@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.Label import Label
@@ -14,6 +16,8 @@ from Tools.BoundFunction import boundFunction
 from Tools.FuzzyDate import FuzzyTime
 from time import time
 from timer import TimerEntry as RealTimerEntry
+from functools import cmp_to_key
+
 
 class PowerTimerEditList(Screen):
 	EMPTY = 0
@@ -27,8 +31,8 @@ class PowerTimerEditList(Screen):
 		self.skinName = "TimerEditList"
 		self.setTitle(_("Power Timer List"))
 
-		self.onChangedEntry = [ ]
-		list = [ ]
+		self.onChangedEntry = []
+		list = []
 		self.list = list
 		self.fillTimerList()
 
@@ -79,21 +83,21 @@ class PowerTimerEditList(Screen):
 		self.updateState()
 
 	def toggleDisabledState(self):
-		cur=self["timerlist"].getCurrent()
+		cur = self["timerlist"].getCurrent()
 		if cur:
 			t = cur
 			if t.disabled:
-				print "[PowerTimerEdit] try to ENABLE timer"
+				print("[PowerTimerEdit] try to ENABLE timer")
 				t.enable()
 			else:
 				if t.isRunning():
 					if t.repeated:
-						list = (
+						tlist = (
 							(_("Stop current event but not future events"), "stoponlycurrent"),
 							(_("Stop current event and disable future events"), "stopall"),
 							(_("Don't stop current event but disable future events"), "stoponlycoming")
 						)
-						self.session.openWithCallback(boundFunction(self.runningEventCallback, t), ChoiceBox, title=_("Repeating the event currently recording... What do you want to do?"), list = list)
+						self.session.openWithCallback(boundFunction(self.runningEventCallback, t), ChoiceBox, title=_("Repeating the event currently recording... What do you want to do?"), list=tlist)
 				else:
 					t.disable()
 			self.session.nav.PowerTimer.timeChanged(t)
@@ -104,7 +108,7 @@ class PowerTimerEditList(Screen):
 		if result is not None:
 			if result[1] == "stoponlycurrent" or result[1] == "stopall":
 				t.enable()
-				t.processRepeated(findRunningEvent = False)
+				t.processRepeated(findRunningEvent=False)
 				self.session.nav.PowerTimer.doActivate(t)
 			if result[1] == "stoponlycoming" or result[1] == "stopall":
 				t.disable()
@@ -121,20 +125,20 @@ class PowerTimerEditList(Screen):
 		cur = self["timerlist"].getCurrent()
 		if cur:
 			if self.key_red_choice != self.DELETE:
-				self["actions"].actions.update({"red":self.removeTimerQuestion})
+				self["actions"].actions.update({"red": self.removeTimerQuestion})
 				self["key_red"].setText(_("Delete"))
 				self.key_red_choice = self.DELETE
 
 			if cur.disabled and (self.key_yellow_choice != self.ENABLE):
-				self["actions"].actions.update({"yellow":self.toggleDisabledState})
+				self["actions"].actions.update({"yellow": self.toggleDisabledState})
 				self["key_yellow"].setText(_("Enable"))
 				self.key_yellow_choice = self.ENABLE
 			elif cur.isRunning() and not cur.repeated and (self.key_yellow_choice != self.EMPTY):
 				self.removeAction("yellow")
 				self["key_yellow"].setText("")
 				self.key_yellow_choice = self.EMPTY
-			elif ((not cur.isRunning())or cur.repeated ) and (not cur.disabled) and (self.key_yellow_choice != self.DISABLE):
-				self["actions"].actions.update({"yellow":self.toggleDisabledState})
+			elif ((not cur.isRunning())or cur.repeated) and (not cur.disabled) and (self.key_yellow_choice != self.DISABLE):
+				self["actions"].actions.update({"yellow": self.toggleDisabledState})
 				self["key_yellow"].setText(_("Disable"))
 				self.key_yellow_choice = self.DISABLE
 		else:
@@ -155,7 +159,7 @@ class PowerTimerEditList(Screen):
 			showCleanup = False
 
 		if showCleanup and (self.key_blue_choice != self.CLEANUP):
-			self["actions"].actions.update({"blue":self.cleanupQuestion})
+			self["actions"].actions.update({"blue": self.cleanupQuestion})
 			self["key_blue"].setText(_("Cleanup"))
 			self.key_blue_choice = self.CLEANUP
 		elif (not showCleanup) and (self.key_blue_choice != self.EMPTY):
@@ -189,27 +193,32 @@ class PowerTimerEditList(Screen):
 
 	def fillTimerList(self):
 		#helper function to move finished timers to end of list
+
+		def xcmp(a, b):
+			return (a > b) - (a < b)
+
 		def eol_compare(x, y):
 			if x[0].state != y[0].state and x[0].state == RealTimerEntry.StateEnded or y[0].state == RealTimerEntry.StateEnded:
-				return cmp(x[0].state, y[0].state)
-			return cmp(x[0].begin, y[0].begin)
+				return xcmp(x[0].state, y[0].state)
+			else:
+				return xcmp(x[0].begin, y[0].begin)
 
-		list = self.list
-		del list[:]
-		list.extend([(timer, False) for timer in self.session.nav.PowerTimer.timer_list])
-		list.extend([(timer, True) for timer in self.session.nav.PowerTimer.processed_timers])
+		flist = self.list
+		del flist[:]
+		flist.extend([(timer, False) for timer in self.session.nav.PowerTimer.timer_list])
+		flist.extend([(timer, True) for timer in self.session.nav.PowerTimer.processed_timers])
 		if config.usage.timerlist_finished_timer_position.index: #end of list
-			list.sort(cmp = eol_compare)
+			flist.sort(key=cmp_to_key(eol_compare))
 		else:
-			list.sort(key = lambda x: x[0].begin)
+			flist.sort(key=lambda x: x[0].begin)
 
 	def showLog(self):
-		cur=self["timerlist"].getCurrent()
+		cur = self["timerlist"].getCurrent()
 		if cur:
 			self.session.openWithCallback(self.finishedEdit, TimerLog, cur)
 
 	def openEdit(self):
-		cur=self["timerlist"].getCurrent()
+		cur = self["timerlist"].getCurrent()
 		if cur:
 			self.session.openWithCallback(self.finishedEdit, TimerEntry, cur)
 
@@ -227,13 +236,13 @@ class PowerTimerEditList(Screen):
 		if not cur:
 			return
 
-		self.session.openWithCallback(self.removeTimer, MessageBox, _("Do you really want to delete this timer ?"), default = False)
+		self.session.openWithCallback(self.removeTimer, MessageBox, _("Do you really want to delete this timer ?"), default=False)
 
 	def removeTimer(self, result):
 		if not result:
 			return
-		list = self["timerlist"]
-		cur = list.getCurrent()
+		rlist = self["timerlist"]
+		cur = rlist.getCurrent()
 		if cur:
 			timer = cur
 			timer.afterEvent = AFTEREVENT.NONE
@@ -254,7 +263,7 @@ class PowerTimerEditList(Screen):
 
 	def addCurrentTimer(self):
 		data = (int(time() + 60), int(time() + 120))
-		self.addTimer(PowerTimerEntry(checkOldTimers = True, *data))
+		self.addTimer(PowerTimerEntry(checkOldTimers=True, *data))
 
 	def addTimer(self, timer):
 		self.session.openWithCallback(self.finishedAdd, TimerEntry, timer)
@@ -266,7 +275,7 @@ class PowerTimerEditList(Screen):
 			self.fillTimerList()
 			self.updateState()
 		else:
-			print "[PowerTimerEdit] PowerTimeredit aborted"
+			print("[PowerTimerEdit] PowerTimeredit aborted")
 
 	def finishedAdd(self, answer):
 		if answer[0]:
@@ -275,7 +284,7 @@ class PowerTimerEditList(Screen):
 			self.fillTimerList()
 			self.updateState()
 		else:
-			print "[PowerTimerEdit] Timeredit aborted"
+			print("[PowerTimerEdit] Timeredit aborted")
 
 	def finishSanityCorrection(self, answer):
 		self.finishedAdd(answer)
@@ -288,9 +297,10 @@ class PowerTimerEditList(Screen):
 		self.refill()
 		self.updateState()
 
+
 class PowerTimerEditListSummary(Screen):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent = parent)
+		Screen.__init__(self, session, parent=parent)
 		self["time"] = StaticText("")
 		self["duration"] = StaticText("")
 		self["state"] = StaticText("")
@@ -308,4 +318,3 @@ class PowerTimerEditListSummary(Screen):
 		self["time"].text = time
 		self["duration"].text = duration
 		self["state"].text = state
-

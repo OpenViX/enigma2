@@ -153,13 +153,26 @@ eventData::eventData(const eit_event_struct* e, int size, int _type, int tsidoni
 					std::transform(cc.begin(), cc.end(), cc.begin(), tolower);
 					int table = encodingHandler.getCountryCodeDefaultMapping(cc);
 
+					//if country code default table is cyrillic, use original encoding
+					//because convertion to utf8 would be limited to only 124 chars
+					bool isCyrillic = (table == 5) ? true : false;
+
 					int eventNameLen = descr[5];
-					int eventTextLen = descr[6 + eventNameLen];
+					int textLen = descr[6 + eventNameLen];
 
 					//convert our strings to UTF8
 					std::string eventNameUTF8 = convertDVBUTF8((const unsigned char*)&descr[6], eventNameLen, table, tsidonid);
-					std::string text((const char*)&descr[7 + eventNameLen], eventTextLen);
-					unsigned int eventNameUTF8len = eventNameUTF8.length();
+					std::string eventText((const char*)&descr[7 + eventNameLen], textLen);
+
+					if (!isCyrillic)
+					{
+						eventText = convertDVBUTF8((const unsigned char*)&descr[7 + eventNameLen], textLen, table, tsidonid);
+						//hack to fix split titles
+						undoAbbreviation(eventNameUTF8, eventText);
+					}
+
+ 					unsigned int eventNameUTF8len = eventNameUTF8.length();
+ 					unsigned int eventTextlen = eventText.length();
 
 					//Rebuild the short event descriptor with UTF-8 strings
 
@@ -201,10 +214,13 @@ eventData::eventData(const eit_event_struct* e, int size, int _type, int tsidoni
 						*pdescr++ = title_crc;
 					}
 
-					//save text with original encoding
-					if( eventTextLen > 0 ) //only store the data if there is something to store
+					//save text with UTF-8/original encoding
+					if( eventTextlen > 0 ) //only store the data if there is something to store
 					{
-						int text_len = 6 + eventTextLen;
+						if (!isCyrillic)
+							eventTextlen = truncateUTF8(eventText, 255 - 6);
+
+						int text_len = 6 + eventTextlen;
 						uint8_t *text_data = new uint8_t[text_len + 2];
 						text_data[0] = SHORT_EVENT_DESCRIPTOR;
 						text_data[1] = text_len;
@@ -212,8 +228,19 @@ eventData::eventData(const eit_event_struct* e, int size, int _type, int tsidoni
 						text_data[3] = descr[3];
 						text_data[4] = descr[4];
 						text_data[5] = 0;
-						text_data[6] = eventTextLen;
-						memcpy(&text_data[7], text.data(), eventTextLen);
+
+						if (isCyrillic)
+						{
+							//use original encoding
+							text_data[6] = eventTextlen;
+							memcpy(&text_data[7], eventText.data(), eventTextlen);
+						}
+						else
+						{
+							text_data[6] = eventTextlen + 1;
+							text_data[7] = 0x15; //identify event text as UTF-8
+							memcpy(&text_data[8], eventText.data(), eventTextlen);
+						}
 
 						text_len += 2; //add 2 the length to include the 2 bytes in the header
 						uint32_t text_crc = calculate_crc_hash(text_data, text_len);
@@ -2018,7 +2045,7 @@ unsigned int eEPGCache::getEpgSources()
 
 static const char* getStringFromPython(ePyObject obj)
 {
-	char *result = 0;
+	const char *result = 0;
 	if (PyString_Check(obj))
 	{
 		result = PyString_AS_STRING(obj);
@@ -2045,7 +2072,7 @@ void eEPGCache::importEvents(ePyObject serviceReferences, ePyObject list)
 
 	if (PyString_Check(serviceReferences))
 	{
-		char *refstr;
+		const char *refstr;
 		refstr = PyString_AS_STRING(serviceReferences);
 	        if (!refstr)
 	        {
@@ -2060,7 +2087,7 @@ void eEPGCache::importEvents(ePyObject serviceReferences, ePyObject list)
 		for (int i = 0; i < nRefs; ++i)
 		{
 			PyObject* item = PyList_GET_ITEM(serviceReferences, i);
-			char *refstr;
+			const char *refstr;
 	                refstr = PyString_AS_STRING(item);
 	                if (!refstr)
         	        {
@@ -2160,7 +2187,7 @@ PyObject *eEPGCache::search(ePyObject arg)
 	int eventid = -1;
 	const char *argstring=0;
 	char *refstr=0;
-	int argcount=0;
+	ssize_t argcount=0;
 	int querytype=-1;
 	bool needServiceEvent=false;
 	int maxmatches=0;
@@ -2177,10 +2204,13 @@ PyObject *eEPGCache::search(ePyObject arg)
 			{
 #if PY_VERSION_HEX < 0x02060000
 				argcount = PyString_GET_SIZE(obj);
-#else
-				argcount = PyString_Size(obj);
-#endif
 				argstring = PyString_AS_STRING(obj);
+#elif PY_VERSION_HEX < 0x03000000
+				argcount = PyString_Size(obj);
+				argstring = PyString_AS_STRING(obj);
+#else
+				argstring = PyUnicode_AsUTF8AndSize(obj, &argcount);
+#endif
 				for (int i=0; i < argcount; ++i)
 					switch(argstring[i])
 					{
@@ -2222,7 +2252,7 @@ PyObject *eEPGCache::search(ePyObject arg)
 				ePyObject obj = PyTuple_GET_ITEM(arg, 3);
 				if (PyString_Check(obj))
 				{
-					refstr = PyString_AS_STRING(obj);
+					const char *refstr = PyString_AS_STRING(obj);
 					eServiceReferenceDVB ref(refstr);
 					if (ref.valid())
 					{
@@ -2275,11 +2305,15 @@ PyObject *eEPGCache::search(ePyObject arg)
 				if (PyString_Check(obj))
 				{
 					int casetype = PyLong_AsLong(PyTuple_GET_ITEM(arg, 4));
-					const char *str = PyString_AS_STRING(obj);
 #if PY_VERSION_HEX < 0x02060000
-					int strlen = PyString_GET_SIZE(obj);
+					ssize_t strlen = PyString_GET_SIZE(obj);
+					const char *str = PyString_AS_STRING(obj);
+#elif PY_VERSION_HEX < 0x03000000
+					ssize_t strlen = PyString_Size(obj);
+					const char *str = PyString_AS_STRING(obj);
 #else
-					int strlen = PyString_Size(obj);
+					ssize_t strlen;
+					const char *str = PyUnicode_AsUTF8AndSize(obj, &strlen);
 #endif
 					switch (querytype)
 					{

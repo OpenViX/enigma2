@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from Screens.Screen import Screen
 from Components.ConfigList import ConfigListScreen
 from Components.Sources.StaticText import StaticText
@@ -7,9 +9,9 @@ from Components.Ipkg import IpkgComponent
 from enigma import eDVBDB
 
 config.misc.installwizard = ConfigSubsection()
-config.misc.installwizard.hasnetwork = ConfigBoolean(default = False)
-config.misc.installwizard.ipkgloaded = ConfigBoolean(default = False)
-config.misc.installwizard.channellistdownloaded = ConfigBoolean(default = False)
+config.misc.installwizard.hasnetwork = ConfigBoolean(default=False)
+config.misc.installwizard.ipkgloaded = ConfigBoolean(default=False)
+config.misc.installwizard.channellistdownloaded = ConfigBoolean(default=False)
 
 
 class InstallWizard(Screen, ConfigListScreen):
@@ -19,7 +21,7 @@ class InstallWizard(Screen, ConfigListScreen):
 	INSTALL_PLUGINS = 2
 	INSTALL_SKINS = 3
 
-	def __init__(self, session, args = None):
+	def __init__(self, session, args=None):
 		Screen.__init__(self, session)
 
 		self.index = args
@@ -30,13 +32,13 @@ class InstallWizard(Screen, ConfigListScreen):
 			config.misc.installwizard.hasnetwork.value = False
 			config.misc.installwizard.ipkgloaded.value = False
 			modes = {0: " "}
-			self.enabled = ConfigSelection(choices = modes, default = 0)
-			self.adapters = [(iNetwork.getFriendlyAdapterName(x),x) for x in iNetwork.getAdapterList()]
+			self.enabled = ConfigSelection(choices=modes, default=0)
+			self.adapters = [(iNetwork.getFriendlyAdapterName(x), x) for x in iNetwork.getAdapterList()]
 			is_found = False
 			for x in self.adapters:
 				if x[1] == 'eth0' or x[1] == 'eth1':
 					if iNetwork.getAdapterAttribute(x[1], 'up'):
-						self.ipConfigEntry = ConfigIP(default = iNetwork.getAdapterAttribute(x[1], "ip"))
+						self.ipConfigEntry = ConfigIP(default=iNetwork.getAdapterAttribute(x[1], "ip"))
 						iNetwork.checkNetworkState(self.checkNetworkCB)
 						is_found = True
 					else:
@@ -45,15 +47,15 @@ class InstallWizard(Screen, ConfigListScreen):
 			if is_found is False:
 				self.createMenu()
 		elif self.index == self.STATE_CHOISE_CHANNELLIST:
-			self.enabled = ConfigYesNo(default = True)
+			self.enabled = ConfigYesNo(default=True)
 			modes = {"19e": "Astra 1", "23e": "Astra 3", "19e-23e": "Astra 1 Astra 3", "19e-23e-28e": "Astra 1 Astra 2 Astra 3", "13e-19e-23e-28e": "Astra 1 Astra 2 Astra 3 Hotbird"}
-			self.channellist_type = ConfigSelection(choices = modes, default = "19e")
+			self.channellist_type = ConfigSelection(choices=modes, default="19e")
 			self.createMenu()
 		elif self.index == self.INSTALL_PLUGINS:
-			self.enabled = ConfigYesNo(default = True)
+			self.enabled = ConfigYesNo(default=True)
 			self.createMenu()
 		elif self.index == self.INSTALL_SKINS:
-			self.enabled = ConfigYesNo(default = True)
+			self.enabled = ConfigYesNo(default=True)
 			self.createMenu()
 
 	def checkNetworkCB(self, data):
@@ -108,15 +110,16 @@ class InstallWizard(Screen, ConfigListScreen):
 		elif self.index == self.STATE_CHOISE_CHANNELLIST and self.enabled.value:
 			self.session.open(InstallWizardIpkgUpdater, self.index, _('Please wait (downloading channel list)'), IpkgComponent.CMD_REMOVE, {'package': 'enigma2-plugin-settings-henksat-' + self.channellist_type.value})
 		elif self.index == self.INSTALL_PLUGINS and self.enabled.value:
-			from PluginBrowser import PluginDownloadBrowser
+			from Screens.PluginBrowser import PluginDownloadBrowser
 			self.session.open(PluginDownloadBrowser, 0, True, "PluginDownloadBrowserWizard")
 		elif self.index == self.INSTALL_SKINS and self.enabled.value:
-			from SkinSelector import SkinSelector
-			self.session.open(SkinSelector, skin_name="SkinSelectorWizard", reboot=False)
+			from Screens.SkinSelector import SkinSelector
+			self.session.open(SkinSelector, skin_name="SkinSelectorWizard")
 		return
 
+
 class InstallWizardIpkgUpdater(Screen):
-	def __init__(self, session, index, info, cmd, pkg = None):
+	def __init__(self, session, index, info, cmd, pkg=None):
 		Screen.__init__(self, session)
 
 		self["statusbar"] = StaticText(info)

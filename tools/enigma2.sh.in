@@ -10,8 +10,8 @@ datarootdir=@datarootdir@
 #fi
 
 # hook to execute user startup script before enigma2 start
-if [ -x /etc/enigma2/startup.sh ]; then
-	/etc/enigma2/startup.sh
+if [ -x @sysconfdir@/enigma2/startup.sh ]; then
+	@sysconfdir@/enigma2/startup.sh
 fi
 
 if [ -e /proc/stb/info/boxtype ]; then
@@ -30,7 +30,7 @@ if [ -x @bindir@/showiframe ]; then
 	else
 		skin=`sed -En 's|config\.skin\.primary_skin=(.+)/skin\.xml|\1|p' @sysconfdir@/enigma2/settings`
 		if [ -z $skin ]; then
-			skin=`strings -n 10 @prefix@/lib/enigma2/python/skin.pyo | egrep -o -m 1 ".+/skin.xml" | sed 's|/skin.xml.*||'`
+			skin=`grep -m1 '^DEFAULT_SKIN' @prefix@/lib/enigma2/python/skin.py | sed -e's%[^"]*"%%' -e's%/.*%%'`
 		fi
 		if [ -n $skin -a -f @datadir@/enigma2/$skin/backdrop.mvi ]; then
 			@bindir@/showiframe @datadir@/enigma2/$skin/backdrop.mvi
@@ -62,6 +62,7 @@ sync
 (sleep 2; echo "enigma2 is the main pvr application... adjust oom score!"; PID=$(pidof enigma2); \
 	[ -e /proc/$PID/oom_score_adj ] && echo "-999" > /proc/$PID/oom_score_adj || echo "-17" > /proc/$PID/oom_adj;) &
 
+export LC_CTYPE="en_US.UTF-8"
 
 # set time format used to prefix each line in the debug logs
 if grep -q 'config\.crash\.logtimeformat' @sysconfdir@/enigma2/settings; then
@@ -69,15 +70,12 @@ if grep -q 'config\.crash\.logtimeformat' @sysconfdir@/enigma2/settings; then
 fi
 
 if grep -q 'config\.crash\.enabledebug=True' @sysconfdir@/enigma2/settings; then
+	DEBUG_LVL='4'
 	debug_dir=$(sed -n 's/config.crash.debug_path=//p' @sysconfdir@/enigma2/settings)
 	[ -n "${debug_dir}" -a -d "${debug_dir}" ] || debug_dir=/home/root/logs/
 	LD_PRELOAD=$LIBS @bindir@/enigma2 &> "${debug_dir}Enigma2_debug_$(date +%Y-%m-%d_%H-%M-%S).log"
 else
-	if grep -q 'config\.misc\.firstrun=False' @sysconfdir@/enigma2/settings; then
-		LD_PRELOAD=$LIBS @bindir@/enigma2 &> /dev/null
-	else
-		LD_PRELOAD=$LIBS @bindir@/enigma2
-	fi
+	LD_PRELOAD=$LIBS @bindir@/enigma2
 fi
 
 # enigma2 exit codes:
@@ -138,7 +136,7 @@ case $ret in
 		/sbin/reboot
 		;;
 	42)
-		python /usr/lib/enigma2/python/upgrade.pyo
+		python /usr/lib/enigma2/python/upgrade.py
 		;;
 	43)
 		init 1

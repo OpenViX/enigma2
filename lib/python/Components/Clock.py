@@ -1,10 +1,12 @@
-from GUIComponent import GUIComponent
-from VariableText import VariableText
-
-from enigma import eTimer, eLabel
+from __future__ import absolute_import
 
 import time
+
+from enigma import eTimer, eLabel
+from Components.GUIComponent import GUIComponent
+from Components.VariableText import VariableText
 # now some "real" components:
+
 
 class Clock(VariableText, GUIComponent):
 	def __init__(self):

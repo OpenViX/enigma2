@@ -1,8 +1,12 @@
-from Components.Element import cached
-from enigma import eTimer
+from __future__ import absolute_import
+
 from time import time as getTime
 
-from Source import Source
+from enigma import eTimer
+
+from Components.Element import cached
+from Components.Sources.Source import Source
+
 
 class Clock(Source):
 	def __init__(self):

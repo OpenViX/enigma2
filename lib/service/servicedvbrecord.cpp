@@ -1,6 +1,7 @@
 #include <lib/service/servicedvbrecord.h>
 #include <lib/base/eerror.h>
 #include <lib/dvb/db.h>
+#include <lib/dvb/dvb.h>
 #include <lib/dvb/epgcache.h>
 #include <lib/dvb/metaparser.h>
 #include <lib/base/httpstream.h>
@@ -285,6 +286,20 @@ int eDVBServiceRecord::doRecord()
 	{
 		eDebug("[eDVBServiceRecord] Recording to %s...", m_filename.c_str());
 		::remove(m_filename.c_str());
+		int tmp_fd = -1;
+		tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+		/* eDebug("[servicedvbrecord] Twol00 Opened tmp_fd: %d", tmp_fd); */
+		if (tmp_fd == 0)
+		{
+			::close(tmp_fd);
+			tmp_fd = -1;	
+			fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+			/* eDebug("[servicedvbrecord] opening null fd returned: %d", fd0lock); */
+		}
+		if (tmp_fd != -1)
+		{
+			::close(tmp_fd);
+		}
 		int fd = ::open(m_filename.c_str(), O_WRONLY | O_CREAT | O_LARGEFILE | O_CLOEXEC, 0666);
 		if (fd == -1)
 		{

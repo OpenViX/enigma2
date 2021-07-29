@@ -1,7 +1,10 @@
-from Screen import Screen
-from Components.Sources.List import List
+from __future__ import absolute_import
+
 from Components.ActionMap import ActionMap
+from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
+from Screens.Screen import Screen
+
 
 class FixedMenu(Screen):
 	def okbuttonClick(self):

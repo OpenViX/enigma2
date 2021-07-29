@@ -1,3 +1,8 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+import six
+
 import mmap
 import re
 
@@ -20,12 +25,11 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_LCDSKIN
 
 class SkinSelector(Screen, HelpableScreen):
 
-	def __init__(self, session, screenTitle=_("GUI Skin"), skin_name=None, reboot=True):
+	def __init__(self, session, screenTitle=_("GUI Skin"), skin_name=None):
 		Screen.__init__(self, session, mandatoryWidgets=["skins", "preview"])
 		HelpableScreen.__init__(self)
 		self.setTitle(screenTitle)
-		self.reboot = reboot
-		self.skinName = ["SkinSelector","__SkinSelector__"]
+		self.skinName = ["SkinSelector", "__SkinSelector__"]
 		if isinstance(skin_name, str):
 			self.skinName = [skin_name] + self.skinName
 		self.rootDir = resolveFilename(SCOPE_SKIN)
@@ -97,13 +101,13 @@ class SkinSelector(Screen, HelpableScreen):
 					if skinFile == "skin.xml":
 						try:
 							with open(skinPath, "r") as fd:
-								mm = mmap.mmap(fd.fileno(), 0, prot=mmap.PROT_READ)
+								mm = fd.read(65535)
 								skinWidth = re.search(r"<?resolution.*?\sxres\s*=\s*\"(\d+)\"", mm)
 								skinHeight = re.search(r"<?resolution.*?\syres\s*=\s*\"(\d+)\"", mm)
 								if skinWidth and skinHeight:
 									skinSize = "%sx%s" % (skinWidth.group(1), skinHeight.group(1))
 								resolution = skinHeight and resolutions.get(skinHeight.group(1), None)
-								mm.close()
+								mm = ""
 						except:
 							pass
 						print("[SkinSelector] Resolution of skin '%s': '%s' (%s)." % (skinPath, "Unknown" if resolution is None else resolution, skinSize))
@@ -175,7 +179,7 @@ class SkinSelector(Screen, HelpableScreen):
 			self.close()
 		else:
 			print("[SkinSelector] Selected skin: '%s'" % pathjoin(self.rootDir, skin))
-			if config.usage.fast_skin_reload.value or not self.reboot:
+			if config.usage.fast_skin_reload.value:
 				self.saveConfig()
 				self.session.reloadSkin()
 			else:

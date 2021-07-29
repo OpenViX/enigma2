@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from Components.GUIComponent import GUIComponent
 from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
@@ -7,7 +11,7 @@ from Components.Sources.StaticText import StaticText
 from ServiceReference import ServiceReference
 from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, eServiceCenter, RT_HALIGN_LEFT, eDVBFrontendParametersSatellite
 from Tools.Transponder import ConvertToHumanReadable, getChannelNumber
-import skin
+from skin import applySkinFactor, parameters, parseFont, parseScale
 
 RT_HALIGN_LEFT = 0
 
@@ -21,20 +25,22 @@ TYPE_VALUE_FREQ = 6
 TYPE_VALUE_FREQ_FLOAT = 7
 TYPE_VALUE_BITRATE = 8
 
+
 def to_unsigned(x):
 	return x & 0xFFFFFFFF
 
+
 def ServiceInfoListEntry(a, b="", valueType=TYPE_TEXT, param=4):
-	print "b:", b
+	print("b:", b)
 	if not isinstance(b, str):
 		if valueType == TYPE_VALUE_HEX:
 			b = ("%0" + str(param) + "X") % to_unsigned(b)
 		elif valueType == TYPE_VALUE_FREQ:
-			b = "%s MHz" % (b / 1000)
+			b = "%s MHz" % (b // 1000)
 		elif valueType == TYPE_VALUE_FREQ_FLOAT:
-			b = "%.3f MHz" % (b / 1000.0)
+			b = "%.3f MHz" % (b // 1000.0)
 		elif valueType == TYPE_VALUE_BITRATE:
-			b = "%s KSymbols/s" % (b / 1000)
+			b = "%s KSymbols/s" % (b // 1000)
 		elif valueType == TYPE_VALUE_HEX_DEC:
 			b = ("%0" + str(param) + "X (%d)") % (to_unsigned(b), b)
 		elif valueType == TYPE_VALUE_ORBIT_DEC:
@@ -45,9 +51,9 @@ def ServiceInfoListEntry(a, b="", valueType=TYPE_TEXT, param=4):
 			b = ("%d.%d%s") % (b // 10, b % 10, direction)
 		else:
 			b = str(b)
-	x, y, w, h = skin.parameters.get("ServiceInfo",(0, 0, skin.applySkinFactor(300), skin.applySkinFactor(30)))
-	xa, ya, wa, ha = skin.parameters.get("ServiceInfoLeft",(0, 0, skin.applySkinFactor(300), skin.applySkinFactor(25)))
-	xb, yb, wb, hb = skin.parameters.get("ServiceInfoRight",(skin.applySkinFactor(300), 0, skin.applySkinFactor(600), skin.applySkinFactor(25)))
+	x, y, w, h = parameters.get("ServiceInfo", applySkinFactor(0, 0, 300, 30))
+	xa, ya, wa, ha = parameters.get("ServiceInfoLeft", applySkinFactor(0, 0, 300, 25))
+	xb, yb, wb, hb = parameters.get("ServiceInfoRight", applySkinFactor(300, 0, 600, 25))
 	if b:
 		return [
 			#PyObject *type, *px, *py, *pwidth, *pheight, *pfnt, *pstring, *pflags;
@@ -62,6 +68,7 @@ def ServiceInfoListEntry(a, b="", valueType=TYPE_TEXT, param=4):
 			(eListboxPythonMultiContent.TYPE_TEXT, xa, ya, wa + wb, ha + hb, 0, RT_HALIGN_LEFT, a)
 		]
 
+
 class ServiceInfoList(GUIComponent):
 	def __init__(self, source):
 		GUIComponent.__init__(self)
@@ -74,16 +81,16 @@ class ServiceInfoList(GUIComponent):
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
-			attribs = [ ]
+			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "font":
-					font = skin.parseFont(value, ((1,1),(1,1)))
+					font = parseFont(value, ((1, 1), (1, 1)))
 					self.fontName = font.family
 					self.fontSize = font.pointSize
 				elif attrib == "itemHeight":
-					self.ItemHeight = skin.parseScale(value)
+					self.ItemHeight = parseScale(value)
 				else:
-					attribs.append((attrib,value))
+					attribs.append((attrib, value))
 			self.skinAttributes = attribs
 		rc = GUIComponent.applySkin(self, desktop, screen)
 		self.setFontsize()
@@ -100,8 +107,10 @@ class ServiceInfoList(GUIComponent):
 		self.instance.setContent(self.l)
 		self.setFontsize()
 
+
 TYPE_SERVICE_INFO = 1
 TYPE_TRANSPONDER_INFO = 2
+
 
 class ServiceInfo(Screen):
 	def __init__(self, session, serviceref=None):
@@ -126,7 +135,7 @@ class ServiceInfo(Screen):
 		if serviceref and not play_service and play_service != serviceref:
 			self.setTitle(_("Transponder Information"))
 			self.type = TYPE_TRANSPONDER_INFO
-			self.skinName="ServiceInfoSimple"
+			self.skinName = "ServiceInfoSimple"
 			self.transponder_info = eServiceCenter.getInstance().info(serviceref).getInfoObject(serviceref, iServiceInformation.sTransponderData)
 			# info is a iStaticServiceInformation, not a iServiceInformation
 		else:
@@ -150,9 +159,9 @@ class ServiceInfo(Screen):
 				self["key_yellow"] = self["yellow"] = Label(_("Service & PIDs"))
 				self["key_blue"] = self["blue"] = Label(_("Tuner settings values"))
 			else:
-				self.skinName="ServiceInfoSimple"
+				self.skinName = "ServiceInfoSimple"
 
-		tlist = [ ]
+		tlist = []
 		self.onShown.append(self.ShowServiceInformation)
 
 	def ShowServiceInformation(self):
@@ -179,16 +188,16 @@ class ServiceInfo(Screen):
 				height = self.info.getInfo(iServiceInformation.sVideoHeight)
 				if width > 0 and height > 0:
 					resolution = videocodec + " - "
-					resolution += "%dx%d - " % (width,height)
-					resolution += str((self.info.getInfo(iServiceInformation.sFrameRate) + 500) / 1000)
+					resolution += "%dx%d - " % (width, height)
+					resolution += str((self.info.getInfo(iServiceInformation.sFrameRate) + 500) // 1000)
 					resolution += ("i", "p", "")[self.info.getInfo(iServiceInformation.sProgressive)]
 					aspect = self.getServiceInfoValue(iServiceInformation.sAspect)
-					aspect = aspect in ( 1, 2, 5, 6, 9, 0xA, 0xD, 0xE ) and "4:3" or "16:9"
-					resolution += " - "+aspect+""
+					aspect = aspect in (1, 2, 5, 6, 9, 0xA, 0xD, 0xE) and "4:3" or "16:9"
+					resolution += " - " + aspect + ""
 				gamma = ("SDR", "HDR", "HDR10", "HLG", "")[self.info.getInfo(iServiceInformation.sGamma)]
 				if gamma:
 					resolution += " - " + gamma
-			if "%3a//" in refstr and reftype not in (1,257,4098,4114):
+			if "%3a//" in refstr and reftype not in (1, 257, 4098, 4114):
 				fillList = [(_("Service name"), name, TYPE_TEXT),
 					(_("Videocodec, size & format"), resolution, TYPE_TEXT),
 					(_("Service reference"), ":".join(refstr.split(":")[:9]), TYPE_TEXT),
@@ -269,7 +278,7 @@ class ServiceInfo(Screen):
 						(_("Inversion, Pilot & Roll-off"), "%s - %s - %s" % (frontendData["inversion"], frontendData.get("pilot", None), str(frontendData.get("rolloff", None))), TYPE_TEXT))
 			elif frontendDataOrg["tuner_type"] == "DVB-C":
 				return (tuner,
-					(_("Modulation"),"%s" % frontendData["modulation"], TYPE_TEXT),
+					(_("Modulation"), "%s" % frontendData["modulation"], TYPE_TEXT),
 					(_("Frequency"), "%s" % frontendData.get("frequency", 0), TYPE_TEXT),
 					(_("Symbol rate & FEC"), "%s - %s" % (frontendData.get("symbol_rate", 0), frontendData["fec_inner"]), TYPE_TEXT),
 					(_("Inversion"), "%s" % frontendData["inversion"], TYPE_TEXT))
@@ -293,9 +302,9 @@ class ServiceInfo(Screen):
 			if item[1]:
 				value = item[1]
 				if len(item) < 4:
-					tlist.append(ServiceInfoListEntry(item[0]+":", value, item[2]))
+					tlist.append(ServiceInfoListEntry(item[0] + ":", value, item[2]))
 				else:
-					tlist.append(ServiceInfoListEntry(item[0]+":", value, item[2], item[3]))
+					tlist.append(ServiceInfoListEntry(item[0] + ":", value, item[2], item[3]))
 		self["infolist"].l.setList(tlist)
 
 	def getServiceInfoValue(self, what):
@@ -336,5 +345,6 @@ class ServiceInfo(Screen):
 			color = "\c00??;?00" if caid[1] == int(ecmdata[3], 16) and caid[0] == int(ecmdata[1], 16) else ""
 			tlist.append(ServiceInfoListEntry("%sECMPid %04X (%d) %04X-%s %s" % (color, caid[1], caid[1], caid[0], CaIdDescription, extra_info)))
 		if not tlist:
-			tlist.append(ServiceInfoListEntry(_("No ECMPids available (FTA Service)")))
+				tlist.append(ServiceInfoListEntry(_("No ECMPids available")))
+				tlist.append(ServiceInfoListEntry(_("(FTA Service)")))
 		self["infolist"].l.setList(tlist)

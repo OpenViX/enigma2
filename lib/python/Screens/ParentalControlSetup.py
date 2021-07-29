@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from Screens.Screen import Screen
 from Components.ConfigList import ConfigListScreen
 from Components.config import config, getConfigListEntry, ConfigNothing, NoSave, ConfigPIN, configfile
@@ -8,6 +10,7 @@ from Screens.InputBox import PinInput
 from Tools.BoundFunction import boundFunction
 from enigma import eServiceCenter, eTimer, eServiceReference
 from operator import itemgetter
+
 
 class ProtectedScreen:
 	def __init__(self):
@@ -26,6 +29,7 @@ class ProtectedScreen:
 	def closeProtectedScreen(self, result=None):
 		self.close(None)
 
+
 class ParentalControlSetup(ConfigListScreen, Screen, ProtectedScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -33,11 +37,11 @@ class ParentalControlSetup(ConfigListScreen, Screen, ProtectedScreen):
 		self.setTitle(_("Parental Control"))
 
 		# for the skin: first try ParentalControlSetup, then Setup, this allows individual skinning
-		self.skinName = ["ParentalControlSetup", "Setup" ]
-		self.onChangedEntry = [ ]
+		self.skinName = ["ParentalControlSetup", "Setup"]
+		self.onChangedEntry = []
 
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry, fullUI = True)
+		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry, fullUI=True)
 		self.createSetup(initial=True)
 
 	def isProtected(self):

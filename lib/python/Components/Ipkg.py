@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+import six
+
 import os
 from enigma import eConsoleAppContainer
 from Components.Harddisk import harddiskmanager
@@ -7,15 +11,18 @@ from boxbranding import getImageDistro
 opkgDestinations = []
 opkgStatusPath = ''
 
+
 def opkgExtraDestinations():
 	global opkgDestinations
-	return ''.join([" --add-dest %s:%s" % (i,i) for i in opkgDestinations])
+	return ''.join([" --add-dest %s:%s" % (i, i) for i in opkgDestinations])
+
 
 def opkgAddDestination(mountpoint):
 	global opkgDestinations
 	if mountpoint not in opkgDestinations:
 		opkgDestinations.append(mountpoint)
-		print "[Ipkg] Added to OPKG destinations:", mountpoint
+		print("[Ipkg] Added to OPKG destinations:", mountpoint)
+
 
 def onPartitionChange(why, part):
 	global opkgDestinations
@@ -34,13 +41,15 @@ def onPartitionChange(why, part):
 		elif why == 'remove':
 			try:
 				opkgDestinations.remove(mountpoint)
-				print "[Ipkg] Removed from OPKG destinations:", mountpoint
+				print("[Ipkg] Removed from OPKG destinations:", mountpoint)
 			except:
 				pass
+
 
 harddiskmanager.on_partition_list_change.append(onPartitionChange)
 for part in harddiskmanager.getMountedPartitions():
 	onPartitionChange('add', part)
+
 
 class IpkgComponent:
 	EVENT_INSTALL = 0
@@ -61,31 +70,31 @@ class IpkgComponent:
 	CMD_UPGRADE = 4
 	CMD_UPGRADE_LIST = 5
 
-	def __init__(self, ipkg = 'opkg'):
+	def __init__(self, ipkg='opkg'):
 		self.ipkg = ipkg
 		self.cmd = eConsoleAppContainer()
 		self.cache = None
 		self.callbackList = []
 		self.setCurrentCommand()
 
-	def setCurrentCommand(self, command = None):
+	def setCurrentCommand(self, command=None):
 		self.currentCommand = command
 
 	def runCmdEx(self, cmd):
 		self.runCmd("%s %s" % (opkgExtraDestinations(), cmd))
 
 	def runCmd(self, cmd):
-		print "[IPKG] executing", self.ipkg, cmd
+		print("[IPKG] executing", self.ipkg, cmd)
 		self.cmd.appClosed.append(self.cmdFinished)
 		self.cmd.dataAvail.append(self.cmdData)
 		if self.cmd.execute("%s %s" % (self.ipkg, cmd)):
 			self.cmdFinished(-1)
 
-	def startCmd(self, cmd, args = None):
+	def startCmd(self, cmd, args=None):
 		if cmd == self.CMD_UPDATE:
 			for fn in os.listdir('/var/lib/opkg'):
 				if fn.startswith(getImageDistro()):
-					os.remove('/var/lib/opkg/'+fn)
+					os.remove('/var/lib/opkg/' + fn)
 			self.runCmdEx("update")
 		elif cmd == self.CMD_UPGRADE:
 			append = ""
@@ -113,6 +122,7 @@ class IpkgComponent:
 		self.cmd.dataAvail.remove(self.cmdData)
 
 	def cmdData(self, data):
+		data = six.ensure_str(data)
 # 		print "data:", data
 		if self.cache is None:
 			self.cache = data
@@ -162,11 +172,11 @@ class IpkgComponent:
 				# if we get multiple config file update questions, the next ones
 				# don't necessarily start at the beginning of a line
 				self.callCallbacks(self.EVENT_MODIFIED, data.split(' \'', 3)[1][:-1])
-		except Exception, ex:
-			print "[Ipkg] Failed to parse: '%s'" % data
-			print "[Ipkg]", ex
+		except Exception as ex:
+			print("[Ipkg] Failed to parse: '%s'" % data)
+			print("[Ipkg]", ex)
 
-	def callCallbacks(self, event, param = None):
+	def callCallbacks(self, event, param=None):
 		for callback in self.callbackList:
 			callback(event, param)
 

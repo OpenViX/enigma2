@@ -1,3 +1,4 @@
+import six
 import sys
 
 from enigma import ePythonOutput
@@ -9,13 +10,15 @@ class EnigmaLog:
 		self.line = ""
 
 	def write(self, data):
-		if isinstance(data, unicode):
-			data = data.encode(encoding="UTF-8", errors="ignore")
+		if six.PY3:
+			if isinstance(data, bytes):
+				data = data.encode(encoding="UTF-8", errors="ignore")
+		else:
+			if isinstance(data, unicode):
+				data = data.encode(encoding="UTF-8", errors="ignore")
 		self.line += data
 		if "\n" in data:
-			ePythonOutput(self.line, self.level)  # OpenPLi, OpenViX
-			# frame = sys._getframe(1)  # OpenATV
-			# ePythonOutput(frame.f_code.co_filename, frame.f_lineno, frame.f_code.co_name, self.line)  # OpenATV
+			ePythonOutput(self.line, self.level)
 			self.line = ""
 
 	def flush(self):

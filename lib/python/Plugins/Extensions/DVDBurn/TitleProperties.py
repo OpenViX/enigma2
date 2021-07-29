@@ -1,16 +1,21 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
+import sys
 from enigma import ePicLoad
 
-from Screens.Screen import Screen
+
 from Components.ActionMap import ActionMap
 from Components.Sources.StaticText import StaticText
 from Components.Pixmap import Pixmap
 from Components.config import config, getConfigListEntry, ConfigInteger
 from Components.ConfigList import ConfigListScreen
 from Components.AVSwitch import AVSwitch
-import DVDTitle
+from Screens.Screen import Screen
+from . import DVDTitle
 
 
-class TitleProperties(Screen,ConfigListScreen):
+class TitleProperties(Screen, ConfigListScreen):
 	skin = """
 		<screen name="TitleProperties" position="center,center" size="560,445" title="Properties of current title" >
 			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
@@ -67,7 +72,7 @@ class TitleProperties(Screen,ConfigListScreen):
 
 	def initConfigList(self, element=None):
 		try:
-			self.properties.position = ConfigInteger(default = self.title_idx+1, limits = (1, len(self.project.titles)))
+			self.properties.position = ConfigInteger(default=self.title_idx + 1, limits=(1, len(self.project.titles)))
 			title = self.project.titles[self.title_idx]
 			self.list = []
 			self.list.append(getConfigListEntry("DVD " + _("Track"), self.properties.position))
@@ -87,11 +92,11 @@ class TitleProperties(Screen,ConfigListScreen):
 					self.list.append(getConfigListEntry("DVD " + "widescreen", self.properties.crop))
 			if len(title.chaptermarks) == 0:
 				self.list.append(getConfigListEntry(_("Auto chapter split every ? minutes (0=never)"), self.properties.autochapter))
-			infotext = "DVB " + _("Title") + ': ' + title.DVBname + "\n" + _("Description") + ': ' + title.DVBdescr + "\n" + _("Channel") + ': ' + title.DVBchannel + '\n' + _("Start time") + title.formatDVDmenuText(": $D.$M.$Y, $T\n", self.title_idx+1)
+			infotext = "DVB " + _("Title") + ': ' + title.DVBname + "\n" + _("Description") + ': ' + title.DVBdescr + "\n" + _("Channel") + ': ' + title.DVBchannel + '\n' + _("Start time") + title.formatDVDmenuText(": $D.$M.$Y, $T\n", self.title_idx + 1)
 			chaptermarks = title.getChapterMarks(template="$h:$m:$s")
 			chapters_count = len(chaptermarks)
 			if chapters_count >= 1:
-				infotext += str(chapters_count+1) + ' ' + _("chapters") + ': '
+				infotext += str(chapters_count + 1) + ' ' + _("chapters") + ': '
 				infotext += ' / '.join(chaptermarks)
 			self["serviceinfo"].setText(infotext)
 			self["config"].setList(self.list)
@@ -102,12 +107,12 @@ class TitleProperties(Screen,ConfigListScreen):
 		self.parent.editTitle()
 
 	def update(self):
-		print "[onShown]"
+		print("[onShown]")
 		self.initConfigList()
 		self.loadThumb()
 
 	def loadThumb(self):
-		thumbfile = self.project.titles[self.title_idx].inputfile.rsplit('.',1)[0] + ".png"
+		thumbfile = self.project.titles[self.title_idx].inputfile.rsplit('.', 1)[0] + ".png"
 		sc = AVSwitch().getFramebufferScale()
 		self.picload.setPara((self["thumbnail"].instance.size().width(), self["thumbnail"].instance.size().height(), sc[0], sc[1], False, 1, "#00000000"))
 		self.picload.startDecode(thumbfile)
@@ -127,12 +132,12 @@ class TitleProperties(Screen,ConfigListScreen):
 	def applySettings(self):
 		for x in self["config"].list:
 			x[1].save()
-		current_pos = self.title_idx+1
+		current_pos = self.title_idx + 1
 		new_pos = self.properties.position.value
 		if new_pos != current_pos:
-			print "title got repositioned from ", current_pos, "to", new_pos
-			swaptitle = self.project.titles.pop(current_pos-1)
-			self.project.titles.insert(new_pos-1, swaptitle)
+			print("title got repositioned from ", current_pos, "to", new_pos)
+			swaptitle = self.project.titles.pop(current_pos - 1)
+			self.project.titles.insert(new_pos - 1, swaptitle)
 
 	def ok(self):
 		#key = self.keydict[self["config"].getCurrent()[1]]
@@ -143,44 +148,73 @@ class TitleProperties(Screen,ConfigListScreen):
 	def cancel(self):
 		self.close()
 
+
 from Tools.ISO639 import LanguageCodes
+
+
 class LanguageChoices():
 	def __init__(self):
 		from Components.Language import language as syslanguage
 		syslang = syslanguage.getLanguage()[:2]
-		self.langdict = { }
+		self.langdict = {}
 		self.choices = []
-		for key, val in LanguageCodes.iteritems():
-			if len(key) == 2:
-				self.langdict[key] = val[0]
-		for key, val in self.langdict.iteritems():
-			if key not in (syslang, 'en'):
-				self.langdict[key] = val
-				self.choices.append((key, val))
+		if sys.version_info >= (3, 0):
+			for key, val in LanguageCodes.items():
+				if len(key) == 2:
+					self.langdict[key] = val[0]
+			for key, val in self.langdict.items():
+				if key not in (syslang, 'en'):
+					self.langdict[key] = val
+					self.choices.append((key, val))
+		else:
+			for key, val in LanguageCodes.iteritems():
+				if len(key) == 2:
+					self.langdict[key] = val[0]
+			for key, val in self.langdict.iteritems():
+				if key not in (syslang, 'en'):
+					self.langdict[key] = val
+					self.choices.append((key, val))
 		self.choices.sort()
-		self.choices.insert(0,("nolang", "unspecified"))
-		self.choices.insert(1,(syslang, self.langdict[syslang]))
+		self.choices.insert(0, ("nolang", "unspecified"))
+		self.choices.insert(1, (syslang, self.langdict[syslang]))
 		if syslang != "en":
-			self.choices.insert(2,("en", self.langdict["en"]))
+			self.choices.insert(2, ("en", self.langdict["en"]))
 
 	def getLanguage(self, DVB_lang):
 		DVB_lang = DVB_lang.lower()
 		for word in ("stereo", "audio", "description", "2ch", "dolby digital"):
-			DVB_lang = DVB_lang.replace(word,"").strip()
-		for key, val in LanguageCodes.iteritems():
-			if DVB_lang.find(key.lower()) == 0:
-				if len(key) == 2:
+			DVB_lang = DVB_lang.replace(word, "").strip()
+		if sys.version_info >= (3, 0):
+			for key, val in LanguageCodes.items():
+				if DVB_lang.find(key.lower()) == 0:
+					if len(key) == 2:
+						return key
+					else:
+						DVB_lang = (LanguageCodes[key])[0]
+				elif DVB_lang.find(val[0].lower()) > -1:
+					if len(key) == 2:
+						return key
+					else:
+						DVB_lang = (LanguageCodes[key])[0]
+			for key, val in self.langdict.items():
+				if val == DVB_lang:
 					return key
-				else:
-					DVB_lang = (LanguageCodes[key])[0]
-			elif DVB_lang.find(val[0].lower()) > -1:
-				if len(key) == 2:
+		else:
+			for key, val in LanguageCodes.iteritems():
+				if DVB_lang.find(key.lower()) == 0:
+					if len(key) == 2:
+						return key
+					else:
+						DVB_lang = (LanguageCodes[key])[0]
+				elif DVB_lang.find(val[0].lower()) > -1:
+					if len(key) == 2:
+						return key
+					else:
+						DVB_lang = (LanguageCodes[key])[0]
+			for key, val in self.langdict.iteritems():
+				if val == DVB_lang:
 					return key
-				else:
-					DVB_lang = (LanguageCodes[key])[0]
-		for key, val in self.langdict.iteritems():
-			if val == DVB_lang:
-				return key
 		return "nolang"
+
 
 languageChoices = LanguageChoices()

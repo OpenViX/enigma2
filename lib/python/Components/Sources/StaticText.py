@@ -1,4 +1,7 @@
-from Source import Source
+from __future__ import absolute_import
+
+from Components.Sources.Source import Source
+
 
 class StaticText(Source):
 	# filter is a function which filters external, untrusted strings
@@ -6,7 +9,7 @@ class StaticText(Source):
 
 	# (and is probably not done yet. For this reason, be careful when
 	# using this on HTML pages. *DO* provide your filter function.)
-	def __init__(self, text = "", filter = lambda x: x):
+	def __init__(self, text="", filter=lambda x: x):
 		Source.__init__(self)
 		self.__text = text
 		self.filter = filter
@@ -27,4 +30,3 @@ class StaticText(Source):
 		return bool(self.__text)
 
 	boolean = property(getBoolean)
-	

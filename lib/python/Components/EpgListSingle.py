@@ -1,11 +1,13 @@
+from __future__ import absolute_import
+from __future__ import division
+
 from time import localtime, time, strftime
 
-from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, loadPNG, gFont, getDesktop, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
-from skin import parameters, parseFont
+from enigma import eEPGCache, eListboxPythonMultiContent, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
+from skin import parameters, parseFont, applySkinFactor
 
 from Components.config import config
 from Components.EpgListBase import EPGListBase
-from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest
 import NavigationInstance
 
 # Various value are in minutes, while others are in seconds.
@@ -19,7 +21,7 @@ class EPGListSingle(EPGListBase):
 
 		self.epgConfig = epgConfig
 		self.eventFontName = "Regular"
-		self.eventFontSize = 28 if self.isFullHd else 20
+		self.eventFontSize = applySkinFactor(19)
 		self.l.setBuildFunc(self.buildEntry)
 
 	def applySkin(self, desktop, screen):
@@ -85,12 +87,12 @@ class EPGListSingle(EPGListBase):
 		]
 		eventW = r3.width()
 		if timerIcon:
-			clockSize = 26 if self.isFullHd else 21
+			clockSize = applySkinFactor(17)
 			eventW -= clockSize
-			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-clockSize, (r3.height()-clockSize)/2, clockSize, clockSize, timerIcon))
+			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left() + r3.width() - clockSize, (r3.height() - clockSize) // 2, clockSize, clockSize, timerIcon))
 			if autoTimerIcon:
 				eventW -= clockSize
-				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left()+r3.width()-clockSize*2, (r3.height()-clockSize)/2, clockSize, clockSize, autoTimerIcon))
+				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left() + r3.width() - clockSize * 2, (r3.height() - clockSize) // 2, clockSize, clockSize, autoTimerIcon))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), eventW, r3.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, eventName))
 		return res
 
@@ -120,7 +122,7 @@ class EPGListSingle(EPGListBase):
 		# time is after "now".
 		# NOTE: that the list is a list of tuples, so we can't modify just the
 		#       Title, but have to replace it with a modified tuple.
-		for i in range(0, len(self.list)):
+		for i in list(range(0, len(self.list))):
 			if self.list[i][4][:2] == odds and self.list[i][4][-2:] == odde:
 				tlist = list(self.list[i])
 				tlist[4] = tlist[4][2:-2]
@@ -129,7 +131,7 @@ class EPGListSingle(EPGListBase):
 				if self.list[i][2] > now:
 					break
 		# Add explicit gaps if data isn't available.
-		for i in range(len(self.list) - 1, 0, -1):
+		for i in list(range(len(self.list) - 1, 0, -1)):
 			thisBeg = self.list[i][2]
 			prevEnd = self.list[i - 1][2] + self.list[i - 1][3]
 			if prevEnd + 5 * SECS_IN_MIN < thisBeg:

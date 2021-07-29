@@ -1,8 +1,12 @@
-from Components.PerServiceDisplay import PerServiceBase
+from __future__ import absolute_import
+
 from enigma import iPlayableService
-from Source import Source
+
 from Components.Element import cached
+from Components.PerServiceDisplay import PerServiceBase
+from Components.Sources.Source import Source
 import NavigationInstance
+
 
 class CurrentService(PerServiceBase, Source):
 	def __init__(self, navcore):
@@ -45,4 +49,3 @@ class CurrentService(PerServiceBase, Source):
 	def destroy(self):
 		PerServiceBase.destroy(self)
 		Source.destroy(self)
-

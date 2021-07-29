@@ -1,9 +1,11 @@
+from __future__ import print_function
 from Components.config import ConfigSubsection, config
 import os
 
 config.plugins = ConfigSubsection()
 
-class PluginDescriptor:
+
+class PluginDescriptor(object):
 	"""An object to describe a plugin."""
 
 	# where to list the plugin. Note that there are different call arguments,
@@ -19,7 +21,7 @@ class PluginDescriptor:
 	# argument: session
 	WHERE_EXTENSIONSMENU = 1
 	WHERE_MAINMENU = 2
-	WHERE_PLUGINMENU  = 3
+	WHERE_PLUGINMENU = 3
 	# argument: session, serviceref (currently selected)
 	WHERE_MOVIELIST = 4
 	# argument: menuid. Fnc must return list with menuitems (4-tuple of name, fnc to call, entryid or None, weight or None)
@@ -68,7 +70,7 @@ class PluginDescriptor:
 	WHERE_NETWORKMOUNTS = 17
 
 	WHERE_VIXMENU = 18
-	
+
 	WHERE_SATCONFIGCHANGED = 19
 
 	WHERE_SERVICESCAN = 20
@@ -76,7 +78,8 @@ class PluginDescriptor:
 	WHERE_EXTENSIONSINGLE = 21
 
 	def __init__(self, name="Plugin", where=None, description="", icon=None, fnc=None, wakeupfnc=None, needsRestart=None, internal=False, weight=0):
-		if not where: where = []
+		if not where:
+			where = []
 		self.name = name
 		self.internal = internal
 		self.needsRestart = needsRestart
@@ -84,7 +87,7 @@ class PluginDescriptor:
 		if isinstance(where, list):
 			self.where = where
 		else:
-			self.where = [ where ]
+			self.where = [where]
 		self.description = description
 
 		if icon is None or isinstance(icon, str):
@@ -98,7 +101,19 @@ class PluginDescriptor:
 
 		self.wakeupfnc = wakeupfnc
 
-		self.__call__ = fnc
+		self._fnc = fnc
+
+	def __call__(self, *args, **kwargs):
+		if callable(self._fnc):
+			return self._fnc(*args, **kwargs)
+		else:
+			print("PluginDescriptor called without a function!")
+			return []
+
+	def __getattribute__(self, name):
+		if name == '__call__':
+			return self._fnc is not None and self._fnc or {}
+		return object.__getattribute__(self, name)
 
 	def updateIcon(self, path):
 		self.path = path
@@ -115,10 +130,10 @@ class PluginDescriptor:
 			return self._icon
 
 	def __eq__(self, other):
-		return self.__call__ == other.__call__
+		return self._fnc == other._fnc
 
 	def __ne__(self, other):
-		return self.__call__ != other.__call__
+		return self._fnc != other._fnc
 
 	def __lt__(self, other):
 		if self.weight < other.weight:
@@ -129,10 +144,10 @@ class PluginDescriptor:
 			return False
 
 	def __gt__(self, other):
-		return other<self
+		return other < self
 
 	def __ge__(self, other):
-		return not self<other
+		return not self < other
 
 	def __le__(self, other):
-		return not other<self
+		return not other < self

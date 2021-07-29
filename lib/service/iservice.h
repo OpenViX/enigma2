@@ -1,5 +1,6 @@
 #ifndef __lib_dvb_iservice_h
 #define __lib_dvb_iservice_h
+#define HAVE_ITAPSERVICE
 
 #include <lib/python/swig.h>
 #include <lib/python/python.h>
@@ -411,8 +412,8 @@ So we move all enum's to own classes (with _ENUMS as name ending) and let our re
 class inherit from the *_ENUMS class. This *_ENUMS classes are normally exportet via swig to python.
 But in the python code we doesn't like to write iServiceInformation_ENUMS.sVideoType....
 we like to write iServiceInformation.sVideoType.
-So until swig have no Solution for this Problem we call in lib/python/Makefile.am a python script named
-enigma_py_patcher.py to remove the "_ENUMS" strings in enigma.py at all needed locations. */
+So until swig have no Solution for this Problem we call in lib/python/Makefile.inc a sed command
+to remove the "_ENUMS" strings in enigma.py at all needed locations. */
 
 class iServiceInformation: public iServiceInformation_ENUMS, public iObject
 {

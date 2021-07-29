@@ -1,5 +1,6 @@
 #include <lib/dvb/pvrparse.h>
 #include <lib/dvb/decoder.h>
+#include <lib/dvb/dvb.h>
 #include <lib/base/cfile.h>
 #include <lib/base/eerror.h>
 #include <sys/types.h>
@@ -57,6 +58,20 @@ int eMPEGStreamInformation::load(const char *filename)
 	//eDebug("[eMPEGStreamInformation] {%d} load(%s)", gettid(), filename);
 	close();
 	std::string s_filename(filename);
+	int tmp_fd = -1;
+	tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+	/* eDebug("[pvrparse][MPEGStream]  Opened tmp_fd: %d", tmp_fd); */
+	if (tmp_fd == 0)
+	{
+		::close(tmp_fd);
+		tmp_fd = -1;	
+		fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+		/* eDebug("[pvrparse][MPEGStream] opening null fd returned: %d", fd0lock); */
+	}
+	if (tmp_fd != -1)
+	{
+		::close(tmp_fd);
+	}
 	m_structure_read_fd = ::open((s_filename + ".sc").c_str(), O_RDONLY | O_CLOEXEC);
 	m_access_points.clear();
 	m_pts_to_offset.clear();
@@ -634,6 +649,20 @@ eMPEGStreamInformationWriter::~eMPEGStreamInformationWriter()
 int eMPEGStreamInformationWriter::startSave(const std::string& filename)
 {
 	m_filename = filename;
+	int tmp_fd = -1;
+	tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+	/* eDebug("[pvrparse][MPEGStream]  Opened tmp_fd: %d", tmp_fd); */
+	if (tmp_fd == 0)
+	{
+		::close(tmp_fd);
+		tmp_fd = -1;	
+		fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+		/* eDebug("[pvrparse][MPEGStream] opening null fd returned: %d", fd0lock); */
+	}
+	if (tmp_fd != -1)
+	{
+		::close(tmp_fd);
+	}
 	m_structure_write_fd = ::open((m_filename + ".sc").c_str(), O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, 0644);
 	m_buffer_filled = 0;
 	m_write_buffer = NULL;

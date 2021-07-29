@@ -1,4 +1,6 @@
-from Converter import Converter
+from __future__ import absolute_import
+
+from Components.Converter.Converter import Converter
 from Components.Element import cached
 from pprint import pprint
 
@@ -8,6 +10,7 @@ from pprint import pprint
 # lines starting with '=' are progress notices,
 # lines starting with '+' are PIDs to record:
 # 	"+d:[p:t[,p:t...]]" with d=demux nr, p: pid, t: type
+
 
 class Streaming2(Converter):
 	@cached
@@ -26,13 +29,13 @@ class Streaming2(Converter):
 			else:
 				return _("=NO STREAM\n")
 
-                retval = "+%d:%s" % (s["demux"], ','.join(["%x:%s" % (x[0], x[1]) for x in s["pids"]]))
+				retval = "+%d:%s" % (s["demux"], ','.join(["%x:%s" % (x[0], x[1]) for x in s["pids"]]))
 
-                if "default_audio_pid" in s and s["default_audio_pid"] >= 0:
-                        retval += ",%x:%s" % (s["default_audio_pid"], "default_audio_pid")
+				if "default_audio_pid" in s and s["default_audio_pid"] >= 0:
+					retval += ",%x:%s" % (s["default_audio_pid"], "default_audio_pid")
 
-                retval += "\n"
+				retval += "\n"
 
-                return(retval);
+				return(retval)
 
 	text = property(getText)

@@ -1,3 +1,6 @@
+from __future__ import print_function
+
+
 class UserDefinedButtons:
 	def __init__(self, config, *args):
 		self.__config = config
@@ -29,7 +32,7 @@ class UserDefinedButtons:
 				if action:
 					action()
 				else:
-					print "[UserDefinedButtons] Missing action method", actionName
+					print("[UserDefinedButtons] Missing action method", actionName)
 			elif len(actions) > 1 and actions[0] == "close":
 				self.close(*(actions[1:]))
 		return keypressHandler

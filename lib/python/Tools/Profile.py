@@ -1,7 +1,10 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 # the implementation here is a bit crappy.
 from boxbranding import getBoxType, getMachineBuild
 import time
-from Directories import resolveFilename, SCOPE_CONFIG
+from Tools.Directories import resolveFilename, SCOPE_CONFIG
 
 PERCENTAGE_START = 0
 PERCENTAGE_END = 100
@@ -24,12 +27,13 @@ try:
 		total_time = t
 		profile_data[id] = t
 except:
-	print "[Profile] no profile data available"
+	print("[Profile] no profile data available")
 
 try:
 	profile_file = open(resolveFilename(SCOPE_CONFIG, "profile"), "w")
 except IOError:
-	print "[Profile] WARNING: couldn't open profile file!"
+	print("[Profile] WARNING: couldn't open profile file!")
+
 
 def profile(id):
 	now = time.time() - profile_start
@@ -59,7 +63,7 @@ def profile(id):
 		if id in profile_data:
 			t = profile_data[id]
 			if total_time:
-				perc = t * (PERCENTAGE_END - PERCENTAGE_START) / total_time + PERCENTAGE_START
+				perc = t * (PERCENTAGE_END - PERCENTAGE_START) // total_time + PERCENTAGE_START
 			else:
 				perc = PERCENTAGE_START
 			try:
@@ -68,6 +72,7 @@ def profile(id):
 				f.close()
 			except IOError:
 				pass
+
 
 def profile_final():
 	global profile_file

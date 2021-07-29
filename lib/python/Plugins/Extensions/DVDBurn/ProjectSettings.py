@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
+import sys
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.HelpMenu import HelpableScreen
@@ -7,13 +11,15 @@ from Components.FileList import FileList
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_FONTS, SCOPE_HDD
 from Components.config import config, getConfigListEntry
 from Components.ConfigList import ConfigListScreen
+import six
+
 
 class FileBrowser(Screen, HelpableScreen):
 
 	def __init__(self, session, scope, configRef):
 		Screen.__init__(self, session)
 		# for the skin: first try FileBrowser_DVDBurn, then FileBrowser, this allows individual skinning
-		self.skinName = ["FileBrowser_DVDBurn", "FileBrowser" ]
+		self.skinName = ["FileBrowser_DVDBurn", "FileBrowser"]
 
 		HelpableScreen.__init__(self)
 		self.scope = scope
@@ -62,26 +68,27 @@ class FileBrowser(Screen, HelpableScreen):
 
 	def getDir(self, currentVal=None, defaultDir=None):
 		if currentVal:
-			return (currentVal.rstrip("/").rsplit("/",1))[0]
-		return defaultDir or (resolveFilename(SCOPE_PLUGINS)+"Extensions/DVDBurn/")
+			return (currentVal.rstrip("/").rsplit("/", 1))[0]
+		return defaultDir or (resolveFilename(SCOPE_PLUGINS) + "Extensions/DVDBurn/")
 
 	def ok(self):
 		if self.filelist.canDescent():
 			self.filelist.descent()
 			if self.scope == "image":
 				path = self["filelist"].getCurrentDirectory() or ""
-				if fileExists(path+"VIDEO_TS"):
-					self.close(path,self.scope,self.configRef)
+				if fileExists(path + "VIDEO_TS"):
+					self.close(path, self.scope, self.configRef)
 		else:
 			ret = self["filelist"].getCurrentDirectory() + '/' + self["filelist"].getFilename()
-			self.close(ret,self.scope,self.configRef)
+			self.close(ret, self.scope, self.configRef)
 
 	def exit(self):
 		if self.scope == "isopath":
-			self.close(self["filelist"].getCurrentDirectory(),self.scope,self.configRef)
-		self.close(None,False,None)
+			self.close(self["filelist"].getCurrentDirectory(), self.scope, self.configRef)
+		self.close(None, False, None)
 
-class ProjectSettings(Screen,ConfigListScreen):
+
+class ProjectSettings(Screen, ConfigListScreen):
 	skin = """
 		<screen name="ProjectSettings" position="center,center" size="560,440" title="Collection settings" >
 			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
@@ -97,7 +104,7 @@ class ProjectSettings(Screen,ConfigListScreen):
 			<widget source="info" render="Label" position="10,360" size="550,80" font="Regular;18" halign="center" valign="center" />
 		</screen>"""
 
-	def __init__(self, session, project = None):
+	def __init__(self, session, project=None):
 		Screen.__init__(self, session)
 		self.project = project
 
@@ -149,12 +156,12 @@ class ProjectSettings(Screen,ConfigListScreen):
 		if output == "iso":
 			self.list.append(getConfigListEntry(_("ISO path"), self.settings.isopath))
 		if authormode.startswith("menu"):
-			self.list.append(getConfigListEntry(_("Menu")+' '+_("template file"), self.settings.menutemplate))
+			self.list.append(getConfigListEntry(_("Menu") + ' ' + _("template file"), self.settings.menutemplate))
 			if config.usage.setup_level.index >= 2: # expert+
-				self.list.append(getConfigListEntry(_("Menu")+' '+_("Title"), self.project.menutemplate.settings.titleformat))
-				self.list.append(getConfigListEntry(_("Menu")+' '+_("Subtitles"), self.project.menutemplate.settings.subtitleformat))
-				self.list.append(getConfigListEntry(_("Menu")+' '+_("background image"), self.project.menutemplate.settings.menubg))
-				self.list.append(getConfigListEntry(_("Menu")+' '+_("Language selection"), self.project.menutemplate.settings.menulang))
+				self.list.append(getConfigListEntry(_("Menu") + ' ' + _("Title"), self.project.menutemplate.settings.titleformat))
+				self.list.append(getConfigListEntry(_("Menu") + ' ' + _("Subtitles"), self.project.menutemplate.settings.subtitleformat))
+				self.list.append(getConfigListEntry(_("Menu") + ' ' + _("background image"), self.project.menutemplate.settings.menubg))
+				self.list.append(getConfigListEntry(_("Menu") + ' ' + _("Language selection"), self.project.menutemplate.settings.menulang))
 			#self.list.append(getConfigListEntry(_("Menu")+' '+_("headline")+' '+_("color"), self.settings.color_headline))
 			#self.list.append(getConfigListEntry(_("Menu")+' '+_("text")+' '+_("color"), self.settings.color_button))
 			#self.list.append(getConfigListEntry(_("Menu")+' '+_("highlighted button")+' '+_("color"), self.settings.color_highlight))
@@ -172,21 +179,21 @@ class ProjectSettings(Screen,ConfigListScreen):
 
 		self["config"].setList(self.list)
 		self.keydict = {}
-		for key, val in self.settings.dict().iteritems():
+		for key, val in six.iteritems(self.settings.dict()):
 			self.keydict[val] = key
-		for key, val in self.project.menutemplate.settings.dict().iteritems():
+		for key, val in six.iteritems(self.project.menutemplate.settings.dict()):
 			self.keydict[val] = key
 
 	def keyLeft(self):
 		ConfigListScreen.keyLeft(self)
 		key = self.keydict[self["config"].getCurrent()[1]]
-		if key == "authormode" or key == "output" or key=="titlesetmode":
+		if key == "authormode" or key == "output" or key == "titlesetmode":
 			self.initConfigList()
 
 	def keyRight(self):
 		ConfigListScreen.keyRight(self)
 		key = self.keydict[self["config"].getCurrent()[1]]
-		if key == "authormode" or key == "output" or key=="titlesetmode":
+		if key == "authormode" or key == "output" or key == "titlesetmode":
 			self.initConfigList()
 
 	def exit(self):
@@ -199,8 +206,8 @@ class ProjectSettings(Screen,ConfigListScreen):
 
 	def ok(self):
 		key = self.keydict[self["config"].getCurrent()[1]]
-		from DVDProject import ConfigFilename
-		if type(self["config"].getCurrent()[1]) == ConfigFilename:
+		from .DVDProject import ConfigFilename
+		if isinstance(self["config"].getCurrent()[1], ConfigFilename):
 			self.session.openWithCallback(self.FileBrowserClosed, FileBrowser, key, self["config"].getCurrent()[1])
 
 	def cancel(self):
@@ -212,27 +219,27 @@ class ProjectSettings(Screen,ConfigListScreen):
 	def saveProject(self):
 		if config.usage.setup_level.index >= 2: # expert+
 			self.applySettings()
-			ret = self.project.saveProject(resolveFilename(SCOPE_PLUGINS)+"Extensions/DVDBurn/")
+			ret = self.project.saveProject(resolveFilename(SCOPE_PLUGINS) + "Extensions/DVDBurn/")
 			if ret.startswith:
-				text = _("Save")+' '+_('OK')+':\n'+ret
-				self.session.open(MessageBox,text,type = MessageBox.TYPE_INFO)
+				text = _("Save") + ' ' + _('OK') + ':\n' + ret
+				self.session.open(MessageBox, text, type=MessageBox.TYPE_INFO)
 			else:
-				text = _("Save")+' '+_('Error')
-				self.session.open(MessageBox,text,type = MessageBox.TYPE_ERROR)
+				text = _("Save") + ' ' + _('Error')
+				self.session.open(MessageBox, text, type=MessageBox.TYPE_ERROR)
 
 	def FileBrowserClosed(self, path, scope, configRef):
 		if scope == "menutemplate":
 			if self.project.menutemplate.loadTemplate(path):
-				print "[ProjectSettings] menu template loaded"
+				print("[ProjectSettings] menu template loaded")
 				configRef.setValue(path)
 				self.initConfigList()
 			else:
-				self.session.open(MessageBox,self.project.error,MessageBox.TYPE_ERROR)
+				self.session.open(MessageBox, self.project.error, MessageBox.TYPE_ERROR)
 		elif scope == "project":
 			self.path = path
-			print "len(self.titles)", len(self.project.titles)
+			print("len(self.titles)", len(self.project.titles))
 			if len(self.project.titles):
-				self.session.openWithCallback(self.askLoadCB, MessageBox,text = _("Your current collection will get lost!") + "\n" + _("Do you want to restore your settings?"), type = MessageBox.TYPE_YESNO)
+				self.session.openWithCallback(self.askLoadCB, MessageBox, text=_("Your current collection will get lost!") + "\n" + _("Do you want to restore your settings?"), type=MessageBox.TYPE_YESNO)
 			else:
 				self.askLoadCB(True)
 		elif scope:
@@ -244,4 +251,4 @@ class ProjectSettings(Screen,ConfigListScreen):
 			if self.project.loadProject(self.path):
 				self.initConfigList()
 			else:
-				self.session.open(MessageBox,self.project.error,MessageBox.TYPE_ERROR)
+				self.session.open(MessageBox, self.project.error, MessageBox.TYPE_ERROR)

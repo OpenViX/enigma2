@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from enigma import eTimer, ePoint, eSize, getDesktop
 
 from Components.ActionMap import HelpableActionMap
@@ -131,7 +135,7 @@ class MessageBox(Screen, HelpableScreen):
 			self.baseTitle = self.baseTitle % prefix
 		self.setTitle(self.baseTitle)
 		if self.timeout > 0:
-			print "[MessageBox] Timeout set to %d seconds." % self.timeout
+			print("[MessageBox] Timeout set to %d seconds." % self.timeout)
 			self.timer.start(25)
 
 	def processTimer(self):
@@ -155,7 +159,7 @@ class MessageBox(Screen, HelpableScreen):
 				self.ok()
 
 	def stopTimer(self, reason):
-		print "[MessageBox] %s" % reason
+		print("[MessageBox] %s" % reason)
 		self.timer.stop()
 		self.timeout = 0
 		if self.baseTitle is not None:
@@ -169,7 +173,7 @@ class MessageBox(Screen, HelpableScreen):
 					itemHeight = parseScale(value) # if value does not parse (due to bad syntax in skin), itemHeight will be 0
 					return itemHeight if itemHeight else defaultItemHeight
 		return defaultItemHeight # if itemHeight not in skinAttributes
-	
+
 	def getPixmapWidth(self):
 		defaultPixmapWidth = 53
 		try: # protect from skin errors
@@ -177,10 +181,10 @@ class MessageBox(Screen, HelpableScreen):
 				self["QuestionPixmap"].visible and hasattr(self["QuestionPixmap"], 'getSize') and isinstance(self["QuestionPixmap"].getSize(), tuple) and len(self["QuestionPixmap"].getSize()) and self["QuestionPixmap"].getSize()[0] or \
 				self["InfoPixmap"].visible and hasattr(self["InfoPixmap"], 'getSize') and isinstance(self["InfoPixmap"].getSize(), tuple) and len(self["InfoPixmap"].getSize()) and self["InfoPixmap"].getSize()[0] or \
 				defaultPixmapWidth
-		except Exception as err: 
+		except Exception as err:
 			print("[MessageBox] defaultPixmapWidth, %s: '%s'" % (type(err).__name__, err))
 		return defaultPixmapWidth
-	
+
 	def autoResize(self):
 		# Get the real pixmap width from the skin so this can be used in the formula below.
 		# Historically the default pixmap width has been 53 + 12 pixels of right margin.
@@ -203,7 +207,7 @@ class MessageBox(Screen, HelpableScreen):
 			if textsize[0] < textsize[1]:
 				textsize = (textsize[1], textsize[0] + 10)
 			if textsize[0] > 520:
-				textBottomMargin = int(1.0*textsize[0]/520*30) # previously always 25
+				textBottomMargin = int(1.0 * textsize[0] // 520 * 30) # previously always 25
 				textsize = (textsize[0], textsize[1] + textBottomMargin)
 			else:
 				textsize = (520, textsize[1] + 25)
@@ -221,7 +225,7 @@ class MessageBox(Screen, HelpableScreen):
 			self["list"].instance.resize(eSize(*listsize))
 		wsizey = textsize[1] + listsize[1]
 		self.instance.resize(eSize(*(wsizex, wsizey)))
-		self.instance.move(ePoint((getDesktop(0).size().width() - wsizex) / 2, (getDesktop(0).size().height() - wsizey) / 2))
+		self.instance.move(ePoint((getDesktop(0).size().width() - wsizex) // 2, (getDesktop(0).size().height() - wsizey) // 2))
 
 	def cancel(self):
 		for l in self["list"].list:

@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
 import os
 from Components.Sources.StaticText import StaticText
 from Components.ActionMap import ActionMap
@@ -55,8 +58,7 @@ class H9SDswap(Screen):
 
 	def SwaptoNand(self):
 		self.switchtype = "Nand"
-		f = open('/proc/cmdline', 'r').read()
-		if "root=/dev/mmcblk0p1"  in f:
+		if "root=/dev/mmcblk0p1" in open('/proc/cmdline', 'r').read():
 			self.container = Console()
 			self.container.ePopen("dd if=/usr/share/bootargs-nand.bin of=/dev/mtdblock1", self.Unm)
 		else:
@@ -64,9 +66,7 @@ class H9SDswap(Screen):
 
 	def SwaptoSD(self):
 		self.switchtype = "mmc"
-		f = open('/proc/cmdline', 'r').read()
-		print "[H9SDswap] switchtype %s cmdline %s" %(self.switchtype, f) 
-		if "root=/dev/mmcblk0p1" in f:
+		if "root=/dev/mmcblk0p1" in open('/proc/cmdline', 'r').read():
 			self.session.open(MessageBox, _("H9 SDcard switch ERROR! - already on mmc"), MessageBox.TYPE_INFO, timeout=20)
 		elif os.path.isfile("/media/mmc/usr/bin/enigma2"):
 			self.container = Console()
@@ -76,16 +76,13 @@ class H9SDswap(Screen):
 
 	def SwaptoUSB(self):
 		self.switchtype = "usb"
-		f = open('/proc/cmdline', 'r').read()
-		print "[H9SDswap] switchtype %s cmdline %s" %(self.switchtype, f) 
-		if "root=/dev/SDA1" in f:
+		if "root=/dev/SDA1" in open('/proc/cmdline', 'r').read():
 			self.session.open(MessageBox, _("H9 USB switch ERROR! - already on USB"), MessageBox.TYPE_INFO, timeout=20)
 		elif os.path.isfile("/media/mmc/usr/bin/enigma2"):
 			self.container = Console()
 			self.container.ePopen("dd if=/usr/share/bootargs-usb.bin of=/dev/mtdblock1", self.Unm)
 		else:
 			self.session.open(MessageBox, _("H9 USB switch ERROR! - H9 root files not transferred to USB"), MessageBox.TYPE_INFO, timeout=20)
-
 
 	def Unm(self, data=None, retval=None, extra_args=None):
 		self.container.killAll()

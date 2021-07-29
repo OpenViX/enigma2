@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import absolute_import
+
 from os import stat
 from os.path import isdir, join as pathJoin
 
@@ -30,7 +33,7 @@ class RecordingSettings(Setup):
 
 	def buildChoices(self, item, configEntry, path):
 		configList = config.movielist.videodirs.value[:]
-		styleList = [] if item == "DefaultPath"	else self.styleKeys
+		styleList = [] if item == "DefaultPath" else self.styleKeys
 		if configEntry.saved_value and configEntry.saved_value not in styleList + configList:
 			configList.append(configEntry.saved_value)
 			configEntry.value = configEntry.saved_value

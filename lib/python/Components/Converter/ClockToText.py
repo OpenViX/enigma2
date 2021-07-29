@@ -1,16 +1,21 @@
-from Converter import Converter
+from __future__ import absolute_import
+from __future__ import division
+
 from time import localtime, strftime
+
+from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.config import config
+
 
 class ClockToText(Converter, object):
 	TIME_OPTIONS = {
 		# 		TRANSLATORS: short time representation hour:minute (Same as "Default")
 		"": lambda t: strftime(config.usage.time.short.value, localtime(t)),  # _("%R")
 		#
-		"AsLength": lambda t: "" if t < 0 else "%d:%02d" % (t / 60, t % 60),
-		"AsLengthHours": lambda t: "" if t < 0 else "%d:%02d" % (t / 3600, t / 60 % 60),
-		"AsLengthSeconds": lambda t: "" if t < 0 else "%d:%02d:%02d" % (t / 3600, t / 60 % 60, t % 60),
+		"AsLength": lambda t: "" if t < 0 else "%d:%02d" % (t // 60, t % 60),
+		"AsLengthHours": lambda t: "" if t < 0 else "%d:%02d" % (t // 3600, t // 60 % 60),
+		"AsLengthSeconds": lambda t: "" if t < 0 else "%d:%02d:%02d" % (t // 3600, t // 60 % 60, t % 60),
 		# 		TRANSLATORS: full date representation dayname daynum monthname year in strftime() format! See 'man strftime'
 		"Date": lambda t: strftime(config.usage.date.dayfull.value, localtime(t)),  # _("%A %e %B %Y")
 		# 		TRANSLATORS: short time representation hour:minute in strftime() format! See 'man strftime'
@@ -28,7 +33,7 @@ class ClockToText(Converter, object):
 		# 		TRANSLATORS: full date representations short dayname daynum monthname long year in strftime() format! See 'man strftime'
 		"FullDate": lambda t: strftime(config.usage.date.shortdayfull.value, localtime(t)),  # _("%a %e %B %Y")
 		#
-		"InMinutes": lambda t: ngettext("%d Min", "%d Mins", (t / 60)) % (t / 60),
+		"InMinutes": lambda t: "" if t < 0 else ngettext("%d Min", "%d Mins", (t // 60)) % (t // 60),
 		# 		TRANSLATORS: long date representations dayname daynum monthname in strftime() format! See 'man strftime'
 		"LongDate": lambda t: strftime(config.usage.date.dayshortfull.value, localtime(t)),  # _("%A %e %B")
 		# 		TRANSLATORS: long date representation short dayname daynum short monthname year hour:minute in strftime() format! See 'man strftime'
@@ -36,7 +41,7 @@ class ClockToText(Converter, object):
 		# 		TRANSLATORS: mixed time representation hour:minute:seconds for 24 hour clock and hour:minute for 12 hour clocks
 		"Mixed": lambda t: strftime(config.usage.time.mixed.value, localtime(t)),  # _("%T") or _("%-I:%M%p")
 		# 		TRANSLATORS: short date representation short dayname daynum short monthname in strftime() format! See 'man strftime'
-		"ShortDate": lambda t: strftime(config.usage.date.dayshort.value, localtime(t)),  # _("%a %e/%m")
+		"ShortDate": lambda t: strftime(config.usage.date.dayshort.value, localtime(t)),  # _("%a %e//%m")
 		# 		TRANSLATORS: long date representation short dayname daynum short monthname year in strftime() format! See 'man strftime'
 		"ShortFullDate": lambda t: strftime(config.usage.date.daylong.value, localtime(t)),  # _("%a %e %b %Y")
 		#
@@ -50,9 +55,9 @@ class ClockToText(Converter, object):
 		# 		TRANSLATORS: VFD daynum short monthname hour:minute in strftime() format! See 'man strftime'
 		"VFD12": lambda t: strftime(config.usage.date.compact.value + config.usage.time.display.value, localtime(t)),  # _("%e%b%R")
 		# 		TRANSLATORS: VFD daynum short monthname hour:minute in strftime() format! See 'man strftime'
-		"VFD14": lambda t: strftime(config.usage.date.short.value + " " + config.usage.time.display.value, localtime(t)),  # _("%e/%b %R")
+		"VFD14": lambda t: strftime(config.usage.date.short.value + " " + config.usage.time.display.value, localtime(t)),  # _("%e//%b %R")
 		# 		TRANSLATORS: VFD daynum short monthname hour:minute in strftime() format! See 'man strftime'
-		"VFD18": lambda t: strftime(config.usage.date.dayshort.value + " " + config.usage.time.display.value, localtime(t)),  # _("%a %e/%b %R")
+		"VFD18": lambda t: strftime(config.usage.date.dayshort.value + " " + config.usage.time.display.value, localtime(t)),  # _("%a %e//%b %R")
 		# 		TRANSLATORS: full time representation hour:minute:seconds
 		"WithSeconds": lambda t: strftime(config.usage.time.long.value, localtime(t))  # _("%T")
 	}

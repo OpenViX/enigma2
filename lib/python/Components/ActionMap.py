@@ -1,3 +1,5 @@
+from __future__ import print_function
+import six
 from enigma import eActionMap
 
 from Tools.KeyBindings import queryKeyBinding
@@ -12,14 +14,15 @@ class ActionMap:
 		self.bound = False
 		self.exec_active = False
 		self.enabled = True
-		unknown = self.actions.keys()
-		for action in unknown[:]:
+		unknown = list(self.actions.keys())
+		for action in unknown:
 			for context in self.contexts:
 				if queryKeyBinding(context, action):
 					unknown.remove(action)
 					break
-		if unknown:
-			print "[ActionMap] Keymap(s) '%s' -> Undefined action(s) '%s'." % (", ".join(contexts), ", ".join(unknown))
+		# if unknown:
+		#	print("")
+		#	print("[ActionMap] Keymap(s) '%s' -> Undefined action(s) '%s'." % (", ".join(contexts), ", ".join(unknown)))
 
 	def setEnabled(self, enabled):
 		self.enabled = enabled
@@ -53,13 +56,13 @@ class ActionMap:
 
 	def action(self, context, action):
 		if action in self.actions:
-			print "[ActionMap] Keymap '%s' -> Action = '%s'." % (context, action)
+			print("[ActionMap] Keymap '%s' -> Action = '%s'." % (context, action))
 			res = self.actions[action]()
 			if res is not None:
 				return res
 			return 1
 		else:
-			print "[ActionMap] Keymap '%s' -> Unknown action '%s'! (Typo in keymap?)" % (context, action)
+			# print("[ActionMap] Keymap '%s' -> Unknown action '%s'! (Typo in keymap?)" % (context, action))
 			return 0
 
 	def destroy(self):
@@ -90,23 +93,33 @@ class HelpableActionMap(ActionMap):
 	# ActionMapconstructor,	the collected helpstrings (with correct
 	# context, action) is added to the screen's "helpList", which will
 	# be picked up by the "HelpableScreen".
+	######### do not change this code that has been modified for python 3 use!#########
 	def __init__(self, parent, contexts, actions=None, prio=0, description=None):
-		if not hasattr(contexts, '__iter__'):
+		def exists(record):
+			for context in parent.helpList:
+				if record in context[2]:
+					# print("[HelpActionMap] removed duplicity: %s %s" % (context[1], record))
+					return True
+			return False
+
+		if not type(contexts) is list:
 			contexts = [contexts]
 		actions = actions or {}
 		self.description = description
 		adict = {}
 		for context in contexts:
 			alist = []
-			for (action, funchelp) in actions.iteritems():
+			for (action, funchelp) in six.iteritems(actions):
 				# Check if this is a tuple.
 				if isinstance(funchelp, tuple):
 					if queryKeyBinding(context, action):
-						alist.append((action, funchelp[1]))
+						if not exists((action, funchelp[1])):
+							alist.append((action, funchelp[1]))
 					adict[action] = funchelp[0]
 				else:
 					if queryKeyBinding(context, action):
-						alist.append((action, None))
+						if not exists((action, None)):
+							alist.append((action, None))
 					adict[action] = funchelp
 			parent.helpList.append((self, context, alist))
 		ActionMap.__init__(self, contexts, adict, prio)

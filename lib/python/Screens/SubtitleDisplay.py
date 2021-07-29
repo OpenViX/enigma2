@@ -1,14 +1,17 @@
+from __future__ import absolute_import
+
 from Screens.Screen import Screen
 from Components.Label import Label
 from enigma import eTimer, getDesktop, eActionMap, gFont
 from Components.ActionMap import ActionMap
-from sys import maxint
+from sys import maxsize
 import skin
+
 
 class SubtitleDisplay(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		eActionMap.getInstance().bindAction('', -maxint - 1, self.__keypress)
+		eActionMap.getInstance().bindAction('', -maxsize - 1, self.__keypress)
 
 		self.messageShown = False
 		self['message'] = Label()
@@ -40,12 +43,12 @@ class SubtitleDisplay(Screen):
 				return 1
 
 	def showMessage(self, message, hideScreen):
-		padding = (40,10)
+		padding = (40, 10)
 		label = self['message']
 		label.setText(message)
 		size = label.getSize()
-		label.resize(size[0]+padding[0]*2, size[1]+padding[1]*2)
-		label.move((getDesktop(0).size().width()-size[0]-padding[0]) // 2, getDesktop(0).size().height()-size[1]-padding[1]*2-30)
+		label.resize(size[0] + padding[0] * 2, size[1] + padding[1] * 2)
+		label.move((getDesktop(0).size().width() - size[0] - padding[0]) // 2, getDesktop(0).size().height() - size[1] - padding[1] * 2 - 30)
 		label.show()
 		self.messageShown = True
 		self.show()

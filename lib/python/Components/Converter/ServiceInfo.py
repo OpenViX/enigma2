@@ -1,11 +1,15 @@
+from __future__ import absolute_import
+from __future__ import division
+
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService
 from Screens.InfoBarGenerics import hasActiveSubservicesForCurrentChannel
 from Components.Element import cached
-from Poll import Poll
+from Components.Converter.Poll import Poll
 from Tools.Transponder import ConvertToHumanReadable
 
 WIDESCREEN = [3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10]
+
 
 class ServiceInfo(Poll, Converter):
 	HAS_TELETEXT = 1
@@ -79,7 +83,7 @@ class ServiceInfo(Poll, Converter):
 			"Progressive": (self.PROGRESSIVE, (iPlayableService.evVideoProgressiveChanged, iPlayableService.evUpdatedInfo,)),
 			"VideoInfo": (self.VIDEO_INFO, (iPlayableService.evVideoSizeChanged, iPlayableService.evVideoFramerateChanged, iPlayableService.evVideoProgressiveChanged, iPlayableService.evUpdatedInfo,)),
 			"TransferBPS": (self.TRANSFERBPS, (iPlayableService.evUpdatedInfo,)),
-			"HasHBBTV": (self.HAS_HBBTV, (iPlayableService.evUpdatedInfo,iPlayableService.evHBBTVInfo, iPlayableService.evStart)),
+			"HasHBBTV": (self.HAS_HBBTV, (iPlayableService.evUpdatedInfo, iPlayableService.evHBBTVInfo, iPlayableService.evStart)),
 			"AudioTracksAvailable": (self.AUDIOTRACKS_AVAILABLE, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"SubtitlesAvailable": (self.SUBTITLES_AVAILABLE, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"Freq_Info": (self.FREQ_INFO, (iPlayableService.evUpdatedInfo,)),
@@ -100,7 +104,7 @@ class ServiceInfo(Poll, Converter):
 			"IsHLG": (self.IS_HLG, (iPlayableService.evVideoGammaChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"IsVideoMPEG2": (self.IS_VIDEO_MPEG2, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"IsVideoAVC": (self.IS_VIDEO_AVC, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
-			"IsVideoHEVC": (self.IS_VIDEO_HEVC,(iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
+			"IsVideoHEVC": (self.IS_VIDEO_HEVC, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 		}[type]
 
 	def isVideoService(self, info):
@@ -123,7 +127,7 @@ class ServiceInfo(Poll, Converter):
 			f.close()
 			if val >= 2 ** 31:
 				val -= 2 ** 32
-		except Exception, e:
+		except Exception as e:
 			pass
 		return val
 
@@ -223,7 +227,7 @@ class ServiceInfo(Poll, Converter):
 			elif self.type == self.IS_SD:
 				return video_height < 720
 			elif self.type == self.IS_HD:
-				return video_height >= 720 and video_height < 2160
+				return video_height >= 720 and video_height < 1500
 			elif self.type == self.IS_SD_AND_WIDESCREEN:
 				return video_height < 720 and video_aspect in WIDESCREEN
 			elif self.type == self.IS_SD_AND_NOT_WIDESCREEN:
@@ -237,7 +241,7 @@ class ServiceInfo(Poll, Converter):
 			elif self.type == self.IS_480:
 				return video_height > 0 and video_height <= 480
 			elif self.type == self.IS_4K:
-				return video_height >= 2100
+				return video_height >= 1500
 			elif self.type == self.PROGRESSIVE:
 				return bool(self._getProgressive(info))
 			elif self.type == self.IS_SDR:
@@ -285,11 +289,11 @@ class ServiceInfo(Poll, Converter):
 		elif self.type == self.SID:
 			return self.getServiceInfoString(info, iServiceInformation.sSID)
 		elif self.type == self.FRAMERATE:
-			return self._getFrameRateStr(info, convert=lambda x: "%d fps" % ((x + 500) / 1000))
+			return self._getFrameRateStr(info, convert=lambda x: "%d fps" % ((x + 500) // 1000))
 		elif self.type == self.PROGRESSIVE:
 			return self._getProgressiveStr(info)
 		elif self.type == self.TRANSFERBPS:
-			return self.getServiceInfoString(info, iServiceInformation.sTransferBPS, lambda x: "%d kB/s" % (x / 1024))
+			return self.getServiceInfoString(info, iServiceInformation.sTransferBPS, lambda x: "%d kB/s" % (x // 1024))
 		elif self.type == self.HAS_HBBTV:
 			return info.getInfoString(iServiceInformation.sHBBTVUrl)
 		elif self.type == self.FREQ_INFO:
@@ -322,7 +326,7 @@ class ServiceInfo(Poll, Converter):
 			if fieldrate > 0:
 				if progressive == 'i':
 					fieldrate *= 2
-				fieldrate = "%dHz" % ((fieldrate + 500) / 1000,)
+				fieldrate = "%dHz" % ((fieldrate + 500) // 1000,)
 			else:
 				fieldrate = ""
 			return "%sx%s%s %s" % (self._getVideoWidthStr(info), self._getVideoHeightStr(info), progressive, fieldrate)

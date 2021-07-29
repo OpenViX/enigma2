@@ -1,10 +1,13 @@
+from __future__ import absolute_import
+
 from Components.config import config
 from Components.VariableText import VariableText
-from Renderer import Renderer
+from Components.Renderer.Renderer import Renderer
 from enigma import eLabel, eEPGCache, eServiceReference
 from time import time, localtime, strftime
 from skin import parseColor
 from Tools.Hex2strColor import Hex2strColor
+
 
 class NextEpgInfo(Renderer, VariableText):
 	def __init__(self):

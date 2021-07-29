@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # enigma2 reactor: based on pollreactor, which is
 # Copyright (c) 2001-2004 Twisted Matrix Laboratories.
 # See LICENSE for details.
@@ -8,7 +9,9 @@ Maintainer: U{Felix Domke<mailto:tmbinc@elitedvb.net>}
 """
 
 # System imports
-import select, errno, sys
+import select
+import errno
+import sys
 
 # Twisted imports
 from twisted.python import log, failure
@@ -16,6 +19,7 @@ from twisted.internet import main, posixbase, error
 #from twisted.internet.pollreactor import PollReactor, poller
 
 from enigma import getApplication
+import six
 
 # globals
 reads = {}
@@ -24,25 +28,28 @@ selectables = {}
 
 POLL_DISCONNECTED = (select.POLLHUP | select.POLLERR | select.POLLNVAL)
 
+
 class E2SharedPoll:
 	def __init__(self):
-		self.dict = { }
+		self.dict = {}
 		self.eApp = getApplication()
 
-	def register(self, fd, eventmask = select.POLLIN | select.POLLERR | select.POLLOUT):
+	def register(self, fd, eventmask=select.POLLIN | select.POLLERR | select.POLLOUT):
 		self.dict[fd] = eventmask
 
 	def unregister(self, fd):
 		del self.dict[fd]
 
-	def poll(self, timeout = None):
+	def poll(self, timeout=None):
 		try:
 			r = self.eApp.poll(timeout, self.dict)
 		except KeyboardInterrupt:
 			return None
 		return r
 
+
 poller = E2SharedPoll()
+
 
 class PollReactor(posixbase.PosixReactorBase):
 	"""A reactor that uses poll(2)."""
@@ -65,7 +72,6 @@ class PollReactor(posixbase.PosixReactorBase):
 			if fd in selectables:
 				del selectables[fd]
 
-
 		poller.eApp.interruptPoll()
 
 	def _dictRemove(self, selectable, mdict):
@@ -78,7 +84,7 @@ class PollReactor(posixbase.PosixReactorBase):
 		except:
 			# the hard way: necessary because fileno() may disappear at any
 			# moment, thanks to python's underlying sockets impl
-			for fd, fdes in selectables.items():
+			for fd, fdes in list(selectables.items()):
 				if selectable is fdes:
 					break
 			else:
@@ -95,7 +101,7 @@ class PollReactor(posixbase.PosixReactorBase):
 		fd = reader.fileno()
 		if fd not in reads:
 			selectables[fd] = reader
-			reads[fd] =  1
+			reads[fd] = 1
 			self._updateRegistration(fd)
 
 	def addWriter(self, writer, writes=writes, selectables=selectables):
@@ -104,7 +110,7 @@ class PollReactor(posixbase.PosixReactorBase):
 		fd = writer.fileno()
 		if fd not in writes:
 			selectables[fd] = writer
-			writes[fd] =  1
+			writes[fd] = 1
 			self._updateRegistration(fd)
 
 	def removeReader(self, reader, reads=reads):
@@ -121,8 +127,8 @@ class PollReactor(posixbase.PosixReactorBase):
 		"""Remove all selectables, and return a list of them."""
 		if self.waker is not None:
 			self.removeReader(self.waker)
-		result = selectables.values()
-		fds = selectables.keys()
+		result = list(selectables.values())
+		fds = list(selectables.keys())
 		reads.clear()
 		writes.clear()
 		selectables.clear()
@@ -151,8 +157,8 @@ class PollReactor(posixbase.PosixReactorBase):
 			if l is None:
 				if self.running:
 					self.stop()
-				l = [ ]
-		except select.error, e:
+				l = []
+		except select.error as e:
 			if e[0] == errno.EINTR:
 				return
 			else:
@@ -170,7 +176,8 @@ class PollReactor(posixbase.PosixReactorBase):
 	doIteration = doPoll
 
 	def _doReadOrWrite(self, selectable, fd, event, POLLIN, POLLOUT, log, faildict=None):
-		if not faildict: faildict = {
+		if not faildict:
+			faildict = {
 		error.ConnectionDone: failure.Failure(error.ConnectionDone()),
 		error.ConnectionLost: failure.Failure(error.ConnectionLost())
 		}
@@ -189,6 +196,12 @@ class PollReactor(posixbase.PosixReactorBase):
 				if not selectable.fileno() == fd:
 					why = error.ConnectionFdescWentAway('Filedescriptor went away')
 					inRead = False
+			except AttributeError as ae:
+				if "'NoneType' object has no attribute 'writeHeaders'" not in six.text_type(ae):
+					log.deferr()
+					why = sys.exc_info()[1]
+				else:
+					why = None
 			except:
 				log.deferr()
 				why = sys.exc_info()[1]
@@ -199,10 +212,12 @@ class PollReactor(posixbase.PosixReactorBase):
 		poller.eApp.interruptPoll()
 		return posixbase.PosixReactorBase.callLater(self, *args, **kwargs)
 
+
 def install():
 	"""Install the poll() reactor."""
 
 	p = PollReactor()
 	main.installReactor(p)
+
 
 __all__ = ["PollReactor", "install"]

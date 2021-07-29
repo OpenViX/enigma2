@@ -1,7 +1,12 @@
+from __future__ import print_function
+from __future__ import absolute_import
+import six
+
 import errno
 import xml.etree.cElementTree
 
 from os import environ, path, symlink, unlink, walk
+import sys
 from time import gmtime, localtime, strftime, time
 
 from Components.config import ConfigSelection, ConfigSubsection, config
@@ -44,6 +49,7 @@ DEFAULT_AREA = "Europe"  # openATV, OpenPLi, OpenViX
 DEFAULT_ZONE = "London"  # OpenViX
 TIMEZONE_FILE = "/etc/timezone.xml"  # This should be SCOPE_TIMEZONES_FILE!  This file moves arond the filesystem!!!  :(
 TIMEZONE_DATA = "/usr/share/zoneinfo/"  # This should be SCOPE_TIMEZONES_DATA!
+
 
 def InitTimeZones():
 	config.timezone = ConfigSubsection()
@@ -134,12 +140,12 @@ class Timezones:
 				name = commonTimezoneNames.get(tz, zone)  # Use the more common name if one is defined.
 				if name is None:
 					continue
-				if isinstance(name, unicode):
-					name = name.encode(encoding="UTF-8", errors="ignore")
-				if isinstance(area, unicode):
-					area = area.encode(encoding="UTF-8", errors="ignore")
-				if isinstance(zone, unicode):
-					zone = zone.encode(encoding="UTF-8", errors="ignore")
+				if isinstance(name, six.text_type):
+					name = six.ensure_str(name.encode(encoding="UTF-8", errors="ignore"))
+				if isinstance(area, six.text_type):
+					area = six.ensure_str(area.encode(encoding="UTF-8", errors="ignore"))
+				if isinstance(zone, six.text_type):
+					zone = six.ensure_str(zone.encode(encoding="UTF-8", errors="ignore"))
 				zones.append((zone, name.replace("_", " ")))
 			if area:
 				if area in self.timezones:
@@ -199,11 +205,11 @@ class Timezones:
 		if root is not None:
 			for zone in root.findall("zone"):
 				name = zone.get("name", "")
-				if isinstance(name, unicode):
-					name = name.encode(encoding="UTF-8", errors="ignore")
+				if isinstance(name, six.text_type):
+					name = six.ensure_str(name.encode(encoding="UTF-8", errors="ignore"))
 				zonePath = zone.get("zone", "")
-				if isinstance(zonePath, unicode):
-					zonePath = zonePath.encode(encoding="UTF-8", errors="ignore")
+				if isinstance(zonePath, six.text_type):
+					zonePath = six.ensure_str(zonePath.encode(encoding="UTF-8", errors="ignore"))
 				if path.exists(path.join(TIMEZONE_DATA, zonePath)):
 					zones.append((zonePath, name))
 				else:

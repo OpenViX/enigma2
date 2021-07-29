@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import Screens.InfoBar
 from enigma import eServiceReference
 
@@ -21,7 +25,7 @@ class ServiceScanSummary(Screen):
 		<widget name="Service" position="6,22" size="120,26" font="Regular;12" transparent="1" />
 	</screen>"""
 
-	def __init__(self, session, parent, showStepSlider = True):
+	def __init__(self, session, parent, showStepSlider=True):
 		Screen.__init__(self, session, parent)
 
 		self["Title"] = Label(parent.title or _("Service scan"))
@@ -33,6 +37,7 @@ class ServiceScanSummary(Screen):
 
 	def updateService(self, name):
 		self["Service"].setText(name)
+
 
 class ServiceScan(Screen):
 
@@ -94,7 +99,7 @@ class ServiceScan(Screen):
 		self["transponder"] = Label()
 
 		self["pass"] = Label("")
-		self["servicelist"] = FIFOList()
+		self["servicelist"] = FIFOList(len=10)
 		self["FrontendInfo"] = FrontendInfo()
 		self["key_red"] = Label(_("Cancel"))
 		self["key_green"] = Label(_("OK"))
@@ -109,13 +114,13 @@ class ServiceScan(Screen):
 		self.setTitle(_("Service scan"))
 		self.onFirstExecBegin.append(self.doServiceScan)
 		self.onClose.append(self.doPluginCB)
-	
+
 	def doPluginCB(self):
 		for p in plugins.getPlugins(PluginDescriptor.WHERE_SERVICESCAN):
 			p()
 
 	def doServiceScan(self):
-		self["servicelist"].len = self["servicelist"].instance.size().height() / self["servicelist"].l.getItemSize().height()
+		self["servicelist"].len = self["servicelist"].instance.size().height() // self["servicelist"].l.getItemSize().height()
 		self["scan"] = CScan(self["scan_progress"], self["scan_state"], self["servicelist"], self["pass"], self.scanList, self["network"], self["transponder"], self["FrontendInfo"], self.session.summary)
 
 	def createSummary(self):

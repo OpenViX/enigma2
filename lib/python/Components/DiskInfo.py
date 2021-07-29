@@ -1,8 +1,12 @@
-from GUIComponent import GUIComponent
-from VariableText import VariableText
+from __future__ import absolute_import
+from __future__ import division
+
 from os import statvfs
 
 from enigma import eLabel
+from Components.GUIComponent import GUIComponent
+from Components.VariableText import VariableText
+
 
 # TODO: Harddisk.py has similiar functions, but only similiar.
 # fix this to use same code
@@ -11,7 +15,7 @@ class DiskInfo(VariableText, GUIComponent):
 	USED = 1
 	SIZE = 2
 
-	def __init__(self, path, type, update = True):
+	def __init__(self, path, type, update=True):
 		GUIComponent.__init__(self)
 		VariableText.__init__(self)
 		self.type = type

@@ -1,14 +1,17 @@
+import six
+
 from Components.config import config
 import os
 import time
 
 ECM_INFO = '/tmp/ecm.info'
-EMPTY_ECM_INFO = ' ','0','0','0'
+EMPTY_ECM_INFO = ' ', '0', '0', '0'
 
 old_ecm_time = time.time()
 info = {}
 ecm = ''
 data = EMPTY_ECM_INFO
+
 
 class GetEcmInfo:
 	def __init__(self):
@@ -27,14 +30,15 @@ class GetEcmInfo:
 			info = {}
 			ecm = ''
 		if ecm_time != old_ecm_time:
-			oecmi1 = info.get('ecminterval1','')
-			oecmi0 = info.get('ecminterval0','')
+			oecmi1 = info.get('ecminterval1', '')
+			oecmi0 = info.get('ecminterval0', '')
 			info = {'ecminterval2': oecmi1, 'ecminterval1': oecmi0}
 			old_ecm_time = ecm_time
 			try:
-				file = open(ECM_INFO, 'rb')
-				ecm = file.readlines()
-				file.close()
+				if six.PY2:
+					ecm = open(ECM_INFO, 'rb').readlines()
+				else:
+					ecm = open(ECM_INFO, 'r').readlines()
 			except:
 				ecm = ''
 			info['caid'] = "0"
@@ -73,13 +77,13 @@ class GetEcmInfo:
 					info['prov'] = line.strip()[6:]
 					continue
 				if 'CaID 0x' in line and 'pid 0x' in line:
-					info['caid'] = line[line.find('CaID 0x')+7:line.find(',')]
-					info['pid'] = line[line.find('pid 0x')+6:line.find(' =')]
+					info['caid'] = line[line.find('CaID 0x') + 7:line.find(',')]
+					info['pid'] = line[line.find('pid 0x') + 6:line.find(' =')]
 					info['provid'] = info.get('prov', '0')[:4]
 			data = self.getText()
 			return True
 		else:
-			info['ecminterval0'] = int(time.time()-ecm_time+0.5)
+			info['ecminterval0'] = int(time.time() - ecm_time + 0.5)
 
 	def getEcm(self):
 		return (self.pollEcmData(), ecm)
@@ -88,7 +92,7 @@ class GetEcmInfo:
 		self.pollEcmData()
 		return data
 
-	def getInfo(self, member, ifempty = ''):
+	def getInfo(self, member, ifempty=''):
 		self.pollEcmData()
 		return str(info.get(member, ifempty))
 
@@ -151,10 +155,12 @@ class GetEcmInfo:
 				if info['decode'] == 'Network':
 					cardid = 'id:' + info.get('prov', '')
 					try:
-						file = open('/tmp/share.info', 'rb')
-						share = file.readlines()
-						file.close()
+						if six.PY2:
+							share = open('/tmp/share.info', 'rb').readlines()
+						else:
+							share = open('/tmp/share.info', 'r').readlines()
 						for line in share:
+							l = six.ensure_str(line)
 							if cardid in line:
 								self.textvalue = line.strip()
 								break
@@ -170,7 +176,7 @@ class GetEcmInfo:
 				source = info.get('source', None)
 				if source:
 					# MGcam
-					self.textvalue = "%s %s %.3f @ %s" % (info['eEnc'],info['eCaid'],(float(info['eTime'])/1000),info['eSrc'])
+					self.textvalue = "%s %s %.3f @ %s" % (info['eEnc'], info['eCaid'], (float(info['eTime']) / 1000), info['eSrc'])
 				else:
 					reader = info.get('reader', '')
 					if reader:
@@ -185,10 +191,10 @@ class GetEcmInfo:
 						if response:
 							# wicardd
 							response = response.split(' ')
-							self.textvalue = "%s (%ss)" % (response[4], float(response[0])/1000)
+							self.textvalue = "%s (%ss)" % (response[4], float(response[0]) / 1000)
 						else:
 							self.textvalue = ""
 		decCI = info.get('caid', info.get('CAID', '0'))
 		provid = info.get('provid', info.get('prov', info.get('Provider', '0')))
 		ecmpid = info.get('pid', info.get('ECM PID', '0'))
-		return self.textvalue,decCI,provid,ecmpid
+		return self.textvalue, decCI, provid, ecmpid

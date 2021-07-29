@@ -5,8 +5,10 @@
 # Version: 0.1 (26.01.2012 04:05)
 # Support: http://dream.altmaster.net/
 #
-from Converter import Converter
-from Poll import Poll
+from __future__ import absolute_import
+
+from Components.Converter.Converter import Converter
+from Components.Converter.Poll import Poll
 from Components.Element import cached
 
 
@@ -17,7 +19,7 @@ class ConverterRotator(Poll, Converter, object):
 		Poll.__init__(self)
 		Converter.__init__(self, type)
 		self.mainstream = None
-		self.sourceList = [ ]
+		self.sourceList = []
 		self.sourceIndex = -1
 		if type and type.isdigit():
 			self.poll_interval = int(type) * 1000
@@ -31,7 +33,7 @@ class ConverterRotator(Poll, Converter, object):
 			if suspended:
 				self.poll_enabled = False
 			else:
-				self.sourceIndex = len(self.sourceList)-1
+				self.sourceIndex = len(self.sourceList) - 1
 				self.poll_enabled = True
 				self.poll()
 

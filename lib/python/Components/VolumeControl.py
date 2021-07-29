@@ -1,31 +1,36 @@
+from __future__ import absolute_import
+
 from enigma import eDVBVolumecontrol, eTimer
 from Tools.Profile import profile
 from Screens.Volume import Volume
 from Screens.Mute import Mute
 from GlobalActions import globalActionMap
-from config import config, ConfigSubsection, ConfigInteger
+from Components.config import config, ConfigSubsection, ConfigInteger
 import skin
 
 profile("VolumeControl")
 #TODO .. move this to a own .py file
+
+
 class VolumeControl:
 	instance = None
 	"""Volume control, handles volUp, volDown, volMute actions and display
 	a corresponding dialog"""
+
 	def __init__(self, session):
 		self.session = session
 
 		global globalActionMap
-		globalActionMap.actions["volumeUp"]=self.volUp
-		globalActionMap.actions["volumeDown"]=self.volDown
-		globalActionMap.actions["volumeMute"]=self.volMute
+		globalActionMap.actions["volumeUp"] = self.volUp
+		globalActionMap.actions["volumeDown"] = self.volDown
+		globalActionMap.actions["volumeMute"] = self.volMute
 
 		assert not VolumeControl.instance, "only one VolumeControl instance is allowed!"
 		VolumeControl.instance = self
 		skin.addOnLoadCallback(self.skinChanged)
 
 		config.audio = ConfigSubsection()
-		config.audio.volume = ConfigInteger(default = 100, limits = (0, 100))
+		config.audio.volume = ConfigInteger(default=100, limits=(0, 100))
 
 		vol = config.audio.volume.value
 		self.volctrl = eDVBVolumecontrol.getInstance()

@@ -1,6 +1,10 @@
-from Screen import Screen
+from __future__ import absolute_import
+import six
+
+from Screens.Screen import Screen
 from Components.Label import Label
 import enigma
+
 
 class NumericalTextInputHelpDialog(Screen):
 	def __init__(self, session, textinput):
@@ -8,7 +12,7 @@ class NumericalTextInputHelpDialog(Screen):
 		self["help1"] = Label(text="<")
 		self["help2"] = Label(text=">")
 		for x in range(0, 10):
-			self["key%d" % x] = Label(text=textinput.mapping[x].encode("utf-8"))
+			self["key%d" % x] = Label(text=six.ensure_str(textinput.mapping[x]))
 		self.last_marked = 0
 		self.onLayoutFinish.append(self.resizeFont)
 
@@ -28,7 +32,7 @@ class NumericalTextInputHelpDialog(Screen):
 			item.instance.setNoWrap(nowrap)
 			return width
 
-		text_width = max([getsize(x) for x in range (0, 10)])
+		text_width = max([getsize(x) for x in range(0, 10)])
 		label_width = self["key0"].instance.size().width()
 		if label_width < text_width:
 			fnt = self["key0"].instance.getFont()

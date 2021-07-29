@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+import six
+
 import xml.etree.cElementTree
 
 from gettext import dgettext
@@ -75,7 +79,9 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				skin = setup.get("skin", None)
 				if skin and skin != "":
 					self.skinName.insert(0, skin)
-				title = setup.get("title", None).encode("UTF-8", errors="ignore")
+				title = setup.get("title", None).encode("UTF-8", errors="ignore") if six.PY2 else setup.get("title", None)
+				title = six.ensure_str(title)
+				# print("[Setup] [createSetup] %s" % title)
 				# If this break is executed then there can only be one setup tag with this key.
 				# This may not be appropriate if conditional setup blocks become available.
 				break
@@ -110,12 +116,13 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def addItem(self, element):
 		if self.pluginLanguageDomain:
-			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8", errors="ignore"))
-			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8", errors="ignore"))
+			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8", errors="ignore")) if six.PY2 else dgettext(self.pluginLanguageDomain, element.get("text", "??"))
+			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8", errors="ignore")) if six.PY2 else dgettext(self.pluginLanguageDomain, element.get("description", " "))
 		else:
-			itemText = _(element.get("text", "??").encode("UTF-8", errors="ignore"))
-			itemDescription = _(element.get("description", " ").encode("UTF-8", errors="ignore"))
+			itemText = _(element.get("text", "??").encode("UTF-8", errors="ignore")) if six.PY2 else _(element.get("text", "??"))
+			itemDescription = _(element.get("description", " ").encode("UTF-8", errors="ignore")) if six.PY2 else _(element.get("description", " "))
 		item = eval(element.text or "")
+		# print("[Setup] [self.pluginLanguageDomain]itemText = %s itemDescription = %s item = %s" % (itemText, itemDescription, item))
 		if item != "" and not isinstance(item, ConfigNothing):
 			self.list.append((self.formatItemText(itemText), item, self.formatItemDescription(item, itemDescription)))  # Add the item to the config list.
 		if item is config.usage.setupShowDefault:
@@ -316,11 +323,12 @@ def setupDom(setup=None, plugin=None):
 				for setup in setupFileDom.findall("setup"):
 					key = setup.get("key")
 					if key:  # If there is no key then this element is useless and can be skipped!
-						title = setup.get("title", "").encode("UTF-8", errors="ignore")
+						title = setup.get("title", "").encode("UTF-8", errors="ignore") if six.PY2 else setup.get("title", "")
 						if title == "":
 							print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
 							title = "** Setup error: '%s' title is missing or blank!" % key
-						# print("[Setup] DEBUG: XML setup load: key='%s', title='%s'." % (key, setup.get("title", "").encode("UTF-8", errors="ignore")))
+					title = six.ensure_str(title)
+					# print("[Setup] [setupDOM]title = %s key = %s" % (title, key))
 			except xml.etree.cElementTree.ParseError as err:
 				fd.seek(0)
 				content = fd.readlines()
@@ -343,11 +351,15 @@ def setupDom(setup=None, plugin=None):
 # Temporary legacy interface.
 # Not used any OpenViX enigma2 module. Known to be used by the Heinz plugin.
 #
+
+
 def setupdom(setup=None, plugin=None):
 	return setupDom(setup, plugin)
 
 # Only used in AudioSelection screen...
 #
+
+
 def getConfigMenuItem(configElement):
 	for item in setupDom().findall("./setup/item/."):
 		if item.text == configElement:

@@ -1,8 +1,18 @@
-from boxbranding import getBoxType, getMachineBrand, getMachineName, getImageType, getImageVersion
-from os import path as os_path, remove, unlink, rename, chmod, access, X_OK
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+import six
+
+from os import system, path as os_path, remove, unlink, rename, chmod, access, X_OK
 import netifaces as ni
+from random import Random
 from shutil import move
+import string
+import sys
 import time
+
+from enigma import eTimer, eConsoleAppContainer
+from boxbranding import getBoxType, getMachineBrand, getMachineName, getImageType, getImageVersion
 
 from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigIP, ConfigText, ConfigPassword, ConfigSelection, getConfigListEntry, ConfigNumber, ConfigLocations, NoSave, ConfigMacText
@@ -20,21 +30,16 @@ from Components.Sources.StaticText import StaticText
 from Components.Sources.Boolean import Boolean
 from Components.Sources.List import List
 from Components.SystemInfo import SystemInfo
-from enigma import eTimer, eConsoleAppContainer
 from Plugins.Plugin import PluginDescriptor
-from random import Random
-from Screens.Screen import Screen
-from Screens.MessageBox import MessageBox
-from Screens.Standby import TryQuitMainloop
 from Screens.HelpMenu import HelpableScreen
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
+from Screens.Setup import Setup
+from Screens.Standby import TryQuitMainloop
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_ACTIVE_SKIN
+from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
 
-from subprocess import call
-import commands
-import string
-import sys
 
 # Define a function to determine whether a service is configured to
 # start at boot time.
@@ -42,6 +47,8 @@ import sys
 # appropriate, but historically it's been rc2.d, so...).
 #
 import glob
+
+
 def ServiceIsEnabled(service_name):
 	starter_list = glob.glob("/etc/rc2.d/S*" + service_name)
 	return len(starter_list) > 0
@@ -51,27 +58,29 @@ def ServiceIsEnabled(service_name):
 # ...but note that the exact details can depend on whether a final reboot
 # is expected.
 #
+
+
 class NSCommon:
-	def StartStopCallback(self, result = None, retval = None, extra_args = None):
+	def StartStopCallback(self, result=None, retval=None, extra_args=None):
 		time.sleep(3)
 		self.updateService()
 
-	def removeComplete(self, result = None, retval = None, extra_args = None):
+	def removeComplete(self, result=None, retval=None, extra_args=None):
 		if self.reboot_at_end:
-			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox, 
+			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox,
 				_('Your %s %s needs to be restarted to complete the removal of %s\nDo you want to reboot now ?') % (getMachineBrand(), getMachineName(), self.getTitle()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_("Reboot required"))
 		else:
 			self.operationComplete()
 
-	def installComplete(self, result = None, retval = None, extra_args = None):
+	def installComplete(self, result=None, retval=None, extra_args=None):
 		if self.reboot_at_end:
-			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox, 
+			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox,
 				_('Your %s %s needs to be restarted to complete the installation of %s\nDo you want to reboot now ?') % (getMachineBrand(), getMachineName(), self.getTitle()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_("Reboot required"))
 		else:
 			self.updateService()
-	
+
 	def operationComplete(self, reboot=False):
 		if reboot:
 			self.session.open(TryQuitMainloop, 2)
@@ -79,33 +88,35 @@ class NSCommon:
 		self.close()
 
 	def doRemove(self, callback, pkgname):
-		self.message = self.session.open(MessageBox,_("Please wait..."), MessageBox.TYPE_INFO, enable_input = False)
-		self.message.setTitle(_('Removing Service'))
-		self.Console.ePopen('/usr/bin/opkg remove ' + pkgname + ' --force-remove --autoremove', callback)
+		self.message = self.session.open(MessageBox, _("Please wait..."), MessageBox.TYPE_INFO, enable_input=False)
+		self.message.setTitle(_("Removing Service"))
+		self.Console.ePopen("/usr/bin/opkg remove " + pkgname + " --force-remove --autoremove", callback)
 
 	def doInstall(self, callback, pkgname):
-		self.message = self.session.open(MessageBox,_("Please wait..."), MessageBox.TYPE_INFO, enable_input = False)
-		self.message.setTitle(_('Installing Service'))
-		self.Console.ePopen('/usr/bin/opkg install ' + pkgname, callback)
+		self.message = self.session.open(MessageBox, _("Please wait..."), MessageBox.TYPE_INFO, enable_input=False)
+		self.message.setTitle(_("Installing Service"))
+		self.Console.ePopen("/usr/bin/opkg install " + pkgname, callback)
 
 	def checkNetworkState(self, str, retval, extra_args):
-		if 'Collected errors' in str:
+		str = six.ensure_str(str)
+		if "Collected errors" in str:
 			self.session.openWithCallback(self.close, MessageBox, _("A background update check is in progress, please wait a few minutes and then try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		elif not str:
-			if (getImageType() != 'release' and feedsstatuscheck.getFeedsBool() != 'unknown') or (getImageType() == 'release' and feedsstatuscheck.getFeedsBool() not in ('stable', 'unstable')):
+			if (getImageType() != "release" and feedsstatuscheck.getFeedsBool() != "unknown") or (getImageType() == "release" and feedsstatuscheck.getFeedsBool() not in ("stable", "unstable")):
 				self.session.openWithCallback(self.InstallPackageFailed, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			else:
-				mtext = _('Are you ready to install %s ?') % self.getTitle()
+				mtext = _("Are you ready to install %s ?") % self.getTitle()
 				self.session.openWithCallback(self.InstallPackage, MessageBox, mtext, MessageBox.TYPE_YESNO)
 		else:
 			self.updateService()
 
 	def UninstallCheck(self):
-		self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.RemovedataAvail)
+		self.Console.ePopen("/usr/bin/opkg list_installed " + self.service_name, self.RemovedataAvail)
 
 	def RemovedataAvail(self, str, retval, extra_args):
+		str = six.ensure_str(str)
 		if str:
-			self.session.openWithCallback(self.RemovePackage, MessageBox, _('Are you ready to remove %s ?') % self.getTitle(), MessageBox.TYPE_YESNO)
+			self.session.openWithCallback(self.RemovePackage, MessageBox, _("Are you ready to remove %s ?") % self.getTitle(), MessageBox.TYPE_YESNO)
 		else:
 			self.updateService()
 
@@ -123,12 +134,13 @@ class NSCommon:
 		self.close()
 
 	def InstallCheck(self):
-		self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.checkNetworkState)
+		self.Console.ePopen("/usr/bin/opkg list_installed " + self.service_name, self.checkNetworkState)
 
 	def createSummary(self):
 		return NetworkServicesSummary
 
-class NetworkAdapterSelection(Screen,HelpableScreen):
+
+class NetworkAdapterSelection(Screen, HelpableScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
@@ -162,18 +174,18 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 
 		self["DefaultInterfaceAction"] = HelpableActionMap(self, "ColorActions",
 			{
-			"yellow": (self.setDefaultInterface, [_("Set interface as the default Interface"),_("* Only available if more than one interface is active.")] ),
+			"yellow": (self.setDefaultInterface, [_("Set interface as the default Interface"), _("* Only available if more than one interface is active.")]),
 			})
 
-		self.adapters = [(iNetwork.getFriendlyAdapterName(x),x) for x in iNetwork.getAdapterList()]
+		self.adapters = [(iNetwork.getFriendlyAdapterName(x), x) for x in iNetwork.getAdapterList()]
 
 		if not self.adapters:
-			self.adapters = [(iNetwork.getFriendlyAdapterName(x),x) for x in iNetwork.getConfiguredAdapters()]
+			self.adapters = [(iNetwork.getFriendlyAdapterName(x), x) for x in iNetwork.getConfiguredAdapters()]
 
 		if len(self.adapters) == 0:
-			self.adapters = [(iNetwork.getFriendlyAdapterName(x),x) for x in iNetwork.getInstalledAdapters()]
+			self.adapters = [(iNetwork.getFriendlyAdapterName(x), x) for x in iNetwork.getInstalledAdapters()]
 
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.list = []
 		self["list"] = List(self.list)
 		self.updateList()
@@ -199,38 +211,38 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 		for cb in self.onChangedEntry:
 			cb(name, desc)
 
-	def buildInterfaceList(self,iface,name,default,active ):
-		divpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "div-h.png"))
+	def buildInterfaceList(self, iface, name, default, active):
+		divpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "div-h.png"))
 		defaultpng = None
 		activepng = None
 		description = None
 		interfacepng = None
 
 		if not iNetwork.isWirelessInterface(iface):
-			if active is True:
-				interfacepng = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/network_wired-active.png"))
+			if active == True:
+				interfacepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/network_wired-active.png"))
 			elif active is False:
-				interfacepng = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/network_wired-inactive.png"))
+				interfacepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/network_wired-inactive.png"))
 			else:
-				interfacepng = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/network_wired.png"))
+				interfacepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/network_wired.png"))
 		elif iNetwork.isWirelessInterface(iface):
-			if active is True:
-				interfacepng = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/network_wireless-active.png"))
+			if active == True:
+				interfacepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/network_wireless-active.png"))
 			elif active is False:
-				interfacepng = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/network_wireless-inactive.png"))
+				interfacepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/network_wireless-inactive.png"))
 			else:
-				interfacepng = LoadPixmap(resolveFilename(SCOPE_ACTIVE_SKIN, "icons/network_wireless.png"))
+				interfacepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/network_wireless.png"))
 
 		num_configured_if = len(iNetwork.getConfiguredAdapters())
 		if num_configured_if >= 2:
 			if default is True:
-				defaultpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/button_blue.png"))
+				defaultpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/button_blue.png"))
 			elif default is False:
-				defaultpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "buttons/button_blue_off.png"))
+				defaultpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/button_blue_off.png"))
 		if active is True:
-			activepng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_on.png"))
+			activepng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/lock_on.png"))
 		elif active is False:
-			activepng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_ACTIVE_SKIN, "icons/lock_error.png"))
+			activepng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/lock_error.png"))
 
 		description = iNetwork.getFriendlyAdapterDescription(iface)
 
@@ -253,7 +265,7 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 			unlink("/etc/default_gw")
 
 		if os_path.exists("/etc/default_gw"):
-			fp = file('/etc/default_gw', 'r')
+			fp = open("/etc/default_gw", "r")
 			result = fp.read()
 			fp.close()
 			default_gw = result
@@ -263,11 +275,11 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 				default_int = True
 			else:
 				default_int = False
-			if iNetwork.getAdapterAttribute(x[1], 'up') is True:
+			if iNetwork.getAdapterAttribute(x[1], "up") == True:
 				active_int = True
 			else:
 				active_int = False
-			self.list.append(self.buildInterfaceList(x[1], _(x[0]), default_int, active_int ))
+			self.list.append(self.buildInterfaceList(x[1], _(x[0]), default_int, active_int))
 
 		if os_path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
 			self["key_blue"].setText(_("Network wizard"))
@@ -279,11 +291,11 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 		old_default_gw = None
 		num_configured_if = len(iNetwork.getConfiguredAdapters())
 		if os_path.exists("/etc/default_gw"):
-			fp = open('/etc/default_gw', 'r')
+			fp = open("/etc/default_gw", "r")
 			old_default_gw = fp.read()
 			fp.close()
 		if num_configured_if > 1 and (not old_default_gw or old_default_gw != selection[0]):
-			fp = open('/etc/default_gw', 'w+')
+			fp = open("/etc/default_gw", "w+")
 			fp.write(selection[0])
 			fp.close()
 			self.restartLan()
@@ -293,7 +305,7 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 
 	def okbuttonClick(self):
 		selection = self["list"].getCurrent()
-		if selection is not None:
+		if selection != None:
 			self.session.openWithCallback(self.AdapterSetupClosed, AdapterSetupConfiguration, selection[0])
 
 	def AdapterSetupClosed(self, *ret):
@@ -309,30 +321,30 @@ class NetworkAdapterSelection(Screen,HelpableScreen):
 
 	def restartLan(self):
 		iNetwork.restartNetwork(self.restartLanDataAvail)
-		self.restartLanRef = self.session.openWithCallback(self.restartfinishedCB, MessageBox, _("Please wait while we configure your network..."), type = MessageBox.TYPE_INFO, enable_input = False)
+		self.restartLanRef = self.session.openWithCallback(self.restartfinishedCB, MessageBox, _("Please wait while we configure your network..."), type=MessageBox.TYPE_INFO, enable_input=False)
 
 	def restartLanDataAvail(self, data):
-		if data is True:
+		if data == True:
 			iNetwork.getInterfaces(self.getInterfacesDataAvail)
 
 	def getInterfacesDataAvail(self, data):
-		if data is True:
+		if data == True:
 			self.restartLanRef.close(True)
 
 	def restartfinishedCB(self, data):
-		if data is True:
+		if data == True:
 			self.updateList()
-			self.session.open(MessageBox, _("Finished configuring your network"), type = MessageBox.TYPE_INFO, timeout = 10, default = False)
+			self.session.open(MessageBox, _("Finished configuring your network"), type=MessageBox.TYPE_INFO, timeout=10, default=False)
 
 	def openNetworkWizard(self):
 		if os_path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
 			try:
 				from Plugins.SystemPlugins.NetworkWizard.NetworkWizard import NetworkWizard
 			except ImportError:
-				self.session.open(MessageBox, _("The network wizard extension is not installed!\nPlease install it."), type = MessageBox.TYPE_INFO,timeout = 10 )
+				self.session.open(MessageBox, _("The network wizard extension is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO, timeout=10)
 			else:
 				selection = self["list"].getCurrent()
-				if selection is not None:
+				if selection != None:
 					self.session.openWithCallback(self.AdapterSetupClosed, NetworkWizard, selection[0])
 
 
@@ -342,7 +354,7 @@ class NameserverSetup(Screen, ConfigListScreen, HelpableScreen):
 		HelpableScreen.__init__(self)
 		self.setTitle(_("Nameserver Settings"))
 		self.backupNameserverList = iNetwork.getNameserverList()[:]
-		print "[NameserverSetup] backup-list:", self.backupNameserverList
+		print("[NameserverSetup] backup-list:%s" % self.backupNameserverList)
 
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
@@ -366,7 +378,7 @@ class NameserverSetup(Screen, ConfigListScreen, HelpableScreen):
 
 	def createConfig(self):
 		self.nameservers = iNetwork.getNameserverList()
-		self.nameserverEntries = [ NoSave(ConfigIP(default=nameserver)) for nameserver in self.nameservers]
+		self.nameserverEntries = [NoSave(ConfigIP(default=nameserver)) for nameserver in self.nameservers]
 
 	def createSetup(self):
 		self.list = []
@@ -391,7 +403,7 @@ class NameserverSetup(Screen, ConfigListScreen, HelpableScreen):
 
 	def cancel(self):
 		iNetwork.clearNameservers()
-		print "[NameserverSetup] backup-list:", self.backupNameserverList
+		print("[NameserverSetup] backup-list:%s" % self.backupNameserverList)
 		for nameserver in self.backupNameserverList:
 			iNetwork.addNameserver(nameserver)
 		self.close()
@@ -402,21 +414,22 @@ class NameserverSetup(Screen, ConfigListScreen, HelpableScreen):
 		self.createSetup()
 
 	def remove(self):
-		print "[NameserverSetup] currentIndex:", self["config"].getCurrentIndex()
+		print("[NameserverSetup] currentIndex:%s" % self["config"].getCurrentIndex())
 		index = self["config"].getCurrentIndex()
 		if index < len(self.nameservers):
 			iNetwork.removeNameserver(self.nameservers[index])
 			self.createConfig()
 			self.createSetup()
 
+
 class NetworkMacSetup(Screen, ConfigListScreen, HelpableScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		self.setTitle(_("MAC Address Settings"))
-		self.curMac = self.getmac('eth0')
-		self.getConfigMac = NoSave(ConfigMacText(default=self.curMac))
-
+		self.curMac = self.getmac("eth0")
+		if self.curMac:
+			self.getConfigMac = NoSave(ConfigMacText(default=self.curMac))
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 
@@ -445,7 +458,7 @@ class NetworkMacSetup(Screen, ConfigListScreen, HelpableScreen):
 
 	def getmac(self, iface):
 		nit = ni.ifaddresses(iface)
-		return nit[ni.AF_LINK][0]['addr'] 
+		return nit[ni.AF_LINK][0]['addr']
 
 	def createSetup(self):
 		self.list = []
@@ -455,7 +468,7 @@ class NetworkMacSetup(Screen, ConfigListScreen, HelpableScreen):
 
 	def ok(self):
 		MAC = self.getConfigMac.value
-		f = open('/etc/enigma2/hwmac', 'w')
+		f = open("/etc/enigma2/hwmac", "w")
 		f.write(MAC)
 		f.close()
 		self.restartLan()
@@ -468,19 +481,20 @@ class NetworkMacSetup(Screen, ConfigListScreen, HelpableScreen):
 
 	def restartLan(self):
 		iNetwork.restartNetwork(self.restartLanDataAvail)
-		self.restartLanRef = self.session.openWithCallback(self.restartfinishedCB, MessageBox, _("Please wait while we configure your network..."), type = MessageBox.TYPE_INFO, enable_input = False)
+		self.restartLanRef = self.session.openWithCallback(self.restartfinishedCB, MessageBox, _("Please wait while we configure your network..."), type=MessageBox.TYPE_INFO, enable_input=False)
 
 	def restartLanDataAvail(self, data):
-		if data is True:
+		if data == True:
 			iNetwork.getInterfaces(self.getInterfacesDataAvail)
 
 	def getInterfacesDataAvail(self, data):
-		if data is True:
+		if data == True:
 			self.restartLanRef.close(True)
 
 	def restartfinishedCB(self, data):
-		if data is True:
-			self.session.openWithCallback(self.close, MessageBox, _("Finished configuring your network"), type = MessageBox.TYPE_INFO, timeout = 10, default = False)
+		if data == True:
+			self.session.openWithCallback(self.close, MessageBox, _("Finished configuring your network"), type=MessageBox.TYPE_INFO, timeout=10, default=False)
+
 
 class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 	def __init__(self, session, networkinfo=None, essid=None):
@@ -524,7 +538,7 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 		}, -2)
 
 		self.list = []
-		ConfigListScreen.__init__(self, self.list,session = self.session)
+		ConfigListScreen.__init__(self, self.list, session=self.session)
 
 		self.createSetup()
 		self.onLayoutFinish.append(self.layoutFinished)
@@ -558,14 +572,14 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 	def layoutFinished(self):
 		self["DNS1"].setText(self.primaryDNS.getText())
 		self["DNS2"].setText(self.secondaryDNS.getText())
-		if self.ipConfigEntry.getText() is not None:
+		if self.ipConfigEntry.getText() != None:
 			if self.ipConfigEntry.getText() == "0.0.0.0":
 				self["IP"].setText(_("N/A"))
 			else:
 				self["IP"].setText(self.ipConfigEntry.getText())
 		else:
 			self["IP"].setText(_("N/A"))
-		if self.netmaskConfigEntry.getText() is not None:
+		if self.netmaskConfigEntry.getText() != None:
 			if self.netmaskConfigEntry.getText() == "0.0.0.0":
 				self["Mask"].setText(_("N/A"))
 			else:
@@ -599,8 +613,13 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 		self.default = None
 
 		if iNetwork.isWirelessInterface(self.iface):
-			from Plugins.SystemPlugins.WirelessLan.Wlan import wpaSupplicant
-			self.ws = wpaSupplicant()
+			driver = iNetwork.detectWlanModule(self.iface)
+			if driver in ("brcm-wl", ):
+				from Plugins.SystemPlugins.WirelessLan.Wlan import brcmWLConfig
+				self.ws = brcmWLConfig()
+			else:
+				from Plugins.SystemPlugins.WirelessLan.Wlan import wpaSupplicant
+				self.ws = wpaSupplicant()
 			self.encryptionlist = []
 			self.encryptionlist.append(("Unencrypted", _("Unencrypted")))
 			self.encryptionlist.append(("WEP", _("WEP")))
@@ -614,25 +633,25 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 
 			self.wsconfig = self.ws.loadConfig(self.iface)
 			if self.essid is None:
-				self.essid = self.wsconfig['ssid']
+				self.essid = self.wsconfig["ssid"]
 
-			config.plugins.wlan.hiddenessid = NoSave(ConfigYesNo(default = self.wsconfig['hiddenessid']))
-			config.plugins.wlan.essid = NoSave(ConfigText(default = self.essid, visible_width = 50, fixed_size = False))
-			config.plugins.wlan.encryption = NoSave(ConfigSelection(self.encryptionlist, default = self.wsconfig['encryption'] ))
-			config.plugins.wlan.wepkeytype = NoSave(ConfigSelection(self.weplist, default = self.wsconfig['wepkeytype'] ))
-			config.plugins.wlan.psk = NoSave(ConfigPassword(default = self.wsconfig['key'], visible_width = 50, fixed_size = False))
+			config.plugins.wlan.hiddenessid = NoSave(ConfigYesNo(default=self.wsconfig["hiddenessid"]))
+			config.plugins.wlan.essid = NoSave(ConfigText(default=self.essid, visible_width=50, fixed_size=False))
+			config.plugins.wlan.encryption = NoSave(ConfigSelection(self.encryptionlist, default=self.wsconfig["encryption"]))
+			config.plugins.wlan.wepkeytype = NoSave(ConfigSelection(self.weplist, default=self.wsconfig["wepkeytype"]))
+			config.plugins.wlan.psk = NoSave(ConfigPassword(default=self.wsconfig["key"], visible_width=50, fixed_size=False))
 
 		self.activateInterfaceEntry = NoSave(ConfigYesNo(default=iNetwork.getAdapterAttribute(self.iface, "up") or False))
 		self.dhcpConfigEntry = NoSave(ConfigYesNo(default=iNetwork.getAdapterAttribute(self.iface, "dhcp") or False))
-		self.ipConfigEntry = NoSave(ConfigIP(default=iNetwork.getAdapterAttribute(self.iface, "ip")) or [0,0,0,0])
-		self.netmaskConfigEntry = NoSave(ConfigIP(default=iNetwork.getAdapterAttribute(self.iface, "netmask") or [255,0,0,0]))
+		self.ipConfigEntry = NoSave(ConfigIP(default=iNetwork.getAdapterAttribute(self.iface, "ip")) or [0, 0, 0, 0])
+		self.netmaskConfigEntry = NoSave(ConfigIP(default=iNetwork.getAdapterAttribute(self.iface, "netmask") or [255, 0, 0, 0]))
 		if iNetwork.getAdapterAttribute(self.iface, "gateway"):
 			self.dhcpdefault = True
 		else:
 			self.dhcpdefault = False
 		self.hasGatewayConfigEntry = NoSave(ConfigYesNo(default=self.dhcpdefault or False))
-		self.gatewayConfigEntry = NoSave(ConfigIP(default=iNetwork.getAdapterAttribute(self.iface, "gateway") or [0,0,0,0]))
-		nameserver = (iNetwork.getNameserverList() + [[0,0,0,0]] * 2)[0:2]
+		self.gatewayConfigEntry = NoSave(ConfigIP(default=iNetwork.getAdapterAttribute(self.iface, "gateway") or [0, 0, 0, 0]))
+		nameserver = (iNetwork.getNameserverList() + [[0, 0, 0, 0]] * 2)[0:2]
 		self.primaryDNS = NoSave(ConfigIP(default=nameserver[0]))
 		self.secondaryDNS = NoSave(ConfigIP(default=nameserver[1]))
 
@@ -645,18 +664,18 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 			self.dhcpEntry = getConfigListEntry(_("Use DHCP"), self.dhcpConfigEntry)
 			self.list.append(self.dhcpEntry)
 			if not self.dhcpConfigEntry.value:
-				self.list.append(getConfigListEntry(_('IP address'), self.ipConfigEntry))
-				self.list.append(getConfigListEntry(_('Netmask'), self.netmaskConfigEntry))
-				self.gatewayEntry = getConfigListEntry(_('Use a gateway'), self.hasGatewayConfigEntry)
+				self.list.append(getConfigListEntry(_("IP address"), self.ipConfigEntry))
+				self.list.append(getConfigListEntry(_("Netmask"), self.netmaskConfigEntry))
+				self.gatewayEntry = getConfigListEntry(_("Use a gateway"), self.hasGatewayConfigEntry)
 				self.list.append(self.gatewayEntry)
 				if self.hasGatewayConfigEntry.value:
-					self.list.append(getConfigListEntry(_('Gateway'), self.gatewayConfigEntry))
+					self.list.append(getConfigListEntry(_("Gateway"), self.gatewayConfigEntry))
 
 			self.extended = None
 			self.configStrings = None
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_NETWORKSETUP):
 				callFnc = p.__call__["ifaceSupported"](self.iface)
-				if callFnc is not None:
+				if callFnc != None:
 					if "WlanPluginEntry" in p.__call__: # internally used only for WLAN Plugin
 						self.extended = callFnc
 						if "configStrings" in p.__call__:
@@ -675,7 +694,7 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 						self.encryptionKey = getConfigListEntry(_("Encryption key"), config.plugins.wlan.psk)
 
 						if config.plugins.wlan.encryption.value != "Unencrypted":
-							if config.plugins.wlan.encryption.value == 'WEP':
+							if config.plugins.wlan.encryption.value == "WEP":
 								if not isExistBcmWifi:
 									self.list.append(self.encryptionType)
 							self.list.append(self.encryptionKey)
@@ -707,29 +726,29 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 	def keySave(self):
 		self.hideInputHelp()
 		if self["config"].isChanged():
-			self.session.openWithCallback(self.keySaveConfirm, MessageBox, (_("Are you sure you want to activate this network configuration?\n\n") + self.oktext ) )
+			self.session.openWithCallback(self.keySaveConfirm, MessageBox, (_("Are you sure you want to activate this network configuration?\n\n") + self.oktext))
 		else:
 			if self.finished_cb:
 				self.finished_cb()
 			else:
-				self.close('cancel')
+				self.close("cancel")
 		config.network.save()
 
-	def keySaveConfirm(self, ret = False):
-		if ret:
+	def keySaveConfirm(self, ret=False):
+		if ret == True:
 			num_configured_if = len(iNetwork.getConfiguredAdapters())
 			if num_configured_if >= 1:
 				if self.iface in iNetwork.getConfiguredAdapters():
 					self.applyConfig(True)
 				else:
-					self.session.openWithCallback(self.secondIfaceFoundCB, MessageBox, _("A second configured interface has been found.\n\nDo you want to disable the second network interface?"), default = True)
+					self.session.openWithCallback(self.secondIfaceFoundCB, MessageBox, _("A second configured interface has been found.\n\nDo you want to disable the second network interface?"), default=True)
 			else:
 				self.applyConfig(True)
 		else:
 			self.keyCancel()
 
 	def secondIfaceFoundCB(self, data):
-		if data is False:
+		if data == False:
 			self.applyConfig(True)
 		else:
 			configuredInterfaces = iNetwork.getConfiguredAdapters()
@@ -737,14 +756,14 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 				if interface == self.iface:
 					continue
 				iNetwork.setAdapterAttribute(interface, "up", False)
-			iNetwork.deactivateInterface(configuredInterfaces,self.deactivateSecondInterfaceCB)
+			iNetwork.deactivateInterface(configuredInterfaces, self.deactivateSecondInterfaceCB)
 
 	def deactivateSecondInterfaceCB(self, data):
-		if data is True:
+		if data == True:
 			self.applyConfig(True)
 
-	def applyConfig(self, ret = False):
-		if ret:
+	def applyConfig(self, ret=False):
+		if ret == True:
 			self.applyConfigRef = None
 			iNetwork.setAdapterAttribute(self.iface, "up", self.activateInterfaceEntry.value)
 			iNetwork.setAdapterAttribute(self.iface, "dhcp", self.dhcpConfigEntry.value)
@@ -755,71 +774,71 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 			else:
 				iNetwork.removeAdapterAttribute(self.iface, "gateway")
 
-			if self.extended is not None and self.configStrings is not None:
+			if self.extended != None and self.configStrings != None:
 				iNetwork.setAdapterAttribute(self.iface, "configStrings", self.configStrings(self.iface))
 				self.ws.writeConfig(self.iface)
 
-			if self.activateInterfaceEntry.value is False:
-				iNetwork.deactivateInterface(self.iface,self.deactivateInterfaceCB)
+			if self.activateInterfaceEntry.value == False:
+				iNetwork.deactivateInterface(self.iface, self.deactivateInterfaceCB)
 				iNetwork.writeNetworkConfig()
-				self.applyConfigRef = self.session.openWithCallback(self.applyConfigfinishedCB, MessageBox, _("Please wait while your network configuration is activated..."), type = MessageBox.TYPE_INFO, enable_input = False)
+				self.applyConfigRef = self.session.openWithCallback(self.applyConfigfinishedCB, MessageBox, _("Please wait while your network configuration is activated..."), type=MessageBox.TYPE_INFO, enable_input=False)
 			else:
-				if self.oldInterfaceState is False:
-					iNetwork.activateInterface(self.iface,self.deactivateInterfaceCB)
+				if self.oldInterfaceState == False:
+					iNetwork.activateInterface(self.iface, self.deactivateInterfaceCB)
 				else:
-					iNetwork.deactivateInterface(self.iface,self.activateInterfaceCB)
+					iNetwork.deactivateInterface(self.iface, self.activateInterfaceCB)
 				iNetwork.writeNetworkConfig()
-				self.applyConfigRef = self.session.openWithCallback(self.applyConfigfinishedCB, MessageBox, _("Please wait while your network configuration is activated..."), type = MessageBox.TYPE_INFO, enable_input = False)
+				self.applyConfigRef = self.session.openWithCallback(self.applyConfigfinishedCB, MessageBox, _("Please wait while your network configuration is activated..."), type=MessageBox.TYPE_INFO, enable_input=False)
 		else:
 			self.keyCancel()
 
 	def deactivateInterfaceCB(self, data):
-		if data is True:
+		if data == True:
 			self.applyConfigDataAvail(True)
 
 	def activateInterfaceCB(self, data):
-		if data is True:
-			iNetwork.activateInterface(self.iface,self.applyConfigDataAvail)
+		if data == True:
+			iNetwork.activateInterface(self.iface, self.applyConfigDataAvail)
 
 	def applyConfigDataAvail(self, data):
-		if data is True:
+		if data == True:
 			iNetwork.getInterfaces(self.getInterfacesDataAvail)
 
 	def getInterfacesDataAvail(self, data):
-		if data is True:
+		if data == True:
 			self.applyConfigRef.close(True)
 
-	def applyConfigfinishedCB(self,data):
-		if data is True:
+	def applyConfigfinishedCB(self, data):
+		if data == True:
 			if self.finished_cb:
-				self.session.openWithCallback(lambda x : self.finished_cb(), MessageBox, _("Your network configuration has been activated."), type = MessageBox.TYPE_INFO, timeout = 10)
+				self.session.openWithCallback(lambda x: self.finished_cb(), MessageBox, _("Your network configuration has been activated."), type=MessageBox.TYPE_INFO, timeout=10)
 			else:
-				self.session.openWithCallback(self.ConfigfinishedCB, MessageBox, _("Your network configuration has been activated."), type = MessageBox.TYPE_INFO, timeout = 10)
+				self.session.openWithCallback(self.ConfigfinishedCB, MessageBox, _("Your network configuration has been activated."), type=MessageBox.TYPE_INFO, timeout=10)
 
-	def ConfigfinishedCB(self,data):
-		if data is not None:
-			if data is True:
-				self.close('ok')
+	def ConfigfinishedCB(self, data):
+		if data != None:
+			if data == True:
+				self.close("ok")
 
 	def keyCancelConfirm(self, result):
 		if not result:
 			return
-		if self.oldInterfaceState is False:
-			iNetwork.deactivateInterface(self.iface,self.keyCancelCB)
+		if self.oldInterfaceState == False:
+			iNetwork.deactivateInterface(self.iface, self.keyCancelCB)
 		else:
-			self.close('cancel')
+			self.close("cancel")
 
 	def keyCancel(self):
 		self.hideInputHelp()
 		if self["config"].isChanged():
-			self.session.openWithCallback(self.keyCancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)
+			self.session.openWithCallback(self.keyCancelConfirm, MessageBox, _("Really close without saving settings?"), default=False)
 		else:
-			self.close('cancel')
+			self.close("cancel")
 
-	def keyCancelCB(self,data):
-		if data is not None:
-			if data is True:
-				self.close('cancel')
+	def keyCancelCB(self, data):
+		if data != None:
+			if data == True:
+				self.close("cancel")
 
 	def runAsync(self, finished_cb):
 		self.finished_cb = finished_cb
@@ -827,7 +846,7 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 
 	def NameserverSetupClosed(self, *ret):
 		iNetwork.loadNameserverConfig()
-		nameserver = (iNetwork.getNameserverList() + [[0,0,0,0]] * 2)[0:2]
+		nameserver = (iNetwork.getNameserverList() + [[0, 0, 0, 0]] * 2)[0:2]
 		self.primaryDNS = NoSave(ConfigIP(default=nameserver[0]))
 		self.secondaryDNS = NoSave(ConfigIP(default=nameserver[1]))
 		self.createSetup()
@@ -839,10 +858,10 @@ class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
 	def hideInputHelp(self):
 		current = self["config"].getCurrent()
 		if current == self.wlanSSID:
-			if current[1].help_window.instance is not None:
+			if current[1].help_window.instance != None:
 				current[1].help_window.instance.hide()
-		elif current == self.encryptionKey and config.plugins.wlan.encryption.value is not "Unencrypted":
-			if current[1].help_window.instance is not None:
+		elif current == self.encryptionKey and config.plugins.wlan.encryption.value != "Unencrypted":
+			if current[1].help_window.instance != None:
 				current[1].help_window.instance.hide()
 
 
@@ -856,7 +875,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		self.iface = iface
 		self.restartLanRef = None
 		self.LinkState = None
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.mainmenu = ""
 		self["menulist"] = MenuList(self.mainmenu)
 		self["key_red"] = StaticText(_("Close"))
@@ -892,7 +911,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 			"red": (self.close, _("Exit network adapter setup menu")),
 			})
 
-		self["actions"] = NumberActionMap(["WizardActions","ShortcutActions"],
+		self["actions"] = NumberActionMap(["WizardActions", "ShortcutActions"],
 		{
 			"ok": self.ok,
 			"back": self.close,
@@ -910,33 +929,54 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		self.selectionChanged()
 		self.onLayoutFinish.append(self.updateStatusbar)
 
-	def queryWirelessDevice(self,iface):
-		try:
-			from pythonwifi.iwlibs import Wireless
-			import errno
-		except ImportError:
-			return False
-		else:
+	def queryWirelessDevice(self, iface):
+		if six.PY3:
 			try:
-				ifobj = Wireless(iface) # a Wireless NIC Object
-				wlanresponse = ifobj.getAPaddr()
-			except IOError, (error_no, error_str):
-				if error_no in (errno.EOPNOTSUPP, errno.ENODEV, errno.EPERM):
-					return False
-				else:
-					print "[AdapterSetupConfiguration] error: ",error_no,error_str
-					return True
+				from wifi.scan import Cell
+				import errno
+			except ImportError:
+				return False
 			else:
-				return True
+				try:
+					system("ifconfig %s up" % iface)
+					wlanresponse = list(Cell.all(iface))
+				except IOError as err:
+					error_no, error_str = err.args
+					if error_no in (errno.EOPNOTSUPP, errno.ENODEV, errno.EPERM):
+						return False
+					else:
+						print("[AdapterSetupConfiguration] error: ", error_no, error_str)
+						return True
+				else:
+					return True
+
+		if six.PY2:
+			try:
+				from pythonwifi.iwlibs import Wireless
+				import errno
+			except ImportError:
+				return False
+			else:
+				try:
+					ifobj = Wireless(iface) # a Wireless NIC Object
+					wlanresponse = ifobj.getAPaddr()
+				except IOError as error_no:
+					if error_no in (errno.EOPNOTSUPP, errno.ENODEV, errno.EPERM):
+						return False
+					else:
+						print("[AdapterSetupConfiguration] error: ", error_no, error_str)
+						return True
+				else:
+					return True
 
 	def ok(self):
 		self.cleanup()
-		if self["menulist"].getCurrent()[1] == 'edit':
+		if self["menulist"].getCurrent()[1] == "edit":
 			if iNetwork.isWirelessInterface(self.iface):
 				try:
 					from Plugins.SystemPlugins.WirelessLan.plugin import WlanScan
 				except ImportError:
-					self.session.open(MessageBox, self.missingwlanplugintxt, type = MessageBox.TYPE_INFO,timeout = 10 )
+					self.session.open(MessageBox, self.missingwlanplugintxt, type=MessageBox.TYPE_INFO, timeout=10)
 				else:
 					if self.queryWirelessDevice(self.iface):
 						self.session.openWithCallback(self.AdapterSetupClosed, AdapterSetup, self.iface)
@@ -944,38 +984,38 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 						self.showErrorMessage()	# Display Wlan not available Message
 			else:
 				self.session.openWithCallback(self.AdapterSetupClosed, AdapterSetup, self.iface)
-		if self["menulist"].getCurrent()[1] == 'test':
-			self.session.open(NetworkAdapterTest,self.iface)
-		if self["menulist"].getCurrent()[1] == 'dns':
+		if self["menulist"].getCurrent()[1] == "test":
+			self.session.open(NetworkAdapterTest, self.iface)
+		if self["menulist"].getCurrent()[1] == "dns":
 			self.session.open(NameserverSetup)
 		if self["menulist"].getCurrent()[1] == 'mac':
 			self.session.open(NetworkMacSetup)
-		if self["menulist"].getCurrent()[1] == 'scanwlan':
+		if self["menulist"].getCurrent()[1] == "scanwlan":
 			try:
 				from Plugins.SystemPlugins.WirelessLan.plugin import WlanScan
 			except ImportError:
-				self.session.open(MessageBox, self.missingwlanplugintxt, type = MessageBox.TYPE_INFO,timeout = 10 )
+				self.session.open(MessageBox, self.missingwlanplugintxt, type=MessageBox.TYPE_INFO, timeout=10)
 			else:
 				if self.queryWirelessDevice(self.iface):
 					self.session.openWithCallback(self.WlanScanClosed, WlanScan, self.iface)
 				else:
 					self.showErrorMessage()	# Display Wlan not available Message
-		if self["menulist"].getCurrent()[1] == 'wlanstatus':
+		if self["menulist"].getCurrent()[1] == "wlanstatus":
 			try:
 				from Plugins.SystemPlugins.WirelessLan.plugin import WlanStatus
 			except ImportError:
-				self.session.open(MessageBox, self.missingwlanplugintxt, type = MessageBox.TYPE_INFO,timeout = 10 )
+				self.session.open(MessageBox, self.missingwlanplugintxt, type=MessageBox.TYPE_INFO, timeout=10)
 			else:
 				if self.queryWirelessDevice(self.iface):
-					self.session.openWithCallback(self.WlanStatusClosed, WlanStatus,self.iface)
+					self.session.openWithCallback(self.WlanStatusClosed, WlanStatus, self.iface)
 				else:
 					self.showErrorMessage()	# Display Wlan not available Message
-		if self["menulist"].getCurrent()[1] == 'lanrestart':
-			self.session.openWithCallback(self.restartLan, MessageBox, (_("Are you sure you want to restart your network interfaces?\n\n") + self.oktext ) )
-		if self["menulist"].getCurrent()[1] == 'openwizard':
+		if self["menulist"].getCurrent()[1] == "lanrestart":
+			self.session.openWithCallback(self.restartLan, MessageBox, (_("Are you sure you want to restart your network interfaces?\n\n") + self.oktext))
+		if self["menulist"].getCurrent()[1] == "openwizard":
 			from Plugins.SystemPlugins.NetworkWizard.NetworkWizard import NetworkWizard
 			self.session.openWithCallback(self.AdapterSetupClosed, NetworkWizard, self.iface)
-		if self["menulist"].getCurrent()[1][0] == 'extendedSetup':
+		if self["menulist"].getCurrent()[1][0] == "extendedSetup":
 			self.extended = self["menulist"].getCurrent()[1][2]
 			self.extended(self.session, self.iface)
 
@@ -996,24 +1036,24 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		return PluginBrowserSummary
 
 	def selectionChanged(self):
-		if self["menulist"].getCurrent()[1] == 'edit':
-			self["description"].setText(_("Edit the network configuration of your %s %s.\n" ) % (getMachineBrand(), getMachineName()) + self.oktext )
-		if self["menulist"].getCurrent()[1] == 'test':
-			self["description"].setText(_("Test the network configuration of your %s %s.\n" ) % (getMachineBrand(), getMachineName()) + self.oktext )
-		if self["menulist"].getCurrent()[1] == 'dns':
-			self["description"].setText(_("Edit the Nameserver configuration of your %s %s.\n" ) % (getMachineBrand(), getMachineName()) + self.oktext )
-		if self["menulist"].getCurrent()[1] == 'scanwlan':
-			self["description"].setText(_("Scan your network for wireless access points and connect to them using your selected wireless device.\n" ) + self.oktext )
-		if self["menulist"].getCurrent()[1] == 'wlanstatus':
-			self["description"].setText(_("Shows the state of your wireless LAN connection.\n" ) + self.oktext )
-		if self["menulist"].getCurrent()[1] == 'lanrestart':
-			self["description"].setText(_("Restart your network connection and interfaces.\n" ) + self.oktext )
-		if self["menulist"].getCurrent()[1] == 'openwizard':
-			self["description"].setText(_("Use the network wizard to configure your Network\n" ) + self.oktext )
-		if self["menulist"].getCurrent()[1][0] == 'extendedSetup':
-			self["description"].setText(_(self["menulist"].getCurrent()[1][1]) + self.oktext )
-		if self["menulist"].getCurrent()[1] == 'mac':
-			self["description"].setText(_("Set the MAC address of your %s %s.\n" ) % (getMachineBrand(), getMachineName()) + self.oktext )
+		if self["menulist"].getCurrent()[1] == "edit":
+			self["description"].setText(_("Edit the network configuration of your %s %s.\n") % (getMachineBrand(), getMachineName()) + self.oktext)
+		if self["menulist"].getCurrent()[1] == "test":
+			self["description"].setText(_("Test the network configuration of your %s %s.\n") % (getMachineBrand(), getMachineName()) + self.oktext)
+		if self["menulist"].getCurrent()[1] == "dns":
+			self["description"].setText(_("Edit the Nameserver configuration of your %s %s.\n") % (getMachineBrand(), getMachineName()) + self.oktext)
+		if self["menulist"].getCurrent()[1] == "scanwlan":
+			self["description"].setText(_("Scan your network for wireless access points and connect to them using your selected wireless device.\n") + self.oktext)
+		if self["menulist"].getCurrent()[1] == "wlanstatus":
+			self["description"].setText(_("Shows the state of your wireless LAN connection.\n") + self.oktext)
+		if self["menulist"].getCurrent()[1] == "lanrestart":
+			self["description"].setText(_("Restart your network connection and interfaces.\n") + self.oktext)
+		if self["menulist"].getCurrent()[1] == "openwizard":
+			self["description"].setText(_("Use the network wizard to configure your Network\n") + self.oktext)
+		if self["menulist"].getCurrent()[1][0] == "extendedSetup":
+			self["description"].setText(_(self["menulist"].getCurrent()[1][1]) + self.oktext)
+		if self["menulist"].getCurrent()[1] == "mac":
+			self["description"].setText(_("Set the MAC address of your %s %s.\n") % (getMachineBrand(), getMachineName()) + self.oktext)
 		item = self["menulist"].getCurrent()
 		if item:
 			name = str(self["menulist"].getCurrent()[0])
@@ -1024,7 +1064,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		for cb in self.onChangedEntry:
 			cb(name, desc)
 
-	def updateStatusbar(self, data = None):
+	def updateStatusbar(self, data=None):
 		self.mainmenu = self.genMainMenu()
 		self["menulist"].l.setList(self.mainmenu)
 		self["IFtext"].setText(_("Network:"))
@@ -1039,9 +1079,9 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 				self["statuspic"].setPixmapNum(1)
 				self["statuspic"].show()
 			else:
-				iStatus.getDataForInterface(self.iface,self.getInfoCB)
+				iStatus.getDataForInterface(self.iface, self.getInfoCB)
 		else:
-			iNetwork.getLinkState(self.iface,self.dataAvail)
+			iNetwork.getLinkState(self.iface, self.dataAvail)
 			self["devicepic"].setPixmapNum(0)
 		self["devicepic"].show()
 
@@ -1055,7 +1095,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		self.extendedSetup = None
 		for p in plugins.getPlugins(PluginDescriptor.WHERE_NETWORKSETUP):
 			callFnc = p.__call__["ifaceSupported"](self.iface)
-			if callFnc is not None:
+			if callFnc != None:
 				self.extended = callFnc
 				if "WlanPluginEntry" in p.__call__: # internally used only for WLAN Plugin
 					menu.append((_("Scan wireless networks"), "scanwlan"))
@@ -1065,32 +1105,31 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 					if "menuEntryName" in p.__call__:
 						menuEntryName = p.__call__["menuEntryName"](self.iface)
 					else:
-						menuEntryName = _('Extended setup...')
+						menuEntryName = _("Extended setup...")
 					if "menuEntryDescription" in p.__call__:
 						menuEntryDescription = p.__call__["menuEntryDescription"](self.iface)
 					else:
-						menuEntryDescription = _('Extended network setup plugin...')
-					self.extendedSetup = ('extendedSetup',menuEntryDescription, self.extended)
-					menu.append((menuEntryName,self.extendedSetup))
+						menuEntryDescription = _("Extended network setup plugin...")
+					self.extendedSetup = ("extendedSetup", menuEntryDescription, self.extended)
+					menu.append((menuEntryName, self.extendedSetup))
 
 		if os_path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
 			menu.append((_("Network wizard"), "openwizard"))
 #		kernel_ver = about.getKernelVersionString()
 #		if kernel_ver <= "3.5.0":
 		menu.append((_("Network MAC settings"), "mac"))
-
 		return menu
 
 	def AdapterSetupClosed(self, *ret):
-		if ret is not None and len(ret):
-			if ret[0] == 'ok' and (iNetwork.isWirelessInterface(self.iface) and iNetwork.getAdapterAttribute(self.iface, "up") is True):
+		if ret != None and len(ret):
+			if ret[0] == "ok" and (iNetwork.isWirelessInterface(self.iface) and iNetwork.getAdapterAttribute(self.iface, "up") == True):
 				try:
 					from Plugins.SystemPlugins.WirelessLan.plugin import WlanStatus
 				except ImportError:
-					self.session.open(MessageBox, self.missingwlanplugintxt, type = MessageBox.TYPE_INFO,timeout = 10 )
+					self.session.open(MessageBox, self.missingwlanplugintxt, type=MessageBox.TYPE_INFO, timeout=10)
 				else:
 					if self.queryWirelessDevice(self.iface):
-						self.session.openWithCallback(self.WlanStatusClosed, WlanStatus,self.iface)
+						self.session.openWithCallback(self.WlanStatusClosed, WlanStatus, self.iface)
 					else:
 						self.showErrorMessage()	# Display Wlan not available Message
 			else:
@@ -1099,42 +1138,43 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 			self.updateStatusbar()
 
 	def WlanStatusClosed(self, *ret):
-		if ret is not None and len(ret):
+		if ret != None and len(ret):
 			from Plugins.SystemPlugins.WirelessLan.Wlan import iStatus
 			iStatus.stopWlanConsole()
 			self.updateStatusbar()
 
-	def WlanScanClosed(self,*ret):
-		if ret[0] is not None:
+	def WlanScanClosed(self, *ret):
+		if ret[0] != None:
 			self.session.openWithCallback(self.AdapterSetupClosed, AdapterSetup, self.iface, ret[0])
 		else:
 			from Plugins.SystemPlugins.WirelessLan.Wlan import iStatus
 			iStatus.stopWlanConsole()
 			self.updateStatusbar()
 
-	def restartLan(self, ret = False):
-		if ret:
+	def restartLan(self, ret=False):
+		if ret == True:
 			iNetwork.restartNetwork(self.restartLanDataAvail)
-			self.restartLanRef = self.session.openWithCallback(self.restartfinishedCB, MessageBox, _("Your network is restarting, Please wait..."), type = MessageBox.TYPE_INFO, enable_input = False)
+			self.restartLanRef = self.session.openWithCallback(self.restartfinishedCB, MessageBox, _("Your network is restarting, Please wait..."), type=MessageBox.TYPE_INFO, enable_input=False)
 
 	def restartLanDataAvail(self, data):
-		if data is True:
+		if data == True:
 			iNetwork.getInterfaces(self.getInterfacesDataAvail)
 
 	def getInterfacesDataAvail(self, data):
-		if data is True:
+		if data == True:
 			self.restartLanRef.close(True)
 
-	def restartfinishedCB(self,data):
-		if data is True:
+	def restartfinishedCB(self, data):
+		if data == True:
 			self.updateStatusbar()
-			self.session.open(MessageBox, _("Your network has finished restarting"), type = MessageBox.TYPE_INFO, timeout = 10, default = False)
+			self.session.open(MessageBox, _("Your network has finished restarting"), type=MessageBox.TYPE_INFO, timeout=10, default=False)
 
-	def dataAvail(self,data):
+	def dataAvail(self, data):
+		data = six.ensure_str(data)
 		self.LinkState = None
 		for line in data.splitlines():
 			line = line.strip()
-			if 'Link detected:' in line:
+			if "Link detected:" in line:
 				if "yes" in line:
 					self.LinkState = True
 				else:
@@ -1146,7 +1186,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 			self["statuspic"].show()
 
 	def showErrorMessage(self):
-		self.session.open(MessageBox, self.errortext, type = MessageBox.TYPE_INFO,timeout = 10 )
+		self.session.open(MessageBox, self.errortext, type=MessageBox.TYPE_INFO, timeout=10)
 
 	def cleanup(self):
 		iNetwork.stopLinkStateConsole()
@@ -1160,11 +1200,11 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		else:
 			iStatus.stopWlanConsole()
 
-	def getInfoCB(self,data,status):
+	def getInfoCB(self, data, status):
 		self.LinkState = None
-		if data is not None:
-			if data is True:
-				if status is not None:
+		if data != None:
+			if data == True:
+				if status != None:
 					if status[self.iface]["essid"] == "off" or status[self.iface]["accesspoint"] == "Not-Associated" or status[self.iface]["accesspoint"] == False:
 						self.LinkState = False
 						self["statuspic"].setPixmapNum(1)
@@ -1173,9 +1213,9 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 						self.LinkState = True
 						iNetwork.checkNetworkState(self.checkNetworkCB)
 
-	def checkNetworkCB(self,data):
-		if iNetwork.getAdapterAttribute(self.iface, "up") is True:
-			if self.LinkState is True:
+	def checkNetworkCB(self, data):
+		if iNetwork.getAdapterAttribute(self.iface, "up") == True:
+			if self.LinkState == True:
 				if data <= 2:
 					self["statuspic"].setPixmapNum(0)
 				else:
@@ -1199,21 +1239,21 @@ class NetworkAdapterTest(Screen):
 		self.onClose.append(self.cleanup)
 		self.onHide.append(self.cleanup)
 
-		self["updown_actions"] = NumberActionMap(["WizardActions","ShortcutActions"],
+		self["updown_actions"] = NumberActionMap(["WizardActions", "ShortcutActions"],
 		{
 			"ok": self.KeyOK,
 			"blue": self.KeyOK,
-			"up": lambda: self.updownhandler('up'),
-			"down": lambda: self.updownhandler('down'),
+			"up": lambda: self.updownhandler("up"),
+			"down": lambda: self.updownhandler("down"),
 
 		}, -2)
 
-		self["shortcuts"] = ActionMap(["ShortcutActions","WizardActions"],
+		self["shortcuts"] = ActionMap(["ShortcutActions", "WizardActions"],
 		{
 			"red": self.cancel,
 			"back": self.cancel,
 		}, -2)
-		self["infoshortcuts"] = ActionMap(["ShortcutActions","WizardActions"],
+		self["infoshortcuts"] = ActionMap(["ShortcutActions", "WizardActions"],
 		{
 			"red": self.closeInfo,
 			"back": self.closeInfo,
@@ -1243,7 +1283,7 @@ class NetworkAdapterTest(Screen):
 		self.nextStepTimer.callback.append(self.nextStepTimerFire)
 
 	def cancel(self):
-		if self.oldInterfaceState is False:
+		if self.oldInterfaceState == False:
 			iNetwork.setAdapterAttribute(self.iface, "up", self.oldInterfaceState)
 			iNetwork.deactivateInterface(self.iface)
 		self.close()
@@ -1264,21 +1304,21 @@ class NetworkAdapterTest(Screen):
 		self.steptimer = False
 		self.runTest()
 
-	def updownhandler(self,direction):
-		if direction == 'up':
-			if self.activebutton >=2:
+	def updownhandler(self, direction):
+		if direction == "up":
+			if self.activebutton >= 2:
 				self.activebutton -= 1
 			else:
 				self.activebutton = 6
 			self.setActiveButton(self.activebutton)
-		if direction == 'down':
-			if self.activebutton <=5:
+		if direction == "down":
+			if self.activebutton <= 5:
 				self.activebutton += 1
 			else:
 				self.activebutton = 1
 			self.setActiveButton(self.activebutton)
 
-	def setActiveButton(self,button):
+	def setActiveButton(self, button):
 		if button == 1:
 			self["EditSettingsButton"].setPixmapNum(0)
 			self["EditSettings_Text"].setForegroundColorNum(0)
@@ -1362,7 +1402,7 @@ class NetworkAdapterTest(Screen):
 
 	def doStep4(self):
 		self["Dhcptext"].setForegroundColorNum(1)
-		if iNetwork.getAdapterAttribute(self.iface, 'dhcp') is True:
+		if iNetwork.getAdapterAttribute(self.iface, "dhcp") == True:
 			self["Dhcp"].setForegroundColorNum(2)
 			self["Dhcp"].setText(_("enabled"))
 			self["DhcpInfo_Check"].setPixmapNum(0)
@@ -1518,7 +1558,7 @@ class NetworkAdapterTest(Screen):
 		self["InfoTextBorder"] = Pixmap()
 		self["InfoText"] = Label()
 
-	def getLinkState(self,iface):
+	def getLinkState(self, iface):
 		if iface in iNetwork.wlan_interfaces:
 			try:
 				from Plugins.SystemPlugins.WirelessLan.Wlan import iStatus
@@ -1528,11 +1568,11 @@ class NetworkAdapterTest(Screen):
 				self["NetworkInfo_Check"].setPixmapNum(1)
 				self["NetworkInfo_Check"].show()
 			else:
-				iStatus.getDataForInterface(self.iface,self.getInfoCB)
+				iStatus.getDataForInterface(self.iface, self.getInfoCB)
 		else:
-			iNetwork.getLinkState(iface,self.LinkStatedataAvail)
+			iNetwork.getLinkState(iface, self.LinkStatedataAvail)
 
-	def LinkStatedataAvail(self,data):
+	def LinkStatedataAvail(self, data):
 		for item in data.splitlines():
 			if "Link detected:" in item:
 				if "yes" in item:
@@ -1548,7 +1588,7 @@ class NetworkAdapterTest(Screen):
 			self["Network"].setText(_("unknown"))
 		self["NetworkInfo_Check"].show()
 
-	def NetworkStatedataAvail(self,data):
+	def NetworkStatedataAvail(self, data):
 		if data <= 2:
 			self["IP"].setForegroundColorNum(2)
 			self["IP"].setText(_("confirmed"))
@@ -1562,7 +1602,7 @@ class NetworkAdapterTest(Screen):
 		self.steptimer = True
 		self.nextStepTimer.start(300)
 
-	def DNSLookupdataAvail(self,data):
+	def DNSLookupdataAvail(self, data):
 		if data <= 2:
 			self["DNS"].setForegroundColorNum(2)
 			self["DNS"].setText(_("confirmed"))
@@ -1585,10 +1625,10 @@ class NetworkAdapterTest(Screen):
 		self["updown_actions"].setEnabled(True)
 		self.activebutton = 6
 
-	def getInfoCB(self,data,status):
-		if data is not None:
-			if data is True:
-				if status is not None:
+	def getInfoCB(self, data, status):
+		if data != None:
+			if data == True:
+				if status != None:
 					if status[self.iface]["essid"] == "off" or status[self.iface]["accesspoint"] == "Not-Associated" or status[self.iface]["accesspoint"] == False:
 						self["Network"].setForegroundColorNum(1)
 						self["Network"].setText(_("disconnected"))
@@ -1610,13 +1650,14 @@ class NetworkAdapterTest(Screen):
 		else:
 			iStatus.stopWlanConsole()
 
-class NetworkMountsMenu(Screen,HelpableScreen):
+
+class NetworkMountsMenu(Screen, HelpableScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		self.setTitle(_("Mounts"))
 		self.session = session
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.mainmenu = self.genMainMenu()
 		self["menulist"] = MenuList(self.mainmenu)
 		self["key_red"] = StaticText(_("Close"))
@@ -1641,7 +1682,7 @@ class NetworkMountsMenu(Screen,HelpableScreen):
 			"red": (self.close, _("Exit networkadapter setup menu")),
 			})
 
-		self["actions"] = NumberActionMap(["WizardActions","ShortcutActions"],
+		self["actions"] = NumberActionMap(["WizardActions", "ShortcutActions"],
 		{
 			"ok": self.ok,
 			"back": self.close,
@@ -1663,7 +1704,7 @@ class NetworkMountsMenu(Screen,HelpableScreen):
 	def selectionChanged(self):
 		item = self["menulist"].getCurrent()
 		if item:
-			if item[1][0] == 'extendedSetup':
+			if item[1][0] == "extendedSetup":
 				self["introduction"].setText(_(item[1][1]))
 			name = str(self["menulist"].getCurrent()[0])
 			desc = self["introduction"].text
@@ -1674,7 +1715,7 @@ class NetworkMountsMenu(Screen,HelpableScreen):
 			cb(name, desc)
 
 	def ok(self):
-		if self["menulist"].getCurrent()[1][0] == 'extendedSetup':
+		if self["menulist"].getCurrent()[1][0] == "extendedSetup":
 			self.extended = self["menulist"].getCurrent()[1][2]
 			self.extended(self.session)
 
@@ -1696,121 +1737,123 @@ class NetworkMountsMenu(Screen,HelpableScreen):
 		self.extendedSetup = None
 		for p in plugins.getPlugins(PluginDescriptor.WHERE_NETWORKMOUNTS):
 			callFnc = p.__call__["ifaceSupported"](self)
-			if callFnc is not None:
+			if callFnc != None:
 				self.extended = callFnc
-				if p.__call__.has_key("menuEntryName"):
+				if "menuEntryName" in p.__call__:
 					menuEntryName = p.__call__["menuEntryName"](self)
 				else:
-					menuEntryName = _('Extended Setup...')
-				if p.__call__.has_key("menuEntryDescription"):
+					menuEntryName = _("Extended Setup...")
+				if "menuEntryDescription" in p.__call__:
 					menuEntryDescription = p.__call__["menuEntryDescription"](self)
 				else:
-					menuEntryDescription = _('Extended Networksetup Plugin...')
-				self.extendedSetup = ('extendedSetup',menuEntryDescription, self.extended)
-				menu.append((menuEntryName,self.extendedSetup))
+					menuEntryDescription = _("Extended Networksetup Plugin...")
+				self.extendedSetup = ("extendedSetup", menuEntryDescription, self.extended)
+				menu.append((menuEntryName, self.extendedSetup))
 		return menu
 
-class NetworkAfp(NSCommon,Screen):
+
+class NetworkAfp(NSCommon, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("AFP"))
 		self.skinName = "NetworkServiceSetup"
-		self.onChangedEntry = [ ]
-		self['lab1'] = Label(_("Autostart:"))
-		self['labactive'] = Label(_(_("Disabled")))
-		self['lab2'] = Label(_("Current Status:"))
-		self['labstop'] = Label(_("Stopped"))
-		self['labrun'] = Label(_("Running"))
-		self['key_red'] = Label(_("Remove Service"))
-		self['key_green'] = Label(_("Start"))
-		self['key_yellow'] = Label(_("Autostart"))
-		self['key_blue'] = Label()
-		self['status_summary'] = StaticText()
-		self['autostartstatus_summary'] = StaticText()
+		self.onChangedEntry = []
+		self["lab1"] = Label(_("Autostart:"))
+		self["labactive"] = Label(_(_("Disabled")))
+		self["lab2"] = Label(_("Current Status:"))
+		self["labstop"] = Label(_("Stopped"))
+		self["labrun"] = Label(_("Running"))
+		self["key_red"] = Label(_("Remove Service"))
+		self["key_green"] = Label(_("Start"))
+		self["key_yellow"] = Label(_("Autostart"))
+		self["key_blue"] = Label()
+		self["status_summary"] = StaticText()
+		self["autostartstatus_summary"] = StaticText()
 		self.Console = Console()
 		self.my_afp_active = False
 		self.my_afp_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'ok': self.close,
-			'back': self.close,
-			'red': self.UninstallCheck,
-			'green': self.AfpStartStop,
-			'yellow': self.activateAfp
+			"ok": self.close,
+			"back": self.close,
+			"red": self.UninstallCheck,
+			"green": self.AfpStartStop,
+			"yellow": self.activateAfp
 		})
-		self.service_name = 'packagegroup-base-appletalk netatalk'
+		self.service_name = "packagegroup-base-appletalk netatalk"
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = True
 
 	def AfpStartStop(self):
 		if not self.my_afp_run:
-			self.Console.ePopen('/etc/init.d/atalk start', self.StartStopCallback)
+			self.Console.ePopen("/etc/init.d/atalk start", self.StartStopCallback)
 		elif self.my_afp_run:
-			self.Console.ePopen('/etc/init.d/atalk stop', self.StartStopCallback)
+			self.Console.ePopen("/etc/init.d/atalk stop", self.StartStopCallback)
 
 	def activateAfp(self):
-		if ServiceIsEnabled('atalk'):
-			self.Console.ePopen('update-rc.d -f atalk remove', self.StartStopCallback)
+		if ServiceIsEnabled("atalk"):
+			self.Console.ePopen("update-rc.d -f atalk remove", self.StartStopCallback)
 		else:
-			self.Console.ePopen('update-rc.d -f atalk defaults', self.StartStopCallback)
+			self.Console.ePopen("update-rc.d -f atalk defaults", self.StartStopCallback)
 
-	def updateService(self,result = None, retval = None, extra_args = None):
+	def updateService(self, result=None, retval=None, extra_args=None):
 		import process
 		p = process.ProcessList()
-		afp_process = str(p.named('afpd')).strip('[]')
-		self['labrun'].hide()
-		self['labstop'].hide()
-		self['labactive'].setText(_("Disabled"))
+		afp_process = str(p.named("afpd")).strip("[]")
+		self["labrun"].hide()
+		self["labstop"].hide()
+		self["labactive"].setText(_("Disabled"))
 		self.my_afp_active = False
 		self.my_afp_run = False
-		if ServiceIsEnabled('atalk'):
-			self['labactive'].setText(_("Enabled"))
-			self['labactive'].show()
+		if ServiceIsEnabled("atalk"):
+			self["labactive"].setText(_("Enabled"))
+			self["labactive"].show()
 			self.my_afp_active = True
 		if afp_process:
 			self.my_afp_run = True
 		if self.my_afp_run:
-			self['labstop'].hide()
-			self['labactive'].show()
-			self['labrun'].show()
-			self['key_green'].setText(_("Stop"))
-			status_summary= self['lab2'].text + ' ' + self['labrun'].text
+			self["labstop"].hide()
+			self["labactive"].show()
+			self["labrun"].show()
+			self["key_green"].setText(_("Stop"))
+			status_summary = self["lab2"].text + " " + self["labrun"].text
 		else:
-			self['labrun'].hide()
-			self['labstop'].show()
-			self['labactive'].show()
-			self['key_green'].setText(_("Start"))
-			status_summary= self['lab2'].text + ' ' + self['labstop'].text
+			self["labrun"].hide()
+			self["labstop"].show()
+			self["labactive"].show()
+			self["key_green"].setText(_("Start"))
+			status_summary = self["lab2"].text + " " + self["labstop"].text
 		title = _("AFP Setup")
-		autostartstatus_summary = self['lab1'].text + ' ' + self['labactive'].text
+		autostartstatus_summary = self["lab1"].text + " " + self["labactive"].text
 
 		for cb in self.onChangedEntry:
 			cb(title, status_summary, autostartstatus_summary)
 
-class NetworkFtp(NSCommon,Screen):
+
+class NetworkFtp(NSCommon, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("FTP"))
 		self.skinName = "NetworkServiceSetup"
-		self.onChangedEntry = [ ]
-		self['lab1'] = Label(_("Autostart:"))
-		self['labactive'] = Label(_(_("Disabled")))
-		self['lab2'] = Label(_("Current Status:"))
-		self['labstop'] = Label(_("Stopped"))
-		self['labrun'] = Label(_("Running"))
-		self['key_green'] = Label(_("Start"))
+		self.onChangedEntry = []
+		self["lab1"] = Label(_("Autostart:"))
+		self["labactive"] = Label(_(_("Disabled")))
+		self["lab2"] = Label(_("Current Status:"))
+		self["labstop"] = Label(_("Stopped"))
+		self["labrun"] = Label(_("Running"))
+		self["key_green"] = Label(_("Start"))
 		self["key_red"] = Label()
-		self['key_yellow'] = Label(_("Autostart"))
-		self["key_blue"] =  Label()
+		self["key_yellow"] = Label(_("Autostart"))
+		self["key_blue"] = Label()
 		self.Console = Console()
 		self.my_ftp_active = False
 		self.my_ftp_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'ok': self.close,
-			'back': self.close,
-			'green': self.FtpStartStop,
-			'yellow': self.activateFtp
+			"ok": self.close,
+			"back": self.close,
+			"green": self.FtpStartStop,
+			"yellow": self.activateFtp
 		})
 		self.Console = Console()
 		self.onLayoutFinish.append(self.updateService)
@@ -1819,155 +1862,156 @@ class NetworkFtp(NSCommon,Screen):
 	def FtpStartStop(self):
 		commands = []
 		if not self.my_ftp_run:
-			commands.append('/etc/init.d/vsftpd start')
+			commands.append("/etc/init.d/vsftpd start")
 		elif self.my_ftp_run:
-			commands.append('/etc/init.d/vsftpd stop')
+			commands.append("/etc/init.d/vsftpd stop")
 		self.Console.eBatch(commands, self.StartStopCallback, debug=True)
 
 	def activateFtp(self):
 		commands = []
-		if ServiceIsEnabled('vsftpd'):
-			commands.append('update-rc.d -f vsftpd remove')
+		if ServiceIsEnabled("vsftpd"):
+			commands.append("update-rc.d -f vsftpd remove")
 		else:
-			commands.append('update-rc.d -f vsftpd defaults')
+			commands.append("update-rc.d -f vsftpd defaults")
 		self.Console.eBatch(commands, self.StartStopCallback, debug=True)
 
 	def updateService(self):
 		import process
 		p = process.ProcessList()
-		ftp_process = str(p.named('vsftpd')).strip('[]')
-		self['labrun'].hide()
-		self['labstop'].hide()
-		self['labactive'].setText(_("Disabled"))
+		ftp_process = str(p.named("vsftpd")).strip("[]")
+		self["labrun"].hide()
+		self["labstop"].hide()
+		self["labactive"].setText(_("Disabled"))
 		self.my_ftp_active = False
-		if ServiceIsEnabled('vsftpd'):
-			self['labactive'].setText(_("Enabled"))
-			self['labactive'].show()
+		if ServiceIsEnabled("vsftpd"):
+			self["labactive"].setText(_("Enabled"))
+			self["labactive"].show()
 			self.my_ftp_active = True
 
 		self.my_ftp_run = False
 		if ftp_process:
 			self.my_ftp_run = True
 		if self.my_ftp_run:
-			self['labstop'].hide()
-			self['labactive'].show()
-			self['labrun'].show()
-			self['key_green'].setText(_("Stop"))
-			status_summary = self['lab2'].text + ' ' + self['labrun'].text
+			self["labstop"].hide()
+			self["labactive"].show()
+			self["labrun"].show()
+			self["key_green"].setText(_("Stop"))
+			status_summary = self["lab2"].text + " " + self["labrun"].text
 		else:
-			self['labrun'].hide()
-			self['labstop'].show()
-			self['labactive'].show()
-			self['key_green'].setText(_("Start"))
-			status_summary = self['lab2'].text + ' ' + self['labstop'].text
+			self["labrun"].hide()
+			self["labstop"].show()
+			self["labactive"].show()
+			self["key_green"].setText(_("Start"))
+			status_summary = self["lab2"].text + " " + self["labstop"].text
 		title = _("FTP Setup")
-		autostartstatus_summary = self['lab1'].text + ' ' + self['labactive'].text
+		autostartstatus_summary = self["lab1"].text + " " + self["labactive"].text
 
 		for cb in self.onChangedEntry:
 			cb(title, status_summary, autostartstatus_summary)
 
-class NetworkNfs(NSCommon,Screen):
+
+class NetworkNfs(NSCommon, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("NFS"))
 		self.skinName = "NetworkServiceSetup"
-		self.onChangedEntry = [ ]
-		self['lab1'] = Label(_("Autostart:"))
-		self['labactive'] = Label(_(_("Disabled")))
-		self['lab2'] = Label(_("Current Status:"))
-		self['labstop'] = Label(_("Stopped"))
-		self['labrun'] = Label(_("Running"))
-		self['key_green'] = Label(_("Start"))
-		self['key_red'] = Label(_("Remove Service"))
-		self['key_yellow'] = Label(_("Autostart"))
-		self['key_blue'] = Label()
+		self.onChangedEntry = []
+		self["lab1"] = Label(_("Autostart:"))
+		self["labactive"] = Label(_(_("Disabled")))
+		self["lab2"] = Label(_("Current Status:"))
+		self["labstop"] = Label(_("Stopped"))
+		self["labrun"] = Label(_("Running"))
+		self["key_green"] = Label(_("Start"))
+		self["key_red"] = Label(_("Remove Service"))
+		self["key_yellow"] = Label(_("Autostart"))
+		self["key_blue"] = Label()
 		self.Console = Console()
 		self.my_nfs_active = False
 		self.my_nfs_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'ok': self.close,
-			'back': self.close,
-			'red': self.UninstallCheck,
-			'green': self.NfsStartStop,
-			'yellow': self.Nfsset
+			"ok": self.close,
+			"back": self.close,
+			"red": self.UninstallCheck,
+			"green": self.NfsStartStop,
+			"yellow": self.Nfsset
 		})
-		self.service_name = 'packagegroup-base-nfs'
+		self.service_name = "packagegroup-base-nfs"
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = True
 
 	def NfsStartStop(self):
 		if not self.my_nfs_run:
-			self.Console.ePopen('/etc/init.d/nfsserver start', self.StartStopCallback)
+			self.Console.ePopen("/etc/init.d/nfsserver start", self.StartStopCallback)
 		elif self.my_nfs_run:
-			self.Console.ePopen('/etc/init.d/nfsserver stop', self.StartStopCallback)
+			self.Console.ePopen("/etc/init.d/nfsserver stop", self.StartStopCallback)
 
 	def Nfsset(self):
-		if ServiceIsEnabled('nfsserver'):
-			self.Console.ePopen('update-rc.d -f nfsserver remove', self.StartStopCallback)
+		if ServiceIsEnabled("nfsserver"):
+			self.Console.ePopen("update-rc.d -f nfsserver remove", self.StartStopCallback)
 		else:
-			self.Console.ePopen('update-rc.d -f nfsserver defaults 13', self.StartStopCallback)
+			self.Console.ePopen("update-rc.d -f nfsserver defaults 13", self.StartStopCallback)
 
 	def updateService(self):
 		import process
 		p = process.ProcessList()
-		nfs_process = str(p.named('nfsd')).strip('[]')
-		self['labrun'].hide()
-		self['labstop'].hide()
-		self['labactive'].setText(_("Disabled"))
+		nfs_process = str(p.named("nfsd")).strip("[]")
+		self["labrun"].hide()
+		self["labstop"].hide()
+		self["labactive"].setText(_("Disabled"))
 		self.my_nfs_active = False
 		self.my_nfs_run = False
-		if ServiceIsEnabled('nfsserver'):
-			self['labactive'].setText(_("Enabled"))
-			self['labactive'].show()
+		if ServiceIsEnabled("nfsserver"):
+			self["labactive"].setText(_("Enabled"))
+			self["labactive"].show()
 			self.my_nfs_active = True
 		if nfs_process:
 			self.my_nfs_run = True
 		if self.my_nfs_run:
-			self['labstop'].hide()
-			self['labrun'].show()
-			self['key_green'].setText(_("Stop"))
-			status_summary= self['lab2'].text + ' ' + self['labrun'].text
+			self["labstop"].hide()
+			self["labrun"].show()
+			self["key_green"].setText(_("Stop"))
+			status_summary = self["lab2"].text + " " + self["labrun"].text
 		else:
-			self['labstop'].show()
-			self['labrun'].hide()
-			self['key_green'].setText(_("Start"))
-			status_summary= self['lab2'].text + ' ' + self['labstop'].text
+			self["labstop"].show()
+			self["labrun"].hide()
+			self["key_green"].setText(_("Start"))
+			status_summary = self["lab2"].text + " " + self["labstop"].text
 		title = _("NFS Setup")
-		autostartstatus_summary = self['lab1'].text + ' ' + self['labactive'].text
+		autostartstatus_summary = self["lab1"].text + " " + self["labactive"].text
 
 		for cb in self.onChangedEntry:
 			cb(title, status_summary, autostartstatus_summary)
 
 
-class NetworkOpenvpn(NSCommon,Screen):
+class NetworkOpenvpn(NSCommon, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("OpenVPN"))
 		self.skinName = "NetworkServiceSetup"
-		self.onChangedEntry = [ ]
-		self['lab1'] = Label(_("Autostart:"))
-		self['labactive'] = Label(_(_("Disabled")))
-		self['lab2'] = Label(_("Current Status:"))
-		self['labstop'] = Label(_("Stopped"))
-		self['labrun'] = Label(_("Running"))
-		self['key_green'] = Label(_("Start"))
-		self['key_red'] = Label(_("Remove Service"))
-		self['key_yellow'] = Label(_("Autostart"))
-		self['key_blue'] = Label(_("Show Log"))
+		self.onChangedEntry = []
+		self["lab1"] = Label(_("Autostart:"))
+		self["labactive"] = Label(_(_("Disabled")))
+		self["lab2"] = Label(_("Current Status:"))
+		self["labstop"] = Label(_("Stopped"))
+		self["labrun"] = Label(_("Running"))
+		self["key_green"] = Label(_("Start"))
+		self["key_red"] = Label(_("Remove Service"))
+		self["key_yellow"] = Label(_("Autostart"))
+		self["key_blue"] = Label(_("Show Log"))
 		self.Console = Console()
 		self.my_vpn_active = False
 		self.my_vpn_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'ok': self.close,
-			'back': self.close,
-			'red': self.UninstallCheck,
-			'green': self.VpnStartStop,
-			'yellow': self.activateVpn,
-			'blue': self.Vpnshowlog
+			"ok": self.close,
+			"back": self.close,
+			"red": self.UninstallCheck,
+			"green": self.VpnStartStop,
+			"yellow": self.activateVpn,
+			"blue": self.Vpnshowlog
 		})
-		self.service_name = 'openvpn'
+		self.service_name = "openvpn"
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = False
 
@@ -1976,100 +2020,102 @@ class NetworkOpenvpn(NSCommon,Screen):
 
 	def VpnStartStop(self):
 		if not self.my_vpn_run:
-			self.Console.ePopen('/etc/init.d/openvpn start', self.StartStopCallback)
+			self.Console.ePopen("/etc/init.d/openvpn start", self.StartStopCallback)
 		elif self.my_vpn_run:
-			self.Console.ePopen('/etc/init.d/openvpn stop', self.StartStopCallback)
+			self.Console.ePopen("/etc/init.d/openvpn stop", self.StartStopCallback)
 
 	def activateVpn(self):
-		if ServiceIsEnabled('openvpn'):
-			self.Console.ePopen('update-rc.d -f openvpn remove', self.StartStopCallback)
+		if ServiceIsEnabled("openvpn"):
+			self.Console.ePopen("update-rc.d -f openvpn remove", self.StartStopCallback)
 		else:
-			self.Console.ePopen('update-rc.d -f openvpn defaults', self.StartStopCallback)
+			self.Console.ePopen("update-rc.d -f openvpn defaults", self.StartStopCallback)
 
 	def updateService(self):
 		import process
 		p = process.ProcessList()
-		openvpn_process = str(p.named('openvpn')).strip('[]')
-		self['labrun'].hide()
-		self['labstop'].hide()
-		self['labactive'].setText(_("Disabled"))
+		openvpn_process = str(p.named("openvpn")).strip("[]")
+		self["labrun"].hide()
+		self["labstop"].hide()
+		self["labactive"].setText(_("Disabled"))
 		self.my_Vpn_active = False
 		self.my_vpn_run = False
-		if ServiceIsEnabled('openvpn'):
-			self['labactive'].setText(_("Enabled"))
-			self['labactive'].show()
+		if ServiceIsEnabled("openvpn"):
+			self["labactive"].setText(_("Enabled"))
+			self["labactive"].show()
 			self.my_Vpn_active = True
 		if openvpn_process:
 			self.my_vpn_run = True
 		if self.my_vpn_run:
-			self['labstop'].hide()
-			self['labrun'].show()
-			self['key_green'].setText(_("Stop"))
-			status_summary= self['lab2'].text + ' ' + self['labrun'].text
+			self["labstop"].hide()
+			self["labrun"].show()
+			self["key_green"].setText(_("Stop"))
+			status_summary = self["lab2"].text + " " + self["labrun"].text
 		else:
-			self['labstop'].show()
-			self['labrun'].hide()
-			self['key_green'].setText(_("Start"))
-			status_summary= self['lab2'].text + ' ' + self['labstop'].text
+			self["labstop"].show()
+			self["labrun"].hide()
+			self["key_green"].setText(_("Start"))
+			status_summary = self["lab2"].text + " " + self["labstop"].text
 		title = _("OpenVpn Setup")
-		autostartstatus_summary = self['lab1'].text + ' ' + self['labactive'].text
+		autostartstatus_summary = self["lab1"].text + " " + self["labactive"].text
 
 		for cb in self.onChangedEntry:
 			cb(title, status_summary, autostartstatus_summary)
+
 
 class NetworkVpnLog(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Log"))
 		self.skinName = "NetworkInadynLog"
-		self['infotext'] = ScrollLabel('')
+		self["infotext"] = ScrollLabel("")
 		self.Console = Console()
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'ok': self.close,
-			'back': self.close,
-			'up': self['infotext'].pageUp,
-			'down': self['infotext'].pageDown
+			"ok": self.close,
+			"back": self.close,
+			"up": self["infotext"].pageUp,
+			"down": self["infotext"].pageDown
 		})
-		strview = ''
-		self.Console.ePopen('tail /etc/openvpn/openvpn.log > /etc/openvpn/tmp.log')
+		strview = ""
+		self.Console.ePopen("tail /etc/openvpn/openvpn.log > /etc/openvpn/tmp.log")
 		time.sleep(1)
-		if fileExists('/etc/openvpn/tmp.log'):
-			f = open('/etc/openvpn/tmp.log', 'r')
+		if fileExists("/etc/openvpn/tmp.log"):
+			f = open("/etc/openvpn/tmp.log", "r")
 			for line in f.readlines():
 				strview += line
 			f.close()
-			remove('/etc/openvpn/tmp.log')
-		self['infotext'].setText(strview)
+			remove("/etc/openvpn/tmp.log")
+		self["infotext"].setText(strview)
 
-class NetworkSamba(NSCommon,Screen):
+
+class NetworkSamba(NSCommon, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Samba"))
 		self.skinName = "NetworkServiceSetup"
-		self.onChangedEntry = [ ]
-		self['lab1'] = Label(_("Autostart:"))
-		self['labactive'] = Label(_(_("Disabled")))
-		self['lab2'] = Label(_("Current Status:"))
-		self['labstop'] = Label(_("Stopped"))
-		self['labrun'] = Label(_("Running"))
-		self['key_green'] = Label(_("Start"))
-		self['key_red'] = Label(_("Remove Service"))
-		self['key_yellow'] = Label(_("Autostart"))
-		self['key_blue'] = Label(_("Show Log"))
+		self.onChangedEntry = []
+		self["lab1"] = Label(_("Autostart:"))
+		self["labactive"] = Label(_(_("Disabled")))
+		self["lab2"] = Label(_("Current Status:"))
+		self["labstop"] = Label(_("Stopped"))
+		self["labrun"] = Label(_("Running"))
+		self["key_green"] = Label(_("Start"))
+		self["key_red"] = Label(_("Remove Service"))
+		self["key_yellow"] = Label(_("Autostart"))
+		self["key_blue"] = Label(_("Show Log"))
 		self.Console = Console()
 		self.my_Samba_active = False
 		self.my_Samba_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'ok': self.close,
-			'back': self.close,
-			'red': self.UninstallCheck,
-			'green': self.SambaStartStop,
-			'yellow': self.activateSamba,
-			'blue': self.Sambashowlog
+			"ok": self.close,
+			"back": self.close,
+			"red": self.UninstallCheck,
+			"green": self.SambaStartStop,
+			"yellow": self.activateSamba,
+			"blue": self.Sambashowlog
 		})
-		self.service_name = 'packagegroup-base-smbfs-server'
+		self.service_name = "packagegroup-base-smbfs-server"
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = True
 
@@ -2079,277 +2125,279 @@ class NetworkSamba(NSCommon,Screen):
 	def SambaStartStop(self):
 		commands = []
 		if not self.my_Samba_run:
-			commands.append('/etc/init.d/samba start')
+			commands.append("/etc/init.d/samba start")
 		elif self.my_Samba_run:
-			commands.append('/etc/init.d/samba stop')
-			commands.append('killall nmbd')
-			commands.append('killall smbd')
+			commands.append("/etc/init.d/samba stop")
+			commands.append("killall nmbd")
+			commands.append("killall smbd")
 		self.Console.eBatch(commands, self.StartStopCallback, debug=True)
 
 	def activateSamba(self):
 		commands = []
-		if ServiceIsEnabled('samba'):
-			commands.append('update-rc.d -f samba remove')
+		if ServiceIsEnabled("samba"):
+			commands.append("update-rc.d -f samba remove")
 		else:
-			commands.append('update-rc.d -f samba defaults')
+			commands.append("update-rc.d -f samba defaults")
 		self.Console.eBatch(commands, self.StartStopCallback, debug=True)
 
 	def updateService(self):
 		import process
 		p = process.ProcessList()
-		samba_process = str(p.named('smbd')).strip('[]')
-		self['labrun'].hide()
-		self['labstop'].hide()
-		self['labactive'].setText(_("Disabled"))
+		samba_process = str(p.named("smbd")).strip("[]")
+		self["labrun"].hide()
+		self["labstop"].hide()
+		self["labactive"].setText(_("Disabled"))
 		self.my_Samba_active = False
-		if ServiceIsEnabled('samba'):
-			self['labactive'].setText(_("Enabled"))
-			self['labactive'].show()
+		if ServiceIsEnabled("samba"):
+			self["labactive"].setText(_("Enabled"))
+			self["labactive"].show()
 			self.my_Samba_active = True
 
 		self.my_Samba_run = False
 		if samba_process:
 			self.my_Samba_run = True
 		if self.my_Samba_run:
-			self['labstop'].hide()
-			self['labactive'].show()
-			self['labrun'].show()
-			self['key_green'].setText(_("Stop"))
-			status_summary = self['lab2'].text + ' ' + self['labrun'].text
+			self["labstop"].hide()
+			self["labactive"].show()
+			self["labrun"].show()
+			self["key_green"].setText(_("Stop"))
+			status_summary = self["lab2"].text + " " + self["labrun"].text
 		else:
-			self['labrun'].hide()
-			self['labstop'].show()
-			self['labactive'].show()
-			self['key_green'].setText(_("Start"))
-			status_summary = self['lab2'].text + ' ' + self['labstop'].text
+			self["labrun"].hide()
+			self["labstop"].show()
+			self["labactive"].show()
+			self["key_green"].setText(_("Start"))
+			status_summary = self["lab2"].text + " " + self["labstop"].text
 		title = _("Samba Setup")
-		autostartstatus_summary = self['lab1'].text + ' ' + self['labactive'].text
+		autostartstatus_summary = self["lab1"].text + " " + self["labactive"].text
 
 		for cb in self.onChangedEntry:
 			cb(title, status_summary, autostartstatus_summary)
+
 
 class NetworkSambaLog(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Log"))
 		self.skinName = "NetworkInadynLog"
-		self['infotext'] = ScrollLabel('')
+		self["infotext"] = ScrollLabel("")
 		self.Console = Console()
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'ok': self.close,
-			'back': self.close,
-			'up': self['infotext'].pageUp,
-			'down': self['infotext'].pageDown
+			"ok": self.close,
+			"back": self.close,
+			"up": self["infotext"].pageUp,
+			"down": self["infotext"].pageDown
 		})
-		strview = ''
-		self.Console.ePopen('tail /tmp/smb.log > /tmp/tmp.log')
+		strview = ""
+		self.Console.ePopen("tail /tmp/smb.log > /tmp/tmp.log")
 		time.sleep(1)
-		if fileExists('/tmp/tmp.log'):
-			f = open('/tmp/tmp.log', 'r')
+		if fileExists("/tmp/tmp.log"):
+			f = open("/tmp/tmp.log", "r")
 			for line in f.readlines():
 				strview += line
 			f.close()
-			remove('/tmp/tmp.log')
-		self['infotext'].setText(strview)
+			remove("/tmp/tmp.log")
+		self["infotext"].setText(strview)
 
-class NetworkTelnet(NSCommon,Screen):
+
+class NetworkTelnet(NSCommon, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Telnet"))
 		self.skinName = "NetworkServiceSetup"
-		self.onChangedEntry = [ ]
-		self['lab1'] = Label(_("Autostart:"))
-		self['labactive'] = Label(_(_("Disabled")))
-		self['lab2'] = Label(_("Current Status:"))
-		self['labstop'] = Label(_("Stopped"))
-		self['labrun'] = Label(_("Running"))
-		self['key_green'] = Label(_("Start"))
-		self['key_yellow'] = Label(_("Autostart"))
+		self.onChangedEntry = []
+		self["lab1"] = Label(_("Autostart:"))
+		self["labactive"] = Label(_(_("Disabled")))
+		self["lab2"] = Label(_("Current Status:"))
+		self["labstop"] = Label(_("Stopped"))
+		self["labrun"] = Label(_("Running"))
+		self["key_green"] = Label(_("Start"))
+		self["key_yellow"] = Label(_("Autostart"))
 		self.Console = Console()
 		self.my_telnet_active = False
 		self.my_telnet_run = False
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'ok': self.close,
-			'back': self.close,
-			'green': self.TelnetStartStop,
-			'yellow': self.activateTelnet
+			"ok": self.close,
+			"back": self.close,
+			"green": self.TelnetStartStop,
+			"yellow": self.activateTelnet
 		})
 		self.reboot_at_end = False
 
 	def TelnetStartStop(self):
 		commands = []
-		if fileExists('/etc/init.d/telnetd.busybox'):
+		if fileExists("/etc/init.d/telnetd.busybox"):
 			if self.my_telnet_run:
-				commands.append('/etc/init.d/telnetd.busybox stop')
+				commands.append("/etc/init.d/telnetd.busybox stop")
 			else:
-				commands.append('/bin/su -l -c "/etc/init.d/telnetd.busybox start"')
+				commands.append("/bin/su -l -c '/etc/init.d/telnetd.busybox start'")
 			self.Console.eBatch(commands, self.StartStopCallback, debug=True)
 
 	def activateTelnet(self):
 		commands = []
-		if fileExists('/etc/init.d/telnetd.busybox'):
-			if ServiceIsEnabled('telnetd.busybox'):
-				commands.append('update-rc.d -f telnetd.busybox remove')
+		if fileExists("/etc/init.d/telnetd.busybox"):
+			if ServiceIsEnabled("telnetd.busybox"):
+				commands.append("update-rc.d -f telnetd.busybox remove")
 			else:
-				commands.append('update-rc.d -f telnetd.busybox defaults')
+				commands.append("update-rc.d -f telnetd.busybox defaults")
 		self.Console.eBatch(commands, self.StartStopCallback, debug=True)
 
 	def updateService(self):
 		import process
 		p = process.ProcessList()
-		telnet_process = str(p.named('telnetd')).strip('[]')
-		self['labrun'].hide()
-		self['labstop'].hide()
-		self['labactive'].setText(_("Disabled"))
+		telnet_process = str(p.named("telnetd")).strip("[]")
+		self["labrun"].hide()
+		self["labstop"].hide()
+		self["labactive"].setText(_("Disabled"))
 		self.my_telnet_active = False
 		self.my_telnet_run = False
-		if ServiceIsEnabled('telnetd.busybox'):
-			self['labactive'].setText(_("Enabled"))
-			self['labactive'].show()
+		if ServiceIsEnabled("telnetd.busybox"):
+			self["labactive"].setText(_("Enabled"))
+			self["labactive"].show()
 			self.my_telnet_active = True
 
 		if telnet_process:
 			self.my_telnet_run = True
 		if self.my_telnet_run:
-			self['labstop'].hide()
-			self['labactive'].show()
-			self['labrun'].show()
-			self['key_green'].setText(_("Stop"))
-			status_summary = self['lab2'].text + ' ' + self['labrun'].text
+			self["labstop"].hide()
+			self["labactive"].show()
+			self["labrun"].show()
+			self["key_green"].setText(_("Stop"))
+			status_summary = self["lab2"].text + " " + self["labrun"].text
 		else:
-			self['labrun'].hide()
-			self['labstop'].show()
-			self['labactive'].show()
-			self['key_green'].setText(_("Start"))
-			status_summary = self['lab2'].text + ' ' + self['labstop'].text
+			self["labrun"].hide()
+			self["labstop"].show()
+			self["labactive"].show()
+			self["key_green"].setText(_("Start"))
+			status_summary = self["lab2"].text + " " + self["labstop"].text
 		title = _("Telnet Setup")
-		autostartstatus_summary = self['lab1'].text + ' ' + self['labactive'].text
+		autostartstatus_summary = self["lab1"].text + " " + self["labactive"].text
 
 		for cb in self.onChangedEntry:
 			cb(title, status_summary, autostartstatus_summary)
 
-class NetworkInadyn(NSCommon,Screen):
+
+class NetworkInadyn(NSCommon, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Inadyn"))
-		self.onChangedEntry = [ ]
-		self['autostart'] = Label(_("Autostart:"))
-		self['labactive'] = Label(_(_("Active")))
-		self['labdisabled'] = Label(_(_("Disabled")))
-		self['status'] = Label(_("Current Status:"))
-		self['labstop'] = Label(_("Stopped"))
-		self['labrun'] = Label(_("Running"))
-		self['time'] = Label(_("Time Update in Minutes:"))
-		self['labtime'] = Label()
-		self['username'] = Label(_("Username") + ":")
-		self['labuser'] = Label()
-		self['password'] = Label(_("Password") + ":")
-		self['labpass'] = Label()
-		self['alias'] = Label(_("Alias") + ":")
-		self['labalias'] = Label()
-		self['sactive'] = Pixmap()
-		self['sinactive'] = Pixmap()
-		self['system'] = Label(_("System") + ":")
-		self['labsys'] = Label()
-		self['key_red'] = Label(_("Remove Service"))
-		self['key_green'] = Label(_("Start"))
-		self['key_yellow'] = Label(_("Autostart"))
-		self['key_blue'] = Label(_("Show Log"))
+		self.onChangedEntry = []
+		self["autostart"] = Label(_("Autostart:"))
+		self["labactive"] = Label(_(_("Active")))
+		self["labdisabled"] = Label(_(_("Disabled")))
+		self["status"] = Label(_("Current Status:"))
+		self["labstop"] = Label(_("Stopped"))
+		self["labrun"] = Label(_("Running"))
+		self["time"] = Label(_("Time Update in Minutes:"))
+		self["labtime"] = Label()
+		self["username"] = Label(_("Username") + ":")
+		self["labuser"] = Label()
+		self["password"] = Label(_("Password") + ":")
+		self["labpass"] = Label()
+		self["alias"] = Label(_("Alias") + ":")
+		self["labalias"] = Label()
+		self["sactive"] = Pixmap()
+		self["sinactive"] = Pixmap()
+		self["system"] = Label(_("System") + ":")
+		self["labsys"] = Label()
+		self["key_red"] = Label(_("Remove Service"))
+		self["key_green"] = Label(_("Start"))
+		self["key_yellow"] = Label(_("Autostart"))
+		self["key_blue"] = Label(_("Show Log"))
 		self["key_menu"] = StaticText(_("MENU"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'SetupActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions", "SetupActions"],
 		{
-			'ok': self.setupinadyn,
-			'back': self.close,
-			'menu': self.setupinadyn,
-			'red': self.UninstallCheck,
-			'green': self.InadynStartStop,
-			'yellow': self.autostart,
-			'blue': self.inaLog
+			"ok": self.setupinadyn,
+			"back": self.close,
+			"menu": self.setupinadyn,
+			"red": self.UninstallCheck,
+			"green": self.InadynStartStop,
+			"yellow": self.autostart,
+			"blue": self.inaLog
 		})
 		self.Console = Console()
-		self.service_name = 'inadyn-mt'
+		self.service_name = "inadyn-mt"
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = False
 
 	def InadynStartStop(self):
 		if not self.my_inadyn_run:
-			self.Console.ePopen('/etc/init.d/inadyn-mt start', self.StartStopCallback)
+			self.Console.ePopen("/etc/init.d/inadyn-mt start", self.StartStopCallback)
 		elif self.my_inadyn_run:
-			self.Console.ePopen('/etc/init.d/inadyn-mt stop', self.StartStopCallback)
+			self.Console.ePopen("/etc/init.d/inadyn-mt stop", self.StartStopCallback)
 
 	def autostart(self):
-		if ServiceIsEnabled('inadyn-mt'):
-			self.Console.ePopen('update-rc.d -f inadyn-mt remove', self.StartStopCallback)
+		if ServiceIsEnabled("inadyn-mt"):
+			self.Console.ePopen("update-rc.d -f inadyn-mt remove", self.StartStopCallback)
 		else:
-			self.Console.ePopen('update-rc.d -f inadyn-mt defaults', self.StartStopCallback)
+			self.Console.ePopen("update-rc.d -f inadyn-mt defaults", self.StartStopCallback)
 
 	def updateService(self):
 		import process
 		p = process.ProcessList()
-		inadyn_process = str(p.named('inadyn-mt')).strip('[]')
-		self['labrun'].hide()
-		self['labstop'].hide()
-		self['labactive'].hide()
-		self['labdisabled'].hide()
-		self['sactive'].hide()
+		inadyn_process = str(p.named("inadyn-mt")).strip("[]")
+		self["labrun"].hide()
+		self["labstop"].hide()
+		self["labactive"].hide()
+		self["labdisabled"].hide()
+		self["sactive"].hide()
 		self.my_inadyn_active = False
 		self.my_inadyn_run = False
-		if ServiceIsEnabled('inadyn-mt'):
-			self['labdisabled'].hide()
-			self['labactive'].show()
+		if ServiceIsEnabled("inadyn-mt"):
+			self["labdisabled"].hide()
+			self["labactive"].show()
 			self.my_inadyn_active = True
-			autostartstatus_summary = self['autostart'].text + ' ' + self['labactive'].text
+			autostartstatus_summary = self["autostart"].text + " " + self["labactive"].text
 		else:
-			self['labactive'].hide()
-			self['labdisabled'].show()
-			autostartstatus_summary = self['autostart'].text + ' ' + self['labdisabled'].text
+			self["labactive"].hide()
+			self["labdisabled"].show()
+			autostartstatus_summary = self["autostart"].text + " " + self["labdisabled"].text
 		if inadyn_process:
 			self.my_inadyn_run = True
 		if self.my_inadyn_run:
-			self['labstop'].hide()
-			self['labrun'].show()
-			self['key_green'].setText(_("Stop"))
-			status_summary = self['status'].text + ' ' + self['labrun'].text
+			self["labstop"].hide()
+			self["labrun"].show()
+			self["key_green"].setText(_("Stop"))
+			status_summary = self["status"].text + " " + self["labrun"].text
 		else:
-			self['labstop'].show()
-			self['labrun'].hide()
-			self['key_green'].setText(_("Start"))
-			status_summary = self['status'].text + ' ' + self['labstop'].text
+			self["labstop"].show()
+			self["labrun"].hide()
+			self["key_green"].setText(_("Start"))
+			status_summary = self["status"].text + " " + self["labstop"].text
 
 		#self.my_nabina_state = False
-		if fileExists('/etc/inadyn.conf'):
-			f = open('/etc/inadyn.conf', 'r')
+		if fileExists("/etc/inadyn.conf"):
+			f = open("/etc/inadyn.conf", "r")
 			for line in f.readlines():
 				line = line.strip()
-				if line.startswith('username '):
+				if line.startswith("username "):
 					line = line[9:]
-					self['labuser'].setText(line)
-				elif line.startswith('password '):
+					self["labuser"].setText(line)
+				elif line.startswith("password "):
 					line = line[9:]
-					self['labpass'].setText(line)
-				elif line.startswith('alias '):
+					self["labpass"].setText(line)
+				elif line.startswith("alias "):
 					line = line[6:]
-					self['labalias'].setText(line)
-				elif line.startswith('update_period_sec '):
+					self["labalias"].setText(line)
+				elif line.startswith("update_period_sec "):
 					line = line[18:]
-					line = (int(line) / 60)
-					self['labtime'].setText(str(line))
-				elif line.startswith('dyndns_system ') or line.startswith('#dyndns_system '):
-					if line.startswith('#'):
+					line = (int(line) // 60)
+					self["labtime"].setText(str(line))
+				elif line.startswith("dyndns_system ") or line.startswith("#dyndns_system "):
+					if line.startswith("#"):
 						line = line[15:]
-						self['sactive'].hide()
+						self["sactive"].hide()
 					else:
 						line = line[14:]
-						self['sactive'].show()
-					self['labsys'].setText(line)
+						self["sactive"].show()
+					self["labsys"].setText(line)
 			f.close()
 		title = _("Inadyn Setup")
 
 		for cb in self.onChangedEntry:
 			cb(title, status_summary, autostartstatus_summary)
-
 
 	def setupinadyn(self):
 		self.session.openWithCallback(self.updateService, NetworkInadynSetup)
@@ -2357,20 +2405,21 @@ class NetworkInadyn(NSCommon,Screen):
 	def inaLog(self):
 		self.session.open(NetworkInadynLog)
 
+
 class NetworkInadynSetup(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Settings"))
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.selectionChanged)
-		self['key_red'] = Label(_("Exit"))
-		self['key_green'] = Label(_("Save"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.selectionChanged)
+		self["key_red"] = Label(_("Exit"))
+		self["key_green"] = Label(_("Save"))
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'red': self.keyCancel,
-			'green': self.saveIna,
-			'back': self.keyCancel
+			"red": self.keyCancel,
+			"green": self.saveIna,
+			"back": self.keyCancel
 		})
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
@@ -2399,36 +2448,36 @@ class NetworkInadynSetup(Screen, ConfigListScreen):
 		self.ina_pass = NoSave(ConfigText(fixed_size=False))
 		self.ina_alias = NoSave(ConfigText(fixed_size=False))
 		self.ina_period = NoSave(ConfigNumber())
-		self.ina_sysactive = NoSave(ConfigYesNo(default='False'))
-		self.ina_system = NoSave(ConfigSelection(default = "dyndns@dyndns.org", choices = [("dyndns@dyndns.org", "dyndns@dyndns.org"), ("statdns@dyndns.org", "statdns@dyndns.org"), ("custom@dyndns.org", "custom@dyndns.org"), ("default@no-ip.com", "default@no-ip.com")]))
+		self.ina_sysactive = NoSave(ConfigYesNo(default="False"))
+		self.ina_system = NoSave(ConfigSelection(default="dyndns@dyndns.org", choices=[("dyndns@dyndns.org", "dyndns@dyndns.org"), ("statdns@dyndns.org", "statdns@dyndns.org"), ("custom@dyndns.org", "custom@dyndns.org"), ("default@no-ip.com", "default@no-ip.com")]))
 
-		if fileExists('/etc/inadyn.conf'):
-			f = open('/etc/inadyn.conf', 'r')
+		if fileExists("/etc/inadyn.conf"):
+			f = open("/etc/inadyn.conf", "r")
 			for line in f.readlines():
 				line = line.strip()
-				if line.startswith('username '):
+				if line.startswith("username "):
 					line = line[9:]
 					self.ina_user.value = line
 					ina_user1 = getConfigListEntry(_("Username") + ":", self.ina_user)
 					self.list.append(ina_user1)
-				elif line.startswith('password '):
+				elif line.startswith("password "):
 					line = line[9:]
 					self.ina_pass.value = line
 					ina_pass1 = getConfigListEntry(_("Password") + ":", self.ina_pass)
 					self.list.append(ina_pass1)
-				elif line.startswith('alias '):
+				elif line.startswith("alias "):
 					line = line[6:]
 					self.ina_alias.value = line
 					ina_alias1 = getConfigListEntry(_("Alias") + ":", self.ina_alias)
 					self.list.append(ina_alias1)
-				elif line.startswith('update_period_sec '):
+				elif line.startswith("update_period_sec "):
 					line = line[18:]
-					line = (int(line) / 60)
+					line = (int(line) // 60)
 					self.ina_period.value = line
 					ina_period1 = getConfigListEntry(_("Time update in minutes") + ":", self.ina_period)
 					self.list.append(ina_period1)
-				elif line.startswith('dyndns_system ') or line.startswith('#dyndns_system '):
-					if not line.startswith('#'):
+				elif line.startswith("dyndns_system ") or line.startswith("#dyndns_system "):
+					if not line.startswith("#"):
 						self.ina_sysactive.value = True
 						line = line[14:]
 					else:
@@ -2441,43 +2490,43 @@ class NetworkInadynSetup(Screen, ConfigListScreen):
 					self.list.append(ina_system1)
 
 			f.close()
-		self['config'].list = self.list
-		self['config'].l.setList(self.list)
+		self["config"].list = self.list
+		self["config"].l.setList(self.list)
 
-	def VirtualKeyBoardCallback(self, callback = None):
-		if callback is not None and len(callback):
+	def VirtualKeyBoardCallback(self, callback=None):
+		if callback != None and len(callback):
 			self["config"].getCurrent()[1].setValue(callback)
 			self["config"].invalidate(self["config"].getCurrent())
 
 	def saveIna(self):
-		if fileExists('/etc/inadyn.conf'):
-			inme = open('/etc/inadyn.conf', 'r')
-			out = open('/etc/inadyn.conf.tmp', 'w')
+		if fileExists("/etc/inadyn.conf"):
+			inme = open("/etc/inadyn.conf", "r")
+			out = open("/etc/inadyn.conf.tmp", "w")
 			for line in inme.readlines():
-				line = line.replace('\n', '')
-				if line.startswith('username '):
-					line = ('username ' + self.ina_user.value.strip())
-				elif line.startswith('password '):
-					line = ('password ' + self.ina_pass.value.strip())
-				elif line.startswith('alias '):
-					line = ('alias ' + self.ina_alias.value.strip())
-				elif line.startswith('update_period_sec '):
+				line = line.replace("\n", "")
+				if line.startswith("username "):
+					line = ("username " + self.ina_user.value.strip())
+				elif line.startswith("password "):
+					line = ("password " + self.ina_pass.value.strip())
+				elif line.startswith("alias "):
+					line = ("alias " + self.ina_alias.value.strip())
+				elif line.startswith("update_period_sec "):
 					strview = (self.ina_period.value * 60)
 					strview = str(strview)
-					line = ('update_period_sec ' + strview)
-				elif line.startswith('dyndns_system ') or line.startswith('#dyndns_system '):
+					line = ("update_period_sec " + strview)
+				elif line.startswith("dyndns_system ") or line.startswith("#dyndns_system "):
 					if self.ina_sysactive.value:
-						line = ('dyndns_system ' + self.ina_system.value.strip())
+						line = ("dyndns_system " + self.ina_system.value.strip())
 					else:
-						line = ('#dyndns_system ' + self.ina_system.value.strip())
-				out.write((line + '\n'))
+						line = ("#dyndns_system " + self.ina_system.value.strip())
+				out.write((line + "\n"))
 			out.close()
 			inme.close()
 		else:
 			self.session.open(MessageBox, _("Sorry your Inadyn config is missing"), MessageBox.TYPE_INFO)
 			self.close()
-		if fileExists('/etc/inadyn.conf.tmp'):
-			rename('/etc/inadyn.conf.tmp', '/etc/inadyn.conf')
+		if fileExists("/etc/inadyn.conf.tmp"):
+			rename("/etc/inadyn.conf.tmp", "/etc/inadyn.conf")
 		self.close()
 
 	def keyCancelConfirm(self, result):
@@ -2488,192 +2537,195 @@ class NetworkInadynSetup(Screen, ConfigListScreen):
 	def keyCancel(self):
 		self.hideInputHelp()
 		if self["config"].isChanged():
-			self.session.openWithCallback(self.keyCancelConfirm, MessageBox, _("Really close without saving settings?"), default = False)
+			self.session.openWithCallback(self.keyCancelConfirm, MessageBox, _("Really close without saving settings?"), default=False)
 		else:
 			self.close()
 
 	def hideInputHelp(self):
-		if self["config"].getCurrent() is not None and self["config"].getCurrent()[1].__class__.__name__ in ('ConfigText', 'ConfigPassword'):
+		if self["config"].getCurrent() is not None and self["config"].getCurrent()[1].__class__.__name__ in ("ConfigText", "ConfigPassword"):
 			self["config"].getCurrent()[1].help_window.instance.hide()
+
 
 class NetworkInadynLog(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Log"))
-		self['infotext'] = ScrollLabel('')
-		self['actions'] = ActionMap(['WizardActions', 'DirectionActions', 'ColorActions'],
+		self["infotext"] = ScrollLabel("")
+		self["actions"] = ActionMap(["WizardActions", "DirectionActions", "ColorActions"],
 		{
-			'ok': self.close,
-			'back': self.close,
-			'up': self['infotext'].pageUp,
-			'down': self['infotext'].pageDown
+			"ok": self.close,
+			"back": self.close,
+			"up": self["infotext"].pageUp,
+			"down": self["infotext"].pageDown
 		})
-		strview = ''
-		if fileExists('/var/log/inadyn.log'):
-			f = open('/var/log/inadyn.log', 'r')
+		strview = ""
+		if fileExists("/var/log/inadyn.log"):
+			f = open("/var/log/inadyn.log", "r")
 			for line in f.readlines():
 				strview += line
 			f.close()
-		self['infotext'].setText(strview)
+		self["infotext"].setText(strview)
+
 
 config.networkushare = ConfigSubsection()
 config.networkushare.mediafolders = NoSave(ConfigLocations(default=""))
-class NetworkuShare(NSCommon,Screen):
+
+
+class NetworkuShare(NSCommon, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("uShare"))
-		self.onChangedEntry = [ ]
-		self['autostart'] = Label(_("Autostart:"))
-		self['labactive'] = Label(_(_("Active")))
-		self['labdisabled'] = Label(_(_("Disabled")))
-		self['status'] = Label(_("Current Status:"))
-		self['labstop'] = Label(_("Stopped"))
-		self['labrun'] = Label(_("Running"))
-		self['username'] = Label(_("uShare Name") + ":")
-		self['labuser'] = Label()
-		self['iface'] = Label(_("Interface") + ":")
-		self['labiface'] = Label()
-		self['port'] = Label(_("uShare Port") + ":")
-		self['labport'] = Label()
-		self['telnetport'] = Label(_("Telnet Port") + ":")
-		self['labtelnetport'] = Label()
-		self['sharedir'] = Label(_("Share Folders") + ":")
-		self['labsharedir'] = Label()
-		self['web'] = Label(_("Web Interface") + ":")
-		self['webactive'] = Pixmap()
-		self['webinactive'] = Pixmap()
-		self['telnet'] = Label(_("Telnet Interface") + ":")
-		self['telnetactive'] = Pixmap()
-		self['telnetinactive'] = Pixmap()
-		self['xbox'] = Label(_("XBox 360 support") + ":")
-		self['xboxactive'] = Pixmap()
-		self['xboxinactive'] = Pixmap()
-		self['dlna'] = Label(_("DLNA support") + ":")
-		self['dlnaactive'] = Pixmap()
-		self['dlnainactive'] = Pixmap()
+		self.onChangedEntry = []
+		self["autostart"] = Label(_("Autostart:"))
+		self["labactive"] = Label(_(_("Active")))
+		self["labdisabled"] = Label(_(_("Disabled")))
+		self["status"] = Label(_("Current Status:"))
+		self["labstop"] = Label(_("Stopped"))
+		self["labrun"] = Label(_("Running"))
+		self["username"] = Label(_("uShare Name") + ":")
+		self["labuser"] = Label()
+		self["iface"] = Label(_("Interface") + ":")
+		self["labiface"] = Label()
+		self["port"] = Label(_("uShare Port") + ":")
+		self["labport"] = Label()
+		self["telnetport"] = Label(_("Telnet Port") + ":")
+		self["labtelnetport"] = Label()
+		self["sharedir"] = Label(_("Share Folders") + ":")
+		self["labsharedir"] = Label()
+		self["web"] = Label(_("Web Interface") + ":")
+		self["webactive"] = Pixmap()
+		self["webinactive"] = Pixmap()
+		self["telnet"] = Label(_("Telnet Interface") + ":")
+		self["telnetactive"] = Pixmap()
+		self["telnetinactive"] = Pixmap()
+		self["xbox"] = Label(_("XBox 360 support") + ":")
+		self["xboxactive"] = Pixmap()
+		self["xboxinactive"] = Pixmap()
+		self["dlna"] = Label(_("DLNA support") + ":")
+		self["dlnaactive"] = Pixmap()
+		self["dlnainactive"] = Pixmap()
 
-		self['key_red'] = Label(_("Remove Service"))
-		self['key_green'] = Label(_("Start"))
-		self['key_yellow'] = Label(_("Autostart"))
-		self['key_blue'] = Label(_("Show Log"))
+		self["key_red"] = Label(_("Remove Service"))
+		self["key_green"] = Label(_("Start"))
+		self["key_yellow"] = Label(_("Autostart"))
+		self["key_blue"] = Label(_("Show Log"))
 		self["key_menu"] = StaticText(_("MENU"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'SetupActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions", "SetupActions"],
 		{
-			'ok': self.setupushare,
-			'back': self.close,
-			'menu': self.setupushare,
-			'red': self.UninstallCheck,
-			'green': self.uShareStartStop,
-			'yellow': self.autostart,
-			'blue': self.ushareLog
+			"ok": self.setupushare,
+			"back": self.close,
+			"menu": self.setupushare,
+			"red": self.UninstallCheck,
+			"green": self.uShareStartStop,
+			"yellow": self.autostart,
+			"blue": self.ushareLog
 		})
 		self.Console = Console()
-		self.service_name = 'ushare'
+		self.service_name = "ushare"
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = False
 
 	def uShareStartStop(self):
 		if not self.my_ushare_run:
-			self.Console.ePopen('/etc/init.d/ushare start >> /tmp/uShare.log', self.StartStopCallback)
+			self.Console.ePopen("/etc/init.d/ushare start >> /tmp/uShare.log", self.StartStopCallback)
 		elif self.my_ushare_run:
-			self.Console.ePopen('/etc/init.d/ushare stop >> /tmp/uShare.log', self.StartStopCallback)
+			self.Console.ePopen("/etc/init.d/ushare stop >> /tmp/uShare.log", self.StartStopCallback)
 
 	def autostart(self):
-		if ServiceIsEnabled('ushare'):
-			self.Console.ePopen('update-rc.d -f ushare remove', self.StartStopCallback)
+		if ServiceIsEnabled("ushare"):
+			self.Console.ePopen("update-rc.d -f ushare remove", self.StartStopCallback)
 		else:
-			self.Console.ePopen('update-rc.d -f ushare defaults', self.StartStopCallback)
+			self.Console.ePopen("update-rc.d -f ushare defaults", self.StartStopCallback)
 
 	def updateService(self):
 		import process
 		p = process.ProcessList()
-		ushare_process = str(p.named('ushare')).strip('[]')
-		self['labrun'].hide()
-		self['labstop'].hide()
-		self['labactive'].hide()
-		self['labdisabled'].hide()
+		ushare_process = str(p.named("ushare")).strip("[]")
+		self["labrun"].hide()
+		self["labstop"].hide()
+		self["labactive"].hide()
+		self["labdisabled"].hide()
 		self.my_ushare_active = False
 		self.my_ushare_run = False
-		if not fileExists('/tmp/uShare.log'):
-			f = open('/tmp/uShare.log', "w")
+		if not fileExists("/tmp/uShare.log"):
+			f = open("/tmp/uShare.log", "w")
 			f.write("")
 			f.close()
-		if ServiceIsEnabled('ushare'):
-			self['labdisabled'].hide()
-			self['labactive'].show()
+		if ServiceIsEnabled("ushare"):
+			self["labdisabled"].hide()
+			self["labactive"].show()
 			self.my_ushare_active = True
-			autostartstatus_summary = self['autostart'].text + ' ' + self['labactive'].text
+			autostartstatus_summary = self["autostart"].text + " " + self["labactive"].text
 		else:
-			self['labactive'].hide()
-			self['labdisabled'].show()
-			autostartstatus_summary = self['autostart'].text + ' ' + self['labdisabled'].text
+			self["labactive"].hide()
+			self["labdisabled"].show()
+			autostartstatus_summary = self["autostart"].text + " " + self["labdisabled"].text
 		if ushare_process:
 			self.my_ushare_run = True
 		if self.my_ushare_run:
-			self['labstop'].hide()
-			self['labrun'].show()
-			self['key_green'].setText(_("Stop"))
-			status_summary= self['status'].text + ' ' + self['labstop'].text
+			self["labstop"].hide()
+			self["labrun"].show()
+			self["key_green"].setText(_("Stop"))
+			status_summary = self["status"].text + " " + self["labstop"].text
 		else:
-			self['labstop'].show()
-			self['labrun'].hide()
-			self['key_green'].setText(_("Start"))
-			status_summary= self['status'].text + ' ' + self['labstop'].text
+			self["labstop"].show()
+			self["labrun"].hide()
+			self["key_green"].setText(_("Start"))
+			status_summary = self["status"].text + " " + self["labstop"].text
 
-		if fileExists('/etc/ushare.conf'):
-			f = open('/etc/ushare.conf', 'r')
+		if fileExists("/etc/ushare.conf"):
+			f = open("/etc/ushare.conf", "r")
 			for line in f.readlines():
 				line = line.strip()
-				if line.startswith('USHARE_NAME='):
+				if line.startswith("USHARE_NAME="):
 					line = line[12:]
-					self['labuser'].setText(line)
-				elif line.startswith('USHARE_IFACE='):
+					self["labuser"].setText(line)
+				elif line.startswith("USHARE_IFACE="):
 					line = line[13:]
-					self['labiface'].setText(line)
-				elif line.startswith('USHARE_PORT='):
+					self["labiface"].setText(line)
+				elif line.startswith("USHARE_PORT="):
 					line = line[12:]
-					self['labport'].setText(line)
-				elif line.startswith('USHARE_TELNET_PORT='):
+					self["labport"].setText(line)
+				elif line.startswith("USHARE_TELNET_PORT="):
 					line = line[19:]
-					self['labtelnetport'].setText(line)
-				elif line.startswith('USHARE_DIR='):
+					self["labtelnetport"].setText(line)
+				elif line.startswith("USHARE_DIR="):
 					line = line[11:]
 					self.mediafolders = line
-					self['labsharedir'].setText(line)
-				elif line.startswith('ENABLE_WEB='):
-					if line[11:] == 'no':
-						self['webactive'].hide()
-						self['webinactive'].show()
+					self["labsharedir"].setText(line)
+				elif line.startswith("ENABLE_WEB="):
+					if line[11:] == "no":
+						self["webactive"].hide()
+						self["webinactive"].show()
 					else:
-						self['webactive'].show()
-						self['webinactive'].hide()
-				elif line.startswith('ENABLE_TELNET='):
-					if line[14:] == 'no':
-						self['telnetactive'].hide()
-						self['telnetinactive'].show()
+						self["webactive"].show()
+						self["webinactive"].hide()
+				elif line.startswith("ENABLE_TELNET="):
+					if line[14:] == "no":
+						self["telnetactive"].hide()
+						self["telnetinactive"].show()
 					else:
-						self['telnetactive'].show()
-						self['telnetinactive'].hide()
-				elif line.startswith('ENABLE_XBOX='):
-					if line[12:] == 'no':
-						self['xboxactive'].hide()
-						self['xboxinactive'].show()
+						self["telnetactive"].show()
+						self["telnetinactive"].hide()
+				elif line.startswith("ENABLE_XBOX="):
+					if line[12:] == "no":
+						self["xboxactive"].hide()
+						self["xboxinactive"].show()
 					else:
-						self['xboxactive'].show()
-						self['xboxinactive'].hide()
-				elif line.startswith('ENABLE_DLNA='):
-					if line[12:] == 'no':
-						self['dlnaactive'].hide()
-						self['dlnainactive'].show()
+						self["xboxactive"].show()
+						self["xboxinactive"].hide()
+				elif line.startswith("ENABLE_DLNA="):
+					if line[12:] == "no":
+						self["dlnaactive"].hide()
+						self["dlnainactive"].show()
 					else:
-						self['dlnaactive'].show()
-						self['dlnainactive'].hide()
+						self["dlnaactive"].show()
+						self["dlnainactive"].hide()
 			f.close()
 		title = _("uShare Setup")
 
 		for cb in self.onChangedEntry:
 			cb(title, status_summary, autostartstatus_summary)
-
 
 	def setupushare(self):
 		self.session.openWithCallback(self.updateService, NetworkuShareSetup)
@@ -2681,22 +2733,23 @@ class NetworkuShare(NSCommon,Screen):
 	def ushareLog(self):
 		self.session.open(NetworkuShareLog)
 
+
 class NetworkuShareSetup(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.selectionChanged)
+		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.selectionChanged)
 		self.setTitle(_("uShare Setup"))
-		self['key_red'] = Label(_("Exit"))
-		self['key_green'] = Label(_("Save"))
-		self['key_yellow'] = Label(_("Shares"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		self["key_red"] = Label(_("Exit"))
+		self["key_green"] = Label(_("Save"))
+		self["key_yellow"] = Label(_("Shares"))
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'red': self.close,
-			'green': self.saveuShare,
-			'yellow': self.selectfolders,
-			'back': self.close
+			"red": self.close,
+			"green": self.saveuShare,
+			"yellow": self.selectfolders,
+			"back": self.close
 		})
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
@@ -2722,127 +2775,128 @@ class NetworkuShareSetup(Screen, ConfigListScreen):
 
 	def updateList(self, ret=None):
 		self.list = []
-		self.ushare_user = NoSave(ConfigText(default=getBoxType(),fixed_size=False))
+		self.ushare_user = NoSave(ConfigText(default=getBoxType(), fixed_size=False))
 		self.ushare_iface = NoSave(ConfigText(fixed_size=False))
 		self.ushare_port = NoSave(ConfigNumber())
 		self.ushare_telnetport = NoSave(ConfigNumber())
-		self.ushare_web = NoSave(ConfigYesNo(default='True'))
-		self.ushare_telnet = NoSave(ConfigYesNo(default='True'))
-		self.ushare_xbox= NoSave(ConfigYesNo(default='True'))
-		self.ushare_ps3= NoSave(ConfigYesNo(default='True'))
+		self.ushare_web = NoSave(ConfigYesNo(default="True"))
+		self.ushare_telnet = NoSave(ConfigYesNo(default="True"))
+		self.ushare_xbox = NoSave(ConfigYesNo(default="True"))
+		self.ushare_ps3 = NoSave(ConfigYesNo(default="True"))
 		# looks like dead code
 		#self.ushare_system = NoSave(ConfigSelection(default = "dyndns@dyndns.org", choices = [("dyndns@dyndns.org", "dyndns@dyndns.org"), ("statdns@dyndns.org", "statdns@dyndns.org"), ("custom@dyndns.org", "custom@dyndns.org")]))
 
-		if fileExists('/etc/ushare.conf'):
-			f = open('/etc/ushare.conf', 'r')
+		if fileExists("/etc/ushare.conf"):
+			f = open("/etc/ushare.conf", "r")
 			for line in f.readlines():
 				line = line.strip()
-				if line.startswith('USHARE_NAME='):
+				if line.startswith("USHARE_NAME="):
 					line = line[12:]
 					self.ushare_user.value = line
 					ushare_user1 = getConfigListEntry(_("uShare name") + ":", self.ushare_user)
 					self.list.append(ushare_user1)
-				elif line.startswith('USHARE_IFACE='):
+				elif line.startswith("USHARE_IFACE="):
 					line = line[13:]
 					self.ushare_iface.value = line
 					ushare_iface1 = getConfigListEntry(_("Interface") + ":", self.ushare_iface)
 					self.list.append(ushare_iface1)
-				elif line.startswith('USHARE_PORT='):
+				elif line.startswith("USHARE_PORT="):
 					line = line[12:]
 					self.ushare_port.value = line
 					ushare_port1 = getConfigListEntry(_("uShare port") + ":", self.ushare_port)
 					self.list.append(ushare_port1)
-				elif line.startswith('USHARE_TELNET_PORT='):
+				elif line.startswith("USHARE_TELNET_PORT="):
 					line = line[19:]
 					self.ushare_telnetport.value = line
 					ushare_telnetport1 = getConfigListEntry(_("Telnet port") + ":", self.ushare_telnetport)
 					self.list.append(ushare_telnetport1)
-				elif line.startswith('ENABLE_WEB='):
-					if line[11:] == 'no':
+				elif line.startswith("ENABLE_WEB="):
+					if line[11:] == "no":
 						self.ushare_web.value = False
 					else:
 						self.ushare_web.value = True
 					ushare_web1 = getConfigListEntry(_("Web interface") + ":", self.ushare_web)
 					self.list.append(ushare_web1)
-				elif line.startswith('ENABLE_TELNET='):
-					if line[14:] == 'no':
+				elif line.startswith("ENABLE_TELNET="):
+					if line[14:] == "no":
 						self.ushare_telnet.value = False
 					else:
 						self.ushare_telnet.value = True
 					ushare_telnet1 = getConfigListEntry(_("Telnet interface") + ":", self.ushare_telnet)
 					self.list.append(ushare_telnet1)
-				elif line.startswith('ENABLE_XBOX='):
-					if line[12:] == 'no':
+				elif line.startswith("ENABLE_XBOX="):
+					if line[12:] == "no":
 						self.ushare_xbox.value = False
 					else:
 						self.ushare_xbox.value = True
 					ushare_xbox1 = getConfigListEntry(_("XBox 360 support") + ":", self.ushare_xbox)
 					self.list.append(ushare_xbox1)
-				elif line.startswith('ENABLE_DLNA='):
-					if line[12:] == 'no':
+				elif line.startswith("ENABLE_DLNA="):
+					if line[12:] == "no":
 						self.ushare_ps3.value = False
 					else:
 						self.ushare_ps3.value = True
 					ushare_ps31 = getConfigListEntry(_("DLNA support") + ":", self.ushare_ps3)
 					self.list.append(ushare_ps31)
 			f.close()
-		self['config'].list = self.list
-		self['config'].l.setList(self.list)
+		self["config"].list = self.list
+		self["config"].l.setList(self.list)
 
-	def VirtualKeyBoardCallback(self, callback = None):
-		if callback is not None and len(callback):
+	def VirtualKeyBoardCallback(self, callback=None):
+		if callback != None and len(callback):
 			self["config"].getCurrent()[1].setValue(callback)
 			self["config"].invalidate(self["config"].getCurrent())
 
 	def saveuShare(self):
-		if fileExists('/etc/ushare.conf'):
-			inme = open('/etc/ushare.conf', 'r')
-			out = open('/etc/ushare.conf.tmp', 'w')
+		if fileExists("/etc/ushare.conf"):
+			inme = open("/etc/ushare.conf", "r")
+			out = open("/etc/ushare.conf.tmp", "w")
 			for line in inme.readlines():
-				line = line.replace('\n', '')
-				if line.startswith('USHARE_NAME='):
-					line = ('USHARE_NAME=' + self.ushare_user.value.strip())
-				elif line.startswith('USHARE_IFACE='):
-					line = ('USHARE_IFACE=' + self.ushare_iface.value.strip())
-				elif line.startswith('USHARE_PORT='):
-					line = ('USHARE_PORT=' + str(self.ushare_port.value))
-				elif line.startswith('USHARE_TELNET_PORT='):
-					line = ('USHARE_TELNET_PORT=' + str(self.ushare_telnetport.value))
-				elif line.startswith('USHARE_DIR='):
-					line = ('USHARE_DIR=' + ', '.join( config.networkushare.mediafolders.value ))
-				elif line.startswith('ENABLE_WEB='):
+				line = line.replace("\n", "")
+				if line.startswith("USHARE_NAME="):
+					line = ("USHARE_NAME=" + self.ushare_user.value.strip())
+				elif line.startswith("USHARE_IFACE="):
+					line = ("USHARE_IFACE=" + self.ushare_iface.value.strip())
+				elif line.startswith("USHARE_PORT="):
+					line = ("USHARE_PORT=" + str(self.ushare_port.value))
+				elif line.startswith("USHARE_TELNET_PORT="):
+					line = ("USHARE_TELNET_PORT=" + str(self.ushare_telnetport.value))
+				elif line.startswith("USHARE_DIR="):
+					line = ("USHARE_DIR=" + ", ".join(config.networkushare.mediafolders.value))
+				elif line.startswith("ENABLE_WEB="):
 					if not self.ushare_web.value:
-						line = 'ENABLE_WEB=no'
+						line = "ENABLE_WEB=no"
 					else:
-						line = 'ENABLE_WEB=yes'
-				elif line.startswith('ENABLE_TELNET='):
+						line = "ENABLE_WEB=yes"
+				elif line.startswith("ENABLE_TELNET="):
 					if not self.ushare_telnet.value:
-						line = 'ENABLE_TELNET=no'
+						line = "ENABLE_TELNET=no"
 					else:
-						line = 'ENABLE_TELNET=yes'
-				elif line.startswith('ENABLE_XBOX='):
+						line = "ENABLE_TELNET=yes"
+				elif line.startswith("ENABLE_XBOX="):
 					if not self.ushare_xbox.value:
-						line = 'ENABLE_XBOX=no'
+						line = "ENABLE_XBOX=no"
 					else:
-						line = 'ENABLE_XBOX=yes'
-				elif line.startswith('ENABLE_DLNA='):
+						line = "ENABLE_XBOX=yes"
+				elif line.startswith("ENABLE_DLNA="):
 					if not self.ushare_ps3.value:
-						line = 'ENABLE_DLNA=no'
+						line = "ENABLE_DLNA=no"
 					else:
-						line = 'ENABLE_DLNA=yes'
-				out.write((line + '\n'))
+						line = "ENABLE_DLNA=yes"
+				out.write((line + "\n"))
 			out.close()
 			inme.close()
 		else:
-			open('/tmp/uShare.log', "a").write(_("Sorry your uShare config is missing") + '\n')
+			open("/tmp/uShare.log", "a").write(_("Sorry your uShare config is missing") + "\n")
 			self.session.open(MessageBox, _("Sorry your uShare config is missing"), MessageBox.TYPE_INFO)
 			self.close()
-		if fileExists('/etc/ushare.conf.tmp'):
-			rename('/etc/ushare.conf.tmp', '/etc/ushare.conf')
+		if fileExists("/etc/ushare.conf.tmp"):
+			rename("/etc/ushare.conf.tmp", "/etc/ushare.conf")
 		self.close()
 
 	def selectfolders(self):
-		self.session.openWithCallback(self.updateList,uShareSelection)
+		self.session.openWithCallback(self.updateList, uShareSelection)
+
 
 class uShareSelection(Screen):
 	def __init__(self, session):
@@ -2852,16 +2906,16 @@ class uShareSelection(Screen):
 		self["key_green"] = StaticText(_("Save"))
 		self["key_yellow"] = StaticText()
 
-		if fileExists('/etc/ushare.conf'):
-			f = open('/etc/ushare.conf', 'r')
+		if fileExists("/etc/ushare.conf"):
+			f = open("/etc/ushare.conf", "r")
 			for line in f.readlines():
 				line = line.strip()
-				if line.startswith('USHARE_DIR='):
+				if line.startswith("USHARE_DIR="):
 					line = line[11:]
 					self.mediafolders = line
-		self.selectedFiles = [str(n) for n in self.mediafolders.split(', ')]
-		defaultDir = '/media/'
-		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir,showFiles = False )
+		self.selectedFiles = [str(n) for n in self.mediafolders.split(", ")]
+		defaultDir = "/media/"
+		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir, showFiles=False)
 		self["checkList"] = self.filelist
 
 		self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ShortcutActions"],
@@ -2887,7 +2941,7 @@ class uShareSelection(Screen):
 
 	def selectionChanged(self):
 		current = self["checkList"].getCurrent()[0]
-		if current[2] is True:
+		if current[2] == True:
 			self["key_yellow"].setText(_("Deselect"))
 		else:
 			self["key_yellow"].setText(_("Select"))
@@ -2920,169 +2974,173 @@ class uShareSelection(Screen):
 		if self.filelist.canDescent():
 			self.filelist.descent()
 
+
 class NetworkuShareLog(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Log"))
 		self.skinName = "NetworkInadynLog"
-		self['infotext'] = ScrollLabel('')
+		self["infotext"] = ScrollLabel("")
 		self.Console = Console()
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'ok': self.close,
-			'back': self.close,
-			'up': self['infotext'].pageUp,
-			'down': self['infotext'].pageDown
+			"ok": self.close,
+			"back": self.close,
+			"up": self["infotext"].pageUp,
+			"down": self["infotext"].pageDown
 		})
-		strview = ''
-		self.Console.ePopen('tail /tmp/uShare.log > /tmp/tmp.log')
+		strview = ""
+		self.Console.ePopen("tail /tmp/uShare.log > /tmp/tmp.log")
 		time.sleep(1)
-		if fileExists('/tmp/tmp.log'):
-			f = open('/tmp/tmp.log', 'r')
+		if fileExists("/tmp/tmp.log"):
+			f = open("/tmp/tmp.log", "r")
 			for line in f.readlines():
 				strview += line
 			f.close()
-			remove('/tmp/tmp.log')
-		self['infotext'].setText(strview)
+			remove("/tmp/tmp.log")
+		self["infotext"].setText(strview)
+
 
 config.networkminidlna = ConfigSubsection()
 config.networkminidlna.mediafolders = NoSave(ConfigLocations(default=""))
-class NetworkMiniDLNA(NSCommon,Screen):
+
+
+class NetworkMiniDLNA(NSCommon, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("MiniDLNA"))
-		self.onChangedEntry = [ ]
-		self['autostart'] = Label(_("Autostart:"))
-		self['labactive'] = Label(_(_("Active")))
-		self['labdisabled'] = Label(_(_("Disabled")))
-		self['status'] = Label(_("Current Status:"))
-		self['labstop'] = Label(_("Stopped"))
-		self['labrun'] = Label(_("Running"))
-		self['username'] = Label(_("Name") + ":")
-		self['labuser'] = Label()
-		self['iface'] = Label(_("Interface") + ":")
-		self['labiface'] = Label()
-		self['port'] = Label(_("Port") + ":")
-		self['labport'] = Label()
-		self['serialno'] = Label(_("Serial No") + ":")
-		self['labserialno'] = Label()
-		self['sharedir'] = Label(_("Share Folders") + ":")
-		self['labsharedir'] = Label()
-		self['inotify'] = Label(_("Inotify Monitoring") + ":")
-		self['inotifyactive'] = Pixmap()
-		self['inotifyinactive'] = Pixmap()
-		self['tivo'] = Label(_("TiVo support") + ":")
-		self['tivoactive'] = Pixmap()
-		self['tivoinactive'] = Pixmap()
-		self['dlna'] = Label(_("Strict DLNA") + ":")
-		self['dlnaactive'] = Pixmap()
-		self['dlnainactive'] = Pixmap()
+		self.onChangedEntry = []
+		self["autostart"] = Label(_("Autostart:"))
+		self["labactive"] = Label(_(_("Active")))
+		self["labdisabled"] = Label(_(_("Disabled")))
+		self["status"] = Label(_("Current Status:"))
+		self["labstop"] = Label(_("Stopped"))
+		self["labrun"] = Label(_("Running"))
+		self["username"] = Label(_("Name") + ":")
+		self["labuser"] = Label()
+		self["iface"] = Label(_("Interface") + ":")
+		self["labiface"] = Label()
+		self["port"] = Label(_("Port") + ":")
+		self["labport"] = Label()
+		self["serialno"] = Label(_("Serial No") + ":")
+		self["labserialno"] = Label()
+		self["sharedir"] = Label(_("Share Folders") + ":")
+		self["labsharedir"] = Label()
+		self["inotify"] = Label(_("Inotify Monitoring") + ":")
+		self["inotifyactive"] = Pixmap()
+		self["inotifyinactive"] = Pixmap()
+		self["tivo"] = Label(_("TiVo support") + ":")
+		self["tivoactive"] = Pixmap()
+		self["tivoinactive"] = Pixmap()
+		self["dlna"] = Label(_("Strict DLNA") + ":")
+		self["dlnaactive"] = Pixmap()
+		self["dlnainactive"] = Pixmap()
 
-		self['key_red'] = Label(_("Remove Service"))
-		self['key_green'] = Label(_("Start"))
-		self['key_yellow'] = Label(_("Autostart"))
-		self['key_blue'] = Label(_("Show Log"))
+		self["key_red"] = Label(_("Remove Service"))
+		self["key_green"] = Label(_("Start"))
+		self["key_yellow"] = Label(_("Autostart"))
+		self["key_blue"] = Label(_("Show Log"))
 		self["key_menu"] = StaticText(_("MENU"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'SetupActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions", "SetupActions"],
 		{
-			'ok': self.setupminidlna,
-			'back': self.close,
-			'menu': self.setupminidlna,
-			'red': self.UninstallCheck,
-			'green': self.MiniDLNAStartStop,
-			'yellow': self.autostart,
-			'blue': self.minidlnaLog
+			"ok": self.setupminidlna,
+			"back": self.close,
+			"menu": self.setupminidlna,
+			"red": self.UninstallCheck,
+			"green": self.MiniDLNAStartStop,
+			"yellow": self.autostart,
+			"blue": self.minidlnaLog
 		})
 		self.Console = Console()
-		self.service_name = 'minidlna'
+		self.service_name = "minidlna"
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = False
 
 	def MiniDLNAStartStop(self):
 		if not self.my_minidlna_run:
-			self.Console.ePopen('/etc/init.d/minidlna start', self.StartStopCallback)
+			self.Console.ePopen("/etc/init.d/minidlna start", self.StartStopCallback)
 		elif self.my_minidlna_run:
-			self.Console.ePopen('/etc/init.d/minidlna stop', self.StartStopCallback)
+			self.Console.ePopen("/etc/init.d/minidlna stop", self.StartStopCallback)
 
 	def autostart(self):
-		if ServiceIsEnabled('minidlna'):
-			self.Console.ePopen('update-rc.d -f minidlna remove', self.StartStopCallback)
+		if ServiceIsEnabled("minidlna"):
+			self.Console.ePopen("update-rc.d -f minidlna remove", self.StartStopCallback)
 		else:
-			self.Console.ePopen('update-rc.d -f minidlna defaults', self.StartStopCallback)
+			self.Console.ePopen("update-rc.d -f minidlna defaults", self.StartStopCallback)
 
 	def updateService(self):
 		import process
 		p = process.ProcessList()
-		minidlna_process = str(p.named('minidlnad')).strip('[]')
-		self['labrun'].hide()
-		self['labstop'].hide()
-		self['labactive'].hide()
-		self['labdisabled'].hide()
+		minidlna_process = str(p.named("minidlnad")).strip("[]")
+		self["labrun"].hide()
+		self["labstop"].hide()
+		self["labactive"].hide()
+		self["labdisabled"].hide()
 		self.my_minidlna_active = False
 		self.my_minidlna_run = False
-		if ServiceIsEnabled('minidlna'):
-			self['labdisabled'].hide()
-			self['labactive'].show()
+		if ServiceIsEnabled("minidlna"):
+			self["labdisabled"].hide()
+			self["labactive"].show()
 			self.my_minidlna_active = True
-			autostartstatus_summary = self['autostart'].text + ' ' + self['labactive'].text
+			autostartstatus_summary = self["autostart"].text + " " + self["labactive"].text
 		else:
-			self['labactive'].hide()
-			self['labdisabled'].show()
-			autostartstatus_summary = self['autostart'].text + ' ' + self['labdisabled'].text
+			self["labactive"].hide()
+			self["labdisabled"].show()
+			autostartstatus_summary = self["autostart"].text + " " + self["labdisabled"].text
 		if minidlna_process:
 			self.my_minidlna_run = True
 		if self.my_minidlna_run:
-			self['labstop'].hide()
-			self['labrun'].show()
-			self['key_green'].setText(_("Stop"))
-			status_summary = self['status'].text + ' ' + self['labstop'].text
+			self["labstop"].hide()
+			self["labrun"].show()
+			self["key_green"].setText(_("Stop"))
+			status_summary = self["status"].text + " " + self["labstop"].text
 		else:
-			self['labstop'].show()
-			self['labrun'].hide()
-			self['key_green'].setText(_("Start"))
-			status_summary = self['status'].text + ' ' + self['labstop'].text
+			self["labstop"].show()
+			self["labrun"].hide()
+			self["key_green"].setText(_("Start"))
+			status_summary = self["status"].text + " " + self["labstop"].text
 
-		if fileExists('/etc/minidlna.conf'):
-			f = open('/etc/minidlna.conf', 'r')
+		if fileExists("/etc/minidlna.conf"):
+			f = open("/etc/minidlna.conf", "r")
 			for line in f.readlines():
 				line = line.strip()
-				if line.startswith('friendly_name='):
+				if line.startswith("friendly_name="):
 					line = line[14:]
-					self['labuser'].setText(line)
-				elif line.startswith('network_interface='):
+					self["labuser"].setText(line)
+				elif line.startswith("network_interface="):
 					line = line[18:]
-					self['labiface'].setText(line)
-				elif line.startswith('port='):
+					self["labiface"].setText(line)
+				elif line.startswith("port="):
 					line = line[5:]
-					self['labport'].setText(line)
-				elif line.startswith('serial='):
+					self["labport"].setText(line)
+				elif line.startswith("serial="):
 					line = line[7:]
-					self['labserialno'].setText(line)
-				elif line.startswith('media_dir='):
+					self["labserialno"].setText(line)
+				elif line.startswith("media_dir="):
 					line = line[10:]
 					self.mediafolders = line
-					self['labsharedir'].setText(line)
-				elif line.startswith('inotify='):
-					if line[8:] == 'no':
-						self['inotifyactive'].hide()
-						self['inotifyinactive'].show()
+					self["labsharedir"].setText(line)
+				elif line.startswith("inotify="):
+					if line[8:] == "no":
+						self["inotifyactive"].hide()
+						self["inotifyinactive"].show()
 					else:
-						self['inotifyactive'].show()
-						self['inotifyinactive'].hide()
-				elif line.startswith('enable_tivo='):
-					if line[12:] == 'no':
-						self['tivoactive'].hide()
-						self['tivoinactive'].show()
+						self["inotifyactive"].show()
+						self["inotifyinactive"].hide()
+				elif line.startswith("enable_tivo="):
+					if line[12:] == "no":
+						self["tivoactive"].hide()
+						self["tivoinactive"].show()
 					else:
-						self['tivoactive'].show()
-						self['tivoinactive'].hide()
-				elif line.startswith('strict_dlna='):
-					if line[12:] == 'no':
-						self['dlnaactive'].hide()
-						self['dlnainactive'].show()
+						self["tivoactive"].show()
+						self["tivoinactive"].hide()
+				elif line.startswith("strict_dlna="):
+					if line[12:] == "no":
+						self["dlnaactive"].hide()
+						self["dlnainactive"].show()
 					else:
-						self['dlnaactive'].show()
-						self['dlnainactive'].hide()
+						self["dlnaactive"].show()
+						self["dlnainactive"].hide()
 			f.close()
 		title = _("MiniDLNA Setup")
 
@@ -3095,23 +3153,24 @@ class NetworkMiniDLNA(NSCommon,Screen):
 	def minidlnaLog(self):
 		self.session.open(NetworkMiniDLNALog)
 
+
 class NetworkMiniDLNASetup(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.onChangedEntry = [ ]
+		self.onChangedEntry = []
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.selectionChanged)
+		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.selectionChanged)
 		self.setTitle(_("MiniDLNA Setup"))
 		self.skinName = "NetworkuShareSetup"
-		self['key_red'] = Label(_("Exit"))
-		self['key_green'] = Label(_("Save"))
-		self['key_yellow'] = Label(_("Shares"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		self["key_red"] = Label(_("Exit"))
+		self["key_green"] = Label(_("Save"))
+		self["key_yellow"] = Label(_("Shares"))
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'red': self.close,
-			'green': self.saveMinidlna,
-			'yellow': self.selectfolders,
-			'back': self.close
+			"red": self.close,
+			"green": self.saveMinidlna,
+			"yellow": self.selectfolders,
+			"back": self.close
 		})
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
@@ -3137,112 +3196,113 @@ class NetworkMiniDLNASetup(Screen, ConfigListScreen):
 
 	def updateList(self, ret=None):
 		self.list = []
-		self.minidlna_name = NoSave(ConfigText(default=getBoxType(),fixed_size=False))
+		self.minidlna_name = NoSave(ConfigText(default=getBoxType(), fixed_size=False))
 		self.minidlna_iface = NoSave(ConfigText(fixed_size=False))
 		self.minidlna_port = NoSave(ConfigNumber())
 		self.minidlna_serialno = NoSave(ConfigNumber())
-		self.minidlna_web = NoSave(ConfigYesNo(default='True'))
-		self.minidlna_inotify = NoSave(ConfigYesNo(default='True'))
-		self.minidlna_tivo= NoSave(ConfigYesNo(default='True'))
-		self.minidlna_strictdlna= NoSave(ConfigYesNo(default='True'))
+		self.minidlna_web = NoSave(ConfigYesNo(default="True"))
+		self.minidlna_inotify = NoSave(ConfigYesNo(default="True"))
+		self.minidlna_tivo = NoSave(ConfigYesNo(default="True"))
+		self.minidlna_strictdlna = NoSave(ConfigYesNo(default="True"))
 
-		if fileExists('/etc/minidlna.conf'):
-			f = open('/etc/minidlna.conf', 'r')
+		if fileExists("/etc/minidlna.conf"):
+			f = open("/etc/minidlna.conf", "r")
 			for line in f.readlines():
 				line = line.strip()
-				if line.startswith('friendly_name='):
+				if line.startswith("friendly_name="):
 					line = line[14:]
 					self.minidlna_name.value = line
 					minidlna_name1 = getConfigListEntry(_("Name") + ":", self.minidlna_name)
 					self.list.append(minidlna_name1)
-				elif line.startswith('network_interface='):
+				elif line.startswith("network_interface="):
 					line = line[18:]
 					self.minidlna_iface.value = line
 					minidlna_iface1 = getConfigListEntry(_("Interface") + ":", self.minidlna_iface)
 					self.list.append(minidlna_iface1)
-				elif line.startswith('port='):
+				elif line.startswith("port="):
 					line = line[5:]
 					self.minidlna_port.value = line
 					minidlna_port1 = getConfigListEntry(_("Port") + ":", self.minidlna_port)
 					self.list.append(minidlna_port1)
-				elif line.startswith('serial='):
+				elif line.startswith("serial="):
 					line = line[7:]
 					self.minidlna_serialno.value = line
 					minidlna_serialno1 = getConfigListEntry(_("Serial no") + ":", self.minidlna_serialno)
 					self.list.append(minidlna_serialno1)
-				elif line.startswith('inotify='):
-					if line[8:] == 'no':
+				elif line.startswith("inotify="):
+					if line[8:] == "no":
 						self.minidlna_inotify.value = False
 					else:
 						self.minidlna_inotify.value = True
 					minidlna_inotify1 = getConfigListEntry(_("Inotify monitoring") + ":", self.minidlna_inotify)
 					self.list.append(minidlna_inotify1)
-				elif line.startswith('enable_tivo='):
-					if line[12:] == 'no':
+				elif line.startswith("enable_tivo="):
+					if line[12:] == "no":
 						self.minidlna_tivo.value = False
 					else:
 						self.minidlna_tivo.value = True
 					minidlna_tivo1 = getConfigListEntry(_("TiVo support") + ":", self.minidlna_tivo)
 					self.list.append(minidlna_tivo1)
-				elif line.startswith('strict_dlna='):
-					if line[12:] == 'no':
+				elif line.startswith("strict_dlna="):
+					if line[12:] == "no":
 						self.minidlna_strictdlna.value = False
 					else:
 						self.minidlna_strictdlna.value = True
 					minidlna_strictdlna1 = getConfigListEntry(_("Strict DLNA") + ":", self.minidlna_strictdlna)
 					self.list.append(minidlna_strictdlna1)
 			f.close()
-		self['config'].list = self.list
-		self['config'].l.setList(self.list)
+		self["config"].list = self.list
+		self["config"].l.setList(self.list)
 
-	def VirtualKeyBoardCallback(self, callback = None):
-		if callback is not None and len(callback):
+	def VirtualKeyBoardCallback(self, callback=None):
+		if callback != None and len(callback):
 			self["config"].getCurrent()[1].setValue(callback)
 			self["config"].invalidate(self["config"].getCurrent())
 
 	def saveMinidlna(self):
-		if fileExists('/etc/minidlna.conf'):
-			inme = open('/etc/minidlna.conf', 'r')
-			out = open('/etc/minidlna.conf.tmp', 'w')
+		if fileExists("/etc/minidlna.conf"):
+			inme = open("/etc/minidlna.conf", "r")
+			out = open("/etc/minidlna.conf.tmp", "w")
 			for line in inme.readlines():
-				line = line.replace('\n', '')
-				if line.startswith('friendly_name='):
-					line = ('friendly_name=' + self.minidlna_name.value.strip())
-				elif line.startswith('network_interface='):
-					line = ('network_interface=' + self.minidlna_iface.value.strip())
-				elif line.startswith('port='):
-					line = ('port=' + str(self.minidlna_port.value))
-				elif line.startswith('serial='):
-					line = ('serial=' + str(self.minidlna_serialno.value))
-				elif line.startswith('media_dir='):
-					line = ('media_dir=' + ', '.join( config.networkminidlna.mediafolders.value ))
-				elif line.startswith('inotify='):
+				line = line.replace("\n", "")
+				if line.startswith("friendly_name="):
+					line = ("friendly_name=" + self.minidlna_name.value.strip())
+				elif line.startswith("network_interface="):
+					line = ("network_interface=" + self.minidlna_iface.value.strip())
+				elif line.startswith("port="):
+					line = ("port=" + str(self.minidlna_port.value))
+				elif line.startswith("serial="):
+					line = ("serial=" + str(self.minidlna_serialno.value))
+				elif line.startswith("media_dir="):
+					line = ("media_dir=" + ", ".join(config.networkminidlna.mediafolders.value))
+				elif line.startswith("inotify="):
 					if not self.minidlna_inotify.value:
-						line = 'inotify=no'
+						line = "inotify=no"
 					else:
-						line = 'inotify=yes'
-				elif line.startswith('enable_tivo='):
+						line = "inotify=yes"
+				elif line.startswith("enable_tivo="):
 					if not self.minidlna_tivo.value:
-						line = 'enable_tivo=no'
+						line = "enable_tivo=no"
 					else:
-						line = 'enable_tivo=yes'
-				elif line.startswith('strict_dlna='):
+						line = "enable_tivo=yes"
+				elif line.startswith("strict_dlna="):
 					if not self.minidlna_strictdlna.value:
-						line = 'strict_dlna=no'
+						line = "strict_dlna=no"
 					else:
-						line = 'strict_dlna=yes'
-				out.write((line + '\n'))
+						line = "strict_dlna=yes"
+				out.write((line + "\n"))
 			out.close()
 			inme.close()
 		else:
 			self.session.open(MessageBox, _("Sorry your MiniDLNA config is missing"), MessageBox.TYPE_INFO)
 			self.close()
-		if fileExists('/etc/minidlna.conf.tmp'):
-			rename('/etc/minidlna.conf.tmp', '/etc/minidlna.conf')
+		if fileExists("/etc/minidlna.conf.tmp"):
+			rename("/etc/minidlna.conf.tmp", "/etc/minidlna.conf")
 		self.close()
 
 	def selectfolders(self):
-		self.session.openWithCallback(self.updateList,MiniDLNASelection)
+		self.session.openWithCallback(self.updateList, MiniDLNASelection)
+
 
 class MiniDLNASelection(Screen):
 	def __init__(self, session):
@@ -3253,16 +3313,16 @@ class MiniDLNASelection(Screen):
 		self["key_green"] = StaticText(_("Save"))
 		self["key_yellow"] = StaticText()
 
-		if fileExists('/etc/minidlna.conf'):
-			f = open('/etc/minidlna.conf', 'r')
+		if fileExists("/etc/minidlna.conf"):
+			f = open("/etc/minidlna.conf", "r")
 			for line in f.readlines():
 				line = line.strip()
-				if line.startswith('media_dir='):
+				if line.startswith("media_dir="):
 					line = line[11:]
 					self.mediafolders = line
-		self.selectedFiles = [str(n) for n in self.mediafolders.split(', ')]
-		defaultDir = '/media/'
-		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir,showFiles = False )
+		self.selectedFiles = [str(n) for n in self.mediafolders.split(", ")]
+		defaultDir = "/media/"
+		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir, showFiles=False)
 		self["checkList"] = self.filelist
 
 		self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ShortcutActions"],
@@ -3288,7 +3348,7 @@ class MiniDLNASelection(Screen):
 
 	def selectionChanged(self):
 		current = self["checkList"].getCurrent()[0]
-		if current[2] is True:
+		if current[2] == True:
 			self["key_yellow"].setText(_("De-select"))
 		else:
 			self["key_yellow"].setText(_("Select"))
@@ -3321,34 +3381,36 @@ class MiniDLNASelection(Screen):
 		if self.filelist.canDescent():
 			self.filelist.descent()
 
+
 class NetworkMiniDLNALog(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Log"))
 		self.skinName = "NetworkInadynLog"
-		self['infotext'] = ScrollLabel('')
+		self["infotext"] = ScrollLabel("")
 		self.Console = Console()
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions'],
+		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
 		{
-			'ok': self.close,
-			'back': self.close,
-			'up': self['infotext'].pageUp,
-			'down': self['infotext'].pageDown
+			"ok": self.close,
+			"back": self.close,
+			"up": self["infotext"].pageUp,
+			"down": self["infotext"].pageDown
 		})
-		strview = ''
-		self.Console.ePopen('tail /var/volatile/log/minidlna.log > /tmp/tmp.log')
+		strview = ""
+		self.Console.ePopen("tail /var/volatile/log/minidlna.log > /tmp/tmp.log")
 		time.sleep(1)
-		if fileExists('/tmp/tmp.log'):
-			f = open('/tmp/tmp.log', 'r')
+		if fileExists("/tmp/tmp.log"):
+			f = open("/tmp/tmp.log", "r")
 			for line in f.readlines():
 				strview += line
 			f.close()
-			remove('/tmp/tmp.log')
-		self['infotext'].setText(strview)
+			remove("/tmp/tmp.log")
+		self["infotext"].setText(strview)
+
 
 class NetworkServicesSummary(Screen):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent = parent)
+		Screen.__init__(self, session, parent=parent)
 		self["title"] = StaticText("")
 		self["status_summary"] = StaticText("")
 		self["autostartstatus_summary"] = StaticText("")
@@ -3366,6 +3428,7 @@ class NetworkServicesSummary(Screen):
 		self["title"].text = title
 		self["status_summary"].text = status_summary
 		self["autostartstatus_summary"].text = autostartstatus_summary
+
 
 class NetworkPassword(ConfigListScreen, Screen):
 	def __init__(self, session):
@@ -3392,7 +3455,7 @@ class NetworkPassword(ConfigListScreen, Screen):
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
 
-		self.user="root"
+		self.user = "root"
 		self.output_line = ""
 
 		self.updateList()
@@ -3422,35 +3485,36 @@ class NetworkPassword(ConfigListScreen, Screen):
 	def SetPasswd(self):
 		password = self.password.value
 		if not password:
-			self.session.open(MessageBox, _("The password can not be blank.") , MessageBox.TYPE_ERROR)
+			self.session.open(MessageBox, _("The password can not be blank."), MessageBox.TYPE_ERROR)
 			return
-		#print "[NetworkPassword] Changing the password for %s to %s" % (self.user,self.password)
+		#print("[NetworkPassword] Changing the password for %s to %s" % (self.user,self.password))
 		self.container = eConsoleAppContainer()
 		self.container.appClosed.append(self.runFinished)
 		self.container.dataAvail.append(self.dataAvail)
-		retval = self.container.execute("echo -e '%s\n%s' | (passwd %s)"  % (password, password, self.user))
+		retval = self.container.execute("echo -e '%s\n%s' | (passwd %s)" % (password, password, self.user))
 		if retval:
-			message=_("Unable to change password")
-			self.session.open(MessageBox, message , MessageBox.TYPE_ERROR)
+			message = _("Unable to change password")
+			self.session.open(MessageBox, message, MessageBox.TYPE_ERROR)
 		else:
-			message=_("Password changed")
-			self.session.open(MessageBox, message , MessageBox.TYPE_INFO, timeout=5)
+			message = _("Password changed")
+			self.session.open(MessageBox, message, MessageBox.TYPE_INFO, timeout=5)
 			self.close()
 
-	def dataAvail(self,data):
+	def dataAvail(self, data):
+		data = six.ensure_str(data)
 		self.output_line += data
 		while True:
 			i = self.output_line.find('\n')
 			if i == -1:
 				break
-			self.processOutputLine(self.output_line[:i+1])
-			self.output_line = self.output_line[i+1:]
+			self.processOutputLine(self.output_line[:i + 1])
+			self.output_line = self.output_line[i + 1:]
 
-	def processOutputLine(self,line):
-		if line.find('password: '):
+	def processOutputLine(self, line):
+		if line.find("password: "):
 			self.container.write("%s\n" % self.password.value)
 
-	def runFinished(self,retval):
+	def runFinished(self, retval):
 		del self.container.dataAvail[:]
 		del self.container.appClosed[:]
 		del self.container

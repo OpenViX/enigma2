@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import absolute_import
+
 from Screens.InfoBar import InfoBar
 from enigma import eServiceReference
 from Components.ActionMap import HelpableActionMap

@@ -1,3 +1,8 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+import six
+
 from copy import copy, deepcopy
 
 from enigma import BT_SCALE, RT_HALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_BOTTOM, RT_VALIGN_CENTER, RT_VALIGN_TOP, eListboxPythonMultiContent, getPrevAsciiCode, gFont
@@ -8,7 +13,7 @@ from Components.Input import Input
 from Components.Label import Label
 from Components.Language import language
 from Components.MenuList import MenuList
-from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaTest
+from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
 from Components.Sources.StaticText import StaticText
 from Screens.ChoiceBox import ChoiceBox
 from Screens.HelpMenu import HelpableScreen
@@ -34,7 +39,7 @@ SPACE = u"SPACEICON"  # Symbol to be used for a SPACE on the keyboard.  Must be 
 class VirtualKeyBoardList(MenuList):
 	def __init__(self, list, enableWrapAround=False):
 		MenuList.__init__(self, list, enableWrapAround, eListboxPythonMultiContent)
-		font = fonts.get("VirtualKeyBoard", ("Regular", applySkinFactor(28), applySkinFactor(45)))
+		font = fonts.get("VirtualKeyBoard", applySkinFactor("Regular", 28, 45))
 		self.l.setFont(0, gFont(font[0], font[1]))
 		self.l.setFont(1, gFont(font[0], font[1] * 5 // 9))  # Smaller font is 56% the height of bigger font
 		self.l.setItemHeight(font[2])
@@ -514,7 +519,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		}, -2, description=_("Virtual KeyBoard Functions"))
 		self.lang = language.getLanguage()
 		self["prompt"] = Label(prompt)
-		self["text"] = Input(text=text, maxSize=maxSize, visible_width=visible_width, type=type, currPos=len(text.decode("utf-8", "ignore")) if currPos is None else currPos, allMarked=allMarked)
+		self["text"] = Input(text=text, maxSize=maxSize, visible_width=visible_width, type=type, currPos=len(six.ensure_text(text, errors='ignore')) if currPos is None else currPos, allMarked=allMarked)
 		self["list"] = VirtualKeyBoardList([])
 		self["mode"] = Label(_("INS"))
 		self["locale"] = Label(_("Locale") + ": " + self.lang)
@@ -526,7 +531,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		self["key_blue"] = StaticText(self.shiftMsgs[1])
 		self["key_text"] = StaticText(_("TEXT"))
 		self["key_help"] = StaticText(_("HELP"))
-		width, height = parameters.get("VirtualKeyBoard", (applySkinFactor(45), applySkinFactor(45)))
+		width, height = parameters.get("VirtualKeyBoard", applySkinFactor(45, 45))
 		if self.bg_l is None or self.bg_m is None or self.bg_r is None:
 			self.width = width
 			self.height = height
@@ -538,7 +543,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		# 	Vertical alignment: 0=Auto, 1=Top, 2=Center, 3=Bottom (Auto=Center).
 		self.alignment = parameters.get("VirtualKeyBoardAlignment", (0, 0))
 		# Padding -> (Left/Right, Top/Botton) in pixels
-		self.padding = parameters.get("VirtualKeyBoardPadding", (applySkinFactor(4), applySkinFactor(4)))
+		self.padding = parameters.get("VirtualKeyBoardPadding", applySkinFactor(4, 4))
 		# Text color for each shift level.  (Ensure there is a color for each shift level!)
 		self.shiftColors = parameters.get("VirtualKeyBoardShiftColors", (0x00ffffff, 0x00ffffff, 0x0000ffff, 0x00ff00ff))
 		self.language = None
@@ -891,7 +896,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		self.keyboardWidth = len(self.keyList[self.shiftLevel][0])  # Determine current keymap size.
 		self.keyboardHeight = len(self.keyList[self.shiftLevel])
 		self.maxKey = self.keyboardWidth * (self.keyboardHeight - 1) + len(self.keyList[self.shiftLevel][-1]) - 1
-		# print("[VirtualKeyBoard] DEBUG: Width=%d, Height=%d, Keys=%d, maxKey=%d, shiftLevels=%d" % (self.keyboardWidth, self.keyboardHeight, self.maxKey + 1, self.maxKey, self.shiftLevels))
+		# print("[VirtualKeyBoard] DEBUG: Width = %d, Height = %d, Keys = %d, maxKey = %d, shiftLevels = %d" % (self.keyboardWidth, self.keyboardHeight, self.maxKey + 1, self.maxKey, self.shiftLevels))
 		self.index = 0
 		self.list = []
 		for keys in self.keyList[self.shiftLevel]:  # Process all the buttons in this shift level.
@@ -918,26 +923,26 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 					x += self.width * width
 				else:
 					w = self.bg_l.size().width()
-					res.append(MultiContentEntryPixmapAlphaTest(pos=(x, 0), size=(w, self.height), png=self.bg_l))
+					res.append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.bg_l))
 					x += w
 					w = self.bg_m.size().width() + (self.width * (width - 1))
-					res.append(MultiContentEntryPixmapAlphaTest(pos=(x, 0), size=(w, self.height), png=self.bg_m, flags=BT_SCALE))
+					res.append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.bg_m, flags=BT_SCALE))
 					x += w
 					w = self.bg_r.size().width()
-					res.append(MultiContentEntryPixmapAlphaTest(pos=(x, 0), size=(w, self.height), png=self.bg_r))
+					res.append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.bg_r))
 					x += w
 				highlight = self.keyHighlights.get(key.upper(), (None, None, None))  # Check if the cell needs to be highlighted.
 				if highlight[0] is None or highlight[1] is None or highlight[2] is None:  # If available display the cell highlight.
 					xHighlight += self.width * width
 				else:
 					w = highlight[0].size().width()
-					res.append(MultiContentEntryPixmapAlphaTest(pos=(xHighlight, 0), size=(w, self.height), png=highlight[0]))
+					res.append(MultiContentEntryPixmapAlphaBlend(pos=(xHighlight, 0), size=(w, self.height), png=highlight[0]))
 					xHighlight += w
 					w = highlight[1].size().width() + (self.width * (width - 1))
-					res.append(MultiContentEntryPixmapAlphaTest(pos=(xHighlight, 0), size=(w, self.height), png=highlight[1], flags=BT_SCALE))
+					res.append(MultiContentEntryPixmapAlphaBlend(pos=(xHighlight, 0), size=(w, self.height), png=highlight[1], flags=BT_SCALE))
 					xHighlight += w
 					w = highlight[2].size().width()
-					res.append(MultiContentEntryPixmapAlphaTest(pos=(xHighlight, 0), size=(w, self.height), png=highlight[2]))
+					res.append(MultiContentEntryPixmapAlphaBlend(pos=(xHighlight, 0), size=(w, self.height), png=highlight[2]))
 					xHighlight += w
 				if self.alignment[0] == 1:  # Determine the cell alignment.
 					alignH = RT_HALIGN_LEFT
@@ -974,13 +979,13 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 						top += (h - hImage) // 2
 					elif alignV == RT_VALIGN_BOTTOM:
 						top += h - hImage
-					res.append(MultiContentEntryPixmapAlphaTest(pos=(left, top), size=(wImage, hImage), png=image))
-					# print("[VirtualKeyBoard] DEBUG: Left=%d, Top=%d, Width=%d, Height=%d, Image Width=%d, Image Height=%d" % (left, top, w, h, wImage, hImage))
+					res.append(MultiContentEntryPixmapAlphaBlend(pos=(left, top), size=(wImage, hImage), png=image))
+					# print("[VirtualKeyBoard] DEBUG: Left = %d, Top = %d, Width = %d, Height = %d, Image Width = %d, Image Height = %d" % (left, top, w, h, wImage, hImage))
 				else:  # Display the cell text.
 					if len(key) > 1:  # NOTE: UTF8 / Unicode glyphs only count as one character here.
-						text.append(MultiContentEntryText(pos=(xData, self.padding[1]), size=(w, h), font=1, flags=alignH | alignV, text=key.encode("utf-8"), color=self.shiftColors[self.shiftLevel]))
+						text.append(MultiContentEntryText(pos=(xData, self.padding[1]), size=(w, h), font=1, flags=alignH | alignV, text=six.ensure_str(key), color=self.shiftColors[self.shiftLevel]))
 					else:
-						text.append(MultiContentEntryText(pos=(xData, self.padding[1]), size=(w, h), font=0, flags=alignH | alignV, text=key.encode("utf-8"), color=self.shiftColors[self.shiftLevel]))
+						text.append(MultiContentEntryText(pos=(xData, self.padding[1]), size=(w, h), font=0, flags=alignH | alignV, text=six.ensure_str(key), color=self.shiftColors[self.shiftLevel]))
 			prevKey = key
 			self.index += 1
 		return res + text
@@ -995,13 +1000,13 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		start, width = self.findStartAndWidth(self.selectedKey)
 		x = start * self.width
 		w = self.sel_l.size().width()
-		self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryPixmapAlphaTest(pos=(x, 0), size=(w, self.height), png=self.sel_l))
+		self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.sel_l))
 		x += w
 		w = self.sel_m.size().width() + (self.width * (width - 1))
-		self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryPixmapAlphaTest(pos=(x, 0), size=(w, self.height), png=self.sel_m, flags=BT_SCALE))
+		self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.sel_m, flags=BT_SCALE))
 		x += w
 		w = self.sel_r.size().width()
-		self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryPixmapAlphaTest(pos=(x, 0), size=(w, self.height), png=self.sel_r))
+		self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.sel_r))
 		self.previousSelectedKey = self.selectedKey
 		self["list"].setList(self.list)
 
@@ -1021,15 +1026,15 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 			if start + width >= max or self.keyList[self.shiftLevel][row][start + width] != self.keyList[self.shiftLevel][row][key]:
 				break
 			width += 1
-		# print("[VirtualKeyBoard] DEBUG: Key='%s', Position=%d, Start=%d, Width=%d" % (self.keyList[self.shiftLevel][row][key], key, start, width))
+		# print("[VirtualKeyBoard] DEBUG: Key = '%s', Position = %d, Start = %d, Width = %d" % (self.keyList[self.shiftLevel][row][key], key, start, width))
 		return (start, width)
 
 	def processSelect(self):
 		self.smsChar = None
-		text = self.keyList[self.shiftLevel][self.selectedKey // self.keyboardWidth][self.selectedKey % self.keyboardWidth].encode("UTF-8")
+		text = six.ensure_str(self.keyList[self.shiftLevel][self.selectedKey // self.keyboardWidth][self.selectedKey % self.keyboardWidth])
 		cmd = self.cmds.get(text.upper(), None)
 		if cmd is None:
-			self['text'].char(text.encode('UTF-8'))
+			self['text'].char(six.ensure_str(text))
 		else:
 			exec(cmd)
 		if text not in (u"SHIFT", u"SHIFTICON") and self.shiftHold != -1:
@@ -1043,7 +1048,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 
 	def localeMenu(self):
 		languages = []
-		for locale, data in self.locales.iteritems():
+		for locale, data in six.iteritems(self.locales):
 			languages.append((data[0] + "  -  " + data[1] + "  (" + locale + ")", locale))
 		languages = sorted(languages)
 		index = 0
@@ -1153,7 +1158,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 
 	def keyGotAscii(self):
 		self.smsChar = None
-		if self.selectAsciiKey(str(unichr(getPrevAsciiCode()).encode("utf-8"))):
+		if six.ensure_str(self.selectAsciiKey(str(six.unichr(getPrevAsciiCode())))):
 			self.processSelect()
 
 	def selectAsciiKey(self, char):

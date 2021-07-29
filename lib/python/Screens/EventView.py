@@ -1,9 +1,16 @@
+# -*- coding: utf-8 -*-
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+import six
+
 from time import localtime, mktime, time, strftime
 
 from enigma import eEPGCache, eTimer, eServiceReference, ePoint
 
 from Screens.Screen import Screen
 from Screens.TimerEdit import TimerSanityConflict
+from Screens.TimerEntry import TimerEntry, addTimerFromEvent
 from Screens.ChoiceBox import ChoiceBox
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -58,7 +65,7 @@ class EventViewBase:
 		self["datetime"] = Label()
 		self["channel"] = Label()
 		self["duration"] = Label()
-		if [p for p in plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO) if 'servicelist' not in p.__call__.func_code.co_varnames]:
+		if [p for p in plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO) if "servicelist" not in p.__call__.__code__.co_varnames]:
 			self["key_menu"] = StaticText(_("MENU"))
 		if similarEPGCB is not None:
 			self["key_red"] = Button("")
@@ -102,7 +109,7 @@ class EventViewBase:
 		self.updateButtons()
 
 	def updateButtons(self):
-		if "key_green" in self:
+		if hasattr(self, "key_green"):
 			if self.isRecording or self.event is None:
 				self["key_green"].setText("")
 				return
@@ -134,7 +141,7 @@ class EventViewBase:
 			cb_func2 = lambda ret: self.editTimer(timer)
 			menu = [(_("Delete Timer"), 'CALLFUNC', callback, cb_func1), (_("Edit Timer"), 'CALLFUNC', callback, cb_func2)]
 			self.ChoiceBoxDialog = self.session.instantiateDialog(ChoiceBox, title=_("Select action for timer %s:") % event.getEventName(), list=menu, keys=['green', 'blue'], skin_name="RecordTimerQuestion")
-			self.ChoiceBoxDialog.instance.move(ePoint(self.instance.position().x()+self["key_green"].getPosition()[0], self.instance.position().y()+self["key_green"].getPosition()[1]-self["key_green"].instance.size().height()))
+			self.ChoiceBoxDialog.instance.move(ePoint(self.instance.position().x() + self["key_green"].getPosition()[0], self.instance.position().y() + self["key_green"].getPosition()[1] - self["key_green"].instance.size().height()))
 			self.showChoiceBoxDialog()
 		else:
 			addTimerFromEvent(self.session, lambda _: self.updateButtons(), event, self.currentService)
@@ -164,7 +171,7 @@ class EventViewBase:
 			else:
 				self["channel"].setText(_("unknown service"))
 
-	def sort_func(self,x,y):
+	def sort_func(self, x, y):
 		if x[1] < y[1]:
 			return -1
 		elif x[1] == y[1]:
@@ -205,7 +212,7 @@ class EventViewBase:
 		begintime = localtime(begint)
 		endtime = localtime(begint + event.getDuration())
 		self["datetime"].setText("%s - %s" % (strftime("%s, %s" % (config.usage.date.short.value, config.usage.time.short.value), begintime), strftime(config.usage.time.short.value, endtime)))
-		self["duration"].setText(_("%d min")%(event.getDuration()/60))
+		self["duration"].setText(_("%d min") % (event.getDuration() / 60))
 		if self.SimilarBroadcastTimer is not None:
 			self.SimilarBroadcastTimer.start(400, True)
 		self.updateButtons()
@@ -229,14 +236,13 @@ class EventViewBase:
 		epgcache = eEPGCache.getInstance()
 		ret = epgcache.search(('NB', 100, eEPGCache.SIMILAR_BROADCASTINGS_SEARCH, refstr, id))
 		if ret is not None:
-			text = '\n\n' + _('Similar broadcasts:')
-			ret.sort(self.sort_func)
-			for x in ret:
+			text = "\n\n" + _("Similar broadcasts:")
+			for x in sorted(ret, key=lambda x: x[1]):
 				text += "\n%s  -  %s" % (strftime(config.usage.date.long.value + ", " + config.usage.time.short.value, localtime(x[1])), x[0])
 			descr = self["epg_description"]
-			descr.setText(descr.getText()+text)
+			descr.setText(descr.getText() + text)
 			descr = self["FullDescription"]
-			descr.setText(descr.getText()+text)
+			descr.setText(descr.getText() + text)
 			self["key_red"].setText(_("Similar"))
 
 	def openSimilarList(self):
@@ -251,7 +257,7 @@ class EventViewBase:
 			menu = []
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO):
 				#only list service or event specific eventinfo plugins here, no servelist plugins
-				if 'servicelist' not in p.__call__.func_code.co_varnames:
+				if "servicelist" not in p.__call__.__code__.co_varnames:
 					menu.append((p.name, boundFunction(self.runPlugin, p)))
 			if menu:
 				self.session.open(EventViewContextMenu, menu)
@@ -264,7 +270,7 @@ class EventViewSimple(Screen, EventViewBase):
 	def __init__(self, session, event, ref, callback=None, singleEPGCB=None, multiEPGCB=None, similarEPGCB=None, skin='EventViewSimple'):
 		Screen.__init__(self, session)
 		self.setTitle(_('Event view'))
-		self.skinName = [skin,"EventView"]
+		self.skinName = [skin, "EventView"]
 		EventViewBase.__init__(self, event, ref, callback, similarEPGCB)
 
 
@@ -296,7 +302,7 @@ class EventViewEPGSelect(Screen, EventViewBase):
 		else:
 			self["key_yellow"] = Button("")
 			self["yellow"].hide()
-			
+
 		if multiEPGCB:
 			self["key_blue"] = Button(_("Multi EPG"))
 			self["epgactions3"] = ActionMap(["EventViewEPGActions"],
@@ -306,5 +312,5 @@ class EventViewEPGSelect(Screen, EventViewBase):
 		else:
 			self["key_blue"] = Button("")
 			self["blue"].hide()
-		
+
 		self.updateButtons()

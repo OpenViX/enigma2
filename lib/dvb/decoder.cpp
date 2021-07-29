@@ -7,6 +7,7 @@
 #include <linux/dvb/audio.h>
 #include <linux/dvb/video.h>
 #include <linux/dvb/dmx.h>
+#include <lib/dvb/dvb.h>
 
 #include <unistd.h>
 #include <fcntl.h>
@@ -35,6 +36,20 @@ eDVBAudio::eDVBAudio(eDVBDemux *demux, int dev)
 {
 	char filename[128];
 	sprintf(filename, "/dev/dvb/adapter%d/audio%d", demux ? demux->adapter : 0, dev);
+	int tmp_fd = -1;
+	tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+	/* eDebug("[decoder][eDVBAudio]  Opened tmp_fd: %d", tmp_fd); */
+	if (tmp_fd == 0)
+	{
+		::close(tmp_fd);
+		tmp_fd = -1;	
+		fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+		/* eDebug("[decoder][eDVBAudio] opening null fd returned: %d", fd0lock); */
+	}
+	if (tmp_fd != -1)
+	{
+		::close(tmp_fd);
+	}
 	m_fd = ::open(filename, O_RDWR | O_CLOEXEC);
 	if (m_fd < 0)
 		eWarning("[eDVBAudio] %s: %m", filename);
@@ -61,6 +76,7 @@ int eDVBAudio::startPid(int pid, int type)
 	if (m_fd_demux >= 0)
 	{
 		dmx_pes_filter_params pes;
+		memset(&pes, 0, sizeof(pes));
 
 		pes.pid      = pid;
 		pes.input    = DMX_IN_FRONTEND;
@@ -253,6 +269,20 @@ eDVBVideo::eDVBVideo(eDVBDemux *demux, int dev)
 {
 	char filename[128];
 	sprintf(filename, "/dev/dvb/adapter%d/video%d", demux ? demux->adapter : 0, dev);
+	int tmp_fd = -1;
+	tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+	/* eDebug("[decoder][eDVBVideo]  Opened tmp_fd: %d", tmp_fd); */
+	if (tmp_fd == 0)
+	{
+		::close(tmp_fd);
+		tmp_fd = -1;	
+		fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+		/* eDebug("[decoder][eDVBVideo] opening null fd returned: %d", fd0lock); */
+	}
+	if (tmp_fd != -1)
+	{
+		::close(tmp_fd);
+	}
 	m_fd = ::open(filename, O_RDWR | O_CLOEXEC);
 	if (m_fd < 0)
 		eWarning("[eDVBVideo] %s: %m", filename);
@@ -355,6 +385,8 @@ int eDVBVideo::startPid(int pid, int type)
 	if (m_fd_demux >= 0)
 	{
 		dmx_pes_filter_params pes;
+		memset(&pes, 0, sizeof(pes));
+
 		pes.pid      = pid;
 		pes.input    = DMX_IN_FRONTEND;
 		pes.output   = DMX_OUT_DECODER;
@@ -681,6 +713,20 @@ eDVBPCR::eDVBPCR(eDVBDemux *demux, int dev): m_demux(demux), m_dev(dev)
 {
 	char filename[128];
 	sprintf(filename, "/dev/dvb/adapter%d/demux%d", demux->adapter, demux->demux);
+	int tmp_fd = -1;
+	tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+	/* eDebug("[decoder][eDVBPCR]  Opened tmp_fd: %d", tmp_fd); */
+	if (tmp_fd == 0)
+	{
+		::close(tmp_fd);
+		tmp_fd = -1;	
+		fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+		/* eDebug("[decoder][eDVBPCR] opening null fd returned: %d", fd0lock); */
+	}
+	if (tmp_fd != -1)
+	{
+		::close(tmp_fd);
+	}
 	m_fd_demux = ::open(filename, O_RDWR | O_CLOEXEC);
 	if (m_fd_demux < 0)
 		eWarning("[eDVBPCR] %s: %m", filename);
@@ -691,6 +737,7 @@ int eDVBPCR::startPid(int pid)
 	if (m_fd_demux < 0)
 		return -1;
 	dmx_pes_filter_params pes;
+	memset(&pes, 0, sizeof(pes));
 
 	pes.pid      = pid;
 	pes.input    = DMX_IN_FRONTEND;
@@ -751,6 +798,20 @@ eDVBTText::eDVBTText(eDVBDemux *demux, int dev)
 {
 	char filename[128];
 	sprintf(filename, "/dev/dvb/adapter%d/demux%d", demux->adapter, demux->demux);
+	int tmp_fd = -1;
+	tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+	/* eDebug("[decoder][eDVBText]  Opened tmp_fd: %d", tmp_fd); */
+	if (tmp_fd == 0)
+	{
+		::close(tmp_fd);
+		tmp_fd = -1;	
+		fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
+		/* eDebug("[decoder][eDVBText] opening null fd returned: %d", fd0lock); */
+	}
+	if (tmp_fd != -1)
+	{
+		::close(tmp_fd);
+	}
 	m_fd_demux = ::open(filename, O_RDWR | O_CLOEXEC);
 	if (m_fd_demux < 0)
 		eWarning("[eDVBText] %s: %m", filename);
@@ -761,6 +822,7 @@ int eDVBTText::startPid(int pid)
 	if (m_fd_demux < 0)
 		return -1;
 	dmx_pes_filter_params pes;
+	memset(&pes, 0, sizeof(pes));
 
 	pes.pid      = pid;
 	pes.input    = DMX_IN_FRONTEND;
@@ -860,8 +922,11 @@ int eTSMPEGDecoder::setState()
 		if (m_text)
 		{
 			m_text->stop();
-			if (m_demux && m_decoder == 0)	// Tuxtxt caching actions only on primary decoder
+			if (m_demux && m_decoder == 0 && m_is_streamx == 0)	// Tuxtxt caching actions only on primary decoder and not stream
+			{
+				eDebug("[decoder][eDVBText] stopCaching");
 				eTuxtxtApp::getInstance()->stopCaching();
+			}
 		}
 		m_text = 0;
 	}
@@ -900,20 +965,26 @@ int eTSMPEGDecoder::setState()
 	{
 		if ((m_textpid >= 0) && (m_textpid < 0x1FFF) && !nott)
 		{
+			eDebug("[decoder][eDVBText] startPID entry  M_is_stream %d", m_is_streamx);	// m_is_streamx set in servicedvb 0 = false 1 = stream
 			m_text = new eDVBTText(m_demux, m_decoder);
 			if (m_text->startPid(m_textpid))
-				res = -1;
-
-			if (m_demux && m_decoder == 0)	// Tuxtxt caching actions only on primary decoder
 			{
+				eDebug("[decoder][eDVBText] startPID");
+				res = -1;
+			}
+			if (m_demux && m_decoder == 0 && m_is_streamx == 0)	// Tuxtxt caching actions only on primary decoder and not stream = false(0)
+			{
+				eDebug("[decoder][eDVBText] startCaching  M_is_stream %d", m_is_streamx);
 				uint8_t demux = 0;
 				m_demux->getCADemuxID(demux);
 				eTuxtxtApp::getInstance()->startCaching(m_textpid, demux);
 			}
 		}
 		else if (m_demux && m_decoder == 0)	// Tuxtxt caching actions only on primary decoder
+		{
+			eDebug("[decoder][eDVBText] resetPID");
 			eTuxtxtApp::getInstance()->resetPid();
-
+		}
 		m_changed &= ~changeText;
 	}
 
@@ -1012,7 +1083,10 @@ eTSMPEGDecoder::eTSMPEGDecoder(eDVBDemux *demux, int decoder)
 	m_has_audio = !access(filename, W_OK);
 
 	if (m_demux && m_decoder == 0)	// Tuxtxt caching actions only on primary decoder
+	{
+		eDebug("[decoder][eDVBText] initCache");
 		eTuxtxtApp::getInstance()->initCache();
+	}
 }
 
 eTSMPEGDecoder::~eTSMPEGDecoder()
@@ -1023,7 +1097,10 @@ eTSMPEGDecoder::~eTSMPEGDecoder()
 	setState();
 
 	if (m_demux && m_decoder == 0)	// Tuxtxt caching actions only on primary decoder
+	{
+		eDebug("[decoder][eDVBText] freeCache");
 		eTuxtxtApp::getInstance()->freeCache();
+	}
 }
 
 RESULT eTSMPEGDecoder::setVideoPID(int vpid, int type)

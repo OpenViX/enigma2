@@ -1,6 +1,10 @@
-from Screen import Screen
+from __future__ import absolute_import
+
+from Screens.Screen import Screen
 
 # a clock display dialog
+
+
 class ClockDisplay(Screen):
 	def okbutton(self):
 		self.session.close()
@@ -9,7 +13,6 @@ class ClockDisplay(Screen):
 		Screen.__init__(self, session)
 		self["theClock"] = clock
 		b = Button("bye")
-		b.onClick = [ self.okbutton ]
+		b.onClick = [self.okbutton]
 		self["okbutton"] = b
 		self["title"] = Header("clock dialog: here you see the current uhrzeit!")
-
