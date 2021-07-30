@@ -185,10 +185,9 @@ class MovieInfo(Converter, object):
 			scanDirectory(path)
 
 		if not MovieInfo.startNewScan:
-			# cache the value if the scan hasn't been cancelled
-			with MovieInfo.scanDirectoryLock:
-				if self.source and self.source.additionalInfo:
-					self.source.additionalInfo.directorySize = size
-			self.changed((self.CHANGED_SPECIFIC, self.getFriendlyFilesize(size)))
+			# cache the value if the scan hasn't been cancelled and fire off a changed event to update any renderers
+			if self.source and self.source.additionalInfo:
+				self.source.additionalInfo.directorySize = size
+				self.changed((self.CHANGED_ALL,))
 
 	text = property(getText)
