@@ -269,6 +269,8 @@ def InitUsageConfig():
 
 	config.usage.task_warning = ConfigYesNo(default=True)
 
+	config.usage.jobtaskextensions = ConfigYesNo(default=True)
+
 	preferredTunerChoicesUpdate()
 
 	config.usage.servicenum_fontsize = ConfigSelectionNumber(default=0, stepwidth=1, min=-8, max=10, wraparound=True)
