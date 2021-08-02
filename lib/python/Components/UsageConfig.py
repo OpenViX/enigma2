@@ -273,6 +273,8 @@ def InitUsageConfig():
 	config.usage.task_warning = ConfigYesNo(default=True)
 
 	config.usage.jobtaskextensions = ConfigYesNo(default=True)
+	config.misc.disable_background_scan = ConfigYesNo(default=False)
+	config.misc.use_ci_assignment = ConfigYesNo(default=False)
 
 	preferredTunerChoicesUpdate()
 
