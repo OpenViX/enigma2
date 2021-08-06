@@ -92,7 +92,7 @@ def getMultibootslots():
 	tmp.dir.cleanup()
 	if bootslots:	
 		print("[Multiboot] Bootslots found:", bootslots)
-		return bootslots
+	return bootslots
 
 
 def GetCurrentImage():

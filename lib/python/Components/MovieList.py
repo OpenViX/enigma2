@@ -554,10 +554,10 @@ class MovieList(GUIComponent):
 		# Duration - optionally active
 		if durationWidth > 0:
 			if data:
-				len = data.len
-				if len > 0:
-					len = ngettext("%d Min", "%d Mins", (len // 60)) % (len // 60)
-					res.append(MultiContentEntryText(pos=(colX, 0), size=(durationWidth, ih), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=len))
+				length = data.len
+				if length > 0:
+					length = ngettext("%d Min", "%d Mins", (length // 60)) % (length // 60)
+					res.append(MultiContentEntryText(pos=(colX, 0), size=(durationWidth, ih), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=length))
 
 		# Date
 		begin_string = ""
@@ -817,6 +817,9 @@ class MovieList(GUIComponent):
 					items.append(groupedItems[0])
 				elif len(groupedItems) > 1:
 					# more than one item, display a collection
+					# to provide a useful description field, we use the oldest recording as the source
+					# which avoids showing potential spoilers 
+					groupedItems = sorted(groupedItems, key=self.buildBeginTimeSortKey, reverse=True)
 					firstItem = groupedItems[0]
 					data = MovieListData()
 					data.collectionCount = len(groupedItems)
@@ -829,7 +832,8 @@ class MovieList(GUIComponent):
 					data.collectionItems = groupedItems
 					data.txt = firstItem[1].getName(firstItem[0]).strip()
 					serviceref = eServiceReference(eServiceReference.idFile, eServiceReference.isGroup, data.txt)
-					items.append((serviceref, serviceref.info(), max(groupedItems, key=lambda i: i[2])[2], data))
+					# For the age of the collection, we use the record time of the newest item in the group
+					items.append((serviceref, serviceref.info(), groupedItems[-1][2], data))
 			self.list = items
 
 		self.firstFileEntry = numberOfDirs

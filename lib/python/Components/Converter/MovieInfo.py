@@ -5,8 +5,7 @@ from threading import Lock, Thread
 from enigma import iServiceInformation, eServiceReference
 
 from Components.Converter.Converter import Converter
-from Components.Element import cached, ElementError
-from ServiceReference import ServiceReference
+from Components.Element import cached
 
 
 class MovieInfo(Converter, object):
@@ -79,6 +78,8 @@ class MovieInfo(Converter, object):
 		return description + extended
 
 	def getFriendlyFilesize(self, filesize):
+		if filesize is None:
+			return ""
 		if filesize >= 104857600000: #100000 * 1024 * 1024
 			return _("%.0f GB") % (filesize / 1073741824.0)
 		elif filesize >= 1073741824: #1024*1024 * 1024
@@ -100,31 +101,40 @@ class MovieInfo(Converter, object):
 					# Short description for Directory is the full path
 					return service.getPath()
 				return (
-					info.getInfoString(service, iServiceInformation.sDescription)
+					self.__getCollectionDescription(service)
+					or info.getInfoString(service, iServiceInformation.sDescription)
 					or (event and self.trimText(event.getShortDescription()))
 					or service.getPath()
 				)
 			elif self.type == self.MOVIE_META_DESCRIPTION:
 				return (
-					(event and (self.trimText(event.getExtendedDescription()) or self.trimText(event.getShortDescription())))
+					self.__getCollectionDescription(service)
+					or (event and (self.trimText(event.getExtendedDescription()) or self.trimText(event.getShortDescription())))
 					or info.getInfoString(service, iServiceInformation.sDescription)
 					or service.getPath()
 				)
 			elif self.type == self.MOVIE_FULL_DESCRIPTION:
 				return (
-					(event and self.formatDescription(event.getShortDescription(), event.getExtendedDescription()))
+					self.__getCollectionDescription(service)
+					or (event and self.formatDescription(event.getShortDescription(), event.getExtendedDescription()))
 					or info.getInfoString(service, iServiceInformation.sDescription)
 					or service.getPath()
 				)
 			elif self.type == self.MOVIE_REC_SERVICE_NAME:
 				rec_ref_str = info.getInfoString(service, iServiceInformation.sServiceref)
-				return ServiceReference(rec_ref_str).getServiceName()
+				return eServiceReference(rec_ref_str).getServiceName()
 			elif self.type == self.MOVIE_REC_SERVICE_REF:
-				rec_ref_str = info.getInfoString(service, iServiceInformation.sServiceref)
-				return str(ServiceReference(rec_ref_str))
+				return info.getInfoString(service, iServiceInformation.sServiceref)
 			elif self.type == self.MOVIE_REC_FILESIZE:
 				return self.getFileSize(service, info)
 		return ""
+
+	def __getCollectionDescription(self, service):
+		if service.flags & eServiceReference.isGroup:
+			items = getattr(self.source.additionalInfo, "collectionItems", None)
+			if items and len(items) > 0:
+				return items[0][1].getInfoString(items[0][0], iServiceInformation.sDescription)
+		return None
 
 	def getFileSize(self, service, info):
 		with MovieInfo.scanDirectoryLock:
@@ -133,8 +143,8 @@ class MovieInfo(Converter, object):
 			MovieInfo.scanPath = None
 			if (self.source.service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory:
 				# we might have a cached value that we can use
-				fileSize = getattr(self.source.additionalInfo, "directorySize", None)
-				if fileSize is not None:
+				fileSize = getattr(self.source.additionalInfo, "directorySize", -1)
+				if fileSize != -1:
 					return self.getFriendlyFilesize(fileSize)
 				# tell the scanner thread to start walking the directory tree
 				MovieInfo.scanPath = self.source.service.getPath()
@@ -145,7 +155,7 @@ class MovieInfo(Converter, object):
 				return _("Directory")
 		if (service.flags & eServiceReference.isGroup) == eServiceReference.isGroup:
 			fileSize = getattr(self.source.additionalInfo, "collectionSize", None)
-			return _("Collection") if fileSize is None else self.getFriendlyFilesize(fileSize)
+			return self.getFriendlyFilesize(fileSize)
 		filesize = info.getInfoObject(service, iServiceInformation.sFileSize)
 		return "" if filesize is None else self.getFriendlyFilesize(filesize)
 
@@ -175,10 +185,9 @@ class MovieInfo(Converter, object):
 			scanDirectory(path)
 
 		if not MovieInfo.startNewScan:
-			# cache the value if the scan hasn't been cancelled
-			with MovieInfo.scanDirectoryLock:
-				if self.source and self.source.additionalInfo:
-					self.source.additionalInfo.directorySize = size
-			self.changed((self.CHANGED_SPECIFIC, self.getFriendlyFilesize(size)))
+			# cache the value if the scan hasn't been cancelled and fire off a changed event to update any renderers
+			if self.source and self.source.additionalInfo:
+				self.source.additionalInfo.directorySize = size
+				self.changed((self.CHANGED_ALL,))
 
 	text = property(getText)
