@@ -57,7 +57,7 @@ class FactoryReset(Setup, ProtectedScreen):
 			if len(self.settings):
 				self.list.append((_("Remove all settings data"), self.resetSettings, _("Select 'Yes' to remove all main settings configuration data. Selecting this option will set all Enigma2 settings back to their default values.  This will also cause Enigma2 to run the Welcome Wizard on restart.")))
 			if len(self.skins):
-				self.list.append((_("Remove all skin data"), self.resetSkins, _("Select 'Yes' to remove all user customisations of skin data. Selecting this option will remove all user based skin customisations. All affected skins will return to their standard settings. This will also clear any customied boot logos and backdrops.")))
+				self.list.append((_("Remove all skin data"), self.resetSkins, _("Select 'Yes' to remove all user customisations of skin data. Selecting this option will remove all user based skin customisations. All affected skins will return to their standard settings. This will also clear any customised boot logos and backdrops.")))
 			if len(self.timers):
 				self.list.append((_("Remove all timer data"), self.resetTimers, _("Select 'Yes' to remove all timer configuration data. Selecting this option will clear all timers, autotimers and power timers.")))
 			if len(self.others):
