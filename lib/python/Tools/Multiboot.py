@@ -43,7 +43,7 @@ def getMultibootslots():
 	tmp.dir = tempfile.TemporaryDirectory(prefix="Multiboot")
 	tmpname = tmp.dir.name 
 	for device in ("/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/block/by-name/bootoptions" ):
-		if bootslots and device == "/dev/block/by-name/bootoptions":
+		if bootslots:
 			continue 
 		if path.exists(device):
 			Console().ePopen("mount %s %s" % (device, tmpname))
@@ -62,6 +62,7 @@ def getMultibootslots():
 					slotname = file.rsplit("_", 3 if "BOXMODE" in file else 1)[0]
 					slotname = file.rsplit("/", 1)[1]
 					slotname = slotname if len(slotname) > 1 else ""
+					slotname = ""	# nullify for current moment
 					# print("[multiboot] [getMultibootslots3] slot = %s file = %s" % (slotnumber, slotname))
 					if slotnumber.isdigit() and slotnumber not in bootslots:
 						slot = {}
