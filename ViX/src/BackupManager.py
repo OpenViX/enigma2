@@ -1076,7 +1076,7 @@ class AutoBackupManagerTimer:
 				self.backupupdate(atLeast)
 		else:
 			print("[BackupManager] Running Backup", strftime("%c", localtime(now)))
-			self.BackupFiles = BackupFiles(self.session)
+			self.BackupFiles = BackupFiles(self.session, schedulebackup=True)
 			Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
 # Note that fact that the job has been *scheduled*.
 # We do *not* only note a successful completion, as that would result
@@ -1092,11 +1092,12 @@ class AutoBackupManagerTimer:
 
 
 class BackupFiles(Screen):
-	def __init__(self, session, updatebackup=False, imagebackup=False):
+	def __init__(self, session, updatebackup=False, imagebackup=False, schedulebackup=False):
 		Screen.__init__(self, session)
 		self.Console = Console()
 		self.updatebackup = updatebackup
 		self.imagebackup = imagebackup
+		self.schedulebackup = schedulebackup
 		self.BackupDevice = config.backupmanager.backuplocation.value
 		print("[BackupManager] Device: " + self.BackupDevice)
 		self.BackupDirectory = config.backupmanager.backuplocation.value + "backup/"
@@ -1306,6 +1307,8 @@ class BackupFiles(Screen):
 			backupType = "-SU-"
 		elif self.imagebackup:
 			backupType = "-IM-"
+		elif self.schedulebackup:
+			backupType = "-Sch-"
 		imageSubBuild = ""
 		if getImageType() != "release":
 			imageSubBuild = ".%s" % getImageDevBuild()
