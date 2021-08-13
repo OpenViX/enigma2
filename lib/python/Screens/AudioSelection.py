@@ -38,6 +38,9 @@ class AudioSelection(Screen, ConfigListScreen):
 		self.protectContextMenu = True
 		ConfigListScreen.__init__(self, [])
 		self.infobar = infobar or self.session.infobar
+		if not hasattr(self.infobar, "selected_subtitle"):
+			self.infobar.selected_subtitle = None
+
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
 			iPlayableService.evUpdatedInfo: self.__updatedInfo
 		})
