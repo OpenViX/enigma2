@@ -210,7 +210,7 @@ class EPGListGrid(EPGListBase):
 
 	def getIndexFromService(self, serviceref):
 		if serviceref is not None:
-			for x in list(range(len(self.list))):
+			for x in range(len(self.list)):
 				if CompareWithAlternatives(self.list[x][0], serviceref):
 					return x
 				if CompareWithAlternatives(self.list[x][1], serviceref):

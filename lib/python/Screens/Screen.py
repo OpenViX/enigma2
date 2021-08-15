@@ -15,7 +15,7 @@ from Tools.CList import CList
 
 
 class Screen(dict):
-	NO_SUSPEND, SUSPEND_STOPS, SUSPEND_PAUSES = list(range(3))
+	NO_SUSPEND, SUSPEND_STOPS, SUSPEND_PAUSES = range(3)
 	ALLOW_SUSPEND = NO_SUSPEND
 	globalScreen = None
 

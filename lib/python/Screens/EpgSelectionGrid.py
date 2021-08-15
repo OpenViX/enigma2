@@ -41,7 +41,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSe
 		self["page"] = Label(_("PAGE UP/DOWN"))
 		self["key_text"] = StaticText(_("TEXT"))
 		self.timeLines = []
-		for x in list(range(0, MAX_TIMELINES)):
+		for x in range(0, MAX_TIMELINES):
 			pm = Pixmap()
 			self.timeLines.append(pm)
 			self["timeline%d" % x] = pm

@@ -2420,7 +2420,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 
 	def historyClear(self):
 		if self and self.servicelist:
-			for i in list(range(0, len(self.history) - 1)):
+			for i in range(0, len(self.history) - 1):
 				del self.history[0]
 			self.history_pos = len(self.history) - 1
 			return True

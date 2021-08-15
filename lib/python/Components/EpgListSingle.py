@@ -122,7 +122,7 @@ class EPGListSingle(EPGListBase):
 		# time is after "now".
 		# NOTE: that the list is a list of tuples, so we can't modify just the
 		#       Title, but have to replace it with a modified tuple.
-		for i in list(range(0, len(self.list))):
+		for i in range(0, len(self.list)):
 			if self.list[i][4][:2] == odds and self.list[i][4][-2:] == odde:
 				tlist = list(self.list[i])
 				tlist[4] = tlist[4][2:-2]

@@ -242,7 +242,7 @@ class Devices(Screen):
 		self.Console = Console()
 		niminfo = ""
 		nims = nimmanager.nimListCompressed()
-		for count in list(range(len(nims))):
+		for count in range(len(nims)):
 			if niminfo:
 				niminfo += "\n"
 			niminfo += nims[count]
@@ -285,7 +285,7 @@ class Devices(Screen):
 		self.list = []
 		if self.hddlist:
 			print("[About] hddlist = %s" % (self.hddlist))
-			for count in list(range(len(self.hddlist))):
+			for count in range(len(self.hddlist)):
 				hdd = self.hddlist[count][1]
 				hddp = self.hddlist[count][0]
 				if "ATA" in hddp:
@@ -359,7 +359,7 @@ class SystemMemoryInfo(Screen):
 		self.AboutText = _("RAM") + "\n\n"
 		RamTotal = "-"
 		RamFree = "-"
-		for lidx in list(range(len(out_lines) - 1)):
+		for lidx in range(len(out_lines) - 1):
 			tstLine = out_lines[lidx].split()
 			if "MemTotal:" in tstLine:
 				MemTotal = out_lines[lidx].split()
