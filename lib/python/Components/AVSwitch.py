@@ -31,10 +31,11 @@ class AVSwitch:
 	rates["576i"] = {"50Hz": {50: "576i"}}
 	rates["480p"] = {"60Hz": {60: "480p"}}
 	rates["576p"] = {"50Hz": {50: "576p"}}
-	rates["720p"] = {"50Hz": {50: "720p50"}, "60Hz": {60: "720p"}, "multi": {50: "720p50", 60: "720p"}}
-	rates["1080i"] = {"50Hz": {50: "1080i50"}, "60Hz": {60: "1080i"}, "multi": {50: "1080i50", 60: "1080i"}}
-	rates["1080p"] = {"50Hz": {50: "1080p50"}, "60Hz": {60: "1080p"}, "multi": {50: "1080p50", 60: "1080p"}}
-	rates["2160p"] = {"50Hz": {50: "2160p50"}, "60Hz": {60: "2160p"}, "multi": {50: "2160p50", 60: "2160p"}}
+	rates["720p"] = {"50Hz": {50: "720p50"}, "60Hz": {60: "720p"}, "multi": {50: "720p50", 60: "720p", 24: "720p24"}}
+	rates["1080i"] = {"50Hz": {50: "1080i50"}, "60Hz": {60: "1080i"}, "multi": {50: "1080i50", 60: "1080i", 24: "1080p24"}}
+	rates["1080p"] = {"50Hz": {50: "1080p50"}, "60Hz": {60: "1080p"}, "multi": {50: "1080p50", 60: "1080p", 24: "1080p24"}}
+	rates["2160p"] = {"50Hz": {50: "2160p50"}, "60Hz": {60: "2160p"}, "multi": {50: "2160p50", 60: "2160p", 24: "2160p24"}}
+	rates["2160p30"] = {"25Hz": {50: "2160p25"}, "30Hz": {60: "2160p30"}, "multi": {50: "2160p25", 60: "2160p30", 24: "2160p24"}}
 	rates["PC"] = {
 		"1024x768": {60: "1024x768"},  # not possible on DM7025
 		"800x600": {60: "800x600"},  # also not possible
@@ -124,26 +125,34 @@ class AVSwitch:
 		self.current_mode = mode
 		self.current_port = port
 		modes = self.rates[mode][rate]
-
 		mode_50 = modes.get(50)
 		mode_60 = modes.get(60)
+		mode_24 = modes.get(24)
 		if mode_50 is None or force == 60:
 			mode_50 = mode_60
 		if mode_60 is None or force == 50:
 			mode_60 = mode_50
+		if mode_24 is None or force:
+			mode_24 = mode_60
+			if force == 50:
+				mode_24 = mode_50
+		try:
+			with open("/proc/stb/video/videomode_50hz", "w") as fd:
+				fd.write(mode_50)
+		except (IOError, OSError):
+			print("[AVSwitch] cannot open /proc/stb/video/videomode_50hz")
+		try:
+			with open("/proc/stb/video/videomode_60hz", "w") as fd:
+				fd.write(mode_60)
+		except (IOError, OSError):
+			print("[AVSwitch] cannot open /proc/stb/video/videomode_60hz")
 
-		try:
-			f = open("/proc/stb/video/videomode_50hz", "w")
-			f.write(mode_50)
-			f.close()
-		except IOError:
-			print "[AVSwitch] cannot open /proc/stb/video/videomode_50hz"
-		try:
-			f = open("/proc/stb/video/videomode_60hz", "w")
-			f.write(mode_60)
-			f.close()
-		except IOError:
-			print "[AVSwitch] cannot open /proc/stb/video/videomode_60hz"
+		if SystemInfo["Has24hz"]:
+			try:
+				with open("/proc/stb/video/videomode_24hz", "w") as fd:
+					fd.write(mode_24)
+			except (IOError, OSError):
+				print("[AVSwitch] cannot open /proc/stb/video/videomode_24hz")
 
 		if getBrandOEM() in ('gigablue'):
 			try:
@@ -155,7 +164,7 @@ class AVSwitch:
 				print "[AVSwitch] GigaBlue writing initial videomode to /etc/videomode failed."
 
 		try:
-			set_mode = modes.get(int(rate[:2]))
+			set_mode = modes.get(int(rate))
 		except: # not support 50Hz, 60Hz for 1080p
 			set_mode = mode_50
 		f = open("/proc/stb/video/videomode", "w")

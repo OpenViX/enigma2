@@ -24,9 +24,11 @@ except ImportError:
 	dvbreader_available = False
 
 if dvbreader_available:
+	from skin import parameters
 	from Components.Sources.StaticText import StaticText
 	from Components.ScrollLabel import ScrollLabel
 	from Components.Label import Label
+	from Tools.Hex2strColor import Hex2strColor
 	import time
 	import datetime
 	import thread
@@ -868,25 +870,26 @@ class SatfinderExtra(Satfinder):
 			return
 		tv = [1, 17, 22, 25, 31]
 		radio = [2, 10]
-		green = "\c0088??88" # FTA tv
-		red = "\c00??8888" # encrypted tv
-		yellow = "\c00????00" # data/interactive/catch-all/etc
-		blue = "\c007799??" # radio
-		no_colour = "\c00??????"
+		colors = parameters.get("SatfinderExtraColors", (0x0088FF88, 0x00FF8888, 0x00FFFF00, 0x007799FF, 0x00FFFFFF)) # "FTA", "encrypted", "data", "radio", "default" colors
+		fta_color = Hex2strColor(colors[0])
+		encrypted_color = Hex2strColor(colors[1])
+		data_color = Hex2strColor(colors[2])
+		radio_color = Hex2strColor(colors[3])
+		default_color = Hex2strColor(colors[4])
 		out = []
-		legend = "%s%s%s:  %s%s%s  %s%s%s  %s%s%s  %s%s%s\n\n%s%s%s\n" % (no_colour, _("Key"), no_colour, green, _("FTA TV"), no_colour, red, _("Encrypted TV"), no_colour, blue, _("Radio"), no_colour, yellow, _("Other"), no_colour, no_colour, _("Channels"), no_colour)
-#		out.append("%s%s%s:" % (no_colour, _("Channels"), no_colour))
+		legend = "%s%s%s:  %s%s%s  %s%s%s  %s%s%s  %s%s%s\n\n%s%s%s\n" % (default_color, _("Key"), default_color, fta_color, _("FTA TV"), default_color, encrypted_color, _("Encrypted TV"), default_color, radio_color, _("Radio"), default_color, data_color, _("Other"), default_color, default_color, _("Channels"), default_color)
+#		out.append("%s%s%s:" % (default_color, _("Channels"), default_color))
 		for service in self.serviceList:
 			fta = "free_ca" in service and service["free_ca"] == 0
 			if service["service_type"] in radio:
-				colour = blue
+				color = radio_color
 			elif service["service_type"] not in tv: # data/interactive/etc
-				colour = yellow
+				color = data_color
 			elif fta:
-				colour = green
+				color = fta_color
 			else:
-				colour = red
-			out.append("- %s%s%s" % (colour, service["service_name"], no_colour))
+				color = encrypted_color
+			out.append("- %s%s%s" % (color, service["service_name"], default_color))
 
 		self.session.open(ServicesFound, "\n".join(out), legend)
 

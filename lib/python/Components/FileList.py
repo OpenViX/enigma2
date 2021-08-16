@@ -353,7 +353,7 @@ class MultiFileSelectList(FileList):
 			idx = self.l.getCurrentSelectionIndex()
 			newList = self.list[:]
 			x = self.list[idx]
-			if not x[0][3].startswith('<'):
+			if x and len(x[0]) > 2 and not x[0][3].startswith('<'):
 				if x[0][1] is True:
 					realPathname = x[0][0]
 				else:
