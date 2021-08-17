@@ -438,7 +438,7 @@ class HdmiCec:
 			msgaddress = message.getAddress()
 			print("[hdmiCEC][messageReceived]1: msgaddress=%s  CECcmd=%s, cmd = %s, ctrl0=%s, length=%s \n" % (msgaddress, CECcmd, cmd, ctrl0, length))
 			if config.hdmicec.debug.value != "0":
-				self.debugRx(length, cmd, ctrl1)
+				self.debugRx(length, cmd, ctrl0)
 			#// workaround for wrong address vom driver (e.g. hd51, message comes from tv -> address is only sometimes 0, dm920, same tv -> address is always 0)
 			if msgaddress > 15:
 				address = 0
@@ -767,7 +767,7 @@ class HdmiCec:
 		tmp += 48 * " "
 		self.fdebug(txt + tmp[:48] + "[0x%02X]" % (address) + "\n")
 
-	def debugRx(self, length, cmd, data):
+	def debugRx(self, length, cmd, ctrl):
 		txt = self.now()
 		if cmd == 0 and length == 0:
 			txt += self.opCode(cmd) + " - "
@@ -776,13 +776,10 @@ class HdmiCec:
 				txt += "<Feature Abort>" + 13 * " " + "<  " + "%02X" % (cmd) + " "
 			else:
 				txt += self.opCode(cmd) + " " + "%02X" % (cmd) + " "
-			for i in range(length - 1):
-				if cmd in [0x32, 0x47]:
-					txt += "%s" % data[i]
-				elif cmd == 0x9e:
-					txt += "%02X" % ord(data[i]) + 3 * " " + "[version: %s]" % CEC[ord(data[i])]
-				else:
-					txt += "%02X" % ord(data[i]) + " "
+			if cmd == 0x9e:
+				txt += "%02X" % ctrl + 3 * " " + "[version: %s]" % CEC[ctrl]
+			else:
+				txt += "%02X" % ctrl + " "
 		txt += "\n"
 		self.fdebug(txt)
 
