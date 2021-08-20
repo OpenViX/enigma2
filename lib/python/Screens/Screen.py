@@ -175,7 +175,7 @@ class Screen(dict):
 			screenTitle = title
 		self["ScreenPath"].text = screenPath
 		self["Title"].text = screenTitle
-		self["title"].text = self.screenTitle
+		self["title"].text = self.screenTitle # DEBUG: Hack to support for some summary screens.
 
 	def getTitle(self):
 		return self.screenTitle
