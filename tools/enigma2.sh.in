@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+# This *is* a bash script, not sh...
 
 prefix=@prefix@
 exec_prefix=@exec_prefix@
@@ -29,10 +30,10 @@ if [ -x @bindir@/showiframe ]; then
 		@bindir@/showiframe @sysconfdir@/enigma2/backdrop.mvi
 	else
 		skin=`sed -En 's|config\.skin\.primary_skin=(.+)/skin\.xml|\1|p' @sysconfdir@/enigma2/settings`
-		if [ -z $skin ]; then
+		if [ -z "$skin" ]; then
 			skin=`grep -m1 '^DEFAULT_SKIN' @prefix@/lib/enigma2/python/skin.py | sed -e's%[^"]*"%%' -e's%/.*%%'`
 		fi
-		if [ -n $skin -a -f @datadir@/enigma2/$skin/backdrop.mvi ]; then
+		if [ -n "$skin" -a -f @datadir@/enigma2/$skin/backdrop.mvi ]; then
 			@bindir@/showiframe @datadir@/enigma2/$skin/backdrop.mvi
 		elif [ -f @datadir@/backdrop.mvi ]; then
 			@bindir@/showiframe @datadir@/backdrop.mvi
@@ -50,6 +51,9 @@ if [ -d /home/root ]; then
 	cd
 fi
 
+# Pre-load libopen, which will set the Close-on-Exec flag for all opened
+# file units so that they don't leak into sub-processes.
+#
 #check for sundtek tuner helper lib
 if [ -e /opt/lib/libmediaclient.so ]; then
 	LIBS="/opt/lib/libmediaclient.so /usr/lib/libopen.so.0.0.0"
@@ -65,17 +69,202 @@ sync
 export LC_CTYPE="en_US.UTF-8"
 
 # set time format used to prefix each line in the debug logs
+#
 if grep -q 'config\.crash\.logtimeformat' @sysconfdir@/enigma2/settings; then
 	export ENIGMA_DEBUG_TIME=`grep "config\.crash\.logtimeformat" @sysconfdir@/enigma2/settings | sed -E "s/^.*=(.*)$/\1/" -`
 fi
 
+# If we are running with a log then we need to set up a sub-process to
+# do this so that it can open a new log if the current one's size
+# becomes too large.
+# So, we define various functions for use
+#
 if grep -q 'config\.crash\.enabledebug=True' @sysconfdir@/enigma2/settings; then
 	DEBUG_LVL='4'
-	debug_dir=$(sed -n 's/config.crash.debug_path=//p' @sysconfdir@/enigma2/settings)
-	[ -n "${debug_dir}" -a -d "${debug_dir}" ] || debug_dir=/home/root/logs/
-	LD_PRELOAD=$LIBS @bindir@/enigma2 &> "${debug_dir}Enigma2_debug_$(date +%Y-%m-%d_%H-%M-%S).log"
+
+# ========== Start of log functions ==========
+# fixup_log() - remove any partial-line at the end a logfile as we
+# switch and add a note there instead.
+#
+    fixup_log() {
+        old="$1"
+        new="$2"
+
+# Remove the fsize limit, so we can add the continuation tag.
+# We're in a subprocess and exit when done, so this won't affect
+# restricting the active log file
+#
+        ulimit -S -f unlimited
+
+# An in-line python script...
+        python - "$old" "$new" <<EOP
+import sys, os
+
+ofile = sys.argv[1]
+nfile = sys.argv[2]
+size = os.stat(ofile).st_size
+pos = size - (size % 1024)
+
+# We partition the file into 1024-byte blocks (plus the probably
+# incomplete one at the end), read them in reverse order and
+# look for the last newline character in each block.
+# As soon as we've found one we've found the last newline in the file.
+# Anything beyond that is an incomplete line which took us to the
+# file-size limit, so we truncate there and add the new log location.
+# The complete text of any such incomplete ending line will be written
+# at the start of the next log, after the note of the preceding log.
+#
+with open(ofile, "r+b") as f:
+    while pos >= 0:
+        f.seek(pos)
+        buf = f.read(1024)
+        where = buf.rfind("\n")
+        if where < 0:
+            pos -= 1024
+            continue
+# OK, we've found the last newline
+# seek there and truncate
+#
+        f.seek(pos + where + 1)
+        f.truncate()
+# Now add the note as to where future logging has gone
+#
+        f.write("Continued in %s\n" % nfile)
+        break
+EOP
+    }
+
+# new_log() - open a new log and, if this is a restart, note the
+# next/prev logs pathnames at the end/start of the relevant logs
+#
+    new_log() {
+        if [ -n "$logname" ]; then
+            prev=$logname
+        else
+            prev=
+        fi
+        logname="${debug_dir}/Enigma2_debug_`date +%Y-%m-%d_%H-%M-%S`.log"
+        exec > $logname 2>&1    # Open the new one
+# If we have opened a new one then we wish to record what the previous
+# one was and also to remove any partial-line at the end of the old log
+# and note the new logname there instead.
+# We do this in the background so that we can get on with logging.
+#
+        if [ -n "$prev" ]; then
+            fixup_log "$prev" "$logname"&
+            echo "Continued from $prev"
+            logswitched=0
+        else
+            logswitched=1
+        fi
+    }
+
+# Set a new file-size limit
+# We MUST ensure that this is ONLY set for the dblogger - NOT enigma2!!!
+# ulimit uses 1024-byte units, so we must multiply the configured limit
+# (in MB) by 1024
+#
+    new_limit() {
+        lim=$(($1 * 1024))
+        ulimit -S -f $lim
+    }
+
+# dblogger - the main function. This receives the log text on
+# stdout
+#
+    dblogger() {
+
+# We want the logger to ignore TERM, so that if a reboot command is run
+# from the command line this doesn't get booted out before enigma2
+# closes down.
+# We'll exit when enigma2 does anyway (the "read line" will fail).
+#
+        trap "" SIGTERM
+
+        logname=
+        lim=
+        logswitched=0
+        debug_dir="/home/root/logs"
+
+# We look for config.crash.debugloglimit in settings
+# (default == 4, see Screens/LogManager.py) and use it:
+#
+        debugloglimit=`awk -F= '
+ BEGIN{res=4};
+ $1 == "config.crash.debugloglimit" {res=$2; exit};
+ END{print res}' @sysconfdir@/enigma2/settings`
+
+        new_limit $debugloglimit
+
+# We look for config.crash.debugloglimit in settings
+# (default == /home/root/logs/, see Screens/LogManager.py) and use it:
+#
+        raw=`awk -F= '
+ BEGIN{res="/home/root/logs/"};
+ $1 == "config.crash.debug_path" {res=$2; exit};
+ END{print res}' /etc/enigma2/settings`
+        debug_dir=${raw%/}      # Strip trailing / if there.
+        trap new_log SIGXFSZ    # Re-opener
+        new_log                 # First opener
+
+# The values will be reported at start-up, but we've already read and
+# handled them above, so set flags to ignore them the first time.
+#
+        first_limit=1   # Not yet seen
+        first_lpath=1   # Not yet seen
+
+        echo "========== Enigma2 log starts =========="
+        while read line; do
+# Have we been asked to change the limit or log path?
+# If so, activate the change.
+# We'll log the CHANGE line as well....
+#
+            case "$line" in
+            CHANGE\ config.crash.debugloglimit=*)
+                if [ $first_limit -eq 1 ]; then
+                    first_limit=0
+                else
+                    debugloglimit=`echo $line |
+                         sed -e's/^.*config.crash.debugloglimit=//'`
+                    new_limit $debugloglimit
+                fi
+                ;;
+            CHANGE\ config.crash.debug_path=*)
+                if [ $first_lpath -eq 1 ]; then
+                    first_lpath=0
+                else
+                    raw=`echo $line |
+                         sed -e's/^.*config.crash.debug_path=//'`
+                    debug_dir=${raw%/}      # Strip trailing / if there.
+                    new_log
+# new_log() will set logswitched, but we don't want to rewrite this line
+# for this case, so unset it
+#
+                    logswitched=0
+                fi
+                ;;
+            esac
+            echo $line
+            if [ $logswitched -eq 1 ]; then # New log opened
+                echo $line                  # Write full line into new log
+                logswitched=0
+            fi
+        done
+
+# enigma2 has left.
+# As we leave, lift the limit (so we don't potentially create a
+# new log just to record the closing) and record this.
+#
+        ulimit -S -f unlimited
+        echo "========== Enigma2 log ends =========="
+    }
+# ========== End of log functions ==========
+
+	LD_PRELOAD=$LIBS @bindir@/enigma2 2>&1 | dblogger
+	ret=${PIPESTATUS[0]}    # enigma2 exit code, not dblogger's
 else
 	LD_PRELOAD=$LIBS @bindir@/enigma2
+	ret=$?
 fi
 
 # enigma2 exit codes:
@@ -86,7 +275,6 @@ fi
 #
 # >128 signal
 
-ret=$?
 
 if [ "$ret" -ne "1" ]; then
 	if [ -e /proc/stb/info/boxtype ]; then
