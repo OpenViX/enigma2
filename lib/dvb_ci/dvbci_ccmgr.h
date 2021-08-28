@@ -279,7 +279,7 @@ class eDVBCICcSession: public eDVBCISession
 	bool ci_element_set_hostid_from_certificate(unsigned int id, X509 *cert);
 
 public:
-	eDVBCICcSession(eDVBCISlot *tslot);
+	eDVBCICcSession(eDVBCISlot *tslot, int version);
 	~eDVBCICcSession();
 
 	void send(const unsigned char *tag, const void *data, int len);
