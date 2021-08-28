@@ -97,8 +97,16 @@
     this will reduce build time in fetching these sources again.
 
 ----------
-14 - Finally you can start building a image
-     For example:- 
+14 - Building image with feeds  e.g.:- 
 
-     MACHINE=vuultimo4k DISTRO=openvix DISTRO_TYPE=release make image
+	MACHINE=vuultimo4k DISTRO=openvix DISTRO_TYPE=release make image
+
+15 - Building an image without feeds (Build time 1-2h)
+
+    MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make enigma2-image
+
+----------
+16 - Building feeds only
+
+    MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make feed
 
