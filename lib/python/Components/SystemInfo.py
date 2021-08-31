@@ -36,8 +36,6 @@ def hasInitCam():
 	for cam in listdir("/etc/init.d"):
 		if cam.startswith("softcam.") and not cam.endswith("None"):
 			return True
-		elif cam.startswith("cardserver.") and not cam.endswith("None"):
-			return True
 		else:
 			pass
 	return False
