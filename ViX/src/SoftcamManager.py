@@ -206,14 +206,17 @@ class VIXSoftcamManager(Screen):
 				self.currentactivecamtemp = result
 			self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
 			self.currentactivecam = self.currentactivecam.replace("\n", ", ")
-			print("[SoftcamManager] Active:%s " % self.currentactivecam)
 			if path.exists("/tmp/SoftcamsScriptsRunning"):
 				file = open("/tmp/SoftcamsScriptsRunning")
 				SoftcamsScriptsRunning = file.read()
 				file.close()
 				SoftcamsScriptsRunning = SoftcamsScriptsRunning.replace("\n", ", ")
 				self.currentactivecam += SoftcamsScriptsRunning
-			self["activecam"].setText(self.currentactivecam)
+			print("[SoftcamManager] Active:%s ScriptCam=%s" % (self.currentactivecam, config.misc.softcams.value))				
+			if config.misc.softcams.value != "None":
+				self["activecam"].setText("SoftcamScript running")
+			else:								
+				self["activecam"].setText(self.currentactivecam)
 			self["activecam"].show()
 		else:
 			print("[SoftcamManager] RESULT FAILED: " + str(result))
