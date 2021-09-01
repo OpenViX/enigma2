@@ -15,7 +15,7 @@ from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
 from Components.ServiceEventTracker import ServiceEventTracker
-from Tools.Directories import resolveFilename, SCOPE_PLUGINS
+from Tools.Directories import isPluginInstalled
 from Tools.HardwareInfo import HardwareInfo
 from Components.AVSwitch import iAVSwitch as iAV
 
@@ -69,7 +69,7 @@ class VideoSetup(ConfigListScreen, Screen):
 		self.list = [
 			getConfigListEntry(_("Video output"), config.av.videoport, _("Configures which video output connector will be used."))
 		]
-		if config.av.videoport.value in ("HDMI", "YPbPr", "Scart-YPbPr") and not path.exists(resolveFilename(SCOPE_PLUGINS) + "SystemPlugins/AutoResolution"):
+		if config.av.videoport.value in ("HDMI", "YPbPr", "Scart-YPbPr") and not isPluginInstalled("AutoResolution"):
 			self.list.append(getConfigListEntry(_("Automatic resolution"), config.av.autores, _("If enabled the output resolution of the box will try to match the resolution of the video content")))
 			if config.av.autores.value in ("all", "hd"):
 				self.list.append(getConfigListEntry(_("Force de-interlace"), config.av.autores_deinterlace, _("If enabled the video will always be de-interlaced.")))
@@ -474,7 +474,7 @@ class AutoVideoMode(Screen):
 
 def autostart(session):
 	global resolutionlabel
-	if not path.exists(resolveFilename(SCOPE_PLUGINS) + "SystemPlugins/AutoResolution"):
+	if not isPluginInstalled("AutoResolution"):
 		if resolutionlabel is None:
 			resolutionlabel = session.instantiateDialog(AutoVideoModeLabel)
 		AutoVideoMode(session)
