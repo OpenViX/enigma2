@@ -126,10 +126,7 @@ class SecConfigure:
 
 	def linkNIMs(self, sec, nim1, nim2):
 		print("[NimManager][SecConfigure] link tuner", nim1, "to tuner", nim2)
-		# for internally connect tuner A to B
-		if '7356' not in about.getChipSetString() and nim2 == (nim1 - 1):
-			self.linkInternally(nim1)
-		elif '7356' in about.getChipSetString():
+		if (nim2 == nim1 - 1) or '7356' in about.getChipSetString():
 			self.linkInternally(nim1)
 		sec.setTunerLinked(nim1, nim2)
 
@@ -961,14 +958,17 @@ class NimManager:
 				entry["i2c"] = None
 			if "has_outputs" not in entry:
 				entry["has_outputs"] = entry["name"] in SystemInfo["HasPhysicalLoopthrough"] # "Has_Outputs: yes" not in /proc/bus/nim_sockets NIM, but the physical loopthrough exist
+			entry["internally_connectable"] = None
 			if "frontend_device" in entry: # check if internally connectable
-				if os.path.exists("/proc/stb/frontend/%d/rf_switch" % entry["frontend_device"]) and id > 0 and entries[id]["name"] == entries[id - 1]["name"]:
-					entry["internally_connectable"] = entry["frontend_device"] - 1
-				else:
-					entry["internally_connectable"] = None
+				if os.path.exists("/proc/stb/frontend/%d/rf_switch" % entry["frontend_device"]) and (not id or entries[id]["name"] == entries[id - 1]["name"]):
+					if '7356' in about.getChipSetString():
+						if not id:
+							entry["internally_connectable"] = 1
+					elif id:
+						entry["internally_connectable"] = entry["frontend_device"] - 1
 			else:
-				entry["frontend_device"] = entry["internally_connectable"] = None
-			if not ("multi_type" in entry):
+				entry["frontend_device"] = None
+			if "multi_type" not in entry:
 				entry["multi_type"] = {}
 			if "supports_blind_scan" not in entry:
 				entry["supports_blind_scan"] = False
