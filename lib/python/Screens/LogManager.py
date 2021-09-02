@@ -1,22 +1,29 @@
-from Screens.Screen import Screen
-from Components.GUIComponent import GUIComponent
-from Components.VariableText import VariableText
-from Components.ActionMap import ActionMap
-from Components.Label import Label
-from Components.Button import Button
-from Components.FileList import FileList
-from Components.ScrollLabel import ScrollLabel
-from Components.config import config, configfile
-from Components.FileList import MultiFileSelectList
-from Screens.MessageBox import MessageBox
-from os import path, remove, walk, stat, rmdir
-from time import time
-from enigma import eTimer, eBackgroundFileEraser, eLabel
-from glob import glob
+from __future__ import print_function
+from __future__ import absolute_import
+
 import sys
+from datetime import datetime
+from glob import glob
+from os import path, remove, walk, stat, rmdir
+from time import time, ctime
 
+
+from enigma import eTimer, eBackgroundFileEraser, eLabel, getDesktop, gFont, fontRenderClass
+
+from Components.ActionMap import ActionMap
+from Components.Button import Button
+from Components.config import config, configfile
+from Components.FileList import FileList, MultiFileSelectList
+from Components.GUIComponent import GUIComponent
+from Components.Label import Label
+from Components.MenuList import MenuList
+from Components.ScrollLabel import ScrollLabel
 import Components.Task
-
+from Components.VariableText import VariableText
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
+from skin import applySkinFactor
+from Tools.TextBoundary import getTextBoundarySize
 
 _session = None
 
@@ -294,19 +301,61 @@ class LogManagerViewLog(Screen):
 		self.session = session
 		self.setTitle(selected)
 
-		if path.exists(config.crash.debug_path.value + selected):
-			log = open(config.crash.debug_path.value + selected).read()
-		else:
-			log = ""
-		self["list"] = ScrollLabel(str(log))
-		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "DirectionActions"],
+		self.logfile = config.crash.debug_path.value + selected
+		self.log = []
+		self["list"] = MenuList(self.log)
+		self["setupActions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions"],
 		{
+			"ok": self.gotoFirstPage,
 			"cancel": self.cancel,
-			"ok": self.cancel,
-			"up": self["list"].pageUp,
-			"down": self["list"].pageDown,
-			"right": self["list"].lastPage
+			"red": self.gotoFirstPage,
+			"green": self["list"].pageDown,
+			"yellow": self["list"].pageUp,
+			"blue": self.gotoLastPage,
+			"up": self["list"].up,
+			"down": self["list"].down,
+			"right": self["list"].pageDown,
+			"left": self["list"].pageUp
 		}, -2)
+		self["key_red"] = Button(_("FirstPage"))
+		self["key_green"] = Button(_("PageFwd"))
+		self["key_yellow"] = Button(_("PageBack"))
+		self["key_blue"] = Button(_("LastPage"))
+		self.onLayoutFinish.append(self.layoutFinished)
+
+	def layoutFinished(self):
+		font = gFont("Console", applySkinFactor(16))
+		if not int(fontRenderClass.getInstance().getLineHeight(font)):
+			font = gFont("Regular", applySkinFactor(16))
+		self["list"].instance.setFont(font)
+		fontwidth = getTextBoundarySize(self.instance, font, self["list"].instance.size(), _(" ")).width()
+		listwidth = int(self["list"].instance.size().width() / fontwidth) - 2
+		if path.exists(self.logfile):
+			for line in open(self.logfile).readlines():
+				line = line.replace("\t", " " * 9)
+				if len(line) > listwidth:
+					pos = 0
+					offset = 0
+					readyline = True
+					while readyline:
+						a = " " * offset + line[pos:pos + listwidth - offset]
+						self.log.append(a)
+						if len(line[pos + listwidth - offset:]):
+							pos += listwidth - offset
+							offset = 19
+						else:
+							readyline = False
+				else:
+					self.log.append(line)
+		else:
+			self.log = [_("file can not displayed - file not found")]
+		self["list"].setList(self.log)
+
+	def gotoFirstPage(self):
+		self["list"].moveToIndex(0)
+
+	def gotoLastPage(self):
+		self["list"].moveToIndex(len(self.log) - 1)
 
 	def cancel(self):
 		self.close()
