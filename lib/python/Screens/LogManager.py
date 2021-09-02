@@ -17,17 +17,6 @@ import sys
 
 import Components.Task
 
-# Import smtplib for the actual sending function
-import smtplib
-import base64
-
-# Here are the email package modules we'll need
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-if sys.version_info[0] >= 3:
-	from email.utils import formatdate
-else:
-	from email.Utils import formatdate
 
 _session = None
 
