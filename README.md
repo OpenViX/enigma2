@@ -108,5 +108,5 @@
 ----------
 16 - Building feeds only
 
-    MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make feed
+    MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make feeds
 
