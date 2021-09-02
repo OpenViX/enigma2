@@ -596,7 +596,7 @@ class HdmiCec:
 			self.useStandby = True
 			address = 0x0f # use broadcast address => boxes will send info
 			cmd = 0x8f
-		if cmd:
+		if cmd != 0:
 			CECcmd = cmdList.get(cmd, "<Polling Message>")
 			print("[hdmiCEC][sendMessage3]: CECcmd=%s cmd=%s, address=%s data=%s \n" % (CECcmd, cmd, address, data))
 			if config.hdmicec.minimum_send_interval.value != "0":
