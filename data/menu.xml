@@ -158,10 +158,7 @@ self.session.open(SABnzbdSetupScreen)
 		</menu>
 
 		<!-- Menu / Setup / SoftcamScript -->
-		<menu entryID="camscript_setup" level="0" text="SoftcamScript" weight="8">
-			<id val="camscript" />
-			<item entryID="softcam_initD" level="0" text="Setup Softcam script" weight="95" requires="HasInitCam"><screen module="SoftcamScript" screen="SoftcamScript"/></item>
-		</menu>
+		<item entryID="softcam_initD" level="0" text="Softcam Script" weight="9" requires="HasInitCam"><screen module="SoftcamScript" screen="SoftcamScript"/></item>
 		
 		<!-- Menu / Setup / Storage -->
 		<menu entryID="hardisk_selection" level="0" text="Storage" weight="9" requires="Harddisk">
