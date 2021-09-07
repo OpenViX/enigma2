@@ -1101,7 +1101,7 @@ class ChannelSelectionEdit:
 				direction = _("W")
 			else:
 				direction = _("E")
-			messageText = _("Are you sure you want to remove all %d.%d%s%s services?") % (unsigned_orbpos / 10, unsigned_orbpos % 10, "\xc2\xb0", direction)
+			messageText = _("Are you sure you want to remove all %d.%d%s%s services?") % (unsigned_orbpos / 10, unsigned_orbpos % 10, SIGN, direction)
 		self.session.openWithCallback(self.removeSatelliteServicesCallback, MessageBox, messageText)
 
 	def removeSatelliteServicesCallback(self, answer):
