@@ -485,8 +485,7 @@ class VIXImageManager(Screen):
 				Console().ePopen('umount %s' % tmp_dir)
 				if not path.ismount(tmp_dir):
 					rmdir(tmp_dir)
-				self.session.open(TryQuitMainloop, 2)					
-					
+				self.session.open(TryQuitMainloop, 2)
 			else:
 				self.session.open(TryQuitMainloop, 2)
 		else:
@@ -1341,7 +1340,8 @@ class ImageManagerDownload(Screen):
 		self.boxtype = getMachineMake()
 		if self.ConfigObj is config.imagemanager.imagefeed_Pli:
 			self.boxtype = HardwareInfo().get_device_name()
-			if self.boxtype == "dm8000":
+			print("[ImageManager1] boxtype:%s" % (self.boxtype))
+			if "dm800" in self.boxtype:
 				self.boxtype = getMachineMake()
 
 		if not self.imagesList:
