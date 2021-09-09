@@ -2,16 +2,16 @@ from __future__ import print_function
 import six
 
 import re
-from os import path, makedirs, remove, rename, symlink, mkdir, listdir
+from os import path, makedirs, remove, rename, symlink, mkdir, listdir, unlink
 from datetime import datetime
 from time import time, sleep
-from enigma import eTimer
+from enigma import eTimer, eConsoleAppContainer 
 
 from . import _, PluginLanguageDomain
 
 from Components.ActionMap import ActionMap
 from Components.Button import Button
-from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigNumber, ConfigLocations
+from Components.config import config, configfile, ConfigLocations, ConfigNumber, ConfigSubsection, ConfigYesNo
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList
 from Components.Label import Label
@@ -46,11 +46,28 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during shutdown, with reason=0 at startup?"""
 	global softcamautopoller
 	if reason == 0:
-		print("[SoftcamManager] AutoStart Enabled")
-		if path.exists("/tmp/SoftcamsDisableCheck"):
-			remove("/tmp/SoftcamsDisableCheck")
-		softcamautopoller = SoftcamAutoPoller()
-		softcamautopoller.start()
+		if six.PY3:
+			link = "/etc/init.d/softcam"
+			print("[SoftcamAutostart] config.misc.softcams.value=%s" % (config.misc.softcams.value))		
+			if path.exists(link) and config.misc.softcams.value != "None":
+					scr = "softcam.%s" % config.misc.softcams.value
+					unlink(link)
+					symlink(scr, link)				
+					cmd = "%s %s" % (link, "start")
+					print("[SoftcamAutostart][command]Executing %s" % cmd)
+					eConsoleAppContainer().execute(cmd)
+			else:	
+				print("[SoftcamManager] AutoStart Enabled")
+				if path.exists("/tmp/SoftcamsDisableCheck"):
+					remove("/tmp/SoftcamsDisableCheck")
+				softcamautopoller = SoftcamAutoPoller()
+				softcamautopoller.start()
+		else:	
+			print("[SoftcamManager] AutoStart Enabled")
+			if path.exists("/tmp/SoftcamsDisableCheck"):
+				remove("/tmp/SoftcamsDisableCheck")
+			softcamautopoller = SoftcamAutoPoller()
+			softcamautopoller.start()
 	elif reason == 1:
 		# Stop Poller
 		if softcamautopoller is not None:
