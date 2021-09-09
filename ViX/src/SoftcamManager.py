@@ -5,7 +5,7 @@ import re
 from os import path, makedirs, remove, rename, symlink, mkdir, listdir, unlink
 from datetime import datetime
 from time import time, sleep
-from enigma import eTimer, eConsoleAppContainer 
+from enigma import eTimer, eConsoleAppContainer
 
 from . import _, PluginLanguageDomain
 
@@ -48,21 +48,21 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 	if reason == 0:
 		if six.PY3:
 			link = "/etc/init.d/softcam"
-			print("[SoftcamAutostart] config.misc.softcams.value=%s" % (config.misc.softcams.value))		
+			print("[SoftcamAutostart] config.misc.softcams.value=%s" % (config.misc.softcams.value))
 			if path.exists(link) and config.misc.softcams.value != "None":
 					scr = "softcam.%s" % config.misc.softcams.value
 					unlink(link)
-					symlink(scr, link)				
+					symlink(scr, link)
 					cmd = "%s %s" % (link, "start")
 					print("[SoftcamAutostart][command]Executing %s" % cmd)
 					eConsoleAppContainer().execute(cmd)
-			else:	
+			else:
 				print("[SoftcamManager] AutoStart Enabled")
 				if path.exists("/tmp/SoftcamsDisableCheck"):
 					remove("/tmp/SoftcamsDisableCheck")
 				softcamautopoller = SoftcamAutoPoller()
 				softcamautopoller.start()
-		else:	
+		else:
 			print("[SoftcamManager] AutoStart Enabled")
 			if path.exists("/tmp/SoftcamsDisableCheck"):
 				remove("/tmp/SoftcamsDisableCheck")
@@ -229,10 +229,10 @@ class VIXSoftcamManager(Screen):
 				file.close()
 				SoftcamsScriptsRunning = SoftcamsScriptsRunning.replace("\n", ", ")
 				self.currentactivecam += SoftcamsScriptsRunning
-			print("[SoftcamManager] Active:%s ScriptCam=%s" % (self.currentactivecam, config.misc.softcams.value))				
+			print("[SoftcamManager] Active:%s ScriptCam=%s" % (self.currentactivecam, config.misc.softcams.value))
 			if config.misc.softcams.value != "None":
 				self["activecam"].setText("SoftcamScript running")
-			else:								
+			else:
 				self["activecam"].setText(self.currentactivecam)
 			self["activecam"].show()
 		else:

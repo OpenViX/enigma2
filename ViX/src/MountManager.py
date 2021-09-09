@@ -249,7 +249,7 @@ class VIXDevicesPanel(Screen):
 			return
 		sel = self["list"].getCurrent()	# partitionInfo = (name, description, png)
 		# print("[MountManager][selectionChanged] sel1=%s sel2=%s" % (sel[0], sel[1]))
-		line = sel[1]		
+		line = sel[1]
 		# print("[MountManager1][selectionChanged] line=%s" % line)
 		if line.find("Mount") >= 0:
 			if line.find("/media/hdd") < 0:
@@ -290,7 +290,7 @@ class VIXDevicesPanel(Screen):
 			parts = des.strip().split("\t")
 			mountp = parts[1].replace(_("Mount: "), "")
 			device = parts[2].replace(_("Device: "), "")
-			# print("[MountManager][unmount] mountp=%s device=%s" % (mountp, device))	
+			# print("[MountManager][unmount] mountp=%s device=%s" % (mountp, device))
 			exitStatus = system("umount %s" % mountp)
 			if exitStatus == 0:
 				self.session.open(MessageBox, _("Partition: %s  Mount: %s unmounted successfully; if all partitions now unmounted you can remove device.") % (device, mountp), MessageBox.TYPE_INFO)
@@ -308,7 +308,7 @@ class VIXDevicesPanel(Screen):
 			parts = des.strip().split("\t")
 			mountp = parts[1].replace(_("Mount: "), "")
 			device = parts[2].replace(_("Device: "), "")
-			# print("[MountManager][mount] mountp=%s device=%s" % (mountp, device))			
+			# print("[MountManager][mount] mountp=%s device=%s" % (mountp, device))
 			exitStatus = system("mount %s" % device)
 			if exitStatus != 0:
 				self.session.open(MessageBox, _("Mount failed for '%s', error code = '%s'.") % (sel, exitStatus), MessageBox.TYPE_INFO, timeout=10)
@@ -396,7 +396,7 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 			self.device = x[2]
 			self.mountp = x[1].value
 			self.type = x[3]
-			# print("[MountManager][saveconfMount] mountp=%s device=%s type=%s" % (self.mountp, self.device, self.type))				
+			# print("[MountManager][saveconfMount] mountp=%s device=%s type=%s" % (self.mountp, self.device, self.type))
 			self.Console.ePopen("umount %s" % self.device)
 			self.Console.ePopen("/sbin/blkid | grep " + self.device + " && opkg list-installed ntfs-3g", self.addconfFstab, [self.device, self.mountp])
 		message = _("Updating mount locations...")

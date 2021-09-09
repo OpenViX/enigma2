@@ -306,13 +306,13 @@ class VIXImageManager(Screen):
 		self.sel = self["list"].getCurrent()
 		if self.sel is not None:
 			self["list"].instance.moveSelectionTo((len(self["list"].list) > self["list"].getSelectionIndex() + 2) and self["list"].getSelectionIndex() or 0) # hold the selection current possition if the list is long enough
-			try:	
+			try:
 				if self.sel.endswith(".zip"):
 					remove(self.BackupDirectory + self.sel)
 				else:
 					rmtree(self.BackupDirectory + self.sel)
 			except:
-				self.session.open(MessageBox, _("Delete failure - check device available."), MessageBox.TYPE_INFO, timeout=10)		
+				self.session.open(MessageBox, _("Delete failure - check device available."), MessageBox.TYPE_INFO, timeout=10)
 			self.refreshList()
 
 	def GreenPressed(self):
