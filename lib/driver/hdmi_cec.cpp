@@ -540,7 +540,7 @@ long eHdmiCEC::translateKey(unsigned char code)
 	return key;
 }
 
-void eHdmiCEC::sendMessage(struct cec_message &message)
+int eHdmiCEC::sendMessage(struct cec_message &message)
 {
 	if (hdmiFd >= 0)
 	{
@@ -566,6 +566,7 @@ void eHdmiCEC::sendMessage(struct cec_message &message)
 #else
 			ssize_t ret = ::write(hdmiFd, &message, 2 + message.length);
 			if (ret < 0) eDebug("[eHdmiCEC] write failed: %m");
+			return ret;
 #endif
 		}
 	}

@@ -97,7 +97,7 @@ public:
 		int getControl1();
 		int getControl2();						
 	};
-	void sendMessage(struct cec_message &message);
+	int sendMessage(struct cec_message &message);
 #endif
 protected:
 	static eHdmiCEC *instance;
