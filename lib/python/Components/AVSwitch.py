@@ -470,7 +470,7 @@ def InitAVSwitch():
 		f = open("/proc/stb/audio/ac3", "w")
 		f.write(configElement.value)
 		f.close()
-		if SystemInfo.get("supportPcmMultichannel", False) and not configElement.value:
+		if SystemInfo.get("supportPcmMultichannel", False) and configElement.value == "passthrough":
 			SystemInfo["CanPcmMultichannel"] = True
 		else:
 			SystemInfo["CanPcmMultichannel"] = False
