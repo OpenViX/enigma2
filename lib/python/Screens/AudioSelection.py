@@ -100,11 +100,6 @@ class AudioSelection(Screen, ConfigListScreen):
 			self.audioTracks = audio = service and service.audioTracks()
 			n = audio and audio.getNumberOfTracks() or 0
 
-			if SystemInfo["CanPcmMultichannel"]:
-				self.settings.pcm_multichannel = ConfigOnOff(default=config.av.pcm_multichannel.value)
-				self.settings.pcm_multichannel.addNotifier(self.changePCMMultichannel, initial_call=False)
-				conflist.append(getConfigListEntry(_("PCM multichannel"), self.settings.pcm_multichannel, None))
-
 			if SystemInfo["CanDownmixAC3"]:
 				if SystemInfo["CanProc"]:
 					self.choices = self.read_choices("/proc/stb/audio/ac3_choices")
@@ -212,6 +207,11 @@ class AudioSelection(Screen, ConfigListScreen):
 				self.settings.wmapro = ConfigSelection(choices=self.choices, default=config.av.wmapro.value)
 				self.settings.wmapro.addNotifier(self.changeWMAPro, initial_call=False)
 				conflist.append(getConfigListEntry(_("WMA Pro downmix"), self.settings.wmapro, None))
+
+			if SystemInfo["CanPcmMultichannel"]:
+				self.settings.pcm_multichannel = ConfigOnOff(default=config.av.pcm_multichannel.value)
+				self.settings.pcm_multichannel.addNotifier(self.changePCMMultichannel, initial_call=False)
+				conflist.append(getConfigListEntry(_("PCM multichannel"), self.settings.pcm_multichannel, None))
 
 			if SystemInfo["Can3DSurround"]:
 				if SystemInfo["CanProc"]:
