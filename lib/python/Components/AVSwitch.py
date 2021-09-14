@@ -519,6 +519,14 @@ def InitAVSwitch():
 		with open("/proc/stb/audio/wmapro", "w") as fd:
 			fd.write(configElement.value)
 
+	def setBTAudio(configElement):
+		with open("/proc/stb/audio/btaudio", "w") as fd:
+			fd.write(configElement.value)
+
+	def setBTAudioDelay(configElement):
+		with open("/proc/stb/audio/btaudio_delay_pcm", "w") as fd:
+			fd.write(format(configElement.value * 90, "x"))
+
 	def setBoxmode(configElement):
 		try:
 			with open("/proc/stb/info/boxmode", "w") as fd:
@@ -891,6 +899,25 @@ def InitAVSwitch():
 
 		config.av.wmapro = ConfigSelection(choices=choices, default=default)
 		config.av.wmapro.addNotifier(setWMAPRO)
+
+	if SystemInfo["CanBTAudio"]:
+		choice_list = [("off", _("Off")), ("on", _("On"))]
+		default = "off"
+
+		if SystemInfo["CanProc"]:
+			f = "/proc/stb/audio/btaudio_choices", "w"
+			(choices, default) = read_choices(f, default)
+
+		config.av.btaudio = ConfigSelection(choices=choice_list, default="off")
+		config.av.btaudio.addNotifier(setBTAudio)
+	else:
+		config.av.btaudio = ConfigNothing()
+
+	if SystemInfo["CanBTAudioDelay"]:
+		config.av.btaudiodelay = ConfigSelectionNumber(-1000, 1000, 5, default=0)
+		config.av.btaudiodelay.addNotifier(setBTAudioDelay)
+	else:
+		config.av.btaudiodelay = ConfigNothing()
 
 	if SystemInfo["haveboxmode"]:
 		config.av.boxmode = ConfigSelection(choices={

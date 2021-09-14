@@ -213,6 +213,12 @@ class AudioSelection(Screen, ConfigListScreen):
 				self.settings.pcm_multichannel.addNotifier(self.changePCMMultichannel, initial_call=False)
 				conflist.append(getConfigListEntry(_("PCM multichannel"), self.settings.pcm_multichannel, None))
 
+			if SystemInfo["CanBTAudio"]:
+				choice_list = [("off", _("Off")), ("on", _("On"))]
+				self.settings.btaudio = ConfigSelection(choices=choice_list, default=config.av.btaudio.value)
+				self.settings.btaudio.addNotifier(self.changeBTAudio, initial_call=False)
+				conflist.append(getConfigListEntry(_("Enable Bluetooth Audio"), self.settings.btaudio, None))
+
 			if SystemInfo["Can3DSurround"]:
 				if SystemInfo["CanProc"]:
 					self.choices = self.read_choices("/proc/stb/audio/3d_surround_choices")
@@ -442,6 +448,11 @@ class AudioSelection(Screen, ConfigListScreen):
 	def setAACTranscode(self, transcode):
 		config.av.transcodeaac.setValue(transcode.value)
 		config.av.transcodeaac.save()
+
+	def changeBTAudio(self, btaudio):
+		if btaudio.value:
+			config.av.btaudio.value = btaudio.value
+		config.av.btaudio.save()
 
 	def changeEDIDChecking(self, edidchecking):
 		if edidchecking.value:
