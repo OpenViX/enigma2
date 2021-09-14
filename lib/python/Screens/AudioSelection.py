@@ -243,7 +243,7 @@ class AudioSelection(Screen, ConfigListScreen):
 						("extrawide", _("extra wide"))
 					]
 				self.settings.surround_3d_speaker = ConfigSelection(choices=self.choices, default=config.av.surround_3d_speaker.value)
-				self.settings.surround_3d_speaker.addNotifier(self.change3DSurroundSpeaker)
+				self.settings.surround_3d_speaker.addNotifier(self.change3DSurroundSpeaker, initial_call=False)
 				conflist.append(getConfigListEntry(_("3D surround speaker position"), self.settings.surround_3d_speaker, None))
 
 			if SystemInfo["CanAutoVolume"]:
@@ -257,7 +257,7 @@ class AudioSelection(Screen, ConfigListScreen):
 						("dac", _("DAC"))
 					]
 				self.settings.autovolume = ConfigSelection(choices=self.choices, default=config.av.autovolume.value)
-				self.settings.autovolume.addNotifier(self.changeAutoVolume)
+				self.settings.autovolume.addNotifier(self.changeAutoVolume, initial_call=False)
 				conflist.append(getConfigListEntry(_("Auto volume level"), self.settings.autovolume, None))
 
 			if n > 0:
@@ -623,7 +623,7 @@ class QuickSubtitlesConfigMenu(ConfigListScreen, Screen):
 		else:
 			self.service_string = self.service.toString()
 		self.center_dvb_subs = ConfigYesNo(default=(eDVBDB.getInstance().getFlag(eServiceReference(self.service_string)) & self.FLAG_CENTER_DVB_SUBS) and True)
-		self.center_dvb_subs.addNotifier(self.setCenterDvbSubs)
+		self.center_dvb_subs.addNotifier(self.setCenterDvbSubs, initial_call=False)
 		self["videofps"] = Label("")
 		sub = self.infobar.selected_subtitle
 		if sub[0] == 0:  # dvb
