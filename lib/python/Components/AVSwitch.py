@@ -484,7 +484,7 @@ def InitAVSwitch():
 	def setAC3Downmix(configElement):
 		with open("/proc/stb/audio/ac3", "w") as fd:
 			fd.write(configElement.value)
-		if SystemInfo.get("supportPcmMultichannel", False) and configElement.value == "passthrough"
+		if SystemInfo.get("supportPcmMultichannel", False) and configElement.value == "passthrough":
 			SystemInfo["CanPcmMultichannel"] = True
 		else:
 			SystemInfo["CanPcmMultichannel"] = False
