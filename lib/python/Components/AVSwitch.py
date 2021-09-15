@@ -563,18 +563,15 @@ def InitAVSwitch():
 		}
 		iAVSwitch.setAspectRatio(map[configElement.value])
 
-	def read_choices(procx, defchoice):
+	def readChoices(procx, choices, default):
 		with open(procx, "r") as myfile:
-			choices = myfile.read().strip()
-		if choices:
-			choiceslist = choices.split(" ")
-			choicesx = [(item, _("%s") % item) for item in choiceslist]
-			defaultx = choiceslist[0]
-			for item in choiceslist:
-				if "%s" % defchoice.upper in item.upper():
-					defaultx = item
-					break
-		return (choicesx, defaultx)
+			procChoices = myfile.read().strip()
+		if procChoices:
+			choiceslist = procChoices.split(" ")
+			choices = [(item, _(item)) for item in choiceslist]
+			default = choiceslist[0]
+			print("[AVSwitch][readChoices from Proc] choices=%s, default=%s" % (choices, default))			
+		return (choices, default)
 
 	iAVSwitch.setInput("ENCODER")  # Init on startup.
 	SystemInfo["ScartSwitch"] = eAVSwitch.getInstance().haveScartSwitch()
@@ -614,7 +611,7 @@ def InitAVSwitch():
 			default = "auto"
 		if SystemInfo["havecolorspacechoices"] and SystemInfo["CanProc"]:
 			f = "/proc/stb/video/hdmi_colorspace_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 		config.av.hdmicolorspace = ConfigSelection(choices=choices, default=default)
 		config.av.hdmicolorspace.addNotifier(setHDMIColorspace)
 	else:
@@ -630,7 +627,7 @@ def InitAVSwitch():
 		default = "auto"
 		if SystemInfo["havecolorimetrychoices"] and SystemInfo["CanProc"]:
 			f = "/proc/stb/video/hdmi_colorimetry_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 		config.av.hdmicolorimetry = ConfigSelection(choices=choices, default=default)
 		config.av.hdmicolorimetry.addNotifier(setHDMIColorimetry)
 	else:
@@ -644,7 +641,7 @@ def InitAVSwitch():
 		default = "auto"
 		if SystemInfo["havehdmicolordepthchoices"] and SystemInfo["CanProc"]:
 			f = "/proc/stb/video/hdmi_colordepth_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 		config.av.hdmicolordepth = ConfigSelection(choices=choices, default=default)
 		config.av.hdmicolordepth.addNotifier(setHdmiColordepth)
 	else:
@@ -733,9 +730,9 @@ def InitAVSwitch():
 		default = "none"
 		if SystemInfo["CanProc"]:
 			f = "/proc/stb/audio/3d_surround_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 
-		config.av.surround_3d = ConfigSelection(choices=choices, default="none")
+		config.av.surround_3d = ConfigSelection(choices=choices, default=default)
 		config.av.surround_3d.addNotifier(set3DSurround)
 	else:
 		config.av.surround_3d = ConfigNothing()
@@ -749,7 +746,7 @@ def InitAVSwitch():
 		default = "center"
 		if SystemInfo["CanProc"]:
 			f = "/proc/stb/audio/3d_surround_speaker_position_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 		config.av.surround_3d_speaker = ConfigSelection(choices=choices, default=default)
 		config.av.surround_3d_speaker.addNotifier(set3DPosition)
 	else:
@@ -765,7 +762,7 @@ def InitAVSwitch():
 		default = "none"
 		if SystemInfo["CanProc"]:
 			f = "/proc/stb/audio/avl_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 		config.av.autovolume = ConfigSelection(choices=choices, default=default)
 		config.av.autovolume.addNotifier(setAutoVolume)
 	else:
@@ -784,7 +781,7 @@ def InitAVSwitch():
 		default = "downmix"
 		if SystemInfo["CanProc"]:
 			f = "/proc/stb/audio/ac3_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 		config.av.downmix_ac3 = ConfigSelection(choices=choices, default=default)
 		config.av.downmix_ac3.addNotifier(setAC3Downmix)
 
@@ -796,19 +793,19 @@ def InitAVSwitch():
 		default = "force_ac3"
 		if SystemInfo["CanProc"]:
 			f = "/proc/stb/audio/ac3plus_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 		config.av.transcodeac3plus = ConfigSelection(choices=choices, default=default)
 		config.av.transcodeac3plus.addNotifier(setAC3plusTranscode)
 
 	if SystemInfo["CanDownmixDTS"]:
-		choice_list = [
+		choices = [
 			("downmix", _("Downmix")),
 			("passthrough", _("Passthrough"))
 		]
 		default = "downmix"
 		if SystemInfo["CanProc"]:
 			f = "/proc/stb/audio/dts_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 		config.av.downmix_dts = ConfigSelection(choices=choices, default=default)
 		config.av.downmix_dts.addNotifier(setDTSDownmix)
 
@@ -823,7 +820,7 @@ def InitAVSwitch():
 		default = "downmix"
 		if SystemInfo["CanProc"]:
 			f = "/proc/stb/audio/dtshd_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 
 		config.av.dtshd = ConfigSelection(choices=choices, default=default)
 		config.av.dtshd.addNotifier(setDTSHD)
@@ -836,7 +833,7 @@ def InitAVSwitch():
 		default = "downmix"
 		if SystemInfo["CanProc"]:
 			f = "/proc/stb/audio/aac_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 
 		config.av.downmix_aac = ConfigSelection(choices=choices, default=default)
 		config.av.downmix_aac.addNotifier(setAACDownmix)
@@ -855,7 +852,7 @@ def InitAVSwitch():
 		default = "downmix"
 		if SystemInfo["CanProc"]:
 			f = "/proc/stb/audio/aacplus_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 
 		config.av.downmix_aacplus = ConfigSelection(choices=choices, default=default)
 		config.av.downmix_aacplus.addNotifier(setAACDownmixPlus)
@@ -869,7 +866,7 @@ def InitAVSwitch():
 		default = "off"
 		if SystemInfo["CanProc"]:
 			f = "/proc/stb/audio/aac_transcode_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 
 		config.av.transcodeaac = ConfigSelection(choices=choices, default=default)
 		config.av.transcodeaac.addNotifier(setAACTranscode)
@@ -886,20 +883,23 @@ def InitAVSwitch():
 		default = "downmix"
 		if SystemInfo["CanProc"]:
 			f = "/proc/stb/audio/wmapro_choices"
-			(choices, default) = read_choices(f, default)
+			(choices, default) = readChoices(f, choices, default)
 
 		config.av.wmapro = ConfigSelection(choices=choices, default=default)
 		config.av.wmapro.addNotifier(setWMAPRO)
 
 	if SystemInfo["CanBTAudio"]:
-		choice_list = [("off", _("Off")), ("on", _("On"))]
+		choices = [
+			("off", _("Off")), 
+			("on", _("On"))
+		]
 		default = "off"
 
 		if SystemInfo["CanProc"]:
-			f = "/proc/stb/audio/btaudio_choices", "w"
-			(choices, default) = read_choices(f, default)
+			f = "/proc/stb/audio/btaudio_choices"
+			(choices, default) = readChoices(f, choices, default)
 
-		config.av.btaudio = ConfigSelection(choices=choice_list, default="off")
+		config.av.btaudio = ConfigSelection(choices=choices, default="off")
 		config.av.btaudio.addNotifier(setBTAudio)
 	else:
 		config.av.btaudio = ConfigNothing()
