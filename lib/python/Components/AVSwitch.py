@@ -515,7 +515,7 @@ def InitAVSwitch():
 			fd.write(configElement.value)
 
 	def setBTAudioDelay(configElement):
-		with open("/proc/stb/audio/btaudio_delay_pcm", "w") as fd:
+		with open(SystemInfo["CanBTAudioDelay"], "w") as fd:
 			fd.write(format(configElement.value * 90, "x"))
 
 	def setBoxmode(configElement):
