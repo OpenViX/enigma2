@@ -151,17 +151,20 @@ class Screen(dict):
 
 	def setTitle(self, title, showPath=True):
 		try:  # This protects against calls to setTitle() before being fully initialised like self.session is accessed *before* being defined.
-			if self.session and len(self.session.dialog_stack) > 2:
-				self.screenPath = " > ".join(ds[0].getTitle() for ds in self.session.dialog_stack[2:])
-			else:
-				self.screenPath = ""
+			self.screenPath = ""
+			if self.session.dialog_stack:
+				screenclasses = [ds[0].__class__.__name__ for ds in self.session.dialog_stack]
+				if "MainMenu" in screenclasses:
+					index = screenclasses.index("MainMenu")
+					if self.session and len(screenclasses) > index:
+						self.screenPath = " > ".join(ds[0].getTitle() for ds in self.session.dialog_stack[index:])
 			if self.instance:
 				self.instance.setTitle(title)
 			self.summaries.setTitle(title)
 		except AttributeError:
 			pass
 		self.screenTitle = title
-		if showPath and config.usage.showScreenPath.value == "large":
+		if showPath and config.usage.showScreenPath.value == "large" and title:
 			screenPath = ""
 			screenTitle = "%s > %s" % (self.screenPath, title) if self.screenPath else title
 		elif showPath and config.usage.showScreenPath.value == "small":
@@ -172,7 +175,7 @@ class Screen(dict):
 			screenTitle = title
 		self["ScreenPath"].text = screenPath
 		self["Title"].text = screenTitle
-		self["title"].text = self.screenTitle
+		self["title"].text = self.screenTitle # DEBUG: Hack to support for some summary screens.
 
 	def getTitle(self):
 		return self.screenTitle

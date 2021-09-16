@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-09 04:32+0000\n"
-"PO-Revision-Date: 2021-06-15 13:37+0200\n"
+"POT-Creation-Date: 2021-08-17 09:01+0000\n"
+"PO-Revision-Date: 2021-08-23 09:26+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
 "Language: de\n"
@@ -192,7 +192,7 @@ msgid " (lower than any auto)"
 msgstr ""
 
 msgid " - Unicable/JESS LNBs not found"
-msgstr ""
+msgstr " - Unicable/JESS LNBs nicht gefunden"
 
 msgid " - video0"
 msgstr ""
@@ -1494,6 +1494,14 @@ msgstr "<unbekannt>"
 
 msgid "=NO STREAM\n"
 msgstr "=KEIN STREAM\n"
+
+#, python-format
+msgid "?%s-recursive?"
+msgstr ""
+
+#, python-format
+msgid "?%s?"
+msgstr ""
 
 msgid "A"
 msgstr "A"
@@ -3048,6 +3056,9 @@ msgstr "Überprüfe erneut die Internetverbindung"
 
 msgid "Checking Logs..."
 msgstr "Überprüfe Log Dateien..."
+
+msgid "Checking ONID/TSID"
+msgstr ""
 
 msgid "Checking disk."
 msgstr "Überprüfe Disk."
@@ -5225,6 +5236,9 @@ msgstr "Den Sender-PIN-Code eingeben"
 
 msgid "Enter the streaming port of the host receiver (normally '8001')."
 msgstr "Streaming Port des Host-Receivers. Standard ist '8001'."
+
+msgid "Enter valid ONID/TSID"
+msgstr "Gebe gültige ONID/TSID ein"
 
 msgid "Enter your current latitude. This is the number of degrees you are from the equator as a decimal."
 msgstr "Gebe den Breitengrad deines Standortes an. Das ist der Winkelabstand vom Äquator."
@@ -7761,6 +7775,9 @@ msgstr "NTP"
 msgid "NTP server"
 msgstr "NTP (Zeit) Server"
 
+msgid "NTP sync interval"
+msgstr "NTP synchronisieerungsintervall"
+
 msgid "NTSC"
 msgstr "NTSC"
 
@@ -8960,6 +8977,15 @@ msgstr "Bitte warte, dass Netzwerk wird überprüft."
 msgid "Please wait while your network configuration is activated..."
 msgstr "Bitte warten bis die Netzwerkkonfiguration aktiviert ist..."
 
+msgid "Please wait, restarting cardserver."
+msgstr "Bitte warten Kartenserver wird neu gestartet."
+
+msgid "Please wait, restarting softcam and cardserver."
+msgstr "Bitte warten. SoftCam und Kartenserver werden neu gestartet."
+
+msgid "Please wait, restarting softcam."
+msgstr "Bitte warten SoftCam wird neu gestartet."
+
 msgid "Please wait..."
 msgstr "Bitte warten..."
 
@@ -8995,9 +9021,6 @@ msgstr "Poland"
 
 msgid "Polarisation"
 msgstr "Polarisation"
-
-msgid "Polarisation:"
-msgstr "Polarisation:"
 
 msgid "Polarization"
 msgstr "Polarisation"
@@ -9209,9 +9232,6 @@ msgstr "Drücke OK, um weitere Details zu %s zu erhalten"
 msgid "Press OK to keep the currently selected%s skin."
 msgstr "Drücke OK um den gewählten Skin %s zu aktivieren."
 
-msgid "Press OK to save and exit."
-msgstr "Dürcke OK für Speichern und Verlassen."
-
 msgid "Press OK to select a group of satellites to configure in one block."
 msgstr "Drücke OK um eine Gruppe von Satelliten zum Konfigurieren auszuwählen."
 
@@ -9241,6 +9261,9 @@ msgstr "Drücke OK um die Auswahl umzuschalten"
 
 msgid "Press OK to toggle the selection."
 msgstr "Drücke OK um die Auswahl umzuschalten."
+
+msgid "Press OK, save and exit..."
+msgstr "Dürcke OK für Speichern und Verlassen..."
 
 msgid ""
 "Press up/down to scroll through the selected log\n"
@@ -9911,11 +9934,20 @@ msgstr "Benutzeroberfläche neu starten"
 msgid "Restart GUI now?"
 msgstr "Benutzeroberfläche jetzt neu starten?"
 
+msgid "Restart both"
+msgstr "Beides neu starten"
+
+msgid "Restart cardserver"
+msgstr "Kartenserver neu starten"
+
 msgid "Restart last movie"
 msgstr "Letzten Film starten"
 
 msgid "Restart network"
 msgstr "Netzwerk neu starten"
+
+msgid "Restart softcam"
+msgstr "SoftCam neu starten"
 
 msgid "Restart test"
 msgstr "Test wiederholen"
@@ -10406,7 +10438,7 @@ msgstr "Wähle 'Ja' um alle Timer, AutoTimer und PowerTimer zu löschen."
 msgid "Select 'Yes' to remove all tuning data. Selecting this option will remove all tuning and bouquet data and will make timers non functional until the receiver is retuned."
 msgstr "Wähle 'Ja' um alle Sender und Senderlisten zu löschen."
 
-msgid "Select 'Yes' to remove all user customisations of skin data. Selecting this option will remove all user based skin customisations. All affected skins will return to their standard settings. This will also clear any customied boot logos and backdrops."
+msgid "Select 'Yes' to remove all user customisations of skin data. Selecting this option will remove all user based skin customisations. All affected skins will return to their standard settings. This will also clear any customised boot logos and backdrops."
 msgstr "Wähle 'Ja' um alle Benutzerveränderungen von Skins zu löschen. Diese Option löscht auch das Bootlogo und Hintergrundbild."
 
 msgid "Select 'Yes' when you want to configure this tuner for ATSC"
@@ -10457,6 +10489,9 @@ msgstr "Wähle 'Ja' um nur DiSEqC  Kommandos zu schicken wenn der Satellit gewec
 msgid "Select CAId"
 msgstr "CAID auswählen"
 
+msgid "Select Card Server"
+msgstr "Wähle Kartenserver"
+
 msgid "Select EPG channel"
 msgstr "Wähle EPG-Kanal"
 
@@ -10468,6 +10503,9 @@ msgstr "Wähle Verzeichnisse"
 
 msgid "Select Satellites"
 msgstr "Wähle Satelliten"
+
+msgid "Select Softcam"
+msgstr "Wähle SoftCam"
 
 msgid "Select a receiver to use for fallback tuners. If the host receiver is not listed, manually enter the URL or IP address"
 msgstr "Wähle einen Receiver für Fallback Tuner aus. Wenn der Receiver nicht angezeigt wird gebe URL oder IP manuell an"
@@ -11685,7 +11723,13 @@ msgstr "Sozial/Politik/Wirtschaft"
 msgid "Softcam"
 msgstr "Softcam"
 
+msgid "Softcam script Setup"
+msgstr "Softcam Script Einstellungen"
+
 msgid "Softcam settings"
+msgstr "Softcam Einstellungen"
+
+msgid "Softcam setup"
 msgstr "Softcam Einstellungen"
 
 msgid "SoftcamCheck"
@@ -11968,6 +12012,9 @@ msgstr "Laufendes Ereignis abbrechen, aber kommende ausführen"
 
 msgid "Stop entry"
 msgstr "Wiedergabe anhalten"
+
+msgid "Stop live TV service"
+msgstr "Stoppe LIVE TV"
 
 msgid "Stop movie"
 msgstr "Stoppe Film"
@@ -12264,11 +12311,8 @@ msgstr "Symbolrate"
 msgid "Symbol rate & FEC"
 msgstr "Symbolrate"
 
-msgid "Symbolrate:"
+msgid "Symbol rate:"
 msgstr "Symbolrate:"
-
-msgid "Sync NTP every (minutes)"
-msgstr "Synchronisiere Zeit alle XX Minuten"
 
 msgid "Sync failure moving back to origin !"
 msgstr "Sync-Fehler gehe zurück zum Anfangspunkt!"
@@ -12670,6 +12714,9 @@ msgstr "Dies ist die Reihenfolge in der DiSEqC Kommandos geschickt werden. Die R
 msgid "This is the prefix of each entry in the debug log. 'boot time' is the number of seconds since the receiver was last booted."
 msgstr "Dies ist der Anfang jedes Eintrags im Debug-Log. 'Boot Zeit' ist die Anzahl von Sekuden seit dem letzten Start."
 
+msgid "This not valid ONID/TSID"
+msgstr "Das ist keine gültigeONID/TSID"
+
 msgid "This option allows to reduce the block-noise in the picture. Obviously this is at the cost of the picture's sharpness."
 msgstr "Diese Option erlaubt es Block-Rauschen im Bild zu reduzieren. Diese Option geht auf Kosten der Bildschärfe."
 
@@ -12874,6 +12921,9 @@ msgid ""
 msgstr ""
 "Dieser Start-Assistent führt durch die Grundeinstellungen der %s %s.\n"
 "Drücke OK auf der Fernbedienung um zum nächsten Schritt zu gelangen."
+
+msgid "This valid ONID/TSID"
+msgstr ""
 
 msgid ""
 "This will (re-)calculate all positions of your rotor and may remove previously memorised positions and fine-tuning!\n"
@@ -13319,11 +13369,11 @@ msgstr ""
 msgid "USALS"
 msgstr "USALS"
 
-msgid "USALS Calibration"
-msgstr "USALS Kalibrierung"
-
 msgid "USALS automatically moves a motorised dish to the correct satellite based on the coordinates entered by the user. Without USALS each satellite will need to be setup and saved individually."
 msgstr "USALS bewegt den motorisierten Spiegel zum korrekten Satelliten auf Grund der Koordinaten die der Benutzer eingegeben hat. Ohne USALS muss jeder Satellit einzeln eingegeben und gespeichert werden."
+
+msgid "USALS calibration"
+msgstr "USALS Kalibrierung"
 
 msgid "Uganda"
 msgstr "Uganda"
@@ -13647,6 +13697,14 @@ msgstr "Benutzt:"
 msgid "User - bouquets"
 msgstr "Benutzer - Favoritenlisten"
 
+#, python-format
+msgid "User Band %d"
+msgstr ""
+
+#, python-format
+msgid "User Band %d (%s)"
+msgstr ""
+
 msgid "User Interface"
 msgstr "Benutzeroberfläche"
 
@@ -13711,6 +13769,9 @@ msgstr "VOB Datei"
 
 msgid "VU+"
 msgstr ""
+
+msgid "Valid ONID/TSID look at www.lyngsat.com..."
+msgstr "Gültige ONID/TSID schaue bei www.lyngsat.com nach..."
 
 msgid "Vanuatu"
 msgstr "Vanuatu"
@@ -13962,6 +14023,9 @@ msgstr "Wallis and Futuna"
 
 msgid "Warning"
 msgstr "Warnung"
+
+msgid "Warning: FBC-C V1 tuner should be connected to the first slot to work correctly. Otherwise, only 2 out of 8 demodulators will be available when connected in the second slot. "
+msgstr "Achtung: FBC-C V1 Tuner sollte im ersten Slot stecken damit er ordnungsgemäß funktioniert. Wenn nicht sind nur 2 der 8 Demodulatoreen verfügbar."
 
 msgid "Warning: no LNB; using factory defaults."
 msgstr "Warnung: Kein LNB benutze Werkseinstellungen."
@@ -14772,7 +14836,7 @@ msgid "Zgemma H.S/H.2S/H.2H/H5"
 msgstr ""
 
 msgid "Zgemma H9/I55Plus old Model"
-msgstr ""
+msgstr "Zgemma H9/I55Plus altes Model"
 
 msgid "Zgemma Star S/2S/H1/H2"
 msgstr ""
@@ -16110,3 +16174,12 @@ msgstr "umgeschaltet"
 #, fuzzy
 #~ msgid "IMDB Search"
 #~ msgstr "IMDb Suche"
+
+#~ msgid "Polarisation:"
+#~ msgstr "Polarisation:"
+
+#~ msgid "Symbolrate:"
+#~ msgstr "Symbolrate:"
+
+#~ msgid "Sync NTP every (minutes)"
+#~ msgstr "Synchronisiere Zeit alle XX Minuten"

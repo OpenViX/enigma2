@@ -143,8 +143,6 @@ class VideoSetup(ConfigListScreen, Screen):
 			self.list.append(getConfigListEntry(_("Allow 10bit"), config.av.allow_10bit, _("Enable or disable the 10 Bit Color Mode")))
 
 		if level >= 1:
-			if SystemInfo["CanPcmMultichannel"]:
-				self.list.append(getConfigListEntry(_("PCM Multichannel"), config.av.pcm_multichannel, _("Choose whether multi channel sound tracks should be output as PCM.")))
 			if SystemInfo["CanDownmixAC3"]:
 				self.list.append(getConfigListEntry(_("AC3 downmix"), config.av.downmix_ac3, _("Choose whether multi channel ac3 sound tracks should be downmixed to stereo.")))
 			if SystemInfo["CanDownmixDTS"]:
@@ -161,6 +159,8 @@ class VideoSetup(ConfigListScreen, Screen):
 				self.list.append(getConfigListEntry(_("DTS-HD HR/DTS-HD MA/DTS"), config.av.dtshd, ("Choose whether multi channel DTSHD sound tracks should be downmixed or transcoded..")))
 			if SystemInfo["CanWMAPRO"]:
 				self.list.append(getConfigListEntry(_("WMA Pro downmix"), config.av.wmapro, _("Choose whether WMA Pro sound tracks should be downmixed.")))
+			if SystemInfo["CanPcmMultichannel"]:
+				self.list.append(getConfigListEntry(_("PCM Multichannel"), config.av.pcm_multichannel, _("Choose whether multi channel sound tracks should be output as PCM.")))
 			self.list.extend((
 				getConfigListEntry(_("General AC3 delay"), config.av.generalAC3delay, _("This option configures the general audio delay of Dolby Digital sound tracks.")),
 				getConfigListEntry(_("General PCM delay"), config.av.generalPCMdelay, _("This option configures the general audio delay of stereo sound tracks."))
