@@ -1,6 +1,8 @@
 from __future__ import print_function
-import os
-import enigma
+from os import listdir, path, readlink, symlink, unlink
+from enigma import eConsoleAppContainer
+
+from Components.config import config
 
 
 class CamControl:
@@ -12,54 +14,58 @@ class CamControl:
 		print("[CamControl] self.name=%s" % self.name)
 		self.link = '/etc/init.d/' + name
 		print("[CamControl] self.link=%s" % self.link)
-		if not os.path.exists(self.link):
-			print("[CamControl] No softcam link?", self.link)
+		if not path.exists(self.link):
+			print("[CamControl] No softcam link %s" % self.link)
 
 	def getList(self):
-		result = noresult = []
+		result = []
 		prefix = self.name + '.'
-		for f in os.listdir("/etc/init.d"):
+		for f in listdir("/etc/init.d"):
 			if f.startswith(prefix):
-				print("[CamControl][getList] softcam=%s" % f)
 				result.append(f[len(prefix):])
 		print("[CamControl][getList] returnlist=%s" % result)	
-		if len(result) > 1:
-			return result
-		else:
-			return False	
+		return result
+			
+	def getConfigs(self, prefix):
+		configs = []
+		if path.exists("/etc/tuxbox/config/%s" % prefix):
+			configs = listdir("/etc/tuxbox/config/%s" % prefix)
+		print("[CamControl][getList] configs=%s" % configs)
+		return configs
+
 
 	def current(self):
 		try:
-			l = os.readlink(self.link)
+			l = readlink(self.link)
 			prefix = self.name + '.'
-			print("[CamControl][current] prefix=%s" % prefix)
-			return os.path.split(l)[1].split(prefix, 2)[1]
+			return path.split(l)[1].split(prefix, 2)[1]
 		except:
 			pass
 		return None
 
 	def command(self, cmd):
-		if os.path.exists(self.link):
-			print("[CamControl][command]Executing", self.link + ' ' + cmd)
-			enigma.eConsoleAppContainer().execute(self.link + ' ' + cmd)
+		if path.exists(self.link):
+			cmd = "%s %s" % (self.link, cmd)
+			print("[CamControl][command]Executing %s" % cmd)
+			eConsoleAppContainer().execute(cmd)
 
-	def select(self, which):
-		print("Selecting CAM:", which)
-		if not which:
-			which = "None"
-		dst = self.name + '.' + which
+	def select(self, cam):
+		print("[CamControl]Selecting CAM:%s" % cam)
+		if not cam:
+			cam= "None"
+		dst = "%s.%s" % (self.name, cam)
 		print("[CamControl][select] dst:%s" % dst)
-		if not os.path.exists('/etc/init.d/' + dst):
+		if not path.exists("/etc/init.d/%s" % dst):
 			print("[CamControl][select] init script does not exist:%s" % dst)
 			return
 		try:
 			print("[CamControl][select][unlink] self.link=%s " % self.link)
-			os.unlink(self.link)
+			unlink(self.link)
 		except:
 			pass
 		try:
 			print("[CamControl][select][symlink] dst=%s self.link=%s" % (dst, self.link))
-			os.symlink(dst, self.link)
+			symlink(dst, self.link)
 		except:
 			print("[CamControl][select] Failed to create symlink for softcam:%s" % dst)
 			import sys

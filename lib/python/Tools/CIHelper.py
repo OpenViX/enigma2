@@ -117,7 +117,7 @@ class CIHelper:
 			no_ci = SystemInfo["CommonInterface"]
 			if no_ci > 0:
 				self.CI_MULTIDESCRAMBLE = False
-				for ci in list(range(no_ci)):
+				for ci in range(no_ci):
 					appname = eDVBCI_UI.getInstance().getAppName(ci)
 					if appname in self.CI_MULTIDESCRAMBLE_MODULES:
 						self.CI_MULTIDESCRAMBLE = True

@@ -252,7 +252,7 @@ class LamedbReader():
 
 		srv_blocks = content[srv_start + 9:srv_stop].strip().split("\n")
 
-		for i in list(range(0, len(srv_blocks) // 3)):
+		for i in range(0, len(srv_blocks) // 3):
 			service_reference = srv_blocks[i * 3].strip()
 			service_name = srv_blocks[(i * 3) + 1].strip()
 			service_provider = srv_blocks[(i * 3) + 2].strip()

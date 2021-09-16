@@ -19,19 +19,6 @@ class tmp:
 	dir = None
 
 
-def getMBbootdevice():
-	tmp.dir = tempfile.mkdtemp(prefix="Multiboot")
-	for device in ("/dev/block/by-name/bootoptions", "/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4"):
-		if path.exists(device):
-			Console().ePopen("mount %s %s" % (device, tmp.dir))
-			if path.isfile(path.join(tmp.dir, "STARTUP")):
-				# print("[Multiboot] [getMBbootdevices] Bootdevice found: %s" % device)
-				return device
-			Console().ePopen("umount %s" % tmp.dir)
-	if not path.ismount(tmp.dir):
-		rmdir(tmp.dir)
-
-
 def getparam(line, param):
 	return line.replace("userdataroot", "rootuserdata").rsplit("%s=" % param, 1)[1].split(" ", 1)[0]
 
@@ -43,7 +30,7 @@ def getMultibootslots():
 	tmp.dir = tempfile.TemporaryDirectory(prefix="Multiboot")
 	tmpname = tmp.dir.name 
 	for device in ("/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/block/by-name/bootoptions" ):
-		if bootslots and device == "/dev/block/by-name/bootoptions":
+		if bootslots:
 			continue 
 		if path.exists(device):
 			Console().ePopen("mount %s %s" % (device, tmpname))
@@ -62,6 +49,7 @@ def getMultibootslots():
 					slotname = file.rsplit("_", 3 if "BOXMODE" in file else 1)[0]
 					slotname = file.rsplit("/", 1)[1]
 					slotname = slotname if len(slotname) > 1 else ""
+					slotname = ""	# nullify for current moment
 					# print("[multiboot] [getMultibootslots3] slot = %s file = %s" % (slotnumber, slotname))
 					if slotnumber.isdigit() and slotnumber not in bootslots:
 						slot = {}
@@ -87,7 +75,7 @@ def getMultibootslots():
 								break
 						if slot:
 							bootslots[int(slotnumber)] = slot
-			(print("[multiboot] [getMultibootslots] Finished bootslots = %s" % bootslots))
+			print("[multiboot] [getMultibootslots] Finished bootslots = %s" % bootslots)
 			Console().ePopen("umount %s" % tmpname)
 	tmp.dir.cleanup()
 	if bootslots:	
@@ -138,7 +126,7 @@ def GetImagelist():
 		if SystemInfo["MultiBootSlot"] != slot or SystemInfo["HasHiSi"]:
 			Console().ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmpname))		
 			imagedir = sep.join([_f for _f in [tmpname, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
-		print("[multiboot] [GetImagelist] isfile = %s" % (path.join(imagedir, "usr/bin/enigma2")))			
+		# print("[multiboot] [GetImagelist]0 isfile = %s" % (path.join(imagedir, "usr/bin/enigma2")))			
 		if path.isfile(path.join(imagedir, "usr/bin/enigma2")):
 			# print("[multiboot] [GetImagelist] Slot = %s imagedir = %s" % (slot, imagedir))		
 			if path.isfile(path.join(imagedir, "usr/lib/enigma.info")):

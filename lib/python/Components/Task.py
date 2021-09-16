@@ -9,7 +9,7 @@ import six
 
 
 class Job(object):
-	NOT_STARTED, IN_PROGRESS, FINISHED, FAILED = list(range(4))
+	NOT_STARTED, IN_PROGRESS, FINISHED, FAILED = range(4)
 
 	def __init__(self, name):
 		self.tasks = []

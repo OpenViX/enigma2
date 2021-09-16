@@ -4,10 +4,10 @@
 
 > Ubuntu 20.04.2 LTS (Kernel 5.4.0) 64 Bit Server OS
 
-## minimum hardware requirement : ##
+## minimum hardware requirement for image build (building feeds may require more):
 
 > RAM:  16GB
-> SWAP: 8GB
+> SWAP: 16GB
 > CPU:  Multi core\thread Model
 > HDD:  for Single Build 250GB Free, for Multibuild 500GB or more
 
@@ -24,7 +24,7 @@
 
 1 - Install packages on your buildserver
 
-    sudo apt-get install -y autoconf automake bison bzip2 chrpath coreutils cpio curl cvs debianutils default-jre default-jre-headless diffstat flex g++ gawk gcc gcc-8 gcc-multilib g++-multilib gettext git git-core gzip help2man info iputils-ping java-common libc6-dev libegl1-mesa libglib2.0-dev libncurses5-dev libperl4-corelibs-perl libproc-processtable-perl libsdl1.2-dev libserf-dev libtool libxml2-utils make ncurses-bin patch perl pkg-config psmisc python3 python3-git python3-jinja2 python3-pexpect python3-pip python-setuptools qemu quilt socat sshpass subversion tar texi2html texinfo unzip wget xsltproc xterm xz-utils zip zlib1g-dev 
+    sudo apt-get install -y autoconf automake bison bzip2 chrpath coreutils cpio curl cvs debianutils default-jre default-jre-headless diffstat flex g++ gawk gcc gcc-8 gcc-multilib g++-multilib gettext git git-core gzip help2man info iputils-ping java-common libc6-dev libegl1-mesa libglib2.0-dev libncurses5-dev libperl4-corelibs-perl libproc-processtable-perl libsdl1.2-dev libserf-dev libtool libxml2-utils make ncurses-bin patch perl pkg-config psmisc python3 python3-git python3-jinja2 python3-pexpect python3-pip python-setuptools qemu quilt socat sshpass subversion tar texi2html texinfo unzip wget xsltproc xterm xz-utils zip zlib1g-dev zstd 
     
 ----------
 2 - Set python3 as preferred provider for python
@@ -97,8 +97,16 @@
     this will reduce build time in fetching these sources again.
 
 ----------
-14 - Finally you can start building a image
-     For example:- 
+14 - Building image with feeds  e.g.:- 
 
-     MACHINE=vuultimo4k DISTRO=openvix DISTRO_TYPE=release make image
+	MACHINE=vuultimo4k DISTRO=openvix DISTRO_TYPE=release make image
+
+15 - Building an image without feeds (Build time 1-2h)
+
+    MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make enigma2-image
+
+----------
+16 - Building feeds only
+
+    MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make feeds
 

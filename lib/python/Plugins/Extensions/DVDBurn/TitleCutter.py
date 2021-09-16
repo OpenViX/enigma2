@@ -29,7 +29,7 @@ class TitleCutter(CutListEditor):
 			from .TitleProperties import languageChoices
 			from Components.config import ConfigSubsection, ConfigSubList, ConfigSelection, ConfigYesNo
 			self.t.properties.audiotracks = ConfigSubList()
-			for x in list(range(n)):
+			for x in range(n):
 				i = audio.getTrackInfo(x)
 				DVB_lang = i.getLanguage()
 				description = i.getDescription()

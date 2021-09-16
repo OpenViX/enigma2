@@ -17,7 +17,7 @@ from Screens.Screen import Screen
 from Screens.Standby import QUIT_REBOOT, TryQuitMainloop
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import copyfile, pathExists
-from Tools.Multiboot import emptySlot, GetCurrentImage, GetImagelist, GetCurrentImageMode, restoreSlots
+from Tools.Multiboot import emptySlot, GetImagelist, GetCurrentImageMode, restoreSlots
 
 
 class MultiBootSelector(Screen, HelpableScreen):
@@ -77,7 +77,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		self.imagedict = GetImagelist()
 		list = []
 		self.deletedImagesExists = False
-		currentimageslot = GetCurrentImage()
+		currentimageslot = SystemInfo["MultiBootSlot"]
 		mode = GetCurrentImageMode() or 0
 		print("[MultiBootSelector] reboot0 slot:", currentimageslot)
 		current = "  %s" % _("(Current)")
@@ -89,13 +89,15 @@ class MultiBootSelector(Screen, HelpableScreen):
 			for index, x in enumerate(sorted(self.imagedict.keys())):
 				if self.imagedict[x]["imagename"] == _("Deleted image"):
 					self.deletedImagesExists = True
-				if self.imagedict[x]["imagename"] != _("Empty slot"):
-					if SystemInfo["canMode12"]:
+				if SystemInfo["canMode12"]:
+					if self.imagedict[x]["imagename"] == _("Empty slot"):
+						list.insert(index, ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))					
+					else:
 						list.insert(index, ChoiceEntryComponent("", (slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "Kodi", current if x == currentimageslot and mode != 12 else ""), (x, 1))))
 						list.append(ChoiceEntryComponent("", (slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "PiP", current if x == currentimageslot and mode == 12 else ""), (x, 12))))
-						indextot = index + 1
-					else:
-						list.append(ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
+					indextot = index + 1
+				elif self.imagedict[x]["imagename"] != _("Empty slot"):
+					list.append(ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
 			if SystemInfo["canMode12"]:
 				list.insert(indextot, " ")
 		else:
@@ -106,7 +108,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 	def reboot(self):
 		self.currentSelected = self["config"].l.getCurrentSelection()
 		self.slotx = self.slot = self.currentSelected[0][1][0]
-		if self.imagedict[self.slotx]["imagename"] == _("Deleted image"):
+		if self.imagedict[self.slotx]["imagename"] == _("Deleted image")  or self.imagedict[self.slotx]["imagename"] == _("Empty slot"):
 			self.session.open(MessageBox, _("Cannot reboot to deleted image"), MessageBox.TYPE_ERROR, timeout=3)
 			self.getImagelist()
 		elif self.currentSelected[0][1] != "Queued":
@@ -130,7 +132,8 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 	def deleteImage(self):
 		self.currentSelected = self["config"].l.getCurrentSelection()
-		if GetCurrentImage() != self.currentSelected[0][1]:
+		self.slot = self.currentSelected[0][1][0]		
+		if SystemInfo["MultiBootSlot"] != self.currentSelected[0][1] and self.imagedict[self.slot]["imagename"] != _("Empty slot"):
 			self.session.openWithCallback(self.deleteImageCallback, MessageBox, "%s:\n%s" % (_("Are you sure you want to delete image:"), self.currentSelected[0][0]), simple=True)
 		else:
 			self.session.open(MessageBox, _("Cannot delete current image"), MessageBox.TYPE_ERROR, timeout=3)

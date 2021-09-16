@@ -20,6 +20,7 @@ class MovieInfo(Converter, object):
 	MOVIE_REC_SERVICE_REF = 3  # referance of recording service
 	MOVIE_REC_FILESIZE = 4  # filesize of recording
 	MOVIE_FULL_DESCRIPTION = 5  # combination of short and long description when available
+	MOVIE_NAME = 6 # recording name
 
 	KEYWORDS = {
 		# Arguments...
@@ -29,6 +30,7 @@ class MovieInfo(Converter, object):
 		"RecordServiceName": ("type", MOVIE_REC_SERVICE_NAME),
 		"RecordServiceRef": ("type", MOVIE_REC_SERVICE_REF),
 		"ShortDescription": ("type", MOVIE_SHORT_DESCRIPTION),
+		"Name": ("type", MOVIE_NAME),
 		# Options...
 		"Separated": ("separator", "\n\n"),
 		"NotSeparated": ("separator", "\n"),
@@ -120,6 +122,11 @@ class MovieInfo(Converter, object):
 					or info.getInfoString(service, iServiceInformation.sDescription)
 					or service.getPath()
 				)
+			elif self.type == self.MOVIE_NAME:
+				if (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory:
+					# Name for directory is the full path
+					return service.getPath()
+				return event and event.getEventName() or info and info.getName(service)
 			elif self.type == self.MOVIE_REC_SERVICE_NAME:
 				rec_ref_str = info.getInfoString(service, iServiceInformation.sServiceref)
 				return eServiceReference(rec_ref_str).getServiceName()

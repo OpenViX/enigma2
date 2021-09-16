@@ -380,7 +380,7 @@ class Harddisk:
 		zero = 512 * b"\0"
 		try:
 			with open(self.dev_path, "wb") as fd:
-				for i in list(range(9)):  # Delete first 9 sectors, which will likely kill the first partition too.
+				for i in range(9):  # Delete first 9 sectors, which will likely kill the first partition too.
 					fd.write(zero)
 		except (IOError, OSError) as err:
 			print("[Harddisk] Error: Failed to wipe partition table on '%s':" % self.dev_path, err)
@@ -390,7 +390,7 @@ class Harddisk:
 		partition = self.partitionPath(n)
 		try:
 			with open(partition, "wb") as fd:
-				for i in list(range(3)):
+				for i in range(3):
 					fd.write(zero)
 		except (IOError, OSError) as err:
 			print("[Harddisk] Error: Failed to wipe partition on '%s':" % partition, err)

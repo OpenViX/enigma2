@@ -36,8 +36,6 @@ def hasInitCam():
 	for cam in listdir("/etc/init.d"):
 		if cam.startswith("softcam.") and not cam.endswith("None"):
 			return True
-		elif cam.startswith("cardserver.") and not cam.endswith("None"):
-			return True
 		else:
 			pass
 	return False
@@ -125,6 +123,8 @@ SystemInfo["CanDownmixAAC"] = fileHas("/proc/stb/audio/aac_choices", "downmix")
 SystemInfo["CanDownmixAACPlus"] = fileHas("/proc/stb/audio/aacplus_choices", "downmix")
 SystemInfo["CanAACTranscode"] = fileHas("/proc/stb/audio/aac_transcode_choices", "off")
 SystemInfo["CanWMAPRO"] = fileHas("/proc/stb/audio/wmapro_choices", "downmix")
+SystemInfo["CanBTAudio"] = fileHas("/proc/stb/audio/btaudio_choices", "off")
+SystemInfo["CanBTAudioDelay"] = fileCheck("/proc/stb/audio/btaudio_delay") or fileCheck("/proc/stb/audio/btaudio_delay_pcm")
 SystemInfo["havecolorspace"] = fileCheck("/proc/stb/video/hdmi_colorspace")
 SystemInfo["havecolorspacechoices"] = fileCheck("/proc/stb/video/hdmi_colorspace_choices")
 SystemInfo["havecolorimetry"] = fileCheck("/proc/stb/video/hdmi_colorimetry")

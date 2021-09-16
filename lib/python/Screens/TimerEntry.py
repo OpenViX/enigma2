@@ -235,7 +235,7 @@ class TimerEntry(TimerEntryBase):
 					ref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 					parent = self.timer.service_ref.ref
 					selection = 0
-					for x in list(range(n)):
+					for x in range(n):
 						i = event.getLinkageService(parent, x)
 						if i.toString() == ref.toString():
 							selection = x

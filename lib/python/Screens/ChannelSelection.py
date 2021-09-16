@@ -414,6 +414,10 @@ class ChannelContextMenu(Screen):
 
 	def removeBouquet(self, answer):
 		if answer:
+			if answer == "never":
+				self.csel.confirmRemove = False
+			if self.csel.movemode:
+				self.csel.toggleMoveMode()
 			self.csel.removeBouquet()
 			eDVBDB.getInstance().reloadBouquets()
 			self.close()
@@ -1101,7 +1105,7 @@ class ChannelSelectionEdit:
 				direction = _("W")
 			else:
 				direction = _("E")
-			messageText = _("Are you sure you want to remove all %d.%d%s%s services?") % (unsigned_orbpos / 10, unsigned_orbpos % 10, "\xc2\xb0", direction)
+			messageText = _("Are you sure you want to remove all %d.%d%s%s services?") % (unsigned_orbpos / 10, unsigned_orbpos % 10, SIGN, direction)
 		self.session.openWithCallback(self.removeSatelliteServicesCallback, MessageBox, messageText)
 
 	def removeSatelliteServicesCallback(self, answer):
@@ -2420,7 +2424,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 
 	def historyClear(self):
 		if self and self.servicelist:
-			for i in list(range(0, len(self.history) - 1)):
+			for i in range(0, len(self.history) - 1):
 				del self.history[0]
 			self.history_pos = len(self.history) - 1
 			return True

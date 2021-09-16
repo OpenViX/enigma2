@@ -1560,7 +1560,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		return default
 
 	def humanReadableTransponder(self, tp):
-		if tp[3] in list(range(4)) and tp[4] in list(range(11)):
+		if tp[3] in range(4) and tp[4] in range(11):
 			pol_list = ['H', 'V', 'L', 'R']
 			fec_list = ['Auto', '1/2', '2/3', '3/4', '5/6', '7/8', '8/9', '3/5', '4/5', '9/10', 'None']
 			tp_text = str(tp[1] // 1000) + " " + pol_list[tp[3]] + " " + str(tp[2] // 1000) + " " + fec_list[tp[4]]
@@ -1636,7 +1636,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		return default
 
 	def humanReadableCabTransponder(self, tp):
-		if tp[3] in list(range(6)) and (tp[4] in list(range(10) or tp[4] == 15)):
+		if tp[3] in range(6) and (tp[4] in range(10) or tp[4] == 15):
 			mod_list = ['Auto', '16-QAM', '32-QAM', '64-QAM', '128-QAM', '256-QAM']
 			fec_list = {0: "Auto", 1: '1/2', 2: '2/3', 3: '3/4', 4: '5/6', 5: '7/8', 6: '8/9', 7: '3/5', 8: '4/5', 9: '9/10', 15: 'None'}
 			print(str(tp[1] / 1000.) + " MHz " + fec_list[tp[4]] + " " + str(tp[2] // 1000) + " " + mod_list[tp[3]])

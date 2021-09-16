@@ -247,7 +247,7 @@ class MovieList(GUIComponent):
 
 		self.onSelectionChanged = []
 		self.iconPart = []
-		for part in list(range(5)):
+		for part in range(5):
 			self.iconPart.append(LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/part_%d_4.png" % part)))
 		self.iconMovieRec = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/part_new.png"))
 		self.iconMoviePlay = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/movie_play.png"))
@@ -858,7 +858,7 @@ class MovieList(GUIComponent):
 			# self.list is a list of tuples, so we can't just assign to elements...
 			#
 			if config.usage.trashsort_deltime.value == "show record time":
-				for i in list(range(len(self.list))):
+				for i in range(len(self.list)):
 					if len(self.list[i]) == 5:
 						x = self.list[i]
 						self.list[i] = (x[0], x[1], x[4], x[3])

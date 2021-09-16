@@ -189,7 +189,7 @@ class DVDformatTaskPostcondition(Condition):
 
 
 class DVDformatTask(Task):
-	ERROR_ALREADYFORMATTED, ERROR_NOTWRITEABLE, ERROR_UNKNOWN = list(range(3))
+	ERROR_ALREADYFORMATTED, ERROR_NOTWRITEABLE, ERROR_UNKNOWN = range(3)
 
 	def __init__(self, job, extra_args=None):
 		if not extra_args:

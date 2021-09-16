@@ -197,7 +197,7 @@ class ChannelsImporter():
 		self.getBouquetsList(bouquetFilenameList, self.DIR_TMP + "bouquets.radio")
 		self.readIndex = 0
 		self.workList = []
-		for listindex in list(range(len(bouquetFilenameList))):
+		for listindex in range(len(bouquetFilenameList)):
 			self.workList.append(bouquetFilenameList[listindex])
 		self.workList.append("lamedb")
 		print("[ChannelsImporter][readBouquets] Downloading bouquets...")

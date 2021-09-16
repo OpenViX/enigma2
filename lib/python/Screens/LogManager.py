@@ -1,33 +1,29 @@
-from Screens.Screen import Screen
-from Components.GUIComponent import GUIComponent
-from Components.VariableText import VariableText
-from Components.ActionMap import ActionMap
-from Components.Label import Label
-from Components.Button import Button
-from Components.FileList import FileList
-from Components.ScrollLabel import ScrollLabel
-from Components.config import config, configfile
-from Components.FileList import MultiFileSelectList
-from Screens.MessageBox import MessageBox
-from os import path, remove, walk, stat, rmdir
-from time import time
-from enigma import eTimer, eBackgroundFileEraser, eLabel
-from glob import glob
+from __future__ import print_function
+from __future__ import absolute_import
+
 import sys
+from datetime import datetime
+from glob import glob
+from os import path, remove, walk, stat, rmdir
+from time import time, ctime
 
+
+from enigma import eTimer, eBackgroundFileEraser, eLabel, getDesktop, gFont, fontRenderClass
+
+from Components.ActionMap import ActionMap
+from Components.Button import Button
+from Components.config import config, configfile
+from Components.FileList import FileList, MultiFileSelectList
+from Components.GUIComponent import GUIComponent
+from Components.Label import Label
+from Components.MenuList import MenuList
+from Components.ScrollLabel import ScrollLabel
 import Components.Task
-
-# Import smtplib for the actual sending function
-import smtplib
-import base64
-
-# Here are the email package modules we'll need
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-if sys.version_info[0] >= 3:
-	from email.utils import formatdate
-else:
-	from email.Utils import formatdate
+from Components.VariableText import VariableText
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
+from skin import applySkinFactor
+from Tools.TextBoundary import getTextBoundarySize
 
 _session = None
 
@@ -58,35 +54,18 @@ class LogManagerPoller:
 		self.TrashTimer = eTimer()
 
 	def start(self):
-		if self.TrimTimerJob not in self.TrimTimer.callback:
-			self.TrimTimer.callback.append(self.TrimTimerJob)
 		if self.TrashTimerJob not in self.TrashTimer.callback:
 			self.TrashTimer.callback.append(self.TrashTimerJob)
-		self.TrimTimer.startLongTimer(0)
 		self.TrashTimer.startLongTimer(0)
 
 	def stop(self):
-		if self.TrimTimerJob in self.TrimTimer.callback:
-			self.TrimTimer.callback.remove(self.TrimTimerJob)
 		if self.TrashTimerJob in self.TrashTimer.callback:
 			self.TrashTimer.callback.remove(self.TrashTimerJob)
-		self.TrimTimer.stop()
 		self.TrashTimer.stop()
-
-	def TrimTimerJob(self):
-		print("[LogManager] Trim Poll Started")
-		Components.Task.job_manager.AddJob(self.createTrimJob())
 
 	def TrashTimerJob(self):
 		print("[LogManager] Trash Poll Started")
 		Components.Task.job_manager.AddJob(self.createTrashJob())
-
-	def createTrimJob(self):
-		job = Components.Task.Job(_("LogManager"))
-		task = Components.Task.PythonTask(job, _("Checking Logs..."))
-		task.work = self.JobTrim
-		task.weighting = 1
-		return job
 
 	def createTrashJob(self):
 		job = Components.Task.Job(_("LogManager"))
@@ -98,19 +77,6 @@ class LogManagerPoller:
 	def openFiles(self, ctimeLimit, allowedBytes):
 		ctimeLimit = ctimeLimit
 		allowedBytes = allowedBytes
-
-	def JobTrim(self):
-		filename = ""
-		for filename in glob(config.crash.debug_path.value + '*.log'):
-			if path.getsize(filename) > (config.crash.debugloglimit.value * 1024 * 1024):
-				fh = open(filename, 'rb+')
-				fh.seek(-(config.crash.debugloglimit.value * 1024 * 1024), 2)
-				data = fh.read()
-				fh.seek(0) # rewind
-				fh.write(data)
-				fh.truncate()
-				fh.close()
-		self.TrimTimer.startLongTimer(3600) #once an hour
 
 	def JobTrash(self):
 		ctimeLimit = time() - (config.crash.daysloglimit.value * 3600 * 24)
@@ -335,19 +301,61 @@ class LogManagerViewLog(Screen):
 		self.session = session
 		self.setTitle(selected)
 
-		if path.exists(config.crash.debug_path.value + selected):
-			log = open(config.crash.debug_path.value + selected).read()
-		else:
-			log = ""
-		self["list"] = ScrollLabel(str(log))
-		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "DirectionActions"],
+		self.logfile = config.crash.debug_path.value + selected
+		self.log = []
+		self["list"] = MenuList(self.log)
+		self["setupActions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions"],
 		{
+			"ok": self.gotoFirstPage,
 			"cancel": self.cancel,
-			"ok": self.cancel,
-			"up": self["list"].pageUp,
-			"down": self["list"].pageDown,
-			"right": self["list"].lastPage
+			"red": self.gotoFirstPage,
+			"green": self["list"].pageDown,
+			"yellow": self["list"].pageUp,
+			"blue": self.gotoLastPage,
+			"up": self["list"].up,
+			"down": self["list"].down,
+			"right": self["list"].pageDown,
+			"left": self["list"].pageUp
 		}, -2)
+		self["key_red"] = Button(_("FirstPage"))
+		self["key_green"] = Button(_("PageFwd"))
+		self["key_yellow"] = Button(_("PageBack"))
+		self["key_blue"] = Button(_("LastPage"))
+		self.onLayoutFinish.append(self.layoutFinished)
+
+	def layoutFinished(self):
+		font = gFont("Console", applySkinFactor(16))
+		if not int(fontRenderClass.getInstance().getLineHeight(font)):
+			font = gFont("Regular", applySkinFactor(16))
+		self["list"].instance.setFont(font)
+		fontwidth = getTextBoundarySize(self.instance, font, self["list"].instance.size(), _(" ")).width()
+		listwidth = int(self["list"].instance.size().width() / fontwidth) - 2
+		if path.exists(self.logfile):
+			for line in open(self.logfile).readlines():
+				line = line.replace("\t", " " * 9)
+				if len(line) > listwidth:
+					pos = 0
+					offset = 0
+					readyline = True
+					while readyline:
+						a = " " * offset + line[pos:pos + listwidth - offset]
+						self.log.append(a)
+						if len(line[pos + listwidth - offset:]):
+							pos += listwidth - offset
+							offset = 19
+						else:
+							readyline = False
+				else:
+					self.log.append(line)
+		else:
+			self.log = [_("file can not displayed - file not found")]
+		self["list"].setList(self.log)
+
+	def gotoFirstPage(self):
+		self["list"].moveToIndex(0)
+
+	def gotoLastPage(self):
+		self["list"].moveToIndex(len(self.log) - 1)
 
 	def cancel(self):
 		self.close()

@@ -25,6 +25,9 @@ eHdmiCEC::eCECMessage::eCECMessage(int addr, int cmd, char *data, int length)
 	if (length > (int)sizeof(messageData)) length = sizeof(messageData);
 	if (length && data) memcpy(messageData, data, length);
 	dataLength = length;
+	control0 = data[0];
+	control1 = data[1];
+	control2 = data[2];
 }
 
 int eHdmiCEC::eCECMessage::getAddress()
@@ -43,6 +46,22 @@ int eHdmiCEC::eCECMessage::getData(char *data, int length)
 	memcpy(data, messageData, length);
 	return length;
 }
+
+int eHdmiCEC::eCECMessage::getControl0()
+{
+	return control0;
+}
+
+int eHdmiCEC::eCECMessage::getControl1()
+{
+	return control1;
+}
+
+int eHdmiCEC::eCECMessage::getControl2()
+{
+	return control2;
+}
+
 
 eHdmiCEC::eHdmiCEC()
 : eRCDriver(eRCInput::getInstance())

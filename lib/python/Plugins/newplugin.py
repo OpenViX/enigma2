@@ -107,7 +107,7 @@ from Plugins.Plugin import PluginDescriptor
 """)
 
 mainlist = []
-for count in list(range(len(targetlist))):
+for count in range(len(targetlist)):
 	if count == 0:
 		mainlist.append("main")
 	else:
@@ -120,7 +120,7 @@ def %s(session, **kwargs):
 """ % main)
 
 descriptorlist = []
-for count in list(range(len(targetlist))):
+for count in range(len(targetlist)):
 	os.system("clear")
 	where = targetlist[count]
 	print("Options for target %s" % where[0])

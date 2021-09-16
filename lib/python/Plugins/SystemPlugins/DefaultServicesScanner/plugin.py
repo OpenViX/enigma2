@@ -75,7 +75,7 @@ class DefaultServicesScannerPlugin(ScanSetup):
 		self.onFirstExecBegin.append(self.runScan)
 
 	def selectSat(self, index):
-		for satindex in list(range(len(self.multiscanlist))):
+		for satindex in range(len(self.multiscanlist)):
 			if satindex != index:
 				self.multiscanlist[satindex][1].value = False
 			else:

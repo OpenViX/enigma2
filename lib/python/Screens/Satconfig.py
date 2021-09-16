@@ -369,7 +369,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 				x[1].value = int(mktime(dt.timetuple()))
 			x[1].save()
 		nimmanager.sec.update()
-		self.saveAll()
+		self.saveAll(reopen=True)
 		return True
 
 	def autoDiseqcRun(self, ports):
@@ -705,7 +705,7 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			is_changed |= x[1].isChanged()
 		return is_changed
 
-	def saveAll(self):
+	def saveAll(self, reopen=False):
 		if self.nim.isCompatible("DVB-S"):
 			# reset connectedTo to all choices to properly store the default value
 			choices = []
@@ -716,11 +716,29 @@ class NimSetup(Screen, ConfigListScreen, ServiceStopScreen):
 			# sanity check for empty sat list
 			if not (self.nimConfig.configMode.value == "satposdepends" or self.nimConfig.configMode.value == "advanced" and int(self.nimConfig.advanced.sat[3607].lnb.value) != 0) and len(nimmanager.getSatListForNim(self.slotid)) < 1:
 				self.nimConfig.configMode.value = "nothing"
-		elif self.nim.isCompatible("DVB-C") and self.nim.isFBCRoot() and self.nimConfig.configMode.value == "nothing":
+		elif self.nim.isCompatible("DVB-C") and self.nim.isFBCRoot():
+			value = "nothing"
+			if self.nimConfig.configMode.value == "enabled":
+				value = "enabled"
 			for slot in nimmanager.nim_slots:
-				if slot.isFBCLink() and slot.is_fbc[2] == self.nim.is_fbc[2] and slot.config.configMode.value != "nothing":
-					slot.config.configMode.value = "nothing"
+				if slot.isFBCLink() and slot.is_fbc[2] == self.nim.is_fbc[2] and slot.config.configMode.value != value:
+					slot.config.configMode.value = value
 					slot.config.configMode.save()
+		if reopen and self.oldref and self.slot_number == self.slotid:
+			type_service = self.oldAlternativeref.getUnsignedData(4) >> 16
+			force_reopen = False
+			if type_service == 0xEEEE and (self.nim.isCompatible("DVB-T") and self.nimConfig.configMode.value == "nothing") or (self.nim.isCombined() and self.nim.canBeCompatible("DVB-T") and not self.nimConfig.configModeDVBT.value):
+				force_reopen = True
+			elif type_service == 0xFFFF and ((self.nim.isCompatible("DVB-C") and self.nimConfig.configMode.value == "nothing") or (self.nim.isCombined() and self.nim.canBeCompatible("DVB-C") and not self.nimConfig.configModeDVBC.value)) or ((self.nim.isCompatible("ATSC") and self.nimConfig.configMode.value == "nothing") or (self.nim.isCombined() and self.nim.canBeCompatible("ATSC") and not self.nimConfig.configModeATSC.value)):
+				force_reopen = True
+			if force_reopen:
+				raw_channel = eDVBResourceManager.getInstance().allocateRawChannel(self.slotid)
+				if raw_channel:
+					frontend = raw_channel.getFrontend()
+					if frontend:
+						frontend.closeFrontend()
+						frontend.reopenFrontend()
+				del raw_channel
 		for x in self["config"].list:
 			x[1].save()
 		configfile.save()
