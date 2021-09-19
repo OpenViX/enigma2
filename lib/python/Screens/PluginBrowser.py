@@ -3,6 +3,8 @@ from __future__ import absolute_import
 import six
 
 import os
+from time import time
+
 from enigma import eConsoleAppContainer, eDVBDB, eTimer
 from boxbranding import getImageVersion, getImageType, getMachineBrand, getMachineName
 
@@ -25,7 +27,6 @@ from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.Screen import Screen, ScreenSummary
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
-from time import time
 
 
 config.misc.pluginbrowser = ConfigSubsection()
@@ -255,15 +256,6 @@ class PluginBrowser(Screen, ProtectedScreen):
 	def PluginDownloadBrowserClosed(self):
 		self.updateList()
 		self.checkWarnings()
-
-	def openExtensionmanager(self):
-		if fileExists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/SoftwareManager/plugin.py")):
-			try:
-				from Plugins.SystemPlugins.SoftwareManager.plugin import PluginManager
-			except ImportError:
-				self.session.open(MessageBox, _("The software management extension is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO, timeout=10)
-			else:
-				self.session.openWithCallback(self.PluginDownloadBrowserClosed, PluginManager)
 
 
 class PluginDownloadBrowser(Screen):
@@ -628,7 +620,7 @@ class PluginDownloadBrowser(Screen):
 			self.pluginlist.sort()
 
 	def updateList(self):
-		xlist = []
+		updatedlist = []
 		expandableIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expandable-plugins.png"))
 		expandedIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expanded-plugins.png"))
 		verticallineIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/verticalline-plugins.png"))
@@ -636,8 +628,8 @@ class PluginDownloadBrowser(Screen):
 		self.plugins = {}
 
 		if self.type == self.UPDATE:
-			self.list = xlist
-			self["list"].l.setList(xlist)
+			self.list = updatedlist
+			self["list"].l.setList(updatedlist)
 			return
 
 		for x in self.pluginlist:
@@ -681,12 +673,12 @@ class PluginDownloadBrowser(Screen):
 			temp.sort()
 		for x in temp:
 			if x in self.expanded:
-				xlist.append(PluginCategoryComponent(x, expandedIcon, self.listWidth))
-				xlist.extend([PluginDownloadComponent(plugin[0], plugin[1], plugin[2], self.listWidth) for plugin in self.plugins[x]])
+				updatedlist.append(PluginCategoryComponent(x, expandedIcon, self.listWidth))
+				updatedlist.extend([PluginDownloadComponent(plugin[0], plugin[1], plugin[2], self.listWidth) for plugin in self.plugins[x]])
 			else:
-				xlist.append(PluginCategoryComponent(x, expandableIcon, self.listWidth))
-		self.list = xlist
-		self["list"].l.setList(xlist)
+				updatedlist.append(PluginCategoryComponent(x, expandableIcon, self.listWidth))
+		self.list = updatedlist
+		self["list"].l.setList(updatedlist)
 
 
 language.addCallback(languageChanged)
