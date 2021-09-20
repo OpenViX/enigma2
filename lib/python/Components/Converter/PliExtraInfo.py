@@ -8,13 +8,11 @@ from enigma import iServiceInformation, iPlayableService
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.config import config
-from Tools.Transponder import ConvertToHumanReadable, getChannelNumber
+from Tools.Transponder import ConvertToHumanReadable, getChannelNumber, SIGN
 from Tools.GetEcmInfo import GetEcmInfo
 from Tools.Hex2strColor import Hex2strColor
 from Components.Converter.Poll import Poll
 from skin import parameters
-
-SIGN = '°' if six.PY3 else str('\xc2\xb0')
 
 caid_data = (
 	("0x100", "0x1ff", "Seca", "S", True),

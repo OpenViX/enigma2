@@ -25,8 +25,7 @@ from Screens.SoftwareUpdate import UpdatePlugin
 from Tools.Directories import fileExists, fileCheck, pathExists
 from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
-
-SIGN = "°" if six.PY3 else str("\xc2\xb0")
+from Tools.Sign import SIGN
 
 
 class About(Screen):
