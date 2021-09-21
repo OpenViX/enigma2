@@ -7927,6 +7927,9 @@ msgstr "Не найден (поддерживаемый) DVD-диск!"
 msgid "No Connection"
 msgstr "Нет подключения"
 
+msgid "No ECM info is currently available. This is only available while decrypting."
+msgstr "Информация о ECM в настоящее время недоступна. Это доступно только при расшифровке."
+
 msgid "No ECMPids available (FTA Service)"
 msgstr "Нет доступных ECMPIDs (открытый канал)"
 
