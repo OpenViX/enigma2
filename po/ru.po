@@ -9244,6 +9244,9 @@ msgstr "Нажмите ОК, чтобы выбрать/отменить CAID."
 msgid "Press OK to set the MAC address."
 msgstr "Нажмите OK, чтобы установить MAC-адрес."
 
+msgid "Press OK to show details"
+msgstr "Нажмите ОК, чтобы сохранить и выйти."
+
 msgid "Press OK to toggle the selection"
 msgstr "Нажмите ОК для подтверждения выбора"
 
@@ -9734,6 +9737,9 @@ msgstr "Удалить все настройки плагина"
 
 msgid "Remove all resume point data"
 msgstr "Удалить все маркеры"
+
+msgid "Remove all selection marks"
+msgstr "Установите отметку выбора"
 
 msgid "Remove all settings data"
 msgstr "Удалить все настройки"
@@ -11029,11 +11035,12 @@ msgstr "Установить напряжение и 22КГц"
 msgid "Sets the root directory of movie list, to remove the '..' from being shown in that folder."
 msgstr "Выберите главную папку для списка записей, где уже не будет показана папка вверх '..'"
 
+#, python-format
 msgid ""
-"Setting a password is strongly advised if your STB is open to the internet.\n"
-"This is the case if you have in your router a port forwarded to the STB."
+"Setting a network password is mandatory in OpenViX %s if you wish to use network services. \n"
+"To set a password using the virtual keyboard press the 'text' button on your remote control."
 msgstr ""
-"Рекомендуется установить пароль, если ресивер открыт для Интернета.\n"
+"Рекомендуется установить пароль в OpenViX %s если ресивер открыт для Интернета.\n"
 "В том случае, если в маршрутизаторе есть порт, перенаправленный на ресивер."
 
 msgid "Settings"
@@ -11393,9 +11400,6 @@ msgstr "Показать список каналов"
 
 msgid "Show service list or movies"
 msgstr "Показать списки каналов или записей"
-
-msgid "Show service name and event description above and below each other instead of side by side."
-msgstr "Если включено, показывает название канала и описание программы один над другим, а не рядом."
 
 msgid "Show service type icons"
 msgstr "Показ иконок для типа сервиса"
@@ -12040,13 +12044,19 @@ msgid "Stop testing plane after # successful transponders"
 msgstr "Остановить тестирование после кол. исправных транспондеров"
 
 msgid "Stop this recording"
-msgstr "Остановить эту запись"
+msgid_plural "Stop these recordings"
+msgstr[0] "Остановить запись"
+msgstr[1] "Остановить записи"
+msgstr[2] "Остановить записи"
 
 msgid "Stop these recordings"
 msgstr "Остановить эти записи"
 
 msgid "Stop this recording and delete it"
-msgstr "Остановить и удалить эту запись"
+msgid_plural "Stop these recordings and delete them"
+msgstr[0] "Остановить и удалить запись"
+msgstr[1] "Остановить и удалить записи"
+msgstr[2] "Остановить и удалить записи"
 
 msgid "Stop these recordings and delete them"
 msgstr "Остановить и удалить эти записи"
@@ -14542,8 +14552,11 @@ msgstr "Вы можете удалить этот плагин."
 msgid "You cannot delete this!"
 msgstr "Вы не можете удалит это!"
 
-msgid "You didn't select a channel to record from."
-msgstr "Вы не выбрали канал для записи."
+msgid "You have a marked recording"
+msgid_plural "You have marked recordings"
+msgstr[0] "Воспроизвести отмеченную запись"
+msgstr[1] "Воспроизвести отмеченные записи"
+msgstr[2] "Воспроизвести отмеченных записей"
 
 msgid "You have chosen to backup your settings. Please press OK to start the backup now."
 msgstr "Вы выбрали резервное копирование настроек. Пожалуйста нажмите ОК для начала резервного копирования."
@@ -15967,6 +15980,12 @@ msgstr "Туризм/Путешествия"
 
 msgid "true"
 msgstr "Да"
+
+msgid "two lines"
+msgstr "В двух строчках"
+
+msgid "two lines and next event"
+msgstr "Перейти на след. событие"
 
 msgid "type"
 msgstr "Тип"
