@@ -184,7 +184,7 @@ wasRecTimerWakeup = False
 
 
 class RecordTimerEntry(TimerEntry):
-	def __init__(self, serviceref, begin, end, name, description, eit, disabled=False, justplay=False, afterEvent=AFTEREVENT.AUTO, checkOldTimers=False, dirname=None, tags=None, descramble="notset", record_ecm="notset", isAutoTimer=False, always_zap=False, rename_repeat=True, conflict_detection=True, pipzap=False, autoTimerId=None):
+	def __init__(self, serviceref, begin, end, name, description, eit, disabled=False, justplay=False, afterEvent=AFTEREVENT.AUTO, checkOldTimers=False, dirname=None, tags=None, descramble="notset", record_ecm="notset", isAutoTimer=False, always_zap=False, rename_repeat=True, conflict_detection=True, pipzap=False, autoTimerId=None, iceTimerId=None):
 		TimerEntry.__init__(self, int(begin), int(end))
 		if checkOldTimers:
 			if self.begin < time() - 1209600:
@@ -268,6 +268,7 @@ class RecordTimerEntry(TimerEntry):
 		self.ts_dialog = None
 		self.isAutoTimer = isAutoTimer or autoTimerId is not None
 		self.autoTimerId = autoTimerId
+		self.iceTimerId = iceTimerId
 		self.wasInStandby = False
 
 		self.flags = set()
@@ -961,8 +962,9 @@ def createTimer(xml):
 	autoTimerId = xml.get("autoTimerId")
 	if autoTimerId is not None:
 		autoTimerId = int(autoTimerId)
+	iceTimerId = xml.get("iceTimerId")
 	name = str(xml.get("name"))
-	entry = RecordTimerEntry(serviceref, begin, end, name, description, eit, disabled, justplay, afterevent, dirname=location, tags=tags, descramble=descramble, record_ecm=record_ecm, isAutoTimer=isAutoTimer, always_zap=always_zap, rename_repeat=rename_repeat, conflict_detection=conflict_detection, pipzap=pipzap, autoTimerId=autoTimerId)
+	entry = RecordTimerEntry(serviceref, begin, end, name, description, eit, disabled, justplay, afterevent, dirname=location, tags=tags, descramble=descramble, record_ecm=record_ecm, isAutoTimer=isAutoTimer, always_zap=always_zap, rename_repeat=rename_repeat, conflict_detection=conflict_detection, pipzap=pipzap, autoTimerId=autoTimerId, iceTimerId=iceTimerId)
 	entry.repeated = int(repeated)
 	flags = xml.get("flags")
 	if flags:
@@ -1148,6 +1150,8 @@ class RecordTimer(Timer):
 				list.append(' disabled="' + str(int(entry.disabled)) + '"')
 			if entry.autoTimerId:
 				list.append(' autoTimerId="' + str(entry.autoTimerId) + '"')
+			if entry.iceTimerId is not None:
+				list.append(' iceTimerId="' + str(entry.iceTimerId) + '"')
 			if entry.flags:
 				list.append(' flags="' + ' '.join([stringToXML(x) for x in entry.flags]) + '"')
 
