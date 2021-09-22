@@ -280,7 +280,7 @@ class EventViewEPGSelect(Screen, EventViewBase):
 		self["yellow"] = Pixmap()
 		self["blue"] = Pixmap()
 
-		self["epgactions1"] = ActionMap(["OkCancelActions", "EventViewActions"],
+		self["epgactions1"] = ActionMap(["EventViewActions"],
 			{
 				"timerAdd": self.timerAdd,
 				"openSimilarList": self.openSimilarList,
