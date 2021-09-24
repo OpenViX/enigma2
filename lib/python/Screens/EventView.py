@@ -130,6 +130,9 @@ class EventViewBase:
 			return
 		timer = self.session.nav.RecordTimer.getTimerForEvent(self.currentService, event)
 		if timer is not None:
+			if "epgactions1" in self: self["epgactions1"].setEnabled(False)
+			if "epgactions2" in self: self["epgactions2"].setEnabled(False)
+			if "epgactions3" in self: self["epgactions3"].setEnabled(False)
 			cb_func1 = lambda ret: self.removeTimer(timer)
 			cb_func2 = lambda ret: self.editTimer(timer)
 			menu = [(_("Delete Timer"), 'CALLFUNC', callback, cb_func1), (_("Edit Timer"), 'CALLFUNC', callback, cb_func2)]
@@ -151,6 +154,9 @@ class EventViewBase:
 			self.ChoiceBoxDialog['actions'].execEnd()
 			self.session.deleteDialog(self.ChoiceBoxDialog)
 		self['actions'].setEnabled(True)
+		if "epgactions1" in self: self["epgactions1"].setEnabled(True)
+		if "epgactions2" in self: self["epgactions2"].setEnabled(True)
+		if "epgactions3" in self: self["epgactions3"].setEnabled(True)
 
 	def setService(self, service):
 		self.currentService = service
@@ -280,7 +286,7 @@ class EventViewEPGSelect(Screen, EventViewBase):
 		self["yellow"] = Pixmap()
 		self["blue"] = Pixmap()
 
-		self["epgactions1"] = ActionMap(["OkCancelActions", "EventViewActions"],
+		self["epgactions1"] = ActionMap(["EventViewActions"],
 			{
 				"timerAdd": self.timerAdd,
 				"openSimilarList": self.openSimilarList,
