@@ -2045,7 +2045,6 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 		self.startServiceRef = None
 		self.history = []
 		self.history_pos = 0
-		self.delhistpoint = None
 		if config.servicelist.startupservice.value and config.servicelist.startuproot.value:
 			config.servicelist.lastmode.value = config.servicelist.startupmode.value
 			if config.servicelist.lastmode.value == 'tv':
@@ -2361,12 +2360,6 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 		return ret
 
 	def addToHistory(self, ref):
-		if self.delhistpoint is not None:
-			x = self.delhistpoint
-			while x <= len(self.history) - 1:
-				del self.history[x]
-		self.delhistpoint = None
-
 		if self.servicePath is not None:
 			tmp = self.servicePath[:]
 			tmp.append(ref)
@@ -2394,10 +2387,8 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 		if hlen > 1 and self.history_pos > 0:
 			self.history_pos -= 1
 			self.setHistoryPath()
-		self.delhistpoint = self.history_pos + 1
 
 	def historyNext(self):
-		self.delhistpoint = None
 		hlen = len(self.history)
 		if hlen > 1 and self.history_pos < hlen - 1:
 			self.history_pos += 1
@@ -2456,12 +2447,11 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 			if x[-1] == retval:
 				break
 			pos += 1
-		self.delhistpoint = pos + 1
 		if pos < hlen and pos != self.history_pos:
 			tmp = self.history[pos]
-			# self.history.append(tmp)
-			# del self.history[pos]
-			self.history_pos = pos
+			del self.history[pos]
+			self.history.append(tmp)
+			self.history_pos = len(self.history)-1
 			self.setHistoryPath()
 
 	def saveRoot(self):
