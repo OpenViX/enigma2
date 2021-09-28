@@ -981,13 +981,13 @@ def createTimer(xml):
 
 	return entry
 
-
 class RecordTimer(Timer):
 	def __init__(self):
 		Timer.__init__(self)
 
 		self.onTimerAdded = []
 		self.onTimerRemoved = []
+		self.onTimerChanged = []
 
 		self.Filename = Directories.resolveFilename(Directories.SCOPE_CONFIG, "timers.xml")
 
@@ -995,6 +995,11 @@ class RecordTimer(Timer):
 			self.loadTimer()
 		except IOError:
 			print("[RecordTimer] unable to load timers from file!")
+
+	def timeChanged(self, entry, dosave=True):
+		Timer.timeChanged(self, entry, dosave)
+		for f in self.onTimerChanged:
+			f(entry)
 
 	def doActivate(self, w, dosave=True):
 		# when activating a timer for servicetype 4097,	
