@@ -1916,13 +1916,13 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				return True
 		return False
 
-	def can_mark(self):
+	def can_mark(self, item):
 		return True
 
 	def do_mark(self):
 		self.toggleMark()
 
-	def can_clearmarks(self):
+	def can_clearmarks(self, item):
 		return True
 
 	def do_clearmarks(self):
