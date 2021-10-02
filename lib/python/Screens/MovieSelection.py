@@ -506,8 +506,8 @@ class SelectionEventInfo:
 
 	def updateEventInfo(self):
 		item = self.getCurrentSelection()
-# Only update if there *is* a current selection!
-		if item != None: self["Service"].newService(item[0], item[3])
+		if item is not None:
+			self["Service"].newService(item[0], item[3])
 
 
 class MovieSelectionSummary(Screen):
