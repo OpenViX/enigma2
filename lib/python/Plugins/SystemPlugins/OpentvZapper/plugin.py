@@ -15,6 +15,7 @@ config.plugins.opentvzapper.providers = ConfigSelection(default="Astra 28.2", ch
 config.plugins.opentvzapper.update_interval = ConfigSelectionNumber(min=3, max=24, stepwidth=3, default=6, wraparound=True)
 config.plugins.opentvzapper.extensions = ConfigYesNo(default=True)
 config.plugins.opentvzapper.notifications = ConfigYesNo(default=False)
+config.plugins.opentvzapper.use_pip_adapter = ConfigYesNo(default=True)
 
 # This import must be after "config" variables are set.
 from .opentv_zapper import opentv_zapper, startSession
