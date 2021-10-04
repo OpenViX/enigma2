@@ -229,11 +229,11 @@ class VIXSoftcamManager(Screen):
 				file.close()
 				SoftcamsScriptsRunning = SoftcamsScriptsRunning.replace("\n", ", ")
 				self.currentactivecam += SoftcamsScriptsRunning
-			print("[SoftcamManager] Active:%s ScriptCam=%s" % (self.currentactivecam, config.misc.softcams.value))
-			if config.misc.softcams.value != "None":
-				self["activecam"].setText("SoftcamScript running")
-			else:
-				self["activecam"].setText(self.currentactivecam)
+			self["activecam"].setText(self.currentactivecam)				
+			if six.PY3:
+				print("[SoftcamManager] Active:%s ScriptCam=%s" % (self.currentactivecam, config.misc.softcams.value))
+				if config.misc.softcams.value != "None":
+					self["activecam"].setText("SoftcamScript running")
 			self["activecam"].show()
 		else:
 			print("[SoftcamManager] RESULT FAILED: " + str(result))
