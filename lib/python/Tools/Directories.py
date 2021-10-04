@@ -17,7 +17,6 @@ SCOPE_TRANSPONDERDATA = 0
 SCOPE_SYSETC = 1
 SCOPE_FONTS = 2
 SCOPE_SKIN = 3
-SCOPE_SKIN_IMAGE = 4  # DEBUG: How is this different from SCOPE_SKIN?
 SCOPE_USERETC = 5  # DEBUG: Not used in Enigma2.
 SCOPE_CONFIG = 6
 SCOPE_LANGUAGE = 7
@@ -32,15 +31,18 @@ SCOPE_KEYMAPS = 15
 SCOPE_METADIR = 16
 SCOPE_CURRENT_PLUGIN = 17
 SCOPE_TIMESHIFT = 18
-SCOPE_ACTIVE_SKIN = 19  # DEBUG: Deprecated scope function - use SCOPE_CURRENT_SKIN instead.
 SCOPE_LCDSKIN = 20
 SCOPE_CURRENT_LCDSKIN = 21
-SCOPE_ACTIVE_LCDSKIN = 21  # DEBUG: Deprecated scope function name - use SCOPE_CURRENT_LCDSKIN instead.
 SCOPE_AUTORECORD = 22
 SCOPE_DEFAULTDIR = 23
 SCOPE_DEFAULTPARTITION = 24
 SCOPE_DEFAULTPARTITIONMOUNTDIR = 25
 SCOPE_LIBDIR = 26
+
+# deprecated scopes for backwards compatibility
+SCOPE_ACTIVE_SKIN = SCOPE_CURRENT_SKIN
+SCOPE_ACTIVE_LCDSKIN = SCOPE_CURRENT_LCDSKIN
+SCOPE_SKIN_IMAGE = SCOPE_SKIN
 
 PATH_CREATE = 0
 PATH_DONTCREATE = 1
@@ -50,7 +52,6 @@ defaultPaths = {
 	SCOPE_SYSETC: (eEnv.resolve("${sysconfdir}/"), PATH_DONTCREATE),
 	SCOPE_FONTS: (eEnv.resolve("${datadir}/fonts/"), PATH_DONTCREATE),
 	SCOPE_SKIN: (eEnv.resolve("${datadir}/enigma2/"), PATH_DONTCREATE),
-	SCOPE_SKIN_IMAGE: (eEnv.resolve("${datadir}/enigma2/"), PATH_DONTCREATE),
 	SCOPE_USERETC: ("", PATH_DONTCREATE),  # User home directory
 	SCOPE_CONFIG: (eEnv.resolve("${sysconfdir}/enigma2/"), PATH_CREATE),
 	SCOPE_LANGUAGE: (eEnv.resolve("${datadir}/enigma2/po/"), PATH_DONTCREATE),
@@ -65,7 +66,6 @@ defaultPaths = {
 	SCOPE_METADIR: (eEnv.resolve("${datadir}/meta"), PATH_CREATE),
 	SCOPE_CURRENT_PLUGIN: (eEnv.resolve("${libdir}/enigma2/python/Plugins/"), PATH_CREATE),
 	SCOPE_TIMESHIFT: ("/media/hdd/timeshift/", PATH_DONTCREATE),
-	SCOPE_ACTIVE_SKIN: (eEnv.resolve("${datadir}/enigma2/"), PATH_DONTCREATE),
 	SCOPE_LCDSKIN: (eEnv.resolve("${datadir}/enigma2/display/"), PATH_DONTCREATE),
 	SCOPE_CURRENT_LCDSKIN: (eEnv.resolve("${datadir}/enigma2/display/"), PATH_DONTCREATE),
 	SCOPE_AUTORECORD: ("/media/hdd/movie/", PATH_DONTCREATE),
@@ -122,8 +122,8 @@ def resolveFilename(scope, base="", path_prefix=None):
 	# If base is "" then set path to the scope.  Otherwise use the scope to resolve the base filename.
 	if base == "":
 		path, flags = defaultPaths.get(scope)
-		# If the scope is SCOPE_CURRENT_SKIN or SCOPE_ACTIVE_SKIN append the current skin to the scope path.
-		if scope in (SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_SKIN):
+		# If the scope is SCOPE_CURRENT_SKIN append the current skin to the scope path.
+		if scope in (SCOPE_CURRENT_SKIN):
 			# This import must be here as this module finds the config file as part of the config initialisation.
 			from Components.config import config
 			skin = os.path.dirname(config.skin.primary_skin.value)
@@ -137,7 +137,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 				if len(pluginCode) > 2:
 					relative = "%s%s%s" % (pluginCode[0], os.sep, pluginCode[1])
 					path = os.path.join(plugins, relative)
-	elif scope in (SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_SKIN):
+	elif scope in (SCOPE_CURRENT_SKIN):
 		# This import must be here as this module finds the config file as part of the config initialisation.
 		from Components.config import config
 		skin = os.path.dirname(config.skin.primary_skin.value)
