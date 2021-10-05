@@ -27,8 +27,8 @@ def getMultibootslots():
 	bootslots = {}
 	slotname = ""
 	BoxInfo = SystemInfo["BoxInfo"]
-	tmp.dir = tempfile.TemporaryDirectory(prefix="Multiboot")
-	tmpname = tmp.dir.name 
+	tmp.dir = tempfile.mkdtemp(prefix="getMultibootslots")
+	tmpname = tmp.dir 
 	for device in ("/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/block/by-name/bootoptions" ):
 		if bootslots:
 			continue 
@@ -77,7 +77,8 @@ def getMultibootslots():
 							bootslots[int(slotnumber)] = slot
 			print("[multiboot] [getMultibootslots] Finished bootslots = %s" % bootslots)
 			Console().ePopen("umount %s" % tmpname)
-	tmp.dir.cleanup()
+	if not path.ismount(tmp.dir):
+		rmdir(tmp.dir)
 	if bootslots:	
 		print("[Multiboot] Bootslots found:", bootslots)
 	return bootslots
@@ -111,8 +112,8 @@ def GetCurrentImageMode():
 
 def GetImagelist():
 	Imagelist = {}
-	tmp.dir = tempfile.TemporaryDirectory(prefix="GetImagelist")
-	tmpname = tmp.dir.name 
+	tmp.dir = tempfile.mkdtemp(prefix="GetImagelist")
+	tmpname = tmp.dir
 	# print("[multiboot] [GetImagelist] tmpname = %s" % (tmpname))	
 	for slot in sorted(list(SystemInfo["canMultiBoot"].keys())):
 		BuildVersion = "  "
@@ -167,7 +168,8 @@ def GetImagelist():
 			Imagelist[slot] = {"imagename": _("Deleted image")}
 		if SystemInfo["MultiBootSlot"] != slot:			
 			Console().ePopen("umount %s" % tmpname)
-	tmp.dir.cleanup()
+	if not path.ismount(tmp.dir):
+		rmdir(tmp.dir)
 	return Imagelist
 
 
@@ -184,31 +186,32 @@ def VerDate(imagedir):
 
 
 def emptySlot(slot):
-	tmp.dir = tempfile.TemporaryDirectory(prefix="emptySlot")
-	tmpname = tmp.dir.name 
-	Console().ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmpname))
-	imagedir = sep.join([_f for _f in [tmpname, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
+	tmp.dir = tempfile.mkdtemp(prefix="emptySlot")
+	Console().ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmp.dir))
+	imagedir = sep.join([_f for _f in [tmp.dir, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
 	if path.isfile(path.join(imagedir, "usr/bin/enigma2")):
 		rename((path.join(imagedir, "usr/bin/enigma2")), (path.join(imagedir, "usr/bin/enigmax")))
 		ret = 0
 	else:
 		print("[multiboot2] NO enigma2 found to rename")
 		ret = 4
-	Console().ePopen("umount %s" % tmpname)
-	tmp.dir.cleanup()
+	Console().ePopen("umount %s" % tmp.dir)
+	if not path.ismount(tmp.dir):
+		rmdir(tmp.dir)
 	return ret
 
 
 def restoreSlots():
 	for slot in SystemInfo["canMultiBoot"]:
-		tmp.dir = tempfile.TemporaryDirectory(prefix="restoreSlot")
-		tmpname = tmp.dir.name 	
-		Console().ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmpname))
-		imagedir = sep.join([_f for _f in [tmpname, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
+		tmp.dir = tempfile.mkdtemp(prefix="restoreSlot")
+		Console().ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmp.dir))
+		imagedir = sep.join([_f for _f in [tmp.dir, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
 		if path.isfile(path.join(imagedir, "usr/bin/enigmax")):
 			rename((path.join(imagedir, "usr/bin/enigmax")), (path.join(imagedir, "usr/bin/enigma2")))
-		Console().ePopen("umount %s" % tmpname)
-	tmp.dir.cleanup()
+		Console().ePopen("umount %s" % tmp.dir)
+	if not path.ismount(tmp.dir):
+		rmdir(tmp.dir)
+
 
 class boxbranding_reader:  # Many thanks to Huevos for creating this reader - well beyond my skill levels!
 	def __init__(self, OsPath):
