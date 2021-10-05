@@ -132,7 +132,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 	if base == "":
 		path, flags = defaultPaths.get(scope)
 		# If the scope is SCOPE_CURRENT_SKIN append the current skin to the scope path.
-		if scope in (SCOPE_CURRENT_SKIN):
+		if scope == SCOPE_CURRENT_SKIN:
 			# This import must be here as this module finds the config file as part of the config initialisation.
 			from Components.config import config
 			skin = os.path.dirname(config.skin.primary_skin.value)
@@ -146,7 +146,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 				if len(pluginCode) > 2:
 					relative = "%s%s%s" % (pluginCode[0], os.sep, pluginCode[1])
 					path = os.path.join(plugins, relative)
-	elif scope in (SCOPE_CURRENT_SKIN):
+	elif scope == SCOPE_CURRENT_SKIN:
 		# This import must be here as this module finds the config file as part of the config initialisation.
 		from Components.config import config
 		skin = os.path.dirname(config.skin.primary_skin.value)
