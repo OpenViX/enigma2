@@ -516,7 +516,7 @@ class AttributeParser:
 
 	def pixmap(self, value):
 		if value.endswith(".svg"): # if grafic is svg force alphatest to "blend"
-			self.guiObject.setAlphatest(2)
+			self.guiObject.setAlphatest(BT_ALPHABLEND)
 		self.guiObject.setPixmap(loadPixmap(value, self.desktop, self.guiObject.size().width(), self.guiObject.size().height()))
 
 	def backgroundPixmap(self, value):
