@@ -1551,17 +1551,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.updateDescription()
 
 	def abort(self):
-		def saveAndClose():
-			self.saveconfig()
-			self.close(None)
-
 		global playlist
 		del playlist[:]
 		if self.list.playInBackground:
 			self.list.playInBackground = None
 			self.session.nav.stopService()
-			self.saveconfig()
-			self.callLater(saveAndClose)
+			self.callLater(self.abort)
 			return
 
 		if self.playingInForeground:
@@ -1571,6 +1566,11 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			return
 
 		self.saveconfig()
+		from Screens.InfoBar import InfoBar
+		infobar = InfoBar.instance
+		if self.session.nav.getCurrentlyPlayingServiceReference():
+			if not infobar.timeshiftEnabled() and ':0:/' not in self.session.nav.getCurrentlyPlayingServiceReference().toString():
+				self.session.nav.stopService()
 		self.close(None)
 
 	def saveconfig(self):
@@ -1916,13 +1916,13 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				return True
 		return False
 
-	def can_mark(self):
+	def can_mark(self, item):
 		return True
 
 	def do_mark(self):
 		self.toggleMark()
 
-	def can_clearmarks(self):
+	def can_clearmarks(self, item):
 		return True
 
 	def do_clearmarks(self):
