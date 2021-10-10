@@ -2052,6 +2052,10 @@ class ConfigSubsection(object):
 		for x in self.content.items.values():
 			x.load()
 
+	def cancel(self):
+		for x in self.content.items.values():
+			x.cancel()
+
 	def dict(self):
 		return self.content.items
 
