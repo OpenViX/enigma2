@@ -2063,7 +2063,7 @@ class ConfigSubsection(object):
 			x.load()
 
 	def cancel(self):
-		for x in self.content.items.values():
+		for x in list(self.content.items.values()):
 			x.cancel()
 
 	def dict(self):
