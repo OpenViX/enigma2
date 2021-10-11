@@ -202,10 +202,8 @@ class RecordTimerEntry(TimerEntry):
 			self.service_ref = serviceref
 		else:
 			self.service_ref = eServiceReference()
-		# print("[RecordTimer][RecordTimerEntry2] serviceref", self.service_ref)				
-		self.eit = eit
 		self.dontSave = False
-		if not description or not name:
+		if not description or not name or not eit:
 			evt = self.getEventFromEPG()
 			if evt:
 				if not description:
@@ -214,6 +212,9 @@ class RecordTimerEntry(TimerEntry):
 					description = evt.getExtendedDescription()
 				if not name:
 					name = evt.getEventName()
+				if not eit:
+					eit = evt.getEventId()
+		self.eit = eit
 		self.name = name
 		self.description = description
 		self.disabled = disabled
