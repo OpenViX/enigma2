@@ -194,9 +194,6 @@ class ConfigElement(object):
 		assert callable(notifier), "notifiers must be callable"
 		if extra_args is not None:
 			self.__addExtraArgs(notifier, extra_args)
-			print("[config] notifier with extra arguments:", notifier)
-			import traceback
-			traceback.print_stack()
 		if immediate_feedback:
 			self.notifiers.append(notifier)
 		else:
