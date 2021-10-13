@@ -107,7 +107,9 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 			print("[ImageManager] Stop")
 			autoImageManagerTimer.stop()
 
-
+class tmp:
+	dir = None
+	
 class VIXImageManager(Screen):
 	skin = """<screen name="VIXImageManager" position="center,center" size="560,400">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
@@ -407,7 +409,11 @@ class VIXImageManager(Screen):
 
 	def keyRestore3(self, val=None):
 		self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares."), MessageBox.TYPE_INFO, timeout=240, enable_input=False)
-		self.TEMPDESTROOT = self.BackupDirectory + "imagerestore"
+		if "/media/autofs" in config.imagemanager.backuplocation.value or "/media/net" in config.imagemanager.backuplocation.value:
+			self.TEMPDESTROOT = tempfile.mkdtemp(prefix="imageRestore")
+		else:	
+			self.TEMPDESTROOT = self.BackupDirectory + "imagerestore"
+		
 		if self.sel.endswith(".zip"):
 			if not path.exists(self.TEMPDESTROOT):
 				mkdir(self.TEMPDESTROOT, 0o755)
