@@ -1176,8 +1176,12 @@ class BackupFiles(Screen):
 			self.selectedFiles.append("/usr/crossepg/providers")
 		if path.exists("/usr/lib/sabnzbd") and "/usr/lib/sabnzbd" not in self.selectedFiles:
 			self.selectedFiles.append("/usr/lib/sabnzbd")
-		if path.exists("/etc/samba") and "/etc/samba" not in self.selectedFiles:
-			self.selectedFiles.append("/etc/samba")
+#		if path.exists("/etc/samba") and "/etc/samba" not in self.selectedFiles:
+#			self.selectedFiles.append("/etc/samba")
+		if path.exists("/etc/samba/smb-user.conf") and "/etc/samba/smb-user.conf" not in self.selectedFiles:
+			self.selectedFiles.append("/etc/samba/smb-user.conf")
+		if path.exists("/etc/samba/private") and "/etc/samba/private" not in self.selectedFiles:
+			self.selectedFiles.append("/etc/samba/private")
 		if path.exists("/usr/keys") and "/etc/CCcam.cfg" not in self.selectedFiles:
 			self.selectedFiles.append("/usr/keys")
 		if path.exists("/opt") and "/opt" not in self.selectedFiles:
