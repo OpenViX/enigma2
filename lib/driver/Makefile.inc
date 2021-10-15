@@ -27,13 +27,11 @@ driverinclude_HEADERS = \
 	driver/hdmi_cec.h
 
 if HAVE_LIBSDL
-driver_libenigma_driver_a_SOURCES += \
-	driver/rcsdl.cpp \
-	driver/rcsdl.h
+driver_libenigma_driver_a_SOURCES += driver/rcsdl.cpp
+driverinclude_HEADERS += driver/rcsdl.h
 endif
 
 if GIGABLUE
-driver_libenigma_driver_a_SOURCES += \
-	driver/vfd.cpp \
-	driver/vfd.h
+driver_libenigma_driver_a_SOURCES += driver/vfd.cpp
+driverinclude_HEADERS += driver/vfd.h
 endif
