@@ -1462,7 +1462,8 @@ class RecordTimer(Timer):
 				if x.setAutoincreaseEnd():
 					self.timeChanged(x, False)
 		# now the timer should be in the processed_timers list. remove it from there.
-		self.processed_timers.remove(entry)
+		if entry in self.processed_timers:
+			self.processed_timers.remove(entry)
 		self.saveTimer()
 
 		# Trigger onTimerRemoved callbacks
