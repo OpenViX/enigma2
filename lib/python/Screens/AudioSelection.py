@@ -86,13 +86,11 @@ class AudioSelection(Screen, ConfigListScreen):
 		
 	def readChoices(self, procx, choises):
 		choise_list = choises
-		# print("[AudiSelection][readChoices from default standard] choices=%s" % (choise_list))
 		with open(procx, "r") as self.myfile:
 			self.procChoices = self.myfile.read().strip()
 		if self.procChoices:
 			self.choiceslist = self.procChoices.split(" ")
 			choise_list = [(item, _(item)) for item in self.choiceslist]
-			print("[AudiSelection][readChoices from Proc] choices=%s" % (choise_list))
 		return choise_list		
 
 	def fillList(self, arg=None):
@@ -100,17 +98,21 @@ class AudioSelection(Screen, ConfigListScreen):
 		streams = []
 		conflist = []
 		selectedidx = 0
+
 		self["key_red"].setBoolean(False)
 		self["key_green"].setBoolean(False)
 		self["key_yellow"].setBoolean(False)
 		self["key_blue"].setBoolean(False)
+
 		subtitlelist = self.getSubtitleList()
+		print("[AudiSelection][fillList] subtitlelist=%s" % (subtitlelist))
 		if self.settings.menupage.value == PAGE_AUDIO:
 			self.setTitle(_("Select audio track"))
 			service = self.session.nav.getCurrentService()
 			self.audioTracks = audio = service and service.audioTracks()
 			n = audio and audio.getNumberOfTracks() or 0
-
+			if subtitlelist:
+				conflist.append(getConfigListEntry(_("To subtitle selection"), self.settings.menupage))
 			if SystemInfo["CanDownmixAC3"]:
 				choise_list = [
 					("downmix", _("Downmix")),
@@ -313,6 +315,7 @@ class AudioSelection(Screen, ConfigListScreen):
 					for x in Plugins:
 						if x[0] != "AudioEffect":  # Always make AudioEffect Blue button.
 							conflist.append(getConfigListEntry(x[0], ConfigNothing(), x[1]))
+
 		elif self.settings.menupage.value == PAGE_SUBTITLES:
 			self.setTitle(_("Subtitle selection"))
 			idx = 0
@@ -347,8 +350,11 @@ class AudioSelection(Screen, ConfigListScreen):
 					number = str(int(number) + 1)
 				streams.append((x, "", number, description, language, selected))
 				idx += 1
+			conflist.append(getConfigListEntry(_("To audio selection"), self.settings.menupage))
+
 			if self.infobar.selected_subtitle and self.infobar.selected_subtitle != (0, 0, 0, 0) and not ".DVDPlayer'>" in repr(self.infobar):
 				conflist.append(getConfigListEntry(_("Subtitle quickmenu"), ConfigNothing(), None))
+
 		if len(conflist) > 0 and conflist[0][0]:
 			self["key_red"].setBoolean(True)
 		if len(conflist) > 1 and conflist[1][0]:
@@ -478,10 +484,19 @@ class AudioSelection(Screen, ConfigListScreen):
 
 	def keyRight(self, config=False):
 		if config or self.focus == FOCUS_CONFIG:
-			if self.settings.menupage.value == PAGE_AUDIO and self["config"].getCurrent()[2]:
-				self["config"].getCurrent()[2]()
+			index = self["config"].getCurrentIndex()
+			if self.settings.menupage.value == PAGE_AUDIO:
+				if index == 0:								# Sub Title selection screen
+					self.keyAudioSubtitle()
+					self.__updatedInfo()
+				elif self["config"].getCurrent()[2]:					
+					self["config"].getCurrent()[2]()
 			elif self.settings.menupage.value == PAGE_SUBTITLES and self.infobar.selected_subtitle and self.infobar.selected_subtitle != (0, 0, 0, 0):
-				self.session.open(QuickSubtitlesConfigMenu, self.infobar)
+				if index == 0:								# Audio selection screen
+					self.keyAudioSubtitle()
+					self.__updatedInfo()
+				else:
+					self.session.open(QuickSubtitlesConfigMenu, self.infobar)	# sub title config screen
 			else:
 				ConfigListScreen.keyRight(self)
 		if self.focus == FOCUS_STREAMS and self["streams"].count() and config == False:
