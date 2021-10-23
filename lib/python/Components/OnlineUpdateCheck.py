@@ -1,16 +1,16 @@
 from __future__ import print_function
 from __future__ import absolute_import
-
-from boxbranding import getImageVersion, getImageBuild, getImageDistro, getMachineBrand, getMachineName, getMachineBuild, getImageType, getBoxType, getFeedsUrl
+import six
 
 from time import time
 
+from boxbranding import getImageVersion, getImageBuild, getMachineBrand, getMachineName, getMachineBuild, getImageType, getBoxType, getFeedsUrl
 from enigma import eTimer
-
 import Components.Task
-from Components.Ipkg import IpkgComponent
-from Components.config import config
 from Components.About import about
+from Components.config import config
+from Components.Ipkg import IpkgComponent
+import Components.Task
 
 import socket
 import sys
@@ -82,8 +82,13 @@ class FeedsStatusCheck:
 		return result
 
 	def getFeedStatus(self):
-		status = '1'
-		trafficLight = 'unknown'
+		status = "1"
+		if "openvix.co" not in getFeedsUrl():
+			print("[OnlineUpdateCheck][getFeedStatus] Alien feeds url: %s" % getFeedsUrl())
+			status = "0"
+			config.softwareupdate.updateisunstable.setValue(status)
+			return "alien"
+		trafficLight = "unknown"
 		if self.adapterAvailable():
 			if self.NetworkUp():
 				if getImageType() == "release": # we know the network is good now so only do this check on release images where the release domain applies
@@ -103,6 +108,7 @@ class FeedsStatusCheck:
 						trafficLight = -2
 				else:
 					trafficLight = "unknown"
+				trafficLight = six.ensure_str(trafficLight)	
 				if trafficLight == "stable":
 					status = "0"
 				config.softwareupdate.updateisunstable.setValue(status)
@@ -129,23 +135,24 @@ class FeedsStatusCheck:
 		"404": _("ERROR: Response 404 Not Found"),
 		"inprogress": _("ERROR: Check is already running in background, please wait a few minutes and try again"),
 		"unknown": _("Feeds status: Unknown"),
+		"alien": _("Feeds status: Unknown, user feeds url"),
 	}
 
 	def getFeedsBool(self):
 		global error
-		self.feedstatus = feedsstatuscheck.getFeedStatus()
+		self.feedstatus = six.ensure_str(feedsstatuscheck.getFeedStatus())
 		if self.feedstatus in (-2, -3, 403, 404):
 			print("[OnlineUpdateCheck][getFeedsBool] Error %s" % self.feedstatus)
-			return str(self.feedstatus)
+			return self.feedstatus
 		elif error:
 			print("[OnlineUpdateCheck][getFeedsBool] Check already in progress")
 			return "inprogress"
 		elif self.feedstatus == "updating":
 			print("[OnlineUpdateCheck][getFeedsBool] Feeds Updating")
 			return "updating"
-		elif self.feedstatus in ("stable", "unstable", "unknown"):
+		elif self.feedstatus in ("stable", "unstable", "unknown", "alien"):
 			print("[OnlineUpdateCheck][getFeedsBool]", self.feedstatus)
-			return str(self.feedstatus)
+			return self.feedstatus
 
 	def getFeedsErrorMessage(self):
 		global error

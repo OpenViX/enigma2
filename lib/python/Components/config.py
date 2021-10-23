@@ -978,6 +978,7 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 		except UnicodeDecodeError:
 			self.text = six.ensure_text(val, errors='ignore')
 			print("[Config] Broken UTF8!")
+		self.changed()
 
 	value = property(getValue, setValue)
 	_value = property(getValue, setValue)
@@ -1250,7 +1251,7 @@ class ConfigText(ConfigElement, NumericalTextInput):
 				else:
 					self.offset = self.marked_pos - self.visible_width + 1
 			if self.offset > 0 and self.offset + self.visible_width > textlen:
-				self.offset = max(0, len - self.visible_width)
+				self.offset = max(0, textlen - self.visible_width)
 
 	def insertChar(self, ch, pos, owr):
 		if owr or self.overwrite:
@@ -1370,6 +1371,7 @@ class ConfigText(ConfigElement, NumericalTextInput):
 		except UnicodeDecodeError:
 			self.text = val.decode("utf-8", "ignore")
 			print("[Config] Broken UTF8!")
+		self.changed()
 
 	value = property(getValue, setValue)
 	_value = property(getValue, setValue)
@@ -1505,6 +1507,7 @@ class ConfigNumber(ConfigText):
 
 	def setValue(self, val):
 		self.text = str(val)
+		self.changed()
 
 	value = property(getValue, setValue)
 	_value = property(getValue, setValue)
@@ -2055,6 +2058,10 @@ class ConfigSubsection(object):
 	def load(self):
 		for x in list(self.content.items.values()):
 			x.load()
+
+	def cancel(self):
+		for x in list(self.content.items.values()):
+			x.cancel()
 
 	def dict(self):
 		return self.content.items

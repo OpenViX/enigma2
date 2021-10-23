@@ -16,8 +16,7 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.FuzzyDate import FuzzyTime
 from Tools.LoadPixmap import LoadPixmap
 from Tools.TextBoundary import getTextBoundarySize
-
-SIGN = '°' if six.PY3 else str('\xc2\xb0')
+from Tools.Sign import SIGN
 
 
 class TimerList(GUIComponent, object):

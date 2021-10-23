@@ -5,7 +5,7 @@ import six
 import errno
 import xml.etree.cElementTree
 
-from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gMainDC, gRGB
+from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gMainDC, gRGB, BT_ALPHATEST, BT_ALPHABLEND
 from os.path import basename, dirname, isfile
 
 from Components.config import ConfigSubsection, ConfigText, config
@@ -239,39 +239,41 @@ class SkinError(Exception):
 
 def parseCoordinate(s, e, size=0, font=None):
 	orig = s = s.strip()
-	if s == "center":  # For speed as this can be common case.
+	if s.isdigit():  # For speed try a simple number first as these are the most common.
+		val = int(s)
+	elif s == "center":  # For speed as this can be common case.
 		val = 0 if not size else (e - size) // 2
+	elif s == "e":
+		val = e
 	elif s == "*":
 		return None
 	else:
-		try:
-			val = int(s)  # For speed try a simple number first.
-		except ValueError:
-			if font is None and ("w" in s or "h" in s):
-				print("[Skin] Error: 'w' or 'h' is being used in a field where neither is valid. Input string: '%s'" % orig)
-				return 0
-			if "center" in s:
-				s = s.replace("center", str((e - size) / 2.0))
-			if "e" in s:
-				s = s.replace("e", str(e))
-			if "c" in s:
-				s = s.replace("c", str(e / 2.0))
-			if "w" in s:
-				s = s.replace("w", "*%s" % str(fonts[font][3]))
-			if "h" in s:
-				s = s.replace("h", "*%s" % str(fonts[font][2]))
-			if "%" in s:
-				s = s.replace("%", "*%s" % str(e / 100.0))
-			if "f" in s:
-				s = s.replace("f", str(getSkinFactor()))
-			try:
-				val = int(s)  # For speed try a simple number first.
-			except ValueError:
-				try:
-					val = int(eval(s))
-				except Exception as err:
-					print("[Skin] %s '%s': Coordinate '%s', processed to '%s', cannot be evaluated!" % (type(err).__name__, err, orig, s))
-					val = 0
+		if font is None and ("w" in s or "h" in s):
+			print("[Skin] Error: 'w' or 'h' is being used in a field where neither is valid. Input string: '%s'" % orig)
+			return 0
+		# No test on "e" because it's already a variable
+		if "center" in s:
+			center = (e - size) / 2.0
+		if "c" in s:
+			c = e / 2.0
+		if "w" in s:
+			s = s.replace("w", "*w")
+			w = float(font in fonts and fonts[font][3] or 0)
+		if "h" in s:
+			s = s.replace("h", "*h")
+			h = float(font in fonts and fonts[font][2] or 0)
+		if "%" in s:
+			s = s.replace("%", "*e / 100.0")
+		if "f" in s:
+			f = getSkinFactor()
+		# Don't bother trying an int() conversion,
+		# because at this point that's almost certainly
+		# going to throw an exception.
+		try: # protects against junk in the input
+			val = int(eval(s))
+		except Exception as err:
+			print("[Skin] %s '%s': Coordinate '%s', processed to '%s', cannot be evaluated!" % (type(err).__name__, err, orig, s))
+			val = 0
 	# print("[Skin] DEBUG: parseCoordinate s='%s', e='%s', size=%s, font='%s', val='%s'." % (s, e, size, font, val))
 	return val
 
@@ -516,7 +518,7 @@ class AttributeParser:
 
 	def pixmap(self, value):
 		if value.endswith(".svg"): # if grafic is svg force alphatest to "blend"
-			self.guiObject.setAlphatest(2)
+			self.guiObject.setAlphatest(BT_ALPHABLEND)
 		self.guiObject.setPixmap(loadPixmap(value, self.desktop, self.guiObject.size().width(), self.guiObject.size().height()))
 
 	def backgroundPixmap(self, value):
@@ -540,9 +542,9 @@ class AttributeParser:
 	def alphatest(self, value):
 		try:
 			self.guiObject.setAlphatest({
-				"on": 1,
+				"on": BT_ALPHATEST,
 				"off": 0,
-				"blend": 2
+				"blend": BT_ALPHABLEND
 			}[value])
 		except KeyError:
 			print("[Skin] Error: Invalid alphatest '%s'!  Must be one of 'on', 'off' or 'blend'." % value)

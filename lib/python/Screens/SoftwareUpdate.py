@@ -158,13 +158,13 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			self['feedStatusMSG'].setText(status_text)
 		if self.trafficLight == 'stable':
 			self['tl_green'].show()
-		elif self.trafficLight == 'unstable':
+		elif self.trafficLight in ("unstable", "alien"):
 			self['tl_red'].show()
 		elif self.trafficLight == 'updating':
 			self['tl_yellow'].show()
 		else:
 			self['tl_off'].show()
-		if (getImageType() != 'release' and self.trafficLight != 'unknown') or (getImageType() == 'release' and self.trafficLight not in ('stable', 'unstable')):
+		if (getImageType() != 'release' and self.trafficLight not in  ("unknown", "alien")) or (getImageType() == 'release' and self.trafficLight not in ("stable", "unstable", "alien")):
 			self.session.openWithCallback(self.close, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
 			return
 		else:
