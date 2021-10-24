@@ -28,6 +28,7 @@ eHdmiCEC::eCECMessage::eCECMessage(int addr, int cmd, char *data, int length)
 	control0 = data[0];
 	control1 = data[1];
 	control2 = data[2];
+	control3 = data[3];
 }
 
 int eHdmiCEC::eCECMessage::getAddress()
@@ -46,22 +47,6 @@ int eHdmiCEC::eCECMessage::getData(char *data, int length)
 	memcpy(data, messageData, length);
 	return length;
 }
-
-int eHdmiCEC::eCECMessage::getControl0()
-{
-	return control0;
-}
-
-int eHdmiCEC::eCECMessage::getControl1()
-{
-	return control1;
-}
-
-int eHdmiCEC::eCECMessage::getControl2()
-{
-	return control2;
-}
-
 
 eHdmiCEC::eHdmiCEC()
 : eRCDriver(eRCInput::getInstance())
@@ -190,6 +175,7 @@ eHdmiCEC *eHdmiCEC::getInstance()
 void eHdmiCEC::reportPhysicalAddress()
 {
 	struct cec_message txmessage;
+	memset(&txmessage, 0, sizeof(txmessage));
 	txmessage.address = 0x0f; /* broadcast */
 	txmessage.data[0] = 0x84; /* report address */
 	txmessage.data[1] = physicalAddress[0];
@@ -391,6 +377,7 @@ void eHdmiCEC::hdmiEvent(int what)
 			static unsigned char pressedkey = 0;
 
 			eDebugNoNewLineStart("[eHdmiCEC] received message");
+			eDebugNoNewLine(" %02X", rxmessage.address);
 			for (int i = 0; i < rxmessage.length; i++)
 			{
 				eDebugNoNewLine(" %02X", rxmessage.data[i]);
@@ -535,6 +522,7 @@ long eHdmiCEC::translateKey(unsigned char code)
 			break;
 		default:
 			key = 0x8b;
+			eDebug("eHdmiCEC: unknown code 0x%02X", (unsigned int)(code & 0xFF));
 			break;
 	}
 	return key;
@@ -545,6 +533,7 @@ void eHdmiCEC::sendMessage(struct cec_message &message)
 	if (hdmiFd >= 0)
 	{
 		eDebugNoNewLineStart("[eHdmiCEC] send message");
+		eDebugNoNewLine(" %02X", message.address);
 		for (int i = 0; i < message.length; i++)
 		{
 			eDebugNoNewLine(" %02X", message.data[i]);
