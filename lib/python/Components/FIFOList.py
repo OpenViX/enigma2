@@ -9,8 +9,7 @@ class FIFOList(MenuList):
 
 	def addItem(self, item):
 		self.list.append(item)
-		self.list = self.list[-self.len:]
-		self.l.setList(self.list)
+		self.l.setList(self.list[-self.len:])
 
 	def clear(self):
 		del self.list[:]
