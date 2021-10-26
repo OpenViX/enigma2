@@ -792,7 +792,7 @@ std::string convertDVBUTF8(const unsigned char *data, int len, int table, int ts
 	output = replace_all(replace_all(output, "\xC2\x8A", "\n"), "\xEE\x82\x8A", "\n");
 
 	// remove character emphasis control characters:
-	output = replace_all(replace_all(replace_all(replace_all(output, "\xC2\x86", ""), "\xEE\xC2\x86", ""), "\xC2\x87", ""), "\xEE\xC2\x87", "");
+	output = replace_all(replace_all(replace_all(replace_all(output, "\xC2\x86", ""), "\xEE\x82\x86", ""), "\xC2\x87", ""), "\xEE\x82\x87", "");
 	
 	return output;
 }
