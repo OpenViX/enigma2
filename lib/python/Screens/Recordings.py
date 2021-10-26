@@ -1,27 +1,21 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-from os import stat
-from os.path import isdir, join as pathJoin
+from os.path import isdir, realpath, join as pathJoin
 
 from Components.config import config
 from Components.UsageConfig import preferredPath
-from Screens.LocationBox import defaultInhibitDirs, MovieLocationBox
+from Screens.LocationBox import MovieLocationBox
 from Screens.MessageBox import MessageBox
 from Screens.Setup import Setup
 from Tools.Directories import fileExists
+import Components.Harddisk
 
 
 class RecordingSettings(Setup):
 	def __init__(self, session):
 		self.styles = [("<default>", _("<Default movie location>")), ("<current>", _("<Current movielist location>")), ("<timer>", _("<Last timer location>"))]
 		self.styleKeys = [x[0] for x in self.styles]
-		self.inhibitDevs = []
-		for dir in defaultInhibitDirs + ["/", "/media"]:
-			if isdir(dir):
-				device = stat(dir).st_dev
-				if device not in self.inhibitDevs:
-					self.inhibitDevs.append(device)
 		self.buildChoices("DefaultPath", config.usage.default_path, None)
 		self.buildChoices("TimerPath", config.usage.timer_path, None)
 		self.buildChoices("InstantPath", config.usage.instantrec_path, None)
@@ -74,9 +68,9 @@ class RecordingSettings(Setup):
 			self.errorItem = self["config"].getCurrentIndex()
 			footnote = _("Directory '%s' does not exist!") % path
 			green = ""
-		elif stat(path).st_dev in self.inhibitDevs:
+		elif not self.isValidPartition(path):
 			self.errorItem = self["config"].getCurrentIndex()
-			footnote = _("Flash directory '%s' not allowed!") % path
+			footnote = _("Directory '%s' not valid. Partition must be ext, nfs, or fat") % path
 			green = ""
 		elif not fileExists(path, "w"):
 			self.errorItem = self["config"].getCurrentIndex()
@@ -88,6 +82,18 @@ class RecordingSettings(Setup):
 			green = self.greenText
 		self.setFootnote(footnote)
 		self["key_green"].text = green
+
+	def isValidPartition(self, path):
+		if path is not None:
+			supported_filesystems = ('ext4', 'ext3', 'ext2', 'nfs', 'vfat')
+			valid_partitions = []
+			for partition in Components.Harddisk.harddiskmanager.getMountedPartitions():
+				if partition.filesystem() in supported_filesystems:
+					valid_partitions.append(partition.mountpoint)
+			print("[" + self.__class__.__name__ + "] valid partitions", valid_partitions)
+			if valid_partitions:
+				return Components.Harddisk.findMountPoint(realpath(path))+'/' in valid_partitions or Components.Harddisk.findMountPoint(realpath(path)) in valid_partitions
+		return False
 
 	def selectionChanged(self):
 		if self.errorItem == -1:
