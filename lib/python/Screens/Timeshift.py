@@ -1,25 +1,20 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-from os import link, remove, stat
-from os.path import isdir, join as pathJoin, splitext
+from os import link, remove
+from os.path import isdir, realpath, join as pathJoin, splitext
 from tempfile import NamedTemporaryFile
 
 from Components.config import config
-from Screens.LocationBox import defaultInhibitDirs, TimeshiftLocationBox
+from Screens.LocationBox import TimeshiftLocationBox
 from Screens.MessageBox import MessageBox
 from Screens.Setup import Setup
 from Tools.Directories import fileExists
+import Components.Harddisk
 
 
 class TimeshiftSettings(Setup):
 	def __init__(self, session):
-		self.inhibitDevs = []
-		for dir in defaultInhibitDirs + ["/", "/media"]:
-			if isdir(dir):
-				device = stat(dir).st_dev
-				if device not in self.inhibitDevs:
-					self.inhibitDevs.append(device)
 		self.buildChoices("TimeshiftPath", config.usage.timeshift_path, None)
 		Setup.__init__(self, session=session, setup="timeshift")
 		self.greenText = self["key_green"].text
@@ -53,17 +48,17 @@ class TimeshiftSettings(Setup):
 			self.errorItem = self["config"].getCurrentIndex()
 			footnote = _("Directory '%s' does not exist!") % path
 			green = ""
-		elif stat(path).st_dev in self.inhibitDevs:
+		elif not self.isValidPartition(path):
 			self.errorItem = self["config"].getCurrentIndex()
-			footnote = _("Flash directory '%s' not allowed!") % path
+			footnote = _("Directory '%s' not valid. Partition must be ext or nfs") % path
 			green = ""
 		elif not fileExists(path, "w"):
 			self.errorItem = self["config"].getCurrentIndex()
 			footnote = _("Directory '%s' not writeable!") % path
 			green = ""
-		elif not self.hasHardLinks(path):
+		elif not self.hasHardLinks(path): # Timeshift requires a hardlinks
 			self.errorItem = self["config"].getCurrentIndex()
-			footnote = _("Directory '%s' can't be linked to recordings!") % path
+			footnote = _("Directory '%s' is not hard links capable!") % path
 			green = ""
 		else:
 			self.errorItem = -1
@@ -71,6 +66,18 @@ class TimeshiftSettings(Setup):
 			green = self.greenText
 		self.setFootnote(footnote)
 		self["key_green"].text = green
+
+	def isValidPartition(self, path):
+		if path is not None:
+			supported_filesystems = ('ext4', 'ext3', 'ext2', 'nfs')
+			valid_partitions = []
+			for partition in Components.Harddisk.harddiskmanager.getMountedPartitions():
+				if partition.filesystem() in supported_filesystems:
+					valid_partitions.append(partition.mountpoint)
+			print("[" + self.__class__.__name__ + "] valid partitions", valid_partitions)
+			if valid_partitions:
+				return Components.Harddisk.findMountPoint(realpath(path))+'/' in valid_partitions or Components.Harddisk.findMountPoint(realpath(path)) in valid_partitions
+		return False
 
 	def hasHardLinks(self, path):
 		try:
@@ -120,4 +127,4 @@ class TimeshiftSettings(Setup):
 		if self.errorItem == -1:
 			Setup.keySave(self)
 		else:
-			self.session.open(MessageBox, "%s\n\n%s" % (self.getFootnote() % _("Please select an acceptable directory.")), type=MessageBox.TYPE_ERROR)
+			self.session.open(MessageBox, "%s\n\n%s" % (self.getFootnote(), _("Please select an acceptable directory.")), type=MessageBox.TYPE_ERROR)
