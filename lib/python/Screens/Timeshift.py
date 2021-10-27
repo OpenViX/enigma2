@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 from os import link, remove
-from os.path import isdir, realpath, join as pathJoin
+from os.path import isdir, realpath, join as pathJoin, splitext
 from tempfile import NamedTemporaryFile
 
 from Components.config import config
@@ -50,11 +50,15 @@ class TimeshiftSettings(Setup):
 			green = ""
 		elif not self.isValidPartition(path):
 			self.errorItem = self["config"].getCurrentIndex()
-			footnote = _("Directory '%s' not valid. Partition must be ext, nfs, or fat") % path
+			footnote = _("Directory '%s' not valid. Partition must be ext or nfs") % path
 			green = ""
 		elif not fileExists(path, "w"):
 			self.errorItem = self["config"].getCurrentIndex()
 			footnote = _("Directory '%s' not writeable!") % path
+			green = ""
+		elif not self.hasHardLinks(path): # Timeshift requires a hardlinks
+			self.errorItem = self["config"].getCurrentIndex()
+			footnote = _("Directory '%s' is not hard links capable!") % path
 			green = ""
 		else:
 			self.errorItem = -1
@@ -65,7 +69,7 @@ class TimeshiftSettings(Setup):
 
 	def isValidPartition(self, path):
 		if path is not None:
-			supported_filesystems = ('ext4', 'ext3', 'ext2', 'nfs', 'vfat')
+			supported_filesystems = ('ext4', 'ext3', 'ext2', 'nfs')
 			valid_partitions = []
 			for partition in Components.Harddisk.harddiskmanager.getMountedPartitions():
 				if partition.filesystem() in supported_filesystems:
@@ -74,6 +78,33 @@ class TimeshiftSettings(Setup):
 			if valid_partitions:
 				return Components.Harddisk.findMountPoint(realpath(path))+'/' in valid_partitions or Components.Harddisk.findMountPoint(realpath(path)) in valid_partitions
 		return False
+
+	def hasHardLinks(self, path):
+		try:
+			tmpfile = NamedTemporaryFile(suffix='.file', prefix='tmp', dir=path, delete=False)
+		except (IOError, OSError) as err:
+			print("[Timeshift] DEBUG: Create temp file - I/O Error %d: %s!" % (err.errno, err.strerror))
+			return False
+		srcname = tmpfile.name
+		tmpfile.close()
+		dstname = "%s.link" % splitext(srcname)[0]
+		try:
+			link(srcname, dstname)
+			result = True
+		except (IOError, OSError) as err:
+			print("[Timeshift] DEBUG: Create link - I/O Error %d: %s!" % (err.errno, err.strerror))
+			result = False
+		try:
+			remove(srcname)
+		except (IOError, OSError) as err:
+			print("[Timeshift] DEBUG: Remove source - I/O Error %d: %s!" % (err.errno, err.strerror))
+			pass
+		try:
+			remove(dstname)
+		except (IOError, OSError) as err:
+			print("[Timeshift] DEBUG: Remove target - I/O Error %d: %s!" % (err.errno, err.strerror))
+			pass
+		return result
 
 	def selectionChanged(self):
 		if self.errorItem == -1:
