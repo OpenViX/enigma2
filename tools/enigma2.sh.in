@@ -244,9 +244,9 @@ EOP
                 fi
                 ;;
             esac
-            echo $line
+            echo "$line"
             if [ $logswitched -eq 1 ]; then # New log opened
-                echo $line                  # Write full line into new log
+                echo "$line"                # Write full line into new log
                 logswitched=0
             fi
         done
