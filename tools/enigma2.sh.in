@@ -220,6 +220,7 @@ EOP
 
         echo "========== Enigma2 log starts =========="
         while read line; do
+            case "$line" in
 # Are we being told that enigma2 has exited?
 # If so, we exit too
 #
@@ -231,7 +232,6 @@ EOP
 # If so, activate the change.
 # We'll log the CHANGE line as well....
 #
-            case "$line" in
             CHANGE\ config.crash.debugloglimit=*)
                 if [ $first_limit -eq 1 ]; then
                     first_limit=0
