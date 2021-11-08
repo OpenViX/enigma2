@@ -10,20 +10,20 @@
         <item level="2" text="Backup prefix" description="Allows you to tag your backups to a box.">config.backupmanager.folderprefix</item>
         <item level="2" text="Include machine name in backup name" description="The name of the receiver can be included in the backup filename, but makes the filename lengthy.">config.backupmanager.showboxname</item>
         <item level="2" text="Schedule backups" description="Allows you to schedule your backups.">config.backupmanager.schedule</item>
-        <item level="2" text="Time of backup to start" requires="config.backupmanager.schedule" description="Set the time of backup to start.">config.backupmanager.scheduletime</item>
-        <item level="2" text="Repeat how often" requires="config.backupmanager.schedule" description="Set the repeat interval of backup schedule.">config.backupmanager.repeattype</item>
-        <item level="2" text="Query before backup starts" requires="config.backupmanager.schedule" description="Query before starting backup.">config.backupmanager.query</item>
-        <item level="2" text="Max backups to keep (0==all)" requires="config.backupmanager.schedule" description="Backups to keep">config.backupmanager.number_to_keep</item>
+        <item level="2" text="- Time of backup to start" requires="config.backupmanager.schedule" description="Set the time of backup to start.">config.backupmanager.scheduletime</item>
+        <item level="2" text="- Repeat how often" requires="config.backupmanager.schedule" description="Set the repeat interval of backup schedule.">config.backupmanager.repeattype</item>
+        <item level="2" text="- Query before backup starts" requires="config.backupmanager.schedule" description="Query before starting backup.">config.backupmanager.query</item>
+        <item level="2" text="- Max backups to keep (0==all)" requires="config.backupmanager.schedule" description="Backups to keep">config.backupmanager.number_to_keep</item>
     </setup>
     <setup key="viximagemanager" title="Image manager settings" titleshort="Settings">
         <item level="1" text="Automatic settings backup" description="Create a settings backup before updating.">config.imagemanager.autosettingsbackup</item>
         <item level="2" text="Backup location" description="Location of where the image backup should be saved.">config.imagemanager.backuplocation</item>
         <item level="2" text="Backup prefix" description="Allows you to tag your image backup to a box. (default is box name/type)">config.imagemanager.folderprefix</item>
         <item level="2" text="Schedule backups" description="Allows you to schedule your image backups.">config.imagemanager.schedule</item>
-        <item level="2" text="Time of backup to start" requires="config.imagemanager.schedule" description="Set the time of backup to start.">config.imagemanager.scheduletime</item>
-        <item level="2" text="Repeat how often" requires="config.imagemanager.schedule" description="Set the repeat interval of backup schedule.">config.imagemanager.repeattype</item>
-        <item level="2" text="Query before image backup starts" requires="config.imagemanager.schedule" description="Query before starting image backup.">config.imagemanager.query</item>
-        <item level="2" text="Max image backups to keep (0==all)" requires="config.imagemanager.schedule" description="Backups to keep">config.imagemanager.number_to_keep</item>
+        <item level="2" text="- Time of backup to start" requires="config.imagemanager.schedule" description="Set the time of backup to start.">config.imagemanager.scheduletime</item>
+        <item level="2" text="- Repeat how often" requires="config.imagemanager.schedule" description="Set the repeat interval of backup schedule.">config.imagemanager.repeattype</item>
+        <item level="2" text="- Query before image backup starts" requires="config.imagemanager.schedule" description="Query before starting image backup.">config.imagemanager.query</item>
+        <item level="2" text="- Max image backups to keep (0==all)" requires="config.imagemanager.schedule" description="Backups to keep">config.imagemanager.number_to_keep</item>
         <!-- item level="2" text="ATV library" description="This http url for the OpenATV image library being accessed.">config.imagemanager.imagefeed_ATV</item>
         <item level="2" text="Pli library" description="This http url for the OpenPLi image library being accessed.">config.imagemanager.imagefeed_Pli</item>
         <item level="2" text="ViX library" description="This http url for the OpenViX image library being accessed.">config.imagemanager.imagefeed_ViX</item -->
