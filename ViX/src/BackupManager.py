@@ -67,6 +67,7 @@ config.backupmanager.query = ConfigYesNo(default=True)
 config.backupmanager.lastbackup = ConfigNumber(default=0)
 # Max no. of backups to keep.  0 == keep them all
 #
+config.backupmanager.types_to_prune = ConfigSelection(default="none", choices=[("all", _("All")), ("none", _("None")), ("sch", _("Only scheduled")), ("auto", _("Automatically created"))])
 config.backupmanager.number_to_keep = ConfigNumber(default=0)
 
 
@@ -1351,14 +1352,21 @@ class BackupFiles(Screen):
 # Trim the number of backups to the configured setting...
 #
 		try:
-			if config.backupmanager.number_to_keep.value > 0 \
+			if config.backupmanager.types_to_prune.value != "none" \
+			 and config.backupmanager.number_to_keep.value > 0 \
 			 and path.exists(self.BackupDirectory): # !?!
 				images = listdir(self.BackupDirectory)
 # Only try to delete backups with the current user prefix
 				emlist = []
 				for fil in images:
 					if (fil.startswith(config.backupmanager.folderprefix.value) and fil.endswith(".tar.gz")):
-						emlist.append(fil)
+						if config.backupmanager.types_to_prune.value == "all":
+							emlist.append(fil)
+						elif config.backupmanager.types_to_prune.value == "sch" and "-Sch-" in fil:
+							emlist.append(fil)
+						elif config.backupmanager.types_to_prune.value == "auto" and ("-Sch-" in fil or "-IM-" in fil or "-SU-" in fil):
+							emlist.append(fil)
+						
 # sort by oldest first...
 				emlist.sort(key=lambda fil: path.getmtime(self.BackupDirectory + fil))
 # ...then, if we have too many, remove the <n> newest from the end

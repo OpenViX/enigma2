@@ -13,7 +13,10 @@
         <item level="2" text="- Time of backup to start" requires="config.backupmanager.schedule" description="Set the time of backup to start.">config.backupmanager.scheduletime</item>
         <item level="2" text="- Repeat how often" requires="config.backupmanager.schedule" description="Set the repeat interval of backup schedule.">config.backupmanager.repeattype</item>
         <item level="2" text="- Query before backup starts" requires="config.backupmanager.schedule" description="Query before starting backup.">config.backupmanager.query</item>
-        <item level="2" text="Max backups to keep (0==all)" description="Backups to keep">config.backupmanager.number_to_keep</item>
+        <item level="2" text="Backups to prune" description="Types of backups to remove when stale.">config.backupmanager.types_to_prune</item>
+        <if conditional="config.backupmanager.types_to_prune.value != 'none'">
+            <item level="2" text="- Max backups to keep (0==all)" description="Maximum number of backups to keep. Older backups are given priority for removal, so the fresher ones remain.">config.backupmanager.number_to_keep</item>
+        </if>
     </setup>
     <setup key="viximagemanager" title="Image manager settings" titleshort="Settings">
         <item level="1" text="Automatic settings backup" description="Create a settings backup before updating.">config.imagemanager.autosettingsbackup</item>
