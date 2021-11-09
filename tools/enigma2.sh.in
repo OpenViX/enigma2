@@ -82,6 +82,11 @@ fi
 if grep -q 'config\.crash\.enabledebug=True' @sysconfdir@/enigma2/settings; then
 	DEBUG_LVL='4'
 
+# Generate a random message for the logger to know that enigma2 has
+# ended
+#
+    unem="Enigma2 is LEAVING: $RANDOM"
+
 # ========== Start of log functions ==========
 # fixup_log() - remove any partial-line at the end a logfile as we
 # switch and add a note there instead.
@@ -215,11 +220,18 @@ EOP
 
         echo "========== Enigma2 log starts =========="
         while read line; do
+            case "$line" in
+# Are we being told that enigma2 has exited?
+# If so, we exit too
+#
+            $unem)
+                echo "enigma2 has exited"
+                break
+                ;;
 # Have we been asked to change the limit or log path?
 # If so, activate the change.
 # We'll log the CHANGE line as well....
 #
-            case "$line" in
             CHANGE\ config.crash.debugloglimit=*)
                 if [ $first_limit -eq 1 ]; then
                     first_limit=0
@@ -244,9 +256,9 @@ EOP
                 fi
                 ;;
             esac
-            echo $line
+            echo "$line"
             if [ $logswitched -eq 1 ]; then # New log opened
-                echo $line                  # Write full line into new log
+                echo "$line"                # Write full line into new log
                 logswitched=0
             fi
         done
@@ -260,7 +272,16 @@ EOP
     }
 # ========== End of log functions ==========
 
-	LD_PRELOAD=$LIBS @bindir@/enigma2 2>&1 | dblogger
+# Run into a logging function in such a way that when
+# enigma2 exits the logger exits too.
+# We need to get the exit code from enigma2, not the logger
+#
+        ( LD_PRELOAD=$LIBS /usr/bin/enigma2 # run enigma2
+            xstat=$?                        # its exit code
+            echo                            # in case of mid-line crisis
+            echo $unem                      # marker to end logger
+            exit $xstat                     # exit code for this "block"
+        ) 2>&1 | dblogger
 	ret=${PIPESTATUS[0]}    # enigma2 exit code, not dblogger's
 else
 	LD_PRELOAD=$LIBS @bindir@/enigma2

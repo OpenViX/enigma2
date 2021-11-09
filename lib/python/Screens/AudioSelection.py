@@ -1,6 +1,5 @@
 from __future__ import print_function
 from __future__ import absolute_import
-from __future__ import division
 
 from Screens.Screen import Screen
 from Screens.Setup import getConfigMenuItem, Setup
@@ -95,23 +94,25 @@ class AudioSelection(Screen, ConfigListScreen):
 
 	def fillList(self, arg=None):
 		from Tools.ISO639 import LanguageCodes
+		from Components.UsageConfig import originalAudioTracks, visuallyImpairedCommentary
 		streams = []
 		conflist = []
 		selectedidx = 0
+		self.subtitlelist = []
 
 		self["key_red"].setBoolean(False)
 		self["key_green"].setBoolean(False)
 		self["key_yellow"].setBoolean(False)
 		self["key_blue"].setBoolean(False)
 
-		subtitlelist = self.getSubtitleList()
-		print("[AudiSelection][fillList] subtitlelist=%s" % (subtitlelist))
+		self.subtitlelist = self.getSubtitleList()
+		print("[AudiSelection][fillList] subtitlelist=%s" % (self.subtitlelist))
 		if self.settings.menupage.value == PAGE_AUDIO:
 			self.setTitle(_("Select audio track"))
 			service = self.session.nav.getCurrentService()
 			self.audioTracks = audio = service and service.audioTracks()
 			n = audio and audio.getNumberOfTracks() or 0
-			if subtitlelist:
+			if self.subtitlelist:
 				conflist.append(getConfigListEntry(_("To subtitle selection"), self.settings.menupage))
 			if SystemInfo["CanDownmixAC3"]:
 				choise_list = [
@@ -290,6 +291,10 @@ class AudioSelection(Screen, ConfigListScreen):
 							language += " / "
 						if lang in LanguageCodes:
 							language += _(LanguageCodes[lang][0])
+						elif lang in originalAudioTracks:
+							language += "%s  (%s)" % (_("Original version"), lang)
+						elif lang in visuallyImpairedCommentary:
+							language += "%s  (%s)" % (_("Audio description for the visually impaired"), lang)
 						else:
 							language += lang
 						cnt += 1
@@ -319,7 +324,7 @@ class AudioSelection(Screen, ConfigListScreen):
 		elif self.settings.menupage.value == PAGE_SUBTITLES:
 			self.setTitle(_("Subtitle selection"))
 			idx = 0
-			for x in subtitlelist:
+			for x in self.subtitlelist:
 				number = str(x[1])
 				description = "?"
 				language = ""
@@ -486,11 +491,13 @@ class AudioSelection(Screen, ConfigListScreen):
 		if config or self.focus == FOCUS_CONFIG:
 			index = self["config"].getCurrentIndex()
 			if self.settings.menupage.value == PAGE_AUDIO:
-				if index == 0:								# Sub Title selection screen
+				if self.subtitlelist and index == 0:					# Subtitle selection screen
 					self.keyAudioSubtitle()
 					self.__updatedInfo()
 				elif self["config"].getCurrent()[2]:					
 					self["config"].getCurrent()[2]()
+				else:
+					ConfigListScreen.keyRight(self)
 			elif self.settings.menupage.value == PAGE_SUBTITLES and self.infobar.selected_subtitle and self.infobar.selected_subtitle != (0, 0, 0, 0):
 				if index == 0:								# Audio selection screen
 					self.keyAudioSubtitle()
