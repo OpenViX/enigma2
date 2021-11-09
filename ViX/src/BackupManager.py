@@ -1204,6 +1204,10 @@ class BackupFiles(Screen):
 				if custommix not in self.selectedFiles:
 					self.selectedFiles.append(custommix)
 
+		# temp measure: clear "/etc/samba" from settings as this is a system config location, not user files
+		if "/etc/samba" in self.selectedFiles:
+			self.selectedFiles.remove("/etc/samba")
+
 		config.backupmanager.backupdirs.setValue(self.selectedFiles)
 		config.backupmanager.backupdirs.save()
 		configfile.save()
