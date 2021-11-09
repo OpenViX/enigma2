@@ -28,6 +28,9 @@ def raw_stderr_print(text):
 	with io.open(2, mode="wt", closefd=False) as myerr:
 		myerr.write(text)
 
+originalAudioTracks = "orj dos ory org esl qaa und mis mul ORY ORJ Audio_ORJ oth"
+visuallyImpairedCommentary = "NAR qad"
+
 def InitUsageConfig():
 	config.version = ConfigNumber(default=0)
 	config.misc.useNTPminutes = ConfigSelection(default="30", choices=[("30", "30" + " " + _("minutes")), ("60", _("Hour")), ("1440", _("Once per day"))])
@@ -1017,7 +1020,7 @@ def InitUsageConfig():
 	audio_language_choices = [
 		("", _("None")),
 		("und", _("Undetermined")),
-		("orj dos ory org esl qaa und mis mul ORY ORJ Audio_ORJ oth", _("Original")),
+		(originalAudioTracks, _("Original version")),
 		("ara", _("Arabic")),
 		("eus baq", _("Basque")),
 		("bul", _("Bulgarian")),
@@ -1051,7 +1054,7 @@ def InitUsageConfig():
 		("tha", _("Thai")),
 		("tur Audio_TUR", _("Turkish")),
 		("ukr Ukr", _("Ukrainian")),
-		("NAR qad", _("Visual impaired commentary"))]
+		(visuallyImpairedCommentary, _("Audio description for the visually impaired"))]
 
 	def setEpgLanguage(configElement):
 		eServiceEvent.setEPGLanguage(configElement.value)
