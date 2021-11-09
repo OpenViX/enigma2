@@ -1203,6 +1203,8 @@ class BackupFiles(Screen):
 			for custommix in glob.glob("/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/*CustomMix.xml"):
 				if custommix not in self.selectedFiles:
 					self.selectedFiles.append(custommix)
+		if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/favourites.xml") and "/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/favourites.xml" not in self.selectedFiles:
+			self.selectedFiles.append("/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/favourites.xml")
 
 		# temp measure: clear "/etc/samba" from settings as this is a system config location, not user files
 		if "/etc/samba" in self.selectedFiles:
