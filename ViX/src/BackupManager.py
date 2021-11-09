@@ -1,4 +1,5 @@
 from __future__ import print_function
+import six
 
 from datetime import date, datetime
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
@@ -690,7 +691,7 @@ class VIXBackupManager(Screen):
 
 	def Stage5Complete(self, result, retval, extra_args):
 		if result:
-			print("[BackupManager] opkg install result:\n", result)
+			print("[BackupManager] opkg install result:\n", six.ensure_str(result))
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
 			print("[BackupManager] Restoring Stage 5: Completed")
