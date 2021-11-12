@@ -271,7 +271,7 @@ class EPGListGrid(EPGListBase):
 				else:
 					self.itemHeight = 45
 			self.l.setItemHeight(self.itemHeight)
-			self.instance.resize(eSize(self.listWidth, self.listHeight / self.itemHeight * self.itemHeight))
+			self.instance.resize(eSize(self.listWidth, self.listHeight // self.itemHeight * self.itemHeight))
 			self.listHeight = self.instance.size().height()
 
 	def setFontsize(self):
