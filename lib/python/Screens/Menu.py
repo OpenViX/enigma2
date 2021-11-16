@@ -82,7 +82,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			self["menu"].setIndex(self.number - 1)
 		self.resetNumberKey()
 		selection = self["menu"].getCurrent()
-		if selection is not None:
+		if selection and selection[1]:
 			selection[1]()
 
 	def execText(self, text):
@@ -115,13 +115,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 					return
 			elif not SystemInfo.get(requires, False):
 				return
-		if six.PY3:
-			MenuTitle = _(node.get("text", "??"))
-			# print("[MenuTiTle PY3] =%s" % (MenuTitle))
-		else:
-			MenuTitle = _(node.get("text", "??").encode("UTF-8"))
-			# print("[MenuTiTle PY2] =%s" % (MenuTitle))
-		MenuTitle = six.ensure_str(MenuTitle)
+		MenuTitle = six.ensure_str(_(node.get("text", "??")) if six.PY3 else _(node.get("text", "??").encode("UTF-8")))
 		entryID = node.get("entryID", "undefined")
 		weight = node.get("weight", 50)
 		x = node.get("flushConfigOnClose")
@@ -141,6 +135,8 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			self.close(True)
 		elif len(self.list) == 1:
 			self.close()
+		else:
+			self.createMenuList()
 
 	def addItem(self, destList, node):
 		requires = node.get("requires")
@@ -153,13 +149,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		conditional = node.get("conditional")
 		if conditional and not eval(conditional):
 			return
-		if six.PY3:
-			item_text = node.get("text", "* Undefined *")
-			# print("[Menu item_text PY3] =%s" % (item_text))
-		else:
-			item_text = node.get("text", "* Undefined *").encode("UTF-8")
-			# print("[Menu item_text PY2] =%s" % (item_text))
-		item_text = six.ensure_str(item_text)
+		item_text = six.ensure_str(node.get("text", "* Undefined *") if six.PY3 else node.get("text", "* Undefined *").encode("UTF-8"))
 		if item_text:
 			item_text = _(item_text)
 		entryID = node.get("entryID", "undefined")
@@ -222,66 +212,21 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		destList.append((item_text, self.nothing, entryID, weight))
 
 	def __init__(self, session, parent):
+		self.parentmenu = parent
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
-		list = []
-
-		menuID = None
-		for x in parent: #walk through the actual nodelist
-			if not x.tag:
-				continue
-			if x.tag == 'item':
-				item_level = int(x.get("level", 0))
-				if item_level <= config.usage.setup_level.index:
-					self.addItem(list, x)
-					count += 1
-			elif x.tag == 'menu':
-				self.addMenu(list, x)
-				count += 1
-			elif x.tag == "id":
-				menuID = x.get("val")
-				count = 0
-
-			if menuID is not None:
-				# menuupdater?
-				if menuupdater.updatedMenuAvailable(menuID):
-					for x in menuupdater.getUpdatedMenu(menuID):
-						if x[1] == count:
-							list.append((x[0], boundFunction(self.runScreen, (x[2], x[3] + ", ")), x[4]))
-							count += 1
-
-		if menuID is not None:
-			# plugins
-			for l in plugins.getPluginsForMenu(menuID):
-				# check if a plugin overrides an existing menu
-				plugin_menuid = l[2]
-				for x in list:
-					if x[2] == plugin_menuid:
-						list.remove(x)
-						break
-				if len(l) > 4 and l[4]:
-					list.append((l[0], boundFunction(l[1], self.session, self.close), l[2], l[3] or 50))
-				else:
-					list.append((l[0], boundFunction(l[1], self.session), l[2], l[3] or 50))
+		self.menulength = 0
+		self["menu"] = List([])
+		self["menu"].enableWrapAround = True
+		self.createMenuList()
 
 		# for the skin: first try a menu_<menuID>, then Menu
 		self.skinName = []
-		if menuID is not None:
-			self.skinName.append("menu_" + menuID)
+		if self.menuID:
+			self.skinName.append("menu_" + self.menuID)
 		self.skinName.append("Menu")
-		self.menuID = menuID
+
 		ProtectedScreen.__init__(self)
-
-		# Sort by Weight
-		if config.usage.sort_menus.value:
-			list.sort()
-		else:
-			list.sort(key=lambda x: int(x[3]))
-
-		if config.usage.menu_show_numbers.value:
-			list = [(str(x[0] + 1) + "  " + x[1][0], x[1][1], x[1][2], x[1][3]) for x in enumerate(list)]
-
-		self["menu"] = List(list)
 
 		# self["menuActions"] = HelpableNumberActionMap(self, ["OkCancelActions", "MenuActions", "NumberActions"], {
 		self["menuActions"] = HelpableNumberActionMap(self, ["OkCancelActions", "NumberActions"], {
@@ -300,13 +245,9 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			"9": (self.keyNumberGlobal, _("Direct menu item selection")),
 			"0": (self.keyNumberGlobal, _("Direct menu item selection"))
 		}, prio=0, description=_("Common Menu Actions"))
-		if six.PY3:
-			a = parent.get("title", "") or None
-			a = a and _(a) or _(parent.get("text", ""))
-		else:
-			a = parent.get("title", "").encode("UTF-8") or None
-			a = a and _(a) or _(parent.get("text", "").encode("UTF-8"))
-		self.setTitle(a)
+		title = (parent.get("title", "") if six.PY3 else parent.get("title", "").encode("UTF-8")) or None
+		title = title and _(title) or (_(parent.get("text", "") if six.PY3 else _(parent.get("text", "").encode("UTF-8"))))
+		self.setTitle(title)
 
 		self.number = 0
 		self.nextNumberTimer = eTimer()
@@ -317,6 +258,60 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 	def __onExecBegin(self):
 		self.onExecBegin.remove(self.__onExecBegin)
 		self.okbuttonClick()
+
+	def createMenuList(self):
+		self.list = []
+		self.menuID = None
+		for x in self.parentmenu: #walk through the actual nodelist
+			if not x.tag:
+				continue
+			if x.tag == 'item':
+				item_level = int(x.get("level", 0))
+				if item_level <= config.usage.setup_level.index:
+					self.addItem(self.list, x)
+					count += 1
+			elif x.tag == 'menu':
+				self.addMenu(self.list, x)
+				count += 1
+			elif x.tag == "id":
+				self.menuID = x.get("val")
+				count = 0
+
+			if self.menuID is not None:
+				# menuupdater?
+				if menuupdater.updatedMenuAvailable(self.menuID):
+					for x in menuupdater.getUpdatedMenu(self.menuID):
+						if x[1] == count:
+							self.list.append((x[0], boundFunction(self.runScreen, (x[2], x[3] + ", ")), x[4]))
+							count += 1
+
+		if self.menuID is not None:
+			# plugins
+			for l in plugins.getPluginsForMenu(self.menuID):
+				# check if a plugin overrides an existing menu
+				plugin_menuid = l[2]
+				for x in self.list:
+					if x[2] == plugin_menuid:
+						self.list.remove(x)
+						break
+				if len(l) > 4 and l[4]:
+					self.list.append((l[0], boundFunction(l[1], self.session, self.close), l[2], l[3] or 50))
+				else:
+					self.list.append((l[0], boundFunction(l[1], self.session), l[2], l[3] or 50))
+
+		# Sort by Weight
+		if config.usage.sort_menus.value:
+			self.list.sort()
+		else:
+			self.list.sort(key=lambda x: int(x[3]))
+
+		if config.usage.menu_show_numbers.value:
+			self.list = [(str(x[0] + 1) + "  " + x[1][0], x[1][1], x[1][2], x[1][3]) for x in enumerate(self.list)]
+
+		if self.menulength != len(self.list): # updateList must only be used on a list of the same length. If length is different we call setList. 
+			self["menu"].setList(self.list)
+			self.menulength = len(self.list)
+		self["menu"].updateList(self.list)
 
 	def keyNumberGlobal(self, number):
 		self.number = self.number * 10 + number
