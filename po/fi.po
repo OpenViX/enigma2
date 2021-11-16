@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-19 16:44+0200\n"
-"PO-Revision-Date: 2021-08-09 11:27+0200\n"
+"PO-Revision-Date: 2021-11-16 20:43+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3050,7 +3050,7 @@ msgid "Check the internet connection again"
 msgstr "Tarkista internet-yhteys uudestaan"
 
 msgid "Checking Logs..."
-msgstr "Tarkistetaan lokeja"
+msgstr "Tarkistetaan lokeja..."
 
 msgid "Checking disk."
 msgstr "Tarkistetaan levyä"
@@ -9445,9 +9445,6 @@ msgstr "Puola"
 msgid "Polarisation"
 msgstr "Polarisaatio"
 
-msgid "Polarisation:"
-msgstr "Polarisaatio:"
-
 msgid "Polarization"
 msgstr "Polarisaatio"
 
@@ -9663,8 +9660,8 @@ msgstr "Katso %s lisätietoja OK-näppäimellä"
 msgid "Press OK to keep the currently selected%s skin."
 msgstr "Valitse teema %s käyttöön painamalla OK."
 
-msgid "Press OK to save and exit."
-msgstr "Paina OK, tallenna ja poistu"
+msgid "Press OK, save and exit..."
+msgstr "Paina OK, tallenna ja poistu..."
 
 msgid "Press OK to select a group of satellites to configure in one block."
 msgstr "Valitse ryhmä satelliitteja konfiguroitaviksi painamalla OK."
@@ -10946,7 +10943,7 @@ msgstr ""
 msgid ""
 "Select 'Yes' to remove all user customisations of skin data. Selecting this "
 "option will remove all user based skin customisations. All affected skins "
-"will return to their standard settings. This will also clear any customied "
+"will return to their standard settings. This will also clear any customised "
 "boot logos and backdrops."
 msgstr ""
 "Valitse 'Kyllä' poistaaksesi kaikki käyttäjän kustomoimat teeman muutokset. "
@@ -13047,7 +13044,7 @@ msgstr "Symbolinopeus"
 msgid "Symbol rate & FEC"
 msgstr "Symbolinopeus & FEC"
 
-msgid "Symbolrate:"
+msgid "Symbol rate:"
 msgstr "Symbolinopeus:"
 
 msgid "Sync NTP every (minutes)"
@@ -14287,9 +14284,6 @@ msgstr "URL"
 msgid "USALS"
 msgstr "USALS"
 
-msgid "USALS Calibration"
-msgstr "USALS kalibrointi"
-
 msgid ""
 "USALS automatically moves a motorised dish to the correct satellite based on "
 "the coordinates entered by the user. Without USALS each satellite will need "
@@ -14891,9 +14885,6 @@ msgstr "Virtuaali-näppäimistö"
 
 msgid "Virtuosso Image Xtreme"
 msgstr "Virtuosso Image Xtreme"
-
-msgid "Visual impaired commentary"
-msgstr "Näkövammaisten äänitekstitys"
 
 msgid "Voltage mode"
 msgstr "13/18V-jännite"
@@ -17171,7 +17162,7 @@ msgid "toggle time, chapter, audio, subtitle info"
 msgstr "Valitse aika, kappale, ääni, tekstitys"
 
 msgid "top"
-msgstr "suositut"
+msgstr "Ylhäällä"
 
 msgid "tourism/travel"
 msgstr "turismi/matkailu"
@@ -17403,3 +17394,136 @@ msgstr "%d päivä"
 
 msgid "%d days"
 msgstr "%d päivää"
+
+#, python-format
+msgid "?%s-recursive?"
+msgstr "?%s-recursief?"
+
+#, python-format
+msgid "?%s?"
+msgstr "?%s?"
+
+msgid "Checking ONID/TSID"
+msgstr "Tarkistetaan ONID/TSID"
+
+msgid "Enter valid ONID/TSID"
+msgstr "Syötä käypä ONID/TSID"
+
+msgid "NTP sync interval"
+msgstr "NTP synkronointiväli"
+
+msgid "Please wait, restarting cardserver."
+msgstr "Odota, korttipalvelin käynnistetään uudelleen."
+
+msgid "Please wait, restarting softcam and cardserver."
+msgstr "Odota, softcam ja korttipalvelin käynnistetään uudelleen."
+
+msgid "Please wait, restarting softcam."
+msgstr "Odota, softcam käynnistetään uudelleen."
+
+msgid "Restart both"
+msgstr "Käynnistä molemmat uudelleen"
+
+msgid "Restart cardserver"
+msgstr "Käynnistä korttipalvelin uudestaan"
+
+msgid "Restart softcam"
+msgstr "Käynnistä softcam uudelleen"
+
+msgid "Select Card Server"
+msgstr "Valitse korttipalvelin"
+
+msgid "Select Softcam"
+msgstr "Valitse softcam"
+
+msgid "Softcam script Setup"
+msgstr "Softcam komentosarja-asetukset"
+
+msgid "Softcam setup"
+msgstr "Softcam-asetukset"
+
+msgid "Stop live TV service"
+msgstr "Pysäytä suora TV-kanava"
+
+msgid "This not valid ONID/TSID"
+msgstr "Tämä ei ole käypä ONID/TSID"
+
+msgid "This valid ONID/TSID"
+msgstr "Tämä on käypä ONID/TSID"
+
+msgid "USALS calibration"
+msgstr "USALS-kalibrointi"
+
+#, python-format
+msgid "User Band %d"
+msgstr "Käyttäjän taajuusalue %d"
+
+#, python-format
+msgid "User Band %d (%s)"
+msgstr "Käyttäjän taajuusalue %d (%s)"
+
+msgid "Valid ONID/TSID look at www.lyngsat.com..."
+msgstr "Katso käypä ONID/TSID: www.lyngsat.com..."
+
+msgid ""
+"Warning: FBC-C V1 tuner should be connected to the first slot to work "
+"correctly. Otherwise, only 2 out of 8 demodulators will be available when "
+"connected in the second slot. "
+msgstr ""
+"Varoitus: FBC-C V1 -viritin pitää olla kytketty ensimmäiseen korttipaikkaan "
+"toimiakseen kunnolla. Toiseen korttipaikkaan kytkettynä vain 2 8:sta "
+"demodulaattorista on käytettävissä."
+
+msgid "Polarisation:"
+msgstr "Polarisaatio:"
+
+msgid "Symbolrate:"
+msgstr "Symbolinopeus:"
+
+msgid "YouTube TV is a new way to watch YouTube videos on Vu+"
+msgstr "YouTube TV on uusi tapa katsoa YouTube-videoita VU+ -laitteella"
+
+msgid "YouTube TV URL"
+msgstr "YouTube TV:n URL"
+
+msgid "Do not show YouTube TV Starter again"
+msgstr "Älä enää näytä YouTube TV:n aloitusikkunaa"
+
+msgid "Enable Ntpd when start YoutubeTV"
+msgstr "Salli ntpd YouTube TV:n käynnistyessä"
+
+msgid "Ntpd URL"
+msgstr "Ntpd:n URL"
+
+msgid "Setting"
+msgstr "Asetukset"
+
+msgid "* Start YouTube TV"
+msgstr "* Käynnistä YouTube TV"
+
+msgid "* Setting YouTube TV"
+msgstr "* Youtube TV:n asetukset"
+
+msgid "* RC Help"
+msgstr "* Kaukosäätimen ohjeet"
+
+msgid "To subtitle selection"
+msgstr "Tekstityksen valintaan"
+
+msgid "To audio selection"
+msgstr "Äänen valintaan"
+
+msgid "Enable Bluetooth Audio"
+msgstr "Ota Bluetooth ääni käyttöön"
+
+msgid "Audio description for the visually impaired"
+msgstr "Äänen kuvaus näkövammaisille"
+
+msgid "Narration"
+msgstr "Äänen kuvaus näkövammaisille"
+
+msgid "Original language"
+msgstr "Alkuperäinen kieli"
+
+msgid "Visual impaired commentary"
+msgstr "Selostus näkövammaisille"
