@@ -139,6 +139,8 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 	def menuClosed(self, *res):
 		if res and res[0]:
 			self.close(True)
+		elif len(self.list) == 1:
+			self.close()
 
 	def addItem(self, destList, node):
 		requires = node.get("requires")
@@ -309,6 +311,12 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		self.number = 0
 		self.nextNumberTimer = eTimer()
 		self.nextNumberTimer.callback.append(self.okbuttonClick)
+		if len(self.list) == 1:
+			self.onExecBegin.append(self.__onExecBegin)
+
+	def __onExecBegin(self):
+		self.onExecBegin.remove(self.__onExecBegin)
+		self.okbuttonClick()
 
 	def keyNumberGlobal(self, number):
 		self.number = self.number * 10 + number
