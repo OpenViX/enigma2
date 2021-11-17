@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-19 16:44+0200\n"
-"PO-Revision-Date: 2021-11-16 20:43+0200\n"
+"PO-Revision-Date: 2021-11-17 15:14+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -6237,7 +6237,7 @@ msgid "Graphics"
 msgstr "Grafiikka"
 
 msgid "Graphics Grid EPG"
-msgstr "Graafinen taulukko-EPG"
+msgstr "Graafinen taulukko-ohjelmaopas"
 
 msgid "Greece"
 msgstr "Kreikka"
@@ -6267,7 +6267,7 @@ msgid "Grey"
 msgstr "Harmaa"
 
 msgid "Grid EPG"
-msgstr "Graafinen taulukko-EPG"
+msgstr "Graafinen taulukko-ohjelmaopas"
 
 msgid "Grow drop"
 msgstr "Kasvava pudotus"
@@ -6938,10 +6938,10 @@ msgid "Info icon width"
 msgstr "Kanavalogon leveys"
 
 msgid "InfoBar EPG"
-msgstr "Tietopalkin EPG"
+msgstr "Tietopalkki-ohjelmaopas"
 
 msgid "Infobar EPG"
-msgstr "Tietopalkin EPG"
+msgstr "Tietopalkki-ohjelmaopas"
 
 msgid "Infobar EPG activation"
 msgstr "Hakupalkin aktivointi"
@@ -8070,7 +8070,7 @@ msgid "Mozambique"
 msgstr "Mozambique"
 
 msgid "Multi EPG"
-msgstr "Kanavaopas"
+msgstr "Monikanavaohjelmaopas"
 
 msgid "MultiBoot Image Selector"
 msgstr "Multiboot Imagen valinta"
@@ -12280,7 +12280,7 @@ msgid "Single"
 msgstr "Yksi"
 
 msgid "Single EPG"
-msgstr "Ohjelmaopas"
+msgstr "Yhden kanavan ohjelmaopas"
 
 msgid "Single core"
 msgstr "Yksi ydin"
@@ -13192,7 +13192,7 @@ msgid "Text"
 msgstr "Teksti"
 
 msgid "Text Grid EPG"
-msgstr "Vaihda teksti-EPG:n"
+msgstr "Teksti taulukko-ohjelmaopas"
 
 msgid "Text View On"
 msgstr "Tekstinäkymä päällä"
@@ -17527,3 +17527,15 @@ msgstr "Alkuperäinen kieli"
 
 msgid "Visual impaired commentary"
 msgstr "Selostus näkövammaisille"
+
+msgid "Enigma2 debug level."
+msgstr "Enigma2 debug-taso."
+
+msgid "Set Enigma2 Log Level"
+msgstr "Aseta Enigma2 loki-taso"
+
+msgid "Debug+ Logs"
+msgstr "Debug+ lokit"
+
+msgid "No Logs"
+msgstr "Ei lokeja"
