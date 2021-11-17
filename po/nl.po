@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-15 06:23+0000\n"
-"PO-Revision-Date: 2021-11-16 16:08+0100\n"
+"POT-Creation-Date: 2021-11-17 04:38+0000\n"
+"PO-Revision-Date: 2021-11-17 09:59+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -164,7 +164,7 @@ msgstr ""
 "Bekijk, installeer en verwijder beschikbare of geïnstalleerde pakketten."
 
 msgid " "
-msgstr ""
+msgstr " "
 
 #, python-format
 msgid "  (%s x %s)"
@@ -4990,6 +4990,9 @@ msgstr "Alternatieven bewerken"
 msgid "Edit chapters of current title"
 msgstr "Wijzig hoofdstuk van de huidige titel"
 
+msgid "Edit menu"
+msgstr "Bewerk menu"
+
 msgid "Edit new entry"
 msgstr "Pas nieuwe invoer aan"
 
@@ -5398,6 +5401,9 @@ msgstr "Verlaat EPG"
 
 msgid "Exit MAC address configuration"
 msgstr "Verlaat MAC-adres configuratie"
+
+msgid "Exit Menusort"
+msgstr "Verlaat MenuSort"
 
 msgid "Exit all menus"
 msgstr "Verlaat alle menu's"
@@ -6217,6 +6223,9 @@ msgstr "Verborgen/blanco"
 
 msgid "Hidden network"
 msgstr "Verborgen netwerk"
+
+msgid "Hide"
+msgstr "Verberg"
 
 msgid "Hide CI messages"
 msgstr "Verberg CI-meldingen"
@@ -7464,6 +7473,10 @@ msgstr "Menu"
 msgid "Menu config"
 msgstr "Menu configuratie"
 
+#, python-format
+msgid "Menusort (%s)"
+msgstr "Menusort (%s)"
+
 msgid "Merging Timeshift files"
 msgstr "Samenvoegen timeshiftbestanden"
 
@@ -7633,6 +7646,12 @@ msgstr "Verplaats omlaag naar volgende ingave"
 
 msgid "Move east"
 msgstr "Draai oost"
+
+msgid "Move menu item down"
+msgstr "Verplaats menu item naar beneden"
+
+msgid "Move menu item up"
+msgstr "Verplaats menu item naar boven"
 
 msgid "Move the keyboard cursor down"
 msgstr "Verplaats de cursor naar beneden"
@@ -9978,6 +9997,9 @@ msgstr "Herstel"
 msgid "Reset and renumerate title names"
 msgstr "Reset en hernummertitels"
 
+msgid "Reset order (All)"
+msgstr "Herstel volgorde (Alle)"
+
 msgid "Reset persistent PIN code"
 msgstr "Voer een nieuwe PIN in"
 
@@ -10028,6 +10050,9 @@ msgstr "Flash"
 
 msgid "Restore backups"
 msgstr "Back-ups terugzetten"
+
+msgid "Restore default sort"
+msgstr "Herstel standaard sortering"
 
 msgid "Restore defaults"
 msgstr "Herstel standaard waardes"
@@ -10264,11 +10289,17 @@ msgstr "Sla alle wijzigingen op en sluit af"
 msgid "Save and activate the currently selected skin"
 msgstr "Activeer de momenteel geselecteerde skin"
 
+msgid "Save and exit"
+msgstr "Bewaar en stop"
+
 msgid "Save and record"
 msgstr "Bewaar en sla op"
 
 msgid "Save and stop"
 msgstr "Bewaar en stop"
+
+msgid "Save changes"
+msgstr "Bewaar instellingen"
 
 msgid "Save every (in hours)"
 msgstr "Sla elke X uur op"
@@ -11181,6 +11212,9 @@ msgstr "Korte naam"
 msgid "Should the FTP connection to the remote receiver be established in passive mode (normally 'no')?"
 msgstr "Moet de FTP-verbinding naar de gast-ontvanger in passieve modus plaatsvinden (normaal 'nee')?"
 
+msgid "Show"
+msgstr "Toon"
+
 #, python-format
 msgid "Show %s"
 msgstr "Toon %s"
@@ -11919,8 +11953,11 @@ msgstr "Sorteer lijst volgens standaard en afsluiten?"
 msgid "Sort list:"
 msgstr "Sorteer lijst op:"
 
-msgid "Sort menu screens alphabetically"
-msgstr "Sorteer de menu's alfabetisch"
+msgid "Sort menu"
+msgstr "Sorteer menu"
+
+msgid "Sort menu screens"
+msgstr "Sorteer de menu's"
 
 msgid "Sort plug-in browser alphabetically"
 msgstr "Sorteer de plugin browser alfabetisch"
@@ -12882,9 +12919,6 @@ msgstr "Hier stelt u in waarheen als eerste gesprongen wordt in de kanaallijst (
 msgid "This option allows you to choose whether or not to display genre information for the event."
 msgstr "Hier kunt u instellen of u de genreinformatie wilt zien voor TV-programma's."
 
-msgid "This option allows you to disable sorting of the menus"
-msgstr "Hier kunt u het sorteren van menu's inschakelen"
-
 msgid "This option allows you to disable sorting of the option in setting screens"
 msgstr "Hiermee kunt u de sortering van de instellingenschermen uitschakelen"
 
@@ -13226,6 +13260,12 @@ msgstr "Schakel tussen nieuwe tekst ingeven voor of overschrijven bestaande teks
 
 msgid "Toggle picture In graphics"
 msgstr "Wissel Picture In Graphics"
+
+msgid "Toggle show/hide"
+msgstr "Wissel toon/verberg"
+
+msgid "Toggle show/hide of the current selection"
+msgstr "Wissel toon/verberg van de huidige selectie"
 
 msgid "Toggle the default subtitles"
 msgstr "Kies de standaard sorteermethode"
@@ -14400,6 +14440,9 @@ msgstr "Als de ontvanger uit stand-by komt, zal de TV op de juiste ingang ingest
 msgid "When set the PIG will return to live after a movie has stopped playing."
 msgstr "Indien 'Ja' wordt gekozen, wordt in de opnamelijst live-TV op de achtergrond of in PiG getoond zolang er geen opname loopt."
 
+msgid "When set to 'user' this option allows you to sort or hide menu items via the blue button in menu screens. When set to 'user defined hidden' the blue button text in the menu remains hidden even though the user sort feature is active."
+msgstr "Indien ingesteld op 'door u gedefinieerd' geeft deze optie de mogelijkheid menu-items met de blauwe toets te verplaatsen. Indien ingesteld op 'door gebruiker bepaald verborgen' is de blauwe toets in de menu's verborgen, terwijl deze wel werkzaam is."
+
 msgid "When set, each directory will show the previous state used. When off, the default values will be shown."
 msgstr "Indien ingeschakeld, worden de vorige waarden van elke map getoond. Indien uitgeschakeld worden de defaults getoond."
 
@@ -15026,6 +15069,9 @@ msgstr "alfabetisch"
 
 msgid "alphabetic reverse"
 msgstr "omgekeerd alfabetisch"
+
+msgid "alphabetical"
+msgstr "alfabetisch"
 
 msgid "alpharev then newest"
 msgstr "omgekeerd alfa dan nieuwste"
@@ -16148,6 +16194,9 @@ msgstr "use_hdmi_cacenter"
 msgid "user defined"
 msgstr "door u gedefinieerd"
 
+msgid "user defined hidden"
+msgstr "door gebruiker bepaald verborgen"
+
 msgid "using:"
 msgstr "gebruikt:"
 
@@ -16327,6 +16376,9 @@ msgstr "zapte"
 #~ msgstr ""
 #~ "De Softwaremanagement-plugin is niet geïnstalleerd!\n"
 #~ "Installeer deze eerst."
+
+#~ msgid "This option allows you to disable sorting of the menus"
+#~ msgstr "Hier kunt u het sorteren van menu's inschakelen"
 
 #~ msgid "Visual impaired commentary"
 #~ msgstr "Audiodescriptie voor slechtzienden"
