@@ -554,7 +554,7 @@ class Status:
 				if signal is not None:
 					data['signal'] = signal
 		if six.PY3:
-			if ssid != None and ssid != "off":
+			if ssid != None and ssid != "off" and ssid != "":
 				try:
 					scanresults = list(Cell.all(iface, 5))
 					print("[Wlan.py] scanresults2 = %s" % scanresults)	
