@@ -1117,7 +1117,7 @@ def InitUsageConfig():
 	config.oscaminfo.port = ConfigInteger(default=16002, limits=(0, 65536))
 	config.oscaminfo.intervall = ConfigSelectionNumber(min=1, max=600, stepwidth=1, default=10, wraparound=True)
 	config.misc.enableCamscript = ConfigYesNo(default=False)
-	config.misc.softcams = ConfigSelection(default="None", choices=CamControl("softcam").getList())
+	config.misc.softcams = ConfigSelection(default="None", choices=[(x, _(x)) for x in CamControl("softcam").getList()])
 	config.misc.softcamrestarts = ConfigSelection(default="", choices=[
 					("", _("Don't restart")),
 					("s", _("Restart softcam"))])	
