@@ -1005,8 +1005,8 @@ class MovieList(GUIComponent):
 	def buildBeginTimeSortKey(self, x):
 		ref = x[0]
 		if ref.flags & eServiceReference.mustDescent and os.path.exists(ref.getPath()):
-			return 0, x[1] and -os.stat(ref.getPath()).st_mtime or 0
-		return 1, -x[2]
+			return 0, "", x[1] and -os.stat(ref.getPath()).st_mtime or 0
+		return 1, "", -x[2]
 
 	def buildGroupwiseSortkey(self, x):
 		# Sort recordings by date, sort MP3 and stuff by name
