@@ -171,7 +171,7 @@ def resetMoviePlayState(cutsFileName, ref=None):
 				cutlist.append(data)
 		f.close()
 		f = open(cutsFileName, 'wb')
-		f.write(''.join(cutlist))
+		f.write(b''.join(cutlist))
 		f.close()
 	except:
 		pass
@@ -1005,7 +1005,7 @@ class MovieList(GUIComponent):
 	def buildBeginTimeSortKey(self, x):
 		ref = x[0]
 		if ref.flags & eServiceReference.mustDescent and os.path.exists(ref.getPath()):
-			return (0, x[1] and x[1].getName(ref).lower() or "")
+			return 0, "", x[1] and -os.stat(ref.getPath()).st_mtime or 0
 		return 1, "", -x[2]
 
 	def buildGroupwiseSortkey(self, x):

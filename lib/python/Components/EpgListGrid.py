@@ -256,22 +256,22 @@ class EPGListGrid(EPGListBase):
 		if not self.isInfobar and config.epgselection.grid.heightswitch.value:
 			numberOfRows = (self.listHeight // self.itemHeight) or 8
 			if ((self.listHeight / numberOfRows) / 3) >= 27:
-				tmpItemHeight = ((self.listHeight / numberOfRows) / 3)
+				tmpItemHeight = int((self.listHeight / numberOfRows) / 3)
 			elif ((self.listHeight / numberOfRows) / 2) >= 27:
-				tmpItemHeight = ((self.listHeight / numberOfRows) / 2)
+				tmpItemHeight = int((self.listHeight / numberOfRows) / 2)
 			else:
 				tmpItemHeight = 27
 			if tmpItemHeight < self.itemHeight:
 				self.itemHeight = tmpItemHeight
 			else:
 				if ((self.listHeight / numberOfRows) * 3) <= 45:
-					self.itemHeight = ((self.listHeight / numberOfRows) * 3)
+					self.itemHeight = int((self.listHeight / numberOfRows) * 3)
 				elif ((self.listHeight / numberOfRows) * 2) <= 45:
-					self.itemHeight = ((self.listHeight / numberOfRows) * 2)
+					self.itemHeight = int((self.listHeight / numberOfRows) * 2)
 				else:
 					self.itemHeight = 45
 			self.l.setItemHeight(self.itemHeight)
-			self.instance.resize(eSize(self.listWidth, self.listHeight / self.itemHeight * self.itemHeight))
+			self.instance.resize(eSize(self.listWidth, self.listHeight // self.itemHeight * self.itemHeight))
 			self.listHeight = self.instance.size().height()
 
 	def setFontsize(self):

@@ -35,6 +35,7 @@ from Screens.Satconfig import NimSetup
 from Screens.Screen import Screen
 from Tools.Transponder import ConvertToHumanReadable
 from Tools.Hex2strColor import Hex2strColor
+from Tools.Sign import SIGN
 from skin import parameters
 
 
@@ -103,7 +104,7 @@ class PositionerSetup(Screen):
 			self.advancedsats = self.advancedconfig.sat
 		else:
 			self.advanced = False
-		if six.PY3:	# do not combine into single conditional, py3 gives  SyntaxError: cannot assign to conditional expression	
+		if six.PY3:	# do not combine into single conditional, py3 gives  SyntaxError: cannot assign to conditional expression
 			self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)]
 		else:
 			self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
@@ -300,8 +301,8 @@ class PositionerSetup(Screen):
 	def OrbToStr(self, orbpos):
 		if orbpos > 1800:
 			orbpos = 3600 - orbpos
-			return "%d.%d\xc2\xb0 W" % (orbpos // 10, orbpos % 10)
-		return "%d.%d\xc2\xb0 E" % (orbpos // 10, orbpos % 10)
+			return "%d.%d%s W" % (orbpos // 10, orbpos % 10, SIGN)
+		return "%d.%d%s E" % (orbpos // 10, orbpos % 10, SIGN)
 
 	def setDishOrbosValue(self):
 		if self.getRotorMovingState():
@@ -418,7 +419,7 @@ class PositionerSetup(Screen):
 		self.positioner_storage = ConfigInteger(default=rotorposition, limits=(1, self.rotorPositions))
 		self.allocatedIndices = []
 		m = PositionerSetup.satposition2metric(orb_pos)
-		self.orbitalposition = ConfigFloat(default=[int(m[0] / 10), m[0] % 10], limits=[(0, 180), (0, 9)])
+		self.orbitalposition = ConfigFloat(default=[int(m[0] // 10), m[0] % 10], limits=[(0, 180), (0, 9)])
 		self.orientation = ConfigSelection([("east", _("East")), ("west", _("West"))], default=m[1])
 		for x in (self.positioner_tune, self.positioner_storage, self.orbitalposition):
 			x.addNotifier(self.retune, initial_call=False)
@@ -583,7 +584,7 @@ class PositionerSetup(Screen):
 	def stepCourse(self, steps):
 		def dots(s):
 			s = abs(s)
-			return (s / 10) * '.' if s < 100 else 10 * '.'
+			return (s // 10) * '.' if s < 100 else 10 * '.'
 
 		if steps > 0:
 			return 4 * " " + ">| %s %d" % (dots(steps), steps) # west
@@ -814,7 +815,7 @@ class PositionerSetup(Screen):
 		feparm = self.tuner.lastparm.getDVBS()
 		orb_pos = feparm.orbital_position
 		m = PositionerSetup.satposition2metric(orb_pos)
-		self.orbitalposition.value = [int(m[0] / 10), m[0] % 10]
+		self.orbitalposition.value = [int(m[0] // 10), m[0] % 10]
 		self.orientation.value = m[1]
 		if self.advanced:
 			if orb_pos in self.availablesats:
@@ -832,6 +833,7 @@ class PositionerSetup(Screen):
 		menu.append((description, self.openTunerSetup))
 		if not self.checkingTsidOnid and self.frontend and self.isLocked() and not self.isMoving:
 			menu.append((_("Checking ONID/TSID"), self.openONIDTSIDScreen))
+
 		def openAction(choice):
 			if choice:
 				choice[1]()

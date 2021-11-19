@@ -825,7 +825,7 @@ class SatfinderExtra(Satfinder):
 			op = (3600 - op) * -1
 		if w_e_flag == 0:
 			op *= -1
-		return "%0.1f%s" % (abs(op) // 10., "W" if op < 0 else "E")
+		return "%0.1f%s" % (abs(op) / 10., "W" if op < 0 else "E")
 
 	def tunerLock(self):
 		frontendStatus = {}

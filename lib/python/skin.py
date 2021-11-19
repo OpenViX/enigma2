@@ -774,6 +774,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				fonts["PartnerBoxE2TimerMenu1"] = applySkinFactor("Regular", 18)
 				fonts["PartnerBoxEntryList0"] = applySkinFactor("Regular", 20, 30)
 				fonts["PartnerBoxEntryList1"] = applySkinFactor("Regular", 18)
+				fonts["SelectionList"] = applySkinFactor("Regular", 22, 30) # EPG Importer expandable sources list
 
 				# Only add parameters here for lists that are not part of enigma2 repo.
 				# Parameters for modules in this repository should be dealt with directly in the corresponding py, not here.
@@ -806,6 +807,8 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				parameters["PartnerBoxEntryListType"] = applySkinFactor(410, 0, 100, 25)
 				parameters["PartnerBoxTimerName"] = applySkinFactor(0, 30, 20)
 				parameters["PartnerBoxTimerServicename"] = applySkinFactor(0, 0, 30)
+				parameters["SelectionListDescr"] = applySkinFactor(32, 3, 650, 30) # EPG Importer expandable sources list
+				parameters["SelectionListLock"] = applySkinFactor(0, 2, 28, 24) # EPG Importer expandable sources list 
 				parameters["SHOUTcastListItem"] = applySkinFactor(20, 18, 22, 69, 20, 23, 43, 22)
 
 	for tag in domSkin.findall("include"):
