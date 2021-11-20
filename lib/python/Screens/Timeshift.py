@@ -69,7 +69,7 @@ class TimeshiftSettings(Setup):
 
 	def isValidPartition(self, path):
 		if path is not None:
-			supported_filesystems = ('ext4', 'ext3', 'ext2', 'nfs')
+			supported_filesystems = ('ext4', 'ext3', 'ext2', 'nfs', 'cifs')
 			valid_partitions = []
 			for partition in Components.Harddisk.harddiskmanager.getMountedPartitions():
 				if partition.filesystem() in supported_filesystems:
