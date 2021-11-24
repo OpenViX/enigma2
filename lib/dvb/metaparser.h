@@ -20,7 +20,7 @@ public:
 		idPacketSize 	= 8,
 		idScrambled 	= 9,
 	};
-}
+};
 
 class eDVBMetaParser
 {
