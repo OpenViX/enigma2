@@ -419,6 +419,8 @@ class MenuSort(Menu):
 		self["key_green"] = StaticText(_("Save changes"))
 		self["key_yellow"] = StaticText(_("Toggle show/hide"))
 		self["key_blue"] = StaticText(_("Reset order (All)"))
+		self["key_previous"] = StaticText(_("PREVIOUS"))
+		self["key_next"] = StaticText(_("NEXT"))
 		self["menu"].onSelectionChanged.append(self.selectionChanged)
 
 		self["MoveActions"] = HelpableActionMap(self, ["DirectionActions"],
