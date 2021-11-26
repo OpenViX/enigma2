@@ -576,11 +576,12 @@ class oscECMInfo(Screen, OscamInfo):
 			self.loop.callback.append(self.showData)
 			timeout = config.oscaminfo.intervall.value * 1000
 			self.loop.start(timeout, False)
-		self["actions"] = ActionMap(["OkCancelActions"],
+		self["actions"] = ActionMap(["SetupActions"],
 					{
 						"ok": self.exit,
 						"cancel": self.exit
 					}, -1)
+		self["key_red"] = StaticText(_("Close"))
 		self.onLayoutFinish.append(self.showData)
 
 	def exit(self):
