@@ -1232,7 +1232,7 @@ class ChannelSelectionEdit:
 				mutableList.flushChanges()
 				# do some voodoo to check if current_root is equal to dest
 				cur_root = self.getRoot()
-				str1 = cur_root and cur_root.toString() or -1
+				str1 = cur_root and cur_root.toString() or ''
 				str2 = dest.toString()
 				pos1 = str1.find("FROM BOUQUET")
 				pos2 = str2.find("FROM BOUQUET")
