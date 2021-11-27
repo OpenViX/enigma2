@@ -21,6 +21,7 @@ public:
 		idScrambled 	= 9,
 	};
 };
+SWIG_ALLOW_OUTPUT_SIMPLE(iDVBMetaFile);
 
 class eDVBMetaParser
 {
