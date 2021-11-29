@@ -1,8 +1,13 @@
 #ifndef __lib_dvb_metaparser_h
 #define __lib_dvb_metaparser_h
 
+#ifndef SWIG
 #include <string>
 #include <lib/dvb/idvb.h>
+#include <lib/dvb/tstools.h>
+#else
+#include <lib/python/swig.h>
+#endif
 
 class iDVBMetaFile
 {
@@ -23,6 +28,7 @@ public:
 };
 SWIG_ALLOW_OUTPUT_SIMPLE(iDVBMetaFile);
 
+#ifndef SWIG
 class eDVBMetaParser
 {
 public:
@@ -37,5 +43,6 @@ public:
 	std::string m_name, m_description, m_tags, m_service_data;
 	long long m_filesize, m_length;
 };
+#endif
 
 #endif
