@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-27 02:42+0000\n"
-"PO-Revision-Date: 2021-11-27 12:51+0100\n"
+"POT-Creation-Date: 2021-11-30 01:21+0000\n"
+"PO-Revision-Date: 2021-11-30 07:45+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -3206,6 +3206,12 @@ msgstr "Stel in of meerkanaals geluid moet worden uitgevoerd als PCM."
 
 msgid "Choose whether or not to show an icon when a motorised dish is moving."
 msgstr "Kies hier of u een icoon wilt zien als uw gemotoriseerde schotel draait."
+
+msgid "Choose whether to scan a single transponder, one satellite or multiple satellites."
+msgstr "Kies of een enkele transponder, een enkele satelliet of meerdere satellieten gescanned moeten worden."
+
+msgid "Choose whether to scan for free services only or whether to include paid/encrypted services too."
+msgstr "Kies te scannen naar vrije zenders of ook naar betaalde/versleutelde zenders."
 
 msgid "Choose which level of menu/settings to display. 'Expert' level shows all items."
 msgstr "Kies welk niveau van menu's en instellingen u wilt zien. Het 'expert' niveau laat alle mogelijkheden zien."
@@ -9901,6 +9907,9 @@ msgstr "Verwijder geselecteerde satellieten"
 msgid "Remove terrestrial services"
 msgstr "Verwijder DVB-T zenders"
 
+msgid "Remove the services on scanned transponders before re-adding services?"
+msgstr "De kanalen van gescande transponders verwijderen voordat de gescaande kanalen toegevoegd worden?"
+
 msgid "Remove timer"
 msgstr "Verwijder timer"
 
@@ -10364,6 +10373,9 @@ msgstr "Bestanden zoeken..."
 
 msgid "Scan options"
 msgstr "Scan opties"
+
+msgid "Scan using transponders on NIT table? 'No' will use transponders in xml file."
+msgstr "Scan transponders op basis van de NIT-tabel? Gebruik 'Nee' om transponders van het xml-bestand te gebruiken."
 
 msgid "Scan wireless networks"
 msgstr "WiFi-netwerken zoeken"
@@ -10840,6 +10852,15 @@ msgstr "Selecteer videomodus"
 
 msgid "Select whether your SCR device is externally powered."
 msgstr "Geef aan of uw SCR-apparaat een externe voeding heeft."
+
+msgid "Select which satellite to scan."
+msgstr "Kies welke satelliet gescand moet worden."
+
+msgid "Select which transponder to scan."
+msgstr "Kies welke transponder gescand moet worden."
+
+msgid "Select which tuner to use for the scan."
+msgstr "Kies welke tuner moet scannen."
 
 msgid "Select wireless network"
 msgstr "Secteer draadloos netwerk"
