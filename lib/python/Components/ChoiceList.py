@@ -12,7 +12,9 @@ def row_delta_y():
 	return (int(font[2]) - int(font[1])) / 2
 
 
-def ChoiceEntryComponent(key=None, text=["--"]):
+def ChoiceEntryComponent(key=None, text=None):
+	if text is None:
+		text = ["--"]
 	res = [text]
 	if text[0] == "--":
 		x, y, w, h = parameters.get("ChoicelistDash", applySkinFactor(0, 2, 800, 25))
