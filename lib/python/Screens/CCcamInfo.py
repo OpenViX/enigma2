@@ -26,72 +26,76 @@ from Screens.Screen import Screen
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import fileExists, SCOPE_CURRENT_SKIN, resolveFilename
 from Tools.LoadPixmap import LoadPixmap
+import requests
+try: # python 3
+	from urllib.parse import urlparse, urlunparse # raises ImportError in Python 2
+except ImportError: # Python 2
+	from urlparse import urlparse, urlunparse
 
-from six.moves.urllib.request import Request, urlopen
-from six.moves.urllib.parse import urlparse, urlunparse
 
-
-VERSION = "v2"
-DATE = "21.11.2014"
+VERSION = "V3 Python 3"
+DATE = "01.12.2021"
 CFG = "/etc/CCcam.cfg"
-
+global Counter
+Counter = 0
+AuthHeaders = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
+}
 #############################################################
 
 
 def _parse(url):
 	url = url.strip()
+	print("[CCcamInfo]0 url=%s" % url)
 	parsed = urlparse(url)
 	scheme = parsed[0]
 	path = urlunparse(('', '') + parsed[2:])
-
+	if path == "":
+		path = "/"
 	host, port = parsed[1], 80
-
+	username = ""
+	password = ""
+	print("[CCcamInfo]1 parsed=%s scheme=%s path=%s host=%s port=%s" % (parsed, scheme, path, host, port))
 	if '@' in host:
 		username, host = host.split('@')
 		if ':' in username:
 			username, password = username.split(':')
-		else:
-			password = ""
-	else:
-		username = ""
-		password = ""
-
+			base64string = "%s:%s" % (username, password)
+			base64string = b64encode(base64string.encode('utf-8')) if six.PY2 else (b64encode(base64string.encode('utf-8'))).decode()
+			authHeader = "Basic " + base64string
+			AuthHeaders["Authorization"] = authHeader
 	if ':' in host:
 		host, port = host.split(':')
 		port = int(port)
-
-	if path == "":
-		path = "/"
-
-	return scheme, host, port, path, username, password
+	print("[CCcamInfo]2 parsed=%s scheme=%s path=%s host=%s port=%s" % (parsed, scheme, path, host, port))
+	url = scheme + '://' + host + ':' + str(port) + path
+	print("[CCcamInfo]1 url=%s AuthHeaders=%s" % (url, AuthHeaders))
+	return url, AuthHeaders
 
 
 def getPage(url, callback, errback):
+	global Counter
 	errormsg = ""
-	base64string = ""
-	scheme, host, port, path, username, password = _parse(url)
-	
-	if username and password:
-		url = scheme + '://' + host + ':' + str(port) + path
-		base64string = six.ensure_str(b64encode(six.ensure_binary('%s:%s' % (username, password))))
-	
+	url, AuthHeaders = _parse(url)
+	print("[CCcamInfo]2 url=%s" % url)
 	try:
-		req = Request(url)
-		if base64string:
-			req.add_header("Authorization", "Basic %s" % base64string)
-		response = urlopen(req)
-		response_code = int(response.getcode())
-		if response_code == 200:
-			callback(six.ensure_str(response.read()))
-			return
+		response = requests.get(url, headers=AuthHeaders)  # to get content after redirection
+		response.raise_for_status()
+	except requests.exceptions.RequestException as error:
+		print("[CCcamInfo][getPage] incorrect response: %s" % error)
+		if Counter == 0:
+			Counter += 1
+			errormsg = "[CCcamInfo][getPage] incorrect response: %s" % error
+			errback(errormsg)
 		else:
-			errormsg = "[CCcamInfo][getPage] incorrect response: %d" % response_code
-	except Exception as err:
-		print("%s: '%s'" % (type(err).__name__, err))
-		import traceback
-		traceback.print_exc()
-	errback(errormsg)
-
+			data = ""
+			callback(data)
+	else:
+		try:
+			data = response.content.decode(encoding = 'UTF-8')
+		except:
+			data = response.content.decode(encoding = 'latin-1')
+		callback(data)
 #############################################################
 
 
@@ -284,8 +288,8 @@ def CCcamListEntry(name, idx):
 		png = "/usr/share/enigma2/skin_default/buttons/key_%s.png" % str(idx)
 	if screenwidth and screenwidth == 1920:
 		if fileExists(png):
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(10, 3), size=(67, 48), png=LoadPixmap(png)))
-		res.append(MultiContentEntryText(pos=(90, 7), size=(900, 50), font=1, text=name))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(10, 7), size=(67, 48), png=LoadPixmap(png)))
+		res.append(MultiContentEntryText(pos=(90, 8), size=(900, 40), font=1, text=name))
 	else:
 		if fileExists(png):
 			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(35, 25), png=LoadPixmap(png)))
@@ -302,8 +306,8 @@ def CCcamServerListEntry(name, color):
 		png = "/usr/share/enigma2/skin_default/buttons/key_%s.png" % color
 	if screenwidth and screenwidth == 1920:
 		if fileExists(png):
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(10, 3), size=(67, 48), png=LoadPixmap(png)))
-		res.append(MultiContentEntryText(pos=(90, 7), size=(900, 50), font=1, text=name))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(10, 7), size=(67, 48), png=LoadPixmap(png)))
+		res.append(MultiContentEntryText(pos=(90, 8), size=(900, 40), font=1, text=name))
 	else:
 		if fileExists(png):
 			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(35, 25), png=LoadPixmap(png)))
@@ -368,7 +372,7 @@ def CCcamConfigListEntry(file):
 		png = lock_off
 	if screenwidth and screenwidth == 1920:
 		res.append(MultiContentEntryPixmapAlphaBlend(pos=(5, 5), size=(50, 50), png=png))
-		res.append(MultiContentEntryText(pos=(85, 5), size=(800, 35), font=1, text=name))
+		res.append(MultiContentEntryText(pos=(85, 0), size=(800, 40), font=1, text=name))
 	else:
 		res.append(MultiContentEntryPixmapAlphaBlend(pos=(2, 2), size=(25, 25), png=png))
 		res.append(MultiContentEntryText(pos=(35, 2), size=(550, 25), font=0, text=name))
@@ -386,7 +390,7 @@ def CCcamMenuConfigListEntry(name, blacklisted):
 		png = lock_on
 	if screenwidth and screenwidth == 1920:
 		res.append(MultiContentEntryPixmapAlphaBlend(pos=(5, 5), size=(50, 50), png=png))
-		res.append(MultiContentEntryText(pos=(85, 5), size=(800, 35), font=1, text=name))
+		res.append(MultiContentEntryText(pos=(85, 0), size=(800, 40), font=1, text=name))
 	else:
 		res.append(MultiContentEntryPixmapAlphaBlend(pos=(2, 2), size=(25, 25), png=png))
 		res.append(MultiContentEntryText(pos=(35, 2), size=(550, 25), font=0, text=name))
@@ -594,8 +598,10 @@ class CCcamInfoMain(Screen):
 			self["menu"].pageDown()
 
 	def getWebpageError(self, error=""):
-		print(str(error))
+		print("CCcamInfo] WEB page error=%s" % error)
 		self.session.openWithCallback(self.workingFinished, MessageBox, _("Error reading webpage!"), MessageBox.TYPE_ERROR)
+		self.workingFinished()
+
 
 	def showFile(self, file):
 		try:
@@ -894,7 +900,7 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 		getPage(self.url + "/providers", self.readProvidersCallback, self.readError)
 
 	def readError(self, error=None):
-		self.session.open(MessageBox, _("Error reading webpage!"), MessageBox.TYPE_ERROR)
+#		self.session.open(MessageBox, _("Error reading webpage!"), MessageBox.TYPE_ERROR)
 		self.working = False
 
 	def readSharesCallback(self, html):
@@ -910,6 +916,7 @@ class CCcamShareViewMenu(Screen, HelpableScreen):
 		totalproviders = 0
 		resharecards = 0
 		numberofreshare = 0
+		ulevel = 0
 		lines = html.split("\n")
 
 		for l in lines:
