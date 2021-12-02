@@ -245,12 +245,4 @@ self.session.scart.VCRSbChanged(3)
 		<item entryID="maintenance_mode" level="0" text="Recovery Mode" requires="RecoveryMode"><screen module="Standby" screen="TryQuitMainloop">16</screen></item>
 		<item entryID="android_mode" level="0" text="Android Mode" requires="AndroidMode"><screen module="Standby" screen="TryQuitMainloop">12</screen></item>
 	</menu>
-
-	<!-- Menu / Software Update -->
-	<menu weight="1000" level="0" text="Software update" entryID="software_update">
-		<id val="softwareupdatemenu"/>
-		<item weight="1" level="0" text="Settings" entryID="onlineupdate_setup"><setup id="softwareupdate"/></item>
-		<item weight="2" level="0" text="Software update" entryID="software_update"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
-	</menu>
-
 </menu>
