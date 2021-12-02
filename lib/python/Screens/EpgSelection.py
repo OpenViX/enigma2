@@ -13,10 +13,12 @@ from Screens.TimerEntry import addTimerFromEventSilent
 # This class assumes that EPGSelection is only used in the SingleEPG sense.
 class EPGSelection(EPGSelectionChannel, EPGServiceZap):
 	def __init__(self, session, service=None, zapFunc=None, eventid=None, bouquetChangeCB=None, serviceChangeCB=None, EPGtype="similar", StartBouquet=None, StartRef=None, bouquets=None):
+		if service is not None and not isinstance(service, eServiceReference):
+			service = eServiceReference(service)
 		if EPGtype not in ("similar", "single"):
 			print("[EPGSelection] Warning: EPGSelection does not support type '%s'" % EPGtype)
 			print("               Attempting to continue in single EPG mode")
-		EPGSelectionChannel.__init__(self, session, eServiceReference(service))
+		EPGSelectionChannel.__init__(self, session, service)
 		EPGServiceZap.__init__(self, zapFunc or InfoBar.instance.zapToService)
 
 		# Rewrite the EPG actions to invoke the compatibility functions.
