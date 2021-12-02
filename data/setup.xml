@@ -474,6 +474,7 @@
 	<setup key="pluginbrowsersetup" title="Plugin browser settings">
 		<item level="2" text="Show translation packages" description="If set to 'yes' it will show the 'PO' packages in browser.">config.pluginbrowser.po</item>
 		<item level="2" text="Show source packages" description="If set to 'yes' it will show the 'SRC' packages in browser.">config.pluginbrowser.src</item>
+		<item level="1" text="Allow unstable (experimental) feeds" description="When enabled the feeds and software updates may contain unstable experimental versions. Enable this at your own risk.">config.softwareupdate.updatebeta</item>
 	</setup>
 	<setup key="wizardoptions" title="Common options">
 		<item level="0" text="Picons: Show in channel list" description="Configure if service picons will be shown in the channel selection list.">config.usage.service_icon_enable</item>
