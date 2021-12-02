@@ -58,8 +58,8 @@ class AnalogClockLCD(Renderer):
 	def hand(self, opt):
 		width = self.positionwidth
 		height = self.positionheight
-		r = (width / 2)
-		r1 = (height / 2)
+		r = (width // 2)
+		r1 = (height // 2)
 		l = self.linesize
 		if opt == 'sec':
 			l = self.linesize
