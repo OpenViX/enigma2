@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-30 01:21+0000\n"
-"PO-Revision-Date: 2021-11-30 07:45+0100\n"
+"POT-Creation-Date: 2021-12-03 00:20+0000\n"
+"PO-Revision-Date: 2021-12-03 13:59+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1190,7 +1190,7 @@ msgstr ""
 "'Voeg taal toe' of 'MENU' voegt additionele taal toe.\n"
 "'Verwijder taal' verwijdert alle talen behalve Engels en de actieve taal OF de geselecteerde taal."
 
-msgid "( All readers)"
+msgid "(All readers)"
 msgstr "(Alle lezers)"
 
 msgid "(Current)"
@@ -1209,8 +1209,9 @@ msgstr "(PiP)"
 msgid "(Radio)"
 msgstr "(Radio)"
 
-msgid "(Show only reader:"
-msgstr "(Toon alleen lezer):"
+#, python-format
+msgid "(Show only reader) (%s)"
+msgstr "(Toon alleen lezer) (%s)"
 
 msgid "(TV)"
 msgstr "(Tv)"
@@ -1244,6 +1245,9 @@ msgstr "* huidige animatie"
 
 msgid "+24 hours"
 msgstr "+24 uur"
+
+msgid "-"
+msgstr "-"
 
 msgid "-24 hours"
 msgstr "-24 uur"
@@ -2019,6 +2023,9 @@ msgstr "Ondertiteltaal overeenkomstig aan audiotaal"
 msgid "Allow subtitles for hearing impaired"
 msgstr "Accepteer ondertitels voor slechthorenden"
 
+msgid "Allow unstable (experimental) feeds"
+msgstr "Accepteer onstabiele (experimentele) feeds"
+
 msgid "Allow unstable (experimental) updates"
 msgstr "Accepteer niet geteste (experimentele) updates"
 
@@ -2737,12 +2744,6 @@ msgstr "Verzonden bytes:"
 msgid "C-Band"
 msgstr "C-Band"
 
-msgid "CAID"
-msgstr "CAID"
-
-msgid "CAID:SrvID"
-msgstr "CAID:SrvID"
-
 msgid "CCcam Client Info"
 msgstr "CCcam klantinfo"
 
@@ -2832,6 +2833,12 @@ msgstr "Miniatuurafbeeldingen cachen"
 msgid "Cached:"
 msgstr "Cached:"
 
+msgid "Caid"
+msgstr "Caid"
+
+msgid "Caid:Srvid"
+msgstr "Caid:Srvid"
+
 msgid "Calculate"
 msgstr "Bereken"
 
@@ -2913,8 +2920,8 @@ msgstr "Mogelijkheden: "
 msgid "Capacity: "
 msgstr "Capaciteit: "
 
-msgid "Card infos (CCcam-Reader)"
-msgstr "Kaartinfo (CCcam-Reader)"
+msgid "Card info (CCcam-Reader)"
+msgstr "Kaartinfo (CCcam-lezer)"
 
 msgid "Cards:"
 msgstr "Kaarten:"
@@ -2999,6 +3006,9 @@ msgstr "Kanaallijst"
 
 msgid "Channel List Context Menu"
 msgstr "Kanaallijst contextmenu"
+
+msgid "Channel Name"
+msgstr "Kanaalnaam"
 
 msgid "Channel Selection"
 msgstr "Zenderkeuze"
@@ -4884,23 +4894,8 @@ msgstr "E2 (her)starts:\t%s\n"
 msgid "ECM Info"
 msgstr "ECM Info"
 
-msgid "ECM Statistics"
-msgstr "ECM Statistieken"
-
-msgid "ECM Time"
-msgstr "ECM Tijd"
-
-msgid "ECM avg"
-msgstr "ECM gem."
-
 msgid "ECM data will be included in the stream. This enables a client receiver to decode it."
 msgstr "ECM data zullen worden opgenomen in de stream. Dit geeft de klant-box de mogelijkheid die te decoderen."
-
-msgid "ECM last"
-msgstr "ECM laatste"
-
-msgid "ECM-Time"
-msgstr "ECM Tijd"
 
 msgid "EPG"
 msgstr "EPG"
@@ -4971,6 +4966,21 @@ msgstr "Oost"
 
 msgid "East limit set"
 msgstr "Oostelijke limiet instellen"
+
+msgid "Ecm Info"
+msgstr "ECM Info"
+
+msgid "Ecm Statistics"
+msgstr "ECM statistieken"
+
+msgid "Ecm Time"
+msgstr "ECM tijd"
+
+msgid "Ecm avg"
+msgstr "ECM gem."
+
+msgid "Ecm last"
+msgstr "ECM laatste"
 
 msgid "Ecm:"
 msgstr "Ecm:"
@@ -6402,6 +6412,9 @@ msgstr "INS"
 msgid "IP"
 msgstr "IP"
 
+msgid "IP Address"
+msgstr "IP-adres"
+
 msgid "IP address"
 msgstr "IP-adres"
 
@@ -7037,9 +7050,6 @@ msgstr "LED helderheid tijdens stand-by."
 
 msgid "LNB"
 msgstr "LNB"
-
-msgid "Label"
-msgstr "Label"
 
 msgid "Language"
 msgstr "Taal"
@@ -8501,6 +8511,9 @@ msgstr "Origineel"
 msgid "Original language"
 msgstr "Originele taal"
 
+msgid "Oscam/Ncam not running - start Cam to obtain information."
+msgstr "Oscam/Ncam draait niet - start Cam om informatie te verkrijgen."
+
 msgid "Other"
 msgstr "Anders"
 
@@ -8536,9 +8549,6 @@ msgstr "PDC"
 
 msgid "PGS file"
 msgstr "PGS-bestand"
-
-msgid "PID"
-msgstr "PID"
 
 #
 msgid "PIP"
@@ -8755,6 +8765,9 @@ msgstr "Toon mini TV-beeld"
 
 msgid "Picture player"
 msgstr "Fotospeler"
+
+msgid "Pid"
+msgstr "Pid"
 
 msgid "Pillarbox"
 msgstr "Pillarbox"
@@ -9594,6 +9607,9 @@ msgstr "Lezer"
 
 msgid "Reader Statistics"
 msgstr "Lezer statistieken"
+
+msgid "Reader/User"
+msgstr "Lezer/Gebruiker"
 
 #, python-format
 msgid "Ready to install \"%s\" ?"
@@ -10928,9 +10944,6 @@ msgstr "Serienummer"
 msgid "Serial no"
 msgstr "Serienummer"
 
-msgid "Serv.Name"
-msgstr "Serv.Naam"
-
 #, python-format
 msgid "Server Info ( %s-Version: %s )"
 msgstr "Serverinfo (  %s-Versie: %s )"
@@ -11243,9 +11256,6 @@ msgstr "Toon"
 msgid "Show %s"
 msgstr "Toon %s"
 
-msgid "Show /tmp/ecm.info"
-msgstr "Toon /tmp/ecm.info"
-
 msgid "Show 1080p 24fps as"
 msgstr "Toon 1080p 24fps als"
 
@@ -11284,6 +11294,9 @@ msgstr "Toon schermiconen"
 
 msgid "Show EIT now/next in infobar"
 msgstr "Toon EIT nu/straks in informatiebalk"
+
+msgid "Show Ecm info"
+msgstr "ECM info weergeven"
 
 msgid "Show Grid EPG"
 msgstr "Toon Multi-EPG"
@@ -11920,9 +11933,6 @@ msgstr "Sorry: de feeds lijken onstabiel te zijn. Als u die toch wilt gebruiken,
 
 msgid "Sorry the feeds are down for maintenance"
 msgstr "Vanwege onderhoud zijn de feeds niet actief"
-
-msgid "Sorry the feeds seem to be in an unstable state, if you wish to use them please enable 'Allow unstable (experimental) updates' in \"Software update settings\"."
-msgstr "Sorry: de feeds lijken onstabiel te zijn. Als u die toch wilt gebruiken, moet u 'Accepteer niet geteste updates' activeren in\"Software update instellingen\"."
 
 msgid "Sorry your Inadyn config is missing"
 msgstr "Sorry, de Inadynconfiguratie ontbreekt"
@@ -13523,6 +13533,16 @@ msgstr "Type: "
 msgid "UNKNOWN"
 msgstr "ONBEKEND"
 
+#, python-format
+msgid ""
+"UNSTABLE: The feeds currently contain unstable experimental updates. You can continue at your own risk but doing so may render your %s %s unusable and in need of a complete reflash.\n"
+"\n"
+"Are you sure you want to continue?"
+msgstr ""
+"ONSTABIEL: De feeds bevatten momenteel onstabiele, experimentele updates. U kunt op eigen risico doorgaan, maar dat kan erin resulteren dat uw %s %s onbruikbaar wordt en dat u deze opnieuw moet flashen.\n"
+"\n"
+"Weet u zeker dat u door wil gaan?"
+
 msgid "URL"
 msgstr "URL"
 
@@ -14313,6 +14333,9 @@ msgstr "Indien ingeschakeld zal een geforceerde download vanuit het extensie-men
 
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Indien ingeschakeld zal enigma2 niet geregistreerde favorietenlijsten laden. Dat betekent dat de lijsten die beschikbaar zijn maar niet zijn opgenomen in de radio- en TV-lijsten, toch geladen zullen worden. Dit stelt u b.v. in staat om eigen lijsten te bewaren, terwijl settings worden geüpgraded"
+
+msgid "When enabled the feeds and software updates may contain unstable experimental versions. Enable this at your own risk."
+msgstr "Indien geactiveerd kunnen feeds en software updates die onstabiele, experimentele versies bevatten, gebruikt worden. Inschakelen geschiedt op uw eigen risico."
 
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Indien geactiveerd zal ook worden gecontroleerd op experimentele versies"
@@ -15707,12 +15730,6 @@ msgstr "muziek/ballet/dans (algemeen)"
 msgid "musical/opera"
 msgstr "musical/opera"
 
-msgid "n/A"
-msgstr "NVT"
-
-msgid "n/a"
-msgstr "NVT"
-
 msgid "nature/animals/environment"
 msgstr "natuur/dieren/milieu"
 
@@ -16346,12 +16363,21 @@ msgstr "zapte"
 #~ msgid "C"
 #~ msgstr "CH"
 
+#~ msgid "CAID"
+#~ msgstr "CAID"
+
+#~ msgid "CAID:SrvID"
+#~ msgstr "CAID:SrvID"
+
 #~ msgid "Collection"
 #~ msgstr "Collectie"
 
 #, fuzzy
 #~ msgid "D"
 #~ msgstr "3D"
+
+#~ msgid "ECM-Time"
+#~ msgstr "ECM Tijd"
 
 #, fuzzy
 #~ msgid "EtPortal"
@@ -16385,8 +16411,23 @@ msgstr "zapte"
 #~ msgid "Internal flash"
 #~ msgstr "Intern geheugen"
 
+#~ msgid "Label"
+#~ msgstr "Label"
+
+#~ msgid "PID"
+#~ msgstr "PID"
+
 #~ msgid "Polarisation:"
 #~ msgstr "Polarisatie:"
+
+#~ msgid "Serv.Name"
+#~ msgstr "Serv.Naam"
+
+#~ msgid "Show /tmp/ecm.info"
+#~ msgstr "Toon /tmp/ecm.info"
+
+#~ msgid "Sorry the feeds seem to be in an unstable state, if you wish to use them please enable 'Allow unstable (experimental) updates' in \"Software update settings\"."
+#~ msgstr "Sorry: de feeds lijken onstabiel te zijn. Als u die toch wilt gebruiken, moet u 'Accepteer niet geteste updates' activeren in\"Software update instellingen\"."
 
 #~ msgid "Symbolrate:"
 #~ msgstr "Symbolrate:"
@@ -16406,3 +16447,9 @@ msgstr "zapte"
 
 #~ msgid "Visual impaired commentary"
 #~ msgstr "Audiodescriptie voor slechtzienden"
+
+#~ msgid "n/A"
+#~ msgstr "NVT"
+
+#~ msgid "n/a"
+#~ msgstr "NVT"
