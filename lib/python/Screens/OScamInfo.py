@@ -41,12 +41,16 @@ elif fileExists("/tmp/.ncam/ncam.version"):
 	NAMEBIN2 = "Ncam"
 
 def check_NAMEBIN():
-	if fileExists("/tmp/.oscam/oscam.version"):
-		NAMEBIN = "oscam"
-	elif fileExists("/tmp/.ncam/ncam.version"):
+	NAMEBIN = "oscam"
+	if fileExists("/tmp/.ncam/ncam.version"):
 		NAMEBIN = "ncam"
 	return NAMEBIN
-	
+
+def check_NAMEBIN2():
+	NAMEBIN2 = "OScam"
+	if fileExists("/tmp/.ncam/ncam.version"):
+		NAMEBIN2 = "Ncam"
+	return NAMEBIN2	
 
 f = 1
 sizeH = 700
@@ -416,6 +420,7 @@ class OscamInfoMenu(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		NAMEBIN = check_NAMEBIN()
+		NAMEBIN2 = check_NAMEBIN2()
 		self.setTitle(_("%s Info - Main Menu" % NAMEBIN2))
 		self.menu = [_("Show Ecm info"), _("Show Clients"), _("Show Readers/Proxies"), _("Show Log"), _("Card info (CCcam-Reader)"), _("Ecm Statistics"), _("Setup")]
 		self.osc = OscamInfo()
@@ -807,6 +812,7 @@ class oscInfo(Screen, OscamInfo):
 
 	def showData(self):
 		NAMEBIN = check_NAMEBIN()
+		NAMEBIN2 = check_NAMEBIN2()
 		if self.firstrun:
 			data = self.webif_data
 			self.firstrun = False
@@ -1219,6 +1225,7 @@ class OscamInfoConfigScreen(Screen, ConfigListScreen):
 
 	def layoutFinished(self):
 		NAMEBIN = check_NAMEBIN()
+		NAMEBIN2 = check_NAMEBIN2()
 		self.setTitle(_("%s Info - Configuration" % NAMEBIN2))
 		self["config"].l.setList(self.oscamconfig)
 
