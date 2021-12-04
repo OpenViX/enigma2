@@ -40,6 +40,14 @@ elif fileExists("/tmp/.ncam/ncam.version"):
 	NAMEBIN = "ncam"
 	NAMEBIN2 = "Ncam"
 
+def check_NAMEBIN():
+	if fileExists("/tmp/.oscam/oscam.version"):
+		NAMEBIN = "oscam"
+	elif fileExists("/tmp/.ncam/ncam.version"):
+		NAMEBIN = "ncam"
+	return NAMEBIN
+	
+
 f = 1
 sizeH = 700
 HDSKIN = False
@@ -79,7 +87,7 @@ class OscamInfo:
 		oport = None
 		opath = None
 		ipcompiled = False
-		global NAMEBIN
+		NAMEBIN = check_NAMEBIN()
 
 		# Find and parse running oscam/ncam
 		if fileExists("/tmp/.%s/%s.version" % (NAMEBIN, NAMEBIN)):
@@ -108,7 +116,7 @@ class OscamInfo:
 		return owebif, oport, opath, ipcompiled
 
 	def getUserData(self):
-		global NAMEBIN
+		NAMEBIN = check_NAMEBIN()
 		[webif, port, conf, ipcompiled] = self.confPath()
 		if conf == None:
 			conf = ""
@@ -150,7 +158,7 @@ class OscamInfo:
 		return ret
 
 	def openWebIF(self, part=None, reader=None):
-		global NAMEBIN
+		NAMEBIN = check_NAMEBIN()
 		self.proto = "http"
 		if config.oscaminfo.userdatafromconf.value:
 			udata = self.getUserData()
@@ -407,7 +415,7 @@ class oscMenuList(MenuList):
 class OscamInfoMenu(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		global NAMEBIN
+		NAMEBIN = check_NAMEBIN()
 		self.setTitle(_("%s Info - Main Menu" % NAMEBIN2))
 		self.menu = [_("Show Ecm info"), _("Show Clients"), _("Show Readers/Proxies"), _("Show Log"), _("Card info (CCcam-Reader)"), _("Ecm Statistics"), _("Setup")]
 		self.osc = OscamInfo()
@@ -477,7 +485,7 @@ class OscamInfoMenu(Screen):
 		pass
 
 	def goEntry(self, entry):
-		global NAMEBIN
+		NAMEBIN = check_NAMEBIN()
 		if NAMEBIN:
 			print("[openWebIF] NAMEBIN=%s" % (NAMEBIN))
 			if entry in (1, 2, 3) and config.oscaminfo.userdatafromconf.value and self.osc.confPath()[0] is None:
@@ -569,7 +577,7 @@ class OscamInfoMenu(Screen):
 		return menuentries
 
 	def showMenu(self):
-		global NAMEBIN
+		NAMEBIN = check_NAMEBIN()
 		entr = self.buildMenu(self.menu)
 		self["mainmenu"].l.setList(entr)
 		self["mainmenu"].moveToIndex(0)
@@ -798,7 +806,7 @@ class oscInfo(Screen, OscamInfo):
 		return res
 
 	def showData(self):
-		global NAMEBIN
+		NAMEBIN = check_NAMEBIN()
 		if self.firstrun:
 			data = self.webif_data
 			self.firstrun = False
@@ -1210,12 +1218,12 @@ class OscamInfoConfigScreen(Screen, ConfigListScreen):
 			pass
 
 	def layoutFinished(self):
-		global NAMEBIN
+		NAMEBIN = check_NAMEBIN()
 		self.setTitle(_("%s Info - Configuration" % NAMEBIN2))
 		self["config"].l.setList(self.oscamconfig)
 
 	def createSetup(self):
-		global NAMEBIN
+		NAMEBIN = check_NAMEBIN()
 		self.oscamconfig = []
 		self.oscamconfig.append(getConfigListEntry(_("Read Userdata from %s.conf" % NAMEBIN), config.oscaminfo.userdatafromconf))
 		if not config.oscaminfo.userdatafromconf.value:
