@@ -81,7 +81,7 @@ class PiPSetup(Screen):
 		self.close()
 
 	def setPiPPosition(self):
-		self.pip.resize(self.size[0], self.size[1])
+		self.pip.resize(int(self.size[0]), int(self.size[1]))
 		self.pip.move(self.pos[0], self.pos[1])
 
 	def resizePiP(self, resize):
