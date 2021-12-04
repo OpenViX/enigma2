@@ -2671,10 +2671,20 @@ class InfoBarExtensions:
 		for p in plugins.getPlugins(PluginDescriptor.WHERE_EXTENSIONSINGLE):
 			p(self)
 
+		self.addExtension(extension=self.getSoftwareUpdate, type=InfoBarExtensions.EXTENSION_LIST)
 		self.addExtension(extension=self.getLogManager, type=InfoBarExtensions.EXTENSION_LIST)
 		self.addExtension(extension=self.getOsd3DSetup, type=InfoBarExtensions.EXTENSION_LIST)
 		self.addExtension(extension=self.getCCcamInfo, type=InfoBarExtensions.EXTENSION_LIST)
 		self.addExtension(extension=self.getOScamInfo, type=InfoBarExtensions.EXTENSION_LIST)
+
+	def getSUname(self):
+		return _("Software Update")
+
+	def getSoftwareUpdate(self):
+		if config.softwareupdate.showinextensions.value == "yes" or config.softwareupdate.showinextensions.value == "available" and config.softwareupdate.updatefound.value:
+			return [((boundFunction(self.getSUname), boundFunction(self.openSoftwareUpdate), lambda: True), None)]
+		else:
+			return []
 
 	def getLMname(self):
 		return _("Log Manager")
@@ -2787,6 +2797,10 @@ class InfoBarExtensions:
 
 	def showTimerList(self):
 		self.session.open(TimerEditList)
+
+	def openSoftwareUpdate(self):
+		from Screens.SoftwareUpdate import UpdatePlugin
+		self.session.open(UpdatePlugin)
 
 	def openLogManager(self):
 		from Screens.LogManager import LogManager

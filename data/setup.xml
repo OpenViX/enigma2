@@ -292,6 +292,7 @@
 		<item level="1" text="Allow unstable (experimental) updates" description="When enabled the online checker will also check for experimental versions">config.softwareupdate.updatebeta</item>
 		<item level="1" text="Automatic settings backup" description="Perform a settings backup before updating.">config.softwareupdate.autosettingsbackup</item>
 		<item level="1" text="Automatic image backup" description="Perform a complete image backup before updating.">config.softwareupdate.autoimagebackup</item>
+		<item level="1" text="Show Software Update in Extentions" description="Show Software Update in Extentions (blue button menu). 'yes' adds it permanently. 'only when available' only shows it when updates are known to be available based on update polling.">config.softwareupdate.showinextensions</item>
 	</setup>
 	<setup key="softcamsetup" title="Softcam settings">
 		<item level="2" text="Show CCcam Info in extensions?" description="Allows you to show/hide CCcam Info in extensions -blue button." requires="CCcamInstalled">config.cccaminfo.showInExtensions</item>
