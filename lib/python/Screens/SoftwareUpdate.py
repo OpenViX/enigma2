@@ -65,10 +65,6 @@ class UpdateChoices(ChoiceBox):
 			self['tl_yellow'] = Pixmap()
 			self['tl_green'] = Pixmap()
 
-		self["menuActions"] = NumberActionMap(["MenuActions"],
-		{
-			"menu": self.opensettings
-		}, prio=-3) # Override ChoiceBox "menu" action
 		self.onShown.append(self.onshow)
 
 	def onshow(self):
@@ -91,10 +87,6 @@ class UpdateChoices(ChoiceBox):
 				self['tl_green'].show()
 			else:
 				self['tl_off'].show()
-
-	def opensettings(self):
-		from Screens.Setup import Setup
-		self.session.open(Setup, "softwareupdate")
 
 	def cancelClick(self, dummy=False):
 		self.close()
