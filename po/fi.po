@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-19 16:44+0200\n"
-"PO-Revision-Date: 2021-11-27 12:33+0200\n"
+"PO-Revision-Date: 2021-12-07 17:35+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -15928,3 +15928,12 @@ msgstr "Järjestele valikkonäytöt "
 
 msgid "Edit menu"
 msgstr "Muokkaa järjestystä"
+
+msgid "Show Software Update in Extensions (blue button menu). 'yes' adds it permanently. 'only when available' only shows it when updates are known to be available based on update polling."
+msgstr "Näytä ohjelmapäivitys laajennuksissa (sininen näppäin). 'Kyllä' lisää sen pysyvästi. 'Vain kun saatavilla' näyttää sen vain, kun päivitys on saatavilla perustuen tarkistustiheyteen."
+
+msgid "Show Software Update in Extentions"
+msgstr "Näytä ohjelmapäivitys laajennuksissa"
+
+msgid "only when available"
+msgstr "vain kun saatavilla"
