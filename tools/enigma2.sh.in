@@ -284,7 +284,14 @@ EOP
         ) 2>&1 | dblogger
 	ret=${PIPESTATUS[0]}    # enigma2 exit code, not dblogger's
 else
-	LD_PRELOAD=$LIBS @bindir@/enigma2
+	# if debug logs are disabled
+	if grep -q 'config\.misc\.firstrun=False' @sysconfdir@/enigma2/settings; then
+		# Write unwanted output to /dev/null. Do not write output to the serial port or the receiver will run slow.
+		LD_PRELOAD=$LIBS @bindir@/enigma2 &> /dev/null
+	else
+		# on first run only, write the output to the serial port
+		LD_PRELOAD=$LIBS @bindir@/enigma2
+	fi
 	ret=$?
 fi
 
