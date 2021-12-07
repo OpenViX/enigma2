@@ -14,32 +14,45 @@ from Screens.Screen import Screen
 
 
 class VIXMenu(Screen, ProtectedScreen):
-	skin = """
-		<screen name="VIXMenu" position="center,center" size="610,410">
-			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-			<widget source="menu" render="Listbox" position="15,60" size="330,290" scrollbarMode="showOnDemand">
+	skin = ["""
+		<screen name="VIXMenu" position="center,center" size="%d,%d">
+			<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" scale="1" alphatest="blend"/>
+			<widget source="key_red" render="Label" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+			<widget source="menu" render="Listbox" position="%d,%d" size="%d,%d" scrollbarMode="showOnDemand">
 				<convert type="TemplatedMultiContent">
 					{"template": [
-							MultiContentEntryText(pos = (2,2), size = (330,24), flags = RT_HALIGN_LEFT, text = 1), # index 0 is the MenuText,
+							MultiContentEntryText(pos = (%d,%d), size = (%d,%d), flags = RT_HALIGN_LEFT, text = 1), # index 0 is the MenuText,
 						],
-					"fonts": [gFont("Regular",22)],
-					"itemHeight":25
+					"fonts": [gFont("Regular",%d)],
+					"itemHeight":%d
 					}
 				</convert>
 			</widget>
-			<widget source="menu" render="Listbox" position="360,50" size="240,300" scrollbarMode="showNever" selectionDisabled="1">
+			<widget source="menu" render="Listbox" position="%d,%d" size="%d,%d" scrollbarMode="showNever" selectionDisabled="1">
 				<convert type="TemplatedMultiContent">
 					{"template": [
-							MultiContentEntryText(pos = (2,2), size = (240,300), flags = RT_HALIGN_CENTER|RT_VALIGN_CENTER|RT_WRAP, text = 2), # index 2 is the Description,
+							MultiContentEntryText(pos = (%d,%d), size = (%d,%d), flags = RT_HALIGN_CENTER|RT_VALIGN_CENTER|RT_WRAP, text = 2), # index 2 is the Description,
 						],
-					"fonts": [gFont("Regular",22)],
-					"itemHeight":300
+					"fonts": [gFont("Regular",%d)],
+					"itemHeight":%d
 					}
 				</convert>
 			</widget>
-			<widget source="status" render="Label" position="5,360" zPosition="10" size="600,50" halign="center" valign="center" font="Regular;22" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
-		</screen>"""
+			<widget source="status" render="Label" position="%d,%d" zPosition="10" size="%d,%d" halign="center" valign="center" font="Regular;%d" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
+		</screen>""",
+			610, 410, # screen
+			0, 0, 140, 40, # key red image
+			0 ,0, 140, 40, 20, # key red text
+			15, 60, 330, 286, # first menu Listbox
+			2, 0, 330, 26, # template one
+			22, # fonts
+			26, # ItemHeight
+			360, 50, 240, 300, # second menu Listbox
+			2, 2, 240, 300, # template two
+			22, # fonts
+			300, # itemHeight
+			5, 360, 600, 50, 22, # status
+		]
 
 	def __init__(self, session, args=0):
 		Screen.__init__(self, session)
