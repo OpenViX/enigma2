@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-03 00:20+0000\n"
-"PO-Revision-Date: 2021-12-03 13:59+0100\n"
+"POT-Creation-Date: 2021-12-05 03:41+0000\n"
+"PO-Revision-Date: 2021-12-07 14:19+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -2022,9 +2022,6 @@ msgstr "Ondertiteltaal overeenkomstig aan audiotaal"
 
 msgid "Allow subtitles for hearing impaired"
 msgstr "Accepteer ondertitels voor slechthorenden"
-
-msgid "Allow unstable (experimental) feeds"
-msgstr "Accepteer onstabiele (experimentele) feeds"
 
 msgid "Allow unstable (experimental) updates"
 msgstr "Accepteer niet geteste (experimentele) updates"
@@ -11340,6 +11337,12 @@ msgstr "Toon SD als"
 msgid "Show Single EPG"
 msgstr "Zender EPG"
 
+msgid "Show Software Update in Extensions (blue button menu). 'yes' adds it permanently. 'only when available' only shows it when updates are known to be available based on update polling."
+msgstr "Toon Software-update in extensies (blauwe toets). 'Ja' voegt het permanent toe, 'alleen indien beschikbaar' toont het alleen indien op basis van het controleren bekend is dat er een update beschikbaar is."
+
+msgid "Show Software Update in Extentions"
+msgstr "Toon Software-update in extensies"
+
 msgid "Show Time Remaining/Elapsed"
 msgstr "Toon resterende/verstreken tijd"
 
@@ -11933,6 +11936,9 @@ msgstr "Sorry: de feeds lijken onstabiel te zijn. Als u die toch wilt gebruiken,
 
 msgid "Sorry the feeds are down for maintenance"
 msgstr "Vanwege onderhoud zijn de feeds niet actief"
+
+msgid "Sorry the feeds seem to be in an unstable state, if you wish to use them please enable 'Allow unstable (experimental) updates' in \"Software update settings\"."
+msgstr "Sorry: de feeds lijken onstabiel te zijn. Als u die toch wilt gebruiken, moet u 'Accepteer niet geteste updates' activeren in\"Software update instellingen\"."
 
 msgid "Sorry your Inadyn config is missing"
 msgstr "Sorry, de Inadynconfiguratie ontbreekt"
@@ -13533,16 +13539,6 @@ msgstr "Type: "
 msgid "UNKNOWN"
 msgstr "ONBEKEND"
 
-#, python-format
-msgid ""
-"UNSTABLE: The feeds currently contain unstable experimental updates. You can continue at your own risk but doing so may render your %s %s unusable and in need of a complete reflash.\n"
-"\n"
-"Are you sure you want to continue?"
-msgstr ""
-"ONSTABIEL: De feeds bevatten momenteel onstabiele, experimentele updates. U kunt op eigen risico doorgaan, maar dat kan erin resulteren dat uw %s %s onbruikbaar wordt en dat u deze opnieuw moet flashen.\n"
-"\n"
-"Weet u zeker dat u door wil gaan?"
-
 msgid "URL"
 msgstr "URL"
 
@@ -14333,9 +14329,6 @@ msgstr "Indien ingeschakeld zal een geforceerde download vanuit het extensie-men
 
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
 msgstr "Indien ingeschakeld zal enigma2 niet geregistreerde favorietenlijsten laden. Dat betekent dat de lijsten die beschikbaar zijn maar niet zijn opgenomen in de radio- en TV-lijsten, toch geladen zullen worden. Dit stelt u b.v. in staat om eigen lijsten te bewaren, terwijl settings worden geüpgraded"
-
-msgid "When enabled the feeds and software updates may contain unstable experimental versions. Enable this at your own risk."
-msgstr "Indien geactiveerd kunnen feeds en software updates die onstabiele, experimentele versies bevatten, gebruikt worden. Inschakelen geschiedt op uw eigen risico."
 
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Indien geactiveerd zal ook worden gecontroleerd op experimentele versies"
@@ -15839,6 +15832,9 @@ msgstr "éénmalig"
 msgid "only HD"
 msgstr "alleen HD"
 
+msgid "only when available"
+msgstr "alleen indien beschikbaar"
+
 msgid "original"
 msgstr "origineel"
 
@@ -16359,6 +16355,9 @@ msgstr "zapte"
 #~ msgid "1,1"
 #~ msgstr "1.1"
 
+#~ msgid "Allow unstable (experimental) feeds"
+#~ msgstr "Accepteer onstabiele (experimentele) feeds"
+
 #, fuzzy
 #~ msgid "C"
 #~ msgstr "CH"
@@ -16426,9 +16425,6 @@ msgstr "zapte"
 #~ msgid "Show /tmp/ecm.info"
 #~ msgstr "Toon /tmp/ecm.info"
 
-#~ msgid "Sorry the feeds seem to be in an unstable state, if you wish to use them please enable 'Allow unstable (experimental) updates' in \"Software update settings\"."
-#~ msgstr "Sorry: de feeds lijken onstabiel te zijn. Als u die toch wilt gebruiken, moet u 'Accepteer niet geteste updates' activeren in\"Software update instellingen\"."
-
 #~ msgid "Symbolrate:"
 #~ msgstr "Symbolrate:"
 
@@ -16445,8 +16441,21 @@ msgstr "zapte"
 #~ msgid "This option allows you to disable sorting of the menus"
 #~ msgstr "Hier kunt u het sorteren van menu's inschakelen"
 
+#, python-format
+#~ msgid ""
+#~ "UNSTABLE: The feeds currently contain unstable experimental updates. You can continue at your own risk but doing so may render your %s %s unusable and in need of a complete reflash.\n"
+#~ "\n"
+#~ "Are you sure you want to continue?"
+#~ msgstr ""
+#~ "ONSTABIEL: De feeds bevatten momenteel onstabiele, experimentele updates. U kunt op eigen risico doorgaan, maar dat kan erin resulteren dat uw %s %s onbruikbaar wordt en dat u deze opnieuw moet flashen.\n"
+#~ "\n"
+#~ "Weet u zeker dat u door wil gaan?"
+
 #~ msgid "Visual impaired commentary"
 #~ msgstr "Audiodescriptie voor slechtzienden"
+
+#~ msgid "When enabled the feeds and software updates may contain unstable experimental versions. Enable this at your own risk."
+#~ msgstr "Indien geactiveerd kunnen feeds en software updates die onstabiele, experimentele versies bevatten, gebruikt worden. Inschakelen geschiedt op uw eigen risico."
 
 #~ msgid "n/A"
 #~ msgstr "NVT"
