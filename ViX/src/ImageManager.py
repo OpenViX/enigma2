@@ -72,6 +72,8 @@ config.imagemanager.imagefeed_ATV = ConfigText(default="http://images.mynonpubli
 config.imagemanager.imagefeed_ATV.value = config.imagemanager.imagefeed_ATV.default # this is no longer a user setup option
 config.imagemanager.imagefeed_Pli = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
 config.imagemanager.imagefeed_Pli.value = config.imagemanager.imagefeed_Pli.default # this is no longer a user setup option
+config.imagemanager.imagefeed_OBH = ConfigText(default="https://images.openbh.net/json", fixed_size=False)
+config.imagemanager.imagefeed_OBH.value = config.imagemanager.imagefeed_OBH.default # this is no longer a user setup option
 config.imagemanager.login_as_ViX_developer = ConfigYesNo(default=False)
 config.imagemanager.developer_username = ConfigText(default="username", fixed_size=False)
 config.imagemanager.developer_password = ConfigText(default="password", fixed_size=False)
@@ -273,7 +275,7 @@ class VIXImageManager(Screen):
 		self.session.openWithCallback(self.setupDone, ImageManagerSetup)
 
 	def doDownload(self):
-		choices = [("OpenViX", config.imagemanager.imagefeed_ViX), ("OpenATV", config.imagemanager.imagefeed_ATV), ("OpenPli", config.imagemanager.imagefeed_Pli)]
+		choices = [("OpenViX", config.imagemanager.imagefeed_ViX), ("OpenATV", config.imagemanager.imagefeed_ATV), ("OpenPli", config.imagemanager.imagefeed_Pli), ("OpenBh", config.imagemanager.imagefeed_OBH)]
 		message = _("From which image library do you want to download?")
 		self.session.openWithCallback(self.doDownloadCallback, MessageBox, message, list=choices, default=1, simple=True)
 
@@ -1313,7 +1315,7 @@ class ImageManagerDownload(Screen):
 
 	def __init__(self, session, BackupDirectory, ConfigObj):
 		Screen.__init__(self, session)
-		self.setTitle(_("%s downloads") % {config.imagemanager.imagefeed_ATV: "OpenATV", config.imagemanager.imagefeed_Pli: "OpenPLi", config.imagemanager.imagefeed_ViX: "OpenViX"}.get(ConfigObj, ''))
+		self.setTitle(_("%s downloads") % {config.imagemanager.imagefeed_ATV: "OpenATV", config.imagemanager.imagefeed_Pli: "OpenPLi", config.imagemanager.imagefeed_ViX: "OpenViX", config.imagemanager.imagefeed_OBH: "OpenBh"}.get(ConfigObj, ''))
 		self.ConfigObj = ConfigObj
 		self.BackupDirectory = BackupDirectory
 		self["lab1"] = Label(_("Select an image to download for %s:") % getMachineMake())
@@ -1493,7 +1495,7 @@ class ImageManagerSetup(Setup):
 				configElement.value = configElement.default
 		if not configElement.value:
 			config.imagemanager.imagefeed_DevL.value = config.imagemanager.imagefeed_DevL.default
-		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_Pli):
+		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_Pli, config.imagemanager.imagefeed_OBH):
 			self.check_URL_format(configElement)
 		for x in self["config"].list:
 			x[1].save()
