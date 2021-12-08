@@ -189,9 +189,9 @@ class VIXDevicesPanel(Screen):
 				{
 				"template":
 					[
-					MultiContentEntryText(pos = (%d, 0), size = (%d, %d), font = 0, flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER, text = 0),
+					MultiContentEntryText(pos = (%d, %d), size = (%d, %d), font = 0, flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER, text = 0),
 					MultiContentEntryText(pos = (%d, %d), size = (%d, %d), font = 1, flags = RT_HALIGN_LEFT | RT_VALIGN_TOP, text = 1),
-					MultiContentEntryPixmapAlphaBlend(pos = (%d, 0), size = (%d, %d), flags = BT_SCALE, png = 2),
+					MultiContentEntryPixmapAlphaBlend(pos = (%d, %d), size = (%d, %d), flags = BT_SCALE, png = 2),
 					],
 				"fonts": [gFont("Regular",%d), gFont("Regular",%d)],
 				"itemHeight": %d
@@ -199,23 +199,31 @@ class VIXDevicesPanel(Screen):
 			</convert>
 		</widget>
 		<widget name="lab1" position="%d,%d" size="%d,%d" font="Regular;%d" halign="center" transparent="1" valign="center" zPosition="+1" />
-		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
-		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
-		<widget source="key_yellow" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
-		<widget source="key_blue" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_blue" font="Regular;%d" foregroundColor="key_text" halign="center" valign="center" />
+		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/green.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/yellow.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/blue.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<widget name="key_red" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget name="key_green" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+		<widget name="key_yellow" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
+		<widget name="key_blue" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
 	</screen>""",
-		640, 495,
-		10, 10, 620, 425,
-		100, 520, 30,
+		560, 495, # screen
+		10, 50, 540, 400, # Listbox
+		100, 0, 520, 30,
 		120, 30, 500, 50,
-		10, 80, 80,
-		24, 20,
+		10, 0, 80, 80,
+		24, 20, # fonts
 		80,
-		10, 10, 620, 425, 25,
-		10, 50, 140, 40, 20,
-		160, 50, 140, 40, 20,
-		310, 50, 140, 40, 20,
-		460, 50, 140, 40, 20
+		10, 10, 540, 425, 25,
+		0, 0, 140, 40, #colors
+		140, 0, 140, 40,
+		280, 0, 140, 40,
+		420, 0, 140, 40,
+		0, 0, 140, 40, 20,
+		140, 0, 140, 40, 20,
+		280, 0, 140, 40, 20,
+		420, 0, 140, 40, 20,
 	]
 
 	def __init__(self, session):
@@ -349,15 +357,25 @@ class VIXDevicesPanel(Screen):
 
 
 class DeviceMountSetup(Screen, ConfigListScreen):
-	skin = """
-	<screen position = "center, center" size = "640, 460">
-		<ePixmap pixmap = "skin_default/buttons/red.png" position = "25, 0" size = "140, 40" alphatest = "on"/>
-		<ePixmap pixmap = "skin_default/buttons/green.png" position = "175, 0" size = "140, 40" alphatest = "on"/>
-		<widget name = "key_red" position = "25, 0" zPosition = "1" size = "140, 40" font = "Regular;20" halign = "center" valign = "center" backgroundColor = "#9f1313" transparent = "1"/>
-		<widget name = "key_green" position = "175, 0" zPosition = "1" size = "140, 40" font = "Regular;20" halign = "center" valign = "center" backgroundColor = "#1f771f" transparent = "1"/>
-		<widget name = "config" position = "30, 60" size = "580, 275" scrollbarMode = "showOnDemand"/>
-		<widget name = "lab1" position = "30, 375" size = "580, 20" font = "Regular;18" halign = "center" valign = "center" backgroundColor = "#9f1313"/>
-	</screen>"""
+	skin = ["""
+	<screen position="center,center" size="%d,%d">
+		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/green.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<widget name="key_red" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget name="key_green" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+		<widget name="config" position="%d,%d" size="%d,%d" itemHeight="%d" font="Regular;%d" scrollbarMode="showOnDemand"/>
+		<widget name="lab1" position="%d,%d" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313"/>
+	</screen>""",
+		560, 450, # screen
+		0, 0, 140, 40, #colors
+		140, 0, 140, 40,
+		0, 0, 140, 40, 20,
+		140, 0, 140, 40, 20,
+		0, 50, 560, 275, 26, 20, # config
+		0, 365, 560, 20, 18,
+	]
+		
+		
 
 	def __init__(self, session):
 		Screen.__init__(self, session)

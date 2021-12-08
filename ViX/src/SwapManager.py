@@ -82,27 +82,48 @@ class StartSwap:
 
 
 class VIXSwap(Screen):
-	skin = """
-	<screen name="VIXSwap" position="center,center" size="620,250">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="10,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="160,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="310,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="460,0" size="140,40" alphatest="blend"/>
-		<widget name="key_red" position="10,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_green" position="160,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_yellow" position="310,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="key_blue" position="460,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="autostart_off" position="10,50" zPosition="1" pixmap="skin_default/icons/lock_off.png" size="32,32" alphatest="blend"/>
-		<widget name="autostart_on" position="10,50" zPosition="2" pixmap="skin_default/icons/lock_on.png" size="32,32" alphatest="blend"/>
-		<widget name="lab1" position="50,50" size="360,30" font="Regular;20" valign="center" transparent="1"/>
-		<widget name="lab2" position="10,100" size="150,30" font="Regular;20" valign="center" transparent="1"/>
-		<widget name="lab3" position="10,150" size="150,30" font="Regular;20" valign="center" transparent="1"/>
-		<widget name="lab4" position="10,200" size="150,30" font="Regular;20" valign="center" transparent="1" />
-		<widget name="labplace" position="160,100" size="220,30" font="Regular;20" valign="center" backgroundColor="#4D5375"/>
-		<widget name="labsize" position="160,150" size="220,30" font="Regular;20" valign="center" backgroundColor="#4D5375"/>
-		<widget name="inactive" position="160,200" size="100,30" font="Regular;20" valign="center" halign="center" backgroundColor="red"/>
-		<widget name="active" position="160,200" size="100,30" font="Regular;20" valign="center" halign="center" backgroundColor="green"/>
-	</screen>"""
+	skin = ["""
+	<screen name="VIXSwap" position="center,center" size="%d,%d">
+		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/green.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/yellow.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/blue.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<widget name="key_red" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget name="key_green" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+		<widget name="key_yellow" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
+		<widget name="key_blue" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
+		<widget name="autostart_off" position="%d,%d" zPosition="1" pixmap="skin_default/icons/lock_off.png" size="%d,%d" alphatest="blend" scale="1"/>
+		<widget name="autostart_on" position="%d,%d" zPosition="2" pixmap="skin_default/icons/lock_on.png" size="%d,%d" alphatest="blend" scale="1"/>
+		<widget name="lab1" position="%d,%d" size="%d,%d" font="Regular;%d" valign="center" transparent="1"/>
+		<widget name="lab2" position="%d,%d" size="%d,%d" font="Regular;%d" valign="center" transparent="1"/>
+		<widget name="lab3" position="%d,%d" size="%d,%d" font="Regular;%d" valign="center" transparent="1"/>
+		<widget name="lab4" position="%d,%d" size="%d,%d" font="Regular;%d" valign="center" transparent="1" />
+		<widget name="labplace" position="%d,%d" size="%d,%d" font="Regular;%d" valign="center" backgroundColor="#4D5375"/>
+		<widget name="labsize" position="%d,%d" size="%d,%d" font="Regular;%d" valign="center" backgroundColor="#4D5375"/>
+		<widget name="inactive" position="%d,%d" size="%d,%d" font="Regular;%d" valign="center" halign="center" backgroundColor="red"/>
+		<widget name="active" position="%d,%d" size="%d,%d" font="Regular;%d" valign="center" halign="center" backgroundColor="green"/>
+	</screen>""",
+		560, 250, # screen
+		0, 0, 140, 40, #colors
+		140, 0, 140, 40,
+		280, 0, 140, 40,
+		420, 0, 140, 40,
+		0, 0, 140, 40, 20,
+		140, 0, 140, 40, 20,
+		280, 0, 140, 40, 20,
+		420, 0, 140, 40, 20,
+		10, 50, 32, 32, # lock off
+		10, 50, 32, 32, # lock on
+		50, 50, 360, 30, 20,
+		10, 100, 150, 30, 20,
+		10, 150, 150, 30, 20,
+		10, 200, 150, 30, 20,
+		160, 100, 220, 30, 20,
+		160, 150, 220, 30, 20,
+		160, 200, 100, 30, 20,
+		160, 200, 100, 30, 20,
+	]
+		
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -129,7 +150,15 @@ class VIXSwap(Screen):
 		self.new_place = ""
 		self.creatingswap = False
 		self.swap_active = False
-		self["actions"] = ActionMap(["WizardActions", "ColorActions", "MenuActions"], {"back": self.close, "red": self.close, "green": self.actDeact, "yellow": self.autoSsWap, "blue": self.createDel, "menu": self.close})
+		self["actions"] = ActionMap(["WizardActions", "ColorActions", "MenuActions"],
+		{
+			"back": self.close,
+			"red": self.close,
+			"green": self.actDeact,
+			"yellow": self.autoSsWap,
+			"blue": self.createDel,
+			"menu": self.close,
+		})
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.getSwapDevice)
 		self.updateSwap()

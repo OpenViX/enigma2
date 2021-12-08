@@ -80,24 +80,43 @@ def softcamSpinner():
 
 
 class VIXSoftcamManager(Screen):
-	skin = """
-	<screen name="VIXSoftcamManager" position="center,center" size="560,400">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="blend"/>
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="lab1" position="40,60" size="170,20" font="Regular; 22" halign="right" zPosition="2" transparent="0"/>
-		<widget name="list" position="225,60" size="240,100" transparent="0" scrollbarMode="showOnDemand"/>
-		<widget name="lab2" position="40,165" size="170,30" font="Regular; 22" halign="right" zPosition="2" transparent="0"/>
-		<widget name="activecam" position="225,166" size="240,100" font="Regular; 20" halign="left" zPosition="2" transparent="0" noWrap="1"/>
+	skin = ["""
+	<screen name="VIXSoftcamManager" position="center,center" size="%d,%d">
+		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/green.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/yellow.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/blue.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<widget name="key_red" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget name="key_green" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+		<widget name="key_yellow" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
+		<widget name="key_blue" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
+		<ePixmap pixmap="skin_default/buttons/key_menu.png" position="%d,%d" size="%d,%d" alphatest="blend" transparent="1" zPosition="3" scale="1" />
+		<ePixmap pixmap="skin_default/buttons/key_info.png" position="%d,%d" size="%d,%d" alphatest="blend" transparent="1" zPosition="3" scale="1" />
+		<widget name="lab1" position="%d,%d" size="%d,%d" font="Regular;%d" halign="right" zPosition="2" transparent="0"/>
+		<widget name="list" position="%d,%d" size="%d,%d" transparent="0" scrollbarMode="showOnDemand"/>
+		<widget name="lab2" position="%d,%d" size="%d,%d" font="Regular;%d" halign="right" zPosition="2" transparent="0"/>
+		<widget name="activecam" position="%d,%d" size="%d,%d" font="Regular;%d" halign="left" zPosition="2" transparent="0" noWrap="1"/>
 		<applet type="onLayoutFinish">
-			self["list"].instance.setItemHeight(25)
+			self["list"].instance.setItemHeight(%d)
 		</applet>
-	</screen>"""
+	</screen>""",
+		560, 400, # screen
+		0, 0, 140, 40, #colors
+		140, 0, 140, 40,
+		280, 0, 140, 40,
+		420, 0, 140, 40,
+		0, 0, 140, 40, 20,
+		140, 0, 140, 40, 20,
+		280, 0, 140, 40, 20,
+		420, 0, 140, 40, 20,
+		0, 45, 35, 25, # menu key
+		40, 45, 35, 25, # info key
+		40, 110, 170, 20, 22, # lab1
+		225, 110, 240, 100, # list
+		40, 215, 170, 30, 22, # lab2
+		225, 216, 240, 100, 20, # activecam
+		25,
+	]
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -356,11 +375,15 @@ class VIXSoftcamManager(Screen):
 
 
 class VIXStartCam(Screen):
-	skin = """
-	<screen name="VIXStartCam" position="center,center" size="484, 150" title="Starting Softcam">
+	skin = ["""
+	<screen name="VIXStartCam" position="center,center" size="%d, %d">
 		<widget name="connect" position="center, 0" size="64,64" zPosition="2" """ + 'pixmaps="%s"' % softcamSpinner() + """ transparent="1" alphatest="blend"/>
-		<widget name="lab1" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
-	</screen>"""
+		<widget name="lab1" position="center, 80" halign="center" size="%d,%d" zPosition="1" font="Regular;%d" valign="top" transparent="1"/>
+	</screen>""",
+		484, 150,
+		460, 60, 20,
+	]
+		
 
 	def __init__(self, session, selectedcam):
 		Screen.__init__(self, session)
@@ -459,11 +482,14 @@ class VIXStartCam(Screen):
 
 
 class VIXStopCam(Screen):
-	skin = """
-	<screen name="VIXStopCam" position="center,center" size="484, 150">
-		<widget name="connect" position="217, 0" size="64,64" zPosition="2" """ + 'pixmaps="%s"' % softcamSpinner() + """ transparent="1" alphatest="blend" scale="1"/>
-		<widget name="lab1" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
-	</screen>"""
+	skin = ["""
+	<screen name="VIXStopCam" position="center,center" size="%d, %d">
+		<widget name="connect" position="center, 0" size="64,64" zPosition="2" """ + 'pixmaps="%s"' % softcamSpinner() + """ transparent="1" alphatest="blend"/>
+		<widget name="lab1" position="center, 80" halign="center" size="%d,%d" zPosition="1" font="Regular;%d" valign="top" transparent="1"/>
+	</screen>""",
+		484, 150,
+		460, 60, 20,
+	]
 
 	def __init__(self, session, selectedcam):
 		Screen.__init__(self, session)
@@ -554,10 +580,13 @@ class VIXStopCam(Screen):
 
 
 class VIXSoftcamLog(Screen):
-	skin = """
-<screen name="VIXSoftcamLog" position="center,center" size="560,400">
-	<widget name="list" position="0,0" size="560,400" font="Regular;14"/>
-</screen>"""
+	skin = ["""
+<screen name="VIXSoftcamLog" position="center,center" size="%d,%d">
+	<widget name="list" position="%d,%d" size="%d,%d" font="Regular;%d"/>
+</screen>""",
+	560, 400,
+	0, 0, 560, 400, 14,
+	]
 
 	def __init__(self, session):
 		self.session = session
