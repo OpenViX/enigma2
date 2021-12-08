@@ -23,7 +23,7 @@ from Components.SystemInfo import SystemInfo
 import Components.Task
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
-from Tools.Directories import resolveFilename, SCOPE_PLUGINS
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_PLUGIN_ABSOLUTE
 
 config.softcammanager = ConfigSubsection()
 config.softcammanager.softcams_autostart = ConfigLocations(default="")
@@ -73,6 +73,10 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 		if softcamautopoller is not None:
 			softcamautopoller.stop()
 			softcamautopoller = None
+
+
+def softcamSpinner():
+	return ','.join([resolveFilename(SCOPE_CURRENT_PLUGIN_ABSOLUTE, "images/busy%d.png" % x) for x in range(1,25) if path.exists(resolveFilename(SCOPE_CURRENT_PLUGIN_ABSOLUTE, "images/busy%d.png" % x))])
 
 
 class VIXSoftcamManager(Screen):
@@ -354,7 +358,7 @@ class VIXSoftcamManager(Screen):
 class VIXStartCam(Screen):
 	skin = """
 	<screen name="VIXStartCam" position="center,center" size="484, 150" title="Starting Softcam">
-		<widget name="connect" position="217, 0" size="64,64" zPosition="2" pixmaps="ViX_HD_Common/busy/busy1.png,ViX_HD_Common/busy/busy2.png,ViX_HD_Common/busy/busy3.png,ViX_HD_Common/busy/busy4.png,ViX_HD_Common/busy/busy5.png,ViX_HD_Common/busy/busy6.png,ViX_HD_Common/busy/busy7.png,ViX_HD_Common/busy/busy8.png,ViX_HD_Common/busy/busy9.png,ViX_HD_Common/busy/busy9.png,ViX_HD_Common/busy/busy10.png,ViX_HD_Common/busy/busy11.png,ViX_HD_Common/busy/busy12.png,ViX_HD_Common/busy/busy13.png,ViX_HD_Common/busy/busy14.png,ViX_HD_Common/busy/busy15.png,ViX_HD_Common/busy/busy17.png,ViX_HD_Common/busy/busy18.png,ViX_HD_Common/busy/busy19.png,ViX_HD_Common/busy/busy20.png,ViX_HD_Common/busy/busy21.png,ViX_HD_Common/busy/busy22.png,ViX_HD_Common/busy/busy23.png,ViX_HD_Common/busy/busy24.png"  transparent="1" alphatest="blend"/>
+		<widget name="connect" position="center, 0" size="64,64" zPosition="2" """ + 'pixmaps="%s"' % softcamSpinner() + """ transparent="1" alphatest="blend"/>
 		<widget name="lab1" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
 	</screen>"""
 
@@ -457,7 +461,7 @@ class VIXStartCam(Screen):
 class VIXStopCam(Screen):
 	skin = """
 	<screen name="VIXStopCam" position="center,center" size="484, 150">
-		<widget name="connect" position="217, 0" size="64,64" zPosition="2" pixmaps="ViX_HD_Common/busy/busy1.png,ViX_HD_Common/busy/busy2.png,ViX_HD_Common/busy/busy3.png,ViX_HD_Common/busy/busy4.png,ViX_HD_Common/busy/busy5.png,ViX_HD_Common/busy/busy6.png,ViX_HD_Common/busy/busy7.png,ViX_HD_Common/busy/busy8.png,ViX_HD_Common/busy/busy9.png,ViX_HD_Common/busy/busy9.png,ViX_HD_Common/busy/busy10.png,ViX_HD_Common/busy/busy11.png,ViX_HD_Common/busy/busy12.png,ViX_HD_Common/busy/busy13.png,ViX_HD_Common/busy/busy14.png,ViX_HD_Common/busy/busy15.png,ViX_HD_Common/busy/busy17.png,ViX_HD_Common/busy/busy18.png,ViX_HD_Common/busy/busy19.png,ViX_HD_Common/busy/busy20.png,ViX_HD_Common/busy/busy21.png,ViX_HD_Common/busy/busy22.png,ViX_HD_Common/busy/busy23.png,ViX_HD_Common/busy/busy24.png"  transparent="1" alphatest="blend"/>
+		<widget name="connect" position="217, 0" size="64,64" zPosition="2" """ + 'pixmaps="%s"' % softcamSpinner() + """ transparent="1" alphatest="blend" scale="1"/>
 		<widget name="lab1" position="10, 80" halign="center" size="460, 60" zPosition="1" font="Regular;20" valign="top" transparent="1"/>
 	</screen>"""
 
