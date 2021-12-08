@@ -841,6 +841,7 @@ def InitUsageConfig():
 	config.softwareupdate.updatefound = NoSave(ConfigBoolean(default=False))
 	config.softwareupdate.updatebeta = ConfigYesNo(default=False)
 	config.softwareupdate.updateisunstable = ConfigInteger(default=0)
+	config.softwareupdate.showinextensions = ConfigSelection(default="no", choices=[("no", _("no")), ("yes", _("yes")), ("available", _("only when available"))])
 
 	config.timeshift = ConfigSubsection()
 	choicelist = [("0", "Disabled")]

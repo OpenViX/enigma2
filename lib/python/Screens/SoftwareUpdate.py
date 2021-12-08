@@ -65,10 +65,6 @@ class UpdateChoices(ChoiceBox):
 			self['tl_yellow'] = Pixmap()
 			self['tl_green'] = Pixmap()
 
-		self["menuActions"] = NumberActionMap(["MenuActions"],
-		{
-			"menu": self.opensettings
-		}, prio=-3) # Override ChoiceBox "menu" action
 		self.onShown.append(self.onshow)
 
 	def onshow(self):
@@ -91,10 +87,6 @@ class UpdateChoices(ChoiceBox):
 				self['tl_green'].show()
 			else:
 				self['tl_off'].show()
-
-	def opensettings(self):
-		from Screens.Setup import Setup
-		self.session.open(Setup, "softwareupdate")
 
 	def cancelClick(self, dummy=False):
 		self.close()
@@ -273,7 +265,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 				elif config.softwareupdate.updateisunstable.value == '0':
 					self.total_packages = len(self.ipkg.getFetchedList())
 					message = _("Do you want to update your %s %s ?") % (getMachineBrand(), getMachineName()) + "\n(" + (ngettext("%s updated package available", "%s updated packages available", self.total_packages) % self.total_packages) + ")"
-				if self.total_packages > 150:
+				if self.total_packages is not None and self.total_packages > 150:
 					message += " " + _("Reflash recommended!")
 				if self.total_packages:
 					global ocram

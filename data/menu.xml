@@ -187,10 +187,15 @@ self.session.open(SABnzbdSetupScreen)
 				<item entryID="logs_setup" level="2" text="Settings"><setup id="logs" /></item>
 				<item entryID="logs_man" level="2" text="Log Manager"><screen module="LogManager" screen="LogManager" /></item>
 			</menu>
-			<item entryID="software_update" level="0" text="Software Update" weight="2"><screen module="SoftwareUpdate" screen="UpdatePlugin" /></item>
-			<item entryID="input_device_setup" level="1" text="Input Devices" weight="3"><screen module="InputDeviceSetup" screen="InputDeviceSelection" /></item>
-			<item entryID="keyboard_setup" level="0" text="Keyboard" weight="4"><setup id="keyboard" /></item>
-			<item entryID="rfmod_setup" level="1" text="Settings" weight="5" requires="RfModulator"><setup id="RFmod" /></item>
+			<!-- Menu / Software Update -->
+			<menu weight="3" level="0" text="Software update" entryID="software_update">
+				<id val="softwareupdatemenu"/>
+				<item entryID="onlineupdate_setup" level="0" text="Settings" weight="1"><setup id="softwareupdate"/></item>
+				<item entryID="software_update" level="0" text="Software update" weight="2"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
+			</menu>
+			<item entryID="input_device_setup" level="1" text="Input Devices" weight="4"><screen module="InputDeviceSetup" screen="InputDeviceSelection" /></item>
+			<item entryID="keyboard_setup" level="0" text="Keyboard" weight="5"><setup id="keyboard" /></item>
+			<item entryID="rfmod_setup" level="1" text="Settings" weight="6" requires="RfModulator"><setup id="RFmod" /></item>
 			<item entryID="factory_reset" level="0" text="Factory Reset" weight="99"><screen module="FactoryReset" screen="FactoryReset" /></item>
 		</menu>
 

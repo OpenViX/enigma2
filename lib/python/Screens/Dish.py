@@ -149,7 +149,7 @@ class Dish(Screen):
 			service = self.session.nav.getCurrentService()
 			info = service and service.info()
 			pmt = info and info.getInfo(iServiceInformation.sPMTPID)
-			if pmt >= 0:
+			if pmt is not None and pmt >= 0:
 				print("[Dish] tuned, closing...")
 				self.__toHide()
 			else:

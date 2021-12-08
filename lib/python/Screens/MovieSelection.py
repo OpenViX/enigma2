@@ -2059,6 +2059,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 		newname = newname.strip()
 		failedList = []
+# Remember when we change a meta file.
+		need_reload = False
 		for item in renameList:
 			itemRef = item[0]
 			path = itemRef.getPath().rstrip('/')
@@ -2084,6 +2086,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 					self.list.removeMark(itemRef)
 					if item[3]:
 						item[3].txt = newname
+						need_reload = True
 					else:
 						index = self.list.findService(itemRef)
 						self.list.invalidateItem(index)
@@ -2094,6 +2097,10 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			msg = "\n".join(failedList)
 			mbox = self.session.open(MessageBox, msg, type=MessageBox.TYPE_ERROR, timeout=5)
 			mbox.setTitle(self.getTitle())
+
+# If we've changed meta-data, we need to reload/redisplay
+#
+		if need_reload: self["list"].reload(self.current_ref, self.selected_tags, self.collectionName)
 
 	def can_decode(self, item):
 		return self.list.countMarked() == 0 and item[0].getPath().endswith('.ts')

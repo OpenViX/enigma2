@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-17 04:38+0000\n"
-"PO-Revision-Date: 2021-11-17 09:59+0100\n"
+"POT-Creation-Date: 2021-12-05 03:41+0000\n"
+"PO-Revision-Date: 2021-12-07 14:19+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1190,7 +1190,7 @@ msgstr ""
 "'Voeg taal toe' of 'MENU' voegt additionele taal toe.\n"
 "'Verwijder taal' verwijdert alle talen behalve Engels en de actieve taal OF de geselecteerde taal."
 
-msgid "( All readers)"
+msgid "(All readers)"
 msgstr "(Alle lezers)"
 
 msgid "(Current)"
@@ -1209,8 +1209,9 @@ msgstr "(PiP)"
 msgid "(Radio)"
 msgstr "(Radio)"
 
-msgid "(Show only reader:"
-msgstr "(Toon alleen lezer):"
+#, python-format
+msgid "(Show only reader) (%s)"
+msgstr "(Toon alleen lezer) (%s)"
 
 msgid "(TV)"
 msgstr "(Tv)"
@@ -1244,6 +1245,9 @@ msgstr "* huidige animatie"
 
 msgid "+24 hours"
 msgstr "+24 uur"
+
+msgid "-"
+msgstr "-"
 
 msgid "-24 hours"
 msgstr "-24 uur"
@@ -2737,12 +2741,6 @@ msgstr "Verzonden bytes:"
 msgid "C-Band"
 msgstr "C-Band"
 
-msgid "CAID"
-msgstr "CAID"
-
-msgid "CAID:SrvID"
-msgstr "CAID:SrvID"
-
 msgid "CCcam Client Info"
 msgstr "CCcam klantinfo"
 
@@ -2760,12 +2758,12 @@ msgid ""
 "CCcam Info %s\n"
 "by AliAbdul %s\n"
 "\n"
-"This plugin shows you the status of your CCcam."
+"This screen shows you the status of CCcam."
 msgstr ""
 "CCcam Info %s\n"
 "door AliAbdul %s\n"
 "\n"
-"Deze plugin toont de status van uw CCcam."
+"Dit scherm toont de status van CCcam."
 
 msgid "CCcam Info Config"
 msgstr "CCcam Info configuratie"
@@ -2831,6 +2829,12 @@ msgstr "Miniatuurafbeeldingen cachen"
 
 msgid "Cached:"
 msgstr "Cached:"
+
+msgid "Caid"
+msgstr "Caid"
+
+msgid "Caid:Srvid"
+msgstr "Caid:Srvid"
 
 msgid "Calculate"
 msgstr "Bereken"
@@ -2913,8 +2917,8 @@ msgstr "Mogelijkheden: "
 msgid "Capacity: "
 msgstr "Capaciteit: "
 
-msgid "Card infos (CCcam-Reader)"
-msgstr "Kaartinfo (CCcam-Reader)"
+msgid "Card info (CCcam-Reader)"
+msgstr "Kaartinfo (CCcam-lezer)"
 
 msgid "Cards:"
 msgstr "Kaarten:"
@@ -2999,6 +3003,9 @@ msgstr "Kanaallijst"
 
 msgid "Channel List Context Menu"
 msgstr "Kanaallijst contextmenu"
+
+msgid "Channel Name"
+msgstr "Kanaalnaam"
 
 msgid "Channel Selection"
 msgstr "Zenderkeuze"
@@ -3206,6 +3213,12 @@ msgstr "Stel in of meerkanaals geluid moet worden uitgevoerd als PCM."
 
 msgid "Choose whether or not to show an icon when a motorised dish is moving."
 msgstr "Kies hier of u een icoon wilt zien als uw gemotoriseerde schotel draait."
+
+msgid "Choose whether to scan a single transponder, one satellite or multiple satellites."
+msgstr "Kies of een enkele transponder, een enkele satelliet of meerdere satellieten gescanned moeten worden."
+
+msgid "Choose whether to scan for free services only or whether to include paid/encrypted services too."
+msgstr "Kies te scannen naar vrije zenders of ook naar betaalde/versleutelde zenders."
 
 msgid "Choose which level of menu/settings to display. 'Expert' level shows all items."
 msgstr "Kies welk niveau van menu's en instellingen u wilt zien. Het 'expert' niveau laat alle mogelijkheden zien."
@@ -4878,23 +4891,8 @@ msgstr "E2 (her)starts:\t%s\n"
 msgid "ECM Info"
 msgstr "ECM Info"
 
-msgid "ECM Statistics"
-msgstr "ECM Statistieken"
-
-msgid "ECM Time"
-msgstr "ECM Tijd"
-
-msgid "ECM avg"
-msgstr "ECM gem."
-
 msgid "ECM data will be included in the stream. This enables a client receiver to decode it."
 msgstr "ECM data zullen worden opgenomen in de stream. Dit geeft de klant-box de mogelijkheid die te decoderen."
-
-msgid "ECM last"
-msgstr "ECM laatste"
-
-msgid "ECM-Time"
-msgstr "ECM Tijd"
 
 msgid "EPG"
 msgstr "EPG"
@@ -4965,6 +4963,21 @@ msgstr "Oost"
 
 msgid "East limit set"
 msgstr "Oostelijke limiet instellen"
+
+msgid "Ecm Info"
+msgstr "ECM Info"
+
+msgid "Ecm Statistics"
+msgstr "ECM statistieken"
+
+msgid "Ecm Time"
+msgstr "ECM tijd"
+
+msgid "Ecm avg"
+msgstr "ECM gem."
+
+msgid "Ecm last"
+msgstr "ECM laatste"
 
 msgid "Ecm:"
 msgstr "Ecm:"
@@ -5200,8 +5213,8 @@ msgstr "Eindtijd"
 msgid "English"
 msgstr "Engels"
 
-msgid "Enigma2 debug level ."
-msgstr "Enigma2 debug-niveau"
+msgid "Enigma2 debug level."
+msgstr "Enigma2 debug-niveau."
 
 #, python-format
 msgid "Enigma2 uptime:\t%s\n"
@@ -6396,6 +6409,9 @@ msgstr "INS"
 msgid "IP"
 msgstr "IP"
 
+msgid "IP Address"
+msgstr "IP-adres"
+
 msgid "IP address"
 msgstr "IP-adres"
 
@@ -7031,9 +7047,6 @@ msgstr "LED helderheid tijdens stand-by."
 
 msgid "LNB"
 msgstr "LNB"
-
-msgid "Label"
-msgstr "Label"
 
 msgid "Language"
 msgstr "Taal"
@@ -8495,6 +8508,9 @@ msgstr "Origineel"
 msgid "Original language"
 msgstr "Originele taal"
 
+msgid "Oscam/Ncam not running - start Cam to obtain information."
+msgstr "Oscam/Ncam draait niet - start Cam om informatie te verkrijgen."
+
 msgid "Other"
 msgstr "Anders"
 
@@ -8530,9 +8546,6 @@ msgstr "PDC"
 
 msgid "PGS file"
 msgstr "PGS-bestand"
-
-msgid "PID"
-msgstr "PID"
 
 #
 msgid "PIP"
@@ -8749,6 +8762,9 @@ msgstr "Toon mini TV-beeld"
 
 msgid "Picture player"
 msgstr "Fotospeler"
+
+msgid "Pid"
+msgstr "Pid"
 
 msgid "Pillarbox"
 msgstr "Pillarbox"
@@ -9433,6 +9449,9 @@ msgstr "Beveilig hoofdmenu"
 msgid "Protect manufacturer reset screen"
 msgstr "Bescherm herstelscherm van fabrikant"
 
+msgid "Protect menu sort"
+msgstr "Beveilig menusortering"
+
 msgid "Protect movie list"
 msgstr "Beveilig opnamelijst"
 
@@ -9585,6 +9604,9 @@ msgstr "Lezer"
 
 msgid "Reader Statistics"
 msgstr "Lezer statistieken"
+
+msgid "Reader/User"
+msgstr "Lezer/Gebruiker"
 
 #, python-format
 msgid "Ready to install \"%s\" ?"
@@ -9897,6 +9919,9 @@ msgstr "Verwijder geselecteerde satellieten"
 
 msgid "Remove terrestrial services"
 msgstr "Verwijder DVB-T zenders"
+
+msgid "Remove the services on scanned transponders before re-adding services?"
+msgstr "De kanalen van gescande transponders verwijderen voordat de gescaande kanalen toegevoegd worden?"
 
 msgid "Remove timer"
 msgstr "Verwijder timer"
@@ -10361,6 +10386,9 @@ msgstr "Bestanden zoeken..."
 
 msgid "Scan options"
 msgstr "Scan opties"
+
+msgid "Scan using transponders on NIT table? 'No' will use transponders in xml file."
+msgstr "Scan transponders op basis van de NIT-tabel? Gebruik 'Nee' om transponders van het xml-bestand te gebruiken."
 
 msgid "Scan wireless networks"
 msgstr "WiFi-netwerken zoeken"
@@ -10838,6 +10866,15 @@ msgstr "Selecteer videomodus"
 msgid "Select whether your SCR device is externally powered."
 msgstr "Geef aan of uw SCR-apparaat een externe voeding heeft."
 
+msgid "Select which satellite to scan."
+msgstr "Kies welke satelliet gescand moet worden."
+
+msgid "Select which transponder to scan."
+msgstr "Kies welke transponder gescand moet worden."
+
+msgid "Select which tuner to use for the scan."
+msgstr "Kies welke tuner moet scannen."
+
 msgid "Select wireless network"
 msgstr "Secteer draadloos netwerk"
 
@@ -10903,9 +10940,6 @@ msgstr "Serienummer"
 
 msgid "Serial no"
 msgstr "Serienummer"
-
-msgid "Serv.Name"
-msgstr "Serv.Naam"
 
 #, python-format
 msgid "Server Info ( %s-Version: %s )"
@@ -11219,9 +11253,6 @@ msgstr "Toon"
 msgid "Show %s"
 msgstr "Toon %s"
 
-msgid "Show /tmp/ecm.info"
-msgstr "Toon /tmp/ecm.info"
-
 msgid "Show 1080p 24fps as"
 msgstr "Toon 1080p 24fps als"
 
@@ -11260,6 +11291,9 @@ msgstr "Toon schermiconen"
 
 msgid "Show EIT now/next in infobar"
 msgstr "Toon EIT nu/straks in informatiebalk"
+
+msgid "Show Ecm info"
+msgstr "ECM info weergeven"
 
 msgid "Show Grid EPG"
 msgstr "Toon Multi-EPG"
@@ -11302,6 +11336,12 @@ msgstr "Toon SD als"
 
 msgid "Show Single EPG"
 msgstr "Zender EPG"
+
+msgid "Show Software Update in Extensions (blue button menu). 'yes' adds it permanently. 'only when available' only shows it when updates are known to be available based on update polling."
+msgstr "Toon Software-update in extensies (blauwe toets). 'Ja' voegt het permanent toe, 'alleen indien beschikbaar' toont het alleen indien op basis van het controleren bekend is dat er een update beschikbaar is."
+
+msgid "Show Software Update in Extentions"
+msgstr "Toon Software-update in extensies"
 
 msgid "Show Time Remaining/Elapsed"
 msgstr "Toon resterende/verstreken tijd"
@@ -15683,12 +15723,6 @@ msgstr "muziek/ballet/dans (algemeen)"
 msgid "musical/opera"
 msgstr "musical/opera"
 
-msgid "n/A"
-msgstr "NVT"
-
-msgid "n/a"
-msgstr "NVT"
-
 msgid "nature/animals/environment"
 msgstr "natuur/dieren/milieu"
 
@@ -15797,6 +15831,9 @@ msgstr "éénmalig"
 
 msgid "only HD"
 msgstr "alleen HD"
+
+msgid "only when available"
+msgstr "alleen indien beschikbaar"
 
 msgid "original"
 msgstr "origineel"
@@ -16318,9 +16355,18 @@ msgstr "zapte"
 #~ msgid "1,1"
 #~ msgstr "1.1"
 
+#~ msgid "Allow unstable (experimental) feeds"
+#~ msgstr "Accepteer onstabiele (experimentele) feeds"
+
 #, fuzzy
 #~ msgid "C"
 #~ msgstr "CH"
+
+#~ msgid "CAID"
+#~ msgstr "CAID"
+
+#~ msgid "CAID:SrvID"
+#~ msgstr "CAID:SrvID"
 
 #~ msgid "Collection"
 #~ msgstr "Collectie"
@@ -16328,6 +16374,9 @@ msgstr "zapte"
 #, fuzzy
 #~ msgid "D"
 #~ msgstr "3D"
+
+#~ msgid "ECM-Time"
+#~ msgstr "ECM Tijd"
 
 #, fuzzy
 #~ msgid "EtPortal"
@@ -16361,8 +16410,20 @@ msgstr "zapte"
 #~ msgid "Internal flash"
 #~ msgstr "Intern geheugen"
 
+#~ msgid "Label"
+#~ msgstr "Label"
+
+#~ msgid "PID"
+#~ msgstr "PID"
+
 #~ msgid "Polarisation:"
 #~ msgstr "Polarisatie:"
+
+#~ msgid "Serv.Name"
+#~ msgstr "Serv.Naam"
+
+#~ msgid "Show /tmp/ecm.info"
+#~ msgstr "Toon /tmp/ecm.info"
 
 #~ msgid "Symbolrate:"
 #~ msgstr "Symbolrate:"
@@ -16380,5 +16441,24 @@ msgstr "zapte"
 #~ msgid "This option allows you to disable sorting of the menus"
 #~ msgstr "Hier kunt u het sorteren van menu's inschakelen"
 
+#, python-format
+#~ msgid ""
+#~ "UNSTABLE: The feeds currently contain unstable experimental updates. You can continue at your own risk but doing so may render your %s %s unusable and in need of a complete reflash.\n"
+#~ "\n"
+#~ "Are you sure you want to continue?"
+#~ msgstr ""
+#~ "ONSTABIEL: De feeds bevatten momenteel onstabiele, experimentele updates. U kunt op eigen risico doorgaan, maar dat kan erin resulteren dat uw %s %s onbruikbaar wordt en dat u deze opnieuw moet flashen.\n"
+#~ "\n"
+#~ "Weet u zeker dat u door wil gaan?"
+
 #~ msgid "Visual impaired commentary"
 #~ msgstr "Audiodescriptie voor slechtzienden"
+
+#~ msgid "When enabled the feeds and software updates may contain unstable experimental versions. Enable this at your own risk."
+#~ msgstr "Indien geactiveerd kunnen feeds en software updates die onstabiele, experimentele versies bevatten, gebruikt worden. Inschakelen geschiedt op uw eigen risico."
+
+#~ msgid "n/A"
+#~ msgstr "NVT"
+
+#~ msgid "n/a"
+#~ msgstr "NVT"

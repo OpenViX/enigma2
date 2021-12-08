@@ -10,7 +10,7 @@ class EPGSelectionSimilar(EPGSelectionBase, EPGStandardButtons):
 	def __init__(self, session, service, eventId):
 		EPGSelectionBase.__init__(self, session, config.epgselection.single)
 
-		self.skinName = ["SingleEPG", "EPGSelection"]
+		self.skinName = ["EPGSelectionSimilar", "SingleEPG", "EPGSelection"]
 		self.currentService = service
 		self.eventId = eventId
 

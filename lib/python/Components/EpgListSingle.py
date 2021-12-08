@@ -143,7 +143,7 @@ class EPGListSingle(EPGListBase):
 	def __sortList(self):
 		sortType = int(config.epgselection.sort.value)
 		if sortType == 1:
-			self.list.sort(key=lambda x: (x[4] and x[4].lower(), x[2]))
+			self.list.sort(key=lambda x: (x[4] and x[4].lower() or '' , x[2])) 
 		else:
 			assert(sortType == 0)
 			self.list.sort(key=lambda x: x[2])
