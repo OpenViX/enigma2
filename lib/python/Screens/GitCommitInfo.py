@@ -27,7 +27,7 @@ else:
 
 E2Branches = {
 	'developer': 'Dev-python3-compatible',
-	'release': 'master'
+	'release': 'future-release'
 	}
 
 project = 0
