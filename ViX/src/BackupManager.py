@@ -115,22 +115,36 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 
 
 class VIXBackupManager(Screen):
-	skin = """<screen name="VIXBackupManager" position="center,center" size="560,400">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="blend" />
-		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="blend" />
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="blend" />
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
-		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
-		<ePixmap pixmap="skin_default/buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
-		<ePixmap pixmap="skin_default/buttons/key_info.png" position="40,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
-		<widget name="lab1" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
-		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand" />
-		<widget name="backupstatus" position="10,370" size="400,30" font="Regular;20" zPosition="5" />
+	skin = ["""<screen name="VIXBackupManager" position="center,center" size="%d,%d">
+		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1" />
+		<ePixmap pixmap="skin_default/buttons/green.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1" />
+		<ePixmap pixmap="skin_default/buttons/yellow.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1" />
+		<widget name="key_red" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+		<widget name="key_green" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
+		<widget name="key_yellow" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
+		<ePixmap pixmap="skin_default/buttons/key_menu.png" position="%d,%d" size="%d,%d" alphatest="blend" transparent="1" zPosition="3" scale="1" />
+		<ePixmap pixmap="skin_default/buttons/key_info.png" position="%d,%d" size="%d,%d" alphatest="blend" transparent="1" zPosition="3" scale="1" />
+		<widget name="lab1" position="%d,%d" size="%d,%d" font="Regular; %d" zPosition="2" transparent="0" halign="center"/>
+		<widget name="list" position="%d,%d" size="%d,%d" font="Regular;%d" scrollbarMode="showOnDemand" />
+		<widget name="backupstatus" position="%d,%d" size="%d,%d" font="Regular;%d" zPosition="5" />
 		<applet type="onLayoutFinish">
-			self["list"].instance.setItemHeight(25)
+			self["list"].instance.setItemHeight(%d)
 		</applet>
-	</screen>"""
+	</screen>""",
+		560, 400, # screen
+		0, 0, 140, 40, #colors
+		140, 0, 140, 40,
+		280, 0, 140, 40,
+		0, 0, 140, 40, 20,
+		140, 0, 140, 40, 20,
+		280, 0, 140, 40, 20,
+		0, 45, 35, 25, # menu key
+		40, 45, 35, 25, # info key
+		0, 50, 560, 50, 18, # lab1
+		10, 105, 540, 260, 20, # list
+		10, 370, 400, 30, 20, # backupstatus
+		26,
+	]
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -711,16 +725,25 @@ class VIXBackupManager(Screen):
 
 
 class BackupSelection(Screen):
-	skin = """
-		<screen name="BackupSelection" position="center,center" size="560,400">
-			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="blend"/>
-			<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="blend"/>
-			<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="blend"/>
-			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-			<widget source="key_yellow" render="Label" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-			<widget name="checkList" position="5,50" size="550,250" transparent="1" scrollbarMode="showOnDemand"/>
-		</screen>"""
+	skin = ["""
+		<screen name="BackupSelection" position="center,center" size="%d,%d">
+			<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+			<ePixmap pixmap="skin_default/buttons/green.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+			<ePixmap pixmap="skin_default/buttons/yellow.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+			<widget source="key_red" render="Label" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+			<widget source="key_green" render="Label" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+			<widget source="key_yellow" render="Label" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
+			<widget name="checkList" position="%d,%d" size="%d,%d" itemHeight="%d" font="Regular;%d" transparent="1" scrollbarMode="showOnDemand"/>
+		</screen>""",
+			560, 400, # screen
+			0, 0, 140, 40, #colors
+			140, 0, 140, 40,
+			280, 0, 140, 40,
+			0, 0, 140, 40, 20,
+			140, 0, 140, 40, 20,
+			280, 0, 140, 40, 20,
+			5, 50, 550, 250, 25, 19, 
+		]
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -800,16 +823,25 @@ class BackupSelection(Screen):
 
 
 class XtraPluginsSelection(Screen):
-	skin = """
-		<screen name="BackupSelection" position="center,center" size="560,400">
-			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="blend"/>
-			<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="blend"/>
-			<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="blend"/>
-			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-			<widget source="key_yellow" render="Label" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-			<widget name="checkList" position="5,50" size="550,250" transparent="1" scrollbarMode="showOnDemand"/>
-		</screen>"""
+	skin = ["""
+		<screen name="BackupSelection" position="center,center" size="%d,%d">
+			<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+			<ePixmap pixmap="skin_default/buttons/green.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+			<ePixmap pixmap="skin_default/buttons/yellow.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+			<widget source="key_red" render="Label" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+			<widget source="key_green" render="Label" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+			<widget source="key_yellow" render="Label" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
+			<widget name="checkList" position="%d,%d" size="%d,%d" itemHeight="%d" font="Regular;%d" transparent="1" scrollbarMode="showOnDemand"/>
+		</screen>""",
+			560, 400, # screen
+			0, 0, 140, 40, #colors
+			140, 0, 140, 40,
+			280, 0, 140, 40,
+			0, 0, 140, 40, 20,
+			140, 0, 140, 40, 20,
+			280, 0, 140, 40, 20,
+			5, 50, 550, 250, 25, 19, 
+		]
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -885,24 +917,40 @@ class XtraPluginsSelection(Screen):
 
 
 class VIXBackupManagerMenu(Setup):
-	skin = """
-	<screen name="VIXBackupManagerMenu" position="center,center" size="560,550">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="blend"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="blend"/>
-		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
-		<widget name="HelpWindow" pixmap="buttons/vkey_icon.png" position="450,510" zPosition="1" size="1,1" transparent="1" alphatest="blend"/>
-		<widget source="VKeyIcon" render="Pixmap" pixmap="buttons/key_text.png" position="0,500" zPosition="1" size="35,25" transparent="1" alphatest="blend">
+	skin = ["""
+	<screen name="VIXBackupManagerMenu" position="center,center" size="%d,%d">
+		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/green.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/yellow.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<ePixmap pixmap="skin_default/buttons/blue.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
+		<widget name="key_red" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+		<widget name="key_green" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+		<widget name="key_yellow" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
+		<widget name="key_blue" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
+		<widget name="HelpWindow" pixmap="buttons/vkey_icon.png" position="%d,%d" zPosition="1" size="1,1" transparent="1" alphatest="blend" scale="1"/>
+		<widget source="VKeyIcon" render="Pixmap" pixmap="buttons/key_text.png" position="%d,%d" zPosition="1" size="%d,%d" transparent="1" scale="1" alphatest="blend">
 			<convert type="ConditionalShowHide"/>
 		</widget>
-		<widget name="footnote" position="0,50" size="300,20" zPosition="1" font="Regular;20" halign="left" transparent="1" valign="top"/>
-		<widget name="config" position="0,90" size="560,375" transparent="0" enableWrapAround="1" scrollbarMode="showOnDemand"/>
-		<widget name="description" position="0,e-75" size="560,75" font="Regular;18" halign="center" valign="top" transparent="0" zPosition="1"/>
-	</screen>"""
+		<widget name="footnote" position="%d,%d" size="%d,%d" zPosition="1" font="Regular;%d" halign="left" transparent="1" valign="top"/>
+		<widget name="config" position="%d,%d" size="%d,%d" itemHeight="%d" font="Regular;%d" transparent="0" enableWrapAround="1" scrollbarMode="showOnDemand"/>
+		<widget name="description" position="%d,e-%d" size="%d,%d" font="Regular;%d" halign="center" valign="top" transparent="0" zPosition="1"/>
+	</screen>""",
+		560, 550, # screen
+		0, 0, 140, 40, #colors
+		140, 0, 140, 40,
+		280, 0, 140, 40,
+		420, 0, 140, 40,
+		0, 0, 140, 40, 20,
+		140, 0, 140, 40, 20,
+		280, 0, 140, 40, 20,
+		420, 0, 140, 40, 20,
+		450, 510, # HelpWindow
+		0, 500, 35, 25, # VKeyIcon
+		0, 50, 300, 20, 20, # footnote
+		0, 90, 560, 375, 25, 19, # config
+		0, 75, 560, 75, 18, # description
+	]
+		
 
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
 		Setup.__init__(self, session, setup, plugin, PluginLanguageDomain)
@@ -933,10 +981,13 @@ class VIXBackupManagerMenu(Setup):
 
 
 class VIXBackupManagerLogView(Screen):
-	skin = """
-<screen name="VIXBackupManagerLogView" position="center,center" size="560,400">
-	<widget name="list" position="0,0" size="560,400" font="Regular;16"/>
-</screen>"""
+	skin = ["""
+<screen name="VIXBackupManagerLogView" position="center,center" size="%d,%d">
+	<widget name="list" position="%d,%d" size="%d,%d" font="Regular;%d"/>
+</screen>""",
+		560, 400,
+		0, 0, 560, 400, 16,
+	]
 
 	def __init__(self, session, filename):
 		self.session = session
