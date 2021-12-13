@@ -385,7 +385,7 @@ class AudioSelection(Screen, ConfigListScreen):
 			self.selectedSubtitle = self.infobar.selected_subtitle
 			if self.selectedSubtitle and self.selectedSubtitle[:4] == (0, 0, 0, 0):
 				self.selectedSubtitle = None
-			elif self.selectedSubtitle and not self.selectedSubtitle[:4] in (x[:4] for x in subtitlelist):
+			elif subtitlelist is not None and self.selectedSubtitle and not self.selectedSubtitle[:4] in (x[:4] for x in subtitlelist):
 				subtitlelist.append(self.selectedSubtitle)
 		return subtitlelist
 
