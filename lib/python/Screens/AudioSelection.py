@@ -247,7 +247,7 @@ class AudioSelection(Screen, ConfigListScreen):
 				if SystemInfo["CanProc"]:
 					choise_list = self.readChoices("/proc/stb/audio/3d_surround_speaker_position_choices", choise_list)
 				self.settings.surround_3d_speaker = ConfigSelection(choices=choise_list, default=config.av.surround_3d_speaker.value)
-				self.settings.surround_3d_speaker.addNotifier(self.change3DSurroundSpeaker)
+				self.settings.surround_3d_speaker.addNotifier(self.change3DSurroundSpeaker, initial_call=False)
 				conflist.append(getConfigListEntry(_("3D surround speaker position"), self.settings.surround_3d_speaker, None))
 
 			if SystemInfo["CanAutoVolume"]:
@@ -260,7 +260,7 @@ class AudioSelection(Screen, ConfigListScreen):
 				if SystemInfo["CanProc"]:
 					choise_list = self.readChoices("/proc/stb/audio/avl_choices", choise_list)
 				self.settings.autovolume = ConfigSelection(choices=choise_list, default=config.av.autovolume.value)
-				self.settings.autovolume.addNotifier(self.changeAutoVolume)
+				self.settings.autovolume.addNotifier(self.changeAutoVolume, initial_call=False)
 				conflist.append(getConfigListEntry(_("Auto volume level"), self.settings.autovolume, None))
 
 			if n > 0:
