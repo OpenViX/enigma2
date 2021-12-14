@@ -324,37 +324,38 @@ class AudioSelection(Screen, ConfigListScreen):
 		elif self.settings.menupage.value == PAGE_SUBTITLES:
 			self.setTitle(_("Subtitle selection"))
 			idx = 0
-			for x in self.subtitlelist:
-				number = str(x[1])
-				description = "?"
-				language = ""
-				selected = ""
-				if self.selectedSubtitle and x[:4] == self.selectedSubtitle[:4]:
-					selected = "X"
-					selectedidx = idx
-				try:
-					if x[4] != "und":
-						if x[4] in LanguageCodes:
-							language = _(LanguageCodes[x[4]][0])
-						else:
-							language = x[4]
-				except Exception:
+			if self.subtitlelist is not None:
+				for x in self.subtitlelist:
+					number = str(x[1])
+					description = "?"
 					language = ""
-				if x[0] == 0:
-					description = "DVB"
-					number = "%x" % (x[1])
-				elif x[0] == 1:
-					description = "teletext"
-					number = "%x%02x" % (x[3] and x[3] or 8, x[2])
-				elif x[0] == 2:
-					types = (_("unknown"), _("embedded"), _("SSA file"), _("ASS file"), _("SRT file"), _("VOB file"), _("PGS file"))
+					selected = ""
+					if self.selectedSubtitle and x[:4] == self.selectedSubtitle[:4]:
+						selected = "X"
+						selectedidx = idx
 					try:
-						description = types[x[2]]
+						if x[4] != "und":
+							if x[4] in LanguageCodes:
+								language = _(LanguageCodes[x[4]][0])
+							else:
+								language = x[4]
 					except Exception:
-						description = _("unknown") + ": %s" % x[2]
-					number = str(int(number) + 1)
-				streams.append((x, "", number, description, language, selected))
-				idx += 1
+						language = ""
+					if x[0] == 0:
+						description = "DVB"
+						number = "%x" % (x[1])
+					elif x[0] == 1:
+						description = "teletext"
+						number = "%x%02x" % (x[3] and x[3] or 8, x[2])
+					elif x[0] == 2:
+						types = (_("unknown"), _("embedded"), _("SSA file"), _("ASS file"), _("SRT file"), _("VOB file"), _("PGS file"))
+						try:
+							description = types[x[2]]
+						except Exception:
+							description = _("unknown") + ": %s" % x[2]
+						number = str(int(number) + 1)
+					streams.append((x, "", number, description, language, selected))
+					idx += 1
 			conflist.append(getConfigListEntry(_("To audio selection"), self.settings.menupage))
 
 			if self.infobar.selected_subtitle and self.infobar.selected_subtitle != (0, 0, 0, 0) and not ".DVDPlayer'>" in repr(self.infobar):
