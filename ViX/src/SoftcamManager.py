@@ -76,7 +76,18 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 
 
 def softcamSpinner():
-	return ','.join([resolveFilename(SCOPE_CURRENT_PLUGIN_ABSOLUTE, "images/busy%d.png" % x) for x in range(1,25) if path.exists(resolveFilename(SCOPE_CURRENT_PLUGIN_ABSOLUTE, "images/busy%d.png" % x))])
+	imagePath = "%s/images/" % path.dirname(path.realpath(__file__))
+	return ','.join([imagePath + "busy%d.png" % x for x in range(1,25) if path.exists(imagePath + "busy%d.png" % x)])
+
+def spinnerSkin(skinName):
+	return ["""
+	<screen """ + 'name="%s"' % skinName + """ position="center,center" size="%d, %d">
+		<widget name="connect" position="center, 0" size="64,64" zPosition="2" """ + 'pixmaps="%s"' % softcamSpinner() + """ transparent="1" alphatest="blend"/>
+		<widget name="lab1" position="center, 80" halign="center" size="%d,%d" zPosition="1" font="Regular;%d" valign="top" transparent="1"/>
+	</screen>""",
+		484, 150,
+		460, 60, 20,
+	]	 
 
 
 class VIXSoftcamManager(Screen):
@@ -375,19 +386,13 @@ class VIXSoftcamManager(Screen):
 
 
 class VIXStartCam(Screen):
-	skin = ["""
-	<screen name="VIXStartCam" position="center,center" size="%d, %d">
-		<widget name="connect" position="center, 0" size="64,64" zPosition="2" """ + 'pixmaps="%s"' % softcamSpinner() + """ transparent="1" alphatest="blend"/>
-		<widget name="lab1" position="center, 80" halign="center" size="%d,%d" zPosition="1" font="Regular;%d" valign="top" transparent="1"/>
-	</screen>""",
-		484, 150,
-		460, 60, 20,
-	]
+	skin = None
 		
-
 	def __init__(self, session, selectedcam):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Softcam starting..."))
+		if VIXStartCam.skin is None:
+			VIXStartCam.skin = spinnerSkin("VIXStartCam")
 		self["connect"] = MultiPixmap()
 		self["lab1"] = Label(_("Please wait while starting\n") + selectedcam + "...")
 		global startselectedcam
@@ -482,20 +487,15 @@ class VIXStartCam(Screen):
 
 
 class VIXStopCam(Screen):
-	skin = ["""
-	<screen name="VIXStopCam" position="center,center" size="%d, %d">
-		<widget name="connect" position="center, 0" size="64,64" zPosition="2" """ + 'pixmaps="%s"' % softcamSpinner() + """ transparent="1" alphatest="blend"/>
-		<widget name="lab1" position="center, 80" halign="center" size="%d,%d" zPosition="1" font="Regular;%d" valign="top" transparent="1"/>
-	</screen>""",
-		484, 150,
-		460, 60, 20,
-	]
+	skin = None
 
 	def __init__(self, session, selectedcam):
 		Screen.__init__(self, session)
 		global stopselectedcam
 		stopselectedcam = selectedcam
 		Screen.setTitle(self, _("Softcam stopping..."))
+		if VIXStartCam.skin is None:
+			VIXStartCam.skin = spinnerSkin("VIXStopCam")
 		self["connect"] = MultiPixmap()
 		self["lab1"] = Label(_("Please wait while stopping\n") + selectedcam + "...")
 		self.Console = Console()
