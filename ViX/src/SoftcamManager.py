@@ -492,8 +492,8 @@ class VIXStopCam(Screen):
 		global stopselectedcam
 		stopselectedcam = selectedcam
 		Screen.setTitle(self, _("Softcam stopping..."))
-		if VIXStartCam.skin is None:
-			VIXStartCam.skin = spinnerSkin("VIXStopCam")
+		if VIXStopCam.skin is None:
+			VIXStopCam.skin = spinnerSkin("VIXStopCam")
 		self["connect"] = MultiPixmap()
 		self["lab1"] = Label(_("Please wait while stopping\n") + selectedcam + "...")
 		self.Console = Console()
