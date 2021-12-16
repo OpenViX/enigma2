@@ -75,14 +75,12 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 			softcamautopoller = None
 
 
-def softcamSpinner():
-	imagePath = "%s/images/" % path.dirname(path.realpath(__file__))
-	return ','.join([imagePath + "busy%d.png" % x for x in range(1,25) if path.exists(imagePath + "busy%d.png" % x)])
-
 def spinnerSkin(skinName):
+	imagePath = "%s/images/" % path.dirname(path.realpath(__file__))
+	softcamSpinner = ','.join([imagePath + "busy%d.png" % x for x in range(1,25) if path.exists(imagePath + "busy%d.png" % x)])
 	return ["""
 	<screen """ + 'name="%s"' % skinName + """ position="center,center" size="%d, %d">
-		<widget name="connect" position="center, 0" size="64,64" zPosition="2" """ + 'pixmaps="%s"' % softcamSpinner() + """ transparent="1" alphatest="blend"/>
+		<widget name="connect" position="center, 0" size="64,64" zPosition="2" """ + 'pixmaps="%s"' % softcamSpinner + """ transparent="1" alphatest="blend"/>
 		<widget name="lab1" position="center, 80" halign="center" size="%d,%d" zPosition="1" font="Regular;%d" valign="top" transparent="1"/>
 	</screen>""",
 		484, 150,
