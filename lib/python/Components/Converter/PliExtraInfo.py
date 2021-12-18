@@ -890,6 +890,7 @@ class PliExtraInfo(Poll, Converter, object):
 			return self.createVideoCodec(info)
 
 		if self.updateFEdata:
+			self.updateFEdata = False
 			feinfo = service.frontendInfo()
 			if feinfo:
 				self.feraw = feinfo.getAll(config.usage.infobar_frontend_source.value == "settings")

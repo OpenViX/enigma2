@@ -22,7 +22,7 @@ from Tools.FuzzyDate import FuzzyTime
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Trashcan import getTrashFolder, isTrashFolder
 import NavigationInstance
-from skin import parseColor, parseFont, parseScale
+from skin import parseColor, parseFont, parseScale, applySkinFactor
 
 AUDIO_EXTENSIONS = frozenset((".dts", ".mp3", ".wav", ".wave", ".wv", ".oga", ".ogg", ".flac", ".m4a", ".mp2", ".m2a", ".wma", ".ac3", ".mka", ".aac", ".ape", ".alac", ".amr", ".au", ".mid"))
 DVD_EXTENSIONS = frozenset((".iso", ".img", ".nrg"))
@@ -388,7 +388,7 @@ class MovieList(GUIComponent):
 
 	def setItemsPerPage(self):
 		numberOfRows = config.movielist.itemsperpage.value
-		itemHeight = (self.listHeight // numberOfRows if numberOfRows else self.skinItemHeight) or 25
+		itemHeight = (self.listHeight // numberOfRows if numberOfRows else self.skinItemHeight) or applySkinFactor(25)
 		self.itemHeight = itemHeight
 		self.l.setItemHeight(itemHeight)
 		self.instance.resize(eSize(self.listWidth, self.listHeight // itemHeight * itemHeight))
