@@ -579,6 +579,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.selected_tags_ele = None
 		self.collectionName = config.movielist.last_videocollection.value
 		self.nextInBackground = None
+		self.closeMoviePlayerOnExit = False
 
 		self.movemode = False
 		self.bouquet_mark_edit = False
@@ -1007,6 +1008,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		except Exception as e:
 			print("[MovieSelection] failed to unsubscribe:", e)
 			pass
+		if self.closeMoviePlayerOnExit:
+			from Screens.InfoBar import MoviePlayer
+			MoviePlayerInstance = MoviePlayer.instance
+			if MoviePlayerInstance is not None:
+				MoviePlayerInstance.close()
+			self.closeMoviePlayerOnExit = False
 
 	def createSummary(self):
 		return MovieSelectionSummary
@@ -1156,6 +1163,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		for ext in AUDIO_EXTENSIONS:
 			if os.path.exists("%s%s" % (suburi, ext)):
 				current = eServiceReference(4097, 0, "file://%s&suburi=file://%s%s" % (path, suburi, ext))
+				self.closeMoviePlayerOnExit = False
 				self.close(current)
 				return True
 
@@ -1306,7 +1314,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			if MoviePlayerInstance is not None:
 				from Screens.InfoBarGenerics import setResumePoint
 				setResumePoint(MoviePlayer.instance.session)
-				MoviePlayerInstance.close()
+				self.closeMoviePlayerOnExit = True
 			self.session.nav.stopService()
 			if config.movielist.show_live_tv_in_movielist.value:
 				self.LivePlayTimer.start(100)
@@ -1374,6 +1382,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				self.preview()
 			else:
 				self.saveconfig()
+				self.closeMoviePlayerOnExit = False
 				self.close(items[0])
 
 	def __playCurrentItem(self):
@@ -1446,6 +1455,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		current = self.getCurrent()
 		if current is not None:
 			self.saveconfig()
+			self.closeMoviePlayerOnExit = False
 			self.close(current)
 
 	def doContext(self):
@@ -1571,6 +1581,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if self.playingInForeground:
 			self.list.playInForeground = self.playingInForeground
 			self.session.nav.stopService()
+			self.closeMoviePlayerOnExit = False
 			self.close(self.playingInForeground)
 			return
 
