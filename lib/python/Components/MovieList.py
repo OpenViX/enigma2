@@ -280,7 +280,14 @@ class MovieList(GUIComponent):
 		return self._playInForeground
 
 	def set_playInForeground(self, value):
-		self._playInForeground = value
+		if self._playInForeground is not value:
+			index = self.findService(self._playInForeground)
+			if index is not None:
+				self.invalidateItem(index)
+			index = self.findService(value)
+			if index is not None:
+				self.invalidateItem(index)
+			self._playInForeground = value
 
 	playInForeground = property(get_playInForeground, set_playInForeground)
 
