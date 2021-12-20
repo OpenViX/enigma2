@@ -8,7 +8,6 @@ from tempfile import NamedTemporaryFile
 from Components.config import config
 from Screens.LocationBox import TimeshiftLocationBox
 from Screens.MessageBox import MessageBox
-from Screens.Recordings import unsupported_filesystems
 from Screens.Setup import Setup
 from Tools.Directories import fileExists
 import Components.Harddisk
@@ -51,7 +50,7 @@ class TimeshiftSettings(Setup):
 			green = ""
 		elif not self.isValidPartition(path):
 			self.errorItem = self["config"].getCurrentIndex()
-			footnote = _("Directory '%s' not valid. Partition not a supported file system.") % path
+			footnote = _("Directory '%s' not valid. Partition must be ext or nfs") % path
 			green = ""
 		elif not fileExists(path, "w"):
 			self.errorItem = self["config"].getCurrentIndex()
@@ -70,9 +69,10 @@ class TimeshiftSettings(Setup):
 
 	def isValidPartition(self, path):
 		if path is not None:
+			supported_filesystems = ('ext4', 'ext3', 'ext2', 'nfs', 'cifs')
 			valid_partitions = []
 			for partition in Components.Harddisk.harddiskmanager.getMountedPartitions():
-				if partition.filesystem() not in unsupported_filesystems:
+				if partition.filesystem() in supported_filesystems:
 					valid_partitions.append(partition.mountpoint)
 			print("[" + self.__class__.__name__ + "] valid partitions", valid_partitions)
 			if valid_partitions:

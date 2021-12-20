@@ -11,9 +11,6 @@ from Screens.Setup import Setup
 from Tools.Directories import fileExists
 import Components.Harddisk
 
-unsupported_filesystems = ("autofs", "binfmt_misc", "bpf", "cgroup2 configfs", "debugfs", "devpts",
-	"devtmpfs ", "efivarfs", "exfat", "fuse.portal", "fuseblk", "fusectl", "hugetlbfs", "isofs", "jffs2",
-	"mqueue", "proc", "pstore", "securityfs", "sysfs", "tmpfs", "tracefs", "ubi", "ubifs", "udf", "vfat")
 
 class RecordingSettings(Setup):
 	def __init__(self, session):
@@ -88,9 +85,10 @@ class RecordingSettings(Setup):
 
 	def isValidPartition(self, path):
 		if path is not None:
+			supported_filesystems = ('ext4', 'ext3', 'ext2', 'nfs', 'cifs')
 			valid_partitions = []
 			for partition in Components.Harddisk.harddiskmanager.getMountedPartitions():
-				if partition.filesystem() not in unsupported_filesystems:
+				if partition.filesystem() in supported_filesystems:
 					valid_partitions.append(partition.mountpoint)
 			print("[" + self.__class__.__name__ + "] valid partitions", valid_partitions)
 			if valid_partitions:
