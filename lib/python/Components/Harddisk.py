@@ -104,6 +104,14 @@ def getProcMounts():
 	result = [line.strip().split(" ") for line in lines]
 	for item in result:
 		item[1] = item[1].replace("\\040", " ")  # Spaces are encoded as \040 in mounts.
+# Also, map any fuseblk fstype to the real file-system behind it...
+# Use blkid to get the info we need....
+#
+		if item[2] == 'fuseblk':
+			import subprocess
+			res = subprocess.run(['blkid', '-sTYPE', '-ovalue', item[0]], capture_output=True)
+			if res.returncode == 0:
+				item[2] = six.ensure_str(res.stdout).strip()
 	return result
 
 
