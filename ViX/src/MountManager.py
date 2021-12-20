@@ -131,6 +131,14 @@ def buildPartitionInfo(partition, partitionList):
 				parts = line.strip().split()
 				mediamount = parts[1]		# media mount e.g. /media/xxxxx
 				_format = parts[2]		# _format e.g. ext4
+# Also, map any fuseblk fstype to the real file-system behind it...
+# Use blkid to get the info we need....
+#
+				if _format == 'fuseblk':
+					import subprocess
+					res = subprocess.run(['blkid', '-sTYPE', '-ovalue', parts[0]], capture_output=True)
+					if res.returncode == 0:
+						_format = six.ensure_str(res.stdout).strip()
 				rw = parts[3]			# read/write
 				break
 
