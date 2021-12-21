@@ -5,9 +5,9 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2021-12-19 10:16+0200\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"PO-Revision-Date: 2021-12-21 07:08+0200\n"
+"Last-Translator: Orlandox\n"
+"Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -171,7 +171,7 @@ msgid "  (%s x %s)"
 msgstr "  (%s x %s)"
 
 msgid " (+5 volt terrestrial)"
-msgstr " Antennivastaanotto"
+msgstr " (+5V antennivastaanotto)"
 
 msgid " (0 - all networks)"
 msgstr " (0 - kaikissa verkoissa)"
@@ -1492,13 +1492,13 @@ msgid "<Default>"
 msgstr "<Oletus>"
 
 msgid "<Emergency>"
-msgstr "Hätä"
+msgstr "<Hätä>"
 
 msgid "<Last timer location>"
 msgstr "<Viimeisin ajastushakemisto>"
 
 msgid "<Pending restart>"
-msgstr "Odottaa uudelleenkäynnistystä"
+msgstr "<Odottaa uudelleenkäynnistystä>"
 
 msgid "<unknown>"
 msgstr "<tuntematon>"
@@ -1670,7 +1670,7 @@ msgid "AAC downmix"
 msgstr "AAC stereoksi"
 
 msgid "AAC transcoding"
-msgstr "AAC-uudelleenpakkaus"
+msgstr "AAC uudelleenpakkaus"
 
 msgid "AAC+ downmix"
 msgstr "AAC+ stereoksi"
@@ -1682,7 +1682,7 @@ msgid "AC3 downmix"
 msgstr "AC3 stereoksi"
 
 msgid "AC3 transcoding"
-msgstr "AC3-uudelleenpakkaus"
+msgstr "AC3 uudelleenpakkaus"
 
 msgid "ACQUIRING TSID/ONID"
 msgstr "HAETAAN TSID/ONID"
@@ -1703,7 +1703,7 @@ msgid "ATSC"
 msgstr "ATSC"
 
 msgid "ATSC provider"
-msgstr "ATSC palvelun tarjoaja"
+msgstr "ATSC palveluntarjoaja"
 
 #, python-format
 msgid "AV aspect is %s."
@@ -1915,7 +1915,7 @@ msgstr ""
 "Kun olet tyytyväinen tulokseen, sulje testikuva painamalla OK tai valitse numeronäppäimillä 1-6 joku muu testikuva."
 
 msgid "Adult Audience, Strong Violence 15+"
-msgstr "Aikuisviihde, Väkivalta 15+"
+msgstr "Aikuisyleisö, Väkivalta 15+"
 
 msgid "Advance EPG to the following date and time"
 msgstr "Siirrä EPG seuraavaan päivään ja aikaan"
@@ -1984,16 +1984,16 @@ msgid "All resolutions"
 msgstr "Kaikki resoluutiot"
 
 msgid "All satellites 1 (USALS)"
-msgstr "Kaikki satelliitit 1 (DiSEqC-tila 1.2)"
+msgstr "Kaikki satelliitit 1 (USALS)"
 
 msgid "All satellites 2 (USALS)"
-msgstr "Kaikki satelliitit 2 (DiSEqC-tila 1.2)"
+msgstr "Kaikki satelliitit 2 (USALS)"
 
 msgid "All satellites 3 (USALS)"
-msgstr "Kaikki satelliitit 3 (DiSEqC-tila 1.2)"
+msgstr "Kaikki satelliitit 3 ((USALS)"
 
 msgid "All satellites 4 (USALS)"
-msgstr "Kaikki satelliitit 4 (DiSEqC-tila 1.2)"
+msgstr "Kaikki satelliitit 4 (USALS)"
 
 msgid "All services provider"
 msgstr "Kaikki kanavat/palveluntarjoajat"
@@ -4113,10 +4113,10 @@ msgid "DVD titlelist"
 msgstr "DVD-otsikkoluettelo"
 
 msgid "Daily"
-msgstr "Joka päivä"
+msgstr "Päivittäin"
 
 msgid "Danish"
-msgstr "Tanska"
+msgstr "Tanskalainen"
 
 msgid "Date"
 msgstr "Päiväys"
@@ -4128,16 +4128,16 @@ msgid "Date style"
 msgstr "Päivämäärän näyttömuoto"
 
 msgid "Day D Mon"
-msgstr "Päivä 9 KK"
+msgstr "Päivä P KK"
 
 msgid "Day D-Mon"
-msgstr "Päivä 9-KK"
+msgstr "Päivä P-KK"
 
 msgid "Day D/M"
-msgstr "Päivä 9/9"
+msgstr "Päivä P/K"
 
 msgid "Day D/MM"
-msgstr "Päivä 9/09"
+msgstr "Päivä P/KK"
 
 msgid "Day DD Mon"
 msgstr "Päivä PP KK"
@@ -4176,13 +4176,13 @@ msgid "Day Mon-DD"
 msgstr "Päivä KK-PP"
 
 msgid "Dayname D Month Year"
-msgstr "Viikonpäivä P kuukausi"
+msgstr "Viikonpäivä P Kuukausi Vuosi"
 
 msgid "Dayname D-Month-Year"
-msgstr "Viikonpäivä P-kuukausi"
+msgstr "Viikonpäivä P-Kuukausi-Vuosi"
 
 msgid "Dayname D. Month Year"
-msgstr "Viikonpäivä P kuukausi Vuosi"
+msgstr "Viikonpäivä P Kuukausi Vuosi"
 
 msgid "Dayname D.M.Year"
 msgstr "Viikonpäivä P.K.Vuosi"
@@ -4191,16 +4191,16 @@ msgid "Dayname D.MM.Year"
 msgstr "Viikonpäivä P.KK.Vuosi"
 
 msgid "Dayname D/M/Year"
-msgstr "Viikonpäivä P/K"
+msgstr "Viikonpäivä P/K/Vuosi"
 
 msgid "Dayname D/MM/Year"
-msgstr "Viikonpäivä P/KK"
+msgstr "Viikonpäivä P/KK/Vuosi"
 
 msgid "Dayname DD Month Year"
-msgstr "Viikonpäivä PP kuukausi"
+msgstr "Viikonpäivä PP Kuukausi Vuosi"
 
 msgid "Dayname DD-Month-Year"
-msgstr "Viikonpäivä PP-kuukausi"
+msgstr "Viikonpäivä PP-Kuukausi-Vuosi"
 
 msgid "Dayname DD. Month Year"
 msgstr "Viikonpäivä PP. Kuukausi Vuosi"
@@ -4212,55 +4212,55 @@ msgid "Dayname DD.MM.Year"
 msgstr "Viikonpäivä PP.KK.Vuosi"
 
 msgid "Dayname DD/M/Year"
-msgstr "Viikonpäivä PP/K"
+msgstr "Viikonpäivä PP/K/Vuosi"
 
 msgid "Dayname DD/MM/Year"
-msgstr "Viikonpäivä PP/KK"
+msgstr "Viikonpäivä PP/KK/Vuosi"
 
 msgid "Dayname M/D/Year"
-msgstr "Viikonpäivä K/P"
+msgstr "Viikonpäivä K/P/Vuosi"
 
 msgid "Dayname M/DD/Year"
-msgstr "Viikonpäivä K/PP"
+msgstr "Viikonpäivä K/PP/Vuosi"
 
 msgid "Dayname MM/D/Year"
-msgstr "Viikonpäivä KK/P"
+msgstr "Viikonpäivä KK/P/Vuosi"
 
 msgid "Dayname MM/DD/Year"
-msgstr "Viikonpäivä KK/PP"
+msgstr "Viikonpäivä KK/PP/Vuosi"
 
 msgid "Dayname Month D Year"
-msgstr "Viikonpäivä KK P"
+msgstr "Viikonpäivä KK P Vuosi"
 
 msgid "Dayname Month DD Year"
-msgstr "Viikonpäivä KK PP"
+msgstr "Viikonpäivä KK PP Vuosi"
 
 msgid "Dayname Month-D-Year"
-msgstr "Viikonpäivä kuukausi-P"
+msgstr "Viikonpäivä Kuukausi-P-Vuosi"
 
 msgid "Dayname Month-DD-Year"
-msgstr "Viikonpäivä kuukausi-PP"
+msgstr "Viikonpäivä Kuukausi-PP-Vuosi"
 
 msgid "Dayname Year Month D"
-msgstr "Viikonpäivä kuukausi P"
+msgstr "Viikonpäivä Vuosi Kuukausi P"
 
 msgid "Dayname Year Month DD"
-msgstr "Viikonpäivä kuukausi PP"
+msgstr "Viikonpäivä Vuosi Kuukausi PP"
 
 msgid "Dayname Year-Month-D"
-msgstr "Viikonpäivä kuukausi-P"
+msgstr "Viikonpäivä Vuosi-Kuukausi-P"
 
 msgid "Dayname Year-Month-DD"
-msgstr "Viikonpäivä kuukausi-PP"
+msgstr "Viikonpäivä Vuosi-Kuukausi-PP"
 
 msgid "Dayname Year/M/D"
-msgstr "Viikonpäivä K/P"
+msgstr "Viikonpäivä Vuosi/K/P"
 
 msgid "Dayname Year/M/DD"
-msgstr "Viikonpäivä K/PP"
+msgstr "Viikonpäivä Vuosi/K/PP"
 
 msgid "Dayname Year/MM/D"
-msgstr "Viikonpäivä KK/P"
+msgstr "Viikonpäivä Vuosi/KK/P"
 
 msgid "Dayname Year/MM/DD"
 msgstr "Viikonpäivä KK/PP"
@@ -16349,223 +16349,3 @@ msgstr "Vaihda kanavaa ja tallenna"
 
 msgid "zapped"
 msgstr "Vaihdettu"
-
-#~ msgid "%d day"
-#~ msgstr "%d päivä"
-
-#~ msgid "%d.%03d GB"
-#~ msgstr "%d.%03d GB"
-
-#~ msgid "* RC Help"
-#~ msgstr "* Kaukosäätimen ohjeet"
-
-#~ msgid "* Setting YouTube TV"
-#~ msgstr "* Youtube TV:n asetukset"
-
-#~ msgid "* Start YouTube TV"
-#~ msgstr "* Käynnistä YouTube TV"
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "1,1"
-#~ msgstr "1,1"
-
-#~ msgid "2678400000"
-#~ msgstr "2678400000"
-
-#~ msgid "Audio description for the visually impaired"
-#~ msgstr "Äänen kuvaus näkövammaisille"
-
-#~ msgid "Backup location"
-#~ msgstr "Varmuuskopion sijainti"
-
-#~ msgid "Backup manager settings"
-#~ msgstr "Varmuuskopioinnin asetukset"
-
-#~ msgid "Backup prefix"
-#~ msgstr "Varmuuskopion etuliite"
-
-#~ msgid "C"
-#~ msgstr "C"
-
-#~ msgid "CAID"
-#~ msgstr "CAID"
-
-#~ msgid "CAID:SrvID"
-#~ msgstr "CAID:SrvID"
-
-#~ msgid "Choose IPK folder"
-#~ msgstr "Valitse IPK-kansio"
-
-#~ msgid "Collection"
-#~ msgstr "Kokoelman nimi"
-
-#~ msgid "D"
-#~ msgstr "D"
-
-#~ msgid "Do not show YouTube TV Starter again"
-#~ msgstr "Älä enää näytä YouTube TV:n aloitusikkunaa"
-
-#~ msgid "ECM-Time"
-#~ msgstr "ECM aika"
-
-#~ msgid "Enable Ntpd when start YoutubeTV"
-#~ msgstr "Salli ntpd YouTube TV:n käynnistyessä"
-
-#~ msgid "EtPortal"
-#~ msgstr "Portugali"
-
-#~ msgid "F"
-#~ msgstr "F"
-
-#~ msgid "FBC socket %s"
-#~ msgstr "FBC kanta %s"
-
-#~ msgid "Flash directory '%s' not allowed!"
-#~ msgstr "Hakemisto '%s' ei ole sallittu!"
-
-#~ msgid "G"
-#~ msgstr "G"
-
-#~ msgid "H"
-#~ msgstr "CH"
-
-#~ msgid "I"
-#~ msgstr "IP"
-
-#~ msgid "IGNORE"
-#~ msgstr "SIVUUTA"
-
-#~ msgid "IMDB Search"
-#~ msgstr "IMDb-haku"
-
-#~ msgid "Image manager settings"
-#~ msgstr "Imagen varmuuskopiointi asetukset"
-
-#~ msgid "Include machine name in backup name"
-#~ msgstr "Lisää laitteen nimi varmuuskopion nimeen"
-
-#~ msgid "Internal flash"
-#~ msgstr "Sisäinen flash-muisti"
-
-#~ msgid "J"
-#~ msgstr "J"
-
-#~ msgid "Label"
-#~ msgstr "Merkki"
-
-#~ msgid "Login as an OpenViX developer"
-#~ msgstr "Kirjaudu sisään OpenViX kehittäjänä"
-
-#~ msgid "Max backups to keep (0==all)"
-#~ msgstr "Varmuuskopioita säilytetään enintään (0==kaikki)"
-
-#~ msgid "Max image backups to keep (0==all)"
-#~ msgstr "Imagen varmuuskopioita säilytetään enintään (0==kaikki)"
-
-#~ msgid "Ntpd URL"
-#~ msgstr "Ntpd:n URL"
-
-#~ msgid "PID"
-#~ msgstr "PID"
-
-#~ msgid "Please wait, restarting cardserver."
-#~ msgstr "Odota, korttipalvelin käynnistetään uudelleen."
-
-#~ msgid "Please wait, restarting softcam and cardserver."
-#~ msgstr "Odota, softcam ja korttipalvelin käynnistetään uudelleen."
-
-#~ msgid "Polarisation:"
-#~ msgstr "Polarisaatio:"
-
-#~ msgid "Query before backup starts"
-#~ msgstr "Kysy ennen varmuuskopioinnin aloittamista"
-
-#~ msgid "Query before image backup starts"
-#~ msgstr "Kysy ennen imagen varmuuskopioinnin aloittamista"
-
-#~ msgid "REC "
-#~ msgstr "TAL"
-
-#~ msgid "Restart both"
-#~ msgstr "Käynnistä molemmat uudelleen"
-
-#~ msgid "Restart cardserver"
-#~ msgstr "Käynnistä korttipalvelin uudestaan"
-
-#~ msgid "Schedule backups"
-#~ msgstr "Ajasta varmuuskopiot"
-
-#~ msgid "Select Card Server"
-#~ msgstr "Valitse korttipalvelin"
-
-#~ msgid "Select Softcam"
-#~ msgstr "Valitse softcam"
-
-#~ msgid "Serv.Name"
-#~ msgstr "Palv.nimi"
-
-#~ msgid "Setting"
-#~ msgstr "Asetukset"
-
-#~ msgid "Show /tmp/ecm.info"
-#~ msgstr "Näytä /tmp/ecm.info"
-
-#~ msgid "Softcam setup"
-#~ msgstr "Softcam-asetukset"
-
-#~ msgid "Sort menu screens alphabetically"
-#~ msgstr "Menuvalikot aakkosjärjestyksessä"
-
-#~ msgid "Symbolrate:"
-#~ msgstr "Symbolinopeus:"
-
-#~ msgid "Sync NTP every (minutes)"
-#~ msgstr "Tahdista NTP:hen joka (minuutti)"
-
-#~ msgid "TUNER:"
-#~ msgstr "VIRITIN:"
-
-#~ msgid ""
-#~ "The software management extension is not installed!\n"
-#~ "Please install it."
-#~ msgstr ""
-#~ "Ohjelmistohallinnan lisäosaa ei ole asennettu!\n"
-#~ "Asenna se."
-
-#~ msgid "This option allows you to disable sorting of the menus"
-#~ msgstr "Tämä asetus määrittää valikkojen järjestyksen"
-
-#~ msgid "Time of backup to start"
-#~ msgstr "Varmuuskopioinnin aloittamisaika"
-
-#~ msgid "ViX Image Management"
-#~ msgstr "ViX Imagen hallinnointi"
-
-#~ msgid "Visual impaired commentary"
-#~ msgstr "Selostus näkövammaisille"
-
-#~ msgid "YouTube TV URL"
-#~ msgstr "YouTube TV:n URL"
-
-#~ msgid "YouTube TV is a new way to watch YouTube videos on Vu+"
-#~ msgstr "YouTube TV on uusi tapa katsoa YouTube-videoita VU+ -laitteella"
-
-#~ msgid "days"
-#~ msgstr "päivää"
-
-#~ msgid "hour"
-#~ msgstr "tunti"
-
-#~ msgid "hours"
-#~ msgstr "tuntia"
-
-#~ msgid "n/A"
-#~ msgstr "Ei saatavilla"
-
-#~ msgid "n/a"
-#~ msgstr "n/a"
-
-#~ msgid "second"
-#~ msgstr "sekunti"
