@@ -28,7 +28,4 @@ class VariableText:
 	text = property(getText, setText)
 
 	def postWidgetCreate(self, instance):
-		try:
-			instance.setText(self.message or "")
-		except:
-			pass
+		instance.setText(str(self.message) or "")
