@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2021-12-21 07:08+0200\n"
+"PO-Revision-Date: 2021-12-26 15:53+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -4263,7 +4263,7 @@ msgid "Dayname Year/MM/D"
 msgstr "Viikonpäivä Vuosi/KK/P"
 
 msgid "Dayname Year/MM/DD"
-msgstr "Viikonpäivä KK/PP"
+msgstr "Viikonpäivä Year/KK/PP"
 
 msgid "De-select"
 msgstr "Uudelleen valitse"
@@ -4580,9 +4580,9 @@ msgstr "Hakemistoon '%s' ei voi kirjoittaa!"
 msgid "Directory '%s' not valid. Partition must be ext or nfs"
 msgstr "Hakemisto '%s' ei ole käypä. Partitio pitää olla ext tai nfs"
 
-#, fuzzy, python-format
+#, python-format
 msgid "Directory '%s' not valid. Partition not a supported file system."
-msgstr "Hakemisto '%s' ei ole käypä. Partitio pitää olla ext tai nfs"
+msgstr "Hakemisto '%s' ei ole käypä. Partitio ei ole tuettu tiedostomuoto."
 
 #, python-format
 msgid "Directory '%s' not writable!"
@@ -4619,9 +4619,8 @@ msgstr "Ei käytössä"
 msgid "Disk space to reserve for recordings (in GB)"
 msgstr "Tallennuksille varattu levytila (GB)"
 
-#, fuzzy
 msgid "Disk state: "
-msgstr "Haun tila"
+msgstr "Kovalevy: "
 
 msgid "Display 16:9 content as"
 msgstr "Näytä 16:9 sisältö näin:"
@@ -11823,9 +11822,9 @@ msgstr "Portti %d"
 msgid "Slot %s / FBC in %s"
 msgstr ""
 
-#, fuzzy, python-format
+#, python-format
 msgid "Slot %s / FBC virtual %s"
-msgstr "FBC virtuaalinen"
+msgstr "Korttipaikka %s / FBC virtuaalinen %s"
 
 #, python-format
 msgid "Slot%s %s: %s - %s mode%s"
@@ -12071,7 +12070,6 @@ msgstr "Sri Lanka"
 msgid "Standard"
 msgstr "Vakio"
 
-#, fuzzy
 msgid "Standard list"
 msgstr "Normaali lista"
 
@@ -15078,9 +15076,8 @@ msgstr "aktivoi PiP"
 msgid "activatePiP long"
 msgstr "aktivoi PiP pitkä"
 
-#, fuzzy
 msgid "active "
-msgstr "Aktiivinen"
+msgstr "Aktiivinen "
 
 msgid "add bookmark"
 msgstr "lisää kirjanmerkki"
@@ -16106,9 +16103,8 @@ msgstr "sse"
 msgid "ssw"
 msgstr "ssw"
 
-#, fuzzy
 msgid "standby "
-msgstr "Valmiustila"
+msgstr "Valmiustila "
 
 msgid "start cut here"
 msgstr "Aloita leikkaus tästä"
