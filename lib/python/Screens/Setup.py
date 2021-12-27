@@ -1,6 +1,6 @@
 import six
 
-import xml.etree.cElementTree
+from xml.etree.cElementTree import ParseError, fromstring, parse
 
 from gettext import dgettext
 from os.path import getmtime, join as pathjoin
@@ -287,7 +287,7 @@ def setupDom(setup=None, plugin=None):
 			elif element.tag == "elif":
 				pass
 
-	setupFileDom = xml.etree.cElementTree.fromstring("<setupxml></setupxml>")
+	setupFileDom = fromstring("<setupxml></setupxml>")
 	setupFile = resolveFilename(SCOPE_PLUGINS, pathjoin(plugin, "setup.xml")) if plugin else resolveFilename(SCOPE_SKIN, "setup.xml")
 	global domSetups, setupModTimes
 	try:
@@ -310,7 +310,7 @@ def setupDom(setup=None, plugin=None):
 			del setupModTimes[setupFile]
 		with open(setupFile, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
 			try:
-				fileDom = xml.etree.cElementTree.parse(fd).getroot()
+				fileDom = parse(fd).getroot()
 				checkItems(fileDom, None)
 				setupFileDom = fileDom
 				domSetups[setupFile] = setupFileDom
@@ -324,7 +324,7 @@ def setupDom(setup=None, plugin=None):
 							title = "** Setup error: '%s' title is missing or blank!" % key
 					title = six.ensure_str(title)
 					# print("[Setup] [setupDOM]title = %s key = %s" % (title, key))
-			except xml.etree.cElementTree.ParseError as err:
+			except ParseError as err:
 				fd.seek(0)
 				content = fd.readlines()
 				line, column = err.position
