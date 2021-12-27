@@ -700,7 +700,6 @@ class HdmiCec:
 
 	def configVolumeForwarding(self, configElement):
 		if config.hdmicec.enabled.value and config.hdmicec.volume_forwarding.value:
-			self.volumeForwardingEnabled = True
 			self.sendMessage(0x05, "givesystemaudiostatus")
 		else:
 			self.volumeForwardingEnabled = False
