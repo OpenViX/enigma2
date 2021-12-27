@@ -3,7 +3,7 @@ import six
 
 from boxbranding import getMachineBrand, getMachineName
 import os
-from enigma import eEPGCache, getBestPlayableServiceReference, eStreamServer, eServiceReference, iRecordableService, quitMainloop, eActionMap, setPreferredTuner, eServiceCenter
+from enigma import eEPGCache, eHdmiCEC, getBestPlayableServiceReference, eStreamServer, eServiceReference, iRecordableService, quitMainloop, eActionMap, setPreferredTuner, eServiceCenter
 
 from Components.config import config
 from Components.UsageConfig import defaultMoviePath
@@ -418,10 +418,13 @@ class RecordTimerEntry(TimerEntry, object):
 		self.log(10, "backoff: retry in %d seconds" % self.backoff)
 
 	def sendactivesource(self):
-		if SystemInfo["HasHDMI-CEC"] and config.hdmicec.enabled.value and config.hdmicec.sourceactive_zaptimers.value:
-			import Components.HdmiCec
-			Components.HdmiCec.hdmi_cec.sendMessage(0, "sourceactive")
-			print("[TIMER] sourceactive was send")
+		if SystemInfo["hasHdmiCec"] and config.hdmicec.enabled.value and config.hdmicec.sourceactive_zaptimers.value:	# Command the TV to switch to the correct HDMI input when zap timers activate
+			msgaddress = 0x0f # use broadcast for active source command
+			cmd = 0x82	# 130
+			physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
+			data = struct.pack("BB", int(physicaladdress / 256), int(physicaladdress % 256))
+			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd, data, len(data))			
+			print("[TIMER] sourceactive was sent")
 
 # This same block of code appeared twice....
 #

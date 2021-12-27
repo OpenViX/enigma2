@@ -589,6 +589,35 @@
 			<item text="After event">self.timerentry_afterevent</item>
 		</if>
 	</setup>
+	<setup key="HdmiCec" title="HDMI-CEC Setup">
+		<item text="Enabled" description="Enable or disable using HDMI-CEC.">config.hdmicec.enabled</item>
+		<if conditional="config.hdmicec.enabled.value">
+			<item text="Put TV in standby" description="Automatically put the TV in standby whenever the receiver goes into standby or deep standby.">config.hdmicec.control_tv_standby</item>
+			<item text="Wakeup TV from standby" description="When the receiver wakes from standby, it will send a command to the TV to bring it out of standby too.">config.hdmicec.control_tv_wakeup</item>
+			<if conditional="config.hdmicec.control_tv_wakeup.value">
+				<item text="Wakeup command for TV" description="Some TVs do not wake from standby when they receive the 'Image View On' command. If this is the case try the 'Text View On' command instead.">config.hdmicec.tv_wakeup_command</item>
+			</if>
+			<item text="Regard deep standby as standby" description="If set to 'yes' the same commands will be sent to the TV for deep standby events, as are sent during regular standby events.">config.hdmicec.handle_deepstandby_events</item>
+			<item text="Switch TV to correct input" description="When receiver wakes from standby, it will command the TV to switch to the HDMI input the receiver is connected to.">config.hdmicec.report_active_source</item>
+			<item text="Use TV remote control" description="Allows the TV remote to be used to control the receiver.">config.hdmicec.report_active_menu</item>
+			<item text="Handle standby from TV" description="When enabled the receiver will automatically return to standby when the TV is turned off.">config.hdmicec.handle_tv_standby</item>
+			<item text="Handle wakeup from TV" description="When enabled the receiver will automatically wake from standby when the TV is turned on.">config.hdmicec.handle_tv_wakeup</item>
+			<if conditional="config.hdmicec.handle_tv_wakeup.value">
+				<item text="Wakeup signal from TV" description="Wake the receiver from standby when the wake command is sent from the TV.">config.hdmicec.tv_wakeup_detection</item>
+			</if>
+			<item text="Forward volume keys" description="Volume keys on the receiver remote will control the TV volume.">config.hdmicec.volume_forwarding</item>
+			<item text="Put A/V receiver in standby" description="Put A/V receiver in standby.">config.hdmicec.control_receiver_standby</item>
+			<item text="Wake A/V receiver from standby" description="Wake A/V receiver from standby.">config.hdmicec.control_receiver_wakeup</item>
+			<item text="Minimum send interval" description="Delay between CEC commands when sending a series of commands. Some devices require this delay for correct functioning, usually between 50-150ms.">config.hdmicec.minimum_send_interval</item>
+			<item text="Repeat leave standby messages" description="The command to wake from standby will be sent multiple times.">config.hdmicec.repeat_wakeup_timer</item>
+			<item text="Send 'sourceactive' before zap timers" description="Command the TV to switch to the correct HDMI input when zap timers activate.">config.hdmicec.sourceactive_zaptimers</item>
+			<item text="Detect next boxes before standby" description="Before sending the command to switch the TV to standby, the receiver tests if all the other devices plugged into TV are in standby. If they are not, the 'sourceactive' command will be sent to the TV instead of the 'standby' command.">config.hdmicec.next_boxes_detect</item>
+			<item text="Debug to file" description="If enabled, a log will be kept of CEC protocol traffic ('hdmicec.log').">config.hdmicec.debug</item>
+			<if conditional="config.hdmicec.debug.value != '0'">
+				<item text="Select path for logfile" description="Press OK to select the save location of the log file.">config.hdmicec.log_path</item>
+			</if>
+		</if>
+	</setup>
 	<setup key="clientmode" title="Client Mode setup">
 		<item text="Enable client mode" description="Enable or disable using HDMI-CEC.">config.clientmode.enabled</item>
 		<if conditional="config.clientmode.enabled.value">
