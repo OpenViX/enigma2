@@ -11,7 +11,7 @@ from boxbranding import getBrandOEM, getDisplayType
 from enigma import eDVBDB, eEPGCache, setTunerTypePriorityOrder, setPreferredTuner, setSpinnerOnOff, setEnableTtCachingOnOff, eEnv, Misc_Options, eBackgroundFileEraser, eServiceEvent, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_WRAP
 
 from Components.Harddisk import harddiskmanager
-from Components.config import ConfigSubsection, ConfigYesNo, config, ConfigSelection, ConfigText, ConfigNumber, ConfigSet, ConfigDictionarySet, ConfigLocations, NoSave, ConfigClock, ConfigInteger, ConfigBoolean, ConfigPassword, ConfigIP, ConfigSlider, ConfigSelectionNumber
+from Components.config import config, ConfigBoolean, ConfigClock, ConfigDictionarySet, ConfigDirectory, ConfigInteger, ConfigIP, ConfigLocations, ConfigNumber, ConfigPassword, ConfigSelection, ConfigSelectionNumber, ConfigSet, ConfigSlider,ConfigSubsection, ConfigText, ConfigYesNo, NoSave
 from Tools.camcontrol import CamControl
 from Tools.Directories import resolveFilename, SCOPE_HDD, SCOPE_TIMESHIFT, defaultRecordingLocation
 from Components.NimManager import nimmanager
@@ -1164,6 +1164,51 @@ def InitUsageConfig():
 	config.mediaplayer = ConfigSubsection()
 	config.mediaplayer.useAlternateUserAgent = ConfigYesNo(default=False)
 	config.mediaplayer.alternateUserAgent = ConfigText(default="")
+	
+	config.hdmicec = ConfigSubsection()
+	config.hdmicec.enabled = ConfigYesNo(default=False)
+	config.hdmicec.control_tv_standby = ConfigYesNo(default=True)
+	config.hdmicec.control_tv_wakeup = ConfigYesNo(default=True)
+	config.hdmicec.report_active_source = ConfigYesNo(default=True)
+	config.hdmicec.report_active_menu = ConfigYesNo(default=True)
+	config.hdmicec.handle_tv_standby = ConfigYesNo(default=True)
+	config.hdmicec.handle_tv_wakeup = ConfigYesNo(default=True)
+	config.hdmicec.tv_wakeup_detection = ConfigSelection(
+		choices={
+		"wakeup": _("Wakeup"),
+		"requestphysicaladdress": _("Request for physical address report"),
+		"tvreportphysicaladdress": _("TV physical address report"),
+		"routingrequest": _("Routing request"),
+		"sourcerequest": _("Source request"),
+		"streamrequest": _("Stream request"),
+		"requestvendor": _("Request for vendor report"),
+		"osdnamerequest": _("OSD name request"),
+		"activity": _("Any activity"),
+		},
+		default="streamrequest")
+	config.hdmicec.tv_wakeup_command = ConfigSelection(
+		choices={
+		"imageview": _("Image View On"),
+		"textview": _("Text View On"),
+		},
+		default="imageview")
+	config.hdmicec.volume_forwarding = ConfigYesNo(default=False)
+	config.hdmicec.control_receiver_wakeup = ConfigYesNo(default=False)
+	config.hdmicec.control_receiver_standby = ConfigYesNo(default=False)
+	config.hdmicec.handle_deepstandby_events = ConfigYesNo(default=False)
+	choicelist = []
+	for i in (10, 50, 100, 150, 250, 500, 750, 1000):
+		choicelist.append(("%d" % i, _("%d ms") % i))
+	config.hdmicec.minimum_send_interval = ConfigSelection(default="0", choices=[("0", _("Disabled"))] + choicelist)
+	choicelist = []
+	for i in [3] + list(range(5, 65, 5)):
+		choicelist.append(("%d" % i, _("%d sec") % i))
+	config.hdmicec.repeat_wakeup_timer = ConfigSelection(default="3", choices=[("0", _("Disabled"))] + choicelist)
+	config.hdmicec.debug = ConfigSelection(default="0", choices=[("0", _("Disabled")), ("1", _("Messages")), ("2", _("Key Events")), ("3", _("All"))])
+	config.hdmicec.bookmarks = ConfigLocations(default="/hdd/")
+	config.hdmicec.log_path = ConfigDirectory("/hdd/")
+	config.hdmicec.next_boxes_detect = ConfigYesNo(default=False)	# Before switching the TV to standby, receiver tests if any devices plugged to TV are in standby. If they are not, the 'sourceinactive' command will be sent to the TV instead of the 'standby' command.
+	config.hdmicec.sourceactive_zaptimers = ConfigYesNo(default=False)				# Command the TV to switch to the correct HDMI input when zap timers activate.	
 
 	upgradeConfig()
 
