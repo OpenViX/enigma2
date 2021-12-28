@@ -567,7 +567,7 @@ class PluginDownloadBrowser(Screen):
 
 	def dataAvail(self, str):
 		str = six.ensure_str(str)
-		if self.type == self.DOWNLOAD and ('wget returned 1' or 'wget returned 255' or '404 Not Found') in str:
+		if self.type == self.DOWNLOAD and any([x for x in ('wget returned 1', 'wget returned 255', '404 Not Found') if x in str]):
 			self.run = 3
 			return
 		#prepend any remaining data from the previous call
