@@ -439,8 +439,9 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		if result:
 			self.device = extra_args[0]
 			self.mountp = extra_args[1]
-			self.device_uuid = "UUID=" + six.ensure_str(result).split("UUID=")[1].split(" ")[0].replace('"', '')
-			self.device_type = six.ensure_str(result).split("TYPE=")[1].split(" ")[0].replace('"', '')
+			result = six.ensure_str(result)
+			self.device_uuid = "UUID=" + result.split("UUID=")[1].split(" ")[0].replace('"', '')
+			self.device_type = result.split("TYPE=")[1].split(" ")[0].replace('"', '')
 			# print("[MountManager][addFstab2] device_uuid:%s device_type:%s" % (self.device_uuid, self.device_type))
 			if self.device_type.startswith("ext"):
 				self.device_type = "auto"
