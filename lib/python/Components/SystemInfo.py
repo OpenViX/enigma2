@@ -13,7 +13,7 @@ SystemInfo["BoxInfo"] = BoxConfig()
 SystemInfo["HasRootSubdir"] = False	# This needs to be here so it can be reset by getMultibootslots!
 SystemInfo["RecoveryMode"] = False	# This needs to be here so it can be reset by getMultibootslots!
 from Tools.Multiboot import GetCurrentImage, getMultibootslots  # This import needs to be here to avoid a SystemInfo load loop!
-SystemInfo["HasHiSi"] = pathExists("/proc/hisi") and getBoxType() not in ("viper4kv20",)	# This needs to be for later checks
+SystemInfo["HasHiSi"] = pathExists("/proc/hisi") and getBoxType() not in ("viper4kv20", "viper4kv40")	# This needs to be for later checks
 SystemInfo["canMultiBoot"] = getMultibootslots()	# SystemInfo["MBbootdevice"] set on call 
 SystemInfo["MultiBootSlot"] = GetCurrentImage() if SystemInfo["canMultiBoot"] else False
 
@@ -63,6 +63,7 @@ SystemInfo["ConfigDisplay"] = SystemInfo["FrontpanelDisplay"] and getDisplayType
 SystemInfo["LCDSKINSetup"] = pathExists("/usr/share/enigma2/display") and not SystemInfo["7segment"]
 SystemInfo["OledDisplay"] = fileExists("/dev/dbox/oled0")
 SystemInfo["LcdDisplay"] = fileExists("/dev/dbox/lcd0")
+SystemInfo["LCDsymbol_hdd"] = getBoxType() in ("mutant51",) and fileCheck("/proc/stb/lcd/symbol_hdd")
 SystemInfo["HasNoDisplay"] = getBoxType() in ("et4x00", "et5x00", "et6x00", "gb800se", "gb800solo", "gbx34k", "iqonios300hd", "mbmicro", "sf128", "sf138", "tmsingle", "tmnano2super", "tmnanose", "tmnanoseplus", "tmnanosem2", "tmnanosem2plus", "tmnanosecombo", "vusolo")
 SystemInfo["DisplayLED"] = getBoxType() in ("gb800se", "gb800solo", "gbx1", "gbx2", "gbx3", "gbx3h")
 SystemInfo["LEDButtons"] = False # getBoxType() == "vuultimo", For some reason this causes a cpp crash on vuultimo (which we no longer build). The cause needs investigating or the dead code in surrounding modules that this change causes should be removed.
@@ -80,8 +81,7 @@ SystemInfo["Power24x7On"] = fileExists("/proc/stb/fp/power4x7on")
 SystemInfo["Power24x7Standby"] = fileExists("/proc/stb/fp/power4x7standby")
 SystemInfo["Power24x7Suspend"] = fileExists("/proc/stb/fp/power4x7suspend")
 SystemInfo["WakeOnLAN"] = getBoxType() not in ("et8000", "et10000") and fileCheck("/proc/stb/power/wol") or fileCheck("/proc/stb/fp/wol")
-SystemInfo["HDMICEC"] = (fileExists("/dev/hdmi_cec") or fileExists("/dev/misc/hdmi_cec0")) and isPluginInstalled("HdmiCEC")
-SystemInfo["HasHDMI-CEC"] = isPluginInstalled("HdmiCEC")
+SystemInfo["hasHdmiCec"] = fileExists("/dev/hdmi_cec") or fileExists("/dev/misc/hdmi_cec0")
 SystemInfo["HasExternalPIP"] = getMachineBuild() not in ("et9x00", "et6x00", "et5x00") and fileCheck("/proc/stb/vmpeg/1/external")
 SystemInfo["VideoDestinationConfigurable"] = fileExists("/proc/stb/vmpeg/0/dst_left")
 SystemInfo["hasPIPVisibleProc"] = fileCheck("/proc/stb/vmpeg/1/visible")
@@ -113,7 +113,7 @@ SystemInfo["CanProc"] = SystemInfo["HasMMC"] and getBrandOEM() != "vuplus"
 SystemInfo["Canaudiosource"] = fileCheck("/proc/stb/hdmi/audio_source")
 SystemInfo["Can3DSurround"] = fileHas("/proc/stb/audio/3d_surround_choices", "none")
 SystemInfo["Can3DSpeaker"] = fileHas("/proc/stb/audio/3d_surround_speaker_position_choices", "center")
-SystemInfo["CanAutoVolume"] = fileHas("/proc/stb/audio/avl_choices", "none")
+SystemInfo["CanAutoVolume"] = fileHas("/proc/stb/audio/avl_choices", "none") or fileHas("/proc/stb/audio/avl_choices", "hdmi")
 SystemInfo["supportPcmMultichannel"] = fileCheck("/proc/stb/audio/multichannel_pcm")
 SystemInfo["CanDownmixAC3"] = fileHas("/proc/stb/audio/ac3_choices", "downmix")
 SystemInfo["CanAC3Transcode"] = fileHas("/proc/stb/audio/ac3plus_choices", "force_ac3")

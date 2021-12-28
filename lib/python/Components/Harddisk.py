@@ -104,6 +104,14 @@ def getProcMounts():
 	result = [line.strip().split(" ") for line in lines]
 	for item in result:
 		item[1] = item[1].replace("\\040", " ")  # Spaces are encoded as \040 in mounts.
+# Also, map any fuseblk fstype to the real file-system behind it...
+# Use blkid to get the info we need....
+#
+		if item[2] == 'fuseblk':
+			import subprocess
+			res = subprocess.run(['blkid', '-sTYPE', '-ovalue', item[0]], capture_output=True)
+			if res.returncode == 0:
+				item[2] = six.ensure_str(res.stdout).strip()
 	return result
 
 
@@ -755,7 +763,7 @@ class HarddiskManager:
 					SystemInfo["Harddisk"] = True
 				else:
 					if SystemInfo["HasHiSi"] and devMajor == 8 and len(partitions) >= 4:
-						partitions = partitions[4:]
+						partitions = [] if len(partitions) > 6 else partitions[4:]
 					print("[Harddisk] len partitions = %s, device = %s" % (len(partitions), device))
 					if len(partitions) != 0:
 						print("[Harddisk] Found storage device '%s' (Removable=%s) NoPartitions = %s." % (device, removable, len(partitions)))

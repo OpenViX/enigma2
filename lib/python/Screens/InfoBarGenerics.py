@@ -1053,7 +1053,7 @@ class InfoBarNumberZap:
 
 	def _helpKeyNumberGlobal0(self):
 		if isinstance(self, InfoBarPiP) and self.pipHandles0Action():
-			return config.usage.pip_zero_button.choices[config.usage.pip_zero_button.value]
+			return config.usage.pip_zero_button.getText()
 		elif len(self.servicelist.history) > 1:
 			return config.usage.panicbutton.value and _("Zap to first channel & clear zap history") or _("Switch between last two channels watched")
 
