@@ -11,8 +11,5 @@ int Connect(const char *hostname, int port, int timeoutsec);
 std::string base64encode(const std::string str);
 std::string base64decode(const std::string hash);
 std::string readLink(const std::string &link);
-bool contains(const std::string &str, const std::string &substr);
-bool endsWith(const std::string &str, const std::string &suffix);
-bool startsWith(const std::string &str, const std::string &prefix);
 
 #endif
