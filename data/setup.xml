@@ -137,6 +137,10 @@
 		<item level="2" text="Country for EPG event rating information" description="Choose a country scheme for decoding rating information in EPG events.">config.misc.epgratingcountry</item>
 		<item level="2" text="Country for EPG event genre information" description="Choose a country scheme for decoding genre information in EPG events.">config.misc.epggenrecountry</item>
 		<item level="2" text="Enable EPG event name abbreviation removal" description="Broadcasters sometimes split long event names into the event description using ... Choose whether to prevent this behaviour.">config.epg.joinAbbreviatedEventNames</item>
+		<item level="2" text="Remove EPG event name prefixes" description="Broadcasters sometimes prefix event names with 'New: ' or 'Live: '. Choose what to do with these prefixes.">config.epg.eventNamePrefixMode</item>
+		<if conditional="config.epg.eventNamePrefixMode.value > 0">
+			<item level="2" text="EPG event name prefixes to remove" description="| separated list of prefixes you'd like to be removed from event names, separated with |, e.g. New:|Live:">config.epg.eventNamePrefixes</item>
+		</if>
 	</setup>
 	<setup key="subtitlesetup" title="Subtitles">
 		<item level="2" text="Teletext subtitle color" description="Configure the color of the teletext subtitles.">config.subtitles.ttx_subtitle_colors</item>

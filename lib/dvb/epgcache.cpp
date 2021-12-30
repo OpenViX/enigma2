@@ -169,6 +169,7 @@ eventData::eventData(const eit_event_struct* e, int size, int _type, int tsidoni
 						eventText = convertDVBUTF8((const unsigned char*)&descr[7 + eventNameLen], textLen, table, tsidonid);
 						//hack to fix split titles
 						undoAbbreviation(eventNameUTF8, eventText);
+						removePrefixesFromEventName(eventNameUTF8, eventText);
 					}
 
  					unsigned int eventNameUTF8len = eventNameUTF8.length();
