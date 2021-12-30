@@ -7,6 +7,10 @@
 #include <stdio.h>
 #include "eerror.h"
 
+bool contains(const std::string &str, const std::string &substr);
+bool endsWith(const std::string &str, const std::string &suffix);
+bool startsWith(const std::string &str, const std::string &prefix);
+
 std::string buildShortName( const std::string &str );
 
 void undoAbbreviation(std::string &str1, std::string &str2);
