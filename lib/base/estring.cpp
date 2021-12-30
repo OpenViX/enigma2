@@ -136,6 +136,34 @@ void undoAbbreviation(std::string &str1, std::string &str2)
 	str2 = s2;
 }
 
+void removePrefixesFromEventName(std::string &name, std::string &description)
+{
+	int eventNamePrefixMode = eSimpleConfig::getInt("config.epg.eventNamePrefixMode", 0);
+	if (eventNamePrefixMode == 0)
+		return;
+
+	const char* titlePrefixes = eSimpleConfig::getString("config.epg.eventNamePrefixes", "").c_str();
+	size_t prefixLength;
+	while ((prefixLength = strcspn(titlePrefixes, "|")))
+	{
+		if (name.size() >= prefixLength && name.find(titlePrefixes, 0, prefixLength) == 0)
+		{
+			// remove the unwanted prefix
+			name.erase(0, prefixLength);
+			// and any subsequent spaces
+			name.erase(0, name.find_first_not_of(" "));
+			if (eventNamePrefixMode == 2)
+			{
+				description += " [";
+				description += std::string(titlePrefixes, prefixLength);
+				description += "]";
+			}
+			break;
+		}
+		titlePrefixes += prefixLength + 1;
+	}
+}
+
 std::string getNum(int val, int sys)
 {
 //	Returns a string that contain the value val as string
