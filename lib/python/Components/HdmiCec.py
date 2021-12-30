@@ -747,8 +747,9 @@ class HdmiCec:
 		return send + now.strftime("%H:%M:%S") + 2 * " "
 
 	def fdebug(self, output):
-		path = path.join(config.hdmicec.log_path.value, "hdmicec.log")
-		if pathExists(path):
-			fp = open(path, "a")
+		logpath = config.hdmicec.log_path.value
+		if pathExists(logpath):
+			logpath = path.join(logpath, "hdmicec.log")
+			fp = open(logpath, "a")
 			fp.write(output)
 			fp.close()
