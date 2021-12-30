@@ -760,6 +760,7 @@ def InitUsageConfig():
 	config.epg.opentv.addNotifier(EpgSettingsChanged)
 
 	config.epg.histminutes = ConfigSelectionNumber(min=0, max=720, stepwidth=15, default=0, wraparound=True)
+	config.epg.joinAbbreviatedEventNames = ConfigYesNo(default=True)
 
 	def EpgHistorySecondsChanged(configElement):
 		eEPGCache.getInstance().setEpgHistorySeconds(config.epg.histminutes.value * 60)
