@@ -7,6 +7,7 @@
 #include <map>
 #include <lib/base/eerror.h>
 #include <lib/base/encoding.h>
+#include <lib/base/esimpleconfig.h>
 #include <lib/base/estring.h>
 #include "freesatv2.h"
 #include "big5.h"
@@ -44,6 +45,9 @@ std::string buildShortName( const std::string &str )
 
 void undoAbbreviation(std::string &str1, std::string &str2)
 {
+	if (!eSimpleConfig::getBool("config.epg.joinAbbreviatedEventNames", true))
+		return;
+
 	std::string s1 = str1;
 	std::string s2 = str2;
 
