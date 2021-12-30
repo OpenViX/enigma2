@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-17 11:46+0000\n"
-"PO-Revision-Date: 2021-12-18 13:49+0100\n"
+"POT-Creation-Date: 2021-12-29 21:32+0000\n"
+"PO-Revision-Date: 2021-12-30 11:29+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -3253,14 +3253,8 @@ msgstr "Ruim op"
 msgid "Clear"
 msgstr "Wis"
 
-msgid "Clear HDMI-CEC fixed address"
-msgstr "Verwijder HDMI-CEC vaste adres"
-
 msgid "Clear before scan"
 msgstr "Vóór zoeken alle zenders verwijderen"
-
-msgid "Clear fixed"
-msgstr "Verwijder vaste"
 
 msgid "Clear log"
 msgstr "Wis log"
@@ -3940,9 +3934,6 @@ msgstr "Curacao"
 msgid "Current Affairs"
 msgstr "Actualiteiten"
 
-msgid "Current CEC address"
-msgstr "Huidig CEC adres"
-
 msgid "Current Event:"
 msgstr "Huidige programma:"
 
@@ -4615,6 +4606,9 @@ msgstr "Gedeactiveerd"
 
 msgid "Disk space to reserve for recordings (in GB)"
 msgstr "Reserveer schijfruimte voor opnames (in GB)"
+
+msgid "Disk state: "
+msgstr "Disk status:"
 
 msgid "Display 16:9 content as"
 msgstr "Toon 16:9 materiaal als"
@@ -5586,13 +5580,6 @@ msgstr ""
 "FBC automatisch\n"
 "inactief"
 
-#, python-format
-msgid "FBC socket %s"
-msgstr "FBC socket %s"
-
-msgid "FBC virtual"
-msgstr "FBC virtueel"
-
 msgid "FEC"
 msgstr "FEC"
 
@@ -6150,9 +6137,6 @@ msgstr "HDD instellingen"
 msgid "HDMI"
 msgstr "HDMI"
 
-msgid "HDMI CEC"
-msgstr "HDMI CEC"
-
 msgid "HDMI Colordepth"
 msgstr "HDMI-kleurdiepte"
 
@@ -6168,8 +6152,8 @@ msgstr "HDMI HDR type"
 msgid "HDMI input"
 msgstr "HDMI-ingang"
 
-msgid "HDMI-CEC address editing actions"
-msgstr "HDMI-CEC adresinstellingen"
+msgid "HDMI-CEC Setup"
+msgstr "HDMI-CEC instellingen"
 
 msgid "HDMIin"
 msgstr "HDMI-in"
@@ -6209,9 +6193,6 @@ msgstr "Harde schijf instellingen"
 
 msgid "HbbTV"
 msgstr "HbbTV"
-
-msgid "Hdmi-CEC setup"
-msgstr "HDMI-CEC instellingen"
 
 msgid "Heard Island and McDonald Islands"
 msgstr "Heard Island and McDonald Islands"
@@ -10686,9 +10667,6 @@ msgstr "Kies de standaard actie voor de INFO-toets"
 msgid "Select destination for:"
 msgstr "Selecteer bestemming voor:"
 
-msgid "Select directory for logfile"
-msgstr "Kies map voor logbestand"
-
 msgid "Select files for backup."
 msgstr "Selecteer bestanden voor back-up."
 
@@ -11050,9 +11028,6 @@ msgstr "Stel het Enigma log-niveau in."
 msgid "Set Framerate for MiniTV"
 msgstr "Stel framerate in voor MiniTV"
 
-msgid "Set HDMI-CEC fixed address"
-msgstr "Gebruik een vast adres voor HDMI-CEC"
-
 msgid "Set LED Color or disable the LED."
 msgstr "Stel de LED kleur in of schakel de LED uit."
 
@@ -11068,9 +11043,6 @@ msgstr "Standaard waarde"
 #
 msgid "Set end time"
 msgstr "Stel eindtijd in"
-
-msgid "Set fixed"
-msgstr "Zet fixed"
 
 msgid "Set fps for external subtitles"
 msgstr "Stel de fps in voor de externe ondertitels"
@@ -11830,6 +11802,14 @@ msgid "Slot %d"
 msgstr "Slot %d"
 
 #, python-format
+msgid "Slot %s / FBC in %s"
+msgstr "Slot %s / FBC in %s"
+
+#, python-format
+msgid "Slot %s / FBC virtual %s"
+msgstr "Slot %s / FBC virtueel %s"
+
+#, python-format
 msgid "Slot%s %s: %s - %s mode%s"
 msgstr "Slot%s %s: %s - %s modus%s"
 
@@ -12074,8 +12054,8 @@ msgstr "Sri Lanka"
 msgid "Standard"
 msgstr "Standaard"
 
-msgid "Standart list"
-msgstr "Standaardlijst"
+msgid "Standard list"
+msgstr "Standaard lijst"
 
 msgid "Standby"
 msgstr "Stand-by"
@@ -13918,9 +13898,6 @@ msgstr "Gebruikersnaam:"
 msgid "Using LNB %d"
 msgstr "Gebruikt LNB %d"
 
-msgid "Using fixed address"
-msgstr "Gebruik een vast adres"
-
 msgid "Using old profile: "
 msgstr "Gebruik oud profiel: "
 
@@ -15077,6 +15054,9 @@ msgstr "activeer PiP"
 msgid "activatePiP long"
 msgstr "activeer PiP lang"
 
+msgid "active "
+msgstr "actief "
+
 msgid "add bookmark"
 msgstr "markeerpunt toevoegen"
 
@@ -16102,6 +16082,9 @@ msgstr "ZZO"
 msgid "ssw"
 msgstr "ZZW"
 
+msgid "standby "
+msgstr "stand-by "
+
 msgid "start cut here"
 msgstr "start knippen hier"
 
@@ -16368,8 +16351,17 @@ msgstr "zapte"
 #~ msgid "CAID:SrvID"
 #~ msgstr "CAID:SrvID"
 
+#~ msgid "Clear HDMI-CEC fixed address"
+#~ msgstr "Verwijder HDMI-CEC vaste adres"
+
+#~ msgid "Clear fixed"
+#~ msgstr "Verwijder vaste"
+
 #~ msgid "Collection"
 #~ msgstr "Collectie"
+
+#~ msgid "Current CEC address"
+#~ msgstr "Huidig CEC adres"
 
 #, fuzzy
 #~ msgid "D"
@@ -16387,6 +16379,10 @@ msgstr "zapte"
 #~ msgstr "F1"
 
 #, python-format
+#~ msgid "FBC socket %s"
+#~ msgstr "FBC socket %s"
+
+#, python-format
 #~ msgid "Flash directory '%s' not allowed!"
 #~ msgstr "Flash-map'%s' is niet toegestaan!"
 
@@ -16397,6 +16393,12 @@ msgstr "zapte"
 #, fuzzy
 #~ msgid "H"
 #~ msgstr "CH"
+
+#~ msgid "HDMI CEC"
+#~ msgstr "HDMI CEC"
+
+#~ msgid "HDMI-CEC address editing actions"
+#~ msgstr "HDMI-CEC adresinstellingen"
 
 #
 #, fuzzy
@@ -16419,8 +16421,17 @@ msgstr "zapte"
 #~ msgid "Polarisation:"
 #~ msgstr "Polarisatie:"
 
+#~ msgid "Select directory for logfile"
+#~ msgstr "Kies map voor logbestand"
+
 #~ msgid "Serv.Name"
 #~ msgstr "Serv.Naam"
+
+#~ msgid "Set HDMI-CEC fixed address"
+#~ msgstr "Gebruik een vast adres voor HDMI-CEC"
+
+#~ msgid "Set fixed"
+#~ msgstr "Zet fixed"
 
 #~ msgid "Show /tmp/ecm.info"
 #~ msgstr "Toon /tmp/ecm.info"
@@ -16450,6 +16461,9 @@ msgstr "zapte"
 #~ "ONSTABIEL: De feeds bevatten momenteel onstabiele, experimentele updates. U kunt op eigen risico doorgaan, maar dat kan erin resulteren dat uw %s %s onbruikbaar wordt en dat u deze opnieuw moet flashen.\n"
 #~ "\n"
 #~ "Weet u zeker dat u door wil gaan?"
+
+#~ msgid "Using fixed address"
+#~ msgstr "Gebruik een vast adres"
 
 #~ msgid "Visual impaired commentary"
 #~ msgstr "Audiodescriptie voor slechtzienden"
