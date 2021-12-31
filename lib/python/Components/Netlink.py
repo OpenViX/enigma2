@@ -13,7 +13,7 @@ class NetlinkSocket(socket.socket):
 		self.bind((os.getpid(), -1))
 
 	def parse(self):
-		data = six.ensure_str(self.recv(512))
+		data = six.ensure_str(self.recv(512), encoding="ascii", errors='ignore')
 		event = {}
 		for item in data.split('\x00'):
 			if not item:
