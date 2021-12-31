@@ -13,19 +13,7 @@ class NetlinkSocket(socket.socket):
 		self.bind((os.getpid(), -1))
 
 	def parse(self):
-		data = self.recv(512)
-# Some items from libudev contain a 32-byte binary structure that is
-# not parseable by this code. So remove it.
-#
-		if data.startswith(b'libudev\x00'):
-			data = data[0:8] + data[40:]
-
-# If we can't handle the data, report it then ignore it.
-		try:
-			data = six.ensure_str(data, errors='ignore')
-		except UnicodeError:
-			print("[Netlink::NetlinkSocket] couldn't parse:", data)
-			return  # Just ignore this one
+		data = six.ensure_str(self.recv(512))
 		event = {}
 		for item in data.split('\x00'):
 			if not item:
