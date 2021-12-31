@@ -79,7 +79,7 @@ class NSCommon:
 				_('Your %s %s needs to be restarted to complete the installation of %s\nDo you want to reboot now ?') % (getMachineBrand(), getMachineName(), self.getTitle()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_("Reboot required"))
 		else:
-			self.updateService()
+			self.message.close()
 
 	def operationComplete(self, reboot=False):
 		if reboot:
