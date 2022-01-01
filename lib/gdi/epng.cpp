@@ -3,7 +3,7 @@
 #include <png.h>
 #include <stdio.h>
 #include <lib/base/cfile.h>
-#include <lib/base/wrappers.h>
+#include <lib/base/estring.h>
 #include <lib/gdi/epng.h>
 #include <lib/gdi/pixmapcache.h>
 #include <unistd.h>

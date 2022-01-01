@@ -177,14 +177,6 @@ class EventViewBase:
 			else:
 				self["channel"].setText(_("unknown service"))
 
-	def sort_func(self, x, y):
-		if x[1] < y[1]:
-			return -1
-		elif x[1] == y[1]:
-			return 0
-		else:
-			return 1
-
 	def setEvent(self, event):
 		if event is None or not hasattr(event, 'getEventName'):
 			return

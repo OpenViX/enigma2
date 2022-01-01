@@ -219,7 +219,7 @@ EOP
         first_lpath=1   # Not yet seen
 
         echo "========== Enigma2 log starts =========="
-        while read line; do
+        while read -r line; do      # -r == no slash-escaping of input
             case "$line" in
 # Are we being told that enigma2 has exited?
 # If so, we exit too

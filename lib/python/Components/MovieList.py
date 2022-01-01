@@ -280,7 +280,14 @@ class MovieList(GUIComponent):
 		return self._playInForeground
 
 	def set_playInForeground(self, value):
-		self._playInForeground = value
+		if self._playInForeground is not value:
+			index = self.findService(self._playInForeground)
+			if index is not None:
+				self.invalidateItem(index)
+			index = self.findService(value)
+			if index is not None:
+				self.invalidateItem(index)
+			self._playInForeground = value
 
 	playInForeground = property(get_playInForeground, set_playInForeground)
 
@@ -428,7 +435,7 @@ class MovieList(GUIComponent):
 		res = [None]
 
 		if serviceref.flags & eServiceReference.isGroup:
-			# Collections
+			# Collection
 			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconCollection, flags=BT_ALIGN_CENTER))
 			if self.getCurrent() in self.markList:
 				res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
@@ -438,17 +445,7 @@ class MovieList(GUIComponent):
 			return res
 		if serviceref.flags & eServiceReference.mustDescent:
 			# Directory
-			# Name is full path name
-			if info is None:
-				# Special case: "parent"
-				txt = ".."
-			else:
-				p = os.path.split(pathName)
-				if not p[1]:
-					# if path ends in '/', p is blank.
-					p = os.path.split(p[0])
-				txt = p[1]
-			if txt == ".Trash":
+			if data.txt == ".Trash":
 				res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconTrash, flags=BT_ALIGN_CENTER))
 				res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=_("Deleted items")))
 				res.append(MultiContentEntryText(pos=(width - 145 - r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=_("Trash can")))
@@ -456,7 +453,7 @@ class MovieList(GUIComponent):
 			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconFolder, flags=BT_ALIGN_CENTER))
 			if self.getCurrent() in self.markList:
 				res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
-			res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=txt))
+			res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
 			res.append(MultiContentEntryText(pos=(width - 145 - r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=_("Directory")))
 			return res
 		if data.dirty:
@@ -705,6 +702,7 @@ class MovieList(GUIComponent):
 			currentFolder = os.path.normpath(rootPath) + '/'
 			if collectionName:
 				data = MovieListData()
+				data.txt = ".."
 				data.directorySize = None
 				self.list.append((eServiceReference.fromDirectory(currentFolder), None, 0, data))
 				numberOfDirs += 1
@@ -714,9 +712,9 @@ class MovieList(GUIComponent):
 					parent += '/'
 				ref = eServiceReference.fromDirectory(parent)
 				data = MovieListData()
+				data.txt = ".."
 				data.directorySize = None
 				self.list.append((ref, None, 0, data))
-
 				numberOfDirs += 1
 		firstDir = numberOfDirs
 
@@ -762,7 +760,10 @@ class MovieList(GUIComponent):
 
 			if not collectionName and serviceref.flags & eServiceReference.mustDescent:
 				if not name.endswith('.AppleDouble/') and not name.endswith('.AppleDesktop/') and not name.endswith('.AppleDB/') and not name.endswith('Network Trash Folder/') and not name.endswith('Temporary Items/'):
-					self.list.append((serviceref, info, begin, MovieListData()))
+					begin = os.stat(serviceref.getPath()).st_mtime
+					data = MovieListData()
+					data.txt = getItemDisplayName(serviceref, info)
+					self.list.append((serviceref, info, begin, data))
 					numberOfDirs += 1
 				continue
 
@@ -789,10 +790,12 @@ class MovieList(GUIComponent):
 				this_tags = set(this_tags)
 				if not this_tags.issuperset(filter_tags) and not this_tags_fullname.issuperset(filter_tags):
 					continue
+			data = MovieListData()
+			data.txt = getItemDisplayName(serviceref, info)
 			if begin2 != 0:
-				self.list.append((serviceref, info, begin, MovieListData(), begin2))
+				self.list.append((serviceref, info, begin, data, begin2))
 			else:
-				self.list.append((serviceref, info, begin, MovieListData()))
+				self.list.append((serviceref, info, begin, data))
 
 		if not collectionName and collectionMode and self.allowCollections:
 			# not displaying the contents of a collection, group similar named
@@ -822,6 +825,7 @@ class MovieList(GUIComponent):
 					groupedItems = sorted(groupedItems, key=self.buildBeginTimeSortKey, reverse=True)
 					firstItem = groupedItems[0]
 					data = MovieListData()
+					data.txt = firstItem[1].getName(firstItem[0]).strip()
 					data.collectionCount = len(groupedItems)
 					collectionSize = 0
 					for item in groupedItems:
@@ -830,7 +834,6 @@ class MovieList(GUIComponent):
 							collectionSize += fileSize
 					data.collectionSize = collectionSize
 					data.collectionItems = groupedItems
-					data.txt = firstItem[1].getName(firstItem[0]).strip()
 					serviceref = eServiceReference(eServiceReference.idFile, eServiceReference.isGroup, data.txt)
 					# For the age of the collection, we use the record time of the newest item in the group
 					items.append((serviceref, serviceref.info(), groupedItems[-1][2], data))
@@ -888,13 +891,6 @@ class MovieList(GUIComponent):
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaNumericSortKey) + sorted(self.list[numberOfDirs:], key=self.buildLengthSortKey, reverse=True)
 		elif self.current_sort == MovieList.SORT_SHORTEST:
 			self.list = sorted(self.list[:numberOfDirs], key=self.buildAlphaNumericSortKey) + sorted(self.list[numberOfDirs:], key=self.buildLengthSortKey)
-
-		for x in self.list:
-			if x[1]:
-				tmppath = x[1].getName(x[0])[:-1] if x[1].getName(x[0]).endswith('/') else x[1].getName(x[0])
-				if tmppath.endswith('.Trash'):
-					self.list.insert(0, self.list.pop(self.list.index(x)))
-					break
 
 		if self.root and numberOfDirs > 0:
 			rootPath = os.path.normpath(self.root.getPath())
@@ -958,55 +954,46 @@ class MovieList(GUIComponent):
 		for tag in realtags:
 			self.tags[tag] = set([tag])
 
+	def getSortPrimaryGroup(self, x):
+		if x[0].flags & eServiceReference.mustDescent:
+			txt = getattr(x[3], "txt", None)
+			if txt == "..":
+				return 0
+			elif txt == ".Trash":
+				return 1
+			return 2
+		return 3
+
 	def buildLengthSortKey(self, x):
 		# x = ref,info,begin,...
 		ref = x[0]
-		name = x[1] and x[1].getName(ref)
 		# if a collection, use the first item in the collection for the length
 		if ref.flags & eServiceReference.isGroup:
 			firstItem = x[3].collectionItems[0]
 			if firstItem:
 				ref = firstItem[0] or ref
 		len = x[1] and (x[1].getLength(ref) // 60) # we only display minutes, so sort by minutes
-		if ref.flags & eServiceReference.mustDescent:
-			return 0, len or 0, name and name.lower() or "", -x[2]
-		return 1, len or 0, name and name.lower() or "", -x[2]
+		name = x[3].txt
+		return self.getSortPrimaryGroup(x), len or 0, name and name.lower() or "", -x[2]
 
 	def buildAlphaNumericSortKey(self, x):
 		# x = ref,info,begin,...
-		ref = x[0]
-		name = x[1] and x[1].getName(ref)
-		if ref.flags & eServiceReference.mustDescent:
-			return 0, name and name.lower() or "", -x[2]
-		return 1, name and name.lower() or "", -x[2]
+		name = x[3].txt
+		return self.getSortPrimaryGroup(x), name and name.lower() or "", -x[2]
 
 	# as for buildAlphaNumericSortKey, but without negating dates
 	def buildAlphaDateSortKey(self, x):
 		# x = ref,info,begin,...
-		ref = x[0]
-		name = x[1] and x[1].getName(ref)
-		if ref.flags & eServiceReference.mustDescent:
-			return 0, name and name.lower() or "", x[2]
-		return 1, name and name.lower() or "", x[2]
+		name = x[3].txt
+		return self.getSortPrimaryGroup(x), name and name.lower() or "", -x[2]
 
 	def buildAlphaNumericFlatSortKey(self, x):
 		# x = ref,info,begin,...
-		ref = x[0]
-		name = x[1] and x[1].getName(ref)
-		if name and ref.flags & eServiceReference.mustDescent:
-			# only use directory basename for sorting
-			p = os.path.split(name)
-			if not p[1]:
-				# if path ends in '/', p is blank.
-				p = os.path.split(p[0])
-			name = p[1]
-		return 1, name and name.lower() or "", -x[2]
+		name = x[3].txt
+		return min(self.getSortPrimaryGroup(x), 2), name and name.lower() or "", -x[2]
 
 	def buildBeginTimeSortKey(self, x):
-		ref = x[0]
-		if ref.flags & eServiceReference.mustDescent and os.path.exists(ref.getPath()):
-			return 0, "", x[1] and -os.stat(ref.getPath()).st_mtime or 0
-		return 1, "", -x[2]
+		return self.getSortPrimaryGroup(x), "", -x[2]
 
 	def buildGroupwiseSortkey(self, x):
 		# Sort recordings by date, sort MP3 and stuff by name

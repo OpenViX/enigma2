@@ -3,7 +3,7 @@
 #include <fcntl.h>
 
 #include <lib/base/cfile.h>
-#include <lib/base/wrappers.h>
+#include <lib/base/estring.h>
 #include <lib/gdi/picload.h>
 
 extern "C" {

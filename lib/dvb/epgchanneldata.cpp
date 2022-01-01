@@ -1937,6 +1937,7 @@ void eEPGChannelData::OPENTV_SummariesSection(const uint8_t *d)
 					std::string sTitle = m_OPENTV_descriptors_map[ote.title_crc];
 					std::string sSummary = (*summary)->getSummary();
 					undoAbbreviation(sTitle, sSummary);
+					removePrefixesFromEventName(sTitle, sSummary);
 
 					if (eEPGCache::getInstance())
 						eEPGCache::getInstance()->submitEventData(sids, chids, ote.startTime, ote.duration, sTitle.c_str(), "", sSummary.c_str(), 0, ote.eventId, eEPGCache::OPENTV);
