@@ -14,8 +14,9 @@ class NetlinkSocket(socket.socket):
 
 	def parse(self):
 		data = six.ensure_str(self.recv(512), encoding="ascii", errors='ignore')
+		data = [x for x in data.split('\x00') if x] + [""] # avoid empty strings in the output except the final one
 		event = {}
-		for item in data.split('\x00'):
+		for item in data:
 			if not item:
 				# terminator
 				yield event
