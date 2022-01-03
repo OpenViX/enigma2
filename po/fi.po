@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2021-12-31 08:57+0200\n"
+"PO-Revision-Date: 2022-01-03 19:17+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -16343,3 +16343,12 @@ msgstr "Vaihda kanavaa ja tallenna"
 
 msgid "zapped"
 msgstr "Vaihdettu"
+
+msgid "Broadcasters sometimes split long event names into the event description using ... Choose whether to prevent this behaviour."
+msgstr "Joskus lähetyksessä pitkät ohjelmanimet jaetaan ohjelmatietoon käyttäen ... Valitse estetäänkö tämä."
+
+msgid "Broadcasters sometimes prefix event names with 'New: ' or 'Live: '. Choose what to do with these prefixes."
+msgstr "Joskus ohjelmanimeen lisätään etuliite 'Uusi: ' tai 'Suora: '. Valitse mitä näille etuliitteille tehdään."
+
+msgid "| separated list of prefixes you'd like to be removed from event names, separated with |, e.g. New:|Live:"
+msgstr "Lisää | välimerkiksi ohjelmanimistä poistettavien etuliitteiden listaan, esim. Uusi:|Suora:"
