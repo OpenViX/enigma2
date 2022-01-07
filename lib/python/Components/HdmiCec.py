@@ -361,8 +361,6 @@ class HdmiCec:
 		eHdmiCEC.getInstance().messageReceived.get().append(self.messageReceived)
 		config.misc.standbyCounter.addNotifier(self.onEnterStandby, initial_call=False)
 		config.misc.DeepStandby.addNotifier(self.onEnterDeepStandby, initial_call=False)
-		print("[HdmiCEC][init] physical_address.value=%s" % getPhysicalAddress())
-		setFixedPhysicalAddress(getPhysicalAddress())		# inform world - ehdmicec broadcasts 0x84 report receiver Cec address
 		self.volumeForwardingEnabled = False
 		self.volumeForwardingDestination = 0
 		self.wakeup_from_tv = False
@@ -530,7 +528,7 @@ class HdmiCec:
 			data = data[:14]
 		elif message == "givesystemaudiostatus":
 			cmd = 0x7d
-			msgaddress = 0x0f
+			msgaddress = 0x05
 		elif message == "requestactivesource":
 			cmd = 0x85
 			msgaddress = 0x0f # use broadcast address
