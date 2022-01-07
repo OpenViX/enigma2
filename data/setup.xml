@@ -624,10 +624,12 @@
 		</if>
 	</setup>
 	<setup key="clientmode" title="Client Mode setup">
-		<item text="Enable client mode" description="Enable or disable using HDMI-CEC.">config.clientmode.enabled</item>
+		<item text="Enable client mode" description="Enable or disable client mode.">config.clientmode.enabled</item>
 		<if conditional="config.clientmode.enabled.value">
-			<item text="Host receiver address type" description="Select between entering an IP address or a domain.">config.clientmode.serverAddressType</item>
-			<if conditional="config.clientmode.serverAddressType.value == 'ip'">
+			<item text="Host receiver address type" description="'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address.">self.addressType</item>
+			<if conditional="self.addressType.value == 'peer'">
+				<item text="Network peers" description="Select a receiver to use for client mode. If the host receiver is not listed, manually enter the URL or IP address.">self.peer</item>
+			<elif conditional="self.addressType.value == 'ip'"/>
 				<item text="Host receiver IP address" description="Enter the IP address of the host receiver.">config.clientmode.serverIP</item>
 			<else/>
 				<item text="Host domain" description="Enter the domain of the host receiver. Do not include 'http://' or port number.">config.clientmode.serverDomain</item>
