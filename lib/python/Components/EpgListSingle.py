@@ -108,7 +108,7 @@ class EPGListSingle(EPGListBase):
 		self.selectionChanged()
 
 	def fillEPG(self, service):
-		now = time()
+		now = int(time())
 		epgTime = now - config.epg.histminutes.value * SECS_IN_MIN
 		test = ['RIBDT', (service.toString(), 0, epgTime, -1)]
 		self.list = self.queryEPG(test)
