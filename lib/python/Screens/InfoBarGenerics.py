@@ -547,7 +547,16 @@ class SecondInfoBar(Screen, HelpableScreen):
 			description += '\n'
 		text = description + extended
 		self.setTitle(event.getEventName())
-		self["epg_description"].setText(text)
+		try:
+			self["epg_description"].setText(text)
+		except TypeError as err:
+			# temporary debug: search for bad encoding
+			import traceback
+			traceback.print_exc()
+			print("[InfoBarGenerics] setEvent text:", ' '.join('{:02X}'.format(ord(c)) for c in text))
+			text = text.encode(encoding="utf8", errors="replace").decode() # attempt to replace bad chars with '?'
+			self["epg_description"].setText(text)
+			
 		serviceref = self.currentService
 		eventid = self.event.getEventId()
 		refstr = serviceref.ref.toString()
