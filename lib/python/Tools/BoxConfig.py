@@ -20,7 +20,7 @@ class BoxConfig:  # To maintain data integrity class variables should not be acc
 				print("[BoxConfig] Error %d: Unable to read lines from file '%s'! (%s)" % (err.errno, path, err.strerror))
 		if lines:
 			for line in lines:
-				if line.startswith("#") or line.strip() == "":
+				if line.startswith("#") or line.strip() == "" or line.strip().lower().startswith("checksum"):
 					continue
 				if "=" in line:
 					item, value = [x.strip() for x in line.split("=", 1)]
