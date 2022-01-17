@@ -486,7 +486,7 @@
 	</setup>
 	<setup key="movieselection" title="Movie List Setup">
 		<item level="0" text="Use trash can in movie list" description="When enabled, deleted recordings are moved to the trash can, instead of being deleted immediately.">config.usage.movielist_trashcan</item>
-		<item level="0" text="Remove items from trash can after (days)" description="Configure the number of days after which items are automatically removed from the trash can.\nA setting of 0 disables this.">config.usage.movielist_trashcan_days</item>
+		<item level="0" text="Remove items from trash can after (days)" description="Configure the number of days after which items are automatically removed from the trash can. A setting of 0 disables this.">config.usage.movielist_trashcan_days</item>
 		<item level="0" text="Clean network trash cans" description="When enabled, network trash cans are probed for cleaning.">config.usage.movielist_trashcan_network_clean</item>
 		<item level="0" text="Disk space to reserve for recordings (in GB)" description="Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can.">config.usage.movielist_trashcan_reserve</item>
 		<item level="0" text="Background delete option" description="Configure on which devices the background delete option should be used.">config.misc.erase_flags</item>
@@ -497,10 +497,10 @@
 		<item level="0" text="Use adaptive date display" description="Adaptive date display allows recent dates to be displayed as 'Today' or 'Yesterday'.  It hides the year for recordings made this year.  It hides the day of the week for recordings made in previous years.">config.movielist.use_fuzzy_dates</item>
 		<item level="0" text="Enable automatic collections" description="When enabled, recordings are grouped by name into collections automatically.">config.movielist.enable_collections</item>
 		<item level="0" text="Sort" description="Set the default sorting method.">self.cfg.moviesort</item>
-		<item level="0" text="Sort Trash by deletion time" description="Use the deletion time to sort Trash directories.\nMost recently deleted at the top.">config.usage.trashsort_deltime</item>
+		<item level="0" text="Sort Trash by deletion time" description="Use the deletion time to sort Trash directories. Most recently deleted at the top.">config.usage.trashsort_deltime</item>
 		<item level="0" text="Show extended description" description="Show or hide the extended description, (skin dependant).">self.cfg.description</item>
 		<item level="0" text="Use individual settings for each directory" description="When set, each directory will show the previous state used. When off, the default values will be shown.">config.movielist.settings_per_directory</item>]
-		<item level="0" text="Permanent sort key changes" description="When set, sort changes via the sort key will be permanent.\nWhen unset, sort changes will be temporary - just for this view of a directory." requires="!config.movielist.settings_per_directory">config.movielist.perm_sort_changes</item>
+		<item level="0" text="Permanent sort key changes" description="When set, sort changes via the sort key will be permanent. When unset, sort changes will be temporary - just for this view of a directory." requires="!config.movielist.settings_per_directory">config.movielist.perm_sort_changes</item>
 		<item level="0" text="Stop service on return to movie list" description="Stop previous broadcasted service on return to movie list.">config.movielist.stop_service</item>
 		<item level="0" text="Show status icons in movie list" description="Shows the watched status of the movie.">config.usage.show_icons_in_movielist</item>]
 		<item level="0" text="Show icon for new/unseen items" description="Shows the icons when new/unseen, otherwise it will not show an icon." conditional="config.usage.show_icons_in_movielist.value != 'o'">config.usage.movielist_unseen</item>
