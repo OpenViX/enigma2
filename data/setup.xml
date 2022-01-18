@@ -610,6 +610,7 @@
 			<if conditional="config.hdmicec.handle_tv_wakeup.value">
 				<item text="Wakeup signal from TV" description="Wake the receiver from standby when the wake command is sent from the TV.">config.hdmicec.tv_wakeup_detection</item>
 			</if>
+			<item text="Set fixed CEC address" description="Fix CEC address setting, default is 0.0.0.0">config.hdmicec.fixed_physical_address</item>			
 			<item text="Forward volume keys" description="Volume keys on the receiver remote will control the TV volume.">config.hdmicec.volume_forwarding</item>
 			<item text="Put A/V receiver in standby" description="Put A/V receiver in standby.">config.hdmicec.control_receiver_standby</item>
 			<item text="Wake A/V receiver from standby" description="Wake A/V receiver from standby.">config.hdmicec.control_receiver_wakeup</item>
