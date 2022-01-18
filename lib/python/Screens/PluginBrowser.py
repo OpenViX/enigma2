@@ -491,8 +491,8 @@ class PluginDownloadBrowser(Screen):
 	def runSettingsInstall(self):
 		self.doInstall(self.installFinished, self.install_settings_name)
 
-	def startIpkgListInstalled(self, pkgname=PLUGIN_PREFIX + '*'):
-		self.container.execute(self.ipkg + Ipkg.opkgExtraDestinations() + " list_installed")
+	def startIpkgListInstalled(self, pkgname=None):
+		self.container.execute(self.ipkg + Ipkg.opkgExtraDestinations() + " list_installed" + (" '%s'" % pkgname if pkgname else ""))
 
 	def startIpkgListAvailable(self):
 		self.container.execute(self.ipkg + Ipkg.opkgExtraDestinations() + " list")

@@ -624,7 +624,6 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 		self.list = self["list"]
 		self.selectedmovie = selectedmovie
-		self.FilePlaying()
 
 		self.playGoTo = None #1 - preview next item / -1 - preview previous
 
@@ -1102,6 +1101,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.filePlayingTimer.stop()
 
 	def onFirstTimeShown(self):
+		self.FilePlaying()
 		self.onShown.remove(self.onFirstTimeShown) # Just once, not after returning etc.
 		self.show()
 		self.reloadList(self.selectedmovie, home=True)

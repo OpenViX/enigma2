@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2021-12-31 08:57+0200\n"
+"PO-Revision-Date: 2022-01-08 08:03+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -1179,7 +1179,7 @@ msgid "'%s' already exists"
 msgstr "Hakemisto %s on jo olemassa"
 
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
-msgstr "'Verkkoympäristösi' havaitsee automaattisesti toiset Enigma2-laitteet lähiverkossasi. Voit myös laittaa osoitteen tai IP:n käsin."
+msgstr "'Verkkoympäristösi' havaitsee automaattisesti toiset Enigma2-laitteet lähiverkossasi. Voit myös syöttää osoitteen tai IP:n käsin."
 
 msgid ""
 "'Save' changes active language.\n"
@@ -5121,6 +5121,18 @@ msgstr "Asiakas-tila päälle"
 msgid "Enable debug logs *"
 msgstr "Ota käyttöön debug-loki"
 
+msgid "Enable EPG event name abbreviation removal"
+msgstr "Salli EPG ohjelmatiedon nimen lyhennyksen poisto"
+
+msgid "Remove EPG event name prefixes"
+msgstr "Poista EPG ohjelmanimen etuliitteet"
+
+msgid "EPG event name prefixes to remove"
+msgstr "Poistettavat EPG ohjelmanimen etuliitteet "
+
+msgid "Move to description"
+msgstr "Siirrä kuvaukseen"
+
 msgid "Enable fallback remote receiver"
 msgstr "Ota käyttöön etävastaanotin"
 
@@ -5151,8 +5163,11 @@ msgstr "Pakota HDR10-tilat UHD:lle päälle/pois"
 msgid "Enable or disable to force HLG Modes for UHD"
 msgstr "Pakota HLG-tilat UHD:lle päälle/pois"
 
-msgid "Enable or disable using HDMI-CEC."
-msgstr "Salli/estä käyttäen HDMI-CEC."
+msgid "Enable or disable client mode."
+msgstr "Salli tai estä 'client moodi'."
+
+msgid "Select a receiver to use for client mode. If the host receiver is not listed, manually enter the URL or IP address."
+msgstr "Valitse 'client moodia' käyttävä vastaanotin. Jos isäntävastaanotin ei ole listattuna, niin syötä URL tai IP-osoite manuaalisesti."
 
 msgid "Enable panic button"
 msgstr "Ota käyttöön paniikkinäppäin"
@@ -8342,7 +8357,7 @@ msgid "Octo core"
 msgstr "Kahdeksanytiminen"
 
 msgid "Off"
-msgstr "Pois"
+msgstr "Pois päältä"
 
 msgid "Offline decode delay (ms)"
 msgstr "Offline-purkamisen viive (ms)"
@@ -16343,3 +16358,12 @@ msgstr "Vaihda kanavaa ja tallenna"
 
 msgid "zapped"
 msgstr "Vaihdettu"
+
+msgid "Broadcasters sometimes split long event names into the event description using ... Choose whether to prevent this behaviour."
+msgstr "Joskus lähetyksessä pitkät ohjelmanimet jaetaan ohjelmatietoon käyttäen ... Valitse estetäänkö tämä."
+
+msgid "Broadcasters sometimes prefix event names with 'New: ' or 'Live: '. Choose what to do with these prefixes."
+msgstr "Joskus ohjelmanimeen lisätään etuliite 'Uusi: ' tai 'Suora: '. Valitse mitä näille etuliitteille tehdään."
+
+msgid "| separated list of prefixes you'd like to be removed from event names, separated with |, e.g. New:|Live:"
+msgstr "Lisää | välimerkiksi ohjelmanimistä poistettavien etuliitteiden listaan, esim. Uusi:|Suora:"
