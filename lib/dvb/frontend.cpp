@@ -1357,6 +1357,10 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 	{
 		ret = snr;
 	}
+	else if (!strcmp(m_description, "M1502A(external)")) // DVB-S2X Dual 4K
+	{
+		ret = (int)(snr / 23.2);
+	}
 
 	signalqualitydb = ret;
 	if (ret == 0x12345678) // no snr db calculation avail.. return untouched snr value..
