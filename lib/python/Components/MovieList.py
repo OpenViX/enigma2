@@ -985,7 +985,7 @@ class MovieList(GUIComponent):
 	def buildAlphaDateSortKey(self, x):
 		# x = ref,info,begin,...
 		name = x[3].txt
-		return self.getSortPrimaryGroup(x), name and name.lower() or "", -x[2]
+		return self.getSortPrimaryGroup(x), name and name.lower() or "", x[2]
 
 	def buildAlphaNumericFlatSortKey(self, x):
 		# x = ref,info,begin,...

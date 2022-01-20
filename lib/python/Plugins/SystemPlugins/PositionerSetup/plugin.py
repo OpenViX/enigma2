@@ -8,7 +8,6 @@ from enigma import eTimer, eDVBResourceManager, eDVBDiseqcCommand, eDVBFrontendP
 from time import sleep
 from operator import mul as mul
 from random import SystemRandom as SystemRandom
-import sys
 from threading import Thread as Thread
 from threading import Event as Event
 
@@ -1205,12 +1204,8 @@ class PositionerSetup(Screen):
 			print((_("Lock ratio") + " [%2d]       : %6.2f") % (pos, lock), file=log)
 
 		def optimise(readings):
-			#	if sys.version_info >= (3, 0):
 			xi = list(readings.keys())
 			yi = [x_y1[0] for x_y1 in list(readings.values())]
-			#	else:
-			#		xi = readings.keys()
-			#		yi = map(lambda (x, y) : x, readings.values())
 			x0 = int(round(sum(map(mul, xi, yi)) // sum(yi)))
 			xm = xi[yi.index(max(yi))]
 			return (x0, xm)
