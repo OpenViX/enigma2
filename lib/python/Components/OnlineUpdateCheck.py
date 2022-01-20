@@ -325,8 +325,7 @@ def kernelMismatch():
 
 	pattern = "kernel-([0-9]+[.][0-9]+[.][0-9]+)"
 	# print("[OnlineUpdateCheck][kernelMismatch] packages=%s" % (packages))
-	if sys.version_info[0] >= 3:
-		packages = packages.decode()
+	packages = six.ensure_str(packages)
 	matches = re.findall(pattern, packages)
 	if matches:
 		match = sorted(matches, key=lambda s: list(map(int, s.split("."))))[-1]
