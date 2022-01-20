@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-01-17 16:59+0200\n"
+"PO-Revision-Date: 2022-01-20 08:14+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -5144,6 +5144,9 @@ msgstr "Suosikkien järjestely"
 msgid "Enable multiple bouquets"
 msgstr "Salli useiden suosikkilistojen luonti ja käyttö"
 
+msgid "Enable or disable using HDMI-CEC."
+msgstr "HDMI-CEC:n käyttö päälle/pois."
+
 msgid "Enable or disable the 10 Bit Color Mode"
 msgstr "10 Bit väritila päälle/pois"
 
@@ -10207,6 +10210,12 @@ msgstr "SCR JESS"
 msgid "SCR Unicable"
 msgstr "SCR Unicable"
 
+msgid "Set fixed CEC address"
+msgstr "Aseta kiinteä CEC-osoite"
+
+msgid "Fix CEC address setting, default is 0.0.0.0"
+msgstr "Määritä CEC-osoite, oletus on 0.0.0.0"
+
 msgid "SINGLE LAYER DVD"
 msgstr "SINGLE LAYER DVD"
 
@@ -14280,7 +14289,7 @@ msgid ""
 msgstr ""
 "Tervetuloa.\n"
 "\n"
-"Jos haluat yhdistää %s %sin verkkoon, auttaa tämä avustaja määrittämään %s %s in lähiverhon perusasetukset.\n"
+"Jos haluat yhdistää %s %s:n verkkoon, auttaa tämä avustaja määrittämään %s %s:n lähiverkon perusasetukset.\n"
 "\n"
 "Siirry seuraavaan vaiheeseen painamalla OK-nappia"
 
