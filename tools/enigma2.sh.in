@@ -352,7 +352,7 @@ case $ret in
 		/sbin/reboot
 		;;
 	42)
-		python /usr/lib/enigma2/python/upgrade.py
+		python @prefix@/lib/enigma2/python/upgrade.pyc
 		;;
 	43)
 		init 1
