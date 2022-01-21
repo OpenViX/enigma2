@@ -31,7 +31,7 @@ if [ -x @bindir@/showiframe ]; then
 	else
 		skin=`sed -En 's|config\.skin\.primary_skin=(.+)/skin\.xml|\1|p' @sysconfdir@/enigma2/settings`
 		if [ -z "$skin" ]; then
-			skin=`grep -m1 '^DEFAULT_SKIN' @prefix@/lib/enigma2/python/skin.py | sed -e's%[^"]*"%%' -e's%/.*%%'`
+			skin=`strings -n 10 @prefix@/lib/enigma2/python/skin.pyc | egrep -o -m 1 ".+/skin.xml" | sed 's|/skin.xml.*||'`
 		fi
 		if [ -n "$skin" -a -f @datadir@/enigma2/$skin/backdrop.mvi ]; then
 			@bindir@/showiframe @datadir@/enigma2/$skin/backdrop.mvi
