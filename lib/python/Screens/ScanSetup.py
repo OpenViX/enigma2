@@ -14,6 +14,7 @@ from Components.NimManager import nimmanager, getConfigSatlist
 from Components.Label import Label
 from Tools.HardwareInfo import HardwareInfo
 from Tools.Transponder import getChannelNumber, supportedChannels, channel2frequency
+from Tools.Directories import fileExists
 from Screens.InfoBar import InfoBar
 from Screens.MessageBox import MessageBox
 from enigma import eTimer, eDVBFrontendParametersSatellite, eComponentScan, eDVBFrontendParametersTerrestrial, eDVBFrontendParametersCable, eConsoleAppContainer, eDVBResourceManager, eDVBFrontendParametersATSC
@@ -304,17 +305,22 @@ class CableTransponderSearchSupport:
 					bus = 4 # DM8000 second num is /dev/i2c/4
 
 		if tunername == "CXD1981":
-			bin_name = "CXD1981"
+			exe_path = "/usr/bin/cxd1978"
 			cmd = "cxd1978 --init --scan --verbose --wakeup --inv 2 --bus %d" % bus
 		elif tunername == "ATBM781x":
-			bin_name = "ATBM781x"
+			exe_path = "/usr/bin/atbm781x"
 			cmd = "atbm781x --init --scan --verbose --wakeup --inv 2 --bus %d" % bus
 		elif tunername.startswith("Sundtek"):
-			bin_name = "mediaclient"
-			cmd = "/opt/bin/mediaclient --blindscan %d" % nim_idx
+			exe_path = "/opt/bin/mediaclient"
+			cmd = "%s --blindscan %d" % (exe_path, nim_idx)
 		else:
 			bin_name = GetCommand(nim_idx)
-			cmd = "%(BIN_NAME)s --init --scan --verbose --wakeup --inv 2 --bus %(BUS)d" % {'BIN_NAME': bin_name, 'BUS': bus}
+			exe_path = "/usr/bin/%s" % bin_name
+			cmd = "%s --init --scan --verbose --wakeup --inv 2 --bus %d" % (bin_name, bus)
+
+		if not fileExists(exe_path):
+			self.session.open(MessageBox, _("Cable scan executable utility not found '%s'!") % exe_path, MessageBox.TYPE_ERROR)
+			return
 
 		if cableConfig.scan_type.value == "bands":
 			cmd += " --scan-bands "
@@ -369,7 +375,7 @@ class CableTransponderSearchSupport:
 			cmd += " --sr "
 			cmd += str(cableConfig.scan_sr_ext2.value)
 			cmd += "000"
-		print(bin_name, " CMD is", cmd)
+		print(exe_path, " CMD is", cmd)
 
 		self.cable_search_container.execute(cmd)
 		tmpstr = _("Try to find used transponders in cable network.. please wait...")
@@ -1006,7 +1012,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		for n in nimmanager.nim_slots:
 			if n.config_mode == "nothing":
 				continue
-			if n.config_mode == "advanced" and len(nimmanager.getSatListForNim(n.slot)) < 1:
+			if n.config_mode in ("simple", "equal", "advanced") and len(nimmanager.getSatListForNim(n.slot)) < 1:
 				continue
 			if n.config_mode in ("loopthrough", "satposdepends"):
 				root_id = nimmanager.sec.getRoot(n.slot_id, int(n.config.connectedTo.value))
@@ -1337,6 +1343,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		if not answer or self.scan_nims.value == "":
 			return
 		tlist = []
+		self.tlist = None
 		flags = 0
 		removeAll = True
 		action = START_SCAN
@@ -1799,6 +1806,7 @@ class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, Terres
 			self.scanList = []
 			self.known_networks = set()
 			self.nim_iter = 0
+			self.tlist = None
 			self.buildTransponderList()
 
 	def buildTransponderList(self): # this method is called multiple times because of asynchronous stuff
