@@ -471,17 +471,17 @@ static PyMethodDef module_methods[] = {
 	{NULL, NULL, 0, NULL}   /* Sentinel */
 };
 
-static struct PyModuleDef moduledef = {
-	PyModuleDef_HEAD_INIT,
-	"socketmmi",											/* m_name */
-	"Module that implements mmi via unix domain socket.",	/* m_doc */
-	-1,														/* m_size */
-	module_methods,											/* m_methods */
-	NULL,													/* m_reload */
-	NULL,													/* m_traverse */
-	NULL,													/* m_clear */
-	NULL,													/* m_free */
-};
+	static struct PyModuleDef moduledef = {
+		PyModuleDef_HEAD_INIT,
+		"socketmmi",											/* m_name */
+		"Module that implements mmi via unix domain socket.",	/* m_doc */
+		-1,														/* m_size */
+		module_methods,											/* m_methods */
+		NULL,													/* m_reload */
+		NULL,													/* m_traverse */
+		NULL,													/* m_clear */
+		NULL,													/* m_free */
+	};
 
 PyMODINIT_FUNC PyInit_socketmmi(void)
 {

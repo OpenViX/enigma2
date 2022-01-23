@@ -126,6 +126,7 @@ ePython::ePython()
 	PyImport_AppendInittab("_enigma", PyInit__enigma);
 	PyImport_AppendInittab("eBaseImpl", PyInit_eBaseImpl);
 	PyImport_AppendInittab("eConsoleImpl", PyInit_eConsoleImpl);
+
 	Py_Initialize();
 }
 
