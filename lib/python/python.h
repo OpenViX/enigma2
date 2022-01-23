@@ -11,7 +11,6 @@
 #if !defined(SKIP_PART1) && !defined(SWIG)
 
 #define PyStringObject PyUnicodeObject
-#define PyString_FromStringAndSize PyUnicode_FromStringAndSize
 
 class ePyObject
 {
