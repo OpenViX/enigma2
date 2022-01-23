@@ -339,11 +339,6 @@ inline ePyObject Impl_PyLong_FromLong(long val)
 	return PyLong_FromLong(val);
 }
 
-inline ePyObject Impl_PyLong_FromLong(long val)
-{
-	return PyLong_FromLong(val);
-}
-
 inline ePyObject Impl_PyLong_FromUnsignedLong(unsigned long val)
 {
 	return PyLong_FromUnsignedLong(val);
