@@ -2,14 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 import six
 
-import os
+from os import listdir, path as ospath
 import re
-import unicodedata
-from Components.Renderer.Renderer import Renderer
+
 from enigma import ePixmap, eServiceReference
-from Tools.Alternatives import GetWithAlternative
-from Tools.Directories import pathExists, SCOPE_CURRENT_SKIN, resolveFilename
+
 from Components.Harddisk import harddiskmanager
+from Components.Renderer.Renderer import Renderer
+from Tools.Alternatives import GetWithAlternative
+from Tools.Directories import pathExists, SCOPE_CURRENT_SKIN, resolveFilename, sanitizeFilename
 
 
 class PiconLocator:
@@ -26,9 +27,9 @@ class PiconLocator:
 	def __onMountpointAdded(self, mountpoint):
 		for piconDirectory in self.piconDirectories:
 			try:
-				path = os.path.join(mountpoint, piconDirectory) + "/"
-				if os.path.isdir(path) and path not in self.searchPaths:
-					for fn in os.listdir(path):
+				path = ospath.join(mountpoint, piconDirectory) + "/"
+				if ospath.isdir(path) and path not in self.searchPaths:
+					for fn in listdir(path):
 						if fn.endswith(".png") or fn.endswith(".svg"):
 							print("[PiconLocator] adding path:", path)
 							self.searchPaths.append(path)
@@ -38,7 +39,7 @@ class PiconLocator:
 
 	def __onMountpointRemoved(self, mountpoint):
 		for piconDirectory in self.piconDirectories:
-			path = os.path.join(mountpoint, piconDirectory) + "/"
+			path = ospath.join(mountpoint, piconDirectory) + "/"
 			try:
 				self.searchPaths.remove(path)
 				print("[PiconLocator] removed path:", path)
@@ -92,8 +93,7 @@ class PiconLocator:
 			fields[2] = "1"
 			pngname = self.findPicon("_".join(fields))
 		if not pngname: # picon by channel name
-			name = eServiceReference(serviceName).getServiceName()
-			name = six.ensure_str(unicodedata.normalize("NFKD", name).encode("ASCII", "ignore")) if six.PY3 else unicodedata.normalize("NFKD", unicode(name, "utf_8", errors="ignore")).encode("ASCII", "ignore")
+			name = sanitizeFilename(eServiceReference(serviceName).getServiceName())			
 			name = re.sub("[^a-z0-9]", "", name.replace("&", "and").replace("+", "plus").replace("*", "star").lower())
 			if len(name) > 0:
 				pngname = self.findPicon(name)
