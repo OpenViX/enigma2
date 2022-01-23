@@ -2203,15 +2203,7 @@ PyObject *eEPGCache::search(ePyObject arg)
 			ePyObject obj = PyTuple_GET_ITEM(arg,0);
 			if (PyString_Check(obj))
 			{
-#if PY_VERSION_HEX < 0x02060000
-				argcount = PyString_GET_SIZE(obj);
-				argstring = PyString_AS_STRING(obj);
-#elif PY_VERSION_HEX < 0x03000000
-				argcount = PyString_Size(obj);
-				argstring = PyString_AS_STRING(obj);
-#else
 				argstring = PyUnicode_AsUTF8AndSize(obj, &argcount);
-#endif
 				for (int i=0; i < argcount; ++i)
 					switch(argstring[i])
 					{
@@ -2306,16 +2298,8 @@ PyObject *eEPGCache::search(ePyObject arg)
 				if (PyString_Check(obj))
 				{
 					int casetype = PyLong_AsLong(PyTuple_GET_ITEM(arg, 4));
-#if PY_VERSION_HEX < 0x02060000
-					ssize_t strlen = PyString_GET_SIZE(obj);
-					const char *str = PyString_AS_STRING(obj);
-#elif PY_VERSION_HEX < 0x03000000
-					ssize_t strlen = PyString_Size(obj);
-					const char *str = PyString_AS_STRING(obj);
-#else
 					ssize_t strlen;
 					const char *str = PyUnicode_AsUTF8AndSize(obj, &strlen);
-#endif
 					switch (querytype)
 					{
 						case 1:
