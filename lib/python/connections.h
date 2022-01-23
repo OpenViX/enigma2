@@ -27,7 +27,7 @@ inline PyObject *PyFrom(int v)
 
 inline PyObject *PyFrom(const char *c)
 {
-	return PyString_FromString(c);
+	return PyUnicode_FromString(c);
 }
 
 // Only used by console which might transfer binary data(screenshots). So use Bytes instead of Unicode
