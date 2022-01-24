@@ -117,7 +117,7 @@ public:
 		uint64_t data;
 		if (::read(m_fd, &data, sizeof(data)) <= 0)
 		{
-			eWarning("[eFixedMessagePump<%s>] read error %m", name);
+			eWarning("[eFixedMessagePump] read error %m");
 			return;
 		}
 
