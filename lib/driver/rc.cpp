@@ -272,7 +272,7 @@ int eRCInput::setKeyMapping(const std::string &id, ePyObject keyRemap)
 		while (PyDict_Next(keyRemap, &pos, &from, &to)) {
 			if (!PyLong_Check(from) || !PyLong_Check(to))
 				return remapFormatErr;
-			remaps[PyInt_AsLong(from)] = PyInt_AsLong(to);
+			remaps[PyLong_AsLong(from)] = PyLong_AsLong(to);
 		}
 		return dev->setKeyMapping(remaps);
 	}

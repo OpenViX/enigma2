@@ -2947,7 +2947,7 @@ PyObject *eServiceMP3::getCutList()
 	{
 		ePyObject tuple = PyTuple_New(2);
 		PyTuple_SET_ITEM(tuple, 0, PyLong_FromLongLong(i->where));
-		PyTuple_SET_ITEM(tuple, 1, PyInt_FromLong(i->what));
+		PyTuple_SET_ITEM(tuple, 1, PyLong_FromLong(i->what));
 		PyList_Append(list, tuple);
 		Py_DECREF(tuple);
 	}
@@ -2984,7 +2984,7 @@ void eServiceMP3::setCutList(ePyObject list)
 			continue;
 		}
 		pts_t pts = PyLong_AsLongLong(ppts);
-		int type = PyInt_AsLong(ptype);
+		int type = PyLong_AsLong(ptype);
 		m_cue_entries.insert(cueEntry(pts, type));
 		eDebug("[eServiceMP3] adding %08llx, %d", pts, type);
 	}
