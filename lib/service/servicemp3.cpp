@@ -68,11 +68,7 @@ typedef enum
  * see: https://bugzilla.gnome.org/show_bug.cgi?id=619434
  * As a workaround, we run the subsink in sync=false mode
  */
-#if GST_VERSION_MAJOR < 1 
-#define GSTREAMER_SUBTITLE_SYNC_MODE_BUG
-#else
 #undef GSTREAMER_SUBTITLE_SYNC_MODE_BUG
-#endif
 /**/
 
 eServiceFactoryMP3::eServiceFactoryMP3()
@@ -369,9 +365,7 @@ eServiceMP3InfoContainer::~eServiceMP3InfoContainer()
 {
 	if (bufferValue)
 	{
-#if GST_VERSION_MAJOR >= 1
 		gst_buffer_unmap(bufferValue, &map);
-#endif
 		gst_buffer_unref(bufferValue);
 		bufferValue = NULL;
 		bufferData = NULL;
@@ -399,14 +393,9 @@ void eServiceMP3InfoContainer::setBuffer(GstBuffer *buffer)
 {
 	bufferValue = buffer;
 	gst_buffer_ref(bufferValue);
-#if GST_VERSION_MAJOR < 1
-	bufferData = GST_BUFFER_DATA(bufferValue);
-	bufferSize = GST_BUFFER_SIZE(bufferValue);
-#else
 	gst_buffer_map(bufferValue, &map, GST_MAP_READ);
 	bufferData = map.data;
 	bufferSize = map.size;
-#endif
 }
 
 // eServiceMP3
@@ -434,10 +423,8 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_use_prefillbuffer = false;
 	m_paused = false;
 	m_cuesheet_loaded = false; /* cuesheet CVR */
-#if GST_VERSION_MAJOR >= 1
 	m_use_chapter_entries = false; /* TOC chapter support CVR */
 	m_last_seek_pos = 0; /* CVR last seek position */
-#endif
 	m_useragent = "Enigma2 HbbTV/1.1.1 (+PVR+RTSP+DL;OpenViX;;;)";
 	m_extra_headers = "";
 	m_download_buffer_path = "";
@@ -633,11 +620,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	eDebug("[eServiceMP3] playbin uri=%s", uri);
 	if (suburi != NULL)
 		eDebug("[eServiceMP3] playbin suburi=%s", suburi);
-#if GST_VERSION_MAJOR < 1
-	m_gst_playbin = gst_element_factory_make("playbin2", "playbin");
-#else
 	m_gst_playbin = gst_element_factory_make("playbin", "playbin");
-#endif
 	if ( m_gst_playbin )
 	{
 		/*
@@ -677,20 +660,12 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		else
 		{
 			m_subs_to_pull_handler_id = g_signal_connect (subsink, "new-buffer", G_CALLBACK (gstCBsubtitleAvail), this);
-#if GST_VERSION_MAJOR < 1
-			g_object_set (G_OBJECT (subsink), "caps", gst_caps_from_string("text/plain; text/x-plain; text/x-raw; text/x-pango-markup; video/x-dvd-subpicture; subpicture/x-pgs"), NULL);
-#else
 			g_object_set (G_OBJECT (subsink), "caps", gst_caps_from_string("text/plain; text/x-plain; text/x-raw; text/x-pango-markup; subpicture/x-dvd; subpicture/x-pgs"), NULL);
-#endif
 			g_object_set (G_OBJECT (m_gst_playbin), "text-sink", subsink, NULL);
 			g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
 		}
 		GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE (m_gst_playbin));
-#if GST_VERSION_MAJOR < 1
-		gst_bus_set_sync_handler(bus, gstBusSyncHandler, this);
-#else
 		gst_bus_set_sync_handler(bus, gstBusSyncHandler, this, NULL);
-#endif
 		gst_object_unref(bus);
 
 		if (suburi != NULL)
@@ -738,11 +713,7 @@ eServiceMP3::~eServiceMP3()
 	{
 		// disconnect sync handler callback
 		GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE (m_gst_playbin));
-#if GST_VERSION_MAJOR < 1
-		gst_bus_set_sync_handler(bus, NULL, NULL);
-#else
 		gst_bus_set_sync_handler(bus, NULL, NULL, NULL);
-#endif
 		gst_object_unref(bus);
 	}
 
@@ -958,11 +929,7 @@ RESULT eServiceMP3::getLength(pts_t &pts)
 
 	GstFormat fmt = GST_FORMAT_TIME;
 	gint64 len;
-#if GST_VERSION_MAJOR < 1
-	if (!gst_element_query_duration(m_gst_playbin, &fmt, &len))
-#else
 	if (!gst_element_query_duration(m_gst_playbin, fmt, &len))
-#endif
 		return -1;
 		/* len is in nanoseconds. we have 90 000 pts per second. */
 
@@ -973,17 +940,10 @@ RESULT eServiceMP3::getLength(pts_t &pts)
 RESULT eServiceMP3::seekToImpl(pts_t to)
 {
 		/* convert pts to nanoseconds */
-#if GST_VERSION_MAJOR < 1
-	gint64 time_nanoseconds = to * 11111LL;
-	if (!gst_element_seek (m_gst_playbin, m_currentTrickRatio, GST_FORMAT_TIME, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT),
-		GST_SEEK_TYPE_SET, time_nanoseconds,
-		GST_SEEK_TYPE_NONE, GST_CLOCK_TIME_NONE))
-#else
 	m_last_seek_pos = to * 11111LL;
 	if (!gst_element_seek (m_gst_playbin, m_currentTrickRatio, GST_FORMAT_TIME, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT),
 		GST_SEEK_TYPE_SET, m_last_seek_pos,
 		GST_SEEK_TYPE_NONE, GST_CLOCK_TIME_NONE))
-#endif
 	{
 		eDebug("[eServiceMP3] seekTo failed");
 		return -1;
@@ -1135,18 +1095,11 @@ RESULT eServiceMP3::seekRelative(int direction, pts_t to)
 	return seekTo(ppos);
 }
 
-#if GST_VERSION_MAJOR < 1
-gint eServiceMP3::match_sinktype(GstElement *element, gpointer type)
-{
-	return strcmp(g_type_name(G_OBJECT_TYPE(element)), (const char*)type);
-}
-#else
 gint eServiceMP3::match_sinktype(const GValue *velement, const gchar *type)
 {
 	GstElement *element = GST_ELEMENT_CAST(g_value_get_object(velement));
 	return strcmp(g_type_name(G_OBJECT_TYPE(element)), type);
 }
-#endif
 
 RESULT eServiceMP3::getPlayPosition(pts_t &pts)
 {
@@ -1164,11 +1117,7 @@ RESULT eServiceMP3::getPlayPosition(pts_t &pts)
 	else
 	{
 		GstFormat fmt = GST_FORMAT_TIME;
-#if GST_VERSION_MAJOR < 1
-		if (!gst_element_query_position(m_gst_playbin, &fmt, &pos))
-#else
 		if (!gst_element_query_position(m_gst_playbin, fmt, &pos))
-#endif
 		{
 			eDebug("[eServiceMP3] gst_element_query_position failed in getPlayPosition");
 			return -1;
@@ -1379,23 +1328,21 @@ std::string eServiceMP3::getInfoString(int w)
 		if (gst_tag_list_get_date(m_stream_tags, GST_TAG_DATE, &date))
 		{
 			gchar res[5];
-			snprintf(res, sizeof(res), "%04d", g_date_get_year(date));
+			snprintf(res, sizeof(res), "%06d", g_date_get_year(date));
 			g_date_free(date);
 			return (std::string)res;
 		}
-#if GST_VERSION_MAJOR >= 1
 		else if (gst_tag_list_get_date_time(m_stream_tags, GST_TAG_DATE_TIME, &date_time))
 		{
 			if (gst_date_time_has_year(date_time))
 			{
 				gchar res[5];
-				snprintf(res, sizeof(res), "%04d", gst_date_time_get_year(date_time));
+				snprintf(res, sizeof(res), "%06d", gst_date_time_get_year(date_time));
 				gst_date_time_unref(date_time);
 				return (std::string)res;
 			}
 			gst_date_time_unref(date_time);
 		}
-#endif
 		break;
 	case sTagComposer:
 		tag = GST_TAG_COMPOSER;
@@ -1650,11 +1597,7 @@ RESULT eServiceMP3::getTrackInfo(struct iAudioTrackInfo &info, unsigned int i)
 subtype_t getSubtitleType(GstPad* pad, gchar *g_codec=NULL)
 {
 	subtype_t type = stUnknown;
-#if GST_VERSION_MAJOR < 1
-	GstCaps* caps = gst_pad_get_negotiated_caps(pad);
-#else
 	GstCaps* caps = gst_pad_get_current_caps(pad);
-#endif
 	if (!caps && !g_codec)
 	{
 		caps = gst_pad_get_allowed_caps(pad);
@@ -1669,11 +1612,7 @@ subtype_t getSubtitleType(GstPad* pad, gchar *g_codec=NULL)
 			eDebug("[eServiceMP3] getSubtitleType::subtitle probe caps type=%s", g_type ? g_type : "(null)");
 			if (g_type)
 			{
-#if GST_VERSION_MAJOR < 1
-				if ( !strcmp(g_type, "video/x-dvd-subpicture") )
-#else
 				if ( !strcmp(g_type, "subpicture/x-dvd") )
-#endif
 					type = stVOB;
 				else if ( !strcmp(g_type, "text/x-pango-markup") )
 					type = stSRT;
@@ -1754,9 +1693,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 				{
 					m_state = stRunning;
 					m_event(this, evStart);
-#if GST_VERSION_MAJOR >= 1
 					GValue result = { 0, };
-#endif
 					GstIterator *children;
 					subsink = gst_bin_get_by_name(GST_BIN(m_gst_playbin), "subtitle_sink");
 					if (subsink)
@@ -1796,26 +1733,18 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						videoSink = NULL;
 					}
 					children = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
-#if GST_VERSION_MAJOR < 1
-					audioSink = GST_ELEMENT_CAST(gst_iterator_find_custom(children, (GCompareFunc)match_sinktype, (gpointer)"GstDVBAudioSink"));
-#else
 					if (gst_iterator_find_custom(children, (GCompareFunc)match_sinktype, &result, (gpointer)"GstDVBAudioSink"))
 					{
 						audioSink = GST_ELEMENT_CAST(g_value_dup_object(&result));
 						g_value_unset(&result);
 					}
-#endif
 					gst_iterator_free(children);
 					children = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
-#if GST_VERSION_MAJOR < 1
-					videoSink = GST_ELEMENT_CAST(gst_iterator_find_custom(children, (GCompareFunc)match_sinktype, (gpointer)"GstDVBVideoSink"));
-#else
 					if (gst_iterator_find_custom(children, (GCompareFunc)match_sinktype, &result, (gpointer)"GstDVBVideoSink"))
 					{
 						videoSink = GST_ELEMENT_CAST(g_value_dup_object(&result));
 						g_value_unset(&result);
 					}
-#endif
 					gst_iterator_free(children);
 
 					/* if we are in preroll already do not check again the state */
@@ -1924,7 +1853,6 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 			g_error_free(err);
 			break;
 		}
-#if GST_VERSION_MAJOR >= 1
 		case GST_MESSAGE_WARNING:
 		{
 			gchar *debug_warn = NULL;
@@ -1952,7 +1880,6 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 			g_error_free(warn);
 			break;
 		}
-#endif
 		case GST_MESSAGE_INFO:
 		{
 			gchar *debug;
@@ -1993,32 +1920,20 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 				if ( gv_image )
 				{
 					GstBuffer *buf_image;
-				
-#if GST_VERSION_MAJOR < 1
-					buf_image = gst_value_get_buffer(gv_image);
-#else
 					GstSample *sample;
 					sample = (GstSample *)g_value_get_boxed(gv_image);
 					buf_image = gst_sample_get_buffer(sample);
-#endif
 					int fd = open("/tmp/.id3coverart", O_CREAT|O_WRONLY|O_TRUNC, 0644);
 					if (fd >= 0)
 					{
 						guint8 *data;
 						gsize size;
-#if GST_VERSION_MAJOR < 1
-						data = GST_BUFFER_DATA(buf_image);
-						size = GST_BUFFER_SIZE(buf_image);
-#else
 						GstMapInfo map;
 						gst_buffer_map(buf_image, &map, GST_MAP_READ);
 						data = map.data;
 						size = map.size;
-#endif
 						int ret = write(fd, data, size);
-#if GST_VERSION_MAJOR >= 1
 						gst_buffer_unmap(buf_image, &map);
-#endif
 						close(fd);
 						m_coverart = true;
 						m_event((iPlayableService*)this, evUser+13);
@@ -2031,13 +1946,11 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 			break;
 		}
 		/* TOC entry intercept used for chapter support CVR */
-#if GST_VERSION_MAJOR >= 1
 		case GST_MESSAGE_TOC:
 		{
 			HandleTocEntry(msg);
 			break;
 		}
-#endif
 		case GST_MESSAGE_ASYNC_DONE:
 		{
 			if(GST_MESSAGE_SRC(msg) != GST_OBJECT(m_gst_playbin))
@@ -2065,11 +1978,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 				GstTagList *tags = NULL;
 				GstPad* pad = 0;
 				g_signal_emit_by_name (m_gst_playbin, "get-audio-pad", i, &pad);
-#if GST_VERSION_MAJOR < 1
-				GstCaps* caps = gst_pad_get_negotiated_caps(pad);
-#else
 				GstCaps* caps = gst_pad_get_current_caps(pad);
-#endif
 				gst_object_unref(pad);
 				if (!caps)
 					continue;
@@ -2082,11 +1991,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 				g_codec = NULL;
 				g_lang = NULL;
 				g_signal_emit_by_name (m_gst_playbin, "get-audio-tags", i, &tags);
-#if GST_VERSION_MAJOR < 1
-				if (tags && gst_is_tag_list(tags))
-#else
 				if (tags && GST_IS_TAG_LIST(tags))
-#endif
 				{
 					if (gst_tag_list_get_string(tags, GST_TAG_AUDIO_CODEC, &g_codec))
 					{
@@ -2112,11 +2017,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 				g_signal_emit_by_name (m_gst_playbin, "get-text-tags", i, &tags);
 				subtitleStream subs;
 				subs.language_code = "und";
-#if GST_VERSION_MAJOR < 1
-				if (tags && gst_is_tag_list(tags))
-#else
 				if (tags && GST_IS_TAG_LIST(tags))
-#endif
 				{
 					if (gst_tag_list_get_string(tags, GST_TAG_LANGUAGE_CODE, &g_lang))
 					{
@@ -2318,7 +2219,6 @@ GstBusSyncReply eServiceMP3::gstBusSyncHandler(GstBus *bus, GstMessage *message,
 	return GST_BUS_DROP;
 }
 /*Processing TOC CVR */
-#if GST_VERSION_MAJOR >= 1
 void eServiceMP3::HandleTocEntry(GstMessage *msg)
 {
 	/* limit TOC to dvbvideosink cue sheet only works for video media */
@@ -2383,7 +2283,6 @@ void eServiceMP3::HandleTocEntry(GstMessage *msg)
 		eDebug("[eServiceMP3] TOC entry from source %s not used", GST_MESSAGE_SRC_NAME(msg));
 	}
 }
-#endif
 void eServiceMP3::playbinNotifySource(GObject *object, GParamSpec *unused, gpointer user_data)
 {
 	GstElement *source = NULL;
@@ -2401,11 +2300,7 @@ void eServiceMP3::playbinNotifySource(GObject *object, GParamSpec *unused, gpoin
 		}
 		if (g_object_class_find_property(G_OBJECT_GET_CLASS(source), "extra-headers") != 0 && !_this->m_extra_headers.empty())
 		{
-#if GST_VERSION_MAJOR < 1
-			GstStructure *extras = gst_structure_empty_new("extras");
-#else
 			GstStructure *extras = gst_structure_new_empty("extras");
-#endif
 			size_t pos = 0;
 			while (pos != std::string::npos)
 			{
@@ -2472,11 +2367,7 @@ void eServiceMP3::handleElementAdded(GstBin *bin, GstElement *element, gpointer 
 			}
 		}
 		else if (g_str_has_prefix(elementname, "uridecodebin")
-#if GST_VERSION_MAJOR < 1
-			|| g_str_has_prefix(elementname, "decodebin2"))
-#else
 			|| g_str_has_prefix(elementname, "decodebin"))
-#endif
 		{
 			/*
 			 * Listen for queue2 element added to uridecodebin/decodebin2 as well.
@@ -2522,11 +2413,7 @@ audiotype_t eServiceMP3::gstCheckAudioPad(GstStructure* structure)
 		return atAC3;
 	else if ( gst_structure_has_name (structure, "audio/x-dts") || gst_structure_has_name (structure, "audio/dts") )
 		return atDTS;
-#if GST_VERSION_MAJOR < 1
-	else if ( gst_structure_has_name (structure, "audio/x-raw-int") )
-#else
 	else if ( gst_structure_has_name (structure, "audio/x-raw") )
-#endif
 		return atPCM;
 
 	return atUnknown;
@@ -2613,11 +2500,7 @@ void eServiceMP3::gstTextpadHasCAPS_synced(GstPad *pad)
 
 			subs.language_code = "und";
 			subs.type = getSubtitleType(pad);
-#if GST_VERSION_MAJOR < 1
-			if (tags && gst_is_tag_list(tags))
-#else
 			if (tags && GST_IS_TAG_LIST(tags))
-#endif
 			{
 				if (gst_tag_list_get_string(tags, GST_TAG_LANGUAGE_CODE, &g_lang))
 				{
@@ -2643,10 +2526,6 @@ void eServiceMP3::pullSubtitle(GstBuffer *buffer)
 {
 	if (buffer && m_currentSubtitleStream >= 0 && m_currentSubtitleStream < (int)m_subtitleStreams.size())
 	{
-#if GST_VERSION_MAJOR < 1
-		gint64 buf_pos = GST_BUFFER_TIMESTAMP(buffer);
-		size_t len = GST_BUFFER_SIZE(buffer);
-#else
 		GstMapInfo map;
 		if(!gst_buffer_map(buffer, &map, GST_MAP_READ))
 		{
@@ -2656,7 +2535,6 @@ void eServiceMP3::pullSubtitle(GstBuffer *buffer)
 		gint64 buf_pos = GST_BUFFER_PTS(buffer);
 		size_t len = map.size;
 		eLog(6, "[eServiceMP3] gst_buffer_get_size %zu map.size %zu", gst_buffer_get_size(buffer), len);
-#endif
 		gint64 duration_ns = GST_BUFFER_DURATION(buffer);
 		int subType = m_subtitleStreams[m_currentSubtitleStream].type;
 		eLog(6, "[eServiceMP3] pullSubtitle type=%d size=%zu", subType, len);
@@ -2671,11 +2549,8 @@ void eServiceMP3::pullSubtitle(GstBuffer *buffer)
 				if (subtitle_fps > 1 && m_framerate > 0)
 					convert_fps = subtitle_fps / (double)m_framerate;
 
-#if GST_VERSION_MAJOR < 1
-				std::string line((const char*)GST_BUFFER_DATA(buffer), len);
-#else
 				std::string line((const char*)map.data, len);
-#endif
+
 				eLog(6, "[eServiceMP3] got new text subtitle @ buf_pos = %lld ns (in pts=%lld), dur=%lld: '%s' ", buf_pos, buf_pos/11111, duration_ns, line.c_str());
 
 				uint32_t start_ms = ((buf_pos / 1000000ULL) * convert_fps) + (delay / 90);
@@ -2688,9 +2563,7 @@ void eServiceMP3::pullSubtitle(GstBuffer *buffer)
 				eLog(3, "[eServiceMP3] unsupported subpicture... ignoring");
 			}
 		}
-#if GST_VERSION_MAJOR >= 1
 		gst_buffer_unmap(buffer, &map);
-#endif
 	}
 }
 
@@ -3091,10 +2964,8 @@ void eServiceMP3::loadCuesheet()
  
 	m_cue_entries.clear();
 	/* only load manual cuts if no chapter info avbl CVR */
-#if GST_VERSION_MAJOR >= 1
 	if (m_use_chapter_entries)
 		return;
-#endif
 
 	std::string filename = m_ref.path + ".cuts";
 
@@ -3136,14 +3007,9 @@ void eServiceMP3::saveCuesheet()
 	std::string filename = m_ref.path;
 
 		/* save cuesheet only when main file is accessible. */
-#if GST_VERSION_MAJOR < 1
-	if (::access(filename.c_str(), R_OK) < 0)
-		return;
-#else
 		/* save cuesheet only when main file is accessible. and no TOC chapters avbl*/
 	if ((::access(filename.c_str(), R_OK) < 0) || m_use_chapter_entries)
 		return;
-#endif
 	filename.append(".cuts");
 	/* do not save to file if there are no cuts */
 	/* remove the cuts file if cue is empty */
