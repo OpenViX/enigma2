@@ -1263,7 +1263,7 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 	else if (!strcmp(m_description, "GIGA DVB-S2 NIM (TS3L10)")
 		|| !strcmp(m_description, "GIGA DVB-S2 NIM (TS2L08)"))
 	{
-		ret = (int)(snr / 40);
+		ret = snr;
 	}
 	else if (!strcmp(m_description, "GIGA DVB-C/T NIM (SP8221L)")
 		|| !strcmp(m_description, "GIGA DVB-C/T NIM (SI4765)")
