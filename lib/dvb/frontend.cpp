@@ -1255,13 +1255,15 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 	{
 		ret = (int)(snr / 43.5);
 	}
-	else if (!strcmp(m_description, "GIGA DVB-S2X NIM (TS3L10)") // dual/single plug&play tuners GB UE/Quad UHD 4K
-		|| !strcmp(m_description, "GIGA DVB-S2X NIM (TS2L08)")
-		|| !strcmp(m_description, "GIGA DVB-S2 NIM (TS3L10)")
-		|| !strcmp(m_description, "GIGA DVB-S2 NIM (TS2L08)")
-		)
+	else if (!strcmp(m_description, "GIGA DVB-S2X NIM (TS3L10)") // dual/single plug & play tuners GB UE/Quad UHD 4K
+		|| !strcmp(m_description, "GIGA DVB-S2X NIM (TS2L08)"))
 	{
 		ret = (int)(snr / 40);
+	}
+	else if (!strcmp(m_description, "GIGA DVB-S2 NIM (TS3L10)")
+		|| !strcmp(m_description, "GIGA DVB-S2 NIM (TS2L08)"))
+	{
+		ret = snr;
 	}
 	else if (!strcmp(m_description, "GIGA DVB-C/T NIM (SP8221L)")
 		|| !strcmp(m_description, "GIGA DVB-C/T NIM (SI4765)")
@@ -1354,6 +1356,10 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
 	else if (!strncmp(m_description, "Si216", 5)) // New models with SI tuners
 	{
 		ret = snr;
+	}
+	else if (!strcmp(m_description, "M1502A(external)")) // DVB-S2X Dual 4K
+	{
+		ret = (int)(snr / 23.2);
 	}
 
 	signalqualitydb = ret;

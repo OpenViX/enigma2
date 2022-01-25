@@ -57,6 +57,7 @@ codec_data = {
 	19: "N/A 19",
 	20: "N/A 20",
 	21: "SPARK",
+	40: "AVS2",
 }
 
 # Dynamic range ("gamma") value to text
