@@ -620,7 +620,7 @@ PyObject *eDVBServiceRecord::getCutList()
 		eDebug("[eDVBServiceRecord] getCutList %llx", p);
 		ePyObject tuple = PyTuple_New(2);
 		PyTuple_SET_ITEM(tuple, 0, PyLong_FromLongLong(p));
-		PyTuple_SET_ITEM(tuple, 1, PyInt_FromLong(2)); /* mark */
+		PyTuple_SET_ITEM(tuple, 1, PyLong_FromLong(2)); /* mark */
 		PyList_Append(list, tuple);
 		Py_DECREF(tuple);
 	}
