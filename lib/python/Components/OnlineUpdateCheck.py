@@ -75,49 +75,52 @@ class FeedsStatusCheck:
 			print("[OnlineUpdateCheck][NetworkUp] FAILED", err)
 			result = False
 		finally:
-			if sd:
-				sd.shutdown(socket.SHUT_RDWR)
+			if sd is not None:
+				try:
+					sd.shutdown(socket.SHUT_RDWR)
+				except:
+					pass
 				sd.close()
 		socket.setdefaulttimeout(previousTimeout)  # Reset to previous value.
 		return result
 
 	def getFeedStatus(self):
-		status = "1"
-		if "openvix.co" not in getFeedsUrl():
-			print("[OnlineUpdateCheck][getFeedStatus] Alien feeds url: %s" % getFeedsUrl())
-			status = "0"
-			config.softwareupdate.updateisunstable.setValue(status)
-			return "alien"
+		officialReleaseFeedsUri = "openvix.co.uk"
+		status = 1
 		trafficLight = "unknown"
 		if self.adapterAvailable():
 			if self.NetworkUp():
-				if getImageType() == "release": # we know the network is good now so only do this check on release images where the release domain applies
+				if getImageType() == "release" and officialReleaseFeedsUri in getFeedsUrl(): # we know the network is good now so only do this check on release images where the release domain applies
 					try:
-						print("[OnlineUpdateCheck][getFeedStatus] Checking feeds state")
+						print("[OnlineUpdateCheck][getFeedStatus] checking feeds state")
 						req = Request("http://openvix.co.uk/TrafficLightState.php")
 						d = urlopen(req)
-						trafficLight = d.read()
+						trafficLight = six.ensure_str(d.read())
+						if trafficLight == "stable":
+							status = 0
+						print("trafficLight", trafficLight)
 					except HTTPError as err:
-						print(("[OnlineUpdateCheck][getFeedStatus] ERROR:", err))
+						print("[OnlineUpdateCheck][getFeedStatus] ERROR:", err)
 						trafficLight = err.code
 					except URLError as err:
-						print(("[OnlineUpdateCheck][getFeedStatus] ERROR:", err.reason[0]))
+						print("[OnlineUpdateCheck][getFeedStatus] ERROR:", err.reason[0])
 						trafficLight = err.reason[0]
 					except:
-						print(("[OnlineUpdateCheck][getFeedStatus] ERROR:", sys.exc_info()[0]))
+						print("[OnlineUpdateCheck][getFeedStatus] ERROR:", sys.exc_info()[0])
 						trafficLight = -2
-				else:
-					trafficLight = "unknown"
-				trafficLight = six.ensure_str(trafficLight)	
-				if trafficLight == "stable":
-					status = "0"
-				config.softwareupdate.updateisunstable.setValue(status)
-				print("[OnlineUpdateCheck][getFeedStatus] PASSED:", trafficLight)
+				if getImageType() == "developer" and "openvixdev"  in getFeedsUrl():
+					print("[OnlineUpdateCheck][getFeedStatus] Official developer feeds")
+					trafficLight = "developer"
+				elif officialReleaseFeedsUri not in getFeedsUrl(): # if not using official feeds mark as alien. There is no status test for alien feeds (including official developer feeds).
+					print("[OnlineUpdateCheck][getFeedStatus] Alien feeds url: %s" % getFeedsUrl())
+					status = 0
+					trafficLight = "alien"
+				config.softwareupdate.updateisunstable.value = status
 				return trafficLight
-			else:
+			else: # network not up
 				print("[OnlineUpdateCheck][getFeedStatus] ERROR: -2")
 				return -2
-		else:
+		else: # adapter not available
 			print("[OnlineUpdateCheck][getFeedStatus] ERROR: -3")
 			return -3
 
@@ -136,21 +139,22 @@ class FeedsStatusCheck:
 		"inprogress": _("ERROR: Check is already running in background, please wait a few minutes and try again"),
 		"unknown": _("Feeds status: Unknown"),
 		"alien": _("Feeds status: Unknown, user feeds url"),
+		"developer": _("Feeds status: Official developer feeds"),
 	}
 
 	def getFeedsBool(self):
 		global error
-		self.feedstatus = six.ensure_str(feedsstatuscheck.getFeedStatus())
+		self.feedstatus = self.getFeedStatus()
 		if self.feedstatus in (-2, -3, 403, 404):
-			print("[OnlineUpdateCheck][getFeedsBool] Error %s" % self.feedstatus)
-			return self.feedstatus
+			print("[OnlineUpdateCheck][getFeedsBool] Error %s" % str(self.feedstatus))
+			return str(self.feedstatus) # must be str as used in string keys of feed_status_msgs
 		elif error:
 			print("[OnlineUpdateCheck][getFeedsBool] Check already in progress")
 			return "inprogress"
 		elif self.feedstatus == "updating":
 			print("[OnlineUpdateCheck][getFeedsBool] Feeds Updating")
 			return "updating"
-		elif self.feedstatus in ("stable", "unstable", "unknown", "alien"):
+		elif self.feedstatus in ("stable", "unstable", "unknown", "alien", "developer"):
 			print("[OnlineUpdateCheck][getFeedsBool]", self.feedstatus)
 			return self.feedstatus
 
@@ -185,7 +189,7 @@ class FeedsStatusCheck:
 				self.ipkg.startCmd(IpkgComponent.CMD_UPGRADE_LIST)
 			elif self.ipkg.currentCommand == IpkgComponent.CMD_UPGRADE_LIST:
 				self.total_packages = len(self.ipkg.getFetchedList())
-				if self.total_packages and (getImageType() != "release" or (config.softwareupdate.updateisunstable.value == "1" and config.softwareupdate.updatebeta.value) or config.softwareupdate.updateisunstable.value == "0"):
+				if self.total_packages and (getImageType() != "release" or (config.softwareupdate.updateisunstable.value == 1 and config.softwareupdate.updatebeta.value) or config.softwareupdate.updateisunstable.value == 0):
 					print(("[OnlineUpdateCheck][ipkgCallback] %s Updates available" % self.total_packages))
 					config.softwareupdate.updatefound.setValue(True)
 		pass
@@ -274,7 +278,7 @@ class VersionCheck:
 
 	def getStableUpdateAvailable(self):
 		if config.softwareupdate.updatefound.value and config.softwareupdate.check.value:
-			if getImageType() != "release" or config.softwareupdate.updateisunstable.value == "0":
+			if getImageType() != "release" or config.softwareupdate.updateisunstable.value == 0:
 				print("[OnlineVersionCheck] New Release updates found")
 				return True
 			else:
@@ -285,7 +289,7 @@ class VersionCheck:
 
 	def getUnstableUpdateAvailable(self):
 		if config.softwareupdate.updatefound.value and config.softwareupdate.check.value:
-			if getImageType() != "release" or (config.softwareupdate.updateisunstable.value == "1" and config.softwareupdate.updatebeta.value):
+			if getImageType() != "release" or (config.softwareupdate.updateisunstable.value == 1 and config.softwareupdate.updatebeta.value):
 				print("[OnlineVersionCheck] New Experimental updates found")
 				return True
 			else:
