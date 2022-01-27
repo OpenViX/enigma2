@@ -1021,8 +1021,9 @@ class ImageBackup(Screen):
 					self.commands.append('echo "' + _("Create:") + " logo dump" + '"')
 					self.commands.append("dd if=/dev/mtd4 of=%s/logo.bin" % self.WORKDIR)
 			else:
-				self.MKUBIFS_ARGS = "-m 2048 -e 126976 -c 4096 -F"
-				self.UBINIZE_ARGS = "-m 2048 -p 128KiB"
+				if not getMachineBuild() in ("h8"):
+					self.MKUBIFS_ARGS = "-m 2048 -e 126976 -c 4096 -F"
+					self.UBINIZE_ARGS = "-m 2048 -p 128KiB"
 				self.commands.append("touch %s/root.ubi" % self.WORKDIR)
 				self.commands.append("mkfs.ubifs -r %s/root -o %s/root.ubi %s" % (self.TMPDIR, self.WORKDIR, self.MKUBIFS_ARGS))
 				self.commands.append("ubinize -o %s/rootfs.ubifs %s %s/ubinize.cfg" % (self.WORKDIR, self.UBINIZE_ARGS, self.WORKDIR))
