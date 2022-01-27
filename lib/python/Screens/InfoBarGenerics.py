@@ -556,7 +556,7 @@ class SecondInfoBar(Screen, HelpableScreen):
 			print("[InfoBarGenerics] setEvent text:", ' '.join('{:02X}'.format(ord(c)) for c in text))
 			text = text.encode(encoding="utf8", errors="replace").decode() # attempt to replace bad chars with '?'
 			self["epg_description"].setText(text)
-			
+
 		serviceref = self.currentService
 		eventid = self.event.getEventId()
 		refstr = serviceref.ref.toString()
@@ -935,9 +935,6 @@ class BufferIndicator(Screen):
 
 	def mayShowEndTimer(self):
 		self.mayShow = True
-		if self.getBufferValue() == 0:
-			self["status"].setText(_("No data received yet"))
-			self.show()
 
 	def getBufferValue(self):
 		service = self.session.nav.getCurrentService()
