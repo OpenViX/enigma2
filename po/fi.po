@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-01-20 08:14+0200\n"
+"PO-Revision-Date: 2022-01-29 16:02+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -16358,3 +16358,21 @@ msgstr "Joskus ohjelmanimeen lisätään etuliite 'Uusi: ' tai 'Suora: '. Valits
 
 msgid "| separated list of prefixes you'd like to be removed from event names, separated with |, e.g. New:|Live:"
 msgstr "Lisää | välimerkiksi ohjelmanimistä poistettavien etuliitteiden listaan, esim. Uusi:|Suora:"
+
+msgid "remove bookmarks in cuts"
+msgstr "poista kirjanmerkit leikkauksista"
+
+msgid "preserve bookmarks in cuts"
+msgstr "säilytä kirjanmerkit leikkauksissa"
+
+msgid "disable intro screen"
+msgstr "estä intro -näyttö"
+
+msgid "enable intro screen"
+msgstr "salli intro -näyttö"
+
+msgid "execute cuts (requires MovieCut plugin)"
+msgstr "suorita leikkaukset (MovieCut tarvitaan)"
+
+msgid "Select horizontal resolution:"
+msgstr "Valitse vaakaerottelu:"
