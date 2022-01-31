@@ -160,7 +160,6 @@ class VIXImageManager(Screen):
 		self.BackupDirectory = " "
 		if SystemInfo["canMultiBoot"]:
 			self.mtdboot = SystemInfo["MBbootdevice"]
-		self.imagesList = {}
 		self.onChangedEntry = []
 		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found on the selected download server...if password check validity")), "Waiter"))])
 		self.populate_List()
@@ -220,9 +219,9 @@ class VIXImageManager(Screen):
 		if self.BackupDirectory == " ":
 			return
 		imglist = [] 
-		self.imagesList = self.getImagesDownloaded()
-		for image in sorted(self.imagesList.keys(), reverse=True):
-			imglist.append(ChoiceEntryComponent("", ((self.imagesList[image]["name"]), self.imagesList[image]["link"])))				
+		imagesDownloadedList = self.getImagesDownloaded()
+		for image in imagesDownloadedList.keys():
+			imglist.append(ChoiceEntryComponent("", ((imagesDownloadedList[image]["name"]), imagesDownloadedList[image]["link"])))				
 		if imglist:
 			print("[ImageManager] [refreshlist] imglist: %s" % imglist)
 			self["key_red"].show()
