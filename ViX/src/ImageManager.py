@@ -393,6 +393,7 @@ class VIXImageManager(Screen):
 						getImages([ospath.join(media, x) for x in listdir(media) if ospath.splitext(x)[1] == ".zip" and model in x])
 						# for dir in [dir for dir in [ospath.join(media, dir) for dir in listdir(media)] if ospath.isdir(dir) and ospath.splitext(dir)[1] == ".unzipped"]:
 						#	rmtree(dir)
+		imagesFound.sort(key=lambda x: x['mtime'], reverse=True)
 		print("[ImageManager][getImagesDownloaded] imagesFound=%s" % imagesFound)
 		return imagesFound
 
