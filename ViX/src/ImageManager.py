@@ -220,8 +220,8 @@ class VIXImageManager(Screen):
 			return
 		imglist = [] 
 		imagesDownloadedList = self.getImagesDownloaded()
-		for image in imagesDownloadedList.keys():
-			imglist.append(ChoiceEntryComponent("", ((imagesDownloadedList[image]["name"]), imagesDownloadedList[image]["link"])))				
+		for image in imagesDownloadedList:
+			imglist.append(ChoiceEntryComponent("", ((image["name"]), image["link"])))				
 		if imglist:
 			print("[ImageManager] [refreshlist] imglist: %s" % imglist)
 			self["key_red"].show()
@@ -378,11 +378,11 @@ class VIXImageManager(Screen):
 		def getImages(files):
 			for file in [x for x in files if ospath.splitext(x)[1] == ".zip" and model in x]:
 #				if checkimagefiles([x.split(ossep)[-1] for x in zipfile.ZipFile(file).namelist()]):
-				self.imagesFind[file] = {'link': file, 'name': file.split(ossep)[-1]}
+				imagesFound.append({'link': file, 'name': file.split(ossep)[-1], 'mtime': stat(file).st_mtime})
 
 
 		model = getMachineMake()
-		self.imagesFind = {}
+		imagesFound = []
 		for media in ['/media/%s' % x for x in listdir('/media')] + (['/media/net/%s' % x for x in listdir('/media/net')] if ospath.isdir('/media/net') else []):
 			getImages([ospath.join(media, x) for x in listdir(media) if ospath.splitext(x)[1] == ".zip" and model in x])
 			for folder in ["imagebackups", "downloaded_images", "images"]:
@@ -393,8 +393,8 @@ class VIXImageManager(Screen):
 						getImages([ospath.join(media, x) for x in listdir(media) if ospath.splitext(x)[1] == ".zip" and model in x])
 						# for dir in [dir for dir in [ospath.join(media, dir) for dir in listdir(media)] if ospath.isdir(dir) and ospath.splitext(dir)[1] == ".unzipped"]:
 						#	rmtree(dir)
-		print("[ImageManager][getImagesDownloaded] self.imagesFind=%s" % self.imagesFind)
-		return self.imagesFind
+		print("[ImageManager][getImagesDownloaded] imagesFound=%s" % imagesFound)
+		return imagesFound
 
 	def doSettingsBackup(self):
 		from Plugins.SystemPlugins.ViX.BackupManager import BackupFiles
