@@ -314,6 +314,22 @@ RESULT eStaticServiceMP3Info::getEvent(const eServiceReference &ref, ePtr<eServi
 		equivalentref.path.clear();
 		return eEPGCache::getInstance()->lookupEventTime(equivalentref, start_time, evt);
 	}
+	else // try to read .eit file
+	{
+		size_t pos;
+		ePtr<eServiceEvent> event = new eServiceEvent;
+		std::string filename = ref.path;
+		if ( (pos = filename.rfind('.')) != std::string::npos)
+		{
+			filename.erase(pos + 1);
+			filename += "eit";
+			if (!event->parseFrom(filename, 0))
+			{
+				evt = event;
+				return 0;
+			}
+		}
+	}
 	evt = 0;
 	return -1;
 }
@@ -410,7 +426,6 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_pump(eApp, 1)
 {
 	m_subtitle_sync_timer = eTimer::create(eApp);
-	m_streamingsrc_timeout = 0;
 	m_stream_tags = 0;
 	m_currentAudioStream = -1;
 	m_currentSubtitleStream = -1;
@@ -422,6 +437,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_is_live = false;
 	m_use_prefillbuffer = false;
 	m_paused = false;
+	m_seek_paused = false;
 	m_cuesheet_loaded = false; /* cuesheet CVR */
 	m_use_chapter_entries = false; /* TOC chapter support CVR */
 	m_last_seek_pos = 0; /* CVR last seek position */
@@ -437,7 +453,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	CONNECT(m_subtitle_sync_timer->timeout, eServiceMP3::pushSubtitles);
 	CONNECT(m_pump.recv_msg, eServiceMP3::gstPoll);
 	CONNECT(m_nownext_timer->timeout, eServiceMP3::updateEpgCacheNowNext);
-	m_aspect = m_width = m_height = m_framerate = m_progressive = -1;
+	m_aspect = m_width = m_height = m_framerate = m_progressive = m_gamma = -1;
 
 	m_state = stIdle;
 	m_coverart = false;
@@ -516,6 +532,11 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		m_sourceinfo.containertype = ctMP4;
 		m_sourceinfo.audiotype = atAAC;
 	}
+	else if ( strcasecmp(ext, ".dra") == 0 )
+	{
+		m_sourceinfo.containertype = ctDRA;
+		m_sourceinfo.audiotype = atDRA;
+	}
 	else if (strcasecmp(ext, ".m3u8") == 0)
 		m_sourceinfo.is_hls = TRUE;
 	else if (strcasecmp(ext, ".mp3") == 0)
@@ -562,8 +583,6 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 			m_useragent = eConfigManager::getConfigValue("config.mediaplayer.alternateUserAgent");
 
 		uri = g_strdup_printf ("%s", filename);
-		m_streamingsrc_timeout = eTimer::create(eApp);;
-		CONNECT(m_streamingsrc_timeout->timeout, eServiceMP3::sourceTimeout);
 
 		if ( m_ref.getData(7) & BUFFERING_ENABLED )
 		{
@@ -592,7 +611,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		if (tmp_fd == 0)
 		{
 			::close(tmp_fd);
-			tmp_fd = -1;	
+			tmp_fd = -1;
 			fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
 			/* eDebug("[servicemp3] opening null fd returned: %d", fd0lock); */
 		}
@@ -678,8 +697,10 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 			strcat(srt_filename, ".srt");
 			if (::access(srt_filename, R_OK) >= 0)
 			{
-				eDebug("[eServiceMP3] subtitle uri: %s", g_filename_to_uri(srt_filename, NULL, NULL));
-				g_object_set (G_OBJECT (m_gst_playbin), "suburi", g_filename_to_uri(srt_filename, NULL, NULL), NULL);
+				gchar *luri = g_filename_to_uri(srt_filename, NULL, NULL);
+				eDebug("[eServiceMP3] subtitle uri: %s", luri);
+				g_object_set (m_gst_playbin, "suburi", luri, NULL);
+				g_free(luri);
 			}
 		}
 	} else
@@ -826,14 +847,26 @@ RESULT eServiceMP3::start()
 		}
 	}
 
-	return 0;
-}
+	if (m_ref.path.find("://") == std::string::npos)
+	{
+		/* read event from .eit file */
+		size_t pos;
+		ePtr<eServiceEvent> event = new eServiceEvent;
+		std::string filename = m_ref.path;
+		if ( (pos = filename.rfind('.')) != std::string::npos)
+		{
+			filename.erase(pos + 1);
+			filename += "eit";
+			if (!event->parseFrom(filename, 0))
+			{
+				ePtr<eServiceEvent> empty;
+				m_event_now = event;
+				m_event_next = empty;
+			}
+		}
+	}
 
-void eServiceMP3::sourceTimeout()
-{
-	eDebug("[eServiceMP3] http source timeout! issuing eof...");
-	stop();
-	m_event((iPlayableService*)this, evEOF);
+	return 0;
 }
 
 RESULT eServiceMP3::stop()
@@ -859,8 +892,6 @@ RESULT eServiceMP3::stop()
 
 	saveCuesheet();
 	m_nownext_timer->stop();
-	if (m_streamingsrc_timeout)
-		m_streamingsrc_timeout->stop();
 
 	return 0;
 }
@@ -1185,6 +1216,7 @@ int eServiceMP3::getInfo(int w)
 	case sVideoWidth: return m_width;
 	case sFrameRate: return m_framerate;
 	case sProgressive: return m_progressive;
+	case sGamma: return m_gamma;
 	case sAspect: return m_aspect;
 	case sTagTitle:
 	case sTagArtist:
@@ -1286,17 +1318,14 @@ int eServiceMP3::getInfo(int w)
 
 std::string eServiceMP3::getInfoString(int w)
 {
-	if ( m_sourceinfo.is_streaming )
+	switch (w)
 	{
-		switch (w)
-		{
-		case sProvider:
-			return "IPTV";
-		case sServiceref:
-			return m_ref.toString();
-		default:
-			break;
-		}
+	case sProvider:
+		return m_sourceinfo.is_streaming ? "IPTV" : "FILE";
+	case sServiceref:
+		return m_ref.toString();
+	default:
+		break;
 	}
 
 	if ( !m_stream_tags && w < sUser && w > 26 )
@@ -1770,8 +1799,6 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 				}	break;
 				case GST_STATE_CHANGE_PAUSED_TO_PLAYING:
 				{
-					if ( m_sourceinfo.is_streaming && m_streamingsrc_timeout )
-						m_streamingsrc_timeout->stop();
 					m_paused = false;
 					if (m_currentAudioStream < 0)
 					{
@@ -1848,6 +1875,13 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						m_event((iPlayableService*)this, evUser+11);
 					else if ( g_strrstr(sourceName, "audiosink") )
 						m_event((iPlayableService*)this, evUser+10);
+				}
+			}
+			else if ( err->domain == GST_RESOURCE_ERROR )
+			{
+				if ( err->code == GST_RESOURCE_ERROR_OPEN_READ || err->code == GST_RESOURCE_ERROR_READ )
+				{
+					stop();
 				}
 			}
 			g_error_free(err);
@@ -2042,6 +2076,11 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 			}
 
 			m_event((iPlayableService*)this, evUpdatedInfo);
+			if (m_seek_paused)
+			{
+				m_seek_paused = false;
+				gst_element_set_state(m_gst_playbin, GST_STATE_PAUSED);
+			}
 
 			if ( m_errorInfo.missing_codec != "" )
 			{
@@ -2097,6 +2136,12 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 							gst_structure_get_int (msgstruct, "progressive", &m_progressive);
 							if (strstr(eventname, "Changed"))
 								m_event((iPlayableService*)this, evVideoProgressiveChanged);
+						}
+						else if (!strcmp(eventname, "eventGammaChanged"))
+						{
+							gst_structure_get_int (msgstruct, "gamma", &m_gamma);
+							if (strstr(eventname, "Changed"))
+								m_event((iPlayableService*)this, evVideoGammaChanged);
 						}
 						else if (!strcmp(eventname, "redirect"))
 						{
@@ -2161,37 +2206,6 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 				}
 			}
 			break;
-		case GST_MESSAGE_STREAM_STATUS:
-		{
-			GstStreamStatusType type;
-			GstElement *owner;
-			gst_message_parse_stream_status (msg, &type, &owner);
-			if ( type == GST_STREAM_STATUS_TYPE_CREATE && m_sourceinfo.is_streaming )
-			{
-				if ( GST_IS_PAD(source) )
-					owner = gst_pad_get_parent_element(GST_PAD(source));
-				else if ( GST_IS_ELEMENT(source) )
-					owner = GST_ELEMENT(source);
-				else
-					owner = 0;
-				if ( owner )
-				{
-					GstState state;
-					gst_element_get_state(m_gst_playbin, &state, NULL, 0LL);
-					GstElementFactory *factory = gst_element_get_factory(GST_ELEMENT(owner));
-					const gchar *name = gst_plugin_feature_get_name(GST_PLUGIN_FEATURE(factory));
-					if (!strcmp(name, "souphttpsrc") && (state == GST_STATE_READY) && !m_streamingsrc_timeout->isActive())
-					{
-						m_streamingsrc_timeout->start(HTTP_TIMEOUT*1000, true);
-						g_object_set (G_OBJECT (owner), "timeout", HTTP_TIMEOUT, NULL);
-						eDebug("[eServiceMP3] GST_STREAM_STATUS_TYPE_CREATE -> setting timeout on %s to %is", name, HTTP_TIMEOUT);
-					}
-				}
-				if ( GST_IS_PAD(source) )
-					gst_object_unref(owner);
-			}
-			break;
-		}
 		default:
 			break;
 	}
@@ -2290,6 +2304,18 @@ void eServiceMP3::playbinNotifySource(GObject *object, GParamSpec *unused, gpoin
 	g_object_get(object, "source", &source, NULL);
 	if (source)
 	{
+		if (g_object_class_find_property(G_OBJECT_GET_CLASS(source), "timeout") != 0)
+		{
+			GstElementFactory *factory = gst_element_get_factory(source);
+			if (factory)
+			{
+				const gchar *sourcename = gst_plugin_feature_get_name(GST_PLUGIN_FEATURE(factory));
+				if (!strcmp(sourcename, "souphttpsrc"))
+				{
+					g_object_set(G_OBJECT(source), "timeout", HTTP_TIMEOUT, NULL);
+				}
+			}
+		}
 		if (g_object_class_find_property(G_OBJECT_GET_CLASS(source), "ssl-strict") != 0)
 		{
 			g_object_set(G_OBJECT(source), "ssl-strict", FALSE, NULL);
@@ -2410,6 +2436,8 @@ audiotype_t eServiceMP3::gstCheckAudioPad(GstStructure* structure)
 	}
 
 	else if ( gst_structure_has_name (structure, "audio/x-ac3") || gst_structure_has_name (structure, "audio/ac3") )
+		return atAC3;
+	else if ( gst_structure_has_name (structure, "truehd") || gst_structure_has_name (structure, "audio/ac3") )
 		return atAC3;
 	else if ( gst_structure_has_name (structure, "audio/x-dts") || gst_structure_has_name (structure, "audio/dts") )
 		return atDTS;
@@ -2550,6 +2578,9 @@ void eServiceMP3::pullSubtitle(GstBuffer *buffer)
 					convert_fps = subtitle_fps / (double)m_framerate;
 
 				std::string line((const char*)map.data, len);
+				// some media muxers do add an extra new line at the end off a muxed/reencoded srt to ssa codec
+				if (!line.empty() && line[line.length()-1] == '\n')
+					line.erase(line.length()-1);
 
 				eLog(6, "[eServiceMP3] got new text subtitle @ buf_pos = %lld ns (in pts=%lld), dur=%lld: '%s' ", buf_pos, buf_pos/11111, duration_ns, line.c_str());
 
@@ -2961,7 +2992,7 @@ void eServiceMP3::loadCuesheet()
 		eDebug("[eServiceMP3] skip loading cuesheet multiple times");
 		return;
 	}
- 
+
 	m_cue_entries.clear();
 	/* only load manual cuts if no chapter info avbl CVR */
 	if (m_use_chapter_entries)
