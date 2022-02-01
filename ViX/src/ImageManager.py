@@ -223,7 +223,6 @@ class VIXImageManager(Screen):
 		for image in imagesDownloadedList:
 			imglist.append(ChoiceEntryComponent("", ((image["name"]), image["link"])))				
 		if imglist:
-			print("[ImageManager] [refreshlist] imglist: %s" % imglist)
 			self["key_red"].show()
 			self["key_blue"].show()
 		else:
@@ -335,7 +334,7 @@ class VIXImageManager(Screen):
 		if self.sel is not None:
 			self["list"].instance.moveSelectionTo((len(self["list"].list) > self["list"].getSelectionIndex() + 2) and self["list"].getSelectionIndex() or 0) # hold the selection current possition if the list is long enough
 			try:
-				print("[ImageManager][keyDelet] selected image=%s" % (self.imagezip))
+				# print("[ImageManager][keyDelet] selected image=%s" % (self.imagezip))
 				if self.imagezip.endswith(".zip"):
 					remove(self.imagezip)
 				else:
@@ -377,7 +376,6 @@ class VIXImageManager(Screen):
 	def getImagesDownloaded(self):
 		def getImages(files):
 			for file in [x for x in files if ospath.splitext(x)[1] == ".zip" and model in x]:
-#				if checkimagefiles([x.split(ossep)[-1] for x in zipfile.ZipFile(file).namelist()]):
 				imagesFound.append({'link': file, 'name': file.split(ossep)[-1], 'mtime': stat(file).st_mtime})
 
 
@@ -389,12 +387,9 @@ class VIXImageManager(Screen):
 				if folder in listdir(media):
 					media = ospath.join(media, folder)
 					if ospath.isdir(media) and not ospath.islink(media) and not ospath.ismount(media):
-#						print("[ImageManager][getImagesDownloaded] media3=%s" % media)
 						getImages([ospath.join(media, x) for x in listdir(media) if ospath.splitext(x)[1] == ".zip" and model in x])
-						# for dir in [dir for dir in [ospath.join(media, dir) for dir in listdir(media)] if ospath.isdir(dir) and ospath.splitext(dir)[1] == ".unzipped"]:
-						#	rmtree(dir)
 		imagesFound.sort(key=lambda x: x['mtime'], reverse=True)
-		print("[ImageManager][getImagesDownloaded] imagesFound=%s" % imagesFound)
+		# print("[ImageManager][getImagesDownloaded] imagesFound=%s" % imagesFound)
 		return imagesFound
 
 	def doSettingsBackup(self):
