@@ -161,7 +161,7 @@ class VIXImageManager(Screen):
 		if SystemInfo["canMultiBoot"]:
 			self.mtdboot = SystemInfo["MBbootdevice"]
 		self.onChangedEntry = []
-		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found on the selected download server...if password check validity")), "Waiter"))])
+		self["list"] = MenuList(list=[((_("No images found on the selected download server...if password check validity")), "Waiter")])
 		self.populate_List()
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.backupRunning)
@@ -221,7 +221,7 @@ class VIXImageManager(Screen):
 		imglist = [] 
 		imagesDownloadedList = self.getImagesDownloaded()
 		for image in imagesDownloadedList:
-			imglist.append(ChoiceEntryComponent("", ((image["name"]), image["link"])))				
+			imglist.append(((image["name"]), image["link"]))				
 		if imglist:
 			self["key_red"].show()
 			self["key_blue"].show()
