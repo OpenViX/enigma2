@@ -178,10 +178,11 @@ class VIXImageManager(Screen):
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
 	def selectionChanged(self):
-		item = self["list"].getCurrent()
+		# Where is this used? self.onChangedEntry does not appear to be populated anywhere. Maybe dead code.
+		item = self["list"].getCurrent() # (name, link)
 		desc = self["backupstatus"].text
 		if item:
-			name = item
+			name = item[1]
 		else:
 			name = ""
 		for cb in self.onChangedEntry:
@@ -214,14 +215,13 @@ class VIXImageManager(Screen):
 		self["list"].instance.moveSelection(self["list"].instance.pageDown)
 		self.selectionChanged()		
 		
-		
 	def refreshList(self):
 		if self.BackupDirectory == " ":
 			return
 		imglist = [] 
 		imagesDownloadedList = self.getImagesDownloaded()
 		for image in imagesDownloadedList:
-			imglist.append(((image["name"]), image["link"]))				
+			imglist.append((image["name"], image["link"]))				
 		if imglist:
 			self["key_red"].show()
 			self["key_blue"].show()
@@ -329,16 +329,15 @@ class VIXImageManager(Screen):
 		self["backupstatus"].setText(str(backuptext))
 
 	def keyDelete(self):
-		self.sel = self["list"].getCurrent()
-		self.imagezip = self["list"].l.getCurrentSelection()[0][1]
+		self.sel = self["list"].getCurrent() # (name, link)
 		if self.sel is not None:
 			self["list"].instance.moveSelectionTo((len(self["list"].list) > self["list"].getSelectionIndex() + 2) and self["list"].getSelectionIndex() or 0) # hold the selection current possition if the list is long enough
 			try:
-				# print("[ImageManager][keyDelet] selected image=%s" % (self.imagezip))
-				if self.imagezip.endswith(".zip"):
-					remove(self.imagezip)
+				# print("[ImageManager][keyDelet] selected image=%s" % (self.sel[1]))
+				if self.sel[1].endswith(".zip"):
+					remove(self.sel[1])
 				else:
-					rmtree(self.imagezip)
+					rmtree(self.sel[1])
 			except:
 				self.session.open(MessageBox, _("Delete failure - check device available."), MessageBox.TYPE_INFO, timeout=10)
 			self.refreshList()
@@ -403,8 +402,7 @@ class VIXImageManager(Screen):
 		self.session.openWithCallback(self.keyRestore3, JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
 
 	def keyRestore(self):
-		self.sel = self["list"].getCurrent()
-		self.imagezip = self["list"].l.getCurrentSelection()[0][1]		
+		self.sel = self["list"].getCurrent() # (name, link)
 		if not self.sel:
 			return
 		self.HasSDmmc = False
@@ -417,9 +415,9 @@ class VIXImageManager(Screen):
 		if not recordings:
 			next_rec_time = self.session.nav.RecordTimer.getNextRecordingTime()
 		if recordings or (next_rec_time > 0 and (next_rec_time - time()) < 360):
-			self.message = _("Recording(s) are in progress or coming up in few seconds!\nDo you still want to flash image\n%s?") % self.sel
+			self.message = _("Recording(s) are in progress or coming up in few seconds!\nDo you still want to flash image\n%s?") % self.sel[0]
 		else:
-			self.message = _("Do you want to flash image\n%s") % self.imagezip
+			self.message = _("Do you want to flash image\n%s") % self.sel[0]
 		if SystemInfo["canMultiBoot"] is False:
 			if config.imagemanager.autosettingsbackup.value:
 				self.doSettingsBackup()
@@ -432,7 +430,7 @@ class VIXImageManager(Screen):
 		choices = []
 		HIslot = len(imagedict) + 1
 		currentimageslot = SystemInfo["MultiBootSlot"]
-		print("[ImageManager][keyRestore] currentslot=%s selected image=%s" % (currentimageslot, self.imagezip))
+		print("[ImageManager][keyRestore] currentslot=%s selected image=%s" % (currentimageslot, self.sel[1]))
 		for x in range(1, HIslot):
 			choices.append(((_("slot%s %s - %s (current image)") if x == currentimageslot else _("slot%s %s - %s")) % (x, SystemInfo["canMultiBoot"][x]["slotname"], imagedict[x]["imagename"]), (x)))
 		self.session.openWithCallback(self.keyRestore2, MessageBox, self.message, list=choices, default=currentimageslot, simple=True)
@@ -461,19 +459,19 @@ class VIXImageManager(Screen):
 		else:	
 			self.TEMPDESTROOT = self.BackupDirectory + "imagerestore"
 		
-		if self.imagezip.endswith(".zip"):
+		if self.sel[1].endswith(".zip"):
 			if not ospath.exists(self.TEMPDESTROOT):
 				mkdir(self.TEMPDESTROOT, 0o755)
-			self.Console.ePopen("unzip -o %s -d %s" % (self.imagezip, self.TEMPDESTROOT), self.keyRestore4)
+			self.Console.ePopen("unzip -o %s -d %s" % (self.sel[1], self.TEMPDESTROOT), self.keyRestore4)
 		else:
-			self.TEMPDESTROOT = self.imagezip
+			self.TEMPDESTROOT = self.sel[1]
 			self.keyRestore4(0, 0)
 
 	def keyRestore4(self, result, retval, extra_args=None):
 		if retval == 0:
 			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("Flash image unzip successful."), MessageBox.TYPE_INFO, timeout=4)
 			if getMachineMake() == "et8500" and self.dualboot:
-				message = _("ET8500 Multiboot: Yes to restore OS1 No to restore OS2:\n ") + self.imagezip
+				message = _("ET8500 Multiboot: Yes to restore OS1 No to restore OS2:\n ") + self.sel[1]
 				ybox = self.session.openWithCallback(self.keyRestore5_ET8500, MessageBox, message, MessageBox.TYPE_YESNO)
 				ybox.setTitle(_("ET8500 Image Restore"))
 			else:
