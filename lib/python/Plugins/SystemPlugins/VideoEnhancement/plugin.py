@@ -31,7 +31,7 @@ class VideoEnhancementSetup(Screen, ConfigListScreen):
 
 		self.list = []
 		self.xtdlist = []
-		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
+		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.createSetup)
 		self.createSetup()
 
 		self["actions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions"],
@@ -48,10 +48,7 @@ class VideoEnhancementSetup(Screen, ConfigListScreen):
 		self["key_yellow"] = StaticText(_("Last config"))
 		self["key_blue"] = StaticText(_("Default"))
 
-		if not self.SelectionChanged in self["config"].onSelectionChanged:
-			self["config"].onSelectionChanged.append(self.SelectionChanged)
 		self.rememberOldSettings()
-		self.changedEntry()
 		self.onLayoutFinish.append(self.layoutFinished)
 
 	def layoutFinished(self):
@@ -111,9 +108,6 @@ class VideoEnhancementSetup(Screen, ConfigListScreen):
 		self["config"].l.setList(self.list)
 		if config.usage.sort_settings.value:
 			self["config"].list.sort()
-
-	def SelectionChanged(self):
-		self["description"].setText(self["config"].getCurrent()[2])
 
 	def PreviewClosed(self):
 		self["config"].invalidate(self["config"].getCurrent())
@@ -272,16 +266,6 @@ class VideoEnhancementSetup(Screen, ConfigListScreen):
 		self.session.openWithCallback(self.keyBlueConfirm, MessageBox, _("Reset video enhancement settings to system defaults?"), MessageBox.TYPE_YESNO, timeout=20, default=False)
 
 	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
 	def createSummary(self):
 		from Screens.Setup import SetupSummary
 		return SetupSummary
