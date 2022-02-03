@@ -213,7 +213,7 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def pluginsRestore_Finished(self, result, retval, extra_args=None):
 		if result:
-			print("[RestoreWizard] opkg install result:\n", six.ensure_str(result))			
+			print("[RestoreWizard] opkg install result:\n", six.ensure_str(result))		
 		self.didPluginRestore = True
 		self.NextStep = "reboot"
 		self.buildListRef.close(True)
@@ -251,26 +251,26 @@ class RestoreWizard(WizardLanguage, Rc):
 		print("[RestoreWizard] Stage 4: Feeds Test")
 		self.Console.ePopen("opkg update", self.doRestorePluginsTestComplete)
 
-	def doRestorePluginsTestComplete(self, result=None, retval=None, extra_args=None):
-		result2 = result.decode("utf8")
-		print("[RestoreWizard] Stage 4: Feeds Test Result", result2)
-		if result2.find("wget returned 4") != -1:
+	def doRestorePluginsTestComplete(self, result='', retval=None, extra_args=None):
+		result = six.ensure_str(result)
+		print("[RestoreWizard] Stage 4: Feeds Test Result", result)
+		if result.find("wget returned 4") != -1:
 			self.NextStep = "reboot"
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available.") % (getMachineBrand(), getMachineName()), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
-		elif result2.find("wget returned 8") != -1:
+		elif result.find("wget returned 8") != -1:
 			self.NextStep = "reboot"
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later.") % (getMachineBrand(), getMachineName()), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
-		elif result2.find("bad address") != -1:
+		elif result.find("bad address") != -1:
 			self.NextStep = "reboot"
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s is not connected to the Internet. Please try using the Backup manager to restore plugins later.") % (getMachineBrand(), getMachineName()), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
-		elif result2.find("wget returned 1") != -1 or result2.find("wget returned 255") != -1 or result2.find("404 Not Found") != -1:
+		elif result.find("wget returned 1") != -1 or result.find("wget returned 255") != -1 or result.find("404 Not Found") != -1:
 			self.NextStep = "reboot"
 			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Sorry the feeds are down for maintenance. Please try using the Backup manager to restore plugins later."), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
-		elif result2.find("Collected errors") != -1:
+		elif result.find("Collected errors") != -1:
 			print("[RestoreWizard] Stage 4: Update is in progress, delaying")
 			self.delaymess = self.session.openWithCallback(self.doRestorePluginsTest, MessageBox, _("A background update check is in progress, please try again."), type=MessageBox.TYPE_INFO, timeout=10, wizard=True)
 			self.delaymess.setTitle(_("Restore wizard"))
@@ -284,13 +284,14 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.Console.ePopen("opkg list-installed", self.doRestorePlugins2)
 
 	def doRestorePlugins2(self, result, retval, extra_args):
+		result = six.ensure_str(result)
 		print("[RestoreWizard] Stage 5: Build list of plugins to restore")
 		self.pluginslist = ""
 		self.pluginslist2 = ""
 		plugins = []
 		if path.exists("/tmp/ExtraInstalledPlugins"):
 			self.pluginslist = []
-			for line in result.decode("utf8").split("\n"):
+			for line in result.split("\n"):
 				if line:
 					parts = line.strip().split()
 					plugins.append(parts[0])
