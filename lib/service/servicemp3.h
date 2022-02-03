@@ -127,7 +127,7 @@ public:
 	virtual ~eServiceMP3();
 
 		// iPlayableService
-	RESULT connectEvent(const sigc::slot<void,iPlayableService*,int> &event, ePtr<eConnection> &connection);
+	RESULT connectEvent(const sigc::slot<void(iPlayableService*,int)> &event, ePtr<eConnection> &connection);
 	RESULT start();
 	RESULT stop();
 
