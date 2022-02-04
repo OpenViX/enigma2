@@ -67,7 +67,7 @@ class DVDProject:
 		list = ['<?xml version="1.0" encoding="utf-8" ?>\n',
 				'<DreamDVDBurnerProject>\n',
 				'\t<settings ']
-		for key, val in six.iteritems(self.settings.dict()):
+		for key, val in self.settings.dict().items():
 				list.append(key + '="' + str(val.value) + '" ')
 		list.append('/>\n')
 		list.append('\t<titles>\n')
@@ -78,7 +78,7 @@ class DVDProject:
 			list.append('</path>\n')
 			list.append('\t\t\t<properties ')
 			audiotracks = []
-			for key, val in six.iteritems(title.properties.dict()):
+			for key, val in title.properties.dict().items():
 				if isinstance(val, ConfigSubList):
 					audiotracks.append('\t\t\t<audiotracks>\n')
 					for audiotrack in val:
