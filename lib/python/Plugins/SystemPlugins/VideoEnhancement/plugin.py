@@ -17,7 +17,7 @@ from Screens.Screen import Screen
 from . import VideoEnhancement
 
 
-class VideoEnhancementSetup(Screen, ConfigListScreen):
+class VideoEnhancementSetup(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.session = session
@@ -170,12 +170,6 @@ class VideoEnhancementSetup(Screen, ConfigListScreen):
 		self.keyYellowConfirm(True)
 		self.close()
 
-	def keyCancel(self):
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"), default=False)
-		else:
-			self.close()
-
 	def keyYellowConfirm(self, confirmed):
 		if not confirmed:
 			print("[VideoEnhancement] not confirmed")
@@ -264,11 +258,6 @@ class VideoEnhancementSetup(Screen, ConfigListScreen):
 
 	def keyBlue(self):
 		self.session.openWithCallback(self.keyBlueConfirm, MessageBox, _("Reset video enhancement settings to system defaults?"), MessageBox.TYPE_YESNO, timeout=20, default=False)
-
-	# for summary:
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
 
 
 class VideoEnhancementPreview(ConfigListScreen, Screen):

@@ -74,19 +74,13 @@ class MediaPlayerSettings(ConfigListScreen, Screen):
 		self["HelpWindow"].hide()
 		self["VKeyIcon"] = Boolean(False)
 
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("Save"))
-
-		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry)
+		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry, fullUI=True)
 		self.parent = parent
 		self.initConfigList()
 		config.mediaplayer.saveDirOnExit.addNotifier(self.initConfigList)
 
-		self["setupActions"] = ActionMap(["SetupActions", "ColorActions"],
+		self["setupActions"] = ActionMap(["SetupActions"],
 		{
-		    "green": self.save,
-		    "red": self.cancel,
-		    "cancel": self.cancel,
 		    "ok": self.ok,
 		}, -2)
 		self.onLayoutFinish.append(self.layoutFinished)
@@ -106,12 +100,9 @@ class MediaPlayerSettings(ConfigListScreen, Screen):
 			self.list.append(getConfigListEntry(_("sorting of playlists"), config.mediaplayer.sortPlaylists))
 			self.list.append(getConfigListEntry(_("Always hide infobar"), config.mediaplayer.alwaysHideInfoBar))
 			self.list.append(getConfigListEntry(_("show mediaplayer on mainmenu"), config.mediaplayer.onMainMenu))
-			self["config"].setList(self.list)
+			self["config"].list = self.list
 		except KeyError:
 			print("keyError")
-
-	def changedConfigList(self):
-		self.initConfigList()
 
 	def ok(self):
 		if self["config"].getCurrent()[1] == config.mediaplayer.defaultDir:
@@ -121,26 +112,3 @@ class MediaPlayerSettings(ConfigListScreen, Screen):
 		print("PathBrowserClosed:" + str(path))
 		if path:
 			config.mediaplayer.defaultDir.setValue(path)
-
-	def save(self):
-		for x in self["config"].list:
-			x[1].save()
-		self.close()
-
-	def cancel(self):
-		self.close()
-
-	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary

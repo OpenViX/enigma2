@@ -160,16 +160,7 @@ class Pic_Setup(ConfigListScreen, Screen):
 		self.setup_title = _("Settings")
 		self.onChangedEntry = []
 		self.session = session
-		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry)
-		self["actions"] = ActionMap(["SetupActions", "MenuActions"],
-			{
-				"cancel": self.keyCancel,
-				"save": self.keySave,
-				"ok": self.keySave,
-				"menu": self.closeRecursive,
-			}, -2)
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("OK"))
+		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry, fullUI=True)
 		self.createSetup()
 		self.onLayoutFinish.append(self.layoutFinished)
 
@@ -191,28 +182,12 @@ class Pic_Setup(ConfigListScreen, Screen):
 			getConfigListEntry(_("Stop play TV"), config.pic.stopPlayTv),
 		]
 		self["config"].list = setup_list
-		self["config"].l.setList(setup_list)
 
 	def keyLeft(self):
 		ConfigListScreen.keyLeft(self)
 
 	def keyRight(self):
 		ConfigListScreen.keyRight(self)
-
-	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
 
 #---------------------------------------------------------------------------
 

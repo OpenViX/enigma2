@@ -568,29 +568,18 @@ class DiseqcTesterTestTypeSelection(ConfigListScreen, Screen):
 		Screen.__init__(self, session)
 		# for the skin: first try MediaPlayerSettings, then Setup, this allows individual skinning
 		self.skinName = ["DiseqcTesterTestTypeSelection", "Setup"]
-		self.setup_title = _("DiSEqC-tester settings")
+		self.title = _("DiSEqC-tester settings")
 		self.onChangedEntry = []
 		self.feid = feid
 
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
+		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry, fullUI=True)
 
-		self["actions"] = ActionMap(["SetupActions", "MenuActions"],
+		self["actions"] = ActionMap(["SetupActions"],
 			{
-				"cancel": self.keyCancel,
-				"save": self.keyOK,
-				"ok": self.keyOK,
-				"menu": self.closeRecursive,
+				"ok": self.keySave,
 			}, -2)
-
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("OK"))
-
 		self.createSetup()
-		self.onLayoutFinish.append(self.layoutFinished)
-
-	def layoutFinished(self):
-		self.setTitle(self.setup_title)
 
 	def createSetup(self):
 		self.testtype = ConfigSelection(choices={"quick": _("Quick"), "random": _("Random"), "complete": _("Complete")}, default="quick")
@@ -611,9 +600,8 @@ class DiseqcTesterTestTypeSelection(ConfigListScreen, Screen):
 			self.list.append(self.logEntry)
 
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
-	def keyOK(self):
+	def keySave(self):
 		print(self.testtype.value)
 		testtype = DiseqcTester.TEST_TYPE_QUICK
 		if self.testtype.value == "quick":
@@ -623,24 +611,6 @@ class DiseqcTesterTestTypeSelection(ConfigListScreen, Screen):
 		elif self.testtype.value == "complete":
 			testtype = DiseqcTester.TEST_TYPE_COMPLETE
 		self.session.open(DiseqcTester, feid=self.feid, test_type=testtype, loopsfailed=int(self.loopsfailed.value), loopssuccessful=int(self.loopssuccessful.value), log=self.log.value)
-
-	def keyCancel(self):
-		self.close()
-
-	# for summary:
-	def changedEntry(self):
-		for x in self.onChangedEntry:
-			x()
-
-	def getCurrentEntry(self):
-		return self["config"].getCurrent()[0]
-
-	def getCurrentValue(self):
-		return str(self["config"].getCurrent()[1].getText())
-
-	def createSummary(self):
-		from Screens.Setup import SetupSummary
-		return SetupSummary
 
 
 class DiseqcTesterNimSelection(NimSelection):
