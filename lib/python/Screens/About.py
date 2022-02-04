@@ -309,7 +309,6 @@ class Devices(Screen):
 		self.Console.ePopen("df -mh | grep -v '^Filesystem'", self.Stage1Complete)
 
 	def Stage1Complete(self, result, retval, extra_args=None):
-		result = six.ensure_str(result)
 		result = result.replace("\n                        ", " ").split("\n")
 		self.mountinfo = ""
 		for line in result:
@@ -384,7 +383,6 @@ class SystemMemoryInfo(Screen):
 		self.Console.ePopen("df -mh / | grep -v '^Filesystem'", self.Stage1Complete)
 
 	def Stage1Complete(self, result, retval, extra_args=None):
-		result = six.ensure_str(result)
 		flash = str(result).replace("\n", "")
 		flash = flash.split()
 		RamTotal = flash[1]

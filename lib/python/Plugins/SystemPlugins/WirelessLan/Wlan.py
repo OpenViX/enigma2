@@ -1,5 +1,4 @@
 from __future__ import print_function
-import six
 import re
 from os import system, path as os_path
 
@@ -412,7 +411,6 @@ class Status:
 		self.WlanConsole.ePopen(cmd, self.iwconfigFinished, iface)
 
 	def iwconfigFinished(self, result, retval, extra_args):
-		result = six.ensure_str(result)
 		iface = extra_args
 		ssid = "off"
 		data = {'essid': False, 'frequency': False, 'accesspoint': False, 'bitrate': False, 'encryption': False, 'quality': False, 'signal': False, 'channel': False, 'encryption_type': False, 'frequency': False, 'frequency_norm': False}

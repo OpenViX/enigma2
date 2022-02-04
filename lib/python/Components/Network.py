@@ -1,6 +1,5 @@
 from __future__ import print_function
 from __future__ import absolute_import
-import six
 
 import os
 import re
@@ -411,7 +410,6 @@ class Network:
 	def getLinkStateFinished(self, result, retval, extra_args):
 		(callback) = extra_args
 		if not self.linkConsole.appContainers:
-			result = six.ensure_str(result)
 			callback(result)
 
 	def stopPingConsole(self):
