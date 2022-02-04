@@ -14,7 +14,7 @@ config.misc.installwizard.ipkgloaded = ConfigBoolean(default=False)
 config.misc.installwizard.channellistdownloaded = ConfigBoolean(default=False)
 
 
-class InstallWizard(Screen, ConfigListScreen):
+class InstallWizard(ConfigListScreen, Screen):
 
 	STATE_UPDATE = 0
 	STATE_CHOISE_CHANNELLIST = 1

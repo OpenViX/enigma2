@@ -26,7 +26,7 @@ FOCUS_CONFIG, FOCUS_STREAMS = range(2)
 [PAGE_AUDIO, PAGE_SUBTITLES] = ["audio", "subtitles"]
 
 
-class AudioSelection(Screen, ConfigListScreen):
+class AudioSelection(ConfigListScreen, Screen):
 	def __init__(self, session, infobar=None, page=PAGE_AUDIO):
 		Screen.__init__(self, session)
 		self["streams"] = List([], enableWrapAround=True)

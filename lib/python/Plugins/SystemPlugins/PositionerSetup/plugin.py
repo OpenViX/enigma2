@@ -1424,7 +1424,6 @@ class ONIDTSIDScreen(ConfigListScreen, Screen):
 		self.list.append(getConfigListEntry(_("ONID"), self.transponderOnid))
 		self.list.append(getConfigListEntry(_("TSID"), self.transponderTsid))
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def keyGo(self):
 		onid = int(self.transponderOnid.value)

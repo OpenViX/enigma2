@@ -341,7 +341,7 @@ class UpdatePluginMenu(Screen):
 			self.session.open(RestoreScreen, runRestore=True)
 
 
-class SoftwareManagerSetup(Screen, ConfigListScreen):
+class SoftwareManagerSetup(ConfigListScreen, Screen):
 
 	skin = """
 		<screen name="SoftwareManagerSetup" position="center,center" size="560,440" title="SoftwareManager setup">
