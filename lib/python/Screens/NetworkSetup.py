@@ -113,9 +113,9 @@ class NSCommon:
 	def UninstallCheck(self):
 		self.Console.ePopen("/usr/bin/opkg list_installed " + self.service_name, self.RemovedataAvail)
 
-	def RemovedataAvail(self, str, retval, extra_args):
-		str = six.ensure_str(str)
-		if str:
+	def RemovedataAvail(self, result, retval, extra_args):
+		result = six.ensure_str(result)
+		if result:
 			self.session.openWithCallback(self.RemovePackage, MessageBox, _("Are you ready to remove %s ?") % self.getTitle(), MessageBox.TYPE_YESNO)
 		else:
 			self.updateService()
