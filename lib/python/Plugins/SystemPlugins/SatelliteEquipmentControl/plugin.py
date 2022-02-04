@@ -9,7 +9,7 @@ from Components.NimManager import nimmanager as nimmgr
 from Components.Sources.StaticText import StaticText
 
 
-class SecParameterSetup(Screen, ConfigListScreen):
+class SecParameterSetup(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = ["SecParameterSetup", "Setup"]

@@ -1189,7 +1189,7 @@ class oscReaderStats(Screen, OscamInfo):
 		self.setTitle(" ".join(title))
 
 
-class OscamInfoConfigScreen(Screen, ConfigListScreen):
+class OscamInfoConfigScreen(ConfigListScreen, Screen):
 	def __init__(self, session, msg=None):
 		Screen.__init__(self, session)
 		self.session = session
