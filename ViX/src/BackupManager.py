@@ -503,18 +503,18 @@ class VIXBackupManager(Screen):
 		self.Console.ePopen("opkg update", self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
-		result2 = result.decode("utf8")
-		print("[BackupManager] Restoring Stage 2: Result ", result2)
-		if result2.find("wget returned 4") != -1: # probably no network adaptor connected
+		result = six.ensure_str(result)
+		print("[BackupManager] Restoring Stage 2: Result ", result)
+		if result.find("wget returned 4") != -1: # probably no network adaptor connected
 			self.feeds = "NONETWORK"
 			self.Stage2Completed = True
-		if result2.find("wget returned 8") != -1 or result2.find("wget returned 1") != -1 or result2.find("wget returned 255") != -1 or result2.find("404 Not Found") != -1: # Server issued an error response, or there was a wget generic error code.
+		if result.find("wget returned 8") != -1 or result.find("wget returned 1") != -1 or result.find("wget returned 255") != -1 or result.find("404 Not Found") != -1: # Server issued an error response, or there was a wget generic error code.
 			self.feeds = "DOWN"
 			self.Stage2Completed = True
-		elif result2.find("bad address") != -1: # probably DNS lookup failed
+		elif result.find("bad address") != -1: # probably DNS lookup failed
 			self.feeds = "BAD"
 			self.Stage2Completed = True
-		elif result2.find("Collected errors") != -1: # none of the above errors. What condition requires this to loop? Maybe double key press.
+		elif result.find("Collected errors") != -1: # none of the above errors. What condition requires this to loop? Maybe double key press.
 			AddPopupWithCallback(self.Stage2,
 								 _("A background update check is in progress, please try again."),
 								 MessageBox.TYPE_INFO,
@@ -583,10 +583,11 @@ class VIXBackupManager(Screen):
 			self.Stage6()
 
 	def Stage3Complete(self, result, retval, extra_args):
+		result = six.ensure_str(result)
 		plugins = []
 		if path.exists("/tmp/ExtraInstalledPlugins") and self.kernelcheck:
 			self.pluginslist = []
-			for line in result.decode("utf8").split("\n"):
+			for line in result.split("\n"):
 				if line:
 					parts = line.strip().split()
 					plugins.append(parts[0])
@@ -1293,8 +1294,9 @@ class BackupFiles(Screen):
 
 	def Stage2Complete(self, result, retval, extra_args):
 		if result:
+			result = six.ensure_str(result)
 			plugins_out = []
-			opkg_status_list = result.decode("utf8").split("\n\n")
+			opkg_status_list = result.split("\n\n")
 			# print("[BackupManager] result=%s, retval=%s" % (opkg_status_list, retval))
 			for opkg_status in opkg_status_list:
 				plugin = ""
