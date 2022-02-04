@@ -579,6 +579,7 @@ class DiseqcTesterTestTypeSelection(ConfigListScreen, Screen):
 			{
 				"ok": self.keySave,
 			}, -2)
+		self["key_green"] = StaticText(_("Start test"))
 		self.createSetup()
 
 	def createSetup(self):
