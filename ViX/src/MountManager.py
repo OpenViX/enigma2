@@ -437,9 +437,9 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 	def addconfFstab(self, result=None, retval=None, extra_args=None):
 		# print("[MountManager] RESULT:", result)
 		if result:
+			result = six.ensure_str(result)
 			self.device = extra_args[0]
 			self.mountp = extra_args[1]
-			result = six.ensure_str(result)
 			uuid = re.search('UUID=\"([^\"]+)\"', result)
 			type = re.search('TYPE=\"([^\"]+)\"', result)
 			if uuid and type:

@@ -213,7 +213,8 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def pluginsRestore_Finished(self, result, retval, extra_args=None):
 		if result:
-			print("[RestoreWizard] opkg install result:\n", six.ensure_str(result))		
+			result = six.ensure_str(result)
+			print("[RestoreWizard] opkg install result:\n", result)		
 		self.didPluginRestore = True
 		self.NextStep = "reboot"
 		self.buildListRef.close(True)

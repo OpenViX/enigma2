@@ -249,10 +249,8 @@ class VIXSoftcamManager(Screen):
 
 	def showActivecam2(self, result, retval, extra_args):
 		if retval == 0:
-			if six.PY3:
-				self.currentactivecamtemp = six.ensure_str(result)
-			else:
-				self.currentactivecamtemp = result
+			result = six.ensure_str(result)
+			self.currentactivecamtemp = result
 			self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
 			self.currentactivecam = self.currentactivecam.replace("\n", ", ")
 			if path.exists("/tmp/SoftcamsScriptsRunning"):
@@ -333,8 +331,9 @@ class VIXSoftcamManager(Screen):
 		if strpos < 0:
 			return
 		else:
+			result = six.ensure_str(result)
 			if retval == 0:
-				stopcam = six.ensure_str(result)
+				stopcam = result
 				print("[SoftcamManager] Stopping " + selectedcam + " PID " + stopcam.replace("\n", ""))
 				output = open("/tmp/cam.check.log", "a")
 				now = datetime.now()
@@ -343,7 +342,7 @@ class VIXSoftcamManager(Screen):
 				self.Console.ePopen("kill -9 " + stopcam.replace("\n", ""))
 				sleep(4)
 			else:
-				print("[SoftcamManager] RESULT FAILED: " + str(result))
+				print("[SoftcamManager] RESULT FAILED: " + result)
 			if selectedcam.lower().startswith("cccam") and path.exists("/etc/CCcam.cfg") == True:
 				if self.currentactivecam.lower().find("mgcam") < 0:
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
@@ -536,9 +535,10 @@ class VIXStopCam(Screen):
 
 	def startShow(self, result, retval, extra_args):
 		if retval == 0:
+			result = six.ensure_str(result)
 			self.count = 0
 			self["connect"].setPixmapNum(0)
-			stopcam = six.ensure_str(result)
+			stopcam = result
 			print("[SoftcamManager][startShow] stopcam=%s" % stopcam)
 			if path.exists("/etc/SoftcamsAutostart"):
 				file = open("/etc/SoftcamsAutostart")
