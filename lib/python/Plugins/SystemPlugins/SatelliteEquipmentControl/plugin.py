@@ -13,7 +13,7 @@ class SecParameterSetup(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = ["SecParameterSetup", "Setup"]
-		self.title(_("Satellite equipment setup"))
+		self.title = _("Satellite equipment setup")
 		self["key_blue"] = StaticText(_("Restore defaults"))
 
 		self["actions"] = ActionMap(["ColorActions"],
