@@ -3,7 +3,7 @@ import six
 import errno
 import os
 import re
-import sys
+#import sys
 from fcntl import ioctl
 from time import sleep, time
 
