@@ -152,10 +152,7 @@ class GetEcmInfo:
 				if info['decode'] == 'Network':
 					cardid = 'id:' + info.get('prov', '')
 					try:
-						if six.PY2:
-							share = open('/tmp/share.info', 'rb').readlines()
-						else:
-							share = open('/tmp/share.info', 'r').readlines()
+						share = open('/tmp/share.info', 'r').readlines()
 						for line in share:
 							l = six.ensure_str(line)
 							if cardid in line:
