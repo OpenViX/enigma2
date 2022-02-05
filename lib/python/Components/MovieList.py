@@ -1,6 +1,3 @@
-import six
-from six.moves import reload_module
-
 import os
 import struct
 import random

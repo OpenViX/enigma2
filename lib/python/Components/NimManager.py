@@ -1,5 +1,3 @@
-import six
-
 import os
 
 from Components.SystemInfo import SystemInfo

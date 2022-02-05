@@ -1,5 +1,4 @@
 # shamelessly copied from pliExpertInfo (Vali, Mirakels, Littlesat)
-import six
 
 from os import path
 from enigma import iServiceInformation, iPlayableService
