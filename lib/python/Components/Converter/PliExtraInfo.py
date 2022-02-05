@@ -1,6 +1,4 @@
 # shamelessly copied from pliExpertInfo (Vali, Mirakels, Littlesat)
-from __future__ import absolute_import
-from __future__ import division
 import six
 
 from os import path

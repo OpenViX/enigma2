@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from time import localtime, time, strftime
 
 from Components.config import config

@@ -1,6 +1,5 @@
 # original code is from openmips gb Team: [OMaClockLcd] Renderer #
 # Thx to arn354 #
-from __future__ import absolute_import
 
 import math
 from Components.Renderer.Renderer import Renderer

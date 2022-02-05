@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from enigma import iServiceInformation, eServiceReference
 
 from Components.Converter.Converter import Converter

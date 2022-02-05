@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from fcntl import ioctl
 from struct import pack, unpack
 from os import path

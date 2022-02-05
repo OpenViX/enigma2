@@ -1,4 +1,3 @@
-from __future__ import print_function
 from os import listdir, path, readlink, symlink, unlink
 from enigma import eConsoleAppContainer
 

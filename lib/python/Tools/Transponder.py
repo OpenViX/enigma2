@@ -1,7 +1,4 @@
 #!/usr/bin/python
-from __future__ import print_function
-from __future__ import division
-
 import six
 
 from enigma import eDVBFrontendParametersSatellite, eDVBFrontendParametersCable, eDVBFrontendParametersTerrestrial, eDVBFrontendParametersATSC

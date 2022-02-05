@@ -1,4 +1,3 @@
-from __future__ import (print_function, division)
 from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
 from Components.Sources.StaticText import StaticText

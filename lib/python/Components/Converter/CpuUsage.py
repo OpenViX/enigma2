@@ -5,8 +5,6 @@
 # Version: 0.4 (11.04.2012 14:05)
 # Support: http://dream.altmaster.net/
 #
-from __future__ import absolute_import
-from __future__ import division
 
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll

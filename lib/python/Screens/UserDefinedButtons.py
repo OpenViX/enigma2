@@ -1,6 +1,3 @@
-from __future__ import print_function
-
-
 class UserDefinedButtons:
 	def __init__(self, config, *args):
 		self.__config = config

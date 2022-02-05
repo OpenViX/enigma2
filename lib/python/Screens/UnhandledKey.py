@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from Screens.Screen import Screen
 from Components.Pixmap import Pixmap
 

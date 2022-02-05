@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from enigma import eLabel, iServiceInformation
 
 from Components.Renderer.Renderer import Renderer

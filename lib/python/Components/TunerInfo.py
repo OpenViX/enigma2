@@ -1,5 +1,3 @@
-from __future__ import division
-
 from math import log
 
 from enigma import eLabel, eSlider, iFrontendInformation

@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from enigma import iPlayableService, eDVBResourceManager, eDVBSatelliteEquipmentControl
 
 from Components.config import config

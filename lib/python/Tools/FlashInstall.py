@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from Components.config import config
 from Tools.Directories import fileExists
 from time import time

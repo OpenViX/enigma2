@@ -17,7 +17,6 @@
 # Version: 1.5 (04.07.2014) fix iptv reference cosmetic - 2boom
 # Support: http://dream.altmaster.net/ & http://gisclub.tv
 #
-from __future__ import absolute_import, division
 
 from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eServiceCenter, eTimer, getBestPlayableServiceReference
 

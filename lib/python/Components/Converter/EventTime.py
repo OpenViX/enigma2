@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-
 from time import time
 
 from enigma import eEPGCache

@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from enigma import eLabel, eTimer
 
 from Components.config import config

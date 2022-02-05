@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from boxbranding import getMachineBrand
 
 from enigma import ePicLoad, eTimer, getDesktop, gMainDC, eSize

@@ -6,7 +6,6 @@
 #<widget source="session.CurrentService" render="Picon" position="1120,95" zPosition="14" size="100,60" transparent="12" alphatest="blend">
 #	<convert type="MovieReference"/>
 #</widget>
-from __future__ import absolute_import
 
 from enigma import iServiceInformation, eServiceReference, iPlayableServicePtr
 

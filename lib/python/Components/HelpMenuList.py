@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 from enigma import eListboxPythonMultiContent, eListbox, gFont
 
 from Components.GUIComponent import GUIComponent

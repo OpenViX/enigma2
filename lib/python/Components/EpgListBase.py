@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
 from time import localtime, time, strftime
 
 from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, eServiceReference, eSize

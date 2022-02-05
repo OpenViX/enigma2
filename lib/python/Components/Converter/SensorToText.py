@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from Tools.Sign import SIGN
 from Components.Converter.Converter import Converter
 

@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from Screens.Screen import Screen
 from Components.Label import Label
 from enigma import eTimer, getDesktop, eActionMap, gFont

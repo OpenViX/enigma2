@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from Components.Converter.Converter import Converter
 from Components.Element import cached, ElementError
 from Tools.Directories import SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, resolveFilename

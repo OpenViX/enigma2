@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
 import six
 
 # DO NOT CHANGE THE ORDER OF THESE IMPORTS OR Harddisk will crash!!

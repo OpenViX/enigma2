@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from Components.config import config, ConfigSelection, ConfigSubsection, ConfigYesNo, ConfigSelectionNumber
 from Components.NimManager import nimmanager
 

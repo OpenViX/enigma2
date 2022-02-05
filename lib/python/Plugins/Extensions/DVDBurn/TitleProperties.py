@@ -1,8 +1,4 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 from enigma import ePicLoad
-
 
 from Components.ActionMap import ActionMap
 from Components.Sources.StaticText import StaticText

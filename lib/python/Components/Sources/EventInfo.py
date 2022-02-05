@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from enigma import iPlayableService, iServiceInformation, eServiceReference, eEPGCache
 
 from Components.Sources.Source import Source

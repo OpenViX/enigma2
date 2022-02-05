@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-
 from Components.Converter.Converter import Converter
 
 from Components.config import config

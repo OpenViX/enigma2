@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
 import six
 
 from os import system, path as os_path, remove, unlink, rename, chmod, access, X_OK

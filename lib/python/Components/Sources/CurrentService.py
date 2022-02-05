@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from enigma import iPlayableService
 
 from Components.Element import cached

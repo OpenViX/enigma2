@@ -1,5 +1,3 @@
-from __future__ import division
-
 from enigma import gFont, getDesktop, gMainDC, eSize, RT_HALIGN_RIGHT, RT_WRAP
 
 from Components.Sources.CanvasSource import CanvasSource

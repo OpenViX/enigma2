@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-
 from enigma import eDVBDB, getLinkedSlotID, eDVBResourceManager
 from Screens.Screen import Screen
 from Components.SystemInfo import SystemInfo
