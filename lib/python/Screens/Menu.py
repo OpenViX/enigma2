@@ -113,7 +113,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 					return
 			elif not SystemInfo.get(requires, False):
 				return
-		MenuTitle = six.ensure_str(_(node.get("text", "??")) if six.PY3 else _(node.get("text", "??").encode("UTF-8")))
+		MenuTitle = six.ensure_str(_(node.get("text", "??")))
 		entryID = node.get("entryID", "undefined")
 		weight = node.get("weight", 50)
 		x = node.get("flushConfigOnClose")
@@ -147,7 +147,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		conditional = node.get("conditional")
 		if conditional and not eval(conditional):
 			return
-		item_text = six.ensure_str(node.get("text", "* Undefined *") if six.PY3 else node.get("text", "* Undefined *").encode("UTF-8"))
+		item_text = six.ensure_str(node.get("text", "* Undefined *"))
 		if item_text:
 			item_text = _(item_text)
 		entryID = node.get("entryID", "undefined")
@@ -251,8 +251,8 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 				"9": (self.keyNumberGlobal, _("Direct menu item selection")),
 				"blue": (self.keyBlue, _("Sort menu")),
 			}, prio=0, description=_("Common Menu Actions"))
-		title = (parent.get("title", "") if six.PY3 else parent.get("title", "").encode("UTF-8")) or None
-		title = title and _(title) or (_(parent.get("text", "") if six.PY3 else _(parent.get("text", "").encode("UTF-8"))))
+		title = parent.get("title", "")
+		title = title and _(title) or _(parent.get("text", "")
 		title = self.__class__.__name__ == "MenuSort" and _("Menusort (%s)") % title or title
 		self["title"] = StaticText(title)
 		self.setTitle(title)

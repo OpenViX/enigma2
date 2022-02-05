@@ -1,5 +1,3 @@
-import six
-
 import os
 import re
 from Components.MenuList import MenuList
@@ -185,10 +183,7 @@ class FileList(MenuList):
 			directories = []
 		elif self.useServiceRef:
 			# we should not use the "eServiceReference(string)" constructor, because it doesn't allow ":" in the directoryname
-			if six.PY3:
-				root = eServiceReference(2, 0, directory)
-			else:
-				root = eServiceReference.fromDirectory(directory)
+			root = eServiceReference(2, 0, directory)
 			if self.additional_extensions:
 				root.setName(self.additional_extensions)
 			serviceHandler = eServiceCenter.getInstance()

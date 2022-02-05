@@ -51,8 +51,7 @@ class HTTPProgressDownloader(client.HTTPDownloader):
 
 class downloadWithProgress:
 	def __init__(self, url, outputfile, contextFactory=None, *args, **kwargs):
-		if six.PY3:
-			url = six.ensure_binary(url)
+		url = six.ensure_binary(url)
 
 		parsed = urlparse(url)
 		scheme = six.ensure_str(parsed.scheme)

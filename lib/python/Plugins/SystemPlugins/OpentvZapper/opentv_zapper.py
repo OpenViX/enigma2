@@ -540,7 +540,7 @@ class LamedbWriter():
 					service_flags = ",f:%x" % service["service_flags"]
 
 				if 'service_line' in service.keys():
-					lamedblist.append(self.utf8_convert("%s\n" % service["service_line"]))
+					lamedblist.append("%s\n" % service["service_line"])
 				else:
 					lamedblist.append("p:%s%s%s\n" % (provider_name, service_ca, service_flags))
 				services_count += 1
@@ -685,7 +685,7 @@ class LamedbWriter():
 
 				if 'service_line' in service.keys(): # from lamedb
 					if len(service["service_line"]):
-						lamedblist.append(",%s\n" % self.utf8_convert(service["service_line"]))
+						lamedblist.append(",%s\n" % service["service_line"])
 					else:
 						lamedblist.append("\n")
 				else: # from scanner
@@ -698,22 +698,6 @@ class LamedbWriter():
 		del lamedblist
 
 		#print("[%s-LamedbWriter] Wrote %d transponders and %d services" % (debug_name, transponders_count, services_count))
-
-	def utf8_convert(self, text):
-		if six.PY3:
-			return text
-		for encoding in ["utf8", "latin-1"]:
-			try:
-				text.decode(encoding=encoding)
-			except UnicodeDecodeError:
-				encoding = None
-			else:
-				break
-		if encoding == "utf8":
-			return text
-		if encoding is None:
-			encoding = "utf8"
-		return text.decode(encoding, errors="ignore").encode("utf8")
 
 
 class Opentv_Zapper():

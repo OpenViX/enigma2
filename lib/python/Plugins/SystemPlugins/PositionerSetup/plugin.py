@@ -1,5 +1,3 @@
-import six
-
 from enigma import eTimer, eDVBResourceManager, eDVBDiseqcCommand, eDVBFrontendParametersSatellite, iDVBFrontend
 
 from time import sleep
@@ -100,10 +98,7 @@ class PositionerSetup(Screen):
 			self.advancedsats = self.advancedconfig.sat
 		else:
 			self.advanced = False
-		if six.PY3:	# do not combine into single conditional, py3 gives  SyntaxError: cannot assign to conditional expression
-			self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)]
-		else:
-			self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
+		self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)]
 		cur = {}
 		if not self.openFrontend():
 			service = self.session.nav.getCurrentService()
@@ -1062,12 +1057,8 @@ class PositionerSetup(Screen):
 			print((_("Lock ratio") + "     %5.1f" + chr(176) + "   : %6.2f") % (pos, lock), file=log)
 
 		def optimise(readings):
-			#	if six.PY3:
 			xi = list(readings.keys())
-			yi = [x_y[0] for x_y in list(readings.values())]
-			#	else:
-			#		xi = readings.keys()
-			#		yi = map(lambda (x, y) : x, readings.values())
+			yi = [x_y[0] for x_y in readings.values()]
 			x0 = sum(map(mul, xi, yi)) // sum(yi)
 			xm = xi[yi.index(max(yi))]
 			return (x0, xm)

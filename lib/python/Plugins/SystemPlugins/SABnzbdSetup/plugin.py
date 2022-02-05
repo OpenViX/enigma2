@@ -1,6 +1,5 @@
 from boxbranding import getMachineBrand, getMachineName
 import time
-import six
 
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -49,7 +48,7 @@ class SABnzbdSetupScreen(Screen):
 		self.my_sabnzbd_active = False
 		self.my_sabnzbd_run = False
 		self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.close, 'back': self.close, 'red': self.UninstallCheck, 'green': self.SABnzbdStartStop, 'yellow': self.activateSABnzbd})
-		self.service_name = ("sabnzbd3" if six.PY3 else "sabnzbd")
+		self.service_name = "sabnzbd3"
 		self.onLayoutFinish.append(self.InstallCheck)
 
 	def InstallCheck(self):
