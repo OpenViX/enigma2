@@ -1,5 +1,3 @@
-import six
-
 from Components.config import config
 import os
 import time
