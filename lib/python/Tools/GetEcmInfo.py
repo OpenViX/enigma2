@@ -154,7 +154,6 @@ class GetEcmInfo:
 					try:
 						share = open('/tmp/share.info', 'r').readlines()
 						for line in share:
-							l = six.ensure_str(line)
 							if cardid in line:
 								self.textvalue = line.strip()
 								break
