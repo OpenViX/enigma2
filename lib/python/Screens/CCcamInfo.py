@@ -1,7 +1,5 @@
 # -*- coding: UTF-8 -*-
 # CCcam Info by AliAbdul
-import six
-
 from base64 import b64encode
 from os import listdir, remove, rename, system, path
 
@@ -59,7 +57,7 @@ def _parse(url):
 		if ':' in username:
 			username, password = username.split(':')
 			base64string = "%s:%s" % (username, password)
-			base64string = b64encode(base64string.encode('utf-8')) if six.PY2 else (b64encode(base64string.encode('utf-8'))).decode()
+			base64string = (b64encode(base64string.encode('utf-8'))).decode()
 			authHeader = "Basic " + base64string
 			AuthHeaders["Authorization"] = authHeader
 	if ':' in host:

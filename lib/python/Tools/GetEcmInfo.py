@@ -35,10 +35,7 @@ class GetEcmInfo:
 			info = {'ecminterval2': oecmi1, 'ecminterval1': oecmi0}
 			old_ecm_time = ecm_time
 			try:
-				if six.PY2:
-					ecm = open(ECM_INFO, 'rb').readlines()
-				else:
-					ecm = open(ECM_INFO, 'r').readlines()
+				ecm = open(ECM_INFO, 'r').readlines()
 			except:
 				ecm = ''
 			info['caid'] = "0"

@@ -77,7 +77,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				skin = setup.get("skin", None)
 				if skin and skin != "":
 					self.skinName.insert(0, skin)
-				title = setup.get("title", None).encode("UTF-8", errors="ignore") if six.PY2 else setup.get("title", None)
+				title = setup.get("title", None)
 				title = six.ensure_str(title)
 				# print("[Setup] [createSetup] %s" % title)
 				# If this break is executed then there can only be one setup tag with this key.
@@ -114,11 +114,11 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def addItem(self, element):
 		if self.pluginLanguageDomain:
-			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8", errors="ignore")) if six.PY2 else dgettext(self.pluginLanguageDomain, element.get("text", "??"))
-			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8", errors="ignore")) if six.PY2 else dgettext(self.pluginLanguageDomain, element.get("description", " "))
+			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??"))
+			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " "))
 		else:
-			itemText = _(element.get("text", "??").encode("UTF-8", errors="ignore")) if six.PY2 else _(element.get("text", "??"))
-			itemDescription = _(element.get("description", " ").encode("UTF-8", errors="ignore")) if six.PY2 else _(element.get("description", " "))
+			itemText = _(element.get("text", "??"))
+			itemDescription = _(element.get("description", " "))
 		item = eval(element.text or "")
 		# print("[Setup] [self.pluginLanguageDomain]itemText = %s itemDescription = %s item = %s" % (itemText, itemDescription, item))
 		if item != "" and not isinstance(item, ConfigNothing):
@@ -318,7 +318,7 @@ def setupDom(setup=None, plugin=None):
 				for setup in setupFileDom.findall("setup"):
 					key = setup.get("key")
 					if key:  # If there is no key then this element is useless and can be skipped!
-						title = setup.get("title", "").encode("UTF-8", errors="ignore") if six.PY2 else setup.get("title", "")
+						title = setup.get("title", "")
 						if title == "":
 							print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
 							title = "** Setup error: '%s' title is missing or blank!" % key
