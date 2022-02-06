@@ -181,12 +181,6 @@ class Pic_Setup(ConfigListScreen, Screen):
 		]
 		self["config"].list = setup_list
 
-	def keyLeft(self):
-		ConfigListScreen.keyLeft(self)
-
-	def keyRight(self):
-		ConfigListScreen.keyRight(self)
-
 #---------------------------------------------------------------------------
 
 
