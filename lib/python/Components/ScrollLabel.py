@@ -26,7 +26,7 @@ class ScrollLabel(GUIComponent):
 			widget_attribs = []
 			scrollbar_attribs = []
 			scrollbarAttrib = ["borderColor", "borderWidth", "scrollbarSliderForegroundColor", "scrollbarSliderBorderColor"]
-			for (attrib, value) in list(self.skinAttributes[:]):
+			for (attrib, value) in self.skinAttributes[:]:
 				if attrib in scrollbarAttrib:
 					scrollbar_attribs.append((attrib, value))
 					self.skinAttributes.remove((attrib, value))

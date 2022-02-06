@@ -197,7 +197,8 @@ class ServiceList(GUIComponent):
 
 		def itemsDistances(value):
 			self.l.setItemsDistances(parseScale(value))
-		for (attrib, value) in list(self.skinAttributes):
+
+		for (attrib, value) in self.skinAttributes[:]:
 			try:
 				locals().get(attrib)(value)
 				self.skinAttributes.remove((attrib, value))
