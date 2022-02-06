@@ -248,7 +248,7 @@ class ConfigElement(object):
 		self.extra_args.append((notifier, extra_args))
 
 	def __removeExtraArgs(self, notifier):
-		for i in list(range(len(self.extra_args))):
+		for i in range(len(self.extra_args)):
 			if self.extra_args[i][0] == notifier:
 				del self.extra_args[i]
 
@@ -437,7 +437,7 @@ class ConfigSelection(ConfigElement):
 			self.changed()
 
 	def setValue(self, value):
-		if str(value) in list(map(str, self.choices)):
+		if str(value) in map(str, self.choices):
 			self._value = self.choices[self.choices.index(value)]
 		else:
 			self._value = self.default
@@ -2000,7 +2000,7 @@ class ConfigSubList(list, object):
 
 	def setSavedValue(self, values):
 		self.stored_values = dict(values)
-		for (key, val) in list(self.stored_values.items()):
+		for (key, val) in self.stored_values.items():
 			if int(key) < len(self):
 				self[int(key)].saved_value = val
 
@@ -2028,16 +2028,16 @@ class ConfigSubDict(dict, object):
 		self.stored_values = {}
 
 	def save(self):
-		for x in list(self.values()):
+		for x in self.values():
 			x.save()
 
 	def load(self):
-		for x in list(self.values()):
+		for x in self.values():
 			x.load()
 
 	def getSavedValue(self):
 		res = {}
-		for (key, val) in list(self.items()):
+		for (key, val) in self.items():
 			sv = val.saved_value
 			if sv is not None:
 				res[str(key)] = sv
@@ -2045,7 +2045,7 @@ class ConfigSubDict(dict, object):
 
 	def setSavedValue(self, values):
 		self.stored_values = dict(values)
-		for (key, val) in list(self.items()):
+		for (key, val) in self.items():
 			if str(key) in self.stored_values:
 				val.saved_value = self.stored_values[str(key)]
 
@@ -2098,7 +2098,7 @@ class ConfigSubsection(object):
 
 	def getSavedValue(self):
 		res = self.content.stored_values
-		for (key, val) in list(self.content.items.items()):
+		for (key, val) in self.content.items.items():
 			sv = val.saved_value
 			if sv is not None:
 				res[key] = sv
@@ -2109,7 +2109,7 @@ class ConfigSubsection(object):
 	def setSavedValue(self, values):
 		values = dict(values)
 		self.content.stored_values = values
-		for (key, val) in list(self.content.items.items()):
+		for (key, val) in self.content.items.items():
 			value = values.get(key, None)
 			if value is not None:
 				val.saved_value = value
@@ -2117,15 +2117,15 @@ class ConfigSubsection(object):
 	saved_value = property(getSavedValue, setSavedValue)
 
 	def save(self):
-		for x in list(self.content.items.values()):
+		for x in self.content.items.values():
 			x.save()
 
 	def load(self):
-		for x in list(self.content.items.values()):
+		for x in self.content.items.values():
 			x.load()
 
 	def cancel(self):
-		for x in list(self.content.items.values()):
+		for x in self.content.items.values():
 			x.cancel()
 
 	def dict(self):
