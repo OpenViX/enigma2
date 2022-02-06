@@ -252,7 +252,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 				"blue": (self.keyBlue, _("Sort menu")),
 			}, prio=0, description=_("Common Menu Actions"))
 		title = parent.get("title", "")
-		title = title and _(title) or _(parent.get("text", "")
+		title = title and _(title) or _(parent.get("text", ""))
 		title = self.__class__.__name__ == "MenuSort" and _("Menusort (%s)") % title or title
 		self["title"] = StaticText(title)
 		self.setTitle(title)
