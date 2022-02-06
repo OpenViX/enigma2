@@ -585,7 +585,7 @@ class NIM(object):
 	def getTunerTypesEnabled(self):
 		try:
 			if self.combined:
-				return [x for x in list(self.multi_type.values()) if
+				return [x for x in self.multi_type.values() if
 					self.config.configModeDVBS.value and x.startswith("DVB-S") or
 					self.config.configModeDVBC.value and x.startswith("DVB-C") or
 					self.config.configModeDVBT.value and x.startswith("DVB-T") or
@@ -598,12 +598,12 @@ class NIM(object):
 		return self.isSupported() and bool([x for x in self.getTunerTypesEnabled() if what in self.compatible[x]])
 
 	def canBeCompatible(self, what):
-		return self.isSupported() and bool([x for x in list(self.multi_type.values()) if what in self.compatible[x]] if self.multi_type else self.isCompatible(what))
+		return self.isSupported() and bool([x for x in self.multi_type.values() if what in self.compatible[x]] if self.multi_type else self.isCompatible(what))
 
 	def getType(self):
 		try:
 			if self.isCombined():
-				return [x for x in list(self.multi_type.values()) if x.startswith("DVB-S")][0]
+				return [x for x in self.multi_type.values() if x.startswith("DVB-S")][0]
 			if self.isMultiType():
 				return self.multi_type[self.config.multiType.value]
 		except:
@@ -703,7 +703,7 @@ class NIM(object):
 
 	def getFriendlyType(self):
 		if list(self.multi_type.values()):
-			returnValue = "/".join([x[1].replace("DVB-", "") for x in sorted([({"DVB-S": 1, "DVB-C": 2, "DVB-T": 3, "ATSC": 4}[x[:5]], x) for x in list(self.multi_type.values())])])
+			returnValue = "/".join([x[1].replace("DVB-", "") for x in sorted([({"DVB-S": 1, "DVB-C": 2, "DVB-T": 3, "ATSC": 4}[x[:5]], x) for x in self.multi_type.values()])])
 			return "%s %s" % (_("Combined") if self.combined else _("MultiType"), returnValue if returnValue == 'ATSC' else "DVB-%s" % returnValue)
 		return self.getType() or _("empty")
 
@@ -943,7 +943,7 @@ class NimManager:
 		self.number_of_slots = len(list(entries.keys()))
 		fbc_number = 0
 		fbc_tuner = 1
-		for id, entry in list(entries.items()):
+		for id, entry in entries.items():
 			if not ("name" in entry and "type" in entry):
 				entry["name"] = _("N/A")
 				entry["type"] = None
@@ -1070,7 +1070,7 @@ class NimManager:
 						nimHaveRotor = True
 						break
 				if not nimHaveRotor:
-					for sat in list(mode.advanced.sat.values()):
+					for sat in mode.advanced.sat.values():
 						lnb_num = int(sat.lnb.value)
 						diseqcmode = lnb_num and mode.advanced.lnb[lnb_num].diseqcMode.value or ""
 						if diseqcmode == "1_2":
@@ -1799,7 +1799,7 @@ def InitNimManager(nimmgr, update_slots=[]):
 			createATSCConfig(nim, slot_id)
 
 		if slot.isMultiType() and not hasattr(nim, "multiType"):
-			nim.multiType = ConfigSelection([(id, slot.getMultiTypeList()[id]) for id in list(slot.getMultiTypeList().keys())] + [("nothing", _("disabled"))], "0")
+			nim.multiType = ConfigSelection([(id, slot.getMultiTypeList()[id]) for id in slot.getMultiTypeList().keys()] + [("nothing", _("disabled"))], "0")
 			nim.multiType.fe_id = slot_id
 			nim.multiType.addNotifier(boundFunction(tunerTypeChanged, nimmgr))
 			if nim.multiType.value == "nothing":
