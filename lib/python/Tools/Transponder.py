@@ -1,5 +1,4 @@
 #!/usr/bin/python
-import six
 
 from enigma import eDVBFrontendParametersSatellite, eDVBFrontendParametersCable, eDVBFrontendParametersTerrestrial, eDVBFrontendParametersATSC
 
