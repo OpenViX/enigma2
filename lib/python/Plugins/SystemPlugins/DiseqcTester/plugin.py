@@ -61,10 +61,10 @@ class ResultParser:
 
 			text += "The %d unsuccessful tuning attempts failed for the following reasons:\n" % countfailed
 
-			for reason in list(reasons.keys()):
+			for reason in reasons.keys():
 				text += "%s: %d transponders failed\n" % (reason, len(reasons[reason]))
 
-			for reason in list(reasons.keys()):
+			for reason in reasons.keys():
 				text += "\n"
 				text += "%s previous planes:\n" % reason
 				for transponder in reasons[reason]:
@@ -110,13 +110,13 @@ class ResultParser:
 		if self.type == self.TYPE_BYINDEX:
 			text += self.getTextualResultForIndex(self.index)
 		elif self.type == self.TYPE_BYORBPOS:
-			for index in list(self.results.keys()):
+			for index in self.results.keys():
 				if index[2] == self.orbpos:
 					text += self.getTextualResultForIndex(index)
 					text += "\n-----------------------------------------------------\n"
 		elif self.type == self.TYPE_ALL:
 			orderedResults = {}
-			for index in list(self.results.keys()):
+			for index in self.results.keys():
 				orbpos = index[2]
 				orderedResults[orbpos] = orderedResults.get(orbpos, [])
 				orderedResults[orbpos].append(index)
@@ -376,7 +376,7 @@ class DiseqcTester(Screen, TuneTest, ResultParser):
 			while not stop:
 				if currindex is None or len(successorindex[currindex]) == 0:
 					oldindex = currindex
-					for index in list(successorindex.keys()):
+					for index in successorindex.keys():
 						if len(successorindex[index]) > 0:
 							currindex = index
 							self.keylist.append(currindex)

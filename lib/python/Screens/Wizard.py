@@ -312,7 +312,7 @@ class Wizard(Screen):
 	def getStepWithID(self, id):
 # 		print "getStepWithID:", id
 		count = 0
-		for x in list(self.wizard.keys()):
+		for x in self.wizard.keys():
 			if self.wizard[x]["id"] == id:
 				print("[Wizard] result:", count)
 				return count

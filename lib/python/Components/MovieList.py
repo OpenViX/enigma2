@@ -909,7 +909,7 @@ class MovieList(GUIComponent):
 
 		# reverse the dictionary to see which unique movie each tag now references
 		rautotags = {}
-		for tag, movies in list(autotags.items()):
+		for tag, movies in autotags.items():
 			if (len(movies) > 1):
 				movies = tuple(movies) # a tuple can be hashed, but a list not
 				item = rautotags.get(movies, [])
@@ -917,7 +917,7 @@ class MovieList(GUIComponent):
 					rautotags[movies] = item
 				item.append(tag)
 		self.tags = {}
-		for movies, tags in list(rautotags.items()):
+		for movies, tags in rautotags.items():
 			movie = movies[0]
 			# format the tag lists so that they are in 'original' order
 			tags.sort(key=movie.find)

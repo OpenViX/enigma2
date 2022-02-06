@@ -452,7 +452,7 @@ class PositionerSetup(Screen):
 		if orb_pos in self.availablesats:
 			lnbnum = int(self.advancedsats[orb_pos].lnb.value)
 			if not lnbnum:
-				for allsats in list(range(3601, 3607)):
+				for allsats in range(3601, 3607):
 					lnbnum = int(self.advancedsats[allsats].lnb.value)
 					if lnbnum:
 						break
@@ -1193,7 +1193,7 @@ class PositionerSetup(Screen):
 
 		def optimise(readings):
 			xi = list(readings.keys())
-			yi = [x_y1[0] for x_y1 in list(readings.values())]
+			yi = [x_y1[0] for x_y1 in readings.values()]
 			x0 = int(round(sum(map(mul, xi, yi)) // sum(yi)))
 			xm = xi[yi.index(max(yi))]
 			return (x0, xm)

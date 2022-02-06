@@ -90,6 +90,6 @@ class Console(object):
 			self.appContainers[name].container.kill()
 
 	def killAll(self):
-		for name, item in list(self.appContainers.items()):
+		for name, item in self.appContainers.items():
 			print("[Console] killing: ", name)
 			item.container.kill()
