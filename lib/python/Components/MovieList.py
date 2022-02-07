@@ -760,7 +760,12 @@ class MovieList(GUIComponent):
 
 			if not collectionName and serviceref.flags & eServiceReference.mustDescent:
 				if not name.endswith('.AppleDouble/') and not name.endswith('.AppleDesktop/') and not name.endswith('.AppleDB/') and not name.endswith('Network Trash Folder/') and not name.endswith('Temporary Items/'):
-					begin = os.stat(serviceref.getPath()).st_mtime
+					try:
+						begin = os.stat(serviceref.getPath()).st_mtime
+					except FileNotFoundError as err: # possibly os.stat failed due to unavailable mount
+						begin = 0
+						import traceback
+						traceback.print_exc()
 					data = MovieListData()
 					data.txt = getItemDisplayName(serviceref, info)
 					self.list.append((serviceref, info, begin, data))
