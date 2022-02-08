@@ -6,9 +6,7 @@
 
 #include <string>
 #include <lib/base/object.h>
-#if PY_VERSION_HEX >= 0x030a0000
 #define PY_SSIZE_T_CLEAN 1
-#endif
 #include "Python.h"
 
 #if !defined(SKIP_PART1) && !defined(SWIG)
@@ -225,20 +223,12 @@ inline void Impl_Py_XINCREF(const char* file, int line, const ePyObject &obj)
 
 inline ePyObject Impl_PyTuple_New(const char* file, int line, int elements=0)
 {
-#if PY_VERSION_HEX >= 0x030a0000
 	return ePyObject(PyTuple_New((Py_ssize_t)elements), file, line);
-#else
-	return ePyObject(PyTuple_New(elements), file, line);
-#endif
 }
 
 inline ePyObject Impl_PyList_New(const char* file, int line, int elements=0)
 {
-#if PY_VERSION_HEX >= 0x030a0000
 	return ePyObject(PyList_New((Py_ssize_t)elements), file, line);
-#else
-	return ePyObject(PyList_New(elements), file, line);
-#endif
 }
 
 inline ePyObject Impl_PyDict_New(const char* file, int line)
@@ -286,20 +276,12 @@ inline ePyObject Impl_PyLong_FromUnsignedLongLong(const char* file, int line, un
 
 inline ePyObject Impl_PyList_GET_ITEM(const char *file, int line, ePyObject list, unsigned int pos)
 {
-#if PY_VERSION_HEX >= 0x030a0000
 	return ePyObject(PyList_GET_ITEM(list, (Py_ssize_t)pos), file, line);
-#else
-	return ePyObject(PyList_GET_ITEM(list, pos), file, line);
-#endif
 }
 
 inline ePyObject Impl_PyTuple_GET_ITEM(const char *file, int line, ePyObject list, unsigned int pos)
 {
-#if PY_VERSION_HEX >= 0x030a0000
 	return ePyObject(PyTuple_GET_ITEM(list, (Py_ssize_t)pos), file, line);
-#else
-	return ePyObject(PyTuple_GET_ITEM(list, pos), file, line);
-#endif
 }
 #else
 inline void Impl_Py_DECREF(const ePyObject &obj)
@@ -326,20 +308,12 @@ inline void Impl_Py_XINCREF(const ePyObject &obj)
 
 inline ePyObject Impl_PyTuple_New(int elements=0)
 {
-#if PY_VERSION_HEX >= 0x030a0000
 	return PyTuple_New((Py_ssize_t)elements);
-#else
-	return PyTuple_New(elements);
-#endif
 }
 
 inline ePyObject Impl_PyList_New(int elements=0)
 {
-#if PY_VERSION_HEX >= 0x030a0000
 	return PyList_New((Py_ssize_t)elements);
-#else
-	return PyList_New(elements);
-#endif
 }
 
 inline ePyObject Impl_PyDict_New()
@@ -377,20 +351,12 @@ inline ePyObject Impl_PyLong_FromUnsignedLongLong(unsigned long long val)
 
 inline ePyObject Impl_PyList_GET_ITEM(ePyObject list, unsigned int pos)
 {
-#if PY_VERSION_HEX >= 0x030a0000
 	return PyList_GET_ITEM(list, (Py_ssize_t)pos);
-#else
-	return PyList_GET_ITEM(list, pos);
-#endif
 }
 
 inline ePyObject Impl_PyTuple_GET_ITEM(ePyObject list, unsigned int pos)
 {
-#if PY_VERSION_HEX >= 0x030a0000
 	return PyTuple_GET_ITEM(list, (Py_ssize_t)pos);
-#else
-	return PyTuple_GET_ITEM(list, pos);
-#endif
 }
 #endif
 
