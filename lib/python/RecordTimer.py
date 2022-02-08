@@ -1018,10 +1018,11 @@ class RecordTimer(Timer):
 					insort(self.processed_timers, w)
 			# correct wrong running timers
 			self.checkWrongRunningTimers()
-			# check for disabled timers, if time as passed set to completed
+			# check for disabled timers, if time has passed set to completed
 			self.cleanupDisabled()
-			# Remove old timers as set in config
-			self.cleanupDaily(config.recording.keep_timers.value, config.recording.keep_finished_timer_logs.value)
+
+		# Remove old log entries as set in config
+		self.cleanupLogs(config.recording.keep_timers.value, config.recording.keep_finished_timer_logs.value, False)
 
 		self.stateChanged(w)
 		if dosave:

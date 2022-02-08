@@ -466,9 +466,11 @@ class PowerTimer(Timer):
 				w.state = PowerTimerEntry.StateWaiting
 				self.addTimerEntry(w)
 			else:
-				# Remove old timers as set in config
-				self.cleanupDaily(config.recording.keep_timers.value, config.recording.keep_finished_timer_logs.value)
 				insort(self.processed_timers, w)
+
+		# Remove old timers as set in config (from RecordTimer settings...)
+		# Pass in whether this is an AutosleepRepeat timer.
+		self.cleanupLogs(config.recording.keep_timers.value, config.recording.keep_finished_timer_logs.value, (str(w.autosleeprepeat) == "repeated"))
 		self.stateChanged(w)
 		if dosave:
 			self.saveTimer()
@@ -647,14 +649,3 @@ class PowerTimer(Timer):
 
 	def shutdown(self):
 		self.saveTimer()
-
-	def cleanupDaily(self, days, finishedLogDays=None):
-		Timer.cleanupDaily(self, days, finishedLogDays)
-		if days > 0:
-			now = time()
-			keepThreshold = now - days * 86400
-			for entry in self.timer_list:
-				if str(entry.autosleeprepeat) == "repeated":
-					# Handle repeat entries, which never end
-					# Repeating timers get autosleeprepeat="repeated" as well as the cases handled by TimerEntry
-					entry.log_entries = [log_entry for log_entry in entry.log_entries if log_entry[0] > keepThreshold]
