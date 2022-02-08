@@ -193,14 +193,19 @@ class Timer:
 		for timer in disabled_timers:
 			timer.shouldSkip()
 
-	def cleanupDaily(self, days, finishedLogDays=None):
+# Prune any old log entries from the timer list
+# We check all entries each time any one changes, so we can prune the old ones.
+# Used by PowerTimer and RecordTimer
+#
+	def cleanupLogs(self, days, finishedLogDays=None, IsAutosleepRepeat=False):
 		now = time()
 		keepThreshold = now - days * 86400 if days else 0
 		keepFinishedLogThreshold = now - finishedLogDays * 86400 if finishedLogDays else 0
 		for entry in self.timer_list:
-			if entry.repeated:
-				# Handle repeat entries, which never end
-				# Repeating timers get, e.g., repeated="127" (day of week bitmap)
+			# Handle repeat entries, which never end
+			# Repeating timers get, e.g., repeated="127" (day of week bitmap)
+			# PowerTimer autosleeprepeat just have that set to "repeated"
+			if (entry.repeated or IsAutosleepRepeat):
 				entry.log_entries = [log_entry for log_entry in entry.log_entries if log_entry[0] > keepThreshold]
 
 		self.processed_timers = [entry for entry in self.processed_timers if (entry.disabled and entry.repeated) or (entry.end and (entry.end > keepThreshold))]
