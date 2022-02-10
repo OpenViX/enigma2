@@ -938,7 +938,7 @@ class BufferIndicator(Screen):
 		return info and info.getInfo(iServiceInformation.sBuffer)
 
 
-class InfoBarBuffer():
+class InfoBarBuffer:
 	def __init__(self):
 		self.bufferScreen = self.session.instantiateDialog(BufferIndicator)
 		self.bufferScreen.hide()
@@ -4192,7 +4192,7 @@ class InfoBarTeletextPlugin:
 		self.teletext_plugin and self.teletext_plugin(session=self.session, service=self.session.nav.getCurrentService())
 
 
-class InfoBarSubtitleSupport():
+class InfoBarSubtitleSupport:
 	def __init__(self):
 		object.__init__(self)
 		self["SubtitleSelectionAction"] = HelpableActionMap(self, "InfobarSubtitleSelectionActions",

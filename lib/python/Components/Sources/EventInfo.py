@@ -1,12 +1,11 @@
 from enigma import iPlayableService, iServiceInformation, eServiceReference, eEPGCache
-
-from Components.Sources.Source import Source
 from Components.Element import cached
 from Components.PerServiceDisplay import PerServiceBase
+from Components.Sources.Source import Source
 
 
 # Fake eServiceEvent to fill Event_Now and Event_Next in Infobar for Streams
-class pServiceEvent():
+class pServiceEvent:
 	NOW = 0
 	NEXT = 1
 

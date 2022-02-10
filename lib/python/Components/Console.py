@@ -28,7 +28,6 @@ class ConsoleItem:
 			self.finishedCB(retval)
 		if callback is None:
 			pid = self.container.getPID()
-			print("[Console] pid = %s" % pid)
 			try:
 				waitpid(pid, 0)
 			except OSError:
@@ -50,7 +49,7 @@ class ConsoleItem:
 			callback(data, retval, self.extra_args)
 
 
-class Console():
+class Console:
 	"""
 		Console by default will work with strings on callback.
 		If binary data required class shoud be initialized with Console(binary=True)
