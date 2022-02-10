@@ -6,7 +6,7 @@ from Components.Converter.Converter import Converter
 from Components.Element import cached
 
 
-class MovieInfo(Converter, object):
+class MovieInfo(Converter):
 	scanDirectoryLock = Lock()
 	scanPath = None
 	isScanning = False

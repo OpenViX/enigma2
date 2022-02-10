@@ -55,7 +55,7 @@ class TIMERTYPE:
 # please do not translate log messages
 
 
-class PowerTimerEntry(TimerEntry, object):
+class PowerTimerEntry(TimerEntry):
 	def __init__(self, begin, end, disabled=False, afterEvent=AFTEREVENT.NONE, timerType=TIMERTYPE.WAKEUP, checkOldTimers=False):
 		TimerEntry.__init__(self, int(begin), int(end))
 		if checkOldTimers:

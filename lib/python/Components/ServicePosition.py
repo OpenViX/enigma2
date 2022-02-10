@@ -4,7 +4,7 @@ from enigma import eTimer, iPlayableService, ePositionGauge
 import time
 
 
-class ServicePosition(PerServiceDisplay, object):
+class ServicePosition(PerServiceDisplay):
 	TYPE_LENGTH = 0,
 	TYPE_POSITION = 1,
 	TYPE_REMAINING = 2,

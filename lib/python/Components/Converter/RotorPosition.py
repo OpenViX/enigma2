@@ -11,7 +11,7 @@ from Tools.Transponder import orbpos
 from skin import parameters
 
 
-class RotorPosition(Converter, object):
+class RotorPosition(Converter):
 	DEFAULT = 0
 	WITH_TEXT = 1
 	TUNER_NAME = 2

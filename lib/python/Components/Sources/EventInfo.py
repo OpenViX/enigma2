@@ -6,7 +6,7 @@ from Components.PerServiceDisplay import PerServiceBase
 
 
 # Fake eServiceEvent to fill Event_Now and Event_Next in Infobar for Streams
-class pServiceEvent(object):
+class pServiceEvent():
 	NOW = 0
 	NEXT = 1
 
@@ -100,7 +100,7 @@ class pServiceEvent(object):
 		return 0
 
 
-class EventInfo(PerServiceBase, Source, object):
+class EventInfo(PerServiceBase, Source):
 	NOW = 0
 	NEXT = 1
 

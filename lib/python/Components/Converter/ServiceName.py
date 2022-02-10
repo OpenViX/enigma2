@@ -8,7 +8,7 @@ from Components.Element import cached
 from Tools.Directories import fileExists
 
 
-class ServiceName(Converter, object):
+class ServiceName(Converter):
 	NAME = 0
 	NAME_ONLY = 1
 	NAME_EVENT = 2

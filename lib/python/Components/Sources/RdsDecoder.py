@@ -4,7 +4,7 @@ from Components.Element import cached
 from enigma import iPlayableService
 
 
-class RdsDecoder(PerServiceBase, Source, object):
+class RdsDecoder(PerServiceBase, Source):
 	def __init__(self, navcore):
 		Source.__init__(self)
 		PerServiceBase.__init__(self, navcore,

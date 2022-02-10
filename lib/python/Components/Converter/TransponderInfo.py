@@ -8,7 +8,7 @@ from Components.NimManager import nimmanager
 import Screens.InfoBar
 
 
-class TransponderInfo(Converter, object):
+class TransponderInfo(Converter):
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		self.type = type.split(";")

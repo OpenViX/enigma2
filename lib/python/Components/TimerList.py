@@ -17,7 +17,7 @@ from Tools.TextBoundary import getTextBoundarySize
 from Tools.Sign import SIGN
 
 
-class TimerList(GUIComponent, object):
+class TimerList(GUIComponent):
 #
 #  | <Name of the Timer>     <Service>  <orb.pos>|
 #  | <state>  <start, end>  |

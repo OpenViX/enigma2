@@ -76,7 +76,7 @@ KEY_9 = ACTIONKEY_9
 #            the default if saved_value is 'None' (default)
 #            or invalid.
 #
-class ConfigElement(object):
+class ConfigElement():
 	def __init__(self):
 		self.extra_args = []
 		self.saved_value = None
@@ -263,7 +263,7 @@ def getKeyNumber(key):
 	return key - ACTIONKEY_0
 
 
-class choicesList(object):  # XXX: we might want a better name for this
+class choicesList():  # XXX: we might want a better name for this
 	LIST_TYPE_LIST = 1
 	LIST_TYPE_DICT = 2
 
@@ -1962,7 +1962,7 @@ class ConfigNothing(ConfigSelection):
 #
 
 
-class ConfigSubsectionContent(object):
+class ConfigSubsectionContent():
 	pass
 
 # we store a backup of the loaded configuration
@@ -1977,7 +1977,7 @@ class ConfigSubsectionContent(object):
 # config.dipswitches.append(ConfigYesNo())
 
 
-class ConfigSubList(list, object):
+class ConfigSubList(list):
 	def __init__(self):
 		list.__init__(self)
 		self.stored_values = {}
@@ -2022,7 +2022,7 @@ class ConfigSubList(list, object):
 # file.
 
 
-class ConfigSubDict(dict, object):
+class ConfigSubDict(dict):
 	def __init__(self):
 		dict.__init__(self)
 		self.stored_values = {}
@@ -2073,7 +2073,7 @@ class ConfigSubDict(dict, object):
 # __setattr__ to a usual exisiting class and you will.
 
 
-class ConfigSubsection(object):
+class ConfigSubsection():
 	def __init__(self):
 		self.__dict__["content"] = ConfigSubsectionContent()
 		self.content.items = {}

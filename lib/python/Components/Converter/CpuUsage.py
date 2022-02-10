@@ -11,7 +11,7 @@ from Components.Converter.Poll import Poll
 from Components.Element import cached
 
 
-class CpuUsage(Converter, object):
+class CpuUsage(Converter):
     CPU_ALL = -2
     CPU_TOTAL = -1
 
@@ -80,7 +80,7 @@ class CpuUsage(Converter, object):
     range = 100
 
 
-class CpuUsageMonitor(Poll, object):
+class CpuUsageMonitor(Poll):
 
     def __init__(self):
         Poll.__init__(self)

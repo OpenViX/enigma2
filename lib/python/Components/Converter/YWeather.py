@@ -18,7 +18,7 @@ except ImportError: # Python 2
 	from urllib2 import Request, urlopen, HTTPError, URLError
 
 
-class YWeather(Poll, Converter, object):
+class YWeather(Poll, Converter):
 	weather_city = '711665'
 	time_update = 20
 	time_update_ms = 30000

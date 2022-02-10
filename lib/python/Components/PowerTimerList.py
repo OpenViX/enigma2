@@ -10,7 +10,7 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from PowerTimer import AFTEREVENT, TIMERTYPE
 
 
-class PowerTimerList(GUIComponent, object):
+class PowerTimerList(GUIComponent):
 #
 #  | <Service>     <Name of the Timer>  |
 #  | <start, end>              <state>  |
