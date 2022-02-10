@@ -89,7 +89,6 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 		entrySpeed = getConfigListEntry(_("Animation Speed"), config.misc.window_animation_speed)
 		self.entrylist.append(entrySpeed)
 		self["config"].list = self.entrylist
-		self["config"].l.setList(self.entrylist)
 
 
 class AnimationSetupScreen(Screen):

@@ -9,23 +9,16 @@ from Components.NimManager import nimmanager as nimmgr
 from Components.Sources.StaticText import StaticText
 
 
-class SecParameterSetup(Screen, ConfigListScreen):
+class SecParameterSetup(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = ["SecParameterSetup", "Setup"]
-		self.setTitle(_("Satellite equipment setup"))
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("OK"))
+		self.title = _("Satellite equipment setup")
 		self["key_blue"] = StaticText(_("Restore defaults"))
 
-		self["actions"] = ActionMap(["SetupActions", "MenuActions", "ColorActions"],
+		self["actions"] = ActionMap(["ColorActions"],
 		{
-			"ok": self.keySave,
-			"green": self.keySave,
-			"cancel": self.keyCancel,
-			"red": self.keyCancel,
 			"blue": self.resetDefaults,
-			"menu": self.closeRecursive,
 		}, -2)
 
 		self.secList = [
@@ -50,12 +43,11 @@ class SecParameterSetup(Screen, ConfigListScreen):
 			(_("Unicable delay after enable voltage before switch command"), config.sec.unicable_delay_after_enable_voltage_before_switch_command),
 			(_("Unicable delay after change voltage before switch command"), config.sec.unicable_delay_after_change_voltage_before_switch_command),
 			(_("Unicable delay after last diseqc command"), config.sec.unicable_delay_after_last_diseqc_command)]
-		ConfigListScreen.__init__(self, [])
+		ConfigListScreen.__init__(self, [], fullUI=True)
 		self.createSetup()
 
 	def createSetup(self):
 		self["config"].list = self.secList
-		self["config"].l.setList(self.secList)
 
 	def resetDefaults(self):
 		for secItem in self.secList:

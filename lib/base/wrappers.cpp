@@ -64,7 +64,8 @@ ssize_t singleRead(int fd, void *buf, size_t count)
 		if (retval < 0)
 		{
 			if (errno == EINTR) continue;
-			eDebug("[singleRead] error: %m");
+/*			eDebug("[singleRead] error: %m"); */
+			return retval;			
 		}
 		return retval;
 	}
@@ -253,7 +254,7 @@ ssize_t writeAll(int fd, const void *buf, size_t count)
 		if (retval < 0)
 		{
 			if (errno == EINTR) continue;
-			eDebug("[writeAll] error: %m");
+/*			eDebug("[writeAll] error: %m");  */
 			return retval;
 		}
 		handledcount += retval;

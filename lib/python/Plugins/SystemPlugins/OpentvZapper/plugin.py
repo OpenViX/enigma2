@@ -18,7 +18,8 @@ config.plugins.opentvzapper.notifications = ConfigYesNo(default=False)
 config.plugins.opentvzapper.use_pip_adapter = ConfigYesNo(default=True)
 
 # This import must be after "config" variables are set.
-from .opentv_zapper import opentv_zapper, startSession
+if nimmanager.hasNimType("DVB-S"):
+	from .opentv_zapper import opentv_zapper, startSession
 
 description = _("Zaps to EPG download transponder for EPG fetch.")
 

@@ -348,7 +348,7 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 					self.session.openWithCallback(self.AdapterSetupClosed, NetworkWizard, selection[0])
 
 
-class NameserverSetup(Screen, ConfigListScreen, HelpableScreen):
+class NameserverSetup(ConfigListScreen, HelpableScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
@@ -422,7 +422,7 @@ class NameserverSetup(Screen, ConfigListScreen, HelpableScreen):
 			self.createSetup()
 
 
-class NetworkMacSetup(Screen, ConfigListScreen, HelpableScreen):
+class NetworkMacSetup(ConfigListScreen, HelpableScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
@@ -496,7 +496,7 @@ class NetworkMacSetup(Screen, ConfigListScreen, HelpableScreen):
 			self.session.openWithCallback(self.close, MessageBox, _("Finished configuring your network"), type=MessageBox.TYPE_INFO, timeout=10, default=False)
 
 
-class AdapterSetup(Screen, ConfigListScreen, HelpableScreen):
+class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 	def __init__(self, session, networkinfo=None, essid=None):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
@@ -2406,7 +2406,7 @@ class NetworkInadyn(NSCommon, Screen):
 		self.session.open(NetworkInadynLog)
 
 
-class NetworkInadynSetup(Screen, ConfigListScreen):
+class NetworkInadynSetup(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Settings"))
@@ -2734,7 +2734,7 @@ class NetworkuShare(NSCommon, Screen):
 		self.session.open(NetworkuShareLog)
 
 
-class NetworkuShareSetup(Screen, ConfigListScreen):
+class NetworkuShareSetup(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.onChangedEntry = []
@@ -3154,7 +3154,7 @@ class NetworkMiniDLNA(NSCommon, Screen):
 		self.session.open(NetworkMiniDLNALog)
 
 
-class NetworkMiniDLNASetup(Screen, ConfigListScreen):
+class NetworkMiniDLNASetup(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.onChangedEntry = []
@@ -3459,12 +3459,6 @@ class NetworkPassword(ConfigListScreen, Screen):
 		self.output_line = ""
 
 		self.updateList()
-		if self.selectionChanged not in self["config"].onSelectionChanged:
-			self["config"].onSelectionChanged.append(self.selectionChanged)
-		self.selectionChanged()
-
-	def selectionChanged(self):
-		self["description"].setText(self.getCurrentDescription())
 
 	def newRandom(self):
 		self.password.value = self.GeneratePassword()

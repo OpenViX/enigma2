@@ -262,6 +262,8 @@ class ConfigListScreen:
 					currConfig[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
 			else:
 				self.showVKeyboard(False)
+			if "description" in self:
+				self["description"].text = self.getCurrentDescription()
 
 	def showVKeyboard(self, state):
 		if "VKeyIcon" in self:

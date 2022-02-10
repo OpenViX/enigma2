@@ -74,18 +74,18 @@ preferredTagEditor = None
 # this kludge is needed because ConfigSelection only takes numbers
 # and someone appears to be fascinated by 'enums'.
 l_moviesort = [
-	(str(MovieList.SORT_GROUPWISE), _("recordings by date then other media by name"), '02/01 & A-Z'),
-	(str(MovieList.SORT_RECORDED), _("by date"), '03/02/01'),
-	(str(MovieList.SORT_ALPHANUMERIC), _("alphabetic"), 'A-Z'),
-	(str(MovieList.SORT_ALPHA_DATE_OLDEST_FIRST), _("alpha then oldest"), 'A1 A2 Z1'),
-	(str(MovieList.SORT_ALPHANUMERIC_FLAT_REVERSE), _("flat alphabetic reverse"), 'Z-A Flat'),
-	(str(MovieList.SORT_LONGEST), _("longest"), 'long-short'),
-	(str(MovieList.SORT_SHORTEST), _("shortest"), 'short-long'),
-	(str(MovieList.SHUFFLE), _("shuffle"), '?'),
+	(str(MovieList.SORT_GROUPWISE), _("newest recordings first then other media by name"), '02/01 & A-Z'),
+	(str(MovieList.SORT_RECORDED), _("newest first"), '03/02/01'),
+	(str(MovieList.SORT_RECORDED_REVERSE), _("oldest first"), '01/02/03'),
+	(str(MovieList.SORT_ALPHANUMERIC), _("alphabetic then newest first"), 'A2 A1 Z1'),
+	(str(MovieList.SORT_ALPHA_DATE_OLDEST_FIRST), _("alphabetic then oldest first"), 'A1 A2 Z1'),
+	(str(MovieList.SORT_SHORTEST), _("shortest first"), 'short-long'),
+	(str(MovieList.SORT_LONGEST), _("longest first"), 'long-short'),
 	(str(MovieList.SORT_ALPHANUMERIC_FLAT), _("flat alphabetic"), 'A-Z Flat'),
-	(str(MovieList.SORT_RECORDED_REVERSE), _("reverse by date"), '01/02/03'),
-	(str(MovieList.SORT_ALPHANUMERIC_REVERSE), _("alphabetic reverse"), 'Z-A'),
-	(str(MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST), _("alpharev then newest"), 'Z1 A2 A1')]
+	(str(MovieList.SORT_ALPHANUMERIC_FLAT_REVERSE), _("flat reverse alphabetic"), 'Z-A Flat'),
+	(str(MovieList.SORT_ALPHAREV_DATE_NEWEST_FIRST), _("reverse alphabetic then newest first"), 'Z1 A2 A1'),
+	(str(MovieList.SORT_ALPHANUMERIC_REVERSE), _("reverse alphabetic then oldest first"), 'Z1 A1 A2'),
+	(str(MovieList.SHUFFLE), _("shuffle"), '?')]
 
 # 4th item is the textual value set in UsageConfig.py
 l_trashsort = [
