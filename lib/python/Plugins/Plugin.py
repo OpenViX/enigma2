@@ -100,18 +100,21 @@ class PluginDescriptor():
 
 		self.wakeupfnc = wakeupfnc
 
-		self._fnc = fnc
+		self.fnc = fnc
 
 	def __call__(self, *args, **kwargs):
-		if callable(self._fnc):
-			return self._fnc(*args, **kwargs)
+		if callable(self.fnc):
+			return self.fnc(*args, **kwargs)
 		else:
 			print("PluginDescriptor called without a function!")
 			return []
 
+	# overrides the builtin object.__getattribute__(self, name).
+	# Method for old code still using the __call__ attribute expecting 
+	# to get the plugin's fnc, i.e. old code was "self.__call__ = fnc"
 	def __getattribute__(self, name):
 		if name == '__call__':
-			return self._fnc is not None and self._fnc or {}
+			return self.fnc is not None and self.fnc or {}
 		return object.__getattribute__(self, name)
 
 	def updateIcon(self, path):
@@ -129,10 +132,10 @@ class PluginDescriptor():
 			return self._icon
 
 	def __eq__(self, other):
-		return self._fnc == other._fnc
+		return self.fnc == other._fnc
 
 	def __ne__(self, other):
-		return self._fnc != other._fnc
+		return self.fnc != other._fnc
 
 	def __lt__(self, other):
 		if self.weight < other.weight:

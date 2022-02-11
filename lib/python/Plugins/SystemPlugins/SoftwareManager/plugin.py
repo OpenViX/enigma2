@@ -137,15 +137,15 @@ class UpdatePluginMenu(Screen):
 			self.list.append(("system-restore", _("Restore system settings"), _("\nRestore your %s %s settings.") % (getMachineBrand(), getMachineName()) + self.oktext, None))
 			self.list.append(("ipkg-install", _("Install local extension"), _("\nScan for local extensions and install them.") + self.oktext, None))
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_SOFTWAREMANAGER):
-				if "SoftwareSupported" in p.__call__:
-					callFnc = p.__call__["SoftwareSupported"](None)
+				if "SoftwareSupported" in p.fnc:
+					callFnc = p.fnc["SoftwareSupported"](None)
 					if callFnc is not None:
-						if "menuEntryName" in p.__call__:
-							menuEntryName = p.__call__["menuEntryName"](None)
+						if "menuEntryName" in p.fnc:
+							menuEntryName = p.fnc["menuEntryName"](None)
 						else:
 							menuEntryName = _('Extended Software')
-						if "menuEntryDescription" in p.__call__:
-							menuEntryDescription = p.__call__["menuEntryDescription"](None)
+						if "menuEntryDescription" in p.fnc:
+							menuEntryDescription = p.fnc["menuEntryDescription"](None)
 						else:
 							menuEntryDescription = _('Extended Software Plugin')
 						self.list.append(('default-plugin', menuEntryName, menuEntryDescription + self.oktext, callFnc))
@@ -159,15 +159,15 @@ class UpdatePluginMenu(Screen):
 				self.list.append(("ipkg-manager", _("Packet management"), _("\nView, install and remove available or installed packages.") + self.oktext, None))
 			self.list.append(("ipkg-source", _("Select upgrade source"), _("\nEdit the upgrade source address.") + self.oktext, None))
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_SOFTWAREMANAGER):
-				if "AdvancedSoftwareSupported" in p.__call__:
-					callFnc = p.__call__["AdvancedSoftwareSupported"](None)
+				if "AdvancedSoftwareSupported" in p.fnc:
+					callFnc = p.fnc["AdvancedSoftwareSupported"](None)
 					if callFnc is not None:
-						if "menuEntryName" in p.__call__:
-							menuEntryName = p.__call__["menuEntryName"](None)
+						if "menuEntryName" in p.fnc:
+							menuEntryName = p.fnc["menuEntryName"](None)
 						else:
 							menuEntryName = _('Advanced software')
-						if "menuEntryDescription" in p.__call__:
-							menuEntryDescription = p.__call__["menuEntryDescription"](None)
+						if "menuEntryDescription" in p.fnc:
+							menuEntryDescription = p.fnc["menuEntryDescription"](None)
 						else:
 							menuEntryDescription = _('Advanced software plugin')
 						self.list.append(('advanced-plugin', menuEntryName, menuEntryDescription + self.oktext, callFnc))

@@ -671,12 +671,12 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 			self.extended = None
 			self.configStrings = None
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_NETWORKSETUP):
-				callFnc = p.__call__["ifaceSupported"](self.iface)
+				callFnc = p.fnc["ifaceSupported"](self.iface)
 				if callFnc != None:
-					if "WlanPluginEntry" in p.__call__: # internally used only for WLAN Plugin
+					if "WlanPluginEntry" in p.fnc: # internally used only for WLAN Plugin
 						self.extended = callFnc
-						if "configStrings" in p.__call__:
-							self.configStrings = p.__call__["configStrings"]
+						if "configStrings" in p.fnc:
+							self.configStrings = p.fnc["configStrings"]
 
 						isExistBcmWifi = os_path.exists("/tmp/bcm/" + self.iface)
 						if not isExistBcmWifi:
@@ -1071,20 +1071,20 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		self.extended = None
 		self.extendedSetup = None
 		for p in plugins.getPlugins(PluginDescriptor.WHERE_NETWORKSETUP):
-			callFnc = p.__call__["ifaceSupported"](self.iface)
+			callFnc = p.fnc["ifaceSupported"](self.iface)
 			if callFnc != None:
 				self.extended = callFnc
-				if "WlanPluginEntry" in p.__call__: # internally used only for WLAN Plugin
+				if "WlanPluginEntry" in p.fnc: # internally used only for WLAN Plugin
 					menu.append((_("Scan wireless networks"), "scanwlan"))
 					if iNetwork.getAdapterAttribute(self.iface, "up"):
 						menu.append((_("Show WLAN status"), "wlanstatus"))
 				else:
-					if "menuEntryName" in p.__call__:
-						menuEntryName = p.__call__["menuEntryName"](self.iface)
+					if "menuEntryName" in p.fnc:
+						menuEntryName = p.fnc["menuEntryName"](self.iface)
 					else:
 						menuEntryName = _("Extended setup...")
-					if "menuEntryDescription" in p.__call__:
-						menuEntryDescription = p.__call__["menuEntryDescription"](self.iface)
+					if "menuEntryDescription" in p.fnc:
+						menuEntryDescription = p.fnc["menuEntryDescription"](self.iface)
 					else:
 						menuEntryDescription = _("Extended network setup plugin...")
 					self.extendedSetup = ("extendedSetup", menuEntryDescription, self.extended)
@@ -1713,15 +1713,15 @@ class NetworkMountsMenu(Screen, HelpableScreen):
 		self.extended = None
 		self.extendedSetup = None
 		for p in plugins.getPlugins(PluginDescriptor.WHERE_NETWORKMOUNTS):
-			callFnc = p.__call__["ifaceSupported"](self)
+			callFnc = p.fnc["ifaceSupported"](self)
 			if callFnc != None:
 				self.extended = callFnc
-				if "menuEntryName" in p.__call__:
-					menuEntryName = p.__call__["menuEntryName"](self)
+				if "menuEntryName" in p.fnc:
+					menuEntryName = p.fnc["menuEntryName"](self)
 				else:
 					menuEntryName = _("Extended Setup...")
-				if "menuEntryDescription" in p.__call__:
-					menuEntryDescription = p.__call__["menuEntryDescription"](self)
+				if "menuEntryDescription" in p.fnc:
+					menuEntryDescription = p.fnc["menuEntryDescription"](self)
 				else:
 					menuEntryDescription = _("Extended Networksetup Plugin...")
 				self.extendedSetup = ("extendedSetup", menuEntryDescription, self.extended)
