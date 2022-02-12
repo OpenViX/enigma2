@@ -132,10 +132,10 @@ class PluginDescriptor():
 			return self._icon
 
 	def __eq__(self, other):
-		return self.fnc == other._fnc
+		return self.fnc == other.fnc
 
 	def __ne__(self, other):
-		return self.fnc != other._fnc
+		return self.fnc != other.fnc
 
 	def __lt__(self, other):
 		if self.weight < other.weight:
