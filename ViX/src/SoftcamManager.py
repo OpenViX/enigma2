@@ -23,7 +23,7 @@ from Components.SystemInfo import SystemInfo
 import Components.Task
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
-from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_PLUGIN_ABSOLUTE
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 
 config.softcammanager = ConfigSubsection()
 config.softcammanager.softcams_autostart = ConfigLocations(default="")
