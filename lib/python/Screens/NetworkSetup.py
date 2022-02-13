@@ -3437,7 +3437,7 @@ class NetworkPassword(ConfigListScreen, Screen):
 		self.skinName = "Setup"
 		self.onChangedEntry = []
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.selectionChanged)
+		ConfigListScreen.__init__(self, self.list, session=self.session)
 
 		self["key_red"] = StaticText(_("Exit"))
 		self["key_green"] = StaticText(_("Save"))
