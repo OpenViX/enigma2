@@ -516,7 +516,7 @@ def isPluginInstalled(pluginname, pluginfile="plugin", pluginType=None):
 	pluginfolders = [name for name in os.listdir(path) if os.path.isdir(os.path.join(path, name)) and name not in ["__pycache__"]]
 	if pluginType is None or pluginType in pluginfolders:
 		plugintypes = pluginType and [pluginType] or pluginfolders
-		for fileext in [".py", ".pyc", ".pyo"]:
+		for fileext in [".pyc", ".py", ".pyo"]:
 			for plugintype in plugintypes:
 				if os.path.isfile(os.path.join(path, plugintype, pluginname, pluginfile + fileext)):
 					return True
