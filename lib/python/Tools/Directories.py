@@ -184,19 +184,6 @@ def resolveFilename(scope, base="", path_prefix=None):
 	return path
 
 
-def comparePaths(leftPath, rightPath):
-	if leftPath.endswith(os.sep):
-		leftPath = leftPath[:-1]
-	if rightPath.endswith(os.sep):
-		rightPath = rightPath[:-1]
-	left = leftPath.split(os.sep)
-	right = rightPath.split(os.sep)
-	for segment in range(len(left)):
-		if left[segment] != right[segment]:
-			return False
-	return True
-
-
 def bestRecordingLocation(candidates):
 	path = ""
 	biggest = 0
