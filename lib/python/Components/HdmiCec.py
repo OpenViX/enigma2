@@ -357,8 +357,6 @@ class HdmiCec:
 		self.handlingStandbyFromTV = False
 		if config.hdmicec.enabled.value and config.hdmicec.fixed_physical_address.value != "0.0.0.0":
 			setFixedPhysicalAddress(config.hdmicec.fixed_physical_address.value)
-		else:
-			setFixedPhysicalAddress("0.0.0.0")			
 		eHdmiCEC.getInstance().messageReceived.get().append(self.messageReceived)
 		config.misc.standbyCounter.addNotifier(self.onEnterStandby, initial_call=False)
 		config.misc.DeepStandby.addNotifier(self.onEnterDeepStandby, initial_call=False)
