@@ -9,7 +9,7 @@ import glob
 from enigma import eTimer, eEnv, eDVBDB, quitMainloop
 from . import _, PluginLanguageDomain
 
-from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getMachineBrand, getMachineName
+from boxbranding import getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getMachineBrand, getMachineMake, getMachineName
 from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -1375,7 +1375,7 @@ class BackupFiles(Screen):
 			imageSubBuild = ".%s" % getImageDevBuild()
 		boxname = ""
 		if config.backupmanager.showboxname.value:
-			boxname = "-" + getBoxType()
+			boxname = "-" + getMachineMake()
 		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + boxname + "-" + getImageType()[0:3] + backupType + getImageVersion() + "." + getImageBuild() + imageSubBuild + "-" + backupdate.strftime("%Y%m%d-%H%M") + ".tar.gz"
 # Need to create a list of what to backup, so that spaces and special
 # characters don't get lost on, or mangle, the command line

@@ -8,7 +8,7 @@ from urllib.error import HTTPError, URLError
 import json
 import tempfile
 
-from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
+from boxbranding import getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from enigma import eTimer, fbClass
 from os import path as ospath, stat, system, mkdir, makedirs, listdir, remove, rename, rmdir, sep as ossep, statvfs, chmod, walk, symlink, unlink
 from shutil import copy, rmtree, move, copyfile
@@ -47,7 +47,7 @@ for p in harddiskmanager.getMountedPartitions():
 				continue
 		if p.mountpoint != "/":
 			hddchoices.append((p.mountpoint, d))
-defaultprefix = getImageDistro() + "-" + getBoxType()
+defaultprefix = getImageDistro() + "-" + getMachineMake()
 config.imagemanager = ConfigSubsection()
 config.imagemanager.autosettingsbackup = ConfigYesNo(default=True)
 config.imagemanager.backuplocation = ConfigSelection(choices=hddchoices)
@@ -734,7 +734,7 @@ class ImageBackup(Screen):
 		self.ROOTFSFILE = getMachineRootFile()
 		self.MAINDEST = self.MAINDESTROOT + "/" + getImageFolder() + "/"
 		self.MAINDEST2 = self.MAINDESTROOT + "/"
-		self.MODEL = getBoxType()
+		self.MODEL = getMachineMake()
 		self.MCBUILD = getMachineBuild()
 		self.IMAGEDISTRO = getImageDistro()
 		self.DISTROVERSION = getImageVersion()
