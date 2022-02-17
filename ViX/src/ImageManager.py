@@ -47,7 +47,7 @@ for p in harddiskmanager.getMountedPartitions():
 				continue
 		if p.mountpoint != "/":
 			hddchoices.append((p.mountpoint, d))
-defaultprefix = getImageDistro() + "-" + getMachineMake()
+defaultprefix = getImageDistro()
 config.imagemanager = ConfigSubsection()
 config.imagemanager.autosettingsbackup = ConfigYesNo(default=True)
 config.imagemanager.backuplocation = ConfigSelection(choices=hddchoices)
@@ -80,7 +80,7 @@ if ospath.exists(config.imagemanager.backuplocation.value + "imagebackups/imager
 		rmtree(config.imagemanager.backuplocation.value + "imagebackups/imagerestore")
 	except Exception:
 		pass
-TMPDIR = config.imagemanager.backuplocation.value + "imagebackups/" + config.imagemanager.folderprefix.value + "-" + getImageType() + "-mount"
+TMPDIR = config.imagemanager.backuplocation.value + "imagebackups/" + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-mount"
 if ospath.exists(TMPDIR + "/root") and ospath.ismount(TMPDIR + "/root"):
 	try:
 		system("umount " + TMPDIR + "/root")
@@ -286,9 +286,9 @@ class VIXImageManager(Screen):
 			try:
 				if not ospath.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0o755)
-				if ospath.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup"):
-					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup")
-					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup")
+				if ospath.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup"):
+					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
+					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
 				self.refreshList()
 			except Exception:
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
@@ -721,15 +721,15 @@ class ImageBackup(Screen):
 		self.BackupDirectory = config.imagemanager.backuplocation.value + "imagebackups/"
 		print("[ImageManager] Directory: " + self.BackupDirectory)
 		self.BackupDate = strftime("%Y%m%d_%H%M%S", localtime())
-		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getImageType() + "-temp"
-		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getImageType() + "-mount"
+		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-temp"
+		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-mount"
 		backupType = "-"
 		if updatebackup:
 			backupType = "-SoftwareUpdate-"
 		imageSubBuild = ""
 		if getImageType() != "release":
 			imageSubBuild = ".%s" % getImageDevBuild()
-		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getImageType() + backupType + getImageVersion() + "." + getImageBuild() + imageSubBuild + "-" + self.BackupDate
+		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + backupType + getImageVersion() + "." + getImageBuild() + imageSubBuild + "-" + self.BackupDate
 		self.KERNELFILE = getMachineKernelFile()
 		self.ROOTFSFILE = getMachineRootFile()
 		self.MAINDEST = self.MAINDESTROOT + "/" + getImageFolder() + "/"
@@ -863,9 +863,9 @@ class ImageBackup(Screen):
 		try:
 			if not ospath.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0o755)
-			if ospath.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup"):
-				system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup")
-				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup")
+			if ospath.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup"):
+				system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
+				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
 		except Exception as e:
 			print(str(e))
 			print("[ImageManager] Device: " + config.imagemanager.backuplocation.value + ", i don't seem to have write access to this device.")
@@ -924,15 +924,15 @@ class ImageBackup(Screen):
 			self.SwapCreated = True
 
 	def MemCheck2(self):
-		self.Console.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
+		self.Console.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
 
 	def MemCheck3(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.Console.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup", self.MemCheck4)
+			self.Console.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup", self.MemCheck4)
 
 	def MemCheck4(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.Console.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup", self.MemCheck5)
+			self.Console.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup", self.MemCheck5)
 
 	def MemCheck5(self, result, retval, extra_args=None):
 		self.SwapCreated = True
@@ -1254,7 +1254,7 @@ class ImageBackup(Screen):
 			print("[ImageManager] Stage5: Create: gpt.bin:", self.MODEL)
 
 		with open(self.MAINDEST + "/imageversion", "w") as fileout:
-			line = defaultprefix + "-" + getImageType() + "-backup-" + getImageVersion() + "." + getImageBuild() + "-" + self.BackupDate
+			line = defaultprefix + "-" + getMachineMake() + "-" + getImageType() + "-backup-" + getImageVersion() + "." + getImageBuild() + "-" + self.BackupDate
 			fileout.write(line)
 
 		if getBrandOEM() == "vuplus":
@@ -1290,9 +1290,9 @@ class ImageBackup(Screen):
 					fileout.write(line1)
 
 		print("[ImageManager] Stage5: Removing Swap.")
-		if ospath.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup"):
-			system("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup")
-			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + getImageType() + "-swapfile_backup")
+		if ospath.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup"):
+			system("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
+			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
 		if ospath.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
 		if (ospath.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and ospath.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (getMachineBuild() in ("h9", "i55plus") and "root=/dev/mmcblk0p1" in z):
@@ -1331,7 +1331,7 @@ class ImageBackup(Screen):
 		try:
 			if config.imagemanager.number_to_keep.value > 0 and ospath.exists(self.BackupDirectory):  # !?!
 				images = listdir(self.BackupDirectory)
-				patt = config.imagemanager.folderprefix.value + "-*.zip"
+				patt = config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-*.zip"
 				emlist = []
 				for fil in images:
 					if fnmatch.fnmatchcase(fil, patt):
