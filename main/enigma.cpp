@@ -413,7 +413,9 @@ const char *getGStreamerVersionString()
 
 void dump_malloc_stats(void)
 {
-	struct mallinfo2 mi = mallinfo2();
+	// struct mallinfo2 mi = mallinfo2();
+	// temporarilly drop back to the deprecated mallinfo as glibc 2.33 is not available in github workflows
+	struct mallinfo mi = mallinfo();
 	eDebug("MALLOC: %d total", mi.uordblks);
 }
 
