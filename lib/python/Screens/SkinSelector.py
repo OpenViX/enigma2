@@ -1,5 +1,3 @@
-import six
-
 import mmap
 import re
 

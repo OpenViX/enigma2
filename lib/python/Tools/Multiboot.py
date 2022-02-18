@@ -1,5 +1,3 @@
-import six
-
 from datetime import datetime
 import glob
 import shutil

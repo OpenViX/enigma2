@@ -1,5 +1,3 @@
-import six
-
 from boxbranding import getImageVersion, getImageBuild, getImageDevBuild, getImageType, getImageDistro, getMachineBrand, getMachineName, getMachineBuild
 from gettext import dgettext
 

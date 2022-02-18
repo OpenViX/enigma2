@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import six
-
 from time import localtime, mktime, time, strftime
 
 from enigma import eEPGCache, eTimer, eServiceReference, ePoint
