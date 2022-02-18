@@ -190,9 +190,10 @@ class VIXSwap(Screen):
 		self.swap_place = ""
 		self.swap_active = False
 		self.device = False
-		if result.find("sd") > 0:
+		if result.find("sd") > 0 or result.find("mmc") > 0:
 			self["key_blue"].setText("")
 			for line in result.split("\n"):
+				print("[SwapManager] grep line=%s", line)
 				if line.find("sd") > 0:
 					parts = line.strip().split()
 					self.swap_place = parts[0]
@@ -203,6 +204,8 @@ class VIXSwap(Screen):
 				for line2 in f.readlines():
 					parts = line2.strip().split()
 					if line2.find("partition") != -1:
+						if "mmc" in parts[0]:
+							self.swap_place = _("manufacturer defined swap")	
 						self.swap_active = True
 						self.swapsize = parts[2]
 						continue
@@ -223,15 +226,6 @@ class VIXSwap(Screen):
 						self.swapsize = info[stat.ST_SIZE]
 						continue
 
-		if config.vixsettings.swapautostart.value and self.swap_place:
-			self["autostart_off"].hide()
-			self["autostart_on"].show()
-		else:
-			config.vixsettings.swapautostart.setValue(False)
-			config.vixsettings.swapautostart.save()
-			configfile.save()
-			self["autostart_on"].hide()
-			self["autostart_off"].show()
 		self["labplace"].setText(self.swap_place)
 		self["labplace"].show()
 
@@ -245,12 +239,12 @@ class VIXSwap(Screen):
 				self.swap_active = True
 				continue
 		f.close()
-
+		self.swapsize = int(self.swapsize)
 		if self.swapsize > 0:
 			if self.swapsize >= 1024:
-				self.swapsize = int(self.swapsize) // 1024
+				self.swapsize = self.swapsize // 1000
 				if self.swapsize >= 1024:
-					self.swapsize = int(self.swapsize) // 1024
+					self.swapsize = self.swapsize // 1000
 				self.swapsize = str(self.swapsize) + " " + "MB"
 			else:
 				self.swapsize = str(self.swapsize) + " " + "KB"
@@ -270,8 +264,22 @@ class VIXSwap(Screen):
 			self["active"].hide()
 			self["key_green"].setText(_("Activate"))
 			self["swapactive_summary"].setText(_("Current status:") + " " + _("Inactive"))
+		if self.swap_place == _("manufacturer defined swap"):
+			self["key_green"].setText("")
+			scanning = _("Swap enabled at startup")
+		else:
+			scanning = _("Enable SWAP at startup")
 
-		scanning = _("Enable SWAP at startup")
+		if config.vixsettings.swapautostart.value or self.swap_place == _("manufacturer defined swap"):
+			self["autostart_off"].hide()
+			self["autostart_on"].show()
+			self["key_yellow"].setText("")
+		else:
+			config.vixsettings.swapautostart.setValue(False)
+			config.vixsettings.swapautostart.save()
+			configfile.save()
+			self["autostart_on"].hide()
+			self["autostart_off"].show()			
 		self["lab1"].setText(scanning)
 		self["lab1"].show()
 		self["actions"].setEnabled(True)
