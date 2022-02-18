@@ -201,7 +201,7 @@ class VIXSwap(Screen):
 					self.device = True
 				f = open("/proc/swaps", "r")
 				for line2 in f.readlines():
-					parts = line.strip().split()
+					parts = line2.strip().split()
 					if line2.find("partition") != -1:
 						self.swap_active = True
 						self.swapsize = parts[2]
