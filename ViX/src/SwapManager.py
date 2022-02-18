@@ -1,5 +1,4 @@
 from __future__ import print_function, division
-import six
 from os import system, stat as mystat, path, remove, rename
 from glob import glob
 import stat
@@ -42,8 +41,6 @@ class StartSwap:
 
 	def startSwap2(self, result=None, retval=None, extra_args=None):
 		swap_place = ""
-		if result:
-			result = six.ensure_str(result)
 		if result and result.find("sd") != -1:
 			for line in result.split("\n"):
 				if line.find("sd") != -1:
@@ -193,8 +190,6 @@ class VIXSwap(Screen):
 		self.swap_place = ""
 		self.swap_active = False
 		self.device = False
-		if result:
-			result = six.ensure_str(result)
 		if result.find("sd") > 0:
 			self["key_blue"].setText("")
 			for line in result.split("\n"):
