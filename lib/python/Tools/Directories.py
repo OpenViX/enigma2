@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import errno
-import inspect
 import os
 
 from enigma import eEnv, getDesktop
 from re import compile, split
 from stat import S_IMODE
+from sys import _getframe as getframe
 from unicodedata import normalize
 
 pathExists = os.path.exists
@@ -130,7 +130,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 			skin = os.path.dirname(config.skin.primary_skin.value)
 			path = os.path.join(path, skin)
 		elif scope in (SCOPE_PLUGIN_ABSOLUTE, SCOPE_PLUGIN_RELATIVE):
-			callingCode = os.path.normpath(inspect.stack()[1][1])
+			callingCode = os.path.normpath(getframe(1).f_code.co_filename)
 			plugins = os.path.normpath(scopePlugins)
 			path = None
 			if comparePath(plugins, callingCode):
@@ -217,7 +217,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 		if pathExists(file):
 			path = file
 	elif scope in (SCOPE_PLUGIN_ABSOLUTE, SCOPE_PLUGIN_RELATIVE):
-		callingCode = os.path.normpath(inspect.stack()[1][1])
+		callingCode = os.path.normpath(getframe(1).f_code.co_filename)
 		plugins = os.path.normpath(scopePlugins)
 		path = None
 		if comparePaths(plugins, callingCode):
