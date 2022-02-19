@@ -294,6 +294,7 @@ PyObject *eFCCServiceManager::getFCCServiceList()
 		{
 			ePyObject tplist = PyList_New(0);
 			PyList_Append(tplist, PyInt_FromLong((long)it->second.m_state));
+			PyList_Append(tplist, PyInt_FromLong((long)isLocked(it->first)));
 			PyDict_SetItemString(dest, it->second.m_service_reference.toString().c_str(), tplist);
 			Py_DECREF(tplist);
 		}
@@ -304,6 +305,13 @@ PyObject *eFCCServiceManager::getFCCServiceList()
 	return dest;
 }
 
+int eFCCServiceManager::isLocked(ePtr<iPlayableService> service)
+{
+	ePtr<iFrontendInformation> ptr;
+	service->frontendInfo(ptr);
+	return ptr->getFrontendInfo(iFrontendInformation_ENUMS::lockState);
+}
+
 void eFCCServiceManager::printFCCServices()
 {
 #ifdef FCC_DEBUG
@@ -312,7 +320,7 @@ void eFCCServiceManager::printFCCServices()
 	std::map< ePtr<iPlayableService>, FCCServiceElem >::iterator it = m_FCCServices.begin();
 	for (;it != m_FCCServices.end();++it)
 	{
-		int isLocked = readFrontendData(iFrontendInformation_ENUMS::lockState);
+		int isLocked = isLocked(it->first);
 		eDebug("[eFCCServiceManager] printFCCServices [*] sref : %s, state : %d, tune : %d, useNormalDecode : %d", it->second.m_service_reference.toString().c_str(), it->second.m_state, isLocked, it->second.m_useNormalDecode);
 	}
 #else
