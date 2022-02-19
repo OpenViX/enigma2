@@ -5,7 +5,7 @@ from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager
 from Components.About import getChipSetString
 from Components.RcModel import rc_model
 from Tools.BoxConfig import BoxConfig
-from Tools.Directories import fileCheck, fileExists, fileHas, pathExists, isPluginInstalled
+from Tools.Directories import fileCheck, fileExists, fileHas, pathExists
 from Tools.HardwareInfo import HardwareInfo
 
 SystemInfo = {}
