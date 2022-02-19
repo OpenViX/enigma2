@@ -2,7 +2,7 @@ from time import localtime, time, strftime
 
 from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
 
-from skin import parseColor, parseFont, parseScale
+from skin import parseColor, parseFont, parseScale, applySkinFactor
 from Components.GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
 from Tools.Alternatives import CompareWithAlternatives
@@ -31,9 +31,9 @@ class EPGBouquetList(GUIComponent):
 		self.graphicsloaded = False
 
 		self.bouquetFontName = "Regular"
-		self.bouquetFontSize = 20
+		self.bouquetFontSize = applySkinFactor(20)
 
-		self.itemHeight = 31
+		self.itemHeight = applySkinFactor(31)
 		self.listHeight = None
 		self.listWidth = None
 
