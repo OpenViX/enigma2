@@ -267,7 +267,7 @@ class FCCSupport:
 				if x > (serviceRefListSize-2): # if not ((x+1) <= (serviceRefListSize-1))
 					break
 
-				idx = (x / 2) + 1
+				idx = (x // 2) + 1
 				if x % 2:
 					idx *= -1 # idx : [ 1, -1, 2, -2, 3, -3, 4, -4 ....]
 				idx = (curServiceIndex+idx) % serviceRefListSize # calc wraparound
