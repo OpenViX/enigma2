@@ -1,4 +1,4 @@
-from enigma import iPlayableService, eDVBResourceManager, eDVBSatelliteEquipmentControl
+from enigma import iPlayableService, eDVBResourceManager, eDVBSatelliteEquipmentControl, iServiceInformation
 
 from Components.config import config
 from Components.NimManager import nimmanager
@@ -37,7 +37,10 @@ class FrontendInfo(Source, PerServiceBase):
 			self.slot_number = self.frontend_type = None
 		else:
 			self.slot_number = data.get("tuner_number")
-			self.frontend_type = data.get("tuner_type")
+			if not self.frontend_source:
+				self.frontend_type = self.getFrontendTransponderType()
+			if not self.frontend_type:
+				self.frontend_type = data.get("tuner_type")
 		self.changed((self.CHANGED_ALL, ))
 
 	def updateTunerMask(self, mask):
@@ -71,6 +74,18 @@ class FrontendInfo(Source, PerServiceBase):
 				config.misc.lastrotorposition.save()
 				self.changed((self.CHANGED_ALL, ))
 				break
+
+	def getFrontendTransponderType(self):
+		service = None
+		if self.service_source:
+			service = self.navcore and self.service_source()
+		elif self.navcore:
+			service = self.navcore.getCurrentService()
+		info = service and service.info()
+		data = info and info.getInfoObject(iServiceInformation.sTransponderData)
+		if data and data != -1:
+			return data.get("tuner_type")
+		return None
 
 	def destroy(self):
 		if not self.frontend_source and not self.service_source:
