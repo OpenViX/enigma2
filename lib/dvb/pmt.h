@@ -136,6 +136,8 @@ public:
 	void sendEventNoPatEntry();
 	void getHBBTVUrl(std::string &ret) const { ret = m_HBBTVUrl; }
 	void setCaDisable(bool disable) { m_ca_disabled = disable; }
+	void addCaHandler();
+	void removeCaHandler();
 
 	enum serviceType
 	{
@@ -159,8 +161,6 @@ public:
 	int tuneExt(eServiceReferenceDVB &ref, ePtr<iTsSource> &, const char *streaminfo_file, eCueSheet *sg=0, bool simulate=false, eDVBService *service = 0, serviceType type = livetv, bool descramble = true);
 
 	void free();
-	void addCaHandler();
-	void removeCaHandler();
 private:
 	bool m_have_cached_program;
 	program m_cached_program;
