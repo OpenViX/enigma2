@@ -5,7 +5,7 @@ from enigma import iServiceInformation, iPlayableService
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.config import config
-from Tools.Transponder import ConvertToHumanReadable, getChannelNumber, SIGN
+from Tools.Transponder import ConvertToHumanReadable, getChannelNumber
 from Tools.GetEcmInfo import GetEcmInfo
 from Tools.Hex2strColor import Hex2strColor
 from Components.Converter.Poll import Poll
@@ -630,9 +630,9 @@ class PliExtraInfo(Poll, Converter, object):
 		orbpos = feraw.get("orbital_position")
 		if orbpos is not None:
 			if orbpos > 1800:
-				return str((float(3600 - orbpos)) / 10.0) + SIGN + "W"
+				return str((float(3600 - orbpos)) / 10.0) + "\xb0" + "W"
 			elif orbpos > 0:
-				return str((float(orbpos)) / 10.0) + SIGN + "E"
+				return str((float(orbpos)) / 10.0) + "\xb0" + "E"
 		return ""
 
 	def createOrbPosOrTunerSystem(self, fedata, feraw):

@@ -50,7 +50,6 @@ from Tools.Directories import sanitizeFilename
 from Tools.LoadPixmap import LoadPixmap
 import Tools.Notifications
 from Tools.NumericalTextInput import NumericalTextInput
-from Tools.Sign import SIGN
 import Tools.Transponder
 
 
@@ -1091,7 +1090,7 @@ class ChannelSelectionEdit:
 				direction = _("W")
 			else:
 				direction = _("E")
-			messageText = _("Are you sure you want to remove all %d.%d%s%s services?") % (unsigned_orbpos / 10, unsigned_orbpos % 10, SIGN, direction)
+			messageText = _("Are you sure you want to remove all %d.%d%s%s services?") % (unsigned_orbpos / 10, unsigned_orbpos % 10, "\xb0", direction)
 		self.session.openWithCallback(self.removeSatelliteServicesCallback, MessageBox, messageText)
 
 	def removeSatelliteServicesCallback(self, answer):
@@ -3061,4 +3060,4 @@ class HistoryZapSelector(Screen, HelpableScreen):
 		if orbpos > 1800:
 			orbpos = 3600 - orbpos
 			direction = "W"
-		return ("%d.%d%s %s") % (orbpos // 10, orbpos % 10, SIGN, direction)
+		return ("%d.%d%s %s") % (orbpos // 10, orbpos % 10, "\xb0", direction)

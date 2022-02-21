@@ -12,7 +12,6 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.FuzzyDate import FuzzyTime
 from Tools.LoadPixmap import LoadPixmap
 from Tools.TextBoundary import getTextBoundarySize
-from Tools.Sign import SIGN
 
 
 class TimerList(GUIComponent):
@@ -239,4 +238,4 @@ class TimerList(GUIComponent):
 		if op > 1800:
 			op = 3600 - op
 			direction = 'W'
-		return ("%d.%d%s%s") % (op // 10, op % 10, SIGN, direction)
+		return ("%d.%d%s%s") % (op // 10, op % 10, "\xb0", direction)

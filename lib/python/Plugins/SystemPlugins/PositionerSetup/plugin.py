@@ -29,7 +29,6 @@ from Screens.Satconfig import NimSetup
 from Screens.Screen import Screen
 from Tools.Transponder import ConvertToHumanReadable
 from Tools.Hex2strColor import Hex2strColor
-from Tools.Sign import SIGN
 from skin import parameters
 
 
@@ -292,8 +291,8 @@ class PositionerSetup(Screen):
 	def OrbToStr(self, orbpos):
 		if orbpos > 1800:
 			orbpos = 3600 - orbpos
-			return "%d.%d%s W" % (orbpos // 10, orbpos % 10, SIGN)
-		return "%d.%d%s E" % (orbpos // 10, orbpos % 10, SIGN)
+			return "%d.%d%s W" % (orbpos // 10, orbpos % 10, "\xb0")
+		return "%d.%d%s E" % (orbpos // 10, orbpos % 10, "\xb0")
 
 	def setDishOrbosValue(self):
 		if self.getRotorMovingState():
