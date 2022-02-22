@@ -79,7 +79,6 @@ class ParentalControlSetup(ConfigListScreen, Screen, ProtectedScreen):
 			self.changePin = getConfigListEntry(_("Enable parental protection"), NoSave(ConfigNothing()))
 			self.list.append(self.changePin)
 		self["config"].list = self.list
-		self["config"].setList(self.list)
 
 	def keySelect(self):
 		if self["config"].l.getCurrentSelection() == self.changePin:

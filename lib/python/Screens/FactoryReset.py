@@ -60,7 +60,7 @@ class FactoryReset(Setup, ProtectedScreen):
 			if len(self.others):
 				self.list.append((_("Remove all other data"), self.resetOthers, _("Select 'Yes' to remove all other files and directories not covered by the options above.")))
 		currentItem = self["config"].getCurrent()
-		self["config"].setList(self.list)
+		self["config"].list = self.list
 		if config.usage.sort_settings.value:
 			self["config"].list.sort()
 		self.moveToItem(currentItem)

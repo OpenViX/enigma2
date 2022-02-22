@@ -367,7 +367,6 @@ class AudioSelection(ConfigListScreen, Screen):
 		if len(conflist) > 3 and conflist[3][0]:
 			self["key_blue"].setBoolean(True)
 		self["config"].list = conflist
-		self["config"].l.setList(conflist)
 		self["streams"].list = streams
 		self["streams"].setIndex(selectedidx)
 

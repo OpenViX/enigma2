@@ -1610,7 +1610,6 @@ class TunerScreen(ConfigListScreen, Screen):
 			currtp = self.transponderToString([None, self.scan_sat.frequency.value, self.scan_sat.symbolrate.value, self.scan_sat.polarization.value])
 			self.tuning.transponder.setValue(currtp)
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def tuningSatChanged(self, *parm):
 		self.updateTransponders()

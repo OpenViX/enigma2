@@ -124,7 +124,6 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 			self.list.append(getConfigListEntry(_("Move Up/Down"), config.osd.dst_top, _("Use the LEFT/RIGHT buttons on your remote to move the user interface up/down.")))
 			self.list.append(getConfigListEntry(_("Height"), config.osd.dst_height, _("Use the LEFT/RIGHT buttons on your remote to adjust the height of the user interface. LEFT button decreases the size, RIGHT increases the size.")))
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 		self.serviceRef = None
 		if self.welcomeWarning not in self.onShow:

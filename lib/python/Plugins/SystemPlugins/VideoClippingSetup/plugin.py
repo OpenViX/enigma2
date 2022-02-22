@@ -58,7 +58,6 @@ class VideoClippingCoordinates(ConfigListScreen, Screen):
 		self.list.append(getConfigListEntry(_("top"), self.clip_top))
 		self.list.append(getConfigListEntry(_("height"), self.clip_height))
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def adjustStep(self):
 		self.clip_left.increment = self.clip_step.value

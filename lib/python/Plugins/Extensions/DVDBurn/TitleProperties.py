@@ -94,7 +94,7 @@ class TitleProperties(ConfigListScreen, Screen):
 				infotext += str(chapters_count + 1) + ' ' + _("chapters") + ': '
 				infotext += ' / '.join(chaptermarks)
 			self["serviceinfo"].setText(infotext)
-			self["config"].setList(self.list)
+			self["config"].list = self.list
 		except AttributeError:
 			pass
 

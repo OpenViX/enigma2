@@ -87,7 +87,6 @@ class InstallWizard(ConfigListScreen, Screen):
 		elif self.index == self.INSTALL_SKINS:
 			self.list.append(getConfigListEntry(_("Do you want to change the default skin"), self.enabled))
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def keyLeft(self):
 		if self.index == 0:

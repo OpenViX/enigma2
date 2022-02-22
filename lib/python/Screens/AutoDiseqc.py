@@ -234,9 +234,6 @@ class AutoDiseqc(ConfigListScreen, Screen):
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=self.session)
 
-		self["config"].list = self.list
-		self["config"].l.setList(self.list)
-
 		self["key_red"] = StaticText(_("Abort"))
 
 		self.index = 0

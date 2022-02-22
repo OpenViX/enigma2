@@ -360,7 +360,6 @@ class CronTimersConfig(ConfigListScreen, Screen):
 		else:
 			self.list.append(getConfigListEntry(_("Command to run"), config.crontimers.predefined_command))
 		self["config"].list = self.list
-		self["config"].setList(self.list)
 
 	# for summary:
 	def changedEntry(self):

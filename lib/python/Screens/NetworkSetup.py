@@ -280,7 +280,7 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 
 		if os_path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
 			self["key_blue"].setText(_("Network wizard"))
-		self["list"].setList(self.list)
+		self["list"].list = self.list
 
 	def setDefaultInterface(self):
 		selection = self["list"].getCurrent()
@@ -386,7 +386,6 @@ class NameserverSetup(ConfigListScreen, HelpableScreen, Screen):
 			i += 1
 
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def ok(self):
 		iNetwork.clearNameservers()
@@ -461,7 +460,6 @@ class NetworkMacSetup(ConfigListScreen, HelpableScreen, Screen):
 		self.list = []
 		self.list.append(getConfigListEntry(_("MAC address"), self.getConfigMac))
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def ok(self):
 		MAC = self.getConfigMac.value
@@ -696,7 +694,6 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 									self.list.append(self.encryptionType)
 							self.list.append(self.encryptionKey)
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def KeyBlue(self):
 		self.session.openWithCallback(self.NameserverSetupClosed, NameserverSetup)
@@ -2468,7 +2465,6 @@ class NetworkInadynSetup(ConfigListScreen, Screen):
 
 			f.close()
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def VirtualKeyBoardCallback(self, callback=None):
 		if callback != None and len(callback):
@@ -2817,7 +2813,6 @@ class NetworkuShareSetup(ConfigListScreen, Screen):
 					self.list.append(ushare_ps31)
 			f.close()
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def VirtualKeyBoardCallback(self, callback=None):
 		if callback != None and len(callback):
@@ -3229,7 +3224,6 @@ class NetworkMiniDLNASetup(ConfigListScreen, Screen):
 					self.list.append(minidlna_strictdlna1)
 			f.close()
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def VirtualKeyBoardCallback(self, callback=None):
 		if callback != None and len(callback):
@@ -3446,7 +3440,6 @@ class NetworkPassword(ConfigListScreen, Screen):
 		instructions = _("Setting a network password is mandatory in OpenViX %s if you wish to use network services. \nTo set a password using the virtual keyboard press the 'text' button on your remote control.") % getImageVersion()
 		self.list.append(getConfigListEntry(_('New password'), self.password, instructions))
 		self['config'].list = self.list
-		self['config'].l.setList(self.list)
 
 	def GeneratePassword(self):
 		passwdChars = string.ascii_letters + string.digits

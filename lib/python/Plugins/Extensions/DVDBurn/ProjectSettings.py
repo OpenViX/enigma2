@@ -173,7 +173,7 @@ class ProjectSettings(ConfigListScreen, Screen):
 			else:
 				self.list.append(getConfigListEntry(_("DVD data format"), self.settings.dataformat))
 
-		self["config"].setList(self.list)
+		self["config"].list = self.list
 		self.keydict = {}
 		for key, val in self.settings.dict().items():
 			self.keydict[val] = key
