@@ -354,7 +354,7 @@ bool eFCCServiceManager::isStateDecoding(iPlayableService* service)
 	}
 	else
 	{
-		eDebug("[eFCCServiceManager] None registered FCC service");
+		eDebug("[eFCCServiceManager] Non registered FCC service");
 	}
 
 	return false;
@@ -370,7 +370,7 @@ void eFCCServiceManager::setNormalDecoding(iPlayableService* service)
 	}
 	else
 	{
-		eDebug("[eFCCServiceManager] None registered FCC service");
+		eDebug("[eFCCServiceManager] Non registered FCC service");
 	}
 }
 
