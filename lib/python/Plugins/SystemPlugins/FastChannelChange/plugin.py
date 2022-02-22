@@ -483,7 +483,6 @@ class FCCSetup(Screen, ConfigListScreen):
 			self.list.append(self.recEntry)
 
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def keyLeft(self):
 		ConfigListScreen.keyLeft(self)
