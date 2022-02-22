@@ -170,7 +170,6 @@ eNavigation::eNavigation(iServiceHandler *serviceHandler, int decoder)
 	m_decoder = decoder;
 	if (decoder == 0 )
 		m_fccmgr = new eFCCServiceManager(this);
-	m_fccmgr = new eFCCServiceManager(this);
 	instance = this;
 }
 
