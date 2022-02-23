@@ -90,6 +90,9 @@ jobs:
         make
         sudo make install
         popd
+    - name: patch enigma cpp files
+      run: |
+        sed -i 's/mallinfo2/mallinfo/g' main/enigma.cpp
     - name: build enigma2
       env: 
         CC: "gcc-${{ matrix.gcc }}"
