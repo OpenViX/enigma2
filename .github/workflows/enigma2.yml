@@ -2,9 +2,9 @@ name: Enigma2 Python3
 
 on:
   push:
-    branches: [ python3 ]
+    branches: [ python3, FCC ]
   pull_request:
-    branches: [ python3 ]
+    branches: [ python3, FCC ]
 
 jobs:
   build:
@@ -68,10 +68,9 @@ jobs:
         echo "installing libsigc++-3"
         pushd .
         cd /tmp
-        git clone --depth 1 https://github.com/dbus-cxx/libsigc--3.0.git
-        cd libsigc--3.0
-        autoreconf -i
-        ./configure
+        git clone --depth 1 https://github.com/libsigcplusplus/libsigcplusplus.git
+        cd libsigcplusplus
+        ./autogen.sh
         make
         sudo make install
         popd
