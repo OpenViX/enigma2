@@ -78,16 +78,15 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				# If this break is executed then there can only be one setup tag with this key.
 				# This may not be appropriate if conditional setup blocks become available.
 				break
+		if title:
+			title = dgettext(self.pluginLanguageDomain, title) if self.pluginLanguageDomain else _(title)
 		self.setTitle(_(title) if title else _("Setup"))
 		if self.list != oldList or self.showDefaultChanged or self.graphicSwitchChanged:
-			print("[Setup] DEBUG: Config list has changed!")
 			currentItem = self["config"].getCurrent()
 			self["config"].list = self.list
 			if config.usage.sort_settings.value:
 				self["config"].list.sort()
 			self.moveToItem(currentItem)
-		else:
-			print("[Setup] DEBUG: Config list is unchanged!")
 
 	def addItems(self, parentNode, including=True):
 		for element in parentNode:
