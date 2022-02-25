@@ -200,10 +200,10 @@ class ConfigListScreen:
 			"gotAsciiCode": (self.keyGotAscii, _("Keyboard data entry"))
 		}, prio=1, description=_("Common Setup Actions"))
 		self["editConfigActions"].setEnabled(False if fullUI else True)
-		self["VirtualKB"] = HelpableActionMap(self, "VirtualKeyboardActions", {
+		self["virtualKeyBoardActions"] = HelpableActionMap(self, "VirtualKeyboardActions", {
 			"showVirtualKeyboard": (self.keyText, _("Display the virtual keyboard for data entry"))
 		}, prio=1, description=_("Common Setup Actions"))
-		self["VirtualKB"].setEnabled(False)
+		self["virtualKeyBoardActions"].setEnabled(False)
 		self["config"] = ConfigList(list, session=session)
 		self.setCancelMessage(None)
 		self.setRestartMessage(None)
@@ -267,7 +267,7 @@ class ConfigListScreen:
 
 	def showVirtualKeyBoard(self, state):
 		if "VKeyIcon" in self:
-			self["VirtualKB"].setEnabled(state)
+			self["virtualKeyBoardActions"].setEnabled(state)
 			self["VKeyIcon"].boolean = state
 
 	def showHelpWindow(self):
