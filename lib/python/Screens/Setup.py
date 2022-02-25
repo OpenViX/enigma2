@@ -114,8 +114,9 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 			itemText = _(element.get("text", "??"))
 			itemDescription = _(element.get("description", " "))
 		item = eval(element.text or "")
-		# print("[Setup] [self.pluginLanguageDomain]itemText = %s itemDescription = %s item = %s" % (itemText, itemDescription, item))
-		if item != "" and not isinstance(item, ConfigNothing):
+		if item == "":
+			self.list.append((self.formatItemText(itemText),))  # Add the comment line to the config list.
+		elif not isinstance(item, ConfigNothing):
 			self.list.append((self.formatItemText(itemText), item, self.formatItemDescription(item, itemDescription)))  # Add the item to the config list.
 		if item is config.usage.setupShowDefault:
 			self.showDefaultChanged = True
