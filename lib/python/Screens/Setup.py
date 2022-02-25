@@ -80,7 +80,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				break
 		if title:
 			title = dgettext(self.pluginLanguageDomain, title) if self.pluginLanguageDomain else _(title)
-		self.setTitle(_(title) if title else _("Setup"))
+		self.setTitle(title if title else _("Setup"))
 		if self.list != oldList or self.showDefaultChanged or self.graphicSwitchChanged:
 			currentItem = self["config"].getCurrent()
 			self["config"].list = self.list
