@@ -41,8 +41,9 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		defaultSetupImage = setups.get("default", "")
 		setupImage = setups.get(setup, defaultSetupImage)
 		if setupImage:
-			print("[Setup] %s image '%s'." % ("Default" if setupImage is defaultSetupImage else "Setup", setupImage))
+			imgType = "[Setup] %s image '%s'." % ("Default" if setupImage is defaultSetupImage else "Setup"
 			setupImage = resolveFilename(SCOPE_CURRENT_SKIN, setupImage)
+			print("[Setup] %s image '%s'." % (imgType, setupImage))
 			self.setupImage = LoadPixmap(setupImage)
 			if self.setupImage:
 				self["setupimage"] = Pixmap()
