@@ -256,16 +256,16 @@ class ConfigListScreen:
 				self["menuConfigActions"].setEnabled(False)
 				self["key_menu"].setText("")
 			if isinstance(currConfig[1], ConfigText):
-				self.showVKeyboard(True)
+				self.showVirtualKeyBoard(True)
 				if "HelpWindow" in self and currConfig[1].help_window and currConfig[1].help_window.instance is not None:
 					helpwindowpos = self["HelpWindow"].getPosition()
 					currConfig[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
 			else:
-				self.showVKeyboard(False)
+				self.showVirtualKeyBoard(False)
 			if "description" in self:
 				self["description"].text = self.getCurrentDescription()
 
-	def showVKeyboard(self, state):
+	def showVirtualKeyBoard(self, state):
 		if "VKeyIcon" in self:
 			self["VirtualKB"].setEnabled(state)
 			self["VKeyIcon"].boolean = state
