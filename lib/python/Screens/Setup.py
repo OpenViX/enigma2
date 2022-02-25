@@ -303,11 +303,11 @@ def setupDom(setup=None, plugin=None):
 	print("[Setup] XML%s setup file '%s', using element '%s'%s." % (" cached" if cached else "", setupFile, setup, " from plugin '%s'" % plugin if plugin else ""))
 	if cached:
 		return domSetups[setupFile]
+	if setupFile in domSetups:
+		del domSetups[setupFile]
+	if setupFile in setupModTimes:
+		del setupModTimes[setupFile]
 	try:
-		if setupFile in domSetups:
-			del domSetups[setupFile]
-		if setupFile in setupModTimes:
-			del setupModTimes[setupFile]
 		with open(setupFile, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
 			try:
 				fileDom = parse(fd).getroot()
