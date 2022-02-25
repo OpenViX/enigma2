@@ -1,6 +1,4 @@
-import six
-
-from xml.etree.cElementTree import ParseError, fromstring, parse
+from xml.etree.cElementTree import fromstring, parse
 
 from gettext import dgettext
 from os.path import getmtime, join as pathjoin
@@ -28,11 +26,8 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		self.setup = setup
 		self.plugin = plugin
 		self.pluginLanguageDomain = PluginLanguageDomain
-		if hasattr(self, "skinName"):
-			if not isinstance(self.skinName, list):
-				self.skinName = [self.skinName]
-		else:
-			self.skinName = []
+		if not isinstance(self.skinName, list):
+			self.skinName = [self.skinName]
 		if setup:
 			self.skinName.append("Setup%s" % setup)  # DEBUG: Proposed for new setup screens.
 			self.skinName.append("setup_%s" % setup)
@@ -78,12 +73,11 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				if skin and skin != "":
 					self.skinName.insert(0, skin)
 				title = setup.get("title", None)
-				title = six.ensure_str(title)
 				# print("[Setup] [createSetup] %s" % title)
 				# If this break is executed then there can only be one setup tag with this key.
 				# This may not be appropriate if conditional setup blocks become available.
 				break
-		self.setTitle(_(title) if title and title != "" else _("Setup"))
+		self.setTitle(_(title) if title else _("Setup"))
 		if self.list != oldList or self.showDefaultChanged or self.graphicSwitchChanged:
 			print("[Setup] DEBUG: Config list has changed!")
 			currentItem = self["config"].getCurrent()
@@ -309,38 +303,22 @@ def setupDom(setup=None, plugin=None):
 		del setupModTimes[setupFile]
 	try:
 		with open(setupFile, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
-			try:
-				fileDom = parse(fd).getroot()
-				checkItems(fileDom, None)
-				setupFileDom = fileDom
-				domSetups[setupFile] = setupFileDom
-				setupModTimes[setupFile] = modTime
-				for setup in setupFileDom.findall("setup"):
-					key = setup.get("key")
-					if key:  # If there is no key then this element is useless and can be skipped!
-						title = setup.get("title", "")
-						if title == "":
-							print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
-							title = "** Setup error: '%s' title is missing or blank!" % key
-					title = six.ensure_str(title)
-					# print("[Setup] [setupDOM]title = %s key = %s" % (title, key))
-			except ParseError as err:
-				fd.seek(0)
-				content = fd.readlines()
-				line, column = err.position
-				print("[Setup] XML Parse Error: '%s' in '%s'!" % (err, setupFile))
-				data = content[line - 1].replace("\t", " ").rstrip()
-				print("[Setup] XML Parse Error: '%s'" % data)
-				print("[Setup] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1)))
-			except Exception as err:
-				print("[Setup] Error: Unable to parse setup data in '%s' - '%s'!" % (setupFile, err))
-	except (IOError, OSError) as err:
-		if err.errno == errno.ENOENT:  # No such file or directory
-			print("[Setup] Warning: Setup file '%s' does not exist!" % setupFile)
-		else:
-			print("[Setup] Error %d: Opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
-	except Exception as err:
-		print("[Setup] Error %d: Unexpected error opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
+			fileDom = parse(fd).getroot()
+			checkItems(fileDom, None)
+			setupFileDom = fileDom
+			domSetups[setupFile] = setupFileDom
+			setupModTimes[setupFile] = modTime
+			for setup in setupFileDom.findall("setup"):
+				key = setup.get("key")
+				if key:  # If there is no key then this element is useless and can be skipped!
+					title = setup.get("title", "")
+					if title == "":
+						print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
+						title = "** Setup error: '%s' title is missing or blank!" % key
+				# print("[Setup] [setupDOM]title = %s key = %s" % (title, key))
+	except:
+		import traceback
+		traceback.print_exc()
 	return setupFileDom
 
 # Temporary legacy interface.
