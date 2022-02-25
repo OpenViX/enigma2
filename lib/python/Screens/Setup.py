@@ -140,7 +140,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 			return False
 		requires = element.get("requires")
 		if requires:
-			for require in requires.split(";"):
+			for require in [x.strip() for x in requires.split(";")]:
 				negate = require.startswith("!")
 				if negate:
 					require = require[1:]
