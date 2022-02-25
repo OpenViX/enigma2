@@ -267,8 +267,8 @@ class ConfigListScreen:
 
 	def showVirtualKeyBoard(self, state):
 		if "VKeyIcon" in self:
-			self["virtualKeyBoardActions"].setEnabled(state)
 			self["VKeyIcon"].boolean = state
+			self["virtualKeyBoardActions"].setEnabled(state)
 
 	def showHelpWindow(self):
 		self.displayHelp(True)
