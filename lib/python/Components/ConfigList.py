@@ -217,9 +217,6 @@ class ConfigListScreen:
 		if self.hideHelpWindow not in self.onExecEnd:
 			self.onExecEnd.append(self.hideHelpWindow)
 
-	def noNativeKeys(self):
-		self["config"].instance.allowNativeKeys(False)
-
 	def setCancelMessage(self, msg):
 		self.cancelMsg = _("Really close without saving settings?") if msg is None else msg
 
@@ -241,6 +238,9 @@ class ConfigListScreen:
 	def changedEntry(self):
 		for x in self.onChangedEntry:
 			x()
+
+	def noNativeKeys(self):
+		self["config"].instance.allowNativeKeys(False)
 
 	def handleInputHelpers(self):
 		currConfig = self["config"].getCurrent()
