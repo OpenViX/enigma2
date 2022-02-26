@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-01-29 16:02+0200\n"
+"PO-Revision-Date: 2022-02-26 14:43+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -11993,7 +11993,7 @@ msgid "Sort Trash by deletion time"
 msgstr "Lajittele roskakori poistoajan mukaan"
 
 msgid "Sort by"
-msgstr "Listan järjestystapa:"
+msgstr "Listan järjestystapa"
 
 msgid "Sort by default"
 msgstr "Oletusjärjestys"
@@ -15475,7 +15475,7 @@ msgid "fitness & health"
 msgstr "kuntoilu ja terveys"
 
 msgid "flat alphabetic"
-msgstr "Aakkosjärjestys, kansionäkymä"
+msgstr "aakkosjärjestys, kansionäkymä"
 
 msgid "flat alphabetic reverse"
 msgstr "Käänteinen aakkosjärjestys, kansionäkymä"
@@ -16054,7 +16054,7 @@ msgid "show/game show (general)"
 msgstr "show/visailu (yleinen)"
 
 msgid "shuffle"
-msgstr "Satunnaisjärjestys"
+msgstr "satunnaisjärjestys"
 
 msgid "shut down"
 msgstr "Sammuta"
@@ -16376,3 +16376,33 @@ msgstr "suorita leikkaukset (MovieCut tarvitaan)"
 
 msgid "Select horizontal resolution:"
 msgstr "Valitse vaakaerottelu:"
+
+msgid "newest recordings first then other media by name"
+msgstr "uusimmat tallennukset ensin, muu media nimen mukaan"
+
+msgid "newest first"
+msgstr "uusin ensin"
+
+msgid "oldest first"
+msgstr "vanhin ensin"
+
+msgid "alphabetic then newest first"
+msgstr "aakkosjärjestys sitten uusin ensin"
+
+msgid "alphabetic then oldest first"
+msgstr "aakkosjärjestys sitten vanhin ensin"
+
+msgid "shortest first"
+msgstr "lyhin ensin"
+
+msgid "longest first"
+msgstr "pisin ensin"
+
+msgid "flat reverse alphabetic"
+msgstr "käänteinen aakkosjärjestys, kansionäkymä"
+
+msgid "reverse alphabetic then newest first"
+msgstr "käänteinen aakkosjärjestys sitten uusin ensin"
+
+msgid "reverse alphabetic then oldest first"
+msgstr "käänteinen aakkosjärjestys sitten vanhin ensin"
