@@ -7,6 +7,8 @@ from re import compile, split
 from stat import S_IMODE
 from sys import _getframe as getframe
 from unicodedata import normalize
+from traceback import print_exc
+from xml.etree.cElementTree import Element, fromstring, parse
 
 pathExists = os.path.exists
 
@@ -339,6 +341,20 @@ def fileHas(f, content, mode="r"):
 			result = True
 	return result
 
+
+def fileReadXML(filename, default=None, *args, **kwargs):
+	dom = None
+	try:
+		with open(filename, "r") as fd:
+			dom = parse(fd).getroot()
+	except:
+		print_exc()
+	if dom is None and default:
+		if isinstance(default, str):
+			dom = fromstring(default)
+		elif isinstance(default, Element):
+			dom = default
+	return dom
 
 def getRecordingFilename(basename, dirname=None):
 	# Filter out non-allowed characters.
