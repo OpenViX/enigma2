@@ -392,7 +392,7 @@ class HdmiCec:
 				msgaddress = 0
 			if cmd == 0x00:
 				if length == 0: 			# only polling message ( it's same as ping )
-					# print("[HdmiCEC][messageReceived1b]: received polling message")
+					print("[HdmiCEC][messageReceived1b]: received polling message")
 				else:
 					if ctrl0 == 68:		# feature abort
 						print("[HdmiCEC][messageReceived2]: volume forwarding not supported by device %02x" % (msgaddress))
