@@ -1,16 +1,8 @@
-import six
-
 import errno
 import os
 import re
-#import sys
 from fcntl import ioctl
 from time import sleep, time
-
-#if sys.version_info >= (3, 0):
-#	import builtins	# py3
-#else:
-#	import __builtin__ as builtins	# py2
 
 from enigma import eTimer
 from boxbranding import getMachineBuild, getMachineMtdRoot
@@ -108,7 +100,7 @@ def getProcMounts():
 			import subprocess
 			res = subprocess.run(['blkid', '-sTYPE', '-ovalue', item[0]], capture_output=True)
 			if res.returncode == 0:
-				item[2] = six.ensure_str(res.stdout).strip()
+				item[2] = res.stdout.strip().decode()
 	return result
 
 
@@ -989,7 +981,6 @@ class UnmountTask(Components.Task.LoggingTask):
 		print("[Harddisk] UnMountTask - prepare")
 		try:
 			dev = self.hdd.disk_path.split(os.sep)[-1]
-			dev = six.ensure_binary(dev)
 			open("/dev/nomount.%s" % dev, "wb").close()
 		except (IOError, OSError) as err:
 			print("[Harddisk] UnmountTask - Error: Failed to create /dev/nomount file:", err)
@@ -1052,7 +1043,7 @@ class MkfsTask(Components.Task.LoggingTask):
 		self.fsck_state = None
 
 	def processOutput(self, data):
-		data = six.ensure_str(data)
+		data = data.decode()
 		print("[Harddisk] MkfsTask - [Mkfs]", data)
 		if "Writing inode tables:" in data:
 			self.fsck_state = "inode"
