@@ -1,4 +1,4 @@
-from six.moves import reduce
+from functools import reduce
 from Tools.CList import CList
 
 # down                       up
