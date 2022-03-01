@@ -828,9 +828,9 @@ class NimSelection(Screen):
 		return "%d.%dE" % (orbpos // 10, orbpos % 10)
 
 	def extraInfo(self):
-		nim = self["nimlist"].getCurrent()
-		nim = nim and nim[3]
-		if config.usage.setup_level.index >= 2 and nim is not None:
+		current = self["nimlist"].getCurrent()
+		nim = current and len(current) > 2 and hasattr(current[3], "slot") and current[3]
+		if config.usage.setup_level.index >= 2 and nim:
 			text = _("Capabilities: ") + eDVBResourceManager.getInstance().getFrontendCapabilities(nim.slot)
 			self.session.open(MessageBox, text, MessageBox.TYPE_INFO, simple=True)
 
@@ -849,9 +849,9 @@ class NimSelection(Screen):
 
 	def processok(self, answer=False):
 		if answer is True:
-			nim = self["nimlist"].getCurrent()
-			nim = nim and nim[3]
-			if nim is not None:
+			current = self["nimlist"].getCurrent()
+			nim = current and len(current) > 2 and hasattr(current[3], "slot") and current[3]
+			if nim:
 				nimConfig = nimmanager.getNimConfig(nim.slot)
 				if nim.isFBCLink() and nimConfig.configMode.value == "nothing" and not getLinkedSlotID(nim.slot) == -1:
 					return
