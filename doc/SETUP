@@ -160,7 +160,7 @@ Each of the "setup" tags can have the following attributes:
 					text used for the heading or title of 
 					this setup screen.
 
-	"showOpenWebIF"	Optional	This attribute is used to signal that 
+	"showOpenWebIf"	Optional	This attribute is used to signal that 
 					this Setup screen should be made 
 					available in OpenWebif.
 
