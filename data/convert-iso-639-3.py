@@ -1,9 +1,5 @@
+import pickle as cPickle
 import sys
-if sys.version_info >= (3, 0):
-	import pickle as cPickle
-else:
-	import cPickle
-
 infilename = "iso-639-3.tab"
 outfilename = "iso-639-3.pck"
 
