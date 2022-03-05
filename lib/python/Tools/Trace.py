@@ -1,7 +1,6 @@
 from time import localtime, time, strftime
 import functools
 import traceback
-import sys
 
 indent = 0
 
