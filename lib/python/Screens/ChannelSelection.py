@@ -4,7 +4,6 @@ import six
 from os import listdir, path, rename, remove 
 import os
 import re
-import sys
 from time import localtime, time, strftime
 
 from enigma import eActionMap, eServiceReference, eEPGCache, eServiceCenter, eRCInput, eTimer, ePoint, eDVBDB, iPlayableService, iServiceInformation, getPrevAsciiCode, eEnv, eDVBLocalTimeHandler
