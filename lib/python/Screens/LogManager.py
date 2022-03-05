@@ -1,4 +1,3 @@
-import sys
 from datetime import datetime
 from glob import glob
 from os import path, remove, walk, stat, rmdir
