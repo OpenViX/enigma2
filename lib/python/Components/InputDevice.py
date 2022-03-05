@@ -64,7 +64,7 @@ class inputDevices:
 		elif "mouse" in name.lower():
 			return "mouse"
 		else:
-			# print "[InputDevice] Unknown device type:",name
+			# print("[InputDevice] Unknown device type:",name)
 			return None
 
 	def getDeviceName(self, x):
@@ -78,7 +78,7 @@ class inputDevices:
 		return sorted(iter(self.Devices.keys()))
 
 	def setDeviceAttribute(self, device, attribute, value):
-		#print "[InputDevice] setting for device", device, "attribute", attribute, " to value", value
+		#print("[InputDevice] setting for device", device, "attribute", attribute, " to value", value)
 		if device in self.Devices:
 			self.Devices[device][attribute] = value
 
@@ -90,13 +90,13 @@ class inputDevices:
 
 	def setEnabled(self, device, value):
 		oldval = self.getDeviceAttribute(device, 'enabled')
-		#print "[InputDevice] setEnabled for device %s to %s from %s" % (device,value,oldval)
+		#print("[InputDevice] setEnabled for device %s to %s from %s" % (device,value,oldval))
 		self.setDeviceAttribute(device, 'enabled', value)
 		if oldval is True and value is False:
 			self.setDefaults(device)
 
 	def setName(self, device, value):
-		#print "[InputDevice] setName for device %s to %s" % (device,value)
+		#print("[InputDevice] setName for device %s to %s" % (device,value))
 		self.setDeviceAttribute(device, 'configuredName', value)
 
 	#struct input_event {
@@ -144,7 +144,7 @@ class InitInputDevices:
 		for device in sorted(iter(iInputDevices.Devices.keys())):
 			# print("[InputDevice][createConfig]", sorted(iter(iInputDevices.Devices.keys())))		
 			self.currentDevice = device
-			#print "[InputDevice] creating config entry for device: %s -> %s  " % (self.currentDevice, iInputDevices.Devices[device]["name"])
+			#print("[InputDevice] creating config entry for device: %s -> %s  " % (self.currentDevice, iInputDevices.Devices[device]["name"]))
 			self.setupConfigEntries(self.currentDevice)
 			self.remapRemoteControl(self.currentDevice)
 			self.currentDevice = ""
