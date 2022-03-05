@@ -1,5 +1,3 @@
-import six
-
 from time import time
 
 from boxbranding import getImageVersion, getImageBuild, getMachineBrand, getMachineName, getMachineBuild, getImageType, getBoxType, getFeedsUrl
@@ -65,8 +63,7 @@ class FeedsStatusCheck:
 			print("[OnlineUpdateCheck][NetworkUp] PASSED")
 			result = True
 		except:
-			err = sys.exc_info()[0]
-			print("[OnlineUpdateCheck][NetworkUp] FAILED", err)
+			print("[OnlineUpdateCheck][NetworkUp] FAILED", sys.exc_info()[0])
 			result = False
 		finally:
 			if sd is not None:
@@ -89,7 +86,7 @@ class FeedsStatusCheck:
 						print("[OnlineUpdateCheck][getFeedStatus] checking feeds state")
 						req = Request("http://openvix.co.uk/TrafficLightState.php")
 						d = urlopen(req)
-						trafficLight = six.ensure_str(d.read())
+						trafficLight = d.read().decode()
 						if trafficLight == "stable":
 							status = 0
 						print("trafficLight", trafficLight)
@@ -323,7 +320,7 @@ def kernelMismatch():
 
 	pattern = "kernel-([0-9]+[.][0-9]+[.][0-9]+)"
 	# print("[OnlineUpdateCheck][kernelMismatch] packages=%s" % (packages))
-	packages = six.ensure_str(packages)
+	packages = packages.decode()
 	matches = re.findall(pattern, packages)
 	if matches:
 		match = sorted(matches, key=lambda s: list(map(int, s.split("."))))[-1]
