@@ -19,11 +19,8 @@ from operator import itemgetter
 import os
 import time
 # required methods: Request, urlopen, HTTPError, URLError, HTTPHandler, HTTPPasswordMgrWithDefaultRealm, HTTPDigestAuthHandler, build_opener, install_opener
-try: # python 3
-	from urllib.request import urlopen, Request, HTTPHandler, HTTPPasswordMgrWithDefaultRealm, HTTPDigestAuthHandler, build_opener, install_opener # raises ImportError in Python 2
-	from urllib.error import HTTPError, URLError # raises ImportError in Python 2
-except ImportError: # Python 2
-	from urllib2 import Request, urlopen, HTTPError, URLError, HTTPHandler, HTTPPasswordMgrWithDefaultRealm, HTTPDigestAuthHandler, build_opener, install_opener
+from urllib.request import urlopen, Request, HTTPHandler, HTTPPasswordMgrWithDefaultRealm, HTTPDigestAuthHandler, build_opener, install_opener
+from urllib.error import HTTPError, URLError
 import skin
 
 global NAMEBIN
