@@ -1,5 +1,3 @@
-import six
-
 import os
 from fcntl import ioctl
 import platform
@@ -44,28 +42,26 @@ class inputDevices:
 		devices = sorted(os.listdir("/dev/input/"))
 
 		for evdev in devices:
-			try:
-				buffer = "\0" * 512
-				self.fd = os.open("/dev/input/" + evdev, os.O_RDWR | os.O_NONBLOCK)
-				self.name = ioctl(self.fd, EVIOCGNAME(256), buffer)
-				self.name = self.name[:self.name.find(b"\0")]
-				self.name = six.ensure_str(self.name)
-				os.close(self.fd)
-			except (IOError, OSError) as err:
-				print("[InputDevice] Error: evdev='%s' getInputDevices <ERROR: ioctl(EVIOCGNAME): '%s'>" % (evdev, str(err)))
-				self.name = None
-
-			if self.name:
-				devtype = self.getInputDeviceType(six.ensure_str(self.name))
-				print("[InputDevice] Found: evdev='%s', name='%s', type='%s'" % (evdev, self.name, devtype))
-				self.Devices[evdev] = {'name': self.name, 'type': devtype, 'enabled': False, 'configuredName': None}
+			deviceName = None
+			buffer = "\0" * 512
+			with open("/dev/input/" + evdev) as fd:
+				try:
+					name = ioctl(fd, EVIOCGNAME(512), buffer)
+				except (IOError, OSError) as err:
+					# print("[InputDevice] Error: evdev='%s' getInputDevices <ERROR: ioctl(EVIOCGNAME): '%s'>" % (evdev, str(err)))
+					continue					
+			deviceName = name[:name.find(b'\0')].decode()
+			if deviceName:
+				devtype = self.getInputDeviceType(deviceName)
+				print("[InputDevice] Found: evdev='%s', name='%s', type='%s'" % (evdev, deviceName, devtype))
+				self.Devices[evdev] = {'name': deviceName, 'type': devtype, 'enabled': False, 'configuredName': None}
 
 	def getInputDeviceType(self, name):
-		if "remote control" in str(name).lower():
+		if "remote control" in name.lower():
 			return "remote"
-		elif "keyboard" in str(name).lower():
+		elif "keyboard" in name.lower():
 			return "keyboard"
-		elif "mouse" in str(name).lower():
+		elif "mouse" in name.lower():
 			return "mouse"
 		else:
 			# print "[InputDevice] Unknown device type:",name
@@ -78,7 +74,8 @@ class inputDevices:
 			return "Unknown device name"
 
 	def getDeviceList(self):
-		return sorted(six.iterkeys(self.Devices))
+		# print("[InputDevice][getDeviceList]", sorted(iter(self.Devices.keys())))	
+		return sorted(iter(self.Devices.keys()))
 
 	def setDeviceAttribute(self, device, attribute, value):
 		#print "[InputDevice] setting for device", device, "attribute", attribute, " to value", value
@@ -144,7 +141,8 @@ class InitInputDevices:
 
 	def createConfig(self, *args):
 		config.inputDevices = ConfigSubsection()
-		for device in sorted(six.iterkeys(iInputDevices.Devices)):
+		for device in sorted(iter(iInputDevices.Devices.keys())):
+			# print("[InputDevice][createConfig]", sorted(iter(iInputDevices.Devices.keys())))		
 			self.currentDevice = device
 			#print "[InputDevice] creating config entry for device: %s -> %s  " % (self.currentDevice, iInputDevices.Devices[device]["name"])
 			self.setupConfigEntries(self.currentDevice)
