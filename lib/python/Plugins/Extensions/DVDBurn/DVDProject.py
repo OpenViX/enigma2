@@ -1,7 +1,6 @@
 import six
 
 import xml.dom.minidom
-import sys
 from boxbranding import getMachineBrand, getMachineName
 
 from Tools.Directories import fileExists
