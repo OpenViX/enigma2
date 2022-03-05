@@ -1,5 +1,3 @@
-import six
-
 from os import system, path as os_path, remove, unlink, rename, chmod, access, X_OK
 import netifaces as ni
 from random import Random
@@ -94,7 +92,6 @@ class NSCommon:
 		self.Console.ePopen("/usr/bin/opkg install " + pkgname, callback)
 
 	def checkNetworkState(self, str, retval, extra_args):
-		str = six.ensure_str(str)
 		if "Collected errors" in str:
 			self.session.openWithCallback(self.close, MessageBox, _("A background update check is in progress, please wait a few minutes and then try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		elif not str:
@@ -110,7 +107,6 @@ class NSCommon:
 		self.Console.ePopen("/usr/bin/opkg list_installed " + self.service_name, self.RemovedataAvail)
 
 	def RemovedataAvail(self, result, retval, extra_args):
-		result = six.ensure_str(result)
 		if result:
 			self.session.openWithCallback(self.RemovePackage, MessageBox, _("Are you ready to remove %s ?") % self.getTitle(), MessageBox.TYPE_YESNO)
 		else:
@@ -1143,7 +1139,6 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 			self.session.open(MessageBox, _("Your network has finished restarting"), type=MessageBox.TYPE_INFO, timeout=10, default=False)
 
 	def dataAvail(self, data):
-		data = six.ensure_str(data)
 		self.LinkState = None
 		for line in data.splitlines():
 			line = line.strip()
@@ -3428,7 +3423,7 @@ class NetworkPassword(Setup):
 		if not password:
 			self.session.open(MessageBox, _("The password can not be blank."), MessageBox.TYPE_ERROR)
 			return
-		#print("[NetworkPassword] Changing the password for %s to %s" % (self.user,self.password))
+		# print("[NetworkPassword] Changing the password for %s to %s" % (self.user,self.password.value))
 		self.container = eConsoleAppContainer()
 		self.container.appClosed.append(self.runFinished)
 		self.container.dataAvail.append(self.dataAvail)
@@ -3442,8 +3437,8 @@ class NetworkPassword(Setup):
 			self.close()
 
 	def dataAvail(self, data):
-		data = data.decode("UTF-8", "ignore")
-		if data.endswith("password: "):
+		# print("[NetworkPassword][dataAvail] data is:", data)
+		if data.endswith(b"password: "):
 			self.container.write("%s\n" % self.password.value)
 
 	def runFinished(self, retval):
