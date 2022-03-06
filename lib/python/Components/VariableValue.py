@@ -5,20 +5,16 @@ class VariableValue():
 		self.__value = 0
 
 	def setValue(self, value):
-		self.__value = int(value)
+		self.__value = (isinstance(value, int) and value) or (isinstance(value, str) and value.isdigit() and int(value)) or 0
 		if self.instance:
-			try:
-				self.instance.setValue(self.__value)
-			except (TypeError, OverflowError) as e:
-				print("[VariableValue::setValue] exception", type(e), "handled")
-				self.instance.setValue(0)
+			self.instance.setValue(self.__value)
+
 
 	def getValue(self):
 		return self.__value
 
 	def postWidgetCreate(self, instance):
-		print(self)
-		print(self.GUI_WIDGET)
-		self.instance.setValue(self.__value)
+		if self.instance:
+			self.instance.setValue(self.__value)
 
 	value = property(getValue, setValue)
