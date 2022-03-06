@@ -1492,17 +1492,7 @@ class ConfigSelectionNumber(ConfigSelection):
 			if key == ACTIONKEY_LEFT:
 				if self.choices.index(str(self.value)) == 0:
 					return
-		nchoices = len(self.choices)
-		if nchoices > 1:
-			i = self.choices.index(str(self.value))
-			if key == ACTIONKEY_LEFT:
-				self.value = self.choices[(i + nchoices - 1) % nchoices]
-			elif key == ACTIONKEY_RIGHT:
-				self.value = self.choices[(i + 1) % nchoices]
-			elif key == ACTIONKEY_FIRST:
-				self.value = self.choices[0]
-			elif key == ACTIONKEY_LAST:
-				self.value = self.choices[nchoices - 1]
+		ConfigSelection.handleKey(self, key)
 
 
 class ConfigNumber(ConfigText):
