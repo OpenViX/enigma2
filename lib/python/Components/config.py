@@ -1668,6 +1668,7 @@ class ConfigSet(ConfigElement):
 		self.pos = 0
 
 	def handleKey(self, key):
+		count = len()
 		if key in [ACTIONKEY_TOGGLE, ACTIONKEY_SELECT, ACTIONKEY_DELETE, ACTIONKEY_BACKSPACE] + ACTIONKEY_NUMBERS:
 			value = self.value
 			choice = self.choices[self.pos]
@@ -1678,19 +1679,13 @@ class ConfigSet(ConfigElement):
 				value.sort()
 			self.changed()
 		elif key == ACTIONKEY_LEFT:
-			if self.pos > 0:
-				self.pos -= 1
-			else:
-				self.pos = len(self.choices) - 1
+			self.pos = (self.pos - 1) % count
 		elif key == ACTIONKEY_RIGHT:
-			if self.pos < len(self.choices) - 1:
-				self.pos += 1
-			else:
-				self.pos = 0
+			self.pos = (self.pos + 1) % count
 		elif key == ACTIONKEY_FIRST:
 			self.pos = 0
 		elif key == ACTIONKEY_LAST:
-			self.pos = len(self.choices) - 1
+			self.pos = count - 1
 
 	def load(self):
 		ConfigElement.load(self)
