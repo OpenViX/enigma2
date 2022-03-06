@@ -439,13 +439,13 @@ class ConfigSelection(ConfigElement):
 			self.changed()
 
 	def setValue(self, value):
-		prev = self._value if hasattr(self, "_value") else None
+		prev = str(self._value) if hasattr(self, "_value") else None
 		if str(value) in map(str, self.choices):
 			self._value = self.choices[self.choices.index(value)]
 		else:
 			self._value = self.default
 		self._descr = None
-		if prev != self._value:
+		if prev != str(self._value):
 			self.changed()
 
 	def tostring(self, val):
@@ -974,13 +974,13 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 			return self.text
 
 	def setValue(self, val):
-		prev = self.text if hasattr(self, "text") else None
+		prev = str(self.text) if hasattr(self, "text") else None
 		try:
 			self.text = six.ensure_text(val)
 		except UnicodeDecodeError:
 			self.text = six.ensure_text(val, errors='ignore')
 			print("[Config] Broken UTF8!")
-		if self.text != prev:
+		if str(self.text) != prev:
 			self.changed()
 
 	value = property(getValue, setValue)
@@ -1371,13 +1371,13 @@ class ConfigText(ConfigElement, NumericalTextInput):
 			return self.text
 
 	def setValue(self, val):
-		prev = self.text if hasattr(self, "text") else None
+		prev = str(self.text) if hasattr(self, "text") else None
 		try:
 			self.text = six.ensure_text(val)
 		except UnicodeDecodeError:
 			self.text = val.decode("utf-8", "ignore")
 			print("[Config] Broken UTF8!")
-		if self.text != prev:
+		if str(self.text) != prev:
 			self.changed()
 
 	value = property(getValue, setValue)
@@ -1503,9 +1503,9 @@ class ConfigNumber(ConfigText):
 		return int(self.text)
 
 	def setValue(self, val):
-		prev = self.text if hasattr(self, "text") else None
+		prev = str(self.text) if hasattr(self, "text") else None
 		self.text = str(val)
-		if self.text != prev:
+		if str(self.text) != prev:
 			self.changed()
 
 	value = property(getValue, setValue)
