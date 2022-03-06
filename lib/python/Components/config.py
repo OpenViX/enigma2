@@ -1658,7 +1658,7 @@ class ConfigSet(ConfigElement):
 		self.pos = 0
 
 	def handleKey(self, key):
-		count = len()
+		count = len(self.choices)
 		if key in [ACTIONKEY_TOGGLE, ACTIONKEY_SELECT, ACTIONKEY_DELETE, ACTIONKEY_BACKSPACE] + ACTIONKEY_NUMBERS:
 			value = self.value
 			choice = self.choices[self.pos]
