@@ -1915,16 +1915,15 @@ class ConfigLocations(ConfigElement):
 		return None
 
 	def handleKey(self, key):
+		count = len(self.value)
 		if key == ACTIONKEY_LEFT:
-			self.pos -= 1
-			if self.pos < -1:
-				self.pos = len(self.value) - 1
+			self.pos = (self.pos - 1) % count
 		elif key == ACTIONKEY_RIGHT:
-			self.pos += 1
-			if self.pos >= len(self.value):
-				self.pos = -1
-		elif key in (ACTIONKEY_FIRST, ACTIONKEY_LAST):
-			self.pos = -1
+			self.pos = (self.pos + 1) % count
+		elif key == ACTIONKEY_FIRST:
+			self.pos = 0
+		elif key == ACTIONKEY_LAST:
+			self.pos = count - 1
 
 	def getText(self):
 		return " ".join(self.value)
