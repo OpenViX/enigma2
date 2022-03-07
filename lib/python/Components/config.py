@@ -548,15 +548,17 @@ class ConfigBoolean(ConfigElement):
 		self.graphic = graphic
 
 	def handleKey(self, key, callback=None):
-		prev = self.value
+		value = bool(self.value)
 		if key in (ACTIONKEY_TOGGLE, ACTIONKEY_SELECT, ACTIONKEY_LEFT, ACTIONKEY_RIGHT):
-			self.value = not self.value
+			value = not value
 		elif key == ACTIONKEY_FIRST:
-			self.value = False
+			value = False
 		elif key == ACTIONKEY_LAST:
-			self.value = True
-		if self.value != prev and callable(callback):
-			callback()
+			value = True
+		if self.value != value:
+			self.value = value
+			if callable(callback):
+				callback()
 
 	def fromstring(self, val):
 		return str(val).lower() in self.trueValues()
