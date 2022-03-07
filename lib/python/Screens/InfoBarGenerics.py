@@ -2840,13 +2840,12 @@ class InfoBarExtensions:
 			return
 		s = self.session.nav.getCurrentService()
 		if s:
+			name = ""
 			info = s.info()
 			event = info.getEvent(0) # 0 = now, 1 = next
 			if event:
 				name = event and event.getEventName() or ''
-			elif self.session.nav.getCurrentlyPlayingServiceOrGroup() is None:
-				self.session.open(EPGSearch)				
-			else:
+			if self.session.nav.getCurrentlyPlayingServiceOrGroup() is not None:
 				name = self.session.nav.getCurrentlyPlayingServiceOrGroup().toString()
 				name = name.split('/')
 				name = name[-1]
