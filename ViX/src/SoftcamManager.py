@@ -1,5 +1,3 @@
-import six
-
 import re
 from os import path, makedirs, remove, rename, symlink, mkdir, listdir, unlink
 from datetime import datetime
@@ -241,7 +239,6 @@ class VIXSoftcamManager(Screen):
 
 	def showActivecam2(self, result, retval, extra_args):
 		if retval == 0:
-			result = six.ensure_str(result)
 			self.currentactivecamtemp = result
 			self.currentactivecam = "".join([s for s in self.currentactivecamtemp.splitlines(True) if s.strip("\r\n")])
 			self.currentactivecam = self.currentactivecam.replace("\n", ", ")
@@ -322,7 +319,6 @@ class VIXSoftcamManager(Screen):
 		if strpos < 0:
 			return
 		else:
-			result = six.ensure_str(result)
 			if retval == 0:
 				stopcam = result
 				print("[SoftcamManager] Stopping " + selectedcam + " PID " + stopcam.replace("\n", ""))
@@ -385,6 +381,7 @@ class VIXStartCam(Screen):
 		self["lab1"] = Label(_("Please wait while starting\n") + selectedcam + "...")
 		global startselectedcam
 		startselectedcam = selectedcam
+		# print("[SoftcamManager][VIXStartCam] init selectedCam=%s" % selectedcam)
 		self.Console = Console()
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.updatepix)
@@ -446,6 +443,7 @@ class VIXStartCam(Screen):
 			if startselectedcam.lower().startswith("hypercam"):
 				self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + startselectedcam + " -c /etc/hypercam.cfg")
 			elif startselectedcam.lower().startswith("oscam"):
+				# print("[SoftcamManager][VIXStartCam] ePopen start command selectedCam=%s" % startselectedcam)
 				self.Console.ePopen("rm -rf /tmp/.ncam /tmp/*.pid* /tmp/ncam.* /tmp/*.ncam /tmp/status.*")
 				self.Console.ePopen("ulimit -s 1024;/usr/softcams/" + startselectedcam + " -b")
 			elif startselectedcam.lower().startswith("ncam"):
@@ -522,11 +520,11 @@ class VIXStopCam(Screen):
 					fileout.close()
 			self.activityTimer.start(1)
 		else:
+			# print("[SoftcamManager][VIXStopCam] ePopen start command selectedCam=%s" % stopselectedcam)
 			self.Console.ePopen("pidof " + stopselectedcam, self.startShow)
 
 	def startShow(self, result, retval, extra_args):
 		if retval == 0:
-			result = six.ensure_str(result)
 			self.count = 0
 			self["connect"].setPixmapNum(0)
 			stopcam = result
