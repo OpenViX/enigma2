@@ -1,5 +1,3 @@
-import six
-
 import errno
 from os import mkdir, path, remove, rename, statvfs, system
 import re
@@ -136,7 +134,7 @@ def buildPartitionInfo(partition, partitionList):
 					import subprocess
 					res = subprocess.run(['blkid', '-sTYPE', '-ovalue', parts[0]], capture_output=True)
 					if res.returncode == 0:
-						_format = six.ensure_str(res.stdout).strip()
+						_format = res.stdout.decode().strip()
 				rw = parts[3]			# read/write
 				break
 
@@ -344,22 +342,24 @@ class VIXDevicesPanel(Screen):
 				self.session.open(MessageBox, _("This device is already mounted as HDD."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 
 	def addFstab(self, result=None, retval=None, extra_args=None):
-		self.device = extra_args[0]
-		self.mountp = extra_args[1]
-		self.device_uuid = "UUID=" + six.ensure_str(result).split("UUID=")[1].split(" ")[0].replace('"', '')
-		# print("[MountManager1][addFstab1]: device = %s, mountp=%s, UUID=%s" %(self.device, self.mountp, self.device_uuid))
-		if not path.exists(self.mountp):
-			mkdir(self.mountp, 0o755)
-		open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if "/media/hdd" not in l])
-		rename("/etc/fstab.tmp", "/etc/fstab")
-		open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if self.device not in l])
-		rename("/etc/fstab.tmp", "/etc/fstab")
-		open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if self.device_uuid not in l])
-		rename("/etc/fstab.tmp", "/etc/fstab")
-		with open("/etc/fstab", "a") as fd:
-			line = self.device_uuid + "\t/media/hdd\tauto\tdefaults\t0 0\n"
-			fd.write(line)
-		self.Console.ePopen("mount -a", self.setTimer)
+		# print("[MountManager] RESULT:", result)
+		if result:
+			self.device = extra_args[0]
+			self.mountp = extra_args[1]
+			self.device_uuid = "UUID=" + result.split("UUID=")[1].split(" ")[0].replace('"', '')
+			# print("[MountManager1][addFstab1]: device = %s, mountp=%s, UUID=%s" %(self.device, self.mountp, self.device_uuid))
+			if not path.exists(self.mountp):
+				mkdir(self.mountp, 0o755)
+			open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if "/media/hdd" not in l])
+			rename("/etc/fstab.tmp", "/etc/fstab")
+			open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if self.device not in l])
+			rename("/etc/fstab.tmp", "/etc/fstab")
+			open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if self.device_uuid not in l])
+			rename("/etc/fstab.tmp", "/etc/fstab")
+			with open("/etc/fstab", "a") as fd:
+				line = self.device_uuid + "\t/media/hdd\tauto\tdefaults\t0 0\n"
+				fd.write(line)
+			self.Console.ePopen("mount -a", self.setTimer)
 
 
 class DeviceMountSetup(Screen, ConfigListScreen):
@@ -435,7 +435,6 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 	def addconfFstab(self, result=None, retval=None, extra_args=None):
 		# print("[MountManager] RESULT:", result)
 		if result:
-			result = six.ensure_str(result)
 			self.device = extra_args[0]
 			self.mountp = extra_args[1]
 			uuid = re.search('UUID=\"([^\"]+)\"', result)
