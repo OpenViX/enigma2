@@ -1,5 +1,3 @@
-import six
-
 from datetime import date, datetime
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
@@ -502,7 +500,6 @@ class VIXBackupManager(Screen):
 		self.Console.ePopen("opkg update", self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
-		result = six.ensure_str(result)
 		print("[BackupManager] Restoring Stage 2: Result ", result)
 		if result.find("wget returned 4") != -1: # probably no network adaptor connected
 			self.feeds = "NONETWORK"
@@ -582,7 +579,6 @@ class VIXBackupManager(Screen):
 			self.Stage6()
 
 	def Stage3Complete(self, result, retval, extra_args):
-		result = six.ensure_str(result)
 		plugins = []
 		if path.exists("/tmp/ExtraInstalledPlugins") and self.kernelcheck:
 			self.pluginslist = []
@@ -705,7 +701,7 @@ class VIXBackupManager(Screen):
 
 	def Stage5Complete(self, result, retval, extra_args):
 		if result:
-			print("[BackupManager] opkg install result:\n", six.ensure_str(result))
+			print("[BackupManager] opkg install result:\n", result)
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
 			print("[BackupManager] Restoring Stage 5: Completed")
@@ -1293,7 +1289,6 @@ class BackupFiles(Screen):
 
 	def Stage2Complete(self, result, retval, extra_args):
 		if result:
-			result = six.ensure_str(result)
 			plugins_out = []
 			opkg_status_list = result.split("\n\n")
 			# print("[BackupManager] result=%s, retval=%s" % (opkg_status_list, retval))
