@@ -1,5 +1,3 @@
-import six
-
 from os import listdir, path, stat
 from boxbranding import getMachineBrand, getMachineName, getImageDistro
 from . import _
@@ -212,7 +210,6 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def pluginsRestore_Finished(self, result, retval, extra_args=None):
 		if result:
-			result = six.ensure_str(result)
 			print("[RestoreWizard] opkg install result:\n", result)		
 		self.didPluginRestore = True
 		self.NextStep = "reboot"
@@ -252,7 +249,6 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.Console.ePopen("opkg update", self.doRestorePluginsTestComplete)
 
 	def doRestorePluginsTestComplete(self, result='', retval=None, extra_args=None):
-		result = six.ensure_str(result)
 		print("[RestoreWizard] Stage 4: Feeds Test Result", result)
 		if result.find("wget returned 4") != -1:
 			self.NextStep = "reboot"
@@ -284,7 +280,6 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.Console.ePopen("opkg list-installed", self.doRestorePlugins2)
 
 	def doRestorePlugins2(self, result, retval, extra_args):
-		result = six.ensure_str(result)
 		print("[RestoreWizard] Stage 5: Build list of plugins to restore")
 		self.pluginslist = ""
 		self.pluginslist2 = ""
