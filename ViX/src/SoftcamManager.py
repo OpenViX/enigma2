@@ -45,22 +45,15 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during shutdown, with reason=0 at startup?"""
 	global softcamautopoller
 	if reason == 0:
-		if six.PY3:
-			link = "/etc/init.d/softcam"
-			print("[SoftcamAutostart] config.misc.softcams.value=%s" % (config.misc.softcams.value))
-			if path.exists(link) and config.misc.softcams.value != "None":
-					scr = "softcam.%s" % config.misc.softcams.value
-					unlink(link)
-					symlink(scr, link)
-					cmd = "%s %s" % (link, "start")
-					print("[SoftcamAutostart][command]Executing %s" % cmd)
-					eConsoleAppContainer().execute(cmd)
-			else:
-				print("[SoftcamManager] AutoStart Enabled")
-				if path.exists("/tmp/SoftcamsDisableCheck"):
-					remove("/tmp/SoftcamsDisableCheck")
-				softcamautopoller = SoftcamAutoPoller()
-				softcamautopoller.start()
+		link = "/etc/init.d/softcam"
+		print("[SoftcamAutostart] config.misc.softcams.value=%s" % (config.misc.softcams.value))
+		if path.exists(link) and config.misc.softcams.value != "None":
+				scr = "softcam.%s" % config.misc.softcams.value
+				unlink(link)
+				symlink(scr, link)
+				cmd = "%s %s" % (link, "start")
+				print("[SoftcamAutostart][command]Executing %s" % cmd)
+				eConsoleAppContainer().execute(cmd)
 		else:
 			print("[SoftcamManager] AutoStart Enabled")
 			if path.exists("/tmp/SoftcamsDisableCheck"):
@@ -259,10 +252,9 @@ class VIXSoftcamManager(Screen):
 				SoftcamsScriptsRunning = SoftcamsScriptsRunning.replace("\n", ", ")
 				self.currentactivecam += SoftcamsScriptsRunning
 			self["activecam"].setText(self.currentactivecam)				
-			if six.PY3:
-				print("[SoftcamManager] Active:%s ScriptCam=%s" % (self.currentactivecam, config.misc.softcams.value))
-				if config.misc.softcams.value != "None":
-					self["activecam"].setText("SoftcamScript running")
+			print("[SoftcamManager] Active:%s ScriptCam=%s" % (self.currentactivecam, config.misc.softcams.value))
+			if config.misc.softcams.value != "None":
+				self["activecam"].setText("SoftcamScript running")
 			self["activecam"].show()
 		else:
 			print("[SoftcamManager] RESULT FAILED: " + str(result))
