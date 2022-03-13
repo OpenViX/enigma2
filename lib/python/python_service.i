@@ -35,7 +35,7 @@ PyObject *getInfoObject(int w)
 
 			for (unsigned int i = 0; i < cnt; i++)
 			{
-				PyList_SET_ITEM(ret, i, PyInt_FromLong(caids[i]));
+				PyList_SET_ITEM(ret, i, PyLong_FromLong(caids[i]));
 			}
 			return ret;
 		}
@@ -52,9 +52,9 @@ PyObject *getInfoObject(int w)
 			for (unsigned int i = 0; i < cnt; i++)
 			{
 				ePyObject tuple = PyTuple_New(3);
-				PyTuple_SET_ITEM(tuple, 0, PyInt_FromLong(caids[i]));
-				PyTuple_SET_ITEM(tuple, 1, PyInt_FromLong(ecmpids[i]));
-				PyTuple_SET_ITEM(tuple, 2, PyString_FromString(databytes[i].c_str()));
+				PyTuple_SET_ITEM(tuple, 0, PyLong_FromLong(caids[i]));
+				PyTuple_SET_ITEM(tuple, 1, PyLong_FromLong(ecmpids[i]));
+				PyTuple_SET_ITEM(tuple, 2, PyUnicode_FromString(databytes[i].c_str()));
 				PyList_SET_ITEM(ret, i, tuple);
 			}
 			return ret;
@@ -67,9 +67,9 @@ PyObject *getInfoObject(int w)
 				ePtr<iServiceInfoContainer> info = self->getInfoObject(w);
 				if (info)
 				{
-					PyTuple_SetItem(tuple, 0, PyInt_FromLong(info->getInteger(0)));
-					PyTuple_SetItem(tuple, 1, PyString_FromString(info->getString(0).c_str()));
-					PyTuple_SetItem(tuple, 2, PyString_FromString(info->getString(1).c_str()));
+					PyTuple_SetItem(tuple, 0, PyLong_FromLong(info->getInteger(0)));
+					PyTuple_SetItem(tuple, 1, PyUnicode_FromString(info->getString(0).c_str()));
+					PyTuple_SetItem(tuple, 2, PyUnicode_FromString(info->getString(1).c_str()));
 				}
 			}
 			return tuple;
@@ -82,8 +82,8 @@ PyObject *getInfoObject(int w)
 				ePtr<iServiceInfoContainer> info = self->getInfoObject(w);
 				if (info)
 				{
-					PyTuple_SetItem(tuple, 0, PyInt_FromLong(info->getInteger(0)));
-					PyTuple_SetItem(tuple, 1, PyString_FromString(info->getString(0).c_str()));
+					PyTuple_SetItem(tuple, 0, PyLong_FromLong(info->getInteger(0)));
+					PyTuple_SetItem(tuple, 1, PyUnicode_FromString(info->getString(0).c_str()));
 				}
 			}
 			return tuple;
@@ -96,8 +96,8 @@ PyObject *getInfoObject(int w)
 				ePtr<iServiceInfoContainer> info = self->getInfoObject(w);
 				if (info)
 				{
-					PyTuple_SetItem(tuple, 0, PyInt_FromLong(info->getInteger(0)));
-					PyTuple_SetItem(tuple, 1, PyInt_FromLong(info->getInteger(1)));
+					PyTuple_SetItem(tuple, 0, PyLong_FromLong(info->getInteger(0)));
+					PyTuple_SetItem(tuple, 1, PyLong_FromLong(info->getInteger(1)));
 				}
 			}
 			return tuple;
@@ -112,11 +112,7 @@ PyObject *getInfoObject(int w)
 				data = info->getBuffer(size);
 				if (data && size)
 				{
-%#if PY_MAJOR_VERSION >= 3
 					return PyMemoryView_FromMemory((char*)data, size, PyBUF_READ);
-%#else
-					return PyBuffer_FromMemory(data, size);
-%#endif
 				}
 				else
 				{
@@ -140,8 +136,8 @@ PyObject *getAITApplications()
 		for (std::map<int, std::string>::iterator it=aitlist.begin(); it!=aitlist.end(); ++it)
 		{
 			ePyObject tuple = PyTuple_New(2);
-			PyTuple_SET_ITEM(tuple, 0, PyInt_FromLong(it->first));
-			PyTuple_SET_ITEM(tuple, 1, PyString_FromString(it->second.c_str()));
+			PyTuple_SET_ITEM(tuple, 0, PyLong_FromLong(it->first));
+			PyTuple_SET_ITEM(tuple, 1, PyUnicode_FromString(it->second.c_str()));
 			PyList_Append(l, tuple);
 			Py_DECREF(tuple);
 		}
@@ -281,11 +277,11 @@ PyObject *getBufferCharge()
 		ePtr<iStreamBufferInfo> info = self->getBufferCharge();
 		if (info)
 		{
-			PyTuple_SET_ITEM(tuple, 0, PyInt_FromLong(info->getBufferPercentage()));
-			PyTuple_SET_ITEM(tuple, 1, PyInt_FromLong(info->getAverageInputRate()));
-			PyTuple_SET_ITEM(tuple, 2, PyInt_FromLong(info->getAverageOutputRate()));
-			PyTuple_SET_ITEM(tuple, 3, PyInt_FromLong(info->getBufferSpace()));
-			PyTuple_SET_ITEM(tuple, 4, PyInt_FromLong(info->getBufferSize()));
+			PyTuple_SET_ITEM(tuple, 0, PyLong_FromLong(info->getBufferPercentage()));
+			PyTuple_SET_ITEM(tuple, 1, PyLong_FromLong(info->getAverageInputRate()));
+			PyTuple_SET_ITEM(tuple, 2, PyLong_FromLong(info->getAverageOutputRate()));
+			PyTuple_SET_ITEM(tuple, 3, PyLong_FromLong(info->getBufferSpace()));
+			PyTuple_SET_ITEM(tuple, 4, PyLong_FromLong(info->getBufferSize()));
 		}
 	}
 	return tuple;
@@ -314,32 +310,32 @@ RESULT enableSubtitles(eWidget *parent, PyObject *tuple)
 
 		entry = PyTuple_GET_ITEM(tuple, 0);
 
-		if (!PyInt_Check(entry))
+		if (!PyLong_Check(entry))
 			goto error_out;
 
-		track.type = PyInt_AsLong(entry);
+		track.type = PyLong_AsLong(entry);
 
 		entry = PyTuple_GET_ITEM(tuple, 1);
-		if (!PyInt_Check(entry))
+		if (!PyLong_Check(entry))
 			goto error_out;
-		track.pid = PyInt_AsLong(entry);
+		track.pid = PyLong_AsLong(entry);
 
 		entry = PyTuple_GET_ITEM(tuple, 2);
-		if (PyInt_Check(entry))
+		if (PyLong_Check(entry))
 		{
-			track.page_number = PyInt_AsLong(entry);
+			track.page_number = PyLong_AsLong(entry);
 		}
 
 		entry = PyTuple_GET_ITEM(tuple, 3);
-		if (PyInt_Check(entry))
+		if (PyLong_Check(entry))
 		{
-			track.magazine_number = PyInt_AsLong(entry);
+			track.magazine_number = PyLong_AsLong(entry);
 		}
 		if (tuplesize==5){
 			entry = PyTuple_GET_ITEM(tuple, 4);
-			if (PyString_Check(entry))
+			if (PyUnicode_Check(entry))
 			{
-				track.language_code = PyString_AsString(entry);
+				track.language_code = PyUnicode_AsUTF8(entry);
 			}
 		}
 	}
@@ -369,11 +365,11 @@ PyObject *getSubtitleList()
 		for (unsigned int i = 0; i < subtitlelist.size(); i++)
 		{
 			ePyObject tuple = PyTuple_New(5);
-			PyTuple_SET_ITEM(tuple, 0, PyInt_FromLong(subtitlelist[i].type));
-			PyTuple_SET_ITEM(tuple, 1, PyInt_FromLong(subtitlelist[i].pid));
-			PyTuple_SET_ITEM(tuple, 2, PyInt_FromLong(subtitlelist[i].page_number));
-			PyTuple_SET_ITEM(tuple, 3, PyInt_FromLong(subtitlelist[i].magazine_number));
-			PyTuple_SET_ITEM(tuple, 4, PyString_FromString(subtitlelist[i].language_code.c_str()));
+			PyTuple_SET_ITEM(tuple, 0, PyLong_FromLong(subtitlelist[i].type));
+			PyTuple_SET_ITEM(tuple, 1, PyLong_FromLong(subtitlelist[i].pid));
+			PyTuple_SET_ITEM(tuple, 2, PyLong_FromLong(subtitlelist[i].page_number));
+			PyTuple_SET_ITEM(tuple, 3, PyLong_FromLong(subtitlelist[i].magazine_number));
+			PyTuple_SET_ITEM(tuple, 4, PyUnicode_FromString(subtitlelist[i].language_code.c_str()));
 			PyList_Append(l, tuple);
 			Py_DECREF(tuple);
 		}
@@ -389,11 +385,11 @@ PyObject *getCachedSubtitle()
 	if (self->getCachedSubtitle(track) >= 0)
 	{
 		ePyObject tuple = PyTuple_New(5);
-		PyTuple_SET_ITEM(tuple, 0, PyInt_FromLong(track.type));
-		PyTuple_SET_ITEM(tuple, 1, PyInt_FromLong(track.pid));
-		PyTuple_SET_ITEM(tuple, 2, PyInt_FromLong(track.page_number));
-		PyTuple_SET_ITEM(tuple, 3, PyInt_FromLong(track.magazine_number));
-		PyTuple_SET_ITEM(tuple, 4, PyString_FromString(track.language_code.c_str()));
+		PyTuple_SET_ITEM(tuple, 0, PyLong_FromLong(track.type));
+		PyTuple_SET_ITEM(tuple, 1, PyLong_FromLong(track.pid));
+		PyTuple_SET_ITEM(tuple, 2, PyLong_FromLong(track.page_number));
+		PyTuple_SET_ITEM(tuple, 3, PyLong_FromLong(track.magazine_number));
+		PyTuple_SET_ITEM(tuple, 4, PyUnicode_FromString(track.language_code.c_str()));
 		return tuple;
 	}
 	Py_INCREF(Py_None);

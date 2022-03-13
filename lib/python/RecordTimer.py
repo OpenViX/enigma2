@@ -1,4 +1,3 @@
-from __future__ import print_function, division
 import six
 
 from boxbranding import getMachineBrand, getMachineName
@@ -186,7 +185,7 @@ wasRecTimerWakeup = False
 # please do not translate log messages
 
 
-class RecordTimerEntry(TimerEntry, object):
+class RecordTimerEntry(TimerEntry):
 	def __init__(self, serviceref, begin, end, name, description, eit, disabled=False, justplay=False, afterEvent=AFTEREVENT.AUTO, checkOldTimers=False, dirname=None, tags=None, descramble='notset', record_ecm='notset', isAutoTimer=False, always_zap=False, rename_repeat=True, conflict_detection=True, pipzap=False, autoTimerId=None):
 		TimerEntry.__init__(self, int(begin), int(end))
 		if checkOldTimers:

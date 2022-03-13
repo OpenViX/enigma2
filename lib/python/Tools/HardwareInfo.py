@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from boxbranding import getBoxType, getBrandOEM
 from Components.About import about
 

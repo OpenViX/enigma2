@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-import six
-
 from timer import TimerEntry
 
 from enigma import eListboxPythonMultiContent, eListbox, gFont, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_TOP, RT_VALIGN_BOTTOM, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
@@ -16,10 +12,9 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.FuzzyDate import FuzzyTime
 from Tools.LoadPixmap import LoadPixmap
 from Tools.TextBoundary import getTextBoundarySize
-from Tools.Sign import SIGN
 
 
-class TimerList(GUIComponent, object):
+class TimerList(GUIComponent):
 #
 #  | <Name of the Timer>     <Service>  <orb.pos>|
 #  | <state>  <start, end>  |
@@ -123,7 +118,7 @@ class TimerList(GUIComponent, object):
 			state = _("done!")
 			icon = self.iconDone
 
-		icon and res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, colX + self.iconMargin / 2, (self.rowSplit - self.iconHeight) / 2, self.iconWidth, self.iconHeight, icon))
+		icon and res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, colX + self.iconMargin // 2, (self.rowSplit - self.iconHeight) // 2, self.iconWidth, self.iconHeight, icon))
 
 		orbpos = self.getOrbitalPos(timer.service_ref)
 		orbposWidth = getTextBoundarySize(self.instance, self.font, self.l.getItemSize(), orbpos).width()
@@ -183,7 +178,8 @@ class TimerList(GUIComponent, object):
 
 		def satPosLeft(value):
 			self.satPosLeft = parseScale(value)
-		for (attrib, value) in list(self.skinAttributes):
+
+		for (attrib, value) in self.skinAttributes[:]:
 			try:
 				locals().get(attrib)(value)
 				self.skinAttributes.remove((attrib, value))
@@ -242,4 +238,4 @@ class TimerList(GUIComponent, object):
 		if op > 1800:
 			op = 3600 - op
 			direction = 'W'
-		return ("%d.%d%s%s") % (op // 10, op % 10, SIGN, direction)
+		return ("%d.%d%s%s") % (op // 10, op % 10, "\xb0", direction)

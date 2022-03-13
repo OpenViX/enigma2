@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from boxbranding import getMachineBrand
 
 from enigma import ePicLoad, eTimer, getDesktop, gMainDC, eSize
@@ -182,12 +180,6 @@ class Pic_Setup(ConfigListScreen, Screen):
 			getConfigListEntry(_("Stop play TV"), config.pic.stopPlayTv),
 		]
 		self["config"].list = setup_list
-
-	def keyLeft(self):
-		ConfigListScreen.keyLeft(self)
-
-	def keyRight(self):
-		ConfigListScreen.keyRight(self)
 
 #---------------------------------------------------------------------------
 

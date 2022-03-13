@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 from Components.ActionMap import HelpableActionMap
 from Components.MenuList import MenuList
 from Components.Button import Button

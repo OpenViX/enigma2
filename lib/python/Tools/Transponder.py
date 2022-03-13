@@ -1,18 +1,12 @@
 #!/usr/bin/python
-from __future__ import print_function
-from __future__ import division
-
-import six
 
 from enigma import eDVBFrontendParametersSatellite, eDVBFrontendParametersCable, eDVBFrontendParametersTerrestrial, eDVBFrontendParametersATSC
 
 from Components.NimManager import nimmanager
 
-from Tools.Sign import SIGN
-
 
 def orbpos(pos):
-	return pos > 3600 and "N/A" or "%0.1f%s%s" % (((3600 - pos)/10., SIGN, "W") if pos > 1800 else (pos/10., SIGN, "E"))
+	return pos > 3600 and "N/A" or "%0.1f%s%s" % (((3600 - pos)/10., "\xb0", "W") if pos > 1800 else (pos/10., "\xb0", "E"))
 
 
 def getTunerDescription(nim):
@@ -267,7 +261,7 @@ def ConvertToHumanReadable(tp, tunertype=None):
 			eDVBFrontendParametersATSC.System_DVB_C_ANNEX_B: "DVB-C ANNEX B"}.get(tp.get("system"))
 	elif tunertype != "None":
 		print("ConvertToHumanReadable: no or unknown tunertype in tpdata dict for tunertype:", tunertype)
-	for k, v in list(tp.items()):
+	for k, v in tp.items():
 		if k not in ret:
 			ret[k] = v
 	return ret

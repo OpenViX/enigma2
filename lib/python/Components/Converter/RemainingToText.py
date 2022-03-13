@@ -1,13 +1,10 @@
-from __future__ import absolute_import
-from __future__ import division
-
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
 from Components.Element import cached
 from Components.config import config
 
 
-class RemainingToText(Poll, Converter, object):
+class RemainingToText(Poll, Converter):
 	DEFAULT = 0
 	WITH_SECONDS = 1
 	NO_SECONDS = 2

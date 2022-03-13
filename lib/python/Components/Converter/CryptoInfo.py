@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
 from Components.Element import cached
@@ -7,7 +5,7 @@ from Components.config import config
 from Tools.GetEcmInfo import GetEcmInfo
 
 
-class CryptoInfo(Poll, Converter, object):
+class CryptoInfo(Poll, Converter):
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)

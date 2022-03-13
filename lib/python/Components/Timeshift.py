@@ -26,7 +26,6 @@
 
 # note that a timeshift can be enabled ("recording") and
 # activated (currently time-shifting).
-from __future__ import print_function
 
 
 from Components.ActionMap import ActionMap, HelpableActionMap

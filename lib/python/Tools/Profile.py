@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
 # the implementation here is a bit crappy.
 from boxbranding import getBoxType, getMachineBuild
 import time

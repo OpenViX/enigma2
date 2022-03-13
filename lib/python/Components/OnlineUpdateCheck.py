@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-import six
-
 from time import time
 
 from boxbranding import getImageVersion, getImageBuild, getMachineBrand, getMachineName, getMachineBuild, getImageType, getBoxType, getFeedsUrl
@@ -15,12 +11,8 @@ import Components.Task
 import socket
 import sys
 # required methods: Request, urlopen, HTTPError, URLError
-try: # python 3
-	from urllib.request import urlopen, Request # raises ImportError in Python 2
-	from urllib.error import HTTPError, URLError # raises ImportError in Python 2
-except ImportError: # Python 2
-	from urllib2 import Request, urlopen, HTTPError, URLError
-
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError, URLError
 
 error = 0
 
@@ -71,8 +63,7 @@ class FeedsStatusCheck:
 			print("[OnlineUpdateCheck][NetworkUp] PASSED")
 			result = True
 		except:
-			err = sys.exc_info()[0]
-			print("[OnlineUpdateCheck][NetworkUp] FAILED", err)
+			print("[OnlineUpdateCheck][NetworkUp] FAILED", sys.exc_info()[0])
 			result = False
 		finally:
 			if sd is not None:
@@ -95,7 +86,7 @@ class FeedsStatusCheck:
 						print("[OnlineUpdateCheck][getFeedStatus] checking feeds state")
 						req = Request("http://openvix.co.uk/TrafficLightState.php")
 						d = urlopen(req)
-						trafficLight = six.ensure_str(d.read())
+						trafficLight = d.read().decode()
 						if trafficLight == "stable":
 							status = 0
 						print("trafficLight", trafficLight)
@@ -329,7 +320,7 @@ def kernelMismatch():
 
 	pattern = "kernel-([0-9]+[.][0-9]+[.][0-9]+)"
 	# print("[OnlineUpdateCheck][kernelMismatch] packages=%s" % (packages))
-	packages = six.ensure_str(packages)
+	packages = packages.decode()
 	matches = re.findall(pattern, packages)
 	if matches:
 		match = sorted(matches, key=lambda s: list(map(int, s.split("."))))[-1]

@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
 import six
 
 from os import listdir, path, popen
@@ -25,7 +22,6 @@ from Screens.SoftwareUpdate import UpdatePlugin
 from Tools.Directories import fileExists, fileCheck, pathExists
 from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
-from Tools.Sign import SIGN
 
 
 class About(Screen):
@@ -136,7 +132,7 @@ class About(Screen):
 			with open("/proc/stb/sensors/temp/value", "r") as f:
 				tempinfo = f.read()
 		if tempinfo and int(tempinfo.replace("\n", "")) > 0:
-			AboutText += _("System temp:\t%s") % tempinfo.replace("\n", "").replace(" ", "") + SIGN + "C\n"
+			AboutText += _("System temp:\t%s") % tempinfo.replace("\n", "").replace(" ", "") + "\xb0" + "C\n"
 
 		tempinfo = ""
 		if path.exists("/proc/stb/fp/temp_sensor_avs"):
@@ -155,7 +151,7 @@ class About(Screen):
 			except:
 				tempinfo = ""
 		if tempinfo and int(tempinfo) > 0:
-			AboutText += _("Processor temp:\t%s") % tempinfo.replace("\n", "").replace(" ", "") + SIGN + "C\n"
+			AboutText += _("Processor temp:\t%s") % tempinfo.replace("\n", "").replace(" ", "") + "\xb0" + "C\n"
 
 		fp_version = getFPVersion()
 		if fp_version is None:
@@ -309,7 +305,6 @@ class Devices(Screen):
 		self.Console.ePopen("df -mh | grep -v '^Filesystem'", self.Stage1Complete)
 
 	def Stage1Complete(self, result, retval, extra_args=None):
-		result = six.ensure_str(result)
 		result = result.replace("\n                        ", " ").split("\n")
 		self.mountinfo = ""
 		for line in result:
@@ -384,7 +379,6 @@ class SystemMemoryInfo(Screen):
 		self.Console.ePopen("df -mh / | grep -v '^Filesystem'", self.Stage1Complete)
 
 	def Stage1Complete(self, result, retval, extra_args=None):
-		result = six.ensure_str(result)
 		flash = str(result).replace("\n", "")
 		flash = flash.split()
 		RamTotal = flash[1]
@@ -687,7 +681,7 @@ class AboutSummary(ScreenSummary):
 			with open("/proc/stb/sensors/temp/value", "r") as f:
 				tempinfo = f.read()
 		if tempinfo and int(tempinfo.replace("\n", "")) > 0:
-			aboutText += _("System temperature: %s") % tempinfo.replace("\n", "") + SIGN + "C\n\n"
+			aboutText += _("System temperature: %s") % tempinfo.replace("\n", "") + "\xb0" + "C\n\n"
 		self["about"] = StaticText(aboutText)  # DEBUG: Proposed for new summary screens.
 		self["AboutText"] = StaticText(aboutText)
 

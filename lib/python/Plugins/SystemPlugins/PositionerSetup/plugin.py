@@ -1,8 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-import six
-
 from enigma import eTimer, eDVBResourceManager, eDVBDiseqcCommand, eDVBFrontendParametersSatellite, iDVBFrontend
 
 from time import sleep
@@ -34,7 +29,6 @@ from Screens.Satconfig import NimSetup
 from Screens.Screen import Screen
 from Tools.Transponder import ConvertToHumanReadable
 from Tools.Hex2strColor import Hex2strColor
-from Tools.Sign import SIGN
 from skin import parameters
 
 
@@ -103,10 +97,7 @@ class PositionerSetup(Screen):
 			self.advancedsats = self.advancedconfig.sat
 		else:
 			self.advanced = False
-		if six.PY3:	# do not combine into single conditional, py3 gives  SyntaxError: cannot assign to conditional expression
-			self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)]
-		else:
-			self.availablesats = map(lambda x: x[0], nimmanager.getRotorSatListForNim(self.feid))
+		self.availablesats = [x[0] for x in nimmanager.getRotorSatListForNim(self.feid)]
 		cur = {}
 		if not self.openFrontend():
 			service = self.session.nav.getCurrentService()
@@ -300,8 +291,8 @@ class PositionerSetup(Screen):
 	def OrbToStr(self, orbpos):
 		if orbpos > 1800:
 			orbpos = 3600 - orbpos
-			return "%d.%d%s W" % (orbpos // 10, orbpos % 10, SIGN)
-		return "%d.%d%s E" % (orbpos // 10, orbpos % 10, SIGN)
+			return "%d.%d%s W" % (orbpos // 10, orbpos % 10, "\xb0")
+		return "%d.%d%s E" % (orbpos // 10, orbpos % 10, "\xb0")
 
 	def setDishOrbosValue(self):
 		if self.getRotorMovingState():
@@ -460,7 +451,7 @@ class PositionerSetup(Screen):
 		if orb_pos in self.availablesats:
 			lnbnum = int(self.advancedsats[orb_pos].lnb.value)
 			if not lnbnum:
-				for allsats in list(range(3601, 3607)):
+				for allsats in range(3601, 3607):
 					lnbnum = int(self.advancedsats[allsats].lnb.value)
 					if lnbnum:
 						break
@@ -1065,12 +1056,8 @@ class PositionerSetup(Screen):
 			print((_("Lock ratio") + "     %5.1f" + chr(176) + "   : %6.2f") % (pos, lock), file=log)
 
 		def optimise(readings):
-			#	if six.PY3:
 			xi = list(readings.keys())
-			yi = [x_y[0] for x_y in list(readings.values())]
-			#	else:
-			#		xi = readings.keys()
-			#		yi = map(lambda (x, y) : x, readings.values())
+			yi = [x_y[0] for x_y in readings.values()]
 			x0 = sum(map(mul, xi, yi)) // sum(yi)
 			xm = xi[yi.index(max(yi))]
 			return (x0, xm)
@@ -1205,7 +1192,7 @@ class PositionerSetup(Screen):
 
 		def optimise(readings):
 			xi = list(readings.keys())
-			yi = [x_y1[0] for x_y1 in list(readings.values())]
+			yi = [x_y1[0] for x_y1 in readings.values()]
 			x0 = int(round(sum(map(mul, xi, yi)) // sum(yi)))
 			xm = xi[yi.index(max(yi))]
 			return (x0, xm)
@@ -1623,7 +1610,6 @@ class TunerScreen(ConfigListScreen, Screen):
 			currtp = self.transponderToString([None, self.scan_sat.frequency.value, self.scan_sat.symbolrate.value, self.scan_sat.polarization.value])
 			self.tuning.transponder.setValue(currtp)
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def tuningSatChanged(self, *parm):
 		self.updateTransponders()

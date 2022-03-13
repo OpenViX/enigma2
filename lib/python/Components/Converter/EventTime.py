@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-
 from time import time
 
 from enigma import eEPGCache
@@ -11,7 +8,7 @@ from Components.Converter.Poll import Poll
 from Components.Element import cached, ElementError
 
 
-class EventTime(Poll, Converter, object):
+class EventTime(Poll, Converter):
 	STARTTIME = 0
 	ENDTIME = 1
 	REMAINING = 2

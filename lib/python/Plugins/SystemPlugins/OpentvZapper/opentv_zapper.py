@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from Components.config import config
 from Components.NimManager import nimmanager
 
@@ -527,13 +523,9 @@ class LamedbWriter():
 
 				control_chars = ''.join(list(map(six.unichr, list(range(0, 32)) + list(range(127, 160)))))
 				control_char_re = re.compile('[%s]' % re.escape(control_chars))
-				if 'provider_name' in list(service.keys()):
-					if six.PY2:
-						service_name = control_char_re.sub('', service["service_name"]).decode('latin-1').encode("utf8")
-						provider_name = control_char_re.sub('', service["provider_name"]).decode('latin-1').encode("utf8")
-					else:
-						service_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
-						provider_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["provider_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
+				if 'provider_name' in service.keys():
+					service_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
+					provider_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["provider_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
 				else:
 					service_name = service["service_name"]
 
@@ -548,7 +540,7 @@ class LamedbWriter():
 					service_flags = ",f:%x" % service["service_flags"]
 
 				if 'service_line' in service.keys():
-					lamedblist.append(self.utf8_convert("%s\n" % service["service_line"]))
+					lamedblist.append("%s\n" % service["service_line"])
 				else:
 					lamedblist.append("p:%s%s%s\n" % (provider_name, service_ca, service_flags))
 				services_count += 1
@@ -675,13 +667,9 @@ class LamedbWriter():
 
 				control_chars = ''.join(list(map(six.unichr, list(range(0, 32)) + list(range(127, 160)))))
 				control_char_re = re.compile('[%s]' % re.escape(control_chars))
-				if 'provider_name' in list(service.keys()):
-					if six.PY2:
-						service_name = control_char_re.sub('', service["service_name"]).decode('latin-1').encode("utf8")
-						provider_name = control_char_re.sub('', service["provider_name"]).decode('latin-1').encode("utf8")
-					else:
-						service_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
-						provider_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["provider_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
+				if 'provider_name' in service.keys():
+					service_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
+					provider_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["provider_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
 				else:
 					service_name = service["service_name"]
 
@@ -697,7 +685,7 @@ class LamedbWriter():
 
 				if 'service_line' in service.keys(): # from lamedb
 					if len(service["service_line"]):
-						lamedblist.append(",%s\n" % self.utf8_convert(service["service_line"]))
+						lamedblist.append(",%s\n" % service["service_line"])
 					else:
 						lamedblist.append("\n")
 				else: # from scanner
@@ -710,22 +698,6 @@ class LamedbWriter():
 		del lamedblist
 
 		#print("[%s-LamedbWriter] Wrote %d transponders and %d services" % (debug_name, transponders_count, services_count))
-
-	def utf8_convert(self, text):
-		if six.PY3:
-			return text
-		for encoding in ["utf8", "latin-1"]:
-			try:
-				text.decode(encoding=encoding)
-			except UnicodeDecodeError:
-				encoding = None
-			else:
-				break
-		if encoding == "utf8":
-			return text
-		if encoding is None:
-			encoding = "utf8"
-		return text.decode(encoding, errors="ignore").encode("utf8")
 
 
 class Opentv_Zapper():

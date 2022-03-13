@@ -22,7 +22,7 @@ static const char *crash_emailaddr =
 	CRASH_EMAILADDR;
 #endif
 
-/* Defined in bsod.cpp */
+/* Defined in eerror.cpp */
 void retrieveLogBuffer(const char **p1, unsigned int *s1, const char **p2, unsigned int *s2);
 
 static const std::string getConfigString(const char* key, const char* defaultValue)
@@ -141,8 +141,8 @@ void bsodFatal(const char *component)
 	if (f)
 	{
 		time_t t = time(0);
-		struct tm tm;
-		char tm_str[32];
+		struct tm tm = {};
+		char tm_str[32] = {};
 
 		localtime_r(&t, &tm);
 		strftime(tm_str, sizeof(tm_str), "%a %b %_d %T %Y", &tm);
@@ -283,7 +283,7 @@ void oops(const mcontext_t &context)
 #elif defined(__arm__)
 	eLog(lvlFatal, "PC: %08lx", (unsigned long)context.arm_pc);
 	eLog(lvlFatal, "Fault Address: %08lx", (unsigned long)context.fault_address);
-	eLog(lvlFatal, "Error Code:: %lu", (unsigned long)context.error_code);
+	eLog(lvlFatal, "Error Code: %lu", (unsigned long)context.error_code);
 #else
 	eLog(lvlFatal, "FIXME: no oops support!");
 #endif
@@ -326,7 +326,7 @@ void handleFatalSignal(int signum, siginfo_t *si, void *ctx)
 
 void bsodCatchSignals()
 {
-	struct sigaction act;
+	struct sigaction act = {};
 	act.sa_sigaction = handleFatalSignal;
 	act.sa_flags = SA_RESTART | SA_SIGINFO;
 	if (sigemptyset(&act.sa_mask) == -1)

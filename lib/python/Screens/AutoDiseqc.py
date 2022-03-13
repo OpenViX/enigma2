@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from Screens.Screen import Screen
 from Components.ConfigList import ConfigListScreen
 from Components.ActionMap import ActionMap
@@ -235,9 +233,6 @@ class AutoDiseqc(ConfigListScreen, Screen):
 
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=self.session)
-
-		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 		self["key_red"] = StaticText(_("Abort"))
 

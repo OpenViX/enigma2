@@ -1,14 +1,11 @@
 # original code is from openmips gb Team: [OMaclock] Converter #
 # Thx to arn354 #
-from __future__ import absolute_import
-from __future__ import division
-
 from time import localtime, strftime
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 
 
-class AnalogClock(Converter, object):
+class AnalogClock(Converter):
 	DEFAULT = 0
 	OMA_SEC = 1
 	OMA_MIN = 2

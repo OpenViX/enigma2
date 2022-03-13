@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import division
-import six
 from enigma import eDVBResourceManager, eDVBFrontendParametersSatellite, eDVBFrontendParametersTerrestrial, eTimer
 
 from enigma import eDVBResourceManager, eDVBFrontendParametersSatellite, eDVBFrontendParametersTerrestrial
@@ -33,10 +30,7 @@ if dvbreader_available:
 	from Tools.Hex2strColor import Hex2strColor
 	import time
 	import datetime
-	if six.PY3:
-		import _thread as thread
-	else:
-		import thread
+	import _thread as thread
 
 
 class Satfinder(ScanSetup, ServiceScan):
@@ -318,7 +312,6 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.preDefTransponderAtscEntry = getConfigListEntry(_('Transponder'), self.ATSCTransponders)
 				self.list.append(self.preDefTransponderAtscEntry)
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def createConfig(self, foo):
 		self.tuning_type = ConfigSelection(default="predefined_transponder", choices=[("single_transponder", _("User defined transponder")), ("predefined_transponder", _("Predefined transponder"))])

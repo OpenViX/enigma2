@@ -17,7 +17,6 @@
 # Version: 1.5 (04.07.2014) fix iptv reference cosmetic - 2boom
 # Support: http://dream.altmaster.net/ & http://gisclub.tv
 #
-from __future__ import absolute_import, division
 
 from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eServiceCenter, eTimer, getBestPlayableServiceReference
 
@@ -33,7 +32,7 @@ except:
 	correctChannelNumber = False
 
 
-class ServiceName2(Converter, object):
+class ServiceName2(Converter):
 	NAME = 0
 	NUMBER = 1
 	BOUQUET = 2
@@ -516,7 +515,7 @@ class ServiceName2(Converter, object):
 			if self.ref:
 				prefix = " (alter)"
 			name += prefix
-			return name.replace('\xc2\x86', '').replace('\xc2\x87', '')
+			return name.replace('\x86', '').replace('\x87', '')
 		elif self.type == self.NUMBER:
 			try:
 				service = self.source.serviceref
@@ -592,7 +591,7 @@ class ServiceName2(Converter, object):
 					if self.ref:
 						postfix = " (alter)"
 					name += postfix
-					ret += name.replace('\xc2\x86', '').replace('\xc2\x87', '')
+					ret += name.replace('\x86', '').replace('\x87', '')
 				elif f == 'n':	# %n - Number
 					try:
 						service = self.source.serviceref

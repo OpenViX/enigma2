@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from enigma import eListboxPythonMultiContent, eListbox, gFont, getDesktop, \
 	RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_TOP, RT_VALIGN_BOTTOM
 
@@ -12,7 +10,7 @@ from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from PowerTimer import AFTEREVENT, TIMERTYPE
 
 
-class PowerTimerList(GUIComponent, object):
+class PowerTimerList(GUIComponent):
 #
 #  | <Service>     <Name of the Timer>  |
 #  | <start, end>              <state>  |
@@ -169,7 +167,8 @@ class PowerTimerList(GUIComponent, object):
 
 		def satPosLeft(value):
 			self.satPosLeft = parseScale(value)
-		for (attrib, value) in list(self.skinAttributes):
+
+		for (attrib, value) in self.skinAttributes[:]:
 			try:
 				locals().get(attrib)(value)
 				self.skinAttributes.remove((attrib, value))

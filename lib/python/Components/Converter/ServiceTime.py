@@ -1,12 +1,10 @@
-from __future__ import absolute_import
-
 from enigma import iServiceInformation, eServiceReference
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached, ElementError
 
 
-class ServiceTime(Converter, object):
+class ServiceTime(Converter):
 	STARTTIME = 0
 	ENDTIME = 1
 	DURATION = 2

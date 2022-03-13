@@ -1,9 +1,5 @@
 # -*- coding: UTF-8 -*-
 # CCcam Info by AliAbdul
-from __future__ import print_function
-from __future__ import absolute_import
-import six
-
 from base64 import b64encode
 from os import listdir, remove, rename, system, path
 
@@ -61,7 +57,7 @@ def _parse(url):
 		if ':' in username:
 			username, password = username.split(':')
 			base64string = "%s:%s" % (username, password)
-			base64string = b64encode(base64string.encode('utf-8')) if six.PY2 else (b64encode(base64string.encode('utf-8'))).decode()
+			base64string = (b64encode(base64string.encode('utf-8'))).decode()
 			authHeader = "Basic " + base64string
 			AuthHeaders["Authorization"] = authHeader
 	if ':' in host:
@@ -103,7 +99,7 @@ class HelpableNumberActionMap(NumberActionMap):
 	def __init__(self, parent, context, actions, prio):
 		alist = []
 		adict = {}
-		for (action, funchelp) in six.iteritems(actions):
+		for (action, funchelp) in actions.items():
 			alist.append((action, funchelp[1]))
 			adict[action] = funchelp[0]
 		NumberActionMap.__init__(self, [context], adict, prio)
@@ -786,7 +782,6 @@ class CCcamInfoMain(Screen):
 
 	def showFreeMemory(self, result, retval, extra_args):
 		if retval == 0:
-			result = six.ensure_str(result)
 			if result.__contains__("Total:"):
 				idx = result.index("Total:")
 				result = result[idx + 6:]

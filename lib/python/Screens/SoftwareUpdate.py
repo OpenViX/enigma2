@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-import six
-
 from boxbranding import getImageVersion, getImageBuild, getImageDevBuild, getImageType, getImageDistro, getMachineBrand, getMachineName, getMachineBuild
 from gettext import dgettext
 

@@ -1,11 +1,9 @@
-from __future__ import absolute_import
-
 from Components.Sources.TunerInfo import TunerInfo as TunerInfoSource
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 
 
-class TunerInfo(Converter, object):
+class TunerInfo(Converter):
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		self.type = {

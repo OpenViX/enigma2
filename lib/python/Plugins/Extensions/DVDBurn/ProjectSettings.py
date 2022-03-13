@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
-import sys
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.HelpMenu import HelpableScreen
@@ -11,7 +7,6 @@ from Components.FileList import FileList
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_FONTS, SCOPE_HDD
 from Components.config import config, getConfigListEntry
 from Components.ConfigList import ConfigListScreen
-import six
 
 
 class FileBrowser(Screen, HelpableScreen):
@@ -177,11 +172,11 @@ class ProjectSettings(ConfigListScreen, Screen):
 			else:
 				self.list.append(getConfigListEntry(_("DVD data format"), self.settings.dataformat))
 
-		self["config"].setList(self.list)
+		self["config"].list = self.list
 		self.keydict = {}
-		for key, val in six.iteritems(self.settings.dict()):
+		for key, val in self.settings.dict().items():
 			self.keydict[val] = key
-		for key, val in six.iteritems(self.project.menutemplate.settings.dict()):
+		for key, val in self.project.menutemplate.settings.dict().items():
 			self.keydict[val] = key
 
 	def keyLeft(self):

@@ -1,8 +1,4 @@
-from __future__ import print_function
-from __future__ import absolute_import
-import six
-
-import xml.etree.cElementTree
+from xml.etree.cElementTree import fromstring, parse
 
 from gettext import dgettext
 from os.path import getmtime, join as pathjoin
@@ -30,11 +26,8 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		self.setup = setup
 		self.plugin = plugin
 		self.pluginLanguageDomain = PluginLanguageDomain
-		if hasattr(self, "skinName"):
-			if not isinstance(self.skinName, list):
-				self.skinName = [self.skinName]
-		else:
-			self.skinName = []
+		if not isinstance(self.skinName, list):
+			self.skinName = [self.skinName]
 		if setup:
 			self.skinName.append("Setup%s" % setup)  # DEBUG: Proposed for new setup screens.
 			self.skinName.append("setup_%s" % setup)
@@ -48,8 +41,9 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		defaultSetupImage = setups.get("default", "")
 		setupImage = setups.get(setup, defaultSetupImage)
 		if setupImage:
-			print("[Setup] %s image '%s'." % ("Default" if setupImage is defaultSetupImage else "Setup", setupImage))
+			imgType = "Default" if setupImage is defaultSetupImage else "Setup"
 			setupImage = resolveFilename(SCOPE_CURRENT_SKIN, setupImage)
+			print("[Setup] %s image '%s'." % (imgType, setupImage))
 			self.setupImage = LoadPixmap(setupImage)
 			if self.setupImage:
 				self["setupimage"] = Pixmap()
@@ -79,22 +73,20 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				skin = setup.get("skin", None)
 				if skin and skin != "":
 					self.skinName.insert(0, skin)
-				title = setup.get("title", None).encode("UTF-8", errors="ignore") if six.PY2 else setup.get("title", None)
-				title = six.ensure_str(title)
+				title = setup.get("title", None)
 				# print("[Setup] [createSetup] %s" % title)
 				# If this break is executed then there can only be one setup tag with this key.
 				# This may not be appropriate if conditional setup blocks become available.
 				break
-		self.setTitle(_(title) if title and title != "" else _("Setup"))
+		if title:
+			title = dgettext(self.pluginLanguageDomain, title) if self.pluginLanguageDomain else _(title)
+		self.setTitle(title if title else _("Setup"))
 		if self.list != oldList or self.showDefaultChanged or self.graphicSwitchChanged:
-			print("[Setup] DEBUG: Config list has changed!")
 			currentItem = self["config"].getCurrent()
-			self["config"].setList(self.list)
+			self["config"].list = self.list
 			if config.usage.sort_settings.value:
 				self["config"].list.sort()
 			self.moveToItem(currentItem)
-		else:
-			print("[Setup] DEBUG: Config list is unchanged!")
 
 	def addItems(self, parentNode, including=True):
 		for element in parentNode:
@@ -116,14 +108,15 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def addItem(self, element):
 		if self.pluginLanguageDomain:
-			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??").encode("UTF-8", errors="ignore")) if six.PY2 else dgettext(self.pluginLanguageDomain, element.get("text", "??"))
-			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " ").encode("UTF-8", errors="ignore")) if six.PY2 else dgettext(self.pluginLanguageDomain, element.get("description", " "))
+			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??"))
+			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " "))
 		else:
-			itemText = _(element.get("text", "??").encode("UTF-8", errors="ignore")) if six.PY2 else _(element.get("text", "??"))
-			itemDescription = _(element.get("description", " ").encode("UTF-8", errors="ignore")) if six.PY2 else _(element.get("description", " "))
+			itemText = _(element.get("text", "??"))
+			itemDescription = _(element.get("description", " "))
 		item = eval(element.text or "")
-		# print("[Setup] [self.pluginLanguageDomain]itemText = %s itemDescription = %s item = %s" % (itemText, itemDescription, item))
-		if item != "" and not isinstance(item, ConfigNothing):
+		if item == "":
+			self.list.append((self.formatItemText(itemText),))  # Add the comment line to the config list.
+		elif not isinstance(item, ConfigNothing):
 			self.list.append((self.formatItemText(itemText), item, self.formatItemDescription(item, itemDescription)))  # Add the item to the config list.
 		if item is config.usage.setupShowDefault:
 			self.showDefaultChanged = True
@@ -147,7 +140,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 			return False
 		requires = element.get("requires")
 		if requires:
-			for require in requires.split(";"):
+			for require in [x.strip() for x in requires.split(";")]:
 				negate = require.startswith("!")
 				if negate:
 					require = require[1:]
@@ -289,7 +282,7 @@ def setupDom(setup=None, plugin=None):
 			elif element.tag == "elif":
 				pass
 
-	setupFileDom = xml.etree.cElementTree.fromstring("<setupxml></setupxml>")
+	setupFileDom = fromstring("<setupxml></setupxml>")
 	setupFile = resolveFilename(SCOPE_PLUGINS, pathjoin(plugin, "setup.xml")) if plugin else resolveFilename(SCOPE_SKIN, "setup.xml")
 	global domSetups, setupModTimes
 	try:
@@ -305,44 +298,28 @@ def setupDom(setup=None, plugin=None):
 	print("[Setup] XML%s setup file '%s', using element '%s'%s." % (" cached" if cached else "", setupFile, setup, " from plugin '%s'" % plugin if plugin else ""))
 	if cached:
 		return domSetups[setupFile]
+	if setupFile in domSetups:
+		del domSetups[setupFile]
+	if setupFile in setupModTimes:
+		del setupModTimes[setupFile]
 	try:
-		if setupFile in domSetups:
-			del domSetups[setupFile]
-		if setupFile in setupModTimes:
-			del setupModTimes[setupFile]
 		with open(setupFile, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
-			try:
-				fileDom = xml.etree.cElementTree.parse(fd).getroot()
-				checkItems(fileDom, None)
-				setupFileDom = fileDom
-				domSetups[setupFile] = setupFileDom
-				setupModTimes[setupFile] = modTime
-				for setup in setupFileDom.findall("setup"):
-					key = setup.get("key")
-					if key:  # If there is no key then this element is useless and can be skipped!
-						title = setup.get("title", "").encode("UTF-8", errors="ignore") if six.PY2 else setup.get("title", "")
-						if title == "":
-							print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
-							title = "** Setup error: '%s' title is missing or blank!" % key
-					title = six.ensure_str(title)
-					# print("[Setup] [setupDOM]title = %s key = %s" % (title, key))
-			except xml.etree.cElementTree.ParseError as err:
-				fd.seek(0)
-				content = fd.readlines()
-				line, column = err.position
-				print("[Setup] XML Parse Error: '%s' in '%s'!" % (err, setupFile))
-				data = content[line - 1].replace("\t", " ").rstrip()
-				print("[Setup] XML Parse Error: '%s'" % data)
-				print("[Setup] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1)))
-			except Exception as err:
-				print("[Setup] Error: Unable to parse setup data in '%s' - '%s'!" % (setupFile, err))
-	except (IOError, OSError) as err:
-		if err.errno == errno.ENOENT:  # No such file or directory
-			print("[Setup] Warning: Setup file '%s' does not exist!" % setupFile)
-		else:
-			print("[Setup] Error %d: Opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
-	except Exception as err:
-		print("[Setup] Error %d: Unexpected error opening setup file '%s'! (%s)" % (err.errno, setupFile, err.strerror))
+			fileDom = parse(fd).getroot()
+			checkItems(fileDom, None)
+			setupFileDom = fileDom
+			domSetups[setupFile] = setupFileDom
+			setupModTimes[setupFile] = modTime
+			for setup in setupFileDom.findall("setup"):
+				key = setup.get("key")
+				if key:  # If there is no key then this element is useless and can be skipped!
+					title = setup.get("title", "")
+					if title == "":
+						print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
+						title = "** Setup error: '%s' title is missing or blank!" % key
+				# print("[Setup] [setupDOM]title = %s key = %s" % (title, key))
+	except:
+		import traceback
+		traceback.print_exc()
 	return setupFileDom
 
 # Temporary legacy interface.

@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from Screens.TimerEntryBase import TimerEntryBase, TimerLogBase
 from Components.config import ConfigSelection, ConfigYesNo, ConfigInteger
 from Components.ActionMap import HelpableActionMap, NumberActionMap

@@ -61,7 +61,7 @@ def write_cache(cache_file, cache_data):
 		try:
 			mkdir(os_path.dirname(cache_file))
 		except OSError:
-				print os_path.dirname(cache_file), 'is a file'
+				print(os_path.dirname(cache_file), 'is a file')
 	fd = open(cache_file, 'w')
 	dump(cache_data, fd, -1)
 	fd.close()
@@ -129,7 +129,7 @@ class UpdatePluginMenu(Screen):
 		self.text = ""
 		self.backupdirs = ' '.join(config.plugins.configurationbackup.backupdirs.value)
 		if self.menu == 0:
-			print "building menu entries"
+			print("building menu entries")
 			self.list.append(("install-extensions", _("Manage extensions"), _("\nManage extensions or plugins for your %s %s") % (getMachineBrand(), getMachineName()) + self.oktext, None))
 			self.list.append(("software-update", _("Software update"), _("\nOnline update of your %s %s software.") % (getMachineBrand(), getMachineName()) + self.oktext, None))
 			self.list.append(("software-restore", _("Software restore"), _("\nRestore your %s %s with a new firmware.") % (getMachineBrand(), getMachineName()) + self.oktext, None))
@@ -137,15 +137,15 @@ class UpdatePluginMenu(Screen):
 			self.list.append(("system-restore", _("Restore system settings"), _("\nRestore your %s %s settings.") % (getMachineBrand(), getMachineName()) + self.oktext, None))
 			self.list.append(("ipkg-install", _("Install local extension"), _("\nScan for local extensions and install them.") + self.oktext, None))
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_SOFTWAREMANAGER):
-				if "SoftwareSupported" in p.__call__:
-					callFnc = p.__call__["SoftwareSupported"](None)
+				if "SoftwareSupported" in p.fnc:
+					callFnc = p.fnc["SoftwareSupported"](None)
 					if callFnc is not None:
-						if "menuEntryName" in p.__call__:
-							menuEntryName = p.__call__["menuEntryName"](None)
+						if "menuEntryName" in p.fnc:
+							menuEntryName = p.fnc["menuEntryName"](None)
 						else:
 							menuEntryName = _('Extended Software')
-						if "menuEntryDescription" in p.__call__:
-							menuEntryDescription = p.__call__["menuEntryDescription"](None)
+						if "menuEntryDescription" in p.fnc:
+							menuEntryDescription = p.fnc["menuEntryDescription"](None)
 						else:
 							menuEntryDescription = _('Extended Software Plugin')
 						self.list.append(('default-plugin', menuEntryName, menuEntryDescription + self.oktext, callFnc))
@@ -159,15 +159,15 @@ class UpdatePluginMenu(Screen):
 				self.list.append(("ipkg-manager", _("Packet management"), _("\nView, install and remove available or installed packages.") + self.oktext, None))
 			self.list.append(("ipkg-source", _("Select upgrade source"), _("\nEdit the upgrade source address.") + self.oktext, None))
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_SOFTWAREMANAGER):
-				if "AdvancedSoftwareSupported" in p.__call__:
-					callFnc = p.__call__["AdvancedSoftwareSupported"](None)
+				if "AdvancedSoftwareSupported" in p.fnc:
+					callFnc = p.fnc["AdvancedSoftwareSupported"](None)
 					if callFnc is not None:
-						if "menuEntryName" in p.__call__:
-							menuEntryName = p.__call__["menuEntryName"](None)
+						if "menuEntryName" in p.fnc:
+							menuEntryName = p.fnc["menuEntryName"](None)
 						else:
 							menuEntryName = _('Advanced software')
-						if "menuEntryDescription" in p.__call__:
-							menuEntryDescription = p.__call__["menuEntryDescription"](None)
+						if "menuEntryDescription" in p.fnc:
+							menuEntryDescription = p.fnc["menuEntryDescription"](None)
 						else:
 							menuEntryDescription = _('Advanced software plugin')
 						self.list.append(('advanced-plugin', menuEntryName, menuEntryDescription + self.oktext, callFnc))
@@ -321,7 +321,7 @@ class UpdatePluginMenu(Screen):
 			self.createBackupfolders()
 
 	def createBackupfolders(self):
-		print "Creating backup folder if not already there..."
+		print("Creating backup folder if not already there...")
 		self.backuppath = getBackupPath()
 		try:
 			if not os_path.exists(self.backuppath):
@@ -401,7 +401,6 @@ class SoftwareManagerSetup(ConfigListScreen, Screen):
 
 		self["config"].list = self.list
 		self["config"].l.setSeperation(400)
-		self["config"].l.setList(self.list)
 		if not self.selectionChanged in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.selectionChanged)
 		self.selectionChanged()
@@ -423,7 +422,7 @@ class SoftwareManagerSetup(ConfigListScreen, Screen):
 
 	def confirm(self, confirmed):
 		if not confirmed:
-			print "not confirmed"
+			print("not confirmed")
 			return
 		else:
 			self.keySave()
@@ -1319,7 +1318,7 @@ class PluginDetails(Screen, PackageInfoHandler):
 
 		if thumbnailUrl is not None:
 			self.thumbnail = "/tmp/" + thumbnailUrl.split('/')[-1]
-			print "[PluginDetails] downloading screenshot " + thumbnailUrl + " to " + self.thumbnail
+			print("[PluginDetails] downloading screenshot " + thumbnailUrl + " to " + self.thumbnail)
 			if iSoftwareTools.NetworkConnectionAvailable:
 				client.downloadPage(thumbnailUrl, self.thumbnail).addCallback(self.setThumbnail).addErrback(self.fetchFailed)
 			else:
@@ -1400,7 +1399,7 @@ class PluginDetails(Screen, PackageInfoHandler):
 
 	def fetchFailed(self, string):
 		self.setThumbnail(noScreenshot=True)
-		print "[PluginDetails] fetch failed " + string.getErrorMessage()
+		print("[PluginDetails] fetch failed " + string.getErrorMessage())
 
 
 class IPKGMenu(Screen):
@@ -1887,7 +1886,7 @@ class PacketManager(Screen, NumericalTextInput):
 		self.list = []
 		self.cachelist = []
 		if self.cache_ttl > 0 and self.vc != 0:
-			print 'Loading packagelist cache from ', self.cache_file
+			print('Loading packagelist cache from ', self.cache_file)
 			try:
 				self.cachelist = load_cache(self.cache_file)
 				if len(self.cachelist) > 0:
@@ -1898,7 +1897,7 @@ class PacketManager(Screen, NumericalTextInput):
 				self.inv_cache = 1
 
 		if self.cache_ttl == 0 or self.inv_cache == 1 or self.vc == 0:
-			print 'rebuilding fresh package list'
+			print('rebuilding fresh package list')
 			for x in self.packetlist:
 				status = ""
 				if x[0] in self.installed_packetlist:

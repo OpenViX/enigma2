@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from time import localtime, strftime, time
 
 from enigma import eTimer

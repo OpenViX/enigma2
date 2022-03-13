@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from enigma import eButton
 
 from Components.GUIComponent import GUIComponent

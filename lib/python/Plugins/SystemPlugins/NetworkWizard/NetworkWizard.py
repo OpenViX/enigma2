@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from os import system
 
 from enigma import eTimer
@@ -132,7 +130,7 @@ class NetworkWizard(WizardLanguage, Rc):
 	def checkOldInterfaceState(self):
 		# disable up interface if it was originally down and config is unchanged.
 		if self.originalInterfaceStateChanged is False:
-			for interface in list(self.originalInterfaceState.keys()):
+			for interface in self.originalInterfaceState.keys():
 				if interface == self.selectedInterface:
 					if self.originalInterfaceState[interface]["up"] is False:
 						if iNetwork.checkforInterface(interface) is True:

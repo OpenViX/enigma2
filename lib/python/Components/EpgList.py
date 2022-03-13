@@ -1,4 +1,3 @@
-from __future__ import print_function
 from enigma import eRect
 
 from Components.config import config

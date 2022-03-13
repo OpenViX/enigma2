@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from Screens.Screen import Screen
 from Components.ConfigList import ConfigListScreen
 from Components.Sources.StaticText import StaticText
@@ -89,7 +87,6 @@ class InstallWizard(ConfigListScreen, Screen):
 		elif self.index == self.INSTALL_SKINS:
 			self.list.append(getConfigListEntry(_("Do you want to change the default skin"), self.enabled))
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 
 	def keyLeft(self):
 		if self.index == 0:

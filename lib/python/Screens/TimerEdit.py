@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 from functools import cmp_to_key
 
 from Components.ActionMap import ActionMap

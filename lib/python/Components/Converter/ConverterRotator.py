@@ -5,14 +5,13 @@
 # Version: 0.1 (26.01.2012 04:05)
 # Support: http://dream.altmaster.net/
 #
-from __future__ import absolute_import
 
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
 from Components.Element import cached
 
 
-class ConverterRotator(Poll, Converter, object):
+class ConverterRotator(Poll, Converter):
 	"""Static Text Converter Rotator"""
 
 	def __init__(self, type):

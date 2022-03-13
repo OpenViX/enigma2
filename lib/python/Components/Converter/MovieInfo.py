@@ -1,5 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
 from os import lstat, scandir
 from threading import Lock, Thread
 from enigma import iServiceInformation, eServiceReference
@@ -8,7 +6,7 @@ from Components.Converter.Converter import Converter
 from Components.Element import cached
 
 
-class MovieInfo(Converter, object):
+class MovieInfo(Converter):
 	scanDirectoryLock = Lock()
 	scanPath = None
 	isScanning = False

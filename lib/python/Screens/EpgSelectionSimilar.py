@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from Components.ActionMap import HelpableActionMap
 from Components.config import config
 from Components.EpgListSingle import EPGListSingle

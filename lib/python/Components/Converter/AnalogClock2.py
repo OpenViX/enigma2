@@ -1,12 +1,9 @@
-from __future__ import absolute_import
-from __future__ import division
-
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from time import localtime, strftime
 
 
-class AnalogClock2(Converter, object):
+class AnalogClock2(Converter):
 
 	def __init__(self, type):
 		Converter.__init__(self, type)

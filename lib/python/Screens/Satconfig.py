@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-
 from enigma import eDVBDB, getLinkedSlotID, eDVBResourceManager
 from Screens.Screen import Screen
 from Components.SystemInfo import SystemInfo
@@ -322,7 +319,6 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 			self.list.append(getConfigListEntry(_("Force legacy signal stats"), self.nimConfig.force_legacy_signal_stats, _("If set to 'yes' signal values (SNR, etc) will be calculated from API V3. This is an old API version that has now been superseded.")))
 
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 		self.setTextKeyYellow()
 
 	def newConfig(self):
@@ -535,7 +531,7 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 		self.list.append(self.configMode)
 		self.advancedSatsEntry = getConfigListEntry(self.indent % _("Satellite"), self.nimConfig.advanced.sats)
 		self.list.append(self.advancedSatsEntry)
-		for x in list(self.nimConfig.advanced.sat.keys()):
+		for x in self.nimConfig.advanced.sat.keys():
 			Sat = self.nimConfig.advanced.sat[x]
 			self.fillListWithAdvancedSatEntrys(Sat)
 		self["config"].list = self.list

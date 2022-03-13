@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from Components.config import config, configfile, ConfigText, ConfigSelection, ConfigIP, ConfigYesNo, ConfigInteger
 from Screens.Setup import Setup
 from enigma import getPeerStreamingBoxes
@@ -60,7 +58,7 @@ class FallbackTunerSetup(Setup):
 				self.list.append((_("Fallback remote receiver URL"), self.domain, _("Enter the URL/IP of the fallback remote receiver, e.g. '192.168.0.1'. The other details such as 'http://' and port number will be filled in automatically when you select save.")))
 
 		currentItem = self["config"].getCurrent()
-		self["config"].setList(self.list)
+		self["config"].list = self.list
 		self.moveToItem(currentItem)
 
 	def keySave(self):

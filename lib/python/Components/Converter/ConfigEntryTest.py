@@ -1,12 +1,9 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 from Components.config import configfile
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 
 
-class ConfigEntryTest(Converter, object):
+class ConfigEntryTest(Converter):
 	def __init__(self, argstr):
 		Converter.__init__(self, argstr)
 		args = argstr.split(',')

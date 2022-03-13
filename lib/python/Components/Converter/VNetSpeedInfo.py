@@ -16,7 +16,6 @@
 # www.vuplus-support.org
 #
 #######################################################################
-from __future__ import absolute_import
 
 import os
 
@@ -25,7 +24,7 @@ from Components.Element import cached
 from Components.Converter.Poll import Poll
 
 
-class VNetSpeedInfo(Poll, Converter, object):
+class VNetSpeedInfo(Poll, Converter):
 	RCL = 0 			# Receive Lan in Megabit/s = Geschwindigkeit/Bandbreite
 	TML = 1				# Transmit Lan in Megabit/s = Geschwindigkeit/Bandbreite
 	RCW = 2				# Receive Wlan in Megabit/s = Geschwindigkeit/Bandbreite

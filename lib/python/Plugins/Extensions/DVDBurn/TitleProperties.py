@@ -1,8 +1,4 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 from enigma import ePicLoad
-
 
 from Components.ActionMap import ActionMap
 from Components.Sources.StaticText import StaticText
@@ -98,7 +94,7 @@ class TitleProperties(ConfigListScreen, Screen):
 				infotext += str(chapters_count + 1) + ' ' + _("chapters") + ': '
 				infotext += ' / '.join(chaptermarks)
 			self["serviceinfo"].setText(infotext)
-			self["config"].setList(self.list)
+			self["config"].list = self.list
 		except AttributeError:
 			pass
 

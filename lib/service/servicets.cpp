@@ -165,7 +165,7 @@ int eServiceTS::openHttpConnection(std::string url)
 	if (fd == -1)
 		return -1;
 
-	struct sockaddr_in addr;
+	struct sockaddr_in addr = {};
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = *((in_addr_t*)h->h_addr_list[0]);
 	addr.sin_port = htons(port);
@@ -225,7 +225,7 @@ int eServiceTS::openHttpConnection(std::string url)
 	return fd;
 }
 
-RESULT eServiceTS::connectEvent(const sigc::slot2<void,iPlayableService*,int> &event, ePtr<eConnection> &connection)
+RESULT eServiceTS::connectEvent(const sigc::slot<void(iPlayableService*,int)> &event, ePtr<eConnection> &connection)
 {
 	connection = new eConnection((iPlayableService*)this, m_event.connect(event));
 	return 0;
@@ -624,7 +624,7 @@ void eStreamThread::thread() {
 	bool eof = false;
 	fd_set rfds;
 	fd_set wfds;
-	struct timeval timeout;
+	struct timeval timeout = {};
 	int rc,r,w,maxfd;
 	time_t next_scantime = 0;
 	bool sosSend = false;

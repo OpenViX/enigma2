@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
-
 from Components.Converter.Converter import Converter
 from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceCenter
 from Components.Element import cached
@@ -10,7 +8,7 @@ from Components.NimManager import nimmanager
 import Screens.InfoBar
 
 
-class TransponderInfo(Converter, object):
+class TransponderInfo(Converter):
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		self.type = type.split(";")

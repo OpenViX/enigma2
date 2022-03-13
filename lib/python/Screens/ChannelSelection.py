@@ -1,66 +1,57 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
 import six
 
+from os import listdir, path, rename, remove 
 import os
-import unicodedata
-from Tools.Profile import profile
+import re
+from time import localtime, time, strftime
 
-from Screens.Screen import Screen
-from Screens.HelpMenu import HelpableScreen
-import Screens.InfoBar
-import Components.ParentalControl
-from Components.Button import Button
-from Components.ServiceList import ServiceList, refreshServiceList
+from enigma import eActionMap, eServiceReference, eEPGCache, eServiceCenter, eRCInput, eTimer, ePoint, eDVBDB, iPlayableService, iServiceInformation, getPrevAsciiCode, eEnv, eDVBLocalTimeHandler
+
+from Tools.Profile import profile
 from Components.ActionMap import ActionMap, HelpableActionMap, HelpableNumberActionMap
+from Components.Button import Button
+from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
+from Components.config import config, configfile, ConfigSubsection, ConfigText, ConfigYesNo
+from Components.Input import Input
 from Components.MenuList import MenuList
+from Components.NimManager import nimmanager
+import Components.ParentalControl
+from Components.PluginComponent import plugins
+from Components.Renderer.Picon import getPiconName
+from Components.ServiceList import ServiceList, refreshServiceList
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
+from Components.Sources.Event import Event
 from Components.Sources.List import List
+from Components.Sources.RdsDecoder import RdsDecoder
+from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
-from Components.Renderer.Picon import getPiconName
-from Screens.TimerEntry import addTimerFromEventSilent
-profile("ChannelSelection.py 1")
-from Screens.EpgSelectionSingle import EPGSelectionSingle
-from enigma import eActionMap, eServiceReference, eEPGCache, eServiceCenter, eRCInput, eTimer, ePoint, eDVBDB, iPlayableService, iServiceInformation, getPrevAsciiCode, eEnv, eDVBLocalTimeHandler
-from Components.config import config, configfile, ConfigSubsection, ConfigText, ConfigYesNo
-from Tools.NumericalTextInput import NumericalTextInput
-profile("ChannelSelection.py 2")
-from Components.NimManager import nimmanager
-profile("ChannelSelection.py 2.1")
-from Components.Sources.RdsDecoder import RdsDecoder
-profile("ChannelSelection.py 2.2")
-from Components.Sources.ServiceEvent import ServiceEvent
-from Components.Sources.Event import Event
-profile("ChannelSelection.py 2.3")
-from Components.Input import Input
-profile("ChannelSelection.py 3")
-from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
+from Plugins.Plugin import PluginDescriptor
 from RecordTimer import AFTEREVENT
-from Screens.TimerEntry import TimerEntry
-from Screens.InputBox import PinInput
-from Screens.VirtualKeyBoard import VirtualKeyBoard
-from Screens.ChoiceBox import ChoiceBox
-from Screens.MessageBox import MessageBox
-from Screens.ServiceInfo import ServiceInfo
+from Screens.Screen import Screen
 from Screens.ButtonSetup import InfoBarButtonSetup, helpableButtonSetupActionMap, getButtonSetupFunctions
-profile("ChannelSelection.py 4")
+from Screens.ChoiceBox import ChoiceBox
+from Screens.EpgSelectionSingle import EPGSelectionSingle
+from Screens.HelpMenu import HelpableScreen
+import Screens.InfoBar
+from Screens.InputBox import PinInput
+from Screens.MessageBox import MessageBox
 from Screens.PictureInPicture import PictureInPicture
 from Screens.RdsDisplay import RassInteractive
+from Screens.ServiceInfo import ServiceInfo
+from Screens.TimerEntry import TimerEntry, addTimerFromEventSilent
+from Screens.VirtualKeyBoard import VirtualKeyBoard
 from ServiceReference import ServiceReference
-from Tools.BoundFunction import boundFunction
-from Tools.LoadPixmap import LoadPixmap
-from Tools import Notifications
 from Tools.Alternatives import GetWithAlternative
+from Tools.BoundFunction import boundFunction
+from Tools.Directories import sanitizeFilename
+from Tools.LoadPixmap import LoadPixmap
+import Tools.Notifications
+from Tools.NumericalTextInput import NumericalTextInput
 import Tools.Transponder
-from Tools.Sign import SIGN
-from Plugins.Plugin import PluginDescriptor
-from Components.PluginComponent import plugins
-from time import localtime, time, strftime
-import re
-import sys
+
+
 try:
 	from Plugins.SystemPlugins.PiPServiceRelation.plugin import getRelationDict
 	plugin_PiPServiceRelation_installed = True
@@ -383,7 +374,7 @@ class ChannelContextMenu(Screen):
 		cur = self.csel.getCurrentSelection()
 		if cur and cur.valid():
 			name = eServiceCenter.getInstance().info(cur).getName(cur) or ServiceReference(cur).getServiceName() or ""
-			name = name.replace('\xc2\x86', '').replace('\xc2\x87', '')
+			name = name.replace('\x86', '').replace('\x87', '')
 			return name
 		return ""
 
@@ -926,7 +917,7 @@ class ChannelSelectionEdit:
 		cur = self.getCurrentSelection()
 		if cur and cur.valid():
 			name = eServiceCenter.getInstance().info(cur).getName(cur) or ServiceReference(cur).getServiceName() or ""
-			name = name.replace('\xc2\x86', '').replace('\xc2\x87', '')
+			name = name.replace('\x86', '').replace('\x87', '')
 			if name:
 				self.session.openWithCallback(self.renameEntryCallback, VirtualKeyBoard, title=_("Please enter a new name:"), text=name)
 		else:
@@ -973,10 +964,7 @@ class ChannelSelectionEdit:
 		mutableBouquet = cur_root.list().startEdit()
 		if mutableBouquet:
 			servicename = cur_service.getServiceName()
-			if six.PY3:
-				name = unicodedata.normalize(u"NFKD", servicename).encode("ascii", "ignore").decode('utf8').translate(str.maketrans('', '', '<>:"/\\|?*() '))
-			else:
-				name = unicodedata.normalize("NFKD", unicode(servicename, "utf_8", errors="ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
+			name = unicodedata.normalize(u"NFKD", servicename).encode("ascii", "ignore").decode('utf8').translate(str.maketrans('', '', '<>:"/\\|?*() '))
 			while os.path.isfile((self.mode == MODE_TV and '/etc/enigma2/alternatives.%s.tv' or '/etc/enigma2/alternatives.%s.radio') % name):
 				name = name.rsplit('_', 1)
 				name = ('_').join((name[0], len(name) == 2 and name[1].isdigit() and str(int(name[1]) + 1) or '1'))
@@ -1011,10 +999,7 @@ class ChannelSelectionEdit:
 		mutableBouquetList = serviceHandler.list(self.bouquet_root).startEdit()
 		if mutableBouquetList:
 			bName += ' ' + (_("(TV)") if self.mode == MODE_TV else _("(Radio)"))
-			if six.PY3:
-				name = unicodedata.normalize(u"NFKD", bName).encode("ASCII", "ignore").decode('utf8').translate(str.maketrans('', '', '<>:"/\\|?*() '))
-			else:
-				name = unicodedata.normalize("NFKD", unicode(bName, "utf_8", errors="ignore")).encode("ASCII", "ignore").translate(None, '<>:"/\\|?*() ')
+			name = sanitizeFilename(bName)
 			while os.path.isfile((self.mode == MODE_TV and '/etc/enigma2/userbouquet.%s.tv' or '/etc/enigma2/userbouquet.%s.radio') % name):
 				name = name.rsplit('_', 1)
 				name = ('_').join((name[0], len(name) == 2 and name[1].isdigit() and str(int(name[1]) + 1) or '1'))
@@ -1104,7 +1089,7 @@ class ChannelSelectionEdit:
 				direction = _("W")
 			else:
 				direction = _("E")
-			messageText = _("Are you sure you want to remove all %d.%d%s%s services?") % (unsigned_orbpos / 10, unsigned_orbpos % 10, SIGN, direction)
+			messageText = _("Are you sure you want to remove all %d.%d%s%s services?") % (unsigned_orbpos / 10, unsigned_orbpos % 10, "\xb0", direction)
 		self.session.openWithCallback(self.removeSatelliteServicesCallback, MessageBox, messageText)
 
 	def removeSatelliteServicesCallback(self, answer):
@@ -3074,4 +3059,4 @@ class HistoryZapSelector(Screen, HelpableScreen):
 		if orbpos > 1800:
 			orbpos = 3600 - orbpos
 			direction = "W"
-		return ("%d.%d%s %s") % (orbpos // 10, orbpos % 10, SIGN, direction)
+		return ("%d.%d%s %s") % (orbpos // 10, orbpos % 10, "\xb0", direction)

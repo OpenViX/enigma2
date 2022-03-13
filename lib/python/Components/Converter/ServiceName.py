@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
 
 from Components.Converter.Converter import Converter
 from Components.config import config
@@ -9,7 +8,7 @@ from Components.Element import cached
 from Tools.Directories import fileExists
 
 
-class ServiceName(Converter, object):
+class ServiceName(Converter):
 	NAME = 0
 	NAME_ONLY = 1
 	NAME_EVENT = 2
@@ -53,7 +52,7 @@ class ServiceName(Converter, object):
 			name = service and info.getName(service)
 			if name is None:
 				name = info.getName()
-			name = name.replace('\xc2\x86', '').replace('\xc2\x87', '')
+			name = name.replace('\x86', '').replace('\x87', '')
 			if self.type == self.NAME_EVENT:
 				act_event = info and info.getEvent(0)
 				if not act_event and info:

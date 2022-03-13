@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 import os
 
 from enigma import eAVSwitch, getDesktop
@@ -103,7 +100,7 @@ class AVSwitch:
 	#
 	def isModeAvailable(self, port, mode, rate):
 		rate = self.rates[mode][rate]
-		for mode in list(rate.values()):
+		for mode in rate.values():
 			if mode not in self.readAvailableModes():
 				return False
 		return True

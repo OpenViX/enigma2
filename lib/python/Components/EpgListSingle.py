@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-
 from time import localtime, time, strftime
 
 from enigma import eEPGCache, eListboxPythonMultiContent, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
@@ -131,7 +128,7 @@ class EPGListSingle(EPGListBase):
 				if self.list[i][2] > now:
 					break
 		# Add explicit gaps if data isn't available.
-		for i in list(range(len(self.list) - 1, 0, -1)):
+		for i in range(len(self.list) - 1, 0, -1):
 			thisBeg = self.list[i][2]
 			prevEnd = self.list[i - 1][2] + self.list[i - 1][3]
 			if prevEnd + 5 * SECS_IN_MIN < thisBeg:

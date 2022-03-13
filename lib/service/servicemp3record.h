@@ -12,7 +12,7 @@ class eServiceMP3Record:
 {
 	DECLARE_REF(eServiceMP3Record);
 public:
-	RESULT connectEvent(const sigc::slot2<void,iRecordableService*,int> &event, ePtr<eConnection> &connection);
+	RESULT connectEvent(const sigc::slot<void(iRecordableService*,int)> &event, ePtr<eConnection> &connection);
 	RESULT prepare(const char *filename, time_t begTime, time_t endTime, int eit_event_id, const char *name, const char *descr, const char *tags, bool descramble, bool recordecm, int packetsize);
 	RESULT prepareStreaming(bool descramble, bool includeecm);
 	RESULT start(bool simulate=false);
@@ -55,7 +55,7 @@ private:
 	static gboolean handleAutoPlugCont(GstElement *bin, GstPad *pad, GstCaps *caps, gpointer user_data);
 
 			/* events */
-	sigc::signal2<void,iRecordableService*,int> m_event;
+	sigc::signal<void(iRecordableService*,int)> m_event;
 };
 
 #endif

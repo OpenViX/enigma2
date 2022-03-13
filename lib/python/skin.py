@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import division
-import six
-
 import errno
 import xml.etree.cElementTree
 
@@ -417,7 +413,7 @@ def collectAttributes(skinAttributes, node, context, skinPath=None, ignore=(), f
 	size = None
 	pos = None
 	font = None
-	for attrib, value in list(node.items()):  # Walk all attributes.
+	for attrib, value in node.items():  # Walk all attributes.
 		if attrib not in ignore:
 			if attrib in filenames:
 				# DEBUG: Why does a SCOPE_CURRENT_LCDSKIN image replace the GUI image?!?!?!
@@ -433,14 +429,14 @@ def collectAttributes(skinAttributes, node, context, skinPath=None, ignore=(), f
 			# listbox; when the scrollbar setting is applied after the size, a scrollbar
 			# will not be shown until the selection moves for the first time.
 			if attrib == "size":
-				size = six.ensure_str(value)
+				size = value
 			elif attrib == "position":
-				pos = six.ensure_str(value)
+				pos = value
 			elif attrib == "font":
-				font = six.ensure_str(value)
+				font = value
 				skinAttributes.append((attrib, font))
 			else:
-				skinAttributes.append((attrib, six.ensure_str(value)))
+				skinAttributes.append((attrib, value))
 	if pos != None:
 		pos, size = context.parse(pos, size, font)
 		skinAttributes.append(("position", pos))

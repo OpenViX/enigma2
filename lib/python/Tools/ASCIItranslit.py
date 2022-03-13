@@ -259,7 +259,7 @@ ASCIItranslit = {
 def legacyEncode(string):
 	import six
 	string2 = ""
-	for z, char in enumerate(string.decode("utf-8") if six.PY2 else string):
+	for z, char in enumerate(string):
 		i = ord(char)
 		if i in ASCIItranslit:
 			string2 += ASCIItranslit[i]

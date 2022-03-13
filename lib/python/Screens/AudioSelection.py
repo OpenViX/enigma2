@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 from Screens.Screen import Screen
 from Screens.Setup import getConfigMenuItem, Setup
 from Screens.InputBox import PinInput
@@ -370,7 +367,6 @@ class AudioSelection(ConfigListScreen, Screen):
 		if len(conflist) > 3 and conflist[3][0]:
 			self["key_blue"].setBoolean(True)
 		self["config"].list = conflist
-		self["config"].l.setList(conflist)
 		self["streams"].list = streams
 		self["streams"].setIndex(selectedidx)
 

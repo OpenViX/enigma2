@@ -275,7 +275,7 @@ class RestoreMenu(Screen):
 	def startDelete(self, ret=False):
 		if ret:
 			self.exe = True
-			print "removing:", self.val
+			print("removing:", self.val)
 			if path.exists(self.val):
 				remove(self.val)
 			self.exe = False

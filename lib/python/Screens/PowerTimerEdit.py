@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.Label import Label

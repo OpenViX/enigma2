@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 from os import path
 
 from enigma import iPlayableService, iServiceInformation, eTimer, eServiceCenter, eServiceReference, eDVBDB
@@ -165,7 +162,6 @@ class VideoSetup(ConfigListScreen, Screen):
 		# if not isinstance(config.av.scaler_sharpness, ConfigNothing):
 		# 	self.list.append(getConfigListEntry(_("Scaler sharpness"), config.av.scaler_sharpness, _("This option configures the picture sharpness.")))
 		self["config"].list = self.list
-		self["config"].l.setList(self.list)
 		if config.usage.sort_settings.value:
 			self["config"].list.sort()
 

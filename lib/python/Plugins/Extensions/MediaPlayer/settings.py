@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from Components.FileList import FileList
 from Components.Sources.StaticText import StaticText
 from Components.config import config, getConfigListEntry, ConfigSubsection, ConfigText, ConfigYesNo, ConfigDirectory

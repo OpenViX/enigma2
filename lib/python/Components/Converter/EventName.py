@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 from enigma import eEPGCache
 
 from Components.Converter.Converter import Converter
@@ -82,7 +79,7 @@ countries = {
 }
 
 
-class EventName(Converter, object):
+class EventName(Converter):
 	NAME = 0
 	SHORT_DESCRIPTION = 1
 	EXTENDED_DESCRIPTION = 2

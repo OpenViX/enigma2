@@ -1,12 +1,9 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 from enigma import iRdsDecoder, iPlayableService
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 
 
-class RdsInfo(Converter, object):
+class RdsInfo(Converter):
 	RASS_INTERACTIVE_AVAILABLE = 0
 	RTP_TEXT_CHANGED = 1
 	RADIO_TEXT_CHANGED = 2

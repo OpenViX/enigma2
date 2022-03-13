@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import socket
 from enigma import eStreamServer
 
@@ -10,7 +8,7 @@ from Components.Sources.StreamService import StreamServiceList
 from ServiceReference import ServiceReference
 
 
-class ClientsStreaming(Converter, Poll, object):
+class ClientsStreaming(Converter, Poll):
 	UNKNOWN = -1
 	REF = 0
 	IP = 1

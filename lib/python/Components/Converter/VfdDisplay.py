@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from datetime import datetime
 from enigma import iPlayableService
 
@@ -8,7 +6,7 @@ from Components.Converter.Poll import Poll
 from Components.Element import cached
 
 
-class VfdDisplay(Poll, Converter, object):
+class VfdDisplay(Poll, Converter):
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)

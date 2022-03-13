@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 from boxbranding import getMachineBrand, getMachineName
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
@@ -315,7 +312,7 @@ class Wizard(Screen):
 	def getStepWithID(self, id):
 # 		print "getStepWithID:", id
 		count = 0
-		for x in list(self.wizard.keys()):
+		for x in self.wizard.keys():
 			if self.wizard[x]["id"] == id:
 				print("[Wizard] result:", count)
 				return count

@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 import locale
 import os
 import skin
@@ -1195,8 +1191,9 @@ def InitUsageConfig():
 		"textview": _("Text View On"),
 		},
 		default="imageview")
-	config.hdmicec.fixed_physical_address = ConfigText(default="0.0.0.0")		
+	config.hdmicec.fixed_physical_address = ConfigText(default="1.0.0.0")		
 	config.hdmicec.volume_forwarding = ConfigYesNo(default=False)
+	config.hdmicec.force_volume_forwarding = ConfigYesNo(default=False)	
 	config.hdmicec.control_receiver_wakeup = ConfigYesNo(default=False)
 	config.hdmicec.control_receiver_standby = ConfigYesNo(default=False)
 	config.hdmicec.handle_deepstandby_events = ConfigYesNo(default=False)
@@ -1370,7 +1367,7 @@ def upgradeConfig():
 		upgrade(config.epgselection.grid.piconwidth, "epgselection.graph_piconwidth")
 		upgrade(config.epgselection.grid.infowidth, "epgselection.graph_infowidth")
 		upgrade(config.epgselection.grid.rec_icon_height, "epgselection.graph_rec_icon_height")
-		for (key, item) in list(config.misc.ButtonSetup.content.items.items()):
+		for (key, item) in config.misc.ButtonSetup.content.items.items():
 			if item.value == "Infobar/openGraphEPG":
 				item.value = "Infobar/openGridEPG"
 				item.save()

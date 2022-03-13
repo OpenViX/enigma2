@@ -40,11 +40,7 @@ eServiceMP3Record::~eServiceMP3Record()
 	{
 		// disconnect sync handler callback
 		GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(m_recording_pipeline));
-#if GST_VERSION_MAJOR < 1
-		gst_bus_set_sync_handler(bus, NULL, NULL);
-#else
 		gst_bus_set_sync_handler(bus, NULL, NULL, NULL);
-#endif
 		gst_object_unref(bus);
 	}
 
@@ -183,11 +179,7 @@ int eServiceMP3Record::doPrepare()
 			gst_bin_add_many(GST_BIN(m_recording_pipeline), m_source, sink, NULL);
 
 			GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(m_recording_pipeline));
-#if GST_VERSION_MAJOR < 1
-			gst_bus_set_sync_handler(bus, gstBusSyncHandler, this);
-#else
 			gst_bus_set_sync_handler(bus, gstBusSyncHandler, this, NULL);
-#endif
 			gst_object_unref(bus);
 		}
 		else
@@ -453,11 +445,7 @@ void eServiceMP3Record::handleUridecNotifySource(GObject *object, GParamSpec *un
 		}
 		if (g_object_class_find_property(G_OBJECT_GET_CLASS(source), "extra-headers") != 0 && !_this->m_extra_headers.empty())
 		{
-#if GST_VERSION_MAJOR < 1
-			GstStructure *extras = gst_structure_empty_new("extras");
-#else
 			GstStructure *extras = gst_structure_new_empty("extras");
-#endif
 			size_t pos = 0;
 			while (pos != std::string::npos)
 			{
@@ -538,7 +526,7 @@ RESULT eServiceMP3Record::frontendInfo(ePtr<iFrontendInformation> &ptr)
 	return -1;
 }
 
-RESULT eServiceMP3Record::connectEvent(const sigc::slot2<void,iRecordableService*,int> &event, ePtr<eConnection> &connection)
+RESULT eServiceMP3Record::connectEvent(const sigc::slot<void(iRecordableService*,int)> &event, ePtr<eConnection> &connection)
 {
 	connection = new eConnection((iRecordableService*)this, m_event.connect(event));
 	return 0;

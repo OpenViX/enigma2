@@ -1,6 +1,3 @@
-from __future__ import print_function
-import six
-
 # logging for XMLTV importer
 #
 # One can simply use
@@ -10,10 +7,7 @@ import six
 
 import sys
 
-if six.PY3:
-	from io import StringIO
-else:
-	from StringIO import StringIO
+from io import StringIO
 import threading
 
 

@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import division
 from Components.Converter.Converter import Converter
 
 from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceCenter
@@ -9,7 +7,7 @@ from ServiceReference import resolveAlternate
 from Components.Element import cached
 
 
-class ServiceOrbitalPosition(Converter, object):
+class ServiceOrbitalPosition(Converter):
 	FULL = 0
 	SHORT = 1
 

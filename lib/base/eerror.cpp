@@ -139,7 +139,7 @@ extern void bsodFatal(const char *component);
 int formatTime(char *buf, int bufferSize, int flags)
 {
 	int pos = 0;
-	struct timespec tp;
+	struct timespec tp = {};
 
 	if (!(flags & _DBGFLG_NOTIME)) {
 		if (debugTime & 1) {

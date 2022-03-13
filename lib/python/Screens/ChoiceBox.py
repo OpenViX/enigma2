@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import division
-from six.moves import zip
-
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.ActionMap import NumberActionMap

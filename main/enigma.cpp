@@ -212,7 +212,7 @@ static void sigterm_handler(int num)
 
 void catchTermSignal()
 {
-	struct sigaction act;
+	struct sigaction act = {};
 
 	act.sa_handler = sigterm_handler;
 	act.sa_flags = SA_RESTART;
@@ -314,7 +314,7 @@ int main(int argc, char **argv)
 		ePtr<gPixmap> wait[MAX_SPINNER];
 		while(i < MAX_SPINNER)
 		{
-			char filename[64];
+			char filename[64] = {};
 			std::string rfilename;
 			snprintf(filename, sizeof(filename), "%s/wait%d.png", skinpath.c_str(), i + 1);
 			rfilename = eEnv::resolve(filename);
@@ -414,7 +414,7 @@ const char *getGStreamerVersionString()
 void dump_malloc_stats(void)
 {
 	struct mallinfo2 mi = mallinfo2();
-	eDebug("MALLOC: %d total", mi.uordblks);
+	eDebug("MALLOC: %zu total", mi.uordblks);
 }
 
 #ifdef USE_LIBVUGLES2

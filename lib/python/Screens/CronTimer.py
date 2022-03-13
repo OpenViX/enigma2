@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-import six
-
 from os import system, listdir, rename, path, mkdir
 from time import sleep
 
@@ -60,11 +57,10 @@ class CronTimers(Screen):
 	def InstallCheck(self):
 		self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.checkNetworkState)
 
-	def checkNetworkState(self, str, retval, extra_args):
-		str = six.ensure_str(str)
-		if 'Collected errors' in str:
+	def checkNetworkState(self, result, retval, extra_args):
+		if 'Collected errors' in result:
 			self.session.openWithCallback(self.close, MessageBox, _("A background update check is in progress, please wait a few minutes and try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
-		elif not str:
+		elif not result:
 			if (getImageType() != 'release' and feedsstatuscheck.getFeedsBool() != 'unknown') or (getImageType() == 'release' and feedsstatuscheck.getFeedsBool() not in ('stable', 'unstable')):
 				self.session.openWithCallback(self.InstallPackageFailed, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			else:
@@ -96,9 +92,8 @@ class CronTimers(Screen):
 		else:
 			self.close()
 
-	def RemovedataAvail(self, str, retval, extra_args):
-		str = six.ensure_str(str)
-		if str:
+	def RemovedataAvail(self, result, retval, extra_args):
+		if result:
 			self.session.openWithCallback(self.RemovePackage, MessageBox, _('Ready to remove "%s" ?') % self.service_name)
 		else:
 			self.close()
@@ -365,7 +360,6 @@ class CronTimersConfig(ConfigListScreen, Screen):
 		else:
 			self.list.append(getConfigListEntry(_("Command to run"), config.crontimers.predefined_command))
 		self["config"].list = self.list
-		self["config"].setList(self.list)
 
 	# for summary:
 	def changedEntry(self):

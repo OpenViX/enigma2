@@ -1,7 +1,4 @@
 #!/usr/bin/python
-from __future__ import print_function
-from six.moves import input
-
 import os
 os.system("clear")
 internalname = input("Internal plugin name (no whitespaces, plugin directory): ")

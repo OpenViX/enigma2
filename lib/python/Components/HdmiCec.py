@@ -1,5 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
 import six
 
 import chardet
@@ -357,10 +355,8 @@ class HdmiCec:
 		self.delay.timeout.get().append(self.sendStandbyMessages)
 		self.useStandby = True
 		self.handlingStandbyFromTV = False
-		if config.hdmicec.enabled.value and config.hdmicec.fixed_physical_address.value != "0.0.0.0":
+		if config.hdmicec.enabled.value and config.hdmicec.fixed_physical_address.value != "1.0.0.0":
 			setFixedPhysicalAddress(config.hdmicec.fixed_physical_address.value)
-		else:
-			setFixedPhysicalAddress("0.0.0.0")			
 		eHdmiCEC.getInstance().messageReceived.get().append(self.messageReceived)
 		config.misc.standbyCounter.addNotifier(self.onEnterStandby, initial_call=False)
 		config.misc.DeepStandby.addNotifier(self.onEnterDeepStandby, initial_call=False)
@@ -405,9 +401,9 @@ class HdmiCec:
 				self.sendMessage(msgaddress, "osdname")
 			elif cmd == 0x72 or cmd == 0x7e: 		# system audio mode status 114 or 126
 				if ctrl0 == 1:
-					self.volumeForwardingDestination = 5 		# on: send volume keys to receiver
+					self.volumeForwardingDestination = 0x05 		# on: send volume keys to receiver
 				else:
-					self.volumeForwardingDestination = 0 		# off: send volume keys to tv
+					self.volumeForwardingDestination = 0x00 		# off: send volume keys to tv
 				print("[HdmiCEC][messageReceived4]: volume forwarding=%s, msgaddress=%s" % (self.volumeForwardingDestination, msgaddress))					
 				if config.hdmicec.volume_forwarding.value:
 					print("[HdmiCEC][messageReceived5]: volume forwarding to device %02x enabled" % self.volumeForwardingDestination)
@@ -482,14 +478,11 @@ class HdmiCec:
 			data = struct.pack("B", 0x6d)
 		elif message == "setsystemaudiomode":
 			cmd = 0x70	# 112
-			msgaddress = 0x05
 			data = self.packDevAddr()
 		elif message == "sourceactive":
-			msgaddress = 0x0f # use broadcast for active source command
 			cmd = 0x82	# 130
 			data = self.packDevAddr()
 		elif message == "reportaddress":
-			msgaddress = 0x0f # use broadcast address
 			cmd = 0x84	# 132
 			data = self.packDevAddr(True)
 		elif message == "vendorid":
@@ -517,7 +510,7 @@ class HdmiCec:
 			CECcmd = cmdList.get(cmd, "<Polling Message>")		
 			encoder = chardet.detect(data)["encoding"]
 			data = six.ensure_str(data, encoding=encoder, errors='ignore')	
-			print("[HdmiCEC][sendMessage]: CECcmd=%s  cmd=%X, data=struct.pack" % (CECcmd, cmd))
+			# print("[HdmiCEC][sendMessage]: CECcmd=%s  cmd=%X, data=struct.pack" % (CECcmd, cmd))
 		elif message == "wakeup":
 			if config.hdmicec.tv_wakeup_command.value == "textview":
 				cmd = 0x0d
@@ -531,17 +524,14 @@ class HdmiCec:
 			data = data[:14]
 		elif message == "givesystemaudiostatus":
 			cmd = 0x7d
-			msgaddress = 0x05
 		elif message == "requestactivesource":
 			cmd = 0x85
-			msgaddress = 0x0f # use broadcast address
 		elif message == "getpowerstatus":
 			self.useStandby = True
 			cmd = 0x8f
-			msgaddress = 0x0f # use broadcast msgaddress => boxes will send info
 		if cmd != 0:
 			CECcmd = cmdList.get(cmd, "<Polling Message>")
-			print("[HdmiCEC][sendMessage3]: CECcmd=%s cmd=%X, msgaddress=%s data=%s" % (CECcmd, cmd, msgaddress, data))
+			# print("[HdmiCEC][sendMessage3]: CECcmd=%s cmd=%X, msgaddress=%s data=%s" % (CECcmd, cmd, msgaddress, data))
 			if config.hdmicec.minimum_send_interval.value != "0":
 				self.queue.append((msgaddress, cmd, data))
 				if not self.wait.isActive():
@@ -555,7 +545,7 @@ class HdmiCec:
 		if len(self.queue):
 			(msgaddress, cmd, data) = self.queue.pop(0)
 			CECcmd = cmdList.get(cmd, "<Polling Message>")
-			print("[HdmiCEC][sendMsgQ1]: msgaddress=%s, CECcmd=%s cmd=%X,data=%s \n" % (msgaddress, CECcmd, cmd, data))
+			# print("[HdmiCEC][sendMsgQ1]: msgaddress=%s, CECcmd=%s cmd=%X,data=%s \n" % (msgaddress, CECcmd, cmd, data))
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd, data, len(data))
 			self.wait.start(int(config.hdmicec.minimum_send_interval.value), True)
 
@@ -652,49 +642,55 @@ class HdmiCec:
 	def configVolumeForwarding(self, configElement):
 		if config.hdmicec.enabled.value and config.hdmicec.volume_forwarding.value:
 			self.sendMessage(0x05, "givesystemaudiostatus")
+			self.sendMessage(0x00, "givesystemaudiostatus")
 		else:
 			self.volumeForwardingEnabled = False
 
 	def keyEvent(self, keyCode, keyEvent):
-		if not self.volumeForwardingEnabled:
-			return
-		cmd = 0
-		data = ""
-		if keyEvent in (0, 2):
-			if keyCode == 113:
-				cmd = 0x44
-				data = struct.pack("B", 0x43)		# 0x43: "<Mute>"
-			if keyCode == 114:
-				cmd = 0x44
-				data = struct.pack("B", 0x42)		# 0x42: "<Volume Down>"
-			if keyCode == 115:
-				cmd = 0x44
-				data = struct.pack("B", 0x41)		# 0x41: "<Volume Up>"
-		elif keyEvent == 1 and keyCode in (113, 114, 115):
-			cmd = 0x45
-		if cmd != 0:
-			print("[HdmiCEC][keyEvent1]: cmd=%X,data=%s" % (cmd, data))
-			if data:
-				encoder = chardet.detect(data)["encoding"]
-				data = six.ensure_str(data, encoding=encoder, errors='ignore')
-				# print("[HdmiCEC][keyEvent2]: encoder=%s, cmd=%x, data=%s" % (encoder, cmd, data))
-			if config.hdmicec.minimum_send_interval.value != "0":
-				self.queueKeyEvent.append((self.volumeForwardingDestination, cmd, data))
-				if not self.waitKeyEvent.isActive():
-					self.waitKeyEvent.start(int(config.hdmicec.minimum_send_interval.value), True)
+		if self.volumeForwardingEnabled or config.hdmicec.force_volume_forwarding.value:
+			cmd = 0
+			data = ""
+			if keyEvent in (0, 2):
+				if keyCode == 113:
+					cmd = 0x44
+					data = struct.pack("B", 0x43)		# 0x43: "<Mute>"
+				if keyCode == 114:
+					cmd = 0x44
+					data = struct.pack("B", 0x42)		# 0x42: "<Volume Down>"
+				if keyCode == 115:
+					cmd = 0x44
+					data = struct.pack("B", 0x41)		# 0x41: "<Volume Up>"
+			elif keyEvent == 1 and keyCode in (113, 114, 115):
+				cmd = 0x45					# 0x45: "<stop>"
+			if cmd != 0:
+				# print("[HdmiCec][keyEvent1]: cmd=%X,data=%s" % (cmd, data))
+				if data:
+					encoder = chardet.detect(data)["encoding"]
+					data = six.ensure_str(data, encoding=encoder, errors='ignore')
+					# print("[HdmiCec][keyEvent2]: encoder=%s, cmd=%x, data=%s" % (encoder, cmd, data))
+				if config.hdmicec.minimum_send_interval.value != "0":
+					self.queueKeyEvent.append((self.volumeForwardingDestination, cmd, data))
+					if not self.waitKeyEvent.isActive():
+						self.waitKeyEvent.start(int(config.hdmicec.minimum_send_interval.value), True)
+				else:
+					print("[HdmiCec][keyEvent3]: forwarding dest=%s, cmd=%X, data=%s" % (self.volumeForwardingDestination, cmd, data))
+				if self.volumeForwardingEnabled:
+					eHdmiCEC.getInstance().sendMessage(self.volumeForwardingDestination, cmd, data, len(data))
+				else:
+					eHdmiCEC.getInstance().sendMessage(0, cmd, data, len(data))
+					eHdmiCEC.getInstance().sendMessage(5, cmd, data, len(data))
+				if config.hdmicec.debug.value in ["2", "3"]:
+					self.debugTx(self.volumeForwardingDestination, cmd, data)
+				return 1
 			else:
-				print("[HdmiCEC][keyEvent3]: forwarding dest=%s, cmd=%X, data=%s" % (self.volumeForwardingDestination, cmd, data))			
-				eHdmiCEC.getInstance().sendMessage(self.volumeForwardingDestination, cmd, data, len(data))
-			if config.hdmicec.debug.value in ["2", "3"]:
-				self.debugTx(self.volumeForwardingDestination, cmd, data)
-			return 1
+				return 0
 		else:
 			return 0
 
 	def sendKeyEventQ(self):
 		if len(self.queueKeyEvent):
 			(msgaddress, cmd, data) = self.queueKeyEvent.pop(0)
-			print("[HdmiCEC][sendmessage2]: msgaddress=%s, cmd=%X, data=%s" % (msgaddress, cmd, data))
+			# print("[HdmiCec][sendKeyEventQ]: msgaddress=%s, cmd=%X, data=%s" % (msgaddress, cmd, data))
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd, data, len(data))
 			self.waitKeyEvent.start(int(config.hdmicec.minimum_send_interval.value), True)
 

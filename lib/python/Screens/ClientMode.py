@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-
 from Components.config import config, configfile, ConfigSelection, ConfigSubList, ConfigSubsection
 from Screens.MessageBox import MessageBox
 from Screens.Setup import Setup

@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-
 from enigma import iPlayableService
 
 from Components.config import config
@@ -9,7 +6,7 @@ from Components.Converter.Poll import Poll
 from Components.Element import cached, ElementError
 
 
-class ServicePosition(Poll, Converter, object):
+class ServicePosition(Poll, Converter):
 	TYPE_LENGTH = 0
 	TYPE_POSITION = 1
 	TYPE_REMAINING = 2

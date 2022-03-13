@@ -188,7 +188,7 @@ int eMainloop::processOneEvent(long user_timeout, PyObject **res, ePyObject addi
 		{
 			eTimer *tmr = *it;
 			/* get current time */
-			timespec now;
+			timespec now = {};
 			clock_gettime(CLOCK_MONOTONIC, &now);
 			/* process all timers which are ready. first remove them out of the list. */
 			while (tmr->needsActivation(now))
@@ -224,7 +224,7 @@ int eMainloop::processOneEvent(long user_timeout, PyObject **res, ePyObject addi
 		fdcount += PyDict_Size(additional);
 
 		// build the poll aray
-	pollfd pfd[fdcount];  // make new pollfd array
+	pollfd pfd[fdcount] = {};  // make new pollfd array
 	std::map<int,eSocketNotifier*>::iterator it = notifiers.begin();
 
 	int i=0;
@@ -246,7 +246,7 @@ int eMainloop::processOneEvent(long user_timeout, PyObject **res, ePyObject addi
 		Py_ssize_t pos=0;
 		while (PyDict_Next(additional, &pos, &key, &val)) {
 			pfd[i].fd = PyObject_AsFileDescriptor(key);
-			pfd[i++].events = PyInt_AsLong(val);
+			pfd[i++].events = PyLong_AsLong(val);
 		}
 	}
 
@@ -287,8 +287,8 @@ int eMainloop::processOneEvent(long user_timeout, PyObject **res, ePyObject addi
 				if (!*res)
 					*res = PyList_New(0);
 				ePyObject it = PyTuple_New(2);
-				PyTuple_SET_ITEM(it, 0, PyInt_FromLong(pfd[i].fd));
-				PyTuple_SET_ITEM(it, 1, PyInt_FromLong(pfd[i].revents));
+				PyTuple_SET_ITEM(it, 0, PyLong_FromLong(pfd[i].fd));
+				PyTuple_SET_ITEM(it, 1, PyLong_FromLong(pfd[i].revents));
 				PyList_Append(*res, it);
 				Py_DECREF(it);
 			}
@@ -342,7 +342,7 @@ int eMainloop::iterate(unsigned int twisted_timeout, PyObject **res, ePyObject d
 		int to = -1;
 		if (twisted_timeout)
 		{
-			timespec now, timeout;
+			timespec now = {}, timeout = {};
 			clock_gettime(CLOCK_MONOTONIC, &now);
 			if (m_twisted_timer<=now) // timeout
 				return 0;
@@ -374,7 +374,7 @@ PyObject *eMainloop::poll(ePyObject timeout, ePyObject dict)
 	if (app_quit_now)
 		Py_RETURN_NONE;
 
-	int twisted_timeout = (timeout == Py_None) ? 0 : PyInt_AsLong(timeout);
+	int twisted_timeout = (timeout == Py_None) ? 0 : PyLong_AsLong(timeout);
 
 	iterate(twisted_timeout, &res, dict);
 	if (res)

@@ -1,10 +1,7 @@
-from __future__ import absolute_import
-
-from Tools.Sign import SIGN
 from Components.Converter.Converter import Converter
 
 
-class SensorToText(Converter, object):
+class SensorToText(Converter):
 	def __init__(self, arguments):
 		Converter.__init__(self, arguments)
 
@@ -13,6 +10,6 @@ class SensorToText(Converter, object):
 			return ""
 		unit = self.source.getUnit()
 		if unit in ('C', 'F'):
-			return "%d%s%s" % (self.source.getValue(), SIGN, unit)
+			return "%d%s%s" % (self.source.getValue(), "\xb0", unit)
 
 	text = property(getText)
