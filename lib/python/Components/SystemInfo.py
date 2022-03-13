@@ -109,7 +109,7 @@ SystemInfo["canBackupEMC"] = getMachineBuild() in ("hd51", "h7") and ("disk.img"
 SystemInfo["canMode12"] = getMachineBuild() in ("hd51", "h7") and ("brcm_cma=440M@328M brcm_cma=192M@768M", "brcm_cma=520M@248M brcm_cma=200M@768M")
 SystemInfo["HasMMC"] = fileHas("/proc/cmdline", "root=/dev/mmcblk") or "mmcblk" in getMachineMtdRoot()
 SystemInfo["HasH9SD"] = getMachineBuild() in ("h9", "i55plus") and pathExists("/dev/mmcblk0p1")
-SystemInfo["HasSDnomount"] = getMachineBuild() in ("h9", "i55plus") and (False, "none") or getMachineBuild() in ("multibox", "h9combo", "h9combose", "h9twin", "h9se") and (True, "mmcblk0")
+SystemInfo["HasSDnomount"] = getMachineBuild() in ("h9", "i55plus") and (False, "none") or getMachineBuild() in ("multibox", "h9combo", "h9combose", "h9twin", "h9se", "pulse4kmini", "hd61", "pulse4k", "h11") and (True, "mmcblk0")
 SystemInfo["CanProc"] = SystemInfo["HasMMC"] and getBrandOEM() != "vuplus"
 SystemInfo["Canaudiosource"] = fileCheck("/proc/stb/hdmi/audio_source")
 SystemInfo["Can3DSurround"] = fileHas("/proc/stb/audio/3d_surround_choices", "none")
