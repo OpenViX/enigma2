@@ -1,5 +1,3 @@
-# for localized messages
-from __future__ import print_function
 from os import listdir, path
 
 from . import _

@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from os import listdir, path, mkdir
 
 from . import _

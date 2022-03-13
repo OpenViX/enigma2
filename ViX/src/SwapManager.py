@@ -1,4 +1,3 @@
-from __future__ import print_function, division
 import six
 from os import system, stat as mystat, path, remove, rename
 from glob import glob
