@@ -1,4 +1,4 @@
-from os import listdir, path, walk, stat
+from os import listdir, path
 from boxbranding import getBoxType, getImageDistro
 
 
