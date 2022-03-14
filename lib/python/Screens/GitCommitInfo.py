@@ -8,16 +8,12 @@ from Screens.Screen import Screen
 
 from enigma import eTimer
 from boxbranding import getImageVersion, getImageBuild, getImageDevBuild, getImageType
-from sys import modules, version_info
-
+from sys import modules
 from datetime import datetime
 from json import loads
 # required methods: Request, urlopen, HTTPError, URLError
-try: # python 3
-	from urllib.request import urlopen, Request # raises ImportError in Python 2
-	from urllib.error import HTTPError, URLError # raises ImportError in Python 2
-except ImportError: # Python 2
-	from urllib2 import Request, urlopen, HTTPError, URLError
+from urllib.request import urlopen, Request # raises ImportError in Python 2
+from urllib.error import HTTPError, URLError # raises ImportError in Python 2
 
 if getImageType() == 'release':
 	ImageVer = "%03d" % int(getImageBuild())
@@ -82,8 +78,6 @@ def readGithubCommitLogsSoftwareUpdate():
 			title = c['commit']['message']
 			date = datetime.strptime(c['commit']['committer']['date'], '%Y-%m-%dT%H:%M:%SZ').strftime('%x %X')
 			commitlog += date + ' ' + creator + '\n' + title + 2 * '\n'
-		if version_info[0] < 3:
-			commitlog = commitlog.encode('utf-8')
 		cachedProjects[getScreenTitle()] = commitlog
 	except HTTPError as err:
 		if err.code == 403:
@@ -147,8 +141,6 @@ def readGithubCommitLogs():
 			title = c['commit']['message']
 			date = datetime.strptime(c['commit']['committer']['date'], '%Y-%m-%dT%H:%M:%SZ').strftime('%x %X')
 			commitlog += date + ' ' + creator + '\n' + title + 2 * '\n'
-		if version_info[0] < 3:
-			commitlog = commitlog.encode('utf-8')
 		cachedProjects[getScreenTitle()] = commitlog
 	except HTTPError as err:
 		if err.code == 403:
@@ -208,10 +200,7 @@ class CommitInfo(Screen):
 
 	def readGithubCommitLogs(self):
 		self.setTitle(gitcommitinfo.getScreenTitle())
-		if version_info[0] < 3:
-			self["AboutScrollLabel"].setText(gitcommitinfo.readGithubCommitLogs().encode("utf8", errors="ignore"))
-		else:
-			self["AboutScrollLabel"].setText(gitcommitinfo.readGithubCommitLogs())
+		self["AboutScrollLabel"].setText(gitcommitinfo.readGithubCommitLogs())
 
 	def updateCommitLogs(self):
 		if gitcommitinfo.getScreenTitle() in gitcommitinfo.cachedProjects:
