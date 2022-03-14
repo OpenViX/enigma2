@@ -15,7 +15,7 @@
 
 > [https://github.com/oe-alliance/oe-alliance-core/tree/5.1](https://github.com/oe-alliance/oe-alliance-core/tree/5.1 "OE-Alliance")
 > 
-> [https://github.com/OpenViX/enigma2/tree/Dev-python3-compatible](https://github.com/OpenViX/enigma2/tree/Dev-python3-compatible "openViX E2")
+> [https://github.com/OpenViX/enigma2/tree/Release](https://github.com/OpenViX/enigma2/tree/Release "openViX E2")
 
 
 ----------
