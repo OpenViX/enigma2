@@ -13,7 +13,7 @@
 
 ## OpenViX python3 is built using oe-alliance build-environment and several git repositories: ##
 
-> [https://github.com/oe-alliance/oe-alliance-core/tree/5.0](https://github.com/oe-alliance/oe-alliance-core/tree/5.0 "OE-Alliance")
+> [https://github.com/oe-alliance/oe-alliance-core/tree/5.1](https://github.com/oe-alliance/oe-alliance-core/tree/5.1 "OE-Alliance")
 > 
 > [https://github.com/OpenViX/enigma2/tree/Dev-python3-compatible](https://github.com/OpenViX/enigma2/tree/Dev-python3-compatible "openViX E2")
 
