@@ -22,7 +22,7 @@ else:
 	ImageVer = float(ImageVer)
 
 E2Branches = {
-	'developer': 'python3',
+	'developer': 'Developer',
 	'release': 'Release'
 	}
 
