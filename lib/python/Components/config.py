@@ -96,7 +96,7 @@ class ConfigElement():
 	def setNotifiers(self, val):
 		self.__notifiers = val
 
-	notifiers = property(getNotifiers, setNotifiers)
+	notifiers = property(fget=getNotifiers, fset=setNotifiers)
 
 	def getNotifiersFinal(self):
 		if self.__notifiers_final is None:
@@ -106,7 +106,7 @@ class ConfigElement():
 	def setNotifiersFinal(self, val):
 		self.__notifiers_final = val
 
-	notifiers_final = property(getNotifiersFinal, setNotifiersFinal)
+	notifiers_final = property(fget=getNotifiersFinal, fset=setNotifiersFinal)
 
 	# you need to override this to do input validation
 	def setValue(self, value):
@@ -118,7 +118,7 @@ class ConfigElement():
 	def getValue(self):
 		return self._value
 
-	value = property(getValue, setValue)
+	value = property(fget=getValue, fset=setValue)
 
 	# you need to override this if self.value is not a string
 	def fromstring(self, value):
@@ -471,12 +471,12 @@ class ConfigSelection(ConfigElement):
 		self._descr = self.description[text] = text
 		self._value = text
 
-	value = property(getValue, setValue)
+	value = property(fget=getValue, fset=setValue)
 
 	def getIndex(self):
 		return self.choices.index(self.value)
 
-	index = property(getIndex)
+	index = property(fget=getIndex)
 
 	# GUI
 	def handleKey(self, key, callback=None):
@@ -532,7 +532,7 @@ class ConfigSelection(ConfigElement):
 		# setValue does check if value is in choices. This is safe enough.
 		self.value = value
 
-	description = property(lambda self: descriptionList(self.choices.choices, self.choices.type))
+	description = property(fget=lambda self: descriptionList(self.choices.choices, self.choices.type))
 
 
 # This is the control, and base class, for binary decisions.
@@ -1009,8 +1009,8 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 		if str(self.text) != prev:
 			self.changed()
 
-	value = property(getValue, setValue)
-	_value = property(getValue, setValue)
+	value = property(fget=getValue, fset=setValue)
+	_value = property(fget=getValue, fset=setValue)
 
 	def getText(self):
 		return six.ensure_str(self.text)
@@ -1210,7 +1210,7 @@ class ConfigInteger(ConfigSequence):
 	def getValue(self):
 		return self._value[0]
 
-	value = property(getValue, setValue)
+	value = property(fget=getValue, fset=setValue)
 
 	def fromstring(self, value):
 		return int(value)
@@ -1236,7 +1236,7 @@ class ConfigFloat(ConfigSequence):
 	def getFloat(self):
 		return float(self.value[1] / float(self.limits[1][1] + 1) + self.value[0])
 
-	float = property(getFloat)
+	float = property(fget=getFloat)
 
 	def getFloatInt(self):
 		return int(self.value[0] * float(self.limits[1][1] + 1) + self.value[1])
@@ -1245,7 +1245,7 @@ class ConfigFloat(ConfigSequence):
 		self.value[0] = val / float(self.limits[1][1] + 1)
 		self.value[1] = val % float(self.limits[1][1] + 1)
 
-	floatint = property(getFloatInt, setFloatInt)
+	floatint = property(fget=getFloatInt, fset=setFloatInt)
 
 # An editable text item.
 #
@@ -1412,8 +1412,8 @@ class ConfigText(ConfigElement, NumericalTextInput):
 		if str(self.text) != prev:
 			self.changed()
 
-	value = property(getValue, setValue)
-	_value = property(getValue, setValue)
+	value = property(fget=getValue, fset=setValue)
+	_value = property(fget=getValue, fset=setValue)
 
 	def getText(self):
 		return six.ensure_str(self.text)
@@ -1509,12 +1509,12 @@ class ConfigSelectionNumber(ConfigSelection):
 	def setValue(self, val):
 		ConfigSelection.setValue(self, str(val))
 
-	value = property(getValue, setValue)
+	value = property(fget=getValue, fset=setValue)
 
 	def getIndex(self):
 		return self.choices.index(self.value)
 
-	index = property(getIndex)
+	index = property(fget=getIndex)
 
 	def handleKey(self, key, callback=None):
 		if not self.wraparound:
@@ -1540,8 +1540,8 @@ class ConfigNumber(ConfigText):
 		if str(self.text) != prev:
 			self.changed()
 
-	value = property(getValue, setValue)
-	_value = property(getValue, setValue)
+	value = property(fget=getValue, fset=setValue)
+	_value = property(fget=getValue, fset=setValue)
 
 	def conform(self):
 		pos = len(self.text) - self.marked_pos
@@ -1668,7 +1668,7 @@ class ConfigSatlist(ConfigSelection):
 			return None
 		return int(self.value)
 
-	orbital_position = property(getOrbitalPosition)
+	orbital_position = property(fget=getOrbitalPosition)
 
 
 # This is the control, and base class, for a set of selection toggle fields.
@@ -1754,7 +1754,7 @@ class ConfigSet(ConfigElement):
 		# self.pos = 0  # Enable this to reset the position marker to the first element.
 		pass
 
-	description = property(lambda self: descriptionList(self.choices.choices, choicesList.LIST_TYPE_LIST))
+	description = property(fget=lambda self: descriptionList(self.choices.choices, choicesList.LIST_TYPE_LIST))
 
 
 class ConfigDictionarySet(ConfigElement):
@@ -1774,7 +1774,7 @@ class ConfigDictionarySet(ConfigElement):
 	def getValue(self):
 		return self.dirs
 
-	value = property(getValue, setValue)
+	value = property(fget=getValue, fset=setValue)
 
 	def tostring(self, value):
 		return str(value)
@@ -1858,7 +1858,7 @@ class ConfigLocations(ConfigElement):
 			x[3] = x[2]
 		return [x[0] for x in locations if x[3]]
 
-	value = property(getValue, setValue)
+	value = property(fget=getValue, fset=setValue)
 
 	def tostring(self, value):
 		return str(value)
@@ -2040,7 +2040,7 @@ class ConfigSubList(list):
 			if int(key) < len(self):
 				self[int(key)].saved_value = val
 
-	saved_value = property(getSavedValue, setSavedValue)
+	saved_value = property(fget=getSavedValue, fset=setSavedValue)
 
 	def append(self, item):
 		i = str(len(self))
@@ -2085,7 +2085,7 @@ class ConfigSubDict(dict):
 			if str(key) in self.stored_values:
 				val.saved_value = self.stored_values[str(key)]
 
-	saved_value = property(getSavedValue, setSavedValue)
+	saved_value = property(fget=getSavedValue, fset=setSavedValue)
 
 	def __setitem__(self, key, item):
 		dict.__setitem__(self, key, item)
@@ -2150,7 +2150,7 @@ class ConfigSubsection():
 			if value is not None:
 				val.saved_value = value
 
-	saved_value = property(getSavedValue, setSavedValue)
+	saved_value = property(fget=getSavedValue, fset=setSavedValue)
 
 	def save(self):
 		for x in self.content.items.values():
