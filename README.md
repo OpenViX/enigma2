@@ -101,6 +101,7 @@
 
 	MACHINE=vuultimo4k DISTRO=openvix DISTRO_TYPE=release make image
 
+----------
 15 - Building an image without feeds (Build time 1-2h)
 
     MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make enigma2-image

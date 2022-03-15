@@ -2,9 +2,9 @@ name: Enigma2 Python3
 
 on:
   push:
-    branches: [ Release, python3, FCC ]
+    branches: [ Release, Developer, FCC ]
   pull_request:
-    branches: [ Release, python3, FCC ]
+    branches: [ Release, Developer, FCC ]
 
 jobs:
   build:
