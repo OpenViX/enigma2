@@ -5597,7 +5597,7 @@ msgid "Do you want to upgrade the package:\n"
 msgstr "¿Quieres actualizar el paquete:?\n"
 
 #, fuzzy
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr "Mezcla digital"
 
 #, fuzzy
