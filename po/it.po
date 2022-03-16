@@ -5603,7 +5603,7 @@ msgstr "Ripristinare la configurazione?"
 msgid "Do you want to upgrade the package:\n"
 msgstr "Aggiornare il pacchetto:\n"
 
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr ""
 
 msgid "Documentary"

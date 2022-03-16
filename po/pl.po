@@ -4998,7 +4998,7 @@ msgstr "Czy chcesz przywrócić własne ustawienia?"
 msgid "Do you want to upgrade the package:\n"
 msgstr "Czy chcesz zaktualizować pakiet:\n"
 
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr ""
 
 msgid "Documentary"

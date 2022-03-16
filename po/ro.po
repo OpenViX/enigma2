@@ -5073,7 +5073,7 @@ msgstr "Doriti sa actualizati %s %s ?"
 msgid "Do you want to upgrade the package:\n"
 msgstr "Doriti actualizarea pachetului:\n"
 
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr "Doblo Digital Downmix este acum"
 
 #, fuzzy

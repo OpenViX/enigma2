@@ -5369,7 +5369,7 @@ msgstr "Viltu setja inn stillingarnar þínar aftur?"
 msgid "Do you want to upgrade the package:\n"
 msgstr "Viltu uppfæra pakkann:\n"
 
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr ""
 
 msgid "Documentary"

@@ -4817,7 +4817,7 @@ msgstr "是否要更新 %s %s?"
 msgid "Do you want to upgrade the package:\n"
 msgstr "是否升级软件包:\n"
 
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr "当前为杜比数码缩混"
 
 msgid "Documentary"

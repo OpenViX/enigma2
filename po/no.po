@@ -5549,7 +5549,7 @@ msgstr "Ønsker du å oppdater din %s %s ?"
 msgid "Do you want to upgrade the package:\n"
 msgstr "Vil du oppgradere pakken? \n"
 
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr "Dolby Digital / DTS nedmix er nå"
 
 #, fuzzy

@@ -5631,7 +5631,7 @@ msgstr "Želite nadgraditi paket:\n"
 
 #
 #, fuzzy
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr "Pretvorba AC3 in DTS zvoka v stereo"
 
 msgid "Documentary"
