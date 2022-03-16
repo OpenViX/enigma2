@@ -4809,7 +4809,7 @@ msgstr "Хотите обновить свой %s %s?"
 msgid "Do you want to upgrade the package:\n"
 msgstr "Вы хотите обновить пакет:\n"
 
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr "Микширование Dolby Digital выполнено"
 
 msgid "Documentary"

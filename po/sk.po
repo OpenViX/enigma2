@@ -5158,7 +5158,7 @@ msgid "Do you want to upgrade the package:\n"
 msgstr "Chcete aktualizovat balícek:\n"
 
 #, fuzzy
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr "Dolby Digital / DTS downmix"
 
 #, fuzzy

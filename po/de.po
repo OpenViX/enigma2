@@ -4798,7 +4798,7 @@ msgstr "Die %s %s aktualisieren?"
 msgid "Do you want to upgrade the package:\n"
 msgstr "Das Paket aktualisieren:\n"
 
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr "DD/DTS Downmix ist jetzt"
 
 msgid "Documentary"

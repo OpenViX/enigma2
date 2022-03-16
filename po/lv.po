@@ -5585,7 +5585,7 @@ msgstr "Vai velaties atjaunot savus iestatijumus?"
 msgid "Do you want to upgrade the package:\n"
 msgstr "Vai velaties atjauninat pakotni:\n"
 
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr ""
 
 msgid "Documentary"
