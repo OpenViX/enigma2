@@ -5578,7 +5578,7 @@ msgstr "Vil du genskabe dine indstillinger?"
 msgid "Do you want to upgrade the package:\n"
 msgstr "Vil du opgradere pakken:\n"
 
-msgid "Dobly Digital downmix is now"
+msgid "Dolby Digital downmix is now"
 msgstr ""
 
 msgid "Documentary"
