@@ -8,7 +8,7 @@ from Components.PluginComponent import plugins
 from Components.ServiceEventTracker import ServiceEventTracker
 from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.Boolean import Boolean
-from Components.config import config, configfile, ConfigBoolean, ConfigClock, ConfigSelection
+from Components.config import config, configfile, ConfigBoolean, ConfigClock, ConfigSelection, ACTIONKEY_RIGHT
 from Components.SystemInfo import SystemInfo
 from Components.UsageConfig import preferredInstantRecordPath, defaultMoviePath
 from Components.VolumeControl import VolumeControl
@@ -3479,14 +3479,9 @@ class InfoBarAudioSelection:
 
 	def audioSelectionLong(self):
 		if SystemInfo["CanDownmixAC3"]:
-			if config.av.downmix_ac3.value:
-				message = _("Dobly Digital downmix is now") + " " + _("disabled")
-				print("[InfoBarGenerics] [Audio] Dobly Digital downmix is now disabled")
-				config.av.downmix_ac3.setValue(False)
-			else:
-				config.av.downmix_ac3.setValue(True)
-				message = _("Dobly Digital downmix is now") + " " + _("enabled")
-				print("[InfoBarGenerics] [Audio] Dobly Digital downmix is now enabled")
+			config.av.downmix_ac3.handleKey(ACTIONKEY_RIGHT)
+			message = _("Dolby Digital downmix is now %s") % config.av.downmix_ac3.getText()
+			print("[InfoBarGenerics] [Audio] Dolby Digital downmix is now %s" % config.av.downmix_ac3.value)
 			Notifications.AddPopup(text=message, type=MessageBox.TYPE_INFO, timeout=5, id="DDdownmixToggle")
 
 
