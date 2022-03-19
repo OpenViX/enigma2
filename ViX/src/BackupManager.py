@@ -29,18 +29,15 @@ autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = "RestoreSettingsNotification"
 PLUGINRESTOREQUESTIONID = "RestorePluginsNotification"
 NOPLUGINS = "NoPluginsNotification"
-
-hddchoices = []
 defaultprefix = getImageDistro()[4:]
+hddchoices = []
 for p in harddiskmanager.getMountedPartitions():
 	if path.exists(p.mountpoint):
 		d = path.normpath(p.mountpoint)
-		if SystemInfo["canMultiBoot"]:
-			if "mmcblk0p" in d or "mmcblk1p" in d:
-				continue
 		if p.mountpoint != "/":
 			hddchoices.append((p.mountpoint, d))
-	print("[BackupManager]hddchoices = %s" % hddchoices)
+hddchoices = sorted(hddchoices)			
+# print("[BackupManager]hddchoices = %s" % hddchoices)
 
 config.backupmanager = ConfigSubsection()
 config.backupmanager.backupdirs = ConfigLocations(

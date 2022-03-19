@@ -38,11 +38,10 @@ hddchoices = []
 for p in harddiskmanager.getMountedPartitions():
 	if ospath.exists(p.mountpoint):
 		d = ospath.normpath(p.mountpoint)
-		if SystemInfo["canMultiBoot"]:
-			if "mmcblk0p" in d or "mmcblk1p" in d:
-				continue
 		if p.mountpoint != "/":
 			hddchoices.append((p.mountpoint, d))
+hddchoices = sorted(hddchoices)
+# print("[ImageManager]hddchoices = %s" % hddchoices)	
 defaultprefix = getImageDistro()
 config.imagemanager = ConfigSubsection()
 config.imagemanager.autosettingsbackup = ConfigYesNo(default=True)
