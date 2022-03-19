@@ -1,7 +1,6 @@
 # A Job consists of many "Tasks".
 # A task is the run of an external tool, with proper methods for failure handling
 from Tools.CList import CList
-import six
 
 
 class Job():
@@ -208,7 +207,7 @@ class Task():
 		self.processOutput(data)
 
 	def processOutput(self, data):
-		data = six.ensure_str(data)
+		data = data.decode()
 		self.output_line += data
 		while True:
 			i = self.output_line.find('\n')
@@ -272,7 +271,7 @@ class LoggingTask(Task):
 		self.log = []
 
 	def processOutput(self, data):
-		data = six.ensure_str(data)
+		data = data.decode()
 		print("[Task] [%s  %s]" % (self.name, data))
 		self.log.append(data)
 
