@@ -1,4 +1,3 @@
-import six
 import os
 
 from twisted.internet import reactor
@@ -72,7 +71,7 @@ class Hotplug(Protocol):
 		self.received = ""
 
 	def dataReceived(self, data):
-		data = six.ensure_str(data)
+		data = data.decode()
 		self.received += data
 		print("[Hotplug] Data received: '%s'." % ", ".join(self.received.split("\0")[:-1]))
 
