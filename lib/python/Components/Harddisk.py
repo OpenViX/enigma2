@@ -166,7 +166,7 @@ class Harddisk:
 		if SystemInfo["Udev"]:
 			self.dev_path = os.path.join("/dev", self.device)
 			self.disk_path = self.dev_path
-			self.sdmmc = "mmc" in self.busType
+			self.sdmmc = "MMC" in self.busType
 		else:
 			tmp = readFile(self.sysfsPath("dev"))
 			if tmp is None:
