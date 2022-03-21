@@ -1,5 +1,3 @@
-import six
-
 from boxbranding import getMachineBrand, getMachineName
 import os
 from enigma import eEPGCache, eHdmiCEC, getBestPlayableServiceReference, eStreamServer, eServiceReference, iRecordableService, quitMainloop, eActionMap, setPreferredTuner, eServiceCenter
@@ -918,9 +916,9 @@ class RecordTimerEntry(TimerEntry):
 def createTimer(xml):
 	begin = int(xml.get("begin"))
 	end = int(xml.get("end"))
-	serviceref = eServiceReference(six.ensure_str(xml.get("serviceref")))
-	description = six.ensure_str(xml.get("description"))
-	repeated = six.ensure_str(xml.get("repeated"))
+	serviceref = eServiceReference(str(xml.get("serviceref")))
+	description = str(xml.get("description"))
+	repeated = str(xml.get("repeated"))
 	rename_repeat = int(xml.get("rename_repeat") or "1")
 	disabled = int(xml.get("disabled") or "0")
 	justplay = int(xml.get("justplay") or "0")
@@ -934,29 +932,19 @@ def createTimer(xml):
 		"deepstandby": AFTEREVENT.DEEPSTANDBY,
 		"auto": AFTEREVENT.AUTO
 		}[afterevent]
-	eit = xml.get("eit")
-	if eit and eit != "None":
-		eit = int(eit)
-	else:
-		eit = None
-	location = xml.get("location")
-	if location and location != "None":
-		location = six.ensure_str(location)
-	else:
-		location = None
-	tags = xml.get("tags")
-	if tags and tags != "None":
-		tags = six.ensure_str(tags).split(" ")
-	else:
-		tags = None
+	eitx = xml.get("eit")
+	eit = int(eitx) if eitx else None
+	locationx = xml.get("location")
+	location = str(locationx) if locationx else None
+	tagsx = xml.get("tags")
+	tags = str(tagsx).split(" ") if tagsx else None
 	descramble = int(xml.get("descramble") or "1")
 	record_ecm = int(xml.get("record_ecm") or "0")
 	isAutoTimer = int(xml.get("isAutoTimer") or "0")
 	autoTimerId = xml.get("autoTimerId")
 	if autoTimerId != None:
 		autoTimerId = int(autoTimerId)
-	name = six.ensure_str(xml.get("name"))
-	#filename = xml.get("filename").encode("utf-8")
+	name = str(xml.get("name"))
 	entry = RecordTimerEntry(serviceref, begin, end, name, description, eit, disabled, justplay, afterevent, dirname=location, tags=tags, descramble=descramble, record_ecm=record_ecm, isAutoTimer=isAutoTimer, always_zap=always_zap, rename_repeat=rename_repeat, conflict_detection=conflict_detection, pipzap=pipzap, autoTimerId=autoTimerId)
 	entry.repeated = int(repeated)
 	flags = xml.get("flags")
@@ -966,7 +954,7 @@ def createTimer(xml):
 	for l in xml.findall("log"):
 		time = int(l.get("time"))
 		code = int(l.get("code"))
-		msg = six.ensure_str(l.text.strip())
+		msg = str(l.text.strip())
 		entry.log_entries.append((time, code, msg))
 
 	return entry

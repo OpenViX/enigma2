@@ -1,5 +1,3 @@
-import six
-
 from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen, ScreenSummary
 from Screens.MessageBox import MessageBox
@@ -113,7 +111,8 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 					return
 			elif not SystemInfo.get(requires, False):
 				return
-		MenuTitle = six.ensure_str(_(node.get("text", "??")))
+		# print("[Menu][addMenu] Menu text=", node.get("text", "??"))				
+		MenuTitle = str(_(node.get("text", "??")))
 		entryID = node.get("entryID", "undefined")
 		weight = node.get("weight", 50)
 		x = node.get("flushConfigOnClose")
@@ -147,7 +146,9 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		conditional = node.get("conditional")
 		if conditional and not eval(conditional):
 			return
-		item_text = six.ensure_str(node.get("text", "* Undefined *"))
+		# print("[Menu][addItem] item text=", node.get("text", "* Undefined *"))
+		item_text = str(node.get("text", "* Undefined *"))
+		
 		if item_text:
 			item_text = _(item_text)
 		entryID = node.get("entryID", "undefined")

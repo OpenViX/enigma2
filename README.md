@@ -13,9 +13,9 @@
 
 ## OpenViX python3 is built using oe-alliance build-environment and several git repositories: ##
 
-> [https://github.com/oe-alliance/oe-alliance-core/tree/5.0](https://github.com/oe-alliance/oe-alliance-core/tree/5.0 "OE-Alliance")
+> [https://github.com/oe-alliance/oe-alliance-core/tree/5.1](https://github.com/oe-alliance/oe-alliance-core/tree/5.1 "OE-Alliance")
 > 
-> [https://github.com/OpenViX/enigma2/tree/Dev-python3-compatible](https://github.com/OpenViX/enigma2/tree/Dev-python3-compatible "openViX E2")
+> [https://github.com/OpenViX/enigma2/tree/Release](https://github.com/OpenViX/enigma2/tree/Release "openViX E2")
 
 
 ----------
@@ -76,7 +76,7 @@
 ----------
 10 - Clone oe-alliance git
 
-    git clone git://github.com/oe-alliance/build-enviroment.git -b 5.0
+    git clone https://github.com/oe-alliance/build-enviroment.git -b 5.1
 
 ----------
 11 - Switch to folder build-enviroment
@@ -101,6 +101,7 @@
 
 	MACHINE=vuultimo4k DISTRO=openvix DISTRO_TYPE=release make image
 
+----------
 15 - Building an image without feeds (Build time 1-2h)
 
     MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make enigma2-image

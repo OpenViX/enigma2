@@ -1,5 +1,3 @@
-import six
-
 import os
 from enigma import eConsoleAppContainer
 from Components.Harddisk import harddiskmanager
@@ -120,13 +118,12 @@ class IpkgComponent:
 		self.cmd.dataAvail.remove(self.cmdData)
 
 	def cmdData(self, data):
-		data = six.ensure_str(data)
 # 		print "data:", data
+		data = data.decode()
 		if self.cache is None:
 			self.cache = data
 		else:
 			self.cache += data
-
 		if '\n' in data:
 			splitcache = self.cache.split('\n')
 			if self.cache[-1] == '\n':

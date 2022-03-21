@@ -1,6 +1,5 @@
 import enigma
-import os
-import six
+from os import waitpid
 
 
 class ConsoleItem:
@@ -31,7 +30,7 @@ class ConsoleItem:
 			pid = self.container.getPID()
 			print("[Console] pid = %s" % pid)
 			try:
-				os.waitpid(pid, 0)
+				waitpid(pid, 0)
 			except OSError:
 				pass
 
@@ -76,7 +75,6 @@ class Console():
 	def eBatchCB(self, data, retval, _extra_args):
 		(cmds, callback, extra_args) = _extra_args
 		if self.debug:
-			data = six.ensure_str(data)
 			print('[Console][eBatch] retval=%s, cmds=%s cmds left=%d, data:\n%s' % (retval, cmds, len(cmds), data))
 		if cmds:
 			cmd = cmds.pop(0)
