@@ -44,11 +44,13 @@ class inputDevices:
 		for evdev in devices:
 			deviceName = None
 			buffer = "\0" * 512
+			if os.path.isdir("/dev/input/" + evdev):
+				continue
 			with open("/dev/input/" + evdev) as fd:
 				try:
 					name = ioctl(fd, EVIOCGNAME(512), buffer)
 				except (IOError, OSError) as err:
-					# print("[InputDevice] Error: evdev='%s' getInputDevices <ERROR: ioctl(EVIOCGNAME): '%s'>" % (evdev, str(err)))
+					print("[InputDevice] Error: evdev='%s' getInputDevices <ERROR: ioctl(EVIOCGNAME): '%s'>" % (evdev, str(err)))
 					continue					
 			deviceName = name[:name.find(b'\0')].decode()
 			if deviceName:
