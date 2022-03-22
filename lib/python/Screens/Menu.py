@@ -1,3 +1,4 @@
+from skin import findSkinScreen
 from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen, ScreenSummary
 from Screens.MessageBox import MessageBox
@@ -75,9 +76,12 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 
 	def okbuttonClick(self):
 		if self.number:
-			self["menu"].setIndex(self.number - 1)
+			if self.menuHorizontal:
+				self.horzIndex = self.number - 1
+			else:
+				self["menu"].setIndex(self.number - 1)
 		self.resetNumberKey()
-		selection = self["menu"].getCurrent()
+		selection = self.list[self.horzIndex] if self.menuHorizontal else self["menu"].getCurrent()
 		if selection and selection[1]:
 			selection[1]()
 
@@ -213,28 +217,32 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 	def __init__(self, session, parent):
 		self.parentmenu = parent
 		Screen.__init__(self, session)
+		self.menuHorizontalSkinName = "MenuHorizontal"
+		self.menuHorizontal = self.__class__.__name__ != "MenuSort" and config.usage.menu_style.value == "horizontal" and findSkinScreen(self.menuHorizontalSkinName)
 		self["key_blue"] = StaticText("")
 		HelpableScreen.__init__(self)
 		self.menulength = 0
-		self["menu"] = List([])
-		self["menu"].enableWrapAround = True
+		if not self.menuHorizontal:
+			self["menu"] = List([])
+			self["menu"].enableWrapAround = True
 		self.createMenuList()
 
 		# for the skin: first try a menu_<menuID>, then Menu
 		self.skinName = []
-		if self.menuID:
+		if self.menuHorizontal:
+			self.skinName.append(self.menuHorizontalSkinName)
+		elif self.menuID:
 			self.skinName.append("menu_" + self.menuID)
 		self.skinName.append("Menu")
 
 		ProtectedScreen.__init__(self)
 
-		# self["menuActions"] = HelpableNumberActionMap(self, ["OkCancelActions", "MenuActions", "NumberActions"], {
-		self["menuActions"] = HelpableActionMap(self, ["OkCancelActions",],
+		self["menuActions"] = HelpableActionMap(self, ["OkCancelActions", "MenuActions"],
 		{
 			"ok": (self.okbuttonClick, self.okbuttontext if hasattr(self, "okbuttontext") else _("Select the current menu item")),
 			"cancel": (self.closeNonRecursive, self.exitbuttontext if hasattr(self, "exitbuttontext") else _("Exit menu")),
 			"close": (self.closeRecursive, self.exitbuttontext if hasattr(self, "exitbuttontext") else _("Exit all menus")),
-			# "menu": (self.closeRecursive, _("Exit all menus")),
+			"menu": (self.closeRecursive, _("Exit all menus")),
 		}, prio=0, description=_("Common Menu Actions"))
 
 		if self.__class__.__name__ != "MenuSort":
@@ -263,6 +271,8 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		self.nextNumberTimer.callback.append(self.okbuttonClick)
 		if len(self.list) == 1:
 			self.onExecBegin.append(self.__onExecBegin)
+		if self.menuHorizontal:
+			self.initMenuHorizontal()
 
 	def __onExecBegin(self):
 		self.onExecBegin.remove(self.__onExecBegin)
@@ -347,14 +357,16 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			self.list = [(str(x[0] + 1) + " " + x[1][0], x[1][1], x[1][2]) for x in enumerate(self.list)]
 
 		if self.menulength != len(self.list): # updateList must only be used on a list of the same length. If length is different we call setList.
-			self["menu"].setList(self.list)
 			self.menulength = len(self.list)
-		self["menu"].updateList(self.list)
+			if not self.menuHorizontal:
+				self["menu"].setList(self.list)
+		if not self.menuHorizontal:
+			self["menu"].updateList(self.list)
 
 	def keyNumberGlobal(self, number):
 		self.number = self.number * 10 + number
-		if self.number and self.number <= len(self["menu"].list):
-			if number * 10 > len(self["menu"].list) or self.number >= 10:
+		if self.number and self.number <= self.menulength:
+			if number * 10 > self.menulength or self.number >= 10:
 				self.okbuttonClick()
 			else:
 				self.nextNumberTimer.start(1500, True)
@@ -374,7 +386,8 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		self.close(True)
 
 	def createSummary(self):
-		return MenuSummary
+		if not self.menuHorizontal:
+			return MenuSummary
 
 	def isProtected(self):
 		if config.ParentalControl.setuppinactive.value:
@@ -405,6 +418,41 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		if not self.list:
 			self.list.append(('', None, 'dummy', '10', 10))
 		self.list.sort(key=lambda listweight: int(listweight[4]))
+
+	# for horizontal menu
+	
+	def updateMenuHorz(self):
+		i = self.horzIndex
+		L = self.menulength
+		self["label1"].setText(self.list[(i-2)%L][0] if L > 3 else "")
+		self["label2"].setText(self.list[(i-1)%L][0] if L > 1 else "")
+		self["label3"].setText(self.list[i][0])
+		self["label4"].setText(self.list[(i+1)%L][0] if L > 1 else " ")
+		self["label5"].setText(self.list[(i+2)%L][0] if L > 3 else " ")
+		
+	def keyLeftHorz(self):
+		self.horzIndex = (self.horzIndex - 1) % self.menulength
+		self.updateMenuHorz()
+
+	def keyRightHorz(self):
+		self.horzIndex = (self.horzIndex + 1) % self.menulength
+		self.updateMenuHorz()
+
+	def initMenuHorizontal(self):
+		self["label1"] = StaticText()
+		self["label2"] = StaticText()
+		self["label3"] = StaticText()
+		self["label4"] = StaticText()
+		self["label5"] = StaticText()
+		self["menuActions3"] = HelpableActionMap(self, ["OkCancelActions", "DirectionActions"],
+		{
+			"left": (self.keyLeftHorz, _("Scroll menu")),
+			"right": (self.keyRightHorz, _("Scroll menu")),
+		}, prio=0, description=_("Common Menu Actions"))
+		self["menuActions3"].setEnabled(bool(self.menulength))
+		if self.menulength:
+			self.horzIndex = 0
+			self.updateMenuHorz()
 
 
 class MenuSort(Menu):

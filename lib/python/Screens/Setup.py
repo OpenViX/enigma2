@@ -2,7 +2,7 @@ from xml.etree.cElementTree import fromstring, parse
 
 from gettext import dgettext
 from os.path import getmtime, join as pathjoin
-from skin import setups
+from skin import setups, findSkinScreen # findSkinScreen used in eval
 
 from Components.config import ConfigBoolean, ConfigNothing, ConfigSelection, config
 from Components.ConfigList import ConfigListScreen
