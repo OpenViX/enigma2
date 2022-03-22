@@ -288,7 +288,7 @@ class Screen(dict):
 			self.summaries.append(summary)
 
 	def removeSummary(self, summary):
-		if summary is not None and summary in self.summaries:
+		if summary is not None:
 			self.summaries.remove(summary)
 
 
