@@ -230,6 +230,8 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		# for the skin: first try a menu_<menuID>, then Menu
 		self.skinName = []
 		if self.menuHorizontal:
+			if self.menuID:
+				self.skinName.append(self.menuHorizontalSkinName + "_" + self.menuID)
 			self.skinName.append(self.menuHorizontalSkinName)
 		elif self.menuID:
 			self.skinName.append("menu_" + self.menuID)
