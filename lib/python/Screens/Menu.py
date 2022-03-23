@@ -573,5 +573,4 @@ class MainMenu(Menu):
 	#add file load functions for the xml-file
 
 	def __init__(self, *x):
-		self.skinName = "Menu"
 		Menu.__init__(self, *x)
