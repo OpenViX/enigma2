@@ -219,6 +219,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		Screen.__init__(self, session)
 		self.menuHorizontalSkinName = "MenuHorizontal"
 		self.menuHorizontal = self.__class__.__name__ != "MenuSort" and config.usage.menu_style.value == "horizontal" and findSkinScreen(self.menuHorizontalSkinName)
+		self.onHorizontalSelectionChanged = []
 		self["key_blue"] = StaticText("")
 		HelpableScreen.__init__(self)
 		self.menulength = 0
@@ -390,6 +391,8 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 	def createSummary(self):
 		if not self.menuHorizontal:
 			return MenuSummary
+		else:
+			return MenuHorizontalSummary
 
 	def isProtected(self):
 		if config.ParentalControl.setuppinactive.value:
@@ -435,10 +438,17 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 	def keyLeftHorz(self):
 		self.horzIndex = (self.horzIndex - 1) % self.menulength
 		self.updateMenuHorz()
+		self.horizontalSelectionChanged()
 
 	def keyRightHorz(self):
 		self.horzIndex = (self.horzIndex + 1) % self.menulength
 		self.updateMenuHorz()
+		self.horizontalSelectionChanged()
+
+	def horizontalSelectionChanged(self):
+		for x in self.onHorizontalSelectionChanged:
+			if callable(x):
+				x()		
 
 	def initMenuHorizontal(self):
 		self["label1"] = StaticText()
@@ -455,6 +465,31 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		if self.menulength:
 			self.horzIndex = 0
 			self.updateMenuHorz()
+
+
+class MenuHorizontalSummary(ScreenSummary):
+	def __init__(self, session, parent):
+		ScreenSummary.__init__(self, session, parent=parent)
+		self.skinName =["MenuHorizontalSummary"]
+		self["title"] = StaticText(self.parent.title)
+		self["entry"] = StaticText()
+		if self.addWatcher not in self.onShow:
+			self.onShow.append(self.addWatcher)
+		if self.removeWatcher not in self.onHide:
+			self.onHide.append(self.removeWatcher)
+
+	def addWatcher(self):
+		if self.selectionChanged not in self.parent.onHorizontalSelectionChanged:
+			self.parent.onHorizontalSelectionChanged.append(self.selectionChanged)
+		self.selectionChanged()
+
+	def removeWatcher(self):
+		if self.selectionChanged in self.parent.onHorizontalSelectionChanged:
+			self.parent.onHorizontalSelectionChanged.remove(self.selectionChanged)
+
+	def selectionChanged(self):
+		if self.parent.list:
+			self["entry"].text = self.parent.list[self.parent.horzIndex][0]
 
 
 class MenuSort(Menu):
