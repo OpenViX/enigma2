@@ -429,8 +429,8 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		self["label1"].setText(self.list[(i-2)%L][0] if L > 3 else "")
 		self["label2"].setText(self.list[(i-1)%L][0] if L > 1 else "")
 		self["label3"].setText(self.list[i][0])
-		self["label4"].setText(self.list[(i+1)%L][0] if L > 1 else " ")
-		self["label5"].setText(self.list[(i+2)%L][0] if L > 3 else " ")
+		self["label4"].setText(self.list[(i+1)%L][0] if L > 1 else "")
+		self["label5"].setText(self.list[(i+2)%L][0] if L > 3 else "")
 		
 	def keyLeftHorz(self):
 		self.horzIndex = (self.horzIndex - 1) % self.menulength
