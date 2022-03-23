@@ -97,6 +97,12 @@
 		</widget>
 	</screen>
 
+<!-- menus-->
+	<screen name="MenuHorizontalSummary" position="0,0" size="96,64">
+		<widget source="title" render="Label" position="0,0" size="96,16" font="FdLcD;14" halign="center" valign="top" noWrap="1"  foregroundColor="lightyellow" />
+		<widget source="entry" render="Label" position="0,16" size="96,48" font="FdLcD;16" halign="left" valign="top" />
+	</screen>
+
 <!-- movieplayer-->
 	<screen name="InfoBarMoviePlayerSummary" position="0,0" size="96,64">
 		<widget source="session.CurrentService" render="Label" position="0,0" size="96,36" font="FdLcD;16" halign="left" valign="top" >

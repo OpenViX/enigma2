@@ -54,6 +54,12 @@
 		</widget>
 	</screen>
 
+	<!-- menus-->
+	<screen name="MenuHorizontalSummary" position="0,0" size="480,320">
+		<widget source="title" render="Label" position="0,5" size="480,60" font="FdLcD;50" halign="center" valign="center" foregroundColor="yellow" />
+		<widget source="entry" render="Label" position="0,65" size="480,85" font="FdLcD;40" halign="center" valign="center" />
+	</screen>
+
 <!-- setup-->
 	<screen name="SetupSummary" position="0,0" size="480,320">
 		<widget source="SetupTitle" render="Label" position="0,5" size="480,60" font="FdLcD;45" halign="center" valign="center" foregroundColor="yellow" />
