@@ -355,8 +355,12 @@ class HdmiCec:
 		self.delay.timeout.get().append(self.sendStandbyMessages)
 		self.useStandby = True
 		self.handlingStandbyFromTV = False
-		if config.hdmicec.enabled.value and config.hdmicec.fixed_physical_address.value != "1.0.0.0":
+		if config.hdmicec.enabled.value and config.hdmicec.fixed_physical_address.value[1:3] != ".0":
+			print("[HdmiCec][init]phsyical address changed by setup value:", config.hdmicec.fixed_physical_address.value)
 			setFixedPhysicalAddress(config.hdmicec.fixed_physical_address.value)
+		else:
+			print("[HdmiCec][init] no set physical address ")
+			setFixedPhysicalAddress("0.0.0.0")			# no fixed physical address send 0 to eHdmiCec C++ driver	
 		eHdmiCEC.getInstance().messageReceived.get().append(self.messageReceived)
 		config.misc.standbyCounter.addNotifier(self.onEnterStandby, initial_call=False)
 		config.misc.DeepStandby.addNotifier(self.onEnterDeepStandby, initial_call=False)
