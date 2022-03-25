@@ -76,6 +76,11 @@
 		</widget>
 	</screen>
 
+	<screen name="MenuHorizontalSummary" position="fill">
+		<widget source="title" render="Label" position="top" size="*,61" font="FdLcD;30" halign="center" valign="top" />
+		<widget source="entry" render="Label" position="top" size="*,53" font="FdLcD;26" halign="left" valign="center" />
+	</screen>
+
 <!-- movieplayer-->
 	<screen name="InfoBarMoviePlayerSummary" position="fill">
 		<widget source="session.CurrentService" render="Label" position="top" size="*,36" font="FdLcD;16" halign="left" valign="top" >

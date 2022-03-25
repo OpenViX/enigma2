@@ -116,6 +116,7 @@ def InitUsageConfig():
 
 	config.usage.show_picon_bkgrn = ConfigSelection(default="transparent", choices=[("none", _("Disabled")), ("transparent", _("Transparent")), ("blue", _("Blue")), ("red", _("Red")), ("black", _("Black")), ("white", _("White")), ("lightgrey", _("Light Grey")), ("grey", _("Grey"))])
 	config.usage.show_genre_info = ConfigYesNo(default=False)
+	config.usage.menu_style = ConfigSelection(default="standard", choices=[("standard", _("Standard")), ("horizontal", _("Horizontal"))])
 	config.usage.menu_sort_weight = ConfigDictionarySet(default={"mainmenu": {"submenu": {}}})
 	config.usage.menu_sort_mode = ConfigSelection(default="default", choices=[("a_z", _("alphabetical")), ("default", _("Default")), ("user", _("user defined")), ("user_hidden", _("user defined hidden"))])
 	config.usage.menu_show_numbers = ConfigYesNo(default=False)
@@ -1191,7 +1192,7 @@ def InitUsageConfig():
 		"textview": _("Text View On"),
 		},
 		default="imageview")
-	config.hdmicec.fixed_physical_address = ConfigText(default="1.0.0.0")		
+	config.hdmicec.fixed_physical_address = ConfigText(default="0.0.0.0")		
 	config.hdmicec.volume_forwarding = ConfigYesNo(default=False)
 	config.hdmicec.force_volume_forwarding = ConfigYesNo(default=False)	
 	config.hdmicec.control_receiver_wakeup = ConfigYesNo(default=False)
