@@ -1,5 +1,5 @@
 import six
-
+from os import environ
 from copy import copy, deepcopy
 
 from enigma import BT_SCALE, RT_HALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_BOTTOM, RT_VALIGN_CENTER, RT_VALIGN_TOP, eListboxPythonMultiContent, getPrevAsciiCode, gFont
@@ -8,7 +8,6 @@ from skin import fonts, parameters, applySkinFactor
 from Components.ActionMap import HelpableNumberActionMap
 from Components.Input import Input
 from Components.Label import Label
-from Components.Language import language
 from Components.MenuList import MenuList
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
 from Components.Sources.StaticText import StaticText
@@ -514,7 +513,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 			"9": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"gotAsciiCode": (self.keyGotAscii, _("Keyboard data entry"))
 		}, -2, description=_("Virtual KeyBoard Functions"))
-		self.lang = language.getLanguage()
+		self.lang = environ["LANGUAGE2"]
 		self["prompt"] = Label(prompt)
 		self["text"] = Input(text=text, maxSize=maxSize, visible_width=visible_width, type=type, currPos=len(six.ensure_text(text, errors='ignore')) if currPos is None else currPos, allMarked=allMarked)
 		self["list"] = VirtualKeyBoardList([])
