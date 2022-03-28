@@ -122,6 +122,7 @@ class Language:
 		# HACK: sometimes python 2.7 reverts to the LC_TIME environment value, so make sure it has the correct value
 		environ["LC_TIME"] = self.gotLanguage + '.UTF-8'
 		environ["LANGUAGE"] = self.gotLanguage + '.UTF-8'
+		environ["LANGUAGE2"] = self.gotLanguage		
 		environ["GST_SUBTITLE_ENCODING"] = self.getGStreamerSubtitleEncoding()
 		return True
 
