@@ -109,9 +109,7 @@ class Language:
 				pass
 
 		# Also write a locale.conf as /home/root/.config/locale.conf to apply language to interactive shells as well:
-		try:
-			stat('/home/root/.config')
-		except:
+		if not path.exists('/home/root/.config'):
 			mkdir('/home/root/.config')
 
 		localeconf = open('/home/root/.config/locale.conf', 'w')
