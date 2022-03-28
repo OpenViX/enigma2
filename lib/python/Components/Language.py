@@ -92,6 +92,7 @@ class Language:
 		self.catalog = gettext.translation('enigma2', resolveFilename(SCOPE_LANGUAGE, ""), languages=[index], fallback=True)
 		self.catalog.install(names=("ngettext", "pgettext"))
 		self.activeLanguage = index
+		self.gotLanguage = self.getLanguage()
 		for x in self.callbacks:
 			if x:
 				x()
@@ -100,7 +101,7 @@ class Language:
 		# We'd rather try to set all available categories, and ignore the others
 		for category in [locale.LC_CTYPE, locale.LC_COLLATE, locale.LC_TIME, locale.LC_MONETARY, locale.LC_MESSAGES, locale.LC_NUMERIC]:
 			try:
-				locale.setlocale(category, (self.getLanguage(), 'UTF-8'))
+				locale.setlocale(category, (self.gotLanguage, 'UTF-8'))
 			except:
 				pass
 
@@ -110,8 +111,8 @@ class Language:
 
 		localeconf = open('/home/root/.config/locale.conf', 'w')
 		for category in ["LC_TIME", "LC_DATE", "LC_MONETARY", "LC_MESSAGES", "LC_NUMERIC", "LC_NAME", "LC_TELEPHONE", "LC_ADDRESS", "LC_PAPER", "LC_IDENTIFICATION", "LC_MEASUREMENT", "LANG"]:
-			if category == "LANG" or (category == "LC_DATE" and path.exists('/usr/lib/locale/' + self.getLanguage() + '/LC_TIME')) or path.exists('/usr/lib/locale/' + self.getLanguage() + '/' + category):
-				localeconf.write('export %s="%s.%s"\n' % (category, self.getLanguage(), "UTF-8"))
+			if category == "LANG" or (category == "LC_DATE" and path.exists('/usr/lib/locale/' + self.gotLanguage + '/LC_TIME')) or path.exists('/usr/lib/locale/' + self.gotLanguage + '/' + category):
+				localeconf.write('export %s="%s.%s"\n' % (category, self.gotLanguage, "UTF-8"))
 			else:
 				if path.exists('/usr/lib/locale/C.UTF-8/' + category):
 					localeconf.write('export %s="C.UTF-8"\n' % category)
@@ -119,8 +120,8 @@ class Language:
 					localeconf.write('export %s="POSIX"\n' % category)
 		localeconf.close()
 		# HACK: sometimes python 2.7 reverts to the LC_TIME environment value, so make sure it has the correct value
-		environ["LC_TIME"] = self.getLanguage() + '.UTF-8'
-		environ["LANGUAGE"] = self.getLanguage() + '.UTF-8'
+		environ["LC_TIME"] = self.gotLanguage + '.UTF-8'
+		environ["LANGUAGE"] = self.gotLanguage + '.UTF-8'
 		environ["GST_SUBTITLE_ENCODING"] = self.getGStreamerSubtitleEncoding()
 		return True
 
