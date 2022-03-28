@@ -162,16 +162,10 @@ class Language:
 		return None
 
 	def getLanguage(self):
-		try:
-			return str(self.lang[self.activeLanguage][1]) + "_" + str(self.lang[self.activeLanguage][2])
-		except:
-			return ''
+		return self.lang[self.activeLanguage][1] + "_" + self.lang[self.activeLanguage][2] if self.activeLanguage != 0 else ""
 
 	def getGStreamerSubtitleEncoding(self):
-		try:
-			return str(self.lang[self.activeLanguage][3])
-		except:
-			return 'ISO-8859-15'
+		return self.lang[self.activeLanguage][3] if self.activeLanguage != 0 else 'ISO-8859-15'
 
 	def addCallback(self, callback):
 		self.callbacks.append(callback)
