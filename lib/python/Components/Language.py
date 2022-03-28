@@ -83,22 +83,18 @@ class Language:
 		self.langlistselection.append((str(lang + "_" + country), name))
 
 	def activateLanguage_TRY(self, index):
-		try:
-			if index not in self.lang:
-				print("[Language] Selected language %s is not installed, fallback to en_US!" % index)
-				index = "en_US"
-				Notifications.AddNotification(MessageBox, _("The selected langugage is unavailable - using en_US"), MessageBox.TYPE_INFO, timeout=3)
-			lang = self.lang[index]
-			print("[Language] Activating language " + lang[0])
-			self.catalog = gettext.translation('enigma2', resolveFilename(SCOPE_LANGUAGE, ""), languages=[index], fallback=True)
-			self.catalog.install(names=("ngettext", "pgettext"))
-			self.activeLanguage = index
-			for x in self.callbacks:
-				if x:
-					x()
-		except:
-			print("[Language] Selected language does not exist!")
-			return False
+		if index not in self.lang:
+			print("[Language] Selected language %s is not installed, fallback to en_US!" % index)
+			index = "en_US"
+			Notifications.AddNotification(MessageBox, _("The selected langugage is unavailable - using en_US"), MessageBox.TYPE_INFO, timeout=3)
+		lang = self.lang[index]
+		print("[Language] Activating language " + lang[0])
+		self.catalog = gettext.translation('enigma2', resolveFilename(SCOPE_LANGUAGE, ""), languages=[index], fallback=True)
+		self.catalog.install(names=("ngettext", "pgettext"))
+		self.activeLanguage = index
+		for x in self.callbacks:
+			if x:
+				x()
 
 		# NOTE: we do not use LC_ALL, because LC_ALL will not set any of the categories, when one of the categories fails.
 		# We'd rather try to set all available categories, and ignore the others
