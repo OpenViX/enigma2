@@ -7,7 +7,7 @@ import tempfile
 
 from boxbranding import getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from enigma import eTimer, fbClass
-from os import path as ospath, stat, system, mkdir, makedirs, listdir, remove, rename, rmdir, sep as ossep, statvfs, chmod, walk, symlink, unlink
+from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, rmdir, sep as ossep, statvfs, chmod, walk, symlink, unlink
 from shutil import copy, rmtree, move, copyfile
 from time import localtime, time, strftime, mktime
 
@@ -37,8 +37,8 @@ from Tools.Notifications import AddPopupWithCallback
 
 hddchoices = []
 for p in harddiskmanager.getMountedPartitions():
-	if ospath.exists(p.mountpoint):
-		d = ospath.normpath(p.mountpoint)
+	if path.exists(p.mountpoint):
+		d = path.normpath(p.mountpoint)
 		if p.mountpoint != "/":
 			hddchoices.append((p.mountpoint, d))
 hddchoices = sorted(hddchoices)
@@ -71,13 +71,13 @@ config.imagemanager.developer_password = ConfigText(default="password", fixed_si
 
 autoImageManagerTimer = None
 
-if ospath.exists(config.imagemanager.backuplocation.value + "imagebackups/imagerestore"):
+if path.exists(config.imagemanager.backuplocation.value + "imagebackups/imagerestore"):
 	try:
 		rmtree(config.imagemanager.backuplocation.value + "imagebackups/imagerestore")
 	except Exception:
 		pass
 TMPDIR = config.imagemanager.backuplocation.value + "imagebackups/" + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-mount"
-if ospath.exists(TMPDIR + "/root") and ospath.ismount(TMPDIR + "/root"):
+if path.exists(TMPDIR + "/root") and path.ismount(TMPDIR + "/root"):
 	try:
 		system("umount " + TMPDIR + "/root")
 	except Exception:
@@ -281,9 +281,9 @@ class VIXImageManager(Screen):
 				free = (s.f_bsize * s.f_bavail) // (1024 * 1024)
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _("MB") + "\n" + _("Select an image to flash:"))
 			try:
-				if not ospath.exists(self.BackupDirectory):
+				if not path.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0o755)
-				if ospath.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup"):
+				if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup"):
 					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
 					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
 				self.refreshList()
@@ -371,19 +371,19 @@ class VIXImageManager(Screen):
 			
 	def getImagesDownloaded(self):
 		def getImages(files):
-			for file in [x for x in files if ospath.splitext(x)[1] == ".zip" and model in x]:
+			for file in [x for x in files if path.splitext(x)[1] == ".zip" and model in x]:
 				imagesFound.append({'link': file, 'name': file.split(ossep)[-1], 'mtime': stat(file).st_mtime})
 
 
 		model = getMachineMake()
 		imagesFound = []
-		for media in ['/media/%s' % x for x in listdir('/media')] + (['/media/net/%s' % x for x in listdir('/media/net')] if ospath.isdir('/media/net') else []):
-			getImages([ospath.join(media, x) for x in listdir(media) if ospath.splitext(x)[1] == ".zip" and model in x])
+		for media in ['/media/%s' % x for x in listdir('/media')] + (['/media/net/%s' % x for x in listdir('/media/net')] if path.isdir('/media/net') else []):
+			getImages([path.join(media, x) for x in listdir(media) if path.splitext(x)[1] == ".zip" and model in x])
 			for folder in ["imagebackups", "downloaded_images", "images"]:
 				if folder in listdir(media):
-					media = ospath.join(media, folder)
-					if ospath.isdir(media) and not ospath.islink(media) and not ospath.ismount(media):
-						getImages([ospath.join(media, x) for x in listdir(media) if ospath.splitext(x)[1] == ".zip" and model in x])
+					media = path.join(media, folder)
+					if path.isdir(media) and not path.islink(media) and not path.ismount(media):
+						getImages([path.join(media, x) for x in listdir(media) if path.splitext(x)[1] == ".zip" and model in x])
 		imagesFound.sort(key=lambda x: x['mtime'], reverse=True)
 		# print("[ImageManager][getImagesDownloaded] imagesFound=%s" % imagesFound)
 		return imagesFound
@@ -406,7 +406,7 @@ class VIXImageManager(Screen):
 		self.multibootslot = 1
 		self.MTDKERNEL = getMachineMtdKernel()
 		self.MTDROOTFS = getMachineMtdRoot()
-		if getMachineMake() == "et8500" and ospath.exists("/proc/mtd"):
+		if getMachineMake() == "et8500" and path.exists("/proc/mtd"):
 			self.dualboot = self.dualBoot()
 		recordings = self.session.nav.getRecordings()
 		if not recordings:
@@ -457,7 +457,7 @@ class VIXImageManager(Screen):
 			self.TEMPDESTROOT = self.BackupDirectory + "imagerestore"
 		
 		if self.sel[1].endswith(".zip"):
-			if not ospath.exists(self.TEMPDESTROOT):
+			if not path.exists(self.TEMPDESTROOT):
 				mkdir(self.TEMPDESTROOT, 0o755)
 			self.Console.ePopen("unzip -o %s -d %s" % (self.sel[1], self.TEMPDESTROOT), self.keyRestore4)
 		else:
@@ -527,12 +527,12 @@ class VIXImageManager(Screen):
 				print("[ImageManager] slot %s result %s\n" % (self.multibootslot, result))
 				tmp_dir = tempfile.mkdtemp(prefix="ImageManagerFlash")
 				Console().ePopen("mount %s %s" % (self.mtdboot, tmp_dir))
-				if pathExists(ospath.join(tmp_dir, "STARTUP")):
-					copyfile(ospath.join(tmp_dir, SystemInfo["canMultiBoot"][self.multibootslot]["startupfile"].replace("boxmode=12'", "boxmode=1'")), ospath.join(tmp_dir, "STARTUP"))
+				if pathExists(path.join(tmp_dir, "STARTUP")):
+					copyfile(path.join(tmp_dir, SystemInfo["canMultiBoot"][self.multibootslot]["startupfile"].replace("boxmode=12'", "boxmode=1'")), path.join(tmp_dir, "STARTUP"))
 				else:
 					self.session.open(MessageBox, _("Multiboot ERROR! - no STARTUP in boot partition."), MessageBox.TYPE_INFO, timeout=20)
 				Console().ePopen('umount %s' % tmp_dir)
-				if not ospath.ismount(tmp_dir):
+				if not path.ismount(tmp_dir):
 					rmdir(tmp_dir)
 				self.session.open(TryQuitMainloop, 2)
 			else:
@@ -858,9 +858,9 @@ class ImageBackup(Screen):
 
 	def JobStart(self):
 		try:
-			if not ospath.exists(self.BackupDirectory):
+			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0o755)
-			if ospath.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup"):
+			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup"):
 				system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
 				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
 		except Exception as e:
@@ -937,14 +937,14 @@ class ImageBackup(Screen):
 	def doBackup1(self):
 		print("[ImageManager] Stage1: Creating tmp folders.", self.BackupDirectory)
 		print("[ImageManager] Stage1: Creating backup Folders.")
-		if ospath.exists(self.WORKDIR):
+		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
 		mkdir(self.WORKDIR, 0o644)
-		if ospath.exists(self.TMPDIR + "/root") and ospath.ismount(self.TMPDIR + "/root"):
+		if path.exists(self.TMPDIR + "/root") and path.ismount(self.TMPDIR + "/root"):
 			system("umount " + self.TMPDIR + "/root")
-		elif ospath.exists(self.TMPDIR + "/root"):
+		elif path.exists(self.TMPDIR + "/root"):
 			rmtree(self.TMPDIR + "/root")
-		if ospath.exists(self.TMPDIR):
+		if path.exists(self.TMPDIR):
 			rmtree(self.TMPDIR)
 		makedirs(self.TMPDIR, 0o644)
 		makedirs(self.TMPDIR + "/root", 0o644)
@@ -1198,11 +1198,11 @@ class ImageBackup(Screen):
 
 	def doBackup4(self):
 		print("[ImageManager] Stage4: Unmounting and removing tmp system")
-		if ospath.exists(self.TMPDIR + "/root") and ospath.ismount(self.TMPDIR + "/root"):
+		if path.exists(self.TMPDIR + "/root") and path.ismount(self.TMPDIR + "/root"):
 			self.command = "umount " + self.TMPDIR + "/root && rm -rf " + self.TMPDIR
 			self.Console.ePopen(self.command, self.Stage4Complete)
 		else:
-			if ospath.exists(self.TMPDIR):
+			if path.exists(self.TMPDIR):
 				rmtree(self.TMPDIR)
 			self.Stage4Complete("pass", 0)
 
@@ -1213,7 +1213,7 @@ class ImageBackup(Screen):
 
 	def doBackup5(self):
 		print("[ImageManager] Stage5: Moving from work to backup folders")
-		if self.EMMCIMG == "emmc.img" or self.EMMCIMG == "disk.img" and ospath.exists("%s/%s" % (self.WORKDIR, self.EMMCIMG)):
+		if self.EMMCIMG == "emmc.img" or self.EMMCIMG == "disk.img" and path.exists("%s/%s" % (self.WORKDIR, self.EMMCIMG)):
 			move("%s/%s" % (self.WORKDIR, self.EMMCIMG), "%s/%s" % (self.MAINDEST, self.EMMCIMG))
 
 		if self.EMMCIMG == "usb_update.bin":
@@ -1223,7 +1223,7 @@ class ImageBackup(Screen):
 			if fileExists("/usr/share/apploader.bin"):
 				system("cp -f /usr/share/apploader.bin %s/apploader.bin" % self.MAINDEST2)
 
-		if "bin" or "uImage" in self.KERNELFILE and ospath.exists("%s/vmlinux.bin" % self.WORKDIR):
+		if "bin" or "uImage" in self.KERNELFILE and path.exists("%s/vmlinux.bin" % self.WORKDIR):
 			move("%s/vmlinux.bin" % self.WORKDIR, "%s/%s" % (self.MAINDEST, self.KERNELFILE))
 		else:
 			move("%s/vmlinux.gz" % self.WORKDIR, "%s/%s" % (self.MAINDEST, self.KERNELFILE))
@@ -1274,7 +1274,7 @@ class ImageBackup(Screen):
 					line = "SF8008 indicate type of backup %s" % self.KERN
 					fileout.write(line)
 				self.session.open(MessageBox, _("Multiboot only able to restore this backup to mmc slot1"), MessageBox.TYPE_INFO, timeout=20)
-			if ospath.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat"):
+			if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat"):
 				copy("/usr/lib/enigma2/python/Plugins/SystemPlugins/ViX/burn.bat", self.MAINDESTROOT + "/burn.bat")
 		elif SystemInfo["HasRootSubdir"]:
 				with open(self.MAINDEST + "/force_%s_READ.ME" % self.MCBUILD, "w") as fileout:
@@ -1287,17 +1287,17 @@ class ImageBackup(Screen):
 					fileout.write(line1)
 
 		print("[ImageManager] Stage5: Removing Swap.")
-		if ospath.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup"):
+		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup"):
 			system("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
 			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
-		if ospath.exists(self.WORKDIR):
+		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
-		if (ospath.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and ospath.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (getMachineBuild() in ("h9", "i55plus") and "root=/dev/mmcblk0p1" in z):
+		if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (getMachineBuild() in ("h9", "i55plus") and "root=/dev/mmcblk0p1" in z):
 			for root, dirs, files in walk(self.MAINDEST):
 				for momo in dirs:
-					chmod(ospath.join(root, momo), 0o644)
+					chmod(path.join(root, momo), 0o644)
 				for momo in files:
-					chmod(ospath.join(root, momo), 0o644)
+					chmod(path.join(root, momo), 0o644)
 			print("[ImageManager] Stage5: Image created in " + self.MAINDESTROOT)
 			self.Stage5Complete()
 		else:
@@ -1309,7 +1309,7 @@ class ImageBackup(Screen):
 		print("[ImageManager] Stage5: Complete.")
 
 	def doBackup6(self):
-		zipfolder = ospath.split(self.MAINDESTROOT)
+		zipfolder = path.split(self.MAINDESTROOT)
 		self.commands = []
 		if SystemInfo["HasRootSubdir"]:
 			self.commands.append("7za a -r -bt -bd %s/%s-%s-%s-%s-%s_mmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROVERSION, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
@@ -1326,7 +1326,7 @@ class ImageBackup(Screen):
 		#    trim the number of backups kept...
 		import fnmatch
 		try:
-			if config.imagemanager.number_to_keep.value > 0 and ospath.exists(self.BackupDirectory):  # !?!
+			if config.imagemanager.number_to_keep.value > 0 and path.exists(self.BackupDirectory):  # !?!
 				images = listdir(self.BackupDirectory)
 				patt = config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-*.zip"
 				emlist = []
@@ -1334,7 +1334,7 @@ class ImageBackup(Screen):
 					if fnmatch.fnmatchcase(fil, patt):
 						emlist.append(fil)
 				# sort by oldest first...
-				emlist.sort(key=lambda fil: ospath.getmtime(self.BackupDirectory + fil))
+				emlist.sort(key=lambda fil: path.getmtime(self.BackupDirectory + fil))
 				# ...then, if we have too many, remove the <n> newest from the end
 				# and delete what is left
 				if len(emlist) > config.imagemanager.number_to_keep.value:
@@ -1411,7 +1411,7 @@ class ImageManagerDownload(Screen):
 		self.getImageDistro()
 
 	def getImageDistro(self):
-		if not ospath.exists(self.BackupDirectory):
+		if not path.exists(self.BackupDirectory):
 			mkdir(self.BackupDirectory, 0o755)
 		self.boxtype = getMachineMake()
 		if self.ConfigObj is config.imagemanager.imagefeed_Pli:
@@ -1429,9 +1429,9 @@ class ImageManagerDownload(Screen):
 				and config.imagemanager.developer_username.value != config.imagemanager.developer_username.default \
 				and config.imagemanager.developer_password.value \
 				and config.imagemanager.developer_password.value != config.imagemanager.developer_password.default:
-				boxtype = ospath.join(boxtype, config.imagemanager.developer_username.value, config.imagemanager.developer_password.value)
+				boxtype = path.join(boxtype, config.imagemanager.developer_username.value, config.imagemanager.developer_password.value)
 			try:
-				urljson = ospath.join(self.ConfigObj.value, boxtype)
+				urljson = path.join(self.ConfigObj.value, boxtype)
 				self.imagesList = dict(json.load(urlopen("%s" % urljson)))
 			except Exception:
 				print("[ImageManager] no images available for: the '%s' at '%s'" % (self.boxtype, self.ConfigObj.value))
