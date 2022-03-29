@@ -1,4 +1,5 @@
 # required methods: Request, urlopen, HTTPError, URLError
+from urllib.parse import urlparse
 from urllib.request import urlopen, Request, urlretrieve
 from urllib.error import HTTPError, URLError
 import json
@@ -1532,10 +1533,6 @@ class ImageManagerDownload(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def processAuthLogin(self, url):
-		try:
-			from urlparse import urlparse
-		except:
-			from urllib.parse import urlparse
 		headers = None
 		parsed = urlparse(url)
 		scheme = parsed.scheme
