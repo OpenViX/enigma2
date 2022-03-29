@@ -1542,12 +1542,11 @@ class ImageManagerDownload(Screen):
 		username = parsed.username if parsed.username else ""
 		password = parsed.password if parsed.password else ""
 		hostname = parsed.hostname
-		path = parsed.path
 		if username or password:
 			import base64
 			base64bytes = base64.b64encode(('%s:%s' % (username, password)).encode())
 			headers = {("Authorization").encode(): ("Basic %s" % base64bytes.decode()).encode()}
-		return headers, scheme + "://" + hostname + path
+		return headers, scheme + "://" + hostname + parsed.path
 
 
 class ImageManagerSetup(Setup):
