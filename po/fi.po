@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-03-23 07:52+0200\n"
+"PO-Revision-Date: 2022-03-29 18:37+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -16418,3 +16418,33 @@ msgstr "Valikkotyyli"
 
 msgid "Select 'Standard' to display the standard vertical menu layout, or 'Horizontal' to display the menu items in a row."
 msgstr "Valitsemalla 'Vakio', näykyy vakio pystymallinen valikkosommitelma tai 'Vaakasuora', näkyvät valikon nimikkeet rivissä."
+
+msgid "Fast Channel Change Setup"
+msgstr "Nopean kanavanvaihdon asetukset"
+
+msgid "Fast Channel Change"
+msgstr "Nopea kanavanvaihto"
+
+msgid "FCC enabled"
+msgstr "Nopea kanavanvaihto käytössä"
+
+msgid "Max channels"
+msgstr "Maksimi kanavamäärä"
+
+msgid "Zap Up/Down"
+msgstr "Kanavanvaihto ylös/alas"
+
+msgid "History Prev/Next"
+msgstr "Historia edellinen/seuraava"
+
+msgid "Disable FCC during recordings"
+msgstr "Estä nopea kanavanvaihto tallennusten aikana"
+
+msgid "priority"
+msgstr "Prioriteetti"
+
+msgid "Enable Fast Channel Change"
+msgstr "Ota nopea kanavanvaihto käyttöön"
+
+msgid "Disable Fast Channel Change"
+msgstr "Poista nopea kanavanvaihto käytöstä"
