@@ -35,18 +35,29 @@ from Tools.HardwareInfo import HardwareInfo
 from Tools.Multiboot import GetImagelist
 from Tools.Notifications import AddPopupWithCallback
 
-hddchoices = []
-for p in harddiskmanager.getMountedPartitions():
-	if path.exists(p.mountpoint):
-		d = path.normpath(p.mountpoint)
-		if p.mountpoint != "/":
-			hddchoices.append((p.mountpoint, d))
-hddchoices = sorted(hddchoices)
-# print("[ImageManager]hddchoices = %s" % hddchoices)	
+
+def getMountChoices():
+	choices = []
+	for p in harddiskmanager.getMountedPartitions():
+		if path.exists(p.mountpoint):
+			d = path.normpath(p.mountpoint)
+			if p.mountpoint != "/":
+				choices.append((p.mountpoint, d))
+	choices.sort()
+	return choices
+
+
+def getMountDefault(choices):
+	choices = {x[1]: x[0] for x in choices}
+	default = choices.get("/media/hdd") or choices.get("/media/usb")
+	return default
+
+
 defaultprefix = getImageDistro()
 config.imagemanager = ConfigSubsection()
 config.imagemanager.autosettingsbackup = ConfigYesNo(default=True)
-config.imagemanager.backuplocation = ConfigSelection(choices=hddchoices)
+choices = getMountChoices()
+config.imagemanager.backuplocation = ConfigSelection(choices=choices, default=getMountDefault(choices))
 config.imagemanager.backupretry = ConfigNumber(default=30)
 config.imagemanager.backupretrycount = NoSave(ConfigNumber(default=0))
 config.imagemanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)

@@ -30,20 +30,31 @@ SETTINGSRESTOREQUESTIONID = "RestoreSettingsNotification"
 PLUGINRESTOREQUESTIONID = "RestorePluginsNotification"
 NOPLUGINS = "NoPluginsNotification"
 defaultprefix = getImageDistro()[4:]
-hddchoices = []
-for p in harddiskmanager.getMountedPartitions():
-	if path.exists(p.mountpoint):
-		d = path.normpath(p.mountpoint)
-		if p.mountpoint != "/":
-			hddchoices.append((p.mountpoint, d))
-hddchoices = sorted(hddchoices)			
-# print("[BackupManager]hddchoices = %s" % hddchoices)
+
+
+def getMountChoices():
+	choices = []
+	for p in harddiskmanager.getMountedPartitions():
+		if path.exists(p.mountpoint):
+			d = path.normpath(p.mountpoint)
+			if p.mountpoint != "/":
+				choices.append((p.mountpoint, d))
+	choices.sort()
+	return choices
+
+
+def getMountDefault(choices):
+	choices = {x[1]: x[0] for x in choices}
+	default = choices.get("/media/hdd") or choices.get("/media/usb")
+	return default
+
 
 config.backupmanager = ConfigSubsection()
 config.backupmanager.backupdirs = ConfigLocations(
 	default=[eEnv.resolve("${sysconfdir}/enigma2/"), eEnv.resolve("${sysconfdir}/fstab"), eEnv.resolve("${sysconfdir}/hostname"), eEnv.resolve("${sysconfdir}/network/interfaces"), eEnv.resolve("${sysconfdir}/passwd"), eEnv.resolve("${sysconfdir}/shadow"), eEnv.resolve("${sysconfdir}/etc/shadow"),
 			 eEnv.resolve("${sysconfdir}/resolv.conf"), eEnv.resolve("${sysconfdir}/ushare.conf"), eEnv.resolve("${sysconfdir}/inadyn.conf"), eEnv.resolve("${sysconfdir}/tuxbox/config/"), eEnv.resolve("${sysconfdir}/wpa_supplicant.conf"), "/usr/softcams/"])
-config.backupmanager.backuplocation = ConfigSelection(choices=hddchoices)
+choices = getMountChoices()
+config.backupmanager.backuplocation = ConfigSelection(choices=choices, default=getMountDefault(choices))
 config.backupmanager.backupretry = ConfigNumber(default=30)
 config.backupmanager.backupretrycount = NoSave(ConfigNumber(default=0))
 config.backupmanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
