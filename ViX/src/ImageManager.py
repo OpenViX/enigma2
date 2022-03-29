@@ -53,11 +53,17 @@ def getMountDefault(choices):
 	return default
 
 
+def __onPartitionChange(*args, **kwargs):
+	choices = getMountChoices()
+	config.imagemanager.backuplocation.setChoices(choices=choices, default=getMountDefault(choices))
+
+
 defaultprefix = getImageDistro()
 config.imagemanager = ConfigSubsection()
 config.imagemanager.autosettingsbackup = ConfigYesNo(default=True)
 choices = getMountChoices()
 config.imagemanager.backuplocation = ConfigSelection(choices=choices, default=getMountDefault(choices))
+harddiskmanager.on_partition_list_change.append(__onPartitionChange) # to update backuplocation choices on mountpoint change
 config.imagemanager.backupretry = ConfigNumber(default=30)
 config.imagemanager.backupretrycount = NoSave(ConfigNumber(default=0))
 config.imagemanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
