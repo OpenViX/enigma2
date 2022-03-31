@@ -204,6 +204,13 @@ class ConfigListScreen:
 			"showVirtualKeyboard": (self.keyText, _("Display the virtual keyboard for data entry"))
 		}, prio=1, description=_("Common Setup Actions"))
 		self["virtualKeyBoardActions"].setEnabled(False)
+
+		# Temporary support for legacy code and plugins that hasn't yet been updated (next 4 lines).
+		self["config_actions"] = DummyActions()
+		self["config_actions"].setEnabled = self.dummyConfigActions
+		self["VirtualKB"] = DummyActions()
+		self["VirtualKB"].setEnabled = self.dummyVKBActions
+
 		self["config"] = ConfigList(list, session=session)
 		self.setCancelMessage(None)
 		self.setRestartMessage(None)
@@ -423,3 +430,27 @@ class ConfigListScreen:
 
 	def run(self):  # Allow ConfigList based screens to be processed from the Wizard.
 		self.keySave()
+
+	def dummyConfigActions(self, value):  # Temporary support for legacy code and plugins that hasn't yet been updated.
+		self["configActions"].setEnabled(value)
+		self["navigationActions"].setEnabled(value)
+		self["menuConfigActions"].setEnabled(value)
+		self["charConfigActions"].setEnabled(value)
+		self["editConfigActions"].setEnabled(value)
+
+	def dummyVKBActions(self, value):  # Temporary support for legacy code and plugins that hasn't yet been updated.
+		self["virtualKeyBoardActions"].setEnabled(value)
+
+
+class DummyActions:  # Temporary support for legacy code and plugins that hasn't yet been updated.
+	def setEnabled(self, enabled):
+		pass
+
+	def destroy(self):
+		pass
+
+	def execBegin(self):
+		pass
+
+	def execEnd(self):
+		pass

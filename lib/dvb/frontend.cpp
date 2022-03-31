@@ -1781,7 +1781,7 @@ int eDVBFrontend::tuneLoopInt()  // called by m_tuneTimer
 		if (tmp == -1 && sec_fe != this && !prev->m_inuse) {
 			int state = sec_fe->m_state;
 			// workaround to put the kernel frontend thread into idle state!
-			if (state != eDVBFrontend::stateIdle && state != stateClosed)
+			if (!m_fbc && state != eDVBFrontend::stateIdle && state != stateClosed)
 			{
 				/* eDebug("[eDVBFrontend] tuneLoopint tuner %d is closed m_sn stop", m_dvbid); */
 				sec_fe->m_sn->stop();

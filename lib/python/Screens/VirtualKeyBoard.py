@@ -1,5 +1,4 @@
-import six
-
+from os import environ
 from copy import copy, deepcopy
 
 from enigma import BT_SCALE, RT_HALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_BOTTOM, RT_VALIGN_CENTER, RT_VALIGN_TOP, eListboxPythonMultiContent, getPrevAsciiCode, gFont
@@ -8,7 +7,6 @@ from skin import fonts, parameters, applySkinFactor
 from Components.ActionMap import HelpableNumberActionMap
 from Components.Input import Input
 from Components.Label import Label
-from Components.Language import language
 from Components.MenuList import MenuList
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
 from Components.Sources.StaticText import StaticText
@@ -514,9 +512,9 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 			"9": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"gotAsciiCode": (self.keyGotAscii, _("Keyboard data entry"))
 		}, -2, description=_("Virtual KeyBoard Functions"))
-		self.lang = language.getLanguage()
+		self.lang = environ["LANGUAGE2"]
 		self["prompt"] = Label(prompt)
-		self["text"] = Input(text=text, maxSize=maxSize, visible_width=visible_width, type=type, currPos=len(six.ensure_text(text, errors='ignore')) if currPos is None else currPos, allMarked=allMarked)
+		self["text"] = Input(text=text, maxSize=maxSize, visible_width=visible_width, type=type, currPos=len((text)) if currPos is None else currPos, allMarked=allMarked)
 		self["list"] = VirtualKeyBoardList([])
 		self["mode"] = Label(_("INS"))
 		self["locale"] = Label(_("Locale") + ": " + self.lang)
@@ -980,9 +978,9 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 					# print("[VirtualKeyBoard] DEBUG: Left = %d, Top = %d, Width = %d, Height = %d, Image Width = %d, Image Height = %d" % (left, top, w, h, wImage, hImage))
 				else:  # Display the cell text.
 					if len(key) > 1:  # NOTE: UTF8 / Unicode glyphs only count as one character here.
-						text.append(MultiContentEntryText(pos=(xData, self.padding[1]), size=(w, h), font=1, flags=alignH | alignV, text=six.ensure_str(key), color=self.shiftColors[self.shiftLevel]))
+						text.append(MultiContentEntryText(pos=(xData, self.padding[1]), size=(w, h), font=1, flags=alignH | alignV, text=str(key), color=self.shiftColors[self.shiftLevel]))
 					else:
-						text.append(MultiContentEntryText(pos=(xData, self.padding[1]), size=(w, h), font=0, flags=alignH | alignV, text=six.ensure_str(key), color=self.shiftColors[self.shiftLevel]))
+						text.append(MultiContentEntryText(pos=(xData, self.padding[1]), size=(w, h), font=0, flags=alignH | alignV, text=str(key), color=self.shiftColors[self.shiftLevel]))
 			prevKey = key
 			self.index += 1
 		return res + text
@@ -1028,10 +1026,10 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 
 	def processSelect(self):
 		self.smsChar = None
-		text = six.ensure_str(self.keyList[self.shiftLevel][self.selectedKey // self.keyboardWidth][self.selectedKey % self.keyboardWidth])
+		text = str(self.keyList[self.shiftLevel][self.selectedKey // self.keyboardWidth][self.selectedKey % self.keyboardWidth])
 		cmd = self.cmds.get(text.upper(), None)
 		if cmd is None:
-			self['text'].char(six.ensure_str(text))
+			self['text'].char(str(text))
 		else:
 			exec(cmd)
 		if text not in ("SHIFT", "SHIFTICON") and self.shiftHold != -1:
@@ -1155,7 +1153,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 
 	def keyGotAscii(self):
 		self.smsChar = None
-		if six.ensure_str(self.selectAsciiKey(str(six.unichr(getPrevAsciiCode())))):
+		if self.selectAsciiKey(chr(getPrevAsciiCode())):
 			self.processSelect()
 
 	def selectAsciiKey(self, char):
