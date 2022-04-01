@@ -313,6 +313,11 @@ if [ "$ret" -ne "1" ]; then
 	fi
 fi
 
+# hook to execute user standby script before enigma2 exits
+if [ -x @sysconfdir@/enigma2/standby.sh ]; then
+	/etc/enigma2/standby.sh
+fi
+
 case $ret in
 	1)
 		/sbin/halt
