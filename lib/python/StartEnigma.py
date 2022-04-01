@@ -108,11 +108,10 @@ def useSyncUsingChanged(configelement):
 	if configelement.value == "0":
 		print("[Time By]: Transponder")
 		enigma.eDVBLocalTimeHandler.getInstance().setUseDVBTime(True)
-		enigma.eEPGCache.getInstance().timeUpdated()
 	else:
 		print("[Time By]: NTP")
 		enigma.eDVBLocalTimeHandler.getInstance().setUseDVBTime(False)
-		enigma.eEPGCache.getInstance().timeUpdated()
+	enigma.eEPGCache.getInstance().timeUpdated()
 
 
 config.misc.SyncTimeUsing.addNotifier(useSyncUsingChanged)
