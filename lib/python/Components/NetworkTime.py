@@ -25,6 +25,10 @@ class NTPSyncPoller:
 	def start(self):
 		if self.timecheck not in self.timer.callback:
 			self.timer.callback.append(self.timecheck)
+			def useNTPminutesChanged(configElement):
+				self.timer.stop()
+				self.timecheck()
+			config.misc.useNTPminutes.addNotifier(useNTPminutesChanged, initial_call=False, immediate_feedback=False)
 		self.timer.startLongTimer(0)
 
 	def stop(self):
