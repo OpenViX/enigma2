@@ -84,8 +84,9 @@ if os.path.exists(resolveFilename(SCOPE_CONFIG, "radio.mvi")):
 config.misc.radiopic = ConfigText(default=radiopic)
 config.misc.isNextRecordTimerAfterEventActionAuto = ConfigYesNo(default=False)
 config.misc.isNextPowerTimerAfterEventActionAuto = ConfigYesNo(default=False)
-config.misc.SyncTimeUsing = ConfigSelection(default="0", choices=[("0", "Transponder Time"), ("1", _("NTP"))])
+config.misc.SyncTimeUsing = ConfigSelection(default="dvb", choices=[("dvb", _("Transponder Time")), ("ntp", _("NTP"))])
 config.misc.NTPserver = ConfigText(default='pool.ntp.org', fixed_size=False)
+config.misc.useNTPminutes = ConfigSelection(default="30", choices=[("30", "30" + " " + _("minutes")), ("60", _("Hour")), ("1440", _("Once per day"))])
 
 config.misc.startCounter = ConfigInteger(default=0) # number of e2 starts...
 config.misc.standbyCounter = NoSave(ConfigInteger(default=0)) # number of standby
@@ -104,23 +105,18 @@ config.misc.DeepStandby = NoSave(ConfigYesNo(default=False)) # detect deepstandb
 ####################################################
 
 
-def useSyncUsingChanged(configelement):
-	if configelement.value == "0":
-		print("[Time By]: Transponder")
-		enigma.eDVBLocalTimeHandler.getInstance().setUseDVBTime(True)
-		enigma.eEPGCache.getInstance().timeUpdated()
-	else:
-		print("[Time By]: NTP")
-		enigma.eDVBLocalTimeHandler.getInstance().setUseDVBTime(False)
-		enigma.eEPGCache.getInstance().timeUpdated()
+def SyncTimeUsingChanged(configElement):
+	print("[Time By]: %s" % configElement.toDisplayString(configElement.value))
+	enigma.eDVBLocalTimeHandler.getInstance().setUseDVBTime(configElement.value == "dvb")
+	enigma.eEPGCache.getInstance().timeUpdated()
 
 
-config.misc.SyncTimeUsing.addNotifier(useSyncUsingChanged)
+config.misc.SyncTimeUsing.addNotifier(SyncTimeUsingChanged)
 
 
-def NTPserverChanged(configelement):
+def NTPserverChanged(configElement):
 	f = open("/etc/default/ntpdate", "w")
-	f.write('NTPSERVERS="' + configelement.value + '"\n')
+	f.write('NTPSERVERS="' + configElement.value + '"\n')
 	f.close()
 	os.chmod("/etc/default/ntpdate", 0o755)
 	from Components.Console import Console

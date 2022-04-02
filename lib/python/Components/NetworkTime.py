@@ -25,6 +25,10 @@ class NTPSyncPoller:
 	def start(self):
 		if self.timecheck not in self.timer.callback:
 			self.timer.callback.append(self.timecheck)
+			def useNTPminutesChanged(configElement):
+				self.timer.stop()
+				self.timecheck()
+			config.misc.useNTPminutes.addNotifier(useNTPminutesChanged, initial_call=False, immediate_feedback=False)
 		self.timer.startLongTimer(0)
 
 	def stop(self):
@@ -33,7 +37,7 @@ class NTPSyncPoller:
 		self.timer.stop()
 
 	def timecheck(self):
-		if config.misc.SyncTimeUsing.value == "1":
+		if config.misc.SyncTimeUsing.value == "ntp":
 			print('[NetworkTime] Updating')
 			self.Console.ePopen('/usr/bin/ntpdate-sync', self.update_schedule)
 		else:
@@ -44,12 +48,9 @@ class NTPSyncPoller:
 		if nowTime > 10000:
 			print('[NetworkTime] setting E2 time:', nowTime)
 			setRTCtime(nowTime)
-			if config.misc.SyncTimeUsing.value == "1":
-				eDVBLocalTimeHandler.getInstance().setUseDVBTime(False)
-			else:
-				eDVBLocalTimeHandler.getInstance().setUseDVBTime(True)
+			eDVBLocalTimeHandler.getInstance().setUseDVBTime(config.misc.SyncTimeUsing.value == "dvb")
 			eEPGCache.getInstance().timeUpdated()
-			self.timer.startLongTimer(int(config.misc.useNTPminutes.value) * 60)
+			self.timer.startLongTimer(int(config.misc.useNTPminutes.value if config.misc.SyncTimeUsing.value == "ntp" else config.misc.useNTPminutes.default) * 60)
 		else:
 			print('[NetworkTime] NO TIME SET')
 			self.timer.startLongTimer(10)
