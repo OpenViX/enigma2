@@ -1845,7 +1845,7 @@ class ConfigLocations(ConfigElement):
 		add = [x for x in value if x not in loc]
 		diff = add + [x for x in loc if x not in value]
 		locations = [x for x in locations if x[0] not in diff] + [[x, self.getMountpoint(x), True, True] for x in add]
-		locations.sort(key = lambda x: x[0])
+		# locations.sort(key = lambda x: x[0]) # Do not sort here. Fix the input. config.py should not be modifying any list sent in by the calling code.
 		if self.locations != locations:
 			self.locations = locations
 			self.changed()
