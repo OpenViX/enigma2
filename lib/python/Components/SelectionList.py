@@ -28,42 +28,42 @@ class SelectionList(MenuList):
 	def __init__(self, list=None, enableWrapAround=False):
 		MenuList.__init__(self, list or [], enableWrapAround, content=eListboxPythonMultiContent)
 		font = fonts.get("SelectionList", applySkinFactor("Regular", 20, 30))
-		self.l.setFont(0, gFont(font[0], font[1]))
-		self.l.setItemHeight(font[2])
+		self.setFont(0, gFont(font[0], font[1]))
+		self.setItemHeight(font[2])
 
 	def addSelection(self, description, value, index, selected=True):
-		self.list.append(SelectionEntryComponent(description, value, index, selected))
-		self.setList(self.list)
+		self.selectionList.append(SelectionEntryComponent(description, value, index, selected))
+		self.setList(self.selectionList)
 
 	def toggleSelection(self):
-		if len(self.list) > 0:
+		if len(self.selectionList) > 0:
 			idx = self.getSelectedIndex()
-			item = self.list[idx][0]
-			self.list[idx] = SelectionEntryComponent(item[0], item[1], item[2], not item[3])
-			self.setList(self.list)
+			item = self.selectionList[idx][0]
+			self.selectionList[idx] = SelectionEntryComponent(item[0], item[1], item[2], not item[3])
+			self.setList(self.selectionList)
 
 	def getSelectionsList(self):
-		return [(item[0][0], item[0][1], item[0][2]) for item in self.list if item[0][3]]
+		return [(item[0][0], item[0][1], item[0][2]) for item in self.selectionList if item[0][3]]
 
 	def toggleAllSelection(self):
-		for idx, item in enumerate(self.list):
-			item = self.list[idx][0]
-			self.list[idx] = SelectionEntryComponent(item[0], item[1], item[2], not item[3])
-		self.setList(self.list)
+		for idx, item in enumerate(self.selectionList):
+			item = self.selectionList[idx][0]
+			self.selectionList[idx] = SelectionEntryComponent(item[0], item[1], item[2], not item[3])
+		self.setList(self.selectionList)
 
 	def removeSelection(self, item):
-		for it in self.list:
+		for it in self.selectionList:
 			if it[0][0:3] == item[0:3]:
-				self.list.pop(self.list.index(it))
-				self.setList(self.list)
+				self.selectionList.pop(self.selectionList.index(it))
+				self.setList(self.selectionList)
 				return
 
 	def toggleItemSelection(self, item):
-		for idx, i in enumerate(self.list):
+		for idx, i in enumerate(self.selectionList):
 			if i[0][0:3] == item[0:3]:
-				item = self.list[idx][0]
-				self.list[idx] = SelectionEntryComponent(item[0], item[1], item[2], not item[3])
-				self.setList(self.list)
+				item = self.selectionList[idx][0]
+				self.selectionList[idx] = SelectionEntryComponent(item[0], item[1], item[2], not item[3])
+				self.setList(self.selectionList)
 				return
 
 	def sort(self, sortType=False, flag=False):
@@ -72,8 +72,8 @@ class SelectionList(MenuList):
 		# 1 - value
 		# 2 - index
 		# 3 - selected
-		self.list.sort(key=lambda x: x[0][sortType], reverse=flag)
-		self.setList(self.list)
+		self.selectionList.sort(key=lambda x: x[0][sortType], reverse=flag)
+		self.setList(self.selectionList)
 
 	def len(self):
-		return len(self.list)
+		return len(self.selectionList)
