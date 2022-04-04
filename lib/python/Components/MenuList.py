@@ -91,3 +91,9 @@ class MenuList(GUIComponent):
 	def selectionEnabled(self, enabled):
 		if self.instance != None:
 			self.instance.setSelectionEnable(enabled)
+
+	def setFont(self, *args): # only in openvix
+		self.l.setFont(*args)
+
+	def setItemHeight(self, itemHeight): # only in openvix
+		self.l.setItemHeight(itemHeight)
