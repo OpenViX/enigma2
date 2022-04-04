@@ -4,20 +4,20 @@ from Components.MenuList import MenuList
 class FIFOList(MenuList):
 	def __init__(self, list=[], len=10):
 		self.len = len
-		self.list = list
-		MenuList.__init__(self, self.list)
+		self.fifoList = list
+		MenuList.__init__(self, self.fifoList)
 
 	def addItem(self, item):
-		self.list.append(item)
-		self.l.setList(self.list[-self.len:])
+		self.fifoList.append(item)
+		self.setList(self.fifoList[-self.len:])
 
 	def clear(self):
-		del self.list[:]
-		self.l.setList(self.list)
+		del self.fifoList[:]
+		self.setList(self.fifoList)
 
 	def getCurrentSelection(self):
-		return self.list and self.getCurrent() or None
+		return self.fifoList and self.getCurrent() or None
 
 	def listAll(self):
-		self.l.setList(self.list)
+		self.setList(self.fifoList)
 		self.selectionEnabled(True)
