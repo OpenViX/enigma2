@@ -234,33 +234,33 @@ def getConfigNameAndContent(fileName):
 class CCcamList(MenuList):
 	def __init__(self, list):
 		MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-		self.l.setItemHeight(25)
-		self.l.setFont(0, gFont("Regular", 20))
-		self.l.setFont(1, gFont("Regular", 32))
+		self.setItemHeight(25)
+		self.setFont(0, gFont("Regular", 20))
+		self.setFont(1, gFont("Regular", 32))
 
 
 class CCcamShareList(MenuList):
 	def __init__(self, list):
 		MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-		self.l.setItemHeight(60)
-		self.l.setFont(0, gFont("Regular", 18))
-		self.l.setFont(1, gFont("Regular", 32))
+		self.setItemHeight(60)
+		self.setFont(0, gFont("Regular", 18))
+		self.setFont(1, gFont("Regular", 32))
 
 
 class CCcamConfigList(MenuList):
 	def __init__(self, list):
 		MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-		self.l.setItemHeight(30)
-		self.l.setFont(0, gFont("Regular", 20))
-		self.l.setFont(1, gFont("Regular", 32))
+		self.setItemHeight(30)
+		self.setFont(0, gFont("Regular", 20))
+		self.setFont(1, gFont("Regular", 32))
 
 
 class CCcamShareViewList(MenuList):
 	def __init__(self, list):
 		MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-		self.l.setItemHeight(20)
-		self.l.setFont(0, gFont("Regular", 18))
-		self.l.setFont(1, gFont("Regular", 32))
+		self.setItemHeight(20)
+		self.setFont(0, gFont("Regular", 18))
+		self.setFont(1, gFont("Regular", 32))
 
 
 def CCcamListEntry(name, idx):
