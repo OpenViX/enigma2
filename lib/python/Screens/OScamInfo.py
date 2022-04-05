@@ -401,11 +401,12 @@ class OscamInfo:
 class oscMenuList(MenuList):
 	def __init__(self, list, itemH=30):
 		MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-		self.setItemHeight(int(itemH * f))
-		self.setFont(0, gFont("Regular", int(20 * f)))
-		self.setFont(1, gFont("Regular", int(18 * f)))
-		self.setFont(2, gFont("Regular", int(16 * f))) # client font
-		self.setFont(3, gFont("Regular", int(12 * f)))
+		self.l.setItemHeight(int(itemH * f))
+		self.l.setFont(0, gFont("Regular", int(20 * f)))
+		self.l.setFont(1, gFont("Regular", int(18 * f)))
+		self.clientFont = gFont("Regular", int(16 * f))
+		self.l.setFont(2, self.clientFont)
+		self.l.setFont(3, gFont("Regular", int(12 * f)))
 
 
 class OscamInfoMenu(Screen):
@@ -576,7 +577,7 @@ class OscamInfoMenu(Screen):
 	def showMenu(self):
 		NAMEBIN = check_NAMEBIN()
 		entr = self.buildMenu(self.menu)
-		self["mainmenu"].setList(entr)
+		self["mainmenu"].l.setList(entr)
 		self["mainmenu"].moveToIndex(0)
 
 
@@ -618,8 +619,8 @@ class oscECMInfo(Screen, OscamInfo):
 		y = 0
 		for i in data:
 			out.append(self.buildListEntry(i))
-		self["output"].setItemHeight(int(30 * f))
-		self["output"].setList(out)
+		self["output"].l.setItemHeight(int(30 * f))
+		self["output"].l.setList(out)
 		self["output"].selectionEnabled(False)
 
 
@@ -852,7 +853,7 @@ class oscInfo(Screen, OscamInfo):
 
 		if self.listchange:
 			self.listchange = False
-			self["output"].setItemHeight(int(self.itemheight * f))
+			self["output"].l.setItemHeight(int(self.itemheight * f))
 			self["output"].instance.setScrollbarMode(0) #"showOnDemand"
 			self.rows = int(self["output"].instance.size().height() / (self.itemheight * f))
 			if self.what != "l" and self.rows < len(self.out):
@@ -860,9 +861,9 @@ class oscInfo(Screen, OscamInfo):
 				return
 			self.disableScrolling(True)
 		if self.scrolling:
-			self["output"].setList(self.out)
+			self["output"].l.setList(self.out)
 		else:
-			self["output"].setList(self.out[-self.rows:])
+			self["output"].l.setList(self.out[-self.rows:])
 
 	def disableScrolling(self, force=False):
 		if force or self.scrolling:
@@ -873,7 +874,7 @@ class oscInfo(Screen, OscamInfo):
 		if force or (not self.scrolling and self.rows < len(self.out)):
 			self.scrolling = True
 			self["output"].selectionEnabled(True)
-			self["output"].setList(self.out)
+			self["output"].l.setList(self.out)
 			if self.what != "l":
 				self["output"].moveToIndex(1)
 			else:
@@ -1211,7 +1212,7 @@ class OscamInfoConfigScreen(ConfigListScreen, Screen):
 	def elementChanged(self, instance):
 		self.createSetup()
 		try:
-			self["config"].setList(self.oscamconfig)
+			self["config"].l.setList(self.oscamconfig)
 		except KeyError:
 			pass
 
@@ -1219,7 +1220,7 @@ class OscamInfoConfigScreen(ConfigListScreen, Screen):
 		NAMEBIN = check_NAMEBIN()
 		NAMEBIN2 = check_NAMEBIN2()
 		self.setTitle(_("%s Info - Configuration" % NAMEBIN2))
-		self["config"].setList(self.oscamconfig)
+		self["config"].l.setList(self.oscamconfig)
 
 	def createSetup(self):
 		NAMEBIN = check_NAMEBIN()
