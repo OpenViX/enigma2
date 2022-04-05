@@ -18,8 +18,8 @@ class PlayList(MenuList):
 	def __init__(self, enableWrapAround=False):
 		MenuList.__init__(self, [], enableWrapAround, eListboxPythonMultiContent)
 		font = fonts.get("PlayList", applySkinFactor("Regular", 18, 23))
-		self.setFont(0, gFont(font[0], font[1]))
-		self.setItemHeight(font[2])
+		self.l.setFont(0, gFont(font[0], font[1]))
+		self.l.setItemHeight(font[2])
 		self.currPlaying = -1
 		self.oldCurrPlaying = -1
 		self.serviceHandler = eServiceCenter.getInstance()
@@ -48,25 +48,25 @@ class PlayList(MenuList):
 		return res
 
 	def clear(self):
-		del self.playList[:]
-		self.setList(self.playList)
+		del self.list[:]
+		self.l.setList(self.list)
 		self.currPlaying = -1
 		self.oldCurrPlaying = -1
 
 	def getSelection(self):
-		return self.getCurrent() and self.getCurrent()[0]
+		return self.l.getCurrentSelection() and self.l.getCurrentSelection()[0]
 
 	def addFile(self, serviceref):
-		self.playList.append(self.PlaylistEntryComponent(serviceref, STATE_NONE))
+		self.list.append(self.PlaylistEntryComponent(serviceref, STATE_NONE))
 
 	def updateFile(self, index, newserviceref):
-		if index < len(self.playList):
-			self.playList[index] = self.PlaylistEntryComponent(newserviceref, STATE_NONE)
+		if index < len(self.list):
+			self.list[index] = self.PlaylistEntryComponent(newserviceref, STATE_NONE)
 
 	def deleteFile(self, index):
 		if self.currPlaying >= index:
 			self.currPlaying -= 1
-		del self.playList[index]
+		del self.list[index]
 
 	def setCurrentPlaying(self, index):
 		self.oldCurrPlaying = self.currPlaying
@@ -75,10 +75,10 @@ class PlayList(MenuList):
 
 	def updateState(self, state):
 		self.state = state
-		if len(self.playList) > self.oldCurrPlaying != -1:
-			self.playList[self.oldCurrPlaying] = self.PlaylistEntryComponent(self.playList[self.oldCurrPlaying][0], STATE_NONE)
-		if self.currPlaying != -1 and self.currPlaying < len(self.playList):
-			self.playList[self.currPlaying] = self.PlaylistEntryComponent(self.playList[self.currPlaying][0], state)
+		if len(self.list) > self.oldCurrPlaying != -1:
+			self.list[self.oldCurrPlaying] = self.PlaylistEntryComponent(self.list[self.oldCurrPlaying][0], STATE_NONE)
+		if self.currPlaying != -1 and self.currPlaying < len(self.list):
+			self.list[self.currPlaying] = self.PlaylistEntryComponent(self.list[self.currPlaying][0], state)
 		self.updateList()
 
 	def isStopped(self):
@@ -100,21 +100,21 @@ class PlayList(MenuList):
 		self.updateState(STATE_FORWARD)
 
 	def updateList(self):
-		self.setList(self.playList)
+		self.l.setList(self.list)
 
 	def getCurrentIndex(self):
 		return self.currPlaying
 
 	def getCurrentEvent(self):
-		l = self.getCurrent()
+		l = self.l.getCurrentSelection()
 		return l and self.serviceHandler.info(l[0]).getEvent(l[0])
 
 	def getCurrent(self):
-		l = self.getCurrent()
+		l = self.l.getCurrentSelection()
 		return l and l[0]
 
 	def getServiceRefList(self):
-		return [x[0] for x in self.playList]
+		return [x[0] for x in self.list]
 
 	def __len__(self):
-		return len(self.playList)
+		return len(self.list)
