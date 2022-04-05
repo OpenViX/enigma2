@@ -35,9 +35,9 @@ class VirtualKeyBoardList(MenuList):
 	def __init__(self, list, enableWrapAround=False):
 		MenuList.__init__(self, list, enableWrapAround, eListboxPythonMultiContent)
 		font = fonts.get("VirtualKeyBoard", applySkinFactor("Regular", 28, 45))
-		self.setFont(0, gFont(font[0], font[1]))
-		self.setFont(1, gFont(font[0], font[1] * 5 // 9))  # Smaller font is 56% the height of bigger font
-		self.setItemHeight(font[2])
+		self.l.setFont(0, gFont(font[0], font[1]))
+		self.l.setFont(1, gFont(font[0], font[1] * 5 // 9))  # Smaller font is 56% the height of bigger font
+		self.l.setItemHeight(font[2])
 
 
 class VirtualKeyBoardEntryComponent:
