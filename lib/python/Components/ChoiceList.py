@@ -42,8 +42,8 @@ class ChoiceList(MenuList):
 	def __init__(self, list, selection=0, enableWrapAround=False):
 		MenuList.__init__(self, list, enableWrapAround, eListboxPythonMultiContent)
 		font = fonts.get("ChoiceList", applySkinFactor("Regular", 20, 25))
-		self.setFont(0, gFont(font[0], font[1]))
-		self.setItemHeight(font[2])
+		self.l.setFont(0, gFont(font[0], font[1]))
+		self.l.setItemHeight(font[2])
 		self.ItemHeight = font[2]
 		self.selection = selection
 
