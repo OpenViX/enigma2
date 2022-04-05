@@ -54,7 +54,7 @@ class PluginList(MenuList):
 	def __init__(self, list, enableWrapAround=True):
 		MenuList.__init__(self, list, enableWrapAround, eListboxPythonMultiContent)
 		font = fonts.get("PluginBrowser0", applySkinFactor("Regular", 20, 50))
-		self.setFont(0, gFont(font[0], font[1]))
-		self.setItemHeight(font[2])
+		self.l.setFont(0, gFont(font[0], font[1]))
+		self.l.setItemHeight(font[2])
 		font = fonts.get("PluginBrowser1", applySkinFactor("Regular", 16))
-		self.setFont(1, gFont(font[0], font[1]))
+		self.l.setFont(1, gFont(font[0], font[1]))
