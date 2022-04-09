@@ -32,6 +32,7 @@ public:
 	RESULT connectRecordEvent(const sigc::slot<void(ePtr<iRecordableService>,int)> &event, ePtr<eConnection> &connection);
 /*	int connectServiceEvent(const sigc::slot<void(iPlayableService*,int> &event, ePtr<eConnection)> &connection); */
 	RESULT getCurrentService(ePtr<iPlayableService> &service);
+	RESULT updateEvent(int event);
 	RESULT stopService(void);
 
 	RESULT recordService(const eServiceReference &ref, ePtr<iRecordableService> &service, bool simulate=false);

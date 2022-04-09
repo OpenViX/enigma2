@@ -32,6 +32,11 @@ RESULT pNavigation::pause(int p)
 	return m_core->pause(p);
 }
 
+RESULT pNavigation::updateEvent(int event)
+{
+	return m_core->updateEvent(event);
+}
+
 RESULT pNavigation::stopService()
 {
 	return m_core->stopService();
