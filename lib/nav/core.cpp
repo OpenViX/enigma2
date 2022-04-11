@@ -59,7 +59,11 @@ RESULT eNavigation::getCurrentService(ePtr<iPlayableService> &service)
 
 RESULT eNavigation::updateEvent(int event)
 {
-	eDebug("[eNavigation] updateEvent %d", event);
+	/* check if there is a running service... */
+	if (!m_runningService)
+		return 1;
+
+	/* update event */
 	m_event(event);
 	return 0;
 }
