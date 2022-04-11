@@ -512,8 +512,12 @@ class HdmiCec:
 			data = struct.pack("B", 0x04) # v1.3a
 		if data:				# keep cmd+data calls above this line so binary data converted
 			CECcmd = cmdList.get(cmd, "<Polling Message>")		
-			data = data.decode(encoding="ascii")	
-			# print("[HdmiCEC][sendMessage]: CECcmd=%s  cmd=%X, data=struct.pack" % (CECcmd, cmd))
+			try:
+				data = data.decode(("UTF-8"))
+			except:
+				data = data.decode("ISO-8859-1", "ignore")
+				print("[HdmiCec][sendMessage] data decode failed with utf-8, trying iso-8859-1")	
+			print("[HdmiCec][sendMessage]: CECcmd=%s  cmd=%X, data=struct.pack" % (CECcmd, cmd))
 		elif message == "wakeup":
 			if config.hdmicec.tv_wakeup_command.value == "textview":
 				cmd = 0x0d
@@ -671,7 +675,11 @@ class HdmiCec:
 					cmd = 0x45					# 0x45: "<stop>"
 				if cmd != 0:
 					if data:
-						data = data.decode(encoding="ascii")
+						try:
+							data = data.decode(("UTF-8"))
+						except:
+							data = data.decode("ISO-8859-1", "ignore")
+							print("[HdmiCec][keyEvent] data decode failed with utf-8, trying iso-8859-1")	
 					if config.hdmicec.minimum_send_interval.value != "0":
 						self.queueKeyEvent.append((self.volumeForwardingDestination, cmd, data))
 						if not self.waitKeyEvent.isActive():
