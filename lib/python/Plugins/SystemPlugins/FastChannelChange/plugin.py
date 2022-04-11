@@ -452,7 +452,7 @@ class FCCSetup(Screen, ConfigListScreen):
 		self.skinName = ["FCCSetup", "Setup"]
 		self.session = session
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=self.session, fullUI=True)
+		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.setupChanged, fullUI=True)
 
 		self.isSupport = checkSupportFCC()
 
@@ -483,14 +483,6 @@ class FCCSetup(Screen, ConfigListScreen):
 			self.list.append(self.recEntry)
 
 		self["config"].list = self.list
-
-	def keyLeft(self):
-		ConfigListScreen.keyLeft(self)
-		self.setupChanged()
-
-	def keyRight(self):
-		ConfigListScreen.keyRight(self)
-		self.setupChanged()
 
 	def setupChanged(self):
 		currentEntry = self["config"].getCurrent()
