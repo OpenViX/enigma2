@@ -422,11 +422,15 @@ class RecordTimerEntry(TimerEntry):
 			cmd = 0x82	# 130
 			physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
 			data = struct.pack("BB", int(physicaladdress // 256), int(physicaladdress % 256))
+			try:
+				data = data.decode(("UTF-8"))
+			except:
+				data = data.decode("ISO-8859-1", "ignore")
+				print("[RecordTimer[sendactivesource] data decode failed with utf-8, trying iso-8859-1")			
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd, data, len(data))			
 			print("[TIMER] sourceactive was sent")
 
-# This same block of code appeared twice....
-#
+
 	def _bouquet_search(self):
 		from Screens.ChannelSelection import ChannelSelection
 		ChannelSelectionInstance = ChannelSelection.instance
