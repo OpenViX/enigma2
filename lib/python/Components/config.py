@@ -1840,13 +1840,12 @@ class ConfigLocations(ConfigElement):
 		self.value = default[:]
 
 	def setValue(self, value):
-		value = list(set(value)) # avoid duplicates
 		locations = self.locations
 		loc = [x[0] for x in locations if x[3]]
 		add = [x for x in value if x not in loc]
 		diff = add + [x for x in loc if x not in value]
 		locations = [x for x in locations if x[0] not in diff] + [[x, self.getMountpoint(x), True, True] for x in add]
-		locations.sort(key = lambda x: x[0])
+		# locations.sort(key = lambda x: x[0]) # Do not sort here. Fix the input. config.py should not be modifying any list sent in by the calling code.
 		if self.locations != locations:
 			self.locations = locations
 			self.changed()
@@ -1872,7 +1871,6 @@ class ConfigLocations(ConfigElement):
 			tmp = self.default
 		else:
 			tmp = self.fromstring(sv)
-		tmp = list(set(tmp)) # avoid duplicates
 		locations = [[x, None, False, False] for x in tmp]
 		self.refreshMountpoints()
 		for x in locations:

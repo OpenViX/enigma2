@@ -423,13 +423,17 @@ class NetworkMacSetup(ConfigListScreen, HelpableScreen, Screen):
 		HelpableScreen.__init__(self)
 		self.setTitle(_("MAC Address Settings"))
 		ifacex = "wlan0"
+		ifacey = "wlan3"
 		if iNetwork.getAdapterAttribute(ifacex, "up"):
 			self.mode = "wlan0"
 			self.curMac = self.getmac("wlan0")
+		elif iNetwork.getAdapterAttribute(ifacey, "up"):
+			self.mode = "wlan3"
+			self.curMac = self.getmac("wlan3")
 		else:
-			self.mode = "eth0"		
-			self.curMac = self.getmac("eth0")	 	
-		# print("[NetworkSetup]self.mode=, MacWiFiLan=", self.mode, "   ", self.curMac)			
+			self.mode = "eth0"
+			self.curMac = self.getmac("eth0")
+		# print("[NetworkSetup]self.mode=, MacWiFiLan=", self.mode, "   ", self.curMac)
 		if self.curMac:
 			self.getConfigMac = NoSave(ConfigMacText(default=self.curMac))
 		self["key_red"] = StaticText(_("Cancel"))
@@ -468,9 +472,9 @@ class NetworkMacSetup(ConfigListScreen, HelpableScreen, Screen):
 		self["config"].list = self.list
 
 	def ok(self):
-		if self.mode == "wlan0":
-			iNetwork.resetWiFiMac(Mac=self.getConfigMac.value)
-		else:					
+		if self.mode in ("wlan0", "wlan3"):
+			iNetwork.resetWiFiMac(Mac=self.getConfigMac.value, wlan=self.mode)
+		else:
 			f = open("/etc/enigma2/hwmac", "w")
 			f.write(self.getConfigMac.value)
 			f.close()
