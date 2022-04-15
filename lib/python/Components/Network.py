@@ -1,4 +1,4 @@
-import os
+from os import listdir, path, system
 import re
 import netifaces as ni
 from socket import *
@@ -209,7 +209,7 @@ class Network:
 #		print "nameservers:", self.nameservers
 
 	def getInstalledAdapters(self):
-		return [x for x in os.listdir('/sys/class/net') if not self.isBlacklisted(x)]
+		return [x for x in listdir('/sys/class/net') if not self.isBlacklisted(x)]
 
 	def getConfiguredAdapters(self):
 		return self.configuredNetworkAdapters
@@ -248,7 +248,7 @@ class Network:
 
 		moduledir = self.getWlanModuleDir(iface)
 		if moduledir:
-			name = os.path.basename(os.path.realpath(moduledir))
+			name = path.basename(path.realpath(moduledir))
 			if name in ('ath_pci', 'ath5k'):
 				name = 'Atheros'
 			elif name in ('rt73', 'rt73usb', 'rt3070sta'):
@@ -257,7 +257,7 @@ class Network:
 				name = 'Zydas'
 			elif name == 'r871x_usb_drv':
 				name = 'Realtek'
-		elif os.path.exists("/tmp/bcm/%s" % iface):
+		elif path.exists("/tmp/bcm/%s" % iface):
 			name = 'Broadcom'
 		else:
 			name = _('Unknown')
@@ -326,7 +326,7 @@ class Network:
 
 	def resetWiFiMac(self,Mac=None, wlan=None, callback=None):
 		if Mac is not None:
-			mode= wlan
+			mode = wlan
 			self.commands = []
 			self.commands.append("ifconfig %s down" % wlan)
 			self.commands.append("ifconfig %s hw ether %s" % (wlan, Mac))
@@ -450,8 +450,8 @@ class Network:
 		if self.getAdapterAttribute(iface, 'up') is True:
 			return True
 		else:
-			ret = os.system("ifconfig " + iface + " up")
-			os.system("ifconfig " + iface + " down")
+			ret = system("ifconfig " + iface + " up")
+			system("ifconfig " + iface + " down")
 			if ret == 0:
 				return True
 			else:
@@ -483,7 +483,7 @@ class Network:
 			commands.append(("/sbin/ifdown", "/sbin/ifdown", "-f", iface))
 			commands.append(("/sbin/ip", "/sbin/ip", "addr", "flush", "dev", iface, "scope", "global"))
 			#wpa_supplicant sometimes doesn't quit properly on SIGTERM
-			if os.path.exists('/var/run/wpa_supplicant/' + iface):
+			if path.exists('/var/run/wpa_supplicant/' + iface):
 				commands.append("wpa_cli -i" + iface + " terminate")
 
 		if isinstance(ifaces, (list, tuple)):
@@ -530,7 +530,7 @@ class Network:
 		if iface in self.wlan_interfaces:
 			return True
 
-		if os.path.isdir(self.sysfsPath(iface) + '/wireless'):
+		if path.isdir(self.sysfsPath(iface) + '/wireless'):
 			return True
 
 		# r871x_usb_drv on kernel 2.6.12 is not identifiable over /sys/class/net/'ifacename'/wireless so look also inside /proc/net/wireless
@@ -550,22 +550,22 @@ class Network:
 
 	def getWlanModuleDir(self, iface=None):
 		devicedir = self.sysfsPath(iface) + '/device'
-		if not os.path.isdir(devicedir):
+		if not path.isdir(devicedir):
 			return None
 		moduledir = devicedir + '/driver/module'
-		if os.path.isdir(moduledir):
+		if path.isdir(moduledir):
 			return moduledir
 
 		# identification is not possible over default moduledir
-		for x in os.listdir(devicedir):
+		for x in listdir(devicedir):
 			# rt3070 on kernel 2.6.18 registers wireless devices as usb_device (e.g. 1-1.3:1.0) and identification is only possible over /sys/class/net/'ifacename'/device/1-xxx
 			if x.startswith("1-"):
 				moduledir = devicedir + '/' + x + '/driver/module'
-				if os.path.isdir(moduledir):
+				if path.isdir(moduledir):
 					return moduledir
 		# rt73, zd1211b, r871x_usb_drv on kernel 2.6.12 can be identified over /sys/class/net/'ifacename'/device/driver, so look also here
 		moduledir = devicedir + '/driver'
-		if os.path.isdir(moduledir):
+		if path.isdir(moduledir):
 			return moduledir
 
 		return None
@@ -575,12 +575,12 @@ class Network:
 			return None
 
 		devicedir = self.sysfsPath(iface) + '/device'
-		if os.path.isdir(devicedir + '/ieee80211'):
+		if path.isdir(devicedir + '/ieee80211'):
 			return 'nl80211'
 
 		moduledir = self.getWlanModuleDir(iface)
 		if moduledir:
-			module = os.path.basename(os.path.realpath(moduledir))
+			module = path.basename(path.realpath(moduledir))
 			if module in ('ath_pci', 'ath5k'):
 				return 'madwifi'
 			if module in ('rt73', 'rt73'):
