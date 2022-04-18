@@ -582,6 +582,10 @@
 		<key id="KEY_TV" mapto="openBouquetList" flags="l" />
 		<key id="KEY_TV2" mapto="showTv" flags="b" />
 		<key id="KEY_TV2" mapto="openBouquetList" flags="l" />
+		<key id="KEY_HOMEPAGE" mapto="showWWW" flags="b" />
+		<key id="KEY_BOOKMARKS" mapto="showWWW" flags="b" />
+		<key id="KEY_VOD" mapto="showWWW" flags="b" />
+		<key id="KEY_WWW" mapto="showWWW" flags="b" />
 		<key id="KEY_PROG1" mapto="openBouquetList" flags="m" />
 		<key id="KEY_PROG2" mapto="openBouquetList" flags="m" />
 		<key id="KEY_FILE" mapto="showMovies" flags="b" />
@@ -1246,5 +1250,11 @@
 		<key id="KEY_AUX" mapto="HDMIin_long" flags="l" />
 		<key id="KEY_FILE" mapto="file" flags="b" />
 		<key id="KEY_FILE" mapto="file_long" flags="l" />
+		<key id="KEY_MP3" mapto="youtube" flags="b" />
+		<key id="KEY_MP3" mapto="youtube_long" flags="l" />
+		<key id="KEY_PLAYER" mapto="kodi" flags="b" />
+		<key id="KEY_PLAYER" mapto="kodi_long" flags="l" />
+		<key id="KEY_WWW" mapto="www" flags="b" />
+		<key id="KEY_WWW" mapto="www_long" flags="l" />
 	</map>
 </keymap>
