@@ -1,3 +1,4 @@
+import chardet
 import datetime
 from os import path, uname
 import struct
@@ -360,7 +361,7 @@ class HdmiCec:
 			setFixedPhysicalAddress("0.0.0.0")			# no fixed physical address send 0 to eHdmiCec C++ driver	
 		eHdmiCEC.getInstance().messageReceived.get().append(self.messageReceived)
 		config.misc.standbyCounter.addNotifier(self.onEnterStandby, initial_call=False)
-		config.misc.DeepStandby.addNotifier(self.onEnterDeepStandby, initial_call=False)
+#		config.misc.DeepStandby.addNotifier(self.onEnterDeepStandby, initial_call=False)
 		self.volumeForwardingEnabled = False
 		self.volumeForwardingDestination = 0
 		self.wakeup_from_tv = False
@@ -512,11 +513,9 @@ class HdmiCec:
 			data = struct.pack("B", 0x04) # v1.3a
 		if data:				# keep cmd+data calls above this line so binary data converted
 			CECcmd = cmdList.get(cmd, "<Polling Message>")		
-			try:
-				data = data.decode(("UTF-8"))
-			except:
-				data = data.decode("ISO-8859-1", "ignore")
-				print("[HdmiCec][sendMessage] data decode failed with utf-8, trying iso-8859-1")	
+			if data:
+				encoder = chardet.detect(data)["encoding"]
+				data = data.decode(encoding=encoder, errors="ignore")
 			print("[HdmiCec][sendMessage]: CECcmd=%s  cmd=%X, data=struct.pack" % (CECcmd, cmd))
 		elif message == "wakeup":
 			if config.hdmicec.tv_wakeup_command.value == "textview":
@@ -564,9 +563,29 @@ class HdmiCec:
 		physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
 		if devicetypeSend:
 			devicetype = eHdmiCEC.getInstance().getDeviceType()
-			return struct.pack("BBB", int(physicaladdress / 256), int(physicaladdress % 256), devicetype)
+			return struct.pack("BBB", int(physicaladdress // 256), int(physicaladdress % 256), devicetype)
 		else:	
-			return struct.pack("BB", int(physicaladdress / 256), int(physicaladdress % 256))
+			return struct.pack("BB", int(physicaladdress // 256), int(physicaladdress % 256))
+
+	def secondBoxActive(self):
+		self.sendMessage(0, "getpowerstatus")
+
+	def configVolumeForwarding(self, configElement):
+		print("[HdmiCEC][configVolumeForwarding]: hdmicec.enabled=%s, hdmicec.volume_forwarding=%s" % (config.hdmicec.enabled.value, config.hdmicec.volume_forwarding.value))	
+		if config.hdmicec.enabled.value and config.hdmicec.volume_forwarding.value:
+			self.sendMessage(0x05, "givesystemaudiostatus")
+			self.sendMessage(0x00, "givesystemaudiostatus")
+		else:
+			self.volumeForwardingEnabled = False
+
+	def onEnterStandby(self, configElement):
+		Screens.Standby.inStandby.onClose.append(self.onLeaveStandby)
+		self.repeat.stop()
+		self.standbyMessages()
+
+	def onEnterDeepStandby(self, configElement):
+		if config.hdmicec.enabled.value and config.hdmicec.handle_deepstandby_events.value:
+			self.standbyMessages()
 
 
 	def standbyMessages(self):
@@ -576,6 +595,7 @@ class HdmiCec:
 				self.delay.start(1000, True)
 			else:
 				self.sendStandbyMessages()
+
 
 	def sendStandbyMessages(self):
 			messages = []
@@ -596,7 +616,25 @@ class HdmiCec:
 			if config.hdmicec.control_receiver_standby.value:
 				self.sendMessage(5, "keypoweroff")
 				self.sendMessage(5, "standby")
-				
+
+
+	def standby(self):			# Standby initiated from TV
+		if not Screens.Standby.inStandby:
+			Notifications.AddNotification(Screens.Standby.Standby)
+
+
+	def onLeaveStandby(self):
+		self.sendWakeupMessages()
+		if int(config.hdmicec.repeat_wakeup_timer.value):
+			self.repeat.startLongTimer(int(config.hdmicec.repeat_wakeup_timer.value))
+
+
+	def wakeup(self):
+		self.wakeup_from_tv = True
+		if Screens.Standby.inStandby:
+			Screens.Standby.inStandby.Power()
+
+			
 	def sendWakeupMessages(self):
 		if config.hdmicec.enabled.value:
 			messages = []
@@ -620,41 +658,6 @@ class HdmiCec:
 		for message in messages:
 			self.sendMessage(msgaddress, message)				
 
-	def secondBoxActive(self):
-		self.sendMessage(0, "getpowerstatus")
-
-	def onLeaveStandby(self):
-		self.sendWakeupMessages()
-		if int(config.hdmicec.repeat_wakeup_timer.value):
-			self.repeat.startLongTimer(int(config.hdmicec.repeat_wakeup_timer.value))
-
-	def onEnterStandby(self, configElement):
-		Screens.Standby.inStandby.onClose.append(self.onLeaveStandby)
-		self.repeat.stop()
-		self.standbyMessages()
-
-	def onEnterDeepStandby(self, configElement):
-		if config.hdmicec.enabled.value and config.hdmicec.handle_deepstandby_events.value:
-			if config.hdmicec.next_boxes_detect.value:
-				self.delay.start(750, True)
-			else:
-				self.sendStandbyMessages()
-
-	def standby(self):
-		if not Screens.Standby.inStandby:
-			Notifications.AddNotification(Screens.Standby.Standby)
-
-	def wakeup(self):
-		self.wakeup_from_tv = True
-		if Screens.Standby.inStandby:
-			Screens.Standby.inStandby.Power()
-
-	def configVolumeForwarding(self, configElement):
-		if config.hdmicec.enabled.value and config.hdmicec.volume_forwarding.value:
-			self.sendMessage(0x05, "givesystemaudiostatus")
-			self.sendMessage(0x00, "givesystemaudiostatus")
-		else:
-			self.volumeForwardingEnabled = False
 
 	def keyEvent(self, keyCode, keyEvent):
 		if keyCode in (113, 114, 115):						# if not volume key return
@@ -675,11 +678,8 @@ class HdmiCec:
 					cmd = 0x45					# 0x45: "<stop>"
 				if cmd != 0:
 					if data:
-						try:
-							data = data.decode(("UTF-8"))
-						except:
-							data = data.decode("ISO-8859-1", "ignore")
-							print("[HdmiCec][keyEvent] data decode failed with utf-8, trying iso-8859-1")	
+						encoder = chardet.detect(data)["encoding"]
+						data = data.decode(encoding=encoder, errors="ignore")
 					if config.hdmicec.minimum_send_interval.value != "0":
 						self.queueKeyEvent.append((self.volumeForwardingDestination, cmd, data))
 						if not self.waitKeyEvent.isActive():
