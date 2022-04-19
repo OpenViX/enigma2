@@ -567,6 +567,26 @@ class HdmiCec:
 		else:	
 			return struct.pack("BB", int(physicaladdress // 256), int(physicaladdress % 256))
 
+	def secondBoxActive(self):
+		self.sendMessage(0, "getpowerstatus")
+
+	def configVolumeForwarding(self, configElement):
+		print("[HdmiCEC][configVolumeForwarding]: hdmicec.enabled=%s, hdmicec.volume_forwarding=%s" % (config.hdmicec.enabled.value, config.hdmicec.volume_forwarding.value))	
+		if config.hdmicec.enabled.value and config.hdmicec.volume_forwarding.value:
+			self.sendMessage(0x05, "givesystemaudiostatus")
+			self.sendMessage(0x00, "givesystemaudiostatus")
+		else:
+			self.volumeForwardingEnabled = False
+
+	def onEnterStandby(self, configElement):
+		Screens.Standby.inStandby.onClose.append(self.onLeaveStandby)
+		self.repeat.stop()
+		self.standbyMessages()
+
+	def onEnterDeepStandby(self, configElement):
+		if config.hdmicec.enabled.value and config.hdmicec.handle_deepstandby_events.value:
+			self.standbyMessages()
+
 
 	def standbyMessages(self):
 		if config.hdmicec.enabled.value:
@@ -575,6 +595,7 @@ class HdmiCec:
 				self.delay.start(1000, True)
 			else:
 				self.sendStandbyMessages()
+
 
 	def sendStandbyMessages(self):
 			messages = []
@@ -595,7 +616,25 @@ class HdmiCec:
 			if config.hdmicec.control_receiver_standby.value:
 				self.sendMessage(5, "keypoweroff")
 				self.sendMessage(5, "standby")
-				
+
+
+	def standby(self):			# Standby initiated from TV
+		if not Screens.Standby.inStandby:
+			Notifications.AddNotification(Screens.Standby.Standby)
+
+
+	def onLeaveStandby(self):
+		self.sendWakeupMessages()
+		if int(config.hdmicec.repeat_wakeup_timer.value):
+			self.repeat.startLongTimer(int(config.hdmicec.repeat_wakeup_timer.value))
+
+
+	def wakeup(self):
+		self.wakeup_from_tv = True
+		if Screens.Standby.inStandby:
+			Screens.Standby.inStandby.Power()
+
+			
 	def sendWakeupMessages(self):
 		if config.hdmicec.enabled.value:
 			messages = []
@@ -619,41 +658,6 @@ class HdmiCec:
 		for message in messages:
 			self.sendMessage(msgaddress, message)				
 
-	def secondBoxActive(self):
-		self.sendMessage(0, "getpowerstatus")
-
-	def onLeaveStandby(self):
-		self.sendWakeupMessages()
-		if int(config.hdmicec.repeat_wakeup_timer.value):
-			self.repeat.startLongTimer(int(config.hdmicec.repeat_wakeup_timer.value))
-
-	def onEnterStandby(self, configElement):
-		Screens.Standby.inStandby.onClose.append(self.onLeaveStandby)
-		self.repeat.stop()
-		self.standbyMessages()
-
-	def onEnterDeepStandby(self, configElement):
-		if config.hdmicec.enabled.value and config.hdmicec.handle_deepstandby_events.value:
-			if config.hdmicec.next_boxes_detect.value:
-				self.delay.start(750, True)
-			else:
-				self.sendStandbyMessages()
-
-	def standby(self):
-		if not Screens.Standby.inStandby:
-			Notifications.AddNotification(Screens.Standby.Standby)
-
-	def wakeup(self):
-		self.wakeup_from_tv = True
-		if Screens.Standby.inStandby:
-			Screens.Standby.inStandby.Power()
-
-	def configVolumeForwarding(self, configElement):
-		if config.hdmicec.enabled.value and config.hdmicec.volume_forwarding.value:
-			self.sendMessage(0x05, "givesystemaudiostatus")
-			self.sendMessage(0x00, "givesystemaudiostatus")
-		else:
-			self.volumeForwardingEnabled = False
 
 	def keyEvent(self, keyCode, keyEvent):
 		if keyCode in (113, 114, 115):						# if not volume key return
