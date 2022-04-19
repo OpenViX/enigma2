@@ -563,9 +563,9 @@ class HdmiCec:
 		physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
 		if devicetypeSend:
 			devicetype = eHdmiCEC.getInstance().getDeviceType()
-			return struct.pack("BBB", int(physicaladdress / 256), int(physicaladdress % 256), devicetype)
+			return struct.pack("BBB", int(physicaladdress // 256), int(physicaladdress % 256), devicetype)
 		else:	
-			return struct.pack("BB", int(physicaladdress / 256), int(physicaladdress % 256))
+			return struct.pack("BB", int(physicaladdress // 256), int(physicaladdress % 256))
 
 
 	def standbyMessages(self):
