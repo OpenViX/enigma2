@@ -1487,30 +1487,6 @@ index ce46b6eaa9..9b4a7e8cad 100644
  	def atBegin(self):
  		return self.instance.atBegin()
  
-diff --git a/lib/python/Components/SystemInfo.py b/lib/python/Components/SystemInfo.py
-index 06dd7e7a4f..ed03f6c552 100644
---- a/lib/python/Components/SystemInfo.py
-+++ b/lib/python/Components/SystemInfo.py
-@@ -164,3 +164,4 @@ SystemInfo["HasFBCtuner"] = ["Vuplus DVB-C NIM(BCM3158)", "Vuplus DVB-C NIM(BCM3
- SystemInfo["rc_model"] = rc_model.getRcFolder()
- SystemInfo["mapKeyInfoToEpgFunctions"] = SystemInfo["rc_model"] in ("vu", "vu2", "vu3", "vu4") # due to button limitations of the remote control
- SystemInfo["toggleTvRadioButtonEvents"] = SystemInfo["rc_model"] in ("ax4", "beyonwiz1", "beyonwiz2", "gb0", "gb1", "gb2", "gb3", "gb4", "sf8008", "sf8008m", "uniboxhde") # due to button limitations of the remote control
-+SystemInfo["FCCactive"] = False
-diff --git a/lib/python/Navigation.py b/lib/python/Navigation.py
-index 25b7fd49b4..07ff95a764 100644
---- a/lib/python/Navigation.py
-+++ b/lib/python/Navigation.py
-@@ -152,6 +152,10 @@ class Navigation:
- 			else:
- 				playref = ref
- 			if self.pnav:
-+				if SystemInfo["FCCactive"] and not self.pnav.playService(playref):
-+					self.currentlyPlayingServiceReference = playref
-+					self.currentlyPlayingServiceOrGroup = ref
-+					return 0
- 				self.pnav.stopService()
- 				self.currentlyPlayingServiceReference = playref
- 				self.currentlyPlayingServiceOrGroup = ref
 diff --git a/lib/python/Plugins/SystemPlugins/FastChannelChange/Makefile.am b/lib/python/Plugins/SystemPlugins/FastChannelChange/Makefile.am
 new file mode 100644
 index 0000000000..ae91ed5776
@@ -1560,10 +1536,10 @@ index 0000000000..1527085fca
 +</default>
 diff --git a/lib/python/Plugins/SystemPlugins/FastChannelChange/plugin.py b/lib/python/Plugins/SystemPlugins/FastChannelChange/plugin.py
 new file mode 100644
-index 0000000000..570e036ca7
+index 0000000000..79dcb95f1f
 --- /dev/null
 +++ b/lib/python/Plugins/SystemPlugins/FastChannelChange/plugin.py
-@@ -0,0 +1,576 @@
+@@ -0,0 +1,573 @@
 +#!/usr/bin/python
 +# -*- coding: utf-8 -*-
 +from Plugins.Plugin import PluginDescriptor
@@ -1573,7 +1549,6 @@ index 0000000000..570e036ca7
 +from Components.ConfigList import ConfigListScreen
 +from Components.Sources.StaticText import StaticText
 +from Components.ServiceEventTracker import ServiceEventTracker
-+from Components.SystemInfo import SystemInfo
 +from enigma import iPlayableService, eTimer, eServiceReference, iRecordableService
 +import os
 +import glob
@@ -1647,7 +1622,6 @@ index 0000000000..570e036ca7
 +		self.__event_tracker = None
 +		self.onClose = []
 +		self.changeEventTracker()
-+		SystemInfo["FCCactive"] = self.fccSetupActivate
 +#		from Screens.PictureInPicture import on_pip_start_stop
 +#		on_pip_start_stop.append(self.FCCForceStopforPIP)
 +
@@ -1739,7 +1713,6 @@ index 0000000000..570e036ca7
 +
 +		if fcc_changed:
 +			self.fccmgr.setFCCEnable(int(self.fccSetupActivate))
-+			SystemInfo["FCCactive"] = self.fccSetupActivate
 +			curPlaying = self.session.nav.getCurrentlyPlayingServiceReference()
 +			if curPlaying:
 +				self.session.nav.stopService()
