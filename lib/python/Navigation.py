@@ -38,7 +38,7 @@ class Navigation:
 		self.currentlyPlayingServiceReference = None
 		self.currentlyPlayingServiceOrGroup = None
 		self.currentlyPlayingService = None
-		self.skipServRefReset = False
+		self.skipServiceReferenceReset = False
 		self.RecordTimer = RecordTimer.RecordTimer()
 		self.PowerTimer = PowerTimer.PowerTimer()
 		self.__wasTimerWakeup = False
@@ -91,7 +91,7 @@ class Navigation:
 		for x in self.event:
 			x(i)
 		if i == iPlayableService.evEnd:
-			if not self.skipServRefReset:
+			if not self.skipServiceReferenceReset:
 				self.currentlyPlayingServiceReference = None
 				self.currentlyPlayingServiceOrGroup = None
 			self.currentlyPlayingService = None
@@ -186,12 +186,12 @@ class Navigation:
 								if config.usage.frontend_priority_dvbs.value != config.usage.frontend_priority.value:
 									setPreferredTuner(int(config.usage.frontend_priority_dvbs.value))
 									setPriorityFrontend = True
-				self.skipServRefReset = True
+				self.skipServiceReferenceReset = True
 				if self.pnav.playService(playref):
 				#	print("[Navigation] Failed to start", playref)
 					self.currentlyPlayingServiceReference = None
 					self.currentlyPlayingServiceOrGroup = None
-				self.skipServRefReset = False
+				self.skipServiceReferenceReset = False
 				if setPriorityFrontend:
 					setPreferredTuner(int(config.usage.frontend_priority.value))
 				return 0
