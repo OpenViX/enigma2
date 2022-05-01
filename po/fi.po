@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-04-17 13:36+0300\n"
+"PO-Revision-Date: 2022-05-01 15:59+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -14487,8 +14487,8 @@ msgstr "Kun vastaanotin herää valmiustilasta, komentaa se TV:n vaihtamaan sill
 msgid "When set the PIG will return to live after a movie has stopped playing."
 msgstr "Kun päällä, pikkukuva jatkaa tv-kanavan toistoa, kun tallenteen katselu päättyy."
 
-msgid "When set to 'user' this option allows you to sort or hide menu items via the blue button in menu screens. When set to 'user defined hidden' the blue button text in the menu remains hidden even though the user sort feature is active."
-msgstr "Tämä vaihtoehto sallii järjestellä tai piilottaa valikon nimikkeitä sinisellä napilla valikkonäytöissä, kun on valittu 'käyttäjä'. Sinisen napin teksti valikossa pysyy piilossa vaikka käyttäjän järjestely ominaisuus on aktiivinen, kun on valittu 'käyttäjän määrittelemä piilotettu'."
+msgid "When set to 'user defined' this option allows you to sort or hide menu items via the blue button in menu screens. When set to 'user defined hidden' the blue button text in the menu remains hidden even though the user sort feature is active."
+msgstr "Tämä vaihtoehto sallii järjestellä tai piilottaa valikon nimikkeitä sinisellä napilla valikkonäytöissä, kun on valittu 'käyttäjän määrittelemä'. Sinisen napin teksti valikossa pysyy piilossa vaikka käyttäjän järjestely ominaisuus on aktiivinen, kun on valittu 'käyttäjän määrittelemä piilotettu'."
 
 msgid "When set, each directory will show the previous state used. When off, the default values will be shown."
 msgstr "Kun päällä, jokainen hakemisto avautuu aikaisemmin valittuun järjestykseen. Kun pois, käytetään oletusarvoja."
@@ -16451,3 +16451,9 @@ msgstr "Ota nopea kanavanvaihto käyttöön"
 
 msgid "Disable Fast Channel Change"
 msgstr "Poista nopea kanavanvaihto käytöstä"
+
+msgid "Http(s) stream start delay"
+msgstr "Http/https streamin käynnistysviive"
+
+msgid "Define additional delay in milliseconds before start of http(s) streams, e.g. to connect a remote tuner, you use a complex system of DiSEqC."
+msgstr "Määrittele lisäviive millisekunneissa ennen http/https streamien alkua, esimerkiksi etävirittimen yhteyteen käytetään mutkikasta DiSEqC-järjestelmää."
