@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-15 16:11+0000\n"
-"PO-Revision-Date: 2022-04-16 17:03+0200\n"
+"POT-Creation-Date: 2022-05-01 00:16+0000\n"
+"PO-Revision-Date: 2022-05-01 16:55+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -4319,6 +4319,9 @@ msgstr "Standaard: '%s'."
 msgid "Defaults"
 msgstr "Standaard waardes"
 
+msgid "Define additional delay in milliseconds before start of http(s) streams, e.g. to connect a remote tuner, you use a complex system of DiSEqC."
+msgstr ""
+
 msgid "Delay after change voltage before switch command"
 msgstr "Vertraging na aanpassen voltage voor de schakelopdracht"
 
@@ -5568,6 +5571,12 @@ msgstr "F3"
 msgid "F3 long"
 msgstr "F3 lang"
 
+msgid "F4"
+msgstr "F4"
+
+msgid "F4 long"
+msgstr "F4 lang"
+
 msgid "FAILED"
 msgstr "MISLUKT"
 
@@ -6392,6 +6401,9 @@ msgstr "Hoeveel minuten wilt u toevoegen aan de opname?"
 
 msgid "How many minutes do you want to record for?"
 msgstr "Hoeveel minuten wilt u opnemen?"
+
+msgid "Http(s) stream start delay"
+msgstr "Http(s) stream startvertraging"
 
 msgid "Hue"
 msgstr "Tint"
@@ -14181,6 +14193,12 @@ msgstr "WSS bij 4:3"
 msgid "WWIO 4K"
 msgstr "WWIO 4K"
 
+msgid "WWW"
+msgstr "WWW"
+
+msgid "WWW long"
+msgstr "WWW lang"
+
 msgid "Waiting"
 msgstr "Aan het wachten"
 
@@ -14502,7 +14520,7 @@ msgstr "Als de ontvanger uit stand-by komt, zal de TV op de juiste ingang ingest
 msgid "When set the PIG will return to live after a movie has stopped playing."
 msgstr "Indien 'Ja' wordt gekozen, wordt in de opnamelijst live-TV op de achtergrond of in PiG getoond zolang er geen opname loopt."
 
-msgid "When set to 'user' this option allows you to sort or hide menu items via the blue button in menu screens. When set to 'user defined hidden' the blue button text in the menu remains hidden even though the user sort feature is active."
+msgid "When set to 'user defined' this option allows you to sort or hide menu items via the blue button in menu screens. When set to 'user defined hidden' the blue button text in the menu remains hidden even though the user sort feature is active."
 msgstr "Indien ingesteld op 'door u gedefinieerd' geeft deze optie de mogelijkheid menu-items met de blauwe toets te verplaatsen. Indien ingesteld op 'door gebruiker bepaald verborgen' is de blauwe toets in de menu's verborgen, terwijl deze wel werkzaam is."
 
 msgid "When set, each directory will show the previous state used. When off, the default values will be shown."
