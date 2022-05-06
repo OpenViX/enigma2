@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-01 00:16+0000\n"
-"PO-Revision-Date: 2022-05-01 16:55+0200\n"
+"PO-Revision-Date: 2022-05-06 16:02+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1781,7 +1781,7 @@ msgid "Add"
 msgstr "Voeg toe"
 
 msgid "Add AutoTimer"
-msgstr "Voeg AutoTimer toe"
+msgstr "Voeg Autotimer toe"
 
 msgid "Add Language"
 msgstr "Voeg taal toe"
@@ -1805,7 +1805,7 @@ msgid "Add a record timer for current event"
 msgstr "Voeg opnametimer toe voor huidige programma"
 
 msgid "Add a record timer or an autotimer for current event"
-msgstr "Voeg opnametimer of AutoTimer toe voor huidige programma"
+msgstr "Voeg opnametimer of Autotimer toe voor huidige programma"
 
 msgid "Add a zap timer for current event"
 msgstr "Voeg zaptimer toe voor huidig programma"
@@ -1817,7 +1817,7 @@ msgid "Add alternatives"
 msgstr "Alternatieven toevoegen"
 
 msgid "Add an autotimer for current event"
-msgstr "Voeg AutoTimer toe voor huidig programma"
+msgstr "Voeg Autotimer toe voor huidig programma"
 
 msgid "Add and edit a record timer for current event"
 msgstr "Voeg opnametimer toe voor huidige programma of pas deze aan"
@@ -1889,7 +1889,7 @@ msgid "Add to parental protection"
 msgstr "Zender achter kinderslot zetten"
 
 msgid "Add/Edit an autotimer for current event"
-msgstr "Voeg AutoTimer toe voor huidig programma of pas deze aan"
+msgstr "Voeg Autotimer toe voor huidig programma of pas deze aan"
 
 msgid "Add/Remove timer for current event"
 msgstr "Timer voor huidige programma toevoegen/verwijderen"
@@ -2359,7 +2359,7 @@ msgid "Auto Standby"
 msgstr "Stand-by"
 
 msgid "Auto Timers"
-msgstr "Autotmers"
+msgstr "Autotimers"
 
 msgid "Auto Volume Level"
 msgstr "Automatisch volumeniveau"
@@ -2386,7 +2386,7 @@ msgid "Auto volume level"
 msgstr "Automatisch volumeniveau"
 
 msgid "AutoTimer List"
-msgstr "AutoTimer Lijst"
+msgstr "Autotimer Lijst"
 
 msgid "Automatic"
 msgstr "Automatisch"
@@ -2440,7 +2440,7 @@ msgid "Autostart:"
 msgstr "Autostart:"
 
 msgid "Autotimer overview"
-msgstr "AutoTimer overzicht"
+msgstr "Autotimer overzicht"
 
 msgid "Available format variables"
 msgstr "Beschikbare formaten"
@@ -4320,7 +4320,7 @@ msgid "Defaults"
 msgstr "Standaard waardes"
 
 msgid "Define additional delay in milliseconds before start of http(s) streams, e.g. to connect a remote tuner, you use a complex system of DiSEqC."
-msgstr ""
+msgstr "Bepaal de aanvullende vertraging in millisec voor de start van http(s)-streams, b.v. om te verinden met een remote-tuner, als u een complex systeem van DiSEqC gebruikt."
 
 msgid "Delay after change voltage before switch command"
 msgstr "Vertraging na aanpassen voltage voor de schakelopdracht"
@@ -5002,7 +5002,7 @@ msgid "Edit"
 msgstr "Bewerk"
 
 msgid "Edit AutoTimer"
-msgstr "Wijzig AutoTimer"
+msgstr "Wijzig Autotimer"
 
 msgid "Edit DNS"
 msgstr "DNS wijzigen"
@@ -11407,7 +11407,7 @@ msgid "Show animation while busy"
 msgstr "Laat animatie zien wanneer bezet"
 
 msgid "Show autotimer list"
-msgstr "Toon AutoTimers"
+msgstr "Toon Autotimers"
 
 msgid "Show background behind subtitles"
 msgstr "Toon achtergrond achter ondertitels"
@@ -11636,7 +11636,7 @@ msgid "Show the DreamPlex player..."
 msgstr "Toon de Dreamplex speler..."
 
 msgid "Show the list of autotimers."
-msgstr "Toon de AutoTimers."
+msgstr "Toon de Autotimers."
 
 msgid "Show the list of timers."
 msgstr "Toon timers."
@@ -12695,7 +12695,7 @@ msgid ""
 "The AutoTimer plugin is not installed!\n"
 "Please install it."
 msgstr ""
-"De AutoTimer plugin is niet geïnstalleerd!\n"
+"De Autotimer plugin is niet geïnstalleerd!\n"
 "Installeer die."
 
 #, python-format
