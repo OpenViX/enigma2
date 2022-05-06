@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import errno
 import os
-from os.path import basename, dirname, exists, getsize, isdir, isfile, islink, join as pathjoin, normpath, splitext
 
 from enigma import eEnv, getDesktop
 from re import compile, split
