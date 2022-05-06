@@ -239,6 +239,50 @@ def resolveFilename(scope, base="", path_prefix=None):
 		path = "%s:%s" % (path, suffix)
 	return path
 
+def fileReadLine(filename, default=None, *args, **kwargs):
+	try:
+		with open(filename, "r") as fd:
+			line = fd.read().strip().replace("\0", "")
+	except (IOError, OSError) as err:
+		if err.errno != ENOENT:  # ENOENT - No such file or directory.
+			print_exc()
+		line = default
+	return line
+
+
+def fileWriteLine(filename, line, *args, **kwargs):
+	try:
+		with open(filename, "w") as fd:
+			fd.write(str(line))
+		return 1
+	except (IOError, OSError) as err:
+		print_exc()
+		return 0
+
+
+def fileReadLines(filename, default=None, *args, **kwargs):
+	try:
+		with open(filename, "r") as fd:
+			lines = fd.read().splitlines()
+	except (IOError, OSError) as err:
+		if err.errno != ENOENT:  # ENOENT - No such file or directory.
+			print_exc()
+		lines = default
+	return lines
+
+
+def fileWriteLines(filename, lines, *args, **kwargs):
+	try:
+		with open(filename, "w") as fd:
+			if isinstance(lines, list):
+				lines.append("")
+				lines = "\n".join(lines)
+			fd.write(lines)
+		return 1
+	except (IOError, OSError) as err:
+		print_exc()
+		return 0
+
 
 def comparePaths(leftPath, rightPath):
 	if leftPath.endswith(os.sep):

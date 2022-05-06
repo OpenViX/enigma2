@@ -207,7 +207,8 @@ class Task():
 		self.processOutput(data)
 
 	def processOutput(self, data):
-		data = data.decode()
+		if isinstance(data, bytes):
+			data = data.decode()
 		self.output_line += data
 		while True:
 			i = self.output_line.find('\n')
