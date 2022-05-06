@@ -2827,7 +2827,7 @@ class InfoBarExtensions:
 			# problem that the maybe it is translated in enigma.po 
 			# but in plugin.po it is still in the untranslated form.
 			# For that case we also test against the untranslated form.
-			if l.name in (_("Auto Timers"), "Auto Timers"):  # Must use translated name
+			if l.name in (_("Auto Timers"), "Auto Timers"):
 				menuEntry = l("timermenu")
 				if menuEntry and len(menuEntry[0]) > 1 and callable(menuEntry[0][1]):
 					return menuEntry[0][1]
