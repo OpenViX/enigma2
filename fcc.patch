@@ -1,8 +1,8 @@
 diff --git a/configure.ac b/configure.ac
-index b74d709e40..9e06adee2f 100644
+index 9166a4d5ee..65ee54fe0c 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -636,6 +636,8 @@ lib/python/Plugins/SystemPlugins/DefaultServicesScanner/Makefile
+@@ -628,6 +628,8 @@ lib/python/Plugins/SystemPlugins/DefaultServicesScanner/Makefile
  lib/python/Plugins/SystemPlugins/DefaultServicesScanner/meta/Makefile
  lib/python/Plugins/SystemPlugins/DiseqcTester/Makefile
  lib/python/Plugins/SystemPlugins/DiseqcTester/meta/Makefile
@@ -407,7 +407,7 @@ index c99644fe9b..05cb4d4ea4 100644
  
  #endif
 diff --git a/lib/dvb/dvb.cpp b/lib/dvb/dvb.cpp
-index 1bcd85c49a..d92e6edcbd 100644
+index 1bcd85c49a..ae47a9f1ed 100644
 --- a/lib/dvb/dvb.cpp
 +++ b/lib/dvb/dvb.cpp
 @@ -10,6 +10,7 @@
@@ -426,15 +426,15 @@ index 1bcd85c49a..d92e6edcbd 100644
  
  #define MIN(a,b) (a < b ? a : b)
  #define MAX(a,b) (a > b ? a : b)
-@@ -104,6 +106,8 @@ eDVBResourceManager::eDVBResourceManager()
- 		num_adapter++;
+@@ -111,6 +113,8 @@ eDVBResourceManager::eDVBResourceManager()
+ 		addAdapter(adapter, true);
  	}
  
 +	setUsbTuner();
 +
- 	if (eDVBAdapterLinux::exist(0))
- 	{
- 		eDVBAdapterLinux *adapter = new eDVBAdapterLinux(0);
+ 	eDebug("[eDVBResourceManager] found %zd adapter, %zd frontends(%zd sim) and %zd demux",
+ 		m_adapter.size(), m_frontend.size(), m_simulate_frontend.size(), m_demux.size());
+ 
 @@ -682,6 +686,59 @@ void eDVBResourceManager::addAdapter(iDVBAdapter *adapter, bool front)
  
  }
@@ -1474,7 +1474,7 @@ index accc007c0e..2334c553c3 100644
  
  	RESULT playService(const eServiceReference &service);
 diff --git a/lib/python/Components/ServiceList.py b/lib/python/Components/ServiceList.py
-index ce46b6eaa9..9b4a7e8cad 100644
+index f00f23faef..13c7b2fa6b 100644
 --- a/lib/python/Components/ServiceList.py
 +++ b/lib/python/Components/ServiceList.py
 @@ -275,6 +275,9 @@ class ServiceList(GUIComponent):
