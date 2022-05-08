@@ -589,7 +589,7 @@ def runScreenTest():
 			wptime = nowTime + 30  # so switch back on in 30 seconds
 		else:
 			wptime = startTime[0] - 240
-		if not config.misc.SyncTimeUsing.value == "0":
+		if not config.misc.SyncTimeUsing.value == "dvb":
 			print("[StartEnigma] dvb time sync disabled... so set RTC now to current linux time!", strftime("%Y/%m/%d %H:%M", localtime(nowTime)))
 			setRTCtime(nowTime)
 		print("[StartEnigma] set wakeup time to", strftime("%Y/%m/%d %H:%M", localtime(wptime)))
@@ -606,7 +606,7 @@ def runScreenTest():
 			wptime = nowTime + 30  # so switch back on in 30 seconds
 		else:
 			wptime = startTime[0]
-		if not config.misc.SyncTimeUsing.value == "0":
+		if not config.misc.SyncTimeUsing.value == "dvb":
 			print("[StartEnigma] dvb time sync disabled... so set RTC now to current linux time!", strftime("%Y/%m/%d %H:%M", localtime(nowTime)))
 			setRTCtime(nowTime)
 		print("[StartEnigma] set wakeup time to", strftime("%Y/%m/%d %H:%M", localtime(wptime + 60)))
