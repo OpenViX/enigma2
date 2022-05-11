@@ -339,7 +339,7 @@ def statusMessage():
 	try:
 		req = Request(uri)
 		d = urlopen(req)
-		message = d.read()
+		message = d.read().decode()
 	except:
 		print("[OnlineUpdateCheck][statusMessage] %s could not be fetched" % uri)
 		return False
