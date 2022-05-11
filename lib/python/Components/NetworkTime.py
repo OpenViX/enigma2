@@ -25,10 +25,6 @@ class NTPSyncPoller:
 	def start(self):
 		if self.timecheck not in self.timer.callback:
 			self.timer.callback.append(self.timecheck)
-			def useNTPminutesChanged(configElement):
-				self.timer.stop()
-				self.timecheck()
-			config.misc.useNTPminutes.addNotifier(useNTPminutesChanged, initial_call=False, immediate_feedback=False)
 		self.timer.startLongTimer(0)
 
 	def stop(self):
@@ -39,11 +35,13 @@ class NTPSyncPoller:
 	def timecheck(self):
 		if config.misc.SyncTimeUsing.value == "ntp":
 			print('[NetworkTime] Updating')
-			self.Console.ePopen('/usr/bin/ntpdate-sync', self.update_schedule)
+			self.Console.ePopen(["/usr/sbin/ntpd", "/usr/sbin/ntpd", "-nq", "-p", config.misc.NTPserver.value], self.updateSchedule)
 		else:
 			self.update_schedule()
 
 	def update_schedule(self, result=None, retval=None, extra_args=None):
+		if retval and result:
+			print("[NetworkTime] Error %d: Unable to synchronize the time!\n%s" % (retval, result.strip()))
 		nowTime = time()
 		if nowTime > 10000:
 			print('[NetworkTime] setting E2 time:', nowTime)
