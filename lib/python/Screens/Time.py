@@ -1,6 +1,6 @@
 from Components.ActionMap import HelpableActionMap
 from Components.config import config
-from Components.NetworkTime import NTPSyncPoller
+from Components.NetworkTime import ntpsyncpoller
 from Components.Sources.StaticText import StaticText
 from Screens.Setup import Setup
 from Tools.Geolocation import geolocation
@@ -18,7 +18,7 @@ class Time(Setup):
 
 	def updateNetworkTime(self):
 		if config.misc.SyncTimeUsing.isChanged() or config.misc.NTPserver.isChanged() or config.misc.useNTPminutes.isChanged():
-			NTPSyncPoller().timecheck()
+			ntpsyncpoller.timecheck()
 
 	def selectionChanged(self):
 		if Setup.getCurrentItem(self) in (config.timezone.area, config.timezone.val):
