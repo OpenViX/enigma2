@@ -1,7 +1,5 @@
-# required methods: Request, urlopen, HTTPError, URLError
 from urllib.parse import urlparse
-from urllib.request import urlopen, Request, urlretrieve
-from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 import json
 import tempfile
 
