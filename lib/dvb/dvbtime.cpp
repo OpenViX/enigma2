@@ -275,6 +275,7 @@ void eDVBLocalTimeHandler::writeTimeOffsetData( const char* filename )
 
 void eDVBLocalTimeHandler::setUseDVBTime(bool b)
 {
+	eDebug("[eDVBLocalTimerHandler] setUseDVBTime: current=%s, new=%s", m_use_dvb_time ? "dvb" : "ntp", b ? "dvb" : "ntp");
 	if (m_use_dvb_time != b) {
 		if (!b)
 		{
