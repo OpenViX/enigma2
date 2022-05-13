@@ -1,9 +1,8 @@
-from xml.etree.ElementTree import ElementTree
-from os import path
-from Components.config import config, ConfigInteger
 from Components.Pixmap import MovingPixmap, MultiPixmap
-from Components.SystemInfo import SystemInfo
 from Tools.Directories import resolveFilename, SCOPE_SKIN
+from xml.etree.ElementTree import ElementTree
+from Components.config import config, ConfigInteger
+from Components.RcModel import rc_model
 
 config.misc.rcused = ConfigInteger(default=1)
 
@@ -17,27 +16,29 @@ class Rc:
 		self["arrowup2"] = MovingPixmap()
 
 		config.misc.rcused = ConfigInteger(default=1)
+		self.isDefaultRc = rc_model.rcIsDefault()
 		self.rcheight = 500
 		self.rcheighthalf = 250
 
 		self.selectpics = []
 		self.selectpics.append((self.rcheighthalf, ["arrowdown", "arrowdown2"], (-18, -70)))
 		self.selectpics.append((self.rcheight, ["arrowup", "arrowup2"], (-18, 0)))
+
 		self.readPositions()
 		self.clearSelectedKeys()
 		self.onShown.append(self.initRc)
 
 	def initRc(self):
-		if SystemInfo["rc_default"]:
+		if self.isDefaultRc:
 			self["rc"].setPixmapNum(config.misc.rcused.value)
 		else:
 			self["rc"].setPixmapNum(0)
 
 	def readPositions(self):
-		if SystemInfo["rc_default"]:
+		if self.isDefaultRc:
 			target = resolveFilename(SCOPE_SKIN, "rcpositions.xml")
 		else:
-			target = resolveFilename(SCOPE_SKIN, path.join("rc_models", SystemInfo["rc_model"], "rcpositions.xml"))
+			target = rc_model.getRcLocation() + 'rcpositions.xml'
 		tree = ElementTree(file=target)
 		rcs = tree.getroot()
 		self.rcs = {}
@@ -63,7 +64,7 @@ class Rc:
 		self["rc"].show()
 
 	def selectKey(self, key):
-		if SystemInfo["rc_default"]:
+		if self.isDefaultRc:
 			rc = self.rcs[config.misc.rcused.value]
 		else:
 			try:

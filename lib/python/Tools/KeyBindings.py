@@ -1,6 +1,6 @@
 from keyids import KEYIDS
 from Components.config import config
-from Components.SystemInfo import SystemInfo
+from Components.RcModel import rc_model
 
 keyBindings = {}
 
@@ -369,7 +369,7 @@ def queryKeyBinding(context, action):
 
 
 def getKeyDescription(key):
-	if SystemInfo["rc_default"]:
+	if rc_model.rcIsDefault():
 		idx = config.misc.rcused.value
 	else:
 		rcType = config.plugins.remotecontroltype.rctype.value
