@@ -691,8 +691,6 @@ profile("Init:CI")
 import Screens.Ci
 Screens.Ci.InitCiConfig()
 
-profile("RcModel")
-import Components.RcModel
 
 if config.clientmode.enabled.value:
 	import Components.ChannelsImporter
