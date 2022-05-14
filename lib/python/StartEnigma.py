@@ -453,9 +453,10 @@ class PowerKey:
 		if not Screens.Standby.inStandby and self.session.current_dialog and self.session.current_dialog.ALLOW_SUSPEND and self.session.in_exec:
 			self.session.open(Screens.Standby.Standby)
 
-
-profile("Scart")
-from Screens.Scart import Scart
+if enigma.eAVSwitch.getInstance().haveScartSwitch():
+	profile("Scart")
+	print("[StartEnigma]  Initialising Scart.")
+	from Screens.Scart import Scart
 
 
 class AutoScartControl:
@@ -536,7 +537,10 @@ def runScreenTest():
 	power = PowerKey(session)
 
 	# we need session.scart to access it from within menu.xml
-	session.scart = AutoScartControl(session)
+	
+	if enigma.eAVSwitch.getInstance().haveScartSwitch():
+		# we need session.scart to access it from within menu.xml
+		session.scart = AutoScartControl(session)
 
 	profile("Init:Trashcan")
 	import Tools.Trashcan
