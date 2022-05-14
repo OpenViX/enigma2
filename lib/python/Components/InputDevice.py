@@ -6,13 +6,11 @@ import errno
 import xml.etree.cElementTree
 from enigma import eRCInput
 from keyids import KEYIDS
-from Components.RcModel import rc_model
 
 from boxbranding import getBrandOEM
 from Components.config import config, ConfigInteger, ConfigSlider, ConfigSubsection, ConfigText, ConfigYesNo
-from Components.RcModel import rc_model
 from Components.SystemInfo import SystemInfo
-
+from Tools.Directories import resolveFilename, SCOPE_SKIN
 
 # include/uapi/asm-generic/ioctl.h
 IOC_NRBITS = 8
@@ -203,7 +201,7 @@ class InitInputDevices:
 		exec(cmd)
 
 	def remapRemoteControl(self, device):
-		filename = rc_model.getRcPositions()
+		filename = resolveFilename(SCOPE_SKIN, path.join("rc_models", SystemInfo["rc_model"], "rcpositions.xml"))
 		domRemote = self.loadRemoteControl(filename)
 		logRemaps = []
 		remapButtons = {}
