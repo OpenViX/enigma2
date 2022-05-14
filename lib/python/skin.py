@@ -401,7 +401,7 @@ def loadPixmap(path, desktop, width=0, height=0):
 	if option != -1:
 		path = path[:option]
 	if not SystemInfo["rc_default"] and basename(path) in ("rc.png", "rc0.png", "rc1.png", "rc2.png", "oldrc.png"):
-		path = resolveFilename(SCOPE_SKIN, path.join("rc_models", SystemInfo["rc_model"], "rc.png"))
+		path = resolveFilename(SCOPE_SKIN, join("rc_models", SystemInfo["rc_model"], "rc.png"))
 	pixmap = LoadPixmap(path, desktop, None, width, height)
 	if pixmap is None:
 		raise SkinError("Pixmap file '%s' not found" % path)
