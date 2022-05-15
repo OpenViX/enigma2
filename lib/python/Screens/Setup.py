@@ -87,7 +87,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 			currentItem = self["config"].getCurrent()
 			self["config"].list = self.list
 			if config.usage.sort_settings.value:
-				self["config"].list.sort()
+				self["config"].list.sort(key=lambda x: x[0])
 			self.moveToItem(currentItem)
 
 	def addItems(self, parentNode, including=True):
