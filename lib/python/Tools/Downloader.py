@@ -5,10 +5,7 @@ import six
 from twisted.web import client
 from twisted.internet import reactor, defer
 # required methods: Request, urlopen, HTTPError, URLError, urlparse
-try: # python 3
-	from urllib.parse import urlparse, urlunparse # raises ImportError in Python 2
-except ImportError: # Python 2
-	from urlparse import urlparse, urlunparse
+from urllib.parse import urlparse, urlunparse
 
 
 class HTTPProgressDownloader(client.HTTPDownloader):

@@ -9,11 +9,8 @@ import os
 import re
 from enigma import eServiceReference, eDVBDB
 # required methods: Request, urlopen, HTTPError, URLError
-try: # python 3
-	from urllib.request import urlopen, Request # raises ImportError in Python 2
-	from urllib.error import HTTPError, URLError # raises ImportError in Python 2
-except ImportError: # Python 2
-	from urllib2 import Request, urlopen, HTTPError, URLError
+from urllib.request import urlopen, Request # raises ImportError in Python 2
+from urllib.error import HTTPError, URLError # raises ImportError in Python 2
 
 autoClientModeTimer = None
 
