@@ -18,7 +18,7 @@ class Time(Setup):
 
 	def updateNetworkTime(self):
 		if config.misc.SyncTimeUsing.isChanged() or config.misc.NTPserver.isChanged() or config.misc.useNTPminutes.isChanged():
-			ntpsyncpoller.timecheck()
+			ntpsyncpoller.ntpConfigUpdated()
 
 	def selectionChanged(self):
 		if Setup.getCurrentItem(self) in (config.timezone.area, config.timezone.val):
