@@ -35,6 +35,7 @@
             <item level="2" text="Developer username" description="Enter your OpenViX developer username.">config.imagemanager.developer_username</item>
             <item level="2" text="Developer password" description="Enter your OpenViX developer password.">config.imagemanager.developer_password</item>
         </if>
+        <item level="2" text="Homebuild URL" description="If you are running your own build server and want to download your own images directly into ImageManager you can link to the URL of your JSON index. If you need help with implementing this please ask on the forum.">config.imagemanager.imagefeed_MyBuild</item>
     </setup>
     <setup key="vixscriptrunner" title="Script runner settings" titleshort="Settings">
         <item level="2" text="Close window on success" description="Allows you to close the window automatically.">config.scriptrunner.close</item>

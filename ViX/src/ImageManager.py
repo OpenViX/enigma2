@@ -84,7 +84,7 @@ config.imagemanager.imagefeed_OBH.value = config.imagemanager.imagefeed_OBH.defa
 # Script must be able to handle urls in the form http://domain/scriptname/boxname.
 # Format of the JSON output from the script must be the same as the official urls above.
 # The option will only show once a url has been added.
-config.imagemanager.imagefeed_MyBuild = ConfigText(default="", fixed_size=False) # currently hidden
+config.imagemanager.imagefeed_MyBuild = ConfigText(default="", fixed_size=False)
 config.imagemanager.login_as_ViX_developer = ConfigYesNo(default=False)
 config.imagemanager.developer_username = ConfigText(default="username", fixed_size=False)
 config.imagemanager.developer_password = ConfigText(default="password", fixed_size=False)
