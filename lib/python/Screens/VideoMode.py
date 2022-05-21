@@ -163,7 +163,7 @@ class VideoSetup(ConfigListScreen, Screen):
 		# 	self.list.append(getConfigListEntry(_("Scaler sharpness"), config.av.scaler_sharpness, _("This option configures the picture sharpness.")))
 		self["config"].list = self.list
 		if config.usage.sort_settings.value:
-			self["config"].list.sort()
+			self["config"].list.sort(key=lambda x: x[0])
 
 	def keyLeft(self):
 		ConfigListScreen.keyLeft(self)
