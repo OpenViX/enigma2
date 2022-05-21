@@ -26,7 +26,6 @@ class NTPSyncPoller:
 		if self.timecheck not in self.timer.callback:
 			self.timer.callback.append(self.timecheck)
 		self.ntpConfigUpdated() # update NTP url, create if not exists
-		self.timer.startLongTimer(0)
 
 	def stop(self):
 		if self.timecheck in self.timer.callback:
@@ -56,7 +55,8 @@ class NTPSyncPoller:
 
 	def ntpConfigUpdated(self):
 		self.updateNtpUrl()
-		self.timecheck()
+		self.timer.stop() # stop current timer if this is an update from Time.py
+		self.timer.startLongTimer(0)
 
 	def updateNtpUrl(self):
 		# update "/etc/default/ntpdate"
