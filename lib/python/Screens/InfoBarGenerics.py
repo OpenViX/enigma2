@@ -3106,6 +3106,7 @@ class InfoBarPiP:
 					currentServicePath = slist.getCurrentServicePath()
 					currentBouquet = slist.getRoot()
 					slist.setCurrentServicePath(self.session.pip.servicePath, doZap=False)
+				self.session.nav.stopService()
 				self.session.pip.playService(swapservice)
 				self.session.nav.playService(pipref, checkParentalControl=False, adjust=False)
 				if slist:
