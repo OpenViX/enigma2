@@ -5,7 +5,7 @@ from time import mktime, strftime, time, localtime
 from enigma import eTimer
 
 #for downloader
-import os
+from os import path as ospath, remove, walk
 import re
 from enigma import eServiceReference, eDVBDB
 # required methods: Request, urlopen, HTTPError, URLError
@@ -286,7 +286,7 @@ class ChannelsImporter():
 		print("[ChannelsImporter][importEPGCallback] '%s%s' downloaded successfully. " % (self.remoteEPGpath, self.remoteEPGfile))
 		print("[ChannelsImporter][importEPGCallback] Removing current EPG data...")
 		try:
-			os.remove(config.misc.epgcache_filename.value)
+			remove(config.misc.epgcache_filename.value)
 		except OSError:
 			pass
 		self.copyFile(self.DIR_TMP + "epg.dat", config.misc.epgcache_filename.value)
@@ -317,10 +317,10 @@ class ChannelsImporter():
 
 	def removeFiles(self, targetdir, target):
 		targetLen = len(target)
-		for root, dirs, files in os.walk(targetdir):
+		for root, dirs, files in walk(targetdir):
 			for name in files:
 				if target in name[:targetLen]:
-					os.remove(os.path.join(root, name))
+					remove(ospath.join(root, name))
 
 	def copyFile(self, source, dest):
 		import shutil
