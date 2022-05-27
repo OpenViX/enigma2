@@ -1403,7 +1403,7 @@ index 3374355b87..8e82ead877 100644
  	};
  
 diff --git a/lib/nav/core.cpp b/lib/nav/core.cpp
-index 22fe033586..5d3c4504d9 100644
+index 22fe033586..41ea421265 100644
 --- a/lib/nav/core.cpp
 +++ b/lib/nav/core.cpp
 @@ -1,6 +1,7 @@
@@ -1421,7 +1421,7 @@ index 22fe033586..5d3c4504d9 100644
 -	stopService();
 +	RESULT res = -1;
 +
-+	if (m_fccmgr->tryFCCService(service, m_runningService) == -1)
++	if (! m_fccmgr || m_fccmgr->tryFCCService(service, m_runningService) == -1)
 +	{
 +		stopService();
 +		ASSERT(m_servicehandler);
@@ -1438,7 +1438,7 @@ index 22fe033586..5d3c4504d9 100644
  		/* kill service. */
  	m_service_event_conn = 0;
 +
-+	m_fccmgr->cleanupFCCService();
++	m_fccmgr && m_fccmgr->cleanupFCCService();
  	return 0;
  }
  
@@ -1446,7 +1446,7 @@ index 22fe033586..5d3c4504d9 100644
  	ASSERT(serviceHandler);
  	m_servicehandler = serviceHandler;
  	m_decoder = decoder;
-+	if (!m_fccmgr)
++	if (decoder == 0 )
 +		m_fccmgr = new eFCCServiceManager(this);
  	instance = this;
  }
