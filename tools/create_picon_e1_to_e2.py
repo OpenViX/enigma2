@@ -6,7 +6,7 @@ from __future__ import print_function
 # It will read the servicenames from the lamedb and create symlinks
 # for the servicereference names.
 from builtins import range
-import os
+from os import makedirs, rename, symlink
 import sys
 
 f = open(sys.argv[1]).readlines()
@@ -64,18 +64,18 @@ while len(f) > 2:
 	#TODO: west
 
 	try:
-		os.makedirs(sat + '/' + servicetype)
+		makedirs(sat + '/' + servicetype)
 	except:
 		pass
 
 	print(sat[0:2] + '.' + sat[-1:] + 'E' + '_' + "%X" % ref[0] + '.png')
 	try:
-		os.rename(sat[0:-1] + 'E' + '_' + "%X" % ref[0] + '.png', sat + '/' + servicetype + '/' + filename)
+		rename(sat[0:-1] + 'E' + '_' + "%X" % ref[0] + '.png', sat + '/' + servicetype + '/' + filename)
 	except:
 		pass
 
 	try:
-		os.symlink(filename, sat + '/' + servicetype + '/' + linkname)
+		symlink(filename, sat + '/' + servicetype + '/' + linkname)
 	except:
 		pass
 

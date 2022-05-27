@@ -4,7 +4,7 @@ from __future__ import print_function
 import six
 
 import sys
-import os
+from os import listdir, path as ospath
 import re
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler, property_lexical_handler
@@ -50,10 +50,10 @@ if not no_comments:
 	parser.setProperty(property_lexical_handler, contentHandler)
 
 for arg in sys.argv[1:]:
-	if os.path.isdir(arg):
-		for file in os.listdir(arg):
+	if ospath.isdir(arg):
+		for file in listdir(arg):
 			if file.endswith(".xml"):
-				parser.parse(os.path.join(arg, file))
+				parser.parse(path.join(arg, file))
 	else:
 		parser.parse(arg)
 

@@ -80,9 +80,9 @@ from events import log
 import calendar
 
 
-import os
+from os import environ
 # we are operating in CET/CEST
-os.environ['TZ'] = 'CET'
+environ['TZ'] = 'CET'
 time.tzset()
 
 #log(test_timer, test_name = "test_timer_repeating", base_time = calendar.timegm((2007, 3, 1, 12, 0, 0)), repeat=0x7f, sim_length = 86400 * 7)

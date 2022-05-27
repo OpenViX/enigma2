@@ -5,7 +5,7 @@
 # It will read the servicenames from the lamedb and create symlinks
 # for the servicereference names.
 from builtins import range
-import os
+from os import makedirs, symlink
 import sys
 
 f = open(sys.argv[1]).readlines()
@@ -60,12 +60,12 @@ while len(f) > 2:
 	filename = sat + "_" + provider + "_" + servicetype + "_" + filename
 
 	try:
-		os.makedirs(sat + '/' + servicetype + '/' + provider)
+		makedirs(sat + '/' + servicetype + '/' + provider)
 	except:
 		pass
 
 	try:
-		os.symlink(filename, sat + '/' + servicetype + '/' + provider + '/' + linkname)
+		symlink(filename, sat + '/' + servicetype + '/' + provider + '/' + linkname)
 	except:
 		pass
 
