@@ -53,7 +53,7 @@ for arg in sys.argv[1:]:
 	if ospath.isdir(arg):
 		for file in listdir(arg):
 			if file.endswith(".xml"):
-				parser.parse(path.join(arg, file))
+				parser.parse(ospath.join(arg, file))
 	else:
 		parser.parse(arg)
 
