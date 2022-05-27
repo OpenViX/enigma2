@@ -1,5 +1,5 @@
 import enigma
-import os
+from os import path
 
 import Components.Netlink
 
@@ -22,10 +22,10 @@ class NetlinkReader():
 					action = event['ACTION']
 					if action == 'add':
 						print("[InputHotplug] New input device detected:", devname)
-						enigma.addInputDevice(os.path.join('/dev', devname))
+						enigma.addInputDevice(path.join('/dev', devname))
 					elif action == 'remove':
 						print("[InputHotplug] Removed input device:", devname)
-						enigma.removeInputDevice(os.path.join('/dev', devname))
+						enigma.removeInputDevice(path.join('/dev', devname))
 				elif subsystem == 'net':
 					from Components.Network import iNetwork
 					iNetwork.hotplug(event)
