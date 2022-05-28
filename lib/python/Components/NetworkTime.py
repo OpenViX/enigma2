@@ -3,6 +3,7 @@ from Components.config import config
 from enigma import eTimer, eDVBLocalTimeHandler, eEPGCache
 from Tools.StbHardware import setRTCtime
 from time import time
+from os import chmod as oschmod
 
 # _session = None
 #
@@ -82,4 +83,4 @@ class NTPSyncPoller:
 			ntpdate = [server, ""]
 		with open(path, "w") as f:
 			f.write("\n".join(ntpdate))
-		os.chmod("/etc/default/ntpdate", 0o755)
+		oschmod("/etc/default/ntpdate", 0o755)
