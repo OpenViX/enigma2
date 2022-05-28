@@ -172,6 +172,7 @@ class Wizard(Screen):
 		self.showStepSlider = showStepSlider
 		self.showList = showList
 		self.showConfig = showConfig
+		self.doingVKeyCallback = False
 
 		self.numSteps = len(self.wizard)
 		self.currStep = self.getStepWithID("start") + 1
@@ -473,6 +474,8 @@ class Wizard(Screen):
 				self["text"].setText(text)
 
 	def updateValues(self):
+		if self.doingVKeyCallback: # skip this path
+			return
 # 		print "Updating values in step " + str(self.currStep)
 		# calling a step which doesn't exist can only happen if the condition in the last step is not fulfilled
 		# if a non-existing step is called, end the wizard
@@ -650,11 +653,12 @@ class Wizard(Screen):
 				self["VKeyIcon"].boolean = False
 
 	def KeyText(self):
+		self.doingVKeyCallback = True
 		from Screens.VirtualKeyBoard import VirtualKeyBoard
-		self.currentConfigIndex = self["config"].getCurrentIndex()
 		self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title=self["config"].getCurrent()[0], text=self["config"].getCurrent()[1].value)
 
 	def VirtualKeyBoardCallback(self, callback=None):
+		self.doingVKeyCallback = False
 		if callback is not None and len(callback):
 			if isinstance(self["config"].getCurrent()[1], ConfigText) or isinstance(self["config"].getCurrent()[1], ConfigPassword):
 				if "HelpWindow" in self:
@@ -662,8 +666,6 @@ class Wizard(Screen):
 						helpwindowpos = self["HelpWindow"].getPosition()
 						from enigma import ePoint
 						self["config"].getCurrent()[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
-			self["config"].instance.moveSelectionTo(self.currentConfigIndex)
-			self["config"].setCurrentIndex(self.currentConfigIndex)
 			self["config"].getCurrent()[1].setValue(callback)
 			self["config"].invalidate(self["config"].getCurrent())
 

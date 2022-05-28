@@ -1,4 +1,4 @@
-import os
+from os import close, listdir, O_NONBLOCK, O_RDWR, open as os_open, path, write
 from fcntl import ioctl
 import platform
 import struct
@@ -6,13 +6,11 @@ import errno
 import xml.etree.cElementTree
 from enigma import eRCInput
 from keyids import KEYIDS
-from Components.RcModel import rc_model
 
 from boxbranding import getBrandOEM
 from Components.config import config, ConfigInteger, ConfigSlider, ConfigSubsection, ConfigText, ConfigYesNo
-from Components.RcModel import rc_model
 from Components.SystemInfo import SystemInfo
-
+from Tools.Directories import resolveFilename, SCOPE_SKIN
 
 # include/uapi/asm-generic/ioctl.h
 IOC_NRBITS = 8
@@ -39,12 +37,12 @@ class inputDevices:
 		self.getInputDevices()
 
 	def getInputDevices(self):
-		devices = sorted(os.listdir("/dev/input/"))
+		devices = sorted(listdir("/dev/input/"))
 
 		for evdev in devices:
 			deviceName = None
 			buffer = "\0" * 512
-			if os.path.isdir("/dev/input/" + evdev):
+			if path.isdir("/dev/input/" + evdev):
 				continue
 			with open("/dev/input/" + evdev) as fd:
 				try:
@@ -113,26 +111,26 @@ class inputDevices:
 		self.setDeviceAttribute(device, 'configuredName', None)
 		event_repeat = struct.pack('LLHHi', 0, 0, 0x14, 0x01, 100)
 		event_delay = struct.pack('LLHHi', 0, 0, 0x14, 0x00, 700)
-		fd = os.open("/dev/input/" + device, os.O_RDWR)
-		os.write(fd, event_repeat)
-		os.write(fd, event_delay)
-		os.close(fd)
+		fd = os_open("/dev/input/" + device, O_RDWR)
+		write(fd, event_repeat)
+		write(fd, event_delay)
+		close(fd)
 
 	def setRepeat(self, device, value): #REP_PERIOD
 		if self.getDeviceAttribute(device, 'enabled'):
 			print("[InputDevice] setRepeat for device %s to %d ms" % (device, value))
 			event = struct.pack('LLHHi', 0, 0, 0x14, 0x01, int(value))
-			fd = os.open("/dev/input/" + device, os.O_RDWR)
-			os.write(fd, event)
-			os.close(fd)
+			fd = os_open("/dev/input/" + device, O_RDWR)
+			write(fd, event)
+			close(fd)
 
 	def setDelay(self, device, value): #REP_DELAY
 		if self.getDeviceAttribute(device, 'enabled'):
 			print("[InputDevice] setDelay for device %s to %d ms" % (device, value))
 			event = struct.pack('LLHHi', 0, 0, 0x14, 0x00, int(value))
-			fd = os.open("/dev/input/" + device, os.O_RDWR)
-			os.write(fd, event)
-			os.close(fd)
+			fd = os_open("/dev/input/" + device, O_RDWR)
+			write(fd, event)
+			close(fd)
 
 
 class InitInputDevices:
@@ -203,7 +201,7 @@ class InitInputDevices:
 		exec(cmd)
 
 	def remapRemoteControl(self, device):
-		filename = rc_model.getRcPositions()
+		filename = resolveFilename(SCOPE_SKIN, path.join("rc_models", SystemInfo["rc_model"], "rcpositions.xml"))
 		domRemote = self.loadRemoteControl(filename)
 		logRemaps = []
 		remapButtons = {}
@@ -267,7 +265,7 @@ config.plugins.remotecontroltype.rctype = ConfigInteger(default=0)
 class RcTypeControl():
 	def __init__(self):
 		self.boxType = "Default"
-		if os.path.exists('/proc/stb/ir/rc/type') and os.path.exists('/proc/stb/info/boxtype') and getBrandOEM() != 'gigablue':
+		if path.exists('/proc/stb/ir/rc/type') and path.exists('/proc/stb/info/boxtype') and getBrandOEM() != 'gigablue':
 			self.isSupported = True
 			with open("/proc/stb/info/boxtype", "r") as fd:
 				self.boxType = fd.read().strip()

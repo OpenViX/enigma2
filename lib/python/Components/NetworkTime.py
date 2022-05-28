@@ -25,11 +25,7 @@ class NTPSyncPoller:
 	def start(self):
 		if self.timecheck not in self.timer.callback:
 			self.timer.callback.append(self.timecheck)
-			def useNTPminutesChanged(configElement):
-				self.timer.stop()
-				self.timecheck()
-			config.misc.useNTPminutes.addNotifier(useNTPminutesChanged, initial_call=False, immediate_feedback=False)
-		self.timer.startLongTimer(0)
+		self.ntpConfigUpdated() # update NTP url, create if not exists
 
 	def stop(self):
 		if self.timecheck in self.timer.callback:
@@ -38,12 +34,14 @@ class NTPSyncPoller:
 
 	def timecheck(self):
 		if config.misc.SyncTimeUsing.value == "ntp":
-			print('[NetworkTime] Updating')
+			print('[NetworkTime] Updating from NTP')
 			self.Console.ePopen('/usr/bin/ntpdate-sync', self.update_schedule)
 		else:
 			self.update_schedule()
 
 	def update_schedule(self, result=None, retval=None, extra_args=None):
+		if retval and result:
+			print("[NetworkTime] Error %d: Unable to synchronize the time!\n%s" % (retval, result.strip()))
 		nowTime = time()
 		if nowTime > 10000:
 			print('[NetworkTime] setting E2 time:', nowTime)
@@ -54,3 +52,34 @@ class NTPSyncPoller:
 		else:
 			print('[NetworkTime] NO TIME SET')
 			self.timer.startLongTimer(10)
+
+	def ntpConfigUpdated(self):
+		self.updateNtpUrl()
+		self.timer.stop() # stop current timer if this is an update from Time.py
+		self.timer.startLongTimer(0)
+
+	def updateNtpUrl(self):
+		# update "/etc/default/ntpdate"
+		# don't just overwrite...
+		# only change the server url
+		path = "/etc/default/ntpdate"
+		server = 'NTPSERVERS="' + config.misc.NTPserver.value + '"'
+		ntpdate = []
+		try:
+			content = open(path).read()
+			if server in content:
+				return # correct NTP url already set so exit
+			if "NTPSERVERS=" in content:
+				ntpdate = content.split("\n")
+		except:
+			pass
+		if ntpdate:
+			for i, line in enumerate(ntpdate[:]):
+				if "NTPSERVERS=" in line:
+					ntpdate[i] = server
+					break
+		else:
+			ntpdate = [server, ""]
+		with open(path, "w") as f:
+			f.write("\n".join(ntpdate))
+		os.chmod("/etc/default/ntpdate", 0o755)

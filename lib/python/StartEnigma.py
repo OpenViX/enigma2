@@ -104,28 +104,6 @@ config.misc.DeepStandby = NoSave(ConfigYesNo(default=False)) # detect deepstandb
 #config.misc.standbyCounter.addNotifier(standbyCountChanged, initial_call = False)
 ####################################################
 
-
-def SyncTimeUsingChanged(configElement):
-	print("[Time By]: %s" % configElement.toDisplayString(configElement.value))
-	enigma.eDVBLocalTimeHandler.getInstance().setUseDVBTime(configElement.value == "dvb")
-	enigma.eEPGCache.getInstance().timeUpdated()
-
-
-config.misc.SyncTimeUsing.addNotifier(SyncTimeUsingChanged)
-
-
-def NTPserverChanged(configElement):
-	f = open("/etc/default/ntpdate", "w")
-	f.write('NTPSERVERS="' + configElement.value + '"\n')
-	f.close()
-	os.chmod("/etc/default/ntpdate", 0o755)
-	from Components.Console import Console
-	Console = Console()
-	Console.ePopen("/usr/bin/ntpdate-sync")
-
-
-config.misc.NTPserver.addNotifier(NTPserverChanged, immediate_feedback=False)
-
 profile("Twisted")
 print("[StartEnigma] Initialising Twisted.")
 try:
@@ -475,9 +453,10 @@ class PowerKey:
 		if not Screens.Standby.inStandby and self.session.current_dialog and self.session.current_dialog.ALLOW_SUSPEND and self.session.in_exec:
 			self.session.open(Screens.Standby.Standby)
 
-
-profile("Scart")
-from Screens.Scart import Scart
+if enigma.eAVSwitch.getInstance().haveScartSwitch():
+	profile("Scart")
+	print("[StartEnigma]  Initialising Scart.")
+	from Screens.Scart import Scart
 
 
 class AutoScartControl:
@@ -558,7 +537,10 @@ def runScreenTest():
 	power = PowerKey(session)
 
 	# we need session.scart to access it from within menu.xml
-	session.scart = AutoScartControl(session)
+	
+	if enigma.eAVSwitch.getInstance().haveScartSwitch():
+		# we need session.scart to access it from within menu.xml
+		session.scart = AutoScartControl(session)
 
 	profile("Init:Trashcan")
 	import Tools.Trashcan
@@ -589,7 +571,7 @@ def runScreenTest():
 			wptime = nowTime + 30  # so switch back on in 30 seconds
 		else:
 			wptime = startTime[0] - 240
-		if not config.misc.SyncTimeUsing.value == "0":
+		if not config.misc.SyncTimeUsing.value == "dvb":
 			print("[StartEnigma] dvb time sync disabled... so set RTC now to current linux time!", strftime("%Y/%m/%d %H:%M", localtime(nowTime)))
 			setRTCtime(nowTime)
 		print("[StartEnigma] set wakeup time to", strftime("%Y/%m/%d %H:%M", localtime(wptime)))
@@ -606,7 +588,7 @@ def runScreenTest():
 			wptime = nowTime + 30  # so switch back on in 30 seconds
 		else:
 			wptime = startTime[0]
-		if not config.misc.SyncTimeUsing.value == "0":
+		if not config.misc.SyncTimeUsing.value == "dvb":
 			print("[StartEnigma] dvb time sync disabled... so set RTC now to current linux time!", strftime("%Y/%m/%d %H:%M", localtime(nowTime)))
 			setRTCtime(nowTime)
 		print("[StartEnigma] set wakeup time to", strftime("%Y/%m/%d %H:%M", localtime(wptime + 60)))
@@ -713,8 +695,6 @@ profile("Init:CI")
 import Screens.Ci
 Screens.Ci.InitCiConfig()
 
-profile("RcModel")
-import Components.RcModel
 
 if config.clientmode.enabled.value:
 	import Components.ChannelsImporter

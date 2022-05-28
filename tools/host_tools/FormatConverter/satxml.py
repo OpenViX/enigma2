@@ -1,5 +1,5 @@
 from __future__ import print_function
-import os
+from os import path as ospath
 from datasource import datasource
 from xml.dom import minidom
 from xml.dom.minidom import Document
@@ -11,7 +11,7 @@ class satxml(datasource):
 		self.filename = filename
 		datasource.__init__(self)
 
-		if not os.path.isfile(filename):
+		if not ospath.isfile(filename):
 			print("File %s doesn't exist. Creating it." % filename)
 
 	def getStatus(self):

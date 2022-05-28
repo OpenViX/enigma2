@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import errno
-import os
+
+from os.path import basename as pathBasename, dirname as pathDirname, exists as pathExists, getsize as pathGetsize, isdir as pathIsdir, isfile as pathIsfile, islink as pathIslink, join as pathJoin, normpath as pathNormpath, splitext as pathSplitext
+
+from os import access, chmod, listdir, makedirs, mkdir, readlink, rename, rmdir, sep, stat as os_stat, statvfs, symlink, utime, walk, F_OK, R_OK, W_OK 
 
 from enigma import eEnv, getDesktop
 from re import compile, split
@@ -9,8 +12,6 @@ from sys import _getframe as getframe
 from unicodedata import normalize
 from traceback import print_exc
 from xml.etree.cElementTree import Element, fromstring, parse
-
-pathExists = os.path.exists
 
 SCOPE_HOME = 0  # DEBUG: Not currently used in Enigma2.
 SCOPE_LANGUAGE = 1
@@ -78,7 +79,7 @@ scopeFonts = defaultPaths[SCOPE_FONTS][0]
 scopePlugins = defaultPaths[SCOPE_PLUGINS][0]
 
 def addInList(*paths):
-	return [path for path in paths if os.path.isdir(path)]
+	return [path for path in paths if pathIsdir(path)]
 
 
 skinResolveList = []
@@ -88,20 +89,20 @@ fontsResolveList = []
 
 def resolveFilename(scope, base="", path_prefix=None):
 	# You can only use the ~/ if we have a prefix directory.
-	if str(base).startswith("~%s" % os.sep):  # You can only use the ~/ if we have a prefix directory.
+	if str(base).startswith("~%s" % sep):  # You can only use the ~/ if we have a prefix directory.
 		if path_prefix:
-			base = os.path.join(path_prefix, base[2:])
+			base = pathJoin(path_prefix, base[2:])
 		else:
-			print("[Directories] Warning: resolveFilename called with base starting with '~%s' but 'path_prefix' is None!" % os.sep)
-	if str(base).startswith(os.sep):  # Don't further resolve absolute paths.
-		return os.path.normpath(base)
+			print("[Directories] Warning: resolveFilename called with base starting with '~%s' but 'path_prefix' is None!" % sep)
+	if str(base).startswith(sep):  # Don't further resolve absolute paths.
+		return pathNormpath(base)
 	if scope not in defaultPaths:  # If an invalid scope is specified log an error and return None.
 		print("[Directories] Error: Invalid scope=%s provided to resolveFilename!" % scope)
 		return None
 	path, flag = defaultPaths[scope]  # Ensure that the defaultPath directory that should exist for this scope does exist.
 	if flag == PATH_CREATE and not pathExists(path):
 		try:
-			os.makedirs(path)
+			makedirs(path)
 		except (IOError, OSError) as err:
 			print("[Directories] Error %d: Couldn't create directory '%s'!  (%s)" % (err.errno, path, err.strerror))
 			return None
@@ -120,7 +121,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 			baseList.append("%s%s" % (base[:-3], "png"))
 		for item in resolveList:
 			for base in baseList:
-				file = os.path.join(item, base)
+				file = pathJoin(item, base)
 				if pathExists(file):
 					return file
 		return base
@@ -129,33 +130,33 @@ def resolveFilename(scope, base="", path_prefix=None):
 		path, flags = defaultPaths[scope]
 		if scope == SCOPE_GUISKIN:  # If the scope is SCOPE_GUISKIN append the current skin to the scope path.
 			from Components.config import config  # This import must be here as this module finds the config file as part of the config initialisation.
-			skin = os.path.dirname(config.skin.primary_skin.value)
-			path = os.path.join(path, skin)
+			skin = pathDirname(config.skin.primary_skin.value)
+			path = pathJoin(path, skin)
 		elif scope in (SCOPE_PLUGIN_ABSOLUTE, SCOPE_PLUGIN_RELATIVE):
-			callingCode = os.path.normpath(getframe(1).f_code.co_filename)
-			plugins = os.path.normpath(scopePlugins)
+			callingCode = pathNormpath(getframe(1).f_code.co_filename)
+			plugins = pathNormpath(scopePlugins)
 			path = None
 			if comparePath(plugins, callingCode):
-				pluginCode = callingCode[len(plugins) + 1:].split(os.sep)
+				pluginCode = callingCode[len(plugins) + 1:].split(sep)
 				if len(pluginCode) > 2:
-					relative = "%s%s%s" % (pluginCode[0], os.sep, pluginCode[1])
-					path = os.path.join(plugins, relative)
+					relative = "%s%s%s" % (pluginCode[0], sep, pluginCode[1])
+					path = pathJoin(plugins, relative)
 	elif scope == SCOPE_GUISKIN:
 		global skinResolveList
 		if not skinResolveList:
 			# This import must be here as this module finds the config file as part of the config initialisation.
 			from Components.config import config
-			skin = os.path.dirname(config.skin.primary_skin.value)
+			skin = pathDirname(config.skin.primary_skin.value)
 			skinResolveList = addInList(
-				os.path.join(scopeConfig, skin),
-				os.path.join(scopeConfig, "skin_common"),
+				pathJoin(scopeConfig, skin),
+				pathJoin(scopeConfig, "skin_common"),
 				scopeConfig
 			)
 			if not "skin_default" in skin:
-				skinResolveList += addInList(os.path.join(scopeGUISkin, skin))
+				skinResolveList += addInList(pathJoin(scopeGUISkin, skin))
 			skinResolveList += addInList(
-				os.path.join(scopeGUISkin, "skin_fallback_%d" % getDesktop(0).size().height()),
-				os.path.join(scopeGUISkin, "skin_default"),
+				pathJoin(scopeGUISkin, "skin_fallback_%d" % getDesktop(0).size().height()),
+				pathJoin(scopeGUISkin, "skin_default"),
 				scopeGUISkin
 			)
 		path = itemExists(skinResolveList, base)
@@ -165,16 +166,16 @@ def resolveFilename(scope, base="", path_prefix=None):
 			# This import must be here as this module finds the config file as part of the config initialisation.
 			from Components.config import config
 			if hasattr(config.skin, "display_skin"):
-				skin = os.path.dirname(config.skin.display_skin.value)
+				skin = pathDirname(config.skin.display_skin.value)
 			else:
 				skin = ""
 			lcdskinResolveList = addInList(
-				os.path.join(scopeConfig, "display", skin),
-				os.path.join(scopeConfig, "display", "skin_common"),
+				pathJoin(scopeConfig, "display", skin),
+				pathJoin(scopeConfig, "display", "skin_common"),
 				scopeConfig,
-				os.path.join(scopeLCDSkin, skin),
-				os.path.join(scopeLCDSkin, "skin_fallback_%s" % getDesktop(1).size().height()),
-				os.path.join(scopeLCDSkin, "skin_default"),
+				pathJoin(scopeLCDSkin, skin),
+				pathJoin(scopeLCDSkin, "skin_fallback_%s" % getDesktop(1).size().height()),
+				pathJoin(scopeLCDSkin, "skin_default"),
 				scopeLCDSkin
 			)
 		path = itemExists(lcdskinResolveList, base)
@@ -183,56 +184,56 @@ def resolveFilename(scope, base="", path_prefix=None):
 		if not fontsResolveList:
 			# This import must be here as this module finds the config file as part of the config initialisation.
 			from Components.config import config
-			skin = os.path.dirname(config.skin.primary_skin.value)
-			display = os.path.dirname(config.skin.display_skin.value) if hasattr(config.skin, "display_skin") else None
+			skin = pathDirname(config.skin.primary_skin.value)
+			display = pathDirname(config.skin.display_skin.value) if hasattr(config.skin, "display_skin") else None
 			fontsResolveList = addInList(
-				os.path.join(scopeConfig, "fonts"),
-				os.path.join(scopeConfig, skin, "fonts"),
-				os.path.join(scopeConfig, skin)
+				pathJoin(scopeConfig, "fonts"),
+				pathJoin(scopeConfig, skin, "fonts"),
+				pathJoin(scopeConfig, skin)
 			)
 			if display:
 				fontsResolveList += addInList(
-					os.path.join(scopeConfig, "display", display, "fonts"),
-					os.path.join(scopeConfig, "display", display)
+					pathJoin(scopeConfig, "display", display, "fonts"),
+					pathJoin(scopeConfig, "display", display)
 				)
 			fontsResolveList += addInList(
-				os.path.join(scopeConfig, "skin_common"),
+				pathJoin(scopeConfig, "skin_common"),
 				scopeConfig,
-				os.path.join(scopeGUISkin, skin, "fonts"),
-				os.path.join(scopeGUISkin, skin),
-				os.path.join(scopeGUISkin, "skin_default", "fonts"),
-				os.path.join(scopeGUISkin, "skin_default")
+				pathJoin(scopeGUISkin, skin, "fonts"),
+				pathJoin(scopeGUISkin, skin),
+				pathJoin(scopeGUISkin, "skin_default", "fonts"),
+				pathJoin(scopeGUISkin, "skin_default")
 			)
 			if display:
 				fontsResolveList += addInList(
-					os.path.join(scopeLCDSkin, display, "fonts"),
-					os.path.join(scopeLCDSkin, display)
+					pathJoin(scopeLCDSkin, display, "fonts"),
+					pathJoin(scopeLCDSkin, display)
 				)
 			fontsResolveList += addInList(
-				os.path.join(scopeLCDSkin, "skin_default", "fonts"),
-				os.path.join(scopeLCDSkin, "skin_default"),
+				pathJoin(scopeLCDSkin, "skin_default", "fonts"),
+				pathJoin(scopeLCDSkin, "skin_default"),
 				scopeFonts
 			)
 		path = itemExists(fontsResolveList, base)
 	elif scope == SCOPE_PLUGIN:
-		file = os.path.join(scopePlugins, base)
+		file = pathJoin(scopePlugins, base)
 		if pathExists(file):
 			path = file
 	elif scope in (SCOPE_PLUGIN_ABSOLUTE, SCOPE_PLUGIN_RELATIVE):
-		callingCode = os.path.normpath(getframe(1).f_code.co_filename)
-		plugins = os.path.normpath(scopePlugins)
+		callingCode = pathNormpath(getframe(1).f_code.co_filename)
+		plugins = pathNormpath(scopePlugins)
 		path = None
 		if comparePaths(plugins, callingCode):
-			pluginCode = callingCode[len(plugins) + 1:].split(os.sep)
+			pluginCode = callingCode[len(plugins) + 1:].split(sep)
 			if len(pluginCode) > 2:
-				relative = os.path.join("%s%s%s" % (pluginCode[0], os.sep, pluginCode[1]), base)
-				path = os.path.join(plugins, relative)
+				relative = pathJoin("%s%s%s" % (pluginCode[0], sep, pluginCode[1]), base)
+				path = pathJoin(plugins, relative)
 	else:
 		path, flags = defaultPaths[scope]
-		path = os.path.join(path, base)
-	path = os.path.normpath(path)
-	if os.path.isdir(path) and not path.endswith(os.sep):  # If the path is a directory then ensure that it ends with a "/".
-		path = "%s%s" % (path, os.sep)
+		path = pathJoin(path, base)
+	path = pathNormpath(path)
+	if pathIsdir(path) and not path.endswith(sep):  # If the path is a directory then ensure that it ends with a "/".
+		path = "%s%s" % (path, sep)
 	if scope == SCOPE_PLUGIN_RELATIVE:
 		path = path[len(plugins) + 1:]
 	if suffix is not None:  # If a suffix was supplied restore it.
@@ -285,12 +286,12 @@ def fileWriteLines(filename, lines, *args, **kwargs):
 
 
 def comparePaths(leftPath, rightPath):
-	if leftPath.endswith(os.sep):
+	if leftPath.endswith(sep):
 		leftPath = leftPath[:-1]
-	if rightPath.endswith(os.sep):
+	if rightPath.endswith(sep):
 		rightPath = rightPath[:-1]
-	left = leftPath.split(os.sep)
-	right = rightPath.split(os.sep)
+	left = leftPath.split(sep)
+	right = rightPath.split(sep)
 	for segment in range(len(left)):
 		if left[segment] != right[segment]:
 			return False
@@ -303,7 +304,7 @@ def bestRecordingLocation(candidates):
 	for candidate in candidates:
 		try:
 			# Must have some free space (i.e. not read-only).
-			stat = os.statvfs(candidate[1])
+			stat = statvfs(candidate[1])
 			if stat.f_bavail:
 				# Free space counts double.
 				size = (stat.f_blocks + stat.f_bavail) * stat.f_bsize
@@ -320,7 +321,7 @@ def defaultRecordingLocation(candidate=None):
 		return candidate
 	# First, try whatever /hdd points to, or /media/hdd.
 	try:
-		path = os.readlink("/hdd")
+		path = readlink("/hdd")
 	except OSError:
 		path = "/media/hdd"
 	if not pathExists(path):
@@ -334,8 +335,8 @@ def defaultRecordingLocation(candidate=None):
 			path = bestRecordingLocation([m for m in mounts if not m[0].startswith("/dev/")])
 	if path:
 		# If there's a movie subdir, we'd probably want to use that.
-		movie = os.path.join(path, "movie")
-		if os.path.isdir(movie):
+		movie = pathJoin(path, "movie")
+		if pathIsdir(movie):
 			path = movie
 		if not path.endswith("/"):
 			path += "/"  # Bad habits die hard, old code relies on this.
@@ -345,9 +346,9 @@ def defaultRecordingLocation(candidate=None):
 def createDir(path, makeParents=False):
 	try:
 		if makeParents:
-			os.makedirs(path)
+			makedirs(path)
 		else:
-			os.mkdir(path)
+			mkdir(path)
 		return 1
 	except OSError:
 		return 0
@@ -355,7 +356,7 @@ def createDir(path, makeParents=False):
 
 def removeDir(path):
 	try:
-		os.rmdir(path)
+		rmdir(path)
 		return 1
 	except OSError:
 		return 0
@@ -363,12 +364,12 @@ def removeDir(path):
 
 def fileExists(f, mode="r"):
 	if mode == "r":
-		acc_mode = os.R_OK
+		acc_mode = R_OK
 	elif mode == "w":
-		acc_mode = os.W_OK
+		acc_mode = W_OK
 	else:
-		acc_mode = os.F_OK
-	return os.access(f, acc_mode)
+		acc_mode = F_OK
+	return access(f, acc_mode)
 
 
 def fileCheck(f, mode="r"):
@@ -416,14 +417,14 @@ def getRecordingFilename(basename, dirname=None):
 	filename = filename[:247]
 	if dirname is not None:
 		if not dirname.startswith("/"):
-			dirname = os.path.join(defaultRecordingLocation(), dirname)
+			dirname = pathJoin(defaultRecordingLocation(), dirname)
 	else:
 		dirname = defaultRecordingLocation()
-	filename = os.path.join(dirname, filename)
+	filename = pathJoin(dirname, filename)
 	path = filename
 	i = 1
 	while True:
-		if not os.path.isfile(path + ".ts"):
+		if not pathIsfile(path + ".ts"):
 			return path
 		path = "%s_%03d" % (filename, i)
 		i += 1
@@ -447,7 +448,7 @@ def crawlDirectory(directory, pattern):
 	list = []
 	if directory:
 		expression = compile(pattern)
-		for root, dirs, files in os.walk(directory):
+		for root, dirs, files in walk(directory):
 			for file in files:
 				if expression.match(file) is not None:
 					list.append((root, file))
@@ -460,8 +461,8 @@ def copyfile(src, dst):
 	status = 0
 	try:
 		f1 = open(src, "rb")
-		if os.path.isdir(dst):
-			dst = os.path.join(dst, os.path.basename(src))
+		if pathIsdir(dst):
+			dst = pathJoin(dst, pathBasename(src))
 		f2 = open(dst, "w+b")
 		while True:
 			buf = f1.read(16 * 1024)
@@ -476,13 +477,13 @@ def copyfile(src, dst):
 	if f2 is not None:
 		f2.close()
 	try:
-		st = os.stat(src)
+		st = os_stat(src)
 		try:
-			os.chmod(dst, S_IMODE(st.st_mode))
+			chmod(dst, S_IMODE(st.st_mode))
 		except (IOError, OSError) as err:
 			print("[Directories] Error %d: Setting modes from '%s' to '%s'! (%s)" % (err.errno, src, dst, err.strerror))
 		try:
-			os.utime(dst, (st.st_atime, st.st_mtime))
+			utime(dst, (st.st_atime, st.st_mtime))
 		except (IOError, OSError) as err:
 			print("[Directories] Error %d: Setting times from '%s' to '%s'! (%s)" % (err.errno, src, dst, err.strerror))
 	except (IOError, OSError) as err:
@@ -491,34 +492,34 @@ def copyfile(src, dst):
 
 
 def copytree(src, dst, symlinks=False):
-	names = os.listdir(src)
-	if os.path.isdir(dst):
-		dst = os.path.join(dst, os.path.basename(src))
-		if not os.path.isdir(dst):
-			os.mkdir(dst)
+	names = listdir(src)
+	if pathIsdir(dst):
+		dst = pathJoin(dst, pathBasename(src))
+		if not pathIsdir(dst):
+			mkdir(dst)
 	else:
-		os.makedirs(dst)
+		makedirs(dst)
 	for name in names:
-		srcname = os.path.join(src, name)
-		dstname = os.path.join(dst, name)
+		srcname = pathJoin(src, name)
+		dstname = pathJoin(dst, name)
 		try:
-			if symlinks and os.path.islink(srcname):
-				linkto = os.readlink(srcname)
-				os.symlink(linkto, dstname)
-			elif os.path.isdir(srcname):
+			if symlinks and pathIslink(srcname):
+				linkto = readlink(srcname)
+				symlink(linkto, dstname)
+			elif pathIsdir(srcname):
 				copytree(srcname, dstname, symlinks)
 			else:
 				copyfile(srcname, dstname)
 		except (IOError, OSError) as err:
 			print("[Directories] Error %d: Copying tree '%s' to '%s'! (%s)" % (err.errno, srcname, dstname, err.strerror))
 	try:
-		st = os.stat(src)
+		st = os_stat(src)
 		try:
-			os.chmod(dst, S_IMODE(st.st_mode))
+			chmod(dst, S_IMODE(st.st_mode))
 		except (IOError, OSError) as err:
 			print("[Directories] Error %d: Setting modes from '%s' to '%s'! (%s)" % (err.errno, src, dst, err.strerror))
 		try:
-			os.utime(dst, (st.st_atime, st.st_mtime))
+			utime(dst, (st.st_atime, st.st_mtime))
 		except (IOError, OSError) as err:
 			print("[Directories] Error %d: Setting times from '%s' to '%s'! (%s)" % (err.errno, src, dst, err.strerror))
 	except (IOError, OSError) as err:
@@ -534,7 +535,7 @@ def moveFiles(fileList):
 	movedList = []
 	try:
 		for item in fileList:
-			os.rename(item[0], item[1])
+			rename(item[0], item[1])
 			movedList.append(item)
 	except (IOError, OSError) as err:
 		if err.errno == errno.EXDEV:  # Invalid cross-device link
@@ -550,7 +551,7 @@ def moveFiles(fileList):
 		print("[Directories] Reversing renamed files due to error.")
 		for item in movedList:
 			try:
-				os.rename(item[1], item[0])
+				rename(item[1], item[0])
 			except (IOError, OSError) as err:
 				print("[Directories] Error %d: Renaming '%s' to '%s'! (%s)" % (err.errno, item[1], item[0], err.strerror))
 				print("[Directories] Failed to undo move:", item)
@@ -558,45 +559,45 @@ def moveFiles(fileList):
 
 def getSize(path, pattern=".*"):
 	path_size = 0
-	if os.path.isdir(path):
+	if pathIsdir(path):
 		files = crawlDirectory(path, pattern)
 		for file in files:
-			filepath = os.path.join(file[0], file[1])
-			path_size += os.path.getsize(filepath)
-	elif os.path.isfile(path):
-		path_size = os.path.getsize(path)
+			filepath = pathJoin(file[0], file[1])
+			path_size += pathGetsize(filepath)
+	elif pathIsfile(path):
+		path_size = pathGetsize(path)
 	return path_size
 
 
 def lsof():
 	lsof = []
-	for pid in os.listdir("/proc"):
+	for pid in listdir("/proc"):
 		if pid.isdigit():
 			try:
-				prog = os.readlink(os.path.join("/proc", pid, "exe"))
-				dir = os.path.join("/proc", pid, "fd")
-				for file in [os.path.join(dir, file) for file in os.listdir(dir)]:
-					lsof.append((pid, prog, os.readlink(file)))
+				prog = readlink(pathJoin("/proc", pid, "exe"))
+				dir = pathJoin("/proc", pid, "fd")
+				for file in [pathJoin(dir, file) for file in listdir(dir)]:
+					lsof.append((pid, prog, readlink(file)))
 			except OSError:
 				pass
 	return lsof
 
 
 def getExtension(file):
-	filename, extension = os.path.splitext(file)
+	filename, extension = pathSplitext(file)
 	return extension
 
 
 def mediafilesInUse(session):
 	from Components.MovieList import KNOWN_EXTENSIONS
-	files = [os.path.basename(x[2]) for x in lsof() if getExtension(x[2]) in KNOWN_EXTENSIONS]
+	files = [pathBasename(x[2]) for x in lsof() if getExtension(x[2]) in KNOWN_EXTENSIONS]
 	service = session.nav.getCurrentlyPlayingServiceOrGroup()
 	filename = service and service.getPath()
 	if filename:
 		if "://" in filename:  # When path is a stream ignore it.
 			filename = None
 		else:
-			filename = os.path.basename(filename)
+			filename = pathBasename(filename)
 	return set([file for file in files if not(filename and file == filename and files.count(filename) < 2)])
 
 # Prepare filenames for use in external shell processing. Filenames may
@@ -611,12 +612,12 @@ def shellquote(s):
 
 def isPluginInstalled(pluginname, pluginfile="plugin", pluginType=None):
 	path = resolveFilename(SCOPE_PLUGINS)
-	pluginfolders = [name for name in os.listdir(path) if os.path.isdir(os.path.join(path, name)) and name not in ["__pycache__"]]
+	pluginfolders = [name for name in listdir(path) if pathIsdir(pathJoin(path, name)) and name not in ["__pycache__"]]
 	if pluginType is None or pluginType in pluginfolders:
 		plugintypes = pluginType and [pluginType] or pluginfolders
 		for fileext in [".pyc", ".py"]:
 			for plugintype in plugintypes:
-				if os.path.isfile(os.path.join(path, plugintype, pluginname, pluginfile + fileext)):
+				if pathIsfile(pathJoin(path, plugintype, pluginname, pluginfile + fileext)):
 					return True
 	return False
 

@@ -9,8 +9,10 @@ class ConsoleItem:
 		self.container = enigma.eConsoleAppContainer()
 		self.containers = containers
 		self.binary = binary
+		if isinstance(cmd, str): # until .execute supports a better api
+			cmd = [cmd]
 		# Create a unique name
-		name = cmd
+		name = cmd[0]
 		if name in containers:
 			name = str(cmd) + '@' + hex(id(self))
 		self.name = name
@@ -21,8 +23,6 @@ class ConsoleItem:
 			self.appResults = []
 			self.container.dataAvail.append(self.dataAvailCB)
 		self.container.appClosed.append(self.finishedCB)
-		if isinstance(cmd, str): # until .execute supports a better api
-			cmd = [cmd]
 		retval = self.container.execute(*cmd)
 		if retval:
 			self.finishedCB(retval)

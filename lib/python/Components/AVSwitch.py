@@ -1,9 +1,8 @@
-import os
+from os import path
 
 from enigma import eAVSwitch, getDesktop
 from boxbranding import getBoxType, getBrandOEM, getHaveAVJACK, getHaveRCA, getHaveSCART, getHaveSCARTYUV, getHaveYUV
 
-from Components.About import about
 from Components.config import ConfigBoolean, ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
 from Components.SystemInfo import SystemInfo
 from Tools.CList import CList
@@ -268,7 +267,7 @@ class AVSwitch:
 			fd.write(cfgelement.value)
 
 	def setPolicy169(self, cfgelement):
-		if os.path.exists("/proc/stb/video/policy2"):
+		if path.exists("/proc/stb/video/policy2"):
 			print("[AVSwitch] setting policy2: %s" % cfgelement.value)
 			with open("/proc/stb/video/policy2", "w") as fd:
 				fd.write(cfgelement.value)
@@ -403,7 +402,7 @@ def InitAVSwitch():
 		"panscan": _("Pan&scan"),					# TRANSLATORS: (aspect ratio policy: cropped content on left/right) in doubt, keep english term
 		"scale": _("Just scale")					# TRANSLATORS: (aspect ratio policy: display as fullscreen, even if this breaks the aspect)
 	}
-	if os.path.exists("/proc/stb/video/policy2_choices"):
+	if path.exists("/proc/stb/video/policy2_choices"):
 		f = open("/proc/stb/video/policy2_choices")
 		if "auto" in f.readline():
 			policy2_choices.update({"auto": _("Auto")})		# TRANSLATORS: (aspect ratio policy: always try to display as fullscreen, when there is no content (black bars) on left/right, even if this breaks the aspect.
@@ -415,7 +414,7 @@ def InitAVSwitch():
 		# "nonlinear": _("Nonlinear"),					# TRANSLATORS: (aspect ratio policy: display as fullscreen, with stretching the left/right)
 		"bestfit": _("Just scale")					# TRANSLATORS: (aspect ratio policy: display as fullscreen, even if this breaks the aspect)
 	}
-	if os.path.exists("/proc/stb/video/policy_choices"):
+	if path.exists("/proc/stb/video/policy_choices"):
 		f = open("/proc/stb/video/policy_choices")
 		if "auto" in f.readline():
 			policy_choices.update({"auto": _("Auto")})		# TRANSLATORS: (aspect ratio policy: always try to display as fullscreen, when there is no content (black bars) on left/right, even if this breaks the aspect.

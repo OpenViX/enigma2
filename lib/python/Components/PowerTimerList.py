@@ -81,7 +81,7 @@ class PowerTimerList(GUIComponent):
 				else:
 					repeatedtext = ", ".join(repeatedtext)
 				if self.iconRepeat:
-					res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, 2, self.rowSplit, 20, 20, self.iconRepeat))
+					res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, 2, self.rowSplit, self.iconWidth, self.iconHeight, self.iconRepeat))
 			else:
 				repeatedtext = begin[0] # date
 			text = repeatedtext + ((" %s ... %s (%d " + _("mins") + ")") % (begin[1], FuzzyTime(timer.end)[1], (timer.end - timer.begin) / 60))
@@ -116,7 +116,7 @@ class PowerTimerList(GUIComponent):
 			icon = self.iconFailed
 		icon and res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, self.iconMargin / 2, (self.rowSplit - self.iconHeight) / 2, self.iconWidth, self.iconHeight, icon))
 
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, self.iconMargin + self.iconWidth, self.rowSplit, 126, height - self.rowSplit, 2, RT_HALIGN_LEFT | RT_VALIGN_BOTTOM, state))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, self.iconMargin + self.iconWidth, self.rowSplit, 180, height - self.rowSplit, 2, RT_HALIGN_LEFT | RT_VALIGN_BOTTOM, state))
 
 		line = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "div-h.png"))
 		res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, 0, height - 2, width, 2, line))

@@ -23,10 +23,7 @@ from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import fileExists, SCOPE_CURRENT_SKIN, resolveFilename
 from Tools.LoadPixmap import LoadPixmap
 import requests
-try: # python 3
-	from urllib.parse import urlparse, urlunparse # raises ImportError in Python 2
-except ImportError: # Python 2
-	from urlparse import urlparse, urlunparse
+from urllib.parse import urlparse, urlunparse # raises ImportError in Python 2
 
 
 VERSION = "V3 Python 3"

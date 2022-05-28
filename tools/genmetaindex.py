@@ -1,4 +1,5 @@
 # usage: genmetaindex.py <xml-files>  > index.xml
+from os import path as ospath
 import sys
 import os
 from xml.etree.ElementTree import ElementTree, Element
@@ -11,7 +12,7 @@ for file in sys.argv[1:]:
 	p.parse(file)
 
 	package = Element("package")
-	package.set("details", os.path.basename(file))
+	package.set("details", ospath.basename(file))
 
 	# we need all prerequisites
 	package.append(p.find("prerequisites"))

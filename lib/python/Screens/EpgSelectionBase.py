@@ -380,7 +380,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 	def __popupMenu(self, title, menu):
 		self.popupDialog = self.session.instantiateDialog(PopupChoiceBox, title=title, list=menu, keys=["green", "blue"], skin_name="RecordTimerQuestion", closeCB=self.closePopupDialog)
 		pos = self["list"].getSelectionPosition()
-		self.popupDialog.instance.move(ePoint(pos[0] - self.popupDialog.instance.size().width(), self.instance.position().y() + pos[1]))
+		self.popupDialog.instance.move(ePoint(max(0, pos[0] - self.popupDialog.instance.size().width()), self.instance.position().y() + pos[1]))
 		self.showPopupDialog()
 
 	def showPopupDialog(self):
