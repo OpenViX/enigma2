@@ -180,6 +180,7 @@ class VIXBackupManager(Screen):
 		self.activityTimer.timeout.get().append(self.backupRunning)
 		self.activityTimer.start(10)
 		self.Console = Console()
+		self.ConsoleB = Console(binary=True)
 
 		if BackupTime > 0:
 			t = localtime(BackupTime)
@@ -364,7 +365,7 @@ class VIXBackupManager(Screen):
 					remove("/tmp/ExtraInstalledPlugins")
 				if path.exists("/tmp/backupkernelversion"):
 					remove("/tmp/backupkernelversion")
-				self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion", self.settingsRestoreCheck)
+				self.ConsoleB.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion", self.settingsRestoreCheck)
 			else:
 				self.session.open(MessageBox, _("There is no backup to restore."), MessageBox.TYPE_INFO, timeout=10)
 		else:
@@ -477,9 +478,9 @@ class VIXBackupManager(Screen):
 	def Stage1(self, answer=None):
 		print("[BackupManager] Restoring Stage 1:")
 		if answer is True:
-			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
+			self.ConsoleB.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /", self.Stage1SettingsComplete)
 		elif answer is False:
-			self.Console.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins", self.Stage1PluginsComplete)
+			self.ConsoleB.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C / tmp/ExtraInstalledPlugins tmp/backupkernelversion tmp/backupimageversion  tmp/3rdPartyPlugins", self.Stage1PluginsComplete)
 
 	def Stage1SettingsComplete(self, result, retval, extra_args):
 		print("[BackupManager] Restoring Stage 1 RESULT:", result)
@@ -708,7 +709,7 @@ class VIXBackupManager(Screen):
 		if self.doPluginsRestore:
 			print("[BackupManager] Restoring Stage 5: starting plugin restore")
 			print("[BackupManager] Console command: ", "opkg install " + self.pluginslist + " " + self.pluginslist2)
-			self.Console.ePopen("opkg install " + self.pluginslist + " " + self.pluginslist2, self.Stage5Complete)
+			self.ConsoleB.ePopen("opkg install " + self.pluginslist + " " + self.pluginslist2, self.Stage5Complete)
 		else:
 			print("[BackupManager] Restoring Stage 5: plugin restore not requested")
 			self.Stage6()
@@ -1158,6 +1159,7 @@ class BackupFiles(Screen):
 	def __init__(self, session, updatebackup=False, imagebackup=False, schedulebackup=False):
 		Screen.__init__(self, session)
 		self.Console = Console()
+		self.ConsoleB = Console(binary=True)		
 		self.updatebackup = updatebackup
 		self.imagebackup = imagebackup
 		self.schedulebackup = schedulebackup
@@ -1391,7 +1393,7 @@ class BackupFiles(Screen):
 		with open(BackupFiles.tar_flist, "w") as tfl:
 			for fn in tmplist:
 				tfl.write(fn + "\n")
-		self.Console.ePopen("tar -T " + BackupFiles.tar_flist + " -czvf " + self.Backupfile, self.Stage4Complete)
+		self.ConsoleB.ePopen("tar -T " + BackupFiles.tar_flist + " -czvf " + self.Backupfile, self.Stage4Complete)
 
 	def Stage4Complete(self, result, retval, extra_args):
 		if path.exists(self.Backupfile):
