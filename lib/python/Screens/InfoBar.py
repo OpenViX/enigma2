@@ -360,6 +360,8 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 			self.session.openWithCallback(self.leavePlayerOnExitCallback, MessageBox, _("Exit movie player?"), simple=True)
 		elif config.usage.leave_movieplayer_onExit.value == "without popup":
 			self.leavePlayerOnExitCallback(True)
+		elif config.usage.leave_movieplayer_onExit.value == "stop":
+			self.leavePlayer()
 
 	def leavePlayerOnExitCallback(self, answer):
 		if answer:
