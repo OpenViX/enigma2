@@ -1175,7 +1175,7 @@ index 0000000000..c7b57c5378
 +
 +#endif /* __dvb_fcc_decoder_h */
 diff --git a/lib/dvb/frontend.cpp b/lib/dvb/frontend.cpp
-index 10feb2b013..440d8f03e9 100644
+index 7982bb9846..3a76b0295b 100644
 --- a/lib/dvb/frontend.cpp
 +++ b/lib/dvb/frontend.cpp
 @@ -556,7 +556,7 @@ int eDVBFrontend::PriorityOrder=0;
@@ -1187,7 +1187,7 @@ index 10feb2b013..440d8f03e9 100644
  	,m_fd(-1), m_dvbversion(0), m_rotor_mode(false), m_need_rotor_workaround(false), m_multitype(false), m_voltage5_terrestrial(-1)
  	,m_state(stateClosed), m_timeout(0), m_tuneTimer(0)
  {
-@@ -1580,6 +1580,8 @@ int eDVBFrontend::readFrontendData(int type)
+@@ -1584,6 +1584,8 @@ int eDVBFrontend::readFrontendData(int type)
  			return !!(readFrontendData(iFrontendInformation_ENUMS::frontendStatus) & FE_HAS_SYNC);
  		case iFrontendInformation_ENUMS::frontendNumber:
  			return m_slotid;
