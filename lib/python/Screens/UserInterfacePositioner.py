@@ -104,7 +104,7 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("OSD position"))
-		self.Console = Console()
+		self.ConsoleB = Console(binary=True)
 		self["status"] = StaticText()
 		self["key_yellow"] = StaticText(_("Defaults"))
 
@@ -151,7 +151,7 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 			self.session.nav.stopService()
 			if self.restoreService not in self.onClose:
 				self.onClose.append(self.restoreService)
-			self.Console.ePopen('/usr/bin/showiframe /usr/share/enigma2/hd-testcard.mvi')
+			self.ConsoleB.ePopen('/usr/bin/showiframe /usr/share/enigma2/hd-testcard.mvi')
 		else:
 			self.close()
 

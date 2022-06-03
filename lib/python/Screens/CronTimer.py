@@ -39,6 +39,7 @@ class CronTimers(Screen):
 		self.summary_running = ''
 		self['key'] = Label(_("H: = Hourly / D: = Daily / W: = Weekly / M: = Monthly"))
 		self.Console = Console()
+		self.ConsoleB = Console(binary=True)
 		self.my_crond_active = False
 		self.my_crond_run = False
 
@@ -80,7 +81,7 @@ class CronTimers(Screen):
 	def doInstall(self, callback, pkgname):
 		self.message = self.session.open(MessageBox, _("Please wait..."), MessageBox.TYPE_INFO, enable_input=False)
 		self.message.setTitle(_('Installing service'))
-		self.Console.ePopen('/usr/bin/opkg install ' + pkgname, callback)
+		self.ConsoleB.ePopen('/usr/bin/opkg install ' + pkgname, callback)
 
 	def installComplete(self, result=None, retval=None, extra_args=None):
 		self.message.close()
@@ -88,7 +89,7 @@ class CronTimers(Screen):
 
 	def UninstallCheck(self):
 		if not self.my_crond_run:
-			self.Console.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.RemovedataAvail)
+			self.ConsoleB.ePopen('/usr/bin/opkg list_installed ' + self.service_name, self.RemovedataAvail)
 		else:
 			self.close()
 
@@ -107,7 +108,7 @@ class CronTimers(Screen):
 	def doRemove(self, callback, pkgname):
 		self.message = self.session.open(MessageBox, _("Please wait..."), MessageBox.TYPE_INFO, enable_input=False)
 		self.message.setTitle(_('Removing service'))
-		self.Console.ePopen('/usr/bin/opkg remove ' + pkgname + ' --force-remove --autoremove', callback)
+		self.ConsoleB.ePopen('/usr/bin/opkg remove ' + pkgname + ' --force-remove --autoremove', callback)
 
 	def removeComplete(self, result=None, retval=None, extra_args=None):
 		self.message.close()
@@ -131,9 +132,9 @@ class CronTimers(Screen):
 
 	def CrondStart(self):
 		if not self.my_crond_run:
-			self.Console.ePopen('/etc/init.d/crond start', self.StartStopCallback)
+			self.ConsoleB.ePopen('/etc/init.d/crond start', self.StartStopCallback)
 		elif self.my_crond_run:
-			self.Console.ePopen('/etc/init.d/crond stop', self.StartStopCallback)
+			self.ConsoleB.ePopen('/etc/init.d/crond stop', self.StartStopCallback)
 
 	def StartStopCallback(self, result=None, retval=None, extra_args=None):
 		sleep(3)
@@ -141,9 +142,9 @@ class CronTimers(Screen):
 
 	def autostart(self):
 		if fileExists('/etc/rc2.d/S90crond'):
-			self.Console.ePopen('update-rc.d -f crond remove')
+			self.ConsoleB.ePopen('update-rc.d -f crond remove')
 		else:
-			self.Console.ePopen('update-rc.d -f crond defaults 90 60')
+			self.ConsoleB.ePopen('update-rc.d -f crond defaults 90 60')
 		sleep(3)
 		self.updateList()
 
