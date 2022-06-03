@@ -1251,7 +1251,7 @@ class ImageBackup(Screen):
 			move("%s/vmlinux.bin" % self.WORKDIR, "%s/%s" % (self.MAINDEST, self.KERNELFILE))
 		else:
 			move("%s/vmlinux.gz" % self.WORKDIR, "%s/%s" % (self.MAINDEST, self.KERNELFILE))
-
+		self.h9root = False
 		if getMachineBuild() in ("h9", "i55plus"):
 			system("mv %s/fastboot.bin %s/fastboot.bin" % (self.WORKDIR, self.MAINDEST))
 			system("mv %s/bootargs.bin %s/bootargs.bin" % (self.WORKDIR, self.MAINDEST))
@@ -1262,8 +1262,10 @@ class ImageBackup(Screen):
 			system("cp -f /usr/share/bootargs.bin %s/bootargs.bin" % self.MAINDEST2)
 			with open("/proc/cmdline", "r") as z:
 				if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z.read():
+					self.h9root = True				
 					move("%s/rootfs.tar.bz2" % self.WORKDIR, "%s/rootfs.tar.bz2" % self.MAINDEST)
 				else:
+					self.h9root = False				
 					move("%s/rootfs.%s" % (self.WORKDIR, self.ROOTFSTYPE), "%s/%s" % (self.MAINDEST, self.ROOTFSFILE))
 		else:
 			move("%s/rootfs.%s" % (self.WORKDIR, self.ROOTFSTYPE), "%s/%s" % (self.MAINDEST, self.ROOTFSFILE))
@@ -1316,7 +1318,7 @@ class ImageBackup(Screen):
 			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
-		if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (getMachineBuild() in ("h9", "i55plus") and "root=/dev/mmcblk0p1" in z):
+		if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (getMachineBuild() in ("h9", "i55plus") and self.h9root):
 			for root, dirs, files in walk(self.MAINDEST):
 				for momo in dirs:
 					chmod(path.join(root, momo), 0o644)
