@@ -574,15 +574,8 @@ def InitAVSwitch():
 
 	if SystemInfo["Canedidchecking"]:
 		def setEDIDBypass(configElement):
-			try:
-				with open("/proc/stb/hdmi/bypass_edid_checking", "w") as fd:
-					fd.write(configElement.value)
-			except (IOError, OSError):
-				pass
-		config.av.bypass_edid_checking = ConfigSelection(choices={
-			"00000000": _("off"),
-			"00000001": _("on")
-		}, default="00000000")
+			open(SystemInfo["Canedidchecking"], "w").write("00000001" if configElement.value else "00000000")
+		config.av.bypass_edid_checking = ConfigYesNo(default=False)
 		config.av.bypass_edid_checking.addNotifier(setEDIDBypass)
 	else:
 		config.av.bypass_edid_checking = ConfigNothing()

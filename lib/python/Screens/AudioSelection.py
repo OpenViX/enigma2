@@ -299,8 +299,7 @@ class AudioSelection(ConfigListScreen, Screen):
 			else:
 				conflist.append(("",))
 			if SystemInfo["Canedidchecking"]:
-				choice_list = [("00000000", _("off")), ("00000001", _("on"))]
-				self.settings.bypass_edid_checking = ConfigSelection(choices=choice_list, default=config.av.bypass_edid_checking.value)
+				self.settings.bypass_edid_checking = ConfigYesNo(default=config.av.bypass_edid_checking.value)
 				self.settings.bypass_edid_checking.addNotifier(self.changeEDIDChecking, initial_call=False)
 				conflist.append(getConfigListEntry(_("Bypass HDMI EDID Check"), self.settings.bypass_edid_checking, None))
 			if hasattr(self.infobar, "runPlugin"):
