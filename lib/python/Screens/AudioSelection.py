@@ -458,13 +458,11 @@ class AudioSelection(ConfigListScreen, Screen):
 		config.av.transcodeaac.save()
 
 	def changeBTAudio(self, btaudio):
-		if btaudio.value:
-			config.av.btaudio.value = btaudio.value
+		config.av.btaudio.value = btaudio.value
 		config.av.btaudio.save()
 
 	def changeEDIDChecking(self, edidchecking):
-		if edidchecking.value:
-			config.av.bypass_edid_checking.value = edidchecking.value
+		config.av.bypass_edid_checking.value = edidchecking.value
 		config.av.bypass_edid_checking.save()
 
 	def changeMode(self, mode):
