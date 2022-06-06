@@ -397,19 +397,16 @@ class AudioSelection(ConfigListScreen, Screen):
 			self.infobar.enableSubtitle(subtitle)
 
 	def change3DSurround(self, surround_3d):
-		if surround_3d.value:
-			config.av.surround_3d.value = surround_3d.value
+		config.av.surround_3d.value = surround_3d.value
 		config.av.surround_3d.save()
 		self.fillList()
 
 	def change3DSurroundSpeaker(self, surround_3d_speaker):
-		if surround_3d_speaker.value:
-			config.av.surround_3d_speaker.value = surround_3d_speaker.value
+		config.av.surround_3d_speaker.value = surround_3d_speaker.value
 		config.av.surround_3d_speaker.save()
 
 	def changeAutoVolume(self, autovolume):
-		if autovolume.value:
-			config.av.autovolume.value = autovolume.value
+		config.av.autovolume.value = autovolume.value
 		config.av.autovolume.save()
 
 	def changePCMMultichannel(self, multichan):
