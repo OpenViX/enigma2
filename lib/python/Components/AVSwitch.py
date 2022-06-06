@@ -469,7 +469,7 @@ def InitAVSwitch():
 			choiceslist = procChoices.split(" ")
 			choices = [(item, _(item)) for item in choiceslist]
 			default = choiceslist[0]
-			print("[AVSwitch][readChoices from Proc] choices=%s, default=%s" % (choices, default))			
+			print("[AVSwitch][readChoices from Proc] choices=%s, default=%s" % (choices, default))
 		return (choices, default)
 
 	iAVSwitch.setInput("ENCODER")  # Init on startup.
@@ -496,7 +496,6 @@ def InitAVSwitch():
 			]
 			default = "Edid(Auto)"
 		else:
-
 			choices = [("auto", _("Auto")),
 						("rgb", _("RGB")),
 						("420", _("420")),
@@ -816,7 +815,7 @@ def InitAVSwitch():
 		def setBTAudio(configElement):
 			open("/proc/stb/audio/btaudio", "w").write(configElement.value)
 		choices = [
-			("off", _("Off")), 
+			("off", _("Off")),
 			("on", _("On"))
 		]
 		default = "off"
