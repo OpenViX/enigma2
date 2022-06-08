@@ -547,7 +547,7 @@ def InitAVSwitch():
 	if SystemInfo["havehdmihdrtype"]:
 		def setHdmiHdrType(configElement):
 			try:
-				with open("/proc/stb/video/hdmi_hdrtype", "w") as fd:
+				with open(SystemInfo["havehdmihdrtype"], "w") as fd:
 					fd.write(configElement.value)
 			except (IOError, OSError):
 				pass
@@ -604,7 +604,7 @@ def InitAVSwitch():
 	if SystemInfo["Canaudiosource"]:
 		def setAudioSource(configElement):
 			try:
-				with open("/proc/stb/hdmi/audio_source", "w") as fd:
+				with open(SystemInfo["Canaudiosource"], "w") as fd:
 					fd.write(configElement.value)
 			except (IOError, OSError):
 				pass
@@ -672,7 +672,7 @@ def InitAVSwitch():
 		config.av.autovolume = ConfigNothing()
 	if SystemInfo["supportPcmMultichannel"]:
 		def setPCMMultichannel(configElement):
-			open("/proc/stb/audio/multichannel_pcm", "w").write(configElement.value and "enable" or "disable")
+			open(SystemInfo["supportPcmMultichannel"], "w").write(configElement.value and "enable" or "disable")
 		config.av.pcm_multichannel = ConfigYesNo(default=False)
 		config.av.pcm_multichannel.addNotifier(setPCMMultichannel)
 
@@ -840,7 +840,7 @@ def InitAVSwitch():
 	if SystemInfo["haveboxmode"]:
 		def setBoxmode(configElement):
 			try:
-				open("/proc/stb/info/boxmode", "w").write(configElement.value)
+				open(SystemInfo["haveboxmode"], "w").write(configElement.value)
 			except (IOError, OSError):
 				pass
 		config.av.boxmode = ConfigSelection(choices={
