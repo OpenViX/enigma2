@@ -7,6 +7,7 @@ from Components.config import config, getConfigListEntry, ConfigSubsection, Conf
 from Components.ConfigList import ConfigListScreen
 from Components.Sources.StaticText import StaticText
 from Components.ServiceEventTracker import ServiceEventTracker
+from Components.SystemInfo import SystemInfo
 from enigma import iPlayableService, eTimer, eServiceReference, iRecordableService
 import os
 import glob
@@ -80,6 +81,7 @@ class FCCSupport:
 		self.__event_tracker = None
 		self.onClose = []
 		self.changeEventTracker()
+		SystemInfo["FCCactive"] = self.fccSetupActivate
 #		from Screens.PictureInPicture import on_pip_start_stop
 #		on_pip_start_stop.append(self.FCCForceStopforPIP)
 
@@ -171,6 +173,7 @@ class FCCSupport:
 
 		if fcc_changed:
 			self.fccmgr.setFCCEnable(int(self.fccSetupActivate))
+			SystemInfo["FCCactive"] = self.fccSetupActivate
 			curPlaying = self.session.nav.getCurrentlyPlayingServiceReference()
 			if curPlaying:
 				self.session.nav.stopService()
