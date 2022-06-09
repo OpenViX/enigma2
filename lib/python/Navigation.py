@@ -38,6 +38,7 @@ class Navigation:
 		self.currentlyPlayingServiceReference = None
 		self.currentlyPlayingServiceOrGroup = None
 		self.currentlyPlayingService = None
+		self.skipServiceReferenceReset = False
 		self.RecordTimer = RecordTimer.RecordTimer()
 		self.PowerTimer = PowerTimer.PowerTimer()
 		self.__wasTimerWakeup = False
@@ -96,8 +97,9 @@ class Navigation:
 		for x in self.event:
 			x(i)
 		if i == iPlayableService.evEnd:
-			self.currentlyPlayingServiceReference = None
-			self.currentlyPlayingServiceOrGroup = None
+			if not self.skipServiceReferenceReset:
+				self.currentlyPlayingServiceReference = None
+				self.currentlyPlayingServiceOrGroup = None
 			self.currentlyPlayingService = None
 
 	def dispatchRecordEvent(self, rec_service, event):
@@ -170,7 +172,10 @@ class Navigation:
 			else:
 				playref = ref
 			if self.pnav:
-				self.pnav.stopService()
+				if not SystemInfo["FCCactive"]:
+					self.pnav.stopService()
+				else:
+					self.skipServiceReferenceReset = True
 				self.currentlyPlayingServiceReference = playref
 				self.currentlyPlayingServiceOrGroup = ref
 				if InfoBarInstance and InfoBarInstance.servicelist.servicelist.setCurrent(ref, adjust):
@@ -212,6 +217,7 @@ class Navigation:
 						self.retryServicePlayTimer = eTimer()
 						self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
 						self.retryServicePlayTimer.start(500, True)
+				self.skipServiceReferenceReset = False
 				if setPriorityFrontend:
 					setPreferredTuner(int(config.usage.frontend_priority.value))
 				return 0
