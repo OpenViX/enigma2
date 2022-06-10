@@ -728,8 +728,13 @@ class VIXBackupManager(Screen):
 		self.Stage4Completed = True
 		self.Stage5Completed = True
 		if self.didPluginsRestore or self.didSettingsRestore:
-			print("[BackupManager] Restoring Completed rebooting")
-			quitMainloop(2)
+			if self.didSettingsRestore:
+				self.ConsoleB.ePopen("tar -xzvf " + self.BackupDirectory + self.sel + " -C /" + " etc/enigma2/settings")
+				print("[BackupManager] Restoring Stage 6: restored settings file again")				
+				self.ConsoleB.ePopen("killall -9 enigma2 && init 6")
+			else:
+				print("[BackupManager] Stage 6 Restoring Completed rebooting")
+				quitMainloop(2)
 		else:
 			print("[BackupManager] Restoring failed or canceled")
 			self.close()
