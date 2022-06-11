@@ -299,8 +299,7 @@ class AudioSelection(ConfigListScreen, Screen):
 			else:
 				conflist.append(("",))
 			if SystemInfo["Canedidchecking"]:
-				choice_list = [("00000000", _("off")), ("00000001", _("on"))]
-				self.settings.bypass_edid_checking = ConfigSelection(choices=choice_list, default=config.av.bypass_edid_checking.value)
+				self.settings.bypass_edid_checking = ConfigYesNo(default=config.av.bypass_edid_checking.value)
 				self.settings.bypass_edid_checking.addNotifier(self.changeEDIDChecking, initial_call=False)
 				conflist.append(getConfigListEntry(_("Bypass HDMI EDID Check"), self.settings.bypass_edid_checking, None))
 			if hasattr(self.infobar, "runPlugin"):
@@ -397,19 +396,16 @@ class AudioSelection(ConfigListScreen, Screen):
 			self.infobar.enableSubtitle(subtitle)
 
 	def change3DSurround(self, surround_3d):
-		if surround_3d.value:
-			config.av.surround_3d.value = surround_3d.value
+		config.av.surround_3d.value = surround_3d.value
 		config.av.surround_3d.save()
 		self.fillList()
 
 	def change3DSurroundSpeaker(self, surround_3d_speaker):
-		if surround_3d_speaker.value:
-			config.av.surround_3d_speaker.value = surround_3d_speaker.value
+		config.av.surround_3d_speaker.value = surround_3d_speaker.value
 		config.av.surround_3d_speaker.save()
 
 	def changeAutoVolume(self, autovolume):
-		if autovolume.value:
-			config.av.autovolume.value = autovolume.value
+		config.av.autovolume.value = autovolume.value
 		config.av.autovolume.save()
 
 	def changePCMMultichannel(self, multichan):
@@ -458,13 +454,11 @@ class AudioSelection(ConfigListScreen, Screen):
 		config.av.transcodeaac.save()
 
 	def changeBTAudio(self, btaudio):
-		if btaudio.value:
-			config.av.btaudio.value = btaudio.value
+		config.av.btaudio.value = btaudio.value
 		config.av.btaudio.save()
 
 	def changeEDIDChecking(self, edidchecking):
-		if edidchecking.value:
-			config.av.bypass_edid_checking.value = edidchecking.value
+		config.av.bypass_edid_checking.value = edidchecking.value
 		config.av.bypass_edid_checking.save()
 
 	def changeMode(self, mode):

@@ -1487,6 +1487,62 @@ index f00f23faef..13c7b2fa6b 100644
  	def atBegin(self):
  		return self.instance.atBegin()
  
+diff --git a/lib/python/Components/SystemInfo.py b/lib/python/Components/SystemInfo.py
+index 75fd07de8b..5563f237f2 100644
+--- a/lib/python/Components/SystemInfo.py
++++ b/lib/python/Components/SystemInfo.py
+@@ -160,6 +160,7 @@ SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable ha
+ SystemInfo["FbcTunerPowerAlwaysOn"] = getBoxType() in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse")
+ SystemInfo["HasPhysicalLoopthrough"] = ["Vuplus DVB-S NIM(AVL2108)", "GIGA DVB-S2 NIM (Internal)"]
+ SystemInfo["HasFBCtuner"] = ["Vuplus DVB-C NIM(BCM3158)", "Vuplus DVB-C NIM(BCM3148)", "Vuplus DVB-S NIM(7376 FBC)", "Vuplus DVB-S NIM(45308X FBC)", "Vuplus DVB-S NIM(45208 FBC)", "DVB-S2 NIM(45208 FBC)", "DVB-S2X NIM(45308X FBC)", "DVB-S2 NIM(45308 FBC)", "DVB-C NIM(3128 FBC)","BCM45208", "BCM45308X", "BCM3158"]
++SystemInfo["FCCactive"] = False
+ SystemInfo["rc_model"] = rc_model.getRcFolder()
+ SystemInfo["mapKeyInfoToEpgFunctions"] = SystemInfo["rc_model"] in ("vu", "vu2", "vu3", "vu4") # due to button limitations of the remote control
+ SystemInfo["toggleTvRadioButtonEvents"] = SystemInfo["rc_model"] in ("ax4", "beyonwiz1", "beyonwiz2", "gb0", "gb1", "gb2", "gb3", "gb4", "sf8008", "sf8008m", "uniboxhde") # due to button limitations of the remote control
+diff --git a/lib/python/Navigation.py b/lib/python/Navigation.py
+index 25b7fd49b4..8509280a4a 100644
+--- a/lib/python/Navigation.py
++++ b/lib/python/Navigation.py
+@@ -38,6 +38,7 @@ class Navigation:
+ 		self.currentlyPlayingServiceReference = None
+ 		self.currentlyPlayingServiceOrGroup = None
+ 		self.currentlyPlayingService = None
++		self.skipServiceReferenceReset = False
+ 		self.RecordTimer = RecordTimer.RecordTimer()
+ 		self.PowerTimer = PowerTimer.PowerTimer()
+ 		self.__wasTimerWakeup = False
+@@ -90,8 +91,9 @@ class Navigation:
+ 		for x in self.event:
+ 			x(i)
+ 		if i == iPlayableService.evEnd:
+-			self.currentlyPlayingServiceReference = None
+-			self.currentlyPlayingServiceOrGroup = None
++			if not self.skipServiceReferenceReset:
++				self.currentlyPlayingServiceReference = None
++				self.currentlyPlayingServiceOrGroup = None
+ 			self.currentlyPlayingService = None
+ 
+ 	def dispatchRecordEvent(self, rec_service, event):
+@@ -152,7 +154,10 @@ class Navigation:
+ 			else:
+ 				playref = ref
+ 			if self.pnav:
+-				self.pnav.stopService()
++				if not SystemInfo["FCCactive"]:
++					self.pnav.stopService()
++				else:
++					self.skipServiceReferenceReset = True
+ 				self.currentlyPlayingServiceReference = playref
+ 				self.currentlyPlayingServiceOrGroup = ref
+ 				if InfoBarInstance and InfoBarInstance.servicelist.servicelist.setCurrent(ref, adjust):
+@@ -189,6 +194,7 @@ class Navigation:
+ 				#	print("[Navigation] Failed to start", playref)
+ 					self.currentlyPlayingServiceReference = None
+ 					self.currentlyPlayingServiceOrGroup = None
++				self.skipServiceReferenceReset = False
+ 				if setPriorityFrontend:
+ 					setPreferredTuner(int(config.usage.frontend_priority.value))
+ 				return 0
 diff --git a/lib/python/Plugins/SystemPlugins/FastChannelChange/Makefile.am b/lib/python/Plugins/SystemPlugins/FastChannelChange/Makefile.am
 new file mode 100644
 index 0000000000..ae91ed5776
@@ -1536,10 +1592,10 @@ index 0000000000..1527085fca
 +</default>
 diff --git a/lib/python/Plugins/SystemPlugins/FastChannelChange/plugin.py b/lib/python/Plugins/SystemPlugins/FastChannelChange/plugin.py
 new file mode 100644
-index 0000000000..79dcb95f1f
+index 0000000000..570e036ca7
 --- /dev/null
 +++ b/lib/python/Plugins/SystemPlugins/FastChannelChange/plugin.py
-@@ -0,0 +1,573 @@
+@@ -0,0 +1,576 @@
 +#!/usr/bin/python
 +# -*- coding: utf-8 -*-
 +from Plugins.Plugin import PluginDescriptor
@@ -1549,6 +1605,7 @@ index 0000000000..79dcb95f1f
 +from Components.ConfigList import ConfigListScreen
 +from Components.Sources.StaticText import StaticText
 +from Components.ServiceEventTracker import ServiceEventTracker
++from Components.SystemInfo import SystemInfo
 +from enigma import iPlayableService, eTimer, eServiceReference, iRecordableService
 +import os
 +import glob
@@ -1622,6 +1679,7 @@ index 0000000000..79dcb95f1f
 +		self.__event_tracker = None
 +		self.onClose = []
 +		self.changeEventTracker()
++		SystemInfo["FCCactive"] = self.fccSetupActivate
 +#		from Screens.PictureInPicture import on_pip_start_stop
 +#		on_pip_start_stop.append(self.FCCForceStopforPIP)
 +
@@ -1713,6 +1771,7 @@ index 0000000000..79dcb95f1f
 +
 +		if fcc_changed:
 +			self.fccmgr.setFCCEnable(int(self.fccSetupActivate))
++			SystemInfo["FCCactive"] = self.fccSetupActivate
 +			curPlaying = self.session.nav.getCurrentlyPlayingServiceReference()
 +			if curPlaying:
 +				self.session.nav.stopService()

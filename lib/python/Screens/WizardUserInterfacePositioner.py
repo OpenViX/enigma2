@@ -14,7 +14,7 @@ class UserInterfacePositionerWizard(WizardLanguage, Rc):
 		Rc.__init__(self)
 		self.skinName = "StartWizard"
 		self.session = session
-		self.Console = Console()
+		self.ConsoleB = Console(binary=True)
 		self["wizard"] = Pixmap()
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
@@ -40,7 +40,7 @@ class UserInterfacePositionerWizard(WizardLanguage, Rc):
 
 	def welcomeAction(self, answer):
 		if answer:
-			self.Console.ePopen('/usr/bin/showiframe /usr/share/enigma2/hd-testcard.mvi')
+			self.ConsoleB.ePopen('/usr/bin/showiframe /usr/share/enigma2/hd-testcard.mvi')
 		else:
 			self.close()
 
@@ -56,4 +56,4 @@ class UserInterfacePositionerWizard(WizardLanguage, Rc):
 		WizardLanguage.back(self)
 
 	def __onClose(self):
-		self.Console.ePopen('/usr/bin/showiframe /usr/share/backdrop.mvi')
+		self.ConsoleB.ePopen('/usr/bin/showiframe /usr/share/backdrop.mvi')

@@ -435,103 +435,6 @@ def InitAVSwitch():
 	config.av.policy_43.addNotifier(iAVSwitch.setPolicy43)
 	config.av.policy_169.addNotifier(iAVSwitch.setPolicy169)
 
-	def setHDMIColorspace(configElement):
-		try:
-			with open(SystemInfo["havecolorspace"], "w") as fd:
-				fd.write(configElement.value)
-		except (IOError, OSError):
-			pass
-
-	def setHDMIColorimetry(configElement):
-		try:
-			with open(SystemInfo["havecolorimetry"], "w") as fd:
-				fd.write(configElement.value)
-		except (IOError, OSError):
-			pass
-
-	def setHdmiColordepth(configElement):
-		try:
-			with open(SystemInfo["havehdmicolordepth"], "w") as fd:
-				fd.write(configElement.value)
-		except (IOError, OSError):
-			pass
-
-	def set3DSurround(configElement):
-		with open("/proc/stb/audio/3d_surround", "w") as fd:
-			fd.write(configElement.value)
-
-	def set3DPosition(configElement):
-		with open("/proc/stb/audio/3d_surround_speaker_position", "w") as fd:
-			fd.write(configElement.value)
-
-	def setAutoVolume(configElement):
-		with open("/proc/stb/audio/avl", "w") as fd:
-			fd.write(configElement.value)
-
-	def setAC3Downmix(configElement):
-		with open("/proc/stb/audio/ac3", "w") as fd:
-			fd.write(configElement.value)
-		if SystemInfo.get("supportPcmMultichannel", False) and configElement.value == "passthrough":
-			SystemInfo["CanPcmMultichannel"] = True
-		else:
-			SystemInfo["CanPcmMultichannel"] = False
-			if SystemInfo["supportPcmMultichannel"]:
-				config.av.pcm_multichannel.setValue(False)
-
-	def setAC3plusTranscode(configElement):
-		with open("/proc/stb/audio/ac3plus", "w") as fd:
-			fd.write(configElement.value)
-
-	def setDTSDownmix(configElement):
-		with open("/proc/stb/audio/dts", "w") as fd:
-			fd.write(configElement.value)
-
-	def setDTSHD(configElement):
-		with open("/proc/stb/audio/dtshd", "w") as fd:
-			fd.write(configElement.value)
-
-	def setAACDownmix(configElement):
-		with open("/proc/stb/audio/aac", "w") as fd:
-			fd.write(configElement.value)
-
-	def setAACDownmixPlus(configElement):
-		with open("/proc/stb/audio/aacplus", "w") as fd:
-			fd.write(configElement.value)
-
-	def setAACTranscode(configElement):
-		with open("/proc/stb/audio/aac_transcode", "w") as fd:
-			fd.write(configElement.value)
-
-	def setWMAPRO(configElement):
-		with open("/proc/stb/audio/wmapro", "w") as fd:
-			fd.write(configElement.value)
-
-	def setBTAudio(configElement):
-		with open("/proc/stb/audio/btaudio", "w") as fd:
-			fd.write(configElement.value)
-
-	def setBTAudioDelay(configElement):
-		with open(SystemInfo["CanBTAudioDelay"], "w") as fd:
-			fd.write(format(configElement.value * 90, "x"))
-
-	def setBoxmode(configElement):
-		try:
-			with open("/proc/stb/info/boxmode", "w") as fd:
-				fd.write(configElement.value)
-		except (IOError, OSError):
-			pass
-
-	def setScaler_sharpness(config):
-		myval = int(config.value)
-		try:
-			print("[AVSwitch] setting scaler_sharpness to: %0.8X" % myval)
-			with open("/proc/stb/vmpeg/0/pep_scaler_sharpness", "w") as fd:
-				fd.write("%0.8X" % myval)
-			with open("/proc/stb/vmpeg/0/pep_apply", "w") as fd:
-				fd.write("1")
-		except (IOError, OSError):
-			print("[AVSwitch] couldn't write pep_scaler_sharpness")
-
 	def setColorFormat(configElement):
 		if config.av.videoport and config.av.videoport.value in ("YPbPr", "Scart-YPbPr"):
 			iAVSwitch.setColorFormat(3)
@@ -566,7 +469,7 @@ def InitAVSwitch():
 			choiceslist = procChoices.split(" ")
 			choices = [(item, _(item)) for item in choiceslist]
 			default = choiceslist[0]
-			print("[AVSwitch][readChoices from Proc] choices=%s, default=%s" % (choices, default))			
+			print("[AVSwitch][readChoices from Proc] choices=%s, default=%s" % (choices, default))
 		return (choices, default)
 
 	iAVSwitch.setInput("ENCODER")  # Init on startup.
@@ -574,20 +477,15 @@ def InitAVSwitch():
 
 	if SystemInfo["Canedidchecking"]:
 		def setEDIDBypass(configElement):
-			try:
-				with open("/proc/stb/hdmi/bypass_edid_checking", "w") as fd:
-					fd.write(configElement.value)
-			except (IOError, OSError):
-				pass
-		config.av.bypass_edid_checking = ConfigSelection(choices={
-			"00000000": _("off"),
-			"00000001": _("on")
-		}, default="00000000")
+			open(SystemInfo["Canedidchecking"], "w").write("00000001" if configElement.value else "00000000")
+		config.av.bypass_edid_checking = ConfigYesNo(default=False)
 		config.av.bypass_edid_checking.addNotifier(setEDIDBypass)
 	else:
 		config.av.bypass_edid_checking = ConfigNothing()
 
 	if SystemInfo["havecolorspace"]:
+		def setHDMIColorspace(configElement):
+			open(SystemInfo["havecolorspace"], "w").write(configElement.value)
 		if getBrandOEM() == "vuplus" and SystemInfo["HasMMC"]:
 			choices = [
 				("Edid(Auto)", _("Auto")),
@@ -598,7 +496,6 @@ def InitAVSwitch():
 			]
 			default = "Edid(Auto)"
 		else:
-
 			choices = [("auto", _("Auto")),
 						("rgb", _("RGB")),
 						("420", _("420")),
@@ -614,6 +511,8 @@ def InitAVSwitch():
 		config.av.hdmicolorspace = ConfigNothing()
 
 	if SystemInfo["havecolorimetry"]:
+		def setHDMIColorimetry(configElement):
+			open(SystemInfo["havecolorimetry"], "w").write(configElement.value)
 		choices = [
 			("auto", _("auto")),
 			("bt2020ncl", _("BT 2020 NCL")),
@@ -630,6 +529,8 @@ def InitAVSwitch():
 		config.av.hdmicolorimetry = ConfigNothing()
 
 	if SystemInfo["havehdmicolordepth"]:
+		def setHdmiColordepth(configElement):
+			open(SystemInfo["havehdmicolordepth"], "w").write(configElement.value)
 		choices = [("auto", _("Auto")),
 					("8bit", _("8bit")),
 					("10bit", _("10bit")),
@@ -646,7 +547,7 @@ def InitAVSwitch():
 	if SystemInfo["havehdmihdrtype"]:
 		def setHdmiHdrType(configElement):
 			try:
-				with open("/proc/stb/video/hdmi_hdrtype", "w") as fd:
+				with open(SystemInfo["havehdmihdrtype"], "w") as fd:
 					fd.write(configElement.value)
 			except (IOError, OSError):
 				pass
@@ -703,7 +604,7 @@ def InitAVSwitch():
 	if SystemInfo["Canaudiosource"]:
 		def setAudioSource(configElement):
 			try:
-				with open("/proc/stb/hdmi/audio_source", "w") as fd:
+				with open(SystemInfo["Canaudiosource"], "w") as fd:
 					fd.write(configElement.value)
 			except (IOError, OSError):
 				pass
@@ -717,6 +618,8 @@ def InitAVSwitch():
 		config.av.audio_source = ConfigNothing()
 
 	if SystemInfo["Can3DSurround"]:
+		def set3DSurround(configElement):
+			open("/proc/stb/audio/3d_surround", "w").write(configElement.value)
 		choices = [
 			("none", _("off")),
 			("hdmi", _("HDMI")),
@@ -734,6 +637,8 @@ def InitAVSwitch():
 		config.av.surround_3d = ConfigNothing()
 
 	if SystemInfo["Can3DSpeaker"]:
+		def set3DPosition(configElement):
+			open("/proc/stb/audio/3d_surround_speaker_position", "w").write(configElement.value)
 		choices = [
 			("center", _("center")),
 			("wide", _("wide")),
@@ -749,6 +654,8 @@ def InitAVSwitch():
 		config.av.surround_3d_speaker = ConfigNothing()
 
 	if SystemInfo["CanAutoVolume"]:
+		def setAutoVolume(configElement):
+			open("/proc/stb/audio/avl", "w").write(configElement.value)
 		choices = [
 			("none", _("off")),
 			("hdmi", _("HDMI")),
@@ -765,11 +672,19 @@ def InitAVSwitch():
 		config.av.autovolume = ConfigNothing()
 	if SystemInfo["supportPcmMultichannel"]:
 		def setPCMMultichannel(configElement):
-			open("/proc/stb/audio/multichannel_pcm", "w").write(configElement.value and "enable" or "disable")
+			open(SystemInfo["supportPcmMultichannel"], "w").write(configElement.value and "enable" or "disable")
 		config.av.pcm_multichannel = ConfigYesNo(default=False)
 		config.av.pcm_multichannel.addNotifier(setPCMMultichannel)
 
 	if SystemInfo["CanDownmixAC3"]:
+		def setAC3Downmix(configElement):
+			open("/proc/stb/audio/ac3", "w").write(configElement.value)
+			if SystemInfo.get("supportPcmMultichannel", False) and configElement.value == "passthrough":
+				SystemInfo["CanPcmMultichannel"] = True
+			else:
+				SystemInfo["CanPcmMultichannel"] = False
+				if SystemInfo["supportPcmMultichannel"]:
+					config.av.pcm_multichannel.setValue(False)
 		choices = [
 			("downmix", _("Downmix")),
 			("passthrough", _("Passthrough"))
@@ -782,6 +697,8 @@ def InitAVSwitch():
 		config.av.downmix_ac3.addNotifier(setAC3Downmix)
 
 	if SystemInfo["CanAC3Transcode"]:
+		def setAC3plusTranscode(configElement):
+			open("/proc/stb/audio/ac3plus", "w").write(configElement.value)
 		choices = [
 			("use_hdmi_caps", _("controlled by HDMI")),
 			("force_ac3", _("convert to AC3"))
@@ -794,6 +711,8 @@ def InitAVSwitch():
 		config.av.transcodeac3plus.addNotifier(setAC3plusTranscode)
 
 	if SystemInfo["CanDownmixDTS"]:
+		def setDTSDownmix(configElement):
+			open("/proc/stb/audio/dts", "w").write(configElement.value)
 		choices = [
 			("downmix", _("Downmix")),
 			("passthrough", _("Passthrough"))
@@ -806,6 +725,8 @@ def InitAVSwitch():
 		config.av.downmix_dts.addNotifier(setDTSDownmix)
 
 	if SystemInfo["CanDTSHD"]:
+		def setDTSHD(configElement):
+			open("/proc/stb/audio/dtshd", "w").write(configElement.value)
 		choices = [
 			("downmix", _("Downmix")),
 			("force_dts", _("convert to DTS")),
@@ -822,6 +743,8 @@ def InitAVSwitch():
 		config.av.dtshd.addNotifier(setDTSHD)
 
 	if SystemInfo["CanDownmixAAC"]:
+		def setAACDownmix(configElement):
+			open("/proc/stb/audio/aac", "w").write(configElement.value)
 		choices = [
 			("downmix", _("Downmix")),
 			("passthrough", _("Passthrough"))
@@ -854,6 +777,8 @@ def InitAVSwitch():
 		config.av.downmix_aacplus.addNotifier(setAACDownmixPlus)
 
 	if SystemInfo["CanAACTranscode"]:
+		def setAACTranscode(configElement):
+			open("/proc/stb/audio/aac_transcode", "w").write(configElement.value)
 		choices = [
 			("off", _("off")),
 			("ac3", _("AC3")),
@@ -870,6 +795,8 @@ def InitAVSwitch():
 		config.av.transcodeaac = ConfigNothing()
 
 	if SystemInfo["CanWMAPRO"]:
+		def setWMAPRO(configElement):
+			open("/proc/stb/audio/wmapro", "w").write(configElement.value)
 		choices = [
 			("downmix", _("Downmix")),
 			("passthrough", _("Passthrough")),
@@ -885,8 +812,10 @@ def InitAVSwitch():
 		config.av.wmapro.addNotifier(setWMAPRO)
 
 	if SystemInfo["CanBTAudio"]:
+		def setBTAudio(configElement):
+			open("/proc/stb/audio/btaudio", "w").write(configElement.value)
 		choices = [
-			("off", _("Off")), 
+			("off", _("Off")),
 			("on", _("On"))
 		]
 		default = "off"
@@ -901,12 +830,19 @@ def InitAVSwitch():
 		config.av.btaudio = ConfigNothing()
 
 	if SystemInfo["CanBTAudioDelay"]:
+		def setBTAudioDelay(configElement):
+			open(SystemInfo["CanBTAudioDelay"], "w").write(format(configElement.value * 90, "x"))
 		config.av.btaudiodelay = ConfigSelectionNumber(-1000, 1000, 5, default=0)
 		config.av.btaudiodelay.addNotifier(setBTAudioDelay)
 	else:
 		config.av.btaudiodelay = ConfigNothing()
 
 	if SystemInfo["haveboxmode"]:
+		def setBoxmode(configElement):
+			try:
+				open(SystemInfo["haveboxmode"], "w").write(configElement.value)
+			except (IOError, OSError):
+				pass
 		config.av.boxmode = ConfigSelection(choices={
 			"12": _("PIP enabled, no HDR"),
 			"1": _("HDR, 12bit 4:2:0/4:2:2, no PIP")
@@ -916,6 +852,14 @@ def InitAVSwitch():
 		config.av.boxmode = ConfigNothing()
 
 	if SystemInfo["HasScaler_sharpness"]:
+		def setScaler_sharpness(configElement):
+			myval = int(configElement.value)
+			try:
+				print("[AVSwitch] setting scaler_sharpness to: %0.8X" % myval)
+				open("/proc/stb/vmpeg/0/pep_scaler_sharpness", "w").write("%0.8X" % myval)
+				open("/proc/stb/vmpeg/0/pep_apply", "w").write("1")
+			except (IOError, OSError):
+				print("[AVSwitch] couldn't write pep_scaler_sharpness")
 		if getBoxType() in ("gbquad", "gbquadplus"):
 			config.av.scaler_sharpness = ConfigSlider(default=5, limits=(0, 26))
 		else:
