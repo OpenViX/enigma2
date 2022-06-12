@@ -465,9 +465,12 @@ class PliExtraInfo(Poll, Converter, object):
 		return ""
 
 	def createResolution(self, info):
-		yres = info.getInfo(iServiceInformation.sVideoHeight)
-		xres = info.getInfo(iServiceInformation.sVideoWidth)
-		if xres == -1:
+		try:
+			xres = int(open("/proc/stb/vmpeg/0/xres", "r").read(), 16)
+			yres = int(open("/proc/stb/vmpeg/0/yres", "r").read(), 16)
+			if xres < 0 or xres > 4096 or yres < 0 or yres > 4096:
+				return ""
+		except IOError:
 			return ""
 		mode = ("i", "p", "", " ")[info.getInfo(iServiceInformation.sProgressive)]
 		fps  = str((info.getInfo(iServiceInformation.sFrameRate) + 500) // 1000)
