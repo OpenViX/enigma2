@@ -470,7 +470,7 @@ class PliExtraInfo(Poll, Converter, object):
 			yres = int(open("/proc/stb/vmpeg/0/yres", "r").read(), 16)
 			if xres < 0 or xres > 4096 or yres < 0 or yres > 4096:
 				return ""
-		except IOError:
+		except (IOError, ValueError) as err:
 			return ""
 		mode = ("i", "p", "", " ")[info.getInfo(iServiceInformation.sProgressive)]
 		fps  = str((info.getInfo(iServiceInformation.sFrameRate) + 500) // 1000)
