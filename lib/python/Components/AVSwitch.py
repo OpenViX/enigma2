@@ -758,6 +758,8 @@ def InitAVSwitch():
 		config.av.downmix_aac.addNotifier(setAACDownmix)
 
 	if SystemInfo["CanDownmixAACPlus"]:
+		def setAACDownmixPlus(configElement):
+			open("/proc/stb/audio/aacplus", "w").write(configElement.value)
 		choices = [
 			("downmix", _("Downmix")),
 			("passthrough", _("Passthrough")),

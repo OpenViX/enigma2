@@ -465,40 +465,29 @@ class PliExtraInfo(Poll, Converter, object):
 		return ""
 
 	def createResolution(self, info):
-		if path.exists("/proc/stb/vmpeg/0/yres"):
-			f = open("/proc/stb/vmpeg/0/yres", "r")
-			try:
-				yres = int(f.read(), 16)
-				if yres > 4096 or yres == 0:
-					return ""
-			except:
-				pass
-			f.close()
-		if path.exists("/proc/stb/vmpeg/0/xres"):
-			f = open("/proc/stb/vmpeg/0/xres", "r")
-			try:
-				xres = int(f.read(), 16)
-				if xres > 4096 or xres == 0:
-					return ""
-			except:
-				pass
-			f.close()
-		if path.exists("/proc/stb/vmpeg/0/progressive"):
-			f = open("/proc/stb/vmpeg/0/progressive", "r")
-			try:
-				mode = "p" if int(f.read(), 16) else "i"
-			except:
-				pass
-			f.close()
-		if path.exists("/proc/stb/vmpeg/0/framerate"):
-			f = open("/proc/stb/vmpeg/0/framerate", "r")
-			try:
-				fps = int(f.read())
-			except:
-				pass
-			f.close()
+		try:
+			yres = int(open("/proc/stb/vmpeg/0/yres", "r").read(), 16)
+			if yres > 4096 or yres == 0:
+				return ""
+		except:
+			return ""
+		try:
+			xres = int(open("/proc/stb/vmpeg/0/xres", "r").read(), 16)
+			if xres > 4096 or xres == 0:
+				return ""
+		except:
+			return ""
+		mode = ""
+		try:
+			mode = "p" if int(open("/proc/stb/vmpeg/0/progressive", "r").read(), 16) else "i"
+		except:
+			pass
+		fps = ""
+		try:
+			fps = str((int(open("/proc/stb/vmpeg/0/framerate", "r").read()) + 500) // 1000)
+		except:
+			pass
 
-		fps = str((fps + 500) // 1000)
 		return "%sx%s%s%s" % (xres, yres, mode, fps)
 
 	def createVideoCodec(self, info):
