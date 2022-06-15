@@ -1532,7 +1532,7 @@ class ConfigNumber(ConfigText):
 		ConfigText.__init__(self, str(default), fixed_size=False)
 
 	def getValue(self):
-		return int(self.text)
+		return int(self.text) if len(self.text) else self.text
 
 	def setValue(self, val):
 		prev = str(self.text) if hasattr(self, "text") else None
