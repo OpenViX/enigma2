@@ -17,8 +17,8 @@ from Components.SystemInfo import SystemInfo
 from Screens.Screen import Screen, ScreenSummary
 from Screens.GitCommitInfo import CommitInfo
 from Screens.SoftwareUpdate import UpdatePlugin
-from Tools.Directories import fileExists, fileCheck, pathExists
-from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode, isPluginInstalled
+from Tools.Directories import fileExists, fileCheck, pathExists, isPluginInstalled
+from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
 
 
@@ -56,7 +56,6 @@ class About(Screen):
 		
 		if SystemInfo["BoxInfo"]:
 			BoxInfo = SystemInfo["BoxInfo"]
-			AboutText += _("Boot Device:\t%s\n") % BoxInfo.getItem("mtdbootfs")			
 			AboutText += _("Chipset:\t%s\n") % BoxInfo.getItem("socfamily")
 							
 		elif about.getChipSetString() != _("unavailable"):
@@ -113,9 +112,9 @@ class About(Screen):
 		AboutText += _("Kernel:\t%s\n") % about.getKernelVersionString()
 		AboutText += _("GStreamer:\t%s\n") % about.getGStreamerVersionString().replace("GStreamer ", "")
 		if isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value == True:
-			AboutText += _("IPTV 4097 player:\t%s\n") % config.plugins.serviceapp.servicemp3.player.value
+			AboutText += _("iptv 4097 player:\t%s\n") % config.plugins.serviceapp.servicemp3.player.value
 		else:
-			AboutText += _("IPTV 4097 player:\tDefault player\n")	
+			AboutText += _("iptv 4097 player:\tDefault player\n")	
 		AboutText += _("Python:\t%s\n") % about.getPythonVersionString()
 		AboutText += _("Installed:\t%s\n") % about.getFlashDateString()
 		AboutText += _("Last update:\t%s\n") % getEnigmaVersionString()
