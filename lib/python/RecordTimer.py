@@ -978,9 +978,17 @@ class RecordTimer(Timer):
 			print("[RecordTimer] unable to load timers from file!")
 
 	def doActivate(self, w, dosave=True):
+		# when activating a timer for servicetype 4097,	
+		# and SystemApp has player enabled, then skip recording.
+		if "4097:" in w.service_ref.toString() and Directories.isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value == True:
+			print("[RecordTimer][doActivate] found Serviceapp & player enabled - disable this timer recording")		
+			w.state = RecordTimerEntry.StateEnded
+			from Tools.Notifications import AddPopup
+			from Screens.MessageBox import MessageBox
+			AddPopup(_("Recording IPTV 4097 with systemapp enabled, timer ended!\nPlease recheck it!"), type=MessageBox.TYPE_ERROR, timeout=0, id="TimerRecordingFailed")		
 		# when activating a timer which has already passed,
 		# simply abort the timer. don't run trough all the stages.
-		if w.shouldSkip():
+		elif w.shouldSkip():
 			w.state = RecordTimerEntry.StateEnded
 		else:
 			# when active returns true, this means "accepted".
