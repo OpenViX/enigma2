@@ -14,13 +14,12 @@ from Components.Pixmap import MultiPixmap
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
-from Screens.Screen import Screen, ScreenSummary
 from Screens.GitCommitInfo import CommitInfo
+from Screens.Screen import Screen, ScreenSummary
 from Screens.SoftwareUpdate import UpdatePlugin
 from Tools.Directories import fileExists, fileCheck, pathExists, isPluginInstalled
-from Tools.Multiboot import GetCurrentImage, GetCurrentImageMode
+from Tools.Multiboot import GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
-
 
 class About(Screen):
 	def __init__(self, session):
@@ -54,11 +53,7 @@ class About(Screen):
 
 		AboutText += _("Model:\t%s %s\n") % (getMachineBrand(), getMachineName())
 		
-		if SystemInfo["BoxInfo"]:
-			BoxInfo = SystemInfo["BoxInfo"]
-			AboutText += _("Chipset:\t%s\n") % BoxInfo.getItem("socfamily")
-							
-		elif about.getChipSetString() != _("unavailable"):
+		if about.getChipSetString() != _("unavailable"):
 			if SystemInfo["HasHiSi"]:
 				AboutText += _("Chipset:\tHiSilicon %s\n") % about.getChipSetString().upper()
 			elif about.getIsBroadcom():
@@ -67,65 +62,10 @@ class About(Screen):
 				AboutText += _("Chipset:\t%s\n") % about.getChipSetString().upper()
 
 		AboutText += _("CPU:\t%s %s %s\n") % (about.getCPUArch(), about.getCPUSpeedString(), about.getCpuCoresString())
-		imageSubBuild = ""
-		if getImageType() != "release":
-			imageSubBuild = ".%s" % getImageDevBuild()
-		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
 
-		if SystemInfo["HasH9SD"]:
-			if "rootfstype=ext4" in open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read():
-				part = "        - SD card in use for Image root \n"
-			else:
-				part = "        - eMMC slot in use for Image root \n"
-			AboutText += _("%s") % part
-
-		if SystemInfo["canMultiBoot"]:
-			slot = image = SystemInfo["MultiBootSlot"]
-			part = "eMMC slot %s" % slot
-			bootmode = ""
-			if SystemInfo["canMode12"]:
-				bootmode = "bootmode = %s" % GetCurrentImageMode()
-			print("[About] HasHiSi = %s, slot = %s" % (SystemInfo["HasHiSi"], slot))
-			if SystemInfo["HasHiSi"] and "sda" in SystemInfo["canMultiBoot"][slot]["root"]:
-				if slot > 4:
-					image -= 4
-				else:
-					image -= 1
-				part = "SDcard slot %s (%s) " % (image, SystemInfo["canMultiBoot"][slot]["root"])
-			AboutText += _("Image Slot:\t%s") % "STARTUP_" + str(slot) + "  " + part + " " + bootmode + "\n"
-
-		if getMachineName() in ("ET8500") and path.exists("/proc/mtd"):
-			self.dualboot = self.dualBoot()
-			if self.dualboot:
-				AboutText += _("ET8500 Multiboot: Installed\n")
-
-		skinWidth = getDesktop(0).size().width()
-		skinHeight = getDesktop(0).size().height()
-
-		string = getDriverDate()
-		year = string[0:4]
-		month = string[4:6]
-		day = string[6:8]
-		driversdate = "-".join((year, month, day))
-
-		AboutText += _("Drivers:\t%s\n") % driversdate
-		AboutText += _("Kernel:\t%s\n") % about.getKernelVersionString()
-		AboutText += _("GStreamer:\t%s\n") % about.getGStreamerVersionString().replace("GStreamer ", "")
-		if isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value == True:
-			AboutText += _("iptv 4097 player:\t%s\n") % config.plugins.serviceapp.servicemp3.player.value
-		else:
-			AboutText += _("iptv 4097 player:\tDefault player\n")	
-		AboutText += _("Python:\t%s\n") % about.getPythonVersionString()
-		AboutText += _("Installed:\t%s\n") % about.getFlashDateString()
-		AboutText += _("Last update:\t%s\n") % getEnigmaVersionString()
-		AboutText += _("E2 (re)starts:\t%s\n") % config.misc.startCounter.value
-		uptime = about.getBoxUptime()
-		if uptime:
-			AboutText += _("Uptime:\t%s\n") % uptime
-		e2uptime = about.getEnigmaUptime()
-		if e2uptime:
-			AboutText += _("Enigma2 uptime:\t%s\n") % e2uptime
-		AboutText += _("Skin:\t%s") % config.skin.primary_skin.value[0:-9] + _("  (%s x %s)") % (skinWidth, skinHeight) + "\n"
+		if SystemInfo["BoxInfo"]:
+			BoxInfo = SystemInfo["BoxInfo"]
+			AboutText += _("SoC:\t%s\n") % BoxInfo.getItem("socfamily").upper()
 
 		tempinfo = ""
 		if path.exists("/proc/stb/sensors/temp0/value"):
@@ -158,6 +98,72 @@ class About(Screen):
 				tempinfo = ""
 		if tempinfo and int(tempinfo) > 0:
 			AboutText += _("Processor temp:\t%s") % tempinfo.replace("\n", "").replace(" ", "") + "\xb0" + "C\n"
+
+		imageSubBuild = ""
+		if getImageType() != "release":
+			imageSubBuild = ".%s" % getImageDevBuild()
+		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
+
+		if SystemInfo["BoxInfo"]:
+			BoxInfo = SystemInfo["BoxInfo"]
+			if BoxInfo.getItem("mtdbootfs") != "" and " " not in BoxInfo.getItem("mtdbootfs"):
+				AboutText += _("Boot Device:\t%s\n") % BoxInfo.getItem("mtdbootfs")
+		if SystemInfo["HasH9SD"]:
+			if "rootfstype=ext4" in open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read():
+				part = "        - SD card in use for Image root \n"
+			else:
+				part = "        - eMMC slot in use for Image root \n"
+			AboutText += _("%s") % part
+
+		if SystemInfo["canMultiBoot"]:
+			slot = image = SystemInfo["MultiBootSlot"]
+			part = "eMMC slot %s" % slot
+			bootmode = ""
+			if SystemInfo["canMode12"]:
+				bootmode = "bootmode = %s" % GetCurrentImageMode()
+			print("[About] HasHiSi = %s, slot = %s" % (SystemInfo["HasHiSi"], slot))
+			if SystemInfo["HasHiSi"] and "sda" in SystemInfo["canMultiBoot"][slot]["root"]:
+				if slot > 4:
+					image -= 4
+				else:
+					image -= 1
+				part = "SDcard slot %s (%s) " % (image, SystemInfo["canMultiBoot"][slot]["root"])
+			AboutText += _("Image Slot:\t%s") % "Startup " + str(slot) + " - " + part + " " + bootmode + "\n"
+
+		if getMachineName() in ("ET8500") and path.exists("/proc/mtd"):
+			self.dualboot = self.dualBoot()
+			if self.dualboot:
+				AboutText += _("ET8500 Multiboot: Installed\n")
+
+		skinWidth = getDesktop(0).size().width()
+		skinHeight = getDesktop(0).size().height()
+
+		string = getDriverDate()
+		year = string[0:4]
+		month = string[4:6]
+		day = string[6:8]
+		driversdate = "-".join((day, month, year))
+
+		AboutText += _("Drivers:\t%s\n") % driversdate
+		AboutText += _("Kernel:\t%s\n") % about.getKernelVersionString()
+		AboutText += _("GStreamer:\t%s\n") % about.getGStreamerVersionString().replace("GStreamer ", "")
+		if isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value == True:
+			AboutText += _("4097 iptv player:\t%s\n") % config.plugins.serviceapp.servicemp3.player.value
+		else:
+			AboutText += _("4097 iptv player:\tDefault player\n")	
+		AboutText += _("Python:\t%s\n") % about.getPythonVersionString()
+		flashDate = about.getFlashDateString()[8:]  + about.getFlashDateString()[4:8] + about.getFlashDateString()[0:4] 
+		AboutText += _("Installed:\t%s\n") % flashDate
+		lastUpdate = getEnigmaVersionString()[8:]  + getEnigmaVersionString()[4:8] + getEnigmaVersionString()[0:4] 
+		AboutText += _("Last update:\t%s\n") % lastUpdate
+		AboutText += _("E2 (re)starts:\t%s\n") % config.misc.startCounter.value
+		uptime = about.getBoxUptime()
+		if uptime:
+			AboutText += _("Uptime:\t%s\n") % uptime
+		e2uptime = about.getEnigmaUptime()
+		if e2uptime:
+			AboutText += _("Enigma2 uptime:\t%s\n") % e2uptime
+		AboutText += _("Skin:\t%s") % config.skin.primary_skin.value[0:-9] + _("  (%s x %s)") % (skinWidth, skinHeight) + "\n"
 
 		fp_version = getFPVersion()
 		if fp_version is None:
