@@ -332,7 +332,7 @@ class Devices(Screen):
 		if pathExists("/media/autofs"):
 			for entry in sorted(listdir("/media/autofs")):
 				mountEntry = path.join("/media/autofs", entry)
-				self.mountinfo += _("\n %s is also enabled for autofs network mount" % (mountEntry))
+				self.mountinfo += _("\n %s is also enabled for autofs network mount") % (mountEntry)
 		if self.mountinfo:
 			self["mounts"].setText(self.mountinfo)
 		else:
