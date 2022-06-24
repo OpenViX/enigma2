@@ -1,26 +1,26 @@
-from boxbranding import getMachineBrand, getMachineName
 import os
-from enigma import eEPGCache, getBestPlayableServiceReference, eStreamServer, eServiceReference, iRecordableService, quitMainloop, eActionMap, setPreferredTuner, eServiceCenter
+from timer import Timer, TimerEntry
+import xml.etree.cElementTree
+from bisect import insort
+from sys import maxsize
+from time import localtime, strftime, ctime, time
 
+from enigma import eEPGCache, getBestPlayableServiceReference, eStreamServer, eServiceReference, iRecordableService, quitMainloop, eActionMap, setPreferredTuner, eServiceCenter
+from boxbranding import getMachineBrand, getMachineName
 from Components.config import config
+import Components.ParentalControl
 from Components.UsageConfig import defaultMoviePath
 from Components.SystemInfo import SystemInfo
 from Components.TimerSanityCheck import TimerSanityCheck
 import Screens.InfoBar
-import Components.ParentalControl
 from Screens.MessageBox import MessageBox
 from Screens.PictureInPicture import PictureInPicture
 import Screens.Standby
 from Tools import Directories, Notifications, ASCIItranslit, Trashcan
 from Tools.XMLTools import stringToXML
 
-from timer import Timer, TimerEntry
-import xml.etree.cElementTree
 import NavigationInstance
 
-from time import localtime, strftime, ctime, time
-from bisect import insort
-from sys import maxsize
 
 # ok, for descriptions etc we have:
 # service reference  (to get the service name)
