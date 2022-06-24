@@ -124,8 +124,8 @@ def SetIconDisplay(nrec):
 		return
 	(wdev, max_states) = SID_code_states
 	if nrec == 0:                   # An absolute setting - clear it...
-		f = open(wdev, 'w')
-		f.write('0')
+		f = open(wdev, "w")
+		f.write("0")
 		f.close()
 		return
 #
@@ -134,7 +134,7 @@ def SetIconDisplay(nrec):
 		sym = max_states
 	if sym < 0:		    # Sanity check - just in case...
 		sym = 0
-	f = open(wdev, 'w')
+	f = open(wdev, "w")
 	f.write(str(sym))
 	f.close()
 	return
@@ -177,14 +177,14 @@ RecordingsState(0)       # Initialize
 # type 2 = digital radio sound service
 # type 10 = advanced codec digital radio sound service
 
-service_types_tv = '1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 22) || (type == 25) || (type == 134) || (type == 195)'
+service_types_tv = "1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 22) || (type == 25) || (type == 134) || (type == 195)"
 wasRecTimerWakeup = False
 
 # please do not translate log messages
 
 
 class RecordTimerEntry(TimerEntry):
-	def __init__(self, serviceref, begin, end, name, description, eit, disabled=False, justplay=False, afterEvent=AFTEREVENT.AUTO, checkOldTimers=False, dirname=None, tags=None, descramble='notset', record_ecm='notset', isAutoTimer=False, always_zap=False, rename_repeat=True, conflict_detection=True, pipzap=False, autoTimerId=None):
+	def __init__(self, serviceref, begin, end, name, description, eit, disabled=False, justplay=False, afterEvent=AFTEREVENT.AUTO, checkOldTimers=False, dirname=None, tags=None, descramble="notset", record_ecm="notset", isAutoTimer=False, always_zap=False, rename_repeat=True, conflict_detection=True, pipzap=False, autoTimerId=None):
 		TimerEntry.__init__(self, int(begin), int(end))
 		if checkOldTimers:
 			if self.begin < time() - 1209600:
@@ -218,14 +218,14 @@ class RecordTimerEntry(TimerEntry):
 		self.tags = tags or []
 		self.conflict_detection = conflict_detection
 
-		if descramble == 'notset' and record_ecm == 'notset':
-			if config.recording.ecm_data.value == 'descrambled+ecm':
+		if descramble == "notset" and record_ecm == "notset":
+			if config.recording.ecm_data.value == "descrambled+ecm":
 				self.descramble = True
 				self.record_ecm = True
-			elif config.recording.ecm_data.value == 'scrambled+ecm':
+			elif config.recording.ecm_data.value == "scrambled+ecm":
 				self.descramble = False
 				self.record_ecm = True
-			elif config.recording.ecm_data.value == 'normal':
+			elif config.recording.ecm_data.value == "normal":
 				self.descramble = True
 				self.record_ecm = False
 		else:
@@ -237,7 +237,7 @@ class RecordTimerEntry(TimerEntry):
 		if SystemInfo["DVB-T_priority_tuner_available"] or SystemInfo["DVB-C_priority_tuner_available"] or SystemInfo["DVB-S_priority_tuner_available"] or SystemInfo["ATSC_priority_tuner_available"]:
 			rec_ref = self.service_ref and self.service_ref.ref
 			str_service = rec_ref and rec_ref.toString()
-			if str_service and '%3a//' not in str_service and not str_service.rsplit(":", 1)[1].startswith("/"):
+			if str_service and "%3a//" not in str_service and not str_service.rsplit(":", 1)[1].startswith("/"):
 				type_service = rec_ref.getUnsignedData(4) >> 16
 				if type_service == 0xEEEE:
 					if SystemInfo["DVB-T_priority_tuner_available"] and config.usage.recording_frontend_priority_dvbt.value != "-2":
@@ -321,7 +321,7 @@ class RecordTimerEntry(TimerEntry):
 		filename = begin_date + " - " + service_name
 		if name:
 			if config.recording.filename_composition.value == "event":
-				filename = name + ' - ' + begin_date + "_" + service_name
+				filename = name + " - " + begin_date + "_" + service_name
 			elif config.recording.filename_composition.value == "short":
 				filename = strftime("%Y%m%d", localtime(self.begin)) + " - " + name
 			elif config.recording.filename_composition.value == "long":
@@ -470,16 +470,14 @@ class RecordTimerEntry(TimerEntry):
 			ChannelSelectionInstance.addToHistory(self.service_ref.ref)
 		NavigationInstance.instance.playService(self.service_ref.ref)
 
-# Report the tuner that the current recording is using
-	def log_tuner(self, level, state):
-# If we have a Zap timer then the tuner is for the current service
-		if self.justplay:
+	def log_tuner(self, level, state):				# Report the tuner that the current recording is using
+		if self.justplay:					# If we have a Zap timer then the tuner is for the current service
 			timer_rs = NavigationInstance.instance.getCurrentService()
 		else:
 			timer_rs = self.record_service
 		feinfo = timer_rs and hasattr(timer_rs, "frontendInfo") and timer_rs.frontendInfo()
 		fedata = feinfo and hasattr(feinfo, "getFrontendData") and feinfo.getFrontendData()
-		tuner_info = fedata and "tuner_number" in fedata and chr(ord('A') + fedata.get("tuner_number")) or "(fallback) stream"
+		tuner_info = fedata and "tuner_number" in fedata and chr(ord("A") + fedata.get("tuner_number")) or "(fallback) stream"
 		self.log(level, "%s recording on tuner: %s" % (state, tuner_info))
 
 	def activate(self):
@@ -609,7 +607,7 @@ class RecordTimerEntry(TimerEntry):
 						if cur_ref_group and cur_ref_group != self.service_ref.ref and self.InfoBarInstance and hasattr(self.InfoBarInstance.session, 'pipshown') and not Components.ParentalControl.parentalControl.isProtected(self.service_ref.ref):
 							if self.InfoBarInstance.session.pipshown:
 								hasattr(self.InfoBarInstance, "showPiP") and self.InfoBarInstance.showPiP()
-							if hasattr(self.InfoBarInstance.session, 'pip'):
+							if hasattr(self.InfoBarInstance.session, "pip"):
 								del self.InfoBarInstance.session.pip
 								self.InfoBarInstance.session.pipshown = False
 							self.InfoBarInstance.session.pip = self.InfoBarInstance.session.instantiateDialog(PictureInPicture)
@@ -696,8 +694,8 @@ class RecordTimerEntry(TimerEntry):
 				return True
 			from Components.Converter.ClientsStreaming import ClientsStreaming
 			if (not Screens.Standby.inStandby and NavigationInstance.instance.getCurrentlyPlayingServiceReference() and
-				('0:0:0:0:0:0:0:0:0' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString() or
-				 '4097:' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString())
+				("0:0:0:0:0:0:0:0:0" in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString() or
+				 "4097:" in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString())
 			    ):
 				return True
 
@@ -734,7 +732,7 @@ class RecordTimerEntry(TimerEntry):
 	def keypress(self, key=None, flag=1):
 		if flag and self.wasInStandby:
 			self.wasInStandby = False
-			eActionMap.getInstance().unbindAction('', self.keypress)
+			eActionMap.getInstance().unbindAction("", self.keypress)
 
 	def setAutoincreaseEnd(self, entry=None):
 		if not self.autoincrease:
@@ -858,9 +856,9 @@ class RecordTimerEntry(TimerEntry):
 			self.log(13, "ok, zapped away")
 			#NavigationInstance.instance.stopUserServices()
 			self._bouquet_search()
-			if not self.first_try_prepare and self.InfoBarInstance and hasattr(self.InfoBarInstance.session, 'pipshown') and self.InfoBarInstance.session.pipshown:
+			if not self.first_try_prepare and self.InfoBarInstance and hasattr(self.InfoBarInstance.session, "pipshown") and self.InfoBarInstance.session.pipshown:
 				hasattr(self.InfoBarInstance, "showPiP") and self.InfoBarInstance.showPiP()
-				if hasattr(self.InfoBarInstance.session, 'pip'):
+				if hasattr(self.InfoBarInstance.session, "pip"):
 					del self.InfoBarInstance.session.pip
 					self.InfoBarInstance.session.pipshown = False
 		else:
@@ -907,13 +905,13 @@ class RecordTimerEntry(TimerEntry):
 	# we have record_service as property to automatically subscribe to record service events
 	def setRecordService(self, service):
 		if self.__record_service is not None:
-#			print("[RecordTimer][remove callback]")
+			# print("[RecordTimer][remove callback]")
 			NavigationInstance.instance.record_event.remove(self.gotRecordEvent)
 
 		self.__record_service = service
 
 		if self.__record_service is not None:
-#			print("[RecordTimer][add callback]")
+			# print("[RecordTimer][add callback]")
 			NavigationInstance.instance.record_event.append(self.gotRecordEvent)
 
 	record_service = property(lambda self: self.__record_service, setRecordService)
@@ -1046,9 +1044,7 @@ class RecordTimer(Timer):
 				return True
 		return False
 
-	# justLoad is passed on to record()
-	#
-	def loadTimer(self, justLoad=False):
+	def loadTimer(self, justLoad=False):		# justLoad is passed on to record()
 		try:
 			file = open(self.Filename, 'r')
 			doc = xml.etree.cElementTree.parse(file)
@@ -1390,7 +1386,7 @@ class RecordTimer(Timer):
 		return returnValue or (None, None)
 
 	def removeEntry(self, entry):
-		#	print("[RecordTimer] Remove " + str(entry))
+		# print("[RecordTimer] Remove " + str(entry))
 
 		# avoid re-enqueuing
 		entry.repeated = False
