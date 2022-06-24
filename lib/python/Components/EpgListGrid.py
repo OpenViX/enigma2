@@ -822,7 +822,7 @@ class EPGListGrid(EPGListBase):
 			# repeat timers represent all their future repetitions, so always include them
 			if (startTime <= timer.end or timer.repeated) and timer.begin < endTime:
 				serviceref = timer.service_ref.ref.toCompareString()
-				serviceref = serviceref.replace("4097", "1", 1) if config.recording.setstreamto1.value else servicere
+				serviceref = serviceref.replace("4097", "1", 1) if config.recording.setstreamto1.value else serviceref
 				l = self.filteredTimerList.get(serviceref)
 				if l is None:
 					self.filteredTimerList[serviceref] = l = [timer]
