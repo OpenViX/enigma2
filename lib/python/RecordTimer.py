@@ -1,4 +1,4 @@
-import os
+from os import access, fsync, makedirs, remove, rename, path as ospath, statvfs, W_OK
 from timer import Timer, TimerEntry
 import xml.etree.cElementTree
 from bisect import insort
@@ -85,14 +85,14 @@ def findSafeRecordPath(dirname):
 	if not dirname:
 		return None
 	from Components import Harddisk
-	dirname = os.path.realpath(dirname)
+	dirname = ospath.realpath(dirname)
 	mountpoint = Harddisk.findMountPoint(dirname)
-	if not os.path.ismount(mountpoint):
+	if not ospath.ismount(mountpoint):
 		print("[RecordTimer] media is not mounted:", dirname)
 		return None
-	if not os.path.isdir(dirname):
+	if not ospath.isdir(dirname):
 		try:
-			os.makedirs(dirname)
+			makedirs(dirname)
 		except Exception as ex:
 			print("[RecordTimer] Failed to create dir '%s':" % dirname, ex)
 			return None
@@ -292,12 +292,12 @@ class RecordTimerEntry(TimerEntry):
 			return False
 
 		self.MountPath = dirname
-		mountwriteable = os.access(dirname, os.W_OK)
+		mountwriteable = access(dirname, W_OK)
 		if not mountwriteable:
 			self.log(0, ("Mount '%s' is not writeable." % dirname))
 			return False
 
-		s = os.statvfs(dirname)
+		s = statvfs(dirname)
 		if (s.f_bavail * s.f_bsize) // 1000000 < 1024:
 			self.log(0, "Not enough free space to record")
 			return False
@@ -576,9 +576,9 @@ class RecordTimerEntry(TimerEntry):
 # Both see the file as existing, but only one can delete it...
 #
 			with wasrec_lock:
-				if os.path.exists("/tmp/was_rectimer_wakeup") and not wasRecTimerWakeup:
+				if ospath.exists("/tmp/was_rectimer_wakeup") and not wasRecTimerWakeup:
 					wasRecTimerWakeup = int(open("/tmp/was_rectimer_wakeup", "r").read()) and True or False
-					os.remove("/tmp/was_rectimer_wakeup")
+					remove("/tmp/was_rectimer_wakeup")
 
 			self.autostate = Screens.Standby.inStandby
 
@@ -1061,7 +1061,7 @@ class RecordTimer(Timer):
 
 			print("[RecordTimer] timers.xml failed to load!")
 			try:
-				os.rename(self.Filename, self.Filename + "_old")
+				rename(self.Filename, self.Filename + "_old")
 			except (IOError, OSError):
 				print("[RecordTimer] renaming broken timer failed")
 			return
@@ -1174,9 +1174,9 @@ class RecordTimer(Timer):
 			file.writelines(list)
 			file.flush()
 
-			os.fsync(file.fileno())
+			fsync(file.fileno())
 			file.close()
-			os.rename(self.Filename + ".writing", self.Filename)
+			rename(self.Filename + ".writing", self.Filename)
 
 	def getNextZapTime(self):
 		now = time()
