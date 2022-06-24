@@ -199,10 +199,10 @@ class RecordTimerEntry(TimerEntry):
 			self.service_ref = serviceref
 		else:
 			self.service_ref = eServiceReference()
-		if "4097" in self.service_ref.toString():
-			pre_serviceref = self.service_ref.toString().replace("4097", "1")
+		if config.recording.setstreamto1.value:
+			pre_serviceref = self.service_ref.toString().replace("4097", "1", 1)
 			self.service_ref = eServiceReference(pre_serviceref)				
-		print("[RecordTimer][RecordTimerEntry] serviceref", serviceref)				
+		# print("[RecordTimer][RecordTimerEntry2] serviceref", self.service_ref)				
 		self.eit = eit
 		self.dontSave = False
 		self.name = name
@@ -927,7 +927,7 @@ def createTimer(xml):
 	begin = int(xml.get("begin"))
 	end = int(xml.get("end"))
 	pre_serviceref = xml.get("serviceref")
-	serviceref = pre_serviceref.replace("4097", "1", 1) if "4097" in pre_serviceref else eServiceReference(pre_serviceref)
+	serviceref = pre_serviceref.replace("4097", "1", 1) if config.recording.setstreamto1.value else eServiceReference(pre_serviceref)
 	description = str(xml.get("description"))
 	repeated = str(xml.get("repeated"))
 	rename_repeat = int(xml.get("rename_repeat") or "1")
