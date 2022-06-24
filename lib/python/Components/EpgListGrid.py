@@ -527,7 +527,8 @@ class EPGListGrid(EPGListBase):
 				duration = ev[3]
 
 				xpos, ewidth = self.calcEventPosAndWidthHelper(stime, duration, start, end, width)
-				serviceTimers = self.filteredTimerList.get(':'.join(service.split(':')[:11]))
+				serviceref = service.replace("4097", "1", 1) if "4097" in service else service
+				serviceTimers = self.filteredTimerList.get(':'.join(serviceref.split(':')[:11]))
 				if serviceTimers is not None:
 					timer, matchType = RecordTimer.isInTimerOnService(serviceTimers, stime, duration)
 					timerIcon, autoTimerIcon = self.getPixmapsForTimer(timer, matchType, selected)
@@ -821,6 +822,7 @@ class EPGListGrid(EPGListBase):
 			# repeat timers represent all their future repetitions, so always include them
 			if (startTime <= timer.end or timer.repeated) and timer.begin < endTime:
 				serviceref = timer.service_ref.ref.toCompareString()
+				serviceref = serviceref.replace("4097", "1", 1) if "4097" in serviceref else serviceref
 				l = self.filteredTimerList.get(serviceref)
 				if l is None:
 					self.filteredTimerList[serviceref] = l = [timer]

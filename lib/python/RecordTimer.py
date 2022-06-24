@@ -199,6 +199,10 @@ class RecordTimerEntry(TimerEntry):
 			self.service_ref = serviceref
 		else:
 			self.service_ref = eServiceReference()
+		if "4097" in self.service_ref.toString():
+			pre_serviceref = self.service_ref.toString().replace("4097", "1")
+			self.service_ref = eServiceReference(pre_serviceref)				
+		print("[RecordTimer][RecordTimerEntry] serviceref", serviceref)				
 		self.eit = eit
 		self.dontSave = False
 		self.name = name
@@ -538,12 +542,14 @@ class RecordTimerEntry(TimerEntry):
 				return True
 			self.log(7, "prepare failed")
 			if eStreamServer.getInstance().getConnectedClients():
+				self.log(71, "eStreamerServer client - stop")
 				eStreamServer.getInstance().stopStream()
 				return False
 			if self.first_try_prepare or (self.ts_dialog is not None and not self.checkingTimeshiftRunning()):
 				self.first_try_prepare = False
 				cur_ref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()
-				if cur_ref and not cur_ref.getPath():
+				rec_ref = self.service_ref and self.service_ref.ref
+				if (cur_ref and not cur_ref.getPath()) or "4097" in rec_ref.toString():
 					if self.always_zap:
 						return False
 					if Screens.Standby.inStandby:
@@ -920,7 +926,8 @@ class RecordTimerEntry(TimerEntry):
 def createTimer(xml):
 	begin = int(xml.get("begin"))
 	end = int(xml.get("end"))
-	serviceref = eServiceReference(str(xml.get("serviceref")))
+	pre_serviceref = xml.get("serviceref")
+	serviceref = pre_serviceref.replace("4097", "1", 1) if "4097" in pre_serviceref else eServiceReference(pre_serviceref)
 	description = str(xml.get("description"))
 	repeated = str(xml.get("repeated"))
 	rename_repeat = int(xml.get("rename_repeat") or "1")
@@ -999,9 +1006,7 @@ class RecordTimer(Timer):
 			self.timer_list.remove(w)
 		except:
 			print("[RecordTimer] Remove list failed")
-
-		# did this timer reached the last state?
-		if w.state < RecordTimerEntry.StateEnded:
+		if w.state < RecordTimerEntry.StateEnded:	# did this timer reached the last state?
 			# no, sort it into active list
 			insort(self.timer_list, w)
 		else:
@@ -1362,7 +1367,7 @@ class RecordTimer(Timer):
 		for timer in self.timer_list:
 			# repeat timers represent all their future repetitions, so always include them
 			if (startAt <= timer.end or timer.repeated) and timer.begin < endAt:
-				check = timer.service_ref.toCompareString() == refstr
+				check = timer.service_ref.toCompareString().split(":", 2)[2] == refstr.split(":", 2)[2]
 				if check:
 					matchType = RecordTimer.__checkTimer(timer, check_offset_time, begin, end, duration)
 					if matchType is not None:
