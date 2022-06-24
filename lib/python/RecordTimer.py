@@ -199,8 +199,8 @@ class RecordTimerEntry(TimerEntry):
 			self.service_ref = serviceref
 		else:
 			self.service_ref = eServiceReference()
-		if config.recording.setstreamto1.value:
-			pre_serviceref = self.service_ref.toString().replace("4097", "1", 1)
+		if config.recording.setstreamto1.value and self.service_ref.toString().startswith("4097:"):
+			pre_serviceref = "1" + self.service_ref.toString()[4:]
 			self.service_ref = eServiceReference(pre_serviceref)				
 		# print("[RecordTimer][RecordTimerEntry2] serviceref", self.service_ref)				
 		self.eit = eit
@@ -549,7 +549,7 @@ class RecordTimerEntry(TimerEntry):
 				self.first_try_prepare = False
 				cur_ref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()
 				rec_ref = self.service_ref and self.service_ref.ref
-				if (cur_ref and not cur_ref.getPath()) or "4097" in rec_ref.toString():
+				if cur_ref and not cur_ref.getPath() or rec_ref.toString().startswith("4097:"):
 					if self.always_zap:
 						return False
 					if Screens.Standby.inStandby:
@@ -927,7 +927,7 @@ def createTimer(xml):
 	begin = int(xml.get("begin"))
 	end = int(xml.get("end"))
 	pre_serviceref = xml.get("serviceref")
-	serviceref = pre_serviceref.replace("4097", "1", 1) if config.recording.setstreamto1.value else eServiceReference(pre_serviceref)
+	serviceref = eServiceReference("1" + pre_serviceref[4:]) if config.recording.setstreamto1.value and pre_serviceref.startswith("4097:") else eServiceReference(pre_serviceref)
 	description = str(xml.get("description"))
 	repeated = str(xml.get("repeated"))
 	rename_repeat = int(xml.get("rename_repeat") or "1")
