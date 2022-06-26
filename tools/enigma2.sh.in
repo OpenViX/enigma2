@@ -66,10 +66,7 @@ sync
 (sleep 2; echo "enigma2 is the main pvr application... adjust oom score!"; PID=$(pidof enigma2); \
 	[ -e /proc/$PID/oom_score_adj ] && echo "-999" > /proc/$PID/oom_score_adj || echo "-17" > /proc/$PID/oom_adj;) &
 
-# LC_ALL available?
-if [ -z $LC_ALL ]; then
-	export LC_ALL="en_US.UTF-8"
-fi
+export LC_CTYPE="en_US.UTF-8"
 
 # set time format used to prefix each line in the debug logs
 #
