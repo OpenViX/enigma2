@@ -195,13 +195,13 @@ class RecordTimerEntry(TimerEntry):
 
 		assert isinstance(serviceref, eServiceReference)
 
+		if serviceref and serviceref.toString()[:4] in config.recording.setstreamto1.value: # check if to convert IPTV services (4097, etc) to "1"
+			serviceref = eServiceReference("1" + serviceref.toString()[4:])				
+
 		if serviceref and serviceref.isRecordable():
 			self.service_ref = serviceref
 		else:
 			self.service_ref = eServiceReference()
-		if self.service_ref.toString()[:4] in config.recording.setstreamto1.value: # check if to convert IPTV services (4097, etc) to "1"
-			pre_serviceref = "1" + self.service_ref.toString()[4:]
-			self.service_ref = eServiceReference(pre_serviceref)				
 		# print("[RecordTimer][RecordTimerEntry2] serviceref", self.service_ref)				
 		self.eit = eit
 		self.dontSave = False
