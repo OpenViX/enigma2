@@ -5,6 +5,15 @@ def InitRecordingConfig():
 	config.recording = ConfigSubsection()
 	# actually this is "recordings always have priority". "Yes" does mean: don't ask. The RecordTimer will ask when value is 0.
 	config.recording.asktozap = ConfigYesNo(default=True)
+	config.recording.setstreamto1 = ConfigSelection(default=(), choices=[
+		((), _("don't convert")),
+		(("4097",), _("4097 only")),
+		(("4097", "5001"), _("4097 + 5001")),
+		(("4097", "5001", "5002"), _("4097 + 5001 + 5002")),
+		(("4097", "5002"), _("4097 + 5002")),
+		(("5001",), _("5001 only")),		
+		(("5001", "5002"), _("5001 + 5002")),
+		(("5002",), _("5002 only"))])
 	config.recording.margin_before = ConfigSelectionNumber(min=0, max=120, stepwidth=1, default=3, wraparound=True)
 	config.recording.margin_after = ConfigSelectionNumber(min=0, max=120, stepwidth=1, default=5, wraparound=True)
 	config.recording.split_programme_minutes = ConfigSelectionNumber(min=0, max=30, stepwidth=1, default=15, wraparound=True)

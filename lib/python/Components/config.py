@@ -7,7 +7,7 @@ from Tools.Directories import resolveFilename, SCOPE_CONFIG, fileExists
 from Components.Harddisk import harddiskmanager
 from Tools.LoadPixmap import LoadPixmap
 from copy import copy as copy_copy
-from os import path as os_path
+from os import fsync, path as os_path, rename, sep
 from time import localtime, strftime, mktime
 
 ACTIONKEY_LEFT = 0
@@ -1908,7 +1908,7 @@ class ConfigLocations(ConfigElement):
 				x[2] = False
 
 	def refreshMountpoints(self):
-		self.mountpoints = [p.mountpoint for p in harddiskmanager.getMountedPartitions() if p.mountpoint != "/"]
+		self.mountpoints = [p.mountpoint for p in harddiskmanager.getMountedPartitions() if p.mountpoint != sep]
 		self.mountpoints.sort(key=lambda x: -len(x))
 
 	def checkChangedMountpoints(self):
@@ -1925,7 +1925,7 @@ class ConfigLocations(ConfigElement):
 				self.addedMount(x)
 
 	def getMountpoint(self, file):
-		file = os_path.realpath(file) + "/"
+		file = os_path.realpath(file) + sep
 		for m in self.mountpoints:
 			if file.startswith(m):
 				return m
@@ -2231,18 +2231,17 @@ class Config(ConfigSubsection):
 	def saveToFile(self, filename):
 		text = self.pickle()
 		try:
-			import os
-			f = open(filename + ".writing", "w")
-			f.write(text)
-			f.flush()
-			os.fsync(f.fileno())
-			f.close()
-			os.rename(filename + ".writing", filename)
+			with open(filename + ".writing", "w", encoding="UTF-8") as f:
+				f.write(text)
+				f.flush()
+				fsync(f.fileno())
+			rename(filename + ".writing", filename)
 		except IOError:
 			print("[Config] Couldn't write %s" % filename)
 
 	def loadFromFile(self, filename, base_file=True):
-		self.unpickle(open(filename, "r"), base_file)
+		with open(filename, "r", encoding="UTF-8") as f:
+			self.unpickle(f, base_file)
 
 
 config = Config()

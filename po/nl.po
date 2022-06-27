@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-01 00:16+0000\n"
-"PO-Revision-Date: 2022-05-06 16:02+0200\n"
+"POT-Creation-Date: 2022-06-13 14:02+0000\n"
+"PO-Revision-Date: 2022-06-24 11:48+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1\n"
 
 #, python-format
 msgid ""
@@ -2544,6 +2544,9 @@ msgstr "Alvorens het commande om de TV in stand-by te zetten wordt verstuurd, te
 
 msgid "Begin time"
 msgstr "Starttijd"
+
+msgid "Behave like stop-button"
+msgstr "Gedrag als stop-toets."
 
 msgid "Behavior of 'pause' when paused"
 msgstr "Functie van pauzetoets gedurende pauze"

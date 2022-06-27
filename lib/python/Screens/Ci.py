@@ -13,10 +13,11 @@ import Screens.Standby
 
 forceNotShowCiMessages = False
 
-
 def setCIBitrate(configElement):
 	eDVBCI_UI.getInstance().setClockRate(configElement.slotid, eDVBCI_UI.rateNormal if configElement.value == "no" else eDVBCI_UI.rateHigh)
 
+def setCIEnabled(configElement):
+	eDVBCI_UI.getInstance().setEnabled(configElement.slotid, configElement.value)
 
 def setdvbCiDelay(configElement):
 	open(SystemInfo["CommonInterfaceCIDelay"], "w").write(configElement.value)
@@ -33,6 +34,9 @@ def InitCiConfig():
 	if SystemInfo["CommonInterface"]:
 		for slot in range(SystemInfo["CommonInterface"]):
 			config.ci.append(ConfigSubsection())
+			config.ci[slot].enabled = ConfigYesNo(default=True)
+			config.ci[slot].enabled.slotid = slot
+			config.ci[slot].enabled.addNotifier(setCIEnabled)
 			config.ci[slot].canDescrambleMultipleServices = ConfigSelection(choices=[("auto", _("auto")), ("no", _("no")), ("yes", _("yes"))], default="auto")
 			config.ci[slot].use_static_pin = ConfigYesNo(default=True)
 			config.ci[slot].static_pin = ConfigPIN(default=0)
@@ -433,6 +437,7 @@ class CiSelection(Screen):
 		self.state[slot] = state
 		if self.slot > 1:
 			self.list.append(("**************************", ConfigNothing(), 3, slot))
+		self.list.append((_("CI %s enabled" % (slot)), config.ci[slot].enabled, -1, slot))
 		self.list.append((_("Reset"), ConfigNothing(), 0, slot))
 		self.list.append((_("Init"), ConfigNothing(), 1, slot))
 
@@ -443,7 +448,11 @@ class CiSelection(Screen):
 		elif self.state[slot] == 2: #module ready
 			appname = eDVBCI_UI.getInstance().getAppName(slot)
 			self.list.append((appname, ConfigNothing(), 2, slot))
-		self.list.append(getConfigListEntry(_("Set pin code persistent"), config.ci[slot].use_static_pin, 3, slot))
+		elif self.state[slot] == 3:  # module disabled by the user
+			self.list.append((_("module disabled"), ConfigNothing(), 2, slot))
+			return
+
+		self.list.append(getConfigListEntry(_("Set persistent PIN code"), config.ci[slot].use_static_pin, 3, slot))
 		self.list.append((_("Enter persistent PIN code"), ConfigNothing(), 5, slot))
 		self.list.append((_("Reset persistent PIN code"), ConfigNothing(), 6, slot))
 		self.list.append(getConfigListEntry(_("Show CI messages"), config.ci[slot].show_ci_messages, 3, slot))
@@ -465,6 +474,7 @@ class CiSelection(Screen):
 
 		if slot > 0:
 			slotidx += 1 #do not change separator
+		slotidx += 1 #do not change CI Enabled
 		slotidx += 1 #do not change Reset
 		slotidx += 1 #do not change Init
 
@@ -475,7 +485,11 @@ class CiSelection(Screen):
 		elif state == 2: #module ready
 			appname = eDVBCI_UI.getInstance().getAppName(slot)
 			self.list[slotidx] = (appname, ConfigNothing(), 2, slot)
-
+			if len(self.list) <= slotidx + 1:
+				self.list = []
+				self.appendEntries(slot, state)
+		elif state == 3:
+			self.list = self.list[0:slotidx+1]
 		lst = self["entries"]
 		lst.list = self.list
 		lst.l.setList(self.list)
