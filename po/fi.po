@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-06-18 17:57+0300\n"
+"PO-Revision-Date: 2022-06-27 21:02+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -16466,3 +16466,28 @@ msgstr "4097 iptv soitin:\t%s\n"
 
 msgid "4097 iptv player:\tDefault player\n"
 msgstr "4097 iptv soitin:\tOletus soitin\n"
+
+msgid "Recordings - convert IPTV servicetypes to  1"
+msgstr "Tallennukset - muunna IPTV palvelulajit 1:ksi"
+
+msgid "Recording 4097, 5001 and 5002 streams not possible with external players, so convert recordings to servicetype 1."
+msgstr "4097, 5001 ja 5002 striimien tallennus ei ole mahdollista ulkoisilla soittimilla, joten muunna tallennukset palvelulaji 1:ksi."
+
+msgid "don't convert"
+msgstr "älä muunna"
+
+msgid "4097 only"
+msgstr "vain 4097"
+
+msgid "5001 only"
+msgstr "vain 5001"
+
+msgid "5002 only"
+msgstr "vain 5002"
+
+msgid ""
+"Recording IPTV with systemapp enabled, timer ended!\n"
+"Please recheck it!"
+msgstr ""
+"IPTV tallennus systemapp:lla käytössä, ajastin loppui!\n"
+"Tarkista se!"
