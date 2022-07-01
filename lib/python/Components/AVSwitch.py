@@ -619,7 +619,7 @@ def InitAVSwitch():
 
 	if SystemInfo["Can3DSurround"]:
 		def set3DSurround(configElement):
-			open("/proc/stb/audio/3d_surround", "w").write(configElement.value)
+			open(SystemInfo["Can3DSurround"], "w").write(configElement.value)
 		choices = [
 			("none", _("off")),
 			("hdmi", _("HDMI")),
