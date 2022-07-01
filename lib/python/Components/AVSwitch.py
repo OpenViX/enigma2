@@ -638,7 +638,7 @@ def InitAVSwitch():
 
 	if SystemInfo["Can3DSpeaker"]:
 		def set3DPosition(configElement):
-			open("/proc/stb/audio/3d_surround_speaker_position", "w").write(configElement.value)
+			open(SystemInfo["Can3DSpeaker"], "w").write(configElement.value)
 		choices = [
 			("center", _("center")),
 			("wide", _("wide")),
