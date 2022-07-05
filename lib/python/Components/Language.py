@@ -83,6 +83,8 @@ class Language:
 		self.langlistselection.append((str(lang + "_" + country), name))
 
 	def activateLanguage_TRY(self, index):
+		from Tools import Notifications
+		from Screens.MessageBox import MessageBox
 		if index not in self.lang:
 			print("[Language] Selected language %s is not installed, fallback to en_US!" % index)
 			index = "en_US"
