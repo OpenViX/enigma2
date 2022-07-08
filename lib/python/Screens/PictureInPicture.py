@@ -107,7 +107,8 @@ class PictureInPicture(Screen):
 		self.onLayoutFinish.append(self.LayoutFinished)
 
 	def __del__(self):
-		del self.pipservice
+		if self.pipservice:	
+			del self.pipservice
 		self.setExternalPiP(False)
 		self.setSizePosMainWindow()
 		if hasattr(self, "dishpipActive") and self.dishpipActive is not None:
