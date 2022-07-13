@@ -96,7 +96,7 @@ class Scanner:
 		return True
 
 	def handleFile(self, res, file):
-		if file.mimetype in self.mimetypes and self.checkFile(file):
+		if file.mimetype and file.mimetype.lower() in list(map(lambda x: x.lower(), self.mimetypes)) and self.checkFile(file):
 			res.setdefault(self, []).append(file)
 
 	def __repr__(self):
