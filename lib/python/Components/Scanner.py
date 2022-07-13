@@ -2,7 +2,22 @@ from Plugins.Plugin import PluginDescriptor
 from Components.PluginComponent import plugins
 
 import os
-from mimetypes import guess_type, add_type
+#from mimetypes import guess_type, add_type
+
+# start: temporary workaround until we discover why mimetypes.add_type() is not updating the map
+from mimetypes import types_map
+
+types_map_dict = dict(types_map)
+
+def add_type(type, ext, strict=True):
+	types_map_dict[ext] = type
+
+def guess_type(url, strict=True):
+	p = url.rfind('.')
+	if p == -1:
+		return (None, None)
+	return (types_map_dict.get(url[p:].lower()), None)
+# end: temporary workaround
 
 add_type("audio/dts", ".dts")
 add_type("audio/mpeg", ".mp3")
