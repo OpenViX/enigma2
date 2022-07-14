@@ -254,7 +254,7 @@ def InitUsageConfig():
 		("shutdown", _("Immediate shutdown")),
 		("standby", _("Standby"))])
 
-	choicelist = [("0", "Disabled")]
+	choicelist = [("0", _("Disabled"))]
 	for i in (5, 30, 60, 300, 600, 900, 1200, 1800, 2700, 3600):
 		if i < 60:
 			m = ngettext("%d second", "%d seconds", i) % i
@@ -785,13 +785,13 @@ def InitUsageConfig():
 	config.epg.cacheloadtimer = ConfigSelectionNumber(default=24, stepwidth=1, min=1, max=24, wraparound=True)
 	config.epg.cachesavetimer = ConfigSelectionNumber(default=24, stepwidth=1, min=1, max=24, wraparound=True)
 
-	hddchoises = [("/etc/enigma2/", "Internal Flash")]
+	hddchoices = [("/etc/enigma2/", "Internal Flash")]
 	for p in harddiskmanager.getMountedPartitions():
 		if os.path.exists(p.mountpoint):
 			d = os.path.normpath(p.mountpoint)
 			if p.mountpoint != "/":
-				hddchoises.append((p.mountpoint, d))
-	config.misc.epgcachepath = ConfigSelection(default='/etc/enigma2/', choices=hddchoises)
+				hddchoices.append((p.mountpoint, d))
+	config.misc.epgcachepath = ConfigSelection(default='/etc/enigma2/', choices=hddchoices)
 	config.misc.epgcachefilename = ConfigText(default='epg', fixed_size=False)
 	config.misc.epgcache_filename = ConfigText(default=(config.misc.epgcachepath.value + config.misc.epgcachefilename.value.replace('.dat', '') + '.dat'))
 
@@ -849,7 +849,7 @@ def InitUsageConfig():
 	config.softwareupdate.showinextensions = ConfigSelection(default="no", choices=[("no", _("no")), ("yes", _("yes")), ("available", _("only when available"))])
 
 	config.timeshift = ConfigSubsection()
-	choicelist = [("0", "Disabled")]
+	choicelist = [("0", _("Disabled"))]
 	for i in (2, 3, 4, 5, 10, 20, 30):
 		choicelist.append(("%d" % i, ngettext("%d second", "%d seconds", i) % i))
 	for i in (60, 120, 300):

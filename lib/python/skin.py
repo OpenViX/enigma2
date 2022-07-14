@@ -495,10 +495,10 @@ class AttributeParser:
 			print("[Skin] Error: Invalid animationMode '%s'!  Must be one of 'disable', 'off', 'offshow', 'offhide', 'onshow' or 'onhide'." % value)
 
 	def title(self, value):
-		self.guiObject.setTitle(_(value))
+		self.guiObject.setTitle(value and _(value))
 
 	def text(self, value):
-		self.guiObject.setText(_(value))
+		self.guiObject.setText(value and _(value))
 
 	def font(self, value):
 		self.guiObject.setFont(parseFont(value, self.scaleTuple))

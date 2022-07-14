@@ -2,7 +2,22 @@ from Plugins.Plugin import PluginDescriptor
 from Components.PluginComponent import plugins
 
 import os
-from mimetypes import guess_type, add_type
+#from mimetypes import guess_type, add_type
+
+# start: temporary workaround until we discover why mimetypes.add_type() is not updating the map
+from mimetypes import types_map
+
+types_map_dict = dict(types_map)
+
+def add_type(type, ext, strict=True):
+	types_map_dict[ext] = type
+
+def guess_type(url, strict=True):
+	p = url.rfind('.')
+	if p == -1:
+		return (None, None)
+	return (types_map_dict.get(url[p:].lower()), None)
+# end: temporary workaround
 
 add_type("audio/dts", ".dts")
 add_type("audio/mpeg", ".mp3")
@@ -33,6 +48,7 @@ add_type("image/gif", ".gif")
 add_type("image/bmp", ".bmp")
 add_type("image/jpeg", ".jpeg")
 add_type("image/jpeg", ".jpe")
+add_type("image/svg+xml", ".svg")
 add_type("video/mpeg", ".mpg")
 add_type("video/dvd", ".vob")
 add_type("video/mp4", ".m4v")
@@ -96,7 +112,7 @@ class Scanner:
 		return True
 
 	def handleFile(self, res, file):
-		if (self.mimetypes is None or file.mimetype in self.mimetypes) and self.checkFile(file):
+		if file.mimetype and file.mimetype.lower() in list(map(lambda x: x.lower(), self.mimetypes)) and self.checkFile(file):
 			res.setdefault(self, []).append(file)
 
 	def __repr__(self):
@@ -119,13 +135,14 @@ class ScanPath:
 	def __hash__(self):
 		return self.path.__hash__() ^ self.with_subdirs.__hash__()
 
-	def __cmp__(self, other):
-		if self.path < other.path:
-			return -1
-		elif self.path > other.path:
-			return +1
-		else:
-			return self.with_subdirs.__cmp__(other.with_subdirs)
+	def __eq__(self, other):
+		return ((self.with_subdirs, self.path) == (other.with_subdirs, other.path))
+
+	def __lt__(self, other):
+		return ((self.with_subdirs, self.path) < (other.with_subdirs, other.path))
+
+	def __gt__(self, other):
+		return ((self.with_subdirs, self.path) > (other.with_subdirs, other.path))
 
 
 class ScanFile:
