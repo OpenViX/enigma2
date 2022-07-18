@@ -1,10 +1,10 @@
-import os
+from os import listdir, path
 
 
 def enumFeeds():
-	for fn in os.listdir('/etc/opkg'):
+	for fn in listdir('/etc/opkg'):
 		if fn.endswith('-feed.conf'):
-			file = open(os.path.join('/etc/opkg', fn))
+			file = open(path.join('/etc/opkg', fn))
 			feedfile = file.readlines()
 			file.close()
 			try:
@@ -20,7 +20,7 @@ def enumPlugins(filter_start=''):
 	for feed in enumFeeds():
 		package = None
 		try:
-			file = open(os.path.join(listsDirPath(), feed), 'r')
+			file = open(path.join(listsDirPath(), feed), 'r')
 			for line in file:
 				if line.startswith('Package:'):
 					package = line.split(":", 1)[1].strip()
