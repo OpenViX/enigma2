@@ -1,4 +1,4 @@
-import os
+from os import access, path, F_OK
 
 from Components.SystemInfo import SystemInfo
 from Tools.HardwareInfo import HardwareInfo
@@ -576,7 +576,7 @@ class NIM():
 				sattypes.remove("DVB-S")
 			if len(sattypes) > 1:
 				self.multi_type = {}
-				self.combined = not(os.path.exists("/proc/stb/frontend/%d/mode" % self.frontend_id) or self.isFBCTuner())
+				self.combined = not(path.exists("/proc/stb/frontend/%d/mode" % self.frontend_id) or self.isFBCTuner())
 				for sattype in sattypes:
 					self.multi_type[str(sattypes.index(sattype))] = sattype
 			elif len(self.multi_type) > 1:
@@ -680,7 +680,7 @@ class NIM():
 	def isT2MI(self):
 		# Check if t2mi feature exists using procfs due to missing FE_CAN_T2MI in DVB API
 		# TODO: Ask manufactures to add /proc/stb/frontend/%d/t2mi entry on supported frontends
-		return os.path.exists("/proc/stb/frontend/%d/t2mi" % self.frontend_id)
+		return path.exists("/proc/stb/frontend/%d/t2mi" % self.frontend_id)
 
 	def supportsBlindScan(self):
 		return self.supports_blind_scan
@@ -717,7 +717,7 @@ class NIM():
 		if self.isFBCTuner():
 			return "%s-%s: %s" % (self.getSlotName(self.slot & ~7), self.getSlotID((self.slot & ~7) + 7), self.getFullDescription())
 		#compress by combining dual tuners by checking if the next tuner has a rf switch
-		elif self.frontend_id is not None and self.number_of_slots > self.frontend_id + 1 and os.access("/proc/stb/frontend/%d/rf_switch" % (self.frontend_id + 1), os.F_OK):
+		elif self.frontend_id is not None and self.number_of_slots > self.frontend_id + 1 and access("/proc/stb/frontend/%d/rf_switch" % (self.frontend_id + 1), F_OK):
 			return "%s-%s: %s" % (self.slot_name, self.getSlotID(self.slot + 1), self.getFullDescription())
 		return self.getFriendlyFullDescription()
 
@@ -953,7 +953,7 @@ class NimManager:
 				entry["has_outputs"] = entry["name"] in SystemInfo["HasPhysicalLoopthrough"] # "Has_Outputs: yes" not in /proc/bus/nim_sockets NIM, but the physical loopthrough exist
 			entry["internally_connectable"] = None
 			if "frontend_device" in entry: # check if internally connectable
-				if os.path.exists("/proc/stb/frontend/%d/rf_switch" % entry["frontend_device"]) and (not id or entries[id]["name"] == entries[id - 1]["name"]):
+				if path.exists("/proc/stb/frontend/%d/rf_switch" % entry["frontend_device"]) and (not id or entries[id]["name"] == entries[id - 1]["name"]):
 					if '7356' in about.getChipSetString():
 						if not id:
 							entry["internally_connectable"] = 1
@@ -967,7 +967,7 @@ class NimManager:
 				entry["supports_blind_scan"] = False
 
 			entry["fbc"] = [0, 0, 0] # not fbc
-			if entry["name"] and ("fbc" in entry["name"].lower() or (entry["name"] in SystemInfo["HasFBCtuner"] and entry["frontend_device"] is not None and os.access("/proc/stb/frontend/%d/fbc_id" % entry["frontend_device"], os.F_OK))):
+			if entry["name"] and ("fbc" in entry["name"].lower() or (entry["name"] in SystemInfo["HasFBCtuner"] and entry["frontend_device"] is not None and access("/proc/stb/frontend/%d/fbc_id" % entry["frontend_device"], F_OK))):
 				fbc_number += 1
 				if fbc_number <= (entry["type"] and "DVB-C" in entry["type"] and 1 or 2):
 					entry["fbc"] = [1, fbc_number, fbc_tuner] # fbc root
@@ -1550,7 +1550,7 @@ def InitNimManager(nimmgr, update_slots=[]):
 	def scpcSearchRangeChanged(configElement):
 		fe_id = configElement.fe_id
 		slot_id = configElement.slot_id
-		if os.path.exists("/proc/stb/frontend/%d/use_scpc_optimized_search_range" % fe_id):
+		if path.exists("/proc/stb/frontend/%d/use_scpc_optimized_search_range" % fe_id):
 			f = open("/proc/stb/frontend/%d/use_scpc_optimized_search_range" % (fe_id), "w")
 			f.write(configElement.value)
 			f.close()
@@ -1558,14 +1558,14 @@ def InitNimManager(nimmgr, update_slots=[]):
 	def toneAmplitudeChanged(configElement):
 		fe_id = configElement.fe_id
 		slot_id = configElement.slot_id
-		if os.path.exists("/proc/stb/frontend/%d/tone_amplitude" % fe_id):
+		if path.exists("/proc/stb/frontend/%d/tone_amplitude" % fe_id):
 			f = open("/proc/stb/frontend/%d/tone_amplitude" % fe_id, "w")
 			f.write(configElement.value)
 			f.close()
 
 	def t2miRawModeChanged(configElement):
 		slot = configElement.slot
-		if os.path.exists("/proc/stb/frontend/%d/t2mirawmode" % slot):
+		if path.exists("/proc/stb/frontend/%d/t2mirawmode" % slot):
 			open("/proc/stb/frontend/%d/t2mirawmode" % slot, "w").write(configElement.value)
 
 	def createSatConfig(nim, slot_id):
@@ -1702,7 +1702,7 @@ def InitNimManager(nimmgr, update_slots=[]):
 						print("[InitNimManager] %d: tunerTypeChanged to '%s' failed (BUSY)" % (fe_id, configElement.getText()))
 						return
 				frontend = raw_channel.getFrontend()
-				is_changed_mode = os.path.exists("/proc/stb/frontend/%d/mode" % fe_id)
+				is_changed_mode = path.exists("/proc/stb/frontend/%d/mode" % fe_id)
 				if not is_changed_mode and frontend.setDeliverySystem(nimmgr.nim_slots[fe_id].getType()):
 					print("[InitNimManager] tunerTypeChanged feid %d to mode %d" % (fe_id, int(configElement.value)))
 					InitNimManager(nimmgr, [fe_id])
@@ -1713,7 +1713,7 @@ def InitNimManager(nimmgr, update_slots=[]):
 					if cur_type != int(configElement.value):
 						print("[InitNimManager] tunerTypeChanged feid %d from %d to mode %d" % (fe_id, cur_type, int(configElement.value)))
 
-						is_dvb_shutdown_timeout = os.path.exists("/sys/module/dvb_core/parameters/dvb_shutdown_timeout")
+						is_dvb_shutdown_timeout = path.exists("/sys/module/dvb_core/parameters/dvb_shutdown_timeout")
 						if is_dvb_shutdown_timeout:
 							try:
 								oldvalue = open("/sys/module/dvb_core/parameters/dvb_shutdown_timeout", "r").readline()
