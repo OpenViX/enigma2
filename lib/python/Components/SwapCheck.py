@@ -1,4 +1,4 @@
-import os
+from os import path, statvfs
 
 from Components.Console import Console
 swapdevice = None
@@ -11,7 +11,7 @@ def bigStorage(minFree):
 			if not candidate.startswith('/media'):
 				continue
 			try:
-				diskstat = os.statvfs(candidate)
+				diskstat = statvfs(candidate)
 				free = diskstat.f_bfree * diskstat.f_bsize
 				if free > minFree:
 					print()
@@ -37,10 +37,10 @@ class SwapCheck:
 		path = bigStorage(9000000)
 		if path:
 			global swapdevice
-			swapdevice = os.path.join(path, 'swapfile_tmp')
+			swapdevice = path.join(path, 'swapfile_tmp')
 			print("[SwapCheck] Location:", swapdevice)
 
-			if os.path.exists(swapdevice):
+			if path.exists(swapdevice):
 				print("[SwapCheck] Removing old swapfile")
 				self.Console.ePopen("swapoff " + swapdevice + " && rm " + swapdevice)
 			f = open('/proc/meminfo', 'r')
@@ -97,6 +97,6 @@ class SwapCheck:
 			self.callback()
 
 	def RemoveSwap(self):
-		if swapdevice and os.path.exists(swapdevice):
+		if swapdevice and path.exists(swapdevice):
 			print("[SwapCheck] Removing Swapfile", swapdevice)
 			self.Console.ePopen("swapoff " + swapdevice + " && rm " + swapdevice)
