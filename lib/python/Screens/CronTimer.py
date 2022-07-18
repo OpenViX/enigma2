@@ -198,7 +198,7 @@ class CronTimers(Screen):
 						self.list.append(res)
 					elif parts[3] == '*':
 						if parts[4] == "*":
-							line2 = 'M:  Day ' + parts[2] + '  ' + parts[1].zfill(2) + ':' + parts[5]
+							line2 = 'M:  Day ' + parts[2] + '  ' + parts[1].zfill(2) + '\t' + parts[5]
 						header = 'W:  '
 						day = ""
 						if str(parts[4]).find('0') >= 0:
