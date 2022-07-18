@@ -1,4 +1,4 @@
-import os
+from os import listdir, path, unlink
 from shutil import rmtree
 from bisect import insort
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
@@ -42,39 +42,39 @@ class PluginComponent:
 	def readPluginList(self, directory):
 		"""enumerates plugins"""
 		new_plugins = []
-		for c in os.listdir(directory):
-			directory_category = os.path.join(directory, c)
-			if not os.path.isdir(directory_category):
+		for c in listdir(directory):
+			directory_category = path.join(directory, c)
+			if not path.isdir(directory_category):
 				continue
-			for pluginname in os.listdir(directory_category):
+			for pluginname in listdir(directory_category):
 				if pluginname == "__pycache__":
 					continue
-				path = os.path.join(directory_category, pluginname)
-				if os.path.isdir(path):
+				pluginPath = path.join(directory_category, pluginname)
+				if path.isdir(pluginPath):
 						profile('plugin ' + pluginname)
 						try:
 							plugin = my_import('.'.join(["Plugins", c, pluginname, "plugin"]))
-							plugins = plugin.Plugins(path=path)
+							plugins = plugin.Plugins(path=pluginPath)
 						except Exception as exc:
 							if pluginname != "WebInterface": # "WebInterface" is a fake plugin created by OpenWebIf. Do not print warnings about this.
 								print("[PluginComponent] Plugin ", c + "/" + pluginname, "failed to load:", exc)
 							# suppress errors due to missing plugin.py* files (badly removed plugin)
 							for fn in ('plugin.py', 'plugin.pyc', 'plugin.pyo'):
-								if os.path.exists(os.path.join(path, fn)):
+								if path.exists(path.join(pluginPath, fn)):
 									self.warnings.append((c + "/" + pluginname, str(exc)))
 									from traceback import print_exc
 									print_exc()
 									break
 							else: # executes if no "break" is encountered in the "for" loop
 								if pluginname != "WebInterface": # "WebInterface" is a fake plugin created by OpenWebIf. Do not process this.
-									print("[PluginComponent] Plugin probably removed, but not cleanly in", path)
-									print("[PluginComponent] trying to remove:", path)
+									print("[PluginComponent] Plugin probably removed, but not cleanly in", pluginPath)
+									print("[PluginComponent] trying to remove:", pluginPath)
 									# rmtree will produce an error if path is a symlink, so...
-									if os.path.islink(path):
-										rmtree(os.path.realpath(path))
-										os.unlink(path)
+									if path.islink(pluginPath):
+										rmtree(path.realpath(pluginPath))
+										unlink(pluginPath)
 									else:
-										rmtree(path)
+										rmtree(pluginPath)
 							continue
 
 						# allow single entry not to be a list
@@ -82,11 +82,11 @@ class PluginComponent:
 							plugins = [plugins]
 
 						for p in plugins:
-							p.path = path
-							p.updateIcon(path)
+							p.path = pluginPath
+							p.updateIcon(pluginPath)
 							new_plugins.append(p)
 
-						keymap = os.path.join(path, "keymap.xml")
+						keymap = path.join(pluginPath, "keymap.xml")
 						if fileExists(keymap):
 							try:
 								keymapparser.readKeymap(keymap)
