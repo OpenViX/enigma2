@@ -1,4 +1,5 @@
-import os
+from os import listdir, path, remove
+
 from enigma import eConsoleAppContainer
 from Components.Harddisk import harddiskmanager
 from Tools.Directories import resolveFilename, SCOPE_LIBDIR
@@ -23,16 +24,16 @@ def opkgAddDestination(mountpoint):
 def onPartitionChange(why, part):
 	global opkgDestinations
 	global opkgStatusPath
-	mountpoint = os.path.normpath(part.mountpoint)
+	mountpoint = path.normpath(part.mountpoint)
 	if mountpoint and not mountpoint.startswith('/media/net'):
 		if why == 'add':
 			if opkgStatusPath == '':
 				# recent opkg versions
 				opkgStatusPath = 'var/lib/opkg/status'
-				if not os.path.exists(os.path.join('/', opkgStatusPath)):
+				if not path.exists(path.join('/', opkgStatusPath)):
 					# older opkg versions
 					opkgStatusPath = resolveFilename(SCOPE_LIBDIR, 'opkg/status')
-			if os.path.exists(os.path.join(mountpoint, opkgStatusPath)):
+			if path.exists(path.join(mountpoint, opkgStatusPath)):
 				opkgAddDestination(mountpoint)
 		elif why == 'remove':
 			try:
@@ -88,9 +89,9 @@ class IpkgComponent:
 
 	def startCmd(self, cmd, args=None):
 		if cmd == self.CMD_UPDATE:
-			for fn in os.listdir('/var/lib/opkg'):
+			for fn in listdir('/var/lib/opkg'):
 				if fn.startswith(getImageDistro()):
-					os.remove('/var/lib/opkg/' + fn)
+					remove('/var/lib/opkg/' + fn)
 			self.runCmdEx("update")
 		elif cmd == self.CMD_UPGRADE:
 			append = ""
