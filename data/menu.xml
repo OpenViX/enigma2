@@ -74,10 +74,10 @@ self.session.openWithCallback(msgClosed, EpgLoadMsg)
 from Components.EpgLoadSave import EpgDeleteMsg
 def msgClosed(ret):
 	if ret:
-		import os
+		from os import path as ospath, remove
 		from Components.config import config
-		if os.path.exists(config.misc.epgcache_filename.value):
-			os.remove(config.misc.epgcache_filename.value)
+		if ospath.exists(config.misc.epgcache_filename.value):
+			remove(config.misc.epgcache_filename.value)
 		from enigma import eEPGCache
 		epgcache = eEPGCache.getInstance()
 		epgcache.flushEPG()
