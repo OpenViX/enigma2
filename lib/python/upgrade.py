@@ -1,4 +1,4 @@
-import os
+from os import listdir, path as ospath, system
 
 opkgDestinations = ['/']
 opkgStatusPath = ''
@@ -6,9 +6,9 @@ opkgStatusPath = ''
 
 def findMountPoint(path):
 	"""Example: findMountPoint("/media/hdd/some/file") returns "/media/hdd\""""
-	path = os.path.abspath(path)
-	while not os.path.ismount(path):
-		path = os.path.dirname(path)
+	path = ospath.abspath(path)
+	while not ospath.ismount(path):
+		path = ospath.dirname(path)
 	return path
 
 
@@ -24,20 +24,20 @@ def opkgAddDestination(mountpoint):
 		print("[Ipkg] Added to OPKG destinations:", mountpoint)
 
 
-mounts = os.listdir('/media')
+mounts = listdir('/media')
 for mount in mounts:
-	mount = os.path.join('/media', mount)
+	mount = ospath.join('/media', mount)
 	if mount and not mount.startswith('/media/net'):
 		if opkgStatusPath == '':
 			# recent opkg versions
 			opkgStatusPath = 'var/lib/opkg/status'
-			if not os.path.exists(os.path.join('/', opkgStatusPath)):
+			if not ospath.exists(ospath.join('/', opkgStatusPath)):
 				# older opkg versions
 				opkgStatusPath = 'usr/lib/opkg/status'
-		if os.path.exists(os.path.join(mount, opkgStatusPath)):
+		if ospath.exists(ospath.join(mount, opkgStatusPath)):
 			opkgAddDestination(mount)
 
-os.system("(echo 'Updating Sysvinit' && opkg upgrade sysvinit && \
+system("(echo 'Updating Sysvinit' && opkg upgrade sysvinit && \
 echo 'Updating Sysvinit-pidof' && opkg upgrade sysvinit-pidof && \
 echo 'Updating Initscripts-functions' && opkg upgrade initscripts-functions && \
 echo 'Updating Busybox' && opkg upgrade busybox && \
