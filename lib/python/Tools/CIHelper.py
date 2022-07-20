@@ -1,6 +1,6 @@
 import six
 
-import os
+from os import path as ospath, remove
 from timer import TimerEntry
 from xml.etree.cElementTree import parse
 
@@ -29,7 +29,7 @@ class CIHelper:
 			for ci in range(NUM_CI):
 				filename = eEnv.resolve("${sysconfdir}/enigma2/ci") + str(ci) + ".xml"
 
-				if not os.path.exists(filename):
+				if not ospath.exists(filename):
 					continue
 
 				try:
@@ -57,7 +57,7 @@ class CIHelper:
 				except:
 					print("[CI_ASSIGNMENT %d] error parsing xml..." % ci)
 					try:
-						os.remove(filename)
+						remove(filename)
 					except:
 						print("[CI_ASSIGNMENT %d] error remove damaged xml..." % ci)
 
