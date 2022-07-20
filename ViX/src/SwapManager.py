@@ -199,6 +199,7 @@ class VIXSwap(Screen):
 		self.MMCdevice = False
 		self.swapdevice = 0
 		self.swapcount = 0
+		self.swapsize = 0
 		if result.find("swap") > 0:					# lets find swap partition
 			for line in result.split("\n"):
 				if "swap" not in line:				# so much garbage from parted command with eMMC partitions need further exclude.
