@@ -1,4 +1,4 @@
-import os
+from os import path, unlink
 from time import time
 
 from enigma import eConsoleAppContainer, eDVBDB, eTimer
@@ -309,7 +309,7 @@ class PluginDownloadBrowser(Screen):
 			"ok": self.go,
 			"back": self.requestClose,
 		})
-		if os.path.isfile('/usr/bin/opkg'):
+		if path.isfile('/usr/bin/opkg'):
 			self.ipkg = '/usr/bin/opkg'
 			self.ipkg_install = self.ipkg + ' install'
 			self.ipkg_remove = self.ipkg + ' remove --autoremove'
@@ -413,7 +413,7 @@ class PluginDownloadBrowser(Screen):
 			dest = result[1]
 			if dest.startswith('/'):
 				# Custom install path, add it to the list too
-				dest = os.path.normpath(dest)
+				dest = path.normpath(dest)
 				extra = '--add-dest %s:%s -d %s' % (dest, dest, dest)
 				Ipkg.opkgAddDestination(dest)
 			else:
@@ -521,7 +521,7 @@ class PluginDownloadBrowser(Screen):
 				print("[PluginBrowser] postInstallCall failed:", ex)
 			self.resetPostInstall()
 		try:
-			os.unlink('/tmp/opkg.conf')
+			unlink('/tmp/opkg.conf')
 		except:
 			pass
 		for plugin in self.pluginlist:
