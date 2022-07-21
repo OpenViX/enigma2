@@ -1,4 +1,4 @@
-import os
+from os import path
 
 from Components.config import config, ConfigSubList, ConfigSubsection, ConfigSlider
 from Tools.BoundFunction import boundFunction
@@ -11,7 +11,7 @@ from boxbranding import getBoxType
 class FanControl:
 	# ATM there's only support for one fan
 	def __init__(self):
-		if os.path.exists("/proc/stb/fp/fan_vlt") or os.path.exists("/proc/stb/fp/fan_pwm") or os.path.exists("/proc/stb/fp/fan_speed"):
+		if path.exists("/proc/stb/fp/fan_vlt") or path.exists("/proc/stb/fp/fan_pwm") or path.exists("/proc/stb/fp/fan_speed"):
 			self.fancount = 1
 		else:
 			self.fancount = 0
@@ -85,10 +85,10 @@ class FanControl:
 		return self.fancount
 
 	def hasRPMSensor(self, fanid):
-		return os.path.exists("/proc/stb/fp/fan_speed")
+		return path.exists("/proc/stb/fp/fan_speed")
 
 	def hasFanControl(self, fanid):
-		return os.path.exists("/proc/stb/fp/fan_vlt") or os.path.exists("/proc/stb/fp/fan_pwm")
+		return path.exists("/proc/stb/fp/fan_vlt") or path.exists("/proc/stb/fp/fan_pwm")
 
 	def getFanSpeed(self, fanid):
 		return int(open("/proc/stb/fp/fan_speed", "r").readline().strip()[:-4])

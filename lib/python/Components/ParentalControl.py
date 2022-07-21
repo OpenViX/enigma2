@@ -1,5 +1,4 @@
 import time
-import os
 
 from enigma import eTimer, eServiceCenter, iServiceInformation, eServiceReference, eDVBDB
 from Components.config import config, ConfigSubsection, ConfigSelection, ConfigPIN, ConfigYesNo, ConfigSubList, ConfigInteger

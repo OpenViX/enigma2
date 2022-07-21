@@ -50,9 +50,9 @@ class Sensors:
 		return self.sensors_list[sensorid][2]
 
 	def addSensors(self):
-		import os
-		if os.path.exists("/proc/stb/sensors"):
-			for dirname in os.listdir("/proc/stb/sensors"):
+		from os import path as ospath, listdir
+		if ospath.exists("/proc/stb/sensors"):
+			for dirname in listdir("/proc/stb/sensors"):
 				if dirname.find("temp", 0, 4) == 0:
 					name = open("/proc/stb/sensors/%s/name" % dirname, "r").readline().strip()
 					unit = open("/proc/stb/sensors/%s/unit" % dirname, "r").readline().strip()

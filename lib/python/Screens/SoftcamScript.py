@@ -1,4 +1,3 @@
-import os
 from enigma import eTimer, getDesktop
 
 
