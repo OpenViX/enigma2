@@ -842,7 +842,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 					cb_func2 = lambda ret: self.editTimer(timer)
 					menu = [(_("Delete Timer"), 'CALLFUNC', self.RemoveTimerDialogCB, cb_func1), (_("Edit Timer"), 'CALLFUNC', self.RemoveTimerDialogCB, cb_func2)]
 					self.ChoiceBoxDialog = self.session.instantiateDialog(ChoiceBox, title=_("Select action for timer %s:") % eventname, list=menu, keys=['green', 'blue'], skin_name="RecordTimerQuestion")
-					selx, sely = self.serviceList.getSelectionPosition()
+					selx, sely = self.servicelist.getSelectionPosition()
 					self.ChoiceBoxDialog.instance.move(ePoint(selx - self.ChoiceBoxDialog.instance.size().width(), self.instance.position().y() + sely))
 				self.showChoiceBoxDialog()
 				break
