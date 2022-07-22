@@ -30,6 +30,7 @@ import Tools.CopyFiles
 import Tools.Trashcan
 import NavigationInstance
 import RecordTimer
+from ServiceReference import ServiceReference
 
 from enigma import eServiceReference, eServiceCenter, eTimer, eSize, iPlayableService, iServiceInformation, getPrevAsciiCode, eRCInput
 import os
