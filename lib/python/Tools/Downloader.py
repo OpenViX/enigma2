@@ -1,82 +1,94 @@
-from boxbranding import getMachineBrand, getMachineName
-
-import six
-
-from twisted.web import client
-from twisted.internet import reactor, defer
-# required methods: Request, urlopen, HTTPError, URLError, urlparse
-from urllib.parse import urlparse, urlunparse
+from os import unlink
+import requests
+from twisted.internet import reactor
+from urllib.request import urlopen, Request
+from enigma import eTimer
 
 
-class HTTPProgressDownloader(client.HTTPDownloader):
-	def __init__(self, url, outfile, headers=None):
-		client.HTTPDownloader.__init__(self, url, outfile, headers=headers, agent=("%s %s Enigma2 HbbTV/1.1.1 (+PVR+RTSP+DL;OpenViX;;;)" % (getMachineBrand(), getMachineName())).encode())
-		self.status = self.progress_callback = self.error_callback = self.end_callback = None
-		self.deferred = defer.Deferred()
-
-	def noPage(self, reason):
-		if self.status == b"304":
-			print(reason.getErrorMessage())
-			client.HTTPDownloader.page(self, b"")
-		else:
-			client.HTTPDownloader.noPage(self, reason)
-		if self.error_callback:
-			self.error_callback(reason.getErrorMessage(), self.status)
-
-	def gotHeaders(self, headers):
-		if self.status == b"200":
-			if b"content-length" in headers:
-				self.totalbytes = int(headers[b"content-length"][0])
-			else:
-				self.totalbytes = 0
-			self.currentbytes = 0.0
-		return client.HTTPDownloader.gotHeaders(self, headers)
-
-	def pagePart(self, packet):
-		if self.status == b"200":
-			self.currentbytes += len(packet)
-		if self.totalbytes and self.progress_callback:
-			self.progress_callback(self.currentbytes, self.totalbytes)
-		return client.HTTPDownloader.pagePart(self, packet)
-
-	def pageEnd(self):
-		ret = client.HTTPDownloader.pageEnd(self)
-		if self.end_callback:
-			self.end_callback()
-		return ret
-
-
-class downloadWithProgress:
-	def __init__(self, url, outputfile, contextFactory=None, *args, **kwargs):
-		url = six.ensure_binary(url)
-
-		parsed = urlparse(url)
-		scheme = six.ensure_str(parsed.scheme)
-		host = parsed.hostname
-		port = parsed.port or (443 if scheme == 'https' else 80)
-
-		self.factory = HTTPProgressDownloader(url, outputfile, *args, **kwargs)
-		if scheme == "https":
-			from twisted.internet import ssl
-			if contextFactory is None:
-				contextFactory = ssl.ClientContextFactory()
-			self.connection = reactor.connectSSL(host, port, self.factory, contextFactory)
-		else:
-			self.connection = reactor.connectTCP(host, port, self.factory)
+class DownloadWithProgress:
+	def __init__(self, url, outputFile):
+		self.url = url
+		self.outputFile = outputFile
+		self.userAgent = "%s %s Enigma2 HbbTV/1.1.1 (+PVR+RTSP+DL;OpenViX;;;)" % (getMachineBrand(), getMachineName())
+		# self.agent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5"
+		self.totalSize = 0
+		self.progress = 0
+		self.progressCallback = None
+		self.endCallback = None
+		self.errorCallback = None
+		self.endCallback2 = None  # Temporary support for deprecated callbacks.
+		self.errorCallback2 = None  # Temporary support for deprecated callbacks.
+		self.stopFlag = False
+		self.timer = eTimer()
+		self.timer.callback.append(self.reportProgress)
 
 	def start(self):
-		return self.factory.deferred
+		request = Request(self.url, None, {"User-agent": self.userAgent})
+		feedFile = urlopen(request)
+		metaData = feedFile.headers
+		self.totalSize = int(metaData.get("Content-Length", 0))
+		# Set the transfer block size to a minimum of 1K and a maximum of 1% of the file size (or 128KB if the size is unknown) else use 64K.
+		self.blockSize = max(min(self.totalSize // 100, 1024), 131071) if self.totalSize else 65536
+		reactor.callInThread(self.run)
+		return self
+
+	def run(self):
+		# requests.Response object = requests.get(url, params=None, allow_redirects=True, auth=None, cert=None, cookies=None, headers=None, proxies=None, stream=False, timeout=None, verify=True)
+		response = requests.get(self.url, headers={"User-agent": self.userAgent}, stream=True)  # Streaming, so we can iterate over the response.
+		try:
+			with open(self.outputFile, "wb") as fd:
+				for buffer in response.iter_content(self.blockSize):
+					if self.stopFlag:
+						response.close()
+						fd.close()
+						unlink(self.outputFile)
+						return True
+					self.progress += len(buffer)
+					if self.progressCallback:
+						self.timer.start(0, True)
+					fd.write(buffer)
+			if self.endCallback:
+				# self.endCallback(self.url, self.outputFile, self.progress)
+				self.endCallback()
+			if self.endCallback2: # Deprecated
+				self.endCallback2(self.outputFile)
+		except OSError as err:
+			if self.errorCallback:
+				# self.errorCallback(self.url, self.outputFile, err.errno, err.strerror)
+				self.errorCallback(err.errno, err.strerror)
+			if self.errorCallback2: # Deprecated
+				self.errorCallback2(err, err.strerror)
+		return False
 
 	def stop(self):
-		if self.connection:
-			self.factory.progress_callback = self.factory.end_callback = self.factory.error_callback = None
-			self.connection.disconnect()
+		self.stopFlag = True
 
-	def addProgress(self, progress_callback):
-		self.factory.progress_callback = progress_callback
+	def reportProgress(self):
+		self.progressCallback(self.progress, self.totalSize)
 
-	def addEnd(self, end_callback):
-		self.factory.end_callback = end_callback
+	def addProgress(self, progressCallback):
+		self.progressCallback = progressCallback
 
-	def addError(self, error_callback):
-		self.factory.error_callback = error_callback
+	def addEnd(self, endCallback):
+		self.endCallback = endCallback
+
+	def addError(self, errorCallback):
+		self.errorCallback = errorCallback
+
+	def setAgent(self, userAgent):
+		self.userAgent = userAgent
+
+	# Temporary supprt for deprecated callbacks.
+	def addErrback(self, errorCallback):
+		print("[Downloader] Warning: DownloadWithProgress 'addErrback' is deprecated use 'addError' instead!")
+		self.errorCallback2 = errorCallback
+		return self
+
+	def addCallback(self, endCallback):
+		print("[Downloader] Warning: DownloadWithProgress 'addCallback' is deprecated use 'addEnd' instead!")
+		self.endCallback2 = endCallback
+		return self
+
+
+class downloadWithProgress(DownloadWithProgress):  # Class names should start with a Capital letter, this catches old code until that code can be updated.
+	pass
