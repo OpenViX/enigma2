@@ -1,3 +1,4 @@
+#include <linux/ioctl.h>
 #include <linux/dvb/frontend.h>
 #include <linux/dvb/dmx.h>
 #include <linux/dvb/version.h>
@@ -406,7 +407,7 @@ eDVBUsbAdapter::eDVBUsbAdapter(int nr)
 		goto error;
 	}
 
-#ifdef VMSG_TYPE2
+#if (_IOC_NONE == 0) && (!VMSG_TYPE1)
 #define VTUNER_GET_MESSAGE  11
 #define VTUNER_SET_RESPONSE 12
 #define VTUNER_SET_NAME     13
