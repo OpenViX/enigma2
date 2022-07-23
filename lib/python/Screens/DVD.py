@@ -35,7 +35,7 @@ class DVDOverlay(Screen):
 		desktop_size = getDesktop(0).size()
 		w = desktop_size.width()
 		h = desktop_size.height()
-		if height != None:
+		if height is not None:
 			h = height
 		DVDOverlay.skin = """<screen name="DVDOverlay" position="0,0" size="%d,%d" flags="wfNoBorder" zPosition="-1" backgroundColor="transparent" />""" % (w, h)
 		Screen.__init__(self, session)
@@ -506,7 +506,7 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 	def FileBrowserClosed(self, val):
 		curref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		print("[DVD] FileBrowserClosed", val)
-		if val == None:
+		if val is None:
 			self.askLeavePlayer()
 		else:
 			isopathname = "/VIDEO_TS.ISO"
@@ -514,7 +514,7 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 				val += isopathname
 			newref = eServiceReference(4369, 0, val)
 			print("[DVD] play", newref.toString())
-			if curref == None or curref != newref:
+			if curref is None or curref != newref:
 				if newref.toString().endswith("/VIDEO_TS") or newref.toString().endswith("/"):
 					names = newref.toString().rsplit("/", 3)
 					if names[2].startswith("Disk ") or names[2].startswith("DVD "):
@@ -577,12 +577,12 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 #			Sorry we cannot open image files here.
 			print("[DVD] Cannot read file or is ISO/IMG/NRG")
 		finally:
-			if ifofile != None:
+			if ifofile is not None:
 				ifofile.close()
 		return status, isNTSC, isLowResolution
 
 	def exitCB(self, answer):
-		if answer != None:
+		if answer is not None:
 			if answer[1] == "exit":
 				if self.service:
 					self.service = None

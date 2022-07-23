@@ -436,10 +436,10 @@ def collectAttributes(skinAttributes, node, context, skinPath=None, ignore=(), f
 				skinAttributes.append((attrib, font))
 			else:
 				skinAttributes.append((attrib, value))
-	if pos != None:
+	if pos is not None:
 		pos, size = context.parse(pos, size, font)
 		skinAttributes.append(("position", pos))
-	if size != None:
+	if size is not None:
 		skinAttributes.append(("size", size))
 
 
