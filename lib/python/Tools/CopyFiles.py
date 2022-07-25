@@ -94,7 +94,7 @@ class DownloadTask(Task):
 		self.callback = callback
 		self.download = downloadWithProgress(self.url, self.path, **self.kwargs)
 		self.download.addProgress(self.download_progress)
-		self.download.start().addCallback(self.download_finished).addErrback(self.download_failed)
+		self.download.start().addEnd(self.download_finished).addErr(self.download_failed)
 		print("[DownloadTask] downloading", self.url, "to", self.path)
 
 	def abort(self):
