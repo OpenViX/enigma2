@@ -2,11 +2,12 @@ from os import unlink
 import requests
 from twisted.internet import reactor
 from urllib.request import urlopen, Request
+from boxbranding import getMachineBrand, getMachineName
 from enigma import eTimer
 
 
 class DownloadWithProgress:
-	def __init__(self, url, outputFile):
+	def __init__(self, url, outputFile, *args, **kwargs):
 		self.url = url
 		self.outputFile = outputFile
 		self.userAgent = "%s %s Enigma2 HbbTV/1.1.1 (+PVR+RTSP+DL;OpenViX;;;)" % (getMachineBrand(), getMachineName())
@@ -21,9 +22,13 @@ class DownloadWithProgress:
 		self.stopFlag = False
 		self.timer = eTimer()
 		self.timer.callback.append(self.reportProgress)
-
+		self.requestHeader = {"User-agent": self.userAgent}
+		self.userHeader = kwargs.get('headers', None)		
+		if self.userHeader is not None:
+			self.requestHeader = self.requestHeader | self.userHeader
+			
 	def start(self):
-		request = Request(self.url, None, {"User-agent": self.userAgent})
+		request = Request(self.url, None, self.requestHeader)
 		feedFile = urlopen(request)
 		metaData = feedFile.headers
 		self.totalSize = int(metaData.get("Content-Length", 0))
@@ -34,7 +39,7 @@ class DownloadWithProgress:
 
 	def run(self):
 		# requests.Response object = requests.get(url, params=None, allow_redirects=True, auth=None, cert=None, cookies=None, headers=None, proxies=None, stream=False, timeout=None, verify=True)
-		response = requests.get(self.url, headers={"User-agent": self.userAgent}, stream=True)  # Streaming, so we can iterate over the response.
+		response = requests.get(self.url, headers=self.requestHeader, stream=True)  # Streaming, so we can iterate over the response.
 		try:
 			with open(self.outputFile, "wb") as fd:
 				for buffer in response.iter_content(self.blockSize):
