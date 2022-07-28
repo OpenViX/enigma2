@@ -81,7 +81,7 @@ class DownloadTask(Task):
 		Task.__init__(self, job, _("Downloading"))
 		self.postconditions.append(DownloaderPostcondition())
 		self.job = job
-		self.url = url.decode if isinstance(url, bytes) else url
+		self.url = url.decode() if isinstance(url, bytes) else url
 		self.path = path
 		self.error_message = ""
 		self.last_recvbytes = 0
