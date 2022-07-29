@@ -181,14 +181,6 @@ service_types_tv = "1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 
 wasRecTimerWakeup = False
 
 # please do not translate log messages
-<<<<<<< HEAD
-=======
-class RecordTimerEntry(timer.TimerEntry):
-######### the following static methods and members are only in use when the box is in (soft) standby
-	wasInStandby = False
-	wasInDeepStandby = False
-	receiveRecordEvents = False
->>>>>>> 1f94a01536 (No need to inherit from object explicitly)
 
 
 class RecordTimerEntry(TimerEntry):
