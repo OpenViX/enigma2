@@ -63,11 +63,7 @@ import os
 from sys import maxsize, version_info
 import itertools
 import datetime
-
-if version_info[0] >= 3:
-	import pickle as cPickle	# py3
-else:
-	import cPickle			# py2
+import pickle as cPickle
 
 # hack alert!
 from Screens.Menu import MainMenu, Menu, mdom
