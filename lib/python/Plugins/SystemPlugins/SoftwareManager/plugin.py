@@ -1,5 +1,5 @@
 from boxbranding import getMachineBrand, getMachineName
-from cPickle import dump, load
+from pickle import dump, load
 from os import path as os_path, stat, mkdir, makedirs, listdir, access, remove, W_OK, R_OK, F_OK
 from time import time
 from stat import ST_MTIME
@@ -56,7 +56,7 @@ config.plugins.softwaremanager.epgcache = ConfigYesNo(default=False)
 
 
 def write_cache(cache_file, cache_data):
-	#Does a cPickle dump
+	#Does a pickle dump
 	if not os_path.isdir(os_path.dirname(cache_file)):
 		try:
 			mkdir(os_path.dirname(cache_file))
@@ -81,7 +81,7 @@ def valid_cache(cache_file, cache_ttl):
 
 
 def load_cache(cache_file):
-	#Does a cPickle load
+	#Does a pickle load
 	fd = open(cache_file)
 	cache_data = load(fd)
 	fd.close()
