@@ -25,6 +25,7 @@ startswap = None
 def SwapAutostart(reason, session=None, **kwargs):
 	global startswap
 	if reason == 0:
+		print("[SwapManager] autostart", config.vixsettings.swapautostart.value)	
 		if config.vixsettings.swapautostart.value:
 			print("[SwapManager] autostart")
 			startswap = StartSwap()
@@ -63,19 +64,18 @@ class StartSwap:
 					if path.exists(filename):
 						swap_Fname = filename
 						print("[SwapManager][StartSwap] Found a SWAP file on ", swap_Fname)
-# old code below is commented out, as no longer needed due to changes in SwapManager
 # basically a swap file if created, is now given higher priority than system swap partition if built in image.
 # swapmanager can now set a user swap file to be active, or deleted and if present system swap partition will be used.
 # if both are present, then swap file is used ahead of swap partition (based on priority) in /proc/swaps.
-#		f = open("/proc/swaps")
-#		swapfile = f.read()
-#		f.close()
-#		print("[SwapManager][StartSwap] partition/filename", swap_Fname, "   ", swap_Pname)		
-#		if swap_Fname and swapfile.find(swap_Fname) == -1:
-#			system("swapon -p 10 " + swap_Fname)
-#			print("[SwapManager][StartSwap] SWAP file active on ", swap_Fname)			
-#		if swap_Pname and not swap_Fname:				
-#			print("[SwapManager][StartSwap] SWAP partition active on ", swap_Pname)			
+		f = open("/proc/swaps")
+		swapfile = f.read()
+		f.close()
+		print("[SwapManager][StartSwap] partition/filename", swap_Fname, "   ", swap_Pname)		
+		if swap_Fname and swapfile.find(swap_Fname) == -1:
+			system("swapon -p 10 " + swap_Fname)
+			print("[SwapManager][StartSwap] SWAP file active on ", swap_Fname)			
+		if swap_Pname and not swap_Fname:				
+			print("[SwapManager][StartSwap] SWAP partition active on ", swap_Pname)			
 		if swap_Pname and swap_Fname:
 			print("[SwapManager][StartSwap] SWAP file %s chosen before swap partition on %s by priority" %(swap_Fname, swap_Pname))
 
@@ -321,6 +321,7 @@ class VIXSwap(Screen):
 				self.swap_Factive = True
 				config.vixsettings.swapautostart.setValue(True)
 				config.vixsettings.swapautostart.save()
+				configfile.save()				
 			else:
 				mybox = self.session.open(MessageBox, _("SWAP file not found. You have to create the file before you try to activate it."), MessageBox.TYPE_INFO)
 				mybox.setTitle(_("Info"))
