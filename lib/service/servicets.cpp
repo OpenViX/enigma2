@@ -95,7 +95,7 @@ void TSAudioInfo::addAudio(int pid, std::string lang, std::string desc, int type
 /* eServiceTS                                                       */
 /********************************************************************/
 
-eServiceTS::eServiceTS(const eServiceReference &url): m_pump(eApp, 1)
+eServiceTS::eServiceTS(const eServiceReference &url): m_pump(eApp, 1, "ServiceTS")
 {
 	eDebug("ServiceTS construct!");
 	m_filename = url.path.c_str();
@@ -473,7 +473,7 @@ int eServiceTS::getCurrentTrack() {
 
 DEFINE_REF(eStreamThread)
 
-eStreamThread::eStreamThread(): m_messagepump(eApp, 0) {
+eStreamThread::eStreamThread(): m_messagepump(eApp, 0, "StreamThread") {
 	CONNECT(m_messagepump.recv_msg, eStreamThread::recvEvent);
 	m_running = false;
 }
