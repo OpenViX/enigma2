@@ -10,6 +10,7 @@ from Components.Console import Console
 from Tools.Directories import fileCheck, fileExists
 from enigma import getDesktop
 from os import access, R_OK
+import traceback
 
 from boxbranding import getBoxType
 
@@ -126,6 +127,8 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 		self["config"].list = self.list
 
 		self.serviceRef = None
+		if "wizard" not in str(traceback.extract_stack()).lower():
+			self.onClose.append(self.__onClose)
 		if self.welcomeWarning not in self.onShow:
 			self.onShow.append(self.welcomeWarning)
 		if self.selectionChanged not in self["config"].onSelectionChanged:
@@ -199,6 +202,9 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 		for item in self["config"].list:
 			self["config"].invalidate(item)
 		print('[UserInterfacePositioner] Setting OSD position: %s %s %s %s' % (config.osd.dst_left.value, config.osd.dst_width.value, config.osd.dst_top.value, config.osd.dst_height.value))
+
+	def __onClose(self):
+		self.ConsoleB.ePopen('/usr/bin/showiframe /usr/share/backdrop.mvi')
 
 # This is called by the Wizard...
 
