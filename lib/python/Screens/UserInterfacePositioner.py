@@ -27,6 +27,12 @@ def setPositionParameter(parameter, configElement):
 		f = open(getFilePath("apply"), "w")
 		f.write('1')
 		f.close()
+	# This is a horrible hack to work around a problem with Vu+ not updating the background properly
+	# when changing height. Previously the background only updated after changing the width fields.
+	elif parameter != "width" and fileExists(getFilePath("width")):
+		f = open(getFilePath("width"), "w")
+		f.write('%08X\n' % config.osd.dst_width.value)
+		f.close()
 
 
 def InitOsd():
