@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-13 14:02+0000\n"
-"PO-Revision-Date: 2022-06-24 11:48+0200\n"
+"POT-Creation-Date: 2022-08-10 19:25+0000\n"
+"PO-Revision-Date: 2022-08-11 07:02+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #, python-format
 msgid ""
@@ -1428,6 +1428,25 @@ msgstr "3X"
 msgid "4"
 msgstr "4"
 
+msgid "4097 + 5001"
+msgstr "4097 + 5001"
+
+msgid "4097 + 5001 + 5002"
+msgstr "4097 + 5001 + 5002"
+
+msgid "4097 + 5002"
+msgstr "4097 + 5002"
+
+#, python-format
+msgid "4097 iptv player:\t%s\n"
+msgstr "4097 iptv speler:\t%s\n"
+
+msgid "4097 iptv player:\tDefault player\n"
+msgstr "4097 iptv player:\tStandaard speler\n"
+
+msgid "4097 only"
+msgstr "4097 alleen"
+
 msgid "420"
 msgstr "420"
 
@@ -1460,6 +1479,15 @@ msgstr "5"
 
 msgid "50 MB/s"
 msgstr "50 MB/s"
+
+msgid "5001 + 5002"
+msgstr "5001 + 5002"
+
+msgid "5001 only"
+msgstr "5001 alleen"
+
+msgid "5002 only"
+msgstr "5002 alleen"
 
 msgid "6"
 msgstr "6"
@@ -2642,6 +2670,10 @@ msgid "Boost green"
 msgstr "Versterk groen"
 
 #, python-format
+msgid "Boot Device:\t%s\n"
+msgstr "Boot device:\t%s\n"
+
+#, python-format
 msgid "Bootloader:\t%s\n"
 msgstr "Bootloader:\t%s\n"
 
@@ -2813,6 +2845,9 @@ msgstr "Common interface Instellingen"
 
 msgid "CI assignment"
 msgstr "CI toewijzing"
+
+msgid "CI enabled"
+msgstr "CI ingeschakeld"
 
 msgid "CI slot: "
 msgstr "CI slot: "
@@ -9728,6 +9763,16 @@ msgstr "Opname"
 msgid "Recording & Playback"
 msgstr "Opname & afspelen"
 
+msgid "Recording 4097, 5001 and 5002 streams not possible with external players, so convert recordings to servicetype 1."
+msgstr "Opname van 4097, 5001 en 5002 streams is niet mogelijk met externe spelers; converteer deze naar servicetype 1."
+
+msgid ""
+"Recording IPTV with systemapp enabled, timer ended!\n"
+"Please recheck it!"
+msgstr ""
+"Opname van IPTV met systeemapp is ingeschakeld, timer afgelopen!\n"
+"Controleer deze!"
+
 msgid "Recording and playback"
 msgstr "Opname en afspelen"
 
@@ -9749,6 +9794,9 @@ msgstr "Opname/media selecteren"
 
 msgid "Recordings"
 msgstr "Opnames"
+
+msgid "Recordings - convert IPTV servicetypes to  1"
+msgstr "Opnames - converteer IPTV servicetype naar  1"
 
 msgid "Recordings always have priority"
 msgstr "Een opname heeft altijd voorrang"
@@ -11064,6 +11112,9 @@ msgstr "Servicereferentie"
 msgid "Service scan"
 msgstr "Zenders zoeken"
 
+msgid "Service type 4097 incorrect for PiP!"
+msgstr "Service type 4097 incorrect voor PiP!"
+
 msgid ""
 "Service unavailable!\n"
 "Check tuner configuration!"
@@ -11120,8 +11171,8 @@ msgstr "Stel deze interface in als standaard"
 msgid "Set limits"
 msgstr "Limieten instellen"
 
-msgid "Set pin code persistent"
-msgstr "Make the PIN blijvend"
+msgid "Set persistent PIN code"
+msgstr "Voer een blijvende PIN in"
 
 msgid "Set sequence repeats if your aerial system requires this. Normally if the aerial system has been configured correctly sequence repeats will not be necessary. If yours does, recheck you have command order set correctly."
 msgstr "Stel het aantal herhalingen in dat uw antennesysteem vereist. Als het systeem goed is geconfigureerd, zullen geen herhalingen nodig zijn. Als dat wel het geval is, moet u controleren of u de commando volgorde goed heeft ingesteld."
@@ -11913,6 +11964,10 @@ msgstr "Smartcard PIN"
 
 msgid "Smooth"
 msgstr "Glad"
+
+#, python-format
+msgid "SoC:\t%s\n"
+msgstr "SoC:\t%s\n"
 
 msgid "Softcam Actions"
 msgstr "Softcam acties"
@@ -12801,7 +12856,7 @@ msgstr "De resultaten zijn bewaard op %s."
 msgid "The saved PIN was cleared."
 msgstr "De opgeslagen PIN is verwijderd."
 
-msgid "The selected langugage is unavailable - using en_US"
+msgid "The selected language is unavailable - using en_US"
 msgstr "De gekozen taal is niet beschikbaar; en_US zal worden gebruikt"
 
 msgid "The service has been added to the favourites."
@@ -15375,6 +15430,9 @@ msgstr "documentaire (algemeen)"
 msgid "dolby"
 msgstr "Dolby"
 
+msgid "don't convert"
+msgstr "Niet converteren"
+
 msgid "don't descramble, record ecm"
 msgstr "niet decoderen, neem ecm op"
 
@@ -15737,6 +15795,9 @@ msgstr "minuut"
 
 msgid "minutes"
 msgstr "minuten"
+
+msgid "module disabled"
+msgstr "module uitgeschakeld"
 
 msgid "month"
 msgstr "maand"
@@ -16530,6 +16591,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Set fixed"
 #~ msgstr "Zet fixed"
+
+#~ msgid "Set pin code persistent"
+#~ msgstr "Make the PIN blijvend"
 
 #~ msgid "Show /tmp/ecm.info"
 #~ msgstr "Toon /tmp/ecm.info"
