@@ -31,8 +31,15 @@ void eWindowStyleManager::getStyle(int style_id, ePtr<eWindowStyle> &style)
 	std::map<int, ePtr<eWindowStyle> >::iterator it = m_current_style.find(style_id);
 	if (it != m_current_style.end())
 		style = it->second;
-	else
+	else {
 		eDebug("[eWindowStyleManager] getStyle(style_id=%d): NOT FOUND", style_id);
+/* Callers expect style to be set on return.
+ * Only one of them (eWindow::eWindow) checks.
+ * So do what it does in the expectation it might help.
+ * Might not be correct, but better than nothing(?).
+ */
+		style = new eWindowStyleSimple();
+	}
 }
 
 void eWindowStyleManager::setStyle(int style_id, eWindowStyle *style)
