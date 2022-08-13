@@ -161,7 +161,6 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 			if self.restoreService not in self.onClose:
 				self.onClose.append(self.restoreService)
 			self.ConsoleB.ePopen('/usr/bin/showiframe /usr/share/enigma2/hd-testcard.mvi')
-			config.osd.alpha.setValue(150)
 		else:
 			self.close()
 
