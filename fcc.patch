@@ -1,8 +1,8 @@
 diff --git a/configure.ac b/configure.ac
-index 9166a4d5ee..65ee54fe0c 100644
+index 02098df15c..f17a0be0e1 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -628,6 +628,8 @@ lib/python/Plugins/SystemPlugins/DefaultServicesScanner/Makefile
+@@ -624,6 +624,8 @@ lib/python/Plugins/SystemPlugins/DefaultServicesScanner/Makefile
  lib/python/Plugins/SystemPlugins/DefaultServicesScanner/meta/Makefile
  lib/python/Plugins/SystemPlugins/DiseqcTester/Makefile
  lib/python/Plugins/SystemPlugins/DiseqcTester/meta/Makefile
@@ -407,10 +407,10 @@ index c99644fe9b..05cb4d4ea4 100644
  
  #endif
 diff --git a/lib/dvb/dvb.cpp b/lib/dvb/dvb.cpp
-index 1bcd85c49a..ae47a9f1ed 100644
+index df2babf964..1033387f89 100644
 --- a/lib/dvb/dvb.cpp
 +++ b/lib/dvb/dvb.cpp
-@@ -10,6 +10,7 @@
+@@ -11,6 +11,7 @@
  #include <lib/dvb/dvb.h>
  #include <lib/dvb/sec.h>
  #include <lib/dvb/fbc.h>
@@ -418,7 +418,7 @@ index 1bcd85c49a..ae47a9f1ed 100644
  #include <lib/dvb/specs.h>
  #include "filepush.h"
  
-@@ -19,6 +20,7 @@
+@@ -20,6 +21,7 @@
  #include <unistd.h>
  #include <fcntl.h>
  #include <sys/ioctl.h>
@@ -426,16 +426,17 @@ index 1bcd85c49a..ae47a9f1ed 100644
  
  #define MIN(a,b) (a < b ? a : b)
  #define MAX(a,b) (a > b ? a : b)
-@@ -111,6 +113,8 @@ eDVBResourceManager::eDVBResourceManager()
+@@ -111,6 +113,9 @@ eDVBResourceManager::eDVBResourceManager()
+ 		adapter->scanDevices();
  		addAdapter(adapter, true);
  	}
- 
++
 +	setUsbTuner();
 +
  	eDebug("[eDVBResourceManager] found %zd adapter, %zd frontends(%zd sim) and %zd demux",
  		m_adapter.size(), m_frontend.size(), m_simulate_frontend.size(), m_demux.size());
- 
-@@ -682,6 +686,59 @@ void eDVBResourceManager::addAdapter(iDVBAdapter *adapter, bool front)
+ 	m_fbcmng = new eFBCTunerManager(instance);
+@@ -682,6 +687,59 @@ void eDVBResourceManager::addAdapter(iDVBAdapter *adapter, bool front)
  
  }
  
@@ -495,7 +496,7 @@ index 1bcd85c49a..ae47a9f1ed 100644
  PyObject *eDVBResourceManager::setFrontendSlotInformations(ePyObject list)
  {
  	if (!PyList_Check(list))
-@@ -1407,6 +1464,56 @@ int eDVBResourceManager::canAllocateChannel(const eDVBChannelID &channelid, cons
+@@ -1407,6 +1465,56 @@ int eDVBResourceManager::canAllocateChannel(const eDVBChannelID &channelid, cons
  	int *decremented_cached_channel_fe_usecount=NULL,
  		*decremented_fe_usecount=NULL;
  
@@ -552,7 +553,7 @@ index 1bcd85c49a..ae47a9f1ed 100644
  	for (std::list<active_channel>::iterator i(active_channels.begin()); i != active_channels.end(); ++i)
  	{
  		eSmartPtrList<eDVBRegisteredFrontend> &frontends = simulate ? m_simulate_frontend : m_frontend;
-@@ -1418,7 +1525,10 @@ int eDVBResourceManager::canAllocateChannel(const eDVBChannelID &channelid, cons
+@@ -1418,7 +1526,10 @@ int eDVBResourceManager::canAllocateChannel(const eDVBChannelID &channelid, cons
  			// another on eUsePtr<iDVBChannel> is used in the eDVBScan instance used in eDVBServicePMTHandler (for SDT scan)
  			// so we must check here if usecount is 3 (when the channel is equal to the cached channel)
  			// or 2 when the cached channel is not equal to the compared channel
@@ -564,7 +565,7 @@ index 1bcd85c49a..ae47a9f1ed 100644
  			{
  				ePtr<iDVBFrontend> fe;
  				if (!i->m_channel->getFrontend(fe))
-@@ -1427,6 +1537,7 @@ int eDVBResourceManager::canAllocateChannel(const eDVBChannelID &channelid, cons
+@@ -1427,6 +1538,7 @@ int eDVBResourceManager::canAllocateChannel(const eDVBChannelID &channelid, cons
  					{
  						if ( &(*fe) == &(*ii->m_frontend) )
  						{
@@ -572,7 +573,7 @@ index 1bcd85c49a..ae47a9f1ed 100644
  							--ii->m_inuse;
  							decremented_fe_usecount = &ii->m_inuse;
  							if (channel == &(*m_cached_channel))
-@@ -1489,6 +1600,14 @@ error:
+@@ -1489,6 +1601,14 @@ error:
  		++(*decremented_fe_usecount);
  	if (decremented_cached_channel_fe_usecount)
  		++(*decremented_cached_channel_fe_usecount);
@@ -1403,7 +1404,7 @@ index 3374355b87..8e82ead877 100644
  	};
  
 diff --git a/lib/nav/core.cpp b/lib/nav/core.cpp
-index 22fe033586..41ea421265 100644
+index 22fe033586..bd76cdc7c8 100644
 --- a/lib/nav/core.cpp
 +++ b/lib/nav/core.cpp
 @@ -1,6 +1,7 @@
@@ -1421,7 +1422,7 @@ index 22fe033586..41ea421265 100644
 -	stopService();
 +	RESULT res = -1;
 +
-+	if (! m_fccmgr || m_fccmgr->tryFCCService(service, m_runningService) == -1)
++	if (m_fccmgr->tryFCCService(service, m_runningService) == -1)
 +	{
 +		stopService();
 +		ASSERT(m_servicehandler);
@@ -1438,7 +1439,7 @@ index 22fe033586..41ea421265 100644
  		/* kill service. */
  	m_service_event_conn = 0;
 +
-+	m_fccmgr && m_fccmgr->cleanupFCCService();
++	m_fccmgr->cleanupFCCService();
  	return 0;
  }
  
@@ -1488,7 +1489,7 @@ index f00f23faef..13c7b2fa6b 100644
  		return self.instance.atBegin()
  
 diff --git a/lib/python/Components/SystemInfo.py b/lib/python/Components/SystemInfo.py
-index 75fd07de8b..5563f237f2 100644
+index 864a23a153..baf1f3f6c5 100644
 --- a/lib/python/Components/SystemInfo.py
 +++ b/lib/python/Components/SystemInfo.py
 @@ -160,6 +160,7 @@ SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable ha
@@ -2187,10 +2188,10 @@ index 27281717a5..8fbea16704 100644
  if VUSOLO2
  SUBDIRS += CableScan
 diff --git a/lib/python/enigma_python.i b/lib/python/enigma_python.i
-index 25b02b1d90..279dcf22cf 100644
+index d0fdab6674..fa520bfd31 100644
 --- a/lib/python/enigma_python.i
 +++ b/lib/python/enigma_python.i
-@@ -112,6 +112,7 @@ is usually caused by not marking PSignals as immutable.
+@@ -113,6 +113,7 @@ is usually caused by not marking PSignals as immutable.
  #include <lib/python/python.h>
  #include <lib/python/python_helpers.h>
  #include <lib/gdi/picload.h>
@@ -2198,7 +2199,7 @@ index 25b02b1d90..279dcf22cf 100644
  %}
  
  %feature("ref")   iObject "$this->AddRef(); /* eDebug(\"AddRef (%s:%d)!\", __FILE__, __LINE__); */ "
-@@ -186,6 +187,7 @@ typedef long time_t;
+@@ -187,6 +188,7 @@ typedef long time_t;
  %immutable eHdmiCEC::addressChanged;
  %immutable ePythonMessagePump::recv_msg;
  %immutable eDVBLocalTimeHandler::m_timeUpdated;
@@ -2206,7 +2207,7 @@ index 25b02b1d90..279dcf22cf 100644
  %immutable iCryptoInfo::clientname;
  %immutable iCryptoInfo::clientinfo;
  %immutable iCryptoInfo::verboseinfo;
-@@ -259,6 +261,7 @@ typedef long time_t;
+@@ -261,6 +263,7 @@ typedef long time_t;
  %include <lib/python/python.h>
  %include <lib/python/pythonconfig.h>
  %include <lib/gdi/picload.h>
@@ -2214,7 +2215,7 @@ index 25b02b1d90..279dcf22cf 100644
  %include <lib/dvb/streamserver.h>
  /**************  eptr  **************/
  
-@@ -425,6 +428,15 @@ int getLinkedSlotID(int fe)
+@@ -427,6 +430,15 @@ int getLinkedSlotID(int fe)
  }
  %}
  
