@@ -4,7 +4,7 @@ from Components.VariableText import VariableText
 from Components.VariableValue import VariableValue
 
 
-class PerServiceBase():
+class PerServiceBase:
 	EventMap = {}
 
 	@staticmethod

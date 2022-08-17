@@ -12,7 +12,7 @@ class UserInterfacePositionerWizard(WizardLanguage, Rc):
 		self.xmlfile = resolveFilename(SCOPE_SKIN, "userinterfacepositionerwizard.xml")
 		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)
 		Rc.__init__(self)
-		self.skinName = "StartWizard"
+		self.skinName = ["UserInterfacePositionerWizard", "StartWizard"]
 		self.session = session
 		self.ConsoleB = Console(binary=True)
 		self["wizard"] = Pixmap()

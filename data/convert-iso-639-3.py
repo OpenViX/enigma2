@@ -1,4 +1,4 @@
-import pickle as cPickle
+import pickle
 import sys
 infilename = "iso-639-3.tab"
 outfilename = "iso-639-3.pck"
@@ -20,4 +20,4 @@ with open(infilename, 'r') as f:
 				l[item[i]] = name
 
 with open(outfilename, 'wb') as f:
-	cPickle.dump(l, f, cPickle.HIGHEST_PROTOCOL)
+	pickle.dump(l, f, pickle.HIGHEST_PROTOCOL)

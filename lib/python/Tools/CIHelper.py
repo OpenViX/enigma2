@@ -1,5 +1,3 @@
-import six
-
 from os import path as ospath, remove
 from timer import TimerEntry
 from xml.etree.cElementTree import parse
@@ -38,19 +36,19 @@ class CIHelper:
 					read_providers = []
 					usingcaid = []
 					for slot in tree.findall("slot"):
-						read_slot = six.ensure_str(getValue(slot.findall("id"), False))
+						read_slot = getValue(slot.findall("id"), False)
 
 						for caid in slot.findall("caid"):
-							read_caid = six.ensure_str(caid.get("id"))
+							read_caid = caid.get("id")
 							usingcaid.append(int(read_caid, 16))
 
 						for service in slot.findall("service"):
-							read_service_ref = six.ensure_str(service.get("ref"))
+							read_service_ref = service.get("ref")
 							read_services.append(read_service_ref)
 
 						for provider in slot.findall("provider"):
-							read_provider_name = six.ensure_str(provider.get("name"))
-							read_provider_dvbname = six.ensure_str(provider.get("dvbnamespace"))
+							read_provider_name = provider.get("name")
+							read_provider_dvbname = provider.get("dvbnamespace")
 							read_providers.append((read_provider_name, int(read_provider_dvbname, 16)))
 						if read_slot is not False and (read_services or read_providers or usingcaid):
 							self.CI_ASSIGNMENT_LIST.append((int(read_slot), (read_services, read_providers, usingcaid)))

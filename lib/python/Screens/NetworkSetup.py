@@ -300,7 +300,7 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 
 	def okbuttonClick(self):
 		selection = self["list"].getCurrent()
-		if selection != None:
+		if selection is not None:
 			self.session.openWithCallback(self.AdapterSetupClosed, AdapterSetupConfiguration, selection[0])
 
 	def AdapterSetupClosed(self, *ret):
@@ -339,7 +339,7 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 				self.session.open(MessageBox, _("The network wizard extension is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO, timeout=10)
 			else:
 				selection = self["list"].getCurrent()
-				if selection != None:
+				if selection is not None:
 					self.session.openWithCallback(self.AdapterSetupClosed, NetworkWizard, selection[0])
 
 
@@ -578,14 +578,14 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 	def layoutFinished(self):
 		self["DNS1"].setText(self.primaryDNS.getText())
 		self["DNS2"].setText(self.secondaryDNS.getText())
-		if self.ipConfigEntry.getText() != None:
+		if self.ipConfigEntry.getText() is not None:
 			if self.ipConfigEntry.getText() == "0.0.0.0":
 				self["IP"].setText(_("N/A"))
 			else:
 				self["IP"].setText(self.ipConfigEntry.getText())
 		else:
 			self["IP"].setText(_("N/A"))
-		if self.netmaskConfigEntry.getText() != None:
+		if self.netmaskConfigEntry.getText() is not None:
 			if self.netmaskConfigEntry.getText() == "0.0.0.0":
 				self["Mask"].setText(_("N/A"))
 			else:
@@ -681,7 +681,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 			self.configStrings = None
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_NETWORKSETUP):
 				callFnc = p.fnc["ifaceSupported"](self.iface)
-				if callFnc != None:
+				if callFnc is not None:
 					if "WlanPluginEntry" in p.fnc: # internally used only for WLAN Plugin
 						self.extended = callFnc
 						if "configStrings" in p.fnc:
@@ -779,7 +779,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 			else:
 				iNetwork.removeAdapterAttribute(self.iface, "gateway")
 
-			if self.extended != None and self.configStrings != None:
+			if self.extended is not None and self.configStrings is not None:
 				iNetwork.setAdapterAttribute(self.iface, "configStrings", self.configStrings(self.iface))
 				self.ws.writeConfig(self.iface)
 
@@ -821,7 +821,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 				self.session.openWithCallback(self.ConfigfinishedCB, MessageBox, _("Your network configuration has been activated."), type=MessageBox.TYPE_INFO, timeout=10)
 
 	def ConfigfinishedCB(self, data):
-		if data != None:
+		if data is not None:
 			if data == True:
 				self.close("ok")
 
@@ -841,7 +841,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 			self.close("cancel")
 
 	def keyCancelCB(self, data):
-		if data != None:
+		if data is not None:
 			if data == True:
 				self.close("cancel")
 
@@ -863,10 +863,10 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 	def hideInputHelp(self):
 		current = self["config"].getCurrent()
 		if current == self.wlanSSID:
-			if current[1].help_window.instance != None:
+			if current[1].help_window.instance is not None:
 				current[1].help_window.instance.hide()
 		elif current == self.encryptionKey and config.plugins.wlan.encryption.value != "Unencrypted":
-			if current[1].help_window.instance != None:
+			if current[1].help_window.instance is not None:
 				current[1].help_window.instance.hide()
 
 
@@ -1080,7 +1080,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		self.extendedSetup = None
 		for p in plugins.getPlugins(PluginDescriptor.WHERE_NETWORKSETUP):
 			callFnc = p.fnc["ifaceSupported"](self.iface)
-			if callFnc != None:
+			if callFnc is not None:
 				self.extended = callFnc
 				if "WlanPluginEntry" in p.fnc: # internally used only for WLAN Plugin
 					menu.append((_("Scan wireless networks"), "scanwlan"))
@@ -1106,7 +1106,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		return menu
 
 	def AdapterSetupClosed(self, *ret):
-		if ret != None and len(ret):
+		if ret is not None and len(ret):
 			if ret[0] == "ok" and (iNetwork.isWirelessInterface(self.iface) and iNetwork.getAdapterAttribute(self.iface, "up") == True):
 				try:
 					from Plugins.SystemPlugins.WirelessLan.plugin import WlanStatus
@@ -1123,13 +1123,13 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 			self.updateStatusbar()
 
 	def WlanStatusClosed(self, *ret):
-		if ret != None and len(ret):
+		if ret is not None and len(ret):
 			from Plugins.SystemPlugins.WirelessLan.Wlan import iStatus
 			iStatus.stopWlanConsole()
 			self.updateStatusbar()
 
 	def WlanScanClosed(self, *ret):
-		if ret[0] != None:
+		if ret[0] is not None:
 			self.session.openWithCallback(self.AdapterSetupClosed, AdapterSetup, self.iface, ret[0])
 		else:
 			from Plugins.SystemPlugins.WirelessLan.Wlan import iStatus
@@ -1187,9 +1187,9 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 
 	def getInfoCB(self, data, status):
 		self.LinkState = None
-		if data != None:
+		if data is not None:
 			if data == True:
-				if status != None:
+				if status is not None:
 					if status[self.iface]["essid"] == "off" or status[self.iface]["accesspoint"] == "Not-Associated" or status[self.iface]["accesspoint"] == False:
 						self.LinkState = False
 						self["statuspic"].setPixmapNum(1)
@@ -1611,9 +1611,9 @@ class NetworkAdapterTest(Screen):
 		self.activebutton = 6
 
 	def getInfoCB(self, data, status):
-		if data != None:
+		if data is not None:
 			if data == True:
-				if status != None:
+				if status is not None:
 					if status[self.iface]["essid"] == "off" or status[self.iface]["accesspoint"] == "Not-Associated" or status[self.iface]["accesspoint"] == False:
 						self["Network"].setForegroundColorNum(1)
 						self["Network"].setText(_("disconnected"))
@@ -1722,7 +1722,7 @@ class NetworkMountsMenu(Screen, HelpableScreen):
 		self.extendedSetup = None
 		for p in plugins.getPlugins(PluginDescriptor.WHERE_NETWORKMOUNTS):
 			callFnc = p.fnc["ifaceSupported"](self)
-			if callFnc != None:
+			if callFnc is not None:
 				self.extended = callFnc
 				if "menuEntryName" in p.fnc:
 					menuEntryName = p.fnc["menuEntryName"](self)
@@ -2486,7 +2486,7 @@ class NetworkInadynSetup(ConfigListScreen, Screen):
 		self["config"].list = self.list
 
 	def VirtualKeyBoardCallback(self, callback=None):
-		if callback != None and len(callback):
+		if callback is not None and len(callback):
 			self["config"].getCurrent()[1].setValue(callback)
 			self["config"].invalidate(self["config"].getCurrent())
 
@@ -2835,7 +2835,7 @@ class NetworkuShareSetup(ConfigListScreen, Screen):
 		self["config"].list = self.list
 
 	def VirtualKeyBoardCallback(self, callback=None):
-		if callback != None and len(callback):
+		if callback is not None and len(callback):
 			self["config"].getCurrent()[1].setValue(callback)
 			self["config"].invalidate(self["config"].getCurrent())
 
@@ -3248,7 +3248,7 @@ class NetworkMiniDLNASetup(ConfigListScreen, Screen):
 		self["config"].list = self.list
 
 	def VirtualKeyBoardCallback(self, callback=None):
-		if callback != None and len(callback):
+		if callback is not None and len(callback):
 			self["config"].getCurrent()[1].setValue(callback)
 			self["config"].invalidate(self["config"].getCurrent())
 

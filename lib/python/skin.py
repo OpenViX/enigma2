@@ -11,7 +11,7 @@ from Tools.Directories import SCOPE_CONFIG, SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT
 from Tools.Import import my_import
 from Tools.LoadPixmap import LoadPixmap
 
-DEFAULT_SKIN = SystemInfo["HasFullHDSkinSupport"] and "ViX-Night-1080/skin.xml" or "ViX-Night-HD/skin.xml"
+DEFAULT_SKIN = SystemInfo["HasFullHDSkinSupport"] and "Simple_Ten_Eighty/skin.xml" or "ViX-Night-HD/skin.xml"
 EMERGENCY_SKIN = "skin_default/skin.xml"
 EMERGENCY_NAME = "Default OE-A"
 DEFAULT_DISPLAY_SKIN = "skin_default/skin_display.xml"
@@ -436,10 +436,10 @@ def collectAttributes(skinAttributes, node, context, skinPath=None, ignore=(), f
 				skinAttributes.append((attrib, font))
 			else:
 				skinAttributes.append((attrib, value))
-	if pos != None:
+	if pos is not None:
 		pos, size = context.parse(pos, size, font)
 		skinAttributes.append(("position", pos))
-	if size != None:
+	if size is not None:
 		skinAttributes.append(("size", size))
 
 

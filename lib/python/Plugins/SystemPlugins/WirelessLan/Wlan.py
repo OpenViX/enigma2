@@ -480,7 +480,7 @@ class Status:
 						signal = line[line.index('Signal level') + 13:len(line)]
 				if signal is not None:
 					data['signal'] = signal
-		if ssid != None and ssid != "off" and ssid != "":
+		if ssid is not None and ssid != "off" and ssid != "":
 			try:
 				scanresults = list(Cell.all(iface, 5))
 				print("[Wlan.py] scanresults2 = %s" % scanresults)	

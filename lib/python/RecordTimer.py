@@ -120,7 +120,7 @@ n_recordings = 0  # Must be when we start running...
 
 
 def SetIconDisplay(nrec):
-	if SID_code_states[0] == None:  # Not the code for us
+	if SID_code_states[0] is None:  # Not the code for us
 		return
 	(wdev, max_states) = SID_code_states
 	if nrec == 0:                   # An absolute setting - clear it...
@@ -959,7 +959,7 @@ def createTimer(xml):
 	record_ecm = int(xml.get("record_ecm") or "0")
 	isAutoTimer = int(xml.get("isAutoTimer") or "0")
 	autoTimerId = xml.get("autoTimerId")
-	if autoTimerId != None:
+	if autoTimerId is not None:
 		autoTimerId = int(autoTimerId)
 	name = str(xml.get("name"))
 	entry = RecordTimerEntry(serviceref, begin, end, name, description, eit, disabled, justplay, afterevent, dirname=location, tags=tags, descramble=descramble, record_ecm=record_ecm, isAutoTimer=isAutoTimer, always_zap=always_zap, rename_repeat=rename_repeat, conflict_detection=conflict_detection, pipzap=pipzap, autoTimerId=autoTimerId)

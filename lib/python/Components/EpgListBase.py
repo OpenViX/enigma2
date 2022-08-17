@@ -1,4 +1,3 @@
-from time import localtime, time, strftime
 
 from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, eServiceReference, eSize
 

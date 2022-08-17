@@ -81,7 +81,7 @@ class DownloadTask(Task):
 		Task.__init__(self, job, _("Downloading"))
 		self.postconditions.append(DownloaderPostcondition())
 		self.job = job
-		self.url = url
+		self.url = url.decode() if isinstance(url, bytes) else url
 		self.path = path
 		self.error_message = ""
 		self.last_recvbytes = 0
@@ -90,11 +90,13 @@ class DownloadTask(Task):
 		self.aborted = False
 
 	def run(self, callback):
-		from Tools.Downloader import downloadWithProgress
+		from Tools.Downloader import DownloadWithProgress
 		self.callback = callback
-		self.download = downloadWithProgress(self.url, self.path, **self.kwargs)
+		self.download = DownloadWithProgress(self.url, self.path, **self.kwargs)
 		self.download.addProgress(self.download_progress)
-		self.download.start().addCallback(self.download_finished).addErrback(self.download_failed)
+		self.download.addEnd(self.download_finished)
+		self.download.addError(self.download_failed)
+		self.download.start()
 		print("[DownloadTask] downloading", self.url, "to", self.path)
 
 	def abort(self):

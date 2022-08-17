@@ -3,7 +3,7 @@ import skin
 from enigma import ePoint, eSize, eListbox
 
 
-class GUIComponent():
+class GUIComponent:
 	""" GUI component """
 
 	def __init__(self):

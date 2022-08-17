@@ -30,11 +30,12 @@ import Tools.CopyFiles
 import Tools.Trashcan
 import NavigationInstance
 import RecordTimer
+from ServiceReference import ServiceReference
 
 from enigma import eServiceReference, eServiceCenter, eTimer, eSize, iPlayableService, iServiceInformation, getPrevAsciiCode, eRCInput
 import os
 import time
-import pickle as cPickle
+import pickle
 
 config.movielist = ConfigSubsection()
 config.movielist.curentlyplayingservice = ConfigText()
@@ -1465,7 +1466,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		try:
 			path = os.path.join(config.movielist.last_videodir.value, ".e2settings.pkl")
 			file = open(path, "wb")
-			cPickle.dump(self.settings, file)
+			pickle.dump(self.settings, file)
 			file.close()
 		except Exception as e:
 			print("[MovieSelection] Failed to save settings to %s: %s" % (path, e))
@@ -1482,7 +1483,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			try:
 				path = os.path.join(config.movielist.last_videodir.value, ".e2settings.pkl")
 				file = open(path, "rb")
-				updates = cPickle.load(file)
+				updates = pickle.load(file)
 				file.close()
 				self.applyConfigSettings(updates)
 			except IOError as e:

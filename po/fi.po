@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-07-09 20:22+0300\n"
+"PO-Revision-Date: 2022-08-12 16:40+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -16500,3 +16500,12 @@ msgstr "Aseta pysyvä PIN-koodi"
 
 msgid "Service type 4097 incorrect for PiP!"
 msgstr "Palvelun tyyppi 4097 virheellinen PiP:lle!"
+
+msgid "Boot Device:\t%s\n"
+msgstr "Käynnistyslaite:\t%s\n"
+
+msgid "SoC:\t%s\n"
+msgstr "SoC:\t%s\n"
+
+msgid "module disabled"
+msgstr "moduuli ei käytössä"

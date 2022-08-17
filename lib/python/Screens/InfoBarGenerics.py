@@ -63,11 +63,7 @@ import os
 from sys import maxsize, version_info
 import itertools
 import datetime
-
-if version_info[0] >= 3:
-	import pickle as cPickle	# py3
-else:
-	import cPickle			# py2
+import pickle
 
 # hack alert!
 from Screens.Menu import MainMenu, Menu, mdom
@@ -136,7 +132,7 @@ def saveResumePoints():
 	global resumePointCache, resumePointCacheLast
 	try:
 		f = open('/etc/enigma2/resumepoints.pkl', 'wb')
-		cPickle.dump(resumePointCache, f, cPickle.HIGHEST_PROTOCOL)
+		pickle.dump(resumePointCache, f, pickle.HIGHEST_PROTOCOL)
 		f.close()
 	except Exception as ex:
 		print("[InfoBarGenerics] Failed to write resumepoints:%s" % ex)
@@ -146,7 +142,7 @@ def saveResumePoints():
 def loadResumePoints():
 	try:
 		file = open('/etc/enigma2/resumepoints.pkl', 'rb')
-		PickleFile = cPickle.load(file)
+		PickleFile = pickle.load(file)
 		file.close()
 		return PickleFile
 	except Exception as ex:
@@ -938,7 +934,7 @@ class BufferIndicator(Screen):
 		return info and info.getInfo(iServiceInformation.sBuffer)
 
 
-class InfoBarBuffer():
+class InfoBarBuffer:
 	def __init__(self):
 		self.bufferScreen = self.session.instantiateDialog(BufferIndicator)
 		self.bufferScreen.hide()
@@ -4192,7 +4188,7 @@ class InfoBarTeletextPlugin:
 		self.teletext_plugin and self.teletext_plugin(session=self.session, service=self.session.nav.getCurrentService())
 
 
-class InfoBarSubtitleSupport():
+class InfoBarSubtitleSupport:
 	def __init__(self):
 		object.__init__(self)
 		self["SubtitleSelectionAction"] = HelpableActionMap(self, "InfobarSubtitleSelectionActions",

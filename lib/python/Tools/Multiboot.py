@@ -30,7 +30,7 @@ def getMultibootslots():
 		if bootslots:
 			continue 
 		if path.exists(device):
-			Console().ePopen("mount %s %s" % (device, tmpname))
+			Console(binary=True).ePopen("mount %s %s" % (device, tmpname))
 			if path.isfile(path.join(tmpname, "STARTUP")):
 				SystemInfo["MBbootdevice"] = device
 				device2 = device.rsplit("/", 1)[1]
@@ -73,7 +73,7 @@ def getMultibootslots():
 						if slot:
 							bootslots[int(slotnumber)] = slot
 			print("[multiboot] [getMultibootslots] Finished bootslots = %s" % bootslots)
-			Console().ePopen("umount %s" % tmpname)
+			Console(binary=True).ePopen("umount %s" % tmpname)
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
 	if bootslots:	
@@ -122,7 +122,7 @@ def GetImagelist():
 		Imagelist[slot] = {"imagename": _("Empty slot")}
 		imagedir = "/"	
 		if SystemInfo["MultiBootSlot"] != slot or SystemInfo["HasHiSi"]:
-			Console().ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmpname))		
+			Console(binary=True).ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmpname))		
 			imagedir = sep.join([_f for _f in [tmpname, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
 		# print("[multiboot] [GetImagelist]0 isfile = %s" % (path.join(imagedir, "usr/bin/enigma2")))			
 		if path.isfile(path.join(imagedir, "usr/bin/enigma2")):
@@ -166,7 +166,7 @@ def GetImagelist():
 		elif path.isfile(path.join(imagedir, "usr/bin/enigmax")):
 			Imagelist[slot] = {"imagename": _("Deleted image")}
 		if SystemInfo["MultiBootSlot"] != slot:			
-			Console().ePopen("umount %s" % tmpname)
+			Console(binary=True).ePopen("umount %s" % tmpname)
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
 	return Imagelist
@@ -186,7 +186,7 @@ def VerDate(imagedir):
 
 def emptySlot(slot):
 	tmp.dir = tempfile.mkdtemp(prefix="emptySlot")
-	Console().ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmp.dir))
+	Console(binary=True).ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmp.dir))
 	imagedir = sep.join([_f for _f in [tmp.dir, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
 	if path.isfile(path.join(imagedir, "usr/bin/enigma2")):
 		rename((path.join(imagedir, "usr/bin/enigma2")), (path.join(imagedir, "usr/bin/enigmax")))
@@ -194,7 +194,7 @@ def emptySlot(slot):
 	else:
 		print("[multiboot2] NO enigma2 found to rename")
 		ret = 4
-	Console().ePopen("umount %s" % tmp.dir)
+	Console(binary=True).ePopen("umount %s" % tmp.dir)
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
 	return ret
@@ -203,11 +203,11 @@ def emptySlot(slot):
 def restoreSlots():
 	for slot in SystemInfo["canMultiBoot"]:
 		tmp.dir = tempfile.mkdtemp(prefix="restoreSlot")
-		Console().ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmp.dir))
+		Console(binary=True).ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmp.dir))
 		imagedir = sep.join([_f for _f in [tmp.dir, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
 		if path.isfile(path.join(imagedir, "usr/bin/enigmax")):
 			rename((path.join(imagedir, "usr/bin/enigmax")), (path.join(imagedir, "usr/bin/enigma2")))
-		Console().ePopen("umount %s" % tmp.dir)
+		Console(binary=True).ePopen("umount %s" % tmp.dir)
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
 

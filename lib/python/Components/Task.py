@@ -3,7 +3,8 @@
 from Tools.CList import CList
 
 
-class Job():
+
+class Job:
 	NOT_STARTED, IN_PROGRESS, FINISHED, FAILED = range(4)
 
 	def __init__(self, name):
@@ -114,7 +115,7 @@ class Job():
 		return "Components.Task.Job name=%s #tasks=%s" % (self.name, len(self.tasks))
 
 
-class Task():
+class Task:
 	def __init__(self, job, name):
 		self.name = name
 		self.immediate_preconditions = []
