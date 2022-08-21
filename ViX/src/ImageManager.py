@@ -413,7 +413,7 @@ class VIXImageManager(Screen):
 
 	def doSettingsBackup(self):
 		from Plugins.SystemPlugins.ViX.BackupManager import BackupFiles
-		self.BackupFiles = BackupFiles(self.session, False, True)
+		self.BackupFiles = BackupFiles(self.session, backuptype=BackupFiles.TYPE_IMAGEMANAGER)
 		Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
 		Components.Task.job_manager.in_background = False
 		for job in Components.Task.job_manager.getPendingJobs():

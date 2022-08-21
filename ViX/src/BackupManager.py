@@ -1145,7 +1145,7 @@ class AutoBackupManagerTimer:
 				self.backupupdate(atLeast)
 		else:
 			print("[BackupManager] Running Backup", strftime("%c", localtime(now)))
-			self.BackupFiles = BackupFiles(self.session, schedulebackup=True)
+			self.BackupFiles = BackupFiles(self.session, backuptype=BackupFiles.TYPE_SCHEDULE)
 			Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
 # Note that fact that the job has been *scheduled*.
 # We do *not* only note a successful completion, as that would result
@@ -1161,13 +1161,15 @@ class AutoBackupManagerTimer:
 
 
 class BackupFiles(Screen):
-	def __init__(self, session, updatebackup=False, imagebackup=False, schedulebackup=False):
+	TYPE_IMAGEMANAGER = 0
+	TYPE_SOFTWAREUPDATE = 1
+	TYPE_SCHEDULE = 2
+	TYPE_FACTORYRESET = 3
+	def __init__(self, session, backuptype=None):
 		Screen.__init__(self, session)
 		self.Console = Console()
-		self.ConsoleB = Console(binary=True)		
-		self.updatebackup = updatebackup
-		self.imagebackup = imagebackup
-		self.schedulebackup = schedulebackup
+		self.ConsoleB = Console(binary=True)
+		self.backuptype = backuptype	
 		self.BackupDevice = config.backupmanager.backuplocation.value
 		print("[BackupManager] Device: " + self.BackupDevice)
 		self.BackupDirectory = config.backupmanager.backuplocation.value + "backup/"
@@ -1379,12 +1381,14 @@ class BackupFiles(Screen):
 		print("[BackupManager] Backup running")
 		backupdate = datetime.now()
 		backupType = "-"
-		if self.updatebackup:
+		if self.backuptype == self.TYPE_SOFTWAREUPDATE:
 			backupType = "-SU-"
-		elif self.imagebackup:
+		elif self.backuptype == self.TYPE_IMAGEMANAGER:
 			backupType = "-IM-"
-		elif self.schedulebackup:
+		elif self.backuptype == self.TYPE_SCHEDULE:
 			backupType = "-Sch-"
+		elif self.backuptype == self.TYPE_FACTORYRESET:
+			backupType = "-FR-"
 		imageSubBuild = ""
 		if getImageType() != "release":
 			imageSubBuild = ".%s" % getImageDevBuild()
