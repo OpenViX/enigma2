@@ -2,15 +2,23 @@ import errno
 import shutil
 
 from boxbranding import getMachineBrand, getMachineName
+from gettext import dgettext
 from os import _exit, listdir, remove, system
 from os.path import isdir, join as pathjoin
 
 from Components.config import ConfigYesNo, config
 from Components.Sources.StaticText import StaticText
+import Components.Task
 from Screens.MessageBox import MessageBox
 from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.Setup import Setup
+from Screens.TaskView import JobView
 from Tools.Directories import SCOPE_CONFIG, SCOPE_SKIN, resolveFilename
+
+try:
+	from Plugins.SystemPlugins.ViX.BackupManager import BackupFiles
+except ImportError:
+	BackupFiles = None
 
 
 class FactoryReset(Setup, ProtectedScreen):
@@ -25,6 +33,7 @@ class FactoryReset(Setup, ProtectedScreen):
 		self.resetSkins = ConfigYesNo(default=True)
 		self.resetTimers = ConfigYesNo(default=True)
 		self.resetOthers = ConfigYesNo(default=True)
+		self.doBackup = ConfigYesNo(default=True)
 		self.setup = {}  # Old Setup config entry data.
 		Setup.__init__(self, session=session, setup="factoryreset")
 		self["key_green"].text = _("Reset")
@@ -59,6 +68,8 @@ class FactoryReset(Setup, ProtectedScreen):
 				self.list.append((_("Remove all timer data"), self.resetTimers, _("Select 'Yes' to remove all timer configuration data. Selecting this option will clear all timers, autotimers and power timers.")))
 			if len(self.others):
 				self.list.append((_("Remove all other data"), self.resetOthers, _("Select 'Yes' to remove all other files and directories not covered by the options above.")))
+		if BackupFiles:
+			self.list.append((_("Make settings backup"), self.doBackup, _("Select 'Yes' to make a settings backup before wiping the current configuration.")))
 		currentItem = self["config"].getCurrent()
 		self["config"].list = self.list
 		if config.usage.sort_settings.value:
@@ -107,12 +118,34 @@ class FactoryReset(Setup, ProtectedScreen):
 				self.others.append(file)
 
 	def keySave(self):
-		restartBox = self.session.openWithCallback(self.keySaveCallback, MessageBox, _("This will permanently delete the current configuration. It would be a good idea to make a backup before taking this drastic action. Are you certain you want to continue with a factory reset?"), default=False)
+		if BackupFiles and self.doBackup.value:
+			msg = _("This will permanently delete the current configuration. If necessary it should be possible to restore the current configuration by restoring the settings backup. Are you certain you want to continue with a factory reset?")
+		else:
+			msg = _("This will permanently delete the current configuration. It would be a good idea to make a backup before taking this drastic action. Are you certain you want to continue with a factory reset?")
+		restartBox = self.session.openWithCallback(self.keySaveCallback, MessageBox, msg, default=False)
 		restartBox.setTitle(_("Factory Reset: Clearing data"))
 
 	def keySaveCallback(self, answer):
 		if not answer:
 			return
+		if BackupFiles and self.doBackup.value:
+			self.doSettingsBackup()
+		else:
+			self.continueReset()
+
+	def doSettingsBackup(self):
+		backupFiles = BackupFiles(self.session, backuptype=BackupFiles.TYPE_FACTORYRESET)
+		Components.Task.job_manager.AddJob(backupFiles.createBackupJob())
+		Components.Task.job_manager.in_background = False
+		for job in Components.Task.job_manager.getPendingJobs():
+			if job.name == dgettext('vix', 'Backup manager'):
+				break
+		self.session.openWithCallback(self.doSettingsBackupCallback, JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
+
+	def doSettingsBackupCallback(self, retval=None):
+		self.continueReset()
+
+	def continueReset(self):
 		configDir = resolveFilename(SCOPE_CONFIG)
 		if self.resetFull.value:
 			print("[FactoryReset] Performing a full factory reset.")
