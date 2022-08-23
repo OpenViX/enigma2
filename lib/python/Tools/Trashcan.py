@@ -183,8 +183,8 @@ class CleanTrashTask(Components.Task.PythonTask):
 						# Don't delete any per-directory config files from .Trash if the option is in use
 						if (config.movielist.settings_per_directory.value and name == ".e2settings.pkl"):
 							continue
-						fn = ospath.join(root, name)
-						st = stat(fn)
+						fn = os.path.join(root, name)
+						st = os.stat(fn)
 						if st.st_ctime < self.ctimeLimit:
 							try:
 								fn = fn.encode(encoding="utf8", errors="ignore").decode(encoding="utf8")	# ensure string is all utf-8, if dataset name changed, erase will handle not found.							
