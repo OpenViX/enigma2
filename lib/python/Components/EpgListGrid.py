@@ -530,7 +530,12 @@ class EPGListGrid(EPGListBase):
 				serviceref = "1" + service[4:] if service[:4] in config.recording.setstreamto1.value else service # converts 4097, 5001, 5002 to 1
 				serviceTimers = self.filteredTimerList.get(':'.join(serviceref.split(':')[:11]))
 				if serviceTimers is not None:
-					timer, matchType = RecordTimer.isInTimerOnService(serviceTimers, stime, duration)
+					# Code below: "+ (20 if config.recording.margin_before.value == 0 else 0)"
+					# When recording-start-margin is zero allow recordings that start up to 20 seconds
+					# after the program boundary to still produce matchType in (2, 3). This allows 
+					# correct display of "epg/RecordEvent.png" when multiple recodings are programmed to
+					# start at the same instant.
+					timer, matchType = RecordTimer.isInTimerOnService(serviceTimers, stime + (20 if config.recording.margin_before.value == 0 else 0), duration)
 					timerIcon, autoTimerIcon = self.getPixmapsForTimer(timer, matchType, selected)
 					if matchType not in (2, 3):
 						timer = None
