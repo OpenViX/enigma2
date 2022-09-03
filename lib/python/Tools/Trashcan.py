@@ -175,7 +175,7 @@ class CleanTrashTask(Components.Task.PythonTask):
 				size = 0
 				for root, dirs, files in os.walk(trashfolder.encode(), topdown=False):
 					for name in files:	# Don't delete any per-directory config files from .Trash
-						if (config.movielist.settings_per_directory.value and name == ".e2settings.pkl"):
+						if (config.movielist.settings_per_directory.value and name == b".e2settings.pkl"):
 							continue
 						fn = os.path.join(root, name)
 						st = os.stat(fn)
