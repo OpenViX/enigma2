@@ -149,6 +149,11 @@ class Navigation:
 							print("[Navigation] Failed to start: ", alternativeref.toString())
 							self.currentlyPlayingServiceReference = None
 							self.currentlyPlayingServiceOrGroup = None
+							if oldref and "://" in oldref.getPath():
+								print "[Navigation] Streaming was active -> try again" # use timer to give the streamserver the time to deallocate the tuner
+								self.retryServicePlayTimer = eTimer()
+								self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
+								self.retryServicePlayTimer.start(500, True)
 						else:
 							print("[Navigation] alternative ref as simulate: ", alternativeref.toString())
 					return 0
@@ -196,6 +201,11 @@ class Navigation:
 				#	print("[Navigation] Failed to start", playref)
 					self.currentlyPlayingServiceReference = None
 					self.currentlyPlayingServiceOrGroup = None
+					if oldref and "://" in oldref.getPath():
+						print "[Navigation] Streaming was active -> try again" # use timer to give the streamserver the time to deallocate the tuner
+						self.retryServicePlayTimer = eTimer()
+						self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
+						self.retryServicePlayTimer.start(500, True)
 				if setPriorityFrontend:
 					setPreferredTuner(int(config.usage.frontend_priority.value))
 				return 0
