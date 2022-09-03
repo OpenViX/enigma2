@@ -31,8 +31,12 @@ public:
 	~eBackgroundFileEraser();
 #ifdef SWIG
 public:
+%typemap(in) (const char* filename2) {
+	$1 = PyBytes_AsString($input);
+}
 #endif
 	void erase(const std::string& filename);
+	void erase(const char* filename2);
 	void setEraseSpeed(int inMBperSecond);
 	void setEraseFlags(int flags);
 	static eBackgroundFileEraser *getInstance() { return instance; }

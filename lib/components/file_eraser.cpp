@@ -65,16 +65,49 @@ void eBackgroundFileEraser::erase(const std::string& filename)
 			// if rename fails with ENOENT (file doesn't exist), do nothing
 			if (errno == ENOENT)
 			{
+				eDebug("[eBackgroundFileEraser][std] filename %s not found: %m", filename.c_str());
 				return;
 			} else
 			// if rename fails, try deleting the file itself without renaming.
 			{
-				eDebug("[eBackgroundFileEraser] Rename %s -> %s failed: %m", filename.c_str(), delname.c_str());
+				eDebug("[eBackgroundFileEraser][std] Rename %s -> %s failed: %m", filename.c_str(), delname.c_str());
 				delname = filename;
 			}
 		}
 		messages.send(Message(delname));
 		run();
+	} else
+	{
+		eDebug("[eBackgroundFileEraser] empty filename (%m)");
+	}
+}
+
+void eBackgroundFileEraser::erase(const char* filename2)
+{
+	std::string filename(filename2);
+	if (!filename.empty())
+	{
+		std::string delname(filename);
+		delname.append(".del");
+		if (rename(filename.c_str(), delname.c_str())<0)
+		{
+			// if rename fails with ENOENT (file doesn't exist), do nothing
+			if (errno == ENOENT)
+			{
+				eDebug("[eBackgroundFileEraser][char] filename %s not found: %m", filename.c_str());
+				return;
+			} else
+			// if rename fails, try deleting the file itself without renaming.
+			{
+				eDebug("[eBackgroundFileEraser][char] Rename %s -> %s failed: %m", filename.c_str(), delname.c_str());
+				delname = filename;
+			}
+		}
+		messages.send(Message(delname));
+		run();
+	} else
+	{
+		eDebug("[eBackgroundFileEraser] empty filename (%m)");
 	}
 }
 
