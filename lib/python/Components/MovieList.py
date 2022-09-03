@@ -40,6 +40,11 @@ def getItemDisplayName(itemRef, info, removeExtension=None):
 			fileName, fileExtension = path.splitext(name)
 			if fileExtension in KNOWN_EXTENSIONS:
 				name = fileName
+	aname = name.encode('UTF-8', 'surrogateescape')
+	if name != aname.decode('UTF-8', 'ignore'):
+		from chardet import detect
+		encoding = detect(aname)['encoding']
+		return aname.decode(encoding)
 	return name
 
 
