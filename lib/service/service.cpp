@@ -114,6 +114,97 @@ eServiceReference::eServiceReference(const std::string &string)
 	name = urlDecode(name);
 }
 
+eServiceReference::eServiceReference(const char* string2)
+{
+	std::string string(string2);
+	eDebug("[eServiceReference][char]");
+	const char *c = string.c_str();
+	int pathl = 0;
+
+	number = 0;
+
+	if (string.empty())
+	{
+		type = idInvalid;
+		return;
+	}
+
+	if (isalpha(*c))
+	{
+		eDebug("[eServiceReference] May be unencoded URL: %s", c);
+		const char *colon = strchr(c, ':');
+		if ((colon) && !strncmp(colon, "://", 3))
+		{
+			type = idServiceMP3;
+			memset(data, 0, sizeof(data));
+			/* Allow space separated name */
+			const char *space = strchr(colon, ' ');
+			if (space)
+			{
+				path.assign(c, space - c);
+				name = space + 1;
+			}
+			else
+			{
+				path = string;
+				name = string;
+			}
+			eDebug("[eServiceReference] URL=%s name=%s", path.c_str(), name.c_str());
+			return;
+		}
+	}
+
+	int ret = sscanf(c, "%d:%d:%x:%x:%x:%x:%x:%x:%x:%x:%n", &type, &flags, &data[0], &data[1], &data[2], &data[3], &data[4], &data[5], &data[6], &data[7], &pathl);
+	if (ret < 8 )
+	{
+		memset(data, 0, sizeof(data));
+		ret = sscanf(c, "%d:%d:%x:%x:%x:%x:%n", &type, &flags, &data[0], &data[1], &data[2], &data[3], &pathl);
+		eDebug("[eServiceReference] find old format eServiceReference string");
+		if (ret < 2)
+			type = idInvalid;
+	}
+
+	if (pathl)
+	{
+		const char *pathstr = c + pathl;
+		const char *namestr = strchr(pathstr, ':');
+		if (namestr)
+		{
+			if (!strncmp(namestr, "://", 3))
+			{
+				/*
+				 * The path is a url (e.g. "http://...")
+				 * We can expect more colons to be present
+				 * in a url, so instead of a colon, we look
+				 * for a space instead as url delimiter,
+				 * after which a name may be present.
+				 */
+				namestr = strchr(namestr, ' ');
+				if (namestr)
+				{
+					path.assign(pathstr, namestr - pathstr);
+					if (*(namestr + 1))
+						name = namestr + 1;
+				}
+			}
+			else
+			{
+				if (pathstr != namestr)
+					path.assign(pathstr, namestr-pathstr);
+				if (*(namestr+1))
+					name=namestr+1;
+			}
+		}
+		else
+		{
+			path=pathstr;
+		}
+	}
+
+	path = urlDecode(path);
+	name = urlDecode(name);
+}
+
 std::string eServiceReference::toString() const
 {
 	std::string ret;
