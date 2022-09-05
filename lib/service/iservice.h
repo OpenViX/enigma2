@@ -158,13 +158,25 @@ public:
 		return valid();
 	}
 #endif
+#ifdef SWIG
+public:
+%typemap(in) (const char* string2) {
+	if (PyBytes_Check($input)) {
+		$1 = PyBytes_AsString($input);
+	} else {
+		$1 = PyBytes_AsString(PyUnicode_AsEncodedString($input, "utf-8", "surrogateescape"));
+	}
+}
+#endif
 	eServiceReference(int type, int flags, const std::string &path)
 		: type(type), flags(flags), path(path)
 	{
 		memset(data, 0, sizeof(data));
 		number = 0;
 	}
+	void eServiceReferenceBase(const std::string &string);
 	eServiceReference(const std::string &string);
+	eServiceReference(const char* string2);
 	std::string toString() const;
 	std::string toCompareString() const;
 	bool operator==(const eServiceReference &c) const
