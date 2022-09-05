@@ -2252,10 +2252,10 @@ index 520b5edc69..6434d7b43e 100644
  	service/servicemp3.h \
  	service/servicemp3record.h \
 diff --git a/lib/service/iservice.h b/lib/service/iservice.h
-index b934a9a8db..34d6a7611f 100644
+index e715513daf..917f3c648a 100644
 --- a/lib/service/iservice.h
 +++ b/lib/service/iservice.h
-@@ -453,6 +453,7 @@ public:
+@@ -465,6 +465,7 @@ public:
  		syncState,
  		frontendNumber,
  		signalQualitydB,
@@ -2263,7 +2263,7 @@ index b934a9a8db..34d6a7611f 100644
  		frontendStatus,
  		snrValue,
  		frequency,
-@@ -949,6 +950,8 @@ public:
+@@ -961,6 +962,8 @@ public:
  
  		evVideoGammaChanged,
  
@@ -2272,7 +2272,7 @@ index b934a9a8db..34d6a7611f 100644
  		evUser = 0x100
  	};
  };
-@@ -1007,6 +1010,8 @@ public:
+@@ -1019,6 +1022,8 @@ public:
  		evRecordFailed,
  		evRecordWriteError,
  		evNewEventInfo,
