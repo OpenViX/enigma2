@@ -93,28 +93,28 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 		</menu>
 
 		<!-- Menu / Setup / User Interface -->
-		<menu entryID="osd_setup" level="0" text="User Interface" weight="4" requires="OsdMenu">
-			<id val="osd_menu" />
+		<menu entryID="gui_setup" level="0" text="User Interface" weight="4">
+			<id val="gui_menu" />
 			<item entryID="user_interface" level="0" text="Settings" weight="1"><setup id="userinterface" /></item>
 			<item entryID="channelselection_setup" level="0" text="Channel Selection" weight="2"><setup id="channelselection" /></item>
-			<menu entryID="gui_skin" level="0" text="Skin Setup" weight="3" requires="OsdMenu">
-				<id val="skinsetup" />
-				<item entryID="skin_setup" level="0" text="Skin" weight="1"><screen module="SkinSelector" screen="SkinSelector" /></item>
+			<item entryID="skin_setup" level="0" text="Skin Selection" weight="3"><screen module="SkinSelector" screen="SkinSelector" /></item>
+			<menu entryID="osd_setup" level="0" text="On Screen Display" weight="4" requires="OsdMenu">
+				<id val="osd_menu" />	
 				<item entryID="osd3dsetup" level="2" text="3D Setup" requires="CanChange3DOsd"><screen module="UserInterfacePositioner" screen="OSD3DSetupScreen" /></item>
 				<item entryID="osdsetup" level="2" text="OSD Position" requires="OsdSetup"><screen module="UserInterfacePositioner" screen="UserInterfacePositioner" /></item>
 			</menu>
-			<menu entryID="display_selection" level="0" text="Front Panel Display" weight="4" requires="Display">
+			<menu entryID="display_selection" level="0" text="Front Panel Display" weight="5" requires="Display">
 				<id val="display" />
 				<item entryID="display_setup" level="0" text="Settings" weight="1"><setup id="display" /></item>
 				<item entryID="lcd_skin_setup" level="0" text="Skin" weight="2" requires="LCDSKINSetup"><screen module="SkinSelector" screen="LcdSkinSelector" /></item>
 			</menu>
-			<menu entryID="leddisplay_selection" level="0" text="LED Display Panel" weight="5" requires="DisplayLED">
+			<menu entryID="leddisplay_selection" level="0" text="LED Display Panel" weight="6" requires="DisplayLED">
 				<id val="leddisplay" />
 			</menu>
-			<item entryID="buttonsetup_setup" level="2" text="Button Setup" weight="6"><screen module="ButtonSetup" screen="ButtonSetup" /></item>
-			<item entryID="subtitle_setup" level="2" text="Subtitles" weight="7"><setup id="subtitlesetup" /></item>
-			<item entryID="language_setup" level="0" text="Language" weight="8"><screen module="LanguageSelection" /></item>
-			<item entryID="parental_setup" level="0" text="Parental Control" weight="9"><screen module="ParentalControlSetup" screen="ParentalControlSetup" /></item>
+			<item entryID="buttonsetup_setup" level="2" text="Button Setup" weight="7"><screen module="ButtonSetup" screen="ButtonSetup" /></item>
+			<item entryID="subtitle_setup" level="2" text="Subtitles" weight="8"><setup id="subtitlesetup" /></item>
+			<item entryID="language_setup" level="0" text="Language" weight="9"><screen module="LanguageSelection" /></item>
+			<item entryID="parental_setup" level="0" text="Parental Control" weight="10"><screen module="ParentalControlSetup" screen="ParentalControlSetup" /></item>
 		</menu>
 
 		<!-- Menu / Setup / Network -->
