@@ -2,6 +2,7 @@ from os import path, stat
 import struct
 import random
 from time import localtime, strftime
+from chardet import detect
 
 from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformation, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_HALIGN_CENTER, BT_ALIGN_CENTER, BT_VALIGN_CENTER, eServiceReference, eServiceCenter, eTimer
 
@@ -40,9 +41,13 @@ def getItemDisplayName(itemRef, info, removeExtension=None):
 			fileName, fileExtension = path.splitext(name)
 			if fileExtension in KNOWN_EXTENSIONS:
 				name = fileName
+	return name
+
+
+def getItemDisplayNameText(itemRef, info, removeExtension=None):
+	name = getItemDisplayName(itemRef, info, removeExtension)
 	aname = name.encode('UTF-8', 'surrogateescape')
 	if name != aname.decode('UTF-8', 'ignore'):
-		from chardet import detect
 		encoding = detect(aname)['encoding']
 		return aname.decode(encoding)
 	return name
@@ -469,7 +474,7 @@ class MovieList(GUIComponent):
 				picon = getPiconName(refs)
 				if picon != "":
 					data.picon = LoadPixmap(picon)
-			data.txt = getItemDisplayName(serviceref, info)
+			data.txt = getItemDisplayNameText(serviceref, info)
 			data.icon = None
 			data.part = 0
 			if path.split(pathName)[1] in self.runningTimers:
@@ -766,7 +771,7 @@ class MovieList(GUIComponent):
 						import traceback
 						traceback.print_exc()
 					data = MovieListData()
-					data.txt = getItemDisplayName(serviceref, info)
+					data.txt = getItemDisplayNameText(serviceref, info)
 					self.list.append((serviceref, info, begin, data))
 					numberOfDirs += 1
 				continue
@@ -795,7 +800,7 @@ class MovieList(GUIComponent):
 				if not this_tags.issuperset(filter_tags) and not this_tags_fullname.issuperset(filter_tags):
 					continue
 			data = MovieListData()
-			data.txt = getItemDisplayName(serviceref, info)
+			data.txt = getItemDisplayNameText(serviceref, info)
 			if begin2 != 0:
 				self.list.append((serviceref, info, begin, data, begin2))
 			else:
