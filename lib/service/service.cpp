@@ -116,14 +116,14 @@ void eServiceReference::eServiceReferenceBase(const std::string &string)
 
 eServiceReference::eServiceReference(const std::string &string)
 {
-	eDebug("[eServiceReference][std]");
+	/* eDebug("[eServiceReference][std]"); */
 	eServiceReferenceBase(string);
 }
 
 eServiceReference::eServiceReference(const char* string2)
 {
 	std::string string(string2);
-	eDebug("[eServiceReference][char]");
+	/* eDebug("[eServiceReference][char]"); */
 	eServiceReferenceBase(string);
 }
 
