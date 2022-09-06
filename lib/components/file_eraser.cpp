@@ -65,6 +65,7 @@ void eBackgroundFileEraser::erase(const std::string& filename)
 			// if rename fails with ENOENT (file doesn't exist), do nothing
 			if (errno == ENOENT)
 			{
+				eDebug("[eBackgroundFileEraser] filename %s not found: %m", filename.c_str());
 				return;
 			} else
 			// if rename fails, try deleting the file itself without renaming.
@@ -75,7 +76,16 @@ void eBackgroundFileEraser::erase(const std::string& filename)
 		}
 		messages.send(Message(delname));
 		run();
+	} else
+	{
+		eDebug("[eBackgroundFileEraser] empty filename (%m)");
 	}
+}
+
+void eBackgroundFileEraser::erase(const char* filename2)
+{
+	std::string filename(filename2);
+	erase(filename);
 }
 
 void eBackgroundFileEraser::gotMessage(const Message &msg )
