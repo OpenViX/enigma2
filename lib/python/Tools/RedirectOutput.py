@@ -13,7 +13,11 @@ class EnigmaLog:
 			data = data.decode(encoding="UTF-8", errors="ignore")
 		self.line += data
 		if "\n" in data:
-			ePythonOutput(self.line, self.level)
+			try:
+				ePythonOutput(self.line, self.level)
+			except TypeError:
+				ePythonOutput("[RedirectOutput] The line below contains broken UTF-8\n", self.level)
+				ePythonOutput(self.line.encode(encoding="UTF-8", errors="ignore").decode(), self.level)
 			self.line = ""
 
 	def flush(self):
