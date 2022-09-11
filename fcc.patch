@@ -1501,7 +1501,7 @@ index 864a23a153..baf1f3f6c5 100644
  SystemInfo["mapKeyInfoToEpgFunctions"] = SystemInfo["rc_model"] in ("vu", "vu2", "vu3", "vu4") # due to button limitations of the remote control
  SystemInfo["toggleTvRadioButtonEvents"] = SystemInfo["rc_model"] in ("ax4", "beyonwiz1", "beyonwiz2", "gb0", "gb1", "gb2", "gb3", "gb4", "sf8008", "sf8008m", "uniboxhde") # due to button limitations of the remote control
 diff --git a/lib/python/Navigation.py b/lib/python/Navigation.py
-index 25b7fd49b4..8509280a4a 100644
+index 3e4b6472aa..b8b37b0742 100644
 --- a/lib/python/Navigation.py
 +++ b/lib/python/Navigation.py
 @@ -38,6 +38,7 @@ class Navigation:
@@ -1524,7 +1524,7 @@ index 25b7fd49b4..8509280a4a 100644
  			self.currentlyPlayingService = None
  
  	def dispatchRecordEvent(self, rec_service, event):
-@@ -152,7 +154,10 @@ class Navigation:
+@@ -164,7 +166,10 @@ class Navigation:
  			else:
  				playref = ref
  			if self.pnav:
@@ -1536,10 +1536,10 @@ index 25b7fd49b4..8509280a4a 100644
  				self.currentlyPlayingServiceReference = playref
  				self.currentlyPlayingServiceOrGroup = ref
  				if InfoBarInstance and InfoBarInstance.servicelist.servicelist.setCurrent(ref, adjust):
-@@ -189,6 +194,7 @@ class Navigation:
- 				#	print("[Navigation] Failed to start", playref)
- 					self.currentlyPlayingServiceReference = None
- 					self.currentlyPlayingServiceOrGroup = None
+@@ -206,6 +211,7 @@ class Navigation:
+ 						self.retryServicePlayTimer = eTimer()
+ 						self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
+ 						self.retryServicePlayTimer.start(500, True)
 +				self.skipServiceReferenceReset = False
  				if setPriorityFrontend:
  					setPreferredTuner(int(config.usage.frontend_priority.value))
@@ -2316,7 +2316,7 @@ index 898354739a..36d5136276 100644
  	int getNextBeginningWithChar(char c);
  	int getPrevMarkerPos();
 diff --git a/lib/service/servicedvb.cpp b/lib/service/servicedvb.cpp
-index b548b17a9f..112c5071dd 100644
+index d31985bc0e..e992fd23cd 100644
 --- a/lib/service/servicedvb.cpp
 +++ b/lib/service/servicedvb.cpp
 @@ -19,6 +19,7 @@
@@ -2370,7 +2370,7 @@ index b548b17a9f..112c5071dd 100644
  	CONNECT(m_service_handler_timeshift.serviceEvent, eDVBServicePlay::serviceEventTimeshift);
  	CONNECT(m_event_handler.m_eit_changed, eDVBServicePlay::gotNewEvent);
  	CONNECT(m_subtitle_sync_timer->timeout, eDVBServicePlay::checkSubtitleTiming);
-@@ -1457,6 +1465,7 @@ RESULT eDVBServicePlay::stop()
+@@ -1458,6 +1466,7 @@ RESULT eDVBServicePlay::stop()
  
  RESULT eDVBServicePlay::setTarget(int target, bool noaudio = false)
  {
@@ -2378,7 +2378,7 @@ index b548b17a9f..112c5071dd 100644
  	m_decoder_index = target;
  	m_noaudio = noaudio;
  	return 0;
-@@ -2212,7 +2221,7 @@ int eDVBServicePlay::selectAudioStream(int i)
+@@ -2213,7 +2222,7 @@ int eDVBServicePlay::selectAudioStream(int i)
  
  	m_current_audio_pid = apid;
  
@@ -2387,7 +2387,7 @@ index b548b17a9f..112c5071dd 100644
  	{
  		eDebug("[eDVBServicePlay] set audio pid %04x failed", apid);
  		return -4;
-@@ -2227,7 +2236,7 @@ int eDVBServicePlay::selectAudioStream(int i)
+@@ -2228,7 +2237,7 @@ int eDVBServicePlay::selectAudioStream(int i)
  	int rdsPid = apid;
  
  		/* if timeshift is not active and we are not in pip mode, check if we need to enable the rds reader */
