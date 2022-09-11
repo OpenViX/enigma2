@@ -178,7 +178,11 @@ class CleanTrashTask(Components.Task.PythonTask):
 						if (config.movielist.settings_per_directory.value and name == b".e2settings.pkl"):
 							continue
 						fn = os.path.join(root, name)
-						st = os.stat(fn)
+						try:			# file may not exist, if dual delete activities.
+							st = os.stat(fn)
+						except FileNotFoundError:						
+							print("[Trashcan][CleanTrashTask[work]  FileNotFoundError ", fn)
+							pass					
 						if st.st_ctime < self.ctimeLimit:
 							enigma.eBackgroundFileEraser.getInstance().erase(fn)
 							bytesToRemove -= st.st_size
