@@ -74,7 +74,7 @@ config.imagemanager.lastbackup = ConfigNumber(default=0)
 config.imagemanager.number_to_keep = ConfigNumber(default=0)
 config.imagemanager.imagefeed_ViX = ConfigText(default="https://www.openvix.co.uk/json", fixed_size=False)
 config.imagemanager.imagefeed_ViX.value = config.imagemanager.imagefeed_ViX.default # this is no longer a user setup option
-config.imagemanager.imagefeed_ATV = ConfigText(default="http://images.mynonpublic.com/openatv/json", fixed_size=False)
+config.imagemanager.imagefeed_ATV = ConfigText(default="https://images.mynonpublic.com/openatv/json", fixed_size=False)
 config.imagemanager.imagefeed_ATV.value = config.imagemanager.imagefeed_ATV.default # this is no longer a user setup option
 config.imagemanager.imagefeed_Pli = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
 config.imagemanager.imagefeed_Pli.value = config.imagemanager.imagefeed_Pli.default # this is no longer a user setup option
