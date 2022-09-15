@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-09-06 20:18+0300\n"
+"PO-Revision-Date: 2022-09-14 21:41+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -976,8 +976,8 @@ msgstr "%d %d:sta Kt"
 #, python-format
 msgid "%d pixel wide"
 msgid_plural "%d pixels wide"
-msgstr[0] "%d pixelin leveys"
-msgstr[1] "%d pixelien leveys"
+msgstr[0] "%d pikselin leveys"
+msgstr[1] "%d pikselin leveys"
 
 #, python-format
 msgid "%d sec"
@@ -3517,7 +3517,7 @@ msgid "Configure the contrast level of the front panel display."
 msgstr "Määritä etupaneelin näytön kontrasti."
 
 msgid "Configure the cursor behavior in the channel selection list. When opening the channel selection list you can remain on the current service or already select up/down and you are able to revert the B+/B- buttons."
-msgstr "Määritä kursorin toiminta kanavalistassa. Kun kanavalista avataan, voit pysyä nykyisellä kanavalla tai siirtyä jo ylös/alas, voit myös kääntää B+/B- näppäimien toiminnan."
+msgstr "Määritä kursorin toiminta kanavalistassa. Kun kanavalista avataan, voit pysyä nykyisellä kanavalla tai valita jo ylös/alas, voit myös kääntää Ch+/Ch- näppäimien toiminnan."
 
 msgid "Configure the duration (in minutes) for the screensaver."
 msgstr "Määrittele näytönsäästäjän aika minuuteissa."
@@ -5383,7 +5383,7 @@ msgid "Event Info"
 msgstr "Ohjelmatiedot"
 
 msgid "Event font size"
-msgstr "Ohjelmatiedon tekstikoko"
+msgstr "Ohjelmatiedon fonttikoko"
 
 msgid "Event name first"
 msgstr "Ohjelmatieto ensin"
@@ -8305,7 +8305,7 @@ msgid "Number buttons mode"
 msgstr "Numeronäppäinmoodi"
 
 msgid "Number of digits in channel number"
-msgstr "Merkkien määrä kanavavalinnassa"
+msgstr "Numeroiden lukumäärä kanavavalinnassa"
 
 msgid "Number of rows"
 msgstr "Rivimäärä"
@@ -10124,7 +10124,7 @@ msgid "Reunion"
 msgstr "Reunion"
 
 msgid "Reverse bouquet buttons"
-msgstr "Käänteiset suosikkilistanäppäimet"
+msgstr "Käänteiset kanavan näppäimet"
 
 msgid "Reverse list"
 msgstr "käänteinen lista"
@@ -11012,7 +11012,7 @@ msgid "Service name"
 msgstr "Kanavan nimi"
 
 msgid "Service name font size"
-msgstr "Kanavanimen tekstikoko"
+msgstr "Kanavanimen fonttikoko"
 
 msgid ""
 "Service not found!\n"
@@ -11023,7 +11023,7 @@ msgstr ""
 "Program Association Tablesta.)"
 
 msgid "Service number font size"
-msgstr "Kanavanumeron merkkikoko"
+msgstr "Kanavanumeron fonttikoko"
 
 msgid "Service off-air"
 msgstr "Kanavalla ei ohjelmaa"
@@ -12866,16 +12866,16 @@ msgid "This DVD RW medium is already formatted - reformatting will erase all con
 msgstr "Tämä DVD-RW levy on jo alustettu - uudelleenalustus tuhoaa levyn kaiken sisällön."
 
 msgid "This allows you change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size"
-msgstr "Tämä asetus määrittää tekstikoon suhteessa teeman määritykseen, joten 1 suurentaa koko yhdellä merkkikoolla ja -1 pienentää yhdellä"
+msgstr "Tämä asetus määrittää fonttikoon suhteessa teeman määritykseen, joten 1 suurentaa kirjasinkokoa yhdellä ja -1 pienentää yhdellä"
 
 msgid "This allows you to change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size"
-msgstr "Tämä asetus määrittää tekstikoon suhteessa teeman määritykseen, joten 1 suurentaa koko yhdellä merkkikoolla ja -1 pienentää yhdellä"
+msgstr "Tämä asetus määrittää fonttikoon suhteessa teeman määritykseen, joten 1 suurentaa kirjasinkokoa yhdellä ja -1 pienentää yhdellä"
 
 msgid "This allows you to change the number of rows shown."
-msgstr "Tämä asetus määrittää monta riviä näytetään."
+msgstr "Tämä asetus määrittää montako riviä näytetään."
 
 msgid "This allows you to set the number of digits you can input when selecting channels using number input."
-msgstr "Aseta merkkien määrä, kuinka monta numeroa voit syöttää kanavavalintaan."
+msgstr "Aseta lukumäärä, kuinka monta numeroa voit syöttää kanavavalintaan."
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
@@ -12897,19 +12897,19 @@ msgid "This option allows to reduce the block-noise in the picture. Obviously th
 msgstr "Tämä asetus vähentää pakkausneliöiden näkymistä kuvassa. Tämä tietysti tapahtuu kuvaterävyyden kustannuksella."
 
 msgid "This option allows to set the level of dynamic contrast of the picture."
-msgstr "Tämä asetus määrittää kuven dynaamisen kontrastin määrän."
+msgstr "Tämä asetus määrittää kuvan dynaamisen kontrastin määrän."
 
 msgid "This option allows you choose how to display elapsed time as + or -"
 msgstr "Tämä asetus määrittää kuinka kulunut aika näytetään, joko + tai -"
 
 msgid "This option allows you choose how to display remaining time, or elapsed time, or both."
-msgstr "Tämä asetus määrittää kuinka jäljelläoleva/kulunut aika näytetään."
+msgstr "Tämä asetus määrittää kuinka jäljellä oleva tai kulunut aika näytetään tai molemmat."
 
 msgid "This option allows you choose how to display the Time or nothing in Standby"
-msgstr "Tämä asetus määrittää kuinka aika näytetään valmiusilassa, tai ei näytetä ollenkaan"
+msgstr "Tämä asetus määrittää kuinka aika näytetään valmiustilassa, tai ei näytetä ollenkaan"
 
 msgid "This option allows you choose how to display the remaining/elapsed time for live TV."
-msgstr "Tämä asetus määrittää kuinka TV-lähetyksen jäljelläoleva/kulunut aika näytetään."
+msgstr "Tämä asetus määrittää kuinka TV-lähetyksen jäljellä oleva/kulunut aika näytetään."
 
 msgid "This option allows you choose the background color of transparent picons."
 msgstr "Tämä asetus määrittää läpinäkyvien kanavalogojen taustavärin."
@@ -14365,7 +14365,7 @@ msgid "When enabled, a popup message will be shown when a recording starts."
 msgstr "Kun päällä, näytetään viesti kun tallennus alkaa."
 
 msgid "When enabled, a recording is allowed to interrupt live TV, when there are no free tuners."
-msgstr "Kun päällä, tallennus saa keskeyttää TV:n katselun jos vapaita virittimiä ei ole saatavilla."
+msgstr "Kun päällä, tallennus saa keskeyttää TV:n katselun, jos vapaita virittimiä ei ole saatavilla."
 
 msgid "When enabled, a warning will be displayed and the user will get an option to stop or to continue the timeshift."
 msgstr "Kun päällä, näytetään varoitus ja käyttäjällä on mahdollisuus pysäyttää tai jatkaa ajansiirtoa."
@@ -14413,7 +14413,7 @@ msgid "When enabled, network trash cans are probed for cleaning."
 msgstr "Kun päällä, verkkolevyjen roskakorit tutkitaan tyhjennystä varten."
 
 msgid "When enabled, number markers will be hidden."
-msgstr "Kun päällä, muneromerkit piilotetaan."
+msgstr "Kun päällä, numeromerkit piilotetaan."
 
 msgid "When enabled, pressing '0' will zap you to the first channel in your first bouquet and delete your zap-history."
 msgstr "Kun päällä, '0'-näppäin vaihtaa ensimmäisen suosikkilistan ensimmäiselle kanavalle ja poistaa katseluhistorian."
