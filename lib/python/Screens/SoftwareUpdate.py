@@ -381,9 +381,8 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		self.ipkg.write(res and "N" or "Y")
 
 	def doSettingsBackup(self):
-		backup = None
 		from Plugins.SystemPlugins.ViX.BackupManager import BackupFiles
-		self.BackupFiles = BackupFiles(self.session, True)
+		self.BackupFiles = BackupFiles(self.session, backuptype=BackupFiles.TYPE_SOFTWAREUPDATE)
 		Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
 		Components.Task.job_manager.in_background = False
 		for job in Components.Task.job_manager.getPendingJobs():

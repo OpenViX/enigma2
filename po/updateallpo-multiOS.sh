@@ -37,7 +37,7 @@
 # Run this script from within the po folder.
 #
 remote="origin"
-branch="Dev"
+branch="Developer"
 python="python"
 localgsed="sed"
 xml2po="xml2po.py"
