@@ -9,14 +9,13 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdio.h>
 
 eBackgroundFileEraser *eBackgroundFileEraser::instance;
 
 eBackgroundFileEraser::eBackgroundFileEraser():
 	messages(this,1, "eBackgroundFileEraser"),
-	stop_thread_timer(eTimer::create(this)),
-	erase_speed(20 << 20),
-	erase_flags(ERASE_FLAG_HDD)
+	stop_thread_timer(eTimer::create(this))
 {
 	if (!instance)
 		instance=this;
@@ -31,7 +30,6 @@ void eBackgroundFileEraser::idle()
 
 eBackgroundFileEraser::~eBackgroundFileEraser()
 {
-	erase_flags = 0; // Stop erasing in background, do it ASAP
 	messages.send(Message());
 	if (instance==this)
 		instance=0;
@@ -62,14 +60,12 @@ void eBackgroundFileEraser::erase(const std::string& filename)
 		delname.append(".del");
 		if (rename(filename.c_str(), delname.c_str())<0)
 		{
-			// if rename fails with ENOENT (file doesn't exist), do nothing
-			if (errno == ENOENT)
+			if (errno == ENOENT)		/* if rename fails with ENOENT (file doesn't exist), do nothing */
 			{
 				eDebug("[eBackgroundFileEraser] filename %s not found: %m", filename.c_str());
 				return;
 			} else
-			// if rename fails, try deleting the file itself without renaming.
-			{
+			{				/* if rename fails, try deleting the file itself without renaming. */
 				eDebug("[eBackgroundFileEraser] Rename %s -> %s failed: %m", filename.c_str(), delname.c_str());
 				delname = filename;
 			}
@@ -97,68 +93,16 @@ void eBackgroundFileEraser::gotMessage(const Message &msg )
 	else
 	{
 		const char* c_filename = msg.filename.c_str();
-		bool unlinked = false;
-		eDebug("[eBackgroundFileEraser] deleting '%s'", c_filename);
-		if ((((erase_flags & ERASE_FLAG_HDD) != 0) && (strncmp(c_filename, "/media/hdd/", 11) == 0)) ||
-		    ((erase_flags & ERASE_FLAG_OTHER) != 0))
+		if ( ::remove(c_filename) < 0 )
+		{			
+			eDebug("[eBackgroundFileEraser] removing %s failed: %m", c_filename);
+
+		} else
 		{
-			struct stat st = {};
-			int i = ::stat(c_filename, &st);
-			// truncate only if the file exists and does not have any hard links
-			if ((i == 0) && (st.st_nlink == 1))
-			{
-				if (st.st_size > erase_speed)
-				{
-					int fd = ::open(c_filename, O_WRONLY|O_SYNC);
-					if (fd == -1)
-					{
-						eDebug("[eBackgroundFileEraser] Cannot open %s for writing: %m", c_filename);
-					}
-					else
-					{
-						// Remove directory entry (file still open, so not erased yet)
-						if (::unlink(c_filename) == 0)
-							unlinked = true;
-						st.st_size -= st.st_size % erase_speed; // align on erase_speed
-						if (::ftruncate(fd, st.st_size) != 0)
-						{
-							eDebug("[eBackgroundFileEraser] Failed to truncate %s: %m", c_filename);
-						}
-						usleep(500000); // even if truncate fails, wait a moment
-						while ((st.st_size > erase_speed) && (erase_flags != 0))
-						{
-							st.st_size -= erase_speed;
-							if (::ftruncate(fd, st.st_size) != 0)
-							{
-								eDebug("[eBackgroundFileEraser] Failed to truncate %s: %m", c_filename);
-								break; // don't try again
-							}
-							usleep(500000); // wait half a second
-						}
-						::close(fd);
-					}
-				}
-			}
-		}
-		if (!unlinked)
-		{
-			if ( ::unlink(c_filename) < 0 )
-				eDebug("[eBackgroundFileEraser] removing %s failed: %m", c_filename);
+			eDebug("[eBackgroundFileEraser] removing %s OK", c_filename);				
 		}
 		stop_thread_timer->start(1000, true); // stop thread in one seconds
 	}
-}
-
-void eBackgroundFileEraser::setEraseSpeed(int inMBperSecond)
-{
-	off_t value = inMBperSecond;
-	value <<= 19; // erase_speed is in MB per half second
-	erase_speed = value;
-}
-
-void eBackgroundFileEraser::setEraseFlags(int flags)
-{
-	erase_flags = flags;
 }
 
 

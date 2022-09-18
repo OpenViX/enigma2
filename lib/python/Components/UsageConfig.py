@@ -940,23 +940,6 @@ def InitUsageConfig():
 
 	config.seek.speeds_backward.addNotifier(updateEnterBackward, immediate_feedback=False)
 
-	def updateEraseSpeed(el):
-		eBackgroundFileEraser.getInstance().setEraseSpeed(int(el.value))
-
-	def updateEraseFlags(el):
-		eBackgroundFileEraser.getInstance().setEraseFlags(int(el.value))
-	config.misc.erase_speed = ConfigSelection(default="20", choices=[
-		("10", _("10 MB/s")),
-		("20", _("20 MB/s")),
-		("50", _("50 MB/s")),
-		("100", _("100 MB/s"))])
-	config.misc.erase_speed.addNotifier(updateEraseSpeed, immediate_feedback=False)
-	config.misc.erase_flags = ConfigSelection(default="1", choices=[
-		("0", _("Disable")),
-		("1", _("Internal hdd only")),
-		("3", _("Everywhere"))])
-	config.misc.erase_flags.addNotifier(updateEraseFlags, immediate_feedback=False)
-
 	config.misc.zapkey_delay = ConfigSelectionNumber(default=5, stepwidth=1, min=0, max=20, wraparound=True)
 	config.misc.numzap_picon = ConfigYesNo(default=False)
 	if SystemInfo["ZapMode"]:
