@@ -1336,8 +1336,8 @@ class BackupFiles(Screen):
 			self.Stage2Completed = True
 		else:
 			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Plugin listing failed - e. g. wrong backup destination or no space left on backup device."), MessageBox.TYPE_INFO, timeout=10)
-			print("[BackupManager] Result.", result)
-			print("{BackupManager] Plugin listing failed - e. g. wrong backup destination or no space left on backup device")
+			print("[BackupManager] Result", result)
+			print("[BackupManager] Plugin listing failed - e. g. wrong backup destination or no space left on backup device")
 
 	def Stage3(self):
 		print("[BackupManager] Finding kernel version:" + about.getKernelVersionString())
@@ -1421,7 +1421,7 @@ class BackupFiles(Screen):
 		except:
 			pass
 
-	def BackupComplete(self):
+	def BackupComplete(self, answer=None):
 		self.Stage1Completed = True
 		self.Stage2Completed = True
 		self.Stage3Completed = True
