@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-09-14 21:41+0300\n"
+"PO-Revision-Date: 2022-09-25 21:47+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -4440,7 +4440,7 @@ msgstr "Poista kursorin alla oleva merkki"
 
 #, python-format
 msgid "Deleted %d items"
-msgstr "Poistetut %d kohteet"
+msgstr "Poistettu %d kohdetta"
 
 #, python-format
 msgid "Deleted %s!"
@@ -4706,7 +4706,7 @@ msgstr "Haluatko varmasti siirtää '%s' roskakoriin?"
 
 #, python-format
 msgid "Do you really want to move these %d items to the trash can?"
-msgstr "Haluatko varmasti siirtää %d kohteet roskakoriin?"
+msgstr "Haluatko varmasti siirtää nämä %d kohdetta roskakoriin?"
 
 #, python-format
 msgid "Do you really want to permanently delete '%s' from the trash can?"
@@ -4718,11 +4718,11 @@ msgstr "Haluatko poistaa pysyvästi '%s'?"
 
 #, python-format
 msgid "Do you really want to permanently delete these %d items from the trash can?"
-msgstr "Haluatko varmasti poistaa pysyvästi %d kohteet roskakorista?"
+msgstr "Haluatko varmasti poistaa pysyvästi nämä %d kohdetta roskakorista?"
 
 #, python-format
 msgid "Do you really want to permanently delete these %d items?"
-msgstr "Haluatko varmasti poistaa pysyvästi %d kohteet?"
+msgstr "Haluatko varmasti poistaa pysyvästi nämä %d kohdetta?"
 
 #, python-format
 msgid "Do you really want to remove directory %s from the disk?"
@@ -7741,7 +7741,7 @@ msgstr "Liikuta länteen"
 
 #, python-format
 msgid "Moved %d items"
-msgstr "Siirretyt %d kohteet"
+msgstr "Siirretty %d kohdetta"
 
 #, python-format
 msgid "Moved '%s'"
