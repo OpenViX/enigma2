@@ -1436,9 +1436,21 @@ class ImageManagerDownload(Screen):
 		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found on the selected download server...if password check validity")), "Waiter"))])
 		self.getImageDistro()
 
+	def showError(self):
+		self.session.open(MessageBox, self.msg, MessageBox.TYPE_ERROR)
+		self.close()
+
 	def getImageDistro(self):
 		if not path.exists(self.BackupDirectory):
-			mkdir(self.BackupDirectory, 0o755)
+			try:
+				mkdir(self.BackupDirectory, 0o755)
+			except Exception as err:
+				self.msg = _("Error creating backup folder:\n%s: %s") % (type(err).__name__, err)
+				print("[ImageManagerDownload][getImageDistro] " + self.msg)
+				self.pausetimer = eTimer()
+				self.pausetimer.callback.append(self.showError)
+				self.pausetimer.start(50, True)
+				return
 		self.boxtype = getMachineMake()
 		if self.ConfigObj is config.imagemanager.imagefeed_Pli:
 			self.boxtype = HardwareInfo().get_device_name()
