@@ -152,4 +152,10 @@ class EPGListBase(GUIComponent):
 		return self.selclocks[matchType] if selected else self.clocks[matchType], autoTimerIcon
 
 	def queryEPG(self, list):
-		return self.epgcache.lookupEvent(list)
+		try:
+			return self.epgcache.lookupEvent(list)
+		except:
+			print("[EPGListBase] queryEPG failed\n", list)
+			import traceback
+			traceback.print_exc()
+			return []
