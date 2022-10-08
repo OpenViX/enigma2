@@ -211,6 +211,8 @@ class OscamInfo:
 			print("[openWebIF] error: %s" % err)
 			return False, err
 		else:
+			if isinstance(data, bytes):
+				data = data.decode(encoding="UTF-8", errors="ignore")		
 			return True, data
 
 	def readXML(self, typ):
@@ -276,7 +278,7 @@ class OscamInfo:
 							tmp[cl.attrib["type"]] = []
 							tmp[cl.attrib["type"]].append((name, proto, "%s:%s" % (caid, srvid), srvname_short, ecmtime, ip, connstatus))
 			else:
-				if b"<![CDATA" not in result[1]:
+				if "<![CDATA" not in result[1]:
 					tmp = result[1].replace("<log>", "<log><![CDATA[").replace("</log>", "]]></log>")
 				else:
 					tmp = result[1]
