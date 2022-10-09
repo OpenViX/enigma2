@@ -962,7 +962,7 @@ class ChannelSelectionEdit:
 		mutableBouquet = cur_root.list().startEdit()
 		if mutableBouquet:
 			servicename = cur_service.getServiceName()
-			name = unicodedata.normalize(u"NFKD", servicename).encode("ascii", "ignore").decode('utf8').translate(str.maketrans('', '', '<>:"/\\|?*() '))
+			name = sanitizeFilename(servicename)
 			while os.path.isfile((self.mode == MODE_TV and '/etc/enigma2/alternatives.%s.tv' or '/etc/enigma2/alternatives.%s.radio') % name):
 				name = name.rsplit('_', 1)
 				name = ('_').join((name[0], len(name) == 2 and name[1].isdigit() and str(int(name[1]) + 1) or '1'))
