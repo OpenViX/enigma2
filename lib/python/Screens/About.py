@@ -217,7 +217,7 @@ class Devices(Screen):
 		self["HDDHeader"] = StaticText(_("Detected devices:"))
 		self["MountsHeader"] = StaticText(_("Network servers:"))
 		self["nims"] = StaticText()
-		for count in (0, 1, 2, 3):
+		for count in range(4):
 			self["Tuner" + str(count)] = StaticText("")
 		self["hdd"] = StaticText()
 		self["mounts"] = StaticText()
@@ -238,7 +238,7 @@ class Devices(Screen):
 		self["actions"].setEnabled(False)
 		scanning = _("Please wait while scanning for devices...")
 		self["nims"].setText(scanning)
-		for count in (0, 1, 2, 3):
+		for count in range(4):
 			self["Tuner" + str(count)].setText(scanning)
 		self["hdd"].setText(scanning)
 		self["mounts"].setText(scanning)
@@ -257,7 +257,7 @@ class Devices(Screen):
 
 		nims = nimmanager.nimList()
 		if len(nims) <= 4:
-			for count in (0, 1, 2, 3):
+			for count in range(4):
 				if count < len(nims):
 					self["Tuner" + str(count)].setText(nims[count])
 				else:
