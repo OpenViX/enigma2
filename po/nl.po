@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-10 19:25+0000\n"
-"PO-Revision-Date: 2022-08-11 07:02+0200\n"
+"POT-Creation-Date: 2022-10-01 23:15+0000\n"
+"PO-Revision-Date: 2022-10-09 15:39+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1293,12 +1293,6 @@ msgstr "1.1"
 msgid "1.2"
 msgstr "1.2"
 
-msgid "10 MB/s"
-msgstr "10 MB/s"
-
-msgid "100 MB/s"
-msgstr "100 MB/s"
-
 msgid "1080i"
 msgstr "1080i"
 
@@ -1361,9 +1355,6 @@ msgstr "1X"
 
 msgid "1st Infobar timeout"
 msgstr "1e informatiebalk timeout"
-
-msgid "20 MB/s"
-msgstr "20 MB/s"
 
 msgid "2160p 24Hz"
 msgstr "2160p 24Hz"
@@ -1476,9 +1467,6 @@ msgstr "4X"
 
 msgid "5"
 msgstr "5"
-
-msgid "50 MB/s"
-msgstr "50 MB/s"
 
 msgid "5001 + 5002"
 msgstr "5001 + 5002"
@@ -2519,12 +2507,6 @@ msgstr "Achtergrond controle"
 msgid "Background color"
 msgstr "Achtergrondkleur"
 
-msgid "Background delete option"
-msgstr "Verwijder op de achtergrond"
-
-msgid "Background delete speed"
-msgstr "Snelheid verwijderen op de achtergrond"
-
 msgid "Backup completed."
 msgstr "Back-up gereed."
 
@@ -3511,9 +3493,6 @@ msgstr "Configureer interface"
 msgid "Configure nameservers"
 msgstr "Configureer nameservers"
 
-msgid "Configure on which devices the background delete option should be used."
-msgstr "Geef aan op welk apparaat op de achtergrond bestanden mogen worden verwijderd."
-
 msgid "Configure the DiSEqC mode for this LNB."
 msgstr "Stel hier de juiste DiSEqC modus voor uw LNB in."
 
@@ -3666,9 +3645,6 @@ msgstr "Stel de slow-motion snelheden in."
 
 msgid "Configure the source of the frontend data as shown on the infobars. 'Settings' is as stored on the settings. 'Tuner' is as reported by the tuner."
 msgstr "Kies de bron voor de tunerdata die in de Infobar getoond wordt. \"Settings\" is opgeslagen als bestand, \"Tuner\" is actuele data zoals de tuner die rapporteert."
-
-msgid "Configure the speed of the background deletion process. Lower speed will consume less hard disk drive performance."
-msgstr "Bepaal de snelheid waarmee bestanden op de achtergrond worden verwijderd. Een lage snelheid vergt minder prestaties van de schijf."
 
 msgid "Configure the subtitle delay when timing information is not available."
 msgstr "Stel de vertraging van de ondertitels in voor het geval tijdsinformatie niet beschikbaar is."
@@ -4639,6 +4615,12 @@ msgstr "Uit"
 msgid "Disable Animations"
 msgstr "Animatie uitschakelen"
 
+msgid "Disable FCC during recordings"
+msgstr "Schakel FCC uit tijdens opnames"
+
+msgid "Disable Fast Channel Change"
+msgstr "Schakel FCC uit"
+
 msgid "Disable Picture in Picture"
 msgstr "Beeld-in-beeld uitschakelen"
 
@@ -5116,6 +5098,9 @@ msgstr "EIT EPG inschakelen"
 msgid "Enable EPG event name abbreviation removal"
 msgstr "Kies voorkomen van afkorten van naam"
 
+msgid "Enable Fast Channel Change"
+msgstr "Schakel FCC in"
+
 msgid "Enable FreeSat EPG"
 msgstr "Freesat EPG inschakelen"
 
@@ -5445,9 +5430,6 @@ msgstr "Elk uur"
 msgid "Everyday"
 msgstr "Elke dag"
 
-msgid "Everywhere"
-msgstr "Overal"
-
 msgid "Exceeds dual layer medium!"
 msgstr "Overschrijdt dubbel lagen medium!"
 
@@ -5646,6 +5628,12 @@ msgstr ""
 "FBC automatisch\n"
 "inactief"
 
+msgid "FCC enabled"
+msgstr "FCC ingeschakeld"
+
+msgid "FCCSetup"
+msgstr "FCC Instellingen"
+
 msgid "FEC"
 msgstr "FEC"
 
@@ -5726,6 +5714,15 @@ msgstr "Faroe Islands"
 
 msgid "Fast"
 msgstr "Snel"
+
+msgid "Fast Channel Change"
+msgstr "Fast Channel Change"
+
+msgid "Fast Channel Change Setup"
+msgstr "Fast Channel Change instellingen"
+
+msgid "Fast Channel Change setup"
+msgstr "Fast Channel Change instellingen"
 
 msgid "Fast DiSEqC"
 msgstr "Snelle DiSEqC"
@@ -6347,6 +6344,9 @@ msgstr "Hoge bitrate ondersteuning"
 msgid "Highlight current events"
 msgstr "Markeer actuele programma's"
 
+msgid "History Prev/Next"
+msgstr "Historie vorige/volgende"
+
 msgid "History Zap"
 msgstr "Geschiedenis-zap"
 
@@ -6885,9 +6885,6 @@ msgstr "Tussenliggend"
 msgid "Internal"
 msgstr "Intern"
 
-msgid "Internal hdd only"
-msgstr "Alleen interne HDD"
-
 msgid "Internet"
 msgstr "Internet"
 
@@ -7412,6 +7409,9 @@ msgstr "Hoofdmenu"
 msgid "Maintain old EPG data for"
 msgstr "Bewaar oude EPG-data voor"
 
+msgid "Make settings backup"
+msgstr "Maak settingsback-up"
+
 msgid "Make this mark an 'in' point"
 msgstr "Markeer dit als 'in' punt"
 
@@ -7490,6 +7490,9 @@ msgstr "Mauritania"
 
 msgid "Mauritius"
 msgstr "Mauritius"
+
+msgid "Max channels"
+msgstr "Max Kanalen"
 
 msgid "Max memory positions"
 msgstr "Max aantal geheugenposities"
@@ -8423,6 +8426,9 @@ msgstr "Oman"
 
 msgid "On"
 msgstr "Aan"
+
+msgid "On Screen Display"
+msgstr "On Screen Display"
 
 msgid "On end of movie"
 msgstr "Bij het einde van bestand"
@@ -9741,6 +9747,9 @@ msgstr "Opname-toets (kort)"
 msgid "Recall channel, panic button & number zap"
 msgstr "Terugvalkanaal, paniektoets en nummerzap"
 
+msgid "Receiver or driver does not support FCC"
+msgstr "Ontvanger of driver ondersteunt geen FCC"
+
 msgid "Record"
 msgstr "Opname"
 
@@ -10634,6 +10643,9 @@ msgstr ""
 "\n"
 "Kies 'Nee' om alleen de door u geselecteerde taal te verwijderen.\n"
 
+msgid "Select 'Yes' to make a settings backup before wiping the current configuration."
+msgstr "Selecteer 'Ja' om een settingsback-up te maken alvorens de huidige configuratie te verwijderen."
+
 msgid "Select 'Yes' to remove all keymap data. Selecting this option will remove all keymap override data and restore the default keymap definitions."
 msgstr "Kies 'Ja' om alle keymap gegevens te verwijderen. Dit zal alle persoonlijke keymapinstellingen verwijderen en de standaard waardes herstellen."
 
@@ -11111,9 +11123,6 @@ msgstr "Servicereferentie"
 
 msgid "Service scan"
 msgstr "Zenders zoeken"
-
-msgid "Service type 4097 incorrect for PiP!"
-msgstr "Service type 4097 incorrect voor PiP!"
 
 msgid ""
 "Service unavailable!\n"
@@ -11830,14 +11839,14 @@ msgstr "Lengtegraad"
 msgid "Skin"
 msgstr "Skin"
 
+msgid "Skin Selection"
+msgstr "Skinkeuze"
+
 msgid "Skin Selection Actions"
 msgstr "Skinkeuze"
 
 msgid "Skin Setting"
 msgstr "Skin instellen"
-
-msgid "Skin Setup"
-msgstr "Skin instellingen"
 
 msgid "Skin install"
 msgstr "Skin installeren"
@@ -13185,6 +13194,9 @@ msgid ""
 msgstr ""
 "Dit zal alle posities herberekenen en zal alle opgeslagen posities verwijderen!\n"
 "Weet u het zeker?"
+
+msgid "This will permanently delete the current configuration. If necessary it should be possible to restore the current configuration by restoring the settings backup. Are you certain you want to continue with a factory reset?"
+msgstr "Dit zal de huidige configuratie voorgoed verwijderen. Indien noodzakelijk moet het mogelijk zijn de huidige configuratie te herstellen vanuit een settingsback-up.  Weet u zeker dat u naar de fabrieksinstellingen terug wil?"
 
 msgid "This will permanently delete the current configuration. It would be a good idea to make a backup before taking this drastic action. Are you certain you want to continue with a factory reset?"
 msgstr "Dit zal de huidige configuratie voorgoed verwijderen. Het is wellicht een goed idee een back-up te maken alvorens zo'n drastische stap te nemen. Weet u zeker dat u naar de fabrieksinstellingen terug wil?"
@@ -15058,6 +15070,9 @@ msgstr "Zap"
 msgid "Zap + Exit"
 msgstr "Zap + Exit"
 
+msgid "Zap Up/Down"
+msgstr "Zap omhoog/omlaag"
+
 msgid "Zap back to previously tuned service?"
 msgstr "Wilt u terug naar het vorige kanaal?"
 
@@ -15992,6 +16007,9 @@ msgstr "peuterprogramma"
 msgid "preserve bookmarks in cuts"
 msgstr "bewaar markeerpunten in cuts"
 
+msgid "priority"
+msgstr "prioriteit"
+
 msgid "provid:"
 msgstr "provid:"
 
@@ -16491,8 +16509,26 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "1,1"
 #~ msgstr "1.1"
 
+#~ msgid "10 MB/s"
+#~ msgstr "10 MB/s"
+
+#~ msgid "100 MB/s"
+#~ msgstr "100 MB/s"
+
+#~ msgid "20 MB/s"
+#~ msgstr "20 MB/s"
+
+#~ msgid "50 MB/s"
+#~ msgstr "50 MB/s"
+
 #~ msgid "Allow unstable (experimental) feeds"
 #~ msgstr "Accepteer onstabiele (experimentele) feeds"
+
+#~ msgid "Background delete option"
+#~ msgstr "Verwijder op de achtergrond"
+
+#~ msgid "Background delete speed"
+#~ msgstr "Snelheid verwijderen op de achtergrond"
 
 #, fuzzy
 #~ msgid "C"
@@ -16513,6 +16549,12 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Collection"
 #~ msgstr "Collectie"
 
+#~ msgid "Configure on which devices the background delete option should be used."
+#~ msgstr "Geef aan op welk apparaat op de achtergrond bestanden mogen worden verwijderd."
+
+#~ msgid "Configure the speed of the background deletion process. Lower speed will consume less hard disk drive performance."
+#~ msgstr "Bepaal de snelheid waarmee bestanden op de achtergrond worden verwijderd. Een lage snelheid vergt minder prestaties van de schijf."
+
 #~ msgid "Current CEC address"
 #~ msgstr "Huidig CEC adres"
 
@@ -16529,6 +16571,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #, fuzzy
 #~ msgid "EtPortal"
 #~ msgstr "Portugal"
+
+#~ msgid "Everywhere"
+#~ msgstr "Overal"
 
 #, fuzzy
 #~ msgid "F"
@@ -16565,6 +16610,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Internal flash"
 #~ msgstr "Intern geheugen"
 
+#~ msgid "Internal hdd only"
+#~ msgstr "Alleen interne HDD"
+
 #~ msgid "Label"
 #~ msgstr "Label"
 
@@ -16589,6 +16637,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Serv.Name"
 #~ msgstr "Serv.Naam"
 
+#~ msgid "Service type 4097 incorrect for PiP!"
+#~ msgstr "Service type 4097 incorrect voor PiP!"
+
 #~ msgid "Set fixed"
 #~ msgstr "Zet fixed"
 
@@ -16600,6 +16651,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Show/Games show"
 #~ msgstr "Show/Spelshow"
+
+#~ msgid "Skin Setup"
+#~ msgstr "Skin instellingen"
 
 #~ msgid "Social/Political/Economics"
 #~ msgstr "Sociaal/Politiek/Economie"

@@ -181,15 +181,15 @@ class OscamInfo:
 			self.proto = "https"
 			self.port.replace("+", "")
 
-		print("[openWebIF] NAMEBIN=%s, CAM=%s" % (NAMEBIN, NAMEBIN))
+#		print("[OscamInfo][openWebIF] NAMEBIN=%s, CAM=%s" % (NAMEBIN, NAMEBIN))
 		if part is None:
 			self.url = "%s://%s:%s/%sapi.html?part=status" % (self.proto, self.ip, self.port, NAMEBIN)
 		else:
 			self.url = "%s://%s:%s/%sapi.html?part=%s" % (self.proto, self.ip, self.port, NAMEBIN, part)
 		if part is not None and reader is not None:
 			self.url = "%s://%s:%s/%sapi.html?part=%s&label=%s" % (self.proto, self.ip, self.port, NAMEBIN, part, reader)
-		print("[openWebIF] NAMEBIN=%s, NAMEBIN=%s url=%s" % (NAMEBIN, NAMEBIN, self.url))
-		print("[OscamInfo] self.url=%s" % self.url)
+#		print("[OscamInfo][openWebIF] NAMEBIN=%s, NAMEBIN=%s url=%s" % (NAMEBIN, NAMEBIN, self.url))
+#		print("[OscamInfo][openWebIF] self.url=%s" % self.url)
 		opener = build_opener(HTTPHandler)
 		if not self.username == "":
 			pwman = HTTPPasswordMgrWithDefaultRealm()
@@ -201,7 +201,7 @@ class OscamInfo:
 		err = False
 		try:
 			data = urlopen(request).read()
-			# print data
+#			print("[OscamInfo][openWebIF] data=", data)
 		except URLError as e:
 			if hasattr(e, "reason"):
 				err = str(e.reason)
@@ -211,6 +211,8 @@ class OscamInfo:
 			print("[openWebIF] error: %s" % err)
 			return False, err
 		else:
+			if isinstance(data, bytes):
+				data = data.decode(encoding="UTF-8", errors="ignore")		
 			return True, data
 
 	def readXML(self, typ):
@@ -276,7 +278,7 @@ class OscamInfo:
 							tmp[cl.attrib["type"]] = []
 							tmp[cl.attrib["type"]].append((name, proto, "%s:%s" % (caid, srvid), srvname_short, ecmtime, ip, connstatus))
 			else:
-				if b"<![CDATA" not in result[1]:
+				if "<![CDATA" not in result[1]:
 					tmp = result[1].replace("<log>", "<log><![CDATA[").replace("</log>", "]]></log>")
 				else:
 					tmp = result[1]

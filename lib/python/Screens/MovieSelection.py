@@ -36,6 +36,7 @@ from enigma import eServiceReference, eServiceCenter, eTimer, eSize, iPlayableSe
 import os
 import time
 import pickle
+import shutil
 
 config.movielist = ConfigSubsection()
 config.movielist.curentlyplayingservice = ConfigText()
@@ -2411,6 +2412,9 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				failedList.append((name, ex))
 
 		if deletedList:
+			path2 = path + ".del"
+			if offline is None and ospath.isdir(path2):		# directory not deleted by eraser and .del added to path name
+				shutil.rmtree(path2) 
 			self["list"].removeServices(deletedList)
 			deletedCount = len(deletedList)
 			self.showActionFeedback(_("Deleted '%s'") % name if deletedCount == 1 else _("Deleted %d items") % deletedCount)
