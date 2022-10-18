@@ -461,7 +461,10 @@ class VIXImageManager(Screen):
 				self.multibootslot = retval
 				print("ImageManager", retval)
 				self.MTDKERNEL = SystemInfo["canMultiBoot"][self.multibootslot]["kernel"].split("/")[2]
-				self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"].split("/")[2]
+				if SystemInfo["HasMultibootMTD"]:
+					self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"]				
+				else:
+				    self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"].split("/")[2]
 			if self.sel:
 				if config.imagemanager.autosettingsbackup.value:
 					self.doSettingsBackup()
@@ -775,7 +778,10 @@ class ImageBackup(Screen):
 		if SystemInfo["canMultiBoot"]:
 			slot = SystemInfo["MultiBootSlot"]
 			self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
-			self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
+			if SystemInfo["HasMultibootMTD"]:
+				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"]
+			else:					
+			    self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
 			if SystemInfo["HasRootSubdir"]:
 				self.ROOTFSSUBDIR = SystemInfo["canMultiBoot"][slot]["rootsubdir"]
 		else:
@@ -1045,13 +1051,17 @@ class ImageBackup(Screen):
 			print("[ImageManager] Stage2: TAR.BZIP Detected.")
 			self.ROOTFSTYPE = "tar.bz2"
 			if SystemInfo["canMultiBoot"]:
-				self.commands.append("mount /dev/%s %s/root" % (self.MTDROOTFS, self.TMPDIR))
+				if SystemInfo["HasMultibootMTD"]:
+					self.commands.append("mount -t ubifs %s %s/root" % (self.MTDROOTFS, self.TMPDIR))	
+				else:		
+				    self.commands.append("mount /dev/%s %s/root" % (self.MTDROOTFS, self.TMPDIR))
 			else:
 				self.commands.append("mount --bind / %s/root" % self.TMPDIR)
 			if SystemInfo["HasRootSubdir"]:
 				self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root/%s --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR, self.ROOTFSSUBDIR))
 			else:
 				self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))
+			self.commands.append("sync")
 			self.commands.append("/usr/bin/bzip2 %s/rootfs.tar" % self.WORKDIR)
 			if getMachineBuild() in ("gb7252", "gbx34k"):
 				self.commands.append("dd if=/dev/mmcblk0p1 of=%s/boot.bin" % self.WORKDIR)
