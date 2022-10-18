@@ -15,6 +15,9 @@ from Tools.BoxConfig import BoxConfig
 class tmp:
 	dir = None
 
+def getMountType():
+	if SystemInfo["HasMultibootMTD"]:
+		return "-t ubifs"
 
 def getparam(line, param):
 	return line.replace("userdataroot", "rootuserdata").rsplit("%s=" % param, 1)[1].split(" ", 1)[0]
@@ -25,10 +28,10 @@ def getMultibootslots():
 	slotname = ""
 	BoxInfo = SystemInfo["BoxInfo"]
 	tmp.dir = tempfile.mkdtemp(prefix="getMultibootslots")
-	tmpname = tmp.dir 
-	for device in ("/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/block/by-name/bootoptions" ):
-		if bootslots:
-			continue 
+	tmpname = tmp.dir
+	for device in ("/dev/block/by-name/bootoptions", "/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/mtdblock2"):
+		if len(bootslots) != 0:
+			break
 		if path.exists(device):
 			Console(binary=True).ePopen("mount %s %s" % (device, tmpname))
 			if path.isfile(path.join(tmpname, "STARTUP")):
@@ -40,8 +43,6 @@ def getMultibootslots():
 					# print("[multiboot*****] [getMultibootslots0] tmpname = %s" % (tmpname))
 					if "STARTUP_RECOVERY" in file:
 						SystemInfo["RecoveryMode"] = True
-						print("[multiboot] [getMultibootslots] RecoveryMode is set to:%s" % SystemInfo["RecoveryMode"])
-					# print("[multiboot] [getMultibootslots0] file = %s" % (file))
 					slotnumber = file.rsplit("_", 3 if "BOXMODE" in file else 1)[1]
 					slotname = file.rsplit("_", 3 if "BOXMODE" in file else 1)[0]
 					slotname = file.rsplit("/", 1)[1]
@@ -55,7 +56,7 @@ def getMultibootslots():
 							if "root=" in line:
 								line = line.rstrip("\n")
 								root = getparam(line, "root")
-								if path.exists(root):
+								if path.exists(root) or root == "ubi0:ubifs":
 									slot["root"] = root
 									slot["startupfile"] = path.basename(file)
 									slot["slotname"] = slotname
@@ -63,9 +64,14 @@ def getMultibootslots():
 										SystemInfo["HasRootSubdir"] = True
 										# print("[multiboot] [getMultibootslots] HasRootSubdir is set to:%s" % SystemInfo["HasRootSubdir"])
 										slot["rootsubdir"] = getparam(line, "rootsubdir")
-										slot["kernel"] = getparam(line, "kernel")
+										if "ubi.mtd=" in line:
+											SystemInfo["HasMultibootMTD"] = True
+											slot["kernel"] = "/dev/mtd%s" % line.split("mtd", 1)[1].split(" ", 1)[0]
+											print("[multiboot] [getMultibootslots]7a HasMultibootMTD, kernel", SystemInfo["HasMultibootMTD"], "   ", slot["kernel"])
+										else:
+											slot["kernel"] = getparam(line, "kernel")
 									elif "sda" in line:
-										slot["kernel"] = getparam(line, "kernel")	# sf8008 SD card slot pairs same as oldsystle MB
+										slot["kernel"] = getparam(line, "kernel")	# sf8008 SD card slot pairs same as oldstyle MB
 										slot["rootsubdir"] = None
 									else:
 										slot["kernel"] = "%sp%s" % (root.split("p")[0], int(root.split("p")[1]) - 1)	# oldstyle MB kernel = root-1
@@ -95,12 +101,18 @@ def GetCurrentImage():
 
 def GetCurrentKern():
 	if SystemInfo["HasRootSubdir"]:
-		return SystemInfo["HasRootSubdir"] and (int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()[:-1].split("kernel=/dev/mmcblk0p")[1].split(" ")[0]))
+		if SystemInfo["HasMultibootMTD"]:
+			return SystemInfo["HasRootSubdir"] and (int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()[:-1].split("kernel=/dev/mtd")[1].split(" ")[0]))
+		else:
+			return SystemInfo["HasRootSubdir"] and (int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()[:-1].split("kernel=/dev/mmcblk0p")[1].split(" ")[0]))
 
 
 def GetCurrentRoot():
 	if SystemInfo["HasRootSubdir"]:
-		return SystemInfo["HasRootSubdir"] and (int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()[:-1].split("root=/dev/mmcblk0p")[1].split(" ")[0]))
+		if SystemInfo["HasMultibootMTD"]:
+			return SystemInfo["HasRootSubdir"] and (int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()[:-1].split("ubi.mtd=")[1].split(" ")[0]))
+		else:
+			return SystemInfo["HasRootSubdir"] and (int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()[:-1].split("root=/dev/mmcblk0p")[1].split(" ")[0]))
 
 
 def GetCurrentImageMode():
@@ -122,7 +134,10 @@ def GetImagelist():
 		Imagelist[slot] = {"imagename": _("Empty slot")}
 		imagedir = "/"	
 		if SystemInfo["MultiBootSlot"] != slot or SystemInfo["HasHiSi"]:
-			Console(binary=True).ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmpname))		
+			if SystemInfo["HasMultibootMTD"]:
+				Console(binary=True).ePopen("mount -t ubifs %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmpname))				
+			else:
+				Console(binary=True).ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmpname))		
 			imagedir = sep.join([_f for _f in [tmpname, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
 		# print("[multiboot] [GetImagelist]0 isfile = %s" % (path.join(imagedir, "usr/bin/enigma2")))			
 		if path.isfile(path.join(imagedir, "usr/bin/enigma2")):
@@ -186,7 +201,10 @@ def VerDate(imagedir):
 
 def emptySlot(slot):
 	tmp.dir = tempfile.mkdtemp(prefix="emptySlot")
-	Console(binary=True).ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmp.dir))
+	if SystemInfo["HasMultibootMTD"]:
+		Console(binary=True).ePopen("mount -t ubifs %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmp.dir))
+	else:
+		Console(binary=True).ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmp.dir))
 	imagedir = sep.join([_f for _f in [tmp.dir, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
 	if path.isfile(path.join(imagedir, "usr/bin/enigma2")):
 		rename((path.join(imagedir, "usr/bin/enigma2")), (path.join(imagedir, "usr/bin/enigmax")))
@@ -203,7 +221,10 @@ def emptySlot(slot):
 def restoreSlots():
 	for slot in SystemInfo["canMultiBoot"]:
 		tmp.dir = tempfile.mkdtemp(prefix="restoreSlot")
-		Console(binary=True).ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmp.dir))
+		if SystemInfo["HasMultibootMTD"]:
+			Console(binary=True).ePopen("mount -t ubifs %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmp.dir))
+		else:
+			Console(binary=True).ePopen("mount %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmp.dir))
 		imagedir = sep.join([_f for _f in [tmp.dir, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
 		if path.isfile(path.join(imagedir, "usr/bin/enigmax")):
 			rename((path.join(imagedir, "usr/bin/enigmax")), (path.join(imagedir, "usr/bin/enigma2")))
