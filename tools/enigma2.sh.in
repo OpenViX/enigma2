@@ -17,7 +17,7 @@ fi
 
 if [ -e /proc/stb/info/boxtype ]; then
 	stbcheck=`cat /proc/stb/info/boxtype`
-	if [ $stbcheck == "viper4k" ] || [ $stbcheck == "sf8008" ] || [ $stbcheck == "sf8008m" ] || [ $stbcheck == "beyonwizv2" ] || [ $stbcheck == "ustym4kpro" ] || [ $stbcheck == "cc1" ] || [ $stbcheck == "gbmv200" ] ; then
+	if [ $stbcheck == "viper4k" ] || [ $stbcheck == "sf8008" ] || [ $stbcheck == "sf8008m" ] || [ $stbcheck == "sx988" ] || [ $stbcheck == "sfx6008" ] || [ $stbcheck == "beyonwizv2" ] || [ $stbcheck == "ustym4kpro" ] || [ $stbcheck == "cc1" ] || [ $stbcheck == "gbmv200" ]; then
 		count=`ps -ef |grep libreader |grep -v "grep" |wc -l`
 		if [ 0 == $count ];then
 			libreader 720P_50
@@ -307,7 +307,7 @@ fi
 if [ "$ret" -ne "1" ]; then
 	if [ -e /proc/stb/info/boxtype ]; then
 		stbcheck=`cat /proc/stb/info/boxtype`
-		if [ $stbcheck == "viper4k" ] || [ $stbcheck == "sf8008" ] || [ $stbcheck == "sf8008m" ] || [ $stbcheck == "beyonwizv2" ] || [ $stbcheck == "gbmv200" ] ; then
+		if [ $stbcheck == "viper4k" ] || [ $stbcheck == "sf8008" ] || [ $stbcheck == "sf8008m" ] || [ $stbcheck == "sx988" ] || [ $stbcheck == "sfx6008" ] || [ $stbcheck == "beyonwizv2" ] || [ $stbcheck == "ustym4kpro" ] || [ $stbcheck == "gbmv200" ]; then
 			killall -9 libreader; sleep 5
 		fi
 	fi
@@ -347,13 +347,18 @@ case $ret in
 		/sbin/reboot
 		;;
 	16)
-		if [ -e /dev/block/by-name/bootoptions ]; then
+		if [ -e /dev/block/by-name/flag ]; then
+			echo -n "0" > /dev/block/by-name/flag
+		elif [ -e /dev/block/by-name/bootoptions ]; then
 			mkdir -p /tmp/bootoptions
 			mount /dev/block/by-name/bootoptions /tmp/bootoptions
 			cp -f /tmp/bootoptions/STARTUP_RECOVERY /tmp/bootoptions/STARTUP_ONCE
+		elif [ -e /boot/STARTUP_RECOVERY ]; then
+			cp -f /boot/STARTUP_RECOVERY /boot/STARTUP_ONCE
 		else
 			echo "rescue" > /proc/stb/fp/boot_mode
 		fi
+		[[ -e /etc/enigma2/.deep ]] && rm /etc/enigma2/.deep
 		/sbin/reboot
 		;;
 	42)
