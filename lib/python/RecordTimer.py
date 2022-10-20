@@ -1477,7 +1477,7 @@ class RecordTimer(Timer):
 		self.saveTimer()
 
 	def cleanup(self):
-		removed_timers = [entry for entry in self.processed_timers if not not entry.disabled]
+		removed_timers = [entry for entry in self.processed_timers if not entry.disabled]
 		Timer.cleanup(self)
 		for entry in removed_timers:
 			for f in self.onTimerRemoved:
