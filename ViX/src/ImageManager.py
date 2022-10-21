@@ -779,9 +779,9 @@ class ImageBackup(Screen):
 			slot = SystemInfo["MultiBootSlot"]
 			self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
 			if SystemInfo["HasMultibootMTD"]:
-				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"]
+				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"]	# sfx60xx ubi0:ubifs not mtd=
 			else:					
-			    self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
+				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
 			if SystemInfo["HasRootSubdir"]:
 				self.ROOTFSSUBDIR = SystemInfo["canMultiBoot"][slot]["rootsubdir"]
 		else:
@@ -989,6 +989,7 @@ class ImageBackup(Screen):
 		self.ConsoleB.ePopen(self.command, self.Stage1Complete)
 
 	def Stage1Complete(self, result, retval, extra_args=None):
+#		print("[ImageManager][Stage1Complete]: result, retval", result, retval)
 		if retval == 0:
 			self.Stage1Completed = True
 			print("[ImageManager] Stage1: Complete.")
@@ -1004,7 +1005,7 @@ class ImageBackup(Screen):
 				JFFS2OPTIONS = " --disable-compressor=lzo --eraseblock=0x20000 -n -l"
 			self.commands.append("mount --bind / %s/root" % self.TMPDIR)
 			self.commands.append("mkfs.jffs2 --root=%s/root --faketime --output=%s/rootfs.jffs2 %s" % (self.TMPDIR, self.WORKDIR, JFFS2OPTIONS))
-		elif "ubi" in self.ROOTFSTYPE.split():
+		elif "ubi" in self.ROOTFSTYPE.split() and self.ROOTFSTYPE != "octagonubi":
 			print("[ImageManager] Stage2: UBIFS Detected.")
 			self.ROOTFSTYPE = "ubifs"
 			with open("%s/ubinize.cfg" % self.WORKDIR, "w") as output:
