@@ -464,7 +464,7 @@ class VIXImageManager(Screen):
 				if SystemInfo["HasMultibootMTD"]:
 					self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"]				
 				else:
-				    self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"].split("/")[2]
+					self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"].split("/")[2]
 			if self.sel:
 				if config.imagemanager.autosettingsbackup.value:
 					self.doSettingsBackup()
@@ -1055,7 +1055,7 @@ class ImageBackup(Screen):
 				if SystemInfo["HasMultibootMTD"]:
 					self.commands.append("mount -t ubifs %s %s/root" % (self.MTDROOTFS, self.TMPDIR))	
 				else:		
-				    self.commands.append("mount /dev/%s %s/root" % (self.MTDROOTFS, self.TMPDIR))
+					self.commands.append("mount /dev/%s %s/root" % (self.MTDROOTFS, self.TMPDIR))
 			else:
 				self.commands.append("mount --bind / %s/root" % self.TMPDIR)
 			if SystemInfo["HasRootSubdir"]:
