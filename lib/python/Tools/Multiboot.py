@@ -20,7 +20,11 @@ def getMountType():
 		return "-t ubifs"
 
 def getparam(line, param):
-	return line.replace("userdataroot", "rootuserdata").rsplit("%s=" % param, 1)[1].split(" ", 1)[0]
+	return line.replace("userdataroot", "rootuserdata").rsplit("%s=" % param, 1)[1].split(" ", 1)[0]	# avoid root= picking up userdataroot
+
+
+def getparam2(line, param):
+	return line.rsplit("%s=" % param, 1)[1].split(" ", 1)[0]											# sfx6008 provide userdataroot	
 
 
 def getMultibootslots():
@@ -37,7 +41,7 @@ def getMultibootslots():
 			if path.isfile(path.join(tmpname, "STARTUP")):
 				SystemInfo["MBbootdevice"] = device
 				device2 = device.rsplit("/", 1)[1]
-				print("[Multiboot] [getMBbootdevices] Bootdevice found: %s" % device2)				
+				print("[Multiboot][[getMultibootslots]1 Bootdevice found: %s" % device2)				
 				BoxInfo.setItem("mtdbootfs", device2)
 				for file in glob.glob(path.join(tmpname, "STARTUP_*")):
 					# print("[multiboot*****] [getMultibootslots0] tmpname = %s" % (tmpname))
@@ -60,16 +64,15 @@ def getMultibootslots():
 									slot["root"] = root
 									slot["startupfile"] = path.basename(file)
 									slot["slotname"] = slotname
+									slot["kernel"] = getparam(line, "kernel")									
 									if "rootsubdir" in line:
 										SystemInfo["HasRootSubdir"] = True
 										# print("[multiboot] [getMultibootslots] HasRootSubdir is set to:%s" % SystemInfo["HasRootSubdir"])
 										slot["rootsubdir"] = getparam(line, "rootsubdir")
 										if "ubi.mtd=" in line:
 											SystemInfo["HasMultibootMTD"] = True
-											slot["kernel"] = "/dev/mtd%s" % line.split("mtd", 1)[1].split(" ", 1)[0]
-											print("[multiboot] [getMultibootslots]7a HasMultibootMTD, kernel", SystemInfo["HasMultibootMTD"], "   ", slot["kernel"])
-										else:
-											slot["kernel"] = getparam(line, "kernel")
+											slot["mtd"] = mtd = getparam2(line, "userdataroot")
+#											print("[multiboot] [getMultibootslots]7a HasMultibootMTD, kernel, root, mtd", SystemInfo["HasMultibootMTD"], "   ", slot["kernel"], "   ", slot["root"], "   ", slot["mtd"])
 									elif "sda" in line:
 										slot["kernel"] = getparam(line, "kernel")	# sf8008 SD card slot pairs same as oldstyle MB
 										slot["rootsubdir"] = None
@@ -78,7 +81,7 @@ def getMultibootslots():
 								break
 						if slot:
 							bootslots[int(slotnumber)] = slot
-			print("[multiboot] [getMultibootslots] Finished bootslots = %s" % bootslots)
+#			print("[multiboot] [getMultibootslots] Finished bootslots = %s" % bootslots)
 			Console(binary=True).ePopen("umount %s" % tmpname)
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
