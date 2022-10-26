@@ -228,6 +228,7 @@ class MovieList(GUIComponent):
 		self.pbarColour = 0x206333
 		self.pbarColourSeen = 0xffc71d
 		self.pbarColourRec = 0xff001d
+		self.pbarColourPlayRec = 0xffc71d
 		self.partIconeShift = None
 		self.spaceRight = 2
 		self.spaceIconeText = 2
@@ -365,6 +366,9 @@ class MovieList(GUIComponent):
 		def pbarColourRec(value):
 			self.pbarColourRec = parseColor(value).argb()
 
+		def pbarColourPlayRec(value):
+			self.pbarColourPlayRec = parseColor(value).argb()
+
 		def partIconeShift(value):
 			self.partIconeShift = parseScale(value)
 
@@ -486,7 +490,7 @@ class MovieList(GUIComponent):
 				elif switch in ('p', 's'):
 					data.part = 100
 					if (self.playInBackground or self.playInForeground) and serviceref == (self.playInBackground or self.playInForeground):
-						data.partcol = self.pbarColourSeen
+						data.partcol = self.pbarColourPlayRec
 					else:
 						data.partcol = self.pbarColourRec
 			elif (self.playInBackground or self.playInForeground) and serviceref == (self.playInBackground or self.playInForeground):
