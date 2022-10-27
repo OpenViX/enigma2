@@ -502,7 +502,7 @@
 		<item level="0" text="Sort" description="Set the default sorting method.">self.cfg.moviesort</item>
 		<item level="0" text="Sort Trash by deletion time" description="Use the deletion time to sort Trash directories. Most recently deleted at the top.">config.usage.trashsort_deltime</item>
 		<item level="0" text="Show extended description" description="Show or hide the extended description, (skin dependant).">self.cfg.description</item>
-		<item level="0" text="Use individual settings for each directory" description="When set, each directory will show the previous state used. When off, the default values will be shown.">config.movielist.settings_per_directory</item>]
+		<item level="0" text="Use individual settings for each directory" description="When set, each directory will show the previous state used. When off, the default values will be shown.">config.movielist.settings_per_directory</item>
 		<item level="0" text="Permanent sort key changes" description="When set, sort changes via the sort key will be permanent. When unset, sort changes will be temporary - just for this view of a directory." requires="!config.movielist.settings_per_directory">config.movielist.perm_sort_changes</item>
 		<item level="0" text="Stop service on return to movie list" description="Stop previous broadcasted service on return to movie list.">config.movielist.stop_service</item>
 		<item level="0" text="Show status icons in movie list" description="Shows the watched status of the movie.">config.usage.show_icons_in_movielist</item>
