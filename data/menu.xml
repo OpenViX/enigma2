@@ -99,7 +99,7 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 			<item entryID="channelselection_setup" level="0" text="Channel Selection" weight="2"><setup id="channelselection" /></item>
 			<item entryID="skin_setup" level="0" text="Skin Selection" weight="3"><screen module="SkinSelector" screen="SkinSelector" /></item>
 			<menu entryID="osd_setup" level="0" text="On Screen Display" weight="4" requires="OsdMenu">
-				<id val="osd_menu" />	
+				<id val="osd_menu" />
 				<item entryID="osd3dsetup" level="2" text="3D Setup" requires="CanChange3DOsd"><screen module="UserInterfacePositioner" screen="OSD3DSetupScreen" /></item>
 				<item entryID="osdsetup" level="2" text="OSD Position" requires="OsdSetup"><screen module="UserInterfacePositioner" screen="UserInterfacePositioner" /></item>
 			</menu>
@@ -159,7 +159,7 @@ self.session.open(SABnzbdSetupScreen)
 
 		<!-- Menu / Setup / SoftcamScript -->
 		<item entryID="softcam_initD" level="0" text="Softcam Script" weight="9" requires="HasInitCam"><screen module="SoftcamScript" screen="SoftcamScript"/></item>
-		
+
 		<!-- Menu / Setup / Storage -->
 		<menu entryID="hardisk_selection" level="0" text="Storage" weight="10" requires="Harddisk">
 			<id val="harddisk" />
