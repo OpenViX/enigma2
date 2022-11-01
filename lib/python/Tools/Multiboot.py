@@ -68,8 +68,8 @@ def getMultibootslots():
 									slot["root"] = root
 									slot["startupfile"] = path.basename(file)
 									slot["slotname"] = slotname
-									slot["kernel"] = getparam(line, "kernel")
 									if "rootsubdir" in line:
+										slot["kernel"] = getparam(line, "kernel")
 										SystemInfo["HasRootSubdir"] = True
 										slot["rootsubdir"] = getparam(line, "rootsubdir")
 										if "ubi.mtd=" in line:
