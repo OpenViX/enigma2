@@ -832,6 +832,7 @@
 		<key id="KEY_DOWN" mapto="down" flags="m" />
 		<key id="KEY_VIDEO" mapto="movieList" flags="m" />
 		<key id="KEY_FILE" mapto="movieList" flags="m" />
+		<key id="KEY_PVR" mapto="movieList" flags="m" />
 	</map>
 
 	<map context="MoviePlayerActions">
