@@ -2413,7 +2413,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 		if deletedList:
 			path2 = path + ".del"
-			if offline is None and ospath.isdir(path2):		# directory not deleted by eraser and .del added to path name
+			if offline is None and os.path.isdir(path2):		# directory not deleted by eraser and .del added to path name
 				shutil.rmtree(path2) 
 			self["list"].removeServices(deletedList)
 			deletedCount = len(deletedList)
