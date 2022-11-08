@@ -3,7 +3,6 @@ import glob
 import shutil
 import subprocess
 import tempfile
-
 from os import mkdir, path, rmdir, rename, remove, sep, stat
 
 from boxbranding import getMachineBuild, getMachineMtdRoot
@@ -103,22 +102,6 @@ def GetCurrentImage():
 			for slot in list(SystemInfo["canMultiBoot"].keys()):
 				if SystemInfo["canMultiBoot"][slot]["root"] == root:
 					return slot
-
-
-def GetCurrentKern():
-	if SystemInfo["HasRootSubdir"]:
-		if SystemInfo["HasMultibootMTD"]:
-			return SystemInfo["HasRootSubdir"] and (int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()[:-1].split("kernel=/dev/mtd")[1].split(" ")[0]))
-		else:
-			return SystemInfo["HasRootSubdir"] and (int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()[:-1].split("kernel=/dev/mmcblk0p")[1].split(" ")[0]))
-
-
-def GetCurrentRoot():
-	if SystemInfo["HasRootSubdir"]:
-		if SystemInfo["HasMultibootMTD"]:
-			return SystemInfo["HasRootSubdir"] and (int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()[:-1].split("ubi.mtd=")[1].split(" ")[0]))
-		else:
-			return SystemInfo["HasRootSubdir"] and (int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()[:-1].split("root=/dev/mmcblk0p")[1].split(" ")[0]))
 
 
 def GetCurrentImageMode():
