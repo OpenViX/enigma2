@@ -323,8 +323,8 @@ class RestoreWizard(WizardLanguage, Rc):
 							devmounts = []
 							files = []
 							self.plugfile = self.plugfiles[3]
-							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
-								if media != "autofs" or "net":
+							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media)) and path.exists("/media/%s/%s" % (media, self.plugfile))]:							
+								if media not in ("autofs", "net"):
 									devmounts.append(dir)
 							if len(devmounts):
 								for x in devmounts:
