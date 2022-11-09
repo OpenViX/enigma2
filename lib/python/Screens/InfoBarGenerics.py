@@ -3493,6 +3493,21 @@ class InfoBarAudioSelection:
 			Notifications.AddPopup(text=message, type=MessageBox.TYPE_INFO, timeout=5, id="DDdownmixToggle")
 
 
+class InfoBarVideoSetup:
+	def __init__(self):
+		if SystemInfo["hasDuplicateVideoAndPvrButtons"]:
+			self["VideoSetupAction"] = HelpableActionMap(self, "InfoBarVideoSetupActions",
+				{
+					"videoSetup": (self.videoSetup, _("Video settings...")),
+				}, prio=-10, description=_("Video settings options"))
+
+	def videoSetup(self):
+		from Screens.VideoMode import VideoSetup
+		self.session.openWithCallback(self.videoSetupDone, VideoSetup)
+
+	def videoSetupDone(self, ret=None):
+		print("[InfoBarGenerics][videoSetupDone] %s" % ret)
+
 class InfoBarSubserviceSelection:
 	def __init__(self):
 		self["SubserviceSelectionAction"] = HelpableActionMap(self, "InfobarSubserviceSelectionActions",

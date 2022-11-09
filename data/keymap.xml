@@ -575,7 +575,7 @@
 	</map>
 
 	<map context="InfobarActions">
-		<key id="KEY_VIDEO" mapto="showMovies" flags="b" />
+		<key id="KEY_VIDEO" mapto="showMovies" flags="m" />
 		<key id="KEY_RADIO" mapto="showRadio" flags="b" />
 		<key id="KEY_RADIO" mapto="openBouquetList" flags="l" />
 		<key id="KEY_TV" mapto="showTv" flags="b" />
@@ -609,6 +609,10 @@
 	<map context="InfobarAudioSelectionActions">
 		<key id="KEY_AUDIO" mapto="audioSelection" flags="b" />
 		<key id="KEY_AUDIO" mapto="audioSelectionLong" flags="l" />
+	</map>
+
+	<map context="InfoBarVideoSetupActions">
+		<key id="KEY_VIDEO" mapto="videoSetup" flags="m" />
 	</map>
 
 	<map context="InfobarSubtitleSelectionActions">
