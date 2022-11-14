@@ -214,6 +214,7 @@ def InitUsageConfig():
 			config.usage.timeshift_path.value = savedValue
 	config.usage.timeshift_path.save()
 	config.usage.allowed_timeshift_paths = ConfigLocations(default=[resolveFilename(SCOPE_TIMESHIFT)])
+	config.usage.timeshift_skipreturntolive = ConfigYesNo(default=False)
 
 	config.usage.trashsort_deltime = ConfigSelection(default="no", choices=[
 		("no", _("no")),

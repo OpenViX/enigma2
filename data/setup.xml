@@ -329,6 +329,7 @@
 		<item level="2" text="Timeshift-save action on zap" description="Select if timeshift should continue when set to record.">config.timeshift.favoriteSaveAction</item>
 		<item level="2" text="Stop timeshift while recording?" description="Stops timeshift being used if a recording is in progress. (Advisable for USB sticks)">config.timeshift.stopwhilerecording</item>
 		<item level="2" text="Use timeshift seekbar while timeshifting?" description="If set to 'yes', allows you to use the seekbar to jump to a point within the event.">config.timeshift.showinfobar</item>
+		<item level="2" text="Skip jumping to live TV while timeshifting with plugins" description="If set to 'yes', allows you to use timeshift with alternative audio plugins.">config.usage.timeshift_skipreturntolive</item>
 	</setup>
 	<setup key="epgchannel" title="Channel EPG">
 		<item level="2" text="Sort list by" description="You can have the list sorted by time or alphanumerical.">config.epgselection.sort</item>
