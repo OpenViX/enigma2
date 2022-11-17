@@ -1,15 +1,126 @@
 from os import listdir
+from os.path import join as pathjoin
 from boxbranding import getBoxType, getBrandOEM, getDisplayType, getHaveAVJACK, getHaveHDMIinFHD, getHaveHDMIinHD, getHaveRCA, getHaveSCART, getHaveSCARTYUV, getHaveYUV, getImageType, getMachineBrand, getMachineBuild, getMachineMtdRoot, getMachineName
 from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager
 
 from Components.About import getChipSetString
 from Components.RcModel import rc_model
-from Tools.BoxConfig import BoxConfig
-from Tools.Directories import fileCheck, fileExists, fileHas, pathExists
+from Tools.Directories import fileCheck, fileExists, fileHas, pathExists, resolveFilename, SCOPE_LIBDIR, fileReadLines
 from Tools.HardwareInfo import HardwareInfo
 
 SystemInfo = {}
-SystemInfo["BoxInfo"] = BoxConfig()
+
+
+class BoxInformation:
+	def __init__(self, root=""):
+		self.immutableList = []
+		self.boxInfo = {}
+		file = root + pathjoin(resolveFilename(SCOPE_LIBDIR), "enigma.info")
+		self.boxInfo["overrideactive"] = False # not currently used by us
+		lines = fileReadLines(file)
+		if lines:
+			for line in lines:
+				if line.startswith("#") or line.strip() == "" or line.strip().lower().startswith("checksum") or "=" not in line:
+					continue
+				item, value = [x.strip() for x in line.split("=", 1)]
+				if item:
+					self.immutableList.append(item)
+					self.boxInfo[item] = self.processValue(value)
+			# print("[SystemInfo] Enigma information file data loaded into BoxInfo.")	
+		else:
+			print("[BoxInfo] ERROR: %s is not available!  The system is unlikely to boot or operate correctly." % file)
+
+	def processValue(self, value):
+		if value is None:
+			pass
+		elif value.startswith("\"") or value.startswith("'") and value.endswith(value[0]):
+			value = value[1:-1]
+		elif value.startswith("(") and value.endswith(")"):
+			data = []
+			for item in [x.strip() for x in value[1:-1].split(",")]:
+				data.append(self.processValue(item))
+			value = tuple(data)
+		elif value.startswith("[") and value.endswith("]"):
+			data = []
+			for item in [x.strip() for x in value[1:-1].split(",")]:
+				data.append(self.processValue(item))
+			value = list(data)
+		elif value.upper() == "NONE":
+			value = None
+		elif value.upper() in ("FALSE", "NO", "OFF", "DISABLED"):
+			value = False
+		elif value.upper() in ("TRUE", "YES", "ON", "ENABLED"):
+			value = True
+		elif value.isdigit() or (value[0:1] == "-" and value[1:].isdigit()):
+			value = int(value)
+		elif value.startswith("0x") or value.startswith("0X"):
+			value = int(value, 16)
+		elif value.startswith("0o") or value.startswith("0O"):
+			value = int(value, 8)
+		elif value.startswith("0b") or value.startswith("0B"):
+			value = int(value, 2)
+		else:
+			try:
+				value = float(value)
+			except ValueError:
+				pass
+		return value
+
+	def getEnigmaInfoList(self):
+		return sorted(self.immutableList)
+
+	def getEnigmaConfList(self): # not used by us
+		return []
+
+	def getItemsList(self):
+		return sorted(list(self.boxInfo.keys()))
+
+	def getItem(self, item, default=None):
+		if item in self.boxInfo:
+			value = self.boxInfo[item]
+		elif item in SystemInfo:
+			value = SystemInfo[item]
+		else:
+			value = default
+		return value
+
+	def setItem(self, item, value, immutable=False):
+		if item in self.immutableList:
+			print("[BoxInfo] Error: Item '%s' is immutable and can not be %s!" % (item, "changed" if item in self.boxInfo else "added"))
+			return False
+		if immutable and item not in self.immutableList:
+			self.immutableList.append(item)
+		self.boxInfo[item] = value
+		SystemInfo[item] = value
+		return True
+
+	def deleteItem(self, item):
+		if item in self.immutableList:
+			print("[BoxInfo] Error: Item '%s' is immutable and can not be deleted!" % item)
+		elif item in self.boxInfo:
+			del self.boxInfo[item]
+			return True
+		return False
+
+
+BoxInfo = BoxInformation()
+
+
+ARCHITECTURE = BoxInfo.getItem("architecture")
+BRAND = BoxInfo.getItem("brand")
+MODEL = BoxInfo.getItem("model")
+SOC_FAMILY = BoxInfo.getItem("socfamily")
+DISPLAYTYPE = BoxInfo.getItem("displaytype")
+MTDROOTFS = BoxInfo.getItem("mtdrootfs")
+DISPLAYMODEL = BoxInfo.getItem("displaymodel")
+DISPLAYBRAND = BoxInfo.getItem("displaybrand")
+MACHINEBUILD = BoxInfo.getItem("machinebuild")
+
+
+def getBoxDisplayName():  # This function returns a tuple like ("BRANDNAME", "BOXNAME")
+	return (DISPLAYBRAND, DISPLAYMODEL)
+
+
 SystemInfo["HasRootSubdir"] = False	# This needs to be here so it can be reset by getMultibootslots!
 SystemInfo["RecoveryMode"] = False	# This needs to be here so it can be reset by getMultibootslots!
 SystemInfo["HasMultibootMTD"] = False # This needs to be here so it can be reset by getMultibootslots!

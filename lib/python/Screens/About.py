@@ -13,7 +13,7 @@ from Components.NimManager import nimmanager
 from Components.Pixmap import MultiPixmap
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, BoxInfo
 from Screens.GitCommitInfo import CommitInfo
 from Screens.Screen import Screen, ScreenSummary
 from Screens.SoftwareUpdate import UpdatePlugin
@@ -63,9 +63,7 @@ class About(Screen):
 
 		AboutText += _("CPU:\t%s %s %s\n") % (about.getCPUArch(), about.getCPUSpeedString(), about.getCpuCoresString())
 
-		if SystemInfo["BoxInfo"]:
-			BoxInfo = SystemInfo["BoxInfo"]
-			AboutText += _("SoC:\t%s\n") % BoxInfo.getItem("socfamily").upper()
+		AboutText += _("SoC:\t%s\n") % BoxInfo.getItem("socfamily").upper()
 
 		tempinfo = ""
 		if path.exists("/proc/stb/sensors/temp0/value"):
@@ -104,10 +102,9 @@ class About(Screen):
 			imageSubBuild = ".%s" % getImageDevBuild()
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
 
-		if SystemInfo["BoxInfo"]:
-			BoxInfo = SystemInfo["BoxInfo"]
-			if BoxInfo.getItem("mtdbootfs") != "" and " " not in BoxInfo.getItem("mtdbootfs"):
-				AboutText += _("Boot Device:\t%s\n") % BoxInfo.getItem("mtdbootfs")
+		if BoxInfo.getItem("mtdbootfs") != "" and " " not in BoxInfo.getItem("mtdbootfs"):
+			AboutText += _("Boot Device:\t%s\n") % BoxInfo.getItem("mtdbootfs")
+
 		if SystemInfo["HasH9SD"]:
 			if "rootfstype=ext4" in open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read():
 				part = "        - SD card in use for Image root \n"
