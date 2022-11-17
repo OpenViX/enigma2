@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-01 23:15+0000\n"
-"PO-Revision-Date: 2022-10-09 15:39+0200\n"
+"POT-Creation-Date: 2022-11-16 07:38+0000\n"
+"PO-Revision-Date: 2022-11-17 15:25+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 
 #, python-format
 msgid ""
@@ -1702,6 +1702,9 @@ msgstr "AC3 transcoding"
 msgid "ACQUIRING TSID/ONID"
 msgstr "VERKRIJGT TSID/ONID"
 
+msgid "AFL"
+msgstr ""
+
 msgid "AFP"
 msgstr "AFP"
 
@@ -1723,6 +1726,9 @@ msgstr "ATSC provider"
 #, python-format
 msgid "AV aspect is %s."
 msgstr "AV aspect is %s."
+
+msgid "Abenteuer"
+msgstr "Avontuur"
 
 msgid "Abort"
 msgstr "Afbreken"
@@ -1747,6 +1753,9 @@ msgstr "Toegang tot extensies"
 
 msgid "Accesspoint:"
 msgstr "Toegangspunt:"
+
+msgid "Action"
+msgstr "Actie"
 
 msgid "Activate"
 msgstr "Activeer"
@@ -1922,11 +1931,20 @@ msgstr "Aanvullende motoropties opent een submenu waar u de mogelijk hebt specif
 msgid "Address"
 msgstr "Adres"
 
+msgid "Adel"
+msgstr "Adel"
+
 msgid "Adjust the color settings so that all the color shades are distinguishable, but appear as saturated as possible. If you are happy with the result, press OK to close the video fine-tuning, or use the number keys to select other test screens."
 msgstr "Wijzig de kleuren zodanig dat alle tinten te onderscheiden, maar wel zo verzadigd mogelijk zijn. Zodra het resultaat u bevalt, drukt u op \"OK\" om dit menu af te sluiten of u selecteert met de nummertoetsen een ander testscherm."
 
+msgid "Adult"
+msgstr "Volwassen"
+
 msgid "Adult Audience, Strong Violence 15+"
 msgstr "Geweld, 15+"
+
+msgid "Adult Movie"
+msgstr "Adult movie"
 
 msgid "Advance EPG to the following date and time"
 msgstr "Ga in de EPG naar de volgende datum/tijd"
@@ -1949,11 +1967,20 @@ msgstr "Geavanceerde software plugin"
 msgid "Advanced video enhancement setup"
 msgstr "Geavanceerde videoverbeteringsinstellingen"
 
+msgid "Adventure"
+msgstr "Avontuur"
+
+msgid "Advertisement"
+msgstr "Reclame"
+
 msgid "Afghanistan"
 msgstr "Afghanistan"
 
 msgid "After event"
 msgstr "Na opname"
+
+msgid "Agenten"
+msgstr "Agenten"
 
 msgid "Aland Islands"
 msgstr "Aland Islands"
@@ -2114,8 +2141,14 @@ msgstr "Selecteer altijd OK"
 msgid "Always show bouquets"
 msgstr "Toon altijd favorieten"
 
+msgid "American Football"
+msgstr "Amerikaans footbaal"
+
 msgid "American Samoa"
 msgstr "American Samoa"
+
+msgid "American Sports"
+msgstr "Amerikaanse sporten"
 
 msgid "An empty filename is illegal."
 msgstr "Een lege bestandsnaam is ongeldig."
@@ -2138,11 +2171,23 @@ msgstr "Angola"
 msgid "Anguilla"
 msgstr "Anguilla"
 
+msgid "Animals"
+msgstr "Dieren"
+
+msgid "Animated Movie"
+msgstr "Animatie film"
+
+msgid "Animation"
+msgstr "Animatie"
+
 msgid "Animation Speed"
 msgstr "Animatiesnelheid"
 
 msgid "Animations"
 msgstr "Animatie"
+
+msgid "Anime"
+msgstr "Anime"
 
 msgid "Antarctica"
 msgstr "Antarctica"
@@ -2155,6 +2200,9 @@ msgstr "Elke activiteit"
 
 msgid "Arabic"
 msgstr "Arabisch"
+
+msgid "Architektur"
+msgstr "Architectuur"
 
 msgid "Are You Sure ?"
 msgstr "Weet u het zeker?"
@@ -2267,6 +2315,9 @@ msgstr "Armenia"
 msgid "Artist"
 msgstr "Artiest"
 
+msgid "Arts & Culture"
+msgstr "Kunst & Cultuur"
+
 msgid "Arts/Culture"
 msgstr "Kunst/Cultuur"
 
@@ -2275,6 +2326,9 @@ msgstr "Kunst/Cultuur (zonder muziek, algemeen)"
 
 msgid "Aruba"
 msgstr "Aruba"
+
+msgid "Arzt"
+msgstr "Arts"
 
 msgid "Ask user"
 msgstr "Vraag gebruiker"
@@ -2299,6 +2353,9 @@ msgstr "Toegewezen zenders/providers:"
 
 msgid "At End:"
 msgstr "Aan het einde:"
+
+msgid "Athletics"
+msgstr "Atletiek"
 
 msgid "Attention, this is repeated timer!\n"
 msgstr "Let op: dit is een herhalende timer!\n"
@@ -2449,6 +2506,9 @@ msgstr "Schakel automatisch externe ondertitels in"
 msgid "Automatically update Client/Server View?"
 msgstr "Automatisch Klant/Server overzicht updaten??"
 
+msgid "Automobil"
+msgstr "Auto"
+
 msgid "Autostart"
 msgstr "Autostart"
 
@@ -2475,6 +2535,9 @@ msgstr "Azerbaijan"
 
 msgid "B"
 msgstr "B"
+
+msgid "B-Movie"
+msgstr "B-film"
 
 #, python-format
 msgid "BC%d"
@@ -2522,11 +2585,17 @@ msgstr "Back-up manager"
 msgid "Backup system settings"
 msgstr "Back-up uw instellingen"
 
+msgid "Badminton"
+msgstr "Badminton"
+
 msgid "Bahamas"
 msgstr "Bahamas"
 
 msgid "Bahrain"
 msgstr "Bahrain"
+
+msgid "Ballet"
+msgstr "Ballet"
 
 msgid "Band"
 msgstr "Band"
@@ -2543,8 +2612,14 @@ msgstr "Barbados"
 msgid "Base time"
 msgstr "Basis timer"
 
+msgid "Baseball"
+msgstr "Basketbal"
+
 msgid "Basic functions"
 msgstr "Basis functies"
+
+msgid "Basketball"
+msgstr "Basketbal"
 
 msgid "Basque"
 msgstr "Baskisch"
@@ -2588,14 +2663,32 @@ msgstr "Belize"
 msgid "Benin"
 msgstr "Benin"
 
+msgid "Bericht"
+msgstr "Bericht"
+
 msgid "Bermuda"
 msgstr "Bermuda"
+
+msgid "Berufe"
+msgstr "Beroep"
+
+msgid "Beziehung"
+msgstr "Betrekking"
 
 msgid "Bhutan"
 msgstr "Bhutan"
 
 msgid "Big PiP"
 msgstr "Audio-PiP"
+
+msgid "Bildung"
+msgstr "Opleiding"
+
+msgid "Biografie"
+msgstr "Biografie"
+
+msgid "Biography"
+msgstr "Biografie"
 
 msgid "Bitrate:"
 msgstr "Bitrate:"
@@ -2639,6 +2732,9 @@ msgstr "Lang-blauw"
 msgid "Bolivia (Plurinational State of)"
 msgstr "Bolivia (Plurinational State of)"
 
+msgid "Bollywood"
+msgstr "Bollywood"
+
 msgid "Bonaire, Sint Eustatius and Saba"
 msgstr "Bonaire, Sint Eustatius and Saba"
 
@@ -2668,11 +2764,20 @@ msgstr "Bosnia and Herzegovina"
 msgid "Botswana"
 msgstr "Botswana"
 
+msgid "Boulevard"
+msgstr "Boulevard"
+
 msgid "Bouquet List"
 msgstr "Favorietenlijst"
 
 msgid "Bouvet Island"
 msgstr "Bouvet Island"
+
+msgid "Boxen"
+msgstr "Boksen"
+
+msgid "Boxing"
+msgstr "Boksen"
 
 msgid "Brazil"
 msgstr "Brazil"
@@ -2739,6 +2844,9 @@ msgstr "Burundi"
 
 msgid "Bus: "
 msgstr "Bus: "
+
+msgid "Business & Finance"
+msgstr "Zaken & financiën"
 
 msgid "Button Setup"
 msgstr "Toetsinstellingen"
@@ -2881,6 +2989,9 @@ msgstr "Berekening gereed"
 msgid "Calibrate"
 msgstr "Kalibreer"
 
+msgid "Call-in"
+msgstr "Inbellen"
+
 msgid "Cambodia"
 msgstr "Cambodia"
 
@@ -2965,8 +3076,17 @@ msgstr "Kaarten: 0"
 msgid "Cardserial"
 msgstr "Kaart serie"
 
+msgid "Cartoon"
+msgstr "Tekenfilm"
+
+msgid "Cartoons"
+msgstr "Cartoons"
+
 msgid "Cascade PiP"
 msgstr "Waterval PiP"
+
+msgid "Casting"
+msgstr "Casting"
 
 msgid "Cayman Islands"
 msgstr "Cayman Islands"
@@ -2988,6 +3108,9 @@ msgstr "Ch- toets"
 
 msgid "Chad"
 msgstr "Chad"
+
+msgid "Challenge"
+msgstr "Uitdaging"
 
 msgid "Change PIN"
 msgstr "Wijzig pincode"
@@ -3135,6 +3258,9 @@ msgstr ""
 msgid "Children"
 msgstr "Jeugd"
 
+msgid "Children/Youth"
+msgstr "Kinderen/Jeugd"
+
 msgid "Children/Youth/Education/Science"
 msgstr "Kinderen/Jeugd/Opleiding/Wetenschap"
 
@@ -3265,6 +3391,12 @@ msgstr "Kies tussen opname en zap."
 msgid "Christmas Island"
 msgstr "Christmas Island"
 
+msgid "Chronik"
+msgstr "Kroniek"
+
+msgid "Cinema"
+msgstr "Cinema"
+
 msgid "Circular LNB"
 msgstr "Circulaire LNB"
 
@@ -3273,6 +3405,9 @@ msgstr "Circulair links"
 
 msgid "Circular right"
 msgstr "Circulair rechts"
+
+msgid "Classical Music"
+msgstr "Klassieke muziek"
 
 msgid "Clean network trash cans"
 msgstr "Maak prullenbakken in het netwerk leeg"
@@ -3353,6 +3488,9 @@ msgstr "Kleurformaat"
 msgid "Color space"
 msgstr "Kleurruimte"
 
+msgid "Combat Sports (without own category)"
+msgstr "Vechtsporten (zonder eigen categorie) "
+
 msgid "Combined"
 msgstr "Gecombineerd"
 
@@ -3361,6 +3499,9 @@ msgstr "Combo"
 
 msgid "Comedy"
 msgstr "Komedie"
+
+msgid "Comic"
+msgstr "Grappig"
 
 msgid "Command order"
 msgstr "Commando volgorde"
@@ -3403,6 +3544,9 @@ msgstr "Complex (mixen audio sporen en aspecten)"
 
 msgid "Composition of the recording filenames"
 msgstr "Samenstelling van de opname bestandsnamen"
+
+msgid "Computer"
+msgstr "Computer"
 
 msgid "Config Scan Details"
 msgstr "Configureer scan details"
@@ -3802,6 +3946,9 @@ msgstr "Converteert ext3 naar ext4...."
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
+msgid "Cooking"
+msgstr "Koken"
+
 msgid "Copy"
 msgstr "Kopieer"
 
@@ -3936,6 +4083,12 @@ msgstr "Creëert bestandssysteem."
 msgid "Creating partition."
 msgstr "Creëert partitie."
 
+msgid "Cricket"
+msgstr "Cricket"
+
+msgid "Crime"
+msgstr "Misdaad"
+
 msgid "Croatia"
 msgstr "Croatia"
 
@@ -3950,6 +4103,12 @@ msgstr "Cron timers"
 
 msgid "Cuba"
 msgstr "Cuba"
+
+msgid "Cult"
+msgstr "Cult"
+
+msgid "Culture"
+msgstr "Cultuur"
 
 msgid "Curacao"
 msgstr "Curacao"
@@ -4021,6 +4180,9 @@ msgstr "Cutlist editor..."
 msgid "Cycle through infobar displays"
 msgstr "Blader door de verschillende weergaves van de infobar"
 
+msgid "Cycling"
+msgstr "Fietsen"
+
 msgid "Cyprus"
 msgstr "Cyprus"
 
@@ -4058,6 +4220,9 @@ msgstr ""
 "\n"
 "Indien u een \"Ingeschakeld\" melding ziet:\n"
 "- controleer dan of u wel een correct werkende DHCP-server in uw netwerk heeft."
+
+msgid "DIY"
+msgstr "DHZ"
 
 msgid "DLNA support"
 msgstr "DLNA support"
@@ -4129,8 +4294,14 @@ msgstr "DvD-titellijst"
 msgid "Daily"
 msgstr "Dagelijks"
 
+msgid "Dance"
+msgstr "Dans"
+
 msgid "Danish"
 msgstr "Deens"
+
+msgid "Darts"
+msgstr "Dart"
 
 msgid "Date"
 msgstr "Datum"
@@ -4140,6 +4311,9 @@ msgstr "Datum eerst"
 
 msgid "Date style"
 msgstr "Datumstijl"
+
+msgid "Dating"
+msgstr "Datering"
 
 msgid "Day D Mon"
 msgstr "Dag D ma"
@@ -4281,6 +4455,9 @@ msgstr "Dagnaam jaar/MM/DD"
 
 msgid "De-select"
 msgstr "Deselecteer"
+
+msgid "Debate"
+msgstr "Debat"
 
 msgid "Debug Logs"
 msgstr "Debug logs"
@@ -4517,6 +4694,12 @@ msgstr "Gedetecteerde media:"
 msgid "Detected tuners:"
 msgstr "Gedetecteerde tuners:"
 
+msgid "Detective"
+msgstr "Detective"
+
+msgid "Detektiv"
+msgstr "Detective"
+
 msgid "Device"
 msgstr "Adapter"
 
@@ -4635,6 +4818,9 @@ msgstr "Verplaatsmodus deactiveren"
 
 msgid "Disabled"
 msgstr "Gedeactiveerd"
+
+msgid "Discussion"
+msgstr "Discussie"
 
 msgid "Disk space to reserve for recordings (in GB)"
 msgstr "Reserveer schijfruimte voor opnames (in GB)"
@@ -4827,6 +5013,9 @@ msgstr "Wilt u een upgrade van het volgende pakket:\n"
 msgid "Documentary"
 msgstr "Dcumentaire"
 
+msgid "Dokumentation"
+msgstr "Documentatie"
+
 #, python-format
 msgid "Dolby Digital downmix is now %s"
 msgstr "Dolby Digital downmix is nu %s"
@@ -4898,6 +5087,9 @@ msgstr "Drivers:\t%s\n"
 #, python-format
 msgid "Drivers: %s"
 msgstr "Drivers: %s"
+
+msgid "Drogen"
+msgstr "Drugs"
 
 msgid "Drop unconfigured satellites"
 msgstr "Verwijder niet geconfigureerde satellieten"
@@ -4997,6 +5189,9 @@ msgstr "Oost"
 msgid "East limit set"
 msgstr "Oostelijke limiet instellen"
 
+msgid "Eastern"
+msgstr "Oostelijk"
+
 msgid "Ecm Info"
 msgstr "ECM Info"
 
@@ -5014,6 +5209,9 @@ msgstr "ECM laatste"
 
 msgid "Ecm:"
 msgstr "Ecm:"
+
+msgid "Economics"
+msgstr "Economie"
 
 msgid "Ecuador"
 msgstr "Ecuador"
@@ -5059,11 +5257,20 @@ msgstr "Wijzig titel"
 msgid "Edit upgrade source url."
 msgstr "Upgrade url bewerken."
 
+msgid "Education"
+msgstr "Opleiding"
+
 msgid "Education/Information"
 msgstr "Onderwijs/Informatie"
 
+msgid "Education/Science/Factual"
+msgstr "Onderwijs/Wetenschap/Feiten"
+
 msgid "Egypt"
 msgstr "Egypt"
+
+msgid "Einzelsportart"
+msgstr "Individuele sport"
 
 msgid "El Salvador"
 msgstr "El Salvador"
@@ -5249,6 +5456,9 @@ msgstr "Favorietenlijst bewerken beeindigen"
 msgid "End time"
 msgstr "Eindtijd"
 
+msgid "Energie"
+msgstr "Energie"
+
 msgid "English"
 msgstr "Engels"
 
@@ -5346,11 +5556,17 @@ msgstr "Ontspanning"
 msgid "Entitlements"
 msgstr "Rechten"
 
+msgid "Environment"
+msgstr "Milieu"
+
 msgid "Epg/Guide"
 msgstr "Epg/Guide"
 
 msgid "Epg/Guide long"
 msgstr "Epg/Guide lang"
+
+msgid "Epos"
+msgstr "Epos"
 
 msgid "Equal to"
 msgstr "Gelijk aan"
@@ -5358,8 +5574,14 @@ msgstr "Gelijk aan"
 msgid "Equatorial Guinea"
 msgstr "Equatorial Guinea"
 
+msgid "Equestrian"
+msgstr "Ruitersport"
+
 msgid "Eritrea"
 msgstr "Eritrea"
+
+msgid "Erotik"
+msgstr "Erotiek"
 
 msgid "Error"
 msgstr "Fout"
@@ -5385,6 +5607,12 @@ msgstr ""
 "Fout: %s\n"
 "Opnieuw proberen?"
 
+msgid "Esoterik"
+msgstr "Esotorisch"
+
+msgid "Essen"
+msgstr "Eten"
+
 msgid "Estonia"
 msgstr "Estonia"
 
@@ -5396,6 +5624,9 @@ msgstr "Ethernet netwerkinterface"
 
 msgid "Ethiopia"
 msgstr "Ethiopia"
+
+msgid "Event"
+msgstr "Gebeurtenis"
 
 msgid "Event Info"
 msgstr "Programma Info"
@@ -5564,6 +5795,12 @@ msgstr "Externe van stroom voorzien"
 msgid "Extra motor options"
 msgstr "Extra motor opties"
 
+msgid "Extreme"
+msgstr "Extreem"
+
+msgid "Extremsport"
+msgstr "Extreme sport"
+
 msgid "Extrude from left"
 msgstr "Groei vanaf links"
 
@@ -5671,6 +5908,9 @@ msgstr "Fabrieksinstellingen"
 msgid "Factory Reset: Clearing data"
 msgstr "Fabrieksinstellingen: verwijdert gegevens"
 
+msgid "Factual Topics"
+msgstr "Feitelijkheden"
+
 msgid "Fade the infobar when hiding"
 msgstr "Vervaag de infobar als die verborgen wordt"
 
@@ -5704,10 +5944,19 @@ msgstr "Fallback remote-ontvanger URL"
 msgid "False"
 msgstr "Niet waar"
 
+msgid "Familie"
+msgstr "Familie"
+
+msgid "Family"
+msgstr "Familie"
+
 #
 #, python-format
 msgid "Fan %d"
 msgstr "Ventilator %d"
+
+msgid "Fantasy"
+msgstr "Fantasie"
 
 msgid "Faroe Islands"
 msgstr "Faroe Islands"
@@ -5783,6 +6032,12 @@ msgstr "Bestandnaam"
 msgid "Filesystem Check"
 msgstr "Bestandssysteemcontrole"
 
+msgid "Film"
+msgstr "Film"
+
+msgid "Film-Noir"
+msgstr "Film-Noir"
+
 msgid "Final position at"
 msgstr "Eindpositie op"
 
@@ -5791,6 +6046,9 @@ msgstr "Eindpositie op index"
 
 msgid "Final scroll delay"
 msgstr "Scrollvertraging"
+
+msgid "Finance"
+msgstr "Financieel"
 
 msgid "Fine movement"
 msgstr "Fijn bewegen"
@@ -5813,6 +6071,12 @@ msgstr "Fins"
 msgid "FirstPage"
 msgstr "Eerste pagina"
 
+msgid "Fishing"
+msgstr "Vissen"
+
+msgid "Fitness & Health"
+msgstr "Fitness & Gezondheid"
+
 msgid "Fix CEC address setting, default is 1.0.0.0"
 msgstr "Fix CEC adresinstelling, default is 1.0.0.0"
 
@@ -5822,11 +6086,29 @@ msgstr "Vast"
 msgid "Flashing"
 msgstr "Bezig met flashen"
 
+msgid "Folk"
+msgstr "Volk"
+
+msgid "Folkloric"
+msgstr "Folklore"
+
 msgid "Following tasks will be done after you press OK!"
 msgstr "Nadat u op OK drukt worden de volgende taken uitgevoerd!"
 
 msgid "Font size"
 msgstr "Lettergrootte"
+
+msgid "Food/Wine"
+msgstr "Eten/Wijn"
+
+msgid "Football"
+msgstr "Voetbal/Rugby"
+
+msgid "Football - Club"
+msgstr "Voetbalclub"
+
+msgid "Football - International"
+msgstr "Voetbal - Internationaal"
 
 msgid "Force de-interlace"
 msgstr "Forceer de-interlace"
@@ -5843,6 +6125,9 @@ msgstr "Geef volume opdrachten door"
 msgid "Format"
 msgstr "Formaat"
 
+msgid "Formula One"
+msgstr "Formule 1"
+
 msgid "Forward volume keys"
 msgstr "Geef volume opdrachten door"
 
@@ -5851,6 +6136,9 @@ msgstr "Framegrootte in vol beeld"
 
 msgid "France"
 msgstr "France"
+
+msgid "Frauen"
+msgstr "Vrouwen"
 
 msgid "Free To Air"
 msgstr "FTA"
@@ -5936,6 +6224,12 @@ msgstr "Volledig doorzichtig"
 msgid "Full view resolution"
 msgstr "Vol scherm resolutie"
 
+msgid "Fußball"
+msgstr "Voetbal"
+
+msgid "Für Kinder"
+msgstr "Voor kinderen"
+
 msgid "GB"
 msgstr "GB"
 
@@ -5966,8 +6260,26 @@ msgstr "GUI instellingen"
 msgid "Gabon"
 msgstr "Gabon"
 
+msgid "Gaelic Football"
+msgstr "Gaelic Football"
+
+msgid "Gaelic Games"
+msgstr "Gaelic Games"
+
 msgid "Gambia"
 msgstr "Gambia"
+
+msgid "Game Show"
+msgstr "Show/Spelshow"
+
+msgid "Gangster"
+msgstr "Gangster"
+
+msgid "Gardening"
+msgstr "Tuinieren"
+
+msgid "Garten"
+msgstr "Tuin"
 
 msgid "Gateway"
 msgstr "Gateway"
@@ -5978,11 +6290,38 @@ msgstr "Algemeen"
 msgid "General AC3 delay"
 msgstr "Algemene AC3 vertraging"
 
+msgid "General Arts"
+msgstr "Algemeen kunst"
+
 msgid "General Bluetooth Audio delay"
 msgstr "Algemene Bluetooth audio vertraging"
 
+msgid "General Children's"
+msgstr "Algemeen jeugd"
+
+msgid "General Education"
+msgstr "Algemeen onderwijs"
+
+msgid "General Movie"
+msgstr "Algemeen film"
+
+msgid "General Music"
+msgstr "Algemeen muziek"
+
+msgid "General News"
+msgstr "Algemeen nieuws"
+
 msgid "General PCM delay"
 msgstr "Algemene PCM vertraging"
+
+msgid "General Show"
+msgstr "Algemeen show"
+
+msgid "General Social"
+msgstr "Algemeen sociaal"
+
+msgid "General Sports"
+msgstr "Algemene sporten"
 
 msgid "Generic"
 msgstr "Algemeen"
@@ -6007,6 +6346,15 @@ msgstr "Duits"
 
 msgid "Germany"
 msgstr "Duitsland"
+
+msgid "Geschichte"
+msgstr "Verhalen"
+
+msgid "Gesellschaft"
+msgstr "Gezelschap"
+
+msgid "Gesundheit"
+msgstr "Gezondheid"
 
 msgid "Getting Event Info failed!"
 msgstr "Geen programma-info gevonden!"
@@ -6070,6 +6418,9 @@ msgstr "Ga naar boven in de lijst"
 
 msgid "Gold"
 msgstr "Goud"
+
+msgid "Golf"
+msgstr "Golf"
 
 msgid "Goto"
 msgstr "Ga naar"
@@ -6157,6 +6508,9 @@ msgstr "Guinea-Bissau"
 
 msgid "Guyana"
 msgstr "Guyana"
+
+msgid "Gymnastics"
+msgstr "Gymnastiek"
 
 msgid "H7/H9/H9COMBO/H10 new Model"
 msgstr "H7/H9/H9COMBO/H10 nieuw model"
@@ -6257,6 +6611,9 @@ msgstr "HLG ondersteuning"
 msgid "Haiti"
 msgstr "Haiti"
 
+msgid "Handball"
+msgstr "Handbal"
+
 msgid "Handle standby from TV"
 msgstr "Verwerk stand-by van TV"
 
@@ -6272,6 +6629,9 @@ msgstr "Harde schijf instellingen"
 msgid "HbbTV"
 msgstr "HbbTV"
 
+msgid "Health & Fitness"
+msgstr "Gezondheid & Fitness"
+
 msgid "Heard Island and McDonald Islands"
 msgstr "Heard Island and McDonald Islands"
 
@@ -6280,6 +6640,12 @@ msgstr "Hebreeuws"
 
 msgid "Height"
 msgstr "Hoogte"
+
+msgid "Heimat"
+msgstr "Vaderland"
+
+msgid "Heimwerker"
+msgstr "Thuiswerker"
 
 msgid "Help"
 msgstr "Help"
@@ -6344,6 +6710,12 @@ msgstr "Hoge bitrate ondersteuning"
 msgid "Highlight current events"
 msgstr "Markeer actuele programma's"
 
+msgid "Historical"
+msgstr "Histories"
+
+msgid "History"
+msgstr "Geschiedenis"
+
 msgid "History Prev/Next"
 msgstr "Historie vorige/volgende"
 
@@ -6361,6 +6733,12 @@ msgstr "Geschiedenis toetsfunctie"
 
 msgid "History next"
 msgstr "Historie volgende"
+
+msgid "Hobbys"
+msgstr "Hobby's"
+
+msgid "Hockey"
+msgstr "Hockey"
 
 msgid "Hold screen"
 msgstr "Hold screen"
@@ -6391,6 +6769,15 @@ msgstr "Horizontaal"
 
 msgid "Horizontal turning speed"
 msgstr "Horizontale draaisnelheid"
+
+msgid "Horror"
+msgstr "Horror"
+
+msgid "Horse Racing"
+msgstr "Paarderacen"
+
+msgid "Horse racing"
+msgstr "Paarderacen"
 
 msgid "Host domain"
 msgstr "Host domain"
@@ -6506,6 +6893,12 @@ msgstr "ISO betand is te groot voor dit bestandsysteem!"
 
 msgid "ISO path"
 msgstr "ISO pad"
+
+msgid "Ice Hockey"
+msgstr "Ijshockey"
+
+msgid "Ice Skating"
+msgstr "Schaatsen"
 
 msgid "Iceland"
 msgstr "Iceland"
@@ -6699,6 +7092,9 @@ msgstr "Vergroot eindtijd"
 msgid "Increment start time"
 msgstr "Vergroot starttijd"
 
+msgid "Independent"
+msgstr "Onafhankelijk"
+
 msgid "Index allocated:"
 msgstr "Index toegewezen:"
 
@@ -6885,11 +7281,20 @@ msgstr "Tussenliggend"
 msgid "Internal"
 msgstr "Intern"
 
+msgid "International"
+msgstr "Internationaal"
+
+msgid "International News"
+msgstr "Internationaal News"
+
 msgid "Internet"
 msgstr "Internet"
 
 msgid "Interval between keys when repeating:"
 msgstr "Interval tussen de opdrachten indien herhaald:"
+
+msgid "Interview"
+msgstr "Interview"
 
 msgid "Invalid"
 msgstr "Ongeldig"
@@ -6961,6 +7366,9 @@ msgstr "Jamaica"
 msgid "Japan"
 msgstr "Japan"
 
+msgid "Jazz"
+msgstr "Jazz"
+
 msgid "Jersey"
 msgstr "Jersey"
 
@@ -6969,6 +7377,9 @@ msgstr "Taken"
 
 msgid "Jordan"
 msgstr "Jordan"
+
+msgid "Jugend"
+msgstr "Jeugd"
 
 msgid "Jump first press in channel selection"
 msgstr "Springt is kanaallijst als eerste"
@@ -7012,8 +7423,17 @@ msgstr "Alleen schalen"
 msgid "Just zap"
 msgstr "Alleen zappen"
 
+msgid "Justiz"
+msgstr "Justitie"
+
 msgid "KA-SAT"
 msgstr "KA-SAT"
+
+msgid "Kampfsport"
+msgstr "Vechtsport"
+
+msgid "Katastrophe"
+msgstr "Catastrofe"
 
 msgid "Kazakhstan"
 msgstr "Kazakhstan"
@@ -7056,14 +7476,47 @@ msgstr "Toetsenbord indeling"
 msgid "Keyboard settings"
 msgstr "Toetsenbord instellingen"
 
+msgid "Kinder"
+msgstr "Kinderen"
+
 msgid "Kiribati"
 msgstr "Kiribati"
+
+msgid "Klassiker"
+msgstr "Klassieker"
+
+msgid "Kneipensport"
+msgstr "Kroegsport"
+
+msgid "Komödie"
+msgstr "Komedie"
 
 msgid "Korea (Democratic People's Republic of)"
 msgstr "Korea (Democratic People's Republic of)"
 
 msgid "Korea (Republic of)"
 msgstr "Korea (Republic of)"
+
+msgid "Kraftsport"
+msgstr "Krachtsport"
+
+msgid "Krieg"
+msgstr "Oorlog"
+
+msgid "Krimi"
+msgstr "Thriller"
+
+msgid "Kriminalität"
+msgstr "Criminaliteit"
+
+msgid "Kultur"
+msgstr "Cultuur"
+
+msgid "Kunst"
+msgstr "Kunst"
+
+msgid "Kurzfilm"
+msgstr "Korte film"
 
 msgid "Kuwait"
 msgstr "Kuwait"
@@ -7110,6 +7563,9 @@ msgstr "LED helderheid tijdens stand-by."
 msgid "LNB"
 msgstr "LNB"
 
+msgid "Landestypisch"
+msgstr "Typisch voor het land"
+
 msgid "Language"
 msgstr "Taal"
 
@@ -7145,6 +7601,9 @@ msgstr "Laatst gebruikte share: "
 msgid "LastPage"
 msgstr "Laatste pagina"
 
+msgid "Late Night"
+msgstr "Latenight"
+
 msgctxt "third event: 'third' event label"
 msgid "Later"
 msgstr "Later"
@@ -7176,6 +7635,12 @@ msgstr "Links van kanaalnaam"
 msgid "Left long"
 msgstr "Lang-links"
 
+msgid "Leichtathletik"
+msgstr "Atletiek"
+
+msgid "Leisure hobbies"
+msgstr "Vrijetijd/Hobby's (algemeen)"
+
 msgid "Lesotho"
 msgstr "Lesotho"
 
@@ -7193,6 +7658,9 @@ msgstr "Libya"
 
 msgid "Liechtenstein"
 msgstr "Liechtenstein"
+
+msgid "Lifestyle"
+msgstr "Lifestyle"
 
 msgid "Light Grey"
 msgstr "Lichtgrijs"
@@ -7263,11 +7731,20 @@ msgstr "Luistert naar hotplug gebeurtenissen."
 msgid "Lists reloaded!"
 msgstr "Links zijn herladen!"
 
+msgid "Literatur"
+msgstr "Literatuur"
+
+msgid "Literaturverfilmung"
+msgstr "Literatuur verfilming"
+
 msgid "Lithuania"
 msgstr "Lithuania"
 
 msgid "Lithuanian"
 msgstr "Litouws"
+
+msgid "Live"
+msgstr "Live"
 
 msgid "Load"
 msgstr "Laden"
@@ -7391,6 +7868,9 @@ msgstr "MB"
 msgid "MENU"
 msgstr "MENU"
 
+msgid "MMA"
+msgstr ""
+
 msgid "Macao"
 msgstr "Macao"
 
@@ -7399,6 +7879,9 @@ msgstr "Macedonia (the former Yugoslav Republic of)"
 
 msgid "Madagascar"
 msgstr "Madagascar"
+
+msgid "Magazin"
+msgstr "Magazine"
 
 msgid "Main Menu"
 msgstr "Hoofdmenu"
@@ -7443,6 +7926,9 @@ msgstr "Beheer van extensies"
 msgid "Manage your %s %s's software"
 msgstr "Beheer de software van uw %s %s"
 
+msgid "Mannschaftssport"
+msgstr "Teamsport"
+
 msgid "Manual"
 msgstr "Handmatig"
 
@@ -7475,6 +7961,9 @@ msgstr "Mark/Portal/Playlist"
 
 msgid "Marshall Islands"
 msgstr "Marshall Islands"
+
+msgid "Martial Sports"
+msgstr "Vechtsporten"
 
 msgid "Martinique"
 msgstr "Martinique"
@@ -7533,11 +8022,20 @@ msgstr "Mediaspeler"
 msgid "Media scanner"
 msgstr "Mediascanner"
 
+msgid "Medical"
+msgstr "Medisch"
+
+msgid "Medien"
+msgstr "Media"
+
 msgid "Medium is not a writeable DVD!"
 msgstr "Dit medium is geen beschrijfbare DVD!"
 
 msgid "Medium is not empty!"
 msgstr "Medium is niet leeg!"
+
+msgid "Melodrama"
+msgstr "Melodrama"
 
 msgid "Memory"
 msgstr "Geheugen"
@@ -7576,6 +8074,9 @@ msgstr "Mexico"
 msgid "Micronesia (Federated States of)"
 msgstr "Micronesia (Federated States of)"
 
+msgid "Mini Series"
+msgstr "Mini series"
+
 msgid "MiniDLNA"
 msgstr "MiniDLNA"
 
@@ -7594,6 +8095,9 @@ msgstr "Minimum leeftijd %d jaar"
 
 msgid "Minimum send interval"
 msgstr "Minimum zendinterval"
+
+msgid "Minority Sports"
+msgstr "Minderheden sporten"
 
 msgid "Mins"
 msgstr "Min"
@@ -7634,6 +8138,9 @@ msgstr "Model: "
 #, python-format
 msgid "Model: %s %s\n"
 msgstr "Model:\t%s %s\n"
+
+msgid "Modern Dance"
+msgstr "Moderne dans"
 
 msgid "Modes"
 msgstr "Modi"
@@ -7677,11 +8184,23 @@ msgstr "Morocco"
 msgid "Mosquito noise reduction"
 msgstr "Mosquito ruisonderdrukking"
 
+msgid "Motor Sport"
+msgstr "Motorsport"
+
 msgid "Motor command retries"
 msgstr "Herhalingen motoropdrachten"
 
 msgid "Motor running timeout"
 msgstr "Rotor time-out"
+
+msgid "Motorcycling"
+msgstr "Motorrijden"
+
+msgid "Motoring"
+msgstr "Autorijden"
+
+msgid "Motorsport"
+msgstr "Motorsport"
 
 msgid "Mount."
 msgstr "Mount."
@@ -7832,6 +8351,9 @@ msgstr "Filmspeler"
 msgid "Movie selection"
 msgstr "Opname selecteren"
 
+msgid "Movie/Drama"
+msgstr "Film/Drama"
+
 msgid "Movielist menu"
 msgstr "Opnamelijstmenu"
 
@@ -7880,14 +8402,29 @@ msgstr "Multisat alle geselecteerd"
 msgid "Multistream"
 msgstr "Multistream"
 
+msgid "Murder"
+msgstr "Moord"
+
 msgid "Music"
 msgstr "Muziek"
 
 msgid "Music/Ballet/Dance"
 msgstr "Muziek/Ballet/Dans"
 
+msgid "Musical"
+msgstr "Musical"
+
+msgid "Musik"
+msgstr "Muziek"
+
 msgid "Myanmar"
 msgstr "Myanmar"
+
+msgid "Mystery"
+msgstr "Mysterie"
+
+msgid "Märchen"
+msgstr "Sprookje"
 
 msgid "N"
 msgstr "N"
@@ -7935,6 +8472,9 @@ msgstr "NTP sync interval"
 msgid "NTSC"
 msgstr "NTSC"
 
+msgid "Nachrichten"
+msgstr "Nieuwsberichten"
+
 msgid "Name"
 msgstr "Naam"
 
@@ -7980,6 +8520,18 @@ msgstr "Namibia"
 msgid "Narration"
 msgstr "Beschrijving"
 
+msgid "National"
+msgstr "Nationaal"
+
+msgid "National News"
+msgstr "Nationaal nieuws"
+
+msgid "Natur"
+msgstr "Natuur"
+
+msgid "Nature"
+msgstr "Natuur"
+
 msgid "Nauru"
 msgstr "Nauru"
 
@@ -7988,6 +8540,9 @@ msgstr "Navigatie"
 
 msgid "Nepal"
 msgstr "Nepal"
+
+msgid "Netball"
+msgstr "Netball"
 
 msgid "Netherlands"
 msgstr "Nederland"
@@ -8049,6 +8604,9 @@ msgstr "Netwerk-wizard"
 msgid "Network:"
 msgstr "Netwerk:"
 
+msgid "Neue Medien"
+msgstr "Nieuwe media"
+
 msgid "New"
 msgstr "Nieuw"
 
@@ -8069,6 +8627,12 @@ msgstr "Nieuwe versie:"
 
 msgid "News"
 msgstr "Nieuws"
+
+msgid "News Magazine"
+msgstr "Nieuwsmagazine"
+
+msgid "News/Current Affairs"
+msgstr "Nieuws/Actualiteiten"
 
 msgid "News/Current Affairs/Social"
 msgstr "Nieuws/Actualiteiten/Sociaal"
@@ -8421,6 +8985,12 @@ msgstr "Uit"
 msgid "Offline decode delay (ms)"
 msgstr "Offline decodeer vertraging (ms)"
 
+msgid "Olympia"
+msgstr "Olympiade"
+
+msgid "Olympics"
+msgstr "Olympische spelen"
+
 msgid "Oman"
 msgstr "Oman"
 
@@ -8564,6 +9134,9 @@ msgstr "Open-VPN instellingen"
 msgid "OpentvZapper"
 msgstr "OpentvZapper"
 
+msgid "Opera"
+msgstr "Opera"
+
 msgid "Orbital position"
 msgstr "Orbitale positie"
 
@@ -8581,6 +9154,9 @@ msgstr "Oscam/Ncam draait niet - start Cam om informatie te verkrijgen."
 
 msgid "Other"
 msgstr "Anders"
+
+msgid "Outdoor"
+msgstr "Buiten"
 
 msgid "Output"
 msgstr "Output"
@@ -8702,6 +9278,9 @@ msgstr "Paniek naar"
 msgid "Papua New Guinea"
 msgstr "Papua New Guinea"
 
+msgid "Parabel"
+msgstr "Parabel"
+
 msgid "Paraguay"
 msgstr "Paraguay"
 
@@ -8716,6 +9295,12 @@ msgstr "Ouderlijk toezicht aanbevolen"
 
 msgid "Parental control"
 msgstr "Kinderslot"
+
+msgid "Parliament"
+msgstr "Parlement"
+
+msgid "Parodie"
+msgstr "Parodie"
 
 msgid "Passthrough"
 msgstr "Passthrough"
@@ -9197,6 +9782,9 @@ msgstr "Pluginmanager helpfunctie"
 msgid "Plugins"
 msgstr "Applicaties"
 
+msgid "Poker"
+msgstr "Poker"
+
 msgid "Poland"
 msgstr "Poland"
 
@@ -9208,6 +9796,18 @@ msgstr "Polarisatie"
 
 msgid "Polish"
 msgstr "Pools"
+
+msgid "Political Issues"
+msgstr "Politieke zaken"
+
+msgid "Politics"
+msgstr "Politiek"
+
+msgid "Politik"
+msgstr "Politiek"
+
+msgid "Pop"
+msgstr "Pop"
 
 msgid "Popup"
 msgstr "Popup"
@@ -9229,6 +9829,9 @@ msgstr "Poort D"
 
 msgid "Port:"
 msgstr "Poort:"
+
+msgid "Porträt"
+msgstr "Portret"
 
 msgid "Portugal"
 msgstr "Portugal"
@@ -9319,6 +9922,9 @@ msgstr "PowerControl frontpaneel stand-by modus"
 
 msgid "PowerControl FrontDisplay Suspend Mode"
 msgstr "PowerControl frontpaneel inactieve modus"
+
+msgid "Powerboating"
+msgstr "Motorboot varen"
 
 msgid "Predefined"
 msgstr "Vooringesteld"
@@ -9505,6 +10111,9 @@ msgstr "Voortgangsbalk links"
 msgid "Progress bar right"
 msgstr "Voortgangsbalk rechts"
 
+msgid "Prominent"
+msgstr "Prominent"
+
 msgid "Properties of current title"
 msgstr "Instellingen van huidige titel"
 
@@ -9577,8 +10186,17 @@ msgstr "Providers:"
 msgid "Providers: "
 msgstr "Providers: "
 
+msgid "Psychologie"
+msgstr "Psychologie"
+
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
+
+msgid "Puppentrick"
+msgstr "Poppentruc"
+
+msgid "Puppets"
+msgstr "Poppen"
 
 msgid "Purge deleted user bouquets"
 msgstr "Verwijder de verwijderde favorietenlijsten definitief"
@@ -9620,6 +10238,9 @@ msgstr "Snelzap"
 msgid "Quit Movie Player with EXIT button"
 msgstr "Speler kan verlaten worden met de Exit-toets"
 
+msgid "Quiz"
+msgstr "Quiz"
+
 msgid "RAM"
 msgstr "RAM"
 
@@ -9649,6 +10270,12 @@ msgstr "Radio"
 
 msgid "Radio Channel Selection"
 msgstr "Radio zenderkeuze"
+
+msgid "Radsport"
+msgstr "wielersport"
+
+msgid "Rallying"
+msgstr "Racen"
 
 msgid "Random"
 msgstr "Willekeurig"
@@ -9689,6 +10316,15 @@ msgstr "Gereed om \"%s\" te installeren?"
 #, python-format
 msgid "Ready to remove \"%s\" ?"
 msgstr "Gereed om \"%s\" te verwijderen?"
+
+msgid "Real Life"
+msgstr "Echte leven"
+
+msgid "Reality"
+msgstr "Realiteit"
+
+msgid "Reality Show"
+msgstr "Realityshow"
 
 msgid "Really close without saving settings?"
 msgstr "Afsluiten zonder opslaan?"
@@ -9866,6 +10502,18 @@ msgstr "Beschouw deep stand-by als stand-by"
 msgid "Region"
 msgstr "Regio"
 
+msgid "Regional"
+msgstr "Regionaal"
+
+msgid "Regional News"
+msgstr "Regionaal nieuws"
+
+msgid "Reisen"
+msgstr "Reizen"
+
+msgid "Reiten"
+msgstr "Rijden"
+
 msgid "Relative"
 msgstr "Relatief"
 
@@ -9874,6 +10522,9 @@ msgstr "Release notes"
 
 msgid "Relevant PIDs routing"
 msgstr "Relevante PIDs routering"
+
+msgid "Religion"
+msgstr "Religie"
 
 msgid "Reload"
 msgstr "Herlaad"
@@ -10060,6 +10711,9 @@ msgstr "Hernoem in:"
 msgid "Renamed %s!"
 msgstr "Hernoemd in %s!"
 
+msgid "Renovation"
+msgstr "Renovatie"
+
 msgid "Repeat"
 msgstr "Herhaal"
 
@@ -10086,6 +10740,9 @@ msgstr "Herhalingen"
 
 msgid "Replace `- ` in dialogs with colored text per speaker (like teletext subtitles for the hearing impaired)"
 msgstr "Vervang `- ` in dialogen met gekleurde tekst per spreker (zoals teletekst ondertitels voor slecht horenden)"
+
+msgid "Reportage"
+msgstr "Reportage"
 
 msgid "Request for physical address report"
 msgstr "Verzoek TV fysiek adres te rapporteren"
@@ -10217,6 +10874,9 @@ msgstr "Omgekeerde favorietenknoppen"
 msgid "Reverse list"
 msgstr "Keer lijst om"
 
+msgid "Revue"
+msgstr "Revue"
+
 msgid "Rewind"
 msgstr "Terug spoelen"
 
@@ -10235,14 +10895,23 @@ msgstr "Rechts van kanaalnaam"
 msgid "Right long"
 msgstr "Lang-rechts"
 
+msgid "Rock"
+msgstr "Rock"
+
 msgid "Roll-off"
 msgstr "Roll-off"
+
+msgid "Romance"
+msgstr "Romantiek"
 
 msgid "Romania"
 msgstr "Romania"
 
 msgid "Romanian"
 msgstr "Roemeens"
+
+msgid "Romantik"
+msgstr "Romantiek"
 
 msgid "Root"
 msgstr "Root"
@@ -10261,6 +10930,27 @@ msgstr "Rotor: "
 
 msgid "Routing request"
 msgstr "Verzoek tot routing"
+
+msgid "Rowing"
+msgstr "Roeien"
+
+msgid "Rugby"
+msgstr "Rugby"
+
+msgid "Rugby League"
+msgstr "Rugby League"
+
+msgid "Rugby League - Domestic"
+msgstr "Rugby League - Binnenlands"
+
+msgid "Rugby League - International"
+msgstr "Rugby League - Internationaal"
+
+msgid "Rugby Union - Domestic"
+msgstr "Rugby Union - Binnenlands"
+
+msgid "Rugby Union - International"
+msgstr "Rugby Union - Internationaal"
 
 msgid "Run how often ?"
 msgstr "Hoe vaak uitvoeren?"
@@ -10319,6 +11009,12 @@ msgstr "SSA-bestand"
 
 msgid "SSID:"
 msgstr "SSID:"
+
+msgid "Saga"
+msgstr "Sage"
+
+msgid "Sailing"
+msgstr "Zeilen"
 
 msgid "Saint Barthelemy"
 msgstr "Saint Barthelemy"
@@ -10379,6 +11075,9 @@ msgstr "Satelliet positie:"
 
 msgid "Satellites"
 msgstr "Satellieten"
+
+msgid "Satire"
+msgstr "Satiere"
 
 msgid "Sats"
 msgstr "Satellieten"
@@ -10517,6 +11216,21 @@ msgstr "Doorzoekt standaard lamedb gesorteerd op satelliet middels een verbonden
 
 msgid "Schedule EPG and channel list import"
 msgstr "Plan EPG en kanaallijst import"
+
+msgid "Sci-Fi"
+msgstr "Sci-Fi"
+
+msgid "Science"
+msgstr "Wetenschap"
+
+msgid "Science & Tech"
+msgstr "Wetenschap & techniek"
+
+msgid "Science Fiction"
+msgstr "Science Fiction"
+
+msgid "Science-Fiction"
+msgstr "Science-Fiction"
 
 msgid "Screen proportions"
 msgstr "Schermformaat"
@@ -11043,6 +11757,12 @@ msgstr "Serienummer"
 msgid "Serial no"
 msgstr "Serienummer"
 
+msgid "Serie"
+msgstr "Serie"
+
+msgid "Serious Music"
+msgstr "Ernstige muziek"
+
 #, python-format
 msgid "Server Info ( %s-Version: %s )"
 msgstr "Serverinfo (  %s-Versie: %s )"
@@ -11338,6 +12058,12 @@ msgstr "Scherpte"
 
 msgid "Shift"
 msgstr "Shift"
+
+msgid "Shopping"
+msgstr "Winkelen"
+
+msgid "Short Film"
+msgstr "Korte film"
 
 msgid "Short filenames"
 msgstr "Korte naam"
@@ -11746,6 +12472,9 @@ msgstr "Toon waarschuwing als timeshift gestopt wordt"
 msgid "Show/Game Show/Leisure hobbies"
 msgstr "Show/Spel show/Vrije tijd/Hobby's"
 
+msgid "Show/Games show"
+msgstr "Show/Spelshow"
+
 msgid "Show/hide infobar"
 msgstr "Toon/verberg infobar"
 
@@ -11830,11 +12559,20 @@ msgstr "Single step (GOP)"
 msgid "Sint Maarten (Dutch part)"
 msgstr "Sint Maarten (Nederlandse deelt)"
 
+msgid "Sitcom"
+msgstr "Sitcom"
+
 msgid "Site latitude"
 msgstr "Breedtegraad"
 
 msgid "Site longitude"
 msgstr "Lengtegraad"
+
+msgid "Sketches"
+msgstr "Sketches"
+
+msgid "Skiing"
+msgstr "Skiën"
 
 msgid "Skin"
 msgstr "Skin"
@@ -11893,6 +12631,9 @@ msgstr "Sla over, pauzeer, spoel terug en snel vooruit"
 
 msgid "Skip, pause, rewind and fast forward timeshift"
 msgstr "Sla over, pauzeer, spoel terug en snel vooruit timeshift"
+
+msgid "Slapstick"
+msgstr "Slapstick"
 
 msgid "Sleep"
 msgstr "Slaap"
@@ -11974,9 +12715,27 @@ msgstr "Smartcard PIN"
 msgid "Smooth"
 msgstr "Glad"
 
+msgid "Snooker"
+msgstr "Snooker"
+
 #, python-format
 msgid "SoC:\t%s\n"
 msgstr "SoC:\t%s\n"
+
+msgid "Soap"
+msgstr "Soap"
+
+msgid "Soap Opera"
+msgstr "Soapopera"
+
+msgid "Soccer"
+msgstr "Voetbal"
+
+msgid "Social/Political/Economics"
+msgstr "Sociaal/Politiek/Economie"
+
+msgid "Society & Culture"
+msgstr "Samenleving & cultuur"
 
 msgid "Softcam Actions"
 msgstr "Softcam acties"
@@ -12161,6 +12920,12 @@ msgstr "Speciaal 2"
 msgid "Speed:"
 msgstr "Snelheid:"
 
+msgid "Spiele"
+msgstr "Spellen"
+
+msgid "Spielfilm"
+msgstr "Speelfilm"
+
 msgid "Split event detection (minutes)"
 msgstr "Splits programma detectie (minuten)"
 
@@ -12175,6 +12940,12 @@ msgstr "Sport"
 
 msgid "Sports"
 msgstr "Sport"
+
+msgid "Sports Magazines"
+msgstr "sportmagazine"
+
+msgid "Sprache"
+msgstr "Taal"
 
 msgid "Sri Lanka"
 msgstr "Sri Lanka"
@@ -12390,6 +13161,12 @@ msgstr "Strepen"
 msgid "Strongest position"
 msgstr "Sterkste positie"
 
+msgid "Strongman Contests"
+msgstr "Sterke man wedstrijd"
+
+msgid "Stumm"
+msgstr "Stom"
+
 msgid "Subnet"
 msgstr "Subnet"
 
@@ -12511,6 +13288,9 @@ msgstr "Sweden"
 
 msgid "Swedish"
 msgstr "Zweeds"
+
+msgid "Swimming"
+msgstr "Zwemmen"
 
 msgid "Switch"
 msgstr "Wissel"
@@ -12656,6 +13436,9 @@ msgstr "TV physiek adres rapporteren"
 msgid "TXT PID"
 msgstr "TXT PID"
 
+msgid "Table Tennis"
+msgstr "Tafeltennis"
+
 msgid "Table of contents for collection"
 msgstr "Inhoudslijst voor verzameling"
 
@@ -12668,11 +13451,26 @@ msgstr "Taiwan"
 msgid "Tajikistan"
 msgstr "Tajikistan"
 
+msgid "Talk"
+msgstr "Gesprek"
+
+msgid "Talk Show"
+msgstr "Talkshow"
+
+msgid "Tanz"
+msgstr "Dans"
+
 msgid "Tanzania, United Republic of"
 msgstr "Tanzania, United Republic of"
 
 msgid "Task warning on shutdown"
 msgstr "Waarschuwing actieve taken bij afsluiten"
+
+msgid "Technik"
+msgstr "Techniek"
+
+msgid "Technology"
+msgstr "Technologie"
 
 msgid "Teletext"
 msgstr "Teletext"
@@ -12697,6 +13495,9 @@ msgstr "Telnetinterface"
 
 msgid "Telnet port"
 msgstr "Telnetpoort"
+
+msgid "Tennis"
+msgstr "Tennis"
 
 msgid "Terrestrial"
 msgstr "Aards"
@@ -12909,6 +13710,9 @@ msgstr "De wizard kan uw huidige settings opslaan. Wilt u nu een back-up maken?"
 
 msgid "The wizard is finished now."
 msgstr "De wizard is nu gereed."
+
+msgid "Theater"
+msgstr "Theater"
 
 msgid "There are at least "
 msgstr "Er zijn ten minste "
@@ -13207,6 +14011,9 @@ msgstr "Drie"
 msgid "Threshold"
 msgstr "Drempelwaarde"
 
+msgid "Thriller"
+msgstr "Thriller"
+
 msgid "Thu"
 msgstr "Do"
 
@@ -13218,6 +14025,9 @@ msgstr "donderdag"
 
 msgid "TiVo support"
 msgstr "TiVo support"
+
+msgid "Tiere"
+msgstr "Dieren"
 
 msgid "Time"
 msgstr "Tijd"
@@ -13467,8 +14277,17 @@ msgstr "Totale swap:"
 msgid "Total:"
 msgstr "Totaal:"
 
+msgid "Tourism"
+msgstr "Tourisme"
+
 msgid "Track"
 msgstr "Spoor"
+
+msgid "Traditional Music"
+msgstr "Traditionele muziek"
+
+msgid "Tragödie"
+msgstr "Tragedie"
 
 msgid "Transcoding: "
 msgstr "Transcoding: "
@@ -13502,6 +14321,12 @@ msgstr "Prullenbak"
 
 msgid "Trashcan:"
 msgstr "Prullenbak:"
+
+msgid "Travel"
+msgstr "Reizen"
+
+msgid "Triathlon"
+msgstr "Triathlon"
 
 msgid "Tries left:"
 msgstr "Aantal resterende pogingen:"
@@ -13671,6 +14496,9 @@ msgstr "Ukraine"
 msgid "Ukrainian"
 msgstr "Ukrainian"
 
+msgid "Umweltbewusstsein"
+msgstr "Milieubewustzijn"
+
 msgid "Unable to change password"
 msgstr "Kan wachtwoord niet veranderen"
 
@@ -13741,6 +14569,21 @@ msgstr "Unmount."
 
 msgid "Unsupported"
 msgstr "Niet ondersteund"
+
+msgid "Unterhaltung"
+msgstr "Onderhouding"
+
+msgid "Unused 0x71"
+msgstr "Ongebruikt 0x71"
+
+msgid "Unused 0x72"
+msgstr "Ongebruikt 0x72"
+
+msgid "Unused 0x80"
+msgstr "Ongebruikt 0x80"
+
+msgid "Unused 0xb2"
+msgstr "Ongebruikt 0xb2"
 
 msgid "Up"
 msgstr "Omhoog"
@@ -13823,6 +14666,9 @@ msgstr "Uptime"
 #, python-format
 msgid "Uptime:\t%s\n"
 msgstr "Uptime:\t%s\n"
+
+msgid "Urban Music"
+msgstr "Stedelijke muziek"
 
 msgid "Uruguay"
 msgstr "Uruguay"
@@ -14000,6 +14846,10 @@ msgstr "Gebruikersinterface"
 msgid "User defined"
 msgstr "Door u ingesteld"
 
+#, python-format
+msgid "User defined 0x%02x"
+msgstr "Door gebruike bepaald 0x%02x"
+
 msgid "User defined transponder"
 msgstr "Door gebruiker bepaalde transponder"
 
@@ -14062,11 +14912,20 @@ msgstr "Voor geldige ONID/TSID kijk op www.lyngsat.com..."
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
+msgid "Variety"
+msgstr "variëteit"
+
 msgid "Various"
 msgstr "Verschillende"
 
 msgid "Venezuela (Bolivarian Republic of)"
 msgstr "Venezuela (Bolivarian Republic of)"
+
+msgid "Verkehr"
+msgstr "Verkeer"
+
+msgid "Verschiedenes"
+msgstr "Divers"
 
 msgid "Version: "
 msgstr "Versie: "
@@ -14129,9 +14988,18 @@ msgstr "Videomodus: %s"
 msgid "Video output"
 msgstr "Video-output"
 
+msgid "Video settings options"
+msgstr "Video instellingen opties"
+
+msgid "Video settings..."
+msgstr "Video instellingen..."
+
 #, python-format
 msgid "Video: %s fps"
 msgstr "Video: %s fps"
+
+msgid "Videoclip"
+msgstr "Videoclip"
 
 msgid "Videocodec, size & format"
 msgstr "Videocodec, grootte & formaat"
@@ -14209,6 +15077,9 @@ msgstr "Bekijk de veranderingen"
 msgid "View video CD..."
 msgstr "Bekijk video CD."
 
+msgid "Violence"
+msgstr "Geweld"
+
 msgid "Virgin Islands (British)"
 msgstr "Virgin Islands (British)"
 
@@ -14227,11 +15098,17 @@ msgstr "Virtueel toetsenbord"
 msgid "Virtuosso Image Xtreme"
 msgstr "Virtuosso Image Xtreme"
 
+msgid "Volleyball"
+msgstr "Volleyball"
+
 msgid "Voltage mode"
 msgstr "Spanningsmodus"
 
 msgid "Volume keys on the receiver remote will control the TV volume."
 msgstr "De volumetoetsen van de AB van de ontvanger zullen het TV-volume regelen."
+
+msgid "Vorschau"
+msgstr "Bezichtiging"
 
 msgid "W"
 msgstr "W"
@@ -14268,6 +15145,9 @@ msgstr "WWW"
 
 msgid "WWW long"
 msgstr "WWW lang"
+
+msgid "Waffen"
+msgstr "Wapen"
 
 msgid "Waiting"
 msgstr "Aan het wachten"
@@ -14311,6 +15191,9 @@ msgstr "Wakeup signaal van TV"
 msgid "Wallis and Futuna"
 msgstr "Wallis and Futuna"
 
+msgid "War"
+msgstr "Oorlog"
+
 msgid "Warning"
 msgstr "Waarschuwing"
 
@@ -14323,11 +15206,20 @@ msgstr "Waarschuwing: geen LNB; gebruikt fabrieksinstellingen."
 msgid "Warning: the second input of this dual tuner may not support SCR LNBs. "
 msgstr "Waarschuwing: de tweede input voor deze dual-tuner ondersteunt mogelijk geen SCR-LNB's."
 
+msgid "Wassersport"
+msgstr "Watersport"
+
 msgid "Watch movies..."
 msgstr "Films afspelen..."
 
 msgid "Watch recordings..."
 msgstr "Opnames afspelen..."
+
+msgid "Water Sport"
+msgstr "Watersporten"
+
+msgid "Weather"
+msgstr "Weer"
 
 msgid "Web Interface"
 msgstr "Webinterface"
@@ -14352,6 +15244,9 @@ msgstr "Wekelijks"
 
 msgid "Weighted position"
 msgstr "Gewogen positie"
+
+msgid "Weightlifting"
+msgstr "Gewichtsheffen"
 
 msgid ""
 "Welcome to OpenViX!\n"
@@ -14410,14 +15305,26 @@ msgstr ""
 "Deze wizard zal u helpen de basisinstellingen voor uw %s %s te maken.\n"
 "Druk op 'OK' voor de volgende stap."
 
+msgid "Werbung"
+msgstr "Reclame"
+
 msgid "West"
 msgstr "West"
 
 msgid "West limit set"
 msgstr "Westelijke limiet instellen"
 
+msgid "Western"
+msgstr "Western"
+
 msgid "Western Sahara"
 msgstr "Western Sahara"
+
+msgid "Wettbewerb"
+msgstr "Concurrentie"
+
+msgid "Wetter"
+msgstr "Natter"
 
 msgid "What action is required on completion of the timer? 'Auto' lets the box return to the state it had when the timer started. 'Do nothing', 'Go to standby' and 'Go to deep standby' do exactly that."
 msgstr "Welke actie is vereist als de timer gereed is? 'Auto' brengt de ontvanger terug in dezelfde status als toen de opname begon. De andere instellingen doen precies wat er staat."
@@ -14629,6 +15536,12 @@ msgstr "Wit"
 msgid "Width"
 msgstr "Breedte"
 
+msgid "Winter Sports"
+msgstr "Wintersporten"
+
+msgid "Wintersport"
+msgstr "Wintersport"
+
 msgid "Wireless LAN"
 msgstr "Draadloze LAN"
 
@@ -14646,6 +15559,12 @@ msgstr "Draadloze netwerkinstellingen."
 
 msgid "Wireless network state"
 msgstr "Status draadloos netwerk"
+
+msgid "Wirtschaft"
+msgstr "Economie"
+
+msgid "Wissenschaft"
+msgstr "Wetenschap"
 
 msgid "With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"
 msgstr "Indien T2MI RAW modus gedeactiveerd is (default), kunnen we de enkele T2MI PLP de-encapsulation gebruiken. Indien T2MI RAW modus geactiveerd is, kunnen we astra-sm gebruiken om T2MI te analyseren"
@@ -14665,6 +15584,9 @@ msgstr "Zonder pop-up"
 #, python-format
 msgid "Would you save the entered PIN %s persistent?"
 msgstr "Wilt u de ingegeven PIN %s blijvend maken?"
+
+msgid "Wrestling"
+msgstr "Worstelen"
 
 msgid "Write error while recording. Disk full?\n"
 msgstr "Schrijffout tijdens opname. Harde schijf vol?\n"
@@ -15061,6 +15983,9 @@ msgstr ""
 "\n"
 "Kies wat u nu wilt doen."
 
+msgid "Youth"
+msgstr "Jeugd"
+
 msgid "Zambia"
 msgstr "Zambia"
 
@@ -15123,6 +16048,9 @@ msgstr "Gezapt naar het timerkanaal %s!"
 msgid "Zaps to EPG download transponder for EPG fetch."
 msgstr "Zapt naar de juiste transponder voor het binnenhalen van de EPG."
 
+msgid "Zeichentrick"
+msgstr "Spotprent"
+
 msgid "Zgemma H.S/H.2S/H.2H/H5"
 msgstr "Zgemma H.S/H.2S/H.2H/H5"
 
@@ -15137,6 +16065,9 @@ msgstr "Zgemma i55"
 
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
+
+msgid "Zirkus"
+msgstr "Circus"
 
 msgid "Zoom"
 msgstr "Zoom"
@@ -16565,9 +17496,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "ECM-Time"
 #~ msgstr "ECM Tijd"
 
-#~ msgid "Education/Science/Factual"
-#~ msgstr "Onderwijs/Wetenschap/Feiten"
-
 #, fuzzy
 #~ msgid "EtPortal"
 #~ msgstr "Portugal"
@@ -16607,17 +17535,8 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "IMDB Search"
 #~ msgstr "IMDb zoeken"
 
-#~ msgid "Internal flash"
-#~ msgstr "Intern geheugen"
-
 #~ msgid "Internal hdd only"
 #~ msgstr "Alleen interne HDD"
-
-#~ msgid "Label"
-#~ msgstr "Label"
-
-#~ msgid "Movie/Drama"
-#~ msgstr "Film/Drama"
 
 #~ msgid "No data received yet"
 #~ msgstr "Nog geen data ontvangen"
@@ -16649,14 +17568,8 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Show /tmp/ecm.info"
 #~ msgstr "Toon /tmp/ecm.info"
 
-#~ msgid "Show/Games show"
-#~ msgstr "Show/Spelshow"
-
 #~ msgid "Skin Setup"
 #~ msgstr "Skin instellingen"
-
-#~ msgid "Social/Political/Economics"
-#~ msgstr "Sociaal/Politiek/Economie"
 
 #~ msgid "Symbolrate:"
 #~ msgstr "Symbolrate:"
