@@ -1,8 +1,8 @@
 diff --git a/configure.ac b/configure.ac
-index 02098df15c..f17a0be0e1 100644
+index e707ec9add..d01adc19f6 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -624,6 +624,8 @@ lib/python/Plugins/SystemPlugins/DefaultServicesScanner/Makefile
+@@ -625,6 +625,8 @@ lib/python/Plugins/SystemPlugins/DefaultServicesScanner/Makefile
  lib/python/Plugins/SystemPlugins/DefaultServicesScanner/meta/Makefile
  lib/python/Plugins/SystemPlugins/DiseqcTester/Makefile
  lib/python/Plugins/SystemPlugins/DiseqcTester/meta/Makefile
@@ -1218,10 +1218,10 @@ index c6c74d7d56..4ee8b3b876 100644
  	std::string getCapabilities();
  };
 diff --git a/lib/dvb/idvb.h b/lib/dvb/idvb.h
-index c4fa24d9e1..74af697277 100644
+index 0e140f9ef7..d6a8994520 100644
 --- a/lib/dvb/idvb.h
 +++ b/lib/dvb/idvb.h
-@@ -697,6 +697,7 @@ public:
+@@ -698,6 +698,7 @@ public:
  	virtual RESULT getCAAdapterID(uint8_t &id)=0;
  	virtual RESULT flush()=0;
  	virtual int openDVR(int flags)=0;
@@ -1229,7 +1229,7 @@ index c4fa24d9e1..74af697277 100644
  };
  
  class iTSMPEGDecoder: public iObject
-@@ -747,6 +748,14 @@ public:
+@@ -748,6 +749,14 @@ public:
  		/** Display any complete data as fast as possible */
  	virtual RESULT setTrickmode()=0;
  
@@ -1404,7 +1404,7 @@ index 3374355b87..8e82ead877 100644
  	};
  
 diff --git a/lib/nav/core.cpp b/lib/nav/core.cpp
-index 22fe033586..bd76cdc7c8 100644
+index 22fe033586..41ea421265 100644
 --- a/lib/nav/core.cpp
 +++ b/lib/nav/core.cpp
 @@ -1,6 +1,7 @@
@@ -1422,7 +1422,7 @@ index 22fe033586..bd76cdc7c8 100644
 -	stopService();
 +	RESULT res = -1;
 +
-+	if (m_fccmgr->tryFCCService(service, m_runningService) == -1)
++	if (! m_fccmgr || m_fccmgr->tryFCCService(service, m_runningService) == -1)
 +	{
 +		stopService();
 +		ASSERT(m_servicehandler);
@@ -1439,7 +1439,7 @@ index 22fe033586..bd76cdc7c8 100644
  		/* kill service. */
  	m_service_event_conn = 0;
 +
-+	m_fccmgr->cleanupFCCService();
++	m_fccmgr && m_fccmgr->cleanupFCCService();
  	return 0;
  }
  
@@ -1489,19 +1489,19 @@ index f00f23faef..13c7b2fa6b 100644
  		return self.instance.atBegin()
  
 diff --git a/lib/python/Components/SystemInfo.py b/lib/python/Components/SystemInfo.py
-index 864a23a153..baf1f3f6c5 100644
+index 130c542f9a..a064653540 100644
 --- a/lib/python/Components/SystemInfo.py
 +++ b/lib/python/Components/SystemInfo.py
-@@ -160,6 +160,7 @@ SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable ha
+@@ -273,6 +273,7 @@ SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable ha
  SystemInfo["FbcTunerPowerAlwaysOn"] = getBoxType() in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse")
  SystemInfo["HasPhysicalLoopthrough"] = ["Vuplus DVB-S NIM(AVL2108)", "GIGA DVB-S2 NIM (Internal)"]
  SystemInfo["HasFBCtuner"] = ["Vuplus DVB-C NIM(BCM3158)", "Vuplus DVB-C NIM(BCM3148)", "Vuplus DVB-S NIM(7376 FBC)", "Vuplus DVB-S NIM(45308X FBC)", "Vuplus DVB-S NIM(45208 FBC)", "DVB-S2 NIM(45208 FBC)", "DVB-S2X NIM(45308X FBC)", "DVB-S2 NIM(45308 FBC)", "DVB-C NIM(3128 FBC)","BCM45208", "BCM45308X", "BCM3158"]
 +SystemInfo["FCCactive"] = False
  SystemInfo["rc_model"] = rc_model.getRcFolder()
  SystemInfo["mapKeyInfoToEpgFunctions"] = SystemInfo["rc_model"] in ("vu", "vu2", "vu3", "vu4") # due to button limitations of the remote control
- SystemInfo["toggleTvRadioButtonEvents"] = SystemInfo["rc_model"] in ("ax4", "beyonwiz1", "beyonwiz2", "gb0", "gb1", "gb2", "gb3", "gb4", "sf8008", "sf8008m", "uniboxhde") # due to button limitations of the remote control
+ SystemInfo["hasDuplicateVideoAndPvrButtons"] = SystemInfo["rc_model"] in ("edision3",) # Allow multiple functions only if both buttons are present
 diff --git a/lib/python/Navigation.py b/lib/python/Navigation.py
-index 3e4b6472aa..b8b37b0742 100644
+index b83bec0615..db38aee8e6 100644
 --- a/lib/python/Navigation.py
 +++ b/lib/python/Navigation.py
 @@ -38,6 +38,7 @@ class Navigation:
@@ -2252,10 +2252,10 @@ index 520b5edc69..6434d7b43e 100644
  	service/servicemp3.h \
  	service/servicemp3record.h \
 diff --git a/lib/service/iservice.h b/lib/service/iservice.h
-index e715513daf..917f3c648a 100644
+index 35fac0afe9..7f2a44367f 100644
 --- a/lib/service/iservice.h
 +++ b/lib/service/iservice.h
-@@ -465,6 +465,7 @@ public:
+@@ -468,6 +468,7 @@ public:
  		syncState,
  		frontendNumber,
  		signalQualitydB,
@@ -2263,7 +2263,7 @@ index e715513daf..917f3c648a 100644
  		frontendStatus,
  		snrValue,
  		frequency,
-@@ -961,6 +962,8 @@ public:
+@@ -964,6 +965,8 @@ public:
  
  		evVideoGammaChanged,
  
@@ -2272,7 +2272,7 @@ index e715513daf..917f3c648a 100644
  		evUser = 0x100
  	};
  };
-@@ -1019,6 +1022,8 @@ public:
+@@ -1022,6 +1025,8 @@ public:
  		evRecordFailed,
  		evRecordWriteError,
  		evNewEventInfo,
