@@ -223,6 +223,7 @@ self.session.open(SABnzbdSetupScreen)
 		<item entryID="network_screen" level="0" text="Network"><screen module="About" screen="SystemNetworkInfo" /></item>
 		<item entryID="service_info_screen" level="1" text="Service"><screen module="ServiceInfo" screen="ServiceInfo" /></item>
 		<item entryID="streaming_clients_info_screen" level="2" text="Streaming Clients"><screen module="StreamingClientsInfo" /></item>
+		<item entryID="boxinfo_screen" level="2" text="BoxInfo"><screen module="AboutBoxInfo" screen="AboutBoxInfo" /></item>
 	</menu>
 
 	<!-- Menu / VCR Scart -->
