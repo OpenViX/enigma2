@@ -33,7 +33,7 @@ class BoxInformation:
 	def processValue(self, value):
 		if value is None:
 			pass
-		elif value.startswith("\"") or value.startswith("'") and value.endswith(value[0]):
+		elif (value.startswith("\"") or value.startswith("'")) and value.endswith(value[0]):
 			value = value[1:-1]
 		elif value.startswith("(") and value.endswith(")"):
 			data = []
