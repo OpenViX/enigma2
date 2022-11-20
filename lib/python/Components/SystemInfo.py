@@ -54,7 +54,7 @@ class BoxInformation:
 			value = False
 		elif value.upper() in ("TRUE", "YES", "ON", "ENABLED"):
 			value = True
-		elif value.isdigit() or (value[0:1] == "-" and value[1:].isdigit()):
+		elif value.isdigit() or ((value[0:1] == "-" or value[0:1] == "+") and value[1:].isdigit()):
 			if value[0] != "0": # if this is zero padded it must be a string, so skip
 				value = int(value)
 		elif value.startswith("0x") or value.startswith("0X"):
