@@ -20,8 +20,8 @@ def getMultibootslots():
 	BoxInfo = BoxInfoRunningInstance
 	tmp.dir = tempfile.mkdtemp(prefix="getMultibootslots")
 	tmpname = tmp.dir
-	for device in ("/dev/block/by-name/bootoptions", "/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/mtdblock2"):
-#		print("[multiboot*****][getMultibootslots]00 device, bootslots", device, "   ", bootslots)
+	for device in ("/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/mtdblock2", "/dev/block/by-name/bootoptions"):
+		print("[multiboot*****][getMultibootslots]00 device, bootslots", device, "   ", bootslots)
 		if len(bootslots) != 0:
 			break
 #		print("[multiboot*****][getMultibootslots]0 device = ", device)
@@ -31,7 +31,7 @@ def getMultibootslots():
 				SystemInfo["MBbootdevice"] = device
 				device2 = device.rsplit("/", 1)[1]
 				print("[Multiboot][[getMultibootslots]1 Bootdevice found: %s" % device2)
-				BoxInfo.setItem("mtdbootfs", device2)
+				BoxInfo.setItem("mtdbootfs", device2, forceOverride=True)				
 				for file in glob.glob(path.join(tmpname, "STARTUP_*")):
 #					print("[multiboot*****] [getMultibootslots]2 tmpname = %s" % (tmpname))
 					if "STARTUP_RECOVERY" in file:
