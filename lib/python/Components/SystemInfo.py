@@ -88,8 +88,8 @@ class BoxInformation:
 			value = default
 		return value
 
-	def setItem(self, item, value, immutable=False):
-		if item in self.immutableList:
+	def setItem(self, item, value, immutable=False, forceOverride=False):
+		if item in self.immutableList and not forceOverride:
 			print("[BoxInfo] Error: Item '%s' is immutable and can not be %s!" % (item, "changed" if item in self.boxInfo else "added"))
 			return False
 		if immutable and item not in self.immutableList:
