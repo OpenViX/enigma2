@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-16 07:38+0000\n"
-"PO-Revision-Date: 2022-11-17 15:25+0100\n"
+"POT-Creation-Date: 2022-11-23 01:28+0000\n"
+"PO-Revision-Date: 2022-11-23 10:45+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1745,6 +1745,9 @@ msgstr "Favorieten bewerken afsluiten"
 msgid "About"
 msgstr "Uw ontvanger"
 
+msgid "AboutBoxInfo"
+msgstr " BoxInfo"
+
 msgid "Accept the current selection"
 msgstr "Accepteer huidige selectie"
 
@@ -2772,6 +2775,9 @@ msgstr "Favorietenlijst"
 
 msgid "Bouvet Island"
 msgstr "Bouvet Island"
+
+msgid "BoxInfo"
+msgstr "Box informatie"
 
 msgid "Boxen"
 msgstr "Boksen"
@@ -6968,6 +6974,9 @@ msgstr "Als u 'ja' kiest, ziet u het kanaal in een klein schermpje in de kanaall
 
 msgid "If set to 'yes', allows you to use the seekbar to jump to a point within the event."
 msgstr "Als u 'ja' kiest, kan de zoekbalk springen naar een punt binnen dit programma."
+
+msgid "If set to 'yes', allows you to use timeshift with alternative audio plugins."
+msgstr "Als u 'ja' kiest, kan timeshift met alternatieve audio plugins gebruikt worden."
 
 msgid "If set to 'yes', the infobar will be displayed when Fast Forwarding or Rewinding during media playback."
 msgstr "Als u 'ja' kiest, wordt de informatiebalk getoond als u snel of langzaam achter- of vooruit spoelt of pauzeert."
@@ -12625,6 +12634,9 @@ msgstr "Spring vooruit (tijd in minuten invoeren)"
 
 msgid "Skip internet connection check (disables automatic package installation)"
 msgstr "Sla cotrole op internetverbinding over (schakelt automatische updates uit)"
+
+msgid "Skip jumping to live TV while timeshifting with plugins"
+msgstr "Spring niet naar live-Tv tijdens timeshift met plugins"
 
 msgid "Skip, pause, rewind and fast forward"
 msgstr "Sla over, pauzeer, spoel terug en snel vooruit"
