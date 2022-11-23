@@ -158,6 +158,8 @@ def hasInitCam():
 	return False
 
 
+SystemInfo["ArchIsARM"] = ARCHITECTURE.startswith(("arm", "cortex"))
+SystemInfo["ArchIsARM64"] = "64" in ARCHITECTURE
 SystemInfo["HasInitCam"] = hasInitCam()
 SystemInfo["MachineBrand"] = getMachineBrand()
 SystemInfo["MachineName"] = getMachineName()
