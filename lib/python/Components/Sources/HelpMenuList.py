@@ -3,6 +3,7 @@ from Tools.KeyBindings import queryKeyBinding, getKeyDescription
 from Components.config import config
 from collections import defaultdict
 
+# Helplist structure:
 # [ ( actionmap, context, [(action, help), (action, help), ...] ), (actionmap, ... ), ... ]
 
 # The helplist is ordered by the order that the Helpable[Number]ActionMaps
@@ -23,20 +24,30 @@ from collections import defaultdict
 
 # In the template for HelpMenuList:
 
-# Template "default" for simple string help items
-# Use data[1] = helpText and data[2] = ""  for non-indented text
-# and data[1] = "" and data[2] = helpText  for indented text (20 pixel indent)
+# In the template for HelpMenuList:
 
-# Template for list/tuple help items
-# Use data[1:3] = helpTuple and data[3:5] = ["", ""] for non-indented text
-# and data[1:3] = ["", ""] and data[3:5] = helpTuple for indented text
+# Template "default" for simple string help items
+# For headings use data[1:] = [heading, None, None]
+# For the help entries:
+# Use data[1:] = [None, helpText, None] for non-indented text
+# and data[1:] = [None, None, helpText] for indented text (indent distance set in template)
+
+# Template "extended" for list/tuple help items
+# For headings use data[1:] = [heading, None, None, None, None]
+# For the help entries:
+# Use data[1] = None
+# and data[2:] = [helpText, None, extText, None] for non-indented text
+# and data[2:] = [None, helpText, None, extText] for indented text
 
 
 class HelpMenuList(List):
+	HEADINGS = 1
+	EXTENDED = 2
+
 	def __init__(self, helplist, callback, rcPos=None):
 		List.__init__(self)
 		self.callback = callback
-		self.extendedHelp = False
+		formatFlags = 0
 		self.rcPos = rcPos
 		self.rcKeyIndex = None
 		self.buttonMap = {}
@@ -59,14 +70,6 @@ class HelpMenuList(List):
 			if sortCmp == self._sortCmpInd:
 				self.rcKeyIndex = dict((x[1], x[0]) for x in enumerate(rcPos.getRcKeyList()))
 
-		indent = 0
-
-		if headings:
-			for (actionmap, context, actions) in helplist:
-				if actionmap.enabled and getattr(actionmap, "description", None):
-					indent = 1
-					break
-
 		buttonsProcessed = set()
 		helpSeen = defaultdict(list)
 		sortedHelplist = sorted(helplist, key=lambda hle: hle[0].prio)
@@ -76,7 +79,9 @@ class HelpMenuList(List):
 			if not actionmap.enabled:
 				continue
 
-			amId = actMapId()
+			if headings and actionmap.description and not (formatFlags & self.HEADINGS):
+				print "[HelpMenuList] headings found"
+				formatFlags |= self.HEADINGS
 
 			for (action, help) in actions:
 				helpTags = []
@@ -93,9 +98,6 @@ class HelpMenuList(List):
 				if not buttons:
 					continue
 
-				name = None
-				flags = 0
-
 				buttonNames = []
 
 				for n in buttons:
@@ -111,39 +113,43 @@ class HelpMenuList(List):
 								buttonNames.append(name)
 								buttonsProcessed.add(nlong)
 
-				# only show non-empty entries with keys that are available on the used rc
-				if not (buttonNames and help):
+				# only show entries with keys that are available on the used rc
+				if not buttonNames:
 					continue
-				if isinstance(help, (tuple, list)):
-					self.extendedHelp = True
+
+				isExtended = isinstance(help, (tuple, list))
+				if isExtended and not (formatFlags & self.EXTENDED):
+					print "[HelpMenuList] extendedHelp entry found"
+					formatFlags |= self.EXTENDED
+
 				if helpTags:
-					helpTagStr = " (" + ", ".join(helpTags) + ")"
-					if isinstance(help, (tuple, list)):
-						help[0] += helpTagStr
-					else:
-						help += helpTagStr
+					helpStr = help[0] if isExtended else help
+					tagsStr = pgettext("Text list separator", ', ').join(helpTags)
+					helpStr = _("%s (%s)") % (helpStr, tagsStr)
+					help = [helpStr, help[1]] if isExtended else helpStr
 
 				entry = [(actionmap, context, action, buttonNames), help]
 				if self._filterHelpList(entry, helpSeen):
-					actionMapHelp[amId].append(entry)
+					actionMapHelp[actMapId()].append(entry)
 
 		l = []
-		extendedPadding = ('', '') if self.extendedHelp else ()
+		extendedPadding = (None, ) if formatFlags & self.EXTENDED else ()
 
 		for (actionmap, context, actions) in helplist:
 			amId = actMapId()
 			if headings and amId in actionMapHelp and getattr(actionmap, "description", None):
 				if sortCmp or sortKey:
 					actionMapHelp[amId].sort(cmp=sortCmp, key=sortKey)
-				self.addListBoxContext(actionMapHelp[amId], indent)
+				self.addListBoxContext(actionMapHelp[amId], formatFlags)
 
-				l.append((None, actionmap.description, '') + extendedPadding)
+				l.append((None, actionmap.description, None) + extendedPadding)
 				l.extend(actionMapHelp[amId])
 				del actionMapHelp[amId]
 
 		if actionMapHelp:
-			if indent:
-				l.append((None, _("Other functions"), '') + extendedPadding)
+			# Add a header if other actionmaps have descriptions
+			if formatFlags & self.HEADINGS:
+				l.append((None, _("Other functions"), None) + extendedPadding)
 
 			otherHelp = []
 			for (actionmap, context, actions) in helplist:
@@ -154,20 +160,24 @@ class HelpMenuList(List):
 
 			if sortCmp or sortKey:
 				otherHelp.sort(cmp=sortCmp, key=sortKey)
-			self.addListBoxContext(otherHelp, indent)
+			self.addListBoxContext(otherHelp, formatFlags)
 			l.extend(otherHelp)
 
 		for i, ent in enumerate(l):
 			if ent[0] is not None:
+				# Ignore "break" events from
+				# OK and EXIT on return from
+				# help popup
 				for b in ent[0][3]:
-					# Ignore "break" events from
-					# OK and EXIT on return from
-					# help popup
 					if b[0] not in ('OK', 'EXIT'):
 						self.buttonMap[b] = i
 
-		if self.extendedHelp:
-			self.style = "extended"
+		self.style = (
+			"default",
+			"default+headings",
+			"extended",
+			"extended+headings",
+		)[formatFlags];
 
 		self.list = l
 
@@ -175,7 +185,7 @@ class HelpMenuList(List):
 		bl1.extend([b for b in bl2 if b not in bl1])
 
 	def _filterHelpList(self, ent, seen):
-		hlp = tuple(ent[1] if isinstance(ent[1], (tuple, list)) else [ent[1], ''])
+		hlp = tuple(ent[1]) if isinstance(ent[1], (tuple, list)) else (ent[1],)
 		if hlp in seen:
 			self._mergeButLists(seen[hlp], ent[0][3])
 			return False
@@ -183,18 +193,17 @@ class HelpMenuList(List):
 			seen[hlp] = ent[0][3]
 			return True
 
-	def addListBoxContext(self, actionMapHelp, indent):
+	def addListBoxContext(self, actionMapHelp, formatFlags):
+		extended = (formatFlags & self.EXTENDED) >> 1
+		headings = formatFlags & self.HEADINGS
 		for i, ent in enumerate(actionMapHelp):
 			help = ent[1]
-			if self.extendedHelp:
-				ent[1:] = ('', '', '', '')
-			else:
-				ent[1:] = ('', '')
+			ent[1:] = [None] * (1 + headings + extended)
 			if isinstance(help, (tuple, list)):
-				ent[1 + indent] = help[0]
-				ent[3 + indent] = help[1]
+				ent[1 + headings] = help[0]
+				ent[2 + headings] = help[1]
 			else:
-				ent[1 + indent] = help
+				ent[1 + headings] = help
 			actionMapHelp[i] = tuple(ent)
 
 	def _getMinPos(self, a):
