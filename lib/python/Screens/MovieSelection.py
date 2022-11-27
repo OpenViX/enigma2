@@ -2271,7 +2271,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			else:
 				fileCount += 1
 				# check if this item is currently recording
-				rec_filename = itemPath[:-3] if itemPath.endswith(".ts") else itemPath
+				rec_filename = itemPath.rsplit(".", 1)[0] # timer.Filename does not include the file ext so remove it from rec_filename before comparing
 				for timer in NavigationInstance.instance.RecordTimer.timer_list:
 					if timer.isRunning() and not timer.justplay and rec_filename == timer.Filename:
 						recList.append((item, timer))
