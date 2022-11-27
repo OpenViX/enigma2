@@ -27,6 +27,61 @@ DEFINE_REF(eServiceEvent);
 DEFINE_REF(eComponentData);
 DEFINE_REF(eGenreData);
 DEFINE_REF(eParentalData);
+DEFINE_REF(eCridData);
+
+std::string eServiceEvent::crid_scheme = "crid://";
+int eServiceEvent::m_fixUTF8 = 0;
+
+std::string eServiceEvent::getShortDescription() const
+{ 
+	if(eServiceEvent::m_fixUTF8 == 0)
+		return m_short_description;
+	return fixUTF8(m_short_description, m_fixUTF8==2);
+}
+
+std::string eServiceEvent::getExtendedDescription() const
+{
+	if(eServiceEvent::m_fixUTF8 == 0)
+		return m_extended_description;
+	return fixUTF8(m_extended_description, m_fixUTF8==2);
+}
+
+std::string eServiceEvent::normalise_crid(std::string crid, ePtr<eDVBService> service)
+{
+	if ( !crid.empty() )
+	{
+		//std::transform(crid.begin(), crid.end(), crid.begin(), ::tolower);
+		if ( crid[0] == '/' )
+		{
+			if ( service && !service->m_default_authority.empty() )
+			{
+				crid = service->m_default_authority + crid;
+			}
+			else
+			{
+				// Don't use a CRID if it needs a default
+				// authority but it doesn't have one
+				// ZZ return "";
+				crid = "missing_authority" + crid;
+			}
+		}
+		if ( crid.substr(0, crid_scheme.size()) != crid_scheme )
+		{
+			std::string crid_lower = crid;
+			std::transform(crid_lower.begin(), crid_lower.end(), crid_lower.begin(), ::tolower);
+			if ( crid_lower.substr(0, crid_scheme.size()) != crid_scheme )
+			{
+				crid = crid_scheme + crid;
+			}
+		}
+	}
+	return crid;
+}
+
+eServiceEvent::eServiceEvent():
+	m_begin(0), m_duration(0), m_event_id(0)
+{
+}
 
 /* search for the presence of language from given EIT event descriptors*/
 bool eServiceEvent::loadLanguage(Event *evt, const std::string &lang, int tsidonid)
