@@ -307,7 +307,7 @@ class MovieList(GUIComponent):
 		result = {}
 		for timer in NavigationInstance.instance.RecordTimer.timer_list:
 			if timer.isRunning() and not timer.justplay and hasattr(timer, 'Filename'):
-				result[path.split(timer.Filename)[1] + '.ts'] = timer
+				result[path.split(timer.Filename)[1]] = timer
 		if self.runningTimers == result:
 			return
 		self.runningTimers = result
@@ -481,7 +481,7 @@ class MovieList(GUIComponent):
 			data.txt = getItemDisplayNameText(serviceref, info)
 			data.icon = None
 			data.part = 0
-			if path.split(pathName)[1] in self.runningTimers:
+			if path.split(pathName)[1].rsplit(".", 1)[0] in self.runningTimers:
 				if switch == 'i':
 					if (self.playInBackground or self.playInForeground) and serviceref == (self.playInBackground or self.playInForeground):
 						data.icon = self.iconMoviePlayRec
