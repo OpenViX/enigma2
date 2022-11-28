@@ -90,7 +90,6 @@ class eServiceEvent: public iObject
 	std::string m_event_name, m_short_description, m_extended_description, m_tmp_extended_description, m_extended_description_items;
 	std::string m_series_crid, m_episode_crid;
 	static std::string m_language, m_language_alternative;
-	std::list<eCridData> m_crids;
 	static int m_fixUTF8;
 	// .. additional info
 public:
@@ -111,8 +110,6 @@ public:
 	std::string getEventName() const { return m_event_name; }
 	std::string getShortDescription() const;
 	std::string getExtendedDescription() const;
-	std::string getExtraEventData() const { return m_extra_event_data; }
-	std::string getEPGSource() const { return m_epg_source; }
 	std::string getBeginTimeString() const;
 	std::string getSeriesCrid() const { return m_series_crid; }
 	std::string getEpisodeCrid() const { return m_episode_crid; }
