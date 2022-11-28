@@ -17,7 +17,7 @@ profile("LOAD:InfoBarGenerics")
 from Screens.InfoBarGenerics import InfoBarShowHide, \
 	InfoBarNumberZap, InfoBarChannelSelection, InfoBarMenu, InfoBarRdsDecoder, \
 	InfoBarEPG, InfoBarSeek, InfoBarInstantRecord, InfoBarRedButton, InfoBarTimerButton, InfoBarVmodeButton, \
-	InfoBarAudioSelection, InfoBarAdditionalInfo, InfoBarNotifications, InfoBarDish, InfoBarUnhandledKey, InfoBarLongKeyDetection, \
+	InfoBarAudioSelection, InfoBarVideoSetup, InfoBarAdditionalInfo, InfoBarNotifications, InfoBarDish, InfoBarUnhandledKey, InfoBarLongKeyDetection, \
 	InfoBarSubserviceSelection, InfoBarShowMovies,  \
 	InfoBarServiceNotifications, InfoBarPVRState, InfoBarCueSheetSupport, InfoBarBuffer, \
 	InfoBarSummarySupport, InfoBarMoviePlayerSummarySupport, InfoBarTimeshiftState, InfoBarTeletextPlugin, InfoBarExtensions, \
@@ -37,7 +37,7 @@ from Screens.HelpMenu import HelpableScreen
 
 class InfoBar(InfoBarBase, InfoBarShowHide,
 	InfoBarNumberZap, InfoBarChannelSelection, InfoBarMenu, InfoBarEPG, InfoBarRdsDecoder,
-	InfoBarInstantRecord, InfoBarAudioSelection, InfoBarRedButton, InfoBarTimerButton, InfoBarVmodeButton,
+	InfoBarInstantRecord, InfoBarAudioSelection, InfoBarVideoSetup, InfoBarRedButton, InfoBarTimerButton, InfoBarVmodeButton,
 	HelpableScreen, InfoBarAdditionalInfo, InfoBarNotifications, InfoBarDish, InfoBarUnhandledKey, InfoBarLongKeyDetection,
 	InfoBarSubserviceSelection, InfoBarTimeshift, InfoBarSeek, InfoBarCueSheetSupport, InfoBarBuffer,
 	InfoBarSummarySupport, InfoBarTimeshiftState, InfoBarTeletextPlugin, InfoBarExtensions,
@@ -68,7 +68,7 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 		for x in HelpableScreen, \
 				InfoBarBase, InfoBarShowHide, \
 				InfoBarNumberZap, InfoBarChannelSelection, InfoBarMenu, InfoBarEPG, InfoBarRdsDecoder, \
-				InfoBarInstantRecord, InfoBarAudioSelection, InfoBarRedButton, InfoBarTimerButton, InfoBarUnhandledKey, InfoBarLongKeyDetection, InfoBarVmodeButton,\
+				InfoBarInstantRecord, InfoBarAudioSelection, InfoBarVideoSetup, InfoBarRedButton, InfoBarTimerButton, InfoBarUnhandledKey, InfoBarLongKeyDetection, InfoBarVmodeButton,\
 				InfoBarAdditionalInfo, InfoBarNotifications, InfoBarDish, InfoBarSubserviceSelection, InfoBarBuffer, \
 				InfoBarTimeshift, InfoBarSeek, InfoBarCueSheetSupport, InfoBarSummarySupport, InfoBarTimeshiftState, \
 				InfoBarTeletextPlugin, InfoBarExtensions, InfoBarPiP, InfoBarSubtitleSupport, InfoBarJobman, InfoBarZoom, \
@@ -229,7 +229,7 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 
 
 class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBarMenu, InfoBarEPG,
-				  InfoBarSeek, InfoBarShowMovies, InfoBarInstantRecord, InfoBarAudioSelection, HelpableScreen, InfoBarNotifications,
+				  InfoBarSeek, InfoBarShowMovies, InfoBarInstantRecord, InfoBarAudioSelection, InfoBarVideoSetup, HelpableScreen, InfoBarNotifications,
 				  InfoBarServiceNotifications, InfoBarPVRState, InfoBarCueSheetSupport,
 				  InfoBarMoviePlayerSummarySupport, InfoBarSubtitleSupport, Screen, InfoBarTeletextPlugin,
 				  InfoBarServiceErrorPopupSupport, InfoBarExtensions, InfoBarPlugins, InfoBarPiP, InfoBarZoom, InfoBarHdmi, InfoBarButtonSetup):
@@ -276,7 +276,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 
 		for x in HelpableScreen, InfoBarShowHide, InfoBarLongKeyDetection, InfoBarMenu, InfoBarEPG, \
 				InfoBarBase, InfoBarSeek, InfoBarShowMovies, InfoBarInstantRecord, \
-				InfoBarAudioSelection, InfoBarNotifications, \
+				InfoBarAudioSelection, InfoBarVideoSetup, InfoBarNotifications, \
 				InfoBarServiceNotifications, InfoBarPVRState, InfoBarCueSheetSupport, \
 				InfoBarMoviePlayerSummarySupport, InfoBarSubtitleSupport, \
 				InfoBarTeletextPlugin, InfoBarServiceErrorPopupSupport, InfoBarExtensions, \

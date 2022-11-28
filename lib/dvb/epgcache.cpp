@@ -1867,12 +1867,27 @@ static inline uint8_t HI(int x) { return (uint8_t) ((x >> 8) & 0xFF); }
 static inline uint8_t LO(int x) { return (uint8_t) (x & 0xFF); }
 
 // convert from set of strings to DVB format (EIT)
+/**
+ * @brief Import EPG events into the EPG database.
+ *
+ * @param serviceRefs list of services that will receive this event
+ * @param start start time of the event
+ * @param duration duration of the event
+ * @param title title of the event. Must not be NULL.
+ * @param short_summary summary of the event
+ * @param long_description full description of the event
+ * @param event_types vector of event type/genre classification
+ * @param parental_ratings vector of parental rating country/rating pairs
+ * @param eventId optional EIT event id, defaults to 0 = auto-generated hash based on start time
+ * @return void
+ */
 void eEPGCache::submitEventData(const std::vector<eServiceReferenceDVB>& serviceRefs, long start,
 	long duration, const char* title, const char* short_summary,
-	const char* long_description, char event_type)
+	const char* long_description, std::vector<uint8_t> event_types, std::vector<eit_parental_rating> parental_ratings, uint16_t eventId)
 {
 	std::vector<int> sids;
 	std::vector<eDVBChannelID> chids;
+	chids.reserve(serviceRefs.size());
 	for (std::vector<eServiceReferenceDVB>::const_iterator serviceRef = serviceRefs.begin();
 		serviceRef != serviceRefs.end();
 		++serviceRef)
@@ -1889,12 +1904,25 @@ void eEPGCache::submitEventData(const std::vector<eServiceReferenceDVB>& service
 			service->m_flags |= eDVBService::dxNoEIT;
 		}
 	}
-	submitEventData(sids, chids, start, duration, title, short_summary, long_description, event_type, 0, EPG_IMPORT);
+	submitEventData(sids, chids, start, duration, title, short_summary, long_description, event_types, parental_ratings, eventId, EPG_IMPORT);
 }
 
 void eEPGCache::submitEventData(const std::vector<int>& sids, const std::vector<eDVBChannelID>& chids, long start,
 	long duration, const char* title, const char* short_summary,
 	const char* long_description, char event_type, int event_id, int source)
+{
+	std::vector<uint8_t> event_types;
+	std::vector<eit_parental_rating> parental_ratings;
+	if(event_type != 0)
+	{
+		event_types.push_back(event_type);
+	}
+	submitEventData(sids, chids, start, duration, title, short_summary, long_description, event_types, parental_ratings, event_id, EPG_IMPORT);
+}
+
+void eEPGCache::submitEventData(const std::vector<int>& sids, const std::vector<eDVBChannelID>& chids, long start,
+	long duration, const char* title, const char* short_summary,
+	const char* long_description, std::vector<uint8_t> event_types, std::vector<eit_parental_rating> parental_ratings, int event_id, int source)
 {
 	if (!title)
 		return;
@@ -1966,13 +1994,49 @@ void eEPGCache::submitEventData(const std::vector<int>& sids, const std::vector<
 	}
 
 	//Content type
-	if (event_type != 0)
+	if (!event_types.empty())
 	{
-		x[0] = 0x54;
-		x[1] = 2;
-		x[2] = event_type;
-		x[3] = 0;
-		x += 4;
+		const int max_etypes = (256 - 2) / 2;
+		int count = event_types.size();
+		if (count > max_etypes)
+			count = max_etypes;
+
+		x[0] = CONTENT_DESCRIPTOR;
+		x[1] = 2 * event_types.size();
+		x += 2;
+		for (std::vector<uint8_t>::const_iterator event_type = event_types.begin();
+			event_type != event_types.end();
+			++event_type)
+		{
+			if(--count < 0)
+				break;
+			x[0] = *event_type;
+			x[1] = 0;
+			x += 2;
+		}
+	}
+
+	//Parental rating
+	if (!parental_ratings.empty())
+	{
+		const int max_ratings = (256 - 2) / 4;
+		int count = parental_ratings.size();
+		if (count > max_ratings)
+			count = max_ratings;
+
+		x[0] = PARENTAL_RATING_DESCRIPTOR;
+		x[1] = 4 * count;
+		x += 2;
+		for (std::vector<eit_parental_rating>::const_iterator parental_rating = parental_ratings.begin();
+			parental_rating != parental_ratings.end();
+			++parental_rating)
+		{
+			if(--count < 0)
+				break;
+			memcpy(x, parental_rating->country_code, 3);
+			x[3] = parental_rating->rating;
+			x += 4;
+		}
 	}
 
 	//Long description
@@ -2060,14 +2124,27 @@ void eEPGCache::importEvent(ePyObject serviceReference, ePyObject list)
 	importEvents(serviceReference, list);
 }
 
-//here we get a python tuple of tuples ;)
-// consider it an array of objects with the following data
-// 1. start time (long)
-// 2. duration (int)
-// 3. event title (string)
-// 4. short description (string)
-// 5. extended description (string)
-// 6. event type (byte)
+/**
+ * @brief Import EPG events from Python into the EPG database. Each event in the @list
+ * is added to each service in the @serviceReferences list.
+ *
+ * @param serviceReferences Any of: a single service reference string; a list of service reference
+ * strings; a single tuple with DVB triplet or a list of tuples with DVB triplets. A DVB triplet is
+ * (onid, tsid, sid)
+ * @param list Either a list or a tuple of EPG events. Each event is a tuple of at least 6 elements:
+ * 1. start time (long)
+ * 2. duration (int)
+ * 3. event title (string)
+ * 4. short description (string)
+ * 5. extended description (string)
+ * 6. event type (byte) or list or tuple of event types
+ * 7. optional event ID (int), if not supplied, it will default to 0, which implies an
+ *    an auto-generated ID based on the start time.
+ * 8. optional list or tuple of tuples
+ *    (country[string 3 bytes], parental_rating [byte]).
+ *
+ * @return void
+ */
 void eEPGCache::importEvents(ePyObject serviceReferences, ePyObject list)
 {
 	std::vector<eServiceReferenceDVB> refs;
@@ -2078,10 +2155,22 @@ void eEPGCache::importEvents(ePyObject serviceReferences, ePyObject list)
 		refstr = PyUnicode_AsUTF8(serviceReferences);
 		if (!refstr)
 		{
-			eDebug("[eEPGCache:import] serviceReference string is 0, aborting");
+			eDebug("[eEPGCache:import] serviceReferences string is 0, aborting");
 			return;
 		}
 		refs.push_back(eServiceReferenceDVB(refstr));
+	}
+	else if (PyTuple_Check(serviceReferences))
+	{
+		if (PyTuple_Size(serviceReferences) != 3)
+		{
+			eDebug("[eEPGCache:import] serviceReferences tuple must contain 3 numbers (onid, tsid, sid), aborting");
+			return;
+		}
+		int onid = PyLong_AsLong(PyTuple_GET_ITEM(serviceReferences, 0));
+		int tsid = PyLong_AsLong(PyTuple_GET_ITEM(serviceReferences, 1));
+		int sid = PyLong_AsLong(PyTuple_GET_ITEM(serviceReferences, 2));
+		refs.push_back(eServiceReferenceDVB(0, tsid, onid, sid, 0));
 	}
 	else if (PyList_Check(serviceReferences))
 	{
@@ -2089,20 +2178,44 @@ void eEPGCache::importEvents(ePyObject serviceReferences, ePyObject list)
 		for (int i = 0; i < nRefs; ++i)
 		{
 			PyObject* item = PyList_GET_ITEM(serviceReferences, i);
-			refstr = PyUnicode_AsUTF8(item);
-			if (!refstr)
+			if (PyUnicode_Check(item))
 			{
-				eDebug("[eEPGCache:import] a serviceref item is not a string");
+				refstr = PyUnicode_AsUTF8(item);
+				if (!refstr)
+				{
+					eDebug("[eEPGCache:import] serviceReferences[%d] is not a string", i);
+				}
+				else
+				{
+					refs.push_back(eServiceReferenceDVB(refstr));
+				}
+			}
+			else if (PyTuple_Check(item))
+			{
+				if (PyTuple_Size(item) != 3)
+				{
+					eDebug("[eEPGCache:import] serviceReferences[%d] tuple must contain 3 numbers (onid, tsid, sid)", i);
+				}
+				int onid = PyLong_AsLong(PyTuple_GET_ITEM(item, 0));
+				int tsid = PyLong_AsLong(PyTuple_GET_ITEM(item, 1));
+				int sid = PyLong_AsLong(PyTuple_GET_ITEM(item, 2));
+				refs.push_back(eServiceReferenceDVB(0, tsid, onid, sid, 0));
 			}
 			else
 			{
-				refs.push_back(eServiceReferenceDVB(refstr));
+				eDebug("[eEPGCache:import] serviceReferences[%d] is not a string or a tuple", i);
 			}
 		}
 	}
 	else
 	{
-		eDebug("[eEPGCache:import] serviceReference string is neither string nor list, aborting");
+		eDebug("[EPG:import] serviceReferences is not a string, a list of strings, a tuple or a list of tuples, aborting");
+		return;
+	}
+
+	if (refs.empty())
+	{
+		eDebug("[EPG:import] no valid serviceReferences found, aborting");
 		return;
 	}
 
@@ -2125,21 +2238,77 @@ void eEPGCache::importEvents(ePyObject serviceReferences, ePyObject list)
 			return;
 		}
 		int tupleSize = PyTuple_Size(singleEvent);
-		if (tupleSize < 5)
+		if (tupleSize < 6)
 		{
 			eDebug("[eEPGCache:import] eventdata tuple does not contain enough fields, aborting");
 			return;
 		}
 
-		long start = PyLong_AsLong(PyTuple_GET_ITEM(singleEvent, 0));
-		long duration = PyLong_AsLong(PyTuple_GET_ITEM(singleEvent, 1));
+		long start = PyLong_AsUnsignedLongMask(PyTuple_GET_ITEM(singleEvent, 0));
+		long duration = PyLong_AsUnsignedLongMask(PyTuple_GET_ITEM(singleEvent, 1));
 		const char *title = getStringFromPython(PyTuple_GET_ITEM(singleEvent, 2));
 		const char *short_summary = getStringFromPython(PyTuple_GET_ITEM(singleEvent, 3));
 		const char *long_description = getStringFromPython(PyTuple_GET_ITEM(singleEvent, 4));
-		char event_type = (char) PyLong_AsLong(PyTuple_GET_ITEM(singleEvent, 5));
+		std::vector<uint8_t> event_types;
+		ePyObject eventTypeList = PyTuple_GET_ITEM(singleEvent, 5);
+		bool eventTypeIsTuple = PyTuple_Check(eventTypeList);
+		if(eventTypeIsTuple || PyList_Check(eventTypeList)) {
+			int numberOfEventTypes = eventTypeIsTuple ? PyTuple_Size(eventTypeList) : PyList_Size(eventTypeList);
+			event_types.reserve(numberOfEventTypes);
+			for (int j = 0; j < numberOfEventTypes;  ++j)
+			{
+				uint8_t event_type = (uint8_t) PyLong_AsUnsignedLongMask(eventTypeIsTuple ? PyTuple_GET_ITEM(eventTypeList, j) : PyList_GET_ITEM(eventTypeList, j));
+				event_types.push_back(event_type);
+			}
+		} else if (PyLong_Check(eventTypeList)) {
+			uint8_t event_type = (uint8_t) PyLong_AsUnsignedLongMask(eventTypeList);
+			event_types.push_back(event_type);
+		} else {
+			eDebug("[eEPGCache:import] event type must be a single integer or a list or tuple of integers, aborting");
+			return;
+		}
+
+		uint16_t eventId = 0;
+		if (tupleSize >= 7)
+		{
+			eventId = (uint16_t) PyLong_AsUnsignedLongMask(PyTuple_GET_ITEM(singleEvent, 6));
+		}
+
+		std::vector<eit_parental_rating> parental_ratings;
+		if (tupleSize >= 8)
+		{
+			ePyObject parentalInfoList = PyTuple_GET_ITEM(singleEvent, 7);
+			bool parentalInfoIsTuple = PyTuple_Check(parentalInfoList);
+			if(parentalInfoIsTuple || PyList_Check(parentalInfoList)) {
+				int numberOfpInfoTypes = parentalInfoIsTuple ? PyTuple_Size(parentalInfoList) : PyList_Size(parentalInfoList);
+				parental_ratings.reserve(numberOfpInfoTypes);
+				for (int j = 0; j < numberOfpInfoTypes;  ++j)
+				{
+					ePyObject parentalInfo = parentalInfoIsTuple ? PyTuple_GET_ITEM(parentalInfoList, j) :  PyList_GET_ITEM(parentalInfoList, j);
+					if (!PyTuple_Check(parentalInfo) || PyTuple_Size(parentalInfo) != 2)
+					{
+						eDebug("[eEPGCache:import] parental rating must be a tuple of length 2, aborting");
+						return;
+					}
+					const char* country = getStringFromPython(PyTuple_GET_ITEM(parentalInfo, 0));
+					if (strlen(country) != 3)
+					{
+						eDebug("[eEPGCache:import] parental rating country code must be of length 3, aborting");
+						return;
+					}
+					eit_parental_rating p_rating;
+					memcpy(p_rating.country_code, country, 3);
+					u_char rating = (u_char) PyLong_AsUnsignedLongMask(PyTuple_GET_ITEM(parentalInfo, 1));
+					p_rating.rating = rating;
+					parental_ratings.push_back(p_rating);
+				}
+			} else {
+				eDebug("[eEPGCache:import] parental ratings must be a list or tuple of parental rating tuples, aborting");
+			}
+		}
 
 		Py_BEGIN_ALLOW_THREADS;
-		submitEventData(refs, start, duration, title, short_summary, long_description, event_type);
+		submitEventData(refs, start, duration, title, short_summary, long_description, event_types, parental_ratings, eventId);
 		Py_END_ALLOW_THREADS;
 	}
 }

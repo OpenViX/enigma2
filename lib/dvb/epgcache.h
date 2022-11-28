@@ -98,6 +98,10 @@ typedef std::tr1::unordered_map<uniqueEPGKey, EventCacheItem, hash_uniqueEPGKey,
 	typedef std::tr1::unordered_map<uniqueEPGKey, contentMap, hash_uniqueEPGKey, uniqueEPGKey::equal > contentMaps;
 #endif
 
+struct eit_parental_rating {
+        u_char  country_code[3];
+        u_char  rating;
+};
 #endif
 
 class eEPGCache: public eMainloop, private eThread, public sigc::trackable
@@ -159,6 +163,7 @@ private:
 	void gotMessage(const Message &message);
 	void cleanLoop();
 	void submitEventData(const std::vector<int>& sids, const std::vector<eDVBChannelID>& chids, long start, long duration, const char* title, const char* short_summary, const char* long_description, char event_type, int event_id, int source);
+	void submitEventData(const std::vector<int>& sids, const std::vector<eDVBChannelID>& chids, long start, long duration, const char* title, const char* short_summary, const char* long_description, std::vector<uint8_t> event_types, std::vector<eit_parental_rating> parental_ratings, int event_id, int source);
 	void clearCompleteEPGCache();
 
 	eServiceReferenceDVB *m_timeQueryRef;
@@ -257,7 +262,7 @@ public:
 	void setEpgSources(unsigned int mask);
 	unsigned int getEpgSources();
 
-	void submitEventData(const std::vector<eServiceReferenceDVB>& serviceRefs, long start, long duration, const char* title, const char* short_summary, const char* long_description, char event_type);
+	void submitEventData(const std::vector<eServiceReferenceDVB>& serviceRefs, long start, long duration, const char* title, const char* short_summary, const char* long_description, std::vector<uint8_t> event_types, std::vector<eit_parental_rating> parental_ratings, uint16_t eventId=0);
 
 	void importEvents(SWIG_PYOBJECT(ePyObject) serviceReferences, SWIG_PYOBJECT(ePyObject) list);
 	void importEvent(SWIG_PYOBJECT(ePyObject) serviceReference, SWIG_PYOBJECT(ePyObject) list);

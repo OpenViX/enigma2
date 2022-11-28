@@ -41,7 +41,7 @@ def setLCDMiniTVMode(value):
 
 class Standby2(Screen):
 	def Power(self):
-		if getBrandOEM() in ('dinobot') or SystemInfo["HasHiSi"]:
+		if getBrandOEM() in ('dinobot') or SystemInfo["HasHiSi"] or getBoxType() in ("sfx6008", "sfx6018"):
 			try:
 				open("/proc/stb/hdmi/output", "w").write("on")
 			except:
@@ -117,7 +117,7 @@ class Standby2(Screen):
 			self.avswitch.setInput("SCART")
 		else:
 			self.avswitch.setInput("AUX")
-		if getBrandOEM() in ('dinobot') or SystemInfo["HasHiSi"]:
+		if getBrandOEM() in ('dinobot') or SystemInfo["HasHiSi"] or getBoxType() in ("sfx6008", "sfx6018"):
 			try:
 				open("/proc/stb/hdmi/output", "w").write("off")
 			except:
@@ -302,12 +302,12 @@ class TryQuitMainloop(MessageBox):
 						self.close(True) # immediate shutdown
 			elif event == iRecordableService.evStart:
 				self.stopTimer()
-				
+
 	def sendCEC(self):
-			print("[Standby][sendCEC] entered ")	
+			print("[Standby][sendCEC] entered ")
 			import struct
 			from enigma import eHdmiCEC
-			physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()				
+			physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
 			msgaddress = 0x0f # use broadcast for active source command
 			cmd0 = 0x9d	# 157 sourceinactive
 			data0 = struct.pack("BB", int(physicaladdress // 256), int(physicaladdress % 256))
@@ -320,14 +320,14 @@ class TryQuitMainloop(MessageBox):
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd0, data0, len(data0))
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd1, data1, len(data1))
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd2, data2, len(data2))
-			print("[Standby][sendCEC] departed ")								
+			print("[Standby][sendCEC] departed ")
 
 	def close(self, value):
 		if self.connected:
 			self.connected = False
 			self.session.nav.record_event.remove(self.getRecordEvent)
 		if config.hdmicec.enabled.value and self.retval == 1:
-			self.sendCEC()				
+			self.sendCEC()
 		if value:
 			self.hide()
 			if self.retval == 1:

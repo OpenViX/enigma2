@@ -166,7 +166,7 @@ canRename = canMove
 
 def createMoveList(serviceref, dest):
 	#normpath is to remove the trailing '/' from directories
-	src = isinstance(serviceref, str) and serviceref + ".ts" or os.path.normpath(serviceref.getPath())
+	src = isinstance(serviceref, str) and "%s.%s" % (serviceref, "ts" if os.path.exists("%s.ts" % serviceref) else "stream") or os.path.normpath(serviceref.getPath())
 	srcPath, srcName = os.path.split(src)
 	if os.path.normpath(srcPath) == dest:
 		# move file to itself is allowed, so we have to check it
@@ -2271,7 +2271,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			else:
 				fileCount += 1
 				# check if this item is currently recording
-				rec_filename = itemPath[:-3] if itemPath.endswith(".ts") else itemPath
+				rec_filename = itemPath.rsplit(".", 1)[0] # timer.Filename does not include the file ext so remove it from rec_filename before comparing
 				for timer in NavigationInstance.instance.RecordTimer.timer_list:
 					if timer.isRunning() and not timer.justplay and rec_filename == timer.Filename:
 						recList.append((item, timer))
@@ -2413,7 +2413,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 		if deletedList:
 			path2 = path + ".del"
-			if offline is None and ospath.isdir(path2):		# directory not deleted by eraser and .del added to path name
+			if offline is None and os.path.isdir(path2):		# directory not deleted by eraser and .del added to path name
 				shutil.rmtree(path2) 
 			self["list"].removeServices(deletedList)
 			deletedCount = len(deletedList)

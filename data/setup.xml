@@ -191,7 +191,7 @@
 		<item level="0" text="Default movie location" description="Set the default location for your recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations.">config.usage.default_path</item>
 		<item level="2" text="Timer recording location" description="Set the default location for your timers. Press OK to add new locations, LEFT/RIGHT to select from any existing locations.">config.usage.timer_path</item>
 		<item level="2" text="Instant recording location" description="Set the default location for your instant recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations.">config.usage.instantrec_path</item>
-		<item level="2" text="Recordings - convert IPTV servicetypes to  1" description="Recording 4097, 5001 and 5002 streams not possible with external players, so convert recordings to servicetype 1.">config.recording.setstreamto1</item>		
+		<item level="2" text="Recordings - convert IPTV servicetypes to  1" description="Recording 4097, 5001 and 5002 streams not possible with external players, so convert recordings to servicetype 1.">config.recording.setstreamto1</item>
 <!--		<item level="2" text="Preferred tuner for recordings" description="Configure which tuner will be preferred for recordings, when more than one tuner is available. 'Disabled' would select a tuner based on preferred tuner in customise screen. 'Auto' would choose based on E2's default rules, ignoring preferred tuner in customise screen.">config.usage.recording_frontend_priority</item>-->
 		<item level="1" text="Recordings always have priority" description="When enabled, a recording is allowed to interrupt live TV, when there are no free tuners.">config.recording.asktozap</item>
 		<item level="0" text="Margin before recording (minutes)" description="When nonzero, a recording will start earlier than the starting time indicated by the EPG.">config.recording.margin_before</item>
@@ -309,13 +309,13 @@
 		<item level="2" text="Show OScam/Ncam Info in extensions?" description="Allows you to show/hide OScam/Ncam Info in extensions -blue button." requires="OScamInstalled">config.oscaminfo.showInExtensions</item>
 	</setup>
 	<setup key="softcamscriptsetup" title="">
-		<item level="0" text="SoftcamScript select camscript" description="Select a softcam script from the available list.">config.misc.softcams</item>		
-		<item level="0" text="SoftcamScript enable/disable cam restart" description="Allow reinitialisation of selected cam script.">config.misc.softcamrestarts</item>        			
+		<item level="0" text="SoftcamScript select camscript" description="Select a softcam script from the available list.">config.misc.softcams</item>
+		<item level="0" text="SoftcamScript enable/disable cam restart" description="Allow reinitialisation of selected cam script.">config.misc.softcamrestarts</item>
 	</setup>
 	<setup key="logs" title="Logs settings">
 		<item level="2" text="Logs folder location" description="Choose the location for crash and debug logs folder.">config.crash.debug_path</item>
 		<item level="2" text="Enable debug logs *" description="Allows you to enable the debug logs. They contain very detailed information about everything the system does. Reboot required to enable this!">config.crash.enabledebug</item>
-		<item level="2" text="Set Enigma2 Log Level" description="Enigma2 debug level." requires="config.crash.enabledebug">config.crash.e2_debug_level</item>		
+		<item level="2" text="Set Enigma2 Log Level" description="Enigma2 debug level." requires="config.crash.enabledebug">config.crash.e2_debug_level</item>
 		<item level="2" text="Limit debug log size (MB)" description="Allows you to set the maximum size (MB) of the individual debug logs. When that size is reached, the log file will be truncated to the maximum size every 60 minutes.">config.crash.debugloglimit</item>
 		<item level="2" text="Show Log Manager in extensions list ?" description="Allows you to show/hide Log Manager in extensions (blue button).">config.logmanager.showinextensions</item>
 		<item level="2" text="Maximum number of days" description="Logs older than the specified number of days will be deleted.">config.crash.daysloglimit</item>
@@ -329,6 +329,7 @@
 		<item level="2" text="Timeshift-save action on zap" description="Select if timeshift should continue when set to record.">config.timeshift.favoriteSaveAction</item>
 		<item level="2" text="Stop timeshift while recording?" description="Stops timeshift being used if a recording is in progress. (Advisable for USB sticks)">config.timeshift.stopwhilerecording</item>
 		<item level="2" text="Use timeshift seekbar while timeshifting?" description="If set to 'yes', allows you to use the seekbar to jump to a point within the event.">config.timeshift.showinfobar</item>
+		<item level="2" text="Skip jumping to live TV while timeshifting with plugins" description="If set to 'yes', allows you to use timeshift with alternative audio plugins.">config.usage.timeshift_skipreturntolive</item>
 	</setup>
 	<setup key="epgchannel" title="Channel EPG">
 		<item level="2" text="Sort list by" description="You can have the list sorted by time or alphanumerical.">config.epgselection.sort</item>
@@ -502,10 +503,10 @@
 		<item level="0" text="Sort" description="Set the default sorting method.">self.cfg.moviesort</item>
 		<item level="0" text="Sort Trash by deletion time" description="Use the deletion time to sort Trash directories. Most recently deleted at the top.">config.usage.trashsort_deltime</item>
 		<item level="0" text="Show extended description" description="Show or hide the extended description, (skin dependant).">self.cfg.description</item>
-		<item level="0" text="Use individual settings for each directory" description="When set, each directory will show the previous state used. When off, the default values will be shown.">config.movielist.settings_per_directory</item>]
+		<item level="0" text="Use individual settings for each directory" description="When set, each directory will show the previous state used. When off, the default values will be shown.">config.movielist.settings_per_directory</item>
 		<item level="0" text="Permanent sort key changes" description="When set, sort changes via the sort key will be permanent. When unset, sort changes will be temporary - just for this view of a directory." requires="!config.movielist.settings_per_directory">config.movielist.perm_sort_changes</item>
 		<item level="0" text="Stop service on return to movie list" description="Stop previous broadcasted service on return to movie list.">config.movielist.stop_service</item>
-		<item level="0" text="Show status icons in movie list" description="Shows the watched status of the movie.">config.usage.show_icons_in_movielist</item>]
+		<item level="0" text="Show status icons in movie list" description="Shows the watched status of the movie.">config.usage.show_icons_in_movielist</item>
 		<item level="0" text="Show icon for new/unseen items" description="Shows the icons when new/unseen, otherwise it will not show an icon." conditional="config.usage.show_icons_in_movielist.value != 'o'">config.usage.movielist_unseen</item>
 		<item level="0" text="Service Title mode" description="Show picons in the movie list.">config.usage.movielist_servicename_mode</item>
 		<item level="0" text="Picon Width" description="." conditional="'picon' in config.usage.movielist_servicename_mode.value">config.usage.movielist_piconwidth</item>
@@ -613,7 +614,7 @@
 			<if conditional="config.hdmicec.handle_tv_wakeup.value">
 				<item text="Wakeup signal from TV" description="Wake the receiver from standby when the wake command is sent from the TV.">config.hdmicec.tv_wakeup_detection</item>
 			</if>
-			<item text="Set fixed CEC address" description="Fix CEC address setting, default is 1.0.0.0">config.hdmicec.fixed_physical_address</item>			
+			<item text="Set fixed CEC address" description="Fix CEC address setting, default is 1.0.0.0">config.hdmicec.fixed_physical_address</item>
 			<item text="Forward volume keys" description="Volume keys on the receiver remote will control the TV volume.">config.hdmicec.volume_forwarding</item>
 			<item text="Force volume keys" description="Force receiver to send volume keys to all devices on hdmi when no response to audio channel request.">config.hdmicec.force_volume_forwarding</item>
 			<item text="Put A/V receiver in standby" description="Put A/V receiver in standby.">config.hdmicec.control_receiver_standby</item>

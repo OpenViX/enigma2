@@ -131,7 +131,7 @@ class ScanPath:
 	def __repr__(self):
 		return self.path + "(" + str(self.with_subdirs) + ")"
 
-	# we will use this in a set(), so we need to implement __hash__ and __cmp__
+	# we will use this in a set(), so we need to implement __hash__ and __eq__
 	def __hash__(self):
 		return self.path.__hash__() ^ self.with_subdirs.__hash__()
 
@@ -191,7 +191,7 @@ def scanDevice(mountpoint):
 
 	# ...then remove with_subdir=False when same path exists
 	# with with_subdirs=True
-	for p in paths_to_scan:
+	for p in paths_to_scan.copy():
 		if p.with_subdirs == True and ScanPath(path=p.path) in paths_to_scan:
 			paths_to_scan.remove(ScanPath(path=p.path))
 

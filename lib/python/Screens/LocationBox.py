@@ -14,7 +14,7 @@ from Screens.ChoiceBox import ChoiceBox
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import pathExists, createDir, removeDir
 from Components.config import config
-from os import path, statvfs
+from os import path as ospath, statvfs
 
 # Quickselect
 from Tools.NumericalTextInput import NumericalTextInput
@@ -31,7 +31,8 @@ from Components.MenuList import MenuList
 # Timer
 from enigma import eTimer
 
-defaultInhibitDirs = ["/bin", "/boot", "/dev", "/etc", "/lib", "/proc", "/sbin", "/sys", "/var"]
+DEFAULT_INHIBIT_DIRECTORIES = ("/bin", "/boot", "/dev", "/etc", "/lib", "/proc", "/sbin", "/sys", "/var", "/picon", "/piconlcd", "/run", "/sbin", "/share", "/sys", "/tmp", "/usr", "/home")
+defaultInhibitDirs =  list(DEFAULT_INHIBIT_DIRECTORIES)
 
 
 class LocationBox(Screen, NumericalTextInput, HelpableScreen):
@@ -244,12 +245,12 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 
 	def createDirCallback(self, res):
 		if res:
-			path = path.join(self["filelist"].current_directory, res)
-			if not pathExists(path):
-				if not createDir(path):
+			pathDir = ospath.join(self["filelist"].current_directory, res)
+			if not pathExists(pathDir):
+				if not createDir(pathDir):
 					self.session.open(
 						MessageBox,
-						_("Creating directory %s failed.") % path,
+						_("Creating directory %s failed.") % pathDir,
 						type=MessageBox.TYPE_ERROR,
 						timeout=5
 					)
@@ -257,7 +258,7 @@ class LocationBox(Screen, NumericalTextInput, HelpableScreen):
 			else:
 				self.session.open(
 					MessageBox,
-					_("The path %s already exists.") % path,
+					_("The directory %s already exists.") % pathDir,
 					type=MessageBox.TYPE_ERROR,
 					timeout=5
 				)

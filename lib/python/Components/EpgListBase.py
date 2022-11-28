@@ -38,6 +38,11 @@ class EPGListBase(GUIComponent):
 		]
 
 		self.autotimericon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_autotimer.png"))
+		try:
+			from Plugins.SystemPlugins.IceTV import loadIceTVIcon
+			self.icetvicon = loadIceTVIcon("epgclock_icetv.png")
+		except ImportError:
+			self.icetvicon = None
 
 		self.listHeight = 0
 		self.listWidth = 0
@@ -148,7 +153,7 @@ class EPGListBase(GUIComponent):
 		if matchType == 3:
 			# recording whole event, add timer type onto pixmap lookup index
 			matchType += 2 if timer.always_zap else 1 if timer.justplay else 0
-			autoTimerIcon = self.autotimericon if timer.isAutoTimer else None
+			autoTimerIcon = self.icetvicon if hasattr(timer, "ice_timer_id") and timer.ice_timer_id else (self.autotimericon if timer.isAutoTimer else None)
 		return self.selclocks[matchType] if selected else self.clocks[matchType], autoTimerIcon
 
 	def queryEPG(self, list):
