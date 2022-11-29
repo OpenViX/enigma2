@@ -42,7 +42,6 @@ def InitUsageConfig():
 	showrotorpositionChoicesUpdate()
 	config.usage.multibouquet = ConfigYesNo(default=True)
 	config.usage.maxchannelnumlen = ConfigSelection(default="4", choices=[("3", _("3")), ("4", _("4")), ("5", _("5")), ("6", _("6"))])
-
 	config.usage.alternative_number_mode = ConfigYesNo(default=False)
 
 	def alternativeNumberModeChange(configElement):
@@ -787,9 +786,9 @@ def InitUsageConfig():
 	config.epg.cachesavetimer = ConfigSelectionNumber(default=24, stepwidth=1, min=1, max=24, wraparound=True)
 
 	def correctInvalidEPGDataChange(configElement):
-		eServiceEvent.setUTF8Fix(int(configElement.value))
+		eServiceEvent.setUTF8CorrectMode(int(configElement.value))
 
-	config.epg.correct_invalid_epgdata = ConfigSelection(default="0", choices=[
+	config.epg.correct_invalid_epgdata = ConfigSelection(default="1", choices=[
 		("0", _("Disabled")),
 		("1", _("Enabled")),
 		("2", _("Debug"))
