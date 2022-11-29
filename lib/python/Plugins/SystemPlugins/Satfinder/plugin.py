@@ -887,7 +887,7 @@ class SatfinderExtra(Satfinder):
 				color = fta_color
 			else:
 				color = encrypted_color
-			out.append("- %s%s%s" % (color, service["service_name"], default_color))
+			out.append("- %s%s (%s)%s" % (color, service["service_name"], service["service_id"], default_color))
 
 		self.session.open(ServicesFound, "\n".join(out), legend)
 
