@@ -240,8 +240,10 @@ class VIXBackupManager(Screen):
 										  "cancel": self.close,
 										  "menu": self.createSetup,
 										  }, -1)
-
-			self["lab1"].setText(_("Device: none available") + "\n" + _("Press 'Menu' to select a storage device"))
+			self["key_red"].hide()
+			self["key_green"].hide()			
+			self["key_yellow"].hide()
+			self["lab1"].setText(_("Device: Press 'Menu' to select a storage device - none available"))
 		else:
 			self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "TimerEditActions"],
 										  {

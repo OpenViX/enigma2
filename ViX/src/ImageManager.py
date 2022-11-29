@@ -177,7 +177,15 @@ class VIXImageManager(Screen):
 		if SystemInfo["canMultiBoot"]:
 			self.mtdboot = SystemInfo["MBbootdevice"]
 		self.onChangedEntry = []
-		self["list"] = MenuList(list=[((_("No images found on the selected download server...if password check validity")), "Waiter")])
+		if getMountChoices():
+			self["list"] = MenuList(list=[((_("No images found on the selected download server...if password check validity")), "Waiter")])		
+				
+		else:
+			self["list"] = MenuList(list=[((_(" Press 'Menu' to select a storage device - none available")), "Waiter")])
+			self["key_red"].hide()
+			self["key_green"].hide()
+			self["key_yellow"].hide()
+			self["key_blue"].hide()			
 		self.populate_List()
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.backupRunning)
