@@ -6,6 +6,7 @@ from Components.ActionMap import HelpableNumberActionMap
 from Components.config import config
 from Components.Input import Input
 from Components.Label import Label
+from Components.Sources.StaticText import StaticText
 from Tools.BoundFunction import boundFunction
 from Tools.Notifications import AddPopup
 from time import time
@@ -15,6 +16,8 @@ class InputBox(Screen, HelpableScreen):
 	def __init__(self, session, title="", windowTitle=None, useableChars=None, **kwargs):
 		Screen.__init__(self, session)
 
+		self["key_red"] = StaticText(_("Cancel"))
+		self["key_green"] = StaticText(_("Save"))
 		self["text"] = Label(title)
 		self["input"] = Input(**kwargs)
 
@@ -26,10 +29,12 @@ class InputBox(Screen, HelpableScreen):
 		if useableChars is not None:
 			self["input"].setUseableChars(useableChars)
 
-		self["actions"] = HelpableNumberActionMap(self, ["WizardActions", "InputBoxActions", "InputAsciiActions", "KeyboardInputActions"],
+		self["actions"] = HelpableNumberActionMap(self, ["WizardActions", "InputBoxActions", "InputAsciiActions", "KeyboardInputActions", "ColorActions"],
 		{
 			"gotAsciiCode": (self.gotAsciiCode, _("Handle ASCII")),
+			"green": (self.go, _("Save")),
 			"ok": (self.go, _("Save")),
+			"red": (self.cancel, _("Cancel")),
 			"back": (self.cancel, _("Cancel")),
 			"left": (self.keyLeft, _("Move left")),
 			"right": (self.keyRight, _("Move right")),
