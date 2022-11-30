@@ -1,21 +1,24 @@
 from enigma import getPrevAsciiCode
-from Screens.Screen import Screen
+from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
-from Components.ActionMap import NumberActionMap
-from Components.Label import Label
-from Components.Input import Input
+from Screens.Screen import Screen
+from Components.ActionMap import HelpableNumberActionMap
 from Components.config import config
+from Components.Input import Input
+from Components.Label import Label
 from Tools.BoundFunction import boundFunction
 from Tools.Notifications import AddPopup
 from time import time
 
 
-class InputBox(Screen):
+class InputBox(Screen, HelpableScreen):
 	def __init__(self, session, title="", windowTitle=None, useableChars=None, **kwargs):
 		Screen.__init__(self, session)
 
 		self["text"] = Label(title)
 		self["input"] = Input(**kwargs)
+
+		HelpableScreen.__init__(self)
 
 		if windowTitle is None:
 			windowTitle = _("Input")
@@ -23,30 +26,30 @@ class InputBox(Screen):
 		if useableChars is not None:
 			self["input"].setUseableChars(useableChars)
 
-		self["actions"] = NumberActionMap(["WizardActions", "InputBoxActions", "InputAsciiActions", "KeyboardInputActions"],
+		self["actions"] = HelpableNumberActionMap(self, ["WizardActions", "InputBoxActions", "InputAsciiActions", "KeyboardInputActions"],
 		{
-			"gotAsciiCode": self.gotAsciiCode,
-			"ok": self.go,
-			"back": self.cancel,
-			"left": self.keyLeft,
-			"right": self.keyRight,
-			"home": self.keyHome,
-			"end": self.keyEnd,
-			"deleteForward": self.keyDelete,
-			"deleteBackward": self.keyBackspace,
-			"tab": self.keyTab,
-			"toggleOverwrite": self.keyInsert,
-			"1": self.keyNumberGlobal,
-			"2": self.keyNumberGlobal,
-			"3": self.keyNumberGlobal,
-			"4": self.keyNumberGlobal,
-			"5": self.keyNumberGlobal,
-			"6": self.keyNumberGlobal,
-			"7": self.keyNumberGlobal,
-			"8": self.keyNumberGlobal,
-			"9": self.keyNumberGlobal,
-			"0": self.keyNumberGlobal
-		}, -1)
+			"gotAsciiCode": (self.gotAsciiCode, _("Handle ASCII")),
+			"ok": (self.go, _("Save")),
+			"back": (self.cancel, _("Cancel")),
+			"left": (self.keyLeft, _("Move left")),
+			"right": (self.keyRight, _("Move right")),
+			"home": (self.keyHome, _("Move to start")),
+			"end": (self.keyEnd, _("Move to end")),
+			"deleteForward": (self.keyDelete, _("Delete forwards")),
+			"deleteBackward": (self.keyBackspace, _("Delete backwards")),
+			"tab": (self.keyTab, _("Tab")),
+			"toggleOverwrite": (self.keyInsert, _("Number or SMS style data entry")),
+			"1": (self.keyNumberGlobal, _("Number or SMS style data entry")),
+			"2": (self.keyNumberGlobal, _("Number or SMS style data entry")),
+			"3": (self.keyNumberGlobal, _("Number or SMS style data entry")),
+			"4": (self.keyNumberGlobal, _("Number or SMS style data entry")),
+			"5": (self.keyNumberGlobal, _("Number or SMS style data entry")),
+			"6": (self.keyNumberGlobal, _("Number or SMS style data entry")),
+			"7": (self.keyNumberGlobal, _("Number or SMS style data entry")),
+			"8": (self.keyNumberGlobal, _("Number or SMS style data entry")),
+			"9": (self.keyNumberGlobal, _("Number or SMS style data entry")),
+			"0": (self.keyNumberGlobal,  _("Number or SMS style data entry")),
+		}, prio=-1,  description=_("InputBox Actions"))
 
 		if self["input"].type == Input.TEXT:
 			self.onExecBegin.append(self.setKeyboardModeAscii)
