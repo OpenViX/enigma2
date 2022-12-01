@@ -2,6 +2,7 @@ from enigma import getPrevAsciiCode
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
+from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Components.ActionMap import HelpableNumberActionMap
 from Components.config import config
 from Components.Input import Input
@@ -18,6 +19,7 @@ class InputBox(Screen, HelpableScreen):
 
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
+		self["key_text"] = StaticText(_("TEXT"))
 		self["text"] = Label(title)
 		self["input"] = Input(**kwargs)
 
@@ -29,8 +31,9 @@ class InputBox(Screen, HelpableScreen):
 		if useableChars is not None:
 			self["input"].setUseableChars(useableChars)
 
-		self["actions"] = HelpableNumberActionMap(self, ["WizardActions", "InputBoxActions", "InputAsciiActions", "KeyboardInputActions", "ColorActions"],
+		self["actions"] = HelpableNumberActionMap(self, ["WizardActions", "InputBoxActions", "InputAsciiActions", "KeyboardInputActions", "ColorActions", "VirtualKeyboardActions"],
 		{
+			"showVirtualKeyboard": (self.keyText, _("Open VirtualKeyboard")),
 			"gotAsciiCode": (self.gotAsciiCode, _("Handle ASCII")),
 			"green": (self.go, _("Save")),
 			"ok": (self.go, _("Save")),
@@ -96,6 +99,14 @@ class InputBox(Screen, HelpableScreen):
 
 	def keyInsert(self):
 		self["input"].toggleOverwrite()
+
+	def keyText(self):
+		self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title=self["text"].text, text=self["input"].getText())
+
+	def VirtualKeyBoardCallback(self, callback=None):
+		if callback is not None and len(callback):
+			self["input"].setText(callback)
+			self.keyEnd()
 
 
 class PinInput(InputBox):
