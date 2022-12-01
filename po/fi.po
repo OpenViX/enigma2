@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-12-01 10:36+0200\n"
+"PO-Revision-Date: 2022-12-01 20:14+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -8425,7 +8425,7 @@ msgid "Only select 'yes' if you are using a multiswich that requires a DiSEqC Po
 msgstr "Valitse 'kyllä', jos käytät monikytkintä, joka vaatii DiSEqC portti-A komentosignaalin. Kaikille muille kokoonpanoille valitse 'ei'."
 
 msgid "Open RDS/RASS screen..."
-msgstr "Anvaa RDS/RASS näyttö..."
+msgstr "Avaa RDS/RASS näyttö..."
 
 msgid "Open bouquet list"
 msgstr "Avaa suosikkilistat"
@@ -16536,3 +16536,33 @@ msgstr "Ohita hyppäys live TV-lähetykseen, kun ajansiirto on lisäosilla"
 
 msgid "Random Password"
 msgstr "Satunnainen salasana"
+
+msgid "Open VirtualKeyboard"
+msgstr "Avaa virtuaalinen näppäimistö"
+
+msgid "Handle ASCII"
+msgstr "Käsittele ASCII"
+
+msgid "Move left"
+msgstr "Siirry vasemmalle"
+
+msgid "Move right"
+msgstr "Siirry oikealle"
+
+msgid "Move to start"
+msgstr "Siirry alkuun"
+
+msgid "Move to end"
+msgstr "Siirry loppuun"
+
+msgid "Delete forwards"
+msgstr "Poista eteenpäin"
+
+msgid "Delete backwards"
+msgstr "Poista taaksepäin"
+
+msgid "Tab"
+msgstr "Välilehti"
+
+msgid "InputBox Actions"
+msgstr "InputBox tehtävät"
