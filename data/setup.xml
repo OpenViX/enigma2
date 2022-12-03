@@ -127,7 +127,7 @@
 		<item level="2" text="Save every (in hours)" requires="config.epg.cachesavesched" description="The %s %s saves the EPG data every (hours).">config.epg.cachesavetimer</item>
 		<item level="2" text="Automatic reload" description="Allows the %s %s to load the saved EPG data regularly.">config.epg.cacheloadsched</item>
 		<item level="2" text="Reload every (in hours)" requires="config.epg.cacheloadsched" description="The %s %s loads the saved EPG data every (hours).">config.epg.cacheloadtimer</item>
-        <item level="2" text="Correct invalid EPG data" description="Choose the option to correct invalid EPG data.">config.epg.correct_invalid_epgdata</item>
+		<item level="2" text="Correct invalid EPG data" description="Choose the option to correct invalid EPG data.">config.epg.correct_invalid_epgdata</item>
 		<item level="2" text="Show EIT now/next in infobar" description="Display the EIT now/next event data in infobar.">config.usage.show_eit_nownext</item>
 		<item level="2" text="Enable EIT EPG" description="Use EIT EPG information when it is available.">config.epg.eit</item>
 		<item level="2" text="Enable MHW EPG" description="Use MHW EPG information when it is available.">config.epg.mhw</item>
