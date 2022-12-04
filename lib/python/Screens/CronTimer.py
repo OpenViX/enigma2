@@ -272,7 +272,7 @@ class CronTimersConfig(ConfigListScreen, Screen):
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
 		self['key_red'] = Label(_("Close"))
 		self['key_green'] = Label(_("Save"))
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"],
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions", "VirtualKeyboardActions"],
 		{
 			'red': self.close,
 			'green': self.checkentry,

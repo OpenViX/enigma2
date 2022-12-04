@@ -123,7 +123,7 @@ with open(ofile, "r+b") as f:
     while pos >= 0:
         f.seek(pos)
         buf = f.read(1024)
-        where = buf.rfind("\n")
+        where = buf.rfind(b"\n")
         if where < 0:
             pos -= 1024
             continue
@@ -134,7 +134,7 @@ with open(ofile, "r+b") as f:
         f.truncate()
 # Now add the note as to where future logging has gone
 #
-        f.write("Continued in %s\n" % nfile)
+        f.write(b"Continued in %s\n" % bytes(nfile, "UTF8"))
         break
 EOP
     }

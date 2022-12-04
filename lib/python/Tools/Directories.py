@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import errno
+from errno import ENOENT, EXDEV
 
 from os.path import basename as pathBasename, dirname as pathDirname, exists as pathExists, getsize as pathGetsize, isdir as pathIsdir, isfile as pathIsfile, islink as pathIslink, join as pathJoin, normpath as pathNormpath, splitext as pathSplitext
 
@@ -538,7 +538,7 @@ def moveFiles(fileList):
 			rename(item[0], item[1])
 			movedList.append(item)
 	except (IOError, OSError) as err:
-		if err.errno == errno.EXDEV:  # Invalid cross-device link
+		if err.errno == EXDEV:  # Invalid cross-device link
 			print("[Directories] Warning: Cannot rename across devices, trying slower move.")
 			from Tools.CopyFiles import moveFiles as extMoveFiles  # OpenViX, OpenATV, Beyonwiz
 			# from Screens.CopyFiles import moveFiles as extMoveFiles  # OpenPLi
