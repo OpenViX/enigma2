@@ -81,7 +81,7 @@ class Rc:
 				pm.hide()
 
 	def initRc(self):
-		if self.SystemInfo["rc_default"]:
+		if SystemInfo["rc_default"]:
 			self["rc"].setPixmapNum(config.misc.rcused.value)
 		else:
 			self["rc"].setPixmapNum(0)
@@ -149,13 +149,8 @@ class RcPositions:
 		if SystemInfo["rc_default"]:
 			target = resolveFilename(SCOPE_SKIN, "rcpositions.xml")
 		else:
-<<<<<<< HEAD
 			target = resolveFilename(SCOPE_SKIN, path.join("rc_models", SystemInfo["rc_model"], "rcpositions.xml"))
-		tree = ElementTree(file = target)
-=======
-			target = rc_model.getRcLocation() + 'rcpositions.xml'
 		tree = ElementTree(file=target)
->>>>>>> ba0ceb95f4 ([HelpMenu, Rc, HelpMenuList] PEP8 cleanup)
 		rcs = tree.getroot()
 		self.rcs = {}
 		for rc in rcs:
