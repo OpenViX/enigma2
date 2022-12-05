@@ -2,6 +2,7 @@ from Components.Sources.List import List
 from Tools.KeyBindings import queryKeyBinding, getKeyDescription
 from Components.config import config
 from collections import defaultdict
+from functools import cmp_to_key
 
 # Helplist structure:
 # [ ( actionmap, context, [(action, help), (action, help), ...] ), (actionmap, ... ), ... ]
@@ -139,7 +140,7 @@ class HelpMenuList(List):
 			amId = actMapId()
 			if headings and amId in actionMapHelp and getattr(actionmap, "description", None):
 				if sortCmp or sortKey:
-					actionMapHelp[amId].sort(cmp=sortCmp, key=sortKey)
+					actionMapHelp[amId].sort(key=cmp_to_key(sortCmp) if sortCmp else sortKey)
 				self.addListBoxContext(actionMapHelp[amId], formatFlags)
 
 				l.append((None, actionmap.description, None) + extendedPadding)
@@ -159,7 +160,7 @@ class HelpMenuList(List):
 					del actionMapHelp[amId]
 
 			if sortCmp or sortKey:
-				otherHelp.sort(cmp=sortCmp, key=sortKey)
+				otherHelp.sort(key=cmp_to_key(sortCmp) if sortCmp else sortKey)
 			self.addListBoxContext(otherHelp, formatFlags)
 			l.extend(otherHelp)
 
@@ -228,7 +229,7 @@ class HelpMenuList(List):
 	def _sortKeyAlpha(self, hlp):
 		# Convert normal help to extended help form for comparison
 		# and ignore case
-		return map(str.lower, hlp[1] if isinstance(hlp[1], (tuple, list)) else [hlp[1], ''])
+		return list(map(str.lower, hlp[1] if isinstance(hlp[1], (tuple, list)) else [hlp[1], '']))
 
 	def ok(self):
 		# a list entry has a "private" tuple as first entry...
