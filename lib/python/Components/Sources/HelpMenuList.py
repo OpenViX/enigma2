@@ -80,7 +80,7 @@ class HelpMenuList(List):
 				continue
 
 			if headings and actionmap.description and not (formatFlags & self.HEADINGS):
-				print "[HelpMenuList] headings found"
+				print("[HelpMenuList] headings found")
 				formatFlags |= self.HEADINGS
 
 			for (action, help) in actions:
@@ -119,7 +119,7 @@ class HelpMenuList(List):
 
 				isExtended = isinstance(help, (tuple, list))
 				if isExtended and not (formatFlags & self.EXTENDED):
-					print "[HelpMenuList] extendedHelp entry found"
+					print("[HelpMenuList] extendedHelp entry found")
 					formatFlags |= self.EXTENDED
 
 				if helpTags:
