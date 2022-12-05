@@ -7,7 +7,7 @@ from Components.Sources.HelpMenuList import HelpMenuList
 from Components.Sources.StaticText import StaticText
 from Screens.Rc import Rc
 from enigma import eActionMap
-from sys import maxint
+maxint = 2147483647 # sys.maxint does not exist in python 3
 
 class HelpMenu(Screen, Rc):
 	helpText = _("""Help Screen
