@@ -104,7 +104,7 @@ The order and grouping of the help information list can be controlled using MENU
 			textline = 0
 			if len(selection[3]) > 1:
 				if longButtons:
-					print "[HelpMenu] SelectionChanged", longButtons
+					print("[HelpMenu] SelectionChanged", longButtons)
 					longText[textline] = _("Long press: ") + ', '.join(longButtons)
 					textline += 1
 				if shiftButtons:
