@@ -51,9 +51,9 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 		Screen.__init__(self, session)
 		self["actions"] = HelpableActionMap(self, "InfobarActions",
 			{
-				"showMovies": (self.showMovies, _("Play recorded movies...")),
-				"showRadio": (self.keyRadio, _("Show the radio player...")),
-				"showTv": (self.keyTV, _("Show the tv player...")),
+				"showMovies": (self.showMovies, _("Play recorded movies")),
+				"showRadio": (self.keyRadio, _("Show the radio player")),
+				"showTv": (self.keyTV, _("Show the tv player")),
 				"openBouquetList": (self.openBouquetList, _("Open bouquet list")),
 			}, prio=2, description=_("Basic functions"))
 
@@ -75,8 +75,8 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 				InfoBarHdmi, InfoBarPlugins, InfoBarServiceErrorPopupSupport, InfoBarButtonSetup:
 			x.__init__(self)
 
-		self.helpList.append((self["actions"], "InfobarActions", [("showMovies", _("Watch recordings..."))]))
-		self.helpList.append((self["actions"], "InfobarActions", [("showRadio", _("Listen to the radio..."))]))
+		self.helpList.append((self["actions"], "InfobarActions", [("showMovies", _("Watch recordings"))]))
+		self.helpList.append((self["actions"], "InfobarActions", [("showRadio", _("Listen to the radio"))]))
 
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
 				enigma.iPlayableService.evUpdatedEventInfo: self.__eventInfoChanged
@@ -268,8 +268,8 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 
 		self["actions"] = HelpableActionMap(self, "MoviePlayerActions",
 			{
-				"leavePlayer": (self.leavePlayer, _("Exit movie player...")),
-				"leavePlayerOnExit": (self.leavePlayerOnExit, _("Exit movie player..."))
+				"leavePlayer": (self.leavePlayer, _("Exit movie player")),
+				"leavePlayerOnExit": (self.leavePlayerOnExit, _("Exit movie player"))
 			}, description=_("Movie player"))
 
 		self.allowPiP = True
