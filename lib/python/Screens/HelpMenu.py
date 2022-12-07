@@ -3,8 +3,8 @@ from Tools.KeyBindings import keyBindings
 from Tools.BoundFunction import boundFunction
 from Components.Label import Label
 from Components.ActionMap import ActionMap
-from Components.Sources.StaticText import StaticText
 from Components.Sources.HelpMenuList import HelpMenuList
+from Components.Sources.StaticText import StaticText
 from Screens.Rc import Rc
 from enigma import eActionMap
 from sys import maxint
@@ -29,15 +29,13 @@ The order and grouping of the help information list can be controlled using MENU
 		self.setup_title = _("Help")
 		Screen.setTitle(self, self.setup_title)
 		Rc.__init__(self)
-		self.onSelChanged = [ ]
+		self.onSelChanged = []
 		self["list"] = HelpMenuList(list, self.close, rcPos=self.getRcPositions())
 		self["longshift_key0"] = Label("")
 		self["longshift_key1"] = Label("")
-
 		self["key_help"] = StaticText(_("HELP"))
 
-		self["actions"] = ActionMap(["WizardActions"],
-		{
+		self["actions"] = ActionMap(["WizardActions"], {
 			"ok": self["list"].ok,
 			"back": self.close,
 		}, -1)
@@ -72,9 +70,8 @@ The order and grouping of the help information list can be controlled using MENU
 
 		self["listboxFilterActions"] = ActionMap(["ListboxHelpMenuActions"], intercepts, prio=-1)
 
-		self["helpActions"] = ActionMap(["HelpActions"],
-			{
-				"displayHelp": self.showHelp,
+		self["helpActions"] = ActionMap(["HelpActions"], {
+			"displayHelp": self.showHelp,
 		})
 
 		self.onLayoutFinish.append(self.doOnLayoutFinish)
@@ -93,7 +90,7 @@ The order and grouping of the help information list can be controlled using MENU
 
 		longText = [""] * 2
 		longButtons = []
-		shiftButtons=[]
+		shiftButtons = []
 		if selection:
 			for button in selection[3]:
 				if len(button) > 1:
@@ -149,10 +146,9 @@ The order and grouping of the help information list can be controlled using MENU
 
 class HelpableScreen:
 	def __init__(self):
-		self["helpActions"] = ActionMap( [ "HelpActions" ],
-			{
-				"displayHelp": self.showHelp,
-			})
+		self["helpActions"] = ActionMap(["HelpActions"], {
+			"displayHelp": self.showHelp,
+		})
 		self["key_help"] = StaticText(_("HELP"))
 
 	def showHelp(self):

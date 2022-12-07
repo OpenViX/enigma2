@@ -5,13 +5,14 @@ from Components.Pixmap import MovingPixmap, MultiPixmap
 from Components.SystemInfo import SystemInfo
 from Tools.Directories import resolveFilename, SCOPE_SKIN
 
-config.misc.rcused = ConfigInteger(default = 1)
+config.misc.rcused = ConfigInteger(default=1)
+
 
 class Rc:
 	def __init__(self):
 		self["rc"] = MultiPixmap()
 
-		config.misc.rcused = ConfigInteger(default = 1)
+		config.misc.rcused = ConfigInteger(default=1)
 		nSelectPics = 16
 		rcheights = (500,) * 2
 		self.selectpics = []
@@ -45,16 +46,16 @@ class Rc:
 				print "[KeyIndicator]", actYpos, pixmap
 				owner[pixmap] = pm
 				self.pixmaps.append(pm)
-			self.pixmaps.sort(key = lambda x: x.activeYPos)
+			self.pixmaps.sort(key=lambda x: x.activeYPos)
 
-		def slideTime(self, frm, to, time = 20):
+		def slideTime(self, frm, to, time=20):
 			if not self.pixmaps:
 				return time
-			dist = ((to[0]-frm[0])**2 + (to[1]-frm[1])**2) ** 0.5
+			dist = ((to[0] - frm[0]) ** 2 + (to[1] - frm[1]) ** 2) ** 0.5
 			slide = int(round(dist / self.pixmaps[-1].activeYPos * time))
 			return slide if slide > 0 else 1
 
-		def moveTo(self, pos, rcpos, moveFrom = None, time = 20):
+		def moveTo(self, pos, rcpos, moveFrom=None, time=20):
 			foundActive = False
 			for i in range(len(self.pixmaps)):
 				pm = self.pixmaps[i]
@@ -80,7 +81,7 @@ class Rc:
 				pm.hide()
 
 	def initRc(self):
-		if self.SystemInfo["rc_default"]:
+		if SystemInfo["rc_default"]:
 			self["rc"].setPixmapNum(config.misc.rcused.value)
 		else:
 			self["rc"].setPixmapNum(0)
@@ -111,9 +112,9 @@ class Rc:
 			selectPic = self.selectpics[self.nSelectedKeys]
 			self.nSelectedKeys += 1
 			if self.oldNSelectedKeys > 0 and self.nSelectedKeys > self.oldNSelectedKeys:
-				selectPic.moveTo(pos, rcpos, moveFrom = self.selectpics[self.oldNSelectedKeys-1], time = 10)
+				selectPic.moveTo(pos, rcpos, moveFrom=self.selectpics[self.oldNSelectedKeys - 1], time=10)
 			else:
-				selectPic.moveTo(pos, rcpos, time = 10)
+				selectPic.moveTo(pos, rcpos, time=10)
 
 	def clearSelectedKeys(self):
 		self.showRc()
@@ -138,8 +139,8 @@ class Rc:
 	# 	rcpos = self["rc"].getPosition()
 	# 	for key in self.rcPositions.getRcKeyList():
 	# 		pos = self.rcPositions.getRcKeyPos(key)
-	# 		pm.addMovePoint(rcpos[0] + pos[0], rcpos[1] + pos[1], time = 5)
-	# 		pm.addMovePoint(rcpos[0] + pos[0], rcpos[1] + pos[1], time = 10)
+	# 		pm.addMovePoint(rcpos[0] + pos[0], rcpos[1] + pos[1], time=5)
+	# 		pm.addMovePoint(rcpos[0] + pos[0], rcpos[1] + pos[1], time=10)
 	# 	pm.startMoving()
 
 
@@ -149,7 +150,7 @@ class RcPositions:
 			target = resolveFilename(SCOPE_SKIN, "rcpositions.xml")
 		else:
 			target = resolveFilename(SCOPE_SKIN, path.join("rc_models", SystemInfo["rc_model"], "rcpositions.xml"))
-		tree = ElementTree(file = target)
+		tree = ElementTree(file=target)
 		rcs = tree.getroot()
 		self.rcs = {}
 		for rc in rcs:
