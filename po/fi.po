@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-12-08 09:16+0200\n"
+"PO-Revision-Date: 2022-12-08 09:55+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -16554,3 +16554,9 @@ msgstr "Välilehti"
 
 msgid "InputBox Actions"
 msgstr "InputBox tehtävät"
+
+msgid "Long press: "
+msgstr "Pitkä painallus: "
+
+msgid "Other functions"
+msgstr "Muut toiminnot"
