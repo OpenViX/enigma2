@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-12-08 19:48+0200\n"
+"PO-Revision-Date: 2022-12-09 14:04+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -5458,7 +5458,7 @@ msgid "Exit mediaplayer"
 msgstr "Poistu Mediasoittimesta"
 
 msgid "Exit menu"
-msgstr "Postu valikosta"
+msgstr "Poistu valikosta"
 
 msgid "Exit mounts setup menu"
 msgstr "Poistu liitosten asetusvalikosta"
@@ -12005,7 +12005,7 @@ msgid "Sort list:"
 msgstr "Listan järjestystapa:"
 
 msgid "Sort menu"
-msgstr "Valikon järjetely"
+msgstr "Valikon järjestely"
 
 msgid "Sort menu screens"
 msgstr "Järjestele valikkonäytöt"
@@ -16606,7 +16606,7 @@ msgid "Flat by position on remote"
 msgstr "Tasainen sijainnin mukaan kaukosäätimessä"
 
 msgid "Flat by key group on remote"
-msgstr "Tasainen avainryhmä kaukosäätimessä"
+msgstr "Tasainen avainryhmän mukaan kaukosäätimessä"
 
 #, python-format
 msgid "%s (%s)"
@@ -16638,3 +16638,6 @@ msgstr "Hakemisto %s on jo olemassa."
 
 msgid "Video settings"
 msgstr "Video-asetukset"
+
+msgid "Skin"
+msgstr "Teema"
