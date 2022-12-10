@@ -147,7 +147,7 @@ class HelpMenuList(List):
 		l = []
 		extendedPadding = (None, ) if formatFlags & self.EXTENDED else ()
 
-		for (actionmap, context, actions) in helplist:
+		for (actionmap, context, actions) in sorted(helplist, key=self._sortHeadingsAlpha):
 			amId = actMapId()
 			if headings and amId in actionMapHelp and getattr(actionmap, "description", None):
 				if sortCmp or sortKey:
@@ -241,6 +241,10 @@ class HelpMenuList(List):
 		# Convert normal help to extended help form for comparison
 		# and ignore case
 		return list(map(str.lower, hlp[1] if isinstance(hlp[1], (tuple, list)) else [hlp[1], '']))
+
+	def _sortHeadingsAlpha(self, a):
+		# ignore case
+		return (getattr(a[0], "description", None) or "").lower()
 
 	def ok(self):
 		# a list entry has a "private" tuple as first entry...
