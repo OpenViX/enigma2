@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-12-09 14:04+0200\n"
+"PO-Revision-Date: 2022-12-10 09:06+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3356,10 +3356,10 @@ msgid "Common Interface"
 msgstr "CI-liitäntä/CAM"
 
 msgid "Common Menu Actions"
-msgstr "CI-valikon aktiviteetit"
+msgstr "Valikon yhteiset toiminnot"
 
 msgid "Common Setup Actions"
-msgstr "CI-asetukset"
+msgstr "Asetusten yhteiset toiminnot"
 
 msgid "Common interface assignment"
 msgstr "CI-määritykset"
@@ -7647,7 +7647,7 @@ msgid "Move Up/Down"
 msgstr "Siirrä ylös/alas"
 
 msgid "Move down a line"
-msgstr "Siirry linja alas"
+msgstr "Siirry rivi alas"
 
 msgid "Move down a page"
 msgstr "Siirry sivu alas"
@@ -7716,7 +7716,7 @@ msgid "Move to previous channel"
 msgstr "Vaihda edelliselle kanavalle"
 
 msgid "Move up a line"
-msgstr "Siirry linja ylös"
+msgstr "Siirry rivi ylös"
 
 msgid "Move up a page"
 msgstr "Siirry sivu ylös"
@@ -16597,16 +16597,16 @@ msgid "Choose the order in which items are displayed in Help windows"
 msgstr "Valitse järjestys missä tiedot näytetään ohjenäytöissä"
 
 msgid "Alphabetical under headings"
-msgstr "Aakkosellinen otsikoiden alla"
+msgstr "Otsikoiden alla aakkosjärjestyksessä"
 
 msgid "Flat alphabetical"
-msgstr "Tasainen aakkosellinen"
+msgstr "Tasainen aakkosjärjestys"
 
 msgid "Flat by position on remote"
-msgstr "Tasainen sijainnin mukaan kaukosäätimessä"
+msgstr "Tasainen, kaukosäätimen näppäinten sijainnin mukaisesti"
 
 msgid "Flat by key group on remote"
-msgstr "Tasainen avainryhmän mukaan kaukosäätimessä"
+msgstr "Tasainen, kaukosäätimen avainryhmän mukaisesti"
 
 #, python-format
 msgid "%s (%s)"
