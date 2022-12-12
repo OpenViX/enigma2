@@ -7,7 +7,7 @@ from Components.Sources.HelpMenuList import HelpMenuList
 from Components.Sources.StaticText import StaticText
 from Screens.Rc import Rc
 from enigma import eActionMap
-maxint = 2147483647 # sys.maxint does not exist in python 3
+from sys import maxsize
 
 class HelpMenu(Screen, Rc):
 	helpText = "\n\n".join([
@@ -40,7 +40,7 @@ class HelpMenu(Screen, Rc):
 		# so that other wildcards can be interposed if needed.
 
 		self.onClose.append(self.doOnClose)
-		eActionMap.getInstance().bindAction('', maxint - 100, self["list"].handleButton)
+		eActionMap.getInstance().bindAction('', maxsize - 100, self["list"].handleButton)
 
 		# Ignore keypress breaks for the keys in the
 		# ListboxActions context.
