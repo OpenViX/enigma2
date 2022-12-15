@@ -123,7 +123,7 @@ def BackupManagerMenu(session, **kwargs):
 
 
 def ImageManager(session):
-	from ImageManager import VIXImageManager
+	from .ImageManager import VIXImageManager
 	return VIXImageManager(session)
 
 
