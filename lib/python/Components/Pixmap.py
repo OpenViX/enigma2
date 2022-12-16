@@ -11,9 +11,48 @@ from skin import loadPixmap
 class Pixmap(GUIComponent):
 	GUI_WIDGET = ePixmap
 
+	def __init__(self):
+		GUIComponent.__init__(self)
+		self.xOffset, self.yOffset = 0, 0
+
 	def getSize(self):
 		s = self.instance.size()
 		return s.width(), s.height()
+
+	def applySkin(self, desktop, screen):
+		if self.skinAttributes is not None:
+			skin_path_prefix = getattr(screen, "skin_path", path)
+			pixmap = None
+			attribs = [ ]
+			for (attrib, value) in self.skinAttributes:
+				if attrib == "offset":
+					self.xOffset, self.yOffset = map(int, value.split(','))
+				else:
+					attribs.append((attrib,value))
+			self.skinAttributes = attribs
+		return GUIComponent.applySkin(self, desktop, screen)
+
+
+	def move(self, x, y = None):
+		if y is None:
+			y = x.y()
+			x = x.x()
+		GUIComponent.move(self, x - self.xOffset, y - self.yOffset)
+
+	def setPosition(self, x, y):
+		self.move(x, y)
+
+	def getPosition(self):
+		x, y = GUIComponent.getPosition(self)
+		return x + self.xOffset, y + self.yOffset
+
+	def setOffset(self, x, y):
+		oldx, oldy = self.getPosition()
+		self.xOffset, self.yOffset = x, y
+		self.move(oldx, oldy)
+
+	def getOffset(self):
+		return self.xOffset, self.yOffset
 
 
 class PixmapConditional(ConditionalWidget, Pixmap):
@@ -28,14 +67,19 @@ class MovingPixmap(Pixmap):
 
 		self.moving = False
 
-		# TODO: get real values
-		self.x = 0.0
-		self.y = 0.0
+		# get actual values after skin applied
+		self.x = 0
+		self.y = 0
 
 		self.clearPath()
 
 		self.moveTimer = eTimer()
 		self.moveTimer.callback.append(self.doMove)
+
+	def applySkin(self, desktop, screen):
+		ret = Pixmap.applySkin(self, desktop, screen)
+		self.x, self.y = self.getPosition()
+		return ret
 
 	def clearPath(self, repeated=False):
 		if self.moving:
@@ -55,24 +99,31 @@ class MovingPixmap(Pixmap):
 
 	def startMoving(self):
 		if not self.moving:
-			self.time = self.path[self.currDest][2]
-			self.stepX = (self.path[self.currDest][0] - self.x) / float(self.time)
-			self.stepY = (self.path[self.currDest][1] - self.y) / float(self.time)
+			try:
+				self.time = self.path[self.currDest][2]
+				self.x, self.y = self.getPosition()
+				self.stepX = (self.path[self.currDest][0] - self.x) / float(self.time)
+				self.stepY = (self.path[self.currDest][1] - self.y) / float(self.time)
 
-			self.moving = True
-			self.moveTimer.start(100)
+				self.moving = True
+				self.moveTimer.start(100)
+			except:  # moving not possible... widget not there yet/any more... stop moving
+				self.stopMoving()
 
 	def stopMoving(self):
 		self.moving = False
 		self.moveTimer.stop()
 
 	def doMove(self):
-		self.x += self.stepX
-		self.y += self.stepY
 		self.time -= 1
+		if self.time == 0:
+			self.x, self.y = self.path[self.currDest][0:2]
+		else:
+			self.x += self.stepX
+			self.y += self.stepY
 		try:
 			self.move(int(self.x), int(self.y))
-		except: # moving not possible... widget not there any more... stop moving
+		except:  # moving not possible... widget not there any more... stop moving
 			self.stopMoving()
 
 		if self.time == 0:

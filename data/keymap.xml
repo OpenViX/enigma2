@@ -359,23 +359,50 @@
 	</map>
 
 	<!--+
-	    | Map to catch break events for the ListboxActions keys
-	    | in Screens.HelpMenu so that those are not passed through
-	    | to the HelpMenu wildcard actions as unhandled keypresses.
+            | Map to catch break events for the ListboxActions keys
+            | in Screens.HelpMenu so that those are not passed through
+            | to the HelpMenu wildcard actions as unhandled keypresses,
+            | and to catch  ListboxActions on CH+/-, FF & REW and
+            | divert them to "jump to help for button" in the Help
+            | screen.  If CH+/-, FF & REW are to be allowed for list
+            | navigation, replace their key mappings with ones that
+            | simply have mapto="ignore" flags="b".
+	    |
+            | If that's done, then the help text for the HelpMenu
+            | screen should be changed to indicate that those buttons
+            | are used for navigation.
 	    +-->
+
 	<map context="ListboxHelpMenuActions">
 		<device name="keyboard">
 			<key id="a" mapto="ignore" flags="b" />
 			<key id="b" mapto="ignore" flags="b" />
 		</device>
+		<key id="KEY_REWIND" mapto="moveEndM" flags="m" />
+		<key id="KEY_REWIND" mapto="moveEndR" flags="r" />
+		<key id="KEY_REWIND" mapto="moveEndL" flags="l" />
+		<key id="KEY_REWIND" mapto="moveEndB" flags="b" />
+		<key id="KEY_LEFT" mapto="ignore" flags="b" />
+		<key id="KEY_CHANNELUP" mapto="pageUpM" flags="m" />
+		<key id="KEY_CHANNELUP" mapto="pageUpR" flags="r" />
+		<key id="KEY_CHANNELUP" mapto="pageUpL" flags="l" />
+		<key id="KEY_CHANNELUP" mapto="pageUpB" flags="b" />
 		<key id="KEY_UP" mapto="ignore" flags="b" />
 		<key id="KEY_DOWN" mapto="ignore" flags="b" />
+		<key id="KEY_RIGHT" mapto="ignore" flags="b" />
+		<key id="KEY_CHANNELDOWN" mapto="pageDownM" flags="m" />
+		<key id="KEY_CHANNELDOWN" mapto="pageDownR" flags="r" />
+		<key id="KEY_CHANNELDOWN" mapto="pageDownL" flags="l" />
+		<key id="KEY_CHANNELDOWN" mapto="pageDownB" flags="b" />
+		<key id="KEY_FASTFORWARD" mapto="moveTopM" flags="m" />
+		<key id="KEY_FASTFORWARD" mapto="moveTopR" flags="r" />
+		<key id="KEY_FASTFORWARD" mapto="moveTopL" flags="l" />
+		<key id="KEY_FASTFORWARD" mapto="moveTopB" flags="b" />
+		<!-- Keyboard specific buttons -->
 		<key id="KEY_HOME" mapto="ignore" flags="b" />
-		<key id="KEY_END" mapto="ignore" flags="b" />
 		<key id="KEY_PAGEUP" mapto="ignore" flags="b" />
 		<key id="KEY_PAGEDOWN" mapto="ignore" flags="b" />
-		<key id="KEY_LEFT" mapto="ignore" flags="b" />
-		<key id="KEY_RIGHT" mapto="ignore" flags="b" />
+		<key id="KEY_END" mapto="ignore" flags="b" />
 		<key id="1" mapto="ignore" flags="b" />
 		<key id="2" mapto="ignore" flags="b" />
 	</map>

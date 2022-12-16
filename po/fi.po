@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-12-01 20:14+0200\n"
+"PO-Revision-Date: 2022-12-10 09:06+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2313,8 +2313,8 @@ msgstr "Äänen kielivalinta 3"
 msgid "Audio language selection 4"
 msgstr "Äänen kielivalinta 4"
 
-msgid "Audio options..."
-msgstr "Ääniasetukset..."
+msgid "Audio options"
+msgstr "Ääniasetukset"
 
 #, python-format
 msgid "Audio track (%s) format"
@@ -3356,10 +3356,10 @@ msgid "Common Interface"
 msgstr "CI-liitäntä/CAM"
 
 msgid "Common Menu Actions"
-msgstr "CI-valikon aktiviteetit"
+msgstr "Valikon yhteiset toiminnot"
 
 msgid "Common Setup Actions"
-msgstr "CI-asetukset"
+msgstr "Asetusten yhteiset toiminnot"
 
 msgid "Common interface assignment"
 msgstr "CI-määritykset"
@@ -5259,8 +5259,8 @@ msgstr "Aseta, jos olet maapallon itä,- tai länsipuolella."
 msgid "Enter if you are north or south of the equator."
 msgstr "Syötä, jos olet päiväntasaajan etelä,- tai pohjoispuolella."
 
-msgid "Enter main menu..."
-msgstr "Mene päävalikkoon..."
+msgid "Enter main menu"
+msgstr "Mene päävalikkoon"
 
 msgid "Enter persistent PIN code"
 msgstr "Syötä katselun PIN-koodi"
@@ -5458,7 +5458,7 @@ msgid "Exit mediaplayer"
 msgstr "Poistu Mediasoittimesta"
 
 msgid "Exit menu"
-msgstr "Postu valikosta"
+msgstr "Poistu valikosta"
 
 msgid "Exit mounts setup menu"
 msgstr "Poistu liitosten asetusvalikosta"
@@ -5466,8 +5466,8 @@ msgstr "Poistu liitosten asetusvalikosta"
 msgid "Exit movie list"
 msgstr "Poistu tallenneluettelosta"
 
-msgid "Exit movie player..."
-msgstr "Poistu soittimesta..."
+msgid "Exit movie player"
+msgstr "Poistu soittimesta"
 
 msgid "Exit movie player?"
 msgstr "Poistu soittimesta?"
@@ -6816,9 +6816,6 @@ msgstr "Pikatallennus"
 msgid "Instant recording location"
 msgstr "Pikatallennuksen hakemisto"
 
-msgid "Instant recording..."
-msgstr "Pikatallennus..."
-
 msgid "Interface"
 msgstr "Liittymä"
 
@@ -7185,8 +7182,8 @@ msgstr "Tila:"
 msgid "Linked titles with a DVD menu"
 msgstr "Linkitetyt tallenteet ja DVD-valikko"
 
-msgid "List EPG functions..."
-msgstr "Listaa EPG-toiminnot..."
+msgid "List EPG functions"
+msgstr "Listaa EPG-toiminnot"
 
 msgid "List available networks"
 msgstr "Näytä verkot"
@@ -7206,8 +7203,8 @@ msgstr "Kanavalista/Suosikit/Tallennukset"
 msgid "List/File"
 msgstr "Lista/Tiedosto"
 
-msgid "Listen to the radio..."
-msgstr "Kuuntele radiota..."
+msgid "Listen to the radio"
+msgstr "Kuuntele radiota"
 
 msgid "Listener for hotplug events."
 msgstr "Kuuntelija hotplug tapahtumille."
@@ -7650,7 +7647,7 @@ msgid "Move Up/Down"
 msgstr "Siirrä ylös/alas"
 
 msgid "Move down a line"
-msgstr "Siirry linja alas"
+msgstr "Siirry rivi alas"
 
 msgid "Move down a page"
 msgstr "Siirry sivu alas"
@@ -7719,7 +7716,7 @@ msgid "Move to previous channel"
 msgstr "Vaihda edelliselle kanavalle"
 
 msgid "Move up a line"
-msgstr "Siirry linja ylös"
+msgstr "Siirry rivi ylös"
 
 msgid "Move up a page"
 msgstr "Siirry sivu ylös"
@@ -8424,17 +8421,14 @@ msgstr "Vain käynnistyksessä"
 msgid "Only select 'yes' if you are using a multiswich that requires a DiSEqC Port-A command signal. For all other setups select 'no'."
 msgstr "Valitse 'kyllä', jos käytät monikytkintä, joka vaatii DiSEqC portti-A komentosignaalin. Kaikille muille kokoonpanoille valitse 'ei'."
 
-msgid "Open RDS/RASS screen..."
-msgstr "Avaa RDS/RASS näyttö..."
+msgid "Open RDS/RASS screen"
+msgstr "Avaa RDS/RASS näyttö"
 
 msgid "Open bouquet list"
 msgstr "Avaa suosikkilistat"
 
 msgid "Open infobar EPG"
 msgstr "Avaa tietopalkin EPG"
-
-msgid "Open infobar EPG..."
-msgstr "Avaa tietopalkin EPG..."
 
 msgid "Open menu"
 msgstr "Avaa valikko"
@@ -8830,8 +8824,8 @@ msgstr "Toista seuraava (palaa aiemmalle kanavalle)"
 msgid "Play previous"
 msgstr "Toista edellinen"
 
-msgid "Play recorded movies..."
-msgstr "Toista tallenteet..."
+msgid "Play recorded movies"
+msgstr "Toista tallenteet"
 
 #, python-format
 msgid "Play the %d marked recordings"
@@ -8867,8 +8861,8 @@ msgstr "Muuta tallennuksen päättymisaika"
 msgid "Please choose CCcam-Reader"
 msgstr "Valitse CCcam-lukija"
 
-msgid "Please choose an extension..."
-msgstr "Valitse laajennus..."
+msgid "Please choose an extension"
+msgstr "Valitse laajennus"
 
 msgid "Please choose reader"
 msgstr "Valitse lukija"
@@ -8950,8 +8944,8 @@ msgstr "Valitse poistettava soittolista..."
 msgid "Please select a playlist..."
 msgstr "Valitse soittolista..."
 
-msgid "Please select a sub service..."
-msgstr "Valitse alipalvelu..."
+msgid "Please select a sub service"
+msgstr "Valitse alipalvelu"
 
 msgid "Please select a subservice to record..."
 msgstr "Valitse tallennettava alipalvelu..."
@@ -9745,8 +9739,8 @@ msgstr "Punainen näppäin (pitkä)"
 msgid "Red button (short)"
 msgstr "Punainen näppäin (lyhyt)"
 
-msgid "Red button..."
-msgstr "Punainen näppäin..."
+msgid "Red button"
+msgstr "Punainen näppäin"
 
 msgid "Red colored"
 msgstr "Punainen väritys"
@@ -11336,8 +11330,8 @@ msgstr "Näytä PiP etunäytössä"
 msgid "Show PVR status in Movie Player infobar"
 msgstr "Näytä soittimen tila soitto-ohjelman tietopalkissa"
 
-msgid "Show RFmod setup..."
-msgstr "Näytä RFMod-asetukset..."
+msgid "Show RFmod setup"
+msgstr "Näytä RFMod-asetukset"
 
 msgid "Show Readers/Proxies"
 msgstr "Näytä lukijat/proxyt"
@@ -11379,7 +11373,7 @@ msgid "Show alternatives"
 msgstr "Näytä vaihtoehtoiset kanavat"
 
 msgid "Show animation while busy"
-msgstr "Näytä animaatio(rattaat) kun varattu"
+msgstr "Näytä animaatio (rattaat) kun varattu"
 
 msgid "Show autotimer list"
 msgstr "Näytä automaattiajastusluettelo"
@@ -11447,8 +11441,8 @@ msgstr "Näytä laajennettu ohjelmakuvaus"
 msgid "Show extension selection"
 msgstr "Näytä laajennukset"
 
-msgid "Show extensions..."
-msgstr "Näytä laajennukset..."
+msgid "Show extensions"
+msgstr "Näytä laajennukset"
 
 msgid "Show favourites list"
 msgstr "Näytä suosikkilista"
@@ -11510,8 +11504,8 @@ msgstr "Näytä tallenteiden pituus tallenneluettelossa"
 msgid "Show movies"
 msgstr "Näytä tallennukset"
 
-msgid "Show network mounts ..."
-msgstr "Näytä verkkoliitokset ..."
+msgid "Show network mounts "
+msgstr "Näytä verkkoliitokset "
 
 msgid "Show notifications"
 msgstr "Näytä ilmoitukset"
@@ -11543,8 +11537,8 @@ msgstr "Näytä kuvake kääntömoottorin liikkuessa"
 msgid "Show positioner position"
 msgstr "Näytä kääntömoottorin asentotieto"
 
-msgid "Show program information..."
-msgstr "Näytä ohjelman tietoja..."
+msgid "Show program information"
+msgstr "Näytä ohjelman tietoja"
 
 msgid "Show record indicator"
 msgstr "Tallennusmerkki"
@@ -11579,8 +11573,8 @@ msgstr "Näytä asetusten oletusarvot"
 msgid "Show shutdown menu"
 msgstr "Näytä sammutusvalikko"
 
-msgid "Show single channel EPG..."
-msgstr "Näytä yhden kanavan EPG..."
+msgid "Show single channel EPG"
+msgstr "Näytä yhden kanavan EPG"
 
 msgid "Show single epg for current channel"
 msgstr "Näytä nykyisen kanavan ohjelmatiedot"
@@ -11600,32 +11594,32 @@ msgstr "Näytä valikko"
 msgid "Show subservice selection"
 msgstr "Näytä kanavatyypin kuvakkeet"
 
-msgid "Show subservice selection list..."
-msgstr "Näytä kanavatyypin valintalista..."
+msgid "Show subservice selection list"
+msgstr "Näytä kanavatyypin valintalista"
 
 msgid "Show subtitle selection"
 msgstr "Tekstitysvalinta"
 
-msgid "Show the DreamPlex player..."
-msgstr "Näytä DreamPlex-soitin..."
+msgid "Show the DreamPlex player"
+msgstr "Näytä DreamPlex-soitin"
 
 msgid "Show the list of autotimers."
 msgstr "Näytä automaattiajastusluettelo."
 
-msgid "Show the list of timers."
-msgstr "Näytä ajastusluettelo."
+msgid "Show the list of timers"
+msgstr "Näytä ajastusluettelo"
 
-msgid "Show the plugin browser.."
-msgstr "Näytä lisäosien selain.."
+msgid "Show the plugin browser"
+msgstr "Näytä lisäosien selain"
 
-msgid "Show the radio player..."
-msgstr "Näytä radiosoitin..."
+msgid "Show the radio player"
+msgstr "Näytä radiosoitin"
 
 msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
 msgstr "Näytä kanavan tiedot  kahdella rivillä kanavan valintanäytöllä. Voit valita nykyisen ohjelmatiedon kanavan nimen alle tai nykyisen ohjelmatiedon kanavan nimen viereen ja seuraavan ohjelmatiedon toiselle riville."
 
-msgid "Show the tv player..."
-msgstr "Näytä tv..."
+msgid "Show the tv player"
+msgstr "Näytä tv"
 
 msgid "Show time elapsed as positive"
 msgstr "Näytä kulunut aika positiivisena"
@@ -12011,7 +12005,7 @@ msgid "Sort list:"
 msgstr "Listan järjestystapa:"
 
 msgid "Sort menu"
-msgstr "Valikon järjetely"
+msgstr "Valikon järjestely"
 
 msgid "Sort menu screens"
 msgstr "Järjestele valikkonäytöt"
@@ -12348,10 +12342,7 @@ msgid "Subtitle quickmenu"
 msgstr "Tekstityksen pikavalikko"
 
 msgid "Subtitle selection"
-msgstr "Tekstitysvalinta"
-
-msgid "Subtitle selection..."
-msgstr "Tekstityksen valinta..."
+msgstr "Tekstityksen valinta"
 
 msgid "Subtitles"
 msgstr "Tekstitys"
@@ -13206,9 +13197,6 @@ msgstr "Ajastuksien tallennushakemisto"
 msgid "Timer selection"
 msgstr "Ajastinvalinta"
 
-msgid "Timer selection..."
-msgstr "Ajastinvalinta..."
-
 msgid "Timer type"
 msgstr "Ajastuksen tyyppi"
 
@@ -13274,8 +13262,8 @@ msgstr "Tekstityksen valintaan"
 msgid "Today"
 msgstr "Tänään"
 
-msgid "Toggle Digital downmix..."
-msgstr "Vaihda muunto stereoksi..."
+msgid "Toggle Digital downmix"
+msgstr "Vaihda muunto stereoksi"
 
 msgid "Toggle HDMI-In PiP"
 msgstr "Valitse HDMI-tulo PiP:n lähteeksi"
@@ -13295,8 +13283,8 @@ msgstr "Vaihda leikkausmerkki nykyiseen kohtaan"
 msgid "Toggle a selection mark"
 msgstr "Vaihda valintamerkkiä"
 
-msgid "Toggle aspect ratio..."
-msgstr "Vaihda kuvasuhdetta..."
+msgid "Toggle aspect ratio"
+msgstr "Vaihda kuvasuhdetta"
 
 msgid "Toggle between bouquet/epg lists"
 msgstr "Vaihda suosikkien ja ohjelmatietojen välillä"
@@ -14058,8 +14046,8 @@ msgstr "Katso Video-CD..."
 msgid "View details"
 msgstr "Lisätiedot"
 
-msgid "View extensions..."
-msgstr "Näytä laajennukset..."
+msgid "View extensions"
+msgstr "Näytä laajennukset"
 
 msgid "View list of available "
 msgstr "Näytä saatavilla olevat"
@@ -14106,8 +14094,8 @@ msgstr "Näyttötila"
 msgid "View photos..."
 msgstr "Näytä kuvia..."
 
-msgid "View teletext..."
-msgstr "Näytä teksti-tv..."
+msgid "View teletext"
+msgstr "Näytä teksti-tv"
 
 msgid "View the changes"
 msgstr "Näytä muutokset"
@@ -14226,8 +14214,8 @@ msgstr "Varoitus: tämän kaksoisvirittimen toinen tulo ei ehkä tue SCR LNB:tä
 msgid "Watch movies..."
 msgstr "Toista tallenteet..."
 
-msgid "Watch recordings..."
-msgstr "Katso tallenteita..."
+msgid "Watch recordings"
+msgstr "Katso tallenteita"
 
 msgid "Web Interface"
 msgstr "Web-liittymä"
@@ -15041,11 +15029,11 @@ msgstr "Zimbabwe"
 msgid "Zoom"
 msgstr "Suurenna"
 
-msgid "Zoom In/Out TV..."
-msgstr "Suurenna +/- TV..."
+msgid "Zoom In/Out TV"
+msgstr "Suurenna +/- TV"
 
-msgid "Zoom Off..."
-msgstr "Suurennus pois..."
+msgid "Zoom Off"
+msgstr "Suurennus pois"
 
 msgid "Zoom from left"
 msgstr "Kasvata vasemmalta"
@@ -16261,7 +16249,7 @@ msgid "violet"
 msgstr "violetti"
 
 msgid "wait for ci..."
-msgstr "Odotetaan ci:tä.."
+msgstr "Odotetaan ci:tä..."
 
 msgid "wait for mmi..."
 msgstr "Odotetaan mmi:tä..."
@@ -16566,3 +16554,90 @@ msgstr "Välilehti"
 
 msgid "InputBox Actions"
 msgstr "InputBox tehtävät"
+
+msgid "Long press: "
+msgstr "Pitkä painallus: "
+
+msgid "Other functions"
+msgstr "Muut toiminnot"
+
+msgid ""
+"Help Screen\n"
+"\n"
+"Brief help information for buttons in your current context.\n"
+"\n"
+"Navigate up/down with UP/DOWN buttons and page up/down with LEFT/RIGHT. EXIT to return to the help screen. OK to perform the action described in the currently highlighted help.\n"
+"\n"
+"Other buttons will jump to the help for that button, if there is help.\n"
+"\n"
+"If an action is user-configurable, its help entry will be flagged (C)\n"
+"\n"
+"A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s).\n"
+"\n"
+"The order and grouping of the help information list can be controlled using MENU>Setup>User Interface>Settings>Sort order for help screen."
+msgstr ""
+"Ohjenäyttö\n"
+"\n"
+"Nappäinten lyhyet ohjetiedot nykyisessä kontekstissäsi.\n"
+"\n"
+"Navigoi ylös/alas YLÖS/ALAS -näppäimillä ja sivu ylös/alas VASEN/OIKEA -näppäimillä. EXIT-näppäimellä paluu ohjenäytölle. OK-näppäimellä suoritetaan toiminto, joka on kuvattu korostetulla rivillä.\n"
+"\n"
+"Muilla näppäimillä hypätään kyseisen näppäimen ohjeeseen, jos sellainen on olemassa.\n"
+"\n"
+"Jos toiminto on käyttäjän määriteltävissä, sen merkkkinä on (M)\n"
+"\n"
+"Korostus kaukosäätimen kuvassa näyttää mihin ohje viittaa. Jos useampi näppäin suorittaa korostetun toiminnon, niin usempi korostus näytetään. Teksti kuvan alla näyttää tarvitaanko näppäimen/näppäinten pitkä painallus.\n"
+"\n"
+"Ohjetietolistan järjestys ja ryhmittely voidaan määrittää kohdassa Päävalikko/Asetukset/Käyttöliittymä/Asetukset> Ohjenäytön lajittelujärjestys."
+
+msgid "Sort order for help screen"
+msgstr "Ohjenäytön lajittelujärjestys"
+
+msgid "Choose the order in which items are displayed in Help windows"
+msgstr "Valitse järjestys missä tiedot näytetään ohjenäytöissä"
+
+msgid "Alphabetical under headings"
+msgstr "Otsikoiden alla aakkosjärjestyksessä"
+
+msgid "Flat alphabetical"
+msgstr "Tasainen aakkosjärjestys"
+
+msgid "Flat by position on remote"
+msgstr "Tasainen, kaukosäätimen näppäinten sijainnin mukaisesti"
+
+msgid "Flat by key group on remote"
+msgstr "Tasainen, kaukosäätimen avainryhmän mukaisesti"
+
+#, python-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+msgctxt "Text list separator"
+msgid ", "
+msgstr ", "
+
+msgctxt "Abbreviation of \"Configurable\""
+msgid "C"
+msgstr "M"
+
+msgid "Choose the option to correct invalid EPG data."
+msgstr "Valitse vaihtoehto epäkelvon EPG-tiedon korjaamiseksi."
+
+msgid "Correct invalid EPG data"
+msgstr "Korjaa epäkelpo EPG-tieto"
+
+msgid "Debug"
+msgstr "Debug"
+
+msgid "SHIFT: "
+msgstr "SHIFT: "
+
+#, python-format
+msgid "The directory %s already exists."
+msgstr "Hakemisto %s on jo olemassa."
+
+msgid "Video settings"
+msgstr "Video-asetukset"
+
+msgid "Skin"
+msgstr "Teema"

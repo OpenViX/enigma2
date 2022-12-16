@@ -74,6 +74,7 @@
 		<item level="2" text="Infobar frontend data source" description="Configure the source of the frontend data as shown on the infobars. 'Settings' is as stored on the settings. 'Tuner' is as reported by the tuner.">config.usage.infobar_frontend_source</item>
 		<item level="2" text="Swap SNR in '&#37;' with SNR in 'db'" description="This option allows you to show the SNR as a percentage (not all receivers support this).">config.usage.swap_snr_on_osd</item>
 		<item level="1" text="Show screen path" description="This option allows you to show the full screen path leading to the current screen.">config.usage.showScreenPath</item>
+		<item level="0" text="Sort order for help screen" description="Choose the order in which items are displayed in Help windows">config.usage.help_sortorder</item>
 		<item level="1" text="Sort setting screens alphabetically" description="This option allows you to disable sorting of the option in setting screens">config.usage.sort_settings</item>
 		<item level="1" text="Sort menu screens" description="When set to 'user defined' this option allows you to sort or hide menu items via the blue button in menu screens. When set to 'user defined hidden' the blue button text in the menu remains hidden even though the user sort feature is active.">config.usage.menu_sort_mode</item>
 		<item level="0" text="Show menu numbers" description="This option allows you to show menu number quick links.">config.usage.menu_show_numbers</item>
