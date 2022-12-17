@@ -76,6 +76,9 @@ class PluginDescriptor():
 
 	WHERE_EXTENSIONSINGLE = 21
 
+	# allow plugin to assign to hotkey only
+	WHERE_BUTTONSETUP = 22
+
 	def __init__(self, name="Plugin", where=None, description="", icon=None, fnc=None, wakeupfnc=None, needsRestart=None, internal=False, weight=0):
 		if not where:
 			where = []
