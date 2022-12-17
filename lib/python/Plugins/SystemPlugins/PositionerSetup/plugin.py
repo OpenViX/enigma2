@@ -1370,7 +1370,7 @@ class PositionerSetupLog(Screen):
 		self.close(False)
 
 	def clear(self):
-		log.logfile.reset()
+		log.logfile.seek(0)
 		log.logfile.truncate()
 		self.close(False)
 
