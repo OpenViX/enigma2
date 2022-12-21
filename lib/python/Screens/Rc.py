@@ -20,7 +20,7 @@ class Rc:
 			self.selectpics.append(
 				self.KeyIndicator(
 					self, rcheights,
-					("indicator_l" + str(i), "indicator_u" + str(i))
+					("indicatorL" + str(i), "indicatorU" + str(i))
 				)
 			)
 		self.rcPositions = RcPositions()
