@@ -10,7 +10,6 @@ from keyids import KEYIDS
 from boxbranding import getBrandOEM
 from Components.config import config, ConfigInteger, ConfigSlider, ConfigSubsection, ConfigText, ConfigYesNo
 from Components.SystemInfo import SystemInfo
-from Tools.Directories import resolveFilename, SCOPE_SKIN
 
 # include/uapi/asm-generic/ioctl.h
 IOC_NRBITS = 8
@@ -201,7 +200,7 @@ class InitInputDevices:
 		exec(cmd)
 
 	def remapRemoteControl(self, device):
-		filename = resolveFilename(SCOPE_SKIN, path.join("rc_models", SystemInfo["rc_model"], "rcpositions.xml"))
+		filename = SystemInfo["RCMapping"]
 		domRemote = self.loadRemoteControl(filename)
 		logRemaps = []
 		remapButtons = {}

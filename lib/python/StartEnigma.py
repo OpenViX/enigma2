@@ -610,6 +610,12 @@ def runScreenTest():
 
 	return 0
 
+# must be above skins and InputDevices
+config.misc.RCSource = ConfigSelection(default="branding", choices=[("branding", _("OE-A-Branding")), ("hardware", _("OE-A-Remotes"))])
+def RCSelectionChanged(configelement):
+	from Components.SystemInfo import setRCFile
+	setRCFile(configelement.value)
+config.misc.RCSource.addNotifier(RCSelectionChanged)
 
 profile("Init:skin")
 print("[StartEnigma] Initialising Skins.")

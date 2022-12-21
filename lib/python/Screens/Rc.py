@@ -149,7 +149,7 @@ class RcPositions:
 		if SystemInfo["rc_default"]:
 			target = resolveFilename(SCOPE_SKIN, "rcpositions.xml")
 		else:
-			target = resolveFilename(SCOPE_SKIN, path.join("rc_models", SystemInfo["rc_model"], "rcpositions.xml"))
+			target = SystemInfo["RCMapping"]
 		tree = ElementTree(file=target)
 		rcs = tree.getroot()
 		self.rcs = {}
