@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-19 22:18+0000\n"
-"PO-Revision-Date: 2022-12-17 18:33+0200\n"
+"PO-Revision-Date: 2022-12-21 10:21+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -16641,3 +16641,9 @@ msgstr "Video-asetukset"
 
 msgid "Skin"
 msgstr "Teema"
+
+msgid "User installed plugins"
+msgstr "Käyttäjän asentamat lisäosat"
+
+msgid "No user installed plugins found"
+msgstr "Käyttäjän asentamia lisäosia ei löydy"
