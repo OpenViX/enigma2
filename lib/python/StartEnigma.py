@@ -615,7 +615,7 @@ config.misc.RCSource = ConfigSelection(default="branding", choices=[("branding",
 def RCSelectionChanged(configelement):
 	from Components.SystemInfo import setRCFile
 	setRCFile(configelement.value)
-config.misc.RCSource.addNotifier(RCSelectionChanged)
+config.misc.RCSource.addNotifier(RCSelectionChanged, immediate_feedback=False)
 
 profile("Init:skin")
 print("[StartEnigma] Initialising Skins.")
