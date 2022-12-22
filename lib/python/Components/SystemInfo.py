@@ -1,5 +1,5 @@
 from os import listdir
-from os.path import join as pathjoin
+from os.path import isfile, join as pathjoin
 from boxbranding import getBoxType, getBrandOEM, getDisplayType, getHaveAVJACK, getHaveHDMIinFHD, getHaveHDMIinHD, getHaveRCA, getHaveSCART, getHaveSCARTYUV, getHaveYUV, getImageType, getMachineBrand, getMachineBuild, getMachineMtdRoot, getMachineName
 from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager
 
