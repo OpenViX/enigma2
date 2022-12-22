@@ -1,9 +1,9 @@
-from xml.etree.ElementTree import ElementTree
-from os import path
+from keyids import KEYIDS
 from Components.config import config, ConfigInteger
 from Components.Pixmap import MovingPixmap, MultiPixmap
 from Components.SystemInfo import SystemInfo
-from Tools.Directories import resolveFilename, SCOPE_SKIN
+from Tools.Directories import resolveFilename, SCOPE_SKIN, fileReadXML
+from Tools.KeyBindings import keyDescriptions
 
 config.misc.rcused = ConfigInteger(default=1)
 
@@ -146,34 +146,59 @@ class Rc:
 
 class RcPositions:
 	def __init__(self):
-		if SystemInfo["rc_default"]:
-			target = resolveFilename(SCOPE_SKIN, "rcpositions.xml")
-		else:
-			target = SystemInfo["RCMapping"]
-		tree = ElementTree(file=target)
-		rcs = tree.getroot()
+		self._makeLabels()
+		file = resolveFilename(SCOPE_SKIN, "rcpositions.xml") if SystemInfo["rc_default"] else SystemInfo["RCMapping"]
+		rcs = fileReadXML(file, "<rcs />")
 		self.rcs = {}
-		for rc in rcs:
-			id = int(rc.attrib["id"])
-			self.rcs[id] = {"names": [], "keypos": {}}
-			for key in rc:
-				name = key.attrib["name"]
-				pos = key.attrib["pos"].split(",")
-				self.rcs[id]["keypos"][name] = (int(pos[0]), int(pos[1]))
-				self.rcs[id]["names"].append(name)
+		machine_id = 2
+		for rc in rcs.findall("rc"):
+			self.rc_id = int(rc.attrib.get("id", machine_id))
+			self.rcs[self.rc_id] = {}
+			self.rcs[self.rc_id]["keyIds"] = []
+			for key in rc.findall("button"):
+				if "name" in key.attrib: # legacy
+					keyId = self.keyDescriptions[self.rc_id].get(key.attrib["name"])
+					if keyId:
+						self.rcs[self.rc_id]["keyIds"].append(keyId)
+						self.rcs[self.rc_id][keyId] = {}
+						self.rcs[self.rc_id][keyId]["label"] = key.attrib["name"]
+						self.rcs[self.rc_id][keyId]["pos"] = [int(x.strip()) for x in key.attrib.get("pos", "0,0").split(",")]
+				elif  "id" in key.attrib: # oe-remotes
+					keyId = KEYIDS.get(key.attrib["id"])
+					if keyId:
+						self.rcs[self.rc_id]["keyIds"].append(keyId)
+						self.rcs[self.rc_id][keyId] = {}
+						self.rcs[self.rc_id][keyId]["label"] = key.attrib.get("label", "UNKNOWN")
+						self.rcs[self.rc_id][keyId]["pos"] = [int(x.strip()) for x in key.attrib.get("pos", "0,0").split(",")]
 		if SystemInfo["rc_default"]:
 			self.rc = self.rcs[config.misc.rcused.value]
 		else:
 			try:
-				self.rc = self.rcs[2]
+				self.rc = self.rcs[machine_id]
+				self.rc_id = machine_id
 			except:
 				self.rc = self.rcs[config.misc.rcused.value]
+				self.rc_id = config.misc.rcused.value
 
+	def _makeLabels(self): # legacy
+		self.keyDescriptions = []
+		for n in range(len(keyDescriptions)):
+			self.keyDescriptions.append({v[0]:k for k,v in keyDescriptions[n].items()})
+	
 	def getRc(self):
 		return self.rc
 
-	def getRcKeyPos(self, key):
-		return self.rc["keypos"].get(key)
+	def getRcKeyPos(self, keyId):
+		if isinstance(keyId, str):
+			keyId = self.keyDescriptions[self.rc_id].get(keyId, 0)
+		if keyId in self.rc:
+			return self.rc[keyId]["pos"]
+		return None
+
+	def getRcKeyLabel(self, keyId):
+		if keyId in self.rc:
+			return self.rc[keyId]["label"]
+		return None
 
 	def getRcKeyList(self):
-		return self.rc["names"]
+		return self.rc["keyIds"]
