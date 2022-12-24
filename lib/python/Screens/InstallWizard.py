@@ -50,10 +50,10 @@ class InstallWizard(ConfigListScreen, Screen):
 			self.channellist_type = ConfigSelection(choices=modes, default="19e")
 			self.createMenu()
 		elif self.index == self.INSTALL_PLUGINS:
-			self.enabled = ConfigYesNo(default=True)
+			self.enabled = ConfigYesNo(default=False)
 			self.createMenu()
 		elif self.index == self.INSTALL_SKINS:
-			self.enabled = ConfigYesNo(default=True)
+			self.enabled = ConfigYesNo(default=False)
 			self.createMenu()
 
 	def checkNetworkCB(self, data):
