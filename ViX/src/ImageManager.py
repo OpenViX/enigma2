@@ -1528,7 +1528,7 @@ class ImageManagerDownload(Screen):
 			if currentSelected[0][1] == "Expander":
 				self["key_green"].setText(_("Compress") if currentSelected[0][0] in self.expanded else _("Expand"))
 			else:
-				self["key_green"].setText(_("DownLoad"))
+				self["key_green"].setText(_("Download"))
 
 	def keyLeft(self):
 		self["list"].instance.moveSelection(self["list"].instance.pageUp)
