@@ -12,7 +12,6 @@ class Rc:
 	def __init__(self):
 		self["rc"] = MultiPixmap()
 
-		config.misc.rcused = ConfigInteger(default=1)
 		nSelectPics = 16
 		rcheights = (500,) * 2
 		self.selectpics = []
