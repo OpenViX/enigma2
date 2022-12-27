@@ -393,6 +393,7 @@ def fileReadXML(filename, default=None, *args, **kwargs):
 		with open(filename, "r") as fd:
 			dom = parse(fd).getroot()
 	except:
+		print("[fileReadXML] failed to read", filename)
 		print_exc()
 	if dom is None and default:
 		if isinstance(default, str):
