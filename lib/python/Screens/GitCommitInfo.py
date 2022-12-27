@@ -150,7 +150,7 @@ def readGithubCommitLogs():
 			print('[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err)
 			commitlog += _("The commit log cannot be retrieved at the moment - please try again later.")
 	except URLError as err:
-		print('[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err.reason[0])
+		print('[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err)
 		commitlog += _("The commit log cannot be retrieved at the moment - please try again later.\n")
 	except Exception as err:
 		print('[GitCommitLog] The commit log cannot be retrieved at the moment - please try again later.', err)
