@@ -181,7 +181,7 @@ class RcPositions:
 			try:
 				RcPositions.rc = remotes[machine_id]
 			except:
-				RcPositions.rc = remotes[config.misc.rcused.value]
+				print("[RcPositions] failed to load RC mapping file")
 
 	def getRc(self):
 		return self.rc
