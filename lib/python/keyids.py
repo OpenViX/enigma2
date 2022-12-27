@@ -353,3 +353,6 @@ def invertKeyIds():
 			else:
 				print("[Keyids] Error: Key code %d is mapped to both '%s' and '%s'!" % (value, invKeyIds[value], key))
 	return invKeyIds
+
+
+KEYIDNAMES = invertKeyIds()

@@ -1,9 +1,9 @@
-from xml.etree.ElementTree import ElementTree
-from os import path
+from keyids import KEYIDS
 from Components.config import config, ConfigInteger
 from Components.Pixmap import MovingPixmap, MultiPixmap
 from Components.SystemInfo import SystemInfo
-from Tools.Directories import resolveFilename, SCOPE_SKIN
+from Tools.Directories import resolveFilename, SCOPE_SKIN, fileReadXML
+from Tools.KeyBindings import keyDescriptions
 
 config.misc.rcused = ConfigInteger(default=1)
 
@@ -12,7 +12,6 @@ class Rc:
 	def __init__(self):
 		self["rc"] = MultiPixmap()
 
-		config.misc.rcused = ConfigInteger(default=1)
 		nSelectPics = 16
 		rcheights = (500,) * 2
 		self.selectpics = []
@@ -20,7 +19,7 @@ class Rc:
 			self.selectpics.append(
 				self.KeyIndicator(
 					self, rcheights,
-					("indicator_l" + str(i), "indicator_u" + str(i))
+					("indicatorL" + str(i), "indicatorU" + str(i))
 				)
 			)
 		self.rcPositions = RcPositions()
@@ -43,7 +42,7 @@ class Rc:
 			self.pixmaps = []
 			for actYpos, pixmap in zip(activeYPos, pixmaps):
 				pm = self.KeyIndicatorPixmap(actYpos, pixmap)
-				print("[KeyIndicator]", actYpos, pixmap)
+#				print("[KeyIndicator]", actYpos, pixmap)
 				owner[pixmap] = pm
 				self.pixmaps.append(pm)
 			self.pixmaps.sort(key=lambda x: x.activeYPos)
@@ -145,35 +144,62 @@ class Rc:
 
 
 class RcPositions:
+	rc = None
 	def __init__(self):
+		if RcPositions.rc is not None:
+			return
+		descriptions = [{v[0]:k for k,v in x.items()} for x in keyDescriptions] # used by wizards and legacy xml format
+		file = resolveFilename(SCOPE_SKIN, "rcpositions.xml") if SystemInfo["rc_default"] else SystemInfo["RCMapping"]
+		rcs = fileReadXML(file, "<rcs />")
+		remotes = {}
+		machine_id = 2
+		for rc in rcs.findall("rc"):
+			rc_id = int(rc.attrib.get("id", machine_id))
+			remotes[rc_id] = {}
+			remotes[rc_id]["keyIds"] = []
+			remotes[rc_id]["remaps"] = {}
+			remotes[rc_id]["keyDescriptions"] = descriptions[rc_id]
+			for key in rc.findall("button"):
+				if "name" in key.attrib: # legacy xml format
+					keyId = descriptions[rc_id].get(key.attrib["name"])
+				elif  "id" in key.attrib: # oe-remotes
+					keyId = KEYIDS.get(key.attrib["id"])
+				if keyId:
+					remotes[rc_id]["keyIds"].append(keyId)
+					remotes[rc_id][keyId] = {}
+					remotes[rc_id][keyId]["label"] = key.attrib.get("name") or key.attrib.get("label", "UNKNOWN")
+					remotes[rc_id][keyId]["pos"] = [int(x.strip()) for x in key.attrib.get("pos", "0,0").split(",")]
+					remap = key.attrib.get("remap")
+					if remap is not None and remap in KEYIDS:
+						remapId = KEYIDS[remap]
+						remotes[rc_id]["remaps"][keyId] = remapId
+						remotes[rc_id][remapId] = remotes[rc_id][keyId] # so the button remaps in the help screen
+
 		if SystemInfo["rc_default"]:
-			target = resolveFilename(SCOPE_SKIN, "rcpositions.xml")
-		else:
-			target = resolveFilename(SCOPE_SKIN, path.join("rc_models", SystemInfo["rc_model"], "rcpositions.xml"))
-		tree = ElementTree(file=target)
-		rcs = tree.getroot()
-		self.rcs = {}
-		for rc in rcs:
-			id = int(rc.attrib["id"])
-			self.rcs[id] = {"names": [], "keypos": {}}
-			for key in rc:
-				name = key.attrib["name"]
-				pos = key.attrib["pos"].split(",")
-				self.rcs[id]["keypos"][name] = (int(pos[0]), int(pos[1]))
-				self.rcs[id]["names"].append(name)
-		if SystemInfo["rc_default"]:
-			self.rc = self.rcs[config.misc.rcused.value]
+			RcPositions.rc = remotes[config.misc.rcused.value]
 		else:
 			try:
-				self.rc = self.rcs[2]
+				RcPositions.rc = remotes[machine_id]
 			except:
-				self.rc = self.rcs[config.misc.rcused.value]
+				RcPositions.rc = remotes[config.misc.rcused.value]
 
 	def getRc(self):
 		return self.rc
 
-	def getRcKeyPos(self, key):
-		return self.rc["keypos"].get(key)
+	def getRcKeyPos(self, keyId):
+		if isinstance(keyId, str): # used by wizards and available to legacy code
+			keyId = self.rc["keyDescriptions"].get(keyId, 0)
+		if keyId in self.rc:
+			return self.rc[keyId]["pos"]
+		return None
+
+	def getRcKeyLabel(self, keyId):
+		if keyId in self.rc:
+			return self.rc[keyId]["label"]
+		return None
 
 	def getRcKeyList(self):
-		return self.rc["names"]
+		return self.rc["keyIds"]
+
+	def getRcKeyRemaps(self):
+		return self.rc["remaps"]

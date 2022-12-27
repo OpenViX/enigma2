@@ -78,6 +78,7 @@ class PluginBrowser(Screen, ProtectedScreen):
 
 		self["key_red"] = Button(_("Remove plugins"))
 		self["key_green"] = Button(_("Download plugins"))
+		self["key_yellow"] = Button(_("User installed plugins"))
 		self["key_menu"] = StaticText(_("MENU"))
 
 		self.list = []
@@ -94,7 +95,8 @@ class PluginBrowser(Screen, ProtectedScreen):
 		self["PluginDownloadActions"] = ActionMap(["ColorActions"],
 		{
 			"red": self.delete,
-			"green": self.download
+			"green": self.download,
+			"yellow": self.userInstalledPlugins
 		})
 		self["DirectionActions"] = ActionMap(["DirectionActions"],
 		{
@@ -252,6 +254,10 @@ class PluginBrowser(Screen, ProtectedScreen):
 	def PluginDownloadBrowserClosed(self):
 		self.updateList()
 		self.checkWarnings()
+
+	def userInstalledPlugins(self):
+		from Screens.AboutUserInstalledPlugins import AboutUserInstalledPlugins
+		self.session.open(AboutUserInstalledPlugins)
 
 
 class PluginDownloadBrowser(Screen):

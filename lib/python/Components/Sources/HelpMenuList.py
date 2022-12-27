@@ -1,7 +1,8 @@
 from Components.Sources.List import List
-from Tools.KeyBindings import queryKeyBinding, getKeyDescription
+from Tools.KeyBindings import queryKeyBinding, getSkipKeys
 from Components.config import config
 from collections import defaultdict
+from keyids import KEYIDS
 
 # Helplist structure:
 # [ ( actionmap, context, [(action, help), (action, help), ...] ), (actionmap, ... ), ... ]
@@ -52,6 +53,7 @@ class HelpMenuList(List):
 		self.rcKeyIndex = None
 		self.buttonMap = {}
 		self.longSeen = False
+		self.skipKeys = getSkipKeys()
 
 		def actMapId():
 			return getattr(actionmap, "description", None) or id(actionmap)
@@ -98,23 +100,22 @@ class HelpMenuList(List):
 				if not buttons:
 					continue
 
-				buttonNames = []
+				buttonLabels = []
 
-				for n in buttons:
-					name, flags = getKeyDescription(n[0]), n[1]
-					if name is not None:
-						if not (name and self.rcPos.getRcKeyPos(name[0])):
-							continue
-						if (len(name) < 2 or name[1] not in("fp", "kbd")):
-							if flags & 8:  # for long keypresses, make the second tuple item "long".
-								name = (name[0], "long")
-							nlong = (n[0], flags & 8)
-							if nlong not in buttonsProcessed:
-								buttonNames.append(name)
-								buttonsProcessed.add(nlong)
+				for keyId, flags in buttons:
+					if not self.rcPos.getRcKeyPos(keyId):
+						continue
+					button = (keyId,)
+					if keyId not in self.skipKeys:
+						if flags & 8:  # for long keypresses, make the second tuple item "long".
+							button = (keyId, "long")
+						nlong = (keyId, flags & 8)
+						if nlong not in buttonsProcessed:
+							buttonLabels.append(button)
+							buttonsProcessed.add(nlong)
 
 				# only show entries with keys that are available on the used rc
-				if not buttonNames:
+				if not buttonLabels:
 					continue
 
 				isExtended = isinstance(help, (tuple, list))
@@ -128,7 +129,7 @@ class HelpMenuList(List):
 					helpStr = _("%s (%s)") % (helpStr, tagsStr)
 					help = [helpStr, help[1]] if isExtended else helpStr
 
-				entry = [(actionmap, context, action, buttonNames), help]
+				entry = [(actionmap, context, action, buttonLabels), help]
 				if self._filterHelpList(entry, helpSeen):
 					actionMapHelp[actMapId()].append(entry)
 
@@ -169,7 +170,7 @@ class HelpMenuList(List):
 				# OK and EXIT on return from
 				# help popup
 				for b in ent[0][3]:
-					if b[0] not in ('OK', 'EXIT'):
+					if b[0] not in (KEYIDS.get("KEY_OK"), KEYIDS.get("KEY_EXIT")):
 						self.buttonMap[b] = i
 
 		self.style = (
@@ -243,26 +244,16 @@ class HelpMenuList(List):
 		# we returns this tuple to the callback.
 		self.callback(l[0], l[1], l[2])
 
-	def handleButton(self, key, flag):
-		name = getKeyDescription(key)
-		if name is not None and (len(name) < 2 or name[1] not in("fp", "kbd")) and flag not in (2, 4):
-			if flag == 0:
-				# Reset the long press flag on make
+	def handleButton(self, keyId, flag):
+		if keyId not in self.skipKeys:
+			button = (keyId, "long") if flag == 3 else (keyId,)
+			if flag == 0:  # Reset the long press flag on Make.
 				self.longSeen = False
-			elif flag == 3:  # for long keypresses, make the second tuple item "long".
-				name = (name[0], "long")
-
-			if name in self.buttonMap:
-				# Show help for pressed button for
-				# long press, or for break if it's not a
-				# long press
-				if flag == 3 or flag == 1 and not self.longSeen:
+			elif button in self.buttonMap and (flag == 3 or flag == 1 and not self.longSeen):  # Show help for pressed button for long press, or for Break if it's not a Long press.
 					self.longSeen = flag == 3
-					self.setIndex(self.buttonMap[name])
-					# Report key handled
-					return 1
-		# Report key not handled
-		return 0
+					self.setIndex(self.buttonMap[button])
+					return 1  # Report keyId handled.
+		return 0  # Report keyId not handled.
 
 	def getCurrent(self):
 		sel = super(HelpMenuList, self).getCurrent()

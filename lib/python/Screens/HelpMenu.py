@@ -87,19 +87,21 @@ class HelpMenu(Screen, Rc):
 		shiftButtons = []
 		if selection:
 			for button in selection[3]:
-				if len(button) > 1:
+				if len(button) > 1 and button[1] in ("SHIFT", "long"):
+					label = self.getRcPositions().getRcKeyLabel(button[0])
+					if label is None:
+						label = "Label not defined"
 					if button[1] == "SHIFT":
 						self.selectKey("SHIFT")
-						shiftButtons.append(button[0])
+						shiftButtons.append(label)
 					elif button[1] == "long":
 						longText[0] = _("Long key press")
-						longButtons.append(button[0])
+						longButtons.append(label)
 				self.selectKey(button[0])
 
 			textline = 0
 			if len(selection[3]) > 1:
 				if longButtons:
-					print("[HelpMenu] SelectionChanged", longButtons)
 					longText[textline] = _("Long press: ") + ', '.join(longButtons)
 					textline += 1
 				if shiftButtons:
