@@ -181,6 +181,8 @@ class RcPositions:
 			try:
 				RcPositions.rc = remotes[machine_id]
 			except:
+				# empty RC map just in case xml file failed to load
+				RcPositions.rc = {"keyIds":[], "remaps":{}, "keyDescriptions":{}}
 				print("[RcPositions] failed to load RC mapping file")
 
 	def getRc(self):
