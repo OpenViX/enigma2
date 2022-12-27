@@ -188,7 +188,7 @@ class RcPositions:
 
 	def getRcKeyPos(self, keyId):
 		if isinstance(keyId, str): # used by wizards and available to legacy code
-			keyId = self.rc["keyDescriptions"].get(keyId, 0)
+			keyId = self.rc["keyDescriptions"].get(keyId, -1)
 		if keyId in self.rc:
 			return self.rc[keyId]["pos"]
 		return None
