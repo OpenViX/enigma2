@@ -1,5 +1,5 @@
 from Components.Sources.List import List
-from Tools.KeyBindings import queryKeyBinding, getSkipKeys
+from Tools.KeyBindings import queryKeyBinding, getFpAndKbdKeys
 from Components.config import config
 from collections import defaultdict
 from keyids import KEYIDS
@@ -53,7 +53,7 @@ class HelpMenuList(List):
 		self.rcKeyIndex = None
 		self.buttonMap = {}
 		self.longSeen = False
-		self.skipKeys = getSkipKeys()
+		self.skipKeys = getFpAndKbdKeys()
 
 		def actMapId():
 			return getattr(actionmap, "description", None) or id(actionmap)

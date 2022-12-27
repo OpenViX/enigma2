@@ -395,5 +395,5 @@ def removeKeyBindings(domain):
 		keyBindings[x] = [e for e in keyBindings[x] if e[1] != domain]
 
 
-def getSkipKeys(): # used by HelpMenuList
+def getFpAndKbdKeys(): # used by HelpMenuList
 	return {k for i in keyDescriptions for k,v in i.items() if len(v) > 1 and v[1] in ("fp", "kbd")}
