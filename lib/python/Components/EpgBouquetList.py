@@ -76,10 +76,12 @@ class EPGBouquetList(GUIComponent):
 	GUI_WIDGET = eListbox
 
 	def getCurrentBouquet(self):
-		return self.l.getCurrentSelection()[0]
+		if self.l.getCurrentSelection() is not None:
+			return self.l.getCurrentSelection()[0]
 
 	def getCurrentBouquetService(self):
-		return self.l.getCurrentSelection()[1]
+		if self.l.getCurrentSelection() is not None:
+			return self.l.getCurrentSelection()[1]
 
 	def selectionChanged(self):
 		for x in self.onSelChanged:
