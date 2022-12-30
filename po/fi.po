@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2022-12-23 09:58+0200\n"
+"PO-Revision-Date: 2022-12-29 22:59+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #, python-format
 msgid ""
@@ -1621,7 +1621,7 @@ msgstr ""
 "%s %s:n virransäästötilaan. Sammutetaanko nyt?"
 
 msgid "A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s)."
-msgstr ""
+msgstr "Korostus kaukosäätimen kuvassa näyttää mihin ohje viittaa. Jos useampi näppäin suorittaa korostetun toiminnon, niin usempi korostus näytetään. Teksti kuvan alla näyttää tarvitaanko näppäimen/näppäinten pitkä painallus."
 
 #, python-format
 msgid ""
@@ -1714,9 +1714,8 @@ msgstr "AC3 uudelleenpakkaus"
 msgid "ACQUIRING TSID/ONID"
 msgstr "HAETAAN TSID/ONID"
 
-#, fuzzy
 msgid "AFL"
-msgstr "AFP"
+msgstr "AFL"
 
 msgid "AFP"
 msgstr "AFP"
@@ -1740,9 +1739,8 @@ msgstr "ATSC palveluntarjoaja"
 msgid "AV aspect is %s."
 msgstr "AV-kuvasuhde on %s."
 
-#, fuzzy
 msgid "Abenteuer"
-msgstr "Keskellä"
+msgstr "Seikkailu"
 
 msgid "Abort"
 msgstr "Keskeytä"
@@ -1760,7 +1758,7 @@ msgid "About"
 msgstr "Tietoja"
 
 msgid "AboutBoxInfo"
-msgstr ""
+msgstr "AboutBoxInfo"
 
 msgid "Accept the current selection"
 msgstr "Hyväksy nykyiset valinnat"
@@ -1771,9 +1769,8 @@ msgstr "Pääsy laajennuksiin"
 msgid "Accesspoint:"
 msgstr "Tukiasema:"
 
-#, fuzzy
 msgid "Action"
-msgstr "Hakemisto"
+msgstr "Toiminta"
 
 msgid "Activate"
 msgstr "Aktivoi"
@@ -1950,7 +1947,7 @@ msgid "Address"
 msgstr "Osoite"
 
 msgid "Adel"
-msgstr ""
+msgstr "Adel"
 
 msgid "Adjust the color settings so that all the color shades are distinguishable, but appear as saturated as possible. If you are happy with the result, press OK to close the video fine-tuning, or use the number keys to select other test screens."
 msgstr ""
@@ -1960,14 +1957,13 @@ msgstr ""
 "Kun olet tyytyväinen tulokseen, sulje testikuva painamalla OK tai valitse numeronäppäimillä 1-6 joku muu testikuva."
 
 msgid "Adult"
-msgstr ""
+msgstr "Aikuisten"
 
 msgid "Adult Audience, Strong Violence 15+"
 msgstr "Aikuisyleisö, Väkivalta 15+"
 
-#, fuzzy
 msgid "Adult Movie"
-msgstr "aikuisviihde"
+msgstr "Aikuisviihde"
 
 msgid "Advance EPG to the following date and time"
 msgstr "Siirrä EPG seuraavaan päivään ja aikaan"
@@ -1991,11 +1987,10 @@ msgid "Advanced video enhancement setup"
 msgstr "Laajempien kuvasäätöjen asetukset"
 
 msgid "Adventure"
-msgstr ""
+msgstr "Seikkailu"
 
-#, fuzzy
 msgid "Advertisement"
-msgstr "mainos/ostos"
+msgstr "Mainos"
 
 msgid "Afghanistan"
 msgstr "Afganistan"
@@ -2003,9 +1998,8 @@ msgstr "Afganistan"
 msgid "After event"
 msgstr "Toiminnon jälkeen"
 
-#, fuzzy
 msgid "Agenten"
-msgstr "Argentiina"
+msgstr "Agentit"
 
 msgid "Aland Islands"
 msgstr "Ahvenanmaa"
@@ -2169,16 +2163,14 @@ msgstr "Valitse aina OK"
 msgid "Always show bouquets"
 msgstr "Näytä suosikkilistat aina"
 
-#, fuzzy
 msgid "American Football"
-msgstr "Amerikan Samoa"
+msgstr "Amerikkalainen jalkapallo"
 
 msgid "American Samoa"
 msgstr "Amerikan Samoa"
 
-#, fuzzy
 msgid "American Sports"
-msgstr "Amerikan Samoa"
+msgstr "Amerikkalainen Urheilu"
 
 msgid "An empty filename is illegal."
 msgstr "Tyhjä nimi ei ole sallittu."
@@ -2201,17 +2193,14 @@ msgstr "Angola"
 msgid "Anguilla"
 msgstr "Anguilla"
 
-#, fuzzy
 msgid "Animals"
-msgstr "Animaatiot"
+msgstr "Eläimet"
 
-#, fuzzy
 msgid "Animated Movie"
-msgstr "Android-tila"
+msgstr "Animoitu Elokuva"
 
-#, fuzzy
 msgid "Animation"
-msgstr "Animaatiot"
+msgstr "Animaatio"
 
 msgid "Animation Speed"
 msgstr "Animaatioiden nopeus"
@@ -2220,7 +2209,7 @@ msgid "Animations"
 msgstr "Animaatiot"
 
 msgid "Anime"
-msgstr ""
+msgstr "Anime"
 
 msgid "Antarctica"
 msgstr "Antarctica"
@@ -2235,7 +2224,7 @@ msgid "Arabic"
 msgstr "Arabia"
 
 msgid "Architektur"
-msgstr ""
+msgstr "Arkkitehtuurinen"
 
 msgid "Are You Sure ?"
 msgstr "Oletko varma ?"
@@ -2348,22 +2337,20 @@ msgstr "Armenia"
 msgid "Artist"
 msgstr "Esittäjä"
 
-#, fuzzy
 msgid "Arts & Culture"
-msgstr "Taide/Kulttuuri"
+msgstr "Taide & Kulttuuri"
 
 msgid "Arts/Culture"
 msgstr "Taide/Kulttuuri"
 
-#, fuzzy
 msgid "Arts/Culture (without music)"
-msgstr "taide/kulttuuri (ilman musiikkia, yleinen)"
+msgstr "Taide/Kulttuuri (ilman musiikkia)"
 
 msgid "Aruba"
 msgstr "Aruba"
 
 msgid "Arzt"
-msgstr ""
+msgstr "Taide"
 
 msgid "Ask user"
 msgstr "Kysy käyttäjältä"
@@ -2389,9 +2376,8 @@ msgstr "Määritetyt kanavat/palveluntarjoajat:"
 msgid "At End:"
 msgstr "Lopussa:"
 
-#, fuzzy
 msgid "Athletics"
-msgstr "yleisurheilu"
+msgstr "Yleisurheilu"
 
 msgid "Attention, this is repeated timer!\n"
 msgstr "Huomaa, että tämä on toistuva ajastus!\n"
@@ -2542,9 +2528,8 @@ msgstr "Käynnistä ulkoinen tekstitys automaattisesti"
 msgid "Automatically update Client/Server View?"
 msgstr "Päivitä asiakas-/palvelinnäkymä automaattisesti?"
 
-#, fuzzy
 msgid "Automobil"
-msgstr "Automaattinen"
+msgstr "Auto"
 
 msgid "Autostart"
 msgstr "Aut.käynnistys"
@@ -2573,9 +2558,8 @@ msgstr "Azerbaizan"
 msgid "B"
 msgstr "B"
 
-#, fuzzy
 msgid "B-Movie"
-msgstr "Elokuva"
+msgstr "B-luokan Elokuva"
 
 #, python-format
 msgid "BC%d"
@@ -2624,7 +2608,7 @@ msgid "Backup system settings"
 msgstr "Varmuuskopioi asetukset"
 
 msgid "Badminton"
-msgstr ""
+msgstr "Sulkapallo"
 
 msgid "Bahamas"
 msgstr "Bahama-saaret"
@@ -2632,9 +2616,8 @@ msgstr "Bahama-saaret"
 msgid "Bahrain"
 msgstr "Bahrain"
 
-#, fuzzy
 msgid "Ballet"
-msgstr "baletti"
+msgstr "Baletti"
 
 msgid "Band"
 msgstr "Taajuusalue"
@@ -2652,13 +2635,13 @@ msgid "Base time"
 msgstr "Aloitusaika"
 
 msgid "Baseball"
-msgstr ""
+msgstr "Baseball"
 
 msgid "Basic functions"
 msgstr "Perustoiminnot"
 
 msgid "Basketball"
-msgstr ""
+msgstr "Koripallo"
 
 msgid "Basque"
 msgstr "Baski"
@@ -2670,7 +2653,7 @@ msgid "Begin time"
 msgstr "Aloitusaika"
 
 msgid "Behave like stop-button"
-msgstr ""
+msgstr "Toimii kuten stop-näppäin"
 
 msgid "Behavior of 'pause' when paused"
 msgstr "Pause-näppäimen toiminto"
@@ -2703,16 +2686,16 @@ msgid "Benin"
 msgstr "Benin"
 
 msgid "Bericht"
-msgstr ""
+msgstr "Raportti"
 
 msgid "Bermuda"
 msgstr "Bermuda"
 
 msgid "Berufe"
-msgstr ""
+msgstr "Ammatti"
 
 msgid "Beziehung"
-msgstr ""
+msgstr "Suhde"
 
 msgid "Bhutan"
 msgstr "Bhutan"
@@ -2721,13 +2704,13 @@ msgid "Big PiP"
 msgstr "Suuri PiP"
 
 msgid "Bildung"
-msgstr ""
+msgstr "Sivistys"
 
 msgid "Biografie"
-msgstr ""
+msgstr "Elämäkerta"
 
 msgid "Biography"
-msgstr ""
+msgstr "Elämäkerta"
 
 msgid "Bitrate:"
 msgstr "Nopeus:"
@@ -2772,7 +2755,7 @@ msgid "Bolivia (Plurinational State of)"
 msgstr "Bolivia"
 
 msgid "Bollywood"
-msgstr ""
+msgstr "Bollywood"
 
 msgid "Bonaire, Sint Eustatius and Saba"
 msgstr "Bonaire, Sint Eustatius ja Saba"
@@ -2804,7 +2787,7 @@ msgid "Botswana"
 msgstr "Botswana"
 
 msgid "Boulevard"
-msgstr ""
+msgstr "Bulevardi"
 
 msgid "Bouquet List"
 msgstr "Suosikkilista"
@@ -2812,21 +2795,20 @@ msgstr "Suosikkilista"
 msgid "Bouvet Island"
 msgstr "Bouvet Island"
 
-#, fuzzy
 msgid "BoxInfo"
-msgstr "Tietoja"
+msgstr "BoxInfo"
 
 msgid "Boxen"
-msgstr ""
+msgstr "Nyrkkeily"
 
 msgid "Boxing"
-msgstr ""
+msgstr "Nyrkkeily"
 
 msgid "Brazil"
 msgstr "Brasilia"
 
 msgid "Brief help information for buttons in your current context."
-msgstr ""
+msgstr "Nappäinten lyhyet ohjetiedot nykyisessä kontekstissäsi."
 
 msgid "Brightness"
 msgstr "Valoisuus"
@@ -2892,7 +2874,7 @@ msgid "Bus: "
 msgstr "Väylä: "
 
 msgid "Business & Finance"
-msgstr ""
+msgstr "Liiketoiminta & Finanssi"
 
 msgid "Button Setup"
 msgstr "Näppäinmääritykset"
@@ -3010,7 +2992,7 @@ msgstr "Kaapeliverkon haku"
 
 #, python-format
 msgid "Cable scan executable utility not found '%s'!"
-msgstr ""
+msgstr "Kaapelin skannauksen suoritettavaa apuohjelmaa ei löytynyt '%s'!"
 
 msgid "Cabo Verde"
 msgstr "Cabo Verde"
@@ -3040,10 +3022,10 @@ msgid "Calibrate"
 msgstr "Kalibroi"
 
 msgid "Call-in"
-msgstr ""
+msgstr "Suora linja"
 
 msgid "Cambodia"
-msgstr "Kambotsea"
+msgstr "Kambodža"
 
 msgid "Cameroon"
 msgstr "Kamerun"
@@ -3127,18 +3109,16 @@ msgid "Cardserial"
 msgstr "Korttisarja"
 
 msgid "Cartoon"
-msgstr ""
+msgstr "Piirretty"
 
-#, fuzzy
 msgid "Cartoons"
-msgstr "piirretty/nukke"
+msgstr "Piirretyt"
 
 msgid "Cascade PiP"
 msgstr "Aktivoi PiP"
 
-#, fuzzy
 msgid "Casting"
-msgstr "Odottaa"
+msgstr "Näyttelijät"
 
 msgid "Cayman Islands"
 msgstr "Cayman saaret"
@@ -3162,7 +3142,7 @@ msgid "Chad"
 msgstr "Chad"
 
 msgid "Challenge"
-msgstr ""
+msgstr "Haaste"
 
 msgid "Change PIN"
 msgstr "Muuta PIN"
@@ -3313,12 +3293,11 @@ msgstr "Lapset"
 msgid "Children/Youth"
 msgstr "Lapset/nuoret"
 
-#, fuzzy
 msgid "Children/Youth/Education/Science"
-msgstr "Lapset/nuoret"
+msgstr "Lapset/Nuoret/Opetus/Tiede"
 
 msgid "Childrens"
-msgstr "Lapset/nuoret"
+msgstr "Lapset"
 
 msgid "Chile"
 msgstr "Chile"
@@ -3451,10 +3430,10 @@ msgid "Christmas Island"
 msgstr "Christmas Island"
 
 msgid "Chronik"
-msgstr ""
+msgstr "Kronikka"
 
 msgid "Cinema"
-msgstr ""
+msgstr "Elokuva"
 
 msgid "Circular LNB"
 msgstr "Kiertopolarisaatio LNB"
@@ -3466,7 +3445,7 @@ msgid "Circular right"
 msgstr "Kiertopol. oikea"
 
 msgid "Classical Music"
-msgstr ""
+msgstr "Klassinen musiikki"
 
 msgid "Clean network trash cans"
 msgstr "Tyhjennä verkkolevyjen roskakorit"
@@ -3548,7 +3527,7 @@ msgid "Color space"
 msgstr "Väriavaruus"
 
 msgid "Combat Sports (without own category)"
-msgstr ""
+msgstr "Taistelu-urheilu (ilman omaa kategoriaa)"
 
 msgid "Combined"
 msgstr "Yhdistetty"
@@ -3560,7 +3539,7 @@ msgid "Comedy"
 msgstr "Komedia"
 
 msgid "Comic"
-msgstr ""
+msgstr "Koominen"
 
 msgid "Command order"
 msgstr "Käskyjen järjestys"
@@ -3604,9 +3583,8 @@ msgstr "Laajennettu (useita ääniraitoja ja kuvasuhteita)"
 msgid "Composition of the recording filenames"
 msgstr "Tallennusnimien rakenne"
 
-#, fuzzy
 msgid "Computer"
-msgstr "Täysi"
+msgstr "Tietokone"
 
 msgid "Config Scan Details"
 msgstr "Määritä haun yksityiskohdat"
@@ -4006,9 +3984,8 @@ msgstr "Muunnetaan ext3:sta ext4:ksi..."
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
-#, fuzzy
 msgid "Cooking"
-msgstr "kokkaus"
+msgstr "Ruuanlaitto"
 
 msgid "Copy"
 msgstr "Kopioi"
@@ -4148,10 +4125,10 @@ msgid "Creating partition."
 msgstr "Luodaan osiota."
 
 msgid "Cricket"
-msgstr ""
+msgstr "Kriketti"
 
 msgid "Crime"
-msgstr ""
+msgstr "Rikos"
 
 msgid "Croatia"
 msgstr "Kroatia"
@@ -4169,11 +4146,10 @@ msgid "Cuba"
 msgstr "Kuuba"
 
 msgid "Cult"
-msgstr ""
+msgstr "Kultti"
 
-#, fuzzy
 msgid "Culture"
-msgstr "Taide/Kulttuuri"
+msgstr "Kulttuuri"
 
 msgid "Curacao"
 msgstr "Curacao"
@@ -4246,7 +4222,7 @@ msgid "Cycle through infobar displays"
 msgstr "Kierrätä tietopalkin näyttöjen kautta"
 
 msgid "Cycling"
-msgstr ""
+msgstr "Pyöräily"
 
 msgid "Cyprus"
 msgstr "Kypros"
@@ -4283,7 +4259,7 @@ msgstr ""
 "- tarkista, että sinulla on lähiverkossasi toimiva ja oikein määritelty DHCP-palvelin."
 
 msgid "DIY"
-msgstr ""
+msgstr "Tee-se-itse"
 
 msgid "DLNA support"
 msgstr "DLNA tuki"
@@ -4354,15 +4330,14 @@ msgstr "DVD-otsikkoluettelo"
 msgid "Daily"
 msgstr "Päivittäin"
 
-#, fuzzy
 msgid "Dance"
-msgstr "Peruuta"
+msgstr "Tanssi"
 
 msgid "Danish"
 msgstr "Tanskalainen"
 
 msgid "Darts"
-msgstr ""
+msgstr "Tikanheitto"
 
 msgid "Date"
 msgstr "Päiväys"
@@ -4373,9 +4348,8 @@ msgstr "Päivä ensin"
 msgid "Date style"
 msgstr "Päivämäärän näyttömuoto"
 
-#, fuzzy
 msgid "Dating"
-msgstr "Odottaa"
+msgstr "Deittailu"
 
 msgid "Day D Mon"
 msgstr "Päivä P KK"
@@ -4519,7 +4493,7 @@ msgid "De-select"
 msgstr "Uudelleen valitse"
 
 msgid "Debate"
-msgstr ""
+msgstr "Väittely"
 
 msgid "Debug"
 msgstr "Debug"
@@ -4764,12 +4738,11 @@ msgstr "Tunnistetut laitteet:"
 msgid "Detected tuners:"
 msgstr "Tunnistetut virittimet:"
 
-#, fuzzy
 msgid "Detective"
-msgstr "Aktiivinen"
+msgstr "Etsivä"
 
 msgid "Detektiv"
-msgstr ""
+msgstr "Salapoliisi"
 
 msgid "Device"
 msgstr "Verkkokortit"
@@ -4891,7 +4864,7 @@ msgid "Disabled"
 msgstr "Ei käytössä"
 
 msgid "Discussion"
-msgstr ""
+msgstr "Keskustelu"
 
 msgid "Disk space to reserve for recordings (in GB)"
 msgstr "Tallennuksille varattu levytila (GB)"
@@ -5085,13 +5058,12 @@ msgstr "Haluatko päivittää ohjelmapaketin:\n"
 msgid "Documentary"
 msgstr "Dokumentti"
 
-#, fuzzy
 msgid "Dokumentation"
-msgstr "Dokumentti"
+msgstr "Dokumentointi"
 
-#, fuzzy, python-format
+#, python-format
 msgid "Dolby Digital downmix is now %s"
-msgstr "Dolby Dig. muunto stereoksi on nyt"
+msgstr "Dolby Digital muunto stereoksi on nyt %s"
 
 msgid "Domain"
 msgstr "Toimialue"
@@ -5151,7 +5123,7 @@ msgid "Drama"
 msgstr "Elokuva/draama"
 
 msgid "Drama and Films"
-msgstr ""
+msgstr "Draama ja Elokuvat"
 
 #, python-format
 msgid "Drivers:\t%s\n"
@@ -5162,7 +5134,7 @@ msgid "Drivers: %s"
 msgstr "Ajurit: %s"
 
 msgid "Drogen"
-msgstr ""
+msgstr "Huumeita"
 
 msgid "Drop unconfigured satellites"
 msgstr "Hylkää asettamattomat satelliitit"
@@ -5262,9 +5234,8 @@ msgstr "Itäistä pituutta"
 msgid "East limit set"
 msgstr "Itäinen raja-arvo asetettu"
 
-#, fuzzy
 msgid "Eastern"
-msgstr "Itäistä pituutta"
+msgstr "Itäinen"
 
 msgid "Ecm Info"
 msgstr "Ecm Info"
@@ -5285,7 +5256,7 @@ msgid "Ecm:"
 msgstr "Ecm:"
 
 msgid "Economics"
-msgstr ""
+msgstr "Taloustiede"
 
 msgid "Ecuador"
 msgstr "Ecuador"
@@ -5331,9 +5302,8 @@ msgstr "Editoi"
 msgid "Edit upgrade source url."
 msgstr "Muokkaa päivitys-URL:ia."
 
-#, fuzzy
 msgid "Education"
-msgstr "Modulaatio"
+msgstr "Opetus"
 
 msgid "Education/Information"
 msgstr "Opetus/Tieto"
@@ -5344,9 +5314,8 @@ msgstr "Koulutus/Tiede/Tosiperäinen"
 msgid "Egypt"
 msgstr "Egypti"
 
-#, fuzzy
 msgid "Einzelsportart"
-msgstr "talviurheilu"
+msgstr "Yksilöllinen urheilu"
 
 msgid "El Salvador"
 msgstr "El Salvador"
@@ -5533,7 +5502,7 @@ msgid "End time"
 msgstr "Lopetusaika"
 
 msgid "Energie"
-msgstr ""
+msgstr "Energia"
 
 msgid "English"
 msgstr "Englanti"
@@ -5632,9 +5601,8 @@ msgstr "Viihde"
 msgid "Entitlements"
 msgstr "Valtuutukset"
 
-#, fuzzy
 msgid "Environment"
-msgstr "Viihde"
+msgstr "Ympäristö"
 
 msgid "Epg/Guide"
 msgstr "Ohjelmaopaspainike"
@@ -5643,7 +5611,7 @@ msgid "Epg/Guide long"
 msgstr "Pitkä ohjelmaopaspainike"
 
 msgid "Epos"
-msgstr ""
+msgstr "Eepos"
 
 msgid "Equal to"
 msgstr "Sama kuin"
@@ -5651,15 +5619,14 @@ msgstr "Sama kuin"
 msgid "Equatorial Guinea"
 msgstr "Equatorial Guinea"
 
-#, fuzzy
 msgid "Equestrian"
-msgstr "ratsastus"
+msgstr "Ratsastus"
 
 msgid "Eritrea"
 msgstr "Eritrea"
 
 msgid "Erotik"
-msgstr ""
+msgstr "Erotiikka"
 
 msgid "Error"
 msgstr "Virhe"
@@ -5686,10 +5653,10 @@ msgstr ""
 "Yritä uudelleen?"
 
 msgid "Esoterik"
-msgstr ""
+msgstr "Rajatieto"
 
 msgid "Essen"
-msgstr ""
+msgstr "Ruokailu"
 
 msgid "Estonia"
 msgstr "Viro"
@@ -5703,9 +5670,8 @@ msgstr "Verkkokortti"
 msgid "Ethiopia"
 msgstr "Etiopia"
 
-#, fuzzy
 msgid "Event"
-msgstr "Ohjelmatiedot"
+msgstr "Ohjelma"
 
 msgid "Event Info"
 msgstr "Ohjelmatiedot"
@@ -5873,11 +5839,10 @@ msgid "Extra motor options"
 msgstr "Moottorin lisäasetukset"
 
 msgid "Extreme"
-msgstr ""
+msgstr "Extreme"
 
-#, fuzzy
 msgid "Extremsport"
-msgstr "joukkueurheilu"
+msgstr "Extremeurheilu"
 
 msgid "Extrude from left"
 msgstr "Kasvata vasemmalta"
@@ -5898,21 +5863,19 @@ msgid "F2"
 msgstr "F2"
 
 msgid "F2 long"
-msgstr "F2"
+msgstr "F2 pitkä"
 
 msgid "F3"
 msgstr "F3"
 
 msgid "F3 long"
-msgstr "F3"
+msgstr "F3 pitkä"
 
-#, fuzzy
 msgid "F4"
-msgstr "4"
+msgstr "F4"
 
-#, fuzzy
 msgid "F4 long"
-msgstr "F2"
+msgstr "F4 pitkä"
 
 msgid "FAILED"
 msgstr "EPÄONNISTUI"
@@ -5989,7 +5952,7 @@ msgid "Factory Reset: Clearing data"
 msgstr "Palauta tehdasasetukset"
 
 msgid "Factual Topics"
-msgstr ""
+msgstr "Tosiasia-aiheet"
 
 msgid "Fade the infobar when hiding"
 msgstr "Häivytä tietopalkki poistuttaessa"
@@ -6025,17 +5988,17 @@ msgid "False"
 msgstr "Epätosi"
 
 msgid "Familie"
-msgstr ""
+msgstr "Perhe"
 
 msgid "Family"
-msgstr ""
+msgstr "Perhe"
 
 #, python-format
 msgid "Fan %d"
 msgstr "Tuuletin %d"
 
 msgid "Fantasy"
-msgstr ""
+msgstr "Fantasia"
 
 msgid "Faroe Islands"
 msgstr "Faroe Islands"
@@ -6112,10 +6075,10 @@ msgid "Filesystem Check"
 msgstr "Tiedostojärjestelmän tarkistus"
 
 msgid "Film"
-msgstr ""
+msgstr "Elokuva"
 
 msgid "Film-Noir"
-msgstr ""
+msgstr "Film-Noir"
 
 msgid "Final position at"
 msgstr "Lopullinen sijainti"
@@ -6126,9 +6089,8 @@ msgstr "Lopullinen sijainti muistipaikassa"
 msgid "Final scroll delay"
 msgstr "Rullausviive lopussa"
 
-#, fuzzy
 msgid "Finance"
-msgstr "France"
+msgstr "Rahoitus"
 
 msgid "Fine movement"
 msgstr "Moottorin hienosäätö"
@@ -6151,13 +6113,11 @@ msgstr "Suomi"
 msgid "FirstPage"
 msgstr "Ensimmäinen sivu"
 
-#, fuzzy
 msgid "Fishing"
-msgstr "Vilkkuva"
+msgstr "Kalastus"
 
-#, fuzzy
 msgid "Fitness & Health"
-msgstr "kuntoilu ja terveys"
+msgstr "Fitness & Terveys"
 
 msgid "Fix CEC address setting, default is 1.0.0.0"
 msgstr "Määritä CEC-osoite, oletus on 1.0.0.0"
@@ -6178,10 +6138,10 @@ msgid "Flat by position on remote"
 msgstr "Tasainen, kaukosäätimen näppäinten sijainnin mukaisesti"
 
 msgid "Folk"
-msgstr ""
+msgstr "Kansanomainen"
 
 msgid "Folkloric"
-msgstr ""
+msgstr "Folklorinen"
 
 msgid "Following tasks will be done after you press OK!"
 msgstr "Seuraavat tehtävät suoritetaan kun painat OK!"
@@ -6190,17 +6150,16 @@ msgid "Font size"
 msgstr "Tekstikoko"
 
 msgid "Food/Wine"
-msgstr ""
+msgstr "Ruoka/Viini"
 
-#, fuzzy
 msgid "Football"
-msgstr "jalkapallo"
+msgstr "Jalkapallo"
 
 msgid "Football - Club"
-msgstr ""
+msgstr "Jalkapallo - Klubi"
 
 msgid "Football - International"
-msgstr ""
+msgstr "Jalkapallo - Kansainvälinen"
 
 msgid "Force de-interlace"
 msgstr "Pakota lomituksen poisto"
@@ -6218,7 +6177,7 @@ msgid "Format"
 msgstr "Alusta"
 
 msgid "Formula One"
-msgstr ""
+msgstr "Formula 1"
 
 msgid "Forward volume keys"
 msgstr "Välitä äänenvoimakkuusnäppäimet"
@@ -6230,7 +6189,7 @@ msgid "France"
 msgstr "France"
 
 msgid "Frauen"
-msgstr ""
+msgstr "Naiset"
 
 msgid "Free To Air"
 msgstr "Salaamaton"
@@ -6317,10 +6276,10 @@ msgid "Full view resolution"
 msgstr "Kokoruudun resoluutio"
 
 msgid "Fußball"
-msgstr ""
+msgstr "Jalkapallo"
 
 msgid "Für Kinder"
-msgstr ""
+msgstr "Lapsille"
 
 msgid "GB"
 msgstr "GB"
@@ -6353,27 +6312,25 @@ msgid "Gabon"
 msgstr "Gabon"
 
 msgid "Gaelic Football"
-msgstr ""
+msgstr "Gaelin Jalkapallo"
 
 msgid "Gaelic Games"
-msgstr ""
+msgstr "Gaelin Pelit"
 
 msgid "Gambia"
 msgstr "Gambia"
 
-#, fuzzy
 msgid "Game Show"
-msgstr "Show/Visailu"
+msgstr "Visailuohjelma"
 
 msgid "Gangster"
-msgstr ""
+msgstr "Gangsteri"
 
-#, fuzzy
 msgid "Gardening"
-msgstr "puutarhanhoito"
+msgstr "Puutarhanhoito"
 
 msgid "Garten"
-msgstr ""
+msgstr "Puutarha"
 
 msgid "Gateway"
 msgstr "Yhdyskäytävä"
@@ -6384,47 +6341,38 @@ msgstr "Yleinen"
 msgid "General AC3 delay"
 msgstr "Yleinen AC3-viive"
 
-#, fuzzy
 msgid "General Arts"
-msgstr "Yleinen"
+msgstr "Yleinen taide"
 
 msgid "General Bluetooth Audio delay"
 msgstr "Yleinen Bluetooth Äänen viive"
 
-#, fuzzy
 msgid "General Children's"
-msgstr "Lapset/nuoret"
+msgstr "Yleinen Lasten"
 
-#, fuzzy
 msgid "General Education"
-msgstr "jatkokoulutus"
+msgstr "Yleissivistävä Koulutus"
 
-#, fuzzy
 msgid "General Movie"
-msgstr "Yleinen"
+msgstr "Yleinen Elokuva"
 
-#, fuzzy
 msgid "General Music"
-msgstr "Yleinen"
+msgstr "Yleinen Musiikki"
 
-#, fuzzy
 msgid "General News"
-msgstr "Yleinen"
+msgstr "Yleiset Uutiset"
 
 msgid "General PCM delay"
 msgstr "Yleinen PCM-viive"
 
-#, fuzzy
 msgid "General Show"
-msgstr "Yleinen"
+msgstr "Yleinen Näyttely"
 
-#, fuzzy
 msgid "General Social"
-msgstr "Yleinen"
+msgstr "Yleinen Sosiaalinen"
 
-#, fuzzy
 msgid "General Sports"
-msgstr "Yleinen"
+msgstr "Yleinen Urheilu"
 
 msgid "Generic"
 msgstr "Yleinen"
@@ -6451,14 +6399,13 @@ msgid "Germany"
 msgstr "Saksa"
 
 msgid "Geschichte"
-msgstr ""
+msgstr "Historia"
 
-#, fuzzy
 msgid "Gesellschaft"
-msgstr "Ei valittu"
+msgstr "Yhteiskunta"
 
 msgid "Gesundheit"
-msgstr ""
+msgstr "Terveys"
 
 msgid "Getting Event Info failed!"
 msgstr "Ohjelmatietojen haku epäonnistui!"
@@ -6524,7 +6471,7 @@ msgid "Gold"
 msgstr "Kulta"
 
 msgid "Golf"
-msgstr ""
+msgstr "Golf"
 
 msgid "Goto"
 msgstr "Mene"
@@ -6614,7 +6561,7 @@ msgid "Guyana"
 msgstr "Guyana"
 
 msgid "Gymnastics"
-msgstr ""
+msgstr "Voimistelu"
 
 msgid "H7/H9/H9COMBO/H10 new Model"
 msgstr "H7/H9/H9COMBO/H10 uusi malli"
@@ -6685,13 +6632,11 @@ msgstr "HDMI HDR Tyyppi"
 msgid "HDMI input"
 msgstr "HDMI sisääntulo"
 
-#, fuzzy
 msgid "HDMI-CEC"
-msgstr "HDMI CEC"
+msgstr "HDMI-CEC"
 
-#, fuzzy
 msgid "HDMI-CEC Setup"
-msgstr "Hdmi-CEC asetukset"
+msgstr "HDMI-CEC asetukset"
 
 msgid "HDMIin"
 msgstr "HDMI sisääntulo"
@@ -6718,7 +6663,7 @@ msgid "Haiti"
 msgstr "Haiti"
 
 msgid "Handball"
-msgstr ""
+msgstr "Käsipallo"
 
 msgid "Handle ASCII"
 msgstr "Käsittele ASCII"
@@ -6739,7 +6684,7 @@ msgid "HbbTV"
 msgstr "HbbTV"
 
 msgid "Health & Fitness"
-msgstr ""
+msgstr "Terveys & Fitness"
 
 msgid "Heard Island and McDonald Islands"
 msgstr "Heard Island and McDonald Islands"
@@ -6751,17 +6696,16 @@ msgid "Height"
 msgstr "Korkeus"
 
 msgid "Heimat"
-msgstr ""
+msgstr "Kotiseutu"
 
 msgid "Heimwerker"
-msgstr ""
+msgstr "Askartelu"
 
 msgid "Help"
 msgstr "Ohjeita"
 
-#, fuzzy
 msgid "Help Screen"
-msgstr "Pidä näyttö"
+msgstr "Ohjenäyttö"
 
 msgid "Help long"
 msgstr "Pitkä punainen"
@@ -6823,13 +6767,11 @@ msgstr "Suurten bittimäärien tuki"
 msgid "Highlight current events"
 msgstr "Korosta tämänhetkiset ohjelmat"
 
-#, fuzzy
 msgid "Historical"
-msgstr "Historia kanavanvaihto"
+msgstr "Historiallinen"
 
-#, fuzzy
 msgid "History"
-msgstr "Historia kanavanvaihto"
+msgstr "Historia"
 
 msgid "History Prev/Next"
 msgstr "Historia edellinen/seuraava"
@@ -6850,11 +6792,10 @@ msgid "History next"
 msgstr "Kanavanvaihto historia eteen"
 
 msgid "Hobbys"
-msgstr ""
+msgstr "Harrastukset"
 
-#, fuzzy
 msgid "Hockey"
-msgstr "Lukittu"
+msgstr "Maahockey"
 
 msgid "Hold screen"
 msgstr "Pidä näyttö"
@@ -6886,15 +6827,14 @@ msgstr "Horisontaali"
 msgid "Horizontal turning speed"
 msgstr "Horisontaalinen kääntymisnopeus"
 
-#, fuzzy
 msgid "Horror"
-msgstr "Virhe"
+msgstr "Kauhu"
 
 msgid "Horse Racing"
-msgstr ""
+msgstr "Laukkaurheilu"
 
 msgid "Horse racing"
-msgstr ""
+msgstr "Laukkaurheilu"
 
 msgid "Host domain"
 msgstr "Isäntälaitteen domain"
@@ -7007,10 +6947,10 @@ msgid "ISO path"
 msgstr "ISO-hakemisto"
 
 msgid "Ice Hockey"
-msgstr ""
+msgstr "Jääkiekko"
 
 msgid "Ice Skating"
-msgstr ""
+msgstr "Taitoluistelu"
 
 msgid "Iceland"
 msgstr "Islanti"
@@ -7022,7 +6962,7 @@ msgid "Idle Time: "
 msgstr "Joutoaika: "
 
 msgid "If an action is user-configurable, its help entry will be flagged (C)"
-msgstr ""
+msgstr "Jos toiminto on käyttäjän määriteltävissä, sen merkkinä on (M)"
 
 msgid "If enabled and PiP is available, PiP will be used for the download. If disabled or Pip is unavailable the download will be done as a fake recording."
 msgstr "Jos sallittu ja PiP käytettävissä, PiP:ä käytetään lataukseen. Jos ei sallittu tai PiP ei käytettävissä, niin lataus tehdään valetallennuksena."
@@ -7217,7 +7157,7 @@ msgid "Increment start time"
 msgstr "Lisää aloitusaikaa"
 
 msgid "Independent"
-msgstr ""
+msgstr "Itsenäinen"
 
 msgid "Index allocated:"
 msgstr "Muistipaikka varattu:"
@@ -7404,13 +7344,11 @@ msgstr "Keskitaso"
 msgid "Internal"
 msgstr "Sisäinen"
 
-#, fuzzy
 msgid "International"
-msgstr "Sisäinen"
+msgstr "Kansainvälinen"
 
-#, fuzzy
 msgid "International News"
-msgstr "Sisäinen"
+msgstr "Kansainväliset Uutiset"
 
 msgid "Internet"
 msgstr "Internet"
@@ -7418,9 +7356,8 @@ msgstr "Internet"
 msgid "Interval between keys when repeating:"
 msgstr "Viive näppäimen toiston välissä:"
 
-#, fuzzy
 msgid "Interview"
-msgstr "Internet"
+msgstr "Haastattelu"
 
 msgid "Invalid"
 msgstr "Puutteellinen"
@@ -7493,7 +7430,7 @@ msgid "Japan"
 msgstr "Japani"
 
 msgid "Jazz"
-msgstr ""
+msgstr "Jatsi"
 
 msgid "Jersey"
 msgstr "Jersey"
@@ -7505,7 +7442,7 @@ msgid "Jordan"
 msgstr "Jordan"
 
 msgid "Jugend"
-msgstr ""
+msgstr "Nuoriso"
 
 msgid "Jump first press in channel selection"
 msgstr "Numeropainalluksen hyppy kanavanvalinnassa"
@@ -7549,19 +7486,17 @@ msgstr "Aina kokoruutu"
 msgid "Just zap"
 msgstr "Vain kanavanvaihto"
 
-#, fuzzy
 msgid "Justiz"
-msgstr "Vain kanavanvaihto"
+msgstr "Oikeudenkäyttö"
 
 msgid "KA-SAT"
 msgstr "KA-SAT (9°E)"
 
-#, fuzzy
 msgid "Kampfsport"
-msgstr "joukkueurheilu"
+msgstr "Kamppailulaji"
 
 msgid "Katastrophe"
-msgstr ""
+msgstr "Katastrofi"
 
 msgid "Kazakhstan"
 msgstr "Kasakstan"
@@ -7605,19 +7540,19 @@ msgid "Keyboard settings"
 msgstr "Näppäimistön asetukset"
 
 msgid "Kinder"
-msgstr ""
+msgstr "Lapset"
 
 msgid "Kiribati"
 msgstr "Kiribati"
 
 msgid "Klassiker"
-msgstr ""
+msgstr "Klassikko"
 
 msgid "Kneipensport"
-msgstr ""
+msgstr "Baari Urheilu"
 
 msgid "Komödie"
-msgstr ""
+msgstr "Komedia"
 
 msgid "Korea (Democratic People's Republic of)"
 msgstr "Korea (Democratic People's Republic of)"
@@ -7625,27 +7560,26 @@ msgstr "Korea (Democratic People's Republic of)"
 msgid "Korea (Republic of)"
 msgstr "Korea (Republic of)"
 
-#, fuzzy
 msgid "Kraftsport"
-msgstr "vesiurheilu"
+msgstr "Voimailu"
 
 msgid "Krieg"
-msgstr ""
+msgstr "Sota"
 
 msgid "Krimi"
-msgstr ""
+msgstr "Dekkari"
 
 msgid "Kriminalität"
-msgstr ""
+msgstr "Rikollisuus"
 
 msgid "Kultur"
-msgstr ""
+msgstr "Kulttuuri"
 
 msgid "Kunst"
-msgstr ""
+msgstr "Taide"
 
 msgid "Kurzfilm"
-msgstr ""
+msgstr "Lyhytfilmi"
 
 msgid "Kuwait"
 msgstr "Kuwait"
@@ -7693,7 +7627,7 @@ msgid "LNB"
 msgstr "LNB"
 
 msgid "Landestypisch"
-msgstr ""
+msgstr "Tyypillinen maalle"
 
 msgid "Language"
 msgstr "Kielivalinta"
@@ -7730,9 +7664,8 @@ msgstr "Viimeksi käytetty jako: "
 msgid "LastPage"
 msgstr "Viimeinen sivu"
 
-#, fuzzy
 msgid "Late Night"
-msgstr "Sivu oikealle"
+msgstr "Myöhäis"
 
 msgctxt "third event: 'third' event label"
 msgid "Later"
@@ -7765,9 +7698,8 @@ msgstr "Kanavanimestä vasemmalle"
 msgid "Left long"
 msgstr "Pitkä vasemmalle"
 
-#, fuzzy
 msgid "Leichtathletik"
-msgstr "yleisurheilu"
+msgstr "Yleisurheilu"
 
 msgid "Leisure hobbies"
 msgstr "Vapaa-ajan harrastukset"
@@ -7790,9 +7722,8 @@ msgstr "Libya"
 msgid "Liechtenstein"
 msgstr "Liechtenstein"
 
-#, fuzzy
 msgid "Lifestyle"
-msgstr "Ajan näyttömuoto"
+msgstr "Elämäntyyli"
 
 msgid "Light Grey"
 msgstr "Vaaleanharmaa"
@@ -7863,13 +7794,11 @@ msgstr "Kuuntelija hotplug tapahtumille."
 msgid "Lists reloaded!"
 msgstr "Listat ladattu!"
 
-#, fuzzy
 msgid "Literatur"
-msgstr "kirjallisuus"
+msgstr "Kirjallisuus"
 
-#, fuzzy
 msgid "Literaturverfilmung"
-msgstr "kirjallisuus"
+msgstr "Kirjallisuuselokuva"
 
 msgid "Lithuania"
 msgstr "Liettua"
@@ -7878,7 +7807,7 @@ msgid "Lithuanian"
 msgstr "Liettua"
 
 msgid "Live"
-msgstr ""
+msgstr "Suora"
 
 msgid "Load"
 msgstr "Lataa"
@@ -8003,7 +7932,7 @@ msgid "MENU"
 msgstr "VALIKKO"
 
 msgid "MMA"
-msgstr ""
+msgstr "MMA"
 
 msgid "Macao"
 msgstr "Macao"
@@ -8014,9 +7943,8 @@ msgstr "Makedonia"
 msgid "Madagascar"
 msgstr "Madagascar"
 
-#, fuzzy
 msgid "Magazin"
-msgstr "uutismakasiini"
+msgstr "Makasiini"
 
 msgid "Main Menu"
 msgstr "Päävalikko"
@@ -8062,7 +7990,7 @@ msgid "Manage your %s %s's software"
 msgstr "Hallitse %s %s:n ohjelmistoa"
 
 msgid "Mannschaftssport"
-msgstr ""
+msgstr "Joukkueurheilu"
 
 msgid "Manual"
 msgstr "Manuaalinen"
@@ -8097,9 +8025,8 @@ msgstr "Merkki/Valikko/Soittolista"
 msgid "Marshall Islands"
 msgstr "Marshall Islands"
 
-#, fuzzy
 msgid "Martial Sports"
-msgstr "kamppailulajit"
+msgstr "Kamppailu-urheilu"
 
 msgid "Martinique"
 msgstr "Martinique"
@@ -8160,12 +8087,11 @@ msgstr "Mediasoitin"
 msgid "Media scanner"
 msgstr "Mediaskanneri"
 
-#, fuzzy
 msgid "Medical"
-msgstr "Vertikaali"
+msgstr "Lääketieteellinen"
 
 msgid "Medien"
-msgstr ""
+msgstr "Meedia"
 
 msgid "Medium is not a writeable DVD!"
 msgstr "Levy ei ole kirjoitettava DVD!"
@@ -8173,9 +8099,8 @@ msgstr "Levy ei ole kirjoitettava DVD!"
 msgid "Medium is not empty!"
 msgstr "Levy ei ole tyhjä!"
 
-#, fuzzy
 msgid "Melodrama"
-msgstr "Elokuva/draama"
+msgstr "Melodraama"
 
 msgid "Memory"
 msgstr "Muisti"
@@ -8215,7 +8140,7 @@ msgid "Micronesia (Federated States of)"
 msgstr "Micronesia (Federated States of)"
 
 msgid "Mini Series"
-msgstr ""
+msgstr "Minisarja"
 
 msgid "MiniDLNA"
 msgstr "MiniDLNA-asetukset"
@@ -8237,7 +8162,7 @@ msgid "Minimum send interval"
 msgstr "Minimi lähestysjakso"
 
 msgid "Minority Sports"
-msgstr ""
+msgstr "Vähemmistöurheilu"
 
 msgid "Mins"
 msgstr "Min."
@@ -8280,7 +8205,7 @@ msgid "Model: %s %s\n"
 msgstr "Malli: %s %s\n"
 
 msgid "Modern Dance"
-msgstr ""
+msgstr "Nykytanssi"
 
 msgid "Modes"
 msgstr "Tilat"
@@ -8324,9 +8249,8 @@ msgstr "Marokko"
 msgid "Mosquito noise reduction"
 msgstr "Mosquito-häiriöiden vaimennus"
 
-#, fuzzy
 msgid "Motor Sport"
-msgstr "moottoriurheilu"
+msgstr "Moottoriurheilu"
 
 msgid "Motor command retries"
 msgstr "Moottorikomentojen uudelleenyritykset"
@@ -8334,17 +8258,14 @@ msgstr "Moottorikomentojen uudelleenyritykset"
 msgid "Motor running timeout"
 msgstr "Moottorin aikaylitys"
 
-#, fuzzy
 msgid "Motorcycling"
-msgstr "autoilu"
+msgstr "Moottoripyöräily"
 
-#, fuzzy
 msgid "Motoring"
-msgstr "autoilu"
+msgstr "Autoilu"
 
-#, fuzzy
 msgid "Motorsport"
-msgstr "moottoriurheilu"
+msgstr "Moottoriurheilu"
 
 msgid "Mount."
 msgstr "Liitä."
@@ -8559,7 +8480,7 @@ msgid "Multistream"
 msgstr "Usea satelliitti"
 
 msgid "Murder"
-msgstr ""
+msgstr "Murha"
 
 msgid "Music"
 msgstr "Musiikki"
@@ -8567,23 +8488,20 @@ msgstr "Musiikki"
 msgid "Music/Ballet/Dance"
 msgstr "Musiikki/Baletti/Tanssi"
 
-#, fuzzy
 msgid "Musical"
-msgstr "Musiikki"
+msgstr "Musikaalinen"
 
-#, fuzzy
 msgid "Musik"
 msgstr "Musiikki"
 
 msgid "Myanmar"
 msgstr "Myanmar"
 
-#, fuzzy
 msgid "Mystery"
-msgstr "Eilen"
+msgstr "Mysteeri"
 
 msgid "Märchen"
-msgstr ""
+msgstr "Satu"
 
 msgid "N"
 msgstr "N"
@@ -8632,7 +8550,7 @@ msgid "NTSC"
 msgstr "NTSC"
 
 msgid "Nachrichten"
-msgstr ""
+msgstr "Uutiset"
 
 msgid "Name"
 msgstr "Nimi"
@@ -8676,26 +8594,23 @@ msgstr "Namibia"
 msgid "Narration"
 msgstr "Äänen kuvaus näkövammaisille"
 
-#, fuzzy
 msgid "National"
-msgstr "Äänen kuvaus näkövammaisille"
+msgstr "Kansallinen"
 
 msgid "National News"
-msgstr ""
+msgstr "Kansalliset Uutiset"
 
-#, fuzzy
 msgid "Natur"
-msgstr "Lauantai"
+msgstr "Luonto"
 
-#, fuzzy
 msgid "Nature"
-msgstr "kirjallisuus"
+msgstr "Luonto"
 
 msgid "Nauru"
 msgstr "Nauru"
 
 msgid "Navigate up/down with UP/DOWN buttons and page up/down with LEFT/RIGHT. EXIT to return to the help screen. OK to perform the action described in the currently highlighted help."
-msgstr ""
+msgstr "Navigoi ylös/alas YLÖS/ALAS -näppäimillä ja sivu ylös/alas VASEN/OIKEA -näppäimillä. EXIT-näppäimellä paluu ohjenäytölle. OK-näppäimellä suoritetaan toiminto, joka on kuvattu korostetulla rivillä."
 
 msgid "Navigation"
 msgstr "Navigointi"
@@ -8703,9 +8618,8 @@ msgstr "Navigointi"
 msgid "Nepal"
 msgstr "Nepal"
 
-#, fuzzy
 msgid "Netball"
-msgstr "baletti"
+msgstr "Verkkopallo"
 
 msgid "Netherlands"
 msgstr "Hollanti"
@@ -8768,7 +8682,7 @@ msgid "Network:"
 msgstr "Sovitin:"
 
 msgid "Neue Medien"
-msgstr ""
+msgstr "Uusmedia"
 
 msgid "New"
 msgstr "Uusi"
@@ -8791,16 +8705,14 @@ msgstr "Uusi versio:"
 msgid "News"
 msgstr "Uutiset"
 
-#, fuzzy
 msgid "News Magazine"
-msgstr "uutismakasiini"
+msgstr "Uutismakasiini"
 
 msgid "News/Current Affairs"
 msgstr "Uutiset/ajankohtaisohjelmat"
 
-#, fuzzy
 msgid "News/Current Affairs/Social"
-msgstr "Uutiset/ajankohtaisohjelmat"
+msgstr "Uutiset/Ajankohtaisasiat/Sosiaalinen"
 
 msgid "Next"
 msgstr "Seuraava"
@@ -9161,10 +9073,10 @@ msgid "Offline decode delay (ms)"
 msgstr "Offline-purkamisen viive (ms)"
 
 msgid "Olympia"
-msgstr ""
+msgstr "Olympialaiset"
 
 msgid "Olympics"
-msgstr ""
+msgstr "Olympialaiset"
 
 msgid "Oman"
 msgstr "Oman"
@@ -9232,9 +9144,8 @@ msgstr "Valitse 'kyllä', jos käytät monikytkintä, joka vaatii DiSEqC portti-
 msgid "Open RDS/RASS screen"
 msgstr "Avaa RDS/RASS näyttö"
 
-#, fuzzy
 msgid "Open RDS/RASS screen..."
-msgstr "Avaa RDS/RASS näyttö"
+msgstr "Avaa RDS/RASS näyttö..."
 
 msgid "Open VirtualKeyboard"
 msgstr "Avaa virtuaalinen näppäimistö"
@@ -9314,7 +9225,7 @@ msgid "OpentvZapper"
 msgstr "OpenTV:n kanavanvaihtaja"
 
 msgid "Opera"
-msgstr ""
+msgstr "Ooppera"
 
 msgid "Orbital position"
 msgstr "Sijainti"
@@ -9335,13 +9246,13 @@ msgid "Other"
 msgstr "Muu"
 
 msgid "Other buttons will jump to the help for that button, if there is help."
-msgstr ""
+msgstr "Muilla näppäimillä hypätään kyseisen näppäimen ohjeeseen, jos sellainen on olemassa."
 
 msgid "Other functions"
 msgstr "Muut toiminnot"
 
 msgid "Outdoor"
-msgstr ""
+msgstr "Ulkoilma"
 
 msgid "Output"
 msgstr "Ulostulo"
@@ -9463,7 +9374,7 @@ msgid "Papua New Guinea"
 msgstr "Papua Uusi Guinea"
 
 msgid "Parabel"
-msgstr ""
+msgstr "Paraabeli"
 
 msgid "Paraguay"
 msgstr "Paraguay"
@@ -9481,10 +9392,10 @@ msgid "Parental control"
 msgstr "Lapsilukko"
 
 msgid "Parliament"
-msgstr ""
+msgstr "Parlamentti"
 
 msgid "Parodie"
-msgstr ""
+msgstr "Parodia"
 
 msgid "Passthrough"
 msgstr "Läpivienti"
@@ -9495,9 +9406,8 @@ msgstr "Laitteen salasana"
 msgid "Password (httpwd)"
 msgstr "Salasana (httpwd)"
 
-#, fuzzy
 msgid "Password Actions"
-msgstr "Salasana vaihdettu"
+msgstr "Salasanan toiminnot"
 
 msgid "Password Setup"
 msgstr "Salasanan asetus"
@@ -9967,7 +9877,7 @@ msgid "Plugins"
 msgstr "Plugin-lisäosat"
 
 msgid "Poker"
-msgstr ""
+msgstr "Pokeri"
 
 msgid "Poland"
 msgstr "Puola"
@@ -9982,19 +9892,16 @@ msgid "Polish"
 msgstr "Puola"
 
 msgid "Political Issues"
-msgstr ""
+msgstr "Poliittiset Kysymykset"
 
-#, fuzzy
 msgid "Politics"
-msgstr "Puola"
+msgstr "Politiikka"
 
-#, fuzzy
 msgid "Politik"
-msgstr "Puola"
+msgstr "Politiikka"
 
-#, fuzzy
 msgid "Pop"
-msgstr "Ponnahdus"
+msgstr "Populaari"
 
 msgid "Popup"
 msgstr "Ponnahdus"
@@ -10017,9 +9924,8 @@ msgstr "Portti D"
 msgid "Port:"
 msgstr "Portti:"
 
-#, fuzzy
 msgid "Porträt"
-msgstr "Portti"
+msgstr "Muotokuva"
 
 msgid "Portugal"
 msgstr "Portugali"
@@ -10111,9 +10017,8 @@ msgstr "Etupaneelin virranhallinta valmiustila"
 msgid "PowerControl FrontDisplay Suspend Mode"
 msgstr "Etupaneelin virranhallinta jäädytydtila"
 
-#, fuzzy
 msgid "Powerboating"
-msgstr "Virta pitkä"
+msgstr "Moottoriveneily"
 
 msgid "Predefined"
 msgstr "Esiasetettu"
@@ -10301,7 +10206,7 @@ msgid "Progress bar right"
 msgstr "Etenemispalkki oikealla"
 
 msgid "Prominent"
-msgstr ""
+msgstr "Kuuluisa"
 
 msgid "Properties of current title"
 msgstr "Omaisuudet"
@@ -10376,16 +10281,16 @@ msgid "Providers: "
 msgstr "Palveluntarjoajat: "
 
 msgid "Psychologie"
-msgstr ""
+msgstr "Psykologia"
 
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
 msgid "Puppentrick"
-msgstr ""
+msgstr "Nukketemppu"
 
 msgid "Puppets"
-msgstr ""
+msgstr "Nuket"
 
 msgid "Purge deleted user bouquets"
 msgstr "Tyhjennä poistetut suosikkilistat"
@@ -10428,7 +10333,7 @@ msgid "Quit Movie Player with EXIT button"
 msgstr "Salli tallenteista poistuminen exit-napilla"
 
 msgid "Quiz"
-msgstr ""
+msgstr "Visailu"
 
 msgid "RAM"
 msgstr "RAM"
@@ -10460,12 +10365,11 @@ msgstr "Radio"
 msgid "Radio Channel Selection"
 msgstr "Radiokanavan valinta"
 
-#, fuzzy
 msgid "Radsport"
-msgstr "joukkueurheilu"
+msgstr "Kilpapyöräily"
 
 msgid "Rallying"
-msgstr ""
+msgstr "Ralliautoilu"
 
 msgid "Random"
 msgstr "Satunnainen"
@@ -10473,9 +10377,8 @@ msgstr "Satunnainen"
 msgid "Random Password"
 msgstr "Satunnainen salasana"
 
-#, fuzzy
 msgid "Randomly generate a password"
-msgstr "Satunnainen salasana"
+msgstr "Luo salasana satunnaisesti"
 
 #, python-format
 msgid "Rating defined by broadcaster - %d"
@@ -10509,13 +10412,13 @@ msgid "Ready to remove \"%s\" ?"
 msgstr "Valmiina poistamaan \"%s\" ?"
 
 msgid "Real Life"
-msgstr ""
+msgstr "Tosielämä"
 
 msgid "Reality"
-msgstr ""
+msgstr "Realiteetti"
 
 msgid "Reality Show"
-msgstr ""
+msgstr "Tositelevisio-ohjelma"
 
 msgid "Really close without saving settings?"
 msgstr "Haluatko poistua tallentamatta asetuksia?"
@@ -10693,19 +10596,17 @@ msgstr "Käytä virransäästötilaa valmiustilana"
 msgid "Region"
 msgstr "Alue"
 
-#, fuzzy
 msgid "Regional"
-msgstr "Alue"
+msgstr "Alueellinen"
 
-#, fuzzy
 msgid "Regional News"
-msgstr "Alue"
+msgstr "Alueelliset Uutiset"
 
 msgid "Reisen"
-msgstr ""
+msgstr "Matkailu"
 
 msgid "Reiten"
-msgstr ""
+msgstr "Ratsastus"
 
 msgid "Relative"
 msgstr "Suhteellinen"
@@ -10716,9 +10617,8 @@ msgstr "Muutosloki"
 msgid "Relevant PIDs routing"
 msgstr "Relevantti PID:n reititys"
 
-#, fuzzy
 msgid "Religion"
-msgstr "uskonto"
+msgstr "Uskonto"
 
 msgid "Reload"
 msgstr "Päivitä"
@@ -10908,9 +10808,8 @@ msgstr "Muuta nimeksi:"
 msgid "Renamed %s!"
 msgstr "Uudelleennimettiin %s!"
 
-#, fuzzy
 msgid "Renovation"
-msgstr "Resoluutio"
+msgstr "Saneeraus"
 
 msgid "Repeat"
 msgstr "Toistokerrat"
@@ -10939,9 +10838,8 @@ msgstr "Toistokerrat"
 msgid "Replace `- ` in dialogs with colored text per speaker (like teletext subtitles for the hearing impaired)"
 msgstr "Korvaa `- ` tekstityksissä väreillä samaan tapaan kuin kuulovammaisten tekstityksissä."
 
-#, fuzzy
 msgid "Reportage"
-msgstr "Prosenttia"
+msgstr "Reportaasi"
 
 msgid "Request for physical address report"
 msgstr "TV:n fyysisen osoitteen raportti"
@@ -11070,10 +10968,10 @@ msgid "Reverse bouquet buttons"
 msgstr "Käänteiset kanavan näppäimet"
 
 msgid "Reverse list"
-msgstr "käänteinen lista"
+msgstr "Käänteinen lista"
 
 msgid "Revue"
-msgstr ""
+msgstr "Revyy"
 
 msgid "Rewind"
 msgstr "Kelaus taaksepäin"
@@ -11094,14 +10992,13 @@ msgid "Right long"
 msgstr "Pitkä oikealle"
 
 msgid "Rock"
-msgstr ""
+msgstr "Rock"
 
 msgid "Roll-off"
 msgstr "Roll-off"
 
-#, fuzzy
 msgid "Romance"
-msgstr "romantiikka"
+msgstr "Romantiikka"
 
 msgid "Romania"
 msgstr "Romania"
@@ -11109,9 +11006,8 @@ msgstr "Romania"
 msgid "Romanian"
 msgstr "Romania"
 
-#, fuzzy
 msgid "Romantik"
-msgstr "Romania"
+msgstr "Romantiikka"
 
 msgid "Root"
 msgstr "Root"
@@ -11132,25 +11028,25 @@ msgid "Routing request"
 msgstr "Reitityksen pyynti"
 
 msgid "Rowing"
-msgstr ""
+msgstr "Soutu"
 
 msgid "Rugby"
-msgstr ""
+msgstr "Rugby"
 
 msgid "Rugby League"
-msgstr ""
+msgstr "Ammattilaisrugby"
 
 msgid "Rugby League - Domestic"
-msgstr ""
+msgstr "Ammattilaisrugby - Kotimainen"
 
 msgid "Rugby League - International"
-msgstr ""
+msgstr "Ammattilaisrugby - Kansainvälinen"
 
 msgid "Rugby Union - Domestic"
-msgstr ""
+msgstr "Amatöörirugby - Kotimainen"
 
 msgid "Rugby Union - International"
-msgstr ""
+msgstr "Amatöörirugby - Kansainvälinen"
 
 msgid "Run how often ?"
 msgstr "Kuinka usein toistetaan?"
@@ -11213,11 +11109,10 @@ msgid "SSID:"
 msgstr "SSID:"
 
 msgid "Saga"
-msgstr ""
+msgstr "Saaga"
 
-#, fuzzy
 msgid "Sailing"
-msgstr "Skaalaustila"
+msgstr "Purjehdus"
 
 msgid "Saint Barthelemy"
 msgstr "Saint Barthelemy"
@@ -11280,7 +11175,7 @@ msgid "Satellites"
 msgstr "Satelliitit"
 
 msgid "Satire"
-msgstr ""
+msgstr "Satiiri"
 
 msgid "Sats"
 msgstr "Sat."
@@ -11421,28 +11316,25 @@ msgid "Schedule EPG and channel list import"
 msgstr "Ajasta EPG ja kanavalistan tuonti"
 
 msgid "Sci-Fi"
-msgstr ""
+msgstr "Sci-Fi"
 
 msgid "Science"
-msgstr ""
+msgstr "Tiede"
 
 msgid "Science & Tech"
-msgstr ""
+msgstr "Tiede & Tekniikka"
 
-#, fuzzy
 msgid "Science Fiction"
-msgstr "Valitse toiminto"
+msgstr "Tieteiskirjallisuus"
 
-#, fuzzy
 msgid "Science-Fiction"
-msgstr "Teeman valinta"
+msgstr "Tieteiskirjallisuus"
 
 msgid "Screen proportions"
 msgstr "Kuvasuhteet"
 
-#, fuzzy
 msgid "Scroll menu"
-msgstr "Näytä valikko"
+msgstr "Vieritysvalikko"
 
 msgid "Scrolling Speed"
 msgstr "Vieritysnopeus"
@@ -11964,10 +11856,10 @@ msgid "Serial no"
 msgstr "Sarjanumero"
 
 msgid "Serie"
-msgstr ""
+msgstr "Sarja"
 
 msgid "Serious Music"
-msgstr ""
+msgstr "Vakava Musiikki"
 
 #, python-format
 msgid "Server Info ( %s-Version: %s )"
@@ -12267,11 +12159,10 @@ msgid "Shift"
 msgstr "Vaihto"
 
 msgid "Shopping"
-msgstr ""
+msgstr "Shoppailu"
 
-#, fuzzy
 msgid "Short Film"
-msgstr "Lyhyet tiedostonimet"
+msgstr "Lyhytfilmi"
 
 msgid "Short filenames"
 msgstr "Lyhyet tiedostonimet"
@@ -12637,9 +12528,8 @@ msgstr "Näytä automaattiajastusluettelo."
 msgid "Show the list of timers"
 msgstr "Näytä ajastusluettelo"
 
-#, fuzzy
 msgid "Show the list of timers."
-msgstr "Näytä ajastusluettelo"
+msgstr "Näytä ajastusluettelo."
 
 msgid "Show the plugin browser"
 msgstr "Näytä lisäosien selain"
@@ -12680,7 +12570,6 @@ msgstr "Näytä kaksi riviä per kanava"
 msgid "Show warning when timeshift is stopped"
 msgstr "Näytä varoitus kun ajansiirto on pysäytetty"
 
-#, fuzzy
 msgid "Show/Game Show/Leisure hobbies"
 msgstr "Vapaa-ajan harrastukset"
 
@@ -12772,7 +12661,7 @@ msgid "Sint Maarten (Dutch part)"
 msgstr "Sint Maarten (Dutch part)"
 
 msgid "Sitcom"
-msgstr ""
+msgstr "Tilannekomedia"
 
 msgid "Site latitude"
 msgstr "Leveysaste"
@@ -12781,10 +12670,10 @@ msgid "Site longitude"
 msgstr "Pituusaste"
 
 msgid "Sketches"
-msgstr ""
+msgstr "Luonnoksia"
 
 msgid "Skiing"
-msgstr ""
+msgstr "Hiihto"
 
 msgid "Skin"
 msgstr "Teema"
@@ -12848,7 +12737,7 @@ msgid "Skip, pause, rewind and fast forward timeshift"
 msgstr "Hyppy, pysäytys, taaksepäin kelaus ja nopea eteenpäin kelaus ajansiirrolle"
 
 msgid "Slapstick"
-msgstr ""
+msgstr "Kermakakkukomedia"
 
 msgid "Sleep"
 msgstr "Sammuminen"
@@ -12931,26 +12820,26 @@ msgid "Smooth"
 msgstr "Pehmennnys"
 
 msgid "Snooker"
-msgstr ""
+msgstr "Snooker"
 
 #, python-format
 msgid "SoC:\t%s\n"
 msgstr "SoC:\t%s\n"
 
 msgid "Soap"
-msgstr ""
+msgstr "Saippua"
 
 msgid "Soap Opera"
-msgstr ""
+msgstr "Saippuaooppera"
 
 msgid "Soccer"
-msgstr ""
+msgstr "Jalkapallo"
 
 msgid "Social/Political/Economics"
 msgstr "Sosiaali/Politiikka/Talous"
 
 msgid "Society & Culture"
-msgstr ""
+msgstr "Yhteiskunta & Kulttuuri"
 
 msgid "Softcam Actions"
 msgstr "Softcam-asetukset"
@@ -13138,10 +13027,10 @@ msgid "Speed:"
 msgstr "Nopeus:"
 
 msgid "Spiele"
-msgstr ""
+msgstr "Urheilukilpailu"
 
 msgid "Spielfilm"
-msgstr ""
+msgstr "Kokoillan elokuva"
 
 msgid "Split event detection (minutes)"
 msgstr "Jaa ohjelman tunnistus (minuuttia)"
@@ -13158,12 +13047,11 @@ msgstr "Urheilu"
 msgid "Sports"
 msgstr "Urheilu"
 
-#, fuzzy
 msgid "Sports Magazines"
-msgstr "urheilumakasiini"
+msgstr "Urheilumakasiinit"
 
 msgid "Sprache"
-msgstr ""
+msgstr "Kieli"
 
 msgid "Sri Lanka"
 msgstr "Sri Lanka"
@@ -13380,10 +13268,10 @@ msgid "Strongest position"
 msgstr "Vahvin sijainti"
 
 msgid "Strongman Contests"
-msgstr ""
+msgstr "Vahvinmies Kilpailut"
 
 msgid "Stumm"
-msgstr ""
+msgstr "Mykkä"
 
 msgid "Subnet"
 msgstr "Aliverkko"
@@ -13505,7 +13393,7 @@ msgid "Swedish"
 msgstr "Ruotsi"
 
 msgid "Swimming"
-msgstr ""
+msgstr "Uinti"
 
 msgid "Switch"
 msgstr "Vaihda"
@@ -13633,6 +13521,7 @@ msgstr "TEKSTI"
 msgid "TRANSLATOR_INFO"
 msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
+"Ylläpito : Orlandox\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -13657,7 +13546,7 @@ msgid "Tab"
 msgstr "Välilehti"
 
 msgid "Table Tennis"
-msgstr ""
+msgstr "Pöytätennis"
 
 msgid "Table of contents for collection"
 msgstr "Kokoelman sisällysluettelo"
@@ -13672,14 +13561,13 @@ msgid "Tajikistan"
 msgstr "Tajikistan"
 
 msgid "Talk"
-msgstr ""
+msgstr "Puhe"
 
-#, fuzzy
 msgid "Talk Show"
-msgstr "talk show"
+msgstr "Keskusteluohjelma"
 
 msgid "Tanz"
-msgstr ""
+msgstr "Tanssi"
 
 msgid "Tanzania, United Republic of"
 msgstr "Tanzania, United Republic of"
@@ -13688,10 +13576,10 @@ msgid "Task warning on shutdown"
 msgstr "Varoita käynnissä olevista tehtävistä"
 
 msgid "Technik"
-msgstr ""
+msgstr "Tekniikka"
 
 msgid "Technology"
-msgstr ""
+msgstr "Teknologia"
 
 msgid "Teletext"
 msgstr "Teksti-TV"
@@ -13717,9 +13605,8 @@ msgstr "Telnet-liittymä"
 msgid "Telnet port"
 msgstr "Telnet-portti"
 
-#, fuzzy
 msgid "Tennis"
-msgstr "Suomi"
+msgstr "Tennis"
 
 msgid "Terrestrial"
 msgstr "Antennivastaanotto"
@@ -13876,7 +13763,7 @@ msgstr ""
 "Asenna se."
 
 msgid "The order and grouping of the help information list can be controlled using MENU>Setup>User Interface>Settings>Sort order for help screen."
-msgstr ""
+msgstr "Ohjetietolistan järjestys ja ryhmittely voidaan määrittää kohdassa Päävalikko/Asetukset/Käyttöliittymä/Asetukset> Ohjenäytön lajittelujärjestys."
 
 msgid "The password can not be blank."
 msgstr "Salasana ei saa olla tyhjä."
@@ -13942,9 +13829,8 @@ msgstr "Avustaja voi kopioida nykyiset asetuksesi. Haluatko varmuuskopioida aset
 msgid "The wizard is finished now."
 msgstr "Avustaja on lopettanut. Paina OK."
 
-#, fuzzy
 msgid "Theater"
-msgstr "Myöhemmin"
+msgstr "Teatteri"
 
 msgid "There are at least "
 msgstr "Saatavilla ainakin "
@@ -14231,9 +14117,8 @@ msgstr ""
 "Tämä toiminto laskee uudelleen kaikki kääntömoottorin sijainnit ja voi poistaa tallennetut muistipaikat ja hienosäädöt!\n"
 "Haluatko varmasti tehdä tämän?"
 
-#, fuzzy
 msgid "This will permanently delete the current configuration. If necessary it should be possible to restore the current configuration by restoring the settings backup. Are you certain you want to continue with a factory reset?"
-msgstr "Tämä poistaa pysyvästi nykyiset määritykset. Kannattaa ensiksi tehdä varmuuskopio. Haluatko varmasti palauttaa tehdasasetukset?"
+msgstr "Tämä poistaa pysyvästi nykyiset määritykset. Kannattaa ensiksi tehdä varmuuskopio, jolloin asetukset voi palauttaa. Haluatko varmasti palauttaa tehdasasetukset?"
 
 msgid "This will permanently delete the current configuration. It would be a good idea to make a backup before taking this drastic action. Are you certain you want to continue with a factory reset?"
 msgstr "Tämä poistaa pysyvästi nykyiset määritykset. Kannattaa ensiksi tehdä varmuuskopio. Haluatko varmasti palauttaa tehdasasetukset?"
@@ -14245,7 +14130,7 @@ msgid "Threshold"
 msgstr "Kynnys"
 
 msgid "Thriller"
-msgstr ""
+msgstr "Trilleri"
 
 msgid "Thu"
 msgstr "To"
@@ -14260,7 +14145,7 @@ msgid "TiVo support"
 msgstr "TiVo tuki"
 
 msgid "Tiere"
-msgstr ""
+msgstr "Karja"
 
 msgid "Time"
 msgstr "Aika"
@@ -14508,17 +14393,16 @@ msgid "Total:"
 msgstr "Kokonais:"
 
 msgid "Tourism"
-msgstr ""
+msgstr "Turismi"
 
 msgid "Track"
 msgstr "Raita"
 
-#, fuzzy
 msgid "Traditional Music"
-msgstr "kansan-/perinteinen musiikki"
+msgstr "Perinteinen Musiikki"
 
 msgid "Tragödie"
-msgstr ""
+msgstr "Tragedia"
 
 msgid "Transcoding: "
 msgstr "Transkoodaus: "
@@ -14554,10 +14438,10 @@ msgid "Trashcan:"
 msgstr "Roskakori:"
 
 msgid "Travel"
-msgstr ""
+msgstr "Matkustelu"
 
 msgid "Triathlon"
-msgstr ""
+msgstr "Triathlon"
 
 msgid "Tries left:"
 msgstr "Yrityksiä jäljellä:"
@@ -14722,7 +14606,7 @@ msgid "Ukrainian"
 msgstr "Ukraina"
 
 msgid "Umweltbewusstsein"
-msgstr ""
+msgstr "Ympäristötietoisuus"
 
 msgid "Unable to change password"
 msgstr "Salasanan vaihto epäonnistui"
@@ -14793,21 +14677,20 @@ msgstr "Pura liitos."
 msgid "Unsupported"
 msgstr "Ei tuettu"
 
-#, fuzzy
 msgid "Unterhaltung"
-msgstr "Sisäinen"
+msgstr "Ylläpito"
 
 msgid "Unused 0x71"
-msgstr ""
+msgstr "Käyttämätön 0x71"
 
 msgid "Unused 0x72"
-msgstr ""
+msgstr "Käyttämätön 0x72"
 
 msgid "Unused 0x80"
-msgstr ""
+msgstr "Käyttämätön 0x80"
 
 msgid "Unused 0xb2"
-msgstr ""
+msgstr "Käyttämätön 0xb2"
 
 msgid "Up"
 msgstr "Ylös"
@@ -14890,9 +14773,8 @@ msgstr "Käynnissäoloaika"
 msgid "Uptime:\t%s\n"
 msgstr "Käynnissäoloaika:\t%s\n"
 
-#, fuzzy
 msgid "Urban Music"
-msgstr "Musiikki"
+msgstr "Urbaani Musiikki"
 
 msgid "Uruguay"
 msgstr "Uruguay"
@@ -15070,9 +14952,9 @@ msgstr "Käyttöliittymä"
 msgid "User defined"
 msgstr "Käyttäjän määrittelemä"
 
-#, fuzzy, python-format
+#, python-format
 msgid "User defined 0x%02x"
-msgstr "Käyttäjän määrittelemä"
+msgstr "Käyttäjän määrittelemä 0x%02x"
 
 msgid "User defined transponder"
 msgstr "Käyttäjän määrittelemä lähetin"
@@ -15139,9 +15021,8 @@ msgstr "Katso käypä ONID/TSID: www.lyngsat.com..."
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
-#, fuzzy
 msgid "Variety"
-msgstr "varietee"
+msgstr "Varietee"
 
 msgid "Various"
 msgstr "Useita"
@@ -15150,10 +15031,10 @@ msgid "Venezuela (Bolivarian Republic of)"
 msgstr "Venezuela (Bolivarian Republic of)"
 
 msgid "Verkehr"
-msgstr ""
+msgstr "Liikenne"
 
 msgid "Verschiedenes"
-msgstr ""
+msgstr "Sekalainen"
 
 msgid "Version: "
 msgstr "Versio: "
@@ -15219,7 +15100,6 @@ msgstr "Video-ulostulo"
 msgid "Video settings"
 msgstr "Video-asetukset"
 
-#, fuzzy
 msgid "Video settings options"
 msgstr "Video-asetukset"
 
@@ -15227,9 +15107,8 @@ msgstr "Video-asetukset"
 msgid "Video: %s fps"
 msgstr "Video: %s fps"
 
-#, fuzzy
 msgid "Videoclip"
-msgstr "Videon leikkaus"
+msgstr "Videoklippi"
 
 msgid "Videocodec, size & format"
 msgstr "Videokoodekki, koko & formaatti"
@@ -15307,7 +15186,7 @@ msgid "View video CD..."
 msgstr "Katso Video-CD..."
 
 msgid "Violence"
-msgstr ""
+msgstr "Väkivalta"
 
 msgid "Virgin Islands (British)"
 msgstr "Virgin Islands (British)"
@@ -15328,7 +15207,7 @@ msgid "Virtuosso Image Xtreme"
 msgstr "Virtuosso Image Xtreme"
 
 msgid "Volleyball"
-msgstr ""
+msgstr "Lentopallo"
 
 msgid "Voltage mode"
 msgstr "13/18V-jännite"
@@ -15337,7 +15216,7 @@ msgid "Volume keys on the receiver remote will control the TV volume."
 msgstr "Vastaanottimen äänenvoimakkuuden painikkeet ohjaavat TV:n äänenvoimakkuutta."
 
 msgid "Vorschau"
-msgstr ""
+msgstr "Ennakkokatsaus"
 
 msgid "W"
 msgstr "W"
@@ -15370,14 +15249,13 @@ msgid "WWIO 4K"
 msgstr "WWIO 4K"
 
 msgid "WWW"
-msgstr ""
+msgstr "WWW"
 
-#, fuzzy
 msgid "WWW long"
-msgstr "F2"
+msgstr "WWW pitkä"
 
 msgid "Waffen"
-msgstr ""
+msgstr "Aseet"
 
 msgid "Waiting"
 msgstr "Odottaa"
@@ -15421,9 +15299,8 @@ msgstr "Käynnistyssignaali TV:ltä"
 msgid "Wallis and Futuna"
 msgstr "Wallis and Futuna"
 
-#, fuzzy
 msgid "War"
-msgstr "Varoitus"
+msgstr "Sota"
 
 msgid "Warning"
 msgstr "Varoitus"
@@ -15437,9 +15314,8 @@ msgstr "Varoitus: ei LNB:tä, käytetään tehdasasetuksia."
 msgid "Warning: the second input of this dual tuner may not support SCR LNBs. "
 msgstr "Varoitus: tämän kaksoisvirittimen toinen tulo ei ehkä tue SCR LNB:tä. "
 
-#, fuzzy
 msgid "Wassersport"
-msgstr "vesiurheilu"
+msgstr "Vesiurheilu"
 
 msgid "Watch movies..."
 msgstr "Toista tallenteet..."
@@ -15447,13 +15323,11 @@ msgstr "Toista tallenteet..."
 msgid "Watch recordings"
 msgstr "Katso tallenteita"
 
-#, fuzzy
 msgid "Water Sport"
-msgstr "vesiurheilu"
+msgstr "Vesiurheilu"
 
-#, fuzzy
 msgid "Weather"
-msgstr "Muu"
+msgstr "Sää"
 
 msgid "Web Interface"
 msgstr "Web-liittymä"
@@ -15479,9 +15353,8 @@ msgstr "Viikottain"
 msgid "Weighted position"
 msgstr "Painotettu sijainti"
 
-#, fuzzy
 msgid "Weightlifting"
-msgstr "Painotettu sijainti"
+msgstr "Painonnosto"
 
 msgid ""
 "Welcome to OpenViX!\n"
@@ -15541,7 +15414,7 @@ msgstr ""
 "Siirry seuraavaan vaiheeseen painamalla OK-nappia."
 
 msgid "Werbung"
-msgstr ""
+msgstr "Mainonta"
 
 msgid "West"
 msgstr "Läntistä pituutta"
@@ -15549,19 +15422,17 @@ msgstr "Läntistä pituutta"
 msgid "West limit set"
 msgstr "Läntinen raja-arvo asetettu"
 
-#, fuzzy
 msgid "Western"
-msgstr "Läntistä pituutta"
+msgstr "Läntinen"
 
 msgid "Western Sahara"
-msgstr "Western Sahara"
+msgstr "Läntinen Sahara"
 
 msgid "Wettbewerb"
-msgstr ""
+msgstr "Kilpailu"
 
-#, fuzzy
 msgid "Wetter"
-msgstr "parempi"
+msgstr "Sää"
 
 msgid "What action is required on completion of the timer? 'Auto' lets the box return to the state it had when the timer started. 'Do nothing', 'Go to standby' and 'Go to deep standby' do exactly that."
 msgstr "Mitä tehdään ajastuksen jälkeen? (auto-asetuksella laite palaa ennen ajastusta käytettyyn tilaan)"
@@ -15773,13 +15644,11 @@ msgstr "Valkoinen"
 msgid "Width"
 msgstr "Leveys"
 
-#, fuzzy
 msgid "Winter Sports"
-msgstr "talviurheilu"
+msgstr "Talviurheilu"
 
-#, fuzzy
 msgid "Wintersport"
-msgstr "talviurheilu"
+msgstr "Talviurheilu"
 
 msgid "Wireless LAN"
 msgstr "WLAN-verkko"
@@ -15800,10 +15669,10 @@ msgid "Wireless network state"
 msgstr "WLAN-verkon tila"
 
 msgid "Wirtschaft"
-msgstr ""
+msgstr "Talous"
 
 msgid "Wissenschaft"
-msgstr ""
+msgstr "Tiede"
 
 msgid "With T2MI RAW mode disabled (default) we can use single T2MI PLP de-encapsulation. With T2MI RAW mode enabled we can use astra-sm to analyze T2MI"
 msgstr "T2MI RAW moodi estettynä (oletus) voidaan käyttää yksittäis-T2MI PLP kapseloinnin poistoa. T2MI sallittuna voidaan Astra-SM käyttää T2MI:n analysointiin"
@@ -15824,9 +15693,8 @@ msgstr "Ilman ilmoitusikkunaa"
 msgid "Would you save the entered PIN %s persistent?"
 msgstr "Haluatko asettaa syötetyn PIN-koodin %s katselulle?"
 
-#, fuzzy
 msgid "Wrestling"
-msgstr "Asennetaan"
+msgstr "Paini"
 
 msgid "Write error while recording. Disk full?\n"
 msgstr "Kirjoitusvirhe tallennuksessa. Levy täynnä?\n"
@@ -16224,9 +16092,8 @@ msgstr ""
 "\n"
 "Valitse mitä haluat tehdä seuraavaksi."
 
-#, fuzzy
 msgid "Youth"
-msgstr "Eteläistä leveyttä"
+msgstr "Nuoriso"
 
 msgid "Zambia"
 msgstr "Zambia"
@@ -16293,7 +16160,7 @@ msgid "Zaps to EPG download transponder for EPG fetch."
 msgstr "Vaihto EPG:n lataustransponderiin EPG:n hakua varten."
 
 msgid "Zeichentrick"
-msgstr ""
+msgstr "Animoitu"
 
 msgid "Zgemma H.S/H.2S/H.2H/H5"
 msgstr "Zgemma H.S/H.2S/H.2H/H5"
@@ -16311,7 +16178,7 @@ msgid "Zimbabwe"
 msgstr "Zimbabwe"
 
 msgid "Zirkus"
-msgstr ""
+msgstr "Sirkus"
 
 msgid "Zoom"
 msgstr "Suurenna"
@@ -16373,7 +16240,6 @@ msgstr "moottorin lisäkaapeli"
 msgid "address:"
 msgstr "osoite:"
 
-#, fuzzy
 msgid "adult movie"
 msgstr "aikuisviihde"
 
@@ -16516,9 +16382,8 @@ msgstr "Kappaleet"
 msgid "childrens (general)"
 msgstr "Lapset (yleinen)"
 
-#, fuzzy
 msgid "childrens's youth program (general)"
-msgstr "Lasten/Nuortenohjelma (yleinen)"
+msgstr "lasten/nuortenohjelma (yleinen)"
 
 msgid "circular left"
 msgstr "Kiertopolarisaatio vasen"
@@ -16652,7 +16517,6 @@ msgstr "Koulutus/Tieto (yleinen)"
 msgid "education/science/factual topics (general)"
 msgstr "koulutus/tiede/tosiasiat (yleinen)"
 
-#, fuzzy
 msgid "educational/science/factual topics (general)"
 msgstr "koulutus/tiede/tosiasiat (yleinen)"
 
@@ -16764,9 +16628,8 @@ msgstr "kuvataide"
 msgid "fitness & health"
 msgstr "kuntoilu ja terveys"
 
-#, fuzzy
 msgid "fitness and health"
-msgstr "kuntoilu ja terveys"
+msgstr "fitness ja terveys"
 
 msgid "flat alphabetic"
 msgstr "aakkosjärjestys, kansionäkymä"
@@ -16906,9 +16769,8 @@ msgstr "Alusta moduuli"
 msgid "insert mark here"
 msgstr "Aseta tähän merkki"
 
-#, fuzzy
 msgid "instant record"
-msgstr "Pikatallennus..."
+msgstr "Pikatallennus"
 
 msgid "invalid type"
 msgstr "Epäkelpo tyyppi"
@@ -16949,9 +16811,8 @@ msgstr "kirjallisuus"
 msgid "live broadcast"
 msgstr "suora lähetys"
 
-#, fuzzy
 msgid "local sports"
-msgstr "joukkueurheilu"
+msgstr "paikallinen urheilu"
 
 msgid "local time"
 msgstr "Paikallinen aika"
@@ -17310,9 +17171,8 @@ msgstr "Valitse CAId:t"
 msgid "serious music/classic music"
 msgstr "vakava musiikki/klassinen musiikki"
 
-#, fuzzy
 msgid "serious/classical/religious/historical drama"
-msgstr "vakava/klassinen/uskonnollinen/historiallinen elokuva/draama"
+msgstr "vakava/klassinen/uskonnollinen/historiallinen draama"
 
 msgid "share:"
 msgstr "Jaa:"
@@ -17401,7 +17261,6 @@ msgstr "sosiaaliset/poliittiset aiheet/talous (yleinen)"
 msgid "social/spiritual science"
 msgstr "sosiaalinen/hengellinen tiede"
 
-#, fuzzy
 msgid "social/spiritual sciences"
 msgstr "sosiaalinen/hengellinen tiede"
 
@@ -17472,12 +17331,11 @@ msgid "talk show"
 msgstr "talk show"
 
 msgid "team sports/excluding football"
-msgstr ""
+msgstr "joukkueurheilu/poislukien jalkapallo"
 
 msgid "technology/natural science"
 msgstr "teknologia/luonnontiede"
 
-#, fuzzy
 msgid "technology/natural sciences"
 msgstr "teknologia/luonnontiede"
 
@@ -17748,7 +17606,7 @@ msgstr "Lisää | välimerkiksi ohjelmanimistä poistettavien etuliitteiden list
 #~ "\n"
 #~ "Muilla näppäimillä hypätään kyseisen näppäimen ohjeeseen, jos sellainen on olemassa.\n"
 #~ "\n"
-#~ "Jos toiminto on käyttäjän määriteltävissä, sen merkkkinä on (M)\n"
+#~ "Jos toiminto on käyttäjän määriteltävissä, sen merkkinä on (M)\n"
 #~ "\n"
 #~ "Korostus kaukosäätimen kuvassa näyttää mihin ohje viittaa. Jos useampi näppäin suorittaa korostetun toiminnon, niin usempi korostus näytetään. Teksti kuvan alla näyttää tarvitaanko näppäimen/näppäinten pitkä painallus.\n"
 #~ "\n"
