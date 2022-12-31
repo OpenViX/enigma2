@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2022-12-29 22:59+0200\n"
+"PO-Revision-Date: 2022-12-31 09:54+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -5362,6 +5362,9 @@ msgstr "Ota käyttöön MHW EPG"
 msgid "Enable Netmed EPG"
 msgstr "Ota käyttöön Netmed EPG"
 
+msgid "Enable new GStreamer playback"
+msgstr "Ota käyttöön uusi GStreamer-toisto"
+
 msgid "Enable OpenTV EPG"
 msgstr "Ota käyttöön OpenTV EPG"
 
@@ -6981,6 +6984,9 @@ msgstr "Jos päällä, näytössä näytetään 12 merkkiä 8 sijaan, mutta vain
 
 msgid "If set to 'Standard' number buttons page up/down/left/right."
 msgstr "Jos asetettu vakioksi, numeronäppäimet sivu ylös/alas/vasemmalle/oikealle."
+
+msgid "If enabled, the new GStreamer playback engine will be used."
+msgstr "Jos päällä, käytetään uutta GStreamer-ohjelmakoodia "
 
 msgid "If set to 'yes' channels without EPG will not be shown."
 msgstr "'Kyllä' valinnalla kanavia ilman EPG:tä ei näytetä."
@@ -13521,7 +13527,9 @@ msgstr "TEKSTI"
 msgid "TRANSLATOR_INFO"
 msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
+"\n"
 "Ylläpito : Orlandox\n"
+"31.12.2022\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
