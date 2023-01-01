@@ -662,20 +662,11 @@ class AboutSummary(ScreenSummary):
 	def __init__(self, session, parent):
 		ScreenSummary.__init__(self, session, parent=parent)
 		self.skinName = "AboutSummary"
-		aboutText = _("Model: %s %s\n") % (getMachineBrand(), getMachineName())
-		if path.exists("/proc/stb/info/chipset"):
-			chipset = open("/proc/stb/info/chipset", "r").read()
-			aboutText += _("Chipset: %s") % chipset.replace("\n", "") + "\n"
-		aboutText += _("ViX version: %s") % getImageVersion() + "\n"
-		aboutText += _("Build: %s") % getImageBuild() + "\n"
-		aboutText += _("Kernel: %s") % about.getKernelVersionString() + "\n"
-		string = getDriverDate()
-		year = string[0:4]
-		month = string[4:6]
-		day = string[6:8]
-		driversdate = "-".join((year, month, day))
-		aboutText += _("Drivers: %s") % driversdate + "\n"
-		aboutText += _("Last update: %s") % getEnigmaVersionString() + "\n\n"
+		self.aboutText = []
+		self["AboutText"] = StaticText()
+		self.aboutText.append(_("OpenViX: %s") % getImageVersion() + "." + getImageBuild() + "\n")
+		self.aboutText.append(_("Model: %s %s\n") % (getMachineBrand(), getMachineName()))
+		self.aboutText.append(_("Updated: %s") % getEnigmaVersionString() + "\n")
 		tempinfo = ""
 		if path.exists("/proc/stb/sensors/temp0/value"):
 			with open("/proc/stb/sensors/temp0/value", "r") as f:
@@ -687,9 +678,28 @@ class AboutSummary(ScreenSummary):
 			with open("/proc/stb/sensors/temp/value", "r") as f:
 				tempinfo = f.read()
 		if tempinfo and int(tempinfo.replace("\n", "")) > 0:
-			aboutText += _("System temperature: %s") % tempinfo.replace("\n", "") + "\xb0" + "C\n\n"
-		self["about"] = StaticText(aboutText)  # DEBUG: Proposed for new summary screens.
-		self["AboutText"] = StaticText(aboutText)
+			self.aboutText.append(_("System temperature: %s") % tempinfo.replace("\n", "") + "\xb0" + "C\n")
+		if path.exists("/proc/stb/info/chipset"):
+			chipset = open("/proc/stb/info/chipset", "r").read()
+			self.aboutText.append(_("Chipset: %s") % chipset.replace("\n", "") + "\n")
+		self.aboutText.append(_("Kernel: %s") % about.getKernelVersionString() + "\n")
+		string = getDriverDate()
+		year = string[0:4]
+		month = string[4:6]
+		day = string[6:8]
+		driversdate = "-".join((year, month, day))
+		self.aboutText.append(_("Drivers: %s") % driversdate + "\n")
+		self["AboutText"].text = "".join(self.aboutText)
+		self.timer = eTimer()
+		self.timer.callback.append(self.update)
+		self.timer.start(3000, 1)
+
+	def update(self):
+		self.timer.stop()
+		if self.aboutText:
+			self.aboutText.append(self.aboutText.pop(0))
+			self["AboutText"].text = "".join(self.aboutText)
+			self.timer.start(2000, 1)
 
 
 class TranslationInfo(Screen):
