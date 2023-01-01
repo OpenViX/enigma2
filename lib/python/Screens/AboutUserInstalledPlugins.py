@@ -4,9 +4,9 @@ from Screens.TextBox import TextBox
 class AboutUserInstalledPlugins(TextBox):
 	def __init__(self, session):
 		self.Console = Console()
-		TextBox.__init__(self, session)
+		TextBox.__init__(self, session, label="AboutScrollLabel")
 		self.setTitle(_("User installed plugins"))
-		self.skinName = "TextBox"
+		self.skinName = "AboutOE"
 		self.onLayoutFinish.append(self.checkOPKG)
 
 	def checkOPKG(self):
@@ -28,6 +28,6 @@ class AboutUserInstalledPlugins(TextBox):
 					if plugin and line.startswith("Status") and "user installed" in line:
 						plugins_out.append(plugin)
 						break
-			self["text"].setText("\n".join(sorted(plugins_out)))
+			self["AboutScrollLabel"].setText("\n".join(sorted(plugins_out)))
 		else:
-			self["text"].setText(_("No user installed plugins found"))
+			self["AboutScrollLabel"].setText(_("No user installed plugins found"))
