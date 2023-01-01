@@ -391,9 +391,9 @@
 		<widget source="parent.label" render="Label" position="white" size="670,200" font="FdLcD;60" halign="center" valign="top" />
 	</screen>
 
-	<!-- misc-->
+	<!-- misc -->
 	<screen name="SimpleSummary" position="0,0" size="800,480"> 
-		<widget source="parent.Title" render="Label" position="40,190" size="720,200" font="FdLcD;60" halign="center" valign="top" />
+		<widget source="Title" render="Label" position="40,190" size="720,200" font="FdLcD;60" halign="center" valign="top" />
 	</screen>
 
 	<!-- Servicescan -->
