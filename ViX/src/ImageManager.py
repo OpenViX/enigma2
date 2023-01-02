@@ -409,7 +409,11 @@ class VIXImageManager(Screen):
 		model = getMachineMake()
 		imagesFound = []
 		for media in ['/media/%s' % x for x in listdir('/media')] + (['/media/net/%s' % x for x in listdir('/media/net')] if path.isdir('/media/net') else [])  + (['/media/autofs/%s' % x for x in listdir('/media/autofs')] if path.isdir('/media/autofs') else []):
-			getImages([path.join(media, x) for x in listdir(media) if path.splitext(x)[1] == ".zip" and model in x])
+			try: # /media/autofs/xxx will crash listdir if "xxx" is inactive (e.g. dropped network link). os.access reports True for "xxx" so it seems we are forced to try/except here.
+				medialist = listdir(media)
+			except FileNotFoundError:
+				continue
+			getImages([path.join(media, x) for x in medialist if path.splitext(x)[1] == ".zip" and model in x])
 			for folder in ["imagebackups", "downloaded_images", "images"]:
 				if folder in listdir(media):
 					media = path.join(media, folder)
