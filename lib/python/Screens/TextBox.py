@@ -1,6 +1,6 @@
 from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
-from Components.Sources.StaticText import StaticText
+from Components.Button import Button
 from Components.ScrollLabel import ScrollLabel
 
 
@@ -15,8 +15,7 @@ class TextBox(Screen):
 			self.label = label
 		self[self.label] = ScrollLabel(self.text)
 
-		if "key_red" not in self:
-			self["key_red"] = StaticText(_("Cancel"))
+		self["key_red"] = Button(_("Close"))
 		
 		self["actions"] = ActionMap(["SetupActions", "NavigationActions"],
 				{
