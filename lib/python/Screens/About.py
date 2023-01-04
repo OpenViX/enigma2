@@ -32,13 +32,12 @@ class About(Screen):
 		self["key_green"] = Button(_("Translations"))
 		self["key_yellow"] = Button(_("Software update"))
 		self["key_blue"] = Button(_("Release notes"))
-		self["actions"] = ActionMap(["SetupActions", "ColorActions", "TimerEditActions", "DirectionActions"],
+		self["actions"] = ActionMap(["SetupActions", "ColorActions", "DirectionActions"],
 									{
 										"cancel": self.close,
 										"ok": self.close,
 										"up": self["AboutScrollLabel"].pageUp,
 										"down": self["AboutScrollLabel"].pageDown,
-										"red": self.close,
 										"green": self.showTranslationInfo,
 										"yellow": self.showUpdatePlugin,
 										"blue": self.showAboutReleaseNotes,
@@ -222,11 +221,10 @@ class Devices(Screen):
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.populate2)
 		self["key_red"] = Button(_("Close"))
-		self["actions"] = ActionMap(["SetupActions", "ColorActions", "TimerEditActions"],
+		self["actions"] = ActionMap(["SetupActions"],
 									{
 										"cancel": self.close,
 										"ok": self.close,
-										"red": self.close,
 									})
 		self.onLayoutFinish.append(self.populate)
 
@@ -349,11 +347,10 @@ class SystemMemoryInfo(Screen):
 		self["AboutScrollLabel"] = ScrollLabel()
 
 		self["key_red"] = Button(_("Close"))
-		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
+		self["actions"] = ActionMap(["SetupActions"],
 									{
 										"cancel": self.close,
 										"ok": self.close,
-										"red": self.close,
 									})
 
 		out_lines = open("/proc/meminfo").readlines()
@@ -446,7 +443,7 @@ class SystemNetworkInfo(Screen):
 
 		self["key_red"] = StaticText(_("Close"))
 
-		self["actions"] = ActionMap(["SetupActions", "ColorActions", "DirectionActions"],
+		self["actions"] = ActionMap(["SetupActions", "DirectionActions"],
 									{
 										"cancel": self.close,
 										"ok": self.close,
