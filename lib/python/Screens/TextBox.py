@@ -17,7 +17,7 @@ class TextBox(Screen):
 
 		self["key_red"] = Button(_("Close"))
 		
-		self["actions"] = ActionMap(["SetupActions", "NavigationActions"],
+		self["textBoxActions"] = ActionMap(["SetupActions", "NavigationActions"],
 				{
 					"cancel": self.close,
 					"ok": self.close,
