@@ -703,35 +703,20 @@ class TranslationInfo(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Translations"))
-		# don't remove the string out of the _(), or it can't be "translated" anymore.
-
-		# TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
-		info = _("TRANSLATOR_INFO")
-
-		if info == "TRANSLATOR_INFO":
-			info = ""
-
-		infolines = _("").split("\n")
-		infomap = {}
-		for x in infolines:
-			l = x.split(": ")
-			if len(l) != 2:
-				continue
-			(type, value) = l
-			infomap[type] = value
-		print(infomap)
 
 		self["key_red"] = Button(_("Close"))
-		self["TranslationInfo"] = StaticText(info)
-
-		translator_name = infomap.get("Language-Team", "none")
-		if translator_name == "none":
-			translator_name = infomap.get("Last-Translator", "")
-
-		self["TranslatorName"] = StaticText(translator_name)
-
 		self["actions"] = ActionMap(["SetupActions"],
-									{
-										"cancel": self.close,
-										"ok": self.close,
-									})
+		{
+			"cancel": self.close,
+			"ok": self.close,
+		})
+
+		# _("") fetches the translator info from the *.po.
+		infomap = {x.split(":")[0].strip() : x.split(":")[1].strip() for x in _("").split("\n") if len(x.split(":")) == 2}
+		self["TranslatorName"] = StaticText(infomap.get("Language-Team") or infomap.get("Last-Translator", ""))
+
+		# TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
+		self["TranslationInfo"] = StaticText(_("TRANSLATOR_INFO") if "TRANSLATOR_INFO" != _("TRANSLATOR_INFO") else "")
+
+		
+
