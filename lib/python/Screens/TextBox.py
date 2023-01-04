@@ -27,7 +27,7 @@ class TextBox(Screen):
 					"right": self[self.label].pageDown,
 					"pageUp": self[self.label].pageUp,
 					"pageDown": self[self.label].pageDown,
-				}, -1)
+				}, prio=1)
 
 		if title:
 			self.setTitle(title)
