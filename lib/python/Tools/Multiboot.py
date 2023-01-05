@@ -34,6 +34,8 @@ def getMultibootslots():
 				BoxInfo.setItem("mtdbootfs", device2, forceOverride=True)				
 				for file in glob.glob(path.join(tmpname, "STARTUP_*")):
 #					print("[multiboot*****] [getMultibootslots]2 tmpname = %s" % (tmpname))
+					if "STARTUP_ANDROID" in file:
+						SystemInfo["AndroidMode"] = True
 					if "STARTUP_RECOVERY" in file:
 						SystemInfo["RecoveryMode"] = True
 #						print("[multiboot] [getMultibootslots]3 RecoveryMode is set to:%s" % SystemInfo["RecoveryMode"])
