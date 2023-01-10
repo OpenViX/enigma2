@@ -160,10 +160,10 @@ class RcPositions:
 			remotes[rc_id]["remaps"] = {}
 			remotes[rc_id]["keyDescriptions"] = descriptions[rc_id]
 			for key in rc.findall("button"):
-				if "name" in key.attrib: # legacy xml format
-					keyId = descriptions[rc_id].get(key.attrib["name"])
-				elif  "id" in key.attrib: # oe-remotes
+				if  "id" in key.attrib:
 					keyId = KEYIDS.get(key.attrib["id"])
+				elif "name" in key.attrib: # legacy xml format
+					keyId = descriptions[rc_id].get(key.attrib["name"])
 				if keyId:
 					remotes[rc_id]["keyIds"].append(keyId)
 					remotes[rc_id][keyId] = {}
