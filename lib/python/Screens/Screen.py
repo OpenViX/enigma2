@@ -308,7 +308,7 @@ class ScreenSummary(Screen):
 		if not isinstance(names, list):
 			names = [names]
 		self.skinName = ["%sSummary" % x for x in names]  # DEBUG: Proposed for new summary screens.
-		self.skinName.append("ScreenSummary")  # DEBUG: Proposed for new summary screens.
 		self.skinName += ["%s_summary" % x for x in names]
 		self.skinName.append("SimpleSummary")
+		self.skinName.append("ScreenSummary")  # DEBUG: Proposed for new summary screens.
 		self.skin = parent.__dict__.get("skinSummary", self.skin)  # If parent has a "skinSummary" defined, use that as default.
