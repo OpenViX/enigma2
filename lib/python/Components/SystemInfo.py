@@ -137,6 +137,8 @@ def setRCFile(source):
 	else:
 		SystemInfo["RCImage"] = resolveFilename(SCOPE_SKIN, pathjoin("rc_models", SystemInfo["rc_model"], "rc.png"))
 		SystemInfo["RCMapping"] = resolveFilename(SCOPE_SKIN, pathjoin("rc_models", SystemInfo["rc_model"], "rcpositions.xml"))
+	if not (isfile(SystemInfo["RCImage"]) and isfile(SystemInfo["RCMapping"])):
+		SystemInfo["rc_default"] = True
 
 
 SystemInfo["HasRootSubdir"] = False	# This needs to be here so it can be reset by getMultibootslots!
