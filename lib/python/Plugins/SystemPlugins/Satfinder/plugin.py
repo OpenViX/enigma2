@@ -63,7 +63,7 @@ class Satfinder(ScanSetup):
 
 		ScanSetup.__init__(self, session)
 		self.entryChanged = self.newConfig
-		self.skinName = ["Satfinder", "Setup"]
+		self.skinName = ["Satfinder"]
 		self.setTitle(_("Signal finder"))
 		self["Frontend"] = FrontendStatus(frontend_source=lambda: self.frontend, update_interval=100)
 
