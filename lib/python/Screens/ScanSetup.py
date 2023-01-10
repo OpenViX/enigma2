@@ -901,6 +901,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 				self.scan_sat.t2mi_plp_id.value = eDVBFrontendParametersSatellite.No_T2MI_PLP_Id
 				self.scan_sat.t2mi_pid.value = eDVBFrontendParametersSatellite.T2MI_Default_Pid
 			self.createSetup()
+		self.changedEntry() # force summary update immediately, not just on select/deselect
 
 	def createConfig(self, frontendData):
 		defaultSat = {
@@ -1759,7 +1760,10 @@ class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, Terres
 			if self.t2_nim_found:
 				self.list.append(getConfigListEntry(_("Blindscan terrestrial (if possible)"), self.scan_terrestrial_binary_scan))
 
-		ConfigListScreen.__init__(self, self.list, fullUI=True)
+		ConfigListScreen.__init__(self, self.list, on_change=self.newConfig, fullUI=True)
+
+	def newConfig(self):
+		self.changedEntry() # force summary update immediately, not just on select/deselect
 
 	def getNetworksForNim(self, nim):
 		if nim.isCompatible("DVB-S"):

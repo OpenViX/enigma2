@@ -166,6 +166,7 @@ class Satfinder(ScanSetup):
 				self.scan_sat.t2mi_pid.value = eDVBFrontendParametersSatellite.T2MI_Default_Pid
 			self.createSetup()
 			self.retune()
+		self.changedEntry() # force summary update immediately, not just on select/deselect
 
 	def createSetup(self):
 		self.list = []
