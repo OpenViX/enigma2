@@ -17,7 +17,7 @@ eFilePushThread::eFilePushThread(int blocksize, size_t buffersize):
 	 m_blocksize(blocksize),
 	 m_buffersize(buffersize),
 	 m_buffer((unsigned char *)malloc(buffersize)),
-	 m_messagepump(eApp, 0, "eFilePushThread"),
+	 m_messagepump(eApp, 0),
 	 m_run_state(0)
 {
 	if (m_buffer == NULL)
@@ -37,12 +37,6 @@ static void signal_handler(int x)
 
 static void ignore_but_report_signals()
 {
-	/* we must set a signal mask for the thread otherwise signals don't have any effect */
-	sigset_t sigmask;
-	sigemptyset(&sigmask);
-	sigaddset(&sigmask, SIGUSR1);
-	pthread_sigmask(SIG_UNBLOCK, &sigmask, NULL);
-	
 	/* we set the signal to not restart syscalls, so we can detect our signal. */
 	struct sigaction act = {};
 	act.sa_handler = signal_handler; // no, SIG_IGN doesn't do it. we want to receive the -EINTR
@@ -328,47 +322,41 @@ eFilePushThreadRecorder::eFilePushThreadRecorder(unsigned char* buffer, size_t b
 	m_buffer(buffer),
 	m_overflow_count(0),
 	m_stop(1),
-	m_messagepump(eApp, 0, "eFilePushThreadRecorder")
+	m_messagepump(eApp, 0)
 {
 	CONNECT(m_messagepump.recv_msg, eFilePushThreadRecorder::recvEvent);
 }
 
 void eFilePushThreadRecorder::thread()
 {
-	ignore_but_report_signals();
-	hasStarted(); /* "start()" blocks until we get here */
 	setIoPrio(IOPRIO_CLASS_RT, 7);
+
 	eDebug("[eFilePushThreadRecorder] THREAD START");
 
-	/* m_stop must be evaluated after each syscall */
-	/* if it isn't, there's a chance of the thread becoming deadlocked when recordings are finishing */
+	/* we set the signal to not restart syscalls, so we can detect our signal. */
+	struct sigaction act;
+	act.sa_handler = signal_handler; // no, SIG_IGN doesn't do it. we want to receive the -EINTR
+	act.sa_flags = 0;
+	sigaction(SIGUSR1, &act, 0);
+
+	hasStarted();
+
+	/* m_stop must be evaluated after each syscall. */
 	while (!m_stop)
 	{
-		/* this works around the buggy Broadcom encoder that always returns even if there is no data */
-		/* (works like O_NONBLOCK even when not opened as such), prevent idle waiting for the data */
-		/* this won't ever hurt, because it will return immediately when there is data or an error condition */
-
-		struct pollfd pfd = { m_fd_source, POLLIN, 0 };
-		poll(&pfd, 1, 100);
-		/* Reminder: m_stop *must* be evaluated after each syscall. */
-		if (m_stop)
-			break;
-
 		ssize_t bytes = ::read(m_fd_source, m_buffer, m_buffersize);
-		/* And again: Check m_stop regardless of read success. */
-		if (m_stop)
-			break;
-
 		if (bytes < 0)
 		{
 			bytes = 0;
+			/* Check m_stop after interrupted syscall. */
+			if (m_stop) {
+				break;
+			}
 			if (errno == EINTR || errno == EBUSY || errno == EAGAIN)
-			{
 #if HAVE_HISILICON
 				usleep(100000);
 #endif
-				continue;
-			}
+			continue;
 			if (errno == EOVERFLOW)
 			{
 				eWarning("[eFilePushThreadRecorder] OVERFLOW while recording");
@@ -393,7 +381,7 @@ void eFilePushThreadRecorder::thread()
 #endif
 		if (w < 0)
 		{
-			eWarning("[eFilePushThreadRecorder] WRITE ERROR, aborting thread: %m");
+			eDebug("[eFilePushThreadRecorder] WRITE ERROR, aborting thread: %m");
 			sendEvent(evtWriteError);
 			break;
 		}
