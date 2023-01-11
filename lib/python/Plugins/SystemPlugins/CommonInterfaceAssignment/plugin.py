@@ -130,7 +130,7 @@ class CIconfigMenu(Screen):
 		self["ServiceList_desc"] = StaticText(_("Assigned services/provider:"))
 		self["ServiceList_info"] = StaticText()
 
-		self["actions"] = ActionMap(["ColorActions", "SetupActions", "MenuActions"],
+		self["actions"] = ActionMap(["ColorActions", "OkCancelActions", "MenuActions"],
 			{
 				"green": self.greenPressed,
 				"red": self.redPressed,
@@ -379,7 +379,7 @@ class easyCIconfigMenu(CIconfigMenu):
 
 	def __init__(self, session, ci_slot="9"):
 		CIconfigMenu.__init__(self, session, ci_slot)
-		self["actions"] = ActionMap(["ColorActions", "SetupActions", "MenuActions"],
+		self["actions"] = ActionMap(["ColorActions", "OkCancelActions", "MenuActions"],
 			{
 				"green": self.greenPressed,
 				"red": self.redPressed,
