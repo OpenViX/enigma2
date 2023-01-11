@@ -36,7 +36,6 @@ class ParentalControlSetup(ConfigListScreen, Screen, ProtectedScreen):
 
 		# for the skin: first try ParentalControlSetup, then Setup, this allows individual skinning
 		self.skinName = ["ParentalControlSetup", "Setup"]
-		self.onChangedEntry = []
 
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry, fullUI=True)
