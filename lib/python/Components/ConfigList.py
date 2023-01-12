@@ -43,7 +43,7 @@ class ConfigList(GUIComponent):
 
 	def handleKey(self, key, callback=None):
 		selection = self.getCurrent()
-		if selection and selection[1].enabled:
+		if selection and len(selection) > 1 and selection[1].enabled:
 			selection[1].handleKey(key, callback)
 			self.invalidateCurrent()
 			if key in ACTIONKEY_NUMBERS:
@@ -232,13 +232,13 @@ class ConfigListScreen:
 		self.restartMsg = _("Restart GUI now?") if msg is None else msg
 
 	def getCurrentItem(self):
-		return self["config"].getCurrent() and self["config"].getCurrent()[1] or None
+		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 1 and self["config"].getCurrent()[1] or None
 
 	def getCurrentEntry(self):
 		return self["config"].getCurrent() and self["config"].getCurrent()[0] or ""
 
 	def getCurrentValue(self):
-		return self["config"].getCurrent() and str(self["config"].getCurrent()[1].getText()) or ""
+		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 1 and str(self["config"].getCurrent()[1].getText()) or ""
 
 	def getCurrentDescription(self):
 		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 2 and self["config"].getCurrent()[2] or ""
