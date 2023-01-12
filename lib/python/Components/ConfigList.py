@@ -263,11 +263,11 @@ class ConfigListScreen:
 			else:
 				self["menuConfigActions"].setEnabled(False)
 				self["key_menu"].setText("")
+			if isinstance(currConfig[1], (ConfigText, ConfigMacText)) and "HelpWindow" in self and currConfig[1].help_window and currConfig[1].help_window.instance is not None:
+				helpwindowpos = self["HelpWindow"].getPosition()
+				currConfig[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
 			if isinstance(currConfig[1], ConfigText):
 				self.showVirtualKeyBoard(True)
-				if "HelpWindow" in self and currConfig[1].help_window and currConfig[1].help_window.instance is not None:
-					helpwindowpos = self["HelpWindow"].getPosition()
-					currConfig[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
 			else:
 				self.showVirtualKeyBoard(False)
 			if "description" in self:
@@ -287,7 +287,7 @@ class ConfigListScreen:
 	def displayHelp(self, state):
 		if "config" in self and "HelpWindow" in self and self["config"].getCurrent() is not None and len(self["config"].getCurrent()) > 1:
 			currConf = self["config"].getCurrent()[1]
-			if isinstance(currConf, ConfigText) and currConf.help_window is not None and currConf.help_window.instance is not None:
+			if isinstance(currConf, (ConfigText, ConfigMacText)) and currConf.help_window is not None and currConf.help_window.instance is not None:
 				if state:
 					currConf.help_window.show()
 				else:
