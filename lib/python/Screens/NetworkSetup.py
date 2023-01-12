@@ -12,7 +12,7 @@ from boxbranding import getBoxType, getMachineBrand, getMachineName, getImageTyp
 
 from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigIP, ConfigText, ConfigPassword, ConfigSelection, getConfigListEntry, ConfigNumber, ConfigLocations, NoSave, ConfigMacText
-from Components.ConfigList import ConfigListScreen, ConfigList
+from Components.ConfigList import ConfigListScreen
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList
 from Components.Label import Label, MultiColorLabel
@@ -348,27 +348,19 @@ class NameserverSetup(ConfigListScreen, HelpableScreen, Screen):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		self.setTitle(_("Nameserver Settings"))
+		self.skinName = ["NameserverSetup", "Setup"]
 		self.backupNameserverList = iNetwork.getNameserverList()[:]
 		print("[NameserverSetup] backup-list:%s" % self.backupNameserverList)
-
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("Save"))
 		self["key_yellow"] = StaticText(_("Add"))
 		self["key_blue"] = StaticText(_("Delete"))
 
-		self["introduction"] = StaticText(_("Press OK to activate the settings."))
-		self.createConfig()
-
-		self["actions"] = HelpableActionMap(self, ["SetupActions", "ColorActions"],
+		self["actions"] = HelpableActionMap(self, ["ColorActions"],
 			{
-			"cancel": (self.cancel, _("Exit nameserver configuration")),
-			"save": (self.ok, _("Activate current configuration")),
 			"yellow": (self.add, _("Add a nameserver entry")),
 			"blue": (self.remove, _("Remove a nameserver entry")),
 			})
-
-		self.list = []
-		ConfigListScreen.__init__(self, self.list)
+		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry, fullUI=True)
+		self.createConfig()
 		self.createSetup()
 
 	def createConfig(self):
@@ -376,16 +368,9 @@ class NameserverSetup(ConfigListScreen, HelpableScreen, Screen):
 		self.nameserverEntries = [NoSave(ConfigIP(default=nameserver)) for nameserver in self.nameservers]
 
 	def createSetup(self):
-		self.list = []
+		self["config"].list = [getConfigListEntry(_("Nameserver %d") % (i+1), x) for i, x in enumerate(self.nameserverEntries)]
 
-		i = 1
-		for x in self.nameserverEntries:
-			self.list.append(getConfigListEntry(_("Nameserver %d") % i, x))
-			i += 1
-
-		self["config"].list = self.list
-
-	def ok(self):
+	def keySave(self):
 		iNetwork.clearNameservers()
 		for nameserver in self.nameserverEntries:
 			iNetwork.addNameserver(nameserver.value)
@@ -393,9 +378,9 @@ class NameserverSetup(ConfigListScreen, HelpableScreen, Screen):
 		self.close()
 
 	def run(self):
-		self.ok()
+		self.keySave()
 
-	def cancel(self):
+	def keyCancel(self):
 		iNetwork.clearNameservers()
 		print("[NameserverSetup] backup-list:%s" % self.backupNameserverList)
 		for nameserver in self.backupNameserverList:
@@ -420,45 +405,24 @@ class NetworkMacSetup(ConfigListScreen, HelpableScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
+		self.skinName = ["NetworkMacSetup", "Setup"]
 		self.setTitle(_("MAC Address Settings"))
 		ifacex = "wlan0"
 		ifacey = "wlan3"
 		if iNetwork.getAdapterAttribute(ifacex, "up"):
-			self.mode = "wlan0"
-			self.curMac = self.getmac("wlan0")
+			self.mode = ifacex
+			self.curMac = self.getmac(ifacex)
 		elif iNetwork.getAdapterAttribute(ifacey, "up"):
-			self.mode = "wlan3"
-			self.curMac = self.getmac("wlan3")
+			self.mode = ifacey
+			self.curMac = self.getmac(ifacey)
 		else:
 			self.mode = "eth0"
 			self.curMac = self.getmac("eth0")
 		# print("[NetworkSetup]self.mode=, MacWiFiLan=", self.mode, "   ", self.curMac)
 		if self.curMac:
 			self.getConfigMac = NoSave(ConfigMacText(default=self.curMac))
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("Save"))
 
-		self["introduction"] = StaticText(_("Press OK to set the MAC address."))
-
-		self["OkCancelActions"] = HelpableActionMap(self, "OkCancelActions",
-			{
-			"cancel": (self.cancel, _("Exit nameserver configuration")),
-			"ok": (self.ok, _("Activate current configuration")),
-			})
-
-		self["ColorActions"] = HelpableActionMap(self, "ColorActions",
-			{
-			"red": (self.cancel, _("Exit MAC address configuration")),
-			"green": (self.ok, _("Activate MAC address configuration")),
-			})
-
-		self["actions"] = NumberActionMap(["SetupActions"],
-		{
-			"ok": self.ok,
-		}, -2)
-
-		self.list = []
-		ConfigListScreen.__init__(self, self.list)
+		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry, fullUI=True)
 		self.createSetup()
 
 	def getmac(self, iface):
@@ -466,24 +430,20 @@ class NetworkMacSetup(ConfigListScreen, HelpableScreen, Screen):
 		return nit[ni.AF_LINK][0]['addr']
 
 	def createSetup(self):
-		self.list = []
-		self.list.append(getConfigListEntry(_("MAC address"), self.getConfigMac))
-		self["config"].list = self.list
+		self["config"].list = [getConfigListEntry(_("MAC address"), self.getConfigMac) if self.curMac else (_("No MAC interface found"),)]
 
-	def ok(self):
-		if self.mode in ("wlan0", "wlan3"):
-			iNetwork.resetWiFiMac(Mac=self.getConfigMac.value, wlan=self.mode)
-		else:
-			f = open("/etc/enigma2/hwmac", "w")
-			f.write(self.getConfigMac.value)
-			f.close()
-		self.restartLan()
+	def keySave(self):
+		if self.curMac:
+			if self.mode in ("wlan0", "wlan3"):
+				iNetwork.resetWiFiMac(Mac=self.getConfigMac.value, wlan=self.mode)
+			else:
+				f = open("/etc/enigma2/hwmac", "w")
+				f.write(self.getConfigMac.value)
+				f.close()
+			self.restartLan()
 
 	def run(self):
-		self.ok()
-
-	def cancel(self):
-		self.close()
+		self.keySave()
 
 	def restartLan(self):
 		iNetwork.restartNetwork(self.restartLanDataAvail)
@@ -507,7 +467,6 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 
-		self.session = session
 		if isinstance(networkinfo, (list, tuple)):
 			self.iface = networkinfo[0]
 			self.essid = networkinfo[1]
@@ -525,26 +484,12 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 
 		self.createConfig()
 
-		self["OkCancelActions"] = HelpableActionMap(self, "OkCancelActions",
-			{
-			"cancel": (self.keyCancel, _("Exit network adapter configuration")),
-			"ok": (self.keySave, _("Activate network adapter configuration")),
-			})
-
 		self["ColorActions"] = HelpableActionMap(self, "ColorActions",
 			{
-			"red": (self.keyCancel, _("Exit network adapter configuration")),
-			"green": (self.keySave, _("Activate network adapter configuration")),
 			"blue": (self.KeyBlue, _("Open nameserver configuration")),
 			})
 
-		self["actions"] = NumberActionMap(["SetupActions"],
-		{
-			"ok": self.keySave,
-		}, -2)
-
-		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=self.session)
+		ConfigListScreen.__init__(self,  [], session=session, on_change=self.newConfig, fullUI=True)
 
 		self.createSetup()
 		self.onLayoutFinish.append(self.layoutFinished)
@@ -567,13 +512,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 		self["Adaptertext"] = StaticText(_("Network:"))
 		self["Adapter"] = StaticText()
 		self["introduction2"] = StaticText(_("Press OK to activate the settings."))
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("Save"))
 		self["key_blue"] = StaticText(_("Edit DNS"))
-
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
 
 	def layoutFinished(self):
 		self["DNS1"].setText(self.primaryDNS.getText())
@@ -719,14 +658,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 		if iNetwork.isWirelessInterface(self.iface):
 			if self["config"].getCurrent() == self.encryption:
 				self.createSetup()
-
-	def keyLeft(self):
-		ConfigListScreen.keyLeft(self)
-		self.newConfig()
-
-	def keyRight(self):
-		ConfigListScreen.keyRight(self)
-		self.newConfig()
+		ConfigListScreen.changedEntry(self)
 
 	def keySave(self):
 		self.hideInputHelp()
@@ -2399,49 +2331,23 @@ class NetworkInadyn(NSCommon, Screen):
 		self.session.open(NetworkInadynLog)
 
 
-class NetworkInadynSetup(ConfigListScreen, Screen):
+class NetworkInadynSetup(ConfigListScreen, HelpableScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Settings"))
-		self.onChangedEntry = []
-		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.selectionChanged)
-		self["key_red"] = Label(_("Exit"))
-		self["key_green"] = Label(_("Save"))
-		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
-		{
-			"red": self.keyCancel,
-			"green": self.saveIna,
-			"back": self.keyCancel
-		})
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
+		HelpableScreen.__init__(self)
+		self.setTitle(_("NetworkInadynSetup"))
+		self.skinName = ["NetworkInadynSetup", "Setup"]
+		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True)
 		self.updateList()
-		if not self.selectionChanged in self["config"].onSelectionChanged:
-			self["config"].onSelectionChanged.append(self.selectionChanged)
-
-	def createSummary(self):
-		from Screens.PluginBrowser import PluginBrowserSummary
-		return PluginBrowserSummary
-
-	def selectionChanged(self):
-		item = self["config"].getCurrent()
-		if item:
-			name = str(item[0])
-			desc = str(item[1].value)
-		else:
-			name = ""
-			desc = ""
-		for cb in self.onChangedEntry:
-			cb(name, desc)
 
 	def updateList(self):
+		self.list = []
+		# standard defaults just in case the config file does not exist
 		self.ina_user = NoSave(ConfigText(fixed_size=False))
 		self.ina_pass = NoSave(ConfigText(fixed_size=False))
 		self.ina_alias = NoSave(ConfigText(fixed_size=False))
 		self.ina_period = NoSave(ConfigNumber())
-		self.ina_sysactive = NoSave(ConfigYesNo(default="False"))
+		self.ina_sysactive = NoSave(ConfigYesNo(default=False))
 		self.ina_system = NoSave(ConfigSelection(default="dyndns@dyndns.org", choices=[("dyndns@dyndns.org", "dyndns@dyndns.org"), ("statdns@dyndns.org", "statdns@dyndns.org"), ("custom@dyndns.org", "custom@dyndns.org"), ("default@no-ip.com", "default@no-ip.com")]))
 
 		if fileExists("/etc/inadyn.conf"):
@@ -2450,34 +2356,29 @@ class NetworkInadynSetup(ConfigListScreen, Screen):
 				line = line.strip()
 				if line.startswith("username "):
 					line = line[9:]
-					self.ina_user.value = line
-					ina_user1 = getConfigListEntry(_("Username") + ":", self.ina_user)
-					self.list.append(ina_user1)
+					self.ina_user = NoSave(ConfigText(fixed_size=False, default=line)) # overwrite so we start with the correct defaults
+					self.list.append(getConfigListEntry(_("Username") + ":", self.ina_user))
 				elif line.startswith("password "):
 					line = line[9:]
-					self.ina_pass.value = line
-					ina_pass1 = getConfigListEntry(_("Password") + ":", self.ina_pass)
-					self.list.append(ina_pass1)
+					self.ina_pass = NoSave(ConfigText(fixed_size=False, default=line)) # overwrite so we start with the correct defaults
+					self.list.append(getConfigListEntry(_("Password") + ":", self.ina_pass))
 				elif line.startswith("alias "):
 					line = line[6:]
-					self.ina_alias.value = line
-					ina_alias1 = getConfigListEntry(_("Alias") + ":", self.ina_alias)
-					self.list.append(ina_alias1)
+					self.ina_alias = NoSave(ConfigText(fixed_size=False, default=line)) # overwrite so we start with the correct defaults
+					self.list.append(getConfigListEntry(_("Alias") + ":", self.ina_alias))
 				elif line.startswith("update_period_sec "):
-					line = line[18:]
-					line = (int(line) // 60)
-					self.ina_period.value = line
-					ina_period1 = getConfigListEntry(_("Time update in minutes") + ":", self.ina_period)
-					self.list.append(ina_period1)
+					line = (int(line[18:]) // 60)
+					self.ina_period = NoSave(ConfigNumber(default=line)) # overwrite so we start with the correct defaults
+					self.list.append(getConfigListEntry(_("Time update in minutes") + ":", self.ina_period))
 				elif line.startswith("dyndns_system ") or line.startswith("#dyndns_system "):
 					if not line.startswith("#"):
-						self.ina_sysactive.value = True
+						default = True
 						line = line[14:]
 					else:
-						self.ina_sysactive.value = False
+						default = False
 						line = line[15:]
-					ina_sysactive1 = getConfigListEntry(_("Set system") + ":", self.ina_sysactive)
-					self.list.append(ina_sysactive1)
+					self.ina_sysactive = NoSave(ConfigYesNo(default=default)) # overwrite so we start with the correct defaults
+					self.list.append(getConfigListEntry(_("Set system") + ":", self.ina_sysactive))
 					# self.ina_value = line # looks like dead code
 					ina_system1 = getConfigListEntry(_("System") + ":", self.ina_system)
 					self.list.append(ina_system1)
@@ -2485,12 +2386,7 @@ class NetworkInadynSetup(ConfigListScreen, Screen):
 			f.close()
 		self["config"].list = self.list
 
-	def VirtualKeyBoardCallback(self, callback=None):
-		if callback is not None and len(callback):
-			self["config"].getCurrent()[1].setValue(callback)
-			self["config"].invalidate(self["config"].getCurrent())
-
-	def saveIna(self):
+	def keySave(self): # saveIna
 		if fileExists("/etc/inadyn.conf"):
 			inme = open("/etc/inadyn.conf", "r")
 			out = open("/etc/inadyn.conf.tmp", "w")
@@ -2520,22 +2416,6 @@ class NetworkInadynSetup(ConfigListScreen, Screen):
 		if fileExists("/etc/inadyn.conf.tmp"):
 			rename("/etc/inadyn.conf.tmp", "/etc/inadyn.conf")
 		self.close()
-
-	def keyCancelConfirm(self, result):
-		if not result:
-			return
-		self.close()
-
-	def keyCancel(self):
-		self.hideInputHelp()
-		if self["config"].isChanged():
-			self.session.openWithCallback(self.keyCancelConfirm, MessageBox, _("Really close without saving settings?"), default=False)
-		else:
-			self.close()
-
-	def hideInputHelp(self):
-		if self["config"].getCurrent() is not None and self["config"].getCurrent()[1].__class__.__name__ in ("ConfigText", "ConfigPassword"):
-			self["config"].getCurrent()[1].help_window.instance.hide()
 
 
 class NetworkInadynLog(Screen):
@@ -2727,44 +2607,19 @@ class NetworkuShare(NSCommon, Screen):
 		self.session.open(NetworkuShareLog)
 
 
-class NetworkuShareSetup(ConfigListScreen, Screen):
+class NetworkuShareSetup(ConfigListScreen, HelpableScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.onChangedEntry = []
-		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.selectionChanged)
+		HelpableScreen.__init__(self)
+		self.skinName = ["NetworkuShareSetup", "Setup"]
+		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True)
 		self.setTitle(_("uShare Setup"))
-		self["key_red"] = Label(_("Exit"))
-		self["key_green"] = Label(_("Save"))
 		self["key_yellow"] = Label(_("Shares"))
-		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
+		self["actions"] = ActionMap(["ColorActions"],
 		{
-			"red": self.close,
-			"green": self.saveuShare,
 			"yellow": self.selectfolders,
-			"back": self.close
 		})
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
 		self.updateList()
-		if not self.selectionChanged in self["config"].onSelectionChanged:
-			self["config"].onSelectionChanged.append(self.selectionChanged)
-
-	def createSummary(self):
-		from Screens.PluginBrowser import PluginBrowserSummary
-		return PluginBrowserSummary
-
-	def selectionChanged(self):
-		item = self["config"].getCurrent()
-		if item:
-			name = str(item[0])
-			desc = str(item[1].value)
-		else:
-			name = ""
-			desc = ""
-		for cb in self.onChangedEntry:
-			cb(name, desc)
 
 	def updateList(self, ret=None):
 		self.list = []
@@ -2772,10 +2627,10 @@ class NetworkuShareSetup(ConfigListScreen, Screen):
 		self.ushare_iface = NoSave(ConfigText(fixed_size=False))
 		self.ushare_port = NoSave(ConfigNumber())
 		self.ushare_telnetport = NoSave(ConfigNumber())
-		self.ushare_web = NoSave(ConfigYesNo(default="True"))
-		self.ushare_telnet = NoSave(ConfigYesNo(default="True"))
-		self.ushare_xbox = NoSave(ConfigYesNo(default="True"))
-		self.ushare_ps3 = NoSave(ConfigYesNo(default="True"))
+		self.ushare_web = NoSave(ConfigYesNo(default=True))
+		self.ushare_telnet = NoSave(ConfigYesNo(default=True))
+		self.ushare_xbox = NoSave(ConfigYesNo(default=True))
+		self.ushare_ps3 = NoSave(ConfigYesNo(default=True))
 		# looks like dead code
 		#self.ushare_system = NoSave(ConfigSelection(default = "dyndns@dyndns.org", choices = [("dyndns@dyndns.org", "dyndns@dyndns.org"), ("statdns@dyndns.org", "statdns@dyndns.org"), ("custom@dyndns.org", "custom@dyndns.org")]))
 
@@ -2785,61 +2640,52 @@ class NetworkuShareSetup(ConfigListScreen, Screen):
 				line = line.strip()
 				if line.startswith("USHARE_NAME="):
 					line = line[12:]
-					self.ushare_user.value = line
-					ushare_user1 = getConfigListEntry(_("uShare name") + ":", self.ushare_user)
-					self.list.append(ushare_user1)
+					self.ushare_user = NoSave(ConfigText(default=line, fixed_size=False)) # overwrite so we start with the correct defaults
+					self.list.append(getConfigListEntry(_("uShare name") + ":", self.ushare_user))
 				elif line.startswith("USHARE_IFACE="):
 					line = line[13:]
-					self.ushare_iface.value = line
-					ushare_iface1 = getConfigListEntry(_("Interface") + ":", self.ushare_iface)
-					self.list.append(ushare_iface1)
+					self.ushare_iface = NoSave(ConfigText(default=line, fixed_size=False)) # overwrite so we start with the correct defaults
+					self.list.append(getConfigListEntry(_("Interface") + ":", self.ushare_iface))
 				elif line.startswith("USHARE_PORT="):
-					line = line[12:]
-					self.ushare_port.value = line
-					ushare_port1 = getConfigListEntry(_("uShare port") + ":", self.ushare_port)
-					self.list.append(ushare_port1)
+					line = int(line[12:])
+					self.ushare_port = NoSave(ConfigNumber(default=line)) # overwrite so we start with the correct defaults
+					self.list.append(getConfigListEntry(_("uShare port") + ":", self.ushare_port))
 				elif line.startswith("USHARE_TELNET_PORT="):
-					line = line[19:]
-					self.ushare_telnetport.value = line
-					ushare_telnetport1 = getConfigListEntry(_("Telnet port") + ":", self.ushare_telnetport)
-					self.list.append(ushare_telnetport1)
+					line = int(line[19:])
+					self.ushare_telnetport = NoSave(ConfigNumber(default=line)) # overwrite so we start with the correct defaults
+					self.list.append(getConfigListEntry(_("Telnet port") + ":", self.ushare_telnetport))
 				elif line.startswith("ENABLE_WEB="):
 					if line[11:] == "no":
-						self.ushare_web.value = False
+						default = False
 					else:
-						self.ushare_web.value = True
-					ushare_web1 = getConfigListEntry(_("Web interface") + ":", self.ushare_web)
-					self.list.append(ushare_web1)
+						default = True
+					self.ushare_web = NoSave(ConfigYesNo(default=default))
+					self.list.append(getConfigListEntry(_("Web interface") + ":", self.ushare_web))
 				elif line.startswith("ENABLE_TELNET="):
 					if line[14:] == "no":
-						self.ushare_telnet.value = False
+						default = False
 					else:
-						self.ushare_telnet.value = True
-					ushare_telnet1 = getConfigListEntry(_("Telnet interface") + ":", self.ushare_telnet)
-					self.list.append(ushare_telnet1)
+						default = True
+					self.ushare_telnet = NoSave(ConfigYesNo(default=default))
+					self.list.append(getConfigListEntry(_("Telnet interface") + ":", self.ushare_telnet))
 				elif line.startswith("ENABLE_XBOX="):
 					if line[12:] == "no":
-						self.ushare_xbox.value = False
+						default = False
 					else:
-						self.ushare_xbox.value = True
-					ushare_xbox1 = getConfigListEntry(_("XBox 360 support") + ":", self.ushare_xbox)
-					self.list.append(ushare_xbox1)
+						default = True
+					self.ushare_xbox = NoSave(ConfigYesNo(default=default))
+					self.list.append(getConfigListEntry(_("XBox 360 support") + ":", self.ushare_xbox))
 				elif line.startswith("ENABLE_DLNA="):
 					if line[12:] == "no":
-						self.ushare_ps3.value = False
+						default = False
 					else:
-						self.ushare_ps3.value = True
-					ushare_ps31 = getConfigListEntry(_("DLNA support") + ":", self.ushare_ps3)
-					self.list.append(ushare_ps31)
+						default = True
+					self.ushare_ps3 = NoSave(ConfigYesNo(default=default))
+					self.list.append(getConfigListEntry(_("DLNA support") + ":", self.ushare_ps3))
 			f.close()
 		self["config"].list = self.list
 
-	def VirtualKeyBoardCallback(self, callback=None):
-		if callback is not None and len(callback):
-			self["config"].getCurrent()[1].setValue(callback)
-			self["config"].invalidate(self["config"].getCurrent())
-
-	def saveuShare(self):
+	def keySave(self):
 		if fileExists("/etc/ushare.conf"):
 			inme = open("/etc/ushare.conf", "r")
 			out = open("/etc/ushare.conf.tmp", "w")
@@ -3148,45 +2994,19 @@ class NetworkMiniDLNA(NSCommon, Screen):
 		self.session.open(NetworkMiniDLNALog)
 
 
-class NetworkMiniDLNASetup(ConfigListScreen, Screen):
+class NetworkMiniDLNASetup(ConfigListScreen, HelpableScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.onChangedEntry = []
-		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.selectionChanged)
+		HelpableScreen.__init__(self)
+		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True)
 		self.setTitle(_("MiniDLNA Setup"))
 		self.skinName = "NetworkuShareSetup"
-		self["key_red"] = Label(_("Exit"))
-		self["key_green"] = Label(_("Save"))
 		self["key_yellow"] = Label(_("Shares"))
-		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
+		self["actions"] = ActionMap(["ColorActions"],
 		{
-			"red": self.close,
-			"green": self.saveMinidlna,
 			"yellow": self.selectfolders,
-			"back": self.close
 		})
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
 		self.updateList()
-		if not self.selectionChanged in self["config"].onSelectionChanged:
-			self["config"].onSelectionChanged.append(self.selectionChanged)
-
-	def createSummary(self):
-		from Screens.PluginBrowser import PluginBrowserSummary
-		return PluginBrowserSummary
-
-	def selectionChanged(self):
-		item = self["config"].getCurrent()
-		if item:
-			name = str(item[0])
-			desc = str(item[1].value)
-		else:
-			name = ""
-			desc = ""
-		for cb in self.onChangedEntry:
-			cb(name, desc)
 
 	def updateList(self, ret=None):
 		self.list = []
@@ -3194,10 +3014,10 @@ class NetworkMiniDLNASetup(ConfigListScreen, Screen):
 		self.minidlna_iface = NoSave(ConfigText(fixed_size=False))
 		self.minidlna_port = NoSave(ConfigNumber())
 		self.minidlna_serialno = NoSave(ConfigNumber())
-		self.minidlna_web = NoSave(ConfigYesNo(default="True"))
-		self.minidlna_inotify = NoSave(ConfigYesNo(default="True"))
-		self.minidlna_tivo = NoSave(ConfigYesNo(default="True"))
-		self.minidlna_strictdlna = NoSave(ConfigYesNo(default="True"))
+		self.minidlna_web = NoSave(ConfigYesNo(default=True))
+		self.minidlna_inotify = NoSave(ConfigYesNo(default=True))
+		self.minidlna_tivo = NoSave(ConfigYesNo(default=True))
+		self.minidlna_strictdlna = NoSave(ConfigYesNo(default=True))
 
 		if fileExists("/etc/minidlna.conf"):
 			f = open("/etc/minidlna.conf", "r")
@@ -3205,54 +3025,45 @@ class NetworkMiniDLNASetup(ConfigListScreen, Screen):
 				line = line.strip()
 				if line.startswith("friendly_name="):
 					line = line[14:]
-					self.minidlna_name.value = line
-					minidlna_name1 = getConfigListEntry(_("Name") + ":", self.minidlna_name)
-					self.list.append(minidlna_name1)
+					self.minidlna_name = NoSave(ConfigText(default=line, fixed_size=False))
+					self.list.append(getConfigListEntry(_("Name") + ":", self.minidlna_name))
 				elif line.startswith("network_interface="):
 					line = line[18:]
-					self.minidlna_iface.value = line
-					minidlna_iface1 = getConfigListEntry(_("Interface") + ":", self.minidlna_iface)
-					self.list.append(minidlna_iface1)
+					self.minidlna_iface = NoSave(ConfigText(default=line, fixed_size=False))
+					self.list.append(getConfigListEntry(_("Interface") + ":", self.minidlna_iface))
 				elif line.startswith("port="):
-					line = line[5:]
-					self.minidlna_port.value = line
-					minidlna_port1 = getConfigListEntry(_("Port") + ":", self.minidlna_port)
-					self.list.append(minidlna_port1)
+					line = int(line[5:])
+					self.minidlna_port = NoSave(ConfigNumber(default=line))
+					self.list.append(getConfigListEntry(_("Port") + ":", self.minidlna_port))
 				elif line.startswith("serial="):
-					line = line[7:]
-					self.minidlna_serialno.value = line
-					minidlna_serialno1 = getConfigListEntry(_("Serial no") + ":", self.minidlna_serialno)
-					self.list.append(minidlna_serialno1)
+					line = int(line[7:])
+					self.minidlna_serialno = NoSave(ConfigNumber(default=line))
+					self.list.append(getConfigListEntry(_("Serial no") + ":", self.minidlna_serialno))
 				elif line.startswith("inotify="):
 					if line[8:] == "no":
-						self.minidlna_inotify.value = False
+						default = False
 					else:
-						self.minidlna_inotify.value = True
-					minidlna_inotify1 = getConfigListEntry(_("Inotify monitoring") + ":", self.minidlna_inotify)
-					self.list.append(minidlna_inotify1)
+						default = True
+					self.minidlna_inotify = NoSave(ConfigYesNo(default=default))
+					self.list.append(getConfigListEntry(_("Inotify monitoring") + ":", self.minidlna_inotify))
 				elif line.startswith("enable_tivo="):
 					if line[12:] == "no":
-						self.minidlna_tivo.value = False
+						default = False
 					else:
-						self.minidlna_tivo.value = True
-					minidlna_tivo1 = getConfigListEntry(_("TiVo support") + ":", self.minidlna_tivo)
-					self.list.append(minidlna_tivo1)
+						default = True
+					self.minidlna_tivo = NoSave(ConfigYesNo(default=default))
+					self.list.append(getConfigListEntry(_("TiVo support") + ":", self.minidlna_tivo))
 				elif line.startswith("strict_dlna="):
 					if line[12:] == "no":
-						self.minidlna_strictdlna.value = False
+						default = False
 					else:
-						self.minidlna_strictdlna.value = True
-					minidlna_strictdlna1 = getConfigListEntry(_("Strict DLNA") + ":", self.minidlna_strictdlna)
-					self.list.append(minidlna_strictdlna1)
+						default = True
+					self.minidlna_strictdlna = NoSave(ConfigYesNo(default=default))
+					self.list.append(getConfigListEntry(_("Strict DLNA") + ":", self.minidlna_strictdlna))
 			f.close()
 		self["config"].list = self.list
 
-	def VirtualKeyBoardCallback(self, callback=None):
-		if callback is not None and len(callback):
-			self["config"].getCurrent()[1].setValue(callback)
-			self["config"].invalidate(self["config"].getCurrent())
-
-	def saveMinidlna(self):
+	def keySave(self):
 		if fileExists("/etc/minidlna.conf"):
 			inme = open("/etc/minidlna.conf", "r")
 			out = open("/etc/minidlna.conf.tmp", "w")
