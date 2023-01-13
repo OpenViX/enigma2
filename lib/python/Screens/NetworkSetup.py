@@ -32,6 +32,7 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
+from Screens.TextBox import TextBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
@@ -48,6 +49,29 @@ import glob
 def ServiceIsEnabled(service_name):
 	starter_list = glob.glob("/etc/rc2.d/S*" + service_name)
 	return len(starter_list) > 0
+
+
+class LogBase(TextBox):
+	def __init__(self, session, filename, label="infotext"):
+		self.label = label
+		TextBox.__init__(self, session, label=self.label)
+		self.filename = filename
+		self.console = Console(binary=True)
+		if not isinstance(self.skinName, list):
+			self.skinName = [self.skinName]
+		if "NetworkInadynLog" not in self.skinName:
+			self.skinName.append("NetworkInadynLog")
+		self.setTitle(_("Log"))
+		self.onLayoutFinish.append(self.layoutFinished)
+
+	def layoutFinished(self):
+		self.console.ePopen("tail -n100 %s" % self.filename, self.cb)
+
+	def cb(self, result, retval, extra_args=None):
+		if retval == 0:
+			self[self.label].setText(result.decode(errors="ignore"))
+			self[self.label].lastPage()
+
 
 # Various classes in here have common entrypoint code requirements.
 # So actually make them common...
@@ -1982,31 +2006,9 @@ class NetworkOpenvpn(NSCommon, Screen):
 			cb(title, status_summary, autostartstatus_summary)
 
 
-class NetworkVpnLog(Screen):
+class NetworkVpnLog(LogBase):
 	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.setTitle(_("Log"))
-		self.skinName = "NetworkInadynLog"
-		self["infotext"] = ScrollLabel("")
-		self.Console = Console()
-		self.ConsoleB = Console(binary=True)		
-		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
-		{
-			"ok": self.close,
-			"back": self.close,
-			"up": self["infotext"].pageUp,
-			"down": self["infotext"].pageDown
-		})
-		strview = ""
-		self.ConsoleB.ePopen("tail /etc/openvpn/openvpn.log > /etc/openvpn/tmp.log")
-		time.sleep(1)
-		if fileExists("/etc/openvpn/tmp.log"):
-			f = open("/etc/openvpn/tmp.log", "r")
-			for line in f.readlines():
-				strview += line
-			f.close()
-			remove("/etc/openvpn/tmp.log")
-		self["infotext"].setText(strview)
+		LogBase.__init__(self, session, "/etc/openvpn/tmp.log")
 
 
 class NetworkSamba(NSCommon, Screen):
@@ -2097,31 +2099,9 @@ class NetworkSamba(NSCommon, Screen):
 			cb(title, status_summary, autostartstatus_summary)
 
 
-class NetworkSambaLog(Screen):
+class NetworkSambaLog(LogBase):
 	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.setTitle(_("Log"))
-		self.skinName = "NetworkInadynLog"
-		self["infotext"] = ScrollLabel("")
-		self.Console = Console()
-		self.ConsoleB = Console(binary=True)		
-		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
-		{
-			"ok": self.close,
-			"back": self.close,
-			"up": self["infotext"].pageUp,
-			"down": self["infotext"].pageDown
-		})
-		strview = ""
-		self.ConsoleB.ePopen("tail /tmp/smb.log > /tmp/tmp.log")
-		time.sleep(1)
-		if fileExists("/tmp/tmp.log"):
-			f = open("/tmp/tmp.log", "r")
-			for line in f.readlines():
-				strview += line
-			f.close()
-			remove("/tmp/tmp.log")
-		self["infotext"].setText(strview)
+		LogBase.__init__(self, session, "/tmp/smb.log")
 
 
 class NetworkTelnet(NSCommon, Screen):
@@ -2418,25 +2398,9 @@ class NetworkInadynSetup(ConfigListScreen, HelpableScreen, Screen):
 		self.close()
 
 
-class NetworkInadynLog(Screen):
+class NetworkInadynLog(LogBase):
 	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.setTitle(_("Log"))
-		self["infotext"] = ScrollLabel("")
-		self["actions"] = ActionMap(["WizardActions", "DirectionActions", "ColorActions"],
-		{
-			"ok": self.close,
-			"back": self.close,
-			"up": self["infotext"].pageUp,
-			"down": self["infotext"].pageDown
-		})
-		strview = ""
-		if fileExists("/var/log/inadyn.log"):
-			f = open("/var/log/inadyn.log", "r")
-			for line in f.readlines():
-				strview += line
-			f.close()
-		self["infotext"].setText(strview)
+		LogBase.__init__(self, session, "/var/log/inadyn.log")
 
 
 config.networkushare = ConfigSubsection()
@@ -2813,31 +2777,9 @@ class uShareSelection(Screen):
 			self.filelist.descent()
 
 
-class NetworkuShareLog(Screen):
+class NetworkuShareLog(LogBase):
 	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.setTitle(_("Log"))
-		self.skinName = "NetworkInadynLog"
-		self["infotext"] = ScrollLabel("")
-		self.Console = Console()
-		self.ConsoleB = Console(binary=True)
-		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
-		{
-			"ok": self.close,
-			"back": self.close,
-			"up": self["infotext"].pageUp,
-			"down": self["infotext"].pageDown
-		})
-		strview = ""
-		self.ConsoleB.ePopen("tail /tmp/uShare.log > /tmp/tmp.log")
-		time.sleep(1)
-		if fileExists("/tmp/tmp.log"):
-			f = open("/tmp/tmp.log", "r")
-			for line in f.readlines():
-				strview += line
-			f.close()
-			remove("/tmp/tmp.log")
-		self["infotext"].setText(strview)
+		LogBase.__init__(self, session, "/tmp/uShare.log")
 
 
 config.networkminidlna = ConfigSubsection()
@@ -3186,31 +3128,9 @@ class MiniDLNASelection(Screen):
 			self.filelist.descent()
 
 
-class NetworkMiniDLNALog(Screen):
+class NetworkMiniDLNALog(LogBase):
 	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.setTitle(_("Log"))
-		self.skinName = "NetworkInadynLog"
-		self["infotext"] = ScrollLabel("")
-		self.Console = Console()
-		self.ConsoleB = Console(binary=True)
-		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
-		{
-			"ok": self.close,
-			"back": self.close,
-			"up": self["infotext"].pageUp,
-			"down": self["infotext"].pageDown
-		})
-		strview = ""
-		self.ConsoleB.ePopen("tail /var/volatile/log/minidlna.log > /tmp/tmp.log")
-		time.sleep(1)
-		if fileExists("/tmp/tmp.log"):
-			f = open("/tmp/tmp.log", "r")
-			for line in f.readlines():
-				strview += line
-			f.close()
-			remove("/tmp/tmp.log")
-		self["infotext"].setText(strview)
+		LogBase.__init__(self, session, "/var/volatile/log/minidlna.log")
 
 
 class NetworkServicesSummary(Screen):
