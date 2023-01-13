@@ -1,8 +1,8 @@
-from xml.etree.cElementTree import fromstring, parse
+from xml.etree.cElementTree import fromstring
 
 from gettext import dgettext
 from os.path import getmtime, join as pathjoin
-from skin import setups, findSkinScreen # findSkinScreen used in eval
+from skin import setups, findSkinScreen # used in <item conditional="..."> to check if a screen name is available in the skin
 
 from Components.config import ConfigBoolean, ConfigNothing, ConfigSelection, config
 from Components.ConfigList import ConfigListScreen
@@ -12,7 +12,7 @@ from Components.SystemInfo import SystemInfo
 from Components.Sources.StaticText import StaticText
 from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen, ScreenSummary
-from Tools.Directories import SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, SCOPE_SKIN, resolveFilename
+from Tools.Directories import SCOPE_CURRENT_SKIN, SCOPE_PLUGINS, SCOPE_SKIN, fileReadXML, resolveFilename
 from Tools.LoadPixmap import LoadPixmap
 
 domSetups = {}
@@ -33,7 +33,6 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 			self.skinName.append("setup_%s" % setup)
 		self.skinName.append("Setup")
 		self.list = []
-		self.onImmediateUpdateRequired = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry, fullUI=True)
 		self["footnote"] = Label()
 		self["footnote"].hide()
@@ -60,8 +59,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 	def changedEntry(self):
 		if isinstance(self["config"].getCurrent()[1], (ConfigBoolean, ConfigSelection)):
 			self.createSetup()
-		for x in self.onImmediateUpdateRequired:
-			x()
+		ConfigListScreen.changedEntry(self) # force summary update immediately, not just on select/deselect
 
 	def createSetup(self):
 		oldList = self.list
@@ -216,8 +214,6 @@ class SetupSummary(ScreenSummary):
 			self.onHide.append(self.removeWatcher)
 
 	def addWatcher(self):
-		if hasattr(self.parent, "onImmediateUpdateRequired") and self.selectionChanged not in self.parent.onImmediateUpdateRequired:
-			self.parent.onImmediateUpdateRequired.append(self.selectionChanged)
 		if self.selectionChanged not in self.parent.onChangedEntry:
 			self.parent.onChangedEntry.append(self.selectionChanged)
 		if self.selectionChanged not in self.parent["config"].onSelectionChanged:
@@ -225,8 +221,6 @@ class SetupSummary(ScreenSummary):
 		self.selectionChanged()
 
 	def removeWatcher(self):
-		if hasattr(self.parent, "onImmediateUpdateRequired") and self.selectionChanged in self.parent.onImmediateUpdateRequired:
-			self.parent.onImmediateUpdateRequired.remove(self.selectionChanged)
 		if self.selectionChanged in self.parent.onChangedEntry:
 			self.parent.onChangedEntry.remove(self.selectionChanged)
 		if self.selectionChanged in self.parent["config"].onSelectionChanged:
@@ -291,7 +285,7 @@ def setupDom(setup=None, plugin=None):
 			elif element.tag == "elif":
 				pass
 
-	setupFileDom = fromstring("<setupxml></setupxml>")
+	setupFileDom = fromstring("<setupxml />")
 	setupFile = resolveFilename(SCOPE_PLUGINS, pathjoin(plugin, "setup.xml")) if plugin else resolveFilename(SCOPE_SKIN, "setup.xml")
 	global domSetups, setupModTimes
 	try:
@@ -302,7 +296,7 @@ def setupDom(setup=None, plugin=None):
 			del domSetups[setupFile]
 		if setupFile in setupModTimes:
 			del setupModTimes[setupFile]
-		return setupFileDom
+		return setupFileDom # we can't access setup.xml so return an empty dom 
 	cached = setupFile in domSetups and setupFile in setupModTimes and setupModTimes[setupFile] == modTime
 	print("[Setup] XML%s setup file '%s', using element '%s'%s." % (" cached" if cached else "", setupFile, setup, " from plugin '%s'" % plugin if plugin else ""))
 	if cached:
@@ -311,24 +305,12 @@ def setupDom(setup=None, plugin=None):
 		del domSetups[setupFile]
 	if setupFile in setupModTimes:
 		del setupModTimes[setupFile]
-	try:
-		with open(setupFile, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
-			fileDom = parse(fd).getroot()
-			checkItems(fileDom, None)
-			setupFileDom = fileDom
-			domSetups[setupFile] = setupFileDom
-			setupModTimes[setupFile] = modTime
-			for setup in setupFileDom.findall("setup"):
-				key = setup.get("key")
-				if key:  # If there is no key then this element is useless and can be skipped!
-					title = setup.get("title", "")
-					if title == "":
-						print("[Setup] Error: Setup key '%s' title is missing or blank!" % key)
-						title = "** Setup error: '%s' title is missing or blank!" % key
-				# print("[Setup] [setupDOM]title = %s key = %s" % (title, key))
-	except:
-		import traceback
-		traceback.print_exc()
+	fileDom = fileReadXML(setupFile)
+	if fileDom:
+		checkItems(fileDom, None)
+		setupFileDom = fileDom
+		domSetups[setupFile] = setupFileDom
+		setupModTimes[setupFile] = modTime
 	return setupFileDom
 
 # Temporary legacy interface.

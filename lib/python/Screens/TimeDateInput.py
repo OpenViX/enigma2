@@ -26,8 +26,8 @@ class TimeDateInput(ConfigListScreen, Screen):
 		}, -2)
 
 		self.list = []
-		ConfigListScreen.__init__(self, self.list)
-		self.createSetup(self["config"])
+		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
+		self.createSetup()
 
 	def createConfig(self, conf_date, conf_time):
 		self.save_mask = 0
@@ -42,13 +42,12 @@ class TimeDateInput(ConfigListScreen, Screen):
 		self.timeinput_date = conf_date
 		self.timeinput_time = conf_time
 
-	def createSetup(self, configlist):
+	def createSetup(self):
 		self.list = [
 			getConfigListEntry(_("Date"), self.timeinput_date),
 			getConfigListEntry(_("Time"), self.timeinput_time)
 		]
-		configlist.list = self.list
-		configlist.l.setList(self.list)
+		self["config"].list = self.list
 
 	def keyPageDown(self):
 		sel = self["config"].getCurrent()

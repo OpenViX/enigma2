@@ -34,6 +34,8 @@ def getMultibootslots():
 				BoxInfo.setItem("mtdbootfs", device2, forceOverride=True)				
 				for file in glob.glob(path.join(tmpname, "STARTUP_*")):
 #					print("[multiboot*****] [getMultibootslots]2 tmpname = %s" % (tmpname))
+					if "STARTUP_ANDROID" in file:
+						SystemInfo["AndroidMode"] = True
 					if "STARTUP_RECOVERY" in file:
 						SystemInfo["RecoveryMode"] = True
 #						print("[multiboot] [getMultibootslots]3 RecoveryMode is set to:%s" % SystemInfo["RecoveryMode"])
@@ -69,11 +71,12 @@ def getMultibootslots():
 		rmdir(tmp.dir)
 	if bootslots:
 #		print("[Multiboot] Bootslots found:", bootslots)
-		if SystemInfo["HasRootSubdir"]:
-			slot = [x[-1] for x in open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read().split() if x.startswith("rootsubdir")]
+		bootArgs = open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()
+		if SystemInfo["HasRootSubdir"] and "root=/dev/sda" not in bootArgs:
+			slot = [x[-1] for x in bootArgs.split() if x.startswith("rootsubdir")]
 			SystemInfo["MultiBootSlot"] = int(slot[0])
 		else:
-			root = dict([(x.split("=", 1)[0].strip(), x.split("=", 1)[1].strip()) for x in open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read().strip().split(" ") if "=" in x])["root"]
+			root = dict([(x.split("=", 1)[0].strip(), x.split("=", 1)[1].strip()) for x in bootArgs.strip().split(" ") if "=" in x])["root"]
 			for slot in bootslots.keys():
 				if bootslots[slot]["root"] == root:
 					SystemInfo["MultiBootSlot"] = slot		

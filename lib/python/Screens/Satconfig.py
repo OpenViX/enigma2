@@ -634,7 +634,7 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 		Screen.__init__(self, session)
 		self.list = []
 		ServiceStopScreen.__init__(self)
-		ConfigListScreen.__init__(self, self.list)
+		ConfigListScreen.__init__(self, self.list, on_change=self.changedEntry)
 
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))

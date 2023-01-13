@@ -1,4 +1,5 @@
 from Screens.Screen import Screen
+from Screens.TextBox import TextBox
 from Tools.KeyBindings import keyBindings
 from Tools.BoundFunction import boundFunction
 from Components.Label import Label
@@ -10,14 +11,14 @@ from enigma import eActionMap
 from sys import maxsize
 
 class HelpMenu(Screen, Rc):
-	helpText = "\n\n".join([
-		_("Help Screen"),
-		_("Brief help information for buttons in your current context."),
-		_("Navigate up/down with UP/DOWN buttons and page up/down with LEFT/RIGHT. EXIT to return to the help screen. OK to perform the action described in the currently highlighted help."),
-		_("Other buttons will jump to the help for that button, if there is help."),
-		_("If an action is user-configurable, its help entry will be flagged (C)"),
-		_("A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s)."),
-		_("The order and grouping of the help information list can be controlled using MENU>Setup>User Interface>Settings>Sort order for help screen.")])
+	def helpText(self):
+		return "\n\n".join([
+			_("Brief help information for buttons in your current context."),
+			_("Navigate up/down with UP/DOWN buttons and page up/down with LEFT/RIGHT. EXIT to return to the help screen. OK to perform the action described in the currently highlighted help."),
+			_("Other buttons will jump to the help for that button, if there is help."),
+			_("If an action is user-configurable, its help entry will be flagged (C)"),
+			_("A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s)."),
+			_("The order and grouping of the help information list can be controlled using MENU>Setup>User Interface>Settings>Sort order for help screen.")])
 
 	def __init__(self, session, list):
 		Screen.__init__(self, session)
@@ -135,9 +136,7 @@ class HelpMenu(Screen, Rc):
 		return 1
 
 	def showHelp(self):
-		# Import deferred so that MessageBox's import of HelpMenu doesn't cause an import loop
-		from Screens.MessageBox import MessageBox
-		self.session.open(MessageBox, _(HelpMenu.helpText), type=MessageBox.TYPE_INFO)
+		self.session.open(TextBox, self.helpText(), _("Help Screen"))
 
 
 class HelpableScreen:

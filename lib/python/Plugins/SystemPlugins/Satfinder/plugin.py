@@ -25,15 +25,14 @@ except ImportError:
 if dvbreader_available:
 	from skin import parameters
 	from Components.Sources.StaticText import StaticText
-	from Components.ScrollLabel import ScrollLabel
-	from Components.Label import Label
+	from Screens.TextBox import TextBox
 	from Tools.Hex2strColor import Hex2strColor
 	import time
 	import datetime
 	import _thread as thread
 
 
-class Satfinder(ScanSetup, ServiceScan):
+class Satfinder(ScanSetup):
 	"""Inherits StaticText [key_red] and [key_green] properties from ScanSetup"""
 
 	def __init__(self, session):
@@ -64,6 +63,7 @@ class Satfinder(ScanSetup, ServiceScan):
 
 		ScanSetup.__init__(self, session)
 		self.entryChanged = self.newConfig
+		self.skinName = ["Satfinder"]
 		self.setTitle(_("Signal finder"))
 		self["Frontend"] = FrontendStatus(frontend_source=lambda: self.frontend, update_interval=100)
 
@@ -166,6 +166,7 @@ class Satfinder(ScanSetup, ServiceScan):
 				self.scan_sat.t2mi_pid.value = eDVBFrontendParametersSatellite.T2MI_Default_Pid
 			self.createSetup()
 			self.retune()
+		self.changedEntry() # force summary update immediately, not just on select/deselect
 
 	def createSetup(self):
 		self.list = []
@@ -595,7 +596,6 @@ class SatfinderExtra(Satfinder):
 	# This class requires AutoBouquetsMaker to be installed.
 	def __init__(self, session):
 		Satfinder.__init__(self, session)
-		self.skinName = ["Satfinder"]
 
 		self["key_yellow"] = StaticText("")
 
@@ -875,7 +875,7 @@ class SatfinderExtra(Satfinder):
 		radio_color = Hex2strColor(colors[3])
 		default_color = Hex2strColor(colors[4])
 		out = []
-		legend = "%s%s%s:  %s%s%s  %s%s%s  %s%s%s  %s%s%s\n\n%s%s%s\n" % (default_color, _("Key"), default_color, fta_color, _("FTA TV"), default_color, encrypted_color, _("Encrypted TV"), default_color, radio_color, _("Radio"), default_color, data_color, _("Other"), default_color, default_color, _("Channels"), default_color)
+		legend = "%s%s%s:  %s%s%s  %s%s%s  %s%s%s  %s%s%s\n\n%s%s%s\n\n" % (default_color, _("Key"), default_color, fta_color, _("FTA TV"), default_color, encrypted_color, _("Encrypted TV"), default_color, radio_color, _("Radio"), default_color, data_color, _("Other"), default_color, default_color, _("Channels"), default_color)
 #		out.append("%s%s%s:" % (default_color, _("Channels"), default_color))
 		for service in self.serviceList:
 			fta = "free_ca" in service and service["free_ca"] == 0
@@ -888,42 +888,7 @@ class SatfinderExtra(Satfinder):
 			else:
 				color = encrypted_color
 			out.append("- %s%s (%s)%s" % (color, service["service_name"], service["service_id"], default_color))
-
-		self.session.open(ServicesFound, "\n".join(out), legend)
-
-
-class ServicesFound(Screen):
-	skin = """
-		<screen name="ServicesFound" position="center,center" size="600,570">
-			<widget name="legend" position="0,0" size="590,80" zPosition="10" font="Regular;21" transparent="1"/>
-			<widget name="servicesfound" position="0,85" size="590,425" zPosition="10" font="Regular;21" transparent="1"/>
-			<ePixmap pixmap="skin_default/buttons/red.png" position="10,525" size="140,40" alphatest="on" />
-			<widget render="Label" source="key_red" position="10,500" zPosition="1" size="140,25" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		</screen>"""
-
-	def __init__(self, session, text, legend):
-		Screen.__init__(self, session)
-		self.setTitle(_("Information"))
-
-		self["key_red"] = StaticText(_("Close"))
-		self["legend"] = Label(legend)
-		self["servicesfound"] = ScrollLabel(text)
-
-		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
-		{
-			"back": self.close,
-			"red": self.close,
-			"up": self.pageUp,
-			"down": self.pageDown,
-			"left": self.pageUp,
-			"right": self.pageDown,
-		}, -2)
-
-	def pageUp(self):
-		self["servicesfound"].pageUp()
-
-	def pageDown(self):
-		self["servicesfound"].pageDown()
+		self.session.open(TextBox, text=legend + "\n".join(out), title=_("Information"), skin_name="TextBoxPigLess")
 
 
 def SatfinderCallback(close, answer):

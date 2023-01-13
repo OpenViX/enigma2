@@ -34,6 +34,8 @@ def InitUsageConfig():
 	else:
 		config.misc.remotecontrol_text_support = ConfigYesNo(default=False)
 
+	config.misc.usegstplaybin3 = ConfigYesNo(default=False)
+
 	config.usage = ConfigSubsection()
 	config.usage.subnetwork = ConfigYesNo(default=True)
 	config.usage.subnetwork_cable = ConfigYesNo(default=True)

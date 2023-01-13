@@ -6,7 +6,7 @@ from Components.ActionMap import ActionMap, NumberActionMap
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.config import config, configfile, getConfigListEntry
-from Components.ConfigList import ConfigList, ConfigListScreen
+from Components.ConfigList import ConfigListScreen
 from Components.MenuList import MenuList
 
 from Tools.LoadPixmap import LoadPixmap
@@ -1187,63 +1187,24 @@ class oscReaderStats(Screen, OscamInfo):
 class OscamInfoConfigScreen(ConfigListScreen, Screen):
 	def __init__(self, session, msg=None):
 		Screen.__init__(self, session)
-		self.session = session
-		if msg is not None:
-			self.msg = "Error:\n%s" % msg
-		else:
-			self.msg = ""
-		self.oscamconfig = []
-		self["key_red"] = StaticText(_("Cancel"))
-		self["key_green"] = StaticText(_("OK"))
-		self["status"] = StaticText(self.msg)
-		self["config"] = ConfigList(self.oscamconfig)
-		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
-		{
-			"red": self.cancel,
-			"green": self.save,
-			"save": self.save,
-			"cancel": self.cancel,
-			"ok": self.save,
-		}, -2)
-		ConfigListScreen.__init__(self, self.oscamconfig, session=self.session)
+		self.setTitle(_("%s Info - Configuration") % check_NAMEBIN2())
+		self["status"] = StaticText(_("Error:\n%s") % msg if msg is not None else "") # what is this?
+		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry, fullUI=True)
 		self.createSetup()
-		config.oscaminfo.userdatafromconf.addNotifier(self.elementChanged, initial_call=False)
-		config.oscaminfo.autoupdate.addNotifier(self.elementChanged, initial_call=False)
-		self.onLayoutFinish.append(self.layoutFinished)
 
-	def elementChanged(self, instance):
-		self.createSetup()
-		try:
-			self["config"].l.setList(self.oscamconfig)
-		except KeyError:
-			pass
-
-	def layoutFinished(self):
-		NAMEBIN = check_NAMEBIN()
-		NAMEBIN2 = check_NAMEBIN2()
-		self.setTitle(_("%s Info - Configuration" % NAMEBIN2))
-		self["config"].l.setList(self.oscamconfig)
+	def changedEntry(self):
+		if self["config"].getCurrent() and len(self["config"].getCurrent()) > 1 and self["config"].getCurrent()[1] in (config.oscaminfo.userdatafromconf, config.oscaminfo.autoupdate):
+			self.createSetup()
+		ConfigListScreen.changedEntry(self)
 
 	def createSetup(self):
-		NAMEBIN = check_NAMEBIN()
-		self.oscamconfig = []
-		self.oscamconfig.append(getConfigListEntry(_("Read Userdata from %s.conf" % NAMEBIN), config.oscaminfo.userdatafromconf))
+		oscamconfig = [(getConfigListEntry(_("Read Userdata from %s.conf" % check_NAMEBIN()), config.oscaminfo.userdatafromconf))]
 		if not config.oscaminfo.userdatafromconf.value:
-			self.oscamconfig.append(getConfigListEntry(_("Username (httpuser)"), config.oscaminfo.username))
-			self.oscamconfig.append(getConfigListEntry(_("Password (httpwd)"), config.oscaminfo.password))
-			self.oscamconfig.append(getConfigListEntry(_("IP address"), config.oscaminfo.ip))
-			self.oscamconfig.append(getConfigListEntry(_("Port"), config.oscaminfo.port))
-		self.oscamconfig.append(getConfigListEntry(_("Automatically update Client/Server View?"), config.oscaminfo.autoupdate))
+			oscamconfig.append(getConfigListEntry(_("Username (httpuser)"), config.oscaminfo.username))
+			oscamconfig.append(getConfigListEntry(_("Password (httpwd)"), config.oscaminfo.password))
+			oscamconfig.append(getConfigListEntry(_("IP address"), config.oscaminfo.ip))
+			oscamconfig.append(getConfigListEntry(_("Port"), config.oscaminfo.port))
+		oscamconfig.append(getConfigListEntry(_("Automatically update Client/Server View?"), config.oscaminfo.autoupdate))
 		if config.oscaminfo.autoupdate.value:
-			self.oscamconfig.append(getConfigListEntry(_("Update interval (in seconds)"), config.oscaminfo.intervall))
-
-	def save(self):
-		for x in self.oscamconfig:
-			x[1].save()
-		configfile.save()
-		self.close()
-
-	def cancel(self):
-		for x in self.oscamconfig:
-			x[1].cancel()
-		self.close()
+			oscamconfig.append(getConfigListEntry(_("Update interval (in seconds)"), config.oscaminfo.intervall))
+		self["config"].list = oscamconfig

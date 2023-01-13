@@ -164,7 +164,7 @@
 
 <!-- misc-->
 	<screen name="SimpleSummary" position="0,0" size="96,64">
-		<widget source="parent.Title" render="Label" position="0,0" size="96,40" font="FdLcD;16" halign="center" valign="center" />
+		<widget source="Title" render="Label" position="0,0" size="96,40" font="FdLcD;16" halign="center" valign="center" />
 		<widget source="session.RecordState" render="FixedLabel" text="Rec" position="0,52" size="24,12" font="FdLcD;12" zPosition="1" noWrap="1" foregroundColor="fullred">
 			<convert type="ConditionalShowHide"></convert>
 		</widget>

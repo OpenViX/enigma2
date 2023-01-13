@@ -43,7 +43,7 @@ class ConfigList(GUIComponent):
 
 	def handleKey(self, key, callback=None):
 		selection = self.getCurrent()
-		if selection and selection[1].enabled:
+		if selection and len(selection) > 1 and selection[1].enabled:
 			selection[1].handleKey(key, callback)
 			self.invalidateCurrent()
 			if key in ACTIONKEY_NUMBERS:
@@ -232,13 +232,13 @@ class ConfigListScreen:
 		self.restartMsg = _("Restart GUI now?") if msg is None else msg
 
 	def getCurrentItem(self):
-		return self["config"].getCurrent() and self["config"].getCurrent()[1] or None
+		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 1 and self["config"].getCurrent()[1] or None
 
 	def getCurrentEntry(self):
 		return self["config"].getCurrent() and self["config"].getCurrent()[0] or ""
 
 	def getCurrentValue(self):
-		return self["config"].getCurrent() and str(self["config"].getCurrent()[1].getText()) or ""
+		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 1 and str(self["config"].getCurrent()[1].getText()) or ""
 
 	def getCurrentDescription(self):
 		return self["config"].getCurrent() and len(self["config"].getCurrent()) > 2 and self["config"].getCurrent()[2] or ""
@@ -263,11 +263,11 @@ class ConfigListScreen:
 			else:
 				self["menuConfigActions"].setEnabled(False)
 				self["key_menu"].setText("")
+			if isinstance(currConfig[1], (ConfigText, ConfigMacText)) and "HelpWindow" in self and currConfig[1].help_window and currConfig[1].help_window.instance is not None:
+				helpwindowpos = self["HelpWindow"].getPosition()
+				currConfig[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
 			if isinstance(currConfig[1], ConfigText):
 				self.showVirtualKeyBoard(True)
-				if "HelpWindow" in self and currConfig[1].help_window and currConfig[1].help_window.instance is not None:
-					helpwindowpos = self["HelpWindow"].getPosition()
-					currConfig[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
 			else:
 				self.showVirtualKeyBoard(False)
 			if "description" in self:
@@ -287,7 +287,7 @@ class ConfigListScreen:
 	def displayHelp(self, state):
 		if "config" in self and "HelpWindow" in self and self["config"].getCurrent() is not None and len(self["config"].getCurrent()) > 1:
 			currConf = self["config"].getCurrent()[1]
-			if isinstance(currConf, ConfigText) and currConf.help_window is not None and currConf.help_window.instance is not None:
+			if isinstance(currConf, (ConfigText, ConfigMacText)) and currConf.help_window is not None and currConf.help_window.instance is not None:
 				if state:
 					currConf.help_window.show()
 				else:
