@@ -49,7 +49,14 @@ class CronTimers(Screen):
 		self['key_blue'] = Label(_("Autostart"))
 		self.list = []
 		self['list'] = List(self.list)
-		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {'ok': self.info, 'back': self.UninstallCheck, 'red': self.delcron, 'green': self.addtocron, 'yellow': self.CrondStart, 'blue': self.autostart})
+		self['actions'] = ActionMap(['WizardActions', 'ColorActions', "MenuActions"], {
+			'ok': self.info, 
+			'back': self.UninstallCheck, 
+			'red': self.delcron, 
+			'green': self.addtocron, 
+			'yellow': self.CrondStart, 
+			'blue': self.autostart,
+			})
 		if not self.selectionChanged in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 		self.service_name = 'cronie'
