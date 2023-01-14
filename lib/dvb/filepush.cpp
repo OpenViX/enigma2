@@ -37,11 +37,13 @@ static void signal_handler(int x)
 
 static void ignore_but_report_signals()
 {
+#ifndef HAVE_HISILICON
 	/* we must set a signal mask for the thread otherwise signals don't have any effect */
 	sigset_t sigmask;
 	sigemptyset(&sigmask);
 	sigaddset(&sigmask, SIGUSR1);
 	pthread_sigmask(SIG_UNBLOCK, &sigmask, NULL);
+#endif
 	
 	/* we set the signal to not restart syscalls, so we can detect our signal. */
 	struct sigaction act = {};
@@ -154,7 +156,6 @@ void eFilePushThread::thread()
 
 				/* in stream_mode, we are sending EOF events
 				   over and over until somebody responds.
-
 				   in stream_mode, think of evtEOF as "buffer underrun occurred". */
 			if (m_sof == 0)
 				sendEvent(evtEOF);
@@ -335,15 +336,27 @@ eFilePushThreadRecorder::eFilePushThreadRecorder(unsigned char* buffer, size_t b
 
 void eFilePushThreadRecorder::thread()
 {
+#ifndef HAVE_HISILICON
 	ignore_but_report_signals();
 	hasStarted(); /* "start()" blocks until we get here */
+#endif
 	setIoPrio(IOPRIO_CLASS_RT, 7);
 	eDebug("[eFilePushThreadRecorder] THREAD START");
+
+#ifdef HAVE_HISILICON
+	/* we set the signal to not restart syscalls, so we can detect our signal. */
+	struct sigaction act;
+	act.sa_handler = signal_handler; // no, SIG_IGN doesn't do it. we want to receive the -EINTR
+	act.sa_flags = 0;
+	sigaction(SIGUSR1, &act, 0);
+	hasStarted();
+#endif
 
 	/* m_stop must be evaluated after each syscall */
 	/* if it isn't, there's a chance of the thread becoming deadlocked when recordings are finishing */
 	while (!m_stop)
 	{
+#ifndef HAVE_HISILICON
 		/* this works around the buggy Broadcom encoder that always returns even if there is no data */
 		/* (works like O_NONBLOCK even when not opened as such), prevent idle waiting for the data */
 		/* this won't ever hurt, because it will return immediately when there is data or an error condition */
@@ -358,10 +371,18 @@ void eFilePushThreadRecorder::thread()
 		/* And again: Check m_stop regardless of read success. */
 		if (m_stop)
 			break;
-
+#else
+		ssize_t bytes = ::read(m_fd_source, m_buffer, m_buffersize);
+#endif
 		if (bytes < 0)
 		{
 			bytes = 0;
+#if HAVE_HISILICON
+			/* Check m_stop after interrupted syscall. */
+			if (m_stop) {
+				break;
+			}
+#endif
 			if (errno == EINTR || errno == EBUSY || errno == EAGAIN)
 			{
 #if HAVE_HISILICON
