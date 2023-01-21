@@ -49,17 +49,17 @@ class MultiBootSelector(Screen, HelpableScreen):
 		self["key_yellow"] = StaticText(_("Delete"))
 		self["key_blue"] = StaticText(_("Restore"))
 		self["actions"] = HelpableActionMap(self, ["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"], {
-			"red": (boundFunction(self.close, None), _("Cancel the image selection and exit")),
+			"red": (boundFunction(self.cancel, None), _("Cancel the image selection and exit")),
 			"green": (self.reboot, _("Select the highlighted image and reboot")),
 			"yellow": (self.deleteImage, _("Select the highlighted image and delete")),
 			"blue": (self.restoreImages, _("Select to restore all deleted images")),
 			"ok": (self.reboot, _("Select the highlighted image and reboot")),
-			"cancel": (boundFunction(self.close, None), _("Cancel the image selection and exit")),
+			"cancel": (boundFunction(self.cancel, None), _("Cancel the image selection and exit")),
 			"up": (self.keyUp, _("Move up a line")),
 			"down": (self.keyDown, _("Move down a line")),
 			"left": (self.keyUp, _("Move up a line")),
 			"right": (self.keyDown, _("Move down a line")),
-			"menu": (boundFunction(self.close, True), _("Cancel the image selection and exit all menus"))
+			"menu": (boundFunction(self.cancel, True), _("Cancel the image selection and exit all menus"))
 		}, -1, description=_("MultiBootSelector Actions"))
 		self.imagedict = []
 		self.tmp_dir = tempfile.mkdtemp(prefix="MultibootSelector")
