@@ -150,6 +150,7 @@ SystemInfo["HasHiSi"] = pathExists("/proc/hisi") and getBoxType() not in ("viper
 SystemInfo["canMultiBoot"] = getMultibootslots()	
 # SystemInfo["MBbootdevice"] = device set in Tools/Multiboot.py 
 # SystemInfo["MultiBootSlot"] = current slot set in Tools/Multiboot.py
+SystemInfo["HasKexecMultiboot"] = fileHas("/proc/cmdline", "kexec=1")
 
 
 def getNumVideoDecoders():
