@@ -792,7 +792,10 @@ class ImageBackup(Screen):
 		self.rootdir = 0
 		if SystemInfo["canMultiBoot"]:
 			slot = SystemInfo["MultiBootSlot"]
-			self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
+			if SystemInfo["HasKexecMultiboot"]:
+				self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"]
+			else:
+				self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
 			if SystemInfo["HasMultibootMTD"]:
 				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"]	# sfx60xx ubi0:ubifs not mtd=
 			else:					
