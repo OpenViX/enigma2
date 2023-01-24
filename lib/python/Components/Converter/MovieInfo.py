@@ -5,6 +5,11 @@ from enigma import iServiceInformation, eServiceReference
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 
+# Handle any invalid utf8 in a description to avoid crash when
+# displaying it.
+#
+def force_valid_utf8(strarray):
+	return strarray.encode(errors='backslashreplace').decode(errors='ignore')
 
 class MovieInfo(Converter):
 	scanDirectoryLock = Lock()
@@ -102,7 +107,7 @@ class MovieInfo(Converter):
 					return service.getPath()
 				return (
 					self.__getCollectionDescription(service)
-					or info.getInfoString(service, iServiceInformation.sDescription)
+					or force_valid_utf8(info.getInfoString(service, iServiceInformation.sDescription))
 					or (event and self.trimText(event.getShortDescription()))
 					or service.getPath()
 				)
@@ -110,14 +115,14 @@ class MovieInfo(Converter):
 				return (
 					self.__getCollectionDescription(service)
 					or (event and (self.trimText(event.getExtendedDescription()) or self.trimText(event.getShortDescription())))
-					or info.getInfoString(service, iServiceInformation.sDescription)
+					or force_valid_utf8(info.getInfoString(service, iServiceInformation.sDescription))
 					or service.getPath()
 				)
 			elif self.type == self.MOVIE_FULL_DESCRIPTION:
 				return (
 					self.__getCollectionDescription(service)
 					or (event and self.formatDescription(event.getShortDescription(), event.getExtendedDescription()))
-					or info.getInfoString(service, iServiceInformation.sDescription)
+					or force_valid_utf8(info.getInfoString(service, iServiceInformation.sDescription))
 					or service.getPath()
 				)
 			elif self.type == self.MOVIE_NAME:
@@ -138,7 +143,7 @@ class MovieInfo(Converter):
 		if service.flags & eServiceReference.isGroup:
 			items = getattr(self.source.additionalInfo, "collectionItems", None)
 			if items and len(items) > 0:
-				return items[0][1].getInfoString(items[0][0], iServiceInformation.sDescription)
+				return force_valid_utf8(items[0][1].getInfoString(items[0][0], iServiceInformation.sDescription))
 		return None
 
 	def getFileSize(self, service, info):
