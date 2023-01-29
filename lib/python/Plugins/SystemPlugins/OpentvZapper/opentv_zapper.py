@@ -766,7 +766,6 @@ class Opentv_Zapper():
 	def start_download(self):
 		print("[%s] start_download." % (debug_name))
 		self.downloadtimer.stop() # stop any running timer. e.g. we could be coming from "force_download" or "config_changed".
-		self.enddownloadtimer.stop()  # stop any running timer. e.g. we could be coming from "force_download" or "config_changed".
 		from Screens.Standby import inStandby
 
 		# this is here so tuner setup is fresh for every download
