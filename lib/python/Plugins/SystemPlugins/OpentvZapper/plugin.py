@@ -33,8 +33,6 @@ class OpentvZapper_Setup(Setup):
 		provider_changed = config.plugins.opentvzapper.providers.isChanged()
 		enabled_changed = config.plugins.opentvzapper.enabled.isChanged()
 		self.saveAll()
-		if provider_changed:
-			opentv_zapper.initialize(config.plugins.opentvzapper.providers.value)
 		if enabled_changed or provider_changed:
 			opentv_zapper.config_changed()
 		self.close()

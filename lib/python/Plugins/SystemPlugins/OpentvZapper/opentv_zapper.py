@@ -706,8 +706,7 @@ class Opentv_Zapper():
 		self.adapter = None
 		self.downloading = False
 		self.force = False
-		self.initialize(config.plugins.opentvzapper.providers.value)
-		self.sref = make_sref(self.service)
+		self.initialized = False
 		self.downloadtimer = eTimer()
 		self.downloadtimer.callback.append(self.start_download)
 		self.enddownloadtimer = eTimer()
@@ -717,9 +716,19 @@ class Opentv_Zapper():
 			print("[%s] first download scheduled for %s" % (debug_name, strftime("%c", localtime(int(time()) + start_first_download))))
 			self.downloadtimer.startLongTimer(start_first_download)
 
-	def initialize(self, provider):
+	def checkAvailableTuners(self):
+		provider = config.plugins.opentvzapper.providers.value
 		self.transponder = providers[provider]["transponder"]
+		self.tuners = getNimListForSat(self.transponder["orbital_position"])
+		self.num_tuners = len(self.tuners)
+		return bool(self.num_tuners)
+	
+	def initialize(self):
+		provider = config.plugins.opentvzapper.providers.value
+		if not self.checkAvailableTuners() or self.initialized == provider: # if no tuner is available for this provider or we are already initialized, abort.
+			return
 		self.service = providers[provider]["service"]
+		self.sref = make_sref(self.service)
 		transponder_key = "%x:%x:%x" % (self.transponder["namespace"], self.transponder["transport_stream_id"], self.transponder["original_network_id"])
 		service_key = "%x:%x" % (self.service["service_type"], self.service["service_id"])
 		provider_present = False
@@ -733,36 +742,44 @@ class Opentv_Zapper():
 			writer.writeLamedb(lamedb_path, transponders)
 			writer.writeLamedb5(lamedb_path, transponders)
 			eDVBDB.getInstance().reloadServicelist()
+		self.initialized = provider
+		print("[%s] initialize completed." % (debug_name))
 
 	def config_changed(self, configElement=None):
 		print("[%s] config_changed." % (debug_name))
 		if config.plugins.opentvzapper.enabled.value:
 			self.start_download()
+		else:
+			self.downloadtimer.stop()
 
 	def set_session(self, session):
 		self.session = session
 
 	def force_download(self):
-		print("[%s] forced download." % (debug_name))
-		self.force = True
-		self.start_download()
+		if self.checkAvailableTuners():
+			print("[%s] forced download." % (debug_name))
+			self.force = True
+			self.start_download()
+		else:
+			print("[%s] no tuner configured for %s." % (debug_name, config.plugins.opentvzapper.providers.value))
 
 	def start_download(self):
 		print("[%s] start_download." % (debug_name))
 		self.downloadtimer.stop() # stop any running timer. e.g. we could be coming from "force_download" or "config_changed".
+		self.enddownloadtimer.stop()  # stop any running timer. e.g. we could be coming from "force_download" or "config_changed".
 		from Screens.Standby import inStandby
 
 		# this is here so tuner setup is fresh for every download
-		tuners = getNimListForSat(self.transponder["orbital_position"])
-		num_tuners = len(tuners)
+		self.initialize()
+
 		self.adaptername = ""
-		if self.session and num_tuners and not self.downloading and not self.session.nav.RecordTimer.isRecording():
+		if self.session and self.num_tuners and not self.downloading and not self.session.nav.RecordTimer.isRecording():
 			self.adapter = None
 			self.downloading = False
 			currentlyPlayingNIM = self.getCurrentlyPlayingNIM()
 			print("[%s]currentlyPlayingNIM" % (debug_name), currentlyPlayingNIM)
-			print("[%s]available tuners" % (debug_name), tuners)
-			if not inStandby and (num_tuners > 1 or tuners[0] != currentlyPlayingNIM):
+			print("[%s]available tuners" % (debug_name), self.tuners)
+			if not inStandby and (self.num_tuners > 1 or self.tuners[0] != currentlyPlayingNIM):
 				if SystemInfo.get("PIPAvailable", False) and config.plugins.opentvzapper.use_pip_adapter.value and not (hasattr(self.session, 'pipshown') and self.session.pipshown):
 					self.adapter = PipAdapter(self.session)
 					self.downloading = self.adapter.play(self.sref)
