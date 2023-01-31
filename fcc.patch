@@ -1,5 +1,5 @@
 diff --git a/configure.ac b/configure.ac
-index e707ec9add..d01adc19f6 100644
+index 065e483943..88d4316bb9 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -625,6 +625,8 @@ lib/python/Plugins/SystemPlugins/DefaultServicesScanner/Makefile
@@ -407,7 +407,7 @@ index c99644fe9b..05cb4d4ea4 100644
  
  #endif
 diff --git a/lib/dvb/dvb.cpp b/lib/dvb/dvb.cpp
-index df2babf964..1033387f89 100644
+index 135b560c47..254da63d77 100644
 --- a/lib/dvb/dvb.cpp
 +++ b/lib/dvb/dvb.cpp
 @@ -11,6 +11,7 @@
@@ -1245,7 +1245,7 @@ index 0e140f9ef7..d6a8994520 100644
  
  	virtual RESULT showSinglePic(const char *filename) = 0;
 diff --git a/lib/dvb/pmt.cpp b/lib/dvb/pmt.cpp
-index e29087462d..26a0993cc1 100644
+index 1d3c454bcf..b8c8da4294 100644
 --- a/lib/dvb/pmt.cpp
 +++ b/lib/dvb/pmt.cpp
 @@ -32,6 +32,8 @@ eDVBServicePMTHandler::eDVBServicePMTHandler()
@@ -1331,7 +1331,7 @@ index e29087462d..26a0993cc1 100644
 +		eDVBCIInterfaces::getInstance()->removePMTHandler(this);
 +}
 diff --git a/lib/dvb/pmt.h b/lib/dvb/pmt.h
-index e47589946c..b9aec9a0cd 100644
+index e47589946c..40dbe1c926 100644
 --- a/lib/dvb/pmt.h
 +++ b/lib/dvb/pmt.h
 @@ -82,6 +82,9 @@ class eDVBServicePMTHandler: public eDVBPMTParser
@@ -1352,23 +1352,16 @@ index e47589946c..b9aec9a0cd 100644
  	};
  #ifndef SWIG
  	sigc::signal<void(int)> serviceEvent;
-@@ -131,6 +135,7 @@ public:
+@@ -131,6 +135,9 @@ public:
  	void resetCachedProgram() { m_have_cached_program = false; }
  	void sendEventNoPatEntry();
  	void getHBBTVUrl(std::string &ret) const { ret = m_HBBTVUrl; }
 +	void setCaDisable(bool disable) { m_ca_disabled = disable; }
++	void addCaHandler();
++	void removeCaHandler();
  
  	enum serviceType
  	{
-@@ -154,6 +159,8 @@ public:
- 	int tuneExt(eServiceReferenceDVB &ref, ePtr<iTsSource> &, const char *streaminfo_file, eCueSheet *sg=0, bool simulate=false, eDVBService *service = 0, serviceType type = livetv, bool descramble = true);
- 
- 	void free();
-+	void addCaHandler();
-+	void removeCaHandler();
- private:
- 	bool m_have_cached_program;
- 	program m_cached_program;
 diff --git a/lib/dvb/pmtparse.cpp b/lib/dvb/pmtparse.cpp
 index 5dff96c731..9e8293ebd4 100644
 --- a/lib/dvb/pmtparse.cpp
@@ -1489,10 +1482,10 @@ index 10b693ca05..cf69e41e1e 100644
  		return self.instance.atBegin()
  
 diff --git a/lib/python/Components/SystemInfo.py b/lib/python/Components/SystemInfo.py
-index c32d476e9f..74f84778ee 100644
+index 0d344fac39..d08591b349 100644
 --- a/lib/python/Components/SystemInfo.py
 +++ b/lib/python/Components/SystemInfo.py
-@@ -279,6 +279,7 @@ SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable ha
+@@ -295,6 +295,7 @@ SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable ha
  SystemInfo["FbcTunerPowerAlwaysOn"] = getBoxType() in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse")
  SystemInfo["HasPhysicalLoopthrough"] = ["Vuplus DVB-S NIM(AVL2108)", "GIGA DVB-S2 NIM (Internal)"]
  SystemInfo["HasFBCtuner"] = ["Vuplus DVB-C NIM(BCM3158)", "Vuplus DVB-C NIM(BCM3148)", "Vuplus DVB-S NIM(7376 FBC)", "Vuplus DVB-S NIM(45308X FBC)", "Vuplus DVB-S NIM(45208 FBC)", "DVB-S2 NIM(45208 FBC)", "DVB-S2X NIM(45308X FBC)", "DVB-S2 NIM(45308 FBC)", "DVB-C NIM(3128 FBC)","BCM45208", "BCM45308X", "BCM3158"]
