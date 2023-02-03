@@ -122,7 +122,7 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 
 class tmp:
 	dir = None
-	
+
 class VIXImageManager(Screen):
 	skin = ["""<screen name="VIXImageManager" position="center,center" size="%d,%d">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
@@ -156,8 +156,6 @@ class VIXImageManager(Screen):
 		10, 370, 400, 30, 20, # backupstatus
 		26,
 	]
-		
-		
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -179,13 +177,13 @@ class VIXImageManager(Screen):
 		self.onChangedEntry = []
 		if getMountChoices():
 			self["list"] = MenuList(list=[((_("No images found on the selected download server...if password check validity")), "Waiter")])		
-				
+
 		else:
 			self["list"] = MenuList(list=[((_(" Press 'Menu' to select a storage device - none available")), "Waiter")])
 			self["key_red"].hide()
 			self["key_green"].hide()
 			self["key_yellow"].hide()
-			self["key_blue"].hide()			
+			self["key_blue"].hide()
 		self.populate_List()
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.backupRunning)
@@ -227,27 +225,26 @@ class VIXImageManager(Screen):
 
 	def refreshUp(self):
 		self["list"].instance.moveSelection(self["list"].instance.moveUp)
-		
+
 
 	def refreshDown(self):
 		self["list"].instance.moveSelection(self["list"].instance.moveDown)
-		
+
 	def keyLeft(self):
 		self["list"].instance.moveSelection(self["list"].instance.pageUp)
 		self.selectionChanged()
 
 	def keyRight(self):
 		self["list"].instance.moveSelection(self["list"].instance.pageDown)
-		self.selectionChanged()		
-		
-		
+		self.selectionChanged()
+
 	def refreshList(self):
 		if self.BackupDirectory == " ":
 			return
-		imglist = [] 
+		imglist = []
 		imagesDownloadedList = self.getImagesDownloaded()
 		for image in imagesDownloadedList:
-			imglist.append((image["name"], image["link"]))				
+			imglist.append((image["name"], image["link"]))
 		if imglist:
 			self["key_red"].show()
 			self["key_blue"].show()
@@ -399,7 +396,7 @@ class VIXImageManager(Screen):
 					break
 			self.showJobView(job)
 
-			
+
 	def getImagesDownloaded(self):
 		def getImages(files):
 			for file in [x for x in files if path.splitext(x)[1] == ".zip" and model in x]:
@@ -474,7 +471,7 @@ class VIXImageManager(Screen):
 				print("ImageManager", retval)
 				self.MTDKERNEL = SystemInfo["canMultiBoot"][self.multibootslot]["kernel"].split("/")[2]
 				if SystemInfo["HasMultibootMTD"]:
-					self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"]				
+					self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"]
 				else:
 					self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"].split("/")[2]
 			if self.sel:
@@ -491,9 +488,9 @@ class VIXImageManager(Screen):
 		self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares."), MessageBox.TYPE_INFO, timeout=240, enable_input=False)
 		if "/media/autofs" in config.imagemanager.backuplocation.value or "/media/net" in config.imagemanager.backuplocation.value:
 			self.TEMPDESTROOT = tempfile.mkdtemp(prefix="imageRestore")
-		else:	
+		else:
 			self.TEMPDESTROOT = self.BackupDirectory + "imagerestore"
-		
+
 		if self.sel[1].endswith(".zip"):
 			if not path.exists(self.TEMPDESTROOT):
 				mkdir(self.TEMPDESTROOT, 0o755)
@@ -530,10 +527,9 @@ class VIXImageManager(Screen):
 
 	def keyRestore6(self, ret):
 		MAINDEST = "%s/%s" % (self.TEMPDESTROOT, getImageFolder())
-		print("[ImageManager] MAINDEST=%s" % MAINDEST)		
+		print("[ImageManager] MAINDEST=%s" % MAINDEST)
 		if ret == 0:
-			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST
-			# normal non multiboot receiver
+			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST			# normal non multiboot receiver
 			if SystemInfo["canMultiBoot"]:
 				if SystemInfo["HasHiSi"] and SystemInfo["HasRootSubdir"] is False:  # SF8008 type receiver with single eMMC & SD card multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
@@ -754,7 +750,7 @@ class ImageBackup(Screen):
 	def __init__(self, session, updatebackup=False):
 		Screen.__init__(self, session)
 		self.Console = Console()
-		self.ConsoleB = Console(binary=True)		
+		self.ConsoleB = Console(binary=True)
 		self.BackupDevice = config.imagemanager.backuplocation.value
 		print("[ImageManager] Device: " + self.BackupDevice)
 		self.BackupDirectory = config.imagemanager.backuplocation.value + "imagebackups/"
@@ -798,7 +794,7 @@ class ImageBackup(Screen):
 				self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
 			if SystemInfo["HasMultibootMTD"]:
 				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"]	# sfx60xx ubi0:ubifs not mtd=
-			else:					
+			else:
 				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
 			if SystemInfo["HasRootSubdir"]:
 				self.ROOTFSSUBDIR = SystemInfo["canMultiBoot"][slot]["rootsubdir"]
@@ -1070,8 +1066,8 @@ class ImageBackup(Screen):
 			self.ROOTFSTYPE = "tar.bz2"
 			if SystemInfo["canMultiBoot"]:
 				if SystemInfo["HasMultibootMTD"]:
-					self.commands.append("mount -t ubifs %s %s/root" % (self.MTDROOTFS, self.TMPDIR))	
-				else:		
+					self.commands.append("mount -t ubifs %s %s/root" % (self.MTDROOTFS, self.TMPDIR))
+				else:
 					self.commands.append("mount /dev/%s %s/root" % (self.MTDROOTFS, self.TMPDIR))
 			else:
 				self.commands.append("mount --bind / %s/root" % self.TMPDIR)
@@ -1289,10 +1285,10 @@ class ImageBackup(Screen):
 			system("cp -f /usr/share/bootargs.bin %s/bootargs.bin" % self.MAINDEST2)
 			with open("/proc/cmdline", "r") as z:
 				if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z.read():
-					self.h9root = True				
+					self.h9root = True
 					move("%s/rootfs.tar.bz2" % self.WORKDIR, "%s/rootfs.tar.bz2" % self.MAINDEST)
 				else:
-					self.h9root = False				
+					self.h9root = False
 					move("%s/rootfs.%s" % (self.WORKDIR, self.ROOTFSTYPE), "%s/%s" % (self.MAINDEST, self.ROOTFSFILE))
 		else:
 			move("%s/rootfs.%s" % (self.WORKDIR, self.ROOTFSTYPE), "%s/%s" % (self.MAINDEST, self.ROOTFSFILE))
