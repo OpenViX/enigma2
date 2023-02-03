@@ -23,7 +23,7 @@ class VuplusKexec(Screen):
 		<widget source="Title" render="Label" position="60,10" foregroundColor="#00ffffff" size="480,50" halign="left" font="Regular; 28" backgroundColor="#00000000" />
 		<eLabel name="line" position="1,60" size="748,1" backgroundColor="#00ffffff" zPosition="1" />
 		<eLabel name="line2" position="1,250" size="748,4" backgroundColor="#00ffffff" zPosition="1" />
-		<widget source="labe14" render="Label" position="2,80" size="730,30" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00ffffff" />
+		<widget source="description" render="Label" position="2,80" size="730,30" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00ffffff" />
 		<widget source="key_red" render="Label" position="30,200" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
 		<widget source="key_green" render="Label" position="200,200" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
 		<widget source="key_yellow" render="Label" position="370,200" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
@@ -35,7 +35,7 @@ class VuplusKexec(Screen):
 		Screen.__init__(self, session)
 		self.skinName = "VuplusKexec"
 		self.setTitle(_("Vu+ MultiBoot Manager"))
-		self["labe14"] = StaticText(_("Press Green key to enable MultiBoot."))
+		self["description"] = StaticText(_("Press Green key to enable MultiBoot."))
 		self["key_red"] = StaticText(_(" "))
 		self["key_green"] = StaticText(_("Init Vu+ MultiBoot"))
 		self["key_yellow"] = StaticText(" ")
