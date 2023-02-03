@@ -755,6 +755,7 @@ class HarddiskManager:
 						partitions = [] if len(partitions) > 6 else partitions[4:]
 					print("[Harddisk] len partitions = %s, device = %s" % (len(partitions), device))
 					if len(partitions) != 0:
+						SystemInfo["HasUsbhdd"]["%s" % device] = len(partitions)
 						print("[Harddisk] Found storage device '%s' (Removable=%s) NoPartitions = %s." % (device, removable, len(partitions)))
 						self.hdd.append(Harddisk(device, removable))
 						SystemInfo["Harddisk"] = True
@@ -875,6 +876,7 @@ class HarddiskManager:
 				if SystemInfo["HasHiSi"] and devMajor == 8 and len(partitions) >= 4:
 					partitions = partitions[4:]
 				if HDDin is False and len(partitions) != 0:
+					SystemInfo["HasUsbhdd"]["%s" % device] = len(partitions)
 					print("[Harddisk] Found storage device '%s' (Removable = %s)." % (device, removable))
 					self.hdd.append(Harddisk(hddDev, removable))
 					# print("[Harddisk] DEBUG: Add hotplug HDD device in hddlist. (device = '%s', hdd.device = '%s', hddDev = '%s')" % (device, hdd.device, hddDev))
