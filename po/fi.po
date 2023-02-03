@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-01-13 16:37+0200\n"
+"PO-Revision-Date: 2023-02-03 18:31+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -4138,6 +4138,9 @@ msgstr "Kroatia"
 
 msgid "Cron Manager"
 msgstr "Cron-manageri"
+
+msgid "Cron Manager Setup"
+msgstr "Cron-managerin asetukset"
 
 msgid "Cron Timers"
 msgstr "Cron-ajastukset"
@@ -9877,7 +9880,7 @@ msgid "Plugin manager activity information"
 msgstr "Lisäosien hallinnan asennustiedot"
 
 msgid "Plugin manager help"
-msgstr "Lisäosien hallinan ohje"
+msgstr "Lisäosien hallinnan ohje"
 
 msgid "Plugins"
 msgstr "Plugin-lisäosat"
@@ -13518,7 +13521,7 @@ msgid "T2MI RAW Mode"
 msgstr "T2MI RAW-tila"
 
 msgid "TB"
-msgstr "Tt"
+msgstr "TB"
 
 msgid "TEXT"
 msgstr "TEKSTI"
@@ -13529,7 +13532,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"13.01.2022\n"
+"03.02.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -17561,111 +17564,35 @@ msgstr "MAC-liitäntää ei löydy"
 msgid "NetworkInadynSetup"
 msgstr "Inadyn-verkon asetukset"
 
-#~ msgid "10 MB/s"
-#~ msgstr "10 Mt/s"
+msgid "Vu Kexec add USB"
+msgstr "Vu Kexec lisää USB"
 
-#~ msgid "100 MB/s"
-#~ msgstr "100 Mt/s"
+msgid "Initialise a Kexec usb EXT4 slot"
+msgstr "Alusta Kexec USB EXT4 -paikka"
 
-#~ msgid "20 MB/s"
-#~ msgstr "20 Mt/s"
+msgid "[MultiBootSelector][Kexec USB add slot] - No EXT4 USB attached."
+msgstr "[Multiboot valitsin][Kexec USB lisää paikka] - EXT4 USB ei yhdistetty."
 
-#~ msgid "50 MB/s"
-#~ msgstr "50 Mt/s"
+msgid "Size: "
+msgstr "Koko: "
 
-#~ msgid "Background delete option"
-#~ msgstr "Taustalla poistaminen"
+msgid "[MultiBootSelector][Kexec USB add slot] - The USB (%s) must be at least 10MB."
+msgstr "[Multiboot valitsin][Kexec USB lisää paikka] - USB:n (%s) pitää olla vähintään 10MB."
 
-#~ msgid "Background delete speed"
-#~ msgstr "Taustalla poistamisen nopeus"
+msgid "[MultiBootSelector][Kexec USB STARTUP] - created Vu+ Kexec STARTUP slots for %s."
+msgstr "[Multiboot valitsin][Kexec USB käynnistys] - luotu Vu+ Kexec käynnistyspaikat %s:lle."
 
-#~ msgid "Clear HDMI-CEC fixed address"
-#~ msgstr "Tyhjennä HDMI-CEC kiinteä osoite"
+msgid "Vu+ MultiBoot Manager"
+msgstr "Vu+ Multiboot hallinta"
 
-#~ msgid "Clear fixed"
-#~ msgstr "Tyhjennä kiinteä"
+msgid "Press Green key to enable MultiBoot."
+msgstr "Paina Vihreää näppäintä ottaaksesi MultiBoot:n käyttöön."
 
-#~ msgid "Configure on which devices the background delete option should be used."
-#~ msgstr "Määritä millä laitteilla tallenteiden taustalla poistoa käytetään."
+msgid "Init Vu+ MultiBoot"
+msgstr "Alusta Vu+ Multiboot"
 
-#~ msgid "Configure the speed of the background deletion process. Lower speed will consume less hard disk drive performance."
-#~ msgstr "Määrittää taustallatuhoamis-prosessin nopeuden. Matalampi nopeus kuormittaa vähemmän kovalevyä."
+msgid "Vu+ MultiBoot Inititialisation - will reboot after 10 seconds."
+msgstr "Vu+ Multiboot alustus - käynnistyy uudelleen 10 sekunnin kuluttua."
 
-#~ msgid "Current CEC address"
-#~ msgstr "Käytettävä CEC-osoite"
-
-#, python-format
-#~ msgid "Directory '%s' not valid. Partition not a supported file system."
-#~ msgstr "Hakemisto '%s' ei ole käypä. Partitio ei ole tuettu tiedostomuoto."
-
-#~ msgid "Everywhere"
-#~ msgstr "Kaikkialla"
-
-#~ msgid "HDMI-CEC address editing actions"
-#~ msgstr "HDMI-CEC -osoitteen asetukset"
-
-#~ msgid "Internal hdd only"
-#~ msgstr "Vain sisäinen kiintolevy"
-
-#~ msgid "No data received yet"
-#~ msgstr "Dataa ei ole vielä vastaanotettu"
-
-#~ msgid "Select between entering an IP address or a domain."
-#~ msgstr "Valitse syöttämällä IP-osoite tai toimialue."
-
-#~ msgid "Select directory for logfile"
-#~ msgstr "Valitse lokitiedoston hakemisto"
-
-#~ msgid "Service type 4097 incorrect for PiP!"
-#~ msgstr "Palvelun tyyppi 4097 virheellinen PiP:lle!"
-
-#~ msgid "Set HDMI-CEC fixed address"
-#~ msgstr "Aseta HDMI-CEC:lle kiinteä osoite"
-
-#~ msgid "Set fixed"
-#~ msgstr "Aseta kiinteäksi"
-
-#~ msgid "Set pin code persistent"
-#~ msgstr "Aseta PIN-koodi katselulle"
-
-#~ msgid "Skin Setup"
-#~ msgstr "Teeman valinta"
-
-#~ msgid "There are no items currently available for this screen."
-#~ msgstr "Tälle näytölle ei ole kohteita."
-
-#~ msgid "Using fixed address"
-#~ msgstr "Käytössä kiinteä osoite"
-
-#~ msgid "alpha then oldest"
-#~ msgstr "aakkosjärjestys, vanhin ensin"
-
-#~ msgid "alphabetic"
-#~ msgstr "aakkosjärjestys"
-
-#~ msgid "alphabetic reverse"
-#~ msgstr "käänteinen aakkosjärjestys"
-
-#~ msgid "alpharev then newest"
-#~ msgstr "käänteinen aakkosjärjestys, uusin ensin"
-
-#~ msgid "by date"
-#~ msgstr "Aikajärjestys"
-
-#~ msgid "flat alphabetic reverse"
-#~ msgstr "Käänteinen aakkosjärjestys, kansionäkymä"
-
-#~ msgid "longest"
-#~ msgstr "pisin"
-
-#~ msgid "movie/drama (general)"
-#~ msgstr "elokuva/draama (yleinen)"
-
-#~ msgid "recordings by date then other media by name"
-#~ msgstr "Tallennukset päiväyksen mukaan, muu media nimen mukaan"
-
-#~ msgid "reverse by date"
-#~ msgstr "Käänteinen aikajärjestys"
-
-#~ msgid "shortest"
-#~ msgstr "lyhyin"
+msgid "Enable Vu+ Kexec MultiBoot"
+msgstr "Otai Vu+ Kexec Multiboot käyttöön"
