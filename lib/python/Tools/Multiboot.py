@@ -51,6 +51,8 @@ def getMultibootslots():
 					slotname = ""	# nullify for current moment
 #					print("[multiboot] [getMultibootslots3] slot = %s file = %s" % (slotnumber, slotname))
 					if slotnumber.isdigit() and slotnumber not in bootslots:
+						if fileHas("/proc/cmdline", "kexec=1") and int(slotnumber) > 3:
+							SystemInfo["HasKexecUSB"] = True					
 						line = open(file).read().replace("'", "").replace('"', "").replace("\n", " ").replace("ubi.mtd", "mtd").replace("bootargs=", "")						
 #						print("[Multiboot][getMultibootslots]6 readlines = %s " % line)
 						slot = dict([(x.split("=", 1)[0].strip(), x.split("=", 1)[1].strip()) for x in line.strip().split(" ") if "=" in x])
@@ -58,7 +60,6 @@ def getMultibootslots():
 						if 	"UUID=" in slot["root"]:
 							slotx = getUUIDtoSD(slot["root"])
 							print("[Multiboot][getMultibootslots]6a slotx slot['root']", slotx, slot["root"])							
-							SystemInfo["HasKexecUSB"] = True
 							if slotx is not None:
 								slot["root"] = slotx
 							slot["kernel"] = "/linuxrootfs%s/zImage" %slotnumber												
@@ -98,7 +99,7 @@ def getMultibootslots():
 			for slot in bootslots.keys():
 				if bootslots[slot]["root"] == root:
 					SystemInfo["MultiBootSlot"] = slot		
-		print("[Multiboot][MultiBootSlot] found:", SystemInfo["MultiBootSlot"]) 		
+					print("[Multiboot][MultiBootSlot]2 current slot used:", SystemInfo["MultiBootSlot"]) 		
 	return bootslots
 
 def getUUIDtoSD(UUID): # returns None on failure
@@ -131,7 +132,7 @@ def GetImagelist():
 		BuildType = " "  # release etc
 		Imagelist[slot] = {"imagename": _("Empty slot")}
 		imagedir = "/"
-		if SystemInfo["MultiBootSlot"] != slot or SystemInfo["HasHiSi"]:
+		if SystemInfo["MultiBootSlot"] != slot or SystemInfo["HasHiSi"] or fileHas("/proc/cmdline", "kexec=1"):
 			if SystemInfo["HasMultibootMTD"]:
 				Console(binary=True).ePopen("mount -t ubifs %s %s" % (SystemInfo["canMultiBoot"][slot]["root"], tmpname))
 			else:
