@@ -202,6 +202,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 					print("[MultiBootSelector][Kexec USB add slot]", des, "%s" % des[6], size/1024) 
 					self.session.open(MessageBox, _("[MultiBootSelector][add USB STARTUP slots] - The USB (%s) must be at least 10MB." % usb), MessageBox.TYPE_INFO, timeout=10)
 					self.cancel()
+					return
 			Console().ePopen("/sbin/blkid | grep " + "/dev/" + hdd[0], self.KexecMountRet)			
 	
 
