@@ -43,43 +43,26 @@ class MultiBootSelector(Screen, HelpableScreen):
 		Screen.setTitle(self, _("MultiBoot Image Selector"))
 		self.skinName = ["MultiBootSelector", "Setup"]
 		self.tmp_dir = None
+		canAddUsbMultiboot = SystemInfo["HasKexecMultiboot"] and not SystemInfo["HasKexecUSB"]
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("Retrieving image slots - Please wait...")), "Queued"))])
 		self["description"] = StaticText(_("Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."))
-		if SystemInfo["HasKexecMultiboot"] and not SystemInfo["HasKexecUSB"]:
-			self["key_red"] = StaticText(_("add Multiboot USB")) 
-		else:		
-			self["key_red"] = StaticText(_("Cancel"))  
+		self["key_red"] = StaticText(_("Add Multiboot USB") if canAddUsbMultiboot else _("Cancel"))  
 		self["key_green"] = StaticText(_("Reboot"))
 		self["key_yellow"] = StaticText(_("Delete"))
 		self["key_blue"] = StaticText(_("Restore"))
-		if SystemInfo["HasKexecMultiboot"] and not SystemInfo["HasKexecUSB"]:		
-			self["actions"] = HelpableActionMap(self, ["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"], {
-				"red": (boundFunction(self.KexecMount), _("Create USB Multiboot")),
-				"green": (self.reboot, _("Select the highlighted image and reboot")),
-				"yellow": (self.deleteImage, _("Select the highlighted image and delete")),
-				"blue": (self.restoreImages, _("Select to restore all deleted images")),
-				"ok": (self.reboot, _("Select the highlighted image and reboot")),
-				"cancel": (boundFunction(self.cancel, None), _("Cancel the image selection and exit")),
-				"up": (self.keyUp, _("Move up a line")),
-				"down": (self.keyDown, _("Move down a line")),
-				"left": (self.keyUp, _("Move up a line")),
-				"right": (self.keyDown, _("Move down a line")),
-				"menu": (boundFunction(self.cancel, True), _("Cancel the image selection and exit all menus"))
-			}, -1, description=_("MultiBootSelector Actions"))		
-		else:
-			self["actions"] = HelpableActionMap(self, ["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"], {
-				"red": (boundFunction(self.cancel, None), _("Cancel the image selection and exit")),
-				"green": (self.reboot, _("Select the highlighted image and reboot")),
-				"yellow": (self.deleteImage, _("Select the highlighted image and delete")),
-				"blue": (self.restoreImages, _("Select to restore all deleted images")),
-				"ok": (self.reboot, _("Select the highlighted image and reboot")),
-				"cancel": (boundFunction(self.cancel, None), _("Cancel the image selection and exit")),
-				"up": (self.keyUp, _("Move up a line")),
-				"down": (self.keyDown, _("Move down a line")),
-				"left": (self.keyUp, _("Move up a line")),
-				"right": (self.keyDown, _("Move down a line")),
-				"menu": (boundFunction(self.cancel, True), _("Cancel the image selection and exit all menus"))
-			}, -1, description=_("MultiBootSelector Actions"))
+		self["actions"] = HelpableActionMap(self, ["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"], {
+			"red": (self.KexecMount if canAddUsbMultiboot else self.cancel, _("Create USB Multiboot") if canAddUsbMultiboot else _("Cancel the image selection and exit")),
+			"green": (self.reboot, _("Select the highlighted image and reboot")),
+			"yellow": (self.deleteImage, _("Select the highlighted image and delete")),
+			"blue": (self.restoreImages, _("Select to restore all deleted images")),
+			"ok": (self.reboot, _("Select the highlighted image and reboot")),
+			"cancel": (self.cancel, _("Cancel the image selection and exit")),
+			"up": (self.keyUp, _("Move up a line")),
+			"down": (self.keyDown, _("Move down a line")),
+			"left": (self.keyUp, _("Move up a line")),
+			"right": (self.keyDown, _("Move down a line")),
+			"menu": (boundFunction(self.cancel, True), _("Cancel the image selection and exit all menus"))
+		}, -1, description=_("MultiBootSelector Actions"))
 		self.imagedict = []
 		self.tmp_dir = tempfile.mkdtemp(prefix="MultibootSelector")
 		Console().ePopen("mount %s %s" % (SystemInfo["MBbootdevice"], self.tmp_dir))
