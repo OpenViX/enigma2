@@ -186,7 +186,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 	def KexecMountRet(self, result=None, retval=None, extra_args=None):
 		self.device_uuid = "UUID=" + result.split("UUID=")[1].split(" ")[0].replace('"', '')
-		usb =result.split(":")[0]
+		usb = result.split(":")[0]
 		print("[MultiBootSelector] RESULT, retval", result, "   ", retval)	
 		print("[MultiBootSelector] uuidPath ", self.device_uuid)
 # 			using UUID	 kernel=/linuxrootfs1/boot/STARTUP_1.kernel root=UUID="12c2025e-2969-4bd1-9e0c-da08b97d40ce" rootsubdir=linuxrootfs1
