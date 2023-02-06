@@ -190,19 +190,14 @@ class MultiBootSelector(Screen, HelpableScreen):
 				self.cancel()
 		else:
 			usb = hdd[0][0:3]
-			size = Harddisk(usb).diskSize()
-
-			if ((float(size) / 1024) / 1024) >= 1:
-				des = _("Size: ") + str(round(((float(size) / 1024) / 1024), 2)) + _("TB")
-			elif (size / 1024) >= 1:
-				des = _("Size: ") + str(round((float(size) / 1024), 2)) + _("GB")
-			if "GB" in des:
-				print("[MultiBootSelector][Kexec USB add slot]", des, "%s" %des[6], size)
-				if size/1024 < 10:
-					print("[MultiBootSelector][Kexec USB add slot]", des, "%s" % des[6], size/1024) 
-					self.session.open(MessageBox, _("[MultiBootSelector][add USB STARTUP slots] - The USB (%s) must be at least 10MB." % usb), MessageBox.TYPE_INFO, timeout=10)
-					self.cancel()
-					return
+			free = Harddisk(usb).Totalfree()
+			print("[MultiBootSelector] USB free space", free)
+			if free < 256:
+				des = str(round((float(free)), 2)) + _("MB")
+				print("[MultiBootSelector][add USB STARTUP slot] limited free space", des) 
+				self.session.open(MessageBox, _("[MultiBootSelector][add USB STARTUP slots] - The USB (%s) only has %s free. At least 256MB is required.") % (usb, des[6:]), MessageBox.TYPE_INFO, timeout=30)
+				self.cancel()
+				return
 			Console().ePopen("/sbin/blkid | grep " + "/dev/" + hdd[0], self.KexecMountRet)			
 	
 
