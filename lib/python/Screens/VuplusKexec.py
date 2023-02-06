@@ -70,4 +70,5 @@ class VuplusKexec(Screen):
 			self.close()
 
 	def RootInitEnd(self, *args, **kwargs):
+		print("[VuplusKexec][RootInitEnd] rebooting")
 		self.session.open(TryQuitMainloop, QUIT_REBOOT)
