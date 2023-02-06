@@ -175,10 +175,10 @@ class MultiBootSelector(Screen, HelpableScreen):
 			usb = hdd[0][0:3]
 			free = Harddisk(usb).Totalfree()
 			print("[MultiBootSelector] USB free space", free)
-			if free < 256:
+			if free < 1024:
 				des = str(round((float(free)), 2)) + _("MB")
 				print("[MultiBootSelector][add USB STARTUP slot] limited free space", des) 
-				self.session.open(MessageBox, _("[MultiBootSelector][add USB STARTUP slots] - The USB (%s) only has %s free. At least 256MB is required.") % (usb, des[6:]), MessageBox.TYPE_INFO, timeout=30)
+				self.session.open(MessageBox, _("[MultiBootSelector][add USB STARTUP slots] - The USB (%s) only has %s free. At least 1024MB is required.") % (usb, des), MessageBox.TYPE_INFO, timeout=30)
 				self.cancel()
 				return
 			Console().ePopen("/sbin/blkid | grep " + "/dev/" + hdd[0], self.KexecMountRet)			
