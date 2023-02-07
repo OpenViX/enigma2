@@ -189,15 +189,15 @@ class MultiBootSelector(Screen, HelpableScreen):
 		usb = result.split(":")[0]
 		print("[MultiBootSelector] RESULT, retval", result, "   ", retval)	
 		print("[MultiBootSelector] uuidPath ", self.device_uuid)
-# 			using UUID	 kernel=/linuxrootfs1/boot/STARTUP_1.kernel root=UUID="12c2025e-2969-4bd1-9e0c-da08b97d40ce" rootsubdir=linuxrootfs1
+# 			using UUID	 kernel=/linuxrootfs1/boot/zImage root=UUID="12c2025e-2969-4bd1-9e0c-da08b97d40ce" rootsubdir=linuxrootfs1
 #			STARTUP_4 = "kernel=/linuxrootfs4/zImage root=/dev/%s rootsubdir=linuxrootfs4" % hdd[0] 	# /STARTUP_4
 #			STARTUP_5 = "kernel=/linuxrootfs5/zImage root=/dev/%s rootsubdir=linuxrootfs5" % hdd[0] 	# /STARTUP_5
 #			STARTUP_6 = "kernel=/linuxrootfs6/zImage root=/dev/%s rootsubdir=linuxrootfs6" % hdd[0] 	# /STARTUP_6
 #			STARTUP_7 = "kernel=/linuxrootfs7/zImage root=/dev/%s rootsubdir=linuxrootfs7" % hdd[0] 	# /STARTUP_7
-		STARTUP_4 = "kernel=/linuxrootfs4/boot/STARTUP_4.kernel root=%s rootsubdir=linuxrootfs4" % self.device_uuid 	# /STARTUP_4
-		STARTUP_5 = "kernel=/linuxrootfs5/boot/STARTUP_5.kernel root=%s rootsubdir=linuxrootfs5" % self.device_uuid 	# /STARTUP_5
-		STARTUP_6 = "kernel=/linuxrootfs6/boot/STARTUP_6.kernel root=%s rootsubdir=linuxrootfs6" % self.device_uuid 	# /STARTUP_6
-		STARTUP_7 = "kernel=/linuxrootfs7/boot/STARTUP_7.kernel root=%s rootsubdir=linuxrootfs7" % self.device_uuid 	# /STARTUP_7
+		STARTUP_4 = "kernel=/linuxrootfs4/zImage root=%s rootsubdir=linuxrootfs4" % self.device_uuid 	# /STARTUP_4
+		STARTUP_5 = "kernel=/linuxrootfs5/zImage root=%s rootsubdir=linuxrootfs5" % self.device_uuid 	# /STARTUP_5
+		STARTUP_6 = "kernel=/linuxrootfs6/zImage root=%s rootsubdir=linuxrootfs6" % self.device_uuid 	# /STARTUP_6
+		STARTUP_7 = "kernel=/linuxrootfs7/zImage root=%s rootsubdir=linuxrootfs7" % self.device_uuid 	# /STARTUP_7
 		print("[MultiBootSelector] STARTUP_4 , self.tmp_dir ", STARTUP_4, "    ", self.tmp_dir)											
 		with open("/%s/STARTUP_4" % self.tmp_dir, 'w') as f:
 			f.write(STARTUP_4)
