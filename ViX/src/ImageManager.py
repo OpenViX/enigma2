@@ -788,15 +788,17 @@ class ImageBackup(Screen):
 		self.rootdir = 0
 		if SystemInfo["canMultiBoot"]:
 			slot = SystemInfo["MultiBootSlot"]
+			print("[ImageManager] slot: ", slot)
 			if SystemInfo["HasKexecMultiboot"]:
-				self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"]
+				self.MTDKERNEL = getMachineMtdKernel() if slot == 0 else SystemInfo["canMultiBoot"][slot]["kernel"]
+				self.MTDROOTFS = getMachineMtdRoot() if slot == 0 else SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
 			else:
 				self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
 			if SystemInfo["HasMultibootMTD"]:
 				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"]	# sfx60xx ubi0:ubifs not mtd=
-			else:
+			elif not SystemInfo["HasKexecMultiboot"]:
 				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
-			if SystemInfo["HasRootSubdir"]:
+			if SystemInfo["HasRootSubdir"] and slot != 0:
 				self.ROOTFSSUBDIR = SystemInfo["canMultiBoot"][slot]["rootsubdir"]
 		else:
 			self.MTDKERNEL = getMachineMtdKernel()
@@ -995,15 +997,21 @@ class ImageBackup(Screen):
 		makedirs(self.MAINDESTROOT, 0o644)
 		self.commands = []
 		makedirs(self.MAINDEST, 0o644)
+		if SystemInfo["canMultiBoot"]:
+			slot = SystemInfo["MultiBootSlot"]
 		print("[ImageManager] Stage1: Making Kernel Image.")
 		if "bin" or "uImage" in self.KERNELFILE:
-			self.command = "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.WORKDIR)
+			if SystemInfo["HasKexecMultiboot"]:
+				boot = SystemInfo["canMultiBoot"][slot]["kernel"] if slot > 3 else "boot"
+				self.command = "dd if=/%s%s of=%s/vmlinux.bin" % (boot, SystemInfo["canMultiBoot"][slot]["kernel"], self.WORKDIR) if slot != 0 else "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.WORKDIR)
+			else:				
+				self.command = "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.WORKDIR)
 		else:
 			self.command = "nanddump /dev/%s -f %s/vmlinux.gz" % (self.MTDKERNEL, self.WORKDIR)
 		self.ConsoleB.ePopen(self.command, self.Stage1Complete)
 
 	def Stage1Complete(self, result, retval, extra_args=None):
-#		print("[ImageManager][Stage1Complete]: result, retval", result, retval)
+		print("[ImageManager][Stage1Complete]: result, retval", result, retval)
 		if retval == 0:
 			self.Stage1Completed = True
 			print("[ImageManager] Stage1: Complete.")
@@ -1071,7 +1079,9 @@ class ImageBackup(Screen):
 					self.commands.append("mount /dev/%s %s/root" % (self.MTDROOTFS, self.TMPDIR))
 			else:
 				self.commands.append("mount --bind / %s/root" % self.TMPDIR)
-			if SystemInfo["HasRootSubdir"]:
+			if  SystemInfo["canMultiBoot"] and SystemInfo["MultiBootSlot"] == 0:
+				self.commands.append("/bin/tar -jcf %s/rootfs.tar.bz2 -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))				
+			elif SystemInfo["HasRootSubdir"]:
 				self.commands.append("/bin/tar -jcf %s/rootfs.tar.bz2 -C %s/root/%s --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR, self.ROOTFSSUBDIR))
 			else:
 				self.commands.append("/bin/tar -jcf %s/rootfs.tar.bz2 -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))
