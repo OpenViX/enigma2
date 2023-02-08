@@ -49,65 +49,55 @@
     sudo sysctl -n -w fs.inotify.max_user_watches=524288
 
 ----------
-5 - Add user openvixbuilder
-
-    sudo adduser openvixbuilder
-
-----------
-6 - Switch to user openvixbuilder
-
-    su openvixbuilder
-
-----------
-7 - Switch to home of openvixbuilder
+5 - Switch to the home of the active user account
 
     cd ~
 
 ----------
-8 - Create folder openvix
+6 - Create folder openvix
 
     mkdir -p ~/openvix
 
 ----------
-9 - Switch to folder openvix
+7 - Switch to folder openvix
 
     cd openvix
 
 ----------
-10 - Clone oe-alliance git
+8 - Clone oe-alliance git
 
     git clone https://github.com/oe-alliance/build-enviroment.git -b 5.1
 
 ----------
-11 - Switch to folder build-enviroment
+9 - Switch to folder build-enviroment
 
     cd build-enviroment
 
 ----------
-12 - Update build-enviroment
+10 - Update build-enviroment
 
     make update
 
 
 ----------
-13 - Update site.conf 
+11 - Update site.conf 
 
     - BB_NUMBER_THREADS, PARALLEL_MAKE set to number of threads supported by the CPU
     - add/modify DL_DIR = " location for build sources " to point to a location where you can save derived build sources, 
     this will reduce build time in fetching these sources again.
 
 ----------
-14 - Building image with feeds  e.g.:- 
+12 - Building image with feeds  e.g.:- 
 
 	MACHINE=vuultimo4k DISTRO=openvix DISTRO_TYPE=release make image
 
 ----------
-15 - Building an image without feeds (Build time 1-2h)
+13 - Building an image without feeds (Build time 1-2h)
 
     MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make enigma2-image
 
 ----------
-16 - Building feeds only
+14 - Building feeds only
 
     MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make feeds
 
