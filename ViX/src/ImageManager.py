@@ -457,10 +457,8 @@ class VIXImageManager(Screen):
 				self.HasSDmmc = True
 		imagedict = GetImagelist()
 		choices = []
-		HIslot = len(imagedict) + 1
 		currentimageslot = SystemInfo["MultiBootSlot"]
-		print("[ImageManager][keyRestore] currentslot=%s selected image=%s" % (currentimageslot, self.sel[1]))
-		for x in range(1, HIslot):
+		for x in imagedict.keys():
 			choices.append(((_("slot%s %s - %s (current image)") if x == currentimageslot else _("slot%s %s - %s")) % (x, SystemInfo["canMultiBoot"][x]["slotname"], imagedict[x]["imagename"]), (x)))
 		self.session.openWithCallback(self.keyRestore2, MessageBox, self.message, list=choices, default=currentimageslot, simple=True)
 
