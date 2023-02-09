@@ -35,7 +35,7 @@ def getMultibootslots():
 				SystemInfo["MBbootdevice"] = device
 				device2 = device.rsplit("/", 1)[1]
 				print("[Multiboot][[getMultibootslots]1 Bootdevice found: %s" % device2)
-				BoxInfo.setItem("mtdbootfs", device2, forceOverride=True)				
+				BoxInfo.setItem("mtdbootfs", device2, forceOverride=True)
 				for file in glob.glob(path.join(tmpname, "STARTUP_*")):
 #					print("[multiboot*****] [getMultibootslots]2 tmpname = %s" % (tmpname))
 					if "STARTUP_ANDROID" in file:
@@ -52,23 +52,23 @@ def getMultibootslots():
 #					print("[multiboot] [getMultibootslots3] slot = %s file = %s" % (slotnumber, slotname))
 					if slotnumber.isdigit() and slotnumber not in bootslots:
 						if fileHas("/proc/cmdline", "kexec=1") and int(slotnumber) > 3:
-							SystemInfo["HasKexecUSB"] = True					
+							SystemInfo["HasKexecUSB"] = True
 						line = open(file).read().replace("'", "").replace('"', "").replace("\n", " ").replace("ubi.mtd", "mtd").replace("bootargs=", "")						
 #						print("[Multiboot][getMultibootslots]6 readlines = %s " % line)
 						slot = dict([(x.split("=", 1)[0].strip(), x.split("=", 1)[1].strip()) for x in line.strip().split(" ") if "=" in x])
 						print("[Multiboot][getMultibootslots]6a slot", slot)
 						if 	"UUID=" in slot["root"]:
 							slotx = getUUIDtoSD(slot["root"])
-							print("[Multiboot][getMultibootslots]6a slotx slot['root']", slotx, slot["root"])							
+							print("[Multiboot][getMultibootslots]6a slotx slot['root']", slotx, slot["root"])
 							if slotx is not None:
 								slot["root"] = slotx
-							slot["kernel"] = "/linuxrootfs%s/zImage" %slotnumber												
+							slot["kernel"] = "/linuxrootfs%s/zImage" %slotnumber
 						if path.exists(slot["root"]) or slot["root"] == "ubi0:ubifs":
 							slot["startupfile"] = path.basename(file)
 							slot["slotname"] = slotname
 							SystemInfo["HasMultibootMTD"] = slot.get("mtd")
 							if not fileHas("/proc/cmdline", "kexec=1") and "sda" in slot["root"]:		# Not Kexec Vu+ receiver -- sf8008 type receiver with sd card, reset value as SD card slot has no rootsubdir
-								slot["rootsubdir"] = None														
+								slot["rootsubdir"] = None
 							else:
 								SystemInfo["HasRootSubdir"] = slot.get("rootsubdir")
 																		 
@@ -98,17 +98,17 @@ def getMultibootslots():
 			root = dict([(x.split("=", 1)[0].strip(), x.split("=", 1)[1].strip()) for x in bootArgs.strip().split(" ") if "=" in x])["root"]	# Broadband receiver (e.g. gbue4k) or sf8008 with sd card as root/kernel pair
 			for slot in bootslots.keys():
 				if bootslots[slot]["root"] == root:
-					SystemInfo["MultiBootSlot"] = slot		
-					print("[Multiboot][MultiBootSlot]2 current slot used:", SystemInfo["MultiBootSlot"]) 		
+					SystemInfo["MultiBootSlot"] = slot
+					print("[Multiboot][MultiBootSlot]2 current slot used:", SystemInfo["MultiBootSlot"])
 	return bootslots
 
 def getUUIDtoSD(UUID): # returns None on failure
-#	print("[multiboot][getUUIDtoSD2] UUID = ", UUID)	
+#	print("[multiboot][getUUIDtoSD2] UUID = ", UUID)
 	check = "/sbin/blkid"
 	if fileExists(check):
 		lines = subprocess.check_output([check]).decode(encoding="utf8", errors="ignore").split("\n")
 		for line in lines:
-#			print("[Multiboot][getUUIDtoSD2] line", line)		
+#			print("[Multiboot][getUUIDtoSD2] line", line)
 			if UUID in line.replace('"', ''):
 				return line.split(":")[0].strip()
 	else:
