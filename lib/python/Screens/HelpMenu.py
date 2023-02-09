@@ -89,7 +89,7 @@ class HelpMenu(Screen, Rc):
 		if selection:
 			for button in selection[3]:
 				if len(button) > 1 and button[1] in ("SHIFT", "long"):
-					label = self.getRcPositions().getRcKeyLabel(button[0])
+					label = _(self.getRcPositions().getRcKeyLabel(button[0]))
 					if label is None:
 						label = "Label not defined"
 					if button[1] == "SHIFT":
