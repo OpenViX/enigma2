@@ -9,7 +9,7 @@ from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.Sources.Event import Event
 from Components.Sources.StaticText import StaticText
-from Screens.EpgSelectionBase import EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSelection, EPGServiceZap, epgActions, infoActions, okActions, recActions
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSelection, EPGServiceZap, epgActions, infoActions, okActions, recActions, channelDownActions, channelUpActions
 from Screens.EventView import EventViewSimple
 from Screens.Setup import Setup
 from Screens.UserDefinedButtons import UserDefinedButtons
@@ -18,7 +18,7 @@ from Screens.UserDefinedButtons import UserDefinedButtons
 class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSelection, EPGServiceZap, UserDefinedButtons):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=None, isInfobar=False):
 		self.epgConfig = config.epgselection.infobar if isInfobar else config.epgselection.grid
-		UserDefinedButtons.__init__(self, self.epgConfig, epgActions, infoActions, okActions, recActions)
+		UserDefinedButtons.__init__(self, self.epgConfig, epgActions, infoActions, okActions, recActions, channelDownActions, channelUpActions)
 		EPGSelectionBase.__init__(self, session, self.epgConfig, startBouquet, startRef, bouquets)
 		EPGServiceNumberSelection.__init__(self)
 		EPGServiceZap.__init__(self, zapFunc)
