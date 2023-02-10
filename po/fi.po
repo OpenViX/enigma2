@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-02-06 07:11+0200\n"
+"PO-Revision-Date: 2023-02-10 07:36+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -6653,9 +6653,6 @@ msgstr "HDR, 12bit 4:2:0/4:2:2, ei PIP"
 msgid "HDR10 Support"
 msgstr "HDR10 Tuki"
 
-msgid "HELP"
-msgstr "APUA"
-
 msgid "HH:mm"
 msgstr "HH:mm"
 
@@ -10024,7 +10021,7 @@ msgid "PowerControl FrontDisplay Standby Mode"
 msgstr "Etupaneelin virranhallinta valmiustila"
 
 msgid "PowerControl FrontDisplay Suspend Mode"
-msgstr "Etupaneelin virranhallinta jäädytydtila"
+msgstr "Etupaneelin virranhallinta jäädytystila"
 
 msgid "Powerboating"
 msgstr "Moottoriveneily"
@@ -13532,7 +13529,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"06.02.2023\n"
+"10.02.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -17608,3 +17605,213 @@ msgstr "[Multiboot valitsin][lisää USB-Käynnistyspaikkoja] - EXT4 USB ei yhdi
 
 msgid "[MultiBootSelector][add USB STARTUP slots] - The USB (%s) only has %s free. At least 1024MB is required."
 msgstr "[Multiboot valitsin][lisää USB-Käynnistyspaikkoja] - USB (%s), vapaa tila %s. Vapaata pitää olla vähintään 1024MB."
+
+msgid "ABOUT"
+msgstr "TIETOJA"
+
+msgid "ARROWLEFT"
+msgstr "VASEN NUOLI"
+
+msgid "ARROWRIGHT"
+msgstr "OIKEA NUOLI"
+
+msgid "AUDIO"
+msgstr "AUDIO"
+
+msgid "AUTOTIMER"
+msgstr "AUTOMAATTIAJASTUS"
+
+msgid "BACK"
+msgstr "TAKAISIN"
+
+msgid "BLUE"
+msgstr "SININEN"
+
+msgid "BOUQUET+"
+msgstr "CH+"
+
+msgid "BOUQUET-"
+msgstr "CH-"
+
+msgid "CONTEXT"
+msgstr "KONTEKSTI"
+
+msgid "DOWN"
+msgstr "ALAS"
+
+msgid "EJECTCD"
+msgstr "POISTA CD"
+
+msgid "END"
+msgstr "LOPPU"
+
+msgid "ENTER"
+msgstr "SYÖTÄ"
+
+msgid "EPGSETUP"
+msgstr "EPG ASETUKSET"
+
+msgid "EXIT"
+msgstr "POISTU"
+
+msgid "FASTFORWARD"
+msgstr "NOPEASTI ETEENPÄIN"
+
+msgid "FAV"
+msgstr "SUOSIKKI"
+
+msgid "FAVORITES"
+msgstr "SUOSIKIT"
+
+msgid "FORWARD"
+msgstr "ETEENKELAUS"
+
+msgid "GREEN"
+msgstr "VIHREÄ"
+
+msgid "HELP"
+msgstr "HELP"
+
+msgid "HISTORY"
+msgstr "HISTORIA"
+
+msgid "HOME"
+msgstr "KOTI"
+
+msgid "HOMEPAGE"
+msgstr "KOTISIVU"
+
+msgid "LAN"
+msgstr "LAN"
+
+msgid "LEFT"
+msgstr "VASEN"
+
+msgid "LIST"
+msgstr "LISTA"
+
+msgid "MEDIA"
+msgstr "MEDIA"
+
+msgid "MUTE"
+msgstr "VAIMENNA"
+
+msgid "NEXTSONG"
+msgstr "SEURAAVA KAPPALE"
+
+msgid "OPTION"
+msgstr "VALINTA"
+
+msgid "PAGEDOWN"
+msgstr "SIVU ALAS"
+
+msgid "PAGEUP"
+msgstr "SIVU YLÖS"
+
+msgid "PAUSE"
+msgstr "TAUKO"
+
+msgid "PLAY"
+msgstr "TOISTA"
+
+msgid "PLAYLIST"
+msgstr "SOITTOLISTA"
+
+msgid "PLAYPAUSE"
+msgstr "TOISTA/TAUKO"
+
+msgid "PLUGIN"
+msgstr "LISÄOSA"
+
+msgid "PORTAL"
+msgstr "PORTAALI"
+
+msgid "POWER"
+msgstr "VIRTA"
+
+msgid "POWER2"
+msgstr "VIRTA2"
+
+msgid "PREVIOUSSONG"
+msgstr "EDELLINEN KAPPALE"
+
+msgid "PVR"
+msgstr "PVR"
+
+msgid "RADIO"
+msgstr "RADIO"
+
+msgid "RECALL"
+msgstr "PALAUTA"
+
+msgid "RECORD"
+msgstr "TALLENNA"
+
+msgid "RED"
+msgstr "PUNAINEN"
+
+msgid "REWIND"
+msgstr "TAKAISINKELAUS"
+
+msgid "RIGHT"
+msgstr "OIKEA"
+
+msgid "SAT"
+msgstr "SAT"
+
+msgid "SCREEN"
+msgstr "NÄYTTÖ"
+
+msgid "SETUP"
+msgstr "ASETUKSET"
+
+msgid "SLEEP"
+msgstr "SAMMUTUS"
+
+msgid "SLOW"
+msgstr "HIDAS"
+
+msgid "STOP"
+msgstr "PYSÄYTÄ"
+
+msgid "SUBTITLE"
+msgstr "TEKSTITYS"
+
+msgid "SUSPEND"
+msgstr "JÄÄDYTYSTILA"
+
+msgid "TIMER"
+msgstr "AJASTIN"
+
+msgid "TIMESHIFT"
+msgstr "AJANSIIRTO"
+
+msgid "UP"
+msgstr "YLÖS"
+
+msgid "VIDEO"
+msgstr "VIDEO"
+
+msgid "VKEY"
+msgstr "VKEY"
+
+msgid "VMODE"
+msgstr "VMODE"
+
+msgid "VOL+"
+msgstr "VOL+"
+
+msgid "VOL-"
+msgstr "VOL-"
+
+msgid "WAKEUP"
+msgstr "HERÄTYS"
+
+msgid "WIZTV"
+msgstr "WIZTV"
+
+msgid "YELLOW"
+msgstr "KELTAINEN"
+
+msgid "ZOOM"
+msgstr "SUURENNA"
