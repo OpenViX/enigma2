@@ -47,8 +47,8 @@ class VuplusKexec(Screen):
 	def RootInit(self):
 		self["actions"].setEnabled(False) # This function takes time so disable the ActionMap to avoid responding to multiple button presses
 		if SystemInfo["CanKexecVu"]:
-			self.title = _("Vu+ MultiBoot Inititialisation - will reboot after 10 seconds.")
-			self["description"].text = _("Vu+ MultiBoot Inititialisation - will reboot after 10 seconds.")
+			self.title = _("Vu+ MultiBoot Initialisation - will reboot after 10 seconds.")
+			self["description"].text = _("Vu+ MultiBoot Initialisation - will reboot after 10 seconds.")
 			with open("/STARTUP", 'w') as f:
 				f.write(STARTUP)
 			with open("/STARTUP_RECOVERY", 'w') as f:
@@ -59,12 +59,12 @@ class VuplusKexec(Screen):
 				f.write(STARTUP_2)
 			with open("/STARTUP_3", 'w') as f:
 				f.write(STARTUP_3)
-			print("[VuplusKexec][RootInit] Kernel Root", getMachineMtdKernel(), "   ", getMachineMtdRoot()) 				
+			print("[VuplusKexec][RootInit] Kernel Root", getMachineMtdKernel(), "   ", getMachineMtdRoot())
 			cmdlist = []
 			cmdlist.append("dd if=/dev/%s of=/zImage" % getMachineMtdKernel())						# backup old kernel
 			cmdlist.append("dd if=/usr/bin/kernel_auto.bin of=/dev/%s" % getMachineMtdKernel())	# create new kernel
 			cmdlist.append("mv /usr/bin/STARTUP.cpio.gz /STARTUP.cpio.gz")						# copy userroot routine
-			cmdlist.append("sync; sleep 1; sync; sleep 1; sync") 			 
+			cmdlist.append("sync; sleep 1; sync; sleep 1; sync")
 			Console().eBatch(cmdlist, self.RootInitEnd, debug=True)
 		else:
 			self.close()
