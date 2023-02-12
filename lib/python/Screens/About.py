@@ -105,8 +105,9 @@ class About(AboutBase):
 			imageSubBuild = ".%s" % getImageDevBuild()
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
 
+		VuPlustxt = " - VuPlus Multiboot with Kexec" if SystemInfo["HasKexecMultiboot"] else " "
 		if BoxInfo.getItem("mtdbootfs") != "" and " " not in BoxInfo.getItem("mtdbootfs"):
-			AboutText += _("Boot Device:\t%s\n") % BoxInfo.getItem("mtdbootfs")
+			AboutText += _("Boot Device%s:\t%s\n") % (VuPlustxt, BoxInfo.getItem("mtdbootfs"))
 
 		if SystemInfo["HasH9SD"]:
 			if "rootfstype=ext4" in open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read():
@@ -117,17 +118,14 @@ class About(AboutBase):
 
 		if SystemInfo["canMultiBoot"]:
 			slot = image = SystemInfo["MultiBootSlot"]
-			part = "eMMC slot %s" % slot
-			bootmode = ""
-			if SystemInfo["canMode12"]:
-				bootmode = "bootmode = %s" % GetCurrentImageMode()
-			print("[About] HasHiSi = %s, slot = %s" % (SystemInfo["HasHiSi"], slot))
 			if SystemInfo["HasHiSi"] and "sda" in SystemInfo["canMultiBoot"][slot]["root"]:
 				if slot > 4:
 					image -= 4
 				else:
 					image -= 1
-				part = "SDcard slot %s (%s) " % (image, SystemInfo["canMultiBoot"][slot]["root"])
+			slotType = SystemInfo["canMultiBoot"][slot]["slotType"].replace(" ", "")
+			part = "slot %s (%s)" % (slot, slotType)
+			bootmode = "bootmode = %s" % GetCurrentImageMode() if SystemInfo["canMode12"] else ""
 			AboutText += _("Image Slot:\t%s") % "Startup " + str(slot) + " - " + part + " " + bootmode + "\n"
 
 		if getMachineName() in ("ET8500") and path.exists("/proc/mtd"):
