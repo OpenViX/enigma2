@@ -819,8 +819,8 @@ class Opentv_Zapper():
 			self.downloadtimer.startLongTimer(download_interval)
 			next_download = strftime("%c", localtime(int(time()) + download_interval))
 			print("[%s]download completed... Next download scheduled for %s" % (debug_name, next_download))
-		if not inStandby and config.plugins.opentvzapper.notifications.value:
-			Notifications.AddPopup(text=_("OpenTV EPG download completed.\nNext download: %s") % next_download, type=MessageBox.TYPE_INFO, timeout=5, id=debug_name)
+			if not inStandby and config.plugins.opentvzapper.notifications.value:
+				Notifications.AddPopup(text=_("OpenTV EPG download completed.\nNext download: %s") % next_download, type=MessageBox.TYPE_INFO, timeout=5, id=debug_name)
 		if callable(self.callback):
 			self.callback()
 		self.callback = None
