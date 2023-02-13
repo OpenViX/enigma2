@@ -151,12 +151,12 @@ def GetImagelist():
 			if path.isfile(path.join(imagedir, "usr/lib/enigma.info")):
 #				print("[multiboot] [BoxInfo] using BoxInfo")
 				BoxInfo = BoxInformation(root=imagedir) if SystemInfo["MultiBootSlot"] != slot else BoxInfoRunningInstance
-				Creator = BoxInfo.getItem("distro")
+				Creator = BoxInfo.getItem("distro").capitalize()
 				BuildImgVersion = BoxInfo.getItem("imgversion")
 				BuildType = BoxInfo.getItem("imagetype")[0:3]
 				BuildVer = BoxInfo.getItem("imagebuild")
 				BuildDate = str(BoxInfo.getItem("compiledate"))
-				BuildDate = datetime.strptime(BuildDate, '%Y%m%d').strftime("%Y-%m-%d")
+				BuildDate = datetime.strptime(BuildDate, '%Y%m%d').strftime("(%d-%m-%Y)")
 				BuildDev = str(BoxInfo.getItem("imagedevbuild")).zfill(3) if BuildType != "rel" else ""
 				BuildVersion = "%s %s %s %s %s %s" % (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, BuildDate)
 #				print("[multiboot] [BoxInfo]  slot=%s, Creator=%s, BuildType=%s, BuildImgVersion=%s, BuildDate=%s, BuildDev=%s" % (slot, Creator, BuildType, BuildImgVersion, BuildDate, BuildDev))
@@ -173,20 +173,19 @@ def GetImagelist():
 #					print("[multiboot] [GetImagelist]5 Slot = %s Creator = %s BuildType = %s Build = %s" % (slot, Creator, BuildType, Build))
 					Dev = BuildType != "release" and " %s" % reader.getImageDevBuild() or ""
 					date = VerDate(imagedir)
-					BuildVersion = "%s %s %s %s %s" % (Creator, BuildType[0:3], Build, Dev, date)
+					BuildVersion = "%s %s %s %s (%s)" % (Creator, BuildType[0:3], Build, Dev, date)
 				elif fileHas("/proc/cmdline", "kexec=1") and path.isfile(path.join(imagedir, "etc/vtiversion.info")):
 					Vti = open(path.join(imagedir, "etc/vtiversion.info")).read()
 #					print("[BootInfo]6 vti = ", Vti)					
 					date = VerDate(imagedir)							
 					Creator = Vti[0:3]
-					Build = Vti[-7:-1]
-					print("[BootInfo]7 len(date), date", len(date), "   ", date)					
-					BuildVersion  = "%s %s %s " % (Creator, Build, date)	
+					Build = Vti[-8:-1]
+					BuildVersion  = "%s %s (%s) " % (Creator, Build, date)	
 #					print("[BootInfo]8 BuildVersion  = ", BuildVersion )									
 				else:	
 					date = VerDate(imagedir)
 					Creator = Creator.replace("-release", " ")
-					BuildVersion = "%s %s" % (Creator, date)
+					BuildVersion = "%s (%s)" % (Creator, date)
 			Imagelist[slot] = {"imagename": "%s" % BuildVersion}
 		elif path.isfile(path.join(imagedir, "usr/bin/enigmax")):
 			Imagelist[slot] = {"imagename": _("Deleted image")}
@@ -203,7 +202,8 @@ def VerDate(imagedir):
 	try:
 		date = datetime.fromtimestamp(stat(path.join(imagedir, "var/lib/opkg/status")).st_mtime).strftime("%Y-%m-%d")
 		date = max(date, datetime.fromtimestamp(stat(path.join(imagedir, "usr/bin/enigma2")).st_mtime).strftime("%Y-%m-%d"))
-#		print("[multiboot] date = %s" % date)
+#		print("[multiboot]1 date = %s" % date)
+		date = datetime.strptime(date, '%Y-%m-%d').strftime("%d-%m-%Y")
 	except Exception:
 		date = _("Unknown")
 	return date
