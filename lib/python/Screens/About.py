@@ -17,7 +17,7 @@ from Screens.GitCommitInfo import CommitInfo
 from Screens.Screen import Screen, ScreenSummary
 from Screens.SoftwareUpdate import UpdatePlugin
 from Screens.TextBox import TextBox
-from Tools.Directories import pathExists, isPluginInstalled
+from Tools.Directories import fileExists, pathExists, isPluginInstalled
 from Tools.Multiboot import GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
 
@@ -105,9 +105,12 @@ class About(AboutBase):
 			imageSubBuild = ".%s" % getImageDevBuild()
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
 
-		VuPlustxt = " - VuPlus Multiboot with Kexec" if SystemInfo["HasKexecMultiboot"] else " "
-		if BoxInfo.getItem("mtdbootfs") != "" and " " not in BoxInfo.getItem("mtdbootfs"):
-			AboutText += _("Boot Device%s:\t%s\n") % (VuPlustxt, BoxInfo.getItem("mtdbootfs"))
+		VuPlustxt = ":\tVu+ Multiboot - " if SystemInfo["HasKexecMultiboot"] else ""
+		if fileExists("/etc/recovery"):
+			AboutText += _("Boot Device: \tRecovery Slot\n")
+		else:
+			if BoxInfo.getItem("mtdbootfs") != "" and " " not in BoxInfo.getItem("mtdbootfs"):
+				AboutText += _("Boot Device%s%s\n") % (VuPlustxt, BoxInfo.getItem("mtdbootfs"))
 
 		if SystemInfo["HasH9SD"]:
 			if "rootfstype=ext4" in open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read():
