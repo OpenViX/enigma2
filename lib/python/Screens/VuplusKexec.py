@@ -14,7 +14,6 @@ STARTUP_RECOVERY = "kernel=/zImage root=/dev/%s rootsubdir=linuxrootfs0" % getMa
 STARTUP_1 = "kernel=/linuxrootfs1/zImage root=/dev/%s rootsubdir=linuxrootfs1" % getMachineMtdRoot() 	# /STARTUP_1
 STARTUP_2 = "kernel=/linuxrootfs2/zImage root=/dev/%s rootsubdir=linuxrootfs2" % getMachineMtdRoot() 	# /STARTUP_2
 STARTUP_3 = "kernel=/linuxrootfs3/zImage root=/dev/%s rootsubdir=linuxrootfs3" % getMachineMtdRoot() 	# /STARTUP_3
-recovery = " "
 
 class VuplusKexec(Screen):
 
@@ -61,8 +60,6 @@ class VuplusKexec(Screen):
 				f.write(STARTUP_2)
 			with open("/STARTUP_3", 'w') as f:
 				f.write(STARTUP_3)
-			with open("/etc/recovery", 'w') as f:
-				f.write(recovery)
 			print("[VuplusKexec][RootInit] Kernel Root", getMachineMtdKernel(), "   ", getMachineMtdRoot())
 			cmdlist = []
 			cmdlist.append("dd if=/dev/%s of=/zImage" % getMachineMtdKernel())						# backup old kernel
