@@ -48,33 +48,30 @@ class VuplusKexec(Screen):
 
 	def RootInit(self):
 		self["actions"].setEnabled(False) # This function takes time so disable the ActionMap to avoid responding to multiple button presses
-		if SystemInfo["CanKexecVu"]:
-			if fileExists("/usr/bin/kernel_auto.bin") and fileExists("/usr/bin/STARTUP.cpio.gz"):
-				self.title = _("Vu+ MultiBoot Inititialisation - will reboot after 10 seconds.")
-				self["description"].text = _("Vu+ MultiBoot Inititialisation - will reboot after 10 seconds.")
-				with open("/STARTUP", 'w') as f:
-					f.write(STARTUP)
-				with open("/STARTUP_RECOVERY", 'w') as f:
-					f.write(STARTUP_RECOVERY)
-				with open("/STARTUP_1", 'w') as f:
-					f.write(STARTUP_1)
-				with open("/STARTUP_2", 'w') as f:
-					f.write(STARTUP_2)
-				with open("/STARTUP_3", 'w') as f:
-					f.write(STARTUP_3)
-				with open("/etc/recovery", 'w') as f:
-					f.write(recovery)
-				print("[VuplusKexec][RootInit] Kernel Root", getMachineMtdKernel(), "   ", getMachineMtdRoot())
-				cmdlist = []
-				cmdlist.append("dd if=/dev/%s of=/zImage" % getMachineMtdKernel())						# backup old kernel
-				cmdlist.append("dd if=/usr/bin/kernel_auto.bin of=/dev/%s" % getMachineMtdKernel())	# create new kernel
-				cmdlist.append("mv /usr/bin/STARTUP.cpio.gz /STARTUP.cpio.gz")						# copy userroot routine
-				cmdlist.append("sync; sleep 1; sync; sleep 1; sync")
-				Console().eBatch(cmdlist, self.RootInitEnd, debug=True)
-			else:
-				self.session.open(MessageBox, _("[VuplusKexec][create Vu Multiboot environment] - Unable to complete, Vu+ Multiboot files missing"), MessageBox.TYPE_INFO, timeout=30)
-				self.close()
+		if fileExists("/usr/bin/kernel_auto.bin") and fileExists("/usr/bin/STARTUP.cpio.gz"):
+			self.title = _("Vu+ MultiBoot Initialisation - will reboot after 10 seconds.")
+			self["description"].text = _("Vu+ MultiBoot Inititialisation - will reboot after 10 seconds.")
+			with open("/STARTUP", 'w') as f:
+				f.write(STARTUP)
+			with open("/STARTUP_RECOVERY", 'w') as f:
+				f.write(STARTUP_RECOVERY)
+			with open("/STARTUP_1", 'w') as f:
+				f.write(STARTUP_1)
+			with open("/STARTUP_2", 'w') as f:
+				f.write(STARTUP_2)
+			with open("/STARTUP_3", 'w') as f:
+				f.write(STARTUP_3)
+			with open("/etc/recovery", 'w') as f:
+				f.write(recovery)
+			print("[VuplusKexec][RootInit] Kernel Root", getMachineMtdKernel(), "   ", getMachineMtdRoot())
+			cmdlist = []
+			cmdlist.append("dd if=/dev/%s of=/zImage" % getMachineMtdKernel())						# backup old kernel
+			cmdlist.append("dd if=/usr/bin/kernel_auto.bin of=/dev/%s" % getMachineMtdKernel())	# create new kernel
+			cmdlist.append("mv /usr/bin/STARTUP.cpio.gz /STARTUP.cpio.gz")						# copy userroot routine
+			cmdlist.append("sync; sleep 1; sync; sleep 1; sync")
+			Console().eBatch(cmdlist, self.RootInitEnd, debug=True)
 		else:
+			self.session.open(MessageBox, _("[VuplusKexec][create Vu Multiboot environment] - Unable to complete, Vu+ Multiboot files missing"), MessageBox.TYPE_INFO, timeout=30)
 			self.close()
 
 	def RootInitEnd(self, *args, **kwargs):
