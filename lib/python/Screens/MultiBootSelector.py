@@ -4,6 +4,7 @@ import struct
 
 from enigma import getDesktop
 
+from boxbranding import getBoxType
 from Components.ActionMap import HelpableActionMap
 from Components.ChoiceList import ChoiceEntryComponent, ChoiceList
 from Components.Console import Console
@@ -13,7 +14,7 @@ from Components.SystemInfo import SystemInfo
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-from Screens.Standby import QUIT_REBOOT, TryQuitMainloop
+from Screens.Standby import QUIT_REBOOT, QUIT_RESTART, TryQuitMainloop
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import copyfile, fileExists, pathExists
 from Tools.Multiboot import emptySlot, GetImagelist, GetCurrentImageMode, restoreSlots
@@ -188,7 +189,8 @@ class MultiBootSelector(Screen, HelpableScreen):
 	def KexecMountRet(self, result=None, retval=None, extra_args=None):
 		self.device_uuid = "UUID=" + result.split("UUID=")[1].split(" ")[0].replace('"', '')
 		usb = result.split(":")[0]
-		print("[MultiBootSelector] RESULT, retval", result, "   ", retval)	
+		boxmodel = getBoxType()[2:]
+		print("[MultiBootSelector] RESULT, retval, boxmodel", result, "   ", retval, "   ", boxmodel)
 		print("[MultiBootSelector] uuidPath ", self.device_uuid)
 # 			using UUID	 kernel=/linuxrootfs1/boot/zImage root=UUID="12c2025e-2969-4bd1-9e0c-da08b97d40ce" rootsubdir=linuxrootfs1
 #			STARTUP_4 = "kernel=/linuxrootfs4/zImage root=/dev/%s rootsubdir=linuxrootfs4" % hdd[0] 	# /STARTUP_4
@@ -197,15 +199,17 @@ class MultiBootSelector(Screen, HelpableScreen):
 #			STARTUP_7 = "kernel=/linuxrootfs7/zImage root=/dev/%s rootsubdir=linuxrootfs7" % hdd[0] 	# /STARTUP_7
 
 		for usbslot in range(4,8):
-			STARTUP_usbslot = "kernel=/linuxrootfs%d/zImage root=%s rootsubdir=linuxrootfs%d" % (usbslot, self.device_uuid,usbslot) # /STARTUP_<n>
+			STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, self.device_uuid, boxmodel, usbslot) # /STARTUP_<n>
+			if boxmodel in ("duo4k", "duo4kse"):
+				STARTUP_usbslot += " rootwait=35"
 			print("[MultiBootSelector] STARTUP_%d --> %s, self.tmp_dir: %s" % (usbslot, STARTUP_usbslot, self.tmp_dir))
 			with open("/%s/STARTUP_%d" % (self.tmp_dir, usbslot), 'w') as f:
 				f.write(STARTUP_usbslot)
 
-		SystemInfo["HasKexecUSB"] = True							
-		self.session.open(MessageBox, _("[MultiBootSelector][Vu USB STARTUP] - created STARTUP slots for %s." % usb), MessageBox.TYPE_INFO, timeout=10)												
-		self.cancel(QUIT_REBOOT)					
-						
+		SystemInfo["HasKexecUSB"] = True
+		self.session.open(MessageBox, _("[MultiBootSelector][Vu+ USB STARTUP] - created STARTUP slots for %s." % usb), MessageBox.TYPE_INFO, timeout=10)
+		self.session.open(TryQuitMainloop, QUIT_RESTART)
+
 	def cancel(self, value=None):
 		Console().ePopen("umount %s" % self.tmp_dir)
 		if not path.ismount(self.tmp_dir):
