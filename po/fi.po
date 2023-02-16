@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-02-10 07:36+0200\n"
+"PO-Revision-Date: 2023-02-16 18:02+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -10439,7 +10439,7 @@ msgid "Really reboot into Android Mode?"
 msgstr "Haluatko silti käynnistää uudelleen Android-tilaan?"
 
 msgid "Really reboot into Recovery Mode?"
-msgstr "Haluatko silti käynnistää uudelleen Palautus-tilaan?"
+msgstr "Haluatko silti käynnistää uudelleen Palautustilaan?"
 
 msgid "Really reboot now?"
 msgstr "Haluatko silti käynnistää uudelleen?"
@@ -10554,7 +10554,7 @@ msgid "Recordings, Playback & Timeshift"
 msgstr "Tallennus, toisto ja ajansiirto"
 
 msgid "Recovery Mode"
-msgstr "Palautus-tila"
+msgstr "Palautustila"
 
 msgid "Red"
 msgstr "Punainen"
@@ -11361,7 +11361,7 @@ msgid "Search by first letter of name"
 msgstr "Hae nimen ensimmäisellä kirjaimella"
 
 msgid "Search by name (SMS-style entry on remote)"
-msgstr "Hae nimellä (SMS-tyylinen kaukosäätimen sisääntulo"
+msgstr "Hae nimellä (SMS-tyylinen merkintä kaukosäätimellä)"
 
 msgid "Search channel list, SMS style 2ABC"
 msgstr "Hae kanavalistaa, SMS-tyylinen 2ABC"
@@ -12788,12 +12788,12 @@ msgid "Slot %s / FBC virtual %s"
 msgstr "Korttipaikka %s / FBC virtuaalinen %s"
 
 #, python-format
-msgid "Slot%s %s: %s - %s mode%s"
-msgstr "Paikka%s %s: %s - %s tila%s"
+msgid "Slot%s %s %s: %s - %s mode%s"
+msgstr "Paikka%s %s %s: %s - %s tila%s"
 
 #, python-format
-msgid "Slot%s %s: %s%s"
-msgstr "Paikka%s %s: %s%s"
+msgid "Slot%s %s %s: %s%s"
+msgstr "Paikka%s %s %s: %s%s"
 
 msgid "Slovak"
 msgstr "Slovakia"
@@ -13529,7 +13529,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"10.02.2023\n"
+"16.02.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -15963,7 +15963,7 @@ msgstr "%s %s käynnistyy uudelleen Android-tilaan"
 
 #, python-format
 msgid "Your %s %s is rebooting into Recovery Mode"
-msgstr "%s %s käynnistyy uudelleen Palautus-tilaan"
+msgstr "%s %s käynnistyy uudelleen Palautustilaan"
 
 #, python-format
 msgid "Your %s %s is shutting down"
@@ -17815,3 +17815,18 @@ msgstr "KELTAINEN"
 
 msgid "ZOOM"
 msgstr "SUURENNA"
+
+msgid "Boot Device%s:\t%s\n"
+msgstr "Boot-laite%s:\t%s\n"
+
+msgid "[MultiBootSelector][Vu+ USB STARTUP] - created STARTUP slots for %s."
+msgstr "[Multiboot valitsin][Vu+ USB Käynnistys] - luotu Käynnistyspaikat %s:lle."
+
+msgid "[VuplusKexec][create Vu Multiboot environment] - Unable to complete, Vu+ Multiboot files missing"
+msgstr "[VuplusKexec][luo Vu Multiboot ympäristö] - Ei saa tehtyä, Vu+ Multiboot -tiedostot puuttuvat"
+
+msgid "Boot Device: \tRecovery Slot\n"
+msgstr "Boot-laite: \tPalautuspaikka\n"
+
+msgid "Add Multiboot USB"
+msgstr "Lisää Multiboot-USB"
