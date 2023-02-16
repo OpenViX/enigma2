@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-02-16 18:02+0200\n"
+"PO-Revision-Date: 2023-02-16 20:35+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -17830,3 +17830,12 @@ msgstr "Boot-laite: \tPalautuspaikka\n"
 
 msgid "Add Multiboot USB"
 msgstr "Lisää Multiboot-USB"
+
+msgid "slot %s (%s)"
+msgstr "paikka %s (%s)"
+
+msgid "bootmode = %s"
+msgstr "boot-moodi = %s"
+
+msgid "Image Slot:\tStartup %s - %s %s"
+msgstr "Imagen paikka:\tKäynnistys %s - %s %s"
