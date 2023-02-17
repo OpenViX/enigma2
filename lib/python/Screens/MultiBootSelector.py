@@ -45,15 +45,16 @@ class MultiBootSelector(Screen, HelpableScreen):
 		Screen.setTitle(self, _("MultiBoot Image Selector"))
 		self.skinName = ["MultiBootSelector", "Setup"]
 		self.tmp_dir = None
-		canAddUsbMultiboot = SystemInfo["HasKexecMultiboot"] and not SystemInfo["HasKexecUSB"]
+		usbIn = True if SystemInfo["HasUsbhdd"] != {} and SystemInfo["HasKexecMultiboot"] else False
+#		print("[MultiBootSelector] usbIn, SystemInfo['HasUsbhdd'], SystemInfo['HasKexecMultiboot'], SystemInfo['HasKexecUSB']", usbIn, "   ", SystemInfo["HasUsbhdd"], "   ", SystemInfo["HasKexecMultiboot"], "   ", SystemInfo["HasKexecUSB"])
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("Retrieving image slots - Please wait...")), "Queued"))])
 		self["description"] = StaticText(_("Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."))
-		self["key_red"] = StaticText(_("Add Multiboot USB") if canAddUsbMultiboot else _("Cancel"))  
+		self["key_red"] = StaticText(_("Add Extra USB slots") if usbIn else _("Cancel"))
 		self["key_green"] = StaticText(_("Reboot"))
 		self["key_yellow"] = StaticText(_("Delete"))
 		self["key_blue"] = StaticText(_("Restore"))
 		self["actions"] = HelpableActionMap(self, ["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"], {
-			"red": (self.KexecMount if canAddUsbMultiboot else self.cancel, _("Create USB Multiboot") if canAddUsbMultiboot else _("Cancel the image selection and exit")),
+			"red": (self.cancel, _("Cancel")) if not usbIn else (self.KexecMount, _("Add Extra USB slots")),
 			"green": (self.reboot, _("Select the highlighted image and reboot")),
 			"yellow": (self.deleteImage, _("Select the highlighted image and delete")),
 			"blue": (self.restoreImages, _("Select to restore all deleted images")),
@@ -87,7 +88,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 					self.deletedImagesExists = True
 				if SystemInfo["canMode12"]:
 					if self.imagedict[x]["imagename"] == _("Empty slot"):
-						list.insert(index, ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))					
+						list.insert(index, ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
 					else:
 						list.insert(index, ChoiceEntryComponent("", (slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "Kodi", current if x == currentimageslot and mode != 12 else ""), (x, 1))))
 						list.append(ChoiceEntryComponent("", (slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "PiP", current if x == currentimageslot and mode == 12 else ""), (x, 12))))
@@ -126,12 +127,12 @@ class MultiBootSelector(Screen, HelpableScreen):
 				copyfile(path.join(self.tmp_dir, SystemInfo["canMultiBoot"][slot]["startupfile"]), path.join(self.tmp_dir, "STARTUP"))
 			if SystemInfo["HasMultibootMTD"]:
 				with open('/dev/block/by-name/flag', 'wb') as f:
-					f.write(struct.pack("B", int(slot)))							
+					f.write(struct.pack("B", int(slot)))
 			self.cancel(QUIT_REBOOT)
 
 	def deleteImage(self):
 		self.currentSelected = self["config"].l.getCurrentSelection()
-		self.slot = self.currentSelected[0][1][0]		
+		self.slot = self.currentSelected[0][1][0]
 		if SystemInfo["MultiBootSlot"] != self.currentSelected[0][1] and self.imagedict[self.slot]["imagename"] != _("Empty slot"):
 			self.session.openWithCallback(self.deleteImageCallback, MessageBox, "%s:\n%s" % (_("Are you sure you want to delete image:"), self.currentSelected[0][0]), simple=True)
 		else:
@@ -156,47 +157,64 @@ class MultiBootSelector(Screen, HelpableScreen):
 		hdd = []
 		usblist = list(SystemInfo["HasUsbhdd"].keys())
 		print("[MultiBootSelector] usblist=", usblist)
-		with open("/proc/mounts", "r") as fd:
-			xlines = fd.readlines()
-#			print("[MultiBootSelector] xlines", xlines)			
-			for hddkey in range(len(usblist)):
-				for xline in xlines:
-					print("[MultiBootSelector] xline, usblist", xline, "   ", usblist[hddkey])			
-					if xline.find(usblist[hddkey]) != -1 and "ext4" in xline:
-						index = xline.find(usblist[hddkey])
-						print("[MultiBootSelector] key, line ", usblist[hddkey], "   ", xline)		
-						hdd.append(xline[index:index+4])
-					else:
-						continue
-#						print("[MultiBootSelector] key, not in line ", usblist[hddkey], "   ", xline)											 
-		print("[MultiBootSelector] hdd available ", hdd) 
-		if not hdd:
-				self.session.open(MessageBox, _("[MultiBootSelector][add USB STARTUP slots] - No EXT4 USB attached."), MessageBox.TYPE_INFO, timeout=10)		
-				self.cancel()
+		if not SystemInfo["VuUUIDSlot"]:
+			with open("/proc/mounts", "r") as fd:
+				xlines = fd.readlines()
+	#			print("[MultiBootSelector] xlines", xlines)
+				for hddkey in range(len(usblist)):
+					for xline in xlines:
+						print("[MultiBootSelector] xline, usblist", xline, "   ", usblist[hddkey])
+						if xline.find(usblist[hddkey]) != -1 and "ext4" in xline:
+							index = xline.find(usblist[hddkey])
+							print("[MultiBootSelector] key, line ", usblist[hddkey], "   ", xline)
+							hdd.append(xline[index:index+4])
+						else:
+							continue
+	#						print("[MultiBootSelector] key, not in line ", usblist[hddkey], "   ", xline)
+			print("[MultiBootSelector] hdd available ", hdd)
+			if not hdd:
+					self.session.open(MessageBox, _("[MultiBootSelector][add USB STARTUP slots] - No EXT4 USB attached."), MessageBox.TYPE_INFO, timeout=10)
+					self.cancel()
+			else:
+				usb = hdd[0][0:3]
+				free = Harddisk(usb).Totalfree()
+				print("[MultiBootSelector] USB free space", free)
+				if free < 1024:
+					des = str(round((float(free)), 2)) + _("MB")
+					print("[MultiBootSelector][add USB STARTUP slot] limited free space", des)
+					self.session.open(MessageBox, _("[MultiBootSelector][add USB STARTUP slots] - The USB (%s) only has %s free. At least 1024MB is required.") % (usb, des), MessageBox.TYPE_INFO, timeout=30)
+					self.cancel()
+					return
+				Console().ePopen("/sbin/blkid | grep " + "/dev/" + hdd[0], self.KexecMountRet)
+
 		else:
-			usb = hdd[0][0:3]
-			free = Harddisk(usb).Totalfree()
-			print("[MultiBootSelector] USB free space", free)
-			if free < 1024:
-				des = str(round((float(free)), 2)) + _("MB")
-				print("[MultiBootSelector][add USB STARTUP slot] limited free space", des) 
-				self.session.open(MessageBox, _("[MultiBootSelector][add USB STARTUP slots] - The USB (%s) only has %s free. At least 1024MB is required.") % (usb, des), MessageBox.TYPE_INFO, timeout=30)
-				self.cancel()
-				return
-			Console().ePopen("/sbin/blkid | grep " + "/dev/" + hdd[0], self.KexecMountRet)			
-	
+			hiKey = sorted(SystemInfo["canMultiBoot"].keys(), reverse=True)[0]
+			self.session.openWithCallback(self.addSTARTUPs, MessageBox, _("Add 8 more Vu+ Multiboot USB slots after slot %s ?" % hiKey), MessageBox.TYPE_YESNO, timeout=30)
+
+	def addSTARTUPs(self, answer):
+		hiKey = sorted(SystemInfo["canMultiBoot"].keys(), reverse=True)[0]
+		hiUUIDkey = SystemInfo["VuUUIDSlot"][1]
+		print("[MultiBootSelector]1 answer, hiKey,  hiUUIDkey", answer, "   ", hiKey, "   ", hiUUIDkey)
+		if answer is False:
+			self.close()
+		else:
+			boxmodel = getBoxType()[2:]
+			for usbslot in range(hiKey+1, hiKey+9):
+				STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, SystemInfo["VuUUIDSlot"][0], boxmodel, usbslot) # /STARTUP_<n>
+				if boxmodel in ("duo4k", "duo4kse"):
+					STARTUP_usbslot += " rootwait=35"
+				with open("/%s/STARTUP_%d" % (self.tmp_dir, usbslot), 'w') as f:
+					f.write(STARTUP_usbslot)
+				print("[MultiBootSelector] STARTUP_%d --> %s, self.tmp_dir: %s" % (usbslot, STARTUP_usbslot, self.tmp_dir))
+			self.session.open(TryQuitMainloop, QUIT_RESTART)
+
 
 	def KexecMountRet(self, result=None, retval=None, extra_args=None):
 		self.device_uuid = "UUID=" + result.split("UUID=")[1].split(" ")[0].replace('"', '')
 		usb = result.split(":")[0]
 		boxmodel = getBoxType()[2:]
-		print("[MultiBootSelector] RESULT, retval, boxmodel", result, "   ", retval, "   ", boxmodel)
-		print("[MultiBootSelector] uuidPath ", self.device_uuid)
-# 			using UUID	 kernel=/linuxrootfs1/boot/zImage root=UUID="12c2025e-2969-4bd1-9e0c-da08b97d40ce" rootsubdir=linuxrootfs1
-#			STARTUP_4 = "kernel=/linuxrootfs4/zImage root=/dev/%s rootsubdir=linuxrootfs4" % hdd[0] 	# /STARTUP_4
-#			STARTUP_5 = "kernel=/linuxrootfs5/zImage root=/dev/%s rootsubdir=linuxrootfs5" % hdd[0] 	# /STARTUP_5
-#			STARTUP_6 = "kernel=/linuxrootfs6/zImage root=/dev/%s rootsubdir=linuxrootfs6" % hdd[0] 	# /STARTUP_6
-#			STARTUP_7 = "kernel=/linuxrootfs7/zImage root=/dev/%s rootsubdir=linuxrootfs7" % hdd[0] 	# /STARTUP_7
+# 		using UUID	 kernel=/linuxrootfs1/boot/zImage root=UUID="12c2025e-2969-4bd1-9e0c-da08b97d40ce" rootsubdir=linuxrootfs1
+#		using dev = "kernel=/linuxrootfs4/zImage root=/dev/%s rootsubdir=linuxrootfs4" % hdd[0] 	# /STARTUP_4
 
 		for usbslot in range(4,8):
 			STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, self.device_uuid, boxmodel, usbslot) # /STARTUP_<n>
@@ -207,7 +225,6 @@ class MultiBootSelector(Screen, HelpableScreen):
 				f.write(STARTUP_usbslot)
 
 		SystemInfo["HasKexecUSB"] = True
-		self.session.open(MessageBox, _("[MultiBootSelector][Vu+ USB STARTUP] - created STARTUP slots for %s." % usb), MessageBox.TYPE_INFO, timeout=10)
 		self.session.open(TryQuitMainloop, QUIT_RESTART)
 
 	def cancel(self, value=None):
