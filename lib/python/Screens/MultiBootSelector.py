@@ -45,7 +45,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		Screen.setTitle(self, _("MultiBoot Image Selector"))
 		self.skinName = ["MultiBootSelector", "Setup"]
 		self.tmp_dir = None
-		usbIn = True if SystemInfo["HasUsbhdd"] != {} and SystemInfo["HasKexecMultiboot"] else False
+		usbIn = SystemInfo["HasUsbhdd"] != {} and SystemInfo["HasKexecMultiboot"]
 #		print("[MultiBootSelector] usbIn, SystemInfo['HasUsbhdd'], SystemInfo['HasKexecMultiboot'], SystemInfo['HasKexecUSB']", usbIn, "   ", SystemInfo["HasUsbhdd"], "   ", SystemInfo["HasKexecMultiboot"], "   ", SystemInfo["HasKexecUSB"])
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("Retrieving image slots - Please wait...")), "Queued"))])
 		self["description"] = StaticText(_("Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."))
