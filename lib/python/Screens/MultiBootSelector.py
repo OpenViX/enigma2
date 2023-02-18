@@ -189,7 +189,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 		else:
 			hiKey = sorted(SystemInfo["canMultiBoot"].keys(), reverse=True)[0]
-			self.session.openWithCallback(self.addSTARTUPs, MessageBox, _("Add 4 more Vu+ Multiboot USB slots after slot %s ?" % hiKey), MessageBox.TYPE_YESNO, timeout=30)
+			self.session.openWithCallback(self.addSTARTUPs, MessageBox, _("Add 4 more Vu+ Multiboot USB slots after slot %s ?") % hiKey, MessageBox.
 
 	def addSTARTUPs(self, answer):
 		hiKey = sorted(SystemInfo["canMultiBoot"].keys(), reverse=True)[0]
