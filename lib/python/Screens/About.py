@@ -105,7 +105,7 @@ class About(AboutBase):
 			imageSubBuild = ".%s" % getImageDevBuild()
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
 
-		VuPlustxt = ":\tVu+ Multiboot - " if SystemInfo["HasKexecMultiboot"] else ""
+		VuPlustxt = "Vu+ Multiboot - " if SystemInfo["HasKexecMultiboot"] else ""
 		if fileHas("/proc/cmdline", "rootsubdir=linuxrootfs0"):
 			AboutText += _("Boot Device: \tRecovery Slot\n")
 		else:

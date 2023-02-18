@@ -189,7 +189,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 		else:
 			hiKey = sorted(SystemInfo["canMultiBoot"].keys(), reverse=True)[0]
-			self.session.openWithCallback(self.addSTARTUPs, MessageBox, _("Add 8 more Vu+ Multiboot USB slots after slot %s ?" % hiKey), MessageBox.TYPE_YESNO, timeout=30)
+			self.session.openWithCallback(self.addSTARTUPs, MessageBox, _("Add 4 more Vu+ Multiboot USB slots after slot %s ?" % hiKey), MessageBox.TYPE_YESNO, timeout=30)
 
 	def addSTARTUPs(self, answer):
 		hiKey = sorted(SystemInfo["canMultiBoot"].keys(), reverse=True)[0]
@@ -199,7 +199,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 			self.close()
 		else:
 			boxmodel = getBoxType()[2:]
-			for usbslot in range(hiKey+1, hiKey+9):
+			for usbslot in range(hiKey+1, hiKey+5):
 				STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, SystemInfo["VuUUIDSlot"][0], boxmodel, usbslot) # /STARTUP_<n>
 				if boxmodel in ("duo4k", "duo4kse"):
 					STARTUP_usbslot += " rootwait=35"
