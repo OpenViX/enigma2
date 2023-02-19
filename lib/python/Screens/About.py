@@ -110,7 +110,7 @@ class About(AboutBase):
 			AboutText += _("Boot Device: \tRecovery Slot\n")
 		else:
 			if BoxInfo.getItem("mtdbootfs") != "" and " " not in BoxInfo.getItem("mtdbootfs"):
-				AboutText += _("Boot Device%s%s\n") % (VuPlustxt, BoxInfo.getItem("mtdbootfs"))
+				AboutText += _("Boot Device:\t%s%s\n") % (VuPlustxt, BoxInfo.getItem("mtdbootfs"))
 
 		if SystemInfo["HasH9SD"]:
 			if "rootfstype=ext4" in open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read():
