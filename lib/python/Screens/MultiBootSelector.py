@@ -72,7 +72,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		self.callLater(self.getImagelist)
 
 	def getImagelist(self):
-		self.imagedict = GetImagelist()
+		self.imagedict = GetImagelist(Recovery=SystemInfo["RecoveryMode"])
 		list = []
 		self.deletedImagesExists = False
 		currentimageslot = SystemInfo["MultiBootSlot"]
@@ -111,9 +111,6 @@ class MultiBootSelector(Screen, HelpableScreen):
 		elif self.currentSelected[0][1] != "Queued":
 			slot = self.currentSelected[0][1][0]
 			boxmode = self.currentSelected[0][1][1]
-			# print("[MultiBootSelector] reboot1 reboot slot = %s, " % slot)
-			# print("[MultiBootSelector] reboot2 reboot boxmode = %s, " % boxmode)
-			# print("[MultiBootSelector] reboot3 slotinfo = %s" % SystemInfo["canMultiBoot"])
 			if SystemInfo["canMode12"]:
 				if "BOXMODE" in SystemInfo["canMultiBoot"][slot]['startupfile']:
 					startupfile = path.join(self.tmp_dir, "%s_%s" % (SystemInfo["canMultiBoot"][slot]['startupfile'].rsplit('_', 1)[0], boxmode))
