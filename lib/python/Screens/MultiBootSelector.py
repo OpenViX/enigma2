@@ -72,13 +72,14 @@ class MultiBootSelector(Screen, HelpableScreen):
 		self.callLater(self.getImagelist)
 
 	def getImagelist(self):
-		self.imagedict = GetImagelist()
+		self.imagedict = GetImagelist(Recovery=SystemInfo["RecoveryMode"])
 		list = []
 		self.deletedImagesExists = False
 		currentimageslot = SystemInfo["MultiBootSlot"]
 		mode = GetCurrentImageMode() or 0
 		print("[MultiBootSelector] reboot0 slot:", currentimageslot)
 		current = "  %s" % _("(Current)")
+		slotRecov = _("%s%s - Select to access recovery options")		
 		slotSingle = _("Slot%s %s %s: %s%s")
 		slotMulti = _("Slot%s %s %s: %s - %s mode%s")
 		if self.imagedict:
@@ -94,7 +95,10 @@ class MultiBootSelector(Screen, HelpableScreen):
 						list.append(ChoiceEntryComponent("", (slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "PiP", current if x == currentimageslot and mode == 12 else ""), (x, 12))))
 					indextot = index + 1
 				elif self.imagedict[x]["imagename"] != _("Empty slot"):
-					list.append(ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
+					if self.imagedict[x]["imagename"] == _("Recovery Mode"):
+						list.append(ChoiceEntryComponent("", (slotRecov % (self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
+					else:
+						list.append(ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
 			if SystemInfo["canMode12"]:
 				list.insert(indextot, " ")
 		else:
@@ -111,9 +115,6 @@ class MultiBootSelector(Screen, HelpableScreen):
 		elif self.currentSelected[0][1] != "Queued":
 			slot = self.currentSelected[0][1][0]
 			boxmode = self.currentSelected[0][1][1]
-			# print("[MultiBootSelector] reboot1 reboot slot = %s, " % slot)
-			# print("[MultiBootSelector] reboot2 reboot boxmode = %s, " % boxmode)
-			# print("[MultiBootSelector] reboot3 slotinfo = %s" % SystemInfo["canMultiBoot"])
 			if SystemInfo["canMode12"]:
 				if "BOXMODE" in SystemInfo["canMultiBoot"][slot]['startupfile']:
 					startupfile = path.join(self.tmp_dir, "%s_%s" % (SystemInfo["canMultiBoot"][slot]['startupfile'].rsplit('_', 1)[0], boxmode))
