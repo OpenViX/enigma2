@@ -1005,7 +1005,7 @@ class ImageBackup(Screen):
 			if SystemInfo["HasKexecMultiboot"]:
 				boot = SystemInfo["canMultiBoot"][slot]["kernel"] if slot > 3 else "boot"
 				self.command = "dd if=/%s%s of=%s/vmlinux.bin" % (boot, SystemInfo["canMultiBoot"][slot]["kernel"], self.WORKDIR) if slot != 0 else "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.WORKDIR)
-			else:				
+			else:
 				self.command = "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.WORKDIR)
 		else:
 			self.command = "nanddump /dev/%s -f %s/vmlinux.gz" % (self.MTDKERNEL, self.WORKDIR)
@@ -1081,7 +1081,7 @@ class ImageBackup(Screen):
 			else:
 				self.commands.append("mount --bind / %s/root" % self.TMPDIR)
 			if  SystemInfo["canMultiBoot"] and SystemInfo["MultiBootSlot"] == 0:
-				self.commands.append("/bin/tar -jcf %s/rootfs.tar.bz2 -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))				
+				self.commands.append("/bin/tar -jcf %s/rootfs.tar.bz2 -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./linuxrootfs* --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))
 			elif SystemInfo["HasRootSubdir"]:
 				self.commands.append("/bin/tar -jcf %s/rootfs.tar.bz2 -C %s/root/%s --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR, self.ROOTFSSUBDIR))
 			else:
