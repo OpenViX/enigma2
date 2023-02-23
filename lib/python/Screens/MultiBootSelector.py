@@ -107,7 +107,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		print("[MultiBootSelector] list X = %s" % list)
 
 	def reboot(self):
-		self.currentSelected = self["config"].l.getCurrentSelection()
+		self.currentSelected = self["config"].getCurrent()
 		self.slotx = self.slot = self.currentSelected[0][1][0]
 		if self.imagedict[self.slotx]["imagename"] == _("Deleted image")  or self.imagedict[self.slotx]["imagename"] == _("Empty slot"):
 			self.session.open(MessageBox, _("Cannot reboot to deleted image"), MessageBox.TYPE_ERROR, timeout=3)
@@ -132,7 +132,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 			self.cancel(QUIT_REBOOT)
 
 	def deleteImage(self):
-		self.currentSelected = self["config"].l.getCurrentSelection()
+		self.currentSelected = self["config"].getCurrent()
 		self.slot = self.currentSelected[0][1][0]
 		if SystemInfo["MultiBootSlot"] != self.currentSelected[0][1] and self.imagedict[self.slot]["imagename"] != _("Empty slot"):
 			self.session.openWithCallback(self.deleteImageCallback, MessageBox, "%s:\n%s" % (_("Are you sure you want to delete image:"), self.currentSelected[0][0]), simple=True)
@@ -142,7 +142,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 	def deleteImageCallback(self, answer):
 		if answer:
-			self.currentSelected = self["config"].l.getCurrentSelection()
+			self.currentSelected = self["config"].getCurrent()
 			self.slot = self.currentSelected[0][1][0]
 			print("[MultiBootSelector] delete self.slot = %s" % self.slot)
 			emptySlot(self.slot)
