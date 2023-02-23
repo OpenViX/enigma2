@@ -238,8 +238,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 			rmdir(self.tmp_dir)
 		if value == QUIT_REBOOT:
 			self.session.open(TryQuitMainloop, QUIT_REBOOT)
-		else:
-			self.close(value)
+		self.close()
 
 	def keyUp(self):
 		self["config"].instance.moveSelection(self["config"].instance.moveUp)
