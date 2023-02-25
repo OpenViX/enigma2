@@ -52,7 +52,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		self["key_red"] = StaticText(_("Add Extra USB slots") if usbIn else _("Cancel"))
 		self["key_green"] = StaticText(_("Reboot"))
 		self["key_yellow"] = StaticText(_("Delete"))
-		self["key_blue"] = StaticText(_("Restore"))
+		self["key_blue"] = StaticText()
 		self["actions"] = HelpableActionMap(self, ["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"], {
 			"red": (self.cancel, _("Cancel")) if not usbIn else (self.KexecMount, _("Add Extra USB slots")),
 			"green": (self.reboot, _("Select the highlighted image and reboot")),
@@ -75,6 +75,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		self.imagedict = GetImagelist(Recovery=SystemInfo["RecoveryMode"])
 		list = []
 		self.deletedImagesExists = False
+		self["key_blue"].text = ""
 		currentimageslot = SystemInfo["MultiBootSlot"]
 		mode = GetCurrentImageMode() or 0
 		print("[MultiBootSelector] reboot0 slot:", currentimageslot)
@@ -87,6 +88,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 			for index, x in enumerate(sorted(self.imagedict.keys())):
 				if self.imagedict[x]["imagename"] == _("Deleted image"):
 					self.deletedImagesExists = True
+					self["key_blue"].text = _("Restore")
 				if SystemInfo["canMode12"]:
 					if self.imagedict[x]["imagename"] == _("Empty slot"):
 						list.insert(index, ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
