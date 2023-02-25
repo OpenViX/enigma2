@@ -26,6 +26,7 @@ from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
 from Screens.TaskView import JobView
+from Screens.TextBox import TextBox
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import fileExists, pathExists, fileHas
 import Tools.CopyFiles
@@ -169,6 +170,11 @@ class VIXImageManager(Screen):
 		self["key_blue"] = Button(_("Flash"))
 
 		self["key_menu"] = StaticText(_("MENU"))
+		self["key_info"] = StaticText(_("INFO"))
+
+		self["infoactions"] = ActionMap(["SetupActions"], {
+			"info": self.showInfo,
+		}, -1)
 
 		self.BackupRunning = False
 		self.BackupDirectory = " "
@@ -594,6 +600,16 @@ class VIXImageManager(Screen):
 				return True
 			else:
 				return False
+
+	def infoText(self):
+		# add info text sentence by sentence to make translators job easier
+		return " ".join([
+			_("Sentence one."),
+			_("Sentence two."),
+			_("Etc, etc, etc.")])
+
+	def showInfo(self):
+		self.session.open(TextBox, self.infoText(), self.title + " - " + _("info"))
 
 
 class AutoImageManagerTimer:
