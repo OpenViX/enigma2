@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-02-22 16:31+0200\n"
+"PO-Revision-Date: 2023-02-26 13:22+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3073,7 +3073,7 @@ msgid "Cancelled upon user request"
 msgstr "Keskeytetty käyttäjän toimesta"
 
 msgid "Cannot delete current image"
-msgstr "Tiedostoa ei voi poistaa"
+msgstr "Nykyistä imagea ei voi poistaa"
 
 msgid "Cannot determine"
 msgstr "Ei voida määrittää"
@@ -3085,7 +3085,7 @@ msgid "Cannot move to the trash can"
 msgstr "Ei voida siirtää roskakoriin"
 
 msgid "Cannot reboot to deleted image"
-msgstr "Ei voi käynnistää poistettuuun imageen"
+msgstr "Ei voi käynnistää poistettuun imageen"
 
 msgid "Capabilities: "
 msgstr "Kapasiteetit: "
@@ -5982,10 +5982,10 @@ msgid "Fallback address type"
 msgstr "Etävastaanottimen osoitetyyppi"
 
 msgid "Fallback receiver IP address"
-msgstr "Etälaitteen IP-osoite"
+msgstr "Etävastaanottimen IP-osoite"
 
 msgid "Fallback receiver streaming port"
-msgstr "Etäaitteen striimausportti"
+msgstr "Etävastaanottimen striimausportti"
 
 msgid "Fallback remote receiver URL"
 msgstr "Etävastaanottimen URL-osoite"
@@ -13529,7 +13529,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"22.02.2023\n"
+"26.02.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -17848,3 +17848,9 @@ msgstr "Lisää 4 Vu+ Multiboot USB-paikkaa paikan %s jälkeen ?"
 
 msgid "%s%s - Select to access recovery options"
 msgstr "%s%s - Valitse, jos haluat käyttää palautusasetuksia"
+
+msgid "Cannot delete empty slot"
+msgstr "Tyhjää paikkaa ei voi poistaa"
+
+msgid "Cannot delete slot0 image"
+msgstr "Paikan 0 imagea ei voi poistaa"
