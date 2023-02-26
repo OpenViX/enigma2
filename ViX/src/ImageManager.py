@@ -1019,8 +1019,9 @@ class ImageBackup(Screen):
 		print("[ImageManager] Stage1: Making Kernel Image.")
 		if "bin" or "uImage" in self.KERNELFILE:
 			if SystemInfo["HasKexecMultiboot"]:
-				boot = SystemInfo["canMultiBoot"][slot]["kernel"] if slot > 3 else "boot"
-				self.command = "dd if=/%s%s of=%s/vmlinux.bin" % (boot, SystemInfo["canMultiBoot"][slot]["kernel"], self.WORKDIR) if slot != 0 else "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.WORKDIR)
+#				boot = "boot" if slot > 0 and slot < 4 else "dev/%s/%s"  %(self.MTDROOTFS, self.ROOTFSSUBDIR)
+				boot = "boot"
+				self.command = "dd if=/%s/%s of=%s/vmlinux.bin" % (boot, SystemInfo["canMultiBoot"][slot]["kernel"].rsplit("/", 1)[1], self.WORKDIR) if slot != 0 else "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.WORKDIR)
 			else:
 				self.command = "dd if=/dev/%s of=%s/vmlinux.bin" % (self.MTDKERNEL, self.WORKDIR)
 		else:
