@@ -796,6 +796,7 @@ class ImageBackup(Screen):
 		self.MKUBIFS_ARGS = getMachineMKUBIFS()
 		self.ROOTFSTYPE = getImageFileSystem().strip()
 		self.ROOTFSSUBDIR = "none"
+		self.VuSlot0 = ""
 		self.EMMCIMG = "none"
 		self.MTDBOOT = "none"
 		if SystemInfo["canBackupEMC"]:
@@ -809,6 +810,7 @@ class ImageBackup(Screen):
 			if SystemInfo["HasKexecMultiboot"]:
 				self.MTDKERNEL = getMachineMtdKernel() if slot == 0 else SystemInfo["canMultiBoot"][slot]["kernel"]
 				self.MTDROOTFS = getMachineMtdRoot() if slot == 0 else SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
+				self.VuSlot0 = "-VuSlot0" if slot == 0 else ""
 			else:
 				self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
 			if SystemInfo["HasMultibootMTD"]:
@@ -1389,7 +1391,7 @@ class ImageBackup(Screen):
 		zipfolder = path.split(self.MAINDESTROOT)
 		self.commands = []
 		if SystemInfo["HasRootSubdir"]:
-			self.commands.append("7za a -r -bt -bd %s/%s-%s-%s-%s-%s_mmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROVERSION, self.DISTROBUILD, self.MODEL, self.BackupDate, self.MAINDESTROOT))
+			self.commands.append("7za a -r -bt -bd %s/%s-%s-%s-%s-%s%s_mmc.zip %s/*" % (self.BackupDirectory, self.IMAGEDISTRO, self.DISTROVERSION, self.DISTROBUILD, self.MODEL, self.BackupDate, self.VuSlot0, self.MAINDESTROOT))
 		else:
 			self.commands.append("cd " + self.MAINDESTROOT + " && zip -r " + self.MAINDESTROOT + ".zip *")
 		self.commands.append("rm -rf " + self.MAINDESTROOT)
