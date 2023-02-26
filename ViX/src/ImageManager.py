@@ -554,7 +554,7 @@ class VIXImageManager(Screen):
 		if ret == 0:
 			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST			# normal non multiboot receiver
 			if SystemInfo["canMultiBoot"]:
-				if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		reset Vu Multiboot slot0
+				if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
 					kz0 = getMachineMtdKernel()
 					rz0 = getMachineMtdRoot()
 					CMD = "/usr/bin/ofgwrite -kkz0 -rrz0 '%s'" % MAINDEST			# slot0 treat as kernel/root only multiboot receiver				
