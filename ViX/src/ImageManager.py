@@ -440,6 +440,25 @@ class VIXImageManager(Screen):
 		self.sel = self["list"].getCurrent() # (name, link)
 		if not self.sel:
 			return
+		print("[ImageManager][keyRestore] self.sel SystemInfo['MultiBootSlot']", self.sel[0], "   ", SystemInfo["MultiBootSlot"])				
+		if SystemInfo["MultiBootSlot"] == 0 and self.sel[0].startswith(("openvix", "openbh")):
+			if "VuSlot0" in self.sel[0] or "release" in self.sel[0] or "developer" in self.sel[0]:  		
+				message = _("Do you want to flash slot0?\nThis will change all eMMC slots.") if "VuSlot0" in self.sel[0] else _("Do you want to flash slot0?\nThis will remove Vu Multiboot and erase all eMMC slots.") 
+				ybox = self.session.openWithCallback(self.keyRestorez0, MessageBox, message, MessageBox.TYPE_YESNO) 
+				ybox.setTitle(_("Restore confirmation"))		
+		else:
+			self.keyRestore1()		
+
+	def keyRestorez0(self, retval):
+		print("[ImageManager][keyRestorez0] retval", retval)	
+		if retval:
+			self.multibootslot = 0												# set slot0 to be flashed
+			self.Console.ePopen("umount /proc/cmdline", self.keyRestore3)		# tell ofgwrite not Vu Multiboot
+		else:
+			self.session.open(MessageBox, _("You have decided not to flash image."), MessageBox.TYPE_INFO, timeout=10)
+			self.keyRestore1()
+		
+	def keyRestore1(self):
 		self.HasSDmmc = False
 		self.multibootslot = 1
 		self.MTDKERNEL = getMachineMtdKernel()
@@ -488,7 +507,7 @@ class VIXImageManager(Screen):
 		else:
 			self.session.open(MessageBox, _("You have decided not to flash image."), MessageBox.TYPE_INFO, timeout=10)
 
-	def keyRestore3(self, val=None):
+	def keyRestore3(self, *args, **kwargs):
 		self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares."), MessageBox.TYPE_INFO, timeout=240, enable_input=False)
 		if "/media/autofs" in config.imagemanager.backuplocation.value or "/media/net" in config.imagemanager.backuplocation.value:
 			self.TEMPDESTROOT = tempfile.mkdtemp(prefix="imageRestore")
@@ -535,7 +554,11 @@ class VIXImageManager(Screen):
 		if ret == 0:
 			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST			# normal non multiboot receiver
 			if SystemInfo["canMultiBoot"]:
-				if SystemInfo["HasHiSi"] and SystemInfo["HasRootSubdir"] is False:  # SF8008 type receiver with single eMMC & SD card multiboot
+				if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		reset Vu Multiboot slot0
+					kz0 = getMachineMtdKernel()
+					rz0 = getMachineMtdRoot()
+					CMD = "/usr/bin/ofgwrite -kkz0 -rrz0 '%s'" % MAINDEST			# slot0 treat as kernel/root only multiboot receiver				
+				elif SystemInfo["HasHiSi"] and SystemInfo["HasRootSubdir"] is False:  # SF8008 type receiver with single eMMC & SD card multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 				elif SystemInfo["HasHiSi"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:	# sf8008 type receiver using SD card in multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
@@ -827,6 +850,7 @@ class ImageBackup(Screen):
 			self.GB4Krescue = "rescue.bin"
 		if "sda" in self.MTDKERNEL:
 			self.KERN = "sda"
+		print("[ImageManager] HasKexecMultiboot:", SystemInfo["HasKexecMultiboot"])			
 		print("[ImageManager] Model:", self.MODEL)
 		print("[ImageManager] Machine Build:", self.MCBUILD)
 		print("[ImageManager] Kernel File:", self.KERNELFILE)
