@@ -13,7 +13,7 @@ from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 from Screens.Standby import QUIT_REBOOT, QUIT_RESTART, TryQuitMainloop
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import copyfile, fileExists, pathExists
@@ -25,47 +25,62 @@ class MultiBootSelector(Screen, HelpableScreen):
 	<screen title="MultiBoot Image Selector" position="center,center" size="%d,%d">
 		<widget name="config" position="%d,%d" size="%d,%d" font="Regular;%d" itemHeight="%d" scrollbarMode="showOnDemand" />
 		<widget source="description" render="Label" position="%d,e-%d" size="%d,%d" font="Regular;%d" />
-		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
-		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
-		<widget source="key_yellow" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
-		<widget source="key_blue" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_blue" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center" />
+		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center">
+			<convert type="ConditionalShowHide"/>
+		</widget>
+		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center">
+			<convert type="ConditionalShowHide"/>
+		</widget>
+		<widget source="key_yellow" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center">
+			<convert type="ConditionalShowHide"/>
+		</widget>
+		<widget source="key_blue" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_blue" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center">
+			<convert type="ConditionalShowHide"/>
+		</widget>
 	</screen>""",
 		900, 460,
-		10, 10, 880, 306, 24, 34,
+		10, 10, 880, 306, 28, 34,
 		10, 125, 880, 60, 22,
-		10, 50, 140, 40, 20,
-		160, 50, 140, 40, 20,
-		310, 50, 140, 40, 20,
-		460, 50, 140, 40, 20
+		10, 50, 210, 40, 20,
+		230, 50, 210, 40, 20,
+		450, 50, 210, 40, 20,
+		670, 50, 210, 40, 20
 	]
 
 	def __init__(self, session, *args):
 		Screen.__init__(self, session, mandatoryWidgets=["key_yellow", "key_blue"])
 		HelpableScreen.__init__(self)
-		Screen.setTitle(self, _("MultiBoot Image Selector"))
+		self.title = _("MultiBoot Image Selector")
 		self.skinName = ["MultiBootSelector", "Setup"]
+		self.onChangedEntry = []
 		self.tmp_dir = None
 		usbIn = SystemInfo["HasUsbhdd"].keys() and SystemInfo["HasKexecMultiboot"]
 #		print("[MultiBootSelector] usbIn, SystemInfo['HasUsbhdd'], SystemInfo['HasKexecMultiboot'], SystemInfo['HasKexecUSB']", usbIn, "   ", SystemInfo["HasUsbhdd"], "   ", SystemInfo["HasKexecMultiboot"], "   ", SystemInfo["HasKexecUSB"])
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("Retrieving image slots - Please wait...")), "Queued"))])
 		self["description"] = StaticText(_("Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."))
 		self["key_red"] = StaticText(_("Add Extra USB slots") if usbIn else _("Cancel"))
-		self["key_green"] = StaticText(_("Reboot"))
-		self["key_yellow"] = StaticText(_("Delete"))
+		self["key_green"] = StaticText()
+		self["key_yellow"] = StaticText()
 		self["key_blue"] = StaticText()
-		self["actions"] = HelpableActionMap(self, ["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"], {
-			"red": (self.cancel, _("Cancel")) if not usbIn else (self.KexecMount, _("Add Extra USB slots")),
-			"green": (self.reboot, _("Select the highlighted image and reboot")),
-			"yellow": (self.deleteImage, _("Select the highlighted image and delete")),
-			"blue": (self.restoreImages, _("Select to restore all deleted images")),
-			"ok": (self.reboot, _("Select the highlighted image and reboot")),
+		self["defaultActions"] = HelpableActionMap(self, ["OkCancelActions", "DirectionActions", "ColorActions", "MenuActions"], {
 			"cancel": (self.cancel, _("Cancel the image selection and exit")),
+			"red": (self.cancel, _("Cancel")) if not usbIn else (self.KexecMount, _("Add Extra USB slots")),
+			"menu": (boundFunction(self.cancel, True), _("Cancel the image selection and exit all menus")),
 			"up": (self.keyUp, _("Move up a line")),
 			"down": (self.keyDown, _("Move down a line")),
 			"left": (self.keyUp, _("Move up a line")),
 			"right": (self.keyDown, _("Move down a line")),
-			"menu": (boundFunction(self.cancel, True), _("Cancel the image selection and exit all menus"))
+			"blue": (self.restoreImages, _("Select to restore all deleted images")),
 		}, -1, description=_("MultiBootSelector Actions"))
+		self["rebootActions"] = HelpableActionMap(self, ["OkCancelActions", "ColorActions", "KeyboardInputActions"], {
+			"green": (self.reboot, _("Select the highlighted image and reboot")),
+			"ok": (self.reboot, _("Select the highlighted image and reboot")),
+		}, -1, description=_("MultiBootSelector Actions"))
+		self["rebootActions"].setEnabled(False)
+		self["deleteActions"] = HelpableActionMap(self, ["OkCancelActions", "ColorActions", "KeyboardInputActions"], {
+			"yellow": (self.deleteImage, _("Select the highlighted image and delete")),
+		}, -1, description=_("MultiBootSelector Actions"))
+		self["deleteActions"].setEnabled(False)
 		self.imagedict = []
 		self.tmp_dir = tempfile.mkdtemp(prefix="MultibootSelector")
 		Console().ePopen("mount %s %s" % (SystemInfo["MBbootdevice"], self.tmp_dir))
@@ -73,14 +88,14 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 	def getImagelist(self):
 		self.imagedict = GetImagelist(Recovery=SystemInfo["RecoveryMode"])
-		list = []
+		imageList = []
 		self.deletedImagesExists = False
 		self["key_blue"].text = ""
 		currentimageslot = SystemInfo["MultiBootSlot"]
 		mode = GetCurrentImageMode() or 0
 		print("[MultiBootSelector] reboot0 slot:", currentimageslot)
 		current = "  %s" % _("(Current)")
-		slotRecov = _("%s%s - Select to access recovery options")		
+		slotRecov = _("%s%s - Select to access recovery options")
 		slotSingle = _("Slot%s %s %s: %s%s")
 		slotMulti = _("Slot%s %s %s: %s - %s mode%s")
 		if self.imagedict:
@@ -91,72 +106,60 @@ class MultiBootSelector(Screen, HelpableScreen):
 					self["key_blue"].text = _("Restore")
 				if SystemInfo["canMode12"]:
 					if self.imagedict[x]["imagename"] == _("Empty slot"):
-						list.insert(index, ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
+						imageList.insert(index, ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
 					else:
-						list.insert(index, ChoiceEntryComponent("", (slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "Kodi", current if x == currentimageslot and mode != 12 else ""), (x, 1))))
-						list.append(ChoiceEntryComponent("", (slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "PiP", current if x == currentimageslot and mode == 12 else ""), (x, 12))))
+						imageList.insert(index, ChoiceEntryComponent("", (slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "Kodi", current if x == currentimageslot and mode != 12 else ""), (x, 1))))
+						imageList.append(ChoiceEntryComponent("", (slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "PiP", current if x == currentimageslot and mode == 12 else ""), (x, 12))))
 					indextot = index + 1
 				elif self.imagedict[x]["imagename"] != _("Empty slot"):
 					if self.imagedict[x]["imagename"] == _("Recovery Mode"):
-						list.append(ChoiceEntryComponent("", (slotRecov % (self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
+						imageList.append(ChoiceEntryComponent("", (slotRecov % (self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
 					else:
-						list.append(ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
+						imageList.append(ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
 			if SystemInfo["canMode12"]:
-				list.insert(indextot, " ")
+				imageList.insert(indextot, " ")
 		else:
-			list.append(ChoiceEntryComponent("", ((_("No images found")), "Waiter")))
-		self["config"].setList(list)
-		print("[MultiBootSelector] list X = %s" % list)
+			imageList.append(ChoiceEntryComponent("", ((_("No images found")), "Waiter")))
+		self["config"].setList(imageList)
+		print("[MultiBootSelector] imageList X = %s" % imageList)
+		self.updateKeys()
 
 	def reboot(self):
-		self.currentSelected = self["config"].getCurrent()
-		self.slotx = self.slot = self.currentSelected[0][1][0]
-		if self.imagedict[self.slotx]["imagename"] == _("Deleted image")  or self.imagedict[self.slotx]["imagename"] == _("Empty slot"):
-			self.session.open(MessageBox, _("Cannot reboot to deleted image"), MessageBox.TYPE_ERROR, timeout=3)
-		elif self.currentSelected[0][1] != "Queued":
-			slot = self.currentSelected[0][1][0]
-			boxmode = self.currentSelected[0][1][1]
-			if SystemInfo["canMode12"]:
-				if "BOXMODE" in SystemInfo["canMultiBoot"][slot]['startupfile']:
-					startupfile = path.join(self.tmp_dir, "%s_%s" % (SystemInfo["canMultiBoot"][slot]['startupfile'].rsplit('_', 1)[0], boxmode))
-					copyfile(startupfile, path.join(self.tmp_dir, "STARTUP"))
-				else:
-					f = open(path.join(self.tmp_dir, SystemInfo["canMultiBoot"][slot]['startupfile']), "r").read()
-					if boxmode == 12:
-						f = f.replace("boxmode=1'", "boxmode=12'").replace("%s" % SystemInfo["canMode12"][0], "%s" % SystemInfo["canMode12"][1])
-					open(path.join(self.tmp_dir, "STARTUP"), "w").write(f)
+		currentSelected = self["config"].getCurrent()
+		slot = currentSelected[0][1][0]
+		boxmode = currentSelected[0][1][1]
+		if SystemInfo["canMode12"]:
+			if "BOXMODE" in SystemInfo["canMultiBoot"][slot]['startupfile']:
+				startupfile = path.join(self.tmp_dir, "%s_%s" % (SystemInfo["canMultiBoot"][slot]['startupfile'].rsplit('_', 1)[0], boxmode))
+				copyfile(startupfile, path.join(self.tmp_dir, "STARTUP"))
 			else:
-				copyfile(path.join(self.tmp_dir, SystemInfo["canMultiBoot"][slot]["startupfile"]), path.join(self.tmp_dir, "STARTUP"))
-			if SystemInfo["HasMultibootMTD"]:
-				with open('/dev/block/by-name/flag', 'wb') as f:
-					f.write(struct.pack("B", int(slot)))
-			self.cancel(QUIT_REBOOT)
+				f = open(path.join(self.tmp_dir, SystemInfo["canMultiBoot"][slot]['startupfile']), "r").read()
+				if boxmode == 12:
+					f = f.replace("boxmode=1'", "boxmode=12'").replace("%s" % SystemInfo["canMode12"][0], "%s" % SystemInfo["canMode12"][1])
+				open(path.join(self.tmp_dir, "STARTUP"), "w").write(f)
+		else:
+			copyfile(path.join(self.tmp_dir, SystemInfo["canMultiBoot"][slot]["startupfile"]), path.join(self.tmp_dir, "STARTUP"))
+		if SystemInfo["HasMultibootMTD"]:
+			with open('/dev/block/by-name/flag', 'wb') as f:
+				f.write(struct.pack("B", int(slot)))
+		self.cancel(QUIT_REBOOT)
 
 	def deleteImage(self):
-		self.currentSelected = self["config"].getCurrent()
-		self.slot = self.currentSelected[0][1][0]
-		if SystemInfo["MultiBootSlot"] != self.slot and SystemInfo["MultiBootSlot"] != 0 and self.imagedict[self.slot]["imagename"] != _("Empty slot"):
-			self.session.openWithCallback(self.deleteImageCallback, MessageBox, "%s:\n%s" % (_("Are you sure you want to delete image:"), self.currentSelected[0][0]), simple=True)
-		else:
-			if SystemInfo["MultiBootSlot"] != 0:
-				self.session.open(MessageBox, _("Cannot delete empty slot"), MessageBox.TYPE_ERROR, timeout=3)
-			else:
-				self.session.open(MessageBox, _("Cannot delete slot0 image"), MessageBox.TYPE_ERROR, timeout=3)
-			self.getImagelist()
+		currentSelected = self["config"].getCurrent()
+		self.session.openWithCallback(self.deleteImageCallback, MessageBox, "%s:\n%s" % (_("Are you sure you want to delete image:"), currentSelected[0][0]), simple=True)
 
 	def deleteImageCallback(self, answer):
 		if answer:
-			self.currentSelected = self["config"].getCurrent()
-			self.slot = self.currentSelected[0][1][0]
-			print("[MultiBootSelector] delete self.slot = %s" % self.slot)
-			emptySlot(self.slot)
-		self.getImagelist()
+			currentSelected = self["config"].getCurrent()
+			slot = currentSelected[0][1][0]
+			print("[MultiBootSelector] delete slot = %s" % slot)
+			emptySlot(slot)
+			self.getImagelist()
 
 	def restoreImages(self):
 		if self.deletedImagesExists:
 			restoreSlots()
 			self.getImagelist()
-
 
 	def KexecMount(self):
 		hdd = []
@@ -246,6 +249,63 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 	def keyUp(self):
 		self["config"].instance.moveSelection(self["config"].instance.moveUp)
+		self.updateKeys()
 
 	def keyDown(self):
 		self["config"].instance.moveSelection(self["config"].instance.moveDown)
+		self.updateKeys()
+
+	def updateKeys(self):
+		currentSelected = self["config"].getCurrent()
+		if currentSelected[0][1] == "Queued": # list not loaded yet so abort
+			return
+		slot = currentSelected[0][1][0]
+
+		# green key
+		if self.imagedict[slot]["imagename"] in (_("Deleted image"), _("Empty slot")):
+			self["key_green"].text = ""
+			self["rebootActions"].setEnabled(False)
+		else:
+			self["key_green"].text = _("Reboot")
+			self["rebootActions"].setEnabled(True)
+
+		# yellow key
+		if SystemInfo["MultiBootSlot"] == slot or self.imagedict[slot]["imagename"] in (_("Empty slot"), _("Recovery Mode")): # must not delete the current image or the recovery image and can't boot an empty slot
+			self["key_yellow"].text = ""
+			self["deleteActions"].setEnabled(False)
+		else:
+			self["key_yellow"].text = _("Delete")
+			self["deleteActions"].setEnabled(True)
+		for x in self.onChangedEntry:
+			if callable(x):
+				x()
+
+	def createSummary(self):
+		return MultiBootSelectorSummary
+
+
+class MultiBootSelectorSummary(ScreenSummary):
+	def __init__(self, session, parent):
+		ScreenSummary.__init__(self, session, parent=parent)
+		self.skinName = ["SetupSummary"]
+		self["SetupTitle"] = StaticText(parent.title)
+		self["SetupEntry"] = StaticText("")
+		self["SetupValue"] = StaticText("")
+		if self.addWatcher not in self.onShow:
+			self.onShow.append(self.addWatcher)
+		if self.removeWatcher not in self.onHide:
+			self.onHide.append(self.removeWatcher)
+
+	def addWatcher(self):
+		if self.selectionChanged not in self.parent.onChangedEntry:
+			self.parent.onChangedEntry.append(self.selectionChanged)
+		self.selectionChanged()
+
+	def removeWatcher(self):
+		if self.selectionChanged in self.parent.onChangedEntry:
+			self.parent.onChangedEntry.remove(self.selectionChanged)
+
+	def selectionChanged(self):
+		currentSelected = self.parent["config"].getCurrent()
+		self["SetupEntry"].text = currentSelected[0][0]
+		self["SetupValue"].text = "" # not yet used
