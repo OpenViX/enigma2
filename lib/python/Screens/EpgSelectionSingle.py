@@ -2,14 +2,14 @@ from time import time
 from Components.ActionMap import HelpableActionMap
 from Components.config import config, configfile
 from Components.EpgListSingle import EPGListSingle
-from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap, epgActions, okActions
+from Screens.EpgSelectionBase import EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap, epgActions, infoActions, okActions, recActions
 from Screens.Setup import Setup
 from Screens.UserDefinedButtons import UserDefinedButtons
 
 
 class EPGSelectionSingle(EPGSelectionBase, EPGServiceNumberSelection, EPGServiceBrowse, EPGServiceZap, UserDefinedButtons):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=None):
-		UserDefinedButtons.__init__(self, config.epgselection.single, epgActions, okActions)
+		UserDefinedButtons.__init__(self, config.epgselection.single, epgActions, infoActions, okActions, recActions)
 		EPGSelectionBase.__init__(self, session, config.epgselection.single, startBouquet, startRef, bouquets)
 		EPGServiceNumberSelection.__init__(self)
 		EPGServiceZap.__init__(self, zapFunc)

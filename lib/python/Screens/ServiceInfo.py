@@ -129,7 +129,7 @@ class ServiceInfo(Screen):
 
 		self.transponder_info = self.info = self.feinfo = None
 		play_service = session.nav.getCurrentlyPlayingServiceReference()
-		if serviceref and not play_service and play_service != serviceref:
+		if serviceref and not (play_service and play_service == serviceref):
 			self.setTitle(_("Transponder Information"))
 			self.type = TYPE_TRANSPONDER_INFO
 			self.skinName = "ServiceInfoSimple"

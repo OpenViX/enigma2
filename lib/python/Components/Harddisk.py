@@ -755,7 +755,10 @@ class HarddiskManager:
 						partitions = [] if len(partitions) > 6 else partitions[4:]
 					print("[Harddisk] len partitions = %s, device = %s" % (len(partitions), device))
 					if len(partitions) != 0:
-						print("[Harddisk] Found storage device '%s' (Removable=%s) NoPartitions = %s." % (device, removable, len(partitions)))
+						if removable:
+							SystemInfo["HasUsbhdd"][device] = len(partitions)
+						print("[Harddisk]2 Found storage device '%s' (Removable=%s) NoPartitions = %s." % (device, removable, len(partitions)))			# [Harddisk] Found storage device 'sdb' (Removable=True) NoPartitions = 1.
+						print("[Harddisk]1 SystemInfo['HasUsbhdd']= %s" % SystemInfo["HasUsbhdd"])
 						self.hdd.append(Harddisk(device, removable))
 						SystemInfo["Harddisk"] = True
 						# self.partitions.append(Partition(mountpoint = self.getMountpoint(device), description = description, force_mounted, device = device))
@@ -763,7 +766,7 @@ class HarddiskManager:
 						for partition in partitions:
 							description = self.getUserfriendlyDeviceName(partition, physicalDevice)
 							print("[Harddisk] Found partition '%s', description='%s', device='%s'." % (partition, description, physicalDevice))
-							part = Partition(mountpoint=self.getMountpoint(partition), description=description, force_mounted=True, device=partition)
+							part = Partition(mountpoint=self.getMountpoint(partition, skiproot = True), description=description, force_mounted=True, device=partition)
 							self.partitions.append(part)
 							# print("[Harddisk] DEBUG: Partition(mountpoint = %s, description = %s, force_mounted = True, device = %s)" % (self.getMountpoint(partition), description, partition))
 							self.on_partition_list_change("add", part)
@@ -828,10 +831,10 @@ class HarddiskManager:
 			return os.path.join("/media", device)
 		return mnt
 
-	def getMountpoint(self, device):
+	def getMountpoint(self, device, skiproot = None):
 		dev = os.path.join("/dev", device)
 		for item in getProcMounts():
-			if item[0] == dev:
+			if (item[0] == dev and skiproot == None) or (item[0] == dev and skiproot == True and item[1] != "/"):
 				return os.path.join(item[1], "")
 		return None
 
@@ -875,7 +878,8 @@ class HarddiskManager:
 				if SystemInfo["HasHiSi"] and devMajor == 8 and len(partitions) >= 4:
 					partitions = partitions[4:]
 				if HDDin is False and len(partitions) != 0:
-					print("[Harddisk] Found storage device '%s' (Removable = %s)." % (device, removable))
+					SystemInfo["HasUsbhdd"][device] = len(partitions)
+					print("[Harddisk]2 SystemInfo['HasUsbhdd']= %s" % SystemInfo["HasUsbhdd"])
 					self.hdd.append(Harddisk(hddDev, removable))
 					# print("[Harddisk] DEBUG: Add hotplug HDD device in hddlist. (device = '%s', hdd.device = '%s', hddDev = '%s')" % (device, hdd.device, hddDev))
 					self.hdd.sort()

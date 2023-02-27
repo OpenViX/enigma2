@@ -120,7 +120,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 			"yellowlong": self.helpKeyAction("yellowlong"),
 			"blue": self.helpKeyAction("blue"),
 			"bluelong": self.helpKeyAction("bluelong")
-		}, prio=-1, description="EPG Commands")
+		}, prio=-1, description=helpDescription)
 		self._updateButtonText()
 
 		self["recordingactions"] = HelpableActionMap(self, "InfobarInstantRecord", {

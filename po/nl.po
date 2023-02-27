@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 00:15+0000\n"
-"PO-Revision-Date: 2022-12-21 11:17+0100\n"
+"POT-Creation-Date: 2023-01-13 13:37+0000\n"
+"PO-Revision-Date: 2023-01-20 12:59+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1756,9 +1756,6 @@ msgstr "Favorieten bewerken afsluiten"
 msgid "About"
 msgstr "Uw ontvanger"
 
-msgid "AboutBoxInfo"
-msgstr "About BoxInfo"
-
 msgid "Accept the current selection"
 msgstr "Accepteer huidige selectie"
 
@@ -1777,17 +1774,8 @@ msgstr "Activeer"
 msgid "Activate HbbTV (RedButton)"
 msgstr "Activeer HbbTV (Rode Knop)"
 
-msgid "Activate MAC address configuration"
-msgstr "Activeer MAC-adres configuratie"
-
 msgid "Activate Picture in Picture"
 msgstr "Activeer Picture In Picture"
-
-msgid "Activate current configuration"
-msgstr "Activeer huidige configuratie"
-
-msgid "Activate network adapter configuration"
-msgstr "Start de netwerkadapter configuratie"
 
 msgid "Activate network settings"
 msgstr "Activeer netwerkinstellingen"
@@ -2835,10 +2823,6 @@ msgstr "Bufferend %d%%"
 
 msgid "Buffers:"
 msgstr "Buffers:"
-
-#, python-format
-msgid "Build: %s"
-msgstr "Build: %s"
 
 msgid "Bulgaria"
 msgstr "Bulgaria"
@@ -4843,12 +4827,6 @@ msgstr "Uit"
 msgid "Disable Animations"
 msgstr "Animatie uitschakelen"
 
-msgid "Disable FCC during recordings"
-msgstr "Schakel FCC uit tijdens opnames"
-
-msgid "Disable Fast Channel Change"
-msgstr "Schakel FCC uit"
-
 msgid "Disable Picture in Picture"
 msgstr "Beeld-in-beeld uitschakelen"
 
@@ -5350,9 +5328,6 @@ msgstr "EIT EPG inschakelen"
 msgid "Enable EPG event name abbreviation removal"
 msgstr "Kies voorkomen van afkorten van naam"
 
-msgid "Enable Fast Channel Change"
-msgstr "Schakel FCC in"
-
 msgid "Enable FreeSat EPG"
 msgstr "Freesat EPG inschakelen"
 
@@ -5416,6 +5391,9 @@ msgstr "Verplaatsmodus inschakelen"
 
 msgid "Enable multiple bouquets"
 msgstr "Meerdere favorietenlijsten toestaan"
+
+msgid "Enable new GStreamer playback"
+msgstr "Schakel afspelen met nieuwe GStreamer in"
 
 msgid "Enable or disable client mode."
 msgstr "Clientmodus in- of uitschakelen."
@@ -5646,6 +5624,14 @@ msgstr "Fout bij hernoemen '%s'"
 
 #, python-format
 msgid ""
+"Error:\n"
+"%s"
+msgstr ""
+"Fout:\n"
+"%s"
+
+#, python-format
+msgid ""
 "Error: %s\n"
 "Retry?"
 msgstr ""
@@ -5724,9 +5710,6 @@ msgstr "Afsluiten"
 msgid "Exit EPG"
 msgstr "Verlaat EPG"
 
-msgid "Exit MAC address configuration"
-msgstr "Verlaat MAC-adres configuratie"
-
 msgid "Exit Menusort"
 msgstr "Verlaat MenuSort"
 
@@ -5762,12 +5745,6 @@ msgstr "Sluit moviespeler"
 
 msgid "Exit movie player?"
 msgstr "Sluit moviespeler?"
-
-msgid "Exit nameserver configuration"
-msgstr "Verlaat nameserver configuratie"
-
-msgid "Exit network adapter configuration"
-msgstr "Verlaat netwerkadapterconfiguratie"
 
 msgid "Exit network adapter setup menu"
 msgstr "Verlaat netwerkadapterinstellingen menu"
@@ -5910,12 +5887,6 @@ msgstr ""
 "FBC automatisch\n"
 "inactief"
 
-msgid "FCC enabled"
-msgstr "FCC ingeschakeld"
-
-msgid "FCCSetup"
-msgstr "FCC Instellingen"
-
 msgid "FEC"
 msgstr "FEC"
 
@@ -6008,15 +5979,6 @@ msgstr "Faroe Islands"
 
 msgid "Fast"
 msgstr "Snel"
-
-msgid "Fast Channel Change"
-msgstr "Fast Channel Change"
-
-msgid "Fast Channel Change Setup"
-msgstr "Fast Channel Change instellingen"
-
-msgid "Fast Channel Change setup"
-msgstr "Fast Channel Change instellingen"
 
 msgid "Fast DiSEqC"
 msgstr "Snelle DiSEqC"
@@ -6776,9 +6738,6 @@ msgstr "Histories"
 msgid "History"
 msgstr "Geschiedenis"
 
-msgid "History Prev/Next"
-msgstr "Historie vorige/volgende"
-
 msgid "History Zap"
 msgstr "Geschiedenis-zap"
 
@@ -6987,6 +6946,9 @@ msgstr "Indien ingeschakeld zal een log van het CEC-verkeer worden bijgehouden (
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
 msgstr "Indien ingeschakeld toont het display 12 karakters i.p.v. 8, maar alleen in latin-1/translit."
 
+msgid "If enabled, the new GStreamer playback engine will be used."
+msgstr "Indien ingeschakeld, zal de nieuwe GStreamer afspeel-engine gebruikt worden."
+
 msgid "If set to 'Standard' number buttons page up/down/left/right."
 msgstr "Indien ingesteld op 'standaard' gaat u met de nummertoetsen een pagina omhoog/omlaag/links/rechts."
 
@@ -7100,6 +7062,9 @@ msgstr "Onmiddellijk uitschakelen"
 
 msgid "Immediately restart selected cams."
 msgstr "Herstart geselecteerde cams onmiddellijk."
+
+msgid "In Developer images only. Allows swapping between oe-alliance/branding or oe-alliance/remotes for button position mapping and rc graphic."
+msgstr "Alleen voor developper-images: staat het wisselen toe tussen oe-alliance/branding en oe-alliance/remotes voor het plaatsen van toets-posities en AB-plaatjes."
 
 msgid "In Setup screens choose whether to show the default value of the selected item in the description field."
 msgstr "Kies in instelschermen of de standaard waarde van de geselecteerde ingang moet worden getoond."
@@ -7657,10 +7622,6 @@ msgstr "Laatste snelheid"
 msgid "Last update:\t%s\n"
 msgstr "Laatste update:\t%s\n"
 
-#, python-format
-msgid "Last update: %s"
-msgstr "Laatste update: %s"
-
 msgid "Last used share: "
 msgstr "Laatst gebruikte share: "
 
@@ -8048,9 +8009,6 @@ msgstr "Mauritania"
 
 msgid "Mauritius"
 msgstr "Mauritius"
-
-msgid "Max channels"
-msgstr "Max Kanalen"
 
 msgid "Max memory positions"
 msgstr "Max aantal geheugenposities"
@@ -8688,6 +8646,9 @@ msgstr "Netwerk-wizard"
 msgid "Network:"
 msgstr "Netwerk:"
 
+msgid "NetworkInadynSetup"
+msgstr "NetworkInadyn instellingen"
+
 msgid "Neue Medien"
 msgstr "Nieuwe media"
 
@@ -8760,6 +8721,9 @@ msgstr "Geen harde schijf gevonden of de harde schijf is niet geformatteerd!"
 
 msgid "No Logs"
 msgstr "Geen logs"
+
+msgid "No MAC interface found"
+msgstr "Geen MAC-interface gevonden"
 
 msgid "No Timeshift found to save as recording!"
 msgstr "Geen timeshift gevonden om als opname op te slaan!"
@@ -8872,6 +8836,9 @@ msgstr ""
 msgid "No updates found, Press OK to exit this screen."
 msgstr "Geen updates gevonden. Druk op \"OK\" om het scherm te sluiten."
 
+msgid "No user installed plugins found"
+msgstr "Geen door gebruiker geïnstalleerde plugins gevonden"
+
 msgid "No wireless networks found! Searching..."
 msgstr "Geen draadloze netwerken gevonden! Bezig met zoeken...."
 
@@ -8951,6 +8918,10 @@ msgstr "Niet zichtbaar"
 msgid "Not associated"
 msgstr "Niet geassocieerd"
 
+#
+msgid "Not defined"
+msgstr "Niet gedefinieerd"
+
 #, python-format
 msgid "Not enough disk space. Please free up some disk space and try again. (%d MB required, %d MB available)"
 msgstr "Onvoldoende schijfruimte. Maak ruimte vrij en probeer het opnieuw (%d MB benodigd, %d MB beschikbaar)"
@@ -9020,6 +8991,12 @@ msgstr "Aantal zichtbare rijen"
 
 msgid "Number or SMS style data entry"
 msgstr "Getal of SMS-type"
+
+msgid "OE-A-Branding"
+msgstr "OE-A-Branding"
+
+msgid "OE-A-Remotes"
+msgstr "OE-A-Afstandsbedieningen"
 
 msgid "OK"
 msgstr "OK"
@@ -9214,6 +9191,10 @@ msgstr "OpenTV download instellingen"
 
 msgid "OpenVPN"
 msgstr "Open-VPN"
+
+#, python-format
+msgid "OpenViX: %s"
+msgstr "OpenViX: %s"
 
 msgid "OpenVpn Setup"
 msgstr "Open-VPN instellingen"
@@ -10130,9 +10111,6 @@ msgstr "Druk op OK om de lokatie van het logbestand op te slaan."
 msgid "Press OK to select/deselect a CAId."
 msgstr "Druk op OK om de CAId aan/uit te zetten."
 
-msgid "Press OK to set the MAC address."
-msgstr "Druk op OK om MAC-adres in te stellen."
-
 msgid "Press OK to show details"
 msgstr "Druk OK voor details"
 
@@ -10476,9 +10454,6 @@ msgstr "Opname-toets (kort)"
 msgid "Recall channel, panic button & number zap"
 msgstr "Terugvalkanaal, paniektoets en nummerzap"
 
-msgid "Receiver or driver does not support FCC"
-msgstr "Ontvanger of driver ondersteunt geen FCC"
-
 msgid "Record"
 msgstr "Opname"
 
@@ -10651,6 +10626,9 @@ msgstr "Let op: u hebt ervoor gekozen het timeshiftbestand op te slaan."
 
 msgid "Remote box"
 msgstr "Remote box"
+
+msgid "Remote control source*"
+msgstr "Bron afstandsbediening*"
 
 msgid "Remote control type"
 msgstr "Type afstandsbediening"
@@ -13354,10 +13332,6 @@ msgstr ""
 msgid "Support at"
 msgstr "Ondersteuning op"
 
-#, python-format
-msgid "Support at %s"
-msgstr "Support op %s"
-
 msgid "Suriname"
 msgstr "Suriname"
 
@@ -14722,6 +14696,10 @@ msgstr "Updateinterval (in secondes)"
 msgid "Update packages..."
 msgstr "Bezig met update pakketten..."
 
+#, python-format
+msgid "Updated: %s"
+msgstr "Geüpdatet: %s"
+
 #
 msgid "Updatefeed not available."
 msgstr "Updatefeed niet beschikbaar."
@@ -14962,6 +14940,9 @@ msgstr "Door gebruike bepaald 0x%02x"
 msgid "User defined transponder"
 msgstr "Door gebruiker bepaalde transponder"
 
+msgid "User installed plugins"
+msgstr "Door gebruiker geïnstalleerde plugins"
+
 msgid "User interface settings"
 msgstr "Gebruikersinterface-instellingen"
 
@@ -15044,10 +15025,6 @@ msgstr "Verticaal"
 
 msgid "Vertical turning speed"
 msgstr "Verticale draaisnelheid"
-
-#, python-format
-msgid "ViX version: %s"
-msgstr "ViX versie: %s"
 
 msgid "Video & Audio Settings"
 msgstr "Video- en audio-instellingen"
@@ -16104,9 +16081,6 @@ msgstr "Zap"
 msgid "Zap + Exit"
 msgstr "Zap + Exit"
 
-msgid "Zap Up/Down"
-msgstr "Zap omhoog/omlaag"
-
 msgid "Zap back to previously tuned service?"
 msgstr "Wilt u terug naar het vorige kanaal?"
 
@@ -16767,6 +16741,9 @@ msgstr "module initialiseren"
 msgid "insert mark here"
 msgstr "markeerpunt invoegen"
 
+msgid "instant record"
+msgstr "directe opname"
+
 msgid "invalid type"
 msgstr "ongeldig type"
 
@@ -17046,9 +17023,6 @@ msgstr "peuterprogramma"
 
 msgid "preserve bookmarks in cuts"
 msgstr "bewaar markeerpunten in cuts"
-
-msgid "priority"
-msgstr "prioriteit"
 
 msgid "provid:"
 msgstr "provid:"
@@ -17561,6 +17535,18 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "50 MB/s"
 #~ msgstr "50 MB/s"
 
+#~ msgid "AboutBoxInfo"
+#~ msgstr "About BoxInfo"
+
+#~ msgid "Activate MAC address configuration"
+#~ msgstr "Activeer MAC-adres configuratie"
+
+#~ msgid "Activate current configuration"
+#~ msgstr "Activeer huidige configuratie"
+
+#~ msgid "Activate network adapter configuration"
+#~ msgstr "Start de netwerkadapter configuratie"
+
 #~ msgid "Allow unstable (experimental) feeds"
 #~ msgstr "Accepteer onstabiele (experimentele) feeds"
 
@@ -17569,6 +17555,10 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Background delete speed"
 #~ msgstr "Snelheid verwijderen op de achtergrond"
+
+#, python-format
+#~ msgid "Build: %s"
+#~ msgstr "Build: %s"
 
 #~ msgid "CAID"
 #~ msgstr "CAID"
@@ -17598,8 +17588,17 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "D"
 #~ msgstr "3D"
 
+#~ msgid "Disable FCC during recordings"
+#~ msgstr "Schakel FCC uit tijdens opnames"
+
+#~ msgid "Disable Fast Channel Change"
+#~ msgstr "Schakel FCC uit"
+
 #~ msgid "ECM-Time"
 #~ msgstr "ECM Tijd"
+
+#~ msgid "Enable Fast Channel Change"
+#~ msgstr "Schakel FCC in"
 
 #, fuzzy
 #~ msgid "EtPortal"
@@ -17608,8 +17607,17 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Everywhere"
 #~ msgstr "Overal"
 
+#~ msgid "Exit MAC address configuration"
+#~ msgstr "Verlaat MAC-adres configuratie"
+
 #~ msgid "Exit movie player..."
 #~ msgstr "Moviespeler afsluiten..."
+
+#~ msgid "Exit nameserver configuration"
+#~ msgstr "Verlaat nameserver configuratie"
+
+#~ msgid "Exit network adapter configuration"
+#~ msgstr "Verlaat netwerkadapterconfiguratie"
 
 #, fuzzy
 #~ msgid "F"
@@ -17618,6 +17626,21 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #, python-format
 #~ msgid "FBC socket %s"
 #~ msgstr "FBC socket %s"
+
+#~ msgid "FCC enabled"
+#~ msgstr "FCC ingeschakeld"
+
+#~ msgid "FCCSetup"
+#~ msgstr "FCC Instellingen"
+
+#~ msgid "Fast Channel Change"
+#~ msgstr "Fast Channel Change"
+
+#~ msgid "Fast Channel Change Setup"
+#~ msgstr "Fast Channel Change instellingen"
+
+#~ msgid "Fast Channel Change setup"
+#~ msgstr "Fast Channel Change instellingen"
 
 #, python-format
 #~ msgid "Flash directory '%s' not allowed!"
@@ -17663,6 +17686,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ "\n"
 #~ "Volgorde en groepering van de help-info kan worden ingesteld in de gebruikersinterface."
 
+#~ msgid "History Prev/Next"
+#~ msgstr "Historie vorige/volgende"
+
 #
 #, fuzzy
 #~ msgid "I"
@@ -17678,6 +17704,13 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Internal hdd only"
 #~ msgstr "Alleen interne HDD"
 
+#, python-format
+#~ msgid "Last update: %s"
+#~ msgstr "Laatste update: %s"
+
+#~ msgid "Max channels"
+#~ msgstr "Max Kanalen"
+
 #~ msgid "No data received yet"
 #~ msgstr "Nog geen data ontvangen"
 
@@ -17689,6 +17722,12 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Polarisation:"
 #~ msgstr "Polarisatie:"
+
+#~ msgid "Press OK to set the MAC address."
+#~ msgstr "Druk op OK om MAC-adres in te stellen."
+
+#~ msgid "Receiver or driver does not support FCC"
+#~ msgstr "Ontvanger of driver ondersteunt geen FCC"
 
 #~ msgid "Select between entering an IP address or a domain."
 #~ msgstr "Kies tussen ingave van IP-adres of domein."
@@ -17716,6 +17755,10 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Subtitle selection..."
 #~ msgstr "Ondertitel-selectie..."
+
+#, python-format
+#~ msgid "Support at %s"
+#~ msgstr "Support op %s"
 
 #~ msgid "Symbolrate:"
 #~ msgstr "Symbolrate:"
@@ -17752,11 +17795,18 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Using fixed address"
 #~ msgstr "Gebruik een vast adres"
 
+#, python-format
+#~ msgid "ViX version: %s"
+#~ msgstr "ViX versie: %s"
+
 #~ msgid "Visual impaired commentary"
 #~ msgstr "Audiodescriptie voor slechtzienden"
 
 #~ msgid "When enabled the feeds and software updates may contain unstable experimental versions. Enable this at your own risk."
 #~ msgstr "Indien geactiveerd kunnen feeds en software updates die onstabiele, experimentele versies bevatten, gebruikt worden. Inschakelen geschiedt op uw eigen risico."
+
+#~ msgid "Zap Up/Down"
+#~ msgstr "Zap omhoog/omlaag"
 
 #~ msgid "alphabetic"
 #~ msgstr "alfabetisch"
@@ -17778,6 +17828,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "n/a"
 #~ msgstr "NVT"
+
+#~ msgid "priority"
+#~ msgstr "prioriteit"
 
 #~ msgid "reverse by date"
 #~ msgstr "omgekeerd chronologisch"

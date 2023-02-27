@@ -8,14 +8,14 @@ from Components.EpgListMulti import EPGListMulti
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.Sources.StaticText import StaticText
-from Screens.EpgSelectionBase import EPGBouquetSelection, EPGSelectionBase, EPGServiceNumberSelection, EPGServiceZap, epgActions, infoActions, okActions
+from Screens.EpgSelectionBase import EPGBouquetSelection, EPGSelectionBase, EPGServiceNumberSelection, EPGServiceZap, epgActions, infoActions, okActions, recActions
 from Screens.Setup import Setup
 from Screens.UserDefinedButtons import UserDefinedButtons
 
 
 class EPGSelectionMulti(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSelection, EPGServiceZap, UserDefinedButtons):
 	def __init__(self, session, zapFunc, startBouquet, startRef, bouquets, timeFocus=-1):
-		UserDefinedButtons.__init__(self, config.epgselection.multi, epgActions, okActions)
+		UserDefinedButtons.__init__(self, config.epgselection.multi, epgActions, infoActions, okActions, recActions)
 		EPGSelectionBase.__init__(self, session, config.epgselection.multi, startBouquet, startRef, bouquets)
 		EPGBouquetSelection.__init__(self, False)
 		EPGServiceNumberSelection.__init__(self)

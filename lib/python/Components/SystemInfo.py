@@ -10,7 +10,6 @@ from Tools.HardwareInfo import HardwareInfo
 
 SystemInfo = {}
 
-
 class BoxInformation:
 	def __init__(self, root=""):
 		self.immutableList = []
@@ -120,7 +119,6 @@ DISPLAYMODEL = BoxInfo.getItem("displaymodel")
 DISPLAYBRAND = BoxInfo.getItem("displaybrand")
 MACHINEBUILD = BoxInfo.getItem("machinebuild")
 
-
 def getBoxDisplayName():  # This function returns a tuple like ("BRANDNAME", "BOXNAME")
 	return (DISPLAYBRAND, DISPLAYMODEL)
 
@@ -143,12 +141,15 @@ def setRCFile(source):
 
 SystemInfo["HasRootSubdir"] = False	# This needs to be here so it can be reset by getMultibootslots!
 SystemInfo["RecoveryMode"] = False	# This needs to be here so it can be reset by getMultibootslots!
-SystemInfo["AndroidMode"] = False	# This needs to be here so it can be reset by getMultibootslots!	
+SystemInfo["AndroidMode"] = False	# This needs to be here so it can be reset by getMultibootslots!
 SystemInfo["HasMultibootMTD"] = False # This needs to be here so it can be reset by getMultibootslots!
+SystemInfo["HasKexecUSB"] = False	# This needs to be here so it can be reset by getMultibootslots!
+SystemInfo["HasKexecMultiboot"] = fileHas("/proc/cmdline", "kexec=1")	# This needs to be here so it can be tested by getMultibootslots!
+SystemInfo["HasKexecUSB"] = False	# This needs to be here so it can be reset by getMultibootslots!
 from Tools.Multiboot import getMultibootslots  # This import needs to be here to avoid a SystemInfo load loop!
 SystemInfo["HasHiSi"] = pathExists("/proc/hisi") and getBoxType() not in ("vipertwin", "viper4kv20", "viper4kv40", "sfx6008", "sfx6018")	# This needs to be for later checks
-SystemInfo["canMultiBoot"] = getMultibootslots()	
-# SystemInfo["MBbootdevice"] = device set in Tools/Multiboot.py 
+SystemInfo["canMultiBoot"] = getMultibootslots()
+# SystemInfo["MBbootdevice"] = device set in Tools/Multiboot.py
 # SystemInfo["MultiBootSlot"] = current slot set in Tools/Multiboot.py
 
 
@@ -174,7 +175,8 @@ def hasInitCam():
 			pass
 	return False
 
-
+SystemInfo["CanKexecVu"] = getBoxType() in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse", "vuzero4k") and not SystemInfo["HasKexecMultiboot"]
+SystemInfo["HasUsbhdd"] = {}
 SystemInfo["ArchIsARM"] = ARCHITECTURE.startswith(("arm", "cortex"))
 SystemInfo["ArchIsARM64"] = "64" in ARCHITECTURE
 SystemInfo["HasInitCam"] = hasInitCam()

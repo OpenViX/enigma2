@@ -17,7 +17,7 @@ from Screens.GitCommitInfo import CommitInfo
 from Screens.Screen import Screen, ScreenSummary
 from Screens.SoftwareUpdate import UpdatePlugin
 from Screens.TextBox import TextBox
-from Tools.Directories import pathExists, isPluginInstalled
+from Tools.Directories import fileExists, fileHas, pathExists, isPluginInstalled
 from Tools.Multiboot import GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
 
@@ -105,8 +105,12 @@ class About(AboutBase):
 			imageSubBuild = ".%s" % getImageDevBuild()
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (getImageVersion(), getImageBuild(), imageSubBuild, getImageType().title())
 
-		if BoxInfo.getItem("mtdbootfs") != "" and " " not in BoxInfo.getItem("mtdbootfs"):
-			AboutText += _("Boot Device:\t%s\n") % BoxInfo.getItem("mtdbootfs")
+		VuPlustxt = "Vu+ Multiboot - " if SystemInfo["HasKexecMultiboot"] else ""
+		if fileHas("/proc/cmdline", "rootsubdir=linuxrootfs0"):
+			AboutText += _("Boot Device: \tRecovery Slot\n")
+		else:
+			if BoxInfo.getItem("mtdbootfs") != "" and " " not in BoxInfo.getItem("mtdbootfs"):
+				AboutText += _("Boot Device:\t%s%s\n") % (VuPlustxt, BoxInfo.getItem("mtdbootfs"))
 
 		if SystemInfo["HasH9SD"]:
 			if "rootfstype=ext4" in open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read():
@@ -117,18 +121,15 @@ class About(AboutBase):
 
 		if SystemInfo["canMultiBoot"]:
 			slot = image = SystemInfo["MultiBootSlot"]
-			part = "eMMC slot %s" % slot
-			bootmode = ""
-			if SystemInfo["canMode12"]:
-				bootmode = "bootmode = %s" % GetCurrentImageMode()
-			print("[About] HasHiSi = %s, slot = %s" % (SystemInfo["HasHiSi"], slot))
 			if SystemInfo["HasHiSi"] and "sda" in SystemInfo["canMultiBoot"][slot]["root"]:
 				if slot > 4:
 					image -= 4
 				else:
 					image -= 1
-				part = "SDcard slot %s (%s) " % (image, SystemInfo["canMultiBoot"][slot]["root"])
-			AboutText += _("Image Slot:\t%s") % "Startup " + str(slot) + " - " + part + " " + bootmode + "\n"
+			slotType = {"eMMC": _("eMMC"), "SDCARD": _("SDCARD"), "USB": _("USB")}.get(SystemInfo["canMultiBoot"][slot]["slotType"].replace(" ", ""), SystemInfo["canMultiBoot"][slot]["slotType"].replace(" ", ""))
+			part = _("slot %s (%s)") % (slot, slotType)
+			bootmode = _("bootmode = %s") % GetCurrentImageMode() if SystemInfo["canMode12"] else ""
+			AboutText += (_("Image Slot:\tStartup %s - %s %s") % (str(slot), part, bootmode)) + "\n"
 
 		if getMachineName() in ("ET8500") and path.exists("/proc/mtd"):
 			self.dualboot = self.dualBoot()

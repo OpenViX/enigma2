@@ -1265,13 +1265,11 @@ class CCcamInfoConfigMenu(ConfigListScreen, Screen):
 			getConfigListEntry(_("Password:"), config.cccaminfo.password),
 			getConfigListEntry(_("Port:"), config.cccaminfo.port)])
 
-		self["actions"] = ActionMap(["CCcamInfoActions"], {"ok": self.okClicked, "cancel": self.exit}, -2)
+		self["actions"] = ActionMap(["CCcamInfoActions"], {"ok": self.okClicked, "cancel": self.close}, -2)
 
 	def okClicked(self):
 		self.close(CCcamInfoRemoteBox(config.cccaminfo.name.value, config.cccaminfo.ip.value, config.cccaminfo.username.value, config.cccaminfo.password.value, config.cccaminfo.port.value))
 
-	def exit(self):
-		self.close(None)
 
 #############################################################
 

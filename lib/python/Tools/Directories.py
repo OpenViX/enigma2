@@ -412,10 +412,11 @@ def getRecordingFilename(basename, dirname=None):
 			c = "_"
 		filename += c
 	# Max filename length for ext4 is 255 (minus 8 characters for .ts.meta)
-	# but must not truncate in the middle of a multi-byte utf8 character!
-	# So convert the truncation to unicode and back, ignoring errors, the
-	# result will be valid utf8 and so xml parsing will be OK.
-	filename = filename[:247]
+	# but we cannot leave the byte truncate in the middle of a
+	# multi-byte utf8 character!
+	# So convert to bytes, truncate then get back to unicode, ignoring
+	# errors along the way, the result will be valid unicode.
+	filename = filename.encode(encoding='utf-8', errors='ignore')[:247].decode(encoding='utf-8', errors='ignore')
 	if dirname is not None:
 		if not dirname.startswith("/"):
 			dirname = pathJoin(defaultRecordingLocation(), dirname)

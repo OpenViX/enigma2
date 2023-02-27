@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-01-11 11:34+0200\n"
+"PO-Revision-Date: 2023-02-26 13:22+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3073,7 +3073,7 @@ msgid "Cancelled upon user request"
 msgstr "Keskeytetty käyttäjän toimesta"
 
 msgid "Cannot delete current image"
-msgstr "Tiedostoa ei voi poistaa"
+msgstr "Nykyistä imagea ei voi poistaa"
 
 msgid "Cannot determine"
 msgstr "Ei voida määrittää"
@@ -3085,7 +3085,7 @@ msgid "Cannot move to the trash can"
 msgstr "Ei voida siirtää roskakoriin"
 
 msgid "Cannot reboot to deleted image"
-msgstr "Ei voi käynnistää poistettuuun imageen"
+msgstr "Ei voi käynnistää poistettuun imageen"
 
 msgid "Capabilities: "
 msgstr "Kapasiteetit: "
@@ -3733,7 +3733,7 @@ msgid "Configure the font size of the subtitles."
 msgstr "Määrittää tekstityksen koon."
 
 msgid "Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size."
-msgstr "Määritä tekstin koko suhteessa teeman määritykseen, joten 1 suurentaa koko yhdellä merkkikoolla ja -1 pienentää yhdellä"
+msgstr "Määritä tekstin koko suhteessa teeman määritykseen, joten 1 suurentaa kokoa yhdellä merkkikoolla ja -1 pienentää yhdellä"
 
 msgid "Configure the fourth audio language."
 msgstr "Määrittää neljännen äänen kielen."
@@ -4138,6 +4138,9 @@ msgstr "Kroatia"
 
 msgid "Cron Manager"
 msgstr "Cron-manageri"
+
+msgid "Cron Manager Setup"
+msgstr "Cron-managerin asetukset"
 
 msgid "Cron Timers"
 msgstr "Cron-ajastukset"
@@ -5979,10 +5982,10 @@ msgid "Fallback address type"
 msgstr "Etävastaanottimen osoitetyyppi"
 
 msgid "Fallback receiver IP address"
-msgstr "Etälaitteen IP-osoite"
+msgstr "Etävastaanottimen IP-osoite"
 
 msgid "Fallback receiver streaming port"
-msgstr "Etäaitteen striimausportti"
+msgstr "Etävastaanottimen striimausportti"
 
 msgid "Fallback remote receiver URL"
 msgstr "Etävastaanottimen URL-osoite"
@@ -6649,9 +6652,6 @@ msgstr "HDR, 12bit 4:2:0/4:2:2, ei PIP"
 
 msgid "HDR10 Support"
 msgstr "HDR10 Tuki"
-
-msgid "HELP"
-msgstr "APUA"
 
 msgid "HH:mm"
 msgstr "HH:mm"
@@ -9877,7 +9877,7 @@ msgid "Plugin manager activity information"
 msgstr "Lisäosien hallinnan asennustiedot"
 
 msgid "Plugin manager help"
-msgstr "Lisäosien hallinan ohje"
+msgstr "Lisäosien hallinnan ohje"
 
 msgid "Plugins"
 msgstr "Plugin-lisäosat"
@@ -10021,7 +10021,7 @@ msgid "PowerControl FrontDisplay Standby Mode"
 msgstr "Etupaneelin virranhallinta valmiustila"
 
 msgid "PowerControl FrontDisplay Suspend Mode"
-msgstr "Etupaneelin virranhallinta jäädytydtila"
+msgstr "Etupaneelin virranhallinta jäädytystila"
 
 msgid "Powerboating"
 msgstr "Moottoriveneily"
@@ -10439,7 +10439,7 @@ msgid "Really reboot into Android Mode?"
 msgstr "Haluatko silti käynnistää uudelleen Android-tilaan?"
 
 msgid "Really reboot into Recovery Mode?"
-msgstr "Haluatko silti käynnistää uudelleen Palautus-tilaan?"
+msgstr "Haluatko silti käynnistää uudelleen Palautustilaan?"
 
 msgid "Really reboot now?"
 msgstr "Haluatko silti käynnistää uudelleen?"
@@ -10554,7 +10554,7 @@ msgid "Recordings, Playback & Timeshift"
 msgstr "Tallennus, toisto ja ajansiirto"
 
 msgid "Recovery Mode"
-msgstr "Palautus-tila"
+msgstr "Palautustila"
 
 msgid "Red"
 msgstr "Punainen"
@@ -11361,7 +11361,7 @@ msgid "Search by first letter of name"
 msgstr "Hae nimen ensimmäisellä kirjaimella"
 
 msgid "Search by name (SMS-style entry on remote)"
-msgstr "Hae nimellä (SMS-tyylinen kaukosäätimen sisääntulo"
+msgstr "Hae nimellä (SMS-tyylinen merkintä kaukosäätimellä)"
 
 msgid "Search channel list, SMS style 2ABC"
 msgstr "Hae kanavalistaa, SMS-tyylinen 2ABC"
@@ -12788,12 +12788,12 @@ msgid "Slot %s / FBC virtual %s"
 msgstr "Korttipaikka %s / FBC virtuaalinen %s"
 
 #, python-format
-msgid "Slot%s %s: %s - %s mode%s"
-msgstr "Paikka%s %s: %s - %s tila%s"
+msgid "Slot%s %s %s: %s - %s mode%s"
+msgstr "Paikka%s %s %s: %s - %s tila%s"
 
 #, python-format
-msgid "Slot%s %s: %s%s"
-msgstr "Paikka%s %s: %s%s"
+msgid "Slot%s %s %s: %s%s"
+msgstr "Paikka%s %s %s: %s%s"
 
 msgid "Slovak"
 msgstr "Slovakia"
@@ -13518,7 +13518,7 @@ msgid "T2MI RAW Mode"
 msgstr "T2MI RAW-tila"
 
 msgid "TB"
-msgstr "Tt"
+msgstr "TB"
 
 msgid "TEXT"
 msgstr "TEKSTI"
@@ -13529,7 +13529,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"11.01.2022\n"
+"26.02.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -15963,7 +15963,7 @@ msgstr "%s %s käynnistyy uudelleen Android-tilaan"
 
 #, python-format
 msgid "Your %s %s is rebooting into Recovery Mode"
-msgstr "%s %s käynnistyy uudelleen Palautus-tilaan"
+msgstr "%s %s käynnistyy uudelleen Palautustilaan"
 
 #, python-format
 msgid "Your %s %s is shutting down"
@@ -17555,111 +17555,302 @@ msgstr ""
 "Virhe:\n"
 "%s"
 
-#~ msgid "10 MB/s"
-#~ msgstr "10 Mt/s"
+msgid "No MAC interface found"
+msgstr "MAC-liitäntää ei löydy"
 
-#~ msgid "100 MB/s"
-#~ msgstr "100 Mt/s"
+msgid "NetworkInadynSetup"
+msgstr "Inadyn-verkon asetukset"
 
-#~ msgid "20 MB/s"
-#~ msgstr "20 Mt/s"
+msgid "Vu Kexec add USB"
+msgstr "Vu Kexec lisää USB"
 
-#~ msgid "50 MB/s"
-#~ msgstr "50 Mt/s"
+msgid "Initialise a Kexec usb EXT4 slot"
+msgstr "Alusta Kexec USB EXT4 -paikka"
 
-#~ msgid "Background delete option"
-#~ msgstr "Taustalla poistaminen"
+msgid "[MultiBootSelector][Kexec USB add slot] - No EXT4 USB attached."
+msgstr "[Multiboot valitsin][Kexec USB lisää paikka] - EXT4 USB ei yhdistetty."
 
-#~ msgid "Background delete speed"
-#~ msgstr "Taustalla poistamisen nopeus"
+msgid "Size: "
+msgstr "Koko: "
 
-#~ msgid "Clear HDMI-CEC fixed address"
-#~ msgstr "Tyhjennä HDMI-CEC kiinteä osoite"
+msgid "[MultiBootSelector][Kexec USB add slot] - The USB (%s) must be at least 10MB."
+msgstr "[Multiboot valitsin][Kexec USB lisää paikka] - USB:n (%s) pitää olla vähintään 10MB."
 
-#~ msgid "Clear fixed"
-#~ msgstr "Tyhjennä kiinteä"
+msgid "[MultiBootSelector][Kexec USB STARTUP] - created Vu+ Kexec STARTUP slots for %s."
+msgstr "[Multiboot valitsin][Kexec USB käynnistys] - luotu Vu+ Kexec käynnistyspaikat %s:lle."
 
-#~ msgid "Configure on which devices the background delete option should be used."
-#~ msgstr "Määritä millä laitteilla tallenteiden taustalla poistoa käytetään."
+msgid "Vu+ MultiBoot Manager"
+msgstr "Vu+ Multiboot hallinta"
 
-#~ msgid "Configure the speed of the background deletion process. Lower speed will consume less hard disk drive performance."
-#~ msgstr "Määrittää taustallatuhoamis-prosessin nopeuden. Matalampi nopeus kuormittaa vähemmän kovalevyä."
+msgid "Press Green key to enable MultiBoot."
+msgstr "Paina Vihreää näppäintä ottaaksesi MultiBoot:n käyttöön."
 
-#~ msgid "Current CEC address"
-#~ msgstr "Käytettävä CEC-osoite"
+msgid "Init Vu+ MultiBoot"
+msgstr "Alusta Vu+ Multiboot"
 
-#, python-format
-#~ msgid "Directory '%s' not valid. Partition not a supported file system."
-#~ msgstr "Hakemisto '%s' ei ole käypä. Partitio ei ole tuettu tiedostomuoto."
+msgid "Vu+ MultiBoot Inititialisation - will reboot after 10 seconds."
+msgstr "Vu+ Multiboot alustus - käynnistyy uudelleen 10 sekunnin kuluttua."
 
-#~ msgid "Everywhere"
-#~ msgstr "Kaikkialla"
+msgid "Enable Vu+ MultiBoot"
+msgstr "Ota Vu+ Multiboot käyttöön"
 
-#~ msgid "HDMI-CEC address editing actions"
-#~ msgstr "HDMI-CEC -osoitteen asetukset"
+msgid "Add Extra USB slots"
+msgstr "Lisää lisä USB-paikkoja"
 
-#~ msgid "Internal hdd only"
-#~ msgstr "Vain sisäinen kiintolevy"
+msgid "Create USB Multiboot"
+msgstr "Luo USB-Multiboot"
 
-#~ msgid "No data received yet"
-#~ msgstr "Dataa ei ole vielä vastaanotettu"
+msgid "[MultiBootSelector][add USB STARTUP slots] - No EXT4 USB attached."
+msgstr "[Multiboot valitsin][lisää USB-Käynnistyspaikkoja] - EXT4 USB ei yhdistetty."
 
-#~ msgid "Select between entering an IP address or a domain."
-#~ msgstr "Valitse syöttämällä IP-osoite tai toimialue."
+msgid "[MultiBootSelector][add USB STARTUP slots] - The USB (%s) only has %s free. At least 1024MB is required."
+msgstr "[Multiboot valitsin][lisää USB-Käynnistyspaikkoja] - USB (%s), vapaa tila %s. Vapaata pitää olla vähintään 1024MB."
 
-#~ msgid "Select directory for logfile"
-#~ msgstr "Valitse lokitiedoston hakemisto"
+msgid "ABOUT"
+msgstr "TIETOJA"
 
-#~ msgid "Service type 4097 incorrect for PiP!"
-#~ msgstr "Palvelun tyyppi 4097 virheellinen PiP:lle!"
+msgid "ARROWLEFT"
+msgstr "VASEN NUOLI"
 
-#~ msgid "Set HDMI-CEC fixed address"
-#~ msgstr "Aseta HDMI-CEC:lle kiinteä osoite"
+msgid "ARROWRIGHT"
+msgstr "OIKEA NUOLI"
 
-#~ msgid "Set fixed"
-#~ msgstr "Aseta kiinteäksi"
+msgid "AUDIO"
+msgstr "AUDIO"
 
-#~ msgid "Set pin code persistent"
-#~ msgstr "Aseta PIN-koodi katselulle"
+msgid "AUTOTIMER"
+msgstr "AUTOMAATTIAJASTUS"
 
-#~ msgid "Skin Setup"
-#~ msgstr "Teeman valinta"
+msgid "BACK"
+msgstr "TAKAISIN"
 
-#~ msgid "There are no items currently available for this screen."
-#~ msgstr "Tälle näytölle ei ole kohteita."
+msgid "BLUE"
+msgstr "SININEN"
 
-#~ msgid "Using fixed address"
-#~ msgstr "Käytössä kiinteä osoite"
+msgid "BOUQUET+"
+msgstr "CH+"
 
-#~ msgid "alpha then oldest"
-#~ msgstr "aakkosjärjestys, vanhin ensin"
+msgid "BOUQUET-"
+msgstr "CH-"
 
-#~ msgid "alphabetic"
-#~ msgstr "aakkosjärjestys"
+msgid "CONTEXT"
+msgstr "KONTEKSTI"
 
-#~ msgid "alphabetic reverse"
-#~ msgstr "käänteinen aakkosjärjestys"
+msgid "DOWN"
+msgstr "ALAS"
 
-#~ msgid "alpharev then newest"
-#~ msgstr "käänteinen aakkosjärjestys, uusin ensin"
+msgid "EJECTCD"
+msgstr "POISTA CD"
 
-#~ msgid "by date"
-#~ msgstr "Aikajärjestys"
+msgid "END"
+msgstr "LOPPU"
 
-#~ msgid "flat alphabetic reverse"
-#~ msgstr "Käänteinen aakkosjärjestys, kansionäkymä"
+msgid "ENTER"
+msgstr "SYÖTÄ"
 
-#~ msgid "longest"
-#~ msgstr "pisin"
+msgid "EPGSETUP"
+msgstr "EPG ASETUKSET"
 
-#~ msgid "movie/drama (general)"
-#~ msgstr "elokuva/draama (yleinen)"
+msgid "EXIT"
+msgstr "POISTU"
 
-#~ msgid "recordings by date then other media by name"
-#~ msgstr "Tallennukset päiväyksen mukaan, muu media nimen mukaan"
+msgid "FASTFORWARD"
+msgstr "NOPEASTI ETEENPÄIN"
 
-#~ msgid "reverse by date"
-#~ msgstr "Käänteinen aikajärjestys"
+msgid "FAV"
+msgstr "SUOSIKKI"
 
-#~ msgid "shortest"
-#~ msgstr "lyhyin"
+msgid "FAVORITES"
+msgstr "SUOSIKIT"
+
+msgid "FORWARD"
+msgstr "ETEENKELAUS"
+
+msgid "GREEN"
+msgstr "VIHREÄ"
+
+msgid "HELP"
+msgstr "HELP"
+
+msgid "HISTORY"
+msgstr "HISTORIA"
+
+msgid "HOME"
+msgstr "KOTI"
+
+msgid "HOMEPAGE"
+msgstr "KOTISIVU"
+
+msgid "LAN"
+msgstr "LAN"
+
+msgid "LEFT"
+msgstr "VASEN"
+
+msgid "LIST"
+msgstr "LISTA"
+
+msgid "MEDIA"
+msgstr "MEDIA"
+
+msgid "MUTE"
+msgstr "VAIMENNA"
+
+msgid "NEXTSONG"
+msgstr "SEURAAVA KAPPALE"
+
+msgid "OPTION"
+msgstr "VALINTA"
+
+msgid "PAGEDOWN"
+msgstr "SIVU ALAS"
+
+msgid "PAGEUP"
+msgstr "SIVU YLÖS"
+
+msgid "PAUSE"
+msgstr "TAUKO"
+
+msgid "PLAY"
+msgstr "TOISTA"
+
+msgid "PLAYLIST"
+msgstr "SOITTOLISTA"
+
+msgid "PLAYPAUSE"
+msgstr "TOISTA/TAUKO"
+
+msgid "PLUGIN"
+msgstr "LISÄOSA"
+
+msgid "PORTAL"
+msgstr "PORTAALI"
+
+msgid "POWER"
+msgstr "VIRTA"
+
+msgid "POWER2"
+msgstr "VIRTA2"
+
+msgid "PREVIOUSSONG"
+msgstr "EDELLINEN KAPPALE"
+
+msgid "PVR"
+msgstr "PVR"
+
+msgid "RADIO"
+msgstr "RADIO"
+
+msgid "RECALL"
+msgstr "PALAUTA"
+
+msgid "RECORD"
+msgstr "TALLENNA"
+
+msgid "RED"
+msgstr "PUNAINEN"
+
+msgid "REWIND"
+msgstr "TAKAISINKELAUS"
+
+msgid "RIGHT"
+msgstr "OIKEA"
+
+msgid "SAT"
+msgstr "SAT"
+
+msgid "SCREEN"
+msgstr "NÄYTTÖ"
+
+msgid "SETUP"
+msgstr "ASETUKSET"
+
+msgid "SLEEP"
+msgstr "SAMMUTUS"
+
+msgid "SLOW"
+msgstr "HIDAS"
+
+msgid "STOP"
+msgstr "PYSÄYTÄ"
+
+msgid "SUBTITLE"
+msgstr "TEKSTITYS"
+
+msgid "SUSPEND"
+msgstr "JÄÄDYTYSTILA"
+
+msgid "TIMER"
+msgstr "AJASTIN"
+
+msgid "TIMESHIFT"
+msgstr "AJANSIIRTO"
+
+msgid "UP"
+msgstr "YLÖS"
+
+msgid "VIDEO"
+msgstr "VIDEO"
+
+msgid "VKEY"
+msgstr "VKEY"
+
+msgid "VMODE"
+msgstr "VMODE"
+
+msgid "VOL+"
+msgstr "VOL+"
+
+msgid "VOL-"
+msgstr "VOL-"
+
+msgid "WAKEUP"
+msgstr "HERÄTYS"
+
+msgid "WIZTV"
+msgstr "WIZTV"
+
+msgid "YELLOW"
+msgstr "KELTAINEN"
+
+msgid "ZOOM"
+msgstr "SUURENNA"
+
+msgid "Boot Device%s:\t%s\n"
+msgstr "Boot-laite%s:\t%s\n"
+
+msgid "[MultiBootSelector][Vu+ USB STARTUP] - created STARTUP slots for %s."
+msgstr "[Multiboot valitsin][Vu+ USB Käynnistys] - luotu Käynnistyspaikat %s:lle."
+
+msgid "[VuplusKexec][create Vu Multiboot environment] - Unable to complete, Vu+ Multiboot files missing"
+msgstr "[VuplusKexec][luo Vu Multiboot ympäristö] - Ei saa tehtyä, Vu+ Multiboot -tiedostot puuttuvat"
+
+msgid "Boot Device: \tRecovery Slot\n"
+msgstr "Boot-laite: \tPalautuspaikka\n"
+
+msgid "Add Multiboot USB"
+msgstr "Lisää Multiboot-USB"
+
+msgid "slot %s (%s)"
+msgstr "paikka %s (%s)"
+
+msgid "bootmode = %s"
+msgstr "boot-moodi = %s"
+
+msgid "Image Slot:\tStartup %s - %s %s"
+msgstr "Imagen paikka:\tKäynnistys %s - %s %s"
+
+msgid "Boot Device:\t%s%s\n"
+msgstr "Boot-laite:\t%s%s\n"
+
+msgid "Add 4 more Vu+ Multiboot USB slots after slot %s ?"
+msgstr "Lisää 4 Vu+ Multiboot USB-paikkaa paikan %s jälkeen ?"
+
+msgid "%s%s - Select to access recovery options"
+msgstr "%s%s - Valitse, jos haluat käyttää palautusasetuksia"
+
+msgid "Cannot delete empty slot"
+msgstr "Tyhjää paikkaa ei voi poistaa"
+
+msgid "Cannot delete slot0 image"
+msgstr "Paikan 0 imagea ei voi poistaa"
