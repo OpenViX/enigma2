@@ -624,9 +624,38 @@ class VIXImageManager(Screen):
 	def infoText(self):
 		# add info text sentence by sentence to make translators job easier
 		return " ".join([
-			_("Sentence one."),
-			_("Sentence two."),
-			_("Etc, etc, etc.")])
+			_("FULL IMAGE BACKUP"),
+			"\n" +
+			_("A full image backup can be created at any time."),
+			_("The backup creates a snapshot of the image exactly as it is at the current instant."),
+			_("It allows making changes to the box with the knowledge that the box can be safely reverted back to a previous known working state."),
+			_("To make an image backup select GREEN from Image Manager main screen."),
+			"\n\n" +
+			_("IMAGE DOWNLOADS"),
+			"\n" +
+			_("Image Manager allows downloading images from OpenViX image server and from a range of other distros."),
+			_("To be able to download any image local storage must already be configured, HDD, USB or SD, and also be selected as the 'Backup location' in Image Manager setup menu."),
+			_("To start a download select YELLOW from Image Manager main screen, then select the distro, and finally which image to download."),
+			_("The image will then be downloaded to the 'Backup location'."),
+			_("Please note, images are large, generally over 100 MB so downloading over a slow or unstable connection is prohibitive."),
+			_("Also, instead to downloading, it is possible to send an image to the 'Backup location' by FTP."),
+			"\n\n" +
+			_("FLASHING"),
+			"\n" +
+			_("Before flashing an image 'Automatic settings backup' should be enabled in Image Manager setup menu."),
+			_("This will make a backup of the current settings and plugins which can be used later when setting up the new image in the First Install Wizard."),
+			_("To flash an image first select it from the list of images in the Image Manager main screen (the image will need to have already been downloaded) and then press BLUE."),
+			_("After confirming, an automatic backup will be made and then the image will be flashed."),
+			_("Upon completion the receiver will reboot and display the First Install Wizard."),
+			_("From here the settings backup and plugins can be restored just by selecting that option."),
+			"\n\n" +
+			_("RECOVERY MODE"),
+			"\n" +
+			_("This only applies to a handful of Vu+ 4K models."),
+			_("Backups of the RECOVERY image will contain a copy of all the client images."),
+			_("When flashing from the recovery image it is possible to flash it to the recovery slot."),
+			_("The new image will overwrite the previous one including any client images that were also configured, so care needs to be taken to make any full image backups (including client images) before overwriting the recovery image."),
+			])
 
 	def showInfo(self):
 		self.session.open(TextBox, self.infoText(), self.title + " - " + _("info"))
