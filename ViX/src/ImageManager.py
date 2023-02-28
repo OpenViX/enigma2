@@ -364,7 +364,7 @@ class VIXImageManager(Screen):
 		if self.sel is not None:
 			self["list"].instance.moveSelectionTo((len(self["list"].list) > self["list"].getSelectionIndex() + 2) and self["list"].getSelectionIndex() or 0) # hold the selection current possition if the list is long enough
 			try:
-				# print("[ImageManager][keyDelet] selected image=%s" % (self.sel[1]))
+				# print("[ImageManager][keyDelete] selected image=%s" % (self.sel[1]))
 				if self.sel[1].endswith(".zip"):
 					remove(self.sel[1])
 				else:
@@ -455,7 +455,6 @@ class VIXImageManager(Screen):
 			self.multibootslot = 0												# set slot0 to be flashed
 			self.Console.ePopen("umount /proc/cmdline", self.keyRestore3)		# tell ofgwrite not Vu Multiboot
 		else:
-			self.session.open(MessageBox, _("You have decided not to flash image."), MessageBox.TYPE_INFO, timeout=10)
 			self.keyRestore1()
 		
 	def keyRestore1(self):
@@ -469,9 +468,9 @@ class VIXImageManager(Screen):
 		if not recordings:
 			next_rec_time = self.session.nav.RecordTimer.getNextRecordingTime()
 		if recordings or (next_rec_time > 0 and (next_rec_time - time()) < 360):
-			self.message = _("Recording(s) are in progress or coming up in few seconds!\nDo you still want to flash image\n%s?") % self.sel[0]
+			message = _("Recording(s) are in progress or coming up in few seconds!\nDo you still want to flash image\n%s?") % self.sel[0]
 		else:
-			self.message = _("Do you want to flash image\n%s") % self.sel[0]
+			message = _("Do you want to flash image\n%s") % self.sel[0]
 		if SystemInfo["canMultiBoot"] is False:
 			if config.imagemanager.autosettingsbackup.value:
 				self.doSettingsBackup()
@@ -485,7 +484,7 @@ class VIXImageManager(Screen):
 		currentimageslot = SystemInfo["MultiBootSlot"]
 		for x in imagedict.keys():
 			choices.append(((_("slot%s %s - %s (current image)") if x == currentimageslot else _("slot%s %s - %s")) % (x, SystemInfo["canMultiBoot"][x]["slotname"], imagedict[x]["imagename"]), (x)))
-		self.session.openWithCallback(self.keyRestore2, MessageBox, self.message, list=choices, default=currentimageslot, simple=True)
+		self.session.openWithCallback(self.keyRestore2, MessageBox, message, list=choices, default=currentimageslot, simple=True)
 
 	def keyRestore2(self, retval):
 		if retval:
@@ -504,8 +503,6 @@ class VIXImageManager(Screen):
 					self.keyRestore3()
 			else:
 				self.session.open(MessageBox, _("There is no image to flash."), MessageBox.TYPE_INFO, timeout=10)
-		else:
-			self.session.open(MessageBox, _("You have decided not to flash image."), MessageBox.TYPE_INFO, timeout=10)
 
 	def keyRestore3(self, *args, **kwargs):
 		self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares."), MessageBox.TYPE_INFO, timeout=240, enable_input=False)
