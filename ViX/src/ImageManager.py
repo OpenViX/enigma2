@@ -441,11 +441,10 @@ class VIXImageManager(Screen):
 		if not self.sel:
 			return
 		print("[ImageManager][keyRestore] self.sel SystemInfo['MultiBootSlot']", self.sel[0], "   ", SystemInfo["MultiBootSlot"])				
-		if SystemInfo["MultiBootSlot"] == 0 and self.sel[0].startswith(("openvix", "openbh")):
-			if "VuSlot0" in self.sel[0] or "release" in self.sel[0] or "developer" in self.sel[0]:  		
-				message = _("Do you want to flash slot0?\nThis will change all eMMC slots.") if "VuSlot0" in self.sel[0] else _("Do you want to flash slot0?\nThis will remove Vu Multiboot and erase all eMMC slots.") 
-				ybox = self.session.openWithCallback(self.keyRestorez0, MessageBox, message, MessageBox.TYPE_YESNO) 
-				ybox.setTitle(_("Restore confirmation"))		
+		if SystemInfo["MultiBootSlot"] == 0 and self.isVuKexecCompatibleImage(self.sel[0]): # only if Vu multiboot has been enabled and the image is compatible
+			message = (_("Do you want to flash slot0?\nThis will change all eMMC slots.") if "VuSlot0" in self.sel[0] else _("Do you want to flash slot0?\nThis will remove Vu Multiboot and erase all eMMC slots.")) + "\n" + _("Select 'no' to flash to a different slot.") 
+			ybox = self.session.openWithCallback(self.keyRestorez0, MessageBox, message, default=False) 
+			ybox.setTitle(_("Restore confirmation"))		
 		else:
 			self.keyRestore1()		
 
@@ -484,7 +483,7 @@ class VIXImageManager(Screen):
 		currentimageslot = SystemInfo["MultiBootSlot"]
 		for x in imagedict.keys():
 			choices.append(((_("slot%s %s - %s (current image)") if x == currentimageslot else _("slot%s %s - %s")) % (x, SystemInfo["canMultiBoot"][x]["slotname"], imagedict[x]["imagename"]), (x)))
-		self.session.openWithCallback(self.keyRestore2, MessageBox, message, list=choices, default=currentimageslot, simple=True)
+		self.session.openWithCallback(self.keyRestore2, MessageBox, message, list=choices, default=False, simple=True)
 
 	def keyRestore2(self, retval):
 		if retval:
@@ -524,7 +523,7 @@ class VIXImageManager(Screen):
 			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("Flash image unzip successful."), MessageBox.TYPE_INFO, timeout=4)
 			if getMachineMake() == "et8500" and self.dualboot:
 				message = _("ET8500 Multiboot: Yes to restore OS1 No to restore OS2:\n ") + self.sel[1]
-				ybox = self.session.openWithCallback(self.keyRestore5_ET8500, MessageBox, message, MessageBox.TYPE_YESNO)
+				ybox = self.session.openWithCallback(self.keyRestore5_ET8500, MessageBox, message)
 				ybox.setTitle(_("ET8500 Image Restore"))
 			else:
 				MAINDEST = "%s/%s" % (self.TEMPDESTROOT, getImageFolder())
@@ -620,6 +619,23 @@ class VIXImageManager(Screen):
 				return True
 			else:
 				return False
+
+	def isVuKexecCompatibleImage(self, name):
+		retval = False
+		if "VuSlot0" in name:
+			retval = True
+		else:
+			name_split = name.split("-")
+			if len(name_split) > 1 and name_split[0] in ("openbh", "openvix") and name[-8:] == "_usb.zip": # "_usb.zip" only in build server images
+				parts = name_split[1].split(".")
+				if len(parts) > 1 and parts[0].isnumeric() and parts[1].isnumeric():
+					version = float(parts[0] + "." + parts[1])
+					if name_split[0] == "openbh" and version > 5.1:
+						retval = True
+					if name_split[0] == "openvix" and (version > 6.3 or version == 6.3 and len(parts) > 2 and parts[2].isnumeric() and int(parts[2]) > 2): # greater than 6.2.002
+						retval = True
+		return retval
+
 
 	def infoText(self):
 		# add info text sentence by sentence to make translators job easier
