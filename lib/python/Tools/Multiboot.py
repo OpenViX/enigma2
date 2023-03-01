@@ -19,7 +19,7 @@ class tmp:
 def getMultibootslots():
 	bootslots = {}
 	slotname = ""
-	SystemInfo["MultiBootSlot"] = False
+	SystemInfo["MultiBootSlot"] = None
 	SystemInfo["VuUUIDSlot"] = ""
 	UUID =	""
 	UUIDnum = 0
