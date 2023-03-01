@@ -1,5 +1,3 @@
-from datetime import datetime
-from glob import glob
 from os import path, remove, walk, stat, rmdir
 from time import time, ctime
 
@@ -13,7 +11,6 @@ from Components.FileList import FileList, MultiFileSelectList
 from Components.GUIComponent import GUIComponent
 from Components.Label import Label
 from Components.MenuList import MenuList
-from Components.ScrollLabel import ScrollLabel
 import Components.Task
 from Components.VariableText import VariableText
 from Screens.MessageBox import MessageBox
