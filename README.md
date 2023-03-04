@@ -90,24 +90,17 @@
 
 
 ----------
-13 - Update site.conf
-
-    - BB_NUMBER_THREADS, PARALLEL_MAKE set to number of threads supported by the CPU
-    - add/modify DL_DIR = " location for build sources " to point to a location where you can save derived build sources,
-    this will reduce build time in fetching these sources again.
-
-----------
-14 - Building image with feeds  e.g.:-
+13 - Building image with feeds  e.g.:-
 
 	MACHINE=vuultimo4k DISTRO=openvix DISTRO_TYPE=release make image
 
 ----------
-15 - Building an image without feeds (Build time 1-2h)
+14 - Building an image without feeds (Build time 1-2h)
 
     MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make enigma2-image
 
 ----------
-16 - Building feeds only
+15 - Building feeds only
 
     MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make feeds
 
