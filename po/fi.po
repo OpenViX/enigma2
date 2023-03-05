@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-02-26 13:22+0200\n"
+"PO-Revision-Date: 2023-03-05 09:00+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3937,7 +3937,7 @@ msgid "Connection using the supplied FTP parameters failed. Please recheck the d
 msgstr "Yhdistäminen annetuilla parametreillä epäonnistui. Tarkista asetukset ja yritä uudelleen."
 
 msgid "Constellation & FFT mode"
-msgstr "Konstellaatio & FFT"
+msgstr "Konstellaatio & FFT-tila"
 
 msgid "Consult your SCR device spec sheet for this information."
 msgstr "Katso SCR-laitteen ohjeista tämä tieto."
@@ -6075,7 +6075,7 @@ msgstr ""
 "Syötä käyttäjänimi/salasana manuaalisesti."
 
 msgid "Filename"
-msgstr "Tiedostonnimi"
+msgstr "Tiedostonimi"
 
 msgid "Filesystem Check"
 msgstr "Tiedostojärjestelmän tarkistus"
@@ -11945,7 +11945,7 @@ msgid "Service off-air"
 msgstr "Kanavalla ei ohjelmaa"
 
 msgid "Service reference"
-msgstr "Referenssi"
+msgstr "Kanavan referenssi"
 
 msgid "Service scan"
 msgstr "Kanavahaku"
@@ -13529,7 +13529,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"26.02.2023\n"
+"05.03.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -17854,3 +17854,60 @@ msgstr "Tyhjää paikkaa ei voi poistaa"
 
 msgid "Cannot delete slot0 image"
 msgstr "Paikan 0 imagea ei voi poistaa"
+
+msgid "Extended PID info"
+msgstr "Laajennetut PID-tiedot"
+
+msgid "Basic PID info"
+msgstr "Perus PID-tiedot"
+
+msgid "Tuner setting values"
+msgstr "Virittimen asetusarvot"
+
+msgid "Service info - tuner setting values"
+msgstr "Kanavan tietoja - virittimen asetusarvot"
+
+msgid "Service info"
+msgstr "Kanavan tietoja"
+
+msgid "Service info - service & PIDs"
+msgstr "Kanavan tietoja - kanava & PID:t"
+
+msgid "Codec & lang"
+msgstr "Koodekki & kieli"
+
+msgid "Namespace & Orbital pos."
+msgstr "Nimiavaruus & sijainti kiertoradalla"
+
+msgid "Audio PID%s, codec & lang"
+msgstr "Äänen PID%s, koodekki & kieli"
+
+msgid "Audio PID, codec & lang"
+msgstr "Äänen PID, koodekki & kieli"
+
+msgid "Service info - service & Basic PID Info"
+msgstr "Kanavan tietoja - kanava & perus PID-tiedot"
+
+msgid "Service info - service & Extended PID Info"
+msgstr "Kanavan tietoja - kanava & laajennetut PID-tiedot"
+
+msgid "DVB Subtitles PID & lang"
+msgstr "DVB-tekstityksien PID & kieli"
+
+msgid "TXT Subtitles page & lang"
+msgstr "TXT-tekstityksien sivu & kieli"
+
+msgid "Other Subtitles & lang"
+msgstr "Muut tekstitykset & kieli"
+
+msgid "Service info - tuner live values"
+msgstr "Kanavan tietoja - virittimen tilatiedot"
+
+msgid "Service info - ECM Info"
+msgstr "Kanavan tietoja - ECM-tiedot"
+
+msgid "active"
+msgstr "aktiivinen"
+
+msgid "No ECMPids available (FTA Service)"
+msgstr "ECMPid:jä ei saatavilla (FTA-kanava)"
