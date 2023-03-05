@@ -54,6 +54,7 @@ def getMountDefault(choices):
 
 
 def __onPartitionChange(*args, **kwargs):
+	global choices
 	choices = getMountChoices()
 	config.imagemanager.backuplocation.setChoices(choices=choices, default=getMountDefault(choices))
 
@@ -182,7 +183,7 @@ class VIXImageManager(Screen):
 		if SystemInfo["canMultiBoot"]:
 			self.mtdboot = SystemInfo["MBbootdevice"]
 		self.onChangedEntry = []
-		if getMountChoices():
+		if choices:
 			self["list"] = MenuList(list=[((_("No images found on the selected download server...if password check validity")), "Waiter")])		
 
 		else:
