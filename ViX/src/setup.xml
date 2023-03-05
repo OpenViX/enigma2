@@ -20,6 +20,7 @@
     </setup>
     <setup key="viximagemanager" title="Image manager settings" titleshort="Settings">
         <item level="1" text="Automatic settings backup" description="Create a settings backup before updating.">config.imagemanager.autosettingsbackup</item>
+        <item level="2" text="Extensive search" description="Locations searched when creating the images list. Select 'yes' to search all likely locations on your system where images may be located. Select 'no' to limit the search to just the user selected backup location.">config.imagemanager.extensive_location_search</item>
         <item level="2" text="Backup location" description="Location of where the image backup should be saved.">config.imagemanager.backuplocation</item>
         <item level="2" text="Backup prefix" description="Allows you to give your image filename a custom prefix.">config.imagemanager.folderprefix</item>
         <item level="2" text="Schedule backups" description="Allows you to schedule your image backups.">config.imagemanager.schedule</item>
