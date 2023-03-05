@@ -196,7 +196,7 @@ class VIXImageManager(Screen):
 		self.populate_List()
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.backupRunning)
-		self.activityTimer.start(10)
+		self.activityTimer.startLongTimer(10)
 		self.Console = Console()
 		self.ConsoleB = Console(binary=True)
 
