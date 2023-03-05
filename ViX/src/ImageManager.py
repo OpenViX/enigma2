@@ -40,8 +40,9 @@ def getMountChoices():
 	for p in harddiskmanager.getMountedPartitions():
 		if path.exists(p.mountpoint):
 			d = path.normpath(p.mountpoint)
-			if p.mountpoint != "/":
-				choices.append((p.mountpoint, d))
+			entry = (p.mountpoint, d)
+			if p.mountpoint != "/" and entry not in choices:
+				choices.append(entry)
 	choices.sort()
 	return choices
 
