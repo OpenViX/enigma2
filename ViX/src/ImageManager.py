@@ -408,9 +408,8 @@ class VIXImageManager(Screen):
 
 	def getImagesDownloaded(self):
 		def getImages(files):
-			for file in [x for x in files if path.splitext(x)[1] == ".zip" and model in x]:
+			for file in files:
 				imagesFound.append({'link': file, 'name': file.split(ossep)[-1], 'mtime': stat(file).st_mtime})
-
 
 		model = getMachineMake()
 		imagesFound = []
