@@ -424,10 +424,10 @@ class VIXImageManager(Screen):
 				continue
 			getImages([path.join(media, x) for x in medialist if path.splitext(x)[1] == ".zip" and model in x])
 			for folder in ["imagebackups", "downloaded_images", "images"]:
-				if folder in listdir(media):
-					media = path.join(media, folder)
-					if path.isdir(media) and not path.islink(media) and not path.ismount(media):
-						getImages([path.join(media, x) for x in listdir(media) if path.splitext(x)[1] == ".zip" and model in x])
+				if folder in medialist:
+					media2 = path.join(media, folder)
+					if path.isdir(media2) and not path.islink(media2) and not path.ismount(media2):
+						getImages([path.join(media2, x) for x in listdir(media2) if path.splitext(x)[1] == ".zip" and model in x])
 		imagesFound.sort(key=lambda x: x['mtime'], reverse=True)
 		# print("[ImageManager][getImagesDownloaded] imagesFound=%s" % imagesFound)
 		return imagesFound
