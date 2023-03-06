@@ -576,8 +576,8 @@ class VIXImageManager(Screen):
 					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
 					if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_6"):
 						copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
-				elif SystemInfo["HasKexecMultiboot"] and "mmcblk" not in self.MTDROOTFS:
-					if SystemInfo["HasKexecUSB"]:
+				elif SystemInfo["HasKexecMultiboot"]:
+					if SystemInfo["HasKexecUSB"]  and "mmcblk" not in self.MTDROOTFS:
 						   CMD = "/usr/bin/ofgwrite -r%s -kzImage -s'%s/linuxrootfs' -m%s '%s'" % (self.MTDROOTFS, getBoxType()[2:], self.multibootslot, MAINDEST)
 					else:
 						   CMD = "/usr/bin/ofgwrite -r%s -kzImage -m%s '%s'" % (self.MTDROOTFS, self.multibootslot, MAINDEST)
