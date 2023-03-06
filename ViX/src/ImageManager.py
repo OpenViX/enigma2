@@ -510,7 +510,7 @@ class VIXImageManager(Screen):
 				else:
 					self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"].split("/")[2]
 			if SystemInfo["HasHiSi"] and SystemInfo["MultiBootSlot"] >= 4 and self.multibootslot < 4:
-				self.session.open(MessageBox, _("ImageManager - %s - cannot flash eMMC slot from sd card slot." % getBoxType()), MessageBox.TYPE_INFO, timeout=10)				
+				self.session.open(MessageBox, _("ImageManager - %s - cannot flash eMMC slot from sd card slot.") % getBoxType(), MessageBox.TYPE_INFO, timeout=10)				
 				return	
 			if self.sel:
 				if config.imagemanager.autosettingsbackup.value:
