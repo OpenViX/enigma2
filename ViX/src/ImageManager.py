@@ -565,7 +565,7 @@ class VIXImageManager(Screen):
 		MAINDEST = "%s/%s" % (self.TEMPDESTROOT, getImageFolder())
 		print("[ImageManager] MAINDEST=%s" % MAINDEST)
 		if ret == 0:
-			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST			# normal non multiboot receiver
+			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST							# normal non multiboot receiver
 			if SystemInfo["canMultiBoot"]:
 				if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
 					kz0 = getMachineMtdKernel()
