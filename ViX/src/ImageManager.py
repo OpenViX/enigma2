@@ -178,8 +178,28 @@ class VIXImageManager(Screen):
 		self["infoactions"] = ActionMap(["SetupActions"], {
 			"info": self.showInfo,
 		}, -1)
-
+		self["defaultactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
+			"cancel": self.close,
+			"menu": self.createSetup,
+		}, -1)
+		self["mainactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "KeyboardInputActions"], {
+			"red": self.keyDelete,
+			"green": self.GreenPressed,
+			"yellow": self.doDownload,
+			"ok": self.keyRestore,
+			"blue": self.keyRestore,
+			"up": self.refreshUp,
+			"down": self.refreshDown,
+			"left": self.keyLeft,
+			"right": self.keyRight,
+			"upRepeated": self.refreshUp,
+			"downRepeated": self.refreshDown,
+			"leftRepeated": self.keyLeft,
+			"rightRepeated": self.keyRight,
+		}, -1)
+		self["mainactions"].setEnabled(False)
 		self.BackupRunning = False
+		self.mountAvailable = False
 		self.BackupDirectory = " "
 		if SystemInfo["canMultiBoot"]:
 			self.mtdboot = SystemInfo["MBbootdevice"]
@@ -222,19 +242,23 @@ class VIXImageManager(Screen):
 
 	def backupRunning(self):
 		self.BackupRunning = False
-		for job in Components.Task.job_manager.getPendingJobs():
-			if job.name.startswith(_("Image manager")):
-				self.BackupRunning = True
-		if self.BackupRunning:
-			self["key_green"].setText(_("View progress"))
+		if self.mountAvailable:
+			for job in Components.Task.job_manager.getPendingJobs():
+				if job.name.startswith(_("Image manager")):
+					self.BackupRunning = True
+					break
+			if self.BackupRunning:
+				self["key_green"].setText(_("View progress"))
+			else:
+				self["key_green"].setText(_("New backup"))
+			self["key_green"].show()
 		else:
-			self["key_green"].setText(_("New backup"))
+			self["key_green"].hide()
 		self.activityTimer.startLongTimer(5)
-		self.refreshList()
+		self.refreshList() # display any new images that may have been sent too the box since the list was built
 
 	def refreshUp(self):
 		self["list"].instance.moveSelection(self["list"].instance.moveUp)
-
 
 	def refreshDown(self):
 		self["list"].instance.moveSelection(self["list"].instance.moveDown)
@@ -281,30 +305,11 @@ class VIXImageManager(Screen):
 			mount = config.imagemanager.backuplocation.value + "/", config.imagemanager.backuplocation.value
 		hdd = "/media/hdd/", "/media/hdd"
 		if mount not in config.imagemanager.backuplocation.choices.choices and hdd not in config.imagemanager.backuplocation.choices.choices:
-			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"], {
-				"cancel": self.close,
-				"menu": self.createSetup,
-			}, -1)
+			self["mainactions"].setEnabled(False)
+			self.mountAvailable = False
+			self["key_green"].hide()
 			self["lab1"].setText(_("Device: None available") + "\n" + _("Press 'Menu' to select a storage device"))
 		else:
-			self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "HelpActions", "KeyboardInputActions"], {
-				"cancel": self.close,
-				"red": self.keyDelete,
-				"green": self.GreenPressed,
-				"yellow": self.doDownload,
-				"menu": self.createSetup,
-				"ok": self.keyRestore,
-				"blue": self.keyRestore,
-				"up": self.refreshUp,
-				"down": self.refreshDown,
-				"left": self.keyLeft,
-				"right": self.keyRight,
-				"upRepeated": self.refreshUp,
-				"downRepeated": self.refreshDown,
-				"leftRepeated": self.keyLeft,
-				"rightRepeated": self.keyRight,
-				"displayHelp": self.doDownload,
-			}, -1)
 			if mount not in config.imagemanager.backuplocation.choices.choices:
 				self.BackupDirectory = "/media/hdd/imagebackups/"
 				config.imagemanager.backuplocation.value = "/media/hdd/"
@@ -324,6 +329,9 @@ class VIXImageManager(Screen):
 				self.refreshList()
 			except Exception:
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
+			self["mainactions"].setEnabled(True)
+			self.mountAvailable = True
+			self["key_green"].show()
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, ImageManagerSetup)
