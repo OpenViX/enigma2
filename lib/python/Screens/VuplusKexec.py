@@ -1,4 +1,4 @@
-from boxbranding import getMachineMtdKernel, getMachineMtdRoot
+from boxbranding import getBoxType, getMachineMtdKernel, getMachineMtdRoot
 from Components.ActionMap import ActionMap
 from Components.Console import Console
 from Components.Label import Label
@@ -7,7 +7,7 @@ from Components.SystemInfo import SystemInfo
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import QUIT_REBOOT, TryQuitMainloop
-from Tools.Directories import fileExists
+from Tools.Directories import fileExists, pathExists
 
 STARTUP = "kernel=/zImage root=/dev/%s rootsubdir=linuxrootfs0" % getMachineMtdRoot()					# /STARTUP
 STARTUP_RECOVERY = "kernel=/zImage root=/dev/%s rootsubdir=linuxrootfs0" % getMachineMtdRoot() 			# /STARTUP_RECOVERY
@@ -34,7 +34,7 @@ class VuplusKexec(Screen):
 	def __init__(self, session, *args, **kwargs):
 		Screen.__init__(self, session)
 		self.title = _("Vu+ MultiBoot Manager")
-		self["description"] = StaticText(_("Press Green key to enable MultiBoot."))
+		self["description"] = StaticText(_("Press Green key to enable MultiBoot\n\nWill reboot within 10 seconds,\nunless you have eMMC slots to restore.\nRestoring eMMC slots can take from 1 -> 5 minutes per slot."))
 #		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Init Vu+ MultiBoot"))
 		self["actions"] = ActionMap(["SetupActions"],
@@ -49,7 +49,7 @@ class VuplusKexec(Screen):
 		self["actions"].setEnabled(False) # This function takes time so disable the ActionMap to avoid responding to multiple button presses
 		if fileExists("/usr/bin/kernel_auto.bin") and fileExists("/usr/bin/STARTUP.cpio.gz"):
 			self.title = _("Vu+ MultiBoot Initialisation - will reboot after 10 seconds.")
-			self["description"].text = _("Vu+ MultiBoot Inititialisation - will reboot after 10 seconds.")
+			self["description"].text = _("Vu+ MultiBoot Initialisation in progress\n\nWill reboot after restoring any eMMC slots\nThis can take from 1 -> 5 minutes per slot.")
 			with open("/STARTUP", 'w') as f:
 				f.write(STARTUP)
 			with open("/STARTUP_RECOVERY", 'w') as f:
@@ -65,7 +65,6 @@ class VuplusKexec(Screen):
 			cmdlist.append("dd if=/dev/%s of=/zImage" % getMachineMtdKernel())						# backup old kernel
 			cmdlist.append("dd if=/usr/bin/kernel_auto.bin of=/dev/%s" % getMachineMtdKernel())	# create new kernel
 			cmdlist.append("mv /usr/bin/STARTUP.cpio.gz /STARTUP.cpio.gz")						# copy userroot routine
-			cmdlist.append("sync; sleep 1; sync; sleep 1; sync")
 			Console().eBatch(cmdlist, self.RootInitEnd, debug=True)
 		else:
 			self.session.open(MessageBox, _("[VuplusKexec][create Vu Multiboot environment] - Unable to complete, Vu+ Multiboot files missing"), MessageBox.TYPE_INFO, timeout=30)
@@ -73,4 +72,7 @@ class VuplusKexec(Screen):
 
 	def RootInitEnd(self, *args, **kwargs):
 		print("[VuplusKexec][RootInitEnd] rebooting")
+		for usbslot in range(1,4):		
+			if pathExists("/media/hdd/%s/linuxrootfs%s" % (getBoxType(), usbslot)):
+				Console().ePopen("cp -R /media/hdd/%s/linuxrootfs%s . /" % (getBoxType(), usbslot))		
 		self.session.open(TryQuitMainloop, QUIT_REBOOT)
