@@ -6,7 +6,7 @@ import tempfile
 from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from enigma import eTimer, fbClass
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, rmdir, sep as ossep, statvfs, chmod, walk, symlink, unlink
-from shutil import copy, rmtree, move, copyfile
+from shutil import copy, copyfile, move, rmtree
 from time import localtime, time, strftime, mktime
 
 from . import _, PluginLanguageDomain
@@ -456,7 +456,7 @@ class VIXImageManager(Screen):
 			return
 		print("[ImageManager][keyRestore] self.sel SystemInfo['MultiBootSlot']", self.sel[0], "   ", SystemInfo["MultiBootSlot"])				
 		if SystemInfo["MultiBootSlot"] == 0 and self.isVuKexecCompatibleImage(self.sel[0]): # only if Vu multiboot has been enabled and the image is compatible
-			message = (_("Do you want to flash slot0?\nThis will change all eMMC slots.") if "VuSlot0" in self.sel[0] else _("Do you want to flash slot0?\nThis will remove Vu Multiboot and erase all eMMC slots.")) + "\n" + _("Select 'no' to flash to a different slot.") 
+			message = (_("Do you want to flash slot0?\nThis will change all eMMC slots.") if "VuSlot0" in self.sel[0] else _("Do you want to flash slot0?\nThis will remove Vu Multiboot and may erase all eMMC slots.")) + "\n" + _("Select 'no' to flash to a different slot.") 
 			ybox = self.session.openWithCallback(self.keyRestorez0, MessageBox, message, default=False) 
 			ybox.setTitle(_("Restore confirmation"))		
 		else:
@@ -465,10 +465,18 @@ class VIXImageManager(Screen):
 	def keyRestorez0(self, retval):
 		print("[ImageManager][keyRestorez0] retval", retval)	
 		if retval:
-			self.multibootslot = 0												# set slot0 to be flashed
-			self.Console.ePopen("umount /proc/cmdline", self.keyRestore3)		# tell ofgwrite not Vu Multiboot
+			message = (_("Do you want to backup eMMC slots? This will add from 1 -> 5 minutes per eMMC slot")) 
+			ybox = self.session.openWithCallback(self.keyRestorez1, MessageBox, message, default=False) 
+			ybox.setTitle(_("Copy eMMC slots confirmation"))			
 		else:
 			self.keyRestore1()
+			
+	def keyRestorez1(self, retval):
+		if retval:
+			self.VuKexecCopyimage()
+		else:
+			self.multibootslot = 0												# set slot0 to be flashed
+			self.Console.ePopen("umount /proc/cmdline", self.keyRestore3)		# tell ofgwrite not Vu Multiboot			
 		
 	def keyRestore1(self):
 		self.HasSDmmc = False
@@ -651,6 +659,26 @@ class VIXImageManager(Screen):
 						retval = True
 		return retval
 
+	def VuKexecCopyimage(self):
+		installedHDD = False
+		with open("/proc/mounts", "r") as fd:
+			lines = fd.readlines()
+		result = [line.strip().split(" ") for line in lines]
+		print("[ImageManager][VuKexecCopyimage] result", result)
+		for item in result:
+			if '/media/hdd' in item[1] and "/dev/sd" in item[0]:
+				installedHDD = True
+				break
+		if installedHDD and pathExists("/media/hdd"):
+			if not pathExists("/media/hdd/%s" % getBoxType()):
+				mkdir("/media/hdd/%s" % getBoxType())
+			for usbslot in range(1,4):
+				if pathExists("/linuxrootfs%s" % usbslot):
+					if pathExists("/media/hdd/%s/linuxrootfs%s/" % (getBoxType(), usbslot)):
+						rmtree("/media/hdd/%s/linuxrootfs%s" % (getBoxType(), usbslot), ignore_errors=True)
+					Console().ePopen("cp -R /linuxrootfs%s . /media/hdd/%s/" % (usbslot, getBoxType()))
+		self.multibootslot = 0												# set slot0 to be flashed
+		self.Console.ePopen("umount /proc/cmdline", self.keyRestore3)		# tell ofgwrite not Vu Multiboot		
 
 	def infoText(self):
 		# add info text sentence by sentence to make translators job easier
