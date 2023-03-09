@@ -174,9 +174,9 @@ def GetImagelist(Recovery=None):
 			if path.isfile(path.join(imagedir, "usr/lib/enigma.info")):
 				print("[multiboot] [BoxInfo] using BoxInfo")
 				BoxInfo = BoxInformation(root=imagedir) if SystemInfo["MultiBootSlot"] != slot else BoxInfoRunningInstance
-				Creator = " " if  BoxInfo.getItem("distro") is None else  BoxInfo.getItem("distro").capitalize()
+				Creator = BoxInfo.getItem("distro", " ").capitalize()
 				BuildImgVersion = BoxInfo.getItem("imgversion")
-				BuildType = " " if BoxInfo.getItem("imagetype") is None else BoxInfo.getItem("imagetype")[0:3]
+				BuildType = BoxInfo.getItem("imagetype", " ")[0:3]
 				BuildVer = BoxInfo.getItem("imagebuild")
 				BuildDate = VerDate(imagedir)
 				BuildDev = str(BoxInfo.getItem("imagedevbuild")).zfill(3) if BuildType != "rel" else ""
