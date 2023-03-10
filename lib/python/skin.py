@@ -473,6 +473,9 @@ class AttributeParser:
 	def objectTypes(self, value):
 		pass
 
+	def objectTypesInverted(self, value):
+		pass
+
 	def position(self, value):
 		self.guiObject.move(ePoint(*value) if isinstance(value, tuple) else parsePosition(value, self.scaleTuple, self.guiObject, self.desktop, self.guiObject.csize()))
 
@@ -1320,6 +1323,9 @@ def readSkin(screen, skin, names, desktop):
 				continue
 			objecttypes = w.attrib.get("objectTypes", "").split(",")
 			if len(objecttypes) > 1 and (objecttypes[0] not in list(screen.keys()) or not [i for i in objecttypes[1:] if i == screen[objecttypes[0]].__class__.__name__]):
+				continue
+			objecttypesinverted = w.attrib.get("objectTypesInverted", "").split(",")
+			if len(objecttypesinverted) > 1 and (objecttypesinverted[0] not in list(screen.keys()) or [i for i in objecttypesinverted[1:] if i == screen[objecttypesinverted[0]].__class__.__name__]):
 				continue
 			p = processors.get(w.tag, processNone)
 			try:
