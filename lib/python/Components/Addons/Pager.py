@@ -1,13 +1,12 @@
 from Components.Addons.GUIAddon import GUIAddon
-from Components.ActionMap import ActionMap
-from skin import parseColor, parseFont, parseScale
+from skin import parseColor
 import math
 
-from enigma import eListbox, gFont, eListboxPythonMultiContent, RT_WRAP, RT_VALIGN_TOP, RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_HALIGN_RIGHT, BT_SCALE, BT_ALPHABLEND, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
+from enigma import eListbox, eListboxPythonMultiContent, BT_ALIGN_CENTER
 from Tools.LoadPixmap import LoadPixmap
 
 from Tools.Directories import resolveFilename, SCOPE_GUISKIN
-from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
+from Components.MultiContent import MultiContentEntryPixmapAlphaBlend
 
 
 class Pager(GUIAddon):
@@ -22,11 +21,6 @@ class Pager(GUIAddon):
 		self.pagerForeground = 15774720
 		self.pagerBackground = 624318628
 		self.l.setItemHeight(self.itemHeight)
-		self.l.setFont(1, gFont('Regular', 18))
-		self.l.setFont(2, gFont('Regular', 22))
-		self.l.setFont(3, gFont('Regular', 22))
-		self.l.setFont(4, gFont('Regular', 22))
-		self.l.setFont(5, gFont('Regular', 22))
 		self.picDotPage = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/dot.png"))
 		self.picDotCurPage = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/dotfull.png"))
 
@@ -96,15 +90,11 @@ class Pager(GUIAddon):
 	
 	def initPager(self):
 		listH = self.getSourceHeight()
-		print("srcH: " + str(listH))
 		if listH > 0:
 			current_index = self.getCurrentIndex()
-			print("current_index: " + str(current_index))
 			listCount = self.getListCount()
-			print("listCount: " + str(listCount))
 			itemHeight = self.getListItemHeight()
-			print("itemHeight: " + str(itemHeight))
-			items_per_page = math.ceil(listH/itemHeight) - 1
+			items_per_page = listH//itemHeight
 			if items_per_page > 0:
 				currentPageIndex = math.floor(current_index/items_per_page)
 				pagesCount = math.ceil(listCount/items_per_page) - 1
@@ -129,5 +119,3 @@ class Pager(GUIAddon):
 				attribs.append((attrib, value))
 		self.skinAttributes = attribs
 		return GUIAddon.applySkin(self, desktop, parent)
-
-	
