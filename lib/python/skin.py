@@ -467,6 +467,9 @@ class AttributeParser:
 	def conditional(self, value):
 		pass
 
+	def connection(self, value):
+		pass
+
 	def objectTypes(self, value):
 		pass
 
