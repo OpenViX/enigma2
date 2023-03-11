@@ -110,7 +110,6 @@ class ServiceInfo(Screen):
 			"green": self.ShowECMInformation,
 			"yellow": self.ShowServiceInformation,
 			"blue": self.ShowTransponderInformation,
-			"blue": self.ShowTransponderInformation,
 			"up": self["infolist"].pageUp,
 			"down": self["infolist"].pageDown,
 			"right": self["infolist"].pageDown,
