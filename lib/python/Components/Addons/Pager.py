@@ -2,7 +2,7 @@ from Components.Addons.GUIAddon import GUIAddon
 
 from enigma import eListbox, eListboxPythonMultiContent, BT_ALIGN_CENTER
 
-from skin import parseScale
+from skin import parseScale, applySkinFactor
 
 from Components.MultiContent import MultiContentEntryPixmapAlphaBlend
 
@@ -15,8 +15,8 @@ class Pager(GUIAddon):
 		GUIAddon.__init__(self)
 		self.l = eListboxPythonMultiContent()
 		self.l.setBuildFunc(self.buildEntry)
-		self.l.setItemHeight(25)
-		self.spacing = 5
+		self.l.setItemHeight(25) # 25 is the height of the default images. For other images set the height in the skin.
+		self.spacing = applySkinFactor(5)
 		self.picDotPage = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/dot.png"))
 		self.picDotCurPage = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/dotfull.png"))
 
