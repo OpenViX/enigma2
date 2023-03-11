@@ -50,7 +50,7 @@ def ServiceInfoListEntry(a, b="", valueType=TYPE_TEXT, param=4, altColor=False):
 	leftColumnAlignment = alignment.get(parameters.get("ServiceInfoLeftColumnAlignment"), RT_HALIGN_LEFT)
 	rightColumnAlignment = alignment.get(parameters.get("ServiceInfoRightColumnAlignment"), RT_HALIGN_LEFT)
 	color = parameters.get("ServiceInfoAltColor", (0x00FFBF00)) # alternative foreground color
-	res = [None]
+	res = [True]
 	if b:
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, xa, ya, wa, ha, 0, leftColumnAlignment | RT_VALIGN_CENTER, a))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, xb, yb, wb, hb, 0, rightColumnAlignment | RT_VALIGN_CENTER, b))
@@ -97,6 +97,14 @@ class ServiceInfoList(GUIComponent):
 		self.instance.setContent(self.l)
 		self.setFontsize()
 
+	def pageUp(self):
+		if self.instance is not None:
+			self.instance.moveSelection(self.instance.pageUp)
+
+	def pageDown(self):
+		if self.instance is not None:
+			self.instance.moveSelection(self.instance.pageDown)
+
 
 TYPE_SERVICE_INFO = 1
 TYPE_TRANSPONDER_INFO = 2
@@ -105,18 +113,22 @@ TYPE_TRANSPONDER_INFO = 2
 class ServiceInfo(Screen):
 	def __init__(self, session, serviceref=None):
 		Screen.__init__(self, session)
-
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
+		self["infolist"] = ServiceInfoList([])
+		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions"],
 		{
 			"ok": self.close,
 			"cancel": self.close,
 			"red": self.close,
 			"green": self.ShowECMInformation,
 			"yellow": self.ShowServiceInformation,
-			"blue": self.ShowTransponderInformation
+			"blue": self.ShowTransponderInformation,
+			"blue": self.ShowTransponderInformation,
+			"up": self["infolist"].pageUp,
+			"down": self["infolist"].pageDown,
+			"right": self["infolist"].pageDown,
+			"left": self["infolist"].pageUp
 		}, -1)
 
-		self["infolist"] = ServiceInfoList([])
 		self.setTitle(_("Service info"))
 		self["key_red"] = self["red"] = Label(_("Exit"))
 
