@@ -77,7 +77,7 @@ class Pager(GUIAddon):
 		elif hasattr(self.source, 'list'):
 			return len(self.source.list)
 		else:
-			return len(self.source.list)
+			0
 
 	def getListItemHeight(self):
 		if hasattr(self.source, 'content'):
