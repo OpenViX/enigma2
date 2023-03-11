@@ -18,6 +18,7 @@ class ScrollLabel(GUIComponent):
 		self.column = 0
 		self.split = False
 		self.splitchar = "|"
+		self.onSelectionChanged = []
 
 	def applySkin(self, desktop, parent):
 		scrollbarWidth = skin.applySlider(self.scrollbar, 10, 1)
@@ -87,6 +88,7 @@ class ScrollLabel(GUIComponent):
 		self.curPos = max(0, min(pos, self.TotalTextHeight - self.pageHeight))
 		self.long_text.move(ePoint(0, -self.curPos))
 		self.split and self.right_text.move(ePoint(self.column, -self.curPos))
+		self.selectionChanged()
 
 	def setText(self, text, showBottom=False):
 		self.message = text
@@ -153,3 +155,7 @@ class ScrollLabel(GUIComponent):
 
 	def getText(self):
 		return self.message
+
+	def selectionChanged(self):
+		for x in self.onSelectionChanged:
+			x()
