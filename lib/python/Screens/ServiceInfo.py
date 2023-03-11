@@ -230,8 +230,8 @@ class ServiceInfo(Screen):
 			self.fillList(self.getFEData(self.transponder_info))
 
 	def namespace(self, nmspc):
-		if isinstance(nmspc, str):
-			return "N/A - N/A"
+		if isinstance(nmspc, str) or nmspc == 0:
+			return None
 		namespace = "%08X" % (to_unsigned(nmspc))
 		if namespace[:4] == "EEEE":
 			return "%s - DVB-T" % (namespace)
