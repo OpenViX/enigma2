@@ -2,9 +2,9 @@ name: Enigma2 Python3
 
 on:
   push:
-    branches: [ Release, Developer, FCC ]
+    branches: [ Release, Developer, FCC, DimitarCC-listbox-project ]
   pull_request:
-    branches: [ Release, Developer, FCC ]
+    branches: [ Release, Developer, FCC, DimitarCC-listbox-project ]
 
 jobs:
   build:
