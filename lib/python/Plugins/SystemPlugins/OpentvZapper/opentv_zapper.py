@@ -863,9 +863,9 @@ def startSession(reason, session=None, **kwargs):
 	wasScheduleTimerWakeup = False
 	if reason == 0:
 		opentv_zapper.set_session(session) # pass session to opentv_zapper
-		# check if box was woken up by a timer, if so, check if this plugin set this timer. This is not conclusive.
-		wasScheduleTimerWakeup = session.nav.wasTimerWakeup() and configname.schedule.value and configname.schedulewakefromdeep.value and abs(configname.nextscheduletime.value - time()) <= 450
+		wasScheduleTimerWakeup = session.nav.pluginTimerWakeupName() == "OpentvZapperScheduler"
 		if wasScheduleTimerWakeup:
+			session.nav.clearPluginTimerWakeupName()
 			# if box is not in standby do it now
 			from Screens.Standby import Standby, inStandby
 			if not inStandby:
