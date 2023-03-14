@@ -838,16 +838,6 @@ class Opentv_Zapper():
 opentv_zapper = Opentv_Zapper()
 
 
-def startSession(reason, session=None, **kwargs):
-	print("[%s][startSession] reason(%d), session" % (debug_name, reason), session)
-	if reason == 0 and session is None:
-		return
-	if reason == 0:
-		opentv_zapper.set_session(session)
-	else:
-		print("[%s][startSession] Stop" % debug_name)
-		opentv_zapper.stop_download()
-
 autoScheduleTimer = None
 
 
