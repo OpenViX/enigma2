@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-03-08 07:35+0200\n"
+"PO-Revision-Date: 2023-03-13 18:12+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -1132,8 +1132,8 @@ msgid "%s Info - Main Menu"
 msgstr "%s Info - Päävalikko"
 
 #, python-format
-msgid "%s Log ( %s-Version: %s )"
-msgstr "%s Loki ( %s-Versio: %s )"
+msgid "Log %s-%s"
+msgstr "Loki %s-%s"
 
 #, python-format
 msgid "%s files cannot be bulk renamed"
@@ -3472,8 +3472,8 @@ msgid "Clear playlist"
 msgstr "Tyhjennä soittolista"
 
 #, python-format
-msgid "Client Info ( %s-Version: %s )"
-msgstr "Asiakas Info ( %s-Versio: %s )"
+msgid "Client %s-%s"
+msgstr "Asiakas %s-%s"
 
 msgid "Client Mode setup"
 msgstr "Asiakas-tila"
@@ -6069,7 +6069,7 @@ msgstr "Fiji"
 #, python-format
 msgid ""
 "File %s.conf not found.\n"
-"Please enter username/password manually."
+"Enter username/password manually."
 msgstr ""
 "Tiedostoa %s.conf ei löytynyt.\n"
 "Syötä käyttäjänimi/salasana manuaalisesti."
@@ -8515,6 +8515,9 @@ msgstr "N"
 msgid "N/A"
 msgstr "Ei saatavilla"
 
+msgid "n/a"
+msgstr "Ei saatavilla"
+
 msgid "NEXT"
 msgstr "SEURAAVA"
 
@@ -9614,13 +9617,13 @@ msgstr "Lisää tallenteita kokoelmaan."
 msgid "Please change the recording end time"
 msgstr "Muuta tallennuksen päättymisaika"
 
-msgid "Please choose CCcam-Reader"
+msgid "Choose CCcam-Reader"
 msgstr "Valitse CCcam-lukija"
 
 msgid "Please choose an extension"
 msgstr "Valitse laajennus"
 
-msgid "Please choose reader"
+msgid "Choose reader"
 msgstr "Valitse lukija"
 
 msgid ""
@@ -11868,8 +11871,8 @@ msgid "Serious Music"
 msgstr "Vakava Musiikki"
 
 #, python-format
-msgid "Server Info ( %s-Version: %s )"
-msgstr "Palvelin Info ( %s-Versio: %s )"
+msgid "Server %s-%s"
+msgstr "Palvelin %s-%s"
 
 msgid "Server:"
 msgstr "Palvelin:"
@@ -13529,7 +13532,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"08.03.2023\n"
+"13.03.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -17895,7 +17898,7 @@ msgid "Codec & lang"
 msgstr "Koodekki & kieli"
 
 msgid "Namespace & Orbital pos."
-msgstr "Nimiavaruus & sijainti kiertoradalla"
+msgstr "Nimiavaruus & kiertoradan sijainti"
 
 msgid "Audio PID%s, codec & lang"
 msgstr "Äänen PID%s, koodekki & kieli"
