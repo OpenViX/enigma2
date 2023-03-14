@@ -81,6 +81,12 @@ class Navigation:
 	def wasTimerWakeup(self):
 		return self.__wasTimerWakeup
 
+	def pluginTimerWakeupName(self):
+		return self.wasTimerWakeup() and config.misc.pluginWakeupName.value or None
+
+	def clearPluginTimerWakeupName(self):
+		config.misc.pluginWakeupName.value = ""
+
 	def gotostandby(self):
 		print("[Navigation] TIMER: now entering standby")
 		import Tools.Notifications

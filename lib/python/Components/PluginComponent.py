@@ -165,5 +165,15 @@ class PluginComponent:
 				wakeup = current
 		return int(wakeup)
 
+	def getNextWakeupName(self):
+		name = None
+		nextWakeup = self.getNextWakeupTime()
+		for p in self.pluginList:
+			# p.name comes from plugin.py in def Plugins() e.g.
+			# PluginDescriptor(name="myName", where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=startSession, wakeupfnc=WakeupTime, needsRestart=True))
+			if nextWakeup == p.getWakeupTime() and p.name and p.name != "Plugin":  # avoid default p.name as this doesn't tell us the plugin
+				name = p.name
+				break
+		return name
 
 plugins = PluginComponent()
