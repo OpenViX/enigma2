@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-03-13 18:12+0200\n"
+"PO-Revision-Date: 2023-03-15 11:18+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13532,7 +13532,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"13.03.2023\n"
+"15.03.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -17935,3 +17935,15 @@ msgstr "ECMPid:jä ei saatavilla (FTA-kanava)"
 
 msgid "Updated: %s"
 msgstr "Päivitetty: %s"
+
+msgid "Oscam/Ncam Info Settings"
+msgstr "OScam/Ncam tietojen asetukset"
+
+msgid "Read Userdata from oscam.conf"
+msgstr "Lue käyttäjätiedot oscam.conf:sta"
+
+msgid "Password (httpuser)"
+msgstr "Salasana (httpuser)"
+
+msgid "Automatically update Client/Server View"
+msgstr "Päivitä asiakas-/palvelinnäkymä automaattisesti"
