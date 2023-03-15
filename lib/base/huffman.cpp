@@ -31,8 +31,6 @@ bool huffman_read_dictionary (char *file)
 	huffman_root.p0 = NULL;
 	huffman_root.p1 = NULL;
 
-	eDebug("[huffman] read.. '%s'", file);
-
 	while (fgets (line, sizeof(line), fd))
 	{
 		memset (value, 0, sizeof (value));
