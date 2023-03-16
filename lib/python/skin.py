@@ -1198,6 +1198,7 @@ def readSkin(screen, skin, names, desktop):
 		wconnection = widget.attrib.get("connection")
 		wclass = widget.attrib.get("addon")
 		windex = widget.attrib.get("index")
+		windex = widget.attrib.get("index")
 		source = None
 		if wname is None and wsource is None and wclass is None:
 			raise SkinError("The widget has no name, no source and no addon type specified")
@@ -1290,7 +1291,11 @@ def readSkin(screen, skin, names, desktop):
 			if not windex:
 				windex = "0"
 			
-			wclassname = name + "_" + wclass + "_" + wconnection + "_" + windex
+			wclassname_base = name + "_" + wclass + "_" + wconnection + "_"
+			wclassname = wclassname_base + windex
+			while wclassname in usedComponents:
+				next_index = int(wclassname.replace(wclassname_base, "")) + 1
+				wclassname = wclassname_base + str(next_index)
 
 			usedComponents.add(wclassname)
 
