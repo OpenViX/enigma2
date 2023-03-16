@@ -111,12 +111,9 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 
 	def okbuttonClick(self):
 		if self.number:
-			if self.menuHorizontal:
-				self.horzIndex = self.number - 1
-			else:
-				self["menu"].setIndex(self.number - 1)
+			self["menu"].setIndex(self.number - 1)
 		self.resetNumberKey()
-		selection = self.list[self.horzIndex] if self.menuHorizontal else self["menu"].getCurrent()
+		selection = self["menu"].getCurrent()
 		if selection and selection[1]:
 			selection[1]()
 
