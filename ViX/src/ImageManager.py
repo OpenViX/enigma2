@@ -168,7 +168,7 @@ class VIXImageManager(Screen):
 		self["lab1"] = Label()
 		self["backupstatus"] = Label()
 		self["key_red"] = Button(_("Delete"))
-		self["key_green"] = Button("New backup")
+		self["key_green"] = Button(_("New backup"))
 		self["key_yellow"] = Button(_("Downloads"))
 		self["key_blue"] = Button(_("Flash"))
 
