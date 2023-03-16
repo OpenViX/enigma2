@@ -456,7 +456,7 @@ class VIXImageManager(Screen):
 			return
 		print("[ImageManager][keyRestore] self.sel SystemInfo['MultiBootSlot']", self.sel[0], "   ", SystemInfo["MultiBootSlot"])				
 		if SystemInfo["MultiBootSlot"] == 0 and self.isVuKexecCompatibleImage(self.sel[0]): # only if Vu multiboot has been enabled and the image is compatible
-			message = (_("Do you want to flash slot0?\nThis will change all eMMC slots.") if "VuSlot0" in self.sel[0] else _("Do you want to flash slot0?\nThis will remove Vu Multiboot and may erase all eMMC slots.")) + "\n" + _("Select 'no' to flash to a different slot.") 
+			message = (_("Do you want to flash Recovery image?\nThis will change all eMMC slots.") if "VuSlot0" in self.sel[0] else _("This selection will flash the Recovery image.\nWe advise flashing new image to a MultiBoot slot and restoring (default) settings backup.")) + "\n" + _("Select 'no' to flash a MultiBoot slot.") 
 			ybox = self.session.openWithCallback(self.keyRestorez0, MessageBox, message, default=False) 
 			ybox.setTitle(_("Restore confirmation"))		
 		else:
