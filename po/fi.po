@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-03-16 18:29+0200\n"
+"PO-Revision-Date: 2023-03-19 11:11+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -11451,7 +11451,7 @@ msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) devi
 msgstr "Valitse 'FBC SCR', jos tämä viritin kytketään SCR (Unicable/JESS) laitteeseen. Kaikille muille kokoonpanoille valitse 'FBC automaattinen'."
 
 msgid "Select 'Standard' to display the standard vertical menu layout, or 'Horizontal' to display the menu items in a row."
-msgstr "Valitsemalla 'Vakio', näkyy vakio pystymallinen valikkosommitelma tai 'Vaakasuora', näkyvät valikon nimikkeet rivissä."
+msgstr "Valitsemalla 'Vakio', näkyy vakio pystymallinen valikkosommitelma tai 'Horisontaali', näkyvät valikon nimikkeet rivissä."
 
 msgid ""
 "Select 'Yes' to delete all languages except English and current language:\n"
@@ -13532,7 +13532,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"16.03.2023\n"
+"19.03.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -17673,7 +17673,7 @@ msgid "EPGSETUP"
 msgstr "EPG ASETUKSET"
 
 msgid "EXIT"
-msgstr "POISTU"
+msgstr "EXIT"
 
 msgid "FASTFORWARD"
 msgstr "NOPEASTI ETEENPÄIN"
@@ -17879,8 +17879,14 @@ msgstr "Paikan 0 imagea ei voi poistaa"
 msgid "Extended PID info"
 msgstr "Laajennetut PID-tiedot"
 
+msgid "Extended info"
+msgstr "Laajennetut tiedot"
+
 msgid "Basic PID info"
 msgstr "Perus PID-tiedot"
+
+msgid "Basic info"
+msgstr "Perustiedot"
 
 msgid "Tuner setting values"
 msgstr "Virittimen asetusarvot"
@@ -17894,8 +17900,8 @@ msgstr "Kanavan tietoja"
 msgid "Service info - service & PIDs"
 msgstr "Kanavan tietoja - kanava & PID:t"
 
-msgid "Codec & lang"
-msgstr "Koodekki & kieli"
+msgid "Codec & lang%s"
+msgstr "Koodekki & kieli%s"
 
 msgid "Namespace & Orbital pos."
 msgstr "Nimiavaruus & kiertoradan sijainti"
