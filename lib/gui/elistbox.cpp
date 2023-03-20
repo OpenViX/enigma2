@@ -140,27 +140,22 @@ void eListbox::moveToEnd()
 void eListbox::moveSelection(long dir)
 {
 	long r_dir = dir;
-	switch (dir) {
-		case moveUp:
-			if (m_orientation == orHorizontal){
+	// For compatability reasons we add this so to support current listbox actions in horizontal listboxes
+	if (m_orientation == orHorizontal) {
+		switch (dir) {
+			case moveUp:
 				r_dir = pageUp;
-			}
-			break;
-		case moveDown:
-			if (m_orientation == orHorizontal){
+				break;
+			case moveDown:
 				r_dir = pageDown;
-			}
-			break;
-		case pageUp:
-			if (m_orientation == orHorizontal){
+				break;
+			case pageUp:
 				r_dir = moveUp;
-			}
-			break;
-		case pageDown:
-			if (m_orientation == orHorizontal){
+				break;
+			case pageDown:
 				r_dir = moveDown;
-			}
-			break;
+				break;
+		}
 	}
 	/* refuse to do anything without a valid list. */
 	if (!m_content)
@@ -180,6 +175,7 @@ void eListbox::moveSelection(long dir)
 			m_content->cursorEnd();
 			[[fallthrough]];
 		case moveUp:
+		case prevItem:
 			do
 			{
 				m_content->cursorMove(-1);
@@ -209,6 +205,7 @@ void eListbox::moveSelection(long dir)
 				break;
 			[[fallthrough]];
 		case moveDown:
+		case nextItem:
 			do
 			{
 				m_content->cursorMove(1);
@@ -222,7 +219,8 @@ void eListbox::moveSelection(long dir)
 			}
 			while (newsel != oldsel && !m_content->currentCursorSelectable());
 			break;
-		case pageUp: {
+		case pageUp: 
+		case prevPage: {
 			int pageind;
 			do
 			{
@@ -261,7 +259,8 @@ void eListbox::moveSelection(long dir)
 			while (newsel == prevsel);
 			break;
 		}
-		case pageDown: {
+		case pageDown:
+		case nextPage: {
 			int pageind;
 			do
 			{
