@@ -144,18 +144,36 @@ void eListbox::moveSelection(long dir)
 	if (m_orientation == orHorizontal) {
 		switch (dir) {
 			case moveUp:
-				r_dir = pageUp;
+				r_dir = prevPage;
 				break;
 			case moveDown:
-				r_dir = pageDown;
+				r_dir = nextPage;
 				break;
 			case pageUp:
-				r_dir = moveUp;
+				r_dir = prevItem;
 				break;
 			case pageDown:
-				r_dir = moveDown;
+				r_dir = nextItem;
 				break;
 		}
+	}
+
+	// Map universal actions to the corresponding action for Horizontal and vertical eListbox
+	switch (dir) {
+		case prevItemPage:
+			if (m_orientation == orHorizontal){
+				r_dir = prevPage;
+			} else {
+				r_dir = prevItem;
+			}
+			break;
+		case nextItemPage:
+			if (m_orientation == orHorizontal){
+				r_dir = nextPage;
+			} else {
+				r_dir = nextItem;
+			}
+			break;
 	}
 	/* refuse to do anything without a valid list. */
 	if (!m_content)
