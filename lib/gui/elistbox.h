@@ -141,8 +141,11 @@ public:
 		pageUp,
 		pageDown,
 		justCheck,
+		moveStartTop,
 		moveStart,
+		prevItemPage,
 		prevItem,
+		nextItemPage,
 		nextItem,
 		prevPage,
 		nextPage
