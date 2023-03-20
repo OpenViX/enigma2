@@ -144,8 +144,10 @@ public:
 		moveStartTop,
 		moveStart,
 		prevItemPage,
+		prevPageItem,
 		prevItem,
 		nextItemPage,
+		nextPageItem,
 		nextItem,
 		prevPage,
 		nextPage

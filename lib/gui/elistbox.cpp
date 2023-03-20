@@ -174,6 +174,20 @@ void eListbox::moveSelection(long dir)
 				r_dir = nextItem;
 			}
 			break;
+		case prevPageItem:
+			if (m_orientation == orVertical){
+				r_dir = prevPage;
+			} else {
+				r_dir = prevItem;
+			}
+			break;
+		case nextPageItem:
+			if (m_orientation == orVertical){
+				r_dir = nextPage;
+			} else {
+				r_dir = nextItem;
+			}
+			break;
 	}
 	/* refuse to do anything without a valid list. */
 	if (!m_content)
