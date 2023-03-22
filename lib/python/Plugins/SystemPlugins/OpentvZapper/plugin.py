@@ -71,7 +71,7 @@ class OpentvZapper_Setup(Setup):
 			if config.plugins.opentvzapper.schedule.value:
 				setupList.append((indent + _("Schedule time of day"), config.plugins.opentvzapper.scheduletime, _("Set the time of day to perform an EPG download.")))
 				setupList.append((indent + _("Schedule days of the week"), config.plugins.opentvzapper.dayscreen, _("Press OK to select which days to perform an EPG download.")))
-				setupList.append((indent + _("Schedule wake from deep standby"), config.plugins.opentvzapper.schedulewakefromdeep, _("Set the time of day to perform an EPG download.")))
+				setupList.append((indent + _("Schedule wake from deep standby"), config.plugins.opentvzapper.schedulewakefromdeep, _("Select 'yes' to wake up the receiver from deep standby, or select 'no' to skip the import.")))
 				if config.plugins.opentvzapper.schedulewakefromdeep.value:
 					setupList.append((indent + _("Schedule return to deep standby"), config.plugins.opentvzapper.scheduleshutdown, _("If the receiver was woken from 'Deep Standby' and is currently in 'Standby' and no recordings are in progress return it to 'Deep Standby' once the EPG download has completed.")))
 			else:
