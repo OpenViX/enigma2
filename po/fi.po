@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-03-19 11:11+0200\n"
+"PO-Revision-Date: 2023-03-25 11:31+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -6301,7 +6301,7 @@ msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
 msgstr ""
-"Kieli vaihtuu kun käyttöliittymä on käynnistetty\n"
+"Kieli vaihtuu, kun käyttöliittymä on käynnistetty uudelleen\n"
 "Haluatko käynnistää käyttöliittymän uudelleen nyt?"
 
 msgid ""
@@ -13532,7 +13532,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"19.03.2023\n"
+"25.03.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -17649,10 +17649,10 @@ msgid "BLUE"
 msgstr "SININEN"
 
 msgid "BOUQUET+"
-msgstr "CH+"
+msgstr "SUOSIKKILISTA+"
 
 msgid "BOUQUET-"
-msgstr "CH-"
+msgstr "SUOSIKKILISTA-"
 
 msgid "CONTEXT"
 msgstr "KONTEKSTI"
@@ -17868,7 +17868,7 @@ msgid "Add 4 more Vu+ Multiboot USB slots after slot %s ?"
 msgstr "Lisää 4 Vu+ Multiboot USB-paikkaa paikan %s jälkeen ?"
 
 msgid "%s%s - Select to access recovery options"
-msgstr "%s%s - Valitse, jos haluat käyttää palautusasetuksia"
+msgstr "%s%s - Valitse päästäksesi palautusvaihtoehtoihin"
 
 msgid "Cannot delete empty slot"
 msgstr "Tyhjää paikkaa ei voi poistaa"
@@ -17976,3 +17976,70 @@ msgstr ""
 
 msgid "Restoring MultiBoot Slots %s."
 msgstr "MultiBoot-paikkojen palauttaminen %s."
+
+msgid "%s scheduled update"
+msgstr "%s ajoitettu päivitys"
+
+msgid ""
+"%s update is about to start.\n"
+"Do you want to allow this?"
+msgstr ""
+"%s päivitys on alkamassa.\n"
+"Haluatko sallia tämän?"
+
+msgid "Allows you to set a schedule to perform an EPG update."
+msgstr "Voit asettaa ajastuksen EPG-päivityksen suorittamiselle."
+
+msgid "At least one day of the week must be selected"
+msgstr "Vähintään yksi viikonpäivä on valittava"
+
+msgid "Automatic update interval"
+msgstr "Automaattinen päivitysväli"
+
+msgid "Enough Retries, delaying till next schedule."
+msgstr "Riittävästi uudelleenyrityksiä, viivästetään seuraavaan ajastukseen."
+
+msgid "If the receiver was woken from 'Deep Standby' and is currently in 'Standby' and no recordings are in progress return it to 'Deep Standby' once the EPG download has completed."
+msgstr "Jos vastaanotin herätettiin 'Virransäästötilasta' ja se on tällä hetkellä 'Valmiustilassa' eikä tallennuksia ole käynnissä, palauta se 'Virransäästötilaan', kun EPG:n lataus on valmis."
+
+msgid "Label not defined"
+msgstr "Etumerkkiä ei ole määritetty"
+
+msgid "Press OK"
+msgstr "Paina OK"
+
+msgid "Press OK to select which days to perform an EPG download."
+msgstr "Paina OK valitaksesi minä päivinä EPG-lataus suoritetaan."
+
+msgid "Schedule days of the week"
+msgstr "Ajasta viikonpäivät"
+
+msgid "Schedule return to deep standby"
+msgstr "Ajasta paluu virransäästötilaan"
+
+msgid "Schedule scan"
+msgstr "Ajasta skannaus"
+
+msgid "Schedule time of day"
+msgstr "Ajasta kellonaika"
+
+msgid "Schedule wake from deep standby"
+msgstr "Ajasta herätys virransäästötilasta"
+
+msgid "Select days"
+msgstr "Valitse päivät"
+
+msgid "Select provider"
+msgstr "Valitse palveluntarjoaja"
+
+msgid "Set automatic update interval (in hours)."
+msgstr "Aseta automaattinen päivitysväli (tunteina)."
+
+msgid "Set the time of day to perform an EPG download."
+msgstr "Aseta kellonaika EPG-latauksen suoritukselle."
+
+msgid "Vu+ MultiBoot Initialisation - will reboot after 10 seconds."
+msgstr "Vu+ MultiBoot Alustus - käynnistyy uudelleen 10 sekunnin kuluttua."
+
+msgid "Select 'yes' to wake up the receiver from deep standby, or select 'no' to skip the import."
+msgstr "Valitse 'kyllä' herättääksesi vastaanottimen virransäästötilasta tai valitse 'ei' ohittaaksesi tuonnin."
