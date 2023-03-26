@@ -78,7 +78,7 @@ def partitionListChanged(action, device):
 		else:
 			print("main infobar is not execing... so we ignore hotplug event!")
 	else:
-			print("hotplug event.. but no infobar")
+		print("hotplug event.. but no infobar")
 
 
 def sessionstart(reason, session):

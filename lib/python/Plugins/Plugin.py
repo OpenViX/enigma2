@@ -124,7 +124,7 @@ class PluginDescriptor():
 		self.path = path
 
 	def getWakeupTime(self):
-		return self.wakeupfnc and self.wakeupfnc() or -1
+		return callable(self.wakeupfnc) and self.wakeupfnc() or -1
 
 	@property
 	def icon(self):

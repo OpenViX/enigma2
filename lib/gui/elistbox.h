@@ -51,6 +51,8 @@ protected:
 	virtual void paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected)=0;
 
 	virtual int getItemHeight()=0;
+	virtual int getItemWidth() { return -1; }
+	virtual int getOrientation() { return 1; }
 
 	eListbox *m_listbox;
 #endif
@@ -61,6 +63,7 @@ struct eListboxStyle
 {
 	ePtr<gPixmap> m_background, m_selection;
 	int m_transparent_background;
+	int m_border_set;
 	gRGB m_background_color, m_background_color_selected, m_foreground_color, m_foreground_color_selected, m_border_color;
 	int m_background_color_set, m_foreground_color_set, m_background_color_selected_set, m_foreground_color_selected_set;
 	gRGB m_scrollbarborder_color, m_scrollbarforeground_color, m_scrollbarbackground_color;
@@ -102,10 +105,13 @@ public:
 		showOnDemand,
 		showAlways,
 		showNever,
-		showLeft
+		showLeft,
+		showTop
 	};
 	void setScrollbarMode(int mode);
 	void setWrapAround(bool);
+	enum { orHorizontal, orVertical };
+	void setOrientation(int orientation);
 
 	void setContent(iListboxContent *content);
 
@@ -120,6 +126,7 @@ public:
 	}; */
 
 	int getCurrentIndex();
+	int getOrientation();
 	void moveSelection(long how);
 	void moveSelectionTo(int index);
 	void moveToEnd();
@@ -133,10 +140,21 @@ public:
 		moveEnd,
 		pageUp,
 		pageDown,
-		justCheck
+		justCheck,
+		moveStartTop,
+		moveStart,
+		prevItemPage,
+		prevPageItem,
+		prevItem,
+		nextItemPage,
+		nextPageItem,
+		nextItem,
+		prevPage,
+		nextPage
 	};
 
 	void setItemHeight(int h);
+	void setItemWidth(int w);
 	void setSelectionEnable(int en);
 
 	void setBackgroundColor(gRGB &col);
@@ -147,6 +165,7 @@ public:
 	void setBorderWidth(int size);
 	void setBackgroundPicture(ePtr<gPixmap> &pixmap);
 	void setSelectionPicture(ePtr<gPixmap> &pixmap);
+	void setSelectionBorderHidden();
 
 	void setFont(gFont *font);
 	void setSecondFont(gFont *font);
@@ -155,6 +174,7 @@ public:
 	void setTextOffset(const ePoint &textoffset);
 
 	void setScrollbarWidth(int width);
+	void setScrollbarHeight(int size);
 	void setScrollbarBorderWidth(int width);
 	void setScrollbarBorderColor(const gRGB &col);
 	void setScrollbarForegroundColor(const gRGB &col);
@@ -163,6 +183,7 @@ public:
 	void setScrollbarBackgroundPixmap(ePtr<gPixmap> &pm);
 
 	int getScrollbarWidth() { return m_scrollbar_width; }
+	int getScrollbarHeight() { return m_scrollbar_height; }
 
 #ifndef SWIG
 	struct eListboxStyle *getLocalStyle(void);
@@ -188,8 +209,11 @@ private:
 	bool m_enabled_wrap_around;
 
 	int m_scrollbar_width;
-	int m_top, m_selected;
+	int m_scrollbar_height;
+	int m_top, m_left, m_selected;
 	int m_itemheight;
+	int m_itemwidth;
+	int m_orientation;
 	int m_items_per_page;
 	int m_selection_enabled;
 

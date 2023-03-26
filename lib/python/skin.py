@@ -467,7 +467,13 @@ class AttributeParser:
 	def conditional(self, value):
 		pass
 
+	def connection(self, value):
+		pass
+
 	def objectTypes(self, value):
+		pass
+
+	def objectTypesInverted(self, value):
 		pass
 
 	def position(self, value):
@@ -511,6 +517,9 @@ class AttributeParser:
 
 	def itemHeight(self, value):
 		self.guiObject.setItemHeight(parseScale(value))
+	
+	def itemWidth(self, value):
+		self.guiObject.setItemWidth(parseScale(value))
 
 	def pixmap(self, value):
 		if value.endswith(".svg"): # if grafic is svg force alphatest to "blend"
@@ -578,7 +587,7 @@ class AttributeParser:
 		except KeyError:
 			raise AttribValueError("'none', 'scale', 'scaleKeepAspect', 'scaleLeftTop', 'scaleLeftCenter', 'scaleLeftBotton', 'scaleCenterTop', 'scaleCenter', 'scaleCenterBotton', 'scaleRightTop', 'scaleRightCenter', 'scaleRightBottom', 'moveLeftTop', 'moveLeftCenter', 'moveLeftBotton', 'moveCenterTop', 'moveCenter', 'moveCenterBotton', 'moveRightTop', 'moveRightCenter', 'moveRightBottom' ('Center'/'Centre'/'Middle' are equivalent)")
 
-	def orientation(self, value):  # Used by eSlider.
+	def orientation(self, value):  # Used by eSlider and eListBox.
 		try:
 			self.guiObject.setOrientation(*{
 				"orVertical": (self.guiObject.orVertical, False),
@@ -727,6 +736,8 @@ def applyScrollbar(guiObject):
 	if scrollbarStyle is None:
 		return
 	guiObject.setScrollbarWidth(scrollbarStyle["width"])
+	if "height" in scrollbarStyle and hasattr("setScrollbarHeight", guiObject):
+		guiObject.setScrollbarHeight(scrollbarStyle["height"])
 	guiObject.setScrollbarBorderWidth(scrollbarStyle["borderWidth"])
 	guiObject.setScrollbarBorderColor(scrollbarStyle["borderColor"])
 	guiObject.setScrollbarForegroundColor(scrollbarStyle["foregroundColor"])
@@ -1184,13 +1195,20 @@ def readSkin(screen, skin, names, desktop):
 		# widgets (source->renderer).
 		wname = widget.attrib.get("name")
 		wsource = widget.attrib.get("source")
-		if wname is None and wsource is None:
-			raise SkinError("The widget has no name and no source")
-			return
+		wconnection = widget.attrib.get("connection")
+		wclass = widget.attrib.get("addon")
+		source = None
+		if wname is None and wsource is None and wclass is None:
+			raise SkinError("The widget has no name, no source and no addon type specified")
+
 		if wname:
 			# print("[Skin] DEBUG: Widget name='%s'." % wname)
 			usedComponents.add(wname)
 			try:  # Get corresponding "gui" object.
+				# if wclass:
+				# 	relClass = my_import(".".join(("Components", wclass))).__dict__.get(wclass)
+				# 	screen[wname] = relClass()
+				# 	screen[wname].connectRelatedElement(wconnection, screen)
 				attributes = screen[wname].skinAttributes = []
 			except Exception:
 				raise SkinError("Component with name '%s' was not found in skin of screen '%s'" % (wname, name))
@@ -1221,9 +1239,13 @@ def readSkin(screen, skin, names, desktop):
 					break  # Otherwise, use the source.
 			if source is None:
 				raise SkinError("The source '%s' was not found in screen '%s'" % (wsource, name))
+
 			wrender = widget.attrib.get("render")
 			if not wrender:
-				raise SkinError("For source '%s' a renderer must be defined with a 'render=' attribute" % wsource)
+				if wsource:
+					raise SkinError("For source '%s' a renderer must be defined with a 'render=' attribute" % wsource)
+				elif wconnection:
+					raise SkinError("For connection '%s' a renderer must be defined with a 'render=' attribute" % wconnection)
 			for converter in widget.findall("convert"):
 				ctype = converter.get("type")
 				assert ctype, "[Skin] The 'convert' tag needs a 'type' attribute!"
@@ -1250,10 +1272,32 @@ def readSkin(screen, skin, names, desktop):
 			except ImportError:
 				raise SkinError("Renderer '%s' not found" % wrender)
 			renderer = rendererClass()  # Instantiate renderer.
-			renderer.connect(source)  # Connect to source.
+			if source:
+				renderer.connect(source)  # Connect to source.
 			attributes = renderer.skinAttributes = []
 			collectAttributes(attributes, widget, context, skinPath, ignore=("render", "source"))
 			screen.renderer.append(renderer)
+		elif wclass:
+			try:
+				addonClass = my_import(".".join(("Components", "Addons", wclass))).__dict__.get(wclass)
+			except ImportError:
+				raise SkinError("GUI Addon '%s' not found" % wclass)
+			
+			if not wconnection:
+				raise SkinError("The widget is from addon type: %s , but no connection is specified." % wclass)
+			
+			i = 0
+			wclassname_base = name + "_" + wclass + "_" + wconnection + "_"
+			while wclassname_base + str(i) in usedComponents:
+				i += 1
+			wclassname = wclassname_base + str(i)
+
+			usedComponents.add(wclassname)
+
+			screen[wclassname] = addonClass()
+			screen[wclassname].connectRelatedElement(wconnection, screen)
+			attributes = screen[wclassname].skinAttributes = []
+			collectAttributes(attributes, widget, context, skinPath, ignore=("addon",))
 
 	def processApplet(widget, context):
 		try:
@@ -1288,6 +1332,9 @@ def readSkin(screen, skin, names, desktop):
 				continue
 			objecttypes = w.attrib.get("objectTypes", "").split(",")
 			if len(objecttypes) > 1 and (objecttypes[0] not in list(screen.keys()) or not [i for i in objecttypes[1:] if i == screen[objecttypes[0]].__class__.__name__]):
+				continue
+			objecttypesinverted = w.attrib.get("objectTypesInverted", "").split(",")
+			if len(objecttypesinverted) > 1 and (objecttypesinverted[0] not in list(screen.keys()) or [i for i in objecttypesinverted[1:] if i == screen[objecttypesinverted[0]].__class__.__name__]):
 				continue
 			p = processors.get(w.tag, processNone)
 			try:

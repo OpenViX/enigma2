@@ -312,6 +312,17 @@
 		<item level="2" text="Show CCcam Info in extensions?" description="Allows you to show/hide CCcam Info in extensions -blue button." requires="CCcamInstalled">config.cccaminfo.showInExtensions</item>
 		<item level="2" text="Show OScam/Ncam Info in extensions?" description="Allows you to show/hide OScam/Ncam Info in extensions -blue button." requires="OScamInstalled">config.oscaminfo.showInExtensions</item>
 	</setup>
+	<setup key="oscam/Ncaminfo" title="Oscam/Ncam Info Settings">
+		<item level="0" text="Read Userdata from oscam.conf" description="Read Userdata from oscam.conf">config.oscaminfo.userdatafromconf</item>
+		<if conditional="not config.oscaminfo.userdatafromconf.value">
+			<item level="0" text="Username (httpuser)" description="Username (httpuser)">config.oscaminfo.username</item>
+			<item level="0" text="Password (httpwd)" description="Password (httpuser)">config.oscaminfo.password</item>
+			<item level="0" text="IP address" description="IP address">config.oscaminfo.ip</item>
+			<item level="0" text="Port" description="Port">config.oscaminfo.port</item>
+		</if>
+		<item level="0" text="Automatically update Client/Server View" description="Automatically update Client/Server View">config.oscaminfo.autoupdate</item>
+		<item level="0" text="Update interval (in seconds)" description="Update interval (in seconds)" conditional="config.oscaminfo.autoupdate.value">config.oscaminfo.intervall</item>
+	</setup>	
 	<setup key="softcamscriptsetup" title="">
 		<item level="0" text="SoftcamScript select camscript" description="Select a softcam script from the available list.">config.misc.softcams</item>
 		<item level="0" text="SoftcamScript enable/disable cam restart" description="Allow reinitialisation of selected cam script.">config.misc.softcamrestarts</item>

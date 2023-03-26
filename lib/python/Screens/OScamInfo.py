@@ -1,37 +1,31 @@
-from Screens.Screen import Screen
-from Screens.MessageBox import MessageBox
-from Screens.ChoiceBox import ChoiceBox
+from os import path as ospath
+import time
+from operator import itemgetter
+from xml.etree import ElementTree
 
+from enigma import eTimer, RT_HALIGN_LEFT, eListboxPythonMultiContent, gFont, getDesktop, eSize, ePoint
+
+from Components.About import about
 from Components.ActionMap import ActionMap, NumberActionMap
-from Components.Sources.List import List
-from Components.Sources.StaticText import StaticText
 from Components.config import config, configfile, getConfigListEntry
 from Components.ConfigList import ConfigListScreen
 from Components.MenuList import MenuList
-
+from Components.Sources.List import List
+from Components.Sources.StaticText import StaticText
+from Screens.ChoiceBox import ChoiceBox
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
+import skin
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename, fileExists
 
-from enigma import eTimer, RT_HALIGN_LEFT, eListboxPythonMultiContent, gFont, getDesktop, eSize, ePoint
-from xml.etree import ElementTree
-
-from operator import itemgetter
-import os
-import time
 # required methods: Request, urlopen, HTTPError, URLError, HTTPHandler, HTTPPasswordMgrWithDefaultRealm, HTTPDigestAuthHandler, build_opener, install_opener
 from urllib.request import urlopen, Request, HTTPHandler, HTTPPasswordMgrWithDefaultRealm, HTTPDigestAuthHandler, build_opener, install_opener
 from urllib.error import HTTPError, URLError
-import skin
+import urllib.parse
+
 
 global NAMEBIN
-NAMEBIN = ""
-NAMEBIN2 = ""
-if fileExists("/tmp/.oscam/oscam.version"):
-	NAMEBIN = "oscam"
-	NAMEBIN2 = "OScam"
-elif fileExists("/tmp/.ncam/ncam.version"):
-	NAMEBIN = "ncam"
-	NAMEBIN2 = "Ncam"
 
 def check_NAMEBIN():
 	NAMEBIN = "oscam"
@@ -129,10 +123,11 @@ class OscamInfo:
 
 		if webif and port is not None:
 		# oscam/ncam reports it got webif support and webif is running (Port != 0)
-			if conf is not None and os.path.exists(conf):
+			if conf is not None and ospath.exists(conf):
 				# If we have a config file, we need to investigate it further
 				with open(conf, 'r') as data:
 					for i in data:
+#						print("[OscamInfo][getUserData] i", i)					
 						if "httpuser" in i.lower():
 							user = i.split("=")[1].strip()
 						elif "httppwd" in i.lower():
@@ -149,16 +144,17 @@ class OscamInfo:
 							if "::1" not in allowed:
 								ipconfigured = False
 
-			if not blocked:
-				ret = [user, pwd, port, ipconfigured]
+			ret = [user, pwd, port, ipconfigured]			# 127.0.0.1 gets 403 in oscam webif so ignore block fix later
 
 		return ret
 
 	def openWebIF(self, part=None, reader=None):
 		NAMEBIN = check_NAMEBIN()
 		self.proto = "http"
+#		print("[OscamInfo][openWebIF] NAMEBIN part", NAMEBIN, "   ", part)		
 		if config.oscaminfo.userdatafromconf.value:
 			udata = self.getUserData()
+#			print("[OscamInfo][openWebIF] udata, config.oscaminfo.userdatafromconf.value: ", udata, "   ", config.oscaminfo.userdatafromconf.value)			
 			if isinstance(udata, str):
 				return False, udata
 			else:
@@ -171,23 +167,31 @@ class OscamInfo:
 				self.ip = "::1"
 			else:
 				self.ip = "127.0.0.1"
+# self.ip = local address 127.0.0.1 gets 403 in Oscam webif so try to pick up box IP address.
+			eth0 = about.getIfConfig("eth0")
+			wlan0 = about.getIfConfig("wlan0")
+			if "addr" in eth0:
+				self.ip = eth0["addr"]
+			if "addr" in wlan0:
+				self.ip = wlan0["addr"]
+#				print("[OscamInfo][openWebIF]1 self.ip self.port  self.username self.password self.ipaccess", self.ip, "   ", self.port, "   ", self.username, "   ",  self.password, "   ", self.ipaccess)
 		else:
 			self.ip = ".".join("%d" % d for d in config.oscaminfo.ip.value)
 			self.port = str(config.oscaminfo.port.value)
 			self.username = str(config.oscaminfo.username.value)
 			self.password = str(config.oscaminfo.password.value)
-
+#			print("[OscamInfo][openWebIF]2 self.ip self.port  self.username self.password", self.ip, "   ", self.port, "   ", self.username, "   ",  self.password)
 		if self.port.startswith('+'):
 			self.proto = "https"
 			self.port.replace("+", "")
-
 #		print("[OscamInfo][openWebIF] NAMEBIN=%s, CAM=%s" % (NAMEBIN, NAMEBIN))
 		if part is None:
 			self.url = "%s://%s:%s/%sapi.html?part=status" % (self.proto, self.ip, self.port, NAMEBIN)
 		else:
 			self.url = "%s://%s:%s/%sapi.html?part=%s" % (self.proto, self.ip, self.port, NAMEBIN, part)
 		if part is not None and reader is not None:
-			self.url = "%s://%s:%s/%sapi.html?part=%s&label=%s" % (self.proto, self.ip, self.port, NAMEBIN, part, reader)
+#			print("[OscamInfo][openWebIF] reader:", reader)		
+			self.url = "%s://%s:%s/%sapi.html?part=%s&label=%s" % (self.proto, self.ip, self.port, NAMEBIN, part, urllib.parse.quote_plus(reader))
 #		print("[OscamInfo][openWebIF] NAMEBIN=%s, NAMEBIN=%s url=%s" % (NAMEBIN, NAMEBIN, self.url))
 #		print("[OscamInfo][openWebIF] self.url=%s" % self.url)
 		opener = build_opener(HTTPHandler)
@@ -203,17 +207,16 @@ class OscamInfo:
 			data = urlopen(request).read()
 #			print("[OscamInfo][openWebIF] data=", data)
 		except URLError as e:
+			print("[OscamInfo][openWebIF] error: %s" % e)		
 			if hasattr(e, "reason"):
 				err = str(e.reason)
 			elif hasattr(e, "code"):
 				err = str(e.code)
 		if err is not False:
-			print("[openWebIF] error: %s" % err)
+			print("[OscamInfo][openWebIF] error: %s" % err)
 			return False, err
 		else:
-			if isinstance(data, bytes):
-				data = data.decode(encoding="UTF-8", errors="ignore")		
-			return True, data
+			return True, data.decode(encoding="UTF-8", errors="ignore")
 
 	def readXML(self, typ):
 		if typ == "l":
@@ -222,68 +225,70 @@ class OscamInfo:
 		else:
 			self.showLog = False
 			part = None
-		result = self.openWebIF(part)
+		result = self.openWebIF(part)			# returns True/False and data or error
 		retval = []
 		tmp = {}
 		if result[0]:
+#			print("[OscamInfo][readXML] show typ, result 0,1", typ, "   ", result[0], "  ", result[1])
 			if not self.showLog:
-				data = ElementTree.XML(result[1])
-#				if typ=="version":
-#					if "version" in data.attrib:
-#						self.version = data.attrib["version"]
-#					else:
-#						self.version = "n/a"
-#					return self.version
-				status = data.find("status")
+				dataXML = ElementTree.XML(result[1])
+				if typ=="version":
+					if "version" in dataXML.attrib:
+						self.version = dataXML.attrib["version"]
+					else:
+						self.version = "n/a"
+					return self.version
+				status = dataXML.find("status")
 				clients = status.findall("client")
-				for cl in clients:
-					name = cl.attrib["name"]
-					proto = cl.attrib["protocol"]
-					if "au" in cl.attrib:
-						au = cl.attrib["au"]
+				for client in clients:
+					name = client.attrib["name"]
+					proto = client.attrib["protocol"]
+					if "au" in client.attrib:
+						au = client.attrib["au"]
 					else:
 						au = ""
-					caid = cl.find("request").attrib["caid"]
-					srvid = cl.find("request").attrib["srvid"]
-					if "ecmtime" in cl.find("request").attrib:
-						ecmtime = cl.find("request").attrib["ecmtime"]
+					caid = client.find("request").attrib["caid"]
+					srvid = client.find("request").attrib["srvid"]
+					if "ecmtime" in client.find("request").attrib:
+						ecmtime = client.find("request").attrib["ecmtime"]
 						if ecmtime == "0" or ecmtime == "":
-							ecmtime = _("-")
+							ecmtime = _("n/a")
 						else:
 							ecmtime = str(float(ecmtime) / 1000)[:5]
 					else:
-						ecmtime = "not available"
-					srvname = cl.find("request").text
+						ecmtime = _("n/a")
+					srvname = client.find("request").text
 					if srvname is not None:
 						if ":" in srvname:
 							srvname_short = srvname.split(":")[1].strip()
 						else:
 							srvname_short = srvname
 					else:
-						srvname_short = _("-")
-					login = cl.find("times").attrib["login"]
-					online = cl.find("times").attrib["online"]
+						srvname_short = _("n/a")
+					login = client.find("times").attrib["login"]
+					online = client.find("times").attrib["online"]
 					if proto.lower() == "dvbapi":
 						ip = ""
 					else:
-						ip = cl.find("connection").attrib["ip"]
+						ip = client.find("connection").attrib["ip"]
 						if ip == "0.0.0.0":
 							ip = ""
-					port = cl.find("connection").attrib["port"]
-					connstatus = cl.find("connection").text
+					port = client.find("connection").attrib["port"]
+					connstatus = client.find("connection").text
 					if name != "" and name != "anonymous" and proto != "":
 						try:
-							tmp[cl.attrib["type"]].append((name, proto, "%s:%s" % (caid, srvid), srvname_short, ecmtime, ip, connstatus))
+							tmp[client.attrib["type"]].append((name, proto, "%s:%s" % (caid, srvid), srvname_short, ecmtime, ip, connstatus))
 						except KeyError:
-							tmp[cl.attrib["type"]] = []
-							tmp[cl.attrib["type"]].append((name, proto, "%s:%s" % (caid, srvid), srvname_short, ecmtime, ip, connstatus))
+							tmp[client.attrib["type"]] = []
+							tmp[client.attrib["type"]].append((name, proto, "%s:%s" % (caid, srvid), srvname_short, ecmtime, ip, connstatus))
 			else:
 				if "<![CDATA" not in result[1]:
 					tmp = result[1].replace("<log>", "<log><![CDATA[").replace("</log>", "]]></log>")
 				else:
 					tmp = result[1]
-				data = ElementTree.XML(tmp)
-				log = data.find("log")
+				print("[OscamInfo][readXML] show tmp", tmp)					
+				dataXML = ElementTree.XML(tmp)
+				log = dataXML.find("log")
 				logtext = log.text
 			if typ == "s":
 				if "r" in tmp:
@@ -307,78 +312,81 @@ class OscamInfo:
 						for j in tmp2:
 							txt += "%s " % j.strip()
 						retval.append(txt)
-
-			return retval
+			print("[OscamInfo][readXML] result retval", result[0], "   ", retval)
+			return result[0], retval
 
 		else:
-			return result[1]
+			print("[OscamInfo][readXML] result result[1]", result[0], "   ", result[1])
+			return result[0], result[1]
 
 	def getVersion(self):
-		xmldata = self.openWebIF()
-		if xmldata[0]:
-			data = ElementTree.XML(xmldata[1])
-			if "version" in data.attrib:
-				self.version = data.attrib["version"]
+		dataWebif = self.openWebIF()
+		print("[OscamInfo][getVersion] dataWebif", dataWebif)
+		if dataWebif[0]:
+			dataXML = ElementTree.XML(dataWebif[1])
+			if "revision" in dataXML.attrib:
+				self.version = dataXML.attrib["revision"]
 			else:
-				self.version = _("-")
+				self.version = _("n/a")
 			return self.version
 		else:
-			self.version = _("-")
+			self.version = _("n/a")
 		return self.version
 
 	def getTotalCards(self, reader):
-		xmldata = self.openWebIF(part="entitlement", reader=reader)
-		if xmldata[0]:
-			xmld = ElementTree.XML(xmldata[1])
-			cards = xmld.find("reader").find("cardlist")
+		dataWebif = self.openWebIF(part="entitlement", reader=reader)
+		if dataWebif[0]:
+			dataXML = ElementTree.XML(dataWebif[1])
+			cards = dataXML.find("reader").find("cardlist")
 			cardTotal = cards.attrib["totalcards"]
 			return cardTotal
 		else:
 			return None
 
 	def getReaders(self, spec=None):
-		xmldata = self.openWebIF()
+		dataWebif = self.openWebIF()
 		readers = []
-		if xmldata[0]:
-			data = ElementTree.XML(xmldata[1])
-			status = data.find("status")
+		if dataWebif[0]:
+			dataXML = ElementTree.XML(dataWebif[1])
+			status = dataXML.find("status")
 			clients = status.findall("client")
-			for cl in clients:
-				if "type" in cl.attrib:
-					if cl.attrib["type"] == "p" or cl.attrib["type"] == "r":
+			for client in clients:
+				if "type" in client.attrib:
+					if client.attrib["type"] == "p" or client.attrib["type"] == "r":
 						if spec is not None:
-							proto = cl.attrib["protocol"]
+							proto = client.attrib["protocol"]
 							if spec in proto:
-								name = cl.attrib["name"]
+								name = client.attrib["name"]
 								cards = self.getTotalCards(name)
 								readers.append((_("%s ( %s Cards )") % (name, cards), name))
 						else:
-							if cl.attrib["name"] != "" and cl.attrib["name"] != "" and cl.attrib["protocol"] != "":
-								readers.append((cl.attrib["name"], cl.attrib["name"]))  # return tuple for later use in Choicebox
+							if client.attrib["name"] != "" and client.attrib["name"] != "" and client.attrib["protocol"] != "":
+								readers.append((client.attrib["name"], client.attrib["name"]))  # return tuple for later use in Choicebox
+			print("[OscamInfo][getReaders] readers", readers)
 			return readers
 		else:
 			return None
 
 	def getClients(self):
-		xmldata = self.openWebIF()
+		dataWebif = self.openWebIF()
 		clientnames = []
-		if xmldata[0]:
-			data = ElementTree.XML(xmldata[1])
-			status = data.find("status")
+		if dataWebif[0]:
+			dataXML = ElementTree.XML(dataWebif[1])
+			status = dataXML.find("status")
 			clients = status.findall("client")
-			for cl in clients:
-				if "type" in cl.attrib:
-					if cl.attrib["type"] == "c":
-						readers.append((cl.attrib["name"], cl.attrib["name"]))  # return tuple for later use in Choicebox
+			for client in clients:
+				if "type" in client.attrib:
+					if client.attrib["type"] == "c":
+						readers.append((client.attrib["name"], client.attrib["name"]))  # return tuple for later use in Choicebox
 			return clientnames
 		else:
 			return None
 
 	def getECMInfo(self, ecminfo):
 		result = []
-		if os.path.exists(ecminfo):
-			data = open(ecminfo, "r").readlines()
-			for i in data:
+		if ospath.exists(ecminfo):
+			dataECM = open(ecminfo, "r").readlines()
+			for i in dataECM:
 				if "caid" in i:
 					result.append((_("Caid"), i.split(":")[1].strip()))
 				elif "pid" in i:
@@ -487,13 +495,13 @@ class OscamInfoMenu(Screen):
 	def goEntry(self, entry):
 		NAMEBIN = check_NAMEBIN()
 		if NAMEBIN:
-			print("[openWebIF] NAMEBIN=%s" % (NAMEBIN))
+#			print("[OscamInfo][goEntry] NAMEBIN=%s" % (NAMEBIN))
 			if entry in (1, 2, 3) and config.oscaminfo.userdatafromconf.value and self.osc.confPath()[0] is None:
 				config.oscaminfo.userdatafromconf.setValue(False)
 				config.oscaminfo.userdatafromconf.save()
-				self.session.openWithCallback(self.ErrMsgCallback, MessageBox, _("File %s.conf not found.\nPlease enter username/password manually." % NAMEBIN), MessageBox.TYPE_ERROR)
+				self.session.openWithCallback(self.ErrMsgCallback, MessageBox, _("File %s.conf not found.\nEnter username/password manually." % NAMEBIN), MessageBox.TYPE_ERROR)
 			elif entry == 0:
-				if os.path.exists("/tmp/ecm.info"):
+				if ospath.exists("/tmp/ecm.info"):
 					self.session.open(oscECMInfo)
 				else:
 					self.session.open(MessageBox, _("No ECM info is currently available. This is only available while decrypting."), MessageBox.TYPE_INFO)
@@ -511,7 +519,7 @@ class OscamInfoMenu(Screen):
 						self.session.open(oscEntitlements, reader[0][1])
 					else:
 						self.callbackmode = "cccam"
-						self.session.openWithCallback(self.chooseReaderCallback, ChoiceBox, title=_("Please choose CCcam-Reader"), list=reader)
+						self.session.openWithCallback(self.chooseReaderCallback, ChoiceBox, title=_("Choose CCcam-Reader"), list=reader)
 			elif entry == 5:
 				osc = OscamInfo()
 				reader = osc.getReaders()
@@ -522,7 +530,7 @@ class OscamInfoMenu(Screen):
 							self.session.open(oscReaderStats, reader[0][1])
 						else:
 							self.callbackmode = "readers"
-							self.session.openWithCallback(self.chooseReaderCallback, ChoiceBox, title=_("Please choose reader"), list=reader)
+							self.session.openWithCallback(self.chooseReaderCallback, ChoiceBox, title=_("Choose reader"), list=reader)
 			elif entry == 6:
 				self.session.open(OscamInfoConfigScreen)
 		else:
@@ -616,10 +624,10 @@ class oscECMInfo(Screen, OscamInfo):
 			]
 
 	def showData(self):
-		data = self.getECMInfo(self.ecminfo)
+		dataECM = self.getECMInfo(self.ecminfo)
 		out = []
 		y = 0
-		for i in data:
+		for i in dataECM:
 			out.append(self.buildListEntry(i))
 		self["output"].l.setItemHeight(int(30 * f))
 		self["output"].l.setList(out)
@@ -815,40 +823,42 @@ class oscInfo(Screen, OscamInfo):
 			data = self.readXML(typ=self.what)
 		self.out = []
 		self.itemheight = 25
-		if not isinstance(data, str):
+#		print("[OscamInfo][showData] data[0], data[1]", data[0], "   ", data[1])
+		if data[0]:
+#			print("[OscamInfo][showData] data[0], data[1] not isinstance(data[1], str)")
 			if self.what != "l":
 				heading = (self.HEAD[self.NAME], self.HEAD[self.PROT], self.HEAD[self.CAID_SRVID],
 						self.HEAD[self.SRVNAME], self.HEAD[self.ECMTIME], self.HEAD[self.IP_PORT], "")
 				self.out = [self.buildListEntry(heading, heading=True)]
-				for i in data:
+				for i in data[1]:
 					self.out.append(self.buildListEntry(i))
 			else:
-				for i in data:
+				for i in data[1]:
 					if i != "":
 						self.out.append(self.buildLogListEntry((i,)))
 			if self.what == "c":
-				self.setTitle(_("Client Info ( %s-Version: %s )") % (NAMEBIN2, self.getVersion()))
+				self.setTitle(_("Client %s-%s") % (NAMEBIN2, self.getVersion()))
 				self["key_green"].setText("")
 				self["key_yellow"].setText(_("Servers"))
 				self["key_blue"].setText(_("Log"))
 			elif self.what == "s":
-				self.setTitle(_("Server Info ( %s-Version: %s )") % (NAMEBIN2, self.getVersion()))
+				self.setTitle(_("Server %s-%s") % (NAMEBIN2, self.getVersion()))
 				self["key_green"].setText(_("Clients"))
 				self["key_yellow"].setText("")
 				self["key_blue"].setText(_("Log"))
 			elif self.what == "l":
-				self.setTitle(_("%s Log ( %s-Version: %s )") % (NAMEBIN2, NAMEBIN2, self.getVersion()))
+				self.setTitle(_("Log %s-%s") % (NAMEBIN2, self.getVersion()))
 				self["key_green"].setText(_("Clients"))
 				self["key_yellow"].setText(_("Servers"))
 				self["key_blue"].setText("")
 				self.itemheight = 20
 		else:
-			self.errmsg = (data,)
+			self.errmsg = (data[1],)
 			if config.oscaminfo.autoupdate.value:
 				self.loop.stop()
 			for i in self.errmsg:
 				self.out.append(self.buildListEntry((i,)))
-			self.setTitle(_("Error") + ": " + data)
+			self.setTitle(_("Error") + ": " + data[1])
 			self["key_green"].setText(_("Clients"))
 			self["key_yellow"].setText(_("Servers"))
 			self["key_blue"].setText(_("Log"))
@@ -969,9 +979,9 @@ class oscEntitlements(Screen, OscamInfo):
 		return res
 
 	def showData(self):
-		xmldata_for_reader = self.openWebIF(part="entitlement", reader=self.cccamreader)
-		xdata = ElementTree.XML(xmldata_for_reader[1])
-		reader = xdata.find("reader")
+		dataWebif_for_reader = self.openWebIF(part="entitlement", reader=self.cccamreader)
+		dataReader = ElementTree.XML(dataWebif_for_reader[1])
+		reader = dataReader.find("reader")
 		if "hostaddress" in reader.attrib:
 			hostadr = reader.attrib["hostaddress"]
 			host_ok = True
@@ -1118,11 +1128,11 @@ class oscReaderStats(Screen, OscamInfo):
 		result = []
 		title2 = ""
 		for i in readers:
-			xmldata = self.openWebIF(part="readerstats", reader=i[1])
+			dataWebif = self.openWebIF(part="readerstats", reader=i[1])
 			emm_wri = emm_ski = emm_blk = emm_err = ""
-			if xmldata[0]:
-				xdata = ElementTree.XML(xmldata[1])
-				rdr = xdata.find("reader")
+			if dataWebif[0]:
+				dataReader = ElementTree.XML(dataWebif[1])
+				rdr = dataReader.find("reader")
 #					emms = rdr.find("emmstats")
 #					if "totalwritten" in emms.attrib:
 #						emm_wri = emms.attrib["totalwritten"]

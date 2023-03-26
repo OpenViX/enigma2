@@ -338,24 +338,24 @@
 
 	<map context="ListboxActions">
 		<device name="keyboard">
-			<key id="a" mapto="up" flags="mr" />
-			<key id="b" mapto="down" flags="mr" />
+			<key id="a" mapto="prevItem" flags="mr" />
+			<key id="b" mapto="nextItem" flags="mr" />
 		</device>
-		<key id="KEY_REWIND" mapto="moveTop" flags="m" />
-		<key id="KEY_LEFT" mapto="pageUp" flags="mr" /><!-- DEBUG: This creates an inconsistent UI and should be deprecated! -->
-		<key id="KEY_CHANNELUP" mapto="pageUp" flags="mr" />
-		<key id="KEY_UP" mapto="moveUp" flags="mr" />
-		<key id="KEY_DOWN" mapto="moveDown" flags="mr" />
-		<key id="KEY_RIGHT" mapto="pageDown" flags="mr" /><!-- DEBUG: This creates an inconsistent UI and should be deprecated! -->
-		<key id="KEY_CHANNELDOWN" mapto="pageDown" flags="mr" />
+		<key id="KEY_REWIND" mapto="moveStart" flags="m" />
+		<key id="KEY_LEFT" mapto="prevPageItem" flags="mr" /><!-- page in vertical, item in horizontal -->
+		<key id="KEY_CHANNELUP" mapto="prevPage" flags="mr" />
+		<key id="KEY_UP" mapto="prevItemPage" flags="mr" /><!-- item in vertical, page in horizontal -->
+		<key id="KEY_DOWN" mapto="nextItemPage" flags="mr" /><!-- item in vertical, page in horizontal -->
+		<key id="KEY_RIGHT" mapto="nextPageItem" flags="mr" /><!-- page in vertical, item in horizontal -->
+		<key id="KEY_CHANNELDOWN" mapto="nextPage" flags="mr" />
 		<key id="KEY_FASTFORWARD" mapto="moveEnd" flags="m" />
 		<!-- Keyboard specific buttons -->
-		<key id="KEY_HOME" mapto="moveTop" flags="m" />
-		<key id="KEY_PAGEUP" mapto="pageUp" flags="mr" />
-		<key id="KEY_PAGEDOWN" mapto="pageDown" flags="mr" />
+		<key id="KEY_HOME" mapto="moveStart" flags="m" />
+		<key id="KEY_PAGEUP" mapto="prevPage" flags="mr" />
+		<key id="KEY_PAGEDOWN" mapto="nextPage" flags="mr" />
 		<key id="KEY_END" mapto="moveEnd" flags="m" />
-		<key id="1" mapto="moveUp" flags="mr" />
-		<key id="2" mapto="moveDown" flags="mr" />
+		<key id="1" mapto="prevItem" flags="mr" />
+		<key id="2" mapto="nextItem" flags="mr" />
 	</map>
 
 	<!--+

@@ -863,6 +863,19 @@ class SatfinderExtra(Satfinder):
 				return
 			time.sleep(1.0)
 
+	def tpDisplayString(self):
+		retval = ""
+		if self.tuning_type.value == "predefined_transponder":
+			if self.DVB_type.value == "DVB-S":
+				retval = " - %s" % self.preDefTransponders.toDisplayString(self.preDefTransponders.value)
+			elif self.DVB_type.value == "DVB-T":
+				retval = " - %s" % self.TerrestrialTransponders.toDisplayString(self.TerrestrialTransponders.value)
+			elif self.DVB_type.value == "DVB-C":
+				retval = " - %s" % self.CableTransponders.toDisplayString(self.CableTransponders.value)
+			elif self.DVB_type.value == "ATSC":
+				retval = " - %s" % self.ATSCTransponders.toDisplayString(self.ATSCTransponders.value)
+		return retval
+
 	def keyReadServices(self):
 		if not self.serviceList:
 			return
@@ -888,7 +901,7 @@ class SatfinderExtra(Satfinder):
 			else:
 				color = encrypted_color
 			out.append("- %s%s (%s)%s" % (color, service["service_name"], service["service_id"], default_color))
-		self.session.open(TextBox, text=legend + "\n".join(out), title=_("Information"), skin_name="TextBoxPigLess")
+		self.session.open(TextBox, text=legend + "\n".join(out), title=_("Information") + self.tpDisplayString(), skin_name="TextBoxPigLess")
 
 
 def SatfinderCallback(close, answer):

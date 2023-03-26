@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-02-26 13:22+0200\n"
+"PO-Revision-Date: 2023-03-19 11:11+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -1132,8 +1132,8 @@ msgid "%s Info - Main Menu"
 msgstr "%s Info - Päävalikko"
 
 #, python-format
-msgid "%s Log ( %s-Version: %s )"
-msgstr "%s Loki ( %s-Versio: %s )"
+msgid "Log %s-%s"
+msgstr "Loki %s-%s"
 
 #, python-format
 msgid "%s files cannot be bulk renamed"
@@ -3472,8 +3472,8 @@ msgid "Clear playlist"
 msgstr "Tyhjennä soittolista"
 
 #, python-format
-msgid "Client Info ( %s-Version: %s )"
-msgstr "Asiakas Info ( %s-Versio: %s )"
+msgid "Client %s-%s"
+msgstr "Asiakas %s-%s"
 
 msgid "Client Mode setup"
 msgstr "Asiakas-tila"
@@ -3937,7 +3937,7 @@ msgid "Connection using the supplied FTP parameters failed. Please recheck the d
 msgstr "Yhdistäminen annetuilla parametreillä epäonnistui. Tarkista asetukset ja yritä uudelleen."
 
 msgid "Constellation & FFT mode"
-msgstr "Konstellaatio & FFT"
+msgstr "Konstellaatio & FFT-tila"
 
 msgid "Consult your SCR device spec sheet for this information."
 msgstr "Katso SCR-laitteen ohjeista tämä tieto."
@@ -6069,13 +6069,13 @@ msgstr "Fiji"
 #, python-format
 msgid ""
 "File %s.conf not found.\n"
-"Please enter username/password manually."
+"Enter username/password manually."
 msgstr ""
 "Tiedostoa %s.conf ei löytynyt.\n"
 "Syötä käyttäjänimi/salasana manuaalisesti."
 
 msgid "Filename"
-msgstr "Tiedostonnimi"
+msgstr "Tiedostonimi"
 
 msgid "Filesystem Check"
 msgstr "Tiedostojärjestelmän tarkistus"
@@ -8515,6 +8515,9 @@ msgstr "N"
 msgid "N/A"
 msgstr "Ei saatavilla"
 
+msgid "n/a"
+msgstr "Ei saatavilla"
+
 msgid "NEXT"
 msgstr "SEURAAVA"
 
@@ -9614,13 +9617,13 @@ msgstr "Lisää tallenteita kokoelmaan."
 msgid "Please change the recording end time"
 msgstr "Muuta tallennuksen päättymisaika"
 
-msgid "Please choose CCcam-Reader"
+msgid "Choose CCcam-Reader"
 msgstr "Valitse CCcam-lukija"
 
 msgid "Please choose an extension"
 msgstr "Valitse laajennus"
 
-msgid "Please choose reader"
+msgid "Choose reader"
 msgstr "Valitse lukija"
 
 msgid ""
@@ -11448,7 +11451,7 @@ msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) devi
 msgstr "Valitse 'FBC SCR', jos tämä viritin kytketään SCR (Unicable/JESS) laitteeseen. Kaikille muille kokoonpanoille valitse 'FBC automaattinen'."
 
 msgid "Select 'Standard' to display the standard vertical menu layout, or 'Horizontal' to display the menu items in a row."
-msgstr "Valitsemalla 'Vakio', näkyy vakio pystymallinen valikkosommitelma tai 'Vaakasuora', näkyvät valikon nimikkeet rivissä."
+msgstr "Valitsemalla 'Vakio', näkyy vakio pystymallinen valikkosommitelma tai 'Horisontaali', näkyvät valikon nimikkeet rivissä."
 
 msgid ""
 "Select 'Yes' to delete all languages except English and current language:\n"
@@ -11868,8 +11871,8 @@ msgid "Serious Music"
 msgstr "Vakava Musiikki"
 
 #, python-format
-msgid "Server Info ( %s-Version: %s )"
-msgstr "Palvelin Info ( %s-Versio: %s )"
+msgid "Server %s-%s"
+msgstr "Palvelin %s-%s"
 
 msgid "Server:"
 msgstr "Palvelin:"
@@ -11945,7 +11948,7 @@ msgid "Service off-air"
 msgstr "Kanavalla ei ohjelmaa"
 
 msgid "Service reference"
-msgstr "Referenssi"
+msgstr "Kanavan referenssi"
 
 msgid "Service scan"
 msgstr "Kanavahaku"
@@ -13529,7 +13532,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"26.02.2023\n"
+"19.03.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -17582,14 +17585,32 @@ msgstr "[Multiboot valitsin][Kexec USB käynnistys] - luotu Vu+ Kexec käynnisty
 msgid "Vu+ MultiBoot Manager"
 msgstr "Vu+ Multiboot hallinta"
 
-msgid "Press Green key to enable MultiBoot."
-msgstr "Paina Vihreää näppäintä ottaaksesi MultiBoot:n käyttöön."
+msgid ""
+"Press Green key to enable MultiBoot\n"
+"\n"
+"Will reboot within 10 seconds,\n"
+"unless you have eMMC slots to restore.\n"
+"Restoring eMMC slots can take from 1 -> 5 minutes per slot."
+msgstr ""
+"Paina Vihreää näppäintä ottaaksesi MultiBoot:n käyttöön.\n"
+"\n"
+"Uudelleen käynnistys 10 sekunnin kuluessa, \n"
+"jollei palauteta eMMC-paikkaa.\n"
+"eMMC-paikkojen palautus voi viedä 1 - 5 minuuttia paikkaa kohden."
 
 msgid "Init Vu+ MultiBoot"
 msgstr "Alusta Vu+ Multiboot"
 
-msgid "Vu+ MultiBoot Inititialisation - will reboot after 10 seconds."
-msgstr "Vu+ Multiboot alustus - käynnistyy uudelleen 10 sekunnin kuluttua."
+msgid ""
+"Vu+ MultiBoot Initialisation in progress\n"
+"\n"
+"Will reboot after restoring any eMMC slots\n"
+"This can take from 1 -> 5 minutes per slot."
+msgstr ""
+"Vu+ Multiboot alustus käynnissä.\n"
+"\n"
+"Uudelleen käynnistys, kun kaikki eMMC-paikat on palautettu.\n"
+"Tämä voi viedä 1 - 5 minuuttia paikkaa kohden."
 
 msgid "Enable Vu+ MultiBoot"
 msgstr "Ota Vu+ Multiboot käyttöön"
@@ -17652,7 +17673,7 @@ msgid "EPGSETUP"
 msgstr "EPG ASETUKSET"
 
 msgid "EXIT"
-msgstr "POISTU"
+msgstr "EXIT"
 
 msgid "FASTFORWARD"
 msgstr "NOPEASTI ETEENPÄIN"
@@ -17854,3 +17875,104 @@ msgstr "Tyhjää paikkaa ei voi poistaa"
 
 msgid "Cannot delete slot0 image"
 msgstr "Paikan 0 imagea ei voi poistaa"
+
+msgid "Extended PID info"
+msgstr "Laajennetut PID-tiedot"
+
+msgid "Extended info"
+msgstr "Laajennetut tiedot"
+
+msgid "Basic PID info"
+msgstr "Perus PID-tiedot"
+
+msgid "Basic info"
+msgstr "Perustiedot"
+
+msgid "Tuner setting values"
+msgstr "Virittimen asetusarvot"
+
+msgid "Service info - tuner setting values"
+msgstr "Kanavan tietoja - virittimen asetusarvot"
+
+msgid "Service info"
+msgstr "Kanavan tietoja"
+
+msgid "Service info - service & PIDs"
+msgstr "Kanavan tietoja - kanava & PID:t"
+
+msgid "Codec & lang%s"
+msgstr "Koodekki & kieli%s"
+
+msgid "Namespace & Orbital pos."
+msgstr "Nimiavaruus & kiertoradan sijainti"
+
+msgid "Audio PID%s, codec & lang"
+msgstr "Äänen PID%s, koodekki & kieli"
+
+msgid "Audio PID, codec & lang"
+msgstr "Äänen PID, koodekki & kieli"
+
+msgid "Service info - service & Basic PID Info"
+msgstr "Kanavan tietoja - kanava & perus PID-tiedot"
+
+msgid "Service info - service & Extended PID Info"
+msgstr "Kanavan tietoja - kanava & laajennetut PID-tiedot"
+
+msgid "DVB Subtitles PID & lang"
+msgstr "DVB-tekstityksen PID & kieli"
+
+msgid "TXT Subtitles page & lang"
+msgstr "TXT-tekstityksen sivu & kieli"
+
+msgid "Other Subtitles & lang"
+msgstr "Muut tekstitykset & kieli"
+
+msgid "Service info - tuner live values"
+msgstr "Kanavan tietoja - virittimen tilatiedot"
+
+msgid "Service info - ECM Info"
+msgstr "Kanavan tietoja - ECM-tiedot"
+
+msgid "active"
+msgstr "aktiivinen"
+
+msgid "No ECMPids available (FTA Service)"
+msgstr "ECMPid:jä ei saatavilla (FTA-kanava)"
+
+msgid "Updated: %s"
+msgstr "Päivitetty: %s"
+
+msgid "Oscam/Ncam Info Settings"
+msgstr "OScam/Ncam tietojen asetukset"
+
+msgid "Read Userdata from oscam.conf"
+msgstr "Lue käyttäjätiedot oscam.conf:sta"
+
+msgid "Password (httpuser)"
+msgstr "Salasana (httpuser)"
+
+msgid "Automatically update Client/Server View"
+msgstr "Päivitä asiakas-/palvelinnäkymä automaattisesti"
+
+msgid "Vu+ MultiBoot Initialisation"
+msgstr "Vu+ MultiBoot alustus"
+
+msgid ""
+"Enabling MultiBoot.\n"
+"Note:- restoring eMMC slots takes upto 5 minutes per slot.\n"
+" Receiver will then reboot to setup Wizard.\n"
+" In Wizard finalise Recovery image, or exit and \n"
+" - select restored eMMC image with MultiBootSelector.   \n"
+" or \n"
+" - flash new image into multiboot slot via ImageManager."
+msgstr ""
+"MultiBootin käyttöönotto.\n"
+"Huomautus: - eMMC-paikkojen palauttaminen kestää jopa 5 minuuttia per paikka.\n"
+" Vastaanotin käynnistyy sitten uudelleen ohjatun asennustoiminnon avulla.\n"
+" Viimeistele ohjatussa toiminnossa Palautus-image tai poistu ja \n"
+" - valitse palautettu eMMC-image Multiboot valitsimella. \n"
+" tai \n"
+" - Flashaa uusi image MultiBoot-paikkaan Imagen hallinnoinnin kautta."
+
+msgid "Restoring MultiBoot Slots %s."
+msgstr "MultiBoot-paikkojen palauttaminen %s."

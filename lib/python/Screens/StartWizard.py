@@ -1,14 +1,14 @@
-from Screens.Wizard import wizardManager
-from Screens.WizardLanguage import WizardLanguage
-from Screens.WizardUserInterfacePositioner import UserInterfacePositionerWizard
-from Screens.VideoWizard import VideoWizard
-from Screens.Rc import Rc
 from boxbranding import getBoxType
 
-from Components.Pixmap import Pixmap
 from Components.config import config, ConfigBoolean, configfile
-
+from Components.Pixmap import Pixmap
 from Screens.LanguageSelection import LanguageWizard
+from Screens.Rc import Rc
+from Screens.WizardLanguage import WizardLanguage
+from Screens.WizardUserInterfacePositioner import UserInterfacePositionerWizard
+from Screens.Wizard import wizardManager
+from Screens.VideoWizard import VideoWizard
+from Tools.Directories import fileExists, fileHas
 
 config.misc.firstrun = ConfigBoolean(default=True)
 config.misc.languageselected = ConfigBoolean(default=True)

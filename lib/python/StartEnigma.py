@@ -84,6 +84,7 @@ if os.path.exists(resolveFilename(SCOPE_CONFIG, "radio.mvi")):
 config.misc.radiopic = ConfigText(default=radiopic)
 config.misc.isNextRecordTimerAfterEventActionAuto = ConfigYesNo(default=False)
 config.misc.isNextPowerTimerAfterEventActionAuto = ConfigYesNo(default=False)
+config.misc.pluginWakeupName = ConfigText(default="")
 config.misc.SyncTimeUsing = ConfigSelection(default="dvb", choices=[("dvb", _("Transponder Time")), ("ntp", _("NTP"))])
 config.misc.NTPserver = ConfigText(default='pool.ntp.org', fixed_size=False)
 config.misc.useNTPminutes = ConfigSelection(default="30", choices=[("30", "30" + " " + _("minutes")), ("60", _("Hour")), ("1440", _("Once per day"))])
@@ -560,7 +561,7 @@ def runScreenTest():
 	wakeupList = [x for x in (
 		(session.nav.RecordTimer.getNextRecordingTime(), 0, session.nav.RecordTimer.isNextRecordAfterEventActionAuto()),
 		(session.nav.RecordTimer.getNextZapTime(), 1),
-		(plugins.getNextWakeupTime(), 2),
+		(plugins.getNextWakeupTime(), 2, plugins.getNextWakeupName()),
 		(session.nav.PowerTimer.getNextPowerManagerTime(), 3, session.nav.PowerTimer.isNextPowerManagerAfterEventActionAuto())
 	) if x[0] != -1]
 	wakeupList.sort()
@@ -571,6 +572,12 @@ def runScreenTest():
 			wptime = nowTime + 30  # so switch back on in 30 seconds
 		else:
 			wptime = startTime[0] - 240
+		if wakeupList[0][1] == 2 and wakeupList[0][2] is not None:
+			config.misc.pluginWakeupName.value = wakeupList[0][2]
+			print("[StartEnigma] next wakeup will be plugin", wakeupList[0][2])
+		else:
+			config.misc.pluginWakeupName.value = "" # next wakeup not a plugin
+		config.misc.pluginWakeupName.save()
 		if not config.misc.SyncTimeUsing.value == "dvb":
 			print("[StartEnigma] dvb time sync disabled... so set RTC now to current linux time!", strftime("%Y/%m/%d %H:%M", localtime(nowTime)))
 			setRTCtime(nowTime)
@@ -595,6 +602,8 @@ def runScreenTest():
 		setFPWakeuptime(wptime)
 		PowerTimerWakeupAuto = startTime[1] == 3 and startTime[2]
 		print("[StartEnigma] PowerTimerWakeupAuto", PowerTimerWakeupAuto)
+		config.misc.pluginWakeupName.value = "" # next wakeup not a plugin
+		config.misc.pluginWakeupName.save()
 	config.misc.isNextPowerTimerAfterEventActionAuto.value = PowerTimerWakeupAuto
 	config.misc.isNextPowerTimerAfterEventActionAuto.save()
 
