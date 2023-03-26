@@ -33,8 +33,17 @@
 	</colors>
 
 	<!-- MAIN -->
+	
+	<!-- WIZARD -->
 
-	<!-- CHANNEL SELECTION-->
+	<screen name="WizardSummary" position="fill">
+		<widget source="text" render="Label" position="top" size="*,180" font="FdLcD;60" halign="center" valign="center"/>
+		<widget source="parent.list" render="Label" position="fill" font="FdLcD;50" halign="center" valign="center">
+			<convert type="StringListSelection" />
+		</widget>
+	</screen>
+
+	<!-- CHANNEL SELECTION -->
 	<screen name="ChannelSelection_summary" position="0,0" size="800,480"> 
 		<panel name="LCDChannelSelectionChannelName" />
 		<panel name="LCDChannelSelectionProgramName" />
