@@ -26,19 +26,21 @@ if [ -e /proc/stb/info/boxtype ]; then
 fi
 
 if [ -x @bindir@/showiframe ]; then
-	if [ -f @sysconfdir@/enigma2/backdrop.mvi ]; then
-		@bindir@/showiframe @sysconfdir@/enigma2/backdrop.mvi
-	else
-		skin=`sed -En 's|config\.skin\.primary_skin=(.+)/skin\.xml|\1|p' @sysconfdir@/enigma2/settings`
-		if [ -z "$skin" ]; then
-			skin="ViX-Night-1080"
-		fi
-		if [ -n "$skin" -a -f @datadir@/enigma2/$skin/backdrop.mvi ]; then
-			@bindir@/showiframe @datadir@/enigma2/$skin/backdrop.mvi
-		elif [ -f @datadir@/backdrop.mvi ]; then
-			@bindir@/showiframe @datadir@/backdrop.mvi
-		fi
+	SKIN=`sed -En 's|config\.skin\.primary_skin=(.+)/skin\.xml|\1|p' @sysconfdir@/enigma2/settings`
+	if [ -z "$SKIN" ]; then
+		SKIN=`strings -n 10 @prefix@/lib/enigma2/python/skin.pyc | egrep -o -m 1 ".+/skin.xml" | sed 's|/skin.xml.*||'`
 	fi
+	if [ -n "${SKIN}" ]; then
+		SEARCHDIRS="@sysconfdir@/${SKIN} @sysconfdir@/skin_common @sysconfdir@ @datadir@/enigma2/${SKIN} @datadir@/enigma2/skin_default @datadir@/enigma2 @datadir@"
+	else
+		SEARCHDIRS="@sysconfdir@/skin_common @sysconfdir@ @datadir@/enigma2/skin_default @datadir@/enigma2 @datadir@"
+	fi
+	for DIR in ${SEARCHDIRS}; do
+		if [ -d "${DIR}" ] && [ -f "${DIR}/backdrop.mvi" ]; then
+			@bindir@/showiframe "${DIR}/backdrop.mvi" &
+			break
+		fi
+	done
 fi
 
 # hook to execute scripts always before enigma2 start
