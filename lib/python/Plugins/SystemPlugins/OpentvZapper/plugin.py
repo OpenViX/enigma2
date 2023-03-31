@@ -24,7 +24,7 @@ config.plugins.opentvzapper.retrycount = NoSave(ConfigNumber(default=0))
 config.plugins.opentvzapper.nextscheduletime = ConfigNumber(default=0)
 config.plugins.opentvzapper.schedulewakefromdeep = ConfigYesNo(default=True)
 config.plugins.opentvzapper.scheduleshutdown = ConfigYesNo(default=True)
-config.plugins.opentvzapper.dayscreen = ConfigSelection(choices=[("1", _("Press OK"))], default="1")
+config.plugins.opentvzapper.dayscreen = NoSave(ConfigSelection(choices=[("1", _("Press OK"))], default="1"))
 config.plugins.opentvzapper.days = ConfigSubDict()
 for i in range(7):
 	config.plugins.opentvzapper.days[i] = ConfigEnableDisable(default=True)
