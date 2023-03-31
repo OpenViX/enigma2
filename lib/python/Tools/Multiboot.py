@@ -10,6 +10,11 @@ from Components.Console import Console
 from Components.SystemInfo import SystemInfo, BoxInfo as BoxInfoRunningInstance, BoxInformation
 from Tools.Directories import fileHas, fileExists
 
+if fileHas("/proc/cmdline", "kexec=1"):		
+	from PIL import Image
+	from PIL import ImageDraw
+	from PIL import ImageFont
+
 MbootList1 = ("/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/mtdblock2", "/dev/block/by-name/bootoptions")
 MbootList2 = ("/dev/%s" % getMachineMtdRoot(), )	# kexec kernel Vu+ multiboot
 
@@ -118,7 +123,7 @@ def getMultibootslots():
 		else:
 			root = dict([(x.split("=", 1)[0].strip(), x.split("=", 1)[1].strip()) for x in bootArgs.strip().split(" ") if "=" in x])["root"]	# Broadband receiver (e.g. gbue4k) or sf8008 with sd card as root/kernel pair
 			for slot in bootslots.keys():
-				if "root" not in bootslots[slot].keys():			
+				if "root" not in bootslots[slot].keys():
 					continue
 				if bootslots[slot]["root"] == root:
 					SystemInfo["MultiBootSlot"] = slot
@@ -208,6 +213,8 @@ def GetImagelist(Recovery=None):
 					date = VerDate(imagedir)
 					Creator = Creator.replace("-release", " ")
 					BuildVersion = "%s (%s)" % (Creator, date)
+			if fileHas("/proc/cmdline", "kexec=1") and Recovery:
+				bootmviSlot(imagedir=imagedir, text=BuildVersion, slot=slot)		
 			Imagelist[slot] = {"imagename": "%s" % BuildVersion}
 		elif path.isfile(path.join(imagedir, "usr/bin/enigmax")):
 			Imagelist[slot] = {"imagename": _("Deleted image")}
@@ -252,6 +259,31 @@ def emptySlot(slot):
 		rmdir(tmp.dir)
 	return ret
 
+def bootmviSlot(imagedir="/", text=" ", slot=0):
+	inmviPath = path.join(imagedir, "usr/share/bootlogo.mvi")
+	outmviPath = path.join(imagedir, "etc/enigma2/bootlogo.mvi")
+	print("[multiboot][bootmviSlot] inPath, outpath ", inmviPath, "   ", outmviPath)
+	if path.exists(inmviPath):
+		print ("[multiboot][bootmviSlot] Copy /usr/share/bootlogo.mvi to /tmp/bootlogo.m1v")
+		Console(binary=True).ePopen("cp %s /tmp/bootlogo.m1v" % inmviPath)
+		print ("[multiboot][bootmviSlot] Dump iframe to png")
+		Console(binary=True).ePopen("ffmpeg -skip_frame nokey -i /tmp/bootlogo.m1v -vsync 0  -y  /tmp/out1.png 2>/dev/null")
+		Console(binary=True).ePopen("rm -f /tmp/mypicture.m1v")
+		if path.exists("/tmp/out1.png"):
+			img = Image.open("/tmp/out1.png")						# Open an Image
+		else:
+			print ("[multiboot][bootmviSlot] unable to create new bootlogo cannot open out1.png")
+			return
+		I1 = ImageDraw.Draw(img)									# Call draw Method to add 2D graphics in an image
+		myFont = ImageFont.truetype("/usr/share/fonts/OpenSans-Regular.ttf", 65)		# Custom font style and font size
+		print("[multiboot][bootmviSlot] Write text to png")
+		text = "booting slot %s %s" % (slot, text)
+		I1.text((12, 12), text, font=myFont, fill =(255, 0, 0))		# Add Text to an image
+		I1.text((10, 10), text, font=myFont, fill =(255, 255, 255))
+		img.save("/tmp/out1.png")									# Save the edited image
+		print ("[multiboot][bootmviSlot] Repack bootlogo")
+		Console(binary=True).ePopen("ffmpeg -i /tmp/out1.png -r 25 -b 20000 -y /tmp/mypicture.m1v  2>/dev/null")
+		Console(binary=True).ePopen("cp /tmp/mypicture.m1v %s" % outmviPath)
 
 def restoreSlots():
 	for slot in SystemInfo["canMultiBoot"]:
