@@ -7,10 +7,12 @@ from Components.About import about
 from Components.config import config, configfile
 from Components.Console import Console
 from Components.Pixmap import Pixmap
+from Components.SystemInfo import SystemInfo
 from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
 from Screens.WizardLanguage import WizardLanguage
-from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS
+from Tools.Directories import fileExists, fileHas, resolveFilename, SCOPE_PLUGINS
+from Tools.Multiboot import bootmviSlot
 
 
 class RestoreWizard(WizardLanguage, Rc):
@@ -124,8 +126,11 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def buildList(self, action):
 		if self.NextStep == "reboot":
+			if fileHas("/proc/cmdline", "kexec=1"):
+				slot = SystemInfo["MultiBootSlot"]
+				bootmviSlot(slot=slot)			
 			if self.didSettingsRestore:
-				self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /" + " etc/enigma2/settings")	
+				self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /" + " etc/enigma2/settings")
 			self.Console.ePopen("killall -9 enigma2 && init 6")
 		elif self.NextStep == "settingsquestion" or self.NextStep == "settingsrestore" or self.NextStep == "pluginsquestion" or self.NextStep == "pluginsrestoredevice" or self.NextStep == "end" or self.NextStep == "noplugins":
 			self.buildListfinishedCB(False)
