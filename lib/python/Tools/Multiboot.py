@@ -278,8 +278,8 @@ def bootmviSlot(imagedir="/", text=" ", slot=0):
 		myFont = ImageFont.truetype("/usr/share/fonts/OpenSans-Regular.ttf", 65)		# Custom font style and font size
 		print("[multiboot][bootmviSlot] Write text to png")
 		text = "booting slot %s %s" % (slot, text)
-		I1.text((12, 12), text, font=myFont, fill =(255, 0, 0))		# Add Text to an image
-		I1.text((10, 10), text, font=myFont, fill =(255, 255, 255))
+		I1.text((52, 12), text, font=myFont, fill =(255, 0, 0))		# Add Text to an image
+		I1.text((50, 10), text, font=myFont, fill =(255, 255, 255))
 		img.save("/tmp/out1.png")									# Save the edited image
 		print ("[multiboot][bootmviSlot] Repack bootlogo")
 		Console(binary=True).ePopen("ffmpeg -i /tmp/out1.png -r 25 -b 20000 -y /tmp/mypicture.m1v  2>/dev/null")
