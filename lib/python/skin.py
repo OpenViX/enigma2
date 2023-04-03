@@ -1403,6 +1403,25 @@ def findWidgets(name):
 	recursively until all referenced widgets are captured. This code only performs
 	a simple scan of the XML and no skin processing is performed.
 	"""
+	def recurseNamelessPanel(panel):
+		widgets = panel.findall("widget")
+		if widgets is not None:
+			for widget in widgets:
+				name = widget.get("name", None)
+				if name is not None:
+					widgetSet.add(name)
+				source = widget.get("source", None)
+				if source is not None:
+					widgetSet.add(source)
+		panels = panel.findall("panel")
+		if panels is not None:
+			for childPanel in panels:
+				name = childPanel.get("name", None)
+				if name:
+					widgetSet.update(findWidgets(name))
+				else:
+					recurseNamelessPanel(childPanel)
+		
 	widgetSet = set()
 	element, path = domScreens.get(name, (None, None))
 	if element is not None:
@@ -1421,6 +1440,8 @@ def findWidgets(name):
 				name = panel.get("name", None)
 				if name:
 					widgetSet.update(findWidgets(name))
+				else:
+					recurseNamelessPanel(panel)
 	return widgetSet
 
 
