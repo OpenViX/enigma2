@@ -6,7 +6,7 @@ from os.path import basename as pathBasename, dirname as pathDirname, exists as 
 from os import access, chmod, listdir, makedirs, mkdir, readlink, rename, rmdir, sep, stat as os_stat, statvfs, symlink, utime, walk, F_OK, R_OK, W_OK 
 
 from enigma import eEnv, getDesktop
-from re import compile, split
+from re import compile, split, search
 from stat import S_IMODE
 from sys import _getframe as getframe
 from unicodedata import normalize
@@ -155,7 +155,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 			if not "skin_default" in skin:
 				skinResolveList += addInList(pathJoin(scopeGUISkin, skin))
 			skinResolveList += addInList(
-				pathJoin(scopeGUISkin, "skin_fallback_%d" % getDesktop(0).size().height()),
+				pathJoin(scopeGUISkin, "skin_fallback_%d" % getPrimarySkinResolution()),
 				pathJoin(scopeGUISkin, "skin_default"),
 				scopeGUISkin
 			)
@@ -239,6 +239,25 @@ def resolveFilename(scope, base="", path_prefix=None):
 	if suffix is not None:  # If a suffix was supplied restore it.
 		path = "%s:%s" % (path, suffix)
 	return path
+
+
+def getPrimarySkinResolution():
+	from Components.config import config # deferred import
+	resolutions = ["480", "576", "720", "1080", "2160", "4320", "8640"] 
+	resolution = None
+	skin = resolveFilename(SCOPE_SKIN, config.skin.primary_skin.value)
+	if not fileExists(skin):
+		from skin import EMERGENCY_SKIN
+		skin = resolveFilename(SCOPE_SKIN, EMERGENCY_SKIN)
+	try:
+		with open(skin, "r") as fd:
+			content = fd.read(65535)
+			skinHeight = search(r"<?resolution.*?\syres\s*=\s*\"(\d+)\"", content)
+			resolution = skinHeight and skinHeight.group(1) in resolutions and int(skinHeight.group(1)) or None
+	except Exception as err:
+		print("[Directories] getPrimarySkinResolution, Error %s: %s!" % (type(err).__name__, str(err)))
+	return resolution if resolution is not None else 720
+
 
 def fileReadLine(filename, default=None, *args, **kwargs):
 	try:
