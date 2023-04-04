@@ -31,9 +31,9 @@ if [ -x @bindir@/showiframe ]; then
 		SKIN=`strings -n 10 @prefix@/lib/enigma2/python/skin.pyc | egrep -o -m 1 ".+/skin.xml" | sed 's|/skin.xml.*||'`
 	fi
 	if [ -n "${SKIN}" ]; then
-		SEARCHDIRS="@sysconfdir@/${SKIN} @sysconfdir@/skin_common @sysconfdir@ @datadir@/enigma2/${SKIN} @datadir@/enigma2/skin_default @datadir@/enigma2 @datadir@"
+		SEARCHDIRS="@sysconfdir@/enigma2/${SKIN} @sysconfdir@/enigma2/skin_common @sysconfdir@/enigma2 @datadir@/enigma2/${SKIN} @datadir@/enigma2/skin_default @datadir@/enigma2 @datadir@"
 	else
-		SEARCHDIRS="@sysconfdir@/skin_common @sysconfdir@ @datadir@/enigma2/skin_default @datadir@/enigma2 @datadir@"
+		SEARCHDIRS="@sysconfdir@/enigma2/skin_common @sysconfdir@/enigma2 @datadir@/enigma2/skin_default @datadir@/enigma2 @datadir@"
 	fi
 	for DIR in ${SEARCHDIRS}; do
 		if [ -d "${DIR}" ] && [ -f "${DIR}/backdrop.mvi" ]; then
