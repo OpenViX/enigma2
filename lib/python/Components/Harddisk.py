@@ -292,6 +292,9 @@ class Harddisk:
 			if os.path.realpath(parts[0]).startswith(self.dev_path):
 				mediapath.append(parts[1])
 		for mpath in mediapath:
+			print("[Harddisk][totalFree]mpath:", mpath)
+			if mpath == "/" and SystemInfo["HasKexecMultiboot"]:
+				continue		
 			free = self.free(mpath)
 			if free > 0:
 				freetot += free
