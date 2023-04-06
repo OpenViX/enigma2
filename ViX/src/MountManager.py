@@ -137,7 +137,9 @@ def buildPartitionInfo(partition, partitionList):
 						_format = res.stdout.decode().strip()
 				rw = parts[3]			# read/write
 				break
-
+	print("[MountManager1][buildPartitionInfo] mediamount", mediamount)
+	if mediamount == "/" and SystemInfo["HasKexecMultiboot"]:
+		return	
 	if mediamount == _("None") or mediamount is None:
 		description = _("Size: ") + _("unavailable")
 	else:
