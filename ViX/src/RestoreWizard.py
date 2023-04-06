@@ -12,7 +12,7 @@ from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
 from Screens.WizardLanguage import WizardLanguage
 from Tools.Directories import fileExists, fileHas, resolveFilename, SCOPE_PLUGINS
-from Tools.Multiboot import bootmviSlot
+from Tools.Multiboot import bootmviSlot, createInfo
 
 
 class RestoreWizard(WizardLanguage, Rc):
@@ -128,7 +128,8 @@ class RestoreWizard(WizardLanguage, Rc):
 		if self.NextStep == "reboot":
 			if fileHas("/proc/cmdline", "kexec=1"):
 				slot = SystemInfo["MultiBootSlot"]
-				bootmviSlot(slot=slot)			
+				text = createInfo(slot)
+				bootmviSlot(text=text, slot=slot)			
 			if self.didSettingsRestore:
 				self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /" + " etc/enigma2/settings")
 			self.Console.ePopen("killall -9 enigma2 && init 6")
