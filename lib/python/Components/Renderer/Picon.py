@@ -48,16 +48,16 @@ class PiconLocator:
 		elif why == "remove":
 			self.__onMountpointRemoved(part.mountpoint)
 
-	def findPicon(self, serviceName):
+	def findPicon(self, service):
 		if self.activePiconPath is not None:
 			for ext in (".png", ".svg"):
-				pngname = self.activePiconPath + serviceName + ext
+				pngname = self.activePiconPath + service + ext
 				if pathExists(pngname):
 					return pngname
 		else:
 			for path in self.searchPaths:
 				for ext in (".png", ".svg"):
-					pngname = path + serviceName + ext
+					pngname = path + service + ext
 					if pathExists(pngname):
 						self.activePiconPath = path
 						return pngname
@@ -70,9 +70,9 @@ class PiconLocator:
 			if not value.startswith("/media/net") and not value.startswith("/media/autofs") and value not in self.searchPaths:
 				self.searchPaths.append(value)
 
-	def getPiconName(self, serviceName):
+	def getPiconName(self, serviceRef):
 		#remove the path and name fields, and replace ":" by "_"
-		fields = GetWithAlternative(serviceName).split(":", 10)[:10]
+		fields = GetWithAlternative(serviceRef).split(":", 10)[:10]
 		if not fields or len(fields) < 10:
 			return ""
 		pngname = self.findPicon("_".join(fields))
@@ -89,7 +89,7 @@ class PiconLocator:
 			fields[2] = "1"
 			pngname = self.findPicon("_".join(fields))
 		if not pngname: # picon by channel name
-			name = sanitizeFilename(eServiceReference(serviceName).getServiceName())			
+			name = sanitizeFilename(eServiceReference(serviceRef).getServiceName())			
 			name = re.sub("[^a-z0-9]", "", name.replace("&", "and").replace("+", "plus").replace("*", "star").lower())
 			if len(name) > 0:
 				pngname = self.findPicon(name)
@@ -112,8 +112,8 @@ def initPiconPaths():
 initPiconPaths()
 
 
-def getPiconName(serviceName):
-	return piconLocator.getPiconName(serviceName)
+def getPiconName(serviceRef):
+	return piconLocator.getPiconName(serviceRef)
 
 
 class Picon(Renderer):
