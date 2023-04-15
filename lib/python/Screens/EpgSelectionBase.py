@@ -675,7 +675,7 @@ class EPGBouquetSelection:
 		return self.bouquets[self.selectedBouquetIndex][1] if self.bouquets and self.selectedBouquetIndex >= 0 else None
 
 	def getCurrentBouquetName(self):
-		return self.bouquets[self.selectedBouquetIndex][0] if self.bouquets and self.selectedBouquetIndex >= 0 else None
+		return self.bouquets[self.selectedBouquetIndex][0] if self.bouquets and self.selectedBouquetIndex >= 0 else ""
 
 	def nextBouquet(self):
 		self.setBouquetIndex(self.selectedBouquetIndex + 1)
