@@ -20,7 +20,7 @@ def getFlashDateString():
 	else:
 		return _("unknown")
 
-def	driversDate(): 
+def driversDate(): 
 	string = getDriverDate()
 	year = string[0:4]
 	month = string[4:6]
