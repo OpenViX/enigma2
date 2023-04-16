@@ -4,7 +4,7 @@ import socket
 import fcntl
 import struct
 
-from boxbranding import getImageVersion, getMachineBuild, getBoxType
+from boxbranding import getDriverDate, getImageVersion, getMachineBuild, getBoxType
 
 
 def getVersionString():
@@ -19,6 +19,12 @@ def getFlashDateString():
 	else:
 		return _("unknown")
 
+def	driversDate(): 
+	string = getDriverDate()
+	year = string[0:4]
+	month = string[4:6]
+	day = string[6:8]
+	return "-".join((year, month, day))
 
 def getEnigmaVersionString():
 	return getImageVersion()

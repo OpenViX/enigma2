@@ -1,7 +1,7 @@
 from os import listdir, path, popen
 from re import search
 from enigma import eTimer, getEnigmaVersionString, getDesktop
-from boxbranding import getMachineBrand, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild
+from boxbranding import getMachineBrand, getMachineName, getImageVersion, getImageType, getImageBuild, getImageDevBuild
 from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -139,13 +139,7 @@ class About(AboutBase):
 		skinWidth = getDesktop(0).size().width()
 		skinHeight = getDesktop(0).size().height()
 
-		string = getDriverDate()
-		year = string[0:4]
-		month = string[4:6]
-		day = string[6:8]
-		driversdate = "-".join((day, month, year))
-
-		AboutText += _("Drivers:\t%s\n") % driversdate
+		AboutText += _("Drivers:\t%s\n") % about.driversDate()
 		AboutText += _("Kernel:\t%s\n") % about.getKernelVersionString()
 		AboutText += _("GStreamer:\t%s\n") % about.getGStreamerVersionString().replace("GStreamer ", "")
 		if isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value == True:
@@ -649,12 +643,7 @@ class AboutSummary(ScreenSummary):
 			chipset = open("/proc/stb/info/chipset", "r").read()
 			self.aboutText.append(_("Chipset: %s") % chipset.replace("\n", "") + "\n")
 		self.aboutText.append(_("Kernel: %s") % about.getKernelVersionString() + "\n")
-		string = getDriverDate()
-		year = string[0:4]
-		month = string[4:6]
-		day = string[6:8]
-		driversdate = "-".join((year, month, day))
-		self.aboutText.append(_("Drivers: %s") % driversdate + "\n")
+		self.aboutText.append(_("Drivers: %s") % about.driversDate() + "\n")
 		self["AboutText"].text = "".join(self.aboutText)
 		self.timer = eTimer()
 		self.timer.callback.append(self.update)
