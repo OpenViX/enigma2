@@ -153,7 +153,7 @@ class About(AboutBase):
 		else:
 			AboutText += _("4097 iptv player:\tDefault player\n")	
 		AboutText += _("Python:\t%s\n") % about.getPythonVersionString()
-		flashDate = about.getFlashDateString()[8:]  + about.getFlashDateString()[4:8] + about.getFlashDateString()[0:4] 
+		flashDate = about.getFlashDateString() 
 		AboutText += _("Installed:\t%s\n") % flashDate
 		lastUpdate = getEnigmaVersionString()[8:]  + getEnigmaVersionString()[4:8] + getEnigmaVersionString()[0:4] 
 		AboutText += _("Last update:\t%s\n") % lastUpdate

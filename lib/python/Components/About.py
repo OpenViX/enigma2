@@ -1,4 +1,5 @@
 from sys import modules, version_info
+from os import path as ospath
 import socket
 import fcntl
 import struct
@@ -11,11 +12,11 @@ def getVersionString():
 
 
 def getFlashDateString():
-	try:
+	if ospath.isfile('/etc/install'):
 		with open("/etc/install", "r") as f:
 			flashdate = f.read()
-			return flashdate
-	except:
+			return flashdate[8:]  + flashdate[4:8] + flashdate[0:4]
+	else:
 		return _("unknown")
 
 
