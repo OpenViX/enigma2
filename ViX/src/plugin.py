@@ -1,6 +1,4 @@
 from os import listdir, path
-from boxbranding import getBoxType, getImageDistro
-
 
 from . import _
 from Plugins.Plugin import PluginDescriptor
