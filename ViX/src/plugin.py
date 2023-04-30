@@ -29,6 +29,7 @@ def setLanguageFromBackup(backupfile):
 					print(languageToSelect)
 					if languageToSelect:
 						from Components.Language import language
+						language.InitLang()
 						language.activateLanguage(languageToSelect)
 						break
 		tar.close()
