@@ -232,8 +232,9 @@ def createInfo(slot, imagedir="/"):
 
 
 def VerDate(imagedir):
-	date3 = "00000000"
-	date1 = datetime.fromtimestamp(stat(path.join(imagedir, "var/lib/opkg/status")).st_mtime).strftime("%Y-%m-%d")
+	date1 = date2 = date3 = "00000000"
+	if fileExists(path.join(imagedir, "var/lib/opkg/status")):
+		date1 = datetime.fromtimestamp(stat(path.join(imagedir, "var/lib/opkg/status")).st_mtime).strftime("%Y-%m-%d")
 	date2 = datetime.fromtimestamp(stat(path.join(imagedir, "usr/bin/enigma2")).st_mtime).strftime("%Y-%m-%d")
 	if fileExists(path.join(imagedir, "usr/share/bootlogo.mvi")):
 		date3 = datetime.fromtimestamp(stat(path.join(imagedir, "usr/share/bootlogo.mvi")).st_mtime).strftime("%Y-%m-%d")
