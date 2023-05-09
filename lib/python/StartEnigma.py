@@ -124,6 +124,10 @@ except ImportError:
 	def runReactor():
 		enigma.runMainloop()
 
+profile("Init:NTPSync")
+import Components.NetworkTime
+Components.NetworkTime.AutoNTPSync()
+
 profile("LOAD:Plugin")
 
 # initialize autorun plugins and plugin menu entries
@@ -673,10 +677,6 @@ Screens.LogManager.AutoLogManager()
 profile("Init:OnlineCheckState")
 import Components.OnlineUpdateCheck
 Components.OnlineUpdateCheck.OnlineUpdateCheck()
-
-profile("Init:NTPSync")
-import Components.NetworkTime
-Components.NetworkTime.AutoNTPSync()
 
 profile("keymapparser")
 import keymapparser
