@@ -419,7 +419,11 @@ class VIXImageManager(Screen):
 			for file in files:
 				imagesFound.append({'link': file, 'name': file.split(ossep)[-1], 'mtime': stat(file).st_mtime})
 
+		def checkMachineNameInFilename(filename):
+			return model in filename or "-" + device_name + "-" in filename
+
 		model = getMachineMake()
+		device_name = HardwareInfo().get_device_name()
 		imagesFound = []
 		if config.imagemanager.extensive_location_search.value:
 			mediaList = ['/media/%s' % x for x in listdir('/media')] + (['/media/net/%s' % x for x in listdir('/media/net')] if path.isdir('/media/net') else [])  + (['/media/autofs/%s' % x for x in listdir('/media/autofs')] if path.isdir('/media/autofs') else [])
@@ -430,12 +434,12 @@ class VIXImageManager(Screen):
 				medialist = listdir(media)
 			except FileNotFoundError:
 				continue
-			getImages([path.join(media, x) for x in medialist if path.splitext(x)[1] == ".zip" and model in x])
+			getImages([path.join(media, x) for x in medialist if path.splitext(x)[1] == ".zip" and checkMachineNameInFilename(x)])
 			for folder in ["imagebackups", "downloaded_images", "images"]:
 				if folder in medialist:
 					media2 = path.join(media, folder)
 					if path.isdir(media2) and not path.islink(media2) and not path.ismount(media2):
-						getImages([path.join(media2, x) for x in listdir(media2) if path.splitext(x)[1] == ".zip" and model in x])
+						getImages([path.join(media2, x) for x in listdir(media2) if path.splitext(x)[1] == ".zip" and checkMachineNameInFilename(x)])
 		imagesFound.sort(key=lambda x: x['mtime'], reverse=True)
 		# print("[ImageManager][getImagesDownloaded] imagesFound=%s" % imagesFound)
 		return imagesFound
