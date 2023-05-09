@@ -5,6 +5,7 @@ from Components.Language import language
 
 def InitSetupDevices():
 	def languageNotifier(configElement):
+		language.InitLang()	
 		language.activateLanguage(configElement.value)
 
 	config.osd = ConfigSubsection()
