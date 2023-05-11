@@ -30,7 +30,7 @@ def setLanguageFromBackup(backupfile):
 	except KeyError:
 		print("[ViX plugin][setLanguageFromBackup] language selected failed")
 		tar.close()
-		pass
+		return
 
 	for line in tar.extractfile(member):
 		line = line.decode()
