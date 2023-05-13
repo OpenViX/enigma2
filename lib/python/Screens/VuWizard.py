@@ -43,14 +43,14 @@ class VuWizard(WizardLanguage, Rc):
 		if self.welcomeWarning in self.onShow:
 			self.onShow.remove(self.welcomeWarning)
 		popup = self.session.openWithCallback(self.welcomeAction, MessageBox, _("Welcome to OpenViX!\n\n"
-			"Select No to setup Standard Vu image.\n\n"
-			"Select Yes to setup Multiboot."), type=MessageBox.TYPE_YESNO, timeout=-1, default=False)
-		popup.setTitle(_("Start Wizard - Vu+ 4K install options"))
+			"Select 'No' to setup Standard Vu+ image.\n\n"
+			"Select 'Yes' to setup Vu+ Multiboot."), type=MessageBox.TYPE_YESNO, timeout=-1, default=False)
+		popup.setTitle(_("Vu+ 4K image install options"))
 
 	def welcomeAction(self, answer):
-		print("[VuWizard][welcomeAction] answer", answer) 		
+		print("[VuWizard][welcomeAction] answer", answer)
 		if answer:
-			print("[VuWizard][welcomeAction] arrived") 		
+			print("[VuWizard][welcomeAction] arrived")
 			if fileExists("/STARTUP_RECOVERY") or fileExists("/boot/STARTUP_RECOVERY"):
 				self.close
 			else:
@@ -101,17 +101,17 @@ class VuWizard(WizardLanguage, Rc):
 		else:
 			self.close()
 
-				
+
 	def eMMCload(self, *args, **kwargs):
 		cmdlist = []
 		for eMMCslot in range(1,4):
 			if pathExists("/media/hdd/%s/linuxrootfs%s" % (getBoxType(), eMMCslot)):
 				cmdlist.append("cp -R /media/hdd/%s/linuxrootfs%s . /" % (getBoxType(), eMMCslot))
-				cmdlist.append("rm -r /media/hdd/%s/linuxrootfs%s" % (getBoxType(), eMMCslot))				
+				cmdlist.append("rm -r /media/hdd/%s/linuxrootfs%s" % (getBoxType(), eMMCslot))
 		if cmdlist:
 			self.Console.eBatch(cmdlist, self.reBoot, debug=False)
 		else:
-			self.reBoot()					
+			self.reBoot()
 
 	def reBoot(self, *args, **kwargs):
 		with open("/STARTUP", 'w') as f:
@@ -119,8 +119,8 @@ class VuWizard(WizardLanguage, Rc):
 		config.misc.restorewizardrun.value = True
 		config.misc.restorewizardrun.save()
 		config.misc.firstrun.value = 0
-		config.misc.firstrun.save()		
-		configfile.save()		
+		config.misc.firstrun.save()
+		configfile.save()
 		self.Console.ePopen("killall -9 enigma2 && init 6")
 
 	def exitWizardQuestion(self, ret=False):
@@ -135,5 +135,4 @@ class VuWizard(WizardLanguage, Rc):
 		pass
 
 	def back(self):
-		WizardLanguage.back(self)	
-
+		WizardLanguage.back(self)
