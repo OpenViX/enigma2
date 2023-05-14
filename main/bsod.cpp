@@ -266,7 +266,13 @@ void bsodFatal(const char *component)
 	 * We'd risk destroying things with every additional instruction we're
 	 * executing here.
 	 */
-	if (component) raise(SIGKILL);
+	if (component) {
+		/*
+		 *  We need to use a signal that generate core dump.
+		 */
+		if (eConfigManager::getConfigBoolValue("config.crash.coredump", false)) raise(SIGTRAP);
+		raise(SIGKILL);
+	}
 }
 
 void oops(const mcontext_t &context)
@@ -313,7 +319,6 @@ void print_backtrace()
 		}
 	}
 }
-
 
 void handleFatalSignal(int signum, siginfo_t *si, void *ctx)
 {
