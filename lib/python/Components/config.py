@@ -1646,7 +1646,7 @@ class ConfigSlider(ConfigElement):
 					callback()
 
 	def getText(self):
-		return "%d // %d" % (self.value, self.max)
+		return "%d / %d" % (self.value, self.max)
 
 	def getMulti(self, selected):
 		return "slider", self.value, self.max
