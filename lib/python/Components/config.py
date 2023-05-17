@@ -1891,8 +1891,7 @@ class ConfigLocations(ConfigElement):
 		locations = self.locations
 		if sv is None and not locations:
 			return False
-		retval = self.tostring([x[0] for x in locations]) != sv
-		return retval
+		return self.tostring([x[0] for x in locations]) != sv
 
 	def addedMount(self, mp):
 		for x in self.locations:
