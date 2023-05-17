@@ -86,6 +86,12 @@ skinResolveList = []
 lcdskinResolveList = []
 fontsResolveList = []
 
+def clearResolveLists():
+	global skinResolveList, lcdskinResolveList, fontsResolveList
+	skinResolveList = []
+	lcdskinResolveList = []
+	fontsResolveList = []
+
 
 def resolveFilename(scope, base="", path_prefix=None):
 	# You can only use the ~/ if we have a prefix directory.
