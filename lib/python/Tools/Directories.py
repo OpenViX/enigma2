@@ -253,8 +253,8 @@ def getPrimarySkinResolution():
 	resolution = None
 	skin = resolveFilename(SCOPE_SKIN, config.skin.primary_skin.value)
 	if not fileExists(skin):
-		from skin import EMERGENCY_SKIN
-		skin = resolveFilename(SCOPE_SKIN, EMERGENCY_SKIN)
+		from skin import DEFAULT_SKIN
+		skin = resolveFilename(SCOPE_SKIN, DEFAULT_SKIN)
 	try:
 		with open(skin, "r") as fd:
 			content = fd.read(65535)
