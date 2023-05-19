@@ -43,25 +43,25 @@ class ScrollLabel(GUIComponent):
 				elif attrib in ("scrollbarBackgroundPicture", "scrollbarbackgroundPixmap"):
 					self.scrollbar.setBackgroundPixmap(skin.loadPixmap(value, desktop))
 					self.skinAttributes.remove((attrib, value))
-				elif "transparent" in attrib or "backgroundColor" in attrib:
+				elif attrib in ("transparent", "backgroundColor"):
 					widget_attribs.append((attrib, value))
-				elif "scrollbarWidth" in attrib:
+				elif attrib == "scrollbarWidth":
 					scrollbarWidth = skin.parseScale(value)
 					self.skinAttributes.remove((attrib, value))
-				elif "scrollbarSliderBorderWidth" in attrib:
+				elif attrib == "scrollbarSliderBorderWidth":
 					self.scrollbar.setBorderWidth(skin.parseScale(value))
 					self.skinAttributes.remove((attrib, value))
-				elif "split" in attrib:
+				elif attrib == "split":
 					self.split = 1 if value.lower() in ("1", "enabled", "on", "split", "true", "yes") else 0
 					if self.split:
 						self.right_text = eLabel(self.instance)
 					self.skinAttributes.remove((attrib, value))
-				elif "colposition" in attrib:
+				elif attrib == "colposition":
 					self.column = skin.parseScale(value)
-				elif "dividechar" in attrib:
+					self.skinAttributes.remove((attrib, value))
+				elif attrib == "dividechar":
 					self.splitchar = value
-				elif "colposition" in attrib:
-					self.column = int(value)
+					self.skinAttributes.remove((attrib, value))
 
 			if self.split:
 				skin.applyAllAttributes(self.long_text, desktop, self.skinAttributes + [("halign", "left")], parent.scale)
