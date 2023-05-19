@@ -18,6 +18,7 @@ class ScrollLabel(GUIComponent):
 		self.column = 0
 		self.split = False
 		self.splitchar = "|"
+		self.keepsplitchar = 0
 		self.onSelectionChanged = []
 
 	def applySkin(self, desktop, parent):
@@ -62,6 +63,9 @@ class ScrollLabel(GUIComponent):
 				elif attrib == "dividechar":
 					self.splitchar = value
 					self.skinAttributes.remove((attrib, value))
+				elif attrib == "keepdivchar":
+					self.keepsplitchar = 1 if value.lower() in ("1", "enabled", "on", "keep", "true", "yes") else 0
+					self.skinAttributes.remove((attrib, value))
 
 			if self.split:
 				skin.applyAllAttributes(self.long_text, desktop, self.skinAttributes + [("halign", "left")], parent.scale)
@@ -99,6 +103,8 @@ class ScrollLabel(GUIComponent):
 				right = []
 				for line in text.split("\n"):
 					line = line.split(self.splitchar, 1)
+					if self.keepsplitchar and len(line) > 1:
+						line[0] += self.splitchar
 					left.append(line[0])
 					right.append("" if len(line) < 2 else line[1].lstrip())
 				self.long_text.setText("\n".join(left))
