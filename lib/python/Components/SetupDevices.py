@@ -1,4 +1,4 @@
-from Components.config import ConfigOnOff, ConfigSelection, ConfigSubsection, ConfigText, config
+from Components.config import ConfigOnOff, ConfigSelection, ConfigSubsection, ConfigText, config, configfile
 from Components.Keyboard import keyboard
 from Components.Language import language
 
@@ -7,9 +7,12 @@ def InitSetupDevices():
 	def languageNotifier(configElement):
 		language.InitLang()	
 		language.activateLanguage(configElement.value)
+		configElement.save()
+		configfile.save()
 
 	config.osd = ConfigSubsection()
 	config.osd.language = ConfigText(default="en_GB")
+	config.osd.language.save_forced = True
 	config.osd.language.addNotifier(languageNotifier)
 
 	def keyboardNotifier(configElement):
