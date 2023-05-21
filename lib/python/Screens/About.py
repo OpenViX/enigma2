@@ -1,6 +1,6 @@
 from os import listdir, path, popen
 from re import search
-from enigma import eTimer, getEnigmaVersionString, getDesktop
+from enigma import eTimer, getDesktop
 from boxbranding import getMachineBrand, getMachineName, getImageVersion, getImageType, getImageBuild, getImageDevBuild
 from Components.About import about
 from Components.ActionMap import ActionMap
@@ -149,7 +149,7 @@ class About(AboutBase):
 		AboutText += _("Python:\t%s\n") % about.getPythonVersionString()
 		flashDate = about.getFlashDateString() 
 		AboutText += _("Installed:\t%s\n") % flashDate
-		lastUpdate = getEnigmaVersionString()[8:]  + getEnigmaVersionString()[4:8] + getEnigmaVersionString()[0:4] 
+		lastUpdate = about.getLastUpdate()
 		AboutText += _("Last update:\t%s\n") % lastUpdate
 		AboutText += _("E2 (re)starts:\t%s\n") % config.misc.startCounter.value
 		uptime = about.getBoxUptime()
@@ -626,7 +626,7 @@ class AboutSummary(ScreenSummary):
 		self["AboutText"] = StaticText()
 		self.aboutText.append(_("OpenViX: %s") % getImageVersion() + "." + getImageBuild() + "\n")
 		self.aboutText.append(_("Model: %s %s\n") % (getMachineBrand(), getMachineName()))
-		self.aboutText.append(_("Updated: %s") % getEnigmaVersionString() + "\n")
+		self.aboutText.append(_("Updated: %s") % about.getLastUpdate() + "\n")
 		tempinfo = ""
 		if path.exists("/proc/stb/sensors/temp0/value"):
 			with open("/proc/stb/sensors/temp0/value", "r") as f:
