@@ -18,17 +18,20 @@ def getFlashDateString():
 	if ospath.isfile('/etc/install'):
 		with open("/etc/install", "r") as f:
 			Date = f.read()
-			return "%(day)s-%(month)s-%(year)s" % {"year": Date[0:4], "month": Date[4:6], "day": Date[6:8]}
+			from Components.config import config
+			return config.usage.date.dateFormatAbout.value % {"year": Date[0:4], "month": Date[4:6], "day": Date[6:8]}
 	else:
 		return _("unknown")
 
 def driversDate(): 
 	Date = getDriverDate()
-	return "%(day)s-%(month)s-%(year)s" % {"year": Date[0:4], "month": Date[4:6], "day": Date[6:8]}
+	from Components.config import config
+	return config.usage.date.dateFormatAbout.value % {"year": Date[0:4], "month": Date[4:6], "day": Date[6:8]}
 
 def getLastUpdate():
 	Date = getEnigmaVersionString()
-	return "%(day)s-%(month)s-%(year)s" % {"year": Date[8:], "month": Date[5:7], "day": Date[0:4]}
+	from Components.config import config
+	return config.usage.date.dateFormatAbout.value % {"year": Date[0:4], "month": Date[5:7], "day": Date[8:]}
 
 def getGStreamerVersionString():
 	try:

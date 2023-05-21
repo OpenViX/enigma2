@@ -44,11 +44,13 @@ class About(AboutBase):
 		self["key_green"] = Button(_("Translations"))
 		self["key_yellow"] = Button(_("Software update"))
 		self["key_blue"] = Button(_("Release notes"))
-		self["actions"] = ActionMap(["ColorActions"],
+		self["key_menu"] = StaticText(_("MENU"))
+		self["actions"] = ActionMap(["ColorActions", "MenuActions"],
 		{
 			"green": self.showTranslationInfo,
 			"yellow": self.showUpdatePlugin,
 			"blue": self.showAboutReleaseNotes,
+			"menu": self.setup,
 		})
 
 	def populate(self):
@@ -199,6 +201,10 @@ class About(AboutBase):
 
 	def showAboutReleaseNotes(self):
 		self.session.open(CommitInfo)
+
+	def setup(self):
+		from Screens.Setup import Setup
+		self.session.openWithCallback(self.populate, Setup, "about")
 
 
 class Devices(Screen):

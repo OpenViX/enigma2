@@ -419,6 +419,7 @@ def InitUsageConfig():
 	config.usage.date = ConfigSubsection()
 	config.usage.date.enabled = NoSave(ConfigBoolean(default=False))
 	config.usage.date.enabled_display = NoSave(ConfigBoolean(default=False))
+	config.usage.date.dateFormatAbout = ConfigSelection(default="%(day)s-%(month)s-%(year)s", choices=[("%(day)s-%(month)s-%(year)s", _("DD-MM-YYYY")), ("%(month)s-%(day)s-%(year)s", _("MM-DD-YYYY")), ("%(year)s-%(month)s-%(day)s", _("YYYY-MM-DD"))])
 	config.usage.time = ConfigSubsection()
 	config.usage.time.enabled = NoSave(ConfigBoolean(default=False))
 	config.usage.time.disabled = NoSave(ConfigBoolean(default=True))
