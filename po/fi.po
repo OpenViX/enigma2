@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-05-13 21:05+0300\n"
+"PO-Revision-Date: 2023-05-22 07:05+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13532,7 +13532,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"13.05.2023\n"
+"22.05.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -18074,3 +18074,21 @@ msgstr ""
 
 msgid "Configure Vu Multiboot interface"
 msgstr "Määritä Vu Multiboot -käyttöliittymä"
+
+msgid "About screen setup"
+msgstr "Tietoja näytön asetuksista"
+
+msgid "Date format"
+msgstr "Päivämäärän muoto"
+
+msgid "How to display the date format for date items in the About screen."
+msgstr "Kuinka näytettään päivämäärän muoto päivämääräkohdille Tietoja-näytössä."
+
+msgid "DD-MM-YYYY"
+msgstr "PP-KK-VVVV"
+
+msgid "MM-DD-YYYY"
+msgstr "KK-PP-VVVV"
+
+msgid "YYYY-MM-DD"
+msgstr "VVVV-KK-PP"
