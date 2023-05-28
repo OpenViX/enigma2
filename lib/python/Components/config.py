@@ -1646,7 +1646,7 @@ class ConfigSlider(ConfigElement):
 					callback()
 
 	def getText(self):
-		return "%d // %d" % (self.value, self.max)
+		return "%d / %d" % (self.value, self.max)
 
 	def getMulti(self, selected):
 		return "slider", self.value, self.max
@@ -1891,8 +1891,7 @@ class ConfigLocations(ConfigElement):
 		locations = self.locations
 		if sv is None and not locations:
 			return False
-		retval = self.tostring([x[0] for x in locations]) != sv
-		return retval
+		return self.tostring([x[0] for x in locations]) != sv
 
 	def addedMount(self, mp):
 		for x in self.locations:
@@ -2179,7 +2178,7 @@ class Config(ConfigSubsection):
 		ConfigSubsection.__init__(self)
 
 	def pickle_this(self, prefix, topickle, result):
-		for (key, val) in sorted(list(topickle.items()), key=lambda x: int(x[0]) if x[0].isdigit() else x[0].lower()):
+		for (key, val) in sorted(topickle.items(), key=lambda x: int(x[0]) if x[0].isdigit() else x[0].lower()):
 			name = '.'.join((prefix, key))
 			if isinstance(val, dict):
 				self.pickle_this(name, val, result)

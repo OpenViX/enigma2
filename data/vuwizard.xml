@@ -1,0 +1,11 @@
+<!--suppress XmlUnboundNsPrefix -->
+<wizard>
+	<step id="start">
+		<text value="Vu+ Multiboot - PLEASE WAIT WHILE INITIALISING!\n  - will take upto 5 minutes plus 5 minutes per restored eMMC slot.\n  - after installing Recovery and Slot1 image, receiver will reboot to Slot 1 setup wizard." />
+		<displaytext value="Configure Vu Multiboot interface" />
+		<config screen="VuWizard" module="VuWizard" type="ConfigList" />
+		<code pos="before" async="yes">
+self.disableKeys = True
+		</code>
+	</step>
+</wizard>

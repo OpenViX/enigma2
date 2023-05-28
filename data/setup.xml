@@ -669,4 +669,7 @@
 			</if>
 		</if>
 	</setup>
+	<setup key="about" title="About screen setup">
+		<item text="Date format" description="How to display the date format for date items in the About screen.">config.usage.date.dateFormatAbout</item>
+	</setup>
 </setupxml>

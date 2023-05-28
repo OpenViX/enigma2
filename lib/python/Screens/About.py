@@ -1,7 +1,7 @@
 from os import listdir, path, popen
 from re import search
-from enigma import eTimer, getEnigmaVersionString, getDesktop
-from boxbranding import getMachineBrand, getMachineName, getImageVersion, getImageType, getImageBuild, getDriverDate, getImageDevBuild
+from enigma import eTimer, getDesktop
+from boxbranding import getMachineBrand, getMachineName, getImageVersion, getImageType, getImageBuild, getImageDevBuild
 from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -44,11 +44,13 @@ class About(AboutBase):
 		self["key_green"] = Button(_("Translations"))
 		self["key_yellow"] = Button(_("Software update"))
 		self["key_blue"] = Button(_("Release notes"))
-		self["actions"] = ActionMap(["ColorActions"],
+		self["key_menu"] = StaticText(_("MENU"))
+		self["actions"] = ActionMap(["ColorActions", "MenuActions"],
 		{
 			"green": self.showTranslationInfo,
 			"yellow": self.showUpdatePlugin,
 			"blue": self.showAboutReleaseNotes,
+			"menu": self.setup,
 		})
 
 	def populate(self):
@@ -139,13 +141,7 @@ class About(AboutBase):
 		skinWidth = getDesktop(0).size().width()
 		skinHeight = getDesktop(0).size().height()
 
-		string = getDriverDate()
-		year = string[0:4]
-		month = string[4:6]
-		day = string[6:8]
-		driversdate = "-".join((day, month, year))
-
-		AboutText += _("Drivers:\t%s\n") % driversdate
+		AboutText += _("Drivers:\t%s\n") % about.driversDate()
 		AboutText += _("Kernel:\t%s\n") % about.getKernelVersionString()
 		AboutText += _("GStreamer:\t%s\n") % about.getGStreamerVersionString().replace("GStreamer ", "")
 		if isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value == True:
@@ -153,9 +149,9 @@ class About(AboutBase):
 		else:
 			AboutText += _("4097 iptv player:\tDefault player\n")	
 		AboutText += _("Python:\t%s\n") % about.getPythonVersionString()
-		flashDate = about.getFlashDateString()[8:]  + about.getFlashDateString()[4:8] + about.getFlashDateString()[0:4] 
+		flashDate = about.getFlashDateString() 
 		AboutText += _("Installed:\t%s\n") % flashDate
-		lastUpdate = getEnigmaVersionString()[8:]  + getEnigmaVersionString()[4:8] + getEnigmaVersionString()[0:4] 
+		lastUpdate = about.getLastUpdate()
 		AboutText += _("Last update:\t%s\n") % lastUpdate
 		AboutText += _("E2 (re)starts:\t%s\n") % config.misc.startCounter.value
 		uptime = about.getBoxUptime()
@@ -205,6 +201,10 @@ class About(AboutBase):
 
 	def showAboutReleaseNotes(self):
 		self.session.open(CommitInfo)
+
+	def setup(self):
+		from Screens.Setup import Setup
+		self.session.openWithCallback(self.populate, Setup, "about")
 
 
 class Devices(Screen):
@@ -632,7 +632,7 @@ class AboutSummary(ScreenSummary):
 		self["AboutText"] = StaticText()
 		self.aboutText.append(_("OpenViX: %s") % getImageVersion() + "." + getImageBuild() + "\n")
 		self.aboutText.append(_("Model: %s %s\n") % (getMachineBrand(), getMachineName()))
-		self.aboutText.append(_("Updated: %s") % getEnigmaVersionString() + "\n")
+		self.aboutText.append(_("Updated: %s") % about.getLastUpdate() + "\n")
 		tempinfo = ""
 		if path.exists("/proc/stb/sensors/temp0/value"):
 			with open("/proc/stb/sensors/temp0/value", "r") as f:
@@ -649,12 +649,7 @@ class AboutSummary(ScreenSummary):
 			chipset = open("/proc/stb/info/chipset", "r").read()
 			self.aboutText.append(_("Chipset: %s") % chipset.replace("\n", "") + "\n")
 		self.aboutText.append(_("Kernel: %s") % about.getKernelVersionString() + "\n")
-		string = getDriverDate()
-		year = string[0:4]
-		month = string[4:6]
-		day = string[6:8]
-		driversdate = "-".join((year, month, day))
-		self.aboutText.append(_("Drivers: %s") % driversdate + "\n")
+		self.aboutText.append(_("Drivers: %s") % about.driversDate() + "\n")
 		self["AboutText"].text = "".join(self.aboutText)
 		self.timer = eTimer()
 		self.timer.callback.append(self.update)

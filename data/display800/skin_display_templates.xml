@@ -188,7 +188,7 @@
 		</widget>
 	</screen>
 	<screen name="LCDPicon">
-		<widget source="session.CurrentService" render="LcdPicon" position="50,25" size="340,240" transparent="1" alphatest="blend" zPosition="2">	
+		<widget source="session.CurrentService" render="LcdPicon" position="50,25" size="340,204" transparent="1" alphatest="blend" zPosition="2">	
 			<convert type="ServiceName">Reference</convert>
 		</widget>
 		<widget source="global.CurrentTime" render="Label" position="540,10" size="220,84" font="FdLcD;84" halign="left">
@@ -196,7 +196,7 @@
 		</widget>			
 	</screen>
 	<screen name="LCDChannelSelectionPicon">
-		<widget source="parent.ServiceEvent" render="LcdPicon" position="50,25" size="340,240" transparent="1" alphatest="blend" zPosition="2">	
+		<widget source="parent.ServiceEvent" render="LcdPicon" position="50,25" size="340,204" transparent="1" alphatest="blend" zPosition="2">	
 			<convert type="ServiceName">Reference</convert>
 		</widget>
 		<widget source="global.CurrentTime" render="Label" position="540,10" size="220,84" font="FdLcD;84" halign="left">
@@ -204,7 +204,7 @@
 		</widget>
 	</screen>
 	<screen name="LCDEPGPicon">
-		<widget source="parent.Service" render="LcdPicon" position="50,25" size="340,240" transparent="1" alphatest="blend" zPosition="2">	
+		<widget source="parent.Service" render="LcdPicon" position="50,25" size="340,204" transparent="1" alphatest="blend" zPosition="2">	
 			<convert type="ServiceName">Reference</convert>
 		</widget>
 		<widget source="global.CurrentTime" render="Label" position="540,10" size="220,84" font="FdLcD;84" halign="left">

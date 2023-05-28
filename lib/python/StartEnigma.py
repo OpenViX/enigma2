@@ -1,8 +1,9 @@
 import sys
-import os
+from os.path import exists as osexists, isfile
 from time import time
+from datetime import datetime
 
-if os.path.isfile("/usr/lib/enigma2/python/enigma.zip"):
+if isfile("/usr/lib/enigma2/python/enigma.zip"):
 	sys.path.append("/usr/lib/enigma2/python/enigma.zip")
 
 from Tools.Profile import profile, profile_final
@@ -79,7 +80,7 @@ InitFallbackFiles()
 profile("config.misc")
 config.misc.blackradiopic = ConfigText(default=resolveFilename(SCOPE_CURRENT_SKIN, "black.mvi"))
 radiopic = resolveFilename(SCOPE_CURRENT_SKIN, "radio.mvi")
-if os.path.exists(resolveFilename(SCOPE_CONFIG, "radio.mvi")):
+if osexists(resolveFilename(SCOPE_CONFIG, "radio.mvi")):
 	radiopic = resolveFilename(SCOPE_CONFIG, "radio.mvi")
 config.misc.radiopic = ConfigText(default=radiopic)
 config.misc.isNextRecordTimerAfterEventActionAuto = ConfigYesNo(default=False)
@@ -124,6 +125,10 @@ except ImportError:
 	def runReactor():
 		enigma.runMainloop()
 
+profile("Init:NTPSync")
+import Components.NetworkTime
+Components.NetworkTime.AutoNTPSync()
+
 profile("LOAD:Plugin")
 
 # initialize autorun plugins and plugin menu entries
@@ -135,8 +140,12 @@ import Screens.Rc
 from Tools.BoundFunction import boundFunction
 from Plugins.Plugin import PluginDescriptor
 
-from Tools.FlashInstall import FlashInstallTime
-FlashInstallTime()
+if config.misc.firstrun.value and not osexists('/etc/install'):
+	with open("/etc/install", "w") as f:
+		now = datetime.now()
+		flashdate = now.strftime("%Y%m%d")
+		print("[Setting Flash date]", flashdate)
+		f.write(flashdate)
 
 profile("misc")
 had = dict()
@@ -359,10 +368,8 @@ class Session:
 		reloadNotification.show()
 
 		# empty any cached resolve lists remaining in Directories.py as these may not relate to the skin being loaded
-		import Tools.Directories
-		Tools.Directories.skinResolveList = []
-		Tools.Directories.lcdskinResolveList = []
-		Tools.Directories.fontsResolveList = []
+		from Tools.Directories import clearResolveLists
+		clearResolveLists()
 
 		# close all open dialogs by emptying the dialog stack
 		# remove any return values and callbacks for a swift exit
@@ -404,7 +411,7 @@ class PowerKey:
 		if not recordings:
 			next_rec_time = self.session.nav.RecordTimer.getNextRecordingTime()
 		if recordings or (next_rec_time > 0 and (next_rec_time - time()) < 360):
-			if os.path.exists("/tmp/was_rectimer_wakeup") and not self.session.nav.RecordTimer.isRecTimerWakeup():
+			if osexists("/tmp/was_rectimer_wakeup") and not self.session.nav.RecordTimer.isRecTimerWakeup():
 				f = open("/tmp/was_rectimer_wakeup", "r")
 				file = f.read()
 				f.close()
@@ -669,10 +676,6 @@ Screens.LogManager.AutoLogManager()
 profile("Init:OnlineCheckState")
 import Components.OnlineUpdateCheck
 Components.OnlineUpdateCheck.OnlineUpdateCheck()
-
-profile("Init:NTPSync")
-import Components.NetworkTime
-Components.NetworkTime.AutoNTPSync()
 
 profile("keymapparser")
 import keymapparser

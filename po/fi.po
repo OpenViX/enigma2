@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-03-25 11:31+0200\n"
+"PO-Revision-Date: 2023-05-25 18:32+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -10051,7 +10051,7 @@ msgid "Prefer subtitles for hearing impaired"
 msgstr "Ensisijaisena kuulovammaisten tekstitys"
 
 msgid "Prefer subtitles stored by service"
-msgstr "Ensisijaisena kanavalle tallennettu tekstiasetus"
+msgstr "Ensisijaisena kanavalle tallennettu tekstitysasetus"
 
 msgid "Preferred tuner"
 msgstr "Ensisijainen viritin"
@@ -13532,7 +13532,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"25.03.2023\n"
+"25.05.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -18043,3 +18043,55 @@ msgstr "Vu+ MultiBoot Alustus - käynnistyy uudelleen 10 sekunnin kuluttua."
 
 msgid "Select 'yes' to wake up the receiver from deep standby, or select 'no' to skip the import."
 msgstr "Valitse 'kyllä' herättääksesi vastaanottimen virransäästötilasta tai valitse 'ei' ohittaaksesi tuonnin."
+
+msgid "CI %s enabled"
+msgstr "CI %s käytössä"
+
+msgid ""
+"Welcome to OpenViX!\n"
+"\n"
+"Select 'Standard' to setup Standard Vu+ image.\n"
+"\n"
+"Select 'Multiboot' to setup Vu+ Multiboot."
+msgstr ""
+"Tervetuloa OpenViX:n!\n"
+"\n"
+"Valitse 'Vakio' asentaaksesi standardin Vu+ -imagen.\n"
+"\n"
+"Valitse 'Multiboot' asentaaksesi Vu+ Multibootin."
+
+msgid "Vu+ 4K image install options"
+msgstr "Vu+ 4K imagen asennusvaihtoehdot"
+
+msgid ""
+"Vu+ Multiboot - PLEASE WAIT WHILE INITIALISING!\n"
+"  - will take upto 5 minutes plus 5 minutes per restored eMMC slot.\n"
+"  - after installing Recovery and Slot1 image, receiver will reboot to Slot 1 setup wizard."
+msgstr ""
+"Vu+ -Multiboot - alustus - ODOTA, ALUSTETAAN!\n"
+" - kestää jopa 5 minuuttia plus 5 minuuttia palautettua eMMC-paikkaa kohden.\n"
+" - Palautuksen ja Paikka1 -imagen asennuksen jälkeen vastaanotin käynnistyy uudelleen ohjatulla Paikka 1 -asennustoiminnolla."
+
+msgid "Configure Vu Multiboot interface"
+msgstr "Määritä Vu Multiboot -käyttöliittymä"
+
+msgid "About screen setup"
+msgstr "Tietoja näytön asetuksista"
+
+msgid "Date format"
+msgstr "Päivämäärän muoto"
+
+msgid "How to display the date format for date items in the About screen."
+msgstr "Kuinka näytettään päivämäärän muoto päivämääräkohdille Tietoja-näytössä."
+
+msgid "DD-MM-YYYY"
+msgstr "PP-KK-VVVV"
+
+msgid "MM-DD-YYYY"
+msgstr "KK-PP-VVVV"
+
+msgid "YYYY-MM-DD"
+msgstr "VVVV-KK-PP"
+
+msgid "Multiboot"
+msgstr "Multiboot"

@@ -36,7 +36,11 @@ class NTPSyncPoller:
 	def timecheck(self):
 		if config.misc.SyncTimeUsing.value == "ntp":
 			print('[NetworkTime] Updating from NTP')
-			self.Console.ePopen('/usr/bin/ntpdate-sync', self.update_schedule)
+			# ntpd from BusyBox.
+			# -n = Run in foreground
+			# -q = Quit after clock is set
+			# -p [keyno:NUM:]PEER... Obtain time from PEER (may be repeated)... Use key NUM for authentication... If -p is not given, 'server HOST' lines from /etc/ntp.conf are used.
+			self.Console.ePopen(["/usr/sbin/ntpd", "/usr/sbin/ntpd", "-nq", "-p", config.misc.NTPserver.value], self.update_schedule)
 		else:
 			self.update_schedule()
 
@@ -55,32 +59,5 @@ class NTPSyncPoller:
 			self.timer.startLongTimer(10)
 
 	def ntpConfigUpdated(self):
-		self.updateNtpUrl()
 		self.timer.stop() # stop current timer if this is an update from Time.py
 		self.timer.startLongTimer(0)
-
-	def updateNtpUrl(self):
-		# update "/etc/default/ntpdate"
-		# don't just overwrite...
-		# only change the server url
-		path = "/etc/default/ntpdate"
-		server = 'NTPSERVERS="' + config.misc.NTPserver.value + '"'
-		ntpdate = []
-		try:
-			content = open(path).read()
-			if server in content:
-				return # correct NTP url already set so exit
-			if "NTPSERVERS=" in content:
-				ntpdate = content.split("\n")
-		except:
-			pass
-		if ntpdate:
-			for i, line in enumerate(ntpdate[:]):
-				if "NTPSERVERS=" in line:
-					ntpdate[i] = server
-					break
-		else:
-			ntpdate = [server, ""]
-		with open(path, "w") as f:
-			f.write("\n".join(ntpdate))
-		oschmod("/etc/default/ntpdate", 0o755)

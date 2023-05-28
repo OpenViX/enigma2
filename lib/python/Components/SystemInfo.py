@@ -145,7 +145,6 @@ SystemInfo["AndroidMode"] = False	# This needs to be here so it can be reset by 
 SystemInfo["HasMultibootMTD"] = False # This needs to be here so it can be reset by getMultibootslots!
 SystemInfo["HasKexecUSB"] = False	# This needs to be here so it can be reset by getMultibootslots!
 SystemInfo["HasKexecMultiboot"] = fileHas("/proc/cmdline", "kexec=1")	# This needs to be here so it can be tested by getMultibootslots!
-SystemInfo["HasKexecUSB"] = False	# This needs to be here so it can be reset by getMultibootslots!
 from Tools.Multiboot import getMultibootslots  # This import needs to be here to avoid a SystemInfo load loop!
 SystemInfo["HasHiSi"] = pathExists("/proc/hisi") and getBoxType() not in ("vipertwin", "viper4kv20", "viper4kv40", "sfx6008", "sfx6018")	# This needs to be for later checks
 SystemInfo["canMultiBoot"] = getMultibootslots()
@@ -300,5 +299,5 @@ SystemInfo["HasFBCtuner"] = ["Vuplus DVB-C NIM(BCM3158)", "Vuplus DVB-C NIM(BCM3
 SystemInfo["rc_model"] = rc_model.getRcFolder()
 SystemInfo["mapKeyInfoToEpgFunctions"] = SystemInfo["rc_model"] in ("vu", "vu2", "vu3", "vu4") # due to button limitations of the remote control
 SystemInfo["hasDuplicateVideoAndPvrButtons"] = SystemInfo["rc_model"] in ("edision3",) # Allow multiple functions only if both buttons are present
-SystemInfo["toggleTvRadioButtonEvents"] = SystemInfo["rc_model"] in ("ax4", "beyonwiz1", "beyonwiz2", "gb0", "gb1", "gb2", "gb3", "gb4", "sf8008", "uniboxhde", "octagon3") # due to button limitations of the remote control
+SystemInfo["toggleTvRadioButtonEvents"] = SystemInfo["rc_model"] in ("ax4", "beyonwiz1", "beyonwiz2", "gb0", "gb1", "gb2", "gb3", "gb4", "octagon1", "octagon3", "sf8008", "uniboxhde") # due to button limitations of the remote control
 SystemInfo["rc_default"] = SystemInfo["rc_model"] in ("dmm0", )

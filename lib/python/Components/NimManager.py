@@ -1,7 +1,6 @@
 from os import access, path, F_OK
 
 from Components.SystemInfo import SystemInfo
-from Tools.HardwareInfo import HardwareInfo
 from Tools.BoundFunction import boundFunction
 
 from Components.config import config, ConfigSubsection, ConfigSelection, ConfigFloat, ConfigSatlist, ConfigYesNo, ConfigInteger, ConfigSubList, ConfigNothing, ConfigSubDict, ConfigOnOff, ConfigDateTime, ConfigText
