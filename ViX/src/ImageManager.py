@@ -676,11 +676,11 @@ class VIXImageManager(Screen):
 		if installedHDD and pathExists("/media/hdd"):
 			if not pathExists("/media/hdd/%s" % getBoxType()):
 				mkdir("/media/hdd/%s" % getBoxType())
-			for usbslot in range(1,4):
-				if pathExists("/linuxrootfs%s" % usbslot):
-					if pathExists("/media/hdd/%s/linuxrootfs%s/" % (getBoxType(), usbslot)):
-						rmtree("/media/hdd/%s/linuxrootfs%s" % (getBoxType(), usbslot), ignore_errors=True)
-					Console().ePopen("cp -R /linuxrootfs%s . /media/hdd/%s/" % (usbslot, getBoxType()))
+			for slotnum in range(1,4):
+				if pathExists("/linuxrootfs%s" % slotnum):
+					if pathExists("/media/hdd/%s/linuxrootfs%s/" % (getBoxType(), slotnum)):
+						rmtree("/media/hdd/%s/linuxrootfs%s" % (getBoxType(), slotnum), ignore_errors=True)
+					Console().ePopen("cp -R /linuxrootfs%s . /media/hdd/%s/" % (slotnum, getBoxType()))
 		if not installedHDD:
 			self.session.open(MessageBox, _("ImageManager - no HDD unable to backup Vu Multiboot eMMC slots"), MessageBox.TYPE_INFO, timeout=5)
 		self.multibootslot = 0												# set slot0 to be flashed
