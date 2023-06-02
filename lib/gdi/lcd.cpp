@@ -257,6 +257,7 @@ eDBoxLCD::~eDBoxLCD()
 
 void eDBoxLCD::dumpLCD2PNG(void)
 {
+	eDebug("[eDBoxLCD] dumpLCD2PNG");
 	if (dump)
 	{
 		dump = false;
@@ -267,6 +268,8 @@ void eDBoxLCD::dumpLCD2PNG(void)
 		pixmap32 = new gPixmap(eSize(lcd_width, lcd_hight), 32, gPixmap::accelAuto);
 		const uint8_t *srcptr = (uint8_t*)_buffer;
 		uint8_t *dstptr=(uint8_t*)pixmap32->surface->data;
+
+		eDebug("%d bit processing",bpp);
 
 		switch(bpp)
 		{

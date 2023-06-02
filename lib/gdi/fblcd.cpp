@@ -287,6 +287,7 @@ int eFbLCD::setLCDBrightness(int brightness)
 
 void eFbLCD::dumpLCD(bool png=true)
 {
+	eDebug("[eFbLCD] dumpLCD");
 	unsigned char *buffer, *output;
 	int mallocsize = m_xRes * m_yRes;
 	output = (unsigned char *)malloc(mallocsize*4);
