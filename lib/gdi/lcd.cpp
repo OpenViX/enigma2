@@ -259,6 +259,7 @@ void eDBoxLCD::dumpLCD2PNG(void)
 {
 	if (dump)
 	{
+		dump = false;
 		int bpp =( _stride *8)/res.width();
 		int lcd_width = res.width();
 		int lcd_hight = res.height();
