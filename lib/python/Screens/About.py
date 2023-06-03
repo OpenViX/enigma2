@@ -7,7 +7,7 @@ from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.config import config
 from Components.Console import Console
-from Components.Harddisk import harddiskmanager
+from Components.Harddisk import harddiskmanager, bytesToHumanReadable
 from Components.Network import iNetwork
 from Components.NimManager import nimmanager
 from Components.Pixmap import MultiPixmap
@@ -294,12 +294,9 @@ class Devices(Screen):
 					hddp = hddp.replace("ATA", "")
 					hddp = hddp.replace("Internal", "ATA Bus ")
 				free = hdd.Totalfree()
-				if (free / 1000 / 1000) >= 1:
-					freeline = _("Free: ") + str(round((free / 1000 / 1000), 2)) + _("TB")
-				elif (free / 1000) >= 1:
-					freeline = _("Free: ") + str(round((free / 1000), 2)) + _("GB")
-				elif free >= 1:
-					freeline = _("Free: ") + str(round(free, 2)) + _("MB")
+				if free >= 1:
+					free  *= 1000000 # convert MB to bytes
+					freeline = _("Free: ") + bytesToHumanReadable(free)
 				elif "Generic(STORAGE" in hddp:				# This is the SDA boot volume for SF8008 if "full" #
 					continue
 				else:

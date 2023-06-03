@@ -240,11 +240,8 @@ class Harddisk:
 
 	def capacity(self):
 		cap = self.diskSize() # cap is in MB
-		if cap == 0:
-			return ""
-		if cap < 1000:
-			return _("%02d MB") % cap
-		return _("%s GB") % (round(cap / 1000, 2))
+		cap *= 1000000 # convert to MB to bytes
+		return bytesToHumanReadable(cap)
 
 	def model(self):
 		data = None

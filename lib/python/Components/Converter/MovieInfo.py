@@ -4,6 +4,7 @@ from enigma import iServiceInformation, eServiceReference
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached
+from Components.Harddisk import bytesToHumanReadable
 
 # Handle any invalid utf8 in a description to avoid crash when
 # displaying it.
@@ -85,15 +86,7 @@ class MovieInfo(Converter):
 	def getFriendlyFilesize(self, filesize):
 		if filesize is None:
 			return ""
-		if filesize >= 104857600000: #100000 * 1024 * 1024
-			return _("%.0f GB") % (filesize / 1073741824.0)
-		elif filesize >= 1073741824: #1024*1024 * 1024
-			return _("%.2f GB") % (filesize / 1073741824.0)
-		elif filesize >= 1048576:
-			return _("%.0f MB") % (filesize / 1048576.0)
-		elif filesize >= 1024:
-			return _("%.0f kB") % (filesize / 1024.0)
-		return _("%d B") % filesize
+		return bytesToHumanReadable(filesize)
 
 	@cached
 	def getText(self):
