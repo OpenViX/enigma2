@@ -210,6 +210,7 @@ class Harddisk:
 		return busName
 
 	def diskSize(self):
+		# output in MB
 		dev = self.findMount()
 		if dev:
 			try:
@@ -222,13 +223,13 @@ class Harddisk:
 		else:
 			data = readFile(self.sysfsPath("size"))
 			if data is not None:
-				cap = int(data) / 1000 * 512 / 1024
+				cap = int(int(data) / 1000 * 512 / 1024)
 			else:
 				cap = 0
 		return cap
 
 	def capacity(self):
-		cap = self.diskSize()
+		cap = self.diskSize() # cap is in MB
 		if cap == 0:
 			return ""
 		if cap < 1000:
@@ -267,6 +268,7 @@ class Harddisk:
 		return -1
 
 	def totalFree(self):
+		# output in MB
 		mediapath = []
 		freetot = 0
 		print("[Harddisk][totalFree]self.dev_path:", self.dev_path)
@@ -281,7 +283,7 @@ class Harddisk:
 			free = self.free(mpath)
 			if free > 0:
 				freetot += free
-		return freetot
+		return int(freetot)
 
 	def Totalfree(self):
 		return self.totalFree()
