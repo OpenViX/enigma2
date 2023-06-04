@@ -21,11 +21,14 @@ def getFlashDateString():
 	else:
 		return _("unknown")
 
+
 def driversDate(): 
 	return _formatDate(getDriverDate())
 
+
 def getLastUpdate():
 	return _formatDate(getEnigmaVersionString().replace("-", ""))
+
 
 def _formatDate(Date):
 	# expected input = "YYYYMMDD"
@@ -33,6 +36,7 @@ def _formatDate(Date):
 		return _("unknown")					
 	from Components.config import config
 	return config.usage.date.dateFormatAbout.value % {"year": Date[0:4], "month": Date[4:6], "day": Date[6:8]}
+
 
 def getGStreamerVersionString():
 	try:
@@ -285,6 +289,7 @@ def formatUptime(seconds):
 	else:
 		out += (_("1 second") if seconds == 1 else _("%d seconds") % seconds) + " "
 	return out
+
 
 # For modules that do "from About import about"
 about = modules[__name__]

@@ -20,6 +20,7 @@ if fileExists("/usr/bin/kernel_auto.bin") and fileExists("/usr/bin/STARTUP.cpio.
 	config.misc.Vuwizardenabled.value = True
 print("[StartWizard][import] import.......")	
 
+
 class StartWizard(WizardLanguage, Rc):
 	def __init__(self, session, silent=True, showSteps=False, neededTag=None):
 		self.xmlfile = ["startwizard.xml"]
@@ -38,6 +39,7 @@ class StartWizard(WizardLanguage, Rc):
 		config.misc.firstrun.value = 0
 		config.misc.firstrun.save()
 		configfile.save()
+
 
 #wizardManager.registerWizard(VideoWizard, config.misc.Vuwizardenabled.value, priority=2)
 wizardManager.registerWizard(VuWizard, config.misc.Vuwizardenabled.value, priority=3)

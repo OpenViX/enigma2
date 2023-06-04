@@ -330,6 +330,7 @@ def getPhysicalAddress():
 	hexstring = "%04x" % physicaladdress
 	return hexstring[0] + "." + hexstring[1] + "." + hexstring[2] + "." + hexstring[3]
 
+
 def setFixedPhysicalAddress(address):
 	hexstring = address[0] + address[2] + address[4] + address[6]
 	eHdmiCEC.getInstance().setFixedPhysicalAddress(int(float.fromhex(hexstring)))
@@ -468,7 +469,6 @@ class HdmiCec:
 					if (ctrl0 * 256 + ctrl1) == 0 and ctrl2 == 0:
 						self.wakeup()
 
-
 	def sendMessage(self, msgaddress, message):
 		cmd = 0
 		data = ""
@@ -558,7 +558,6 @@ class HdmiCec:
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd, data, len(data))
 			self.wait.start(int(config.hdmicec.minimum_send_interval.value), True)
 
-
 	def packDevAddr(self, devicetypeSend=False):
 		physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
 		if devicetypeSend:
@@ -587,7 +586,6 @@ class HdmiCec:
 		if config.hdmicec.enabled.value and config.hdmicec.handle_deepstandby_events.value:
 			self.standbyMessages()
 
-
 	def standbyMessages(self):
 		if config.hdmicec.enabled.value:
 			if config.hdmicec.next_boxes_detect.value:
@@ -595,7 +593,6 @@ class HdmiCec:
 				self.delay.start(1000, True)
 			else:
 				self.sendStandbyMessages()
-
 
 	def sendStandbyMessages(self):
 			messages = []
@@ -617,24 +614,20 @@ class HdmiCec:
 				self.sendMessage(5, "keypoweroff")
 				self.sendMessage(5, "standby")
 
-
 	def standby(self):			# Standby initiated from TV
 		if not Screens.Standby.inStandby:
 			Notifications.AddNotification(Screens.Standby.Standby)
-
 
 	def onLeaveStandby(self):
 		self.sendWakeupMessages()
 		if int(config.hdmicec.repeat_wakeup_timer.value):
 			self.repeat.startLongTimer(int(config.hdmicec.repeat_wakeup_timer.value))
 
-
 	def wakeup(self):
 		self.wakeup_from_tv = True
 		if Screens.Standby.inStandby:
 			Screens.Standby.inStandby.Power()
 
-			
 	def sendWakeupMessages(self):
 		if config.hdmicec.enabled.value:
 			messages = []
@@ -653,11 +646,9 @@ class HdmiCec:
 				self.sendMessage(5, "keypoweron")
 				self.sendMessage(5, "setsystemaudiomode")
 								
-				
 	def sendQMessages(self, msgaddress, messages):
 		for message in messages:
 			self.sendMessage(msgaddress, message)				
-
 
 	def keyEvent(self, keyCode, keyEvent):
 		if keyCode in (113, 114, 115):						# if not volume key return
@@ -707,7 +698,6 @@ class HdmiCec:
 			# print("[HdmiCEC][sendKeyEventQ]: msgaddress=%s, cmd=%X, data=%s" % (msgaddress, cmd, data))
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd, data, len(data))
 			self.waitKeyEvent.start(int(config.hdmicec.minimum_send_interval.value), True)
-
 
 	def debugTx(self, msgaddress, cmd, data):
 		txt = self.now(True) + self.opCode(cmd, True) + " " + "%02X" % (cmd) + " "

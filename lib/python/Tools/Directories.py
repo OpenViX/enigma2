@@ -78,6 +78,7 @@ scopeLCDSkin = defaultPaths[SCOPE_LCDSKIN][0]
 scopeFonts = defaultPaths[SCOPE_FONTS][0]
 scopePlugins = defaultPaths[SCOPE_PLUGINS][0]
 
+
 def addInList(*paths):
 	return [path for path in paths if pathIsdir(path)]
 
@@ -85,6 +86,7 @@ def addInList(*paths):
 skinResolveList = []
 lcdskinResolveList = []
 fontsResolveList = []
+
 
 def clearResolveLists():
 	global skinResolveList, lcdskinResolveList, fontsResolveList
@@ -426,6 +428,7 @@ def fileReadXML(filename, default=None, *args, **kwargs):
 		elif isinstance(default, Element):
 			dom = default
 	return dom
+
 
 def getRecordingFilename(basename, dirname=None):
 	# Filter out non-allowed characters.

@@ -32,7 +32,6 @@ class CamControl:
 		print("[CamControl][getList] configs=%s" % configs)
 		return configs
 
-
 	def current(self):
 		try:
 			l = readlink(self.link)

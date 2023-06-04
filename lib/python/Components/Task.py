@@ -3,7 +3,6 @@
 from Tools.CList import CList
 
 
-
 class Job:
 	NOT_STARTED, IN_PROGRESS, FINISHED, FAILED = range(4)
 

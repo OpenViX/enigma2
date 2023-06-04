@@ -1196,7 +1196,6 @@ class NimManager:
 	def getNimListForSat(self, orb_pos):
 		return [nim.slot for nim in self.nim_slots if nim.isCompatible("DVB-S") and not nim.isFBCLink() and orb_pos in [sat[0] for sat in self.getSatListForNim(nim.slot)]]
 
-
 	def rotorLastPositionForNim(self, slotid, number=True):
 		available_slot = False
 		for slot in self.nim_slots:

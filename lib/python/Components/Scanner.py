@@ -9,8 +9,10 @@ from mimetypes import types_map
 
 types_map_dict = dict(types_map)
 
+
 def add_type(type, ext, strict=True):
 	types_map_dict[ext] = type
+
 
 def guess_type(url, strict=True):
 	p = url.rfind('.')
@@ -18,6 +20,7 @@ def guess_type(url, strict=True):
 		return (None, None)
 	return (types_map_dict.get(url[p:].lower()), None)
 # end: temporary workaround
+
 
 add_type("audio/dts", ".dts")
 add_type("audio/mpeg", ".mp3")

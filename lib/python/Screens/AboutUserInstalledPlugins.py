@@ -1,6 +1,7 @@
 from Components.Console import Console
 from Screens.TextBox import TextBox
 
+
 class AboutUserInstalledPlugins(TextBox):
 	def __init__(self, session):
 		self.Console = Console()

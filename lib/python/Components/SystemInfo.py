@@ -10,6 +10,7 @@ from Tools.HardwareInfo import HardwareInfo
 
 SystemInfo = {}
 
+
 class BoxInformation:
 	def __init__(self, root=""):
 		self.immutableList = []
@@ -119,14 +120,17 @@ DISPLAYMODEL = BoxInfo.getItem("displaymodel")
 DISPLAYBRAND = BoxInfo.getItem("displaybrand")
 MACHINEBUILD = BoxInfo.getItem("machinebuild")
 
+
 def getBoxDisplayName():  # This function returns a tuple like ("BRANDNAME", "BOXNAME")
 	return (DISPLAYBRAND, DISPLAYMODEL)
+
 
 def getRCFile(ext):
 	filename = resolveFilename(SCOPE_SKIN, pathjoin("hardware", "%s.%s" % (BoxInfo.getItem("rcname"), ext)))
 	if not isfile(filename):
 		filename = resolveFilename(SCOPE_SKIN, pathjoin("hardware", "dmm1.%s" % ext))
 	return filename
+
 
 def setRCFile(source):
 	if source == "hardware":
@@ -173,6 +177,7 @@ def hasInitCam():
 		else:
 			pass
 	return False
+
 
 SystemInfo["CanKexecVu"] = getBoxType() in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse", "vuzero4k") and not SystemInfo["HasKexecMultiboot"]
 SystemInfo["HasUsbhdd"] = {}
