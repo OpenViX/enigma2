@@ -147,9 +147,11 @@ def bytesToHumanReadable(size_bytes, binary=False):
 	# input is bytes, convert from KB, MB before use.
 	size_units = ("B", "kB", "MB", "GB", "TB")
 	base = 1024 if binary else 1000
-	i = 0; L = len(size_units)-1
+	i = 0
+	L = len(size_units)-1
 	while i < L and size_bytes >= base:
-		size_bytes /= base; i += 1
+		size_bytes /= base
+		i += 1
 	return ("%.2f %s" if i != 0 and size_bytes < 10 else "%.0f %s") % (size_bytes, size_units[i])
 
 
