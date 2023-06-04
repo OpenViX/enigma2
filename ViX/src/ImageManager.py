@@ -124,8 +124,10 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 			print("[ImageManager] Stop")
 			autoImageManagerTimer.stop()
 
+
 class tmp:
 	dir = None
+
 
 class VIXImageManager(Screen):
 	skin = ["""<screen name="VIXImageManager" position="center,center" size="%d,%d">
@@ -205,7 +207,7 @@ class VIXImageManager(Screen):
 			self.mtdboot = SystemInfo["MBbootdevice"]
 		self.onChangedEntry = []
 		if choices:
-			self["list"] = MenuList(list=[((_("No images found on the selected download server...if password check validity")), "Waiter")])		
+			self["list"] = MenuList(list=[((_("No images found on the selected download server...if password check validity")), "Waiter")])
 
 		else:
 			self["list"] = MenuList(list=[((_(" Press 'Menu' to select a storage device - none available")), "Waiter")])
@@ -413,7 +415,6 @@ class VIXImageManager(Screen):
 					break
 			self.showJobView(job)
 
-
 	def getImagesDownloaded(self):
 		def getImages(files):
 			for file in files:
@@ -426,7 +427,7 @@ class VIXImageManager(Screen):
 		device_name = HardwareInfo().get_device_name()
 		imagesFound = []
 		if config.imagemanager.extensive_location_search.value:
-			mediaList = ['/media/%s' % x for x in listdir('/media')] + (['/media/net/%s' % x for x in listdir('/media/net')] if path.isdir('/media/net') else [])  + (['/media/autofs/%s' % x for x in listdir('/media/autofs')] if path.isdir('/media/autofs') else [])
+			mediaList = ['/media/%s' % x for x in listdir('/media')] + (['/media/net/%s' % x for x in listdir('/media/net')] if path.isdir('/media/net') else []) + (['/media/autofs/%s' % x for x in listdir('/media/autofs')] if path.isdir('/media/autofs') else [])
 		else:
 			mediaList = [config.imagemanager.backuplocation.value]
 		for media in mediaList:
@@ -458,30 +459,30 @@ class VIXImageManager(Screen):
 		self.sel = self["list"].getCurrent() # (name, link)
 		if not self.sel:
 			return
-		print("[ImageManager][keyRestore] self.sel SystemInfo['MultiBootSlot']", self.sel[0], "   ", SystemInfo["MultiBootSlot"])				
+		print("[ImageManager][keyRestore] self.sel SystemInfo['MultiBootSlot']", self.sel[0], "   ", SystemInfo["MultiBootSlot"])
 		if SystemInfo["MultiBootSlot"] == 0 and self.isVuKexecCompatibleImage(self.sel[0]): # only if Vu multiboot has been enabled and the image is compatible
-			message = (_("Do you want to flash Recovery image?\nThis will change all eMMC slots.") if "VuSlot0" in self.sel[0] else _("This selection will flash the Recovery image.\nWe advise flashing new image to a MultiBoot slot and restoring (default) settings backup.")) + "\n" + _("Select 'no' to flash a MultiBoot slot.") 
-			ybox = self.session.openWithCallback(self.keyRestorez0, MessageBox, message, default=False) 
-			ybox.setTitle(_("Restore confirmation"))		
+			message = (_("Do you want to flash Recovery image?\nThis will change all eMMC slots.") if "VuSlot0" in self.sel[0] else _("This selection will flash the Recovery image.\nWe advise flashing new image to a MultiBoot slot and restoring (default) settings backup.")) + "\n" + _("Select 'no' to flash a MultiBoot slot.")
+			ybox = self.session.openWithCallback(self.keyRestorez0, MessageBox, message, default=False)
+			ybox.setTitle(_("Restore confirmation"))
 		else:
-			self.keyRestore1()		
+			self.keyRestore1()
 
 	def keyRestorez0(self, retval):
-		print("[ImageManager][keyRestorez0] retval", retval)	
+		print("[ImageManager][keyRestorez0] retval", retval)
 		if retval:
 			message = (_("Do you want to backup eMMC slots? This will add from 1 -> 5 minutes per eMMC slot"))
 			ybox = self.session.openWithCallback(self.keyRestorez1, MessageBox, message, default=False)
 			ybox.setTitle(_("Copy eMMC slots confirmation"))
 		else:
 			self.keyRestore1()
-			
+
 	def keyRestorez1(self, retval):
 		if retval:
 			self.VuKexecCopyimage()
 		else:
 			self.multibootslot = 0												# set slot0 to be flashed
-			self.Console.ePopen("umount /proc/cmdline", self.keyRestore3)		# tell ofgwrite not Vu Multiboot			
-		
+			self.Console.ePopen("umount /proc/cmdline", self.keyRestore3)		# tell ofgwrite not Vu Multiboot
+
 	def keyRestore1(self):
 		self.HasSDmmc = False
 		self.multibootslot = 1
@@ -522,8 +523,8 @@ class VIXImageManager(Screen):
 				else:
 					self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"].split("/")[2]
 			if SystemInfo["HasHiSi"] and SystemInfo["MultiBootSlot"] >= 4 and self.multibootslot < 4:
-				self.session.open(MessageBox, _("ImageManager - %s - cannot flash eMMC slot from sd card slot.") % getBoxType(), MessageBox.TYPE_INFO, timeout=10)				
-				return	
+				self.session.open(MessageBox, _("ImageManager - %s - cannot flash eMMC slot from sd card slot.") % getBoxType(), MessageBox.TYPE_INFO, timeout=10)
+				return
 			if self.sel:
 				if config.imagemanager.autosettingsbackup.value:
 					self.doSettingsBackup()
@@ -582,14 +583,14 @@ class VIXImageManager(Screen):
 				if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
 					kz0 = getMachineMtdKernel()
 					rz0 = getMachineMtdRoot()
-					CMD = "/usr/bin/ofgwrite -kkz0 -rrz0 '%s'" % MAINDEST			# slot0 treat as kernel/root only multiboot receiver				
+					CMD = "/usr/bin/ofgwrite -kkz0 -rrz0 '%s'" % MAINDEST			# slot0 treat as kernel/root only multiboot receiver
 				elif SystemInfo["HasHiSi"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:	# sf8008 type receiver using SD card in multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
 					if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_6"):
 						copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
 				elif SystemInfo["HasKexecMultiboot"]:
-					if SystemInfo["HasKexecUSB"]  and "mmcblk" not in self.MTDROOTFS:
+					if SystemInfo["HasKexecUSB"] and "mmcblk" not in self.MTDROOTFS:
 						   CMD = "/usr/bin/ofgwrite -r%s -kzImage -s'%s/linuxrootfs' -m%s '%s'" % (self.MTDROOTFS, getBoxType()[2:], self.multibootslot, MAINDEST)
 					else:
 						   CMD = "/usr/bin/ofgwrite -r%s -kzImage -m%s '%s'" % (self.MTDROOTFS, self.multibootslot, MAINDEST)
@@ -630,7 +631,6 @@ class VIXImageManager(Screen):
 		else:
 			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("ofgwrite error (also sent to any debug log):\n%s") % result, MessageBox.TYPE_INFO, timeout=20)
 			print("[ImageManager] OFGWriteResult failed:\n", result)
-
 
 	def dualBoot(self):
 		rootfs2 = False
@@ -676,7 +676,7 @@ class VIXImageManager(Screen):
 		if installedHDD and pathExists("/media/hdd"):
 			if not pathExists("/media/hdd/%s" % getBoxType()):
 				mkdir("/media/hdd/%s" % getBoxType())
-			for slotnum in range(1,4):
+			for slotnum in range(1, 4):
 				if pathExists("/linuxrootfs%s" % slotnum):
 					if pathExists("/media/hdd/%s/linuxrootfs%s/" % (getBoxType(), slotnum)):
 						rmtree("/media/hdd/%s/linuxrootfs%s" % (getBoxType(), slotnum), ignore_errors=True)
@@ -684,7 +684,7 @@ class VIXImageManager(Screen):
 		if not installedHDD:
 			self.session.open(MessageBox, _("ImageManager - no HDD unable to backup Vu Multiboot eMMC slots"), MessageBox.TYPE_INFO, timeout=5)
 		self.multibootslot = 0												# set slot0 to be flashed
-		self.Console.ePopen("umount /proc/cmdline", self.keyRestore3)		# tell ofgwrite not Vu Multiboot		
+		self.Console.ePopen("umount /proc/cmdline", self.keyRestore3)		# tell ofgwrite not Vu Multiboot
 
 	def infoText(self):
 		# add info text sentence by sentence to make translators job easier
@@ -941,7 +941,7 @@ class ImageBackup(Screen):
 			self.GB4Krescue = "rescue.bin"
 		if "sda" in self.MTDKERNEL:
 			self.KERN = "sda"
-		print("[ImageManager] HasKexecMultiboot:", SystemInfo["HasKexecMultiboot"])			
+		print("[ImageManager] HasKexecMultiboot:", SystemInfo["HasKexecMultiboot"])
 		print("[ImageManager] Model:", self.MODEL)
 		print("[ImageManager] Machine Build:", self.MCBUILD)
 		print("[ImageManager] Kernel File:", self.KERNELFILE)
@@ -1214,7 +1214,7 @@ class ImageBackup(Screen):
 					self.commands.append("mount /dev/%s %s/root" % (self.MTDROOTFS, self.TMPDIR))
 			else:
 				self.commands.append("mount --bind / %s/root" % self.TMPDIR)
-			if  SystemInfo["canMultiBoot"] and SystemInfo["MultiBootSlot"] == 0:
+			if SystemInfo["canMultiBoot"] and SystemInfo["MultiBootSlot"] == 0:
 				self.commands.append("/bin/tar -jcf %s/rootfs.tar.bz2 -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./linuxrootfs* --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))
 			elif SystemInfo["HasRootSubdir"]:
 				self.commands.append("/bin/tar -jcf %s/rootfs.tar.bz2 -C %s/root/%s --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR, self.ROOTFSSUBDIR))

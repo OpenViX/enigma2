@@ -129,7 +129,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			if fileHas("/proc/cmdline", "kexec=1"):
 				slot = SystemInfo["MultiBootSlot"]
 				text = createInfo(slot)
-				bootmviSlot(text=text, slot=slot)			
+				bootmviSlot(text=text, slot=slot)
 			if self.didSettingsRestore:
 				self.Console.ePopen("tar -xzvf " + self.fullbackupfilename + " -C /" + " etc/enigma2/settings")
 			self.Console.ePopen("killall -9 enigma2 && init 6")
@@ -218,7 +218,7 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def pluginsRestore_Finished(self, result, retval, extra_args=None):
 		if result:
-			print("[RestoreWizard] opkg install result:\n", result)		
+			print("[RestoreWizard] opkg install result:\n", result)
 		self.didPluginRestore = True
 		self.NextStep = "reboot"
 		self.buildListRef.close(True)
@@ -329,7 +329,7 @@ class RestoreWizard(WizardLanguage, Rc):
 							devmounts = []
 							files = []
 							self.plugfile = self.plugfiles[3]
-							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media)) and path.exists("/media/%s/%s" % (media, self.plugfile))]:							
+							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media)) and path.exists("/media/%s/%s" % (media, self.plugfile))]:
 								if media not in ("autofs", "net"):
 									devmounts.append(dir)
 							if len(devmounts):

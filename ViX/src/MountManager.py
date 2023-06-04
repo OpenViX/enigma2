@@ -139,7 +139,7 @@ def buildPartitionInfo(partition, partitionList):
 				break
 	print("[MountManager1][buildPartitionInfo] mediamount", mediamount)
 	if mediamount == "/" and SystemInfo["HasKexecMultiboot"]:
-		return	
+		return
 	if mediamount == _("None") or mediamount is None:
 		description = _("Size: ") + _("unavailable")
 	else:
@@ -382,8 +382,6 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		0, 50, 560, 275, 26, 20, # config
 		0, 365, 560, 20, 18,
 	]
-		
-		
 
 	def __init__(self, session):
 		Screen.__init__(self, session)

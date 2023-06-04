@@ -40,7 +40,7 @@ class VIXMenu(Screen, ProtectedScreen):
 		</screen>""",
 			610, 410, # screen
 			0, 0, 140, 40, # key red image
-			0 ,0, 140, 40, 20, # key red text
+			0, 0, 140, 40, 20, # key red text
 			15, 60, 330, 286, # first menu Listbox
 			2, 0, 330, 26, # template one
 			22, # fonts

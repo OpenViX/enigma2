@@ -67,7 +67,7 @@ def SoftcamAutostart(reason, session=None, **kwargs):
 
 def spinnerSkin(skinName):
 	imagePath = "%s/images/" % path.dirname(path.realpath(__file__))
-	softcamSpinner = ','.join([imagePath + "busy%d.png" % x for x in range(1,25) if path.exists(imagePath + "busy%d.png" % x)])
+	softcamSpinner = ','.join([imagePath + "busy%d.png" % x for x in range(1, 25) if path.exists(imagePath + "busy%d.png" % x)])
 	return ["""
 	<screen """ + 'name="%s"' % skinName + """ position="center,center" size="%d, %d">
 		<widget name="connect" position="center, 0" size="64,64" zPosition="2" """ + 'pixmaps="%s"' % softcamSpinner + """ transparent="1" alphatest="blend"/>
@@ -75,7 +75,7 @@ def spinnerSkin(skinName):
 	</screen>""",
 		484, 150,
 		460, 60, 20,
-	]	 
+	]
 
 
 class VIXSoftcamManager(Screen):
@@ -248,7 +248,7 @@ class VIXSoftcamManager(Screen):
 				file.close()
 				SoftcamsScriptsRunning = SoftcamsScriptsRunning.replace("\n", ", ")
 				self.currentactivecam += SoftcamsScriptsRunning
-			self["activecam"].setText(self.currentactivecam)				
+			self["activecam"].setText(self.currentactivecam)
 			print("[SoftcamManager] Active:%s ScriptCam=%s" % (self.currentactivecam, config.misc.softcams.value))
 			if config.misc.softcams.value != "None":
 				self["activecam"].setText("SoftcamScript running")
@@ -371,7 +371,7 @@ class VIXSoftcamManager(Screen):
 
 class VIXStartCam(Screen):
 	skin = None
-		
+
 	def __init__(self, session, selectedcam):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Softcam starting..."))

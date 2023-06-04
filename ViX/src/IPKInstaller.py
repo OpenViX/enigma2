@@ -187,7 +187,6 @@ class IpkgInstaller(Screen):
 			0, 410, 560, 2,
 			5, 420, 550, 30, 22,
 		]
-		
 
 	def __init__(self, session, list):
 		Screen.__init__(self, session)
