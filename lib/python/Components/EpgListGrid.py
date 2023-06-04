@@ -532,7 +532,7 @@ class EPGListGrid(EPGListBase):
 				if serviceTimers is not None:
 					# Code below: "+ (20 if config.recording.margin_before.value == 0 else 0)"
 					# When recording-start-margin is zero allow recordings that start up to 20 seconds
-					# after the program boundary to still produce matchType in (2, 3). This allows 
+					# after the program boundary to still produce matchType in (2, 3). This allows
 					# correct display of "epg/RecordEvent.png" when multiple recodings are programmed to
 					# start at the same instant.
 					timer, matchType = RecordTimer.isInTimerOnService(serviceTimers, stime + (20 if config.recording.margin_before.value == 0 else 0), duration)

@@ -48,7 +48,7 @@ class inputDevices:
 					name = ioctl(fd, EVIOCGNAME(512), buffer)
 				except (IOError, OSError) as err:
 					print("[InputDevice] Error: evdev='%s' getInputDevices <ERROR: ioctl(EVIOCGNAME): '%s'>" % (evdev, str(err)))
-					continue					
+					continue
 			deviceName = name[:name.find(b'\0')].decode()
 			if deviceName:
 				devtype = self.getInputDeviceType(deviceName)
@@ -73,7 +73,7 @@ class inputDevices:
 			return "Unknown device name"
 
 	def getDeviceList(self):
-		# print("[InputDevice][getDeviceList]", sorted(iter(self.Devices.keys())))	
+		# print("[InputDevice][getDeviceList]", sorted(iter(self.Devices.keys())))
 		return sorted(iter(self.Devices.keys()))
 
 	def setDeviceAttribute(self, device, attribute, value):
@@ -141,7 +141,7 @@ class InitInputDevices:
 	def createConfig(self, *args):
 		config.inputDevices = ConfigSubsection()
 		for device in sorted(iter(iInputDevices.Devices.keys())):
-			# print("[InputDevice][createConfig]", sorted(iter(iInputDevices.Devices.keys())))		
+			# print("[InputDevice][createConfig]", sorted(iter(iInputDevices.Devices.keys())))
 			self.currentDevice = device
 			#print("[InputDevice] creating config entry for device: %s -> %s  " % (self.currentDevice, iInputDevices.Devices[device]["name"]))
 			self.setupConfigEntries(self.currentDevice)

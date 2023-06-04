@@ -68,7 +68,7 @@ class VuplusKexec(Screen):
 			cmdlist.append("dd if=/usr/bin/kernel_auto.bin of=/dev/%s" % getMachineMtdKernel())	# create new kernel
 			cmdlist.append("mv /usr/bin/STARTUP.cpio.gz /STARTUP.cpio.gz")						# copy userroot routine
 			for file in glob.glob("/media/*/vuplus/*/force.update", recursive=True):
-				cmdlist.append("mv %s %s" % (file, file.replace("force.update", "noforce.update")))						# remove Vu force update(currently Vu+ Zero4k)						
+				cmdlist.append("mv %s %s" % (file, file.replace("force.update", "noforce.update")))						# remove Vu force update(currently Vu+ Zero4k)
 			Console().eBatch(cmdlist, self.RootInitEnd, debug=True)
 		else:
 			self.session.open(MessageBox, _("[VuplusKexec][create Vu Multiboot environment] - Unable to complete, Vu+ Multiboot files missing"), MessageBox.TYPE_INFO, timeout=30)
@@ -76,7 +76,7 @@ class VuplusKexec(Screen):
 
 	def RootInitEnd(self, *args, **kwargs):
 		print("[VuplusKexec][RootInitEnd] rebooting")
-		for usbslot in range(1, 4):		
+		for usbslot in range(1, 4):
 			if pathExists("/media/hdd/%s/linuxrootfs%s" % (getBoxType(), usbslot)):
-				Console().ePopen("cp -R /media/hdd/%s/linuxrootfs%s . /" % (getBoxType(), usbslot))		
+				Console().ePopen("cp -R /media/hdd/%s/linuxrootfs%s . /" % (getBoxType(), usbslot))
 		self.session.open(TryQuitMainloop, QUIT_REBOOT)

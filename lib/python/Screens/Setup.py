@@ -296,7 +296,7 @@ def setupDom(setup=None, plugin=None):
 			del domSetups[setupFile]
 		if setupFile in setupModTimes:
 			del setupModTimes[setupFile]
-		return setupFileDom # we can't access setup.xml so return an empty dom 
+		return setupFileDom # we can't access setup.xml so return an empty dom
 	cached = setupFile in domSetups and setupFile in setupModTimes and setupModTimes[setupFile] == modTime
 	print("[Setup] XML%s setup file '%s', using element '%s'%s." % (" cached" if cached else "", setupFile, setup, " from plugin '%s'" % plugin if plugin else ""))
 	if cached:

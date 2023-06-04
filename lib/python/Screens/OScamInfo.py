@@ -39,7 +39,7 @@ def check_NAMEBIN2():
 	NAMEBIN2 = "OScam"
 	if fileExists("/tmp/.ncam/ncam.version"):
 		NAMEBIN2 = "Ncam"
-	return NAMEBIN2	
+	return NAMEBIN2
 
 
 f = 1
@@ -130,7 +130,7 @@ class OscamInfo:
 				# If we have a config file, we need to investigate it further
 				with open(conf, 'r') as data:
 					for i in data:
-#						print("[OscamInfo][getUserData] i", i)					
+#						print("[OscamInfo][getUserData] i", i)
 						if "httpuser" in i.lower():
 							user = i.split("=")[1].strip()
 						elif "httppwd" in i.lower():
@@ -154,10 +154,10 @@ class OscamInfo:
 	def openWebIF(self, part=None, reader=None):
 		NAMEBIN = check_NAMEBIN()
 		self.proto = "http"
-#		print("[OscamInfo][openWebIF] NAMEBIN part", NAMEBIN, "   ", part)		
+#		print("[OscamInfo][openWebIF] NAMEBIN part", NAMEBIN, "   ", part)
 		if config.oscaminfo.userdatafromconf.value:
 			udata = self.getUserData()
-#			print("[OscamInfo][openWebIF] udata, config.oscaminfo.userdatafromconf.value: ", udata, "   ", config.oscaminfo.userdatafromconf.value)			
+#			print("[OscamInfo][openWebIF] udata, config.oscaminfo.userdatafromconf.value: ", udata, "   ", config.oscaminfo.userdatafromconf.value)
 			if isinstance(udata, str):
 				return False, udata
 			else:
@@ -193,7 +193,7 @@ class OscamInfo:
 		else:
 			self.url = "%s://%s:%s/%sapi.html?part=%s" % (self.proto, self.ip, self.port, NAMEBIN, part)
 		if part is not None and reader is not None:
-#			print("[OscamInfo][openWebIF] reader:", reader)		
+#			print("[OscamInfo][openWebIF] reader:", reader)
 			self.url = "%s://%s:%s/%sapi.html?part=%s&label=%s" % (self.proto, self.ip, self.port, NAMEBIN, part, urllib.parse.quote_plus(reader))
 #		print("[OscamInfo][openWebIF] NAMEBIN=%s, NAMEBIN=%s url=%s" % (NAMEBIN, NAMEBIN, self.url))
 #		print("[OscamInfo][openWebIF] self.url=%s" % self.url)
@@ -210,7 +210,7 @@ class OscamInfo:
 			data = urlopen(request).read()
 #			print("[OscamInfo][openWebIF] data=", data)
 		except URLError as e:
-			print("[OscamInfo][openWebIF] error: %s" % e)		
+			print("[OscamInfo][openWebIF] error: %s" % e)
 			if hasattr(e, "reason"):
 				err = str(e.reason)
 			elif hasattr(e, "code"):
@@ -289,7 +289,7 @@ class OscamInfo:
 					tmp = result[1].replace("<log>", "<log><![CDATA[").replace("</log>", "]]></log>")
 				else:
 					tmp = result[1]
-				print("[OscamInfo][readXML] show tmp", tmp)					
+				print("[OscamInfo][readXML] show tmp", tmp)
 				dataXML = ElementTree.XML(tmp)
 				log = dataXML.find("log")
 				logtext = log.text

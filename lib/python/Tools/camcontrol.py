@@ -22,9 +22,9 @@ class CamControl:
 		for f in listdir("/etc/init.d"):
 			if f.startswith(prefix):
 				result.append(f[len(prefix):])
-		print("[CamControl][getList] returnlist=%s" % result)	
+		print("[CamControl][getList] returnlist=%s" % result)
 		return result
-			
+
 	def getConfigs(self, prefix):
 		configs = []
 		if path.exists("/etc/tuxbox/config/%s" % prefix):

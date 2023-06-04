@@ -50,7 +50,7 @@ def getvalue():
 	finally:
 		mutex.release()
 	return head + tail
-	
+
 
 def close():
 	global logfile

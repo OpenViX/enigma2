@@ -32,7 +32,7 @@ def MenuEntryPixmap(entryID, png_cache, parentMenuEntryID):
 	isMenuIcons = int(parameters.get("MenuIcons", 0)) == 1
 	if not isMenuIcons:
 		return None
-	
+
 	icoSize = int(parameters.get("MenuIconsSize", 192))
 	width = icoSize
 	height = icoSize
@@ -147,7 +147,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 					return
 			elif not SystemInfo.get(requires, False):
 				return
-		# print("[Menu][addMenu] Menu text=", node.get("text", "??"))				
+		# print("[Menu][addMenu] Menu text=", node.get("text", "??"))
 		MenuTitle = str(_(node.get("text", "??")))
 		entryID = node.get("entryID", "undefined")
 		weight = node.get("weight", 50)
@@ -187,7 +187,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			return
 		# print("[Menu][addItem] item text=", node.get("text", "* Undefined *"))
 		item_text = str(node.get("text", "* Undefined *"))
-		
+
 		if item_text:
 			item_text = _(item_text)
 		entryID = node.get("entryID", "undefined")
@@ -361,7 +361,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 				description = l[4] if len(l) == 5 else plugins.getDescriptionForMenuEntryID(self.menuID, plugin_menuid)
 				menupng = MenuEntryPixmap(l[2], self.png_cache, parentEntryID)
 				if len(l) > 4 and l[4]:
-					
+
 					self.list.append((l[0], boundFunction(l[1], self.session, self.close), l[2], l[3] or 50, description, menupng))
 				else:
 					self.list.append((l[0], boundFunction(l[1], self.session), l[2], l[3] or 50, description, menupng))

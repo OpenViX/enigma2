@@ -834,7 +834,7 @@ class MovieList(GUIComponent):
 				elif len(groupedItems) > 1:
 					# more than one item, display a collection
 					# to provide a useful description field, we use the oldest recording as the source
-					# which avoids showing potential spoilers 
+					# which avoids showing potential spoilers
 					groupedItems = sorted(groupedItems, key=self.buildBeginTimeSortKey, reverse=True)
 					firstItem = groupedItems[0]
 					data = MovieListData()

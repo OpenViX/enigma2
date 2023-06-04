@@ -31,7 +31,7 @@ class AboutBase(TextBox):
 			self["lab3"] = StaticText(_("Support at") + " www.world-of-satellite.com")
 
 	def createSummary(self):
-		return AboutSummary	
+		return AboutSummary
 
 
 class About(AboutBase):
@@ -57,7 +57,7 @@ class About(AboutBase):
 		model = None
 		AboutText = ""
 		AboutText += _("Model:\t%s %s\n") % (getMachineBrand(), getMachineName())
-		
+
 		if about.getChipSetString() != _("unavailable"):
 			if SystemInfo["HasHiSi"]:
 				AboutText += _("Chipset:\tHiSilicon %s\n") % about.getChipSetString().upper()
@@ -147,9 +147,9 @@ class About(AboutBase):
 		if isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value == True:
 			AboutText += _("4097 iptv player:\t%s\n") % config.plugins.serviceapp.servicemp3.player.value
 		else:
-			AboutText += _("4097 iptv player:\tDefault player\n")	
+			AboutText += _("4097 iptv player:\tDefault player\n")
 		AboutText += _("Python:\t%s\n") % about.getPythonVersionString()
-		flashDate = about.getFlashDateString() 
+		flashDate = about.getFlashDateString()
 		AboutText += _("Installed:\t%s\n") % flashDate
 		lastUpdate = about.getLastUpdate()
 		AboutText += _("Last update:\t%s\n") % lastUpdate
@@ -678,6 +678,3 @@ class TranslationInfo(Screen):
 
 		# TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 		self["TranslationInfo"] = StaticText(_("TRANSLATOR_INFO") if "TRANSLATOR_INFO" != _("TRANSLATOR_INFO") else "")
-
-		
-

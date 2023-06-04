@@ -2814,12 +2814,12 @@ class InfoBarExtensions:
 		# overview and is always present.
 
 		for l in plugins.getPlugins(PluginDescriptor.WHERE_MENU):
-			# l.name is the translated version from the *.po in the 
-			# AutoTimer plugin, whereas with _("Auto Timers") the 
-			# translated version comes from enigma2 *.po. This means 
-			# for this to work the translation in plugin.po must 
-			# match the translation in enigma.po. We also have the 
-			# problem that the maybe it is translated in enigma.po 
+			# l.name is the translated version from the *.po in the
+			# AutoTimer plugin, whereas with _("Auto Timers") the
+			# translated version comes from enigma2 *.po. This means
+			# for this to work the translation in plugin.po must
+			# match the translation in enigma.po. We also have the
+			# problem that the maybe it is translated in enigma.po
 			# but in plugin.po it is still in the untranslated form.
 			# For that case we also test against the untranslated form.
 			if l.name in (_("Auto Timers"), "Auto Timers"):

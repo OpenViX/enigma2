@@ -44,7 +44,7 @@ class VuWizard(WizardLanguage, Rc):
 			self.onShow.remove(self.welcomeWarning)
 		popup = self.session.openWithCallback(self.welcomeAction, MessageBox, _("Welcome to OpenViX!\n\n"
 			"Select 'Standard' to setup Standard Vu+ image.\n\n"
-			"Select 'Multiboot' to setup Vu+ Multiboot."), type=MessageBox.TYPE_YESNO, timeout=-1, 
+			"Select 'Multiboot' to setup Vu+ Multiboot."), type=MessageBox.TYPE_YESNO, timeout=-1,
 			default=False, list=[(_("Standard"), False), (_("Multiboot"), True)])
 		popup.setTitle(_("Vu+ 4K image install options"))
 

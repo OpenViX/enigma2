@@ -498,7 +498,7 @@ class AttributeParser:
 
 	def itemHeight(self, value):
 		self.guiObject.setItemHeight(parseScale(value))
-	
+
 	def itemWidth(self, value):
 		self.guiObject.setItemWidth(parseScale(value))
 
@@ -825,7 +825,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				parameters["PartnerBoxTimerName"] = applySkinFactor(0, 30, 20)
 				parameters["PartnerBoxTimerServicename"] = applySkinFactor(0, 0, 30)
 				parameters["SelectionListDescr"] = applySkinFactor(32, 3, 650, 30) # EPG Importer expandable sources list
-				parameters["SelectionListLock"] = applySkinFactor(0, 2, 28, 24) # EPG Importer expandable sources list 
+				parameters["SelectionListLock"] = applySkinFactor(0, 2, 28, 24) # EPG Importer expandable sources list
 				parameters["SHOUTcastListItem"] = applySkinFactor(20, 18, 22, 69, 20, 23, 43, 22)
 
 	for tag in domSkin.findall("include"):
@@ -1263,10 +1263,10 @@ def readSkin(screen, skin, names, desktop):
 				addonClass = my_import(".".join(("Components", "Addons", wclass))).__dict__.get(wclass)
 			except ImportError:
 				raise SkinError("GUI Addon '%s' not found" % wclass)
-			
+
 			if not wconnection:
 				raise SkinError("The widget is from addon type: %s , but no connection is specified." % wclass)
-			
+
 			i = 0
 			wclassname_base = name + "_" + wclass + "_" + wconnection + "_"
 			while wclassname_base + str(i) in usedComponents:
@@ -1403,7 +1403,7 @@ def findWidgets(name):
 					widgetSet.update(findWidgets(name))
 				else:
 					recurseNamelessPanel(childPanel)
-		
+
 	widgetSet = set()
 	element, path = domScreens.get(name, (None, None))
 	if element is not None:

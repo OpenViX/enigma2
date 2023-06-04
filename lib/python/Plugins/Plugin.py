@@ -113,7 +113,7 @@ class PluginDescriptor():
 			return []
 
 	# overrides the builtin object.__getattribute__(self, name).
-	# Method for old code still using the __call__ attribute expecting 
+	# Method for old code still using the __call__ attribute expecting
 	# to get the plugin's fnc, i.e. old code was "self.__call__ = fnc"
 	def __getattribute__(self, name):
 		if name == '__call__':

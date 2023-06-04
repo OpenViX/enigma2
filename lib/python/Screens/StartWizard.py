@@ -18,7 +18,7 @@ config.misc.networkenabled = ConfigBoolean(default=False)
 config.misc.Vuwizardenabled = ConfigBoolean(default=False)
 if fileExists("/usr/bin/kernel_auto.bin") and fileExists("/usr/bin/STARTUP.cpio.gz") and not fileHas("/proc/cmdline", "kexec=1") and config.misc.firstrun.value:
 	config.misc.Vuwizardenabled.value = True
-print("[StartWizard][import] import.......")	
+print("[StartWizard][import] import.......")
 
 
 class StartWizard(WizardLanguage, Rc):

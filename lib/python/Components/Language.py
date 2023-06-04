@@ -124,12 +124,12 @@ class Language:
 		# HACK: sometimes python 2.7 reverts to the LC_TIME environment value, so make sure it has the correct value
 		environ["LC_TIME"] = self.gotLanguage + '.UTF-8'
 		environ["LANGUAGE"] = self.gotLanguage + '.UTF-8'
-		environ["LANGUAGE2"] = self.gotLanguage		
+		environ["LANGUAGE2"] = self.gotLanguage
 		environ["GST_SUBTITLE_ENCODING"] = self.getGStreamerSubtitleEncoding()
 		return True
 
 	def activateLanguage(self, index):
-		from Screens.MessageBox import MessageBox	
+		from Screens.MessageBox import MessageBox
 		from Tools import Notifications
 		if not self.activateLanguage_TRY(index):
 			print("[Language] - retry with ", "en_US")

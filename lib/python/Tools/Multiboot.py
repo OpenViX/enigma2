@@ -10,7 +10,7 @@ from Components.Console import Console
 from Components.SystemInfo import SystemInfo, BoxInfo as BoxInfoRunningInstance, BoxInformation
 from Tools.Directories import fileHas, fileExists
 
-if fileHas("/proc/cmdline", "kexec=1"):		
+if fileHas("/proc/cmdline", "kexec=1"):
 	from PIL import Image
 	from PIL import ImageDraw
 	from PIL import ImageFont
@@ -161,7 +161,7 @@ def GetImagelist(Recovery=None):
 				continue
 			else:					# called by MultiBootSelector
 				Imagelist[slot] = {"imagename": _("Recovery Mode")}
-				continue	
+				continue
 		print("[multiboot] [GetImagelist] slot = ", slot)
 		BuildVersion = "  "
 		Build = " "  # ViX Build No.
@@ -211,7 +211,7 @@ def GetImagelist(Recovery=None):
 					Creator = Creator.replace("-release", " ")
 					BuildVersion = "%s (%s)" % (Creator, date)
 			if fileHas("/proc/cmdline", "kexec=1") and Recovery:
-				bootmviSlot(imagedir=imagedir, text=BuildVersion, slot=slot)		
+				bootmviSlot(imagedir=imagedir, text=BuildVersion, slot=slot)
 			Imagelist[slot] = {"imagename": "%s" % BuildVersion}
 		elif path.isfile(path.join(imagedir, "usr/bin/enigmax")):
 			Imagelist[slot] = {"imagename": _("Deleted image")}
