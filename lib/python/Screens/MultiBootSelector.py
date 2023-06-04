@@ -226,7 +226,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 # 		using UUID	 kernel=/linuxrootfs1/boot/zImage root=UUID="12c2025e-2969-4bd1-9e0c-da08b97d40ce" rootsubdir=linuxrootfs1
 #		using dev = "kernel=/linuxrootfs4/zImage root=/dev/%s rootsubdir=linuxrootfs4" % hdd[0] 	# /STARTUP_4
 
-		for usbslot in range(4,8):
+		for usbslot in range(4, 8):
 			STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, self.device_uuid, boxmodel, usbslot) # /STARTUP_<n>
 			if boxmodel in ("duo4k"):
 				STARTUP_usbslot += " rootwait=40"

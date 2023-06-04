@@ -105,7 +105,7 @@ class VuWizard(WizardLanguage, Rc):
 
 	def eMMCload(self, *args, **kwargs):
 		cmdlist = []
-		for eMMCslot in range(1,4):
+		for eMMCslot in range(1, 4):
 			if pathExists("/media/hdd/%s/linuxrootfs%s" % (getBoxType(), eMMCslot)):
 				cmdlist.append("cp -R /media/hdd/%s/linuxrootfs%s . /" % (getBoxType(), eMMCslot))
 				cmdlist.append("rm -r /media/hdd/%s/linuxrootfs%s" % (getBoxType(), eMMCslot))
