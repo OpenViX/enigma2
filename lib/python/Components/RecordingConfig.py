@@ -11,7 +11,7 @@ def InitRecordingConfig():
 		(("4097", "5001"), _("4097 + 5001")),
 		(("4097", "5001", "5002"), _("4097 + 5001 + 5002")),
 		(("4097", "5002"), _("4097 + 5002")),
-		(("5001",), _("5001 only")),		
+		(("5001",), _("5001 only")),
 		(("5001", "5002"), _("5001 + 5002")),
 		(("5002",), _("5002 only"))])
 	config.recording.margin_before = ConfigSelectionNumber(min=0, max=120, stepwidth=1, default=3, wraparound=True)

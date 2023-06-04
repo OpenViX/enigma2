@@ -29,7 +29,7 @@ class BoxInformation:
 					if not (value.startswith("\"") or value.startswith("'")) and item in ("python", "imageversion", "imgversion"):
 						value = '"' + value + '"' # wrap it so it is treated as a string
 					self.boxInfo[item] = self.processValue(value)
-			# print("[SystemInfo] Enigma information file data loaded into BoxInfo.")	
+			# print("[SystemInfo] Enigma information file data loaded into BoxInfo.")
 		else:
 			print("[BoxInfo] ERROR: %s is not available!  The system is unlikely to boot or operate correctly." % file)
 

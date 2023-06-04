@@ -546,7 +546,7 @@ def runScreenTest():
 	power = PowerKey(session)
 
 	# we need session.scart to access it from within menu.xml
-	
+
 	if enigma.eAVSwitch.getInstance().haveScartSwitch():
 		# we need session.scart to access it from within menu.xml
 		session.scart = AutoScartControl(session)

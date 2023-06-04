@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from os import listdir, path, rename, remove 
+from os import listdir, path, rename, remove
 import os
 import re
 from time import localtime, time, strftime

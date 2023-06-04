@@ -61,7 +61,7 @@ class OpentvZapper_Setup(Setup):
 		else:
 			Setup.keySelect(self)
 
-	def createSetup(self):	
+	def createSetup(self):
 		indent = "- "
 		setupList = []
 		setupList.append((_("Enable OpenTV download"), config.plugins.opentvzapper.enabled, _("Enable automated downloading of OpenTV EPG data. If only one tuner is available the download will be done when the reciever is in standby.")))

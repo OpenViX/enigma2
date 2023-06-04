@@ -452,7 +452,7 @@ class InfoBarButtonSetup():
 			self.ButtonSetupFunctions = getButtonSetupFunctions()
 			self.ButtonSetupFunctionsCheck = t
 		return self.ButtonSetupFunctions
-			
+
 	def clearLongkeyPressed(self):
 		self.longkeyPressed = False
 
@@ -544,7 +544,7 @@ class InfoBarButtonSetup():
 				except Exception as e:
 					print("[ButtonSetup] error during executing module %s, screen %s, %s" % (selected[1], selected[2], e))
 					import traceback
-					traceback.print_exc()					
+					traceback.print_exc()
 			elif selected[0] == "Setup":
 				from Screens.Setup import Setup
 				exec("self.session.open(Setup, \"%s\")" % selected[1])

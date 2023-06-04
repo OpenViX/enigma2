@@ -22,7 +22,7 @@ def getFlashDateString():
 		return _("unknown")
 
 
-def driversDate(): 
+def driversDate():
 	return _formatDate(getDriverDate())
 
 
@@ -33,7 +33,7 @@ def getLastUpdate():
 def _formatDate(Date):
 	# expected input = "YYYYMMDD"
 	if len(Date) != 8 or not Date.isnumeric():
-		return _("unknown")					
+		return _("unknown")
 	from Components.config import config
 	return config.usage.date.dateFormatAbout.value % {"year": Date[0:4], "month": Date[4:6], "day": Date[6:8]}
 

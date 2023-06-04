@@ -16,7 +16,7 @@ class TextBox(Screen):
 		self[self.label] = ScrollLabel(self.text)
 
 		self["key_red"] = Button(_("Close"))
-		
+
 		self["textBoxActions"] = ActionMap(["SetupActions", "NavigationActions"],
 				{
 					"cancel": self.close,

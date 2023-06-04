@@ -95,7 +95,7 @@ class ClientModeScreen(Setup):
 				config.clientmode.serverAddressType.value = "domain"
 			else:
 				config.clientmode.serverAddressType.value = self.addressType.value
-				
+
 		if self.addressType.value == "peer":
 			return self.peer.value
 		elif self.addressType.value == "ip":

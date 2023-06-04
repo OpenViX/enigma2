@@ -1132,7 +1132,7 @@ def InitUsageConfig():
 	config.misc.softcams = ConfigSelection(default="None", choices=[(x, _(x)) for x in CamControl("softcam").getList()])
 	config.misc.softcamrestarts = ConfigSelection(default="", choices=[
 					("", _("Don't restart")),
-					("s", _("Restart softcam"))])	
+					("s", _("Restart softcam"))])
 	SystemInfo["OScamInstalled"] = False
 
 	config.cccaminfo = ConfigSubsection()
@@ -1175,7 +1175,7 @@ def InitUsageConfig():
 	config.mediaplayer = ConfigSubsection()
 	config.mediaplayer.useAlternateUserAgent = ConfigYesNo(default=False)
 	config.mediaplayer.alternateUserAgent = ConfigText(default="")
-	
+
 	config.hdmicec = ConfigSubsection()
 	config.hdmicec.enabled = ConfigYesNo(default=False)
 	config.hdmicec.control_tv_standby = ConfigYesNo(default=True)
@@ -1203,9 +1203,9 @@ def InitUsageConfig():
 		"textview": _("Text View On"),
 		},
 		default="imageview")
-	config.hdmicec.fixed_physical_address = ConfigText(default="0.0.0.0")		
+	config.hdmicec.fixed_physical_address = ConfigText(default="0.0.0.0")
 	config.hdmicec.volume_forwarding = ConfigYesNo(default=False)
-	config.hdmicec.force_volume_forwarding = ConfigYesNo(default=False)	
+	config.hdmicec.force_volume_forwarding = ConfigYesNo(default=False)
 	config.hdmicec.control_receiver_wakeup = ConfigYesNo(default=False)
 	config.hdmicec.control_receiver_standby = ConfigYesNo(default=False)
 	config.hdmicec.handle_deepstandby_events = ConfigYesNo(default=False)
@@ -1221,7 +1221,7 @@ def InitUsageConfig():
 	config.hdmicec.bookmarks = ConfigLocations(default="/hdd/")
 	config.hdmicec.log_path = ConfigDirectory("/hdd/")
 	config.hdmicec.next_boxes_detect = ConfigYesNo(default=False)	# Before switching the TV to standby, receiver tests if any devices plugged to TV are in standby. If they are not, the 'sourceinactive' command will be sent to the TV instead of the 'standby' command.
-	config.hdmicec.sourceactive_zaptimers = ConfigYesNo(default=False)				# Command the TV to switch to the correct HDMI input when zap timers activate.	
+	config.hdmicec.sourceactive_zaptimers = ConfigYesNo(default=False)				# Command the TV to switch to the correct HDMI input when zap timers activate.
 
 	upgradeConfig()
 

@@ -409,7 +409,7 @@ def createTimer(xml):
 	for l in xml.findall("log"):
 		ltime = int(l.get("time"))
 		lcode = int(l.get("code"))
-		# print("[PowerManager]: ltext, time, code", l.text, "   ", l.get("time"), "   ", l.get("code"))		
+		# print("[PowerManager]: ltext, time, code", l.text, "   ", l.get("time"), "   ", l.get("code"))
 		msg = l.text.strip()
 		entry.log_entries.append((ltime, lcode, msg))
 	return entry

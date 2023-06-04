@@ -3,7 +3,7 @@ from errno import ENOENT, EXDEV
 
 from os.path import basename as pathBasename, dirname as pathDirname, exists as pathExists, getsize as pathGetsize, isdir as pathIsdir, isfile as pathIsfile, islink as pathIslink, join as pathJoin, normpath as pathNormpath, splitext as pathSplitext
 
-from os import access, chmod, listdir, makedirs, mkdir, readlink, rename, rmdir, sep, stat as os_stat, statvfs, symlink, utime, walk, F_OK, R_OK, W_OK 
+from os import access, chmod, listdir, makedirs, mkdir, readlink, rename, rmdir, sep, stat as os_stat, statvfs, symlink, utime, walk, F_OK, R_OK, W_OK
 
 from enigma import eEnv, getDesktop
 from re import compile, split, search
@@ -251,7 +251,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 
 def getPrimarySkinResolution():
 	from Components.config import config # deferred import
-	resolutions = ["480", "576", "720", "1080", "2160", "4320", "8640"] 
+	resolutions = ["480", "576", "720", "1080", "2160", "4320", "8640"]
 	resolution = None
 	skin = resolveFilename(SCOPE_SKIN, config.skin.primary_skin.value)
 	if not fileExists(skin):
