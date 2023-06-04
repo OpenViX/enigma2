@@ -41,7 +41,7 @@ def MenuEntryPixmap(entryID, png_cache, parentMenuEntryID):
 		pngPath = resolveFilename(SCOPE_GUISKIN, "menu/" + entryID + ".svg")
 		pos = config.skin.primary_skin.value.rfind('/')
 		if pos > -1:
-			current_skin = config.skin.primary_skin.value[:pos+1]
+			current_skin = config.skin.primary_skin.value[:pos + 1]
 		else:
 			current_skin = ""
 		if (current_skin in pngPath and current_skin) or not current_skin:
@@ -432,7 +432,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 
 	def isProtected(self):
 		if config.ParentalControl.setuppinactive.value:
-			if config.ParentalControl.config_sections.main_menu.value and not(hasattr(self.session, 'infobar') and self.session.infobar is None):
+			if config.ParentalControl.config_sections.main_menu.value and not (hasattr(self.session, 'infobar') and self.session.infobar is None):
 				return self.menuID == "mainmenu"
 			elif config.ParentalControl.config_sections.configuration.value and self.menuID == "setup":
 				return True

@@ -82,7 +82,7 @@ class VuWizard(WizardLanguage, Rc):
 				if hddExt4:
 					if not pathExists("/media/hdd/%s" % getBoxType()):
 						cmdlist.append("mkdir /media/hdd/%s" % getBoxType())
-					if  pathExists("/media/hdd/%s/linuxrootfs1" % getBoxType()):
+					if pathExists("/media/hdd/%s/linuxrootfs1" % getBoxType()):
 						cmdlist.append("rm -rf /media/hdd/%s/linuxrootfs1" % getBoxType())
 					cmdlist.append("mkdir /tmp/mmc")
 					cmdlist.append("mount /dev/%s /tmp/mmc" % getMachineMtdRoot())

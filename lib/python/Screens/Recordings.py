@@ -89,7 +89,7 @@ class RecordingSettings(Setup):
 					valid_partitions.append(partition.mountpoint)
 			print("[" + self.__class__.__name__ + "] valid partitions", valid_partitions)
 			if valid_partitions:
-				return Components.Harddisk.findMountPoint(realpath(path))+'/' in valid_partitions or Components.Harddisk.findMountPoint(realpath(path)) in valid_partitions
+				return Components.Harddisk.findMountPoint(realpath(path)) + '/' in valid_partitions or Components.Harddisk.findMountPoint(realpath(path)) in valid_partitions
 		return False
 
 	def selectionChanged(self):

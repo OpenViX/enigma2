@@ -175,7 +175,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 						if xline.find(usblist[hddkey]) != -1 and "ext4" in xline:
 							index = xline.find(usblist[hddkey])
 							print("[MultiBootSelector] key, line ", usblist[hddkey], "   ", xline)
-							hdd.append(xline[index:index+4])
+							hdd.append(xline[index:index + 4])
 						else:
 							continue
 	#						print("[MultiBootSelector] key, not in line ", usblist[hddkey], "   ", xline)
@@ -207,7 +207,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 			self.close()
 		else:
 			boxmodel = getBoxType()[2:]
-			for usbslot in range(hiKey+1, hiKey+5):
+			for usbslot in range(hiKey + 1, hiKey + 5):
 				STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, SystemInfo["VuUUIDSlot"][0], boxmodel, usbslot) # /STARTUP_<n>
 				if boxmodel in ("duo4k"):
 					STARTUP_usbslot += " rootwait=40"
