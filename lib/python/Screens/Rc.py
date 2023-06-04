@@ -148,7 +148,7 @@ class RcPositions:
 	def __init__(self):
 		if RcPositions.rc is not None:
 			return
-		descriptions = [{v[0]:k for k,v in x.items()} for x in keyDescriptions] # used by wizards and legacy xml format
+		descriptions = [{v[0]:k for k, v in x.items()} for x in keyDescriptions] # used by wizards and legacy xml format
 		file = resolveFilename(SCOPE_SKIN, "rcpositions.xml") if SystemInfo["rc_default"] else SystemInfo["RCMapping"]
 		rcs = fileReadXML(file, "<rcs />")
 		remotes = {}
@@ -182,7 +182,7 @@ class RcPositions:
 				RcPositions.rc = remotes[machine_id]
 			except:
 				# empty RC map just in case xml file failed to load
-				RcPositions.rc = {"keyIds":[], "remaps":{}, "keyDescriptions":{}}
+				RcPositions.rc = {"keyIds": [], "remaps": {}, "keyDescriptions": {}}
 				print("[RcPositions] failed to load RC mapping file")
 
 	def getRc(self):

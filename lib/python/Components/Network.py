@@ -320,7 +320,7 @@ class Network:
 		if not self.resetNetworkConsole.appContainers:
 			self.writeDefaultNetworkConfig(mode, callback)
 
-	def resetWiFiMac(self,Mac=None, wlan=None, callback=None):
+	def resetWiFiMac(self, Mac=None, wlan=None, callback=None):
 		if Mac is not None:
 			mode = wlan
 			self.commands = []

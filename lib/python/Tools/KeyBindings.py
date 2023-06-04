@@ -476,4 +476,4 @@ def removeKeyBindings(domain):
 
 
 def getFpAndKbdKeys(): # used by HelpMenuList
-	return {k for i in keyDescriptions for k,v in i.items() if len(v) > 1 and v[1] in ("fp", "kbd")}
+	return {k for i in keyDescriptions for k, v in i.items() if len(v) > 1 and v[1] in ("fp", "kbd")}

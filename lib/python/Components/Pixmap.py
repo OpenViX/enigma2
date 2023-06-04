@@ -28,7 +28,7 @@ class Pixmap(GUIComponent):
 				if attrib == "offset":
 					self.xOffset, self.yOffset = map(int, value.split(','))
 				else:
-					attribs.append((attrib,value))
+					attribs.append((attrib, value))
 			self.skinAttributes = attribs
 		return GUIComponent.applySkin(self, desktop, screen)
 

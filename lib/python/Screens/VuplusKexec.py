@@ -75,7 +75,7 @@ class VuplusKexec(Screen):
 
 	def RootInitEnd(self, *args, **kwargs):
 		print("[VuplusKexec][RootInitEnd] rebooting")
-		for usbslot in range(1,4):		
+		for usbslot in range(1, 4):		
 			if pathExists("/media/hdd/%s/linuxrootfs%s" % (getBoxType(), usbslot)):
 				Console().ePopen("cp -R /media/hdd/%s/linuxrootfs%s . /" % (getBoxType(), usbslot))		
 		self.session.open(TryQuitMainloop, QUIT_REBOOT)
