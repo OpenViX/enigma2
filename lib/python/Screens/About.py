@@ -673,7 +673,7 @@ class TranslationInfo(Screen):
 		})
 
 		# _("") fetches the translator info from the *.po.
-		infomap = {x.split(":")[0].strip() : x.split(":")[1].strip() for x in _("").split("\n") if len(x.split(":")) == 2}
+		infomap = {x.split(":")[0].strip(): x.split(":")[1].strip() for x in _("").split("\n") if len(x.split(":")) == 2}
 		self["TranslatorName"] = StaticText(infomap.get("Language-Team") or infomap.get("Last-Translator", ""))
 
 		# TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)

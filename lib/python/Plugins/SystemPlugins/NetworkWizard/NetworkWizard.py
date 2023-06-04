@@ -176,7 +176,7 @@ class NetworkWizard(WizardLanguage, Rc):
 					else:
 						self.isInterfaceUp = False
 						config.misc.networkenabled.value = False
-					print("[NetworkWizard] networkenabled value = %s" % config.misc.networkenabled.value )						
+					print("[NetworkWizard] networkenabled value = %s" % config.misc.networkenabled.value)						
 					self.currStep = self.getStepWithID(self.NextStep)
 					self.afterAsyncCode()
 				else:
@@ -207,7 +207,7 @@ class NetworkWizard(WizardLanguage, Rc):
 			else:
 				self.isInterfaceUp = False
 				config.misc.networkenabled.value = False
-			print("[NetworkWizard] networkenabled value = %s" % config.misc.networkenabled.value )				
+			print("[NetworkWizard] networkenabled value = %s" % config.misc.networkenabled.value)				
 			self.resetRef.close(True)
 		else:
 			print("we should never come here!")

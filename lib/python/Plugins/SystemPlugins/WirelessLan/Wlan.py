@@ -490,7 +490,7 @@ class Status:
 			aps = {}
 			if scanresults is not None:
 				config.misc.networkenabled.value = True
-				print("[NetworkWizard] networkenabled value = %s" % config.misc.networkenabled.value )				
+				print("[NetworkWizard] networkenabled value = %s" % config.misc.networkenabled.value)				
 				for i in range(len(scanresults)):
 					bssid = scanresults[i].ssid
 					aps[bssid] = {
