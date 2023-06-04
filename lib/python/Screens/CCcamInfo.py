@@ -85,9 +85,9 @@ def getPage(url, callback, errback):
 			callback(data)
 	else:
 		try:
-			data = response.content.decode(encoding = 'UTF-8')
+			data = response.content.decode(encoding='UTF-8')
 		except:
-			data = response.content.decode(encoding = 'latin-1')
+			data = response.content.decode(encoding='latin-1')
 		callback(data)
 #############################################################
 
