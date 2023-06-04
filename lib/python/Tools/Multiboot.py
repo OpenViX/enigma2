@@ -272,15 +272,15 @@ def bootmviSlot(imagedir="/", text=" ", slot=0):
 	if path.exists(inmviPath):
 		if path.exists(outmviPath) and path.exists(txtPath) and open(txtPath).read() == text:
 			return
-		print ("[multiboot][bootmviSlot] Copy /usr/share/bootlogo.mvi to /tmp/bootlogo.m1v")
+		print("[multiboot][bootmviSlot] Copy /usr/share/bootlogo.mvi to /tmp/bootlogo.m1v")
 		Console(binary=True).ePopen("cp %s /tmp/bootlogo.m1v" % inmviPath)
-		print ("[multiboot][bootmviSlot] Dump iframe to png")
+		print("[multiboot][bootmviSlot] Dump iframe to png")
 		Console(binary=True).ePopen("ffmpeg -skip_frame nokey -i /tmp/bootlogo.m1v -vsync 0  -y  /tmp/out1.png 2>/dev/null")
 		Console(binary=True).ePopen("rm -f /tmp/mypicture.m1v")
 		if path.exists("/tmp/out1.png"):
 			img = Image.open("/tmp/out1.png")						# Open an Image
 		else:
-			print ("[multiboot][bootmviSlot] unable to create new bootlogo cannot open out1.png")
+			print("[multiboot][bootmviSlot] unable to create new bootlogo cannot open out1.png")
 			return
 		I1 = ImageDraw.Draw(img)									# Call draw Method to add 2D graphics in an image
 		myFont = ImageFont.truetype("/usr/share/fonts/OpenSans-Regular.ttf", 65)		# Custom font style and font size
@@ -288,7 +288,7 @@ def bootmviSlot(imagedir="/", text=" ", slot=0):
 		I1.text((52, 12), text, font=myFont, fill=(255, 0, 0))		# Add Text to an image
 		I1.text((50, 10), text, font=myFont, fill=(255, 255, 255))
 		img.save("/tmp/out1.png")									# Save the edited image
-		print ("[multiboot][bootmviSlot] Repack bootlogo")
+		print("[multiboot][bootmviSlot] Repack bootlogo")
 		Console(binary=True).ePopen("ffmpeg -i /tmp/out1.png -r 25 -b 20000 -y /tmp/mypicture.m1v  2>/dev/null")
 		Console(binary=True).ePopen("cp /tmp/mypicture.m1v %s" % outmviPath)
 		with open(txtPath, "w") as f:

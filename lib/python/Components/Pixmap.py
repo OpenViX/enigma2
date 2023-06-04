@@ -23,7 +23,7 @@ class Pixmap(GUIComponent):
 		if self.skinAttributes is not None:
 			skin_path_prefix = getattr(screen, "skin_path", path)
 			pixmap = None
-			attribs = [ ]
+			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "offset":
 					self.xOffset, self.yOffset = map(int, value.split(','))

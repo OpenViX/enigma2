@@ -44,7 +44,7 @@ def MenuEntryPixmap(entryID, png_cache, parentMenuEntryID):
 			current_skin = config.skin.primary_skin.value[:pos+1]
 		else:
 			current_skin = ""
-		if ( current_skin in pngPath and current_skin ) or not current_skin:
+		if (current_skin in pngPath and current_skin) or not current_skin:
 			png = LoadPixmap(pngPath, cached=True, width=width, height=0 if pngPath.endswith(".svg") else height) #looking for a dedicated icon
 		if png is None: # no dedicated icon found
 			if parentMenuEntryID is not None: # check do we have parent menu item that can use for icon
