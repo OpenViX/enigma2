@@ -2105,7 +2105,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 # If we've changed meta-data, we need to reload/redisplay
 #
-		if need_reload: self["list"].reload(self.current_ref, self.selected_tags, self.collectionName)
+		if need_reload:
+			self["list"].reload(self.current_ref, self.selected_tags, self.collectionName)
 
 	def can_decode(self, item):
 		return self.list.countMarked() == 0 and item[0].getPath().endswith('.ts')
