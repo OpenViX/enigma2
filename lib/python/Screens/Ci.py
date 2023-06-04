@@ -489,7 +489,7 @@ class CiSelection(Screen):
 				self.list = []
 				self.appendEntries(slot, state)
 		elif state == 3:
-			self.list = self.list[0:slotidx+1]
+			self.list = self.list[0:slotidx + 1]
 		lst = self["entries"]
 		lst.list = self.list
 		lst.l.setList(self.list)

@@ -99,7 +99,7 @@ class FeedsStatusCheck:
 					except:
 						print("[OnlineUpdateCheck][getFeedStatus] ERROR:", sys.exc_info()[0])
 						trafficLight = -2
-				if getImageType() == "developer" and "openvixdev"  in getFeedsUrl():
+				if getImageType() == "developer" and "openvixdev" in getFeedsUrl():
 					print("[OnlineUpdateCheck][getFeedStatus] Official developer feeds")
 					trafficLight = "developer"
 				elif officialReleaseFeedsUri not in getFeedsUrl(): # if not using official feeds mark as alien. There is no status test for alien feeds (including official developer feeds).

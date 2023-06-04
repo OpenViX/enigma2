@@ -575,7 +575,7 @@ class NIM:
 				sattypes.remove("DVB-S")
 			if len(sattypes) > 1:
 				self.multi_type = {}
-				self.combined = not(path.exists("/proc/stb/frontend/%d/mode" % self.frontend_id) or self.isFBCTuner())
+				self.combined = not (path.exists("/proc/stb/frontend/%d/mode" % self.frontend_id) or self.isFBCTuner())
 				for sattype in sattypes:
 					self.multi_type[str(sattypes.index(sattype))] = sattype
 			elif len(self.multi_type) > 1:

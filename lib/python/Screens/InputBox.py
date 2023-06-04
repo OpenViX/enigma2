@@ -56,8 +56,8 @@ class InputBox(Screen, HelpableScreen):
 			"7": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"8": (self.keyNumberGlobal, _("Number or SMS style data entry")),
 			"9": (self.keyNumberGlobal, _("Number or SMS style data entry")),
-			"0": (self.keyNumberGlobal,  _("Number or SMS style data entry")),
-		}, prio=-1,  description=_("InputBox Actions"))
+			"0": (self.keyNumberGlobal, _("Number or SMS style data entry")),
+		}, prio=-1, description=_("InputBox Actions"))
 
 		if self["input"].type == Input.TEXT:
 			self.onExecBegin.append(self.setKeyboardModeAscii)

@@ -1121,7 +1121,7 @@ class MovieList(GUIComponent):
 		for service in self.markList[:]:
 			idx = self.findService(service)
 			if idx is not None:
-				if not excludeDirs or not(service.flags & eServiceReference.isDirectory):
+				if not excludeDirs or not (service.flags & eServiceReference.isDirectory):
 					marked.append(self.list[idx])
 			else:
 				self.markList.remove(service)
