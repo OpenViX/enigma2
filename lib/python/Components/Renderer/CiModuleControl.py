@@ -6,6 +6,7 @@ from Components.VariableText import VariableText
 from Tools.Hex2strColor import Hex2strColor
 from os import popen
 
+
 class CiModuleControl(Renderer, VariableText):
 	def __init__(self):
 		Renderer.__init__(self)

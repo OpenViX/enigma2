@@ -145,6 +145,7 @@ class Rc:
 
 class RcPositions:
 	rc = None
+
 	def __init__(self):
 		if RcPositions.rc is not None:
 			return

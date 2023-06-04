@@ -72,7 +72,6 @@ class NetworkWizard(WizardLanguage, Rc):
 		self.getInstalledInterfaceCount()
 		self.isWlanPluginInstalled()
 
-
 	def exitWizardQuestion(self, ret=False):
 		if ret:
 			self.markDone()

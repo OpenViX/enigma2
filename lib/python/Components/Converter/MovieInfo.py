@@ -9,8 +9,11 @@ from Components.Harddisk import bytesToHumanReadable
 # Handle any invalid utf8 in a description to avoid crash when
 # displaying it.
 #
+
+
 def force_valid_utf8(strarray):
 	return strarray.encode(errors='backslashreplace').decode(errors='ignore')
+
 
 class MovieInfo(Converter):
 	scanDirectoryLock = Lock()
@@ -164,6 +167,7 @@ class MovieInfo(Converter):
 
 	def __directoryScanWorker(self):
 		size = 0
+
 		def scanDirectory(path):
 			nonlocal size
 			for entry in scandir(path):

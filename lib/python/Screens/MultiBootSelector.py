@@ -218,7 +218,6 @@ class MultiBootSelector(Screen, HelpableScreen):
 				print("[MultiBootSelector] STARTUP_%d --> %s, self.tmp_dir: %s" % (usbslot, STARTUP_usbslot, self.tmp_dir))
 			self.session.open(TryQuitMainloop, QUIT_RESTART)
 
-
 	def KexecMountRet(self, result=None, retval=None, extra_args=None):
 		self.device_uuid = "UUID=" + result.split("UUID=")[1].split(" ")[0].replace('"', '')
 		usb = result.split(":")[0]

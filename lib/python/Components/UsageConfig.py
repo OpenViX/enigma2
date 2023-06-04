@@ -20,12 +20,16 @@ from Tools.HardwareInfo import HardwareInfo
 # stderr expect unicode, not str, so we decode as utf-8
 #
 import io
+
+
 def raw_stderr_print(text):
 	with io.open(2, mode="wt", closefd=False) as myerr:
 		myerr.write(text)
 
+
 originalAudioTracks = "orj dos ory org esl qaa und mis mul ORY ORJ Audio_ORJ oth"
 visuallyImpairedCommentary = "NAR qad"
+
 
 def InitUsageConfig():
 	config.version = ConfigNumber(default=0)
@@ -1381,6 +1385,7 @@ def upgradeConfig():
 				item.save()
 		config.version.value = "53023"
 		config.version.save()
+
 
 def preferredTunerChoicesUpdate(update=False):
 	dvbs_nims = [("-2", _("disabled"))]

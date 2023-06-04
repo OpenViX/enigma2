@@ -473,7 +473,6 @@ class AudioSelection(ConfigListScreen, Screen):
 			if self.session.nav.getCurrentService().audioTracks().getNumberOfTracks() > track:
 				self.audioTracks.selectTrack(track)
 
-
 	def keyLeft(self):
 		if self.focus == FOCUS_CONFIG:
 			ConfigListScreen.keyLeft(self)

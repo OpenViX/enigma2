@@ -595,7 +595,6 @@ class CCcamInfoMain(Screen):
 		self.session.openWithCallback(self.workingFinished, MessageBox, _("Error reading webpage!"), MessageBox.TYPE_ERROR)
 		self.workingFinished()
 
-
 	def showFile(self, file):
 		try:
 			f = open(file, "r")

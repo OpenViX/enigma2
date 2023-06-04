@@ -453,7 +453,6 @@ class InfoBarButtonSetup():
 			self.ButtonSetupFunctionsCheck = t
 		return self.ButtonSetupFunctions
 			
-
 	def clearLongkeyPressed(self):
 		self.longkeyPressed = False
 

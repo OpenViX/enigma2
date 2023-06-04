@@ -10,6 +10,7 @@ from Screens.Rc import Rc
 from enigma import eActionMap
 from sys import maxsize
 
+
 class HelpMenu(Screen, Rc):
 	def helpText(self):
 		return "\n\n".join([

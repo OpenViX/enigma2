@@ -102,7 +102,6 @@ class VuWizard(WizardLanguage, Rc):
 		else:
 			self.close()
 
-
 	def eMMCload(self, *args, **kwargs):
 		cmdlist = []
 		for eMMCslot in range(1, 4):

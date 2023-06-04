@@ -32,7 +32,6 @@ class Pixmap(GUIComponent):
 			self.skinAttributes = attribs
 		return GUIComponent.applySkin(self, desktop, screen)
 
-
 	def move(self, x, y=None):
 		if y is None:
 			y = x.y()

@@ -1005,7 +1005,6 @@ class MovieList(GUIComponent):
 		name = x[3].txt
 		return min(self.getSortPrimaryGroup(x), 2), name and name.lower() or "", -x[2]
 
-
 	def buildBeginTimeSortKey(self, x):
 		return self.getSortPrimaryGroup(x), "", -x[2]
 

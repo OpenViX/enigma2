@@ -751,6 +751,7 @@ def __getGenreStringSubIceTV(hn, ln, genres):
 		return _("User defined 0x%02x" % ((hn << 4) | ln))
 	return ""
 
+
 countries = {
 	"AUS": (__getGenreStringMain, __getGenreStringMain, GenresAUS()),
 	# Use illegal country names for IceTV genre tables so that they won't match real countries
