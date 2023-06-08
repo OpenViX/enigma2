@@ -12,6 +12,39 @@ from Screens.WizardLanguage import WizardLanguage
 from Tools.Directories import fileExists, pathExists, resolveFilename, SCOPE_SKIN
 
 
+patterns = [
+	"plugin-systemplugins",
+	"plugin-extensions",
+	"packagegroup-base-alsa",
+	"packagegroup-base-bluetooth",
+	"packagegroup-base-smbfs",
+	"packagegroup-base-smbfs-client",
+	"packagegroup-base-smbfs-server",
+	"python3-pyasn1",
+	"python3-pyasn1-modules",
+	"python3-cryptography",
+	"python3-future",
+	"python3-mime",
+	"alsa",
+	"firmware",	
+	"glibc",
+	"gnome-themes",
+	"kernel-module",
+	"lib-samba",
+	"lib-smb",
+	"mime",
+	"samba4",
+	"webkit",
+	"wpa-supplicant",
+	"skins-openvix-youvix",
+	"skins-openvix-vix",
+	"skins-openvix-magic",
+]
+
+patterns_locale = [
+	"enigma2-locale",
+]
+
 STARTUP = "kernel=/zImage root=/dev/%s rootsubdir=linuxrootfs0" % getMachineMtdRoot()					# /STARTUP
 STARTUP_RECOVERY = "kernel=/zImage root=/dev/%s rootsubdir=linuxrootfs0" % getMachineMtdRoot() 			# /STARTUP_RECOVERY
 STARTUP_1 = "kernel=/linuxrootfs1/zImage root=/dev/%s rootsubdir=linuxrootfs1" % getMachineMtdRoot() 	# /STARTUP_1
@@ -27,6 +60,7 @@ class VuWizard(WizardLanguage, Rc):
 		self.skinName = ["VuWizard", "StartWizard"]
 		self.session = session
 		self.Console = Console(binary=True)
+		self.ConsoleS = Console()
 		self["wizard"] = Pixmap()
 		self["HelpWindow"] = Pixmap()
 		self["HelpWindow"].hide()
@@ -110,7 +144,7 @@ class VuWizard(WizardLanguage, Rc):
 				cmdlist.append("rm -r /media/hdd/%s/linuxrootfs%s" % (getBoxType(), eMMCslot))
 		if cmdlist:
 			cmdlist.append("rm -rf /media/hdd/%s" % getBoxType())
-			self.Console.eBatch(cmdlist, self.reBoot, debug=True)
+			self.Console.eBatch(cmdlist, self.reBoot, debug=False)
 		else:
 			self.reBoot()
 
@@ -124,18 +158,33 @@ class VuWizard(WizardLanguage, Rc):
 		config.misc.firstrun.value = 0
 		config.misc.firstrun.save()
 		configfile.save()
+		self.ConsoleS.ePopen("/usr/bin/opkg list_installed", self.readOpkg)
+
+	def readOpkg(self, result, retval, extra_args):
+#		print("[VuWizard] retval, result", retval, "   ", result)
+		if result:
+			cmdlist = []
+			opkg_installed_list = result.split("\n")										# python list installed elements
+#			print("[AboutUserInstalledPlugins] opkg_installed_list", opkg_installed_list)
+			for opkg_element in opkg_installed_list:										# element e.g. opkg_status aio-grab - 1.0+git116+30847a1-r0
+				if bool([x for x in patterns if x in opkg_element]):
+					parts = opkg_element.strip().split()
+#					print("[AboutUserInstalledPlugins]1 parts, parts0", parts, "   ", parts[0])
+					cmdlist.append("/usr/bin/opkg remove --autoremove --add-dest /:/ " + parts[0] + " --force-remove --force-depends")
+					continue
+				if bool([x for x in patterns_locale if x in opkg_element]):
+					if "en-gb" in opkg_element or "meta" in opkg_element:		# en-gb for OpenViX default - ensure don't clear .po
+						continue
+					parts = opkg_element.strip().split()
+#					print("[AboutUserInstalledPlugins]2 parts, parts0", parts, "   ", parts[0])
+					cmdlist.append("/usr/bin/opkg remove --autoremove --add-dest /:/ " + parts[0] + " --force-remove --force-depends")
+					continue
+#			print("[VuWizard] cmdlist", cmdlist)
+			if cmdlist:	
+				cmdlist.append("rm -f /usr/share/fonts/wqy-microhei.ttc")
+				self.Console.eBatch(cmdlist, self.bootSlot, debug=False)
+		else:
+			self.bootSlot()
+
+	def bootSlot(self, *args, **kwargs):
 		self.Console.ePopen("killall -9 enigma2 && init 6")
-
-	def exitWizardQuestion(self, ret=False):
-		if ret:
-			self.markDone()
-			self.close()
-
-	def markDone(self):
-		pass
-
-	def run(self):
-		pass
-
-	def back(self):
-		WizardLanguage.back(self)
