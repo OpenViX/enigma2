@@ -83,7 +83,6 @@
 		<item entryID="restart_enigma" level="0" text="Restart GUI"><screen module="Standby" screen="TryQuitMainloop">3</screen></item>
 		<item entryID="restart" level="0" text="Reboot"><screen module="Standby" screen="TryQuitMainloop">2</screen></item>
 		<item entryID="multiboot" level="0" text="MultiBoot Image Selector" requires="canMultiBoot"><screen module="MultiBootSelector" screen="MultiBootSelector">1</screen></item>
-		<item entryID="VU+MBoot" level="0" text="Enable Vu+ MultiBoot" requires="CanKexecVu"><screen module="VuplusKexec" screen="VuplusKexec">1</screen></item>
 		<item entryID="H9SDswap" level="0" text="H9SDroot" requires="HasH9SD"><screen module="H9SDswap" screen="H9SDswap">1</screen></item>
 		<item entryID="deep_standby" level="0" text="Deep Standby" requires="DeepstandbySupport"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
 		<item entryID="deep_standby" level="0" text="Shut Down" requires="!DeepstandbySupport"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
