@@ -105,8 +105,8 @@ class VuWizard(WizardLanguage, Rc):
 				cmdlist.append("mv /usr/bin/STARTUP.cpio.gz /STARTUP.cpio.gz")						# copy userroot routine
 				for file in glob.glob("/media/*/vuplus/*/force.update", recursive=True):
 					cmdlist.append("mv %s %s" % (file, file.replace("force.update", "noforce.update")))						# remove Vu force update(Vu+ Zero4k)
+				hddExt4 = False
 				if pathExists("/media/hdd"):
-					hddExt4 = False
 					with open("/proc/mounts", "r") as fd:
 						xlines = fd.readlines()
 						for xline in xlines:
