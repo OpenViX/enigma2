@@ -20,8 +20,8 @@ import xml.etree.cElementTree
 
 from Screens.Setup import Setup
 
-# read the menu
-file = open(resolveFilename(SCOPE_SKINS, 'menu.xml'), 'r')
+# read the menu... recovery.xml is an abreviated version of menu.xml used for slot 0 (recovery image).
+file = open(resolveFilename(SCOPE_SKINS, 'menu.xml' if SystemInfo["MultiBootSlot"] != 0 else 'recovery.xml'), 'r')
 mdom = xml.etree.cElementTree.parse(file)
 file.close()
 
