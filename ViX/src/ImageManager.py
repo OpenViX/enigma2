@@ -459,7 +459,7 @@ class VIXImageManager(Screen):
 		self.sel = self["list"].getCurrent() # (name, link)
 		if not self.sel:
 			return
-		print("[ImageManager][keyRestore] self.sel SystemInfo['MultiBootSlot']", self.sel[0], "   ", SystemInfo["MultiBootSlot"])		
+		print("[ImageManager][keyRestore] self.sel SystemInfo['MultiBootSlot']", self.sel[0], "   ", SystemInfo["MultiBootSlot"])
 		if SystemInfo["MultiBootSlot"] == 0 and self.isVuKexecCompatibleImage(self.sel[0]): # only if Vu multiboot has been enabled and the image is compatible
 			message = [_("Are you sure you want to overwrite the Recovery image?")]
 			if "VuSlot0" in self.sel[0]:
@@ -471,8 +471,8 @@ class VIXImageManager(Screen):
 				message.append(_("We advise flashing the new image to a regular MultiBoot slot and restoring a settings backup."))
 				message.append(_("Select 'Flash regular slot' to flash a regular MultiBoot slot or select 'Overwrite Recovery' to overwrite the Recovery image."))
 				choices = [(_("Flash regular slot"), False), (_("Overwrite Recovery"), True)]
-			ybox = self.session.openWithCallback(self.keyRestorez0, MessageBox, "\n".join(message), default=False, list=choices) 
-			ybox.setTitle(_("Restore confirmation"))		
+			ybox = self.session.openWithCallback(self.keyRestorez0, MessageBox, "\n".join(message), default=False, list=choices)
+			ybox.setTitle(_("Restore confirmation"))
 		else:
 			self.keyRestore1()
 
