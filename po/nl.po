@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-01 04:37+0000\n"
-"PO-Revision-Date: 2023-04-19 16:24+0200\n"
+"POT-Creation-Date: 2023-06-08 13:08+0000\n"
+"PO-Revision-Date: 2023-06-10 15:30+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -324,26 +324,6 @@ msgstr "%-m/%d "
 
 msgid "%-m/%d/%Y"
 msgstr "%-m/%d/%Y"
-
-#, python-format
-msgid "%.0f GB"
-msgstr "%.0f GB"
-
-#, python-format
-msgid "%.0f MB"
-msgstr "%.0f MB"
-
-#, python-format
-msgid "%.0f kB"
-msgstr "%.0f kB"
-
-#, python-format
-msgid "%.2f GB"
-msgstr "%.2f GB"
-
-#, python-format
-msgid "%02d MB"
-msgstr "%02d MB"
 
 #, python-format
 msgid "%2.1f sec"
@@ -852,10 +832,6 @@ msgid "%d %b %Y"
 msgstr "%d %b %Y"
 
 #, python-format
-msgid "%d B"
-msgstr "%d B"
-
-#, python-format
 msgid "%d GB"
 msgstr "%d GB"
 
@@ -1118,10 +1094,6 @@ msgstr "%s (%s)\n"
 #, python-format
 msgid "%s - %s (%s%d min)"
 msgstr "%s - %s (%s%d min)"
-
-#, python-format
-msgid "%s GB"
-msgstr "%s GB"
 
 #, python-format
 msgid "%s Info - Configuration"
@@ -1776,6 +1748,9 @@ msgstr "Favorieten bewerken afsluiten"
 
 msgid "About"
 msgstr "Uw ontvanger"
+
+msgid "About screen setup"
+msgstr "About screen instellingen"
 
 msgid "Accept the current selection"
 msgstr "Accepteer huidige selectie"
@@ -3664,6 +3639,9 @@ msgstr "Configureer DVB-S"
 msgid "Configure DVB-T"
 msgstr "Configureer DVB-T"
 
+msgid "Configure Vu Multiboot interface"
+msgstr "Configureer Vu Multiboot interface"
+
 msgid "Configure alignment of service events."
 msgstr "Configureer uitlijning van programma's."
 
@@ -4045,6 +4023,9 @@ msgstr "Kopieer naar favorietenlijsten"
 msgid "Copying files"
 msgstr "Kopieert bestanden"
 
+msgid "Core dumps are helpful for developers in case of a FATAL SIGNAL crash in the C++ code. Typical core dump size is 110 MB so adjust maximum space used and choose proper location."
+msgstr "Core dumps zijn behulpzaam voor ontwikkelaars in geval van een \"FATAL SIGNAL crash\" in de C++ code. Een typische core dump size heeft een grootte van 110 MB, dus pas de maximaal toegestane ruimte op een bruikbare locatie aan."
+
 msgid "Correct invalid EPG data"
 msgstr "Corrigeer ongeldige EPG-data"
 
@@ -4288,6 +4269,9 @@ msgstr "Czechia"
 msgid "DAC"
 msgstr "DAC"
 
+msgid "DD-MM-YYYY"
+msgstr "DD-MM-JJJJ"
+
 msgid "DHCP"
 msgstr "DHCP"
 
@@ -4407,6 +4391,9 @@ msgstr "Datum"
 
 msgid "Date first"
 msgstr "Datum eerst"
+
+msgid "Date format"
+msgstr "Datum formaat"
 
 msgid "Date style"
 msgstr "Datumstijl"
@@ -5272,9 +5259,6 @@ msgstr "EPG instellingen"
 msgid "EPGSETUP"
 msgstr "EPGSETUP"
 
-msgid "ERROR"
-msgstr "FOUT"
-
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "FOUT - zoeken mislukt (%s)!"
@@ -5470,6 +5454,9 @@ msgstr "Favorietenlijst bewerken activeren"
 
 msgid "Enable client mode"
 msgstr "Clientmodus inschakelen"
+
+msgid "Enable core dumps *"
+msgstr "Activeer core dumps *"
 
 msgid "Enable debug logs *"
 msgstr "Activeer debug logs *"
@@ -6364,9 +6351,6 @@ msgstr "Voetbal"
 msgid "Für Kinder"
 msgstr "Voor kinderen"
 
-msgid "GB"
-msgstr "GB"
-
 msgid "GREEN"
 msgstr "GROEN"
 
@@ -6975,6 +6959,9 @@ msgstr "Hoeveel minuten wilt u toevoegen aan de opname?"
 
 msgid "How many minutes do you want to record for?"
 msgstr "Hoeveel minuten wilt u opnemen?"
+
+msgid "How to display the date format for date items in the About screen."
+msgstr "Hoe moet de datum in het \"About\" scherm geformuleerd zijn?"
 
 msgid "Http(s) stream start delay"
 msgstr "Http(s) stream startvertraging"
@@ -8054,6 +8041,9 @@ msgstr "MEDIA"
 msgid "MENU"
 msgstr "MENU"
 
+msgid "MM-DD-YYYY"
+msgstr "MM-DD-JJJJ"
+
 msgid "MMA"
 msgstr "MMA"
 
@@ -8584,6 +8574,9 @@ msgstr "MultiBootselectie akties"
 
 msgid "MultiType"
 msgstr "Multitype"
+
+msgid "Multiboot"
+msgstr "Multiboot"
 
 msgid "Multimedia"
 msgstr "Multimedia"
@@ -13795,9 +13788,6 @@ msgstr "T2MI PLP ID"
 msgid "T2MI RAW Mode"
 msgstr "T2MI RAW modus"
 
-msgid "TB"
-msgstr "TB"
-
 msgid "TEXT"
 msgstr "TEKST"
 
@@ -15524,6 +15514,9 @@ msgstr "De volumetoetsen van de AB van de ontvanger zullen het TV-volume regelen
 msgid "Vorschau"
 msgstr "Bezichtiging"
 
+msgid "Vu+ 4K image install options"
+msgstr "Vu+ 4K image installeer opties"
+
 msgid "Vu+ MultiBoot Initialisation - will reboot after 10 seconds."
 msgstr "Vu+ MultiBoot Initialisatie - zal na 10 seconden rebooten."
 
@@ -15540,6 +15533,15 @@ msgstr ""
 
 msgid "Vu+ MultiBoot Manager"
 msgstr "Vu+ MultiBoot Manager"
+
+msgid ""
+"Vu+ Multiboot - PLEASE WAIT WHILE INITIALISING!\n"
+"  - will take upto 5 minutes plus 5 minutes per restored eMMC slot.\n"
+"  - after installing Recovery and Slot1 image, receiver will reboot to Slot 1 setup wizard."
+msgstr ""
+"Vu+ Multiboot - WACHT TJDENS HET INITILISEREN!\n"
+" - duurt tot 5 minuten plus 5 minuten voor elk hersteld eMMC-slot.\n"
+" - na het installeren van Recovery en het Slot1 image, zal de ontvanger rebooten naar de slot1 wizard."
 
 msgid "W"
 msgstr "W"
@@ -15701,6 +15703,19 @@ msgstr ""
 "Gebruik: Pas positie en maat zodanig aan dat het afgeschermde deel van het scherm precies het patroon op de achtergrond bedekt.\n"
 "\n"
 "Kies 'Ja' om de instellingen op te slaan of 'Nee' om deze stap over te slaan."
+
+msgid ""
+"Welcome to OpenViX!\n"
+"\n"
+"Select 'Standard' to setup Standard Vu+ image.\n"
+"\n"
+"Select 'Multiboot' to setup Vu+ Multiboot."
+msgstr ""
+"Welkom bij OpenViX!\n"
+"\n"
+"Kies 'Standaard' om een standaard Vu+ image te installeren.\n"
+"]n\n"
+"Kies 'Multiboot' om Vu+ Multiboot te installeren."
 
 msgid ""
 "Welcome to the cutlist editor.\n"
@@ -16068,6 +16083,9 @@ msgstr "JA"
 
 msgid "YPbPr"
 msgstr "YPbPr (Component)"
+
+msgid "YYYY-MM-DD"
+msgstr "JJJJ-MM-DD"
 
 msgid "Year"
 msgstr "Jaar"
@@ -17896,8 +17914,36 @@ msgid "| separated list of prefixes you'd like to be removed from event names, s
 msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, gescheiden door |, e.g. New:|Live:"
 
 #, python-format
+#~ msgid "%.0f GB"
+#~ msgstr "%.0f GB"
+
+#, python-format
+#~ msgid "%.0f MB"
+#~ msgstr "%.0f MB"
+
+#, python-format
+#~ msgid "%.0f kB"
+#~ msgstr "%.0f kB"
+
+#, python-format
+#~ msgid "%.2f GB"
+#~ msgstr "%.2f GB"
+
+#, python-format
+#~ msgid "%02d MB"
+#~ msgstr "%02d MB"
+
+#, python-format
+#~ msgid "%d B"
+#~ msgstr "%d B"
+
+#, python-format
 #~ msgid "%d.%03d GB"
 #~ msgstr "%d.%03d GB"
+
+#, python-format
+#~ msgid "%s GB"
+#~ msgstr "%s GB"
 
 #, python-format
 #~ msgid "%s Log ( %s-Version: %s )"
@@ -18004,6 +18050,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "ECM-Time"
 #~ msgstr "ECM Tijd"
 
+#~ msgid "ERROR"
+#~ msgstr "FOUT"
+
 #~ msgid "Enable Fast Channel Change"
 #~ msgstr "Schakel FCC in"
 
@@ -18055,6 +18104,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #, fuzzy
 #~ msgid "G"
+#~ msgstr "GB"
+
+#~ msgid "GB"
 #~ msgstr "GB"
 
 #, fuzzy
@@ -18185,6 +18237,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Sync NTP every (minutes)"
 #~ msgstr "Synchroniseer NTP elke X minuten"
+
+#~ msgid "TB"
+#~ msgstr "TB"
 
 #~ msgid ""
 #~ "The software management extension is not installed!\n"
