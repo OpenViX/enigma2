@@ -539,7 +539,7 @@ class VIXImageManager(Screen):
 				self.session.open(MessageBox, _("ImageManager - %s - cannot flash eMMC slot from sd card slot.") % getBoxType(), MessageBox.TYPE_INFO, timeout=10)
 				return
 			if self.sel:
-				if config.imagemanager.autosettingsbackup.value:
+				if SystemInfo["MultiBootSlot"] != 0 and config.imagemanager.autosettingsbackup.value:
 					self.doSettingsBackup()
 				else:
 					self.keyRestore3()
