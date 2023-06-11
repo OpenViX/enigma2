@@ -596,7 +596,7 @@ class VIXImageManager(Screen):
 				if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
 					kz0 = getMachineMtdKernel()
 					rz0 = getMachineMtdRoot()
-					CMD = "/usr/bin/ofgwrite -kkz0 -rrz0 '%s'" % MAINDEST			# slot0 treat as kernel/root only multiboot receiver
+					CMD = "/usr/bin/ofgwrite -k%s -r%s '%s'" % (kz0, rz0, MAINDEST)	# slot0 treat as kernel/root only multiboot receiver
 				elif SystemInfo["HasHiSi"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:	# sf8008 type receiver using SD card in multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
