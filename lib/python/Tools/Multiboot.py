@@ -155,6 +155,7 @@ def GetImagelist(Recovery=None):
 	Imagelist = {}
 	tmp.dir = tempfile.mkdtemp(prefix="GetImagelist")
 	tmpname = tmp.dir
+	from Components.config import config		# here to prevent boot loop
 	for slot in sorted(list(SystemInfo["canMultiBoot"].keys())):
 		if slot == 0:
 			if not Recovery:		# called by ImageManager
@@ -210,7 +211,7 @@ def GetImagelist(Recovery=None):
 					date = VerDate(imagedir)
 					Creator = Creator.replace("-release", " ")
 					BuildVersion = "%s (%s)" % (Creator, date)
-			if fileHas("/proc/cmdline", "kexec=1") and Recovery:
+			if fileHas("/proc/cmdline", "kexec=1") and Recovery and config.usage.bootlogo_identify.value:
 				bootmviSlot(imagedir=imagedir, text=BuildVersion, slot=slot)
 			Imagelist[slot] = {"imagename": "%s" % BuildVersion}
 		elif path.isfile(path.join(imagedir, "usr/bin/enigmax")):

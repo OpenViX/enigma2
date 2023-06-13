@@ -17,6 +17,7 @@
 	<setup key="usage" title="Customize settings">
 		<item level="0" text="Setup mode" description="Choose which level of menu/settings to display. 'Expert' level shows all items.">config.usage.setup_level</item>
 		<item level="0" text="Task warning on shutdown" description="On shutdown/restart warn about any pending jobs being carried out in the background.">config.usage.task_warning</item>
+		<item level="0" text="Boot Logo Identification" description="Identify image version on bootlogo.mvi.">config.usage.bootlogo_identify</item>		
 		<item level="1" text="Enable teletext caching" description="When enabled, teletext pages will be cached, allowing faster access.">config.usage.enable_tt_caching</item>
 		<item level="2" text="Include ECM in http streams" description="ECM data will be included in the stream. This enables a client receiver to decode it.">config.streaming.stream_ecm</item>
 		<item level="2" text="Descramble sending http streams" description="When enabled, http streams are descrambled on the server side. The (remote) client receiver does not have to do descrambling. Default on.">config.streaming.descramble</item>
