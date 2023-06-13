@@ -126,7 +126,7 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def buildList(self, action):
 		if self.NextStep == "reboot":
-			if fileHas("/proc/cmdline", "kexec=1"):
+			if fileHas("/proc/cmdline", "kexec=1") and config.usage.bootlogo_identify.value:
 				slot = SystemInfo["MultiBootSlot"]
 				text = createInfo(slot)
 				bootmviSlot(text=text, slot=slot)
