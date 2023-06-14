@@ -1,4 +1,4 @@
-from os import mkdir, path, rmdir, system
+from os import path, rmdir
 import tempfile
 import struct
 
