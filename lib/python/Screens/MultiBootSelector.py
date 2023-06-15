@@ -28,6 +28,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		self.skinName = ["MultiBootSelector", "Setup"]
 		self.onChangedEntry = []
 		self.tmp_dir = None
+		self.fromInit = True
 		usbIn = SystemInfo["HasUsbhdd"].keys() and SystemInfo["HasKexecMultiboot"]
 #		print("[MultiBootSelector] usbIn, SystemInfo['HasUsbhdd'], SystemInfo['HasKexecMultiboot'], SystemInfo['HasKexecUSB']", usbIn, "   ", SystemInfo["HasUsbhdd"], "   ", SystemInfo["HasKexecMultiboot"], "   ", SystemInfo["HasKexecUSB"])
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent(text=((_("Retrieving image slots - Please wait...")), "Queued"))])
@@ -96,6 +97,9 @@ class MultiBootSelector(Screen, HelpableScreen):
 			imageList.append(ChoiceEntryComponent(text=((_("No images found")), "Waiter")))
 		self["config"].setList(imageList)
 		print("[MultiBootSelector] imageList X = %s" % imageList)
+		if self.fromInit:
+			self["config"].moveToIndex(next(iter([i for i, x in enumerate(imageList) if current in x[0][0]]), 0))
+			self.fromInit = False
 		self.updateKeys()
 
 	def reboot(self):
