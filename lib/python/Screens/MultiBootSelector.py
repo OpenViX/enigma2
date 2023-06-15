@@ -21,32 +21,6 @@ from Tools.Multiboot import emptySlot, GetImagelist, GetCurrentImageMode, restor
 
 
 class MultiBootSelector(Screen, HelpableScreen):
-	skin = ["""
-	<screen title="MultiBoot Image Selector" position="center,center" size="%d,%d">
-		<widget name="config" position="%d,%d" size="%d,%d" font="Regular;%d" itemHeight="%d" scrollbarMode="showOnDemand" />
-		<widget source="description" render="Label" position="%d,e-%d" size="%d,%d" font="Regular;%d" />
-		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center">
-			<convert type="ConditionalShowHide"/>
-		</widget>
-		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center">
-			<convert type="ConditionalShowHide"/>
-		</widget>
-		<widget source="key_yellow" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center">
-			<convert type="ConditionalShowHide"/>
-		</widget>
-		<widget source="key_blue" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_blue" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center">
-			<convert type="ConditionalShowHide"/>
-		</widget>
-	</screen>""",
-		900, 460,
-		10, 10, 880, 306, 28, 34,
-		10, 125, 880, 60, 22,
-		10, 50, 210, 40, 20,
-		230, 50, 210, 40, 20,
-		450, 50, 210, 40, 20,
-		670, 50, 210, 40, 20
-	]
-
 	def __init__(self, session, *args):
 		Screen.__init__(self, session, mandatoryWidgets=["key_yellow", "key_blue"])
 		HelpableScreen.__init__(self)
