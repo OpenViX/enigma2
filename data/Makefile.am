@@ -6,6 +6,7 @@ dist_pkgdata_DATA = \
 	menu.xml \
 	black.mvi \
 	rcpositions.xml \
+	recovery.xml \
 	setup.xml \
 	skin_subtitles.xml \
 	startwizard.xml \

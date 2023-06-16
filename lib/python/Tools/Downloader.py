@@ -21,17 +21,17 @@ class DownloadWithProgress:
 		self.timer = eTimer()
 		self.timer.callback.append(self.reportProgress)
 		self.requestHeader = {"User-agent": self.userAgent}
-		self.userHeader = kwargs.get('headers', None)		
+		self.userHeader = kwargs.get('headers', None)
 		if self.userHeader is not None:
 			self.requestHeader = self.requestHeader | self.userHeader
-			
+
 	def start(self):
 		try:
 			request = Request(self.url, None, self.requestHeader)
 		except OSError as err:
 			if self.errorCallback:
 				self.errorCallback(err)
-			return self			
+			return self
 		feedFile = urlopen(request)
 		metaData = feedFile.headers
 		self.totalSize = int(metaData.get("Content-Length", 0))

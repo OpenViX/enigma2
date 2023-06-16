@@ -575,7 +575,7 @@ class NIM:
 				sattypes.remove("DVB-S")
 			if len(sattypes) > 1:
 				self.multi_type = {}
-				self.combined = not(path.exists("/proc/stb/frontend/%d/mode" % self.frontend_id) or self.isFBCTuner())
+				self.combined = not (path.exists("/proc/stb/frontend/%d/mode" % self.frontend_id) or self.isFBCTuner())
 				for sattype in sattypes:
 					self.multi_type[str(sattypes.index(sattype))] = sattype
 			elif len(self.multi_type) > 1:
@@ -1195,7 +1195,6 @@ class NimManager:
 
 	def getNimListForSat(self, orb_pos):
 		return [nim.slot for nim in self.nim_slots if nim.isCompatible("DVB-S") and not nim.isFBCLink() and orb_pos in [sat[0] for sat in self.getSatListForNim(nim.slot)]]
-
 
 	def rotorLastPositionForNim(self, slotid, number=True):
 		available_slot = False

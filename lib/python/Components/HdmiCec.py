@@ -82,15 +82,15 @@ cmdList = {
 	}
 
 CtrlByte0 = {		# Information only: control byte 0 status/action request by command (see cmdList)
-	0x00: {	0x00: "<Unrecognized opcode>",
+	0x00: {0x00: "<Unrecognized opcode>",
 			0x01: "<Not in correct mode to respond>",
 			0x02: "<Cannot provide source>",
 			0x03: "<Invalid operand>",
 			0x04: "<Refused>"},
-	0x08: {	0x01: "<On>",
+	0x08: {0x01: "<On>",
 			0x02: "<Off>",
 			0x03: "<Once>"},
-	0x0A: {	0x01: "<Recording currently selected source>",
+	0x0A: {0x01: "<Recording currently selected source>",
 			0x02: "<Recording Digital Service>",
 			0x03: "<Recording Analogue Service>",
 			0x04: "<Recording External Input>",
@@ -114,7 +114,7 @@ CtrlByte0 = {		# Information only: control byte 0 status/action request by comma
 			0x1A: "<Recording terminated normally>",
 			0x1B: "<Recording has already terminated>",
 			0x1F: "<No recording - other reason>"},
-	0x1B: {	0x11: "<Play>",
+	0x1B: {0x11: "<Play>",
 			0x12: "<Record",
 			0x13: "<Play Reverse>",
 			0x14: "<Still>",
@@ -129,10 +129,10 @@ CtrlByte0 = {		# Information only: control byte 0 status/action request by comma
 			0x1D: "<Index Search Forward>",
 			0x1E: "<Index Search Reverse>",
 			0x1F: "<Other Status>"},
-	0x1A: {	0x01: "<On>",
+	0x1A: {0x01: "<On>",
 			0x02: "<Off>",
 			0x03: "<Once>"},
-	0x41: {	0x05: "<Play Forward Min Speed>",
+	0x41: {0x05: "<Play Forward Min Speed>",
 			0x06: "<Play Forward Medium Speed>",
 			0x07: "<Play Forward Max Speed>",
 			0x09: "<Play Reverse Min Speed>",
@@ -147,15 +147,15 @@ CtrlByte0 = {		# Information only: control byte 0 status/action request by comma
 			0x20: "<Play Reverse>",
 			0x24: "<Play Forward>",
 			0x25: "<Play Still>"},
-	0x42: {	0x01: "<Skip Forward / Wind>",
+	0x42: {0x01: "<Skip Forward / Wind>",
 			0x02: "<Skip Reverse / Rewind",
 			0x03: "<Stop>",
 			0x04: "<Eject>"},
-	0x43: {	0x00: "<Timer not cleared - recording>",
+	0x43: {0x00: "<Timer not cleared - recording>",
 			0x01: "<Timer not cleared - no matching>",
 			0x02: "<Timer not cleared - no info available>",
 			0x80: "<Timer cleared>"},
-	0x44: {	0x00: "<Select>",
+	0x44: {0x00: "<Select>",
 			0x01: "<Up>",
 			0x02: "<Down>",
 			0x03: "<Left>",
@@ -283,15 +283,15 @@ CtrlByte0 = {		# Information only: control byte 0 status/action request by comma
 			0x7D: "<Reserved 0x7D>",
 			0x7E: "<Reserved 0x7E>",
 			0x7F: "<Reserved 0x7F>"},
-	0x64: {	0x00: "<Display for default time>",
+	0x64: {0x00: "<Display for default time>",
 			0x40: "<Display until cleared>",
 			0x80: "<Clear previous message>",
 			0xC0: "<Reserved for future use>"},
-	0x72: {	0x00: "<Off>",
+	0x72: {0x00: "<Off>",
 			0x01: "<On>"},
-	0x7E: {	0x00: "<Off>",
+	0x7E: {0x00: "<Off>",
 			0x01: "<On>"},
-	0x84: {	0x00: "<TV>",
+	0x84: {0x00: "<TV>",
 			0x01: "<Recording Device>",
 			0x02: "<Reserved>",
 			0x03: "<Tuner>",
@@ -299,23 +299,23 @@ CtrlByte0 = {		# Information only: control byte 0 status/action request by comma
 			0x05: "<Audio System>",
 			0x06: "<Pure CEC Switch>",
 			0x07: "<Video Processor>"},
-	0x8D: {	0x00: "<Activate>",
+	0x8D: {0x00: "<Activate>",
 			0x01: "<Deactivate>",
 			0x02: "<Query>"},
-	0x8E: {	0x00: "<Activated>",
+	0x8E: {0x00: "<Activated>",
 			0x01: "<Deactivated>"},
-	0x90: {	0x00: "<On>",
+	0x90: {0x00: "<On>",
 			0x01: "<Standby>",
 			0x02: "<In transition Standby to On>",
 			0x03: "<In transition On to Standby>"},
-	0x9A: {	0x00: "<Rate Control Off>",
+	0x9A: {0x00: "<Rate Control Off>",
 			0x01: "<WRC Standard Rate: 100% rate>",
 			0x02: "<WRC Fast Rate: Max 101% rate>",
 			0x03: "<WRC Slow Rate: Min 99% rate",
 			0x04: "<NRC Standard Rate: 100% rate>",
 			0x05: "<NRC Fast Rate: Max 100.1% rate>",
 			0x06: "<NRC Slow Rate: Min 99.9% rate"},
-	0x9E: {	0x00: "<1.1>",
+	0x9E: {0x00: "<1.1>",
 			0x01: "<1.2>",
 			0x02: "<1.2a>",
 			0x03: "<1.3>",
@@ -329,6 +329,7 @@ def getPhysicalAddress():
 	physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
 	hexstring = "%04x" % physicaladdress
 	return hexstring[0] + "." + hexstring[1] + "." + hexstring[2] + "." + hexstring[3]
+
 
 def setFixedPhysicalAddress(address):
 	hexstring = address[0] + address[2] + address[4] + address[6]
@@ -358,7 +359,7 @@ class HdmiCec:
 			setFixedPhysicalAddress(config.hdmicec.fixed_physical_address.value)
 		else:
 			print("[HdmiCEC][init] no set physical address ")
-			setFixedPhysicalAddress("0.0.0.0")			# no fixed physical address send 0 to eHdmiCec C++ driver	
+			setFixedPhysicalAddress("0.0.0.0")			# no fixed physical address send 0 to eHdmiCec C++ driver
 		eHdmiCEC.getInstance().messageReceived.get().append(self.messageReceived)
 		config.misc.standbyCounter.addNotifier(self.onEnterStandby, initial_call=False)
 #		config.misc.DeepStandby.addNotifier(self.onEnterDeepStandby, initial_call=False)
@@ -385,12 +386,12 @@ class HdmiCec:
 			ctrl0 = message.getControl0()
 			ctrl1 = message.getControl1()
 			ctrl2 = message.getControl2()
-			msgaddress = message.getAddress()			# 0 = TV, 5 = receiver 15 = broadcast 
+			msgaddress = message.getAddress()			# 0 = TV, 5 = receiver 15 = broadcast
 			print("[HdmiCEC][messageReceived0]: msgaddress=%s  CECcmd=%s, cmd=%X, ctrl0=%s, length=%s" % (msgaddress, CECcmd, cmd, ctrl0, length))
 			if config.hdmicec.debug.value != "0":
 				self.debugRx(length, cmd, ctrl0)
 			if msgaddress > 15:	# workaround for wrong address from driver (e.g. hd51, message comes from tv -> address is only sometimes 0, dm920, same tv -> address is always 0)
-				print("[HdmiCEC][messageReceived1a]: msgaddress > 15 reset to 0")			
+				print("[HdmiCEC][messageReceived1a]: msgaddress > 15 reset to 0")
 				msgaddress = 0
 			if cmd == 0x00:
 				if length == 0: 			# only polling message ( it's same as ping )
@@ -406,7 +407,7 @@ class HdmiCec:
 					self.volumeForwardingDestination = 5 		# on: send volume keys to receiver
 				else:
 					self.volumeForwardingDestination = 0 		# off: send volume keys to tv
-				print("[HdmiCEC][messageReceived4]: volume forwarding=%s, msgaddress=%s" % (self.volumeForwardingDestination, msgaddress))			
+				print("[HdmiCEC][messageReceived4]: volume forwarding=%s, msgaddress=%s" % (self.volumeForwardingDestination, msgaddress))
 				if config.hdmicec.volume_forwarding.value:
 					print("[HdmiCEC][messageReceived5]: volume forwarding to device %02x enabled" % self.volumeForwardingDestination)
 					self.volumeForwardingEnabled = True
@@ -419,7 +420,7 @@ class HdmiCec:
 			elif cmd == 0x86:
 				physicaladdress = ctrl0 * 256 + ctrl1	# request streaming path
 				ouraddress = eHdmiCEC.getInstance().getPhysicalAddress()
-				print("[HdmiCEC][messageReceived6]:cmd 134 physical address=%s ouraddress=%s" % (physicaladdress, ouraddress))				
+				print("[HdmiCEC][messageReceived6]:cmd 134 physical address=%s ouraddress=%s" % (physicaladdress, ouraddress))
 				if physicaladdress == ouraddress:
 					if not Screens.Standby.inStandby:
 						if config.hdmicec.report_active_source.value:
@@ -461,13 +462,12 @@ class HdmiCec:
 				elif ((cmd == 0x80 and config.hdmicec.handle_tv_wakeup.value == "routingrequest") or (cmd == 0x86 and config.hdmicec.handle_tv_wakeup.value == "streamrequest")):
 					physicaladdress = ctrl0 * 256 + ctrl1
 					ouraddress = eHdmiCEC.getInstance().getPhysicalAddress()
-					print("[HdmiCEC][messageReceived8]:cmd 128 physical address=%s ouraddress=%s" % (physicaladdress, ouraddress))					
+					print("[HdmiCEC][messageReceived8]:cmd 128 physical address=%s ouraddress=%s" % (physicaladdress, ouraddress))
 					if physicaladdress == ouraddress:
 						self.wakeup()
 				elif cmd == 0x84 and config.hdmicec.tv_wakeup_detection.value == "tvreportphysicaladdress":
 					if (ctrl0 * 256 + ctrl1) == 0 and ctrl2 == 0:
 						self.wakeup()
-
 
 	def sendMessage(self, msgaddress, message):
 		cmd = 0
@@ -492,7 +492,7 @@ class HdmiCec:
 			data = self.packDevAddr(True)
 		elif message == "vendorid":
 			cmd = 0x87
-			data = b"\x00\x00\x00"	
+			data = b"\x00\x00\x00"
 		elif message == "menuactive":
 			cmd = 0x8e	# 142
 			data = struct.pack("B", 0x00)
@@ -512,7 +512,7 @@ class HdmiCec:
 			cmd = 0x9E	# 158
 			data = struct.pack("B", 0x04) # v1.3a
 		if data:				# keep cmd+data calls above this line so binary data converted
-			CECcmd = cmdList.get(cmd, "<Polling Message>")		
+			CECcmd = cmdList.get(cmd, "<Polling Message>")
 			if data:
 				encoder = chardet.detect(data)["encoding"]
 				data = data.decode(encoding=encoder, errors="ignore")
@@ -558,20 +558,19 @@ class HdmiCec:
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd, data, len(data))
 			self.wait.start(int(config.hdmicec.minimum_send_interval.value), True)
 
-
 	def packDevAddr(self, devicetypeSend=False):
 		physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
 		if devicetypeSend:
 			devicetype = eHdmiCEC.getInstance().getDeviceType()
 			return struct.pack("BBB", int(physicaladdress // 256), int(physicaladdress % 256), devicetype)
-		else:	
+		else:
 			return struct.pack("BB", int(physicaladdress // 256), int(physicaladdress % 256))
 
 	def secondBoxActive(self):
 		self.sendMessage(0, "getpowerstatus")
 
 	def configVolumeForwarding(self, configElement):
-		print("[HdmiCEC][configVolumeForwarding]: hdmicec.enabled=%s, hdmicec.volume_forwarding=%s" % (config.hdmicec.enabled.value, config.hdmicec.volume_forwarding.value))	
+		print("[HdmiCEC][configVolumeForwarding]: hdmicec.enabled=%s, hdmicec.volume_forwarding=%s" % (config.hdmicec.enabled.value, config.hdmicec.volume_forwarding.value))
 		if config.hdmicec.enabled.value and config.hdmicec.volume_forwarding.value:
 			self.sendMessage(0x05, "givesystemaudiostatus")
 			self.sendMessage(0x00, "givesystemaudiostatus")
@@ -587,7 +586,6 @@ class HdmiCec:
 		if config.hdmicec.enabled.value and config.hdmicec.handle_deepstandby_events.value:
 			self.standbyMessages()
 
-
 	def standbyMessages(self):
 		if config.hdmicec.enabled.value:
 			if config.hdmicec.next_boxes_detect.value:
@@ -595,7 +593,6 @@ class HdmiCec:
 				self.delay.start(1000, True)
 			else:
 				self.sendStandbyMessages()
-
 
 	def sendStandbyMessages(self):
 			messages = []
@@ -617,24 +614,20 @@ class HdmiCec:
 				self.sendMessage(5, "keypoweroff")
 				self.sendMessage(5, "standby")
 
-
 	def standby(self):			# Standby initiated from TV
 		if not Screens.Standby.inStandby:
 			Notifications.AddNotification(Screens.Standby.Standby)
-
 
 	def onLeaveStandby(self):
 		self.sendWakeupMessages()
 		if int(config.hdmicec.repeat_wakeup_timer.value):
 			self.repeat.startLongTimer(int(config.hdmicec.repeat_wakeup_timer.value))
 
-
 	def wakeup(self):
 		self.wakeup_from_tv = True
 		if Screens.Standby.inStandby:
 			Screens.Standby.inStandby.Power()
 
-			
 	def sendWakeupMessages(self):
 		if config.hdmicec.enabled.value:
 			messages = []
@@ -652,12 +645,10 @@ class HdmiCec:
 			if config.hdmicec.control_receiver_wakeup.value:
 				self.sendMessage(5, "keypoweron")
 				self.sendMessage(5, "setsystemaudiomode")
-								
-				
+
 	def sendQMessages(self, msgaddress, messages):
 		for message in messages:
-			self.sendMessage(msgaddress, message)				
-
+			self.sendMessage(msgaddress, message)
 
 	def keyEvent(self, keyCode, keyEvent):
 		if keyCode in (113, 114, 115):						# if not volume key return
@@ -707,7 +698,6 @@ class HdmiCec:
 			# print("[HdmiCEC][sendKeyEventQ]: msgaddress=%s, cmd=%X, data=%s" % (msgaddress, cmd, data))
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd, data, len(data))
 			self.waitKeyEvent.start(int(config.hdmicec.minimum_send_interval.value), True)
-
 
 	def debugTx(self, msgaddress, cmd, data):
 		txt = self.now(True) + self.opCode(cmd, True) + " " + "%02X" % (cmd) + " "

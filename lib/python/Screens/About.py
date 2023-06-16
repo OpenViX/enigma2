@@ -7,7 +7,7 @@ from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.config import config
 from Components.Console import Console
-from Components.Harddisk import harddiskmanager
+from Components.Harddisk import harddiskmanager, bytesToHumanReadable
 from Components.Network import iNetwork
 from Components.NimManager import nimmanager
 from Components.Pixmap import MultiPixmap
@@ -31,7 +31,7 @@ class AboutBase(TextBox):
 			self["lab3"] = StaticText(_("Support at") + " www.world-of-satellite.com")
 
 	def createSummary(self):
-		return AboutSummary	
+		return AboutSummary
 
 
 class About(AboutBase):
@@ -57,7 +57,7 @@ class About(AboutBase):
 		model = None
 		AboutText = ""
 		AboutText += _("Model:\t%s %s\n") % (getMachineBrand(), getMachineName())
-		
+
 		if about.getChipSetString() != _("unavailable"):
 			if SystemInfo["HasHiSi"]:
 				AboutText += _("Chipset:\tHiSilicon %s\n") % about.getChipSetString().upper()
@@ -147,9 +147,9 @@ class About(AboutBase):
 		if isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value == True:
 			AboutText += _("4097 iptv player:\t%s\n") % config.plugins.serviceapp.servicemp3.player.value
 		else:
-			AboutText += _("4097 iptv player:\tDefault player\n")	
+			AboutText += _("4097 iptv player:\tDefault player\n")
 		AboutText += _("Python:\t%s\n") % about.getPythonVersionString()
-		flashDate = about.getFlashDateString() 
+		flashDate = about.getFlashDateString()
 		AboutText += _("Installed:\t%s\n") % flashDate
 		lastUpdate = about.getLastUpdate()
 		AboutText += _("Last update:\t%s\n") % lastUpdate
@@ -294,12 +294,9 @@ class Devices(Screen):
 					hddp = hddp.replace("ATA", "")
 					hddp = hddp.replace("Internal", "ATA Bus ")
 				free = hdd.Totalfree()
-				if (free / 1000 / 1000) >= 1:
-					freeline = _("Free: ") + str(round((free / 1000 / 1000), 2)) + _("TB")
-				elif (free / 1000) >= 1:
-					freeline = _("Free: ") + str(round((free / 1000), 2)) + _("GB")
-				elif free >= 1:
-					freeline = _("Free: ") + str(round(free, 2)) + _("MB")
+				if free >= 1:
+					free *= 1000000 # convert MB to bytes
+					freeline = _("Free: ") + bytesToHumanReadable(free)
 				elif "Generic(STORAGE" in hddp:				# This is the SDA boot volume for SF8008 if "full" #
 					continue
 				else:
@@ -676,11 +673,8 @@ class TranslationInfo(Screen):
 		})
 
 		# _("") fetches the translator info from the *.po.
-		infomap = {x.split(":")[0].strip() : x.split(":")[1].strip() for x in _("").split("\n") if len(x.split(":")) == 2}
+		infomap = {x.split(":")[0].strip(): x.split(":")[1].strip() for x in _("").split("\n") if len(x.split(":")) == 2}
 		self["TranslatorName"] = StaticText(infomap.get("Language-Team") or infomap.get("Last-Translator", ""))
 
 		# TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 		self["TranslationInfo"] = StaticText(_("TRANSLATOR_INFO") if "TRANSLATOR_INFO" != _("TRANSLATOR_INFO") else "")
-
-		
-

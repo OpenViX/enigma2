@@ -122,7 +122,7 @@ class NSCommon:
 		if "Collected errors" in str:
 			self.session.openWithCallback(self.close, MessageBox, _("A background update check is in progress, please wait a few minutes and then try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		elif not str:
-			if (getImageType() != "release" and feedsstatuscheck.getFeedsBool() not in  ("unknown", "alien", "developer")) or (getImageType() == "release" and feedsstatuscheck.getFeedsBool() not in ("stable", "unstable", "alien", "developer")):
+			if (getImageType() != "release" and feedsstatuscheck.getFeedsBool() not in ("unknown", "alien", "developer")) or (getImageType() == "release" and feedsstatuscheck.getFeedsBool() not in ("stable", "unstable", "alien", "developer")):
 				self.session.openWithCallback(self.InstallPackageFailed, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			else:
 				mtext = _("Are you ready to install %s ?") % self.getTitle()
@@ -392,7 +392,7 @@ class NameserverSetup(ConfigListScreen, HelpableScreen, Screen):
 		self.nameserverEntries = [NoSave(ConfigIP(default=nameserver)) for nameserver in self.nameservers]
 
 	def createSetup(self):
-		self["config"].list = [getConfigListEntry(_("Nameserver %d") % (i+1), x) for i, x in enumerate(self.nameserverEntries)]
+		self["config"].list = [getConfigListEntry(_("Nameserver %d") % (i + 1), x) for i, x in enumerate(self.nameserverEntries)]
 
 	def keySave(self):
 		iNetwork.clearNameservers()
@@ -513,7 +513,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 			"blue": (self.KeyBlue, _("Open nameserver configuration")),
 			})
 
-		ConfigListScreen.__init__(self,  [], session=session, on_change=self.newConfig, fullUI=True)
+		ConfigListScreen.__init__(self, [], session=session, on_change=self.newConfig, fullUI=True)
 
 		self.createSetup()
 		self.onLayoutFinish.append(self.layoutFinished)
@@ -1787,7 +1787,7 @@ class NetworkFtp(NSCommon, Screen):
 		self["key_red"] = Label()
 		self["key_yellow"] = Label(_("Autostart"))
 		self["key_blue"] = Label()
-		self.Console = Console()		
+		self.Console = Console()
 		self.ConsoleB = Console(binary=True)
 		self.my_ftp_active = False
 		self.my_ftp_run = False
@@ -2027,7 +2027,7 @@ class NetworkSamba(NSCommon, Screen):
 		self["key_yellow"] = Label(_("Autostart"))
 		self["key_blue"] = Label(_("Show Log"))
 		self.Console = Console()
-		self.ConsoleB = Console(binary=True)		
+		self.ConsoleB = Console(binary=True)
 		self.my_Samba_active = False
 		self.my_Samba_run = False
 		self["actions"] = ActionMap(["WizardActions", "ColorActions"],
@@ -2222,7 +2222,7 @@ class NetworkInadyn(NSCommon, Screen):
 			"blue": self.inaLog
 		})
 		self.Console = Console()
-		self.ConsoleB = Console(binary=True)		
+		self.ConsoleB = Console(binary=True)
 		self.service_name = "inadyn-mt"
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = False
@@ -2457,7 +2457,7 @@ class NetworkuShare(NSCommon, Screen):
 			"blue": self.ushareLog
 		})
 		self.Console = Console()
-		self.ConsoleB = Console(binary=True)		
+		self.ConsoleB = Console(binary=True)
 		self.service_name = "ushare"
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = False
@@ -2833,7 +2833,7 @@ class NetworkMiniDLNA(NSCommon, Screen):
 			"blue": self.minidlnaLog
 		})
 		self.Console = Console()
-		self.ConsoleB = Console(binary=True)		
+		self.ConsoleB = Console(binary=True)
 		self.service_name = "minidlna"
 		self.onLayoutFinish.append(self.InstallCheck)
 		self.reboot_at_end = False

@@ -723,7 +723,7 @@ class Opentv_Zapper():
 		self.tuners = getNimListForSat(self.transponder["orbital_position"])
 		self.num_tuners = len(self.tuners)
 		return bool(self.num_tuners)
-	
+
 	def initialize(self):
 		provider = config.plugins.opentvzapper.providers.value
 		if not self.checkAvailableTuners() or self.initialized == provider: # if no tuner is available for this provider or we are already initialized, abort.

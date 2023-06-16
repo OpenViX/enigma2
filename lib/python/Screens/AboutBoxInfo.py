@@ -1,6 +1,7 @@
 from Components.SystemInfo import BoxInfo
 from Screens.TextBox import TextBox
 
+
 class AboutBoxInfo(TextBox):
 	def __init__(self, session):
 		TextBox.__init__(self, session, label="AboutScrollLabel")

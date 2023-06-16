@@ -5,7 +5,7 @@ from Components.Language import language
 
 def InitSetupDevices():
 	def languageNotifier(configElement):
-		language.InitLang()	
+		language.InitLang()
 		language.activateLanguage(configElement.value)
 		configElement.save()
 		configfile.save()

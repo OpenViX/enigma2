@@ -834,7 +834,7 @@ class MovieList(GUIComponent):
 				elif len(groupedItems) > 1:
 					# more than one item, display a collection
 					# to provide a useful description field, we use the oldest recording as the source
-					# which avoids showing potential spoilers 
+					# which avoids showing potential spoilers
 					groupedItems = sorted(groupedItems, key=self.buildBeginTimeSortKey, reverse=True)
 					firstItem = groupedItems[0]
 					data = MovieListData()
@@ -1005,7 +1005,6 @@ class MovieList(GUIComponent):
 		name = x[3].txt
 		return min(self.getSortPrimaryGroup(x), 2), name and name.lower() or "", -x[2]
 
-
 	def buildBeginTimeSortKey(self, x):
 		return self.getSortPrimaryGroup(x), "", -x[2]
 
@@ -1121,7 +1120,7 @@ class MovieList(GUIComponent):
 		for service in self.markList[:]:
 			idx = self.findService(service)
 			if idx is not None:
-				if not excludeDirs or not(service.flags & eServiceReference.isDirectory):
+				if not excludeDirs or not (service.flags & eServiceReference.isDirectory):
 					marked.append(self.list[idx])
 			else:
 				self.markList.remove(service)

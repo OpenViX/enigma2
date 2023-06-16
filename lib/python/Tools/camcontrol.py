@@ -22,16 +22,15 @@ class CamControl:
 		for f in listdir("/etc/init.d"):
 			if f.startswith(prefix):
 				result.append(f[len(prefix):])
-		print("[CamControl][getList] returnlist=%s" % result)	
+		print("[CamControl][getList] returnlist=%s" % result)
 		return result
-			
+
 	def getConfigs(self, prefix):
 		configs = []
 		if path.exists("/etc/tuxbox/config/%s" % prefix):
 			configs = listdir("/etc/tuxbox/config/%s" % prefix)
 		print("[CamControl][getList] configs=%s" % configs)
 		return configs
-
 
 	def current(self):
 		try:
@@ -51,7 +50,7 @@ class CamControl:
 	def select(self, cam):
 		print("[CamControl]Selecting CAM:%s" % cam)
 		if not cam:
-			cam= "None"
+			cam = "None"
 		dst = "%s.%s" % (self.name, cam)
 		print("[CamControl][select] dst:%s" % dst)
 		if not path.exists("/etc/init.d/%s" % dst):

@@ -1,4 +1,4 @@
-from os import mkdir, path, rmdir, system
+from os import path, rmdir
 import tempfile
 import struct
 
@@ -21,32 +21,6 @@ from Tools.Multiboot import emptySlot, GetImagelist, GetCurrentImageMode, restor
 
 
 class MultiBootSelector(Screen, HelpableScreen):
-	skin = ["""
-	<screen title="MultiBoot Image Selector" position="center,center" size="%d,%d">
-		<widget name="config" position="%d,%d" size="%d,%d" font="Regular;%d" itemHeight="%d" scrollbarMode="showOnDemand" />
-		<widget source="description" render="Label" position="%d,e-%d" size="%d,%d" font="Regular;%d" />
-		<widget source="key_red" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_red" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center">
-			<convert type="ConditionalShowHide"/>
-		</widget>
-		<widget source="key_green" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_green" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center">
-			<convert type="ConditionalShowHide"/>
-		</widget>
-		<widget source="key_yellow" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_yellow" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center">
-			<convert type="ConditionalShowHide"/>
-		</widget>
-		<widget source="key_blue" render="Label" position="%d,e-%d" size="%d,%d" backgroundColor="key_blue" font="Regular;%d" foregroundColor="key_text" halign="center" noWrap="1" valign="center">
-			<convert type="ConditionalShowHide"/>
-		</widget>
-	</screen>""",
-		900, 460,
-		10, 10, 880, 306, 28, 34,
-		10, 125, 880, 60, 22,
-		10, 50, 210, 40, 20,
-		230, 50, 210, 40, 20,
-		450, 50, 210, 40, 20,
-		670, 50, 210, 40, 20
-	]
-
 	def __init__(self, session, *args):
 		Screen.__init__(self, session, mandatoryWidgets=["key_yellow", "key_blue"])
 		HelpableScreen.__init__(self)
@@ -54,9 +28,10 @@ class MultiBootSelector(Screen, HelpableScreen):
 		self.skinName = ["MultiBootSelector", "Setup"]
 		self.onChangedEntry = []
 		self.tmp_dir = None
+		self.fromInit = True
 		usbIn = SystemInfo["HasUsbhdd"].keys() and SystemInfo["HasKexecMultiboot"]
 #		print("[MultiBootSelector] usbIn, SystemInfo['HasUsbhdd'], SystemInfo['HasKexecMultiboot'], SystemInfo['HasKexecUSB']", usbIn, "   ", SystemInfo["HasUsbhdd"], "   ", SystemInfo["HasKexecMultiboot"], "   ", SystemInfo["HasKexecUSB"])
-		self["config"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("Retrieving image slots - Please wait...")), "Queued"))])
+		self["config"] = ChoiceList(list=[ChoiceEntryComponent(text=((_("Retrieving image slots - Please wait...")), "Queued"))])
 		self["description"] = StaticText(_("Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."))
 		self["key_red"] = StaticText(_("Add Extra USB slots") if usbIn else _("Cancel"))
 		self["key_green"] = StaticText()
@@ -89,6 +64,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 	def getImagelist(self):
 		self.imagedict = GetImagelist(Recovery=SystemInfo["RecoveryMode"])
 		imageList = []
+		imageList12 = []
 		self.deletedImagesExists = False
 		self["key_blue"].text = ""
 		currentimageslot = SystemInfo["MultiBootSlot"]
@@ -99,29 +75,28 @@ class MultiBootSelector(Screen, HelpableScreen):
 		slotSingle = _("Slot%s %s %s: %s%s")
 		slotMulti = _("Slot%s %s %s: %s - %s mode%s")
 		if self.imagedict:
-			indextot = 0
-			for index, x in enumerate(sorted(self.imagedict.keys())):
+			for x in sorted(self.imagedict.keys()):
 				if self.imagedict[x]["imagename"] == _("Deleted image"):
 					self.deletedImagesExists = True
 					self["key_blue"].text = _("Restore")
-				if SystemInfo["canMode12"]:
-					if self.imagedict[x]["imagename"] == _("Empty slot"):
-						imageList.insert(index, ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
-					else:
-						imageList.insert(index, ChoiceEntryComponent("", (slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "Kodi", current if x == currentimageslot and mode != 12 else ""), (x, 1))))
-						imageList.append(ChoiceEntryComponent("", (slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "PiP", current if x == currentimageslot and mode == 12 else ""), (x, 12))))
-					indextot = index + 1
 				elif self.imagedict[x]["imagename"] != _("Empty slot"):
-					if self.imagedict[x]["imagename"] == _("Recovery Mode"):
-						imageList.append(ChoiceEntryComponent("", (slotRecov % (self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
+					if SystemInfo["canMode12"]:
+						imageList.append(ChoiceEntryComponent(text=(slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "Kodi", current if x == currentimageslot and mode != 12 else ""), (x, 1))))
+						imageList12.append(ChoiceEntryComponent(text=(slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "PiP", current if x == currentimageslot and mode == 12 else ""), (x, 12))))
 					else:
-						imageList.append(ChoiceEntryComponent("", (slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
-			if SystemInfo["canMode12"]:
-				imageList.insert(indextot, " ")
+						if self.imagedict[x]["imagename"] == _("Recovery Mode"):
+							imageList.append(ChoiceEntryComponent(text=(slotRecov % (self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
+						else:
+							imageList.append(ChoiceEntryComponent(text=(slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
+			if imageList12:
+				imageList += [" "] + imageList12
 		else:
-			imageList.append(ChoiceEntryComponent("", ((_("No images found")), "Waiter")))
+			imageList.append(ChoiceEntryComponent(text=((_("No images found")), "Waiter")))
 		self["config"].setList(imageList)
 		print("[MultiBootSelector] imageList X = %s" % imageList)
+		if self.fromInit:
+			self["config"].moveToIndex(next(iter([i for i, x in enumerate(imageList) if current in x[0][0]]), 0))
+			self.fromInit = False
 		self.updateKeys()
 
 	def reboot(self):
@@ -152,8 +127,12 @@ class MultiBootSelector(Screen, HelpableScreen):
 		if answer:
 			currentSelected = self["config"].getCurrent()
 			slot = currentSelected[0][1][0]
-			print("[MultiBootSelector] delete slot = %s" % slot)
-			emptySlot(slot)
+#			print("[MultiBootSelector] delete slot = %s" % slot)
+			if SystemInfo["HasKexecMultiboot"] and int(slot) < 4:
+#					print("[MultiBootSelector] rm -rf delete slot = %s" % slot)
+					Console().ePopen("rm -rf /boot/linuxrootfs%s" % slot)
+			else:
+				emptySlot(slot)
 			self.getImagelist()
 
 	def restoreImages(self):
@@ -175,7 +154,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 						if xline.find(usblist[hddkey]) != -1 and "ext4" in xline:
 							index = xline.find(usblist[hddkey])
 							print("[MultiBootSelector] key, line ", usblist[hddkey], "   ", xline)
-							hdd.append(xline[index:index+4])
+							hdd.append(xline[index:index + 4])
 						else:
 							continue
 	#						print("[MultiBootSelector] key, not in line ", usblist[hddkey], "   ", xline)
@@ -207,7 +186,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 			self.close()
 		else:
 			boxmodel = getBoxType()[2:]
-			for usbslot in range(hiKey+1, hiKey+5):
+			for usbslot in range(hiKey + 1, hiKey + 5):
 				STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, SystemInfo["VuUUIDSlot"][0], boxmodel, usbslot) # /STARTUP_<n>
 				if boxmodel in ("duo4k"):
 					STARTUP_usbslot += " rootwait=40"
@@ -218,7 +197,6 @@ class MultiBootSelector(Screen, HelpableScreen):
 				print("[MultiBootSelector] STARTUP_%d --> %s, self.tmp_dir: %s" % (usbslot, STARTUP_usbslot, self.tmp_dir))
 			self.session.open(TryQuitMainloop, QUIT_RESTART)
 
-
 	def KexecMountRet(self, result=None, retval=None, extra_args=None):
 		self.device_uuid = "UUID=" + result.split("UUID=")[1].split(" ")[0].replace('"', '')
 		usb = result.split(":")[0]
@@ -226,7 +204,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 # 		using UUID	 kernel=/linuxrootfs1/boot/zImage root=UUID="12c2025e-2969-4bd1-9e0c-da08b97d40ce" rootsubdir=linuxrootfs1
 #		using dev = "kernel=/linuxrootfs4/zImage root=/dev/%s rootsubdir=linuxrootfs4" % hdd[0] 	# /STARTUP_4
 
-		for usbslot in range(4,8):
+		for usbslot in range(4, 8):
 			STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, self.device_uuid, boxmodel, usbslot) # /STARTUP_<n>
 			if boxmodel in ("duo4k"):
 				STARTUP_usbslot += " rootwait=40"

@@ -85,9 +85,9 @@ def getPage(url, callback, errback):
 			callback(data)
 	else:
 		try:
-			data = response.content.decode(encoding = 'UTF-8')
+			data = response.content.decode(encoding='UTF-8')
 		except:
-			data = response.content.decode(encoding = 'latin-1')
+			data = response.content.decode(encoding='latin-1')
 		callback(data)
 #############################################################
 
@@ -594,7 +594,6 @@ class CCcamInfoMain(Screen):
 		print("CCcamInfo] WEB page error=%s" % error)
 		self.session.openWithCallback(self.workingFinished, MessageBox, _("Error reading webpage!"), MessageBox.TYPE_ERROR)
 		self.workingFinished()
-
 
 	def showFile(self, file):
 		try:

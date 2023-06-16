@@ -467,12 +467,12 @@ class EPGListGrid(EPGListBase):
 						flags=BT_SCALE))
 			if self.borderBottomPix is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos =(r1.left(), r1.height() - self.serviceBorderWidth),
+						pos=(r1.left(), r1.height() - self.serviceBorderWidth),
 						size=(r1.width(), self.serviceBorderWidth),
 						png=self.borderBottomPix,
 						flags=BT_SCALE))
 				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos =(left, height - self.eventBorderWidth),
+						pos=(left, height - self.eventBorderWidth),
 						size=(width, self.eventBorderWidth),
 						png=self.borderBottomPix,
 						flags=BT_SCALE))
@@ -489,12 +489,12 @@ class EPGListGrid(EPGListBase):
 						flags=BT_SCALE))
 			if self.borderRightPix is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos =(r1.width() - self.serviceBorderWidth, r1.left()),
+						pos=(r1.width() - self.serviceBorderWidth, r1.left()),
 						size=(self.serviceBorderWidth, r1.height()),
 						png=self.borderRightPix,
 						flags=BT_SCALE))
 				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos =(left + width - self.eventBorderWidth, top),
+						pos=(left + width - self.eventBorderWidth, top),
 						size=(self.eventBorderWidth, height),
 						png=self.borderRightPix,
 						flags=BT_SCALE))
@@ -532,7 +532,7 @@ class EPGListGrid(EPGListBase):
 				if serviceTimers is not None:
 					# Code below: "+ (20 if config.recording.margin_before.value == 0 else 0)"
 					# When recording-start-margin is zero allow recordings that start up to 20 seconds
-					# after the program boundary to still produce matchType in (2, 3). This allows 
+					# after the program boundary to still produce matchType in (2, 3). This allows
 					# correct display of "epg/RecordEvent.png" when multiple recodings are programmed to
 					# start at the same instant.
 					timer, matchType = RecordTimer.isInTimerOnService(serviceTimers, stime + (20 if config.recording.margin_before.value == 0 else 0), duration)
@@ -630,7 +630,7 @@ class EPGListGrid(EPGListBase):
 								flags=BT_SCALE))
 					if borderBottomPix is not None:
 						res.append(MultiContentEntryPixmapAlphaBlend(
-								pos =(left + xpos, height - self.eventBorderWidth),
+								pos=(left + xpos, height - self.eventBorderWidth),
 								size=(ewidth, self.eventBorderWidth),
 								png=borderBottomPix,
 								flags=BT_SCALE))
@@ -642,7 +642,7 @@ class EPGListGrid(EPGListBase):
 								flags=BT_SCALE))
 					if borderRightPix is not None:
 						res.append(MultiContentEntryPixmapAlphaBlend(
-								pos =(left + xpos + ewidth - self.eventBorderWidth, top),
+								pos=(left + xpos + ewidth - self.eventBorderWidth, top),
 								size=(self.eventBorderWidth, height),
 								png=borderRightPix,
 								flags=BT_SCALE))
@@ -974,7 +974,7 @@ class TimelineText(GUIComponent):
 
 			res.append(MultiContentEntryText(
 				pos=(5, 0),
-				size =(serviceRect.width() - 15, self.listHeight),
+				size=(serviceRect.width() - 15, self.listHeight),
 				font=0, flags=int(config.epgselection.grid.timelinedate_alignment.value),
 				text=_(datestr),
 				color=foreColor,

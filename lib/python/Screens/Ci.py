@@ -13,11 +13,14 @@ import Screens.Standby
 
 forceNotShowCiMessages = False
 
+
 def setCIBitrate(configElement):
 	eDVBCI_UI.getInstance().setClockRate(configElement.slotid, eDVBCI_UI.rateNormal if configElement.value == "no" else eDVBCI_UI.rateHigh)
 
+
 def setCIEnabled(configElement):
 	eDVBCI_UI.getInstance().setEnabled(configElement.slotid, configElement.value)
+
 
 def setdvbCiDelay(configElement):
 	open(SystemInfo["CommonInterfaceCIDelay"], "w").write(configElement.value)
@@ -489,7 +492,7 @@ class CiSelection(Screen):
 				self.list = []
 				self.appendEntries(slot, state)
 		elif state == 3:
-			self.list = self.list[0:slotidx+1]
+			self.list = self.list[0:slotidx + 1]
 		lst = self["entries"]
 		lst.list = self.list
 		lst.l.setList(self.list)

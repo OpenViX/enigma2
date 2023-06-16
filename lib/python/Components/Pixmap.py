@@ -23,17 +23,16 @@ class Pixmap(GUIComponent):
 		if self.skinAttributes is not None:
 			skin_path_prefix = getattr(screen, "skin_path", path)
 			pixmap = None
-			attribs = [ ]
+			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "offset":
 					self.xOffset, self.yOffset = map(int, value.split(','))
 				else:
-					attribs.append((attrib,value))
+					attribs.append((attrib, value))
 			self.skinAttributes = attribs
 		return GUIComponent.applySkin(self, desktop, screen)
 
-
-	def move(self, x, y = None):
+	def move(self, x, y=None):
 		if y is None:
 			y = x.y()
 			x = x.x()

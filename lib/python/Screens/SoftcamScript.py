@@ -131,7 +131,5 @@ class SoftcamScript(Setup):
 		if self.camtype == "None" or "e" in self.camtype:
 			Setup.keySave(self)
 
-
 	def restartSoftcam(self):
 		self.restart(device="s")
-

@@ -18,7 +18,8 @@ config.misc.networkenabled = ConfigBoolean(default=False)
 config.misc.Vuwizardenabled = ConfigBoolean(default=False)
 if fileExists("/usr/bin/kernel_auto.bin") and fileExists("/usr/bin/STARTUP.cpio.gz") and not fileHas("/proc/cmdline", "kexec=1") and config.misc.firstrun.value:
 	config.misc.Vuwizardenabled.value = True
-print("[StartWizard][import] import.......")	
+print("[StartWizard][import] import.......")
+
 
 class StartWizard(WizardLanguage, Rc):
 	def __init__(self, session, silent=True, showSteps=False, neededTag=None):
@@ -38,6 +39,7 @@ class StartWizard(WizardLanguage, Rc):
 		config.misc.firstrun.value = 0
 		config.misc.firstrun.save()
 		configfile.save()
+
 
 #wizardManager.registerWizard(VideoWizard, config.misc.Vuwizardenabled.value, priority=2)
 wizardManager.registerWizard(VuWizard, config.misc.Vuwizardenabled.value, priority=3)

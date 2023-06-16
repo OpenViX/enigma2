@@ -32,7 +32,7 @@ from Components.MenuList import MenuList
 from enigma import eTimer
 
 DEFAULT_INHIBIT_DIRECTORIES = ("/bin", "/boot", "/dev", "/etc", "/lib", "/proc", "/sbin", "/sys", "/var", "/picon", "/piconlcd", "/run", "/sbin", "/share", "/sys", "/tmp", "/usr", "/home")
-defaultInhibitDirs =  list(DEFAULT_INHIBIT_DIRECTORIES)
+defaultInhibitDirs = list(DEFAULT_INHIBIT_DIRECTORIES)
 
 
 class LocationBox(Screen, NumericalTextInput, HelpableScreen):

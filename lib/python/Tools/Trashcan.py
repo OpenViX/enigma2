@@ -180,7 +180,7 @@ class CleanTrashTask(Components.Task.PythonTask):
 						fn = os.path.join(root, name)
 						try:			# file may not exist, if dual delete activities.
 							st = os.stat(fn)
-						except FileNotFoundError:						
+						except FileNotFoundError:
 							print("[Trashcan][CleanTrashTask[work]  FileNotFoundError ", fn)
 							continue
 						if st.st_ctime < self.ctimeLimit or config.usage.movielist_trashcan_days.value == 0:

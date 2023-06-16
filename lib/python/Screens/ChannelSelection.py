@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from os import listdir, path, rename, remove 
+from os import listdir, path, rename, remove
 import os
 import re
 from time import localtime, time, strftime
@@ -1840,7 +1840,7 @@ class ChannelSelectionBase(Screen, HelpableScreen):
 				self.servicelist.moveToChar(charstr[0])
 
 	def numberSelectionActions(self, number):
-		if not(hasattr(self, "movemode") and self.movemode):
+		if not (hasattr(self, "movemode") and self.movemode):
 			if len(self.selectionNumber) > 4:
 				self.clearNumberSelectionNumber()
 			self.selectionNumber = self.selectionNumber + str(number)
@@ -2436,7 +2436,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 			tmp = self.history[pos]
 			del self.history[pos]
 			self.history.append(tmp)
-			self.history_pos = len(self.history)-1
+			self.history_pos = len(self.history) - 1
 			self.setHistoryPath()
 
 	def saveRoot(self):

@@ -7,7 +7,7 @@ from boxbranding import getBrandOEM, getDisplayType
 from enigma import eDVBDB, eEPGCache, setTunerTypePriorityOrder, setPreferredTuner, setSpinnerOnOff, setEnableTtCachingOnOff, eEnv, Misc_Options, eBackgroundFileEraser, eServiceEvent, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_WRAP
 
 from Components.Harddisk import harddiskmanager
-from Components.config import config, ConfigBoolean, ConfigClock, ConfigDictionarySet, ConfigDirectory, ConfigInteger, ConfigIP, ConfigLocations, ConfigNumber, ConfigPassword, ConfigSelection, ConfigSelectionNumber, ConfigSet, ConfigSlider,ConfigSubsection, ConfigText, ConfigYesNo, NoSave
+from Components.config import config, ConfigBoolean, ConfigClock, ConfigDictionarySet, ConfigDirectory, ConfigInteger, ConfigIP, ConfigLocations, ConfigNumber, ConfigPassword, ConfigSelection, ConfigSelectionNumber, ConfigSet, ConfigSlider, ConfigSubsection, ConfigText, ConfigYesNo, NoSave
 from Tools.camcontrol import CamControl
 from Tools.Directories import resolveFilename, SCOPE_HDD, SCOPE_TIMESHIFT, defaultRecordingLocation
 from Components.NimManager import nimmanager
@@ -20,12 +20,16 @@ from Tools.HardwareInfo import HardwareInfo
 # stderr expect unicode, not str, so we decode as utf-8
 #
 import io
+
+
 def raw_stderr_print(text):
 	with io.open(2, mode="wt", closefd=False) as myerr:
 		myerr.write(text)
 
+
 originalAudioTracks = "orj dos ory org esl qaa und mis mul ORY ORJ Audio_ORJ oth"
 visuallyImpairedCommentary = "NAR qad"
+
 
 def InitUsageConfig():
 	config.version = ConfigNumber(default=0)
@@ -273,6 +277,8 @@ def InitUsageConfig():
 	config.usage.screen_saver = ConfigSelection(default="60", choices=choicelist)
 
 	config.usage.check_timeshift = ConfigYesNo(default=True)
+
+	config.usage.bootlogo_identify = ConfigYesNo(default=True)
 
 	config.usage.alternatives_priority = ConfigSelection(default="0", choices=[
 		("0", "DVB-S/-C/-T"),
@@ -941,6 +947,7 @@ def InitUsageConfig():
 		if not os.path.exists(config.crash.debug_path.value):
 			os.mkdir(config.crash.debug_path.value, 0o755)
 	config.crash.debug_path.addNotifier(updatedebug_path, immediate_feedback=False)
+	config.crash.coredump = ConfigYesNo(default=False)
 
 	config.usage.timerlist_showpicons = ConfigYesNo(default=True)
 	config.usage.timerlist_finished_timer_position = ConfigSelection(default="end", choices=[("beginning", _("at beginning")), ("end", _("at end")), ("hide", _("hide"))])
@@ -1128,7 +1135,7 @@ def InitUsageConfig():
 	config.misc.softcams = ConfigSelection(default="None", choices=[(x, _(x)) for x in CamControl("softcam").getList()])
 	config.misc.softcamrestarts = ConfigSelection(default="", choices=[
 					("", _("Don't restart")),
-					("s", _("Restart softcam"))])	
+					("s", _("Restart softcam"))])
 	SystemInfo["OScamInstalled"] = False
 
 	config.cccaminfo = ConfigSubsection()
@@ -1171,7 +1178,7 @@ def InitUsageConfig():
 	config.mediaplayer = ConfigSubsection()
 	config.mediaplayer.useAlternateUserAgent = ConfigYesNo(default=False)
 	config.mediaplayer.alternateUserAgent = ConfigText(default="")
-	
+
 	config.hdmicec = ConfigSubsection()
 	config.hdmicec.enabled = ConfigYesNo(default=False)
 	config.hdmicec.control_tv_standby = ConfigYesNo(default=True)
@@ -1199,9 +1206,9 @@ def InitUsageConfig():
 		"textview": _("Text View On"),
 		},
 		default="imageview")
-	config.hdmicec.fixed_physical_address = ConfigText(default="0.0.0.0")		
+	config.hdmicec.fixed_physical_address = ConfigText(default="0.0.0.0")
 	config.hdmicec.volume_forwarding = ConfigYesNo(default=False)
-	config.hdmicec.force_volume_forwarding = ConfigYesNo(default=False)	
+	config.hdmicec.force_volume_forwarding = ConfigYesNo(default=False)
 	config.hdmicec.control_receiver_wakeup = ConfigYesNo(default=False)
 	config.hdmicec.control_receiver_standby = ConfigYesNo(default=False)
 	config.hdmicec.handle_deepstandby_events = ConfigYesNo(default=False)
@@ -1217,7 +1224,7 @@ def InitUsageConfig():
 	config.hdmicec.bookmarks = ConfigLocations(default="/hdd/")
 	config.hdmicec.log_path = ConfigDirectory("/hdd/")
 	config.hdmicec.next_boxes_detect = ConfigYesNo(default=False)	# Before switching the TV to standby, receiver tests if any devices plugged to TV are in standby. If they are not, the 'sourceinactive' command will be sent to the TV instead of the 'standby' command.
-	config.hdmicec.sourceactive_zaptimers = ConfigYesNo(default=False)				# Command the TV to switch to the correct HDMI input when zap timers activate.	
+	config.hdmicec.sourceactive_zaptimers = ConfigYesNo(default=False)				# Command the TV to switch to the correct HDMI input when zap timers activate.
 
 	upgradeConfig()
 
@@ -1381,6 +1388,7 @@ def upgradeConfig():
 				item.save()
 		config.version.value = "53023"
 		config.version.save()
+
 
 def preferredTunerChoicesUpdate(update=False):
 	dvbs_nims = [("-2", _("disabled"))]

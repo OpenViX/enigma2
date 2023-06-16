@@ -226,9 +226,9 @@ class NumericalTextInput:
 			try:
 				locale = LOCALES.get(environ["LANGUAGE2"], None)
 			except KeyError:
-				locale =  None
+				locale = None
 				pass
-			# print("[NumericalTextInput] getLanguage locale=", locale)			
+			# print("[NumericalTextInput] getLanguage locale=", locale)
 			if locale is not None and index in range(0, 6):
 				index = index % 3
 				for num in range(0, 10):
