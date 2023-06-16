@@ -64,6 +64,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 	def getImagelist(self):
 		self.imagedict = GetImagelist(Recovery=SystemInfo["RecoveryMode"])
 		imageList = []
+		imageList12 = []
 		self.deletedImagesExists = False
 		self["key_blue"].text = ""
 		currentimageslot = SystemInfo["MultiBootSlot"]
@@ -75,24 +76,21 @@ class MultiBootSelector(Screen, HelpableScreen):
 		slotMulti = _("Slot%s %s %s: %s - %s mode%s")
 		if self.imagedict:
 			indextot = 0
-			for index, x in enumerate(sorted(self.imagedict.keys())):
+			for x in sorted(self.imagedict.keys()):
 				if self.imagedict[x]["imagename"] == _("Deleted image"):
 					self.deletedImagesExists = True
 					self["key_blue"].text = _("Restore")
-				if SystemInfo["canMode12"]:
-					if self.imagedict[x]["imagename"] == _("Empty slot"):
-						imageList.insert(index, ChoiceEntryComponent(text=(slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
-					else:
-						imageList.insert(index, ChoiceEntryComponent(text=(slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "Kodi", current if x == currentimageslot and mode != 12 else ""), (x, 1))))
-						imageList.append(ChoiceEntryComponent(text=(slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "PiP", current if x == currentimageslot and mode == 12 else ""), (x, 12))))
-					indextot = index + 1
 				elif self.imagedict[x]["imagename"] != _("Empty slot"):
-					if self.imagedict[x]["imagename"] == _("Recovery Mode"):
-						imageList.append(ChoiceEntryComponent(text=(slotRecov % (self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
+					if SystemInfo["canMode12"]:
+						imageList.append(ChoiceEntryComponent(text=(slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "Kodi", current if x == currentimageslot and mode != 12 else ""), (x, 1))))
+						imageList12.append(ChoiceEntryComponent(text=(slotMulti % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], "PiP", current if x == currentimageslot and mode == 12 else ""), (x, 12))))
 					else:
-						imageList.append(ChoiceEntryComponent(text=(slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
-			if SystemInfo["canMode12"]:
-				imageList.insert(indextot, " ")
+						if self.imagedict[x]["imagename"] == _("Recovery Mode"):
+							imageList.append(ChoiceEntryComponent(text=(slotRecov % (self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
+						else:
+							imageList.append(ChoiceEntryComponent(text=(slotSingle % (x, SystemInfo["canMultiBoot"][x]["slotType"], SystemInfo["canMultiBoot"][x]["slotname"], self.imagedict[x]["imagename"], current if x == currentimageslot else ""), (x, 1))))
+			if imageList12:
+				imageList += [" "] + imageList12
 		else:
 			imageList.append(ChoiceEntryComponent(text=((_("No images found")), "Waiter")))
 		self["config"].setList(imageList)
