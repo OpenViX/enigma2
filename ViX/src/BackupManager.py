@@ -333,7 +333,7 @@ class VIXBackupManager(Screen):
 	def keyDelete(self):
 		self.sel = self["list"].getCurrent()
 		if self.sel is not None:
-			self["list"].instance.moveSelectionTo((len(self["list"].list) > self["list"].getSelectionIndex() + 1) and self["list"].getSelectionIndex() or max(len(self["list"].list) - 2, 0)) # hold the selection current possition if the list is long enough, else go to last item
+			self["list"].moveToIndex(self["list"].getSelectionIndex() if len(self["list"].list) > self["list"].getSelectionIndex() + 1 else max(len(self["list"].list) - 2, 0)) # hold the selection current possition if the list is long enough, else go to last item
 			remove(self.BackupDirectory + self.sel)
 			self.populate_List()
 
