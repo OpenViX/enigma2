@@ -75,7 +75,6 @@ class MultiBootSelector(Screen, HelpableScreen):
 		slotSingle = _("Slot%s %s %s: %s%s")
 		slotMulti = _("Slot%s %s %s: %s - %s mode%s")
 		if self.imagedict:
-			indextot = 0
 			for x in sorted(self.imagedict.keys()):
 				if self.imagedict[x]["imagename"] == _("Deleted image"):
 					self.deletedImagesExists = True
