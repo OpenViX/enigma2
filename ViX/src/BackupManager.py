@@ -125,6 +125,9 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 			autoBackupManagerTimer.stop()
 
 
+BackupTime = 0
+
+
 class VIXBackupManager(Screen):
 	skin = ["""<screen name="VIXBackupManager" position="center,center" size="%d,%d">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1" />

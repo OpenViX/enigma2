@@ -129,6 +129,9 @@ class tmp:
 	dir = None
 
 
+BackupTime = 0
+
+
 class VIXImageManager(Screen):
 	skin = ["""<screen name="VIXImageManager" position="center,center" size="%d,%d">
 		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
