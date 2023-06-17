@@ -142,7 +142,7 @@ def ImageManager(session):
 	return VIXImageManager(session)
 
 
-def ImageMangerMenu(session, **kwargs):
+def ImageManagerMenu(session, **kwargs):
 	session.open(ImageManager)
 
 
@@ -220,7 +220,7 @@ def Plugins(**kwargs):
 		plist.append(PluginDescriptor(name=_("Vu+ ImageManager wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(30, ImageManager)))
 	plist.append(PluginDescriptor(name=_("Ipkg"), where=PluginDescriptor.WHERE_FILESCAN, needsRestart=False, fnc=filescan))
 	plist.append(PluginDescriptor(name=_("ViX Backup manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=BackupManagerMenu))
-	plist.append(PluginDescriptor(name=_("ViX Image manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=ImageMangerMenu))
+	plist.append(PluginDescriptor(name=_("ViX Image manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=ImageManagerMenu))
 	plist.append(PluginDescriptor(name=_("ViX Mount manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=MountManagerMenu))
 	plist.append(PluginDescriptor(name=_("ViX Script runner"), where=PluginDescriptor.WHERE_VIXMENU, fnc=ScriptRunnerMenu))
 	plist.append(PluginDescriptor(name=_("ViX SWAP manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=SwapManagerMenu))
