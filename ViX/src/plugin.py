@@ -146,6 +146,12 @@ def ImageManagerMenu(session, **kwargs):
 	session.open(ImageManager)
 
 
+def ImageManagerStart(menuid, **kwargs):
+	if menuid == "mainmenu":
+		return [(_("Image Manager"), ImageManagerMenu, "image_manager", -1)]
+	return []
+
+
 def H9SDmanager(session):
 	from .H9SDmanager import H9SDmanager
 	return H9SDmanager(session)
@@ -200,6 +206,12 @@ def filescan(**kwargs):
 
 
 def Plugins(**kwargs):
+	if SystemInfo["MultiBootSlot"] == 0: # only in recovery image
+		plist = [PluginDescriptor(name=_("Image Manager"), where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=ImageManagerStart)]
+		if not config.misc.firstrun.value:
+			plist.append(PluginDescriptor(name=_("Vu+ ImageManager wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(30, ImageManager)))
+		return plist
+
 	plist = [PluginDescriptor(where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=startSetup),
 			 PluginDescriptor(name=_("ViX Image Management"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain),
 			 PluginDescriptor(where=PluginDescriptor.WHERE_MENU, fnc=SoftcamSetup)]
@@ -216,8 +228,6 @@ def Plugins(**kwargs):
 		plist.append(PluginDescriptor(name=_("Language Wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(1, LanguageWizard)))
 	if config.misc.firstrun.value and not config.misc.restorewizardrun.value and backupAvailable == 1:
 		plist.append(PluginDescriptor(name=_("Restore wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(4, RestoreWizard)))
-	if not config.misc.firstrun.value and SystemInfo["MultiBootSlot"] == 0:
-		plist.append(PluginDescriptor(name=_("Vu+ ImageManager wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(30, ImageManager)))
 	plist.append(PluginDescriptor(name=_("Ipkg"), where=PluginDescriptor.WHERE_FILESCAN, needsRestart=False, fnc=filescan))
 	plist.append(PluginDescriptor(name=_("ViX Backup manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=BackupManagerMenu))
 	plist.append(PluginDescriptor(name=_("ViX Image manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=ImageManagerMenu))
