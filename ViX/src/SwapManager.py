@@ -17,8 +17,8 @@ from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 
-
-config.vixsettings.swapautostart = ConfigYesNo(default=False)
+config.swapmanager = ConfigSubsection()
+config.swapmanager.swapautostart = ConfigYesNo(default=False)
 
 startswap = None
 
@@ -26,8 +26,8 @@ startswap = None
 def SwapAutostart(reason, session=None, **kwargs):
 	global startswap
 	if reason == 0:
-		print("[SwapManager] autostart", config.vixsettings.swapautostart.value)
-		if config.vixsettings.swapautostart.value:
+		print("[SwapManager] autostart", config.swapmanager.swapautostart.value)
+		if config.swapmanager.swapautostart.value:
 			print("[SwapManager] autostart")
 			startswap = StartSwap()
 			startswap.start()
@@ -181,8 +181,8 @@ class VIXSwap(Screen):
 		self.activityTimer.stop()
 		if path.exists("/etc/rcS.d/S98SwapManager"):
 			remove("/etc/rcS.d/S98SwapManager")
-			config.vixsettings.swapautostart.value = True
-			config.vixsettings.swapautostart.save()
+			config.swapmanager.swapautostart.value = True
+			config.swapmanager.swapautostart.save()
 		if path.exists("/tmp/swapdevices.tmp"):
 			remove("/tmp/swapdevices.tmp")
 		self.Console.ePopen("parted -l /dev/sd? | grep swap", self.updateSwap2)
@@ -292,14 +292,14 @@ class VIXSwap(Screen):
 		else:
 			scanning = _("Enable SWAP at startup")
 
-		if config.vixsettings.swapautostart.value or self.swap_name == _("manufacturer defined swap"):
-#		if config.vixsettings.swapautostart.value:
+		if config.swapmanager.swapautostart.value or self.swap_name == _("manufacturer defined swap"):
+#		if config.swapmanager.swapautostart.value:
 			self["autostart_off"].hide()
 			self["autostart_on"].show()
 			self["key_yellow"].setText("")
 		else:
-			config.vixsettings.swapautostart.setValue(False)
-			config.vixsettings.swapautostart.save()
+			config.swapmanager.swapautostart.setValue(False)
+			config.swapmanager.swapautostart.save()
 			configfile.save()
 			self["autostart_on"].hide()
 			self["autostart_off"].show()
@@ -318,8 +318,8 @@ class VIXSwap(Screen):
 			if self.swap_Fname:
 				self.Console.ePopen("swapon -p 10 " + self.swap_Fname, self.updateSwap)
 				self.swap_Factive = True
-				config.vixsettings.swapautostart.setValue(True)
-				config.vixsettings.swapautostart.save()
+				config.swapmanager.swapautostart.setValue(True)
+				config.swapmanager.swapautostart.save()
 				configfile.save()
 			else:
 				mybox = self.session.open(MessageBox, _("SWAP file not found. You have to create the file before you try to activate it."), MessageBox.TYPE_INFO)
@@ -344,9 +344,9 @@ class VIXSwap(Screen):
 
 	def createDel3(self, result, retval, extra_args=None):
 			print("[SwapManager][createDel3] delete swap, retval, result", retval, "   ", result)
-			if config.vixsettings.swapautostart.value:
-				config.vixsettings.swapautostart.setValue(False)
-				config.vixsettings.swapautostart.save()
+			if config.swapmanager.swapautostart.value:
+				config.swapmanager.swapautostart.setValue(False)
+				config.swapmanager.swapautostart.save()
 				configfile.save()
 			self.updateSwap()
 
@@ -384,12 +384,12 @@ class VIXSwap(Screen):
 
 	def autoSsWap(self):
 		if self.swap_name:
-			if config.vixsettings.swapautostart.value:
-				config.vixsettings.swapautostart.setValue(False)
-				config.vixsettings.swapautostart.save()
+			if config.swapmanager.swapautostart.value:
+				config.swapmanager.swapautostart.setValue(False)
+				config.swapmanager.swapautostart.save()
 			else:
-				config.vixsettings.swapautostart.setValue(True)
-				config.vixsettings.swapautostart.save()
+				config.swapmanager.swapautostart.setValue(True)
+				config.swapmanager.swapautostart.save()
 			configfile.save()
 		else:
 			mybox = self.session.open(MessageBox, _("You have to create a SWAP file before trying to activate the autostart."), MessageBox.TYPE_INFO)
