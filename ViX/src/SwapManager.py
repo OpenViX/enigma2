@@ -5,16 +5,17 @@ import stat
 from enigma import eTimer
 
 from . import _
-from Screens.Screen import Screen
-from Screens.MessageBox import MessageBox
-from Screens.ChoiceBox import ChoiceBox
-from Components.config import config, configfile, ConfigYesNo
+
+from Components.config import config, configfile, ConfigSubsection, ConfigYesNo
 from Components.ActionMap import ActionMap
+from Components.Console import Console
+from Components.Harddisk import harddiskmanager, getProcMounts
 from Components.Label import Label
 from Components.Pixmap import Pixmap
-from Components.Harddisk import harddiskmanager, getProcMounts
-from Components.Console import Console
 from Components.Sources.StaticText import StaticText
+from Screens.ChoiceBox import ChoiceBox
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
 
 
 config.vixsettings.swapautostart = ConfigYesNo(default=False)
