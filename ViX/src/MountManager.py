@@ -154,37 +154,37 @@ def buildPartitionInfo(partition, partitionList):
 			description = _("Size: %sGB") % format(size / 1000, '.2f')
 		else:
 			description = _("Size: %sTB") % format(size / (1000 * 1000), '.2f')
-	if description != "": # how will this ever return false?
-		if SystemInfo["MountManager"]:	# called by VIXDevicesPanel else DeviceMountSetup
-			if rw.startswith("rw"):
-				rw = " R/W"
-			elif rw.startswith("ro"):
-				rw = " R/O"
-			else:
-				rw = ""
-			description += "\t" + _("Mount: ") + mediamount + "\n" + _("Device: ") + "/dev/" + partition + "\t" + _("Type: ") + _format + rw
-			png = LoadPixmap(mypixmap)
-			partitionInfo = (name, description, png)
+
+	if SystemInfo["MountManager"]:	# called by VIXDevicesPanel else DeviceMountSetup
+		if rw.startswith("rw"):
+			rw = " R/W"
+		elif rw.startswith("ro"):
+			rw = " R/O"
 		else:
-			Gmedia = [
-				("/media/" + device, "/media/" + device),
-				("/media/hdd", "/media/hdd"),
-				("/media/hdd2", "/media/hdd2"),
-				("/media/hdd3", "/media/hdd3"),
-				("/media/usb", "/media/usb"),
-				("/media/usb2", "/media/usb2"),
-				("/media/usb3", "/media/usb3"),
-				("/media/sdcard", "/media/sdcard")
-			]
-			item = NoSave(ConfigSelection(default="/media/%s" % partition, choices=Gmedia))
-			if _format == "Linux":
-				_format = "ext4"
-			else:
-				_format = "auto"
-			item.value = mediamount.strip()
-			text = name + " " + description + " /dev/" + partition
-			partitionInfo = getConfigListEntry(text, item, partition, _format)
-		partitionList.append(partitionInfo)
+			rw = ""
+		description += "\t" + _("Mount: ") + mediamount + "\n" + _("Device: ") + "/dev/" + partition + "\t" + _("Type: ") + _format + rw
+		png = LoadPixmap(mypixmap)
+		partitionInfo = (name, description, png)
+	else:
+		Gmedia = [
+			("/media/" + device, "/media/" + device),
+			("/media/hdd", "/media/hdd"),
+			("/media/hdd2", "/media/hdd2"),
+			("/media/hdd3", "/media/hdd3"),
+			("/media/usb", "/media/usb"),
+			("/media/usb2", "/media/usb2"),
+			("/media/usb3", "/media/usb3"),
+			("/media/sdcard", "/media/sdcard")
+		]
+		item = NoSave(ConfigSelection(default="/media/%s" % partition, choices=Gmedia))
+		if _format == "Linux":
+			_format = "ext4"
+		else:
+			_format = "auto"
+		item.value = mediamount.strip()
+		text = name + " " + description + " /dev/" + partition
+		partitionInfo = getConfigListEntry(text, item, partition, _format)
+	partitionList.append(partitionInfo)
 
 
 class VIXDevicesPanel(Screen):
