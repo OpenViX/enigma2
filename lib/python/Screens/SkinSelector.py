@@ -1,4 +1,3 @@
-import mmap
 import re
 
 from enigma import ePicLoad
