@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-05-25 18:32+0300\n"
+"PO-Revision-Date: 2023-06-25 16:30+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -4505,7 +4505,7 @@ msgid "Debug Logs"
 msgstr "Debug-lokit"
 
 msgid "Debug log time format *"
-msgstr "Debug-lokin aikamuoto"
+msgstr "Debug-lokin aikamuoto *"
 
 msgid "Debug to file"
 msgstr "Debug tiedostoon"
@@ -13532,7 +13532,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"25.05.2023\n"
+"25.06.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -18076,7 +18076,7 @@ msgid "Configure Vu Multiboot interface"
 msgstr "Määritä Vu Multiboot -käyttöliittymä"
 
 msgid "About screen setup"
-msgstr "Tietoja näytön asetuksista"
+msgstr "Tietoja-näytön asetukset"
 
 msgid "Date format"
 msgstr "Päivämäärän muoto"
@@ -18095,3 +18095,15 @@ msgstr "VVVV-KK-PP"
 
 msgid "Multiboot"
 msgstr "Multiboot"
+
+msgid "Enable core dumps *"
+msgstr "Ota ydinvedokset käyttöön *"
+
+msgid "Core dumps are helpful for developers in case of a FATAL SIGNAL crash in the C++ code. Typical core dump size is 110 MB so adjust maximum space used and choose proper location."
+msgstr "Ydinvedostiedostot ovat hyödyllisiä kehittäjille, jos C++ -koodissa tapahtuu FATAL SIGNAL -kaatuminen. Tyypillinen ydinvedoskoko on 110 Mt, joten säädä käytettävän tilan enimmäismäärää ja valitse oikea sijainti."
+
+msgid "Boot Logo Identification"
+msgstr "Käynnistyslogon tunnistus"
+
+msgid "Identify image version on bootlogo.mvi."
+msgstr "Tunnista imagen versio bootlogo.mvi:ssa."
