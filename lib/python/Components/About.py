@@ -48,56 +48,39 @@ def getGStreamerVersionString():
 
 
 def getKernelVersionString():
-	if ospath.isfile("/proc/version"):
-		with open("/proc/version", "r") as f:
-			kernelversion = f.read().split(" ", 4)[2].split("-", 2)[0]
-			return kernelversion
-	else:
+	try:
+		return open("/proc/version").read().split(" ", 3)[2].split("-", 1)[0]
+	except:
 		return _("unknown")
 
 
 def getIsBroadcom():
-	if ospath.isfile("/proc/cpuinfo"):
-		with open("/proc/cpuinfo", "r") as file:
-			lines = file.readlines()
-			for x in lines:
-				splitted = x.split(": ")
-				if len(splitted) > 1:
-					splitted[1] = splitted[1].replace("\n", "")
-					if splitted[0].startswith("Hardware"):
-						system = splitted[1].split(" ")[0]
-					elif splitted[0].startswith("system type"):
-						if splitted[1].split(" ")[0].startswith("BCM"):
-							system = "Broadcom"
-		if "Broadcom" in system:
-			return True
-		else:
-			return False
-	else:
-		return False
+	try:
+		for x in open("/proc/cpuinfo").readlines():
+			x = x.split(": ")
+			if len(x) > 1 and (x[0].startswith("Hardware") and x[1].split(" ")[0] == "Broadcom" or x[0].startswith("system type") and x[1].startswith("BCM")):
+				return True
+	except:
+		pass
+	return False
 
 
 def getChipSetString():
-	if ospath.isfile("/proc/stb/info/chipset"):
-		with open("/proc/stb/info/chipset", "r") as f:
-			return str(f.read().lower().replace("\n", "").replace("brcm", "").replace("bcm", ""))
-	else:
+	try:
+		return str(open("/proc/stb/info/chipset").read().lower().replace("\n", "").replace("brcm", "").replace("bcm", ""))
+	except:
 		return _("unavailable")
 
 
 def getCPUSpeedMHzInt():
 	cpu_speed = 0
-	if ospath.isfile("/proc/cpuinfo"):
-		with open("/proc/cpuinfo", "r") as file:
-			lines = file.readlines()
-			for x in lines:
-				splitted = x.split(": ")
-				if len(splitted) > 1:
-					splitted[1] = splitted[1].replace("\n", "")
-					if splitted[0].startswith("cpu MHz"):
-						cpu_speed = float(splitted[1].split(" ")[0])
-						break
-	else:
+	try:
+		for x in open("/proc/cpuinfo").readlines():
+			x = x.split(": ")
+			if len(x) > 1 and x[0].startswith("cpu MHz"):
+				cpu_speed = float(x[1].split(" ")[0].strip())
+				break
+	except IOError:
 		print("[About] getCPUSpeedMHzInt, /proc/cpuinfo not available")
 
 	if cpu_speed == 0:
@@ -138,22 +121,9 @@ def getCPUArch():
 
 
 def getCPUString():
-	system = _("unavailable")
-	if ospath.isfile("/proc/cpuinfo"):
-		with open("/proc/cpuinfo", "r") as file:
-			lines = file.readlines()
-			for x in lines:
-				splitted = x.split(": ")
-				if len(splitted) > 1:
-					splitted[1] = splitted[1].replace("\n", "")
-					if splitted[0].startswith("system type"):
-						system = splitted[1].split(" ")[0]
-					elif splitted[0].startswith("model name"):
-						system = splitted[1].split(" ")[0]
-					elif splitted[0].startswith("Processor"):
-						system = splitted[1].split(" ")[0]
-			return system
-	else:
+	try:
+		return [x.split(": ")[1].split(" ")[0] for x in open("/proc/cpuinfo").readlines() if (x.startswith("system type") or x.startswith("model name") or x.startswith("Processor")) and len(x.split(": ")) > 1][0]
+	except:
 		return _("unavailable")
 
 
