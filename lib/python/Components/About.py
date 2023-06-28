@@ -158,11 +158,9 @@ def getCPUString():
 
 
 def getCpuCoresInt():
-	if ospath.isfile("/sys/devices/system/cpu/possible"):
-		with open("/sys/devices/system/cpu/possible", "r") as file:
-			splitted = file.read().strip().split("-")
-			return int(splitted[1]) + 1
-	else:
+	try:
+		return int(open("/sys/devices/system/cpu/present").read().split("-")[1]) + 1
+	except:
 		return 0
 
 
