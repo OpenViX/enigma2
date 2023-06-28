@@ -260,15 +260,6 @@ def getEnigmaUptime():
 		return ''
 
 
-def getBoxUptime():
-	try:
-		with open("/proc/uptime", "rb") as f:
-			seconds = int(f.readline().split('.')[0])
-		return formatUptime(seconds)
-	except:
-		return ''
-
-
 def formatUptime(seconds):
 	out = ''
 	if seconds > 86400:
