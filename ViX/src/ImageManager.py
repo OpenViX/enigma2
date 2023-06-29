@@ -267,17 +267,17 @@ class VIXImageManager(Screen):
 		self.refreshList() # display any new images that may have been sent too the box since the list was built
 
 	def refreshUp(self):
-		self["list"].instance.moveSelection(self["list"].instance.moveUp)
+		self["list"].moveUp()
 
 	def refreshDown(self):
-		self["list"].instance.moveSelection(self["list"].instance.moveDown)
+		self["list"].moveDown()
 
 	def keyLeft(self):
-		self["list"].instance.moveSelection(self["list"].instance.pageUp)
+		self["list"].pageUp()
 		self.selectionChanged()
 
 	def keyRight(self):
-		self["list"].instance.moveSelection(self["list"].instance.pageDown)
+		self["list"].pageDown()
 		self.selectionChanged()
 
 	def refreshList(self):
@@ -1689,7 +1689,7 @@ class ImageManagerDownload(Screen):
 			self["list"].setList(imglist)
 			if self.setIndex:
 				self["list"].moveToIndex(self.setIndex if self.setIndex < len(list) else len(list) - 1)
-				if self["list"].l.getCurrentSelection()[0][1] == "Expander":
+				if self["list"].getCurrent()[0][1] == "Expander":
 					self.setIndex -= 1
 					if self.setIndex:
 						self["list"].moveToIndex(self.setIndex if self.setIndex < len(list) else len(list) - 1)
@@ -1697,7 +1697,7 @@ class ImageManagerDownload(Screen):
 			self.SelectionChanged()
 
 	def SelectionChanged(self):
-		currentSelected = self["list"].l.getCurrentSelection()
+		currentSelected = self["list"].getCurrent()
 		if currentSelected[0][1] == "Waiter":
 			self["key_green"].setText("")
 		else:
@@ -1707,23 +1707,23 @@ class ImageManagerDownload(Screen):
 				self["key_green"].setText(_("Download"))
 
 	def keyLeft(self):
-		self["list"].instance.moveSelection(self["list"].instance.pageUp)
+		self["list"].pageUp()
 		self.SelectionChanged()
 
 	def keyRight(self):
-		self["list"].instance.moveSelection(self["list"].instance.pageDown)
+		self["list"].pageDown()
 		self.SelectionChanged()
 
 	def keyUp(self):
-		self["list"].instance.moveSelection(self["list"].instance.moveUp)
+		self["list"].moveUp()
 		self.SelectionChanged()
 
 	def keyDown(self):
-		self["list"].instance.moveSelection(self["list"].instance.moveDown)
+		self["list"].moveDown()
 		self.SelectionChanged()
 
 	def keyDownload(self):
-		currentSelected = self["list"].l.getCurrentSelection()
+		currentSelected = self["list"].getCurrent()
 		if currentSelected[0][1] == "Expander":
 			if currentSelected[0][0] in self.expanded:
 				self.expanded.remove(currentSelected[0][0])
@@ -1742,8 +1742,7 @@ class ImageManagerDownload(Screen):
 
 	def doDownloadX(self, answer):
 		if answer:
-			selectedimage = self["list"].getCurrent()
-			currentSelected = self["list"].l.getCurrentSelection()
+			currentSelected = self["list"].getCurrent()
 			selectedimage = currentSelected[0][0]
 			headers, fileurl = self.processAuthLogin(currentSelected[0][1])
 			fileloc = self.BackupDirectory + selectedimage
