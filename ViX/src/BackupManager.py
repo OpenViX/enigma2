@@ -16,13 +16,13 @@ from Components.FileList import MultiFileSelectList, FileList
 from Components.Harddisk import harddiskmanager
 from Components.Label import Label
 from Components.MenuList import MenuList
-from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
 import Components.Task
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Setup import Setup
+from Screens.TextBox import TextBox
 from Tools.Notifications import AddPopupWithCallback
 
 autoBackupManagerTimer = None
@@ -999,7 +999,7 @@ class VIXBackupManagerMenu(Setup):
 		config.save()
 
 
-class VIXBackupManagerLogView(Screen):
+class VIXBackupManagerLogView(TextBox):
 	skin = ["""
 <screen name="VIXBackupManagerLogView" position="center,center" size="%d,%d">
 	<widget name="list" position="%d,%d" size="%d,%d" font="Regular;%d"/>
@@ -1009,36 +1009,13 @@ class VIXBackupManagerLogView(Screen):
 	]
 
 	def __init__(self, session, filename):
-		self.session = session
-		Screen.__init__(self, session)
+		TextBox.__init__(self, session, label="list")
 		self.setTitle(_("Logs"))
-
 		self.skinName = "VIXBackupManagerLogView"
 		filedate = str(date.fromtimestamp(stat(filename).st_mtime))
-		backuplog = _("Backup created") + ": " + filedate + "\n\n"
 		tar = tarfile.open(filename, "r")
-		contents = ""
-		for tarinfo in tar:
-			file = tarinfo.name
-			contents += str(file) + "\n"
+		self["list"].setText("\n".join([_("Backup created") + ": " + filedate + "\n"] + [str(tarinfo.name) for tarinfo in tar]))
 		tar.close()
-		backuplog = backuplog + contents
-
-		self["list"] = ScrollLabel(str(backuplog))
-		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "DirectionActions", "MenuActions"],
-										 {
-										 "cancel": self.cancel,
-										 "ok": self.cancel,
-										 "up": self["list"].pageUp,
-										 "down": self["list"].pageDown,
-										 "menu": self.closeRecursive,
-										 }, -2)
-
-	def cancel(self):
-		self.close()
-
-	def closeRecursive(self):
-		self.close(True)
 
 
 class AutoBackupManagerTimer:
