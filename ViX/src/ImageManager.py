@@ -76,14 +76,6 @@ config.imagemanager.scheduletime = ConfigClock(default=0)  # 1:00
 config.imagemanager.query = ConfigYesNo(default=True)
 config.imagemanager.lastbackup = ConfigNumber(default=0)
 config.imagemanager.number_to_keep = ConfigNumber(default=0)
-config.imagemanager.imagefeed_ViX = ConfigText(default="https://www.openvix.co.uk/json", fixed_size=False)
-config.imagemanager.imagefeed_ViX.value = config.imagemanager.imagefeed_ViX.default # this is no longer a user setup option
-config.imagemanager.imagefeed_ATV = ConfigText(default="https://images.mynonpublic.com/openatv/json", fixed_size=False)
-config.imagemanager.imagefeed_ATV.value = config.imagemanager.imagefeed_ATV.default # this is no longer a user setup option
-config.imagemanager.imagefeed_Pli = ConfigText(default="http://downloads.openpli.org/json", fixed_size=False)
-config.imagemanager.imagefeed_Pli.value = config.imagemanager.imagefeed_Pli.default # this is no longer a user setup option
-config.imagemanager.imagefeed_OBH = ConfigText(default="https://images.openbh.net/json", fixed_size=False)
-config.imagemanager.imagefeed_OBH.value = config.imagemanager.imagefeed_OBH.default # this is no longer a user setup option
 # Add a method for users to download images directly from their own build servers.
 # Script must be able to handle urls in the form http://domain/scriptname/boxname.
 # Format of the JSON output from the script must be the same as the official urls above.
@@ -92,6 +84,18 @@ config.imagemanager.imagefeed_MyBuild = ConfigText(default="", fixed_size=False)
 config.imagemanager.login_as_ViX_developer = ConfigYesNo(default=False)
 config.imagemanager.developer_username = ConfigText(default="username", fixed_size=False)
 config.imagemanager.developer_password = ConfigText(default="password", fixed_size=False)
+
+DISTRO = 0
+URL = 1
+ACTION = 2
+
+FEED_URLS = [
+	("OpenViX", "https://www.openvix.co.uk/json/%s", "getMachineMake"),
+	("OpenATV", "https://images.mynonpublic.com/openatv/json/%s", "getMachineMake"),
+	("OpenBH", "https://images.openbh.net/json/%s", "getMachineMake"),
+	("OpenPLi", "http://downloads.openpli.org/json/%s", "HardwareInfo"),
+]
+	
 
 autoImageManagerTimer = None
 
@@ -342,9 +346,9 @@ class VIXImageManager(Screen):
 		self.session.openWithCallback(self.setupDone, ImageManagerSetup)
 
 	def doDownload(self):
-		choices = [("OpenViX", config.imagemanager.imagefeed_ViX), ("OpenATV", config.imagemanager.imagefeed_ATV), ("OpenPli", config.imagemanager.imagefeed_Pli), ("OpenBh", config.imagemanager.imagefeed_OBH)]
+		choices = [(x[DISTRO], x) for x in FEED_URLS]
 		if config.imagemanager.imagefeed_MyBuild.value.startswith("http"):
-			choices.insert(0, ("My build", config.imagemanager.imagefeed_MyBuild))
+			choices.insert(0, ("My build", ("My build", config.imagemanager.imagefeed_MyBuild.value, "getMachineMake")))
 		message = _("From which image library do you want to download?")
 		self.session.openWithCallback(self.doDownloadCallback, MessageBox, message, list=choices, default=1, simple=True)
 
@@ -1591,10 +1595,10 @@ class ImageManagerDownload(Screen):
 		26,
 	]
 
-	def __init__(self, session, BackupDirectory, ConfigObj):
+	def __init__(self, session, BackupDirectory, imagefeed):
 		Screen.__init__(self, session)
-		self.setTitle(_("%s downloads") % {config.imagemanager.imagefeed_ATV: "OpenATV", config.imagemanager.imagefeed_Pli: "OpenPLi", config.imagemanager.imagefeed_ViX: "OpenViX", config.imagemanager.imagefeed_OBH: "OpenBh", config.imagemanager.imagefeed_MyBuild: "My build"}.get(ConfigObj, ''))
-		self.ConfigObj = ConfigObj
+		self.setTitle(_("%s downloads") % imagefeed[DISTRO])
+		self.imagefeed = imagefeed
 		self.BackupDirectory = BackupDirectory
 		self["lab1"] = Label(_("Select an image to download for %s:") % getMachineMake())
 		self["key_red"] = Button(_("Close"))
@@ -1635,28 +1639,35 @@ class ImageManagerDownload(Screen):
 				self.pausetimer.callback.append(self.showError)
 				self.pausetimer.start(50, True)
 				return
-		self.boxtype = getMachineMake()
-		if self.ConfigObj is config.imagemanager.imagefeed_Pli:
-			self.boxtype = HardwareInfo().get_device_name()
-			print("[ImageManager1] boxtype:%s" % (self.boxtype))
-			if "dm800" in self.boxtype:
-				self.boxtype = getMachineMake()
+		boxtype = getMachineMake()
+		if self.imagefeed[ACTION] == "HardwareInfo":
+			boxtype = HardwareInfo().get_device_name()
+			print("[ImageManager1] boxtype:%s" % (boxtype))
+			if "dm800" in boxtype:
+				boxtype = getMachineMake()
 
 		if not self.imagesList:
-			boxtype = self.boxtype
-			if self.ConfigObj is config.imagemanager.imagefeed_ViX \
-				and self.ConfigObj.value.startswith("https") \
+			# Legacy: self.imagefeed[URL] didn't contain "%s" where to insert the boxname.
+			# So just tag the boxname onto the end of the url like it is a subfolder.
+			# Obviously the url needs to exist.
+			if "%s" not in self.imagefeed[URL] and "?" not in self.imagefeed[URL]:
+				url = path.join(self.imagefeed[URL], boxtype)
+			else: # New style: self.imagefeed[URL] contains "%s" and boxname is inserted there.
+				url = self.imagefeed[URL] % boxtype
+			
+			# special case for openvix developer downloads using user/pass
+			if self.imagefeed[DISTRO].lower() == "openvix" \
+				and self.imagefeed[URL].startswith("https") \
 				and config.imagemanager.login_as_ViX_developer.value \
 				and config.imagemanager.developer_username.value \
 				and config.imagemanager.developer_username.value != config.imagemanager.developer_username.default \
 				and config.imagemanager.developer_password.value \
 				and config.imagemanager.developer_password.value != config.imagemanager.developer_password.default:
-				boxtype = path.join(boxtype, config.imagemanager.developer_username.value, config.imagemanager.developer_password.value)
+				url = path.join(url, config.imagemanager.developer_username.value, config.imagemanager.developer_password.value)
 			try:
-				urljson = path.join(self.ConfigObj.value, boxtype)
-				self.imagesList = dict(json.load(urlopen("%s" % urljson)))
+				self.imagesList = dict(json.load(urlopen(url)))
 			except Exception:
-				print("[ImageManager] no images available for: the '%s' at '%s'" % (self.boxtype, self.ConfigObj.value))
+				print("[ImageManager] no images available for: the '%s' at '%s'" % (boxtype, url))
 				return
 
 		if not self.imagesList: # Nothing has been found on that server so we might as well give up.
@@ -1776,10 +1787,7 @@ class ImageManagerSetup(Setup):
 		for configElement in (config.imagemanager.developer_username, config.imagemanager.developer_password):
 			if not configElement.value:
 				configElement.value = configElement.default
-		if not configElement.value:
-			config.imagemanager.imagefeed_DevL.value = config.imagemanager.imagefeed_DevL.default
-		for configElement in (config.imagemanager.imagefeed_ViX, config.imagemanager.imagefeed_ATV, config.imagemanager.imagefeed_Pli, config.imagemanager.imagefeed_OBH):
-			self.check_URL_format(configElement)
+		self.check_URL_format(config.imagemanager.imagefeed_MyBuild)
 		for x in self["config"].list:
 			x[1].save()
 		configfile.save()
