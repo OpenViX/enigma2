@@ -396,34 +396,14 @@ class Harddisk:
 		task = Components.Task.ConditionTask(job, _("Waiting for partition."), timeoutCount=20)
 		task.check = lambda: not ospath.exists(self.partitionPath("1"))
 		task.weighting = 1
-		if ospath.exists("/usr/sbin/parted"):
-			use_parted = True
-		else:
-			if size > 2097151:
-				addInstallTask(job, "parted")
-				use_parted = True
-			else:
-				use_parted = False
-		print("[Harddisk] Creating partition.")
 		task = Components.Task.LoggingTask(job, _("Creating partition."))
 		task.weighting = 5
-		if use_parted:
-			task.setTool("parted")
-			if size < 1024:
-				alignment = "min"  # On very small devices, align to block only.
-			else:
-				alignment = "opt"  # Prefer optimal alignment for performance.
-			task.args += ["-a", alignment, "-s", self.disk_path, "mklabel", "gpt", "mkpart", "primary", "0%", "100%"]
+		task.setTool("parted")
+		if size < 1024:
+			alignment = "min"  # On very small devices, align to block only.
 		else:
-			task.setTool("sfdisk")
-			task.args.append("-f")
-			task.args.append("-uS")
-			task.args.append(self.disk_path)
-			if size > 128000:
-				print("[Harddisk] Detected >128GB disk, using 4k alignment.")
-				task.initial_input = "8,\n;0,0\n;0,0\n;0,0\ny\n"  # Start at sector 8 to better support 4k aligned disks.
-			else:
-				task.initial_input = "0,\n;\n;\n;\ny\n"  # Smaller disks (CF cards, sticks etc) don't need that.
+			alignment = "opt"  # Prefer optimal alignment for performance.
+		task.args += ["-a", alignment, "-s", self.disk_path, "mklabel", "gpt", "mkpart", "primary", "0%", "100%"]
 		task = Components.Task.ConditionTask(job, _("Waiting for partition."))
 		task.check = lambda: ospath.exists(self.partitionPath("1"))
 		task.weighting = 1
@@ -443,7 +423,7 @@ class Harddisk:
 			big_o_options.append("sparse_super")
 		elif size > 2048:
 			task.args += ["-T", "largefile", "-N", str(int(size * 32))]  # Over 2GB: 32 i-nodes per megabyte.
-		task.args += ["-m0", "-O", ",".join(big_o_options), self.partitionPath("1")]
+		task.args += ["-F", "-F", "-m0", "-O ^metadata_csum", "-O", ",".join(big_o_options), self.partitionPath("1")]
 		task = MountTask(job, self)
 		task.weighting = 3
 		print("[Harddisk] Mounting storage device.")
