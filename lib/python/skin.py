@@ -82,9 +82,11 @@ def InitSkins(booting=True):
 	desktop = getDesktop(GUI_SKIN_ID)
 	# Add the emergency skin.  This skin should provide enough functionality
 	# to enable basic GUI functions to work.
-	loadSkin(EMERGENCY_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID)
+	if not loadSkin(EMERGENCY_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID):
+		print("[Skin] Error: Adding EMERGENCY_SKIN '%s' has failed!" % EMERGENCY_SKIN)
 	# Add the subtitle skin.
-	loadSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID)
+	if not loadSkin(SUBTITLE_SKIN, scope=SCOPE_CURRENT_SKIN, desktop=desktop, screenID=GUI_SKIN_ID):
+		print("[Skin] Error: Adding SUBTITLE_SKIN '%s' has failed!" % SUBTITLE_SKIN)
 	# Add the front panel / display / lcd skin.
 	processed = []
 	for skin, name in [(config.skin.display_skin.value, "current"), (DEFAULT_DISPLAY_SKIN, "default")]:
@@ -143,33 +145,34 @@ def loadSkinData(desktop):
 def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID):
 	global windowStyles
 	filename = resolveFilename(scope, filename)
-	print("[Skin] Loading skin file '%s'." % filename)
-	domSkin = fileReadXML(filename)
-	if domSkin:
-		print("[Skin] DEBUG: Extracting non screen blocks from '%s'.  (scope='%s')" % (filename, scope))
-		# For loadSingleSkinData colors, bordersets etc. are applied one after
-		# the other in order of ascending priority.
-		loadSingleSkinData(desktop, screenID, domSkin, filename, scope=scope)
-		for element in domSkin:
-			if element.tag == "screen":  # Process all screen elements.
-				name = element.attrib.get("name", None)
-				if name:  # Without a name, it's useless!
+	if isfile(filename):
+		print("[Skin] Loading skin file '%s'." % filename)
+		domSkin = fileReadXML(filename)
+		if domSkin:
+			print("[Skin] DEBUG: Extracting non screen blocks from '%s'.  (scope='%s')" % (filename, {SCOPE_CONFIG: "SCOPE_CONFIG", SCOPE_CURRENT_LCDSKIN: "SCOPE_CURRENT_LCDSKIN", SCOPE_CURRENT_SKIN: "SCOPE_CURRENT_SKIN", SCOPE_FONTS: "SCOPE_FONTS", SCOPE_SKIN: "SCOPE_SKIN", SCOPE_SKIN_IMAGE: "SCOPE_SKIN_IMAGE"}.get(scope, scope)))
+			# For loadSingleSkinData colors, bordersets etc. are applied one after
+			# the other in order of ascending priority.
+			loadSingleSkinData(desktop, screenID, domSkin, filename, scope=scope)
+			for element in domSkin:
+				if element.tag == "screen":  # Process all screen elements.
+					name = element.attrib.get("name", None)
+					if name:  # Without a name, it's useless!
+						scrnID = element.attrib.get("id", None)
+						if scrnID is None or scrnID == screenID:  # If there is a screen ID is it for this display.
+							# print("[Skin] DEBUG: Extracting screen '%s' from '%s'.  (scope='%s')" % (name, filename, scope))
+							domScreens[name] = (element, "%s/" % dirname(filename))
+				elif element.tag == "windowstyle":  # Process the windowstyle element.
 					scrnID = element.attrib.get("id", None)
-					if scrnID is None or scrnID == screenID:  # If there is a screen ID is it for this display.
-						# print("[Skin] DEBUG: Extracting screen '%s' from '%s'.  (scope='%s')" % (name, filename, scope))
-						domScreens[name] = (element, "%s/" % dirname(filename))
-			elif element.tag == "windowstyle":  # Process the windowstyle element.
-				scrnID = element.attrib.get("id", None)
-				if scrnID is not None:  # Without an scrnID, it is useless!
-					scrnID = int(scrnID)
-					# print("[Skin] DEBUG: Processing a windowstyle ID='%s'." % scrnID)
-					domStyle = ElementTree(Element("skin"))
-					domStyle.getroot().append(element)
-					windowStyles[scrnID] = (desktop, screenID, domStyle.getroot(), filename, scope)
-			# Element is not a screen or windowstyle element so no need for it any longer.
-		reloadWindowStyles()  # Reload the window style to ensure all skin changes are taken into account.
-		print("[Skin] Loading skin file '%s' complete." % filename)
-		return True
+					if scrnID is not None:  # Without an scrnID, it is useless!
+						scrnID = int(scrnID)
+						# print("[Skin] DEBUG: Processing a windowstyle ID='%s'." % scrnID)
+						domStyle = ElementTree(Element("skin"))
+						domStyle.getroot().append(element)
+						windowStyles[scrnID] = (desktop, screenID, domStyle.getroot(), filename, scope)
+				# Element is not a screen or windowstyle element so no need for it any longer.
+			reloadWindowStyles()  # Reload the window style to ensure all skin changes are taken into account.
+			print("[Skin] Loading skin file '%s' complete." % filename)
+			return True
 	return False
 
 
