@@ -1,7 +1,7 @@
 from os import listdir
 
+from Components.config import config
 from Components.Console import Console
-# from Components.Language import language
 from Tools.Directories import SCOPE_KEYMAPS, pathExists, resolveFilename
 
 
@@ -43,16 +43,12 @@ class Keyboard:
 		return self.keyboardMaps
 
 	def getDefaultKeyboardMap(self):
-		# This is a code proposal to make the default keymap respond
-		# to the currently defined locale.  OpenATV initialises the
-		# keymap based on hardware manufacturer.  Making the
-		# selection based on language locale makes more sense.  There
-		# are other code changes coming that will allow this to happen.
-		#
-		# locale = language.getLocale()
-		# if locale.startswith("de_") and "de.kmap" in self.keyboardMaps:
-		# 	return "de.kmap"
-		return "default.kmap"
+		for map in self.keyboardMaps:
+			if "eng.kmap" == map[0] and config.osd.language.value.startswith("en_"):
+		 		return "eng.kmap"
+			else:
+				continue
+		return "default.kmap"		# this is US for some strange reason
 
 
 keyboard = Keyboard()
