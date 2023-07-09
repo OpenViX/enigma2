@@ -551,6 +551,34 @@ except ImportError:
 	def runReactor():
 		enigma.runMainloop()
 
+profile("Twisted Log")
+print("[StartEnigma]  Initialising Twisted Log.")
+try:
+	from twisted.python import log, util
+
+	def quietEmit(self, eventDict):
+		text = log.textFromEventDict(eventDict)
+		if text is None:
+			return
+		if "/api/statusinfo" in text:  # Do not log OpenWebif status info.
+			return			
+		formatDict = {
+			"text": text.replace("\n", "\n\t")
+		}
+		msg = log._safeFormat("%(text)s\n", formatDict)
+		util.untilConcludes(self.write, msg)
+		util.untilConcludes(self.flush)
+
+	logger = log.FileLogObserver(sys.stdout)		# do not change or no crashlog
+	log.FileLogObserver.emit = quietEmit
+	backup_stdout = sys.stdout		# backup stdout and stderr redirections
+	backup_stderr = sys.stderr	
+	log.startLoggingWithObserver(logger.emit)
+	sys.stdout = backup_stdout		# restore stdout and stderr redirections because of twisted redirections
+	sys.stderr = backup_stderr
+except ImportError:
+	print("[StartEnigma] Error: Twisted not available!")
+
 
 profile("Init:NTPSync")
 print("[StartEnigma]  Initialising NTPSync.")
