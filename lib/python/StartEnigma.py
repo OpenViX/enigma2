@@ -477,7 +477,7 @@ print("[StartEnigma]  Initialising InfoBar.")
 from Screens import InfoBar
 
 from Components.SystemInfo import SystemInfo	#	don't move this import
-VuRecovery = True if SystemInfo["HasKexecMultiboot"] and SystemInfo["MultiBootSlot"] == 0 else False
+VuRecovery = SystemInfo["HasKexecMultiboot"] and SystemInfo["MultiBootSlot"] == 0
 print("[StartEnigma]  Is this VuRecovery?. Recovery = ", VuRecovery)
 
 from Components.config import config, configfile, ConfigInteger, ConfigSelection, ConfigText, ConfigYesNo, NoSave
@@ -635,9 +635,7 @@ if enigma.eAVSwitch.getInstance().haveScartSwitch():
 	print("[StartEnigma]  Initialising Scart.")
 	from Screens.Scart import Scart
 
-if VuRecovery:
-	pass
-else:
+if not VuRecovery:
 	profile("Load:CI")
 	print("[StartEnigma]  Initialising CommonInterface.")
 	from Screens.Ci import CiHandler
@@ -673,10 +671,7 @@ profile("EpgConfig")
 from Components.EpgConfig import InitEPGConfig
 InitEPGConfig()
 
-if VuRecovery:
-	pass
-else:
-
+if not VuRecovery:
 	profile("RecordingConfig")
 	print("[StartEnigma]  Initialising RecordingConfig.")
 	from Components.RecordingConfig import InitRecordingConfig
@@ -758,9 +753,7 @@ print("[StartEnigma]  Starting User Interface.")	# first, setup a screen
 try:
 	runScreenTest()
 	plugins.shutdown()
-	if VuRecovery:
-		pass
-	else:
+	if not VuRecovery:
 		Components.ParentalControl.parentalControl.save()
 except Exception:
 	print("[StartEnigma] EXCEPTION IN PYTHON STARTUP CODE:")
