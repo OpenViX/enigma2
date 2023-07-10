@@ -757,13 +757,16 @@ class SoftcamAutoPoller:
 						if softcamcheck.lower().startswith("oscam") or softcamcheck.lower().startswith("ncam"):
 							if path.exists("/tmp/status.html"):
 								remove("/tmp/status.html")
-							port = ""
+							camconf = port = ""
 							if softcamcheck.lower().startswith("oscam"):
 								if path.exists("/etc/tuxbox/config/oscam.conf"):
 									camconf = "/etc/tuxbox/config/oscam.conf"
 							elif softcamcheck.lower().startswith("ncam"):
 								if path.exists("/etc/tuxbox/config/ncam.conf"):
 									camconf = "/etc/tuxbox/config/ncam.conf"
+							if not camconf:
+								print("[SoftcamManager] oscam.conf or ncam.conf not defined")
+								return									
 							f = open(camconf, "r")
 							for line in f.readlines():
 								if line.find("httpport") != -1:
