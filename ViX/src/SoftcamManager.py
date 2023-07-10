@@ -24,9 +24,9 @@ from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 
 config.softcammanager = ConfigSubsection()
 config.softcammanager.softcams_autostart = ConfigLocations(default="")
-config.softcammanager.softcamtimerenabled = ConfigYesNo(default=True)
+config.softcammanager.softcamtimerenabled = ConfigYesNo(default=False)
 config.softcammanager.softcamtimer = ConfigNumber(default=6)
-config.softcammanager.showinextensions = ConfigYesNo(default=True)
+config.softcammanager.showinextensions = ConfigYesNo(default=False)
 
 softcamautopoller = None
 
