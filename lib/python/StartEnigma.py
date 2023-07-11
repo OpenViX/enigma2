@@ -328,9 +328,7 @@ def runScreenTest():
 	profile("Init:Trashcan")
 	import Tools.Trashcan
 	Tools.Trashcan.init(session)
-	if VuRecovery:
-		pass
-	else:
+	if not VuRecovery:
 		CiHandler.setSession(session)
 	
 	screensToRun = [p.fnc for p in plugins.getPlugins(PluginDescriptor.WHERE_WIZARD)]
@@ -357,9 +355,7 @@ def runScreenTest():
 
 	runNextScreen(session, screensToRun)
 
-	if VuRecovery:
-		pass
-	else:
+	if not VuRecovery:
 		profile("Init:VolumeControl")
 		vol = VolumeControl(session)
 		profile("Init:PowerKey")
@@ -378,9 +374,7 @@ def runScreenTest():
 	profile_final()
 	runReactor()
 
-	if VuRecovery:
-		pass
-	else:
+	if not VuRecovery:
 		profile("wakeup")
 		# get currentTime
 		nowTime = time()
@@ -438,9 +432,7 @@ def runScreenTest():
 	session.nav.shutdown()
 	profile("configfile.save")
 	configfile.save()
-	if VuRecovery:
-		pass
-	else:
+	if not VuRecovery:
 		from Screens import InfoBarGenerics
 		InfoBarGenerics.saveResumePoints()
 	return 0
@@ -481,9 +473,7 @@ VuRecovery = SystemInfo["HasKexecMultiboot"] and SystemInfo["MultiBootSlot"] == 
 print("[StartEnigma]  Is this VuRecovery?. Recovery = ", VuRecovery)
 
 from Components.config import config, configfile, ConfigInteger, ConfigSelection, ConfigText, ConfigYesNo, NoSave
-if VuRecovery:
-	config.clientmode.enabled.value == True
-else:
+if not VuRecovery:
 	profile("Bouquets")
 	print("[StartEnigma]  Initialising Bouquets.")
 	config.misc.load_unlinked_userbouquets = ConfigYesNo(default=False)
