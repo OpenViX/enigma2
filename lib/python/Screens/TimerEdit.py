@@ -130,6 +130,7 @@ class TimerEditList(Screen, ProtectedScreen):
 		cur = self["timerlist"].getCurrent()
 		if cur:
 			t = cur
+			orig_state = t.disabled
 			if t.disabled:
 				t.enable()
 				timersanitycheck = TimerSanityCheck(self.session.nav.RecordTimer.timer_list, cur)
@@ -155,6 +156,8 @@ class TimerEditList(Screen, ProtectedScreen):
 				else:
 					t.disable()
 			self.session.nav.RecordTimer.timeChanged(t)
+			if t.disabled != orig_state:
+				cur.log(0, "[TimerEdit] Timer has been %s" % ("disabled" if t.disabled else "enabled"))
 			self.refill()
 			self.updateState()
 
