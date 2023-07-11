@@ -17,7 +17,7 @@ fi
 
 if [ -e /proc/stb/info/boxtype ]; then
 	stbcheck=`cat /proc/stb/info/boxtype`
-	if [ $stbcheck == "viper4k" ] || [ $stbcheck == "sf8008" ] || [ $stbcheck == "sf8008m" ] || [ $stbcheck == "sx988" ] || [ $stbcheck == "sfx6008" ] || [ $stbcheck == "beyonwizv2" ] || [ $stbcheck == "ustym4kpro" ] || [ $stbcheck == "cc1" ] || [ $stbcheck == "gbmv200" ]; then
+	if [ $stbcheck == "viper4k" ] || [ $stbcheck == "sf8008" ] || [ $stbcheck == "sf8008m" ] || [ $stbcheck == "sx988" ] || [ $stbcheck == "sfx6008" ] || [ $stbcheck == "beyonwizv2" ] || [ $stbcheck == "sx88v2" ] || [ $stbcheck == "gbmv200" ]; then
 		count=`ps -ef |grep libreader |grep -v "grep" |wc -l`
 		if [ 0 == $count ];then
 			libreader 720P_50
@@ -340,7 +340,7 @@ wait ${enigma2pid}
 if [ "$ret" -ne "1" ]; then
 	if [ -e /proc/stb/info/boxtype ]; then
 		stbcheck=`cat /proc/stb/info/boxtype`
-		if [ $stbcheck == "viper4k" ] || [ $stbcheck == "sf8008" ] || [ $stbcheck == "sf8008m" ] || [ $stbcheck == "sx988" ] || [ $stbcheck == "sfx6008" ] || [ $stbcheck == "beyonwizv2" ] || [ $stbcheck == "ustym4kpro" ] || [ $stbcheck == "gbmv200" ]; then
+		if [ $stbcheck == "viper4k" ] || [ $stbcheck == "sf8008" ] || [ $stbcheck == "sf8008m" ] || [ $stbcheck == "sx988" ] || [ $stbcheck == "sfx6008" ] || [ $stbcheck == "beyonwizv2" ] || [ $stbcheck == "sx88v2" ] || [ $stbcheck == "gbmv200" ]; then
 			killall -9 libreader; sleep 5
 		fi
 	fi
