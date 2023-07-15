@@ -1,9 +1,11 @@
-from Screens.InfoBar import InfoBar
 from enigma import eServiceReference
+
 from Components.ActionMap import HelpableActionMap
 from Screens.EpgSelectionChannel import EPGSelectionChannel
 from Screens.EpgSelectionBase import EPGServiceZap
+from Screens.InfoBar import InfoBar
 from Screens.TimerEntry import addTimerFromEventSilent
+from Tools.Directories import isPluginInstalled
 
 
 # Keep for backwards compatibility with plugins, including the parameter naming.
