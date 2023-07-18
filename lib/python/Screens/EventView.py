@@ -19,6 +19,7 @@ from Components.Pixmap import Pixmap
 from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.Event import Event
 from RecordTimer import AFTEREVENT
+from Components.Sources.StaticText import StaticText
 from Screens.TimerEntry import TimerEntry, addTimerFromEvent
 from Plugins.Plugin import PluginDescriptor
 from Tools.BoundFunction import boundFunction
@@ -29,6 +30,8 @@ class EventViewContextMenu(Screen):
 		Screen.__init__(self, session)
 		self.setTitle(_('Event view menu'))
 
+		self["description"] = StaticText()
+
 		self["actions"] = ActionMap(["OkCancelActions"],
 			{
 				"ok": self.okbuttonClick,
@@ -36,12 +39,19 @@ class EventViewContextMenu(Screen):
 			})
 
 		self["menu"] = MenuList(menu)
+		if self.updateDescription not in self["menu"].onSelectionChanged:
+			self["menu"].onSelectionChanged.append(self.updateDescription)
+		self.updateDescription()
 
 	def okbuttonClick(self):
 		self["menu"].getCurrent() and self["menu"].getCurrent()[1]()
 
 	def cancelClick(self):
 		self.close(False)
+
+	def updateDescription(self):
+		current = self["menu"].getCurrent()
+		self["description"].text = current and len(current) > 2 and hasattr(current[2], "description") and current[2].description or ""
 
 
 class EventViewBase:
@@ -257,7 +267,7 @@ class EventViewBase:
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO):
 				#only list service or event specific eventinfo plugins here, no servelist plugins
 				if "servicelist" not in p.fnc.__code__.co_varnames:
-					menu.append((p.name, boundFunction(self.runPlugin, p)))
+					menu.append((p.name, boundFunction(self.runPlugin, p), p))
 			if menu:
 				self.session.open(EventViewContextMenu, menu)
 
