@@ -10,8 +10,7 @@ class DownloadWithProgress:
 	def __init__(self, url, outputFile, *args, **kwargs):
 		self.url = url
 		self.outputFile = outputFile
-		self.userAgent = "%s %s Enigma2 HbbTV/1.1.1 (+PVR+RTSP+DL;OpenViX;;;)" % (getMachineBrand(), getMachineName())
-		# self.agent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5"
+		self.userAgent = "%s %s HbbTV/1.1.1 (+PVR+RTSP+DL; Sonic; TV44; 1.32.455; 2.002) Bee/3.5)" % (getMachineBrand(), getMachineName())
 		self.totalSize = 0
 		self.progress = 0
 		self.progressCallback = None
