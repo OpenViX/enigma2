@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-07-15 19:36+0300\n"
+"PO-Revision-Date: 2023-07-18 20:14+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -6908,6 +6908,9 @@ msgstr "Nykyisen ohjelman IMDb-haku"
 msgid "IMDb Search"
 msgstr "IMDb-haku"
 
+msgid "IMDb search"
+msgstr "IMDb-haku"
+
 msgid "INFO"
 msgstr "INFO"
 
@@ -13532,7 +13535,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"15.07.2023\n"
+"18.07.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -18109,6 +18112,9 @@ msgid "Identify image version on bootlogo.mvi."
 msgstr "Tunnista imagen versio bootlogo.mvi:ssa."
 
 msgid "TMDb Search"
+msgstr "TMDb-haku"
+
+msgid "TMDb search"
 msgstr "TMDb-haku"
 
 msgid "TMDB search for current event"
