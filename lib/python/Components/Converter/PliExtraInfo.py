@@ -439,7 +439,10 @@ class PliExtraInfo(Poll, Converter, object):
 		return res
 
 	def createCryptoSpecial(self, info):
-		caid_name = "FTA"
+		refstr = info.getInfoString(iServiceInformation.sServiceref)
+		caid_name = "Free to Air"
+		if "%3a//" in refstr.lower() and not "127.0.0.1" in refstr and not "0.0.0.0" in refstr and not "localhost" in refstr or "@" in refstr:
+				return "IPTV" + ":%06X:%04X" % (int(self.current_provid, 16), info.getInfo(iServiceInformation.sSID))
 		if int(self.current_caid, 16) == 0:
 			return caid_name + ":%06X:%04X" % (int(self.current_provid, 16), info.getInfo(iServiceInformation.sSID))
 		try:
