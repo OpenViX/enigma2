@@ -245,7 +245,7 @@ class ServiceInfo(Screen):
 		if self.number_of_tracks:
 
 			def create_list(i):
-				audioDesc = self.audio.getTrackInfo(i).getDescription()
+				audio_desc = self.audio.getTrackInfo(i).getDescription()
 				audio_pid = self.audio.getTrackInfo(i).getPID()
 				audio_lang = self.audio.getTrackInfo(i).getLanguage() or _("Not defined")
 				if self.IPTV:
