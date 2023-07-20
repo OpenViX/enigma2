@@ -276,7 +276,7 @@ class AudioSelection(ConfigListScreen, Screen):
 					number = str(x + 1)
 					i = audio.getTrackInfo(x)
 					languages = i.getLanguage().split('/')
-					description = i.getDescription().replace("A ", "").replace("A_", "").replace("EAC3", "AC3+").replace("EAC-3", "AC3+").replace("AC-3", "AC3") or ""
+					description = i.getDescription().replace("A ", "").replace("A_", "").replace("EAC3", "AC3+").replace("EAC-3", "AC3+").replace("E-AC3", "AC3+").replace("E-AC-3", "AC3+").replace("AC-3", "AC3").replace("MPEG4-AAC", "HE-AAC").replace("MPEG-4 ", "HE-").replace(" AAC", "AAC").replace("A_MPEG/l3", "MPEG").replace("MPEG-1", "MPEG").replace("MPEG-2AAC", "AAC").replace("(ATSC A/52)", "").replace("(ATSC A/52B)", "").replace("audio", "") or ""
 					selected = ""
 					language = ""
 					if selectedAudio == x:
