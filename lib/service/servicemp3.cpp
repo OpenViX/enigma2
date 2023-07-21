@@ -441,7 +441,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_cuesheet_loaded = false; /* cuesheet CVR */
 	m_use_chapter_entries = false; /* TOC chapter support CVR */
 	m_last_seek_pos = 0; /* CVR last seek position */
-	m_useragent = "Enigma2 HbbTV/1.1.1 (+PVR+RTSP+DL;OpenViX;;;)";
+	m_useragent = "HbbTV/1.1.1 (+PVR+RTSP+DL; Sonic; TV44; 1.32.455; 2.002) Bee/3.5";
 	m_extra_headers = "";
 	m_download_buffer_path = "";
 	m_prev_decoder_time = -1;
@@ -1621,22 +1621,22 @@ RESULT eServiceMP3::getTrackInfo(struct iAudioTrackInfo &info, unsigned int i)
 
 
 	std::map<std::string, std::string> audioReplacements = {
-		{"A ", ""},
-		{"A_", ""},
+		{"AC-3", "AC3"},
 		{"EAC3", "AC3+"},
 		{"EAC-3", "AC3+"},
 		{"E-AC3", "AC3+"},
 		{"E-AC-3", "AC3+"},
-		{"AC-3", "AC3"},
-		{"MPEG4-AAC", "HE-AAC"},
-		{"MPEG-4 ", "HE-"},
-		{" AAC", "AAC"},
-		{"A_MPEG/l3", "MPEG"},
-		{"MPEG-1", "MPEG"},
-		{"MPEG-2AAC", "AAC"},
+		{"-1 ", ""},
+		{"-2 AAC", "AAC"},
+		{"-4 AAC", "AAC"},
+		{"4-AAC", "HE-AAC"},
 		{"(ATSC A/52)", ""},
 		{"(ATSC A/52B)", ""},
-		{" audio", ""}};
+		{"MPEG", ""},
+		{"Layer", ""},
+		{" 2 ", ""},
+		{"(MP2)", "AAC"},
+		{"audio", ""}};
 
 	if (!desc.empty())
 	{
