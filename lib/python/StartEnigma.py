@@ -645,6 +645,7 @@ profile("InputDevice")
 print("[StartEnigma]  Initialising InputDevice.")
 from Components.InputDevice import InitInputDevices
 InitInputDevices()
+import Components.InputHotplug
 
 profile("UserInterface")
 print("[StartEnigma]  Initialising UserInterface.")
