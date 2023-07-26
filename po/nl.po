@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-01 04:37+0000\n"
-"PO-Revision-Date: 2023-04-19 16:24+0200\n"
+"POT-Creation-Date: 2023-07-10 21:33+0000\n"
+"PO-Revision-Date: 2023-07-11 16:07+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #, python-format
 msgid ""
@@ -324,26 +324,6 @@ msgstr "%-m/%d "
 
 msgid "%-m/%d/%Y"
 msgstr "%-m/%d/%Y"
-
-#, python-format
-msgid "%.0f GB"
-msgstr "%.0f GB"
-
-#, python-format
-msgid "%.0f MB"
-msgstr "%.0f MB"
-
-#, python-format
-msgid "%.0f kB"
-msgstr "%.0f kB"
-
-#, python-format
-msgid "%.2f GB"
-msgstr "%.2f GB"
-
-#, python-format
-msgid "%02d MB"
-msgstr "%02d MB"
 
 #, python-format
 msgid "%2.1f sec"
@@ -852,10 +832,6 @@ msgid "%d %b %Y"
 msgstr "%d %b %Y"
 
 #, python-format
-msgid "%d B"
-msgstr "%d B"
-
-#, python-format
 msgid "%d GB"
 msgstr "%d GB"
 
@@ -1118,10 +1094,6 @@ msgstr "%s (%s)\n"
 #, python-format
 msgid "%s - %s (%s%d min)"
 msgstr "%s - %s (%s%d min)"
-
-#, python-format
-msgid "%s GB"
-msgstr "%s GB"
 
 #, python-format
 msgid "%s Info - Configuration"
@@ -1776,6 +1748,9 @@ msgstr "Favorieten bewerken afsluiten"
 
 msgid "About"
 msgstr "Uw ontvanger"
+
+msgid "About screen setup"
+msgstr "About screen instellingen"
 
 msgid "Accept the current selection"
 msgstr "Accepteer huidige selectie"
@@ -2818,6 +2793,9 @@ msgstr "Boot Device:\t%s%s\n"
 msgid "Boot Device: \tRecovery Slot\n"
 msgstr "Boot Device: \tRecovery Slot\n"
 
+msgid "Boot Logo Identification"
+msgstr "Bootlogo identificatie"
+
 #, python-format
 msgid "Bootloader:\t%s\n"
 msgstr "Bootloader:\t%s\n"
@@ -3664,6 +3642,9 @@ msgstr "Configureer DVB-S"
 msgid "Configure DVB-T"
 msgstr "Configureer DVB-T"
 
+msgid "Configure Vu Multiboot interface"
+msgstr "Configureer Vu Multiboot interface"
+
 msgid "Configure alignment of service events."
 msgstr "Configureer uitlijning van programma's."
 
@@ -4045,6 +4026,9 @@ msgstr "Kopieer naar favorietenlijsten"
 msgid "Copying files"
 msgstr "Kopieert bestanden"
 
+msgid "Core dumps are helpful for developers in case of a FATAL SIGNAL crash in the C++ code. Typical core dump size is 110 MB so adjust maximum space used and choose proper location."
+msgstr "Core dumps zijn behulpzaam voor ontwikkelaars in het geval van een FATAL SIGNAL crash in de C++ code. Een typische core dump is 110 MB groot, dus de maximale grootte en de lokatie moeten goed gekozen zijn."
+
 msgid "Correct invalid EPG data"
 msgstr "Corrigeer ongeldige EPG-data"
 
@@ -4288,6 +4272,9 @@ msgstr "Czechia"
 msgid "DAC"
 msgstr "DAC"
 
+msgid "DD-MM-YYYY"
+msgstr "DD-MM-JJJJ"
+
 msgid "DHCP"
 msgstr "DHCP"
 
@@ -4407,6 +4394,9 @@ msgstr "Datum"
 
 msgid "Date first"
 msgstr "Datum eerst"
+
+msgid "Date format"
+msgstr "Datumformaat"
 
 msgid "Date style"
 msgstr "Datumstijl"
@@ -5272,9 +5262,6 @@ msgstr "EPG instellingen"
 msgid "EPGSETUP"
 msgstr "EPGSETUP"
 
-msgid "ERROR"
-msgstr "FOUT"
-
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
 msgstr "FOUT - zoeken mislukt (%s)!"
@@ -5443,9 +5430,6 @@ msgstr "Viasat EPG inschakelen"
 msgid "Enable Virgin EPG"
 msgstr "Virgin EPG inschakelen"
 
-msgid "Enable Vu+ MultiBoot"
-msgstr "Vu+ MultiBoot inschakelen"
-
 msgid "Enable auto cable scan"
 msgstr "Automatische kabelscan inschakelen"
 
@@ -5470,6 +5454,9 @@ msgstr "Favorietenlijst bewerken activeren"
 
 msgid "Enable client mode"
 msgstr "Clientmodus inschakelen"
+
+msgid "Enable core dumps *"
+msgstr "Activeer core dumps *"
 
 msgid "Enable debug logs *"
 msgstr "Activeer debug logs *"
@@ -6364,9 +6351,6 @@ msgstr "Voetbal"
 msgid "Für Kinder"
 msgstr "Voor kinderen"
 
-msgid "GB"
-msgstr "GB"
-
 msgid "GREEN"
 msgstr "GROEN"
 
@@ -6976,6 +6960,9 @@ msgstr "Hoeveel minuten wilt u toevoegen aan de opname?"
 msgid "How many minutes do you want to record for?"
 msgstr "Hoeveel minuten wilt u opnemen?"
 
+msgid "How to display the date format for date items in the About screen."
+msgstr "Hoe de datum getoond moet worden in het 'About'-scherm."
+
 msgid "Http(s) stream start delay"
 msgstr "Http(s) stream startvertraging"
 
@@ -7054,6 +7041,9 @@ msgstr "Iceland"
 
 msgid "Icons"
 msgstr "Iconen"
+
+msgid "Identify image version on bootlogo.mvi."
+msgstr "Identificeer de image versie op bootlogo.mvi."
 
 msgid "Idle Time: "
 msgstr "Tijd werkloos: "
@@ -7315,9 +7305,6 @@ msgstr "Infotainment"
 
 msgid "Init"
 msgstr "Initialiseren"
-
-msgid "Init Vu+ MultiBoot"
-msgstr "Init Vu+ MultiBoot"
 
 msgid "Init modules"
 msgstr "Modules initialiseren"
@@ -8054,6 +8041,9 @@ msgstr "MEDIA"
 msgid "MENU"
 msgstr "MENU"
 
+msgid "MM-DD-YYYY"
+msgstr "MM-DD-JJJJ"
+
 msgid "MMA"
 msgstr "MMA"
 
@@ -8584,6 +8574,9 @@ msgstr "MultiBootselectie akties"
 
 msgid "MultiType"
 msgstr "Multitype"
+
+msgid "Multiboot"
+msgstr "Multiboot"
 
 msgid "Multimedia"
 msgstr "Multimedia"
@@ -10266,19 +10259,6 @@ msgstr "Druk op  '0' om te schakelen tussen de PiP-modi"
 
 msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."
 msgstr "Druk op GROEN (Reboot) om van image te veranderen, op GEEL (Verwijder) om een image te verwijderen of op BLAUW (Herstel) om alle images te herstellen."
-
-msgid ""
-"Press Green key to enable MultiBoot\n"
-"\n"
-"Will reboot within 10 seconds,\n"
-"unless you have eMMC slots to restore.\n"
-"Restoring eMMC slots can take from 1 -> 5 minutes per slot."
-msgstr ""
-"Druk op GROEN om MultiBoot in te schakelen\n"
-"\n"
-"Zal binnen 10 seconds rebooten,\n"
-"tenzij u eMMC-slots wilt herstellen .\n"
-"Herstellen van eMMC slots kan 1 -> 5 minutes per slot duren."
 
 msgid "Press INFO on your remote control for additional information."
 msgstr "Druk op INFO voor aanvullende informatie."
@@ -13795,9 +13775,6 @@ msgstr "T2MI PLP ID"
 msgid "T2MI RAW Mode"
 msgstr "T2MI RAW modus"
 
-msgid "TB"
-msgstr "TB"
-
 msgid "TEXT"
 msgstr "TEKST"
 
@@ -15524,22 +15501,17 @@ msgstr "De volumetoetsen van de AB van de ontvanger zullen het TV-volume regelen
 msgid "Vorschau"
 msgstr "Bezichtiging"
 
-msgid "Vu+ MultiBoot Initialisation - will reboot after 10 seconds."
-msgstr "Vu+ MultiBoot Initialisatie - zal na 10 seconden rebooten."
+msgid "Vu+ 4K image install options"
+msgstr "Vu+ 4K image installeer opties"
 
 msgid ""
-"Vu+ MultiBoot Initialisation in progress\n"
-"\n"
-"Will reboot after restoring any eMMC slots\n"
-"This can take from 1 -> 5 minutes per slot."
+"Vu+ Multiboot - PLEASE WAIT WHILE INITIALISING!\n"
+"  - will take upto 5 minutes plus 5 minutes per restored eMMC slot.\n"
+"  - after installing Recovery and Slot1 image, receiver will reboot to Slot 1 setup wizard."
 msgstr ""
-"Vu+ MultiBoot Initialisatie in uitvoering\n"
-"\n"
-"Zal rebooten na het herstellen van de eMMC slots\n"
-"Dit kan 1 -> 5 minuten per slot duren."
-
-msgid "Vu+ MultiBoot Manager"
-msgstr "Vu+ MultiBoot Manager"
+"Vu+ Multiboot - WACHT TERWIJL DEZE GEÏNITIALISEERD WORDT!\n"
+"  - duurt 5 minuten plus 5 minuten per hersteld eMMC slot.\n"
+"  - na het installeren van Recovery en het Slot1 image, zal de ontvanger rebooten naar Slot 1 setup wizard."
 
 msgid "W"
 msgstr "W"
@@ -15703,6 +15675,19 @@ msgstr ""
 "Kies 'Ja' om de instellingen op te slaan of 'Nee' om deze stap over te slaan."
 
 msgid ""
+"Welcome to OpenViX!\n"
+"\n"
+"Select 'Standard' to setup Standard Vu+ image.\n"
+"\n"
+"Select 'Multiboot' to setup Vu+ Multiboot."
+msgstr ""
+"Welkom bij OpenViX!\n"
+"\n"
+"Kies 'Standaard' om een standaard Vu+ image in te stellen.\n"
+"\n"
+"Kies 'Multiboot' om Vu+ Multiboot in te stellen."
+
+msgid ""
 "Welcome to the cutlist editor.\n"
 "\n"
 "Seek to the start of the stuff you want to cut away. Press OK, select 'start cut'.\n"
@@ -15814,8 +15799,10 @@ msgstr "Indien ingeschakeld mogen opnames live-TV beeindigen als er niet voldoen
 msgid "When enabled, a warning will be displayed and the user will get an option to stop or to continue the timeshift."
 msgstr "Indien ingeschakeld krijgt u de keuze om timeshift te stoppen of door te laten lopen."
 
-msgid "When enabled, always descramble receiving http streams. This takes up more resources (descrambling demuxers), only enable if necessary. Individual streams are always descrambled if 0x100 is added to the service type, regardless of this setting. Default off."
-msgstr "Indien ingeschakeld zullen inkomende streams altijd gedecodeerd worden. Dit gebruikt meer systeembronnen (decoderen, demuxen), zodat het verstandig is dit alleen in te schakelen indien nodig. Bovendien wordt dit niet door alle STB's ondersteund. Individuele streams zullen altijd worden gedecodeerd als '0x100' is toegevoegd aan het servicetype, ongeacht de instelling die hier is gemaakt. De standaard waarde is 'uit'."
+msgid "When enabled, always descramble receiving http streams. This takes up more resources (descrambling demuxers), only enable if necessary. Individual streams are always descrambled if 0x100 is added to the service type, regardless of this setting."
+msgstr ""
+"Indien ingeschakeld zullen inkomende streams altijd gedecodeerd worden. Dit gebruikt meer systeembronnen (decoderen, demuxen), zodat het verstandig is dit alleen in te schakelen indien nodig. \n"
+"Individuele streams zijn altijd gecodeerd indien 0x100 is toegevoegd aan het service-type, ongeacht deze instelling."
 
 msgid "When enabled, authentication is required to watch http streams."
 msgstr "Indien geactiveerd is authenticatie voor HTTP-streams noodzakelijk."
@@ -15844,8 +15831,8 @@ msgstr "Indien ingeschakeld zullen grafische DVB-ondertitels op hun originele pl
 msgid "When enabled, graphical DVB subtitles will be displayed in yellow, instead of the original color."
 msgstr "Indien ingeschakeld worden grafische DVB-ondertitels vertoond in geel in plaats van in de originele kleur."
 
-msgid "When enabled, http streams are descrambled on the server side. The (remote) client receiver does not have to do descrambling. Default on."
-msgstr "Indien ingeschakeld worden streams altijd door de server gedecodeerd. De klnat-box hoeft niet te decoderen. De standaardwaarde is 'Aan'."
+msgid "When enabled, http streams are descrambled on the server side. The (remote) client receiver does not have to do descrambling."
+msgstr "Indien ingeschakeld worden streams altijd door de server gedecodeerd. De klant-box hoeft niet te decoderen."
 
 msgid "When enabled, it is possible to leave the Movie Player with exit."
 msgstr "Indien ingeschakeld kan de speler (ook) verlaten worden door op de exit-toets te drukken."
@@ -16068,6 +16055,9 @@ msgstr "JA"
 
 msgid "YPbPr"
 msgstr "YPbPr (Component)"
+
+msgid "YYYY-MM-DD"
+msgstr "JJJJ-MM-DD"
 
 msgid "Year"
 msgstr "Jaar"
@@ -16536,9 +16526,6 @@ msgstr "[TimeShift] Timeshift wordt herstart!"
 
 msgid "[Timeshift] Merging records failed!"
 msgstr "[Timeshift] Samenvoegen van opnames is milukt!"
-
-msgid "[VuplusKexec][create Vu Multiboot environment] - Unable to complete, Vu+ Multiboot files missing"
-msgstr "[VuplusKexec][creëer Vu Multiboot omgeving] - Kan niet vervolgen, Vu+ Multiboot bestanden ontbreken"
 
 msgid "[alternative edit]"
 msgstr "[alternatieven bewerken]"
@@ -17896,8 +17883,36 @@ msgid "| separated list of prefixes you'd like to be removed from event names, s
 msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, gescheiden door |, e.g. New:|Live:"
 
 #, python-format
+#~ msgid "%.0f GB"
+#~ msgstr "%.0f GB"
+
+#, python-format
+#~ msgid "%.0f MB"
+#~ msgstr "%.0f MB"
+
+#, python-format
+#~ msgid "%.0f kB"
+#~ msgstr "%.0f kB"
+
+#, python-format
+#~ msgid "%.2f GB"
+#~ msgstr "%.2f GB"
+
+#, python-format
+#~ msgid "%02d MB"
+#~ msgstr "%02d MB"
+
+#, python-format
+#~ msgid "%d B"
+#~ msgstr "%d B"
+
+#, python-format
 #~ msgid "%d.%03d GB"
 #~ msgstr "%d.%03d GB"
+
+#, python-format
+#~ msgid "%s GB"
+#~ msgstr "%s GB"
 
 #, python-format
 #~ msgid "%s Log ( %s-Version: %s )"
@@ -18004,8 +18019,14 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "ECM-Time"
 #~ msgstr "ECM Tijd"
 
+#~ msgid "ERROR"
+#~ msgstr "FOUT"
+
 #~ msgid "Enable Fast Channel Change"
 #~ msgstr "Schakel FCC in"
+
+#~ msgid "Enable Vu+ MultiBoot"
+#~ msgstr "Vu+ MultiBoot inschakelen"
 
 #, fuzzy
 #~ msgid "EtPortal"
@@ -18057,6 +18078,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "G"
 #~ msgstr "GB"
 
+#~ msgid "GB"
+#~ msgstr "GB"
+
 #, fuzzy
 #~ msgid "H"
 #~ msgstr "CH"
@@ -18105,6 +18129,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "IMDB Search"
 #~ msgstr "IMDb zoeken"
 
+#~ msgid "Init Vu+ MultiBoot"
+#~ msgstr "Init Vu+ MultiBoot"
+
 #~ msgid "Instant recording..."
 #~ msgstr "Directe opname..."
 
@@ -18135,6 +18162,19 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Polarisation:"
 #~ msgstr "Polarisatie:"
+
+#~ msgid ""
+#~ "Press Green key to enable MultiBoot\n"
+#~ "\n"
+#~ "Will reboot within 10 seconds,\n"
+#~ "unless you have eMMC slots to restore.\n"
+#~ "Restoring eMMC slots can take from 1 -> 5 minutes per slot."
+#~ msgstr ""
+#~ "Druk op GROEN om MultiBoot in te schakelen\n"
+#~ "\n"
+#~ "Zal binnen 10 seconds rebooten,\n"
+#~ "tenzij u eMMC-slots wilt herstellen .\n"
+#~ "Herstellen van eMMC slots kan 1 -> 5 minutes per slot duren."
 
 #~ msgid "Press OK to set the MAC address."
 #~ msgstr "Druk op OK om MAC-adres in te stellen."
@@ -18186,6 +18226,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Sync NTP every (minutes)"
 #~ msgstr "Synchroniseer NTP elke X minuten"
 
+#~ msgid "TB"
+#~ msgstr "TB"
+
 #~ msgid ""
 #~ "The software management extension is not installed!\n"
 #~ "Please install it."
@@ -18235,11 +18278,31 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Visual impaired commentary"
 #~ msgstr "Audiodescriptie voor slechtzienden"
 
+#~ msgid "Vu+ MultiBoot Initialisation - will reboot after 10 seconds."
+#~ msgstr "Vu+ MultiBoot Initialisatie - zal na 10 seconden rebooten."
+
+#~ msgid ""
+#~ "Vu+ MultiBoot Initialisation in progress\n"
+#~ "\n"
+#~ "Will reboot after restoring any eMMC slots\n"
+#~ "This can take from 1 -> 5 minutes per slot."
+#~ msgstr ""
+#~ "Vu+ MultiBoot Initialisatie in uitvoering\n"
+#~ "\n"
+#~ "Zal rebooten na het herstellen van de eMMC slots\n"
+#~ "Dit kan 1 -> 5 minuten per slot duren."
+
+#~ msgid "Vu+ MultiBoot Manager"
+#~ msgstr "Vu+ MultiBoot Manager"
+
 #~ msgid "When enabled the feeds and software updates may contain unstable experimental versions. Enable this at your own risk."
 #~ msgstr "Indien geactiveerd kunnen feeds en software updates die onstabiele, experimentele versies bevatten, gebruikt worden. Inschakelen geschiedt op uw eigen risico."
 
 #~ msgid "Zap Up/Down"
 #~ msgstr "Zap omhoog/omlaag"
+
+#~ msgid "[VuplusKexec][create Vu Multiboot environment] - Unable to complete, Vu+ Multiboot files missing"
+#~ msgstr "[VuplusKexec][creëer Vu Multiboot omgeving] - Kan niet vervolgen, Vu+ Multiboot bestanden ontbreken"
 
 #~ msgid "alphabetic"
 #~ msgstr "alfabetisch"

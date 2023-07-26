@@ -884,8 +884,8 @@ class NimManager:
 		# nim_slots is an array which has exactly one entry for each slot, even for empty ones.
 		self.nim_slots = []
 
-		if config.clientmode.enabled.value:
-			print("[NimManager][enumerateNIMs] Receiver in client mode. Local NIMs will be ignored.")
+		if config.clientmode.enabled.value or (SystemInfo["HasKexecMultiboot"] and SystemInfo["MultiBootSlot"] == 0):
+			print("[NimManager][enumerateNIMs] Receiver in client mode or Vu+ Recovery. Local NIMs will be ignored.")
 			return
 
 		try:
