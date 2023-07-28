@@ -1,10 +1,10 @@
 import errno
-import xml.etree.cElementTree
 
 from os import environ, path, symlink, unlink, walk
 from time import gmtime, localtime, strftime, time
 
 from Components.config import ConfigSelection, ConfigSubsection, config
+from Tools.Directories import fileReadXML
 from Tools.StbHardware import setRTCoffset
 
 # The DEFAULT_AREA setting is usable by the image maintainers to select the
@@ -166,30 +166,7 @@ class Timezones:
 	# Read the timezones.xml file and load all time zones found.
 	#
 	def readTimezones(self, filename=TIMEZONE_FILE):
-		root = None
-		try:
-			with open(filename, "r") as fd:  # This open gets around a possible file handle leak in Python's XML parser.
-				try:
-					root = xml.etree.cElementTree.parse(fd).getroot()
-				except xml.etree.cElementTree.ParseError as err:
-					root = None
-					fd.seek(0)
-					content = fd.readlines()
-					line, column = err.position
-					print("[Timezones] XML Parse Error: '%s' in '%s'!" % (err, filename))
-					data = content[line - 1].replace("\t", " ").rstrip()
-					print("[Timezones] XML Parse Error: '%s'" % data)
-					print("[Timezones] XML Parse Error: '%s^%s'" % ("-" * column, " " * (len(data) - column - 1)))
-				except Exception as err:
-					root = None
-					print("[Timezones] Error: Unable to parse time zone data in '%s' - '%s'!" % (filename, err))
-		except (IOError, OSError) as err:
-			if err.errno == errno.ENOENT:  # No such file or directory
-				print("[Timezones] Note: Classic time zones in '%s' are not available." % filename)
-			else:
-				print("[Timezones] Error %d: Opening time zone file '%s'! (%s)" % (err.errno, filename, err.strerror))
-		except Exception as err:
-			print("[Timezones] Error: Unexpected error opening time zone file '%s'! (%s)" % (filename, err))
+		root = fileReadXML(filename)
 		zones = []
 		if root is not None:
 			for zone in root.findall("zone"):
