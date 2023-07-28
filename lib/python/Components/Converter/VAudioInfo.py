@@ -30,6 +30,12 @@ class VAudioInfo(Poll, Converter, object):
 			"11_pcm": ("pcm",),
 			"12_mpeg": ("mpeg",),
 			"13_dolbytruehd": ("truehd",),
+			"14_aacplus": ("aac+",),
+			"15_ipcm": ("ipcm",),
+			"16_wma-pro": ("wma pro",),
+			"17_vorbis": ("vorbis",),
+			"18_opus": ("opus",),
+			"19_amr": ("amr",),
 			}
 		self.codec_info = {
 			"dolbytruehd": ("51", "20", "71"),
