@@ -1,6 +1,5 @@
 from os import access, fsync, makedirs, remove, rename, path as ospath, statvfs, W_OK
 from timer import Timer, TimerEntry
-import xml.etree.cElementTree
 from bisect import insort
 from sys import maxsize
 from time import localtime, strftime, ctime, time
@@ -1093,27 +1092,7 @@ class RecordTimer(Timer):
 		return False
 
 	def loadTimer(self, justLoad=False):		# justLoad is passed on to record()
-		try:
-			file = open(self.Filename, 'r')
-			doc = xml.etree.cElementTree.parse(file)
-			file.close()
-		except SyntaxError:
-			from Tools.Notifications import AddPopup
-			from Screens.MessageBox import MessageBox
-
-			AddPopup(_("The timer file (timers.xml) is corrupt and could not be loaded."), type=MessageBox.TYPE_ERROR, timeout=0, id="TimerLoadFailed")
-
-			print("[RecordTimer] timers.xml failed to load!")
-			try:
-				rename(self.Filename, self.Filename + "_old")
-			except (IOError, OSError):
-				print("[RecordTimer] renaming broken timer failed")
-			return
-		except IOError:
-			print("[RecordTimer] timers.xml not found!")
-			return
-
-		root = doc.getroot()
+		root = Directories.fileReadXML(self.Filename, "<timers />")
 
 		# put out a message when at least one timer overlaps
 		checkit = False
