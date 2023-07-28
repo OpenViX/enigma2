@@ -1,11 +1,9 @@
-from os import close, listdir, O_NONBLOCK, O_RDWR, open as os_open, path, write
+from os import close, listdir, O_RDWR, open as os_open, path, write
 from fcntl import ioctl
 import platform
 import struct
-import errno
-import xml.etree.cElementTree
 from enigma import eRCInput
-from keyids import KEYIDS, KEYIDNAMES
+from keyids import KEYIDNAMES
 
 from boxbranding import getBrandOEM
 from Components.config import config, ConfigInteger, ConfigSlider, ConfigSubsection, ConfigText, ConfigYesNo
