@@ -20,12 +20,13 @@ class StreamInfo(Converter):
 		if playref:
 			refstr = playref.toString()
 			strtype = refstr.replace('%3a', ':')
-			if '0.0.0.0:' in strtype and strtype.startswith('1:0:') or '127.0.0.1:' in strtype and strtype.startswith('1:0:') or 'localhost:' in strtype and strtype.startswith('1:0:'):
-				return 'Stream Relay'
+			if strtype.startswith('1:0:'):
+				if bool([1 for x in ('0.0.0.0:', '127.0.0.1:', 'localhost:') if x in strtype]):
+					return 'Stream Relay'
+				elif '%3a' in refstr:
+					return 'GStreamer'
 			elif '%3a' in refstr and strtype.startswith('4097:0:'):
 				return 'MediaPlayer'
-			elif '%3a' in refstr and strtype.startswith('1:0:'):
-				return 'GStreamer'
 			elif '%3a' in refstr and strtype.startswith('5001:0:'):
 				return 'GstPlayer'
 			elif '%3a' in refstr and strtype.startswith('5002:0:'):
