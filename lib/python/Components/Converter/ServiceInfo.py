@@ -185,7 +185,7 @@ class ServiceInfo(Poll, Converter):
 				idx = 0
 				while idx < n:
 					i = audio.getTrackInfo(idx)
-					description = i.getDescription()
+					description = i.getDescription().replace("A_", "").replace("", "").replace("AC-3", "AC3").replace("(ATSC A/52)", "").replace("(ATSC A/52B)", "").replace("MPEG", "AAC").replace(" Layer 2 (MP2)", "").replace(" 3 (MP3)", "MP3").replace("-1", "").replace("2-", "").replace("-4 AAC", "").replace("4-AAC", "HE-AAC").replace("audio", "").replace("/L3", "").replace("/mpeg", "AAC").replace("/x-",  "").replace("raw",  "Dolby TrueHD").replace("E-AC3", "AC3+").replace("EAC3", "AC3+").replace("IPCM", "AC3").replace("LPCM", "AC3+").replace("AAC_PLUS", "AAC+").replace("AAC_LATM", "AAC").replace("WMA/PRO", "WMA Pro")
 					if description and description.split()[0] in ("AC4", "AAC+", "AC3", "AC3+", "Dolby", "DTS", "DTS-HD", "HE-AAC", "IPCM", "LPCM", "WMA Pro"):
 						if self.type == self.IS_MULTICHANNEL:
 							return True
