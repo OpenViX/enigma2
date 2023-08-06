@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-07-18 20:14+0300\n"
+"PO-Revision-Date: 2023-08-06 18:01+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #, python-format
 msgid ""
@@ -13535,7 +13535,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"18.07.2023\n"
+"06.08.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -16975,6 +16975,9 @@ msgstr "Ei mitään"
 msgid "normal"
 msgstr "Normaali"
 
+msgid "Normal"
+msgstr "Normaali"
+
 msgid "not configured"
 msgstr "Ei määritetty"
 
@@ -18132,3 +18135,6 @@ msgstr "TMDb-haku korostetusta ohjelmasta"
 
 msgid "IMDb search for highlighted event"
 msgstr "IMDb-haku korostetusta ohjelmasta"
+
+msgid "High"
+msgstr "Korkea"
