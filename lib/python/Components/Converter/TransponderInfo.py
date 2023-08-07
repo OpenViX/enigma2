@@ -67,7 +67,7 @@ class TransponderInfo(Converter):
 		# e.g. <convert type="TransponderInfo">DVB-S;DVB-S2</convert> to return True for either.
 		s = self.getText()
 		# get the first group of characters, and, convert to lower case
-		s = s and s.strip().split() and s.strip().split()[0].lower()
+		s = s and s.strip().split() and s.strip().split()[0].replace(_("Stream"), "Stream").lower()
 		# only populated entries, and, convert to lower case
 		t = self.type and [x.lower() for x in self.type if x]
 		return bool(s and t and s in t)
