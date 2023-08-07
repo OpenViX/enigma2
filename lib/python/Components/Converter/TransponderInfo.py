@@ -30,10 +30,11 @@ class TransponderInfo(Converter):
 				ref = nref
 				info = eServiceCenter.getInstance().info(ref)
 			transponderraw = info.getInfoObject(ref, iServiceInformation.sTransponderData)
-			ref = ref.toString().replace("%3a", ":")
+			ref = ref.toString()
 		else:
 			transponderraw = info.getInfoObject(iServiceInformation.sTransponderData)
 			ref = info.getInfoString(iServiceInformation.sServiceref)
+		ref = ref.replace("%3a", ":")
 		if transponderraw:
 			transponderdata = ConvertToHumanReadable(transponderraw)
 			# retreive onid and tsid from service reference
