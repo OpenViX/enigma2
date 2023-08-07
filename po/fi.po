@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-08-06 18:01+0300\n"
+"PO-Revision-Date: 2023-08-07 18:40+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13535,7 +13535,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"06.08.2023\n"
+"07.08.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -14136,6 +14136,9 @@ msgstr "Tämä poistaa pysyvästi nykyiset määritykset. Kannattaa ensiksi tehd
 
 msgid "This will permanently delete the current configuration. It would be a good idea to make a backup before taking this drastic action. Are you certain you want to continue with a factory reset?"
 msgstr "Tämä poistaa pysyvästi nykyiset määritykset. Kannattaa ensiksi tehdä varmuuskopio. Haluatko varmasti palauttaa tehdasasetukset?"
+
+msgid "This will permanently delete the current configuration. Although settings backup requested, there is No backup device attached, are you certain you want to continue with a factory reset?"
+msgstr "Tämä poistaa pysyvästi nykyiset määritykset. Vaikka asetusten varmuuskopiointia pyydettiin, varmuuskopiointilaitetta ei ole liitetty, haluatko varmasti palauttaa tehdasasetukset?"
 
 msgid "Three"
 msgstr "Kolme"
