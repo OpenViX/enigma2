@@ -1,5 +1,5 @@
 diff --git a/configure.ac b/configure.ac
-index 9e9e5479e4..9eb303e317 100644
+index 7ea83f92d3..01b7c9eaab 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -626,6 +626,8 @@ lib/python/Plugins/SystemPlugins/DefaultServicesScanner/Makefile
@@ -1482,7 +1482,7 @@ index 10b693ca05..cf69e41e1e 100644
  		return self.instance.atBegin()
  
 diff --git a/lib/python/Components/SystemInfo.py b/lib/python/Components/SystemInfo.py
-index c4f25ce5a0..b928b2daf8 100644
+index 35530ec41a..6f612839fe 100644
 --- a/lib/python/Components/SystemInfo.py
 +++ b/lib/python/Components/SystemInfo.py
 @@ -301,6 +301,7 @@ SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable ha
@@ -2421,10 +2421,10 @@ index ee97f458aa..c379a8ef38 100644
  	void gotNewEvent(int error);
 diff --git a/lib/service/servicedvbfcc.cpp b/lib/service/servicedvbfcc.cpp
 new file mode 100644
-index 0000000000..5494521807
+index 0000000000..0005743f6e
 --- /dev/null
 +++ b/lib/service/servicedvbfcc.cpp
-@@ -0,0 +1,501 @@
+@@ -0,0 +1,503 @@
 +#include <lib/service/servicedvbfcc.h>
 +#include <lib/components/file_eraser.h>
 +#include <lib/dvb/decoder.h>
@@ -2443,10 +2443,12 @@ index 0000000000..5494521807
 +
 +void eDVBServiceFCCPlay::serviceEvent(int event)
 +{
++	RESULT ret = 0;
++
 +	if (!m_is_primary) // PIP mode
 +	{
-+		eDVBServicePlay::serviceEvent(event);
-+		return;
++		ret = eDVBServicePlay::start();
++		return ret;
 +	}
 +
 +	m_tune_state = event;
@@ -2536,8 +2538,8 @@ index 0000000000..5494521807
 +{
 +	if (!m_is_primary) // PIP mode
 +	{
-+		eDVBServicePlay::start();
-+		return 0;
++		ret = eDVBServicePlay::start();
++		return ret;
 +	}
 +
 +	if (m_fcc_flag & fcc_start) // already started
