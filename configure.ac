@@ -538,7 +538,7 @@ if test x"$with_lcddev" != xno ; then
 fi
 
 AC_ARG_WITH(fcc,
-	AC_HELP_STRING([--with-fcc], [add FCC system plugin]),
+	AS_HELP_STRING([--with-fcc], [add FCC system plugin]),
 	[[with_fcc=$withval]],
 	[[with_fcc=no]]
 )
