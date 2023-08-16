@@ -1,4 +1,4 @@
-from os import listdir, path
+from os import listdir, path, stat
 
 from . import _
 from Plugins.Plugin import PluginDescriptor
@@ -49,43 +49,23 @@ def setLanguageFromBackup(backupfile):
 
 
 def checkConfigBackup():
-	try:
-		devmounts = []
-		list = []
-		files = []
-		for dir in ["/media/%s/backup" % media for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
-			devmounts.append(dir)
-		if len(devmounts):
-			for devpath in devmounts:
-				if path.exists(devpath):
-					try:
-						files = listdir(devpath)
-					except:
-						files = []
-				else:
-					files = []
-				if len(files):
-					for file in files:
-						if file.endswith(".tar.gz") and "vix" in file.lower():
-							list.append((path.join(devpath, file)))
-		if len(list):
-			print("[RestoreWizard] Backup Image:", list[0])
-			backupfile = list[0]
-			if path.isfile(backupfile):
-				setLanguageFromBackup(backupfile)
-			return True
-		else:
-			return None
-	except IOError as e:
-		print("[ViX] unable to use device (%s)..." % str(e))
-		return None
+	backups = []
+	for dir in ["/media/%s/backup" % media for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
+		try:
+			backups += [{"name": f, "mtime": stat(f).st_mtime} for x in listdir(dir) if (f := path.join(dir, x)) and path.isfile(f) and f.endswith(".tar.gz") and "vix" in f.lower()]
+		except FileNotFoundError:  # e.g. /media/autofs/xxx will crash listdir if "xxx" is inactive
+			pass
+	if backups:
+		backupfile = next(iter(sorted(backups, key=lambda x: x["mtime"], reverse=True)))["name"]  # select the most recent
+		print("[RestoreWizard] Backup Image:", backupfile)
+		return backupfile
+	return None
 
 
 if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
-	if checkConfigBackup() is None:
-		backupAvailable = 0
-	else:
-		backupAvailable = 1
+	backupAvailable = checkConfigBackup()
+	if backupAvailable:
+		setLanguageFromBackup(backupAvailable)
 
 
 def VIXMenu(session):
@@ -224,10 +204,11 @@ def Plugins(**kwargs):
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=ImageManagerautostart))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=BackupManagerautostart))
 	plist.append(PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=ScriptRunnerAutostart))
-	if config.misc.firstrun.value and not config.misc.restorewizardrun.value and backupAvailable == 0:
-		plist.append(PluginDescriptor(name=_("Language Wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(1, LanguageWizard)))
-	if config.misc.firstrun.value and not config.misc.restorewizardrun.value and backupAvailable == 1:
-		plist.append(PluginDescriptor(name=_("Restore wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(4, RestoreWizard)))
+	if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
+		if backupAvailable:
+			plist.append(PluginDescriptor(name=_("Restore wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(4, RestoreWizard)))
+		else:
+			plist.append(PluginDescriptor(name=_("Language Wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(1, LanguageWizard)))
 	plist.append(PluginDescriptor(name=_("Ipkg"), where=PluginDescriptor.WHERE_FILESCAN, needsRestart=False, fnc=filescan))
 	plist.append(PluginDescriptor(name=_("ViX Backup manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=BackupManagerMenu))
 	plist.append(PluginDescriptor(name=_("ViX Image manager"), where=PluginDescriptor.WHERE_VIXMENU, fnc=ImageManagerMenu))
