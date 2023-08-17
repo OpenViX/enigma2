@@ -470,7 +470,7 @@ from Screens import InfoBar
 
 from Components.SystemInfo import SystemInfo	#	don't move this import
 VuRecovery = SystemInfo["HasKexecMultiboot"] and SystemInfo["MultiBootSlot"] == 0
-print("[StartEnigma]  Is this VuRecovery?. Recovery = ", VuRecovery)
+# print("[StartEnigma]  Is this VuRecovery?. Recovery = ", VuRecovery)
 
 from Components.config import config, configfile, ConfigInteger, ConfigSelection, ConfigText, ConfigYesNo, NoSave
 if not VuRecovery:

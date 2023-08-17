@@ -473,8 +473,8 @@ class SystemNetworkInfo(AboutBase):
 			self.iface = "wlan3"
 
 		rx_bytes, tx_bytes = about.getIfTransferredData(self.iface)
-		self.AboutText += "\n" + _("Bytes received:") + "\t" + rx_bytes + "\n"
-		self.AboutText += _("Bytes sent:") + "\t" + tx_bytes + "\n"
+		self.AboutText += "\n" + _("Bytes received:") + "\t" + bytesToHumanReadable(int(rx_bytes)) + "\n"
+		self.AboutText += _("Bytes sent:") + "\t" + bytesToHumanReadable(int(tx_bytes)) + "\n"
 		for line in popen("ethtool %s |grep Speed" % self.iface, "r"):
 			line = line.strip().split(":")
 			line = line[1].replace(" ", "")

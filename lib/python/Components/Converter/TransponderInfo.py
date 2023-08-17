@@ -30,14 +30,15 @@ class TransponderInfo(Converter):
 				ref = nref
 				info = eServiceCenter.getInstance().info(ref)
 			transponderraw = info.getInfoObject(ref, iServiceInformation.sTransponderData)
-			ref = ref.toString().replace("%3a", ":")
+			ref = ref.toString()
 		else:
 			transponderraw = info.getInfoObject(iServiceInformation.sTransponderData)
 			ref = info.getInfoString(iServiceInformation.sServiceref)
+		ref = ref.replace("%3a", ":")
 		if transponderraw:
 			transponderdata = ConvertToHumanReadable(transponderraw)
-			# retreive onid and tsid from service reference
-			[onid, tsid] = [int(x, 16) for x in ref.split(':')[4:6]]
+			# retrieve onid and tsid from service reference
+			onid, tsid = [int(x, 16) for x in ref.split(':')[4:6]]
 			if not transponderdata["system"]:
 				transponderdata["system"] = transponderraw.get("tuner_type", "None")
 			try:
@@ -52,10 +53,8 @@ class TransponderInfo(Converter):
  					transponderdata["fec_inner"], transponderdata["modulation"], tsid, onid, transponderdata["detailed_satpos" in self.type and "orbital_position" or "orb_pos"])
 			except:
 				return ""
-		if "@" in ref:
-			return _("Stream") + " " + ref.rsplit("@", 1)[1].split("/")[0]
-		elif "://" in ref:
-			return _("Stream") + " " + ref.rsplit("://", 1)[1].split("/")[0]
+		if "://" in ref:
+			return _("Stream") + " " + ref.rsplit("://", 1)[1].split("/", 1)[0].split("@", 1)[-1].split(":")[0]
 		return ""
 
 	text = property(getText)
@@ -66,7 +65,7 @@ class TransponderInfo(Converter):
 		# e.g. <convert type="TransponderInfo">DVB-S;DVB-S2</convert> to return True for either.
 		s = self.getText()
 		# get the first group of characters, and, convert to lower case
-		s = s and s.strip().split() and s.strip().split()[0].lower()
+		s = s and s.strip().split() and s.strip().split()[0].replace(_("Stream"), "Stream").lower()
 		# only populated entries, and, convert to lower case
 		t = self.type and [x.lower() for x in self.type if x]
 		return bool(s and t and s in t)

@@ -1,7 +1,8 @@
 import enigma
-import xml.etree.cElementTree
 
 from keyids import KEYIDS
+
+from Tools.Directories import fileReadXML
 
 # these are only informational (for help)...
 from Tools.KeyBindings import addKeyBinding
@@ -79,20 +80,7 @@ def parseTrans(filename, actionmap, device, keys):
 def readKeymap(filename):
 	p = enigma.eActionMap.getInstance()
 	assert p
-
-	try:
-		source = open(filename)
-	except:
-		print("[keymapparser] keymap file " + filename + " not found")
-		return
-
-	try:
-		dom = xml.etree.cElementTree.parse(source)
-	except:
-		raise KeymapError("[keymapparser] keymap %s not well-formed." % filename)
-
-	source.close()
-	keymap = dom.getroot()
+	keymap = fileReadXML(filename, "<keymap />")
 
 	for cmap in keymap.findall("map"):
 		context = cmap.attrib.get("context")

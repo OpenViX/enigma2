@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-10 21:33+0000\n"
-"PO-Revision-Date: 2023-07-11 16:07+0200\n"
+"POT-Creation-Date: 2023-08-12 13:52+0000\n"
+"PO-Revision-Date: 2023-08-12 17:57+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -4896,6 +4896,12 @@ msgstr "Uit"
 msgid "Disable Animations"
 msgstr "Animatie uitschakelen"
 
+msgid "Disable FCC during recordings"
+msgstr "Schakel FCC uit tijdens opnames"
+
+msgid "Disable Fast Channel Change"
+msgstr "Schakel FCC uit"
+
 msgid "Disable Picture in Picture"
 msgstr "Beeld-in-beeld uitschakelen"
 
@@ -5408,6 +5414,9 @@ msgstr "EIT EPG inschakelen"
 
 msgid "Enable EPG event name abbreviation removal"
 msgstr "Kies voorkomen van afkorten van naam"
+
+msgid "Enable Fast Channel Change"
+msgstr "Schakel FCC in"
 
 msgid "Enable FreeSat EPG"
 msgstr "Freesat EPG inschakelen"
@@ -5989,6 +5998,12 @@ msgstr ""
 "FBC automatisch\n"
 "inactief"
 
+msgid "FCC enabled"
+msgstr "FCC ingeschakeld"
+
+msgid "FCCSetup"
+msgstr "FCC Instellingen"
+
 msgid "FEC"
 msgstr "FEC"
 
@@ -6084,6 +6099,15 @@ msgstr "Faroe Islands"
 
 msgid "Fast"
 msgstr "Snel"
+
+msgid "Fast Channel Change"
+msgstr "Fast Channel Change"
+
+msgid "Fast Channel Change Setup"
+msgstr "Fast Channel Change instellingen"
+
+msgid "Fast Channel Change setup"
+msgstr "Fast Channel Change instellingen"
 
 msgid "Fast DiSEqC"
 msgstr "Snelle DiSEqC"
@@ -6726,6 +6750,9 @@ msgstr "HH:mm"
 msgid "HH:mm:ss"
 msgstr "HH:mm:ss"
 
+msgid "HI cleanup for external subtitles"
+msgstr "Opruiming van externe ondertitels"
+
 msgid "HISTORY"
 msgstr "HISTORIE"
 
@@ -6840,6 +6867,9 @@ msgstr "Verberg zapfouten"
 msgid "Hierarchy info"
 msgstr "Hiërarchie info"
 
+msgid "High"
+msgstr "Hoog"
+
 msgid "High bitrate support"
 msgstr "Hoge bitrate ondersteuning"
 
@@ -6851,6 +6881,9 @@ msgstr "Histories"
 
 msgid "History"
 msgstr "Geschiedenis"
+
+msgid "History Prev/Next"
+msgstr "Historie vorige/volgende"
 
 msgid "History Zap"
 msgstr "Geschiedenis-zap"
@@ -6983,6 +7016,12 @@ msgstr "IMDB zoekslag naar huidig programma"
 
 msgid "IMDb Search"
 msgstr "IMDb zoeken"
+
+msgid "IMDb search"
+msgstr "TMDb zoeken"
+
+msgid "IMDb search for highlighted event"
+msgstr "TMDb zoekslag naar huidig programma"
 
 msgid "INFO"
 msgstr "INFO"
@@ -8159,6 +8198,9 @@ msgstr "Mauritania"
 msgid "Mauritius"
 msgstr "Mauritius"
 
+msgid "Max channels"
+msgstr "Max Kanalen"
+
 msgid "Max memory positions"
 msgstr "Max aantal geheugenposities"
 
@@ -9044,6 +9086,9 @@ msgstr "Geen"
 
 msgid "Norfolk Island"
 msgstr "Norfolk Island"
+
+msgid "Normal"
+msgstr "Normaal"
 
 msgid "North"
 msgstr "Noord"
@@ -10675,6 +10720,9 @@ msgstr "Opname-toets (kort)"
 msgid "Recall channel, panic button & number zap"
 msgstr "Terugvalkanaal, paniektoets en nummerzap"
 
+msgid "Receiver or driver does not support FCC"
+msgstr "Ontvanger of driver ondersteunt geen FCC"
+
 msgid "Record"
 msgstr "Opname"
 
@@ -10955,6 +11003,9 @@ msgstr "Verwijder geselecteerde satellieten"
 
 msgid "Remove terrestrial services"
 msgstr "Verwijder DVB-T zenders"
+
+msgid "Remove text for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
+msgstr "Verwijder tekst voor gehoor gestoorden (instrumentale muziek of omgevingsgeluid, b.v. wanneer een deurbel of een schot klinkt)."
 
 msgid "Remove the services on scanned transponders before re-adding services?"
 msgstr "De kanalen van gescande transponders verwijderen voordat de gescaande kanalen toegevoegd worden?"
@@ -13784,6 +13835,18 @@ msgstr "TIMER"
 msgid "TIMESHIFT"
 msgstr "TIMESHIFT"
 
+msgid "TMDB search for current event"
+msgstr "TMDb zoekslag naar huidig programma"
+
+msgid "TMDb Search"
+msgstr "TMDb zoeken"
+
+msgid "TMDb search"
+msgstr "TMDb zoeken"
+
+msgid "TMDb search for highlighted event"
+msgstr "TMDb zoekslag naar geselecteerd programma"
+
 #. TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 msgid "TRANSLATOR_INFO"
 msgstr "Vertaal info"
@@ -13997,6 +14060,13 @@ msgstr "De PIN is succesvol opgeslagen."
 msgid "The PIN codes you entered are different."
 msgstr "De ingevoerde pincodes komen niet overeen."
 
+msgid ""
+"The TMDb plugin is not installed!\n"
+"Please install it."
+msgstr ""
+"De TMDb-plugin is niet geïnstalleerd!\n"
+"Installeer die."
+
 msgid "The backup failed. Please choose a different backup location."
 msgstr "Back-up is mislukt. Kies een andere back-up lokatie."
 
@@ -14057,12 +14127,6 @@ msgstr "De zender is toegevoegd aan de favorieten."
 
 msgid "The service has been added to the selected bouquet."
 msgstr "De zender is toegevoegd aan de geselecteerde favorietenlijst."
-
-msgid "The timer file (pm_timers.xml) is corrupt and could not be loaded."
-msgstr "Het timer-bestand (pm-timer.xml) is beschadigd en kan niet worden geladen."
-
-msgid "The timer file (timers.xml) is corrupt and could not be loaded."
-msgstr "Het timer-bestand (timer.xml) is beschadigd en kan niet worden geladen."
 
 #, python-format
 msgid "The user interface of your %s %s is restarting"
@@ -14381,6 +14445,9 @@ msgid ""
 msgstr ""
 "Dit zal alle posities herberekenen en zal alle opgeslagen posities verwijderen!\n"
 "Weet u het zeker?"
+
+msgid "This will permanently delete the current configuration. Although settings backup requested, there is No backup device attached, are you certain you want to continue with a factory reset?"
+msgstr "Dit zal de huidige configuratie voorgoed verwijderen. Hoewel een settings back-up gevraagd is, is er geen back-up apparaat gevonden. Weet u zeker dat u naar de fabrieksinstellingen terug wil?"
 
 msgid "This will permanently delete the current configuration. If necessary it should be possible to restore the current configuration by restoring the settings backup. Are you certain you want to continue with a factory reset?"
 msgstr "Dit zal de huidige configuratie voorgoed verwijderen. Indien noodzakelijk moet het mogelijk zijn de huidige configuratie te herstellen vanuit een settingsback-up.  Weet u zeker dat u naar de fabrieksinstellingen terug wil?"
@@ -16428,6 +16495,9 @@ msgstr "Zap"
 msgid "Zap + Exit"
 msgstr "Zap + Exit"
 
+msgid "Zap Up/Down"
+msgstr "Zap omhoog/omlaag"
+
 msgid "Zap back to previously tuned service?"
 msgstr "Wilt u terug naar het vorige kanaal?"
 
@@ -17391,6 +17461,9 @@ msgstr "peuterprogramma"
 msgid "preserve bookmarks in cuts"
 msgstr "bewaar markeerpunten in cuts"
 
+msgid "priority"
+msgstr "prioriteit"
+
 msgid "provid:"
 msgstr "provid:"
 
@@ -18010,20 +18083,11 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "D"
 #~ msgstr "3D"
 
-#~ msgid "Disable FCC during recordings"
-#~ msgstr "Schakel FCC uit tijdens opnames"
-
-#~ msgid "Disable Fast Channel Change"
-#~ msgstr "Schakel FCC uit"
-
 #~ msgid "ECM-Time"
 #~ msgstr "ECM Tijd"
 
 #~ msgid "ERROR"
 #~ msgstr "FOUT"
-
-#~ msgid "Enable Fast Channel Change"
-#~ msgstr "Schakel FCC in"
 
 #~ msgid "Enable Vu+ MultiBoot"
 #~ msgstr "Vu+ MultiBoot inschakelen"
@@ -18054,21 +18118,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #, python-format
 #~ msgid "FBC socket %s"
 #~ msgstr "FBC socket %s"
-
-#~ msgid "FCC enabled"
-#~ msgstr "FCC ingeschakeld"
-
-#~ msgid "FCCSetup"
-#~ msgstr "FCC Instellingen"
-
-#~ msgid "Fast Channel Change"
-#~ msgstr "Fast Channel Change"
-
-#~ msgid "Fast Channel Change Setup"
-#~ msgstr "Fast Channel Change instellingen"
-
-#~ msgid "Fast Channel Change setup"
-#~ msgstr "Fast Channel Change instellingen"
 
 #, python-format
 #~ msgid "Flash directory '%s' not allowed!"
@@ -18117,9 +18166,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ "\n"
 #~ "Volgorde en groepering van de help-info kan worden ingesteld in de gebruikersinterface."
 
-#~ msgid "History Prev/Next"
-#~ msgstr "Historie vorige/volgende"
-
 #
 #, fuzzy
 #~ msgid "I"
@@ -18141,9 +18187,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #, python-format
 #~ msgid "Last update: %s"
 #~ msgstr "Laatste update: %s"
-
-#~ msgid "Max channels"
-#~ msgstr "Max Kanalen"
 
 #~ msgid "Namespace"
 #~ msgstr "Namespace"
@@ -18178,9 +18221,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Press OK to set the MAC address."
 #~ msgstr "Druk op OK om MAC-adres in te stellen."
-
-#~ msgid "Receiver or driver does not support FCC"
-#~ msgstr "Ontvanger of driver ondersteunt geen FCC"
 
 #~ msgid "Scroll menu"
 #~ msgstr "Menu scrollen"
@@ -18235,6 +18275,12 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgstr ""
 #~ "De Softwaremanagement-plugin is niet geïnstalleerd!\n"
 #~ "Installeer deze eerst."
+
+#~ msgid "The timer file (pm_timers.xml) is corrupt and could not be loaded."
+#~ msgstr "Het timer-bestand (pm-timer.xml) is beschadigd en kan niet worden geladen."
+
+#~ msgid "The timer file (timers.xml) is corrupt and could not be loaded."
+#~ msgstr "Het timer-bestand (timer.xml) is beschadigd en kan niet worden geladen."
 
 #~ msgid "There are no items currently available for this screen."
 #~ msgstr "Er zijn momenteel geen onderdelen beschikbaar voor dit scherm."
@@ -18298,9 +18344,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "When enabled the feeds and software updates may contain unstable experimental versions. Enable this at your own risk."
 #~ msgstr "Indien geactiveerd kunnen feeds en software updates die onstabiele, experimentele versies bevatten, gebruikt worden. Inschakelen geschiedt op uw eigen risico."
 
-#~ msgid "Zap Up/Down"
-#~ msgstr "Zap omhoog/omlaag"
-
 #~ msgid "[VuplusKexec][create Vu Multiboot environment] - Unable to complete, Vu+ Multiboot files missing"
 #~ msgstr "[VuplusKexec][creëer Vu Multiboot omgeving] - Kan niet vervolgen, Vu+ Multiboot bestanden ontbreken"
 
@@ -18321,9 +18364,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "n/A"
 #~ msgstr "NVT"
-
-#~ msgid "priority"
-#~ msgstr "prioriteit"
 
 #~ msgid "reverse by date"
 #~ msgstr "omgekeerd chronologisch"

@@ -151,8 +151,9 @@ class VuWizard(WizardLanguage, Rc):
 	def reBoot(self, *args, **kwargs):
 		with open("/STARTUP", 'w') as f:
 			f.write(STARTUP_1)
-		config.misc.restorewizardrun.value = True
-		config.misc.restorewizardrun.save()
+		if hasattr(config.misc, "restorewizardrun"):  # protect here because it is initialised in vix plugin
+			config.misc.restorewizardrun.value = True
+			config.misc.restorewizardrun.save()
 		config.misc.videowizardenabled.value = 0
 		config.misc.videowizardenabled.save()
 		config.misc.firstrun.value = 0

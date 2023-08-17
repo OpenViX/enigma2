@@ -1,11 +1,11 @@
-from os import path as ospath, remove
+from os import path as ospath
 from timer import TimerEntry
-from xml.etree.cElementTree import parse
 
 from enigma import eDVBCIInterfaces, eDVBCI_UI, eEnv, eServiceCenter, eServiceReference
 
 import NavigationInstance
 from Components.SystemInfo import SystemInfo
+from Tools.Directories import fileReadXML
 
 
 class CIHelper:
@@ -30,8 +30,8 @@ class CIHelper:
 				if not ospath.exists(filename):
 					continue
 
-				try:
-					tree = parse(filename).getroot()
+				tree = fileReadXML(filename)
+				if tree is not None:
 					read_services = []
 					read_providers = []
 					usingcaid = []
@@ -52,13 +52,6 @@ class CIHelper:
 							read_providers.append((read_provider_name, int(read_provider_dvbname, 16)))
 						if read_slot is not False and (read_services or read_providers or usingcaid):
 							self.CI_ASSIGNMENT_LIST.append((int(read_slot), (read_services, read_providers, usingcaid)))
-				except:
-					print("[CI_ASSIGNMENT %d] error parsing xml..." % ci)
-					try:
-						remove(filename)
-					except:
-						print("[CI_ASSIGNMENT %d] error remove damaged xml..." % ci)
-
 			services = []
 			providers = []
 			for item in self.CI_ASSIGNMENT_LIST:

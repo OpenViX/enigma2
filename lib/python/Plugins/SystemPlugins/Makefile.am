@@ -63,4 +63,8 @@ if HAVE_OSDANIMATION
 SUBDIRS += AnimationSetup
 endif
 
+if HAVE_FCC
+SUBDIRS += FastChannelChange
+endif
+
 install_PYTHON = __init__.py

@@ -263,6 +263,11 @@ int eDVBServiceRecord::doPrepare()
 				f->open(m_ref.path.c_str());
 				source = ePtr<iTsSource>(f);
 			}
+			m_event((iRecordableService*)this, evPvrTuneStart);
+		}
+		else
+		{
+			m_event((iRecordableService*)this, evTuneStart);
 		}
 		return m_service_handler.tuneExt(m_ref, source, m_ref.path.c_str(), 0, m_simulate, NULL, servicetype, m_descramble);
 	}
@@ -636,6 +641,10 @@ PyObject *eDVBServiceRecord::getCutList()
 
 void eDVBServiceRecord::saveCutlist()
 {
+	/* save cuesheet only when main file is accessible. */
+	if (::access(m_filename.c_str(), R_OK) < 0)
+		return;
+
 	std::string filename = m_filename + ".cuts";
 
 	// If a cuts file exists, append to it (who cares about sorting it)

@@ -839,6 +839,7 @@ RESULT eServiceMP3::start()
 		case GST_STATE_CHANGE_FAILURE:
 			eDebug("[eServiceMP3] failed to start pipeline");
 			stop();
+			return -1;
 			break;
 		case GST_STATE_CHANGE_SUCCESS:
 			m_is_live = false;
@@ -1617,44 +1618,7 @@ RESULT eServiceMP3::getTrackInfo(struct iAudioTrackInfo &info, unsigned int i)
 		return -2;
 	}
 
-	std::string desc = m_audioStreams[i].codec;
-
-
-	std::map<std::string, std::string> audioReplacements = {
-		{"AC-3", "AC3"},
-		{"EAC3", "AC3+"},
-		{"EAC-3", "AC3+"},
-		{"E-AC3", "AC3+"},
-		{"E-AC-3", "AC3+"},
-		{"-1 ", ""},
-		{"-2 AAC", "AAC"},
-		{"-4 AAC", "AAC"},
-		{"4-AAC", "HE-AAC"},
-		{"(ATSC A/52)", ""},
-		{"(ATSC A/52B)", ""},
-		{"MPEG", ""},
-		{"Layer", ""},
-		{" 2 ", ""},
-		{"(MP2)", "AAC"},
-		{"audio", ""}};
-
-	if (!desc.empty())
-	{
-		for (auto const &x : audioReplacements)
-		{
-						std::string s = x.first;
-			if (desc.length() >= s.length())
-			{
-				size_t loc = desc.find(s);
-				if (loc != std::string::npos)
-				{
-					desc.replace(loc, s.length(), x.second);
-				}
-			}
-		}
-	}
-
-	info.m_description = desc;
+	info.m_description = m_audioStreams[i].codec;
 
 	if (info.m_language.empty())
 	{

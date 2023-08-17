@@ -106,17 +106,6 @@ def getProcMounts():
 	return result
 
 
-def isFileSystemSupported(filesystem):
-	try:
-		with open("/proc/filesystems", "r") as fd:
-			for line in fd.readlines():
-				if line.strip().endswith(filesystem):
-					return True
-	except (IOError, OSError) as err:
-		print("[Harddisk] Error: Failed to read '/proc/filesystems':", err)
-	return False
-
-
 def findMountPoint(path):
 	'Example: findMountPoint("/media/hdd/some/file") returns "/media/hdd"'
 	path = ospath.abspath(path)
@@ -153,9 +142,6 @@ def bytesToHumanReadable(size_bytes, binary=False):
 		size_bytes /= base
 		i += 1
 	return ("%.2f %s" if i != 0 and size_bytes < 10 else "%.0f %s") % (size_bytes, size_units[i])
-
-
-SystemInfo["ext4"] = isFileSystemSupported("ext4")
 
 
 class Harddisk:
@@ -335,9 +321,6 @@ class Harddisk:
 	def createPartition(self):
 		return runCommand("printf \"8,\n;0,0\n;0,0\n;0,0\ny\n\" | sfdisk -f -uS %s" % self.disk_path)
 
-	def mkfs(self):
-		return 1  # No longer supported, use createInitializeJob instead.
-
 	def mount(self):
 		if self.mount_device is None:  # Try mounting through fstab first.
 			dev = self.partitionPath("1")
@@ -357,8 +340,6 @@ class Harddisk:
 		sleep(3)  # Give udev some time to make the mount, which it will do asynchronously.
 		return exitCode
 
-	def fsck(self):
-		return 1  # No longer supported, use createCheckJob instead.
 
 	def killPartitionTable(self):
 		zero = 512 * b"\0"
@@ -411,10 +392,7 @@ class Harddisk:
 		print("[Harddisk] Creating filesystem.")
 		task = MkfsTask(job, _("Creating filesystem."))
 		big_o_options = ["dir_index"]
-		if SystemInfo["ext4"]:
-			task.setTool("mkfs.ext4")
-		else:
-			task.setTool("mkfs.ext3")
+		task.setTool("mkfs.ext4")
 		if size > 250000:
 			task.args += ["-T", "largefile", "-N", "262144"]  # No more than 256k i-nodes (prevent problems with fsck memory requirements).
 			big_o_options.append("sparse_super")
@@ -432,12 +410,6 @@ class Harddisk:
 		task.weighting = 1
 		print("[Harddisk] Initialization complete.")
 		return job
-
-	def initialize(self):
-		return -5  # No longer supported.
-
-	def check(self):
-		return -5  # No longer supported.
 
 	def createCheckJob(self):
 		print("[Harddisk] Checking filesystem...")

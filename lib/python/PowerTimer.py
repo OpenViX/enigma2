@@ -1,6 +1,5 @@
 import os
 from boxbranding import getMachineBrand, getMachineName
-import xml.etree.cElementTree
 from time import ctime, time
 from bisect import insort
 
@@ -475,28 +474,8 @@ class PowerTimer(Timer):
 		# TODO: PATH!
 		if not Directories.fileExists(self.Filename):
 			return
-		try:
-			file = open(self.Filename, 'r')
-			doc = xml.etree.cElementTree.parse(file)
-			file.close()
-		except SyntaxError:
-			from Tools.Notifications import AddPopup
-			from Screens.MessageBox import MessageBox
 
-			AddPopup(_("The timer file (pm_timers.xml) is corrupt and could not be loaded."), type=MessageBox.TYPE_ERROR, timeout=0, id="TimerLoadFailed")
-
-			print("pm_timers.xml failed to load!")
-			try:
-				import os
-				os.rename(self.Filename, self.Filename + "_old")
-			except (IOError, OSError):
-				print("renaming broken timer failed")
-			return
-		except IOError:
-			print("pm_timers.xml not found!")
-			return
-
-		root = doc.getroot()
+		root = Directories.fileReadXML(self.Filename, "<timers />")
 
 		# put out a message when at least one timer overlaps
 		checkit = True
