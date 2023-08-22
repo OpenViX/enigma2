@@ -3383,7 +3383,7 @@ class InfoBarInstantRecord:
 
 	def inputAddRecordingTime(self, value):
 		if value:
-			print("[InfoBarGenerics] added %s minutes for recording." % int(value))
+			print("[InfoBarInstantRecord] added %s minutes for recording." % int(value))
 			entry = self.recording[self.selectedEntry]
 			if int(value) != 0:
 				entry.autoincrease = False
@@ -3393,7 +3393,7 @@ class InfoBarInstantRecord:
 	def inputCallback(self, value):
 		entry = self.recording[self.selectedEntry]
 		if value is not None:
-			print("[InfoBarGenerics] stopping recording after %s minutes." % int(value))
+			print("[InfoBarInstantRecord] stopping recording after %s minutes." % int(value))
 			if int(value) != 0:
 				entry.autoincrease = False
 			entry.end = int(time()) + 60 * int(value)
