@@ -575,15 +575,15 @@ print("[StartEnigma]  Initialising NTPSync.")
 from Components.NetworkTime import AutoNTPSync
 AutoNTPSync()
 
+profile("LOAD:Wizard")
+print("[StartEnigma]  Initialising Wizards.")
+from Screens.StartWizard import *
 
 profile("LOAD:Plugin")
 print("[StartEnigma]  Initialising Plugins.")
 # initialize autorun plugins and plugin menu entries
 from Components.PluginComponent import plugins
 
-profile("LOAD:Wizard")
-print("[StartEnigma]  Initialising Wizards.")
-from Screens.StartWizard import *
 import Screens.Rc
 from Tools.BoundFunction import boundFunction
 from Plugins.Plugin import PluginDescriptor
