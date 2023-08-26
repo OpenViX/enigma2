@@ -98,8 +98,8 @@ class BoxInformation:
 		SystemInfo[item] = value
 		return True
 
-	def deleteItem(self, item):
-		if item in self.immutableList:
+	def deleteItem(self, item, forceOverride=False):
+		if item in self.immutableList and not forceOverride:
 			print("[BoxInfo] Error: Item '%s' is immutable and can not be deleted!" % item)
 		elif item in self.boxInfo:
 			del self.boxInfo[item]
