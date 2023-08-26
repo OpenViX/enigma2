@@ -28,7 +28,7 @@
 		</widget>
 	</screen>
 <!-- Rec Panel -->
-	<screen name="MeinRecordingPanel">
+	<screen name="MainRecordingPanel">
 		<widget source="session.RecordState" render="Pixmap" position="0,0" pixmap="/usr/share/enigma2/display/skin_default/record.png" transparent="1" alphatest="on" size="400,25" zPosition="1">
 			<convert type="ConfigEntryTest">config.usage.blinking_rec_symbol_during_recording,True,CheckSourceBoolean</convert>
 			<convert type="ConditionalShowHide">Blink,1000</convert>
@@ -39,7 +39,7 @@
 		</widget>
 	</screen>
 <!-- Tuner Panel -->
-	<screen name="MeinTunerInfoPanel">
+	<screen name="MainTunerInfoPanel">
 		<widget source="session.FrontendInfo" render="FixedLabel" position="0,216" size="24,24" text="A" foregroundColor="#04B404" font="FdLcD;24" zPosition="1" transparent="1" halign="center" >
 			<convert type="FrontendInfo">NUMBER</convert>
 			<convert type="ValueRange">0,0</convert>
@@ -105,29 +105,10 @@
 	</screen>
 <!-- main-->
 	<screen name="InfoBarSummary" position="0,0" size="480,320">
-		<widget source="session.CurrentService" render="LcdPicon" position="100,0" zPosition="2" size="200,120" alphatest="on">
+		<widget source="session.CurrentService" render="LcdPicon" position="30,40" zPosition="2" size="410,260" alphatest="on">
 			<convert type="ServiceName">Reference</convert>
 		</widget>
-		<widget source="session.Event_Now" render="Label" position="0,83" size="98,38" font="FdLcD;38" foregroundColor="#87CEFA" valign="center" halign="center">
-			<convert type="EventTime">StartTime</convert>
-			<convert type="ClockToText"></convert>
-		</widget>
-		<widget source="session.Event_Now" render="Label" position="303,83" size="98,38" font="FdLcD;38" foregroundColor="#87CEFA" valign="center" halign="center">
-			<convert type="EventTime">EndTime</convert>
-			<convert type="ClockToText"></convert>
-		</widget>
-		<eLabel position="0,131" size="400,2" backgroundColor="#BDBDBD" zPosition="3" />
-		<widget source="session.Event_Now" render="Progress" position="0,138" size="400,25" transparent="1">
-			<convert type="EventTime">Progress</convert>
-		</widget>
-		<eLabel position="0,168" size="400,2" backgroundColor="#BDBDBD" zPosition="3" />
-		<widget source="session.Event_Now" render="Label" position="300,173" size="100,40" font="FdLcD;40" zPosition="0" foregroundColor="#A9E2F3" halign="right" transparent="1">
-			<convert type="EventTime">Remaining</convert>
-			<convert type="RemainingToText">OnlyMinute</convert>
-		</widget>
-		<panel name="MeinRecordingPanel" />
-		<panel name="SummaryClockPanel" />
-		<panel name="MeinTunerInfoPanel" />
+
 	</screen>
 <!-- Movieplayer auch MediaPortal-->
 	<screen name="InfoBarMoviePlayerSummary" position="0,0" size="480,320">
@@ -142,9 +123,9 @@
 		<widget source="session.CurrentService" render="Label" position="300,173" size="100,40" font="FdLcD;40" foregroundColor="#A9E2F3" zPosition="0" halign="right" transparent="1">
 			<convert type="ServicePosition">Remaining,ShowNoSeconds,OnlyMinute</convert>
 		</widget>
-		<panel name="MeinRecordingPanel" />
+		<panel name="MainRecordingPanel" />
 		<panel name="SummaryClockPanel" />
-		<panel name="MeinTunerInfoPanel" />
+		<panel name="MainTunerInfoPanel" />
 	</screen>
 
 	<screen name="MovieContextMenuSummary" position="0,0" size="480,320">
@@ -177,9 +158,9 @@
 		<widget source="session.CurrentService" render="Label" position="300,173" size="100,40" font="FdLcD;40" foregroundColor="#A9E2F3" zPosition="0" halign="right" transparent="1">
 			<convert type="ServicePosition">Remaining,ShowNoSeconds,OnlyMinute</convert>
 		</widget>
-		<panel name="MeinRecordingPanel" />
+		<panel name="MainRecordingPanel" />
 		<panel name="SummaryClockPanel" />
-		<panel name="MeinTunerInfoPanel" />
+		<panel name="MainTunerInfoPanel" />
 	</screen>
 <!-- channelselection -->
 	<screen name="ChannelSelection_summary" position="0,0" size="480,320">
@@ -202,7 +183,7 @@
 		<widget source="parent.ServiceEvent" render="Label" position="0,115" size="400,125" font="FdLcD;34" halign="center" valign="center" >
 			<convert type="EventName">Name</convert>
 		</widget>
-		<panel name="MeinRecordingPanel" />
+		<panel name="MainRecordingPanel" />
 	</screen>
 <!-- RadioChannelselection  -->
 	<screen name="ChannelSelectionRadio_summary" position="0,0" size="480,320">
@@ -297,15 +278,15 @@
 	</screen>
 <!-- standby -->
 	<screen name="StandbySummary" position="0,0" size="480,320">
-		<widget source="global.CurrentTime" render="Label" position="center,50" size="225,100" font="FdLcD;85" halign="center" transparent="1" noWrap="1" >
+		<widget source="global.CurrentTime" render="Label" position="center,60" size="355,120" font="FdLcD;120" halign="center" transparent="1" noWrap="1" >
 			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
 		<eLabel position="100,150" size="200,1" backgroundColor="white" />
-		<widget source="global.CurrentTime" render="Label" position="0,165" size="400,34" font="FdLcD;34" halign="center" transparent="1" noWrap="1">
+		<widget source="global.CurrentTime" render="Label" position="20,185" size="400,80" font="FdLcD;60" halign="center" transparent="1" noWrap="1">
 			<convert type="ClockToText">ShortDate</convert>
 		</widget>
-		<panel name="MeinRecordingPanel" />
-		<panel name="MeinTunerInfoPanel" />
+		<panel name="MainRecordingPanel" />
+		<panel name="MainTunerInfoPanel" />
 	</screen>
 <!-- Plugin browser -->
 	<screen name="PluginBrowserSummary" position="fill">
@@ -535,8 +516,8 @@
 		<widget source="session.CurrentService" render="Label" position="300,173" size="100,40" font="FdLcD;40" zPosition="0" foregroundColor="#A9E2F3" halign="right" transparent="1">
 			<convert type="ServicePosition">Remaining,ShowNoSeconds,OnlyMinute</convert>
 		</widget>
-		<panel name="MeinRecordingPanel" />
+		<panel name="MainRecordingPanel" />
 		<panel name="SummaryClockPanel" />
-		<panel name="MeinTunerInfoPanel" />
+		<panel name="MainTunerInfoPanel" />
 	</screen>
 </skin>
