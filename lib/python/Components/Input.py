@@ -19,7 +19,7 @@ class Input(VariableText, GUIComponent, NumericalTextInput):
 		self.allmarked = allMarked and (text != "") and (type != self.PIN)
 		self.maxSize = maxSize
 		self.currPos = currPos
-		self.maxValue= maxValue
+		self.maxValue = maxValue
 		self.visible_width = visible_width
 		self.offset = 0
 		self.overwrite = maxSize or self.type == self.NUMBER
