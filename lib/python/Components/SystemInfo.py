@@ -171,12 +171,7 @@ def countFrontpanelLEDs():
 
 
 def hasInitCam():
-	for cam in listdir("/etc/init.d"):
-		if cam.startswith("softcam.") and not cam.endswith("None"):
-			return True
-		else:
-			pass
-	return False
+	return bool([f for f in listdir("/etc/init.d") if f.startswith("softcam.") and f != "softcam.None"])
 
 
 SystemInfo["CanKexecVu"] = getBoxType() in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse", "vuzero4k") and not SystemInfo["HasKexecMultiboot"]
