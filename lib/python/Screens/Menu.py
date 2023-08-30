@@ -29,7 +29,7 @@ file.close()
 def MenuEntryPixmap(entryID, png_cache, parentMenuEntryID):
  	# imported here to avoid circular import
 	from skin import parameters
-	isMenuIcons = int(parameters.get("MenuIcons", 0)) == 1
+	isMenuIcons = parameters.get("MenuIcons", "").lower() in ("1", "enabled", "on", "true", "yes")
 	if not isMenuIcons:
 		return None
 
