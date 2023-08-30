@@ -9,7 +9,6 @@ from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, rmd
 from shutil import copy, copyfile, move, rmtree
 from time import localtime, time, strftime, mktime
 
-from . import _, PluginLanguageDomain
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
@@ -1778,7 +1777,7 @@ class ImageManagerDownload(Screen):
 
 class ImageManagerSetup(Setup):
 	def __init__(self, session):
-		Setup.__init__(self, session=session, setup="viximagemanager", plugin="SystemPlugins/ViX", PluginLanguageDomain=PluginLanguageDomain)
+		Setup.__init__(self, session=session, setup="viximagemanager", plugin="SystemPlugins/ViX")
 
 	def keySave(self):
 		if config.imagemanager.folderprefix.value == "":

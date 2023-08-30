@@ -4,8 +4,6 @@ from datetime import datetime
 from time import time, sleep
 from enigma import eTimer, eConsoleAppContainer
 
-from . import _, PluginLanguageDomain
-
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.config import config, configfile, ConfigLocations, ConfigNumber, ConfigSubsection, ConfigYesNo
@@ -166,7 +164,7 @@ class VIXSoftcamManager(Screen):
 
 	def createSetup(self):
 		from Screens.Setup import Setup
-		self.session.open(Setup, 'vixsoftcammanager', 'SystemPlugins/ViX', PluginLanguageDomain)
+		self.session.open(Setup, 'vixsoftcammanager', 'SystemPlugins/ViX')
 
 	def selectionChanged(self):
 		cams = []

@@ -1,7 +1,5 @@
 from os import listdir, path, mkdir
 
-from . import _
-
 from Components.ActionMap import NumberActionMap
 from Components.config import config
 from Components.Sources.StaticText import StaticText

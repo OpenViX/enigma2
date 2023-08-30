@@ -1,6 +1,5 @@
 from os import listdir, path, stat
 from boxbranding import getMachineBrand, getMachineName, getImageDistro
-from . import _
 from .BackupManager import isRestorableSettings, isRestorablePlugins, isRestorableKernel
 
 from Components.About import about

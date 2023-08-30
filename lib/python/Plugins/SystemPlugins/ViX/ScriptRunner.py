@@ -1,6 +1,5 @@
 from os import path, mkdir, listdir, rename
 
-from . import _, PluginLanguageDomain
 from Components.ActionMap import ActionMap
 from Components.config import config, ConfigSubsection, ConfigYesNo
 from Components.PluginComponent import plugins
@@ -23,8 +22,8 @@ def updateExtensions(configElement):
 
 config.scriptrunner.showinextensions.addNotifier(updateExtensions, initial_call=False)
 
-
 def ScriptRunnerAutostart(reason, session=None, **kwargs):
+	"""called with reason=1 during /sbin/shutdown.sysvinit, with reason=0 at startup"""
 	pass
 
 
@@ -43,7 +42,7 @@ class VIXScriptRunner(IpkgInstaller):
 				if pkg.find(".sh") >= 0:
 					list.append(pkg)
 		IpkgInstaller.__init__(self, session, list)
-		self.setTitle(_("Script runner"))
+		self.setTitle(_("Script runner - runs from /usr/script"))
 
 		self.skinName = ["VIXScriptRunner", "IpkgInstaller"]
 		self["key_green"] = StaticText(_("Run"))
@@ -54,7 +53,7 @@ class VIXScriptRunner(IpkgInstaller):
 									  }, -1)
 
 	def createSetup(self):
-		self.session.open(Setup, "vixscriptrunner", "SystemPlugins/ViX", PluginLanguageDomain)
+		self.session.open(Setup, "vixscriptrunner", "SystemPlugins/ViX")
 
 	def install(self):
 		list = self.list.getSelectionsList()

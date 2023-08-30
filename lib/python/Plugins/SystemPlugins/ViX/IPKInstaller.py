@@ -1,7 +1,5 @@
 from os import listdir, path
 
-from . import _
-
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.config import config

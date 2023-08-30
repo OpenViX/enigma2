@@ -4,8 +4,6 @@ import stat
 
 from enigma import eTimer
 
-from . import _
-
 from Components.config import config, configfile, ConfigSubsection, ConfigYesNo
 from Components.ActionMap import ActionMap
 from Components.Console import Console

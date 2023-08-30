@@ -6,8 +6,6 @@ from time import sleep
 from boxbranding import getMachineBrand, getMachineName, getMachineBuild
 from enigma import eTimer, getDesktop
 
-from . import _
-
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.ConfigList import ConfigListScreen

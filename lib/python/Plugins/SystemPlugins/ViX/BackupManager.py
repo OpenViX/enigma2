@@ -4,7 +4,6 @@ from time import localtime, time, strftime, mktime
 import tarfile
 import glob
 from enigma import eTimer, eEnv, eDVBDB, quitMainloop
-from . import _, PluginLanguageDomain
 
 from boxbranding import getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getMachineBrand, getMachineMake, getMachineName
 from Components.About import about
@@ -294,7 +293,7 @@ class VIXBackupManager(Screen):
 				self["lab1"].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
-		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX', PluginLanguageDomain)
+		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX')
 
 	def showLog(self):
 		self.sel = self["list"].getCurrent()
@@ -306,9 +305,7 @@ class VIXBackupManager(Screen):
 		if config.backupmanager.folderprefix.value == "":
 			config.backupmanager.folderprefix.value = defaultprefix
 			config.backupmanager.folderprefix.save()
-# If the prefix doesn't start with the defaultprefix it is a tag...
-#
-		if not config.backupmanager.folderprefix.value.startswith(defaultprefix):
+		if not config.backupmanager.folderprefix.value.startswith(defaultprefix):	# If the prefix doesn't start with the defaultprefix it is a tag...
 			config.backupmanager.folderprefix.value = defaultprefix + "-" + config.backupmanager.folderprefix.value
 			config.backupmanager.folderprefix.save()
 		self.populate_List()
@@ -497,10 +494,7 @@ class VIXBackupManager(Screen):
 			eDVBDB.getInstance().reloadServicelist()
 			eDVBDB.getInstance().reloadBouquets()
 			self.session.nav.PowerTimer.loadTimer()
-# Don't check RecordTimers for conflicts. On a restore we may
-# not have the correct tuner configuration (and no USB tuners)...
-#
-			self.session.nav.RecordTimer.loadTimer(justLoad=True)
+			self.session.nav.RecordTimer.loadTimer(justLoad=True)	# Don't check RecordTimers for conflicts. On a restore we may not have the correct tuner configuration (and no USB tuners)...
 			configfile.load()
 		else:
 			print("[BackupManager] Restoring Stage 1 Failed:")
@@ -1069,12 +1063,10 @@ class AutoBackupManagerTimer:
 		now = int(time())
 		if BackupTime > 0:
 			if BackupTime < now + atLeast:
-# Backup missed - run it 60s from now
-				self.backuptimer.startLongTimer(60)
+				self.backuptimer.startLongTimer(60)	# Backup missed - run it 60s from now
 				print("[BackupManager] Backup Time overdue - running in 60s")
 			else:
-# Backup in future - set the timer...
-				delay = BackupTime - now
+				delay = BackupTime - now	# Backup in future - set the timer...
 				self.backuptimer.startLongTimer(delay)
 		else:
 			BackupTime = -1
@@ -1088,13 +1080,11 @@ class AutoBackupManagerTimer:
 		self.backuptimer.stop()
 		now = int(time())
 		wake = self.getBackupTime()
-		# If we're close enough, we're okay...
-		atLeast = 0
+		atLeast = 0							# If we're close enough, we're okay...
 		if wake - now < 60:
 			print("[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now)))
 			from Screens.Standby import inStandby
-# Check for querying enabled
-			if not inStandby and config.backupmanager.query.value:
+			if not inStandby and config.backupmanager.query.value:	# Check for querying enabled
 				message = _("Your %s %s is about to run a backup of your settings and to detect your plugins.\nDo you want to allow this?") % (getMachineBrand(), getMachineName())
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle("Scheduled backup.")
@@ -1345,9 +1335,7 @@ class BackupFiles(Screen):
 				output.close()
 		self.Stage4Completed = True
 
-# Filename for backup list
-	tar_flist = "/tmp/_backup-files.list"
-
+	tar_flist = "/tmp/_backup-files.list"					# Filename for backup list
 	def Stage5(self):
 		tmplist = config.backupmanager.backupdirs.value
 		tmplist.append("/tmp/ExtraInstalledPlugins")
@@ -1379,10 +1367,7 @@ class BackupFiles(Screen):
 		if config.backupmanager.showboxname.value:
 			boxname = "-" + getMachineMake()
 		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + boxname + "-" + getImageType()[0:3] + backupType + getImageVersion() + "." + getImageBuild() + imageSubBuild + "-" + backupdate.strftime("%Y%m%d-%H%M") + ".tar.gz"
-# Need to create a list of what to backup, so that spaces and special
-# characters don't get lost on, or mangle, the command line
-#
-		with open(BackupFiles.tar_flist, "w") as tfl:
+		with open(BackupFiles.tar_flist, "w") as tfl:			# Need to create a list of what to backup, so that spaces and special characters don't get lost on, or mangle, the command line
 			for fn in tmplist:
 				tfl.write(fn + "\n")
 		self.ConsoleB.ePopen("tar -T " + BackupFiles.tar_flist + " -czvf " + self.Backupfile, self.Stage4Complete)
@@ -1397,9 +1382,7 @@ class BackupFiles(Screen):
 			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Backup failed - e. g. wrong backup destination or no space left on backup device."), MessageBox.TYPE_INFO, timeout=10)
 			print("[BackupManager] Result.", result)
 			print("{BackupManager] Backup failed - e. g. wrong backup destination or no space left on backup device")
-# Delete the list of backup files now that it's finished.
-# Ignore any failure here, as there's nothing useful we could do anyway...
-		try:
+		try:								# Delete the list of backup files now that it's finished. Ignore any failure here, as there's nothing useful we could do anyway...
 			remove(BackupFiles.tar_flist)
 		except:
 			pass
@@ -1418,8 +1401,7 @@ class BackupFiles(Screen):
 			 and config.backupmanager.number_to_keep.value > 0 \
 			 and path.exists(self.BackupDirectory): # !?!
 				images = listdir(self.BackupDirectory)
-# Only try to delete backups with the current user prefix
-				emlist = []
+				emlist = []					# Only try to delete backups with the current user prefix
 				for fil in images:
 					if (fil.startswith(config.backupmanager.folderprefix.value) and fil.endswith(".tar.gz")):
 						if config.backupmanager.types_to_prune.value == "all":
