@@ -119,7 +119,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		MenuTitle = str(_(node.get("text", "??")))
 		entryID = node.get("entryID", "undefined")
 		weight = node.get("weight", 50)
-		description = node.get("description", "").encode("UTF-8") or None
+		description = node.get("description", "") or None
 		description = description and _(description)
 		menupng = MenuEntryPixmap(entryID, self.png_cache, parent)
 		x = node.get("flushConfigOnClose")
@@ -160,7 +160,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			item_text = _(item_text)
 		entryID = node.get("entryID", "undefined")
 		weight = node.get("weight", 50)
-		description = node.get("description", "").encode("UTF-8") or None
+		description = node.get("description", "") or None
 		description = description and _(description)
 		menupng = MenuEntryPixmap(entryID, self.png_cache, parent)
 		for x in node:
