@@ -33,25 +33,15 @@ def MenuEntryPixmap(entryID, png_cache, parentMenuEntryID):
 	if not isMenuIcons:
 		return None
 
-	icoSize = int(parameters.get("MenuIconsSize", 192))
-	width = icoSize
-	height = icoSize
-	png = png_cache.get(entryID, None)
+	iconSize = int(parameters.get("MenuIconsSize", 192))
+	width = iconSize
+	height = iconSize
+	png = png_cache.get(entryID)
 	if png is None: # no cached entry
 		pngPath = resolveFilename(SCOPE_GUISKIN, "menu/" + entryID + ".svg")
-		pos = config.skin.primary_skin.value.rfind('/')
-		if pos > -1:
-			current_skin = config.skin.primary_skin.value[:pos + 1]
-		else:
-			current_skin = ""
-		if (current_skin in pngPath and current_skin) or not current_skin:
-			png = LoadPixmap(pngPath, cached=True, width=width, height=0 if pngPath.endswith(".svg") else height) #looking for a dedicated icon
-		if png is None: # no dedicated icon found
-			if parentMenuEntryID is not None: # check do we have parent menu item that can use for icon
-				png = png_cache.get(parentMenuEntryID, None)
-		png_cache[entryID] = png
+		png = LoadPixmap(pngPath, cached=True, width=width, height=0 if pngPath.endswith(".svg") else height) #looking for a dedicated icon
 	if png is None:
-		png = png_cache.get("missing", None)
+		png = png_cache.get("missing")
 		if png is None:
 			pngPath = resolveFilename(SCOPE_GUISKIN, "menu/missing.svg")
 			png = LoadPixmap(pngPath, cached=True, width=width, height=0 if pngPath.endswith(".svg") else height)
