@@ -29,8 +29,7 @@ file.close()
 def MenuEntryPixmap(entryID, png_cache, parentMenuEntryID):
  	# imported here to avoid circular import
 	from skin import parameters
-	isMenuIcons = parameters.get("MenuIcons", "").lower() in ("1", "enabled", "on", "true", "yes")
-	if not isMenuIcons:
+	if not parameters.get("MenuIcons", "").lower() in ("1", "enabled", "on", "true", "yes"):
 		return None
 	iconSize = int(parameters.get("MenuIconsSize", 192))  # icons are square, e.g. 192 x 192.
 	png = png_cache.get(entryID)
