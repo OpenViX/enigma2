@@ -350,10 +350,6 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 						break
 				description = plugins.getDescriptionForMenuEntryID(self.menuID, plugin_menuid)
 				menupng = MenuEntryPixmap(l[2], self.png_cache, parentEntryID)
-#				if len(l) > 4 and l[4]:
-#					self.list.append((l[0], boundFunction(l[1], self.session, self.close), l[2], l[3] or 50, description, menupng))
-#				else:
-#					self.list.append((l[0], boundFunction(l[1], self.session), l[2], l[3] or 50, description, menupng))
 				self.list.append((l[0], boundFunction(l[1], self.session, close=self.close), l[2], l[3] or 50, description, menupng))
 
 		if "user" in config.usage.menu_sort_mode.value and self.menuID == "mainmenu":
