@@ -49,28 +49,6 @@ def MenuEntryPixmap(entryID, png_cache, parentMenuEntryID):
 	return png
 
 
-class MenuUpdater:
-	def __init__(self):
-		self.updatedMenuItems = {}
-
-	def addMenuItem(self, id, pos, text, module, screen, weight):
-		if not self.updatedMenuAvailable(id):
-			self.updatedMenuItems[id] = []
-		self.updatedMenuItems[id].append([text, pos, module, screen, weight])
-
-	def delMenuItem(self, id, pos, text, module, screen, weight):
-		self.updatedMenuItems[id].remove([text, pos, module, screen, weight])
-
-	def updatedMenuAvailable(self, id):
-		return id in self.updatedMenuItems
-
-	def getUpdatedMenu(self, id):
-		return self.updatedMenuItems[id]
-
-
-menuupdater = MenuUpdater()
-
-
 class MenuSummary(ScreenSummary):
 	def __init__(self, session, parent):
 		ScreenSummary.__init__(self, session, parent=parent)
@@ -327,17 +305,6 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			elif x.tag == "id":
 				self.menuID = x.get("val")
 				count = 0
-
-			if self.menuID is not None:
-				# menuupdater?
-				if menuupdater.updatedMenuAvailable(self.menuID):
-					for x in menuupdater.getUpdatedMenu(self.menuID):
-						if x[1] == count:
-							description = x.get("description", "").encode("UTF-8") or None
-							description = description and _(description)
-							menupng = MenuEntryPixmap(self.menuID, self.png_cache, parentEntryID)
-							self.list.append((x[0], boundFunction(self.runScreen, (x[2], x[3] + ", ")), x[4], description, menupng))
-							count += 1
 
 		if self.menuID is not None:
 			# plugins
