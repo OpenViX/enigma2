@@ -348,7 +348,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 					if x[2] == plugin_menuid:
 						self.list.remove(x)
 						break
-				description = l[4] if len(l) == 5 else plugins.getDescriptionForMenuEntryID(self.menuID, plugin_menuid)
+				description = plugins.getDescriptionForMenuEntryID(self.menuID, plugin_menuid)
 				menupng = MenuEntryPixmap(l[2], self.png_cache, parentEntryID)
 #				if len(l) > 4 and l[4]:
 #					self.list.append((l[0], boundFunction(l[1], self.session, self.close), l[2], l[3] or 50, description, menupng))
