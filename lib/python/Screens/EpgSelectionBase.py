@@ -227,7 +227,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 			if event is not None:
 				self.session.open(tmdbScreen, event.getEventName(), 2)
 
-
 	def openEPGSearch(self):
 		self.closeEventViewDialog()
 		try:

@@ -340,7 +340,6 @@ class Harddisk:
 		sleep(3)  # Give udev some time to make the mount, which it will do asynchronously.
 		return exitCode
 
-
 	def killPartitionTable(self):
 		zero = 512 * b"\0"
 		try:

@@ -218,6 +218,7 @@ class Session:
 		print("[SkinReloader] closing InfoBar")
 		InfoBar.InfoBar.instance.close("reloadskin", reloadNotification)
 
+
 class PowerKey:
 	""" PowerKey - handles the powerkey press and powerkey release actions"""
 
@@ -289,6 +290,7 @@ class PowerKey:
 		if not Screens.Standby.inStandby and self.session.current_dialog and self.session.current_dialog.ALLOW_SUSPEND and self.session.in_exec:
 			self.session.open(Screens.Standby.Standby)
 
+
 class AutoScartControl:
 	def __init__(self, session):
 		self.force = False
@@ -311,6 +313,7 @@ class AutoScartControl:
 				self.scartDialog.showMessageBox()
 			else:
 				self.scartDialog.switchToTV()
+
 
 def runScreenTest():
 	config.misc.startCounter.value += 1
@@ -364,7 +367,6 @@ def runScreenTest():
 		if enigma.eAVSwitch.getInstance().haveScartSwitch():
 			# we need session.scart to access it from within menu.xml
 			session.scart = AutoScartControl(session)
-
 
 		profile("Init:AutoVideoMode")
 		import Screens.VideoMode
@@ -437,6 +439,7 @@ def runScreenTest():
 		InfoBarGenerics.saveResumePoints()
 	return 0
 
+
 profile("PYTHON_START")
 print("[StartEnigma]  Starting Python Level Initialisation.")
 print("[StartEnigma]  Image Type -> '%s'" % getImageType())
@@ -478,10 +481,8 @@ if not VuRecovery:
 	print("[StartEnigma]  Initialising Bouquets.")
 	config.misc.load_unlinked_userbouquets = ConfigYesNo(default=False)
 
-
 	def setLoadUnlinkedUserbouquets(configElement):
 		enigma.eDVBDB.getInstance().setLoadUnlinkedUserbouquets(configElement.value)
-
 
 	config.misc.load_unlinked_userbouquets.addNotifier(setLoadUnlinkedUserbouquets)
 	if config.clientmode.enabled.value == False:
@@ -610,9 +611,13 @@ Screen.globalScreen = Globals()
 
 # must be above skins and InputDevices
 config.misc.RCSource = ConfigSelection(default="branding", choices=[("branding", _("OE-A-Branding")), ("hardware", _("OE-A-Remotes"))])
+
+
 def RCSelectionChanged(configelement):
 	from Components.SystemInfo import setRCFile
 	setRCFile(configelement.value)
+
+
 config.misc.RCSource.addNotifier(RCSelectionChanged, immediate_feedback=False)
 
 profile("Standby,PowerKey")
@@ -732,7 +737,6 @@ else:
 	print("[StartEnigma]  Initialising CommonInterface.")
 	from Screens.Ci import InitCiConfig
 	InitCiConfig()
-
 
 	if config.clientmode.enabled.value:
 		import Components.ChannelsImporter

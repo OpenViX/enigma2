@@ -22,6 +22,7 @@ def updateExtensions(configElement):
 
 config.scriptrunner.showinextensions.addNotifier(updateExtensions, initial_call=False)
 
+
 def ScriptRunnerAutostart(reason, session=None, **kwargs):
 	"""called with reason=1 during /sbin/shutdown.sysvinit, with reason=0 at startup"""
 	pass

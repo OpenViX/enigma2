@@ -24,6 +24,7 @@ try:
 except ImportError:
 	BackupFiles = None
 
+
 class FactoryReset(Setup, ProtectedScreen):
 	def __init__(self, session):
 		self.resetFull = ConfigYesNo(default=True)

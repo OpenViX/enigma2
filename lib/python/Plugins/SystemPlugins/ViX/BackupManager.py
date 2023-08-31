@@ -1336,6 +1336,7 @@ class BackupFiles(Screen):
 		self.Stage4Completed = True
 
 	tar_flist = "/tmp/_backup-files.list"					# Filename for backup list
+
 	def Stage5(self):
 		tmplist = config.backupmanager.backupdirs.value
 		tmplist.append("/tmp/ExtraInstalledPlugins")

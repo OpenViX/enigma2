@@ -3,6 +3,7 @@ from Components.Element import cached
 import NavigationInstance
 from enigma import iPlayableService
 
+
 class StreamInfo(Converter):
 	STREAMURL = 0
 	STREAMTYPE = 1
