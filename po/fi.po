@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-08-30 20:52+0300\n"
+"PO-Revision-Date: 2023-08-31 07:59+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -18147,18 +18147,3 @@ msgstr "Kuulovammaisille tarkoitetun tekstityksen puhdistus ulkoisista tekstityk
 
 msgid "Remove text for the hearing impaired from external subtitles (instrumental music or environmental sounds, e.g., when a doorbell rings or a gun shot is heard)."
 msgstr "Poista kuulovammaisille tarkoitettu teksti ulkoisista tekstityksistä (instrumentaalimusiikki tai ympäristöäänet, esim. kun ovikello soi tai kuuluu laukaus)."
-
-msgid "Remote Control Selection"
-msgstr "Kaukosäätimen valinta"
-
-msgid "Remote"
-msgstr "Kaukosäädin"
-
-msgid "Choose the remote you want to use."
-msgstr "Valitse kaukosäädin, jota haluat käyttää."
-
-msgid "Reset to default"
-msgstr "Palauta oletus"
-
-msgid "Select any remote from oe-mirrors branding module"
-msgstr "Valitse mikä tahansa kaukosäädin oe-mirrors-brändäysmoduulista"
