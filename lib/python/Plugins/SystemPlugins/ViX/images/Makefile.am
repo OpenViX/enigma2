@@ -1,3 +1,3 @@
-installdir = $(libdir)/enigma2/python/Plugins/SystemPlugins/ViX/images
+installdir = $(pkglibdir)/python/Plugins/SystemPlugins/ViX/images
 
 install_DATA = *.png
