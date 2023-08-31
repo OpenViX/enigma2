@@ -30,15 +30,15 @@ class VIXIPKInstaller(Screen):
 			self["list"].instance.setItemHeight(%d)
 		</applet>
 	</screen>""",
-		560, 400, # screen
-		0, 0, 140, 40, #colors
+		560, 400,  # screen
+		0, 0, 140, 40,  # colors
 		140, 0, 140, 40,
 		280, 0, 140, 40,
 		0, 0, 140, 40, 20,
 		140, 0, 140, 40, 20,
 		280, 0, 140, 40, 20,
-		0, 50, 560, 50, 18, # lab1
-		10, 105, 540, 260, 20, # list
+		0, 50, 560, 50, 18,  # lab1
+		10, 105, 540, 260, 20,  # list
 		26,
 	]
 
@@ -172,8 +172,8 @@ class IpkgInstaller(Screen):
 			<ePixmap pixmap="skin_default/div-h.png" position="%d,%d" zPosition="10" size="%d,%d" transparent="1" alphatest="blend" scale="1"/>
 			<widget source="introduction" render="Label" position="%d,%d" zPosition="10" size="%d,%d" halign="center" valign="center" font="Regular;%d" transparent="1" shadowColor="black" shadowOffset="-1,-1"/>
 		</screen>""",
-			560, 450, # screen
-			0, 0, 140, 40, #colors
+			560, 450,  # screen
+			0, 0, 140, 40,  # colors
 			140, 0, 140, 40,
 			280, 0, 140, 40,
 			420, 0, 140, 40,
@@ -181,7 +181,7 @@ class IpkgInstaller(Screen):
 			140, 0, 140, 40, 20,
 			280, 0, 140, 40, 20,
 			420, 0, 140, 40, 20,
-			5, 50, 540, 360, 20, # list
+			5, 50, 540, 360, 20,  # list
 			0, 410, 560, 2,
 			5, 420, 550, 30, 22,
 		]

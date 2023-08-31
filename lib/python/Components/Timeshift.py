@@ -76,9 +76,9 @@ class InfoBarTimeshift:
 
 		self["TimeshiftActivateActions"] = ActionMap(["InfobarTimeshiftActivateActions"],
 			{
-				"timeshiftActivateEnd": self.activateTimeshiftEnd, # something like "rewind key"
+				"timeshiftActivateEnd": self.activateTimeshiftEnd,  # something like "rewind key"
 				"timeshiftActivateEndAndPause": self.activateTimeshiftEndAndPause  # something like "pause key"
-			}, prio=-1) # priority over record
+			}, prio=-1)  # priority over record
 
 		self["TimeshiftSeekPointerActions"] = ActionMap(["InfobarTimeshiftSeekPointerActions"],
 			{
@@ -91,7 +91,7 @@ class InfoBarTimeshift:
 			{
 				"jumpPreviousFile": self.__evSOF,
 				"jumpNextFile": self.__evEOF
-			}, prio=-1) # priority over history
+			}, prio=-1)  # priority over history
 
 		self["TimeshiftActions"].setEnabled(False)
 		self["TimeshiftActivateActions"].setEnabled(False)
@@ -324,7 +324,7 @@ class InfoBarTimeshift:
 
 	def seekdef(self, key):
 		if self.seekstate == self.SEEK_STATE_PLAY:
-			return 0 # trade as unhandled action
+			return 0  # trade as unhandled action
 		time = (-config.seek.selfdefined_13.value, False, config.seek.selfdefined_13.value,
 			-config.seek.selfdefined_46.value, False, config.seek.selfdefined_46.value,
 			-config.seek.selfdefined_79.value, False, config.seek.selfdefined_79.value)[key - 1]
@@ -429,11 +429,11 @@ class InfoBarTimeshift:
 		if ts.isTimeshiftActive():
 			self.pauseService()
 		else:
-			ts.activateTimeshift() # activate timeshift will automatically pause
+			ts.activateTimeshift()  # activate timeshift will automatically pause
 			self.setSeekState(self.SEEK_STATE_PAUSE)
 			seekable = self.getSeek()
 			if seekable is not None:
-				seekable.seekTo(-90000) # seek approx. 1 sec before end
+				seekable.seekTo(-90000)  # seek approx. 1 sec before end
 		if back:
 			if getBrandOEM() == "xtrend":
 				self.ts_rewind_timer.start(1000, 1)
@@ -809,7 +809,7 @@ class InfoBarTimeshift:
 		for filename in os.listdir(config.usage.timeshift_path.value):
 			if (filename.startswith("timeshift.") or filename.startswith("pts_livebuffer_")) and (filename.endswith(".del") is False and filename.endswith(".copy") is False):
 				# print("[Timeshift]filename:", filename)
-				statinfo = os.stat("%s%s" % (config.usage.timeshift_path.value, filename)) # if no write for 3 sec = stranded timeshift
+				statinfo = os.stat("%s%s" % (config.usage.timeshift_path.value, filename))  # if no write for 3 sec = stranded timeshift
 				if statinfo.st_mtime < (time() - 3.0):
 				# try:
 					# print("[Timeshift][TimeShift] Erasing stranded timeshift %s" % filename)
@@ -1237,7 +1237,7 @@ class InfoBarTimeshift:
 
 	def ptsSeekBackTimer(self):
 		# print("[Timeshift]!!!!! ptsSeekBackTimer RUN")
-		self.doSeek(-90000 * 10) # seek ~10s before end
+		self.doSeek(-90000 * 10)  # seek ~10s before end
 		self.setSeekState(self.SEEK_STATE_PAUSE)
 		self.pts_StartSeekBackTimer.start(1000, True)
 

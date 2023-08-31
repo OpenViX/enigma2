@@ -2,7 +2,7 @@ from xml.etree.cElementTree import fromstring
 
 from gettext import dgettext
 from os.path import getmtime, join as pathjoin
-from skin import setups, findSkinScreen # used in <item conditional="..."> to check if a screen name is available in the skin
+from skin import setups, findSkinScreen  # used in <item conditional="..."> to check if a screen name is available in the skin
 
 from Components.config import ConfigBoolean, ConfigNothing, ConfigSelection, config
 from Components.ConfigList import ConfigListScreen
@@ -59,7 +59,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 	def changedEntry(self):
 		if isinstance(self["config"].getCurrent()[1], (ConfigBoolean, ConfigSelection)):
 			self.createSetup()
-		ConfigListScreen.changedEntry(self) # force summary update immediately, not just on select/deselect
+		ConfigListScreen.changedEntry(self)  # force summary update immediately, not just on select/deselect
 
 	def createSetup(self):
 		oldList = self.list
@@ -82,7 +82,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		if title:
 			title = dgettext(self.pluginLanguageDomain, title) if self.pluginLanguageDomain else _(title)
 		self.setTitle(title if title else _("Setup"))
-		if not self.list: # This forces the self["config"] list to be cleared if there are no eligible items available to be displayed.
+		if not self.list:  # This forces the self["config"] list to be cleared if there are no eligible items available to be displayed.
 			self["config"].list = self.list
 		elif self.list != oldList or self.showDefaultChanged or self.graphicSwitchChanged:
 			currentItem = self["config"].getCurrent()
@@ -296,7 +296,7 @@ def setupDom(setup=None, plugin=None):
 			del domSetups[setupFile]
 		if setupFile in setupModTimes:
 			del setupModTimes[setupFile]
-		return setupFileDom # we can't access setup.xml so return an empty dom
+		return setupFileDom  # we can't access setup.xml so return an empty dom
 	cached = setupFile in domSetups and setupFile in setupModTimes and setupModTimes[setupFile] == modTime
 	print("[Setup] XML%s setup file '%s', using element '%s'%s." % (" cached" if cached else "", setupFile, setup, " from plugin '%s'" % plugin if plugin else ""))
 	if cached:

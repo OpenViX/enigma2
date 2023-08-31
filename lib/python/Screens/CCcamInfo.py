@@ -23,7 +23,7 @@ from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import fileExists, SCOPE_CURRENT_SKIN, resolveFilename
 from Tools.LoadPixmap import LoadPixmap
 import requests
-from urllib.parse import urlparse, urlunparse # raises ImportError in Python 2
+from urllib.parse import urlparse, urlunparse  # raises ImportError in Python 2
 
 
 VERSION = "V3 Python 3"
@@ -1197,11 +1197,11 @@ class CCcamInfoServerMenu(Screen):
 
 		list = []
 		for x in self.infoList:
-			if x[5].replace(_("Connected: "), "") == "": #offline - red
+			if x[5].replace(_("Connected: "), "") == "":  # offline - red
 				list.append(CCcamServerListEntry(x[0], "red"))
-			elif x[1] == _("Cards: 0"): #online with no card - blue
+			elif x[1] == _("Cards: 0"):  # online with no card - blue
 				list.append(CCcamServerListEntry(x[0], "blue"))
-			else: #online with cards - green
+			else:  # online with cards - green
 				list.append(CCcamServerListEntry(x[0], "green"))
 		self["list"] = CCcamList(list)
 		self["info"] = Label()

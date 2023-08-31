@@ -24,13 +24,13 @@ DISPLAY_SKIN_ID = 1  # Front panel / display / LCD.
 
 domScreens = {}  # Dictionary of skin based screens.
 colors = {}  # Dictionary of skin color names.
-BodyFont = ("Regular", 20, 25, 18) # font which is used when a font alias definition is missing from the "fonts" dict.
+BodyFont = ("Regular", 20, 25, 18)  # font which is used when a font alias definition is missing from the "fonts" dict.
 fonts = {}  # Dictionary of predefined and skin defined font aliases.
 menus = {}  # Dictionary of images associated with menu entries.
 parameters = {}  # Dictionary of skin parameters used to modify code behavior.
 setups = {}  # Dictionary of images associated with setup menus.
 switchPixmap = {}  # Dictionary of switch images.
-scrollbarStyle = None # When set, a dictionary of scrollbar styles
+scrollbarStyle = None  # When set, a dictionary of scrollbar styles
 windowStyles = {}  # Dictionary of window styles for each screen ID.
 xres = 720
 yres = 576
@@ -249,7 +249,7 @@ def parseCoordinate(s, e, size=0, font=None):
 		# Don't bother trying an int() conversion,
 		# because at this point that's almost certainly
 		# going to throw an exception.
-		try: # protects against junk in the input
+		try:  # protects against junk in the input
 			val = int(eval(s))
 		except Exception as err:
 			print("[Skin] %s '%s': Coordinate '%s', processed to '%s', cannot be evaluated!" % (type(err).__name__, err, orig, s))
@@ -506,7 +506,7 @@ class AttributeParser:
 		self.guiObject.setItemWidth(parseScale(value))
 
 	def pixmap(self, value):
-		if value.endswith(".svg"): # if grafic is svg force alphatest to "blend"
+		if value.endswith(".svg"):  # if grafic is svg force alphatest to "blend"
 			self.guiObject.setAlphatest(BT_ALPHABLEND)
 		self.guiObject.setPixmap(loadPixmap(value, self.desktop, self.guiObject.size().width(), self.guiObject.size().height()))
 
@@ -794,7 +794,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				fonts["PartnerBoxE2TimerMenu1"] = applySkinFactor("Regular", 18)
 				fonts["PartnerBoxEntryList0"] = applySkinFactor("Regular", 20, 30)
 				fonts["PartnerBoxEntryList1"] = applySkinFactor("Regular", 18)
-				fonts["SelectionList"] = applySkinFactor("Regular", 22, 30) # EPG Importer expandable sources list
+				fonts["SelectionList"] = applySkinFactor("Regular", 22, 30)  # EPG Importer expandable sources list
 
 				# Only add parameters here for lists that are not part of enigma2 repo.
 				# Parameters for modules in this repository should be dealt with directly in the corresponding py, not here.
@@ -827,8 +827,8 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				parameters["PartnerBoxEntryListType"] = applySkinFactor(410, 0, 100, 25)
 				parameters["PartnerBoxTimerName"] = applySkinFactor(0, 30, 20)
 				parameters["PartnerBoxTimerServicename"] = applySkinFactor(0, 0, 30)
-				parameters["SelectionListDescr"] = applySkinFactor(32, 3, 650, 30) # EPG Importer expandable sources list
-				parameters["SelectionListLock"] = applySkinFactor(0, 2, 28, 24) # EPG Importer expandable sources list
+				parameters["SelectionListDescr"] = applySkinFactor(32, 3, 650, 30)  # EPG Importer expandable sources list
+				parameters["SelectionListLock"] = applySkinFactor(0, 2, 28, 24)  # EPG Importer expandable sources list
 				parameters["SHOUTcastListItem"] = applySkinFactor(20, 18, 22, 69, 20, 23, 43, 22)
 
 	for tag in domSkin.findall("include"):

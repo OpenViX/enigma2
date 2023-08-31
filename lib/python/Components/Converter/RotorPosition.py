@@ -22,7 +22,7 @@ class RotorPosition(Converter):
 		config.misc.lastrotorposition.addNotifier(self.forceChanged, initial_call=False)
 		config.misc.showrotorposition.addNotifier(self.show_hide, initial_call=False)
 		self.sec = eDVBSatelliteEquipmentControl.getInstance()
-		self.colors = parameters.get("RotorPositionColors", (0x0000f0f0, 0x00f0f0f0)) # tuner letter, nim_text
+		self.colors = parameters.get("RotorPositionColors", (0x0000f0f0, 0x00f0f0f0))  # tuner letter, nim_text
 
 	@cached
 	def getText(self):

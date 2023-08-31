@@ -40,7 +40,7 @@ def buildTerTransponder(frequency,
 def getInitialTransponderList(tlist, pos, feid=None):
 	list = nimmanager.getTransponders(pos, feid)
 	for x in list:
-		if x[0] == 0: #SAT
+		if x[0] == 0:  # SAT
 			parm = eDVBFrontendParametersSatellite()
 			parm.frequency = x[1]
 			parm.symbol_rate = x[2]
@@ -63,7 +63,7 @@ def getInitialTransponderList(tlist, pos, feid=None):
 def getInitialCableTransponderList(tlist, nim):
 	list = nimmanager.getTranspondersCable(nim)
 	for x in list:
-		if x[0] == 1: #CABLE
+		if x[0] == 1:  # CABLE
 			parm = eDVBFrontendParametersCable()
 			parm.frequency = x[1]
 			parm.symbol_rate = x[2]
@@ -77,7 +77,7 @@ def getInitialCableTransponderList(tlist, nim):
 def getInitialTerrestrialTransponderList(tlist, region, tsystem=eDVBFrontendParametersTerrestrial.System_DVB_T_T2):
 	list = nimmanager.getTranspondersTerrestrial(region)
 	for x in list:
-		if x[0] == 2: #TERRESTRIAL
+		if x[0] == 2:  # TERRESTRIAL
 			if tsystem == eDVBFrontendParametersTerrestrial.System_DVB_T_T2:
 				parm = buildTerTransponder(x[1], x[9], x[2], x[4], x[5], x[3], x[7], x[6], x[8], x[10], x[11])
 			elif x[10] == eDVBFrontendParametersTerrestrial.System_DVB_T_T2 or x[10] == tsystem:
@@ -90,7 +90,7 @@ def getInitialTerrestrialTransponderList(tlist, region, tsystem=eDVBFrontendPara
 def getInitialATSCTransponderList(tlist, nim):
 	list = nimmanager.getTranspondersATSC(nim)
 	for x in list:
-		if x[0] == 3: #ATSC
+		if x[0] == 3:  # ATSC
 			parm = eDVBFrontendParametersATSC()
 			parm.frequency = x[1]
 			parm.modulation = x[2]
@@ -120,7 +120,7 @@ cable_autoscan_nimtype = {
 'TURBO': 'vuplus_turbo_c',
 'TURBO2': 'vuplus_turbo2_c',
 'TT2L08': 'tt2l08',
-'BCM3148': 'bcm3148', #BCM3158/BCM3148 use the same bcm3148 utility
+'BCM3148': 'bcm3148',  # BCM3158/BCM3148 use the same bcm3148 utility
 'BCM3158': 'bcm3148'
 }
 
@@ -174,7 +174,7 @@ class CableTransponderSearchSupport:
 			if raw_channel:
 				frontend = raw_channel.getFrontend()
 				if frontend:
-					frontend.closeFrontend() # immediate close...
+					frontend.closeFrontend()  # immediate close...
 					del frontend
 					del raw_channel
 					return True
@@ -297,9 +297,9 @@ class CableTransponderSearchSupport:
 					bus = nim_idx
 			else:
 				if nim_idx == 2:
-					bus = 2 # DM8000 first nim is /dev/i2c/2
+					bus = 2  # DM8000 first nim is /dev/i2c/2
 				else:
-					bus = 4 # DM8000 second num is /dev/i2c/4
+					bus = 4  # DM8000 second num is /dev/i2c/4
 
 		if tunername == "CXD1981":
 			exe_path = "/usr/bin/cxd1978"
@@ -455,8 +455,8 @@ class TerrestrialTransponderSearchSupport:
 			if data[0] == 'OK':
 				# DVB-T : OK, frequency, bandwidth, system, -1
 				# DVB-T2 : OK, frequency, bandwidth, system, number_of_plp, plp_id0:plp_type0
-				if len(data) < 6: # DVB-T (caution: system may give an incorrect value of 2 for DVB-T multiplexes)
-					if not hasattr(self, "scan_ter") or self.scan_ter.complete_system.value != eDVBFrontendParametersTerrestrial.System_DVB_T2: # do not scan if user selected DVB-T2 scan only
+				if len(data) < 6:  # DVB-T (caution: system may give an incorrect value of 2 for DVB-T multiplexes)
+					if not hasattr(self, "scan_ter") or self.scan_ter.complete_system.value != eDVBFrontendParametersTerrestrial.System_DVB_T2:  # do not scan if user selected DVB-T2 scan only
 						parm = eDVBFrontendParametersTerrestrial()
 						parm.frequency = int(data[1])
 						parm.bandwidth = self.terrestrialTransponderconvBandwidth_P(int(data[2]))
@@ -478,7 +478,7 @@ class TerrestrialTransponderSearchSupport:
 							plp_list = plp_list[:plp_num]
 						for plp in plp_list:
 							(plp_id, plp_type) = plp.split(':')
-							if plp_type == '0': # common PLP:
+							if plp_type == '0':  # common PLP:
 								continue
 							parm = eDVBFrontendParametersTerrestrial()
 							parm.frequency = int(data[1])
@@ -503,9 +503,9 @@ class TerrestrialTransponderSearchSupport:
 	def terrestrialTransponderInitSearchList(self, searchList, region):
 		tpList = nimmanager.getTranspondersTerrestrial(region)
 		for x in tpList:
-			if x[0] == 2: #TERRESTRIAL
-				freq = x[1] # frequency
-				bandWidth = self.terrestrialTransponderConvBandwidth_I(x[2]) # bandWidth
+			if x[0] == 2:  # TERRESTRIAL
+				freq = x[1]  # frequency
+				bandWidth = self.terrestrialTransponderConvBandwidth_I(x[2])  # bandWidth
 				parm = (freq, bandWidth)
 				searchList.append(parm)
 
@@ -670,7 +670,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		if self.scan_nims == []:
 			return
 
-		self.DVB_TypeEntry = getConfigListEntry(_("DVB type"), self.DVB_type) # multitype?
+		self.DVB_TypeEntry = getConfigListEntry(_("DVB type"), self.DVB_type)  # multitype?
 		if len(self.nim_type_dict[index_to_scan]["modes"]) > 1:
 			self.list.append(self.DVB_TypeEntry)
 		self.typeOfScanEntry = None
@@ -689,7 +689,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 			self.typeOfScanEntry = getConfigListEntry(_("Type of scan"), self.scan_type, _("Choose whether to scan a single transponder, one satellite or multiple satellites."))
 			self.list.append(self.typeOfScanEntry)
 		elif self.DVB_type.value == "DVB-C":
-			if config.Nims[index_to_scan].cable.scan_type.value != "provider": # only show predefined transponder if in provider mode
+			if config.Nims[index_to_scan].cable.scan_type.value != "provider":  # only show predefined transponder if in provider mode
 				if self.scan_typecable.value == "predefined_transponder" and self.last_scan_typecable in ("single_transponder", "complete"):
 					self.scan_typecable.value = self.cable_toggle[self.last_scan_typecable]
 			self.last_scan_typecable = self.scan_typecable.value
@@ -853,7 +853,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 				self.predefinedATSCTranspondersList()
 				self.list.append(getConfigListEntry(_('Transponder'), self.ATSCTransponders, _("Select which transponder to scan.")))
 			elif self.scan_type_atsc.value == "complete":
-				pass #FIXME
+				pass  # FIXME
 		self.list.append(getConfigListEntry(_("Network scan"), self.scan_networkScan, _("Scan using transponders on NIT table? 'No' will use transponders in xml file.")))
 		self.list.append(getConfigListEntry(_("Clear before scan"), self.scan_clearallservices, _("Remove the services on scanned transponders before re-adding services?")))
 		self.list.append(getConfigListEntry(_("Only free scan"), self.scan_onlyfree, _("Choose whether to scan for free services only or whether to include paid/encrypted services too.")))
@@ -901,7 +901,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 				self.scan_sat.t2mi_plp_id.value = eDVBFrontendParametersSatellite.No_T2MI_PLP_Id
 				self.scan_sat.t2mi_pid.value = eDVBFrontendParametersSatellite.T2MI_Default_Pid
 			self.createSetup()
-		self.changedEntry() # force summary update immediately, not just on select/deselect
+		self.changedEntry()  # force summary update immediately, not just on select/deselect
 
 	def createConfig(self, frontendData):
 		defaultSat = {
@@ -1003,12 +1003,12 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 			if n.empty or n.config_mode == "nothing":
 				continue
 			modes = [x[:5] for x in n.getTunerTypesEnabled()]
-			if "DVB-S" in modes: # Only do the DVB-S tests below when DVB-S is present in modes. This avoids problems with combined tuners such as Availink AVL6862.
+			if "DVB-S" in modes:  # Only do the DVB-S tests below when DVB-S is present in modes. This avoids problems with combined tuners such as Availink AVL6862.
 				if n.config_mode in ("simple", "equal", "advanced") and len(nimmanager.getSatListForNim(n.slot)) < 1:
 					continue
 				if n.config_mode in ("loopthrough", "satposdepends"):
 					root_id = nimmanager.sec.getRoot(n.slot_id, int(n.config.connectedTo.value))
-					if n.type == nimmanager.nim_slots[root_id].type: # check if connected from a DVB-S to DVB-S2 Nim or vice versa
+					if n.type == nimmanager.nim_slots[root_id].type:  # check if connected from a DVB-S to DVB-S2 Nim or vice versa
 						continue
 			nim_list.append((str(n.slot), n.friendly_full_description))
 			self.nim_type_dict[n.slot] = {"modes": modes,
@@ -1094,7 +1094,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		self.scan_sat.t2mi_pid = ConfigInteger(default=defaultSat["t2mi_pid"] if self.scan_sat.t2mi_plp_id.value != eDVBFrontendParametersSatellite.No_T2MI_PLP_Id else eDVBFrontendParametersSatellite.T2MI_Default_Pid, limits=(0, 8191))
 		self.scan_sat.t2mi_plp_id_bool = ConfigSelection(default=defaultSat["t2mi_plp_id"] != eDVBFrontendParametersSatellite.No_T2MI_PLP_Id, choices=[(True, _("Enabled")), (False, _("Disabled"))])
 
-		self.is_id_memory = self.scan_sat.is_id.value # used to prevent is_id value being lost when self.scan_sat.is_id_bool state changes
+		self.is_id_memory = self.scan_sat.is_id.value  # used to prevent is_id value being lost when self.scan_sat.is_id_bool state changes
 		self.pls_mode_memory = self.scan_sat.pls_mode.value
 		self.pls_code_memory = self.scan_sat.pls_code.value
 		self.t2mi_plp_id_memory = self.scan_sat.t2mi_plp_id.value
@@ -1535,9 +1535,9 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 			else:
 				fec = self.scan_sat.fec.value
 			compare = [
-				0, # DVB type
+				0,  # DVB type
 				self.scan_sat.frequency.value * 1000,  # 1
-				self.scan_sat.symbolrate.value * 1000, # 2
+				self.scan_sat.symbolrate.value * 1000,  # 2
 				self.scan_sat.polarization.value,    # 3
 				fec,                                 # 4
 				self.scan_sat.system.value,          # 5
@@ -1580,7 +1580,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		return _("Invalid transponder data")
 
 	def compareTransponders(self, tp, compare):
-		frequencyTolerance = 2000 #2 MHz
+		frequencyTolerance = 2000  # 2 MHz
 		symbolRateTolerance = 10
 		return abs(tp[1] - compare[1]) <= frequencyTolerance and abs(tp[2] - compare[2]) <= symbolRateTolerance and tp[3] == compare[3] and (not tp[4] or tp[4] == compare[4]) and (tp[5] == eDVBFrontendParametersSatellite.System_DVB_S or (tp[10] == eDVBFrontendParametersSatellite.No_Stream_Id_Filter or tp[10] == compare[10]) and tp[13] == compare[13])
 
@@ -1595,7 +1595,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		region = terrestrialRegion.description[terrestrialRegion.value]
 		tps = nimmanager.getTranspondersTerrestrial(region)
 		for tp in tps:
-			if tp[0] == 2: #TERRESTRIAL
+			if tp[0] == 2:  # TERRESTRIAL
 				channel = ''
 				if channels:
 					channel = _(' (Channel %s)') % (getChannelNumber(tp[1], index_to_scan))
@@ -1608,7 +1608,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		return default
 
 	def compareTerrTransponders(self, tp, compare):
-		frequencyTolerance = 1000000 #1 MHz
+		frequencyTolerance = 1000000  # 1 MHz
 		return abs(tp[1] - compare[1]) <= frequencyTolerance
 
 	def getTerrestrialRegionsList(self, index_to_scan=None):
@@ -1632,7 +1632,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		index_to_scan = int(self.scan_nims.value)
 		tps = nimmanager.getTranspondersCable(index_to_scan)
 		for tp in tps:
-			if tp[0] == 1: #CABLE
+			if tp[0] == 1:  # CABLE
 				if default is None and self.compareCabTransponders(tp, compare):
 					default = str(i)
 				list.append((str(i), self.humanReadableCabTransponder(tp)))
@@ -1649,7 +1649,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		return _("Invalid transponder data")
 
 	def compareCabTransponders(self, tp, compare):
-		frequencyTolerance = 1000 #1 MHz
+		frequencyTolerance = 1000  # 1 MHz
 		symbolRateTolerance = 10
 		return abs(tp[1] - compare[1]) <= frequencyTolerance and abs(tp[2] - compare[2]) <= symbolRateTolerance and tp[3] == compare[3] and (not tp[4] or tp[4] == compare[4])
 
@@ -1659,7 +1659,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 		index_to_scan = int(self.scan_nims.value)
 		tps = nimmanager.getTranspondersATSC(index_to_scan)
 		for i, tp in enumerate(tps):
-			if tp[0] == 3: #ATSC
+			if tp[0] == 3:  # ATSC
 				list.append((str(i), '%s MHz' % (str(tp[1] // 1000000))))
 		self.ATSCTransponders = ConfigSelection(choices=list, default=default)
 		return default
@@ -1763,7 +1763,7 @@ class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, Terres
 		ConfigListScreen.__init__(self, self.list, on_change=self.newConfig, fullUI=True)
 
 	def newConfig(self):
-		self.changedEntry() # force summary update immediately, not just on select/deselect
+		self.changedEntry()  # force summary update immediately, not just on select/deselect
 
 	def getNetworksForNim(self, nim):
 		if nim.isCompatible("DVB-S"):
@@ -1777,7 +1777,7 @@ class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, Terres
 			if not nimmanager.somethingConnected(nim.slot):
 				networks = []
 		elif not nim.empty:
-			networks = [nim.type] # "DVB-C" or "DVB-T". TODO: seperate networks for different C/T tuners, if we want to support that.
+			networks = [nim.type]  # "DVB-C" or "DVB-T". TODO: seperate networks for different C/T tuners, if we want to support that.
 		else:
 			# empty tuners provide no networks.
 			networks = []
@@ -1802,7 +1802,7 @@ class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, Terres
 			self.tlist = None
 			self.buildTransponderList()
 
-	def buildTransponderList(self): # this method is called multiple times because of asynchronous stuff
+	def buildTransponderList(self):  # this method is called multiple times because of asynchronous stuff
 		APPEND_NOW = 0
 		SEARCH_CABLE_TRANSPONDERS = 1
 		SEARCH_TERRESTRIAL2_TRANSPONDERS = 2
@@ -1811,7 +1811,7 @@ class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, Terres
 		n = self.nim_iter < len(self.nim_enable) and self.nim_enable[self.nim_iter] or None
 		self.nim_iter += 1
 		if n:
-			if n.value: # check if nim is enabled
+			if n.value:  # check if nim is enabled
 				flags = 0
 				nim = nimmanager.nim_slots[n.nim_index]
 				networks = set(self.getNetworksForNim(nim))
@@ -1867,7 +1867,7 @@ class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, Terres
 				else:
 					assert False
 
-			self.buildTransponderList() # recursive call of this function !!!
+			self.buildTransponderList()  # recursive call of this function !!!
 			return
 		# when we are here, then the recursion is finished and all enabled nims are checked
 		# so we now start the real transponder scan

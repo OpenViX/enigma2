@@ -149,13 +149,13 @@ class UpdatePluginMenu(Screen):
 						else:
 							menuEntryDescription = _('Extended Software Plugin')
 						self.list.append(('default-plugin', menuEntryName, menuEntryDescription + self.oktext, callFnc))
-			if config.usage.setup_level.index >= 2: # expert+
+			if config.usage.setup_level.index >= 2:  # expert+
 				self.list.append(("advanced", _("Advanced options"), _("\nAdvanced options and settings.") + self.oktext, None))
 		elif self.menu == 1:
 			self.list.append(("advancedrestore", _("Advanced restore"), _("\nRestore your backups by date.") + self.oktext, None))
 			self.list.append(("backuplocation", _("Select backup location"), _("\nSelect your backup device.\nCurrent device: ") + config.plugins.configurationbackup.backuplocation.value + self.oktext, None))
 			self.list.append(("backupfiles", _("Select backup files"), _("Select files for backup.") + self.oktext + "\n\n" + self.infotext, None))
-			if config.usage.setup_level.index >= 2: # expert+
+			if config.usage.setup_level.index >= 2:  # expert+
 				self.list.append(("ipkg-manager", _("Packet management"), _("\nView, install and remove available or installed packages.") + self.oktext, None))
 			self.list.append(("ipkg-source", _("Select upgrade source"), _("\nEdit the upgrade source address.") + self.oktext, None))
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_SOFTWAREMANAGER):
@@ -232,7 +232,7 @@ class UpdatePluginMenu(Screen):
 			if iSoftwareTools.available_updates is not 0:
 				self.text = _("There are at least %s updates available.") % (str(iSoftwareTools.available_updates))
 			else:
-				self.text = "" #_("There are no updates available.")
+				self.text = ""  # _("There are no updates available.")
 			if iSoftwareTools.list_updating is True:
 				self.text += "\n" + _("A search for available updates is currently in progress.")
 		else:
@@ -931,7 +931,7 @@ class PluginManager(Screen, PackageInfoHandler):
 				return _("Electronic Program Guide"), _("View list of available EPG extensions."), tag, divpng
 			elif tag == 'Communication':
 				return _("Communication"), _("View list of available communication extensions."), tag, divpng
-			else: # dynamically generate non existent tags
+			else:  # dynamically generate non existent tags
 				return str(tag), _("View list of available ") + str(tag) + ' ' + _("extensions."), tag, divpng
 
 	def prepareInstall(self):
@@ -1216,7 +1216,7 @@ class PluginDetails(Screen, PackageInfoHandler):
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("Plugin details"))
 		self.skin_path = plugin_path
-		self.language = language.getLanguage()[:2] # getLanguage returns e.g. "fi_FI" for "language_country"
+		self.language = language.getLanguage()[:2]  # getLanguage returns e.g. "fi_FI" for "language_country"
 		self.attributes = None
 		PackageInfoHandler.__init__(self, self.statusCallback)
 		self.directory = resolveFilename(SCOPE_METADIR)
@@ -1641,7 +1641,7 @@ class PacketManager(Screen, NumericalTextInput):
 		self.cmdList = []
 		self.cachelist = []
 		self.cache_ttl = 86400  #600 is default, 0 disables, Seconds cache is considered valid (24h should be ok for caching ipkgs)
-		self.cache_file = eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/SoftwareManager/packetmanager.cache') #Path to cache directory
+		self.cache_file = eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/SoftwareManager/packetmanager.cache')  # Path to cache directory
 		self.oktext = _("\nAfter pressing OK, please wait!")
 		self.unwanted_extensions = ('-dbg', '-dev', '-doc', '-staticdev', '-src', 'busybox')
 
@@ -1973,7 +1973,7 @@ class IpkgInstaller(Screen):
 
 def filescan_open(list, session, **kwargs):
 	filelist = [x.path for x in list]
-	session.open(IpkgInstaller, filelist) # list
+	session.open(IpkgInstaller, filelist)  # list
 
 
 def filescan(**kwargs):

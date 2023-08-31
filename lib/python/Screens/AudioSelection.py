@@ -495,7 +495,7 @@ class AudioSelection(ConfigListScreen, Screen):
 					self.keyAudioSubtitle()
 					self.__updatedInfo()
 				else:
-					self.session.open(QuickSubtitlesConfigMenu, self.infobar)	# sub title config screen
+					self.session.open(QuickSubtitlesConfigMenu, self.infobar)  # sub title config screen
 			else:
 				ConfigListScreen.keyRight(self)
 		if self.focus == FOCUS_STREAMS and self["streams"].count() and config == False:

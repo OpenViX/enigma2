@@ -293,13 +293,13 @@ class TryQuitMainloop(MessageBox):
 		else:
 			if event == iRecordableService.evEnd:
 				recordings = self.session.nav.getRecordings()
-				if not recordings: # no more recordings exist
+				if not recordings:  # no more recordings exist
 					rec_time = self.session.nav.RecordTimer.getNextRecordingTime()
 					if rec_time > 0 and (rec_time - time()) < 360:
-						self.initTimeout(360) # wait for next starting timer
+						self.initTimeout(360)  # wait for next starting timer
 						self.startTimer()
 					else:
-						self.close(True) # immediate shutdown
+						self.close(True)  # immediate shutdown
 			elif event == iRecordableService.evStart:
 				self.stopTimer()
 
@@ -308,14 +308,14 @@ class TryQuitMainloop(MessageBox):
 			import struct
 			from enigma import eHdmiCEC
 			physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
-			msgaddress = 0x0f # use broadcast for active source command
-			cmd0 = 0x9d	# 157 sourceinactive
+			msgaddress = 0x0f  # use broadcast for active source command
+			cmd0 = 0x9d  # 157 sourceinactive
 			data0 = struct.pack("BB", int(physicaladdress // 256), int(physicaladdress % 256))
 			data0 = data0.decode("UTF-8", "ignore")
-			cmd1 = 0x44	# 68 keypoweroff
+			cmd1 = 0x44  # 68 keypoweroff
 			data1 = struct.pack("B", 0x6c)
 			data1 = data1.decode("UTF-8", "ignore")
-			cmd2 = 0x36	# 54 standby
+			cmd2 = 0x36  # 54 standby
 			data2 = ""
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd0, data0, len(data0))
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd1, data1, len(data1))

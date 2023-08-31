@@ -81,7 +81,7 @@ class TimerEntry(TimerEntryBase):
 
 		# FIXME some service-chooser needed here
 		servicename = "N/A"
-		try: # no current service available?
+		try:  # no current service available?
 			servicename = str(self.timer.service_ref.getServiceName())
 		except:
 			pass
@@ -130,7 +130,7 @@ class TimerEntry(TimerEntryBase):
 				MovieLocationBox,
 				_("Select target folder"),
 				self.timerentry_dirname.value,
-				minFree=100 # We require at least 100MB free space
+				minFree=100  # We require at least 100MB free space
 			)
 		elif cur and cur[1] == self.timerentry_tagsset:
 			self.session.openWithCallback(

@@ -76,7 +76,7 @@ class ScrollLabel(GUIComponent):
 			skin.applyAllAttributes(self.scrollbar, desktop, scrollbar_attribs + widget_attribs, parent.scale)
 			ret = True
 		self.pageWidth = self.long_text.size().width()
-		lineheight = fontRenderClass.getInstance().getLineHeight(self.long_text.getFont()) or 30 # assume a random lineheight if nothing is visible
+		lineheight = fontRenderClass.getInstance().getLineHeight(self.long_text.getFont()) or 30  # assume a random lineheight if nothing is visible
 		lines = int(self.long_text.size().height() // lineheight)
 		self.pageHeight = int(lines * lineheight)
 		self.instance.move(self.long_text.position())

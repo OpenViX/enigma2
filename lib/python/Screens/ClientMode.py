@@ -35,7 +35,7 @@ class ClientModeScreen(Setup):
 			addressTypeDefault = "peer"
 		self.addressType = ConfigSelection(default=addressTypeDefault, choices=addressChoices)
 
-	def run(self): # for start wizard
+	def run(self):  # for start wizard
 		self.saveconfig()
 
 	def keySave(self):
@@ -66,7 +66,7 @@ class ClientModeScreen(Setup):
 		if config.clientmode.enabled.value:
 			config.usage.remote_fallback_enabled.value = True
 			config.usage.remote_fallback.value = "http://%s:%d" % (remoteAddress, config.clientmode.serverStreamingPort.value)
-		elif config.clientmode.enabled.isChanged(): # switching back to normal mode
+		elif config.clientmode.enabled.isChanged():  # switching back to normal mode
 			# load nim config from config.clientmode.nimcache
 			import json
 			nim_config_list = json.loads(config.clientmode.nim_cache.value)

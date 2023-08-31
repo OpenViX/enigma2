@@ -11,7 +11,7 @@ if len(sys.argv) > 2:
 l = {}
 
 with open(infilename, 'r') as f:
-	f.readline() # throw away header line
+	f.readline()  # throw away header line
 	for line in f:
 		item = line.split('\t')
 		name = (item[6],)

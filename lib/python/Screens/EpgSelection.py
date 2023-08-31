@@ -101,7 +101,7 @@ class EPGSelection(EPGSelectionChannel, EPGServiceZap):
 	def infoKeyPressed(self):
 		self.openEventView()
 
-	def eventSelected(self): # used by EPG Search plugin
+	def eventSelected(self):  # used by EPG Search plugin
 		self.openEventView()
 
 	def epgButtonPressed(self):

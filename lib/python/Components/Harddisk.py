@@ -227,8 +227,8 @@ class Harddisk:
 		return cap
 
 	def capacity(self):
-		cap = self.diskSize() # cap is in MB
-		cap *= 1000000 # convert to MB to bytes
+		cap = self.diskSize()  # cap is in MB
+		cap *= 1000000  # convert to MB to bytes
 		return bytesToHumanReadable(cap)
 
 	def model(self):

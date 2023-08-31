@@ -53,7 +53,7 @@ class TimeshiftSettings(Setup):
 			self.errorItem = self["config"].getCurrentIndex()
 			footnote = _("Directory '%s' not writeable!") % path
 			green = ""
-		elif not self.hasHardLinks(path): # Timeshift requires a hardlinks
+		elif not self.hasHardLinks(path):  # Timeshift requires a hardlinks
 			self.errorItem = self["config"].getCurrentIndex()
 			footnote = _("Directory '%s' is not hard links capable!") % path
 			green = ""

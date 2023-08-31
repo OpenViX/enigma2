@@ -143,8 +143,8 @@ def buildPartitionInfo(partition, partitionList):
 	else:
 		stat = statvfs(mediamount)
 		# print("[MountManager1]mediamount: %s" % mediamount)
-		size = (stat.f_blocks * stat.f_bsize) / (1000 * 1000) # get size in MB
-		if size < 1: # is condition ever fulfilled?
+		size = (stat.f_blocks * stat.f_bsize) / (1000 * 1000)  # get size in MB
+		if size < 1:  # is condition ever fulfilled?
 			description = _("Size: unavailable")
 		if size < 1000:
 			description = _("Size: %sMB") % str(int(size))
@@ -153,7 +153,7 @@ def buildPartitionInfo(partition, partitionList):
 		else:
 			description = _("Size: %sTB") % format(size / (1000 * 1000), '.2f')
 
-	if SystemInfo["MountManager"]:	# called by VIXDevicesPanel else DeviceMountSetup
+	if SystemInfo["MountManager"]:  # called by VIXDevicesPanel else DeviceMountSetup
 		if rw.startswith("rw"):
 			rw = " R/W"
 		elif rw.startswith("ro"):
@@ -212,15 +212,15 @@ class VIXDevicesPanel(Screen):
 		<widget name="key_yellow" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
 		<widget name="key_blue" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
 	</screen>""",
-		560, 495, # screen
-		10, 50, 540, 400, # Listbox
+		560, 495,  # screen
+		10, 50, 540, 400,  # Listbox
 		100, 0, 520, 30,
 		120, 30, 500, 50,
 		10, 0, 80, 80,
-		24, 20, # fonts
+		24, 20,  # fonts
 		80,
 		10, 10, 540, 425, 25,
-		0, 0, 140, 40, #colors
+		0, 0, 140, 40,  # colors
 		140, 0, 140, 40,
 		280, 0, 140, 40,
 		420, 0, 140, 40,
@@ -259,7 +259,7 @@ class VIXDevicesPanel(Screen):
 		# print("[MountManager][selectionChanged] self.partitionList=%s" % self.partitionList)
 		if len(self.partitionList) == 0:
 			return
-		sel = self["list"].getCurrent()	# partitionInfo = (name, description, png)
+		sel = self["list"].getCurrent()  # partitionInfo = (name, description, png)
 		# print("[MountManager][selectionChanged] sel1=%s sel2=%s" % (sel[0], sel[1]))
 		line = sel[1]
 		# print("[MountManager1][selectionChanged] line=%s" % line)
@@ -291,7 +291,7 @@ class VIXDevicesPanel(Screen):
 		self["lab1"].hide()
 
 	def setupMounts(self):
-		self.session.openWithCallback(self.setTimer, DeviceMountSetup)	#	print("[MountManager][setupMounts")
+		self.session.openWithCallback(self.setTimer, DeviceMountSetup)  # print("[MountManager][setupMounts")
 
 	def unmount(self):
 		sel = self["list"].getCurrent()
@@ -372,12 +372,12 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		<widget name="config" position="%d,%d" size="%d,%d" itemHeight="%d" font="Regular;%d" scrollbarMode="showOnDemand"/>
 		<widget name="lab1" position="%d,%d" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313"/>
 	</screen>""",
-		560, 450, # screen
-		0, 0, 140, 40, #colors
+		560, 450,  # screen
+		0, 0, 140, 40,  # colors
 		140, 0, 140, 40,
 		0, 0, 140, 40, 20,
 		140, 0, 140, 40, 20,
-		0, 50, 560, 275, 26, 20, # config
+		0, 50, 560, 275, 26, 20,  # config
 		0, 365, 560, 20, 18,
 	]
 
@@ -414,7 +414,7 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		self["lab1"].hide()
 
 	def saveconfMounts(self):
-		for x in self["config"].list:	# partitionInfo = getConfigListEntry(text, item, partition, _format)
+		for x in self["config"].list:  # partitionInfo = getConfigListEntry(text, item, partition, _format)
 			self.device = x[2]
 			self.mountp = x[1].value
 			self.type = x[3]

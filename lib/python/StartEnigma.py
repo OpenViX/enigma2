@@ -144,7 +144,7 @@ class Session:
 		self.pushCurrent()
 		self.current_dialog = dialog
 		self.current_dialog.isTmp = False
-		self.current_dialog.callback = None # would cause re-entrancy problems.
+		self.current_dialog.callback = None  # would cause re-entrancy problems.
 		self.execBegin()
 
 	def openWithCallback(self, callback, screen, *arguments, **kwargs):
@@ -226,7 +226,7 @@ class PowerKey:
 		globalActionMap.actions["power_down"] = self.powerdown
 		globalActionMap.actions["power_up"] = self.powerup
 		globalActionMap.actions["power_long"] = self.powerlong
-		globalActionMap.actions["deepstandby"] = self.shutdown # frontpanel long power button press
+		globalActionMap.actions["deepstandby"] = self.shutdown  # frontpanel long power button press
 		globalActionMap.actions["discrete_off"] = self.standby
 		self.standbyblocked = 1
 
@@ -396,7 +396,7 @@ def runScreenTest():
 				config.misc.pluginWakeupName.value = wakeupList[0][2]
 				print("[StartEnigma] next wakeup will be plugin", wakeupList[0][2])
 			else:
-				config.misc.pluginWakeupName.value = "" # next wakeup not a plugin
+				config.misc.pluginWakeupName.value = ""  # next wakeup not a plugin
 			config.misc.pluginWakeupName.save()
 			if not config.misc.SyncTimeUsing.value == "dvb":
 				print("[StartEnigma] dvb time sync disabled... so set RTC now to current linux time!", strftime("%Y/%m/%d %H:%M", localtime(nowTime)))
@@ -422,7 +422,7 @@ def runScreenTest():
 			setFPWakeuptime(wptime)
 			PowerTimerWakeupAuto = startTime[1] == 3 and startTime[2]
 			print("[StartEnigma] PowerTimerWakeupAuto", PowerTimerWakeupAuto)
-			config.misc.pluginWakeupName.value = "" # next wakeup not a plugin
+			config.misc.pluginWakeupName.value = ""  # next wakeup not a plugin
 			config.misc.pluginWakeupName.save()
 		config.misc.isNextPowerTimerAfterEventActionAuto.value = PowerTimerWakeupAuto
 		config.misc.isNextPowerTimerAfterEventActionAuto.save()
@@ -468,7 +468,7 @@ profile("InfoBar")
 print("[StartEnigma]  Initialising InfoBar.")
 from Screens import InfoBar
 
-from Components.SystemInfo import SystemInfo	#	don't move this import
+from Components.SystemInfo import SystemInfo  # don't move this import
 VuRecovery = SystemInfo["HasKexecMultiboot"] and SystemInfo["MultiBootSlot"] == 0
 # print("[StartEnigma]  Is this VuRecovery?. Recovery = ", VuRecovery)
 
@@ -517,7 +517,7 @@ config.misc.SyncTimeUsing = ConfigSelection(default="dvb", choices=[("dvb", _("T
 config.misc.NTPserver = ConfigText(default='pool.ntp.org', fixed_size=False)
 config.misc.useNTPminutes = ConfigSelection(default="30", choices=[("30", "30" + " " + _("minutes")), ("60", _("Hour")), ("1440", _("Once per day"))])
 
-config.misc.startCounter = ConfigInteger(default=0) # number of e2 starts..
+config.misc.startCounter = ConfigInteger(default=0)  # number of e2 starts..
 config.misc.startCounter = ConfigInteger(default=0)  # number of e2 starts...
 config.misc.standbyCounter = NoSave(ConfigInteger(default=0))  # number of standby
 config.misc.DeepStandby = NoSave(ConfigYesNo(default=False))  # detect deepstandby
@@ -739,7 +739,7 @@ else:
 		Components.ChannelsImporter.autostart()
 
 
-print("[StartEnigma]  Starting User Interface.")	# first, setup a screen
+print("[StartEnigma]  Starting User Interface.")  # first, setup a screen
 
 try:
 	runScreenTest()

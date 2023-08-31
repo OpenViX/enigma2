@@ -59,8 +59,8 @@ class RestoreWizard(WizardLanguage, Rc):
 				if len(files):
 					for file in files:
 						if file.endswith(".tar.gz") and "vix" in file.lower() or file.startswith("%s" % defaultprefix):
-							mtimes.append((path.join(devpath, file), stat(path.join(devpath, file)).st_mtime)) # (filname, mtime)
-		for file in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
+							mtimes.append((path.join(devpath, file), stat(path.join(devpath, file)).st_mtime))  # (filname, mtime)
+		for file in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]:  # sort by mtime
 			list.append((file, file))
 		return list
 

@@ -211,9 +211,9 @@ class wpaSupplicant:
 	def loadBcmWifiConfig(self, iface):
 		wsconf = {}
 		wsconf["ssid"] = ""
-		wsconf["hiddenessid"] = False # not used
+		wsconf["hiddenessid"] = False  # not used
 		wsconf["encryption"] = "WPA2"
-		wsconf["wepkeytype"] = "ASCII" # not used
+		wsconf["wepkeytype"] = "ASCII"  # not used
 		wsconf["key"] = ""
 
 		configfile = getWlConfName(iface)

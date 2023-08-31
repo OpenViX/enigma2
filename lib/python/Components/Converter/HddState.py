@@ -50,7 +50,7 @@ class HddState(Converter):
 		self.timer.callback.append(self.updateHddState)
 		self.idle_time = int(config.usage.hdd_standby.value)
 		config.usage.hdd_standby.addNotifier(self.setStandbyTime, initial_call=False)
-		self.colors = parameters.get("HddStateColors", (0x00FFFF00, 0x0000FF00)) # standby - yellow, active - green
+		self.colors = parameters.get("HddStateColors", (0x00FFFF00, 0x0000FF00))  # standby - yellow, active - green
 		if self.hdd_list:
 			self.updateHddState(force=True)
 		if self.onPartitionAddRemove not in harddiskmanager.on_partition_list_change:

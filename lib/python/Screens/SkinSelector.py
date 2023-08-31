@@ -28,7 +28,7 @@ class SkinSelector(Screen, HelpableScreen):
 			self.skinName = [skin_name] + self.skinName
 		self.rootDir = resolveFilename(SCOPE_SKIN)
 		self.config = config.skin.primary_skin
-		from skin import currentPrimarySkin # value types are imported by value at import time
+		from skin import currentPrimarySkin  # value types are imported by value at import time
 		self.currentSkin = currentPrimarySkin
 		self.xmlList = ["skin.xml"]
 		self.onChangedEntry = []
@@ -228,7 +228,7 @@ class LcdSkinSelector(SkinSelector):
 		self.skinName = ["LcdSkinSelector"] + self.skinName
 		self.rootDir = resolveFilename(SCOPE_LCDSKIN)
 		self.config = config.skin.display_skin
-		from skin import currentDisplaySkin # value types are imported by value at import time
+		from skin import currentDisplaySkin  # value types are imported by value at import time
 		self.currentSkin = currentDisplaySkin
 		self.xmlList = ["skin_display.xml", "skin_display_picon.xml"]
 

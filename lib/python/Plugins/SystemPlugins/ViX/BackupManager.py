@@ -59,7 +59,7 @@ config.backupmanager.backupdirs = ConfigLocations(
 			 eEnv.resolve("${sysconfdir}/resolv.conf"), eEnv.resolve("${sysconfdir}/ushare.conf"), eEnv.resolve("${sysconfdir}/inadyn.conf"), eEnv.resolve("${sysconfdir}/tuxbox/config/"), eEnv.resolve("${sysconfdir}/wpa_supplicant.conf"), "/usr/softcams/"])
 choices = getMountChoices()
 config.backupmanager.backuplocation = ConfigSelection(choices=choices, default=getMountDefault(choices))
-harddiskmanager.on_partition_list_change.append(__onPartitionChange) # to update backuplocation choices on mountpoint change
+harddiskmanager.on_partition_list_change.append(__onPartitionChange)  # to update backuplocation choices on mountpoint change
 config.backupmanager.backupretry = ConfigNumber(default=30)
 config.backupmanager.backupretrycount = NoSave(ConfigNumber(default=0))
 config.backupmanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
@@ -144,18 +144,18 @@ class VIXBackupManager(Screen):
 			self["list"].instance.setItemHeight(%d)
 		</applet>
 	</screen>""",
-		560, 400, # screen
-		0, 0, 140, 40, #colors
+		560, 400,  # screen
+		0, 0, 140, 40,  # colors
 		140, 0, 140, 40,
 		280, 0, 140, 40,
 		0, 0, 140, 40, 20,
 		140, 0, 140, 40, 20,
 		280, 0, 140, 40, 20,
-		0, 45, 35, 25, # menu key
-		40, 45, 35, 25, # info key
-		0, 50, 560, 50, 18, # lab1
-		10, 105, 540, 260, 20, # list
-		10, 370, 400, 30, 20, # backupstatus
+		0, 45, 35, 25,  # menu key
+		40, 45, 35, 25,  # info key
+		0, 50, 560, 50, 18,  # lab1
+		10, 105, 540, 260, 20,  # list
+		10, 370, 400, 30, 20,  # backupstatus
 		26,
 	]
 
@@ -278,8 +278,8 @@ class VIXBackupManager(Screen):
 						else:
 							prefix = "A"
 						key = "%s-%012u" % (prefix, stat(self.BackupDirectory + fil).st_mtime)
-						mtimes.append((fil, key)) # (filname, prefix-mtime)
-				for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]: # sort by mtime
+						mtimes.append((fil, key))  # (filname, prefix-mtime)
+				for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]:  # sort by mtime
 					self.emlist.append(fil)
 				self["list"].setList(self.emlist)
 				self["list"].show()
@@ -305,7 +305,7 @@ class VIXBackupManager(Screen):
 		if config.backupmanager.folderprefix.value == "":
 			config.backupmanager.folderprefix.value = defaultprefix
 			config.backupmanager.folderprefix.save()
-		if not config.backupmanager.folderprefix.value.startswith(defaultprefix):	# If the prefix doesn't start with the defaultprefix it is a tag...
+		if not config.backupmanager.folderprefix.value.startswith(defaultprefix):  # If the prefix doesn't start with the defaultprefix it is a tag...
 			config.backupmanager.folderprefix.value = defaultprefix + "-" + config.backupmanager.folderprefix.value
 			config.backupmanager.folderprefix.save()
 		self.populate_List()
@@ -333,7 +333,7 @@ class VIXBackupManager(Screen):
 	def keyDelete(self):
 		self.sel = self["list"].getCurrent()
 		if self.sel is not None:
-			self["list"].moveToIndex(self["list"].getSelectionIndex() if len(self["list"].list) > self["list"].getSelectionIndex() + 1 else max(len(self["list"].list) - 2, 0)) # hold the selection current possition if the list is long enough, else go to last item
+			self["list"].moveToIndex(self["list"].getSelectionIndex() if len(self["list"].list) > self["list"].getSelectionIndex() + 1 else max(len(self["list"].list) - 2, 0))  # hold the selection current possition if the list is long enough, else go to last item
 			remove(self.BackupDirectory + self.sel)
 			self.populate_List()
 
@@ -494,7 +494,7 @@ class VIXBackupManager(Screen):
 			eDVBDB.getInstance().reloadServicelist()
 			eDVBDB.getInstance().reloadBouquets()
 			self.session.nav.PowerTimer.loadTimer()
-			self.session.nav.RecordTimer.loadTimer(justLoad=True)	# Don't check RecordTimers for conflicts. On a restore we may not have the correct tuner configuration (and no USB tuners)...
+			self.session.nav.RecordTimer.loadTimer(justLoad=True)  # Don't check RecordTimers for conflicts. On a restore we may not have the correct tuner configuration (and no USB tuners)...
 			configfile.load()
 		else:
 			print("[BackupManager] Restoring Stage 1 Failed:")
@@ -515,16 +515,16 @@ class VIXBackupManager(Screen):
 
 	def Stage2Complete(self, result, retval, extra_args):
 		print("[BackupManager] Restoring Stage 2: Result ", result)
-		if result.find("wget returned 4") != -1: # probably no network adaptor connected
+		if result.find("wget returned 4") != -1:  # probably no network adaptor connected
 			self.feeds = "NONETWORK"
 			self.Stage2Completed = True
-		if result.find("wget returned 8") != -1 or result.find("wget returned 1") != -1 or result.find("wget returned 255") != -1 or result.find("404 Not Found") != -1: # Server issued an error response, or there was a wget generic error code.
+		if result.find("wget returned 8") != -1 or result.find("wget returned 1") != -1 or result.find("wget returned 255") != -1 or result.find("404 Not Found") != -1:  # Server issued an error response, or there was a wget generic error code.
 			self.feeds = "DOWN"
 			self.Stage2Completed = True
-		elif result.find("bad address") != -1: # probably DNS lookup failed
+		elif result.find("bad address") != -1:  # probably DNS lookup failed
 			self.feeds = "BAD"
 			self.Stage2Completed = True
-		elif result.find("Collected errors") != -1: # none of the above errors. What condition requires this to loop? Maybe double key press.
+		elif result.find("Collected errors") != -1:  # none of the above errors. What condition requires this to loop? Maybe double key press.
 			AddPopupWithCallback(self.Stage2,
 								 _("A background update check is in progress, please try again."),
 								 MessageBox.TYPE_INFO,
@@ -749,8 +749,8 @@ class BackupSelection(Screen):
 			<widget source="key_yellow" render="Label" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
 			<widget name="checkList" position="%d,%d" size="%d,%d" itemHeight="%d" font="Regular;%d" transparent="1" scrollbarMode="showOnDemand"/>
 		</screen>""",
-			560, 400, # screen
-			0, 0, 140, 40, #colors
+			560, 400,  # screen
+			0, 0, 140, 40,  # colors
 			140, 0, 140, 40,
 			280, 0, 140, 40,
 			0, 0, 140, 40, 20,
@@ -847,8 +847,8 @@ class XtraPluginsSelection(Screen):
 			<widget source="key_yellow" render="Label" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
 			<widget name="checkList" position="%d,%d" size="%d,%d" itemHeight="%d" font="Regular;%d" transparent="1" scrollbarMode="showOnDemand"/>
 		</screen>""",
-			560, 400, # screen
-			0, 0, 140, 40, #colors
+			560, 400,  # screen
+			0, 0, 140, 40,  # colors
 			140, 0, 140, 40,
 			280, 0, 140, 40,
 			0, 0, 140, 40, 20,
@@ -949,8 +949,8 @@ class VIXBackupManagerMenu(Setup):
 		<widget name="config" position="%d,%d" size="%d,%d" itemHeight="%d" font="Regular;%d" transparent="0" enableWrapAround="1" scrollbarMode="showOnDemand"/>
 		<widget name="description" position="%d,e-%d" size="%d,%d" font="Regular;%d" halign="center" valign="top" transparent="0" zPosition="1"/>
 	</screen>""",
-		560, 550, # screen
-		0, 0, 140, 40, #colors
+		560, 550,  # screen
+		0, 0, 140, 40,  # colors
 		140, 0, 140, 40,
 		280, 0, 140, 40,
 		420, 0, 140, 40,
@@ -958,11 +958,11 @@ class VIXBackupManagerMenu(Setup):
 		140, 0, 140, 40, 20,
 		280, 0, 140, 40, 20,
 		420, 0, 140, 40, 20,
-		450, 510, # HelpWindow
-		0, 500, 35, 25, # VKeyIcon
-		0, 50, 300, 20, 20, # footnote
-		0, 90, 560, 375, 25, 19, # config
-		0, 75, 560, 75, 18, # description
+		450, 510,  # HelpWindow
+		0, 500, 35, 25,  # VKeyIcon
+		0, 50, 300, 20, 20,  # footnote
+		0, 90, 560, 375, 25, 19,  # config
+		0, 75, 560, 75, 18,  # description
 	]
 
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
@@ -1063,10 +1063,10 @@ class AutoBackupManagerTimer:
 		now = int(time())
 		if BackupTime > 0:
 			if BackupTime < now + atLeast:
-				self.backuptimer.startLongTimer(60)	# Backup missed - run it 60s from now
+				self.backuptimer.startLongTimer(60)  # Backup missed - run it 60s from now
 				print("[BackupManager] Backup Time overdue - running in 60s")
 			else:
-				delay = BackupTime - now	# Backup in future - set the timer...
+				delay = BackupTime - now  # Backup in future - set the timer...
 				self.backuptimer.startLongTimer(delay)
 		else:
 			BackupTime = -1
@@ -1084,7 +1084,7 @@ class AutoBackupManagerTimer:
 		if wake - now < 60:
 			print("[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now)))
 			from Screens.Standby import inStandby
-			if not inStandby and config.backupmanager.query.value:	# Check for querying enabled
+			if not inStandby and config.backupmanager.query.value:  # Check for querying enabled
 				message = _("Your %s %s is about to run a backup of your settings and to detect your plugins.\nDo you want to allow this?") % (getMachineBrand(), getMachineName())
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle("Scheduled backup.")
@@ -1399,7 +1399,7 @@ class BackupFiles(Screen):
 		try:
 			if config.backupmanager.types_to_prune.value != "none" \
 			 and config.backupmanager.number_to_keep.value > 0 \
-			 and path.exists(self.BackupDirectory): # !?!
+			 and path.exists(self.BackupDirectory):  # !?!
 				images = listdir(self.BackupDirectory)
 				emlist = []					# Only try to delete backups with the current user prefix
 				for fil in images:

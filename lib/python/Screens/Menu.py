@@ -33,9 +33,9 @@ def MenuEntryPixmap(entryID, png_cache, parentMenuEntryID):
 		return None
 	iconSize = int(parameters.get("MenuIconsSize", 192))  # icons are square, e.g. 192 x 192.
 	png = png_cache.get(entryID)
-	if png is None: # no cached entry
+	if png is None:  # no cached entry
 		pngPath = resolveFilename(SCOPE_GUISKIN, "menu/" + entryID + ".svg")
-		png = LoadPixmap(pngPath, cached=True, width=iconSize, height=0 if pngPath.endswith(".svg") else iconSize) #looking for a dedicated icon
+		png = LoadPixmap(pngPath, cached=True, width=iconSize, height=0 if pngPath.endswith(".svg") else iconSize)  # looking for a dedicated icon
 	if png is None:
 		png = png_cache.get("missing")
 		if png is None:
@@ -94,10 +94,10 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			exec("from %s import %s" % (arg[0], arg[1].split(",")[0]))
 			self.openDialog(*eval(arg[1]))
 
-	def nothing(self): #dummy
+	def nothing(self):  # dummy
 		pass
 
-	def openDialog(self, *dialog): # in every layer needed
+	def openDialog(self, *dialog):  # in every layer needed
 		self.session.openWithCallback(self.menuClosed, *dialog)
 
 	def openSetup(self, dialog):
@@ -284,7 +284,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		self.list = []
 		self.menuID = None
 		parentEntryID = None
-		for x in self.parentmenu: #walk through the actual nodelist
+		for x in self.parentmenu:  # walk through the actual nodelist
 			if not x.tag:
 				continue
 			parentEntryID = self.parentmenu.get("entryID", None)
@@ -349,7 +349,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		if config.usage.menu_show_numbers.value:
 			self.list = [(str(x[0] + 1) + " " + x[1][0], x[1][1], x[1][2]) for x in enumerate(self.list)]
 
-		if self.menulength != len(self.list): # updateList must only be used on a list of the same length. If length is different we call setList.
+		if self.menulength != len(self.list):  # updateList must only be used on a list of the same length. If length is different we call setList.
 			self.menulength = len(self.list)
 			self["menu"].setList(self.list)
 		self["menu"].updateList(self.list)

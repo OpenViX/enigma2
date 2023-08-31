@@ -69,7 +69,7 @@ class PowerTimerEntry(TimerEntry):
 		self.timerType = timerType
 		self.afterEvent = afterEvent
 		self.autoincrease = False
-		self.autoincreasetime = 3600 * 24 # 1 day
+		self.autoincreasetime = 3600 * 24  # 1 day
 		self.autosleepinstandbyonly = 'no'
 		self.autosleepdelay = 60
 		self.autosleeprepeat = 'once'
@@ -163,7 +163,7 @@ class PowerTimerEntry(TimerEntry):
 				return True
 
 			elif self.timerType == TIMERTYPE.STANDBY:
-				if not Screens.Standby.inStandby: # not already in standby
+				if not Screens.Standby.inStandby:  # not already in standby
 					Notifications.AddNotificationWithUniqueIDCallback(self.sendStandbyNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName()), timeout=180)
 				return True
 
@@ -172,7 +172,7 @@ class PowerTimerEntry(TimerEntry):
 					self.do_backoff()
 					# retry
 					return False
-				if not Screens.Standby.inStandby: # not already in standby
+				if not Screens.Standby.inStandby:  # not already in standby
 					Notifications.AddNotificationWithUniqueIDCallback(self.sendStandbyNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName()), timeout=180)
 					if self.autosleeprepeat == "once":
 						eActionMap.getInstance().unbindAction('', self.keyPressed)
@@ -215,8 +215,8 @@ class PowerTimerEntry(TimerEntry):
 					self.do_backoff()
 					# retry
 					return False
-				if not Screens.Standby.inTryQuitMainloop: # not a shutdown messagebox is open
-					if Screens.Standby.inStandby: # in standby
+				if not Screens.Standby.inTryQuitMainloop:  # not a shutdown messagebox is open
+					if Screens.Standby.inStandby:  # in standby
 						quitMainloop(1)
 						return True
 					else:
@@ -237,8 +237,8 @@ class PowerTimerEntry(TimerEntry):
 					self.do_backoff()
 					# retry
 					return False
-				if not Screens.Standby.inTryQuitMainloop: # not a shutdown messagebox is open
-					if Screens.Standby.inStandby: # in standby
+				if not Screens.Standby.inTryQuitMainloop:  # not a shutdown messagebox is open
+					if Screens.Standby.inStandby:  # in standby
 						quitMainloop(1)
 					else:
 						Notifications.AddNotificationWithUniqueIDCallback(self.sendTryQuitMainloopNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to shutdown your %s %s.\nDo that now?") % (getMachineBrand(), getMachineName()), timeout=180)
@@ -249,8 +249,8 @@ class PowerTimerEntry(TimerEntry):
 					self.do_backoff()
 					# retry
 					return False
-				if not Screens.Standby.inTryQuitMainloop: # not a shutdown messagebox is open
-					if Screens.Standby.inStandby: # in standby
+				if not Screens.Standby.inTryQuitMainloop:  # not a shutdown messagebox is open
+					if Screens.Standby.inStandby:  # in standby
 						quitMainloop(2)
 					else:
 						Notifications.AddNotificationWithUniqueIDCallback(self.sendTryToRebootNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to reboot your %s %s.\nDo that now?") % (getMachineBrand(), getMachineName()), timeout=180)
@@ -261,8 +261,8 @@ class PowerTimerEntry(TimerEntry):
 					self.do_backoff()
 					# retry
 					return False
-				if not Screens.Standby.inTryQuitMainloop: # not a shutdown messagebox is open
-					if Screens.Standby.inStandby: # in standby
+				if not Screens.Standby.inTryQuitMainloop:  # not a shutdown messagebox is open
+					if Screens.Standby.inStandby:  # in standby
 						quitMainloop(3)
 					else:
 						Notifications.AddNotificationWithUniqueIDCallback(self.sendTryToRestartNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to restart the user interface.\nDo that now?"), timeout=180)
@@ -272,15 +272,15 @@ class PowerTimerEntry(TimerEntry):
 			old_end = self.end
 			NavigationInstance.instance.PowerTimer.saveTimer()
 			if self.afterEvent == AFTEREVENT.STANDBY:
-				if not Screens.Standby.inStandby: # not already in standby
+				if not Screens.Standby.inStandby:  # not already in standby
 					Notifications.AddNotificationWithUniqueIDCallback(self.sendStandbyNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName()), timeout=180)
 			elif self.afterEvent == AFTEREVENT.DEEPSTANDBY:
 				if NavigationInstance.instance.RecordTimer.isRecording() or abs(NavigationInstance.instance.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(NavigationInstance.instance.RecordTimer.getNextZapTime() - time()) <= 900:
 					self.do_backoff()
 					# retry
 					return False
-				if not Screens.Standby.inTryQuitMainloop: # not a shutdown messagebox is open
-					if Screens.Standby.inStandby: # in standby
+				if not Screens.Standby.inTryQuitMainloop:  # not a shutdown messagebox is open
+					if Screens.Standby.inStandby:  # in standby
 						quitMainloop(1)
 					else:
 						Notifications.AddNotificationWithUniqueIDCallback(self.sendTryQuitMainloopNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to shutdown your %s %s.\nDo that now?") % (getMachineBrand(), getMachineName()), timeout=180)
@@ -485,7 +485,7 @@ class PowerTimer(Timer):
 				from Tools.Notifications import AddPopup
 				from Screens.MessageBox import MessageBox
 				AddPopup(_("Timer overlap in pm_timers.xml detected!\nPlease recheck it!"), type=MessageBox.TYPE_ERROR, timeout=0, id="TimerLoadFailed")
-				checkit = False # at moment it is enough when the message is displayed one time
+				checkit = False  # at moment it is enough when the message is displayed one time
 
 	def saveTimer(self):
 		timerTypes = {

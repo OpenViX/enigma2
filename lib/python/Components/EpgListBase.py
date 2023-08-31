@@ -55,7 +55,7 @@ class EPGListBase(GUIComponent):
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "itemHeight":
 					self.skinItemHeight = parseScale(value)
-				elif attrib == "NumberOfRows": # for compatibility with ATV skins
+				elif attrib == "NumberOfRows":  # for compatibility with ATV skins
 					self.numberOfRows = int(value)
 				else:
 					attribs.append((attrib, value))

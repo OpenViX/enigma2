@@ -106,12 +106,12 @@ class ProjectSettings(ConfigListScreen, Screen):
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("OK"))
 		self["key_yellow"] = StaticText(_("Load"))
-		if config.usage.setup_level.index >= 2: # expert+
+		if config.usage.setup_level.index >= 2:  # expert+
 			self["key_blue"] = StaticText(_("Save"))
 		else:
 			self["key_blue"] = StaticText()
 
-		if config.usage.setup_level.index >= 2: # expert+
+		if config.usage.setup_level.index >= 2:  # expert+
 			infotext = _("Available format variables") + ":\n$i=" + _("Track") + ", $t=" + _("Title") + ", $d=" + _("Description") + ", $l=" + _("length") + ", $c=" + _("chapters") + ",\n" + _("Record") + " $T=" + _("Begin time") + ", $Y=" + _("Year") + ", $M=" + _("month") + ", $D=" + _("day") + ",\n$A=" + _("audio tracks") + ", $C=" + _("Channel") + ", $f=" + _("filename")
 		else:
 			infotext = ""
@@ -152,7 +152,7 @@ class ProjectSettings(ConfigListScreen, Screen):
 			self.list.append(getConfigListEntry(_("ISO path"), self.settings.isopath))
 		if authormode.startswith("menu"):
 			self.list.append(getConfigListEntry(_("Menu") + ' ' + _("template file"), self.settings.menutemplate))
-			if config.usage.setup_level.index >= 2: # expert+
+			if config.usage.setup_level.index >= 2:  # expert+
 				self.list.append(getConfigListEntry(_("Menu") + ' ' + _("Title"), self.project.menutemplate.settings.titleformat))
 				self.list.append(getConfigListEntry(_("Menu") + ' ' + _("Subtitles"), self.project.menutemplate.settings.subtitleformat))
 				self.list.append(getConfigListEntry(_("Menu") + ' ' + _("background image"), self.project.menutemplate.settings.menubg))
@@ -164,7 +164,7 @@ class ProjectSettings(ConfigListScreen, Screen):
 			#self.list.append(getConfigListEntry(_("Font size")+' ('+_("headline")+', '+_("Title")+', '+_("Subtitles")+')', self.settings.font_size))
 			#self.list.append(getConfigListEntry(_("Menu")+' '+_("spaces (top, between rows, left)"), self.settings.space))
 			#self.list.append(getConfigListEntry(_("Menu")+' '+_("Audio"), self.settings.menuaudio))
-		if config.usage.setup_level.index >= 2: # expert+
+		if config.usage.setup_level.index >= 2:  # expert+
 			if authormode != "data_ts":
 				self.list.append(getConfigListEntry(_("Titleset mode"), self.settings.titlesetmode))
 				if self.settings.titlesetmode.value == "single" or authormode == "just_linked":
@@ -212,7 +212,7 @@ class ProjectSettings(ConfigListScreen, Screen):
 		self.session.openWithCallback(self.FileBrowserClosed, FileBrowser, "project", self.settings)
 
 	def saveProject(self):
-		if config.usage.setup_level.index >= 2: # expert+
+		if config.usage.setup_level.index >= 2:  # expert+
 			self.applySettings()
 			ret = self.project.saveProject(resolveFilename(SCOPE_PLUGINS) + "Extensions/DVDBurn/")
 			if ret.startswith:

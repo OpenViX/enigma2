@@ -187,7 +187,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		else:
 			boxmodel = getBoxType()[2:]
 			for usbslot in range(hiKey + 1, hiKey + 5):
-				STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, SystemInfo["VuUUIDSlot"][0], boxmodel, usbslot) # /STARTUP_<n>
+				STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, SystemInfo["VuUUIDSlot"][0], boxmodel, usbslot)  # /STARTUP_<n>
 				if boxmodel in ("duo4k"):
 					STARTUP_usbslot += " rootwait=40"
 				elif boxmodel in ("duo4kse"):
@@ -205,7 +205,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 #		using dev = "kernel=/linuxrootfs4/zImage root=/dev/%s rootsubdir=linuxrootfs4" % hdd[0] 	# /STARTUP_4
 
 		for usbslot in range(4, 8):
-			STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, self.device_uuid, boxmodel, usbslot) # /STARTUP_<n>
+			STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, self.device_uuid, boxmodel, usbslot)  # /STARTUP_<n>
 			if boxmodel in ("duo4k"):
 				STARTUP_usbslot += " rootwait=40"
 			elif boxmodel in ("duo4kse"):
@@ -235,7 +235,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 	def updateKeys(self):
 		currentSelected = self["config"].getCurrent()
-		if currentSelected[0][1] == "Queued": # list not loaded yet so abort
+		if currentSelected[0][1] == "Queued":  # list not loaded yet so abort
 			return
 		slot = currentSelected[0][1][0]
 
@@ -248,7 +248,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 			self["rebootActions"].setEnabled(True)
 
 		# yellow key
-		if SystemInfo["MultiBootSlot"] == slot or self.imagedict[slot]["imagename"] in (_("Empty slot"), _("Recovery Mode")): # must not delete the current image or the recovery image and can't boot an empty slot
+		if SystemInfo["MultiBootSlot"] == slot or self.imagedict[slot]["imagename"] in (_("Empty slot"), _("Recovery Mode")):  # must not delete the current image or the recovery image and can't boot an empty slot
 			self["key_yellow"].text = ""
 			self["deleteActions"].setEnabled(False)
 		else:
@@ -286,4 +286,4 @@ class MultiBootSelectorSummary(ScreenSummary):
 	def selectionChanged(self):
 		currentSelected = self.parent["config"].getCurrent()
 		self["SetupEntry"].text = currentSelected[0][0]
-		self["SetupValue"].text = "" # not yet used
+		self["SetupValue"].text = ""  # not yet used

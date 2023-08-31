@@ -15,12 +15,12 @@ class Pager(GUIAddon):
 		GUIAddon.__init__(self)
 		self.l = eListboxPythonMultiContent()
 		self.l.setBuildFunc(self.buildEntry)
-		self.l.setItemHeight(25) # 25 is the height of the default images. For other images set the height in the skin.
-		self.l.setItemWidth(25) # 25 is the width of the default images. For other images set the width in the skin.
+		self.l.setItemHeight(25)  # 25 is the height of the default images. For other images set the height in the skin.
+		self.l.setItemWidth(25)  # 25 is the width of the default images. For other images set the width in the skin.
 		self.spacing = applySkinFactor(5)
 		self.picDotPage = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/dot.png"))
 		self.picDotCurPage = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/dotfull.png"))
-		self.showIcons = "showAll" # can be "showAll", "onlyFirst", "onlyLast"
+		self.showIcons = "showAll"  # can be "showAll", "onlyFirst", "onlyLast"
 		self.orientations = {"orHorizontal": eListbox.orHorizontal, "orVertical": eListbox.orVertical}
 		self.orientation = eListbox.orHorizontal
 
@@ -87,7 +87,7 @@ class Pager(GUIAddon):
 		instance.allowNativeKeys(False)
 
 	def getSourceOrientation(self):
-		if self.source.__class__.__name__ == "List": # Components.Sources.List, used by MainMenu
+		if self.source.__class__.__name__ == "List":  # Components.Sources.List, used by MainMenu
 			orig_source = self.source.master.master
 		else:
 			orig_source = self.source
@@ -101,7 +101,7 @@ class Pager(GUIAddon):
 		return self.source.l.getCurrentSelectionIndex()
 
 	def getSourceSize(self):
-		if self.source.__class__.__name__ == "List": # Components.Sources.List, used by MainMenu
+		if self.source.__class__.__name__ == "List":  # Components.Sources.List, used by MainMenu
 			return self.source.master.master.instance.size()
 		return self.source.instance.size()
 
@@ -113,7 +113,7 @@ class Pager(GUIAddon):
 		return 0
 
 	def getListItemSize(self):
-		if self.source.__class__.__name__ == "List": # Components.Sources.List, used by MainMenu
+		if self.source.__class__.__name__ == "List":  # Components.Sources.List, used by MainMenu
 			orig_source = self.source.master.master
 		else:
 			orig_source = self.source

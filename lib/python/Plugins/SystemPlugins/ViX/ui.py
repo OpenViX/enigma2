@@ -36,18 +36,18 @@ class VIXMenu(Screen, ProtectedScreen):
 			</widget>
 			<widget source="status" render="Label" position="%d,%d" zPosition="10" size="%d,%d" halign="center" valign="center" font="Regular;%d" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
 		</screen>""",
-			610, 410, # screen
-			0, 0, 140, 40, # key red image
-			0, 0, 140, 40, 20, # key red text
-			15, 60, 330, 286, # first menu Listbox
-			2, 0, 330, 26, # template one
-			22, # fonts
-			26, # ItemHeight
-			360, 50, 240, 300, # second menu Listbox
-			2, 2, 240, 300, # template two
-			22, # fonts
-			300, # itemHeight
-			5, 360, 600, 50, 22, # status
+			610, 410,  # screen
+			0, 0, 140, 40,  # key red image
+			0, 0, 140, 40, 20,  # key red text
+			15, 60, 330, 286,  # first menu Listbox
+			2, 0, 330, 26,  # template one
+			22,  # fonts
+			26,  # ItemHeight
+			360, 50, 240, 300,  # second menu Listbox
+			2, 2, 240, 300,  # template two
+			22,  # fonts
+			300,  # itemHeight
+			5, 360, 600, 50, 22,  # status
 		]
 
 	def __init__(self, session, args=0):

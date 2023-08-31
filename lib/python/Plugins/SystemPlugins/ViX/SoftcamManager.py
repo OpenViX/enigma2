@@ -97,8 +97,8 @@ class VIXSoftcamManager(Screen):
 			self["list"].instance.setItemHeight(%d)
 		</applet>
 	</screen>""",
-		560, 400, # screen
-		0, 0, 140, 40, #colors
+		560, 400,  # screen
+		0, 0, 140, 40,  # colors
 		140, 0, 140, 40,
 		280, 0, 140, 40,
 		420, 0, 140, 40,
@@ -106,12 +106,12 @@ class VIXSoftcamManager(Screen):
 		140, 0, 140, 40, 20,
 		280, 0, 140, 40, 20,
 		420, 0, 140, 40, 20,
-		0, 45, 35, 25, # menu key
-		40, 45, 35, 25, # info key
-		40, 110, 170, 20, 22, # lab1
-		225, 110, 240, 100, # list
-		40, 215, 170, 30, 22, # lab2
-		225, 216, 240, 100, 20, # activecam
+		0, 45, 35, 25,  # menu key
+		40, 45, 35, 25,  # info key
+		40, 110, 170, 20, 22,  # lab1
+		225, 110, 240, 100,  # list
+		40, 215, 170, 30, 22,  # lab2
+		225, 216, 240, 100, 20,  # activecam
 		25,
 	]
 
@@ -138,7 +138,7 @@ class VIXSoftcamManager(Screen):
 									  "green": self.keyStart,
 									  "yellow": self.getRestartPID,
 									  "blue": self.changeSelectionState,
-									  "log": self.showLog, # KEY_INFO
+									  "log": self.showLog,  # KEY_INFO
 									  "menu": self.createSetup,
 									  }, -1)
 

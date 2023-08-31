@@ -38,7 +38,7 @@ class FeedsStatusCheck:
 		except ValueError:
 			return False
 
-	def adapterAvailable(self): # Box has an adapter configured and active
+	def adapterAvailable(self):  # Box has an adapter configured and active
 		for adapter in ("eth0", "eth1", "wlan0", "wlan1", "wlan2", "wlan3", "ra0"):
 			if "addr" in about.getIfConfig(adapter):
 				print("[OnlineUpdateCheck][adapterAvailable] PASSED")
@@ -46,7 +46,7 @@ class FeedsStatusCheck:
 		print("[OnlineUpdateCheck][adapterAvailable] FAILED")
 		return False
 
-	def NetworkUp(self, host="8.8.8.8", port=53, timeout=2): # Box can access outside the local network
+	def NetworkUp(self, host="8.8.8.8", port=53, timeout=2):  # Box can access outside the local network
 		# Avoids DNS resolution
 		# Avoids application layer (HTTP/FTP/IMAP)
 		# Avoids calls to external utilities
@@ -81,7 +81,7 @@ class FeedsStatusCheck:
 		trafficLight = "unknown"
 		if self.adapterAvailable():
 			if self.NetworkUp():
-				if getImageType() == "release" and officialReleaseFeedsUri in getFeedsUrl(): # we know the network is good now so only do this check on release images where the release domain applies
+				if getImageType() == "release" and officialReleaseFeedsUri in getFeedsUrl():  # we know the network is good now so only do this check on release images where the release domain applies
 					try:
 						print("[OnlineUpdateCheck][getFeedStatus] checking feeds state")
 						req = Request("http://openvix.co.uk/TrafficLightState.php")
@@ -102,16 +102,16 @@ class FeedsStatusCheck:
 				if getImageType() == "developer" and "openvixdev" in getFeedsUrl():
 					print("[OnlineUpdateCheck][getFeedStatus] Official developer feeds")
 					trafficLight = "developer"
-				elif officialReleaseFeedsUri not in getFeedsUrl(): # if not using official feeds mark as alien. There is no status test for alien feeds (including official developer feeds).
+				elif officialReleaseFeedsUri not in getFeedsUrl():  # if not using official feeds mark as alien. There is no status test for alien feeds (including official developer feeds).
 					print("[OnlineUpdateCheck][getFeedStatus] Alien feeds url: %s" % getFeedsUrl())
 					status = 0
 					trafficLight = "alien"
 				config.softwareupdate.updateisunstable.value = status
 				return trafficLight
-			else: # network not up
+			else:  # network not up
 				print("[OnlineUpdateCheck][getFeedStatus] ERROR: -2")
 				return -2
-		else: # adapter not available
+		else:  # adapter not available
 			print("[OnlineUpdateCheck][getFeedStatus] ERROR: -3")
 			return -3
 
@@ -138,7 +138,7 @@ class FeedsStatusCheck:
 		self.feedstatus = self.getFeedStatus()
 		if self.feedstatus in (-2, -3, 403, 404):
 			print("[OnlineUpdateCheck][getFeedsBool] Error %s" % str(self.feedstatus))
-			return str(self.feedstatus) # must be str as used in string keys of feed_status_msgs
+			return str(self.feedstatus)  # must be str as used in string keys of feed_status_msgs
 		elif error:
 			print("[OnlineUpdateCheck][getFeedsBool] Check already in progress")
 			return "inprogress"
@@ -195,7 +195,7 @@ class OnlineUpdateCheckPoller:
 		self.timer = eTimer()
 
 	# Class variables
-	MIN_INITIAL_DELAY = 40 * 60 # Wait at least 40 mins
+	MIN_INITIAL_DELAY = 40 * 60  # Wait at least 40 mins
 	checktimer_Notifier_Added = False
 
 	# Add optional args to start(), as it is now a callback from addNotifier
@@ -211,8 +211,8 @@ class OnlineUpdateCheckPoller:
 			config.softwareupdate.checktimer.addNotifier(self.start, initial_call=False, immediate_feedback=False)
 			self.checktimer_Notifier_Added = True
 			minimum_delay = self.MIN_INITIAL_DELAY
-		else: # we been here before, so this is *not* start-up
-			minimum_delay = 60 # 1 minute
+		else:  # we been here before, so this is *not* start-up
+			minimum_delay = 60  # 1 minute
 
 		last_run = config.softwareupdate.updatelastcheck.getValue()
 		gap = config.softwareupdate.checktimer.value * 3600

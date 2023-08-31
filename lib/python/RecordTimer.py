@@ -194,7 +194,7 @@ class RecordTimerEntry(TimerEntry):
 
 		assert isinstance(serviceref, eServiceReference)
 
-		if serviceref and serviceref.toString()[:4] in config.recording.setstreamto1.value: # check if to convert IPTV services (4097, etc) to "1"
+		if serviceref and serviceref.toString()[:4] in config.recording.setstreamto1.value:  # check if to convert IPTV services (4097, etc) to "1"
 			serviceref = eServiceReference("1" + serviceref.toString()[4:])
 
 		if serviceref and serviceref.isRecordable():
@@ -228,7 +228,7 @@ class RecordTimerEntry(TimerEntry):
 		self.dirname = dirname
 		self.dirnameHadToFallback = False
 		self.autoincrease = False
-		self.autoincreasetime = 3600 * 24 # 1 day
+		self.autoincreasetime = 3600 * 24  # 1 day
 		self.tags = tags or []
 		self.conflict_detection = conflict_detection
 
@@ -345,7 +345,7 @@ class RecordTimerEntry(TimerEntry):
 			elif config.recording.filename_composition.value == "long":
 				filename += " - " + name + " - " + self.description
 			else:
-				filename += " - " + name # standard
+				filename += " - " + name  # standard
 
 		if config.recording.ascii_filenames.value:
 			filename = ASCIItranslit.legacyEncode(filename)
@@ -445,11 +445,11 @@ class RecordTimerEntry(TimerEntry):
 		self.log(10, "backoff: retry in %d seconds" % self.backoff)
 
 	def sendactivesource(self):
-		if SystemInfo["hasHdmiCec"] and config.hdmicec.enabled.value and config.hdmicec.sourceactive_zaptimers.value:	# Command the TV to switch to the correct HDMI input when zap timers activate
+		if SystemInfo["hasHdmiCec"] and config.hdmicec.enabled.value and config.hdmicec.sourceactive_zaptimers.value:  # Command the TV to switch to the correct HDMI input when zap timers activate
 			import struct
 			from enigma import eHdmiCEC
-			msgaddress = 0x0f # use broadcast for active source command
-			cmd = 0x82	# 130
+			msgaddress = 0x0f  # use broadcast for active source command
+			cmd = 0x82  # 130
 			physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
 			data = struct.pack("BB", int(physicaladdress // 256), int(physicaladdress % 256))
 			try:
@@ -477,7 +477,7 @@ class RecordTimerEntry(TimerEntry):
 			if not bouquetlist is None:
 				while True:
 					bouquet = bouquetlist.getNext()
-					if not bouquet.valid(): # Reached end of bouquets
+					if not bouquet.valid():  # Reached end of bouquets
 						print("[RecordTimer] _bouquet_search reached end of bouquets..??")
 						break
 					if bouquet.flags & eServiceReference.isDirectory:
@@ -592,7 +592,7 @@ class RecordTimerEntry(TimerEntry):
 					elif not config.recording.asktozap.value:
 						self.log(8, "asking user to zap away")
 						Notifications.AddNotificationWithCallback(self.failureCB, MessageBox, _("A timer failed to record!\nDisable TV and try again?\n"), timeout=20)
-					else: # zap without asking
+					else:  # zap without asking
 						self.log(9, "zap without asking")
 						Notifications.AddNotification(MessageBox, _("In order to record a timer, the TV was switched to the recording service!\n"), type=MessageBox.TYPE_INFO, timeout=20)
 						self.setRecordingPreferredTuner()
@@ -737,8 +737,8 @@ class RecordTimerEntry(TimerEntry):
 				return True
 
 			if self.afterEvent == AFTEREVENT.STANDBY or (not wasRecTimerWakeup and self.autostate and self.afterEvent == AFTEREVENT.AUTO) or self.wasInStandby:
-				self.keypress() #this unbinds the keypress detection
-				if not Screens.Standby.inStandby: # not already in standby
+				self.keypress()  # this unbinds the keypress detection
+				if not Screens.Standby.inStandby:  # not already in standby
 					Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox, _("A finished record timer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName()), timeout=180)
 			elif self.afterEvent == AFTEREVENT.DEEPSTANDBY or (wasRecTimerWakeup and self.afterEvent == AFTEREVENT.AUTO and Screens.Standby.inStandby):
 				if (abs(NavigationInstance.instance.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(NavigationInstance.instance.RecordTimer.getNextZapTime() - time()) <= 900) or NavigationInstance.instance.RecordTimer.getStillRecording():
@@ -753,14 +753,14 @@ class RecordTimerEntry(TimerEntry):
 #
 				from Components.Converter.ClientsStreaming import ClientsStreaming
 				if int(ClientsStreaming("NUMBER").getText()) > 0:
-					if not Screens.Standby.inStandby: # not already in standby
+					if not Screens.Standby.inStandby:  # not already in standby
 						Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox,
 							 _("A finished record timer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName())
 							 + _("\n(DeepStandby request changed to Standby owing to there being streaming clients.)"), timeout=180)
 					return True
 #
-				if not Screens.Standby.inTryQuitMainloop: # not a shutdown messagebox is open
-					if Screens.Standby.inStandby: # in standby
+				if not Screens.Standby.inTryQuitMainloop:  # not a shutdown messagebox is open
+					if Screens.Standby.inStandby:  # in standby
 						quitMainloop(1)
 					else:
 						Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A finished record timer wants to shut down\nyour %s %s. Shutdown now?") % (getMachineBrand(), getMachineName()), timeout=180)
@@ -958,7 +958,7 @@ def createTimer(xml):
 	begin = int(xml.get("begin"))
 	end = int(xml.get("end"))
 	pre_serviceref = xml.get("serviceref")
-	serviceref = eServiceReference("1" + pre_serviceref[4:]) if pre_serviceref[:4] in config.recording.setstreamto1.value else eServiceReference(pre_serviceref) # check if to convert IPTV services (4097, etc) to "1"
+	serviceref = eServiceReference("1" + pre_serviceref[4:]) if pre_serviceref[:4] in config.recording.setstreamto1.value else eServiceReference(pre_serviceref)  # check if to convert IPTV services (4097, etc) to "1"
 	description = str(xml.get("description"))
 	repeated = str(xml.get("repeated"))
 	rename_repeat = int(xml.get("rename_repeat") or "1")
@@ -1048,7 +1048,7 @@ class RecordTimer(Timer):
 			self.timer_list.remove(w)
 		except:
 			print("[RecordTimer] Remove list failed")
-		if w.state < RecordTimerEntry.StateEnded:	# did this timer reached the last state?
+		if w.state < RecordTimerEntry.StateEnded:  # did this timer reached the last state?
 			# no, sort it into active list
 			insort(self.timer_list, w)
 		else:
@@ -1320,7 +1320,7 @@ class RecordTimer(Timer):
 				if timer_end < end:
 					# recording first part of event
 					return 3 if x.justplay else 1
-				else: # recording whole event
+				else:  # recording whole event
 					return 3
 		else:
 			bt = localtime(begin)
@@ -1402,7 +1402,7 @@ class RecordTimer(Timer):
 					matchType = RecordTimer.__checkTimer(timer, check_offset_time, begin, end, duration)
 					if matchType is not None:
 						returnValue = (timer, matchType)
-						if matchType in (2, 3): # When full recording or within an event do not look further
+						if matchType in (2, 3):  # When full recording or within an event do not look further
 							break
 		return returnValue or (None, None)
 
@@ -1416,7 +1416,7 @@ class RecordTimer(Timer):
 			matchType = RecordTimer.__checkTimer(timer, check_offset_time, begin, end, duration)
 			if matchType is not None:
 				returnValue = (timer, matchType)
-				if matchType in (2, 3): # When full recording or within an event do not look further
+				if matchType in (2, 3):  # When full recording or within an event do not look further
 					break
 		return returnValue or (None, None)
 

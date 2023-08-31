@@ -25,10 +25,10 @@ from enigma import ePoint, eSize
 
 debug_name = "opentv_zapper"
 lamedb_path = "/etc/enigma2"
-download_interval = config.plugins.opentvzapper.update_interval.value * 60 * 60 #  6 hours
-download_duration = 3 * 60 # stay tuned for 3 minutes
-start_first_download = 5 * 60 # 5 minutes after booting
-wait_time_on_fail = 15 * 60 # 15 minutes
+download_interval = config.plugins.opentvzapper.update_interval.value * 60 * 60  # 6 hours
+download_duration = 3 * 60  # stay tuned for 3 minutes
+start_first_download = 5 * 60  # 5 minutes after booting
+wait_time_on_fail = 15 * 60  # 15 minutes
 
 
 def getNimListForSat(orb_pos):
@@ -59,7 +59,7 @@ class DefaultAdapter:
 		return True
 
 	def stop(self):
-		if self.currentService == (self.navcore and self.navcore.getCurrentlyPlayingServiceReference()): # check the user hasn't zapped in the mean time
+		if self.currentService == (self.navcore and self.navcore.getCurrentlyPlayingServiceReference()):  # check the user hasn't zapped in the mean time
 			if self.currentBouquet is not None:
 				ChannelSelection.instance.setRoot(self.currentBouquet)
 			self.navcore.playService(self.previousService)
@@ -103,7 +103,7 @@ class PipAdapter:
 		self.session.pip.show()
 		if self.hide:
 			self.__hidePiP()
-		self.session.pipshown = True # Always pretends it's shown (since the ressources are present)
+		self.session.pipshown = True  # Always pretends it's shown (since the ressources are present)
 		newservice = self.session.nav.getCurrentlyPlayingServiceReference()
 		if self.session.pip.playService(newservice):
 			self.session.pip.servicePath = newservice.getPath()
@@ -203,18 +203,18 @@ class LamedbReader():
 
 				transponder["inversion"] = int(second_row[5])
 				transponder["flags"] = int(second_row[6])
-				if len(second_row) == 7: # DVB-S
+				if len(second_row) == 7:  # DVB-S
 					transponder["system"] = 0
-				else: # DVB-S2
+				else:  # DVB-S2
 					transponder["system"] = int(second_row[7])
 					transponder["modulation"] = int(second_row[8])
 					transponder["roll_off"] = int(second_row[9])
 					transponder["pilot"] = int(second_row[10])
-					if len(second_row) > 13: # Multistream
+					if len(second_row) > 13:  # Multistream
 						transponder["is_id"] = int(second_row[11])
 						transponder["pls_code"] = int(second_row[12])
 						transponder["pls_mode"] = int(second_row[13])
-						if len(second_row) > 15: # T2MI
+						if len(second_row) > 15:  # T2MI
 							transponder["t2mi_plp_id"] = int(second_row[14])
 							transponder["t2mi_pid"] = int(second_row[15])
 			elif transponder["dvb_type"] == "dvbt":
@@ -329,14 +329,14 @@ class LamedbReader():
 
 					transponder["inversion"] = int(second_part[5])
 					transponder["flags"] = int(second_part[6])
-					if len(second_part) == 7: # DVB-S
+					if len(second_part) == 7:  # DVB-S
 						transponder["system"] = 0
-					else: # DVB-S2
+					else:  # DVB-S2
 						transponder["system"] = int(second_part[7])
 						transponder["modulation"] = int(second_part[8])
 						transponder["roll_off"] = int(second_part[9])
 						transponder["pilot"] = int(second_part[10])
-						for part in line.strip().split(",")[2:]: # Multistream/T2MI
+						for part in line.strip().split(",")[2:]:  # Multistream/T2MI
 							if part.startswith("MIS/PLS:") and len(part[8:].split(":")) == 3:
 								transponder["is_id"] = int(part[8:].split(":")[0])
 								transponder["pls_code"] = int(part[8:].split(":")[1])
@@ -434,7 +434,7 @@ class LamedbWriter():
 				else:
 					orbital_position = transponder["orbital_position"]
 
-				if transponder["system"] == 0: # DVB-S
+				if transponder["system"] == 0:  # DVB-S
 					lamedblist.append("\ts %d:%d:%d:%d:%d:%d:%d\n" %
 						(transponder["frequency"],
 						transponder["symbol_rate"],
@@ -443,7 +443,7 @@ class LamedbWriter():
 						orbital_position,
 						transponder["inversion"],
 						transponder["flags"]))
-				else: # DVB-S2
+				else:  # DVB-S2
 					multistream = ''
 					t2mi = ''
 					if "t2mi_plp_id" in transponder and "t2mi_pid" in transponder:
@@ -455,14 +455,14 @@ class LamedbWriter():
 							transponder["is_id"],
 							transponder["pls_code"],
 							transponder["pls_mode"])
-					if t2mi and not multistream: # this is to pad t2mi values if necessary.
-						try: # some images are still not multistream aware after all this time
+					if t2mi and not multistream:  # this is to pad t2mi values if necessary.
+						try:  # some images are still not multistream aware after all this time
 							multistream = ':%d:%d:%d' % (
 								eDVBFrontendParametersSatellite.No_Stream_Id_Filter,
 								eDVBFrontendParametersSatellite.PLS_Gold,
 								eDVBFrontendParametersSatellite.PLS_Default_Gold_Code)
 						except AttributeError as err:
-							pass #print("[%s-BouquetsWriter] some images are still not multistream aware after all this time" % (debug_name),  err)
+							pass  # print("[%s-BouquetsWriter] some images are still not multistream aware after all this time" % (debug_name),  err)
 					lamedblist.append("\ts %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d%s%s\n" %
 						(transponder["frequency"],
 						transponder["symbol_rate"],
@@ -583,7 +583,7 @@ class LamedbWriter():
 				else:
 					orbital_position = transponder["orbital_position"]
 
-				if transponder["system"] == 0: # DVB-S
+				if transponder["system"] == 0:  # DVB-S
 					lamedblist.append("s:%d:%d:%d:%d:%d:%d:%d\n" %
 						(transponder["frequency"],
 						transponder["symbol_rate"],
@@ -592,11 +592,11 @@ class LamedbWriter():
 						orbital_position,
 						transponder["inversion"],
 						transponder["flags"]))
-				else: # DVB-S2
+				else:  # DVB-S2
 					multistream = ''
 					t2mi = ''
 					if "is_id" in transponder and "pls_code" in transponder and "pls_mode" in transponder:
-						try: # some images are still not multistream aware after all this time
+						try:  # some images are still not multistream aware after all this time
 							# don't write default values
 							if not (transponder["is_id"] == eDVBFrontendParametersSatellite.No_Stream_Id_Filter and transponder["pls_code"] == eDVBFrontendParametersSatellite.PLS_Gold and transponder["pls_mode"] == eDVBFrontendParametersSatellite.PLS_Default_Gold_Code):
 								multistream = ',MIS/PLS:%d:%d:%d' % (
@@ -604,7 +604,7 @@ class LamedbWriter():
 									transponder["pls_code"],
 									transponder["pls_mode"])
 						except AttributeError as err:
-							pass #print("[%s-BouquetsWriter] some images are still not multistream aware after all this time" % (debug_name), err)
+							pass  # print("[%s-BouquetsWriter] some images are still not multistream aware after all this time" % (debug_name), err)
 					if "t2mi_plp_id" in transponder and "t2mi_pid" in transponder:
 						t2mi = ',T2MI:%d:%d' % (
 						transponder["t2mi_plp_id"],
@@ -683,12 +683,12 @@ class LamedbWriter():
 				if "service_flags" in service.keys() and service["service_flags"] > 0:
 					service_flags = ",f:%x" % service["service_flags"]
 
-				if 'service_line' in service.keys(): # from lamedb
+				if 'service_line' in service.keys():  # from lamedb
 					if len(service["service_line"]):
 						lamedblist.append(",%s\n" % service["service_line"])
 					else:
 						lamedblist.append("\n")
-				else: # from scanner
+				else:  # from scanner
 					lamedblist.append(",p:%s%s%s\n" % (provider_name, service_ca, service_flags))
 				services_count += 1
 
@@ -713,7 +713,7 @@ class Opentv_Zapper():
 		self.enddownloadtimer = eTimer()
 		self.enddownloadtimer.callback.append(self.stop_download)
 		print("[%s] starting..." % (debug_name))
-		if config.plugins.opentvzapper.enabled.value and not config.plugins.opentvzapper.schedule.value: # auto interval, not schedule
+		if config.plugins.opentvzapper.enabled.value and not config.plugins.opentvzapper.schedule.value:  # auto interval, not schedule
 			print("[%s] first download scheduled for %s" % (debug_name, strftime("%c", localtime(int(time()) + start_first_download))))
 			self.downloadtimer.startLongTimer(start_first_download)
 
@@ -726,7 +726,7 @@ class Opentv_Zapper():
 
 	def initialize(self):
 		provider = config.plugins.opentvzapper.providers.value
-		if not self.checkAvailableTuners() or self.initialized == provider: # if no tuner is available for this provider or we are already initialized, abort.
+		if not self.checkAvailableTuners() or self.initialized == provider:  # if no tuner is available for this provider or we are already initialized, abort.
 			return
 		self.service = providers[provider]["service"]
 		self.sref = make_sref(self.service)
@@ -748,7 +748,7 @@ class Opentv_Zapper():
 
 	def config_changed(self, configElement=None):
 		print("[%s] config_changed." % (debug_name))
-		if config.plugins.opentvzapper.enabled.value and not config.plugins.opentvzapper.schedule.value: # auto interval, not schedule
+		if config.plugins.opentvzapper.enabled.value and not config.plugins.opentvzapper.schedule.value:  # auto interval, not schedule
 			self.start_download()
 		else:
 			print("[%s] auto download timer stopped." % (debug_name))
@@ -771,7 +771,7 @@ class Opentv_Zapper():
 
 	def start_download(self):
 		print("[%s] start_download." % (debug_name))
-		self.downloadtimer.stop() # stop any running timer. e.g. we could be coming from "force_download" or "config_changed".
+		self.downloadtimer.stop()  # stop any running timer. e.g. we could be coming from "force_download" or "config_changed".
 		from Screens.Standby import inStandby
 
 		# this is here so tuner setup is fresh for every download
@@ -805,7 +805,7 @@ class Opentv_Zapper():
 			if not inStandby and config.plugins.opentvzapper.notifications.value:
 				Notifications.AddPopup(text=_("OpenTV EPG download starting."), type=MessageBox.TYPE_INFO, timeout=5, id=debug_name)
 		else:
-			self.downloadtimer.startLongTimer(wait_time_on_fail) # download not possible at this time. Try again in 10 minutes
+			self.downloadtimer.startLongTimer(wait_time_on_fail)  # download not possible at this time. Try again in 10 minutes
 			print("[%s]download not currently possible... Will try again at %s" % (debug_name, strftime("%c", localtime(int(time()) + wait_time_on_fail))))
 
 	def stop_download(self):
@@ -815,7 +815,7 @@ class Opentv_Zapper():
 			del self.adapter
 		self.downloading = False
 		self.adapter = None
-		if not config.plugins.opentvzapper.schedule.value: # auto interval, not schedule
+		if not config.plugins.opentvzapper.schedule.value:  # auto interval, not schedule
 			self.downloadtimer.startLongTimer(download_interval)
 			next_download = strftime("%c", localtime(int(time()) + download_interval))
 			print("[%s]download completed... Next download scheduled for %s" % (debug_name, next_download))
@@ -862,7 +862,7 @@ def startSession(reason, session=None, **kwargs):
 	global wasScheduleTimerWakeup
 	wasScheduleTimerWakeup = False
 	if reason == 0:
-		opentv_zapper.set_session(session) # pass session to opentv_zapper
+		opentv_zapper.set_session(session)  # pass session to opentv_zapper
 		wasScheduleTimerWakeup = session.nav.pluginTimerWakeupName() == "OpentvZapperScheduler"
 		if wasScheduleTimerWakeup:
 			session.nav.clearPluginTimerWakeupName()
@@ -902,7 +902,7 @@ class AutoScheduleTimer:
 		now = int(time())
 		if self.config.schedule.value:
 			print("[%s][AutoScheduleTimer] Schedule Enabled at " % self.schedulename, strftime("%c", localtime(now)))
-			if now > 1546300800: # Tuesday, January 1, 2019 12:00:00 AM
+			if now > 1546300800:  # Tuesday, January 1, 2019 12:00:00 AM
 				self.scheduledate()
 			else:
 				print("[%s][AutoScheduleTimer] STB clock not yet set." % self.schedulename)
@@ -1004,9 +1004,9 @@ class AutoScheduleTimer:
 		if wasScheduleTimerWakeup and inStandby and self.config.scheduleshutdown.value and not self.session.nav.getRecordings() and not inTryQuitMainloop:
 			print("[%s] Returning to deep standby after scheduled wakeup" % self.schedulename)
 			self.session.open(TryQuitMainloop, 1)
-		wasScheduleTimerWakeup = False # clear this as any subsequent run will not be from wake up from deep
+		wasScheduleTimerWakeup = False  # clear this as any subsequent run will not be from wake up from deep
 
-	def doneConfiguring(self): # called from plugin on save
+	def doneConfiguring(self):  # called from plugin on save
 		now = int(time())
 		if self.config.schedule.value:
 			if autoScheduleTimer is not None:

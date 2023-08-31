@@ -57,7 +57,7 @@ class PluginComponent:
 							plugin = my_import('.'.join(["Plugins", c, pluginname, "plugin"]))
 							plugins = plugin.Plugins(path=pluginPath)
 						except Exception as exc:
-							if pluginname != "WebInterface": # "WebInterface" is a fake plugin created by OpenWebIf. Do not print warnings about this.
+							if pluginname != "WebInterface":  # "WebInterface" is a fake plugin created by OpenWebIf. Do not print warnings about this.
 								print("[PluginComponent] Plugin ", c + "/" + pluginname, "failed to load:", exc)
 							# suppress errors due to missing plugin.py* files (badly removed plugin)
 							for fn in ('plugin.py', 'plugin.pyc', 'plugin.pyo'):
@@ -66,8 +66,8 @@ class PluginComponent:
 									from traceback import print_exc
 									print_exc()
 									break
-							else: # executes if no "break" is encountered in the "for" loop
-								if pluginname != "WebInterface": # "WebInterface" is a fake plugin created by OpenWebIf. Do not process this.
+							else:  # executes if no "break" is encountered in the "for" loop
+								if pluginname != "WebInterface":  # "WebInterface" is a fake plugin created by OpenWebIf. Do not process this.
 									print("[PluginComponent] Plugin probably removed, but not cleanly in", pluginPath)
 									print("[PluginComponent] trying to remove:", pluginPath)
 									# rmtree will produce an error if path is a symlink, so...

@@ -66,7 +66,7 @@ class SecConfigure:
 		sec.setDiSEqCMode(3 if diseqcmode == 4 else diseqcmode)
 		sec.setToneburst(toneburstmode)
 		sec.setCommittedCommand(diseqcpos)
-		sec.setUncommittedCommand(0) # SENDNO
+		sec.setUncommittedCommand(0)  # SENDNO
 
 		if 0 <= diseqcmode < 3:
 			self.addSatellite(sec, orbpos)
@@ -76,7 +76,7 @@ class SecConfigure:
 			else:
 				sec.setVoltageMode(switchParam._14V)
 				sec.setToneMode(switchParam.OFF)
-		elif 3 <= diseqcmode < 5: # diseqc 1.2
+		elif 3 <= diseqcmode < 5:  # diseqc 1.2
 			if slotid in self.satposdepends:
 				for slot in self.satposdepends[slotid]:
 					tunermask |= (1 << slot)
@@ -101,7 +101,7 @@ class SecConfigure:
 				self.addSatellite(sec, int(x[0]))
 				sec.setVoltageMode(switchParam.HV_13 if diseqc13V else switchParam.HV)
 				sec.setToneMode(switchParam.HILO)
-				sec.setRotorPosNum(0) # USALS
+				sec.setRotorPosNum(0)  # USALS
 
 		sec.setLNBSlotMask(tunermask)
 
@@ -124,7 +124,7 @@ class SecConfigure:
 		visited = []
 		while self.NimManager.getNimConfig(connto).configMode.value in ("satposdepends", "equal", "loopthrough"):
 			connto = int(self.NimManager.getNimConfig(connto).connectedTo.value)
-			if connto in visited: # prevent endless loop
+			if connto in visited:  # prevent endless loop
 				return slotid
 			visited.append(connto)
 		return connto
@@ -136,7 +136,7 @@ class SecConfigure:
 		for slotid in self.NimManager.getNimListOfType("DVB-S"):
 			if self.NimManager.nimInternallyConnectableTo(slotid) is not None:
 				self.NimManager.nimRemoveInternalLink(slotid)
-		sec.clear() ## this do unlinking NIMs too !!
+		sec.clear()  # this do unlinking NIMs too !!
 		print("[NimManager][SecConfigure] sec config cleared")
 
 		self.linked = {}
@@ -260,7 +260,7 @@ class SecConfigure:
 								useInputPower=useInputPower,
 								inputPowerDelta=inputPowerDelta,
 								diseqc13V=nim.diseqc13V.value)
-					elif nim.configMode.value == "advanced": #advanced config
+					elif nim.configMode.value == "advanced":  # advanced config
 						clear_lastsatrotorposition = not self.NimManager.getRotorSatListForNim(x, only_first=True)
 						self.updateAdvanced(sec, x)
 				if clear_lastsatrotorposition and nim.lastsatrotorposition.value:
@@ -364,7 +364,7 @@ class SecConfigure:
 						tunermask |= (1 << slot)
 
 				if currLnb.lof.value != "unicable":
-					sec.setLNBSatCRformat(0) # Unicable / JESS disabled, 0 = SatCR_format_none
+					sec.setLNBSatCRformat(0)  # Unicable / JESS disabled, 0 = SatCR_format_none
 				if currLnb.lof.value == "universal_lnb":
 					sec.setLNBLOFL(9750000)
 					sec.setLNBLOFH(10600000)
@@ -450,7 +450,7 @@ class SecConfigure:
 						if udc > 0:
 							sec.setUncommittedCommand(0xF0 | (udc - 1))
 						else:
-							sec.setUncommittedCommand(0) # SENDNO
+							sec.setUncommittedCommand(0)  # SENDNO
 
 						sec.setRepeats({"none": 0, "one": 1, "two": 2, "three": 3}[currLnb.diseqcRepeats.value])
 
@@ -525,7 +525,7 @@ class SecConfigure:
 					if not currSat.usals.value and x < 65:
 						sec.setRotorPosNum(currSat.rotorposition.value)
 					else:
-						sec.setRotorPosNum(0) #USALS
+						sec.setRotorPosNum(0)  # USALS
 
 
 class NIM:
@@ -747,7 +747,7 @@ class NimManager:
 		self.atscList = []
 		self.enumerateNIMs()
 		self.readTransponders()
-		InitNimManager(self)	#init config stuff
+		InitNimManager(self)  # init config stuff
 
 	def getConfiguredSats(self):
 		return self.sec.getConfiguredSats()
@@ -756,7 +756,7 @@ class NimManager:
 		if pos in self.transponders:
 			if feid is None or self.nim_slots[feid].isMultistream():
 				return self.transponders[pos]
-			else: # remove multistream transponders
+			else:  # remove multistream transponders
 				def isMultistreamTP(tp):
 					# since we are using Gold sequences there is no need to check the PLS Mode
 					return tp[5] == eDVBFrontendParametersSatellite.System_DVB_S2 and (tp[10] > eDVBFrontendParametersSatellite.No_Stream_Id_Filter or tp[12] > eDVBFrontendParametersSatellite.PLS_Default_Gold_Code)
@@ -848,7 +848,7 @@ class NimManager:
 		if self.hasNimType("DVB-S"):
 			print("[NimManager] Reading satellites.xml")
 			db.readSatellites(self.satList, self.satellites, self.transponders)
-			self.satList.sort() # sort by orbpos
+			self.satList.sort()  # sort by orbpos
 		if self.hasNimType("DVB-C") or self.hasNimType("DVB-T"):
 			print("[NimManager] Reading cables.xml")
 			db.readCables(self.cablesList, self.transponderscable)
@@ -947,9 +947,9 @@ class NimManager:
 			if not ("i2c" in entry):
 				entry["i2c"] = None
 			if "has_outputs" not in entry:
-				entry["has_outputs"] = entry["name"] in SystemInfo["HasPhysicalLoopthrough"] # "Has_Outputs: yes" not in /proc/bus/nim_sockets NIM, but the physical loopthrough exist
+				entry["has_outputs"] = entry["name"] in SystemInfo["HasPhysicalLoopthrough"]  # "Has_Outputs: yes" not in /proc/bus/nim_sockets NIM, but the physical loopthrough exist
 			entry["internally_connectable"] = None
-			if "frontend_device" in entry: # check if internally connectable
+			if "frontend_device" in entry:  # check if internally connectable
 				if path.exists("/proc/stb/frontend/%d/rf_switch" % entry["frontend_device"]) and (not id or entries[id]["name"] == entries[id - 1]["name"]):
 					if '7356' in about.getChipSetString():
 						if not id:
@@ -963,13 +963,13 @@ class NimManager:
 			if "supports_blind_scan" not in entry:
 				entry["supports_blind_scan"] = False
 
-			entry["fbc"] = [0, 0, 0] # not fbc
+			entry["fbc"] = [0, 0, 0]  # not fbc
 			if entry["name"] and ("fbc" in entry["name"].lower() or (entry["name"] in SystemInfo["HasFBCtuner"] and entry["frontend_device"] is not None and access("/proc/stb/frontend/%d/fbc_id" % entry["frontend_device"], F_OK))):
 				fbc_number += 1
 				if fbc_number <= (entry["type"] and "DVB-C" in entry["type"] and 1 or 2):
-					entry["fbc"] = [1, fbc_number, fbc_tuner] # fbc root
+					entry["fbc"] = [1, fbc_number, fbc_tuner]  # fbc root
 				elif fbc_number <= 8:
-					entry["fbc"] = [2, fbc_number, fbc_tuner] # fbc link
+					entry["fbc"] = [2, fbc_number, fbc_tuner]  # fbc link
 				if fbc_number == 8:
 					fbc_number = 0
 					fbc_tuner += 1
@@ -1003,7 +1003,7 @@ class NimManager:
 			if n.isCompatible(type) and n.slot != exception and n.config_mode != "nothing":
 				if type.startswith("DVB-S") and n.config_mode in ("loopthrough", "satposdepends"):
 					root_id = nimmanager.sec.getRoot(n.slot_id, int(n.config.connectedTo.value))
-					if n.type == nimmanager.nim_slots[root_id].type: # check if connected from a DVB-S to DVB-S2 Nim or vice versa
+					if n.type == nimmanager.nim_slots[root_id].type:  # check if connected from a DVB-S to DVB-S2 Nim or vice versa
 						return False
 				return True
 		return [x.slot for x in self.nim_slots if x.slot != exception and enabled(x)]
@@ -1044,7 +1044,7 @@ class NimManager:
 
 	def canEqualTo(self, slotid):
 		sattype = self.getNimType(slotid)
-		sattype = sattype[:5] # DVB-S2X --> DVB-S, DVB-S2 --> DVB-S, DVB-T2 --> DVB-T, DVB-C2 --> DVB-C
+		sattype = sattype[:5]  # DVB-S2X --> DVB-S, DVB-S2 --> DVB-S, DVB-T2 --> DVB-T, DVB-C2 --> DVB-C
 		nimList = self.getNimListOfType(sattype, slotid)
 		for nim in nimList[:]:
 			mode = self.getNimConfig(nim)
@@ -1054,7 +1054,7 @@ class NimManager:
 
 	def canDependOn(self, slotid, advanced_satposdepends=""):
 		type = self.getNimType(slotid)
-		type = type[:5] # DVB-S2X --> DVB-S, DVB-S2 --> DVB-S, DVB-T2 --> DVB-T, DVB-C2 --> DVB-C
+		type = type[:5]  # DVB-S2X --> DVB-S, DVB-S2 --> DVB-S, DVB-T2 --> DVB-T, DVB-C2 --> DVB-C
 		nimList = self.getNimListOfType(type, slotid)
 		positionerList = []
 		for nim in nimList[:]:
@@ -1206,7 +1206,7 @@ class NimManager:
 				if lastrotorposition == -1:
 					return number and -1 or _("undefined")
 				else:
-					from Tools.Transponder import orbpos as orbStr # imported here so doesn't cause a circular import
+					from Tools.Transponder import orbpos as orbStr  # imported here so doesn't cause a circular import
 					return number and lastrotorposition or orbStr(lastrotorposition)
 		else:
 			return number and 9999 or _("not valid frontend")

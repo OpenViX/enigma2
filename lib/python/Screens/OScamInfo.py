@@ -868,7 +868,7 @@ class oscInfo(Screen, OscamInfo):
 		if self.listchange:
 			self.listchange = False
 			self["output"].l.setItemHeight(int(self.itemheight * f))
-			self["output"].instance.setScrollbarMode(0) #"showOnDemand"
+			self["output"].instance.setScrollbarMode(0)  # "showOnDemand"
 			self.rows = int(self["output"].instance.size().height() / (self.itemheight * f))
 			if self.what != "l" and self.rows < len(self.out):
 				self.enableScrolling(True)
@@ -1200,7 +1200,7 @@ class OscamInfoConfigScreen(ConfigListScreen, Screen):
 	def __init__(self, session, msg=None):
 		Screen.__init__(self, session)
 		self.setTitle(_("%s Info - Configuration") % check_NAMEBIN2())
-		self["status"] = StaticText(_("Error:\n%s") % msg if msg is not None else "") # what is this?
+		self["status"] = StaticText(_("Error:\n%s") % msg if msg is not None else "")  # what is this?
 		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry, fullUI=True)
 		self.createSetup()
 

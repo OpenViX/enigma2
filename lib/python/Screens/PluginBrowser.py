@@ -330,7 +330,7 @@ class PluginDownloadBrowser(Screen):
 	def selectionChanged(self):
 		item = self["list"].getCurrent()
 		try:
-			if isinstance(item[0], str): # category
+			if isinstance(item[0], str):  # category
 				name = item[0]
 				desc = ""
 			else:
@@ -382,7 +382,7 @@ class PluginDownloadBrowser(Screen):
 			return
 
 		sel = sel[0]
-		if isinstance(sel, str): # category
+		if isinstance(sel, str):  # category
 			if sel in self.expanded:
 				self.expanded.remove(sel)
 			else:

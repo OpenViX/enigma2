@@ -64,7 +64,7 @@ config.imagemanager.autosettingsbackup = ConfigYesNo(default=True)
 choices = getMountChoices()
 config.imagemanager.backuplocation = ConfigSelection(choices=choices, default=getMountDefault(choices))
 config.imagemanager.extensive_location_search = ConfigYesNo(default=True)
-harddiskmanager.on_partition_list_change.append(__onPartitionChange) # to update backuplocation choices on mountpoint change
+harddiskmanager.on_partition_list_change.append(__onPartitionChange)  # to update backuplocation choices on mountpoint change
 config.imagemanager.backupretry = ConfigNumber(default=30)
 config.imagemanager.backupretrycount = NoSave(ConfigNumber(default=0))
 config.imagemanager.folderprefix = ConfigText(default=defaultprefix, fixed_size=False)
@@ -153,8 +153,8 @@ class VIXImageManager(Screen):
 			self["list"].instance.setItemHeight(%d)
 		</applet>
 	</screen>""",
-		560, 400, # screen
-		0, 0, 140, 40, #colors
+		560, 400,  # screen
+		0, 0, 140, 40,  # colors
 		140, 0, 140, 40,
 		280, 0, 140, 40,
 		420, 0, 140, 40,
@@ -162,10 +162,10 @@ class VIXImageManager(Screen):
 		140, 0, 140, 40, 20,
 		280, 0, 140, 40, 20,
 		420, 0, 140, 40, 20,
-		0, 45, 35, 25, # menu key
-		0, 50, 560, 50, 18, # lab1
-		10, 105, 540, 260, 20, # list
-		10, 370, 400, 30, 20, # backupstatus
+		0, 45, 35, 25,  # menu key
+		0, 50, 560, 50, 18,  # lab1
+		10, 105, 540, 260, 20,  # list
+		10, 370, 400, 30, 20,  # backupstatus
 		26,
 	]
 
@@ -239,7 +239,7 @@ class VIXImageManager(Screen):
 
 	def selectionChanged(self):
 		# Where is this used? self.onChangedEntry does not appear to be populated anywhere. Maybe dead code.
-		item = self["list"].getCurrent() # (name, link)
+		item = self["list"].getCurrent()  # (name, link)
 		desc = self["backupstatus"].text
 		if item:
 			name = item[1]
@@ -263,7 +263,7 @@ class VIXImageManager(Screen):
 		else:
 			self["key_green"].hide()
 		self.activityTimer.startLongTimer(5)
-		self.refreshList() # display any new images that may have been sent too the box since the list was built
+		self.refreshList()  # display any new images that may have been sent too the box since the list was built
 
 	def refreshUp(self):
 		self["list"].moveUp()
@@ -351,7 +351,7 @@ class VIXImageManager(Screen):
 		message = _("From which image library do you want to download?")
 		self.session.openWithCallback(self.doDownloadCallback, MessageBox, message, list=choices, default=1, simple=True)
 
-	def doDownloadCallback(self, retval): # retval will be the config element (or False, in the case of aborting the MessageBox).
+	def doDownloadCallback(self, retval):  # retval will be the config element (or False, in the case of aborting the MessageBox).
 		if retval:
 			self.session.openWithCallback(self.refreshList, ImageManagerDownload, self.BackupDirectory, retval)
 
@@ -379,9 +379,9 @@ class VIXImageManager(Screen):
 		self["backupstatus"].setText(str(backuptext))
 
 	def keyDelete(self):
-		self.sel = self["list"].getCurrent() # (name, link)
+		self.sel = self["list"].getCurrent()  # (name, link)
 		if self.sel is not None:
-			self["list"].moveToIndex(self["list"].getSelectionIndex() if len(self["list"].list) > self["list"].getSelectionIndex() + 1 else max(len(self["list"].list) - 2, 0)) # hold the selection current possition if the list is long enough, else go to last item
+			self["list"].moveToIndex(self["list"].getSelectionIndex() if len(self["list"].list) > self["list"].getSelectionIndex() + 1 else max(len(self["list"].list) - 2, 0))  # hold the selection current possition if the list is long enough, else go to last item
 			try:
 				# print("[ImageManager][keyDelete] selected image=%s" % (self.sel[1]))
 				if self.sel[1].endswith(".zip"):
@@ -437,7 +437,7 @@ class VIXImageManager(Screen):
 		else:
 			mediaList = [config.imagemanager.backuplocation.value]
 		for media in mediaList:
-			try: # /media/autofs/xxx will crash listdir if "xxx" is inactive (e.g. dropped network link). os.access reports True for "xxx" so it seems we are forced to try/except here.
+			try:  # /media/autofs/xxx will crash listdir if "xxx" is inactive (e.g. dropped network link). os.access reports True for "xxx" so it seems we are forced to try/except here.
 				medialist = listdir(media)
 			except FileNotFoundError:
 				continue
@@ -462,11 +462,11 @@ class VIXImageManager(Screen):
 		self.session.openWithCallback(self.keyRestore3, JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
 
 	def keyRestore(self):
-		self.sel = self["list"].getCurrent() # (name, link)
+		self.sel = self["list"].getCurrent()  # (name, link)
 		if not self.sel:
 			return
 		print("[ImageManager][keyRestore] self.sel SystemInfo['MultiBootSlot']", self.sel[0], "   ", SystemInfo["MultiBootSlot"])
-		if SystemInfo["MultiBootSlot"] == 0 and self.isVuKexecCompatibleImage(self.sel[0]): # only if Vu multiboot has been enabled and the image is compatible
+		if SystemInfo["MultiBootSlot"] == 0 and self.isVuKexecCompatibleImage(self.sel[0]):  # only if Vu multiboot has been enabled and the image is compatible
 			message = [_("Are you sure you want to overwrite the Recovery image?")]
 			if "VuSlot0" in self.sel[0]:
 				callback = self.keyRestoreVuSlot0Image
@@ -602,8 +602,8 @@ class VIXImageManager(Screen):
 				if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
 					kz0 = getMachineMtdKernel()
 					rz0 = getMachineMtdRoot()
-					CMD = "/usr/bin/ofgwrite -k%s -r%s '%s'" % (kz0, rz0, MAINDEST)	# slot0 treat as kernel/root only multiboot receiver
-				elif SystemInfo["HasHiSi"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:	# sf8008 type receiver using SD card in multiboot
+					CMD = "/usr/bin/ofgwrite -k%s -r%s '%s'" % (kz0, rz0, MAINDEST)  # slot0 treat as kernel/root only multiboot receiver
+				elif SystemInfo["HasHiSi"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:  # sf8008 type receiver using SD card in multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
 					if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_6"):
@@ -615,7 +615,7 @@ class VIXImageManager(Screen):
 						   CMD = "/usr/bin/ofgwrite -r%s -kzImage -m%s '%s'" % (self.MTDROOTFS, self.multibootslot, MAINDEST)
 					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
 				else:
-					CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)	# Normal multiboot
+					CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)  # Normal multiboot
 			elif SystemInfo["HasH9SD"]:
 				if fileHas("/proc/cmdline", "root=/dev/mmcblk0p1") is True and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 using SD card
 					CMD = "/usr/bin/ofgwrite -rmmcblk0p1 '%s'" % MAINDEST
@@ -631,7 +631,7 @@ class VIXImageManager(Screen):
 		fbClass.getInstance().unlock()
 		print("[ImageManager] ofgwrite retval :", retval)
 		if retval == 0:
-			if SystemInfo["HasHiSi"] and SystemInfo["HasRootSubdir"] is False and self.HasSDmmc is False:	# sf8008 receiver 1 eMMC parition, No SD card
+			if SystemInfo["HasHiSi"] and SystemInfo["HasRootSubdir"] is False and self.HasSDmmc is False:  # sf8008 receiver 1 eMMC parition, No SD card
 				self.session.open(TryQuitMainloop, 2)
 			if SystemInfo["canMultiBoot"]:
 				print("[ImageManager] slot %s result %s\n" % (self.multibootslot, result))
@@ -672,13 +672,13 @@ class VIXImageManager(Screen):
 			retval = True
 		else:
 			name_split = name.split("-")
-			if len(name_split) > 1 and name_split[0] in ("openbh", "openvix") and name[-8:] == "_usb.zip": # "_usb.zip" only in build server images
+			if len(name_split) > 1 and name_split[0] in ("openbh", "openvix") and name[-8:] == "_usb.zip":  # "_usb.zip" only in build server images
 				parts = name_split[1].split(".")
 				if len(parts) > 1 and parts[0].isnumeric() and parts[1].isnumeric():
 					version = float(parts[0] + "." + parts[1])
 					if name_split[0] == "openbh" and version > 5.1:
 						retval = True
-					if name_split[0] == "openvix" and (version > 6.3 or version == 6.3 and len(parts) > 2 and parts[2].isnumeric() and int(parts[2]) > 2): # greater than 6.2.002
+					if name_split[0] == "openvix" and (version > 6.3 or version == 6.3 and len(parts) > 2 and parts[2].isnumeric() and int(parts[2]) > 2):  # greater than 6.2.002
 						retval = True
 		return retval
 
@@ -883,8 +883,8 @@ class ImageBackup(Screen):
 			self["list"].instance.setItemHeight(%d)
 		</applet>
 	</screen>""",
-		560, 400, # screen
-		0, 0, 140, 40, #colors
+		560, 400,  # screen
+		0, 0, 140, 40,  # colors
 		140, 0, 140, 40,
 		280, 0, 140, 40,
 		420, 0, 140, 40,
@@ -892,8 +892,8 @@ class ImageBackup(Screen):
 		140, 0, 140, 40, 20,
 		280, 0, 140, 40, 20,
 		420, 0, 140, 40, 20,
-		0, 50, 560, 50, 18, # lab1
-		10, 105, 540, 260, 20, # list
+		0, 50, 560, 50, 18,  # lab1
+		10, 105, 540, 260, 20,  # list
 		26,
 	]
 
@@ -947,7 +947,7 @@ class ImageBackup(Screen):
 			else:
 				self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
 			if SystemInfo["HasMultibootMTD"]:
-				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"]	# sfx60xx ubi0:ubifs not mtd=
+				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"]  # sfx60xx ubi0:ubifs not mtd=
 			elif not SystemInfo["HasKexecMultiboot"]:
 				self.MTDROOTFS = SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
 			if SystemInfo["HasRootSubdir"] and slot != 0:
@@ -1580,8 +1580,8 @@ class ImageManagerDownload(Screen):
 			self["list"].instance.setItemHeight(%d)
 		</applet>
 	</screen>""",
-		560, 400, # screen
-		0, 0, 140, 40, #colors
+		560, 400,  # screen
+		0, 0, 140, 40,  # colors
 		140, 0, 140, 40,
 		280, 0, 140, 40,
 		420, 0, 140, 40,
@@ -1589,8 +1589,8 @@ class ImageManagerDownload(Screen):
 		140, 0, 140, 40, 20,
 		280, 0, 140, 40, 20,
 		420, 0, 140, 40, 20,
-		0, 50, 560, 50, 18, # lab1
-		10, 105, 540, 260, 20, # list
+		0, 50, 560, 50, 18,  # lab1
+		10, 105, 540, 260, 20,  # list
 		26,
 	]
 
@@ -1651,7 +1651,7 @@ class ImageManagerDownload(Screen):
 			# Obviously the url needs to exist.
 			if "%s" not in self.imagefeed[URL] and "?" not in self.imagefeed[URL]:
 				url = path.join(self.imagefeed[URL], boxtype)
-			else: # New style: self.imagefeed[URL] contains "%s" and boxname is inserted there.
+			else:  # New style: self.imagefeed[URL] contains "%s" and boxname is inserted there.
 				url = self.imagefeed[URL] % boxtype
 			
 			# special case for openvix developer downloads using user/pass
@@ -1669,10 +1669,10 @@ class ImageManagerDownload(Screen):
 				print("[ImageManager] no images available for: the '%s' at '%s'" % (boxtype, url))
 				return
 
-		if not self.imagesList: # Nothing has been found on that server so we might as well give up.
+		if not self.imagesList:  # Nothing has been found on that server so we might as well give up.
 			return
 
-		imglist = [] # this is reset on every "ok" key press of an expandable item so it reflects the current state of expandability of that item
+		imglist = []  # this is reset on every "ok" key press of an expandable item so it reflects the current state of expandability of that item
 		for categorie in sorted(self.imagesList.keys(), reverse=True):
 			if categorie in self.expanded:
 				imglist.append(ChoiceEntryComponent("expanded", ((str(categorie)), "Expander")))
@@ -1794,6 +1794,6 @@ class ImageManagerSetup(Setup):
 	def check_URL_format(self, configElement):
 		if configElement.value:
 			configElement.value = "%s%s" % (not (configElement.value.startswith("http://") or configElement.value.startswith("https://") or configElement.value.startswith("ftp://")) and "http://" or "", configElement.value)
-			configElement.value = configElement.value.strip("/") # remove any trailing slash
+			configElement.value = configElement.value.strip("/")  # remove any trailing slash
 		else:
 			configElement.value = configElement.default

@@ -101,8 +101,8 @@ class VIXSwap(Screen):
 		<widget name="inactive" position="%d,%d" size="%d,%d" font="Regular;%d" valign="center" halign="center" backgroundColor="red"/>
 		<widget name="active" position="%d,%d" size="%d,%d" font="Regular;%d" valign="center" halign="center" backgroundColor="green"/>
 	</screen>""",
-		560, 250, # screen
-		0, 0, 140, 40, #colors
+		560, 250,  # screen
+		0, 0, 140, 40,  # colors
 		140, 0, 140, 40,
 		280, 0, 140, 40,
 		420, 0, 140, 40,
@@ -110,8 +110,8 @@ class VIXSwap(Screen):
 		140, 0, 140, 40, 20,
 		280, 0, 140, 40, 20,
 		420, 0, 140, 40, 20,
-		10, 50, 32, 32, # lock off
-		10, 50, 32, 32, # lock on
+		10, 50, 32, 32,  # lock off
+		10, 50, 32, 32,  # lock on
 		50, 50, 360, 30, 20,
 		10, 100, 150, 30, 20,
 		10, 150, 150, 30, 20,
@@ -252,7 +252,7 @@ class VIXSwap(Screen):
 				self["autostart_off"].hide()
 				self.swap_active = self.swap_Factive = True
 				continue
-			elif line.find("partition") != -1 and not self.swap_Fname:	# only swap partition
+			elif line.find("partition") != -1 and not self.swap_Fname:  # only swap partition
 				self.swap_active = self.swap_Pactive = True
 				continue
 

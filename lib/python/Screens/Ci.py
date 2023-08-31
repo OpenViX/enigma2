@@ -456,11 +456,11 @@ class CiSelection(Screen):
 		self.list.append((_("Reset"), ConfigNothing(), 0, slot))
 		self.list.append((_("Init"), ConfigNothing(), 1, slot))
 
-		if self.state[slot] == 0: #no module
+		if self.state[slot] == 0:  # no module
 			self.list.append((_("no module found"), ConfigNothing(), 2, slot))
-		elif self.state[slot] == 1: #module in init
+		elif self.state[slot] == 1:  # module in init
 			self.list.append((_("init module"), ConfigNothing(), 2, slot))
-		elif self.state[slot] == 2: #module ready
+		elif self.state[slot] == 2:  # module ready
 			appname = eDVBCI_UI.getInstance().getAppName(slot)
 			self.list.append((appname, ConfigNothing(), 2, slot))
 		elif self.state[slot] == 3:  # module disabled by the user
@@ -488,16 +488,16 @@ class CiSelection(Screen):
 			slotidx += 1
 
 		if slot > 0:
-			slotidx += 1 #do not change separator
-		slotidx += 1 #do not change CI Enabled
-		slotidx += 1 #do not change Reset
-		slotidx += 1 #do not change Init
+			slotidx += 1  # do not change separator
+		slotidx += 1  # do not change CI Enabled
+		slotidx += 1  # do not change Reset
+		slotidx += 1  # do not change Init
 
-		if state == 0: #no module
+		if state == 0:  # no module
 			self.list[slotidx] = (_("no module found"), ConfigNothing(), 2, slot)
-		elif state == 1: #module in init
+		elif state == 1:  # module in init
 			self.list[slotidx] = (_("init module"), ConfigNothing(), 2, slot)
-		elif state == 2: #module ready
+		elif state == 2:  # module ready
 			appname = eDVBCI_UI.getInstance().getAppName(slot)
 			self.list[slotidx] = (appname, ConfigNothing(), 2, slot)
 			if len(self.list) <= slotidx + 1:
@@ -528,9 +528,9 @@ class CiSelection(Screen):
 			slot = cur[3]
 			if action == 3:
 				pass
-			elif action == 0: #reset
+			elif action == 0:  # reset
 				eDVBCI_UI.getInstance().setReset(slot)
-			elif action == 1: #init
+			elif action == 1:  # init
 				eDVBCI_UI.getInstance().setInit(slot)
 			elif action == 5:
 				self.session.openWithCallback(self.cancelCB, PermanentPinEntry, config.ci[slot].static_pin, _("Smartcard PIN"))

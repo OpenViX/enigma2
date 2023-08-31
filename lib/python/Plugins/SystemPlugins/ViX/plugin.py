@@ -184,7 +184,7 @@ def filescan(**kwargs):
 
 
 def Plugins(**kwargs):
-	if SystemInfo["MultiBootSlot"] == 0: # only in recovery image
+	if SystemInfo["MultiBootSlot"] == 0:  # only in recovery image
 		plist = [PluginDescriptor(name=_("Image Manager"), where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=ImageManagerStart)]
 		if not config.misc.firstrun.value:
 			plist.append(PluginDescriptor(name=_("Vu+ ImageManager wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(30, ImageManager)))

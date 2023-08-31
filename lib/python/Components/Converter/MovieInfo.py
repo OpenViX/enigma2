@@ -27,7 +27,7 @@ class MovieInfo(Converter):
 	MOVIE_REC_SERVICE_REF = 3  # referance of recording service
 	MOVIE_REC_FILESIZE = 4  # filesize of recording
 	MOVIE_FULL_DESCRIPTION = 5  # combination of short and long description when available
-	MOVIE_NAME = 6 # recording name
+	MOVIE_NAME = 6  # recording name
 
 	KEYWORDS = {
 		# Arguments...

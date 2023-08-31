@@ -37,7 +37,7 @@ class SubtitleDisplay(Screen):
 			# whilst the notification is shown any keydown event dismisses the notification
 			if flag == 0:
 				self.hideMessage()
-			else: # any key repeat or keyup event is discarded
+			else:  # any key repeat or keyup event is discarded
 				return 1
 
 	def showMessage(self, message, hideScreen):

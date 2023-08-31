@@ -16,7 +16,7 @@ if fileHas("/proc/cmdline", "kexec=1"):
 	from PIL import ImageFont
 
 MbootList1 = ("/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/mtdblock2", "/dev/block/by-name/bootoptions")
-MbootList2 = ("/dev/%s" % getMachineMtdRoot(), )	# kexec kernel Vu+ multiboot
+MbootList2 = ("/dev/%s" % getMachineMtdRoot(), )  # kexec kernel Vu+ multiboot
 
 
 class tmp:
@@ -54,7 +54,7 @@ def getMultibootslots():
 					slotname = file.rsplit("_", 3 if "BOXMODE" in file else 1)[0]
 					slotname = file.rsplit("/", 1)[1]
 					slotname = slotname if len(slotname) > 1 else ""
-					slotname = ""	# nullify for current moment
+					slotname = ""  # nullify for current moment
 					if "STARTUP_ANDROID" in file:
 						SystemInfo["AndroidMode"] = True
 						continue
@@ -94,7 +94,7 @@ def getMultibootslots():
 									SystemInfo["HasRootSubdir"] = slot.get("rootsubdir")
 
 								if "kernel" not in slot.keys():
-									slot["kernel"] = "%sp%s" % (slot["root"].split("p")[0], int(slot["root"].split("p")[1]) - 1)	# oldstyle MB kernel = root-1
+									slot["kernel"] = "%sp%s" % (slot["root"].split("p")[0], int(slot["root"].split("p")[1]) - 1)  # oldstyle MB kernel = root-1
 	#							print("[multiboot] [getMultibootslots]7a HasMultibootMTD, kernel, root, SystemInfo['HasRootSubdir'] ", SystemInfo["HasMultibootMTD"], "   ", slot["kernel"], "   ", slot["root"], "   ", SystemInfo["HasRootSubdir"])
 							else:
 								continue
@@ -123,7 +123,7 @@ def getMultibootslots():
 			SystemInfo["MultiBootSlot"] = int(slot[0])
 			print("[Multiboot][MultiBootSlot]1 current slot used:", SystemInfo["MultiBootSlot"])
 		else:
-			root = dict([(x.split("=", 1)[0].strip(), x.split("=", 1)[1].strip()) for x in bootArgs.strip().split(" ") if "=" in x])["root"]	# Broadband receiver (e.g. gbue4k) or sf8008 with sd card as root/kernel pair
+			root = dict([(x.split("=", 1)[0].strip(), x.split("=", 1)[1].strip()) for x in bootArgs.strip().split(" ") if "=" in x])["root"]  # Broadband receiver (e.g. gbue4k) or sf8008 with sd card as root/kernel pair
 			for slot in bootslots.keys():
 				if "root" not in bootslots[slot].keys():
 					continue
@@ -134,7 +134,7 @@ def getMultibootslots():
 	return bootslots
 
 
-def getUUIDtoSD(UUID): # returns None on failure
+def getUUIDtoSD(UUID):  # returns None on failure
 #	print("[multiboot][getUUIDtoSD2] UUID = ", UUID)
 	check = "/sbin/blkid"
 	if fileExists(check):

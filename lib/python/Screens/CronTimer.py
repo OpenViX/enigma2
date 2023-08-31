@@ -302,7 +302,7 @@ class CronTimersConfig(Setup):
 	def changedEntry(self):
 		if self["config"].getCurrent()[1] in (self.runwhen, self.commandtype):
 			self.createSetup()
-		ConfigListScreen.changedEntry(self) # update callbacks
+		ConfigListScreen.changedEntry(self)  # update callbacks
 
 	def keySave(self):
 		msg = ''

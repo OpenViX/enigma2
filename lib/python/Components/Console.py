@@ -9,7 +9,7 @@ class ConsoleItem:
 		self.container = enigma.eConsoleAppContainer()
 		self.containers = containers
 		self.binary = binary
-		if isinstance(cmd, str): # until .execute supports a better api
+		if isinstance(cmd, str):  # until .execute supports a better api
 			cmd = [cmd]
 		# Create a unique name
 		name = cmd[0]
