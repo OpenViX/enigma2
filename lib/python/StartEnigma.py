@@ -1,5 +1,5 @@
 from os.path import exists as osexists
-import sys				#	don't change import 
+import sys				#	don't change import
 from time import localtime, strftime, time
 from datetime import datetime
 from traceback import print_exc
@@ -170,10 +170,10 @@ class Session:
 		# Be sure that the close is for the right dialog!
 		# If it's not, you probably closed after another dialog was opened.
 		# This can happen if you open a dialog onExecBegin, and forget to do this only once.
-		# 
+		#
 		# After close of the top dialog, the underlying dialog will gain focus again (for a short time),
 		# thus triggering the onExec, which opens the dialog again, closing the loop.
-		# 
+		#
 		assert screen == self.current_dialog
 
 		self.current_dialog.returnValue = retval
@@ -333,7 +333,7 @@ def runScreenTest():
 	Tools.Trashcan.init(session)
 	if not VuRecovery:
 		CiHandler.setSession(session)
-	
+
 	screensToRun = [p.fnc for p in plugins.getPlugins(PluginDescriptor.WHERE_WIZARD)]
 	profile("wizards")
 	screensToRun += wizardManager.getWizards()
@@ -363,7 +363,7 @@ def runScreenTest():
 		vol = VolumeControl(session)
 		profile("Init:PowerKey")
 		power = PowerKey(session)
-		
+
 		if enigma.eAVSwitch.getInstance().haveScartSwitch():
 			# we need session.scart to access it from within menu.xml
 			session.scart = AutoScartControl(session)
@@ -451,7 +451,7 @@ if getImageType() != "release":
 
 # SetupDevices sets up defaults:- language, keyboard, parental & expert config.
 # Moving further down will break translation.
-# Moving further up will break imports in config.py				
+# Moving further up will break imports in config.py
 profile("SetupDevices")
 print("[StartEnigma]  Initialising SetupDevices.")
 from Components.SetupDevices import InitSetupDevices
@@ -459,7 +459,7 @@ InitSetupDevices()
 
 if getImageArch() in ("aarch64"):
 	from usb.backend import libusb1
-	libusb1.get_backend(find_library=lambda x: "/lib64/libusb-1.0.so.0")				
+	libusb1.get_backend(find_library=lambda x: "/lib64/libusb-1.0.so.0")
 
 
 profile("ClientMode")
@@ -552,7 +552,7 @@ try:
 		if text is None:
 			return
 		if "/api/statusinfo" in text:  # Do not log OpenWebif status info.
-			return			
+			return
 		formatDict = {
 			"text": text.replace("\n", "\n\t")
 		}
@@ -563,7 +563,7 @@ try:
 	logger = log.FileLogObserver(sys.stdout)		# do not change or no crashlog
 	log.FileLogObserver.emit = quietEmit
 	backup_stdout = sys.stdout		# backup stdout and stderr redirections
-	backup_stderr = sys.stderr	
+	backup_stderr = sys.stderr
 	log.startLoggingWithObserver(logger.emit)
 	sys.stdout = backup_stdout		# restore stdout and stderr redirections because of twisted redirections
 	sys.stderr = backup_stderr

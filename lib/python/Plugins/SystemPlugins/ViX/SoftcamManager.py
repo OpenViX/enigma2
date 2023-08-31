@@ -764,7 +764,7 @@ class SoftcamAutoPoller:
 									camconf = "/etc/tuxbox/config/ncam.conf"
 							if not camconf:
 								print("[SoftcamManager] oscam.conf or ncam.conf not defined")
-								return									
+								return
 							f = open(camconf, "r")
 							for line in f.readlines():
 								if line.find("httpport") != -1:

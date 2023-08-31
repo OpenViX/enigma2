@@ -20,7 +20,7 @@ try:
 	mountOptions = getMountChoices()
 	if not mountOptions:
 		BackupFiles = None
-	print("[FactoryReset] DEBUG: mountOptions", mountOptions)		
+	print("[FactoryReset] DEBUG: mountOptions", mountOptions)
 except ImportError:
 	BackupFiles = None
 
@@ -125,7 +125,7 @@ class FactoryReset(Setup, ProtectedScreen):
 		if BackupFiles and self.doBackup.value:
 			msg = _("This will permanently delete the current configuration. If necessary it should be possible to restore the current configuration by restoring the settings backup. Are you certain you want to continue with a factory reset?")
 		elif self.doBackup.value:
-			msg = _("This will permanently delete the current configuration. Although settings backup requested, there is No backup device attached, are you certain you want to continue with a factory reset?")		
+			msg = _("This will permanently delete the current configuration. Although settings backup requested, there is No backup device attached, are you certain you want to continue with a factory reset?")
 		else:
 			msg = _("This will permanently delete the current configuration. It would be a good idea to make a backup before taking this drastic action. Are you certain you want to continue with a factory reset?")
 		restartBox = self.session.openWithCallback(self.keySaveCallback, MessageBox, msg, default=False)

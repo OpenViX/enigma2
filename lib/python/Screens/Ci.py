@@ -56,7 +56,7 @@ def InitCiConfig():
 						("normal", _("Normal")),
 						("high", _("High")),
 					]
-				print("[CI][InitCiConfig] highBitrateChoices", highBitrateChoices)					
+				print("[CI][InitCiConfig] highBitrateChoices", highBitrateChoices)
 				config.ci[slot].highBitrate = ConfigSelection(default="high", choices=highBitrateChoices)
 				config.ci[slot].highBitrate.slotid = slot
 				config.ci[slot].highBitrate.addNotifier(setCIBitrate)

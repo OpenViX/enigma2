@@ -94,7 +94,7 @@ FEED_URLS = [
 	("OpenBH", "https://images.openbh.net/json/%s", "getMachineMake"),
 	("OpenPLi", "http://downloads.openpli.org/json/%s", "HardwareInfo"),
 ]
-	
+
 
 autoImageManagerTimer = None
 
@@ -1653,7 +1653,7 @@ class ImageManagerDownload(Screen):
 				url = path.join(self.imagefeed[URL], boxtype)
 			else:  # New style: self.imagefeed[URL] contains "%s" and boxname is inserted there.
 				url = self.imagefeed[URL] % boxtype
-			
+
 			# special case for openvix developer downloads using user/pass
 			if self.imagefeed[DISTRO].lower() == "openvix" \
 				and self.imagefeed[URL].startswith("https") \

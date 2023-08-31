@@ -26,7 +26,7 @@ patterns = [
 	"python3-future",
 	"python3-mime",
 	"alsa",
-	"firmware",	
+	"firmware",
 	"glibc",
 	"gnome-themes",
 	"kernel-module",
@@ -180,7 +180,7 @@ class VuWizard(WizardLanguage, Rc):
 					cmdlist.append("/usr/bin/opkg remove --autoremove --add-dest /:/ " + parts[0] + " --force-remove --force-depends")
 					continue
 #			print("[VuWizard] cmdlist", cmdlist)
-			if cmdlist:	
+			if cmdlist:
 				cmdlist.append("rm -f /usr/share/fonts/wqy-microhei.ttc")
 				self.Console.eBatch(cmdlist, self.bootSlot, debug=False)
 		else:
