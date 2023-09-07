@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-09-07 15:44+0300\n"
+"PO-Revision-Date: 2023-09-07 17:04+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2321,8 +2321,8 @@ msgid "Are you sure you want to save the EPG Cache to:\n"
 msgstr "Haluatko varmasti tallentaa EPG:n tänne:\n"
 
 #, python-format
-msgid "Are you sure you want to update your %s %s ?"
-msgstr "Haluatko päivittää %s %s:n ?"
+msgid "Are you sure you want to update your %s %s?"
+msgstr "Haluatko päivittää %s %s:n?"
 
 msgid "Argentina"
 msgstr "Argentiina"
@@ -5048,7 +5048,7 @@ msgid "Do you want to resume playback?"
 msgstr "Jatketaanko toistoa?"
 
 #, python-format
-msgid "Do you want to update your %s %s ?"
+msgid "Do you want to update your %s %s?"
 msgstr "Haluatko päivittää %s %s:n?"
 
 msgid "Do you want to upgrade the package:\n"
@@ -9471,8 +9471,8 @@ msgstr "Suorita täydellinen image-varmuuskopiointi"
 msgid "Perform a settings backup before updating."
 msgstr "Suorita asetusten varmuuskopiointi ennen päivitystä."
 
-msgid "Perform a settings backup,"
-msgstr "Varmuuskopioi asetukset,"
+msgid "Perform a settings backup"
+msgstr "Varmuuskopioi asetukset"
 
 msgid "Perform a settings backup, making a backup before updating is strongly advised."
 msgstr "Suorita asetusten varmuuskopiointi, varmuuskopion tekeminen ennen päivitystä on erittäin suositeltavaa."
@@ -13758,8 +13758,8 @@ msgstr "Lokia ei voi nyt noutaa, ole hyvä ja yritä myöhemmin uudelleen."
 msgid "The commit log cannot be retrieved at the moment - please try again later.\n"
 msgstr "Lokia ei voi nyt noutaa, ole hyvä ja yritä myöhemmin uudelleen.\n"
 
-msgid "The current update may be unstable"
-msgstr "Nykyinen päivitys voi olla epästabiili"
+msgid "The current update may be unstable."
+msgstr "Nykyinen päivitys voi olla epästabiili."
 
 #, python-format
 msgid "The directory %s already exists."
@@ -19074,3 +19074,6 @@ msgstr "Aut.käynnistys pois käytöstä"
 
 msgid "SWAP name:"
 msgstr "SWAP-nimi:"
+
+msgid "Making a settings backup before updating is highly recommended."
+msgstr "Asetusten varmuuskopiointi ennen päivitystä on erittäin suositeltavaa."
