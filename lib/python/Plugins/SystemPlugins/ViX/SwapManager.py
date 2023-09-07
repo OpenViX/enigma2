@@ -301,14 +301,14 @@ class VIXSwap(Screen):
 		if config.swapmanager.swapautostart.value or self.swap_name == _("manufacturer defined swap"):
 			self["autostart_off"].hide()
 			self["autostart_on"].show()
-			self["key_yellow"].setText("Disable Autostart")
+			self["key_yellow"].setText(_("Disable Autostart"))
 		else:
 			config.swapmanager.swapautostart.setValue(False)
 			config.swapmanager.swapautostart.save()
 			configfile.save()
 			self["autostart_on"].hide()
 			self["autostart_off"].show()
-			self["key_yellow"].setText("Enable Autostart")
+			self["key_yellow"].setText(_("Enable Autostart"))
 		self["lab1"].setText(scanning)
 		self["lab1"].show()
 		self["actions"].setEnabled(True)
