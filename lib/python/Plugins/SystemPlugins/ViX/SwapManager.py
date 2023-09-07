@@ -18,6 +18,14 @@ from Screens.Screen import Screen
 config.swapmanager = ConfigSubsection()
 config.swapmanager.swapautostart = ConfigYesNo(default=False)
 
+# start: temp code - used due to config variable change 
+config.vixsettings.swapautostart = ConfigYesNo(default=False)
+if config.vixsettings.swapautostart.value:
+	config.swapmanager.swapautostart.value = True
+	# switch off so doesn't happen on any subsuquent run
+	config.vixsettings.swapautostart.value = False
+	config.vixsettings.swapautostart.save()
+# end: temp code
 startswap = None
 
 
