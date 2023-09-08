@@ -1,5 +1,4 @@
 from boxbranding import getImageVersion, getImageBuild, getImageDevBuild, getImageType, getImageDistro, getMachineBrand, getMachineName, getMachineBuild
-from gettext import dgettext
 
 from enigma import eTimer, eDVBDB
 
@@ -391,7 +390,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		Components.Task.job_manager.AddJob(self.BackupFiles.createBackupJob())
 		Components.Task.job_manager.in_background = False
 		for job in Components.Task.job_manager.getPendingJobs():
-			if job.name == dgettext('vix', 'Backup manager'):
+			if job.name == _('Backup manager'):
 				break
 		self.showJobView(job)
 
@@ -402,7 +401,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		Components.Task.job_manager.AddJob(self.ImageBackup.createBackupJob())
 		Components.Task.job_manager.in_background = False
 		for job in Components.Task.job_manager.getPendingJobs():
-			if job.name == dgettext('vix', 'Image manager'):
+			if job.name == _('Image manager'):
 				break
 		self.showJobView(job)
 
@@ -417,9 +416,9 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			self.close()
 
 	def showJobView(self, job):
-		if job.name == dgettext('vix', 'Image manager'):
+		if job.name == _('Image manager'):
 			self.ImageBackupDone = True
-		elif job.name == dgettext('vix', 'Backup manager'):
+		elif job.name == _('Backup manager'):
 			self.SettingsBackupDone = True
 		from Screens.TaskView import JobView
 		Components.Task.job_manager.in_background = False
