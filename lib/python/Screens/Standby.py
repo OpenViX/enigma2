@@ -1,5 +1,4 @@
 from os import path
-from gettext import dgettext
 from time import localtime, time
 from enigma import eDVBVolumecontrol, eTimer, eDVBLocalTimeHandler, eServiceReference, eStreamServer
 from boxbranding import getMachineBrand, getMachineName, getBoxType, getBrandOEM, getMachineBuild
@@ -237,7 +236,7 @@ class TryQuitMainloop(MessageBox):
 		recordings = session.nav.getRecordings()
 		jobs = []
 		for job in job_manager.getPendingJobs():
-			if job.name != dgettext('vix', 'SoftcamCheck'):
+			if job.name != _('SoftcamCheck'):			
 				jobs.append(job)
 
 		inTimeshift = Screens.InfoBar.InfoBar and Screens.InfoBar.InfoBar.instance and Screens.InfoBar.InfoBar.ptsGetTimeshiftStatus(Screens.InfoBar.InfoBar.instance)
