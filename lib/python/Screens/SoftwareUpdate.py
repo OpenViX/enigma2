@@ -348,14 +348,16 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			return
 
 		if answer[1] == "menu":
+			packagesMsg = "\n(%s " % self.total_packages + _("Packages") + ")"
 			if config.softwareupdate.updateisunstable.value == 1:
-				message = _("The current update may be unstable") + "\n" + _("Are you sure you want to update your %s %s ?") % (getMachineBrand(), getMachineName()) + "\n(%s " % self.total_packages + _("Packages") + ")"
+				message = _("The current update may be unstable.") + "\n" + _("Are you sure you want to update your %s %s?") % (getMachineBrand(), getMachineName()) + packagesMsg
 			elif config.softwareupdate.updateisunstable.value == 0:
-				message = _("Do you want to update your %s %s ?") % (getMachineBrand(), getMachineName()) + "\n(%s " % self.total_packages + _("Packages") + ")"
+				message = _("Do you want to update your %s %s?") % (getMachineBrand(), getMachineName()) + packagesMsg
 			choices = [(_("View the changes"), "changes"),
 				(_("Upgrade and reboot system"), "cold")]
 			if not self.SettingsBackupDone and not config.softwareupdate.autosettingsbackup.value and config.backupmanager.backuplocation.value:
-				choices.append((_("Perform a settings backup, making a backup before updating is strongly advised."), "backup"))
+				choices.append((_("Perform a settings backup"), "backup"))
+				message += "\n" + _("Making a settings backup before updating is highly recommended.")
 			if not self.ImageBackupDone and not config.softwareupdate.autoimagebackup.value and config.imagemanager.backuplocation.value:
 				choices.append((_("Perform a full image backup"), "imagebackup"))
 			choices.append((_("Update channel list only"), "channels"))
