@@ -2,7 +2,6 @@ import errno
 import shutil
 
 from boxbranding import getMachineBrand, getMachineName
-from gettext import dgettext
 from os import _exit, listdir, remove, system
 from os.path import isdir, join as pathjoin
 
@@ -144,7 +143,7 @@ class FactoryReset(Setup, ProtectedScreen):
 		Components.Task.job_manager.AddJob(backupFiles.createBackupJob())
 		Components.Task.job_manager.in_background = False
 		for job in Components.Task.job_manager.getPendingJobs():
-			if job.name == dgettext('vix', 'Backup manager'):
+			if job.name == _('Backup manager'):
 				break
 		self.session.openWithCallback(self.doSettingsBackupCallback, JobView, job, cancelable=False, backgroundable=False, afterEventChangeable=False, afterEvent="close")
 
