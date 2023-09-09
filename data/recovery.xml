@@ -16,80 +16,68 @@
 -->
 
 <!-- Main Menu -->
-<menu entryID="main_menu" level="0" text="Main Menu">
-	<id val="mainmenu" />
+<menu key="mainmenu" level="0" text="Main Menu">
 
 	<!-- Menu / MultiBoot Image Selector -->
-	<menu entryID="recovery_multiboot image selector" level="0" text="MultiBoot Image Selector" weight="1">
-		<id val="recovery_multiboot" />
+	<menu key="recovery_multiboot" level="0" text="MultiBoot Image Selector" weight="1">
 
-		<item entryID="multiboot" level="0" text="MultiBoot Image Selector" requires="canMultiBoot"><screen module="MultiBootSelector" screen="MultiBootSelector">1</screen></item>
+		<item key="multiboot" level="0" text="MultiBoot Image Selector" requires="canMultiBoot"><screen module="MultiBootSelector" screen="MultiBootSelector">1</screen></item>
 	</menu>
 
 	<!-- Menu / Other -->
-	<menu entryID="recovery_other" level="0" text="Other" weight="2">
-		<id val="recovery_other" />
+	<menu key="recovery_other" level="0" text="Other" weight="2">
 
 		<!-- Menu / Setup -->
-		<menu entryID="setup_selection" level="0" text="Setup" flushConfigOnClose="1" weight="1">
-			<id val="setup" />
+		<menu key="setup" level="0" text="Setup" flushConfigOnClose="1" weight="1">
 	
 			<!-- Menu / Setup / User Interface -->
-			<menu entryID="gui_setup" level="0" text="User Interface" weight="4">
-				<id val="gui_menu" />
-				<item entryID="language_setup" level="0" text="Language" weight="9"><screen module="LanguageSelection" /></item>
+			<menu key="gui_menu" level="0" text="User Interface" weight="4">
+				<item key="language_setup" level="0" text="Language" weight="9"><screen module="LanguageSelection" /></item>
 			</menu>
 	
 			<!-- Menu / Setup / Network -->
-			<menu entryID="network_menu" level="0" text="Network" weight="5">
-				<id val="network" />
-				<item entryID="device_setup" level="0" text="Device" weight="1"><screen module="NetworkSetup" screen="NetworkAdapterSelection" /></item>
-				<item entryID="password_setup" level="2" text="Password"><screen module="NetworkSetup" screen="NetworkPassword" /></item>
+			<menu key="network" level="0" text="Network" weight="5">
+				<item key="device_setup" level="0" text="Device" weight="1"><screen module="NetworkSetup" screen="NetworkAdapterSelection" /></item>
+				<item key="password_setup" level="2" text="Password"><screen module="NetworkSetup" screen="NetworkPassword" /></item>
 			</menu>
 			<!-- Menu / Setup / Storage -->
-			<menu entryID="hardisk_selection" level="0" text="Storage" weight="10" requires="Harddisk">
-				<id val="harddisk" />
-				<item entryID="harddisk_init" level="0" text="Initialize Devices"><screen module="HarddiskSetup" screen="HarddiskSelection" /></item>
-				<item entryID="harddisk_check" level="0" text="Filesystem Check"><screen module="HarddiskSetup" screen="HarddiskFsckSelection" /></item>
+			<menu key="harddisk" level="0" text="Storage" weight="10" requires="Harddisk">
+				<item key="harddisk_init" level="0" text="Initialize Devices"><screen module="HarddiskSetup" screen="HarddiskSelection" /></item>
+				<item key="harddisk_check" level="0" text="Filesystem Check"><screen module="HarddiskSetup" screen="HarddiskFsckSelection" /></item>
 			</menu>
 	
 			<!-- Menu / Setup / System -->
-			<menu entryID="system_selection" level="0" text="System" weight="98">
-				<id val="system" />
-				<menu entryID="logs_setup" level="2" text="Logs" weight="2">
-					<id val="logs_menu" />
-					<item entryID="logs_setup" level="2" text="Settings"><setup id="logs" /></item>
-					<item entryID="logs_man" level="2" text="Log Manager"><screen module="LogManager" screen="LogManager" /></item>
+			<menu key="system" level="0" text="System" weight="98">
+				<menu key="logs_menu" level="2" text="Logs" weight="2">
+					<item key="logs_setup" level="2" text="Settings"><setup id="logs" /></item>
+					<item key="logs_man" level="2" text="Log Manager"><screen module="LogManager" screen="LogManager" /></item>
 				</menu>
 				<!-- Menu / Software Update -->
-				<menu weight="3" level="0" text="Software update" entryID="software_update">
-					<id val="softwareupdatemenu"/>
-					<item entryID="onlineupdate_setup" level="0" text="Settings" weight="1"><setup id="softwareupdate"/></item>
-					<item entryID="software_update" level="0" text="Software update" weight="2"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
+				<menu weight="3" level="0" text="Software update" key="softwareupdatemenu">
+					<item key="onlineupdate_setup" level="0" text="Settings" weight="1"><setup id="softwareupdate"/></item>
+					<item key="software_update" level="0" text="Software update" weight="2"><screen module="SoftwareUpdate" screen="UpdatePlugin"/></item>
 				</menu>
 			</menu>
 		</menu>
 	
 		<!-- Menu / Information -->
-		<menu entryID="info_screen" level="0" text="Information" weight="6">
-			<id val="information" />
-			<item entryID="about_screen" level="0" text="About"><screen module="About" screen="About" /></item>
-			<item entryID="device_screen" level="0" text="Devices"><screen module="About" screen="Devices" /></item>
-			<item entryID="memory_screen" level="0" text="Memory"><screen module="About" screen="SystemMemoryInfo" /></item>
-			<item entryID="network_screen" level="0" text="Network"><screen module="About" screen="SystemNetworkInfo" /></item>
-			<item entryID="boxinfo_screen" level="2" text="BoxInfo"><screen module="AboutBoxInfo" screen="AboutBoxInfo" /></item>
+		<menu key="information" level="0" text="Information" weight="6">
+			<item key="about_screen" level="0" text="About"><screen module="About" screen="About" /></item>
+			<item key="device_screen" level="0" text="Devices"><screen module="About" screen="Devices" /></item>
+			<item key="memory_screen" level="0" text="Memory"><screen module="About" screen="SystemMemoryInfo" /></item>
+			<item key="network_screen" level="0" text="Network"><screen module="About" screen="SystemNetworkInfo" /></item>
+			<item key="boxinfo_screen" level="2" text="BoxInfo"><screen module="AboutBoxInfo" screen="AboutBoxInfo" /></item>
 		</menu>
 	
 		<!-- Menu / Standby and Restart -->
-		<menu entryID="standby_restart_list" text="Standby &amp; Restart" weight="99">
-			<id val="shutdown" />
-			<item entryID="standby" level="0" text="Standby"><screen module="Standby" screen="Standby" /></item>
-			<item entryID="restart_enigma" level="0" text="Restart GUI"><screen module="Standby" screen="TryQuitMainloop">3</screen></item>
-			<item entryID="restart" level="0" text="Reboot"><screen module="Standby" screen="TryQuitMainloop">2</screen></item>
-			<item entryID="multiboot" level="0" text="MultiBoot Image Selector" requires="canMultiBoot"><screen module="MultiBootSelector" screen="MultiBootSelector">1</screen></item>
-			<item entryID="H9SDswap" level="0" text="H9SDroot" requires="HasH9SD"><screen module="H9SDswap" screen="H9SDswap">1</screen></item>
-			<item entryID="deep_standby" level="0" text="Deep Standby" requires="DeepstandbySupport"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
-			<item entryID="deep_standby" level="0" text="Shut Down" requires="!DeepstandbySupport"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
+		<menu key="shutdown" text="Standby &amp; Restart" weight="99">
+			<item key="standby" level="0" text="Standby"><screen module="Standby" screen="Standby" /></item>
+			<item key="restart_enigma" level="0" text="Restart GUI"><screen module="Standby" screen="TryQuitMainloop">3</screen></item>
+			<item key="restart" level="0" text="Reboot"><screen module="Standby" screen="TryQuitMainloop">2</screen></item>
+			<item key="multiboot" level="0" text="MultiBoot Image Selector" requires="canMultiBoot"><screen module="MultiBootSelector" screen="MultiBootSelector">1</screen></item>
+			<item key="H9SDswap" level="0" text="H9SDroot" requires="HasH9SD"><screen module="H9SDswap" screen="H9SDswap">1</screen></item>
+			<item key="deep_standby" level="0" text="Deep Standby" requires="DeepstandbySupport"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
+			<item key="deep_standby" level="0" text="Shut Down" requires="!DeepstandbySupport"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
 		</menu>
 	</menu>
 </menu>
