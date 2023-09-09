@@ -288,17 +288,11 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 	def loadMenuImage(self):
 		self.menuImage = None
 		if menus and self.menuID:
-			defaultMenuImage = menus.get("default", "")
-			menuImage = menus.get(self.menuID, defaultMenuImage)
+			menuImage = menus.get(self.menuID, menus.get("default", ""))
 			if menuImage:
-				imgType = "Default" if menuImage is defaultMenuImage else "Menu"
-				menuImage = resolveFilename(SCOPE_CURRENT_SKIN, menuImage)
-				print("[Menu] %s image '%s'." % (imgType, menuImage))
-				self.menuImage = LoadPixmap(menuImage)
+				self.menuImage = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, menuImage))
 				if self.menuImage:
 					self["menuImage"] = Pixmap()
-				else:
-					print("[Menu] Error: Unable to load menu image '%s'!" % menuImage)
 
 	def createMenuList(self):
 		if self.__class__.__name__ != "MenuSort":
