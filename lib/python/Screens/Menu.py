@@ -32,7 +32,7 @@ mdom = xml.etree.cElementTree.parse(file)
 file.close()
 
 
-def MenuEntryPixmap(entryID, png_cache, parentMenuEntryID):
+def MenuEntryPixmap(entryID, png_cache):
 	if not parameters.get("MenuIcons", "").lower() in ("1", "enabled", "on", "true", "yes"):
 		return None
 	iconSize = int(parameters.get("MenuIconsSize", 192))  # icons are square, e.g. 192 x 192.
@@ -107,7 +107,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 	def openSetup(self, dialog):
 		self.session.openWithCallback(self.menuClosed, Setup, dialog)
 
-	def addMenu(self, destList, node, parent=None):
+	def addMenu(self, destList, node):
 		requires = node.get("requires")
 		if requires:
 			if requires[0] == '!':
@@ -121,7 +121,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		weight = node.get("weight", 50)
 		description = node.get("description", "") or None
 		description = description and _(description)
-		menupng = MenuEntryPixmap(entryID, self.png_cache, parent)
+		menupng = MenuEntryPixmap(entryID, self.png_cache)
 		x = node.get("flushConfigOnClose")
 		if x:
 			a = boundFunction(self.session.openWithCallback, self.menuClosedWithConfigFlush, Menu, node)
@@ -142,7 +142,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		else:
 			self.createMenuList()
 
-	def addItem(self, destList, node, parent=None):
+	def addItem(self, destList, node):
 		requires = node.get("requires")
 		if requires:
 			if requires[0] == '!':
@@ -162,7 +162,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		weight = node.get("weight", 50)
 		description = node.get("description", "") or None
 		description = description and _(description)
-		menupng = MenuEntryPixmap(entryID, self.png_cache, parent)
+		menupng = MenuEntryPixmap(entryID, self.png_cache)
 		for x in node:
 			if x.tag == 'screen':
 				module = x.get("module")
@@ -317,12 +317,12 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			if x.tag == 'item':
 				item_level = int(x.get("level", 0))
 				if item_level <= config.usage.setup_level.index:
-					self.addItem(self.list, x, parentEntryID)
+					self.addItem(self.list, x)
 					count += 1
 			elif x.tag == 'menu':
 				item_level = int(x.get("level", 0))
 				if item_level <= config.usage.setup_level.index:
-					self.addMenu(self.list, x, parentEntryID)
+					self.addMenu(self.list, x)
 					count += 1
 			elif x.tag == "id":
 				self.menuID = x.get("val")
@@ -338,7 +338,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 						self.list.remove(x)
 						break
 				description = plugins.getDescriptionForMenuEntryID(self.menuID, plugin_menuid)
-				menupng = MenuEntryPixmap(l[2], self.png_cache, parentEntryID)
+				menupng = MenuEntryPixmap(l[2], self.png_cache)
 				self.list.append((l[0], boundFunction(l[1], self.session, close=self.close), l[2], l[3] or 50, description, menupng))
 
 		if "user" in config.usage.menu_sort_mode.value and self.menuID == "mainmenu":
