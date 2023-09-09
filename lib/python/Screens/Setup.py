@@ -47,17 +47,11 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 	def loadSetupImage(self, setup):
 		self.setupImage = None
 		if setups:
-			defaultSetupImage = setups.get("default", "")
-			setupImage = setups.get(setup, defaultSetupImage)
+			setupImage = setups.get(setup, setups.get("default", ""))
 			if setupImage:
-				imgType = "Default" if setupImage is defaultSetupImage else "Setup"
-				setupImage = resolveFilename(SCOPE_CURRENT_SKIN, setupImage)
-				print("[Setup] %s image '%s'." % (imgType, setupImage))
-				self.setupImage = LoadPixmap(setupImage)
+				self.setupImage = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, setupImage))
 				if self.setupImage:
 					self["setupimage"] = Pixmap()
-				else:
-					print("[Setup] Error: Unable to load setup image '%s'!" % setupImage)
 
 	def changedEntry(self):
 		if isinstance(self["config"].getCurrent()[1], (ConfigBoolean, ConfigSelection)):
