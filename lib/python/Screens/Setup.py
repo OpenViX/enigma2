@@ -114,10 +114,10 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def addItem(self, element):
 		if self.pluginLanguageDomain:
-			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??"))
+			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "* fix me *"))
 			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " "))
 		else:
-			itemText = _(element.get("text", "??"))
+			itemText = _(element.get("text", "* fix me *"))
 			itemDescription = _(element.get("description", " "))
 		item = eval(element.text or "")
 		if item == "":

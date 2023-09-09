@@ -117,7 +117,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 					return
 			elif not SystemInfo.get(requires, False):
 				return
-		menu_text = _(node.get("text", "??"))
+		menu_text = _(node.get("text", "* fix me *"))
 		weight = node.get("weight", 50)
 		description = node.get("description", "") or None
 		description = description and _(description)
@@ -155,7 +155,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		conditional = node.get("conditional")
 		if conditional and not eval(conditional):
 			return
-		item_text = _(node.get("text", "* Undefined *"))
+		item_text = _(node.get("text", "* fix me *"))
 		weight = node.get("weight", 50)
 		description = node.get("description", "") or None
 		description = description and _(description)
