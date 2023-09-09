@@ -1,19 +1,25 @@
-from skin import findSkinScreen
-from Screens.HelpMenu import HelpableScreen
-from Screens.Screen import Screen, ScreenSummary
-from Screens.MessageBox import MessageBox
-from Screens.ParentalControlSetup import ProtectedScreen
-from Components.Sources.List import List
+from skin import findSkinScreen, parameters, menus
+
 from Components.ActionMap import HelpableNumberActionMap, HelpableActionMap
-from Components.Sources.StaticText import StaticText
-from Components.PluginComponent import plugins
 from Components.config import config, ConfigDictionarySet, configfile, NoSave
 from Components.NimManager import nimmanager
+from Components.Pixmap import Pixmap
+from Components.PluginComponent import plugins
+from Components.Sources.List import List
+from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
-from Tools.BoundFunction import boundFunction
+
 from Plugins.Plugin import PluginDescriptor
+
+from Screens.HelpMenu import HelpableScreen
+from Screens.MessageBox import MessageBox
+from Screens.ParentalControlSetup import ProtectedScreen
+from Screens.Screen import Screen, ScreenSummary
+
+from Tools.BoundFunction import boundFunction
 from Tools.Directories import resolveFilename, SCOPE_SKINS, SCOPE_GUISKIN
 from Tools.LoadPixmap import LoadPixmap
+
 from enigma import eTimer
 
 import xml.etree.cElementTree
@@ -27,8 +33,6 @@ file.close()
 
 
 def MenuEntryPixmap(entryID, png_cache, parentMenuEntryID):
- 	# imported here to avoid circular import
-	from skin import parameters
 	if not parameters.get("MenuIcons", "").lower() in ("1", "enabled", "on", "true", "yes"):
 		return None
 	iconSize = int(parameters.get("MenuIconsSize", 192))  # icons are square, e.g. 192 x 192.
