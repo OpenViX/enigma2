@@ -338,6 +338,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 						self.list.remove(x)
 						break
 				description = plugins.getDescriptionForMenuEntryID(self.menuID, plugin_menuid)
+				description = ""  # plugins.getDescriptionForMenuEntryID(self.menuID, plugin_menuid) # commented out as it is super slow
 				menupng = MenuEntryPixmap(l[2], self.png_cache)
 				self.list.append((l[0], boundFunction(l[1], self.session, close=self.close), l[2], l[3] or 50, description, menupng))
 
