@@ -38,23 +38,26 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		self["footnote"].hide()
 		self["description"] = Label()
 		self.createSetup()
-		defaultSetupImage = setups.get("default", "")
-		setupImage = setups.get(setup, defaultSetupImage)
-		if setupImage:
-			imgType = "Default" if setupImage is defaultSetupImage else "Setup"
-			setupImage = resolveFilename(SCOPE_CURRENT_SKIN, setupImage)
-			print("[Setup] %s image '%s'." % (imgType, setupImage))
-			self.setupImage = LoadPixmap(setupImage)
-			if self.setupImage:
-				self["setupimage"] = Pixmap()
-			else:
-				print("[Setup] Error: Unable to load menu image '%s'!" % setupImage)
-		else:
-			self.setupImage = None
+		self.loadSetupImage(setup)
 		if self.layoutFinished not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.layoutFinished)
 		if self.selectionChanged not in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.selectionChanged)
+
+	def loadSetupImage(self, setup):
+		self.setupImage = None
+		if setups:
+			defaultSetupImage = setups.get("default", "")
+			setupImage = setups.get(setup, defaultSetupImage)
+			if setupImage:
+				imgType = "Default" if setupImage is defaultSetupImage else "Setup"
+				setupImage = resolveFilename(SCOPE_CURRENT_SKIN, setupImage)
+				print("[Setup] %s image '%s'." % (imgType, setupImage))
+				self.setupImage = LoadPixmap(setupImage)
+				if self.setupImage:
+					self["setupimage"] = Pixmap()
+				else:
+					print("[Setup] Error: Unable to load setup image '%s'!" % setupImage)
 
 	def changedEntry(self):
 		if isinstance(self["config"].getCurrent()[1], (ConfigBoolean, ConfigSelection)):
