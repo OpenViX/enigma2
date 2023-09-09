@@ -271,16 +271,38 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		title = self.__class__.__name__ == "MenuSort" and _("Menusort (%s)") % title or title
 		self["title"] = StaticText(title)
 		self.setTitle(title)
+		self.loadMenuImage()
 
 		self.number = 0
 		self.nextNumberTimer = eTimer()
 		self.nextNumberTimer.callback.append(self.okbuttonClick)
 		if len(self.list) == 1:
 			self.onExecBegin.append(self.__onExecBegin)
+		if self.layoutFinished not in self.onLayoutFinish:
+			self.onLayoutFinish.append(self.layoutFinished)
 
 	def __onExecBegin(self):
 		self.onExecBegin.remove(self.__onExecBegin)
 		self.okbuttonClick()
+
+	def layoutFinished(self):
+		if self.menuImage:
+			self["menuimage"].instance.setPixmap(self.menuImage)
+
+	def loadMenuImage(self):
+		self.menuImage = None
+		if menus and self.menuID:
+			defaultMenuImage = menus.get("default", "")
+			menuImage = menus.get(self.menuID, defaultMenuImage)
+			if menuImage:
+				imgType = "Default" if menuImage is defaultMenuImage else "Menu"
+				menuImage = resolveFilename(SCOPE_CURRENT_SKIN, menuImage)
+				print("[Menu] %s image '%s'." % (imgType, menuImage))
+				self.menuImage = LoadPixmap(menuImage)
+				if self.menuImage:
+					self["menuImage"] = Pixmap()
+				else:
+					print("[Menu] Error: Unable to load menu image '%s'!" % menuImage)
 
 	def createMenuList(self):
 		if self.__class__.__name__ != "MenuSort":
