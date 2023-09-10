@@ -52,25 +52,6 @@ def MenuEntryPixmap(key, png_cache):
 class MenuSummary(ScreenSummary):
 	def __init__(self, session, parent):
 		ScreenSummary.__init__(self, session, parent=parent)
-		self["entry"] = StaticText("")  # DEBUG: Proposed for new summary screens.
-		if self.addWatcher not in self.onShow:
-			self.onShow.append(self.addWatcher)
-		if self.removeWatcher not in self.onHide:
-			self.onHide.append(self.removeWatcher)
-
-	def addWatcher(self):
-		if self.selectionChanged not in self.parent["menu"].onSelectionChanged:
-			self.parent["menu"].onSelectionChanged.append(self.selectionChanged)
-		self.selectionChanged()
-
-	def removeWatcher(self):
-		if self.selectionChanged in self.parent["menu"].onSelectionChanged:
-			self.parent["menu"].onSelectionChanged.remove(self.selectionChanged)
-
-	def selectionChanged(self):
-		selection = self.parent["menu"].getCurrent()
-		if selection:
-			self["entry"].text = selection[0]  # DEBUG: Proposed for new summary screens.
 
 
 class Menu(Screen, HelpableScreen, ProtectedScreen):
