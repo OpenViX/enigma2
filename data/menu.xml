@@ -34,7 +34,7 @@
 			<item key="tunermisc_setup" level="0" text="Miscellaneous" weight="3"><setup id="tunermisc" /></item>
 			<item key="auto_scan" level="0" text="Automatic Scan" weight="20" conditional="nimmanager.somethingConnected()" requires="ClientModeDisabled"><screen module="ScanSetup" screen="ScanSimple" /></item>
 			<item key="manual_scan" level="0" text="Manual Scan" weight="30" conditional="nimmanager.somethingConnected()" requires="ClientModeDisabled"><screen module="ScanSetup" /></item>
-			<item key="fallback_mode" level="0" text="Fallback Configuration" weight="100" requires="ClientModeDisabled"><screen module="FallbackTunerSetup" screen="FallbackTunerSetup" /></item>
+			<item key="fallback_mode" level="0" text="Fallback Configuration" weight="100" requires="ClientModeDisabled"><screen module="FallbackTunerSetup" /></item>
 		</menu>
 
 		<!-- Menu / Setup / EPG -->
@@ -90,10 +90,10 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 		<menu key="gui_menu" level="0" text="User Interface" weight="4">
 			<item key="user_interface" level="0" text="Settings" weight="1"><setup id="userinterface" /></item>
 			<item key="channelselection_setup" level="0" text="Channel Selection" weight="2"><setup id="channelselection" /></item>
-			<item key="skin_setup" level="0" text="Skin Selection" weight="3"><screen module="SkinSelector" screen="SkinSelector" /></item>
+			<item key="skin_setup" level="0" text="Skin Selection" weight="3"><screen module="SkinSelector" /></item>
 			<menu key="osd_menu" level="0" text="On Screen Display" weight="4" requires="OsdMenu">
 				<item key="osd3dsetup" level="2" text="3D Setup" requires="CanChange3DOsd"><screen module="UserInterfacePositioner" screen="OSD3DSetupScreen" /></item>
-				<item key="osdsetup" level="2" text="OSD Position" requires="OsdSetup"><screen module="UserInterfacePositioner" screen="UserInterfacePositioner" /></item>
+				<item key="osdsetup" level="2" text="OSD Position" requires="OsdSetup"><screen module="UserInterfacePositioner" /></item>
 			</menu>
 			<menu key="display" level="0" text="Front Panel Display" weight="5" requires="Display">
 				<item key="display_setup" level="0" text="Settings" weight="1"><setup id="display" /></item>
@@ -101,10 +101,10 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 			</menu>
 			<menu key="leddisplay" level="0" text="LED Display Panel" weight="6" requires="DisplayLED">
 			</menu>
-			<item key="buttonsetup_setup" level="2" text="Button Setup" weight="7"><screen module="ButtonSetup" screen="ButtonSetup" /></item>
+			<item key="buttonsetup_setup" level="2" text="Button Setup" weight="7"><screen module="ButtonSetup" /></item>
 			<item key="subtitle_setup" level="2" text="Subtitles" weight="8"><setup id="subtitlesetup" /></item>
 			<item key="language_setup" level="0" text="Language" weight="9"><screen module="LanguageSelection" /></item>
-			<item key="parental_setup" level="0" text="Parental Control" weight="10"><screen module="ParentalControlSetup" screen="ParentalControlSetup" /></item>
+			<item key="parental_setup" level="0" text="Parental Control" weight="10"><screen module="ParentalControlSetup" /></item>
 		</menu>
 
 		<!-- Menu / Setup / Network -->
@@ -144,7 +144,7 @@ self.session.open(SABnzbdSetupScreen)
 		</menu>
 
 		<!-- Menu / Setup / SoftcamScript -->
-		<item key="softcam_initD" level="0" text="Softcam Script" weight="9" requires="HasInitCam"><screen module="SoftcamScript" screen="SoftcamScript"/></item>
+		<item key="softcam_initD" level="0" text="Softcam Script" weight="9" requires="HasInitCam"><screen module="SoftcamScript" /></item>
 
 		<!-- Menu / Setup / Storage -->
 		<menu key="harddisk" level="0" text="Storage" weight="10" requires="Harddisk">
@@ -160,14 +160,14 @@ self.session.open(SABnzbdSetupScreen)
 		</menu>
 
 		<!-- Menu / Setup / Time Settings -->
-		<item key="time_setup" level="0" text="Time" weight="12"><screen module="Time" screen="Time" /></item>
+		<item key="time_setup" level="0" text="Time" weight="12"><screen module="Time" /></item>
 
 		<!-- Menu / Setup / System -->
 		<menu key="system" level="0" text="System" weight="98">
 			<item key="usage_setup" level="0" text="Customize" weight="1"><setup id="usage" /></item>
 			<menu key="logs_menu" level="2" text="Logs" weight="2">
 				<item key="logs_setup" level="2" text="Settings"><setup id="logs" /></item>
-				<item key="logs_man" level="2" text="Log Manager"><screen module="LogManager" screen="LogManager" /></item>
+				<item key="logs_man" level="2" text="Log Manager"><screen module="LogManager" /></item>
 			</menu>
 			<!-- Menu / Software Update -->
 			<menu weight="3" level="0" text="Software update" key="softwareupdatemenu">
@@ -177,7 +177,7 @@ self.session.open(SABnzbdSetupScreen)
 			<item key="input_device_setup" level="1" text="Input Devices" weight="4"><screen module="InputDeviceSetup" screen="InputDeviceSelection" /></item>
 			<item key="keyboard_setup" level="0" text="Keyboard" weight="5"><setup id="keyboard" /></item>
 			<item key="rfmod_setup" level="1" text="Settings" weight="6" requires="RfModulator"><setup id="RFmod" /></item>
-			<item key="factory_reset" level="0" text="Factory Reset" weight="99"><screen module="FactoryReset" screen="FactoryReset" /></item>
+			<item key="factory_reset" level="0" text="Factory Reset" weight="99"><screen module="FactoryReset" /></item>
 		</menu>
 
 		<!-- Menu / Setup / HDMI-CEC -->
@@ -185,7 +185,7 @@ self.session.open(SABnzbdSetupScreen)
 	</menu>
 
 	<!-- Menu / Plugins -->
-	<item key="plugin_selection" level="0" text="Plugins" weight="2"><screen module="PluginBrowser" screen="PluginBrowser" /></item>
+	<item key="plugin_selection" level="0" text="Plugins" weight="2"><screen module="PluginBrowser" /></item>
 
 	<!-- Menu / Timers -->
 	<menu key="timermenu" level="0" text="Timers" weight="5">
@@ -196,13 +196,13 @@ self.session.open(SABnzbdSetupScreen)
 
 	<!-- Menu / Information -->
 	<menu key="information" level="0" text="Information" weight="6">
-		<item key="about_screen" level="0" text="About"><screen module="About" screen="About" /></item>
+		<item key="about_screen" level="0" text="About"><screen module="About" /></item>
 		<item key="device_screen" level="0" text="Devices"><screen module="About" screen="Devices" /></item>
 		<item key="memory_screen" level="0" text="Memory"><screen module="About" screen="SystemMemoryInfo" /></item>
 		<item key="network_screen" level="0" text="Network"><screen module="About" screen="SystemNetworkInfo" /></item>
-		<item key="service_info_screen" level="1" text="Service"><screen module="ServiceInfo" screen="ServiceInfo" /></item>
+		<item key="service_info_screen" level="1" text="Service"><screen module="ServiceInfo" /></item>
 		<item key="streaming_clients_info_screen" level="2" text="Streaming Clients"><screen module="StreamingClientsInfo" /></item>
-		<item key="boxinfo_screen" level="2" text="BoxInfo"><screen module="AboutBoxInfo" screen="AboutBoxInfo" /></item>
+		<item key="boxinfo_screen" level="2" text="BoxInfo"><screen module="AboutBoxInfo" /></item>
 	</menu>
 
 	<!-- Menu / VCR Scart -->
@@ -214,11 +214,11 @@ self.session.scart.VCRSbChanged(3)
 
 	<!-- Menu / Standby and Restart -->
 	<menu key="shutdown" text="Standby &amp; Restart" weight="99">
-		<item key="standby" level="0" text="Standby"><screen module="Standby" screen="Standby" /></item>
+		<item key="standby" level="0" text="Standby"><screen module="Standby" /></item>
 		<item key="restart_enigma" level="0" text="Restart GUI"><screen module="Standby" screen="TryQuitMainloop">3</screen></item>
 		<item key="restart" level="0" text="Reboot"><screen module="Standby" screen="TryQuitMainloop">2</screen></item>
-		<item key="multiboot" level="0" text="MultiBoot Image Selector" requires="canMultiBoot"><screen module="MultiBootSelector" screen="MultiBootSelector">1</screen></item>
-		<item key="H9SDswap" level="0" text="H9SDroot" requires="HasH9SD"><screen module="H9SDswap" screen="H9SDswap">1</screen></item>
+		<item key="multiboot" level="0" text="MultiBoot Image Selector" requires="canMultiBoot"><screen module="MultiBootSelector">1</screen></item>
+		<item key="H9SDswap" level="0" text="H9SDroot" requires="HasH9SD"><screen module="H9SDswap">1</screen></item>
 		<item key="deep_standby" level="0" text="Deep Standby" requires="DeepstandbySupport"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
 		<item key="deep_standby" level="0" text="Shut Down" requires="!DeepstandbySupport"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
 	</menu>

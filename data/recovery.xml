@@ -21,7 +21,7 @@
 	<!-- Menu / MultiBoot Image Selector -->
 	<menu key="recovery_multiboot" level="0" text="MultiBoot Image Selector" weight="1">
 
-		<item key="multiboot" level="0" text="MultiBoot Image Selector" requires="canMultiBoot"><screen module="MultiBootSelector" screen="MultiBootSelector">1</screen></item>
+		<item key="multiboot" level="0" text="MultiBoot Image Selector" requires="canMultiBoot"><screen module="MultiBootSelector">1</screen></item>
 	</menu>
 
 	<!-- Menu / Other -->
@@ -50,7 +50,7 @@
 			<menu key="system" level="0" text="System" weight="98">
 				<menu key="logs_menu" level="2" text="Logs" weight="2">
 					<item key="logs_setup" level="2" text="Settings"><setup id="logs" /></item>
-					<item key="logs_man" level="2" text="Log Manager"><screen module="LogManager" screen="LogManager" /></item>
+					<item key="logs_man" level="2" text="Log Manager"><screen module="LogManager" /></item>
 				</menu>
 				<!-- Menu / Software Update -->
 				<menu weight="3" level="0" text="Software update" key="softwareupdatemenu">
@@ -62,20 +62,20 @@
 	
 		<!-- Menu / Information -->
 		<menu key="information" level="0" text="Information" weight="6">
-			<item key="about_screen" level="0" text="About"><screen module="About" screen="About" /></item>
+			<item key="about_screen" level="0" text="About"><screen module="About" /></item>
 			<item key="device_screen" level="0" text="Devices"><screen module="About" screen="Devices" /></item>
 			<item key="memory_screen" level="0" text="Memory"><screen module="About" screen="SystemMemoryInfo" /></item>
 			<item key="network_screen" level="0" text="Network"><screen module="About" screen="SystemNetworkInfo" /></item>
-			<item key="boxinfo_screen" level="2" text="BoxInfo"><screen module="AboutBoxInfo" screen="AboutBoxInfo" /></item>
+			<item key="boxinfo_screen" level="2" text="BoxInfo"><screen module="AboutBoxInfo" /></item>
 		</menu>
 	
 		<!-- Menu / Standby and Restart -->
 		<menu key="shutdown" text="Standby &amp; Restart" weight="99">
-			<item key="standby" level="0" text="Standby"><screen module="Standby" screen="Standby" /></item>
+			<item key="standby" level="0" text="Standby"><screen module="Standby" /></item>
 			<item key="restart_enigma" level="0" text="Restart GUI"><screen module="Standby" screen="TryQuitMainloop">3</screen></item>
 			<item key="restart" level="0" text="Reboot"><screen module="Standby" screen="TryQuitMainloop">2</screen></item>
-			<item key="multiboot" level="0" text="MultiBoot Image Selector" requires="canMultiBoot"><screen module="MultiBootSelector" screen="MultiBootSelector">1</screen></item>
-			<item key="H9SDswap" level="0" text="H9SDroot" requires="HasH9SD"><screen module="H9SDswap" screen="H9SDswap">1</screen></item>
+			<item key="multiboot" level="0" text="MultiBoot Image Selector" requires="canMultiBoot"><screen module="MultiBootSelector">1</screen></item>
+			<item key="H9SDswap" level="0" text="H9SDroot" requires="HasH9SD"><screen module="H9SDswap">1</screen></item>
 			<item key="deep_standby" level="0" text="Deep Standby" requires="DeepstandbySupport"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
 			<item key="deep_standby" level="0" text="Shut Down" requires="!DeepstandbySupport"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
 		</menu>
