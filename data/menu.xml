@@ -9,6 +9,14 @@
 		Arguments must be comma seperated (will be fed to eval), and can
 			use stuff from module.
 		(Of course you must specify at least one of module, screen.)
+	<plugin [extensions/system="pluginname"] [screen="classname"]>[arguments]</plugin>
+		Either "extensions" or "system" must be used. "extensions" is for 
+		Plugin.Extensions plugins and "system" is for Plugins.SystemPlugins.
+	<plugin [extensions="pluginname"] [screen="classname"]>[arguments]</plugin>
+		Executes Screen called "classname" from module "Plugins.Extensions.pluginname.plugin".
+		If no screen is given, "pluginname" is used as screen class name.
+		Arguments must be comma seperated (will be fed to eval), and can
+			use stuff from module.
 	<setup id="id" />
 		Opens a setup with specified id.
 	<code> .. code .. </code>
