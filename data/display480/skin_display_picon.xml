@@ -129,12 +129,12 @@
 	</screen>
 
 	<screen name="MovieContextMenuSummary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,110" font="FdLcD;30" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,110" font="FdLcD;30" halign="center" valign="center" />
 		<widget source="selected" render="Label" position="0,115" size="400,135" font="FdLcDLight;30" halign="center" valign="center" />
 	</screen>
 
 	<screen name="MovieSelectionSummary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,65" foregroundColor="#87CEFA" font="FdLcD;28" halign="center" valign="center" zPosition="14" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,65" foregroundColor="#87CEFA" font="FdLcD;28" halign="center" valign="center" zPosition="14" />
 		<eLabel position="0,66" size="400,1" backgroundColor="white" />
 		<widget source="name" render="Label" position="0,67" size="400,138" font="FdLcD;34" halign="center" valign="center" />
 		<widget source="parent.Service" render="Label" position="0,206" size="400,46" font="FdLcD;34" halign="left" transparent="1">
@@ -215,7 +215,7 @@
 	</screen>
 <!-- Schnellstartmenue -->
 	<screen name="QuickMenu_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
 		<eLabel position="0,87" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,88" size="400,152" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
@@ -226,7 +226,7 @@
 	</screen>
 <!-- Infopanel -->
 	<screen name="Infopanel_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
 		<eLabel position="0,87" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,88" size="400,152" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
@@ -240,7 +240,7 @@
 	</screen>
 <!-- Servicescan -->
 	<screen name="ServiceScanSummary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
 		<widget name="scan_progress" render="Progress" position="0,100" size="400,35"  borderWidth="2" />
 		<widget name="Service" position="0,150" size="400,85" font="FdLcD;38" halign="center" valign="center" />
 	</screen>
@@ -270,7 +270,7 @@
 	</screen>
 <!-- DevicesPanelSummary -->
 	<screen name="DevicesPanelSummary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,37" font="FdLcD;34" foregroundColor="#87CEFA" noWrap="1" halign="center" valign="top" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,37" font="FdLcD;34" foregroundColor="#87CEFA" noWrap="1" halign="center" valign="top" />
 		<eLabel position="0,38" size="400,1" backgroundColor="white" />
 		<widget source="entry" render="Label" position="0,39" size="400,34" font="FdLcD;30" noWrap="1" halign="center" valign="center" transparent="1" />
 		<eLabel position="0,73" size="400,1" backgroundColor="white" />
@@ -290,7 +290,7 @@
 	</screen>
 <!-- Plugin browser -->
 	<screen name="PluginBrowserSummary" position="fill">
-		<widget source="parent.Title" render="Label" position="top" size="*,28" font="FdLcD;25" noWrap="1" />
+		<widget source="parent.title" render="Label" position="top" size="*,28" font="FdLcD;25" noWrap="1" />
 		<widget source="entry" render="Label" position="top" size="*,38" font="FdLcD;32" foregroundColor="#87CEFA" noWrap="1" halign="left" />
 		<eLabel position="top" size="*,1" backgroundColor="white" />
 		<widget source="desc" render="Label" position="fill" font="FdLcD;22" valign="top" />
@@ -306,12 +306,12 @@
 	</screen>
 
 	<screen name="EventView_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="160,22" font="FdLcD;20" halign="left" noWrap="1" />
+		<widget source="parent.title" render="Label" position="0,0" size="160,22" font="FdLcD;20" halign="left" noWrap="1" />
 		<widget source="parent.summary_description" render="Label" position="0,22" size="400,140" font="FdLcD;24" />
 	</screen>
 
 	<screen name="EventViewSimple_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="160,22" font="FdLcD;20" halign="left" noWrap="1" />
+		<widget source="parent.title" render="Label" position="0,0" size="160,22" font="FdLcD;20" halign="left" noWrap="1" />
 		<widget source="parent.summary_description" render="Label" position="0,22" size="400,140" font="FdLcD;24" />
 	</screen>
 <!-- EPG Screens -->
@@ -370,13 +370,13 @@
 	</screen>
 <!-- console -->
 	<screen name="Console_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
 		<eLabel position="0,87" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,88" size="400,152" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
 <!--  normale Timer -->
 	<screen name="TimerEditListSummary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,26" font="FdLcD;24" halign="center" noWrap="1" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,26" font="FdLcD;24" halign="center" noWrap="1" />
 		<eLabel position="0,30" size="400,1" backgroundColor="white" />
 		<widget source="service" render="Label" position="0,35" size="400,30" font="FdLcD;28" foregroundColor="#87CEFA" halign="center" noWrap="1" />
 		<eLabel position="0,68" size="400,1" backgroundColor="white" />
@@ -388,7 +388,7 @@
 	</screen>
 <!-- PowerTimerEditListSummary -->
 	<screen name="PowerTimerEditListSummary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,26" font="FdLcD;24" halign="center" noWrap="1" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,26" font="FdLcD;24" halign="center" noWrap="1" />
 		<eLabel position="0,30" size="400,1" backgroundColor="white" />
 		<widget source="name" render="Label" position="0,35" size="400,30" font="FdLcD;28" foregroundColor="#87CEFA" halign="center" noWrap="1" />
 		<eLabel position="0,68" size="400,1" backgroundColor="white" />
@@ -400,19 +400,19 @@
 	</screen>
 <!-- TimerLog_summary -->
 	<screen name="TimerLog_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,30" font="FdLcD;28" foregroundColor="#87CEFA" halign="center" noWrap="1" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,30" font="FdLcD;28" foregroundColor="#87CEFA" halign="center" noWrap="1" />
 		<eLabel position="0,31" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,32" size="400,208" font="FdLcD;26" transparent="1" halign="center" valign="center" />
 	</screen>
 <!-- AutoTimer -->
 	<screen name="AutoTimerOverviewSummary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,38" font="FdLcD;34" foregroundColor="#87CEFA" halign="center" noWrap="1" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,38" font="FdLcD;34" foregroundColor="#87CEFA" halign="center" noWrap="1" />
 		<eLabel position="0,42" size="400,1" backgroundColor="white" />
 		<widget source="entry" render="Label" position="0,45" size="400,197" font="FdLcD;42" transparent="1" halign="center" valign="center" />
 	</screen>
 <!-- SoftwareUpdate -->
 	<screen name="UpdatePlugin_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,32" font="FdLcD;28" foregroundColor="#87CEFA" halign="center" noWrap="1" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,32" font="FdLcD;28" foregroundColor="#87CEFA" halign="center" noWrap="1" />
 		<widget source="parent.package" render="Label" position="0,33" size="400,174" font="FdLcD;33" halign="center" valign="center" />
 		<widget source="parent.status" render="Label" position="0,208" size="400,32" font="FdLcD;28" halign="left" transparent="1" />
 	</screen>
@@ -438,32 +438,32 @@
 	</screen>
 <!-- Neu -->
 	<screen name="BackupSelection_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
 		<eLabel position="0,106" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,107" size="400,133" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
 	<screen name="RestoreScreen_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
 		<eLabel position="0,106" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,107" size="400,133" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
 	<screen name="installedPlugins_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
 		<eLabel position="0,106" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,107" size="400,133" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
 	<screen name="RestartNetwork_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
 		<eLabel position="0,106" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,107" size="400,133" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
 	<screen name="RestorePlugins_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
 		<eLabel position="0,106" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,107" size="400,133" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
 	<screen name="RestoreMenu_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
 		<eLabel position="0,106" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,107" size="400,133" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
@@ -490,7 +490,7 @@
 	</screen>
 <!-- EMC Screen -->
 	<screen name="EMCSelection_summary" position="0,0" size="480,320">
-		<widget source="parent.Title" render="Label" position="0,0" size="400,72" font="FdLcD;32" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,72" font="FdLcD;32" foregroundColor="#87CEFA" halign="center" valign="center" />
 		<eLabel position="0,74" size="400,1" backgroundColor="white" />
 		<widget source="parent.Service" render="Label" position="0,74" size="400,131" font="FdLcD;34" halign="center" valign="center">
 			<convert type="ServiceName">Name</convert>
