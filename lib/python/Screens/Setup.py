@@ -108,11 +108,11 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def addItem(self, element):
 		if self.pluginLanguageDomain:
-			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "* fix me *"))
-			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " "))
+			itemText = dgettext(self.pluginLanguageDomain, x) if (x := element.get("text")) else "* fix me *"
+			itemDescription = dgettext(self.pluginLanguageDomain, x) if (x := element.get("description")) else ""
 		else:
-			itemText = _(element.get("text", "* fix me *"))
-			itemDescription = _(element.get("description", " "))
+			itemText = _(x) if (x := element.get("text")) else "* fix me *"
+			itemDescription = _(x) if (x := element.get("description")) else ""
 		item = eval(element.text or "")
 		if item == "":
 			self.list.append((self.formatItemText(itemText),))  # Add the comment line to the config list.
