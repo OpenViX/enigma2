@@ -98,6 +98,9 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 					return
 			elif not SystemInfo.get(requires, False):
 				return
+		conditional = node.get("conditional")
+		if conditional and not eval(conditional):
+			return
 		menu_text = _(x) if (x := node.get("text")) else "* fix me *"
 		weight = node.get("weight", 50)
 		description = node.get("description", "") or None
