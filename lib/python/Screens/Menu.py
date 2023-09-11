@@ -294,14 +294,13 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 
 		if self.menuID is not None:
 			# plugins
-			for l in plugins.getPluginsForMenu(self.menuID):
+			for l, description in plugins.getPluginsForMenuWithDescription(self.menuID):
 				# check if a plugin overrides an existing menu
 				plugin_menuid = l[2]
 				for x in self.list:
 					if x[2] == plugin_menuid:
 						self.list.remove(x)
 						break
-				description = None  # plugins.getDescriptionForMenuEntryID(self.menuID, plugin_menuid) # commented out as it is super slow
 				menupng = MenuEntryPixmap(l[2], self.png_cache)
 				self.list.append((l[0], boundFunction(l[1], self.session, close=self.close), l[2], l[3] or 50, description, menupng))
 
