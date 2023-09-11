@@ -274,7 +274,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			if menuImage:
 				self.menuImage = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, menuImage))
 				if self.menuImage:
-					self["menuImage"] = Pixmap()
+					self["menuimage"] = Pixmap()
 
 	def createMenuList(self):
 		if self.__class__.__name__ != "MenuSort":
