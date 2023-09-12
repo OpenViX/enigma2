@@ -1,4 +1,4 @@
-from skin import findSkinScreen, parameters, menus
+from skin import findSkinScreen, parameters, menus, menuicons
 
 from Components.ActionMap import HelpableNumberActionMap, HelpableActionMap
 from Components.config import config, ConfigDictionarySet, configfile, NoSave
@@ -17,7 +17,7 @@ from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.Screen import Screen, ScreenSummary
 
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import resolveFilename, SCOPE_SKINS, SCOPE_GUISKIN
+from Tools.Directories import resolveFilename, SCOPE_SKINS, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
 
 from enigma import eTimer
@@ -33,19 +33,14 @@ file.close()
 
 
 def MenuEntryPixmap(key, png_cache):
-	if not parameters.get("MenuIcons", "").lower() in ("1", "enabled", "on", "true", "yes"):
+	if not menuicons:
 		return None
-	iconSize = int(parameters.get("MenuIconsSize", 192))  # icons are square, e.g. 192 x 192.
+	w, h = parameters.get("MenuIconSize", (50, 50))
 	png = png_cache.get(key)
 	if png is None:  # no cached entry
-		pngPath = resolveFilename(SCOPE_GUISKIN, "menu/" + key + ".svg")
-		png = LoadPixmap(pngPath, cached=True, width=iconSize, height=0 if pngPath.endswith(".svg") else iconSize)  # looking for a dedicated icon
-	if png is None:
-		png = png_cache.get("missing")
-		if png is None:
-			pngPath = resolveFilename(SCOPE_GUISKIN, "menu/missing.svg")
-			png = LoadPixmap(pngPath, cached=True, width=iconSize, height=0 if pngPath.endswith(".svg") else iconSize)
-			png_cache["missing"] = png
+		pngPath = menuicons.get(key, menuicons.get("default", ""))
+		if pngPath:
+			png = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, pngPath), cached=True, width=w, height=0 if pngPath.endswith(".svg") else h)
 	return png
 
 

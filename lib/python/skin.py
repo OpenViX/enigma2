@@ -27,6 +27,7 @@ colors = {}  # Dictionary of skin color names.
 BodyFont = ("Regular", 20, 25, 18)  # font which is used when a font alias definition is missing from the "fonts" dict.
 fonts = {}  # Dictionary of predefined and skin defined font aliases.
 menus = {}  # Dictionary of images associated with menu entries.
+menuicons = {}  # Dictionary of icons associated with menu items.
 parameters = {}  # Dictionary of skin parameters used to modify code behavior.
 setups = {}  # Dictionary of images associated with setup menus.
 switchPixmap = {}  # Dictionary of switch images.
@@ -64,7 +65,7 @@ onLoadCallbacks = []
 
 def InitSkins(booting=True):
 	global currentPrimarySkin, currentDisplaySkin
-	global domScreens, colors, BodyFont, fonts, menus, parameters, setups, switchPixmap, scrollbarStyle, windowStyles, xres, yres
+	global domScreens, colors, BodyFont, fonts, menus, menuicons, parameters, setups, switchPixmap, scrollbarStyle, windowStyles, xres, yres
 	# Reset skin dictionaries. We can reload skins without a restart
 	# Make sure we keep the original dictionaries as many modules now import skin globals explicitly
 	domScreens.clear()
@@ -74,6 +75,7 @@ def InitSkins(booting=True):
 		"Body": BodyFont
 	})
 	menus.clear()
+	menuicons.clear()
 	parameters.clear()
 	setups.clear()
 	switchPixmap.clear()
@@ -763,7 +765,7 @@ def reloadWindowStyles():
 def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 	"""Loads skin data like colors, windowstyle etc."""
 	assert domSkin.tag == "skin", "root element in skin must be 'skin'!"
-	global colors, fonts, menus, parameters, setups, switchPixmap, scrollbarStyle, xres, yres
+	global colors, fonts, menus, menuicons, parameters, setups, switchPixmap, scrollbarStyle, xres, yres
 	for tag in domSkin.findall("output"):
 		scrnID = int(tag.attrib.get("id", GUI_SKIN_ID))
 		if scrnID == GUI_SKIN_ID:
@@ -927,6 +929,15 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				# print("[Skin] DEBUG: Menu key='%s', image='%s'." % (key, image))
 			else:
 				raise SkinError("Tag 'menu' needs key and image, got key='%s' and image='%s'" % (key, image))
+	for tag in domSkin.findall("menuicons"):
+		for menuicon in tag.findall("menuicon"):
+			key = menuicon.attrib.get("key")
+			image = menuicon.attrib.get("image")
+			if key and image:
+				menuicons[key] = image
+				# print("[Skin] DEBUG: Menu key='%s', image='%s'." % (key, image))
+			else:
+				raise SkinError("Tag 'menuicon' needs key and image, got key='%s' and image='%s'" % (key, image))
 	for tag in domSkin.findall("setups"):
 		for setup in tag.findall("setup"):
 			key = setup.attrib.get("key")

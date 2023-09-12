@@ -27,7 +27,7 @@ In skin.xml add the list of images to the "menus" section based on menuID.
 	
 	There is a special "key" attribute with the name "default".  This entry, 
 	if defined, assigns a default graphical image to be used in ALL 
-	"Screens/Setup.py" screens that do not have a specifically assigned 
+	"Screens/Menu.py" screens that do not have a specifically assigned 
 	image.
 
 
@@ -47,28 +47,37 @@ In skin.xml add the widget to MainMenu and Menu screens:
 Adding icons to the menu list entries
 =====================================
 
-In skin.xml add enable parameter:
-	<parameter name="MenuIcons" value="1" />
+In skin.xml add the icon size parameter (width x height):
+	<parameter name="MenuIconSize" value="48,48" />
 
 
-In skin.xml add the icon size parameter:
-	<parameter name="MenuIconsSize" value="48" />
+In skin.xml add the list of icons to the "menuicons" section based on "key" from menu.xml.
 
-
-The graphics for the menu icons are stored in:
-	/usr/share/enigma2/<current_skin>/menu
-
-
-The icon graphics can be svg or png format and are named as follows:
-	<entryID>.png or <entryID>.svg
-
-
-<entryID> is the entryID from menu.xml, e.g.
-	<menu entryID="av_setup" level="0" text="Audio &amp; Video" weight="1">
-
-
-In the above case the graphic name would be:
-	av_setup.png or av_setup.svg
+	Syntax:
+	
+		<menuicons>
+			<menuicon key="default" image="path/myNameForDefault.png" />
+			<menuicon key="scan" image="path/myNameForScan.png" />
+		</menuicons>
+	
+	This element is optional but if defined allows a skin designer to associate 
+	a graphical icons with menu list items.  The "menuicons" tag element has no 
+	attributes and contains a list of "menuicon" tag elements.
+	
+	Each "menuicon" tag element must contain two attributes:
+	
+		key	This attribute is the value of the "key" attribute from a 
+			menu.xml file. If the keys match then this entry defines 
+			a graphical icon that is to be used in the list item 
+			associated with that key.
+	
+		image	This attribute is the pathname of the graphical image that 
+			is to be associated with the Menu item identified by the 
+			"key" attribute.
+	
+	There is a special "key" attribute with the name "default".  This entry, 
+	if defined, assigns a default graphical icon to be used in any list item
+	that do not have a specifically assigned icon.
 
 
 In skin.xml the skin widget for the Menu screen with icons looks like this:
