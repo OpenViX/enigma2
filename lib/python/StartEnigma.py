@@ -268,14 +268,11 @@ class PowerKey:
 			print("[StartEnigma] Show shutdown Menu")
 			root = mdom.getroot()
 			for x in root.findall("menu"):
-				y = x.find("id")
-				if y is not None:
-					id = y.get("val")
-					if id and id == "shutdown":
-						self.session.infobar = self
-						menu_screen = self.session.openWithCallback(self.MenuClosed, MainMenu, x)
-						menu_screen.setTitle(_("Standby / restart"))
-						return
+				if x.get("key") == "shutdown":
+					self.session.infobar = self
+					menu_screen = self.session.openWithCallback(self.MenuClosed, MainMenu, x)
+					menu_screen.setTitle(_("Standby / restart"))
+					return
 		elif action == "standby":
 			self.standby()
 
