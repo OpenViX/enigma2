@@ -76,7 +76,7 @@ class TimerList(GUIComponent):
 			if self.iconRepeat:
 				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, colX + self.iconMargin, self.rowSplit + (self.itemHeight - self.rowSplit - self.iconHeight) // 2, self.iconWidth, self.iconHeight, self.iconRepeat))
 		else:
-			repeatedtext = begin[0] # date
+			repeatedtext = begin[0]  # date
 		if timer.justplay:
 			extra_text = _("(ZAP)")
 			if timer.pipzap:

@@ -133,9 +133,9 @@ class TuneTest:
 		print("[TuneTest] for feid %d" % self.feid)
 		if not self.openFrontend():
 			self.oldref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
-			self.session.nav.stopService() # try to disable foreground service
+			self.session.nav.stopService()  # try to disable foreground service
 			if not self.openFrontend():
-				if self.session.pipshown: # try to disable pip
+				if self.session.pipshown:  # try to disable pip
 					if hasattr(self.session, 'infobar'):
 						if self.session.infobar.servicelist.dopipzap:
 							self.session.infobar.servicelist.togglePipzap()
@@ -143,7 +143,7 @@ class TuneTest:
 						del self.session.pip
 					self.session.pipshown = False
 					if not self.openFrontend():
-						self.frontend = None # in normal case this should not happen
+						self.frontend = None  # in normal case this should not happen
 		self.tuner = Tuner(self.frontend)
 		self.timer = eTimer()
 		self.timer.callback.append(self.updateStatus)
@@ -197,7 +197,7 @@ class TuneTest:
 							if self.stopOnSuccess != -1 and self.stopOnSuccess <= len(self.successfullyTune):
 								stop = True
 				else:
-					self.successfullyTune.append([self.currTuned, self.oldTuned, tunerdict]) # 3rd parameter is the frontend status
+					self.successfullyTune.append([self.currTuned, self.oldTuned, tunerdict])  # 3rd parameter is the frontend status
 					if self.stopOnSuccess != -1 and self.stopOnSuccess <= len(self.successfullyTune):
 						stop = True
 				self.tuningtransponder = self.nextTransponder()

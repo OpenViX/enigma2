@@ -162,17 +162,17 @@ class MessageBox(Screen, HelpableScreen):
 			self.setTitle(self.baseTitle)
 
 	def getListItemHeight(self):
-		defaultItemHeight = 25 # if no itemHeight is present in the skin
+		defaultItemHeight = 25  # if no itemHeight is present in the skin
 		if self.list and hasattr(self["list"], "skinAttributes") and isinstance(self["list"].skinAttributes, list):
 			for (attrib, value) in self["list"].skinAttributes:
 				if attrib == "itemHeight":
-					itemHeight = parseScale(value) # if value does not parse (due to bad syntax in skin), itemHeight will be 0
+					itemHeight = parseScale(value)  # if value does not parse (due to bad syntax in skin), itemHeight will be 0
 					return itemHeight if itemHeight else defaultItemHeight
-		return defaultItemHeight # if itemHeight not in skinAttributes
+		return defaultItemHeight  # if itemHeight not in skinAttributes
 
 	def getPixmapWidth(self):
 		defaultPixmapWidth = 53
-		try: # protect from skin errors
+		try:  # protect from skin errors
 			return self["ErrorPixmap"].visible and hasattr(self["ErrorPixmap"], 'getSize') and isinstance(self["ErrorPixmap"].getSize(), tuple) and len(self["ErrorPixmap"].getSize()) and self["ErrorPixmap"].getSize()[0] or \
 				self["QuestionPixmap"].visible and hasattr(self["QuestionPixmap"], 'getSize') and isinstance(self["QuestionPixmap"].getSize(), tuple) and len(self["QuestionPixmap"].getSize()) and self["QuestionPixmap"].getSize()[0] or \
 				self["InfoPixmap"].visible and hasattr(self["InfoPixmap"], 'getSize') and isinstance(self["InfoPixmap"].getSize(), tuple) and len(self["InfoPixmap"].getSize()) and self["InfoPixmap"].getSize()[0] or \
@@ -203,7 +203,7 @@ class MessageBox(Screen, HelpableScreen):
 			if textsize[0] < textsize[1]:
 				textsize = (textsize[1], textsize[0] + 10)
 			if textsize[0] > 520:
-				textBottomMargin = int(1.0 * textsize[0] // 520 * 30) # previously always 25
+				textBottomMargin = int(1.0 * textsize[0] // 520 * 30)  # previously always 25
 				textsize = (textsize[0], textsize[1] + textBottomMargin)
 			else:
 				textsize = (520, textsize[1] + 25)

@@ -278,7 +278,7 @@ def buildMovieLocationList(includeOther=False, path=None, includeSubdirs=False, 
 			try:
 				base = os.path.split(path)[0]
 				for fn in os.listdir(base):
-					if not fn.startswith('.'): # Skip hidden things
+					if not fn.startswith('.'):  # Skip hidden things
 						d = os.path.join(base, fn)
 						if os.path.isdir(d) and (d not in inlist):
 							bookmarks.append((fn, d))
@@ -304,7 +304,7 @@ def buildMovieLocationList(includeOther=False, path=None, includeSubdirs=False, 
 			try:
 				bookmarks[bookmarks.index((d, d))] = (p.tabbedDescription(), d)
 			except:
-				pass # When already listed as some "friendly" name
+				pass  # When already listed as some "friendly" name
 		else:
 			bookmarks.append((p.tabbedDescription(), d))
 			inlist.append(d)
@@ -560,7 +560,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			self.skinName = "MovieSelection"
 		HelpableScreen.__init__(self)
 		if not timeshiftEnabled:
-			InfoBarBase.__init__(self) # For ServiceEventTracker
+			InfoBarBase.__init__(self)  # For ServiceEventTracker
 		ProtectedScreen.__init__(self)
 		self.protectContextMenu = True
 
@@ -619,7 +619,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.list = self["list"]
 		self.selectedmovie = selectedmovie
 
-		self.playGoTo = None #1 - preview next item / -1 - preview previous
+		self.playGoTo = None  # 1 - preview next item / -1 - preview previous
 
 		title = _("Movie selection")
 		self.setTitle(title)
@@ -914,7 +914,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			self["list"].moveDown()
 
 	def moveToFirstOrFirstFile(self):
-		if self.list.getCurrentIndex() <= self.list.firstFileEntry: #selection above or on first movie
+		if self.list.getCurrentIndex() <= self.list.firstFileEntry:  # selection above or on first movie
 			if self.list.getCurrentIndex() < 1:
 				self.list.moveToLast()
 			else:
@@ -923,7 +923,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			self.list.moveToFirstMovie()
 
 	def moveToLastOrFirstFile(self):
-		if self.list.getCurrentIndex() >= self.list.firstFileEntry or self.list.firstFileEntry == len(self.list): #selection below or on first movie or no files
+		if self.list.getCurrentIndex() >= self.list.firstFileEntry or self.list.firstFileEntry == len(self.list):  # selection below or on first movie or no files
 			if self.list.getCurrentIndex() == len(self.list) - 1:
 				self.list.moveToFirst()
 			else:
@@ -1097,7 +1097,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def onFirstTimeShown(self):
 		self.FilePlaying()
-		self.onShown.remove(self.onFirstTimeShown) # Just once, not after returning etc.
+		self.onShown.remove(self.onFirstTimeShown)  # Just once, not after returning etc.
 		self.show()
 		self.reloadList(self.selectedmovie, home=True)
 		del self.selectedmovie
@@ -1219,7 +1219,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if config.movielist.play_audio_internal.value:
 			index = self.list.findService(playInBackground)
 			if index is None:
-				return # Not found?
+				return  # Not found?
 			next = self.list.getItem(index + 1)
 			if not next:
 				return
@@ -1495,7 +1495,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 					"movieoff": config.usage.on_movie_eof.default
 				}
 				self.applyConfigSettings(updates)
-				pass # ignore fail to open errors
+				pass  # ignore fail to open errors
 			except Exception as e:
 				print("[MovieSelection] Failed to load settings from %s: %s" % (path, e))
 		else:
@@ -1718,7 +1718,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self["list"].reload(self.current_ref, self.selected_tags, self.collectionName)
 		self.updateTags()
 		title = ""
-		if config.usage.setup_level.index >= 2: # expert+
+		if config.usage.setup_level.index >= 2:  # expert+
 			title += config.movielist.last_videodir.value
 		if self.selected_tags:
 			title += " - " + ','.join(self.selected_tags)
@@ -1776,7 +1776,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				if len(self.list) == 2:
 					# collection is going to disappear, select the one remaining item that'll replace the collection
 					selItem = self.list.getItem(1)
-				else: # select this collection
+				else:  # select this collection
 					selItem = eServiceReference(eServiceReference.idFile, eServiceReference.isGroup, self.collectionName)
 				self.collectionName = None
 				config.movielist.last_videocollection.value = ""
@@ -1850,7 +1850,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def tagChosen(self, tag):
 		if tag is not None:
-			if tag[1] is None: # all
+			if tag[1] is None:  # all
 				self.showAll()
 				return
 			# TODO: Some error checking maybe, don't wanna crash on KeyError
@@ -2256,7 +2256,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			if isTrashFolder(itemRef):
 				self.purgeAll()
 				return
-			elif not info: # parent directory
+			elif not info:  # parent directory
 				return
 		for item in expandCollections(markedList):
 			itemRef = item[0]
@@ -2273,7 +2273,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			else:
 				fileCount += 1
 				# check if this item is currently recording
-				rec_filename = itemPath.rsplit(".", 1)[0] # timer.Filename does not include the file ext so remove it from rec_filename before comparing
+				rec_filename = itemPath.rsplit(".", 1)[0]  # timer.Filename does not include the file ext so remove it from rec_filename before comparing
 				for timer in NavigationInstance.instance.RecordTimer.timer_list:
 					if timer.isRunning() and not timer.justplay and rec_filename == timer.Filename:
 						recList.append((item, timer))
@@ -2515,7 +2515,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			self['key_blue'].setText(sorttext)
 		self.sorttimer = eTimer()
 		self.sorttimer.callback.append(self._updateButtonTexts)
-		self.sorttimer.start(3000, True) #time for displaying sorting type just applied
+		self.sorttimer.start(3000, True)  # time for displaying sorting type just applied
 		self.sortBy(int(l_moviesort[index][0]))
 		self["movie_sort"].setPixmapNum(self.getPixmapSortIndex(l_moviesort[index][0]))
 

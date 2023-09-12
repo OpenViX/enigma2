@@ -286,9 +286,9 @@ class DiseqcTester(Screen, TuneTest, ResultParser):
 	def getIndexForTransponder(self, transponder):
 
 		if transponder[0] < 11700:
-			band = 1 # low
+			band = 1  # low
 		else:
-			band = 0 # high
+			band = 0  # high
 
 		polarisation = transponder[2]
 
@@ -349,7 +349,7 @@ class DiseqcTester(Screen, TuneTest, ResultParser):
 		if self.test_type == self.TEST_TYPE_QUICK:
 			self.myindex = 0
 			keys = list(self.indexlist.keys())
-			keys.sort(key=lambda a: a[2]) # sort by orbpos
+			keys.sort(key=lambda a: a[2])  # sort by orbpos
 			self["overall_progress"].setRange(len(keys))
 			self["overall_progress"].setValue(self.myindex)
 			return keys[0]
@@ -399,7 +399,7 @@ class DiseqcTester(Screen, TuneTest, ResultParser):
 		if self.test_type == self.TEST_TYPE_QUICK:
 			self.myindex += 1
 			keys = list(self.indexlist.keys())
-			keys.sort(key=lambda a: a[2]) # sort by orbpos
+			keys.sort(key=lambda a: a[2])  # sort by orbpos
 
 			self["overall_progress"].setValue(self.myindex)
 			if self.myindex < len(keys):

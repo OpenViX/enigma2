@@ -16,6 +16,8 @@ config.misc.languageselected = ConfigBoolean(default=True)
 config.misc.videowizardenabled = ConfigBoolean(default=True)
 config.misc.networkenabled = ConfigBoolean(default=False)
 config.misc.Vuwizardenabled = ConfigBoolean(default=False)
+config.misc.restorewizardrun = ConfigBoolean(default=False)
+
 if fileExists("/usr/bin/kernel_auto.bin") and fileExists("/usr/bin/STARTUP.cpio.gz") and not fileHas("/proc/cmdline", "kexec=1") and config.misc.firstrun.value:
 	config.misc.Vuwizardenabled.value = True
 print("[StartWizard][import] import.......")

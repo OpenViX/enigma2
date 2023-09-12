@@ -106,7 +106,7 @@ class DownloadTask(Task):
 		self.aborted = True
 
 	def download_progress(self, recvbytes, totalbytes):
-		if (recvbytes - self.last_recvbytes) > 100000: # anti-flicker
+		if (recvbytes - self.last_recvbytes) > 100000:  # anti-flicker
 			self.progress = int(100 * (float(recvbytes) / float(totalbytes)))
 			if (((float(totalbytes) / 1024) / 1024) / 1024) >= 1:
 				self.name = _("Downloading") + ' ' + _("%s of %s GB") % (str(round((((float(recvbytes) / 1024) / 1024) / 1024), 2)), str(round((((float(totalbytes) / 1024) / 1024) / 1024), 2)))

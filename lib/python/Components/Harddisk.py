@@ -227,8 +227,8 @@ class Harddisk:
 		return cap
 
 	def capacity(self):
-		cap = self.diskSize() # cap is in MB
-		cap *= 1000000 # convert to MB to bytes
+		cap = self.diskSize()  # cap is in MB
+		cap *= 1000000  # convert to MB to bytes
 		return bytesToHumanReadable(cap)
 
 	def model(self):
@@ -339,7 +339,6 @@ class Harddisk:
 		exitCode = runCommand("hdparm -z %s" % self.disk_path)  # We can let udev do the job, re-read the partition table.
 		sleep(3)  # Give udev some time to make the mount, which it will do asynchronously.
 		return exitCode
-
 
 	def killPartitionTable(self):
 		zero = 512 * b"\0"
@@ -540,7 +539,7 @@ class Harddisk:
 				match = bus
 				break
 
-		if SystemInfo["HasHiSi"] and match == bus and "usb1/1-1/1-1.1/1-1.1:1.0" in self.phys_path:
+		if SystemInfo["HasHiSi"] and match == bus and ("usb1/1-1/1-1.1/1-1.1:1.0" in self.phys_path or "usb1/1-1/1-1.4/1-1.4:1.0" in self.phys_path):
 			match = None
 
 		if match:

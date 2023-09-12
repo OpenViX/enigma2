@@ -150,7 +150,7 @@ class PollReactor(posixbase.PosixReactorBase):
 		"""Poll the poller for new events."""
 
 		if timeout is not None:
-			timeout = int(timeout * 1000) # convert seconds to milliseconds
+			timeout = int(timeout * 1000)  # convert seconds to milliseconds
 
 		try:
 			l = poller.poll(timeout)

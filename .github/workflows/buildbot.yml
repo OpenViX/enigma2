@@ -1,0 +1,28 @@
+name: buildbot
+
+on:
+  push:
+    branches: [ Developer ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          ref: 'Developer'
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Build python CI
+        run: |
+          sudo apt-get -q update
+          sudo apt-get install dos2unix
+          pip install --upgrade pip autopep8
+          ./CI/build.sh

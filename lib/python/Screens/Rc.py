@@ -149,7 +149,7 @@ class RcPositions:
 	def __init__(self):
 		if RcPositions.rc is not None:
 			return
-		descriptions = [{v[0]:k for k, v in x.items()} for x in keyDescriptions] # used by wizards and legacy xml format
+		descriptions = [{v[0]: k for k, v in x.items()} for x in keyDescriptions]  # used by wizards and legacy xml format
 		file = resolveFilename(SCOPE_SKIN, "rcpositions.xml") if SystemInfo["rc_default"] else SystemInfo["RCMapping"]
 		rcs = fileReadXML(file, "<rcs />")
 		remotes = {}
@@ -163,7 +163,7 @@ class RcPositions:
 			for key in rc.findall("button"):
 				if "id" in key.attrib:
 					keyId = KEYIDS.get(key.attrib["id"])
-				elif "name" in key.attrib: # legacy xml format
+				elif "name" in key.attrib:  # legacy xml format
 					keyId = descriptions[rc_id].get(key.attrib["name"])
 				if keyId:
 					remotes[rc_id]["keyIds"].append(keyId)
@@ -174,7 +174,7 @@ class RcPositions:
 					if remap is not None and remap in KEYIDS:
 						remapId = KEYIDS[remap]
 						remotes[rc_id]["remaps"][keyId] = remapId
-						remotes[rc_id][remapId] = remotes[rc_id][keyId] # so the button remaps in the help screen
+						remotes[rc_id][remapId] = remotes[rc_id][keyId]  # so the button remaps in the help screen
 
 		if SystemInfo["rc_default"]:
 			RcPositions.rc = remotes[config.misc.rcused.value]
@@ -190,7 +190,7 @@ class RcPositions:
 		return self.rc
 
 	def getRcKeyPos(self, keyId):
-		if isinstance(keyId, str): # used by wizards and available to legacy code
+		if isinstance(keyId, str):  # used by wizards and available to legacy code
 			keyId = self.rc["keyDescriptions"].get(keyId, -1)
 		if keyId in self.rc:
 			return self.rc[keyId]["pos"]

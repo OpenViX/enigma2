@@ -9,7 +9,7 @@ class RecordState(Source):
 		self.records_running = 0
 		self.session = session
 		session.nav.record_event.append(self.gotRecordEvent)
-		self.gotRecordEvent(None, None) # get initial state
+		self.gotRecordEvent(None, None)  # get initial state
 
 	def gotRecordEvent(self, service, event):
 		prev_records = self.records_running

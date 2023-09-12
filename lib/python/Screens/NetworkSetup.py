@@ -645,7 +645,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_NETWORKSETUP):
 				callFnc = p.fnc["ifaceSupported"](self.iface)
 				if callFnc is not None:
-					if "WlanPluginEntry" in p.fnc: # internally used only for WLAN Plugin
+					if "WlanPluginEntry" in p.fnc:  # internally used only for WLAN Plugin
 						self.extended = callFnc
 						if "configStrings" in p.fnc:
 							self.configStrings = p.fnc["configStrings"]
@@ -922,7 +922,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 					if self.queryWirelessDevice(self.iface):
 						self.session.openWithCallback(self.AdapterSetupClosed, AdapterSetup, self.iface)
 					else:
-						self.showErrorMessage()	# Display Wlan not available Message
+						self.showErrorMessage()  # Display Wlan not available Message
 			else:
 				self.session.openWithCallback(self.AdapterSetupClosed, AdapterSetup, self.iface)
 		if self["menulist"].getCurrent()[1] == "test":
@@ -940,7 +940,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 				if self.queryWirelessDevice(self.iface):
 					self.session.openWithCallback(self.WlanScanClosed, WlanScan, self.iface)
 				else:
-					self.showErrorMessage()	# Display Wlan not available Message
+					self.showErrorMessage()  # Display Wlan not available Message
 		if self["menulist"].getCurrent()[1] == "wlanstatus":
 			try:
 				from Plugins.SystemPlugins.WirelessLan.plugin import WlanStatus
@@ -950,7 +950,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 				if self.queryWirelessDevice(self.iface):
 					self.session.openWithCallback(self.WlanStatusClosed, WlanStatus, self.iface)
 				else:
-					self.showErrorMessage()	# Display Wlan not available Message
+					self.showErrorMessage()  # Display Wlan not available Message
 		if self["menulist"].getCurrent()[1] == "lanrestart":
 			self.session.openWithCallback(self.restartLan, MessageBox, (_("Are you sure you want to restart your network interfaces?\n\n") + self.oktext))
 		if self["menulist"].getCurrent()[1] == "openwizard":
@@ -1038,7 +1038,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 			callFnc = p.fnc["ifaceSupported"](self.iface)
 			if callFnc is not None:
 				self.extended = callFnc
-				if "WlanPluginEntry" in p.fnc: # internally used only for WLAN Plugin
+				if "WlanPluginEntry" in p.fnc:  # internally used only for WLAN Plugin
 					menu.append((_("Scan wireless networks"), "scanwlan"))
 					if iNetwork.getAdapterAttribute(self.iface, "up"):
 						menu.append((_("Show WLAN status"), "wlanstatus"))
@@ -1072,7 +1072,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 					if self.queryWirelessDevice(self.iface):
 						self.session.openWithCallback(self.WlanStatusClosed, WlanStatus, self.iface)
 					else:
-						self.showErrorMessage()	# Display Wlan not available Message
+						self.showErrorMessage()  # Display Wlan not available Message
 			else:
 				self.updateStatusbar()
 		else:
@@ -1266,14 +1266,14 @@ class NetworkAdapterTest(Screen):
 			self["NetworkInfo"].setPixmapNum(0)
 			self["NetworkInfo_Text"].setForegroundColorNum(1)
 			self["AdapterInfo"].setPixmapNum(1) 		  # active
-			self["AdapterInfo_Text"].setForegroundColorNum(2) # active
+			self["AdapterInfo_Text"].setForegroundColorNum(2)  # active
 		if button == 2:
 			self["AdapterInfo_Text"].setForegroundColorNum(1)
 			self["AdapterInfo"].setPixmapNum(0)
 			self["DhcpInfo"].setPixmapNum(0)
 			self["DhcpInfo_Text"].setForegroundColorNum(1)
 			self["NetworkInfo"].setPixmapNum(1) 		  # active
-			self["NetworkInfo_Text"].setForegroundColorNum(2) # active
+			self["NetworkInfo_Text"].setForegroundColorNum(2)  # active
 		if button == 3:
 			self["NetworkInfo"].setPixmapNum(0)
 			self["NetworkInfo_Text"].setForegroundColorNum(1)
@@ -1287,19 +1287,19 @@ class NetworkAdapterTest(Screen):
 			self["DNSInfo"].setPixmapNum(0)
 			self["DNSInfo_Text"].setForegroundColorNum(1)
 			self["IPInfo"].setPixmapNum(1)			# active
-			self["IPInfo_Text"].setForegroundColorNum(2)	# active
+			self["IPInfo_Text"].setForegroundColorNum(2)  # active
 		if button == 5:
 			self["IPInfo"].setPixmapNum(0)
 			self["IPInfo_Text"].setForegroundColorNum(1)
 			self["EditSettingsButton"].setPixmapNum(0)
 			self["EditSettings_Text"].setForegroundColorNum(0)
 			self["DNSInfo"].setPixmapNum(1)			# active
-			self["DNSInfo_Text"].setForegroundColorNum(2)	# active
+			self["DNSInfo_Text"].setForegroundColorNum(2)  # active
 		if button == 6:
 			self["DNSInfo"].setPixmapNum(0)
 			self["DNSInfo_Text"].setForegroundColorNum(1)
 			self["EditSettingsButton"].setPixmapNum(1) 	   # active
-			self["EditSettings_Text"].setForegroundColorNum(2) # active
+			self["EditSettings_Text"].setForegroundColorNum(2)  # active
 			self["AdapterInfo"].setPixmapNum(0)
 			self["AdapterInfo_Text"].setForegroundColorNum(1)
 
@@ -1402,32 +1402,32 @@ class NetworkAdapterTest(Screen):
 	def KeyOK(self):
 		self["infoshortcuts"].setEnabled(True)
 		self["shortcuts"].setEnabled(False)
-		if self.activebutton == 1: # Adapter Check
+		if self.activebutton == 1:  # Adapter Check
 			self["InfoText"].setText(_("LAN adapter\n\nThis test detects your configured LAN adapter."))
 			self["InfoTextBorder"].show()
 			self["InfoText"].show()
 			self["key_red"].setText(_("Back"))
-		if self.activebutton == 2: #LAN Check
+		if self.activebutton == 2:  # LAN Check
 			self["InfoText"].setText(_("Local network\n\nThis test checks whether a network cable is connected to your LAN adapter.\n\nIf you get a \"disconnected\" message:\n- Verify that a network cable is attached.\n- Verify that the cable is not broken."))
 			self["InfoTextBorder"].show()
 			self["InfoText"].show()
 			self["key_red"].setText(_("Back"))
-		if self.activebutton == 3: #DHCP Check
+		if self.activebutton == 3:  # DHCP Check
 			self["InfoText"].setText(_("DHCP\n\nThis test checks whether your LAN adapter is set up for automatic IP address configuration with DHCP.\n\nIf you get a \"disabled\" message:\n- Your LAN adapter is configured for manual IP setup.\n- Verify that you have entered correct IP informations in the adapter setup dialog.\n\nIf you get an \"enabled\" message:\n- Verify that you have a configured and working DHCP server in your network."))
 			self["InfoTextBorder"].show()
 			self["InfoText"].show()
 			self["key_red"].setText(_("Back"))
-		if self.activebutton == 4: # IP Check
+		if self.activebutton == 4:  # IP Check
 			self["InfoText"].setText(_("IP address\n\nThis test checks whether a valid IP address is found for your LAN adapter.\n\nIf you get a \"unconfirmed\" message:\n- No valid IP address was found.\n- Please check your DHCP server, cabling and adapter setup."))
 			self["InfoTextBorder"].show()
 			self["InfoText"].show()
 			self["key_red"].setText(_("Back"))
-		if self.activebutton == 5: # DNS Check
+		if self.activebutton == 5:  # DNS Check
 			self["InfoText"].setText(_("Nameserver\n\nThis test checks for configured nameservers.\n\nIf you get a \"unconfirmed\" message:\n- Please check your DHCP server, cabling and adapter setup.\n- If you configured your nameservers manually please verify your entries in the \"Nameserver\" configuration."))
 			self["InfoTextBorder"].show()
 			self["InfoText"].show()
 			self["key_red"].setText(_("Back"))
-		if self.activebutton == 6: # Edit Settings
+		if self.activebutton == 6:  # Edit Settings
 			self.session.open(AdapterSetup, self.iface)
 
 	def KeyYellow(self):
@@ -1556,7 +1556,7 @@ class NetworkAdapterTest(Screen):
 		self["DNSInfo_Text"].setForegroundColorNum(1)
 		self["EditSettings_Text"].show()
 		self["EditSettingsButton"].setPixmapNum(1)
-		self["EditSettings_Text"].setForegroundColorNum(2) # active
+		self["EditSettings_Text"].setForegroundColorNum(2)  # active
 		self["EditSettingsButton"].show()
 		self["key_yellow"].setText("")
 		self["key_green"].setText(_("Restart test"))
@@ -2336,19 +2336,19 @@ class NetworkInadynSetup(ConfigListScreen, HelpableScreen, Screen):
 				line = line.strip()
 				if line.startswith("username "):
 					line = line[9:]
-					self.ina_user = NoSave(ConfigText(fixed_size=False, default=line)) # overwrite so we start with the correct defaults
+					self.ina_user = NoSave(ConfigText(fixed_size=False, default=line))  # overwrite so we start with the correct defaults
 					self.list.append(getConfigListEntry(_("Username") + ":", self.ina_user))
 				elif line.startswith("password "):
 					line = line[9:]
-					self.ina_pass = NoSave(ConfigText(fixed_size=False, default=line)) # overwrite so we start with the correct defaults
+					self.ina_pass = NoSave(ConfigText(fixed_size=False, default=line))  # overwrite so we start with the correct defaults
 					self.list.append(getConfigListEntry(_("Password") + ":", self.ina_pass))
 				elif line.startswith("alias "):
 					line = line[6:]
-					self.ina_alias = NoSave(ConfigText(fixed_size=False, default=line)) # overwrite so we start with the correct defaults
+					self.ina_alias = NoSave(ConfigText(fixed_size=False, default=line))  # overwrite so we start with the correct defaults
 					self.list.append(getConfigListEntry(_("Alias") + ":", self.ina_alias))
 				elif line.startswith("update_period_sec "):
 					line = (int(line[18:]) // 60)
-					self.ina_period = NoSave(ConfigNumber(default=line)) # overwrite so we start with the correct defaults
+					self.ina_period = NoSave(ConfigNumber(default=line))  # overwrite so we start with the correct defaults
 					self.list.append(getConfigListEntry(_("Time update in minutes") + ":", self.ina_period))
 				elif line.startswith("dyndns_system ") or line.startswith("#dyndns_system "):
 					if not line.startswith("#"):
@@ -2357,7 +2357,7 @@ class NetworkInadynSetup(ConfigListScreen, HelpableScreen, Screen):
 					else:
 						default = False
 						line = line[15:]
-					self.ina_sysactive = NoSave(ConfigYesNo(default=default)) # overwrite so we start with the correct defaults
+					self.ina_sysactive = NoSave(ConfigYesNo(default=default))  # overwrite so we start with the correct defaults
 					self.list.append(getConfigListEntry(_("Set system") + ":", self.ina_sysactive))
 					# self.ina_value = line # looks like dead code
 					ina_system1 = getConfigListEntry(_("System") + ":", self.ina_system)
@@ -2366,7 +2366,7 @@ class NetworkInadynSetup(ConfigListScreen, HelpableScreen, Screen):
 			f.close()
 		self["config"].list = self.list
 
-	def keySave(self): # saveIna
+	def keySave(self):  # saveIna
 		if fileExists("/etc/inadyn.conf"):
 			inme = open("/etc/inadyn.conf", "r")
 			out = open("/etc/inadyn.conf.tmp", "w")
@@ -2604,19 +2604,19 @@ class NetworkuShareSetup(ConfigListScreen, HelpableScreen, Screen):
 				line = line.strip()
 				if line.startswith("USHARE_NAME="):
 					line = line[12:]
-					self.ushare_user = NoSave(ConfigText(default=line, fixed_size=False)) # overwrite so we start with the correct defaults
+					self.ushare_user = NoSave(ConfigText(default=line, fixed_size=False))  # overwrite so we start with the correct defaults
 					self.list.append(getConfigListEntry(_("uShare name") + ":", self.ushare_user))
 				elif line.startswith("USHARE_IFACE="):
 					line = line[13:]
-					self.ushare_iface = NoSave(ConfigText(default=line, fixed_size=False)) # overwrite so we start with the correct defaults
+					self.ushare_iface = NoSave(ConfigText(default=line, fixed_size=False))  # overwrite so we start with the correct defaults
 					self.list.append(getConfigListEntry(_("Interface") + ":", self.ushare_iface))
 				elif line.startswith("USHARE_PORT="):
 					line = int(line[12:])
-					self.ushare_port = NoSave(ConfigNumber(default=line)) # overwrite so we start with the correct defaults
+					self.ushare_port = NoSave(ConfigNumber(default=line))  # overwrite so we start with the correct defaults
 					self.list.append(getConfigListEntry(_("uShare port") + ":", self.ushare_port))
 				elif line.startswith("USHARE_TELNET_PORT="):
 					line = int(line[19:])
-					self.ushare_telnetport = NoSave(ConfigNumber(default=line)) # overwrite so we start with the correct defaults
+					self.ushare_telnetport = NoSave(ConfigNumber(default=line))  # overwrite so we start with the correct defaults
 					self.list.append(getConfigListEntry(_("Telnet port") + ":", self.ushare_telnetport))
 				elif line.startswith("ENABLE_WEB="):
 					if line[11:] == "no":

@@ -42,7 +42,7 @@
 	</screen>
 
 	<screen name="Parent_Title">
-		<widget source="parent.Title" render="Label" position="0,5" size="480,60" font="FdLcD;50" halign="center" valign="center" foregroundColor="yellow" />
+		<widget source="parent.title" render="Label" position="0,5" size="480,60" font="FdLcD;50" halign="center" valign="center" foregroundColor="yellow" />
 	</screen>
 
 <!-- main-->

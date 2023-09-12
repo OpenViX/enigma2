@@ -125,7 +125,7 @@ class DVDTitle:
 		# our demuxer expects *strictly* IN,OUT lists.
 		currently_in = not any(type == CUT_TYPE_IN for pts, type in self.cuesheet)
 		if currently_in:
-			self.cutlist.append(0) # emulate "in" at first
+			self.cutlist.append(0)  # emulate "in" at first
 
 		for (pts, type) in self.cuesheet:
 			#print "pts=", pts, "type=", type, "accumulated_in=", accumulated_in, "accumulated_at=", accumulated_at, "last_in=", last_in

@@ -11,14 +11,14 @@ from .providers import providers
 config.plugins.opentvzapper = ConfigSubsection()
 config.plugins.opentvzapper.enabled = ConfigYesNo(default=False)
 config.plugins.opentvzapper.providers = ConfigSelection(default="Astra 28.2", choices=list(providers.keys()))
-config.plugins.opentvzapper.update_interval = ConfigSelectionNumber(min=3, max=24, stepwidth=3, default=6, wraparound=True) # auto schedule
+config.plugins.opentvzapper.update_interval = ConfigSelectionNumber(min=3, max=24, stepwidth=3, default=6, wraparound=True)  # auto schedule
 config.plugins.opentvzapper.extensions = ConfigYesNo(default=True)
 config.plugins.opentvzapper.notifications = ConfigYesNo(default=False)
 config.plugins.opentvzapper.use_pip_adapter = ConfigYesNo(default=True)
 
 # user defined schedule
 config.plugins.opentvzapper.schedule = ConfigBoolean(default=False, descriptions={False: _("Auto"), True: _("Custom")}, graphic=False)
-config.plugins.opentvzapper.scheduletime = ConfigClock(default=0) # 1:00
+config.plugins.opentvzapper.scheduletime = ConfigClock(default=0)  # 1:00
 config.plugins.opentvzapper.retry = ConfigNumber(default=30)
 config.plugins.opentvzapper.retrycount = NoSave(ConfigNumber(default=0))
 config.plugins.opentvzapper.nextscheduletime = ConfigNumber(default=0)
@@ -101,21 +101,21 @@ class OpentvZapperDaysScreen(Setup):
 		Setup.keySave(self)
 
 
-def startdownload(session, **kwargs): # Called from extensions menu if this option is active
+def startdownload(session, **kwargs):  # Called from extensions menu if this option is active
 	opentv_zapper.force_download()
 
 
-def OpentvZapperStart(menuid, **kwargs): # Menu position of plugin setup screen
+def OpentvZapperStart(menuid, **kwargs):  # Menu position of plugin setup screen
 	if menuid == "epg":
 		return [(_("OpenTV EPG downloader"), OpentvZapperMain, "OpentvZapper_Setup", None)]
 	return []
 
 
-def OpentvZapperMain(session, **kwargs): # calls setup screen
+def OpentvZapperMain(session, **kwargs):  # calls setup screen
 	session.open(OpentvZapper_Setup)
 
 
-def OpentvZapperWakeupTime(): # Called on shutdown (going into deep standby) to tell the box when to wake from deep
+def OpentvZapperWakeupTime():  # Called on shutdown (going into deep standby) to tell the box when to wake from deep
 	print("[OpentvZapper] next wake up due %d" % (config.plugins.opentvzapper.schedule.value and config.plugins.opentvzapper.schedulewakefromdeep.value and config.plugins.opentvzapper.nextscheduletime.value > 0 and config.plugins.opentvzapper.nextscheduletime.value or -1))
 	return config.plugins.opentvzapper.schedule.value and config.plugins.opentvzapper.schedulewakefromdeep.value and config.plugins.opentvzapper.nextscheduletime.value > 0 and config.plugins.opentvzapper.nextscheduletime.value or -1
 

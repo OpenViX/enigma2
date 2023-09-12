@@ -43,7 +43,7 @@ class ServiceStopScreen:
 					self.oldAlternativeref = self.session.nav.getCurrentlyPlayingServiceReference()
 					self.session.nav.stopService()
 			if self.pipAvailable():
-				if self.session.pipshown: # try to disable pip
+				if self.session.pipshown:  # try to disable pip
 					if hasattr(self.session, 'infobar'):
 						if self.session.infobar.servicelist and self.session.infobar.servicelist.dopipzap:
 							self.session.infobar.servicelist.togglePipzap()

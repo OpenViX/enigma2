@@ -63,7 +63,7 @@ def expandCollections(items):
 	return expanded
 
 
-cutsParser = struct.Struct('>QI') # big-endian, 64-bit PTS and 32-bit type
+cutsParser = struct.Struct('>QI')  # big-endian, 64-bit PTS and 32-bit type
 
 
 class MovieListData:
@@ -121,7 +121,7 @@ def moviePlayState(cutsFileName, ref, length):
 			if len(data) < cutsParser.size:
 				break
 			cut, cutType = cutsParser.unpack(data)
-			if cutType == 3: # undocumented, but 3 appears to be the stop
+			if cutType == 3:  # undocumented, but 3 appears to be the stop
 				lastPosition = cut
 		f.close()
 		# See what we have in RAM (it might help)
@@ -241,7 +241,7 @@ class MovieList(GUIComponent):
 		self.l = eListboxPythonMultiContent()
 		self.tags = set()
 		self.markList = []
-		self.allowCollections = allowCollections # used to disable collections when loaded by OpenWebIf
+		self.allowCollections = allowCollections  # used to disable collections when loaded by OpenWebIf
 		self.root = None
 		self._playInBackground = None
 		self._playInForeground = None
@@ -466,12 +466,12 @@ class MovieList(GUIComponent):
 			return res
 		if data.dirty:
 			cur_idx = self.l.getCurrentSelectionIndex()
-			x = self.list[cur_idx] # x = ref,info,begin,...
+			x = self.list[cur_idx]  # x = ref,info,begin,...
 			if config.usage.load_length_of_movies_in_moviellist.value:
-				data.len = x[1].getLength(x[0]) #recalc the movie length...
+				data.len = x[1].getLength(x[0])  # recalc the movie length...
 			else:
-				data.len = 0 #dont recalc movielist to speedup loading the list
-			self.list[cur_idx] = (x[0], x[1], x[2], data) #update entry in list... so next time we don't need to recalc
+				data.len = 0  # dont recalc movielist to speedup loading the list
+			self.list[cur_idx] = (x[0], x[1], x[2], data)  # update entry in list... so next time we don't need to recalc
 			data.picon = None
 			if showPicons:
 				refs = info.getInfoString(x[0], iServiceInformation.sServiceref)
@@ -770,7 +770,7 @@ class MovieList(GUIComponent):
 				if not name.endswith('.AppleDouble/') and not name.endswith('.AppleDesktop/') and not name.endswith('.AppleDB/') and not name.endswith('Network Trash Folder/') and not name.endswith('Temporary Items/'):
 					try:
 						begin = stat(serviceref.getPath()).st_mtime
-					except (FileNotFoundError, PermissionError) as err: # possibly os.stat failed due to unavailable mount or a permission error over a network mount
+					except (FileNotFoundError, PermissionError) as err:  # possibly os.stat failed due to unavailable mount or a permission error over a network mount
 						begin = 0
 						import traceback
 						traceback.print_exc()
@@ -930,7 +930,7 @@ class MovieList(GUIComponent):
 		rautotags = {}
 		for tag, movies in autotags.items():
 			if (len(movies) > 1):
-				movies = tuple(movies) # a tuple can be hashed, but a list not
+				movies = tuple(movies)  # a tuple can be hashed, but a list not
 				item = rautotags.get(movies, [])
 				if not item:
 					rautotags[movies] = item
@@ -961,7 +961,7 @@ class MovieList(GUIComponent):
 				self.tags[match] = set(tags)
 			else:
 				match = ' '.join(tags)
-				if (len(match) > 2) or (match in realtags): #Omit small words, only for auto tags
+				if (len(match) > 2) or (match in realtags):  # Omit small words, only for auto tags
 					self.tags[match] = set(tags)
 		# Adding the realtags to the tag list
 		for tag in realtags:
@@ -985,7 +985,7 @@ class MovieList(GUIComponent):
 			firstItem = x[3].collectionItems[0]
 			if firstItem:
 				ref = firstItem[0] or ref
-		len = x[1] and (x[1].getLength(ref) // 60) # we only display minutes, so sort by minutes
+		len = x[1] and (x[1].getLength(ref) // 60)  # we only display minutes, so sort by minutes
 		name = x[3].txt
 		return self.getSortPrimaryGroup(x), len or 0, name and name.lower() or "", -x[2]
 
@@ -1037,7 +1037,7 @@ class MovieList(GUIComponent):
 			lbl.visible = True
 		self.moveToCharTimer = eTimer()
 		self.moveToCharTimer.callback.append(self._moveToChrStr)
-		self.moveToCharTimer.start(1000, True) #time to wait for next key press to decide which letter to use...
+		self.moveToCharTimer.start(1000, True)  # time to wait for next key press to decide which letter to use...
 
 	def moveToString(self, char, lbl=None):
 		self._char = self._char + char.upper()
@@ -1047,7 +1047,7 @@ class MovieList(GUIComponent):
 			lbl.visible = True
 		self.moveToCharTimer = eTimer()
 		self.moveToCharTimer.callback.append(self._moveToChrStr)
-		self.moveToCharTimer.start(1000, True) #time to wait for next key press to decide which letter to use...
+		self.moveToCharTimer.start(1000, True)  # time to wait for next key press to decide which letter to use...
 
 	def _moveToChrStr(self):
 		currentIndex = self.instance.getCurrentIndex()
@@ -1070,7 +1070,7 @@ class MovieList(GUIComponent):
 					self.instance.moveSelectionTo(index + currentIndex + 1)
 					break
 		if found == False and currentIndex > 0:
-			itemsAbove = self.list[1:currentIndex] #first item (0) points parent folder - no point to include
+			itemsAbove = self.list[1:currentIndex]  # first item (0) points parent folder - no point to include
 			for index, item in enumerate(itemsAbove):
 				# Just ignore any "root tagged" item - for which item[1] is None
 				if not item[1]:
@@ -1131,10 +1131,10 @@ class MovieList(GUIComponent):
 
 
 def getShortName(name, serviceref):
-	if serviceref.flags & eServiceReference.mustDescent: #Directory
+	if serviceref.flags & eServiceReference.mustDescent:  # Directory
 		pathName = serviceref.getPath()
 		p = path.split(pathName)
-		if not p[1]: #if path ends in '/', p is blank.
+		if not p[1]:  # if path ends in '/', p is blank.
 			p = path.split(p[0])
 		return p[1].upper()
 	else:

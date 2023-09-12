@@ -24,13 +24,14 @@ DISPLAY_SKIN_ID = 1  # Front panel / display / LCD.
 
 domScreens = {}  # Dictionary of skin based screens.
 colors = {}  # Dictionary of skin color names.
-BodyFont = ("Regular", 20, 25, 18) # font which is used when a font alias definition is missing from the "fonts" dict.
+BodyFont = ("Regular", 20, 25, 18)  # font which is used when a font alias definition is missing from the "fonts" dict.
 fonts = {}  # Dictionary of predefined and skin defined font aliases.
 menus = {}  # Dictionary of images associated with menu entries.
+menuicons = {}  # Dictionary of icons associated with menu items.
 parameters = {}  # Dictionary of skin parameters used to modify code behavior.
 setups = {}  # Dictionary of images associated with setup menus.
 switchPixmap = {}  # Dictionary of switch images.
-scrollbarStyle = None # When set, a dictionary of scrollbar styles
+scrollbarStyle = None  # When set, a dictionary of scrollbar styles
 windowStyles = {}  # Dictionary of window styles for each screen ID.
 xres = 720
 yres = 576
@@ -64,7 +65,7 @@ onLoadCallbacks = []
 
 def InitSkins(booting=True):
 	global currentPrimarySkin, currentDisplaySkin
-	global domScreens, colors, BodyFont, fonts, menus, parameters, setups, switchPixmap, scrollbarStyle, windowStyles, xres, yres
+	global domScreens, colors, BodyFont, fonts, menus, menuicons, parameters, setups, switchPixmap, scrollbarStyle, windowStyles, xres, yres
 	# Reset skin dictionaries. We can reload skins without a restart
 	# Make sure we keep the original dictionaries as many modules now import skin globals explicitly
 	domScreens.clear()
@@ -74,6 +75,7 @@ def InitSkins(booting=True):
 		"Body": BodyFont
 	})
 	menus.clear()
+	menuicons.clear()
 	parameters.clear()
 	setups.clear()
 	switchPixmap.clear()
@@ -249,7 +251,7 @@ def parseCoordinate(s, e, size=0, font=None):
 		# Don't bother trying an int() conversion,
 		# because at this point that's almost certainly
 		# going to throw an exception.
-		try: # protects against junk in the input
+		try:  # protects against junk in the input
 			val = int(eval(s))
 		except Exception as err:
 			print("[Skin] %s '%s': Coordinate '%s', processed to '%s', cannot be evaluated!" % (type(err).__name__, err, orig, s))
@@ -506,7 +508,7 @@ class AttributeParser:
 		self.guiObject.setItemWidth(parseScale(value))
 
 	def pixmap(self, value):
-		if value.endswith(".svg"): # if grafic is svg force alphatest to "blend"
+		if value.endswith(".svg"):  # if grafic is svg force alphatest to "blend"
 			self.guiObject.setAlphatest(BT_ALPHABLEND)
 		self.guiObject.setPixmap(loadPixmap(value, self.desktop, self.guiObject.size().width(), self.guiObject.size().height()))
 
@@ -763,7 +765,7 @@ def reloadWindowStyles():
 def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT_SKIN):
 	"""Loads skin data like colors, windowstyle etc."""
 	assert domSkin.tag == "skin", "root element in skin must be 'skin'!"
-	global colors, fonts, menus, parameters, setups, switchPixmap, scrollbarStyle, xres, yres
+	global colors, fonts, menus, menuicons, parameters, setups, switchPixmap, scrollbarStyle, xres, yres
 	for tag in domSkin.findall("output"):
 		scrnID = int(tag.attrib.get("id", GUI_SKIN_ID))
 		if scrnID == GUI_SKIN_ID:
@@ -794,7 +796,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				fonts["PartnerBoxE2TimerMenu1"] = applySkinFactor("Regular", 18)
 				fonts["PartnerBoxEntryList0"] = applySkinFactor("Regular", 20, 30)
 				fonts["PartnerBoxEntryList1"] = applySkinFactor("Regular", 18)
-				fonts["SelectionList"] = applySkinFactor("Regular", 22, 30) # EPG Importer expandable sources list
+				fonts["SelectionList"] = applySkinFactor("Regular", 22, 30)  # EPG Importer expandable sources list
 
 				# Only add parameters here for lists that are not part of enigma2 repo.
 				# Parameters for modules in this repository should be dealt with directly in the corresponding py, not here.
@@ -827,8 +829,8 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				parameters["PartnerBoxEntryListType"] = applySkinFactor(410, 0, 100, 25)
 				parameters["PartnerBoxTimerName"] = applySkinFactor(0, 30, 20)
 				parameters["PartnerBoxTimerServicename"] = applySkinFactor(0, 0, 30)
-				parameters["SelectionListDescr"] = applySkinFactor(32, 3, 650, 30) # EPG Importer expandable sources list
-				parameters["SelectionListLock"] = applySkinFactor(0, 2, 28, 24) # EPG Importer expandable sources list
+				parameters["SelectionListDescr"] = applySkinFactor(32, 3, 650, 30)  # EPG Importer expandable sources list
+				parameters["SelectionListLock"] = applySkinFactor(0, 2, 28, 24)  # EPG Importer expandable sources list
 				parameters["SHOUTcastListItem"] = applySkinFactor(20, 18, 22, 69, 20, 23, 43, 22)
 
 	for tag in domSkin.findall("include"):
@@ -919,14 +921,23 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 			else:
 				raise SkinError("Tag 'parameter' needs a name and value, got name='%s' and size='%s'" % (name, value))
 	for tag in domSkin.findall("menus"):
-		for setup in tag.findall("menu"):
-			key = setup.attrib.get("key")
-			image = setup.attrib.get("image")
+		for menu in tag.findall("menu"):
+			key = menu.attrib.get("key")
+			image = menu.attrib.get("image")
 			if key and image:
 				menus[key] = image
 				# print("[Skin] DEBUG: Menu key='%s', image='%s'." % (key, image))
 			else:
 				raise SkinError("Tag 'menu' needs key and image, got key='%s' and image='%s'" % (key, image))
+	for tag in domSkin.findall("menuicons"):
+		for menuicon in tag.findall("menuicon"):
+			key = menuicon.attrib.get("key")
+			image = menuicon.attrib.get("image")
+			if key and image:
+				menuicons[key] = image
+				# print("[Skin] DEBUG: Menu key='%s', image='%s'." % (key, image))
+			else:
+				raise SkinError("Tag 'menuicon' needs key and image, got key='%s' and image='%s'" % (key, image))
 	for tag in domSkin.findall("setups"):
 		for setup in tag.findall("setup"):
 			key = setup.attrib.get("key")

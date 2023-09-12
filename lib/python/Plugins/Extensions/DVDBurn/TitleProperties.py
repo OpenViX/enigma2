@@ -73,7 +73,7 @@ class TitleProperties(ConfigListScreen, Screen):
 			self.list.append(getConfigListEntry("DVD " + _("Track"), self.properties.position))
 			self.list.append(getConfigListEntry("DVD " + _("Title"), self.properties.menutitle))
 			self.list.append(getConfigListEntry("DVD " + _("Description"), self.properties.menusubtitle))
-			if config.usage.setup_level.index >= 2: # expert+
+			if config.usage.setup_level.index >= 2:  # expert+
 				for audiotrack in self.properties.audiotracks:
 					DVB_aud = audiotrack.DVB_lang.value or audiotrack.pid.value
 					self.list.append(getConfigListEntry(_("Burn audio track (%s)") % DVB_aud, audiotrack.active))

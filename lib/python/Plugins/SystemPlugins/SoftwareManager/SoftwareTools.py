@@ -29,7 +29,7 @@ class SoftwareTools(PackageInfoHandler):
 			self.ImageVersion = 'Experimental'
 		else:
 			self.ImageVersion = 'Stable'
-		self.language = language.getLanguage()[:2] # getLanguage returns e.g. "fi_FI" for "language_country"
+		self.language = language.getLanguage()[:2]  # getLanguage returns e.g. "fi_FI" for "language_country"
 		PackageInfoHandler.__init__(self, self.statusCallback, neededTag='ALL_TAGS', neededFlag=self.ImageVersion)
 		self.directory = resolveFilename(SCOPE_METADIR)
 		self.list = List([])

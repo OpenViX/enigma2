@@ -2,7 +2,7 @@ from xml.etree.cElementTree import fromstring
 
 from gettext import dgettext
 from os.path import getmtime, join as pathjoin
-from skin import setups, findSkinScreen # used in <item conditional="..."> to check if a screen name is available in the skin
+from skin import setups, findSkinScreen  # used in <item conditional="..."> to check if a screen name is available in the skin
 
 from Components.config import ConfigBoolean, ConfigNothing, ConfigSelection, config
 from Components.ConfigList import ConfigListScreen
@@ -38,28 +38,25 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		self["footnote"].hide()
 		self["description"] = Label()
 		self.createSetup()
-		defaultSetupImage = setups.get("default", "")
-		setupImage = setups.get(setup, defaultSetupImage)
-		if setupImage:
-			imgType = "Default" if setupImage is defaultSetupImage else "Setup"
-			setupImage = resolveFilename(SCOPE_CURRENT_SKIN, setupImage)
-			print("[Setup] %s image '%s'." % (imgType, setupImage))
-			self.setupImage = LoadPixmap(setupImage)
-			if self.setupImage:
-				self["setupimage"] = Pixmap()
-			else:
-				print("[Setup] Error: Unable to load menu image '%s'!" % setupImage)
-		else:
-			self.setupImage = None
+		self.loadSetupImage(setup)
 		if self.layoutFinished not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.layoutFinished)
 		if self.selectionChanged not in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.selectionChanged)
 
+	def loadSetupImage(self, setup):
+		self.setupImage = None
+		if setups:
+			setupImage = setups.get(setup, setups.get("default", ""))
+			if setupImage:
+				self.setupImage = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, setupImage))
+				if self.setupImage:
+					self["setupimage"] = Pixmap()
+
 	def changedEntry(self):
 		if isinstance(self["config"].getCurrent()[1], (ConfigBoolean, ConfigSelection)):
 			self.createSetup()
-		ConfigListScreen.changedEntry(self) # force summary update immediately, not just on select/deselect
+		ConfigListScreen.changedEntry(self)  # force summary update immediately, not just on select/deselect
 
 	def createSetup(self):
 		oldList = self.list
@@ -82,7 +79,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		if title:
 			title = dgettext(self.pluginLanguageDomain, title) if self.pluginLanguageDomain else _(title)
 		self.setTitle(title if title else _("Setup"))
-		if not self.list: # This forces the self["config"] list to be cleared if there are no eligible items available to be displayed.
+		if not self.list:  # This forces the self["config"] list to be cleared if there are no eligible items available to be displayed.
 			self["config"].list = self.list
 		elif self.list != oldList or self.showDefaultChanged or self.graphicSwitchChanged:
 			currentItem = self["config"].getCurrent()
@@ -111,11 +108,11 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 
 	def addItem(self, element):
 		if self.pluginLanguageDomain:
-			itemText = dgettext(self.pluginLanguageDomain, element.get("text", "??"))
-			itemDescription = dgettext(self.pluginLanguageDomain, element.get("description", " "))
+			itemText = dgettext(self.pluginLanguageDomain, x) if (x := element.get("text")) else "* fix me *"
+			itemDescription = dgettext(self.pluginLanguageDomain, x) if (x := element.get("description")) else ""
 		else:
-			itemText = _(element.get("text", "??"))
-			itemDescription = _(element.get("description", " "))
+			itemText = _(x) if (x := element.get("text")) else "* fix me *"
+			itemDescription = _(x) if (x := element.get("description")) else ""
 		item = eval(element.text or "")
 		if item == "":
 			self.list.append((self.formatItemText(itemText),))  # Add the comment line to the config list.
@@ -296,7 +293,7 @@ def setupDom(setup=None, plugin=None):
 			del domSetups[setupFile]
 		if setupFile in setupModTimes:
 			del setupModTimes[setupFile]
-		return setupFileDom # we can't access setup.xml so return an empty dom
+		return setupFileDom  # we can't access setup.xml so return an empty dom
 	cached = setupFile in domSetups and setupFile in setupModTimes and setupModTimes[setupFile] == modTime
 	print("[Setup] XML%s setup file '%s', using element '%s'%s." % (" cached" if cached else "", setupFile, setup, " from plugin '%s'" % plugin if plugin else ""))
 	if cached:

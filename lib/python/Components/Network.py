@@ -70,11 +70,11 @@ class Network:
 			if data['up']:
 				self.configuredInterfaces.append(iface)
 			nit = ni.ifaddresses(iface)
-			data['ip'] = self.convertIP(nit[ni.AF_INET][0]['addr']) # ipv4
+			data['ip'] = self.convertIP(nit[ni.AF_INET][0]['addr'])  # ipv4
 			data['netmask'] = self.convertIP(nit[ni.AF_INET][0]['netmask'])
 			data['bcast'] = self.convertIP(nit[ni.AF_INET][0]['broadcast'])
-			data['mac'] = nit[ni.AF_LINK][0]['addr'] # mac
-			data['gateway'] = self.convertIP(ni.gateways()['default'][ni.AF_INET][0]) # default gw
+			data['mac'] = nit[ni.AF_LINK][0]['addr']  # mac
+			data['gateway'] = self.convertIP(ni.gateways()['default'][ni.AF_INET][0])  # default gw
 		except:
 			data['dhcp'] = True
 			data['ip'] = [0, 0, 0, 0]
@@ -144,7 +144,7 @@ class Network:
 					ifaces[currif]["dhcp"] = True
 				else:
 					ifaces[currif]["dhcp"] = False
-			if currif == iface: #read information only for available interfaces
+			if currif == iface:  # read information only for available interfaces
 				if split[0] == "address":
 					ifaces[currif]["address"] = list(map(int, split[1].split('.')))
 					if "ip" in self.ifaces[currif]:
@@ -217,7 +217,7 @@ class Network:
 		if x in self.friendlyNames.keys():
 			return self.friendlyNames.get(x, x)
 		self.friendlyNames[x] = self.getFriendlyAdapterNaming(x)
-		return self.friendlyNames.get(x, x) # when we have no friendly name, use adapter name
+		return self.friendlyNames.get(x, x)  # when we have no friendly name, use adapter name
 
 	def getFriendlyAdapterNaming(self, iface):
 		name = None

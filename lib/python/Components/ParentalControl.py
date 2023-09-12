@@ -249,7 +249,7 @@ class ParentalControl:
 		root = eServiceReference(refstr)
 		list = serviceHandler.list(root)
 		if list is not None:
-			services = list.getContent("CN", True) #(servicecomparestring, name)
+			services = list.getContent("CN", True)  # (servicecomparestring, name)
 			return services
 
 	def save(self):

@@ -84,7 +84,7 @@ class TimerEntry(TimerEntryBase):
 # Ensure that the timer repeated is cleared if we have an autosleeprepeat
 			if self.timerentry_type.value == "repeated":
 				self.timer.resetRepeated()
-				self.timerentry_type.value = "once" # Stop it being set again
+				self.timerentry_type.value = "once"  # Stop it being set again
 
 		TimerEntryBase.keySave(self)
 

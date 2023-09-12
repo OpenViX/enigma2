@@ -93,7 +93,7 @@ def getCPUSpeedMHzInt():
 			except IOError:
 				cpu_speed = 1700
 		else:
-			try: # Solo4K sf8008
+			try:  # Solo4K sf8008
 				with open("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq", "r") as file:
 					cpu_speed = float(file.read()) // 1000
 			except IOError:
@@ -159,10 +159,10 @@ def getIfConfig(ifname):
 	infos = {}
 	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	# offsets defined in /usr/include/linux/sockios.h on linux 2.6
-	infos["addr"] = 0x8915 # SIOCGIFADDR
-	infos["brdaddr"] = 0x8919 # SIOCGIFBRDADDR
-	infos["hwaddr"] = 0x8927 # SIOCSIFHWADDR
-	infos["netmask"] = 0x891b # SIOCGIFNETMASK
+	infos["addr"] = 0x8915  # SIOCGIFADDR
+	infos["brdaddr"] = 0x8919  # SIOCGIFBRDADDR
+	infos["hwaddr"] = 0x8927  # SIOCSIFHWADDR
+	infos["netmask"] = 0x891b  # SIOCGIFNETMASK
 	try:
 		for k, v in infos.items():
 			ifreq[k] = _ifinfo(sock, v, ifname)

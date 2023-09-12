@@ -582,17 +582,17 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 			else:
 				menulist.append((_("Add files to playlist"), "copyfiles"))
 			menulist.append((_("Switch to playlist"), "playlist"))
-			if config.usage.setup_level.index >= 1: # intermediate+
+			if config.usage.setup_level.index >= 1:  # intermediate+
 				menulist.append((_("Delete file"), "deletefile"))
 		else:
 			menulist.append((_("Switch to filelist"), "filelist"))
 			menulist.append((_("Clear playlist"), "clear"))
 			menulist.append((_("Delete entry"), "deleteentry"))
-			if config.usage.setup_level.index >= 1: # intermediate+
+			if config.usage.setup_level.index >= 1:  # intermediate+
 				menulist.append((_("Shuffle playlist"), "shuffle"))
 		menulist.append((_("Hide player"), "hide"))
 		menulist.append((_("Load playlist"), "loadplaylist"))
-		if config.usage.setup_level.index >= 1: # intermediate+
+		if config.usage.setup_level.index >= 1:  # intermediate+
 			menulist.append((_("Save playlist"), "saveplaylist"))
 			menulist.append((_("Delete saved playlist"), "deleteplaylist"))
 			menulist.append((_("Edit settings"), "settings"))
@@ -657,7 +657,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 				cdinfo = Query(self)
 				cdinfo.scan()
 			except ImportError:
-				pass # we can live without CDInfo
+				pass  # we can live without CDInfo
 			self.changeEntry(0)
 			self.switchToPlayList()
 
@@ -780,7 +780,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 		filelist = FileList(directory, useServiceRef=True, showMountpoints=False, isTop=True)
 
 		for x in filelist.getFileList():
-			if x[0][1]: #isDir
+			if x[0][1]:  # isDir
 				if recursive:
 					if x[0][0] != directory:
 						self.copyDirectory(x[0][0])
@@ -849,7 +849,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 				self.switchToFileList()
 
 	def copyFile(self):
-		if self.filelist.getServiceRef().type == 4098: # playlist
+		if self.filelist.getServiceRef().type == 4098:  # playlist
 			ServiceRef = self.filelist.getServiceRef()
 			extension = ServiceRef.getPath()[ServiceRef.getPath().rfind('.') + 1:]
 			if extension in self.playlistparsers:
@@ -917,7 +917,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 			self.isAudioCD = False
 			sel = self.filelist.getSelection()
 			if sel:
-				if sel[1]: # can descent
+				if sel[1]:  # can descent
 					# add directory to playlist
 					self.copyDirectory(sel[0])
 				else:

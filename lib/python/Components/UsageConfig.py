@@ -1033,7 +1033,7 @@ def InitUsageConfig():
 	config.subtitles.pango_autoturnon = ConfigYesNo(default=True)
 
 	config.autolanguage = ConfigSubsection()
-	default_autoselect = "eng Englisch" # for audio_autoselect1
+	default_autoselect = "eng Englisch"  # for audio_autoselect1
 	audio_language_choices = [
 		("", _("None")),
 		("und", _("Undetermined")),
@@ -1224,7 +1224,7 @@ def InitUsageConfig():
 	config.hdmicec.debug = ConfigSelection(default="0", choices=[("0", _("Disabled")), ("1", _("Messages")), ("2", _("Key Events")), ("3", _("All"))])
 	config.hdmicec.bookmarks = ConfigLocations(default="/hdd/")
 	config.hdmicec.log_path = ConfigDirectory("/hdd/")
-	config.hdmicec.next_boxes_detect = ConfigYesNo(default=False)	# Before switching the TV to standby, receiver tests if any devices plugged to TV are in standby. If they are not, the 'sourceinactive' command will be sent to the TV instead of the 'standby' command.
+	config.hdmicec.next_boxes_detect = ConfigYesNo(default=False)  # Before switching the TV to standby, receiver tests if any devices plugged to TV are in standby. If they are not, the 'sourceinactive' command will be sent to the TV instead of the 'standby' command.
 	config.hdmicec.sourceactive_zaptimers = ConfigYesNo(default=False)				# Command the TV to switch to the correct HDMI input when zap timers activate.
 
 	upgradeConfig()

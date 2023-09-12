@@ -1,5 +1,5 @@
 from Components.config import ConfigSubsection, config
-import os
+from os import path as ospath
 
 config.plugins = ConfigSubsection()
 
@@ -130,7 +130,7 @@ class PluginDescriptor():
 	def icon(self):
 		if self.iconstr and self.path:
 			from Tools.LoadPixmap import LoadPixmap
-			return LoadPixmap(os.path.join(self.path, self.iconstr))
+			return LoadPixmap(ospath.join(self.path, self.iconstr))
 		else:
 			return self._icon
 

@@ -26,7 +26,7 @@ patterns = [
 	"python3-future",
 	"python3-mime",
 	"alsa",
-	"firmware",	
+	"firmware",
 	"glibc",
 	"gnome-themes",
 	"kernel-module",
@@ -101,7 +101,7 @@ class VuWizard(WizardLanguage, Rc):
 					f.write(STARTUP_3)
 				cmdlist = []
 				cmdlist.append("dd if=/dev/%s of=/zImage" % getMachineMtdKernel())					# backup old kernel
-				cmdlist.append("dd if=/usr/bin/kernel_auto.bin of=/dev/%s" % getMachineMtdKernel())	# create new kernel
+				cmdlist.append("dd if=/usr/bin/kernel_auto.bin of=/dev/%s" % getMachineMtdKernel())  # create new kernel
 				cmdlist.append("mv /usr/bin/STARTUP.cpio.gz /STARTUP.cpio.gz")						# copy userroot routine
 				for file in glob.glob("/media/*/vuplus/*/force.update", recursive=True):
 					cmdlist.append("mv %s %s" % (file, file.replace("force.update", "noforce.update")))						# remove Vu force update(Vu+ Zero4k)
@@ -151,9 +151,8 @@ class VuWizard(WizardLanguage, Rc):
 	def reBoot(self, *args, **kwargs):
 		with open("/STARTUP", 'w') as f:
 			f.write(STARTUP_1)
-		if hasattr(config.misc, "restorewizardrun"):  # protect here because it is initialised in vix plugin
-			config.misc.restorewizardrun.value = True
-			config.misc.restorewizardrun.save()
+		config.misc.restorewizardrun.value = True
+		config.misc.restorewizardrun.save()
 		config.misc.videowizardenabled.value = 0
 		config.misc.videowizardenabled.save()
 		config.misc.firstrun.value = 0
@@ -181,7 +180,7 @@ class VuWizard(WizardLanguage, Rc):
 					cmdlist.append("/usr/bin/opkg remove --autoremove --add-dest /:/ " + parts[0] + " --force-remove --force-depends")
 					continue
 #			print("[VuWizard] cmdlist", cmdlist)
-			if cmdlist:	
+			if cmdlist:
 				cmdlist.append("rm -f /usr/share/fonts/wqy-microhei.ttc")
 				self.Console.eBatch(cmdlist, self.bootSlot, debug=False)
 		else:

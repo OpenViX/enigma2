@@ -67,8 +67,8 @@ class NextEpgInfo(Renderer, VariableText):
 				attribs.append((attrib, value))
 		for (attrib, value) in attribs:
 			self.skinAttributes.remove((attrib, value))
-		if self.timecolor == "": # fallback to foregroundColor
+		if self.timecolor == "":  # fallback to foregroundColor
 			self.timecolor = self.foregroundColor
-		if self.labelcolor == "": # fallback to foregroundColor
+		if self.labelcolor == "":  # fallback to foregroundColor
 			self.labelcolor = self.foregroundColor
 		return Renderer.applySkin(self, desktop, parent)

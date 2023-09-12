@@ -295,7 +295,7 @@ class Devices(Screen):
 					hddp = hddp.replace("Internal", "ATA Bus ")
 				free = hdd.Totalfree()
 				if free >= 1:
-					free *= 1000000 # convert MB to bytes
+					free *= 1000000  # convert MB to bytes
 					freeline = _("Free: ") + bytesToHumanReadable(free)
 				elif "Generic(STORAGE" in hddp:				# This is the SDA boot volume for SF8008 if "full" #
 					continue

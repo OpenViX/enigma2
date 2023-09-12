@@ -82,7 +82,7 @@ class TimerSanityCheck:
 #         after the timer to be added ends
 #      Code to handle this needs to be added (it is *NOT* here yet!)
 #
-		if (self.newtimer is not None) and (self.newtimer.end < time()): # does not conflict
+		if (self.newtimer is not None) and (self.newtimer.end < time()):  # does not conflict
 			return True
 
 		if not self.newtimer or not self.newtimer.service_ref or not self.newtimer.service_ref.ref.valid():
@@ -98,12 +98,12 @@ class TimerSanityCheck:
 		rflags = self.newtimer.repeated
 		rflags = ((rflags & 0x7F) >> 3) | ((rflags & 0x07) << 4)
 		if rflags:
-			begin = self.newtimer.begin % 86400 # map to first day
+			begin = self.newtimer.begin % 86400  # map to first day
 			if (self.localtimediff > 0) and ((begin + self.localtimediff) > 86400):
 				rflags = ((rflags >> 1) & 0x3F) | ((rflags << 6) & 0x40)
 			elif (self.localtimediff < 0) and (begin < self.localtimediff):
 				rflags = ((rflags << 1) & 0x7E) | ((rflags >> 6) & 0x01)
-			while rflags: # then arrange on the week
+			while rflags:  # then arrange on the week
 				if rflags & 1:
 					self.rep_eventlist.append((begin, -1))
 				begin += 86400
@@ -122,7 +122,7 @@ class TimerSanityCheck:
 				if timer.repeated:
 					rflags = timer.repeated
 					rflags = ((rflags & 0x7F) >> 3) | ((rflags & 0x07) << 4)
-					begin = timer.begin % 86400 # map all to first day
+					begin = timer.begin % 86400  # map all to first day
 					if (self.localtimediff > 0) and ((begin + self.localtimediff) > 86400):
 						rflags = ((rflags >> 1) & 0x3F) | ((rflags << 6) & 0x40)
 					elif (self.localtimediff < 0) and (begin < self.localtimediff):
@@ -148,7 +148,7 @@ class TimerSanityCheck:
 				weeks += 1
 			for cnt in range(int(weeks)):
 				for event in self.rep_eventlist:
-					if event[1] == -1: # -1 is the identifier of the changed timer
+					if event[1] == -1:  # -1 is the identifier of the changed timer
 						event_begin = self.newtimer.begin
 						event_end = self.newtimer.end
 					else:
@@ -160,16 +160,16 @@ class TimerSanityCheck:
 					new_event_begin += 3600 * (localtime(event_begin).tm_hour - new_lth)
 					new_event_end = new_event_begin + (event_end - event_begin)
 					if event[1] == -1:
-						if new_event_begin >= self.newtimer.begin: # is the soap already running?
+						if new_event_begin >= self.newtimer.begin:  # is the soap already running?
 							self.nrep_eventlist.extend([(new_event_begin, self.bflag, event[1]), (new_event_end, self.eflag, event[1])])
 					else:
-						if new_event_begin >= self.check_timerlist[event[1]].begin: # is the soap already running?
+						if new_event_begin >= self.check_timerlist[event[1]].begin:  # is the soap already running?
 							self.nrep_eventlist.extend([(new_event_begin, self.bflag, event[1]), (new_event_end, self.eflag, event[1])])
 		else:
-			offset_0 = 345600 # the Epoch begins on Thursday
-			for cnt in (0, 1): # test two weeks to take care of Sunday-Monday transitions
+			offset_0 = 345600  # the Epoch begins on Thursday
+			for cnt in (0, 1):  # test two weeks to take care of Sunday-Monday transitions
 				for event in self.rep_eventlist:
-					if event[1] == -1: # -1 is the identifier of the changed timer
+					if event[1] == -1:  # -1 is the identifier of the changed timer
 						event_begin = self.newtimer.begin
 						event_end = self.newtimer.end
 					else:
@@ -208,7 +208,7 @@ class TimerSanityCheck:
 
 		for event in self.nrep_eventlist:
 			cnt += event[1]
-			if event[2] == -1: # new timer
+			if event[2] == -1:  # new timer
 				timer = self.newtimer
 			else:
 				timer = self.check_timerlist[event[2]]
@@ -227,35 +227,35 @@ class TimerSanityCheck:
 				#if fakeRecResult == -6 and len(NavigationInstance.instance.getRecordings(True)) < 2:
 				#	print "[TimerSanityCheck] less than two timers in the simulated recording list - timer conflict is not plausible - ignored !"
 				#	fakeRecResult = 0
-				if not fakeRecResult: # tune okay
+				if not fakeRecResult:  # tune okay
 					if hasattr(fakeRecService, 'frontendInfo'):
 						feinfo = fakeRecService.frontendInfo()
 						if feinfo and hasattr(feinfo, 'getFrontendData'):
 							tunerType.append(feinfo.getFrontendData().get("tuner_type", -1))
 						feinfo = None
-				else: # tune failed.. so we must go another way to get service type (DVB-S, DVB-T, DVB-C)
+				else:  # tune failed.. so we must go another way to get service type (DVB-S, DVB-T, DVB-C)
 
-					def getServiceType(ref): # helper function to get a service type of a service reference
+					def getServiceType(ref):  # helper function to get a service type of a service reference
 						serviceInfo = serviceHandler.info(ref)
 						serviceInfo = serviceInfo and serviceInfo.getInfoObject(ref, iServiceInformation.sTransponderData)
 						return -1 if serviceInfo is None else serviceInfo.get("tuner_type", -1)
 
-					if ref and ref.flags & eServiceReference.isGroup: # service group ?
-						serviceList = serviceHandler.list(ref) # get all alternative services
+					if ref and ref.flags & eServiceReference.isGroup:  # service group ?
+						serviceList = serviceHandler.list(ref)  # get all alternative services
 						if serviceList:
-							for ref in serviceList.getContent("R"): # iterate over all group service references
+							for ref in serviceList.getContent("R"):  # iterate over all group service references
 								type = getServiceType(ref)
-								if not type in tunerType: # just add single time
+								if not type in tunerType:  # just add single time
 									tunerType.append(type)
 					elif ref:
 						tunerType.append(getServiceType(ref))
 
-				if event[2] == -1: # new timer
+				if event[2] == -1:  # new timer
 					newTimerTunerType = tunerType
 				overlaplist.append((fakeRecResult, timer, tunerType))
 				fakeRecList.append((timer, fakeRecService))
 				if fakeRecResult:
-					if ConflictTimer is None: # just take care of the first conflict
+					if ConflictTimer is None:  # just take care of the first conflict
 						ConflictTimer = timer
 						ConflictTunerType = tunerType
 			elif event[1] == self.eflag:
@@ -287,7 +287,7 @@ class TimerSanityCheck:
 						ConflictTimer = timer
 						ConflictTunerType = tunerType
 
-			self.nrep_eventlist[idx] = (event[0], event[1], event[2], cnt, overlaplist[:]) # insert a duplicate into current overlaplist
+			self.nrep_eventlist[idx] = (event[0], event[1], event[2], cnt, overlaplist[:])  # insert a duplicate into current overlaplist
 			fakeRecService = None
 			fakeRecResult = None
 			idx += 1
@@ -299,9 +299,9 @@ class TimerSanityCheck:
 ##################################################################################
 # we have detected a conflict, now we must figure out the involved timers
 
-		if self.newtimer is not ConflictTimer: # the new timer is not the conflicting timer?
+		if self.newtimer is not ConflictTimer:  # the new timer is not the conflicting timer?
 			for event in self.nrep_eventlist:
-				if len(event[4]) > 1: # entry in overlaplist of this event??
+				if len(event[4]) > 1:  # entry in overlaplist of this event??
 					kt = False
 					nt = False
 					for entry in event[4]:
@@ -316,7 +316,7 @@ class TimerSanityCheck:
 
 		self.simultimer = [ConflictTimer]
 		for event in self.nrep_eventlist:
-			if len(event[4]) > 1: # entry in overlaplist of this event??
+			if len(event[4]) > 1:  # entry in overlaplist of this event??
 				for entry in event[4]:
 					if entry[1] is ConflictTimer:
 						break

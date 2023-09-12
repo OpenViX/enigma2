@@ -1,0 +1,42 @@
+<!--suppress XmlUnboundNsPrefix -->
+<setupxml>
+    <setup key="vixsoftcammanager" title="Softcam manager settings" titleshort="Settings" showOpenWebIF="1">
+        <item level="2" text="Show in extensions" description="Allows the softcam manager to be launched from extensions.">config.softcammanager.showinextensions</item>
+        <item level="2" text="Enable frozen check" description="Allows the softcam to be checked if it stopped working, and restarted automatically if needed.">config.softcammanager.softcamtimerenabled</item>
+        <item level="2" text="Frozen check interval" requires="config.softcammanager.softcamtimerenabled" description="Set the interval to be checked in mins.">config.softcammanager.softcamtimer</item>
+    </setup>
+    <setup key="vixbackupmanager" title="Backup manager settings" titleshort="Settings">
+        <item level="2" text="Backup location" description="Location of where backup should be saved.">config.backupmanager.backuplocation</item>
+        <item level="2" text="Backup prefix" description="Allows you to tag your backups to a box.">config.backupmanager.folderprefix</item>
+        <item level="2" text="Include machine name in backup name" description="The name of the receiver can be included in the backup filename, but makes the filename lengthy.">config.backupmanager.showboxname</item>
+        <item level="2" text="Schedule backups" description="Allows you to schedule your backups.">config.backupmanager.schedule</item>
+        <item level="2" text="- Time of backup to start" requires="config.backupmanager.schedule" description="Set the time of backup to start.">config.backupmanager.scheduletime</item>
+        <item level="2" text="- Repeat how often" requires="config.backupmanager.schedule" description="Set the repeat interval of backup schedule.">config.backupmanager.repeattype</item>
+        <item level="2" text="- Query before backup starts" requires="config.backupmanager.schedule" description="Query before starting backup.">config.backupmanager.query</item>
+        <item level="2" text="Backups to prune" description="Types of backups to remove when stale.">config.backupmanager.types_to_prune</item>
+        <if conditional="config.backupmanager.types_to_prune.value != 'none'">
+            <item level="2" text="- Max backups to keep (0==all)" description="Maximum number of backups to keep. Older backups are given priority for removal, so the fresher ones remain.">config.backupmanager.number_to_keep</item>
+        </if>
+    </setup>
+    <setup key="viximagemanager" title="Image manager settings" titleshort="Settings">
+        <item level="1" text="Automatic settings backup" description="Create a settings backup before updating.">config.imagemanager.autosettingsbackup</item>
+        <item level="2" text="Extensive search" description="Locations searched when creating the images list. Select 'yes' to search all likely locations on your system where images may be located. Select 'no' to limit the search to just the user selected backup location.">config.imagemanager.extensive_location_search</item>
+        <item level="2" text="Backup location" description="Location of where the image backup should be saved.">config.imagemanager.backuplocation</item>
+        <item level="2" text="Backup prefix" description="Allows you to give your image filename a custom prefix.">config.imagemanager.folderprefix</item>
+        <item level="2" text="Schedule backups" description="Allows you to schedule your image backups.">config.imagemanager.schedule</item>
+        <item level="2" text="- Time of backup to start" requires="config.imagemanager.schedule" description="Set the time of backup to start.">config.imagemanager.scheduletime</item>
+        <item level="2" text="- Repeat how often" requires="config.imagemanager.schedule" description="Set the repeat interval of backup schedule.">config.imagemanager.repeattype</item>
+        <item level="2" text="- Query before image backup starts" requires="config.imagemanager.schedule" description="Query before starting image backup.">config.imagemanager.query</item>
+        <item level="2" text="Max image backups to keep (0==all)" description="Backups to keep">config.imagemanager.number_to_keep</item>
+        <item level="2" text="Login as an OpenViX developer" description="If you are an OpenViX developer you can enter your login details to have direct access to OpenViX developer images for your receiver. This feature is only available via 'https' connections.">config.imagemanager.login_as_ViX_developer</item>
+        <if conditional="config.imagemanager.login_as_ViX_developer.value">
+            <item level="2" text="Developer username" description="Enter your OpenViX developer username.">config.imagemanager.developer_username</item>
+            <item level="2" text="Developer password" description="Enter your OpenViX developer password.">config.imagemanager.developer_password</item>
+        </if>
+        <item level="2" text="Homebuild URL" description="If you are running your own build server and want to download your own images directly into ImageManager you can link to the URL of your JSON index. Don't forget to add '%s' where the box name should be inserted into the url. If you need help with implementing this please ask on the forum.">config.imagemanager.imagefeed_MyBuild</item>
+    </setup>
+    <setup key="vixscriptrunner" title="Script runner settings" titleshort="Settings">
+        <item level="2" text="Close window on success" description="Allows you to close the window automatically.">config.scriptrunner.close</item>
+        <item level="2" text="Show in extensions" description="Allows the script runner to be launched from extensions.">config.scriptrunner.showinextensions</item>
+    </setup>
+</setupxml>

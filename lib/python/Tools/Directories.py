@@ -250,7 +250,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 
 
 def getPrimarySkinResolution():
-	from Components.config import config # deferred import
+	from Components.config import config  # deferred import
 	resolutions = ["480", "576", "720", "1080", "2160", "4320", "8640"]
 	resolution = None
 	skin = resolveFilename(SCOPE_SKIN, config.skin.primary_skin.value)

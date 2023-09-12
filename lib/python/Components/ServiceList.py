@@ -440,7 +440,7 @@ class ServiceList(GUIComponent):
 		else:
 			self.l.setGetPiconNameFunc(None)
 
-		rowWidth = self.instance.size().width() - 30 #scrollbar is fixed 20 + 10 Extra marge
+		rowWidth = self.instance.size().width() - 30  # scrollbar is fixed 20 + 10 Extra marge
 
 		if mode == self.MODE_NORMAL or not config.usage.show_channel_numbers_in_servicelist.value:
 			channelNumberWidth = 0

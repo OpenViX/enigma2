@@ -24,7 +24,7 @@ class ServiceOrbitalPosition(Converter):
 		if isinstance(service, iPlayableServicePtr):
 			info = service and service.info()
 			ref = None
-		else: # reference
+		else:  # reference
 			info = service and self.source.info
 			ref = service
 		if not info:

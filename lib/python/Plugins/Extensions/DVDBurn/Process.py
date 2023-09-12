@@ -343,7 +343,7 @@ class BurnTask(Task):
 			extra_args = []
 		Task.__init__(self, job, job.name)
 		self.weighting = 500
-		self.end = 120 # 100 for writing, 10 for buffer flush, 10 for closing disc
+		self.end = 120  # 100 for writing, 10 for buffer flush, 10 for closing disc
 		self.postconditions.append(BurnTaskPostcondition())
 		self.setTool(tool)
 		self.args += extra_args
@@ -414,7 +414,7 @@ class RemoveDVDFolder(Task):
 class CheckDiskspaceTask(Task):
 	def __init__(self, job):
 		Task.__init__(self, job, "Checking free space")
-		totalsize = 0 # require an extra safety 50 MB
+		totalsize = 0  # require an extra safety 50 MB
 		maxsize = 0
 		for title in job.project.titles:
 			titlesize = title.estimatedDiskspace
@@ -423,7 +423,7 @@ class CheckDiskspaceTask(Task):
 			totalsize += titlesize
 		diskSpaceNeeded = totalsize + maxsize
 		job.estimateddvdsize = totalsize / 1024 / 1024
-		totalsize += 50 * 1024 * 1024 # require an extra safety 50 MB
+		totalsize += 50 * 1024 * 1024  # require an extra safety 50 MB
 		self.global_preconditions.append(DiskspacePrecondition(diskSpaceNeeded))
 		self.weighting = 5
 

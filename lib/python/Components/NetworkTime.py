@@ -26,7 +26,7 @@ class NTPSyncPoller:
 	def start(self):
 		if self.timecheck not in self.timer.callback:
 			self.timer.callback.append(self.timecheck)
-		self.ntpConfigUpdated() # update NTP url, create if not exists
+		self.ntpConfigUpdated()  # update NTP url, create if not exists
 
 	def stop(self):
 		if self.timecheck in self.timer.callback:
@@ -59,5 +59,5 @@ class NTPSyncPoller:
 			self.timer.startLongTimer(10)
 
 	def ntpConfigUpdated(self):
-		self.timer.stop() # stop current timer if this is an update from Time.py
+		self.timer.stop()  # stop current timer if this is an update from Time.py
 		self.timer.startLongTimer(0)

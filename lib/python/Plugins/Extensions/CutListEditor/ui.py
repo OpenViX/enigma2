@@ -68,7 +68,7 @@ class CutListContextMenu(FixedMenu):
 	SHOW_DELETECUT = 2
 
 	def __init__(self, session, state, nearmark):
-		menu = [(_("back"), self.close)] #, (None, )]
+		menu = [(_("back"), self.close)]  # , (None, )]
 
 		if state == self.SHOW_STARTCUT:
 			menu.append((_("start cut here"), self.startCut))
@@ -270,7 +270,7 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 		self.uploadCuesheet()
 
 	def __addMark(self):
-		self.toggleMark(onlyadd=True, tolerance=90000) # do not allow two marks in <1s
+		self.toggleMark(onlyadd=True, tolerance=90000)  # do not allow two marks in <1s
 
 	def __removeMark(self):
 		m = self["cutlist"].getCurrent()
@@ -381,9 +381,9 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 			in_after = None
 
 			for (where, what) in self.cut_list:
-				if what == 1 and where <= self.context_position: # out
+				if what == 1 and where <= self.context_position:  # out
 					out_before = (where, what)
-				elif what == 0 and where < self.context_position: # in, before out
+				elif what == 0 and where < self.context_position:  # in, before out
 					out_before = None
 				elif what == 0 and where >= self.context_position and in_after is None:
 					in_after = (where, what)

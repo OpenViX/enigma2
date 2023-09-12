@@ -246,9 +246,9 @@ class Pic_Thumb(Screen):
 
 		self.size_w = getDesktop(0).size().width()
 		self.size_h = getDesktop(0).size().height()
-		self.thumbsX = self.size_w // (self.spaceX + self.picX) # thumbnails in X
-		self.thumbsY = self.size_h // (self.spaceY + self.picY) # thumbnails in Y
-		self.thumbsC = self.thumbsX * self.thumbsY # all thumbnails
+		self.thumbsX = self.size_w // (self.spaceX + self.picX)  # thumbnails in X
+		self.thumbsY = self.size_h // (self.spaceY + self.picY)  # thumbnails in Y
+		self.thumbsC = self.thumbsX * self.thumbsY  # all thumbnails
 
 		self.positionlist = []
 		skincontent = ""
@@ -360,7 +360,7 @@ class Pic_Thumb(Screen):
 	def showPic(self, picInfo=""):
 		for x in range(len(self.Thumbnaillist)):
 			if self.Thumbnaillist[x][0] == 0:
-				if self.picload.getThumbnail(self.Thumbnaillist[x][2]) == 1: #zu tun probier noch mal
+				if self.picload.getThumbnail(self.Thumbnaillist[x][2]) == 1:  # zu tun probier noch mal
 					self.ThumbTimer.start(500, True)
 				else:
 					self.Thumbnaillist[x][0] = 1
@@ -468,17 +468,17 @@ class Pic_Full_View(Screen):
 		self.dirlistcount = 0
 
 		for x in filelist:
-			if len(filelist[0]) == 3: #orig. filelist
+			if len(filelist[0]) == 3:  # orig. filelist
 				if not x[0][1]:
 					self.filelist.append(path + x[0][0])
 				else:
 					self.dirlistcount += 1
-			elif len(filelist[0]) == 2: #scanlist
+			elif len(filelist[0]) == 2:  # scanlist
 				if not x[0][1]:
 					self.filelist.append(x[0][0])
 				else:
 					self.dirlistcount += 1
-			else: # thumbnaillist
+			else:  # thumbnaillist
 				self.filelist.append(x[T_FULL])
 
 		self.maxentry = len(self.filelist) - 1

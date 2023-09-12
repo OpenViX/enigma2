@@ -206,9 +206,9 @@ class InputDeviceSetup(ConfigListScreen, Screen):
 	# for summary:
 	def changedEntry(self):
 		ConfigListScreen.changedEntry(self)
-		self.selectionChanged() # to update hints text from the slider in real time.
+		self.selectionChanged()  # to update hints text from the slider in real time.
 
-	def getCurrentValue(self): # required because getCurrentValue() in ConfigListScreen outputs .getText() e.g. '100/500' rather than just .value, '100' and this is what is wanted in the hints text.
+	def getCurrentValue(self):  # required because getCurrentValue() in ConfigListScreen outputs .getText() e.g. '100/500' rather than just .value, '100' and this is what is wanted in the hints text.
 		return str(self["config"].getCurrent()[1].value)
 
 
@@ -280,8 +280,8 @@ class RemoteControlType(ConfigListScreen, Screen):
 			("protek4k", 26),
 			("hd61", 26),
 			("hd60", 27),
-			("h7", 28), # new model
-			("h9", 28), # new model
+			("h7", 28),  # new model
+			("h9", 28),  # new model
 			("h9combo", 28),
 			("h10", 28)
 		]

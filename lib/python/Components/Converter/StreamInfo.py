@@ -3,6 +3,7 @@ from Components.Element import cached
 import NavigationInstance
 from enigma import iPlayableService
 
+
 class StreamInfo(Converter):
 	STREAMURL = 0
 	STREAMTYPE = 1
@@ -34,7 +35,7 @@ class StreamInfo(Converter):
 		return ''
 
 	def streamurl(self):
-		playref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()		
+		playref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()
 		if playref:
 			refstr = playref.toString()
 			if '%3a' in refstr:

@@ -5,8 +5,8 @@ import datetime
 
 
 class TimerEntry:
-	StateWaiting = 0	# Waiting for the recording start time
-	StatePrepared = 1	# Pre recording preparation has been completed, about to start recording
+	StateWaiting = 0  # Waiting for the recording start time
+	StatePrepared = 1  # Pre recording preparation has been completed, about to start recording
 	StateRunning = 2 	# Currently recording
 	StateEnded = 3		# Recording was completed successfully
 	StateFailed = 4		# Something went wrong
@@ -270,7 +270,7 @@ class Timer:
 
 		min = int(now) + self.MaxWaitTime
 
-		self.timer_list and self.timer_list.sort() #  resort/refresh list, try to fix hanging timers
+		self.timer_list and self.timer_list.sort()  # resort/refresh list, try to fix hanging timers
 
 		# calculate next activation point
 		timer_list = [t for t in self.timer_list if not t.disabled]

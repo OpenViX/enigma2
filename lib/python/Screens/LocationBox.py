@@ -526,7 +526,7 @@ class TimeshiftLocationBox(LocationBox):
 				autoAdd=True,
 				editDir=True,
 				inhibitDirs=defaultInhibitDirs,
-				minFree=1024 # the same requirement is hardcoded in servicedvb.cpp
+				minFree=1024  # the same requirement is hardcoded in servicedvb.cpp
 		)
 		self.skinName = "LocationBox"
 

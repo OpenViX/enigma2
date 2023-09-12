@@ -338,7 +338,7 @@ keyDescriptions = [{  # id=0 - dmm0 remote directory, DM8000.
 	KEYIDS["KEY_YELLOW"]: ("YELLOW",)
 }]
 
-labels = { # This is not currently used anywhere. It is just present to populate the pot file.
+labels = {  # This is not currently used anywhere. It is just present to populate the pot file.
 	"ABOUT": _("ABOUT"),
 	"ARROWLEFT": _("ARROWLEFT"),
 	"ARROWRIGHT": _("ARROWRIGHT"),
@@ -475,5 +475,5 @@ def removeKeyBindings(domain):
 		keyBindings[x] = [e for e in keyBindings[x] if e[1] != domain]
 
 
-def getFpAndKbdKeys(): # used by HelpMenuList
+def getFpAndKbdKeys():  # used by HelpMenuList
 	return {k for i in keyDescriptions for k, v in i.items() if len(v) > 1 and v[1] in ("fp", "kbd")}

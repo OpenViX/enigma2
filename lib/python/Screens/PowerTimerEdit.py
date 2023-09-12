@@ -205,7 +205,7 @@ class PowerTimerEditList(Screen):
 		del flist[:]
 		flist.extend([(timer, False) for timer in self.session.nav.PowerTimer.timer_list])
 		flist.extend([(timer, True) for timer in self.session.nav.PowerTimer.processed_timers])
-		if config.usage.timerlist_finished_timer_position.index: #end of list
+		if config.usage.timerlist_finished_timer_position.index:  # end of list
 			flist.sort(key=cmp_to_key(eol_compare))
 		else:
 			flist.sort(key=lambda x: x[0].begin)

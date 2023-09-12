@@ -25,7 +25,7 @@ epgActions = [
 	# function name, button label, help text
 	("", _("Do nothing")),
 	("openIMDb", _("IMDb Search"), _("IMDB search for current event")),
-	("openTMDb", _("TMDb Search"), _("TMDB search for current event")),	
+	("openTMDb", _("TMDb Search"), _("TMDB search for current event")),
 	("sortEPG", _("Sort"), _("Sort the EPG list")),
 	("addEditTimer", _("Add Timer"), _("Add/Remove timer for current event")),
 	("openTimerList", _("Show Timer List")),
@@ -134,7 +134,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.noAutotimer = _("The AutoTimer plugin is not installed!\nPlease install it.")
 		self.noEPGSearch = _("The EPGSearch plugin is not installed!\nPlease install it.")
 		self.noIMDb = _("The IMDb plugin is not installed!\nPlease install it.")
-		self.noTMDb = _("The TMDb plugin is not installed!\nPlease install it.")		
+		self.noTMDb = _("The TMDb plugin is not installed!\nPlease install it.")
 		self.refreshTimer = eTimer()
 		self.refreshTimer.timeout.get().append(self.refreshList)
 		self.onLayoutFinish.append(self.onCreate)
@@ -226,7 +226,6 @@ class EPGSelectionBase(Screen, HelpableScreen):
 			event = self["list"].getCurrent()[0]
 			if event is not None:
 				self.session.open(tmdbScreen, event.getEventName(), 2)
-
 
 	def openEPGSearch(self):
 		self.closeEventViewDialog()
