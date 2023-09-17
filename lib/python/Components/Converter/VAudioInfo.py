@@ -65,14 +65,14 @@ class VAudioInfo(Poll, Converter, object):
 			if lang in languages:
 				languages = "English"
 				break
-		languages = languages.replace("und ", "")
+		languages = languages.replace("und", "")
 		return languages
 
 	def getAudioCodec(self, info):
 		description_str = _("unknown")
 		if self.getAudio():
 			languages = self.getLanguage()
-			description = self.audio_info.getDescription().replace("A_", "").replace("", "").replace("AC-3", "AC3").replace("(ATSC A/52)", "").replace("(ATSC A/52B)", "").replace("MPEG", "AAC").replace(" Layer 2 (MP2)", "").replace(" 3 (MP3)", "MP3").replace("-1", "").replace("2-", "").replace("-4 AAC", "").replace("4-AAC", "HE-AAC").replace("audio", "").replace("/L3", "").replace("/mpeg", "AAC").replace("/x-", "").replace("raw", "Dolby TrueHD").replace("E-AC3", "AC3+").replace("EAC3", "AC3+").replace("IPCM", "AC3").replace("LPCM", "AC3+").replace("AAC_PLUS", "AAC+").replace("AAC_LATM", "AAC").replace("WMA/PRO", "WMA Pro") or ""
+			description = self.audio_info.getDescription().replace("A_", "").replace("AC-3", "AC3").replace("(ATSC A/52)", "").replace("(ATSC A/52B)", "").replace(" Layer 2 (MP2)", "").replace(" Layer 3 (MP3)", "MP3").replace("-1", "").replace("-2", "").replace("2-", "").replace("-4 AAC", "AAC").replace("4-AAC", "HE-AAC").replace("audio", "").replace("/L3", "").replace("/mpeg", "AAC").replace("/x-", "").replace("raw", "Dolby TrueHD").replace("E-AC3", "AC3+").replace("EAC3", "AC3+").replace("IPCM", "AC3").replace("LPCM", "AC3+").replace("AAC_PLUS", "AAC+").replace("AAC_LATM", "AAC").replace("WMA/PRO", "WMA Pro").replace("MPEG", "MPEG1 Layer II").replace("MPEG1 Layer II AAC", "AAC").replace("MPEG1 Layer IIAAC", "AAC").replace("MPEG1 Layer IIMP3", "MP3") or ""
 			description_str = description.split(" ")
 			if len(description_str) and description_str[0] in languages:
 				return languages
