@@ -245,7 +245,7 @@ class ServiceInfo(Screen):
 		if self.number_of_tracks:
 
 			def create_list(i):
-				audio_desc = self.audio.getTrackInfo(i).getDescription().replace("A_", "").replace("", "").replace("AC-3", "AC3").replace("(ATSC A/52)", "").replace("(ATSC A/52B)", "").replace("MPEG", "AAC").replace(" Layer 2 (MP2)", "").replace(" 3 (MP3)", "MP3").replace("-1", "").replace("2-", "").replace("-4 AAC", "").replace("4-AAC", "HE-AAC").replace("audio", "").replace("/L3", "").replace("/mpeg", "AAC").replace("/x-", "").replace("raw", "Dolby TrueHD").replace("E-AC3", "AC3+").replace("EAC3", "AC3+").replace("IPCM", "AC3").replace("LPCM", "AC3+").replace("AAC_PLUS", "AAC+").replace("AAC_LATM", "AAC").replace("WMA/PRO", "WMA Pro")
+				audio_desc = self.audio.getTrackInfo(i).getDescription().replace("A_", "").replace("AC-3", "AC3").replace("(ATSC A/52)", "").replace("(ATSC A/52B)", "").replace(" Layer 2 (MP2)", "").replace(" Layer 3 (MP3)", "MP3").replace("-1", "").replace("-2", "").replace("2-", "").replace("-4 AAC", "AAC").replace("4-AAC", "HE-AAC").replace("audio", "").replace("/L3", "").replace("/mpeg", "AAC").replace("/x-", "").replace("raw", "Dolby TrueHD").replace("E-AC3", "AC3+").replace("EAC3", "AC3+").replace("IPCM", "AC3").replace("LPCM", "AC3+").replace("AAC_PLUS", "AAC+").replace("AAC_LATM", "AAC").replace("WMA/PRO", "WMA Pro").replace("MPEG", "MPEG1 Layer II").replace("MPEG1 Layer II AAC", "AAC").replace("MPEG1 Layer IIAAC", "AAC").replace("MPEG1 Layer IIMP3", "MP3")
 				audio_pid = self.audio.getTrackInfo(i).getPID()
 				audio_lang = self.audio.getTrackInfo(i).getLanguage() or _("Not defined")
 				if self.IPTV:
