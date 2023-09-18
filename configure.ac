@@ -599,6 +599,9 @@ data/display800/Default_with_Picon_Fullscreen/Makefile
 data/vfd128/Makefile
 data/vfd140/Makefile
 data/vfd255/Makefile
+etc/Makefile
+etc/cron/Makefile
+etc/cron/crontabs/Makefile
 include/Makefile
 lib/Makefile
 lib/base/eenv.cpp
