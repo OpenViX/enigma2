@@ -13,6 +13,7 @@ from Components.SystemInfo import SystemInfo
 from Components.VolumeControl import VolumeControl
 from Components.PluginComponent import plugins
 from Plugins.Plugin import PluginDescriptor
+from Components.Converter.VAudioInfo import StdAudioDesc
 
 from enigma import iPlayableService, eTimer, eSize, eDVBDB, eServiceReference, eServiceCenter, iServiceInformation
 
@@ -276,7 +277,7 @@ class AudioSelection(ConfigListScreen, Screen):
 					number = str(x + 1)
 					i = audio.getTrackInfo(x)
 					languages = i.getLanguage().split('/')
-					description = i.getDescription().replace("A_", "").replace("AC-3", "AC3").replace("(ATSC A/52)", "").replace("(ATSC A/52B)", "").replace(" Layer 2 (MP2)", "").replace(" Layer 3 (MP3)", "MP3").replace("-1", "").replace("-2", "").replace("2-", "").replace("-4 AAC", "AAC").replace("4-AAC", "HE-AAC").replace("audio", "").replace("/L3", "").replace("/mpeg", "AAC").replace("/x-", "").replace("raw", "Dolby TrueHD").replace("E-AC3", "AC3+").replace("EAC3", "AC3+").replace("IPCM", "AC3").replace("LPCM", "AC3+").replace("AAC_PLUS", "AAC+").replace("AAC_LATM", "AAC").replace("WMA/PRO", "WMA Pro").replace("MPEG", "MPEG1 Layer II").replace("MPEG1 Layer II AAC", "AAC").replace("MPEG1 Layer IIAAC", "AAC").replace("MPEG1 Layer IIMP3", "MP3")
+					description = StdAudioDesc(i.getDescription())
 					selected = ""
 					language = ""
 					if selectedAudio == x:
