@@ -8,16 +8,14 @@ from enigma import eTimer
 from os import path as ospath, remove, walk
 import re
 from enigma import eServiceReference, eDVBDB
-# required methods: Request, urlopen, HTTPError, URLError
-from urllib.request import urlopen, Request  # raises ImportError in Python 2
-from urllib.error import HTTPError, URLError  # raises ImportError in Python 2
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError, URLError
 
 autoClientModeTimer = None
 
 
 def autostart():
 	global autoClientModeTimer
-	now = int(time())
 	print("[ClientModeScheduler][ClientModeautostart] AutoStart Enabled")
 	if autoClientModeTimer is None:
 		autoClientModeTimer = AutoClientModeTimer()
@@ -358,7 +356,7 @@ class ChannelsImporter():
 		try:
 			req = Request(url)
 			response = urlopen(req)
-			print("[ChannelsImporter][saveEPGonRemoteReceiver] Response: %d, %s" % (response.getcode(), response.read().strip().replace("\r", "").replace("\n", "")))
+			print("[ChannelsImporter][saveEPGonRemoteReceiver] Response: %d, %s" % (response.getcode(), response.read().decode().strip().replace("\r", "").replace("\n", "")))
 		except HTTPError as err:
 			print("[ChannelsImporter][saveEPGonRemoteReceiver] ERROR:", err)
 		except URLError as err:
