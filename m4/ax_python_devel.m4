@@ -283,7 +283,7 @@ EOD`
 			then
 				ac_python_libdir_XCompile=''
 			else
-				ac_python_libdir_XCompile=`echo "$ac_python_libdir" | sed "s_/usr/lib__"`
+				ac_python_libdir_XCompile=`echo "$ac_python_libdir" | sed "s_/usr/lib__"  | sed "s_-native__"`
 			fi
 			ac_python_library=`echo "$ac_python_library" | sed "s/^lib//"`
 			AC_MSG_RESULT([$ac_python_libdir])
@@ -315,9 +315,7 @@ EOD`
 	   #
 	   # Check for Python include path
 	   #
-	   # checking for Python include path... should have -I/media/twol/TwolHome1/5.3/builds/openvix/release/vuuno4kse/tmp/work/vuuno4kse-oe-linux-gnueabi/enigma2/enigma2-7.3+gitAUTOINC+84579bb7a4-r0/recipe-sysroot/usr/include/python3.11
 	   # so pick up ac_python_libdir_XCompile from previous search for Python library path for Cross compile and front include...
-
 
 	   AC_MSG_CHECKING([for Python include path])
 	   if test -z "$PYTHON_CPPFLAGS"; then
@@ -338,7 +336,14 @@ EOD`
 			if test "${plat_python_path}" != "${python_path}"; then
 				python_path="-I$python_path -I$plat_python_path"
 			else
-				python_path="-I$ac_python_libdir_XCompile$python_path"
+				# check for OpenPli 3.9 build, returns full path but native lib
+				if [[ "${#python_path}" -gt 24 ]]
+				then
+					plat_python_path=`echo "$plat_python_path" | sed "s_-native__"`
+					python_path="-I$plat_python_path"
+				else
+					python_path="-I$ac_python_libdir_XCompile$python_path"
+				fi
 			fi
 		fi
 		PYTHON_CPPFLAGS=$python_path
