@@ -37,10 +37,13 @@ _acedits = (
     ("MPEG1 Layer IIAAC", "AAC"),
     ("MPEG1 Layer IIMP3", "MP3"),
 )
+
+
 def StdAudioDesc(description):
     for orig, repl in _acedits:
         description = description.replace(orig, repl)
     return description
+
 
 class VAudioInfo(Poll, Converter, object):
 	GET_AUDIO_ICON = 0
