@@ -218,7 +218,8 @@ $ac_sysconfig_result])
 
 	if test $ax_python_devel_found = yes; then
 	   #
-	   # Check for Python library path
+	   # Check for Python library path here before check for Python include path
+	   # to pick up correct OE-A build library
 	   #
 	   AC_MSG_CHECKING([for Python library path])
 	   if test -z "$PYTHON_LIBS"; then
@@ -274,16 +275,16 @@ EOD`
 		#
 		if test -n "$ac_python_libdir" -a -n "$ac_python_library"
 		then
-			# use the official shared library
-			# if not Github workflow, cross compile ac_python_libdir = builds/distro/release/boxtype/tmp/work/boxtype-oe-linux-gnueabi/enigma2/enigma2-7.3+gitAUTOINC+XXXXXXXXX-rx/recipe-sysroot/usr/lib
-			# so then pick up ac_python_libdir from previous search for Python library path for Cross compile
-			hosted="hosted"
+			# OE-A build, the original devel.m4 finds host python not build python
+			# Github worklflow obtains correct libs
+			# if not Github workflow, use modified ac_python_libdir (see above) for cross compile
 			# first check for git workflows via hosted
+			hosted="hosted"
 			if grep -q "${hosted}" <<< "$ac_python_libdir"
 			then
 				ac_python_libdir_XCompile=''
 			else
-				ac_python_libdir_XCompile=`echo "$ac_python_libdir" | sed "s_/usr/lib__"  | sed "s_-native__"`
+				ac_python_libdir_XCompile=`echo "$ac_python_libdir" | sed "s_/usr/lib__"`
 			fi
 			ac_python_library=`echo "$ac_python_library" | sed "s/^lib//"`
 			AC_MSG_RESULT([$ac_python_libdir])
@@ -314,9 +315,8 @@ EOD`
 	   AC_SUBST([PYTHON_LIBS])
 	   #
 	   # Check for Python include path
+	   # for OE-A builds, include path is ac_python_libdir_XCompile(see above) plus found(host) python lib path
 	   #
-	   # so pick up ac_python_libdir_XCompile from previous search for Python library path for Cross compile and front include...
-
 	   AC_MSG_CHECKING([for Python include path])
 	   if test -z "$PYTHON_CPPFLAGS"; then
 		if test "$IMPORT_SYSCONFIG" = "import sysconfig"; then
@@ -336,10 +336,11 @@ EOD`
 			if test "${plat_python_path}" != "${python_path}"; then
 				python_path="-I$python_path -I$plat_python_path"
 			else
-				# check for OpenPli 3.9 build, returns full path but native lib
+				# OpenPli 3.9 build finds python native, so needs sed to create correct python 3.9 path
+				# check OpenPli 3.9 path length(build lib) vs OE-A path length(host lib)
 				if [[ "${#python_path}" -gt 24 ]]
 				then
-					plat_python_path=`echo "$plat_python_path" | sed "s_-native__"`
+					plat_python_path=`echo "$plat_python_path" | sed "s/-native//"`
 					python_path="-I$plat_python_path"
 				else
 					python_path="-I$ac_python_libdir_XCompile$python_path"
@@ -359,7 +360,7 @@ EOD`
 	   AC_MSG_CHECKING([for Python site-packages path])
 	   if test -z "$PYTHON_SITE_PKG"; then
 		if test "$IMPORT_SYSCONFIG" = "import sysconfig"; then
-			PYTHON_SITE_PKG2=`$PYTHON -c "
+			PYTHON_SITE_PKG=`$PYTHON -c "
 $IMPORT_SYSCONFIG;
 if hasattr(sysconfig, 'get_default_scheme'):
     scheme = sysconfig.get_default_scheme()
@@ -375,11 +376,11 @@ sitedir = sysconfig.get_path('purelib', scheme, vars={'base': prefix})
 print(sitedir)"`
 		else
 			# distutils.sysconfig way
-			PYTHON_SITE_PKG2=`$PYTHON -c "$IMPORT_SYSCONFIG; \
+			PYTHON_SITE_PKG=`$PYTHON -c "$IMPORT_SYSCONFIG; \
 				print (sysconfig.get_python_lib(0,0));"`
 		fi
 	   fi
-	   PYTHON_SITE_PKG="$ac_python_libdir_XCompile$PYTHON_SITE_PKG2"
+	   PYTHON_SITE_PKG="$ac_python_libdir_XCompile$PYTHON_SITE_PKG"
 	   AC_MSG_RESULT([$PYTHON_SITE_PKG])
 	   AC_SUBST([PYTHON_SITE_PKG])
 
@@ -389,7 +390,7 @@ print(sitedir)"`
 	   AC_MSG_CHECKING([for Python platform specific site-packages path])
 	   if test -z "$PYTHON_PLATFORM_SITE_PKG"; then
 		if test "$IMPORT_SYSCONFIG" = "import sysconfig"; then
-			PYTHON_PLATFORM_SITE_PKG2=`$PYTHON -c "
+			PYTHON_PLATFORM_SITE_PKG=`$PYTHON -c "
 $IMPORT_SYSCONFIG;
 if hasattr(sysconfig, 'get_default_scheme'):
     scheme = sysconfig.get_default_scheme()
@@ -405,11 +406,11 @@ sitedir = sysconfig.get_path('platlib', scheme, vars={'platbase': prefix})
 print(sitedir)"`
 		else
 			# distutils.sysconfig way
-			PYTHON_PLATFORM_SITE_PKG2=`$PYTHON -c "$IMPORT_SYSCONFIG; \
+			PYTHON_PLATFORM_SITE_PKG=`$PYTHON -c "$IMPORT_SYSCONFIG; \
 				print (sysconfig.get_python_lib(1,0));"`
 		fi
 	   fi
-	   PYTHON_PLATFORM_SITE_PKG="$ac_python_libdir_XCompile$PYTHON_PLATFORM_SITE_PKG2"
+	   PYTHON_PLATFORM_SITE_PKG="$ac_python_libdir_XCompile$PYTHON_PLATFORM_SITE_PKG"
 	   AC_MSG_RESULT([$PYTHON_PLATFORM_SITE_PKG])
 	   AC_SUBST([PYTHON_PLATFORM_SITE_PKG])
 
@@ -487,4 +488,3 @@ print(sitedir)"`
 	# all done!
 	#
 ])
-
