@@ -1,10 +1,10 @@
 from Components.config import config
 
-#for scheduler
+# for scheduler
 from time import mktime, strftime, time, localtime
 from enigma import eTimer
 
-#for downloader
+# for downloader
 from os import path as ospath, remove, walk
 import re
 from enigma import eServiceReference, eDVBDB
@@ -132,11 +132,6 @@ class AutoClientModeTimer:
 				ClientModeTime = 0
 				print("[ClientModeScheduler][doneConfiguring] Schedule Disabled at", strftime("%c", localtime(now)))
 				autoClientModeTimer.backupstop()
-		if ClientModeTime > 0:
-			t = localtime(ClientModeTime)
-			clientmodetext = strftime(_("%a %e %b  %-H:%M"), t)
-		else:
-			clientmodetext = ""
 
 
 class ChannelsImporter():
