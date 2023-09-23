@@ -737,7 +737,6 @@ class ConfigSequence(ConfigElement):
 				number = getKeyNumber(key)
 
 			block_len = [len(str(x[1])) for x in self.limits]
-			total_len = sum(block_len)
 
 			pos = 0
 			blocknumber = 0
@@ -1021,7 +1020,7 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 				mark = list(range(0, min(self.visible_width, len(self.text))))
 			else:
 				mark = [self.marked_pos - self.offset]
-			return "mtext"[1 - selected:], six.ensure_str(text[self.offset:self.offset + self.visible_width]) + " ", mark
+			return "mtext"[1 - selected:], six.ensure_str(self.text[self.offset:self.offset + self.visible_width]) + " ", mark
 		else:
 			if self.allmarked:
 				mark = list(range(0, len(self.text)))
@@ -2282,7 +2281,7 @@ class ConfigFile:
 				ret = self.__resolveValue(names[1:], config.content.items)
 				if ret and len(ret):
 					return ret
-		#	print("[Config] getResolvedKey", key, "empty variable.")
+		# print("[Config] getResolvedKey", key, "empty variable.")
 		return ""
 
 
