@@ -49,7 +49,7 @@ class TransponderInfo(Converter):
 				elif "ATSC" in transponderdata["system"]:
 					return "%s %s %s %s-%s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["modulation"], tsid, onid)
 				return "%s %s %s %s %s %s %s-%s %s" % (transponderdata["system"], transponderdata["frequency"], transponderdata["polarization_abbreviation"], transponderdata["symbol_rate"],
- 					transponderdata["fec_inner"], transponderdata["modulation"], tsid, onid, transponderdata["detailed_satpos" in self.type and "orbital_position" or "orb_pos"])
+					transponderdata["fec_inner"], transponderdata["modulation"], tsid, onid, transponderdata["detailed_satpos" in self.type and "orbital_position" or "orb_pos"])
 			except:
 				return ""
 		if "://" in ref:
