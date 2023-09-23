@@ -128,11 +128,11 @@ class EPGListBase(GUIComponent):
 		event = self.getEventFromId(service, eventId)
 		return event, service
 
-	def connectSelectionChanged(func):
+	def connectSelectionChanged(self, func):
 		if not self.onSelChanged.count(func):
 			self.onSelChanged.append(func)
 
-	def disconnectSelectionChanged(func):
+	def disconnectSelectionChanged(self, func):
 		self.onSelChanged.remove(func)
 
 	def selectionChanged(self):
