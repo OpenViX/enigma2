@@ -435,7 +435,7 @@ class YWeather(Poll, Converter):
 				info = "N/A"
 		elif self.type == self.date5:
 			info = xweather['ydate5']
-		#print "[YWeather][gText] info:", info
+		# print "[YWeather][gText] info:", info
 		return info
 
 	text = property(getText)
