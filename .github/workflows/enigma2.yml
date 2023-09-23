@@ -91,15 +91,34 @@ jobs:
         sudo make install
         popd
 
+    - name: Install python ${{ matrix.python }} packages
+      run: |
+        pip3 install six flake8
+
     - name: build enigma2
       env:
         CC: "gcc-${{ matrix.gcc }}"
         CXX: "g++-${{ matrix.gcc }}"
       run: |
-        pip3 install six
         echo "compiling enigma2"
         autoreconf -i
         ./configure --with-libsdl=no --with-boxtype=nobox --enable-dependency-tracking ac_cv_prog_c_openmp=-fopenmp --with-gstversion=1.0 --with-textlcd
         make
         python -m compileall .
-        echo done!
+        echo "checking enigma2 compiles completed"
+
+    - name: Check format PEP8
+      run: |
+        echo "checking locale format..."
+        find . -type f -name "*.po" -exec msgfmt {} -o {}.mo \;
+        echo "checking PEP8 validation..."
+        flake8 --ignore=W191,W503,W504,E128,E501,E722 . --exit-zero
+        echo "check format PEP8 completed!"
+
+# PEP8 :- IGNORE CODES
+# W191 : indentation contains tabs
+# W503 : line break before binary operator
+# W504 : line break after binary operator
+# E128 : continuation line under-indented for visual indent
+# E501 : line too long (> 79 characters)
+# E722 : do not use bare 'except'
