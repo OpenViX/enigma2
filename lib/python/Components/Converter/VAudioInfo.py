@@ -9,40 +9,40 @@ from Components.Element import cached
 # order given.
 #
 _acedits = (
-    ("A_", ""),
-    ("AC-3", "AC3"),
-    ("(ATSC A/52)", ""),
-    ("(ATSC A/52B)", ""),
-    (" Layer 2 (MP2)", ""),
-    (" Layer 3 (MP3)", "MP3"),
-    ("-1", ""),
-    ("-2", ""),
-    ("2-", ""),
-    ("-4 AAC", "AAC"),
-    ("4-AAC", "HE-AAC"),
-    ("audio", ""),
-    ("/L3", ""),
-    ("/mpeg", "AAC"),
-    ("/x-", ""),
-    ("raw", "Dolby TrueHD"),
-    ("E-AC3", "AC3+"),
-    ("EAC3", "AC3+"),
-    ("IPCM", "AC3"),
-    ("LPCM", "AC3+"),
-    ("AAC_PLUS", "AAC+"),
-    ("AAC_LATM", "AAC"),
-    ("WMA/PRO", "WMA Pro"),
-    ("MPEG", "MPEG1 Layer II"),
-    ("MPEG1 Layer II AAC", "AAC"),
-    ("MPEG1 Layer IIAAC", "AAC"),
-    ("MPEG1 Layer IIMP3", "MP3"),
+	("A_", ""),
+	("AC-3", "AC3"),
+	("(ATSC A/52)", ""),
+	("(ATSC A/52B)", ""),
+	(" Layer 2 (MP2)", ""),
+	(" Layer 3 (MP3)", "MP3"),
+	("-1", ""),
+	("-2", ""),
+	("2-", ""),
+	("-4 AAC", "AAC"),
+	("4-AAC", "HE-AAC"),
+	("audio", ""),
+	("/L3", ""),
+	("/mpeg", "AAC"),
+	("/x-", ""),
+	("raw", "Dolby TrueHD"),
+	("E-AC3", "AC3+"),
+	("EAC3", "AC3+"),
+	("IPCM", "AC3"),
+	("LPCM", "AC3+"),
+	("AAC_PLUS", "AAC+"),
+	("AAC_LATM", "AAC"),
+	("WMA/PRO", "WMA Pro"),
+	("MPEG", "MPEG1 Layer II"),
+	("MPEG1 Layer II AAC", "AAC"),
+	("MPEG1 Layer IIAAC", "AAC"),
+	("MPEG1 Layer IIMP3", "MP3"),
 )
 
 
 def StdAudioDesc(description):
-    for orig, repl in _acedits:
-        description = description.replace(orig, repl)
-    return description
+	for orig, repl in _acedits:
+		description = description.replace(orig, repl)
+	return description
 
 
 class VAudioInfo(Poll, Converter, object):
