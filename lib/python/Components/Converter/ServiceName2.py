@@ -233,7 +233,7 @@ class ServiceName2(Converter):
 			elif type == 'IP-TV':
 				return _("Streaming")
 			else:
-				fmt = ["O ", "s ", "M ", "F ", "p ", "Y ", "f"]		#(orbital_position frequency polarization symbol_rate fec)
+				fmt = ["O ", "s ", "M ", "F ", "p ", "Y ", "f"]  #(orbital_position frequency polarization symbol_rate fec)
 		for line in fmt:
 			f = line[:1]
 			if f == 't':  # %t - tuner_type (dvb-s/s2/c/t)
@@ -258,7 +258,7 @@ class ServiceName2(Converter):
 					result += '%d MHz' % (self.tpdata.get('frequency', 0) / 1000)
 				if type in ('DVB-C', 'DVB-T'):
 					result += '%.3f MHz' % (((self.tpdata.get('frequency', 0) + 500) / 1000) / 1000.0)
-#					result += '%.3f'%(((self.tpdata.get('frequency', 0) / 1000) +1) / 1000.0) + " MHz "
+					# result += '%.3f'%(((self.tpdata.get('frequency', 0) / 1000) +1) / 1000.0) + " MHz "
 			elif f == 'f':  # %f - fec_inner (dvb-s/s2/c/t)
 				if type in ('DVB-S', 'DVB-C'):
 					x = self.tpdata.get('fec_inner', 15)
