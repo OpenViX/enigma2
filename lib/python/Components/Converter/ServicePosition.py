@@ -251,7 +251,6 @@ class ServicePosition(Poll, Converter):
 						except:
 							return ""
 				elif self.type == self.TYPE_REMAINING:
-					test = 0
 					if config.usage.swap_time_remaining_on_osd.value == "1":  # Elapsed
 						try:
 							return sign_p + "%d%%" % ((float(p + 0.0) / float(l + 0.0)) * 100)
