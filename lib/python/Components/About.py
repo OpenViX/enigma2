@@ -186,15 +186,6 @@ def getPythonVersionString():
 	return "%s.%s.%s" % (version_info.major, version_info.minor, version_info.micro)
 
 
-def getEnigmaUptime():
-	location = "/etc/enigma2/profile"
-	try:
-		seconds = int(time() - ospath.getmtime(location))
-		return formatUptime(seconds)
-	except:
-		return ''
-
-
 def getBoxUptime():
 	try:
 		with open("/proc/uptime", "rb") as f:
@@ -202,22 +193,6 @@ def getBoxUptime():
 		return formatUptime(seconds)
 	except:
 		return ''
-
-
-def formatUptime(seconds):
-	out = ''
-	if seconds > 86400:
-		days = int(seconds / 86400)
-		out += ("1 day" if days == 1 else "%d days" % days) + ", "
-	if seconds > 3600:
-		hours = int((seconds % 86400) / 3600)
-		out += ("1 hour" if hours == 1 else "%d hours" % hours) + ", "
-	if seconds > 60:
-		minutes = int((seconds % 3600) / 60)
-		out += ("1 minute" if minutes == 1 else "%d minutes" % minutes) + " "
-	else:
-		out += ("1 second" if seconds == 1 else "%d seconds" % seconds) + " "
-	return out
 
 
 def getEnigmaUptime():
