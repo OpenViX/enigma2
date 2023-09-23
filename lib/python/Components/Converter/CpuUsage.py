@@ -6,6 +6,8 @@
 # Support: http://dream.altmaster.net/
 #
 
+from os.path import isfile
+
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
 from Components.Element import cached
