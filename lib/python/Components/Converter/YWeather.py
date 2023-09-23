@@ -10,9 +10,7 @@ from Components.Converter.Poll import Poll
 from Components.Element import cached
 from Tools.Directories import fileExists
 
-# required methods: Request, urlopen, HTTPError, URLError
-from urllib.request import urlopen, Request  # raises ImportError in Python 2
-from urllib.error import HTTPError, URLError  # raises ImportError in Python 2
+from urllib.request import urlopen, Request
 
 
 class YWeather(Poll, Converter):
@@ -177,14 +175,14 @@ class YWeather(Poll, Converter):
 		if fileExists(XML_location) and (int((time.time() - stat(XML_location).st_mtime) / 60) >= self.time_update):
 			remove(XML_location)
 		XML_URL = "https://query.yahooapis.com/v1/public/yql?q=select%%20*%%20from%%20weather.forecast%%20where%%20woeid=%ss%%20AND%%20u=%%22c%%22" % self.weather_city
-		if not fileExists(XML_location) and self.fetchXML(XML_URL, XML_location) != True:
+		if not fileExists(XML_location) and self.fetchXML(XML_URL, XML_location) is not True:
 			with open(XML_location, "w") as f:
 				f.write("None")
 				f.close
 			return 'N/A'
 		wday = 1
 		for line in open(XML_location):
-			#print "[YWeather][gText] line:", line
+			# print "[YWeather][gText] line:", line
 			if line.find("<yweather:location") > -1:
 				xweather['ycity'] = line.split('city')[1].split('"')[1]
 				xweather['ycountry'] = line.split('country')[1].split('"')[1]
@@ -230,7 +228,7 @@ class YWeather(Poll, Converter):
 					xweather['ytemplowday5'] = line.split('low')[1].split('"')[1]
 				wday = wday + 1
 
-		#print "[YWeather][gText] xweather:", xweather
+		# print "[YWeather][gText] xweather:", xweather
 
 		if self.type == self.city:
 			info = xweather['ycity']
