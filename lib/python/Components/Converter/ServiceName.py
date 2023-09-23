@@ -2,7 +2,7 @@
 
 from Components.Converter.Converter import Converter
 from Components.config import config
-from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eEPGCache, eServiceCenter
+from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eEPGCache
 from ServiceReference import resolveAlternate
 from Components.Element import cached
 from Tools.Directories import fileExists
