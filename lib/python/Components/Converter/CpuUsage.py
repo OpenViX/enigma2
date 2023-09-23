@@ -93,23 +93,20 @@ class CpuUsageMonitor(Poll):
 
     def getCpusInfo(self):
         res = []
-        try:
-            fd = open("/proc/stat", "r")
-            for l in fd:
-                if l.find("cpu") == 0:
-                    total = busy = 0
-                    # tmp = [cpu, usr, nic, sys, idle, iowait, irq, softirq, steal]
-                    tmp = l.split()
-                    for i in range(1, len(tmp)):
-                        tmp[i] = int(tmp[i])
-                        total += tmp[i]
-                    # busy = total - idle - iowait
-                    busy = total - tmp[4] - tmp[5]
-                    # append [cpu, total, busy]
-                    res.append([tmp[0], total, busy])
-            fd.close()
-        except:
-            pass
+        file = "/proc/stat"
+        if isfile(file):
+            with open("/proc/stat", "r") as fd:
+                while line := fd.readline():
+                	if line.find("cpu") == 0:
+                        total = busy = 0
+                        # tmp = [cpu, usr, nic, sys, idle, iowait, irq, softirq, steal]
+                        tmp = line.split()
+                        for i in range(1, len(tmp)):
+                            total += int(tmp[i])
+                        # busy = total - idle - iowait
+                        busy = total - int(tmp[4]) - int(tmp[5])
+                        # append [cpu, total, busy]
+                        res.append([tmp[0], total, busy])
         return res
 
     def poll(self):
