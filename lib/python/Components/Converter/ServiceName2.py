@@ -566,7 +566,7 @@ class ServiceName2(Converter):
 			else:
 				if self.ref:
 					return self.getSatelliteName(self.ref)
-			#test#
+			# test
 				return self.getSatelliteName(ref or eServiceReference(info.getInfoString(iServiceInformation.sServiceref)))
 		elif self.type == self.ALLREF:
 			tmpref = self.getReferenceType(refstr, ref)
@@ -657,7 +657,7 @@ class ServiceName2(Converter):
 			self.what = None
 
 	def forceChanged(self, what):
-		if what == True:
+		if what is True:
 			self.refstr = self.isStream = self.ref = self.info = self.tpdata = None
 			Converter.changed(self, (self.CHANGED_ALL,))
 			self.what = None
