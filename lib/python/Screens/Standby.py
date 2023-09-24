@@ -1,17 +1,17 @@
 from os import path
-from time import localtime, time
-from enigma import eDVBVolumecontrol, eTimer, eDVBLocalTimeHandler, eServiceReference, eStreamServer
-from boxbranding import getMachineBrand, getMachineName, getBoxType, getBrandOEM, getMachineBuild
-from GlobalActions import globalActionMap
+from time import time
 
+from enigma import eDVBVolumecontrol, eTimer, eDVBLocalTimeHandler, eServiceReference, eStreamServer
+
+from boxbranding import getMachineBrand, getMachineName, getBoxType, getBrandOEM
 from Components.ActionMap import ActionMap
 from Components.AVSwitch import AVSwitch
 from Components.config import config
 from Components.Console import Console
 import Components.ParentalControl
 from Components.SystemInfo import SystemInfo
-from Components.Sources.StaticText import StaticText
 from Components.Sources.StreamService import StreamServiceList
+from GlobalActions import globalActionMap
 import Screens.InfoBar
 from Screens.Screen import Screen, ScreenSummary
 import Tools.Notifications
@@ -121,7 +121,6 @@ class Standby2(Screen):
 				open("/proc/stb/hdmi/output", "w").write("off")
 			except:
 				pass
-
 		self.onFirstExecBegin.append(self.__onFirstExecBegin)
 		self.onClose.append(self.__onClose)
 
@@ -133,7 +132,6 @@ class Standby2(Screen):
 		if self.paused_service:
 			self.paused_action and self.paused_service.unPauseService()
 		elif self.prev_running_service:
-			service = self.prev_running_service.toString()
 			if config.servicelist.startupservice_onstandby.value:
 				self.session.nav.playService(eServiceReference(config.servicelist.startupservice.value))
 				from Screens.InfoBar import InfoBar
