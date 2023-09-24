@@ -1,5 +1,4 @@
 import glob
-from time import sleep
 from boxbranding import getBoxType, getMachineMtdKernel, getMachineMtdRoot
 from Components.config import config, configfile
 from Components.Console import Console
