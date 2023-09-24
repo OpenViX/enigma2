@@ -144,7 +144,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 			callingCode = pathNormpath(getframe(1).f_code.co_filename)
 			plugins = pathNormpath(scopePlugins)
 			path = None
-			if comparePath(plugins, callingCode):
+			if comparePaths(plugins, callingCode):
 				pluginCode = callingCode[len(plugins) + 1:].split(sep)
 				if len(pluginCode) > 2:
 					relative = "%s%s%s" % (pluginCode[0], sep, pluginCode[1])
@@ -160,7 +160,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 				pathJoin(scopeConfig, "skin_common"),
 				scopeConfig
 			)
-			if not "skin_default" in skin:
+			if "skin_default" not in skin:
 				skinResolveList += addInList(pathJoin(scopeGUISkin, skin))
 			skinResolveList += addInList(
 				pathJoin(scopeGUISkin, "skin_fallback_%d" % getPrimarySkinResolution()),
