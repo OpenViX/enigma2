@@ -1,11 +1,10 @@
 from time import localtime, time, strftime
 
-from enigma import eEPGCache, eListboxPythonMultiContent, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
+from enigma import eEPGCache, eListboxPythonMultiContent, gFont, eRect, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER
 from skin import parameters, parseFont, applySkinFactor
 
 from Components.config import config
 from Components.EpgListBase import EPGListBase
-import NavigationInstance
 
 # Various value are in minutes, while others are in seconds.
 # Use this to remind us what is going on...
