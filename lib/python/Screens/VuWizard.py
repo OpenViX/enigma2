@@ -6,7 +6,6 @@ from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
 from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
-from Screens.Screen import Screen
 from Screens.WizardLanguage import WizardLanguage
 from Tools.Directories import fileExists, pathExists, resolveFilename, SCOPE_SKIN
 
