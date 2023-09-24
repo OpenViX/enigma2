@@ -3,11 +3,11 @@ import time
 from operator import itemgetter
 from xml.etree import ElementTree
 
-from enigma import eTimer, RT_HALIGN_LEFT, eListboxPythonMultiContent, gFont, getDesktop, eSize, ePoint
+from enigma import eTimer, RT_HALIGN_LEFT, eListboxPythonMultiContent, gFont, getDesktop
 
 from Components.About import about
 from Components.ActionMap import ActionMap, NumberActionMap
-from Components.config import config, configfile, getConfigListEntry
+from Components.config import config, getConfigListEntry
 from Components.ConfigList import ConfigListScreen
 from Components.MenuList import MenuList
 from Components.Sources.List import List
@@ -19,9 +19,9 @@ import skin
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename, fileExists
 
-# required methods: Request, urlopen, HTTPError, URLError, HTTPHandler, HTTPPasswordMgrWithDefaultRealm, HTTPDigestAuthHandler, build_opener, install_opener
+# required methods: Request, urlopen, URLError, HTTPHandler, HTTPPasswordMgrWithDefaultRealm, HTTPDigestAuthHandler, build_opener, install_opener
 from urllib.request import urlopen, Request, HTTPHandler, HTTPPasswordMgrWithDefaultRealm, HTTPDigestAuthHandler, build_opener, install_opener
-from urllib.error import HTTPError, URLError
+from urllib.error import URLError
 import urllib.parse
 
 
@@ -112,7 +112,7 @@ class OscamInfo:
 	def getUserData(self):
 		NAMEBIN = check_NAMEBIN()
 		[webif, port, conf, ipcompiled] = self.confPath()
-		if conf == None:
+		if conf is None:
 			conf = ""
 		conf += "/%s.conf" % NAMEBIN
 
