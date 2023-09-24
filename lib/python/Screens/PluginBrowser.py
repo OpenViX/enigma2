@@ -1,8 +1,7 @@
 from os import path, unlink
-from time import time
 
 from enigma import eConsoleAppContainer, eDVBDB, eTimer
-from boxbranding import getImageVersion, getImageType, getMachineBrand, getMachineName
+from boxbranding import getImageType, getMachineBrand, getMachineName
 
 from Components.ActionMap import ActionMap, NumberActionMap
 from Components.Button import Button
