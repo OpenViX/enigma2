@@ -34,7 +34,7 @@ class GUIComponent:
 		if not self.visible:
 			self.instance.hide()
 
-		if type(self.instance) == eListbox:
+		if isinstance(self.instance, eListbox):
 			skin.applyScrollbar(self.instance)
 		if self.skinAttributes:
 			skin.applyAllAttributes(self.instance, desktop, self.skinAttributes, parent.scale)
