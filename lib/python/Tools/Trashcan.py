@@ -66,7 +66,6 @@ class Trashcan:
 		self.gotRecordEvent(None, None)
 
 	def gotRecordEvent(self, service, event):
-		from RecordTimer import n_recordings
 		if event == enigma.iRecordableService.evEnd:
 			self.cleanIfIdle()
 
