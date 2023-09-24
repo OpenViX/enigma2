@@ -1,4 +1,4 @@
-from enigma import eListbox, eListboxPythonMultiContent, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_WRAP, BT_SCALE
+from enigma import eListbox, eListboxPythonMultiContent, gFont, eRect, RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_WRAP, BT_SCALE
 
 from skin import parseColor, parseFont, parseScale, applySkinFactor
 from Components.GUIComponent import GUIComponent
