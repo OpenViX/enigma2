@@ -208,7 +208,7 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 		self.list = []
 		self["list"] = List(self.list)
 		self.updateList()
-		if not self.selectionChanged in self["list"].onSelectionChanged:
+		if self.selectionChanged not in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
 		if len(self.adapters) == 1:
@@ -238,14 +238,14 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 		interfacepng = None
 
 		if not iNetwork.isWirelessInterface(iface):
-			if active == True:
+			if active is True:
 				interfacepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/network_wired-active.png"))
 			elif active is False:
 				interfacepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/network_wired-inactive.png"))
 			else:
 				interfacepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/network_wired.png"))
 		elif iNetwork.isWirelessInterface(iface):
-			if active == True:
+			if active is True:
 				interfacepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/network_wireless-active.png"))
 			elif active is False:
 				interfacepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/network_wireless-inactive.png"))
@@ -294,7 +294,7 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 				default_int = True
 			else:
 				default_int = False
-			if iNetwork.getAdapterAttribute(x[1], "up") == True:
+			if iNetwork.getAdapterAttribute(x[1], "up") is True:
 				active_int = True
 			else:
 				active_int = False
@@ -343,15 +343,15 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 		self.restartLanRef = self.session.openWithCallback(self.restartfinishedCB, MessageBox, _("Please wait while we configure your network..."), type=MessageBox.TYPE_INFO, enable_input=False)
 
 	def restartLanDataAvail(self, data):
-		if data == True:
+		if data is True:
 			iNetwork.getInterfaces(self.getInterfacesDataAvail)
 
 	def getInterfacesDataAvail(self, data):
-		if data == True:
+		if data is True:
 			self.restartLanRef.close(True)
 
 	def restartfinishedCB(self, data):
-		if data == True:
+		if data is True:
 			self.updateList()
 			self.session.open(MessageBox, _("Finished configuring your network"), type=MessageBox.TYPE_INFO, timeout=10, default=False)
 
@@ -474,15 +474,15 @@ class NetworkMacSetup(ConfigListScreen, HelpableScreen, Screen):
 		self.restartLanRef = self.session.openWithCallback(self.restartfinishedCB, MessageBox, _("Please wait while we configure your network..."), type=MessageBox.TYPE_INFO, enable_input=False)
 
 	def restartLanDataAvail(self, data):
-		if data == True:
+		if data is True:
 			iNetwork.getInterfaces(self.getInterfacesDataAvail)
 
 	def getInterfacesDataAvail(self, data):
-		if data == True:
+		if data is True:
 			self.restartLanRef.close(True)
 
 	def restartfinishedCB(self, data):
-		if data == True:
+		if data is True:
 			self.session.openWithCallback(self.close, MessageBox, _("Finished configuring your network"), type=MessageBox.TYPE_INFO, timeout=10, default=False)
 
 
@@ -696,7 +696,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 		config.network.save()
 
 	def keySaveConfirm(self, ret=False):
-		if ret == True:
+		if ret is True:
 			num_configured_if = len(iNetwork.getConfiguredAdapters())
 			if num_configured_if >= 1:
 				if self.iface in iNetwork.getConfiguredAdapters():
@@ -709,7 +709,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 			self.keyCancel()
 
 	def secondIfaceFoundCB(self, data):
-		if data == False:
+		if data is False:
 			self.applyConfig(True)
 		else:
 			configuredInterfaces = iNetwork.getConfiguredAdapters()
@@ -720,11 +720,11 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 			iNetwork.deactivateInterface(configuredInterfaces, self.deactivateSecondInterfaceCB)
 
 	def deactivateSecondInterfaceCB(self, data):
-		if data == True:
+		if data is True:
 			self.applyConfig(True)
 
 	def applyConfig(self, ret=False):
-		if ret == True:
+		if ret is True:
 			self.applyConfigRef = None
 			iNetwork.setAdapterAttribute(self.iface, "up", self.activateInterfaceEntry.value)
 			iNetwork.setAdapterAttribute(self.iface, "dhcp", self.dhcpConfigEntry.value)
@@ -739,12 +739,12 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 				iNetwork.setAdapterAttribute(self.iface, "configStrings", self.configStrings(self.iface))
 				self.ws.writeConfig(self.iface)
 
-			if self.activateInterfaceEntry.value == False:
+			if self.activateInterfaceEntry.value is False:
 				iNetwork.deactivateInterface(self.iface, self.deactivateInterfaceCB)
 				iNetwork.writeNetworkConfig()
 				self.applyConfigRef = self.session.openWithCallback(self.applyConfigfinishedCB, MessageBox, _("Please wait while your network configuration is activated..."), type=MessageBox.TYPE_INFO, enable_input=False)
 			else:
-				if self.oldInterfaceState == False:
+				if self.oldInterfaceState is False:
 					iNetwork.activateInterface(self.iface, self.deactivateInterfaceCB)
 				else:
 					iNetwork.deactivateInterface(self.iface, self.activateInterfaceCB)
@@ -754,23 +754,23 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 			self.keyCancel()
 
 	def deactivateInterfaceCB(self, data):
-		if data == True:
+		if data is True:
 			self.applyConfigDataAvail(True)
 
 	def activateInterfaceCB(self, data):
-		if data == True:
+		if data is True:
 			iNetwork.activateInterface(self.iface, self.applyConfigDataAvail)
 
 	def applyConfigDataAvail(self, data):
-		if data == True:
+		if data is True:
 			iNetwork.getInterfaces(self.getInterfacesDataAvail)
 
 	def getInterfacesDataAvail(self, data):
-		if data == True:
+		if data is True:
 			self.applyConfigRef.close(True)
 
 	def applyConfigfinishedCB(self, data):
-		if data == True:
+		if data is True:
 			if self.finished_cb:
 				self.session.openWithCallback(lambda x: self.finished_cb(), MessageBox, _("Your network configuration has been activated."), type=MessageBox.TYPE_INFO, timeout=10)
 			else:
@@ -778,13 +778,13 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 
 	def ConfigfinishedCB(self, data):
 		if data is not None:
-			if data == True:
+			if data is True:
 				self.close("ok")
 
 	def keyCancelConfirm(self, result):
 		if not result:
 			return
-		if self.oldInterfaceState == False:
+		if self.oldInterfaceState is False:
 			iNetwork.deactivateInterface(self.iface, self.keyCancelCB)
 		else:
 			self.close("cancel")
@@ -798,7 +798,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 
 	def keyCancelCB(self, data):
 		if data is not None:
-			if data == True:
+			if data is True:
 				self.close("cancel")
 
 	def runAsync(self, finished_cb):
@@ -885,7 +885,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 
 		self.updateStatusbar()
 		self.onClose.append(self.cleanup)
-		if not self.selectionChanged in self["menulist"].onSelectionChanged:
+		if self.selectionChanged not in self["menulist"].onSelectionChanged:
 			self["menulist"].onSelectionChanged.append(self.selectionChanged)
 		self.selectionChanged()
 		self.onLayoutFinish.append(self.updateStatusbar)
@@ -1063,7 +1063,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 
 	def AdapterSetupClosed(self, *ret):
 		if ret is not None and len(ret):
-			if ret[0] == "ok" and (iNetwork.isWirelessInterface(self.iface) and iNetwork.getAdapterAttribute(self.iface, "up") == True):
+			if ret[0] == "ok" and (iNetwork.isWirelessInterface(self.iface) and iNetwork.getAdapterAttribute(self.iface, "up") is True):
 				try:
 					from Plugins.SystemPlugins.WirelessLan.plugin import WlanStatus
 				except ImportError:
@@ -1093,20 +1093,20 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 			self.updateStatusbar()
 
 	def restartLan(self, ret=False):
-		if ret == True:
+		if ret is True:
 			iNetwork.restartNetwork(self.restartLanDataAvail)
 			self.restartLanRef = self.session.openWithCallback(self.restartfinishedCB, MessageBox, _("Your network is restarting, Please wait..."), type=MessageBox.TYPE_INFO, enable_input=False)
 
 	def restartLanDataAvail(self, data):
-		if data == True:
+		if data is True:
 			iNetwork.getInterfaces(self.getInterfacesDataAvail)
 
 	def getInterfacesDataAvail(self, data):
-		if data == True:
+		if data is True:
 			self.restartLanRef.close(True)
 
 	def restartfinishedCB(self, data):
-		if data == True:
+		if data is True:
 			self.updateStatusbar()
 			self.session.open(MessageBox, _("Your network has finished restarting"), type=MessageBox.TYPE_INFO, timeout=10, default=False)
 
@@ -1144,9 +1144,9 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 	def getInfoCB(self, data, status):
 		self.LinkState = None
 		if data is not None:
-			if data == True:
+			if data is True:
 				if status is not None:
-					if status[self.iface]["essid"] == "off" or status[self.iface]["accesspoint"] == "Not-Associated" or status[self.iface]["accesspoint"] == False:
+					if status[self.iface]["essid"] == "off" or status[self.iface]["accesspoint"] == "Not-Associated" or status[self.iface]["accesspoint"] is False:
 						self.LinkState = False
 						self["statuspic"].setPixmapNum(1)
 						self["statuspic"].show()
@@ -1155,8 +1155,8 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 						iNetwork.checkNetworkState(self.checkNetworkCB)
 
 	def checkNetworkCB(self, data):
-		if iNetwork.getAdapterAttribute(self.iface, "up") == True:
-			if self.LinkState == True:
+		if iNetwork.getAdapterAttribute(self.iface, "up") is True:
+			if self.LinkState is True:
 				if data <= 2:
 					self["statuspic"].setPixmapNum(0)
 				else:
@@ -1224,7 +1224,7 @@ class NetworkAdapterTest(Screen):
 		self.nextStepTimer.callback.append(self.nextStepTimerFire)
 
 	def cancel(self):
-		if self.oldInterfaceState == False:
+		if self.oldInterfaceState is False:
 			iNetwork.setAdapterAttribute(self.iface, "up", self.oldInterfaceState)
 			iNetwork.deactivateInterface(self.iface)
 		self.close()
@@ -1343,7 +1343,7 @@ class NetworkAdapterTest(Screen):
 
 	def doStep4(self):
 		self["Dhcptext"].setForegroundColorNum(1)
-		if iNetwork.getAdapterAttribute(self.iface, "dhcp") == True:
+		if iNetwork.getAdapterAttribute(self.iface, "dhcp") is True:
 			self["Dhcp"].setForegroundColorNum(2)
 			self["Dhcp"].setText(_("enabled"))
 			self["DhcpInfo_Check"].setPixmapNum(0)
@@ -1568,9 +1568,9 @@ class NetworkAdapterTest(Screen):
 
 	def getInfoCB(self, data, status):
 		if data is not None:
-			if data == True:
+			if data is True:
 				if status is not None:
-					if status[self.iface]["essid"] == "off" or status[self.iface]["accesspoint"] == "Not-Associated" or status[self.iface]["accesspoint"] == False:
+					if status[self.iface]["essid"] == "off" or status[self.iface]["accesspoint"] == "Not-Associated" or status[self.iface]["accesspoint"] is False:
 						self["Network"].setForegroundColorNum(1)
 						self["Network"].setText(_("disconnected"))
 						self["NetworkInfo_Check"].setPixmapNum(1)
@@ -1634,7 +1634,7 @@ class NetworkMountsMenu(Screen, HelpableScreen):
 			"right": self.right,
 		}, -2)
 
-		if not self.selectionChanged in self["menulist"].onSelectionChanged:
+		if self.selectionChanged not in self["menulist"].onSelectionChanged:
 			self["menulist"].onSelectionChanged.append(self.selectionChanged)
 		self.selectionChanged()
 
@@ -2743,7 +2743,7 @@ class uShareSelection(Screen):
 
 	def selectionChanged(self):
 		current = self["checkList"].getCurrent()[0]
-		if current[2] == True:
+		if current[2] is True:
 			self["key_yellow"].setText(_("Deselect"))
 		else:
 			self["key_yellow"].setText(_("Select"))
@@ -3083,7 +3083,7 @@ class MiniDLNASelection(Screen):
 			"down": self.down,
 			"up": self.up
 		}, -1)
-		if not self.selectionChanged in self["checkList"].onSelectionChanged:
+		if self.selectionChanged not in self["checkList"].onSelectionChanged:
 			self["checkList"].onSelectionChanged.append(self.selectionChanged)
 		self.onLayoutFinish.append(self.layoutFinished)
 
