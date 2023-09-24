@@ -1,9 +1,6 @@
 from os import listdir, path, readlink, symlink, unlink
 from enigma import eConsoleAppContainer
 
-from Components.config import config
-
-
 class CamControl:
 	'''CAM convention is that a softlink named /etc/init.c/softcam.* points
 	to the start/stop script.'''
