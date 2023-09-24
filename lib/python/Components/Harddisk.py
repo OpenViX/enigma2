@@ -1,15 +1,12 @@
 import errno
 from os import listdir, major, minor, path as ospath, rmdir, sep as ossep, stat, statvfs, system as ossystem, unlink
-import re
 from fcntl import ioctl
 from time import sleep, time
 
 from enigma import eTimer
-from boxbranding import getMachineBuild, getMachineMtdRoot
 from Components.SystemInfo import SystemInfo
 import Components.Task
 from Tools.CList import CList
-from Tools.HardwareInfo import HardwareInfo
 
 # DEBUG: REMINDER: This comment needs to be expanded for the benefit of readers.
 # Removable if 1 --> With motor
@@ -93,16 +90,16 @@ def getProcMounts():
 	result = [line.strip().split(" ") for line in lines]
 	for item in result:
 		item[1] = item[1].replace("\\040", " ")  # Spaces are encoded as \040 in mounts.
-# Also, map any fuseblk fstype to the real file-system behind it...
-# Use blkid to get the info we need....
-#
+		# Also, map any fuseblk fstype to the real file-system behind it...
+		# Use blkid to get the info we need....
+		#
 		if item[2] == 'fuseblk':
 			import subprocess
 			res = subprocess.run(['blkid', '-sTYPE', '-ovalue', item[0]], capture_output=True)
 			if res.returncode == 0:
 				# print("[Harddisk][getProcMounts] fuseblk", res.stdout)
 				item[2] = res.stdout.strip().decode()
-#	print("[Harddisk][getProcMounts] ProcMounts", result)
+	# print("[Harddisk][getProcMounts] ProcMounts", result)
 	return result
 
 
@@ -258,8 +255,8 @@ class Harddisk:
 			try:
 				stat = statvfs(dev)
 				return (stat.f_bfree / 1000) * (stat.f_bsize / 1000)
-			except (IOError, OSError):
-				print("[Harddisk] Error: Failed to get free space for '%s':" % dev, err)
+			except (IOError, OSError) as err:
+				print("[Harddisk] Error: Failed to get free space for '%s' %s:" % dev, err)
 		return -1
 
 	def totalFree(self):
@@ -630,10 +627,10 @@ class HarddiskManager:
 		try:
 			rootDev = stat("/").st_dev
 			rootMajor = major(rootDev)
-			rootMinor = minor(rootDev)
+			# rootMinor = minor(rootDev)
 		except (IOError, OSError):
 			rootMajor = None
-			rootMinor = None
+			# rootMinor = None
 		# print("[Harddisk] DEBUG: rootMajor = '%s', rootMinor = '%s'" % (rootMajor, rootMinor))
 		for device in sorted(listdir("/sys/block")):
 			try:
@@ -704,7 +701,7 @@ class HarddiskManager:
 						for partition in partitions:
 							description = self.getUserfriendlyDeviceName(partition, physicalDevice)
 							print("[Harddisk] Found partition '%s', description='%s', device='%s'." % (partition, description, physicalDevice))
-#							part = Partition(mountpoint=self.getMountpoint(partition), description=description, force_mounted=True, device=partition)
+							# part = Partition(mountpoint=self.getMountpoint(partition), description=description, force_mounted=True, device=partition)
 							part = Partition(mountpoint=self.getMountpoint(partition, skiproot=True), description=description, force_mounted=True, device=partition)
 							self.partitions.append(part)
 							# print("[Harddisk] DEBUG: Partition(mountpoint = %s, description = %s, force_mounted = True, device = %s)" % (self.getMountpoint(partition), description, partition))
@@ -773,7 +770,7 @@ class HarddiskManager:
 	def getMountpoint(self, device, skiproot=None):
 		dev = ospath.join("/dev", device)
 		for item in getProcMounts():
-			if (item[0] == dev and skiproot == None) or (item[0] == dev and skiproot == True and item[1] != "/"):
+			if (item[0] == dev and skiproot is None) or (item[0] == dev and skiproot is True and item[1] != "/"):
 				return ospath.join(item[1], "")
 		return None
 
