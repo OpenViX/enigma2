@@ -16,7 +16,7 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen, ScreenSummary
 from Screens.Standby import QUIT_REBOOT, QUIT_RESTART, TryQuitMainloop
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import copyfile, fileExists, pathExists
+from Tools.Directories import copyfile
 from Tools.Multiboot import emptySlot, GetImagelist, GetCurrentImageMode, restoreSlots
 
 
@@ -199,7 +199,6 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 	def KexecMountRet(self, result=None, retval=None, extra_args=None):
 		self.device_uuid = "UUID=" + result.split("UUID=")[1].split(" ")[0].replace('"', '')
-		usb = result.split(":")[0]
 		boxmodel = getBoxType()[2:]
 # 		using UUID	 kernel=/linuxrootfs1/boot/zImage root=UUID="12c2025e-2969-4bd1-9e0c-da08b97d40ce" rootsubdir=linuxrootfs1
 #		using dev = "kernel=/linuxrootfs4/zImage root=/dev/%s rootsubdir=linuxrootfs4" % hdd[0] 	# /STARTUP_4
