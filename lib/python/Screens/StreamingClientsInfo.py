@@ -1,11 +1,11 @@
-from Screens.Screen import Screen
+from enigma import eTimer, eStreamServer
+
 from Components.ActionMap import ActionMap
 from Components.Button import Button
-from Components.ScrollLabel import ScrollLabel
 from Components.Converter.ClientsStreaming import ClientsStreaming
-from Components.config import config
+from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
-from enigma import eTimer, eStreamServer
+from Screens.Screen import Screen
 import skin
 
 
