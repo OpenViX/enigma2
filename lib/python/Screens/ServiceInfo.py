@@ -1,10 +1,11 @@
+from enigma import eListboxPythonMultiContent, gFont, iServiceInformation, eServiceCenter, eDVBFrontendParametersSatellite, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER
+
+from Components.ActionMap import ActionMap
 from Components.GUIComponent import GUIComponent
+from Components.Label import Label
 from Components.MenuList import MenuList
 from Screens.Screen import Screen
-from Components.ActionMap import ActionMap
-from Components.Label import Label
 from ServiceReference import ServiceReference
-from enigma import eListboxPythonMultiContent, gFont, iServiceInformation, eServiceCenter, eDVBFrontendParametersSatellite, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER
 from Tools.Transponder import ConvertToHumanReadable, getChannelNumber
 from skin import applySkinFactor, parameters, parseFont, parseScale
 from Components.Converter.VAudioInfo import StdAudioDesc
