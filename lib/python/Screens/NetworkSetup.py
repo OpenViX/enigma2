@@ -3094,7 +3094,7 @@ class MiniDLNASelection(Screen):
 
 	def selectionChanged(self):
 		current = self["checkList"].getCurrent()[0]
-		if current[2] == True:
+		if current[2] is True:
 			self["key_yellow"].setText(_("De-select"))
 		else:
 			self["key_yellow"].setText(_("Select"))
