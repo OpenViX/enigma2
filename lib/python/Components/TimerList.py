@@ -4,7 +4,7 @@ from enigma import eListboxPythonMultiContent, eListbox, gFont, RT_HALIGN_LEFT, 
 
 from Components.config import config
 from Components.GUIComponent import GUIComponent
-from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
+from Components.MultiContent import MultiContentEntryPixmapAlphaBlend
 from Components.Renderer.Picon import getPiconName
 from skin import parseFont, parseScale
 from Tools.Alternatives import GetWithAlternative
@@ -15,10 +15,10 @@ from Tools.TextBoundary import getTextBoundarySize
 
 
 class TimerList(GUIComponent):
-#
-#  | <Name of the Timer>     <Service>  <orb.pos>|
-#  | <state>  <start, end>  |
-#
+	#
+	#  | <Name of the Timer>     <Service>  <orb.pos>|
+	#  | <state>  <start, end>  |
+	#
 	def buildTimerEntry(self, timer, processed):
 		height = self.l.getItemSize().height()
 		width = self.l.getItemSize().width()
