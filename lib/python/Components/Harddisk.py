@@ -1,5 +1,5 @@
 import errno
-from os import listdir, major, minor, path as ospath, rmdir, sep as ossep, stat, statvfs, system as ossystem, unlink
+from os import listdir, major, path as ospath, rmdir, sep as ossep, stat, statvfs, system as ossystem, unlink  # minor
 from fcntl import ioctl
 from time import sleep, time
 
