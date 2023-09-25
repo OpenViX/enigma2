@@ -1,6 +1,6 @@
-##
-## P(icture)i(n)g(raphics) renderer
-##
+#
+# P(icture)i(n)g(raphics) renderer
+#
 
 from enigma import eVideoWidget, getDesktop
 
