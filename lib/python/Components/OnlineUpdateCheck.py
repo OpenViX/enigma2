@@ -2,7 +2,6 @@ from time import time
 
 from boxbranding import getImageVersion, getImageBuild, getMachineBrand, getMachineName, getMachineBuild, getImageType, getBoxType, getFeedsUrl
 from enigma import eTimer
-import Components.Task
 from Components.About import about
 from Components.config import config
 from Components.Ipkg import IpkgComponent
@@ -151,7 +150,6 @@ class FeedsStatusCheck:
 
 	def getFeedsErrorMessage(self):
 		global error
-		#feedstatus = feedsstatuscheck.getFeedsBool() # This is forcing an additional HTTP request so don't do it. Also the output was incorrect so the messages didn"t show, just an empty MessageBox.
 		if self.feedstatus == -2:
 			return _("Your %s %s has no internet access, please check your network settings and make sure you have network cable connected and try again.") % (getMachineBrand(), getMachineName())
 		elif self.feedstatus == -3:
@@ -227,7 +225,6 @@ class OnlineUpdateCheckPoller:
 		if delay > gap:
 			delay = gap
 		self.timer.startLongTimer(delay)
-		when = time() + delay
 
 	def stop(self):
 		if self.version_check in self.timer.callback:
