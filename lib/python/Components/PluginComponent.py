@@ -52,55 +52,55 @@ class PluginComponent:
 					continue
 				pluginPath = path.join(directory_category, pluginname)
 				if path.isdir(pluginPath):
-						profile('plugin ' + pluginname)
-						try:
-							plugin = my_import('.'.join(["Plugins", c, pluginname, "plugin"]))
-							plugins = plugin.Plugins(path=pluginPath)
-						except Exception as exc:
-							if pluginname != "WebInterface":  # "WebInterface" is a fake plugin created by OpenWebIf. Do not print warnings about this.
-								print("[PluginComponent] Plugin ", c + "/" + pluginname, "failed to load:", exc)
-							# suppress errors due to missing plugin.py* files (badly removed plugin)
-							for fn in ('plugin.py', 'plugin.pyc', 'plugin.pyo'):
-								if path.exists(path.join(pluginPath, fn)):
-									self.warnings.append((c + "/" + pluginname, str(exc)))
-									from traceback import print_exc
-									print_exc()
-									break
-							else:  # executes if no "break" is encountered in the "for" loop
-								if pluginname != "WebInterface":  # "WebInterface" is a fake plugin created by OpenWebIf. Do not process this.
-									print("[PluginComponent] Plugin probably removed, but not cleanly in", pluginPath)
-									print("[PluginComponent] trying to remove:", pluginPath)
-									# rmtree will produce an error if path is a symlink, so...
-									if path.islink(pluginPath):
-										rmtree(path.realpath(pluginPath))
-										unlink(pluginPath)
-									else:
-										rmtree(pluginPath)
-							continue
-
-						# allow single entry not to be a list
-						if not isinstance(plugins, list):
-							plugins = [plugins]
-
-						for p in plugins:
-							p.path = pluginPath
-							p.updateIcon(pluginPath)
-							new_plugins.append(p)
-
-						keymap = path.join(pluginPath, "keymap.xml")
-						if fileExists(keymap):
-							try:
-								keymapparser.readKeymap(keymap)
-							except Exception as exc:
-								print("[PluginComponent] keymap for plugin %s/%s failed to load: " % (c, pluginname), exc)
+					profile('plugin ' + pluginname)
+					try:
+						plugin = my_import('.'.join(["Plugins", c, pluginname, "plugin"]))
+						plugins = plugin.Plugins(path=pluginPath)
+					except Exception as exc:
+						if pluginname != "WebInterface":  # "WebInterface" is a fake plugin created by OpenWebIf. Do not print warnings about this.
+							print("[PluginComponent] Plugin ", c + "/" + pluginname, "failed to load:", exc)
+						# suppress errors due to missing plugin.py* files (badly removed plugin)
+						for fn in ('plugin.py', 'plugin.pyc', 'plugin.pyo'):
+							if path.exists(path.join(pluginPath, fn)):
 								self.warnings.append((c + "/" + pluginname, str(exc)))
+								from traceback import print_exc
+								print_exc()
+								break
+						else:  # executes if no "break" is encountered in the "for" loop
+							if pluginname != "WebInterface":  # "WebInterface" is a fake plugin created by OpenWebIf. Do not process this.
+								print("[PluginComponent] Plugin probably removed, but not cleanly in", pluginPath)
+								print("[PluginComponent] trying to remove:", pluginPath)
+								# rmtree will produce an error if path is a symlink, so...
+								if path.islink(pluginPath):
+									rmtree(path.realpath(pluginPath))
+									unlink(pluginPath)
+								else:
+									rmtree(pluginPath)
+						continue
+
+					# allow single entry not to be a list
+					if not isinstance(plugins, list):
+						plugins = [plugins]
+
+					for p in plugins:
+						p.path = pluginPath
+						p.updateIcon(pluginPath)
+						new_plugins.append(p)
+
+					keymap = path.join(pluginPath, "keymap.xml")
+					if fileExists(keymap):
+						try:
+							keymapparser.readKeymap(keymap)
+						except Exception as exc:
+							print("[PluginComponent] keymap for plugin %s/%s failed to load: " % (c, pluginname), exc)
+							self.warnings.append((c + "/" + pluginname, str(exc)))
 
 		# build a diff between the old list of plugins and the new one
 		# internally, the "fnc" argument will be compared with __eq__
 		plugins_added = [p for p in new_plugins if p not in self.pluginList]
 		plugins_removed = [p for p in self.pluginList if not p.internal and p not in new_plugins]
 
-		#ignore already installed but reloaded plugins
+		# ignore already installed but reloaded plugins
 		for p in plugins_removed:
 			for pa in plugins_added:
 				if pa.path == p.path and pa.where == p.where:
