@@ -250,9 +250,9 @@ class HelpMenuList(List):
 			if flag == 0:  # Reset the long press flag on Make.
 				self.longSeen = False
 			elif button in self.buttonMap and (flag == 3 or flag == 1 and not self.longSeen):  # Show help for pressed button for long press, or for Break if it's not a Long press.
-					self.longSeen = flag == 3
-					self.setIndex(self.buttonMap[button])
-					return 1  # Report keyId handled.
+				self.longSeen = flag == 3
+				self.setIndex(self.buttonMap[button])
+				return 1  # Report keyId handled.
 		return 0  # Report keyId not handled.
 
 	def getCurrent(self):
