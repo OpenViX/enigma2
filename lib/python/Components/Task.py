@@ -289,7 +289,7 @@ class PythonTask(Task):
 		self.timer.start(5)
 
 	def work(self):
-		raise NotImplemented("work")
+		raise NotImplementedError("[Task] PythonTask work")  # what is this?
 
 	def abort(self):
 		self.aborted = True
