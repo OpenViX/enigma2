@@ -595,7 +595,7 @@ class InfoBarTimeshift:
 						readmetafile = open("%s%s.meta" % (config.usage.timeshift_path.value, filename), "r")
 						servicerefname = readmetafile.readline()[0:-1]  # local variable 'servicerefname' is assigned to but never used
 						eventname = readmetafile.readline()[0:-1]
-						description = readmetafile.readline()[0:-1]  # local variable 'description' is assigned to but never used 
+						description = readmetafile.readline()[0:-1]  # local variable 'description' is assigned to but never used
 						begintime = readmetafile.readline()[0:-1]
 						readmetafile.close()
 
