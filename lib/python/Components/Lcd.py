@@ -2,7 +2,6 @@ from sys import maxsize
 
 from boxbranding import getBoxType, getDisplayType
 
-from twisted.internet import threads
 from enigma import eDBoxLCD, eTimer, eActionMap
 
 from Components.config import config, ConfigSubsection, ConfigSelection, ConfigSlider, ConfigYesNo, ConfigNothing
