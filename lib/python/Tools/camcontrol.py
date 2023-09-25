@@ -22,6 +22,7 @@ class CamControl:
 		print("[CamControl][getList] returnlist=%s" % result)
 		return result
 
+
 	def getConfigs(self, prefix):
 		configs = []
 		if path.exists("/etc/tuxbox/config/%s" % prefix):
