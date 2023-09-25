@@ -71,21 +71,21 @@ class PiconLocator:
 				self.searchPaths.append(value)
 
 	def getPiconName(self, serviceRef):
-		#remove the path and name fields, and replace ":" by "_"
+		# remove the path and name fields, and replace ":" by "_"
 		fields = GetWithAlternative(serviceRef).split(":", 10)[:10]
 		if not fields or len(fields) < 10:
 			return ""
 		pngname = self.findPicon("_".join(fields))
 		if not pngname and not fields[6].endswith("0000"):
-			#remove "sub-network" from namespace
+			# remove "sub-network" from namespace
 			fields[6] = fields[6][:-4] + "0000"
 			pngname = self.findPicon("_".join(fields))
 		if not pngname and fields[0] != "1":
-			#fallback to 1 for IPTV streams
+			# fallback to 1 for IPTV streams
 			fields[0] = "1"
 			pngname = self.findPicon("_".join(fields))
 		if not pngname and fields[2] != "2":
-			#fallback to 1 for TV services with non-standard service types
+			# fallback to 1 for TV services with non-standard service types
 			fields[2] = "1"
 			pngname = self.findPicon("_".join(fields))
 		if not pngname:  # picon by channel name
