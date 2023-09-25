@@ -220,19 +220,19 @@ class UpdatePlugin(Screen, ProtectedScreen):
 				self.slider.setValue(self.sliderPackages[param])
 			self.package.setText(param)
 			self.status.setText(_("Upgrading") + ": %s/%s" % (self.packages, self.total_packages))
-			if not param in self.processed_packages:
+			if param not in self.processed_packages:
 				self.processed_packages.append(param)
 				self.packages += 1
 		elif event == IpkgComponent.EVENT_INSTALL:
 			self.package.setText(param)
 			self.status.setText(_("Installing"))
-			if not param in self.processed_packages:
+			if param not in self.processed_packages:
 				self.processed_packages.append(param)
 				self.packages += 1
 		elif event == IpkgComponent.EVENT_REMOVE:
 			self.package.setText(param)
 			self.status.setText(_("Removing"))
-			if not param in self.processed_packages:
+			if param not in self.processed_packages:
 				self.processed_packages.append(param)
 				self.packages += 1
 		elif event == IpkgComponent.EVENT_CONFIGURING:
