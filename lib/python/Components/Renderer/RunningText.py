@@ -47,8 +47,8 @@ RIGHT = 1
 TOP = 2
 BOTTOM = 3
 # halign:
-#LEFT     = 0
-#RIGHT    = 1
+# LEFT     = 0
+# RIGHT    = 1
 CENTER = 2
 BLOCK = 3
 
@@ -100,7 +100,7 @@ class RunningText(Renderer):
 				else:
 					x = max(limit, int(val))
 			except:
-					x = default
+				x = default
 			return x
 
 		def setWrapFlag(attrib, value):
@@ -215,7 +215,7 @@ class RunningText(Renderer):
 		Renderer.connect(self, source)
 
 	def changed(self, what):
-		if not self.mTimer is None:
+		if self.mTimer is not None:
 			self.mTimer.stop()
 		if what[0] == self.CHANGED_CLEAR:
 			self.txtext = ""
@@ -238,9 +238,7 @@ class RunningText(Renderer):
 
 		self.scroll_label.setText(self.txtext)
 
-		if self.txtext == "" or \
-		   self.type == NONE or \
-		   self.scroll_label is None:
+		if self.txtext == "" or self.type == NONE or self.scroll_label is None:
 			return False
 
 		if self.direction in (LEFT, RIGHT) or not (self.txtflags & RT_WRAP):
@@ -259,9 +257,9 @@ class RunningText(Renderer):
 			text_height = max(text_height, (text_height + self.lineHeight - 1) // self.lineHeight * self.lineHeight)
 
 
-#		self.type =		0 - NONE; 1 - RUNNING; 2 - SWIMMING; 3 - AUTO(???)
-#		self.direction =	0 - LEFT; 1 - RIGHT;   2 - TOP;      3 - BOTTOM
-#		self.halign =		0 - LEFT; 1 - RIGHT;   2 - CENTER;   3 - BLOCK
+		# self.type =		0 - NONE; 1 - RUNNING; 2 - SWIMMING; 3 - AUTO(???)
+		# self.direction =	0 - LEFT; 1 - RIGHT;   2 - TOP;      3 - BOTTOM
+		# self.halign =		0 - LEFT; 1 - RIGHT;   2 - CENTER;   3 - BLOCK
 
 		if self.direction in (LEFT, RIGHT):
 			if not self.mAlways and text_width <= self.W:
@@ -277,7 +275,7 @@ class RunningText(Renderer):
 					self.mStep = abs(self.mStep)
 					self.mStop = self.B - text_width + self.soffset[0] - self.mStep
 					self.P = self.A
-				if not self.mStartPoint is None:
+				if self.mStartPoint is not None:
 					if self.direction == LEFT:
 						self.mStop = self.P = max(self.A, min(self.W, self.mStartPoint))
 					else:
@@ -325,7 +323,7 @@ class RunningText(Renderer):
 					self.mStep = abs(self.mStep)
 					self.mStop = self.B - text_height + self.soffset[1] - self.mStep
 					self.P = self.A
-				if not self.mStartPoint is None:
+				if self.mStartPoint is not None:
 					if self.direction == TOP:
 						self.mStop = self.P = max(self.A, min(self.H, self.mStartPoint))
 					else:
