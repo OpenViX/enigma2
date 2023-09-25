@@ -33,7 +33,7 @@ class PlaylistIO:
 		if entry[0] == "/":
 			path = entry
 		else:
-			path = path.dirname(filename) + "/" + entry
+			path = path.dirname(filename) + "/" + entry  # this name swapping with "path" is very confussing and should be fixed
 			for proto in self.REMOTE_PROTOS:
 				if entry.startswith(proto):
 					path = entry
