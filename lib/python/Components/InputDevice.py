@@ -179,13 +179,13 @@ class InitInputDevices:
 	def setupConfigEntries(self, device):
 		setattr(config.inputDevices, device, ConfigSubsection())
 		currentElement = getattr(config.inputDevices, device)
-		currentElement.enabled = ConfigYesNo(default = False)
+		currentElement.enabled = ConfigYesNo(default=False)
 		currentElement.enabled.addNotifier(self.inputDevicesEnabledChanged)
 		currentElement.name = ConfigText(default='')
 		currentElement.name.addNotifier(self.inputDevicesNameChanged)
-		currentElement.repeat = ConfigSlider(default=100, increment = 10, limits=(0, 500))
+		currentElement.repeat = ConfigSlider(default=100, increment=10, limits=(0, 500))
 		currentElement.repeat.addNotifier(self.inputDevicesRepeatChanged)
-		currentElement.delay = ConfigSlider(default=700, increment = 100, limits=(0, 5000))
+		currentElement.delay = ConfigSlider(default=700, increment=100, limits=(0, 5000))
 		currentElement.delay.addNotifier(self.inputDevicesDelayChanged)
 
 	def remapRemoteControl(self, device):
