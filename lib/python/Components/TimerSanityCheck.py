@@ -65,7 +65,7 @@ class TimerSanityCheck:
 		serviceHandler = eServiceCenter.getInstance()
 		# create a list with all start and end times
 		# split it into recurring and singleshot timers
-		
+
 		##################################################################################
 		# process the new timer
 		self.rep_eventlist = []
