@@ -2,7 +2,6 @@ from skin import findSkinScreen, parameters, menus, menuicons
 
 from Components.ActionMap import HelpableNumberActionMap, HelpableActionMap
 from Components.config import config, ConfigDictionarySet, configfile, NoSave
-from Components.NimManager import nimmanager
 from Components.Pixmap import Pixmap
 from Components.PluginComponent import plugins
 from Components.Sources.List import List
