@@ -21,8 +21,6 @@ class Pixmap(GUIComponent):
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
-			skin_path_prefix = getattr(screen, "skin_path", path)
-			pixmap = None
 			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "offset":
