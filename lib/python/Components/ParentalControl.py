@@ -43,7 +43,7 @@ def InitParentalControl():
 	config.ParentalControl.config_sections.vixmenu = ConfigYesNo(default=False)
 	config.ParentalControl.config_sections.menu_sort = ConfigYesNo(default=False)
 
-	#Added for backwards compatibility with some 3rd party plugins that depend on this config
+	# Added for backwards compatibility with some 3rd party plugins that depend on this config
 	config.ParentalControl.servicepinactive = config.ParentalControl.configured
 	config.ParentalControl.setuppin = config.ParentalControl.servicepin[0]
 	config.ParentalControl.retries.setuppin = config.ParentalControl.retries.servicepin
@@ -55,22 +55,22 @@ def InitParentalControl():
 
 class ParentalControl:
 	def __init__(self):
-		#Do not call open on init, because bouquets are not ready at that moment
+		# Do not call open on init, because bouquets are not ready at that moment
 		self.filesOpened = False
 		self.PinDlg = None
-		#This is the timer that is used to see, if the time for caching the pin is over
-		#Of course we could also work without a timer and compare the times every
-		#time we call isServicePlayable. But this might probably slow down zapping,
-		#That's why I decided to use a timer
+		# This is the timer that is used to see, if the time for caching the pin is over
+		# Of course we could also work without a timer and compare the times every
+		# time we call isServicePlayable. But this might probably slow down zapping,
+		# That's why I decided to use a timer
 		self.sessionPinTimer = eTimer()
 		self.sessionPinTimer.callback.append(self.resetSessionPin)
 		self.getConfigValues()
 
 	def serviceMethodWrapper(self, service, method, *args):
-		#This method is used to call all functions that need a service as Parameter:
-		#It takes either a Service- Reference or a Bouquet- Reference and passes
-		#Either the service or all services contained in the bouquet to the method given
-		#That way all other functions do not need to distinguish between service and bouquet.
+		# This method is used to call all functions that need a service as Parameter:
+		# It takes either a Service- Reference or a Bouquet- Reference and passes
+		# Either the service or all services contained in the bouquet to the method given
+		# That way all other functions do not need to distinguish between service and bouquet.
 		if "FROM BOUQUET" in service:
 			method(service, TYPE_BOUQUET, *args)
 			servicelist = self.readServicesFromBouquet(service, "C")
@@ -85,8 +85,8 @@ class ParentalControl:
 	def isProtected(self, ref):
 		if not config.ParentalControl.servicepinactive.value or not ref:
 			return False
-		#Check if configuration has already been read or if the significant values have changed.
-		#If true: read the configuration
+		# Check if configuration has already been read or if the significant values have changed.
+		# If true: read the configuration
 		if self.storeServicePin != config.ParentalControl.storeservicepin.value:
 			self.getConfigValues()
 		service = ref.toCompareString()
@@ -109,7 +109,7 @@ class ParentalControl:
 	def isServicePlayable(self, ref, callback, session=None):
 		self.session = session
 		if self.isProtected(ref):
-			#Check if the session pin is cached
+			# Check if the session pin is cached
 			if self.sessionPinCached:
 				return True
 			self.callback = callback
@@ -143,7 +143,7 @@ class ParentalControl:
 		return service in self.blacklist and TYPE_BOUQUETSERVICE in self.blacklist[service]
 
 	def getConfigValues(self):
-		#Read all values from configuration
+		# Read all values from configuration
 		self.checkPinInterval = False
 		self.checkPinIntervalCancel = False
 		self.checkSessionPin = False
@@ -168,7 +168,7 @@ class ParentalControl:
 		self.resetSessionPin()
 
 	def resetSessionPin(self):
-		#Reset the session pin, stop the timer
+		# Reset the session pin, stop the timer
 		self.sessionPinCached = False
 		self.hideBlacklist()
 
@@ -179,9 +179,9 @@ class ParentalControl:
 		return [x.value for x in config.ParentalControl.servicepin]
 
 	def setSessionPinCached(self):
-		if self.checkSessionPin == True:
+		if self.checkSessionPin is True:
 			self.sessionPinCached = True
-		if self.checkPinInterval == True:
+		if self.checkPinInterval is True:
 			self.sessionPinCached = True
 			self.sessionPinTimer.startLongTimer(self.pinIntervalSeconds)
 
@@ -190,7 +190,7 @@ class ParentalControl:
 			self.setSessionPinCached()
 			self.hideBlacklist()
 			self.callback(ref=service)
-		elif result == False:
+		elif result is False:
 			messageText = _("The pin code you entered is wrong.")
 			if self.session:
 				self.session.open(MessageBox, messageText, MessageBox.TYPE_INFO, timeout=3)
@@ -198,20 +198,20 @@ class ParentalControl:
 				AddPopup(messageText, MessageBox.TYPE_ERROR, timeout=3)
 
 	def saveListToFile(self, sWhichList, vList):
-		#Replaces saveWhiteList and saveBlackList:
+		#  Replaces saveWhiteList and saveBlackList:
 		#I don't like to have two functions with identical code...
 		file = open(resolveFilename(SCOPE_CONFIG, sWhichList), 'w')
 		for sService, sType in vList.items():
-			#Only Services that are selected directly and Bouqets are saved.
-			#Services that are added by a bouquet are not saved.
-			#This is the reason for the change in self.whitelist and self.blacklist
+			# Only Services that are selected directly and Bouqets are saved.
+			# Services that are added by a bouquet are not saved.
+			# This is the reason for the change in self.whitelist and self.blacklist
 			if TYPE_SERVICE in sType or TYPE_BOUQUET in sType:
 				file.write(str(sService) + "\n")
 		file.close()
 
 	def openListFromFile(self, sWhichList):
-		#Replaces openWhiteList and openBlackList:
-		#I don't like to have two functions with identical code...
+		# Replaces openWhiteList and openBlackList:
+		# I don't like to have two functions with identical code...
 		result = {}
 		try:
 			file = open(resolveFilename(SCOPE_CONFIG, sWhichList), 'r')
@@ -224,17 +224,17 @@ class ParentalControl:
 		return result
 
 	def addServiceToList(self, service, type, vList):
-		#Replaces addWhitelistService and addBlacklistService
-		#The lists are not only lists of service references any more.
-		#They are named lists with the service as key and an array of types as value:
+		# Replaces addWhitelistService and addBlacklistService
+		# The lists are not only lists of service references any more.
+		# They are named lists with the service as key and an array of types as value:
 		if service in vList:
-			if not type in vList[service]:
+			if type not in vList[service]:
 				vList[service].append(type)
 		else:
 			vList[service] = [type]
 
 	def removeServiceFromList(self, service, type, vList):
-		#Replaces deleteWhitelistService and deleteBlacklistService
+		# Replaces deleteWhitelistService and deleteBlacklistService
 		if service in vList:
 			if type in vList[service]:
 				vList[service].remove(type)
@@ -242,7 +242,7 @@ class ParentalControl:
 				del vList[service]
 
 	def readServicesFromBouquet(self, sBouquetSelection, formatstring):
-		#This method gives back a list of services for a given bouquet
+		# This method gives back a list of services for a given bouquet
 		from enigma import eServiceCenter, eServiceReference
 		serviceHandler = eServiceCenter.getInstance()
 		refstr = sBouquetSelection
