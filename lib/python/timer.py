@@ -247,9 +247,9 @@ class Timer:
 						print("OK!!!!!!!!!!!!!!")
 					NavigationInstance.instance.stopRecordService(rec)
 			else:
-				print "no NAV" . 
+				print "no NAV" .
 	'''
-	
+
 	def setNextActivation(self, now, when):
 		delay = int((when - now) * 1000)
 		self.timer.start(delay, 1)
