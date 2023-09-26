@@ -171,8 +171,8 @@ class CleanTrashTask(Components.Task.PythonTask):
 				print("[Trashcan][CleanTrashTask][work] " + str(trashfolder) + ": Size:", "{:,}".format(trashsize))
 				candidates = []
 				size = 0
-				for root, dirs, files in walk(trashfolder.encode(), topdown=False):	# handle non utf-8 files
-					for name in files:	# Don't delete any per-directory config files from .Trash
+				for root, dirs, files in walk(trashfolder.encode(), topdown=False):  # handle non utf-8 files
+					for name in files:  # Don't delete any per-directory config files from .Trash
 						if (config.movielist.settings_per_directory.value and name == b".e2settings.pkl"):
 							continue
 						fn = ospath.join(root, name)
