@@ -26,7 +26,6 @@ from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
 from Screens.TaskView import JobView
 from Screens.TextBox import TextBox
-from Tools.BoundFunction import boundFunction
 from Tools.Directories import fileExists, pathExists, fileHas
 import Tools.CopyFiles
 from Tools.HardwareInfo import HardwareInfo
