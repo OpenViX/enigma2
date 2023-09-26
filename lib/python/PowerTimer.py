@@ -86,7 +86,7 @@ class PowerTimerEntry(TimerEntry):
 			TIMERTYPE.DEEPSTANDBY: "deepstandby",
 			TIMERTYPE.REBOOT: "reboot",
 			TIMERTYPE.RESTART: "restart"
-			}[self.timerType]
+		}[self.timerType]
 		if not self.disabled:
 			return "PowerTimerEntry(type=%s, begin=%s)" % (timertype, ctime(self.begin))
 		else:
@@ -96,9 +96,9 @@ class PowerTimerEntry(TimerEntry):
 		self.log_entries.append((int(time()), code, msg))
 
 	def do_backoff(self):
-#
-# back-off an auto-repeat timer by its autosleepdelay, not 5, 10, 20, 30 mins
-#
+		#
+		# back-off an auto-repeat timer by its autosleepdelay, not 5, 10, 20, 30 mins
+		#
 		if self.autosleeprepeat == "repeated" and self.timerType in (TIMERTYPE.AUTOSTANDBY, TIMERTYPE.AUTODEEPSTANDBY):
 			self.backoff = int(self.autosleepdelay) * 60
 		elif self.backoff == 0:
@@ -108,16 +108,16 @@ class PowerTimerEntry(TimerEntry):
 			if self.backoff > 1800:
 				self.backoff = 1800
 		self.log(10, "backoff: retry in %d minutes" % (int(self.backoff) / 60))
-#
-# If this is the first backoff of a repeat timer remember the original
-# begin/end times, so that we can use *these* when setting up the repeat.
-#
+		#
+		# If this is the first backoff of a repeat timer remember the original
+		# begin/end times, so that we can use *these* when setting up the repeat.
+		#
 		if self.repeated != 0 and not hasattr(self, "real_begin"):
 			self.real_begin = self.begin
 			self.real_end = self.end
 
-# Delay the timer by the back-off time
-#
+		# Delay the timer by the back-off time
+		#
 		self.begin = time() + self.backoff
 		if self.end <= self.begin:
 			self.end = self.begin
@@ -127,10 +127,10 @@ class PowerTimerEntry(TimerEntry):
 		self.log(5, "activating state %d" % next_state)
 
 		if next_state == self.StatePrepared and (self.timerType == TIMERTYPE.AUTOSTANDBY or self.timerType == TIMERTYPE.AUTODEEPSTANDBY):
-# This is the first action for an auto* timer.
-# It binds any key press to keyPressed(), which resets the timer delay,
-# and sets the initial delay.
-#
+			# This is the first action for an auto* timer.
+			# It binds any key press to keyPressed(), which resets the timer delay,
+			# and sets the initial delay.
+			#
 			eActionMap.getInstance().bindAction('', -0x7FFFFFFF, self.keyPressed)
 			self.begin = time() + int(self.autosleepdelay) * 60
 			if self.end <= self.begin:
@@ -188,16 +188,16 @@ class PowerTimerEntry(TimerEntry):
 
 			elif self.timerType == TIMERTYPE.AUTODEEPSTANDBY:
 
-# Check for there being any active Movie playback or IPTV channel
-# or any streaming clients before going to Deep Standby.
-# However, it is possible to put the box into Standby with the
-# MoviePlayer still active (it will play if the box is taken out
-# of Standby) - similarly for the IPTV player. This should not
-# prevent a DeepStandby
-# And check for existing or imminent recordings, etc..
-# Also added () around the test and split them across lines
-# to make it clearer what each test is.
-#
+				# Check for there being any active Movie playback or IPTV channel
+				# or any streaming clients before going to Deep Standby.
+				# However, it is possible to put the box into Standby with the
+				# MoviePlayer still active (it will play if the box is taken out
+				# of Standby) - similarly for the IPTV player. This should not
+				# prevent a DeepStandby
+				# And check for existing or imminent recordings, etc..
+				# Also added () around the test and split them across lines
+				# to make it clearer what each test is.
+				#
 				from Components.Converter.ClientsStreaming import ClientsStreaming
 				if ((not Screens.Standby.inStandby and NavigationInstance.instance.getCurrentlyPlayingServiceReference() and
 					('0:0:0:0:0:0:0:0:0' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString() or
@@ -386,12 +386,12 @@ def createTimer(xml):
 	autosleepinstandbyonly = str(xml.get("autosleepinstandbyonly") or "no")
 	autosleepdelay = str(xml.get("autosleepdelay") or "0")
 	autosleeprepeat = str(xml.get("autosleeprepeat") or "once")
-#
-# If this is a repeating auto* timer then start it in 30 secs,
-# which means it will start its repeating countdown from when enigma2
-# starts each time rather then waiting until anything left over from the
-# last enigma2 running.
-#
+	#
+	# If this is a repeating auto* timer then start it in 30 secs,
+	# which means it will start its repeating countdown from when enigma2
+	# starts each time rather then waiting until anything left over from the
+	# last enigma2 running.
+	#
 	if autosleeprepeat == "repeated":
 		begin = end = time() + 30
 
@@ -399,7 +399,7 @@ def createTimer(xml):
 	entry.autosleepinstandbyonly = autosleepinstandbyonly
 	entry.autosleepdelay = int(autosleepdelay)
 	entry.autosleeprepeat = autosleeprepeat
-# Ensure that the timer repeated is cleared if we have an autosleeprepeat
+	# Ensure that the timer repeated is cleared if we have an autosleeprepeat
 	if entry.autosleeprepeat == "repeated":
 		entry.repeated = 0
 	else:
@@ -481,7 +481,7 @@ class PowerTimer(Timer):
 		checkit = True
 		for timer in root.findall("timer"):
 			newTimer = createTimer(timer)
-			if (self.record(newTimer, True, dosave=False) is not None) and (checkit == True):
+			if (self.record(newTimer, True, dosave=False) is not None) and (checkit is True):
 				from Tools.Notifications import AddPopup
 				from Screens.MessageBox import MessageBox
 				AddPopup(_("Timer overlap in pm_timers.xml detected!\nPlease recheck it!"), type=MessageBox.TYPE_ERROR, timeout=0, id="TimerLoadFailed")
@@ -576,14 +576,12 @@ class PowerTimer(Timer):
 			return nextrectime
 
 	def isNextPowerManagerAfterEventActionAuto(self):
-		now = time()
-		t = None
 		for timer in self.timer_list:
 			if timer.timerType == TIMERTYPE.WAKEUPTOSTANDBY or timer.afterEvent == AFTEREVENT.WAKEUPTOSTANDBY:
 				return True
 		return False
 
-	def record(self, entry, ignoreTSC=False, dosave=True):		#wird von loadTimer mit dosave=False aufgerufen
+	def record(self, entry, ignoreTSC=False, dosave=True):  # as called by loadTimer with dosave=False
 		entry.timeChanged()
 		print("[PowerTimer]", str(entry))
 		entry.Timer = self
@@ -606,9 +604,10 @@ class PowerTimer(Timer):
 		if entry.state != entry.StateEnded:
 			self.timeChanged(entry)
 
-# 		print "state: ", entry.state
-# 		print "in processed: ", entry in self.processed_timers
-# 		print "in running: ", entry in self.timer_list
+		# print "state: ", entry.state
+		# print "in processed: ", entry in self.processed_timers
+		# print "in running: ", entry in self.timer_list
+		#
 		# disable timer first
 		if entry.state != 3:
 			entry.disable()
