@@ -3,7 +3,7 @@ from boxbranding import getMachineBrand, getMachineName, getImageDistro
 from .BackupManager import isRestorableSettings, isRestorablePlugins, isRestorableKernel
 
 from Components.About import about
-from Components.config import config, configfile
+from Components.config import config
 from Components.Console import Console
 from Components.Pixmap import Pixmap
 from Components.SystemInfo import SystemInfo
@@ -208,7 +208,7 @@ class RestoreWizard(WizardLanguage, Rc):
 
 	def settingRestore_Finished(self, result, retval, extra_args=None):
 		self.didSettingsRestore = True
-		network = [x.split(" ")[3] for x in open("/etc/network/interfaces").read().splitlines() if x.startswith("iface eth0")]
+		# network = [x.split(" ")[3] for x in open("/etc/network/interfaces").read().splitlines() if x.startswith("iface eth0")]  # what is this?
 		self.pleaseWait.close()
 		self.doRestorePlugins1()
 
@@ -326,7 +326,6 @@ class RestoreWizard(WizardLanguage, Rc):
 							available = listdir(self.thirdpartyPluginsLocation)
 						else:
 							devmounts = []
-							files = []
 							self.plugfile = self.plugfiles[3]
 							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media)) and path.exists("/media/%s/%s" % (media, self.plugfile))]:
 								if media not in ("autofs", "net"):
