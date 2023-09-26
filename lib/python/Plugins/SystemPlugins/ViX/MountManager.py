@@ -1,18 +1,16 @@
 import errno
-from os import mkdir, path, remove, rename, statvfs, system
+from os import mkdir, path, rename, statvfs, system
 import re
-from time import sleep
 
-from boxbranding import getMachineBrand, getMachineName, getMachineBuild
-from enigma import eTimer, getDesktop
+from boxbranding import getMachineBrand, getMachineName   # , getMachineBuild
+from enigma import eTimer
 
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.ConfigList import ConfigListScreen
-from Components.config import config, getConfigListEntry, ConfigSelection, NoSave
+from Components.config import getConfigListEntry, ConfigSelection, NoSave
 from Components.Console import Console
 from Components.Sources.List import List
-from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -318,7 +316,7 @@ class VIXDevicesPanel(Screen):
 			des = sel[1]
 			des = des.replace("\n", "\t")
 			parts = des.strip().split("\t")
-			mountp = parts[1].replace(_("Mount: "), "")
+			# mountp = parts[1].replace(_("Mount: "), "")
 			device = parts[2].replace(_("Device: "), "")
 			# print("[MountManager][mount] mountp=%s device=%s" % (mountp, device))
 			exitStatus = system("mount %s" % device)
@@ -350,11 +348,11 @@ class VIXDevicesPanel(Screen):
 			# print("[MountManager1][addFstab1]: device = %s, mountp=%s, UUID=%s" %(self.device, self.mountp, self.device_uuid))
 			if not path.exists(self.mountp):
 				mkdir(self.mountp, 0o755)
-			open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if "/media/hdd" not in l])
+			open("/etc/fstab.tmp", "w").writelines([x for x in open("/etc/fstab").readlines() if "/media/hdd" not in x])
 			rename("/etc/fstab.tmp", "/etc/fstab")
-			open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if self.device not in l])
+			open("/etc/fstab.tmp", "w").writelines([x for x in open("/etc/fstab").readlines() if self.device not in x])
 			rename("/etc/fstab.tmp", "/etc/fstab")
-			open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if self.device_uuid not in l])
+			open("/etc/fstab.tmp", "w").writelines([x for x in open("/etc/fstab").readlines() if self.device_uuid not in x])
 			rename("/etc/fstab.tmp", "/etc/fstab")
 			with open("/etc/fstab", "a") as fd:
 				line = self.device_uuid + "\t/media/hdd\tauto\tdefaults\t0 0\n"
@@ -449,9 +447,9 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 					self.device_type = "ntfs"
 				if not path.exists(self.mountp):
 					mkdir(self.mountp, 0o755)
-				open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if self.device not in l])
+				open("/etc/fstab.tmp", "w").writelines([x for x in open("/etc/fstab").readlines() if self.device not in x])
 				rename("/etc/fstab.tmp", "/etc/fstab")
-				open("/etc/fstab.tmp", "w").writelines([l for l in open("/etc/fstab").readlines() if self.device_uuid not in l])
+				open("/etc/fstab.tmp", "w").writelines([x for x in open("/etc/fstab").readlines() if self.device_uuid not in x])
 				rename("/etc/fstab.tmp", "/etc/fstab")
 				with open("/etc/fstab", "a") as fd:
 					line = self.device_uuid + "\t" + self.mountp + "\t" + self.device_type + "\tdefaults\t0 0\n"
