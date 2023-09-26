@@ -776,7 +776,7 @@ class BackupSelection(Screen):
 			140, 0, 140, 40, 20,
 			280, 0, 140, 40, 20,
 			5, 50, 550, 250, 25, 19,
-		]
+	]
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -875,7 +875,7 @@ class XtraPluginsSelection(Screen):
 			140, 0, 140, 40, 20,
 			280, 0, 140, 40, 20,
 			5, 50, 550, 250, 25, 19,
-		]
+	]
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
