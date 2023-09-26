@@ -49,15 +49,16 @@ class VIXIPKInstaller(Screen):
 		self["lab1"] = Label()
 		self.defaultDir = "/tmp"
 		self.onChangedEntry = []
-		self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions"],
-									  {
-									  "cancel": self.close,
-									  "red": self.close,
-									  "green": self.keyInstall,
-									  "yellow": self.changelocation,
-									  "ok": self.keyInstall,
-									  "menu": self.close,
-									  }, -1)
+		self["myactions"] = ActionMap(
+			["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions"],
+			{
+				"cancel": self.close,
+				"red": self.close,
+				"green": self.keyInstall,
+				"yellow": self.changelocation,
+				"ok": self.keyInstall,
+				"menu": self.close,
+			}, -1)
 
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button(_("Install"))
@@ -67,7 +68,7 @@ class VIXIPKInstaller(Screen):
 		self["list"] = MenuList(self.list)
 		self.populate_List()
 
-		if not self.selectionChanged in self["list"].onSelectionChanged:
+		if self.selectionChanged not in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
 	def createSummary(self):
@@ -184,7 +185,7 @@ class IpkgInstaller(Screen):
 			5, 50, 540, 360, 20,  # list
 			0, 410, 560, 2,
 			5, 420, 550, 30, 22,
-		]
+	]
 
 	def __init__(self, session, list):
 		Screen.__init__(self, session)
@@ -201,14 +202,15 @@ class IpkgInstaller(Screen):
 		self["key_blue"] = StaticText(_("Invert"))
 		self["introduction"] = StaticText(_("Press OK to toggle the selection."))
 
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
-									{
-									"ok": self.list.toggleSelection,
-									"cancel": self.close,
-									"red": self.close,
-									"green": self.install,
-									"blue": self.list.toggleAllSelection
-									}, -1)
+		self["actions"] = ActionMap(
+			["OkCancelActions", "ColorActions"],
+			{
+				"ok": self.list.toggleSelection,
+				"cancel": self.close,
+				"red": self.close,
+				"green": self.install,
+				"blue": self.list.toggleAllSelection
+			}, -1)
 
 	def install(self):
 		list = self.list.getSelectionsList()
