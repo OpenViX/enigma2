@@ -1,6 +1,7 @@
 from os import listdir, path, readlink, symlink, unlink
 from enigma import eConsoleAppContainer
 
+
 class CamControl:
 	'''CAM convention is that a softlink named /etc/init.c/softcam.* points
 	to the start/stop script.'''
@@ -21,7 +22,6 @@ class CamControl:
 				result.append(f[len(prefix):])
 		print("[CamControl][getList] returnlist=%s" % result)
 		return result
-
 
 	def getConfigs(self, prefix):
 		configs = []
