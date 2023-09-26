@@ -57,8 +57,8 @@ config.backupmanager.backupdirs = ConfigLocations(
 	default=[
 		eEnv.resolve("${sysconfdir}/enigma2/"),
 		eEnv.resolve("${sysconfdir}/fstab"),
-		eEnv.resolve("${sysconfdir}/hostname") 
-		eEnv.resolve("${sysconfdir}/network/interfaces"), 
+		eEnv.resolve("${sysconfdir}/hostname")
+		eEnv.resolve("${sysconfdir}/network/interfaces"),
 		eEnv.resolve("${sysconfdir}/passwd"),
 		eEnv.resolve("${sysconfdir}/shadow"),
 		eEnv.resolve("${sysconfdir}/etc/shadow"),
@@ -915,7 +915,7 @@ class XtraPluginsSelection(Screen):
 		self.setTitle(_("Select folder that contains plugins"))
 
 	def selectionChanged(self):
-		current = self["checkList"].getCurrent()[0]  # what is this supposed to be doing 
+		current = self["checkList"].getCurrent()[0]  # what is this supposed to be doing
 
 	def up(self):
 		self["checkList"].up()
