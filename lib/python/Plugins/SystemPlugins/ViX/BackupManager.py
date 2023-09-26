@@ -16,7 +16,6 @@ from Components.Harddisk import harddiskmanager
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo
 import Components.Task
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -55,8 +54,20 @@ def __onPartitionChange(*args, **kwargs):
 
 config.backupmanager = ConfigSubsection()
 config.backupmanager.backupdirs = ConfigLocations(
-	default=[eEnv.resolve("${sysconfdir}/enigma2/"), eEnv.resolve("${sysconfdir}/fstab"), eEnv.resolve("${sysconfdir}/hostname"), eEnv.resolve("${sysconfdir}/network/interfaces"), eEnv.resolve("${sysconfdir}/passwd"), eEnv.resolve("${sysconfdir}/shadow"), eEnv.resolve("${sysconfdir}/etc/shadow"),
-			 eEnv.resolve("${sysconfdir}/resolv.conf"), eEnv.resolve("${sysconfdir}/ushare.conf"), eEnv.resolve("${sysconfdir}/inadyn.conf"), eEnv.resolve("${sysconfdir}/tuxbox/config/"), eEnv.resolve("${sysconfdir}/wpa_supplicant.conf"), "/usr/softcams/"])
+	default=[
+		eEnv.resolve("${sysconfdir}/enigma2/"),
+		eEnv.resolve("${sysconfdir}/fstab"),
+		eEnv.resolve("${sysconfdir}/hostname") 
+		eEnv.resolve("${sysconfdir}/network/interfaces"), 
+		eEnv.resolve("${sysconfdir}/passwd"),
+		eEnv.resolve("${sysconfdir}/shadow"),
+		eEnv.resolve("${sysconfdir}/etc/shadow"),
+		eEnv.resolve("${sysconfdir}/resolv.conf"),
+		eEnv.resolve("${sysconfdir}/ushare.conf"),
+		eEnv.resolve("${sysconfdir}/inadyn.conf"),
+		eEnv.resolve("${sysconfdir}/tuxbox/config/"),
+		eEnv.resolve("${sysconfdir}/wpa_supplicant.conf"),
+		"/usr/softcams/"])
 choices = getMountChoices()
 config.backupmanager.backuplocation = ConfigSelection(choices=choices, default=getMountDefault(choices))
 harddiskmanager.on_partition_list_change.append(__onPartitionChange)  # to update backuplocation choices on mountpoint change
@@ -104,14 +115,13 @@ def isRestorableKernel(kernelversion):
 	# This check should no longer be necessary since auto-installed packages are no longer listed in the plugins backup.
 	# For more information please consult commit https://github.com/OpenViX/vix-core/commit/53a95067677651a3f2579a1b0d1f70172ccc493b
 	return True
-	#return kernelversion == about.getKernelVersionString()
+	# return kernelversion == about.getKernelVersionString()
 
 
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
 	global autoBackupManagerTimer
 	global _session
-	now = int(time())
 	if reason == 0:
 		print("[BackupManager] AutoStart Enabled")
 		if session is not None:
@@ -190,7 +200,7 @@ class VIXBackupManager(Screen):
 		else:
 			backuptext = _("Next backup: ")
 		self["backupstatus"].setText(str(backuptext))
-		if not self.selectionChanged in self["list"].onSelectionChanged:
+		if self.selectionChanged not in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
 	def createSummary(self):
@@ -237,26 +247,28 @@ class VIXBackupManager(Screen):
 			mount = config.backupmanager.backuplocation.value + "/", config.backupmanager.backuplocation.value
 		hdd = "/media/hdd/", "/media/hdd"
 		if mount not in config.backupmanager.backuplocation.choices.choices and hdd not in config.backupmanager.backuplocation.choices.choices:
-			self["myactions"] = ActionMap(["OkCancelActions", "MenuActions"],
-										  {
-										  "cancel": self.close,
-										  "menu": self.createSetup,
-										  }, -1)
+			self["myactions"] = ActionMap(
+				["OkCancelActions", "MenuActions"],
+				{
+					"cancel": self.close,
+					"menu": self.createSetup,
+				}, -1)
 			self["key_red"].hide()
 			self["key_green"].hide()
 			self["key_yellow"].hide()
 			self["lab1"].setText(_("Device: Press 'Menu' to select a storage device - none available"))
 		else:
-			self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "TimerEditActions"],
-										  {
-										  "cancel": self.close,
-										  "ok": self.keyResstore,
-										  "red": self.keyDelete,
-										  "green": self.GreenPressed,
-										  "yellow": self.keyResstore,
-										  "menu": self.createSetup,
-										  "log": self.showLog,
-										  }, -1)
+			self["myactions"] = ActionMap(
+				["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "TimerEditActions"],
+				{
+					"cancel": self.close,
+					"ok": self.keyResstore,
+					"red": self.keyDelete,
+					"green": self.GreenPressed,
+					"yellow": self.keyResstore,
+					"menu": self.createSetup,
+					"log": self.showLog,
+				}, -1)
 			if mount not in config.backupmanager.backuplocation.choices.choices:
 					self.BackupDirectory = "/media/hdd/backup/"
 					config.backupmanager.backuplocation.value = "/media/hdd/"
@@ -470,11 +482,12 @@ class VIXBackupManager(Screen):
 		return job
 
 	def JobStart(self):
-		AddPopupWithCallback(self.Stage1,
-							 _("Do you want to restore your enigma2 settings ?"),
-							 MessageBox.TYPE_YESNO,
-							 10,
-							 SETTINGSRESTOREQUESTIONID
+		AddPopupWithCallback(
+			self.Stage1,
+			_("Do you want to restore your enigma2 settings ?"),
+			MessageBox.TYPE_YESNO,
+			10,
+			SETTINGSRESTOREQUESTIONID
 		)
 
 	def Stage1(self, answer=None):
@@ -498,11 +511,12 @@ class VIXBackupManager(Screen):
 			configfile.load()
 		else:
 			print("[BackupManager] Restoring Stage 1 Failed:")
-			AddPopupWithCallback(self.Stage2,
-								 _("Sorry, but the restore failed."),
-								 MessageBox.TYPE_INFO,
-								 10,
-								 "StageOneFailedNotification"
+			AddPopupWithCallback(
+				self.Stage2,
+				_("Sorry, but the restore failed."),
+				MessageBox.TYPE_INFO,
+				10,
+				"StageOneFailedNotification"
 			)
 
 	def Stage1PluginsComplete(self, result, retval, extra_args):
@@ -525,11 +539,12 @@ class VIXBackupManager(Screen):
 			self.feeds = "BAD"
 			self.Stage2Completed = True
 		elif result.find("Collected errors") != -1:  # none of the above errors. What condition requires this to loop? Maybe double key press.
-			AddPopupWithCallback(self.Stage2,
-								 _("A background update check is in progress, please try again."),
-								 MessageBox.TYPE_INFO,
-								 10,
-								 NOPLUGINS
+			AddPopupWithCallback(
+				self.Stage2,
+				_("A background update check is in progress, please try again."),
+				MessageBox.TYPE_INFO,
+				10,
+				NOPLUGINS
 			)
 		else:
 			print("[BackupManager] Restoring Stage 2: Complete")
@@ -564,29 +579,32 @@ class VIXBackupManager(Screen):
 		elif self.feeds == "NONETWORK":
 			print("[BackupManager] Restoring Stage 3: No network connection, plugin restore not possible")
 			self.kernelcheck = False
-			AddPopupWithCallback(self.Stage6,
-								 _("Your %s %s is not connected to a network. Please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
-								 MessageBox.TYPE_INFO,
-								 15,
-								 NOPLUGINS
+			AddPopupWithCallback(
+				self.Stage6,
+				_("Your %s %s is not connected to a network. Please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
+				MessageBox.TYPE_INFO,
+				15,
+				NOPLUGINS
 			)
 		elif self.feeds == "DOWN":
 			print("[BackupManager] Restoring Stage 3: Feeds are down, plugin restore not possible")
 			self.kernelcheck = False
-			AddPopupWithCallback(self.Stage6,
-								 _("Sorry the feeds are down for maintenance. Please try again later."),
-								 MessageBox.TYPE_INFO,
-								 15,
-								 NOPLUGINS
+			AddPopupWithCallback(
+				self.Stage6,
+				_("Sorry the feeds are down for maintenance. Please try again later."),
+				MessageBox.TYPE_INFO,
+				15,
+				NOPLUGINS
 			)
 		elif self.feeds == "BAD":
 			print("[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible")
 			self.kernelcheck = False
-			AddPopupWithCallback(self.Stage6,
-								 _("Your %s %s is not connected to the Internet. Please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
-								 MessageBox.TYPE_INFO,
-								 15,
-								 NOPLUGINS
+			AddPopupWithCallback(
+				self.Stage6,
+				_("Your %s %s is not connected to the Internet. Please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
+				MessageBox.TYPE_INFO,
+				15,
+				NOPLUGINS
 			)
 		else:
 			print("[BackupManager] Restoring Stage 3: Feeds state is unknown aborting")
@@ -636,9 +654,8 @@ class VIXBackupManager(Screen):
 							available = listdir(self.thirdpartyPluginsLocation)
 						else:
 							devmounts = []
-							files = []
 							self.plugfile = self.plugfiles[3]
-#							print("[BackupManager] self.plugfile, self.plugfiles", self.plugfile, self.plugfiles)
+							# print("[BackupManager] self.plugfile, self.plugfiles", self.plugfile, self.plugfiles)
 							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media)) and path.exists("/media/%s/%s" % (media, self.plugfile))]:
 								if media not in ("autofs", "net"):
 									devmounts.append(dir)
@@ -656,7 +673,7 @@ class VIXBackupManager(Screen):
 							for file in available:
 								if file:
 									fileparts = file.strip().split("_")
-#									print("[BackupManager] fileparts, ipk", fileparts, ipk)
+									# print("[BackupManager] fileparts, ipk", fileparts, ipk)
 									if fileparts[0] == ipk:
 										self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(" ", "%20")
 										ipk = path.join(self.thirdpartyPluginsLocation, file)
@@ -679,11 +696,12 @@ class VIXBackupManager(Screen):
 				self.pluginslist2 = ""
 			print("[BackupManager] Restoring Stage 4: Plugins to restore (extra plugins)", self.pluginslist)
 			print("[BackupManager] Restoring Stage 4: Plugins to restore (3rd party plugins)", self.pluginslist2)
-			AddPopupWithCallback(self.Stage4Complete,
-								 _("Do you want to restore your Enigma2 plugins ?"),
-								 MessageBox.TYPE_YESNO,
-								 15,
-								 PLUGINRESTOREQUESTIONID
+			AddPopupWithCallback(
+				self.Stage4Complete,
+				_("Do you want to restore your Enigma2 plugins ?"),
+				MessageBox.TYPE_YESNO,
+				15,
+				PLUGINRESTOREQUESTIONID
 			)
 		else:
 			print("[BackupManager] Restoring Stage 4: plugin restore not required")
@@ -696,11 +714,12 @@ class VIXBackupManager(Screen):
 			self.Stage4Completed = True
 		elif answer is False:
 			print("[BackupManager] Restoring Stage 4: plugin restore skipped by user")
-			AddPopupWithCallback(self.Stage6,
-								 _("Now skipping restore process"),
-								 MessageBox.TYPE_INFO,
-								 15,
-								 NOPLUGINS
+			AddPopupWithCallback(
+				self.Stage6,
+				_("Now skipping restore process"),
+				MessageBox.TYPE_INFO,
+				15,
+				NOPLUGINS
 			)
 
 	def Stage5(self):
@@ -772,19 +791,20 @@ class BackupSelection(Screen):
 		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir)
 		self["checkList"] = self.filelist
 
-		self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ShortcutActions", "MenuActions"],
-									{
-									"cancel": self.exit,
-									"red": self.exit,
-									"yellow": self.changeSelectionState,
-									"green": self.saveSelection,
-									"ok": self.okClicked,
-									"left": self.left,
-									"right": self.right,
-									"down": self.down,
-									"up": self.up,
-									"menu": self.exit,
-									}, -1)
+		self["actions"] = ActionMap(
+			["DirectionActions", "OkCancelActions", "ShortcutActions", "MenuActions"],
+			{
+				"cancel": self.exit,
+				"red": self.exit,
+				"yellow": self.changeSelectionState,
+				"green": self.saveSelection,
+				"ok": self.okClicked,
+				"left": self.left,
+				"right": self.right,
+				"down": self.down,
+				"up": self.up,
+				"menu": self.exit,
+			}, -1)
 		if not self.selectionChanged in self["checkList"].onSelectionChanged:
 			self["checkList"].onSelectionChanged.append(self.selectionChanged)
 		self.onLayoutFinish.append(self.layoutFinished)
@@ -868,19 +888,20 @@ class XtraPluginsSelection(Screen):
 		self.filelist = FileList(defaultDir, showFiles=True, matchingPattern="^.*.(ipk)")
 		self["checkList"] = self.filelist
 
-		self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ShortcutActions", "MenuActions"],
-									{
-									"cancel": self.exit,
-									"red": self.exit,
-									"green": self.saveSelection,
-									"ok": self.okClicked,
-									"left": self.left,
-									"right": self.right,
-									"down": self.down,
-									"up": self.up,
-									"menu": self.exit,
-									}, -1)
-		if not self.selectionChanged in self["checkList"].onSelectionChanged:
+		self["actions"] = ActionMap(
+			["DirectionActions", "OkCancelActions", "ShortcutActions", "MenuActions"],
+			{
+				"cancel": self.exit,
+				"red": self.exit,
+				"green": self.saveSelection,
+				"ok": self.okClicked,
+				"left": self.left,
+				"right": self.right,
+				"down": self.down,
+				"up": self.up,
+				"menu": self.exit,
+			}, -1)
+		if self.selectionChanged not in self["checkList"].onSelectionChanged:
 			self["checkList"].onSelectionChanged.append(self.selectionChanged)
 		self.onLayoutFinish.append(self.layoutFinished)
 
@@ -894,7 +915,7 @@ class XtraPluginsSelection(Screen):
 		self.setTitle(_("Select folder that contains plugins"))
 
 	def selectionChanged(self):
-		current = self["checkList"].getCurrent()[0]
+		current = self["checkList"].getCurrent()[0]  # what is this supposed to be doing 
 
 	def up(self):
 		self["checkList"].up()
@@ -969,11 +990,12 @@ class VIXBackupManagerMenu(Setup):
 		Setup.__init__(self, session, setup, plugin, PluginLanguageDomain)
 		self.skinName = "VIXBackupManagerMenu"
 
-		self["actions2"] = ActionMap(["SetupActions", "ColorActions", "VirtualKeyboardActions", "MenuActions"],
-									 {
-									 "yellow": self.chooseFiles,
-									 "blue": self.chooseXtraPluginDir,
-									 }, -2)
+		self["actions2"] = ActionMap(
+			["SetupActions", "ColorActions", "VirtualKeyboardActions", "MenuActions"],
+			{
+				"yellow": self.chooseFiles,
+				"blue": self.chooseXtraPluginDir,
+			}, -2)
 
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("Save"))
@@ -1222,8 +1244,6 @@ class BackupFiles(Screen):
 			self.selectedFiles.append("/usr/lib/sabnzbd")
 		if path.exists("/etc/ciplus") and "/etc/ciplus" not in self.selectedFiles:
 			self.selectedFiles.append("/etc/ciplus")
-#		if path.exists("/etc/samba") and "/etc/samba" not in self.selectedFiles:
-#			self.selectedFiles.append("/etc/samba")
 		if path.exists("/etc/samba/smb-user.conf") and "/etc/samba/smb-user.conf" not in self.selectedFiles:
 			self.selectedFiles.append("/etc/samba/smb-user.conf")
 		if path.exists("/etc/samba/private") and "/etc/samba/private" not in self.selectedFiles:
@@ -1383,7 +1403,7 @@ class BackupFiles(Screen):
 			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Backup failed - e. g. wrong backup destination or no space left on backup device."), MessageBox.TYPE_INFO, timeout=10)
 			print("[BackupManager] Result.", result)
 			print("{BackupManager] Backup failed - e. g. wrong backup destination or no space left on backup device")
-		try:								# Delete the list of backup files now that it's finished. Ignore any failure here, as there's nothing useful we could do anyway...
+		try:  # Delete the list of backup files now that it's finished. Ignore any failure here, as there's nothing useful we could do anyway...
 			remove(BackupFiles.tar_flist)
 		except:
 			pass
@@ -1395,8 +1415,8 @@ class BackupFiles(Screen):
 		self.Stage4Completed = True
 		self.Stage5Completed = True
 
-# Trim the number of backups to the configured setting...
-#
+		# Trim the number of backups to the configured setting...
+		#
 		try:
 			if config.backupmanager.types_to_prune.value != "none" \
 			 and config.backupmanager.number_to_keep.value > 0 \
@@ -1412,10 +1432,10 @@ class BackupFiles(Screen):
 						elif config.backupmanager.types_to_prune.value == "auto" and ("-Sch-" in fil or "-IM-" in fil or "-SU-" in fil):
 							emlist.append(fil)
 
-# sort by oldest first...
+				# sort by oldest first...
 				emlist.sort(key=lambda fil: path.getmtime(self.BackupDirectory + fil))
-# ...then, if we have too many, remove the <n> newest from the end
-# and delete what is left
+				# ...then, if we have too many, remove the <n> newest from the end
+				# and delete what is left
 				if len(emlist) > config.backupmanager.number_to_keep.value:
 					emlist = emlist[0:len(emlist) - config.backupmanager.number_to_keep.value]
 					for fil in emlist:
