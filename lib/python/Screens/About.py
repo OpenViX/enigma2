@@ -17,7 +17,7 @@ from Screens.GitCommitInfo import CommitInfo
 from Screens.Screen import Screen, ScreenSummary
 from Screens.SoftwareUpdate import UpdatePlugin
 from Screens.TextBox import TextBox
-from Tools.Directories import fileExists, fileHas, pathExists, isPluginInstalled
+from Tools.Directories import fileHas, pathExists, isPluginInstalled
 from Tools.Multiboot import GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
 
@@ -54,7 +54,6 @@ class About(AboutBase):
 		})
 
 	def populate(self):
-		model = None
 		AboutText = ""
 		AboutText += _("Model:\t%s %s\n") % (getMachineBrand(), getMachineName())
 
@@ -96,7 +95,7 @@ class About(AboutBase):
 				tempinfo = ""
 		elif path.exists("/proc/hisi/msp/pm_cpu"):
 			try:
-				tempinfo = search("temperature = (\d+) degree", open("/proc/hisi/msp/pm_cpu").read()).group(1)
+				tempinfo = search("temperature = (\d+) degree", open("/proc/hisi/msp/pm_cpu").read()).group(1)  # noqa: W605
 			except:
 				tempinfo = ""
 		if tempinfo and int(tempinfo) > 0:
@@ -144,7 +143,7 @@ class About(AboutBase):
 		AboutText += _("Drivers:\t%s\n") % about.driversDate()
 		AboutText += _("Kernel:\t%s\n") % about.getKernelVersionString()
 		AboutText += _("GStreamer:\t%s\n") % about.getGStreamerVersionString().replace("GStreamer ", "")
-		if isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value == True:
+		if isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value:
 			AboutText += _("4097 iptv player:\t%s\n") % config.plugins.serviceapp.servicemp3.player.value
 		else:
 			AboutText += _("4097 iptv player:\tDefault player\n")
@@ -171,10 +170,10 @@ class About(AboutBase):
 
 		bootloader = ""
 		if path.exists('/sys/firmware/devicetree/base/bolt/tag'):
-				f = open('/sys/firmware/devicetree/base/bolt/tag', 'r')
-				bootloader = f.readline().replace('\x00', '').replace('\n', '')
-				f.close()
-				AboutText += _("Bootloader:\t%s\n") % (bootloader)
+			f = open('/sys/firmware/devicetree/base/bolt/tag', 'r')
+			bootloader = f.readline().replace('\x00', '').replace('\n', '')
+			f.close()
+			AboutText += _("Bootloader:\t%s\n") % (bootloader)
 
 		self["AboutScrollLabel"].setText(AboutText)
 
@@ -342,8 +341,6 @@ class SystemMemoryInfo(AboutBase):
 		self.skinName = ["SystemMemoryInfo", "About"]
 		out_lines = open("/proc/meminfo").readlines()
 		self.AboutText = _("RAM") + "\n\n"
-		RamTotal = "-"
-		RamFree = "-"
 		for lidx in range(len(out_lines) - 1):
 			tstLine = out_lines[lidx].split()
 			if "MemTotal:" in tstLine:
@@ -496,14 +493,14 @@ class SystemNetworkInfo(AboutBase):
 		self.LinkState = None
 		if data is not None and data:
 			if status is not None:
-# getDataForInterface()->iwconfigFinished() in
-# Plugins/SystemPlugins/WirelessLan/Wlan.py sets fields to boolean False
-# if there is no info for them, so we need to check that possibility
-# for each status[self.iface] field...
-#
+				# getDataForInterface()->iwconfigFinished() in
+				# Plugins/SystemPlugins/WirelessLan/Wlan.py sets fields to boolean False
+				# if there is no info for them, so we need to check that possibility
+				# for each status[self.iface] field...
+				#
 				if self.iface == "wlan0" or self.iface == "wlan3" or self.iface == "ra0":
-# accesspoint is used in the "enc" code too, so we get it regardless
-#
+					# accesspoint is used in the "enc" code too, so we get it regardless
+					#
 					if not status[self.iface]["accesspoint"]:
 						accesspoint = _("Unknown")
 					else:
@@ -562,9 +559,7 @@ class SystemNetworkInfo(AboutBase):
 								encryption = _("Enabled")
 						self.AboutText += _("Encryption:") + "\t" + encryption + "\n"
 
-					if ((status[self.iface]["essid"] and status[self.iface]["essid"] == "off") or
-					    not status[self.iface]["accesspoint"] or
-					    status[self.iface]["accesspoint"] == "Not-Associated"):
+					if ((status[self.iface]["essid"] and status[self.iface]["essid"] == "off") or not status[self.iface]["accesspoint"] or status[self.iface]["accesspoint"] == "Not-Associated"):
 						self.LinkState = False
 						self["statuspic"].setPixmapNum(1)
 						self["statuspic"].show()
