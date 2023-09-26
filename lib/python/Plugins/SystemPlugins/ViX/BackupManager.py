@@ -57,7 +57,7 @@ config.backupmanager.backupdirs = ConfigLocations(
 	default=[
 		eEnv.resolve("${sysconfdir}/enigma2/"),
 		eEnv.resolve("${sysconfdir}/fstab"),
-		eEnv.resolve("${sysconfdir}/hostname")
+		eEnv.resolve("${sysconfdir}/hostname"),
 		eEnv.resolve("${sysconfdir}/network/interfaces"),
 		eEnv.resolve("${sysconfdir}/passwd"),
 		eEnv.resolve("${sysconfdir}/shadow"),
