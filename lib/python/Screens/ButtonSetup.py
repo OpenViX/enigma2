@@ -5,7 +5,6 @@ from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
 from Components.SystemInfo import SystemInfo
 from Components.config import config, ConfigSubsection, ConfigText, ConfigYesNo
 from Components.PluginComponent import plugins
-from Components.Sources.StaticText import StaticText
 from Screens.ChoiceBox import ChoiceBox
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -93,7 +92,7 @@ ButtonSetupKeys = [(_("Red"), "red", "Infobar/openSingleServiceEPG/1"),
 config.misc.ButtonSetup = ConfigSubsection()
 config.misc.ButtonSetup.additional_keys = ConfigYesNo(default=True)
 for x in ButtonSetupKeys:
-	exec("config.misc.ButtonSetup." + x[1] + " = ConfigText(default='" + x[2] + "')")
+	setattr(config.misc.ButtonSetup, x[1], ConfigText(default=x[2])
 
 
 def getButtonSetupFunctions():
@@ -546,7 +545,7 @@ class InfoBarButtonSetup():
 					import traceback
 					traceback.print_exc()
 			elif selected[0] == "Setup":
-				from Screens.Setup import Setup
+				from Screens.Setup import Setup  # noqa: F401
 				exec("self.session.open(Setup, \"%s\")" % selected[1])
 			elif selected[0].startswith("Zap"):
 				if selected[0] == "ZapPanic":
@@ -568,7 +567,7 @@ class InfoBarButtonSetup():
 				root = mdom.getroot()
 				for x in root.findall("menu"):
 					if x.get("key") == selected[1]:
-						menu_screen = self.session.open(MainMenu, x)
+						menu_screen = self.session.open(MainMenu, x) # noqa: F841
 						break
 
 	def showServiceListOrMovies(self):
