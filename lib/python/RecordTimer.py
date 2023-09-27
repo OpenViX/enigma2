@@ -5,7 +5,7 @@ from sys import maxsize
 from time import localtime, strftime, ctime, time
 
 from enigma import eEPGCache, getBestPlayableServiceReference, eStreamServer, eServiceReference, iRecordableService, quitMainloop, eActionMap, setPreferredTuner, eServiceCenter
-from boxbranding import getMachineBrand, getMachineName
+from boxbranding import getMachineBrand, getMachineName, getBoxType
 from Components.config import config
 import Components.ParentalControl
 from Components.UsageConfig import defaultMoviePath
@@ -112,7 +112,7 @@ def findSafeRecordPath(dirname):
 SID_symbol_states = {
 	"mbtwin": ("/proc/stb/lcd/symbol_circle", 4)
 }
-from boxbranding import getBoxType
+
 SID_code_states = SID_symbol_states.setdefault(getBoxType(), (None, 0))
 
 n_recordings = 0  # Must be when we start running...
@@ -146,14 +146,14 @@ def SetIconDisplay(nrec):
 
 
 def RecordingsState(alter):
-# Since we are about to modify it we need to declare it as global
-#
+	# Since we are about to modify it we need to declare it as global
+	#
 	global n_recordings
 	if not -1 <= alter <= 1:
 		return
 
-# Adjust the number of currently running recordings...
-#
+	# Adjust the number of currently running recordings...
+	#
 	if alter == 0:              # Initialize
 		n_recordings = 0
 	else:
@@ -324,11 +324,11 @@ class RecordTimerEntry(TimerEntry):
 			return True
 
 	def calculateFilename(self, name=None):
-# An external caller (e.g. the enigma2 plugin Series Plugin) may well
-# not have called freespace(). So we need to set MountPath here.
-# There is no point in calling freespace() as the caller won't be able
-# to handle anything it does anyway.
-#
+		# An external caller (e.g. the enigma2 plugin Series Plugin) may well
+		# not have called freespace(). So we need to set MountPath here.
+		# There is no point in calling freespace() as the caller won't be able
+		# to handle anything it does anyway.
+		#
 		if not hasattr(self, "MountPath"):
 			self.MountPath = self.dirname
 
@@ -469,12 +469,11 @@ class RecordTimerEntry(TimerEntry):
 				bqrootstr = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'
 			else:
 				bqrootstr = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet' % self.service_types
-			rootstr = ''
 			serviceHandler = eServiceCenter.getInstance()
 			rootbouquet = eServiceReference(bqrootstr)
 			bouquet = eServiceReference(bqrootstr)
 			bouquetlist = serviceHandler.list(bouquet)
-			if not bouquetlist is None:
+			if bouquetlist is not None:
 				while True:
 					bouquet = bouquetlist.getNext()
 					if not bouquet.valid():  # Reached end of bouquets
@@ -484,7 +483,7 @@ class RecordTimerEntry(TimerEntry):
 						ChannelSelectionInstance.clearPath()
 						ChannelSelectionInstance.setRoot(bouquet)
 						servicelist = serviceHandler.list(bouquet)
-						if not servicelist is None:
+						if servicelist is not None:
 							serviceIterator = servicelist.getNext()
 							while serviceIterator.valid():
 								if self.service_ref.ref == serviceIterator:
@@ -532,10 +531,10 @@ class RecordTimerEntry(TimerEntry):
 				if Screens.Standby.inStandby:
 					self.wasInStandby = True
 					eActionMap.getInstance().bindAction("", -maxsize - 1, self.keypress)
-					#set service to zap after standby
+					# set service to zap after standby
 					Screens.Standby.inStandby.prev_running_service = self.service_ref.ref
 					Screens.Standby.inStandby.paused_service = None
-					#wakeup standby
+					# wakeup standby
 					Screens.Standby.inStandby.Power()
 					self.log(5, "wakeup and zap to recording service")
 				else:
@@ -629,10 +628,10 @@ class RecordTimerEntry(TimerEntry):
 					self.wasInStandby = True
 					eActionMap.getInstance().bindAction("", -maxsize - 1, self.keypress)
 					self.log(11, "wakeup and zap")
-					#set service to zap after standby
+					# set service to zap after standby
 					Screens.Standby.inStandby.prev_running_service = self.service_ref.ref
 					Screens.Standby.inStandby.paused_service = None
-					#wakeup standby
+					# wakeup standby
 					Screens.Standby.inStandby.Power()
 				else:
 					self.sendactivesource()
@@ -667,17 +666,17 @@ class RecordTimerEntry(TimerEntry):
 						if notify:
 							Notifications.AddPopup(text=_("Zapped to timer service %s!") % self.service_ref.getServiceName(), type=MessageBox.TYPE_INFO, timeout=5)
 
-# If the user is looking at a MovieList then we need to update this
-# lastservice, so that we get back to the updated one when closing the
-# list.
-#
+						# If the user is looking at a MovieList then we need to update this
+						# lastservice, so that we get back to the updated one when closing the
+						# list.
+						#
 						if self.InfoBarInstance:
 							self.InfoBarInstance.lastservice = self.service_ref.ref
 
-# If there is a MoviePlayer active it will set things back to the
-# original channel after it finishes (which will be after we run) unless
-# we update the lastservice entry.
-#
+						# If there is a MoviePlayer active it will set things back to the
+						# original channel after it finishes (which will be after we run) unless
+						# we update the lastservice entry.
+						#
 						from Screens.InfoBar import MoviePlayer
 						if MoviePlayer.instance is not None:
 							MoviePlayer.instance.lastservice = self.service_ref.ref
@@ -715,24 +714,24 @@ class RecordTimerEntry(TimerEntry):
 					NavigationInstance.instance.stopRecordService(self.record_service)
 					self.record_service = None
 
-# From here on we are checking whether to put the box into Standby or
-# Deep Standby.
-# Don't even *bother* checking this if a playback is in progress or an
-# IPTV channel is active (unless we are in Standby - in which case it
-# isn't really in playback or active)
-# ....just say the timer has been handled.
-# Trying to back off isn't worth it as backing off in Record timers
-# currently only refers to *starting* a recording.
-#
-# But first, if this is just a zap timer there is no more to do!!!
-# This prevents a daft "go to standby?" prompt if a Zap timer wakes the
-# box up from standby.
+			# From here on we are checking whether to put the box into Standby or
+			# Deep Standby.
+			# Don't even *bother* checking this if a playback is in progress or an
+			# IPTV channel is active (unless we are in Standby - in which case it
+			# isn't really in playback or active)
+			# ....just say the timer has been handled.
+			# Trying to back off isn't worth it as backing off in Record timers
+			# currently only refers to *starting* a recording.
+			#
+			# But first, if this is just a zap timer there is no more to do!!!
+			# This prevents a daft "go to standby?" prompt if a Zap timer wakes the
+			# box up from standby.
 			if self.justplay:
 				return True
 			from Components.Converter.ClientsStreaming import ClientsStreaming
 			if (not Screens.Standby.inStandby and NavigationInstance.instance.getCurrentlyPlayingServiceReference() and
 				("0:0:0:0:0:0:0:0:0" in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString() or
-				 "4097:" in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString())
+					"4097:" in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString())
 			    ):
 				return True
 
@@ -745,20 +744,19 @@ class RecordTimerEntry(TimerEntry):
 					print("[RecordTimer] Recording or Recording due is next 15 mins, not return to deepstandby")
 					return True
 
-# Also check for someone streaming remotely - in which case we don't
-# want DEEPSTANDBY.
-# Might consider going to standby instead, but probably not worth it...
-# Also might want to back off - but that is set-up for trying to start
-# recordings, so has a low maximum delay.
-#
-				from Components.Converter.ClientsStreaming import ClientsStreaming
+				# Also check for someone streaming remotely - in which case we don't
+				# want DEEPSTANDBY.
+				# Might consider going to standby instead, but probably not worth it...
+				# Also might want to back off - but that is set-up for trying to start
+				# recordings, so has a low maximum delay.
+				#
 				if int(ClientsStreaming("NUMBER").getText()) > 0:
 					if not Screens.Standby.inStandby:  # not already in standby
 						Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox,
 							 _("A finished record timer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName())
-							 + _("\n(DeepStandby request changed to Standby owing to there being streaming clients.)"), timeout=180)
+							+ _("\n(DeepStandby request changed to Standby owing to there being streaming clients.)"), timeout=180)
 					return True
-#
+
 				if not Screens.Standby.inTryQuitMainloop:  # not a shutdown messagebox is open
 					if Screens.Standby.inStandby:  # in standby
 						quitMainloop(1)
@@ -824,8 +822,8 @@ class RecordTimerEntry(TimerEntry):
 				choice.insert(0, (_("Save timeshift and zap"), "save"))
 			else:
 				message += _("Reminder, you have chosen to save timeshift file.")
-			#if self.justplay or self.always_zap:
-			#	choice.insert(2, (_("Don't zap"), "continue"))
+			# if self.justplay or self.always_zap:
+			# 	choice.insert(2, (_("Don't zap"), "continue"))
 			choice.insert(2, (_("Don't zap"), "continue"))
 
 			def zapAction(choice):
@@ -1027,7 +1025,7 @@ class RecordTimer(Timer):
 		# when activating a timer for servicetype 4097,
 		# and SystemApp has player enabled, then skip recording.
 		# Or always skip if in ("5001", "5002") as these cannot be recorded.
-		if w.service_ref.toString().startswith("4097:") and Directories.isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value or w.service_ref.toString()[:4] in ("5001", "5002"):
+		if w.service_ref.toString().startswith("4097:") and Directories.isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value == True or w.service_ref.toString()[:4] in ("5001", "5002"):
 			print("[RecordTimer][doActivate] found Serviceapp & player enabled - disable this timer recording")
 			w.state = RecordTimerEntry.StateEnded
 			from Tools.Notifications import AddPopup
@@ -1122,37 +1120,38 @@ class RecordTimer(Timer):
 		for entry in self.timer_list + self.processed_timers:
 			if entry.dontSave:
 				continue
-			list.append('<timer'
-						' begin="%d"'
-						' end="%d"'
-						' serviceref="%s"'
-						' repeated="%d"'
-						' rename_repeat="%d"'
-						' name="%s"'
-						' description="%s"'
-						' afterevent="%s"'
-						' justplay="%d"'
-						' always_zap="%d"'
-						' pipzap="%d"'
-						' conflict_detection="%d"'
-						' descramble="%d"'
-						' record_ecm="%d"'
-						' isAutoTimer="%d"' % (
-						int(entry.begin),
-						int(entry.end),
-						stringToXML(str(entry.service_ref)),
-						int(entry.repeated),
-						int(entry.rename_repeat),
-						stringToXML(entry.name),
-						stringToXML(entry.description),
-						afterEvents[entry.afterEvent],
-						int(entry.justplay),
-						int(entry.always_zap),
-						int(entry.pipzap),
-						int(entry.conflict_detection),
-						int(entry.descramble),
-						int(entry.record_ecm),
-						int(entry.isAutoTimer)))
+			list.append(
+				'<timer'
+				' begin="%d"'
+				' end="%d"'
+				' serviceref="%s"'
+				' repeated="%d"'
+				' rename_repeat="%d"'
+				' name="%s"'
+				' description="%s"'
+				' afterevent="%s"'
+				' justplay="%d"'
+				' always_zap="%d"'
+				' pipzap="%d"'
+				' conflict_detection="%d"'
+				' descramble="%d"'
+				' record_ecm="%d"'
+				' isAutoTimer="%d"' % (
+				int(entry.begin),
+				int(entry.end),
+				stringToXML(str(entry.service_ref)),
+				int(entry.repeated),
+				int(entry.rename_repeat),
+				stringToXML(entry.name),
+				stringToXML(entry.description),
+				afterEvents[entry.afterEvent],
+				int(entry.justplay),
+				int(entry.always_zap),
+				int(entry.pipzap),
+				int(entry.conflict_detection),
+				int(entry.descramble),
+				int(entry.record_ecm),
+				int(entry.isAutoTimer)))
 			if entry.eit is not None:
 				list.append(' eit="' + str(entry.eit) + '"')
 			if entry.dirname:
