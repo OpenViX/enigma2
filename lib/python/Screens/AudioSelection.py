@@ -1,24 +1,26 @@
-from Screens.Screen import Screen
-from Screens.Setup import getConfigMenuItem, Setup
+from Components.ActionMap import NumberActionMap
+from Components.config import config, ConfigSubsection, getConfigListEntry, ConfigNothing, ConfigSelection, ConfigOnOff, ConfigYesNo
+from Components.ConfigList import ConfigListScreen
+from Components.Converter.VAudioInfo import StdAudioDesc
+from Components.Label import Label
+from Components.PluginComponent import plugins
+from Components.ServiceEventTracker import ServiceEventTracker
+from Components.Sources.Boolean import Boolean
+from Components.Sources.List import List
+from Components.SystemInfo import SystemInfo
+from Components.UsageConfig import originalAudioTracks, visuallyImpairedCommentary
+from Components.VolumeControl import VolumeControl
+
+from Plugins.Plugin import PluginDescriptor
+
 from Screens.InputBox import PinInput
 from Screens.MessageBox import MessageBox
-from Components.ServiceEventTracker import ServiceEventTracker
-from Components.ActionMap import NumberActionMap
-from Components.ConfigList import ConfigListScreen
-from Components.config import config, ConfigSubsection, getConfigListEntry, ConfigNothing, ConfigSelection, ConfigOnOff, ConfigYesNo
-from Components.Label import Label
-from Components.Sources.List import List
-from Components.Sources.Boolean import Boolean
-from Components.SystemInfo import SystemInfo
-from Components.VolumeControl import VolumeControl
-from Components.PluginComponent import plugins
-from Plugins.Plugin import PluginDescriptor
-from Components.Converter.VAudioInfo import StdAudioDesc
-
-from enigma import iPlayableService, eTimer, eSize, eDVBDB, eServiceReference, eServiceCenter, iServiceInformation
+from Screens.Screen import Screen
+from Screens.Setup import getConfigMenuItem, Setup
 
 from Tools.ISO639 import LanguageCodes
-from Tools.BoundFunction import boundFunction
+
+from enigma import iPlayableService, eTimer, eSize, eDVBDB, eServiceReference, eServiceCenter, iServiceInformation
 
 FOCUS_CONFIG, FOCUS_STREAMS = range(2)
 [PAGE_AUDIO, PAGE_SUBTITLES] = ["audio", "subtitles"]
@@ -91,8 +93,6 @@ class AudioSelection(ConfigListScreen, Screen):
 		return choice_list
 
 	def fillList(self, arg=None):
-		from Tools.ISO639 import LanguageCodes
-		from Components.UsageConfig import originalAudioTracks, visuallyImpairedCommentary
 		streams = []
 		conflist = []
 		selectedidx = 0
@@ -357,7 +357,7 @@ class AudioSelection(ConfigListScreen, Screen):
 					idx += 1
 			conflist.append(getConfigListEntry(_("To audio selection"), self.settings.menupage))
 
-			if self.infobar.selected_subtitle and self.infobar.selected_subtitle != (0, 0, 0, 0) and not ".DVDPlayer'>" in repr(self.infobar):
+			if self.infobar.selected_subtitle and self.infobar.selected_subtitle != (0, 0, 0, 0) and ".DVDPlayer'>" not in repr(self.infobar):
 				conflist.append(getConfigListEntry(_("Subtitle quickmenu"), ConfigNothing(), None))
 
 		if len(conflist) > 0 and conflist[0][0]:
@@ -484,7 +484,7 @@ class AudioSelection(ConfigListScreen, Screen):
 		if config or self.focus == FOCUS_CONFIG:
 			index = self["config"].getCurrentIndex()
 			if self.settings.menupage.value == PAGE_AUDIO:
-				if self.subtitlelist and index == 0:					# Subtitle selection screen
+				if self.subtitlelist and index == 0:  # Subtitle selection screen
 					self.keyAudioSubtitle()
 					self.__updatedInfo()
 				elif self["config"].getCurrent()[2]:
@@ -492,14 +492,14 @@ class AudioSelection(ConfigListScreen, Screen):
 				else:
 					ConfigListScreen.keyRight(self)
 			elif self.settings.menupage.value == PAGE_SUBTITLES and self.infobar.selected_subtitle and self.infobar.selected_subtitle != (0, 0, 0, 0):
-				if index == 0:								# Audio selection screen
+				if index == 0:  # Audio selection screen
 					self.keyAudioSubtitle()
 					self.__updatedInfo()
 				else:
 					self.session.open(QuickSubtitlesConfigMenu, self.infobar)  # sub title config screen
 			else:
 				ConfigListScreen.keyRight(self)
-		if self.focus == FOCUS_STREAMS and self["streams"].count() and config == False:
+		if self.focus == FOCUS_STREAMS and self["streams"].count() and config is False:
 			self["streams"].setIndex(self["streams"].count() - 1)
 
 	def keyRed(self):
