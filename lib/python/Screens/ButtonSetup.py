@@ -567,7 +567,7 @@ class InfoBarButtonSetup():
 				root=mdom.getroot()
 				for x in root.findall("menu"):
 					if x.get("key") == selected[1]:
-						menu_screen=self.session.open(MainMenu, x) # noqa: F841
+						menu_screen=self.session.open(MainMenu, x)  # noqa: F841
 						break
 
 	def showServiceListOrMovies(self):
