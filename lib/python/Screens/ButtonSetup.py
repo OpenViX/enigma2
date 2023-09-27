@@ -96,27 +96,27 @@ for x in ButtonSetupKeys:
 
 
 def getButtonSetupFunctions():
-	ButtonSetupFunctions = []
-	twinPlugins = []
-	twinPaths = {}
-	pluginlist = plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO)
+	ButtonSetupFunctions=[]
+	twinPlugins=[]
+	twinPaths={}
+	pluginlist=plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO)
 	pluginlist.sort(key=lambda p: p.name)
 	for plugin in pluginlist:
 		if plugin.name not in twinPlugins and plugin.path and 'selectedevent' not in plugin.fnc.__code__.co_varnames:
 			if plugin.path[plugin.path.rfind("Plugins"):] in twinPaths:
 				twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] += 1
 			else:
-				twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] = 1
+				twinPaths[plugin.path[plugin.path.rfind("Plugins"):]]=1
 			ButtonSetupFunctions.append((plugin.name, plugin.path[plugin.path.rfind("Plugins"):] + "/" + str(twinPaths[plugin.path[plugin.path.rfind("Plugins"):]]), "EPG"))
 			twinPlugins.append(plugin.name)
-	pluginlist = plugins.getPlugins([PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_VIXMENU, PluginDescriptor.WHERE_EVENTINFO, PluginDescriptor.WHERE_BUTTONSETUP])
+	pluginlist=plugins.getPlugins([PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_VIXMENU, PluginDescriptor.WHERE_EVENTINFO, PluginDescriptor.WHERE_BUTTONSETUP])
 	pluginlist.sort(key=lambda p: p.name)
 	for plugin in pluginlist:
 		if plugin.name not in twinPlugins and plugin.path:
 			if plugin.path[plugin.path.rfind("Plugins"):] in twinPaths:
 				twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] += 1
 			else:
-				twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] = 1
+				twinPaths[plugin.path[plugin.path.rfind("Plugins"):]]=1
 			ButtonSetupFunctions.append((plugin.name, plugin.path[plugin.path.rfind("Plugins"):] + "/" + str(twinPaths[plugin.path[plugin.path.rfind("Plugins"):]]), "Plugins"))
 			twinPlugins.append(plugin.name)
 	ButtonSetupFunctions.append((_("Show Grid EPG"), "Infobar/openGridEPG", "EPG"))
@@ -199,21 +199,21 @@ class ButtonSetup(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Button Setup"))
-		self['description'] = Label(_('On your remote, click on the button you want to change'))
-		self.session = session
-		self.list = []
-		self.ButtonSetupFunctions = getButtonSetupFunctions()
+		self['description']=Label(_('On your remote, click on the button you want to change'))
+		self.session=session
+		self.list=[]
+		self.ButtonSetupFunctions=getButtonSetupFunctions()
 		for x in ButtonSetupKeys:
 			self.list.append(ChoiceEntryComponent('', (_(x[0]), x[1])))
-		self["list"] = ChoiceList(list=self.list[:config.misc.ButtonSetup.additional_keys.value and len(ButtonSetupKeys) or 10], selection=0)
-		self["choosen"] = ChoiceList(list=[])
+		self["list"]=ChoiceList(list=self.list[:config.misc.ButtonSetup.additional_keys.value and len(ButtonSetupKeys) or 10], selection=0)
+		self["choosen"]=ChoiceList(list=[])
 		self.getFunctions()
-		self["actions"] = ActionMap(["OkCancelActions"],
+		self["actions"]=ActionMap(["OkCancelActions"],
 		{
 			"cancel": self.close,
 		}, -1)
-		self["ButtonSetupButtonActions"] = ButtonSetupActionMap(["ButtonSetupActions"], dict((x[1], self.ButtonSetupGlobal) for x in ButtonSetupKeys))
-		self.longkeyPressed = False
+		self["ButtonSetupButtonActions"]=ButtonSetupActionMap(["ButtonSetupActions"], dict((x[1], self.ButtonSetupGlobal) for x in ButtonSetupKeys))
+		self.longkeyPressed=False
 		self.onLayoutFinish.append(self.__layoutFinished)
 		self.onExecBegin.append(self.getFunctions)
 		self.onShown.append(self.disableKeyMap)
@@ -238,25 +238,25 @@ class ButtonSetup(Screen):
 
 	def ButtonSetupGlobal(self, key):
 		if self.longkeyPressed:
-			self.longkeyPressed = False
+			self.longkeyPressed=False
 		else:
-			index = 0
+			index=0
 			for x in self.list[:config.misc.ButtonSetup.additional_keys.value and len(ButtonSetupKeys) or 10]:
 				if key == x[0][1]:
 					self["list"].moveToIndex(index)
 					if key.endswith("_long"):
-						self.longkeyPressed = True
+						self.longkeyPressed=True
 					break
 				index += 1
 			self.getFunctions()
 			self.session.open(ButtonSetupSelect, self["list"].l.getCurrentSelection())
 
 	def getFunctions(self):
-		key = self["list"].l.getCurrentSelection()[0][1]
+		key=self["list"].l.getCurrentSelection()[0][1]
 		if key:
-			selected = []
+			selected=[]
 			for x in getattr(config.misc.ButtonSetup, key).value.split(','):
-				function = next((function for function in self.ButtonSetupFunctions if function[1] == x), None)
+				function=next((function for function in self.ButtonSetupFunctions if function[1] == x), None)
 				if function:
 					selected.append(ChoiceEntryComponent('', ((function[0]), function[1])))
 			self["choosen"].setList(selected)
@@ -265,26 +265,26 @@ class ButtonSetup(Screen):
 class ButtonSetupSelect(Screen):
 	def __init__(self, session, key):
 		Screen.__init__(self, session)
-		self.skinName = "ButtonSetupSelect"
-		self['description'] = Label(_('Select the desired function and click on "OK" to assign it. Use "CH+/-" to toggle between the lists. Select an assigned function and click on "OK" to de-assign it. Use "Next/Previous" to change the order of the assigned functions.'))
-		self.session = session
-		self.key = key
+		self.skinName="ButtonSetupSelect"
+		self['description']=Label(_('Select the desired function and click on "OK" to assign it. Use "CH+/-" to toggle between the lists. Select an assigned function and click on "OK" to de-assign it. Use "Next/Previous" to change the order of the assigned functions.'))
+		self.session=session
+		self.key=key
 		self.setTitle(_("Button setup for") + ": " + key[0][0])
-		self["key_red"] = Button(_("Cancel"))
-		self["key_green"] = Button(_("Save"))
-		self.mode = "list"
-		self.ButtonSetupFunctions = getButtonSetupFunctions()
-		self.config = getattr(config.misc.ButtonSetup, key[0][1])
-		self.expanded = []
-		self.selected = []
+		self["key_red"]=Button(_("Cancel"))
+		self["key_green"]=Button(_("Save"))
+		self.mode="list"
+		self.ButtonSetupFunctions=getButtonSetupFunctions()
+		self.config=getattr(config.misc.ButtonSetup, key[0][1])
+		self.expanded=[]
+		self.selected=[]
 		for x in self.config.value.split(','):
-			function = next((function for function in self.ButtonSetupFunctions if function[1] == x), None)
+			function=next((function for function in self.ButtonSetupFunctions if function[1] == x), None)
 			if function:
 				self.selected.append(ChoiceEntryComponent('', ((function[0]), function[1])))
-		self.prevselected = self.selected[:]
-		self["choosen"] = ChoiceList(list=self.selected, selection=0)
-		self["list"] = ChoiceList(list=self.getFunctionList(), selection=0)
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions"],
+		self.prevselected=self.selected[:]
+		self["choosen"]=ChoiceList(list=self.selected, selection=0)
+		self["list"]=ChoiceList(list=self.getFunctionList(), selection=0)
+		self["actions"]=ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions"],
 		{
 			"ok": self.keyOk,
 			"cancel": self.cancel,
@@ -321,11 +321,11 @@ class ButtonSetupSelect(Screen):
 		eActionMap.getInstance().bindKey("keymap.xml", "generic", 106, 5, "ListboxActions", "pageDown")
 
 	def getFunctionList(self):
-		functionslist = []
-		catagories = {}
+		functionslist=[]
+		catagories={}
 		for function in self.ButtonSetupFunctions:
 			if function[2] not in catagories:
-				catagories[function[2]] = []
+				catagories[function[2]]=[]
 			catagories[function[2]].append(function)
 		for catagorie in sorted(list(catagories)):
 			if catagorie in self.expanded:
@@ -338,17 +338,17 @@ class ButtonSetupSelect(Screen):
 
 	def toggleMode(self):
 		if self.mode == "list" and self.selected:
-			self.mode = "choosen"
+			self.mode="choosen"
 			self["choosen"].selectionEnabled(1)
 			self["list"].selectionEnabled(0)
 		elif self.mode == "choosen":
-			self.mode = "list"
+			self.mode="list"
 			self["choosen"].selectionEnabled(0)
 			self["list"].selectionEnabled(1)
 
 	def keyOk(self):
 		if self.mode == "list":
-			currentSelected = self["list"].l.getCurrentSelection()
+			currentSelected=self["list"].l.getCurrentSelection()
 			if currentSelected[0][1] == "Expander":
 				if currentSelected[0][0] in self.expanded:
 					self.expanded.remove(currentSelected[0][0])
@@ -386,19 +386,19 @@ class ButtonSetupSelect(Screen):
 
 	def moveChoosen(self, direction):
 		if self.mode == "choosen":
-			currentIndex = self["choosen"].getSelectionIndex()
-			swapIndex = (currentIndex + (direction == self.keyDown and 1 or -1)) % len(self["choosen"].list)
-			self["choosen"].list[currentIndex], self["choosen"].list[swapIndex] = self["choosen"].list[swapIndex], self["choosen"].list[currentIndex]
+			currentIndex=self["choosen"].getSelectionIndex()
+			swapIndex=(currentIndex + (direction == self.keyDown and 1 or -1)) % len(self["choosen"].list)
+			self["choosen"].list[currentIndex], self["choosen"].list[swapIndex]=self["choosen"].list[swapIndex], self["choosen"].list[currentIndex]
 			self["choosen"].setList(self["choosen"].list)
 			direction()
 		else:
 			return 0
 
 	def save(self):
-		configValue = []
+		configValue=[]
 		for x in self.selected:
 			configValue.append(x[0][1])
-		self.config.value = ",".join(configValue)
+		self.config.value=",".join(configValue)
 		self.config.save()
 		self.close()
 
@@ -415,7 +415,7 @@ class ButtonSetupSelect(Screen):
 class ButtonSetupActionMap(ActionMap):
 	def action(self, contexts, action):
 		if action in tuple(x[1] for x in ButtonSetupKeys) and action in self.actions:
-			res = self.actions[action](action)
+			res=self.actions[action](action)
 			if res is not None:
 				return res
 			return 1
@@ -426,7 +426,7 @@ class ButtonSetupActionMap(ActionMap):
 class helpableButtonSetupActionMap(HelpableActionMap):
 	def action(self, contexts, action):
 		if action in tuple(x[1] for x in ButtonSetupKeys) and action in self.actions:
-			res = self.actions[action](action)
+			res=self.actions[action](action)
 			if res is not None:
 				return res
 			return 1
@@ -436,92 +436,92 @@ class helpableButtonSetupActionMap(HelpableActionMap):
 
 class InfoBarButtonSetup():
 	def __init__(self):
-		self["ButtonSetupButtonActions"] = helpableButtonSetupActionMap(self, "ButtonSetupActions",
+		self["ButtonSetupButtonActions"]=helpableButtonSetupActionMap(self, "ButtonSetupActions",
 			dict((x[1], (self.ButtonSetupGlobal, boundFunction(self.getHelpText, x[1]))) for x in ButtonSetupKeys), -10)
-		self.longkeyPressed = False
+		self.longkeyPressed=False
 		self.onExecEnd.append(self.clearLongkeyPressed)
-		self.ButtonSetupFunctions = None
-		self.ButtonSetupFunctionsCheck = 0
+		self.ButtonSetupFunctions=None
+		self.ButtonSetupFunctionsCheck=0
 
 	def getButtonSetupFunctions(self):
 		# This is a min cache that persists for just 1 second.
 		# This saves getButtonSetupFunctions() being called multiple times when working from a loop.
-		t = time()
+		t=time()
 		if (t - self.ButtonSetupFunctionsCheck) > 1 or not self.ButtonSetupFunctions:
-			self.ButtonSetupFunctions = getButtonSetupFunctions()
-			self.ButtonSetupFunctionsCheck = t
+			self.ButtonSetupFunctions=getButtonSetupFunctions()
+			self.ButtonSetupFunctionsCheck=t
 		return self.ButtonSetupFunctions
 
 	def clearLongkeyPressed(self):
-		self.longkeyPressed = False
+		self.longkeyPressed=False
 
 	def getKeyFunctions(self, key):
 		if key in ("play", "playpause", "Stop", "stop", "pause", "rewind", "next", "previous", "fastforward", "skip_back", "skip_forward") and (self.__class__.__name__ == "MoviePlayer" or hasattr(self, "timeshiftActivated") and self.timeshiftActivated()):
 			return False
-		selection = getattr(config.misc.ButtonSetup, key).value.split(',')
-		selected = []
+		selection=getattr(config.misc.ButtonSetup, key).value.split(',')
+		selected=[]
 		for x in selection:
 			if x.startswith("ZapPanic"):
 				selected.append(((_("Panic to") + " " + ServiceReference(eServiceReference(x.split("/", 1)[1]).toString()).getServiceName()), x))
 			elif x.startswith("Zap"):
 				selected.append(((_("Zap to") + " " + ServiceReference(eServiceReference(x.split("/", 1)[1]).toString()).getServiceName()), x))
 			elif x:
-				function = next((function for function in self.getButtonSetupFunctions() if function[1] == x), None)
+				function=next((function for function in self.getButtonSetupFunctions() if function[1] == x), None)
 				if function:
 					selected.append(function)
 		return selected
 
 	def getHelpText(self, key):
-		selected = self.getKeyFunctions(key)
+		selected=self.getKeyFunctions(key)
 		if not selected:
 			return
 		return pgettext("ButtonSetup help separator", '/').join(sel[0] for sel in selected)
 
 	def ButtonSetupGlobal(self, key):
 		if self.longkeyPressed:
-			self.longkeyPressed = False
+			self.longkeyPressed=False
 		else:
 			if not hasattr(self.session, "infobar") or self.session.infobar is not None:
-				self.session.infobar = None
-			selected = self.getKeyFunctions(key)
+				self.session.infobar=None
+			selected=self.getKeyFunctions(key)
 			if not selected:
 				return 0
 			elif len(selected) == 1:
 				if key.endswith("_long"):
-					self.longkeyPressed = True
+					self.longkeyPressed=True
 				return self.execButtonSetup(selected[0])
 			else:
-				key = tuple(x[0] for x in ButtonSetupKeys if x[1] == key)[0]
+				key=tuple(x[0] for x in ButtonSetupKeys if x[1] == key)[0]
 				self.session.openWithCallback(self.execButtonSetup, ChoiceBox, _("ButtonSetup") + " " + key, selected)
 
 	def execButtonSetup(self, selected):
 		if selected:
 			if not hasattr(self.session, "infobar") or self.session.infobar is None:
-				self.session.infobar = self
-			selected = selected[1].split("/")
+				self.session.infobar=self
+			selected=selected[1].split("/")
 			if selected[0] == "Plugins":
-				twinPlugins = []
-				twinPaths = {}
-				pluginlist = plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO)
+				twinPlugins=[]
+				twinPaths={}
+				pluginlist=plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO)
 				pluginlist.sort(key=lambda p: p.name)
 				for plugin in pluginlist:
 					if plugin.name not in twinPlugins and plugin.path and 'selectedevent' not in plugin.fnc.__code__.co_varnames:
 						if plugin.path[plugin.path.rfind("Plugins"):] in twinPaths:
 							twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] += 1
 						else:
-							twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] = 1
+							twinPaths[plugin.path[plugin.path.rfind("Plugins"):]]=1
 						if plugin.path[plugin.path.rfind("Plugins"):] + "/" + str(twinPaths[plugin.path[plugin.path.rfind("Plugins"):]]) == "/".join(selected):
 							self.runPlugin(plugin)
 							return
 						twinPlugins.append(plugin.name)
-				pluginlist = plugins.getPlugins([PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_VIXMENU, PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_BUTTONSETUP])
+				pluginlist=plugins.getPlugins([PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_VIXMENU, PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_BUTTONSETUP])
 				pluginlist.sort(key=lambda p: p.name)
 				for plugin in pluginlist:
 					if plugin.name not in twinPlugins and plugin.path:
 						if plugin.path[plugin.path.rfind("Plugins"):] in twinPaths:
 							twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] += 1
 						else:
-							twinPaths[plugin.path[plugin.path.rfind("Plugins"):]] = 1
+							twinPaths[plugin.path[plugin.path.rfind("Plugins"):]]=1
 						if plugin.path[plugin.path.rfind("Plugins"):] + "/" + str(twinPaths[plugin.path[plugin.path.rfind("Plugins"):]]) == "/".join(selected):
 							self.runPlugin(plugin)
 							return
@@ -549,25 +549,25 @@ class InfoBarButtonSetup():
 				exec("self.session.open(Setup, \"%s\")" % selected[1])
 			elif selected[0].startswith("Zap"):
 				if selected[0] == "ZapPanic":
-					self.servicelist.history = []
+					self.servicelist.history=[]
 					self.pipShown() and self.showPiP()
 				self.servicelist.servicelist.setCurrent(eServiceReference("/".join(selected[1:])))
 				self.servicelist.zap(enable_pipzap=True)
 				if hasattr(self, "lastservice"):
-					self.lastservice = eServiceReference("/".join(selected[1:]))
+					self.lastservice=eServiceReference("/".join(selected[1:]))
 					self.close()
 				else:
 					self.show()
 				from Screens.MovieSelection import defaultMoviePath
-				moviepath = defaultMoviePath()
+				moviepath=defaultMoviePath()
 				if moviepath:
-					config.movielist.last_videodir.value = moviepath
+					config.movielist.last_videodir.value=moviepath
 			elif selected[0] == "Menu":
 				from Screens.Menu import MainMenu, mdom
-				root = mdom.getroot()
+				root=mdom.getroot()
 				for x in root.findall("menu"):
 					if x.get("key") == selected[1]:
-						menu_screen = self.session.open(MainMenu, x) # noqa: F841
+						menu_screen=self.session.open(MainMenu, x) # noqa: F841
 						break
 
 	def showServiceListOrMovies(self):
@@ -577,7 +577,7 @@ class InfoBarButtonSetup():
 			self.showMovies()
 
 	def ToggleLCDLiveTV(self):
-		config.lcd.showTv.value = not config.lcd.showTv.value
+		config.lcd.showTv.value=not config.lcd.showTv.value
 
 	def reloadSkin(self):
 		self.session.reloadSkin()
