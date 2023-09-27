@@ -92,7 +92,7 @@ ButtonSetupKeys = [(_("Red"), "red", "Infobar/openSingleServiceEPG/1"),
 config.misc.ButtonSetup = ConfigSubsection()
 config.misc.ButtonSetup.additional_keys = ConfigYesNo(default=True)
 for x in ButtonSetupKeys:
-	setattr(config.misc.ButtonSetup, x[1], ConfigText(default=x[2])
+	setattr(config.misc.ButtonSetup, x[1], ConfigText(default=x[2]))
 
 
 def getButtonSetupFunctions():
