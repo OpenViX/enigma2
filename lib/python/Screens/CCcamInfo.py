@@ -3,7 +3,7 @@
 from base64 import b64encode
 from os import listdir, remove, rename, system, path
 
-from enigma import eListboxPythonMultiContent, eTimer, gFont, RT_HALIGN_RIGHT, getDesktop
+from enigma import eListboxPythonMultiContent, gFont, RT_HALIGN_RIGHT, getDesktop
 
 from Components.ActionMap import ActionMap, NumberActionMap
 from Components.config import config, getConfigListEntry
@@ -13,7 +13,6 @@ from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
 from Components.ScrollLabel import ScrollLabel
-from Components.Sources.StaticText import StaticText
 from Screens.HelpMenu import HelpableScreen
 
 from Screens.LocationBox import LocationBox
@@ -32,7 +31,7 @@ CFG = "/etc/CCcam.cfg"
 global Counter
 Counter = 0
 AuthHeaders = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
+	"User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36",
 }
 #############################################################
 
