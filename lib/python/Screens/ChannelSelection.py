@@ -2738,7 +2738,7 @@ class ChannelSelectionRadio(ChannelSelectionEdit, ChannelSelectionBase, ChannelS
 				iPlayableService.evEnd: self.__evServiceEnd
 			})
 
-########## RDS Radiotext / Rass Support BEGIN
+		# RDS Radiotext / Rass Support BEGIN
 		self.infobar = infobar  # reference to real infobar (the one and only)
 		self["RdsDecoder"] = self.info["RdsDecoder"]
 		self["RdsActions"] = HelpableActionMap(self, "InfobarRdsActions",
