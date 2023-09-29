@@ -137,6 +137,9 @@ class ScrollLabel(GUIComponent):
 			self.setPos(self.curPos + self.pageHeight)
 			self.updateScrollbar()
 
+	def firstPage(self):
+		self.setPos(0)
+
 	def lastPage(self):
 		self.setPos(self.TotalTextHeight - self.pageHeight)
 
