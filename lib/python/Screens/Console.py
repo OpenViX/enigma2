@@ -13,13 +13,17 @@ class Console(Screen):
 		self.errorOcurred = False
 
 		self["text"] = ScrollLabel("")
-		self["actions"] = ActionMap(["WizardActions", "DirectionActions"],
+		self["actions"] = ActionMap(["SetupActions", "NavigationActions"],
 		{
 			"ok": self.cancel,
-			"back": self.cancel,
+			"cancel": self.cancel,
 			"up": self["text"].pageUp,
-			"down": self["text"].pageDown
-		}, -1)
+			"pageUp": self["text"].firstPage,
+			"left": self["text"].pageUp,
+			"down": self["text"].pageDown,
+			"right": self["text"].pageDown,
+			"pageDown": self["text"].lastPage,
+		}, prio=1)
 
 		self.cmdlist = cmdlist
 		self.newtitle = title
