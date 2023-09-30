@@ -1,3 +1,5 @@
+from os import popen as os_popen
+
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Plugins.Plugin import PluginDescriptor
@@ -5,9 +7,8 @@ from Screens.Screen import Screen
 
 
 def getUpgradeVersion():
-	import os
 	try:
-		r = os.popen("fpupgrade --version").read()
+		r = os_popen("fpupgrade --version").read()
 	except IOError:
 		return None
 	if r[:16] != "FP update tool v":
