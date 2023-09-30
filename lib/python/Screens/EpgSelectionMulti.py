@@ -3,7 +3,7 @@ from time import localtime, strftime, time
 from enigma import eTimer
 
 from Components.ActionMap import HelpableActionMap
-from Components.config import config, ConfigSelection, ConfigSubsection
+from Components.config import config
 from Components.EpgListMulti import EPGListMulti
 from Components.Label import Label
 from Components.Pixmap import Pixmap
