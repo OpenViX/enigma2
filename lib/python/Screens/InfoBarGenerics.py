@@ -385,7 +385,7 @@ class SecondInfoBar(Screen, HelpableScreen):
 				"openSimilarList": (self.openSimilarList, _("Show list of similar programs")),
 			}, prio=-1, description=_("Second infobar"))
 
-		self.__event_tracker = ServiceEventTracker(screen=self, 
+		self.__event_tracker = ServiceEventTracker(screen=self,
 			eventmap={
 				iPlayableService.evUpdatedEventInfo: self.getEvent
 			}
@@ -590,7 +590,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 				"hide": (self.keyHide, self._helpKeyHide),
 			}, prio=1, description=_("Show/hide infobar"))  # lower prio to make it possible to override ok and cancel..
 
-		self.__event_tracker = ServiceEventTracker(screen=self, 
+		self.__event_tracker = ServiceEventTracker(screen=self,
 			eventmap={
 				iPlayableService.evStart: self.serviceStarted,
 			}
@@ -1998,7 +1998,7 @@ class InfoBarSeek:
 	SEEK_STATE_EOF = (1, 0, 0, "END")
 
 	def __init__(self, actionmap="InfobarSeekActions"):
-		self.__event_tracker = ServiceEventTracker(screen=self, 
+		self.__event_tracker = ServiceEventTracker(screen=self,
 			eventmap={
 				iPlayableService.evSeekableStatusChanged: self.__seekableStatusChanged,
 				iPlayableService.evStart: self.__serviceStarted,
