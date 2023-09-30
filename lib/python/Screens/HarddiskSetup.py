@@ -3,12 +3,8 @@ from Components.ActionMap import ActionMap
 from Components.Harddisk import harddiskmanager
 from Components.MenuList import MenuList
 from Components.Label import Label
-from Components.Pixmap import Pixmap
 from Components.Task import job_manager
-from Components.config import config
-from Components.Sources.StaticText import StaticText
 from Screens.MessageBox import MessageBox
-from Tools.BoundFunction import boundFunction
 import Screens.InfoBar
 
 
