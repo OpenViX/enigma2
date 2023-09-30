@@ -173,11 +173,11 @@ class DiseqcTester(Screen, TuneTest, ResultParser):
 		<widget source="progress_list" render="Listbox" position="0,0" size="510,150" scrollbarMode="showOnDemand">
 			<convert type="TemplatedMultiContent">
 				{"template": [
-						MultiContentEntryText(pos = (10, 0), size = (330, 25), flags = RT_HALIGN_LEFT, text = 1), # index 1 is the index name,
-						MultiContentEntryText(pos = (330, 0), size = (150, 25), flags = RT_HALIGN_RIGHT, text = 2) # index 2 is the status,
+					MultiContentEntryText(pos = (10, 0), size = (330, 25), flags = RT_HALIGN_LEFT, text = 1), # index 1 is the index name,
+					MultiContentEntryText(pos = (330, 0), size = (150, 25), flags = RT_HALIGN_RIGHT, text = 2) # index 2 is the status,
 					],
-				 "fonts": [gFont("Regular", 20)],
-				 "itemHeight": 25
+				"fonts": [gFont("Regular", 20)],
+				"itemHeight": 25
 				}
 			</convert>
 		</widget>
@@ -220,7 +220,7 @@ class DiseqcTester(Screen, TuneTest, ResultParser):
 		}, -2)
 
 		TuneTest.__init__(self, feid, stopOnSuccess=self.loopssuccessful, stopOnError=self.loopsfailed)
-		#self["Frontend"] = FrontendStatus(frontend_source = lambda : self.frontend, update_interval = 100)
+		# self["Frontend"] = FrontendStatus(frontend_source = lambda : self.frontend, update_interval = 100)
 		self["overall_progress"] = Progress()
 		self["sub_progress"] = Progress()
 
@@ -303,7 +303,7 @@ class DiseqcTester(Screen, TuneTest, ResultParser):
 		if index not in self.indexlist:
 			self.indexlist[index] = []
 		self.indexlist[index].append(transponder)
-		#print "self.indexlist:", self.indexlist
+		# print "self.indexlist:", self.indexlist
 
 	# returns a string for the user representing a human readable output for index
 	def getTextualIndexRepresentation(self, index):
@@ -327,7 +327,7 @@ class DiseqcTester(Screen, TuneTest, ResultParser):
 		self.clearTransponder()
 		print("----------- fillTransponderList")
 		print("index:", self.currentlyTestedIndex)
-		keys = list(self.indexlist.keys())
+		# keys = list(self.indexlist.keys())
 		if self.getContinueScanning():
 			print("index:", self.getTextualIndexRepresentation(self.currentlyTestedIndex))
 			for transponder in self.indexlist[self.currentlyTestedIndex]:
@@ -494,20 +494,12 @@ class DiseqcTester(Screen, TuneTest, ResultParser):
 			self.addResult(self.currentlyTestedIndex, "untestable", self.failedTune, self.successfullyTune)
 		elif len(self.failedTune) > 0:
 			self.changeProgressListStatus(self.currentlyTestedIndex, "failed")
-			#self["failed_counter"].setText(str(int(self["failed_counter"].getText()) + len(self.failedTune)))
 			self["failed_counter"].setText(str(int(self["failed_counter"].getText()) + 1))
 			self.addResult(self.currentlyTestedIndex, "failed", self.failedTune, self.successfullyTune)
 		else:
 			self.changeProgressListStatus(self.currentlyTestedIndex, "successful")
-			#self["succeeded_counter"].setText(str(int(self["succeeded_counter"].getText()) + len(self.successfullyTune)))
 			self["succeeded_counter"].setText(str(int(self["succeeded_counter"].getText()) + 1))
 			self.addResult(self.currentlyTestedIndex, "successful", self.failedTune, self.successfullyTune)
-
-		#self["failed_counter"].setText(str(int(self["failed_counter"].getText()) + len(self.failedTune)))
-		#self["succeeded_counter"].setText(str(int(self["succeeded_counter"].getText()) + len(self.successfullyTune)))
-		#if len(self.failedTune) == 0 and len(self.successfullyTune) == 0:
-			#self["untestable_counter"].setText(str(int(self["untestable_counter"].getText()) + 1))
-
 		self.currentlyTestedIndex = self.getNextIndex()
 		self.addProgressListItem(self.currentlyTestedIndex)
 
@@ -545,11 +537,8 @@ class DiseqcTester(Screen, TuneTest, ResultParser):
 		print("selectedIndex:", self["progress_list"].getCurrent()[0])
 		if not self.running:
 			index = self["progress_list"].getCurrent()[0]
-			#self.setResultType(ResultParser.TYPE_BYORBPOS)
-			#self.setResultParameter(index[2])
 			self.setResultType(ResultParser.TYPE_BYINDEX)
 			self.setResultParameter(index)
-			#self.setResultType(ResultParser.TYPE_ALL)
 			self.session.open(TextBox, self.getTextualResult())
 
 	def selectionChanged(self):
@@ -617,7 +606,6 @@ class DiseqcTesterNimSelection(NimSelection):
 		self.skinName = ["DiseqcTesterNimSelection", "NimSelection"]
 
 	def setResultClass(self):
-		#self.resultclass = DiseqcTester
 		self.resultclass = DiseqcTesterTestTypeSelection
 
 	def showNim(self, nim):
