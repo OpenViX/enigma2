@@ -1,13 +1,11 @@
 from Components.ActionMap import ActionMap
-from Components.Sources.StaticText import StaticText
 from Components.Button import Button
-from Components.ScrollLabel import ScrollLabel
 from Components.Label import Label
-from Components.config import config
+from Components.ScrollLabel import ScrollLabel
 from Screens.Screen import Screen
 
 from enigma import eTimer
-from boxbranding import getImageVersion, getImageBuild, getImageDevBuild, getImageType
+from boxbranding import getImageBuild, getImageDevBuild, getImageType
 from sys import modules
 from datetime import datetime
 from json import loads
@@ -24,7 +22,7 @@ else:
 E2Branches = {
 	'developer': 'Developer',
 	'release': 'Release'
-	}
+}
 
 project = 0
 projects = [
@@ -52,7 +50,7 @@ def readGithubCommitLogsSoftwareUpdate():
 			log = loads(urlopen(req, timeout=5).read())
 		for c in log:
 			if c['commit']['message'].startswith('openbh:') or (gitstart and not c['commit']['message'].startswith('openvix:') and getScreenTitle() in ("OE-A Core", "Enigma2", "ViX Core", "ViX Skins")):
-					continue
+				continue
 			if c['commit']['message'].startswith('openvix:'):
 				gitstart = False
 				if getImageType() == 'release' and c['commit']['message'].startswith('openvix: developer'):
@@ -70,7 +68,6 @@ def readGithubCommitLogsSoftwareUpdate():
 						releasever = '%s.%s' % (tmp[2], tmp[3])
 						releasever = float(releasever)
 				if ImageVer >= releasever:
-					blockstart = True
 					break
 
 			creator = c['commit']['author']['name']
@@ -189,7 +186,8 @@ class CommitInfo(Screen):
 				"down": self["AboutScrollLabel"].pageDown,
 				"left": self.left,
 				"right": self.right
-			})
+			}
+		)
 
 		self["key_red"] = Button(_("Cancel"))
 
