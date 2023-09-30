@@ -124,12 +124,12 @@ class ProjectSettings(ConfigListScreen, Screen):
 
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
-		    "green": self.exit,
-		    "red": self.cancel,
-		    "blue": self.saveProject,
-		    "yellow": self.loadProject,
-		    "cancel": self.cancel,
-		    "ok": self.ok,
+			"green": self.exit,
+			"red": self.cancel,
+			"blue": self.saveProject,
+			"yellow": self.loadProject,
+			"cancel": self.cancel,
+			"ok": self.ok,
 		}, -2)
 		self.onLayoutFinish.append(self.layoutFinished)
 
@@ -157,13 +157,13 @@ class ProjectSettings(ConfigListScreen, Screen):
 				self.list.append(getConfigListEntry(_("Menu") + ' ' + _("Subtitles"), self.project.menutemplate.settings.subtitleformat))
 				self.list.append(getConfigListEntry(_("Menu") + ' ' + _("background image"), self.project.menutemplate.settings.menubg))
 				self.list.append(getConfigListEntry(_("Menu") + ' ' + _("Language selection"), self.project.menutemplate.settings.menulang))
-			#self.list.append(getConfigListEntry(_("Menu")+' '+_("headline")+' '+_("color"), self.settings.color_headline))
-			#self.list.append(getConfigListEntry(_("Menu")+' '+_("text")+' '+_("color"), self.settings.color_button))
-			#self.list.append(getConfigListEntry(_("Menu")+' '+_("highlighted button")+' '+_("color"), self.settings.color_highlight))
-			#self.list.append(getConfigListEntry(_("Menu")+' '+_("font face"), self.settings.font_face))
-			#self.list.append(getConfigListEntry(_("Font size")+' ('+_("headline")+', '+_("Title")+', '+_("Subtitles")+')', self.settings.font_size))
-			#self.list.append(getConfigListEntry(_("Menu")+' '+_("spaces (top, between rows, left)"), self.settings.space))
-			#self.list.append(getConfigListEntry(_("Menu")+' '+_("Audio"), self.settings.menuaudio))
+			# self.list.append(getConfigListEntry(_("Menu")+' '+_("headline")+' '+_("color"), self.settings.color_headline))
+			# self.list.append(getConfigListEntry(_("Menu")+' '+_("text")+' '+_("color"), self.settings.color_button))
+			# self.list.append(getConfigListEntry(_("Menu")+' '+_("highlighted button")+' '+_("color"), self.settings.color_highlight))
+			# self.list.append(getConfigListEntry(_("Menu")+' '+_("font face"), self.settings.font_face))
+			# self.list.append(getConfigListEntry(_("Font size")+' ('+_("headline")+', '+_("Title")+', '+_("Subtitles")+')', self.settings.font_size))
+			# self.list.append(getConfigListEntry(_("Menu")+' '+_("spaces (top, between rows, left)"), self.settings.space))
+			# self.list.append(getConfigListEntry(_("Menu")+' '+_("Audio"), self.settings.menuaudio))
 		if config.usage.setup_level.index >= 2:  # expert+
 			if authormode != "data_ts":
 				self.list.append(getConfigListEntry(_("Titleset mode"), self.settings.titlesetmode))
