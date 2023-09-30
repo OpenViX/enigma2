@@ -25,10 +25,10 @@ class FallbackTunerSetup(Setup):
 		ipDefault = [0, 0, 0, 0]
 		self.portDefault = portDefault = 8001
 		if config.usage.remote_fallback.value:
-			result = re.search("(\d+)[.](\d+)[.](\d+)[.](\d+)", config.usage.remote_fallback.value)
+			result = re.search("(\d+)[.](\d+)[.](\d+)[.](\d+)", config.usage.remote_fallback.value)  # noqa: W605
 			if result is not None:
 				ipDefault = [int(result.group(1)), int(result.group(2)), int(result.group(3)), int(result.group(4))]
-			result = re.search("[:](\d+)$", config.usage.remote_fallback.value)
+			result = re.search("[:](\d+)$", config.usage.remote_fallback.value)  # noqa: W605
 			if result is not None:
 				portDefault = int(result.group(1))
 		self.ip = ConfigIP(default=ipDefault, auto_jump=True)
