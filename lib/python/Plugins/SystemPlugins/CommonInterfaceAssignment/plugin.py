@@ -1,24 +1,19 @@
-import six
+from os import path, remove, unlink
 
-import os
-
-from enigma import eDVBCI_UI, eDVBCIInterfaces, eEnv, eServiceCenter
-
+from enigma import eDVBCI_UI, eDVBCIInterfaces, eEnv, eServiceCenter, eServiceReference
 
 from Components.ActionMap import ActionMap
-from Components.config import ConfigNothing
+from Components.config import config, ConfigNothing
 from Components.ConfigList import ConfigList
-from Components.Label import Label
-from Components.MenuList import MenuList
+from Components.NimManager import nimmanager
 from Components.SelectionList import SelectionList
 from Components.SystemInfo import SystemInfo
 from ServiceReference import ServiceReference
 from Plugins.Plugin import PluginDescriptor
-from Screens.ChannelSelection import *
+from Screens.ChannelSelection import ChannelSelectionBase, EDIT_BOUQUET, OFF
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Screens.Standby import TryQuitMainloop
 from Tools.BoundFunction import boundFunction
@@ -180,13 +175,13 @@ class CIconfigMenu(Screen):
 		self.session.openWithCallback(self.finishedCAidSelection, CAidSelect, self.caidlist, self.selectedcaid)
 
 	def menuPressed(self):
-		if os.path.exists(self.filename):
+		if path.exists(self.filename):
 			self.session.openWithCallback(self.deleteXMLfile, MessageBox, _("Delete file") + " " + self.filename + "?", MessageBox.TYPE_YESNO)
 
 	def deleteXMLfile(self, answer):
 		if answer:
 			try:
-				os.remove(self.filename)
+				remove(self.filename)
 			except:
 				print("[CI_Config_CI%d] error remove xml..." % self.ci_slot)
 			else:
@@ -221,7 +216,7 @@ class CIconfigMenu(Screen):
 				for ref in args[0]:
 					service_ref = ServiceReference(ref)
 					service_name = service_ref.getServiceName()
-					if len(service_name) and find_in_list(self.servicelist, service_name, 0) == False:
+					if len(service_name) and find_in_list(self.servicelist, service_name, 0) is False:
 						str_service = service_ref.ref.toString()
 						split_ref = str_service.split(":")
 						if split_ref[0] == "1" and not str_service.startswith("1:134:") and "%3a//" not in str_service:
@@ -233,7 +228,7 @@ class CIconfigMenu(Screen):
 				if ref:
 					service_ref = ServiceReference(ref)
 					service_name = service_ref.getServiceName()
-					if find_in_list(self.servicelist, service_name, 0) == False:
+					if find_in_list(self.servicelist, service_name, 0) is False:
 						str_service = service_ref.ref.toString()
 						split_ref = str_service.split(":")
 						if split_ref[0] == "1" and not str_service.startswith("1:134:") and "%3a//" not in str_service:
@@ -248,7 +243,7 @@ class CIconfigMenu(Screen):
 				for ref in args[0]:
 					service_ref = ServiceReference(ref)
 					service_name = service_ref.getServiceName()
-					if len(service_name) and find_in_list(self.servicelist, service_name, 0) == False:
+					if len(service_name) and find_in_list(self.servicelist, service_name, 0) is False:
 						split_ref = service_ref.ref.toString().split(":")
 						if split_ref[0] == "1":
 							self.servicelist.append((service_name, ConfigNothing(), 0, service_ref.ref.toString()))
@@ -257,7 +252,7 @@ class CIconfigMenu(Screen):
 			else:
 				name = args[0]
 				dvbnamespace = args[1]
-				if find_in_list(self.servicelist, name, 0) == False:
+				if find_in_list(self.servicelist, name, 0) is False:
 					self.servicelist.append((name, ConfigNothing(), 1, dvbnamespace))
 					self["ServiceList"].l.setList(self.servicelist)
 					self.setServiceListInfo()
@@ -306,10 +301,10 @@ class CIconfigMenu(Screen):
 			fp.close()
 		except:
 			print("[CI_Config_CI%d] xml not written" % self.ci_slot)
-			os.unlink(self.filename)
+			unlink(self.filename)
 
 	def loadXML(self):
-		if not os.path.exists(self.filename):
+		if not path.exists(self.filename):
 			self.setServiceListInfo()
 			return
 
@@ -323,7 +318,7 @@ class CIconfigMenu(Screen):
 		tree = fileReadXML(self.filename)
 		if tree is not None:
 			for slot in tree.findall("slot"):
-				read_slot = six.ensure_str(getValue(slot.findall("id"), False))
+				read_slot = str(getValue(slot.findall("id"), False))
 				i = 0
 				for caid in slot.findall("caid"):
 					read_caid = caid.get("id").encode("UTF-8")
@@ -332,13 +327,13 @@ class CIconfigMenu(Screen):
 					i += 1
 
 				for service in slot.findall("service"):
-					read_service_name = six.ensure_str(service.get("name"))
-					read_service_ref = six.ensure_str(service.get("ref"))
+					# read_service_name = str(service.get("name"))
+					read_service_ref = str(service.get("ref"))
 					self.read_services.append(read_service_ref)
 
 				for provider in slot.findall("provider"):
-					read_provider_name = six.ensure_str(provider.get("name"))
-					read_provider_dvbname = six.ensure_str(provider.get("dvbnamespace"))
+					read_provider_name = str(provider.get("name"))
+					read_provider_dvbname = str(provider.get("dvbnamespace"))
 					self.read_providers.append((read_provider_name, read_provider_dvbname))
 				self.ci_config.append((int(read_slot), (self.read_services, self.read_providers, self.usingcaid)))
 
@@ -498,7 +493,7 @@ class myProviderSelection(ChannelSelectionBase):
 						elif choice[1] == "providerlist":
 							serviceHandler = eServiceCenter.getInstance()
 							servicelist = serviceHandler.list(ref)
-							if not servicelist is None:
+							if servicelist is not None:
 								providerlist = []
 								while True:
 									service = servicelist.getNext()
@@ -534,7 +529,7 @@ class myProviderSelection(ChannelSelectionBase):
 				if justSet:
 					serviceHandler = eServiceCenter.getInstance()
 					servicelist = serviceHandler.list(ref)
-					if not servicelist is None:
+					if servicelist is not None:
 						while True:
 							service = servicelist.getNext()
 							if not service.valid():  # check if end of list
@@ -636,7 +631,7 @@ class myChannelSelection(ChannelSelectionBase):
 		if answer and ref:
 			serviceHandler = eServiceCenter.getInstance()
 			servicelist = serviceHandler.list(ref)
-			if not servicelist is None:
+			if servicelist is not None:
 				providerlist = []
 				while True:
 					service = servicelist.getNext()
