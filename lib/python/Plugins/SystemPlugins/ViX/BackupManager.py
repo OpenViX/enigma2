@@ -270,10 +270,10 @@ class VIXBackupManager(Screen):
 					"log": self.showLog,
 				}, -1)
 			if mount not in config.backupmanager.backuplocation.choices.choices:
-					self.BackupDirectory = "/media/hdd/backup/"
-					config.backupmanager.backuplocation.value = "/media/hdd/"
-					config.backupmanager.backuplocation.save()
-					self["lab1"].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select a backup to restore:"))
+				self.BackupDirectory = "/media/hdd/backup/"
+				config.backupmanager.backuplocation.value = "/media/hdd/"
+				config.backupmanager.backuplocation.save()
+				self["lab1"].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select a backup to restore:"))
 			else:
 				self.BackupDirectory = config.backupmanager.backuplocation.value + "backup/"
 				self["lab1"].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to restore:"))
@@ -805,7 +805,7 @@ class BackupSelection(Screen):
 				"up": self.up,
 				"menu": self.exit,
 			}, -1)
-		if not self.selectionChanged in self["checkList"].onSelectionChanged:
+		if self.selectionChanged not in self["checkList"].onSelectionChanged:
 			self["checkList"].onSelectionChanged.append(self.selectionChanged)
 		self.onLayoutFinish.append(self.layoutFinished)
 
@@ -1418,9 +1418,7 @@ class BackupFiles(Screen):
 		# Trim the number of backups to the configured setting...
 		#
 		try:
-			if config.backupmanager.types_to_prune.value != "none" \
-			 and config.backupmanager.number_to_keep.value > 0 \
-			 and path.exists(self.BackupDirectory):  # !?!
+			if config.backupmanager.types_to_prune.value != "none" and config.backupmanager.number_to_keep.value > 0 and path.exists(self.BackupDirectory):  # !?!
 				images = listdir(self.BackupDirectory)
 				emlist = []					# Only try to delete backups with the current user prefix
 				for fil in images:
