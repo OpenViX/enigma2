@@ -12,9 +12,9 @@ class TitleCutter(CutListEditor):
 		self.session = session
 		self.t = t
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
-				iPlayableService.evUpdatedInfo: self.getPMTInfo,
-				iPlayableService.evCuesheetChanged: self.refillList
-			})
+			iPlayableService.evUpdatedInfo: self.getPMTInfo,
+			iPlayableService.evCuesheetChanged: self.refillList
+		})
 		self.onExecBegin.remove(self.showTutorial)
 
 	def getPMTInfo(self):
@@ -72,8 +72,8 @@ class CutlistReader(TitleCutter):
 						MultiContentEntryText(text = 1),
 						MultiContentEntryText(text = 2)
 					],
-				 "fonts": [gFont("Regular", 18)],
-				 "itemHeight": 20
+				"fonts": [gFont("Regular", 18)],
+				"itemHeight": 20
 				}
 			</convert>
 		</widget>
