@@ -3,8 +3,8 @@ from Plugins.Plugin import PluginDescriptor
 
 def main(session, **kwargs):
 	from . import TitleList
-	#project = DVDProject.DVDProject()
-	#project.addService(service)
+	# project = DVDProject.DVDProject()
+	# project.addService(service)
 	return session.open(TitleList.TitleList)
 
 
