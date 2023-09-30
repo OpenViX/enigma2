@@ -1,33 +1,32 @@
-import os
+from os import listdir, path as ospath, remove as osremove
 from time import strftime
 import random
 from boxbranding import getMachineBrand, getMachineName
 
 from enigma import iPlayableService, eTimer, eServiceCenter, iServiceInformation, ePicLoad
-
-from ServiceReference import ServiceReference
-from Screens.Screen import Screen
-from Screens.HelpMenu import HelpableScreen
-from Screens.MessageBox import MessageBox
-from Screens.InputBox import InputBox
+from Components.ActionMap import NumberActionMap, HelpableActionMap
+from Components.config import config
+from Components.Label import Label
+from Components.FileList import FileList
+from Components.Harddisk import harddiskmanager
+from Components.MediaPlayer import PlayList
+from Components.MovieList import AUDIO_EXTENSIONS
+from Components.Pixmap import Pixmap, MultiPixmap
+from Components.Playlist import PlaylistIOInternal, PlaylistIOM3U, PlaylistIOPLS
+from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
+from Components.ServicePosition import ServicePositionGauge
+from Components.Sources.StaticText import StaticText
+from Components.SystemInfo import SystemInfo
+from Plugins.Plugin import PluginDescriptor
 from Screens.ChoiceBox import ChoiceBox
 from Screens.InfoBar import InfoBar
 from Screens.InfoBarGenerics import InfoBarSeek, InfoBarScreenSaver, InfoBarAudioSelection, InfoBarCueSheetSupport, InfoBarNotifications, InfoBarSubtitleSupport
-from Components.ActionMap import NumberActionMap, HelpableActionMap
-from Components.Label import Label
-from Components.Pixmap import Pixmap, MultiPixmap
-from Components.FileList import FileList
-from Components.MediaPlayer import PlayList
-from Components.MovieList import AUDIO_EXTENSIONS
-from Components.ServicePosition import ServicePositionGauge
-from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
-from Components.Playlist import PlaylistIOInternal, PlaylistIOM3U, PlaylistIOPLS
-from Components.AVSwitch import AVSwitch
-from Components.Harddisk import harddiskmanager
-from Components.config import config
-from Components.SystemInfo import SystemInfo
-from Components.Sources.StaticText import StaticText
-from Tools.Directories import fileExists, pathExists, resolveFilename, SCOPE_CONFIG, SCOPE_PLAYLIST, SCOPE_CURRENT_SKIN
+from Screens.InputBox import InputBox
+from Screens.HelpMenu import HelpableScreen
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
+from ServiceReference import ServiceReference
+from Tools.Directories import fileExists, resolveFilename, SCOPE_CONFIG, SCOPE_PLAYLIST, SCOPE_CURRENT_SKIN
 from Tools.BoundFunction import boundFunction
 from .settings import MediaPlayerSettings
 
@@ -66,9 +65,8 @@ class MediaPixmap(Pixmap):
 
 	def onShow(self):
 		Pixmap.onShow(self)
-		sc = AVSwitch().getFramebufferScale()
-		#0=Width 1=Height 2=Aspect 3=use_cache 4=resize_type 5=Background(#AARRGGBB)
-		self.picload.setPara((self.instance.size().width(), self.instance.size().height(), sc[0], sc[1], False, 1, "#00000000"))
+		# 0=Width 1=Height 2=Aspect 3=use_cache 4=resize_type 5=Background(#AARRGGBB)
+		self.picload.setPara((self.instance.size().width(), self.instance.size().height(), 1, 1, False, 1, "#00000000"))
 
 	def paintCoverArtPixmapCB(self, picInfo=None):
 		ptr = self.picload.getData()
@@ -108,6 +106,7 @@ class MediaPlayerInfoBar(Screen):
 class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarAudioSelection, InfoBarCueSheetSupport, InfoBarNotifications, InfoBarSubtitleSupport, HelpableScreen):
 	ALLOW_SUSPEND = True
 	ENABLE_RESUME_SUPPORT = True
+	FLAG_CENTER_DVB_SUBS = 2048
 
 	def __init__(self, session, args=None):
 		Screen.__init__(self, session)
@@ -257,12 +256,12 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 			self.playlist.updateList()
 
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
-				iPlayableService.evUpdatedInfo: self.__evUpdatedInfo,
-				iPlayableService.evUser + 10: self.__evAudioDecodeError,
-				iPlayableService.evUser + 11: self.__evVideoDecodeError,
-				iPlayableService.evUser + 12: self.__evPluginError,
-				iPlayableService.evUser + 13: self["coverArt"].embeddedCoverArt
-			})
+			iPlayableService.evUpdatedInfo: self.__evUpdatedInfo,
+			iPlayableService.evUser + 10: self.__evAudioDecodeError,
+			iPlayableService.evUser + 11: self.__evVideoDecodeError,
+			iPlayableService.evUser + 12: self.__evPluginError,
+			iPlayableService.evUser + 13: self["coverArt"].embeddedCoverArt
+		})
 
 		self.servicelist = None
 		self.pipZapAvailable = False
