@@ -55,7 +55,7 @@ class CronTimers(Screen):
 			'yellow': self.CrondStart,
 			'blue': self.autostart,
 			})
-		if not self.selectionChanged in self["list"].onSelectionChanged:
+		if self.selectionChanged not in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 		self.service_name = 'cronie'
 		self.onLayoutFinish.append(self.InstallCheck)
@@ -245,9 +245,9 @@ class CronTimers(Screen):
 			mysel = self['list'].getCurrent()
 			if mysel:
 				myline = mysel[1]
-				open('/etc/cron/crontabs/root.tmp', 'w').writelines([l for l in open('/etc/cron/crontabs/root').readlines() if myline not in l])
+				open('/etc/cron/crontabs/root.tmp', 'w').writelines([x for x in open('/etc/cron/crontabs/root').readlines() if myline not in x])
 				rename('/etc/cron/crontabs/root.tmp', '/etc/cron/crontabs/root')
-				rc = system('crontab /etc/cron/crontabs/root -c /etc/cron/crontabs')
+				system('crontab /etc/cron/crontabs/root -c /etc/cron/crontabs')
 				self.updateList()
 
 	def info(self):
@@ -348,5 +348,5 @@ class CronTimersConfig(Setup):
 		out = open('/etc/cron/crontabs/root', 'a')
 		out.write(newcron)
 		out.close()
-		rc = system('crontab /etc/cron/crontabs/root -c /etc/cron/crontabs')
+		system('crontab /etc/cron/crontabs/root -c /etc/cron/crontabs')
 		self.close()
