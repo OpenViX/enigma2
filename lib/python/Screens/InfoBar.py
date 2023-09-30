@@ -14,7 +14,7 @@ profile("LOAD:enigma")
 import enigma  # noqa: E402
 
 profile("LOAD:InfoBarGenerics")
-from Screens.InfoBarGenerics import InfoBarShowHide, \  # noqa: E402
+from Screens.InfoBarGenerics import InfoBarShowHide, \
 	InfoBarNumberZap, InfoBarChannelSelection, InfoBarMenu, InfoBarRdsDecoder, \
 	InfoBarEPG, InfoBarSeek, InfoBarInstantRecord, InfoBarRedButton, InfoBarTimerButton, InfoBarVmodeButton, \
 	InfoBarAudioSelection, InfoBarVideoSetup, InfoBarAdditionalInfo, InfoBarNotifications, InfoBarDish, InfoBarUnhandledKey, InfoBarLongKeyDetection, \
@@ -22,7 +22,7 @@ from Screens.InfoBarGenerics import InfoBarShowHide, \  # noqa: E402
 	InfoBarServiceNotifications, InfoBarPVRState, InfoBarCueSheetSupport, InfoBarBuffer, \
 	InfoBarSummarySupport, InfoBarMoviePlayerSummarySupport, InfoBarTimeshiftState, InfoBarTeletextPlugin, InfoBarExtensions, \
 	InfoBarSubtitleSupport, InfoBarPiP, InfoBarPlugins, InfoBarServiceErrorPopupSupport, InfoBarJobman, InfoBarZoom, \
-	InfoBarHdmi, setResumePoint, delResumePoint
+	InfoBarHdmi, setResumePoint, delResumePoint  # noqa: E402
 from Screens.ButtonSetup import InfoBarButtonSetup  # noqa: E402
 
 profile("LOAD:InitBar_Components")
