@@ -94,9 +94,9 @@ class HarddiskSelection(Screen):
 
 	def doIt(self, selection):
 		self.session.openWithCallback(self.close, HarddiskSetup, selection,
-			 action=selection.createInitializeJob,
-			 text=_("Initialize"),
-			 question=_("Do you really want to initialize this device?\nAll the data on the device will be lost!"))
+			action=selection.createInitializeJob,
+			text=_("Initialize"),
+			question=_("Do you really want to initialize this device?\nAll the data on the device will be lost!"))
 
 	def okbuttonClick(self):
 		selection = self["hddlist"].getCurrent()
@@ -115,6 +115,6 @@ class HarddiskFsckSelection(HarddiskSelection):
 
 	def doIt(self, selection):
 		self.session.openWithCallback(self.close, HarddiskSetup, selection,
-			 action=selection.createCheckJob,
-			 text=_("Check"),
-			 question=_("Do you really want to check the filesystem?\nThis could take a long time!"))
+			action=selection.createCheckJob,
+			text=_("Check"),
+			question=_("Do you really want to check the filesystem?\nThis could take a long time!"))
