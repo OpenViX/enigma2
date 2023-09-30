@@ -415,5 +415,16 @@
 	<!-- EPG -->
 	<screen name="EPGExtensionsList_summary" position="0,0" size="800,480">
 		<widget source="parent.Title" render="Label" position="40,20" size="720,250" font="FdLcD;80" halign="center" valign="center" foregroundColor="white" />
-	</screen> 
+	</screen>
+
+	<!-- TimerEditListSummary -->
+	<screen name="TimerEditListSummary" position="0,0" size="800,480">
+		<widget source="parent.Title" render="Label" position="0,0" size="e,90" font="FdLcD;85" halign="center" valign="center" noWrap="1" />
+		<widget source="service" render="Label" position="0,120" size="e,70" font="FdLcD;65" halign="center" valign="center" noWrap="1" />
+		<widget source="name" render="Label" position="0,220" size="e,60" font="FdLcD;50" halign="center" valign="center" />
+		<widget source="time" render="Label" position="0,310" size="c,60" font="FdLcD;60" halign="center" valign="center" transparent="1" />
+		<widget source="duration" render="Label" position="c,310" size="c,60" font="FdLcD;60" halign="center" valign="center" transparent="1" />
+		<widget source="state" render="Label" position="0,380" size="e,80" font="FdLcD;65" halign="center" valign="center" transparent="1" />
+	</screen>
+		
 </skin>
