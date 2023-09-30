@@ -57,7 +57,7 @@ class ChapterZap(Screen):
 		self.close(int(self["number"].getText()))
 
 	def keyNumberGlobal(self, number):
-		self.Timer.start(3000, True)		#reset timer
+		self.Timer.start(3000, True)  # reset timer
 		self.field += str(number)
 		self["number"].setText(self.field)
 		if len(self.field) >= 4:
@@ -85,7 +85,8 @@ class ChapterZap(Screen):
 				"8": self.keyNumberGlobal,
 				"9": self.keyNumberGlobal,
 				"0": self.keyNumberGlobal
-			})
+			}
+		)
 
 		self.Timer = eTimer()
 		self.Timer.callback.append(self.keyOK)
@@ -153,7 +154,8 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 		self.totalTitles = 0
 		self.currentTitle = 0
 
-		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
+		self.__event_tracker = ServiceEventTracker(screen=self,
+			eventmap={
 				iPlayableService.evStopped: self.__serviceStopped,
 				iPlayableService.evUser: self.__timeUpdated,
 				iPlayableService.evUser + 1: self.__statePlay,
@@ -168,23 +170,24 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 				iPlayableService.evUser + 11: self.__menuOpened,
 				iPlayableService.evUser + 12: self.__menuClosed,
 				iPlayableService.evUser + 13: self.__osdAngleInfoAvail
-			})
+			}
+		)
 
 		self["DVDPlayerDirectionActions"] = ActionMap(["DirectionActions"],
 			{
-				#MENU KEY DOWN ACTIONS
+				# MENU KEY DOWN ACTIONS
 				"left": self.keyLeft,
 				"right": self.keyRight,
 				"up": self.keyUp,
 				"down": self.keyDown,
 
-				#MENU KEY REPEATED ACTIONS
+				# MENU KEY REPEATED ACTIONS
 				"leftRepeated": self.doNothing,
 				"rightRepeated": self.doNothing,
 				"upRepeated": self.doNothing,
 				"downRepeated": self.doNothing,
 
-				#MENU KEY UP ACTIONS
+				# MENU KEY UP ACTIONS
 				"leftUp": self.doNothing,
 				"rightUp": self.doNothing,
 				"upUp": self.doNothing,
@@ -195,7 +198,8 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 			{
 				"ok": self.keyOk,
 				"cancel": self.keyCancel,
-			})
+			}
+		)
 
 		self["DVDPlayerPlaybackActions"] = HelpableActionMap(self, "DVDPlayerActions",
 			{
@@ -213,7 +217,8 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 				"nextSubtitleTrack": (self.nextSubtitleTrack, _("switch to the next subtitle language")),
 				"nextAngle": (self.nextAngle, _("switch to the next angle")),
 				"seekBeginning": self.seekBeginning,
-			}, -2)
+			}, -2
+		)
 
 		self["NumberActions"] = NumberActionMap(["NumberActions"],
 			{
@@ -227,7 +232,8 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 				"8": self.keyNumberGlobal,
 				"9": self.keyNumberGlobal,
 				"0": self.keyNumberGlobal,
-			})
+			}
+		)
 
 		self.onClose.append(self.__onClose)
 
@@ -271,7 +277,7 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 		self.session.openWithCallback(self.numberEntered, ChapterZap, number)
 
 	def numberEntered(self, retval):
-#		print self.servicelist
+		# print self.servicelist
 		if retval > 0:
 			self.zapToNumber(retval)
 
@@ -468,7 +474,7 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 				print("[DVD] seek to chapter %d" % number)
 				seekable.seekChapter(number)
 
-#	MENU ACTIONS
+	# MENU ACTIONS
 	def keyRight(self):
 		self.sendKey(iServiceKeys.keyRight)
 
@@ -524,7 +530,7 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 					print("[DVD] setting name to: ", self.service)
 					newref.setName(str(name))
 
-#				Construct a path for the IFO header assuming it exists
+				# Construct a path for the IFO header assuming it exists
 				ifofilename = val
 				if not ifofilename.upper().endswith("/VIDEO_TS"):
 					ifofilename += "/VIDEO_TS"
@@ -562,7 +568,7 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 
 		ifofile = None
 		try:
-#			Try to read the IFO header to determine PAL/NTSC format and the resolution
+			# Try to read the IFO header to determine PAL/NTSC format and the resolution
 			ifofile = open(isofilename, "r")
 			ifofile.seek(offset)
 			video_attr_high = ord(ifofile.read(1))
@@ -573,8 +579,8 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 			isNTSC = (video_attr_high & 0x10 == 0)
 			isLowResolution = (video_attr_low & 0x18 == 0x18)
 		except:
-#			If the service is an .iso or .img or .nrg file we assume it is PAL
-#			Sorry we cannot open image files here.
+			# If the service is an .iso or .img or .nrg file we assume it is PAL
+			# Sorry we cannot open image files here.
 			print("[DVD] Cannot read file or is ISO/IMG/NRG")
 		finally:
 			if ifofile is not None:
@@ -606,7 +612,7 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 	def playLastCB(self, answer):  # overwrite infobar cuesheet function
 		print("[DVD] ", answer, self.resume_point)
 		if self.service:
-			if answer == True:
+			if answer is True:
 				self.resumeDvd()
 				seekable = self.getSeek()
 				if seekable:
@@ -622,7 +628,7 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 	def createSummary(self):
 		return DVDSummary
 
-#override some InfoBarSeek functions
+	# override some InfoBarSeek functions
 	def doEof(self):
 		self.setSeekState(self.SEEK_STATE_PLAY)
 
