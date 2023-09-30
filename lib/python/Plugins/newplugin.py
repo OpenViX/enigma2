@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from os import  listdir, mkdir, path as ospath, system as ossystem
+from os import listdir, mkdir, path as ospath, system as ossystem
 
 ossystem("clear")
 internalname = input("Internal plugin name (no whitespaces, plugin directory): ")
