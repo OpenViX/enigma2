@@ -140,6 +140,7 @@ class picshow(Screen):
 		config.pic.save()
 		self.close()
 
+
 class Pic_Setup(ConfigListScreen, Screen):
 
 	def __init__(self, session):
