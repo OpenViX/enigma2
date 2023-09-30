@@ -13,9 +13,9 @@ from boxbranding import getBrandOEM
 
 # default = disabled
 g_default = {
-        "current": 0,
-        "speed": 20,
-}
+	"current": 0,
+	"speed": 20,
+	}
 g_max_speed = 30
 
 g_animation_paused = False
@@ -37,22 +37,21 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 			<widget source="key_green" render="Label" position="140,100" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#1f771f" transparent="1" />
 			<widget source="key_yellow" render="Label" position="280,100" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#a08500" transparent="1" />
 		</screen>
-		"""
+			"""
 
 	def __init__(self, session):
 		self.session = session
 		self.entrylist = []
-
 		Screen.__init__(self, session)
 		ConfigListScreen.__init__(self, self.entrylist)
-
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", ], {
+		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", ],
+			{
 			"ok": self.keyGreen,
 			"green": self.keyGreen,
 			"yellow": self.keyYellow,
 			"red": self.keyRed,
 			"cancel": self.keyRed,
-		}, -2)
+			}, -2)
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self["key_yellow"] = StaticText(_("Default"))
@@ -85,7 +84,6 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 
 	def makeConfigList(self):
 		self.entrylist = []
-
 		entrySpeed = getConfigListEntry(_("Animation Speed"), config.misc.window_animation_speed)
 		self.entrylist.append(entrySpeed)
 		self["config"].list = self.entrylist
@@ -100,7 +98,7 @@ class AnimationSetupScreen(Screen):
 			{"idx": 3, "name": _("Grow drop")},
 			{"idx": 4, "name": _("Grow from left")},
 			{"idx": 5, "name": _("Extrude from left")},
-			#{"idx":6, "name":_("Popup")},
+			# {"idx":6, "name":_("Popup")},
 			{"idx": 7, "name": _("Slide drop")},
 			{"idx": 8, "name": _("Slide from left")},
 			{"idx": 9, "name": _("Slide left to right")},
@@ -137,32 +135,28 @@ class AnimationSetupScreen(Screen):
 
 			<widget name="list" position="10,60" size="660,364" scrollbarMode="showOnDemand" />
 			<widget source="introduction" render="Label" position="0,370" size="560,40" zPosition="10" font="Regular;20" valign="center" backgroundColor="#25062748" transparent="1" />
-		</screen>"""
+		</screen>
+			"""
 
 	def __init__(self, session):
 
 		self.skin = AnimationSetupScreen.skin
 		Screen.__init__(self, session)
-
 		self.animationList = []
-
 		self["introduction"] = StaticText(_("* current animation"))
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self["key_yellow"] = StaticText(_("Settings"))
 		self["key_blue"] = StaticText(_("Preview"))
-
 		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
 			{
-				"cancel": self.keyclose,
-				"save": self.ok,
-				"ok": self.ok,
-				"yellow": self.config,
-				"blue": self.preview
+			"cancel": self.keyclose,
+			"save": self.ok,
+			"ok": self.ok,
+			"yellow": self.config,
+			"blue": self.preview
 			}, -3)
-
 		self["list"] = MenuList(self.animationList)
-
 		self.onLayoutFinish.append(self.layoutFinished)
 
 	def layoutFinished(self):
