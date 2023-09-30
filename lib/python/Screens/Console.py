@@ -53,7 +53,6 @@ class Console(Screen):
 			if self.container.execute(self.cmdlist[self.run]):  # start of container application failed...
 				self.runFinished(-1)  # so we must call runFinished manual
 		else:
-			lastpage = self["text"].isAtLastPage()
 			self["text"].appendText(_("Execution finished!!"))
 			if self.finishedCallback is not None:
 				self.finishedCallback()
