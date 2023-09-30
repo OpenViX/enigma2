@@ -1,11 +1,9 @@
 from enigma import eDVBResourceManager, eDVBFrontendParametersSatellite, eDVBFrontendParametersTerrestrial, eTimer
 
-from enigma import eDVBResourceManager, eDVBFrontendParametersSatellite, eDVBFrontendParametersTerrestrial
 from Components.ActionMap import ActionMap
 from Components.config import config, ConfigSelection, getConfigListEntry
 from Components.NimManager import nimmanager, getConfigSatlist
 from Components.Sources.FrontendStatus import FrontendStatus
-from Components.SystemInfo import SystemInfo
 from Components.TuneTest import Tuner
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
@@ -176,7 +174,7 @@ class Satfinder(ScanSetup):
 		self.DVB_type = self.nim_type_dict[int(self.satfinder_scan_nims.value)]["selection"]
 		self.DVB_TypeEntry = getConfigListEntry(_("DVB type"), self.DVB_type)  # multitype?
 		if len(self.nim_type_dict[int(self.satfinder_scan_nims.value)]["modes"]) > 1:
-			 self.list.append(self.DVB_TypeEntry)
+			self.list.append(self.DVB_TypeEntry)
 		if self.DVB_type.value == "DVB-S":
 			self.tuning_sat = self.scan_satselection[self.getSelectedSatIndex(self.feid)]
 			self.satEntry = getConfigListEntry(_('Satellite'), self.tuning_sat)
@@ -307,7 +305,7 @@ class Satfinder(ScanSetup):
 				self.list.append(getConfigListEntry(_("Inversion"), self.scan_ats.inversion))
 				self.list.append(getConfigListEntry(_("Modulation"), self.scan_ats.modulation))
 			elif self.tuning_type.value == "predefined_transponder":
-				#FIXME add region
+				# FIXME add region
 				self.scan_nims.value = self.satfinder_scan_nims.value
 				self.predefinedATSCTranspondersList()
 				self.preDefTransponderAtscEntry = getConfigListEntry(_('Transponder'), self.ATSCTransponders)
@@ -347,8 +345,6 @@ class Satfinder(ScanSetup):
 				continue
 			if n.isCompatible("DVB-S") and len(nimmanager.getSatListForNim(n.slot)) < 1:
 				continue
-#			if n.isCompatible("DVB-S") and n.isFBCTuner() and not n.isFBCRoot():
-#				continue
 			satfinder_nim_list.append((str(n.slot), n.friendly_full_description))
 		self.satfinder_scan_nims = ConfigSelection(choices=satfinder_nim_list)
 		if self.frontendData is not None and len(satfinder_nim_list) > 0:  # open the plugin with the currently active NIM as default
@@ -889,7 +885,6 @@ class SatfinderExtra(Satfinder):
 		default_color = Hex2strColor(colors[4])
 		out = []
 		legend = "%s%s%s:  %s%s%s  %s%s%s  %s%s%s  %s%s%s\n\n%s%s%s\n\n" % (default_color, _("Key"), default_color, fta_color, _("FTA TV"), default_color, encrypted_color, _("Encrypted TV"), default_color, radio_color, _("Radio"), default_color, data_color, _("Other"), default_color, default_color, _("Channels"), default_color)
-#		out.append("%s%s%s:" % (default_color, _("Channels"), default_color))
 		for service in self.serviceList:
 			fta = "free_ca" in service and service["free_ca"] == 0
 			if service["service_type"] in radio:
