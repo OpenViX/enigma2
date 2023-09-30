@@ -135,13 +135,11 @@ class brcmWLConfig:
 
 	def writeConfig(self, iface):
 		essid = config.plugins.wlan.essid.value
-		hiddenessid = config.plugins.wlan.hiddenessid.value
 		encryption = config.plugins.wlan.encryption.value
-		wepkeytype = config.plugins.wlan.wepkeytype.value
 		psk = config.plugins.wlan.psk.value
-
+		# hiddenessid = config.plugins.wlan.hiddenessid.value
+		# wepkeytype = config.plugins.wlan.wepkeytype.value
 		fp = open(getWlanConfigName(iface), 'w')
-
 		fp.write('ssid=' + essid + '\n')
 		if encryption in ('WPA', 'WPA2', 'WPA/WPA2', 'WEP'):
 			if encryption == "WPA/WPA2":
@@ -239,12 +237,12 @@ class wpaSupplicant:
 					continue
 		except:
 			print("[Wlan.py] Error parsing ", configfile)
-			wsconfig = {
-					'hiddenessid': False,
-					'ssid': "",
-					'encryption': "WPA2",
-					'wepkeytype': "ASCII",
-					'key': "",
+			wsconf = {
+				'ssid': "",
+				'hiddenessid': False,
+				'encryption': "WPA2",
+				'wepkeytype': "ASCII",
+				'key': "",
 				}
 
 		for (k, v) in list(wsconf.items()):
@@ -301,7 +299,7 @@ class wpaSupplicant:
 		fp.write('}')
 		fp.write('\n')
 		fp.close()
-		#system('cat ' + getWlanConfigName(iface))
+		# system('cat ' + getWlanConfigName(iface))
 
 	def loadConfig(self, iface):
 		if existBcmWifi(iface):
@@ -311,7 +309,7 @@ class wpaSupplicant:
 		if not os_path.exists(configfile):
 			configfile = '/etc/wpa_supplicant.conf'
 		try:
-			#parse the wpasupplicant configfile
+			# parse the wpasupplicant configfile
 			print("[Wlan.py] parsing configfile: ", configfile)
 			fp = open(configfile, 'r')
 			supplicant = fp.readlines()
@@ -357,11 +355,11 @@ class wpaSupplicant:
 			config.plugins.wlan.encryption.value = encryption
 
 			wsconfig = {
-					'hiddenessid': config.plugins.wlan.hiddenessid.value,
-					'ssid': config.plugins.wlan.essid.value,
-					'encryption': config.plugins.wlan.encryption.value,
-					'wepkeytype': config.plugins.wlan.wepkeytype.value,
-					'key': config.plugins.wlan.psk.value,
+				'hiddenessid': config.plugins.wlan.hiddenessid.value,
+				'ssid': config.plugins.wlan.essid.value,
+				'encryption': config.plugins.wlan.encryption.value,
+				'wepkeytype': config.plugins.wlan.wepkeytype.value,
+				'key': config.plugins.wlan.psk.value,
 				}
 
 			for (key, item) in list(wsconfig.items()):
@@ -379,13 +377,13 @@ class wpaSupplicant:
 		except:
 			print("[Wlan.py] Error parsing ", configfile)
 			wsconfig = {
-					'hiddenessid': False,
-					'ssid': "",
-					'encryption': "WPA2",
-					'wepkeytype': "ASCII",
-					'key': "",
-				}
-		#print "[Wlan.py] WS-CONFIG-->",wsconfig
+				'hiddenessid': False,
+				'ssid': "",
+				'encryption': "WPA2",
+				'wepkeytype': "ASCII",
+				'key': "",
+			}
+		# print "[Wlan.py] WS-CONFIG-->",wsconfig
 		return wsconfig
 
 
@@ -512,13 +510,12 @@ class Status:
 						'pairwise_ciphers': scanresults[i].pairwise_ciphers,
 						'authentication_suites': scanresults[i].authentication_suites,
 					}
-				#data['bitrate'] = aps[ssid]["maxrate"]
+				# data['bitrate'] = aps[ssid]["maxrate"]
 				data['encryption'] = aps[ssid]["encrypted"]
 				data['quality'] = aps[ssid]["quality"]
 				data['signal'] = aps[ssid]["signal"]
 				data['channel'] = aps[ssid]["channel"]
 				data['encryption_type'] = aps[ssid]["encryption_type"]
-				#data['frequency'] = aps[ssid]["frequency"]
 				data['frequency_norm'] = aps[ssid]["frequency_norm"]
 		print("[Wlan.py] apsresults2 = %s" % data)
 		self.wlaniface[iface] = data
