@@ -43,25 +43,25 @@ class TimeshiftSettings(Setup):
 	def pathStatus(self, path):
 		if not isdir(path):
 			self.errorItem = self["config"].getCurrentIndex()
-			footnote = _("Directory '%s' does not exist!") % path
+			self.footnote = _("Directory '%s' does not exist.") % path
 			green = ""
 		elif not self.isValidPartition(path):
 			self.errorItem = self["config"].getCurrentIndex()
-			footnote = _("Directory '%s' not valid. Partition must be ext or nfs") % path
+			self.footnote = _("Directory '%s' not valid. Partition must be ext or nfs.") % path
 			green = ""
 		elif not fileExists(path, "w"):
 			self.errorItem = self["config"].getCurrentIndex()
-			footnote = _("Directory '%s' not writeable!") % path
+			self.footnote = _("Directory '%s' not writeable.") % path
 			green = ""
 		elif not self.hasHardLinks(path):  # Timeshift requires a hardlinks
 			self.errorItem = self["config"].getCurrentIndex()
-			footnote = _("Directory '%s' is not hard links capable!") % path
+			self.footnote = _("Directory '%s' is not hard links capable.") % path
 			green = ""
 		else:
 			self.errorItem = -1
-			footnote = ""
+			self.footnote = ""
 			green = self.greenText
-		self.setFootnote(footnote)
+		self.setFootnote(self.footnote)
 		self["key_green"].text = green
 
 	def isValidPartition(self, path):
@@ -108,6 +108,7 @@ class TimeshiftSettings(Setup):
 			Setup.selectionChanged(self)
 		else:
 			self["config"].setCurrentIndex(self.errorItem)
+			self.errorMsg()
 
 	def changedEntry(self):
 		if self.getCurrentItem() is config.usage.timeshift_path:
@@ -120,8 +121,11 @@ class TimeshiftSettings(Setup):
 		else:
 			Setup.keySelect(self)
 
+	def errorMsg(self):
+		self.session.open(MessageBox, "%s\n\n%s" % (self.footnote, _("Please select a valid directory.")), type=MessageBox.TYPE_ERROR)
+
 	def keySave(self):
 		if self.errorItem == -1:
 			Setup.keySave(self)
 		else:
-			self.session.open(MessageBox, "%s\n\n%s" % (self.getFootnote(), _("Please select an acceptable directory.")), type=MessageBox.TYPE_ERROR)
+			self.errorMsg()
