@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-09-23 20:15+0300\n"
+"PO-Revision-Date: 2023-10-01 09:51+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -4813,24 +4813,24 @@ msgid "Directory %s does not exist."
 msgstr "Hakemistoa %s ei löydy."
 
 #, python-format
-msgid "Directory '%s' does not exist!"
-msgstr "Hakemistoa '%s' ei löydy!"
+msgid "Directory '%s' does not exist."
+msgstr "Hakemistoa '%s' ei löydy."
 
 #, python-format
-msgid "Directory '%s' is not hard links capable!"
-msgstr "Hakemistoon '%s' ei voi kirjoittaa!"
+msgid "Directory '%s' is not hard links capable."
+msgstr "Hakemistoon '%s' ei voi kirjoittaa."
 
 #, python-format
-msgid "Directory '%s' not valid. Partition must be ext or nfs"
-msgstr "Hakemisto '%s' ei ole käypä. Partitio pitää olla ext tai nfs"
+msgid "Directory '%s' not valid. Partition must be ext or nfs."
+msgstr "Hakemisto '%s' ei ole käypä. Partitio pitää olla ext tai nfs."
 
 #, python-format
-msgid "Directory '%s' not writable!"
-msgstr "Hakemistoon '%s' ei voi kirjoittaa!"
+msgid "Directory '%s' not writable."
+msgstr "Hakemistoon '%s' ei voi kirjoittaa."
 
 #, python-format
-msgid "Directory '%s' not writeable!"
-msgstr "Hakemistoon '%s' ei voi kirjoittaa!"
+msgid "Directory '%s' not writeable."
+msgstr "Hakemistoon '%s' ei voi kirjoittaa."
 
 msgid "Directory browser"
 msgstr "Hakemistoselain"
@@ -13537,7 +13537,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"23.09.2023\n"
+"01.10.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -14036,7 +14036,7 @@ msgid "This option configures output for Auto Volume Level."
 msgstr "Tämä asetus määrittää automaattisen äänenvoimakkuuden tason."
 
 msgid "This option configures the general audio delay for bluetooth speakers."
-msgstr "Tämä asetus määrittää yleisen äänen viiveen bluetooth-kaiutittimille."
+msgstr "Tämä asetus määrittää yleisen äänen viiveen bluetooth-kaiuttimille."
 
 msgid "This option configures the general audio delay of Dolby Digital sound tracks."
 msgstr "Tämä asetus määrittää Dolby Digital -ääniraitojen yleisen ääniviiveen."
@@ -19077,3 +19077,6 @@ msgstr "SWAP-nimi:"
 
 msgid "Making a settings backup before updating is highly recommended."
 msgstr "Asetusten varmuuskopiointi ennen päivitystä on erittäin suositeltavaa."
+
+msgid "Please select a valid directory."
+msgstr "Valitse kelvollinen hakemisto."
