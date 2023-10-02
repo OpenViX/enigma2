@@ -199,7 +199,7 @@ class ParentalControl:
 
 	def saveListToFile(self, sWhichList, vList):
 		#  Replaces saveWhiteList and saveBlackList:
-		#I don't like to have two functions with identical code...
+		# I don't like to have two functions with identical code...
 		file = open(resolveFilename(SCOPE_CONFIG, sWhichList), 'w')
 		for sService, sType in vList.items():
 			# Only Services that are selected directly and Bouqets are saved.
