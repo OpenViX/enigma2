@@ -25,14 +25,14 @@ class PowerTimerList(GUIComponent):
 			TIMERTYPE.DEEPSTANDBY: _("Deep Standby"),
 			TIMERTYPE.REBOOT: _("Reboot"),
 			TIMERTYPE.RESTART: _("Restart GUI")
-			}[timer.timerType]
+		}[timer.timerType]
 
 		afterevent = {
 			AFTEREVENT.NONE: _("Nothing"),
 			AFTEREVENT.WAKEUPTOSTANDBY: _("Wake Up To Standby"),
 			AFTEREVENT.STANDBY: _("Standby"),
 			AFTEREVENT.DEEPSTANDBY: _("Deep Standby")
-			}[timer.afterEvent]
+		}[timer.afterEvent]
 
 		height = self.l.getItemSize().height()
 		width = self.l.getItemSize().width()
