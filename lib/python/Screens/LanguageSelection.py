@@ -1,5 +1,5 @@
 from enigma import eTimer
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 from Components.ActionMap import ActionMap
 from Components.config import config
 from Components.Label import Label
@@ -202,6 +202,14 @@ class LanguageSelection(Screen):
 
 	def changed(self):
 		self.run(justlocal=True)
+
+	def createSummary(self):
+		return LanguageSelectionSummary
+
+
+class LanguageSelectionSummary(ScreenSummary):
+	def __init__(self, session, parent):
+		ScreenSummary.__init__(self, session, parent)
 
 
 class LanguageWizard(LanguageSelection, Rc):
