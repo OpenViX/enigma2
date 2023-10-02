@@ -548,16 +548,16 @@ class NIM:
 		self.is_fbc = is_fbc
 
 		self.compatible = {
-				None: (None,),
-				"DVB-S": ("DVB-S", None),
-				"DVB-C": ("DVB-C", None),
-				"DVB-T": ("DVB-T", None),
-				"DVB-S2": ("DVB-S", "DVB-S2", None),
-				"DVB-S2X": ("DVB-S", "DVB-S2", "DVB-S2X", None),
-				"DVB-C2": ("DVB-C", "DVB-C2", None),
-				"DVB-T2": ("DVB-T", "DVB-T2", None),
-				"ATSC": ("ATSC", None),
-			}
+			None: (None,),
+			"DVB-S": ("DVB-S", None),
+			"DVB-C": ("DVB-C", None),
+			"DVB-T": ("DVB-T", None),
+			"DVB-S2": ("DVB-S", "DVB-S2", None),
+			"DVB-S2X": ("DVB-S", "DVB-S2", "DVB-S2X", None),
+			"DVB-C2": ("DVB-C", "DVB-C2", None),
+			"DVB-T2": ("DVB-T", "DVB-T2", None),
+			"ATSC": ("ATSC", None),
+		}
 
 		# get multi sat type using delsys information
 		self.combined = False
@@ -607,15 +607,15 @@ class NIM:
 
 	def connectableTo(self):
 		connectable = {
-				"DVB-S": ("DVB-S", "DVB-S2", "DVB-S2X"),
-				"DVB-C": ("DVB-C", "DVB-C2"),
-				"DVB-T": ("DVB-T", "DVB-T2"),
-				"DVB-S2": ("DVB-S", "DVB-S2", "DVB-S2X"),
-				"DVB-S2X": ("DVB-S", "DVB-S2", "DVB-S2X"),
-				"DVB-C2": ("DVB-C", "DVB-C2"),
-				"DVB-T2": ("DVB-T", "DVB-T2"),
-				"ATSC": ("ATSC"),
-			}
+			"DVB-S": ("DVB-S", "DVB-S2", "DVB-S2X"),
+			"DVB-C": ("DVB-C", "DVB-C2"),
+			"DVB-T": ("DVB-T", "DVB-T2"),
+			"DVB-S2": ("DVB-S", "DVB-S2", "DVB-S2X"),
+			"DVB-S2X": ("DVB-S", "DVB-S2", "DVB-S2X"),
+			"DVB-C2": ("DVB-C", "DVB-C2"),
+			"DVB-T2": ("DVB-T", "DVB-T2"),
+			"ATSC": ("ATSC"),
+		}
 		return connectable[self.getType()]
 
 	def getSlotID(self, slot=None):
