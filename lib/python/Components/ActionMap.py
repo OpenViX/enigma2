@@ -19,8 +19,8 @@ class ActionMap:
 					unknown.remove(action)
 					break
 		# if unknown:
-		#	print("")
-		#	print("[ActionMap] Keymap(s) '%s' -> Undefined action(s) '%s'." % (", ".join(contexts), ", ".join(unknown)))
+		# 	print("")
+		# 	print("[ActionMap] Keymap(s) '%s' -> Undefined action(s) '%s'." % (", ".join(contexts), ", ".join(unknown)))
 
 	def setEnabled(self, enabled):
 		self.enabled = enabled
@@ -91,7 +91,7 @@ class HelpableActionMap(ActionMap):
 	# ActionMapconstructor,	the collected helpstrings (with correct
 	# context, action) is added to the screen's "helpList", which will
 	# be picked up by the "HelpableScreen".
-	######### do not change this code that has been modified for python 3 use!#########
+	# do not change this code that has been modified for python 3 use!
 	def __init__(self, parent, contexts, actions=None, prio=0, description=None):
 		def exists(record):
 			for context in parent.helpList:
