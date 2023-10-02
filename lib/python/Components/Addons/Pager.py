@@ -13,7 +13,7 @@ from Tools.LoadPixmap import LoadPixmap
 class Pager(GUIAddon):
 	def __init__(self):
 		GUIAddon.__init__(self)
-		self.l = eListboxPythonMultiContent()
+		self.l = eListboxPythonMultiContent()  # noqa: E741
 		self.l.setBuildFunc(self.buildEntry)
 		self.l.setItemHeight(25)  # 25 is the height of the default images. For other images set the height in the skin.
 		self.l.setItemWidth(25)  # 25 is the width of the default images. For other images set the width in the skin.
@@ -60,18 +60,20 @@ class Pager(GUIAddon):
 			for x in pages:
 				if self.picDotPage and self.picDotCurPage:
 					if self.orientation == eListbox.orHorizontal:
-						res.append(MultiContentEntryPixmapAlphaBlend(
-									pos=(xPos, 0),
-									size=(pixd_width, pixd_height),
-									png=self.picDotCurPage if x == currentPage else self.picDotPage,
-									backcolor=None, backcolor_sel=None, flags=BT_ALIGN_CENTER))
+						res.append(
+							MultiContentEntryPixmapAlphaBlend(
+								pos=(xPos, 0),
+								size=(pixd_width, pixd_height),
+								png=self.picDotCurPage if x == currentPage else self.picDotPage,
+								backcolor=None, backcolor_sel=None, flags=BT_ALIGN_CENTER))
 						xPos += pixd_width + self.spacing
 					else:
-						res.append(MultiContentEntryPixmapAlphaBlend(
-									pos=(0, yPos),
-									size=(pixd_width, pixd_height),
-									png=self.picDotCurPage if x == currentPage else self.picDotPage,
-									backcolor=None, backcolor_sel=None, flags=BT_ALIGN_CENTER | BT_VALIGN_CENTER))
+						res.append(
+							MultiContentEntryPixmapAlphaBlend(
+								pos=(0, yPos),
+								size=(pixd_width, pixd_height),
+								png=self.picDotCurPage if x == currentPage else self.picDotPage,
+								backcolor=None, backcolor_sel=None, flags=BT_ALIGN_CENTER | BT_VALIGN_CENTER))
 						yPos += pixd_height + self.spacing
 
 		return res
