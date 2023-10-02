@@ -76,17 +76,17 @@ class VAudioInfo(Poll, Converter, object):
 			"17_vorbis": ("vorbis",),
 			"18_opus": ("opus",),
 			"19_amr": ("amr",),
-			}
+		}
 		self.codec_info = {
 			"dolbytruehd": ("51", "20", "71"),
 			"dolbydigitalplus": ("51", "20", "71"),
 			"dolbydigital": ("51", "20", "71"),
 			"wma": ("8", "9"),
-			}
+		}
 		self.type, self.interesting_events = {
 			"AudioIcon": (self.GET_AUDIO_ICON, (iPlayableService.evUpdatedInfo,)),
 			"AudioCodec": (self.GET_AUDIO_CODEC, (iPlayableService.evUpdatedInfo,)),
-			}[type]
+		}[type]
 
 	def getAudio(self):
 		service = self.source.service
@@ -109,7 +109,7 @@ class VAudioInfo(Poll, Converter, object):
 		return languages
 
 	def getAudioCodec(self, info):
-		description_str = _("unknown")
+		description_str = _("N/A")
 		if self.getAudio():
 			languages = self.getLanguage()
 			description = StdAudioDesc(self.audio_info.getDescription()) or ""
