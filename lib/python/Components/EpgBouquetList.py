@@ -189,28 +189,28 @@ class EPGBouquetList(GUIComponent):
 		if self.graphic:
 			if borderTopPix is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(left, r1.top()),
-						size=(r1.width(), self.borderWidth),
-						png=borderTopPix,
-						flags=BT_SCALE))
+					pos=(left, r1.top()),
+					size=(r1.width(), self.borderWidth),
+					png=borderTopPix,
+					flags=BT_SCALE))
 			if borderBottomPix is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(left, r1.height() - self.borderWidth),
-						size=(r1.width(), self.borderWidth),
-						png=borderBottomPix,
-						flags=BT_SCALE))
+					pos=(left, r1.height() - self.borderWidth),
+					size=(r1.width(), self.borderWidth),
+					png=borderBottomPix,
+					flags=BT_SCALE))
 			if borderLeftPix is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(left, r1.top()),
-						size=(self.borderWidth, r1.height()),
-						png=borderLeftPix,
-						flags=BT_SCALE))
+					pos=(left, r1.top()),
+					size=(self.borderWidth, r1.height()),
+					png=borderLeftPix,
+					flags=BT_SCALE))
 			if borderRightPix is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(r1.width() - self.borderWidth, left),
-						size=(self.borderWidth, r1.height()),
-						png=borderRightPix,
-						flags=BT_SCALE))
+					pos=(r1.width() - self.borderWidth, left),
+					size=(self.borderWidth, r1.height()),
+					png=borderRightPix,
+					flags=BT_SCALE))
 
 		return res
 
