@@ -105,7 +105,7 @@ class RunningText(Renderer):
 
 		def setWrapFlag(attrib, value):
 			if (attrib.lower() == "wrap" and value == "0") or \
-			   (attrib.lower() == "nowrap" and value != "0"):
+				(attrib.lower() == "nowrap" and value != "0"):
 				self.txtflags &= ~RT_WRAP
 			else:
 				self.txtflags |= RT_WRAP
