@@ -421,19 +421,19 @@ def InitLcd():
 		elif can_lcdmodechecking and getBoxType() in ('gbquad4k', 'gbue4k'):
 			#  (0:normal, 1:video0, 2:fb, 3:vide0+fb, 4:video1, 5:vide0+video1, 6:video1+fb, 7:video0+video1+fb)
 			config.lcd.minitvmode = ConfigSelection(default="0", choices=[
-					("0", _("normal")),
-					("1", _("MiniTV") + _(" - video0")),
-					("3", _("MiniTV with OSD") + _(" - video0")),
-					("2", _("OSD")),
-					("4", _("MiniTV") + _(" - video1")),
-					("6", _("MiniTV with OSD") + _(" - video1")),
-					("5", _("MiniTV") + _(" - video0+video1")),
-					("7", _("MiniTV with OSD") + _(" - video0+video1"))])
+				("0", _("normal")),
+				("1", _("MiniTV") + _(" - video0")),
+				("3", _("MiniTV with OSD") + _(" - video0")),
+				("2", _("OSD")),
+				("4", _("MiniTV") + _(" - video1")),
+				("6", _("MiniTV with OSD") + _(" - video1")),
+				("5", _("MiniTV") + _(" - video0+video1")),
+				("7", _("MiniTV with OSD") + _(" - video0+video1"))])
 			config.lcd.minitvmode.addNotifier(setLCDminitvmode)
 			config.lcd.minitvpipmode = ConfigSelection(default="0", choices=[
-					("0", _("off")),
-					("4", _("PIP")),
-					("6", _("PIP with OSD"))])
+				("0", _("off")),
+				("4", _("PIP")),
+				("6", _("PIP with OSD"))])
 			config.lcd.minitvpipmode.addNotifier(setLCDminitvpipmode)
 			config.lcd.minitvfps = ConfigSlider(default=30, limits=(0, 30))
 			config.lcd.minitvfps.addNotifier(setLCDminitvfps)
@@ -459,10 +459,10 @@ def InitLcd():
 			def initial_scroll_delay(el):
 				open(SystemInfo["VFD_initial_scroll_delay"], "w").write(el.value)
 			choicelist = [
-			("10000", "10 " + _("seconds")),
-			("20000", "20 " + _("seconds")),
-			("30000", "30 " + _("seconds")),
-			("0", _("no delay"))]
+				("10000", "10 " + _("seconds")),
+				("20000", "20 " + _("seconds")),
+				("30000", "30 " + _("seconds")),
+				("0", _("no delay"))]
 			config.usage.vfd_initial_scroll_delay = ConfigSelection(default="1000", choices=choicelist)
 			config.usage.vfd_initial_scroll_delay.addNotifier(initial_scroll_delay, immediate_feedback=False)
 
@@ -470,10 +470,10 @@ def InitLcd():
 			def final_scroll_delay(el):
 				open(SystemInfo["VFD_final_scroll_delay"], "w").write(el.value)
 			choicelist = [
-			("10000", "10 " + _("seconds")),
-			("20000", "20 " + _("seconds")),
-			("30000", "30 " + _("seconds")),
-			("0", _("no delay"))]
+				("10000", "10 " + _("seconds")),
+				("20000", "20 " + _("seconds")),
+				("30000", "30 " + _("seconds")),
+				("0", _("no delay"))]
 			config.usage.vfd_final_scroll_delay = ConfigSelection(default="1000", choices=choicelist)
 			config.usage.vfd_final_scroll_delay.addNotifier(final_scroll_delay, immediate_feedback=False)
 
