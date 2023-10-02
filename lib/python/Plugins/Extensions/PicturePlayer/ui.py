@@ -1,6 +1,7 @@
 from enigma import ePicLoad, eTimer, getDesktop, gMainDC, eSize
 
 from Components.ActionMap import ActionMap
+from Components.AVSwitch import AVSwitch
 from Components.config import config, ConfigSubsection, ConfigInteger, ConfigSelection, ConfigText, ConfigYesNo, getConfigListEntry
 from Components.ConfigList import ConfigListScreen
 from Components.FileList import FileList
