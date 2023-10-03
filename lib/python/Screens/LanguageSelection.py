@@ -67,27 +67,28 @@ class LanguageSelection(Screen):
 			"blue": self.delLang,
 			"menu": self.installLanguage,
 		}, -1)
+		self.pos = 0
 
 	def updateCache(self):
 #		print("[LanguageSelection] updateCache")
 		self["languages"].setList([('update cache', _('Updating cache, please wait...'), None)])
-		self.updateTimer = eTimer()
-		self.updateTimer.callback.append(self.startupdateCache)
-		self.updateTimer.start(100)
-
-	def startupdateCache(self):
-		self.updateTimer.stop()
 		language.updateLanguageCache()
 		self["languages"].setList(self.list)
 		self.selectActiveLanguage()
 
 	def selectActiveLanguage(self):
 		activeLanguage = language.getActiveLanguage()
-		pos = 0
 		for pos, x in enumerate(self.list):
 			if x[0] == activeLanguage:
 				self["languages"].index = pos
+				self.pos = pos
 				break
+		self.timer = eTimer()
+		self.timer.callback.append(self.updateSelection)
+		self.timer.start(5)
+
+	def updateSelection(self):
+		self["languages"].selectionChanged(self.pos)
 
 	def save(self):
 		self.run()
