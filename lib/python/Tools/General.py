@@ -1,5 +1,5 @@
 from enigma import iServiceInformation, eServiceReference, eServiceCenter
-	
+
 
 def isIPTV(service):
 	path = service and service.getPath()

@@ -912,7 +912,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 	def queueChange(self):
 		self._waitForEventInfoTimer.stop()
 		self._waitForEventInfoTimer.start(50, True)
-		
+
 	def avChange(self):
 		service = self.session.nav.getCurrentService()
 		ref_p = self.session.nav.getCurrentlyPlayingServiceReference()
@@ -936,9 +936,9 @@ class InfoBarShowHide(InfoBarScreenSaver):
 					n = audio and audio.getNumberOfTracks() or 0
 					if audio_pid and audio_pid != -1 and playinga_idx != audio_pid:
 						audio.selectTrack(audio_pid)
-					
+
 					self.enableSubtitle(subs_pid)
-					
+
 				self._waitForEventInfoTimer.stop()
 			except Exception as e:
 				self._waitForEventInfoTimer.stop()
