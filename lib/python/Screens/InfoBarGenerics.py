@@ -913,7 +913,6 @@ class InfoBarShowHide(InfoBarScreenSaver):
 		self._waitForEventInfoTimer.stop()
 		self._waitForEventInfoTimer.start(50, True)
 		
-		
 	def avChange(self):
 		service = self.session.nav.getCurrentService()
 		ref_p = self.session.nav.getCurrentlyPlayingServiceReference()
