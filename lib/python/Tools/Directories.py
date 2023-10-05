@@ -283,7 +283,7 @@ def fileWriteLine(filename, line, *args, **kwargs):
 		with open(filename, "w") as fd:
 			fd.write(str(line))
 		return 1
-	except (IOError, OSError) as err:
+	except (IOError, OSError):
 		print_exc()
 		return 0
 
@@ -307,7 +307,7 @@ def fileWriteLines(filename, lines, *args, **kwargs):
 				lines = "\n".join(lines)
 			fd.write(lines)
 		return 1
-	except (IOError, OSError) as err:
+	except (IOError, OSError):
 		print_exc()
 		return 0
 
