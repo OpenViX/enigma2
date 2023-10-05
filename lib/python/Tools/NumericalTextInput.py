@@ -1,7 +1,7 @@
 from os import environ
 from enigma import eTimer
-
-from Components.Language import language		# DO NOT REMOVE THIS IMPORT - NEEDED TO RESOLVE path/language/locales
+# DO NOT REMOVE import language - NEEDED TO RESOLVE path/language/locales
+from Components.Language import language  # noqa: F401
 
 MAP_SEARCH_UPCASE = "SearchUpper"  # NOTE: Legacy interface for previous and deprecated versions of NumericalTextInput.
 MAP_SEARCH = "SearchLower"
