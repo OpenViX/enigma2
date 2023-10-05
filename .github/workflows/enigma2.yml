@@ -91,7 +91,7 @@ jobs:
         echo "installing libsigc++-3"
         pushd .
         cd /tmp
-        git clone --depth 1 https://github.com/dbus-cxx/libsigc--3.0.git
+        git clone --depth 1 https://github.com/TwolDE2/libsigc--3.0.git
         cd libsigc--3.0
         autoreconf -i
         ./configure
