@@ -37,7 +37,7 @@ class InfoBarBase:
 			x(infobar)
 
 	def __init__(self, steal_current_service=False):
-		self.av_config = {} #add this here so to prevent crashes in plugins that doesnt inherit InfobarShowHide
+		self.av_config = {}  # add this here so to prevent crashes in plugins that doesnt inherit InfobarShowHide
 		if steal_current_service:
 			ServiceEventTracker.setActiveInfoBar(self, None, None)
 		else:
