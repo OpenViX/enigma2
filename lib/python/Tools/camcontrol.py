@@ -32,7 +32,7 @@ class CamControl:
 
 	def current(self):
 		try:
-			l = readlink(self.link)
+			l = readlink(self.link)  # noqa: E741
 			prefix = self.name + '.'
 			return path.split(l)[1].split(prefix, 2)[1]
 		except:
