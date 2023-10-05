@@ -1,9 +1,8 @@
-from __future__ import print_function
 from os import path as ospath
-from datasource import datasource
+from . import datasource
 from xml.dom import minidom
 from xml.dom.minidom import Document
-from input import inputText
+from . import input
 
 
 class satxml(datasource):
@@ -26,7 +25,7 @@ class satxml(datasource):
 
 	def setFilename(self):
 		print("Please give a filename <satellites.xml>:")
-		filename = inputText()
+		filename = input.inputText()
 		if filename == "":
 			self.filename = "satellites.xml"
 		else:

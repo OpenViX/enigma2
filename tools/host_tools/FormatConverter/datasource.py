@@ -1,5 +1,5 @@
 from __future__ import print_function
-from input import inputChoices
+from . import input
 
 
 class datasource:
@@ -66,7 +66,7 @@ class genericdatasource(datasource):
 	def copymerge(self, action="copy"):
 		choice = -1
 		while choice is not None:
-			choice = inputChoices(["select source", "select destination", "copy now!"])
+			choice = input.inputChoices(["select source", "select destination", "copy now!"])
 			if choice == 0:
 				print("\nselect source:")
 				self.source = self.selectDatasource()
@@ -106,7 +106,7 @@ class genericdatasource(datasource):
 			if source != self:
 				list.append(source.getName() + (" (%d sats)" % len(source.transponderlist.keys())))
 				sources.append(source)
-		choice = inputChoices(list)
+		choice = input.inputChoices(list)
 		if choice is None:
 			return None
 		return sources[choice]
