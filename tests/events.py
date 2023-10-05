@@ -1,6 +1,5 @@
-from __future__ import print_function
 import time
-import tests
+from . import tests
 
 recorded_events = []
 

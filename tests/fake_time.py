@@ -1,4 +1,3 @@
-from __future__ import print_function
 import time
 
 real_time = None
@@ -12,7 +11,7 @@ def setRealtime():
 
 def setIdealtime():
 	global real_time
-	real_time = lambda: 0
+	real_time = lambda: 0  # noqa: E731
 
 
 def setTime(now):

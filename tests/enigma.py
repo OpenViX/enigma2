@@ -1,4 +1,6 @@
-from __future__ import print_function
+import time
+from . import events
+
 # fake-enigma
 
 
@@ -16,11 +18,7 @@ class slot:
 
 timers = set()
 
-import time
-
-from events import eventfnc
-
-##################### ENIGMA BASE
+#  ENIGMA BASE
 
 
 class eTimer:
@@ -86,7 +84,7 @@ def run(duration=1000):
 		runIteration()
 
 
-##################### ENIGMA GUI
+# ENIGMA GUI
 
 eSize = None
 ePoint = None
@@ -129,15 +127,15 @@ class pNavigation:
 		self.m_event = slot()
 		self.m_record_event = slot()
 
-	@eventfnc
+	@events.eventfnc
 	def recordService(self, service):
 		return iRecordableService(service)
 
-	@eventfnc
+	@events.eventfnc
 	def stopRecordService(self, service):
 		service.stop()
 
-	@eventfnc
+	@events.eventfnc
 	def playService(self, service):
 		return None
 
@@ -176,15 +174,15 @@ class iRecordableService:
 	def __init__(self, ref):
 		self.ref = ref
 
-	@eventfnc
+	@events.eventfnc
 	def prepare(self, filename, begin, end, event_id):
 		return 0
 
-	@eventfnc
+	@events.eventfnc
 	def start(self):
 		return 0
 
-	@eventfnc
+	@events.eventfnc
 	def stop(self):
 		return 0
 
@@ -305,10 +303,10 @@ class eServiceCenter:
 
 eServiceCenter()
 
-##################### ENIGMA CHROOT
+# ENIGMA CHROOT
 
 print("import directories")
-import Tools.Directories
+import Tools.Directories  # noqa: E402
 print("done")
 
 chroot = "."
@@ -319,19 +317,16 @@ for (x, (y, z)) in Tools.Directories.defaultPaths.items():
 Tools.Directories.defaultPaths[Tools.Directories.SCOPE_SKIN] = ("../data/", Tools.Directories.PATH_DONTCREATE)
 Tools.Directories.defaultPaths[Tools.Directories.SCOPE_CONFIG] = ("/etc/enigma2/", Tools.Directories.PATH_DONTCREATE)
 
-##################### ENIGMA CONFIG
+# ENIGMA CONFIG
 
 print("import config")
-import Components.config
+import Components.config  # noqa: E402
 print("done")
 
-my_config = [
-"config.skin.primary_skin=None\n"
-]
-
+my_config = ["config.skin.primary_skin=None\n"]
 Components.config.config.unpickle(my_config)
 
-##################### ENIGMA ACTIONS
+# ENIGMA ACTIONS
 
 
 class eActionMap:
@@ -339,24 +334,24 @@ class eActionMap:
 		pass
 
 
-##################### ENIGMA STARTUP:
+# ENIGMA STARTUP:
 
 def init_nav():
 	print("init nav")
-	import Navigation
-	import NavigationInstance
+	import Navigation  # noqa: E402
+	import NavigationInstance  # noqa: E402
 	NavigationInstance.instance = Navigation.Navigation()
 
 
 def init_record_config():
 	print("init recording")
-	import Components.RecordingConfig
+	import Components.RecordingConfig  # noqa: E402
 	Components.RecordingConfig.InitRecordingConfig()
 
 
 def init_parental_control():
 	print("init parental")
-	from Components.ParentalControl import InitParentalControl
+	from Components.ParentalControl import InitParentalControl  # noqa: E402
 	InitParentalControl()
 
 
@@ -367,26 +362,26 @@ def init_all():
 	init_record_config()
 	init_parental_control()
 
-	import Components.InputDevice
+	import Components.InputDevice  # noqa: E402
 	Components.InputDevice.InitInputDevices()
 
-	import Components.AVSwitch
+	import Components.AVSwitch  # noqa: E402
 	Components.AVSwitch.InitAVSwitch()
 
-	import Components.UsageConfig
+	import Components.UsageConfig  # noqa: E402
 	Components.UsageConfig.InitUsageConfig()
 
-	import Components.Network
+	import Components.Network  # noqa: E402
 	Components.Network.InitNetwork()
 
-	import Components.Lcd
+	import Components.Lcd  # noqa: E402
 	Components.Lcd.InitLcd()
 
-	import Components.SetupDevices
+	import Components.SetupDevices  # noqa: E402
 	Components.SetupDevices.InitSetupDevices()
 
-	import Components.RFmod
+	import Components.RFmod  # noqa: E402
 	Components.RFmod.InitRFmod()
 
-	import Screens.Ci
+	import Screens.Ci  # noqa: E402
 	Screens.Ci.InitCiConfig()
