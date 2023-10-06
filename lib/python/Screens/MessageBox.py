@@ -224,12 +224,12 @@ class MessageBox(Screen, HelpableScreen):
 		self.instance.move(ePoint((getDesktop(0).size().width() - wsizex) // 2, (getDesktop(0).size().height() - wsizey) // 2))
 
 	def cancel(self):
-		for l in self["list"].list:
-			# print "[MessageBox] DEBUG: (cancel) '%s' -> '%s'" % (str(l[0]), str(l[1]))
+		for x in self["list"].list:
+			# print "[MessageBox] DEBUG: (cancel) '%s' -> '%s'" % (str(x[0]), str(x[1]))
 			# Should we be looking at the second element to get the boolean value rather than the word?
-			if l[0].lower() == _('no') or l[0].lower() == _('false'):
-				if len(l) > 2:
-					l[2](None)
+			if x[0].lower() == _('no') or x[0].lower() == _('false'):
+				if len(x) > 2:
+					x[2](None)
 				break
 		# Don't close again if the MessageBox was closed in the loop
 		if hasattr(self, "execing"):
@@ -256,12 +256,12 @@ class MessageBox(Screen, HelpableScreen):
 
 	def alwaysOK(self):
 		if self["list"].list:
-			for l in self["list"].list:
-				# print "[MessageBox] DEBUG: (cancel) '%s' -> '%s'" % (str(l[0]), str(l[1]))
+			for x in self["list"].list:
+				# print "[MessageBox] DEBUG: (cancel) '%s' -> '%s'" % (str(x[0]), str(x[1]))
 				# Should we be looking at the second element to get the boolean value rather than the word?
-				if l[0].lower() == _('yes') or l[0].lower() == _('true'):
-					if len(l) > 2:
-						self.goEntry(l)
+				if x[0].lower() == _('yes') or x[0].lower() == _('true'):
+					if len(x) > 2:
+						self.goEntry(x)
 					else:
 						self.close(True)
 					break
