@@ -269,7 +269,6 @@ class PowerTimerEntry(TimerEntry):
 				return True
 
 		elif next_state == self.StateEnded:
-			old_end = self.end
 			NavigationInstance.instance.PowerTimer.saveTimer()
 			if self.afterEvent == AFTEREVENT.STANDBY:
 				if not Screens.Standby.inStandby:  # not already in standby
