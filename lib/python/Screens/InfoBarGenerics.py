@@ -1158,7 +1158,7 @@ class InfoBarNumberZap:
 				bouquet = eServiceReference(bqrootstr)
 				bouquetlist = serviceHandler.list(bouquet)
 				service = None
-				if not bouquetlist is None:
+				if bouquetlist is not None:
 					while True:
 						bouquet = bouquetlist.getNext()
 						if not bouquet.valid():
@@ -1167,7 +1167,7 @@ class InfoBarNumberZap:
 							self.servicelist.clearPath()
 							self.servicelist.setRoot(bouquet)
 							servicelist = serviceHandler.list(bouquet)
-							if not servicelist is None:
+							if servicelist is not None:
 								serviceIterator = servicelist.getNext()
 								while serviceIterator.valid():
 									service, bouquet2 = self.searchNumber(1)
@@ -1250,7 +1250,7 @@ class InfoBarChannelSelection:
 	channelChange actions which open the channelSelection dialog """
 
 	def __init__(self):
-		#instantiate forever
+		# instantiate forever
 		self.servicelist = self.session.instantiateDialog(ChannelSelection)
 		self.servicelist2 = self.session.instantiateDialog(PiPZapSelection)
 		self.tscallback = None
@@ -1752,7 +1752,7 @@ class InfoBarEPG:
 	def getBouquetServices(self, bouquet):
 		services = []
 		servicelist = eServiceCenter.getInstance().list(bouquet)
-		if not servicelist is None:
+		if servicelist is not None:
 			while True:
 				service = servicelist.getNext()
 				if not service.valid():  # check if end of list
@@ -1808,7 +1808,7 @@ class InfoBarEPG:
 			if action:
 				action()
 			else:
-				print("[InfoBarGenerics][UserDefinedButtons] Missing action method %s" % actionName)
+				print("[InfoBarGenerics][UserDefinedButtons] Missing action method %s" % str(args[1]))
 		if len(args) == 6 and args[0] == "open":
 			# open another EPG screen
 			self.session.openWithCallback(self.epgClosed, args[1], self.zapToService,
@@ -2970,12 +2970,12 @@ class InfoBarPlugins:
 		return name
 
 	def getPluginList(self):
-		l = []
+		x = []
 		for p in plugins.getPlugins(where=PluginDescriptor.WHERE_EXTENSIONSMENU):
 			args = inspect.getfullargspec(p.fnc)[0]
 			if len(args) == 1 or len(args) == 2 and isinstance(self, InfoBarChannelSelection):
-				l.append(((boundFunction(self.getPluginName, p.name), boundFunction(self.runPlugin, p), lambda: True), None, p.name))
-		l.sort(key=lambda e: e[2])  # sort by name
+				x.append(((boundFunction(self.getPluginName, p.name), boundFunction(self.runPlugin, p), lambda: True), None, p.name))
+		x.sort(key=lambda e: e[2])  # sort by name
 		return l
 
 	def runPlugin(self, plugin):
