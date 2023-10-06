@@ -372,13 +372,13 @@ class LogManagerFb(Screen):
 
 		self["actions"] = ActionMap(["ChannelSelectBaseActions", "WizardActions", "DirectionActions", "MenuActions", "NumberActions", "ColorActions"],
 			{
-			 "ok": self.ok,
-			 "back": self.exit,
-			 "up": self.goUp,
-			 "down": self.goDown,
-			 "left": self.goLeft,
-			 "right": self.goRight,
-			 "0": self.doRefresh,
+				"ok": self.ok,
+				"back": self.exit,
+				"up": self.goUp,
+				"down": self.goDown,
+				"left": self.goLeft,
+				"right": self.goRight,
+				"0": self.doRefresh,
 			 }, -1)
 		self.onLayoutFinish.append(self.mainlist)
 
