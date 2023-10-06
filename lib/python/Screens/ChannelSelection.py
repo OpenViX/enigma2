@@ -1275,10 +1275,10 @@ class ChannelSelectionEdit:
 		self.session.openWithCallback(self.exitContext, ChannelContextMenu, self)
 
 	def exitContext(self, close=False):
-		l = self["list"]
-		l.setFontsize()
-		l.setItemsPerPage()
-		l.setMode('MODE_TV')
+		x = self["list"]
+		x.setFontsize()
+		x.setItemsPerPage()
+		x.setMode('MODE_TV')
 
 		# l.setMode('MODE_TV') automatically sets "hide number marker" to
 		# the config.usage.hide_number_markers.value so when we are in "movemode"
