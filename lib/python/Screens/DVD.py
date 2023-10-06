@@ -203,7 +203,7 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 
 		self["DVDPlayerPlaybackActions"] = HelpableActionMap(self, "DVDPlayerActions",
 			{
-				#PLAYER ACTIONS
+				# PLAYER ACTIONS
 				"dvdMenu": (self.enterDVDMenu, _("show DVD main menu")),
 				"toggleInfo": (self.toggleInfo, _("toggle time, chapter, audio, subtitle info")),
 				"nextChapter": (self.nextChapter, _("forward to the next chapter")),
