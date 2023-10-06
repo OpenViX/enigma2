@@ -2,7 +2,7 @@ from skin import findSkinScreen, parameters, menus, menuicons
 
 from Components.ActionMap import HelpableNumberActionMap, HelpableActionMap
 from Components.config import config, ConfigDictionarySet, configfile, NoSave
-from Components.NimManager import nimmanager
+from Components.NimManager import nimmanager  # noqa: F401  # used in menu.xml conditionals
 from Components.Pixmap import Pixmap
 from Components.PluginComponent import plugins
 from Components.Sources.List import List
@@ -105,7 +105,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			a = boundFunction(self.session.openWithCallback, self.menuClosedWithConfigFlush, Menu, node)
 		else:
 			a = boundFunction(self.session.openWithCallback, self.menuClosed, Menu, node)
-		#TODO add check if !empty(node.childNodes)
+		# TODO add check if !empty(node.childNodes)
 		destList.append((menu_text, a, key, weight, description, menupng))
 
 	def menuClosedWithConfigFlush(self, *res):
@@ -289,24 +289,24 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 
 		if self.menuID is not None:
 			# plugins
-			for l, description in plugins.getPluginsForMenuWithDescription(self.menuID):
+			for plugin, description in plugins.getPluginsForMenuWithDescription(self.menuID):
 				# check if a plugin overrides an existing menu
-				plugin_menuid = l[2]
+				plugin_menuid = plugin[2]
 				for x in self.list:
 					if x[2] == plugin_menuid:
 						self.list.remove(x)
 						break
-				menupng = MenuEntryPixmap(l[2], self.png_cache)
-				self.list.append((l[0], boundFunction(l[1], self.session, close=self.close), l[2], l[3] or 50, description, menupng))
+				menupng = MenuEntryPixmap(plugin[2], self.png_cache)
+				self.list.append((plugin[0], boundFunction(plugin[1], self.session, close=self.close), plugin[2], plugin[3] or 50, description, menupng))
 
 		if "user" in config.usage.menu_sort_mode.value and self.menuID == "mainmenu":
 			plugin_list = []
 			id_list = []
-			for l in plugins.getPlugins([PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_EVENTINFO]):
-				l.id = (l.name.lower()).replace(' ', '_')
-				if l.id not in id_list:
-					id_list.append(l.id)
-					plugin_list.append((l.name, boundFunction(l.fnc, self.session), l.id, 200))
+			for plugin in plugins.getPlugins([PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_EVENTINFO]):
+				plugin.id = (plugin.name.lower()).replace(' ', '_')
+				if plugin.id not in id_list:
+					id_list.append(plugin.id)
+					plugin_list.append((plugin.name, boundFunction(plugin.fnc, self.session), plugin.id, 200))
 
 		if self.menuID is not None and "user" in config.usage.menu_sort_mode.value:
 			self.sub_menu_sort = NoSave(ConfigDictionarySet())
@@ -507,7 +507,7 @@ class MenuSort(Menu):
 
 
 class MainMenu(Menu):
-	#add file load functions for the xml-file
+	# add file load functions for the xml-file
 
 	def __init__(self, *x):
 		Menu.__init__(self, *x)
