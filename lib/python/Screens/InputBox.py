@@ -4,7 +4,6 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Components.ActionMap import HelpableNumberActionMap
-from Components.config import config
 from Components.Input import Input
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
