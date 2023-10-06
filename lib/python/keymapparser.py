@@ -42,7 +42,7 @@ def parseKeys(context, filename, actionmap, device, keys):
 		id = get_attr("id")
 		flags = get_attr("flags")
 
-		flag_ascii_to_id = lambda x: {'m': 1, 'b': 2, 'r': 4, 'l': 8}[x]
+		flag_ascii_to_id = lambda x: {'m': 1, 'b': 2, 'r': 4, 'l': 8}[x]  # noqa: E731
 
 		flags = sum(map(flag_ascii_to_id, flags))
 
@@ -51,7 +51,7 @@ def parseKeys(context, filename, actionmap, device, keys):
 		assert flags, "[keymapparser] %s: must specify at least one flag in context %s, id '%s'" % (filename, context, id)
 
 		keyid = getKeyId(id)
-#				print("[keymapparser] " + context + "::" + mapto + " -> " + device + "." + hex(keyid))
+		# print("[keymapparser] " + context + "::" + mapto + " -> " + device + "." + hex(keyid))
 		actionmap.bindKey(filename, device, keyid, flags, context, mapto)
 		addKeyBinding(filename, keyid, context, mapto, flags)
 
