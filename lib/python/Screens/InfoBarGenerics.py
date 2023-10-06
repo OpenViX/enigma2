@@ -3015,6 +3015,7 @@ class InfoBarJobman:
 
 # depends on InfoBarExtensions
 
+
 from Screens.PiPSetup import PiPSetup  # noqa: E402
 
 
