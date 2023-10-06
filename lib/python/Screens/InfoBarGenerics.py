@@ -933,14 +933,13 @@ class InfoBarShowHide(InfoBarScreenSaver):
 						audio_pid = pickle_loads(av_val.encode())
 					audio = service and service.audioTracks()
 					playinga_idx = audio and audio.getCurrentTrack()
-					n = audio and audio.getNumberOfTracks() or 0
 					if audio_pid and audio_pid != -1 and playinga_idx != audio_pid:
 						audio.selectTrack(audio_pid)
 
 					self.enableSubtitle(subs_pid)
 
 				self._waitForEventInfoTimer.stop()
-			except Exception as e:
+			except:
 				self._waitForEventInfoTimer.stop()
 
 
