@@ -8,14 +8,11 @@ from Components.Language_cache import LANG_TEXT
 from Components.Pixmap import Pixmap
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
-from Components.Pixmap import Pixmap
-from Screens.InfoBar import InfoBar
 from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
 from Screens.Standby import TryQuitMainloop
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
-import gettext
 
 inWizzard = False
 
@@ -69,7 +66,7 @@ class LanguageSelection(Screen):
 		}, -1)
 
 	def updateCache(self):
-#		print("[LanguageSelection] updateCache")
+		# print("[LanguageSelection] updateCache")
 		self["languages"].setList([('update cache', _('Updating cache, please wait...'), None)])
 		self.updateTimer = eTimer()
 		self.updateTimer.callback.append(self.startupdateCache)
@@ -92,10 +89,10 @@ class LanguageSelection(Screen):
 	def save(self):
 		self.run()
 		global inWizzard
-#		print("[LanguageSelection] save function inWizzard is %s", %inWizzard)
+		# print("[LanguageSelection] save function inWizzard is %s", %inWizzard)
 		if inWizzard:
 			inWizzard = False
-			#self.session.openWithCallback(self.deletelanguagesCB, MessageBox, _("Do you want to delete all other languages?"), default = False)
+			# self.session.openWithCallback(self.deletelanguagesCB, MessageBox, _("Do you want to delete all other languages?"), default = False)
 			if self.oldActiveLanguage != config.osd.language.value:
 				self.session.open(TryQuitMainloop, 3)
 			self.close()
@@ -118,11 +115,11 @@ class LanguageSelection(Screen):
 		self.close()
 
 	def delLang(self):
-#		print("[LanguageSelection] deleting language")
+		# print("[LanguageSelection] deleting language")
 		curlang = config.osd.language.value
 		lang = curlang
 		languageList = language.getLanguageListSelection()
-#		print("[LanguageSelection] deleting language  lang = %s, languagelist = %s", %(lang, languageList))
+		# print("[LanguageSelection] deleting language  lang = %s, languagelist = %s", %(lang, languageList))
 		for t in languageList:
 			if curlang == t[0]:
 				lang = t[1]
@@ -139,7 +136,7 @@ class LanguageSelection(Screen):
 			curlang = config.osd.language.value
 			lang = curlang
 			languageList = language.getLanguageListSelection()
-	#		print("[LanguageSelection] deleting language  lang = %s, languagelist = %s", %(lang, languageList))
+			# print("[LanguageSelection] deleting language  lang = %s, languagelist = %s", %(lang, languageList))
 			for t in languageList:
 				if curlang == t[0]:
 					lang = t[1]
@@ -154,10 +151,10 @@ class LanguageSelection(Screen):
 			language.activateLanguage(self.oldActiveLanguage)
 			self.updateList()
 			self.selectActiveLanguage()
-#		self.close()
+			# self.close()
 
 	def run(self, justlocal=False):
-#		print("[LanguageSelection] updating language...")
+		# print("[LanguageSelection] updating language...")
 		lang = self["languages"].getCurrent()[0]
 
 		if lang == 'update cache':
