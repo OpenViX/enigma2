@@ -518,15 +518,15 @@ def MovieLocationBox(session, text, dir, minFree=None):
 class TimeshiftLocationBox(LocationBox):
 	def __init__(self, session):
 		LocationBox.__init__(
-				self,
-				session,
-				text=_("Where to save temporary timeshift recordings?"),
-				currDir=config.usage.timeshift_path.value,
-				bookmarks=config.usage.allowed_timeshift_paths,
-				autoAdd=True,
-				editDir=True,
-				inhibitDirs=defaultInhibitDirs,
-				minFree=1024  # the same requirement is hardcoded in servicedvb.cpp
+			self,
+			session,
+			text=_("Where to save temporary timeshift recordings?"),
+			currDir=config.usage.timeshift_path.value,
+			bookmarks=config.usage.allowed_timeshift_paths,
+			autoAdd=True,
+			editDir=True,
+			inhibitDirs=defaultInhibitDirs,
+			minFree=1024  # the same requirement is hardcoded in servicedvb.cpp
 		)
 		self.skinName = "LocationBox"
 
