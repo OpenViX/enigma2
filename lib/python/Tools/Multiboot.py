@@ -186,16 +186,7 @@ def GetImagelist(Recovery=None):
 				print("[multiboot] [GetImagelist] 2 slot = %s imagedir = %s" % (slot, imagedir))
 				Creator = open("%s/etc/issue" % imagedir).readlines()[-2].capitalize().strip()[:-6]
 				print("[multiboot] [GetImagelist] Creator = %s imagedir = %s" % (Creator, imagedir))
-				if Creator.startswith("Openvix"):
-					reader = boxbranding_reader(imagedir)
-					BuildType = reader.getImageType()
-					Build = reader.getImageBuild()
-					Creator = Creator.replace("-release", " rel")
-#					print("[multiboot] [GetImagelist]5 Slot = %s Creator = %s BuildType = %s Build = %s" % (slot, Creator, BuildType, Build))
-					Dev = BuildType != "release" and " %s" % reader.getImageDevBuild() or ""
-					date = VerDate(imagedir)
-					BuildVersion = "%s %s %s %s (%s)" % (Creator, BuildType[0:3], Build, Dev, date)
-				elif fileHas("/proc/cmdline", "kexec=1") and path.isfile(path.join(imagedir, "etc/vtiversion.info")):
+				if fileHas("/proc/cmdline", "kexec=1") and path.isfile(path.join(imagedir, "etc/vtiversion.info")):
 					Vti = open(path.join(imagedir, "etc/vtiversion.info")).read()
 					# print("[BootInfo]6 vti = ", Vti)
 					date = VerDate(imagedir)
@@ -310,92 +301,3 @@ def restoreSlots():
 		Console(binary=True).ePopen("umount %s" % tmp.dir)
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
-
-
-class boxbranding_reader:  # Many thanks to Huevos for creating this reader - well beyond my skill levels!
-	def __init__(self, OsPath):
-		if path.exists("%s/usr/lib64" % OsPath):
-			self.branding_path = "%s/usr/lib64/enigma2/python/" % OsPath
-		else:
-			self.branding_path = "%s/usr/lib/enigma2/python/" % OsPath
-		self.branding_file = "boxbranding.so"
-		self.tmp_path = "/tmp/"
-		self.helper_file = "helper.py"
-
-		self.output = {
-			"getMachineBuild": "",
-			"getMachineProcModel": "",
-			"getMachineBrand": "",
-			"getMachineName": "",
-			"getMachineMtdKernel": "",
-			"getMachineKernelFile": "",
-			"getMachineMtdRoot": "",
-			"getMachineRootFile": "",
-			"getMachineMKUBIFS": "",
-			"getMachineUBINIZE": "",
-			"getBoxType": "",
-			"getBrandOEM": "",
-			"getOEVersion": "",
-			"getDriverDate": "",
-			"getImageVersion": "",
-			"getImageBuild": "",
-			"getImageDistro": "",
-			"getImageFolder": "",
-			"getImageFileSystem": "",
-			"getImageDevBuild": "",
-			"getImageType": "",
-			"getMachineMake": "",
-			"getImageArch": "",
-			"getFeedsUrl": "",
-		}
-		self.createHelperFile()
-		self.copyBrandingFile()
-		self.readBrandingFile()
-		self.removeHelperFile()
-		self.removeBrandingFile()
-		self.addBrandingMethods()
-
-	def readBrandingFile(self):  # Reads boxbranding.so and updates self.output
-		output = eval(subprocess.check_output(["python", path.join(self.tmp_path, self.helper_file)]))
-		if output:
-			for att in list(self.output.keys()):
-				self.output[att] = output[att]
-
-	def addBrandingMethods(self):  # This creates reader.getBoxType(), reader.getImageDevBuild(), etc
-		loc = {}
-		for att in list(self.output.keys()):
-			exec("def %s(self): return self.output[\"%s\"]" % (att, att), None, loc)
-		for name, value in list(loc.items()):
-			setattr(boxbranding_reader, name, value)
-
-	def createHelperFile(self):
-		f = open(path.join(self.tmp_path, self.helper_file), "w+")
-		f.write(self.helperFileContent())
-		f.close()
-
-	def copyBrandingFile(self):
-		shutil.copy2(path.join(self.branding_path, self.branding_file), path.join(self.tmp_path, self.branding_file))
-
-	def removeHelperFile(self):
-		self.removeFile(path.join(self.tmp_path, self.helper_file))
-
-	def removeBrandingFile(self):
-		self.removeFile(path.join(self.tmp_path, self.branding_file))
-
-	def removeFile(self, toRemove):
-		if path.isfile(toRemove):
-			remove(toRemove)
-
-	def helperFileContent(self):
-		out = []
-		out.append("try:")
-		out.append("\timport boxbranding")
-		out.append("\toutput = {")
-		for att in list(self.output.keys()):
-			out.append("\t\t\"%s\": boxbranding.%s()," % (att, att))
-		out.append("\t}")
-		out.append("except Exception:")
-		out.append("\t\toutput = None")
-		out.append("print(output)")
-		out.append("")
-		return "\n".join(out)
