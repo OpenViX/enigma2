@@ -84,6 +84,23 @@ if grep -q 'config\.crash\.logtimeformat' @sysconfdir@/enigma2/settings; then
 	export ENIGMA_DEBUG_TIME=`grep "config\.crash\.logtimeformat" @sysconfdir@/enigma2/settings | sed -E "s/^.*=(.*)$/\1/" -`
 fi
 
+# Enable generation of core dumps
+debug_dir=$(sed -n 's/config.crash.debug_path=//p' @sysconfdir@/enigma2/settings)
+	[ -n "${debug_dir}" -a -d "${debug_dir}" ] || debug_dir=/home/root/logs/
+# It would be best to have this at system startup because this way we may not
+# catch core dumps that happen early to enigma2.
+# The kernel.core_pattern could be set via /etc/sysctl.conf.
+# The size limit could be set via /etc/security/limits.conf.
+if [ "$(grep -i config.crash.coredump=true /etc/enigma2/settings)" != "" ]; then
+	COREDUMPSIZE=$((10 * 512 * 4 - 1 * 512 * 4)) # size is in blocks (512 byte) so this sets 10 MB - 1 MB for log files
+	COREDUMPFILE=${debug_dir}%t-enigma2-core.dump
+	if [ "$(grep -i config.crash.sizeloglimit= /etc/enigma2/settings | sed 's/config.crash.sizeloglimit=//g')" != "" ]; then
+		COREDUMPSIZE=$(grep -i config.crash.sizeloglimit= /etc/enigma2/settings | sed 's/config.crash.sizeloglimit=//g')
+		COREDUMPSIZE=$((${COREDUMPSIZE} * 512 * 4 - 1 * 512 * 4))
+	fi
+	echo ${COREDUMPFILE} > /proc/sys/kernel/core_pattern
+	ulimit -c ${COREDUMPSIZE}
+fi
 # If we are running with a log then we need to set up a sub-process to
 # do this so that it can open a new log if the current one's size
 # becomes too large.
@@ -304,6 +321,20 @@ else
 	fi
 	ret=$?
 fi
+
+enigma2pid=$!
+
+# Enable generation of core dumps with ELF header included.
+# This seem to be required by gdb.
+# Would be default if kernel is configured with CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS.
+# Default coredump filter can only be set via kernel command line.
+# In all other cases this is only available per process.
+if [ "$(grep -i config.crash.coredump=true /etc/enigma2/settings)" != "" ]; then
+	COREDUMPFILTER=0x33
+	echo ${COREDUMPFILTER} > /proc/${enigma2pid}/coredump_filter
+fi
+
+wait ${enigma2pid}
 
 # enigma2 exit codes:
 #
