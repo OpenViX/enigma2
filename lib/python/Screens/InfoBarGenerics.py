@@ -20,7 +20,7 @@ from Plugins.Plugin import PluginDescriptor
 from Components.Timeshift import InfoBarTimeshift
 
 from Screens.Screen import Screen
-from Screens.AudioSelection import CONFIG_FILE_AV, getAVDict
+from Screens.AudioSelection import getAVDict
 from Screens.HelpMenu import HelpableScreen
 from Screens import ScreenSaver
 from Screens.ChannelSelection import ChannelSelection, PiPZapSelection, BouquetSelector, EpgBouquetSelector, service_types_tv
@@ -2976,7 +2976,7 @@ class InfoBarPlugins:
 			if len(args) == 1 or len(args) == 2 and isinstance(self, InfoBarChannelSelection):
 				x.append(((boundFunction(self.getPluginName, p.name), boundFunction(self.runPlugin, p), lambda: True), None, p.name))
 		x.sort(key=lambda e: e[2])  # sort by name
-		return l
+		return x
 
 	def runPlugin(self, plugin):
 		if isinstance(self, InfoBarChannelSelection):
