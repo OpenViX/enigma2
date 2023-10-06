@@ -992,10 +992,10 @@ def createTimer(xml):
 	if flags:
 		entry.flags = set(flags.encode("utf-8").split(" "))
 
-	for l in xml.findall("log"):
-		time = int(l.get("time"))
-		code = int(l.get("code"))
-		msg = str(l.text.strip())
+	for x in xml.findall("log"):
+		time = int(x.get("time"))
+		code = int(x.get("code"))
+		msg = str(x.text.strip())
 		entry.log_entries.append((time, code, msg))
 
 	return entry
@@ -1025,7 +1025,7 @@ class RecordTimer(Timer):
 		# when activating a timer for servicetype 4097,
 		# and SystemApp has player enabled, then skip recording.
 		# Or always skip if in ("5001", "5002") as these cannot be recorded.
-		if w.service_ref.toString().startswith("4097:") and Directories.isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value == True or w.service_ref.toString()[:4] in ("5001", "5002"):
+		if w.service_ref.toString().startswith("4097:") and Directories.isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value is True or w.service_ref.toString()[:4] in ("5001", "5002"):
 			print("[RecordTimer][doActivate] found Serviceapp & player enabled - disable this timer recording")
 			w.state = RecordTimerEntry.StateEnded
 			from Tools.Notifications import AddPopup
