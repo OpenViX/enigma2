@@ -1,4 +1,4 @@
-from os import ospath
+from os import path as ospath
 
 from enigma import eServiceReference
 from ServiceReference import ServiceReference
