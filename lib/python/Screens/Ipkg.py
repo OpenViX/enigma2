@@ -33,7 +33,7 @@ class Ipkg(Screen):
 		self.activity = 0
 		self.activityTimer = eTimer()
 		self.activityTimer.callback.append(self.doActivityTimer)
-		#self.activityTimer.start(100, False)
+		# self.activityTimer.start(100, False)
 
 		self.ipkg = IpkgComponent()
 		self.ipkg.addCallback(self.ipkgCallback)
@@ -89,13 +89,13 @@ class Ipkg(Screen):
 				self.slider.setValue(self.sliderPackages[param])
 			self.package.setText(param)
 			self.status.setText(_("Upgrading"))
-			if not param in self.processed_packages:
+			if param not in self.processed_packages:
 				self.processed_packages.append(param)
 				self.packages += 1
 		elif event == IpkgComponent.EVENT_INSTALL:
 			self.package.setText(param)
 			self.status.setText(_("Installing"))
-			if not param in self.processed_packages:
+			if param not in self.processed_packages:
 				self.processed_packages.append(param)
 				self.packages += 1
 		elif event == IpkgComponent.EVENT_REMOVE:
