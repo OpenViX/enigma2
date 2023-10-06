@@ -1,8 +1,7 @@
-import errno
 from xml.etree.cElementTree import Element, ElementTree, fromstring
 
 from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gMainDC, gRGB, BT_ALPHATEST, BT_ALPHABLEND, BT_HALIGN_CENTER, BT_HALIGN_LEFT, BT_HALIGN_RIGHT, BT_KEEP_ASPECT_RATIO, BT_SCALE, BT_VALIGN_BOTTOM, BT_VALIGN_CENTER, BT_VALIGN_TOP
-from os.path import basename, dirname, isfile, join
+from os.path import basename, dirname, isfile
 
 from Components.config import ConfigSubsection, ConfigText, config
 from Components.Sources.Source import ObsoleteSource
@@ -235,19 +234,19 @@ def parseCoordinate(s, e, size=0, font=None):
 			return 0
 		# No test on "e" because it's already a variable
 		if "center" in s:
-			center = (e - size) / 2.0
+			center = (e - size) / 2.0  # noqa: F841
 		if "c" in s:
 			c = e / 2.0
 		if "w" in s:
 			s = s.replace("w", "*w")
-			w = float(font in fonts and fonts[font][3] or 0)
+			w = float(font in fonts and fonts[font][3] or 0)  # noqa: F841
 		if "h" in s:
 			s = s.replace("h", "*h")
-			h = float(font in fonts and fonts[font][2] or 0)
+			h = float(font in fonts and fonts[font][2] or 0)  # noqa: F841
 		if "%" in s:
-			s = s.replace("%", "*e / 100.0")
+			s = s.replace("%", "*e / 100.0")  # noqa: F841
 		if "f" in s:
-			f = getSkinFactor()
+			f = getSkinFactor()  # noqa: F841
 		# Don't bother trying an int() conversion,
 		# because at this point that's almost certainly
 		# going to throw an exception.
@@ -571,7 +570,7 @@ class AttributeParser:
 				"moveRightBottom": BT_HALIGN_RIGHT | BT_VALIGN_BOTTOM
 			}[value])
 		except KeyError:
-			raise AttribValueError("'none', 'scale', 'scaleKeepAspect', 'scaleLeftTop', 'scaleLeftCenter', 'scaleLeftBotton', 'scaleCenterTop', 'scaleCenter', 'scaleCenterBotton', 'scaleRightTop', 'scaleRightCenter', 'scaleRightBottom', 'moveLeftTop', 'moveLeftCenter', 'moveLeftBotton', 'moveCenterTop', 'moveCenter', 'moveCenterBotton', 'moveRightTop', 'moveRightCenter', 'moveRightBottom' ('Center'/'Centre'/'Middle' are equivalent)")
+			print("[Skin] Error: Invalid scale '%s'!  Must be one of 'none', 'scale', 'scaleKeepAspect', 'scaleLeftTop', 'scaleLeftCenter', 'scaleLeftBotton', 'scaleCenterTop', 'scaleCenter', 'scaleCenterBotton', 'scaleRightTop', 'scaleRightCenter', 'scaleRightBottom', 'moveLeftTop', 'moveLeftCenter', 'moveLeftBotton', 'moveCenterTop', 'moveCenter', 'moveCenterBottom', 'moveRightTop', 'moveRightCenter', 'moveRightBottom' ('Center'/'Centre'/'Middle' are equivalent)." % value)
 
 	def orientation(self, value):  # Used by eSlider and eListBox.
 		try:
