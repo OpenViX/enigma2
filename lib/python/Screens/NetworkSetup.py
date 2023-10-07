@@ -1,9 +1,8 @@
 import six
 
-from os import system, path as os_path, remove, unlink, rename, chmod, access, X_OK
+from os import system, path as os_path, unlink, rename
 import netifaces as ni
 from random import Random
-from shutil import move
 import string
 import time
 
@@ -21,11 +20,8 @@ from Components.Network import iNetwork
 from Components.OnlineUpdateCheck import feedsstatuscheck
 from Components.Pixmap import Pixmap, MultiPixmap
 from Components.PluginComponent import plugins
-from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
-from Components.Sources.Boolean import Boolean
 from Components.Sources.List import List
-from Components.SystemInfo import SystemInfo
 from Plugins.Plugin import PluginDescriptor
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
@@ -33,7 +29,6 @@ from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
 from Screens.TextBox import TextBox
-from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import fileExists, resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
 
@@ -180,20 +175,20 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 
 		self["OkCancelActions"] = HelpableActionMap(self, "OkCancelActions",
 			{
-			"cancel": (self.close, _("Exit network interface list")),
-			"ok": (self.okbuttonClick, _("Select interface")),
+				"cancel": (self.close, _("Exit network interface list")),
+				"ok": (self.okbuttonClick, _("Select interface")),
 			})
 
 		self["ColorActions"] = HelpableActionMap(self, "ColorActions",
 			{
-			"red": (self.close, _("Exit network interface list")),
-			"green": (self.okbuttonClick, _("Select interface")),
-			"blue": (self.openNetworkWizard, _("Use the network wizard to configure selected network adapter")),
+				"red": (self.close, _("Exit network interface list")),
+				"green": (self.okbuttonClick, _("Select interface")),
+				"blue": (self.openNetworkWizard, _("Use the network wizard to configure selected network adapter")),
 			})
 
 		self["DefaultInterfaceAction"] = HelpableActionMap(self, "ColorActions",
 			{
-			"yellow": (self.setDefaultInterface, [_("Set interface as the default Interface"), _("* Only available if more than one interface is active.")]),
+				"yellow": (self.setDefaultInterface, [_("Set interface as the default Interface"), _("* Only available if more than one interface is active.")]),
 			})
 
 		self.adapters = [(iNetwork.getFriendlyAdapterName(x), x) for x in iNetwork.getAdapterList()]
@@ -306,7 +301,6 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 
 	def setDefaultInterface(self):
 		selection = self["list"].getCurrent()
-		num_if = len(self.list)
 		old_default_gw = None
 		num_configured_if = len(iNetwork.getConfiguredAdapters())
 		if os_path.exists("/etc/default_gw"):
@@ -510,7 +504,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 
 		self["ColorActions"] = HelpableActionMap(self, "ColorActions",
 			{
-			"blue": (self.KeyBlue, _("Open nameserver configuration")),
+				"blue": (self.KeyBlue, _("Open nameserver configuration")),
 			})
 
 		ConfigListScreen.__init__(self, [], session=session, on_change=self.newConfig, fullUI=True)
@@ -855,21 +849,21 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 
 		self["WizardActions"] = HelpableActionMap(self, "WizardActions",
 			{
-			"up": (self.up, _("Move up to previous entry")),
-			"down": (self.down, _("Move down to next entry")),
-			"left": (self.left, _("Move up to first entry")),
-			"right": (self.right, _("Move down to last entry")),
+				"up": (self.up, _("Move up to previous entry")),
+				"down": (self.down, _("Move down to next entry")),
+				"left": (self.left, _("Move up to first entry")),
+				"right": (self.right, _("Move down to last entry")),
 			})
 
 		self["OkCancelActions"] = HelpableActionMap(self, "OkCancelActions",
 			{
-			"cancel": (self.close, _("Exit network adapter setup menu")),
-			"ok": (self.ok, _("Select menu entry")),
+				"cancel": (self.close, _("Exit network adapter setup menu")),
+				"ok": (self.ok, _("Select menu entry")),
 			})
 
 		self["ColorActions"] = HelpableActionMap(self, "ColorActions",
 			{
-			"red": (self.close, _("Exit network adapter setup menu")),
+				"red": (self.close, _("Exit network adapter setup menu")),
 			})
 
 		self["actions"] = NumberActionMap(["WizardActions", "ShortcutActions"],
@@ -899,7 +893,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		else:
 			try:
 				system("ifconfig %s up" % iface)
-				wlanresponse = list(Cell.all(iface))
+				wlanresponse = list(Cell.all(iface))  # what is this? local variable 'wlanresponse' is assigned to but never used
 			except IOError as err:
 				error_no, error_str = err.args
 				if error_no in (errno.EOPNOTSUPP, errno.ENODEV, errno.EPERM):
@@ -1056,8 +1050,8 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 
 		if os_path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
 			menu.append((_("Network wizard"), "openwizard"))
-#		kernel_ver = about.getKernelVersionString()
-#		if kernel_ver <= "3.5.0":
+		# kernel_ver = about.getKernelVersionString()
+		# if kernel_ver <= "3.5.0":
 		menu.append((_("Network MAC settings"), "mac"))
 		return menu
 
@@ -1606,21 +1600,21 @@ class NetworkMountsMenu(Screen, HelpableScreen):
 
 		self["WizardActions"] = HelpableActionMap(self, "WizardActions",
 			{
-			"up": (self.up, _("Move up to previous entry")),
-			"down": (self.down, _("Move down to next entry")),
-			"left": (self.left, _("Move up to first entry")),
-			"right": (self.right, _("Move down to last entry")),
+				"up": (self.up, _("Move up to previous entry")),
+				"down": (self.down, _("Move down to next entry")),
+				"left": (self.left, _("Move up to first entry")),
+				"right": (self.right, _("Move down to last entry")),
 			})
 
 		self["OkCancelActions"] = HelpableActionMap(self, "OkCancelActions",
 			{
-			"cancel": (self.close, _("Exit mounts setup menu")),
-			"ok": (self.ok, _("Select menu entry")),
+				"cancel": (self.close, _("Exit mounts setup menu")),
+				"ok": (self.ok, _("Select menu entry")),
 			})
 
 		self["ColorActions"] = HelpableActionMap(self, "ColorActions",
 			{
-			"red": (self.close, _("Exit networkadapter setup menu")),
+				"red": (self.close, _("Exit networkadapter setup menu")),
 			})
 
 		self["actions"] = NumberActionMap(["WizardActions", "ShortcutActions"],
@@ -2272,7 +2266,7 @@ class NetworkInadyn(NSCommon, Screen):
 			self["key_green"].setText(_("Start"))
 			status_summary = self["status"].text + " " + self["labstop"].text
 
-		#self.my_nabina_state = False
+		# self.my_nabina_state = False
 		if fileExists("/etc/inadyn.conf"):
 			f = open("/etc/inadyn.conf", "r")
 			for line in f.readlines():
@@ -2596,7 +2590,7 @@ class NetworkuShareSetup(ConfigListScreen, HelpableScreen, Screen):
 		self.ushare_xbox = NoSave(ConfigYesNo(default=True))
 		self.ushare_ps3 = NoSave(ConfigYesNo(default=True))
 		# looks like dead code
-		#self.ushare_system = NoSave(ConfigSelection(default = "dyndns@dyndns.org", choices = [("dyndns@dyndns.org", "dyndns@dyndns.org"), ("statdns@dyndns.org", "statdns@dyndns.org"), ("custom@dyndns.org", "custom@dyndns.org")]))
+		# self.ushare_system = NoSave(ConfigSelection(default = "dyndns@dyndns.org", choices = [("dyndns@dyndns.org", "dyndns@dyndns.org"), ("statdns@dyndns.org", "statdns@dyndns.org"), ("custom@dyndns.org", "custom@dyndns.org")]))
 
 		if fileExists("/etc/ushare.conf"):
 			f = open("/etc/ushare.conf", "r")
