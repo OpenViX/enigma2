@@ -2304,7 +2304,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def __showDeleteConfirmation(self, delList, delInfo):
 		dirCount, fileCount, subItemCount, inTrash = delInfo
-		callback = lambda confirmed: self.__permanentDeleteListConfirmed(delList, confirmed)
+		callback = lambda confirmed: self.__permanentDeleteListConfirmed(delList, confirmed)  # noqa: E731
 		itemCount = dirCount + fileCount
 		singleName = None
 		if itemCount == 1:
@@ -2320,7 +2320,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				are_you_sure = _("Do you really want to move '%s' to the trash can?") % singleName
 			else:
 				are_you_sure = _("Do you really want to move these %d items to the trash can?") % itemCount
-			callback = lambda confirmed: self.__deleteListConfirmed(delList, confirmed)
+			callback = lambda confirmed: self.__deleteListConfirmed(delList, confirmed)  # noqa: E731
 		else:
 			if itemCount == 1:
 				are_you_sure = _("Do you really want to permanently delete '%s'?") % singleName
@@ -2498,7 +2498,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			index = 0
 		else:
 			index += 1
-		#descriptions in native languages too long...
+		# descriptions in native languages too long...
 		sorttext = l_moviesort[index][2]
 		if config.movielist.btn_red.value == "sort":
 			self['key_red'].setText(sorttext)
@@ -2516,7 +2516,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def installedMovieManagerPlugin(self):
 		try:
-			from Plugins.Extensions.MovieManager.ui import MovieManager
+			from Plugins.Extensions.MovieManager.ui import MovieManager  # noqa: F401
 			return True
 		except Exception as e:
 			print("[MovieSelection] MovieManager is not installed...", e)
