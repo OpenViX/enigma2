@@ -61,7 +61,7 @@ jobs:
         echo "checking locale format..."
         find . -type f -name "*.po" -exec msgfmt {} -o {}.mo \;
         echo "checking PEP8 validation..."
-        flake8 --builtins="_,ngettext,pgettext" --ignore=W191,W503,W504,E123,E128,E501,E722 . --exit-zero
+        flake8 --builtins="_,ngettext,pgettext" --ignore=W191,W503,W504,E123,E126,E128,E501,E722 . --exit-zero
         echo "check format PEP8 completed!"
 
 # PEP8 :- IGNORE CODES
