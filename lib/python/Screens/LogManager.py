@@ -379,7 +379,7 @@ class LogManagerFb(Screen):
 				"left": self.goLeft,
 				"right": self.goRight,
 				"0": self.doRefresh,
-			 }, -1)
+			}, -1)
 		self.onLayoutFinish.append(self.mainlist)
 
 	def exit(self):
