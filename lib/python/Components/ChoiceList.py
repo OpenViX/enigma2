@@ -32,9 +32,9 @@ def ChoiceEntryComponent(key=None, text=None):
 		else:
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, RT_HALIGN_LEFT, "-" * 200))
 	else:
+		x, y, w, h = parameters.get("ChoicelistName", applySkinFactor(45, 2, 800, 25))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, RT_HALIGN_LEFT, text[0]))
 		if key:
-			x, y, w, h = parameters.get("ChoicelistName", applySkinFactor(45, 2, 800, 25))
-			res.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, RT_HALIGN_LEFT, text[0]))
 			# separate the sizes definition for keybutton is=cons and the rest so there to be possibility to use different size images for different type icons
 			iconKeyConfigName = "ChoicelistIcon"
 			if key == "expandable":
