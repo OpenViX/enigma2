@@ -2,8 +2,6 @@ from os import path, rmdir
 import tempfile
 import struct
 
-from enigma import getDesktop
-
 from boxbranding import getBoxType
 from Components.ActionMap import HelpableActionMap
 from Components.ChoiceList import ChoiceEntryComponent, ChoiceList
@@ -30,7 +28,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		self.tmp_dir = None
 		self.fromInit = True
 		usbIn = SystemInfo["HasUsbhdd"].keys() and SystemInfo["HasKexecMultiboot"]
-#		print("[MultiBootSelector] usbIn, SystemInfo['HasUsbhdd'], SystemInfo['HasKexecMultiboot'], SystemInfo['HasKexecUSB']", usbIn, "   ", SystemInfo["HasUsbhdd"], "   ", SystemInfo["HasKexecMultiboot"], "   ", SystemInfo["HasKexecUSB"])
+		# print("[MultiBootSelector] usbIn, SystemInfo['HasUsbhdd'], SystemInfo['HasKexecMultiboot'], SystemInfo['HasKexecUSB']", usbIn, "   ", SystemInfo["HasUsbhdd"], "   ", SystemInfo["HasKexecMultiboot"], "   ", SystemInfo["HasKexecUSB"])
 		self["config"] = ChoiceList(list=[ChoiceEntryComponent(text=((_("Retrieving image slots - Please wait...")), "Queued"))])
 		self["description"] = StaticText(_("Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."))
 		self["key_red"] = StaticText(_("Add Extra USB slots") if usbIn else _("Cancel"))
@@ -127,9 +125,9 @@ class MultiBootSelector(Screen, HelpableScreen):
 		if answer:
 			currentSelected = self["config"].getCurrent()
 			slot = currentSelected[0][1][0]
-#			print("[MultiBootSelector] delete slot = %s" % slot)
+			# print("[MultiBootSelector] delete slot = %s" % slot)
 			if SystemInfo["HasKexecMultiboot"] and int(slot) < 4:
-#					print("[MultiBootSelector] rm -rf delete slot = %s" % slot)
+					# print("[MultiBootSelector] rm -rf delete slot = %s" % slot)
 					Console().ePopen("rm -rf /boot/linuxrootfs%s" % slot)
 			else:
 				emptySlot(slot)
@@ -147,7 +145,7 @@ class MultiBootSelector(Screen, HelpableScreen):
 		if not SystemInfo["VuUUIDSlot"]:
 			with open("/proc/mounts", "r") as fd:
 				xlines = fd.readlines()
-	#			print("[MultiBootSelector] xlines", xlines)
+				# print("[MultiBootSelector] xlines", xlines)
 				for hddkey in range(len(usblist)):
 					for xline in xlines:
 						print("[MultiBootSelector] xline, usblist", xline, "   ", usblist[hddkey])
@@ -157,11 +155,11 @@ class MultiBootSelector(Screen, HelpableScreen):
 							hdd.append(xline[index:index + 4])
 						else:
 							continue
-	#						print("[MultiBootSelector] key, not in line ", usblist[hddkey], "   ", xline)
+							# print("[MultiBootSelector] key, not in line ", usblist[hddkey], "   ", xline)
 			print("[MultiBootSelector] hdd available ", hdd)
 			if not hdd:
-					self.session.open(MessageBox, _("[MultiBootSelector][add USB STARTUP slots] - No EXT4 USB attached."), MessageBox.TYPE_INFO, timeout=10)
-					self.cancel()
+				self.session.open(MessageBox, _("[MultiBootSelector][add USB STARTUP slots] - No EXT4 USB attached."), MessageBox.TYPE_INFO, timeout=10)
+				self.cancel()
 			else:
 				usb = hdd[0][0:3]
 				free = Harddisk(usb).Totalfree()
@@ -200,8 +198,8 @@ class MultiBootSelector(Screen, HelpableScreen):
 	def KexecMountRet(self, result=None, retval=None, extra_args=None):
 		self.device_uuid = "UUID=" + result.split("UUID=")[1].split(" ")[0].replace('"', '')
 		boxmodel = getBoxType()[2:]
-# 		using UUID	 kernel=/linuxrootfs1/boot/zImage root=UUID="12c2025e-2969-4bd1-9e0c-da08b97d40ce" rootsubdir=linuxrootfs1
-#		using dev = "kernel=/linuxrootfs4/zImage root=/dev/%s rootsubdir=linuxrootfs4" % hdd[0] 	# /STARTUP_4
+		# using UUID	 kernel=/linuxrootfs1/boot/zImage root=UUID="12c2025e-2969-4bd1-9e0c-da08b97d40ce" rootsubdir=linuxrootfs1
+		# using dev = "kernel=/linuxrootfs4/zImage root=/dev/%s rootsubdir=linuxrootfs4" % hdd[0] 	# /STARTUP_4
 
 		for usbslot in range(4, 8):
 			STARTUP_usbslot = "kernel=%s/linuxrootfs%d/zImage root=%s rootsubdir=%s/linuxrootfs%d" % (boxmodel, usbslot, self.device_uuid, boxmodel, usbslot)  # /STARTUP_<n>
