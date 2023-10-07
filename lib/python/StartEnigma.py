@@ -17,6 +17,7 @@ enigma.eConsoleAppContainer = eConsoleImpl.eConsoleAppContainer
 
 class Session:
 
+
 """
  Session.open:
 	 * push current active dialog ("current_dialog") onto stack
