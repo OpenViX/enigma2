@@ -141,9 +141,9 @@ class ServiceName(Converter):
 			try:
 				position = tp_data["orbital_position"]
 				if position > 1800: # west
-					orbitalpos = "%.1f " %(float(3600 - position)/10) + _("W")
+					orbitalpos = "%.1f " % (float(3600 - position) / 10) + _("W")
 				else:
-					orbitalpos = "%.1f " %(float(position)/10) + _("E")
+					orbitalpos = "%.1f " % (float(position) / 10) + _("E")
 			except:
 				pass
 		return orbitalpos
