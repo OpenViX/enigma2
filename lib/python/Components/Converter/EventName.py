@@ -328,7 +328,7 @@ class EventName(Converter):
 				duration = event.getDuration()
 				duration_str = "%d min" % (duration / 60)
 			start_time_str = "%2d:%02d" % (t_start.tm_hour, t_start.tm_min)
-			end_time_str = "%2d:%02d" % (t_end.tm_hour, t_end.tm_min) 
+			end_time_str = "%2d:%02d" % (t_end.tm_hour, t_end.tm_min)
 			res_str = "%s - %s  %s  %s" % (start_time_str, end_time_str, self.separator, duration_str)
 			return res_str
 		return ""

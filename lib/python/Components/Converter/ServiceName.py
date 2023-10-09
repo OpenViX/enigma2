@@ -117,7 +117,7 @@ class ServiceName(Converter):
 		if name is None:
 			name = info.getName()
 		return name.replace('\xc2\x86', '').replace('\xc2\x87', '').replace('_', ' ')
-	
+
 	def getNumber(self, ref, info):
 		if not ref:
 			ref = eServiceReference(info.getInfoString(iServiceInformation.sServiceref))
@@ -125,12 +125,12 @@ class ServiceName(Converter):
 		if num is not None:
 			num = str(num)
 		return num
-	
+
 	def getProvider(self, ref, info):
 		if ref:
 			return info.getInfoString(ref, iServiceInformation.sProvider)
 		return info.getInfoString(iServiceInformation.sProvider)
-	
+
 	def getOrbitalPos(self, ref, info):
 		orbitalpos = ""
 		if ref:
