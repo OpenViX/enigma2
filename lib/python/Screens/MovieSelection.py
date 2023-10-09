@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Screens.Screen import Screen
 from Components.Button import Button
 from Components.ActionMap import HelpableActionMap, ActionMap, HelpableNumberActionMap
@@ -32,6 +33,7 @@ import Tools.Trashcan
 import NavigationInstance
 import RecordTimer
 from ServiceReference import ServiceReference
+from skin import parameters
 
 from enigma import eServiceReference, eServiceCenter, eTimer, eSize, iPlayableService, iServiceInformation, getPrevAsciiCode, eRCInput
 import os
@@ -1712,14 +1714,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.loadLocalSettings()
 		self["list"].reload(self.current_ref, self.selected_tags, self.collectionName)
 		self.updateTags()
-		title = ""
-		if config.usage.setup_level.index >= 2:  # expert+
-			title += config.movielist.last_videodir.value
-		if self.selected_tags:
-			title += " - " + ','.join(self.selected_tags)
-		if self.collectionName:
-			title += ": %s" % self.collectionName
-		self.setTitle(title)
+		self.updateTitle()
 		self.displayMovieOffStatus()
 		self.displaySortStatus()
 		if not (self.reload_sel and self["list"].moveTo(self.reload_sel)):
@@ -1737,6 +1732,17 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				self.playGoTo = None
 				self.callLater(self.preview)
 		self.callLater(self.enablePathSelect)
+
+	def updateTitle(self):
+		separatorChar = parameters.get("MovieSelectionTitleSeparatorChar", "-")
+		title = []
+		if config.usage.setup_level.index >= 2:  # expert+
+			title.append(config.movielist.last_videodir.value)
+		if self.selected_tags:
+			title.append(','.join(self.selected_tags))
+		if self.collectionName:
+			title.append(self.collectionName)
+		self.title = (" %s " % separatorChar).join(title)
 
 	def enablePathSelect(self):
 		self.pathselectEnabled = True
