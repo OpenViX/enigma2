@@ -5,7 +5,7 @@ from Components.Element import cached
 from Components.Converter.genre import getGenreStringSub
 from Components.config import config
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
-from time import localtime, mktime, strftime
+from time import time, localtime, mktime, strftime
 
 
 class ETSIClassifications(dict):
@@ -106,6 +106,8 @@ class EventName(Converter):
 	RATINGCOUNTRY = 32
 	RATINGICON = 33
 
+	FORMAT_STRING = 34
+
 	KEYWORDS = {
 		# Arguments...
 		"Name": ("type", NAME),
@@ -162,6 +164,12 @@ class EventName(Converter):
 		parse = ","
 		type.replace(";", parse)  # Some builds use ";" as a separator, most use ",".
 		args = [arg.strip() for arg in type.split(parse)]
+		self.parts = args
+
+		if len(self.parts) > 1:
+			self.type = self.FORMAT_STRING
+			self.separatorChar = self.parts[0]
+
 		for arg in args:
 			name, value = self.KEYWORDS.get(arg, ("Error", None))
 			if name == "Error":
@@ -307,6 +315,22 @@ class EventName(Converter):
 			rating = event.getParentalData()
 			if rating:
 				return rating.getCountryCode().upper()
+		elif self.type == self.FORMAT_STRING:
+			begin = event.getBeginTime()
+			end = begin + event.getDuration()
+			now = int(time())
+			t_start = localtime(begin)
+			t_end = localtime(end)
+			if begin <= now <= end:
+				duration = end - now
+				duration_str = "+%d min" % (duration / 60)
+			else:
+				duration = event.getDuration()
+				duration_str = "%d min" % (duration / 60)
+			start_time_str = "%2d:%02d" % (t_start.tm_hour, t_start.tm_min)
+			end_time_str = "%2d:%02d" % (t_end.tm_hour, t_end.tm_min) 
+			res_str = "%s - %s  %s  %s" % (start_time_str, end_time_str, self.separator, duration_str)
+			return res_str
 		return ""
 
 	text = property(getText)
