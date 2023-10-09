@@ -20,14 +20,11 @@ class ServiceName(Converter):
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		self.epgQuery = eEPGCache.getInstance().lookupEventTime
-		self.mode = ""
 		self.parts = type.split(",")
 		if len(self.parts) > 1:
 			self.type = self.FORMAT_STRING
 			self.separatorChar = self.parts[0]
 		else:
-			if ';' in type:
-				type, self.mode = type.split(';')
 			if type == "Provider":
 				self.type = self.PROVIDER
 			elif type == "Reference":
