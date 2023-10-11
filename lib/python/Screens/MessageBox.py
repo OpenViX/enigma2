@@ -294,6 +294,3 @@ class MessageBox(Screen, HelpableScreen):
 	
 	def getListWidth(self):
 		return self["list"].instance.getMaxItemTextWidth()
-
-	def getListWidth(self):
-		return self["list"].instance.getMaxItemTextWidth()
