@@ -20,7 +20,7 @@ public:
 	void invalidateEntry(int index);
 	void invalidate();
 	eSize getItemSize() { return m_itemsize; }
-	int getMaxItemTextWidth() { return m_max_text_width; }
+	int getMaxItemTextWidth();
 #ifndef SWIG
 protected:
 	void cursorHome();
