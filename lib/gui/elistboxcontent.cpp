@@ -52,7 +52,7 @@ int iListboxContent::currentCursorSelectable()
 DEFINE_REF(eListboxPythonStringContent);
 
 eListboxPythonStringContent::eListboxPythonStringContent()
-	:m_cursor(0), m_saved_cursor(0), m_itemheight(25), m_itemwidth(25), m_max_text_width(0), m_orientation(1)
+	:m_cursor(0), m_saved_cursor(0), m_itemheight(25), m_itemwidth(25), m_orientation(1)
 {
 }
 
@@ -273,16 +273,6 @@ void eListboxPythonStringContent::paint(gPainter &painter, eWindowStyle &style, 
 					flags |= gPainter::RT_HALIGN_RIGHT;
 				else if (local_style->m_halign == eListboxStyle::alignBlock)
 					flags |= gPainter::RT_HALIGN_BLOCK;
-			}
-
-			eRect textRect = eRect(text_offset, m_itemsize);
-
-			ePtr<eTextPara> para = new eTextPara(textRect);
-			para->setFont(fnt);
-			para->renderString(string);
-			int textWidth = para->getBoundBox().width();
-			if (textWidth > m_max_text_width) {
-				m_max_text_width = textWidth;
 			}
 
 			painter.renderText(eRect(text_offset, m_itemsize),
