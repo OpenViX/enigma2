@@ -88,7 +88,8 @@ class ServiceName(Converter):
 			return service.toString()
 		elif self.type == self.FORMAT_STRING:
 			name = self.getName(service, info)
-			num = self.getNumber(service, info)
+			numservice = self.source.serviceref
+			num = self.getNumber(numservice, info)
 			provider = self.getProvider(service, info)
 			orbpos = self.getOrbitalPos(service, info)
 			res_str = ""
