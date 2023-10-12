@@ -135,6 +135,7 @@ class TimerList(GUIComponent):
 
 	def __init__(self, list):
 		GUIComponent.__init__(self)
+		self.onSelectionChanged = []
 		self.l = eListboxPythonMultiContent()
 		self.l.setBuildFunc(self.buildTimerEntry)
 		self.serviceNameFont = gFont("Regular", 20)
@@ -205,9 +206,18 @@ class TimerList(GUIComponent):
 	GUI_WIDGET = eListbox
 
 	def postWidgetCreate(self, instance):
+		instance.selectionChanged.get().append(self.selectionChanged)
 		instance.setContent(self.l)
 		self.instance = instance
 		instance.setWrapAround(True)
+
+	def preWidgetRemove(self, instance):
+		instance.selectionChanged.get().remove(self.selectionChanged)
+		instance.setContent(None)
+
+	def selectionChanged(self):
+		for x in self.onSelectionChanged:
+			x()
 
 	def moveToIndex(self, index):
 		self.instance.moveSelectionTo(index)
