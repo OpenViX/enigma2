@@ -94,13 +94,13 @@ class ServiceName(Converter):
 			orbpos = self.getOrbitalPos(service, info)
 			res_str = ""
 			for x in self.parts[1:]:
-				if x == "NUMBER" and num != '':
+				if x == "NUMBER" and num:
 					res_str = self.appendToStringWithSeparator(res_str, num)
-				if x == "NAME" and name != '':
+				if x == "NAME" and name:
 					res_str = self.appendToStringWithSeparator(res_str, name)
-				if x == "ORBPOS" and orbpos != '':
+				if x == "ORBPOS" and orbpos:
 					res_str = self.appendToStringWithSeparator(res_str, orbpos)
-				if x == "PROVIDER" and provider is not None and provider != '':
+				if x == "PROVIDER" and provider:
 					res_str = self.appendToStringWithSeparator(res_str, provider)
 			return res_str
 
