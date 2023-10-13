@@ -208,9 +208,9 @@ class ChannelContextMenu(Screen):
 						else:
 							_append_when_current_valid(current, menu, actions, (_("Cover dashed flickering line for this service"), self.toggleVBI), level=1)
 						if Screens.InfoBar.InfoBar.instance.checkStreamrelay(current):
-							_append_when_current_valid(current, menu, (_("Play service without streamrelay"), self.toggleStreamrelay), level=1)
+							_append_when_current_valid(current, menu, actions, (_("Play service without streamrelay"), self.toggleStreamrelay), level=1)
 						else:
-							_append_when_current_valid(current, menu, (_("Play service with streamrelay"), self.toggleStreamrelay), level=1)
+							_append_when_current_valid(current, menu, actions, (_("Play service with streamrelay"), self.toggleStreamrelay), level=1)
 						if eDVBDB.getInstance().getCachedPid(eServiceReference(current.toString()), 9) >> 16 not in (-1, eDVBDB.getInstance().getCachedPid(eServiceReference(current.toString()), 2)):
 							# Only show when a DVB subtitle is cached on this service
 							if eDVBDB.getInstance().getFlag(eServiceReference(current.toString())) & FLAG_CENTER_DVB_SUBS:
