@@ -10,6 +10,7 @@ from Tools.BoundFunction import boundFunction
 from Tools.StbHardware import getFPWasTimerWakeup
 import RecordTimer
 import PowerTimer
+from ServiceReference import ServiceReference
 import Screens.Standby
 import NavigationInstance
 from Screens.InfoBar import InfoBar
