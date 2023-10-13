@@ -74,8 +74,7 @@ class TimerEditList(Screen, ProtectedScreen):
 
 	def onCreate(self):
 		self.fillTimerList()
-		self["timerlist"].l.setList(self.list)
-		self["timerlist"].selectionChanged()
+		self["timerlist"].setList(self.list)
 
 		if self.selectItem is not None:
 			(event, service) = self.selectItem
