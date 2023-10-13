@@ -162,12 +162,13 @@ def updateresumePointCache():
 resumePointCache = loadResumePoints()
 resumePointCacheLast = int(time())
 
-whitelist_vbi = None
+
+class whitelist:
+	vbi = []
 
 
 def reload_whitelist_vbi():
-	global whitelist_vbi
-	whitelist_vbi = [line.strip() for line in open('/etc/enigma2/whitelist_vbi', 'r').readlines()] if os.path.isfile('/etc/enigma2/whitelist_vbi') else []
+	whitelist.vbi = [line.strip() for line in open('/etc/enigma2/whitelist_vbi', 'r').readlines()] if os.path.isfile('/etc/enigma2/whitelist_vbi') else []
 
 
 reload_whitelist_vbi()
@@ -886,10 +887,10 @@ class InfoBarShowHide(InfoBarScreenSaver):
 					service = service and eServiceReference(service)
 					if service:
 						print(service, service and service.toString())
-					return service and ":".join(service.toString().split(":")[:11]) in whitelist_vbi
+					return service and ":".join(service.toString().split(":")[:11]) in whitelist.vbi
 				else:
 					return ".hidevbi." in servicepath.lower()
-		return service and service.toString() in whitelist_vbi
+		return service and service.toString() in whitelist.vbi
 
 	def showHideVBI(self):
 		if self.checkHideVBI():
@@ -901,12 +902,11 @@ class InfoBarShowHide(InfoBarScreenSaver):
 		service = service or self.session.nav.getCurrentlyPlayingServiceReference()
 		if service:
 			service = service.toString()
-			global whitelist_vbi
-			if service in whitelist_vbi:
-				whitelist_vbi.remove(service)
+			if service in whitelist.vbi:
+				whitelist.vbi.remove(service)
 			else:
-				whitelist_vbi.append(service)
-			open('/etc/enigma2/whitelist_vbi', 'w').write('\n'.join(whitelist_vbi))
+				whitelist.vbi.append(service)
+			open('/etc/enigma2/whitelist_vbi', 'w').write('\n'.join(whitelist.vbi))
 			self.showHideVBI()
 
 	def queueChange(self):
