@@ -181,7 +181,7 @@ class Navigation:
 				if '%3a//' not in playrefstring and playrefstring in whitelist.streamrelay:
 					url = "http://%s:%s/" % (config.misc.softcam_streamrelay_url.getHTML(), config.misc.softcam_streamrelay_port.value)
 					playref = eServiceReference("%s%s%s:%s" % (playrefstring, url.replace(":", "%3a"), playrefstring.replace(":", "%3a"), ServiceReference(playref).getServiceName()))
-					print("[Navigation] Play service via streamrelay as it is whitelisted as such" ,playref.toString())
+					print("[Navigation] Play service via streamrelay as it is whitelisted as such", playref.toString())
 				self.currentlyPlayingServiceOrGroup = ref
 				if InfoBarInstance and InfoBarInstance.servicelist.servicelist.setCurrent(ref, adjust):
 					self.currentlyPlayingServiceOrGroup = InfoBarInstance.servicelist.servicelist.getCurrent()
