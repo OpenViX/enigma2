@@ -143,6 +143,7 @@ class TimerList(GUIComponent):
 		self.eventNameFont = gFont("Regular", 18)
 
 		self.l.setList(list)
+		self.selectionChanged()
 		self.itemHeight = 50
 		self.rowSplit = 25
 		self.iconMargin = 4
