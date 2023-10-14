@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-10-13 07:29+0300\n"
+"PO-Revision-Date: 2023-10-14 10:19+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13540,7 +13540,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"13.10.2023\n"
+"14.10.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -19083,3 +19083,9 @@ msgstr "Asetusten varmuuskopiointi ennen päivitystä on erittäin suositeltavaa
 
 msgid "Please select a valid directory."
 msgstr "Valitse kelvollinen hakemisto."
+
+msgid "Play service without streamrelay"
+msgstr "Toista kanava ilman streamrelay:tä"
+
+msgid "Play service with streamrelay"
+msgstr "Toista kanava streamrelay:llä"
