@@ -324,6 +324,11 @@
 		</if>
 		<item level="0" text="Automatically update Client/Server View" description="Automatically update Client/Server View">config.oscaminfo.autoupdate</item>
 		<item level="0" text="Update interval (in seconds)" description="Update interval (in seconds)" conditional="config.oscaminfo.autoupdate.value">config.oscaminfo.intervall</item>
+	</setup>
+	<setup key="stream_relay" title="Stream relay">
+		<item level="0" text="Stream relay url" description="Stream relay url will normally be the default">config.misc.softcam_streamrelay_url</item>
+		<item level="0" text="Stream relay port" description="Stream relay port will normally be the default">config.misc.softcam_streamrelay_port</item>
+		<item level="0" text="Stream relay use dummy namespace" description="Some binaries require a dummy namespace">config.misc.softcam_streamrelay_use_dummy_namespace</item>
 	</setup>	
 	<setup key="softcamscriptsetup" title="">
 		<item level="0" text="SoftcamScript select camscript" description="Select a softcam script from the available list.">config.misc.softcams</item>
