@@ -18812,7 +18812,7 @@ msgid "Select extra packages folder"
 msgstr "Valitse lisäohjelmapakettien hakemisto"
 
 msgid "Select folder containing plugins(.ipk) and Save"
-msgstr "Valitse laajennuksia sisältävä hakemisto (.ipk) ja Tallenna"
+msgstr "Valitse lisäosia sisältävä hakemisto (.ipk) ja Tallenna"
 
 msgid "Select the SWAP file size:"
 msgstr "Valitse SWAP:n koko:"
