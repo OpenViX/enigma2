@@ -21,7 +21,10 @@ class StreamInfo(Converter):
 		if playref:
 			refstr = playref.toString()
 			strtype = refstr.replace('%3a', ':')
-			if strtype.startswith('1:0:'):
+			streamrelay = [line.strip() for line in open('/etc/enigma2/whitelist_streamrelay', 'r').readlines()]
+			if refstr in streamrelay:
+				return 'iCAM'
+			elif strtype.startswith('1:0:'):
 				if bool([1 for x in ('0.0.0.0:', '127.0.0.1:', 'localhost:') if x in strtype]):
 					return 'Stream Relay'
 				elif '%3a' in refstr:
@@ -36,8 +39,11 @@ class StreamInfo(Converter):
 
 	def streamurl(self):
 		playref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()
+		streamrelay = [line.strip() for line in open('/etc/enigma2/whitelist_streamrelay', 'r').readlines()]
 		if playref:
 			refstr = playref.toString()
+			if refstr in streamrelay:
+				return 'Stream Relay'
 			if '%3a' in refstr:
 				strurl = refstr.split(':')
 				streamurl = strurl[10].replace('%3a', ':').replace('http://', '').replace('https://', '').split('/1:0:')[0].split('//')[0].split('/')[0].split('@')[-1]

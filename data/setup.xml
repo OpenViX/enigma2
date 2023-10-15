@@ -313,6 +313,9 @@
 	<setup key="softcamsetup" title="Softcam settings">
 		<item level="2" text="Show CCcam Info in extensions?" description="Allows you to show/hide CCcam Info in extensions -blue button." requires="CCcamInstalled">config.cccaminfo.showInExtensions</item>
 		<item level="2" text="Show OScam/Ncam Info in extensions?" description="Allows you to show/hide OScam/Ncam Info in extensions -blue button." requires="OScamInstalled">config.oscaminfo.showInExtensions</item>
+		<item level="2" text="Stream relay url" description="Stream relay url will normally be the default" requires="DeveloperImage">config.misc.softcam_streamrelay_url</item>
+		<item level="2" text="Stream relay port" description="Stream relay port will normally be the default" requires="DeveloperImage">config.misc.softcam_streamrelay_port</item>
+		<item level="2" text="Stream relay use dummy namespace" description="Some binaries require a dummy namespace" requires="DeveloperImage">config.misc.softcam_streamrelay_use_dummy_namespace</item>
 	</setup>
 	<setup key="oscam/Ncaminfo" title="Oscam/Ncam Info Settings">
 		<item level="0" text="Read Userdata from oscam.conf" description="Read Userdata from oscam.conf">config.oscaminfo.userdatafromconf</item>
@@ -325,11 +328,6 @@
 		<item level="0" text="Automatically update Client/Server View" description="Automatically update Client/Server View">config.oscaminfo.autoupdate</item>
 		<item level="0" text="Update interval (in seconds)" description="Update interval (in seconds)" conditional="config.oscaminfo.autoupdate.value">config.oscaminfo.intervall</item>
 	</setup>
-	<setup key="stream_relay" title="Stream relay">
-		<item level="0" text="Stream relay url" description="Stream relay url will normally be the default">config.misc.softcam_streamrelay_url</item>
-		<item level="0" text="Stream relay port" description="Stream relay port will normally be the default">config.misc.softcam_streamrelay_port</item>
-		<item level="0" text="Stream relay use dummy namespace" description="Some binaries require a dummy namespace">config.misc.softcam_streamrelay_use_dummy_namespace</item>
-	</setup>	
 	<setup key="softcamscriptsetup" title="">
 		<item level="0" text="SoftcamScript select camscript" description="Select a softcam script from the available list.">config.misc.softcams</item>
 		<item level="0" text="SoftcamScript enable/disable cam restart" description="Allow reinitialisation of selected cam script.">config.misc.softcamrestarts</item>
