@@ -1,5 +1,6 @@
 from Components.Converter.Converter import Converter
 from Components.Element import cached
+from Screens.InfoBarGenerics import whitelist
 import NavigationInstance
 from enigma import iPlayableService
 
@@ -21,8 +22,7 @@ class StreamInfo(Converter):
 		if playref:
 			refstr = playref.toString()
 			strtype = refstr.replace('%3a', ':')
-			streamrelay = [line.strip() for line in open('/etc/enigma2/whitelist_streamrelay', 'r').readlines()]
-			if refstr in streamrelay:
+			if refstr in whitelist.streamrelay:
 				return 'iCAM'
 			elif strtype.startswith('1:0:'):
 				if bool([1 for x in ('0.0.0.0:', '127.0.0.1:', 'localhost:') if x in strtype]):
@@ -39,10 +39,9 @@ class StreamInfo(Converter):
 
 	def streamurl(self):
 		playref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()
-		streamrelay = [line.strip() for line in open('/etc/enigma2/whitelist_streamrelay', 'r').readlines()]
 		if playref:
 			refstr = playref.toString()
-			if refstr in streamrelay:
+			if refstr in whitelist.streamrelay:
 				return 'Stream Relay'
 			if '%3a' in refstr:
 				strurl = refstr.split(':')
