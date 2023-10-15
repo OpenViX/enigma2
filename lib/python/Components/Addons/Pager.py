@@ -5,6 +5,7 @@ from enigma import eListbox, eListboxPythonMultiContent, BT_ALIGN_CENTER, BT_VAL
 from skin import parseScale, applySkinFactor
 
 from Components.MultiContent import MultiContentEntryPixmapAlphaBlend
+from Components.Sources.List import List
 
 from Tools.Directories import resolveFilename, SCOPE_GUISKIN
 from Tools.LoadPixmap import LoadPixmap
@@ -89,7 +90,7 @@ class Pager(GUIAddon):
 		instance.allowNativeKeys(False)
 
 	def getSourceOrientation(self):
-		if self.source.__class__.__name__ == "List":  # Components.Sources.List, used by MainMenu
+		if isinstance(self.source, List):  # Components.Sources.List
 			orig_source = self.source.master.master
 		else:
 			orig_source = self.source
@@ -103,7 +104,7 @@ class Pager(GUIAddon):
 		return self.source.l.getCurrentSelectionIndex()
 
 	def getSourceSize(self):
-		if self.source.__class__.__name__ == "List":  # Components.Sources.List, used by MainMenu
+		if isinstance(self.source, List):  # Components.Sources.List
 			return self.source.master.master.instance.size()
 		return self.source.instance.size()
 
@@ -115,7 +116,7 @@ class Pager(GUIAddon):
 		return 0
 
 	def getListItemSize(self):
-		if self.source.__class__.__name__ == "List":  # Components.Sources.List, used by MainMenu
+		if isinstance(self.source, List):  # Components.Sources.List
 			orig_source = self.source.master.master
 		else:
 			orig_source = self.source
