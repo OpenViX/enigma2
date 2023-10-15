@@ -124,12 +124,14 @@ class PowerTimerList(GUIComponent):
 
 	def __init__(self, list):
 		GUIComponent.__init__(self)
+		self.onSelectionChanged = []
 		self.l = eListboxPythonMultiContent()
 		self.l.setBuildFunc(self.buildTimerEntry)
 		self.serviceNameFont = gFont("Regular", 20)
 		self.font = gFont("Regular", 18)
 		self.eventNameFont = gFont("Regular", 18)
 		self.l.setList(list)
+		self.listCount = len(list)  # used by pager
 		self.itemHeight = 50
 		self.rowSplit = 25
 		self.iconMargin = 4
@@ -177,6 +179,7 @@ class PowerTimerList(GUIComponent):
 		self.l.setFont(0, self.serviceNameFont)
 		self.l.setFont(1, self.font)
 		self.l.setFont(2, self.eventNameFont)
+		self.selectionChanged()
 		return GUIComponent.applySkin(self, desktop, parent)
 
 	def getCurrent(self):
@@ -186,8 +189,17 @@ class PowerTimerList(GUIComponent):
 	GUI_WIDGET = eListbox
 
 	def postWidgetCreate(self, instance):
+		instance.selectionChanged.get().append(self.selectionChanged)
 		instance.setContent(self.l)
 		self.instance = instance
+
+	def preWidgetRemove(self, instance):
+		instance.selectionChanged.get().remove(self.selectionChanged)
+		instance.setContent(None)
+
+	def selectionChanged(self):
+		for x in self.onSelectionChanged:
+			x()
 
 	def moveToIndex(self, index):
 		self.instance.moveSelectionTo(index)

@@ -59,6 +59,7 @@ class PowerTimerEditList(Screen):
 			}, -1)
 		self.session.nav.PowerTimer.on_state_change.append(self.onStateChange)
 		self.onShown.append(self.updateState)
+		self["timerlist"].selectionChanged()
 
 	def createSummary(self):
 		return PowerTimerEditListSummary
