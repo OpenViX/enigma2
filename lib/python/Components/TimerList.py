@@ -143,7 +143,7 @@ class TimerList(GUIComponent):
 		self.eventNameFont = gFont("Regular", 18)
 
 		self.l.setList(list)
-		self.listCount = len(list)
+		self.listCount = len(list)  # used by pager
 		self.itemHeight = 50
 		self.rowSplit = 25
 		self.iconMargin = 4
@@ -209,7 +209,7 @@ class TimerList(GUIComponent):
 
 	def setList(self, list):
 		self.l.setList(list)
-		self.listCount = len(list)
+		self.listCount = len(list)  # used by pager
 		self.selectionChanged()
 
 	def postWidgetCreate(self, instance):
