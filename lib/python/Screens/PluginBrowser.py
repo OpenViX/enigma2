@@ -1,8 +1,7 @@
 from os import path, unlink
-from time import time
 
 from enigma import eConsoleAppContainer, eDVBDB, eTimer
-from boxbranding import getImageVersion, getImageType, getMachineBrand, getMachineName
+from boxbranding import getImageType, getMachineBrand, getMachineName
 
 from Components.ActionMap import ActionMap, NumberActionMap
 from Components.Button import Button
@@ -214,7 +213,7 @@ class PluginBrowser(Screen, ProtectedScreen):
 				self.list = [self.list[-1]] + self.list[:-1]
 			else:
 				self.list[currentIndex], self.list[swapIndex] = self.list[swapIndex], self.list[currentIndex]
-			self["list"].l.setList(self.list)
+			self["list"].setList(self.list)
 			if direction == 1:
 				self["list"].down()
 			else:
@@ -234,7 +233,7 @@ class PluginBrowser(Screen, ProtectedScreen):
 				self.list.append(PluginEntryComponent(plugin[0], self.listWidth))
 				pluginlist.remove(plugin[0])
 		self.list = self.list + [PluginEntryComponent(plugin, self.listWidth) for plugin in pluginlist]
-		self["list"].l.setList(self.list)
+		self["list"].setList(self.list)
 
 	def delete(self):
 		config.misc.pluginbrowser.po.value = False
@@ -631,7 +630,7 @@ class PluginDownloadBrowser(Screen):
 
 		if self.type == self.UPDATE:
 			self.list = updatedlist
-			self["list"].l.setList(updatedlist)
+			self["list"].setList(updatedlist)
 			return
 
 		for x in self.pluginlist:
@@ -680,7 +679,7 @@ class PluginDownloadBrowser(Screen):
 			else:
 				updatedlist.append(PluginCategoryComponent(x, expandableIcon, self.listWidth))
 		self.list = updatedlist
-		self["list"].l.setList(updatedlist)
+		self["list"].setList(updatedlist)
 
 
 language.addCallback(languageChanged)

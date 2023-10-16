@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from __future__ import print_function
 import six
 
 import sys
@@ -23,7 +22,7 @@ class parseXML(ContentHandler, LexicalHandler):
 		self.isPointsElement, self.isReboundsElement = 0, 0
 		self.attrlist = attrlist
 		self.last_comment = None
-		self.ishex = re.compile('#[0-9a-fA-F]+\Z')
+		self.ishex = re.compile(r'#[0-9a-fA-F]+\Z')
 
 	def comment(self, comment):
 		if "TRANSLATORS:" in comment:
@@ -65,7 +64,7 @@ for arg in sys.argv[1:]:
 		print('#: ' + arg)
 		k.replace("\\n", "\"\n\"")
 		if c:
-			for l in c.split('\n'):
+			for l in c.split('\n'):  # noqa: E741
 				print("#. ", l)
 		print('msgid "' + six.ensure_str(k) + '"')
 		print('msgstr ""')

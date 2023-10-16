@@ -1,11 +1,8 @@
-from time import localtime, time, strftime
-
-from enigma import eEPGCache, eListbox, eListboxPythonMultiContent, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
+from enigma import eListbox, eListboxPythonMultiContent, gFont, eRect, RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, RT_WRAP, BT_SCALE
 
 from skin import parseColor, parseFont, parseScale, applySkinFactor
 from Components.GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
-from Tools.Alternatives import CompareWithAlternatives
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
 from Tools.LoadPixmap import LoadPixmap
 
@@ -192,28 +189,28 @@ class EPGBouquetList(GUIComponent):
 		if self.graphic:
 			if borderTopPix is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(left, r1.top()),
-						size=(r1.width(), self.borderWidth),
-						png=borderTopPix,
-						flags=BT_SCALE))
+					pos=(left, r1.top()),
+					size=(r1.width(), self.borderWidth),
+					png=borderTopPix,
+					flags=BT_SCALE))
 			if borderBottomPix is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(left, r1.height() - self.borderWidth),
-						size=(r1.width(), self.borderWidth),
-						png=borderBottomPix,
-						flags=BT_SCALE))
+					pos=(left, r1.height() - self.borderWidth),
+					size=(r1.width(), self.borderWidth),
+					png=borderBottomPix,
+					flags=BT_SCALE))
 			if borderLeftPix is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(left, r1.top()),
-						size=(self.borderWidth, r1.height()),
-						png=borderLeftPix,
-						flags=BT_SCALE))
+					pos=(left, r1.top()),
+					size=(self.borderWidth, r1.height()),
+					png=borderLeftPix,
+					flags=BT_SCALE))
 			if borderRightPix is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(r1.width() - self.borderWidth, left),
-						size=(self.borderWidth, r1.height()),
-						png=borderRightPix,
-						flags=BT_SCALE))
+					pos=(r1.width() - self.borderWidth, left),
+					size=(self.borderWidth, r1.height()),
+					png=borderRightPix,
+					flags=BT_SCALE))
 
 		return res
 

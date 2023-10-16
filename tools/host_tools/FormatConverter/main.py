@@ -1,12 +1,12 @@
 #!/usr/bin/python
 from os import system as ossystem
 
-from datasource import genericdatasource
-from satxml import satxml
-from lamedb import lamedb
-from input import *
+from . import datasource
+from . import satxml
+from . import lamedb
+from . import input
 
-maindata = genericdatasource()
+maindata = datasource.genericdatasource()
 
 sources = [satxml, lamedb]
 
@@ -23,7 +23,7 @@ while True:
 	list = []
 	for index in list(range(len(datasources))):
 		list.append(datasources[index].getName() + (" (%d sats)" % len(datasources[index].transponderlist.keys())))
-	index = inputChoices(list, "q", "quit")
+	index = input.inputChoices(list, "q", "quit")
 	if index is None:
 		break
 
@@ -32,11 +32,8 @@ while True:
 		list = []
 		for action in datasources[index].getCapabilities():
 			list.append(action[0])
-		action = inputChoices(list)
+		action = input.inputChoices(list)
 		if action is None:
 			break
 
 		datasources[index].getCapabilities()[action][1]()
-		#except:
-		#	print sys.exc_info()
-		#	print "sorry, could not execute that command"

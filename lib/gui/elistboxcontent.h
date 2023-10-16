@@ -20,6 +20,7 @@ public:
 	void invalidateEntry(int index);
 	void invalidate();
 	eSize getItemSize() { return m_itemsize; }
+	int getMaxItemTextWidth();
 #ifndef SWIG
 protected:
 	void cursorHome();
@@ -53,6 +54,7 @@ protected:
 	ePtr<gFont> m_font;
 	int m_itemheight;
 	int m_itemwidth;
+	int m_max_text_width;
 	int m_orientation;
 #endif
 };
@@ -93,6 +95,7 @@ public:
 	void resetClip();
 	void entryRemoved(int idx);
 	void setTemplate(SWIG_PYOBJECT(ePyObject) tmplate);
+	int getMaxItemTextWidth();
 private:
 	std::map<int, ePtr<gFont> > m_font;
 };

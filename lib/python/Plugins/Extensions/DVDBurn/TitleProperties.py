@@ -1,12 +1,12 @@
 from enigma import ePicLoad
 
 from Components.ActionMap import ActionMap
-from Components.Sources.StaticText import StaticText
-from Components.Pixmap import Pixmap
 from Components.config import config, getConfigListEntry, ConfigInteger
 from Components.ConfigList import ConfigListScreen
-from Components.AVSwitch import AVSwitch
+from Components.Pixmap import Pixmap
+from Components.Sources.StaticText import StaticText
 from Screens.Screen import Screen
+from Tools.ISO639 import LanguageCodes
 from . import DVDTitle
 
 
@@ -52,11 +52,11 @@ class TitleProperties(ConfigListScreen, Screen):
 
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
-		    "green": self.exit,
-		    "red": self.cancel,
-		    "yellow": self.editTitle,
-		    "cancel": self.cancel,
-		    "ok": self.ok,
+			"green": self.exit,
+			"red": self.cancel,
+			"yellow": self.editTitle,
+			"cancel": self.cancel,
+			"ok": self.ok,
 		}, -2)
 
 		self.onShown.append(self.update)
@@ -108,8 +108,7 @@ class TitleProperties(ConfigListScreen, Screen):
 
 	def loadThumb(self):
 		thumbfile = self.project.titles[self.title_idx].inputfile.rsplit('.', 1)[0] + ".png"
-		sc = AVSwitch().getFramebufferScale()
-		self.picload.setPara((self["thumbnail"].instance.size().width(), self["thumbnail"].instance.size().height(), sc[0], sc[1], False, 1, "#00000000"))
+		self.picload.setPara((self["thumbnail"].instance.size().width(), self["thumbnail"].instance.size().height(), 1, 1, False, 1, "#00000000"))
 		self.picload.startDecode(thumbfile)
 
 	def paintThumbPixmapCB(self, picInfo=None):
@@ -135,19 +134,16 @@ class TitleProperties(ConfigListScreen, Screen):
 			self.project.titles.insert(new_pos - 1, swaptitle)
 
 	def ok(self):
-		#key = self.keydict[self["config"].getCurrent()[1]]
-		#if key in self.project.filekeys:
-			#self.session.openWithCallback(self.FileBrowserClosed, FileBrowser, key, self.settings)
+		# key = self.keydict[self["config"].getCurrent()[1]]
+		# if key in self.project.filekeys:
+		# 	self.session.openWithCallback(self.FileBrowserClosed, FileBrowser, key, self.settings)
 		pass
 
 	def cancel(self):
 		self.close()
 
 
-from Tools.ISO639 import LanguageCodes
-
-
-class LanguageChoices():
+class LanguageChoices:
 	def __init__(self):
 		from Components.Language import language as syslanguage
 		syslang = syslanguage.getLanguage()[:2]

@@ -1,8 +1,6 @@
 from os import listdir, path, readlink, symlink, unlink
 from enigma import eConsoleAppContainer
 
-from Components.config import config
-
 
 class CamControl:
 	'''CAM convention is that a softlink named /etc/init.c/softcam.* points
@@ -34,7 +32,7 @@ class CamControl:
 
 	def current(self):
 		try:
-			l = readlink(self.link)
+			l = readlink(self.link)  # noqa: E741
 			prefix = self.name + '.'
 			return path.split(l)[1].split(prefix, 2)[1]
 		except:

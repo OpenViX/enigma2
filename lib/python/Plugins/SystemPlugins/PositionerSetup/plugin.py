@@ -1,12 +1,10 @@
-from enigma import eTimer, eDVBResourceManager, eDVBDiseqcCommand, eDVBFrontendParametersSatellite, iDVBFrontend
+from enigma import eTimer, eDVBResourceManager, eDVBDiseqcCommand, eDVBFrontendParametersSatellite, eDVBSatelliteEquipmentControl, iDVBFrontend
 
 from time import sleep
 from operator import mul as mul
 from random import SystemRandom as SystemRandom
 from threading import Thread as Thread
 from threading import Event as Event
-
-from enigma import eTimer, eDVBSatelliteEquipmentControl, eDVBResourceManager, eDVBDiseqcCommand, eDVBFrontendParametersSatellite, iDVBFrontend
 
 from Components.ActionMap import NumberActionMap, ActionMap
 from Components.Button import Button
@@ -30,7 +28,6 @@ from Screens.Screen import Screen
 from Tools.Transponder import ConvertToHumanReadable
 from Tools.Hex2strColor import Hex2strColor
 from skin import parameters
-
 
 from . import log
 from . import rotor_calc
@@ -1466,9 +1463,9 @@ class TunerScreen(ConfigListScreen, Screen):
 		orb_pos = self.fe_data.get("orbital_position", None)
 		self.tuning = ConfigSubsection()
 		self.tuning.type = ConfigSelection(
-				default="manual_transponder",
-				choices={"manual_transponder": _("Manual transponder"),
-							"predefined_transponder": _("Predefined transponder")})
+			default="manual_transponder",
+			choices={"manual_transponder": _("Manual transponder"),
+						"predefined_transponder": _("Predefined transponder")})
 		self.tuning.sat = ConfigSatlist(list=satlist)
 		if orb_pos is not None:
 			orb_pos_str = str(orb_pos)
@@ -1490,7 +1487,6 @@ class TunerScreen(ConfigListScreen, Screen):
 			"pls_mode": eDVBFrontendParametersSatellite.PLS_Gold,
 			"pls_code": eDVBFrontendParametersSatellite.PLS_Default_Gold_Code}
 		if frontendData is not None:
-			ttype = frontendData.get("tuner_type", "UNKNOWN")
 			defaultSat["system"] = frontendData.get("system", eDVBFrontendParametersSatellite.System_DVB_S)
 			defaultSat["frequency"] = frontendData.get("frequency", 0) // 1000
 			defaultSat["inversion"] = frontendData.get("inversion", eDVBFrontendParametersSatellite.Inversion_Unknown)

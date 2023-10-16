@@ -1,13 +1,8 @@
-from boxbranding import getMachineBuild
 from Components.ActionMap import ActionMap
-from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
-from Components.config import config
-from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
 from Screens.Console import Console
 from Screens.Screen import Screen
-from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
 from Tools.BoundFunction import boundFunction
 
@@ -61,9 +56,9 @@ class H9SDmanager(Screen):
 			cmdlist.append("umount /dev/mmcblk0p1")
 			cmdlist.append("dd if=/dev/zero of=/dev/mmcblk0p1 bs=1M count=150")
 			cmdlist.append("mkfs.ext4 -L 'H9-ROOTFS' /dev/mmcblk0p1")
-#			cmdlist.append("parted -s /dev/mmcblk0 rm 1")
-#			cmdlist.append("parted -s /dev/mmcblk0 mklabel gpt")
-#			cmdlist.append("parted -s /dev/mmcblk0 mkpart rootfs2 ext4 0% 100%")
+			# cmdlist.append("parted -s /dev/mmcblk0 rm 1")
+			# cmdlist.append("parted -s /dev/mmcblk0 mklabel gpt")
+			# cmdlist.append("parted -s /dev/mmcblk0 mkpart rootfs2 ext4 0% 100%")
 			cmdlist.append("mkdir /tmp/mmc")
 			cmdlist.append("mount /dev/mmcblk0p1 /tmp/mmc")
 			cmdlist.append("mkdir /tmp/root")
@@ -81,21 +76,21 @@ class H9SDmanager(Screen):
 		self.session.open(TryQuitMainloop, 2)
 
 	def USBInit(self):
-			self.TITLE = _("Init Zgemma H9 USB/SDA1 - please reboot after use.")
-			cmdlist = []
-			cmdlist.append("opkg update")
-			cmdlist.append("opkg install rsync")
-			cmdlist.append("umount /dev/mmcblk0p1")
-			cmdlist.append("dd if=/dev/zero of=/dev/sda1 bs=1M count=150")
-			cmdlist.append("mkfs.ext4 -L 'H9-ROOTFS' /dev/sda1")
-#			cmdlist.append("mkfs.ext4 -L 'rootfs2' /dev/sda1")
-			cmdlist.append("mkdir /tmp/mmc")
-			cmdlist.append("mount /dev/mmcblk0p1 /tmp/mmc")
-			cmdlist.append("mkdir /tmp/root")
-			cmdlist.append("mount --bind / /tmp/root")
-			cmdlist.append("rsync -aAX /tmp/root/ /tmp/mmc/")
-			cmdlist.append("umount /tmp/root")
-			cmdlist.append("umount /tmp/mmc")
-			cmdlist.append("rmdir /tmp/root")
-			cmdlist.append("rmdir /tmp/mmc")
-			self.session.open(Console, title=self.TITLE, cmdlist=cmdlist, closeOnSuccess=True)
+		self.TITLE = _("Init Zgemma H9 USB/SDA1 - please reboot after use.")
+		cmdlist = []
+		cmdlist.append("opkg update")
+		cmdlist.append("opkg install rsync")
+		cmdlist.append("umount /dev/mmcblk0p1")
+		cmdlist.append("dd if=/dev/zero of=/dev/sda1 bs=1M count=150")
+		cmdlist.append("mkfs.ext4 -L 'H9-ROOTFS' /dev/sda1")
+		# cmdlist.append("mkfs.ext4 -L 'rootfs2' /dev/sda1")
+		cmdlist.append("mkdir /tmp/mmc")
+		cmdlist.append("mount /dev/mmcblk0p1 /tmp/mmc")
+		cmdlist.append("mkdir /tmp/root")
+		cmdlist.append("mount --bind / /tmp/root")
+		cmdlist.append("rsync -aAX /tmp/root/ /tmp/mmc/")
+		cmdlist.append("umount /tmp/root")
+		cmdlist.append("umount /tmp/mmc")
+		cmdlist.append("rmdir /tmp/root")
+		cmdlist.append("rmdir /tmp/mmc")
+		self.session.open(Console, title=self.TITLE, cmdlist=cmdlist, closeOnSuccess=True)

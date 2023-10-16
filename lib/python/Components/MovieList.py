@@ -11,7 +11,6 @@ from Components.GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryProgress
 from Components.Renderer.Picon import getPiconName
 from Screens.LocationBox import defaultInhibitDirs
-from ServiceReference import ServiceReference
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
 from Tools.FuzzyDate import FuzzyTime
 from Tools.LoadPixmap import LoadPixmap
@@ -319,7 +318,7 @@ class MovieList(GUIComponent):
 			self.reloadDelayTimer.start(5000, 1)
 
 	def connectSelChanged(self, fnc):
-		if not fnc in self.onSelectionChanged:
+		if fnc not in self.onSelectionChanged:
 			self.onSelectionChanged.append(fnc)
 
 	def disconnectSelChanged(self, fnc):
@@ -730,13 +729,13 @@ class MovieList(GUIComponent):
 			here = path.realpath(rootPath)
 			MovieList.InTrashFolder = here.startswith(getTrashFolder(here))
 		else:
-	 		MovieList.InTrashFolder = False
+			MovieList.InTrashFolder = False
 		MovieList.UsingTrashSort = False
 		if MovieList.InTrashFolder:
 			if (config.usage.trashsort_deltime.value == "show record time"):
-		 		MovieList.UsingTrashSort = MovieList.TRASHSORT_SHOWRECORD
+				MovieList.UsingTrashSort = MovieList.TRASHSORT_SHOWRECORD
 			elif (config.usage.trashsort_deltime.value == "show delete time"):
-		 		MovieList.UsingTrashSort = MovieList.TRASHSORT_SHOWDELETE
+				MovieList.UsingTrashSort = MovieList.TRASHSORT_SHOWDELETE
 
 		while True:
 			serviceref = reflist.getNext()
@@ -770,7 +769,7 @@ class MovieList(GUIComponent):
 				if not name.endswith('.AppleDouble/') and not name.endswith('.AppleDesktop/') and not name.endswith('.AppleDB/') and not name.endswith('Network Trash Folder/') and not name.endswith('Temporary Items/'):
 					try:
 						begin = stat(serviceref.getPath()).st_mtime
-					except (FileNotFoundError, PermissionError) as err:  # possibly os.stat failed due to unavailable mount or a permission error over a network mount
+					except (FileNotFoundError, PermissionError):  # possibly os.stat failed due to unavailable mount or a permission error over a network mount
 						begin = 0
 						import traceback
 						traceback.print_exc()
@@ -786,7 +785,7 @@ class MovieList(GUIComponent):
 				# No tags? Auto tag!
 				this_tags = name.replace(',', ' ').replace('.', ' ').replace('_', ' ').replace(':', ' ').split()
 				# For auto tags, we are keeping a (tag, movies) dictionary.
-				#It will be used later to check if movies have a complete sentence in common.
+				# It will be used later to check if movies have a complete sentence in common.
 				for tag in this_tags:
 					if tag in autotags:
 						autotags[tag].append(name)
@@ -1054,7 +1053,7 @@ class MovieList(GUIComponent):
 		found = False
 		if currentIndex < (len(self.list) - 1):
 			itemsBelow = self.list[currentIndex + 1:]
-			#first search the items below the selection
+			# first search the items below the selection
 			for index, item in enumerate(itemsBelow):
 				# Just ignore any "root tagged" item - for which item[1] is None
 				if not item[1]:
@@ -1069,7 +1068,7 @@ class MovieList(GUIComponent):
 					found = True
 					self.instance.moveSelectionTo(index + currentIndex + 1)
 					break
-		if found == False and currentIndex > 0:
+		if found is False and currentIndex > 0:
 			itemsAbove = self.list[1:currentIndex]  # first item (0) points parent folder - no point to include
 			for index, item in enumerate(itemsAbove):
 				# Just ignore any "root tagged" item - for which item[1] is None

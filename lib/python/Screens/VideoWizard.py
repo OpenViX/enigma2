@@ -1,4 +1,3 @@
-from boxbranding import getBoxType, getMachineName, getHaveRCA, getHaveDVI, getHaveSCART, getHaveAVJACK
 from Screens.Wizard import WizardSummary
 from Screens.WizardLanguage import WizardLanguage
 from Screens.Rc import Rc
@@ -9,7 +8,7 @@ from Components.config import config, ConfigBoolean, configfile
 from Components.SystemInfo import SystemInfo
 
 from Tools.Directories import resolveFilename, SCOPE_SKIN, SCOPE_CURRENT_SKIN
-from Tools.HardwareInfo import HardwareInfo
+# from Tools.HardwareInfo import HardwareInfo
 
 config.misc.showtestcard = ConfigBoolean(default=False)
 

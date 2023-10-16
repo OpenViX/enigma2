@@ -6,7 +6,6 @@ from Components.PluginComponent import plugins
 from Components.Sources.StaticText import StaticText
 from .IPKInstaller import IpkgInstaller
 from Screens.Console import Console
-from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 
@@ -48,10 +47,11 @@ class VIXScriptRunner(IpkgInstaller):
 		self.skinName = ["VIXScriptRunner", "IpkgInstaller"]
 		self["key_green"] = StaticText(_("Run"))
 
-		self["myactions"] = ActionMap(["MenuActions"],
-									  {
-									  "menu": self.createSetup,
-									  }, -1)
+		self["myactions"] = ActionMap(
+			["MenuActions"],
+			{
+				"menu": self.createSetup,
+			}, -1)
 
 	def createSetup(self):
 		self.session.open(Setup, "vixscriptrunner", "SystemPlugins/ViX")

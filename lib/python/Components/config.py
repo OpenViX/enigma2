@@ -5,7 +5,6 @@ from enigma import getPrevAsciiCode
 from Tools.NumericalTextInput import NumericalTextInput
 from Tools.Directories import resolveFilename, SCOPE_CONFIG, fileExists
 from Components.Harddisk import harddiskmanager
-from Tools.LoadPixmap import LoadPixmap
 from copy import copy as copy_copy
 from os import fsync, path as os_path, rename, sep
 from time import localtime, strftime, mktime
@@ -509,11 +508,12 @@ class ConfigSelection(ConfigElement):
 		if self._descr is None:
 			self._descr = self.description[self.value]
 		from Components.config import config
-		from skin import switchPixmap
-		if self.graphic and config.usage.boolean_graphic.value == "yes" and "menu_on" in switchPixmap and "menu_off" in switchPixmap:
-			pixmap = "menu_on" if self._descr in (_('True'), _('true'), _('Yes'), _('yes'), _('Enable'), _('enable'), _('Enabled'), _('enabled'), _('On'), _('on')) else "menu_off" if self._descr in (_('False'), _('false'), _('No'), _('no'), _("Disable"), _('disable'), _('Disabled'), _('disabled'), _('Off'), _('off'), _('None'), _('none')) else None
-			if pixmap:
-				return ('pixmap', switchPixmap[pixmap])
+		if self.graphic and config.usage.boolean_graphic.value == "yes":
+			from skin import switchPixmap
+			if "menu_on" in switchPixmap and "menu_off" in switchPixmap:
+				pixmap = "menu_on" if self._descr in (_('True'), _('true'), _('Yes'), _('yes'), _('Enable'), _('enable'), _('Enabled'), _('enabled'), _('On'), _('on')) else "menu_off" if self._descr in (_('False'), _('false'), _('No'), _('no'), _("Disable"), _('disable'), _('Disabled'), _('disabled'), _('Off'), _('off'), _('None'), _('none')) else None
+				if pixmap:
+					return ('pixmap', switchPixmap[pixmap])
 		return ("text", self._descr)
 
 	# HTML
@@ -575,10 +575,11 @@ class ConfigBoolean(ConfigElement):
 		return self.descriptions[self.value]
 
 	def getMulti(self, selected):
-		from skin import switchPixmap
 		from Components.config import config
-		if self.graphic and config.usage.boolean_graphic.value in ("yes", "only_bool") and "menu_on" in switchPixmap and "menu_off" in switchPixmap:
-			return ('pixmap', switchPixmap["menu_on" if self.value else "menu_off"])
+		if self.graphic and config.usage.boolean_graphic.value in ("yes", "only_bool"):
+			from skin import switchPixmap
+			if "menu_on" in switchPixmap and "menu_off" in switchPixmap:
+				return ('pixmap', switchPixmap["menu_on" if self.value else "menu_off"])
 		return ("text", self.descriptions[self.value])
 
 	# For HTML Interface - Is this still used?
@@ -737,7 +738,6 @@ class ConfigSequence(ConfigElement):
 				number = getKeyNumber(key)
 
 			block_len = [len(str(x[1])) for x in self.limits]
-			total_len = sum(block_len)
 
 			pos = 0
 			blocknumber = 0
@@ -898,7 +898,8 @@ class ConfigIP(ConfigSequence):
 		else:
 			return "text", value
 
-	def getHTML(self, id):
+	def getHTML(self, id=0):
+		# I do not know why id is here but it is used in the sources renderer and I'm afraid we should keep it for compatibily. It is not used here but I give at a default value
 		# we definitely don't want leading zeros
 		return '.'.join(["%d" % d for d in self.value])
 
@@ -1021,7 +1022,7 @@ class ConfigMacText(ConfigElement, NumericalTextInput):
 				mark = list(range(0, min(self.visible_width, len(self.text))))
 			else:
 				mark = [self.marked_pos - self.offset]
-			return "mtext"[1 - selected:], six.ensure_str(text[self.offset:self.offset + self.visible_width]) + " ", mark
+			return "mtext"[1 - selected:], six.ensure_str(self.text[self.offset:self.offset + self.visible_width]) + " ", mark
 		else:
 			if self.allmarked:
 				mark = list(range(0, len(self.text)))
@@ -2282,7 +2283,7 @@ class ConfigFile:
 				ret = self.__resolveValue(names[1:], config.content.items)
 				if ret and len(ret):
 					return ret
-		#	print("[Config] getResolvedKey", key, "empty variable.")
+		# print("[Config] getResolvedKey", key, "empty variable.")
 		return ""
 
 

@@ -257,7 +257,7 @@ class TimerEntry(TimerEntryBase):
 			TimerEntryBase.decrementEnd(self)
 
 	def subserviceSelected(self, service):
-		if not service is None:
+		if service is not None:
 			self.timer.service_ref = ServiceReference(service[1])
 		self.saveTimer()
 		self.close((True, self.timer))

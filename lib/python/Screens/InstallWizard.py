@@ -69,7 +69,7 @@ class InstallWizard(ConfigListScreen, Screen):
 
 	def createMenu(self):
 		try:
-			test = self.index
+			test = self.index  # noqa: F841  # what is this?
 		except:
 			return
 		self.list = []

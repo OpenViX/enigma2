@@ -1,25 +1,23 @@
-from boxbranding import getImageVersion, getImageBuild, getImageDevBuild, getImageType, getImageDistro, getMachineBrand, getMachineName, getMachineBuild
-
 from enigma import eTimer, eDVBDB
 
-import Components.Task
-from Components.OnlineUpdateCheck import feedsstatuscheck, kernelMismatch, statusMessage
-from Screens.ChoiceBox import ChoiceBox
-from Screens.MessageBox import MessageBox
-from Screens.ParentalControlSetup import ProtectedScreen
-from Screens.Screen import Screen
-from Screens.Standby import TryQuitMainloop
-from Screens.GitCommitInfo import CommitInfo, gitcommitinfo
-from Components.ActionMap import ActionMap, NumberActionMap
+from boxbranding import getImageType, getMachineBrand, getMachineName
+from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.config import config
-from Components.Console import Console
 from Components.Ipkg import IpkgComponent
 from Components.Pixmap import Pixmap
 from Components.Label import Label
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
 from Components.Slider import Slider
+import Components.Task
+from Screens.ChoiceBox import ChoiceBox
+from Screens.GitCommitInfo import CommitInfo, gitcommitinfo
+from Screens.MessageBox import MessageBox
+from Components.OnlineUpdateCheck import feedsstatuscheck, kernelMismatch, statusMessage
+from Screens.ParentalControlSetup import ProtectedScreen
+from Screens.Screen import Screen
+from Screens.Standby import TryQuitMainloop
 from Tools.Directories import isPluginInstalled
 
 ocram = ''
@@ -222,19 +220,19 @@ class UpdatePlugin(Screen, ProtectedScreen):
 				self.slider.setValue(self.sliderPackages[param])
 			self.package.setText(param)
 			self.status.setText(_("Upgrading") + ": %s/%s" % (self.packages, self.total_packages))
-			if not param in self.processed_packages:
+			if param not in self.processed_packages:
 				self.processed_packages.append(param)
 				self.packages += 1
 		elif event == IpkgComponent.EVENT_INSTALL:
 			self.package.setText(param)
 			self.status.setText(_("Installing"))
-			if not param in self.processed_packages:
+			if param not in self.processed_packages:
 				self.processed_packages.append(param)
 				self.packages += 1
 		elif event == IpkgComponent.EVENT_REMOVE:
 			self.package.setText(param)
 			self.status.setText(_("Removing"))
-			if not param in self.processed_packages:
+			if param not in self.processed_packages:
 				self.processed_packages.append(param)
 				self.packages += 1
 		elif event == IpkgComponent.EVENT_CONFIGURING:

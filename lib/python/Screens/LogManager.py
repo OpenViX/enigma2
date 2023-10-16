@@ -1,8 +1,7 @@
 from os import path, remove, walk, stat, rmdir
-from time import time, ctime
+from time import time
 
-
-from enigma import eTimer, eBackgroundFileEraser, eLabel, getDesktop, gFont, fontRenderClass
+from enigma import eTimer, eBackgroundFileEraser, eLabel, gFont, fontRenderClass
 
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -159,7 +158,7 @@ class LogManager(Screen):
 		self["list"] = self.filelist
 		self["LogsSize"] = self.logsinfo = LogInfo(config.crash.debug_path.value, LogInfo.USED, update=False)
 		self.onLayoutFinish.append(self.layoutFinished)
-		if not self.selectionChanged in self["list"].onSelectionChanged:
+		if self.selectionChanged not in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
 	def createSummary(self):
@@ -373,14 +372,14 @@ class LogManagerFb(Screen):
 
 		self["actions"] = ActionMap(["ChannelSelectBaseActions", "WizardActions", "DirectionActions", "MenuActions", "NumberActions", "ColorActions"],
 			{
-			 "ok": self.ok,
-			 "back": self.exit,
-			 "up": self.goUp,
-			 "down": self.goDown,
-			 "left": self.goLeft,
-			 "right": self.goRight,
-			 "0": self.doRefresh,
-			 }, -1)
+				"ok": self.ok,
+				"back": self.exit,
+				"up": self.goUp,
+				"down": self.goDown,
+				"left": self.goLeft,
+				"right": self.goRight,
+				"0": self.doRefresh,
+			}, -1)
 		self.onLayoutFinish.append(self.mainlist)
 
 	def exit(self):

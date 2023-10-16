@@ -2,7 +2,6 @@ import chardet
 import datetime
 from os import path, uname
 import struct
-import time
 from sys import maxsize
 
 from enigma import eActionMap, eHdmiCEC, eTimer
@@ -362,7 +361,7 @@ class HdmiCec:
 			setFixedPhysicalAddress("0.0.0.0")			# no fixed physical address send 0 to eHdmiCec C++ driver
 		eHdmiCEC.getInstance().messageReceived.get().append(self.messageReceived)
 		config.misc.standbyCounter.addNotifier(self.onEnterStandby, initial_call=False)
-#		config.misc.DeepStandby.addNotifier(self.onEnterDeepStandby, initial_call=False)
+		# config.misc.DeepStandby.addNotifier(self.onEnterDeepStandby, initial_call=False)
 		self.volumeForwardingEnabled = False
 		self.volumeForwardingDestination = 0
 		self.wakeup_from_tv = False
@@ -595,24 +594,24 @@ class HdmiCec:
 				self.sendStandbyMessages()
 
 	def sendStandbyMessages(self):
-			messages = []
-			if config.hdmicec.control_tv_standby.value:
-				if self.useStandby and not self.handlingStandbyFromTV:
-					messages.append("standby")
-				else:
-					messages.append("sourceinactive")
-					self.useStandby = True
+		messages = []
+		if config.hdmicec.control_tv_standby.value:
+			if self.useStandby and not self.handlingStandbyFromTV:
+				messages.append("standby")
 			else:
-				if config.hdmicec.report_active_source.value:
-					messages.append("sourceinactive")
-				if config.hdmicec.report_active_menu.value:
-					messages.append("menuinactive")
-			if messages:
-				self.sendQMessages(0, messages)
+				messages.append("sourceinactive")
+				self.useStandby = True
+		else:
+			if config.hdmicec.report_active_source.value:
+				messages.append("sourceinactive")
+			if config.hdmicec.report_active_menu.value:
+				messages.append("menuinactive")
+		if messages:
+			self.sendQMessages(0, messages)
 
-			if config.hdmicec.control_receiver_standby.value:
-				self.sendMessage(5, "keypoweroff")
-				self.sendMessage(5, "standby")
+		if config.hdmicec.control_receiver_standby.value:
+			self.sendMessage(5, "keypoweroff")
+			self.sendMessage(5, "standby")
 
 	def standby(self):			# Standby initiated from TV
 		if not Screens.Standby.inStandby:

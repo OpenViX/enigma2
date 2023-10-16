@@ -1,5 +1,4 @@
-from __future__ import print_function
-from datasource import datasource
+from . import datasource
 
 
 class lamedb(datasource):
@@ -30,6 +29,8 @@ class lamedb(datasource):
 		transpondersreading = False
 		sats = {}
 		transponders = {}
+		tsid = None
+		onid = None
 		for line in lines:
 			if line.strip() == "transponders":
 				transpondersreading = True

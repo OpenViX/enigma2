@@ -1,8 +1,7 @@
 # -*- coding: UTF-8 -*-
 import gettext
 import locale
-from os import listdir, environ, mkdir, path, stat, system
-from shutil import rmtree
+from os import listdir, environ, mkdir, path, system
 from time import time, localtime, strftime
 from Tools.Directories import SCOPE_LANGUAGE, resolveFilename
 

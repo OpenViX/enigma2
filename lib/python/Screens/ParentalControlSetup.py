@@ -1,13 +1,12 @@
-from Screens.Screen import Screen
-from Components.ConfigList import ConfigListScreen
-from Components.config import config, getConfigListEntry, ConfigNothing, NoSave, ConfigPIN, configfile
-
-from Screens.ChoiceBox import ChoiceBox
-from Screens.MessageBox import MessageBox
-from Screens.InputBox import PinInput
-from Tools.BoundFunction import boundFunction
-from enigma import eServiceCenter, eTimer, eServiceReference
 from operator import itemgetter
+
+from Components.config import config, getConfigListEntry, ConfigNothing, NoSave, ConfigPIN, configfile
+from Components.ConfigList import ConfigListScreen
+from Screens.ChoiceBox import ChoiceBox
+from Screens.InputBox import PinInput
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
+from Tools.BoundFunction import boundFunction
 
 
 class ProtectedScreen:
@@ -116,7 +115,7 @@ class ParentalControlSetup(ConfigListScreen, Screen, ProtectedScreen):
 	def oldPinEntered(self, answer):
 		if answer:
 			self.session.openWithCallback(self.newPinEntered, PinInput, title=_("Please enter the new PIN code"), windowTitle=_("Enter pin code"))
-		elif answer == False:
+		elif answer is False:
 			self.session.open(MessageBox, _("The pin code you entered is wrong."), MessageBox.TYPE_ERROR, timeout=3)
 
 	def newPinEntered(self, answer):

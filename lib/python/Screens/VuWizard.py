@@ -1,5 +1,4 @@
 import glob
-from time import sleep
 from boxbranding import getBoxType, getMachineMtdKernel, getMachineMtdRoot
 from Components.config import config, configfile
 from Components.Console import Console
@@ -7,7 +6,6 @@ from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
 from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
-from Screens.Screen import Screen
 from Screens.WizardLanguage import WizardLanguage
 from Tools.Directories import fileExists, pathExists, resolveFilename, SCOPE_SKIN
 
@@ -161,25 +159,25 @@ class VuWizard(WizardLanguage, Rc):
 		self.ConsoleS.ePopen("/usr/bin/opkg list_installed", self.readOpkg)
 
 	def readOpkg(self, result, retval, extra_args):
-#		print("[VuWizard] retval, result", retval, "   ", result)
+		# print("[VuWizard] retval, result", retval, "   ", result)
 		if result:
 			cmdlist = []
 			opkg_installed_list = result.split("\n")										# python list installed elements
-#			print("[VuWizard] opkg_installed_list", opkg_installed_list)
+			# print("[VuWizard] opkg_installed_list", opkg_installed_list)
 			for opkg_element in opkg_installed_list:										# element e.g. opkg_status aio-grab - 1.0+git116+30847a1-r0
 				if bool([x for x in patterns if x in opkg_element]):
 					parts = opkg_element.strip().split()
-#					print("[VuWizard]1 parts, parts0", parts, "   ", parts[0])
+					# print("[VuWizard]1 parts, parts0", parts, "   ", parts[0])
 					cmdlist.append("/usr/bin/opkg remove --autoremove --add-dest /:/ " + parts[0] + " --force-remove --force-depends")
 					continue
 				if bool([x for x in patterns_locale if x in opkg_element]):
 					if "en-gb" in opkg_element or "meta" in opkg_element:		# en-gb for OpenViX default - ensure don't clear .po
 						continue
 					parts = opkg_element.strip().split()
-#					print("[VuWizard]2 parts, parts0", parts, "   ", parts[0])
+					# print("[VuWizard]2 parts, parts0", parts, "   ", parts[0])
 					cmdlist.append("/usr/bin/opkg remove --autoremove --add-dest /:/ " + parts[0] + " --force-remove --force-depends")
 					continue
-#			print("[VuWizard] cmdlist", cmdlist)
+					# print("[VuWizard] cmdlist", cmdlist)
 			if cmdlist:
 				cmdlist.append("rm -f /usr/share/fonts/wqy-microhei.ttc")
 				self.Console.eBatch(cmdlist, self.bootSlot, debug=False)

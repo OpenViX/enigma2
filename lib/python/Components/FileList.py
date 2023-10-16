@@ -144,7 +144,7 @@ class FileList(MenuList):
 
 	def getCurrentEvent(self):
 		l = self.l.getCurrentSelection()
-		if not l or l[0][1] == True:
+		if not l or l[0][1] is True:
 			return None
 		else:
 			return self.serviceHandler.info(l[0][0]).getEvent(l[0][0])

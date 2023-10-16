@@ -4,7 +4,6 @@ from Components.Label import Label
 from Components.config import config
 from Components.PowerTimerList import PowerTimerList
 from Components.Sources.StaticText import StaticText
-from Components.Sources.StaticText import StaticText
 from PowerTimer import PowerTimerEntry, AFTEREVENT
 from Screens.Screen import Screen
 from Screens.ChoiceBox import ChoiceBox
@@ -60,6 +59,7 @@ class PowerTimerEditList(Screen):
 			}, -1)
 		self.session.nav.PowerTimer.on_state_change.append(self.onStateChange)
 		self.onShown.append(self.updateState)
+		self["timerlist"].selectionChanged()
 
 	def createSummary(self):
 		return PowerTimerEditListSummary
@@ -151,7 +151,7 @@ class PowerTimerEditList(Screen):
 
 		showCleanup = True
 		for x in self.list:
-			if (not x[0].disabled) and (x[1] == True):
+			if (not x[0].disabled) and (x[1] is True):
 				break
 		else:
 			showCleanup = False

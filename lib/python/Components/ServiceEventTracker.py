@@ -8,7 +8,7 @@ class InfoBarBase:
 
 	@staticmethod
 	def connectInfoBarOpened(fnc):
-		if not fnc in InfoBarBase.onInfoBarOpened:
+		if fnc not in InfoBarBase.onInfoBarOpened:
 			InfoBarBase.onInfoBarOpened.append(fnc)
 
 	@staticmethod
@@ -23,7 +23,7 @@ class InfoBarBase:
 
 	@staticmethod
 	def connectInfoBarClosed(fnc):
-		if not fnc in InfoBarBase.onInfoBarClosed:
+		if fnc not in InfoBarBase.onInfoBarClosed:
 			InfoBarBase.onInfoBarClosed.append(fnc)
 
 	@staticmethod
@@ -37,6 +37,7 @@ class InfoBarBase:
 			x(infobar)
 
 	def __init__(self, steal_current_service=False):
+		self.av_config = {}  # add this here so to prevent crashes in plugins that doesnt inherit InfobarShowHide
 		if steal_current_service:
 			ServiceEventTracker.setActiveInfoBar(self, None, None)
 		else:
@@ -94,7 +95,7 @@ class ServiceEventTracker:
 			pass
 		set.InfoBarStack.append(infobar)
 		set.InfoBarStackSize += 1
-#		print "ServiceEventTracker set active '" + str(infobar) + "'"
+		# print "ServiceEventTracker set active '" + str(infobar) + "'"
 
 	@staticmethod
 	def popActiveInfoBar():
@@ -107,8 +108,8 @@ class ServiceEventTracker:
 			old_service = nav.getCurrentService()
 			set.oldServiceStr = old_service and old_service.getPtrString()
 			set.oldRef = nav.getCurrentlyPlayingServiceOrGroup()
-#			if set.InfoBarStackSize:
-#				print "ServiceEventTracker reset active '" + str(stack[set.InfoBarStackSize-1]) + "'"
+			# if set.InfoBarStackSize:
+			# 	print "ServiceEventTracker reset active '" + str(stack[set.InfoBarStackSize-1]) + "'"
 
 	@staticmethod
 	def getActiveInfoBar():

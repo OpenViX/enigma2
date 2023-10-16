@@ -1,6 +1,6 @@
 from Components.MenuList import MenuList
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
-from enigma import eListboxPythonMultiContent, gFont, RT_HALIGN_LEFT, RT_VALIGN_CENTER
+from enigma import eListboxPythonMultiContent, gFont, RT_HALIGN_LEFT
 from Tools.LoadPixmap import LoadPixmap
 from skin import applySkinFactor, fonts, parameters
 

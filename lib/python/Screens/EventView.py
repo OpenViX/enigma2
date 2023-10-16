@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from time import localtime, mktime, time, strftime
+from time import localtime, strftime
 
 from enigma import eEPGCache, eTimer, eServiceReference, ePoint
 
 from Screens.Screen import Screen
-from Screens.TimerEdit import TimerSanityConflict
 from Screens.TimerEntry import TimerEntry, addTimerFromEvent
 from Screens.ChoiceBox import ChoiceBox
 from Components.ActionMap import ActionMap
@@ -19,8 +18,6 @@ from Components.Pixmap import Pixmap
 from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.Event import Event
 from RecordTimer import AFTEREVENT
-from Components.Sources.StaticText import StaticText
-from Screens.TimerEntry import TimerEntry, addTimerFromEvent
 from Plugins.Plugin import PluginDescriptor
 from Tools.BoundFunction import boundFunction
 
@@ -36,7 +33,8 @@ class EventViewContextMenu(Screen):
 			{
 				"ok": self.okbuttonClick,
 				"cancel": self.cancelClick
-			})
+			}
+		)
 
 		self["menu"] = MenuList(menu)
 		if self.updateDescription not in self["menu"].onSelectionChanged:
@@ -91,7 +89,8 @@ class EventViewBase:
 		self['dialogactions'] = ActionMap(['WizardActions'],
 			{
 				'back': self.closeChoiceBoxDialog,
-			}, -1)
+			}, -1
+		)
 		self['dialogactions'].csel = self
 		self["dialogactions"].setEnabled(False)
 		self.onLayoutFinish.append(self.onCreate)
@@ -148,8 +147,8 @@ class EventViewBase:
 				self["epgactions2"].setEnabled(False)
 			if "epgactions3" in self:
 				self["epgactions3"].setEnabled(False)
-			cb_func1 = lambda ret: self.removeTimer(timer)
-			cb_func2 = lambda ret: self.editTimer(timer)
+			cb_func1 = lambda ret: self.removeTimer(timer)  # noqa: E731
+			cb_func2 = lambda ret: self.editTimer(timer)  # noqa: E731
 			menu = [(_("Delete Timer"), 'CALLFUNC', callback, cb_func1), (_("Edit Timer"), 'CALLFUNC', callback, cb_func2)]
 			self.ChoiceBoxDialog = self.session.instantiateDialog(ChoiceBox, title=_("Select action for timer %s:") % event.getEventName(), list=menu, keys=['green', 'blue'], skin_name="RecordTimerQuestion")
 			self.ChoiceBoxDialog.instance.move(ePoint(self.instance.position().x() + self["key_green"].getPosition()[0], self.instance.position().y() + self["key_green"].getPosition()[1] - self["key_green"].instance.size().height()))
@@ -265,7 +264,7 @@ class EventViewBase:
 		if self.event:
 			menu = []
 			for p in plugins.getPlugins(PluginDescriptor.WHERE_EVENTINFO):
-				#only list service or event specific eventinfo plugins here, no servelist plugins
+				# only list service or event specific eventinfo plugins here, no servelist plugins
 				if "servicelist" not in p.fnc.__code__.co_varnames:
 					menu.append((p.name, boundFunction(self.runPlugin, p), p))
 			if menu:
@@ -299,7 +298,8 @@ class EventViewEPGSelect(Screen, EventViewBase):
 			{
 				"timerAdd": self.timerAdd,
 				"openSimilarList": self.openSimilarList,
-			})
+			}
+		)
 		self["key_green"] = Button("")
 
 		if singleEPGCB:
@@ -307,7 +307,8 @@ class EventViewEPGSelect(Screen, EventViewBase):
 			self["epgactions2"] = ActionMap(["EventViewEPGActions"],
 				{
 					"openSingleServiceEPG": singleEPGCB,
-				})
+				}
+			)
 		else:
 			self["key_yellow"] = Button("")
 			self["yellow"].hide()
@@ -317,7 +318,8 @@ class EventViewEPGSelect(Screen, EventViewBase):
 			self["epgactions3"] = ActionMap(["EventViewEPGActions"],
 				{
 					"openMultiServiceEPG": multiEPGCB,
-				})
+				}
+			)
 		else:
 			self["key_blue"] = Button("")
 			self["blue"].hide()

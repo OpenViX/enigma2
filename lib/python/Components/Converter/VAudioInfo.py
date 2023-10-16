@@ -4,6 +4,46 @@ from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
 from Components.Element import cached
 
+# Common function to standardize the display of Audio Codecs
+# _acedits is a list of text conversions (from, to) that are done in the
+# order given.
+#
+_acedits = (
+	("A_", ""),
+	("AC-3", "AC3"),
+	("(ATSC A/52)", ""),
+	("(ATSC A/52B)", ""),
+	(" Layer 2 (MP2)", ""),
+	(" Layer 3 (MP3)", "MP3"),
+	("-1", ""),
+	("-2", ""),
+	("2-", ""),
+	("-4 AAC", "AAC"),
+	("4-AAC", "HE-AAC"),
+	("audio", ""),
+	("/L3", ""),
+	("/mpeg", "AAC"),
+	("/x-", ""),
+	("raw", "Dolby TrueHD"),
+	("E-AC3", "AC3+"),
+	("EAC3", "AC3+"),
+	("IPCM", "AC3"),
+	("LPCM", "AC3+"),
+	("AAC_PLUS", "AAC+"),
+	("AAC_LATM", "AAC"),
+	("WMA/PRO", "WMA Pro"),
+	("MPEG", "MPEG1 Layer II"),
+	("MPEG1 Layer II AAC", "AAC"),
+	("MPEG1 Layer IIAAC", "AAC"),
+	("MPEG1 Layer IIMP3", "MP3"),
+)
+
+
+def StdAudioDesc(description):
+	for orig, repl in _acedits:
+		description = description.replace(orig, repl)
+	return description
+
 
 class VAudioInfo(Poll, Converter, object):
 	GET_AUDIO_ICON = 0
@@ -36,17 +76,17 @@ class VAudioInfo(Poll, Converter, object):
 			"17_vorbis": ("vorbis",),
 			"18_opus": ("opus",),
 			"19_amr": ("amr",),
-			}
+		}
 		self.codec_info = {
 			"dolbytruehd": ("51", "20", "71"),
 			"dolbydigitalplus": ("51", "20", "71"),
 			"dolbydigital": ("51", "20", "71"),
 			"wma": ("8", "9"),
-			}
+		}
 		self.type, self.interesting_events = {
 			"AudioIcon": (self.GET_AUDIO_ICON, (iPlayableService.evUpdatedInfo,)),
 			"AudioCodec": (self.GET_AUDIO_CODEC, (iPlayableService.evUpdatedInfo,)),
-			}[type]
+		}[type]
 
 	def getAudio(self):
 		service = self.source.service
@@ -69,10 +109,10 @@ class VAudioInfo(Poll, Converter, object):
 		return languages
 
 	def getAudioCodec(self, info):
-		description_str = _("unknown")
+		description_str = _("N/A")
 		if self.getAudio():
 			languages = self.getLanguage()
-			description = self.audio_info.getDescription().replace("A_", "").replace("AC-3", "AC3").replace("(ATSC A/52)", "").replace("(ATSC A/52B)", "").replace(" Layer 2 (MP2)", "").replace(" Layer 3 (MP3)", "MP3").replace("-1", "").replace("-2", "").replace("2-", "").replace("-4 AAC", "AAC").replace("4-AAC", "HE-AAC").replace("audio", "").replace("/L3", "").replace("/mpeg", "AAC").replace("/x-", "").replace("raw", "Dolby TrueHD").replace("E-AC3", "AC3+").replace("EAC3", "AC3+").replace("IPCM", "AC3").replace("LPCM", "AC3+").replace("AAC_PLUS", "AAC+").replace("AAC_LATM", "AAC").replace("WMA/PRO", "WMA Pro").replace("MPEG", "MPEG1 Layer II").replace("MPEG1 Layer II AAC", "AAC").replace("MPEG1 Layer IIAAC", "AAC").replace("MPEG1 Layer IIMP3", "MP3") or ""
+			description = StdAudioDesc(self.audio_info.getDescription()) or ""
 			description_str = description.split(" ")
 			if len(description_str) and description_str[0] in languages:
 				return languages

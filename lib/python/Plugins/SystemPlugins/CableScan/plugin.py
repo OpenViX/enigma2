@@ -243,7 +243,7 @@ CableScanAutoStartTimer = eTimer()
 
 
 def CableScanMain(session, **kwargs):
-		session.open(CableScanScreen, nimmanager.getEnabledNimListOfType("DVB-C"))
+	session.open(CableScanScreen, nimmanager.getEnabledNimListOfType("DVB-C"))
 
 
 def restartScanAutoStartTimer(reply=False):

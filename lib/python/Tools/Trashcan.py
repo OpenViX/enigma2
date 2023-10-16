@@ -1,7 +1,6 @@
-import os
+from os import access, mkdir, path as ospath, rmdir, stat, statvfs, walk, W_OK
 import enigma
 import time
-
 
 from Components.config import config
 from Components.GUIComponent import GUIComponent
@@ -11,23 +10,23 @@ from Components.VariableText import VariableText
 
 
 def isTrashFolder(path):
-	path = os.path.realpath(path)
+	path = ospath.realpath(path)
 	return getTrashFolder(path) == path
 
 
 def getTrashFolder(path=None):
 	# Returns trash folder without symlinks
 	try:
-		if path is None or os.path.realpath(path) == "/media/autofs":
+		if path is None or ospath.realpath(path) == "/media/autofs":
 			return ""
 		else:
-			trashcan = Harddisk.findMountPoint(os.path.realpath(path))
+			trashcan = Harddisk.findMountPoint(ospath.realpath(path))
 			if "/movie" in path:
-				trashcan = os.path.join(trashcan, "movie")
+				trashcan = ospath.join(trashcan, "movie")
 			elif config.usage.default_path.value in path:
 				# if default_path happens to not be the default /hdd/media/movie, then we can have a trash folder there instead
-				trashcan = os.path.join(trashcan, config.usage.default_path.value)
-			return os.path.realpath(os.path.join(trashcan, ".Trash"))
+				trashcan = ospath.join(trashcan, config.usage.default_path.value)
+			return ospath.realpath(ospath.join(trashcan, ".Trash"))
 	except:
 		return None
 
@@ -35,10 +34,10 @@ def getTrashFolder(path=None):
 def createTrashFolder(path=None):
 	trash = getTrashFolder(path)
 	print("[Trashcan] Debug path %s => %s" % (path, trash))
-	if trash and os.access(os.path.split(trash)[0], os.W_OK):
-		if not os.path.isdir(trash):
+	if trash and access(ospath.split(trash)[0], W_OK):
+		if not ospath.isdir(trash):
 			try:
-				os.mkdir(trash)
+				mkdir(trash)
 			except:
 				return None
 		return trash
@@ -49,11 +48,11 @@ def createTrashFolder(path=None):
 def get_size(start_path="."):
 	total_size = 0
 	if start_path:
-		for dirpath, dirnames, filenames in os.walk(start_path):
+		for dirpath, dirnames, filenames in walk(start_path):
 			for f in filenames:
 				try:
-					fp = os.path.join(dirpath, f)
-					total_size += os.path.getsize(fp)
+					fp = ospath.join(dirpath, f)
+					total_size += ospath.getsize(fp)
 				except:
 					pass
 	return total_size
@@ -66,7 +65,6 @@ class Trashcan:
 		self.gotRecordEvent(None, None)
 
 	def gotRecordEvent(self, service, event):
-		from RecordTimer import n_recordings
 		if event == enigma.iRecordableService.evEnd:
 			self.cleanIfIdle()
 
@@ -118,16 +116,16 @@ def clean(ctimeLimit, reserveBytes):
 
 def cleanAll(path=None):
 	trash = getTrashFolder(path)
-	if not os.path.isdir(trash):
+	if not ospath.isdir(trash):
 		print("[Trashcan] No trash.", trash)
 		return 0
-	for root, dirs, files in os.walk(trash.encode(), topdown=False):  # handle non utf-8 filenames
+	for root, dirs, files in walk(trash.encode(), topdown=False):  # handle non utf-8 filenames
 		for name in files:
-			fn = os.path.join(root, name)
+			fn = ospath.join(root, name)
 			enigma.eBackgroundFileEraser.getInstance().erase(fn)
 		for name in dirs:		# Remove empty directories if possible
 			try:
-				os.rmdir(os.path.join(root, name))
+				rmdir(ospath.join(root, name))
 			except:
 				pass
 
@@ -144,7 +142,7 @@ class CleanTrashTask(Components.Task.PythonTask):
 
 	def work(self):
 		# add the default movie path
-		trashcanLocations = set([os.path.join(config.usage.default_path.value)])
+		trashcanLocations = set([ospath.join(config.usage.default_path.value)])
 
 		# add the root and the movie directory of each mount
 		print("[Trashcan] probing folders")
@@ -159,27 +157,27 @@ class CleanTrashTask(Components.Task.PythonTask):
 				continue
 			# one trashcan in the root, one in movie subdirectory
 			trashcanLocations.add(parts[1])
-			trashcanLocations.add(os.path.join(parts[1], "movie"))
+			trashcanLocations.add(ospath.join(parts[1], "movie"))
 		f.close()
 
 		for trashfolder in trashcanLocations:
-			trashfolder = os.path.join(trashfolder, ".Trash")
-			if os.path.isdir(trashfolder):
-				print("[Trashcan][work] looking in trashcan", trashfolder)
+			trashfolder = ospath.join(trashfolder, ".Trash")
+			if ospath.isdir(trashfolder):
+				print("[Trashcan][CleanTrashTask][work] looking in trashcan", trashfolder)
 				trashsize = get_size(trashfolder)
-				diskstat = os.statvfs(trashfolder)
+				diskstat = statvfs(trashfolder)
 				free = diskstat.f_bfree * diskstat.f_bsize
 				bytesToRemove = self.reserveBytes - free
-				print("[Trashcan][work] " + str(trashfolder) + ": Size:", "{:,}".format(trashsize))
+				print("[Trashcan][CleanTrashTask][work] " + str(trashfolder) + ": Size:", "{:,}".format(trashsize))
 				candidates = []
 				size = 0
-				for root, dirs, files in os.walk(trashfolder.encode(), topdown=False):
+				for root, dirs, files in walk(trashfolder.encode(), topdown=False):  # handle non utf-8 files
 					for name in files:  # Don't delete any per-directory config files from .Trash
 						if (config.movielist.settings_per_directory.value and name == b".e2settings.pkl"):
 							continue
-						fn = os.path.join(root, name)
+						fn = ospath.join(root, name)
 						try:			# file may not exist, if dual delete activities.
-							st = os.stat(fn)
+							st = stat(fn)
 						except FileNotFoundError:
 							print("[Trashcan][CleanTrashTask[work]  FileNotFoundError ", fn)
 							continue
@@ -191,8 +189,9 @@ class CleanTrashTask(Components.Task.PythonTask):
 							size += st.st_size
 					for name in dirs:		# Remove empty directories if possible
 						try:
-							os.rmdir(os.path.join(root, name))
-						except:
+							rmdir(ospath.join(root, name))
+						except Exception as e:
+							print("[Trashcan][CleanTrashTask][work] unable to delete directory ", root, "/", name, "   ", e)
 							pass
 					candidates.sort()
 					# Now we have a list of ctime, candidates, size. Sorted by ctime (=deletion time)
@@ -205,7 +204,7 @@ class CleanTrashTask(Components.Task.PythonTask):
 							pass
 						bytesToRemove -= st_size
 						size -= st_size
-					print("[Trashcan][work] " + str(trashfolder) + ": Size now:", "{:,}".format(size))
+					print("[Trashcan][CleanTrashTask][work] " + str(trashfolder) + ": Size now:", "{:,}".format(size))
 
 
 class TrashInfo(VariableText, GUIComponent):

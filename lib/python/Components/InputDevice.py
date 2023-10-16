@@ -75,7 +75,7 @@ class inputDevices:
 		return sorted(iter(self.Devices.keys()))
 
 	def setDeviceAttribute(self, device, attribute, value):
-		#print("[InputDevice] setting for device", device, "attribute", attribute, " to value", value)
+		# print("[InputDevice] setting for device", device, "attribute", attribute, " to value", value)
 		if device in self.Devices:
 			self.Devices[device][attribute] = value
 
@@ -87,21 +87,21 @@ class inputDevices:
 
 	def setEnabled(self, device, value):
 		oldval = self.getDeviceAttribute(device, 'enabled')
-		#print("[InputDevice] setEnabled for device %s to %s from %s" % (device,value,oldval))
+		# print("[InputDevice] setEnabled for device %s to %s from %s" % (device,value,oldval))
 		self.setDeviceAttribute(device, 'enabled', value)
 		if oldval is True and value is False:
 			self.setDefaults(device)
 
 	def setName(self, device, value):
-		#print("[InputDevice] setName for device %s to %s" % (device,value))
+		# print("[InputDevice] setName for device %s to %s" % (device,value))
 		self.setDeviceAttribute(device, 'configuredName', value)
 
-	#struct input_event {
-	#	struct timeval time;    -> ignored
-	#	__u16 type;             -> EV_REP (0x14)
-	#	__u16 code;             -> REP_DELAY (0x00) or REP_PERIOD (0x01)
-	#	__s32 value;            -> DEFAULTS: 700(REP_DELAY) or 100(REP_PERIOD)
-	#}; -> size = 16
+	# struct input_event {
+	# 	struct timeval time;    -> ignored
+	# 	__u16 type;             -> EV_REP (0x14)
+	# 	__u16 code;             -> REP_DELAY (0x00) or REP_PERIOD (0x01)
+	# 	__s32 value;            -> DEFAULTS: 700(REP_DELAY) or 100(REP_PERIOD)
+	# }; -> size = 16
 
 	def setDefaults(self, device):
 		print("[InputDevice] setDefaults for device %s" % device)
@@ -158,10 +158,9 @@ class InitInputDevices:
 			if configElement.value != "":
 				devname = iInputDevices.getDeviceAttribute(self.currentDevice, 'name')
 				if devname != configElement.value:
-					cmd = "config.inputDevices.%s.enabled.value = False" % self.currentDevice
-					exec(cmd)
-					cmd = "config.inputDevices.%s.enabled.save()" % self.currentDevice
-					exec(cmd)
+					currentElement = getattr(config.inputDevices, self.currentDevice)
+					currentElement.enabled.value = False
+					currentElement.enabled.save()
 		elif iInputDevices.currentDevice != "":
 			iInputDevices.setName(iInputDevices.currentDevice, configElement.value)
 
@@ -178,24 +177,16 @@ class InitInputDevices:
 			iInputDevices.setDelay(iInputDevices.currentDevice, configElement.value)
 
 	def setupConfigEntries(self, device):
-		cmd = "config.inputDevices.%s = ConfigSubsection()" % device
-		exec(cmd)
-		cmd = "config.inputDevices.%s.enabled = ConfigYesNo(default = False)" % device
-		exec(cmd)
-		cmd = "config.inputDevices.%s.enabled.addNotifier(self.inputDevicesEnabledChanged,config.inputDevices.%s.enabled)" % (device, device)
-		exec(cmd)
-		cmd = "config.inputDevices.%s.name = ConfigText(default='')" % device
-		exec(cmd)
-		cmd = "config.inputDevices.%s.name.addNotifier(self.inputDevicesNameChanged,config.inputDevices.%s.name)" % (device, device)
-		exec(cmd)
-		cmd = "config.inputDevices.%s.repeat = ConfigSlider(default=100, increment = 10, limits=(0, 500))" % device
-		exec(cmd)
-		cmd = "config.inputDevices.%s.repeat.addNotifier(self.inputDevicesRepeatChanged,config.inputDevices.%s.repeat)" % (device, device)
-		exec(cmd)
-		cmd = "config.inputDevices.%s.delay = ConfigSlider(default=700, increment = 100, limits=(0, 5000))" % device
-		exec(cmd)
-		cmd = "config.inputDevices.%s.delay.addNotifier(self.inputDevicesDelayChanged,config.inputDevices.%s.delay)" % (device, device)
-		exec(cmd)
+		setattr(config.inputDevices, device, ConfigSubsection())
+		currentElement = getattr(config.inputDevices, device)
+		currentElement.enabled = ConfigYesNo(default=False)
+		currentElement.enabled.addNotifier(self.inputDevicesEnabledChanged)
+		currentElement.name = ConfigText(default='')
+		currentElement.name.addNotifier(self.inputDevicesNameChanged)
+		currentElement.repeat = ConfigSlider(default=100, increment=10, limits=(0, 500))
+		currentElement.repeat.addNotifier(self.inputDevicesRepeatChanged)
+		currentElement.delay = ConfigSlider(default=700, increment=100, limits=(0, 5000))
+		currentElement.delay.addNotifier(self.inputDevicesDelayChanged)
 
 	def remapRemoteControl(self, device):
 		remapButtons = RcPositions().getRcKeyRemaps()

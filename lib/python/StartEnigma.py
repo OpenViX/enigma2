@@ -1,12 +1,12 @@
 from os.path import exists as osexists
-import sys				#	don't change import
+import sys  # don't change import
 from time import localtime, strftime, time
 from datetime import datetime
 from traceback import print_exc
 
 from boxbranding import getImageArch, getImageBuild, getImageDevBuild, getImageType, getImageVersion
 from Tools.Profile import profile, profile_final
-import Tools.RedirectOutput  # Don't remove this line. It may seem to do nothing, but if removed it will break output redirection for crash logs.
+import Tools.RedirectOutput  # noqa: F401 # Don't remove this line. It may seem to do nothing, but if removed it will break output redirection for crash logs.
 import eConsoleImpl
 import eBaseImpl
 import enigma
@@ -17,30 +17,32 @@ enigma.eConsoleAppContainer = eConsoleImpl.eConsoleAppContainer
 
 class Session:
 
-# Session.open:
-#	 * push current active dialog ("current_dialog") onto stack
-#	 * call execEnd for this dialog
-#	   * clear in_exec flag
-#	   * hide screen
-#	 * instantiate new dialog into "current_dialog"
-#	   * create screens, components
-#	   * read, apply skin
-#	   * create GUI for screen
-#	 * call execBegin for new dialog
-#	   * set in_exec
-#	   * show gui screen
-#	   * call components' / screen's onExecBegin
-# ... screen is active, until it calls "close"...
-# Session.close:
-#	 * assert in_exec
-#	 * save return value
-#	 * start deferred close handler ("onClose")
-#	 * execEnd
-#	   * clear in_exec
-#	   * hide screen
-# .. a moment later:
-# Session.doClose:
-#	 * destroy screen
+	"""
+	 Session.open:
+		 * push current active dialog ("current_dialog") onto stack
+		 * call execEnd for this dialog
+		   * clear in_exec flag
+		   * hide screen
+		 * instantiate new dialog into "current_dialog"
+		   * create screens, components
+		   * read, apply skin
+		   * create GUI for screen
+		 * call execBegin for new dialog
+		   * set in_exec
+		   * show gui screen
+		   * call components' / screen's onExecBegin
+	 ... screen is active, until it calls "close"...
+	 Session.close:
+		 * assert in_exec
+		 * save return value
+		 * start deferred close handler ("onClose")
+		 * execEnd
+		   * clear in_exec
+		   * hide screen
+	 .. a moment later:
+	 Session.doClose:
+		 * destroy screen
+	"""
 
 	def __init__(self, desktop=None, summary_desktop=None, navigation=None):
 		self.desktop = desktop
@@ -303,7 +305,7 @@ class AutoScartControl:
 		self.VCRSbChanged(self.current_vcr_sb)
 
 	def VCRSbChanged(self, value):
-		#print("vcr sb changed to", value)
+		# print("vcr sb changed to", value)
 		self.current_vcr_sb = value
 		if config.av.vcrswitch.value or value > 2:
 			if value:
@@ -357,9 +359,9 @@ def runScreenTest():
 
 	if not VuRecovery:
 		profile("Init:VolumeControl")
-		vol = VolumeControl(session)
+		vol = VolumeControl(session)  #noqa: F841
 		profile("Init:PowerKey")
-		power = PowerKey(session)
+		power = PowerKey(session)  #noqa: F841
 
 		if enigma.eAVSwitch.getInstance().haveScartSwitch():
 			# we need session.scart to access it from within menu.xml
@@ -451,7 +453,7 @@ if getImageType() != "release":
 # Moving further up will break imports in config.py
 profile("SetupDevices")
 print("[StartEnigma]  Initialising SetupDevices.")
-from Components.SetupDevices import InitSetupDevices
+from Components.SetupDevices import InitSetupDevices  # noqa: E402
 InitSetupDevices()
 
 if getImageArch() in ("aarch64"):
@@ -461,18 +463,18 @@ if getImageArch() in ("aarch64"):
 
 profile("ClientMode")
 print("[StartEnigma]  Initialising ClientMode.")
-from Components.ClientMode import InitClientMode
+from Components.ClientMode import InitClientMode  # noqa: E402
 InitClientMode()
 
 profile("InfoBar")
 print("[StartEnigma]  Initialising InfoBar.")
-from Screens import InfoBar
+from Screens import InfoBar  # noqa: E402
 
-from Components.SystemInfo import SystemInfo  # don't move this import
+from Components.SystemInfo import SystemInfo    # noqa: E402 # don't move this import
 VuRecovery = SystemInfo["HasKexecMultiboot"] and SystemInfo["MultiBootSlot"] == 0
 # print("[StartEnigma]  Is this VuRecovery?. Recovery = ", VuRecovery)
 
-from Components.config import config, configfile, ConfigInteger, ConfigSelection, ConfigText, ConfigYesNo, NoSave
+from Components.config import config, configfile, ConfigInteger, ConfigSelection, ConfigText, ConfigYesNo, NoSave  # noqa: E402
 if not VuRecovery:
 	profile("Bouquets")
 	print("[StartEnigma]  Initialising Bouquets.")
@@ -482,26 +484,26 @@ if not VuRecovery:
 		enigma.eDVBDB.getInstance().setLoadUnlinkedUserbouquets(configElement.value)
 
 	config.misc.load_unlinked_userbouquets.addNotifier(setLoadUnlinkedUserbouquets)
-	if config.clientmode.enabled.value == False:
+	if config.clientmode.enabled.value is False:
 		enigma.eDVBDB.getInstance().reloadBouquets()
 
 profile("ParentalControl")
 print("[StartEnigma]  Initialising ParentalControl.")
-import Components.ParentalControl
+import Components.ParentalControl  # noqa: E402
 Components.ParentalControl.InitParentalControl()
 
 profile("LOAD:Navigation")
 print("[StartEnigma]  Initialising Navigation.")
-from Navigation import Navigation
+from Navigation import Navigation  # noqa: E402
 
 profile("LOAD:skin")
 print("[StartEnigma]  Initialising Skin.")
-from skin import readSkin
+from skin import readSkin  # noqa: E402
 
 profile("LOAD:Tools")
 print("[StartEnigma]  Initialising FallbackFiles.")
 
-from Tools.Directories import InitFallbackFiles, resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
+from Tools.Directories import InitFallbackFiles, resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN  # noqa: E402
 InitFallbackFiles()
 
 profile("config.misc")
@@ -570,21 +572,21 @@ except ImportError:
 
 profile("Init:NTPSync")
 print("[StartEnigma]  Initialising NTPSync.")
-from Components.NetworkTime import AutoNTPSync
+from Components.NetworkTime import AutoNTPSync  # noqa: E402
 AutoNTPSync()
 
 profile("LOAD:Wizard")
 print("[StartEnigma]  Initialising Wizards.")
-from Screens.StartWizard import *
+from Screens.StartWizard import *  # import *' used; unable to detect undefined names
 
 profile("LOAD:Plugin")
 print("[StartEnigma]  Initialising Plugins.")
 # initialize autorun plugins and plugin menu entries
-from Components.PluginComponent import plugins
+from Components.PluginComponent import plugins  # noqa: E402
 
-import Screens.Rc
-from Tools.BoundFunction import boundFunction
-from Plugins.Plugin import PluginDescriptor
+import Screens.Rc  # noqa: E402
+from Tools.BoundFunction import boundFunction  # noqa: E402
+from Plugins.Plugin import PluginDescriptor  # noqa: E402
 
 if config.misc.firstrun.value and not osexists('/etc/install'):
 	with open("/etc/install", "w") as f:
@@ -598,9 +600,9 @@ had = dict()
 
 profile("LOAD:ScreenGlobals")
 print("[StartEnigma]  Initialising ScreenGlobals.")
-from Screens.Globals import Globals
-from Screens.SessionGlobals import SessionGlobals
-from Screens.Screen import Screen, ScreenSummary
+from Screens.Globals import Globals  # noqa: E402
+from Screens.SessionGlobals import SessionGlobals  # noqa: E402
+from Screens.Screen import Screen, ScreenSummary  # noqa: E402
 
 profile("Screen")
 Screen.globalScreen = Globals()
@@ -618,9 +620,9 @@ def RCSelectionChanged(configelement):
 config.misc.RCSource.addNotifier(RCSelectionChanged, immediate_feedback=False)
 
 profile("Standby,PowerKey")
-import Screens.Standby
-from Screens.Menu import MainMenu, mdom
-from GlobalActions import globalActionMap
+import Screens.Standby  # noqa: E402
+from Screens.Menu import MainMenu, mdom  # noqa: E402
+from GlobalActions import globalActionMap  # noqa: E402
 
 if enigma.eAVSwitch.getInstance().haveScartSwitch():
 	profile("Scart")
@@ -639,29 +641,29 @@ if not VuRecovery:
 
 profile("Init:skin")
 print("[StartEnigma]  Initialising Skins.")
-from skin import InitSkins
+from skin import InitSkins  # noqa: E402
 InitSkins()
 print("[StartEnigma]  Initialisation of Skins complete.")
 
 profile("InputDevice")
 print("[StartEnigma]  Initialising InputDevice.")
-from Components.InputDevice import InitInputDevices
+from Components.InputDevice import InitInputDevices  # noqa: E402
 InitInputDevices()
-import Components.InputHotplug
+import Components.InputHotplug  # noqa: E402
 
 profile("UserInterface")
 print("[StartEnigma]  Initialising UserInterface.")
-from Screens.UserInterfacePositioner import InitOsd
+from Screens.UserInterfacePositioner import InitOsd  # noqa: E402
 InitOsd()
 
 profile("AVSwitch")
 print("[StartEnigma]  Initialising AVSwitch.")
-from Components.AVSwitch import InitAVSwitch, InitiVideomodeHotplug
+from Components.AVSwitch import InitAVSwitch, InitiVideomodeHotplug  # noqa: E402
 InitAVSwitch()
 InitiVideomodeHotplug()
 
 profile("EpgConfig")
-from Components.EpgConfig import InitEPGConfig
+from Components.EpgConfig import InitEPGConfig  # noqa: E402
 InitEPGConfig()
 
 if not VuRecovery:
@@ -672,22 +674,22 @@ if not VuRecovery:
 
 profile("UsageConfig")
 print("[StartEnigma]  Initialising UsageConfig.")
-from Components.UsageConfig import InitUsageConfig
+from Components.UsageConfig import InitUsageConfig  # noqa: E402
 InitUsageConfig()
 
 profile("TimeZones")
 print("[StartEnigma]  Initialising Timezones.")
-from Components.Timezones import InitTimeZones
+from Components.Timezones import InitTimeZones  # noqa: E402
 InitTimeZones()
 
 profile("Init:DebugLogCheck")
 print("[StartEnigma]  Initialising DebugLogCheck.")
-from Screens.LogManager import AutoLogManager
+from Screens.LogManager import AutoLogManager  # noqa: E402
 AutoLogManager()
 
 profile("keymapparser")
 print("[StartEnigma]  Initialising KeymapParser.")
-from keymapparser import readKeymap
+from keymapparser import readKeymap  # noqa: E402
 readKeymap(config.usage.keymap.value)
 readKeymap(config.usage.keytrans.value)
 

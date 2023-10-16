@@ -1,5 +1,3 @@
-import six
-
 import xml.dom.minidom
 from boxbranding import getMachineBrand, getMachineName
 
@@ -24,7 +22,7 @@ class ConfigFilename(ConfigText):
 		if self.text == "":
 			return ("mtext"[1 - selected:], "", 0)
 		cut_len = min(len(self.text), 40)
-		filename = six.ensure_str((self.text.rstrip("/").rsplit("/", 1))[1])[:cut_len] + " "
+		filename = str((self.text.rstrip("/").rsplit("/", 1))[1])[:cut_len] + " "
 		if self.allmarked:
 			mark = list(range(0, len(filename)))
 		else:
@@ -65,7 +63,7 @@ class DVDProject:
 				'<DreamDVDBurnerProject>\n',
 				'\t<settings ']
 		for key, val in self.settings.dict().items():
-				list.append(key + '="' + str(val.value) + '" ')
+			list.append(key + '="' + str(val.value) + '" ')
 		list.append('/>\n')
 		list.append('\t<titles>\n')
 		for title in self.titles:
@@ -115,53 +113,53 @@ class DVDProject:
 		return ret
 
 	def loadProject(self, filename):
-		#try:
-			if not fileExists(filename):
-				self.error = "xml file not found!"
-				#raise AttributeError
-			file = open(filename, "r")
-			data = file.read().decode("utf-8").replace('&', "&amp;").encode("ascii", 'xmlcharrefreplace')
-			file.close()
-			projectfiledom = xml.dom.minidom.parseString(data)
-			for node in projectfiledom.childNodes[0].childNodes:
-				print("node:", node)
-				if node.nodeType == xml.dom.minidom.Element.nodeType:
-					if node.tagName == 'settings':
-						self.xmlAttributesToConfig(node, self.settings)
-					elif node.tagName == 'titles':
-						self.xmlGetTitleNodeRecursive(node)
+		# try:
+		if not fileExists(filename):
+			self.error = "xml file not found!"
+			# raise AttributeError
+		file = open(filename, "r")
+		data = file.read().decode("utf-8").replace('&', "&amp;").encode("ascii", 'xmlcharrefreplace')
+		file.close()
+		projectfiledom = xml.dom.minidom.parseString(data)
+		for node in projectfiledom.childNodes[0].childNodes:
+			print("node:", node)
+			if node.nodeType == xml.dom.minidom.Element.nodeType:
+				if node.tagName == 'settings':
+					self.xmlAttributesToConfig(node, self.settings)
+				elif node.tagName == 'titles':
+					self.xmlGetTitleNodeRecursive(node)
 
-			for key in self.filekeys:
-				val = self.settings.dict()[key].value
-				if not fileExists(val):
-					if val[0] != "/":
-						if key.find("font") == 0:
-							val = resolveFilename(SCOPE_FONTS) + val
-						else:
-							val = resolveFilename(SCOPE_PLUGINS) + "Extensions/DVDBurn/" + val
-						if fileExists(val):
-							self.settings.dict()[key].setValue(val)
-							continue
-					self.error += "\n%s '%s' not found" % (key, val)
-		#except AttributeError:
-			#print "loadProject AttributeError", self.error
-			#self.error += (" in project '%s'") % (filename)
-			#return False
-			return True
+		for key in self.filekeys:
+			val = self.settings.dict()[key].value
+			if not fileExists(val):
+				if val[0] != "/":
+					if key.find("font") == 0:
+						val = resolveFilename(SCOPE_FONTS) + val
+					else:
+						val = resolveFilename(SCOPE_PLUGINS) + "Extensions/DVDBurn/" + val
+					if fileExists(val):
+						self.settings.dict()[key].setValue(val)
+						continue
+				self.error += "\n%s '%s' not found" % (key, val)
+		# 	except AttributeError:
+		# 		print "loadProject AttributeError", self.error
+		# 		self.error += (" in project '%s'") % (filename)
+		# 		return False
+		return True
 
 	def xmlAttributesToConfig(self, node, config):
 		try:
 			i = 0
-			#if node.attributes.length < len(config.dict())-1:
-				#self.error = "project attributes missing"
-				#raise AttributeError
+			# 	if node.attributes.length < len(config.dict())-1:
+			# 	 	self.error = "project attributes missing"
+			# 	 	raise AttributeError
 			while i < node.attributes.length:
 				item = node.attributes.item(i)
-				key = six.ensure_str(item.name)
+				key = str(item.name)
 				try:
 					val = eval(item.nodeValue)
 				except (NameError, SyntaxError):
-					val = six.ensure_str(item.nodeValue)
+					val = str(item.nodeValue)
 				try:
 					print("config[%s].setValue(%s)" % (key, val))
 					config.dict()[key].setValue(val)
@@ -188,7 +186,7 @@ class DVDProject:
 				if subnode.tagName == 'path':
 					print("path:", subnode.firstChild.data)
 					filename = subnode.firstChild.data
-					self.titles[title_idx].addFile(six.ensure_str(filename))
+					self.titles[title_idx].addFile(str(filename))
 				if subnode.tagName == 'properties':
 					self.xmlAttributesToConfig(node, self.titles[title_idx].properties)
 				if subnode.tagName == 'audiotracks':

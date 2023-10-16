@@ -139,19 +139,19 @@ class GetEcmInfo:
 					source = info.get('source', None)
 					if source:
 						# wicardd - type 2 / mgcamd
-							caid = info.get('caid', None)
-							if caid:
-								info['caid'] = info['caid'][2:]
-								info['pid'] = info['pid'][2:]
-							info['provid'] = info['prov'][2:]
-							time = ""
-							for line in ecm:
-								if 'msec' in line:
-									line = line.split(' ')
-									if line[0]:
-										time = " (%ss)" % (float(line[0]) / 1000)
-										continue
-							self.textvalue = source + time
+						caid = info.get('caid', None)
+						if caid:
+							info['caid'] = info['caid'][2:]
+							info['pid'] = info['pid'][2:]
+						info['provid'] = info['prov'][2:]
+						time = ""
+						for line in ecm:
+							if 'msec' in line:
+								line = line.split(' ')
+								if line[0]:
+									time = " (%ss)" % (float(line[0]) / 1000)
+									continue
+						self.textvalue = source + time
 					else:
 						reader = info.get('reader', '')
 						if reader:

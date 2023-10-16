@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from Screens.Screen import Screen
 from Components.BlinkingPixmap import BlinkingPixmapConditional
-from Components.Pixmap import Pixmap
 from Components.config import config, ConfigInteger
 from Components.Sources.Boolean import Boolean
 from Components.Label import Label
@@ -302,9 +301,9 @@ class Dishpip(Dish, Screen):
 			self.close_timeout -= 1
 			if self.close_timeout <= 3:
 				self.__toHide()
-			#elif not self.getRotorMovingState():
-			#	self.turnTimer.stop()
-			#	self.timeoutTimer.start(10000, True)
+			# elif not self.getRotorMovingState():
+			# 	self.turnTimer.stop()
+			# 	self.timeoutTimer.start(10000, True)
 		else:
 			if not self.getRotorMovingState():
 				self.turnTimer.stop()

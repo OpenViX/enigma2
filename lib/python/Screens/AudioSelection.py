@@ -1,26 +1,48 @@
-from Screens.Screen import Screen
-from Screens.Setup import getConfigMenuItem, Setup
+from Components.ActionMap import NumberActionMap
+from Components.config import config, ConfigSubsection, getConfigListEntry, ConfigNothing, ConfigSelection, ConfigOnOff, ConfigYesNo
+from Components.ConfigList import ConfigListScreen
+from Components.Converter.VAudioInfo import StdAudioDesc
+from Components.Label import Label
+from Components.PluginComponent import plugins
+from Components.ServiceEventTracker import ServiceEventTracker
+from Components.Sources.Boolean import Boolean
+from Components.Sources.List import List
+from Components.SystemInfo import SystemInfo
+from Components.UsageConfig import originalAudioTracks, visuallyImpairedCommentary
+from Components.VolumeControl import VolumeControl
+
+from Plugins.Plugin import PluginDescriptor
+
 from Screens.InputBox import PinInput
 from Screens.MessageBox import MessageBox
-from Components.ServiceEventTracker import ServiceEventTracker
-from Components.ActionMap import NumberActionMap
-from Components.ConfigList import ConfigListScreen
-from Components.config import config, ConfigSubsection, getConfigListEntry, ConfigNothing, ConfigSelection, ConfigOnOff, ConfigYesNo
-from Components.Label import Label
-from Components.Sources.List import List
-from Components.Sources.Boolean import Boolean
-from Components.SystemInfo import SystemInfo
-from Components.VolumeControl import VolumeControl
-from Components.PluginComponent import plugins
-from Plugins.Plugin import PluginDescriptor
+from Screens.Screen import Screen
+from Screens.Setup import getConfigMenuItem, Setup
+
+from Tools.ISO639 import LanguageCodes
+from Tools.General import isIPTV
+# from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
+# from Tools.LoadPixmap import LoadPixmap
+from pickle import load as pickle_load, dump as pickle_dump, dumps as pickle_dumps
+from os import path as os_path
 
 from enigma import iPlayableService, eTimer, eSize, eDVBDB, eServiceReference, eServiceCenter, iServiceInformation
 
-from Tools.ISO639 import LanguageCodes
-from Tools.BoundFunction import boundFunction
-
 FOCUS_CONFIG, FOCUS_STREAMS = range(2)
 [PAGE_AUDIO, PAGE_SUBTITLES] = ["audio", "subtitles"]
+
+CONFIG_FILE_AV = '/etc/enigma2/config_av'
+
+# selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "selections/selectioncross.png"))  # for use in the future
+
+
+def getAVDict():
+	if os_path.exists(CONFIG_FILE_AV):
+		pkl_file = open(CONFIG_FILE_AV, 'rb')
+		if pkl_file:
+			avdict = pickle_load(pkl_file)
+			pkl_file.close()
+			return avdict
+	return {}
 
 
 class AudioSelection(ConfigListScreen, Screen):
@@ -80,6 +102,27 @@ class AudioSelection(ConfigListScreen, Screen):
 		self.focus = FOCUS_STREAMS
 		self.settings.menupage.addNotifier(self.fillList)
 
+	def saveAVDict(self, dict):
+		pkl_file = open(CONFIG_FILE_AV, 'wb')
+		if pkl_file:
+			pickle_dump(dict, pkl_file)
+			pkl_file.close()
+
+	def setAVInfo(self, service):
+		playinga_idx = service and service.audioTracks().getCurrentTrack() or -1
+		ref = self.session.nav.getCurrentlyPlayingServiceReference()
+		x = ref.toString().split(":")
+		ref_str = ":".join(x[:10])
+
+		playing_idx = self.infobar.selected_subtitle
+
+		if playing_idx:
+			self.infobar.av_config[ref_str] = pickle_dumps(playinga_idx, 0).decode() + "|" + pickle_dumps(playing_idx, 0).decode()
+		else:
+			self.infobar.av_config[ref_str] = pickle_dumps(playinga_idx, 0).decode()
+
+		self.saveAVDict(self.infobar.av_config)
+
 	def readChoices(self, procx, choices):
 		choice_list = choices
 		with open(procx, "r") as myfile:
@@ -90,8 +133,6 @@ class AudioSelection(ConfigListScreen, Screen):
 		return choice_list
 
 	def fillList(self, arg=None):
-		from Tools.ISO639 import LanguageCodes
-		from Components.UsageConfig import originalAudioTracks, visuallyImpairedCommentary
 		streams = []
 		conflist = []
 		selectedidx = 0
@@ -276,7 +317,7 @@ class AudioSelection(ConfigListScreen, Screen):
 					number = str(x + 1)
 					i = audio.getTrackInfo(x)
 					languages = i.getLanguage().split('/')
-					description = i.getDescription().replace("A_", "").replace("AC-3", "AC3").replace("(ATSC A/52)", "").replace("(ATSC A/52B)", "").replace(" Layer 2 (MP2)", "").replace(" Layer 3 (MP3)", "MP3").replace("-1", "").replace("-2", "").replace("2-", "").replace("-4 AAC", "AAC").replace("4-AAC", "HE-AAC").replace("audio", "").replace("/L3", "").replace("/mpeg", "AAC").replace("/x-", "").replace("raw", "Dolby TrueHD").replace("E-AC3", "AC3+").replace("EAC3", "AC3+").replace("IPCM", "AC3").replace("LPCM", "AC3+").replace("AAC_PLUS", "AAC+").replace("AAC_LATM", "AAC").replace("WMA/PRO", "WMA Pro").replace("MPEG", "MPEG1 Layer II").replace("MPEG1 Layer II AAC", "AAC").replace("MPEG1 Layer IIAAC", "AAC").replace("MPEG1 Layer IIMP3", "MP3")
+					description = StdAudioDesc(i.getDescription())
 					selected = ""
 					language = ""
 					if selectedAudio == x:
@@ -356,7 +397,7 @@ class AudioSelection(ConfigListScreen, Screen):
 					idx += 1
 			conflist.append(getConfigListEntry(_("To audio selection"), self.settings.menupage))
 
-			if self.infobar.selected_subtitle and self.infobar.selected_subtitle != (0, 0, 0, 0) and not ".DVDPlayer'>" in repr(self.infobar):
+			if self.infobar.selected_subtitle and self.infobar.selected_subtitle != (0, 0, 0, 0) and ".DVDPlayer'>" not in repr(self.infobar):
 				conflist.append(getConfigListEntry(_("Subtitle quickmenu"), ConfigNothing(), None))
 
 		if len(conflist) > 0 and conflist[0][0]:
@@ -470,8 +511,12 @@ class AudioSelection(ConfigListScreen, Screen):
 	def changeAudio(self, audio):
 		track = int(audio)
 		if isinstance(track, int):
-			if self.session.nav.getCurrentService().audioTracks().getNumberOfTracks() > track:
+			service = self.session.nav.getCurrentService()
+			ref = self.session.nav.getCurrentlyPlayingServiceReference()
+			if service.audioTracks().getNumberOfTracks() > track:
 				self.audioTracks.selectTrack(track)
+				if isIPTV(ref):
+					self.setAVInfo(service)
 
 	def keyLeft(self):
 		if self.focus == FOCUS_CONFIG:
@@ -483,7 +528,7 @@ class AudioSelection(ConfigListScreen, Screen):
 		if config or self.focus == FOCUS_CONFIG:
 			index = self["config"].getCurrentIndex()
 			if self.settings.menupage.value == PAGE_AUDIO:
-				if self.subtitlelist and index == 0:					# Subtitle selection screen
+				if self.subtitlelist and index == 0:  # Subtitle selection screen
 					self.keyAudioSubtitle()
 					self.__updatedInfo()
 				elif self["config"].getCurrent()[2]:
@@ -491,14 +536,14 @@ class AudioSelection(ConfigListScreen, Screen):
 				else:
 					ConfigListScreen.keyRight(self)
 			elif self.settings.menupage.value == PAGE_SUBTITLES and self.infobar.selected_subtitle and self.infobar.selected_subtitle != (0, 0, 0, 0):
-				if index == 0:								# Audio selection screen
+				if index == 0:  # Audio selection screen
 					self.keyAudioSubtitle()
 					self.__updatedInfo()
 				else:
 					self.session.open(QuickSubtitlesConfigMenu, self.infobar)  # sub title config screen
 			else:
 				ConfigListScreen.keyRight(self)
-		if self.focus == FOCUS_STREAMS and self["streams"].count() and config == False:
+		if self.focus == FOCUS_STREAMS and self["streams"].count() and config is False:
 			self["streams"].setIndex(self["streams"].count() - 1)
 
 	def keyRed(self):
@@ -575,6 +620,8 @@ class AudioSelection(ConfigListScreen, Screen):
 	def keyOk(self):
 		if self.focus == FOCUS_STREAMS and self["streams"].list:
 			cur = self["streams"].getCurrent()
+			ref = self.session.nav.getCurrentlyPlayingServiceReference()
+			service = self.session.nav.getCurrentService()
 			if self.settings.menupage.value == PAGE_AUDIO and cur[0] is not None:
 				self.changeAudio(cur[0])
 				self.__updatedInfo()
@@ -587,6 +634,8 @@ class AudioSelection(ConfigListScreen, Screen):
 				else:
 					self.enableSubtitle(cur[0][:5])
 					self.__updatedInfo()
+				if isIPTV(ref):
+					self.setAVInfo(service)
 			self.close(0)
 		elif self.focus == FOCUS_CONFIG:
 			self.keyRight()

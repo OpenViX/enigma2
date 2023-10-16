@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-31 22:20+0000\n"
-"PO-Revision-Date: 2023-09-02 12:45+0200\n"
+"POT-Creation-Date: 2023-09-21 00:52+0000\n"
+"PO-Revision-Date: 2023-09-21 12:39+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -2432,7 +2432,7 @@ msgid "Are you sure you want to save the EPG Cache to:\n"
 msgstr "Weet u zeker dat u de EPG Cache wilt opslaan in:\n"
 
 #, python-format
-msgid "Are you sure you want to update your %s %s ?"
+msgid "Are you sure you want to update your %s %s?"
 msgstr "Weet u zeker dat u uw %s %s wilt updaten?"
 
 msgid "Argentina"
@@ -5163,6 +5163,9 @@ msgstr "Uit"
 msgid "Disable Animations"
 msgstr "Animatie uitschakelen"
 
+msgid "Disable Autostart"
+msgstr "Schakel automatisch opstarten uit"
+
 msgid "Disable FCC during recordings"
 msgstr "Schakel FCC uit tijdens opnames"
 
@@ -5402,7 +5405,7 @@ msgid "Do you want to resume playback?"
 msgstr "Wilt u het afspelen vervolgen?"
 
 #, python-format
-msgid "Do you want to update your %s %s ?"
+msgid "Do you want to update your %s %s?"
 msgstr "Wilt u uw %s %s updaten?"
 
 msgid "Do you want to upgrade the package:\n"
@@ -5724,6 +5727,9 @@ msgstr "Aan"
 
 msgid "Enable 5V for active antenna"
 msgstr "5V voor actieve antenne inschakelen"
+
+msgid "Enable Autostart"
+msgstr "Schakel automatisch opstarten in"
 
 msgid "Enable Bluetooth Audio"
 msgstr "Schakel Bluetooth audio in"
@@ -8597,6 +8603,9 @@ msgstr "Markeer dit als 'uit' punt"
 msgid "Make this mark just a mark"
 msgstr "Universele markering"
 
+msgid "Making a settings backup before updating is highly recommended."
+msgstr "Het maken van een settingsback-up vóór het updaten wordt sterk aanbevolen."
+
 msgid "Malawi"
 msgstr "Malawi"
 
@@ -10273,14 +10282,11 @@ msgstr "Maak een imageback-up alvorens te updaten."
 msgid "Perform a full image backup"
 msgstr "Maak een volledige imageback-up"
 
+msgid "Perform a settings backup"
+msgstr "Maak een settingsback-up"
+
 msgid "Perform a settings backup before updating."
 msgstr "Maak een settingsback-up alvorens te updaten."
-
-msgid "Perform a settings backup,"
-msgstr "Maak een settingsback-up."
-
-msgid "Perform a settings backup, making a backup before updating is strongly advised."
-msgstr "Maak een settingsback-up; het maken van een back-up alvorens te updaten wordt sterk geadviseerd."
 
 msgid "Perform an online update check in the background"
 msgstr "Controleer op de achtergrond op updates"
@@ -14928,8 +14934,8 @@ msgstr "Het commitlog kan momenteel niet binnengehaald worden; probeer het later
 msgid "The commit log cannot be retrieved at the moment - please try again later.\n"
 msgstr "Het commitlog kan momenteel niet binnengehaald worden; probeer het later nog eens.\n"
 
-msgid "The current update may be unstable"
-msgstr "De huidige update kan onstabiel zijn"
+msgid "The current update may be unstable."
+msgstr "De huidige update kan onstabiel zijn."
 
 #, python-format
 msgid "The directory %s already exists."
@@ -18204,9 +18210,6 @@ msgstr "directe opname"
 msgid "invalid type"
 msgstr "ongeldig type"
 
-msgid "is strongly advised."
-msgstr "wordt sterk aangeraden."
-
 msgid "jazz"
 msgstr "jazz"
 
@@ -18257,9 +18260,6 @@ msgstr "langste eerst"
 
 msgid "magazines/reports/documentary"
 msgstr "tijdschriften/reportages/documentaire"
-
-msgid "making a backup before updating"
-msgstr "maakt een back-up alvorens te updaten"
 
 msgid "manual"
 msgstr "handmatig"
@@ -19280,6 +19280,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "PID"
 #~ msgstr "PID"
 
+#~ msgid "Perform a settings backup, making a backup before updating is strongly advised."
+#~ msgstr "Maak een settingsback-up; het maken van een back-up alvorens te updaten wordt sterk geadviseerd."
+
 #~ msgid "Polarisation:"
 #~ msgstr "Polarisatie:"
 
@@ -19469,6 +19472,12 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "flat alphabetic reverse"
 #~ msgstr "omgekeerd plat alfabetisch"
+
+#~ msgid "is strongly advised."
+#~ msgstr "wordt sterk aangeraden."
+
+#~ msgid "making a backup before updating"
+#~ msgstr "maakt een back-up alvorens te updaten"
 
 #~ msgid "movie/drama (general)"
 #~ msgstr "film/drama (algemeen)"

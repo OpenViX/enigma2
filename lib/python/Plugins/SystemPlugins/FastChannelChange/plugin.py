@@ -85,8 +85,6 @@ class FCCSupport:
 		self.onClose = []
 		self.changeEventTracker()
 		SystemInfo["FCCactive"] = self.fccSetupActivate
-#		from Screens.PictureInPicture import on_pip_start_stop
-#		on_pip_start_stop.append(self.FCCForceStopforPIP)
 
 	def setProcFCC(self, value):
 		procPath = "/proc/stb/frontend/fbc/fcc"

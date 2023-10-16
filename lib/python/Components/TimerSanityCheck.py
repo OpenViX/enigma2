@@ -55,7 +55,7 @@ class TimerSanityCheck:
 		return False
 
 	def checkTimerlist(self, ext_timer=None):
-		#with special service for external plugins
+		# with special service for external plugins
 		# Entries in eventlist
 		# timeindex
 		# BeginEndFlag 1 for begin, -1 for end
@@ -63,25 +63,25 @@ class TimerSanityCheck:
 		# count of running timers
 
 		serviceHandler = eServiceCenter.getInstance()
-# create a list with all start and end times
-# split it into recurring and singleshot timers
+		# create a list with all start and end times
+		# split it into recurring and singleshot timers
 
-##################################################################################
-# process the new timer
+		##################################################################################
+		# process the new timer
 		self.rep_eventlist = []
 		self.nrep_eventlist = []
 		if ext_timer and isinstance(ext_timer, RecordTimer.RecordTimerEntry):
 			self.newtimer = ext_timer
 
-#GML:1 - A timer which has already ended (happens during start-up check) can't clash!!
-#
-#      NOTE: that when adding a timer it also cannot clash with:
-#       o any timers which run before the latest period of no timers running
-#         before the timer to be added starts
-#       o any timers which run after the first period of no timers running
-#         after the timer to be added ends
-#      Code to handle this needs to be added (it is *NOT* here yet!)
-#
+		#GML:1 - A timer which has already ended (happens during start-up check) can't clash!!
+		#
+		#      NOTE: that when adding a timer it also cannot clash with:
+		#       o any timers which run before the latest period of no timers running
+		#         before the timer to be added starts
+		#       o any timers which run after the first period of no timers running
+		#         after the timer to be added ends
+		#      Code to handle this needs to be added (it is *NOT* here yet!)
+		#
 		if (self.newtimer is not None) and (self.newtimer.end < time()):  # does not conflict
 			return True
 
@@ -111,8 +111,8 @@ class TimerSanityCheck:
 		else:
 			self.nrep_eventlist.extend([(self.newtimer.begin, self.bflag, -1), (self.newtimer.end, self.eflag, -1)])
 
-##################################################################################
-# now process existing timers
+		##################################################################################
+		# now process existing timers
 		self.check_timerlist = []
 		idx = 0
 		for timer in self.timerlist:
@@ -137,8 +137,8 @@ class TimerSanityCheck:
 			self.check_timerlist.append(timer)
 			idx += 1
 
-################################################################################
-# journalize timer repeations
+		################################################################################
+		# journalize timer repeations
 		if self.nrep_eventlist:
 			interval_begin = min(self.nrep_eventlist)[0]
 			interval_end = max(self.nrep_eventlist)[0]
@@ -179,12 +179,12 @@ class TimerSanityCheck:
 					new_event_end = new_event_begin + (event_end - event_begin)
 					self.nrep_eventlist.extend([(new_event_begin, self.bflag, event[1]), (new_event_end, self.eflag, event[1])])
 
-################################################################################
-# order list chronological
+		################################################################################
+		# order list chronological
 		self.nrep_eventlist.sort()
 
-##################################################################################
-# detect overlapping timers and overlapping times
+		##################################################################################
+		# detect overlapping timers and overlapping times
 		fakeRecList = []
 		ConflictTimer = None
 		ConflictTunerType = None
@@ -192,7 +192,6 @@ class TimerSanityCheck:
 		cnt = 0
 		idx = 0
 		overlaplist = []
-		is_ci_use = 0
 		is_ci_timer_conflict = 0
 
 		ci_timer = False
@@ -245,7 +244,7 @@ class TimerSanityCheck:
 						if serviceList:
 							for ref in serviceList.getContent("R"):  # iterate over all group service references
 								type = getServiceType(ref)
-								if not type in tunerType:  # just add single time
+								if type not in tunerType:  # just add single time
 									tunerType.append(type)
 					elif ref:
 						tunerType.append(getServiceType(ref))
@@ -296,8 +295,8 @@ class TimerSanityCheck:
 			print("[TimerSanityCheck] conflict not found!")
 			return True
 
-##################################################################################
-# we have detected a conflict, now we must figure out the involved timers
+		##################################################################################
+		# we have detected a conflict, now we must figure out the involved timers
 
 		if self.newtimer is not ConflictTimer:  # the new timer is not the conflicting timer?
 			for event in self.nrep_eventlist:

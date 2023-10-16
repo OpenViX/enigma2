@@ -149,7 +149,7 @@ class JobView(InfoBarNotifications, ConfigListScreen, Screen):
 		if self.job.status == self.job.NOT_STARTED:
 			job_manager.active_jobs.remove(self.job)
 			self.close(False)
-		elif self.job.status == self.job.IN_PROGRESS and self.cancelable == True:
+		elif self.job.status == self.job.IN_PROGRESS and self.cancelable is True:
 			self.job.cancel()
 		else:
 			self.close(False)

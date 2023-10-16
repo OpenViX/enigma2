@@ -3,7 +3,6 @@ from Components.config import config
 from enigma import eTimer, eDVBLocalTimeHandler, eEPGCache
 from Tools.StbHardware import setRTCtime
 from time import time
-from os import chmod as oschmod
 
 # _session = None
 #

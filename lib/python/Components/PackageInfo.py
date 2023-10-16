@@ -36,7 +36,7 @@ class InfoHandler(xml.sax.ContentHandler):
 
 		if name in ("hardware", "bcastsystem", "satellite", "tag", "flag"):
 			if "type" not in attrs:
-					self.printError(str(name) + " tag with no type attribute")
+				self.printError(str(name) + " tag with no type attribute")
 			if self.elements[-3] in ("default", "package"):
 				prerequisites = self.globalprerequisites
 			else:
@@ -65,9 +65,9 @@ class InfoHandler(xml.sax.ContentHandler):
 					self.printError("file tag with no name attribute")
 				else:
 					if "directory" not in attrs:
-						directory = self.directory
+						directory = self.directory  # what is this? Variable assigned, not used. Is this supposed to be attrs["directory"] = self.directory?
 					type = attrs["type"]
-					if not type in self.validFileTypes:
+					if type not in self.validFileTypes:
 						self.printError("file tag with invalid type attribute")
 					else:
 						self.filetype = type
@@ -190,7 +190,7 @@ class PackageInfoHandler:
 			self.directory = [self.directory]
 
 		for directory in self.directory:
-			packages += crawlDirectory(directory, ".*\.info$")
+			packages += crawlDirectory(directory, ".*\.info$")  # noqa: W605
 
 		for package in packages:
 			self.readInfo(package[0] + "/", package[0] + "/" + package[1])
@@ -235,15 +235,14 @@ class PackageInfoHandler:
 		return self.packageDetails
 
 	def prerequisiteMet(self, prerequisites):
-		met = True
 		if self.neededTag is None:
 			if "tag" in prerequisites:
 				return False
 		elif self.neededTag == 'ALL_TAGS':
-				return True
+			return True
 		else:
 			if "tag" in prerequisites:
-				if not self.neededTag in prerequisites["tag"]:
+				if self.neededTag not in prerequisites["tag"]:
 					return False
 			else:
 				return False
@@ -253,7 +252,7 @@ class PackageInfoHandler:
 				return False
 		else:
 			if "flag" in prerequisites:
-				if not self.neededFlag in prerequisites["flag"]:
+				if self.neededFlag not in prerequisites["flag"]:
 					return False
 			else:
 				return True
@@ -304,7 +303,7 @@ class PackageInfoHandler:
 	def installNext(self, *args, **kwargs):
 		if self.reloadFavourites:
 			self.reloadFavourites = False
-			db = eDVBDB.getInstance().reloadBouquets()
+			eDVBDB.getInstance().reloadBouquets()
 
 		self.currentIndex += 1
 		attributes = self.installingAttributes

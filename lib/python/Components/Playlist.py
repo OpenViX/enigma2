@@ -1,4 +1,4 @@
-from os import path
+from os import path as ospath
 
 from enigma import eServiceReference
 from ServiceReference import ServiceReference
@@ -31,13 +31,13 @@ class PlaylistIO:
 
 	def getRef(self, filename, entry):
 		if entry[0] == "/":
-			path = entry
+			refPath = entry
 		else:
-			path = path.dirname(filename) + "/" + entry
+			refPath = ospath.dirname(filename) + "/" + entry
 			for proto in self.REMOTE_PROTOS:
 				if entry.startswith(proto):
-					path = entry
-		ref = eServiceReference(4097, 0, path)
+					refPath = entry
+		ref = eServiceReference(4097, 0, refPath)
 		return ServiceReference(ref)
 
 

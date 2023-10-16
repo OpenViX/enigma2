@@ -54,13 +54,6 @@ class LayoutInfo(Poll, Converter):
             self.poll_interval = 1600
         self.poll_enabled = True
 
-    def doSuspend(self, suspended):
-        if suspended:
-            self.poll_enabled = False
-        else:
-            self.downstream_elements.changed((self.CHANGED_POLL,))
-            self.poll_enabled = True
-
     @cached
     def getText(self):
         text = 'N/A'

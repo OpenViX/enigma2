@@ -1,3 +1,7 @@
+import codecs
+import re
+import six
+
 from Components.config import config, configfile
 from Components.NimManager import nimmanager
 
@@ -13,12 +17,8 @@ from enigma import eDVBDB, eServiceReference, eTimer, eDVBFrontendParametersSate
 
 from time import localtime, time, strftime, mktime
 
-import os
-import codecs
-import re
-import six
 
-#for pip
+# for pip
 from Screens.PictureInPicture import PictureInPicture
 from Components.SystemInfo import SystemInfo
 from enigma import ePoint, eSize
@@ -93,7 +93,7 @@ class PipAdapter:
 	def __hidePiP(self):
 		# set pip size to 1 pixel
 		x = y = 0
-		w = h = 1
+		w = 1
 		self.session.pip.instance.move(ePoint(x, y))
 		self.session.pip.instance.resize(eSize(w, y))
 		self.session.pip["video"].instance.resize(eSize(w, y))
@@ -126,13 +126,13 @@ class PipAdapter:
 
 class LamedbReader():
 	def readLamedb(self, path):
-		#print("[%s-LamedbReader] Reading lamedb..." % (debug_name))
+		# print("[%s-LamedbReader] Reading lamedb..." % (debug_name))
 
 		transponders = {}
 
 		try:
 			lamedb = open(path + "/lamedb", "r")
-		except Exception as e:
+		except Exception:
 			return transponders
 
 		content = lamedb.read()
@@ -142,7 +142,7 @@ class LamedbReader():
 		result = re.match('eDVB services /([45])/', content)
 		if result:
 			lamedb_ver = int(result.group(1))
-			#print("[%s-LamedbReader] lamedb ver" % (debug_name), lamedb_ver)
+			# print("[%s-LamedbReader] lamedb ver" % (debug_name), lamedb_ver)
 		if lamedb_ver == 4:
 			transponders = self.parseLamedbV4Content(content)
 		elif lamedb_ver == 5:
@@ -175,7 +175,7 @@ class LamedbReader():
 			transponder["transport_stream_id"] = int(first_row[1], 16)
 			transponder["original_network_id"] = int(first_row[2], 16)
 
-			#print("%x:%x:%x" % (namespace, transport_stream_id, original_network_id))
+			# print("%x:%x:%x" % (namespace, transport_stream_id, original_network_id))
 			second_row = rows[1].strip()
 			transponder["dvb_type"] = 'dvb' + second_row[0]
 			if transponder["dvb_type"] not in ["dvbs", "dvbt", "dvbc"]:
@@ -281,7 +281,7 @@ class LamedbReader():
 
 			services_count += 1
 
-		#print("[%s-LamedbReader] Read %d transponders and %d services" % (debug_name, transponders_count, services_count))
+		# print("[%s-LamedbReader] Read %d transponders and %d services" % (debug_name, transponders_count, services_count))
 		return transponders
 
 	def parseLamedbV5Content(self, content):
@@ -404,13 +404,13 @@ class LamedbReader():
 
 				services_count += 1
 
-		#print("[%s-LamedbReader] Read %d transponders and %d services" % (debug_name, transponders_count, services_count))
+		# print("[%s-LamedbReader] Read %d transponders and %d services" % (debug_name, transponders_count, services_count))
 		return transponders
 
 
 class LamedbWriter():
 	def writeLamedb(self, path, transponders, filename="lamedb"):
-		#print("[%s-LamedbWriter] Writing lamedb..." % (debug_name))
+		# print("[%s-LamedbWriter] Writing lamedb..." % (debug_name))
 
 		transponders_count = 0
 		services_count = 0
@@ -461,9 +461,9 @@ class LamedbWriter():
 								eDVBFrontendParametersSatellite.No_Stream_Id_Filter,
 								eDVBFrontendParametersSatellite.PLS_Gold,
 								eDVBFrontendParametersSatellite.PLS_Default_Gold_Code)
-						except AttributeError as err:
-							pass  # print("[%s-BouquetsWriter] some images are still not multistream aware after all this time" % (debug_name),  err)
-					lamedblist.append("\ts %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d%s%s\n" %
+						except AttributeError:
+							pass
+						lamedblist.append("\ts %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d%s%s\n" %
 						(transponder["frequency"],
 						transponder["symbol_rate"],
 						transponder["polarization"],
@@ -551,10 +551,10 @@ class LamedbWriter():
 		lamedb.close()
 		del lamedblist
 
-		#print("[%s-LamedbWriter] Wrote %d transponders and %d services" % (debug_name, transponders_count, services_count))
+		# print("[%s-LamedbWriter] Wrote %d transponders and %d services" % (debug_name, transponders_count, services_count))
 
 	def writeLamedb5(self, path, transponders, filename="lamedb5"):
-		#print("[%s-LamedbWriter] Writing lamedb V5..." % (debug_name))
+		# print("[%s-LamedbWriter] Writing lamedb V5..." % (debug_name))
 
 		transponders_count = 0
 		services_count = 0
@@ -603,12 +603,12 @@ class LamedbWriter():
 									transponder["is_id"],
 									transponder["pls_code"],
 									transponder["pls_mode"])
-						except AttributeError as err:
-							pass  # print("[%s-BouquetsWriter] some images are still not multistream aware after all this time" % (debug_name), err)
+						except AttributeError:
+							pass
 					if "t2mi_plp_id" in transponder and "t2mi_pid" in transponder:
 						t2mi = ',T2MI:%d:%d' % (
-						transponder["t2mi_plp_id"],
-						transponder["t2mi_pid"])
+					transponder["t2mi_plp_id"],
+					transponder["t2mi_pid"])
 					lamedblist.append("s:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d%s%s\n" %
 						(transponder["frequency"],
 						transponder["symbol_rate"],
@@ -697,7 +697,7 @@ class LamedbWriter():
 		lamedb.close()
 		del lamedblist
 
-		#print("[%s-LamedbWriter] Wrote %d transponders and %d services" % (debug_name, transponders_count, services_count))
+		# print("[%s-LamedbWriter] Wrote %d transponders and %d services" % (debug_name, transponders_count, services_count))
 
 
 class Opentv_Zapper():
@@ -732,7 +732,6 @@ class Opentv_Zapper():
 		self.sref = make_sref(self.service)
 		transponder_key = "%x:%x:%x" % (self.transponder["namespace"], self.transponder["transport_stream_id"], self.transponder["original_network_id"])
 		service_key = "%x:%x" % (self.service["service_type"], self.service["service_id"])
-		provider_present = False
 		transponders = LamedbReader().readLamedb(lamedb_path)
 		if transponder_key not in transponders:
 			transponders[transponder_key] = self.transponder
@@ -853,7 +852,6 @@ def startSession(reason, session=None, **kwargs):
 	# If only using WHERE_SESSIONSTART there is no call to this function on shutdown.
 	#
 	schedulename = "OpentvZapper-Scheduler"
-	configname = config.plugins.opentvzapper
 
 	print("[%s][Scheduleautostart] reason(%d), session" % (schedulename, reason), session)
 	if reason == 0 and session is None:
@@ -999,7 +997,7 @@ class AutoScheduleTimer:
 
 	def runscheduleditemCallback(self):
 		global wasScheduleTimerWakeup
-		from Screens.Standby import Standby, inStandby, TryQuitMainloop, inTryQuitMainloop
+		from Screens.Standby import inStandby, TryQuitMainloop, inTryQuitMainloop
 		print("[%s][runscheduleditemCallback] inStandby" % self.schedulename, inStandby)
 		if wasScheduleTimerWakeup and inStandby and self.config.scheduleshutdown.value and not self.session.nav.getRecordings() and not inTryQuitMainloop:
 			print("[%s] Returning to deep standby after scheduled wakeup" % self.schedulename)

@@ -10,11 +10,12 @@ from Tools.BoundFunction import boundFunction
 from Tools.StbHardware import getFPWasTimerWakeup
 import RecordTimer
 import PowerTimer
+from ServiceReference import ServiceReference
 import Screens.Standby
 import NavigationInstance
-import ServiceReference
-from Screens.InfoBar import InfoBar, MoviePlayer
+from Screens.InfoBar import InfoBar
 from Components.Sources.StreamService import StreamServiceList
+from Screens.InfoBarGenerics import streamrelayChecker
 
 # TODO: remove pNavgation, eNavigation and rewrite this stuff in python.
 
@@ -103,12 +104,15 @@ class Navigation:
 			self.currentlyPlayingService = None
 
 	def dispatchRecordEvent(self, rec_service, event):
-#		print "record_event", rec_service, event
+		# print "record_event", rec_service, event
 		for x in self.record_event:
 			try:
 				x(rec_service, event)
 			except:
 				pass
+
+	def restartService(self):
+		self.playService(self.currentlyPlayingServiceOrGroup, forceRestart=True)
 
 	def playService(self, ref, checkParentalControl=True, forceRestart=False, adjust=True):
 		oldref = self.currentlyPlayingServiceOrGroup
@@ -177,6 +181,7 @@ class Navigation:
 				else:
 					self.skipServiceReferenceReset = True
 				self.currentlyPlayingServiceReference = playref
+				playref = streamrelayChecker(playref)
 				self.currentlyPlayingServiceOrGroup = ref
 				if InfoBarInstance and InfoBarInstance.servicelist.servicelist.setCurrent(ref, adjust):
 					self.currentlyPlayingServiceOrGroup = InfoBarInstance.servicelist.servicelist.getCurrent()
@@ -209,7 +214,7 @@ class Navigation:
 									setPreferredTuner(int(config.usage.frontend_priority_dvbs.value))
 									setPriorityFrontend = True
 				if self.pnav.playService(playref):
-				#	print("[Navigation] Failed to start", playref)
+					# print("[Navigation] Failed to start", playref)
 					self.currentlyPlayingServiceReference = None
 					self.currentlyPlayingServiceOrGroup = None
 					if oldref and "://" in oldref.getPath():
@@ -238,6 +243,7 @@ class Navigation:
 		if ref:
 			if ref.flags & eServiceReference.isGroup:
 				ref = getBestPlayableServiceReference(ref, eServiceReference(), simulate)
+			ref = streamrelayChecker(ref)
 			service = ref and self.pnav and self.pnav.recordService(ref, simulate)
 			if service is None:
 				print("[Navigation] record returned non-zero")

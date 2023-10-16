@@ -1,12 +1,12 @@
 from os import path
 
 from enigma import eAVSwitch, getDesktop
-from boxbranding import getBoxType, getBrandOEM, getHaveAVJACK, getHaveRCA, getHaveSCART, getHaveSCARTYUV, getHaveYUV
+from boxbranding import getBoxType, getBrandOEM
 
 from Components.config import ConfigBoolean, ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
 from Components.SystemInfo import SystemInfo
 from Tools.CList import CList
-from Tools.HardwareInfo import HardwareInfo
+# from Tools.HardwareInfo import HardwareInfo
 
 config.av = ConfigSubsection()
 

@@ -208,7 +208,7 @@ class WlanStatus(Screen):
 
 	def updateStatusLink(self, status):
 		if status is not None:
-			if status[self.iface]["essid"] == "off" or status[self.iface]["accesspoint"] == "Not-Associated" or status[self.iface]["accesspoint"] == False:
+			if status[self.iface]["essid"] == "off" or status[self.iface]["accesspoint"] == "Not-Associated" or status[self.iface]["accesspoint"] is False:
 				self["statuspic"].setPixmapNum(1)
 			else:
 				self["statuspic"].setPixmapNum(0)
@@ -324,7 +324,6 @@ class WlanScan(Screen):
 		newList = self.getAccessPoints(refresh=True)
 		self.newAPList = []
 		tmpList = []
-		newListIndex = None
 		currentListEntry = None
 		currentListIndex = None
 
@@ -342,11 +341,11 @@ class WlanScan(Screen):
 				idx = 0
 				for entry in self.newAPList:
 					if entry[0] == currentListEntry[0]:
-						newListIndex = idx
+						currentListIndex = idx
 					idx += 1
 			self['list'].setList(self.newAPList)
-			if newListIndex is not None:
-				self["list"].setIndex(newListIndex)
+			if currentListIndex is not None:
+				self["list"].setIndex(currentListIndex)
 			self["list"].updateList(self.newAPList)
 			self.listLength = len(self.newAPList)
 			self.buildWlanList()
@@ -432,7 +431,7 @@ def configStrings(iface):
 		ret += '\tpost-down wl-down.sh\n'
 	else:
 		if driver == 'madwifi' and config.plugins.wlan.hiddenessid.value:
-			ret += "\tpre-up iwconfig " + iface + " essid \"" + re.escape(config.plugins.wlan.essid.value) + "\" || true\n"
+			ret += "\tpre-up iwconfig " + iface + " essid \"" + re_escape(config.plugins.wlan.essid.value) + "\" || true\n"
 		ret += "\tpre-up wpa_supplicant -i" + iface + " -c" + getWlanConfigName(iface) + " -B -dd -D" + driver + " || true\n"
 		ret += "\tpre-down wpa_cli -i" + iface + " terminate || true\n"
 	return ret

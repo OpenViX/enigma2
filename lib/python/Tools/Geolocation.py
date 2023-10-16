@@ -1,7 +1,7 @@
 from json import loads
-# required methods: Request, urlopen, HTTPError, URLError
-from urllib.request import urlopen, Request  # raises ImportError in Python 2
-from urllib.error import HTTPError, URLError  # raises ImportError in Python 2
+# required methods: urlopen, URLError
+from urllib.request import urlopen
+from urllib.error import URLError
 
 # Data available from http://ip-api.com/json/:
 #

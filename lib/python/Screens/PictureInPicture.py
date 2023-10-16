@@ -218,7 +218,8 @@ class PictureInPicture(Screen):
 	def playService(self, service):
 		if service is None:
 			return False
-		ref = self.resolveAlternatePipService(service)
+		from Screens.InfoBarGenerics import streamrelayChecker
+		ref = streamrelayChecker(self.resolveAlternatePipService(service))
 		if ref:
 			if SystemInfo["CanNotDoSimultaneousTranscodeAndPIP"] and StreamServiceList:
 				self.pipservice = None

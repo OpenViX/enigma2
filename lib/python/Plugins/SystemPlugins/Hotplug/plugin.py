@@ -1,4 +1,4 @@
-import os
+from os import remove
 
 from twisted.internet import reactor
 from twisted.internet.protocol import Protocol, Factory
@@ -42,12 +42,12 @@ def processHotplugData(self, eventData):
 		# remains in if no other media was played.
 		try:
 			with open("/etc/enigma2/playlist.e2pls", "r") as fd:
-				file = f.readline().strip()
+				file = fd.readline().strip()
 		except (IOError, OSError):
 			file = None
 		if file and ".cda" in file:
 			try:
-				os.remove("/etc/enigma2/playlist.e2pls")
+				remove("/etc/enigma2/playlist.e2pls")
 			except (IOError, OSError):
 				pass
 		harddiskmanager.removeHotplugPartition(dev)
@@ -89,7 +89,7 @@ class Hotplug(Protocol):
 def autostart(reason, **kwargs):
 	if reason == 0:
 		try:
-			os.remove("/tmp/hotplug.socket")
+			remove("/tmp/hotplug.socket")
 		except (IOError, OSError):
 			pass
 		factory = Factory()

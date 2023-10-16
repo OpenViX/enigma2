@@ -311,7 +311,7 @@ class VideoEnhancementPreview(ConfigListScreen, Screen):
 		self["config"].list = self.list
 		self["config"].l.setSeperation(300)
 		self["config"].l.setList(self.list)
-		if not self.selectionChanged in self["config"].onSelectionChanged:
+		if self.selectionChanged not in self["config"].onSelectionChanged:
 			self["config"].onSelectionChanged.append(self.selectionChanged)
 		self.selectionChanged()
 

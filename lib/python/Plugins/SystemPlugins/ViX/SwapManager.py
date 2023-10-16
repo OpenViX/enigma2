@@ -1,4 +1,4 @@
-from os import system, stat as mystat, path, remove, rename
+from os import system, stat as mystat, path, remove
 from glob import glob
 import stat
 
@@ -55,15 +55,14 @@ class StartSwap:
 				# print("[SwapManager][StartSwap] grep lines in result", line)
 				if "swap" not in line:
 					continue
-				parts = line.strip().split()
 				swap_Pname = line.strip().rsplit(" ", 1)[-1]
 				print("[SwapManager][StartSwap] Found a SWAP partition:", swap_Pname)
 		devicelist = []
 		for p in harddiskmanager.getMountedPartitions():
 			d = path.normpath(p.mountpoint)
 			if (path.exists(p.mountpoint) and p.mountpoint != "/"
-				 and not p.mountpoint.startswith("/media/net/")
-				 and not p.mountpoint.startswith("/media/autofs/")):
+				and not p.mountpoint.startswith("/media/net/")
+				and not p.mountpoint.startswith("/media/autofs/")):
 				devicelist.append((p.description, d))
 		if len(devicelist):
 			for device in devicelist:
@@ -222,7 +221,7 @@ class VIXSwap(Screen):
 						if "mmc" in parts[0]:
 							self.MMCdevice = True
 							self.swap_Pname = parts[0]
-#							self["key_blue"].setText("")
+							# self["key_blue"].setText("")
 							self.swap_name = _("manufacturer defined swap")
 						self.swap_Pactive = True
 				f.close()
@@ -357,7 +356,6 @@ class VIXSwap(Screen):
 			self.updateSwap()
 
 	def doCreateSwap(self):
-		parts = []
 		supported_filesystems = frozenset(("ext4", "ext3"))
 		candidates = []
 		mounts = getProcMounts()

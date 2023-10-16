@@ -5,6 +5,7 @@ from enigma import iServiceInformation, eServiceReference
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.Harddisk import bytesToHumanReadable
+from time import localtime, strftime
 
 # Handle any invalid utf8 in a description to avoid crash when
 # displaying it.
@@ -28,6 +29,7 @@ class MovieInfo(Converter):
 	MOVIE_REC_FILESIZE = 4  # filesize of recording
 	MOVIE_FULL_DESCRIPTION = 5  # combination of short and long description when available
 	MOVIE_NAME = 6  # recording name
+	FORMAT_STRING = 6  # it is formatted string based on parameter and with defined separator
 
 	KEYWORDS = {
 		# Arguments...
@@ -46,6 +48,7 @@ class MovieInfo(Converter):
 	}
 
 	def __init__(self, type):
+		Converter.__init__(self, type)
 		self.textEvent = None
 		self.type = None
 		self.separator = "\n"
@@ -54,6 +57,12 @@ class MovieInfo(Converter):
 		parse = ","
 		type.replace(";", parse)  # Some builds use ";" as a separator, most use ",".
 		args = [arg.strip() for arg in type.split(parse)]
+
+		self.parts = args
+		if len(self.parts) > 1:
+			self.type = self.FORMAT_STRING
+			self.separatorChar = self.parts[0]
+
 		for arg in args:
 			name, value = self.KEYWORDS.get(arg, ("Error", None))
 			if name == "Error":
@@ -63,7 +72,6 @@ class MovieInfo(Converter):
 		if ((name == "Error") or (type is None)):
 			print("[MovieInfo] Valid arguments are: ShortDescription|MetaDescription|FullDescription|RecordServiceName|RecordServiceRef|FileSize.")
 			print("[MovieInfo] Valid options for descriptions are: Separated|NotSeparated|Trimmed|NotTrimmed.")
-		Converter.__init__(self, type)
 
 	def destroy(self):
 		Converter.destroy(self)
@@ -133,6 +141,19 @@ class MovieInfo(Converter):
 				return info.getInfoString(service, iServiceInformation.sServiceref)
 			elif self.type == self.MOVIE_REC_FILESIZE:
 				return self.getFileSize(service, info)
+			elif self.type == self.FORMAT_STRING:
+				timeCreate = strftime("%A %d %b %Y", localtime(info.getInfo(service, iServiceInformation.sTimeCreate)))
+				duration = "%d min" % (info.getLength(service) / 60)
+				filesize = "%d MB" % (info.getInfoObject(service, iServiceInformation.sFileSize) / (1024 * 1024))
+				res_str = ""
+				for x in self.parts[1:]:
+					if x == "TIMECREATED" and timeCreate != '':
+						res_str = self.appendToStringWithSeparator(res_str, timeCreate)
+					if x == "DURATION" and duration != '':
+						res_str = self.appendToStringWithSeparator(res_str, duration)
+					if x == "FILESIZE" and filesize != '':
+						res_str = self.appendToStringWithSeparator(res_str, filesize)
+				return res_str
 		return ""
 
 	def __getCollectionDescription(self, service):

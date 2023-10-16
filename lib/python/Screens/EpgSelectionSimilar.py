@@ -1,4 +1,3 @@
-from Components.ActionMap import HelpableActionMap
 from Components.config import config
 from Components.EpgListSingle import EPGListSingle
 from Screens.EpgSelectionBase import EPGSelectionBase, EPGStandardButtons

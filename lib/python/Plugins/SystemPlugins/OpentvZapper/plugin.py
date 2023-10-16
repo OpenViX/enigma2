@@ -3,7 +3,7 @@ from Components.NimManager import nimmanager
 from Components.SystemInfo import SystemInfo
 
 from Plugins.Plugin import PluginDescriptor
-
+from Screens.MessageBox import MessageBox
 from Screens.Setup import Setup
 
 from .providers import providers

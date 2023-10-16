@@ -225,8 +225,8 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 
 		self.onExecBegin.append(self.showTutorial)
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
-				iPlayableService.evCuesheetChanged: self.refillList
-			})
+			iPlayableService.evCuesheetChanged: self.refillList
+		})
 
 		# to track new entries we save the last version of the cutlist
 		self.last_cuts = self.getCutlist()

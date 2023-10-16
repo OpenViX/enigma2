@@ -82,7 +82,7 @@ class ServiceName2(Converter):
 		def searchService(serviceHandler, bouquet):
 			istype = False
 			servicelist = serviceHandler.list(bouquet)
-			if not servicelist is None:
+			if servicelist is not None:
 				while True:
 					s = servicelist.getNext()
 					if not s.valid():
@@ -110,7 +110,7 @@ class ServiceName2(Converter):
 			isService = searchService(serviceHandler, bouquet)
 		else:
 			bouquetlist = serviceHandler.list(bouquet)
-			if not bouquetlist is None:
+			if bouquetlist is not None:
 				while True:
 					bouquet = bouquetlist.getNext()
 					if not bouquet.valid():
@@ -124,7 +124,7 @@ class ServiceName2(Converter):
 	def getServiceNumber(self, ref):
 		def searchHelper(serviceHandler, num, bouquet):
 			servicelist = serviceHandler.list(bouquet)
-			if not servicelist is None:
+			if servicelist is not None:
 				while True:
 					s = servicelist.getNext()
 					if not s.valid():
@@ -167,16 +167,16 @@ class ServiceName2(Converter):
 				cur = eServiceReference(rootstr)
 				bouquet = eServiceReference(bqrootstr)
 				bouquetlist = serviceHandler.list(bouquet)
-				if not bouquetlist is None:
+				if bouquetlist is not None:
 					while True:
 						bouquet = bouquetlist.getNext()
 						if not bouquet.valid():
 							break
 						if bouquet.flags & eServiceReference.isDirectory:
 							service, number = searchHelper(serviceHandler, number, bouquet)
-							if not service is None and cur == bouquet:
+							if service is not None and cur == bouquet:
 								break
-			if not service is None:
+			if service is not None:
 				info = serviceHandler.info(bouquet)
 				name = info and info.getName(bouquet) or ''
 				return number, name
@@ -191,14 +191,14 @@ class ServiceName2(Converter):
 			provider_root = eServiceReference(rootstr)
 			serviceHandler = eServiceCenter.getInstance()
 			providerlist = serviceHandler.list(provider_root)
-			if not providerlist is None:
+			if providerlist is not None:
 				while True:
 					provider = providerlist.getNext()
 					if not provider.valid():
 						break
 					if provider.flags & eServiceReference.isDirectory:
 						servicelist = serviceHandler.list(provider)
-						if not servicelist is None:
+						if servicelist is not None:
 							while True:
 								service = servicelist.getNext()
 								if not service.valid():
@@ -233,7 +233,7 @@ class ServiceName2(Converter):
 			elif type == 'IP-TV':
 				return _("Streaming")
 			else:
-				fmt = ["O ", "s ", "M ", "F ", "p ", "Y ", "f"]		#(orbital_position frequency polarization symbol_rate fec)
+				fmt = ["O ", "s ", "M ", "F ", "p ", "Y ", "f"]  #(orbital_position frequency polarization symbol_rate fec)
 		for line in fmt:
 			f = line[:1]
 			if f == 't':  # %t - tuner_type (dvb-s/s2/c/t)
@@ -258,7 +258,7 @@ class ServiceName2(Converter):
 					result += '%d MHz' % (self.tpdata.get('frequency', 0) / 1000)
 				if type in ('DVB-C', 'DVB-T'):
 					result += '%.3f MHz' % (((self.tpdata.get('frequency', 0) + 500) / 1000) / 1000.0)
-#					result += '%.3f'%(((self.tpdata.get('frequency', 0) / 1000) +1) / 1000.0) + " MHz "
+					# result += '%.3f'%(((self.tpdata.get('frequency', 0) / 1000) +1) / 1000.0) + " MHz "
 			elif f == 'f':  # %f - fec_inner (dvb-s/s2/c/t)
 				if type in ('DVB-S', 'DVB-C'):
 					x = self.tpdata.get('fec_inner', 15)
@@ -566,7 +566,7 @@ class ServiceName2(Converter):
 			else:
 				if self.ref:
 					return self.getSatelliteName(self.ref)
-			#test#
+			# test
 				return self.getSatelliteName(ref or eServiceReference(info.getInfoString(iServiceInformation.sServiceref)))
 		elif self.type == self.ALLREF:
 			tmpref = self.getReferenceType(refstr, ref)
@@ -657,7 +657,7 @@ class ServiceName2(Converter):
 			self.what = None
 
 	def forceChanged(self, what):
-		if what == True:
+		if what is True:
 			self.refstr = self.isStream = self.ref = self.info = self.tpdata = None
 			Converter.changed(self, (self.CHANGED_ALL,))
 			self.what = None

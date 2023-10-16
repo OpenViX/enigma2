@@ -267,8 +267,8 @@ class VideoEnhancement:
 			config.pep.dynamic_contrast = NoSave(ConfigNothing())
 
 		try:
-			x = config.av.scaler_sharpness.value
-		except KeyError:
+			x = config.av.scaler_sharpness
+		except NameError:
 			if os_path.exists("/proc/stb/vmpeg/0/pep_scaler_sharpness"):
 				def setScaler_sharpness(config):
 					myval = int(config.value)

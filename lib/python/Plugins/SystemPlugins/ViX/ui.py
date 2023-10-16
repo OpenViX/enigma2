@@ -1,5 +1,3 @@
-from os import listdir, path, mkdir
-
 from Components.ActionMap import NumberActionMap
 from Components.config import config
 from Components.Sources.StaticText import StaticText
@@ -48,7 +46,7 @@ class VIXMenu(Screen, ProtectedScreen):
 			22,  # fonts
 			300,  # itemHeight
 			5, 360, 600, 50, 22,  # status
-		]
+	]
 
 	def __init__(self, session, args=0):
 		Screen.__init__(self, session)
@@ -69,21 +67,21 @@ class VIXMenu(Screen, ProtectedScreen):
 		self["key_red"] = StaticText(_("Close"))
 
 		self["shortcuts"] = NumberActionMap(["ShortcutActions", "WizardActions", "InfobarEPGActions", "MenuActions", "NumberActions"],
-											{
-											"ok": self.go,
-											"back": self.close,
-											"red": self.close,
-											"menu": self.closeRecursive,
-											"1": self.go,
-											"2": self.go,
-											"3": self.go,
-											"4": self.go,
-											"5": self.go,
-											"6": self.go,
-											"7": self.go,
-											"8": self.go,
-											"9": self.go,
-											}, -1)
+			{
+				"ok": self.go,
+				"back": self.close,
+				"red": self.close,
+				"menu": self.closeRecursive,
+				"1": self.go,
+				"2": self.go,
+				"3": self.go,
+				"4": self.go,
+				"5": self.go,
+				"6": self.go,
+				"7": self.go,
+				"8": self.go,
+				"9": self.go,
+			}, -1)
 		self.onLayoutFinish.append(self.layoutFinished)
 		self.onChangedEntry = []
 		self["menu"].onSelectionChanged.append(self.selectionChanged)
