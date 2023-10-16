@@ -1138,7 +1138,6 @@ def InitUsageConfig():
 		("s", _("Restart softcam"))])
 	config.misc.softcam_streamrelay_url = ConfigIP(default=[127, 0, 0, 1], auto_jump=True)
 	config.misc.softcam_streamrelay_port = ConfigInteger(default=17999, limits=(0, 65535))
-	config.misc.softcam_streamrelay_use_dummy_namespace = ConfigYesNo(default=True)
 	SystemInfo["OScamInstalled"] = False
 
 	config.cccaminfo = ConfigSubsection()
