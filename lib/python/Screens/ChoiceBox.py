@@ -132,6 +132,9 @@ class ChoiceBox(Screen):
 		}, prio=-2)
 
 	def autoResize(self):
+		# This needs fixing to use self["list"].instance.getMaxItemTextWidth().
+		# Currently it is just fetching the list width from skin.xml, but that
+		# is fixed width so scaling the list will not work.
 		desktop_w = enigma.getDesktop(0).size().width()
 		desktop_h = enigma.getDesktop(0).size().height()
 		itemheight = self["list"].getItemHeight()
