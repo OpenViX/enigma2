@@ -1734,7 +1734,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.callLater(self.enablePathSelect)
 
 	def updateTitle(self):
-		separatorChar = parameters.get("MovieSelectionTitleSeparatorChar", "-")
+		separatorChar = parameters.get("MovieSelectionTitleSeparatorChar", " - ")
 		title = []
 		if config.usage.setup_level.index >= 2:  # expert+
 			title.append(config.movielist.last_videodir.value)
@@ -1742,7 +1742,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			title.append(','.join(self.selected_tags))
 		if self.collectionName:
 			title.append(self.collectionName)
-		self.title = (" %s " % separatorChar).join(title)
+		self.title = separatorChar.join(title)
 
 	def enablePathSelect(self):
 		self.pathselectEnabled = True
