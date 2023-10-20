@@ -6,7 +6,7 @@ from Components.Label import Label
 from Components.ChoiceList import ChoiceEntryComponent, ChoiceList
 from Components.Sources.StaticText import StaticText
 from Tools.BoundFunction import boundFunction
-import enigma
+from enigma import ePoint, eSize, getDesktop
 from skin import applySkinFactor
 
 config.misc.pluginlist = ConfigSubsection()
@@ -134,9 +134,9 @@ class ChoiceBox(Screen):
 
 	def autoResize(self):
 		margin = applySkinFactor(4)
-		separator = 10
-		desktop_w = enigma.getDesktop(0).size().width()
-		desktop_h = enigma.getDesktop(0).size().height()
+		separator = applySkinFactor(10)
+		desktop_w = getDesktop(0).size().width()
+		desktop_h = getDesktop(0).size().height()
 		itemheight = self["list"].getItemHeight()
 		textsize = (0, 0)
 		if self["text"].text:
@@ -149,24 +149,24 @@ class ChoiceBox(Screen):
 		listWidth = int(min(self["list"].instance.getMaxItemTextWidth() + scrollbar, desktop_w * 0.9))
 		count = min(listLen, listMaxItems)
 		if textsize[1] and textsize[0] < listWidth:
-			textsize[0] = listWidth
+			textsize = (listWidth, textsize[1])
 		width = max(listWidth, textsize[0])
 		listsize = (width, listMaxItems * itemheight)
 		listPos = separator + (textsize[1] if textsize[1] > 0 else 0)
 		# resize label
-		self["text"].instance.resize(enigma.eSize(*textsize))
-		self["text"].instance.move(enigma.ePoint(margin, margin))
+		self["text"].instance.resize(eSize(*textsize))
+		self["text"].instance.move(ePoint(margin, margin))
 		# move list
-		self["list"].instance.resize(enigma.eSize(*listsize))
-		self["list"].instance.move(enigma.ePoint(margin, listPos))
+		self["list"].instance.resize(eSize(*listsize))
+		self["list"].instance.move(ePoint(margin, listPos))
 
 		wsizex = margin * 2 + width
 		wsizey = listPos + (count * itemheight) + margin
 		wsize = (wsizex, wsizey)
-		self.instance.resize(enigma.eSize(*wsize))
+		self.instance.resize(eSize(*wsize))
 
 		# center window
-		self.instance.move(enigma.ePoint((desktop_w - wsizex) // 2, (desktop_h - wsizey) // 2))
+		self.instance.move(ePoint((desktop_w - wsizex) // 2, (desktop_h - wsizey) // 2))
 
 	def left(self):
 		if len(self["list"].list) > 0:
