@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-10-15 09:11+0300\n"
+"PO-Revision-Date: 2023-10-20 13:02+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -4813,15 +4813,15 @@ msgstr "Hakemisto"
 
 #, python-format
 msgid "Directory %s does not exist."
-msgstr "Hakemistoa %s ei löydy."
+msgstr "Hakemistoa %s ei ole olemassa."
 
 #, python-format
 msgid "Directory '%s' does not exist."
-msgstr "Hakemistoa '%s' ei löydy."
+msgstr "Hakemistoa '%s' ei ole olemassa."
 
 #, python-format
 msgid "Directory '%s' is not hard links capable."
-msgstr "Hakemistoon '%s' ei voi kirjoittaa."
+msgstr "Hakemisto '%s' ei ole kova-linkkeihin kykenevä."
 
 #, python-format
 msgid "Directory '%s' not valid. Partition must be ext or nfs."
@@ -13540,7 +13540,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"15.10.2023\n"
+"20.10.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -18812,7 +18812,7 @@ msgid "Select extra packages folder"
 msgstr "Valitse lisäohjelmapakettien hakemisto"
 
 msgid "Select folder containing plugins(.ipk) and Save"
-msgstr "Valitse lisäosia sisältävä hakemisto (.ipk) ja Tallenna"
+msgstr "Valitse laajennuksia sisältävä hakemisto (.ipk) ja Tallenna"
 
 msgid "Select the SWAP file size:"
 msgstr "Valitse SWAP:n koko:"
@@ -19085,28 +19085,22 @@ msgid "Please select a valid directory."
 msgstr "Valitse kelvollinen hakemisto."
 
 msgid "Play service without streamrelay"
-msgstr "Toista kanava ilman stream relay:tä"
+msgstr "Toista kanava ilman striimin välitystä"
 
 msgid "Play service with streamrelay"
-msgstr "Toista kanava stream relay:llä"
+msgstr "Toista kanava striimin välityksellä"
 
 msgid "Stream relay"
-msgstr "Stream relay"
+msgstr "Striimin välitys"
 
-msgid "Stream relay url"
-msgstr "Stream relay -url"
+msgid "Streamrelay url"
+msgstr "Striimin välitys -url"
 
-msgid "Stream relay url will normally be the default"
-msgstr "Stream relay -url on normaalisti oletusarvo"
+msgid "The IP address of the streamrelay server that is used to descramble services that can only be decrypted via streamrelay"
+msgstr "Striimin välitys -palvelimen IP-osoite, jota käytetään sellaisten palvelujen salauksen purkamiseen, joiden salaus voidaan purkaa vain striimin välityksen kautta"
 
-msgid "Stream relay port"
-msgstr "Stream relay -portti"
+msgid "Streamrelay port"
+msgstr "Striimin välitys -portti"
 
-msgid "Stream relay port will normally be the default"
-msgstr "Stream relay -portti on normaalisti oletusarvo"
-
-msgid "Stream relay use dummy namespace"
-msgstr "Stream relay, käytä valenimiavaruutta"
-
-msgid "Some binaries require a dummy namespace"
-msgstr "Jotkin binäärit vaativat valenimiavaruuden"
+msgid "The port of the streamrelay server that is used to descramble services that can only be decrypted via streamrelay"
+msgstr "Striimin välitys -palvelimen portti, jota käytetään sellaisten palvelujen salauksen purkamiseen, joiden salaus voidaan purkaa vain striimin välityksen kautta"
