@@ -139,22 +139,23 @@ class ChoiceBox(Screen):
 		desktop_h = enigma.getDesktop(0).size().height()
 		itemheight = self["list"].getItemHeight()
 		textsize = (0, 0)
-		if self["text"].text and textsize[0] < textsize[1]:
+		if self["text"].text:
+			textsize = self["text"].getSize()
+			if textsize[0] < textsize[1]:
 				textsize = (textsize[1], textsize[0] + 10)
 		listLen = len(self.list)
 		listMaxItems = int((desktop_h * 0.8 - textsize[1]) // itemheight)
 		scrollbar = self["list"].instance.getScrollbarWidth() + 5 if listLen > listMaxItems else 0
 		listWidth = int(min(self["list"].instance.getMaxItemTextWidth() + scrollbar, desktop_w * 0.9))
 		count = min(listLen, listMaxItems)
-		if textsize[0] and textsize[0] < listWidth:
+		if textsize[1] and textsize[0] < listWidth:
 			textsize[0] = listWidth
 		width = max(listWidth, textsize[0])
 		listsize = (width, listMaxItems * itemheight)
 		listPos = separator + (textsize[1] if textsize[1] > 0 else 0)
-		if self["text"].text:
-			# resize label
-			self["text"].instance.resize(enigma.eSize(*textsize))
-			self["text"].instance.move(enigma.ePoint(margin, margin))
+		# resize label
+		self["text"].instance.resize(enigma.eSize(*textsize))
+		self["text"].instance.move(enigma.ePoint(margin, margin))
 		# move list
 		self["list"].instance.resize(enigma.eSize(*listsize))
 		self["list"].instance.move(enigma.ePoint(margin, listPos))
