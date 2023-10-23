@@ -54,7 +54,7 @@ class CronTimers(Screen):
 			'green': self.addtocron,
 			'yellow': self.CrondStart,
 			'blue': self.autostart,
-			})
+			})  # noqa: E123
 		if self.selectionChanged not in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 		self.service_name = 'cronie'
