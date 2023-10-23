@@ -9,10 +9,7 @@ from Components.ServiceEventTracker import InfoBarBase
 from Components.Timeshift import InfoBarTimeshift
 
 
-class SubservicesQuickzap(InfoBarBase, InfoBarShowHide, InfoBarMenu,
-						  InfoBarInstantRecord, InfoBarSeek, InfoBarTimeshift,
-						  InfoBarTimeshiftState, InfoBarExtensions, InfoBarSubtitleSupport,
-						  InfoBarAudioSelection, Screen):
+class SubservicesQuickzap(InfoBarBase, InfoBarShowHide, InfoBarMenu, InfoBarInstantRecord, InfoBarSeek, InfoBarTimeshift, InfoBarTimeshiftState, InfoBarExtensions, InfoBarSubtitleSupport, InfoBarAudioSelection, Screen):
 
 	def __init__(self, session, subservices):
 		Screen.__init__(self, session)
@@ -41,7 +38,7 @@ class SubservicesQuickzap(InfoBarBase, InfoBarShowHide, InfoBarMenu,
 				"8": self.keyNumberGlobal,
 				"9": self.keyNumberGlobal,
 				"0": self.keyNumberGlobal
-			}, 0)
+			}, 0)  # noqa: E123
 		self.onLayoutFinish.append(self.onLayoutFinished)
 		self.onClose.append(self.__onClose)
 
