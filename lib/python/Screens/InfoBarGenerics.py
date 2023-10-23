@@ -409,7 +409,7 @@ class SecondInfoBar(Screen, HelpableScreen):
 				"nextEvent": (self.nextEvent, _("Show description for next event)")),
 				"timerAdd": (self.timerAdd, _("Add timer")),
 				"openSimilarList": (self.openSimilarList, _("Show list of similar programs")),
-			}, prio=-1, description=_("Second infobar"))
+			}, prio=-1, description=_("Second infobar"))  # noqa: E123
 
 		self.__event_tracker = ServiceEventTracker(screen=self,
 			eventmap={
@@ -614,7 +614,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 				"LongOKPressed": (self.toggleShowLong, self._helpToggleShowLong),
 				"toggleShow": (self.toggleShow, _("Cycle through infobar displays")),
 				"hide": (self.keyHide, self._helpKeyHide),
-			}, prio=1, description=_("Show/hide infobar"))  # lower prio to make it possible to override ok and cancel..
+			}, prio=1, description=_("Show/hide infobar"))    # noqa: E123   lower prio to make it possible to override ok and cancel..
 
 		self.__event_tracker = ServiceEventTracker(screen=self,
 			eventmap={
@@ -1110,7 +1110,7 @@ class NumberZap(Screen):
 				"8": self.keyNumberGlobal,
 				"9": self.keyNumberGlobal,
 				"0": self.keyNumberGlobal
-			})
+			})  # noqa: E123
 
 		self.Timer = eTimer()
 		self.Timer.callback.append(self.keyOK)
@@ -1134,7 +1134,7 @@ class InfoBarNumberZap:
 				"8": (self.keyNumberGlobal, _("Zap to channel number")),
 				"9": (self.keyNumberGlobal, _("Zap to channel number")),
 				"0": (self.keyNumberGlobal, self._helpKeyNumberGlobal0),
-			}, description=_("Recall channel, panic button & number zap"))
+			}, description=_("Recall channel, panic button & number zap"))  # noqa: E123
 
 	def _helpKeyNumberGlobal0(self):
 		if isinstance(self, InfoBarPiP) and self.pipHandles0Action():
@@ -1611,8 +1611,8 @@ class InfoBarEPG:
 		self.defaultEPGType = self.getDefaultEPGtype()
 		self.defaultINFOType = self.getDefaultINFOtype()
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
-				iPlayableService.evUpdatedEventInfo: self.__evEventInfoChanged,
-			})
+			iPlayableService.evUpdatedEventInfo: self.__evEventInfoChanged,
+		})
 
 		# Note regarding INFO button on the RCU. Some RCUs do not have an INFO button, but to make matters
 		# more complicated they have an EPG button that sends KEY_INFO instead of KEY_EPG. To deal with
@@ -1948,9 +1948,9 @@ class InfoBarRdsDecoder:
 		self.rass_interactive = None
 
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
-				iPlayableService.evEnd: self.__serviceStopped,
-				iPlayableService.evUpdatedRassSlidePic: self.RassSlidePicChanged
-			})
+			iPlayableService.evEnd: self.__serviceStopped,
+			iPlayableService.evUpdatedRassSlidePic: self.RassSlidePicChanged
+		})
 
 		self["RdsActions"] = HelpableActionMap(self, ["InfobarRdsActions"],
 		{
@@ -3391,7 +3391,7 @@ class InfoBarInstantRecord:
 
 		# print("[InfoBarGenerics]test1")
 		if answer is None or answer[1] == "no":
-			# print([InfoBarGenerics]"test2")
+			# print(["InfoBarGenerics]test2")
 			return
 		list = []
 		recording = self.recording[:]
@@ -3799,8 +3799,8 @@ class VideoMode(Screen):
 
 		self["actions"] = NumberActionMap(["InfobarVmodeButtonActions"],
 			{
-				"vmodeSelection": self.selectVMode
-			})
+			"vmodeSelection": self.selectVMode
+			})  # noqa: E123
 
 		self.Timer = eTimer()
 		self.Timer.callback.append(self.quit)
@@ -3933,13 +3933,10 @@ class InfoBarCueSheetSupport:
 		self.resume_point = None
 		self.force_next_resume = False
 		self.__event_tracker = ServiceEventTracker(screen=self,
-			eventmap={
-				iPlayableService.evStart: self.__serviceStarted,
-				iPlayableService.evCuesheetChanged: self.downloadCuesheet,
-			iPlayableService.evStopped: self.__evStopped,
-			}
-		)
-
+		eventmap={
+			iPlayableService.evStart: self.__serviceStarted,
+			iPlayableService.evCuesheetChanged: self.downloadCuesheet,
+			iPlayableService.evStopped: self.__evStopped, })
 		self.__blockDownloadCuesheet = False
 		self.__recording = None
 		self.__recordingCuts = []
@@ -4141,7 +4138,7 @@ class InfoBarCueSheetSupport:
 	def toggleMark(self, onlyremove=False, onlyadd=False, tolerance=5 * 90000, onlyreturn=False):
 		current_pos = self.cueGetCurrentPosition()
 		if current_pos is None:
-		# print("[InfoBarGenerics]not seekable")
+			# print("[InfoBarGenerics]not seekable")
 			return
 
 		nearest_cutpoint = self.getNearestCutPoint(current_pos)
@@ -4245,10 +4242,10 @@ class InfoBarSummary(Screen):
 		</widget>
 	</screen>"""
 
-# for picon:  (path="piconlcd" will use LCD picons)
-#		<widget source="session.CurrentService" render="Picon" position="6,0" size="120,64" path="piconlcd" >
-#			<convert type="ServiceName">Reference</convert>
-#		</widget>
+	# for picon:  (path="piconlcd" will use LCD picons)
+	# <widget source="session.CurrentService" render="Picon" position="6,0" size="120,64" path="piconlcd" >
+	# <convert type="ServiceName">Reference</convert>
+	# </widget>
 
 
 class InfoBarSummarySupport:
@@ -4434,10 +4431,10 @@ class InfoBarSubtitleSupport:
 class InfoBarServiceErrorPopupSupport:
 	def __init__(self):
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
-				iPlayableService.evTuneFailed: self.__tuneFailed,
-				iPlayableService.evTunedIn: self.__serviceStarted,
-				iPlayableService.evStart: self.__serviceStarted
-			})
+			iPlayableService.evTuneFailed: self.__tuneFailed,
+			iPlayableService.evTunedIn: self.__serviceStarted,
+			iPlayableService.evStart: self.__serviceStarted
+		})
 		self.__serviceStarted()
 
 	def __serviceStarted(self):
