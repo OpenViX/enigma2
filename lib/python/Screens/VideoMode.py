@@ -5,6 +5,7 @@ from enigma import iPlayableService, iServiceInformation, eTimer, eServiceCenter
 from Screens.Screen import Screen
 from Screens.ChannelSelection import FLAG_IS_DEDICATED_3D
 from Components.About import about
+from Components.ActionMap import ActionMap
 from Components.SystemInfo import SystemInfo
 from Components.ConfigList import ConfigListScreen
 from Components.config import config, configfile, getConfigListEntry
@@ -38,12 +39,8 @@ class VideoSetup(ConfigListScreen, Screen):
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry, fullUI=True)
 
-		from Components.ActionMap import ActionMap
 		self["actions"] = ActionMap(["SetupActions"],
-			{
-				"save": self.apply,
-			}, -2)
-
+			{"save": self.apply, }, -2)
 		self["description"] = Label("")
 		self.createSetup()
 		self.grabLastGoodMode()
@@ -251,18 +248,18 @@ class AutoVideoMode(Screen):
 		self.detecttimer.callback.append(self.VideoChangeDetect)
 
 	def checkIfDedicated3D(self):
-			service = self.session.nav.getCurrentlyPlayingServiceReference()
-			servicepath = service and service.getPath()
-			if servicepath and servicepath.startswith("/"):
-					if service.toString().startswith("1:"):
-						info = eServiceCenter.getInstance().info(service)
-						service = info and info.getInfoString(service, iServiceInformation.sServiceref)
-						return service and eDVBDB.getInstance().getFlag(eServiceReference(service)) & FLAG_IS_DEDICATED_3D == FLAG_IS_DEDICATED_3D and "sidebyside"
-					else:
-						return ".3d." in servicepath.lower() and "sidebyside" or ".tab." in servicepath.lower() and "topandbottom"
-			service = self.session.nav.getCurrentService()
-			info = service and service.info()
-			return info and info.getInfo(iServiceInformation.sIsDedicated3D) == 1 and "sidebyside"
+		service = self.session.nav.getCurrentlyPlayingServiceReference()
+		servicepath = service and service.getPath()
+		if servicepath and servicepath.startswith("/"):
+			if service.toString().startswith("1:"):
+				info = eServiceCenter.getInstance().info(service)
+				service = info and info.getInfoString(service, iServiceInformation.sServiceref)
+				return service and eDVBDB.getInstance().getFlag(eServiceReference(service)) & FLAG_IS_DEDICATED_3D == FLAG_IS_DEDICATED_3D and "sidebyside"
+			else:
+				return ".3d." in servicepath.lower() and "sidebyside" or ".tab." in servicepath.lower() and "topandbottom"
+		service = self.session.nav.getCurrentService()
+		info = service and service.info()
+		return info and info.getInfo(iServiceInformation.sIsDedicated3D) == 1 and "sidebyside"
 
 	def __evStart(self):
 		if config.osd.threeDmode.value == "auto":
@@ -305,13 +302,6 @@ class AutoVideoMode(Screen):
 			current_mode = fd.read()[:-1].replace("\n", "")
 		if current_mode.upper() in ("PAL", "NTSC"):
 			current_mode = current_mode.upper()
-		current_pol = ""
-		if "i" in current_mode:
-			current_pol = "i"
-		elif "p" in current_mode:
-			current_pol = "p"
-		current_res = current_pol and current_mode.split(current_pol)[0].replace("\n", "") or ""
-		current_rate = current_pol and current_mode.split(current_pol)[0].replace("\n", "") and current_mode.split(current_pol)[1].replace("\n", "") or ""
 		video_height = None
 		video_width = None
 		video_pol = None
@@ -384,8 +374,7 @@ class AutoVideoMode(Screen):
 				new_pol = str(video_pol)
 			else:
 				new_pol = config_pol
-			write_mode = None
-			new_mode = None
+			write_mode = new_mode = None
 			if config_mode in ("PAL", "NTSC"):
 				write_mode = config_mode
 			elif config.av.autores.value == "all" or (config.av.autores.value == "hd" and int(new_res) >= 720):
@@ -449,7 +438,7 @@ class AutoVideoMode(Screen):
 						else:
 							write_mode = current_mode
 					except IOError:
-							write_mode = current_mode
+						write_mode = current_mode
 			if write_mode and current_mode != write_mode:
 				resolutionlabel["restxt"].setText(_("Video mode: %s") % write_mode)
 				if config.av.autores.value != "disabled" and config.av.autores_label_timeout.value != "0":
