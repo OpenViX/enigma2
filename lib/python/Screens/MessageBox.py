@@ -63,6 +63,8 @@ class MessageBox(Screen, HelpableScreen):
 		self["InfoPixmap"].hide()
 		self["ErrorPixmap"] = Pixmap()
 		self["ErrorPixmap"].hide()
+		self["WarningPixmap"] = Pixmap()
+		self["WarningPixmap"].hide()
 		self["icon"] = MultiPixmap()
 		self["icon"].hide()
 		self.picon = picon
@@ -74,6 +76,8 @@ class MessageBox(Screen, HelpableScreen):
 				self["InfoPixmap"].show()
 			elif self.type == self.TYPE_ERROR:
 				self["ErrorPixmap"].show()
+			elif self.type == self.TYPE_WARNING:
+				self["WarningPixmap"].show()
 			self["icon"].show()
 		self.skinName = ["MessageBox"]
 		if simple:
