@@ -3,7 +3,7 @@ from Components.config import ConfigSelection, ConfigYesNo, ConfigInteger
 from Components.ActionMap import HelpableActionMap, NumberActionMap
 from Components.SystemInfo import SystemInfo
 from PowerTimer import AFTEREVENT, TIMERTYPE
-from time import localtime, time, strftime
+from time import time
 
 
 class TimerEntry(TimerEntryBase):
@@ -17,7 +17,7 @@ class TimerEntry(TimerEntryBase):
 			AFTEREVENT.WAKEUPTOSTANDBY: "wakeuptostandby",
 			AFTEREVENT.STANDBY: "standby",
 			AFTEREVENT.DEEPSTANDBY: "deepstandby"
-			}[self.timer.afterEvent]
+			}[self.timer.afterEvent]  # noqa: E123
 
 		timertype = {
 			TIMERTYPE.WAKEUP: "wakeup",
@@ -28,7 +28,7 @@ class TimerEntry(TimerEntryBase):
 			TIMERTYPE.DEEPSTANDBY: "deepstandby",
 			TIMERTYPE.REBOOT: "reboot",
 			TIMERTYPE.RESTART: "restart"
-			}[self.timer.timerType]
+			}[self.timer.timerType]  # noqa: E123
 
 		autosleepinstandbyonly = self.timer.autosleepinstandbyonly
 		autosleepdelay = self.timer.autosleepdelay
@@ -64,13 +64,13 @@ class TimerEntry(TimerEntryBase):
 			"deepstandby": TIMERTYPE.DEEPSTANDBY,
 			"reboot": TIMERTYPE.REBOOT,
 			"restart": TIMERTYPE.RESTART
-			}[self.timerentry_timertype.value]
+			}[self.timerentry_timertype.value]  # noqa: E123
 		self.timer.afterEvent = {
 			"nothing": AFTEREVENT.NONE,
 			"wakeuptostandby": AFTEREVENT.WAKEUPTOSTANDBY,
 			"standby": AFTEREVENT.STANDBY,
 			"deepstandby": AFTEREVENT.DEEPSTANDBY
-			}[self.timerentry_afterevent.value]
+			}[self.timerentry_afterevent.value]  # noqa: E123
 
 		if self.timerentry_type.value == "once":
 			self.timer.begin, self.timer.end = self.getBeginEnd()
