@@ -2441,7 +2441,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 			tmp = self.history[pos]
 			del self.history[pos]
 			self.history.append(tmp)
-			self.history_pos = len(self.history)-1  # noqa: E226
+			self.history_pos = len(self.history) - 1  # noqa: E226
 			self.setHistoryPath()
 
 	def saveRoot(self):
