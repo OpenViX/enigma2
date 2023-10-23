@@ -20,8 +20,8 @@ from Screens.Setup import getConfigMenuItem, Setup
 
 from Tools.ISO639 import LanguageCodes
 from Tools.General import isIPTV
-# from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
-# from Tools.LoadPixmap import LoadPixmap
+from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
+from Tools.LoadPixmap import LoadPixmap
 from pickle import load as pickle_load, dump as pickle_dump, dumps as pickle_dumps
 from os import path as os_path
 
@@ -32,7 +32,7 @@ FOCUS_CONFIG, FOCUS_STREAMS = range(2)
 
 CONFIG_FILE_AV = '/etc/enigma2/config_av'
 
-# selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "selections/selectioncross.png"))  # for use in the future
+selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "selections/selectioncross.png"))  # for use in the future
 
 
 def getAVDict():
@@ -338,7 +338,7 @@ class AudioSelection(ConfigListScreen, Screen):
 						else:
 							language += lang
 						cnt += 1
-					streams.append((x, "", number, description, language, selected))
+					streams.append((x, "", number, description, language, selected, selectionpng if selected == "X" else None))
 			else:
 				conflist.append(("",))
 			if SystemInfo["Canedidchecking"]:
@@ -393,7 +393,7 @@ class AudioSelection(ConfigListScreen, Screen):
 						except Exception:
 							description = _("unknown") + ": %s" % x[2]
 						number = str(int(number) + 1)
-					streams.append((x, "", number, description, language, selected))
+					streams.append((x, "", number, description, language, selected, selectionpng if selected == "X" else None))
 					idx += 1
 			conflist.append(getConfigListEntry(_("To audio selection"), self.settings.menupage))
 
