@@ -33,7 +33,7 @@ class EventViewContextMenu(Screen):
 			{
 				"ok": self.okbuttonClick,
 				"cancel": self.cancelClick
-			}
+			}  # noqa: E123
 		)
 
 		self["menu"] = MenuList(menu)
@@ -85,11 +85,11 @@ class EventViewBase:
 				"prevEvent": self.prevEvent,
 				"nextEvent": self.nextEvent,
 				"contextMenu": self.doContext,
-			})
-		self['dialogactions'] = ActionMap(['WizardActions'],
+			})  # noqa: E123
+		self["dialogactions"] = ActionMap(["WizardActions"],
 			{
-				'back': self.closeChoiceBoxDialog,
-			}, -1
+				"back": self.closeChoiceBoxDialog,
+			}, -1  # noqa: E123
 		)
 		self['dialogactions'].csel = self
 		self["dialogactions"].setEnabled(False)
@@ -100,7 +100,7 @@ class EventViewBase:
 		self.setEvent(self.event)
 
 	def prevEvent(self):
-		if self.cbFunc is not None:
+		if self.cbFunc is not None:  # noqa: E402
 			self.cbFunc(self.setEvent, self.setService, -1)
 
 	def nextEvent(self):
@@ -298,8 +298,7 @@ class EventViewEPGSelect(Screen, EventViewBase):
 			{
 				"timerAdd": self.timerAdd,
 				"openSimilarList": self.openSimilarList,
-			}
-		)
+			})  # noqa: E123
 		self["key_green"] = Button("")
 
 		if singleEPGCB:
@@ -307,8 +306,7 @@ class EventViewEPGSelect(Screen, EventViewBase):
 			self["epgactions2"] = ActionMap(["EventViewEPGActions"],
 				{
 					"openSingleServiceEPG": singleEPGCB,
-				}
-			)
+				})  # noqa: E123
 		else:
 			self["key_yellow"] = Button("")
 			self["yellow"].hide()
@@ -318,8 +316,7 @@ class EventViewEPGSelect(Screen, EventViewBase):
 			self["epgactions3"] = ActionMap(["EventViewEPGActions"],
 				{
 					"openMultiServiceEPG": multiEPGCB,
-				}
-			)
+				})  # noqa: E123
 		else:
 			self["key_blue"] = Button("")
 			self["blue"].hide()
