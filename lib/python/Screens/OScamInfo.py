@@ -57,7 +57,6 @@ elif screenwidth and screenwidth > 1920:
 elif screenwidth and screenwidth > 1024:
 	sizeH = screenwidth - 100
 	HDSKIN = True
-###global
 
 
 class OscamInfo:
@@ -125,12 +124,12 @@ class OscamInfo:
 		ret = _("%s webif disabled" % NAMEBIN)
 
 		if webif and port is not None:
-		# oscam/ncam reports it got webif support and webif is running (Port != 0)
+			# oscam/ncam reports it got webif support and webif is running (Port != 0)
 			if conf is not None and ospath.exists(conf):
 				# If we have a config file, we need to investigate it further
 				with open(conf, 'r') as data:
 					for i in data:
-#						print("[OscamInfo][getUserData] i", i)
+						# print("[OscamInfo][getUserData] i", i)
 						if "httpuser" in i.lower():
 							user = i.split("=")[1].strip()
 						elif "httppwd" in i.lower():
@@ -154,10 +153,10 @@ class OscamInfo:
 	def openWebIF(self, part=None, reader=None):
 		NAMEBIN = check_NAMEBIN()
 		self.proto = "http"
-#		print("[OscamInfo][openWebIF] NAMEBIN part", NAMEBIN, "   ", part)
+		# print("[OscamInfo][openWebIF] NAMEBIN part", NAMEBIN, "   ", part)
 		if config.oscaminfo.userdatafromconf.value:
 			udata = self.getUserData()
-#			print("[OscamInfo][openWebIF] udata, config.oscaminfo.userdatafromconf.value: ", udata, "   ", config.oscaminfo.userdatafromconf.value)
+			# print("[OscamInfo][openWebIF] udata, config.oscaminfo.userdatafromconf.value: ", udata, "   ", config.oscaminfo.userdatafromconf.value)
 			if isinstance(udata, str):
 				return False, udata
 			else:
@@ -170,33 +169,33 @@ class OscamInfo:
 				self.ip = "::1"
 			else:
 				self.ip = "127.0.0.1"
-# self.ip = local address 127.0.0.1 gets 403 in Oscam webif so try to pick up box IP address.
+			# self.ip = local address 127.0.0.1 gets 403 in Oscam webif so try to pick up box IP address.
 			eth0 = about.getIfConfig("eth0")
 			wlan0 = about.getIfConfig("wlan0")
 			if "addr" in eth0:
 				self.ip = eth0["addr"]
 			if "addr" in wlan0:
 				self.ip = wlan0["addr"]
-#				print("[OscamInfo][openWebIF]1 self.ip self.port  self.username self.password self.ipaccess", self.ip, "   ", self.port, "   ", self.username, "   ",  self.password, "   ", self.ipaccess)
+				# print("[OscamInfo][openWebIF]1 self.ip self.port  self.username self.password self.ipaccess", self.ip, "   ", self.port, "   ", self.username, "   ",  self.password, "   ", self.ipaccess)
 		else:
 			self.ip = ".".join("%d" % d for d in config.oscaminfo.ip.value)
 			self.port = str(config.oscaminfo.port.value)
 			self.username = str(config.oscaminfo.username.value)
 			self.password = str(config.oscaminfo.password.value)
-#			print("[OscamInfo][openWebIF]2 self.ip self.port  self.username self.password", self.ip, "   ", self.port, "   ", self.username, "   ",  self.password)
+			# print("[OscamInfo][openWebIF]2 self.ip self.port  self.username self.password", self.ip, "   ", self.port, "   ", self.username, "   ",  self.password)
 		if self.port.startswith('+'):
 			self.proto = "https"
 			self.port.replace("+", "")
-#		print("[OscamInfo][openWebIF] NAMEBIN=%s, CAM=%s" % (NAMEBIN, NAMEBIN))
+			# print("[OscamInfo][openWebIF] NAMEBIN=%s, CAM=%s" % (NAMEBIN, NAMEBIN))
 		if part is None:
 			self.url = "%s://%s:%s/%sapi.html?part=status" % (self.proto, self.ip, self.port, NAMEBIN)
 		else:
 			self.url = "%s://%s:%s/%sapi.html?part=%s" % (self.proto, self.ip, self.port, NAMEBIN, part)
 		if part is not None and reader is not None:
-#			print("[OscamInfo][openWebIF] reader:", reader)
+			# print("[OscamInfo][openWebIF] reader:", reader)
 			self.url = "%s://%s:%s/%sapi.html?part=%s&label=%s" % (self.proto, self.ip, self.port, NAMEBIN, part, urllib.parse.quote_plus(reader))
-#		print("[OscamInfo][openWebIF] NAMEBIN=%s, NAMEBIN=%s url=%s" % (NAMEBIN, NAMEBIN, self.url))
-#		print("[OscamInfo][openWebIF] self.url=%s" % self.url)
+		# print("[OscamInfo][openWebIF] NAMEBIN=%s, NAMEBIN=%s url=%s" % (NAMEBIN, NAMEBIN, self.url))
+		# print("[OscamInfo][openWebIF] self.url=%s" % self.url)
 		opener = build_opener(HTTPHandler)
 		if not self.username == "":
 			pwman = HTTPPasswordMgrWithDefaultRealm()
@@ -208,7 +207,7 @@ class OscamInfo:
 		err = False
 		try:
 			data = urlopen(request).read()
-#			print("[OscamInfo][openWebIF] data=", data)
+			# print("[OscamInfo][openWebIF] data=", data)
 		except URLError as e:
 			print("[OscamInfo][openWebIF] error: %s" % e)
 			if hasattr(e, "reason"):
@@ -232,7 +231,7 @@ class OscamInfo:
 		retval = []
 		tmp = {}
 		if result[0]:
-#			print("[OscamInfo][readXML] show typ, result 0,1", typ, "   ", result[0], "  ", result[1])
+			# print("[OscamInfo][readXML] show typ, result 0,1", typ, "   ", result[0], "  ", result[1])
 			if not self.showLog:
 				dataXML = ElementTree.XML(result[1])
 				if typ == "version":
@@ -451,7 +450,7 @@ class OscamInfoMenu(Screen):
 						"0": self.keyNumberGlobal,
 						"up": self.up,
 						"down": self.down
-						}, -1)
+						}, -1)  # noqa: E123
 		self.onLayoutFinish.append(self.showMenu)
 
 	def ok(self):
@@ -498,7 +497,7 @@ class OscamInfoMenu(Screen):
 	def goEntry(self, entry):
 		NAMEBIN = check_NAMEBIN()
 		if NAMEBIN:
-#			print("[OscamInfo][goEntry] NAMEBIN=%s" % (NAMEBIN))
+			# print("[OscamInfo][goEntry] NAMEBIN=%s" % (NAMEBIN))
 			if entry in (1, 2, 3) and config.oscaminfo.userdatafromconf.value and self.osc.confPath()[0] is None:
 				config.oscaminfo.userdatafromconf.setValue(False)
 				config.oscaminfo.userdatafromconf.save()
@@ -606,10 +605,10 @@ class oscECMInfo(Screen, OscamInfo):
 			timeout = config.oscaminfo.intervall.value * 1000
 			self.loop.start(timeout, False)
 		self["actions"] = ActionMap(["SetupActions"],
-					{
-						"ok": self.exit,
-						"cancel": self.exit
-					}, -1)
+			{
+				"ok": self.exit,
+				"cancel": self.exit
+			}, -1)  # noqa: E123
 		self["key_red"] = StaticText(_("Close"))
 		self.onLayoutFinish.append(self.showData)
 
@@ -623,7 +622,7 @@ class oscECMInfo(Screen, OscamInfo):
 			"",
 			(eListboxPythonMultiContent.TYPE_TEXT, 10 * f, 2 * f, 300 * f, 30 * f, 0, RT_HALIGN_LEFT, listentry[0]),
 			(eListboxPythonMultiContent.TYPE_TEXT, 300 * f, 2 * f, 300 * f, 30 * f, 0, RT_HALIGN_LEFT, listentry[1])
-			]
+			]  # noqa: E123
 
 	def showData(self):
 		dataECM = self.getECMInfo(self.ecminfo)
@@ -686,20 +685,20 @@ class oscInfo(Screen, OscamInfo):
 			timeout = config.oscaminfo.intervall.value * 1000
 			self.loop.start(timeout, False)
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions"],
-					{
-						"ok": self.key_ok,
-						"cancel": self.exit,
-						"red": self.exit,
-						"green": self.key_green,
-						"yellow": self.key_yellow,
-						"blue": self.key_blue,
-						"up": self.key_up,
-						"down": self.key_down,
-						"right": self.key_right,
-						"left": self.key_left,
-						"moveUp": self.key_moveUp,
-						"moveDown": self.key_moveDown
-					}, -1)
+			{
+				"ok": self.key_ok,
+				"cancel": self.exit,
+				"red": self.exit,
+				"green": self.key_green,
+				"yellow": self.key_yellow,
+				"blue": self.key_blue,
+				"up": self.key_up,
+				"down": self.key_down,
+				"right": self.key_right,
+				"left": self.key_left,
+				"moveUp": self.key_moveUp,
+				"moveDown": self.key_moveDown
+			}, -1)  # noqa: E123
 		self.onLayoutFinish.append(self.showData)
 
 	def key_ok(self):
@@ -825,9 +824,9 @@ class oscInfo(Screen, OscamInfo):
 			data = self.readXML(typ=self.what)
 		self.out = []
 		self.itemheight = 25
-#		print("[OscamInfo][showData] data[0], data[1]", data[0], "   ", data[1])
+		# print("[OscamInfo][showData] data[0], data[1]", data[0], "   ", data[1])
 		if data[0]:
-#			print("[OscamInfo][showData] data[0], data[1] not isinstance(data[1], str)")
+			# print("[OscamInfo][showData] data[0], data[1] not isinstance(data[1], str)")
 			if self.what != "l":
 				heading = (self.HEAD[self.NAME], self.HEAD[self.PROT], self.HEAD[self.CAID_SRVID],
 						self.HEAD[self.SRVNAME], self.HEAD[self.ECMTIME], self.HEAD[self.IP_PORT], "")
@@ -941,10 +940,10 @@ class oscEntitlements(Screen, OscamInfo):
 		self.cccamreader = reader
 		self["output"] = List([])
 		self["actions"] = ActionMap(["SetupActions"],
-					{
-						"ok": self.showData,
-						"cancel": self.exit
-					}, -1)
+			{
+				"ok": self.showData,
+				"cancel": self.exit
+			}, -1)  # noqa: E123
 		self["key_red"] = StaticText(_("Close"))
 		self.onLayoutFinish.append(self.showData)
 
@@ -973,10 +972,10 @@ class oscEntitlements(Screen, OscamInfo):
 			for j in prov:
 				providertxt += "%s - %s%s" % (j[0], j[1], linefeed)
 			res.append((ca_id,
-					csystem,
-					str(hops[1]), str(hops[2]), str(hops[3]), str(hops[4]), str(hops[5]), str(csum), str(creshare),
-					providertxt[:-1]
-					))
+				csystem,
+				str(hops[1]), str(hops[2]), str(hops[3]), str(hops[4]), str(hops[5]), str(csum), str(creshare),
+				providertxt[:-1]
+				))  # noqa: E123
 			outlist.append(res)
 		return res
 
@@ -1083,10 +1082,10 @@ class oscReaderStats(Screen, OscamInfo):
 		self.mlist = oscMenuList([])
 		self["output"] = List([])
 		self["actions"] = ActionMap(["SetupActions"],
-					{
-						"ok": self.showData,
-						"cancel": self.exit
-					}, -1)
+			{
+				"ok": self.showData,
+				"cancel": self.exit
+			}, -1)  # noqa: E123
 		self["key_red"] = StaticText(_("Close"))
 		self.onLayoutFinish.append(self.showData)
 
@@ -1115,10 +1114,10 @@ class oscReaderStats(Screen, OscamInfo):
 			for j in prov:
 				providertxt += "%s - %s%s" % (j[0], j[1], linefeed)
 			res.append((ca_id,
-					csystem,
-					str(hops[1]), str(hops[2]), str(hops[3]), str(hops[4]), str(hops[5]), str(csum), str(creshare),
-					providertxt[:-1]
-					))
+				csystem,
+				str(hops[1]), str(hops[2]), str(hops[3]), str(hops[4]), str(hops[5]), str(csum), str(creshare),
+				providertxt[:-1]
+				))  # noqa: E123
 			outlist.append(res)
 		return res
 
@@ -1131,7 +1130,7 @@ class oscReaderStats(Screen, OscamInfo):
 		title2 = ""
 		for i in readers:
 			dataWebif = self.openWebIF(part="readerstats", reader=i[1])
-			emm_wri = emm_ski = emm_blk = emm_err = ""
+			# emm_wri = emm_ski = emm_blk = emm_err = ""
 			if dataWebif[0]:
 				dataReader = ElementTree.XML(dataWebif[1])
 				rdr = dataReader.find("reader")
@@ -1172,8 +1171,8 @@ class oscReaderStats(Screen, OscamInfo):
 								last_req = ""
 						else:
 							avg_time = last_time = last_req = ""
-#						if lastreq != "":
-#							last_req = lastreq.split("T")[1][:-5]
+						# if lastreq != "":
+						# 	last_req = lastreq.split("T")[1][:-5]
 						if self.allreaders:
 							result.append((i[1], caid, channel, avg_time, last_time, rcs, last_req, int(num)))
 							title2 = _("(All readers)")
