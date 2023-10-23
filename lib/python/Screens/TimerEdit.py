@@ -68,7 +68,7 @@ class TimerEditList(Screen, ProtectedScreen):
 				"moveTop": self.moveTop,
 				"moveEnd": self.moveEnd,
 				"menu": self.createSetup
-			}, -1)
+			}, -1)  # noqa: E123
 		self.session.nav.RecordTimer.on_state_change.append(self.onStateChange)
 		self.onLayoutFinish.append(self.onCreate)
 
@@ -215,7 +215,7 @@ class TimerEditList(Screen, ProtectedScreen):
 
 		showCleanup = True
 		for x in self.list:
-			if (not x[0].disabled) and (x[1] == True):
+			if (not x[0].disabled) and (x[1] is True):
 				break
 		else:
 			showCleanup = False
@@ -268,7 +268,7 @@ class TimerEditList(Screen, ProtectedScreen):
 			cb(name, time, duration, service, state)
 
 	def fillTimerList(self):
-		#helper function to move finished timers to end of list
+		# helper function to move finished timers to end of list
 		def _cmp(a, b):
 			return (a > b) - (a < b)
 
@@ -461,7 +461,7 @@ class TimerSanityConflict(Screen):
 				"red": self.editTimer1,
 				"up": self.up,
 				"down": self.down
-			}, -1)
+			}, -1)  # noqa: E123
 		self.onShown.append(self.updateState)
 
 	def getTimerList(self, timer):
