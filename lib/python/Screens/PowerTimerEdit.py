@@ -56,7 +56,7 @@ class PowerTimerEditList(Screen):
 				"right": self.right,
 				"up": self.up,
 				"down": self.down
-			}, -1)
+			}, -1)  # noqa: E123
 		self.session.nav.PowerTimer.on_state_change.append(self.onStateChange)
 		self.onShown.append(self.updateState)
 		self["timerlist"].selectionChanged()
@@ -190,7 +190,7 @@ class PowerTimerEditList(Screen):
 			cb(time, duration, state)
 
 	def fillTimerList(self):
-		#helper function to move finished timers to end of list
+		# helper function to move finished timers to end of list
 
 		def xcmp(a, b):
 			return (a > b) - (a < b)
@@ -278,7 +278,7 @@ class PowerTimerEditList(Screen):
 	def finishedAdd(self, answer):
 		if answer[0]:
 			entry = answer[1]
-			simulTimerList = self.session.nav.PowerTimer.record(entry)
+			simulTimerList = self.session.nav.PowerTimer.record(entry)  # noqa: F841
 			self.fillTimerList()
 			self.updateState()
 		else:
