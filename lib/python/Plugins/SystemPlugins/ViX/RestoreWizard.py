@@ -45,7 +45,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		mtimes = []
 		defaultprefix = getImageDistro()[4:]
 
-		for dir in ["/media/%s/backup" % media for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:
+		for dir in ["/media/%s/backup" % media for media in listdir("/media/") if path.isdir(path.join("/media/", media))]:  # noqa: F821
 			devmounts.append(dir)
 		if len(devmounts):
 			for devpath in devmounts:
