@@ -335,7 +335,7 @@ def runScreenTest():
 
 	screensToRun = [p.fnc for p in plugins.getPlugins(PluginDescriptor.WHERE_WIZARD)]
 	profile("wizards")
-	screensToRun += wizardManager.getWizards()
+	screensToRun += wizardManager.getWizards()  # noqa: F405
 	screensToRun.append((100, InfoBar.InfoBar))
 	screensToRun.sort()
 
@@ -359,9 +359,9 @@ def runScreenTest():
 
 	if not VuRecovery:
 		profile("Init:VolumeControl")
-		vol = VolumeControl(session)  #noqa: F841
+		vol = VolumeControl(session)  # noqa: F841
 		profile("Init:PowerKey")
-		power = PowerKey(session)  #noqa: F841
+		power = PowerKey(session)  # noqa: F841
 
 		if enigma.eAVSwitch.getInstance().haveScartSwitch():
 			# we need session.scart to access it from within menu.xml
@@ -457,7 +457,7 @@ from Components.SetupDevices import InitSetupDevices  # noqa: E402
 InitSetupDevices()
 
 if getImageArch() in ("aarch64"):
-	from usb.backend import libusb1
+	from usb.backend import libusb1  # noqa: E402
 	libusb1.get_backend(find_library=lambda x: "/lib64/libusb-1.0.so.0")
 
 
@@ -470,7 +470,7 @@ profile("InfoBar")
 print("[StartEnigma]  Initialising InfoBar.")
 from Screens import InfoBar  # noqa: E402
 
-from Components.SystemInfo import SystemInfo    # noqa: E402 # don't move this import
+from Components.SystemInfo import SystemInfo  # noqa: E402  don't move this import
 VuRecovery = SystemInfo["HasKexecMultiboot"] and SystemInfo["MultiBootSlot"] == 0
 # print("[StartEnigma]  Is this VuRecovery?. Recovery = ", VuRecovery)
 
@@ -526,11 +526,11 @@ config.misc.DeepStandby = NoSave(ConfigYesNo(default=False))  # detect deepstand
 profile("Twisted")
 print("[StartEnigma]  Initialising Twisted.")
 try:
-	import twisted.python.runtime
+	import twisted.python.runtime  # noqa: E402
 	twisted.python.runtime.platform.supportsThreads = lambda: True
-	import e2reactor
+	import e2reactor  # noqa: E402
 	e2reactor.install()
-	from twisted.internet import reactor
+	from twisted.internet import reactor  # noqa: E402
 
 	def runReactor():
 		reactor.run(installSignalHandlers=False)
@@ -544,7 +544,7 @@ except ImportError:
 profile("Twisted Log")
 print("[StartEnigma]  Initialising Twisted Log.")
 try:
-	from twisted.python import log, util
+	from twisted.python import log, util  # noqa: E402
 
 	def quietEmit(self, eventDict):
 		text = log.textFromEventDict(eventDict)
@@ -577,7 +577,7 @@ AutoNTPSync()
 
 profile("LOAD:Wizard")
 print("[StartEnigma]  Initialising Wizards.")
-from Screens.StartWizard import *  # import *' used; unable to detect undefined names
+from Screens.StartWizard import *  # noqa: F403,E402
 
 profile("LOAD:Plugin")
 print("[StartEnigma]  Initialising Plugins.")
@@ -613,31 +613,32 @@ config.misc.RCSource = ConfigSelection(default="branding", choices=[("branding",
 
 
 def RCSelectionChanged(configelement):
-	from Components.SystemInfo import setRCFile
+	from Components.SystemInfo import setRCFile  # noqa: E402
 	setRCFile(configelement.value)
 
 
 config.misc.RCSource.addNotifier(RCSelectionChanged, immediate_feedback=False)
 
-profile("Standby,PowerKey")
+profile("Standby")
 import Screens.Standby  # noqa: E402
+
 from Screens.Menu import MainMenu, mdom  # noqa: E402
 from GlobalActions import globalActionMap  # noqa: E402
 
 if enigma.eAVSwitch.getInstance().haveScartSwitch():
 	profile("Scart")
 	print("[StartEnigma]  Initialising Scart.")
-	from Screens.Scart import Scart
+	from Screens.Scart import Scart  # noqa: E402
 
 if not VuRecovery:
 	profile("Load:CI")
 	print("[StartEnigma]  Initialising CommonInterface.")
-	from Screens.Ci import CiHandler
+	from Screens.Ci import CiHandler  # noqa: E402
 
 	profile("Load:VolumeControl")
 	print("[StartEnigma]  Initialising VolumeControl.")
-	from Components.VolumeControl import VolumeControl
-	from Tools.StbHardware import setFPWakeuptime, setRTCtime
+	from Components.VolumeControl import VolumeControl  # noqa: E402
+	from Tools.StbHardware import setFPWakeuptime, setRTCtime  # noqa: E402
 
 profile("Init:skin")
 print("[StartEnigma]  Initialising Skins.")
@@ -669,7 +670,7 @@ InitEPGConfig()
 if not VuRecovery:
 	profile("RecordingConfig")
 	print("[StartEnigma]  Initialising RecordingConfig.")
-	from Components.RecordingConfig import InitRecordingConfig
+	from Components.RecordingConfig import InitRecordingConfig  # noqa: E402
 	InitRecordingConfig()
 
 profile("UsageConfig")
@@ -698,47 +699,47 @@ if VuRecovery:
 else:
 	profile("Init:OnlineCheckState")
 	print("[StartEnigma]  Initialising OnlineCheckState.")
-	from Components.OnlineUpdateCheck import OnlineUpdateCheck
+	from Components.OnlineUpdateCheck import OnlineUpdateCheck  # noqa: E402
 	OnlineUpdateCheck()
 
 	profile("Network")
 	print("[StartEnigma]  Initialising Network.")
-	from Components.Network import InitNetwork
+	from Components.Network import InitNetwork  # noqa: E402
 	InitNetwork()
 
 	profile("HdmiCec")
 	print("[StartEnigma]  Initialising hdmiCEC.")
-	from Components.HdmiCec import HdmiCec
+	from Components.HdmiCec import HdmiCec  # noqa: E402
 	HdmiCec()
 
 	profile("LCD")
 	print("[StartEnigma]  Initialising LCD / FrontPanel.")
-	from Components.Lcd import InitLcd
+	from Components.Lcd import InitLcd  # noqa: E402
 	InitLcd()
 
 	profile("UserInterface")
 	print("[StartEnigma]  Initialising UserInterface.")
-	from Screens.UserInterfacePositioner import InitOsdPosition
+	from Screens.UserInterfacePositioner import InitOsdPosition  # noqa: E402
 	InitOsdPosition()
 
 	profile("EpgCacheSched")
 	print("[StartEnigma]  Initialising EPGCacheScheduler.")
-	from Components.EpgLoadSave import EpgCacheLoadCheck, EpgCacheSaveCheck
+	from Components.EpgLoadSave import EpgCacheLoadCheck, EpgCacheSaveCheck  # noqa: E402
 	EpgCacheSaveCheck()
 	EpgCacheLoadCheck()
 
 	profile("RFMod")
 	print("[StartEnigma]  Initialising RFMod.")
-	from Components.RFmod import InitRFmod
+	from Components.RFmod import InitRFmod  # noqa: E402
 	InitRFmod()
 
 	profile("Init:CI")
 	print("[StartEnigma]  Initialising CommonInterface.")
-	from Screens.Ci import InitCiConfig
+	from Screens.Ci import InitCiConfig  # noqa: E402
 	InitCiConfig()
 
 	if config.clientmode.enabled.value:
-		import Components.ChannelsImporter
+		import Components.ChannelsImporter  # noqa: E402
 		Components.ChannelsImporter.autostart()
 
 
