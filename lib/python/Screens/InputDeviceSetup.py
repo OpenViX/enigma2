@@ -190,6 +190,10 @@ class InputDeviceSetup(ConfigListScreen, Screen):
 		ConfigListScreen.keyRight(self)
 		self.newConfig()
 
+	def keySelect(self):
+		ConfigListScreen.keySelect(self)
+		self.newConfig()
+
 	def confirm(self, confirmed):
 		if not confirmed:
 			print("[InputDeviceSetup] not confirmed")
