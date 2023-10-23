@@ -130,20 +130,20 @@ class LogManagerPoller:
 class LogManager(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.logtype = 'crashlogs'
+		self.logtype = "crashlogs"
 
-		self['myactions'] = ActionMap(['ColorActions', 'OkCancelActions', 'DirectionActions'],
+		self["myactions"] = ActionMap(["ColorActions", "OkCancelActions", "DirectionActions"],
 			{
-				'ok': self.changeSelectionState,
-				'cancel': self.close,
-				'red': self.changelogtype,
-				'green': self.showLog,
-				'yellow': self.deletelog,
+				"ok": self.changeSelectionState,
+				"cancel": self.close,
+				"red": self.changelogtype,
+				"green": self.showLog,
+				"yellow": self.deletelog,
 				"left": self.left,
 				"right": self.right,
 				"down": self.down,
 				"up": self.up
-			}, -1)
+			}, -1)  # noqa: E123
 
 		self["key_red"] = Button(_("Debug Logs"))
 		self["key_green"] = Button(_("View"))
@@ -217,14 +217,14 @@ class LogManager(Screen):
 	def changelogtype(self):
 		self["LogsSize"].update(config.crash.debug_path.value)
 		import re
-		if self.logtype == 'crashlogs':
+		if self.logtype == "crashlogs":
 			self["key_red"].setText(_("Crash Logs"))
-			self.logtype = 'debuglogs'
-			self.matchingPattern = 'Enigma2_debug_'
+			self.logtype = "debuglogs"
+			self.matchingPattern = "Enigma2_debug_"
 		else:
 			self["key_red"].setText(_("Debug Logs"))
-			self.logtype = 'crashlogs'
-			self.matchingPattern = 'Enigma2_crash_'
+			self.logtype = "crashlogs"
+			self.matchingPattern = "Enigma2_crash_"
 		self["list"].matchingPattern = re.compile(self.matchingPattern)
 		self["list"].changeDir(self.defaultDir)
 
@@ -372,14 +372,14 @@ class LogManagerFb(Screen):
 
 		self["actions"] = ActionMap(["ChannelSelectBaseActions", "WizardActions", "DirectionActions", "MenuActions", "NumberActions", "ColorActions"],
 			{
-				"ok": self.ok,
-				"back": self.exit,
-				"up": self.goUp,
-				"down": self.goDown,
-				"left": self.goLeft,
-				"right": self.goRight,
-				"0": self.doRefresh,
-			}, -1)
+			"ok": self.ok,
+			"back": self.exit,
+			"up": self.goUp,
+			"down": self.goDown,
+			"left": self.goLeft,
+			"right": self.goRight,
+			"0": self.doRefresh,
+			}, -1)  # noqa: E123
 		self.onLayoutFinish.append(self.mainlist)
 
 	def exit(self):
