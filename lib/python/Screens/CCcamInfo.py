@@ -433,7 +433,7 @@ class CCcamInfoMain(Screen):
 				"down": self.down,
 				"left": self.left,
 				"right": self.right
-			}, -2)
+			}, -2)  # noqa: E123
 
 		self.onLayoutFinish.append(self.updateMenuList)
 
@@ -829,7 +829,7 @@ class CCcamInfoInfoScreen(Screen):
 				"down": self["text"].pageDown,
 				"left": self["text"].pageUp,
 				"right": self["text"].pageDown,
-			}, -1)
+			}, -1)  # noqa: E123
 
 		self["key_red"] = Label(_("Cancel"))
 		self["shortcuts"] = ActionMap(["ShortcutActions"],
@@ -1294,7 +1294,7 @@ class CCcamInfoRemoteBoxMenu(Screen):
 				"green": self.new,
 				"yellow": self.location,
 				"blue": self.edit
-			}, -1)
+			}, -1)  # noqa: E123
 
 		self.onLayoutFinish.append(self.readProfiles)
 
@@ -1419,7 +1419,7 @@ class CCcamInfoShareInfo(Screen):
 				"green": self.uhopsMinus,
 				"yellow": self.maxdownPlus,
 				"blue": self.maxdownMinus
-			}, -1)
+			}, -1)  # noqa: E123
 
 		self.onLayoutFinish.append(self.readShares)
 
@@ -1551,7 +1551,7 @@ class CCcamInfoConfigSwitcher(Screen):
 				"green": self.activate,
 				"yellow": self.rename,
 				"blue": self.showContent
-			}, -1)
+			}, -1)  # noqa: E123
 
 		self.onLayoutFinish.append(self.showConfigs)
 
@@ -1665,7 +1665,7 @@ class CCcamInfoMenuConfig(Screen):
 				"red": self.close,
 				"green": self.save,
 				"yellow": self.location
-			}, -1)
+			}, -1)  # noqa: E123
 
 		self.onLayoutFinish.append(self.showConfigs)
 
