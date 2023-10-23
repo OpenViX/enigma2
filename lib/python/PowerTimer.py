@@ -1,8 +1,9 @@
-import os
-from boxbranding import getMachineBrand, getMachineName
-from time import ctime, time
+from os import fsync, path as ospath, remove, rename
 from bisect import insort
+from time import ctime, time
+from timer import Timer, TimerEntry
 
+from boxbranding import getMachineBrand, getMachineName
 from enigma import eActionMap, quitMainloop
 
 from Components.config import config
@@ -12,7 +13,6 @@ from Screens.MessageBox import MessageBox
 import Screens.Standby
 from Tools import Directories, Notifications
 from Tools.XMLTools import stringToXML
-from timer import Timer, TimerEntry
 import NavigationInstance
 
 
@@ -144,9 +144,9 @@ class PowerTimerEntry(TimerEntry):
 
 		elif next_state == self.StateRunning:
 			self.wasPowerTimerWakeup = False
-			if os.path.exists("/tmp/was_powertimer_wakeup"):
+			if ospath.exists("/tmp/was_powertimer_wakeup"):
 				self.wasPowerTimerWakeup = int(open("/tmp/was_powertimer_wakeup", "r").read()) and True or False
-				os.remove("/tmp/was_powertimer_wakeup")
+				remove("/tmp/was_powertimer_wakeup")
 			# if this timer has been cancelled, just go to "end" state.
 			if self.cancelled:
 				return True
@@ -535,9 +535,9 @@ class PowerTimer(Timer):
 		file.writelines(list)
 		file.flush()
 
-		os.fsync(file.fileno())
+		fsync(file.fileno())
 		file.close()
-		os.rename(self.Filename + ".writing", self.Filename)
+		rename(self.Filename + ".writing", self.Filename)
 
 	def getNextZapTime(self):
 		now = time()
