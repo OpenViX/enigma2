@@ -17,32 +17,30 @@ enigma.eConsoleAppContainer = eConsoleImpl.eConsoleAppContainer
 
 class Session:
 
-	"""
-	 Session.open:
-		 * push current active dialog ("current_dialog") onto stack
-		 * call execEnd for this dialog
-		   * clear in_exec flag
-		   * hide screen
-		 * instantiate new dialog into "current_dialog"
-		   * create screens, components
-		   * read, apply skin
-		   * create GUI for screen
-		 * call execBegin for new dialog
-		   * set in_exec
-		   * show gui screen
-		   * call components' / screen's onExecBegin
-	 ... screen is active, until it calls "close"...
-	 Session.close:
-		 * assert in_exec
-		 * save return value
-		 * start deferred close handler ("onClose")
-		 * execEnd
-		   * clear in_exec
-		   * hide screen
-	 .. a moment later:
-	 Session.doClose:
-		 * destroy screen
-	"""
+	#  Session.open:
+	# 	 * push current active dialog ("current_dialog") onto stack
+	# 	 * call execEnd for this dialog
+	# 	   * clear in_exec flag
+	# 	   * hide screen
+	# 	 * instantiate new dialog into "current_dialog"
+	# 	   * create screens, components
+	# 	   * read, apply skin
+	# 	   * create GUI for screen
+	# 	 * call execBegin for new dialog
+	# 	   * set in_exec
+	# 	   * show gui screen
+	# 	   * call components' / screen's onExecBegin
+	#  ... screen is active, until it calls "close"...
+	#  Session.close:
+	# 	 * assert in_exec
+	# 	 * save return value
+	# 	 * start deferred close handler ("onClose")
+	# 	 * execEnd
+	# 	   * clear in_exec
+	# 	   * hide screen
+	#  .. a moment later:
+	#  Session.doClose:
+	# 	 * destroy screen
 
 	def __init__(self, desktop=None, summary_desktop=None, navigation=None):
 		self.desktop = desktop
