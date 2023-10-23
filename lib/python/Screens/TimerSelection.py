@@ -16,7 +16,7 @@ class TimerSelection(Screen):
 			{
 				"ok": self.selected,
 				"cancel": self.leave,
-			}, -1)
+			}, -1)  # noqa: E123
 
 	def leave(self):
 		self.close(None)
