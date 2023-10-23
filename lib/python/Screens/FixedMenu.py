@@ -19,6 +19,6 @@ class FixedMenu(Screen):
 			{
 				"ok": self.okbuttonClick,
 				"cancel": self.close
-			})
+			})  # noqa: E123
 
 		self["title"] = StaticText(title)
