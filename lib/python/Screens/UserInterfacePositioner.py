@@ -71,7 +71,7 @@ def InitOsdPosition():
 	SystemInfo["CanChangeOsdPosition"] = access('/proc/stb/fb/dst_left', R_OK) and True or False
 	SystemInfo["OsdSetup"] = SystemInfo["CanChangeOsdPosition"]
 
-	if SystemInfo["CanChangeOsdAlpha"] == True or SystemInfo["CanChangeOsdPosition"] == True:
+	if SystemInfo["CanChangeOsdAlpha"] is True or SystemInfo["CanChangeOsdPosition"] is True:
 		SystemInfo["OsdMenu"] = True
 	else:
 		SystemInfo["OsdMenu"] = False
@@ -118,8 +118,8 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 		self["actions"] = ActionMap(["ColorActions"],
 			{
 				"yellow": self.keyDefault,
-			}, -2)
-
+			}, -2)  # noqa: E123
+		self.alpha = config.osd.alpha.value
 		self.onChangedEntry = []
 		self.list = []
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry, fullUI=True)
@@ -212,7 +212,7 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 	def __onClose(self):
 		self.ConsoleB.ePopen('/usr/bin/showiframe /usr/share/backdrop.mvi')
 
-# This is called by the Wizard...
+	# This is called by the Wizard...
 
 	def run(self):
 		config.osd.dst_left.save()
