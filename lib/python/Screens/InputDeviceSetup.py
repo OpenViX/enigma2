@@ -28,16 +28,16 @@ class InputDeviceSelection(Screen, HelpableScreen):
 		print(("[InputDeviceSetup] found devices :->", len(self.devices), self.devices))
 
 		self["OkCancelActions"] = HelpableActionMap(self, "OkCancelActions",
-			{
-				"cancel": (self.close, _("Exit input device selection.")),
-				"ok": (self.okbuttonClick, _("Select input device.")),
-			}, -2)
+		{
+		"cancel": (self.close, _("Exit input device selection.")),  # noqa: E122
+		"ok": (self.okbuttonClick, _("Select input device.")),  # noqa: E122
+		}, -2)
 
 		self["ColorActions"] = HelpableActionMap(self, "ColorActions",
-			{
-				"red": (self.close, _("Exit input device selection.")),
-				"green": (self.okbuttonClick, _("Select input device.")),
-			}, -2)
+		{
+		"red": (self.close, _("Exit input device selection.")),  # noqa: E122
+		"green": (self.okbuttonClick, _("Select input device.")),  # noqa: E122
+		}, -2)
 
 		self.currentIndex = 0
 		self.list = []
@@ -56,16 +56,16 @@ class InputDeviceSelection(Screen, HelpableScreen):
 		if type is None:
 			devicepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/input_rcold-configured.png"))
 		elif type == 'remote':
-			if config.misc.rcused.value == 0:
-				if enabled:
-					devicepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/input_rcnew-configured.png"))
-				else:
-					devicepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/input_rcnew.png"))
-			else:
+			if config.misc.rcused.value == 1:  # default is 1
 				if enabled:
 					devicepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/input_rcold-configured.png"))
 				else:
 					devicepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/input_rcold.png"))
+			else:
+				if enabled:
+					devicepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/input_rcnew-configured.png"))
+				else:
+					devicepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/input_rcnew.png"))
 		elif type == 'keyboard':
 			if enabled:
 				devicepng = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/input_keyboard-configured.png"))
