@@ -101,7 +101,7 @@ class Ipkg(Screen):
 		elif event == IpkgComponent.EVENT_REMOVE:
 			self.package.setText(param)
 			self.status.setText(_("Removing"))
-			if not param in self.processed_packages:
+			if param not in self.processed_packages:
 				self.processed_packages.append(param)
 				self.packages += 1
 		elif event == IpkgComponent.EVENT_CONFIGURING:
