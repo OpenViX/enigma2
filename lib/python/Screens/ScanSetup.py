@@ -21,7 +21,7 @@ def buildTerTransponder(frequency,
 		inversion=2, bandwidth=7000000, fechigh=6, feclow=6,
 		modulation=2, transmission=2, guard=4,
 		hierarchy=4, system=0, plp_id=0):
-	#print("freq", frequency, "inv", inversion, "bw", bandwidth, "fech", fechigh, "fecl", feclow, "mod", modulation, "tm", transmission, "guard", guard, "hierarchy", hierarchy, "system", system, "plp_id", plp_id)
+	# print("freq", frequency, "inv", inversion, "bw", bandwidth, "fech", fechigh, "fecl", feclow, "mod", modulation, "tm", transmission, "guard", guard, "hierarchy", hierarchy, "system", system, "plp_id", plp_id)
 	parm = eDVBFrontendParametersTerrestrial()
 	parm.frequency = frequency
 	parm.inversion = inversion
@@ -115,22 +115,22 @@ cable_bands = {
 }
 
 cable_autoscan_nimtype = {
-'SSH108': 'ssh108',
-'TT3L10': 'tt3l10',
-'TURBO': 'vuplus_turbo_c',
-'TURBO2': 'vuplus_turbo2_c',
-'TT2L08': 'tt2l08',
-'BCM3148': 'bcm3148',  # BCM3158/BCM3148 use the same bcm3148 utility
-'BCM3158': 'bcm3148'
+	'SSH108': 'ssh108',
+	'TT3L10': 'tt3l10',
+	'TURBO': 'vuplus_turbo_c',
+	'TURBO2': 'vuplus_turbo2_c',
+	'TT2L08': 'tt2l08',
+	'BCM3148': 'bcm3148',  # BCM3158/BCM3148 use the same bcm3148 utility
+	'BCM3158': 'bcm3148'
 }
 
 terrestrial_autoscan_nimtype = {
-'SSH108': 'ssh108_t2_scan',
-'TT3L10': 'tt3l10_t2_scan',
-'TURBO': 'vuplus_turbo_t',
-'TURBO2': 'vuplus_turbo2_t',
-'TT2L08': 'tt2l08_t2_scan',
-'BCM3466': 'bcm3466'
+	'SSH108': 'ssh108_t2_scan',
+	'TT3L10': 'tt3l10_t2_scan',
+	'TURBO': 'vuplus_turbo_t',
+	'TURBO2': 'vuplus_turbo2_t',
+	'TT2L08': 'tt2l08_t2_scan',
+	'BCM3466': 'bcm3466'
 }
 
 dual_tuner_list = ('TT3L10', 'BCM3466')
@@ -202,12 +202,12 @@ class CableTransponderSearchSupport:
 	def getCableTransponderData(self, str):
 		str = six.ensure_str(str)
 		print("[getCableTransponderData] ", str)
-		#prepend any remaining data from the previous call
+		# prepend any remaining data from the previous call
 		str = self.remainingdata + str
 		lines = str.split('\n')
-		#'str' should end with '\n', so when splitting, the last line should be empty. If this is not the case, we received an incomplete line
+		# 'str' should end with '\n', so when splitting, the last line should be empty. If this is not the case, we received an incomplete line
 		if len(lines[-1]):
-			#remember this data for next time
+			# remember this data for next time
 			self.remainingdata = lines[-1]
 			lines = lines[0:-1]
 		else:
@@ -849,7 +849,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 				self.list.append(getConfigListEntry(_("Inversion"), self.scan_ats.inversion))
 				self.list.append(getConfigListEntry(_("Modulation"), self.scan_ats.modulation))
 			elif self.scan_type_atsc.value == "predefined_transponder":
-				#FIXME add region
+				# FIXME add region
 				self.predefinedATSCTranspondersList()
 				self.list.append(getConfigListEntry(_('Transponder'), self.ATSCTransponders, _("Select which transponder to scan.")))
 			elif self.scan_type_atsc.value == "complete":
@@ -1145,8 +1145,8 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 			(7000000, "7MHz"),
 			(8000000, "8MHz"),
 			(10000000, "10MHz")
-			])
-		#, (eDVBFrontendParametersTerrestrial.Bandwidth_Auto, _("Auto"))))
+			])  # noqa: E123
+		# , (eDVBFrontendParametersTerrestrial.Bandwidth_Auto, _("Auto"))))
 		self.scan_ter.fechigh = ConfigSelection(default=defaultTer["fechigh"], choices=[
 			(eDVBFrontendParametersTerrestrial.FEC_1_2, "1/2"),
 			(eDVBFrontendParametersTerrestrial.FEC_2_3, "2/3"),
@@ -1229,7 +1229,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 
 		self.scan_scansat = {}
 		for sat in nimmanager.satList:
-			#print(sat[1])
+			# print(sat[1])
 			self.scan_scansat[sat[0]] = ConfigYesNo(default=False)
 
 		self.scan_satselection = []
@@ -1393,7 +1393,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport, Terrest
 				sat = self.satList[index_to_scan][self.scan_satselection[index_to_scan].index]
 				getInitialTransponderList(tlist, sat[0], index_to_scan)
 			elif "multisat" in self.scan_type.value:
-				SatList = nimmanager.getSatListForNim(index_to_scan)
+				# SatList = nimmanager.getSatListForNim(index_to_scan)  # not used variable?
 				for x in self.multiscanlist:
 					if x[1].value:
 						print("[ScanSetup]    " + str(x[0]))
@@ -1708,7 +1708,7 @@ class ScanSimple(ConfigListScreen, Screen, CableTransponderSearchSupport, Terres
 		self.session.postScanService = session.nav.getCurrentlyPlayingServiceOrGroup()
 
 		self.list = []
-		tlist = []
+		# tlist = []
 
 		known_networks = []
 		nims_to_scan = []
