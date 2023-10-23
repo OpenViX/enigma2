@@ -6,7 +6,7 @@ from os.path import basename, dirname, isfile
 from Components.config import ConfigSubsection, ConfigText, config
 from Components.Sources.Source import ObsoleteSource
 from Components.SystemInfo import SystemInfo
-from Tools.Directories import SCOPE_CONFIG, SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT_SKIN, SCOPE_FONTS, SCOPE_SKIN, SCOPE_SKIN_IMAGE, resolveFilename, fileReadXML, clearResolveLists
+from Tools.Directories import SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT_SKIN, SCOPE_FONTS, SCOPE_SKIN, resolveFilename, fileReadXML, clearResolveLists
 from Tools.Import import my_import
 from Tools.LoadPixmap import LoadPixmap
 
@@ -236,7 +236,7 @@ def parseCoordinate(s, e, size=0, font=None):
 		if "center" in s:
 			center = (e - size) / 2.0  # noqa: F841
 		if "c" in s:
-			c = e / 2.0
+			c = e / 2.0  # noqa: F841 do not remove c variable
 		if "w" in s:
 			s = s.replace("w", "*w")
 			w = float(font in fonts and fonts[font][3] or 0)  # noqa: F841
