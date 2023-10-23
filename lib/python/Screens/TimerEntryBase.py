@@ -8,7 +8,7 @@ from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Screens.HelpMenu import HelpableScreen
 
-from time import localtime, mktime, strftime
+from time import localtime, mktime, strftime, time
 from datetime import datetime
 
 
