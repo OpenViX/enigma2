@@ -343,7 +343,7 @@ class PluginDownloadBrowser(Screen):
 			cb(name, desc)
 
 	def createPluginFilter(self):
-		#Create Plugin Filter
+		# Create Plugin Filter
 		self.PLUGIN_PREFIX2 = []
 		if config.misc.pluginbrowser.bootlogos.value:
 			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'bootlogos')
@@ -571,13 +571,13 @@ class PluginDownloadBrowser(Screen):
 		if self.type == self.DOWNLOAD and any([x for x in ('wget returned 1', 'wget returned 255', '404 Not Found') if x in str]):
 			self.run = 3
 			return
-		#prepend any remaining data from the previous call
+		# prepend any remaining data from the previous call
 		str = self.remainingdata + str
-		#split in lines
+		# split in lines
 		lines = str.split('\n')
-		#'str' should end with '\n', so when splitting, the last line should be empty. If this is not the case, we received an incomplete line
+		# 'str' should end with '\n', so when splitting, the last line should be empty. If this is not the case, we received an incomplete line
 		if len(lines[-1]):
-			#remember this data for next time
+			# remember this data for next time
 			self.remainingdata = lines[-1]
 			lines = lines[0:-1]
 		else:
