@@ -3,7 +3,7 @@ from sys import maxsize
 from enigma import eTimer, getDesktop, eActionMap, gFont
 from Components.Label import Label
 from Screens.Screen import Screen
-import skin
+import skin  # noqa: F401
 
 
 class SubtitleDisplay(Screen):
