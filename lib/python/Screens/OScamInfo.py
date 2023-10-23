@@ -377,9 +377,8 @@ class OscamInfo:
 			status = dataXML.find("status")
 			clients = status.findall("client")
 			for client in clients:
-				if "type" in client.attrib:
-					if client.attrib["type"] == "c":
-						readers.append((client.attrib["name"], client.attrib["name"]))  # return tuple for later use in Choicebox
+				if "type" in client.attrib and client.attrib["type"] == "c":
+					clientnames.append((client.attrib["name"], client.attrib["name"]))  # return tuple for later use in Choicebox
 			return clientnames
 		else:
 			return None
