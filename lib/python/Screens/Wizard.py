@@ -5,7 +5,7 @@ from enigma import eTimer, eEnv
 
 from boxbranding import getMachineBrand, getMachineName
 from Components.ActionMap import NumberActionMap
-from Components.config import config, ConfigText, ConfigPassword, KEY_LEFT, KEY_RIGHT, KEY_0, KEY_DELETE, KEY_BACKSPACE, KEY_ASCII
+from Components.config import config, ConfigText, ConfigPassword, KEY_LEFT, KEY_RIGHT, KEY_0, KEY_DELETE, KEY_BACKSPACE, KEY_ASCII  # noqa: F401
 from Components.ConfigList import ConfigList
 from Components.Label import Label
 from Components.Slider import Slider
@@ -80,7 +80,7 @@ class Wizard(Screen):
 				if 'type' in attrs:
 					if attrs["type"] == "dynamic":
 						self.wizard[self.lastStep]["dynamiclist"] = attrs.get("source")
-					#self.wizard[self.lastStep]["list"].append(("Hallo", "test"))
+					# self.wizard[self.lastStep]["list"].append(("Hallo", "test"))
 				if "evaluation" in attrs:
 					# print("[Wizard] evaluation")
 					self.wizard[self.lastStep]["listevaluation"] = attrs.get("evaluation")
@@ -195,7 +195,7 @@ class Wizard(Screen):
 			self.list = []
 			self["list"] = List(self.list, enableWrapAround=True)
 			self["list"].onSelectionChanged.append(self.selChanged)
-			#self["list"] = MenuList(self.list, enableWrapAround = True)
+			# self["list"] = MenuList(self.list, enableWrapAround = True)
 
 		self.onShown.append(self.updateValues)
 
@@ -341,7 +341,7 @@ class Wizard(Screen):
 				else:
 					self.currStep = self.getStepWithID(nextStep)
 
-		print_now = True
+		# print_now = True
 		if (currStep == self.numSteps and self.wizard[currStep]["nextstep"] is None) or self.wizard[currStep]["id"] == "end":  # wizard finished
 			# print("[wizard]wizard finished")
 			self.markDone()
@@ -358,7 +358,7 @@ class Wizard(Screen):
 					self.onShown.remove(self.updateValues)
 
 		# if print_now:
-		#		print "Now: " + str(self.currStep)
+		# 	print("Now: " + str(self.currStep))
 
 	def ok(self):
 		# print("[Wizard][OK] currstep, self.wizard", self.currStep, "   ", self.wizard)
@@ -419,7 +419,7 @@ class Wizard(Screen):
 			if "onselect" in self.wizard[self.currStep]:
 				# print("[wizard][Wizard] current:", self["list"].current)
 				self.selection = self["list"].current[-1]
-				#self.selection = self.wizard[self.currStep]["evaluatedlist"][self["list"].l.getCurrentSelectionIndex()][1]
+				# self.selection = self.wizard[self.currStep]["evaluatedlist"][self["list"].l.getCurrentSelectionIndex()][1]
 				getattr(self, self.wizard[self.currStep]["onselect"])()
 		# print("[wizard]up")
 
@@ -429,14 +429,14 @@ class Wizard(Screen):
 			self["config"].instance.moveSelection(self["config"].instance.moveDown)
 			self.handleInputHelpers()
 		elif self.showList and len(self.wizard[self.currStep]["evaluatedlist"]) > 0:
-			#self["list"].instance.moveSelection(self["list"].instance.moveDown)
+			# self["list"].instance.moveSelection(self["list"].instance.moveDown)
 			self["list"].selectNext()
 			if "onselect" in self.wizard[self.currStep]:
 				# print("[wizard]current:", self["list"].current)
-				#self.selection = self.wizard[self.currStep]["evaluatedlist"][self["list"].l.getCurrentSelectionIndex()][1]
-				#exec("self." + self.wizard[self.currStep]["onselect"] + "()")
+				# self.selection = self.wizard[self.currStep]["evaluatedlist"][self["list"].l.getCurrentSelectionIndex()][1]
+				# exec("self." + self.wizard[self.currStep]["onselect"] + "()")
 				self.selection = self["list"].current[-1]
-				#self.selection = self.wizard[self.currStep]["evaluatedlist"][self["list"].l.getCurrentSelectionIndex()][1]
+				# self.selection = self.wizard[self.currStep]["evaluatedlist"][self["list"].l.getCurrentSelectionIndex()][1]
 				getattr(self, self.wizard[self.currStep]["onselect"])()
 		# print("[wizard]down")
 
@@ -563,7 +563,7 @@ class Wizard(Screen):
 							rootrenderer.instance.setZPosition(1)
 						renderer = renderer.source
 
-				#self["list"].instance.setZPosition(1)
+				# self["list"].instance.setZPosition(1)
 				self.list = []
 				if "dynamiclist" in self.wizard[self.currStep]:
 					# print "dynamic list, calling",  self.wizard[self.currStep]["dynamiclist"]
