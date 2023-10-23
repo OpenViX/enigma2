@@ -5,7 +5,7 @@ from Components.SystemInfo import SystemInfo
 from Tools.Directories import resolveFilename, SCOPE_SKIN, fileReadXML
 from Tools.KeyBindings import keyDescriptions
 
-config.misc.rcused = ConfigInteger(default=1)
+config.misc.rcused = ConfigInteger(default=1)  # all E2 receivers use default 1 - retained in case this changes(used by KeyBindings, InputDeviceSetup, MessageBox)
 
 
 class Rc:
@@ -42,7 +42,7 @@ class Rc:
 			self.pixmaps = []
 			for actYpos, pixmap in zip(activeYPos, pixmaps):
 				pm = self.KeyIndicatorPixmap(actYpos, pixmap)
-#				print("[KeyIndicator]", actYpos, pixmap)
+				# print("[KeyIndicator]", actYpos, pixmap)
 				owner[pixmap] = pm
 				self.pixmaps.append(pm)
 			self.pixmaps.sort(key=lambda x: x.activeYPos)
