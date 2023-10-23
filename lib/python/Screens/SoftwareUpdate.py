@@ -7,7 +7,7 @@ from Components.config import config
 from Components.Ipkg import IpkgComponent
 from Components.Pixmap import Pixmap
 from Components.Label import Label
-from Components.ScrollLabel import ScrollLabel
+from Components.ScrollLabel import ScrollLabel  # noqa: F401
 from Components.Sources.StaticText import StaticText
 from Components.Slider import Slider
 import Components.Task
@@ -329,7 +329,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			if 'enigma2-plugin-settings-' in param[0] and self.channellist_only > 0:
 				self.channellist_name = param[0]
 				self.channellist_only = 2
-		#print( event, "-", param)
+		# print( event, "-", param)
 		pass
 
 	def setEndMessage(self, txt):
