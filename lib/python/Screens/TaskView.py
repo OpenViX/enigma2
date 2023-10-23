@@ -111,7 +111,7 @@ class JobView(InfoBarNotifications, ConfigListScreen, Screen):
 		self["summary_job_progress"].range = j.end
 		self["job_progress"].value = j.progress
 		self["summary_job_progress"].value = j.progress
-		#print "JobView::state_changed:", j.end, j.progress
+		# print "JobView::state_changed:", j.end, j.progress
 		self["job_status"].text = j.getStatustext()
 		if j.status == j.IN_PROGRESS:
 			self["job_task"].text = j.tasks[j.current_task].name
