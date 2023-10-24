@@ -211,7 +211,7 @@ class FCCSupport:
 					iPlayableService.evEnd: self.getEvEnd,
 					iPlayableService.evTunedIn: self.getEvTunedIn,
 					iPlayableService.evTuneFailed: self.getEvTuneFailed
-					})
+					})  # noqa: E123
 
 		elif self.__event_tracker:
 			# run ServiceEventTracker.__del_event()
@@ -567,19 +567,19 @@ def Plugins(**kwargs):
 			PluginDescriptor(name="FCCSupport",
 			description="Fast Channel Change support",
 			where=[PluginDescriptor.WHERE_SESSIONSTART],
-			fnc=FCCSupportInit))
+			fnc=FCCSupportInit))  # noqa: E122
 
 		list.append(
 			PluginDescriptor(name="FCCExtensionMenu",
 			description="Fast Channel Change menu",
 			where=[PluginDescriptor.WHERE_EXTENSIONSINGLE],
-			fnc=addExtentions))
+			fnc=addExtentions))  # noqa: E122
 
 		list.append(
 			PluginDescriptor(name=_("FCCSetup"),
 			description=_("Fast Channel Change setup"),
-			where=[PluginDescriptor.WHERE_MENU],
-			needsRestart=False,
-			fnc=main))
+			where=[PluginDescriptor.WHERE_MENU],  # noqa: E122
+			needsRestart=False,  # noqa: E122
+			fnc=main))  # noqa: E122
 
 	return list
