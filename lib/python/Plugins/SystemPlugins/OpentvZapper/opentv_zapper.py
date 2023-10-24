@@ -607,8 +607,8 @@ class LamedbWriter():
 							pass
 					if "t2mi_plp_id" in transponder and "t2mi_pid" in transponder:
 						t2mi = ',T2MI:%d:%d' % (
-					transponder["t2mi_plp_id"],
-					transponder["t2mi_pid"])
+					transponder["t2mi_plp_id"],  # noqa: E122
+					transponder["t2mi_pid"])  # noqa: E122
 					lamedblist.append("s:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d%s%s\n" %
 						(transponder["frequency"],
 						transponder["symbol_rate"],
