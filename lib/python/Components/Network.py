@@ -1,7 +1,7 @@
 from os import listdir, path, system
 import re
 import netifaces as ni
-from socket import *  # 'from socket import *' used; unable to detect undefined names
+from socket import *  # noqa: F401,F403  'from socket import *' used; unable to detect undefined names
 
 from Components.Console import Console
 from Components.PluginComponent import plugins
