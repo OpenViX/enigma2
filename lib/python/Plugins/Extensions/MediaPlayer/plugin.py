@@ -128,7 +128,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 
 		# 'None' is magic to start at the list of mountpoints
 		defaultDir = config.mediaplayer.defaultDir.getValue()
-		self.filelist = FileList(defaultDir, matchingPattern="(?i)^.*\.(dts|mp3|wav|wave|wv|oga|ogg|flac|m4a|mp2|m2a|wma|ac3|mka|aac|ape|alac|mpg|vob|m4v|mkv|avi|divx|dat|flv|mp4|mov|wmv|asf|3gp|3g2|mpeg|mpe|rm|rmvb|ogm|ogv|m2ts|mts|ts|m3u|e2pls|pls|amr|au|mid|pva|wtv)", useServiceRef=True, additionalExtensions="4098:m3u 4098:e2pls 4098:pls")
+		self.filelist = FileList(defaultDir, matchingPattern=r"(?i)^.*\.(dts|mp3|wav|wave|wv|oga|ogg|flac|m4a|mp2|m2a|wma|ac3|mka|aac|ape|alac|mpg|vob|m4v|mkv|avi|divx|dat|flv|mp4|mov|wmv|asf|3gp|3g2|mpeg|mpe|rm|rmvb|ogm|ogv|m2ts|mts|ts|m3u|e2pls|pls|amr|au|mid|pva|wtv)", useServiceRef=True, additionalExtensions="4098:m3u 4098:e2pls 4098:pls")
 		self["filelist"] = self.filelist
 
 		self.playlist = MyPlayList()
@@ -1135,16 +1135,16 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 
 class MediaPlayerLCDScreen(Screen):
 	skin = (
-	"""<screen name="MediaPlayerLCDScreen" position="0, 0" size="132, 64" id="1">
-		<widget name="text1" position="4, 0" size="132, 35" font="Regular;16"/>
-		<widget name="text3" position="4, 36" size="132, 14" font="Regular;10"/>
-		<widget name="text4" position="4, 49" size="132, 14" font="Regular;10"/>
-	</screen>""",
-	"""<screen name="MediaPlayerLCDScreen" position="0, 0" size="96, 64" id="2">
-		<widget name="text1" position="0, 0" size="96, 35" font="Regular;14"/>
-		<widget name="text3" position="0, 36" size="96, 14" font="Regular;10"/>
-		<widget name="text4" position="0, 49" size="96, 14" font="Regular;10"/>
-	</screen>""")
+		"""<screen name="MediaPlayerLCDScreen" position="0, 0" size="132, 64" id="1">
+			<widget name="text1" position="4, 0" size="132, 35" font="Regular;16"/>
+			<widget name="text3" position="4, 36" size="132, 14" font="Regular;10"/>
+			<widget name="text4" position="4, 49" size="132, 14" font="Regular;10"/>
+		</screen>""",
+		"""<screen name="MediaPlayerLCDScreen" position="0, 0" size="96, 64" id="2">
+			<widget name="text1" position="0, 0" size="96, 35" font="Regular;14"/>
+			<widget name="text3" position="0, 36" size="96, 14" font="Regular;10"/>
+			<widget name="text4" position="0, 49" size="96, 14" font="Regular;10"/>
+		</screen>""")
 
 	def __init__(self, session, parent):
 		Screen.__init__(self, session)
