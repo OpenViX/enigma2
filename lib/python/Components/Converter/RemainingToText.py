@@ -95,7 +95,7 @@ class RemainingToText(Poll, Converter):
 		else:
 			(duration, remaining) = self.source.time
 
-		l = duration  # Length
+		l = duration  # noqa: E741 Length
 		p = elapsed  # Position
 		r = remaining  # Remaining
 
