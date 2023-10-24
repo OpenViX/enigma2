@@ -7,17 +7,18 @@ from Tools.Hex2strColor import Hex2strColor
 from skin import parameters
 from enigma import eTimer
 
-
-#***************************************************************
-#	internalAll/internalHDD/internalSSD/external - disk type
-#	Example : <convert type="HddState">internalAll</convert>
-#	or all type - internal and external
-#	Example : <convert type="HddState"></convert>
-#	noLetterName - do not print a letter "I"(internal)/"S"(SSD)/"E"(external)
-#	Example : <convert type="HddState">noLetterName</convert>
-#	allVisible - show "Disk state: standby " when use noLetterName
-#	Example : <convert type="HddState">noLetterName,allVisible</convert>
-#***************************************************************
+'''
+	***************************************************************
+	internalAll/internalHDD/internalSSD/external - disk type
+	Example : <convert type="HddState">internalAll</convert>
+	or all type - internal and external
+	Example : <convert type="HddState"></convert>
+	noLetterName - do not print a letter "I"(internal)/"S"(SSD)/"E"(external)
+	Example : <convert type="HddState">noLetterName</convert>
+	allVisible - show "Disk state: standby " when use noLetterName
+	Example : <convert type="HddState">noLetterName,allVisible</convert>
+	***************************************************************
+'''
 
 
 class HddState(Converter):
