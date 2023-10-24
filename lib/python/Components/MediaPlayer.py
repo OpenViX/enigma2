@@ -106,12 +106,12 @@ class PlayList(MenuList):
 		return self.currPlaying
 
 	def getCurrentEvent(self):
-		l = self.l.getCurrentSelection()
-		return l and self.serviceHandler.info(l[0]).getEvent(l[0])
+		currl = self.l.getCurrentSelection()
+		return currl and self.serviceHandler.info(currl[0]).getEvent(currl[0])
 
 	def getCurrent(self):
-		l = self.l.getCurrentSelection()
-		return l and l[0]
+		currl = self.l.getCurrentSelection()
+		return currl and currl[0]
 
 	def getServiceRefList(self):
 		return [x[0] for x in self.list]
