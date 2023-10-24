@@ -143,11 +143,11 @@ class FileList(MenuList):
 		return self.l.getCurrentSelection()[0]
 
 	def getCurrentEvent(self):
-		l = self.l.getCurrentSelection()
-		if not l or l[0][1] is True:
+		currl = self.l.getCurrentSelection()
+		if not currl or currl[0][1] is True:
 			return None
 		else:
-			return self.serviceHandler.info(l[0][0]).getEvent(l[0][0])
+			return self.serviceHandler.info(currl[0][0]).getEvent(currl[0][0])
 
 	def getFileList(self):
 		return self.list
