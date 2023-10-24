@@ -393,7 +393,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		self.showJobView(job)
 
 	def doImageBackup(self):
-		backup = None
+		backup = None  # noqa: F841
 		from Plugins.SystemPlugins.ViX.ImageManager import ImageBackup
 		self.ImageBackup = ImageBackup(self.session, True)
 		Components.Task.job_manager.AddJob(self.ImageBackup.createBackupJob())
