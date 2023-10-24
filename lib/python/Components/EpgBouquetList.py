@@ -11,7 +11,7 @@ class EPGBouquetList(GUIComponent):
 	def __init__(self, graphic=False):
 		GUIComponent.__init__(self)
 		self.graphic = graphic
-		self.l = eListboxPythonMultiContent()
+		self.l = eListboxPythonMultiContent()  # noqa: E741
 		self.l.setBuildFunc(self.buildEntry)
 		self.onSelChanged = []
 
