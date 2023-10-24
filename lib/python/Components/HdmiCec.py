@@ -552,7 +552,7 @@ class HdmiCec:
 	def sendMsgQ(self):
 		if len(self.queue):
 			(msgaddress, cmd, data) = self.queue.pop(0)
-			CECcmd = cmdList.get(cmd, "<Polling Message>")
+			CECcmd = cmdList.get(cmd, "<Polling Message>")  # noqa: F841
 			# print("[HdmiCEC][sendMsgQ1]: msgaddress=%s, CECcmd=%s cmd=%X,data=%s \n" % (msgaddress, CECcmd, cmd, data))
 			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd, data, len(data))
 			self.wait.start(int(config.hdmicec.minimum_send_interval.value), True)
