@@ -13,7 +13,7 @@ from Screens.Screen import Screen
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Screens.ParentalControlSetup import ProtectedScreen
-from Screens.InputBox import PinInput
+from Screens.InputBox import PinInput  # noqa: F401
 from ServiceReference import ServiceReference
 from Screens.TimerEntry import TimerEntry, TimerLog
 from Screens.Setup import Setup
