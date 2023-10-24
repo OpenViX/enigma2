@@ -1,6 +1,6 @@
 # A Job consists of many "Tasks".
 # A task is the run of an external tool, with proper methods for failure handling
-from os import access, environ, path as ospath, pathsep, statvfs, F_OK, X_OK, W_OK
+from os import access, environ, path as ospath, pathsep, statvfs, X_OK, W_OK
 
 from Tools.CList import CList
 
