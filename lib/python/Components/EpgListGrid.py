@@ -828,11 +828,11 @@ class EPGListGrid(EPGListBase):
 			if (startTime <= timer.end or timer.repeated) and timer.begin < endTime:
 				serviceref = timer.service_ref.ref.toCompareString()
 				serviceref = "1" + serviceref[4:] if serviceref[:4] in config.recording.setstreamto1.value else serviceref  # converts 4097, 5001, 5002 to 1
-				l = self.filteredTimerList.get(serviceref)
-				if l is None:
-					self.filteredTimerList[serviceref] = l = [timer]
+				srefl = self.filteredTimerList.get(serviceref)
+				if srefl is None:
+					self.filteredTimerList[serviceref] = srefl = [timer]
 				else:
-					l.append(timer)
+					srefl.append(timer)
 
 	def getChannelNumber(self, service):
 		if service.ref and "0:0:0:0:0:0:0:0:0" not in service.ref.toString():
@@ -854,7 +854,7 @@ class TimelineText(GUIComponent):
 		GUIComponent.__init__(self)
 		self.epgConfig = epgConfig
 		self.graphic = graphic
-		self.l = eListboxPythonMultiContent()
+		self.l = eListboxPythonMultiContent()  # noqa: E741
 		self.l.setSelectionClip(eRect(0, 0, 0, 0))
 		self.itemHeight = 30
 		self.timelineDate = None
@@ -958,7 +958,7 @@ class TimelineText(GUIComponent):
 			bgpng = self.timelineDate
 			if bgpng is not None and self.graphic:
 				backColor = None
-				backColorSel = None
+				# backColorSel = None
 				res.append(MultiContentEntryPixmapAlphaBlend(
 					pos=(0, 0),
 					size=(serviceRect.width(), self.listHeight),
@@ -984,7 +984,7 @@ class TimelineText(GUIComponent):
 			xpos = 0
 			if bgpng is not None and self.graphic:
 				backColor = None
-				backColorSel = None
+				# backColorSel = None
 				res.append(MultiContentEntryPixmapAlphaBlend(
 					pos=(serviceRect.width(), 0),
 					size=(eventRect.width(), self.listHeight),
