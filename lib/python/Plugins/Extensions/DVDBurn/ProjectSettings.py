@@ -23,27 +23,27 @@ class FileBrowser(Screen, HelpableScreen):
 		currDir = "/"
 		if self.scope == "project":
 			currDir = self.getDir()
-			pattern = "(?i)^.*\.(ddvdp\.xml)"
+			pattern = r"(?i)^.*\.(ddvdp\.xml)"
 		elif self.scope == "menutemplate":
 			currDir = self.getDir()
-			pattern = "(?i)^.*\.(ddvdm\.xml)"
+			pattern = r"(?i)^.*\.(ddvdm\.xml)"
 		if self.scope == "menubg":
 			currDir = self.getDir(configRef.value)
-			pattern = "(?i)^.*\.(jpeg|jpg|jpe|png|bmp)"
+			pattern = r"(?i)^.*\.(jpeg|jpg|jpe|png|bmp)"
 		elif self.scope == "menuaudio":
 			currDir = self.getDir(configRef.value)
-			pattern = "(?i)^.*\.(mp2|m2a|ac3)"
+			pattern = r"(?i)^.*\.(mp2|m2a|ac3)"
 		elif self.scope == "vmgm":
 			currDir = self.getDir(configRef.value)
-			pattern = "(?i)^.*\.(mpg|mpeg)"
+			pattern = r"(?i)^.*\.(mpg|mpeg)"
 		elif self.scope == "font_face":
 			currDir = self.getDir(configRef.value, resolveFilename(SCOPE_FONTS))
-			pattern = "(?i)^.*\.(ttf)"
+			pattern = r"(?i)^.*\.(ttf)"
 		elif self.scope == "isopath":
 			currDir = configRef.value
 		elif self.scope == "image":
 			currDir = resolveFilename(SCOPE_HDD)
-			pattern = "(?i)^.*\.(iso)"
+			pattern = r"(?i)^.*\.(iso)"
 
 		self.filelist = FileList(currDir, matchingPattern=pattern)
 		self["filelist"] = self.filelist
@@ -53,7 +53,7 @@ class FileBrowser(Screen, HelpableScreen):
 				"save": self.ok,
 				"ok": self.ok,
 				"cancel": self.exit
-			})
+			})  # noqa: E123
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("OK"))
 		self.onLayoutFinish.append(self.layoutFinished)
