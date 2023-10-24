@@ -60,9 +60,7 @@ class StartSwap:
 		devicelist = []
 		for p in harddiskmanager.getMountedPartitions():
 			d = path.normpath(p.mountpoint)
-			if (path.exists(p.mountpoint) and p.mountpoint != "/"
-				and not p.mountpoint.startswith("/media/net/")
-				and not p.mountpoint.startswith("/media/autofs/")):
+			if (path.exists(p.mountpoint) and p.mountpoint != "/" and not p.mountpoint.startswith("/media/net/") and not p.mountpoint.startswith("/media/autofs/")):
 				devicelist.append((p.description, d))
 		if len(devicelist):
 			for device in devicelist:
@@ -127,7 +125,7 @@ class VIXSwap(Screen):
 		160, 150, 220, 30, 20,
 		160, 200, 100, 30, 20,
 		160, 200, 100, 30, 20,
-	]
+				]  # noqa: E124
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -348,12 +346,12 @@ class VIXSwap(Screen):
 			self.Console.ePopen("rm " + self.swap_Fname, self.createDel3)
 
 	def createDel3(self, result, retval, extra_args=None):
-			print("[SwapManager][createDel3] delete swap, retval, result", retval, "   ", result)
-			if config.swapmanager.swapautostart.value:
-				config.swapmanager.swapautostart.setValue(False)
-				config.swapmanager.swapautostart.save()
-				configfile.save()
-			self.updateSwap()
+		print("[SwapManager][createDel3] delete swap, retval, result", retval, "   ", result)
+		if config.swapmanager.swapautostart.value:
+			config.swapmanager.swapautostart.setValue(False)
+			config.swapmanager.swapautostart.save()
+			configfile.save()
+		self.updateSwap()
 
 	def doCreateSwap(self):
 		supported_filesystems = frozenset(("ext4", "ext3"))
