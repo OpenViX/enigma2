@@ -118,11 +118,11 @@ class EPGListMulti(EPGListBase):
 		for x in timerList:
 			if x.end >= startTime:
 				service = ":".join(x.service_ref.ref.toString().split(':')[:11])
-				l = self.filteredTimerList.get(service)
-				if l is None:
-					self.filteredTimerList[service] = l = [x]
+				srefl = self.filteredTimerList.get(service)
+				if srefl is None:
+					self.filteredTimerList[service] = srefl = [x]
 				else:
-					l.append(x)
+					srefl.append(x)
 				if x.begin > startTime + 6 * 3600:
 					break
 
