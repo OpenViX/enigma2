@@ -1,6 +1,6 @@
 from enigma import eRCInput, eTimer, eWindow  # , getDesktop
 
-from skin import GUI_SKIN_ID, applyAllAttributes
+from skin import GUI_SKIN_ID, applyAllAttributes  # noqa: F401 GUI_SKIN_ID used by debug
 from Components.config import config
 from Components.GUIComponent import GUIComponent
 from Components.Sources.Source import Source
