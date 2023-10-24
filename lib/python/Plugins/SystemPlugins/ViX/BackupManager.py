@@ -167,7 +167,7 @@ class VIXBackupManager(Screen):
 		10, 105, 540, 260, 20,  # list
 		10, 370, 400, 30, 20,  # backupstatus
 		26,
-	]
+			]  # noqa: E124
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -656,8 +656,8 @@ class VIXBackupManager(Screen):
 							devmounts = []
 							self.plugfile = self.plugfiles[3]
 							# print("[BackupManager] self.plugfile, self.plugfiles", self.plugfile, self.plugfiles)
-							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media)) and path.exists("/media/%s/%s" % (media, self.plugfile))]:  # noqa: F821
-								if media not in ("autofs", "net"):
+							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media)) and path.exists("/media/%s/%s" % (media, self.plugfile))]:
+								if media not in ("autofs", "net"):  # noqa: F821
 									devmounts.append(dir)
 							if len(devmounts):
 								for x in devmounts:
@@ -776,7 +776,7 @@ class BackupSelection(Screen):
 			140, 0, 140, 40, 20,
 			280, 0, 140, 40, 20,
 			5, 50, 550, 250, 25, 19,
-	]
+			]  # noqa: E124
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -976,7 +976,7 @@ class VIXBackupManagerMenu(Setup):
 		0, 50, 300, 20, 20,  # footnote
 		0, 90, 560, 375, 25, 19,  # config
 		0, 75, 560, 75, 18,  # description
-	]
+			]  # noqa: E124
 
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
 		Setup.__init__(self, session, setup, plugin, PluginLanguageDomain)
@@ -1014,7 +1014,7 @@ class VIXBackupManagerLogView(TextBox):
 </screen>""",
 		560, 400,
 		0, 0, 560, 400, 16,
-	]
+			]  # noqa: E124
 
 	def __init__(self, session, filename):
 		TextBox.__init__(self, session, label="list")
@@ -1094,7 +1094,7 @@ class AutoBackupManagerTimer:
 		self.backuptimer.stop()
 		now = int(time())
 		wake = self.getBackupTime()
-		atLeast = 0							# If we're close enough, we're okay...
+		atLeast = 0  # noqa: F841 if we're close enough, we're okay...
 		if wake - now < 60:
 			print("[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now)))
 			from Screens.Standby import inStandby
