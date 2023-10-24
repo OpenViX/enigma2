@@ -96,8 +96,7 @@ class DVDTitle:
 		template = template.replace("$A", audiostring)
 
 		if template.find("$l") >= 0:
-			l = self.length
-			lengthstring = "%d:%02d:%02d" % (l / 3600, l % 3600 / 60, l % 60)
+			lengthstring = "%d:%02d:%02d" % (self.length / 3600, self.length % 3600 / 60, self.length % 60)
 			template = template.replace("$l", lengthstring)
 		if self.timeCreate:
 			template = template.replace("$Y", str(self.timeCreate[0]))
