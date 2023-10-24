@@ -15,7 +15,7 @@ from boxbranding import getBrandOEM
 g_default = {
 	"current": 0,
 	"speed": 20,
-	}
+	}  # noqa: E123
 g_max_speed = 30
 
 g_animation_paused = False
@@ -51,7 +51,7 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 			"yellow": self.keyYellow,
 			"red": self.keyRed,
 			"cancel": self.keyRed,
-			}, -2)
+			}, -2)  # noqa: E123
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self["key_yellow"] = StaticText(_("Default"))
@@ -155,20 +155,20 @@ class AnimationSetupScreen(Screen):
 			"ok": self.ok,
 			"yellow": self.config,
 			"blue": self.preview
-			}, -3)
+			}, -3)  # noqa: E123
 		self["list"] = MenuList(self.animationList)
 		self.onLayoutFinish.append(self.layoutFinished)
 
 	def layoutFinished(self):
-		l = []
+		lani = []
 		for x in self.animationSetupItems:
 			key = x.get("idx", 0)
 			name = x.get("name", "??")
 			if key == config.misc.window_animation_default.value:
 				name = "* %s" % (name)
-			l.append((name, key))
+			lani.append((name, key))
 
-		self["list"].setList(l)
+		self["list"].setList(lani)
 
 	def ok(self):
 		current = self["list"].getCurrent()
