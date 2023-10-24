@@ -1,8 +1,8 @@
-from operator import itemgetter
+from operator import itemgetter  # noqa: F401
 
-from Components.config import config, getConfigListEntry, ConfigNothing, NoSave, ConfigPIN, configfile
+from Components.config import config, getConfigListEntry, ConfigNothing, NoSave, ConfigPIN, configfile  # noqa: F401
 from Components.ConfigList import ConfigListScreen
-from Screens.ChoiceBox import ChoiceBox
+from Screens.ChoiceBox import ChoiceBox  # noqa: F401
 from Screens.InputBox import PinInput
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
