@@ -2084,7 +2084,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				else:
 					metafile = open(meta, "r+")
 					sid = metafile.readline()
-					oldtitle = metafile.readline()  #noqa: F841 # local variable 'oldtitle' is assigned to but never used. Must be to skip a line.
+					oldtitle = metafile.readline()  # noqa: F841 # local variable 'oldtitle' is assigned to but never used. Must be to skip a line.
 					rest = metafile.read()
 					metafile.seek(0)
 					metafile.write("%s%s\n%s" % (sid, newname, rest))
