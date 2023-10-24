@@ -21,7 +21,7 @@ class ServicePosition(PerServiceDisplay):
 			})
 		self.type = type
 		self.relative_base = 0
-#		self.setType(type)
+		# self.setType(type)
 
 	def newService(self):
 		self.setType(self.type)
@@ -57,19 +57,19 @@ class ServicePosition(PerServiceDisplay):
 		if seek is not None:
 			if self.type != self.TYPE_RELATIVE:
 				if self.type == self.TYPE_LENGTH:
-					l = self.get(self.TYPE_LENGTH)
+					argument = self.get(self.TYPE_LENGTH)
 				elif self.type == self.TYPE_POSITION:
-					l = self.get(self.TYPE_POSITION)
+					argument = self.get(self.TYPE_POSITION)
 				elif self.type == self.TYPE_REMAINING:
-					l = self.get(self.TYPE_LENGTH) - self.get(self.TYPE_POSITION)
+					argument = self.get(self.TYPE_LENGTH) - self.get(self.TYPE_POSITION)
 
-				self.setText("%d:%02d" % (l // 60, l % 60))
+				self.setText("%d:%02d" % (argument // 60, argument % 60))
 			else:
-				l = self.get(self.TYPE_POSITION)
-				if l != -1:
-					l += self.relative_base
+				argument = self.get(self.TYPE_POSITION)
+				if argument != -1:
+					argument += self.relative_base
 					try:
-						t = time.localtime(l)
+						t = time.localtime(argument)
 						timestr = "%2d:%02d:%02d" % (t.tm_hour, t.tm_min, t.tm_sec)
 					except ValueError:
 						timestr = ""
