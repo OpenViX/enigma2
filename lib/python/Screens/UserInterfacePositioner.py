@@ -5,7 +5,6 @@ from Components.config import config, configfile, getConfigListEntry, ConfigSele
 from Components.ConfigList import ConfigListScreen
 from Components.SystemInfo import SystemInfo
 from Components.Sources.StaticText import StaticText
-from Components.Pixmap import Pixmap
 from Components.Console import Console
 from Tools.Directories import fileCheck, fileExists
 from enigma import getDesktop
