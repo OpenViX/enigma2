@@ -80,7 +80,7 @@ class Tuner:
 			parm.modulation = transponder[2]
 			parm.fec_inner = transponder[3]
 			parm.inversion = transponder[4]
-			#parm.system = transponder[5]
+			# parm.system = transponder[5]
 			self.tuneCabObj(parm)
 
 	def tuneCabObj(self, transponderObj):
