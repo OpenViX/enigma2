@@ -237,7 +237,7 @@ class MovieList(GUIComponent):
 		if config.usage.time.wide.value:
 			self.dateWidth = int(self.dateWidth * 1.15)
 		self.reloadDelayTimer = None
-		self.l = eListboxPythonMultiContent()
+		self.l = eListboxPythonMultiContent()  # noqa: E741
 		self.tags = set()
 		self.markList = []
 		self.allowCollections = allowCollections  # used to disable collections when loaded by OpenWebIf
@@ -603,12 +603,12 @@ class MovieList(GUIComponent):
 		return self.instance.getCurrentIndex()
 
 	def getCurrentEvent(self):
-		l = self.l.getCurrentSelection()
-		return l and l[0] and l[1] and l[1].getEvent(l[0])
+		currl = self.l.getCurrentSelection()
+		return currl and currl[0] and currl[1] and currl[1].getEvent(currl[0])
 
 	def getCurrent(self):
-		l = self.l.getCurrentSelection()
-		return l and l[0]
+		currl = self.l.getCurrentSelection()
+		return currl and currl[0]
 
 	def getItem(self, index):
 		if self.list:
