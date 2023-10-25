@@ -8,7 +8,7 @@ from Components.Button import Button
 from Components.Label import Label
 from Components.UsageConfig import showrotorpositionChoicesUpdate, preferredTunerChoicesUpdate
 from Components.SelectionList import SelectionList, SelectionEntryComponent
-from Components.config import getConfigListEntry, config, ConfigNothing, ConfigBoolean, configfile, NoSave, ConfigSelection
+from Components.config import getConfigListEntry, config, ConfigNothing, ConfigBoolean, configfile, ConfigSelection
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Screens.MessageBox import MessageBox
