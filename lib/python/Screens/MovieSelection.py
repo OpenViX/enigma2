@@ -1207,7 +1207,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def __evEOF(self):
 		playInBackground = self.list.playInBackground
-		playInForeground = self.list.playInForeground
+		# playInForeground = self.list.playInForeground
 		if not playInBackground:
 			print("[MovieSelection] Not playing anything in background")
 			return
