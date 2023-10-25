@@ -136,7 +136,7 @@ class TimerList(GUIComponent):
 	def __init__(self, list):
 		GUIComponent.__init__(self)
 		self.onSelectionChanged = []
-		self.l = eListboxPythonMultiContent()
+		self.l = eListboxPythonMultiContent()  # noqa: E741
 		self.l.setBuildFunc(self.buildTimerEntry)
 		self.serviceNameFont = gFont("Regular", 20)
 		self.font = gFont("Regular", 18)
@@ -149,7 +149,7 @@ class TimerList(GUIComponent):
 		self.iconMargin = 4
 		self.satPosLeft = 160
 		self.iconWait = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_wait.png"))
-		#currently intended that all icons have the same size
+		# currently intended that all icons have the same size
 		self.iconWidth = self.iconWait.size().width()
 		self.iconHeight = self.iconWait.size().height()
 		self.iconRecording = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_rec.png"))
