@@ -8,7 +8,7 @@ from Components.MultiContent import MultiContentEntryPixmapAlphaBlend
 from Components.Renderer.Picon import getPiconName
 from skin import parseFont, parseScale
 from Tools.Alternatives import GetWithAlternative
-from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
+from Tools.Directories import resolveFilename, SCOPE_GUISKIN
 from Tools.FuzzyDate import FuzzyTime
 from Tools.LoadPixmap import LoadPixmap
 from Tools.TextBoundary import getTextBoundarySize
@@ -49,12 +49,12 @@ class TimerList(GUIComponent):
 					backcolor=None, backcolor_sel=None, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_ALIGN_CENTER))
 			return piconWidth
 
-		colX = 0
+		colX = self.sidesMargin
 		if config.usage.timerlist_showpicons.value:
 			colX += addPicon()
 
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.iconWidth + self.iconMargin, 0, nameWidth, self.rowSplit, 2, RT_HALIGN_LEFT | RT_VALIGN_BOTTOM, timer.name))
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, width - serviceNameWidth, 0, serviceNameWidth, self.rowSplit, 0, RT_HALIGN_RIGHT | RT_VALIGN_BOTTOM, serviceName))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.sidesMargin + self.iconWidth + self.iconMargin, 0, nameWidth, self.rowSplit, 2, RT_HALIGN_LEFT | RT_VALIGN_BOTTOM, timer.name))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, width - serviceNameWidth - self.sidesMargin, 0, serviceNameWidth, self.rowSplit, 0, RT_HALIGN_RIGHT | RT_VALIGN_BOTTOM, serviceName))
 
 		begin = FuzzyTime(timer.begin)
 		if timer.repeated:
@@ -74,7 +74,7 @@ class TimerList(GUIComponent):
 			else:
 				repeatedtext = ", ".join(repeatedtext)
 			if self.iconRepeat:
-				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, colX + self.iconMargin, self.rowSplit + (self.itemHeight - self.rowSplit - self.iconHeight) // 2, self.iconWidth, self.iconHeight, self.iconRepeat))
+				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, colX + self.sidesMargin + self.iconMargin // 2, self.rowSplit + (self.itemHeight - self.rowSplit - self.iconHeight) // 2, self.iconWidth, self.iconHeight, self.iconRepeat))
 		else:
 			repeatedtext = begin[0]  # date
 		if timer.justplay:
@@ -120,16 +120,16 @@ class TimerList(GUIComponent):
 			state = _("done!")
 			icon = self.iconDone
 
-		icon and res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, colX + self.iconMargin // 2, (self.rowSplit - self.iconHeight) // 2, self.iconWidth, self.iconHeight, icon))
+		icon and res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, colX + self.sidesMargin + self.iconMargin // 2, (self.rowSplit - self.iconHeight) // 2, self.iconWidth, self.iconHeight, icon))
 
 		orbpos = self.getOrbitalPos(timer.service_ref)
 		orbposWidth = getTextBoundarySize(self.instance, self.font, self.l.getItemSize(), orbpos).width()
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.satPosLeft, self.rowSplit, orbposWidth, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT | RT_VALIGN_TOP, orbpos))
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.iconWidth + self.iconMargin, self.rowSplit, self.satPosLeft - self.iconWidth - self.iconMargin, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT | RT_VALIGN_TOP, state))
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.satPosLeft + orbposWidth, self.rowSplit, width - self.satPosLeft - orbposWidth - colX, self.itemHeight - self.rowSplit, 1, RT_HALIGN_RIGHT | RT_VALIGN_TOP, text))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.sidesMargin + self.satPosLeft, self.rowSplit, orbposWidth, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT | RT_VALIGN_TOP, orbpos))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.sidesMargin + self.iconWidth + self.iconMargin, self.rowSplit, self.satPosLeft - self.iconWidth - self.iconMargin, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT | RT_VALIGN_TOP, state))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.sidesMargin + self.satPosLeft + orbposWidth, self.rowSplit, width - self.satPosLeft - orbposWidth - colX - self.sidesMargin*2, self.itemHeight - self.rowSplit, 1, RT_HALIGN_RIGHT | RT_VALIGN_TOP, text))
 
-		line = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "div-h.png"))
-		res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, 0, height - 2, width, 2, line))
+		if self.sepLinePixmap:
+			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, 0, height - 2, width, 2, self.sepLinePixmap))
 
 		return res
 
@@ -145,21 +145,23 @@ class TimerList(GUIComponent):
 		self.l.setList(list)
 		self.listCount = len(list)  # used by pager
 		self.itemHeight = 50
+		self.sidesMargin = 0
 		self.rowSplit = 25
 		self.iconMargin = 4
 		self.satPosLeft = 160
-		self.iconWait = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_wait.png"))
-		# currently intended that all icons have the same size
+		self.sepLinePixmap = None
+		self.iconWait = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/timer_wait.png"))
+		#currently intended that all icons have the same size
 		self.iconWidth = self.iconWait.size().width()
 		self.iconHeight = self.iconWait.size().height()
-		self.iconRecording = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_rec.png"))
-		self.iconPrepared = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_prep.png"))
-		self.iconDone = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_done.png"))
-		self.iconRepeat = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_rep.png"))
-		self.iconZapped = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_zap.png"))
-		self.iconDisabled = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_off.png"))
-		self.iconFailed = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_failed.png"))
-		self.iconAutoTimer = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/timer_autotimer.png"))
+		self.iconRecording = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/timer_rec.png"))
+		self.iconPrepared = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/timer_prep.png"))
+		self.iconDone = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/timer_done.png"))
+		self.iconRepeat = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/timer_rep.png"))
+		self.iconZapped = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/timer_zap.png"))
+		self.iconDisabled = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/timer_off.png"))
+		self.iconFailed = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/timer_failed.png"))
+		self.iconAutoTimer = LoadPixmap(resolveFilename(SCOPE_GUISKIN, "icons/timer_autotimer.png"))
 		try:
 			from Plugins.SystemPlugins.IceTV import loadIceTVIcon
 			self.iconIceTVTimer = loadIceTVIcon("timer_icetv.png")
@@ -187,6 +189,12 @@ class TimerList(GUIComponent):
 
 		def satPosLeft(value):
 			self.satPosLeft = parseScale(value)
+		
+		def sidesMargin(value):
+			self.sidesMargin = parseScale(value)
+		
+		def sepLinePixmap(value):
+			self.sepLinePixmap = LoadPixmap(resolveFilename(SCOPE_GUISKIN, value))
 
 		for (attrib, value) in self.skinAttributes[:]:
 			try:
