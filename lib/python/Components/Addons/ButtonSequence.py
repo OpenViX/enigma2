@@ -43,7 +43,6 @@ class ButtonSequence(GUIAddon):
 		xPos = self.instance.size().width() if self.alignment == "right" else 0
 		yPos = 0
 
-
 		res = [None]
 
 		for x in sequence:
@@ -65,13 +64,11 @@ class ButtonSequence(GUIAddon):
 						xPos += pixd_width + self.spacing
 		return res
 
-
 	def postWidgetCreate(self, instance):
 		instance.setSelectionEnable(False)
 		instance.setContent(self.l)
 		instance.allowNativeKeys(False)
 
-	
 	def constructButtonSequence(self):
 		sequence = []
 		for x, val in self.sources.items():
