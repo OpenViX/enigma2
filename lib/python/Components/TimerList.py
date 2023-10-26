@@ -126,7 +126,7 @@ class TimerList(GUIComponent):
 		orbposWidth = getTextBoundarySize(self.instance, self.font, self.l.getItemSize(), orbpos).width()
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.sidesMargin + self.satPosLeft, self.rowSplit, orbposWidth, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT | RT_VALIGN_TOP, orbpos))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.sidesMargin + self.iconWidth + self.iconMargin, self.rowSplit, self.satPosLeft - self.iconWidth - self.iconMargin, self.itemHeight - self.rowSplit, 1, RT_HALIGN_LEFT | RT_VALIGN_TOP, state))
-		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.sidesMargin + self.satPosLeft + orbposWidth, self.rowSplit, width - self.satPosLeft - orbposWidth - colX - self.sidesMargin*2, self.itemHeight - self.rowSplit, 1, RT_HALIGN_RIGHT | RT_VALIGN_TOP, text))
+		res.append((eListboxPythonMultiContent.TYPE_TEXT, colX + self.sidesMargin + self.satPosLeft + orbposWidth, self.rowSplit, width - self.satPosLeft - orbposWidth - colX - self.sidesMargin * 2, self.itemHeight - self.rowSplit, 1, RT_HALIGN_RIGHT | RT_VALIGN_TOP, text))
 
 		if self.sepLinePixmap:
 			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, 0, height - 2, width, 2, self.sepLinePixmap))
