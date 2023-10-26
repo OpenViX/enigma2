@@ -189,10 +189,10 @@ class TimerList(GUIComponent):
 
 		def satPosLeft(value):
 			self.satPosLeft = parseScale(value)
-		
+
 		def sidesMargin(value):
 			self.sidesMargin = parseScale(value)
-		
+
 		def sepLinePixmap(value):
 			self.sepLinePixmap = LoadPixmap(resolveFilename(SCOPE_GUISKIN, value))
 
