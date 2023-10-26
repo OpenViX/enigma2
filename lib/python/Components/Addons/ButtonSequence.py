@@ -23,6 +23,7 @@ class ButtonSequence(GUIAddon):
 		self.spacing = applySkinFactor(10)
 		self.orientations = {"orHorizontal": eListbox.orHorizontal, "orVertical": eListbox.orVertical}
 		self.orientation = eListbox.orHorizontal
+		self.alignment = "left"
 		self.pixmaps = {}
 
 	def onContainerShown(self):
@@ -39,7 +40,7 @@ class ButtonSequence(GUIAddon):
 		self.l.setList(l_list)
 
 	def buildEntry(self, sequence):
-		xPos = self.instance.size().width()
+		xPos = self.instance.size().width() if self.alignment == "right" else 0
 		yPos = 0
 
 
@@ -52,12 +53,16 @@ class ButtonSequence(GUIAddon):
 					pixd_size = pic.size()
 					pixd_width = pixd_size.width()
 					pixd_height = pixd_size.height()
+					pic_x_pos = (xPos - pixd_width) if self.alignment == "right" else xPos
 					res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(xPos - pixd_width, yPos),
+						pos=(pic_x_pos, yPos),
 						size=(pixd_width, pixd_height),
 						png=pic,
 						backcolor=None, backcolor_sel=None, flags=BT_ALIGN_CENTER))
-					xPos -= pixd_width + self.spacing
+					if self.alignment == "right":
+						xPos -= pixd_width + self.spacing
+					else:
+						xPos += pixd_width + self.spacing
 		return res
 
 
@@ -90,6 +95,8 @@ class ButtonSequence(GUIAddon):
 				self.l.setItemWidth(parseScale(value))
 			elif attrib == "spacing":
 				self.spacing = parseScale(value)
+			elif attrib == "alignment":
+				self.alignment = value
 			elif attrib == "orientation":
 				self.orientation = self.orientations.get(value, self.orientations["orHorizontal"])
 				if self.orientation == eListbox.orHorizontal:
