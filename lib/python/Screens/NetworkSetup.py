@@ -393,7 +393,7 @@ class NameserverSetup(ConfigListScreen, HelpableScreen, Screen):
 		self.nameserverEntries = [NoSave(ConfigIP(default=nameserver)) for nameserver in self.nameservers]
 
 	def createSetup(self):
-		self["config"].list = [getConfigListEntry(_("Nameserver %d") % (i+1), x) for i, x in enumerate(self.nameserverEntries)]  # noqa: E226
+		self["config"].list = [getConfigListEntry(_("Nameserver %d") % (i + 1), x) for i, x in enumerate(self.nameserverEntries)]  # noqa: E226
 
 	def keySave(self):
 		iNetwork.clearNameservers()
