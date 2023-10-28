@@ -260,6 +260,7 @@ class OscamInfo:
 					else:
 						ecmtime = _("n/a")
 					srvname = client.find("request").text
+					srvname_short = _("n/a")
 					if srvname is not None:
 						srvname_short = srvname.split(":")[1].strip() if ":" in srvname else srvname
 					if proto.lower() == "dvbapi":
