@@ -46,6 +46,7 @@ class VIXScriptRunner(IpkgInstaller):
 
 		self.skinName = ["VIXScriptRunner", "IpkgInstaller"]
 		self["key_green"] = StaticText(_("Run"))
+		self["key_menu"] = StaticText(_("MENU"))  # hook for automatic menu key
 
 		self["myactions"] = ActionMap(
 			["MenuActions"],
