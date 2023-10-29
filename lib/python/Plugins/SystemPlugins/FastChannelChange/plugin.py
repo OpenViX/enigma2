@@ -3,6 +3,7 @@
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Screens.InfoBar import InfoBar
+from Screens.InfoBarGenerics import whitelist
 from Components.config import config, getConfigListEntry, ConfigSubsection, ConfigYesNo, ConfigSelection
 from Components.ConfigList import ConfigListScreen
 from Components.Sources.StaticText import StaticText
@@ -245,6 +246,9 @@ class FCCSupport:
 			playable = False
 
 		elif int(sref.getData(0)) in (2, 10):  # is RADIO?
+			playable = False
+
+		elif sref.toString() in whitelist.streamrelay:
 			playable = False
 
 		return playable
