@@ -80,7 +80,7 @@ class ColorButtonsSequence(GUIAddon):
 				buttonText = val.text
 			else:
 				buttonText = ""
-			
+
 			if buttonText:
 				textWidth = self._calcTextWidth(buttonText, font=self.font, size=eSize(self.getDesktopWith() // 3, 0))
 			else:
@@ -146,7 +146,7 @@ class ColorButtonsSequence(GUIAddon):
 		self.skinAttributes = attribs
 		self.l.setFont(0, self.font)
 		return GUIAddon.applySkin(self, desktop, parent)
-	
+
 	def _calcTextWidth(self, text, font=None, size=None):
 		if size:
 			self.textRenderer.instance.resize(size)
@@ -154,6 +154,6 @@ class ColorButtonsSequence(GUIAddon):
 			self.textRenderer.instance.setFont(font)
 		self.textRenderer.text = text
 		return self.textRenderer.instance.calculateSize().width()
-	
+
 	def getDesktopWith(self):
 		return getDesktop(0).size().width()
