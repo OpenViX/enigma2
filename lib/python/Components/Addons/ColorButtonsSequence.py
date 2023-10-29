@@ -35,8 +35,7 @@ class ColorButtonsSequence(GUIAddon):
 		for x, val in self.sources.items():
 			if self.constructButtonSequence not in val.onChanged:
 				val.onChanged.append(self.constructButtonSequence)
-		if self.layoutStyle == "fluid":
-			self.textRenderer.GUIcreate(self.relatedScreen.instance)
+		self.textRenderer.GUIcreate(self.relatedScreen.instance)
 		self.constructButtonSequence()
 
 	GUI_WIDGET = eListbox
@@ -52,11 +51,15 @@ class ColorButtonsSequence(GUIAddon):
 		xPos = width if self.alignment == "right" else 0
 		yPos = 0
 		sectorWidth = width // len(sequence)
+		minSectorWidth = width // 4
 
 		res = [None]
 		pixd_width = 0
 
 		for x, val in sequence.items():
+			textColor = self.foreColor
+			if x in self.colors:
+				textColor = parseColor(self.colors[x]).argb()
 			if x in self.pixmaps:
 				pic = LoadPixmap(resolveFilename(SCOPE_GUISKIN, self.pixmaps[x]))
 				if pic:
@@ -73,13 +76,14 @@ class ColorButtonsSequence(GUIAddon):
 						xPos -= pixd_width + self.spacingPixmapText
 					else:
 						xPos += pixd_width + self.spacingPixmapText
-				buttonText = val.text
-				if self.layoutStyle == "fluid":
-					textWidth = self._calcTextWidth(buttonText, font=self.font, size=eSize(self.getDesktopWith() // 3, 0))
-				else:
-					textWidth = sectorWidth - self.spacingButtons - self.spacingPixmapText - pixd_width
-				res.append((eListboxPythonMultiContent.TYPE_TEXT, xPos, yPos, textWidth, height - 2, 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, buttonText))
-				xPos += textWidth + self.spacingButtons
+			buttonText = val.text
+			textWidth = self._calcTextWidth(buttonText, font=self.font, size=eSize(self.getDesktopWith() // 3, 0))
+			if self.layoutStyle != "fluid":
+				if textWidth < (minSectorWidth - self.spacingButtons - self.spacingPixmapText - pixd_width):
+					textWidth = minSectorWidth - self.spacingButtons - self.spacingPixmapText - pixd_width
+
+			res.append((eListboxPythonMultiContent.TYPE_TEXT, xPos, yPos, textWidth, height - 2, 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, buttonText, textColor if not pic else self.foreColor))
+			xPos += textWidth + self.spacingButtons
 
 		return res
 
@@ -125,12 +129,14 @@ class ColorButtonsSequence(GUIAddon):
 				self.font = parseFont(value, ((1, 1), (1, 1)))
 			elif attrib == "foregroundColor":
 				self.foreColor = parseColor(value).argb()
+			elif attrib == "textColors":
+				self.colors = dict(item.split(':') for item in value.split(','))
 			else:
 				attribs.append((attrib, value))
 		self.skinAttributes = attribs
 		self.l.setFont(0, self.font)
 		return GUIAddon.applySkin(self, desktop, parent)
-
+	
 	def _calcTextWidth(self, text, font=None, size=None):
 		if size:
 			self.textRenderer.instance.resize(size)
@@ -138,6 +144,6 @@ class ColorButtonsSequence(GUIAddon):
 			self.textRenderer.instance.setFont(font)
 		self.textRenderer.text = text
 		return self.textRenderer.instance.calculateSize().width()
-
+	
 	def getDesktopWith(self):
 		return getDesktop(0).size().width()
