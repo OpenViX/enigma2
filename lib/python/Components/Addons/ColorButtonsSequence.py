@@ -54,7 +54,8 @@ class ColorButtonsSequence(GUIAddon):
 		sectorWidth = width // len(sequence)
 
 		res = [None]
-
+		pixd_width = 0
+		
 		for x, val in sequence.items():
 			if x in self.pixmaps:
 				pic = LoadPixmap(resolveFilename(SCOPE_GUISKIN, self.pixmaps[x]))
