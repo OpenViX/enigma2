@@ -48,53 +48,53 @@ class LayoutInfo(Poll, Converter):
 			self.poll_interval = 1600
 			self.poll_enabled = True
 
-		@cached
-		def getText(self):
-			text = 'N/A'
-			if self.type == self.HDDTEMP:
-				text = self.getHddTemp()
-			elif self.type == self.LOADAVG:
-				text = self.getLoadAvg()
+	@cached
+	def getText(self):
+		text = 'N/A'
+		if self.type == self.HDDTEMP:
+			text = self.getHddTemp()
+		elif self.type == self.LOADAVG:
+			text = self.getLoadAvg()
+		else:
+			entry = {self.MEMTOTAL: ('Mem', 'Ram'),
+			self.MEMFREE: ('Mem', 'Ram'),
+			self.SWAPTOTAL: ('Swap', 'Swap'),
+			self.SWAPFREE: ('Swap', 'Swap'),
+			self.USBINFO: ('/media/usb', 'USB'),
+			self.HDDINFO: ('/media/hdd', 'HDD'),
+			self.FLASHINFO: ('/', 'Flash')}[self.type]
+			if self.type in (self.USBINFO, self.HDDINFO, self.FLASHINFO):
+				list = self.getDiskInfo(entry[0])
 			else:
-				entry = {self.MEMTOTAL: ('Mem', 'Ram'),
-				self.MEMFREE: ('Mem', 'Ram'),
-				self.SWAPTOTAL: ('Swap', 'Swap'),
-				self.SWAPFREE: ('Swap', 'Swap'),
-				self.USBINFO: ('/media/usb', 'USB'),
-				self.HDDINFO: ('/media/hdd', 'HDD'),
-				self.FLASHINFO: ('/', 'Flash')}[self.type]
-				if self.type in (self.USBINFO, self.HDDINFO, self.FLASHINFO):
-					list = self.getDiskInfo(entry[0])
-				else:
-					list = self.getMemInfo(entry[0])
-				if list[0] == 0:
-					text = '%s: N/A' % entry[1]
-				elif self.shortFormat:
-					text = '%s%%' % (list[3])
-				elif self.fullFormat:
-					text = '%s: %s Free:%s Used:%s (%s%%)' % (entry[1], self.getSizeStr(list[0]), self.getSizeStr(list[2]), self.getSizeStr(list[1]), list[3])
-				else:
-					text = '%s: %s Used:%s Free:%s' % (entry[1], self.getSizeStr(list[0]), self.getSizeStr(list[1]), self.getSizeStr(list[2]))
-				return text
+				list = self.getMemInfo(entry[0])
+			if list[0] == 0:
+				text = '%s: N/A' % entry[1]
+			elif self.shortFormat:
+				text = '%s%%' % (list[3])
+			elif self.fullFormat:
+				text = '%s: %s Free:%s Used:%s (%s%%)' % (entry[1], self.getSizeStr(list[0]), self.getSizeStr(list[2]), self.getSizeStr(list[1]), list[3])
+			else:
+				text = '%s: %s Used:%s Free:%s' % (entry[1], self.getSizeStr(list[0]), self.getSizeStr(list[1]), self.getSizeStr(list[2]))
+			return text
 
-		@cached
-		def getValue(self):
-			result = 0
-			if self.type in (self.MEMTOTAL,
-				self.MEMFREE,
-				self.SWAPTOTAL,
-				self.SWAPFREE):
-				entry = {self.MEMTOTAL: 'Mem',
-				self.MEMFREE: 'Mem',
-				self.SWAPTOTAL: 'Swap',
-				self.SWAPFREE: 'Swap'}[self.type]
-				result = self.getMemInfo(entry)[3]
-			elif self.type in (self.USBINFO, self.HDDINFO, self.FLASHINFO):
-				path = {self.USBINFO: '/media/usb',
-				self.HDDINFO: '/media/hdd',
-				self.FLASHINFO: '/'}[self.type]
-				result = self.getDiskInfo(path)[3]
-			return result
+	@cached
+	def getValue(self):
+		result = 0
+		if self.type in (self.MEMTOTAL,
+			self.MEMFREE,
+			self.SWAPTOTAL,
+			self.SWAPFREE):
+			entry = {self.MEMTOTAL: 'Mem',
+			self.MEMFREE: 'Mem',
+			self.SWAPTOTAL: 'Swap',
+			self.SWAPFREE: 'Swap'}[self.type]
+			result = self.getMemInfo(entry)[3]
+		elif self.type in (self.USBINFO, self.HDDINFO, self.FLASHINFO):
+			path = {self.USBINFO: '/media/usb',
+			self.HDDINFO: '/media/hdd',
+			self.FLASHINFO: '/'}[self.type]
+			result = self.getDiskInfo(path)[3]
+		return result
 
 	text = property(getText)  # noqa: F821
 	value = property(getValue)  # noqa: F821
