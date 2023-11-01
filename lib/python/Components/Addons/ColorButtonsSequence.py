@@ -90,9 +90,9 @@ class ColorButtonsSequence(GUIAddon):
 			if self.layoutStyle != "fluid":
 				if textWidth < (minSectorWidth - self.spacingButtons - self.spacingPixmapText - pixd_width):
 					textWidth = minSectorWidth - self.spacingButtons - self.spacingPixmapText - pixd_width
-
-			res.append((eListboxPythonMultiContent.TYPE_TEXT, xPos, yPos, textWidth, height - 2, 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, buttonText, textColor if not pic else self.foreColor))
-			xPos += textWidth + self.spacingButtons
+			if buttonText:
+				res.append((eListboxPythonMultiContent.TYPE_TEXT, xPos, yPos, textWidth, height - 2, 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, buttonText, textColor if not pic else self.foreColor))
+				xPos += textWidth + self.spacingButtons
 			if xPos > width and self.layoutStyle != "fluid":
 				self.layoutStyle = "fluid"
 				return self.buildEntry(sequence)
