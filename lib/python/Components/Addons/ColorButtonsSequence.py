@@ -36,6 +36,8 @@ class ColorButtonsSequence(GUIAddon):
 			if self.constructColorButtonSequence not in val.onChanged:
 				val.onChanged.append(self.constructColorButtonSequence)
 		self.textRenderer.GUIcreate(self.relatedScreen.instance)
+		self.l.setItemHeight(self.instance.size().height())
+		self.l.setItemWidth(self.instance.size().width())
 		self.constructColorButtonSequence()
 
 	GUI_WIDGET = eListbox
@@ -117,10 +119,6 @@ class ColorButtonsSequence(GUIAddon):
 		for (attrib, value) in self.skinAttributes[:]:
 			if attrib == "pixmaps":
 				self.pixmaps = dict(item.split(':') for item in value.split(','))
-			elif attrib == "itemHeight":
-				self.l.setItemHeight(parseScale(value))
-			elif attrib == "itemWidth":
-				self.l.setItemWidth(parseScale(value))
 			elif attrib == "spacingButtons":
 				self.spacingButtons = parseScale(value)
 			elif attrib == "spacingPixmapText":
