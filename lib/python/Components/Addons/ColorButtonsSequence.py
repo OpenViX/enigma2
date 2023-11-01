@@ -122,7 +122,7 @@ class ColorButtonsSequence(GUIAddon):
 		for (attrib, value) in self.skinAttributes[:]:
 			if attrib == "pixmaps":
 				self.pixmaps = dict(item.split(':') for item in value.split(','))
-			elif attrib == "spacingButtons":
+			elif attrib == "spacing":
 				self.spacingButtons = parseScale(value)
 			elif attrib == "spacingPixmapText":
 				self.spacingPixmapText = parseScale(value)
