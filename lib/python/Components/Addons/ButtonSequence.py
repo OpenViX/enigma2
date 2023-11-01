@@ -30,6 +30,8 @@ class ButtonSequence(GUIAddon):
 		for x, val in self.sources.items():
 			if self.constructButtonSequence not in val.onChanged:
 				val.onChanged.append(self.constructButtonSequence)
+		self.l.setItemHeight(self.instance.size().height())
+		self.l.setItemWidth(self.instance.size().width())
 		self.constructButtonSequence()
 
 	GUI_WIDGET = eListbox
@@ -86,10 +88,6 @@ class ButtonSequence(GUIAddon):
 		for (attrib, value) in self.skinAttributes[:]:
 			if attrib == "pixmaps":
 				self.pixmaps = dict(item.split(':') for item in value.split(','))
-			elif attrib == "itemHeight":
-				self.l.setItemHeight(parseScale(value))
-			elif attrib == "itemWidth":
-				self.l.setItemWidth(parseScale(value))
 			elif attrib == "spacing":
 				self.spacing = parseScale(value)
 			elif attrib == "alignment":
