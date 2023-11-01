@@ -14,7 +14,7 @@ from Tools.LoadPixmap import LoadPixmap
 class ColorButtonsSequence(GUIAddon):
 	def __init__(self):
 		GUIAddon.__init__(self)
-		self.foreColor = 0xffffff
+		self.foreColor = None
 		self.font = gFont("Regular", 18)
 		self.l = eListboxPythonMultiContent()  # noqa: E741
 		self.l.setBuildFunc(self.buildEntry)
@@ -93,7 +93,10 @@ class ColorButtonsSequence(GUIAddon):
 				if textWidth < (minSectorWidth - self.spacingButtons - self.spacingPixmapText - pixd_width):
 					textWidth = minSectorWidth - self.spacingButtons - self.spacingPixmapText - pixd_width
 			if buttonText:
-				res.append((eListboxPythonMultiContent.TYPE_TEXT, xPos, yPos, textWidth, height - 2, 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, buttonText, textColor if not pic else self.foreColor))
+				if textColor is not None:
+					res.append((eListboxPythonMultiContent.TYPE_TEXT, xPos, yPos, textWidth, height - 2, 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, buttonText, textColor))
+				else:
+					res.append((eListboxPythonMultiContent.TYPE_TEXT, xPos, yPos, textWidth, height - 2, 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, buttonText))
 				xPos += textWidth + self.spacingButtons
 			if xPos > width and self.layoutStyle != "fluid":
 				self.layoutStyle = "fluid"
