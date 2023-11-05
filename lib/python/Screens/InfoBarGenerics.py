@@ -1534,7 +1534,7 @@ class InfoBarMenu:
 		menulist = mdom.getroot().findall("menu")
 		for menuItem in menulist:
 			if menuItem.get("key") == "setup":
-				menulist2= menuItem.findall("menu")
+				menulist2 = menuItem.findall("menu")
 				for menuItems in menulist2:
 					if menuItems.get('key') == "system":
 						self.session.openWithCallback(self.mainMenuClosed, Menu, menuItems)					
