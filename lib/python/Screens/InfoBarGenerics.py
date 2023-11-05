@@ -1531,26 +1531,22 @@ class InfoBarMenu:
 		self.session.open(MessageBox, _("AV aspect is %s." % ASPECT_MSG[config.av.aspect.value]), MessageBox.TYPE_INFO, timeout=5, simple=True)
 
 	def showSystemMenu(self):
-		menulist = mdom.getroot().findall('menu')
-		for item in menulist:
-			if item.attrib['entryID'] == 'setup_selection':
-				menulist = item.findall('menu')
-				for item in menulist:
-					if item.attrib['entryID'] == 'system_selection':
-						menu = item
-		assert menu.tag == "menu", "root element in menu must be 'menu'!"
-		self.session.openWithCallback(self.mainMenuClosed, Menu, menu)
+		menulist = mdom.getroot().findall("menu")
+		for menuItem in menulist:
+			if menuItem.get("key") == "setup":
+				menulist2= menuItem.findall("menu")
+				for menuItems in menulist2:
+					if menuItems.get('key') == "system":
+						self.session.openWithCallback(self.mainMenuClosed, Menu, menuItems)					
 
 	def showNetworkMounts(self):
 		menulist = mdom.getroot().findall('menu')
-		for item in menulist:
-			if item.attrib['entryID'] == 'setup_selection':
-				menulist = item.findall('menu')
-				for item in menulist:
-					if item.attrib['entryID'] == 'network_menu':
-						menu = item
-		assert menu.tag == "menu", "root element in menu must be 'menu'!"
-		self.session.openWithCallback(self.mainMenuClosed, Menu, menu)
+		for menuItem in menulist:
+			if menuItem.get('key') == "setup":
+				menulist2 = menuItem.findall('menu')
+				for menuItems in menulist2:
+					if menuItems.get('key') == "network":
+						self.session.openWithCallback(self.mainMenuClosed, Menu, menuItems)
 
 	def showRFSetup(self):
 		self.session.openWithCallback(self.mainMenuClosed, Setup, 'RFmod')
