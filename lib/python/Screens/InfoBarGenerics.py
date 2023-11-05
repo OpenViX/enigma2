@@ -1537,7 +1537,7 @@ class InfoBarMenu:
 				menulist2 = menuItem.findall("menu")
 				for menuItems in menulist2:
 					if menuItems.get('key') == "system":
-						self.session.openWithCallback(self.mainMenuClosed, Menu, menuItems)					
+						self.session.openWithCallback(self.mainMenuClosed, Menu, menuItems)
 
 	def showNetworkMounts(self):
 		menulist = mdom.getroot().findall('menu')
