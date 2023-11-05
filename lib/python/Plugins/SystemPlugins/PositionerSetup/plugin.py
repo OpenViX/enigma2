@@ -187,7 +187,7 @@ class PositionerSetup(Screen):
 		self["key_yellow"] = self.yellow
 		self.blue = Button("")
 		self["key_blue"] = self.blue
-		
+
 		self["key_info"] = StaticText(_("INFO"))
 		self["key_menu"] = StaticText(_("MENU"))
 
