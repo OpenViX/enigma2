@@ -120,7 +120,7 @@ self.session.openWithCallback(msgClosed, EpgDeleteMsg)
 			<item key="device_setup" level="0" text="Device" weight="1"><screen module="NetworkSetup" screen="NetworkAdapterSelection" /></item>
 			<item key="netmounts_setup" level="1" text="Mounts" weight="2"><screen module="NetworkSetup" screen="NetworkMountsMenu" /></item>
 			<menu key="netservices" level="0" text="Utilities" weight="3">
-				<item key="netafp_setup" level="2" text="AFP"><screen module="NetworkSetup" screen="NetworkAfp" /></item>
+				<!-- <item key="netafp_setup" level="2" text="AFP"><screen module="NetworkSetup" screen="NetworkAfp" /></item> not currently built -->
 				<item key="netftp_setup" level="2" text="FTP"><screen module="NetworkSetup" screen="NetworkFtp" /></item>
 				<item key="Inadyn_setup" level="2" text="Inadyn"><screen module="NetworkSetup" screen="NetworkInadyn" /></item>
 				<item key="netdlna_setup" level="2" text="MiniDLNA"><screen module="NetworkSetup" screen="NetworkMiniDLNA" /></item>
