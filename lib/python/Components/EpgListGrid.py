@@ -671,7 +671,7 @@ class EPGListGrid(EPGListBase):
 							pix_width = pix_size.width()
 							pix_height = pix_size.height()
 							res.append(MultiContentEntryPixmapAlphaBlend(
-								pos=(pos[0] - pix_width - applySkinFactor(5) , pos[1]), size=(pix_width, pix_height),
+								pos=(pos[0] - pix_width - applySkinFactor(5), pos[1]), size=(pix_width, pix_height),
 								png=autoTimerIcon))
 		return res
 
