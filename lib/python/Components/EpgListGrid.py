@@ -648,31 +648,36 @@ class EPGListGrid(EPGListBase):
 								flags=BT_SCALE))
 
 				# Recording icons.
-				if timerIcon is not None and ewidth > 23:
+				if timerIcon is not None and ewidth > timerIcon.size().width():
 					if config.epgselection.grid.rec_icon_height.value != "hide":
-						clockSize = applySkinFactor(17)
+						pix_size = timerIcon.size()
+						pix_width = pix_size.width()
+						pix_height = pix_size.height()
 						if config.epgselection.grid.rec_icon_height.value == "middle":
-							recIconHeight = top + (height - clockSize) // 2
+							recIconHeight = top + (height - pix_height) // 2
 						elif config.epgselection.grid.rec_icon_height.value == "top":
 							recIconHeight = top + 3
 						else:
-							recIconHeight = top + height - clockSize
+							recIconHeight = top + height - pix_height - applySkinFactor(5)
 						if matchType == 0:
 							pos = (left + xpos + ewidth - applySkinFactor(10), recIconHeight)
 						else:
-							pos = (left + xpos + ewidth - clockSize, recIconHeight)
+							pos = (left + xpos + ewidth - pix_width - applySkinFactor(5), recIconHeight)
 						res.append(MultiContentEntryPixmapAlphaBlend(
-							pos=pos, size=(clockSize, clockSize),
+							pos=pos, size=(pix_width, pix_height),
 							png=timerIcon))
 						if autoTimerIcon:
+							pix_size = autoTimerIcon.size()
+							pix_width = pix_size.width()
+							pix_height = pix_size.height()
 							res.append(MultiContentEntryPixmapAlphaBlend(
-								pos=(pos[0] - clockSize, pos[1]), size=(clockSize, clockSize),
+								pos=(pos[0] - pix_width - applySkinFactor(5) , pos[1]), size=(pix_width, pix_height),
 								png=autoTimerIcon))
 		return res
 
 	def getSelectionPosition(self):
 		_, sely = EPGListBase.getSelectionPosition(self)
-		return self.selectionRect.left() + self.selectionRect.width(), sely
+		return self.selectionRect.left() + self.selectionRect.width() + self.instance.position().x(), sely
 
 	def refreshSelection(self):
 		events = self.selectedService and self.selectedService[2]  # (service, serviceName, events, picon)

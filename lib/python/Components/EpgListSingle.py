@@ -1,7 +1,7 @@
 from time import localtime, time, strftime
 
 from enigma import eEPGCache, eListboxPythonMultiContent, gFont, eRect, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER
-from skin import parameters, parseFont, applySkinFactor
+from skin import parameters, parseFont, parseScale, applySkinFactor
 
 from Components.config import config
 from Components.EpgListBase import EPGListBase
@@ -18,6 +18,7 @@ class EPGListSingle(EPGListBase):
 		self.epgConfig = epgConfig
 		self.eventFontName = "Regular"
 		self.eventFontSize = applySkinFactor(19)
+		self.sidesMargin = 0
 		self.l.setBuildFunc(self.buildEntry)
 
 	def applySkin(self, desktop, screen):
@@ -28,6 +29,8 @@ class EPGListSingle(EPGListBase):
 					font = parseFont(value, ((1, 1), (1, 1)))
 					self.eventFontName = font.family
 					self.eventFontSize = font.pointSize
+				elif attrib == "sidesMargin":
+					self.sidesMargin = parseScale(value)
 				else:
 					attribs.append((attrib, value))
 			self.skinAttributes = attribs
@@ -57,13 +60,14 @@ class EPGListSingle(EPGListBase):
 		dateW = int(fontSize * dateScale)
 		timesW = int(fontSize * timesScale)
 		left, dateWidth, sepWidth, timesWidth, breakWidth = parameters.get("EPGSingleColumnSpecs", (0, dateW, 5, timesW, 20))
+		left += self.sidesMargin
 		if config.usage.time.wide.value:
 			timesWidth = int(timesWidth * wideScale)
 		self._weekdayRect = eRect(left, 0, dateWidth, height)
 		left += dateWidth + sepWidth
 		self._datetimeRect = eRect(left, 0, timesWidth, height)
 		left += timesWidth + breakWidth
-		self._descrRect = eRect(left, 0, width - left, height)
+		self._descrRect = eRect(left, 0, width - left - self.sidesMargin, height)
 		self.showend = True  # This is not an unused variable. It is a flag used by EPGSearch plugin
 
 	def buildEntry(self, service, eventId, beginTime, duration, eventName):
@@ -83,12 +87,17 @@ class EPGListSingle(EPGListBase):
 		]
 		eventW = r3.width()
 		if timerIcon:
-			clockSize = applySkinFactor(17)
-			eventW -= clockSize
-			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left() + r3.width() - clockSize, (r3.height() - clockSize) // 2, clockSize, clockSize, timerIcon))
+			pix_size = timerIcon.size()
+			pix_width = pix_size.width()
+			pix_height = pix_size.height()
+			eventW -= pix_width
+			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left() + r3.width() - pix_width, (r3.height() - pix_height) // 2, pix_width, pix_height, timerIcon))
 			if autoTimerIcon:
-				eventW -= clockSize
-				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left() + r3.width() - clockSize * 2, (r3.height() - clockSize) // 2, clockSize, clockSize, autoTimerIcon))
+				pix_size = autoTimerIcon.size()
+				pix_width = pix_size.width()
+				pix_height = pix_size.height()
+				eventW -= pix_width
+				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left() + r3.width() - pix_width * 2 - 10, (r3.height() - pix_height) // 2, pix_width, pix_height, autoTimerIcon))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), eventW, r3.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, eventName))
 		return res
 
