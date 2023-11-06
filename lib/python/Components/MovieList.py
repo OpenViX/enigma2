@@ -230,6 +230,7 @@ class MovieList(GUIComponent):
 		self.pbarColourPlayRec = 0xffc71d
 		self.partIconeShift = None
 		self.spaceRight = 2
+		self.spaceLeft= 2
 		self.spaceIconeText = 2
 		self.iconsWidth = 22
 		self.durationWidth = 160
@@ -376,6 +377,9 @@ class MovieList(GUIComponent):
 
 		def iconsWidth(value):
 			self.iconsWidth = parseScale(value)
+		
+		def spaceLeft(value):
+			self.spaceLeft = parseScale(value)
 
 		def spaceRight(value):
 			self.spaceRight = parseScale(value)
@@ -443,24 +447,24 @@ class MovieList(GUIComponent):
 
 		if serviceref.flags & eServiceReference.isGroup:
 			# Collection
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconCollection, flags=BT_ALIGN_CENTER))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconCollection, flags=BT_ALIGN_CENTER))
 			if self.getCurrent() in self.markList:
-				res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
-			res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width - 220, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
+				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
+			res.append(MultiContentEntryText(pos=(self.spaceLeft + col0iconSize + space, 0), size=(width - 220, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
 			recordingCount = ngettext("%d Recording", "%d Recordings", data.collectionCount) % data.collectionCount
 			res.append(MultiContentEntryText(pos=(width - 220 - r, 0), size=(220, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=recordingCount))
 			return res
 		if serviceref.flags & eServiceReference.mustDescent:
 			# Directory
 			if data.txt == ".Trash":
-				res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconTrash, flags=BT_ALIGN_CENTER))
-				res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=_("Deleted items")))
+				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconTrash, flags=BT_ALIGN_CENTER))
+				res.append(MultiContentEntryText(pos=(self.spaceLeft + col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=_("Deleted items")))
 				res.append(MultiContentEntryText(pos=(width - 145 - r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=_("Trash can")))
 				return res
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconFolder, flags=BT_ALIGN_CENTER))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconFolder, flags=BT_ALIGN_CENTER))
 			if self.getCurrent() in self.markList:
-				res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
-			res.append(MultiContentEntryText(pos=(col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
+				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
+			res.append(MultiContentEntryText(pos=(self.spaceLeft + col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
 			res.append(MultiContentEntryText(pos=(width - 145 - r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=_("Directory")))
 			return res
 		if data.dirty:
@@ -518,25 +522,25 @@ class MovieList(GUIComponent):
 			if data:
 				if switch == 'i' and data.icon is not None:
 					if self.partIconeShift is None:
-						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX, 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
 					else:
-						res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, self.partIconeShift), size=(iconSize, data.icon.size().height()), png=data.icon))
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX, self.partIconeShift), size=(iconSize, data.icon.size().height()), png=data.icon))
 				elif switch in ('p', 's'):
 					if data.part > 0:
 						pbarY = (self.itemHeight - self.pbarHeight) // 2 if self.pbarShift is None else self.pbarShift
-						res.append(MultiContentEntryProgress(pos=(colX, pbarY), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
+						res.append(MultiContentEntryProgress(pos=(self.spaceLeft + colX, pbarY), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
 					elif data.icon is not None:
 						if self.pbarShift is None:
-							res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
+							res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX, 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
 						else:
-							res.append(MultiContentEntryPixmapAlphaBlend(pos=(colX, self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
+							res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX, self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
 			return iconSize
 
 		if piconWidth > 0:
 			# Picon
 			if data and data.picon is not None:
 				res.append(MultiContentEntryPixmapAlphaBlend(
-					pos=(colX, 0), size=(piconWidth, ih),
+					pos=(self.spaceLeft + colX, 0), size=(piconWidth, ih),
 					png=data.picon,
 					backcolor=None, backcolor_sel=None, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER))
 			colX += piconWidth
@@ -545,11 +549,11 @@ class MovieList(GUIComponent):
 
 		# The selection mark floats over the top of the first column
 		if self.getCurrent() in self.markList:
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(colX, self.itemHeight), png=self.iconMarked))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(colX, self.itemHeight), png=self.iconMarked))
 		colX += space
 
 		# Recording name
-		res.append(MultiContentEntryText(pos=(colX, 0), size=(width - iconSize - space - durationWidth - dateWidth - r - colX, ih), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
+		res.append(MultiContentEntryText(pos=(self.spaceLeft + colX, 0), size=(width - iconSize - space - durationWidth - dateWidth - r - colX, ih), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
 		colX = width - iconSize - space - durationWidth - dateWidth - r
 
 		if piconWidth > 0:
@@ -561,7 +565,7 @@ class MovieList(GUIComponent):
 				length = data.len
 				if length > 0:
 					length = ngettext("%d Min", "%d Mins", (length // 60)) % (length // 60)
-					res.append(MultiContentEntryText(pos=(colX, 0), size=(durationWidth, ih), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=length))
+					res.append(MultiContentEntryText(pos=(self.spaceLeft + colX, 0), size=(durationWidth, ih), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=length))
 
 		# Date
 		begin_string = ""
