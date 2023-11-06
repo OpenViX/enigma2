@@ -230,7 +230,7 @@ class MovieList(GUIComponent):
 		self.pbarColourPlayRec = 0xffc71d
 		self.partIconeShift = None
 		self.spaceRight = 2
-		self.spaceLeft= 2
+		self.spaceLeft = 2
 		self.spaceIconeText = 2
 		self.iconsWidth = 22
 		self.durationWidth = 160
