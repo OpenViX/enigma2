@@ -377,7 +377,7 @@ class MovieList(GUIComponent):
 
 		def iconsWidth(value):
 			self.iconsWidth = parseScale(value)
-		
+
 		def spaceLeft(value):
 			self.spaceLeft = parseScale(value)
 
