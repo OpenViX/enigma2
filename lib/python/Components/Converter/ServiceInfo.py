@@ -267,7 +267,10 @@ class ServiceInfo(Poll, Converter):
 			elif self.type == self.IS_VIDEO_AVC:
 				return info.getInfo(iServiceInformation.sVideoType) == 1
 			elif self.type == self.IS_VIDEO_HEVC:
-				return info.getInfo(iServiceInformation.sVideoType) == 7
+				if info.getInfoString(iServiceInformation.sServiceref).startswith("5002") and info.getInfo(iServiceInformation.sVideoType) == -1:
+					return 7
+				else:
+					return info.getInfo(iServiceInformation.sVideoType) == 7
 		return False
 
 	boolean = property(getBoolean)
