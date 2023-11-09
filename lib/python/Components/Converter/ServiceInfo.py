@@ -21,38 +21,49 @@ def getProcVal(pathname, base=10):
 		pass
 	return val
 
+
 def getVal(pathname, info, infoVal, base=10):
 	val = getProcVal(pathname, base=base)
 	return val if val is not None else info.getInfo(infoVal)
+
 
 def getValInt(pathname, info, infoVal, base=10, default=-1):
 	val = getVal(pathname, info, infoVal, base)
 	return val if val is not None else default
 
+
 def getValStr(pathname, info, infoVal, base=10, convert=lambda x: "%d" % x, instance=None):
 	val = getProcVal(pathname, base=base)
 	return convert(val) if val is not None else instance.getServiceInfoString(info, infoVal, convert)
 
+
 def getVideoHeight(info):
 	return getValInt("/proc/stb/vmpeg/0/yres", info, iServiceInformation.sVideoHeight, base=16)
+
 
 def getVideoHeightStr(info, convert=lambda x: "%d" % x if x > 0 else "?", instance=None):
 	return getValStr("/proc/stb/vmpeg/0/yres", info, iServiceInformation.sVideoHeight, base=16, convert=convert, instance=instance)
 
+
 def getVideoWidth(info):
 	return getValInt("/proc/stb/vmpeg/0/xres", info, iServiceInformation.sVideoWidth, base=16)
+
 
 def getVideoWidthStr(info, convert=lambda x: "%d" % x if x > 0 else "?", instance=None):
 	return getValStr("/proc/stb/vmpeg/0/xres", info, iServiceInformation.sVideoWidth, base=16, convert=convert, instance=instance)
 
+
 def getFrameRate(info):
 	return getValInt("/proc/stb/vmpeg/0/framerate", info, iServiceInformation.sFrameRate)
+
 
 def getFrameRateStr(info, convert=lambda x: "%d" % x if x > 0 else "", instance=None):
 	return getValStr("/proc/stb/vmpeg/0/framerate", info, iServiceInformation.sFrameRate, convert=convert, instance=instance)
 
+
 def getProgressive(info):
 	return getValInt("/proc/stb/vmpeg/0/progressive", info, iServiceInformation.sProgressive, default=0)
+
 
 def getProgressiveStr(info, convert=lambda x: "" if x else "i", instance=None):
 	return getValStr("/proc/stb/vmpeg/0/progressive", info, iServiceInformation.sProgressive, convert=convert, instance=instance)
