@@ -13,9 +13,9 @@ class Converter(Element):
 	def handleCommand(self, cmd):
 		self.source.handleCommand(cmd)
 
-	def appendToStringWithSeparator(self, str, part):
-		if str == "":
-			str = part
+	def appendToStringWithSeparator(self, text, part):
+		if text == "":
+			text = part
 		else:
-			str = str + self.separatorChar + part
-		return str
+			text = f"{text} {self.separatorChar} {part}"
+		return text
