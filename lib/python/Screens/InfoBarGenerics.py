@@ -943,7 +943,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 				whitelist.streamrelay.append(servicestring)
 			if self.session.nav.getCurrentlyPlayingServiceReference() == service:
 				self.session.nav.restartService()
-			whitelist.streamrelay.sort(key=lambda ref: ((x:=ref.split(":"))[6], x[5], x[4], x[3]))
+			whitelist.streamrelay.sort(key=lambda ref: ((x := ref.split(":"))[6], x[5], x[4], x[3]))
 			open('/etc/enigma2/whitelist_streamrelay', 'w').write('\n'.join(whitelist.streamrelay))
 
 	def queueChange(self):
