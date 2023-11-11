@@ -30,11 +30,11 @@ class RdsInfoDisplay(Screen):
 		Screen.__init__(self, session)
 
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
-				iPlayableService.evEnd: self.__serviceStopped,
-				iPlayableService.evUpdatedRadioText: self.RadioTextChanged,
-				iPlayableService.evUpdatedRtpText: self.RtpTextChanged,
-				iPlayableService.evUpdatedRassInteractivePicMask: self.RassInteractivePicMaskChanged,
-			})
+			iPlayableService.evEnd: self.__serviceStopped,
+			iPlayableService.evUpdatedRadioText: self.RadioTextChanged,
+			iPlayableService.evUpdatedRtpText: self.RtpTextChanged,
+			iPlayableService.evUpdatedRassInteractivePicMask: self.RassInteractivePicMaskChanged,
+		})
 
 		self["RadioText"] = Label()
 		self["RtpText"] = Label()
@@ -118,11 +118,11 @@ class RassInteractive(Screen):
 				"prevPage": self.prevPage,
 				"nextSubPage": self.nextSubPage,
 				"prevSubPage": self.prevSubPage
-			})
+			})  # noqa: E123
 
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
-				iPlayableService.evUpdatedRassInteractivePicMask: self.recvRassInteractivePicMaskChanged
-			})
+			iPlayableService.evUpdatedRassInteractivePicMask: self.recvRassInteractivePicMaskChanged
+		})
 
 		self["subpages_1"] = Pixmap()
 		self["subpages_2"] = Pixmap()

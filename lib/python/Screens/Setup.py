@@ -2,7 +2,7 @@ from xml.etree.cElementTree import fromstring
 
 from gettext import dgettext
 from os.path import getmtime, join as pathjoin
-from skin import setups, findSkinScreen  # used in <item conditional="..."> to check if a screen name is available in the skin
+from skin import setups, findSkinScreen  # noqa: F401  used in <item conditional="..."> to check if a screen name is available in the skin
 
 from Components.config import ConfigBoolean, ConfigNothing, ConfigSelection, config
 from Components.ConfigList import ConfigListScreen
@@ -235,7 +235,7 @@ class SetupSummary(ScreenSummary):
 def setupDom(setup=None, plugin=None):
 	# Constants for checkItems()
 	ROOT_ALLOWED = ("setup", )  # Tags allowed in top level of setupxml entry.
-	ELEMENT_ALLOWED = ("item", "if")  # Tags allowed in top level of setup entry.
+	ELEMENT_ALLOWED = ("item", "if")  # noqa: F841 Tags allowed in top level of setup entry.
 	IF_ALLOWED = ("item", "if", "elif", "else")  # Tags allowed inside <if />.
 	AFTER_ELSE_ALLOWED = ("item", "if")  # Tags allowed after <elif /> or <else />.
 	CHILDREN_ALLOWED = ("setup", "if", )  # Tags that may have children.

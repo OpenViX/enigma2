@@ -1065,10 +1065,10 @@ class ConfigClock(ConfigSequence):
 		# dafault can either be a timestamp
 		# or an (hours, minutes) tuple.
 		if isinstance(default, tuple):
-			l = list(localtime())
-			l[3] = default[0]  # hours
-			l[4] = default[1]  # minutes
-			default = int(mktime(tuple(l)))
+			itemList = list(localtime())
+			itemList[3] = default[0]  # hours
+			itemList[4] = default[1]  # minutes
+			default = int(mktime(tuple(itemList)))
 		t = localtime(default)
 		ConfigSequence.__init__(self, seperator=":", limits=clock_limits, default=[t.tm_hour, t.tm_min])
 
@@ -2198,11 +2198,11 @@ class Config(ConfigSubsection):
 	def unpickle(self, lines, base_file=True):
 		tree = {}
 		configbase = tree.setdefault("config", {})
-		for l in lines:
-			if not l or l[0] == '#':
+		for element in lines:
+			if not element or element[0] == '#':
 				continue
 
-			result = l.split('=', 1)
+			result = element.split('=', 1)
 			if len(result) != 2:
 				continue
 			(name, val) = result

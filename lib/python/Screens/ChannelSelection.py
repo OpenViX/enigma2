@@ -73,7 +73,7 @@ class BouquetSelector(Screen):
 			{
 				"ok": self.okbuttonClick,
 				"cancel": self.cancelClick
-			})
+			})  # noqa: E123
 		entrys = [(x[0], x[1]) for x in bouquets]
 		self["menu"] = MenuList(entrys, enableWrapAround)
 
@@ -284,12 +284,13 @@ class ChannelContextMenu(Screen):
 							_append_when_current_valid(current, menu, actions, (_("Enable favourite edit"), self.bouquetMarkStart), level=0, key="yellow")
 					if SystemInfo["PIPAvailable"]:
 						if not self.parentalControlEnabled or self.parentalControl.getProtectionLevel(current.toCompareString()) == -1:
-#							if self.csel.dopipzap:
-#								_append_when_current_valid(current, menu, actions, (_("Play in main window"), self.playMain), level=0, key="red")
-#								else:
-									_append_when_current_valid(current, menu, actions, (_("Play as picture in picture"), self.showServiceInPiP), level=0, key="blue")
-#					_append_when_current_valid(current, menu, actions, (_("Find currently played service"), self.findCurrentlyPlayed), level=0, key="4")
-#				else:
+							_append_when_current_valid(current, menu, actions, (_("Play as picture in picture"), self.showServiceInPiP), level=0, key="blue")
+# 							if self.csel.dopipzap:
+# 								_append_when_current_valid(current, menu, actions, (_("Play in main window"), self.playMain), level=0, key="red")
+# 								else:
+# 									_append_when_current_valid(current, menu, actions, (_("Play as picture in picture"), self.showServiceInPiP), level=0, key="blue")
+# 					_append_when_current_valid(current, menu, actions, (_("Find currently played service"), self.findCurrentlyPlayed), level=0, key="4")
+# 				else:
 					if self.parentalControlEnabled:
 						if self.parentalControl.getProtectionLevel(csel.getCurrentSelection().toCompareString()) == -1:
 							_append_when_current_valid(current, menu, actions, (_("Add to parental protection"), boundFunction(self.addParentalProtection, current)), level=0, key="bullet")
@@ -736,17 +737,17 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 		self["ChannelSelectEPGActions"] = HelpableActionMap(self, ["ChannelSelectEPGActions"],
 			{
 				"showEPGList": (self.showEPGList, _("Show Single EPG")),
-			}, description=_("EPG access"))
+			}, description=_("EPG access"))  # noqa: E123
 		self["recordingactions"] = HelpableActionMap(self, "InfobarInstantRecord",
 			{
 				"ShortRecord": (self.RecordTimerQuestion, _("Add a record timer")),
-				'LongRecord': (self.doZapTimer, _('Add a zap timer for next event'))
-			}, prio=-1, description=_("Add timers"))
-		self['dialogactions'] = ActionMap(['OkCancelActions'],
+				"LongRecord": (self.doZapTimer, _("Add a zap timer for next event"))
+			}, prio=-1, description=_("Add timers"))  # noqa: E123
+		self["dialogactions"] = ActionMap(["OkCancelActions"],
 			{
-				'cancel': self.closeChoiceBoxDialog,
-			})
-		self['dialogactions'].setEnabled(False)
+				"cancel": self.closeChoiceBoxDialog,
+			})  # noqa: E123
+		self["dialogactions"].setEnabled(False)
 
 	def getKeyFunctions(self, key):
 		selection = eval("config.misc.ButtonSetup." + key + ".value.split(',')")
@@ -840,13 +841,13 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 			if timer.eit == eventid and ':'.join(timer.service_ref.ref.toString().split(':')[:11]) == refstr:
 				if eventIndex == 0:
 					# Now
-					cb_func = lambda ret: self.removeTimer(timer)
-					menu = [(_("Yes"), 'CALLFUNC', cb_func), (_("No"), 'CALLFUNC', self.ChoiceBoxCB)]
-					self.ChoiceBoxDialog = self.session.instantiateDialog(MessageBox, text=_('Do you really want to remove the timer for %s?') % eventname, list=menu, skin_name="RemoveTimerQuestion", picon=False)
+					cb_func = lambda ret: self.removeTimer(timer)  # noqa: E731
+					menu = [(_("Yes"), "CALLFUNC", cb_func), (_("No"), "CALLFUNC", self.ChoiceBoxCB)]
+					self.ChoiceBoxDialog = self.session.instantiateDialog(MessageBox, text=_("Do you really want to remove the timer for %s?") % eventname, list=menu, skin_name="RemoveTimerQuestion", picon=False)
 				else:
 					# Next
-					cb_func1 = lambda ret: self.removeTimer(timer)
-					cb_func2 = lambda ret: self.editTimer(timer)
+					cb_func1 = lambda ret: self.removeTimer(timer)  # noqa: E731
+					cb_func2 = lambda ret: self.editTimer(timer)  # noqa: E731
 					menu = [(_("Delete Timer"), 'CALLFUNC', self.RemoveTimerDialogCB, cb_func1), (_("Edit Timer"), 'CALLFUNC', self.RemoveTimerDialogCB, cb_func2)]
 					self.ChoiceBoxDialog = self.session.instantiateDialog(ChoiceBox, title=_("Select action for timer %s:") % eventname, list=menu, keys=['green', 'blue'], skin_name="RecordTimerQuestion")
 					selx, sely = self.servicelist.getSelectionPosition()
@@ -904,7 +905,7 @@ class ChannelSelectionEdit:
 		self["ChannelSelectEditActions"] = ChannelSelectionEditActionMap(self, ["ChannelSelectEditActions"],
 			{
 				"contextMenu": (self.doContext, _("Open menu")),
-			}, description=_("Menu"))
+			}, description=_("Menu"))  # noqa: E123
 
 	def getMutableList(self, root=eServiceReference()):
 		if self.mutableList is not None:
@@ -1381,7 +1382,7 @@ class ChannelSelectionBase(Screen, HelpableScreen):
 				"8": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(8)),
 				"9": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(9)),
 				"0": (self.keyNumberGlobal, lambda: self._helpKeyNumberGlobal(0)),
-			}, prio=-1, description=_("Basic functions"))
+			}, prio=-1, description=_("Basic functions"))  # noqa: E123
 		self.maintitle = _("Channel selection")
 		self.recallBouquetMode()
 		self.onShown.append(self.applyKeyMap)
@@ -1846,7 +1847,7 @@ class ChannelSelectionBase(Screen, HelpableScreen):
 				self.servicelist.moveToChar(charstr[0])
 
 	def numberSelectionActions(self, number):
-		if not (hasattr(self, "movemode") and self.movemode):
+		if not (hasattr(self, "movemode") and self.movemode):  # noqa: E275
 			if len(self.selectionNumber) > 4:
 				self.clearNumberSelectionNumber()
 			self.selectionNumber = self.selectionNumber + str(number)
@@ -1987,7 +1988,7 @@ class ChannelSelectionBase(Screen, HelpableScreen):
 
 HISTORYSIZE = 20
 
-#config for lastservice
+# config for lastservice
 config.tv = ConfigSubsection()
 config.tv.lastservice = ConfigText()
 config.tv.lastroot = ConfigText()
@@ -2023,7 +2024,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 				"ok": self.channelSelected,
 				"keyRadio": self.keyRadio,
 				"keyTV": self.keyTV,
-			})
+			})  # noqa: E123
 
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
 			iPlayableService.evStart: self.__evServiceStart,
@@ -2441,7 +2442,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 			tmp = self.history[pos]
 			del self.history[pos]
 			self.history.append(tmp)
-			self.history_pos = len(self.history) - 1
+			self.history_pos = len(self.history) - 1  # noqa: E226
 			self.setHistoryPath()
 
 	def saveRoot(self):
@@ -2739,12 +2740,12 @@ class ChannelSelectionRadio(ChannelSelectionEdit, ChannelSelectionBase, ChannelS
 				"cancel": self.cancel,
 				"ok": self.channelSelected,
 				"audio": self.audioSelection,
-			})
+			})  # noqa: E123
 
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
-				iPlayableService.evStart: self.__evServiceStart,
-				iPlayableService.evEnd: self.__evServiceEnd
-			})
+			iPlayableService.evStart: self.__evServiceStart,
+			iPlayableService.evEnd: self.__evServiceEnd
+		})
 
 		# RDS Radiotext / Rass Support BEGIN
 		self.infobar = infobar  # reference to real infobar (the one and only)
@@ -2884,7 +2885,7 @@ class SimpleChannelSelection(ChannelSelectionBase):
 				"ok": self.channelSelected,
 				"keyRadio": self.setModeRadio,
 				"keyTV": self.setModeTv,
-			})
+			})  # noqa: E123
 		self.bouquet_mark_edit = OFF
 		self.title = title
 		self.currentBouquet = currentBouquet

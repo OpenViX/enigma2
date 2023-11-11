@@ -2,16 +2,16 @@ from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.ServicePosition import ServicePositionGauge
 from Components.ActionMap import HelpableActionMap
-from Components.MultiContent import MultiContentEntryText
+from Components.MultiContent import MultiContentEntryText  # noqa: F401
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.VideoWindow import VideoWindow
 from Components.Label import Label
 from Components.config import config, ConfigSubsection, ConfigYesNo
 from Screens.InfoBarGenerics import InfoBarSeek, InfoBarCueSheetSupport
-from enigma import getDesktop, gFont, iPlayableService, RT_HALIGN_RIGHT
+from enigma import getDesktop, gFont, iPlayableService, RT_HALIGN_RIGHT  # noqa: F401
 from Screens.FixedMenu import FixedMenu
 from Screens.HelpMenu import HelpableScreen
-from ServiceReference import ServiceReference
+from ServiceReference import ServiceReference  # noqa: F401
 from Components.Sources.List import List
 from Components.Console import Console
 from Screens.ChoiceBox import ChoiceBox

@@ -11,7 +11,7 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 
-from . import VideoEnhancement
+from . import VideoEnhancement  # noqa: F401
 
 
 class VideoEnhancementSetup(ConfigListScreen, Screen):

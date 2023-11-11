@@ -167,7 +167,7 @@ class VIXBackupManager(Screen):
 		10, 105, 540, 260, 20,  # list
 		10, 370, 400, 30, 20,  # backupstatus
 		26,
-	]
+			]  # noqa: E124
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -657,7 +657,7 @@ class VIXBackupManager(Screen):
 							self.plugfile = self.plugfiles[3]
 							# print("[BackupManager] self.plugfile, self.plugfiles", self.plugfile, self.plugfiles)
 							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media)) and path.exists("/media/%s/%s" % (media, self.plugfile))]:
-								if media not in ("autofs", "net"):
+								if media not in ("autofs", "net"):  # noqa: F821
 									devmounts.append(dir)
 							if len(devmounts):
 								for x in devmounts:
@@ -776,7 +776,7 @@ class BackupSelection(Screen):
 			140, 0, 140, 40, 20,
 			280, 0, 140, 40, 20,
 			5, 50, 550, 250, 25, 19,
-	]
+			]  # noqa: E124
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -944,43 +944,9 @@ class XtraPluginsSelection(Screen):
 
 
 class VIXBackupManagerMenu(Setup):
-	skin = ["""
-	<screen name="VIXBackupManagerMenu" position="center,center" size="%d,%d">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<widget name="key_red" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_yellow" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="key_blue" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
-		<widget name="HelpWindow" pixmap="buttons/vkey_icon.png" position="%d,%d" zPosition="1" size="1,1" transparent="1" alphatest="blend" scale="1"/>
-		<widget source="VKeyIcon" render="Pixmap" pixmap="buttons/key_text.png" position="%d,%d" zPosition="1" size="%d,%d" transparent="1" scale="1" alphatest="blend">
-			<convert type="ConditionalShowHide"/>
-		</widget>
-		<widget name="footnote" position="%d,%d" size="%d,%d" zPosition="1" font="Regular;%d" halign="left" transparent="1" valign="top"/>
-		<widget name="config" position="%d,%d" size="%d,%d" itemHeight="%d" font="Regular;%d" transparent="0" enableWrapAround="1" scrollbarMode="showOnDemand"/>
-		<widget name="description" position="%d,e-%d" size="%d,%d" font="Regular;%d" halign="center" valign="top" transparent="0" zPosition="1"/>
-	</screen>""",
-		560, 550,  # screen
-		0, 0, 140, 40,  # colors
-		140, 0, 140, 40,
-		280, 0, 140, 40,
-		420, 0, 140, 40,
-		0, 0, 140, 40, 20,
-		140, 0, 140, 40, 20,
-		280, 0, 140, 40, 20,
-		420, 0, 140, 40, 20,
-		450, 510,  # HelpWindow
-		0, 500, 35, 25,  # VKeyIcon
-		0, 50, 300, 20, 20,  # footnote
-		0, 90, 560, 375, 25, 19,  # config
-		0, 75, 560, 75, 18,  # description
-	]
-
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
-		Setup.__init__(self, session, setup, plugin, PluginLanguageDomain)
 		self.skinName = "VIXBackupManagerMenu"
+		Setup.__init__(self, session, setup, plugin, PluginLanguageDomain)
 
 		self["actions2"] = ActionMap(
 			["SetupActions", "ColorActions", "VirtualKeyboardActions", "MenuActions"],
@@ -1014,7 +980,7 @@ class VIXBackupManagerLogView(TextBox):
 </screen>""",
 		560, 400,
 		0, 0, 560, 400, 16,
-	]
+			]  # noqa: E124
 
 	def __init__(self, session, filename):
 		TextBox.__init__(self, session, label="list")
@@ -1094,7 +1060,7 @@ class AutoBackupManagerTimer:
 		self.backuptimer.stop()
 		now = int(time())
 		wake = self.getBackupTime()
-		atLeast = 0							# If we're close enough, we're okay...
+		atLeast = 0  # noqa: F841 if we're close enough, we're okay...
 		if wake - now < 60:
 			print("[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now)))
 			from Screens.Standby import inStandby

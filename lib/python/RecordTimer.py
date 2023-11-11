@@ -731,8 +731,7 @@ class RecordTimerEntry(TimerEntry):
 			from Components.Converter.ClientsStreaming import ClientsStreaming
 			if (not Screens.Standby.inStandby and NavigationInstance.instance.getCurrentlyPlayingServiceReference() and
 				("0:0:0:0:0:0:0:0:0" in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString() or
-					"4097:" in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString())
-			    ):
+					"4097:" in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString())):
 				return True
 
 			if self.afterEvent == AFTEREVENT.STANDBY or (not wasRecTimerWakeup and self.autostate and self.afterEvent == AFTEREVENT.AUTO) or self.wasInStandby:
@@ -753,7 +752,7 @@ class RecordTimerEntry(TimerEntry):
 				if int(ClientsStreaming("NUMBER").getText()) > 0:
 					if not Screens.Standby.inStandby:  # not already in standby
 						Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox,
-							 _("A finished record timer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName())
+							_("A finished record timer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName())
 							+ _("\n(DeepStandby request changed to Standby owing to there being streaming clients.)"), timeout=180)
 					return True
 
@@ -889,7 +888,7 @@ class RecordTimerEntry(TimerEntry):
 	def failureCB(self, answer):
 		if answer:
 			self.log(13, "ok, zapped away")
-			#NavigationInstance.instance.stopUserServices()
+			# NavigationInstance.instance.stopUserServices()
 			self._bouquet_search()
 			if not self.first_try_prepare and self.InfoBarInstance and hasattr(self.InfoBarInstance.session, "pipshown") and self.InfoBarInstance.session.pipshown:
 				hasattr(self.InfoBarInstance, "showPiP") and self.InfoBarInstance.showPiP()
@@ -971,7 +970,7 @@ def createTimer(xml):
 		"standby": AFTEREVENT.STANDBY,
 		"deepstandby": AFTEREVENT.DEEPSTANDBY,
 		"auto": AFTEREVENT.AUTO
-		}[afterevent]
+		}[afterevent]  # noqa: E123
 	eitx = xml.get("eit")
 	eit = int(eitx) if eitx else None
 	locationx = xml.get("location")
@@ -1137,21 +1136,21 @@ class RecordTimer(Timer):
 				' descramble="%d"'
 				' record_ecm="%d"'
 				' isAutoTimer="%d"' % (
-				int(entry.begin),
-				int(entry.end),
-				stringToXML(str(entry.service_ref)),
-				int(entry.repeated),
-				int(entry.rename_repeat),
-				stringToXML(entry.name),
-				stringToXML(entry.description),
-				afterEvents[entry.afterEvent],
-				int(entry.justplay),
-				int(entry.always_zap),
-				int(entry.pipzap),
-				int(entry.conflict_detection),
-				int(entry.descramble),
-				int(entry.record_ecm),
-				int(entry.isAutoTimer)))
+					int(entry.begin),
+					int(entry.end),
+					stringToXML(str(entry.service_ref)),
+					int(entry.repeated),
+					int(entry.rename_repeat),
+					stringToXML(entry.name),
+					stringToXML(entry.description),
+					afterEvents[entry.afterEvent],
+					int(entry.justplay),
+					int(entry.always_zap),
+					int(entry.pipzap),
+					int(entry.conflict_detection),
+					int(entry.descramble),
+					int(entry.record_ecm),
+					int(entry.isAutoTimer)))
 			if entry.eit is not None:
 				list.append(' eit="' + str(entry.eit) + '"')
 			if entry.dirname:
@@ -1286,7 +1285,7 @@ class RecordTimer(Timer):
 						entry.begin += 1
 			entry.conflict_detection = real_cd
 		entry.timeChanged()
-		print("[Timer] Record %s" % entry)
+		# print("[Timer] Record %s" % entry)
 		entry.Timer = self
 		self.addTimerEntry(entry)
 

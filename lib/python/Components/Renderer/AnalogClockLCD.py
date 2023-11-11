@@ -57,16 +57,16 @@ class AnalogClockLCD(Renderer):
 		height = self.positionheight
 		r = (width // 2)
 		r1 = (height // 2)
-		l = self.linesize
+		len = self.linesize
 		if opt == 'sec':
-			l = self.linesize
+			len = self.linesize
 			self.fColor = self.fColors
 		elif opt == 'min':
-			l = self.linesize
+			len = self.linesize
 			self.fColor = self.fColorm
 		else:
 			self.fColor = self.fColorh
-		(endX, endY,) = self.calc(self.forend, l, r, r1)
+		(endX, endY,) = self.calc(self.forend, len, r, r1)
 		self.line_draw(r, r1, endX, endY)
 
 	def line_draw(self, x0, y0, x1, y1):

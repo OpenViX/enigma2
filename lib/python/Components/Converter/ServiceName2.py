@@ -233,7 +233,7 @@ class ServiceName2(Converter):
 			elif type == 'IP-TV':
 				return _("Streaming")
 			else:
-				fmt = ["O ", "s ", "M ", "F ", "p ", "Y ", "f"]  #(orbital_position frequency polarization symbol_rate fec)
+				fmt = ["O ", "s ", "M ", "F ", "p ", "Y ", "f"]  # (orbital_position frequency polarization symbol_rate fec)
 		for line in fmt:
 			f = line[:1]
 			if f == 't':  # %t - tuner_type (dvb-s/s2/c/t)
@@ -296,12 +296,12 @@ class ServiceName2(Converter):
 			elif f == 'r':  # %r - rolloff (dvb-s2)
 				if not self.isStream:
 					x = self.tpdata.get('rolloff')
-					if not x is None:
+					if x is not None:
 						result += x in range(3) and {0: '0.35', 1: '0.25', 2: '0.20'}[x] or ''
 			elif f == 'o':  # %o - pilot (dvb-s2)
 				if not self.isStream:
 					x = self.tpdata.get('pilot')
-					if not x is None:
+					if x is not None:
 						result += x in range(3) and {0: 'Off', 1: 'On', 2: 'Auto'}[x] or ''
 			elif f == 'c':  # %c - constellation (dvb-t)
 				if type == 'DVB-T':
@@ -532,7 +532,7 @@ class ServiceName2(Converter):
 			return bouq
 		elif self.type == self.PROVIDER:
 			if self.isStream:
-				if self.refstr and ('%3a//' in self.refstr or '%3a//' in self.refstr):
+				if self.refstr and ('%3a//' in self.refstr):
 					return self.getIPTVProvider(self.refstr)
 				return self.getIPTVProvider(refstr)
 			else:

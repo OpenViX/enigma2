@@ -669,10 +669,10 @@ class HarddiskManager:
 			# 	# print("[Harddisk] DEBUG: Device '%s' (%s) has removable media." % (device, physicalDevice))
 			try:
 				open(ospath.join("/dev", device), "r").close()
-				mediumFound = True  # Check for medium.
+				mediumFound = True  # noqa: F841 Check for medium set for debug.
 			except (IOError, OSError) as err:
 				if err.errno in (123, 159):  # ENOMEDIUM - No medium found.  (123 = Common Linux, 159 = MIPS Linux)
-					mediumFound = False
+					mediumFound = False  # noqa: F841 set for Debug
 				else:
 					print("[Harddisk] Error: Device '%s' (%s) media availability test failed:" % (device, physicalDevice), err)
 					continue

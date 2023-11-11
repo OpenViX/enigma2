@@ -1,8 +1,9 @@
-import os
-from boxbranding import getMachineBrand, getMachineName
-from time import ctime, time
+from os import fsync, path as ospath, remove, rename
 from bisect import insort
+from time import ctime, time
+from timer import Timer, TimerEntry
 
+from boxbranding import getMachineBrand, getMachineName
 from enigma import eActionMap, quitMainloop
 
 from Components.config import config
@@ -12,7 +13,6 @@ from Screens.MessageBox import MessageBox
 import Screens.Standby
 from Tools import Directories, Notifications
 from Tools.XMLTools import stringToXML
-from timer import Timer, TimerEntry
 import NavigationInstance
 
 
@@ -144,9 +144,9 @@ class PowerTimerEntry(TimerEntry):
 
 		elif next_state == self.StateRunning:
 			self.wasPowerTimerWakeup = False
-			if os.path.exists("/tmp/was_powertimer_wakeup"):
+			if ospath.exists("/tmp/was_powertimer_wakeup"):
 				self.wasPowerTimerWakeup = int(open("/tmp/was_powertimer_wakeup", "r").read()) and True or False
-				os.remove("/tmp/was_powertimer_wakeup")
+				remove("/tmp/was_powertimer_wakeup")
 			# if this timer has been cancelled, just go to "end" state.
 			if self.cancelled:
 				return True
@@ -199,19 +199,12 @@ class PowerTimerEntry(TimerEntry):
 				# to make it clearer what each test is.
 				#
 				from Components.Converter.ClientsStreaming import ClientsStreaming
-				if ((not Screens.Standby.inStandby and NavigationInstance.instance.getCurrentlyPlayingServiceReference() and
-					('0:0:0:0:0:0:0:0:0' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString() or
-					 '4097:' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString()
-				     ) or
-				     (int(ClientsStreaming("NUMBER").getText()) > 0)
-				    ) or
-				    (NavigationInstance.instance.RecordTimer.isRecording() or
-				     abs(NavigationInstance.instance.RecordTimer.getNextRecordingTime() - time()) <= 900 or
-				     abs(NavigationInstance.instance.RecordTimer.getNextZapTime() - time()) <= 900) or
-				     (self.autosleepinstandbyonly == 'yes' and not Screens.Standby.inStandby) or
-				     (self.autosleepinstandbyonly == 'yes' and Screens.Standby.inStandby and internalHDDNotSleeping()
-				    )
-				   ):
+				if ((not Screens.Standby.inStandby and NavigationInstance.instance.getCurrentlyPlayingServiceReference() and ('0:0:0:0:0:0:0:0:0' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString() or
+					'4097:' in NavigationInstance.instance.getCurrentlyPlayingServiceReference().toString()) or (int(ClientsStreaming("NUMBER").getText()) > 0)) or
+					(NavigationInstance.instance.RecordTimer.isRecording() or abs(NavigationInstance.instance.RecordTimer.getNextRecordingTime() - time()) <= 900 or
+					abs(NavigationInstance.instance.RecordTimer.getNextZapTime() - time()) <= 900) or
+					(self.autosleepinstandbyonly == 'yes' and not Screens.Standby.inStandby) or
+					(self.autosleepinstandbyonly == 'yes' and Screens.Standby.inStandby and internalHDDNotSleeping())):
 					self.do_backoff()
 					# retry
 					return False
@@ -370,7 +363,7 @@ def createTimer(xml):
 		"deepstandby": TIMERTYPE.DEEPSTANDBY,
 		"reboot": TIMERTYPE.REBOOT,
 		"restart": TIMERTYPE.RESTART
-		}[timertype]
+		}[timertype]  # noqa: E123
 	begin = int(xml.get("begin"))
 	end = int(xml.get("end"))
 	repeated = str(xml.get("repeated"))
@@ -381,7 +374,7 @@ def createTimer(xml):
 		"wakeuptostandby": AFTEREVENT.WAKEUPTOSTANDBY,
 		"standby": AFTEREVENT.STANDBY,
 		"deepstandby": AFTEREVENT.DEEPSTANDBY
-		}[afterevent]
+		}[afterevent]  # noqa: E123
 	autosleepinstandbyonly = str(xml.get("autosleepinstandbyonly") or "no")
 	autosleepdelay = str(xml.get("autosleepdelay") or "0")
 	autosleeprepeat = str(xml.get("autosleeprepeat") or "once")
@@ -404,11 +397,11 @@ def createTimer(xml):
 	else:
 		entry.repeated = int(repeated)
 
-	for l in xml.findall("log"):
-		ltime = int(l.get("time"))
-		lcode = int(l.get("code"))
-		# print("[PowerManager]: ltext, time, code", l.text, "   ", l.get("time"), "   ", l.get("code"))
-		msg = l.text.strip()
+	for lxml in xml.findall("log"):
+		ltime = int(lxml.get("time"))
+		lcode = int(lxml.get("code"))
+		# print("[PowerManager]: ltext, time, code", l.text, "   ", lxml.get("time"), "   ", lxml.get("code"))
+		msg = lxml.text.strip()
 		entry.log_entries.append((ltime, lcode, msg))
 	return entry
 
@@ -508,25 +501,26 @@ class PowerTimer(Timer):
 		for timer in self.timer_list + self.processed_timers:
 			if timer.dontSave:
 				continue
-			list.append('<timer'
-						' timertype="%s"'
-						' begin="%d"'
-						' end="%d"'
-						' repeated="%d"'
-						' afterevent="%s"'
-						' disabled="%d"'
-						' autosleepinstandbyonly="%s"'
-						' autosleepdelay="%s"'
-						' autosleeprepeat="%s"' % (
-						timerTypes[timer.timerType],
-						int(timer.begin),
-						int(timer.end),
-						int(timer.repeated),
-						afterEvents[timer.afterEvent],
-						int(timer.disabled),
-						timer.autosleepinstandbyonly,
-						timer.autosleepdelay,
-						timer.autosleeprepeat))
+			list.append(
+				'<timer'
+				' timertype="%s"'
+				' begin="%d"'
+				' end="%d"'
+				' repeated="%d"'
+				' afterevent="%s"'
+				' disabled="%d"'
+				' autosleepinstandbyonly="%s"'
+				' autosleepdelay="%s"'
+				' autosleeprepeat="%s"' % (
+				timerTypes[timer.timerType],  # noqa: E122
+				int(timer.begin),  # noqa: E122
+				int(timer.end),  # noqa: E122
+				int(timer.repeated),  # noqa: E122
+				afterEvents[timer.afterEvent],  # noqa: E122
+				int(timer.disabled),  # noqa: E122
+				timer.autosleepinstandbyonly,  # noqa: E122
+				timer.autosleepdelay,  # noqa: E122
+				timer.autosleeprepeat))  # noqa: E122
 
 			if len(timer.log_entries) == 0:
 				list.append('/>\n')
@@ -541,9 +535,9 @@ class PowerTimer(Timer):
 		file.writelines(list)
 		file.flush()
 
-		os.fsync(file.fileno())
+		fsync(file.fileno())
 		file.close()
-		os.rename(self.Filename + ".writing", self.Filename)
+		rename(self.Filename + ".writing", self.Filename)
 
 	def getNextZapTime(self):
 		now = time()
@@ -582,7 +576,7 @@ class PowerTimer(Timer):
 
 	def record(self, entry, ignoreTSC=False, dosave=True):  # as called by loadTimer with dosave=False
 		entry.timeChanged()
-		print("[PowerTimer]", str(entry))
+		# print("[PowerTimer]", str(entry))
 		entry.Timer = self
 		self.addTimerEntry(entry)
 		if dosave:
@@ -590,7 +584,7 @@ class PowerTimer(Timer):
 		return None
 
 	def removeEntry(self, entry):
-		print("[PowerTimer] Remove", str(entry))
+		# print("[PowerTimer] Remove", str(entry))
 
 		# avoid re-enqueuing
 		entry.repeated = False

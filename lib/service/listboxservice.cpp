@@ -200,20 +200,28 @@ int eListboxServiceContent::getPrevMarkerPos()
 		return 0;
 	list::iterator i(m_cursor);
 	int index = m_cursor_number;
-	while (index) // Skip precending markers
-	{
-		--i;
-		--index;
-		if (!(i->flags & eServiceReference::isMarker && !(i->flags & eServiceReference::isInvisible)))
-			break;
-	}
+
+	// if the search is starting part way through a section return to the start of the current section
 	while (index)
 	{
 		--i;
 		--index;
-		if (i->flags & eServiceReference::isMarker && !(i->flags & eServiceReference::isInvisible))
+		if (i->flags == eServiceReference::isMarker)
 			break;
 	}
+
+	// if the search started from part way through the current section return now because this is the previous visible marker
+	if (cursorResolve(index) + 1 != cursorResolve(m_cursor_number)) return cursorResolve(index);
+
+	// search for visible marker index of previous section
+	while (index)
+	{
+		--i;
+		--index;
+		if (i->flags == eServiceReference::isMarker)
+			break;
+	}
+
 	return cursorResolve(index);
 }
 
@@ -227,7 +235,7 @@ int eListboxServiceContent::getNextMarkerPos()
 	{
 		++i;
 		++index;
-		if (i->flags & eServiceReference::isMarker && !(i->flags & eServiceReference::isInvisible))
+		if (i->flags == eServiceReference::isMarker)
 			break;
 	}
 	return cursorResolve(index);
@@ -382,7 +390,7 @@ void eListboxServiceContent::cursorHome()
 		m_cursor_number = 0;
 		while (m_cursor != m_list.end())
 		{
-			if (!((m_hide_number_marker && (m_cursor->flags & eServiceReference::isNumberedMarker)) || (m_cursor->flags & eServiceReference::isInvisible)))
+			if (!((m_marked.empty() && m_hide_number_marker && (m_cursor->flags & eServiceReference::isNumberedMarker)) || (m_cursor->flags & eServiceReference::isInvisible)))
 				break;
 			m_cursor++;
 			m_cursor_number++;
@@ -470,7 +478,7 @@ int eListboxServiceContent::cursorMove(int count)
 					m_listbox->entryChanged(cursorResolve(m_cursor_number));
 			}
 			++m_cursor_number;
-			if (!(m_hide_number_marker && m_cursor->flags & eServiceReference::isNumberedMarker) && !(m_cursor->flags & eServiceReference::isInvisible))
+			if (!(m_marked.empty() && m_hide_number_marker && m_cursor->flags & eServiceReference::isNumberedMarker) && !(m_cursor->flags & eServiceReference::isInvisible))
 				--count;
 		}
 	}
@@ -486,12 +494,12 @@ int eListboxServiceContent::cursorMove(int count)
 					m_listbox->entryChanged(cursorResolve(m_cursor_number));
 			}
 			--m_cursor_number;
-			if (!(m_hide_number_marker && m_cursor->flags & eServiceReference::isNumberedMarker) && !(m_cursor->flags & eServiceReference::isInvisible))
+			if (!(m_marked.empty() && m_hide_number_marker && m_cursor->flags & eServiceReference::isNumberedMarker) && !(m_cursor->flags & eServiceReference::isInvisible))
 				++count;
 		}
 		while (m_cursor != m_list.end())
 		{
-			if (!((m_hide_number_marker && (m_cursor->flags & eServiceReference::isNumberedMarker)) || (m_cursor->flags & eServiceReference::isInvisible)))
+			if (!((m_marked.empty() && m_hide_number_marker && (m_cursor->flags & eServiceReference::isNumberedMarker)) || (m_cursor->flags & eServiceReference::isInvisible)))
 				break;
 			m_cursor++;
 			m_cursor_number++;
@@ -521,7 +529,7 @@ int eListboxServiceContent::cursorResolve(int cursorPosition)
 		if (count == cursorPosition)
 			break;
 		count++;
-		if ((m_hide_number_marker && (i->flags & eServiceReference::isNumberedMarker)) || (i->flags & eServiceReference::isInvisible))
+		if ((m_marked.empty() && m_hide_number_marker && (i->flags & eServiceReference::isNumberedMarker)) || (i->flags & eServiceReference::isInvisible))
 			continue;
 		strippedCursor++;
 	}
@@ -564,7 +572,7 @@ int eListboxServiceContent::size()
 	int size = 0;
 	for (list::iterator i(m_list.begin()); i != m_list.end(); ++i)
 	{
-		if ((m_hide_number_marker && (i->flags & eServiceReference::isNumberedMarker)) || (i->flags & eServiceReference::isInvisible))
+		if ((m_marked.empty() && m_hide_number_marker && (i->flags & eServiceReference::isNumberedMarker)) || (i->flags & eServiceReference::isInvisible))
 			continue;
 		size++;
 	}

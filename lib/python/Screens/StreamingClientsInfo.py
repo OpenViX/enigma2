@@ -6,7 +6,7 @@ from Components.Converter.ClientsStreaming import ClientsStreaming
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
 from Screens.Screen import Screen
-import skin
+import skin  # noqa: F401
 
 
 class StreamingClientsInfo(Screen):
@@ -27,7 +27,7 @@ class StreamingClientsInfo(Screen):
 				"blue": self.stopStreams,
 				"up": self["ScrollLabel"].pageUp,
 				"down": self["ScrollLabel"].pageDown
-			})
+			})  # noqa: E123
 
 		self.onLayoutFinish.append(self.start)
 

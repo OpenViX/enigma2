@@ -46,7 +46,7 @@ class VIXMenu(Screen, ProtectedScreen):
 			22,  # fonts
 			300,  # itemHeight
 			5, 360, 600, 50, 22,  # status
-	]
+			]  # noqa: E124
 
 	def __init__(self, session, args=0):
 		Screen.__init__(self, session)
@@ -81,7 +81,7 @@ class VIXMenu(Screen, ProtectedScreen):
 				"7": self.go,
 				"8": self.go,
 				"9": self.go,
-			}, -1)
+			}, -1)  # noqa: E123
 		self.onLayoutFinish.append(self.layoutFinished)
 		self.onChangedEntry = []
 		self["menu"].onSelectionChanged.append(self.selectionChanged)

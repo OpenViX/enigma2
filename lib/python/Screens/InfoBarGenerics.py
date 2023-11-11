@@ -189,9 +189,9 @@ def streamrelayChecker(playref):
 	if '%3a//' not in playrefstring and playrefstring in whitelist.streamrelay:
 		url = "http://%s:%s/" % (config.misc.softcam_streamrelay_url.getHTML(), config.misc.softcam_streamrelay_port.value)
 		if "127.0.0.1" in url:
-				playrefmod = ":".join([("%x" % (int(x[1], 16) + 1)).upper() if x[0] == 6 else x[1] for x in enumerate(playrefstring.split(':'))])
+			playrefmod = ":".join([("%x" % (int(x[1], 16) + 1)).upper() if x[0] == 6 else x[1] for x in enumerate(playrefstring.split(':'))])
 		else:
-				playrefmod = playrefstring
+			playrefmod = playrefstring
 		playref = eServiceReference("%s%s%s:%s" % (playrefmod, url.replace(":", "%3a"), playrefstring.replace(":", "%3a"), ServiceReference(playref).getServiceName()))
 		print("[Whitelist_StreamRelay] Play service via streamrelay as it is whitelisted as such", playref.toString())
 	return playref
@@ -409,7 +409,7 @@ class SecondInfoBar(Screen, HelpableScreen):
 				"nextEvent": (self.nextEvent, _("Show description for next event)")),
 				"timerAdd": (self.timerAdd, _("Add timer")),
 				"openSimilarList": (self.openSimilarList, _("Show list of similar programs")),
-			}, prio=-1, description=_("Second infobar"))
+			}, prio=-1, description=_("Second infobar"))  # noqa: E123
 
 		self.__event_tracker = ServiceEventTracker(screen=self,
 			eventmap={
@@ -614,7 +614,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 				"LongOKPressed": (self.toggleShowLong, self._helpToggleShowLong),
 				"toggleShow": (self.toggleShow, _("Cycle through infobar displays")),
 				"hide": (self.keyHide, self._helpKeyHide),
-			}, prio=1, description=_("Show/hide infobar"))  # lower prio to make it possible to override ok and cancel..
+			}, prio=1, description=_("Show/hide infobar"))    # noqa: E123   lower prio to make it possible to override ok and cancel..
 
 		self.__event_tracker = ServiceEventTracker(screen=self,
 			eventmap={
@@ -840,7 +840,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 				self.show()
 			if self.secondInfoBarScreen:
 				self.secondInfoBarScreen.hide()
-			self.secondInfoBarWasShown = False
+				self.secondInfoBarWasShown = False
 			self.EventViewIsShown = False
 		elif isStandardInfoBar(self) and config.usage.show_second_infobar.value == "EPG":
 			self.showDefaultEPG()
@@ -941,8 +941,9 @@ class InfoBarShowHide(InfoBarScreenSaver):
 				whitelist.streamrelay.remove(servicestring)
 			else:
 				whitelist.streamrelay.append(servicestring)
-				if self.session.nav.getCurrentlyPlayingServiceReference() == service:
-					self.session.nav.restartService()
+			if self.session.nav.getCurrentlyPlayingServiceReference() == service:
+				self.session.nav.restartService()
+			whitelist.streamrelay.sort(key=lambda ref: ((x := ref.split(":"))[6], x[5], x[4], x[3]))
 			open('/etc/enigma2/whitelist_streamrelay', 'w').write('\n'.join(whitelist.streamrelay))
 
 	def queueChange(self):
@@ -1110,7 +1111,7 @@ class NumberZap(Screen):
 				"8": self.keyNumberGlobal,
 				"9": self.keyNumberGlobal,
 				"0": self.keyNumberGlobal
-			})
+			})  # noqa: E123
 
 		self.Timer = eTimer()
 		self.Timer.callback.append(self.keyOK)
@@ -1134,7 +1135,7 @@ class InfoBarNumberZap:
 				"8": (self.keyNumberGlobal, _("Zap to channel number")),
 				"9": (self.keyNumberGlobal, _("Zap to channel number")),
 				"0": (self.keyNumberGlobal, self._helpKeyNumberGlobal0),
-			}, description=_("Recall channel, panic button & number zap"))
+			}, description=_("Recall channel, panic button & number zap"))  # noqa: E123
 
 	def _helpKeyNumberGlobal0(self):
 		if isinstance(self, InfoBarPiP) and self.pipHandles0Action():
@@ -1531,26 +1532,22 @@ class InfoBarMenu:
 		self.session.open(MessageBox, _("AV aspect is %s." % ASPECT_MSG[config.av.aspect.value]), MessageBox.TYPE_INFO, timeout=5, simple=True)
 
 	def showSystemMenu(self):
-		menulist = mdom.getroot().findall('menu')
-		for item in menulist:
-			if item.attrib['entryID'] == 'setup_selection':
-				menulist = item.findall('menu')
-				for item in menulist:
-					if item.attrib['entryID'] == 'system_selection':
-						menu = item
-		assert menu.tag == "menu", "root element in menu must be 'menu'!"
-		self.session.openWithCallback(self.mainMenuClosed, Menu, menu)
+		menulist = mdom.getroot().findall("menu")
+		for menuItem in menulist:
+			if menuItem.get("key") == "setup":
+				menulist2 = menuItem.findall("menu")
+				for menuItems in menulist2:
+					if menuItems.get('key') == "system":
+						self.session.openWithCallback(self.mainMenuClosed, Menu, menuItems)
 
 	def showNetworkMounts(self):
 		menulist = mdom.getroot().findall('menu')
-		for item in menulist:
-			if item.attrib['entryID'] == 'setup_selection':
-				menulist = item.findall('menu')
-				for item in menulist:
-					if item.attrib['entryID'] == 'network_menu':
-						menu = item
-		assert menu.tag == "menu", "root element in menu must be 'menu'!"
-		self.session.openWithCallback(self.mainMenuClosed, Menu, menu)
+		for menuItem in menulist:
+			if menuItem.get('key') == "setup":
+				menulist2 = menuItem.findall('menu')
+				for menuItems in menulist2:
+					if menuItems.get('key') == "network":
+						self.session.openWithCallback(self.mainMenuClosed, Menu, menuItems)
 
 	def showRFSetup(self):
 		self.session.openWithCallback(self.mainMenuClosed, Setup, 'RFmod')
@@ -1611,8 +1608,8 @@ class InfoBarEPG:
 		self.defaultEPGType = self.getDefaultEPGtype()
 		self.defaultINFOType = self.getDefaultINFOtype()
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
-				iPlayableService.evUpdatedEventInfo: self.__evEventInfoChanged,
-			})
+			iPlayableService.evUpdatedEventInfo: self.__evEventInfoChanged,
+		})
 
 		# Note regarding INFO button on the RCU. Some RCUs do not have an INFO button, but to make matters
 		# more complicated they have an EPG button that sends KEY_INFO instead of KEY_EPG. To deal with
@@ -1948,9 +1945,9 @@ class InfoBarRdsDecoder:
 		self.rass_interactive = None
 
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
-				iPlayableService.evEnd: self.__serviceStopped,
-				iPlayableService.evUpdatedRassSlidePic: self.RassSlidePicChanged
-			})
+			iPlayableService.evEnd: self.__serviceStopped,
+			iPlayableService.evUpdatedRassSlidePic: self.RassSlidePicChanged
+		})
 
 		self["RdsActions"] = HelpableActionMap(self, ["InfobarRdsActions"],
 		{
@@ -3391,7 +3388,7 @@ class InfoBarInstantRecord:
 
 		# print("[InfoBarGenerics]test1")
 		if answer is None or answer[1] == "no":
-			# print([InfoBarGenerics]"test2")
+			# print(["InfoBarGenerics]test2")
 			return
 		list = []
 		recording = self.recording[:]
@@ -3799,8 +3796,8 @@ class VideoMode(Screen):
 
 		self["actions"] = NumberActionMap(["InfobarVmodeButtonActions"],
 			{
-				"vmodeSelection": self.selectVMode
-			})
+			"vmodeSelection": self.selectVMode
+			})  # noqa: E123
 
 		self.Timer = eTimer()
 		self.Timer.callback.append(self.quit)
@@ -3933,13 +3930,10 @@ class InfoBarCueSheetSupport:
 		self.resume_point = None
 		self.force_next_resume = False
 		self.__event_tracker = ServiceEventTracker(screen=self,
-			eventmap={
-				iPlayableService.evStart: self.__serviceStarted,
-				iPlayableService.evCuesheetChanged: self.downloadCuesheet,
-			iPlayableService.evStopped: self.__evStopped,
-			}
-		)
-
+		eventmap={
+			iPlayableService.evStart: self.__serviceStarted,
+			iPlayableService.evCuesheetChanged: self.downloadCuesheet,
+			iPlayableService.evStopped: self.__evStopped, })
 		self.__blockDownloadCuesheet = False
 		self.__recording = None
 		self.__recordingCuts = []
@@ -4141,7 +4135,7 @@ class InfoBarCueSheetSupport:
 	def toggleMark(self, onlyremove=False, onlyadd=False, tolerance=5 * 90000, onlyreturn=False):
 		current_pos = self.cueGetCurrentPosition()
 		if current_pos is None:
-		# print("[InfoBarGenerics]not seekable")
+			# print("[InfoBarGenerics]not seekable")
 			return
 
 		nearest_cutpoint = self.getNearestCutPoint(current_pos)
@@ -4245,10 +4239,10 @@ class InfoBarSummary(Screen):
 		</widget>
 	</screen>"""
 
-# for picon:  (path="piconlcd" will use LCD picons)
-#		<widget source="session.CurrentService" render="Picon" position="6,0" size="120,64" path="piconlcd" >
-#			<convert type="ServiceName">Reference</convert>
-#		</widget>
+	# for picon:  (path="piconlcd" will use LCD picons)
+	# <widget source="session.CurrentService" render="Picon" position="6,0" size="120,64" path="piconlcd" >
+	# <convert type="ServiceName">Reference</convert>
+	# </widget>
 
 
 class InfoBarSummarySupport:
@@ -4434,10 +4428,10 @@ class InfoBarSubtitleSupport:
 class InfoBarServiceErrorPopupSupport:
 	def __init__(self):
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
-				iPlayableService.evTuneFailed: self.__tuneFailed,
-				iPlayableService.evTunedIn: self.__serviceStarted,
-				iPlayableService.evStart: self.__serviceStarted
-			})
+			iPlayableService.evTuneFailed: self.__tuneFailed,
+			iPlayableService.evTunedIn: self.__serviceStarted,
+			iPlayableService.evStart: self.__serviceStarted
+		})
 		self.__serviceStarted()
 
 	def __serviceStarted(self):

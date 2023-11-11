@@ -1,6 +1,6 @@
 from enigma import eRCInput, eTimer, eWindow  # , getDesktop
 
-from skin import GUI_SKIN_ID, applyAllAttributes
+from skin import GUI_SKIN_ID, applyAllAttributes  # noqa: F401 GUI_SKIN_ID used by debug
 from Components.config import config
 from Components.GUIComponent import GUIComponent
 from Components.Sources.Source import Source
@@ -50,6 +50,7 @@ class Screen(dict):
 		self["title"] = StaticText()  # DEBUG: Hack to support for some summary screens.
 		self.screenPath = ""  # This is the current screen path without the title.
 		self.screenTitle = ""  # This is the current screen title without the path.
+		self.handledWidgets = []
 
 	def __repr__(self):
 		return str(type(self))
@@ -262,7 +263,7 @@ class Screen(dict):
 					if depr:
 						print("[Screen] WARNING: OBSOLETE COMPONENT '%s' USED IN SKIN. USE '%s' INSTEAD!" % (key, depr[0]))
 						print("[Screen] OBSOLETE COMPONENT WILL BE REMOVED %s, PLEASE UPDATE!" % depr[1])
-				elif not depr:
+				elif not depr and key not in self.handledWidgets:
 					print("[Screen] Warning: Skin is missing element '%s' in %s." % (key, str(self)))
 		for w in self.additionalWidgets:
 			if not updateonly:

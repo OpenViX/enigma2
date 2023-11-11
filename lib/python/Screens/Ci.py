@@ -107,7 +107,7 @@ class MMIDialog(Screen):
 				"8": self.keyNumberGlobal,
 				"9": self.keyNumberGlobal,
 				"0": self.keyNumberGlobal
-			}, -1)
+			}, -1)  # noqa: E123
 
 		self.action = action
 		self.screen_data = screen_data
@@ -398,7 +398,7 @@ class CiSelection(Screen):
 				"right": self.keyLeft,
 				"ok": self.okbuttonClick,
 				"cancel": self.cancel
-			}, -1)
+			}, -1)  # noqa: E123
 		self["key_red"] = StaticText(_("Cancel"))
 
 		self.dlg = None

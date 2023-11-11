@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-10-15 09:11+0300\n"
+"PO-Revision-Date: 2023-11-07 16:38+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2240,7 +2240,7 @@ msgid ""
 "Are you sure you want to activate this network configuration?\n"
 "\n"
 msgstr ""
-"Haluatko aktivoida nämä verkkoasetukset?\n"
+"Haluatko varmasti aktivoida tämän verkkomäärityksen?\n"
 "\n"
 
 msgid ""
@@ -4813,15 +4813,15 @@ msgstr "Hakemisto"
 
 #, python-format
 msgid "Directory %s does not exist."
-msgstr "Hakemistoa %s ei löydy."
+msgstr "Hakemistoa %s ei ole olemassa."
 
 #, python-format
 msgid "Directory '%s' does not exist."
-msgstr "Hakemistoa '%s' ei löydy."
+msgstr "Hakemistoa '%s' ei ole olemassa."
 
 #, python-format
 msgid "Directory '%s' is not hard links capable."
-msgstr "Hakemistoon '%s' ei voi kirjoittaa."
+msgstr "Hakemisto '%s' ei ole kova-linkkeihin kykenevä."
 
 #, python-format
 msgid "Directory '%s' not valid. Partition must be ext or nfs."
@@ -9631,6 +9631,9 @@ msgstr "Valitse CCcam-lukija"
 msgid "Please choose an extension"
 msgstr "Valitse laajennus"
 
+msgid "Please choose an extension..."
+msgstr "Valitse laajennus..."
+
 msgid "Choose reader"
 msgstr "Valitse lukija"
 
@@ -13540,7 +13543,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"15.10.2023\n"
+"07.11.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -18331,7 +18334,7 @@ msgid "Checking softcams..."
 msgstr "Tarkistetaan softcameja..."
 
 msgid "Choose IPK folder"
-msgstr "Valitse IPK kansio"
+msgstr "Valitse IPK-kansio"
 
 msgid "Choose files"
 msgstr "Valitse tiedostot"
@@ -18812,7 +18815,7 @@ msgid "Select extra packages folder"
 msgstr "Valitse lisäohjelmapakettien hakemisto"
 
 msgid "Select folder containing plugins(.ipk) and Save"
-msgstr "Valitse lisäosia sisältävä hakemisto (.ipk) ja Tallenna"
+msgstr "Valitse lisäosia (.ipk) sisältävä hakemisto ja Tallenna"
 
 msgid "Select the SWAP file size:"
 msgstr "Valitse SWAP:n koko:"
@@ -19085,28 +19088,38 @@ msgid "Please select a valid directory."
 msgstr "Valitse kelvollinen hakemisto."
 
 msgid "Play service without streamrelay"
-msgstr "Toista kanava ilman stream relay:tä"
+msgstr "Toista kanava ilman striimin välitystä"
 
 msgid "Play service with streamrelay"
-msgstr "Toista kanava stream relay:llä"
+msgstr "Toista kanava striimin välityksellä"
 
 msgid "Stream relay"
-msgstr "Stream relay"
+msgstr "Striimin välitys"
 
-msgid "Stream relay url"
-msgstr "Stream relay -url"
+msgid "Streamrelay url"
+msgstr "Striimin välitys -url"
 
-msgid "Stream relay url will normally be the default"
-msgstr "Stream relay -url on normaalisti oletusarvo"
+msgid "The IP address of the streamrelay server that is used to descramble services that can only be decrypted via streamrelay"
+msgstr "Striimin välitys -palvelimen IP-osoite, jota käytetään sellaisten palvelujen salauksen purkamiseen, joiden salaus voidaan purkaa vain striimin välityksen kautta"
 
-msgid "Stream relay port"
-msgstr "Stream relay -portti"
+msgid "Streamrelay port"
+msgstr "Striimin välitys -portti"
 
-msgid "Stream relay port will normally be the default"
-msgstr "Stream relay -portti on normaalisti oletusarvo"
+msgid "The port of the streamrelay server that is used to descramble services that can only be decrypted via streamrelay"
+msgstr "Striimin välitys -palvelimen portti, jota käytetään sellaisten palvelujen salauksen purkamiseen, joiden salaus voidaan purkaa vain striimin välityksen kautta"
 
-msgid "Stream relay use dummy namespace"
-msgstr "Stream relay, käytä valenimiavaruutta"
+msgid "Enter adapter settings or disable adapter, then Save to action changed setup."
+msgstr "Syötä sovittimen asetukset tai poista sovitin käytöstä ja sitten Tallenna toimintoon muutettu asetus."
 
-msgid "Some binaries require a dummy namespace"
-msgstr "Jotkin binäärit vaativat valenimiavaruuden"
+msgid ""
+"Are you sure you want to disable this network configuration?\n"
+"\n"
+msgstr ""
+"Haluatko varmasti poistaa tämän verkkomäärityksen käytöstä?\n"
+"\n"
+
+msgid "Please wait while your network configuration is deactivated..."
+msgstr "Odota, verkkoasetuksia poistetaan käytöstä..."
+
+msgid "Your network configuration has been disabled."
+msgstr "Verkkoasetukset on poistettu käytöstä."

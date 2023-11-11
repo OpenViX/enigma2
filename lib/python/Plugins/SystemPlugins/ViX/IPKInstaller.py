@@ -40,7 +40,7 @@ class VIXIPKInstaller(Screen):
 		0, 50, 560, 50, 18,  # lab1
 		10, 105, 540, 260, 20,  # list
 		26,
-	]
+			]  # noqa: E124
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -185,7 +185,7 @@ class IpkgInstaller(Screen):
 			5, 50, 540, 360, 20,  # list
 			0, 410, 560, 2,
 			5, 420, 550, 30, 22,
-	]
+			]  # noqa: E124
 
 	def __init__(self, session, list):
 		Screen.__init__(self, session)

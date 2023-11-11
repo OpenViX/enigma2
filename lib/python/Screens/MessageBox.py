@@ -8,7 +8,7 @@ from Components.Pixmap import Pixmap, MultiPixmap
 from Components.Sources.StaticText import StaticText
 from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen
-from skin import parseScale
+from skin import parseScale, applySkinFactor
 
 
 class MessageBox(Screen, HelpableScreen):
@@ -63,6 +63,8 @@ class MessageBox(Screen, HelpableScreen):
 		self["InfoPixmap"].hide()
 		self["ErrorPixmap"] = Pixmap()
 		self["ErrorPixmap"].hide()
+		self["WarningPixmap"] = Pixmap()
+		self["WarningPixmap"].hide()
 		self["icon"] = MultiPixmap()
 		self["icon"].hide()
 		self.picon = picon
@@ -74,6 +76,8 @@ class MessageBox(Screen, HelpableScreen):
 				self["InfoPixmap"].show()
 			elif self.type == self.TYPE_ERROR:
 				self["ErrorPixmap"].show()
+			elif self.type == self.TYPE_WARNING:
+				self["WarningPixmap"].show()
 			self["icon"].show()
 		self.skinName = ["MessageBox"]
 		if simple:
@@ -176,52 +180,54 @@ class MessageBox(Screen, HelpableScreen):
 			return self["ErrorPixmap"].visible and hasattr(self["ErrorPixmap"], 'getSize') and isinstance(self["ErrorPixmap"].getSize(), tuple) and len(self["ErrorPixmap"].getSize()) and self["ErrorPixmap"].getSize()[0] or \
 				self["QuestionPixmap"].visible and hasattr(self["QuestionPixmap"], 'getSize') and isinstance(self["QuestionPixmap"].getSize(), tuple) and len(self["QuestionPixmap"].getSize()) and self["QuestionPixmap"].getSize()[0] or \
 				self["InfoPixmap"].visible and hasattr(self["InfoPixmap"], 'getSize') and isinstance(self["InfoPixmap"].getSize(), tuple) and len(self["InfoPixmap"].getSize()) and self["InfoPixmap"].getSize()[0] or \
+				self["WarningPixmap"].visible and hasattr(self["WarningPixmap"], 'getSize') and isinstance(self["WarningPixmap"].getSize(), tuple) and len(self["WarningPixmap"].getSize()) and self["WarningPixmap"].getSize()[0] or \
 				defaultPixmapWidth
 		except Exception as err:
 			print("[MessageBox] defaultPixmapWidth, %s: '%s'" % (type(err).__name__, err))
 		return defaultPixmapWidth
 
 	def autoResize(self):
-		# Get the real pixmap width from the skin so this can be used in the formula below.
-		# Historically the default pixmap width has been 53 + 12 pixels of right margin.
-		pixmapWidth = self.getPixmapWidth()
-		pixmapMargin = 12
-		itemHeight = self.getListItemHeight()
-		count = len(self.list)
-		if not self["text"].text:
-			textsize = (520, 0)
-			listsize = (520, itemHeight * count)
-			if self.picon:
-				self["list"].instance.move(ePoint(pixmapWidth + pixmapMargin, 0))
-				wsizex = textsize[0] + pixmapWidth + pixmapMargin
-			else:
-				self["list"].instance.move(ePoint(0, 0))
-				wsizex = textsize[0]
-			self["list"].instance.resize(eSize(*listsize))
-		else:
+		margin = applySkinFactor(4)
+		separator = applySkinFactor(10)
+		desktop_w = getDesktop(0).size().width()
+		desktop_h = getDesktop(0).size().height()
+		pixmapWidth = 0
+		pixmapMargin = 0
+		if self.picon:
+			pixmapWidth = self.getPixmapWidth()
+			pixmapMargin = applySkinFactor(4)
+		textsize = (0, 0)
+		if self["text"].text:
 			textsize = self["text"].getSize()
 			if textsize[0] < textsize[1]:
 				textsize = (textsize[1], textsize[0] + 10)
-			if textsize[0] > 520:
-				textBottomMargin = int(1.0 * textsize[0] // 520 * 30)  # previously always 25
-				textsize = (textsize[0], textsize[1] + textBottomMargin)
-			else:
-				textsize = (520, textsize[1] + 25)
-			listsize = (textsize[0], itemHeight * count)
+		listLen = len(self.list)
+		itemheight = self.getListItemHeight()
+		listMaxItems = int((desktop_h * 0.8 - textsize[1]) // itemheight)
+		scrollbar = self["list"].instance.getScrollbarWidth() + 5 if listLen > listMaxItems else 0
+		listWidth = int(min(self["list"].instance.getMaxItemTextWidth() + scrollbar, desktop_w * 0.9))
+		count = min(listLen, listMaxItems)
+		if textsize[1]:
+			textsize = (textsize[0] + applySkinFactor(10), textsize[1] + applySkinFactor(2))
+			if textsize[0] < listWidth:
+				textsize = (listWidth, textsize[1])
+		width = max(listWidth, textsize[0])
+		listsize = (width, listMaxItems * itemheight)
+		listPos = separator + (textsize[1] if textsize[1] > 0 else 0)
+		# resize label
+		self["text"].instance.resize(eSize(*textsize))
+		self["text"].instance.move(ePoint(margin + pixmapWidth + pixmapMargin, 0))
+		# move list
+		self["list"].instance.resize(eSize(*listsize))
+		self["list"].instance.move(ePoint(margin + pixmapWidth + pixmapMargin, listPos))
 
-			self["text"].instance.resize(eSize(*textsize))
-			if self.picon:
-				self["text"].instance.move(ePoint(pixmapWidth + pixmapMargin, 0))
-				self["list"].instance.move(ePoint(pixmapWidth + pixmapMargin, textsize[1]))
-				wsizex = textsize[0] + pixmapWidth + pixmapMargin
-			else:
-				self["text"].instance.move(ePoint(10, 10))
-				self["list"].instance.move(ePoint(0, textsize[1]))
-				wsizex = textsize[0]
-			self["list"].instance.resize(eSize(*listsize))
-		wsizey = textsize[1] + listsize[1]
-		self.instance.resize(eSize(*(wsizex, wsizey)))
-		self.instance.move(ePoint((getDesktop(0).size().width() - wsizex) // 2, (getDesktop(0).size().height() - wsizey) // 2))
+		wsizex = margin * 2 + width + pixmapWidth + pixmapMargin
+		wsizey = listPos + (count * itemheight) + margin
+		wsize = (wsizex, wsizey)
+		self.instance.resize(eSize(*wsize))
+
+		# center window
+		self.instance.move(ePoint((desktop_w - wsizex) // 2, (desktop_h - wsizey) // 2))
 
 	def cancel(self):
 		for x in self["list"].list:

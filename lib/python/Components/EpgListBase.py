@@ -16,7 +16,7 @@ class EPGListBase(GUIComponent):
 		self.onSelChanged = []
 		if selChangedCB is not None:
 			self.onSelChanged.append(selChangedCB)
-		self.l = eListboxPythonMultiContent()
+		self.l = eListboxPythonMultiContent()  # noqa: E741
 		self.epgcache = eEPGCache.getInstance()
 
 		# Load the common clock icons.

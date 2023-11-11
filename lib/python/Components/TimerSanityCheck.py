@@ -73,7 +73,7 @@ class TimerSanityCheck:
 		if ext_timer and isinstance(ext_timer, RecordTimer.RecordTimerEntry):
 			self.newtimer = ext_timer
 
-		#GML:1 - A timer which has already ended (happens during start-up check) can't clash!!
+		# GML:1 - A timer which has already ended (happens during start-up check) can't clash!!
 		#
 		#      NOTE: that when adding a timer it also cannot clash with:
 		#       o any timers which run before the latest period of no timers running
@@ -223,9 +223,9 @@ class TimerSanityCheck:
 				else:
 					fakeRecResult = -1
 				# TODO
-				#if fakeRecResult == -6 and len(NavigationInstance.instance.getRecordings(True)) < 2:
-				#	print "[TimerSanityCheck] less than two timers in the simulated recording list - timer conflict is not plausible - ignored !"
-				#	fakeRecResult = 0
+				# if fakeRecResult == -6 and len(NavigationInstance.instance.getRecordings(True)) < 2:
+				# print "[TimerSanityCheck] less than two timers in the simulated recording list - timer conflict is not plausible - ignored !"
+				# fakeRecResult = 0
 				if not fakeRecResult:  # tune okay
 					if hasattr(fakeRecService, 'frontendInfo'):
 						feinfo = fakeRecService.frontendInfo()

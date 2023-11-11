@@ -6,7 +6,7 @@ import tempfile
 from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from enigma import eTimer, fbClass
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, rmdir, sep as ossep, statvfs, chmod, walk
-from shutil import copyfile, move, rmtree
+from shutil import copy, copyfile, move, rmtree
 from time import localtime, time, strftime, mktime
 
 from Components.ActionMap import ActionMap
@@ -165,7 +165,7 @@ class VIXImageManager(Screen):
 		10, 105, 540, 260, 20,  # list
 		10, 370, 400, 30, 20,  # backupstatus
 		26,
-	]
+			]  # noqa: E124
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -892,7 +892,7 @@ class ImageBackup(Screen):
 		0, 50, 560, 50, 18,  # lab1
 		10, 105, 540, 260, 20,  # list
 		26,
-	]
+			]  # noqa: E124
 
 	def __init__(self, session, updatebackup=False):
 		Screen.__init__(self, session)
@@ -1588,7 +1588,7 @@ class ImageManagerDownload(Screen):
 		0, 50, 560, 50, 18,  # lab1
 		10, 105, 540, 260, 20,  # list
 		26,
-	]
+			]  # noqa: E124
 
 	def __init__(self, session, BackupDirectory, imagefeed):
 		Screen.__init__(self, session)

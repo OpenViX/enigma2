@@ -6,7 +6,8 @@ from Components.Label import Label
 from Components.ChoiceList import ChoiceEntryComponent, ChoiceList
 from Components.Sources.StaticText import StaticText
 from Tools.BoundFunction import boundFunction
-import enigma
+from enigma import ePoint, eSize, getDesktop
+from skin import applySkinFactor
 
 config.misc.pluginlist = ConfigSubsection()
 config.misc.pluginlist.eventinfo_order = ConfigText(default="")
@@ -132,44 +133,40 @@ class ChoiceBox(Screen):
 		}, prio=-2)
 
 	def autoResize(self):
-		desktop_w = enigma.getDesktop(0).size().width()
-		desktop_h = enigma.getDesktop(0).size().height()
+		margin = applySkinFactor(4)
+		separator = applySkinFactor(10)
+		desktop_w = getDesktop(0).size().width()
+		desktop_h = getDesktop(0).size().height()
 		itemheight = self["list"].getItemHeight()
-		count = len(self.list)
-		if count > 15:
-			count = 15
-		width = self["list"].instance.size().width()
-		if width < 0 or width > desktop_w:
-			width = 520
-		if not self["text"].text:
-			# move list
-			textsize = (width, 0)
-			listsize = (width, itemheight * count)
-			self["list"].instance.move(enigma.ePoint(0, 0))
-			self["list"].instance.resize(enigma.eSize(*listsize))
-		else:
+		textsize = (0, 0)
+		if self["text"].text:
 			textsize = self["text"].getSize()
 			if textsize[0] < textsize[1]:
 				textsize = (textsize[1], textsize[0] + 10)
-			if textsize[0] > width:
-				textsize = (textsize[0], textsize[1] + itemheight)
-			else:
-				textsize = (width, textsize[1] + itemheight)
-			listsize = (textsize[0], itemheight * count)
-			# resize label
-			self["text"].instance.resize(enigma.eSize(*textsize))
-			self["text"].instance.move(enigma.ePoint(10, 10))
-			# move list
-			self["list"].instance.move(enigma.ePoint(0, textsize[1]))
-			self["list"].instance.resize(enigma.eSize(*listsize))
+		listLen = len(self.list)
+		listMaxItems = int((desktop_h * 0.8 - textsize[1]) // itemheight)
+		scrollbar = self["list"].instance.getScrollbarWidth() + 5 if listLen > listMaxItems else 0
+		listWidth = int(min(self["list"].instance.getMaxItemTextWidth() + scrollbar, desktop_w * 0.9))
+		count = min(listLen, listMaxItems)
+		if textsize[1] and textsize[0] < listWidth:
+			textsize = (listWidth, textsize[1])
+		width = max(listWidth, textsize[0])
+		listsize = (width, listMaxItems * itemheight)
+		listPos = separator + (textsize[1] if textsize[1] > 0 else 0)
+		# resize label
+		self["text"].instance.resize(eSize(*textsize))
+		self["text"].instance.move(ePoint(margin, margin))
+		# move list
+		self["list"].instance.resize(eSize(*listsize))
+		self["list"].instance.move(ePoint(margin, listPos))
 
-		wsizex = textsize[0]
-		wsizey = textsize[1] + listsize[1]
+		wsizex = margin * 2 + width
+		wsizey = listPos + (count * itemheight) + margin
 		wsize = (wsizex, wsizey)
-		self.instance.resize(enigma.eSize(*wsize))
+		self.instance.resize(eSize(*wsize))
 
 		# center window
-		self.instance.move(enigma.ePoint((desktop_w - wsizex) // 2, (desktop_h - wsizey) // 2))
+		self.instance.move(ePoint((desktop_w - wsizex) // 2, (desktop_h - wsizey) // 2))
 
 	def left(self):
 		if len(self["list"].list) > 0:

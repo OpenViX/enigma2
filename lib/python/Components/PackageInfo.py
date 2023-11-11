@@ -65,7 +65,7 @@ class InfoHandler(xml.sax.ContentHandler):
 					self.printError("file tag with no name attribute")
 				else:
 					if "directory" not in attrs:
-						directory = self.directory  # what is this? Variable assigned, not used. Is this supposed to be attrs["directory"] = self.directory?
+						directory = self.directory  # noqa: F841 - PackageInfo only use by unused SoftwareManager plugin
 					type = attrs["type"]
 					if type not in self.validFileTypes:
 						self.printError("file tag with invalid type attribute")

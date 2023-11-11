@@ -141,7 +141,7 @@ class InitInputDevices:
 		for device in sorted(iter(iInputDevices.Devices.keys())):
 			# print("[InputDevice][createConfig]", sorted(iter(iInputDevices.Devices.keys())))
 			self.currentDevice = device
-			#print("[InputDevice] creating config entry for device: %s -> %s  " % (self.currentDevice, iInputDevices.Devices[device]["name"]))
+			# print("[InputDevice] creating config entry for device: %s -> %s  " % (self.currentDevice, iInputDevices.Devices[device]["name"]))
 			self.setupConfigEntries(self.currentDevice)
 			self.remapRemoteControl(self.currentDevice)
 			self.currentDevice = ""

@@ -27,7 +27,7 @@ class ServiceList(GUIComponent):
 	def __init__(self, serviceList):
 		self.serviceList = serviceList
 		GUIComponent.__init__(self)
-		self.l = eListboxServiceContent()
+		self.l = eListboxServiceContent()  # noqa: E741
 
 		pic = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/folder.png"))
 		pic and self.l.setPixmap(self.l.picFolder, pic)
@@ -336,7 +336,7 @@ class ServiceList(GUIComponent):
 		sely = self.instance.position().y() + self.ItemHeight * index
 		if sely >= self.instance.position().y() + self.listHeight:
 			sely -= self.listHeight
-		return self.listWidth, sely
+		return self.listWidth + self.instance.position().x(), sely
 
 	def setFontsize(self):
 		self.ServiceNumberFont = gFont(self.ServiceNameFontName, self.ServiceNameFontSize + config.usage.servicenum_fontsize.value)

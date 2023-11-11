@@ -16774,11 +16774,11 @@ msgstr "Žlté DVB titulky"
 
 #, fuzzy
 msgid "Yellow button (long)"
-msgstr "Tlacidlo info (dlho)"
+msgstr "Žlté tlačidlo (dlho)"
 
 #, fuzzy
 msgid "Yellow button (short)"
-msgstr "Tlacidlo info (krátko)"
+msgstr "Žlté tlačidlo (krátko)"
 
 msgid "Yellow long"
 msgstr ""

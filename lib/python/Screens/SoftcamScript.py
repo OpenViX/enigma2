@@ -1,8 +1,8 @@
-from enigma import eTimer, getDesktop
+from enigma import eTimer
 
 
 from Components.ActionMap import HelpableActionMap
-from Components.config import config, ConfigSelection
+from Components.config import config
 from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
 from Screens.MessageBox import MessageBox
@@ -97,7 +97,6 @@ class SoftcamScript(Setup):
 
 	def doStop(self):
 		self.activityTimer.stop()
-#		if "s" in self.camtype:
 		self.softcam.command("stop")
 		self.oldref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		self.session.nav.stopService()
@@ -113,7 +112,6 @@ class SoftcamScript(Setup):
 			msg = _("No configs for specifies softcam %s." % config.misc.softcams.value)
 			self.mbox = self.session.open(MessageBox, msg, MessageBox.TYPE_INFO)
 			self.camtype = "None"
-#		elif "s" in self.camtype:
 		self.softcam.select(config.misc.softcams.value)
 		if config.misc.softcams.value != "None":
 			self.softcam.command("start")

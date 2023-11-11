@@ -1,7 +1,7 @@
+import io
 import locale
 import os
 import skin
-from time import time
 from boxbranding import getBrandOEM, getDisplayType
 
 from enigma import eDVBDB, eEPGCache, setTunerTypePriorityOrder, setPreferredTuner, setSpinnerOnOff, setEnableTtCachingOnOff, eEnv, Misc_Options, eServiceEvent
@@ -18,7 +18,6 @@ from Components.SystemInfo import SystemInfo
 # getting a time-stamp prepended.
 # stderr expect unicode, not str, so we decode as utf-8
 #
-import io
 
 
 def raw_stderr_print(text):
@@ -344,7 +343,7 @@ def InitUsageConfig():
 		config.usage.wakeOnLAN = ConfigYesNo(default=False)
 		config.usage.wakeOnLAN.addNotifier(wakeOnLANChanged)
 
-	#standby
+	# standby
 	if getDisplayType() in ("textlcd7segment"):
 		config.usage.blinking_display_clock_during_recording = ConfigSelection(default="Rec", choices=[
 			("Rec", _("REC")),
@@ -353,7 +352,7 @@ def InitUsageConfig():
 	else:
 		config.usage.blinking_display_clock_during_recording = ConfigYesNo(default=False)
 
-	#in use
+	# in use
 	if getDisplayType() in ("textlcd"):
 		config.usage.blinking_rec_symbol_during_recording = ConfigSelection(default="Channel", choices=[
 			("Rec", _("REC Symbol")),

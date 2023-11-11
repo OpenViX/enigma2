@@ -1,11 +1,13 @@
-# Movie Selection:
-#<widget source="Service" render="Picon" position="1120,95" zPosition="14" size="100,60" transparent="12" alphatest="blend">
-#	<convert type="MovieReference"/>
-#</widget>
-# Movie Player Infobar:
-#<widget source="session.CurrentService" render="Picon" position="1120,95" zPosition="14" size="100,60" transparent="12" alphatest="blend">
-#	<convert type="MovieReference"/>
-#</widget>
+'''
+	Movie Selection:
+	<widget source="Service" render="Picon" position="1120,95" zPosition="14" size="100,60" transparent="12" alphatest="blend">
+	<convert type="MovieReference"/>
+		</widget>
+	Movie Player Infobar:
+	<widget source="session.CurrentService" render="Picon" position="1120,95" zPosition="14" size="100,60" transparent="12" alphatest="blend">
+		<convert type="MovieReference"/>
+		</widget>
+'''
 
 from enigma import iServiceInformation, eServiceReference, iPlayableServicePtr
 

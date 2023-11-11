@@ -8,7 +8,6 @@ from Components.TuneTest import Tuner
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
 from Screens.ScanSetup import ScanSetup, buildTerTransponder
-from Screens.Screen import Screen  # for services found class
 from Screens.ServiceScan import ServiceScan
 from Tools.Transponder import getChannelNumber, channel2frequency
 from Tools.BoundFunction import boundFunction
