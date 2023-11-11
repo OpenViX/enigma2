@@ -840,7 +840,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 				self.show()
 			if self.secondInfoBarScreen:
 				self.secondInfoBarScreen.hide()
-			self.secondInfoBarWasShown = False
+				self.secondInfoBarWasShown = False
 			self.EventViewIsShown = False
 		elif isStandardInfoBar(self) and config.usage.show_second_infobar.value == "EPG":
 			self.showDefaultEPG()
