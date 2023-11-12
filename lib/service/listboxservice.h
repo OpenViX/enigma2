@@ -44,7 +44,8 @@ public:
 
 	enum {
 		visModeSimple,
-		visModeComplex
+		visModeComplex,
+		visSkinDefined
 	};
 
 	void setVisualMode(int mode);
@@ -73,6 +74,11 @@ public:
 		picServiceEventProgressbar,
 		picCrypto,
 		picRecord,
+		pic4K,
+		picHD,
+		picSD,
+		picBackup,
+		picCatchup,
 		picElements
 	};
 
