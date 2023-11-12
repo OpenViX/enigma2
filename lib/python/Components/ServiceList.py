@@ -27,7 +27,7 @@ class ServiceList(GUIComponent):
 	def __init__(self, serviceList):
 		self.serviceList = serviceList
 		GUIComponent.__init__(self)
-		self.l = eListboxServiceContent()  # noqa: E741
+		self.l = eListboxServiceContent()
 
 		pic = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/folder.png"))
 		pic and self.l.setPixmap(self.l.picFolder, pic)
@@ -55,6 +55,18 @@ class ServiceList(GUIComponent):
 
 		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/record.png"))
 		pic and self.l.setPixmap(self.l.picRecord, pic)
+		
+		# Icons for two lines alternative mode
+		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/ico_hd-fs8.png"))
+		pic and self.l.setPixmap(self.l.picHD, pic)
+		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/ico_sd-fs8.png"))
+		pic and self.l.setPixmap(self.l.picSD, pic)
+		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/ico_uhd-fs8.png"))
+		pic and self.l.setPixmap(self.l.pic4K, pic)
+		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/ico_catchup-fs8.png"))
+		pic and self.l.setPixmap(self.l.picCatchup, pic)
+		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/ico_altref-fs8.png"))
+		pic and self.l.setPixmap(self.l.picBackup, pic)
 
 		self.root = None
 		self.mode = self.MODE_NORMAL
@@ -431,9 +443,12 @@ class ServiceList(GUIComponent):
 		self.setItemsPerPage()
 		two_lines_val = int(config.usage.servicelist_twolines.value)
 		show_two_lines = two_lines_val and mode == self.MODE_FAVOURITES
-		self.ItemHeight *= (2 if show_two_lines else 1)
+		if two_lines_val == 3:
+			self.ItemHeight = 86
+		else:
+			self.ItemHeight *= (2 if show_two_lines else 1)
 		self.l.setItemHeight(self.ItemHeight)
-		self.l.setVisualMode(eListboxServiceContent.visModeComplex)
+		self.l.setVisualMode(eListboxServiceContent.visModeComplex if two_lines_val < 3 else eListboxServiceContent.visSkinDefined)
 
 		if config.usage.service_icon_enable.value:
 			self.l.setGetPiconNameFunc(getPiconName)
@@ -464,6 +479,7 @@ class ServiceList(GUIComponent):
 		else:
 			self.l.setElementPosition(self.l.celServiceEventProgressbar, eRect(0, 0, 0, 0))
 			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth + channelNumberSpace, 0, rowWidth - (channelNumberWidth + channelNumberSpace), self.ItemHeight))
+
 		self.l.setElementFont(self.l.celServiceName, self.ServiceNameFont)
 		self.l.setElementFont(self.l.celServiceNumber, self.ServiceNumberFont)
 		self.l.setElementFont(self.l.celServiceInfo, self.ServiceInfoFont)
