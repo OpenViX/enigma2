@@ -222,7 +222,7 @@ class Navigation:
 					self.retryServicePlayTimer = eTimer()
 					self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust, True))
 					self.retryServicePlayTimer.start(100, True)
-				if self.pnav.playService(playref):
+				elif self.pnav.playService(playref):
 					# print("[Navigation] Failed to start", playref)
 					self.currentlyPlayingServiceReference = None
 					self.currentlyPlayingServiceOrGroup = None
