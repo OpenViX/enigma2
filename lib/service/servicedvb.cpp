@@ -388,6 +388,13 @@ RESULT eStaticServiceDVBPVRInformation::getName(const eServiceReference &ref, st
 		}
 		m_parser.m_name = name;
 	}
+	if (!name.empty()) {
+	 	std::vector<std::string> name_split = split(name, "|");
+	 	name = name_split[0];
+		if (name_split.size() > 1) {
+			m_parser.m_prov = name_split[1];
+		}
+	 }
 	return 0;
 }
 
@@ -460,6 +467,13 @@ std::string eStaticServiceDVBPVRInformation::getInfoString(const eServiceReferen
 		return m_parser.m_ref.toString();
 	case iServiceInformation::sTags:
 		return m_parser.m_tags;
+	case iServiceInformation::sProvider:
+	{
+		if (m_parser.m_prov.empty()) {
+			return "";
+		}
+		return m_parser.m_prov;
+	}
 	default:
 		return "";
 	}
