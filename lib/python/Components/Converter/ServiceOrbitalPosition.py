@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from Components.Converter.Converter import Converter
-
 from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceCenter
-from ServiceReference import resolveAlternate
 
+from Components.Converter.Converter import Converter
 from Components.Element import cached
+from ServiceReference import resolveAlternate
 
 
 class ServiceOrbitalPosition(Converter):
@@ -57,7 +56,20 @@ class ServiceOrbitalPosition(Converter):
 				return _("Stream")
 			if refString.startswith("1:134:"):
 				return _("Alternative")
-		return ""
+		elif info:
+			if "%3a//127" in info.getInfoString(iServiceInformation.sServiceref).lower():
+				nmspc = info.getInfo(iServiceInformation.sNamespace) & 0xFFFFFFFF
+				namespace = "%08X" % nmspc
+				EW = "E"
+				orbpos = int(namespace[:4], 16)
+				if orbpos > 1800:
+					orbpos = 3600 - orbpos
+					EW = "W"
+				return "%s\xb0 %s" % (float(orbpos) / 10.0, EW)
+			else:
+				return ""
+		else:
+			return ""
 
 	text = property(getText)
 
