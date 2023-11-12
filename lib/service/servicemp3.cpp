@@ -17,6 +17,7 @@
 #include <lib/gdi/gpixmap.h>
 
 #include <string>
+#include <lib/base/estring.h>
 
 #include <gst/gst.h>
 #include <gst/pbutils/missing-plugins.h>
@@ -261,6 +262,10 @@ RESULT eStaticServiceMP3Info::getName(const eServiceReference &ref, std::string 
 		else
 			name = ref.path;
 	}
+	if (!name.empty()) {
+	 	std::vector<std::string> name_split = split(name, "|");
+	 	name = name_split[0];
+	 }
 	return 0;
 }
 
@@ -1199,6 +1204,14 @@ RESULT eServiceMP3::getName(std::string &name)
 	}
 	else
 		name = title;
+
+	if (!name.empty()) {
+	 	std::vector<std::string> name_split = split(name, "|");
+	 	name = name_split[0];
+		if (name_split.size() > 1) {
+			m_prov = name_split[1];
+		}
+	 }
 	return 0;
 }
 
@@ -1326,7 +1339,16 @@ std::string eServiceMP3::getInfoString(int w)
 	switch (w)
 	{
 	case sProvider:
-		return m_sourceinfo.is_streaming ? "IPTV" : "FILE";
+	{
+		if (m_sourceinfo.is_streaming) {
+			if (m_prov.empty()) {
+				return "IPTV";
+			} else {
+				return m_prov;
+			}
+		}
+		return "FILE";
+	}
 	case sServiceref:
 		return m_ref.toString();
 	default:
