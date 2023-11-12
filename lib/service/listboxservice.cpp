@@ -793,6 +793,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 		bool serviceFallback = false;
 		int isplayable_value;
 		gRGB EventProgressbarColor = 0xe7b53f;
+		ePtr<iPlayableService> refCur;
 
 		if (!marked && isPlayable && service_info && m_is_playable_ignore.valid())
 		{
