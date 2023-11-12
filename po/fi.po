@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-11-07 16:38+0200\n"
+"PO-Revision-Date: 2023-11-12 19:00+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3180,7 +3180,7 @@ msgid "Channel"
 msgstr "Kanava"
 
 msgid "Channel EPG"
-msgstr "KanavaEPG"
+msgstr "Kanava-ohjelmaopas"
 
 msgid "Channel List"
 msgstr "Kanavalista"
@@ -4633,7 +4633,7 @@ msgid "Delete Confirmation"
 msgstr "Poistamisen vahvistuskysely"
 
 msgid "Delete EPG Cache"
-msgstr "Poista EPG"
+msgstr "Poista ohjelmaopas"
 
 msgid "Delete Language(s)"
 msgstr "Poista kieli"
@@ -6533,7 +6533,7 @@ msgid "Grey"
 msgstr "Harmaa"
 
 msgid "Grid EPG"
-msgstr "Graafinen taulukko-ohjelmaopas"
+msgstr "Taulukko-ohjelmaopas"
 
 msgid "Grow drop"
 msgstr "Kasvava pudotus"
@@ -7201,13 +7201,13 @@ msgid "Infobar EPG"
 msgstr "Tietopalkki-ohjelmaopas"
 
 msgid "Infobar EPG activation"
-msgstr "Hakupalkin aktivointi"
+msgstr "Tietopalkki-ohjelmaopppan aktivointi"
 
 msgid "Infobar Grid EPG"
-msgstr "Tietopalkin taulukko-EPG"
+msgstr "Tietopalkin taulukko-ohjelmaopas"
 
 msgid "Infobar Single EPG"
-msgstr "Tietopalkin yksittäinen EPG"
+msgstr "Tietopalkin yksittäinen ohjelmaopas"
 
 msgid "Infobar fade-out speed"
 msgstr "Tietopalkin häivytysnopeus"
@@ -7679,6 +7679,9 @@ msgctxt "third event: 'third' event label"
 msgid "Later"
 msgstr "Myöhemmin"
 
+msgid "LATER"
+msgstr "MYÖHEMMIN"
+
 msgid "Latitude"
 msgstr "Leveysaste"
 
@@ -7821,7 +7824,7 @@ msgid "Load"
 msgstr "Lataa"
 
 msgid "Load EPG Cache"
-msgstr "Lataa EPG"
+msgstr "Lataa ohjelmaopas"
 
 msgid "Load playlist"
 msgstr "Lataa soittolista"
@@ -7830,7 +7833,7 @@ msgid "Load unlinked userbouquets"
 msgstr "Näytä piilotetut suosikkilistat"
 
 msgid "Load, Save & Delete EPG Cache"
-msgstr "Lataa, Tallenna ja Poista EPG"
+msgstr "Lataa, Tallenna ja Poista ohjelmaopas"
 
 msgid "Loading skin"
 msgstr "Ladataan teemaa"
@@ -9014,6 +9017,9 @@ msgctxt "now/next: 'now' event label"
 msgid "Now"
 msgstr "Nyt"
 
+msgid "NOW"
+msgstr "NYT"
+
 msgid "Now, use the contrast setting to turn up the brightness of the background as much as possible, but make sure that you can still see the difference between the two brightest levels of shades.If you have done that, press OK."
 msgstr "Säädä kontrastisäädöllä tausta mahdollisimman valkoiseksi. Varmista, että näet yhä kahden kirkkaimman sävyn eron. Kun olet tyytyväinen tulokseen, paina OK."
 
@@ -9171,7 +9177,7 @@ msgid "Open bouquet list"
 msgstr "Avaa suosikkilistat"
 
 msgid "Open infobar EPG"
-msgstr "Avaa tietopalkin EPG"
+msgstr "Avaa tietopalkin ohjelmaopas"
 
 msgid "Open menu"
 msgstr "Avaa valikko"
@@ -10250,7 +10256,7 @@ msgid "Protect movie list"
 msgstr "Suojaa tallennusvalikko"
 
 msgid "Protect on epg age"
-msgstr "Suojaa epg"
+msgstr "Suojaa ohjelmaopas"
 
 msgid "Protect plugin browser"
 msgstr "Suojaa lisäosavalikko"
@@ -11216,7 +11222,7 @@ msgid "Save / Enter text and exit"
 msgstr "Tallenna ja poistu"
 
 msgid "Save EPG Cache"
-msgstr "Tallenna EPG"
+msgstr "Tallenna ohjelmaopas"
 
 msgid "Save all changed settings and exit"
 msgstr "Tallenna ja poistu"
@@ -12240,7 +12246,7 @@ msgid "Show Ecm info"
 msgstr "Näytä ECM-tiedot"
 
 msgid "Show Grid EPG"
-msgstr "Näytä taulukko-EPG"
+msgstr "Näytä taulukko-ohjelmaopas"
 
 msgid "Show Log"
 msgstr "Näytä loki"
@@ -12255,7 +12261,7 @@ msgid "Show MiniTV in the Front Display"
 msgstr "Näytä MiniTV etupaneelin näytössä"
 
 msgid "Show Multi EPG"
-msgstr "Näytä Multi EPG"
+msgstr "Näytä monikanavaohjelmaopas"
 
 msgid "Show OScam/Ncam Info in extensions?"
 msgstr "Näytä OScam/Ncam Info laajennusvalikossa?"
@@ -12279,7 +12285,7 @@ msgid "Show SD as"
 msgstr "Näytä SD näin:"
 
 msgid "Show Single EPG"
-msgstr "Näytä yksittäinen EPG"
+msgstr "Näytä yksittäinen ohjelmaopas"
 
 msgid "Show Software Update in Extensions"
 msgstr "Näytä ohjelmapäivitys laajennuksissa"
@@ -12408,7 +12414,7 @@ msgid "Show info line"
 msgstr "Näytä tietopalkki"
 
 msgid "Show infobar EPG"
-msgstr "Tietopalkin EPG"
+msgstr "Näytä tietopalkki-ohjelmaopas"
 
 msgid "Show infobar on channel change"
 msgstr "Näytä tietopalkki kanavaa vaihdettaessa"
@@ -12513,7 +12519,7 @@ msgid "Show shutdown menu"
 msgstr "Näytä sammutusvalikko"
 
 msgid "Show single channel EPG"
-msgstr "Näytä yhden kanavan EPG"
+msgstr "Näytä yhden kanavan ohjelmaopas"
 
 msgid "Show single epg for current channel"
 msgstr "Näytä nykyisen kanavan ohjelmatiedot"
@@ -13437,16 +13443,16 @@ msgid "Switch the PiP to the previous channel"
 msgstr "Vaihda PiP edelliselle kanavalle"
 
 msgid "Switch to Grid EPG"
-msgstr "Vaihda taulukko-EPG:n"
+msgstr "Vaihda taulukko-ohjelmaoppaaseen"
 
 msgid "Switch to HDMI in mode"
 msgstr "Vaihda HDMI In -tilaan"
 
 msgid "Switch to Multi EPG"
-msgstr "Vaihda graafiseen EPG:n"
+msgstr "Vaihda monikanavaohjelmaoppaaseen"
 
 msgid "Switch to Single EPG"
-msgstr "Vaihda yksittäiseen-EPG:n"
+msgstr "Vaihda yksittäiseen ohjelmaoppaaseen"
 
 msgid "Switch to TV mode"
 msgstr "Vaihda TV-tilaan"
@@ -13543,7 +13549,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"07.11.2023\n"
+"12.11.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -13656,7 +13662,7 @@ msgid "Text"
 msgstr "Teksti"
 
 msgid "Text Grid EPG"
-msgstr "Teksti taulukko-ohjelmaopas"
+msgstr "Tekstillinen taulukko-ohjelmaopas"
 
 msgid "Text View On"
 msgstr "Tekstinäkymä päällä"
@@ -19123,3 +19129,9 @@ msgstr "Odota, verkkoasetuksia poistetaan käytöstä..."
 
 msgid "Your network configuration has been disabled."
 msgstr "Verkkoasetukset on poistettu käytöstä."
+
+msgid "Reception"
+msgstr "Vastaanotto"
+
+msgid "Transmission"
+msgstr "Lähetys"
