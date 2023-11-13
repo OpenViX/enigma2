@@ -55,7 +55,7 @@ class ServiceList(GUIComponent):
 
 		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/record.png"))
 		pic and self.l.setPixmap(self.l.picRecord, pic)
-		
+
 		# Icons for two lines alternative mode
 		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/ico_hd-fs8.png"))
 		pic and self.l.setPixmap(self.l.picHD, pic)

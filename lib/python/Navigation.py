@@ -218,7 +218,7 @@ class Navigation:
 					self.currentServiceStreaming = False
 					self.currentlyPlayingServiceReference = None
 					self.currentlyPlayingServiceOrGroup = None
-					print("[Navigation] Streamrelay was active -> delay the zap till tuner is freed") 
+					print("[Navigation] Streamrelay was active -> delay the zap till tuner is freed")
 					self.retryServicePlayTimer = eTimer()
 					self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust, True))
 					self.retryServicePlayTimer.start(100, True)
