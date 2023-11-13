@@ -324,6 +324,9 @@ def runScreenTest():
 	profile("Init:Session")
 	nav = Navigation(config.misc.isNextRecordTimerAfterEventActionAuto.value, config.misc.isNextPowerTimerAfterEventActionAuto.value)
 	session = Session(desktop=enigma.getDesktop(0), summary_desktop=enigma.getDesktop(1), navigation=nav)
+	from Session import SessionObject
+	so = SessionObject()
+	so.session = session
 
 	profile("Init:Trashcan")
 	import Tools.Trashcan
