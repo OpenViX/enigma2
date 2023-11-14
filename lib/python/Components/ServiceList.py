@@ -27,7 +27,7 @@ class ServiceList(GUIComponent):
 	def __init__(self, serviceList):
 		self.serviceList = serviceList
 		GUIComponent.__init__(self)
-		self.l = eListboxServiceContent()
+		self.l = eListboxServiceContent() # noqa: E741
 
 		pic = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/folder.png"))
 		pic and self.l.setPixmap(self.l.picFolder, pic)
@@ -218,7 +218,8 @@ class ServiceList(GUIComponent):
 		def selectionPixmapLarge(value):
 			two_lines_val = int(config.usage.servicelist_twolines.value)
 			if two_lines_val:
-				self.l.setSelectionPicture(LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, value)))
+				pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, value))
+				pic and self.l.setSelectionPicture(pic)
 
 		for (attrib, value) in self.skinAttributes[:]:
 			try:
