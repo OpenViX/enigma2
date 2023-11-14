@@ -215,6 +215,7 @@ class ServiceList(GUIComponent):
 			
 		def textSeparator(value):
 			self.l.setTextSeparator(value)
+
 		def selectionPixmapLarge(value):
 			two_lines_val = int(config.usage.servicelist_twolines.value)
 			if two_lines_val:
