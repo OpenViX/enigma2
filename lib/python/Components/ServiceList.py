@@ -27,7 +27,7 @@ class ServiceList(GUIComponent):
 	def __init__(self, serviceList):
 		self.serviceList = serviceList
 		GUIComponent.__init__(self)
-		self.l = eListboxServiceContent()  # noqa: E741
+		self.l = eListboxServiceContent()
 
 		pic = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/folder.png"))
 		pic and self.l.setPixmap(self.l.picFolder, pic)
@@ -55,8 +55,7 @@ class ServiceList(GUIComponent):
 
 		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/record.png"))
 		pic and self.l.setPixmap(self.l.picRecord, pic)
-
-		# Icons for two lines alternative mode
+		
 		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/ico_hd-fs8.png"))
 		pic and self.l.setPixmap(self.l.picHD, pic)
 		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/ico_sd-fs8.png"))
@@ -83,6 +82,7 @@ class ServiceList(GUIComponent):
 		self.progressBarWidth = 52
 		self.progressPercentWidth = 0
 		self.fieldMargins = 10
+		self.sidesMargin = 0
 		self.ItemHeight = None
 		self.skinItemHeight = None
 
@@ -209,6 +209,16 @@ class ServiceList(GUIComponent):
 
 		def itemsDistances(value):
 			self.l.setItemsDistances(parseScale(value))
+			
+		def sidesMargin(value):
+			self.sidesMargin = parseScale(value)
+			
+		def textSeparator(value):
+			self.l.setTextSeparator(value)
+		def selectionPixmapLarge(value):
+			two_lines_val = int(config.usage.servicelist_twolines.value)
+			if two_lines_val:
+				self.l.setSelectionPicture(LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, value)))
 
 		for (attrib, value) in self.skinAttributes[:]:
 			try:
@@ -443,10 +453,7 @@ class ServiceList(GUIComponent):
 		self.setItemsPerPage()
 		two_lines_val = int(config.usage.servicelist_twolines.value)
 		show_two_lines = two_lines_val and mode == self.MODE_FAVOURITES
-		if two_lines_val == 3:
-			self.ItemHeight = 86
-		else:
-			self.ItemHeight *= (2 if show_two_lines else 1)
+		self.ItemHeight *= (2 if show_two_lines else 1)
 		self.l.setItemHeight(self.ItemHeight)
 		self.l.setVisualMode(eListboxServiceContent.visModeComplex if two_lines_val < 3 else eListboxServiceContent.visSkinDefined)
 
@@ -464,21 +471,21 @@ class ServiceList(GUIComponent):
 			channelNumberWidth = config.usage.alternative_number_mode.value and getTextBoundarySize(self.instance, self.ServiceNumberFont, self.instance.size(), "0000").width() or getTextBoundarySize(self.instance, self.ServiceNumberFont, self.instance.size(), "00000").width()
 			channelNumberSpace = self.fieldMargins
 
-		self.l.setElementPosition(self.l.celServiceNumber, eRect(0, 0, channelNumberWidth, self.ItemHeight))
+		self.l.setElementPosition(self.l.celServiceNumber, eRect(self.sidesMargin, 0, channelNumberWidth, self.ItemHeight))
 
 		progressWidth = self.progressBarWidth
 		if "perc" in config.usage.show_event_progress_in_servicelist.value:
 			progressWidth = self.progressPercentWidth or self.progressBarWidth
 
 		if "left" in config.usage.show_event_progress_in_servicelist.value:
-			self.l.setElementPosition(self.l.celServiceEventProgressbar, eRect(channelNumberWidth + channelNumberSpace, 0, progressWidth, self.ItemHeight))
-			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth + channelNumberSpace + progressWidth + self.fieldMargins, 0, rowWidth - (channelNumberWidth + channelNumberSpace + progressWidth + self.fieldMargins), self.ItemHeight))
+			self.l.setElementPosition(self.l.celServiceEventProgressbar, eRect(channelNumberWidth + channelNumberSpace + self.sidesMargin, 0, progressWidth, self.ItemHeight))
+			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth + channelNumberSpace + progressWidth + self.fieldMargins + self.sidesMargin, 0, rowWidth - (channelNumberWidth + channelNumberSpace + progressWidth + self.fieldMargins), self.ItemHeight))
 		elif "right" in config.usage.show_event_progress_in_servicelist.value:
 			self.l.setElementPosition(self.l.celServiceEventProgressbar, eRect(rowWidth - progressWidth, 0, progressWidth, self.ItemHeight))
-			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth + channelNumberSpace, 0, rowWidth - (channelNumberWidth + channelNumberSpace + progressWidth + self.fieldMargins), self.ItemHeight))
+			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth + channelNumberSpace + self.sidesMargin, 0, rowWidth - (channelNumberWidth + channelNumberSpace + progressWidth + self.fieldMargins), self.ItemHeight))
 		else:
 			self.l.setElementPosition(self.l.celServiceEventProgressbar, eRect(0, 0, 0, 0))
-			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth + channelNumberSpace, 0, rowWidth - (channelNumberWidth + channelNumberSpace), self.ItemHeight))
+			self.l.setElementPosition(self.l.celServiceName, eRect(channelNumberWidth + channelNumberSpace + self.sidesMargin, 0, rowWidth - (channelNumberWidth + channelNumberSpace + self.sidesMargin), self.ItemHeight))
 
 		self.l.setElementFont(self.l.celServiceName, self.ServiceNameFont)
 		self.l.setElementFont(self.l.celServiceNumber, self.ServiceNumberFont)

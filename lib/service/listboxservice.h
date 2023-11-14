@@ -102,8 +102,10 @@ public:
 	void setProgressbarBorderWidth(int value) { m_progressbar_border_width = value; }
 	void setNonplayableMargins(int value) { m_nonplayable_margins = value; }
 	void setItemsDistances(int value) { m_items_distances = value; }
+	void setSidesMargin(int value) { m_sides_margin = value; }
 
 	void setNextTitle(const std::string &string) { m_next_title = string; }
+	void setTextSeparator(const std::string &string) { m_separator = string; }
 
 	static void setGetPiconNameFunc(SWIG_PYOBJECT(ePyObject) func);
 
@@ -198,8 +200,10 @@ private:
 	int m_progressbar_border_width;
 	int m_nonplayable_margins;
 	int m_items_distances;
+	int m_sides_margin;
 
 	std::string m_next_title;
+	std::string m_separator;
 };
 
 #endif
