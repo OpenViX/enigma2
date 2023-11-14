@@ -55,7 +55,7 @@ class ServiceList(GUIComponent):
 
 		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/record.png"))
 		pic and self.l.setPixmap(self.l.picRecord, pic)
-		
+
 		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/ico_hd-fs8.png"))
 		pic and self.l.setPixmap(self.l.picHD, pic)
 		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/ico_sd-fs8.png"))
@@ -209,10 +209,10 @@ class ServiceList(GUIComponent):
 
 		def itemsDistances(value):
 			self.l.setItemsDistances(parseScale(value))
-			
+
 		def sidesMargin(value):
 			self.sidesMargin = parseScale(value)
-			
+
 		def textSeparator(value):
 			self.l.setTextSeparator(value)
 
