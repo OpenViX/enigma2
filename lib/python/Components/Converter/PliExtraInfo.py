@@ -545,7 +545,7 @@ class PliExtraInfo(Poll, Converter, object):
 			elif field == "TransponderModulationFEC":
 				val = self.createModulation(fedata) + '-' + self.createFEC(fedata, feraw)
 			elif field == "TransponderName":
-				val = self.createTransponderName(feraw, info)
+				val = self.createTransponderName(feraw)
 			elif field == "ProviderName":
 				val = self.createProviderName(info)
 			elif field in ("NewLine", "NL"):
@@ -618,41 +618,25 @@ class PliExtraInfo(Poll, Converter, object):
 	def createTunerSystem(self, fedata):
 		return fedata.get("system") or ""
 
-	def namespace(self, info):
-		if "%3a//127" in info.getInfoString(iServiceInformation.sServiceref).lower():
-			nmspc = info.getInfo(iServiceInformation.sNamespace) & 0xFFFFFFFF
-			namespace = "%08X" % nmspc
-			orbpos = int(namespace[:4], 16)
-			if orbpos > 1800:
-				return str((float(3600 - orbpos)) / 10.0) + "\xb0" + "W"
-			elif orbpos > 0:
-				return str((float(orbpos)) / 10.0) + "\xb0" + "E"
-		else:
-			return ""
-
-
-	def createOrbPos(self, feraw, info):
+	def createOrbPos(self, feraw):
 		orbpos = feraw.get("orbital_position")
 		if orbpos is not None:
 			if orbpos > 1800:
 				return str((float(3600 - orbpos)) / 10.0) + "\xb0" + "W"
 			elif orbpos > 0:
 				return str((float(orbpos)) / 10.0) + "\xb0" + "E"
-		else:
-			orbpos = self.namespace(info)
-			return orbpos
+		return ""
 
-	def createOrbPosOrTunerSystem(self, fedata, feraw, info):
-		orbpos = self.createOrbPos(feraw, info)
+	def createOrbPosOrTunerSystem(self, fedata, feraw):
+		orbpos = self.createOrbPos(feraw)
 		if orbpos != "":
 			return orbpos
 		return self.createTunerSystem(fedata)
 
-	def createTransponderName(self, feraw, info):
+	def createTransponderName(self, feraw):
 		orbpos = feraw.get("orbital_position")
 		if orbpos is None:  # Not satellite
-			orbpos = self.namespace(info)
-			return orbpos
+			return ""
 		freq = feraw.get("frequency")
 		if freq and freq < 10700000:  # C-band
 			if orbpos > 1800:
@@ -760,14 +744,7 @@ class PliExtraInfo(Poll, Converter, object):
 			return str((float(orbpos)) / 10.0) + "E"
 
 	def createProviderName(self, info):
-		refstr = info.getInfoString(iServiceInformation.sServiceref)
-		if "%3a//" in refstr.lower() and not "127.0.0.1" in refstr and not "0.0.0.0" in refstr and not "localhost" in refstr:
-			return ""
-		elif "%3a//127" in refstr and "17999" in refstr:
-			provider = self.namespace(info).replace("28.2\xb0E", "Sky UK").replace("19.2\xb0E", "Sky Deutschland").replace("13.0\xb0E", "Sky Italia")
-			return "%s" % provider
-		else:
-			return info.getInfoString(iServiceInformation.sProvider)
+		return info.getInfoString(iServiceInformation.sProvider)
 
 	def createMisPls(self, fedata):
 		tmp = ""
@@ -948,7 +925,7 @@ class PliExtraInfo(Poll, Converter, object):
 			return self.createModulation(fedata)
 
 		if textType == "OrbitalPosition":
-			return self.createOrbPos(feraw, info)
+			return self.createOrbPos(feraw)
 
 		if textType == "TunerType":
 			return self.createTunerType(feraw)
@@ -957,7 +934,7 @@ class PliExtraInfo(Poll, Converter, object):
 			return self.createTunerSystem(fedata)
 
 		if self.type == "OrbitalPositionOrTunerSystem":
-			return self.createOrbPosOrTunerSystem(fedata, feraw, info)
+			return self.createOrbPosOrTunerSystem(fedata, feraw)
 
 		if textType == "TerrestrialChannelNumber":
 			return self.createChannelNumber(fedata, feraw)
