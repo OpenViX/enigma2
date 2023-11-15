@@ -628,10 +628,10 @@ class PliExtraInfo(Poll, Converter, object):
 
 	def getOrbPosFromInfo(self, info):
 		if "%3a//127" in info.getInfoString(iServiceInformation.sServiceref).lower():
-			return (x := info.getInfo(iServiceInformation.sNamespace)) and (x & 0xFFFFFFFF) >> 16
+			return (x:=info.getInfo(iServiceInformation.sNamespace)) and (x & 0xFFFFFFFF) >> 16
 
 	def createOrbPosFromInfo(self, info):
-		if (orbpos := self.getOrbPosFromInfo(info)) is not None:
+		if (orbpos:=self.getOrbPosFromInfo(info)) is not None:
 			return self.formatOrbPos(orbpos)
 		else:
 			return ""
@@ -764,7 +764,7 @@ class PliExtraInfo(Poll, Converter, object):
 		if "%3a//" in refstr.lower() and "127.0.0.1" not in refstr and "0.0.0.0" not in refstr and "localhost" not in refstr:
 			return ""
 		elif "%3a//127" in refstr and "17999" in refstr:
-			return {282: "Sky UK", 192: "Sky Deutschland", 130: "Sky Italia"}.get((pos := self.getOrbPosFromInfo(info)), self.formatOrbPos(pos))
+			return {282: "Sky UK", 192: "Sky Deutschland", 130: "Sky Italia"}.get((pos:=self.getOrbPosFromInfo(info)), self.formatOrbPos(pos))
 		else:
 			return info.getInfoString(iServiceInformation.sProvider)
 
