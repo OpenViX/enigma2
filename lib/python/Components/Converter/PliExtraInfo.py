@@ -618,14 +618,17 @@ class PliExtraInfo(Poll, Converter, object):
 	def createTunerSystem(self, fedata):
 		return fedata.get("system") or ""
 
-	def createOrbPos(self, feraw):
-		orbpos = feraw.get("orbital_position")
-		if orbpos is not None:
+	def formatOrbPos(self, orbpos):
+		if isinstance(orbpos, int) and 0 <= orbpos <= 3600:  # sanity
 			if orbpos > 1800:
 				return str((float(3600 - orbpos)) / 10.0) + "\xb0" + "W"
-			elif orbpos > 0:
+			else:
 				return str((float(orbpos)) / 10.0) + "\xb0" + "E"
 		return ""
+
+	def createOrbPos(self, feraw):
+		orbpos = feraw.get("orbital_position")
+		return self.formatOrbPos(orbpos)
 
 	def createOrbPosOrTunerSystem(self, fedata, feraw):
 		orbpos = self.createOrbPos(feraw)
@@ -738,10 +741,8 @@ class PliExtraInfo(Poll, Converter, object):
 
 		if orbpos in sat_names:
 			return sat_names[orbpos]
-		elif orbpos > 1800:
-			return str((float(3600 - orbpos)) / 10.0) + "W"
 		else:
-			return str((float(orbpos)) / 10.0) + "E"
+			return self.formatOrbPos(orbpos)
 
 	def createProviderName(self, info):
 		return info.getInfoString(iServiceInformation.sProvider)
