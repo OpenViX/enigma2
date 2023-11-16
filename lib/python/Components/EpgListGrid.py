@@ -660,7 +660,7 @@ class EPGListGrid(EPGListBase):
 						else:
 							recIconHeight = top + height - pix_height - applySkinFactor(5)
 						if matchType == 0:
-							pos = (left + xpos + ewidth - applySkinFactor(10), recIconHeight)
+							pos = (left + xpos + ewidth - pix_width - applySkinFactor(5), recIconHeight)
 						else:
 							pos = (left + xpos + ewidth - pix_width - applySkinFactor(5), recIconHeight)
 						res.append(MultiContentEntryPixmapAlphaBlend(
