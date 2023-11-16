@@ -987,14 +987,13 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 			if (isMarker || isDirectory) {
 				ePtr<gPixmap> &pixmap_mDir  = isMarker ? m_pixmaps[picMarker] : isDirectory ? m_pixmaps[picFolder] : m_pixmaps[picElements];
 				if (pixmap_mDir) {
-					eSize pixmap_size = pixmap_mDir->size();
-					eRect area = eRect(xoffs, offset.y() + (ctrlHeight - pixmap_size.height())/2, pixmap_size.width(), pixmap_size.height());
+					int pflags = gPainter::BT_ALPHABLEND | gPainter::BT_KEEP_ASPECT_RATIO | gPainter::BT_HALIGN_CENTER | gPainter::BT_VALIGN_CENTER;
+					eRect area = eRect(xoffs, offset.y(), 125, m_itemheight);
 					painter.clip(area);
-					painter.blit(pixmap_mDir, ePoint(area.left(), area.top()), area, gPainter::BT_ALPHABLEND);
+					painter.blitScale(pixmap_mDir, eRect(xoffs, offset.y(), 125, m_itemheight), area, pflags);
 					painter.clippop();
-				
-					xoffs += pixmap_size.width() + 16 + 8;
 				}
+				xoffs += 125 + 16 + 8;
 			}
 
 			// channel number + name
@@ -1475,19 +1474,21 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					{
 						eSize pixmap_size = pixmap->size();
 						eRect area;
-						if (e == celFolderPixmap || m_element_position[celServiceNumber].width() < pixmap_size.width())
+						if (e == celFolderPixmap || m_element_position[celServiceNumber].width() < m_itemheight)
 						{
 							area = m_element_position[celServiceName];
 							if (m_element_position[celServiceEventProgressbar].left() == 0)
 								area.setLeft(0);
-							xoffset = pixmap_size.width() + m_items_distances;
+							xoffset = m_itemheight + m_items_distances;
 						}
 						else
 							area = m_element_position[celServiceNumber];
-						int correction = (area.height() - pixmap_size.height()) / 2;
 						area.moveBy(offset);
 						painter.clip(area);
-						painter.blit(pixmap, ePoint(area.left(), offset.y() + correction), area, gPainter::BT_ALPHABLEND);
+						painter.blitScale(pixmap,
+										eRect(area.left(), offset.y(), m_itemheight, area.height()),
+										area,
+										gPainter::BT_ALPHABLEND | gPainter::BT_KEEP_ASPECT_RATIO | gPainter::BT_HALIGN_CENTER | gPainter::BT_VALIGN_CENTER);
 						painter.clippop();
 					}
 				}
