@@ -454,7 +454,7 @@ class ServiceList(GUIComponent):
 		self.mode = mode
 		self.setItemsPerPage()
 		two_lines_val = int(config.usage.servicelist_twolines.value)
-		show_two_lines = two_lines_val and mode == self.MODE_FAVOURITES
+		show_two_lines = (two_lines_val and mode == self.MODE_FAVOURITES) or two_lines_val == 3
 		self.ItemHeight *= (2 if show_two_lines else 1)
 		self.l.setItemHeight(self.ItemHeight)
 		self.l.setVisualMode(eListboxServiceContent.visModeComplex if two_lines_val < 3 else eListboxServiceContent.visSkinDefined)
