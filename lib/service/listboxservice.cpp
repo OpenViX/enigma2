@@ -955,7 +955,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 			xoffs = xoffset;
 			if (PyCallable_Check(m_GetPiconNameFunc))
 			{
-				eRect piconArea =  eRect(xoffs, offset.y(), 125, m_itemheight);//m_element_position[celServiceInfo];
+				eRect piconArea =  eRect(xoffs, offset.y(), 125, m_itemheight);
 				/* PIcons are usually about 100:60. Make it a
 				* bit wider in case the icons are diffently
 				* shaped, and to add a bit of margin between
@@ -981,7 +981,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					}
 					painter.clippop();
 				}
-				xoffs += 125 + 16 + 8;
+				if (!(isMarker || isDirectory))	xoffs += 125 + 16 + 8;
 			}
 
 			if (isMarker || isDirectory) {
