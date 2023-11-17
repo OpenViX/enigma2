@@ -224,7 +224,7 @@ class ServiceList(GUIComponent):
 
 		def markerLine(value):
 			self.l.setMarkerAsLine(parseScale(value))
-		
+
 		def markerTextAlignment(value):
 			self.l.setMarkerTextAlignment(value)
 
