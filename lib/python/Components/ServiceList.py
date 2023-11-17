@@ -70,6 +70,7 @@ class ServiceList(GUIComponent):
 		self.root = None
 		self.mode = self.MODE_NORMAL
 		self.listHeight = 0
+		self.listHeightOrig = 0
 		self.listWidth = 0
 		self.ServiceNumberFontName = "Regular"
 		self.ServiceNumberFontSize = 20
@@ -237,6 +238,7 @@ class ServiceList(GUIComponent):
 		rc = GUIComponent.applySkin(self, desktop, parent)
 		self.listHeight = self.instance.size().height()
 		self.listWidth = self.instance.size().width()
+		self.listHeightOrig = self.listHeight
 		self.setFontsize()
 		self.setMode(self.mode)
 		return rc
@@ -462,6 +464,16 @@ class ServiceList(GUIComponent):
 		two_lines_val = int(config.usage.servicelist_twolines.value)
 		show_two_lines = (two_lines_val and mode == self.MODE_FAVOURITES) or two_lines_val == 3
 		self.ItemHeight *= (2 if show_two_lines else 1)
+		if two_lines_val == 3 and self.ItemHeight > 86:
+			self.ItemHeight = 86
+		
+		if two_lines_val == 3:
+			numberOfRows = self.listHeightOrig // self.ItemHeight
+			itemHeight = self.listHeightOrig // numberOfRows
+			self.ItemHeight = itemHeight
+			if self.listHeightOrig:
+				self.instance.resize(eSize(self.listWidth, self.listHeightOrig // itemHeight * itemHeight))
+
 		self.l.setItemHeight(self.ItemHeight)
 		self.l.setVisualMode(eListboxServiceContent.visModeComplex if two_lines_val < 3 else eListboxServiceContent.visSkinDefined)
 
