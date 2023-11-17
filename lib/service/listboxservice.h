@@ -106,9 +106,11 @@ public:
 	void setNonplayableMargins(int value) { m_nonplayable_margins = value; }
 	void setItemsDistances(int value) { m_items_distances = value; }
 	void setSidesMargin(int value) { m_sides_margin = value; }
+	void setMarkerAsLine(int value) { m_marker_as_line = value; }
 
 	void setNextTitle(const std::string &string) { m_next_title = string; }
 	void setTextSeparator(const std::string &string) { m_separator = string; }
+	void setMarkerTextAlignment(const std::string &string) { m_marker_alignment = string; } // currently supports left and center
 
 	static void setGetPiconNameFunc(SWIG_PYOBJECT(ePyObject) func);
 
@@ -204,9 +206,11 @@ private:
 	int m_nonplayable_margins;
 	int m_items_distances;
 	int m_sides_margin;
+	int m_marker_as_line;
 
 	std::string m_next_title;
 	std::string m_separator;
+	std::string m_marker_alignment;
 };
 
 #endif

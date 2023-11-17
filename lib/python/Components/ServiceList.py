@@ -222,6 +222,12 @@ class ServiceList(GUIComponent):
 				pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, value))
 				pic and self.l.setSelectionPicture(pic)
 
+		def markerLine(value):
+			self.l.setMarkerAsLine(parseScale(value))
+		
+		def markerTextAlignment(value):
+			self.l.setMarkerTextAlignment(value)
+
 		for (attrib, value) in self.skinAttributes[:]:
 			try:
 				locals().get(attrib)(value)

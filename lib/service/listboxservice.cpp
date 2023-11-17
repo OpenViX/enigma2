@@ -382,7 +382,7 @@ void eListboxServiceContent::sort()
 DEFINE_REF(eListboxServiceContent);
 
 eListboxServiceContent::eListboxServiceContent()
-	:m_visual_mode(visModeSimple), m_size(0), m_current_marked(false), m_itemheight(25), m_hide_number_marker(false), m_show_two_lines(0), m_servicetype_icon_mode(0), m_crypto_icon_mode(0), m_record_indicator_mode(0), m_column_width(0), m_progressbar_height(6), m_progressbar_border_width(2), m_nonplayable_margins(10), m_items_distances(8), m_sides_margin(0)
+	:m_visual_mode(visModeSimple), m_size(0), m_current_marked(false), m_itemheight(25), m_hide_number_marker(false), m_show_two_lines(0), m_servicetype_icon_mode(0), m_crypto_icon_mode(0), m_record_indicator_mode(0), m_column_width(0), m_progressbar_height(6), m_progressbar_border_width(2), m_nonplayable_margins(10), m_items_distances(8), m_sides_margin(0), m_marker_as_line(0)
 {
 	memset(m_color_set, 0, sizeof(m_color_set));
 	cursorHome();
@@ -984,21 +984,48 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				if (!(isMarker || isDirectory))	xoffs += 125 + 16 + 8;
 			}
 
-			if (isMarker || isDirectory) {
-				ePtr<gPixmap> &pixmap_mDir  = isMarker ? m_pixmaps[picMarker] : isDirectory ? m_pixmaps[picFolder] : m_pixmaps[picElements];
-				if (pixmap_mDir) {
-					int pflags = gPainter::BT_ALPHABLEND | gPainter::BT_KEEP_ASPECT_RATIO | gPainter::BT_HALIGN_CENTER | gPainter::BT_VALIGN_CENTER;
-					eRect area = eRect(xoffs, offset.y(), 125, m_itemheight);
-					painter.clip(area);
-					painter.blitScale(pixmap_mDir, eRect(xoffs, offset.y(), 125, m_itemheight), area, pflags);
-					painter.clippop();
-				}
-				xoffs += 125 + 16 + 8;
-			}
-
 			// channel number + name
 			if (service_info)
 				service_info->getName(ref, text);
+
+			ePtr<eTextPara> paraName = new eTextPara(eRect(0, 0, m_itemsize.width(), m_itemheight/2));
+			paraName->setFont(m_element_font[celServiceName]);
+			paraName->renderString(text.c_str());
+			eRect bboxName = paraName->getBoundBox();
+
+			int xoffsMarker = 16 + 125 + 16 + 8;
+			int correction = 0;
+			if (!m_marker_alignment.empty() && m_marker_alignment == "center" && isMarker) {
+				xoffsMarker = (m_itemsize.width() - bboxName.width()) / 2;
+				correction = 16;
+			}
+
+			if (isMarker || isDirectory) {
+				ePtr<gPixmap> &pixmap_mDir  = isMarker ? m_pixmaps[picMarker] : isDirectory ? m_pixmaps[picFolder] : m_pixmaps[picElements];
+				if (isDirectory || (isMarker && !m_marker_as_line)) {
+					if (pixmap_mDir) {
+						eSize pixmap_size = pixmap_mDir->size();
+						if (pixmap_size.width() < 125 || pixmap_size.height() < m_itemheight){
+							eRect area = eRect(xoffs, offset.y() + (ctrlHeight - pixmap_size.height())/2, pixmap_size.width(), pixmap_size.height());
+							painter.clip(area);
+							painter.blit(pixmap_mDir, ePoint(area.left(), area.top()), area, gPainter::BT_ALPHABLEND);
+						} else {
+							int pflags = gPainter::BT_ALPHABLEND | gPainter::BT_KEEP_ASPECT_RATIO | gPainter::BT_HALIGN_CENTER | gPainter::BT_VALIGN_CENTER;
+							eRect area = eRect(xoffs, offset.y(), 125, m_itemheight);
+							painter.clip(area);
+							painter.blitScale(pixmap_mDir, eRect(xoffs, offset.y(), 125, m_itemheight), area, pflags);
+						}
+						painter.clippop();
+					}
+				} else if (isMarker && m_marker_as_line) {
+					eRect firstLineRect = eRect(xoffs, offset.y() + (m_itemheight - m_marker_as_line) / 2, xoffsMarker - 16 - 8 - xoffs - correction, m_marker_as_line);
+					painter.fill(firstLineRect);
+					int secondLineOffset = xoffsMarker + bboxName.width() + 16 + 8 - correction;
+					eRect secondLineRect = eRect(secondLineOffset, offset.y() + (m_itemheight - m_marker_as_line) / 2, m_itemsize.width() - secondLineOffset - 16 - 8, m_marker_as_line);
+					painter.fill(secondLineRect);
+				}
+				xoffs += 125 + 16 + 8;
+			}
 
 			if (!isMarker && !isDirectory) {
 				std::string chNum = "";
@@ -1015,7 +1042,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 			para->setFont(m_element_font[celServiceName]);
 			para->renderString(text.c_str());
 			eRect bbox = para->getBoundBox();
-			painter.renderPara(para, ePoint(xoffs, offset.y() + yoffs + ((ctrlHeight - bbox.height())/2)));
+			painter.renderPara(para, ePoint(xoffsMarker - correction , offset.y() + yoffs + ((ctrlHeight - bbox.height())/2)));
 
 			// event name
 			if (is_event)
@@ -1473,22 +1500,31 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					if (pixmap)
 					{
 						eSize pixmap_size = pixmap->size();
+						bool notScale = (e == celMarkerPixmap) && (pixmap_size.width() < 125 || pixmap_size.height() < m_itemheight);
 						eRect area;
 						if (e == celFolderPixmap || m_element_position[celServiceNumber].width() < m_itemheight)
 						{
 							area = m_element_position[celServiceName];
 							if (m_element_position[celServiceEventProgressbar].left() == 0)
 								area.setLeft(0);
-							xoffset = m_itemheight + m_items_distances;
+							if (notScale) 
+								xoffset = pixmap_size.width() + m_items_distances;
+							else
+								xoffset = 125 + m_items_distances;
 						}
 						else
 							area = m_element_position[celServiceNumber];
 						area.moveBy(offset);
 						painter.clip(area);
-						painter.blitScale(pixmap,
-										eRect(area.left(), offset.y(), m_itemheight, area.height()),
-										area,
-										gPainter::BT_ALPHABLEND | gPainter::BT_KEEP_ASPECT_RATIO | gPainter::BT_HALIGN_CENTER | gPainter::BT_VALIGN_CENTER);
+						if (notScale) {
+							int correction = (area.height() - pixmap_size.height()) / 2;
+							painter.blit(pixmap, ePoint(area.left(), offset.y() + correction), area, gPainter::BT_ALPHABLEND);
+						} else {
+							painter.blitScale(pixmap,
+											eRect(area.left(), offset.y(), m_itemheight, area.height()),
+											area,
+											gPainter::BT_ALPHABLEND | gPainter::BT_KEEP_ASPECT_RATIO | gPainter::BT_HALIGN_CENTER | gPainter::BT_VALIGN_CENTER);
+						}
 						painter.clippop();
 					}
 				}
