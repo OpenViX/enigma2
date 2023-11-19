@@ -85,7 +85,7 @@ class ServiceList(GUIComponent):
 		self.fieldMargins = 10
 		self.sidesMargin = 0
 		self.ItemHeight = 0
-		self.ItemHeightTwoLine = applySkinFactor(86)
+		self.ItemHeightTwoLine = applySkinFactor(58)
 
 		self.onSelectionChanged = []
 
