@@ -367,10 +367,9 @@ class ServiceList(GUIComponent):
 		itemHeight = self.ItemHeight if not two_lines_val else self.ItemHeightTwoLine
 		if numberOfRows > 0:
 			itemHeight = self.listHeight // numberOfRows
-			self.ItemHeight = itemHeight
 			self.l.setItemHeight(itemHeight)
 		if self.listHeight and itemHeight:
-			self.instance.resize(eSize(self.listWidth, self.listHeight // itemHeight * itemHeight))
+			self.instance.resize(eSize(self.listWidth, self.listHeightOrig // itemHeight * itemHeight))
 
 	def getSelectionPosition(self):
 		# Adjust absolute index to index in displayed view
