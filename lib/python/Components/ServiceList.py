@@ -84,8 +84,8 @@ class ServiceList(GUIComponent):
 		self.progressPercentWidth = 0
 		self.fieldMargins = 10
 		self.sidesMargin = 0
-		self.ItemHeight = None
-		self.skinItemHeight = None
+		self.ItemHeight = 0
+		self.ItemHeightTwoLine = 86
 
 		self.onSelectionChanged = []
 
@@ -169,9 +169,6 @@ class ServiceList(GUIComponent):
 			pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, value))
 			pic and self.l.setPixmap(self.l.picServiceEventProgressbar, pic)
 
-		def serviceItemHeight(value):
-			self.skinItemHeight = parseScale(value)
-
 		def serviceNameFont(value):
 			font = parseFont(value, ((1, 1), (1, 1)))
 			self.ServiceNameFontName = font.family
@@ -222,9 +219,18 @@ class ServiceList(GUIComponent):
 			if two_lines_val:
 				pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, value))
 				pic and self.l.setSelectionPicture(pic)
+		
+		def itemHeightTwoLine(value):
+			self.ItemHeightTwoLine = parseScale(value)
+			
+		def itemHeight(value):
+			self.ItemHeight = parseScale(value)
 
 		def markerLine(value):
 			self.l.setMarkerAsLine(parseScale(value))
+			
+		def markerLineColor(value):
+			self.l.setMarkerLineColor(parseColor(value))
 
 		def markerTextAlignment(value):
 			self.l.setMarkerTextAlignment(value)
@@ -355,10 +361,15 @@ class ServiceList(GUIComponent):
 
 	def setItemsPerPage(self):
 		numberOfRows = config.usage.serviceitems_per_page.value
-		itemHeight = (self.listHeight // numberOfRows if numberOfRows > 0 else self.skinItemHeight) or 28
-		self.ItemHeight = itemHeight
-		self.l.setItemHeight(itemHeight)
-		if self.listHeight:
+		two_lines_val = int(config.usage.servicelist_twolines.value)
+		if two_lines_val == 1:
+			numberOfRows = numberOfRows // 2
+		itemHeight = self.ItemHeight if not two_lines_val else self.ItemHeightTwoLine
+		if numberOfRows > 0:
+			itemHeight = self.listHeight // numberOfRows
+			self.ItemHeight = itemHeight
+			self.l.setItemHeight(itemHeight)
+		if self.listHeight and itemHeight:
 			self.instance.resize(eSize(self.listWidth, self.listHeight // itemHeight * itemHeight))
 
 	def getSelectionPosition(self):
@@ -462,20 +473,8 @@ class ServiceList(GUIComponent):
 		self.mode = mode
 		self.setItemsPerPage()
 		two_lines_val = int(config.usage.servicelist_twolines.value)
-		show_two_lines = (two_lines_val and mode == self.MODE_FAVOURITES) or two_lines_val == 3
-		self.ItemHeight *= (2 if show_two_lines else 1)
-		if two_lines_val == 3 and self.ItemHeight > 86:
-			self.ItemHeight = 86
-		
-		if two_lines_val == 3:
-			numberOfRows = self.listHeightOrig // self.ItemHeight
-			itemHeight = self.listHeightOrig // numberOfRows
-			self.ItemHeight = itemHeight
-			if self.listHeightOrig:
-				self.instance.resize(eSize(self.listWidth, self.listHeightOrig // itemHeight * itemHeight))
-
-		self.l.setItemHeight(self.ItemHeight)
-		self.l.setVisualMode(eListboxServiceContent.visModeComplex if two_lines_val < 3 else eListboxServiceContent.visSkinDefined)
+		self.l.setItemHeight(self.ItemHeight if two_lines_val == 0 else self.ItemHeightTwoLine)
+		self.l.setVisualMode(eListboxServiceContent.visModeComplex if two_lines_val == 0 else eListboxServiceContent.visSkinDefined)
 
 		if config.usage.service_icon_enable.value:
 			self.l.setGetPiconNameFunc(getPiconName)
@@ -510,18 +509,14 @@ class ServiceList(GUIComponent):
 		self.l.setElementFont(self.l.celServiceName, self.ServiceNameFont)
 		self.l.setElementFont(self.l.celServiceNumber, self.ServiceNumberFont)
 		self.l.setElementFont(self.l.celServiceInfo, self.ServiceInfoFont)
-		if show_two_lines and two_lines_val == 2:
-			self.l.setElementFont(self.l.celServiceNextInfo, self.ServiceNextInfoFont)
-			nextTitle = _("NEXT") + ":  "
-			self.l.setNextTitle(nextTitle)
 		if "perc" in config.usage.show_event_progress_in_servicelist.value:
 			self.l.setElementFont(self.l.celServiceEventProgressbar, self.ServiceInfoFont)
-		self.l.setShowTwoLines(two_lines_val)
+		
 		self.l.setHideNumberMarker(config.usage.hide_number_markers.value)
 		self.l.setServiceTypeIconMode(int(config.usage.servicetype_icon_mode.value))
 		self.l.setCryptoIconMode(int(config.usage.crypto_icon_mode.value))
 		self.l.setRecordIndicatorMode(int(config.usage.record_indicator_mode.value))
-		self.l.setColumnWidth(-1 if show_two_lines else int(config.usage.servicelist_column.value))
+		self.l.setColumnWidth(-1 if two_lines_val > 0 else int(config.usage.servicelist_column.value))
 
 	def selectionEnabled(self, enabled):
 		if self.instance is not None:
