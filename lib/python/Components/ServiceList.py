@@ -1,5 +1,5 @@
 from Components.GUIComponent import GUIComponent
-from skin import parseColor, parseFont, parseScale
+from skin import parseColor, parseFont, parseScale, applySkinFactor
 
 from enigma import eListboxServiceContent, eListbox, eServiceCenter, eServiceReference, gFont, eRect, eSize
 from Tools.LoadPixmap import LoadPixmap
@@ -85,7 +85,7 @@ class ServiceList(GUIComponent):
 		self.fieldMargins = 10
 		self.sidesMargin = 0
 		self.ItemHeight = 0
-		self.ItemHeightTwoLine = 86
+		self.ItemHeightTwoLine = applySkinFactor(86)
 
 		self.onSelectionChanged = []
 

@@ -772,7 +772,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 		eServiceReference ref = *m_cursor;
 		std::string orig_ref_str = ref.toString();
 		std::string service_res_str =  toLower(split(orig_ref_str, ":")[2]);
-		//eDebug("[eListboxServiceContent] service_res_str = %s", service_res_str.c_str());
+
 		bool isBackupAvailable = false;
 		int catchUpDays = 0;
 		if (orig_ref_str.find("@") != std::string::npos) {
@@ -783,13 +783,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 			catchUpDays = std::stoi(split(split(orig_ref_str, "|<|")[1], "@")[0]);
 		}
 		
-		if (ref.type == 0x13E9) {
-			if (endsWith(orig_ref_str, ".m3u8")) {
-				ref = eServiceReference(orig_ref_str.replace(0,4,"4097"));
-			} else {
-				ref = eServiceReference(orig_ref_str.replace(0,4,"1"));
-			}
-		}
+
 		/* get service information */
 		ePtr<iStaticServiceInformation> service_info;
 		m_service_center->info(ref, service_info);
