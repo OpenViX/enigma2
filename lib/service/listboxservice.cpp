@@ -669,14 +669,12 @@ bool eListboxServiceContent::checkServiceIsRecorded(eServiceReference ref)
 				for (std::list<eServiceReference>::iterator i(bouquet->m_services.begin()); i != bouquet->m_services.end(); ++i){
 					if (compareServices(*i, it->second))
 						return true;
-					return false;
 				}
 			}
 		}
 		else {
 			if (compareServices(ref, it->second))
 				return true;
-			return false;
 		} 
 	}
 	return false;
