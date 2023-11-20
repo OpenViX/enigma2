@@ -934,7 +934,8 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 			}
 			ePtr<gPixmap> piconPixmap;
 			bool isPIconSVG = false;
-			if (isPlayable && PyCallable_Check(m_GetPiconNameFunc))
+			bool hasPicon = PyCallable_Check(m_GetPiconNameFunc);
+			if (isPlayable && hasPicon)
 			{
 				ePyObject pArgs = PyTuple_New(1);
 				PyTuple_SET_ITEM(pArgs, 0, PyUnicode_FromString(ref.toString().c_str()));
@@ -955,7 +956,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				}
 			}
 			xoffs = xoffset + 16;
-			bool hasPicon = PyCallable_Check(m_GetPiconNameFunc);
+			
 			if (hasPicon)
 			{
 				eRect piconArea =  eRect(xoffs, offset.y(), 125, m_itemheight);
@@ -1168,6 +1169,10 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				event_begin = evt->getBeginTime();
 				event_duration = evt->getDuration();
 			}
+			bool hasPicons = PyCallable_Check(m_GetPiconNameFunc);
+
+			eRect p_area = m_element_position[celServiceInfo];
+			int iconWidth =	p_area.height() * 9 / 5;
 			int xoffeset_marker = 0;
 			int marker_text_width = 0;
 			for (int e = 0; e != celServiceTypePixmap; ++e)
@@ -1300,12 +1305,10 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					int xoffs = 0;
 					ePtr<gPixmap> piconPixmap;
 					bool isPIconSVG = false;
-					eRect p_area = m_element_position[celServiceInfo];
-					const int iconWidth = (p_area.height() * 9 / 5) - m_items_distances;
 					if (e == celServiceName)
 					{
 						//picon stuff
-						if (isPlayable && PyCallable_Check(m_GetPiconNameFunc))
+						if (isPlayable && hasPicons)
 						{
 							ePyObject pArgs = PyTuple_New(1);
 							PyTuple_SET_ITEM(pArgs, 0, PyUnicode_FromString(ref.toString().c_str()));
@@ -1316,11 +1319,12 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 								if (PyUnicode_Check(pRet))
 								{
 									std::string piconFilename = PyUnicode_AsUTF8(pRet);
-									if (endsWith(piconFilename, ".svg")) {
+									if (endsWith(toLower(piconFilename), ".svg")) {
 										isPIconSVG = true;
 									}
-									if (!piconFilename.empty())
+									if (!piconFilename.empty()) {
 										loadImage(piconPixmap, piconFilename.c_str(), 0, isPIconSVG ? iconWidth : 0);
+									}
 								}
 								Py_DECREF(pRet);
 							}
@@ -1350,16 +1354,20 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 						if (isPlayable)
 						{
 							//picon stuff
-							if (PyCallable_Check(m_GetPiconNameFunc) and (m_column_width || piconPixmap))
+							if (hasPicons && (m_column_width || piconPixmap))
 							{
 								eRect area = m_element_position[celServiceInfo];
 
-								m_element_position[celServiceInfo].setLeft(area.left() + iconWidth);
-								m_element_position[celServiceInfo].setWidth(area.width() - iconWidth);
+								iconWidth = area.height() * 9 / 5;
+
+
+								m_element_position[celServiceInfo].setLeft(area.left() + iconWidth + m_items_distances);
+								m_element_position[celServiceInfo].setWidth(area.width() - iconWidth - m_items_distances);
 								area = m_element_position[celServiceName];
-								xoffs += iconWidth;
+								xoffs += iconWidth + m_items_distances;
 								if (piconPixmap)
 								{
+
 									area.moveBy(offset);
 									painter.clip(area);
 									/* PIcons are usually about 100:60. Make it a
@@ -1374,13 +1382,13 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 									{
 										if (isPIconSVG) {
 											painter.blit(piconPixmap,
-											eRect(area.left(), area.top(), iconWidth, m_itemheight),
+											eRect(area.left(), area.top(), iconWidth, area.height()),
 											eRect(),
 											pflags
 											);
 										} else {
 											painter.blitScale(piconPixmap,
-												eRect(area.left(), area.top() + 4, iconWidth, m_itemheight - 8),
+												eRect(area.left(), area.top(), iconWidth, area.height()),
 												area,
 												pflags);
 										}
@@ -1390,7 +1398,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 							}
 
 							//record icon stuff part1
-							int rec_pixmap_xoffs = 0;
+							int rec_pixmap_xoffs = m_items_distances;
 							if (isRecorded && m_record_indicator_mode == 1 && m_pixmaps[picRecord])
 								rec_pixmap_xoffs = m_pixmaps[picRecord]->size().width() + m_items_distances;
 
@@ -1408,8 +1416,6 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 								{
 									eSize pixmap_size = pixmap->size();
 									eRect area = m_element_position[celServiceInfo];
-									m_element_position[celServiceInfo].setLeft(area.left() + pixmap_size.width() + m_items_distances);
-									m_element_position[celServiceInfo].setWidth(area.width() - pixmap_size.width() - m_items_distances * 2);
 									int offs = rec_pixmap_xoffs;
 									if (m_servicetype_icon_mode == 1)
 									{
@@ -1419,6 +1425,8 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 									}
 									else if (m_crypto_icon_mode == 1 && m_pixmaps[picCrypto])
 										offs = offs + m_pixmaps[picCrypto]->size().width() + m_items_distances;
+									m_element_position[celServiceInfo].setLeft(area.left() + offs + pixmap_size.width() + m_items_distances);
+									m_element_position[celServiceInfo].setWidth(area.width() - pixmap_size.width() - offs - m_items_distances * 2);
 									int correction = (area.height() - pixmap_size.height()) / 2;
 									area.moveBy(offset);
 									painter.clip(area);
@@ -1447,8 +1455,8 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 								{
 									if (m_crypto_icon_mode == 2)
 									{
-										m_element_position[celServiceInfo].setLeft(area.left() + pixmap_size.width() + m_items_distances);
-										m_element_position[celServiceInfo].setWidth(area.width() - pixmap_size.width() - m_items_distances * 2);
+										m_element_position[celServiceInfo].setLeft(area.left() + offs + pixmap_size.width() + m_items_distances);
+										m_element_position[celServiceInfo].setWidth(area.width() - pixmap_size.width() - offs - m_items_distances * 2);
 									}
 									painter.clip(area);
 									painter.blit(m_pixmaps[picCrypto], ePoint(area.left() + offs, offset.y() + correction), area, gPainter::BT_ALPHABLEND);
@@ -1461,7 +1469,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 							{
 								eSize pixmap_size = m_pixmaps[picRecord]->size();
 								eRect area = m_element_position[celServiceInfo];
-								int offs = 0;
+								int offs = m_items_distances;
 								if (m_record_indicator_mode == 1)
 								{
 									m_element_position[celServiceInfo].setLeft(area.left() + pixmap_size.width() + m_items_distances);
@@ -1472,10 +1480,10 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 								}
 								int correction = (area.height() - pixmap_size.height()) / 2;
 								area.moveBy(offset);
-								if (m_record_indicator_mode == 2)
+								if (m_record_indicator_mode)
 								{
-									m_element_position[celServiceInfo].setLeft(area.left() + pixmap_size.width() + m_items_distances);
-									m_element_position[celServiceInfo].setWidth(area.width() - pixmap_size.width() - m_items_distances * 2);
+									m_element_position[celServiceInfo].setLeft(area.left() + offs + pixmap_size.width() + m_items_distances);
+									m_element_position[celServiceInfo].setWidth(area.width() - pixmap_size.width() - offs - m_items_distances * 2);
 								}
 								painter.clip(area);
 								painter.blit(m_pixmaps[picRecord], ePoint(area.left() + offs, offset.y() + correction), area, gPainter::BT_ALPHABLEND);
@@ -1523,7 +1531,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 							if (notScale) 
 								xoffset = pixmap_size.width() + m_items_distances;
 							else
-								xoffset = 125 + m_items_distances;
+								xoffset = (hasPicons ? iconWidth : m_itemheight) + m_items_distances;
 						}
 						else
 							area = m_element_position[celServiceNumber];
