@@ -86,6 +86,8 @@ class ServiceList(GUIComponent):
 		self.sidesMargin = 0
 		self.ItemHeight = 0
 		self.ItemHeightTwoLine = applySkinFactor(58)
+		self.ItemHeightSkin = 0
+		self.ItemHeightTwoLineSkin = applySkinFactor(58)
 
 		self.onSelectionChanged = []
 
@@ -222,9 +224,11 @@ class ServiceList(GUIComponent):
 
 		def itemHeightTwoLine(value):
 			self.ItemHeightTwoLine = parseScale(value)
+			self.ItemHeightTwoLineSkin = self.ItemHeightTwoLine
 
 		def itemHeight(value):
 			self.ItemHeight = parseScale(value)
+			self.ItemHeightSkin = self.ItemHeight
 
 		def markerLine(value):
 			self.l.setMarkerAsLine(parseScale(value))
@@ -364,10 +368,14 @@ class ServiceList(GUIComponent):
 		two_lines_val = int(config.usage.servicelist_twolines.value)
 		if two_lines_val == 1:
 			numberOfRows = numberOfRows // 2
-		itemHeight = self.ItemHeight if not two_lines_val else self.ItemHeightTwoLine
+		itemHeight = self.ItemHeightSkin if not two_lines_val else self.ItemHeightTwoLineSkin
 		if numberOfRows > 0:
 			itemHeight = self.listHeight // numberOfRows
-			self.l.setItemHeight(itemHeight)
+		if two_lines_val:
+			self.ItemHeightTwoLine = itemHeight
+		else:
+			self.ItemHeight = itemHeight
+		self.l.setItemHeight(itemHeight)
 		if self.listHeight and itemHeight:
 			self.instance.resize(eSize(self.listWidth, self.listHeightOrig // itemHeight * itemHeight))
 
