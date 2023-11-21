@@ -484,7 +484,7 @@ class ServiceList(GUIComponent):
 		two_lines_val = int(config.usage.servicelist_twolines.value)
 		self.l.setItemHeight(self.ItemHeight if two_lines_val == 0 else self.ItemHeightTwoLine)
 		self.l.setVisualMode(eListboxServiceContent.visModeComplex if two_lines_val == 0 else eListboxServiceContent.visSkinDefined)
-		
+
 		pic = None
 		if two_lines_val:
 			if self.selectionPixmapDouble:
@@ -492,7 +492,7 @@ class ServiceList(GUIComponent):
 		else:
 			if self.selectionPixmapSingle:
 				pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, self.selectionPixmapSingle))
-		
+
 		pic and hasattr(self.l, "setSelectionPicture") and self.l.setSelectionPicture(pic)
 
 		if config.usage.service_icon_enable.value:
