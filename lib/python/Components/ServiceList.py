@@ -367,7 +367,7 @@ class ServiceList(GUIComponent):
 		numberOfRows = config.usage.serviceitems_per_page.value
 		two_lines_val = int(config.usage.servicelist_twolines.value)
 		if two_lines_val == 1:
-			numberOfRows = numberOfRows // 2
+			numberOfRows = int(numberOfRows / ((self.ItemHeightTwoLineSkin / self.ItemHeightSkin)) if self.ItemHeightSkin and self.ItemHeightTwoLineSkin else 2)
 		itemHeight = self.ItemHeightSkin if not two_lines_val else self.ItemHeightTwoLineSkin
 		if numberOfRows > 0:
 			itemHeight = self.listHeight // numberOfRows
