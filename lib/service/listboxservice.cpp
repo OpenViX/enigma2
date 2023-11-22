@@ -1012,38 +1012,44 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				}
 				if (chNum != "") text = chNum + m_separator + text;
 			}
+			ePtr<gPixmap> &pixmap_mDir = isMarker ? m_pixmaps[picMarker] : isDirectory ? m_pixmaps[picFolder] : m_pixmaps[picElements];;
+			if (isMarker || isDirectory) {
+				if (isDirectory || (isMarker && !m_marker_as_line)) {
+					eSize pixmap_size = pixmap_mDir->size();
+					if (pixmap_size.width() < 125 || pixmap_size.height() < m_itemheight)
+						xoffsMarker = xoffs + pixmap_size.width() + 16;
+				} 
+			}
 
 			ePtr<eTextPara> para = new eTextPara(eRect(0, 0, xlpos - xoffsMarker, m_itemheight/2));
 			para->setFont(m_element_font[celServiceName]);
 			para->renderString(text.c_str());
 			eRect bbox = para->getBoundBox();
-			painter.renderPara(para, ePoint(xoffsMarker - correction , offset.y() + yoffs + ((ctrlHeight - bbox.height())/2)));
+			painter.renderPara(para, ePoint(xoffsMarker - correction, offset.y() + yoffs + ((ctrlHeight - bbox.height())/2)));
 
-			if (isMarker || isDirectory) {
-				ePtr<gPixmap> &pixmap_mDir  = isMarker ? m_pixmaps[picMarker] : isDirectory ? m_pixmaps[picFolder] : m_pixmaps[picElements];
-				if (isDirectory || (isMarker && !m_marker_as_line)) {
-					if (pixmap_mDir) {
-						eSize pixmap_size = pixmap_mDir->size();
-						if (pixmap_size.width() < 125 || pixmap_size.height() < m_itemheight){
-							eRect area = eRect(xoffs, offset.y() + (ctrlHeight - pixmap_size.height())/2, pixmap_size.width(), pixmap_size.height());
-							painter.clip(area);
-							painter.blit(pixmap_mDir, ePoint(area.left(), area.top()), area, gPainter::BT_ALPHABLEND);
-						} else {
-							int pflags = gPainter::BT_ALPHABLEND | gPainter::BT_KEEP_ASPECT_RATIO | gPainter::BT_HALIGN_CENTER | gPainter::BT_VALIGN_CENTER;
-							eRect area = eRect(xoffs, offset.y(), 125, m_itemheight);
-							painter.clip(area);
-							painter.blitScale(pixmap_mDir, eRect(xoffs, offset.y(), 125, m_itemheight), area, pflags);
-						}
-						painter.clippop();
+			
+			if (isDirectory || (isMarker && !m_marker_as_line)) {
+				if (pixmap_mDir) {
+					eSize pixmap_size = pixmap_mDir->size();
+					if (pixmap_size.width() < 125 || pixmap_size.height() < m_itemheight){
+						eRect area = eRect(xoffs, offset.y() + (ctrlHeight - pixmap_size.height())/2, pixmap_size.width(), pixmap_size.height());
+						painter.clip(area);
+						painter.blit(pixmap_mDir, ePoint(area.left(), area.top()), area, gPainter::BT_ALPHABLEND);
+					} else {
+						int pflags = gPainter::BT_ALPHABLEND | gPainter::BT_KEEP_ASPECT_RATIO | gPainter::BT_HALIGN_CENTER | gPainter::BT_VALIGN_CENTER;
+						eRect area = eRect(xoffs, offset.y(), 125, m_itemheight);
+						painter.clip(area);
+						painter.blitScale(pixmap_mDir, eRect(xoffs, offset.y(), 125, m_itemheight), area, pflags);
 					}
-				} else if (isMarker && m_marker_as_line) {
-					if (m_markerline_color_set) painter.setForegroundColor(m_markerline_color);
-					eRect firstLineRect = eRect(xoffs, offset.y() + (m_itemheight - m_marker_as_line) / 2, xoffsMarker - 16 - 8 - xoffs - correction, m_marker_as_line);
-					painter.fill(firstLineRect);
-					int secondLineOffset = xoffsMarker + bboxName.width() + 16 + 8 - correction;
-					eRect secondLineRect = eRect(secondLineOffset, offset.y() + (m_itemheight - m_marker_as_line) / 2, m_itemsize.width() - secondLineOffset - 16 - 8, m_marker_as_line);
-					painter.fill(secondLineRect);
+					painter.clippop();
 				}
+			} else if (isMarker && m_marker_as_line) {
+				if (m_markerline_color_set) painter.setForegroundColor(m_markerline_color);
+				eRect firstLineRect = eRect(xoffs, offset.y() + (m_itemheight - m_marker_as_line) / 2, xoffsMarker - 16 - 8 - xoffs - correction, m_marker_as_line);
+				painter.fill(firstLineRect);
+				int secondLineOffset = xoffsMarker + bboxName.width() + 16 + 8 - correction;
+				eRect secondLineRect = eRect(secondLineOffset, offset.y() + (m_itemheight - m_marker_as_line) / 2, m_itemsize.width() - secondLineOffset - 16 - 8, m_marker_as_line);
+				painter.fill(secondLineRect);
 			}
 
 			// event name
