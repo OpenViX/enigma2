@@ -693,7 +693,8 @@ profile("keymapparser")
 print("[StartEnigma]  Initialising KeymapParser.")
 from keymapparser import readKeymap  # noqa: E402
 readKeymap(config.usage.keymap.value)
-readKeymap(config.usage.keytrans.value)
+if osexists(config.usage.keytrans.value):
+	readKeymap(config.usage.keytrans.value)
 
 if VuRecovery:
 	SystemInfo["Display"] = False
