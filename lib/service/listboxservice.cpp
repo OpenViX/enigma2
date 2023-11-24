@@ -12,6 +12,7 @@
 #include <ctype.h>
 #include <string>
 #include <algorithm>
+#include <lib/base/estring.h>
 
 ePyObject eListboxServiceContent::m_GetPiconNameFunc;
 
@@ -50,6 +51,18 @@ bool compareServices(const eServiceReference &ref1, const eServiceReference &ref
 	std::vector<std::string> s_split_r(s_split.begin(), s_split.begin() + 10);
 	std::string s_s;
 	join(s_split_r, ':', s_s);
+
+	if (ref_s == s_s) return true;
+	// Check is it having a localhost in the service reference. If it do probably a stream relay
+	// so use different logic
+	if (ref2.toString().find("127.0.0.1") != std::string::npos) {
+		std::string url_sr = s_split[s_split.size() - 2];
+		std::vector<std::string> sr_split = split(url_sr, "/");
+		std::string ref_orig = sr_split.back();
+		ref_orig = replace_all(ref_orig, "%3a", ":");
+		//eDebug("Ref1: %s || Ref2: %s", ref_s.c_str(), ref_orig.c_str());
+		return ref_s + ":" == ref_orig;
+	}
 
 	return ref_s == s_s;
 }
