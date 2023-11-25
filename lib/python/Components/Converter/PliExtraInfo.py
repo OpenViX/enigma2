@@ -1,6 +1,6 @@
 # shamelessly copied from pliExpertInfo (Vali, Mirakels, Littlesat)
 
-from enigma import eServiceCenter, iServiceInformation, iPlayableService
+from enigma import iServiceInformation, iPlayableService
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.config import config
@@ -9,7 +9,6 @@ from Tools.GetEcmInfo import GetEcmInfo
 from Tools.Hex2strColor import Hex2strColor
 from Components.Converter.Poll import Poll
 from skin import parameters
-from Session import SessionObject
 
 caid_data = (
 	("0x100", "0x1ff", "Seca", "S", True),
@@ -886,9 +885,6 @@ class PliExtraInfo(Poll, Converter, object):
 			feinfo = service.frontendInfo()
 			if feinfo:
 				self.feraw = feinfo.getAll(config.usage.infobar_frontend_source.value == "settings")
-				if not self.feraw:
-					serviceref = SessionObject().session.nav.getCurrentlyPlayingServiceReference()
-					self.feraw = serviceref and eServiceCenter.getInstance().info(serviceref).getInfoObject(serviceref, iServiceInformation.sTransponderData)
 				if self.feraw:
 					self.fedata = ConvertToHumanReadable(self.feraw)
 
