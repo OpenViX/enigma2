@@ -810,19 +810,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 
 		if (!marked && isPlayable && service_info && m_is_playable_ignore.valid())
 		{
-			
-			eNavigation::getInstance()->getCurrentService(refCur);
-			ePtr<iServiceInformation> tmp_info;
-			refCur->info(tmp_info);
-			std::string ref =  tmp_info->getInfoString(iServiceInformation::sServiceref);
-			std::map<ePtr<iRecordableService>, eServiceReference, std::less<iRecordableService*> > recordedServices;
-			recordedServices = eNavigation::getInstance()->getRecordingsServices();
-			if (ref.find("127.0.0.1") != std::string::npos && recordedServices.size() == 0) {
-				isplayable_value = 1;
-			} else {
-				isplayable_value = service_info->isPlayable(*m_cursor, m_is_playable_ignore);
-			}
-
+			isplayable_value = service_info->isPlayable(*m_cursor, m_is_playable_ignore);
 			if (isplayable_value == 0) // service unavailable
 			{
 				if (m_color_set[serviceNotAvail])
