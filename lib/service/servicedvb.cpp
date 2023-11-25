@@ -2113,6 +2113,11 @@ std::string eDVBServicePlay::getInfoString(int w)
 
 ePtr<iDVBTransponderData> eDVBServicePlay::getTransponderData()
 {
+	eServiceReferenceDVB orig;
+	bool res = ((const eServiceReferenceDVB&)m_reference).getSROriginal(orig);
+	if (res) {
+		return eStaticServiceDVBInformation().getTransponderData(orig);
+	}
 	return eStaticServiceDVBInformation().getTransponderData(m_reference);
 }
 
