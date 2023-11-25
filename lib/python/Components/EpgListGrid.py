@@ -573,6 +573,8 @@ class EPGListGrid(EPGListBase):
 					borderRightPix = self.borderSelectedRightPix
 					infoPix = self.selInfoPix
 					bgpng = self.nowSelEvPix if isNow else self.selEvPix
+					if timer:
+						bgpng = self.recSelEvPix if timer.justplay == 0 and timer.always_zap == 0 else self.zapSelEvPix
 				else:
 					borderTopPix = self.borderTopPix
 					borderLeftPix = self.borderLeftPix
