@@ -4,6 +4,7 @@ from Components.config import config
 
 # Global helper functions
 
+
 def getStreamRelayRef(sref):
 	try:
 		if "http" in sref:
@@ -15,6 +16,7 @@ def getStreamRelayRef(sref):
 	except Exception:
 		pass
 	return sref, False
+
 
 def getPlayingRef():
 	playingref = None
@@ -28,11 +30,13 @@ def getPlayingRef():
 			playingref.setStreamRelayOriginalRef(playref_str)
 	return playingref or eServiceReference()
 	
+
 def getPlayingService():
 	playingref = None
 	if NavigationInstance.instance:
 		playingref = NavigationInstance.instance.getCurrentService()
 	return playingref
+
 
 def isPlayableForCur(serviceref):
 	info = eServiceCenter.getInstance().info(serviceref)
