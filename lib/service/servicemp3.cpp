@@ -263,7 +263,7 @@ RESULT eStaticServiceMP3Info::getName(const eServiceReference &ref, std::string 
 			name = ref.path;
 	}
 	if (!name.empty()) {
-	 	std::vector<std::string> name_split = split(name, "|");
+	 	std::vector<std::string> name_split = split(name, "•");
 	 	name = name_split[0];
 	 }
 	return 0;
@@ -1206,7 +1206,7 @@ RESULT eServiceMP3::getName(std::string &name)
 		name = title;
 
 	if (!name.empty()) {
-	 	std::vector<std::string> name_split = split(name, "|");
+	 	std::vector<std::string> name_split = split(name, "•");
 	 	name = name_split[0];
 		if (name_split.size() > 1) {
 			m_prov = name_split[1];
