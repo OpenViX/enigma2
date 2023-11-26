@@ -214,7 +214,7 @@ class Navigation:
 								if config.usage.frontend_priority_dvbs.value != config.usage.frontend_priority.value:
 									setPreferredTuner(int(config.usage.frontend_priority_dvbs.value))
 									setPriorityFrontend = True
-				if self.currentServiceStreaming and not fromTimer:
+				if config.misc.softcam_streamrelay_delay.value and self.currentServiceStreaming and not fromTimer:
 					self.currentServiceStreaming = False
 					self.currentlyPlayingServiceReference = None
 					self.currentlyPlayingServiceOrGroup = None
