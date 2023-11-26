@@ -24,6 +24,7 @@
 		<item level="2" text="Descramble receiving http streams" description="When enabled, always descramble receiving http streams. This takes up more resources (descrambling demuxers), only enable if necessary. Individual streams are always descrambled if 0x100 is added to the service type, regardless of this setting.">config.streaming.descramble_client</item>
 		<item level="2" text="Streamrelay url" description="The IP address of the streamrelay server that is used to descramble services that can only be decrypted via streamrelay">config.misc.softcam_streamrelay_url</item>
 		<item level="2" text="Streamrelay port" description="The port of the streamrelay server that is used to descramble services that can only be decrypted via streamrelay">config.misc.softcam_streamrelay_port</item>
+		<item level="2" text="Streamrelay delay" description="Delay when closing a streamrelay service before reallocating the tuner for another service.">config.misc.softcam_streamrelay_delay</item>
 		<item level="2" text="Require authentication for http streams" description="When enabled, authentication is required to watch http streams.">config.streaming.authentication</item>
 		<item level="2" text="Http(s) stream start delay" description="Define additional delay in milliseconds before start of http(s) streams, e.g. to connect a remote tuner, you use a complex system of DiSEqC.">config.usage.http_startdelay</item>
 		<item level="2" text="Wake On LAN" description="When enabled the set top box is able to wakeup on LAN" requires="WakeOnLAN">config.usage.wakeOnLAN</item>

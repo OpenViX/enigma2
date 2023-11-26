@@ -221,7 +221,7 @@ class Navigation:
 					print("[Navigation] Streamrelay was active -> delay the zap till tuner is freed")
 					self.retryServicePlayTimer = eTimer()
 					self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust, True))
-					self.retryServicePlayTimer.start(100, True)
+					self.retryServicePlayTimer.start(config.misc.softcam_streamrelay_delay.value, True)
 				elif self.pnav.playService(playref):
 					# print("[Navigation] Failed to start", playref)
 					self.currentlyPlayingServiceReference = None
