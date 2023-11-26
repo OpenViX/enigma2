@@ -1,15 +1,38 @@
-from enigma import eServiceReference, eServiceCenter, getBestPlayableServiceReference
+from enigma import eServiceReference, eServiceCenter, getBestPlayableServiceReference, iServiceInformation
 import NavigationInstance
+from Components.config import config
 
 # Global helper functions
 
+def getStreamRelayRef(sref):
+	try:
+		if "http" in sref:
+			sr_port = config.misc.softcam_streamrelay_port.value
+			sr_ip = ".".join("%d" % d for d in config.misc.softcam_streamrelay_url.value)
+			sr_url = f"http%3a//{sr_ip}%3a{sr_port}/"
+			if sr_url in sref:
+				return sref.split(sr_url)[1].split(":")[0].replace("%3a", ":"), True
+	except Exception:
+		pass
+	return sref, False
 
 def getPlayingRef():
 	playingref = None
-	if NavigationInstance.instance:
-		playingref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()
+	playsrv = getPlayingService()
+	info_s = playsrv and playsrv.info()
+	playref_str = info_s and info_s.getInfoString(iServiceInformation.sServiceref) or ""
+	if playref_str:
+		playref_str, is_stream_relay = getStreamRelayRef(playref_str)
+		playingref = eServiceReference(playref_str)
+		if is_stream_relay:
+			playingref.setStreamRelayOriginalRef(playref_str)
 	return playingref or eServiceReference()
-
+	
+def getPlayingService():
+	playingref = None
+	if NavigationInstance.instance:
+		playingref = NavigationInstance.instance.getCurrentService()
+	return playingref
 
 def isPlayableForCur(serviceref):
 	info = eServiceCenter.getInstance().info(serviceref)

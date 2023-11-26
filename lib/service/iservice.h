@@ -54,9 +54,11 @@ public:
 #ifndef SWIG
 	int data[8];
 	std::string path;
+	std::string streamrelayOrigSref;
 #endif
 	std::string getPath() const { return path; }
 	void setPath( const std::string &n ) { path=n; }
+	void setStreamRelayOriginalRef( const std::string &n ) { streamrelayOrigSref=n; }
 
 	unsigned int getUnsignedData(unsigned int num) const
 	{

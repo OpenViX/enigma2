@@ -17,7 +17,6 @@
 #include <dvbsi++/satellite_delivery_system_descriptor.h>
 #include <dvbsi++/s2_satellite_delivery_system_descriptor.h>
 #include <dirent.h>
-#include <lib/nav/core.h>
 
 /*
  * Copyright (C) 2017 Marcus Metzler <mocm@metzlerbros.de>
@@ -222,15 +221,6 @@ bool eDVBService::isCrypted()
 
 int eDVBService::isPlayable(const eServiceReference &ref, const eServiceReference &ignore, bool simulate)
 {
-	eServiceReferenceDVB sRelayOrigSref;
-	ePtr<iPlayableService> refCur;
-	eNavigation::getInstance()->getCurrentService(refCur);
-	ePtr<iServiceInformation> tmp_info;
-	refCur->info(tmp_info);
-	std::string ref_s = tmp_info->getInfoString(iServiceInformation::sServiceref);
-	eServiceReferenceDVB currentlyPlaying = eServiceReferenceDVB(ref_s);
-	bool res = currentlyPlaying.getSROriginal(sRelayOrigSref);
-
 	ePtr<eDVBResourceManager> res_mgr;
 	bool remote_fallback_enabled = eConfigManager::getConfigBoolValue("config.usage.remote_fallback_enabled", false);
 
@@ -244,11 +234,11 @@ int eDVBService::isPlayable(const eServiceReference &ref, const eServiceReferenc
 		((const eServiceReferenceDVB&)ref).getChannelID(chid);
 		((const eServiceReferenceDVB&)ignore).getChannelID(chid_ignore);
 
-		if (res) {
-			sRelayOrigSref.getChannelID(chid_ignore_sr);
-		} else {
+		 if (ignore.streamrelayOrigSref.empty()) {
 			chid_ignore_sr = eDVBChannelID();
-		}
+		 } else {
+			chid_ignore_sr = chid_ignore;
+		 }
 
 		if (res_mgr->canAllocateChannel(chid, chid_ignore, chid_ignore_sr, system, simulate))
 		{

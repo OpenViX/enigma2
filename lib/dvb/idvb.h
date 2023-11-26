@@ -12,8 +12,6 @@
 #include <lib/service/service.h>
 #include <libsig_comp.h>
 #include <connection.h>
-#include <lib/base/nconfig.h> // access to python config
-#include <lib/base/estring.h>
 
 #define CAID_LIST std::list<uint16_t>
 
@@ -145,6 +143,13 @@ struct eDVBChannelID
 	eTransportStreamID transport_stream_id;
 	eOriginalNetworkID original_network_id;
 
+	std::string toString(void) const
+	{
+		char buf[30];
+		sprintf(buf, "%x:%x:%x", transport_stream_id.get(), original_network_id.get(), dvbnamespace.get());
+		return std::string(buf);
+	}
+
 	bool operator==(const eDVBChannelID &c) const
 	{
 		return dvbnamespace == c.dvbnamespace &&
@@ -213,7 +218,7 @@ public:
 
 	int getSourceID() const { return data[7]; }
 	void setSourceID(int sourceid) { data[7] = sourceid; }
-
+	
 	eServiceReferenceDVB getParentServiceReference() const
 	{
 		eServiceReferenceDVB tmp(*this);
@@ -249,24 +254,6 @@ public:
 	void getChannelID(eDVBChannelID &chid) const
 	{
 		chid = eDVBChannelID(getDVBNamespace(), getTransportStreamID(), getOriginalNetworkID());
-	}
-
-	bool getSROriginal(eServiceReferenceDVB &sref) const
-	{
-		std::string s_ref = this->toString();
-		std::string sr_url = eConfigManager::getConfigValue("config.misc.softcam_streamrelay_url");
-		sr_url = replace_all(replace_all(replace_all(sr_url, "[", ""), "]", ""), ", ", ".");
-		std::string sr_port = eConfigManager::getConfigValue("config.misc.softcam_streamrelay_port");
-		if (s_ref.find(sr_url + "%3a" + sr_port) != std::string::npos) {
-			std::vector<std::string> s_split = split(s_ref, ":");
-			std::string url_sr = s_split[s_split.size() - 2];
-			std::vector<std::string> sr_split = split(url_sr, "/");
-			std::string ref_orig = sr_split.back();
-			ref_orig = replace_all(ref_orig, "%3a", ":");
-			sref = eServiceReferenceDVB(ref_orig);
-			return true;
-		}
-		return false;
 	}
 
 	eServiceReferenceDVB()
