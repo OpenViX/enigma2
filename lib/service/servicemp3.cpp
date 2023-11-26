@@ -265,7 +265,7 @@ RESULT eStaticServiceMP3Info::getName(const eServiceReference &ref, std::string 
 	if (!name.empty()) {
 	 	std::vector<std::string> name_split = split(name, "•");
 	 	name = name_split[0];
-	}
+	 }
 	return 0;
 }
 

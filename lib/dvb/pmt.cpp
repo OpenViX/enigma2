@@ -795,31 +795,6 @@ int eDVBServicePMTHandler::compareAudioSubtitleCode(const std::string &subtitleT
 
 int eDVBServicePMTHandler::getChannel(eUsePtr<iDVBChannel> &channel)
 {
-	if (!m_sr_channel && !m_reference.streamrelayOrigSref.empty())
-	{
-		ePtr<eDVBResourceManager> res_mgr;
-		if ( !eDVBResourceManager::getInstance( res_mgr ) )
-		{
-			std::list<eDVBResourceManager::active_channel> list;
-			res_mgr->getActiveChannels(list);
-			if(list.size()) {
-				eServiceReferenceDVB sRelayOrigSref = eServiceReferenceDVB(m_reference.streamrelayOrigSref);
-				char buf[30];
-				sprintf(buf, "%x:%x:%x", sRelayOrigSref.getTransportStreamID().get(), sRelayOrigSref.getOriginalNetworkID().get(), sRelayOrigSref.getDVBNamespace().get());
-				std::string origChannelID = std::string(buf);
-				for (std::list<eDVBResourceManager::active_channel>::iterator i(list.begin()); i != list.end(); ++i)
-				{
-					std::string channelid = i->m_channel_id.toString();
-					if (channelid == origChannelID)
-					{
-						m_sr_channel = i->m_channel;
-						break;
-					}
-				}
-
-			}
-		}
-	}
 	if (m_sr_channel) {
 		channel = m_sr_channel;
 	} else {
@@ -984,6 +959,29 @@ int eDVBServicePMTHandler::tuneExt(eServiceReferenceDVB &ref, ePtr<iTsSource> &s
 
 	if (!simulate)
 	{
+		// If is stream relay service then allocate the real channel so to provide correct frontend info
+		eDVBChannelID chid;
+		eServiceReferenceDVB sRelayOrigSref;
+		bool res = ref.getSROriginal(sRelayOrigSref);
+
+		if (res) {
+			sRelayOrigSref.getChannelID(chid);
+			res = m_resourceManager->allocateChannel(chid, m_sr_channel, simulate);
+		}
+
+
+		if (m_sr_channel) {
+			m_sr_channel->connectStateChange(
+				sigc::mem_fun(*this, &eDVBServicePMTHandler::channelStateChanged),
+				m_channelStateChanged_connection);
+			m_last_channel_state = -1;
+			channelStateChanged(m_sr_channel);
+
+			m_sr_channel->connectEvent(
+				sigc::mem_fun(*this, &eDVBServicePMTHandler::channelEvent),
+				m_channelEvent_connection);
+		}
+
 		if (m_channel)
 		{
 			m_channel->connectStateChange(
