@@ -39,7 +39,7 @@ from Screens.RdsDisplay import RassInteractive
 from Screens.ServiceInfo import ServiceInfo
 from Screens.TimerEntry import TimerEntry, addTimerFromEventSilent
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from ServiceReference import ServiceReference
+from ServiceReference import ServiceReference, getStreamRelayRef
 from Tools.Alternatives import GetWithAlternative
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import sanitizeFilename
@@ -2099,9 +2099,11 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 				info = service.info()
 				if info:
 					refstr = info.getInfoString(iServiceInformation.sServiceref)
-					refstr = getStreamRelayRef(refstr)
-					self.servicelist.setPlayableIgnoreService(eServiceReference(refstr))
-
+					refstr, is_stream_relay = getStreamRelayRef(refstr)
+					ref = eServiceReference(refstr)
+					if is_stream_relay:
+						ref.setStreamRelayOriginalRef(refstr)
+					self.servicelist.setPlayableIgnoreService(ref)
 	def __evServiceEnd(self):
 		self.servicelist.setPlayableIgnoreService(eServiceReference())
 
