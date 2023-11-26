@@ -2104,7 +2104,6 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 					if is_stream_relay:
 						ref.setStreamRelayOriginalRef(refstr)
 					self.servicelist.setPlayableIgnoreService(ref)
-
 	def __evServiceEnd(self):
 		self.servicelist.setPlayableIgnoreService(eServiceReference())
 
