@@ -29,7 +29,7 @@ def getPlayingRef():
 		if is_stream_relay:
 			playingref.setStreamRelayOriginalRef(playref_str)
 	return playingref or eServiceReference()
-	
+
 
 def getPlayingService():
 	playingref = None
