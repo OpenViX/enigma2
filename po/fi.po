@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-11-13 19:22+0200\n"
+"PO-Revision-Date: 2023-11-27 07:03+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -7677,9 +7677,6 @@ msgstr "Myöhäis"
 
 msgctxt "third event: 'third' event label"
 msgid "Later"
-msgstr "Myöhemmin"
-
-msgid "LATER"
 msgstr "MYÖHEMMIN"
 
 msgid "Latitude"
@@ -8526,9 +8523,6 @@ msgstr "Ei saatavilla"
 msgid "n/a"
 msgstr "Ei saatavilla"
 
-msgid "NEXT"
-msgstr "SEURAAVA"
-
 msgid "NFS"
 msgstr "NFS"
 
@@ -8739,7 +8733,7 @@ msgstr "Seuraava"
 
 msgctxt "now/next: 'next' event label"
 msgid "Next"
-msgstr "Seuraava"
+msgstr "SEURAAVA"
 
 msgid "Nicaragua"
 msgstr "Nicaragua"
@@ -9015,9 +9009,6 @@ msgstr "Ei mitään, sulje valikko"
 
 msgctxt "now/next: 'now' event label"
 msgid "Now"
-msgstr "Nyt"
-
-msgid "NOW"
 msgstr "NYT"
 
 msgid "Now, use the contrast setting to turn up the brightness of the background as much as possible, but make sure that you can still see the difference between the two brightest levels of shades.If you have done that, press OK."
@@ -13549,7 +13540,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"13.11.2023\n"
+"27.11.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -19113,6 +19104,12 @@ msgstr "Striimin välitys -palvelimen IP-osoite, jota käytetään sellaisten pa
 
 msgid "Streamrelay port"
 msgstr "Striimin välitys -portti"
+
+msgid "Streamrelay delay"
+msgstr "Striimin välityksen viive"
+
+msgid "Delay when closing a streamrelay service before reallocating the tuner for another service."
+msgstr "Viive striimin välitys -palvelun sulkemisessa ennen virittimen uudelleenallokointia toista palvelua varten."
 
 msgid "The port of the streamrelay server that is used to descramble services that can only be decrypted via streamrelay"
 msgstr "Striimin välitys -palvelimen portti, jota käytetään sellaisten palvelujen salauksen purkamiseen, joiden salaus voidaan purkaa vain striimin välityksen kautta"
