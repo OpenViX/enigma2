@@ -503,8 +503,6 @@ class ServiceList(GUIComponent):
 		else:
 			self.l.setGetPiconNameFunc(None)
 
-		rowWidth = self.instance.size().width() - 30  # scrollbar is fixed 20 + 10 Extra marge
-
 		progressWidth = self.progressBarWidth
 		if "perc" in config.usage.show_event_progress_in_servicelist.value:
 			progressWidth = self.progressPercentWidth or self.progressBarWidth
