@@ -8,7 +8,6 @@ from Components.MultiContent import MultiContentEntryText
 from Components.Sources.StaticText import StaticText
 
 
-
 class ScreenHeader(GUIAddon):
 	def __init__(self):
 		GUIAddon.__init__(self)
