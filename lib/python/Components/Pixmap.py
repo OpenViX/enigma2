@@ -159,7 +159,7 @@ class MultiPixmap(Pixmap):
 						if fileExists(pngfile := resolveFilename(SCOPE_CURRENT_SKIN, p, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_SKIN_IMAGE, p, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_ACTIVE_LCDSKIN, p, path_prefix=skin_path_prefix)):
 							self.pixmapfiles.append(pngfile)
 						else:
-							print("[MultiPixmap] file not exists", p) 
+							print("[MultiPixmap] file not exists", p)
 					if not pixmap:
 						if fileExists(pngfile := resolveFilename(SCOPE_CURRENT_SKIN, pixmaps[0], path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_SKIN_IMAGE, pixmaps[0], path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_ACTIVE_LCDSKIN, pixmaps[0], path_prefix=skin_path_prefix)):
 							pixmap = pngfile
