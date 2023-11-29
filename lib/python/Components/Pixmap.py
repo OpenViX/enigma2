@@ -155,16 +155,11 @@ class MultiPixmap(Pixmap):
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "pixmaps":
 					pixmaps = value.split(',')
-					for p in pixmaps:
-						if fileExists(pngfile := resolveFilename(SCOPE_CURRENT_SKIN, p, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_SKIN_IMAGE, p, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_ACTIVE_LCDSKIN, p, path_prefix=skin_path_prefix)):
-							self.pixmapfiles.append(pngfile)
-						else:
-							print("[MultiPixmap] file not exists", p)
-					if not pixmap:
-						if fileExists(pngfile := resolveFilename(SCOPE_CURRENT_SKIN, pixmaps[0], path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_SKIN_IMAGE, pixmaps[0], path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_ACTIVE_LCDSKIN, pixmaps[0], path_prefix=skin_path_prefix)):
-							pixmap = pngfile
+					self.pixmapfiles = [pngfile for p in pixmaps if (pngfile := self.checkPaths(p.strip(), skin_path_prefix))]
+					if not pixmap and self.pixmapfiles:
+						pixmap = self.pixmapfiles[0]
 				elif attrib == "pixmap":
-					if fileExists(pngfile := resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_SKIN_IMAGE, value, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_ACTIVE_LCDSKIN, value, path_prefix=skin_path_prefix)):
+					if (pngfile := self.checkPaths(value, skin_path_prefix)):
 						pixmap = pngfile
 				else:
 					attribs.append((attrib, value))
@@ -172,6 +167,9 @@ class MultiPixmap(Pixmap):
 				attribs.append(("pixmap", pixmap))
 			self.skinAttributes = attribs
 		return GUIComponent.applySkin(self, desktop, screen)
+
+	def checkPaths(self, value, skin_path_prefix):
+		return (fileExists(pngfile := resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_SKIN_IMAGE, value, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_ACTIVE_LCDSKIN, value, path_prefix=skin_path_prefix))) and pngfile
 
 	def setPixmapNum(self, x):
 		if self.instance:
