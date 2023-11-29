@@ -4,7 +4,7 @@ from enigma import ePixmap, eTimer
 
 from Components.ConditionalWidget import ConditionalWidget
 from Components.GUIComponent import GUIComponent
-from Tools.Directories import resolveFilename, fileExists, SCOPE_SKIN_IMAGE, SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_LCDSKIN
+from Tools.Directories import resolveFilename, fileExists, SCOPE_CURRENT_SKIN, SCOPE_ACTIVE_LCDSKIN
 from skin import loadPixmap
 
 
@@ -169,7 +169,7 @@ class MultiPixmap(Pixmap):
 		return GUIComponent.applySkin(self, desktop, screen)
 
 	def checkPaths(self, value, skin_path_prefix):
-		return (fileExists(pngfile := resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_SKIN_IMAGE, value, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_ACTIVE_LCDSKIN, value, path_prefix=skin_path_prefix))) and pngfile
+		return (fileExists(pngfile := resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_ACTIVE_LCDSKIN, value, path_prefix=skin_path_prefix))) and pngfile
 
 	def setPixmapNum(self, x):
 		if self.instance:
