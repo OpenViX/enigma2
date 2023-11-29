@@ -143,9 +143,11 @@ class MovingPixmap(Pixmap):
 class MultiPixmap(Pixmap):
 	def __init__(self):
 		Pixmap.__init__(self)
+		self.pixmapfiles = []
 		self.pixmaps = []
 
 	def applySkin(self, desktop, screen):
+		self.desktop = desktop
 		if self.skinAttributes is not None:
 			skin_path_prefix = getattr(screen, "skin_path", path)
 			pixmap = None
@@ -154,29 +156,16 @@ class MultiPixmap(Pixmap):
 				if attrib == "pixmaps":
 					pixmaps = value.split(',')
 					for p in pixmaps:
-						pngfile = ""
-						if fileExists(resolveFilename(SCOPE_CURRENT_SKIN, p, path_prefix=skin_path_prefix)):
-							pngfile = resolveFilename(SCOPE_CURRENT_SKIN, p, path_prefix=skin_path_prefix)
-						elif fileExists(resolveFilename(SCOPE_SKIN_IMAGE, p, path_prefix=skin_path_prefix)):
-							pngfile = resolveFilename(SCOPE_SKIN_IMAGE, p, path_prefix=skin_path_prefix)
-						elif fileExists(resolveFilename(SCOPE_ACTIVE_LCDSKIN, p, path_prefix=skin_path_prefix)):
-							pngfile = resolveFilename(SCOPE_ACTIVE_LCDSKIN, p, path_prefix=skin_path_prefix)
-						if path.exists(pngfile):
-							self.pixmaps.append(loadPixmap(pngfile, desktop))
+						if fileExists(pngfile := resolveFilename(SCOPE_CURRENT_SKIN, p, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_SKIN_IMAGE, p, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_ACTIVE_LCDSKIN, p, path_prefix=skin_path_prefix)):
+							self.pixmapfiles.append(pngfile)
+						else:
+							print("[MultiPixmap] file not exists", p) 
 					if not pixmap:
-						if fileExists(resolveFilename(SCOPE_CURRENT_SKIN, pixmaps[0], path_prefix=skin_path_prefix)):
-							pixmap = resolveFilename(SCOPE_CURRENT_SKIN, pixmaps[0], path_prefix=skin_path_prefix)
-						elif fileExists(resolveFilename(SCOPE_SKIN_IMAGE, pixmaps[0], path_prefix=skin_path_prefix)):
-							pixmap = resolveFilename(SCOPE_SKIN_IMAGE, pixmaps[0], path_prefix=skin_path_prefix)
-						elif fileExists(resolveFilename(SCOPE_ACTIVE_LCDSKIN, pixmaps[0], path_prefix=skin_path_prefix)):
-							pixmap = resolveFilename(SCOPE_ACTIVE_LCDSKIN, pixmaps[0], path_prefix=skin_path_prefix)
+						if fileExists(pngfile := resolveFilename(SCOPE_CURRENT_SKIN, pixmaps[0], path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_SKIN_IMAGE, pixmaps[0], path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_ACTIVE_LCDSKIN, pixmaps[0], path_prefix=skin_path_prefix)):
+							pixmap = pngfile
 				elif attrib == "pixmap":
-					if fileExists(resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skin_path_prefix)):
-						pixmap = resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skin_path_prefix)
-					elif fileExists(resolveFilename(SCOPE_SKIN_IMAGE, value, path_prefix=skin_path_prefix)):
-						pixmap = resolveFilename(SCOPE_SKIN_IMAGE, value, path_prefix=skin_path_prefix)
-					elif fileExists(resolveFilename(SCOPE_ACTIVE_LCDSKIN, value, path_prefix=skin_path_prefix)):
-						pixmap = resolveFilename(SCOPE_ACTIVE_LCDSKIN, value, path_prefix=skin_path_prefix)
+					if fileExists(pngfile := resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_SKIN_IMAGE, value, path_prefix=skin_path_prefix)) or fileExists(pngfile := resolveFilename(SCOPE_ACTIVE_LCDSKIN, value, path_prefix=skin_path_prefix)):
+						pixmap = pngfile
 				else:
 					attribs.append((attrib, value))
 			if pixmap:
@@ -186,7 +175,11 @@ class MultiPixmap(Pixmap):
 
 	def setPixmapNum(self, x):
 		if self.instance:
+			if not self.pixmaps and self.pixmapfiles:
+				width, height = self.getSize()
+				for file in self.pixmapfiles:
+					self.pixmaps.append(loadPixmap(file, self.desktop, width, height))
 			if len(self.pixmaps) > x:
 				self.instance.setPixmap(self.pixmaps[x])
 			else:
-				print("[Pixmap] setPixmapNum(%d) failed! defined pixmaps:" % x, self.pixmaps)
+				print("[MultiPixmap] setPixmapNum(%d) failed! defined pixmaps:" % x, self.pixmaps)
