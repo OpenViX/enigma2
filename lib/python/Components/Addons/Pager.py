@@ -237,7 +237,7 @@ class Pager(GUIAddon):
 			elif attrib == "spacing":
 				self.spacing = parseScale(value)
 			elif attrib == "showIcons":
-				self.showIcons = parseScale(value)
+				self.showIcons = value
 			elif attrib == "maxPages":
 				self.max_pages = value
 			elif attrib == "orientation":
