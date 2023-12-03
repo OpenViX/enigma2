@@ -6,6 +6,7 @@ from Screens.Setup import Setup
 
 from ServiceReference import ServiceReference
 
+
 class StreamRelaySetup(Setup):
 	def __init__(self, session):
 		self.serviceitems = []
