@@ -6,6 +6,7 @@ from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, e
 from ServiceReference import resolveAlternate
 from Components.Element import cached
 from Tools.Directories import fileExists
+from Tools.Transponder import ConvertToHumanReadable
 
 
 class ServiceName(Converter):
@@ -88,10 +89,11 @@ class ServiceName(Converter):
 			return service.toString()
 		elif self.type == self.FORMAT_STRING:
 			name = self.getName(service, info)
-			numservice = self.source.serviceref
-			num = self.getNumber(numservice, info)
+			numservice = hasattr(self.source, "serviceref") and self.source.serviceref
+			num = numservice and self.getNumber(numservice, info) or ""
 			orbpos, tp_data = self.getOrbitalPos(service, info)
 			provider = self.getProvider(service, info, tp_data)
+			tuner_system = self.getServiceSystem(service, info, tp_data)
 			res_str = ""
 			for x in self.parts[1:]:
 				if x == "NUMBER" and num:
@@ -102,6 +104,8 @@ class ServiceName(Converter):
 					res_str = self.appendToStringWithSeparator(res_str, orbpos)
 				if x == "PROVIDER" and provider:
 					res_str = self.appendToStringWithSeparator(res_str, provider)
+				if x == "TUNERSYSTEM" and tuner_system:
+					res_str = self.appendToStringWithSeparator(res_str, tuner_system)
 			return res_str
 
 	text = property(getText)
@@ -136,12 +140,6 @@ class ServiceName(Converter):
 		else:
 			tp_data = info.getInfoObject(iServiceInformation.sTransponderData)
 
-		if not tp_data and not ref:
-			service = self.source.service
-			if service:
-				feraw = service.frontendInfo()
-				tp_data = feraw and feraw.getAll(config.usage.infobar_frontend_source.value == "settings")
-
 		if tp_data is not None:
 			try:
 				position = tp_data["orbital_position"]
@@ -152,3 +150,19 @@ class ServiceName(Converter):
 			except:
 				pass
 		return orbitalpos, tp_data
+	
+	def getServiceSystem(self, ref, info, feraw):
+		if ref:
+			sref = info.getInfoObject(ref, iServiceInformation.sServiceref)
+		else:
+			sref = info.getInfoObject(iServiceInformation.sServiceref)
+		
+		if not sref:
+			sref = ref.toString()
+			
+		if sref and "%3a//" in sref:
+			return "IPTV"
+			
+		fedata = ConvertToHumanReadable(feraw)
+
+		return fedata.get("system") or ""
