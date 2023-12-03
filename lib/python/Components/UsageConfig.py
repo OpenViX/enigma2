@@ -133,6 +133,7 @@ def InitUsageConfig():
 		print("[UserConfig] DEBUG: The 'show_menupath' setting of '%s' has been transferred to 'showScreenPath'." % config.usage.showScreenPath.value)
 	# End of temporary code.
 	config.usage.show_spinner = ConfigYesNo(default=True)
+	config.usage.enable_blinking = ConfigYesNo(default=True)
 	config.usage.enable_tt_caching = ConfigYesNo(default=True)
 	config.usage.sort_settings = ConfigYesNo(default=False)
 	config.usage.sort_pluginlist = ConfigYesNo(default=True)
