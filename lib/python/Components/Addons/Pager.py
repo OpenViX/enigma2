@@ -239,7 +239,7 @@ class Pager(GUIAddon):
 			elif attrib == "showIcons":
 				self.showIcons = value
 			elif attrib == "maxPages":
-				self.max_pages = value
+				self.max_pages = int(value)
 			elif attrib == "orientation":
 				self.orientation = self.orientations.get(value, self.orientations["orHorizontal"])
 				if self.orientation == eListbox.orHorizontal:
