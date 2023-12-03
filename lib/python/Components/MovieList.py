@@ -447,7 +447,7 @@ class MovieList(GUIComponent):
 
 		if serviceref.flags & eServiceReference.isGroup:
 			# Collection
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconCollection, flags=BT_ALIGN_CENTER))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconCollection, flags=BT_ALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
 			if self.getCurrent() in self.markList:
 				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
 			res.append(MultiContentEntryText(pos=(self.spaceLeft + col0iconSize + space, 0), size=(width - 220, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
@@ -461,7 +461,7 @@ class MovieList(GUIComponent):
 				res.append(MultiContentEntryText(pos=(self.spaceLeft + col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=_("Deleted items")))
 				res.append(MultiContentEntryText(pos=(width - 145 - r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=_("Trash can")))
 				return res
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconFolder, flags=BT_ALIGN_CENTER))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconFolder, flags=BT_ALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
 			if self.getCurrent() in self.markList:
 				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
 			res.append(MultiContentEntryText(pos=(self.spaceLeft + col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
