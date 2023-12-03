@@ -150,19 +150,19 @@ class ServiceName(Converter):
 			except:
 				pass
 		return orbitalpos, tp_data
-	
+
 	def getServiceSystem(self, ref, info, feraw):
 		if ref:
 			sref = info.getInfoObject(ref, iServiceInformation.sServiceref)
 		else:
 			sref = info.getInfoObject(iServiceInformation.sServiceref)
-		
+
 		if not sref:
 			sref = ref.toString()
-			
+
 		if sref and "%3a//" in sref:
 			return "IPTV"
-			
+
 		fedata = ConvertToHumanReadable(feraw)
 
 		return fedata.get("system") or ""
