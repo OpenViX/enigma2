@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-08 01:01+0000\n"
-"PO-Revision-Date: 2023-11-08 17:17+0100\n"
+"POT-Creation-Date: 2023-12-03 20:33+0000\n"
+"PO-Revision-Date: 2023-12-05 16:50+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -4754,6 +4754,9 @@ msgstr "Vertraging in milliseconde voor het scrollen van tekst op het display be
 msgid "Delay time"
 msgstr "Vertragingstijd"
 
+msgid "Delay when closing a stream relay service before reallocating the tuner for another service. Using '0' is only recommended for boxes with multiple satellite tuners."
+msgstr "Vertraging na het sluiten van een streamrely-service voordat de tuner aan een andere service kan worden toegewezen. Het gebruik van \"0\" wordt alleen aanbevolen voor ontvangers met meerdere satelliettuners."
+
 msgid "Delay:"
 msgstr "Vertraging:"
 
@@ -5592,6 +5595,12 @@ msgstr "Schakel automatisch downloaden van OpenTV EPG in. Als er slechts één t
 
 msgid "Enable automatic collections"
 msgstr "Automatische collecties inschakelen"
+
+msgid "Enable blinking"
+msgstr "Schakel knipperen in"
+
+msgid "Enable blinking for ui elements. For example for recording icon"
+msgstr "Schakel knipperen in voor verschillende GUI-elementen. Bij voorbeeld voor de opname-icoon."
 
 msgid "Enable blinking rec symbol on the LCD Display"
 msgstr "Schakel knipperend opnamesymbool in op het LCD-scherm"
@@ -10143,8 +10152,14 @@ msgstr "Speel vorige"
 msgid "Play recorded movies"
 msgstr "Speel opnames af"
 
+msgid "Play service with Stream Relay"
+msgstr "Speel service met streamrelay"
+
 msgid "Play service with streamrelay"
 msgstr "Speel service met streamrelay"
+
+msgid "Play service without Stream Relay"
+msgstr "Speel service zonder streamrelay"
 
 msgid "Play service without streamrelay"
 msgstr "Speel service zonder streamrelay"
@@ -14047,6 +14062,21 @@ msgstr "Opgeslagen positie"
 msgid "Stream"
 msgstr "Stream"
 
+msgid "Stream Relay Settings"
+msgstr "Streamrelay instellingen"
+
+msgid "Stream Relay Setup Actions"
+msgstr "Streamrelay instellingen"
+
+msgid "Stream Relay delay"
+msgstr "Streamrelay vertraging"
+
+msgid "Stream Relay port"
+msgstr "Streamrelay poort"
+
+msgid "Stream Relay url"
+msgstr "Streamrelay url"
+
 msgid "Stream request"
 msgstr "Stream-verzoek"
 
@@ -14061,12 +14091,6 @@ msgstr "Stream-klanten"
 
 msgid "Streaming Clients Info"
 msgstr "Stream-klanten info"
-
-msgid "Streamrelay port"
-msgstr "Streamrelay poort"
-
-msgid "Streamrelay url"
-msgstr "Streamrelay url"
 
 msgid "Strict DLNA"
 msgstr "Strict DLNA"
@@ -14531,8 +14555,8 @@ msgstr ""
 "De IMDb-plugin is niet geïnstalleerd!\n"
 "Installeer die."
 
-msgid "The IP address of the streamrelay server that is used to descramble services that can only be decrypted via streamrelay"
-msgstr "Het IP-adres van de streamrelay server die wordt gebruikt om te services te descramblen waarbij dat alleen via een streamrelay kan."
+msgid "The IP address of the streamrelay server that is used to descramble services that can only be decrypted via stream relay."
+msgstr "Het IP-adres van de streamrelay-server die wordt gebruikt om te services te descramblen waarbij dat alleen via een streamrelay kan."
 
 msgid ""
 "The Linux kernel has changed, an update is not permitted. \n"
@@ -14635,8 +14659,8 @@ msgstr "Het pad %s bestaat al."
 msgid "The pin code you entered is wrong."
 msgstr "De ingevoerde pincode is onjuist."
 
-msgid "The port of the streamrelay server that is used to descramble services that can only be decrypted via streamrelay"
-msgstr "De poort van de streamrelay server die wordt gebruikt om te services te descramblen waarbij dat alleen via een streamrelay kan."
+msgid "The port of the streamrelay server that is used to descramble services that can only be decrypted via stream relay."
+msgstr "De poort van de streamrelay-server die wordt gebruikt om te services te descramblen waarbij dat alleen via een streamrelay kan."
 
 #, python-format
 msgid "The results have been written to %s."
@@ -18256,9 +18280,6 @@ msgstr "stand-by "
 msgid "start cut here"
 msgstr "start knippen hier"
 
-msgid "start directory"
-msgstr "startmap"
-
 msgid "stepsize"
 msgstr "stapgrootte"
 
@@ -18327,9 +18348,6 @@ msgstr "waar"
 
 msgid "two lines"
 msgstr "twee regels"
-
-msgid "two lines and next event"
-msgstr "twee regels en volgende programma"
 
 msgid "type"
 msgstr "type"
@@ -19539,6 +19557,12 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #, python-format
 #~ msgid "slot%s - %s (current image)"
 #~ msgstr "slot%s - %s (huidige image)"
+
+#~ msgid "start directory"
+#~ msgstr "startmap"
+
+#~ msgid "two lines and next event"
+#~ msgstr "twee regels en volgende programma"
 
 #~ msgid "updates available."
 #~ msgstr "updates beschikbaar."
