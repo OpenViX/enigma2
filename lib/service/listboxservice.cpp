@@ -263,13 +263,13 @@ int eListboxServiceContent::getPrevMarkerPos()
 		if (i->flags == eServiceReference::isMarker)
 			break;
 	}
-	
+
 	//eDebug("[eListboxServiceContent] prevMarkerIndex= %i; curSelIndex= %i; index= %i", cursorResolve(prevMarkerIndex), cursorResolve(m_cursor_number), index);
 
 	// if currently selected service is not the first after the marker found - return the found marker index 
 	if (cursorResolve(index) + 1 != cursorResolve(m_cursor_number)) return cursorResolve(index); 
 
-	
+
 	while (index)
 	{
 		--i;
@@ -277,7 +277,7 @@ int eListboxServiceContent::getPrevMarkerPos()
 		if (i->flags == eServiceReference::isMarker)
 			break;
 	}
-	
+
 	return cursorResolve(index);
 }
 
@@ -691,7 +691,7 @@ bool eListboxServiceContent::checkServiceIsRecorded(eServiceReference ref)
 		else {
 			if (compareServices(ref, it->second, m_alternative_record_match))
 				return true;
-		} 
+		}
 	}
 	return false;
 }
@@ -786,7 +786,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 		eServiceReference ref = *m_cursor;
 		std::string orig_ref_str = ref.toString();
 		std::string service_res_str =  toLower(split(orig_ref_str, ":")[2]);
-		
+
 		bool isBackupAvailable = false;
 		int catchUpDays = 0;
 		if (orig_ref_str.find("@") != std::string::npos) {
@@ -796,7 +796,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 		if (orig_ref_str.find("|<|") != std::string::npos) {
 			catchUpDays = std::stoi(split(split(orig_ref_str, "|<|")[1], "@")[0]);
 		}
-		
+
 		/* get service information */
 		ePtr<iStaticServiceInformation> service_info;
 		m_service_center->info(ref, service_info);
@@ -864,9 +864,9 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				yoffs = 5;
 			}
 			if (!isMarker && !isDirectory) {
-				ePtr<gPixmap> &pixmap =  service_res_str == "1f" ? m_pixmaps[pic4K] : (service_res_str == "19" || service_res_str == "11") ? 
+				ePtr<gPixmap> &pixmap =  service_res_str == "1f" ? m_pixmaps[pic4K] : (service_res_str == "19" || service_res_str == "11") ?
 					m_pixmaps[picHD] : m_pixmaps[picSD];
-					
+
 				if (pixmap)
 				{
 					eSize pixmap_size = pixmap->size();
@@ -961,7 +961,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				}
 			}
 			xoffs = xoffset + 16;
-			
+
 			if (hasPicon)
 			{
 				eRect piconArea =  eRect(xoffs, offset.y(), 125, m_itemheight);
@@ -1024,7 +1024,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					eSize pixmap_size = pixmap_mDir->size();
 					if (pixmap_size.width() < 125 || pixmap_size.height() < m_itemheight)
 						xoffsMarker = xoffs + pixmap_size.width() + 16;
-				} 
+				}
 			}
 
 			ePtr<eTextPara> para = new eTextPara(eRect(0, 0, xlpos - xoffsMarker, m_itemheight/2));
@@ -1033,7 +1033,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 			eRect bbox = para->getBoundBox();
 			painter.renderPara(para, ePoint(xoffsMarker - correction, offset.y() + yoffs + ((ctrlHeight - bbox.height())/2)));
 
-			
+
 			if (isDirectory || (isMarker && !m_marker_as_line)) {
 				if (pixmap_mDir) {
 					eSize pixmap_size = pixmap_mDir->size();
@@ -1057,7 +1057,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				eRect secondLineRect = eRect(secondLineOffset, offset.y() + (m_itemheight - m_marker_as_line) / 2, m_itemsize.width() - secondLineOffset - 16 - 8, m_marker_as_line);
 				painter.fill(secondLineRect);
 			}
-			
+
 
 			// event name
 			if (is_event)
@@ -1067,7 +1067,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				event_duration = evt->getDuration();
 				int timeLeft = event_begin + event_duration - now;
 				eRect progressBarRect = m_element_position[celServiceEventProgressbar];
-				
+
 				if (!event_name.empty())
 				{
 					//--------------------------------------------------- Event Progressbar -----------------------------------------------------------------
@@ -1172,7 +1172,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				}
 			}
 		} else {
-			
+
 			// Single line mode goes here
 			if (service_info)
 				service_info->getName(ref, text);
@@ -1391,7 +1391,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				
 				if (m_crypto_icon_mode == 2 && m_pixmaps[picCrypto] && service_info && service_info->isCrypted()) {
 					pixmap_crypto_size = m_pixmaps[picCrypto]->size();
-					iconRecordPosX += pixmap_crypto_size.width() + m_items_distances;	
+					iconRecordPosX += pixmap_crypto_size.width() + m_items_distances;
 					iconOffsX += pixmap_crypto_size.width() + m_items_distances;
 					xoffs = iconOffsX;
 				}
@@ -1535,7 +1535,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					}
 				}
 			}
-		} 
+		}
 	}
 	painter.clippop();
 }
