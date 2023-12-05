@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-12-04 07:19+0200\n"
+"PO-Revision-Date: 2023-12-05 07:08+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13540,7 +13540,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"04.12.2023\n"
+"05.12.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -19153,3 +19153,15 @@ msgstr "Striimin välitysasetustoiminnot"
 
 msgid "Play service without Stream Relay"
 msgstr "Toista kanava ilman striimin välitystä"
+
+msgid "Record icon match"
+msgstr "Tallennuskuvakkeen vastine"
+
+msgid "Select display of record icon based on 'sref only' or 'Sref + stream url' where applicable."
+msgstr "Valitse tallennuskuvakkeen näyttö 'vain sref' tai 'Sref + striimin url' perusteella, jos mahdollista."
+
+msgid "Sref only"
+msgstr "Vain Sref"
+
+msgid "Sref + stream url"
+msgstr "Sref + striimin url"
