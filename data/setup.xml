@@ -234,7 +234,7 @@
 		<item level="2" text="Remove finished timer logs after (days)" description="Configure the number of days old timers' log details are kept before they're automatically removed.">config.recording.keep_finished_timer_logs</item>
 		<item level="2" text="Offline decode delay (ms)" description="Configure the offline decoding delay (in milliseconds). The configured delay is observed at each control word parity change.">config.recording.offline_decode_delay</item>
 		<item level="2" text="Default recording type" description="Descramble &amp; record ECM' gives the option to descramble afterwards if descrambling on recording failed. 'Don't descramble, record ECM' save a scramble recording that can be descrambled on playback. 'Normal' means descramble the recording and don't record ECM.">config.recording.ecm_data</item>
-		<item level="2" text="Record icon match" description="Select display of record icon based on 'sref only' or 'Sref + stream url' where applicable.">config.recording.record_icon_match</item>
+		<item level="2" text="Record icon match" description="Select display of record icon based on 'Sref only' or 'Sref + Stream url' where applicable.">config.recording.record_icon_match</item>
 	</setup>
 	<setup key="harddisk" title="HDD settings">
 		<item level="0" text="Hard disk standby after" description="Configure duration of inactivity before the hard disk drive goes to standby">config.usage.hdd_standby</item>
