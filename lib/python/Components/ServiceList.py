@@ -67,7 +67,7 @@ class ServiceList(GUIComponent):
 		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/ico_altref-fs8.png"))
 		pic and self.l.setPixmap(self.l.picBackup, pic)
 
-		self.l.setAlternativeRecordMatching(not config.recording.record_icon_match.value)
+		self.l.setAlternativeRecordMatching(config.recording.record_icon_match.value == "Sref only")
 
 		self.root = None
 		self.mode = self.MODE_NORMAL

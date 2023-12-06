@@ -1,4 +1,4 @@
-from Components.config import ConfigBoolean, ConfigSelectionNumber, ConfigYesNo, ConfigSubsection, ConfigSelection, config
+from Components.config import ConfigSelectionNumber, ConfigYesNo, ConfigSubsection, ConfigSelection, config
 
 
 def InitRecordingConfig():
@@ -28,4 +28,4 @@ def InitRecordingConfig():
 		("long", _("Long filenames"))])
 	config.recording.offline_decode_delay = ConfigSelectionNumber(min=1, max=10000, stepwidth=10, default=1000, wraparound=True)
 	config.recording.ecm_data = ConfigSelection(choices=[("normal", _("normal")), ("descrambled+ecm", _("descramble and record ecm")), ("scrambled+ecm", _("don't descramble, record ecm"))], default="normal")
-	config.recording.record_icon_match = ConfigBoolean(descriptions={False: _("Sref only"), True: _("Sref + stream url")}, graphic=False)
+	config.recording.record_icon_match = ConfigSelection(default="Sref + stream url", choices=[("Sref only", _("Sref only")), ("Sref + stream url", _("Sref + stream url"))])
