@@ -144,16 +144,14 @@ self.session.open(SABnzbdSetupScreen)
 			<item key="ci_setup" level="1" text="Common Interface" weight="10"><screen module="Ci" screen="CiSelection" /></item>
 		</menu>
 
-		<!-- Menu / Setup / SoftcamManager -->
-		<menu key="cam" level="0" text="SoftcamManager" weight="8">
+		<!-- Menu / Setup / Softcam Management -->
+		<menu key="cam" level="0" text="Softcam Management" weight="8">
 			<item key="softcam_setup" level="2" text="Settings" weight="1"><setup id="softcamsetup" /></item>
 			<item key="cccaminfo" level="2" text="CCcam Info" weight="90" requires="CCcamInstalled"><screen module="CCcamInfo" screen="CCcamInfoMain" /></item>
 			<item key="oscam/Ncaminfo" level="2" text="OScam/Ncam Info" weight="91" requires="OScamInstalled"><screen module="OScamInfo" screen="OscamInfoMenu" /></item>
-			<item key="streamrelay_settings" level="2" text="Stream Relay Settings" weight="110" requires="HasInitCam"><screen module="StreamRelaySetup" screen="StreamRelaySetup" /></item>
+			<item key="streamrelay_settings" level="2" text="Stream Relay Settings" weight="100" requires="HasInitCam"><screen module="StreamRelaySetup" screen="StreamRelaySetup" /></item>
+			<item key="softcam_initD" level="2" text="Softcam Script" weight="110" requires="HasInitCam"><screen module="SoftcamScript" /></item>				
 		</menu>
-
-		<!-- Menu / Setup / SoftcamScript -->
-		<item key="softcam_initD" level="0" text="Softcam Script" weight="9" requires="HasInitCam"><screen module="SoftcamScript" /></item>
 
 		<!-- Menu / Setup / Storage -->
 		<menu key="harddisk" level="0" text="Storage" weight="10" requires="Harddisk">
