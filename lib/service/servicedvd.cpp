@@ -1120,7 +1120,7 @@ void eServiceDVD::saveCuesheet()
 		if (stat("/home/root", &st) == 0 && stat(filename.c_str(), &st) != 0)
 			if (mkdir(filename.c_str(), 0755))
 				return; // cannot create directory so no point in trying to save cue data
-			
+
 		filename += "/";
 		if (m_ddvd_titlestring[0] != '\0')
 			filename += m_ddvd_titlestring;
