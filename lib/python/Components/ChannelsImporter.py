@@ -137,7 +137,7 @@ class AutoClientModeTimer:
 				print("[ChannelsImporter] attempt %d failed. Retrying..." % (self.attempts + 1,))
 				self.autostartscantimer.startLongTimer(10)
 			self.attempts += 1
-			
+
 	def checkFTPconnection(self):
 		print("[ChannelsImporter][checkFTPconnection] Testing FTP connection...")
 		try:
