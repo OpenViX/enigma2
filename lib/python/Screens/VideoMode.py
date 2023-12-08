@@ -306,8 +306,12 @@ class AutoVideoMode(Screen):
 			self.delay = False
 			self.detecttimer.stop()
 			return
-		with open(videomode, "r+") as fd:  # GB4K can fail on initial open as r
-			current_mode = fd.read()[:-1].replace("\n", "")
+		try:	
+			with open(videomode, "r+") as fd:  # GB4K can fail on initial open
+				current_mode = fd.read()[:-1].replace("\n", "")
+		except:
+			with open("/proc/stb/video/videomode", "r") as fd:
+				current_mode = fd.read()[:-1].replace("\n", "")
 		if current_mode.upper() in ("PAL", "NTSC"):
 			current_mode = current_mode.upper()
 		video_height = None
