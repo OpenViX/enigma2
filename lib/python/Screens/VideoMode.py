@@ -1,5 +1,5 @@
 from os import path
-
+from boxbranding import getBoxType
 from enigma import iPlayableService, iServiceInformation, eTimer, eServiceCenter, eServiceReference, eDVBDB
 
 from Screens.Screen import Screen
@@ -19,7 +19,7 @@ from Components.AVSwitch import iAVSwitch as iAV
 resolutionlabel = None
 previous = None
 isDedicated3D = False
-
+videomode = "/proc/stb/video/videomode_50hz" if getBoxType() in ("gbquad4k", "gbue4k") else "/proc/stb/video/videomode"
 
 class VideoSetup(ConfigListScreen, Screen):
 	def __init__(self, session):
@@ -297,7 +297,7 @@ class AutoVideoMode(Screen):
 		config_res = str(config.av.videomode[config_port].value[:-1]).replace("\n", "")
 		config_pol = str(config.av.videomode[config_port].value[-1:]).replace("\n", "")
 		config_rate = str(config.av.videorate[config_mode].value).replace("Hz", "").replace("\n", "")
-		with open("/proc/stb/video/videomode", "r") as fd:
+		with open(videomode, "r+") as fd:  # GB4K can fail on initial open as r
 			current_mode = fd.read()[:-1].replace("\n", "")
 		if current_mode.upper() in ("PAL", "NTSC"):
 			current_mode = current_mode.upper()
@@ -330,11 +330,7 @@ class AutoVideoMode(Screen):
 				except Exception:
 					pass
 		if not video_height or not video_width or not video_pol or not video_rate:
-			service = self.session.nav.getCurrentService()
-			if service is not None:
-				info = service.info()
-			else:
-				info = None
+			info = None if self.session.nav.getCurrentService() is None else self.session.nav.getCurrentService().info()
 			if info:
 				video_height = int(info.getInfo(iServiceInformation.sVideoHeight))
 				video_width = int(info.getInfo(iServiceInformation.sVideoWidth))
@@ -428,9 +424,11 @@ class AutoVideoMode(Screen):
 					new_mode = config.av.autores_2160p30.value
 				write_mode = new_mode
 			else:
+				if video_rate == 25000:  # videomode_25hz is not in proc and will be reset 2nd pass thru , so do it now.				
+					new_rate = 50
 				if path.exists("/proc/stb/video/videomode_%shz" % new_rate) and config_rate == "multi":
 					try:
-						with open("/proc/stb/video/videomode_%shz" % new_rate, "r") as fd:
+						with open("/proc/stb/video/videomode_%shz" % new_rate, "r+") as fd:
 							multi_videomode = fd.read().replace("\n", "")
 						if multi_videomode and (current_mode != multi_videomode):
 							write_mode = multi_videomode
@@ -442,8 +440,8 @@ class AutoVideoMode(Screen):
 				resolutionlabel["restxt"].setText(_("Video mode: %s") % write_mode)
 				if config.av.autores.value != "disabled" and config.av.autores_label_timeout.value != "0":
 					resolutionlabel.show()
-				print("[VideoMode] setMode - port: %s, mode: %s" % (config_port, write_mode))
-				with open("/proc/stb/video/videomode", "w") as fd:
+				print("[VideoMode] setMode - port: %s, mode: %s" % (config.av.videoport.value, write_mode))
+				with open(videomode, "w+") as fd:
 					fd.write(write_mode)
 		iAV.setAspect(config.av.aspect)
 		iAV.setWss(config.av.wss)
