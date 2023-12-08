@@ -2,19 +2,19 @@ from os import path
 from boxbranding import getBoxType
 from enigma import iPlayableService, iServiceInformation, eTimer, eServiceCenter, eServiceReference, eDVBDB
 
-from Screens.Screen import Screen
-from Screens.ChannelSelection import FLAG_IS_DEDICATED_3D
 from Components.ActionMap import ActionMap
-from Components.SystemInfo import SystemInfo
-from Components.ConfigList import ConfigListScreen
+from Components.AVSwitch import iAVSwitch as iAV
 from Components.config import config, configfile, getConfigListEntry
+from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.Pixmap import Pixmap
-from Components.Sources.Boolean import Boolean
 from Components.ServiceEventTracker import ServiceEventTracker
+from Components.Sources.Boolean import Boolean
+from Components.SystemInfo import SystemInfo
+from Screens.ChannelSelection import FLAG_IS_DEDICATED_3D
+from Screens.Screen import Screen
 from Tools.Directories import isPluginInstalled
 from Tools.HardwareInfo import HardwareInfo
-from Components.AVSwitch import iAVSwitch as iAV
 
 resolutionlabel = None
 previous = None
@@ -293,10 +293,18 @@ class AutoVideoMode(Screen):
 	def VideoChangeDetect(self):
 		global resolutionlabel
 		config_port = config.av.videoport.value
-		config_mode = str(config.av.videomode[config_port].value).replace("\n", "")
-		config_res = str(config.av.videomode[config_port].value[:-1]).replace("\n", "")
-		config_pol = str(config.av.videomode[config_port].value[-1:]).replace("\n", "")
-		config_rate = str(config.av.videorate[config_mode].value).replace("Hz", "").replace("\n", "")
+		print("[VideoMode][VideoChangeDetect] config.av.videomode keys", list(config.av.videomode.keys()))
+		try:
+			config_mode = str(config.av.videomode[config_port].value).replace("\n", "")
+			config_res = str(config.av.videomode[config_port].value[:-1]).replace("\n", "")
+			config_pol = str(config.av.videomode[config_port].value[-1:]).replace("\n", "")
+			config_rate = str(config.av.videorate[config_mode].value).replace("Hz", "").replace("\n", "")
+			print("[VideoMode][VideoChangeDetect] config_port, config_mode, config_res, config_pol, config_rate", config_port, "   ", config_mode, "   ", config_res, "   ", config_pol, "   ", config_rate)
+		except KeyError as e:
+			print("[VideoMode][VideoChangeDetect] config_port Keyerror use current values", e)
+			self.delay = False
+			self.detecttimer.stop()
+			return
 		with open(videomode, "r+") as fd:  # GB4K can fail on initial open as r
 			current_mode = fd.read()[:-1].replace("\n", "")
 		if current_mode.upper() in ("PAL", "NTSC"):
@@ -305,30 +313,26 @@ class AutoVideoMode(Screen):
 		video_width = None
 		video_pol = None
 		video_rate = None
-		if path.exists("/proc/stb/vmpeg/0/yres"):
+		try:
 			with open("/proc/stb/vmpeg/0/yres", "r") as fd:
-				try:
-					video_height = int(fd.read(), 16)
-				except Exception:
-					pass
-		if path.exists("/proc/stb/vmpeg/0/xres"):
+				video_height = int(fd.read(), 16)
+		except Exception:
+			pass
+		try:
 			with open("/proc/stb/vmpeg/0/xres", "r") as fd:
-				try:
-					video_width = int(fd.read(), 16)
-				except Exception:
-					pass
-		if path.exists("/proc/stb/vmpeg/0/progressive"):
+				video_width = int(fd.read(), 16)
+		except Exception:
+			pass
+		try:
 			with open("/proc/stb/vmpeg/0/progressive", "r") as fd:
-				try:
-					video_pol = "p" if int(fd.read(), 16) else "i"
-				except Exception:
-					pass
-		if path.exists("/proc/stb/vmpeg/0/framerate"):
+				video_pol = "p" if int(fd.read(), 16) else "i"
+		except Exception:
+			pass
+		try:
 			with open("/proc/stb/vmpeg/0/framerate", "r") as fd:
-				try:
-					video_rate = int(fd.read())
-				except Exception:
-					pass
+				video_rate = int(fd.read())
+		except Exception:
+			pass
 		if not video_height or not video_width or not video_pol or not video_rate:
 			info = None if self.session.nav.getCurrentService() is None else self.session.nav.getCurrentService().info()
 			if info:
