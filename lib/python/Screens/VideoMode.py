@@ -429,7 +429,7 @@ class AutoVideoMode(Screen):
 					new_mode = config.av.autores_2160p30.value
 				write_mode = new_mode
 			else:
-				if video_rate == 25000:  # videomode_25hz is not in proc and will be reset 2nd pass thru , so do it now.				
+				if video_rate == 25000:  # videomode_25hz is not in proc and will be reset 2nd pass thru , so do it now.
 					new_rate = 50
 				if path.exists("/proc/stb/video/videomode_%shz" % new_rate) and config_rate == "multi":
 					try:
