@@ -20,6 +20,7 @@ def autostart():
 	if autoClientModeTimer is None:
 		autoClientModeTimer = AutoClientModeTimer()
 
+
 def getRemoteAddress():
 	if config.clientmode.serverAddressType.value == "ip":
 		return "%d.%d.%d.%d" % (config.clientmode.serverIP.value[0], config.clientmode.serverIP.value[1], config.clientmode.serverIP.value[2], config.clientmode.serverIP.value[3])
@@ -137,7 +138,6 @@ class AutoClientModeTimer:
 				self.autostartscantimer.startLongTimer(10)
 			self.attempts += 1
 			
-
 	def checkFTPconnection(self):
 		print("[ChannelsImporter][checkFTPconnection] Testing FTP connection...")
 		try:
