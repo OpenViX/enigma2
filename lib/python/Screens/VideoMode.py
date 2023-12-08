@@ -306,7 +306,7 @@ class AutoVideoMode(Screen):
 			self.delay = False
 			self.detecttimer.stop()
 			return
-		try:	
+		try:
 			with open(videomode, "r+") as fd:  # GB4K can fail on initial open
 				current_mode = fd.read()[:-1].replace("\n", "")
 		except:
