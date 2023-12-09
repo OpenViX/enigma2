@@ -12,16 +12,16 @@ from Tools.Directories import pathExists
 from skin import parameters
 
 caid_data = (
-	("0x100", "0x1ff", "Seca", "S", "SEC", True),
+	("0x100", "0x1ff", "Seca", "S", "SECA", True),
 	("0x500", "0x5ff", "Via", "V", "VIA", True),
 	("0x600", "0x6ff", "Irdeto", "I", "IRD", True),
 	("0x900", "0x9ff", "NDS", "Nd", "NDS", True),
-	("0xb00", "0xbff", "Conax", "Co", "CON", True),
+	("0xb00", "0xbff", "Conax", "Co", "CONAX", True),
 	("0xd00", "0xdff", "CryptoW", "Cw", "CRW", True),
 	("0xe00", "0xeff", "PowerVU", "P", "PV", False),
-	("0x1000", "0x10FF", "Tandberg", "TB", "TAN", False),
-	("0x1700", "0x17ff", "Beta", "B", "BET", True),
-	("0x1800", "0x18ff", "Nagra", "N", "NAG", True),
+	("0x1000", "0x10FF", "Tandberg", "TB", "TAND", False),
+	("0x1700", "0x17ff", "Beta", "B", "BETA", True),
+	("0x1800", "0x18ff", "Nagra", "N", "NAGRA", True),
 	("0x2600", "0x2600", "Biss", "Bi", "BiSS", False),
 	("0x2700", "0x2710", "Dre3", "D3", "DRE3", False),
 	("0x4ae0", "0x4ae1", "Dre", "D", "DRE", False),
