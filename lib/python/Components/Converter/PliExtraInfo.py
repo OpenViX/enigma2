@@ -245,7 +245,7 @@ class PliExtraInfo(Poll, Converter, object):
 
 		res += Hex2strColor(colors[3])  # white (this acts like a color "reset" for following strings
 		return res
-	
+
 	def createCurrentCaidLabel(self):
 		res = ""
 		if not pathExists("/tmp/ecm.info"):

@@ -57,8 +57,7 @@ class AudioIcon(Renderer):
 				self.pngname = pngname
 
 	def findAudioIcon(self, audioName):
-		pngname = resolveFilename(SCOPE_GUISKIN, self.path + audioName + ".svg") 
+		pngname = resolveFilename(SCOPE_GUISKIN, self.path + audioName + ".svg")
 		if fileExists(pngname):
 			return pngname
 		return ""
-
