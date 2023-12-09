@@ -3,6 +3,7 @@ from enigma import ePixmap
 from Tools.Directories import fileExists, SCOPE_GUISKIN, resolveFilename
 from Tools.LoadPixmap import LoadPixmap
 
+
 class AudioIcon(Renderer):
 	def __init__(self):
 		Renderer.__init__(self)
