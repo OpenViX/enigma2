@@ -63,15 +63,16 @@ class MovieInfo(Converter):
 			self.type = self.FORMAT_STRING
 			self.separatorChar = self.parts[0]
 
-		for arg in args:
-			name, value = self.KEYWORDS.get(arg, ("Error", None))
-			if name == "Error":
-				print("[MovieInfo] ERROR: Unexpected / Invalid argument token '%s'!" % arg)
-			else:
-				setattr(self, name, value)
-		if ((name == "Error") or (type is None)):
-			print("[MovieInfo] Valid arguments are: ShortDescription|MetaDescription|FullDescription|RecordServiceName|RecordServiceRef|FileSize.")
-			print("[MovieInfo] Valid options for descriptions are: Separated|NotSeparated|Trimmed|NotTrimmed.")
+		if self.type != self.FORMAT_STRING:
+			for arg in args:
+				name, value = self.KEYWORDS.get(arg, ("Error", None))
+				if name == "Error":
+					print("[MovieInfo] ERROR: Unexpected / Invalid argument token '%s'!" % arg)
+				else:
+					setattr(self, name, value)
+			if ((name == "Error") or (type is None)):
+				print("[MovieInfo] Valid arguments are: ShortDescription|MetaDescription|FullDescription|RecordServiceName|RecordServiceRef|FileSize.")
+				print("[MovieInfo] Valid options for descriptions are: Separated|NotSeparated|Trimmed|NotTrimmed.")
 
 	def destroy(self):
 		Converter.destroy(self)
@@ -145,14 +146,18 @@ class MovieInfo(Converter):
 				timeCreate = strftime("%A %d %b %Y", localtime(info.getInfo(service, iServiceInformation.sTimeCreate)))
 				duration = "%d min" % (info.getLength(service) / 60)
 				filesize = "%d MB" % (info.getInfoObject(service, iServiceInformation.sFileSize) / (1024 * 1024))
+				rec_ref_str = info.getInfoString(service, iServiceInformation.sServiceref)
+				rec_service_name = eServiceReference(rec_ref_str).getServiceName()
 				res_str = ""
 				for x in self.parts[1:]:
-					if x == "TIMECREATED" and timeCreate != '':
+					if x == "TIMECREATED" and timeCreate:
 						res_str = self.appendToStringWithSeparator(res_str, timeCreate)
-					if x == "DURATION" and duration != '':
+					if x == "DURATION" and duration:
 						res_str = self.appendToStringWithSeparator(res_str, duration)
-					if x == "FILESIZE" and filesize != '':
+					if x == "FILESIZE" and filesize:
 						res_str = self.appendToStringWithSeparator(res_str, filesize)
+					if x == "RECSERVICE" and rec_service_name:
+						res_str = self.appendToStringWithSeparator(res_str, rec_service_name)
 				return res_str
 		return ""
 

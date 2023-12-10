@@ -121,9 +121,10 @@ class JobView(InfoBarNotifications, ConfigListScreen, Screen):
 			self["summary_job_task"].text = j.getStatustext()
 		if j.status in (j.FINISHED, j.FAILED):
 			self.performAfterEvent()
-			self.backgroundable = False
-			self["key_blue"].setText("")
-			self["backgroundActions"].setEnabled(False)
+			if self.backgroundable:
+				self.backgroundable = False
+				self["key_blue"].setText("")
+				self["backgroundActions"].setEnabled(False)
 			if j.status == j.FINISHED:
 				self["key_green"].setText(_("OK"))
 				self["okActions"].setEnabled(True)
@@ -160,7 +161,7 @@ class JobView(InfoBarNotifications, ConfigListScreen, Screen):
 			return
 		elif self.settings.afterEvent.value == "close" and self.job.status == self.job.FINISHED:
 			self.close(False)
-		if self.settings.afterEvent.value == "deepstandby":
+		elif self.settings.afterEvent.value == "deepstandby":
 			if not Screens.Standby.inTryQuitMainloop:
 				Tools.Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A sleep timer wants to shut down\nyour %s %s. Proceed?") % (getMachineBrand(), getMachineName()), timeout=20)
 		elif self.settings.afterEvent.value == "standby":

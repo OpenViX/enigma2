@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-11-07 16:38+0200\n"
+"PO-Revision-Date: 2023-12-09 21:41+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3180,7 +3180,7 @@ msgid "Channel"
 msgstr "Kanava"
 
 msgid "Channel EPG"
-msgstr "KanavaEPG"
+msgstr "Kanava-ohjelmaopas"
 
 msgid "Channel List"
 msgstr "Kanavalista"
@@ -4633,7 +4633,7 @@ msgid "Delete Confirmation"
 msgstr "Poistamisen vahvistuskysely"
 
 msgid "Delete EPG Cache"
-msgstr "Poista EPG"
+msgstr "Poista ohjelmaopas"
 
 msgid "Delete Language(s)"
 msgstr "Poista kieli"
@@ -6533,7 +6533,7 @@ msgid "Grey"
 msgstr "Harmaa"
 
 msgid "Grid EPG"
-msgstr "Graafinen taulukko-ohjelmaopas"
+msgstr "Taulukko-ohjelmaopas"
 
 msgid "Grow drop"
 msgstr "Kasvava pudotus"
@@ -7201,13 +7201,13 @@ msgid "Infobar EPG"
 msgstr "Tietopalkki-ohjelmaopas"
 
 msgid "Infobar EPG activation"
-msgstr "Hakupalkin aktivointi"
+msgstr "Tietopalkki-ohjelmaopppan aktivointi"
 
 msgid "Infobar Grid EPG"
-msgstr "Tietopalkin taulukko-EPG"
+msgstr "Tietopalkin taulukko-ohjelmaopas"
 
 msgid "Infobar Single EPG"
-msgstr "Tietopalkin yksittäinen EPG"
+msgstr "Tietopalkin yksittäinen ohjelmaopas"
 
 msgid "Infobar fade-out speed"
 msgstr "Tietopalkin häivytysnopeus"
@@ -7677,7 +7677,7 @@ msgstr "Myöhäis"
 
 msgctxt "third event: 'third' event label"
 msgid "Later"
-msgstr "Myöhemmin"
+msgstr "MYÖHEMMIN"
 
 msgid "Latitude"
 msgstr "Leveysaste"
@@ -7821,7 +7821,7 @@ msgid "Load"
 msgstr "Lataa"
 
 msgid "Load EPG Cache"
-msgstr "Lataa EPG"
+msgstr "Lataa ohjelmaopas"
 
 msgid "Load playlist"
 msgstr "Lataa soittolista"
@@ -7830,7 +7830,7 @@ msgid "Load unlinked userbouquets"
 msgstr "Näytä piilotetut suosikkilistat"
 
 msgid "Load, Save & Delete EPG Cache"
-msgstr "Lataa, Tallenna ja Poista EPG"
+msgstr "Lataa, Tallenna ja Poista ohjelmaopas"
 
 msgid "Loading skin"
 msgstr "Ladataan teemaa"
@@ -8523,9 +8523,6 @@ msgstr "Ei saatavilla"
 msgid "n/a"
 msgstr "Ei saatavilla"
 
-msgid "NEXT"
-msgstr "SEURAAVA"
-
 msgid "NFS"
 msgstr "NFS"
 
@@ -8736,7 +8733,7 @@ msgstr "Seuraava"
 
 msgctxt "now/next: 'next' event label"
 msgid "Next"
-msgstr "Seuraava"
+msgstr "SEURAAVA"
 
 msgid "Nicaragua"
 msgstr "Nicaragua"
@@ -9012,7 +9009,7 @@ msgstr "Ei mitään, sulje valikko"
 
 msgctxt "now/next: 'now' event label"
 msgid "Now"
-msgstr "Nyt"
+msgstr "NYT"
 
 msgid "Now, use the contrast setting to turn up the brightness of the background as much as possible, but make sure that you can still see the difference between the two brightest levels of shades.If you have done that, press OK."
 msgstr "Säädä kontrastisäädöllä tausta mahdollisimman valkoiseksi. Varmista, että näet yhä kahden kirkkaimman sävyn eron. Kun olet tyytyväinen tulokseen, paina OK."
@@ -9171,7 +9168,7 @@ msgid "Open bouquet list"
 msgstr "Avaa suosikkilistat"
 
 msgid "Open infobar EPG"
-msgstr "Avaa tietopalkin EPG"
+msgstr "Avaa tietopalkin ohjelmaopas"
 
 msgid "Open menu"
 msgstr "Avaa valikko"
@@ -10250,7 +10247,7 @@ msgid "Protect movie list"
 msgstr "Suojaa tallennusvalikko"
 
 msgid "Protect on epg age"
-msgstr "Suojaa epg"
+msgstr "Suojaa ohjelmaopas"
 
 msgid "Protect plugin browser"
 msgstr "Suojaa lisäosavalikko"
@@ -11216,7 +11213,7 @@ msgid "Save / Enter text and exit"
 msgstr "Tallenna ja poistu"
 
 msgid "Save EPG Cache"
-msgstr "Tallenna EPG"
+msgstr "Tallenna ohjelmaopas"
 
 msgid "Save all changed settings and exit"
 msgstr "Tallenna ja poistu"
@@ -12240,7 +12237,7 @@ msgid "Show Ecm info"
 msgstr "Näytä ECM-tiedot"
 
 msgid "Show Grid EPG"
-msgstr "Näytä taulukko-EPG"
+msgstr "Näytä taulukko-ohjelmaopas"
 
 msgid "Show Log"
 msgstr "Näytä loki"
@@ -12255,7 +12252,7 @@ msgid "Show MiniTV in the Front Display"
 msgstr "Näytä MiniTV etupaneelin näytössä"
 
 msgid "Show Multi EPG"
-msgstr "Näytä Multi EPG"
+msgstr "Näytä monikanavaohjelmaopas"
 
 msgid "Show OScam/Ncam Info in extensions?"
 msgstr "Näytä OScam/Ncam Info laajennusvalikossa?"
@@ -12279,7 +12276,7 @@ msgid "Show SD as"
 msgstr "Näytä SD näin:"
 
 msgid "Show Single EPG"
-msgstr "Näytä yksittäinen EPG"
+msgstr "Näytä yksittäinen ohjelmaopas"
 
 msgid "Show Software Update in Extensions"
 msgstr "Näytä ohjelmapäivitys laajennuksissa"
@@ -12408,7 +12405,7 @@ msgid "Show info line"
 msgstr "Näytä tietopalkki"
 
 msgid "Show infobar EPG"
-msgstr "Tietopalkin EPG"
+msgstr "Näytä tietopalkki-ohjelmaopas"
 
 msgid "Show infobar on channel change"
 msgstr "Näytä tietopalkki kanavaa vaihdettaessa"
@@ -12513,7 +12510,7 @@ msgid "Show shutdown menu"
 msgstr "Näytä sammutusvalikko"
 
 msgid "Show single channel EPG"
-msgstr "Näytä yhden kanavan EPG"
+msgstr "Näytä yhden kanavan ohjelmaopas"
 
 msgid "Show single epg for current channel"
 msgstr "Näytä nykyisen kanavan ohjelmatiedot"
@@ -12557,8 +12554,8 @@ msgstr "Näytä lisäosien selain"
 msgid "Show the radio player"
 msgstr "Näytä radiosoitin"
 
-msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
-msgstr "Näytä kanavan tiedot  kahdella rivillä kanavan valintanäytöllä. Voit valita nykyisen ohjelmatiedon kanavan nimen alle tai nykyisen ohjelmatiedon kanavan nimen viereen ja seuraavan ohjelmatiedon toiselle riville."
+msgid "Show the service information on two lines in the channel selection screen."
+msgstr "Näytä kanavan tiedot kahdella rivillä kanavanvalintanäytössä."
 
 msgid "Show the tv player"
 msgstr "Näytä tv"
@@ -12873,7 +12870,7 @@ msgstr "Softcam-asetukset"
 msgid "SoftcamCheck"
 msgstr "SoftCam:in tarkistus"
 
-msgid "SoftcamManager"
+msgid "Softcam Management"
 msgstr "Softcam hallinta"
 
 msgid "SoftcamScript enable/disable cam restart"
@@ -13437,16 +13434,16 @@ msgid "Switch the PiP to the previous channel"
 msgstr "Vaihda PiP edelliselle kanavalle"
 
 msgid "Switch to Grid EPG"
-msgstr "Vaihda taulukko-EPG:n"
+msgstr "Vaihda taulukko-ohjelmaoppaaseen"
 
 msgid "Switch to HDMI in mode"
 msgstr "Vaihda HDMI In -tilaan"
 
 msgid "Switch to Multi EPG"
-msgstr "Vaihda graafiseen EPG:n"
+msgstr "Vaihda monikanavaohjelmaoppaaseen"
 
 msgid "Switch to Single EPG"
-msgstr "Vaihda yksittäiseen-EPG:n"
+msgstr "Vaihda yksittäiseen ohjelmaoppaaseen"
 
 msgid "Switch to TV mode"
 msgstr "Vaihda TV-tilaan"
@@ -13543,7 +13540,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"07.11.2023\n"
+"09.12.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -13656,7 +13653,7 @@ msgid "Text"
 msgstr "Teksti"
 
 msgid "Text Grid EPG"
-msgstr "Teksti taulukko-ohjelmaopas"
+msgstr "Tekstillinen taulukko-ohjelmaopas"
 
 msgid "Text View On"
 msgstr "Tekstinäkymä päällä"
@@ -17400,6 +17397,9 @@ msgstr "kaksi riviä"
 msgid "two lines and next event"
 msgstr "kaksi riviä ja seuraava ohjelma"
 
+msgid "two lines alternative"
+msgstr "kahden rivin vaihtoehto"
+
 msgid "type"
 msgstr "DVB tyyppi"
 
@@ -18853,7 +18853,7 @@ msgstr "Koko: %sTt"
 msgid "Size: unavailable"
 msgstr "Koko: ei saatavilla"
 
-msgid "Softcam manager"
+msgid "Softcam Manager"
 msgstr "Softcam:n hallinnointi"
 
 msgid "Softcam manager settings"
@@ -19096,17 +19096,23 @@ msgstr "Toista kanava striimin välityksellä"
 msgid "Stream relay"
 msgstr "Striimin välitys"
 
-msgid "Streamrelay url"
+msgid "Stream Relay url"
 msgstr "Striimin välitys -url"
 
-msgid "The IP address of the streamrelay server that is used to descramble services that can only be decrypted via streamrelay"
-msgstr "Striimin välitys -palvelimen IP-osoite, jota käytetään sellaisten palvelujen salauksen purkamiseen, joiden salaus voidaan purkaa vain striimin välityksen kautta"
+msgid "The IP address of the streamrelay server that is used to descramble services that can only be decrypted via stream relay."
+msgstr "Striimin välitys -palvelimen IP-osoite, jota käytetään sellaisten palvelujen salauksen purkamiseen, joiden salaus voidaan purkaa vain striimin välityksen kautta."
 
-msgid "Streamrelay port"
+msgid "Stream Relay port"
 msgstr "Striimin välitys -portti"
 
-msgid "The port of the streamrelay server that is used to descramble services that can only be decrypted via streamrelay"
-msgstr "Striimin välitys -palvelimen portti, jota käytetään sellaisten palvelujen salauksen purkamiseen, joiden salaus voidaan purkaa vain striimin välityksen kautta"
+msgid "Stream Relay delay"
+msgstr "Striimin välityksen viive"
+
+msgid "Delay when closing a stream relay service before reallocating the tuner for another service. Using '0' is only recommended for boxes with multiple satellite tuners."
+msgstr "Viive striimin välitys -palvelun sulkemisessa ennen virittimen uudelleenallokointia toista palvelua varten. 0:n käyttöä suositellaan vain bokseille, joissa on useita satelliittivirittimiä."
+
+msgid "The port of the streamrelay server that is used to descramble services that can only be decrypted via stream relay."
+msgstr "Striimin välitys -palvelimen portti, jota käytetään sellaisten palvelujen salauksen purkamiseen, joiden salaus voidaan purkaa vain striimin välityksen kautta."
 
 msgid "Enter adapter settings or disable adapter, then Save to action changed setup."
 msgstr "Syötä sovittimen asetukset tai poista sovitin käytöstä ja sitten Tallenna toimintoon muutettu asetus."
@@ -19123,3 +19129,39 @@ msgstr "Odota, verkkoasetuksia poistetaan käytöstä..."
 
 msgid "Your network configuration has been disabled."
 msgstr "Verkkoasetukset on poistettu käytöstä."
+
+msgid "Reception"
+msgstr "Vastaanotto"
+
+msgid "Transmission"
+msgstr "Lähetys"
+
+msgid "Enable blinking"
+msgstr "Ota vilkkuminen käyttöön"
+
+msgid "Enable blinking for ui elements. For example for recording icon"
+msgstr "Ota vilkkuminen käyttöön käyttöliittymäelementeissä. Esimerkiksi tallennuskuvakkeelle"
+
+msgid "Stream Relay Settings"
+msgstr "Striimin välitysasetukset"
+
+msgid "Play service with Stream Relay"
+msgstr "Toista kanava striimin välityksellä"
+
+msgid "Stream Relay Setup Actions"
+msgstr "Striimin välitysasetustoiminnot"
+
+msgid "Play service without Stream Relay"
+msgstr "Toista kanava ilman striimin välitystä"
+
+msgid "Record icon match"
+msgstr "Tallennuskuvakkeen vastine"
+
+msgid "Select display of record icon based on 'Sref only' or 'Sref + Stream url' where applicable."
+msgstr "Valitse tallennuskuvakkeen näyttö 'vain Sref' tai 'Sref + striimin url' perusteella, jos mahdollista."
+
+msgid "Sref only"
+msgstr "Vain Sref"
+
+msgid "Sref + stream url"
+msgstr "Sref + striimin url"

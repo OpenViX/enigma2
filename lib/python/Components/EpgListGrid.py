@@ -573,6 +573,8 @@ class EPGListGrid(EPGListBase):
 					borderRightPix = self.borderSelectedRightPix
 					infoPix = self.selInfoPix
 					bgpng = self.nowSelEvPix if isNow else self.selEvPix
+					if timer:
+						bgpng = self.recSelEvPix if timer.justplay == 0 and timer.always_zap == 0 else self.zapSelEvPix
 				else:
 					borderTopPix = self.borderTopPix
 					borderLeftPix = self.borderLeftPix
@@ -660,7 +662,7 @@ class EPGListGrid(EPGListBase):
 						else:
 							recIconHeight = top + height - pix_height - applySkinFactor(5)
 						if matchType == 0:
-							pos = (left + xpos + ewidth - applySkinFactor(10), recIconHeight)
+							pos = (left + xpos + ewidth - pix_width - applySkinFactor(5), recIconHeight)
 						else:
 							pos = (left + xpos + ewidth - pix_width - applySkinFactor(5), recIconHeight)
 						res.append(MultiContentEntryPixmapAlphaBlend(

@@ -1,6 +1,7 @@
 from enigma import eTimer
 
 from Components.Converter.Converter import Converter
+from Components.config import config
 
 
 class ConditionalShowHide(Converter):
@@ -8,7 +9,7 @@ class ConditionalShowHide(Converter):
 		Converter.__init__(self, argstr)
 		args = argstr.split(',')
 		self.invert = "Invert" in args
-		self.blink = "Blink" in args
+		self.blink = "Blink" in args and config.usage.enable_blinking.value
 		if self.blink:
 			self.blinktime = len(args) == 2 and args[1].isdigit() and int(args[1]) or 500
 			self.timer = eTimer()

@@ -191,7 +191,7 @@ class VIXSoftcamManager(Screen):
 			else:
 				self["key_green"].setText(_("Stop"))
 			if self.currentactivecam.find(selcam) < 0:
-				self["key_yellow"].setText(" ")
+				self["key_yellow"].setText("")
 			else:
 				self["key_yellow"].setText(_("Restart"))
 

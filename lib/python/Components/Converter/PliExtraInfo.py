@@ -8,24 +8,25 @@ from Tools.Transponder import ConvertToHumanReadable
 from Tools.GetEcmInfo import GetEcmInfo
 from Tools.Hex2strColor import Hex2strColor
 from Components.Converter.Poll import Poll
+from Tools.Directories import pathExists
 from skin import parameters
 
 caid_data = (
-	("0x100", "0x1ff", "Seca", "S", True),
-	("0x500", "0x5ff", "Via", "V", True),
-	("0x600", "0x6ff", "Irdeto", "I", True),
-	("0x900", "0x9ff", "NDS", "Nd", True),
-	("0xb00", "0xbff", "Conax", "Co", True),
-	("0xd00", "0xdff", "CryptoW", "Cw", True),
-	("0xe00", "0xeff", "PowerVU", "P", False),
-	("0x1000", "0x10FF", "Tandberg", "TB", False),
-	("0x1700", "0x17ff", "Beta", "B", True),
-	("0x1800", "0x18ff", "Nagra", "N", True),
-	("0x2600", "0x2600", "Biss", "Bi", False),
-	("0x2700", "0x2710", "Dre3", "D3", False),
-	("0x4ae0", "0x4ae1", "Dre", "D", False),
-	("0x4aee", "0x4aee", "BulCrypt", "B1", False),
-	("0x5581", "0x5581", "BulCrypt", "B2", False)
+	("0x100", "0x1ff", "Seca", "S", "SECA", True),
+	("0x500", "0x5ff", "Via", "V", "VIA", True),
+	("0x600", "0x6ff", "Irdeto", "I", "IRD", True),
+	("0x900", "0x9ff", "NDS", "Nd", "NDS", True),
+	("0xb00", "0xbff", "Conax", "Co", "CONAX", True),
+	("0xd00", "0xdff", "CryptoW", "Cw", "CRW", True),
+	("0xe00", "0xeff", "PowerVU", "P", "PV", False),
+	("0x1000", "0x10FF", "Tandberg", "TB", "TAND", False),
+	("0x1700", "0x17ff", "Beta", "B", "BETA", True),
+	("0x1800", "0x18ff", "Nagra", "N", "NAGRA", True),
+	("0x2600", "0x2600", "Biss", "Bi", "BiSS", False),
+	("0x2700", "0x2710", "Dre3", "D3", "DRE3", False),
+	("0x4ae0", "0x4ae1", "Dre", "D", "DRE", False),
+	("0x4aee", "0x4aee", "BulCrypt", "B1", "BUL", False),
+	("0x5581", "0x5581", "BulCrypt", "B2", "BUL", False)
 )
 
 # stream type to codec map
@@ -237,12 +238,22 @@ class PliExtraInfo(Poll, Converter, object):
 				except:
 					pass
 
-			if color != Hex2strColor(colors[2]) or caid_entry[4]:
+			if color != Hex2strColor(colors[2]) or caid_entry[5]:
 				if res:
 					res += " "
 				res += color + caid_entry[3]
 
 		res += Hex2strColor(colors[3])  # white (this acts like a color "reset" for following strings
+		return res
+
+	def createCurrentCaidLabel(self):
+		res = ""
+		if not pathExists("/tmp/ecm.info"):
+			return "FTA"
+		for caid_entry in caid_data:
+			if int(caid_entry[0], 16) <= int(self.current_caid, 16) <= int(caid_entry[1], 16):
+				res = caid_entry[4]
+
 		return res
 
 	def createCryptoSeca(self, info):
@@ -562,7 +573,7 @@ class PliExtraInfo(Poll, Converter, object):
 	def createStreamURLInfo(self, info):
 		refstr = info.getInfoString(iServiceInformation.sServiceref)
 		if "%3a//" in refstr.lower():
-			return refstr.split(":")[10].replace("%3a", ":").replace("%3A", ":")
+			return refstr.replace("%3a", ":").replace("%3A", ":").split("://")[1].split("/")[0].split('@')[-1]
 		return ""
 
 	def createFrequency(self, fedata):
@@ -618,14 +629,17 @@ class PliExtraInfo(Poll, Converter, object):
 	def createTunerSystem(self, fedata):
 		return fedata.get("system") or ""
 
-	def createOrbPos(self, feraw):
-		orbpos = feraw.get("orbital_position")
-		if orbpos is not None:
+	def formatOrbPos(self, orbpos):
+		if isinstance(orbpos, int) and 0 <= orbpos <= 3600:  # sanity
 			if orbpos > 1800:
 				return str((float(3600 - orbpos)) / 10.0) + "\xb0" + "W"
-			elif orbpos > 0:
+			else:
 				return str((float(orbpos)) / 10.0) + "\xb0" + "E"
 		return ""
+
+	def createOrbPos(self, feraw):
+		orbpos = feraw.get("orbital_position")
+		return self.formatOrbPos(orbpos)
 
 	def createOrbPosOrTunerSystem(self, fedata, feraw):
 		orbpos = self.createOrbPos(feraw)
@@ -738,10 +752,8 @@ class PliExtraInfo(Poll, Converter, object):
 
 		if orbpos in sat_names:
 			return sat_names[orbpos]
-		elif orbpos > 1800:
-			return str((float(3600 - orbpos)) / 10.0) + "W"
 		else:
-			return str((float(orbpos)) / 10.0) + "E"
+			return self.formatOrbPos(orbpos)
 
 	def createProviderName(self, info):
 		return info.getInfoString(iServiceInformation.sProvider)
@@ -774,6 +786,13 @@ class PliExtraInfo(Poll, Converter, object):
 
 		if not info:
 			return ""
+
+		if textType == "CurrentCrypto":
+			if int(config.usage.show_cryptoinfo.value) > 0:
+				self.getCryptoInfo(info)
+				return self.createCurrentCaidLabel()
+			else:
+				return ""
 
 		if textType == "CryptoBar":
 			if int(config.usage.show_cryptoinfo.value) > 0:

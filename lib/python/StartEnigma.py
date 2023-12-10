@@ -324,6 +324,9 @@ def runScreenTest():
 	profile("Init:Session")
 	nav = Navigation(config.misc.isNextRecordTimerAfterEventActionAuto.value, config.misc.isNextPowerTimerAfterEventActionAuto.value)
 	session = Session(desktop=enigma.getDesktop(0), summary_desktop=enigma.getDesktop(1), navigation=nav)
+	from Session import SessionObject
+	so = SessionObject()
+	so.session = session
 
 	profile("Init:Trashcan")
 	import Tools.Trashcan
@@ -690,7 +693,8 @@ profile("keymapparser")
 print("[StartEnigma]  Initialising KeymapParser.")
 from keymapparser import readKeymap  # noqa: E402
 readKeymap(config.usage.keymap.value)
-readKeymap(config.usage.keytrans.value)
+if osexists(config.usage.keytrans.value):
+	readKeymap(config.usage.keytrans.value)
 
 if VuRecovery:
 	SystemInfo["Display"] = False

@@ -1,24 +1,25 @@
 from os import path
-
+from boxbranding import getBoxType
 from enigma import iPlayableService, iServiceInformation, eTimer, eServiceCenter, eServiceReference, eDVBDB
 
-from Screens.Screen import Screen
-from Screens.ChannelSelection import FLAG_IS_DEDICATED_3D
 from Components.ActionMap import ActionMap
-from Components.SystemInfo import SystemInfo
-from Components.ConfigList import ConfigListScreen
+from Components.AVSwitch import iAVSwitch as iAV
 from Components.config import config, configfile, getConfigListEntry
+from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.Pixmap import Pixmap
-from Components.Sources.Boolean import Boolean
 from Components.ServiceEventTracker import ServiceEventTracker
+from Components.Sources.Boolean import Boolean
+from Components.SystemInfo import SystemInfo
+from Screens.ChannelSelection import FLAG_IS_DEDICATED_3D
+from Screens.Screen import Screen
 from Tools.Directories import isPluginInstalled
 from Tools.HardwareInfo import HardwareInfo
-from Components.AVSwitch import iAVSwitch as iAV
 
 resolutionlabel = None
 previous = None
 isDedicated3D = False
+videomode = "/proc/stb/video/videomode_50hz" if getBoxType() in ("gbquad4k", "gbue4k") else "/proc/stb/video/videomode"
 
 
 class VideoSetup(ConfigListScreen, Screen):
@@ -293,48 +294,52 @@ class AutoVideoMode(Screen):
 	def VideoChangeDetect(self):
 		global resolutionlabel
 		config_port = config.av.videoport.value
-		config_mode = str(config.av.videomode[config_port].value).replace("\n", "")
-		config_res = str(config.av.videomode[config_port].value[:-1]).replace("\n", "")
-		config_pol = str(config.av.videomode[config_port].value[-1:]).replace("\n", "")
-		config_rate = str(config.av.videorate[config_mode].value).replace("Hz", "").replace("\n", "")
-		with open("/proc/stb/video/videomode", "r") as fd:
-			current_mode = fd.read()[:-1].replace("\n", "")
+		print("[VideoMode][VideoChangeDetect] config.av.videomode keys", list(config.av.videomode.keys()))
+		try:
+			config_mode = str(config.av.videomode[config_port].value).replace("\n", "")
+			config_res = str(config.av.videomode[config_port].value[:-1]).replace("\n", "")
+			config_pol = str(config.av.videomode[config_port].value[-1:]).replace("\n", "")
+			config_rate = str(config.av.videorate[config_mode].value).replace("Hz", "").replace("\n", "")
+			print("[VideoMode][VideoChangeDetect] config_port, config_mode, config_res, config_pol, config_rate", config_port, "   ", config_mode, "   ", config_res, "   ", config_pol, "   ", config_rate)
+		except KeyError as e:
+			print("[VideoMode][VideoChangeDetect] config_port Keyerror use current values", e)
+			self.delay = False
+			self.detecttimer.stop()
+			return
+		try:
+			with open(videomode, "r+") as fd:  # GB4K can fail on initial open
+				current_mode = fd.read()[:-1].replace("\n", "")
+		except:
+			with open("/proc/stb/video/videomode", "r") as fd:
+				current_mode = fd.read()[:-1].replace("\n", "")
 		if current_mode.upper() in ("PAL", "NTSC"):
 			current_mode = current_mode.upper()
 		video_height = None
 		video_width = None
 		video_pol = None
 		video_rate = None
-		if path.exists("/proc/stb/vmpeg/0/yres"):
+		try:
 			with open("/proc/stb/vmpeg/0/yres", "r") as fd:
-				try:
-					video_height = int(fd.read(), 16)
-				except Exception:
-					pass
-		if path.exists("/proc/stb/vmpeg/0/xres"):
+				video_height = int(fd.read(), 16)
+		except Exception:
+			pass
+		try:
 			with open("/proc/stb/vmpeg/0/xres", "r") as fd:
-				try:
-					video_width = int(fd.read(), 16)
-				except Exception:
-					pass
-		if path.exists("/proc/stb/vmpeg/0/progressive"):
+				video_width = int(fd.read(), 16)
+		except Exception:
+			pass
+		try:
 			with open("/proc/stb/vmpeg/0/progressive", "r") as fd:
-				try:
-					video_pol = "p" if int(fd.read(), 16) else "i"
-				except Exception:
-					pass
-		if path.exists("/proc/stb/vmpeg/0/framerate"):
+				video_pol = "p" if int(fd.read(), 16) else "i"
+		except Exception:
+			pass
+		try:
 			with open("/proc/stb/vmpeg/0/framerate", "r") as fd:
-				try:
-					video_rate = int(fd.read())
-				except Exception:
-					pass
+				video_rate = int(fd.read())
+		except Exception:
+			pass
 		if not video_height or not video_width or not video_pol or not video_rate:
-			service = self.session.nav.getCurrentService()
-			if service is not None:
-				info = service.info()
-			else:
-				info = None
+			info = None if self.session.nav.getCurrentService() is None else self.session.nav.getCurrentService().info()
 			if info:
 				video_height = int(info.getInfo(iServiceInformation.sVideoHeight))
 				video_width = int(info.getInfo(iServiceInformation.sVideoWidth))
@@ -428,9 +433,11 @@ class AutoVideoMode(Screen):
 					new_mode = config.av.autores_2160p30.value
 				write_mode = new_mode
 			else:
+				if video_rate == 25000:  # videomode_25hz is not in proc and will be reset 2nd pass thru , so do it now.
+					new_rate = 50
 				if path.exists("/proc/stb/video/videomode_%shz" % new_rate) and config_rate == "multi":
 					try:
-						with open("/proc/stb/video/videomode_%shz" % new_rate, "r") as fd:
+						with open("/proc/stb/video/videomode_%shz" % new_rate, "r+") as fd:
 							multi_videomode = fd.read().replace("\n", "")
 						if multi_videomode and (current_mode != multi_videomode):
 							write_mode = multi_videomode
@@ -442,8 +449,8 @@ class AutoVideoMode(Screen):
 				resolutionlabel["restxt"].setText(_("Video mode: %s") % write_mode)
 				if config.av.autores.value != "disabled" and config.av.autores_label_timeout.value != "0":
 					resolutionlabel.show()
-				print("[VideoMode] setMode - port: %s, mode: %s" % (config_port, write_mode))
-				with open("/proc/stb/video/videomode", "w") as fd:
+				print("[VideoMode] setMode - port: %s, mode: %s" % (config.av.videoport.value, write_mode))
+				with open(videomode, "w+") as fd:
 					fd.write(write_mode)
 		iAV.setAspect(config.av.aspect)
 		iAV.setWss(config.av.wss)
