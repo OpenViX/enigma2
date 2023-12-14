@@ -13,9 +13,9 @@ import Components.Harddisk
 class TimeshiftSettings(Setup):
 	def __init__(self, session):
 		self.buildChoices("TimeshiftPath", config.usage.timeshift_path, None)
+		self.errorItem = -1
 		Setup.__init__(self, session=session, setup="timeshift")
 		self.greenText = self["key_green"].text
-		self.errorItem = -1
 		if self.getCurrentItem() is config.usage.timeshift_path:
 			self.pathStatus(self.getCurrentValue())
 
