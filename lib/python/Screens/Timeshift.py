@@ -108,7 +108,6 @@ class TimeshiftSettings(Setup):
 			Setup.selectionChanged(self)
 		else:
 			self["config"].setCurrentIndex(self.errorItem)
-			self.errorMsg()
 
 	def changedEntry(self):
 		if self.getCurrentItem() is config.usage.timeshift_path:
@@ -121,11 +120,6 @@ class TimeshiftSettings(Setup):
 		else:
 			Setup.keySelect(self)
 
-	def errorMsg(self):
-		self.session.open(MessageBox, "%s\n\n%s" % (self.footnote, _("Please select a valid directory.")), type=MessageBox.TYPE_ERROR)
-
 	def keySave(self):
 		if self.errorItem == -1:
 			Setup.keySave(self)
-		else:
-			self.errorMsg()
