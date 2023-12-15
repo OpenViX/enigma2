@@ -4,7 +4,6 @@ from tempfile import NamedTemporaryFile
 
 from Components.config import config
 from Screens.LocationBox import TimeshiftLocationBox
-from Screens.MessageBox import MessageBox
 from Screens.Setup import Setup
 from Tools.Directories import fileExists
 import Components.Harddisk
