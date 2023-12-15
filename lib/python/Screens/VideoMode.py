@@ -1,5 +1,4 @@
 from os import path
-from boxbranding import getBoxType
 from enigma import iPlayableService, iServiceInformation, eTimer, eServiceCenter, eServiceReference, eDVBDB
 
 from Components.ActionMap import ActionMap
