@@ -3,7 +3,7 @@ from skin import parseColor, parseFont, parseScale, applySkinFactor
 
 from enigma import eListboxServiceContent, eListbox, eServiceCenter, eServiceReference, gFont, eRect, eSize
 from Tools.LoadPixmap import LoadPixmap
-from Tools.TextBoundary import getTextBoundarySize
+# from Tools.TextBoundary import getTextBoundarySize
 
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 
