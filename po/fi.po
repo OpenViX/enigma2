@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-12-17 18:04+0200\n"
+"PO-Revision-Date: 2023-12-18 06:59+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3639,13 +3639,13 @@ msgid "Configure how recording filenames are constructed."
 msgstr "Määritä tallenteiden tiedostonimien rakenne."
 
 msgid "Configure if and how crypto icons will be shown in the channel selection list (left alignment only available in single line mode)."
-msgstr "Määrittää näytetäänkö/miten näytetään salauksen kuvakkeet kanavalistassa (tasaus vasemmalle käytettävissä vain yksirivisessä tilassa)."
+msgstr "Määrittää näytetäänkö/miten näytetään salauksen kuvakkeet kanavalistassa (tasaus vasemmalle käytössä vain yksirivisessä tilassa)."
 
 msgid "Configure if and how service type icons will be shown (left alignment only available in single line mode)."
-msgstr "Määritä näytetäänkö/miten näytetään kanavatyypin kuvakkeet (tasaus vasemmalle käytettävissä vain yksirivisessä tilassa)."
+msgstr "Määritä näytetäänkö/miten näytetään kanavatyypin kuvakkeet (tasaus vasemmalle käytössä vain yksirivisessä tilassa)."
 
-msgid "Configure if and how the record indicator will be shown in the channel selection list."
-msgstr "Määrittää kuinka tallennuksen indikaattori näytetään kanavalistassa."
+msgid "Configure if and how the record indicator will be shown in the channel selection list (left alignment only available in single line mode)."
+msgstr "Määrittää kuinka tallennuksen indikaattori näytetään kanavalistassa (tasaus vasemmalle käytössä vain yksirivisessä tilassa)."
 
 msgid "Configure if and how wide the service name column will be shown in the channel selection list."
 msgstr "Määrittää kuinka leveänä kanavanimet näytetään kanavalistassa."
@@ -7701,7 +7701,7 @@ msgid "Left"
 msgstr "Vasen"
 
 msgid "Left from servicename (only available in single line mode)"
-msgstr "Kanavanimestä vasemmalle (käytettävissä vain yksirivisessä tilassa)"
+msgstr "Kanavanimestä vasemmalle (käytössä vain yksirivisessä tilassa)"
 
 msgid "Left long"
 msgstr "Pitkä vasemmalle"
@@ -9463,7 +9463,7 @@ msgid "Percentage left"
 msgstr "Prosentit vasemmalla"
 
 msgid "Percentage right (only available in single line mode)"
-msgstr "Prosentit oikealla (käytettävissä vain yksirivisessä tilassa)"
+msgstr "Prosentit oikealla (käytössä vain yksirivisessä tilassa)"
 
 msgid "Perform a complete image backup before updating."
 msgstr "Suorita täydellinen image-varmuuskopiointi ennen päivitystä."
@@ -10223,7 +10223,7 @@ msgid "Progress bar left"
 msgstr "Etenemispalkki vasemmalla"
 
 msgid "Progress bar right (only available in single line mode)"
-msgstr "Etenemispalkki oikealla (käytettävissä vain yksirivisessä tilassa)"
+msgstr "Etenemispalkki oikealla (käytössä vain yksirivisessä tilassa)"
 
 msgid "Prominent"
 msgstr "Kuuluisa"
@@ -12105,7 +12105,7 @@ msgid "Set the time the timer must stop."
 msgstr "Kellonaika, jolloin ajastuksen pitää pysähtyä."
 
 msgid "Set the type of the progress indication in the channel selection screen (right alignment only available in single line mode)."
-msgstr "Määritä ohjelman pituuden osoittamisen tyyppi kanavien valintalistassa (tasaus oikealle käytettävissä vain yksirivisessä tilassa)."
+msgstr "Määritä ohjelman pituuden osoittamisen tyyppi kanavien valintalistassa (tasaus oikealle käytössä vain yksirivisessä tilassa)."
 
 msgid "Set to the desired primetime."
 msgstr "Asetettu parhaaseen katseluaikaan."
@@ -13261,16 +13261,16 @@ msgid "Stored position"
 msgstr "Sijainnin muistipaikka"
 
 msgid "Stream"
-msgstr "Stream"
+msgstr "Streami"
 
 msgid "Stream request"
-msgstr "Streamin pyynti"
+msgstr "Streamin pyyntö"
 
 msgid "Stream-tv"
-msgstr "Stream"
+msgstr "Streami-tv"
 
 msgid "Streaming"
-msgstr "Stream"
+msgstr "Streamaa"
 
 msgid "Streaming Clients"
 msgstr "Etäasiakkaat"
@@ -13543,7 +13543,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"17.12.2023\n"
+"18.12.2023\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
