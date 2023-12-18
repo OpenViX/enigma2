@@ -1147,7 +1147,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 							EventProgressbarColor = m_color[eventForegroundSelected];
 						}
 						else
-							painter.setForegroundColor(gRGB(0x787878));
+							painter.setForegroundColor(gRGB(0xe7b53f));
 
 						if (serviceFallback && !selected && m_color_set[eventForegroundFallback]) // fallback receiver
 						{
@@ -1523,7 +1523,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 							EventProgressbarColor = m_color[eventForegroundSelected];
 						}
 						else
-							painter.setForegroundColor(gRGB(0x787878));
+							painter.setForegroundColor(gRGB(0xe7b53f));
 
 						if (serviceFallback && !selected && m_color_set[eventForegroundFallback]) // fallback receiver
 						{
