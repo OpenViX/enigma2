@@ -54,26 +54,26 @@ def InitUsageConfig():
 	config.usage.alternative_number_mode.addNotifier(alternativeNumberModeChange)
 
 	config.usage.servicelist_twolines = ConfigSelection(default="0", choices=[("0", _("None")), ("1", _("two lines")), ("2", _("two lines+next event"))])
-	config.usage.servicelist_twolines.addNotifier(refreshServiceList)
+	config.usage.servicelist_twolines.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
 
 	config.usage.hide_number_markers = ConfigYesNo(default=True)
-	config.usage.hide_number_markers.addNotifier(refreshServiceList)
+	config.usage.hide_number_markers.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
 
 	config.usage.servicetype_icon_mode = ConfigSelection(default="0", choices=[("0", _("None")), ("1", _("Left from servicename (only available in single line mode)")), ("2", _("Right from servicename"))])
-	config.usage.servicetype_icon_mode.addNotifier(refreshServiceList)
+	config.usage.servicetype_icon_mode.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
 	config.usage.crypto_icon_mode = ConfigSelection(default="0", choices=[("0", _("None")), ("1", _("Left from servicename (only available in single line mode)")), ("2", _("Right from servicename"))])
-	config.usage.crypto_icon_mode.addNotifier(refreshServiceList)
+	config.usage.crypto_icon_mode.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
 	config.usage.record_indicator_mode = ConfigSelection(default="3", choices=[("0", _("None")), ("1", _("Left from servicename (only available in single line mode)")), ("2", _("Right from servicename")), ("3", _("Red colored"))])
-	config.usage.record_indicator_mode.addNotifier(refreshServiceList)
+	config.usage.record_indicator_mode.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
 
 	choicelist = [("-1", _("Disable"))]
 	for i in range(0, 1300, 25):
 		choicelist.append((str(i), ngettext("%d pixel wide", "%d pixels wide", i) % i))
 	config.usage.servicelist_column = ConfigSelection(default="-1", choices=choicelist)
-	config.usage.servicelist_column.addNotifier(refreshServiceList)
+	config.usage.servicelist_column.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
 
 	config.usage.service_icon_enable = ConfigYesNo(default=False)
-	config.usage.service_icon_enable.addNotifier(refreshServiceList)
+	config.usage.service_icon_enable.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
 	config.usage.servicelist_cursor_behavior = ConfigSelection(default="keep", choices=[
 		("standard", _("Standard")),
 		("keep", _("Keep service")),
@@ -327,8 +327,8 @@ def InitUsageConfig():
 		("alpha", _("Alpha")),
 		("number", _("Number"))])
 
-	config.usage.show_event_progress_in_servicelist.addNotifier(refreshServiceList)
-	config.usage.show_channel_numbers_in_servicelist.addNotifier(refreshServiceList)
+	config.usage.show_event_progress_in_servicelist.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
+	config.usage.show_channel_numbers_in_servicelist.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
 
 	if SystemInfo["WakeOnLAN"]:
 		def wakeOnLANChanged(configElement):
