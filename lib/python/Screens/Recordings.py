@@ -20,6 +20,7 @@ class RecordingSettings(Setup):
 		self.greenText = self["key_green"].text
 		if self.getCurrentItem() in (config.usage.default_path, config.usage.timer_path, config.usage.instantrec_path):
 			self.pathStatus(self.getCurrentValue())
+		self.changedEntry()
 
 	def buildChoices(self, item, configEntry, path):
 		configList = config.movielist.videodirs.value[:]

@@ -17,6 +17,7 @@ class TimeshiftSettings(Setup):
 		self.greenText = self["key_green"].text
 		if self.getCurrentItem() is config.usage.timeshift_path:
 			self.pathStatus(self.getCurrentValue())
+		self.changedEntry()
 
 	def buildChoices(self, item, configEntry, path):
 		configList = config.usage.allowed_timeshift_paths.value[:]
