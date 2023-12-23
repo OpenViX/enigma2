@@ -15,8 +15,8 @@ from Screens.MessageBox import MessageBox
 from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.InputBox import PinInput  # noqa: F401
 from ServiceReference import ServiceReference
+from Screens.Recordings import RecordingSettings
 from Screens.TimerEntry import TimerEntry, TimerLog
-from Screens.Setup import Setup
 from Tools.BoundFunction import boundFunction
 from Tools.FuzzyDate import FuzzyTime
 from time import time
@@ -92,9 +92,8 @@ class TimerEditList(Screen, ProtectedScreen):
 	def createSetup(self):
 		def onSetupClose(test=None):
 			self.refill()
-			pass
 
-		self.session.openWithCallback(onSetupClose, Setup, 'recording')
+		self.session.openWithCallback(onSetupClose, RecordingSettings)
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and (not config.ParentalControl.config_sections.main_menu.value or hasattr(self.session, 'infobar') and self.session.infobar is None) and config.ParentalControl.config_sections.timer_menu.value and config.ParentalControl.servicepin[0].value
