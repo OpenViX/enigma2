@@ -222,14 +222,19 @@ bool eDVBService::isCrypted()
 
 int eDVBService::isPlayable(const eServiceReference &ref, const eServiceReference &ignore, bool simulate)
 {
+	bool isStreamRelayService = false;
 	eServiceReferenceDVB sRelayOrigSref;
 	ePtr<iPlayableService> refCur;
 	eNavigation::getInstance()->getCurrentService(refCur);
-	ePtr<iServiceInformation> tmp_info;
-	refCur->info(tmp_info);
-	std::string ref_s = tmp_info->getInfoString(iServiceInformation::sServiceref);
-	eServiceReferenceDVB currentlyPlaying = eServiceReferenceDVB(ref_s);
-	bool res = currentlyPlaying.getSROriginal(sRelayOrigSref);
+	if (refCur) {
+		ePtr<iServiceInformation> tmp_info;
+		refCur->info(tmp_info);
+		std::string ref_s = tmp_info->getInfoString(iServiceInformation::sServiceref);
+		eServiceReferenceDVB currentlyPlaying = eServiceReferenceDVB(ref_s);
+		isStreamRelayService = currentlyPlaying.getSROriginal(sRelayOrigSref);
+	} else {
+		return 1;
+	}
 
 	ePtr<eDVBResourceManager> res_mgr;
 	bool remote_fallback_enabled = eConfigManager::getConfigBoolValue("config.usage.remote_fallback_enabled", false);
@@ -244,7 +249,7 @@ int eDVBService::isPlayable(const eServiceReference &ref, const eServiceReferenc
 		((const eServiceReferenceDVB&)ref).getChannelID(chid);
 		((const eServiceReferenceDVB&)ignore).getChannelID(chid_ignore);
 
-		if (res) {
+		if (isStreamRelayService) {
 			sRelayOrigSref.getChannelID(chid_ignore_sr);
 		} else {
 			chid_ignore_sr = eDVBChannelID();
