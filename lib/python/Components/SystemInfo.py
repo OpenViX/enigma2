@@ -25,9 +25,6 @@ class BoxInformation:
 				item, value = [x.strip() for x in line.split("=", 1)]
 				if item:
 					self.immutableList.append(item)
-					# Temporary fix: some items that look like floats are not floats and should be handled as strings, e.g. python "3.10" should not be processed as "3.1".
-					if not (value.startswith("\"") or value.startswith("'")) and item in ("python", "imageversion", "imgversion"):
-						value = '"' + value + '"'  # wrap it so it is treated as a string
 					self.boxInfo[item] = self.processValue(value)
 			# print("[SystemInfo] Enigma information file data loaded into BoxInfo.")
 		else:
