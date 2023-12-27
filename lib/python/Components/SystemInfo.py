@@ -31,41 +31,19 @@ class BoxInformation:
 			print("[BoxInfo] ERROR: %s is not available!  The system is unlikely to boot or operate correctly." % file)
 
 	def processValue(self, value):
-		if value is None:
-			pass
-		elif (value.startswith("\"") or value.startswith("'")) and value.endswith(value[0]):
-			value = value[1:-1]
-		elif value.startswith("(") and value.endswith(")"):
-			data = []
-			for item in [x.strip() for x in value[1:-1].split(",")]:
-				data.append(self.processValue(item))
-			value = tuple(data)
-		elif value.startswith("[") and value.endswith("]"):
-			data = []
-			for item in [x.strip() for x in value[1:-1].split(",")]:
-				data.append(self.processValue(item))
-			value = list(data)
-		elif value.upper() == "NONE":
-			value = None
+		if (value.startswith("\"") or value.startswith("'")) and value.endswith(value[0]):
+			return value[1:-1]
 		elif value.upper() in ("FALSE", "NO", "OFF", "DISABLED"):
-			value = False
+			return False
 		elif value.upper() in ("TRUE", "YES", "ON", "ENABLED"):
-			value = True
-		elif value.isdigit() or ((value[0:1] == "-" or value[0:1] == "+") and value[1:].isdigit()):
-			if value[0] != "0":  # if this is zero padded it must be a string, so skip
-				value = int(value)
-		elif value.startswith("0x") or value.startswith("0X"):
-			value = int(value, 16)
-		elif value.startswith("0o") or value.startswith("0O"):
-			value = int(value, 8)
-		elif value.startswith("0b") or value.startswith("0B"):
-			value = int(value, 2)
+			return True
+		elif value.upper() == "NONE":
+			return None
 		else:
 			try:
-				value = float(value)
-			except ValueError:
-				pass
-		return value
+				return eval(value)
+			except:
+				return value
 
 	def getEnigmaInfoList(self):
 		return sorted(self.immutableList)
@@ -78,12 +56,10 @@ class BoxInformation:
 
 	def getItem(self, item, default=None):
 		if item in self.boxInfo:
-			value = self.boxInfo[item]
+			return self.boxInfo[item]
 		elif item in SystemInfo:
-			value = SystemInfo[item]
-		else:
-			value = default
-		return value
+			return SystemInfo[item]
+		return default
 
 	def setItem(self, item, value, immutable=False, forceOverride=False):
 		if item in self.immutableList and not forceOverride:
