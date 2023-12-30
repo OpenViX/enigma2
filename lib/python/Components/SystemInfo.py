@@ -38,19 +38,39 @@ class BoxInformation:
 			print("[BoxInfo] ERROR: %s is not available!  The system is unlikely to boot or operate correctly." % file)
 
 	def processValue(self, value):
-		if value.startswith(("\"", "'")) and value.endswith(value[0]):
-			return value[1:-1]
+		if len(value) > 1 and value[0] in ("\"", "'") and value[-1] == value[0]):
+			value = value[1:-1]
+		elif value.startswith("(") and value.endswith(")"):
+			data = []
+			for item in [x.strip() for x in value[1:-1].split(",")]:
+				data.append(self.processValue(item))
+			value = tuple(data)
+		elif value.startswith("[") and value.endswith("]"):
+			data = []
+			for item in [x.strip() for x in value[1:-1].split(",")]:
+				data.append(self.processValue(item))
+			value = list(data)
 		elif value.upper() in ("FALSE", "NO", "OFF", "DISABLED"):
-			return False
+			value = False
 		elif value.upper() in ("TRUE", "YES", "ON", "ENABLED"):
-			return True
+			value = True
 		elif value.upper() == "NONE":
-			return None
+			value = None
+		elif value.isdigit() or ((value[0:1] == "-" or value[0:1] == "+") and value[1:].isdigit()):
+			if value[0] != "0":  # if this is zero padded it must be a string, so skip
+				value = int(value)
+		elif value.lower().startswith("0x"):
+			value = int(value, 16)
+		elif value.lower().startswith("0o"):
+			value = int(value, 8)
+		elif value.lower().startswith("0b"):
+			value = int(value, 2)
 		else:
 			try:
-				return eval(value)
-			except:
-				return value
+				value = float(value)
+			except ValueError:
+				pass
+		return value
 
 	def getEnigmaInfoList(self):
 		return sorted(self.immutableList)
