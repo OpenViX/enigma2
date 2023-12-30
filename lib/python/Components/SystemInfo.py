@@ -1,4 +1,5 @@
 from os import listdir
+from hashlib import md5
 from os.path import isfile, join as pathjoin
 from boxbranding import getBoxType, getBrandOEM, getDisplayType, getHaveAVJACK, getHaveHDMIinFHD, getHaveHDMIinHD, getHaveRCA, getHaveSCART, getHaveSCARTYUV, getHaveYUV, getImageType, getMachineBrand, getMachineBuild, getMachineMtdRoot, getMachineName
 from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager
@@ -17,16 +18,22 @@ class BoxInformation:
 		self.boxInfo = {}
 		file = root + pathjoin(resolveFilename(SCOPE_LIBDIR), "enigma.info")
 		self.boxInfo["overrideactive"] = False  # not currently used by us
+		self.boxInfo["checksumerror"] = True
 		lines = fileReadLines(file)
 		if lines:
 			for line in lines:
-				if line.startswith("#") or line.strip() == "" or line.strip().lower().startswith("checksum") or "=" not in line:
+				if line.startswith("#") or line.strip() == "" or "=" not in line:
 					continue
 				item, value = [x.strip() for x in line.split("=", 1)]
-				if item:
+				if item.lower() == "checksum":
+					self.boxInfo["checksumerror"] = (i := lines.index(line)) < 1 or md5(bytearray("\n".join(lines[:i]) + "\n", "UTF-8", errors="ignore")).hexdigest() != value
+				elif item:
 					self.immutableList.append(item)
 					self.boxInfo[item] = self.processValue(value)
-			# print("[SystemInfo] Enigma information file data loaded into BoxInfo.")
+			if self.boxInfo["checksumerror"]:
+				 print("[BoxInfo] Data integrity of %s could not be verified." % file)
+			# else:
+				# print("[SystemInfo] Enigma information file data loaded into BoxInfo.")
 		else:
 			print("[BoxInfo] ERROR: %s is not available!  The system is unlikely to boot or operate correctly." % file)
 
