@@ -1,5 +1,5 @@
 from os import listdir, path as ospath
-import re
+from re import sub
 
 from enigma import ePixmap, eServiceReference
 
@@ -90,13 +90,11 @@ class PiconLocator:
 			pngname = self.findPicon("_".join(fields))
 		if not pngname:  # picon by channel name
 			name = sanitizeFilename(eServiceReference(serviceRef).getServiceName())
-			name = re.sub("[^a-z0-9]", "", name.replace("&", "and").replace("+", "plus").replace("*", "star").lower())
-			if len(name) > 0:
-				pngname = self.findPicon(name)
-				if not pngname and len(name) > 2 and name.endswith("hd"):
-					pngname = self.findPicon(name[:-2])
+			name = sub("[^a-z0-9]", "", name.replace("&", "and").replace("+", "plus").replace("*", "star").lower())
+			if name:
+				pngname = self.findPicon(name) or self.findPicon(sub("(fhd|uhd|hd|sd|4k)$", "", name).strip())
 				if not pngname and len(name) > 6:
-					series = re.sub(r"s[0-9]*e[0-9]*$", "", name)
+					series = sub(r"s[0-9]*e[0-9]*$", "", name)
 					pngname = self.findPicon(series)
 		return pngname
 
