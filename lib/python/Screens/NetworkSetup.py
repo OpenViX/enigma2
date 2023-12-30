@@ -2260,7 +2260,7 @@ class NetworkInadyn(NSCommon, Screen):
 					line = line[18:]
 					line = (int(line) // 60)
 					self["labtime"].setText(str(line))
-				elif line.startswith("dyndns_system ") or line.startswith("#dyndns_system "):
+				elif line.startswith(("dyndns_system ", "#dyndns_system ")):
 					if line.startswith("#"):
 						line = line[15:]
 						self["sactive"].hide()
@@ -2320,7 +2320,7 @@ class NetworkInadynSetup(ConfigListScreen, HelpableScreen, Screen):
 					line = (int(line[18:]) // 60)
 					self.ina_period = NoSave(ConfigNumber(default=line))  # overwrite so we start with the correct defaults
 					self.list.append(getConfigListEntry(_("Time update in minutes") + ":", self.ina_period))
-				elif line.startswith("dyndns_system ") or line.startswith("#dyndns_system "):
+				elif line.startswith(("dyndns_system ", "#dyndns_system ")):
 					if not line.startswith("#"):
 						default = True
 						line = line[14:]
@@ -2352,7 +2352,7 @@ class NetworkInadynSetup(ConfigListScreen, HelpableScreen, Screen):
 					strview = (self.ina_period.value * 60)
 					strview = str(strview)
 					line = ("update_period_sec " + strview)
-				elif line.startswith("dyndns_system ") or line.startswith("#dyndns_system "):
+				elif line.startswith(("dyndns_system ", "#dyndns_system ")):
 					if self.ina_sysactive.value:
 						line = ("dyndns_system " + self.ina_system.value.strip())
 					else:

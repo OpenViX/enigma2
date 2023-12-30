@@ -1789,7 +1789,7 @@ class ImageManagerSetup(Setup):
 
 	def check_URL_format(self, configElement):
 		if configElement.value:
-			configElement.value = "%s%s" % (not (configElement.value.startswith("http://") or configElement.value.startswith("https://") or configElement.value.startswith("ftp://")) and "http://" or "", configElement.value)
+			configElement.value = "%s%s" % (not configElement.value.startswith(("http://", "https://", "ftp://")) and "http://" or "", configElement.value)
 			configElement.value = configElement.value.strip("/")  # remove any trailing slash
 		else:
 			configElement.value = configElement.default

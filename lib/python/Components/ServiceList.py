@@ -291,7 +291,7 @@ class ServiceList(GUIComponent):
 		from Components.ServiceEventTracker import InfoBarCount
 		if adjust and config.usage.multibouquet.value and InfoBarCount == 1 and ref and ref.type != 8192:
 			print("[servicelist] search for service in userbouquets")
-			isRadio = ref.toString().startswith("1:0:2:") or ref.toString().startswith("1:0:A:")
+			isRadio = ref.toString().startswith(("1:0:2:", "1:0:A:"))
 			if self.serviceList:
 				revert_mode = config.servicelist.lastmode.value
 				revert_root = self.getRoot()

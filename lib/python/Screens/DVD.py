@@ -519,7 +519,7 @@ class DVDPlayer(Screen, InfoBarBase, InfoBarNotifications, InfoBarSeek, InfoBarP
 			if curref is None or curref != newref:
 				if newref.toString().endswith("/VIDEO_TS") or newref.toString().endswith("/"):
 					names = newref.toString().rsplit("/", 3)
-					if names[2].startswith("Disk ") or names[2].startswith("DVD "):
+					if names[2].startswith(("Disk ", "DVD ")):
 						name = str(names[1]) + " - " + str(names[2])
 					else:
 						name = names[2]

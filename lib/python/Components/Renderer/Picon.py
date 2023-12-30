@@ -67,7 +67,7 @@ class PiconLocator:
 		if pathExists(value):
 			if not value.endswith("/"):
 				value += "/"
-			if not value.startswith("/media/net") and not value.startswith("/media/autofs") and value not in self.searchPaths:
+			if not value.startswith(("/media/net", "/media/autofs")) and value not in self.searchPaths:
 				self.searchPaths.append(value)
 
 	def getPiconName(self, serviceRef):

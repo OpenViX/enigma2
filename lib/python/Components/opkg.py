@@ -55,7 +55,7 @@ def enumPlugins(filter_start=''):
 def listsDirPath():
 	try:
 		for line in open('/etc/opkg/opkg.conf', "r"):
-			if line.startswith('option lists_dir') or line.startswith('lists_dir'):
+			if line.startswith(('option lists_dir', 'lists_dir')):
 				return line.replace('\n', '').split(' ')[2]
 	except IOError:
 		print("[Opkg] cannot open /etc/opkg/opkg.conf")

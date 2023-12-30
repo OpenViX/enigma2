@@ -38,7 +38,7 @@ class BoxInformation:
 			print("[BoxInfo] ERROR: %s is not available!  The system is unlikely to boot or operate correctly." % file)
 
 	def processValue(self, value):
-		if (value.startswith("\"") or value.startswith("'")) and value.endswith(value[0]):
+		if value.startswith(("\"", "'")) and value.endswith(value[0]):
 			return value[1:-1]
 		elif value.upper() in ("FALSE", "NO", "OFF", "DISABLED"):
 			return False

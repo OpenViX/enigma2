@@ -312,7 +312,7 @@ class Devices(Screen):
 		self.mountinfo = ""
 		for line in result:
 			self.parts = line.split()
-			if line and self.parts[0] and (self.parts[0].startswith("192") or self.parts[0].startswith("//192")):
+			if line and self.parts[0] and self.parts[0].startswith(("192", "//192"))):
 				line = line.split()
 				ipaddress = line[0]
 				mounttotal = line[1]
