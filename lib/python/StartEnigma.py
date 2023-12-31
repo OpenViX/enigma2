@@ -472,7 +472,7 @@ profile("InfoBar")
 print("[StartEnigma]  Initialising InfoBar.")
 from Screens import InfoBar  # noqa: E402
 
-#from Components.SystemInfo import SystemInfo  # noqa: E402  don't move this import
+# from Components.SystemInfo import SystemInfo  # noqa: E402  don't move this import
 VuRecovery = SystemInfo["HasKexecMultiboot"] and SystemInfo["MultiBootSlot"] == 0
 # print("[StartEnigma]  Is this VuRecovery?. Recovery = ", VuRecovery)
 

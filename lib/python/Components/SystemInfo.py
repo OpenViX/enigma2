@@ -29,7 +29,7 @@ class BoxInformation:
 				elif item:
 					self.setItem(item, self.processValue(value), immutable=True)
 			if self.boxInfo["checksumerror"]:
-				 print("[BoxInfo] Data integrity of %s could not be verified." % file)
+				print("[BoxInfo] Data integrity of %s could not be verified." % file)
 			# else:
 				# print("[SystemInfo] Enigma information file data loaded into BoxInfo.")
 		else:
