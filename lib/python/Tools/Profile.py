@@ -52,7 +52,7 @@ def profile(id):
 	# 	dev_fmt = ("/proc/vfd", "Loading %d%%\n")
 	# else:
 	# 	dev_fmt = ("/proc/progress", "%d \n")
-	
+
 	dev_fmt = ("/proc/progress", "%d \n")
 	(dev, fmt) = dev_fmt
 
