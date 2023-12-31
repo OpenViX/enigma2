@@ -40,26 +40,26 @@ class DVDProject:
 		self.settings = ConfigSubsection()
 		self.settings.name = ConfigText(fixed_size=False, visible_width=40)
 		self.settings.authormode = ConfigSelection(choices=[("menu_linked", _("Linked titles with a DVD menu")), ("just_linked", _("Direct playback of linked titles without menu")), ("menu_seperate", _("Seperate titles with a main menu")), ("data_ts", _("%s %s format data DVD (HDTV compatible)") % getBoxDisplayName()))])
-		self.settings.titlesetmode = ConfigSelection(choices=[("single", _("Simple titleset (compatibility for legacy players)")), ("multi", _("Complex (allows mixing audio tracks and aspects)"))], default="multi")
-		self.settings.output = ConfigSelection(choices=[("iso", _("Create DVD-ISO")), ("dvd", _("Burn DVD"))])
-		self.settings.isopath = ConfigText(fixed_size=False, visible_width=40)
-		self.settings.dataformat = ConfigSelection(choices=[("iso9660_1", "ISO9660 Level 1"), ("iso9660_4", "ISO9660 version 2"), ("udf", "UDF")])
-		self.settings.menutemplate = ConfigFilename()
-		self.settings.vmgm = ConfigFilename()
-		self.filekeys = ["vmgm", "isopath", "menutemplate"]
-		self.menutemplate = MenuTemplate()
-		self.error = ""
-		self.session = None
+		self.settings.titlesetmode=ConfigSelection(choices=[("single", _("Simple titleset (compatibility for legacy players)")), ("multi", _("Complex (allows mixing audio tracks and aspects)"))], default="multi")
+		self.settings.output=ConfigSelection(choices=[("iso", _("Create DVD-ISO")), ("dvd", _("Burn DVD"))])
+		self.settings.isopath=ConfigText(fixed_size=False, visible_width=40)
+		self.settings.dataformat=ConfigSelection(choices=[("iso9660_1", "ISO9660 Level 1"), ("iso9660_4", "ISO9660 version 2"), ("udf", "UDF")])
+		self.settings.menutemplate=ConfigFilename()
+		self.settings.vmgm=ConfigFilename()
+		self.filekeys=["vmgm", "isopath", "menutemplate"]
+		self.menutemplate=MenuTemplate()
+		self.error=""
+		self.session=None
 
 	def addService(self, service):
-		title = DVDTitle.DVDTitle(self)
+		title=DVDTitle.DVDTitle(self)
 		title.addService(service)
 		self.titles.append(title)
 		return title
 
 	def saveProject(self, path):
 		from Tools.XMLTools import stringToXML
-		list = ['<?xml version="1.0" encoding="utf-8" ?>\n',
+		list=['<?xml version="1.0" encoding="utf-8" ?>\n',
 				'<DreamDVDBurnerProject>\n',
 				'\t<settings ']
 		for key, val in self.settings.dict().items():
@@ -72,7 +72,7 @@ class DVDProject:
 			list.append(stringToXML(title.source.getPath()))
 			list.append('</path>\n')
 			list.append('\t\t\t<properties ')
-			audiotracks = []
+			audiotracks=[]
 			for key, val in title.properties.dict().items():
 				if isinstance(val, ConfigSubList):
 					audiotracks.append('\t\t\t<audiotracks>\n')
@@ -90,14 +90,14 @@ class DVDProject:
 		list.append('\t</titles>\n')
 		list.append('</DreamDVDBurnerProject>\n')
 
-		name = self.settings.name.value
-		i = 0
-		filename = path + name + ".ddvdp.xml"
+		name=self.settings.name.value
+		i=0
+		filename=path + name + ".ddvdp.xml"
 		while fileExists(filename):
 			i += 1
-			filename = path + name + str(i).zfill(3) + ".ddvdp.xml"
+			filename=path + name + str(i).zfill(3) + ".ddvdp.xml"
 		try:
-			file = open(filename, "w")
+			file=open(filename, "w")
 			for x in list:
 				file.write(x)
 			file.close()
@@ -106,21 +106,21 @@ class DVDProject:
 		return filename
 
 	def load(self, filename):
-		ret = self.loadProject(filename)
+		ret=self.loadProject(filename)
 		if ret:
-			ret = self.menutemplate.loadTemplate(self.settings.menutemplate.value)
+			ret=self.menutemplate.loadTemplate(self.settings.menutemplate.value)
 			self.error += self.menutemplate.error
 		return ret
 
 	def loadProject(self, filename):
 		# try:
 		if not fileExists(filename):
-			self.error = "xml file not found!"
+			self.error="xml file not found!"
 			# raise AttributeError
-		file = open(filename, "r")
-		data = file.read().decode("utf-8").replace('&', "&amp;").encode("ascii", 'xmlcharrefreplace')
+		file=open(filename, "r")
+		data=file.read().decode("utf-8").replace('&', "&amp;").encode("ascii", 'xmlcharrefreplace')
 		file.close()
-		projectfiledom = xml.dom.minidom.parseString(data)
+		projectfiledom=xml.dom.minidom.parseString(data)
 		for node in projectfiledom.childNodes[0].childNodes:
 			print("node:", node)
 			if node.nodeType == xml.dom.minidom.Element.nodeType:
@@ -130,13 +130,13 @@ class DVDProject:
 					self.xmlGetTitleNodeRecursive(node)
 
 		for key in self.filekeys:
-			val = self.settings.dict()[key].value
+			val=self.settings.dict()[key].value
 			if not fileExists(val):
 				if val[0] != "/":
 					if key.find("font") == 0:
-						val = resolveFilename(SCOPE_FONTS) + val
+						val=resolveFilename(SCOPE_FONTS) + val
 					else:
-						val = resolveFilename(SCOPE_PLUGINS) + "Extensions/DVDBurn/" + val
+						val=resolveFilename(SCOPE_PLUGINS) + "Extensions/DVDBurn/" + val
 					if fileExists(val):
 						self.settings.dict()[key].setValue(val)
 						continue
@@ -149,22 +149,22 @@ class DVDProject:
 
 	def xmlAttributesToConfig(self, node, config):
 		try:
-			i = 0
+			i=0
 			# 	if node.attributes.length < len(config.dict())-1:
 			# 	 	self.error = "project attributes missing"
 			# 	 	raise AttributeError
 			while i < node.attributes.length:
-				item = node.attributes.item(i)
-				key = str(item.name)
+				item=node.attributes.item(i)
+				key=str(item.name)
 				try:
-					val = eval(item.nodeValue)
+					val=eval(item.nodeValue)
 				except (NameError, SyntaxError):
-					val = str(item.nodeValue)
+					val=str(item.nodeValue)
 				try:
 					print("config[%s].setValue(%s)" % (key, val))
 					config.dict()[key].setValue(val)
 				except KeyError:
-					self.error = "unknown attribute '%s'" % key
+					self.error="unknown attribute '%s'" % key
 					print("KeyError", self.error)
 					raise AttributeError
 				i += 1
@@ -180,12 +180,12 @@ class DVDProject:
 			if subnode.nodeType == xml.dom.minidom.Element.nodeType:
 				if subnode.tagName == 'title':
 					title_idx += 1
-					title = DVDTitle.DVDTitle(self)
+					title=DVDTitle.DVDTitle(self)
 					self.titles.append(title)
 					self.xmlGetTitleNodeRecursive(subnode, title_idx)
 				if subnode.tagName == 'path':
 					print("path:", subnode.firstChild.data)
-					filename = subnode.firstChild.data
+					filename=subnode.firstChild.data
 					self.titles[title_idx].addFile(str(filename))
 				if subnode.tagName == 'properties':
 					self.xmlAttributesToConfig(node, self.titles[title_idx].properties)
@@ -195,55 +195,55 @@ class DVDProject:
 					print("audiotrack...", subnode.toxml())
 
 	def getSize(self):
-		totalsize = 0
+		totalsize=0
 		for title in self.titles:
 			totalsize += title.estimatedDiskspace
 		return totalsize
 
-	size = property(getSize)
+	size=property(getSize)
 
 
 class MenuTemplate(DVDProject):
 	def __init__(self):
-		self.settings = ConfigSubsection()
-		self.settings.titleformat = ConfigText(fixed_size=False, visible_width=40)
-		self.settings.subtitleformat = ConfigText(fixed_size=False, visible_width=40)
-		self.settings.menubg = ConfigFilename()
-		self.settings.menuaudio = ConfigFilename()
-		self.settings.dimensions = ConfigSequence(seperator=',', default=[576, 720], limits=[(352, 720), (480, 576)])
-		self.settings.rows = ConfigInteger(default=4, limits=(1, 10))
-		self.settings.cols = ConfigInteger(default=1, limits=(1, 4))
-		self.settings.color_headline = ConfigColor()
-		self.settings.color_headline = ConfigColor()
-		self.settings.color_highlight = ConfigColor()
-		self.settings.color_button = ConfigColor()
-		self.settings.fontface_headline = ConfigFilename()
-		self.settings.fontface_title = ConfigFilename()
-		self.settings.fontface_subtitle = ConfigFilename()
-		self.settings.fontsize_headline = ConfigInteger(default=46, limits=(0, 199))
-		self.settings.fontsize_title = ConfigInteger(default=24, limits=(0, 199))
-		self.settings.fontsize_subtitle = ConfigInteger(default=14, limits=(0, 199))
-		self.settings.margin_top = ConfigInteger(default=120, limits=(0, 500))
-		self.settings.margin_bottom = ConfigInteger(default=40, limits=(0, 500))
-		self.settings.margin_left = ConfigInteger(default=56, limits=(0, 500))
-		self.settings.margin_right = ConfigInteger(default=56, limits=(0, 500))
-		self.settings.space_rows = ConfigInteger(default=32, limits=(0, 500))
-		self.settings.space_cols = ConfigInteger(default=24, limits=(0, 500))
-		self.settings.prev_page_text = ConfigText(default="<<<", fixed_size=False)
-		self.settings.next_page_text = ConfigText(default=">>>", fixed_size=False)
-		self.settings.offset_headline = ConfigSequence(seperator=',', default=[0, 0], limits=[(-1, 500), (-1, 500)])
-		self.settings.offset_title = ConfigSequence(seperator=',', default=[0, 0], limits=[(-1, 500), (-1, 500)])
-		self.settings.offset_subtitle = ConfigSequence(seperator=',', default=[20, 0], limits=[(-1, 500), (-1, 500)])
-		self.settings.offset_thumb = ConfigSequence(seperator=',', default=[40, 0], limits=[(-1, 500), (-1, 500)])
-		self.settings.thumb_size = ConfigSequence(seperator=',', default=[200, 158], limits=[(0, 576), (-1, 720)])
-		self.settings.thumb_border = ConfigInteger(default=2, limits=(0, 20))
-		self.filekeys = ["menubg", "menuaudio", "fontface_headline", "fontface_title", "fontface_subtitle"]
+		self.settings=ConfigSubsection()
+		self.settings.titleformat=ConfigText(fixed_size=False, visible_width=40)
+		self.settings.subtitleformat=ConfigText(fixed_size=False, visible_width=40)
+		self.settings.menubg=ConfigFilename()
+		self.settings.menuaudio=ConfigFilename()
+		self.settings.dimensions=ConfigSequence(seperator=',', default=[576, 720], limits=[(352, 720), (480, 576)])
+		self.settings.rows=ConfigInteger(default=4, limits=(1, 10))
+		self.settings.cols=ConfigInteger(default=1, limits=(1, 4))
+		self.settings.color_headline=ConfigColor()
+		self.settings.color_headline=ConfigColor()
+		self.settings.color_highlight=ConfigColor()
+		self.settings.color_button=ConfigColor()
+		self.settings.fontface_headline=ConfigFilename()
+		self.settings.fontface_title=ConfigFilename()
+		self.settings.fontface_subtitle=ConfigFilename()
+		self.settings.fontsize_headline=ConfigInteger(default=46, limits=(0, 199))
+		self.settings.fontsize_title=ConfigInteger(default=24, limits=(0, 199))
+		self.settings.fontsize_subtitle=ConfigInteger(default=14, limits=(0, 199))
+		self.settings.margin_top=ConfigInteger(default=120, limits=(0, 500))
+		self.settings.margin_bottom=ConfigInteger(default=40, limits=(0, 500))
+		self.settings.margin_left=ConfigInteger(default=56, limits=(0, 500))
+		self.settings.margin_right=ConfigInteger(default=56, limits=(0, 500))
+		self.settings.space_rows=ConfigInteger(default=32, limits=(0, 500))
+		self.settings.space_cols=ConfigInteger(default=24, limits=(0, 500))
+		self.settings.prev_page_text=ConfigText(default="<<<", fixed_size=False)
+		self.settings.next_page_text=ConfigText(default=">>>", fixed_size=False)
+		self.settings.offset_headline=ConfigSequence(seperator=',', default=[0, 0], limits=[(-1, 500), (-1, 500)])
+		self.settings.offset_title=ConfigSequence(seperator=',', default=[0, 0], limits=[(-1, 500), (-1, 500)])
+		self.settings.offset_subtitle=ConfigSequence(seperator=',', default=[20, 0], limits=[(-1, 500), (-1, 500)])
+		self.settings.offset_thumb=ConfigSequence(seperator=',', default=[40, 0], limits=[(-1, 500), (-1, 500)])
+		self.settings.thumb_size=ConfigSequence(seperator=',', default=[200, 158], limits=[(0, 576), (-1, 720)])
+		self.settings.thumb_border=ConfigInteger(default=2, limits=(0, 20))
+		self.filekeys=["menubg", "menuaudio", "fontface_headline", "fontface_title", "fontface_subtitle"]
 		from .TitleProperties import languageChoices
-		self.settings.menulang = ConfigSelection(choices=languageChoices.choices, default=languageChoices.choices[1][0])
-		self.error = ""
+		self.settings.menulang=ConfigSelection(choices=languageChoices.choices, default=languageChoices.choices[1][0])
+		self.error=""
 
 	def loadTemplate(self, filename):
-		ret = DVDProject.loadProject(self, filename)
-		DVDProject.error = self.error
+		ret=DVDProject.loadProject(self, filename)
+		DVDProject.error=self.error
 
 		return ret
