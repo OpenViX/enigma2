@@ -17,7 +17,7 @@ profile_file = None
 # 	if fileExists(f := pathjoin(resolveFilename(SCOPE_LIBDIR), "enigma.info")):
 # 		return (m := [x.split("=")[1].strip() for x in open(f).readlines() if x.startswith("machinebuild=")]) and m[0] or None
 
-		
+
 # MODEL = getModel()
 
 
