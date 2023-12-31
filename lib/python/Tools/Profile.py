@@ -1,5 +1,3 @@
-# the implementation here is a bit crappy.
-# from boxbranding import getBoxType, getMachineBuild
 import time
 from Tools.Directories import resolveFilename, SCOPE_CONFIG  # , fileExists, SCOPE_LIBDIR
 
