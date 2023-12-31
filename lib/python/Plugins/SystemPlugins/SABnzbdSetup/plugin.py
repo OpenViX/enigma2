@@ -1,4 +1,3 @@
-from boxbranding import getMachineBrand, getMachineName
 import time
 
 from Screens.Screen import Screen
@@ -7,6 +6,7 @@ from Components.Console import Console
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.ActionMap import ActionMap
+from Components.SystemInfo import getBoxDisplayName
 from Tools.Directories import fileExists
 
 
@@ -56,7 +56,7 @@ class SABnzbdSetupScreen(Screen):
 
 	def InstalldataAvail(self, result, retval, extra_args):
 		if not result:
-			restartbox = self.session.openWithCallback(self.InstallPackage, MessageBox, _('Your %s %s will be restarted after the installation of service.\n\nDo you want to install now ?') % (getMachineBrand(), getMachineName()), MessageBox.TYPE_YESNO)
+			restartbox = self.session.openWithCallback(self.InstallPackage, MessageBox, _('Your %s %s will be restarted after the installation of service.\n\nDo you want to install now ?') % getBoxDisplayName(), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_('Ready to install "%s" ?') % self.service_name)
 		else:
 			self.updateService()
@@ -83,7 +83,7 @@ class SABnzbdSetupScreen(Screen):
 
 	def UninstalldataAvail(self, result, retval, extra_args):
 		if result:
-			restartbox = self.session.openWithCallback(self.RemovePackage, MessageBox, _('Your %s %s will be restarted after the removal of service\nDo you want to remove now ?') % (getMachineBrand(), getMachineName()), MessageBox.TYPE_YESNO)
+			restartbox = self.session.openWithCallback(self.RemovePackage, MessageBox, _('Your %s %s will be restarted after the removal of service\nDo you want to remove now ?') % getBoxDisplayName(), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_('Ready to remove "%s" ?') % self.service_name)
 		else:
 			self.updateService()

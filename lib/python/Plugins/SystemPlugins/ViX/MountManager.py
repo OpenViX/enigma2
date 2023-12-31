@@ -2,7 +2,6 @@ import errno
 from os import mkdir, path, rename, statvfs, system
 import re
 
-from boxbranding import getMachineBrand, getMachineName   # , getMachineBuild
 from enigma import eTimer
 
 from Components.ActionMap import ActionMap
@@ -398,7 +397,7 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		self.setconfTimer()
 
 	def setconfTimer(self, result=None, retval=None, extra_args=None):
-		scanning = _("Please wait while scanning your %s %s devices...") % (getMachineBrand(), getMachineName())
+		scanning = _("Please wait while scanning your %s %s devices...") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"])
 		self["lab1"].setText(scanning)
 		self.activityTimer.start(10)
 
@@ -424,9 +423,9 @@ class DeviceMountSetup(Screen, ConfigListScreen):
 		ybox.setTitle(_("Please wait."))
 
 	def delay(self, val):
-		message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (getMachineBrand(), getMachineName())
+		message = _("The changes need a system restart to take effect.\nRestart your %s %s now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"])
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Restart %s %s.") % (getMachineBrand(), getMachineName()))
+		ybox.setTitle(_("Restart %s %s.") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
 
 	def addconfFstab(self, result=None, retval=None, extra_args=None):
 		# print("[MountManager] RESULT:", result)

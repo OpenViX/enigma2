@@ -18,7 +18,6 @@ from Screens.AutoDiseqc import AutoDiseqc
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import fileExists
 
-from boxbranding import getImageType
 from time import mktime, localtime, time
 from datetime import datetime
 
@@ -832,7 +831,7 @@ class NimSelection(Screen):
 		recordings = self.session.nav.getRecordings()
 		next_rec_time = self.session.nav.RecordTimer.getNextRecordingTime()
 		if recordings or (next_rec_time and next_rec_time > 0 and (next_rec_time - time()) < 360):
-			if getImageType() == 'release':
+			if SystemInfo["imagetype"] == 'release':
 				self.session.open(MessageBox, _("Recording(s) are in progress or coming up in few seconds!"), MessageBox.TYPE_INFO, timeout=5, enable_input=False)
 			else:
 				message = _("Recording(s) are in progress or coming up in few seconds!")

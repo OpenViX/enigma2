@@ -1,10 +1,10 @@
 from time import time
 
-from boxbranding import getImageVersion, getImageBuild, getMachineBrand, getMachineName, getMachineBuild, getImageType, getBoxType, getFeedsUrl
 from enigma import eTimer
 from Components.About import about
 from Components.config import config
 from Components.Ipkg import IpkgComponent
+from Components.SystemInfo import SystemInfo
 import Components.Task
 
 import socket
@@ -80,7 +80,7 @@ class FeedsStatusCheck:
 		trafficLight = "unknown"
 		if self.adapterAvailable():
 			if self.NetworkUp():
-				if getImageType() == "release" and officialReleaseFeedsUri in getFeedsUrl():  # we know the network is good now so only do this check on release images where the release domain applies
+				if SystemInfo["imagetype"] == "release" and officialReleaseFeedsUri in SystemInfo["feedsurl"]:  # we know the network is good now so only do this check on release images where the release domain applies
 					try:
 						print("[OnlineUpdateCheck][getFeedStatus] checking feeds state")
 						req = Request("http://openvix.co.uk/TrafficLightState.php")
@@ -98,11 +98,11 @@ class FeedsStatusCheck:
 					except:
 						print("[OnlineUpdateCheck][getFeedStatus] ERROR:", sys.exc_info()[0])
 						trafficLight = -2
-				if getImageType() == "developer" and "openvixdev" in getFeedsUrl():
+				if SystemInfo["imagetype"] == "developer" and "openvixdev" in SystemInfo["feedsurl"]:
 					print("[OnlineUpdateCheck][getFeedStatus] Official developer feeds")
 					trafficLight = "developer"
-				elif officialReleaseFeedsUri not in getFeedsUrl():  # if not using official feeds mark as alien. There is no status test for alien feeds (including official developer feeds).
-					print("[OnlineUpdateCheck][getFeedStatus] Alien feeds url: %s" % getFeedsUrl())
+				elif officialReleaseFeedsUri not in SystemInfo["feedsurl"]:  # if not using official feeds mark as alien. There is no status test for alien feeds (including official developer feeds).
+					print("[OnlineUpdateCheck][getFeedStatus] Alien feeds url: %s" % SystemInfo["feedsurl"])
 					status = 0
 					trafficLight = "alien"
 				config.softwareupdate.updateisunstable.value = status
@@ -151,11 +151,11 @@ class FeedsStatusCheck:
 	def getFeedsErrorMessage(self):
 		global error
 		if self.feedstatus == -2:
-			return _("Your %s %s has no internet access, please check your network settings and make sure you have network cable connected and try again.") % (getMachineBrand(), getMachineName())
+			return _("Your %s %s has no internet access, please check your network settings and make sure you have network cable connected and try again.") % (SystemInfo["displaybrand"], SystemInfo["machinename"])
 		elif self.feedstatus == -3:
-			return _("Your %s %s has no network access, please check your network settings and make sure you have network cable connected and try again.") % (getMachineBrand(), getMachineName())
+			return _("Your %s %s has no network access, please check your network settings and make sure you have network cable connected and try again.") % (SystemInfo["displaybrand"], SystemInfo["machinename"])
 		elif self.feedstatus == 404:
-			return _("Your %s %s is not able to connect to the feeds, please try again later. If this persists please report on the OpenViX forum at world-of-satellite.com.") % (getMachineBrand(), getMachineName())
+			return _("Your %s %s is not able to connect to the feeds, please try again later. If this persists please report on the OpenViX forum at world-of-satellite.com.") % (SystemInfo["displaybrand"], SystemInfo["machinename"])
 		elif self.feedstatus in ("updating", 403):
 			return _("Sorry feeds are down for maintenance, please try again later. If this issue persists please check openvix.co.uk or world-of-satellite.com.")
 		elif error:
@@ -178,7 +178,7 @@ class FeedsStatusCheck:
 				self.ipkg.startCmd(IpkgComponent.CMD_UPGRADE_LIST)
 			elif self.ipkg.currentCommand == IpkgComponent.CMD_UPGRADE_LIST:
 				self.total_packages = len(self.ipkg.getFetchedList())
-				if self.total_packages and (getImageType() != "release" or (config.softwareupdate.updateisunstable.value == 1 and config.softwareupdate.updatebeta.value) or config.softwareupdate.updateisunstable.value == 0):
+				if self.total_packages and (SystemInfo["imagetype"] != "release" or (config.softwareupdate.updateisunstable.value == 1 and config.softwareupdate.updatebeta.value) or config.softwareupdate.updateisunstable.value == 0):
 					print(("[OnlineUpdateCheck][ipkgCallback] %s Updates available" % self.total_packages))
 					config.softwareupdate.updatefound.setValue(True)
 		pass
@@ -249,7 +249,7 @@ class OnlineUpdateCheckPoller:
 
 	def JobStart(self):
 		config.softwareupdate.updatefound.setValue(False)
-		if (getImageType() != "release" and feedsstatuscheck.getFeedsBool() == "unknown") or (getImageType() == "release" and feedsstatuscheck.getFeedsBool() in ("stable", "unstable")):
+		if (SystemInfo["imagetype"] != "release" and feedsstatuscheck.getFeedsBool() == "unknown") or (SystemInfo["imagetype"] == "release" and feedsstatuscheck.getFeedsBool() in ("stable", "unstable")):
 			print("[OnlineUpdateCheckPoller] Starting background check.")
 			feedsstatuscheck.startCheck()
 		else:
@@ -266,7 +266,7 @@ class VersionCheck:
 
 	def getStableUpdateAvailable(self):
 		if config.softwareupdate.updatefound.value and config.softwareupdate.check.value:
-			if getImageType() != "release" or config.softwareupdate.updateisunstable.value == 0:
+			if SystemInfo["imagetype"] != "release" or config.softwareupdate.updateisunstable.value == 0:
 				print("[OnlineVersionCheck] New Release updates found")
 				return True
 			else:
@@ -277,7 +277,7 @@ class VersionCheck:
 
 	def getUnstableUpdateAvailable(self):
 		if config.softwareupdate.updatefound.value and config.softwareupdate.check.value:
-			if getImageType() != "release" or (config.softwareupdate.updateisunstable.value == 1 and config.softwareupdate.updatebeta.value):
+			if SystemInfo["imagetype"] != "release" or (config.softwareupdate.updateisunstable.value == 1 and config.softwareupdate.updatebeta.value):
 				print("[OnlineVersionCheck] New Experimental updates found")
 				return True
 			else:
@@ -300,7 +300,7 @@ def kernelMismatch():
 		print("[OnlineUpdateCheck][kernelMismatch] unable to retrieve kernel version from STB")
 		return False
 
-	uri = "%s/%s/Packages.gz" % (getFeedsUrl(), getMachineBuild())
+	uri = "%s/%s/Packages.gz" % (SystemInfo["feedsurl"], SystemInfo["model"])
 	try:
 		req = Request(uri)
 		d = urlopen(req)
@@ -332,7 +332,7 @@ def kernelMismatch():
 def statusMessage():
 	# returns message if status message is found, else False.
 	# status-message.php goes in the root folder of the feeds webserver
-	uri = "http://%s/status-message.php?machine=%s&version=%s&build=%s" % (getFeedsUrl().split("/")[2], getBoxType(), getImageVersion(), getImageBuild())
+	uri = "http://%s/status-message.php?machine=%s&version=%s&build=%s" % (SystemInfo["feedsurl"].split("/")[2], SystemInfo["boxtype"], SystemInfo["imageversion"], SystemInfo["imagebuild"])
 	try:
 		req = Request(uri)
 		d = urlopen(req)

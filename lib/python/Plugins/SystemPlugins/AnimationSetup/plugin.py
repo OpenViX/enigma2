@@ -5,11 +5,10 @@ from Components.ConfigList import ConfigListScreen
 from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
 from Components.config import config, ConfigNumber, ConfigSelectionNumber, getConfigListEntry
+from Components.SystemInfo import SystemInfo
 from Plugins.Plugin import PluginDescriptor
 
 from enigma import setAnimation_current, setAnimation_speed
-
-from boxbranding import getBrandOEM
 
 # default = disabled
 g_default = {
@@ -90,7 +89,7 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 
 
 class AnimationSetupScreen(Screen):
-	if getBrandOEM() == 'gigablue':
+	if SystemInfo["brand"] == 'gigablue':
 		animationSetupItems = [
 			{"idx": 0, "name": _("Disable Animations")},
 			{"idx": 1, "name": _("Simple fade")},

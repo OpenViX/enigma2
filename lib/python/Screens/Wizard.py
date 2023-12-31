@@ -3,7 +3,6 @@ from xml.sax.handler import ContentHandler
 
 from enigma import eTimer, eEnv
 
-from boxbranding import getMachineBrand, getMachineName
 from Components.ActionMap import NumberActionMap
 from Components.config import config, ConfigText, ConfigPassword, KEY_LEFT, KEY_RIGHT, KEY_0, KEY_DELETE, KEY_BACKSPACE, KEY_ASCII  # noqa: F401
 from Components.ConfigList import ConfigList
@@ -11,6 +10,7 @@ from Components.Label import Label
 from Components.Slider import Slider
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
+from Components.SystemInfo import SystemInfo
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 
@@ -462,7 +462,7 @@ class Wizard(Screen):
 		return False
 
 	def getTranslation(self, text):
-		return _(text).replace("%s %s", "%s %s" % (getMachineBrand(), getMachineName()))
+		return _(text).replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
 
 	def updateText(self, firstset=False):
 		text = self.getTranslation(self.wizard[self.currStep]["text"])

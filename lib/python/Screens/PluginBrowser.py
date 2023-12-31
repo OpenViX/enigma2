@@ -1,7 +1,6 @@
 from os import path, unlink
 
 from enigma import eConsoleAppContainer, eDVBDB, eTimer
-from boxbranding import getImageType, getMachineBrand, getMachineName
 
 from Components.ActionMap import ActionMap, NumberActionMap
 from Components.Button import Button
@@ -242,7 +241,7 @@ class PluginBrowser(Screen, ProtectedScreen):
 	def download(self):
 		config.misc.pluginbrowser.po.value = True
 		if not (feedsstatuscheck.adapterAvailable() and feedsstatuscheck.NetworkUp()):
-			self.session.openWithCallback(self.close, MessageBox, _("Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again.") % (getMachineBrand(), getMachineName(), feedsstatuscheck.adapterAvailable() and 'internet' or 'network'), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
+			self.session.openWithCallback(self.close, MessageBox, _("Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again.") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"], feedsstatuscheck.adapterAvailable() and 'internet' or 'network'), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
 			return
 		if kernelMismatch():
 			self.session.openWithCallback(self.close, MessageBox, _("The Linux kernel has changed, plugins are not compatible. \nInstall latest image using USB stick or Image Manager."), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
@@ -505,9 +504,9 @@ class PluginDownloadBrowser(Screen):
 		self.listHeight = listsize.height()
 		if self.type == self.DOWNLOAD:
 			self.type = self.UPDATE
-			if (getImageType() != "release" and feedsstatuscheck.getFeedsBool() not in ("unknown", "alien", "developer")) or (getImageType() == "release" and feedsstatuscheck.getFeedsBool() not in ("stable", "unstable", "alien", "developer")):
+			if (SystemInfo["imagetype"] != "release" and feedsstatuscheck.getFeedsBool() not in ("unknown", "alien", "developer")) or (SystemInfo["imagetype"] == "release" and feedsstatuscheck.getFeedsBool() not in ("stable", "unstable", "alien", "developer")):
 				self["text"].setText(feedsstatuscheck.getFeedsErrorMessage())
-			elif getImageType() != 'release' or (config.softwareupdate.updateisunstable.value == 1 and config.softwareupdate.updatebeta.value):
+			elif SystemInfo["imagetype"] != 'release' or (config.softwareupdate.updateisunstable.value == 1 and config.softwareupdate.updatebeta.value):
 				self["text"].setText(_("WARNING: feeds may be unstable.") + '\n' + _("Downloading plugin information. Please wait..."))
 				self.container.execute(self.ipkg + " update")
 			elif config.softwareupdate.updateisunstable.value == 1 and not config.softwareupdate.updatebeta.value:

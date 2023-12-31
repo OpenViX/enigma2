@@ -1,5 +1,5 @@
 # the implementation here is a bit crappy.
-from boxbranding import getBoxType, getMachineBuild
+# from boxbranding import getBoxType, getMachineBuild
 import time
 from Tools.Directories import resolveFilename, SCOPE_CONFIG
 
@@ -37,21 +37,23 @@ def profile(id):
 
 	# GML: Set the device and format here...probably more could be added?
 	#
-	box_type = getBoxType()
-	if box_type in ("odinm7", "odinm6", "xp1000s"):
-		dev_fmt = ("/dev/dbox/oled0", "%d")
-	elif box_type in ("gb800se", "gb800solo"):
-		dev_fmt = ("/dev/dbox/oled0", "%d  \n")
-	elif box_type == "mbtwin":
-		dev_fmt = ("/dev/dbox/oled0", "%d%%")
-	elif box_type == "gb800seplus":
-		dev_fmt = ("/dev/mcu", "%d  \n")
-	elif box_type == "ebox5000":
-		dev_fmt = ("/proc/progress", "%d"),
-	elif getMachineBuild() in ("inihdp", "inihdx"):
-		dev_fmt = ("/proc/vfd", "Loading %d%%\n")
-	else:
-		dev_fmt = ("/proc/progress", "%d \n")
+	# box_type = getBoxType()
+	# if box_type in ("odinm7", "odinm6", "xp1000s"):
+	# 	dev_fmt = ("/dev/dbox/oled0", "%d")
+	# elif box_type in ("gb800se", "gb800solo"):
+	# 	dev_fmt = ("/dev/dbox/oled0", "%d  \n")
+	# elif box_type == "mbtwin":
+	# 	dev_fmt = ("/dev/dbox/oled0", "%d%%")
+	# elif box_type == "gb800seplus":
+	# 	dev_fmt = ("/dev/mcu", "%d  \n")
+	# elif box_type == "ebox5000":
+	# 	dev_fmt = ("/proc/progress", "%d"),
+	# elif getMachineBuild() in ("inihdp", "inihdx"):
+	# 	dev_fmt = ("/proc/vfd", "Loading %d%%\n")
+	# else:
+	# 	dev_fmt = ("/proc/progress", "%d \n")
+	
+	dev_fmt = ("/proc/progress", "%d \n")
 	(dev, fmt) = dev_fmt
 
 	if profile_file:

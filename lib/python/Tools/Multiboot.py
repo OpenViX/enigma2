@@ -4,7 +4,6 @@ import subprocess
 import tempfile
 from os import path, rmdir, rename, sep, stat
 
-from boxbranding import getMachineMtdRoot
 from Components.Console import Console
 from Components.SystemInfo import SystemInfo, BoxInfo as BoxInfoRunningInstance, BoxInformation
 from Tools.Directories import fileHas, fileExists
@@ -15,7 +14,7 @@ if fileHas("/proc/cmdline", "kexec=1"):
 	from PIL import ImageFont
 
 MbootList1 = ("/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/mtdblock2", "/dev/block/by-name/bootoptions")
-MbootList2 = ("/dev/%s" % getMachineMtdRoot(), )  # kexec kernel Vu+ multiboot
+MbootList2 = ("/dev/%s" % SystemInfo["mtdrootfs"], )  # kexec kernel Vu+ multiboot
 
 
 class tmp:

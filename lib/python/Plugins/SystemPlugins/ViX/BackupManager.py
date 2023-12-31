@@ -5,7 +5,6 @@ import tarfile
 import glob
 from enigma import eTimer, eEnv, eDVBDB, quitMainloop
 
-from boxbranding import getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getMachineBrand, getMachineMake, getMachineName
 from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -16,6 +15,7 @@ from Components.Harddisk import harddiskmanager
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
+from Components.SystemInfo import SystemInfo
 import Components.Task
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -27,7 +27,7 @@ autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = "RestoreSettingsNotification"
 PLUGINRESTOREQUESTIONID = "RestorePluginsNotification"
 NOPLUGINS = "NoPluginsNotification"
-defaultprefix = getImageDistro()[4:]
+defaultprefix = SystemInfo["distro"][4:]
 
 
 def getMountChoices():
@@ -581,7 +581,7 @@ class VIXBackupManager(Screen):
 			self.kernelcheck = False
 			AddPopupWithCallback(
 				self.Stage6,
-				_("Your %s %s is not connected to a network. Please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
+				_("Your %s %s is not connected to a network. Please check your network settings and try again.") % (SystemInfo["displaybrand"], SystemInfo["machinename"]),
 				MessageBox.TYPE_INFO,
 				15,
 				NOPLUGINS
@@ -601,7 +601,7 @@ class VIXBackupManager(Screen):
 			self.kernelcheck = False
 			AddPopupWithCallback(
 				self.Stage6,
-				_("Your %s %s is not connected to the Internet. Please check your network settings and try again.") % (getMachineBrand(), getMachineName()),
+				_("Your %s %s is not connected to the Internet. Please check your network settings and try again.") % (SystemInfo["displaybrand"], SystemInfo["machinename"]),
 				MessageBox.TYPE_INFO,
 				15,
 				NOPLUGINS
@@ -1068,7 +1068,7 @@ class AutoBackupManagerTimer:
 			print("[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now)))
 			from Screens.Standby import inStandby
 			if not inStandby and config.backupmanager.query.value:  # Check for querying enabled
-				message = _("Your %s %s is about to run a backup of your settings and to detect your plugins.\nDo you want to allow this?") % (getMachineBrand(), getMachineName())
+				message = _("Your %s %s is about to run a backup of your settings and to detect your plugins.\nDo you want to allow this?") % (SystemInfo["displaybrand"], SystemInfo["machinename"])
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle("Scheduled backup.")
 			else:
@@ -1343,12 +1343,12 @@ class BackupFiles(Screen):
 		elif self.backuptype == self.TYPE_FACTORYRESET:
 			backupType = "-FR-"
 		imageSubBuild = ""
-		if getImageType() != "release":
-			imageSubBuild = ".%s" % getImageDevBuild()
+		if SystemInfo["imagetype"] != "release":
+			imageSubBuild = ".%s" % SystemInfo["imagedevbuild"]
 		boxname = ""
 		if config.backupmanager.showboxname.value:
-			boxname = "-" + getMachineMake()
-		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + boxname + "-" + getImageType()[0:3] + backupType + getImageVersion() + "." + getImageBuild() + imageSubBuild + "-" + backupdate.strftime("%Y%m%d-%H%M") + ".tar.gz"
+			boxname = "-" + SystemInfo["machinebuild"]
+		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + boxname + "-" + SystemInfo["imagetype"][0:3] + backupType + SystemInfo["imageversion"] + "." + SystemInfo["imagebuild"] + imageSubBuild + "-" + backupdate.strftime("%Y%m%d-%H%M") + ".tar.gz"
 		with open(BackupFiles.tar_flist, "w") as tfl:			# Need to create a list of what to backup, so that spaces and special characters don't get lost on, or mangle, the command line
 			for fn in tmplist:
 				tfl.write(fn + "\n")

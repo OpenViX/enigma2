@@ -48,7 +48,6 @@ from Tools.Directories import pathExists, fileExists, getRecordingFilename, copy
 from Tools.TimeShift import CopyTimeshiftJob, MergeTimeshiftJob, CreateAPSCFilesJob
 
 from enigma import eBackgroundFileEraser, eTimer, eServiceCenter, iServiceInformation, iPlayableService, eEPGCache, eServiceReference
-from boxbranding import getBoxType, getBrandOEM
 
 from time import time, localtime, strftime
 from random import randint
@@ -435,13 +434,13 @@ class InfoBarTimeshift:
 			if seekable is not None:
 				seekable.seekTo(-90000)  # seek approx. 1 sec before end
 		if back:
-			if getBrandOEM() == "xtrend":
+			if SystemInfo["brand"] == "xtrend":
 				self.ts_rewind_timer.start(1000, 1)
 			else:
 				self.ts_rewind_timer.start(100, 1)
 
 	def rewindService(self):
-		if getBrandOEM() in ("gigablue", "xp"):
+		if SystemInfo["brand"] in ("gigablue", "xp"):
 			self.setSeekState(self.SEEK_STATE_PLAY)
 		self.setSeekState(self.makeStateBackward(int(config.seek.enter_backward.value)))
 
@@ -545,7 +544,7 @@ class InfoBarTimeshift:
 		self.stopTimeshiftcheckTimeshiftRunningCallback(True)
 		ts = self.getTimeshift()
 		if ts and not ts.startTimeshift():
-			if (getBoxType() == "vuuno" or getBoxType() == "vuduo") and os.path.exists("/proc/stb/lcd/symbol_timeshift"):
+			if (SystemInfo["boxtype"] == "vuuno" or SystemInfo["boxtype"] == "vuduo") and os.path.exists("/proc/stb/lcd/symbol_timeshift"):
 				if self.session.nav.RecordTimer.isRecording():
 					f = open("/proc/stb/lcd/symbol_timeshift", "w")
 					f.write("0")

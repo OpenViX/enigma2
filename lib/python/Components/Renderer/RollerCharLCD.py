@@ -1,5 +1,4 @@
 from enigma import eLabel, eTimer
-from boxbranding import getBoxType
 
 from Components.config import config
 from Components.Renderer.Renderer import Renderer
@@ -11,10 +10,7 @@ class RollerCharLCD(VariableText, Renderer):
 	def __init__(self):
 		Renderer.__init__(self)
 		VariableText.__init__(self)
-		if getBoxType() in ('vuduo', 'sf4008'):
-			self.stringlength = 16
-		else:
-			self.stringlength = 12
+		self.stringlength = 12
 
 	GUI_WIDGET = eLabel
 
