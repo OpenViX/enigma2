@@ -19,6 +19,7 @@ from Components.Pixmap import Pixmap, MultiPixmap
 from Components.PluginComponent import plugins
 from Components.Sources.StaticText import StaticText
 from Components.Sources.List import List
+from Components.SystemInfo import SystemInfo
 from Plugins.Plugin import PluginDescriptor
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox

@@ -364,7 +364,7 @@ class TitleList(Screen, HelpableScreen):
 		t = self.current_edit_title
 		t.titleEditDone(cutlist)
 		if t.VideoType != 0:
-			self.session.openWithCallback(self.DVDformatCB, MessageBox, text=_("The DVD standard doesn't support H.264 (HDTV) video streams. Do you want to create a %s %s format data DVD (which will not play in stand-alone DVD players) instead?") % (getMachineBrand(), getMachineName()), type=MessageBox.TYPE_YESNO)
+			self.session.openWithCallback(self.DVDformatCB, MessageBox, text=_("The DVD standard doesn't support H.264 (HDTV) video streams. Do you want to create a %s %s format data DVD (which will not play in stand-alone DVD players) instead?") % getBoxDisplayName(), type=MessageBox.TYPE_YESNO)
 		else:
 			self.updateTitleList()
 
