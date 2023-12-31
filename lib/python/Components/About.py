@@ -9,6 +9,7 @@ from enigma import getEnigmaVersionString
 
 
 def getVersionString():
+	from Components.SystemInfo import SystemInfo
 	return SystemInfo["imageversion"]
 
 
