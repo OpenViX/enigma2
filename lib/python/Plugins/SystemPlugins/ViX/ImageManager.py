@@ -1616,7 +1616,7 @@ class ImageManagerDownload(Screen):
 		self.setIndex = 0
 		self.expanded = []
 		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found on the selected download server...if password check validity")), "Waiter"))])
-		self.SystemInfo["distro"]
+		self.getImageDistro()
 
 	def showError(self):
 		self.session.open(MessageBox, self.msg, MessageBox.TYPE_ERROR)
@@ -1723,7 +1723,7 @@ class ImageManagerDownload(Screen):
 				self.expanded.remove(currentSelected[0][0])
 			else:
 				self.expanded.append(currentSelected[0][0])
-			self.SystemInfo["distro"]
+			self.getImageDistro()
 
 		elif currentSelected[0][1] != "Waiter":
 			self.sel = currentSelected[0][0]
