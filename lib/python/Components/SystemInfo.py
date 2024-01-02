@@ -1,3 +1,4 @@
+from ast import literal_eval
 from os import listdir
 from hashlib import md5
 from os.path import isfile, join as pathjoin
@@ -36,39 +37,16 @@ class BoxInformation:
 			print("[BoxInfo] ERROR: %s is not available!  The system is unlikely to boot or operate correctly." % file)
 
 	def processValue(self, value):
-		if len(value) > 1 and value[0] in ("\"", "'") and value[-1] == value[0]:
-			value = value[1:-1]
-		elif value.startswith("(") and value.endswith(")"):
-			data = []
-			for item in [x.strip() for x in value[1:-1].split(",")]:
-				data.append(self.processValue(item))
-			value = tuple(data)
-		elif value.startswith("[") and value.endswith("]"):
-			data = []
-			for item in [x.strip() for x in value[1:-1].split(",")]:
-				data.append(self.processValue(item))
-			value = list(data)
-		elif value.upper() in ("FALSE", "NO", "OFF", "DISABLED"):
-			value = False
+		if value.upper() in ("FALSE", "NO", "OFF", "DISABLED"):
+			return False
 		elif value.upper() in ("TRUE", "YES", "ON", "ENABLED"):
-			value = True
+			return True
 		elif value.upper() == "NONE":
-			value = None
-		elif value.isdigit() or ((value[0:1] == "-" or value[0:1] == "+") and value[1:].isdigit()):
-			if value[0] != "0":  # if this is zero padded it must be a string, so skip
-				value = int(value)
-		elif value.lower().startswith("0x"):
-			value = int(value, 16)
-		elif value.lower().startswith("0o"):
-			value = int(value, 8)
-		elif value.lower().startswith("0b"):
-			value = int(value, 2)
-		else:
-			try:
-				value = float(value)
-			except ValueError:
-				pass
-		return value
+			return None
+		try:
+			return literal_eval(value)
+		except:
+			return value
 
 	def getEnigmaInfoList(self):
 		return sorted(self.immutableList)
