@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-12-18 06:59+0200\n"
+"PO-Revision-Date: 2024-01-02 19:16+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13543,7 +13543,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"18.12.2023\n"
+"02.01.2024\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -19174,3 +19174,18 @@ msgstr "Sref + striimin url"
 
 msgid "Playback"
 msgstr "Toisto"
+
+msgid "Extensive search"
+msgstr "Laaja haku"
+
+msgid "Locations searched when creating the images list. Select 'yes' to search all likely locations on your system where images may be located. Select 'no' to limit the search to just the user selected backup location."
+msgstr "Sijainnit, joita haetaan imageiden listaa luotaessa. Valitse 'kyllä', jos haluat etsiä järjestelmästäsi kaikista mahdollisista paikoista, joissa imaget saattavat sijaita. Valitse 'ei', jos haluat rajoittaa haun vain käyttäjän valitsemaan varmuuskopiointipaikkaan."
+
+msgid "Allows you to give your image filename a custom prefix."
+msgstr "Voit antaa imagen tiedostonimelle mukautetun etuliitteen."
+
+msgid "Homebuild URL"
+msgstr "Itse luodun imagen URL"
+
+msgid "If you are running your own build server and want to download your own images directly into ImageManager you can link to the URL of your JSON index. Don't forget to add '%s' where the box name should be inserted into the url. If you need help with implementing this please ask on the forum."
+msgstr "Jos käytät omaa koontipalvelinta ja haluat ladata omat imagesi suoraan Imagen Hallinnointiin, voit linkittää JSON-hakemistosi URL-osoitteeseen. Älä unohda lisätä '%s', johon boksin nimi tulee lisätä URL-osoitteeseen. Jos tarvitset apua tämän toteuttamisessa, kysy foorumilta."
