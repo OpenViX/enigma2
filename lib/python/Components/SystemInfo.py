@@ -54,9 +54,7 @@ class BoxInformation:
 		return sorted(list(self.boxInfo.keys()))
 
 	def getItem(self, item, default=None):
-		if item in self.boxInfo:
-			return self.boxInfo[item]
-		return default
+		return self.boxInfo.get(item, default)
 
 	def setItem(self, item, value, immutable=False, forceOverride=False):
 		if item in self.immutableList and not forceOverride:
