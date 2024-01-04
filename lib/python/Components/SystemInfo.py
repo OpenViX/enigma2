@@ -9,8 +9,6 @@ from Components.RcModel import rc_model
 from Tools.Directories import fileCheck, fileExists, fileHas, pathExists, resolveFilename, SCOPE_LIBDIR, SCOPE_SKIN, fileReadLines
 from Tools.HardwareInfo import HardwareInfo
 
-SystemInfo = {}
-
 
 class BoxInformation:
 	def __init__(self, root=""):
@@ -31,8 +29,6 @@ class BoxInformation:
 					self.setItem(item, self.processValue(value), immutable=True)
 			if self.boxInfo["checksumerror"]:
 				print("[BoxInfo] Data integrity of %s could not be verified." % file)
-			# else:
-				# print("[SystemInfo] Enigma information file data loaded into BoxInfo.")
 		else:
 			print("[BoxInfo] ERROR: %s is not available!  The system is unlikely to boot or operate correctly." % file)
 
@@ -60,8 +56,6 @@ class BoxInformation:
 	def getItem(self, item, default=None):
 		if item in self.boxInfo:
 			return self.boxInfo[item]
-		elif item in SystemInfo:
-			return SystemInfo[item]
 		return default
 
 	def setItem(self, item, value, immutable=False, forceOverride=False):
@@ -71,7 +65,6 @@ class BoxInformation:
 		if immutable and item not in self.immutableList:
 			self.immutableList.append(item)
 		self.boxInfo[item] = value
-		SystemInfo[item] = value
 		return True
 
 	def deleteItem(self, item, forceOverride=False):
@@ -84,6 +77,9 @@ class BoxInformation:
 
 
 BoxInfo = BoxInformation()
+
+
+SystemInfo = BoxInfo.boxInfo
 
 
 ARCHITECTURE = BoxInfo.getItem("architecture")
