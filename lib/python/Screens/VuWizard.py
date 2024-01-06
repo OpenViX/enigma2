@@ -43,6 +43,10 @@ patterns_locale = [
 	"enigma2-locale",
 ]
 
+patterns_skip = [
+	"enigma2-plugin-systemplugins-vix",
+]
+
 STARTUP = "kernel=/zImage root=/dev/%s rootsubdir=linuxrootfs0" % SystemInfo["mtdrootfs"]					# /STARTUP
 STARTUP_RECOVERY = "kernel=/zImage root=/dev/%s rootsubdir=linuxrootfs0" % SystemInfo["mtdrootfs"] 			# /STARTUP_RECOVERY
 STARTUP_1 = "kernel=/linuxrootfs1/zImage root=/dev/%s rootsubdir=linuxrootfs1" % SystemInfo["mtdrootfs"] 	# /STARTUP_1
@@ -165,6 +169,8 @@ class VuWizard(WizardLanguage, Rc):
 			opkg_installed_list = result.split("\n")										# python list installed elements
 			# print("[VuWizard] opkg_installed_list", opkg_installed_list)
 			for opkg_element in opkg_installed_list:										# element e.g. opkg_status aio-grab - 1.0+git116+30847a1-r0
+				if bool([x for x in patterns_skip if x in opkg_element]):
+					continue
 				if bool([x for x in patterns if x in opkg_element]):
 					parts = opkg_element.strip().split()
 					# print("[VuWizard]1 parts, parts0", parts, "   ", parts[0])
