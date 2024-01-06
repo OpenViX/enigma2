@@ -67,7 +67,10 @@ class ServiceList(GUIComponent):
 		pic = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/ico_altref-fs8.png"))
 		pic and self.l.setPixmap(self.l.picBackup, pic)
 
-		self.l.setAlternativeRecordMatching(config.recording.record_icon_match.value == "Sref only")
+		try:  # "config.recording" not available in VuRecovery mode
+			self.l.setAlternativeRecordMatching(config.recording.record_icon_match.value == "Sref only")
+		except AttributeError:
+			pass
 
 		self.root = None
 		self.mode = self.MODE_NORMAL
