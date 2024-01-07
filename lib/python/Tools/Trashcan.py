@@ -152,8 +152,7 @@ class CleanTrashTask(Components.Task.PythonTask):
 			if parts[1] == "/media/autofs":
 				continue
 			# skip network mounts unless the option to clean them is set
-			if (not config.usage.movielist_trashcan_network_clean.value and
-				(parts[1].startswith("/media/net") or parts[1].startswith("/media/autofs"))):
+			if not config.usage.movielist_trashcan_network_clean.value and parts[1].startswith(("/media/net", "/media/autofs")):
 				continue
 			# one trashcan in the root, one in movie subdirectory
 			trashcanLocations.add(parts[1])

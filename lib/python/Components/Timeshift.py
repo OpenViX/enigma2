@@ -48,7 +48,6 @@ from Tools.Directories import pathExists, fileExists, getRecordingFilename, copy
 from Tools.TimeShift import CopyTimeshiftJob, MergeTimeshiftJob, CreateAPSCFilesJob
 
 from enigma import eBackgroundFileEraser, eTimer, eServiceCenter, iServiceInformation, iPlayableService, eEPGCache, eServiceReference
-from boxbranding import getBoxType, getBrandOEM
 
 from time import time, localtime, strftime
 from random import randint
@@ -435,13 +434,13 @@ class InfoBarTimeshift:
 			if seekable is not None:
 				seekable.seekTo(-90000)  # seek approx. 1 sec before end
 		if back:
-			if getBrandOEM() == "xtrend":
+			if SystemInfo["brand"] == "xtrend":
 				self.ts_rewind_timer.start(1000, 1)
 			else:
 				self.ts_rewind_timer.start(100, 1)
 
 	def rewindService(self):
-		if getBrandOEM() in ("gigablue", "xp"):
+		if SystemInfo["brand"] in ("gigablue", "xp"):
 			self.setSeekState(self.SEEK_STATE_PLAY)
 		self.setSeekState(self.makeStateBackward(int(config.seek.enter_backward.value)))
 
@@ -505,7 +504,7 @@ class InfoBarTimeshift:
 
 	def eraseTimeshiftFile(self):
 		for filename in os.listdir(config.usage.timeshift_path.value):
-			if filename.startswith("timeshift.") and not filename.endswith(".del") and not filename.endswith(".copy"):
+			if filename.startswith("timeshift.") and not filename.endswith((".del", ".copy")):
 				self.BgFileEraser.erase("%s%s" % (config.usage.timeshift_path.value, filename))
 
 	def autostartPermanentTimeshift(self):
@@ -545,7 +544,7 @@ class InfoBarTimeshift:
 		self.stopTimeshiftcheckTimeshiftRunningCallback(True)
 		ts = self.getTimeshift()
 		if ts and not ts.startTimeshift():
-			if (getBoxType() == "vuuno" or getBoxType() == "vuduo") and os.path.exists("/proc/stb/lcd/symbol_timeshift"):
+			if (SystemInfo["boxtype"] == "vuuno" or SystemInfo["boxtype"] == "vuduo") and os.path.exists("/proc/stb/lcd/symbol_timeshift"):
 				if self.session.nav.RecordTimer.isRecording():
 					f = open("/proc/stb/lcd/symbol_timeshift", "w")
 					f.write("0")
@@ -809,7 +808,7 @@ class InfoBarTimeshift:
 			return
 
 		for filename in os.listdir(config.usage.timeshift_path.value):
-			if (filename.startswith("timeshift.") or filename.startswith("pts_livebuffer_")) and (filename.endswith(".del") is False and filename.endswith(".copy") is False):
+			if filename.startswith(("timeshift.", "pts_livebuffer_")) and not filename.endswith((".del", ".copy")):
 				# print("[Timeshift]filename:", filename)
 				statinfo = os.stat("%s%s" % (config.usage.timeshift_path.value, filename))  # if no write for 3 sec = stranded timeshift
 				if statinfo.st_mtime < (time() - 3.0):
@@ -883,7 +882,7 @@ class InfoBarTimeshift:
 		# print("[Timeshift]ptsCreateHardlink")
 		for filename in os.listdir(config.usage.timeshift_path.value):
 			# if filename.startswith("timeshift") and not os.path.splitext(filename)[1]:
-			if filename.startswith("timeshift.") and not filename.endswith(".sc") and not filename.endswith(".del") and not filename.endswith(".copy") and not filename.endswith(".ap"):
+			if filename.startswith("timeshift.") and not filename.endswith((".sc", ".del", ".copy", ".ap")):
 				if os.path.exists("%spts_livebuffer_%s.eit" % (config.usage.timeshift_path.value, self.pts_eventcount)):
 					self.BgFileEraser.erase("%spts_livebuffer_%s.eit" % (config.usage.timeshift_path.value, self.pts_eventcount))
 				if os.path.exists("%spts_livebuffer_%s.meta" % (config.usage.timeshift_path.value, self.pts_eventcount)):

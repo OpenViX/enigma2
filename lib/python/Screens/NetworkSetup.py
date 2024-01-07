@@ -5,7 +5,6 @@ import string
 import time
 import glob
 from enigma import eTimer, eConsoleAppContainer
-from boxbranding import getBoxType, getMachineBrand, getMachineName, getImageType, getImageVersion
 
 from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigIP, ConfigText, ConfigPassword, ConfigSelection, getConfigListEntry, ConfigNumber, ConfigLocations, NoSave, ConfigMacText
@@ -20,6 +19,7 @@ from Components.Pixmap import Pixmap, MultiPixmap
 from Components.PluginComponent import plugins
 from Components.Sources.StaticText import StaticText
 from Components.Sources.List import List
+from Components.SystemInfo import SystemInfo
 from Plugins.Plugin import PluginDescriptor
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
@@ -94,7 +94,7 @@ class NSCommon:
 	def removeComplete(self, result=None, retval=None, extra_args=None):
 		if self.reboot_at_end:
 			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox,
-				_('Your %s %s needs to be restarted to complete the removal of %s\nDo you want to reboot now ?') % (getMachineBrand(), getMachineName(), self.getTitle()), MessageBox.TYPE_YESNO)
+				_('Your %s %s needs to be restarted to complete the removal of %s\nDo you want to reboot now ?') % (SystemInfo["MachineBrand"], SystemInfo["MachineName"], self.getTitle()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_("Reboot required"))
 		else:
 			self.operationComplete()
@@ -102,7 +102,7 @@ class NSCommon:
 	def installComplete(self, result=None, retval=None, extra_args=None):
 		if self.reboot_at_end:
 			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox,
-				_('Your %s %s needs to be restarted to complete the installation of %s\nDo you want to reboot now ?') % (getMachineBrand(), getMachineName(), self.getTitle()), MessageBox.TYPE_YESNO)
+				_('Your %s %s needs to be restarted to complete the installation of %s\nDo you want to reboot now ?') % (SystemInfo["MachineBrand"], SystemInfo["MachineName"], self.getTitle()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_("Reboot required"))
 		else:
 			self.message.close()
@@ -127,7 +127,7 @@ class NSCommon:
 		if "Collected errors" in str:
 			self.session.openWithCallback(self.close, MessageBox, _("A background update check is in progress, please wait a few minutes and then try again."), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		elif not str:
-			if (getImageType() != "release" and feedsstatuscheck.getFeedsBool() not in ("unknown", "alien", "developer")) or (getImageType() == "release" and feedsstatuscheck.getFeedsBool() not in ("stable", "unstable", "alien", "developer")):
+			if (SystemInfo["imagetype"] != "release" and feedsstatuscheck.getFeedsBool() not in ("unknown", "alien", "developer")) or (SystemInfo["imagetype"] == "release" and feedsstatuscheck.getFeedsBool() not in ("stable", "unstable", "alien", "developer")):
 				self.session.openWithCallback(self.InstallPackageFailed, MessageBox, feedsstatuscheck.getFeedsErrorMessage(), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			else:
 				mtext = _("Are you ready to install %s ?") % self.getTitle()
@@ -965,11 +965,11 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 
 	def selectionChanged(self):
 		if self["menulist"].getCurrent()[1] == "edit":
-			self["description"].setText(_("Edit the network configuration of your %s %s.\n") % (getMachineBrand(), getMachineName()) + self.oktext)
+			self["description"].setText(_("Edit the network configuration of your %s %s.\n") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]) + self.oktext)
 		if self["menulist"].getCurrent()[1] == "test":
-			self["description"].setText(_("Test the network configuration of your %s %s.\n") % (getMachineBrand(), getMachineName()) + self.oktext)
+			self["description"].setText(_("Test the network configuration of your %s %s.\n") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]) + self.oktext)
 		if self["menulist"].getCurrent()[1] == "dns":
-			self["description"].setText(_("Edit the Nameserver configuration of your %s %s.\n") % (getMachineBrand(), getMachineName()) + self.oktext)
+			self["description"].setText(_("Edit the Nameserver configuration of your %s %s.\n") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]) + self.oktext)
 		if self["menulist"].getCurrent()[1] == "scanwlan":
 			self["description"].setText(_("Scan your network for wireless access points and connect to them using your selected wireless device.\n") + self.oktext)
 		if self["menulist"].getCurrent()[1] == "wlanstatus":
@@ -981,7 +981,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		if self["menulist"].getCurrent()[1][0] == "extendedSetup":
 			self["description"].setText(_(self["menulist"].getCurrent()[1][1]) + self.oktext)
 		if self["menulist"].getCurrent()[1] == "mac":
-			self["description"].setText(_("Set the MAC address of your %s %s.\n") % (getMachineBrand(), getMachineName()) + self.oktext)
+			self["description"].setText(_("Set the MAC address of your %s %s.\n") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]) + self.oktext)
 		item = self["menulist"].getCurrent()
 		if item:
 			name = str(self["menulist"].getCurrent()[0])
@@ -2260,7 +2260,7 @@ class NetworkInadyn(NSCommon, Screen):
 					line = line[18:]
 					line = (int(line) // 60)
 					self["labtime"].setText(str(line))
-				elif line.startswith("dyndns_system ") or line.startswith("#dyndns_system "):
+				elif line.startswith(("dyndns_system ", "#dyndns_system ")):
 					if line.startswith("#"):
 						line = line[15:]
 						self["sactive"].hide()
@@ -2320,7 +2320,7 @@ class NetworkInadynSetup(ConfigListScreen, HelpableScreen, Screen):
 					line = (int(line[18:]) // 60)
 					self.ina_period = NoSave(ConfigNumber(default=line))  # overwrite so we start with the correct defaults
 					self.list.append(getConfigListEntry(_("Time update in minutes") + ":", self.ina_period))
-				elif line.startswith("dyndns_system ") or line.startswith("#dyndns_system "):
+				elif line.startswith(("dyndns_system ", "#dyndns_system ")):
 					if not line.startswith("#"):
 						default = True
 						line = line[14:]
@@ -2352,7 +2352,7 @@ class NetworkInadynSetup(ConfigListScreen, HelpableScreen, Screen):
 					strview = (self.ina_period.value * 60)
 					strview = str(strview)
 					line = ("update_period_sec " + strview)
-				elif line.startswith("dyndns_system ") or line.startswith("#dyndns_system "):
+				elif line.startswith(("dyndns_system ", "#dyndns_system ")):
 					if self.ina_sysactive.value:
 						line = ("dyndns_system " + self.ina_system.value.strip())
 					else:
@@ -2557,7 +2557,7 @@ class NetworkuShareSetup(ConfigListScreen, HelpableScreen, Screen):
 
 	def updateList(self, ret=None):
 		self.list = []
-		self.ushare_user = NoSave(ConfigText(default=getBoxType(), fixed_size=False))
+		self.ushare_user = NoSave(ConfigText(default=SystemInfo["boxtype"], fixed_size=False))
 		self.ushare_iface = NoSave(ConfigText(fixed_size=False))
 		self.ushare_port = NoSave(ConfigNumber())
 		self.ushare_telnetport = NoSave(ConfigNumber())
@@ -2922,7 +2922,7 @@ class NetworkMiniDLNASetup(ConfigListScreen, HelpableScreen, Screen):
 
 	def updateList(self, ret=None):
 		self.list = []
-		self.minidlna_name = NoSave(ConfigText(default=getBoxType(), fixed_size=False))
+		self.minidlna_name = NoSave(ConfigText(default=SystemInfo["boxtype"], fixed_size=False))
 		self.minidlna_iface = NoSave(ConfigText(fixed_size=False))
 		self.minidlna_port = NoSave(ConfigNumber())
 		self.minidlna_serialno = NoSave(ConfigNumber())
@@ -3144,7 +3144,7 @@ class NetworkPassword(Setup):
 		self["config"].invalidateCurrent()
 
 	def createSetup(self):
-		instructions = _("Setting a network password is mandatory in OpenViX %s if you wish to use network services. \nTo set a password using the virtual keyboard press the 'text' button on your remote control.") % getImageVersion()
+		instructions = _("Setting a network password is mandatory in OpenViX %s if you wish to use network services. \nTo set a password using the virtual keyboard press the 'text' button on your remote control.") % SystemInfo["imageversion"]
 		self.list.append(getConfigListEntry(_('New password'), self.password, instructions))
 		self['config'].list = self.list
 

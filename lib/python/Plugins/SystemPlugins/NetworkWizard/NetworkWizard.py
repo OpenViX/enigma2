@@ -1,12 +1,12 @@
 from os import system
 
 from enigma import eTimer
-from boxbranding import getMachineBrand, getMachineName
 from Components.config import config
 from Components.Label import Label
 from Components.Network import iNetwork
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
+from Components.SystemInfo import getBoxDisplayName
 from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
 from Screens.WizardLanguage import WizardLanguage
@@ -246,7 +246,7 @@ class NetworkWizard(WizardLanguage, Rc):
 		if data is not None:
 			if data is True:
 				if status is not None:
-					text1 = _("Your %s %s is now ready to be used.\n\nYour internet connection is working now.\n\n") % (getMachineBrand(), getMachineName())
+					text1 = _("Your %s %s is now ready to be used.\n\nYour internet connection is working now.\n\n") % getBoxDisplayName()
 					text2 = _('Accesspoint:') + "\t" + str(status[self.selectedInterface]["accesspoint"]) + "\n"
 					text3 = _('SSID:') + "\t" + str(status[self.selectedInterface]["essid"]) + "\n"
 					text4 = _('Link quality:') + "\t" + str(status[self.selectedInterface]["quality"]) + "\n"

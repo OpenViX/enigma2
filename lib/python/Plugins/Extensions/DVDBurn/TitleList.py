@@ -1,5 +1,3 @@
-from boxbranding import getMachineBrand, getMachineName
-
 from . import DVDProject
 from . import TitleCutter
 from . import TitleProperties
@@ -17,6 +15,7 @@ from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.Sources.Progress import Progress
 from Components.Label import MultiColorLabel
+from Components.SystemInfo import getBoxDisplayName
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 
 
@@ -227,7 +226,7 @@ class TitleList(Screen, HelpableScreen):
 		if source is None:
 			return None
 		if not source.getPath().endswith(".ts"):
-			self.session.open(MessageBox, text=_("You can only burn %s %s recordings!") % (getMachineBrand(), getMachineName()), type=MessageBox.TYPE_ERROR)
+			self.session.open(MessageBox, text=_("You can only burn %s %s recordings!") % getBoxDisplayName(), type=MessageBox.TYPE_ERROR)
 			return None
 		t = self.project.addService(source)
 		try:
@@ -365,7 +364,7 @@ class TitleList(Screen, HelpableScreen):
 		t = self.current_edit_title
 		t.titleEditDone(cutlist)
 		if t.VideoType != 0:
-			self.session.openWithCallback(self.DVDformatCB, MessageBox, text=_("The DVD standard doesn't support H.264 (HDTV) video streams. Do you want to create a %s %s format data DVD (which will not play in stand-alone DVD players) instead?") % (getMachineBrand(), getMachineName()), type=MessageBox.TYPE_YESNO)
+			self.session.openWithCallback(self.DVDformatCB, MessageBox, text=_("The DVD standard doesn't support H.264 (HDTV) video streams. Do you want to create a %s %s format data DVD (which will not play in stand-alone DVD players) instead?") % getBoxDisplayName(), type=MessageBox.TYPE_YESNO)
 		else:
 			self.updateTitleList()
 

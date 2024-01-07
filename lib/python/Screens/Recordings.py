@@ -3,7 +3,6 @@ from os.path import isdir, realpath, join as pathJoin
 from Components.config import config
 from Components.UsageConfig import preferredPath
 from Screens.LocationBox import MovieLocationBox
-from Screens.MessageBox import MessageBox
 from Screens.Setup import Setup
 from Tools.Directories import fileExists
 import Components.Harddisk
@@ -16,11 +15,12 @@ class RecordingSettings(Setup):
 		self.buildChoices("DefaultPath", config.usage.default_path, None)
 		self.buildChoices("TimerPath", config.usage.timer_path, None)
 		self.buildChoices("InstantPath", config.usage.instantrec_path, None)
+		self.errorItem = -1
 		Setup.__init__(self, session=session, setup="recording")
 		self.greenText = self["key_green"].text
-		self.errorItem = -1
 		if self.getCurrentItem() in (config.usage.default_path, config.usage.timer_path, config.usage.instantrec_path):
 			self.pathStatus(self.getCurrentValue())
+		self.changedEntry()
 
 	def buildChoices(self, item, configEntry, path):
 		configList = config.movielist.videodirs.value[:]
@@ -97,7 +97,6 @@ class RecordingSettings(Setup):
 			Setup.selectionChanged(self)
 		else:
 			self["config"].setCurrentIndex(self.errorItem)
-			self.errorMsg()
 
 	def changedEntry(self):
 		if self.getCurrentItem() in (config.usage.default_path, config.usage.timer_path, config.usage.instantrec_path):
@@ -112,11 +111,6 @@ class RecordingSettings(Setup):
 		else:
 			Setup.keySelect(self)
 
-	def errorMsg(self):
-		self.session.open(MessageBox, "%s\n\n%s" % (self.footnote, _("Please select a valid directory.")), type=MessageBox.TYPE_ERROR)
-
 	def keySave(self):
 		if self.errorItem == -1:
 			Setup.keySave(self)
-		else:
-			self.errorMsg()

@@ -1,8 +1,8 @@
 import xml.dom.minidom
-from boxbranding import getMachineBrand, getMachineName
 
 from Tools.Directories import fileExists
 from Components.config import ConfigSubsection, ConfigInteger, ConfigText, ConfigSelection, ConfigSequence, ConfigSubList
+from Components.SystemInfo import getBoxDisplayName
 from . import DVDTitle
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_FONTS
 
@@ -39,7 +39,7 @@ class DVDProject:
 		self.target = None
 		self.settings = ConfigSubsection()
 		self.settings.name = ConfigText(fixed_size=False, visible_width=40)
-		self.settings.authormode = ConfigSelection(choices=[("menu_linked", _("Linked titles with a DVD menu")), ("just_linked", _("Direct playback of linked titles without menu")), ("menu_seperate", _("Seperate titles with a main menu")), ("data_ts", _("%s %s format data DVD (HDTV compatible)") % (getMachineBrand(), getMachineName()))])
+		self.settings.authormode = ConfigSelection(choices=[("menu_linked", _("Linked titles with a DVD menu")), ("just_linked", _("Direct playback of linked titles without menu")), ("menu_seperate", _("Seperate titles with a main menu")), ("data_ts", _("%s %s format data DVD (HDTV compatible)") % getBoxDisplayName())])
 		self.settings.titlesetmode = ConfigSelection(choices=[("single", _("Simple titleset (compatibility for legacy players)")), ("multi", _("Complex (allows mixing audio tracks and aspects)"))], default="multi")
 		self.settings.output = ConfigSelection(choices=[("iso", _("Create DVD-ISO")), ("dvd", _("Burn DVD"))])
 		self.settings.isopath = ConfigText(fixed_size=False, visible_width=40)

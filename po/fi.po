@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2023-12-09 21:41+0200\n"
+"PO-Revision-Date: 2024-01-07 14:10+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3638,14 +3638,14 @@ msgstr "Määrittää kuinka monta minuuttia päättyneiden ohjelmien ohjelmatie
 msgid "Configure how recording filenames are constructed."
 msgstr "Määritä tallenteiden tiedostonimien rakenne."
 
-msgid "Configure if and how crypto icons will be shown in the channel selection list."
-msgstr "Määrittää näytetäänkö/miten näytetään salauksen kuvakkeet kanavalistassa."
+msgid "Configure if and how crypto icons will be shown in the channel selection list (left alignment only available in single line mode)."
+msgstr "Määrittää näytetäänkö/miten näytetään salauksen kuvakkeet kanavalistassa (tasaus vasemmalle käytössä vain yksirivisessä tilassa)."
 
-msgid "Configure if and how service type icons will be shown."
-msgstr "Määritä näytetäänkö/miten näytetään kanavatyypin kuvakkeet."
+msgid "Configure if and how service type icons will be shown (left alignment only available in single line mode)."
+msgstr "Määritä näytetäänkö/miten näytetään kanavatyypin kuvakkeet (tasaus vasemmalle käytössä vain yksirivisessä tilassa)."
 
-msgid "Configure if and how the record indicator will be shown in the channel selection list."
-msgstr "Määrittää kuinka tallennuksen indikaattori näytetään kanavalistassa."
+msgid "Configure if and how the record indicator will be shown in the channel selection list (left alignment only available in single line mode)."
+msgstr "Määrittää kuinka tallennuksen indikaattori näytetään kanavalistassa (tasaus vasemmalle käytössä vain yksirivisessä tilassa)."
 
 msgid "Configure if and how wide the service name column will be shown in the channel selection list."
 msgstr "Määrittää kuinka leveänä kanavanimet näytetään kanavalistassa."
@@ -7088,7 +7088,7 @@ msgid "Image Slot:\t%s"
 msgstr "Image-paikka:\t%s"
 
 msgid "Image View On"
-msgstr "Jakonäkymä"
+msgstr "Kuvanäkymä päälle"
 
 msgid "Image manager"
 msgstr "Imagen hallinnointi"
@@ -7700,8 +7700,8 @@ msgstr "Libanon"
 msgid "Left"
 msgstr "Vasen"
 
-msgid "Left from servicename"
-msgstr "Kanavanimestä vasemmalle"
+msgid "Left from servicename (only available in single line mode)"
+msgstr "Kanavanimestä vasemmalle (käytössä vain yksirivisessä tilassa)"
 
 msgid "Left long"
 msgstr "Pitkä vasemmalle"
@@ -8170,7 +8170,7 @@ msgid "Minimum age %d years"
 msgstr "Minimi-ikä %d vuotta"
 
 msgid "Minimum send interval"
-msgstr "Minimi lähestysjakso"
+msgstr "Minimi lähetysväli"
 
 msgid "Minority Sports"
 msgstr "Vähemmistöurheilu"
@@ -8730,6 +8730,9 @@ msgstr "Uutiset/Ajankohtaisasiat/Sosiaalinen"
 
 msgid "Next"
 msgstr "Seuraava"
+
+msgid "NEXT"
+msgstr "SEURAAVA"
 
 msgctxt "now/next: 'next' event label"
 msgid "Next"
@@ -9459,8 +9462,8 @@ msgstr "Prosenttia"
 msgid "Percentage left"
 msgstr "Prosentit vasemmalla"
 
-msgid "Percentage right"
-msgstr "Prosentit oikealla"
+msgid "Percentage right (only available in single line mode)"
+msgstr "Prosentit oikealla (käytössä vain yksirivisessä tilassa)"
 
 msgid "Perform a complete image backup before updating."
 msgstr "Suorita täydellinen image-varmuuskopiointi ennen päivitystä."
@@ -10219,8 +10222,8 @@ msgstr "Etenemispalkki"
 msgid "Progress bar left"
 msgstr "Etenemispalkki vasemmalla"
 
-msgid "Progress bar right"
-msgstr "Etenemispalkki oikealla"
+msgid "Progress bar right (only available in single line mode)"
+msgstr "Etenemispalkki oikealla (käytössä vain yksirivisessä tilassa)"
 
 msgid "Prominent"
 msgstr "Kuuluisa"
@@ -10514,7 +10517,7 @@ msgid "Record time limited due to conflicting timer %s"
 msgstr "Ajastusaika rajoitettu, ristiriita ajastukseen %s"
 
 msgid "Recording"
-msgstr "Tallenne"
+msgstr "Tallennus"
 
 msgid "Recording & Playback"
 msgstr "Tallennus ja toisto"
@@ -12101,8 +12104,8 @@ msgstr "Kellonaika, jolloin ajastuksen pitää käynnistyä."
 msgid "Set the time the timer must stop."
 msgstr "Kellonaika, jolloin ajastuksen pitää pysähtyä."
 
-msgid "Set the type of the progress indication in the channel selection screen."
-msgstr "Määritä ohjelman pituuden osoittamisen tyyppi kanavien valintalistassa."
+msgid "Set the type of the progress indication in the channel selection screen (right alignment only available in single line mode)."
+msgstr "Määritä ohjelman pituuden osoittamisen tyyppi kanavien valintalistassa (tasaus oikealle käytössä vain yksirivisessä tilassa)."
 
 msgid "Set to the desired primetime."
 msgstr "Asetettu parhaaseen katseluaikaan."
@@ -13258,16 +13261,16 @@ msgid "Stored position"
 msgstr "Sijainnin muistipaikka"
 
 msgid "Stream"
-msgstr "Stream"
+msgstr "Streami"
 
 msgid "Stream request"
-msgstr "Streamin pyynti"
+msgstr "Streamin pyyntö"
 
 msgid "Stream-tv"
-msgstr "Stream"
+msgstr "Streami-tv"
 
 msgid "Streaming"
-msgstr "Stream"
+msgstr "Streamaa"
 
 msgid "Streaming Clients"
 msgstr "Etäasiakkaat"
@@ -13540,7 +13543,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"09.12.2023\n"
+"07.01.2024\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -17394,8 +17397,8 @@ msgstr "tosi"
 msgid "two lines"
 msgstr "kaksi riviä"
 
-msgid "two lines and next event"
-msgstr "kaksi riviä ja seuraava ohjelma"
+msgid "two lines+next event"
+msgstr "kaksi riviä + seuraava ohjelma"
 
 msgid "two lines alternative"
 msgstr "kahden rivin vaihtoehto"
@@ -18856,6 +18859,9 @@ msgstr "Koko: ei saatavilla"
 msgid "Softcam Manager"
 msgstr "Softcam:n hallinnointi"
 
+msgid "Softcam manager"
+msgstr "Softcam:n hallinnointi"
+
 msgid "Softcam manager settings"
 msgstr "Softcam hallinnoinnin asetukset"
 
@@ -19165,3 +19171,140 @@ msgstr "Vain Sref"
 
 msgid "Sref + stream url"
 msgstr "Sref + striimin url"
+
+msgid "Playback"
+msgstr "Toisto"
+
+msgid "Extensive search"
+msgstr "Laaja haku"
+
+msgid "Locations searched when creating the images list. Select 'yes' to search all likely locations on your system where images may be located. Select 'no' to limit the search to just the user selected backup location."
+msgstr "Sijainnit, joita haetaan imageiden listaa luotaessa. Valitse 'kyllä', jos haluat etsiä järjestelmästäsi kaikista mahdollisista paikoista, joissa imaget saattavat sijaita. Valitse 'ei', jos haluat rajoittaa haun vain käyttäjän valitsemaan varmuuskopiointipaikkaan."
+
+msgid "Allows you to give your image filename a custom prefix."
+msgstr "Voit antaa imagen tiedostonimelle mukautetun etuliitteen."
+
+msgid "Homebuild URL"
+msgstr "Itse luodun imagen URL"
+
+msgid "If you are running your own build server and want to download your own images directly into ImageManager you can link to the URL of your JSON index. Don't forget to add '%s' where the box name should be inserted into the url. If you need help with implementing this please ask on the forum."
+msgstr "Jos käytät omaa koontipalvelinta ja haluat ladata omat imagesi suoraan Imagen Hallinnointiin, voit linkittää JSON-hakemistosi URL-osoitteeseen. Älä unohda lisätä '%s', johon boksin nimi tulee lisätä URL-osoitteeseen. Jos tarvitset apua tämän toteuttamisessa, kysy foorumilta."
+
+msgid "slot%s %s - %s (current image)"
+msgstr "paikka%s %s - %s (nykyinen image)"
+
+msgid "slot%s %s - %s"
+msgstr "paikka%s %s - %s"
+
+msgid "ImageManager - %s - cannot flash eMMC slot from sd card slot."
+msgstr "Imagen hallinnointi - %s - eMMC-paikkaa ei voi flashata SD-kortin paikasta."
+
+msgid "ImageManager - no HDD unable to backup Vu Multiboot eMMC slots"
+msgstr "Imagen hallinnointi - ei HDD:tä, joten ei pysty varmuuskopioimaan Vu Multiboot eMMC -paikkoja"
+
+msgid "FULL IMAGE BACKUP"
+msgstr "KOKO IMAGEN VARMUUSKOPIOINTI"
+
+msgid "A full image backup can be created at any time."
+msgstr "Koko imagen varmuuskopiointi voidaan luoda milloin tahansa."
+
+msgid "The backup creates a snapshot of the image exactly as it is at the current instant."
+msgstr "Varmuuskopio luo tilannekuvan imagesta täsmälleen sellaisena kuin se on kyseisellä hetkellä."
+
+msgid "It allows making changes to the box with the knowledge that the box can be safely reverted back to a previous known working state."
+msgstr "Se mahdollistaa muutosten tekemisen boksiin tietäen, että boksi voidaan turvallisesti palauttaa aiempaan tunnetusti toimivaan tilaan."
+
+msgid "To make an image backup select GREEN from Image Manager main screen."
+msgstr "Jos haluat tehdä imagen varmuuskopion, valitse Imagen hallinnoinnin päänäytöstä VIHREÄ."
+
+msgid "IMAGE DOWNLOADS"
+msgstr "IMAGEN LATAUKSET"
+
+msgid "Image Manager allows downloading images from OpenViX image server and from a range of other distros."
+msgstr "Imagen hallinnointi mahdollistaa imagen lataamisen OpenViX-imagepalvelimelta ja useista muista jakeluista."
+
+msgid "To be able to download any image local storage must already be configured, HDD, USB or SD, and also be selected as the 'Backup location' in Image Manager setup menu."
+msgstr "Imagen lataaminen edellyttää, että paikallinen tallennustila on jo määritetty, HDD, USB tai SD, ja se on myös valittava 'Varmuuskopion sijainti' paikaksi Imagen hallinnan asetusvalikosta."
+
+msgid "To start a download select YELLOW from Image Manager main screen, then select the distro, and finally which image to download."
+msgstr "Aloita lataus valitsemalla KELTAINEN Imagen hallinnoinnin päänäytöstä, valitse sitten kirjasto ja lopuksi ladattava image."
+
+msgid "The image will then be downloaded to the 'Backup location'."
+msgstr "Image ladataan sitten paikkaan 'Varmuuskopion sijainti'."
+
+msgid "Please note, images are large, generally over 100 MB so downloading over a slow or unstable connection is prohibitive."
+msgstr "Huomaa, että imaget ovat suuria, yleensä yli 100 Mt, joten lataaminen hitaalla tai epävakaalla yhteydellä on kohtuutonta."
+
+msgid "Also, instead to downloading, it is possible to send an image to the 'Backup location' by FTP."
+msgstr "Lataamisen sijasta on myös mahdollista lähettää image FTP:n kautta 'Varmuuskopion sijainti' paikkaan."
+
+msgid "FLASHING"
+msgstr "FLASHAUS"
+
+msgid "Before flashing an image 'Automatic settings backup' should be enabled in Image Manager setup menu."
+msgstr "Ennen imagen flashausta, 'Automaattinen asetusten varmuuskopiointi' tulee ottaa käyttöön Imagen hallinnoinnin asetusvalikossa."
+
+msgid "This will make a backup of the current settings and plugins which can be used later when setting up the new image in the First Install Wizard."
+msgstr "Tämä tekee varmuuskopion nykyisistä asetuksista ja laajennuksista, joita voidaan käyttää myöhemmin, kun määrität uuden imagen ohjatussa ensimmäisessä asennustoiminnossa."
+
+msgid "To flash an image first select it from the list of images in the Image Manager main screen (the image will need to have already been downloaded) and then press BLUE."
+msgstr "Jos haluat flashata imagen, valitse se ensin Imagen hallinnoinnin päänäytön imageluettelosta (imagen on oltava jo ladattu) ja paina sitten SINISTÄ."
+
+msgid "After confirming, an automatic backup will be made and then the image will be flashed."
+msgstr "Vahvistuksen jälkeen tehdään automaattinen asetusten varmuuskopiointi, jonka jälkeen image flashataan."
+
+msgid "Upon completion the receiver will reboot and display the First Install Wizard."
+msgstr "Kun se on valmis, vastaanotin käynnistyy uudelleen ja näyttää ohjatun ensimmäisen asennustoiminnon."
+
+msgid "From here the settings backup and plugins can be restored just by selecting that option."
+msgstr "Täältä voit palauttaa asetusten varmuuskopion ja laajennukset valitsemalla vain kyseisen vaihtoehdon."
+
+msgid "RECOVERY MODE"
+msgstr "PALAUTUSTILA"
+
+msgid "This only applies to a handful of Vu+ 4K models."
+msgstr "Tämä koskee vain muutamia Vu+ 4K -malleja."
+
+msgid "Backups of the RECOVERY image will contain a copy of all the client images."
+msgstr "PALAUTUS-imagen varmuuskopiot sisältävät kopion kaikista klientti-imageista."
+
+msgid "When flashing from the recovery image it is possible to flash it to the recovery slot."
+msgstr "Kun flashataan palautus-imagesta, on se mahdollista flashata palautuspaikkaan."
+
+msgid "The new image will overwrite the previous one including any client images that were also configured, so care needs to be taken to make any full image backups (including client images) before overwriting the recovery image."
+msgstr "Uusi image korvaa edellisen, mukaan lukien kaikki klientti-imaget, jotka oli myös määritetty, joten on huolehdittava kaikkien imagejen varmuuskopioiden tekemisestä (mukaan lukien klientti-imaget) ennen palautus-imagen ylikirjoittamista."
+
+#, python-format
+msgid ""
+"Error creating backup folder:\n"
+"%s: %s"
+msgstr ""
+"Virhe luotaessa varmuuskopiokansiota:\n"
+"%s: %s"
+
+msgid " Press 'Menu' to select a storage device - none available"
+msgstr " Paina 'MENU' valitaksesi tallennuslaitteen - ei yhtään saatavilla"
+
+msgid "Are you sure you want to overwrite the Recovery image?"
+msgstr "Haluatko varmasti korvata palautusimagen?"
+
+msgid "This change will overwrite all eMMC slots."
+msgstr "Tämä muutos korvaa kaikki eMMC-paikat."
+
+msgid "We advise flashing the new image to a regular MultiBoot slot and restoring a settings backup."
+msgstr "Suosittelemme flashaamaan uuden imagen tavalliseen MultiBoot-paikkaan ja palauttamaan asetusten varmuuskopion."
+
+msgid "Select 'Flash regular slot' to flash a regular MultiBoot slot or select 'Overwrite Recovery' to overwrite the Recovery image."
+msgstr "Valitse 'Flashaa tavallinen paikka' flashataksesi tavallisen MultiBoot-paikan tai valitse 'Korvaa palautusimage' korvataksesi palautusimagen."
+
+msgid "Flash regular slot"
+msgstr "Flashaa tavallinen paikka"
+
+msgid "Overwrite Recovery"
+msgstr "Korvaa palautusimage"
+
+msgid "Do you want to backup eMMC slots? This will add from 1 -> 5 minutes per eMMC slot"
+msgstr "Haluatko varmuuskopioida eMMC-paikat? Tämä lisää 1 - 5 minuuttia eMMC-paikkaa kohden"
+
+msgid "Copy eMMC slots confirmation"
+msgstr "eMMC-paikkojen kopioinnin vahvistus"

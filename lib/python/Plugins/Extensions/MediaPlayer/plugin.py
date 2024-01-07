@@ -1,7 +1,6 @@
 from os import listdir, path as ospath, remove as osremove
 from time import strftime
 import random
-from boxbranding import getMachineBrand, getMachineName
 
 from enigma import iPlayableService, eTimer, eServiceCenter, iServiceInformation, ePicLoad
 from Components.ActionMap import NumberActionMap, HelpableActionMap
@@ -353,13 +352,13 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 		currPlay = self.session.nav.getCurrentService()
 		sTagAudioCodec = currPlay.info().getInfoString(iServiceInformation.sTagAudioCodec)
 		print("[__evAudioDecodeError] audio-codec %s can't be decoded by hardware" % sTagAudioCodec)
-		self.session.open(MessageBox, _("This %s %s cannot decode %s streams!") % (getMachineBrand(), getMachineName(), sTagAudioCodec), type=MessageBox.TYPE_INFO, timeout=20)
+		self.session.open(MessageBox, _("This %s %s cannot decode %s streams!") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"], sTagAudioCodec), type=MessageBox.TYPE_INFO, timeout=20)
 
 	def __evVideoDecodeError(self):
 		currPlay = self.session.nav.getCurrentService()
 		sTagVideoCodec = currPlay.info().getInfoString(iServiceInformation.sTagVideoCodec)
 		print("[__evVideoDecodeError] video-codec %s can't be decoded by hardware" % sTagVideoCodec)
-		self.session.open(MessageBox, _("This %s %s cannot decode %s streams!") % (getMachineBrand(), getMachineName(), sTagVideoCodec), type=MessageBox.TYPE_INFO, timeout=20)
+		self.session.open(MessageBox, _("This %s %s cannot decode %s streams!") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"], sTagVideoCodec), type=MessageBox.TYPE_INFO, timeout=20)
 
 	def __evPluginError(self):
 		currPlay = self.session.nav.getCurrentService()

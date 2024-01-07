@@ -135,7 +135,7 @@ class DemuxTask(Task):
 		elif line.startswith(MSG_PROGRESS):
 			progress = line[len(MSG_PROGRESS):]
 			self.haveProgress(progress)
-		elif line.startswith(MSG_NEW_MP2) or line.startswith(MSG_NEW_AC3):
+		elif line.startswith((MSG_NEW_MP2, MSG_NEW_AC3)):
 			try:
 				self.currentPID = str(int(line.split(': PID 0x', 1)[1].split(' ', 1)[0], 16))
 			except ValueError:

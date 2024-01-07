@@ -1,7 +1,5 @@
 from sys import maxsize
 
-from boxbranding import getBoxType, getDisplayType
-
 from enigma import eDBoxLCD, eTimer, eActionMap
 
 from Components.config import config, ConfigSubsection, ConfigSelection, ConfigSlider, ConfigYesNo, ConfigNothing
@@ -179,7 +177,7 @@ def standbyCounterChanged(dummy):
 def InitLcd():
 	if SystemInfo["HasNoDisplay"]:
 		detected = False
-	elif getBoxType() in ('gbtrio4k',):
+	elif SystemInfo["boxtype"] in ('gbtrio4k',):
 		detected = True
 	else:
 		detected = eDBoxLCD.getInstance().detected()
@@ -411,14 +409,14 @@ def InitLcd():
 			if "live_enable" in SystemInfo["LcdLiveTV"]:
 				config.misc.standbyCounter.addNotifier(standbyCounterChangedLCDLiveTV, initial_call=False)
 
-		if SystemInfo["LCDMiniTV"] and getBoxType() not in ('gbquad4k', 'gbue4k'):
+		if SystemInfo["LCDMiniTV"] and SystemInfo["boxtype"] not in ('gbquad4k', 'gbue4k'):
 			config.lcd.minitvmode = ConfigSelection([("0", _("normal")), ("1", _("MiniTV")), ("2", _("OSD")), ("3", _("MiniTV with OSD"))], "0")
 			config.lcd.minitvmode.addNotifier(setLCDminitvmode)
 			config.lcd.minitvpipmode = ConfigSelection([("0", _("off")), ("5", _("PIP")), ("7", _("PIP with OSD"))], "0")
 			config.lcd.minitvpipmode.addNotifier(setLCDminitvpipmode)
 			config.lcd.minitvfps = ConfigSlider(default=30, limits=(0, 30))
 			config.lcd.minitvfps.addNotifier(setLCDminitvfps)
-		elif can_lcdmodechecking and getBoxType() in ('gbquad4k', 'gbue4k'):
+		elif can_lcdmodechecking and SystemInfo["boxtype"] in ('gbquad4k', 'gbue4k'):
 			#  (0:normal, 1:video0, 2:fb, 3:vide0+fb, 4:video1, 5:vide0+video1, 6:video1+fb, 7:video0+video1+fb)
 			config.lcd.minitvmode = ConfigSelection(default="0", choices=[
 				("0", _("normal")),
@@ -442,20 +440,20 @@ def InitLcd():
 			config.lcd.minitvpipmode = ConfigNothing()
 			config.lcd.minitvfps = ConfigNothing()
 
-		if SystemInfo["VFD_scroll_repeats"] and getDisplayType() not in ('7segment'):
+		if SystemInfo["VFD_scroll_repeats"] and SystemInfo["displaytype"] not in ('7segment'):
 			def scroll_repeats(el):
 				open(SystemInfo["VFD_scroll_repeats"], "w").write(el.value)
 			choicelist = [("0", _("None")), ("1", _("1X")), ("2", _("2X")), ("3", _("3X")), ("4", _("4X")), ("500", _("Continues"))]
 			config.usage.vfd_scroll_repeats = ConfigSelection(default="3", choices=choicelist)
 			config.usage.vfd_scroll_repeats.addNotifier(scroll_repeats, immediate_feedback=False)
 
-		if SystemInfo["VFD_scroll_delay"] and getDisplayType() not in ('7segment'):
+		if SystemInfo["VFD_scroll_delay"] and SystemInfo["displaytype"] not in ('7segment'):
 			def scroll_delay(el):
 				open(SystemInfo["VFD_scroll_delay"], "w").write(str(el.value))
 			config.usage.vfd_scroll_delay = ConfigSlider(default=150, increment=10, limits=(0, 500))
 			config.usage.vfd_scroll_delay.addNotifier(scroll_delay, immediate_feedback=False)
 
-		if SystemInfo["VFD_initial_scroll_delay"] and getDisplayType() not in ('7segment'):
+		if SystemInfo["VFD_initial_scroll_delay"] and SystemInfo["displaytype"] not in ('7segment'):
 			def initial_scroll_delay(el):
 				open(SystemInfo["VFD_initial_scroll_delay"], "w").write(el.value)
 			choicelist = [
@@ -466,7 +464,7 @@ def InitLcd():
 			config.usage.vfd_initial_scroll_delay = ConfigSelection(default="1000", choices=choicelist)
 			config.usage.vfd_initial_scroll_delay.addNotifier(initial_scroll_delay, immediate_feedback=False)
 
-		if SystemInfo["VFD_final_scroll_delay"] and getDisplayType() not in ('7segment'):
+		if SystemInfo["VFD_final_scroll_delay"] and SystemInfo["displaytype"] not in ('7segment'):
 			def final_scroll_delay(el):
 				open(SystemInfo["VFD_final_scroll_delay"], "w").write(el.value)
 			choicelist = [

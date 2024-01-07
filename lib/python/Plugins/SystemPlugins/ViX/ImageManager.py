@@ -3,7 +3,6 @@ from urllib.request import urlopen
 import json
 import tempfile
 
-from boxbranding import getBoxType, getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild, getImageFolder, getImageFileSystem, getBrandOEM, getMachineBrand, getMachineName, getMachineBuild, getMachineMake, getMachineMtdRoot, getMachineRootFile, getMachineMtdKernel, getMachineKernelFile, getMachineMKUBIFS, getMachineUBINIZE
 from enigma import eTimer, fbClass
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, rmdir, sep as ossep, statvfs, chmod, walk
 from shutil import copy, copyfile, move, rmtree
@@ -57,12 +56,12 @@ def __onPartitionChange(*args, **kwargs):
 	config.imagemanager.backuplocation.setChoices(choices=choices, default=getMountDefault(choices))
 
 
-defaultprefix = getImageDistro()
+defaultprefix = SystemInfo["distro"]
 config.imagemanager = ConfigSubsection()
 config.imagemanager.autosettingsbackup = ConfigYesNo(default=True)
 choices = getMountChoices()
 config.imagemanager.backuplocation = ConfigSelection(choices=choices, default=getMountDefault(choices))
-config.imagemanager.extensive_location_search = ConfigYesNo(default=True)
+config.imagemanager.extensive_location_search = ConfigYesNo(default=False)
 harddiskmanager.on_partition_list_change.append(__onPartitionChange)  # to update backuplocation choices on mountpoint change
 config.imagemanager.backupretry = ConfigNumber(default=30)
 config.imagemanager.backupretrycount = NoSave(ConfigNumber(default=0))
@@ -102,7 +101,7 @@ if path.exists(config.imagemanager.backuplocation.value + "imagebackups/imageres
 		rmtree(config.imagemanager.backuplocation.value + "imagebackups/imagerestore")
 	except Exception:
 		pass
-TMPDIR = config.imagemanager.backuplocation.value + "imagebackups/" + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-mount"
+TMPDIR = config.imagemanager.backuplocation.value + "imagebackups/" + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-mount"
 if path.exists(TMPDIR + "/root") and path.ismount(TMPDIR + "/root"):
 	try:
 		system("umount " + TMPDIR + "/root")
@@ -329,9 +328,9 @@ class VIXImageManager(Screen):
 			try:
 				if not path.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0o755)
-				if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup"):
-					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
-					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
+				if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-swapfile_backup"):
+					system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-swapfile_backup")
+					remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-swapfile_backup")
 				self.refreshList()
 			except Exception:
 				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
@@ -427,7 +426,7 @@ class VIXImageManager(Screen):
 		def checkMachineNameInFilename(filename):
 			return model in filename or "-" + device_name + "-" in filename
 
-		model = getMachineMake()
+		model = SystemInfo["machinebuild"]
 		device_name = HardwareInfo().get_device_name()
 		imagesFound = []
 		if config.imagemanager.extensive_location_search.value:
@@ -503,9 +502,9 @@ class VIXImageManager(Screen):
 	def keyRestore1(self):
 		self.HasSDmmc = False
 		self.multibootslot = 1
-		self.MTDKERNEL = getMachineMtdKernel()
-		self.MTDROOTFS = getMachineMtdRoot()
-		if getMachineMake() == "et8500" and path.exists("/proc/mtd"):
+		self.MTDKERNEL = SystemInfo["mtdkernel"]
+		self.MTDROOTFS = SystemInfo["mtdrootfs"]
+		if SystemInfo["machinebuild"] == "et8500" and path.exists("/proc/mtd"):
 			self.dualboot = self.dualBoot()
 		recordings = self.session.nav.getRecordings()
 		if not recordings:
@@ -540,7 +539,7 @@ class VIXImageManager(Screen):
 				else:
 					self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"].split("/")[2]
 			if SystemInfo["HasHiSi"] and SystemInfo["MultiBootSlot"] > 4 and self.multibootslot < 4:
-				self.session.open(MessageBox, _("ImageManager - %s - cannot flash eMMC slot from sd card slot.") % getBoxType(), MessageBox.TYPE_INFO, timeout=10)
+				self.session.open(MessageBox, _("ImageManager - %s - cannot flash eMMC slot from sd card slot.") % SystemInfo["boxtype"], MessageBox.TYPE_INFO, timeout=10)
 				return
 			if self.sel:
 				if SystemInfo["MultiBootSlot"] != 0 and config.imagemanager.autosettingsbackup.value:
@@ -568,12 +567,12 @@ class VIXImageManager(Screen):
 	def keyRestore4(self, result, retval, extra_args=None):
 		if retval == 0:
 			self.session.openWithCallback(self.restore_infobox.close, MessageBox, _("Flash image unzip successful."), MessageBox.TYPE_INFO, timeout=4)
-			if getMachineMake() == "et8500" and self.dualboot:
+			if SystemInfo["machinebuild"] == "et8500" and self.dualboot:
 				message = _("ET8500 Multiboot: Yes to restore OS1 No to restore OS2:\n ") + self.sel[1]
 				ybox = self.session.openWithCallback(self.keyRestore5_ET8500, MessageBox, message)
 				ybox.setTitle(_("ET8500 Image Restore"))
 			else:
-				MAINDEST = "%s/%s" % (self.TEMPDESTROOT, getImageFolder())
+				MAINDEST = "%s/%s" % (self.TEMPDESTROOT, SystemInfo["imagedir"])
 				if pathExists("%s/SDAbackup" % MAINDEST) and self.multibootslot != 1:
 					self.session.open(MessageBox, _("Multiboot only able to restore this backup to mmc slot1"), MessageBox.TYPE_INFO, timeout=20)
 					print("[ImageManager] SF8008 mmc restore to SDcard failed:\n", end=' ')
@@ -592,14 +591,14 @@ class VIXImageManager(Screen):
 			self.keyRestore6(1)
 
 	def keyRestore6(self, ret):
-		MAINDEST = "%s/%s" % (self.TEMPDESTROOT, getImageFolder())
+		MAINDEST = "%s/%s" % (self.TEMPDESTROOT, SystemInfo["imagedir"])
 		print("[ImageManager] MAINDEST=%s" % MAINDEST)
 		if ret == 0:
 			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST							# normal non multiboot receiver
 			if SystemInfo["canMultiBoot"]:
 				if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
-					kz0 = getMachineMtdKernel()
-					rz0 = getMachineMtdRoot()
+					kz0 = SystemInfo["mtdkernel"]
+					rz0 = SystemInfo["mtdrootfs"]
 					CMD = "/usr/bin/ofgwrite -k%s -r%s '%s'" % (kz0, rz0, MAINDEST)  # slot0 treat as kernel/root only multiboot receiver
 				elif SystemInfo["HasHiSi"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:  # sf8008 type receiver using SD card in multiboot
 					CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
@@ -608,7 +607,7 @@ class VIXImageManager(Screen):
 						copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
 				elif SystemInfo["HasKexecMultiboot"]:
 					if SystemInfo["HasKexecUSB"] and "mmcblk" not in self.MTDROOTFS:
-						CMD = "/usr/bin/ofgwrite -r%s -kzImage -s'%s/linuxrootfs' -m%s '%s'" % (self.MTDROOTFS, getBoxType()[2:], self.multibootslot, MAINDEST)
+						CMD = "/usr/bin/ofgwrite -r%s -kzImage -s'%s/linuxrootfs' -m%s '%s'" % (self.MTDROOTFS, SystemInfo["boxtype"][2:], self.multibootslot, MAINDEST)
 					else:
 						CMD = "/usr/bin/ofgwrite -r%s -kzImage -m%s '%s'" % (self.MTDROOTFS, self.multibootslot, MAINDEST)
 					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
@@ -691,13 +690,13 @@ class VIXImageManager(Screen):
 				installedHDD = True
 				break
 		if installedHDD and pathExists("/media/hdd"):
-			if not pathExists("/media/hdd/%s" % getBoxType()):
-				mkdir("/media/hdd/%s" % getBoxType())
+			if not pathExists("/media/hdd/%s" % SystemInfo["boxtype"]):
+				mkdir("/media/hdd/%s" % SystemInfo["boxtype"])
 			for slotnum in range(1, 4):
 				if pathExists("/linuxrootfs%s" % slotnum):
-					if pathExists("/media/hdd/%s/linuxrootfs%s/" % (getBoxType(), slotnum)):
-						rmtree("/media/hdd/%s/linuxrootfs%s" % (getBoxType(), slotnum), ignore_errors=True)
-					Console().ePopen("cp -R /linuxrootfs%s . /media/hdd/%s/" % (slotnum, getBoxType()))
+					if pathExists("/media/hdd/%s/linuxrootfs%s/" % (SystemInfo["boxtype"], slotnum)):
+						rmtree("/media/hdd/%s/linuxrootfs%s" % (SystemInfo["boxtype"], slotnum), ignore_errors=True)
+					Console().ePopen("cp -R /linuxrootfs%s . /media/hdd/%s/" % (slotnum, SystemInfo["boxtype"]))
 		if not installedHDD:
 			self.session.open(MessageBox, _("ImageManager - no HDD unable to backup Vu Multiboot eMMC slots"), MessageBox.TYPE_INFO, timeout=5)
 		self.multibootslot = 0												# set slot0 to be flashed
@@ -817,7 +816,7 @@ class AutoImageManagerTimer:
 			from Screens.Standby import inStandby
 
 			if not inStandby and config.imagemanager.query.value:
-				message = _("Your %s %s is about to create a full image backup, this can take about 6 minutes to complete.\nDo you want to allow this?") % (getMachineBrand(), getMachineName())
+				message = _("Your %s %s is about to create a full image backup, this can take about 6 minutes to complete.\nDo you want to allow this?") % (SystemInfo["displaybrand"], SystemInfo["machinename"])
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle("Scheduled backup.")
 			else:
@@ -903,28 +902,28 @@ class ImageBackup(Screen):
 		self.BackupDirectory = config.imagemanager.backuplocation.value + "imagebackups/"
 		print("[ImageManager] Directory: " + self.BackupDirectory)
 		self.BackupDate = strftime("%Y%m%d_%H%M%S", localtime())
-		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-temp"
-		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-mount"
+		self.WORKDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-temp"
+		self.TMPDIR = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-mount"
 		backupType = "-"
 		if updatebackup:
 			backupType = "-SoftwareUpdate-"
 		imageSubBuild = ""
-		if getImageType() != "release":
-			imageSubBuild = ".%s" % getImageDevBuild()
-		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + backupType + getImageVersion() + "." + getImageBuild() + imageSubBuild + "-" + self.BackupDate
-		self.KERNELFILE = getMachineKernelFile()
-		self.ROOTFSFILE = getMachineRootFile()
-		self.MAINDEST = self.MAINDESTROOT + "/" + getImageFolder() + "/"
+		if SystemInfo["imagetype"] != "release":
+			imageSubBuild = ".%s" % SystemInfo["imagedevbuild"]
+		self.MAINDESTROOT = self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + backupType + SystemInfo["imageversion"] + "." + SystemInfo["imagebuild"] + imageSubBuild + "-" + self.BackupDate
+		self.KERNELFILE = SystemInfo["kernelfile"]
+		self.ROOTFSFILE = SystemInfo["rootfile"]
+		self.MAINDEST = self.MAINDESTROOT + "/" + SystemInfo["imagedir"] + "/"
 		self.MAINDEST2 = self.MAINDESTROOT + "/"
-		self.MODEL = getMachineMake()
-		self.MCBUILD = getMachineBuild()
-		self.IMAGEDISTRO = getImageDistro()
-		self.DISTROVERSION = getImageVersion()
-		self.DISTROBUILD = getImageBuild()
-		self.KERNELBIN = getMachineKernelFile()
-		self.UBINIZE_ARGS = getMachineUBINIZE()
-		self.MKUBIFS_ARGS = getMachineMKUBIFS()
-		self.ROOTFSTYPE = getImageFileSystem().strip()
+		self.MODEL = SystemInfo["machinebuild"]
+		self.MCBUILD = SystemInfo["model"]
+		self.IMAGEDISTRO = SystemInfo["distro"]
+		self.DISTROVERSION = SystemInfo["imageversion"]
+		self.DISTROBUILD = SystemInfo["imagebuild"]
+		self.KERNELBIN = SystemInfo["kernelfile"]
+		self.UBINIZE_ARGS = SystemInfo["ubinize"]
+		self.MKUBIFS_ARGS = SystemInfo["mkubifs"]
+		self.ROOTFSTYPE = SystemInfo["imagefs"].strip()
 		self.ROOTFSSUBDIR = "none"
 		self.VuSlot0 = ""
 		self.EMMCIMG = "none"
@@ -938,8 +937,8 @@ class ImageBackup(Screen):
 			slot = SystemInfo["MultiBootSlot"]
 			print("[ImageManager] slot: ", slot)
 			if SystemInfo["HasKexecMultiboot"]:
-				self.MTDKERNEL = getMachineMtdKernel() if slot == 0 else SystemInfo["canMultiBoot"][slot]["kernel"]
-				self.MTDROOTFS = getMachineMtdRoot() if slot == 0 else SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
+				self.MTDKERNEL = SystemInfo["mtdkernel"] if slot == 0 else SystemInfo["canMultiBoot"][slot]["kernel"]
+				self.MTDROOTFS = SystemInfo["mtdrootfs"] if slot == 0 else SystemInfo["canMultiBoot"][slot]["root"].split("/")[2]
 				self.VuSlot0 = "-VuSlot0" if slot == 0 else ""
 			else:
 				self.MTDKERNEL = SystemInfo["canMultiBoot"][slot]["kernel"].split("/")[2]
@@ -950,9 +949,9 @@ class ImageBackup(Screen):
 			if SystemInfo["HasRootSubdir"] and slot != 0:
 				self.ROOTFSSUBDIR = SystemInfo["canMultiBoot"][slot]["rootsubdir"]
 		else:
-			self.MTDKERNEL = getMachineMtdKernel()
-			self.MTDROOTFS = getMachineMtdRoot()
-		if getMachineBuild() in ("gb7252", "gbx34k"):
+			self.MTDKERNEL = SystemInfo["mtdkernel"]
+			self.MTDROOTFS = SystemInfo["mtdrootfs"]
+		if SystemInfo["model"] in ("gb7252", "gbx34k"):
 			self.GB4Kbin = "boot.bin"
 			self.GB4Krescue = "rescue.bin"
 		if "sda" in self.MTDKERNEL:
@@ -1056,9 +1055,9 @@ class ImageBackup(Screen):
 		try:
 			if not path.exists(self.BackupDirectory):
 				mkdir(self.BackupDirectory, 0o755)
-			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup"):
-				system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
-				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
+			if path.exists(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-swapfile_backup"):
+				system("swapoff " + self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-swapfile_backup")
+				remove(self.BackupDirectory + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-swapfile_backup")
 		except Exception as e:
 			print(str(e))
 			print("[ImageManager] Device: " + config.imagemanager.backuplocation.value + ", i don't seem to have write access to this device.")
@@ -1117,15 +1116,15 @@ class ImageBackup(Screen):
 			self.SwapCreated = True
 
 	def MemCheck2(self):
-		self.ConsoleB.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
+		self.ConsoleB.ePopen("dd if=/dev/zero of=" + self.swapdevice + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-swapfile_backup bs=1024 count=61440", self.MemCheck3)
 
 	def MemCheck3(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.ConsoleB.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup", self.MemCheck4)
+			self.ConsoleB.ePopen("mkswap " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-swapfile_backup", self.MemCheck4)
 
 	def MemCheck4(self, result, retval, extra_args=None):
 		if retval == 0:
-			self.ConsoleB.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup", self.MemCheck5)
+			self.ConsoleB.ePopen("swapon " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-swapfile_backup", self.MemCheck5)
 
 	def MemCheck5(self, result, retval, extra_args=None):
 		self.SwapCreated = True
@@ -1172,7 +1171,7 @@ class ImageBackup(Screen):
 		if "jffs2" in self.ROOTFSTYPE.split():
 			print("[ImageManager] Stage2: JFFS2 Detected.")
 			self.ROOTFSTYPE = "jffs2"
-			if getMachineBuild() == "gb800solo":
+			if SystemInfo["model"] == "gb800solo":
 				JFFS2OPTIONS = " --disable-compressor=lzo -e131072 -l -p125829120"
 			else:
 				JFFS2OPTIONS = " --disable-compressor=lzo --eraseblock=0x20000 -n -l"
@@ -1191,7 +1190,7 @@ class ImageBackup(Screen):
 				output.write("vol_flags=autoresize\n")
 
 			self.commands.append("mount -o bind,ro / %s/root" % self.TMPDIR)
-			if getMachineBuild() in ("h9", "i55plus"):
+			if SystemInfo["model"] in ("h9", "i55plus"):
 				with open("/proc/cmdline", "r") as z:
 					if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z.read():
 						self.ROOTFSTYPE = "tar.bz2"
@@ -1214,7 +1213,7 @@ class ImageBackup(Screen):
 					self.commands.append('echo "' + _("Create:") + " logo dump" + '"')
 					self.commands.append("dd if=/dev/mtd4 of=%s/logo.bin" % self.WORKDIR)
 			else:
-				if not getMachineBuild() in ("h8"):
+				if not SystemInfo["model"] in ("h8"):
 					self.MKUBIFS_ARGS = "-m 2048 -e 126976 -c 4096 -F"
 					self.UBINIZE_ARGS = "-m 2048 -p 128KiB"
 				self.commands.append("touch %s/root.ubi" % self.WORKDIR)
@@ -1237,7 +1236,7 @@ class ImageBackup(Screen):
 			else:
 				self.commands.append("/bin/tar -jcf %s/rootfs.tar.bz2 -C %s/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR))
 			self.commands.append("sync")
-			if getMachineBuild() in ("gb7252", "gbx34k"):
+			if SystemInfo["model"] in ("gb7252", "gbx34k"):
 				self.commands.append("dd if=/dev/mmcblk0p1 of=%s/boot.bin" % self.WORKDIR)
 				self.commands.append("dd if=/dev/mmcblk0p3 of=%s/rescue.bin" % self.WORKDIR)
 				print("[ImageManager] Stage2: Create: boot dump boot.bin:", self.MODEL)
@@ -1436,7 +1435,7 @@ class ImageBackup(Screen):
 		else:
 			move("%s/vmlinux.gz" % self.WORKDIR, "%s/%s" % (self.MAINDEST, self.KERNELFILE))
 		self.h9root = False
-		if getMachineBuild() in ("h9", "i55plus"):
+		if SystemInfo["model"] in ("h9", "i55plus"):
 			system("mv %s/fastboot.bin %s/fastboot.bin" % (self.WORKDIR, self.MAINDEST))
 			system("mv %s/bootargs.bin %s/bootargs.bin" % (self.WORKDIR, self.MAINDEST))
 			system("mv %s/pq_param.bin %s/pq_param.bin" % (self.WORKDIR, self.MAINDEST))
@@ -1454,18 +1453,18 @@ class ImageBackup(Screen):
 		else:
 			move("%s/rootfs.%s" % (self.WORKDIR, self.ROOTFSTYPE), "%s/%s" % (self.MAINDEST, self.ROOTFSFILE))
 
-		if getMachineBuild() in ("gb7252", "gbx34k"):
+		if SystemInfo["model"] in ("gb7252", "gbx34k"):
 			move("%s/%s" % (self.WORKDIR, self.GB4Kbin), "%s/%s" % (self.MAINDEST, self.GB4Kbin))
 			move("%s/%s" % (self.WORKDIR, self.GB4Krescue), "%s/%s" % (self.MAINDEST, self.GB4Krescue))
 			system("cp -f /usr/share/gpt.bin %s/gpt.bin" % self.MAINDEST)
 			print("[ImageManager] Stage5: Create: gpt.bin:", self.MODEL)
 
 		with open(self.MAINDEST + "/imageversion", "w") as fileout:
-			line = defaultprefix + "-" + getMachineMake() + "-" + getImageType() + "-backup-" + getImageVersion() + "." + getImageBuild() + "-" + self.BackupDate
+			line = defaultprefix + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-backup-" + SystemInfo["imageversion"] + "." + SystemInfo["imagebuild"] + "-" + self.BackupDate
 			fileout.write(line)
 
-		if getBrandOEM() == "vuplus":
-			if getMachineBuild() == "vuzero":
+		if SystemInfo["brand"] == "vuplus":
+			if SystemInfo["model"] == "vuzero":
 				with open(self.MAINDEST + "/force.update", "w") as fileout:
 					line = "This file forces the update."
 					fileout.write(line)
@@ -1474,8 +1473,8 @@ class ImageBackup(Screen):
 				with open(self.MAINDEST + "/reboot.update", "w") as fileout:
 					line = "This file forces a reboot after the update."
 					fileout.write(line)
-		elif getBrandOEM() in ("xtrend", "gigablue", "octagon", "odin", "xp", "ini"):
-			if getBrandOEM() in ("xtrend", "octagon", "odin", "ini"):
+		elif SystemInfo["brand"] in ("xtrend", "gigablue", "octagon", "odin", "xp", "ini"):
+			if SystemInfo["brand"] in ("xtrend", "octagon", "odin", "ini"):
 				with open(self.MAINDEST + "/noforce", "w") as fileout:
 					line = "rename this file to 'force' to force an update without confirmation"
 					fileout.write(line)
@@ -1497,12 +1496,12 @@ class ImageBackup(Screen):
 				fileout.write(line1)
 
 		print("[ImageManager] Stage5: Removing Swap.")
-		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup"):
-			system("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
-			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-" + getImageType() + "-swapfile_backup")
+		if path.exists(self.swapdevice + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-swapfile_backup"):
+			system("swapoff " + self.swapdevice + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-swapfile_backup")
+			remove(self.swapdevice + config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-" + SystemInfo["imagetype"] + "-swapfile_backup")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
-		if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (getMachineBuild() in ("h9", "i55plus") and self.h9root):
+		if (path.exists(self.MAINDEST + "/" + self.ROOTFSFILE) and path.exists(self.MAINDEST + "/" + self.KERNELFILE)) or (SystemInfo["model"] in ("h9", "i55plus") and self.h9root):
 			for root, dirs, files in walk(self.MAINDEST):
 				for momo in dirs:
 					chmod(path.join(root, momo), 0o644)
@@ -1537,7 +1536,7 @@ class ImageBackup(Screen):
 		try:
 			if config.imagemanager.number_to_keep.value > 0 and path.exists(self.BackupDirectory):  # !?!
 				images = listdir(self.BackupDirectory)
-				patt = config.imagemanager.folderprefix.value + "-" + getMachineMake() + "-*.zip"
+				patt = config.imagemanager.folderprefix.value + "-" + SystemInfo["machinebuild"] + "-*.zip"
 				emlist = []
 				for fil in images:
 					if fnmatch.fnmatchcase(fil, patt):
@@ -1595,7 +1594,7 @@ class ImageManagerDownload(Screen):
 		self.setTitle(_("%s downloads") % imagefeed[DISTRO])
 		self.imagefeed = imagefeed
 		self.BackupDirectory = BackupDirectory
-		self["lab1"] = Label(_("Select an image to download for %s:") % getMachineMake())
+		self["lab1"] = Label(_("Select an image to download for %s:") % SystemInfo["machinebuild"])
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button(_("Download"))
 		self["ImageDown"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "KeyboardInputActions", "MenuActions"], {
@@ -1634,12 +1633,12 @@ class ImageManagerDownload(Screen):
 				self.pausetimer.callback.append(self.showError)
 				self.pausetimer.start(50, True)
 				return
-		boxtype = getMachineMake()
+		boxtype = SystemInfo["machinebuild"]
 		if self.imagefeed[ACTION] == "HardwareInfo":
 			boxtype = HardwareInfo().get_device_name()
 			print("[ImageManager1] boxtype:%s" % (boxtype))
 			if "dm800" in boxtype:
-				boxtype = getMachineMake()
+				boxtype = SystemInfo["machinebuild"]
 
 		if not self.imagesList:
 			# Legacy: self.imagefeed[URL] didn't contain "%s" where to insert the boxname.
@@ -1789,7 +1788,7 @@ class ImageManagerSetup(Setup):
 
 	def check_URL_format(self, configElement):
 		if configElement.value:
-			configElement.value = "%s%s" % (not (configElement.value.startswith("http://") or configElement.value.startswith("https://") or configElement.value.startswith("ftp://")) and "http://" or "", configElement.value)
+			configElement.value = "%s%s" % (not configElement.value.startswith(("http://", "https://", "ftp://")) and "http://" or "", configElement.value)
 			configElement.value = configElement.value.strip("/")  # remove any trailing slash
 		else:
 			configElement.value = configElement.default

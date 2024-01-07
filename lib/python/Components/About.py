@@ -5,13 +5,12 @@ import socket
 import fcntl
 import struct
 
-from boxbranding import getDriverDate, getImageVersion, getMachineBuild, getBoxType
-
 from enigma import getEnigmaVersionString
 
 
 def getVersionString():
-	return getImageVersion()
+	from Components.SystemInfo import SystemInfo
+	return SystemInfo["imageversion"]
 
 
 def getFlashDateString():
@@ -23,7 +22,8 @@ def getFlashDateString():
 
 
 def driversDate():
-	return _formatDate(getDriverDate())
+	from Components.SystemInfo import SystemInfo
+	return _formatDate(SystemInfo["driversdate"])
 
 
 def getLastUpdate():
@@ -84,7 +84,8 @@ def getCPUSpeedMHzInt():
 		print("[About] getCPUSpeedMHzInt, /proc/cpuinfo not available")
 
 	if cpu_speed == 0:
-		if getMachineBuild() in ("h7", "hd51", "sf4008", "osmio4k", "osmio4kplus", "osmini4k"):
+		from Components.SystemInfo import MODEL
+		if MODEL in ("h7", "hd51", "sf4008", "osmio4k", "osmio4kplus", "osmini4k"):
 			try:
 				import binascii
 				with open("/sys/firmware/devicetree/base/cpus/cpu@0/clock-frequency", "rb") as f:
@@ -113,7 +114,8 @@ def getCPUSpeedString():
 
 
 def getCPUArch():
-	if getBoxType() in ("osmio4k", ):
+	from Components.SystemInfo import MODEL
+	if MODEL.startswith("osmio4k"):
 		return "ARM V7"
 	if "ARM" in getCPUString():
 		return getCPUString()
@@ -122,7 +124,7 @@ def getCPUArch():
 
 def getCPUString():
 	try:
-		return [x.split(": ")[1].split(" ")[0] for x in open("/proc/cpuinfo").readlines() if (x.startswith("system type") or x.startswith("model name") or x.startswith("Processor")) and len(x.split(": ")) > 1][0]
+		return [x.split(": ")[1].split(" ")[0] for x in open("/proc/cpuinfo").readlines() if x.startswith(("system type", "model name", "Processor")) and len(x.split(": ")) > 1][0]
 	except:
 		return _("unavailable")
 

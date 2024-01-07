@@ -357,7 +357,7 @@ class VIXSoftcamManager(Screen):
 					self.session.open(MessageBox, _("MGcamd can't run whilst CCcam is running."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 			elif selectedcam.lower().startswith("scam"):
 				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
-			elif not selectedcam.lower().startswith("cccam") or selectedcam.lower().startswith("oscam") or selectedcam.lower().startswith("ncam") or selectedcam.lower().startswith("mgcamd"):
+			elif not selectedcam.lower().startswith(("cccam", "oscam", "ncam", "mgcamd")):
 				self.session.open(MessageBox, _("Found non-standard softcam, trying to start, this may fail."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 				self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 
@@ -751,7 +751,7 @@ class SoftcamAutoPoller:
 						now = datetime.now()
 						output.write(now.strftime("%Y-%m-%d %H:%M") + ": " + softcamcheck + " running OK\n")
 						output.close()
-						if softcamcheck.lower().startswith("oscam") or softcamcheck.lower().startswith("ncam"):
+						if softcamcheck.lower().startswith(("oscam", "ncam")):
 							if path.exists("/tmp/status.html"):
 								remove("/tmp/status.html")
 							camconf = port = ""
@@ -888,7 +888,7 @@ class SoftcamAutoPoller:
 						now = datetime.now()
 						output.write(now.strftime("%Y-%m-%d %H:%M") + ": Couldn't find " + softcamcheck + " running, Starting " + softcamcheck + "\n")
 						output.close()
-						if softcamcheck.lower().startswith("oscam") or softcamcheck.lower().startswith("ncam"):
+						if softcamcheck.lower().startswith(("oscam", "ncam")):
 							self.Console.ePopen("ps.procps | grep softcams | grep -v grep | awk 'NR==1' | awk '{print $5}'| awk  -F'[/]' '{print $4}' > /tmp/softcamRuningCheck.tmp")
 							sleep(2)
 							file = open("/tmp/softcamRuningCheck.tmp")

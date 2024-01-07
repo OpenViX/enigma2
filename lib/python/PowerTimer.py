@@ -3,11 +3,11 @@ from bisect import insort
 from time import ctime, time
 from timer import Timer, TimerEntry
 
-from boxbranding import getMachineBrand, getMachineName
 from enigma import eActionMap, quitMainloop
 
 from Components.config import config
 from Components.Harddisk import internalHDDNotSleeping
+from Components.SystemInfo import SystemInfo
 from Components.TimerSanityCheck import TimerSanityCheck
 from Screens.MessageBox import MessageBox
 import Screens.Standby
@@ -164,7 +164,7 @@ class PowerTimerEntry(TimerEntry):
 
 			elif self.timerType == TIMERTYPE.STANDBY:
 				if not Screens.Standby.inStandby:  # not already in standby
-					Notifications.AddNotificationWithUniqueIDCallback(self.sendStandbyNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName()), timeout=180)
+					Notifications.AddNotificationWithUniqueIDCallback(self.sendStandbyNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to set your\n%s %s to standby. Do that now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), timeout=180)
 				return True
 
 			elif self.timerType == TIMERTYPE.AUTOSTANDBY:
@@ -173,7 +173,7 @@ class PowerTimerEntry(TimerEntry):
 					# retry
 					return False
 				if not Screens.Standby.inStandby:  # not already in standby
-					Notifications.AddNotificationWithUniqueIDCallback(self.sendStandbyNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName()), timeout=180)
+					Notifications.AddNotificationWithUniqueIDCallback(self.sendStandbyNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to set your\n%s %s to standby. Do that now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), timeout=180)
 					if self.autosleeprepeat == "once":
 						eActionMap.getInstance().unbindAction('', self.keyPressed)
 						return True
@@ -213,7 +213,7 @@ class PowerTimerEntry(TimerEntry):
 						quitMainloop(1)
 						return True
 					else:
-						Notifications.AddNotificationWithUniqueIDCallback(self.sendTryQuitMainloopNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to shutdown your %s %s.\nDo that now?") % (getMachineBrand(), getMachineName()), timeout=180)
+						Notifications.AddNotificationWithUniqueIDCallback(self.sendTryQuitMainloopNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to shutdown your %s %s.\nDo that now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), timeout=180)
 						if self.autosleeprepeat == "once":
 							eActionMap.getInstance().unbindAction('', self.keyPressed)
 							return True
@@ -234,7 +234,7 @@ class PowerTimerEntry(TimerEntry):
 					if Screens.Standby.inStandby:  # in standby
 						quitMainloop(1)
 					else:
-						Notifications.AddNotificationWithUniqueIDCallback(self.sendTryQuitMainloopNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to shutdown your %s %s.\nDo that now?") % (getMachineBrand(), getMachineName()), timeout=180)
+						Notifications.AddNotificationWithUniqueIDCallback(self.sendTryQuitMainloopNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to shutdown your %s %s.\nDo that now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), timeout=180)
 				return True
 
 			elif self.timerType == TIMERTYPE.REBOOT:
@@ -246,7 +246,7 @@ class PowerTimerEntry(TimerEntry):
 					if Screens.Standby.inStandby:  # in standby
 						quitMainloop(2)
 					else:
-						Notifications.AddNotificationWithUniqueIDCallback(self.sendTryToRebootNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to reboot your %s %s.\nDo that now?") % (getMachineBrand(), getMachineName()), timeout=180)
+						Notifications.AddNotificationWithUniqueIDCallback(self.sendTryToRebootNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to reboot your %s %s.\nDo that now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), timeout=180)
 				return True
 
 			elif self.timerType == TIMERTYPE.RESTART:
@@ -265,7 +265,7 @@ class PowerTimerEntry(TimerEntry):
 			NavigationInstance.instance.PowerTimer.saveTimer()
 			if self.afterEvent == AFTEREVENT.STANDBY:
 				if not Screens.Standby.inStandby:  # not already in standby
-					Notifications.AddNotificationWithUniqueIDCallback(self.sendStandbyNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName()), timeout=180)
+					Notifications.AddNotificationWithUniqueIDCallback(self.sendStandbyNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to set your\n%s %s to standby. Do that now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), timeout=180)
 			elif self.afterEvent == AFTEREVENT.DEEPSTANDBY:
 				if NavigationInstance.instance.RecordTimer.isRecording() or abs(NavigationInstance.instance.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(NavigationInstance.instance.RecordTimer.getNextZapTime() - time()) <= 900:
 					self.do_backoff()
@@ -275,7 +275,7 @@ class PowerTimerEntry(TimerEntry):
 					if Screens.Standby.inStandby:  # in standby
 						quitMainloop(1)
 					else:
-						Notifications.AddNotificationWithUniqueIDCallback(self.sendTryQuitMainloopNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to shutdown your %s %s.\nDo that now?") % (getMachineBrand(), getMachineName()), timeout=180)
+						Notifications.AddNotificationWithUniqueIDCallback(self.sendTryQuitMainloopNotification, "PT_StateChange", MessageBox, _("A finished powertimer wants to shutdown your %s %s.\nDo that now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), timeout=180)
 			return True
 
 	def setAutoincreaseEnd(self, entry=None):

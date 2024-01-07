@@ -206,7 +206,7 @@ class DVDformatTask(Task):
 		if line.startswith("- media is already formatted"):
 			self.error = self.ERROR_ALREADYFORMATTED
 			self.retryargs = ["-force"]
-		if line.startswith("- media is not blank") or line.startswith("  -format=full  to perform full (lengthy) reformat;"):
+		if line.startswith(("- media is not blank", "  -format=full  to perform full (lengthy) reformat;")):
 			self.error = self.ERROR_ALREADYFORMATTED
 			self.retryargs = ["-blank"]
 		if line.startswith(":-( mounted media doesn't appear to be"):

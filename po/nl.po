@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-03 20:33+0000\n"
-"PO-Revision-Date: 2023-12-05 16:50+0100\n"
+"POT-Creation-Date: 2023-12-14 12:09+0000\n"
+"PO-Revision-Date: 2023-12-15 11:16+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -10174,6 +10174,9 @@ msgstr "Speel de gemarkeerde opname af"
 msgid "Play the selected recording"
 msgstr "Speel de geselecteerde opname af"
 
+msgid "Playback"
+msgstr "Afspelen"
+
 msgid ""
 "Playback information missing\n"
 "Playback aborted to avoid crash\n"
@@ -10290,9 +10293,6 @@ msgstr "Selecteer een subkanaal voor opname..."
 
 msgid "Please select a subservice..."
 msgstr "Selecteer een subkanaal..."
-
-msgid "Please select a valid directory."
-msgstr "Kies een geldige map."
 
 msgid "Please select device to use as SWAP file location."
 msgstr "Kies het medium voor het SWAP-bestand."
@@ -11132,6 +11132,9 @@ msgstr "Ontvanger of driver ondersteunt geen FCC"
 msgid "Record"
 msgstr "Opname"
 
+msgid "Record icon match"
+msgstr "Opname-icoon overeenkomst"
+
 msgid "Record next"
 msgstr "Neem volgende op"
 
@@ -11148,9 +11151,6 @@ msgstr "Opnametijd beperkt vanwege conflicterende timer %s"
 msgid "Recording"
 msgstr "Opname"
 
-msgid "Recording & Playback"
-msgstr "Opname & afspelen"
-
 msgid "Recording 4097, 5001 and 5002 streams not possible with external players, so convert recordings to servicetype 1."
 msgstr "Opname van 4097, 5001 en 5002 streams is niet mogelijk met externe spelers; converteer deze naar servicetype 1."
 
@@ -11160,9 +11160,6 @@ msgid ""
 msgstr ""
 "Opname van IPTV met systeemapp is ingeschakeld, timer afgelopen!\n"
 "Controleer deze!"
-
-msgid "Recording and playback"
-msgstr "Opname en afspelen"
 
 msgid "Recording and playback settings"
 msgstr "Opname-en afspeelinstellingen"
@@ -12351,6 +12348,9 @@ msgstr "Kies de standaard actie voor de INFO-toets"
 msgid "Select destination for:"
 msgstr "Selecteer bestemming voor:"
 
+msgid "Select display of record icon based on 'Sref only' or 'Sref + Stream url' where applicable."
+msgstr "Kies tussen tonen van opname-icoon op basis van 'alleen Sref' of 'Sref + stream url'."
+
 msgid "Select extra packages folder"
 msgstr "Kies de folder met extra plugins"
 
@@ -13331,8 +13331,8 @@ msgstr "Toon de pluginbrowser"
 msgid "Show the radio player"
 msgstr "Radioweergave modus"
 
-msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
-msgstr "Toon de kanaalinformatie in twee regels in het kanaalselectiescherm. U kunt kiezen tussen de huidige programmabeschrijving onder de kanaalnaam of de huidige programmabeschrijving naast de kanaalnaam en het volgende programma de tweede regel."
+msgid "Show the service information on two lines in the channel selection screen."
+msgstr "Toon de kanaalinformatie op twee regels in de kanaallijst."
 
 msgid "Show the tv player"
 msgstr "TV-weergave modus"
@@ -13653,6 +13653,12 @@ msgstr "Samenleving & cultuur"
 msgid "Softcam Actions"
 msgstr "Softcam acties"
 
+msgid "Softcam Management"
+msgstr "Softcambeheer"
+
+msgid "Softcam Manager"
+msgstr "Softcammanager"
+
 msgid "Softcam Script"
 msgstr "Softcam script"
 
@@ -13673,9 +13679,6 @@ msgstr "Softcam stopt..."
 
 msgid "SoftcamCheck"
 msgstr "Softcamcontrole"
-
-msgid "SoftcamManager"
-msgstr "Softcammanager"
 
 msgid "SoftcamScript enable/disable cam restart"
 msgstr "SoftcamScript schakelt cam-herstart in/uit"
@@ -13865,6 +13868,12 @@ msgstr "sportmagazine"
 
 msgid "Sprache"
 msgstr "Taal"
+
+msgid "Sref + stream url"
+msgstr "Sref + stream url"
+
+msgid "Sref only"
+msgstr "Alleen Sref"
 
 msgid "Sri Lanka"
 msgstr "Sri Lanka"
@@ -19073,6 +19082,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Perform a settings backup, making a backup before updating is strongly advised."
 #~ msgstr "Maak een settingsback-up; het maken van een back-up alvorens te updaten wordt sterk geadviseerd."
 
+#~ msgid "Please select a valid directory."
+#~ msgstr "Kies een geldige map."
+
 #~ msgid "Please select medium to use as backup location"
 #~ msgstr "Selecteer het te gebruiken medium als back-up lokatie"
 
@@ -19121,6 +19133,12 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Query before image backup starts"
 #~ msgstr "Vraag alvorens image back-up te starten"
+
+#~ msgid "Recording & Playback"
+#~ msgstr "Opname & afspelen"
+
+#~ msgid "Recording and playback"
+#~ msgstr "Opname en afspelen"
 
 #~ msgid "Reload"
 #~ msgstr "Herlaad"
@@ -19205,6 +19223,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Show /tmp/ecm.info"
 #~ msgstr "Toon /tmp/ecm.info"
+
+#~ msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
+#~ msgstr "Toon de kanaalinformatie in twee regels in het kanaalselectiescherm. U kunt kiezen tussen de huidige programmabeschrijving onder de kanaalnaam of de huidige programmabeschrijving naast de kanaalnaam en het volgende programma de tweede regel."
 
 #~ msgid "Skin Setup"
 #~ msgstr "Skin instellingen"

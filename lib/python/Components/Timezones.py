@@ -121,7 +121,7 @@ class Timezones:
 		}
 		for (root, dirs, files) in walk(TIMEZONE_DATA):
 			base = root[len(TIMEZONE_DATA):]
-			if base.startswith("posix") or base.startswith("right"):  # Skip these alternate copies of the time zone data if they exist.
+			if base.startswith(("posix", "right")):  # Skip these alternate copies of the time zone data if they exist.
 				continue
 			if base == "":
 				base = "Generic"

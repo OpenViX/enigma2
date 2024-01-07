@@ -110,12 +110,12 @@
 		<item level="1" text="Enable panic button" description="When enabled, pressing '0' will zap you to the first channel in your first bouquet and delete your zap-history.">config.usage.panicbutton</item>
 		<item level="1" text="Hide number markers" description="When enabled, number markers will be hidden.">config.usage.hide_number_markers</item>
 		<item level="1" text="Jump first press in channel selection" description="This option allows you to choose what the first button press jumps to in channel list screen, (so pressing '2' jumps to 'A' or '2' first), when 'Quick Actions' preset actions are perfomed. ">config.usage.show_channel_jump_in_servicelist</item>
-		<item level="0" text="Show event-progress in channel selection" description="Set the type of the progress indication in the channel selection screen.">config.usage.show_event_progress_in_servicelist</item>
-		<item level="0" text="Show channel numbers in channel selection" description="When enabled, show channel numbers in the channel selection screen.">config.usage.show_channel_numbers_in_servicelist</item>
 		<item level="2" text="Show two lines per entry" description="Show the service information on two lines in the channel selection screen.">config.usage.servicelist_twolines</item>
-		<item level="1" text="Show crypto icons" description="Configure if and how crypto icons will be shown in the channel selection list.">config.usage.crypto_icon_mode</item>
-		<item level="1" text="Show service type icons" description="Configure if and how service type icons will be shown.">config.usage.servicetype_icon_mode</item>
-		<item level="1" text="Show record indicator" description="Configure if and how the record indicator will be shown in the channel selection list.">config.usage.record_indicator_mode</item>
+		<item level="0" text="Show event-progress in channel selection" description="Set the type of the progress indication in the channel selection screen (right alignment only available in single line mode).">config.usage.show_event_progress_in_servicelist</item>
+		<item level="0" text="Show channel numbers in channel selection" description="When enabled, show channel numbers in the channel selection screen.">config.usage.show_channel_numbers_in_servicelist</item>
+		<item level="1" text="Show crypto icons" description="Configure if and how crypto icons will be shown in the channel selection list (left alignment only available in single line mode).">config.usage.crypto_icon_mode</item>
+		<item level="1" text="Show service type icons" description="Configure if and how service type icons will be shown (left alignment only available in single line mode).">config.usage.servicetype_icon_mode</item>
+		<item level="1" text="Show record indicator" description="Configure if and how the record indicator will be shown in the channel selection list (left alignment only available in single line mode).">config.usage.record_indicator_mode</item>
 		<item level="1" text="Show picons in service list" description="Configure if picons will be shown in the service list.">config.usage.service_icon_enable</item>
 		<item level="1" text="Show columns" conditional="config.usage.servicelist_twolines.value == '0'" description="Configure if and how wide the service name column will be shown in the channel selection list.">config.usage.servicelist_column</item>
 		<item level="1" text="Number of rows" description="This allows you to change the number of rows shown.">config.usage.serviceitems_per_page</item>
@@ -199,26 +199,37 @@
 		<item level="1" text="EPG language selection 1" description="Configure the primary EPG language.">config.autolanguage.audio_epglanguage</item>
 		<item level="1" text="EPG language selection 2" conditional="config.autolanguage.audio_epglanguage.value" description="Configure the secondary EPG language.">config.autolanguage.audio_epglanguage_alternative</item>
 	</setup>
-	<setup key="recording" title="Recording and playback">
+	<setup key="recording" title="Recording">
 		<item level="0" text="Default movie location" description="Set the default location for your recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations.">config.usage.default_path</item>
-		<item level="2" text="Timer recording location" description="Set the default location for your timers. Press OK to add new locations, LEFT/RIGHT to select from any existing locations.">config.usage.timer_path</item>
-		<item level="2" text="Instant recording location" description="Set the default location for your instant recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations.">config.usage.instantrec_path</item>
-		<item level="2" text="Recordings - convert IPTV servicetypes to  1" description="Recording 4097, 5001 and 5002 streams not possible with external players, so convert recordings to servicetype 1.">config.recording.setstreamto1</item>
+		<item level="2" text="Timer recording location" conditional="self.errorItem in (-1, 1, 2)" description="Set the default location for your timers. Press OK to add new locations, LEFT/RIGHT to select from any existing locations.">config.usage.timer_path</item>
+		<item level="2" text="Instant recording location" conditional="self.errorItem in (-1, 2)" description="Set the default location for your instant recordings. Press OK to add new locations, LEFT/RIGHT to select from any existing locations.">config.usage.instantrec_path</item>
+		<if conditional="self.errorItem == -1">
+			<item level="2" text="Recordings - convert IPTV servicetypes to  1" description="Recording 4097, 5001 and 5002 streams not possible with external players, so convert recordings to servicetype 1.">config.recording.setstreamto1</item>
 <!--		<item level="2" text="Preferred tuner for recordings" description="Configure which tuner will be preferred for recordings, when more than one tuner is available. 'Disabled' would select a tuner based on preferred tuner in customise screen. 'Auto' would choose based on E2's default rules, ignoring preferred tuner in customise screen.">config.usage.recording_frontend_priority</item>-->
-		<item level="1" text="Recordings always have priority" description="When enabled, a recording is allowed to interrupt live TV, when there are no free tuners.">config.recording.asktozap</item>
-		<item level="0" text="Margin before recording (minutes)" description="When nonzero, a recording will start earlier than the starting time indicated by the EPG.">config.recording.margin_before</item>
-		<item level="0" text="Margin after recording (minutes)" description="When nonzero, a recording will stop later than the ending time indicated by the EPG.">config.recording.margin_after</item>
-		<item level="0" text="Split event detection (minutes)" description="Detect programs split by news bulletins. Choose the maximum duration in minutes to consider as a bulletin, or 0 to disable.">config.recording.split_programme_minutes</item>
-		<item level="2" text="Show message when recording starts" description="When enabled, a popup message will be shown when a recording starts.">config.usage.show_message_when_recording_starts</item>
-		<item level="2" text="Quit Movie Player with EXIT button" description="When enabled, it is possible to leave the Movie Player with exit.">config.usage.leave_movieplayer_onExit</item>
+			<item level="1" text="Recordings always have priority" description="When enabled, a recording is allowed to interrupt live TV, when there are no free tuners.">config.recording.asktozap</item>
+			<item level="0" text="Margin before recording (minutes)" description="When nonzero, a recording will start earlier than the starting time indicated by the EPG.">config.recording.margin_before</item>
+			<item level="0" text="Margin after recording (minutes)" description="When nonzero, a recording will stop later than the ending time indicated by the EPG.">config.recording.margin_after</item>
+			<item level="0" text="Split event detection (minutes)" description="Detect programs split by news bulletins. Choose the maximum duration in minutes to consider as a bulletin, or 0 to disable.">config.recording.split_programme_minutes</item>
+			<item level="2" text="Show message when recording starts" description="When enabled, a popup message will be shown when a recording starts.">config.usage.show_message_when_recording_starts</item>
+			<item level="2" text="Limit character set for recording filenames" description="Limit the characters that can be used in recording filenames to (7 bit) ascii. This ensures compatibility with operating systems or file systems with limited character sets.">config.recording.ascii_filenames</item>
+			<item level="2" text="Composition of the recording filenames" description="Configure how recording filenames are constructed.">config.recording.filename_composition</item>
+			<item level="1" text="Show picons in timer list" description="Configure if picons will be shown in the timer list.">config.usage.timerlist_showpicons</item>
+			<item level="1" text="Position of finished timers in timer list" description="Control how finished timers are shown in the timer list. If set to hide, disabled timers will still be shown">config.usage.timerlist_finished_timer_position</item>
+			<item level="2" text="Remove finished timers after (days)" description="Configure the number of days old timers are kept before they are automatically removed from the timer list.">config.recording.keep_timers</item>
+			<item level="2" text="Remove finished timer logs after (days)" description="Configure the number of days old timers' log details are kept before they're automatically removed.">config.recording.keep_finished_timer_logs</item>
+			<item level="2" text="Default recording type" description="Descramble &amp; record ECM' gives the option to descramble afterwards if descrambling on recording failed. 'Don't descramble, record ECM' save a scramble recording that can be descrambled on playback. 'Normal' means descramble the recording and don't record ECM.">config.recording.ecm_data</item>
+			<item level="2" text="Record icon match" description="Select display of record icon based on 'Sref only' or 'Sref + Stream url' where applicable.">config.recording.record_icon_match</item>
+		</if>
+	</setup>
+	<setup key="playback" title="Playback">
 		<item level="2" text="Behavior when a movie is started" description="Configure the behavior when movie playback is started.">config.usage.on_movie_start</item>
 		<item level="2" text="Behavior when a movie is stopped" description="Configure the behavior when movie playback is manually stopped.">config.usage.on_movie_stop</item>
 		<item level="2" text="Behavior when a movie reaches the end" description="Configure the behavior when reaching the end of a movie, during movie playback.">config.usage.on_movie_eof</item>
-		<item level="2" text="Display message before playing next movie" description="When enabled, a popup message will be shown when a movie has finished and the next one will start.">config.usage.next_movie_msg</item>
-		<item level="2" text="Behavior of 'pause' when paused" description="Configure the behavior of the 'pause' key when movie playback is already paused.">config.seek.on_pause</item>
 		<item level="2" text="Custom skip time for '1'/'3' buttons" description="Configure the skip time interval for the 1 and 3 buttons.">config.seek.selfdefined_13</item>
 		<item level="2" text="Custom skip time for '4'/'6' buttons" description="Configure the skip time interval for the 4 and 6 buttons.">config.seek.selfdefined_46</item>
 		<item level="2" text="Custom skip time for '7'/'9' buttons" description="Configure the skip time interval for the 7 and 9 buttons.">config.seek.selfdefined_79</item>
+		<item level="2" text="Quit Movie Player with EXIT button" description="When enabled, it is possible to leave the Movie Player with exit.">config.usage.leave_movieplayer_onExit</item>
+		<item level="2" text="Behavior of 'pause' when paused" description="Configure the behavior of the 'pause' key when movie playback is already paused.">config.seek.on_pause</item>
 		<item level="2" text="Seekbar activation" description="Select seekbar to be activated by arrow L/R (long) or &lt;&lt; &gt;&gt; (long).">config.seek.baractivation</item>
 		<item level="2" text="Seekbar sensibility" description="Set the jump-size of the seekbar.">config.seek.sensibility</item>
 		<item level="2" text="Fast forward speeds" description="Configure the possible fast forward speeds.">config.seek.speeds_forward</item>
@@ -226,15 +237,9 @@
 		<item level="2" text="Slow motion speeds" description="Configure the slow motion speeds.">config.seek.speeds_slowmotion</item>
 		<item level="2" text="Initial fast forward speed" description="Configure the initial fast forward speed. When you press the fast forward button, winding will start at this speed.">config.seek.enter_forward</item>
 		<item level="2" text="Initial rewind speed" description="Configure the initial rewind speed. When you press the rewind button, rewinding will start at this speed.">config.seek.enter_backward</item>
-		<item level="2" text="Limit character set for recording filenames" description="Limit the characters that can be used in recording filenames to (7 bit) ascii. This ensures compatibility with operating systems or file systems with limited character sets.">config.recording.ascii_filenames</item>
-		<item level="2" text="Composition of the recording filenames" description="Configure how recording filenames are constructed.">config.recording.filename_composition</item>
-		<item level="1" text="Show picons in timer list" description="Configure if picons will be shown in the timer list.">config.usage.timerlist_showpicons</item>
-		<item level="1" text="Position of finished timers in timer list" description="Control how finished timers are shown in the timer list. If set to hide, disabled timers will still be shown">config.usage.timerlist_finished_timer_position</item>
-		<item level="2" text="Remove finished timers after (days)" description="Configure the number of days old timers are kept before they are automatically removed from the timer list.">config.recording.keep_timers</item>
-		<item level="2" text="Remove finished timer logs after (days)" description="Configure the number of days old timers' log details are kept before they're automatically removed.">config.recording.keep_finished_timer_logs</item>
+		<item level="2" text="Display message before playing next movie" description="When enabled, a popup message will be shown when a movie has finished and the next one will start.">config.usage.next_movie_msg</item>
 		<item level="2" text="Offline decode delay (ms)" description="Configure the offline decoding delay (in milliseconds). The configured delay is observed at each control word parity change.">config.recording.offline_decode_delay</item>
-		<item level="2" text="Default recording type" description="Descramble &amp; record ECM' gives the option to descramble afterwards if descrambling on recording failed. 'Don't descramble, record ECM' save a scramble recording that can be descrambled on playback. 'Normal' means descramble the recording and don't record ECM.">config.recording.ecm_data</item>
-		<item level="2" text="Record icon match" description="Select display of record icon based on 'Sref only' or 'Sref + Stream url' where applicable.">config.recording.record_icon_match</item>
+
 	</setup>
 	<setup key="harddisk" title="HDD settings">
 		<item level="0" text="Hard disk standby after" description="Configure duration of inactivity before the hard disk drive goes to standby">config.usage.hdd_standby</item>
@@ -349,12 +354,14 @@
 	</setup>
 	<setup key="timeshift" title="Timeshift">
 		<item level="0" text="Timeshift location" description="Set the default location for your timeshift files. Press OK to add new locations, LEFT/RIGHT to select any existing locations.">config.usage.timeshift_path</item>
-		<item level="1" text="Automatically start timeshift after" description="When enabled, timeshift starts automatically in background after the specified time.">config.timeshift.startdelay</item>
-		<item level="1" text="Show warning when timeshift is stopped" description="When enabled, a warning will be displayed and the user will get an option to stop or to continue the timeshift.">config.usage.check_timeshift</item>
-		<item level="2" text="Timeshift-save action on zap" description="Select if timeshift should continue when set to record.">config.timeshift.favoriteSaveAction</item>
-		<item level="2" text="Stop timeshift while recording?" description="Stops timeshift being used if a recording is in progress. (Advisable for USB sticks)">config.timeshift.stopwhilerecording</item>
-		<item level="2" text="Use timeshift seekbar while timeshifting?" description="If set to 'yes', allows you to use the seekbar to jump to a point within the event.">config.timeshift.showinfobar</item>
-		<item level="2" text="Skip jumping to live TV while timeshifting with plugins" description="If set to 'yes', allows you to use timeshift with alternative audio plugins.">config.usage.timeshift_skipreturntolive</item>
+		<if conditional="self.errorItem == -1">
+			<item level="1" text="Automatically start timeshift after" description="When enabled, timeshift starts automatically in background after the specified time.">config.timeshift.startdelay</item>
+			<item level="1" text="Show warning when timeshift is stopped" description="When enabled, a warning will be displayed and the user will get an option to stop or to continue the timeshift.">config.usage.check_timeshift</item>
+			<item level="2" text="Timeshift-save action on zap" description="Select if timeshift should continue when set to record.">config.timeshift.favoriteSaveAction</item>
+			<item level="2" text="Stop timeshift while recording?" description="Stops timeshift being used if a recording is in progress. (Advisable for USB sticks)">config.timeshift.stopwhilerecording</item>
+			<item level="2" text="Use timeshift seekbar while timeshifting?" description="If set to 'yes', allows you to use the seekbar to jump to a point within the event.">config.timeshift.showinfobar</item>
+			<item level="2" text="Skip jumping to live TV while timeshifting with plugins" description="If set to 'yes', allows you to use timeshift with alternative audio plugins.">config.usage.timeshift_skipreturntolive</item>
+		</if>
 	</setup>
 	<setup key="epgchannel" title="Channel EPG">
 		<item level="2" text="Sort list by" description="You can have the list sorted by time or alphanumerical.">config.epgselection.sort</item>

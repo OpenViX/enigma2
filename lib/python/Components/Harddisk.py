@@ -716,7 +716,11 @@ class HarddiskManager:
 			mountEntry = ospath.join("/media", entry)
 			if not ospath.isdir(mountEntry):
 				continue
-			mounts = listdir(mountEntry)
+			try:  # protect against drive being removed unexpectedly
+				mounts = listdir(mountEntry)
+			except IOError as err:
+				print("[Harddisk] drive not accessible", err)
+				continue
 			if len(mounts) > 0:
 				for mount in mounts:
 					mountDir = ospath.join(mountEntry, mount, "")

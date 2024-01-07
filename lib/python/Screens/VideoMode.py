@@ -1,5 +1,4 @@
 from os import path
-from boxbranding import getBoxType
 from enigma import iPlayableService, iServiceInformation, eTimer, eServiceCenter, eServiceReference, eDVBDB
 
 from Components.ActionMap import ActionMap
@@ -19,7 +18,7 @@ from Tools.HardwareInfo import HardwareInfo
 resolutionlabel = None
 previous = None
 isDedicated3D = False
-videomode = "/proc/stb/video/videomode_50hz" if getBoxType() in ("gbquad4k", "gbue4k") else "/proc/stb/video/videomode"
+videomode = "/proc/stb/video/videomode"
 
 
 class VideoSetup(ConfigListScreen, Screen):
@@ -306,12 +305,8 @@ class AutoVideoMode(Screen):
 			self.delay = False
 			self.detecttimer.stop()
 			return
-		try:
-			with open(videomode, "r+") as fd:  # GB4K can fail on initial open
-				current_mode = fd.read()[:-1].replace("\n", "")
-		except:
-			with open("/proc/stb/video/videomode", "r") as fd:
-				current_mode = fd.read()[:-1].replace("\n", "")
+		with open(videomode, "r") as fd:
+			current_mode = fd.read()[:-1].replace("\n", "")
 		if current_mode.upper() in ("PAL", "NTSC"):
 			current_mode = current_mode.upper()
 		video_height = None
@@ -373,7 +368,6 @@ class AutoVideoMode(Screen):
 				new_rate = str((new_rate + 500) // 1000)
 			else:
 				new_rate = config_rate
-
 			if video_pol != -1:
 				new_pol = str(video_pol)
 			else:
@@ -435,9 +429,9 @@ class AutoVideoMode(Screen):
 			else:
 				if video_rate == 25000:  # videomode_25hz is not in proc and will be reset 2nd pass thru , so do it now.
 					new_rate = 50
-				if path.exists("/proc/stb/video/videomode_%shz" % new_rate) and config_rate == "multi":
-					try:
-						with open("/proc/stb/video/videomode_%shz" % new_rate, "r+") as fd:
+				if path.exists("%s_%shz" % (videomode, new_rate)) and config_rate == "multi":
+					try:  # gbuhd4k/gbue4k sometimes will 1st time fail on open
+						with open("%s_%shz" % (videomode, new_rate), "r") as fd:
 							multi_videomode = fd.read().replace("\n", "")
 						if multi_videomode and (current_mode != multi_videomode):
 							write_mode = multi_videomode
@@ -452,6 +446,9 @@ class AutoVideoMode(Screen):
 				print("[VideoMode] setMode - port: %s, mode: %s" % (config.av.videoport.value, write_mode))
 				with open(videomode, "w+") as fd:
 					fd.write(write_mode)
+					# read_mode = fd.read().replace("\n", "")
+					# print("[VideoMode] fd.write_mode, read_mode", write_mode, "   ", read_mode)
+
 		iAV.setAspect(config.av.aspect)
 		iAV.setWss(config.av.wss)
 		iAV.setPolicy43(config.av.policy_43)

@@ -1,4 +1,3 @@
-from boxbranding import getBoxType, getBrandOEM
 from Components.About import about
 
 
@@ -45,10 +44,12 @@ class HardwareInfo:
 		return HardwareInfo.device_version
 
 	def has_hdmi(self):
-		return getBrandOEM() in ('xtrend', 'gigablue', 'dags', 'ixuss', 'odin', 'vuplus', 'ini', 'ebox', 'ceryon') or (getBoxType() in ('dm7020hd', 'dm800se', 'dm500hd', 'dm8000') and HardwareInfo.device_version is not None)
+		from Components.SystemInfo import SystemInfo
+		return SystemInfo["brand"] in ('xtrend', 'gigablue', 'dags', 'ixuss', 'odin', 'vuplus', 'ini', 'ebox', 'ceryon') or (SystemInfo["boxtype"] in ('dm7020hd', 'dm800se', 'dm500hd', 'dm8000') and HardwareInfo.device_version is not None)
 
 	def has_deepstandby(self):
-		return getBoxType() != 'dm800'
+		# from Components.SystemInfo import SystemInfo
+		return True  # SystemInfo["boxtype"] != 'dm800'
 
 	def is_nextgen(self):
 		if about.getCpuCoresInt() < 2 or about.getCPUSpeedMHzInt() < 750:

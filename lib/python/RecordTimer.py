@@ -5,7 +5,6 @@ from sys import maxsize
 from time import localtime, strftime, ctime, time
 
 from enigma import eEPGCache, getBestPlayableServiceReference, eStreamServer, eServiceReference, iRecordableService, quitMainloop, eActionMap, setPreferredTuner, eServiceCenter
-from boxbranding import getMachineBrand, getMachineName, getBoxType
 from Components.config import config
 import Components.ParentalControl
 from Components.UsageConfig import defaultMoviePath
@@ -113,7 +112,7 @@ SID_symbol_states = {
 	"mbtwin": ("/proc/stb/lcd/symbol_circle", 4)
 }
 
-SID_code_states = SID_symbol_states.setdefault(getBoxType(), (None, 0))
+SID_code_states = SID_symbol_states.setdefault(SystemInfo["boxtype"], (None, 0))
 
 n_recordings = 0  # Must be when we start running...
 
@@ -737,7 +736,7 @@ class RecordTimerEntry(TimerEntry):
 			if self.afterEvent == AFTEREVENT.STANDBY or (not wasRecTimerWakeup and self.autostate and self.afterEvent == AFTEREVENT.AUTO) or self.wasInStandby:
 				self.keypress()  # this unbinds the keypress detection
 				if not Screens.Standby.inStandby:  # not already in standby
-					Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox, _("A finished record timer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName()), timeout=180)
+					Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox, _("A finished record timer wants to set your\n%s %s to standby. Do that now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), timeout=180)
 			elif self.afterEvent == AFTEREVENT.DEEPSTANDBY or (wasRecTimerWakeup and self.afterEvent == AFTEREVENT.AUTO and Screens.Standby.inStandby):
 				if (abs(NavigationInstance.instance.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(NavigationInstance.instance.RecordTimer.getNextZapTime() - time()) <= 900) or NavigationInstance.instance.RecordTimer.getStillRecording():
 					print("[RecordTimer] Recording or Recording due is next 15 mins, not return to deepstandby")
@@ -752,7 +751,7 @@ class RecordTimerEntry(TimerEntry):
 				if int(ClientsStreaming("NUMBER").getText()) > 0:
 					if not Screens.Standby.inStandby:  # not already in standby
 						Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox,
-							_("A finished record timer wants to set your\n%s %s to standby. Do that now?") % (getMachineBrand(), getMachineName())
+							_("A finished record timer wants to set your\n%s %s to standby. Do that now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"])
 							+ _("\n(DeepStandby request changed to Standby owing to there being streaming clients.)"), timeout=180)
 					return True
 
@@ -760,7 +759,7 @@ class RecordTimerEntry(TimerEntry):
 					if Screens.Standby.inStandby:  # in standby
 						quitMainloop(1)
 					else:
-						Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A finished record timer wants to shut down\nyour %s %s. Shutdown now?") % (getMachineBrand(), getMachineName()), timeout=180)
+						Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A finished record timer wants to shut down\nyour %s %s. Shutdown now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), timeout=180)
 			return True
 
 	def keypress(self, key=None, flag=1):
