@@ -219,7 +219,7 @@ def createInfo(slot, imagedir="/"):
 	BuildVer = BoxInfo.getItem("imagebuild")
 	BuildDate = VerDate(imagedir)
 	BuildDev = str(BoxInfo.getItem("imagedevbuild")).zfill(3) if BuildType != "rel" else ""
-	return " ".join([x for x in (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, "(%s)" % BuildDate) if x])
+	return " ".join([str(x) for x in (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, "(%s)" % BuildDate) if x])
 
 
 def VerDate(imagedir):
@@ -230,7 +230,7 @@ def VerDate(imagedir):
 	if fileExists(path.join(imagedir, "usr/share/bootlogo.mvi")):
 		date3 = datetime.fromtimestamp(stat(path.join(imagedir, "usr/share/bootlogo.mvi")).st_mtime).strftime("%Y-%m-%d")
 	print("[multiboot][VerDate]1 date1, date2, date3", date1, "   ", date2, "   ", date3)
-	date = max(date1, date2, date3)
+	date = max(date1, date2, date3)  # this is comparing strings
 	print("[multiboot][VerDate]2 date = %s" % date)
 	date = datetime.strptime(date, '%Y-%m-%d').strftime("%d-%m-%Y")
 	return date
