@@ -26,9 +26,9 @@ def getMultibootslots():
 	slotname = ""
 	SystemInfo["MultiBootSlot"] = None
 	SystemInfo["VuUUIDSlot"] = ""
+	SystemInfo["BootDevice"] = ""
 	UUID = ""
 	UUIDnum = 0
-	BoxInfo = BoxInfoRunningInstance
 	tmp.dir = tempfile.mkdtemp(prefix="getMultibootslots")
 	tmpname = tmp.dir
 	MbootList = MbootList2 if fileHas("/proc/cmdline", "kexec=1") else MbootList1
@@ -44,7 +44,7 @@ def getMultibootslots():
 				SystemInfo["MBbootdevice"] = device
 				device2 = device.rsplit("/", 1)[1]
 				print("[Multiboot][[getMultibootslots]1 Bootdevice found: %s" % device2)
-				BoxInfo.setItem("mtdbootfs", device2, forceOverride=True)
+				SystemInfo["BootDevice"] = device2
 				for file in glob.glob(path.join(tmpname, "STARTUP_*")):
 					print("[multiboot*****] [getMultibootslots]2 tmpname = %s" % (tmpname))
 					print("[multiboot] [getMultibootslots]4 file = ", file)
@@ -177,12 +177,12 @@ def GetImagelist(Recovery=None):
 		if path.isfile(path.join(imagedir, "usr/bin/enigma2")):
 			# print("[multiboot] [GetImagelist]1 Slot = %s imagedir = %s" % (slot, imagedir))
 			if path.isfile(path.join(imagedir, "usr/lib/enigma.info")):
-				print("[multiboot] [BoxInfo] using BoxInfo")
+				print("[multiboot] [GetImagelist] using enigma.info")
 				BuildVersion = createInfo(slot, imagedir=imagedir)
-				# print("[multiboot] [BoxInfo]  slot=%s, BuildVersion=%s" % (slot, BuildVersion))
+				# print("[multiboot] [GetImagelist]  slot=%s, BuildVersion=%s" % (slot, BuildVersion))
 			else:
-				# print("[multiboot] [BoxInfo] using BoxBranding")
-				print("[multiboot] [GetImagelist] 2 slot = %s imagedir = %s" % (slot, imagedir))
+				# print("[multiboot] [GetImagelist] using BoxBranding")
+				print("[multiboot] [GetImagelist]2 slot = %s imagedir = %s" % (slot, imagedir))
 				Creator = open("%s/etc/issue" % imagedir).readlines()[-2].capitalize().strip()[:-6]
 				print("[multiboot] [GetImagelist] Creator = %s imagedir = %s" % (Creator, imagedir))
 				if fileHas("/proc/cmdline", "kexec=1") and path.isfile(path.join(imagedir, "etc/vtiversion.info")):

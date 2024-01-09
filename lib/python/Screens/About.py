@@ -109,8 +109,8 @@ class About(AboutBase):
 		if fileHas("/proc/cmdline", "rootsubdir=linuxrootfs0"):
 			AboutText += _("Boot Device: \tRecovery Slot\n")
 		else:
-			if SystemInfo["mtdbootfs"] != "" and " " not in SystemInfo["mtdbootfs"]:
-				AboutText += _("Boot Device:\t%s%s\n") % (VuPlustxt, SystemInfo["mtdbootfs"])
+			if "BootDevice" in SystemInfo and SystemInfo["BootDevice"]:
+				AboutText += _("Boot Device:\t%s%s\n") % (VuPlustxt, SystemInfo["BootDevice"])
 
 		if SystemInfo["HasH9SD"]:
 			if "rootfstype=ext4" in open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read():
