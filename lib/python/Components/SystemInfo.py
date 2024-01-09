@@ -48,7 +48,7 @@ class BoxInformation:
 		return sorted(self.immutableList)
 
 	def getEnigmaConfList(self):  # not used by us
-		return []
+		return []  # return an empty list because we do not import a file called "enigma.conf"
 
 	def getItemsList(self):
 		return sorted(list(self.boxInfo.keys()))
