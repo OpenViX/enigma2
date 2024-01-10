@@ -86,7 +86,7 @@ class SystemInformation(dict):
 
 	def __prohibited(self, *args, **kws):
 		print("[SystemInfo] operation not permitted")
-	
+
 	clear = __prohibited
 	update = __prohibited
 	setdefault = __prohibited
