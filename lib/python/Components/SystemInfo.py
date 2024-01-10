@@ -71,7 +71,30 @@ class BoxInformation:
 BoxInfo = BoxInformation()
 
 
-SystemInfo = BoxInfo.boxInfo
+class SystemInformation(dict):
+	def __getitem__(self, item):
+		return BoxInfo.boxInfo[item]
+
+	def __setitem__(self, item, value):
+		BoxInfo.setItem(item, value, immutable=False)
+
+	def __delitem__(self, item):
+		BoxInfo.deleteItem(item)
+
+	def get(self, item, default=None):
+		return BoxInfo.boxInfo.get(item, default)
+
+	def __prohibited(self, *args, **kws):
+		print("[SystemInfo] operation not permitted")
+	
+	clear = __prohibited
+	update = __prohibited
+	setdefault = __prohibited
+	pop = __prohibited
+	popitem = __prohibited
+
+
+SystemInfo = SystemInformation()
 
 
 ARCHITECTURE = BoxInfo.getItem("architecture")
