@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-14 12:09+0000\n"
-"PO-Revision-Date: 2023-12-15 11:16+0100\n"
+"POT-Creation-Date: 2024-01-10 10:06+0000\n"
+"PO-Revision-Date: 2024-01-11 15:34+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #, python-format
 msgid ""
@@ -3734,14 +3734,14 @@ msgstr "Bepaal hoelang oude info in de EPG zichtbaar moet blijven. Nuttig als u 
 msgid "Configure how recording filenames are constructed."
 msgstr "Stel in hoe de namen van opnames worden samengesteld."
 
-msgid "Configure if and how crypto icons will be shown in the channel selection list."
-msgstr "Stel in of en hoe de crypto-iconen moeten worden getoond."
+msgid "Configure if and how crypto icons will be shown in the channel selection list (left alignment only available in single line mode)."
+msgstr "Stel in of en hoe de crypto-iconen moeten worden getoond (links alleen beschikbaar in de één regel modus)."
 
-msgid "Configure if and how service type icons will be shown."
-msgstr "Stel in of en hoe de servicetype-iconen worden getoond."
+msgid "Configure if and how service type icons will be shown (left alignment only available in single line mode)."
+msgstr "Stel in of en hoe de servicetype-iconen worden getoond (links alleen beschikbaar in de één regel modus)."
 
-msgid "Configure if and how the record indicator will be shown in the channel selection list."
-msgstr "Stel in of en hoe de opname-indicatie in de kanaallijst wordt getoond."
+msgid "Configure if and how the record indicator will be shown in the channel selection list (left alignment only available in single line mode)."
+msgstr "Stel in of en hoe de opname-indicatie in de kanaallijst wordt getoond (links alleen beschikbaar in de één regel modus)."
 
 msgid "Configure if and how wide the service name column will be shown in the channel selection list."
 msgstr "Stel in of en hoe breed de kanaalnaam moeten worden getoond in de kanaallijst."
@@ -8093,8 +8093,8 @@ msgstr "Lebanon"
 msgid "Left"
 msgstr "Links"
 
-msgid "Left from servicename"
-msgstr "Links van kanaalnaam"
+msgid "Left from servicename (only available in single line mode)"
+msgstr "Links van kanaalnaam (alleen beschikbaar in de één regel modus)"
 
 msgid "Left long"
 msgstr "Lang-links"
@@ -10023,8 +10023,8 @@ msgstr "Percentage"
 msgid "Percentage left"
 msgstr "Percentage links"
 
-msgid "Percentage right"
-msgstr "Percentage rechts"
+msgid "Percentage right (only available in single line mode)"
+msgstr "Percentage rechts (alleen beschikbaar in de één regel modus)"
 
 msgid "Perform a complete image backup before updating."
 msgstr "Maak een imageback-up alvorens te updaten."
@@ -10818,8 +10818,8 @@ msgstr "Voortgang"
 msgid "Progress bar left"
 msgstr "Voortgangsbalk links"
 
-msgid "Progress bar right"
-msgstr "Voortgangsbalk rechts"
+msgid "Progress bar right (only available in single line mode)"
+msgstr "Voortgangsbalk rechts (alleen beschikbaar in de één regel modus)"
 
 msgid "Prominent"
 msgstr "Prominent"
@@ -12874,8 +12874,8 @@ msgstr "Stel de tijd in waarop de timer moet starten."
 msgid "Set the time the timer must stop."
 msgstr "Stel de tijd in waarop de timer stopt."
 
-msgid "Set the type of the progress indication in the channel selection screen."
-msgstr "Bepaal teh type voortgangsindicator dat u wilt gebruiken in de kanaallijst."
+msgid "Set the type of the progress indication in the channel selection screen (right alignment only available in single line mode)."
+msgstr "Bepaal het type voortgangsindicator dat u wil gebruiken in de kanaallijst (rechts alleen beschikbaar in de één regel modus)."
 
 msgid "Set to the desired primetime."
 msgstr "Stel de gewenste primetime in."
@@ -18358,6 +18358,9 @@ msgstr "waar"
 msgid "two lines"
 msgstr "twee regels"
 
+msgid "two lines+next event"
+msgstr "twee regels + volgende programma"
+
 msgid "type"
 msgstr "type"
 
@@ -19009,6 +19012,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Last update: %s"
 #~ msgstr "Laatste update: %s"
 
+#~ msgid "Left from servicename"
+#~ msgstr "Links van kanaalnaam"
+
 #~ msgid "Manage extensions"
 #~ msgstr "Beheer van extensies"
 
@@ -19079,6 +19085,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Packet manager"
 #~ msgstr "Pakketbeheer"
 
+#~ msgid "Percentage right"
+#~ msgstr "Percentage rechts"
+
 #~ msgid "Perform a settings backup, making a backup before updating is strongly advised."
 #~ msgstr "Maak een settingsback-up; het maken van een back-up alvorens te updaten wordt sterk geadviseerd."
 
@@ -19127,6 +19136,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Process"
 #~ msgstr "Proces"
+
+#~ msgid "Progress bar right"
+#~ msgstr "Voortgangsbalk rechts"
 
 #~ msgid "Query before backup starts"
 #~ msgstr "Vraag alvorens back-up te starten"
@@ -19581,9 +19593,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "start directory"
 #~ msgstr "startmap"
-
-#~ msgid "two lines and next event"
-#~ msgstr "twee regels en volgende programma"
 
 #~ msgid "updates available."
 #~ msgstr "updates beschikbaar."
