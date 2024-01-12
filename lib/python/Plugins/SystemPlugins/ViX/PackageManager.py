@@ -68,18 +68,18 @@ class PackageManager(Screen, NumericalTextInput):
 				</convert>
 			</widget>
 		</screen>""",
-			530, 420, # Screen
-			0, 0, 140, 40, # colours
+			530, 420,  # Screen
+			0, 0, 140, 40,  # colours
 			140, 0, 140, 40,
 			0, 0, 140, 40, 20,
 			140, 0, 140, 40, 20,
-			5, 50, 520, 365, # list
-			5, 1, 440, 28, # template
+			5, 50, 520, 365,  # list
+			5, 1, 440, 28,  # template
 			5, 26, 440, 20,
 			445, 2, 48, 48,
 			5, 50, 510, 2,
-			22, 14, # font
-			52, #itemHeight
+			22, 14,  # font
+			52,  # itemHeight
 			]
 			
 
@@ -125,7 +125,7 @@ class PackageManager(Screen, NumericalTextInput):
 		self.cmdList = []
 		self.cachelist = []
 		self.cache_ttl = 86400  #600 is default, 0 disables, Seconds cache is considered valid (24h should be ok for caching opkgs)
-		self.cache_file = "/etc/enigma2/packetmanager.cache" #Path to cache directory
+		self.cache_file = "/etc/enigma2/packetmanager.cache"  # Path to cache directory
 		self.oktext = _("\nAfter pressing OK, please wait!")
 		self.unwanted_extensions = ("-dbg", "-dev", "-doc", "-staticdev", "-src", "busybox")
 
