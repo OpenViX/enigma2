@@ -82,7 +82,6 @@ class PackageManager(Screen, NumericalTextInput):
 			52,  # itemHeight
 			]
 			
-
 		# TODO, skin scale
 
 	def __init__(self, session):
