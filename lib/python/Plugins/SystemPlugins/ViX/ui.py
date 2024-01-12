@@ -61,6 +61,8 @@ class VIXMenu(Screen, ProtectedScreen):
 			self.list.append(("mount-manager", _("Mount manager"), _("Manage your devices mount points."), None))
 			self.list.append(("script-runner", _("Script runner"), _("Run your shell scripts."), None))
 			self.list.append(("swap-manager", _("SWAP manager"), _("Create and Manage your SWAP files."), None))
+			if config.usage.setup_level.index > 1:  # expert+
+				self.list.append(("package-manager", _("Package manager"), _("Advanced management of software packages."), None))
 			if SystemInfo["HasH9SD"]:
 				self.list.append(("H9SDcard manager", _("H9SDcard Manager"), _("Move Nand root to SD card"), None))
 		self["menu"] = List(self.list)
@@ -139,6 +141,9 @@ class VIXMenu(Screen, ProtectedScreen):
 				elif currentEntry == "swap-manager":
 					from .SwapManager import VIXSwap
 					self.session.open(VIXSwap)
+				elif currentEntry == "package-manager":
+					from .PackageManager import PackageManager
+					self.session.open(PackageManager)
 
 	def closeRecursive(self):
 		self.close(True)
