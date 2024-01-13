@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-01-07 14:10+0200\n"
+"PO-Revision-Date: 2024-01-13 15:19+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2172,7 +2172,7 @@ msgid "An empty filename is illegal."
 msgstr "Tyhjä nimi ei ole sallittu."
 
 msgid "An error occurred while downloading the packetlist. Please try again."
-msgstr "Tapahtui virhe pakettiluetteloa ladattaessa. Yritä uudestaan."
+msgstr "Tapahtui virhe pakettilistaa ladattaessa. Yritä uudestaan."
 
 msgid "An unknown error occurred!"
 msgstr "Tuntematon virhe!"
@@ -13543,7 +13543,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"07.01.2024\n"
+"13.01.2024\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -19308,3 +19308,21 @@ msgstr "Haluatko varmuuskopioida eMMC-paikat? Tämä lisää 1 - 5 minuuttia eMM
 
 msgid "Copy eMMC slots confirmation"
 msgstr "eMMC-paikkojen kopioinnin vahvistus"
+
+msgid "Package manager"
+msgstr "Ohjelmistopaketin hallinnointi"
+
+msgid "Refresh list"
+msgstr "Päivitä lista"
+
+msgid "Downloading a new packet list. Please wait..."
+msgstr "Ladataan uutta pakettilistaa. Odota..."
+
+msgid "Removal has completed."
+msgstr "Poistaminen on valmis."
+
+msgid "Update has completed."
+msgstr "Päivitys on valmis."
+
+msgid "Advanced management of software packages."
+msgstr "Ohjelmistopakettien edistynyt hallinnointi."
