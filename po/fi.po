@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-01-15 06:58+0200\n"
+"PO-Revision-Date: 2024-01-15 17:42+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -19310,7 +19310,10 @@ msgid "Copy eMMC slots confirmation"
 msgstr "eMMC-paikkojen kopioinnin vahvistus"
 
 msgid "Package manager"
-msgstr "Ohjelmistopaketin hallinnointi"
+msgstr "Ohjelmistopakettien hallinnointi"
+
+msgid "Package Manager"
+msgstr "Ohjelmistopakettien hallinnointi"
 
 msgid "Refresh list"
 msgstr "Päivitä lista"
@@ -19323,9 +19326,6 @@ msgstr "Poistaminen on valmis."
 
 msgid "Update has completed."
 msgstr "Päivitys on valmis."
-
-msgid "Advanced management of software packages."
-msgstr "Ohjelmistopakettien edistynyt hallinnointi."
 
 msgid "Show packages to be updated"
 msgstr "Näytä päivitettävät ohjelmistopaketit"
