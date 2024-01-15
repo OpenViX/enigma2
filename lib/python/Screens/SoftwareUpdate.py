@@ -17,7 +17,9 @@ from Screens.MessageBox import MessageBox
 from Components.OnlineUpdateCheck import feedsstatuscheck, kernelMismatch, statusMessage
 from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.Screen import Screen
+from Screens.TextBox import TextBox
 from Screens.Standby import TryQuitMainloop
+from Tools.BoundFunction import boundFunction
 from Tools.Directories import isPluginInstalled
 
 ocram = ''
@@ -285,6 +287,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 						if not config.softwareupdate.autoimagebackup.value and config.imagemanager.backuplocation.value:
 							choices.append((_("Perform a full image backup"), "imagebackup"))
 					choices.append((_("Update channel list only"), "channels"))
+					choices.append((_("Show packages to be updated"), "showlist"))
 					choices.append((_("Cancel"), ""))
 					self["actions"].setEnabled(True)
 					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight)
@@ -362,6 +365,9 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			self["actions"].setEnabled(True)
 			upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight)
 			upgrademessage.setTitle(self.getTitle())
+		elif answer[1] == "showlist":
+			text = "\n".join([x[0] for x in sorted(self.ipkg.getFetchedList(), key=lambda d: d[0])])
+			self.session.openWithCallback(boundFunction(self.ipkgCallback, IpkgComponent.EVENT_DONE, None), TextBox, text, _("Packages to update"), True)
 		elif answer[1] == "changes":
 			self.session.openWithCallback(self.startActualUpgrade, SoftwareUpdateChanges)
 		elif answer[1] == "backup":
