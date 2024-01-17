@@ -88,7 +88,7 @@ class SelectionList(MenuList):
 				pass
 			else:
 				self.skinAttributes.remove((attrib, value))
-		
+
 		# recreate the list with the new parameters parsed from skin
 		for x in range(len(self.list)):
 			description, value, index, selected = self.list[x][0]
