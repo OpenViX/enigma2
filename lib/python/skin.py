@@ -1,6 +1,6 @@
 from xml.etree.cElementTree import Element, ElementTree, fromstring
 
-from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gMainDC, gRGB, BT_ALPHATEST, BT_ALPHABLEND, BT_HALIGN_CENTER, BT_HALIGN_LEFT, BT_HALIGN_RIGHT, BT_KEEP_ASPECT_RATIO, BT_SCALE, BT_VALIGN_BOTTOM, BT_VALIGN_CENTER, BT_VALIGN_TOP
+from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWidget, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gMainDC, gRGB, BT_ALPHATEST, BT_ALPHABLEND, BT_HALIGN_CENTER, BT_HALIGN_LEFT, BT_HALIGN_RIGHT, BT_KEEP_ASPECT_RATIO, BT_SCALE, BT_VALIGN_BOTTOM, BT_VALIGN_CENTER, BT_VALIGN_TOP
 from os.path import basename, dirname, isfile
 
 from Components.config import ConfigSubsection, ConfigText, config
@@ -291,6 +291,26 @@ def parseValuePair(s, scale, object=None, desktop=None, size=None):
 def parsePosition(s, scale, object=None, desktop=None, size=None):
 	return ePoint(*parseValuePair(s, scale, object, desktop, size))
 
+def parseRadius(value):
+	data = [x.strip() for x in value.split(";")]
+	if len(data) == 2:
+		edges = [x.strip() for x in data[1].split(",")]
+		edgesMask = {
+			"topLeft": eWidget.RADIUS_TOP_LEFT,
+			"topRight": eWidget.RADIUS_TOP_RIGHT,
+			"top": eWidget.RADIUS_TOP,
+			"bottomLeft": eWidget.RADIUS_BOTTOM_LEFT,
+			"bottomRight": eWidget.RADIUS_BOTTOM_RIGHT,
+			"bottom": eWidget.RADIUS_BOTTOM,
+			"left": eWidget.RADIUS_LEFT,
+			"right": eWidget.RADIUS_RIGHT,
+		}
+		edgeValue = 0
+		for e in edges:
+			edgeValue += edgesMask.get(e, 0)
+		return int(data[0]), edgeValue
+	else:
+		return int(data[0]), eWidget.RADIUS_ALL
 
 def parseSize(s, scale, object=None, desktop=None):
 	return eSize(*[max(0, x) for x in parseValuePair(s, scale, object, desktop)])
@@ -496,6 +516,12 @@ class AttributeParser:
 
 	def secondfont(self, value):
 		self.guiObject.setSecondFont(parseFont(value, self.scaleTuple))
+		
+	def widgetBorderColor(self, value):
+		self.guiObject.setWidgetBorderColor(parseColor(value))
+
+	def widgetBorderWidth(self, value):
+		self.guiObject.setWidgetBorderWidth(parseScale(value))
 
 	def zPosition(self, value):
 		self.guiObject.setZPosition(int(value))
@@ -516,7 +542,7 @@ class AttributeParser:
 
 	def selectionPixmap(self, value):
 		self.guiObject.setSelectionPicture(loadPixmap(value, self.desktop))
-
+		
 	def selectionPixmapLarge(self, value):
 		self.guiObject.setSelectionPictureLarge(loadPixmap(value, self.desktop))
 
@@ -666,6 +692,10 @@ class AttributeParser:
 
 	def borderWidth(self, value):
 		self.guiObject.setBorderWidth(parseScale(value))
+		
+	def cornerRadius(self, value):
+		radius, edgeValue = parseRadius(value)
+		self.guiObject.setCornerRadius(radius, edgeValue)
 
 	def scrollbarSliderBorderWidth(self, value):
 		self.guiObject.setScrollbarBorderWidth(parseScale(value))
