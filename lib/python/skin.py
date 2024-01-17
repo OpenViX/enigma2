@@ -291,6 +291,7 @@ def parseValuePair(s, scale, object=None, desktop=None, size=None):
 def parsePosition(s, scale, object=None, desktop=None, size=None):
 	return ePoint(*parseValuePair(s, scale, object, desktop, size))
 
+
 def parseRadius(value):
 	data = [x.strip() for x in value.split(";")]
 	if len(data) == 2:
@@ -311,6 +312,7 @@ def parseRadius(value):
 		return int(data[0]), edgeValue
 	else:
 		return int(data[0]), eWidget.RADIUS_ALL
+
 
 def parseSize(s, scale, object=None, desktop=None):
 	return eSize(*[max(0, x) for x in parseValuePair(s, scale, object, desktop)])
