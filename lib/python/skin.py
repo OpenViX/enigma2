@@ -518,7 +518,7 @@ class AttributeParser:
 
 	def secondfont(self, value):
 		self.guiObject.setSecondFont(parseFont(value, self.scaleTuple))
-		
+
 	def widgetBorderColor(self, value):
 		self.guiObject.setWidgetBorderColor(parseColor(value))
 
@@ -544,7 +544,7 @@ class AttributeParser:
 
 	def selectionPixmap(self, value):
 		self.guiObject.setSelectionPicture(loadPixmap(value, self.desktop))
-		
+
 	def selectionPixmapLarge(self, value):
 		self.guiObject.setSelectionPictureLarge(loadPixmap(value, self.desktop))
 
@@ -694,7 +694,7 @@ class AttributeParser:
 
 	def borderWidth(self, value):
 		self.guiObject.setBorderWidth(parseScale(value))
-		
+
 	def cornerRadius(self, value):
 		radius, edgeValue = parseRadius(value)
 		self.guiObject.setCornerRadius(radius, edgeValue)
