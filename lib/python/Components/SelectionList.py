@@ -9,8 +9,8 @@ selectiononpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN
 selectionoffpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/lock_off.png"))
 
 
-def SelectionEntryComponent(description, value, index, selected, selectionListDescr=parameters.get("SelectionListDescr", applySkinFactor(25, 3, 650, 30))):
-	dx, dy, dw, dh = selectionListDescr
+def SelectionEntryComponent(description, value, index, selected, selectionListDescr=None):
+	dx, dy, dw, dh = parameters.get("SelectionListDescr", applySkinFactor(25, 3, 650, 30)) if selectionListDescr is None else selectionListDescr
 	res = [
 		(description, value, index, selected),
 		(eListboxPythonMultiContent.TYPE_TEXT, dx, dy, dw, dh, 0, RT_HALIGN_LEFT, description)
@@ -37,7 +37,7 @@ class SelectionList(MenuList):
 		self.setList(self.list)
 
 	def toggleSelection(self):
-		if len(self.list):
+		if self.list:
 			idx = self.getSelectedIndex()
 			item = self.list[idx][0]
 			self.list[idx] = SelectionEntryComponent(item[0], item[1], item[2], not item[3], self.selectionListDescr)
