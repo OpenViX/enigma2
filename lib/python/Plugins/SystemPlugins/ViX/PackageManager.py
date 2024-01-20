@@ -13,7 +13,7 @@ from Components.Sources.StaticText import StaticText
 
 from Screens.Ipkg import Ipkg
 from Screens.MessageBox import MessageBox
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 from Screens.Standby import TryQuitMainloop
 
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_PLUGIN, SCOPE_CURRENT_SKIN
@@ -45,6 +45,11 @@ def valid_cache(cache_file, cache_ttl):
 
 def load_cache(cache_file):
 	return pickle.load(open(cache_file, "rb"))
+
+
+class PackageManagerSummary(ScreenSummary):
+	def __init__(self, session, parent):
+		ScreenSummary.__init__(self, session, parent=parent)
 
 
 class PackageManager(Screen, NumericalTextInput):
