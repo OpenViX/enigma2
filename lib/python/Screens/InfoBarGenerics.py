@@ -3359,7 +3359,7 @@ class InfoBarInstantRecord:
 			if limitEvent:
 				end = info["end"]
 		else:
-			if limitEvent:
+			if not limitEvent:
 				self.session.open(MessageBox, _("No event info found, recording indefinitely."), MessageBox.TYPE_INFO, simple=True)
 
 		if isinstance(serviceref, eServiceReference):
@@ -3452,7 +3452,7 @@ class InfoBarInstantRecord:
 			self.deleteRecording = True
 			self.stopAllCurrentRecordings(list)
 		elif answer[1] in ("indefinitely", "manualduration", "manualendtime", "event"):
-			self.startInstantRecording(limitEvent=answer[1] in ("event", "manualendtime") or False)
+			self.startInstantRecording(limitEvent=answer[1] in ("manualduration", "manualendtime", "event") or False)
 			if answer[1] == "manualduration":
 				self.changeDuration(len(self.recording) - 1)
 			elif answer[1] == "manualendtime":
