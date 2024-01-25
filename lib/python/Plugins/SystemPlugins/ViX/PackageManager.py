@@ -422,13 +422,13 @@ class PackageManager(Screen, NumericalTextInput):
 			self.title = _("Package manager") + " - " + self.filters[self.getCurrentFilter()]
 			self["key_green"].text = _("Refresh list")
 			self["key_previous"].text = _("PREVIOUS")
-			self["key_next"].text  = _("NEXT")
+			self["key_next"].text = _("NEXT")
 		else:
 			self["filterActions"].setEnabled(False)
 			self.title = _("Package manager")
 			self["key_green"].text = ""
 			self["key_previous"].text = ""
-			self["key_next"].text  = ""
+			self["key_next"].text = ""
 			
 	def reloadPluginlist(self):
 		plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
