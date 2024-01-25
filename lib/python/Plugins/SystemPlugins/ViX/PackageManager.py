@@ -90,7 +90,7 @@ class PackageManager(Screen, NumericalTextInput):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		NumericalTextInput.__init__(self)
-		self.setTitle(_("Package manager"))
+		self.title = _("Package manager")
 
 		self.setUseableChars("1234567890abcdefghijklmnopqrstuvwxyz")
 
@@ -98,7 +98,6 @@ class PackageManager(Screen, NumericalTextInput):
 		{
 			"ok": self.go,
 			"cancel": self.exit,
-			"save": self.reload,
 			"gotAsciiCode": self.keyGotAscii,
 			"1": self.keyNumberGlobal,
 			"2": self.keyNumberGlobal,
@@ -112,11 +111,21 @@ class PackageManager(Screen, NumericalTextInput):
 			"0": self.keyNumberGlobal
 		}, -1)
 
+		self["filterActions"] = NumberActionMap(["SetupActions"],
+		{
+			"deleteBackward": self.filterPrev,
+			"deleteForward": self.filterNext,
+			"save": self.reload,
+		}, -1)
+		self["filterActions"].setEnabled(False)
+
 		self.list = []
 		self.statuslist = []
 		self["list"] = List(self.list)
 		self["key_red"] = StaticText(_("Close"))
-		self["key_green"] = StaticText(_("Refresh list"))
+		self["key_green"] = StaticText()
+		self["key_previous"] = StaticText()
+		self["key_next"] = StaticText()
 
 		self.imagePath = "%s/images/" % os.path.dirname(os.path.realpath(__file__))
 		self.list_updating = True
@@ -130,6 +139,12 @@ class PackageManager(Screen, NumericalTextInput):
 		self.cache_file = "/etc/enigma2/packetmanager.cache"  # Path to cache directory
 		self.oktext = _("\nAfter pressing OK, please wait!")
 		self.unwanted_extensions = ("-dbg", "-dev", "-doc", "-staticdev", "-src", "busybox")
+		self.filters = {"All": _("All"), "Installed": _("Installed"), "Upgradeable": _("Upgradeable"), "Installable": _("Installable")}
+
+
+		self.installedpng = LoadPixmap(cached=True, path=self.imagePath + "installed.png")
+		self.upgradeablepng = LoadPixmap(cached=True, path=self.imagePath + "upgradeable.png")
+		self.installablepng = LoadPixmap(cached=True, path=self.imagePath + "installable.png")
 
 		self.ipkg = IpkgComponent()
 		self.ipkg.addCallback(self.ipkgCallback)
@@ -339,18 +354,16 @@ class PackageManager(Screen, NumericalTextInput):
 		if not description:
 			description = "No description available."
 		if state == "installed":
-			installedpng = LoadPixmap(cached=True, path=self.imagePath + "installed.png")
-			return ((name, version, _(description), state, installedpng, divpng))
+			return ((name, version, _(description), state, self.installedpng, divpng))
 		elif state == "upgradeable":
-			upgradeablepng = LoadPixmap(cached=True, path=self.imagePath + "upgradeable.png")
-			return ((name, version, _(description), state, upgradeablepng, divpng))
+			return ((name, version, _(description), state, self.upgradeablepng, divpng))
 		else:
-			installablepng = LoadPixmap(cached=True, path=self.imagePath + "installable.png")
-			return ((name, version, _(description), state, installablepng, divpng))
+			return ((name, version, _(description), state, self.installablepng, divpng))
 
 	def buildPacketList(self):
 		self.list = []
 		self.cachelist = []
+		self.i = 0
 		if self.cache_ttl > 0 and self.vc != 0:
 			print("Loading packagelist cache from ", self.cache_file)
 			try:
@@ -377,6 +390,48 @@ class PackageManager(Screen, NumericalTextInput):
 				self.cachelist.append([x[0], x[1], x[2], status])
 			write_cache(self.cache_file, self.cachelist)
 			self["list"].setList(self.list)
+		self.updateTexts()
 
+	def filterPrev(self):
+		self.i -= 1
+		self.filterList()
+
+	def filterNext(self):
+		self.i += 1
+		self.filterList()
+
+	def filterList(self):
+		if self.list:
+			filter = self.getCurrentFilter()
+			if filter == "All":
+				self["list"].setList(self.list)
+			elif filter == "Installed":
+				self["list"].setList([x for x in self.list if x[4] is self.installedpng])
+			elif filter == "Upgradeable":
+				self["list"].setList([x for x in self.list if x[4] is self.upgradeablepng])
+			elif filter == "Installable":
+				self["list"].setList([x for x in self.list if x[4] is self.installablepng])
+			self.updateTexts()
+
+	def getCurrentFilter(self):
+		return list(self.filters.keys())[self.i % len(self.filters)]
+
+	def updateTexts(self):
+		if self.list:
+			self["filterActions"].setEnabled(True)
+			self.title = _("Package manager") + " - " + self.filters[self.getCurrentFilter()]
+			self["key_green"].text = _("Refresh list")
+			self["key_previous"].text = _("PREVIOUS")
+			self["key_next"].text  = _("NEXT")
+		else:
+			self["filterActions"].setEnabled(False)
+			self.title = _("Package manager")
+			self["key_green"].text = ""
+			self["key_previous"].text = ""
+			self["key_next"].text  = ""
+			
 	def reloadPluginlist(self):
 		plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
+
+	def createSummary(self):
+		return PackageManagerSummary
