@@ -35,8 +35,11 @@ class Pager(GUIAddon):
 		if hasattr(self.source, "instance") and hasattr(self.source.instance, "setScrollbarMode"):
 			self.source.instance.setScrollbarMode(2)
 
-		if self.initPager not in self.source.onSelectionChanged:
+		if hasattr(self.source, "onSelectionChanged") and self.initPager not in self.source.onSelectionChanged:
 			self.source.onSelectionChanged.append(self.initPager)
+		if hasattr(self.source, "onSelChanged") and self.initPager not in self.source.onSelChanged:
+			self.source.onSelChanged.append(self.initPager)
+
 		self.initPager()
 
 	GUI_WIDGET = eListbox
