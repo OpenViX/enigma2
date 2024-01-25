@@ -428,7 +428,7 @@ class PackageManager(Screen, NumericalTextInput):
 			self["key_green"].text = ""
 			self["key_previous"].text = ""
 			self["key_next"].text = ""
-			
+
 	def reloadPluginlist(self):
 		plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
 
