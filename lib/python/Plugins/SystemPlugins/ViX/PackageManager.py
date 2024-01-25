@@ -141,7 +141,6 @@ class PackageManager(Screen, NumericalTextInput):
 		self.unwanted_extensions = ("-dbg", "-dev", "-doc", "-staticdev", "-src", "busybox")
 		self.filters = {"All": _("All"), "Installed": _("Installed"), "Upgradeable": _("Upgradeable"), "Installable": _("Installable")}
 
-
 		self.installedpng = LoadPixmap(cached=True, path=self.imagePath + "installed.png")
 		self.upgradeablepng = LoadPixmap(cached=True, path=self.imagePath + "upgradeable.png")
 		self.installablepng = LoadPixmap(cached=True, path=self.imagePath + "installable.png")
