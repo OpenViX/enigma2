@@ -234,12 +234,15 @@ class VIXImageManager(Screen):
 		if self.selectionChanged not in self["list"].onSelectionChanged:
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
+	def createSummary(self):
+		from Screens.PluginBrowser import PluginBrowserSummary
+		return PluginBrowserSummary
+
 	def selectionChanged(self):
-		# Where is this used? self.onChangedEntry does not appear to be populated anywhere. Maybe dead code.
 		item = self["list"].getCurrent()  # (name, link)
 		desc = self["backupstatus"].text
 		if item:
-			name = item[1]
+			name = item[0]
 		else:
 			name = ""
 		for cb in self.onChangedEntry:
