@@ -564,10 +564,17 @@
 		<widget name="Service" position="20,100" size="440,100" font="FdLcD;35" transparent="1" />
 	</screen>
 
-	<!-- NUMBERZAP -->
+<!-- NUMBERZAP -->
 	<screen name="NumberZap_summary" position="0,0" size="480,320">
 		<widget source="parent.servicename_summary" render="Label" position="0,5" size="480,70" font="FdLcD;55" halign="center" valign="center" foregroundColor="yellow" />
 		<widget source="parent.number_summary" render="Label" position="10,100" size="480,80" foregroundColor="white" font="FdLcD;75" halign="center" valign="center" />
 	</screen>
 
+<!-- Package manager -->
+	<screen name="PackageManagerSummary" position="fill">
+		<widget source="Title" render="Label" position="top" size="*,100" font="FdLcD;40" halign="center" valign="center" foregroundColor="yellow"/>
+		<widget source="parent.list" render="Label" position="fill" font="FdLcD;35" halign="center" valign="center">
+			<convert type="StringListSelection" />
+		</widget>
+	</screen>
 </skin>
