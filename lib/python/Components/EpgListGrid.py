@@ -146,7 +146,7 @@ class EPGListGrid(EPGListBase):
 					self.foreColorNow = parseColor(value).argb()
 				elif attrib == "EntryForegroundColorNowSelected":
 					self.foreColorNowSelected = parseColor(value).argb()
-					
+
 				elif attrib == "EventTextSidesMargin":
 					self.eventTextSidesMargin = parseScale(value)
 
