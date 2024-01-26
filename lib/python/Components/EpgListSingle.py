@@ -91,13 +91,14 @@ class EPGListSingle(EPGListBase):
 			pix_width = pix_size.width()
 			pix_height = pix_size.height()
 			eventW -= pix_width
-			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left() + r3.width() - pix_width, (r3.height() - pix_height) // 2, pix_width, pix_height, timerIcon))
+			posX = r3.left() + r3.width() - pix_width
+			res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, posX, (r3.height() - pix_height) // 2, pix_width, pix_height, timerIcon))
 			if autoTimerIcon:
 				pix_size = autoTimerIcon.size()
 				pix_width = pix_size.width()
 				pix_height = pix_size.height()
-				eventW -= pix_width
-				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r3.left() + r3.width() - pix_width * 2 - 10, (r3.height() - pix_height) // 2, pix_width, pix_height, autoTimerIcon))
+				eventW -= pix_width + 6
+				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, posX - pix_width - 6, (r3.height() - pix_height) // 2, pix_width, pix_height, autoTimerIcon))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), eventW, r3.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, eventName))
 		return res
 
