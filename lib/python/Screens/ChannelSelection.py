@@ -1337,7 +1337,7 @@ service_types_radio = '1:7:2:0:0:0:0:0:0:0:(type == 2) || (type == 10)'
 
 class ChannelSelectionBase(Screen, HelpableScreen):
 
-	orbposReStr = "\(satellitePosition *== *(\d+)"  # noqa: W605
+	orbposReStr = r"\(satellitePosition *== *(\d+)"  # noqa: W605
 	orbposRe = None  # Lazy compilation
 
 	def __init__(self, session):

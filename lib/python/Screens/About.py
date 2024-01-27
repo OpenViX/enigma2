@@ -94,7 +94,7 @@ class About(AboutBase):
 				tempinfo = ""
 		elif path.exists("/proc/hisi/msp/pm_cpu"):
 			try:
-				tempinfo = search("temperature = (\d+) degree", open("/proc/hisi/msp/pm_cpu").read()).group(1)  # noqa: W605
+				tempinfo = search(r"temperature = (\d+) degree", open("/proc/hisi/msp/pm_cpu").read()).group(1)  # noqa: W605
 			except:
 				tempinfo = ""
 		if tempinfo and int(tempinfo) > 0:

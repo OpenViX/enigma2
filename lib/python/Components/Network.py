@@ -183,7 +183,7 @@ class Network:
 				callback(True)
 
 	def loadNameserverConfig(self):
-		ipRegexp = "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"  # noqa: W605
+		ipRegexp = r"[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"  # noqa: W605
 		nameserverPattern = re.compile("nameserver +" + ipRegexp)
 		ipPattern = re.compile(ipRegexp)
 
