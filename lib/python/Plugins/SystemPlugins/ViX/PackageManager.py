@@ -146,11 +146,10 @@ class PackageManager(Screen):
 	def Reboot(self, result):
 		if result:
 			self.session.open(TryQuitMainloop, retvalue=3)
-		elif result is False:  # result is None would mean the MessageBox was exited
-			if cur := self["list"].getCurrent():
-				self.list[self["list"].getIndex()] = self.buildEntryComponent(cur[0], cur[1], cur[2], "installable" if self.wasRemove else "installed")
-				self["list"].setList(self.list)
-				self.reloadPluginlist()
+		elif cur := self["list"].getCurrent():
+			self.list[self.list.index(cur)] = self.buildEntryComponent(cur[0], cur[1], cur[2], "installable" if self.wasRemove else "installed")
+			self.filterList()
+			self.reloadPluginlist()
 
 	def ipkgCallback(self, event, param):
 		if event == IpkgComponent.EVENT_ERROR:
