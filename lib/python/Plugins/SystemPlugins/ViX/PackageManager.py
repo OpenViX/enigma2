@@ -262,7 +262,7 @@ class PackageManager(Screen):
 			self["filterActions"].setEnabled(True)
 			self.title = _("Package manager") + " - " + self.filters[self.getCurrentFilter()]
 			self["key_previous"].text = _("PREVIOUS")
-			self["key_next"].text  = _("NEXT")
+			self["key_next"].text = _("NEXT")
 
 	def reloadPluginlist(self):
 		plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
