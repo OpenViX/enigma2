@@ -145,7 +145,7 @@ int formatTime(char *buf, int bufferSize, int flags)
 		if (debugTime & 1) {
 			clock_gettime(CLOCK_MONOTONIC, &tp);
 /* Cast to (long long) is to cater for older 32-bit time fields */
-			pos += snprintf(buf, bufferSize, "<%6lld.%04lld> ", (long long)tp.tv_sec, (long long)tp.tv_nsec/100000);
+			pos += snprintf(buf, bufferSize, "<%6lld.%06lld> ", (long long)tp.tv_sec, (long long)tp.tv_nsec/1000);
 		}
 
 		if (debugTime & 2) {
