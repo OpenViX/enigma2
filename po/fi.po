@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-01-25 18:50+0200\n"
+"PO-Revision-Date: 2024-01-27 08:14+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13543,7 +13543,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 25.01.2024 ---\n"
+"--- 27.01.2024 ---\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -19344,3 +19344,18 @@ msgstr "Päivitettävissä"
 
 msgid "Installable"
 msgstr "Asennettavissa"
+
+msgid "opkg update"
+msgstr "Pakettilistojen (opkg) päivitys"
+
+msgid "Running opkg update"
+msgstr "Opkg päivitys käynnissä"
+
+msgid "Downloading the latest package list. Please wait..."
+msgstr "Päivitetään uusinta pakettilistaa. Odota..."
+
+msgid "Package list loading"
+msgstr "Pakettilistan lataus"
+
+msgid "Loading the package list. Please wait..."
+msgstr "Ladataan pakettilistaa. Odota..."
