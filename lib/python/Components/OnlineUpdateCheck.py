@@ -249,7 +249,7 @@ class OnlineUpdateCheckPoller:
 
 	def JobStart(self):
 		config.softwareupdate.updatefound.setValue(False)
-		if (SystemInfo["imagetype"] != "release" and feedsstatuscheck.getFeedsBool() == "unknown") or (SystemInfo["imagetype"] == "release" and feedsstatuscheck.getFeedsBool() in ("stable", "unstable")):
+		if (SystemInfo["imagetype"] != "release" and feedsstatuscheck.getFeedsBool() in ("alien", "developer")) or (SystemInfo["imagetype"] == "release" and feedsstatuscheck.getFeedsBool() in ("stable", "unstable")):
 			print("[OnlineUpdateCheckPoller] Starting background check.")
 			feedsstatuscheck.startCheck()
 		else:
