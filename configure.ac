@@ -1,4 +1,4 @@
-AC_INIT([enigma2],[6.4],[http://www.world-of-satellite.com])
+AC_INIT([enigma2],[6.5],[http://www.world-of-satellite.com])
 AM_INIT_AUTOMAKE([dist-bzip2 no-define tar-pax -Wno-portability])
 AC_CONFIG_HEADERS([enigma2_config.h])
 
