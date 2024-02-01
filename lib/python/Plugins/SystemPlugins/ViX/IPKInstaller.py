@@ -116,7 +116,7 @@ class VIXIPKInstaller(Screen):
 
 		del self.list[:]
 		f = listdir(self.defaultDir)
-		self.loadDir = self.defaultDir.replace(" ", "%20")		
+		self.loadDir = self.defaultDir.replace(" ", "%20")
 		for line in f:
 			if line.find(".ipk") != -1:
 				self.list.append(path.join(self.loadDir, line))
@@ -130,7 +130,7 @@ class VIXIPKInstaller(Screen):
 					self.list.append(path.join(self.loadDir, line))
 
 		self.list.sort()
-		#  print(f"[IPKinstaller]3 f:{f} self.list:{self.list}")  
+		#  print(f"[IPKinstaller]3 f:{f} self.list:{self.list}")
 		self["list"].l.setList(self.list)
 
 	def keyInstall(self):
