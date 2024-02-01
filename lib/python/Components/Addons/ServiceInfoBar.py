@@ -40,7 +40,7 @@ class ServiceInfoBar(GUIAddon):
 		self.separatorLineColor = 0xC0C0C0
 		self.foreColor = 0xFFFFFF
 		self.separatorLineThickness = 0
-		self.autoresizeMode = "auto"  # possible values: auto, fixed, condensed 
+		self.autoresizeMode = "auto"  # possible values: auto, fixed, condensed
 		self.font = gFont("Regular", 18)
 		self.__event_tracker = None
 		self.current_crypto = "---"
@@ -53,7 +53,7 @@ class ServiceInfoBar(GUIAddon):
 		self.lastElement = None
 		self.permanentIcons = []
 		self.records_running = 0
-		
+
 	def onContainerShown(self):
 		self.textRenderer.GUIcreate(self.relatedScreen.instance)
 		self.l.setItemHeight(self.instance.size().height())
@@ -69,7 +69,7 @@ class ServiceInfoBar(GUIAddon):
 					iPlayableService.evHBBTVInfo: self.updateAddon
 				}
 			)
-			
+
 	def destroy(self):
 		self.nav.record_event.remove(self.gotRecordEvent)
 		self.refreshCryptoInfo.stop()
@@ -79,7 +79,7 @@ class ServiceInfoBar(GUIAddon):
 		GUIAddon.destroy(self)
 
 	GUI_WIDGET = eListbox
-	
+
 	def gotRecordEvent(self, service, event):
 		prev_records = self.records_running
 		if event in (iRecordableService.evEnd, iRecordableService.evStart, None):
@@ -87,11 +87,11 @@ class ServiceInfoBar(GUIAddon):
 			self.records_running = len(recs)
 			if self.records_running != prev_records:
 				self.updateAddon()
-	
+
 	def scheduleAddonUpdate(self):
 		self.refreshAddon.stop()
 		self.refreshAddon.start(1000)
-	
+
 	def checkCrypto_update(self):
 		if NavigationInstance.instance is not None:
 			service = NavigationInstance.instance.getCurrentService()
@@ -239,19 +239,19 @@ class ServiceInfoBar(GUIAddon):
 							xPos -= textWidth + self.spacing
 						else:
 							xPos += textWidth + self.spacing
-							
+
 			if enabledKey:
 				self.prevElement = self.lastElement
 				self.lastElement = enabledKey
-		
+
 		if self.lastElement == "separator" and self.prevElement != "currentCrypto":
 			res.pop()
 
 		return res
-		
+
 	def getDesktopWith(self):
 		return getDesktop(0).size().width()
-		
+
 	def _calcTextWidth(self, text, font=None, size=None):
 		if size:
 			self.textRenderer.instance.resize(size)
