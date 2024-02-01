@@ -220,7 +220,7 @@ class ServiceInfoBar(GUIAddon):
 					if enabledKey == "separator":
 						if self.lastElement != "separator":
 							res.append(MultiContentEntryText(
-								pos=(xPos-self.separatorLineThickness, yPos), size=(self.separatorLineThickness, self.instance.size().height()),
+								pos=(xPos - self.separatorLineThickness, yPos), size=(self.separatorLineThickness, self.instance.size().height()),
 								font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER,
 								text="",
 								color=self.separatorLineColor, color_sel=self.separatorLineColor,
@@ -232,7 +232,7 @@ class ServiceInfoBar(GUIAddon):
 					else:
 						textWidth = self._calcTextWidth(self.current_crypto, font=self.font, size=eSize(self.getDesktopWith() // 3, 0))
 						res.append(MultiContentEntryText(
-								pos=(xPos-textWidth, yPos-2), size=(textWidth, self.instance.size().height()),
+								pos=(xPos - textWidth, yPos - 2), size=(textWidth, self.instance.size().height()),
 								font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_TOP,
 								text=self.current_crypto,
 								color=self.foreColor, color_sel=self.foreColor,
