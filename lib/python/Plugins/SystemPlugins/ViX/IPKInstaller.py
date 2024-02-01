@@ -116,17 +116,21 @@ class VIXIPKInstaller(Screen):
 
 		del self.list[:]
 		f = listdir(self.defaultDir)
+		self.loadDir = self.defaultDir.replace(" ", "%20")		
 		for line in f:
 			if line.find(".ipk") != -1:
-				self.list.append(line)
-
+				self.list.append(path.join(self.loadDir, line))
+		#  print(f"[IPKinstaller]1 f:{f} self.list:{self.list}")
 		if path.ismount("/media/usb"):
 			f = listdir("/media/usb")
+			self.loadDir = "/media/usb"
 			for line in f:
 				if line.find(".ipk") != -1:
-					self.list.append(line)
+					#  print(f"[IPKinstaller]2 f:{f} line:{line}")
+					self.list.append(path.join(self.loadDir, line))
 
 		self.list.sort()
+		#  print(f"[IPKinstaller]3 f:{f} self.list:{self.list}")  
 		self["list"].l.setList(self.list)
 
 	def keyInstall(self):
@@ -138,8 +142,8 @@ class VIXIPKInstaller(Screen):
 		if answer is True:
 			sel = self["list"].getCurrent()
 			if sel:
-				self.defaultDir = self.defaultDir.replace(" ", "%20")
-				cmd1 = "/usr/bin/opkg install " + path.join(self.defaultDir, sel)
+				cmd1 = f"/usr/bin/opkg install {sel}"
+				print(f"[IPKinstaller]4 sel:{sel}, cmd1:{cmd1}")
 				self.session.openWithCallback(self.installFinished(sel), Console, title=_("Installing..."), cmdlist=[cmd1], closeOnSuccess=True)
 
 	def installFinished(self, sel):
