@@ -71,6 +71,7 @@ def addspace(text):
 		text += "  "
 	return text
 
+
 def getCryptoInfo(info):
 	ecmdata = GetEcmInfo()
 	if info and info.getInfo(iServiceInformation.sIsCrypted) == 1:
@@ -86,6 +87,7 @@ def getCryptoInfo(info):
 		current_ecmpid = "0"
 	return current_source, current_caid, current_provid, current_ecmpid
 	
+
 def createCurrentCaidLabel(info):
 	current_source, current_caid, current_provid, current_ecmpid = getCryptoInfo(info)
 	res = "---"

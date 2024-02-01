@@ -54,8 +54,6 @@ class ServiceInfoBar(GUIAddon):
 		self.permanentIcons = []
 		self.records_running = 0
 		
-		
-
 	def onContainerShown(self):
 		self.textRenderer.GUIcreate(self.relatedScreen.instance)
 		self.l.setItemHeight(self.instance.size().height())
