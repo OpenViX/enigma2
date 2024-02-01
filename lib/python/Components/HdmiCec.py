@@ -78,7 +78,7 @@ cmdList = {
 	0xA1: "<Clear External Timer>",
 	0xA2: "<Set External Timer>",
 	0xFF: "<Abort>",
-	}	# noqa E123
+	}  # noqa E123
 
 CtrlByte0 = {		# Information only: control byte 0 status/action request by command (see cmdList)
 	0x00: {0x00: "<Unrecognized opcode>",
@@ -321,7 +321,7 @@ CtrlByte0 = {		# Information only: control byte 0 status/action request by comma
 			0x04: "<1.3a>",
 			0x05: "<1.4>",
 			0x06: "<2.0>"},
-	}	# noqa E123
+	}  # noqa E123
 
 
 def getPhysicalAddress():
