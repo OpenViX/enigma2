@@ -45,7 +45,7 @@ class ServiceInfoBar(GUIAddon):
 		self.separatorLineColor = 0xC0C0C0
 		self.foreColor = 0xFFFFFF
 		self.separatorLineThickness = 0
-		self.autoresizeMode = "auto" # possible values: auto, fixed, condensed 
+		self.autoresizeMode = "auto"  # possible values: auto, fixed, condensed 
 		self.font = gFont("Regular", 18)
 		self.__event_tracker = None
 		self.current_crypto = "---"
