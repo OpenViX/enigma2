@@ -1,17 +1,15 @@
 from os import path
 from enigma import iPlayableService, iServiceInformation, eTimer, eServiceCenter, eServiceReference, eDVBDB
 
-from Components.ActionMap import ActionMap
 from Components.AVSwitch import iAVSwitch as iAV
 from Components.config import config, configfile, getConfigListEntry
-from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
-from Components.Pixmap import Pixmap
 from Components.ServiceEventTracker import ServiceEventTracker
-from Components.Sources.Boolean import Boolean
 from Components.SystemInfo import SystemInfo
 from Screens.ChannelSelection import FLAG_IS_DEDICATED_3D
+from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
+from Screens.Setup import Setup
 from Tools.Directories import isPluginInstalled
 from Tools.HardwareInfo import HardwareInfo
 
@@ -21,26 +19,12 @@ isDedicated3D = False
 videomode = "/proc/stb/video/videomode"
 
 
-class VideoSetup(ConfigListScreen, Screen):
+class VideoSetup(Setup):
 	def __init__(self, session):
-		Screen.__init__(self, session)
-		self.skinName = ["Setup"]
-		self.setTitle(_("Video & Audio Settings"))
-		self["HelpWindow"] = Pixmap()
-		self["HelpWindow"].hide()
-		self["VKeyIcon"] = Boolean(False)
-		self["footnote"] = Label()
-		self.onChangedEntry = []
-		# handle hotplug by re-creating setup
+		Setup.__init__(self, session, None)
+		self.title = _("Video & Audio Settings")
 		self.onShow.append(self.startHotplug)
 		self.onHide.append(self.stopHotplug)
-
-		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry, fullUI=True)
-
-		self["actions"] = ActionMap(["SetupActions"],
-			{"save": self.apply, }, -2)
-		self["description"] = Label("")
 		self.createSetup()
 		self.grabLastGoodMode()
 
@@ -55,8 +39,10 @@ class VideoSetup(ConfigListScreen, Screen):
 		self.list = [
 			getConfigListEntry(_("Video output"), config.av.videoport, _("Configures which video output connector will be used."))
 		]
+		if config.av.videoport.value == "Scart":
+			config.av.autores.value = "disabled"
 		if config.av.videoport.value in ("HDMI", "YPbPr", "Scart-YPbPr") and not isPluginInstalled("AutoResolution"):
-			self.list.append(getConfigListEntry(_("Automatic resolution"), config.av.autores, _("If enabled the output resolution of the box will try to match the resolution of the video content")))
+			self.list.append(getConfigListEntry(_("Automatic resolution *"), config.av.autores, _("If enabled the output resolution of the box will try to match the resolution of the video content")))
 			if config.av.autores.value in ("all", "hd"):
 				self.list.append(getConfigListEntry(_("Force de-interlace"), config.av.autores_deinterlace, _("If enabled the video will always be de-interlaced.")))
 				self.list.append(getConfigListEntry(_("Automatic resolution label"), config.av.autores_label_timeout, _("Allows you to adjust the amount of time the resolution infomation display on screen.")))
@@ -161,14 +147,6 @@ class VideoSetup(ConfigListScreen, Screen):
 		if config.usage.sort_settings.value:
 			self["config"].list.sort(key=lambda x: x[0])
 
-	def keyLeft(self):
-		ConfigListScreen.keyLeft(self)
-		self.createSetup()
-
-	def keyRight(self):
-		ConfigListScreen.keyRight(self)
-		self.createSetup()
-
 	def confirm(self, confirmed):
 		if not confirmed:
 			config.av.videoport.setValue(self.last_good[0])
@@ -176,7 +154,7 @@ class VideoSetup(ConfigListScreen, Screen):
 			config.av.videorate[self.last_good[1]].setValue(self.last_good[2])
 			iAV.setMode(*self.last_good)
 		else:
-			self.keySave()
+			Setup.keySave(self)
 
 	def grabLastGoodMode(self):
 		port = config.av.videoport.value
@@ -184,21 +162,15 @@ class VideoSetup(ConfigListScreen, Screen):
 		rate = config.av.videorate[mode].value
 		self.last_good = (port, mode, rate)
 
-	def saveAll(self):
-		if config.av.videoport.value == 'Scart':
-			config.av.autores.setValue('disabled')
-		ConfigListScreen.saveAll(self)
-
-	def apply(self):
+	def keySave(self):
 		port = config.av.videoport.value
 		mode = config.av.videomode[port].value
 		rate = config.av.videorate[mode].value
 		if (port, mode, rate) != self.last_good:
 			iAV.setMode(port, mode, rate)
-			from Screens.MessageBox import MessageBox
 			self.session.openWithCallback(self.confirm, MessageBox, _("Is this video mode ok?"), MessageBox.TYPE_YESNO, timeout=20, default=False)
 		else:
-			self.keySave()
+			Setup.keySave(self)
 
 
 class AutoVideoModeLabel(Screen):
