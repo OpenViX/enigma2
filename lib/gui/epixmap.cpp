@@ -91,6 +91,8 @@ int ePixmap::event(int event, void *data, void *data2)
 //		eWidget::event(event, data, data2);
 
 		gPainter &painter = *(gPainter*)data2;
+		int cornerRadius = getCornerRadius();
+
 		if (m_pixmap)
 		{
 			int flags = 0;
@@ -102,8 +104,13 @@ int ePixmap::event(int event, void *data, void *data2)
 				flags = gPainter::BT_ALPHABLEND;
 			if (m_scale)
 				flags |= gPainter::BT_SCALE;
+
+			painter.setRadius(cornerRadius, getCornerRadiusEdges());
 			painter.blit(m_pixmap, eRect(ePoint(0, 0), s), eRect(), flags);
 		}
+
+		if(cornerRadius)
+			return 0; // border not suppored for rounded edges
 
 		if (m_have_border_color)
 			painter.setForegroundColor(m_border_color);
