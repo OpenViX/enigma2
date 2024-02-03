@@ -75,6 +75,7 @@ class ServiceInfoBar(GUIAddon):
 		self.currentServiceSource = self.source.screen["CurrentService"]
 		if self.currentServiceSource and self.updateAddon not in self.currentServiceSource.onManualNewService:
 			self.currentServiceSource.onManualNewService.append(self.scheduleAddonUpdate)
+
 	def destroy(self):
 		self.nav.record_event.remove(self.gotRecordEvent)
 		self.refreshCryptoInfo.stop()
