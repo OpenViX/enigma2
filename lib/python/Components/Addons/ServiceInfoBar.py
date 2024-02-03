@@ -41,7 +41,7 @@ class ServiceInfoBar(GUIAddon):
 		self.separatorLineColor = 0xC0C0C0
 		self.foreColor = 0xFFFFFF
 		self.separatorLineThickness = 0
-		self.autoresizeMode = "auto"  # possible values: auto, fixed, condensed 
+		self.autoresizeMode = "auto"  # possible values: auto, fixed, condensed
 		self.font = gFont("Regular", 18)
 		self.__event_tracker = None
 		self.current_crypto = "---"
@@ -84,9 +84,9 @@ class ServiceInfoBar(GUIAddon):
 		duplicate = None
 		for item in a_list:
 			if duplicate != item:
-				duplicate = item 
+				duplicate = item
 				yield item
-	
+
 	def gotRecordEvent(self, service, event):
 		prev_records = self.records_running
 		if event in (iRecordableService.evEnd, iRecordableService.evStart, None):
@@ -111,18 +111,18 @@ class ServiceInfoBar(GUIAddon):
 
 	def updateAddon(self):
 		self.refreshAddon.stop()
-		
+
 		filteredElements = []
-		
+
 		for x in self.elements:
 			enabledKey = self.detectVisible(x) if x != "separator" else "separator"
 			if enabledKey:
 				filteredElements.append(enabledKey)
 			elif self.autoresizeMode in ["auto", "fixed"] or x in self.permanentIcons:
 				filteredElements.append(x + "!")
-				
+
 		filteredElements = list(self.remove_doubles(filteredElements))
-		
+
 		if filteredElements[-1] == "separator" and len(filteredElements) > 1 and filteredElements[len(filteredElements) - 2] != "currentCrypto":
 			del filteredElements[-1]
 
