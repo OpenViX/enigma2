@@ -284,6 +284,7 @@ def getActiveSubservicesForCurrentChannel(service):
 				activeSubservices.append((subservice.getName(), subservice.toString()))
 	return activeSubservices
 
+
 def hasActiveSubservicesForCurrentChannel(service):
 	activeSubservices = getActiveSubservicesForCurrentChannel(service)
 	return bool(activeSubservices and len(activeSubservices))
