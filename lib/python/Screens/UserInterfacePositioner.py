@@ -40,7 +40,7 @@ def InitOsd():
 	config.osd.dst_top = ConfigSelectionNumber(default=0, stepwidth=1, min=0, max=576, wraparound=False)
 	config.osd.dst_height = ConfigSelectionNumber(default=576, stepwidth=1, min=0, max=576, wraparound=False)
 	config.osd.alpha = ConfigSelectionNumber(default=255, stepwidth=1, min=0, max=255, wraparound=False)
-	config.av.osd_alpha = NoSave(ConfigNumber(default=255))
+	config.misc.osd_alpha = NoSave(ConfigNumber(default=255))
 	config.osd.threeDmode = ConfigSelection([("off", _("Off")), ("auto", _("Auto")), ("sidebyside", _("Side by Side")), ("topandbottom", _("Top and Bottom"))], "auto")
 	config.osd.threeDznorm = ConfigSlider(default=50, increment=1, limits=(0, 100))
 	config.osd.show3dextensions = ConfigYesNo(default=False)
@@ -97,7 +97,7 @@ def InitOsdPosition():
 	def setOSDAlpha(configElement):
 		if SystemInfo["CanChangeOsdAlpha"]:
 			print('[UserInterfacePositioner] Setting OSD alpha:', str(configElement.value))
-			config.av.osd_alpha.setValue(configElement.value)
+			config.misc.osd_alpha.setValue(configElement.value)
 			f = open("/proc/stb/video/alpha", "w")
 			f.write(str(configElement.value))
 			f.close()
@@ -158,6 +158,7 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 			if self.restoreService not in self.onClose:
 				self.onClose.append(self.restoreService)
 			self.ConsoleB.ePopen('/usr/bin/showiframe /usr/share/enigma2/hd-testcard.mvi')
+			# config.osd.alpha.setValue(155)
 		else:
 			self.close()
 
@@ -212,6 +213,7 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 	# This is called by the Wizard...
 
 	def run(self):
+		# config.osd.alpha.setValue(self.alpha)
 		config.osd.dst_left.save()
 		config.osd.dst_width.save()
 		config.osd.dst_top.save()

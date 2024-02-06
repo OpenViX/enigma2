@@ -1,5 +1,6 @@
 <!--suppress XmlUnboundNsPrefix -->
 <wizard>
+from Components.AVSwitch import iAVSwitch as avSwitch
 	<step id="inputselection" nextstep="modeselection" timeout="10" timeoutaction="selectnext">
 		<condition>
 self.condition = len(self.listInputChannels()) > 1
@@ -42,7 +43,8 @@ self.selectKey("DOWN")
 	</step>
 	<step id="end">
 		<code>
-self.hw.saveMode(self.port, self.mode, self.rate)
+from Components.AVSwitch import iAVSwitch as avSwitch		
+avSwitch.saveMode(self.port, self.mode, self.rate)
 from Components.config import configfile
 configfile.save()
 self.markDone()
