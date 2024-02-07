@@ -5,6 +5,7 @@
 #include <lib/python/swig.h>
 #include <lib/python/python.h>
 #include <lib/base/object.h>
+#include <lib/base/estring.h>
 #include <string>
 #include <connection.h>
 #include <list>
@@ -51,6 +52,8 @@ public:
 
 	inline int getSortKey() const { return (flags & hasSortKey) ? data[3] : ((flags & sort1) ? 1 : 0); }
 
+	static RESULT parseNameAndProviderFromName(std::string &sourceName, std::string& name, std::string& prov);
+
 #ifndef SWIG
 	int data[8];
 	std::string path;
@@ -88,9 +91,18 @@ public:
 // real existing service ( for dvb eServiceDVB )
 #ifndef SWIG
 	std::string name;
+	std::string prov;
 	int number;
 #endif
-	std::string getName() const { return name; }
+	std::string getName() const { 
+		if (!name.empty()) {
+			std::vector<std::string> name_split = split(name, "•");
+			std::string name_res = name_split[0];
+			return name_res; 
+		}
+		return name; 
+	}
+	std::string getProvider() const { return prov; }
 	void setName( const std::string &n ) { name=n; }
 	int getChannelNum() const { return number; }
 	void setChannelNum(const int n) { number = n; }
