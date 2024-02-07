@@ -6626,7 +6626,7 @@ msgid "HDMI Color depth"
 msgstr "HDMI Värisyvyys"
 
 msgid "HDMI Colorimetry"
-msgstr "HDMI Väriavaruus"
+msgstr "HDMI Kolorimetria"
 
 msgid "HDMI Colorspace"
 msgstr "HDMI Väriavaruus"
