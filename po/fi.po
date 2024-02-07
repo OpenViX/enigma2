@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-02-04 16:46+0200\n"
+"PO-Revision-Date: 2024-02-07 19:20+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3167,14 +3167,14 @@ msgstr "Muuta toiston ja viiveen asetuksia?"
 msgid "Change step size"
 msgstr "Muuta askelkokoa"
 
-msgid "Change the Colordepth for UHD"
-msgstr "Vaihda UHD:n värisyvyyttä"
+msgid "Change the Colordepth for UHD - this may cause unexpected results or black screen"
+msgstr "Muuta UHD:n värisyvyyttä - tämä voi aiheuttaa odottamattomia tuloksia tai mustan ruudun"
 
-msgid "Change the Colorimetry for HDR"
-msgstr "Vaihda HDR:n väriavaruutta"
+msgid "Change the Colorimetry for HDR - this may cause unexpected results or black screen"
+msgstr "Muuta HDR:n kolorimetriaa - tämä voi aiheuttaa odottamattomia tuloksia tai mustan ruudun"
 
-msgid "Change the Colorspace from Auto to RGB"
-msgstr "Vaihda väriavaruus automaattisesta RGB:ksi"
+msgid "Change Colorspace setting - this may cause unexpected results or black screen"
+msgstr "Muuta väriavaruusasetusta - tämä voi aiheuttaa odottamattomia tuloksia tai mustan ruudun"
 
 msgid "Channel"
 msgstr "Kanava"
@@ -3797,8 +3797,8 @@ msgstr "Määrittää mahdolliset taaksepäinkelauksen nopeudet."
 msgid "Configure the primary EPG language."
 msgstr "Määrittää ensisijaisen ohjelmaoppaan kielen."
 
-msgid "Configure the refresh rate of the screen. Multi means refresh rate depends on the source 24/50/60Hz"
-msgstr "Määritä näytön virkistystaajuus. Multi tarkoittaa vaihtelevaa taajuutta ohjelmalähteen mukaan: 24/50/60Hz"
+msgid "Configure screen refresh rate. Multi & Auto rates depend on the source 24/50/60Hz"
+msgstr "Määritä näytön virkistystaajuus. Multi & Auto -taajuudet riippuvat lähteestä 24/50/60Hz"
 
 msgid "Configure the second audio language."
 msgstr "Määrittää toissijaisen äänen kielen."
@@ -6622,7 +6622,7 @@ msgstr "Kiintolevyn asetukset"
 msgid "HDMI"
 msgstr "HDMI"
 
-msgid "HDMI Colordepth"
+msgid "HDMI Color depth"
 msgstr "HDMI Värisyvyys"
 
 msgid "HDMI Colorimetry"
@@ -7411,7 +7411,7 @@ msgid "Is this setting ok?"
 msgstr "Käytä näitä asetuksia?"
 
 msgid "Is this video mode ok?"
-msgstr "Otetaanko tämä video-tila käyttöön?"
+msgstr "Otetaanko tämä videotila käyttöön?"
 
 msgid "Isle of Man"
 msgstr "Isle of Man"
@@ -11795,7 +11795,7 @@ msgid "Select video input with up/down buttons"
 msgstr "Valitse video-sisäänmeno ylös/alas-näppäimillä"
 
 msgid "Select video mode"
-msgstr "Valitse video-tila"
+msgstr "Valitse videotila"
 
 msgid "Select whether your SCR device is externally powered."
 msgstr "Valitse onko SCR-laitteesi jännite syötetty ulkoisesti."
@@ -12216,7 +12216,7 @@ msgid "Show 2160p 30fps as"
 msgstr "Näytä 2160p 30fps näin:"
 
 msgid "Show 480/576p 24fps as"
-msgstr "Näytä 1080p 24fps näin:"
+msgstr "Näytä 480/576p 24fps näin:"
 
 msgid "Show 720p 24fps as"
 msgstr "Näytä 720p 24fps näin:"
@@ -13543,7 +13543,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 04.02.2024 ---\n"
+"--- 07.02.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -13986,7 +13986,7 @@ msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as
 msgstr "Tämä asetus määrittää kuinka 720p 24Hz näytetään sinun TV:ssä. (koska kaikki TV:t eivät suoraan tue tätä resoluutiota)"
 
 msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Tämä asetus määrittää kuinka SD-kuva 24Hz näytetään. (koska kaikki TV:t eivät suoraan tue tätä resoluutiota)"
+msgstr "Tämä asetus määrittää kuinka SD progressiivinen 24Hz näytetään. (koska kaikki TV:t eivät suoraan tue tätä resoluutiota)"
 
 msgid "This option allows you to choose how to display elapsed time. As + or -"
 msgstr "Tämä asetus määrittää kuinka kulunut aika näytetään. Joko + tai -"
@@ -15114,11 +15114,11 @@ msgstr ""
 "Seuraavaa tuloporttia tutkitaan automaattisesti 10 sekunnin kuluttua."
 
 msgid "Video mode selection."
-msgstr "Video-tilan valinta."
+msgstr "Videotilan valinta."
 
 #, python-format
 msgid "Video mode: %s"
-msgstr "Video-tila: %s"
+msgstr "Videotila: %s"
 
 msgid "Video output"
 msgstr "Video-ulostulo"
@@ -19360,3 +19360,15 @@ msgstr "Pakettilistan lataus"
 
 msgid "Loading the package list. Please wait..."
 msgstr "Ladataan pakettilistaa. Odota..."
+
+msgid "Force resolution override*"
+msgstr "Pakota resoluution ohitus*"
+
+msgid "Only use if you must force the output resolution - otherwise select 'Refresh Rate = auto'"
+msgstr "Käytä vain, jos sinun täytyy pakottaa ulostuloresoluutio - muussa tapauksessa valitse 'Virkistystaajuus = auto'"
+
+msgid "Show resolution label"
+msgstr "\"Näytä resoluutiotieto"
+
+msgid "Video mode: %s not available"
+msgstr "Videotila: %s ei ole käytettävissä"
