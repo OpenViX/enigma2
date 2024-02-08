@@ -535,7 +535,7 @@ class VIXImageManager(Screen):
 		dialog = self.session.openWithCallback(self.keyRestore2, MessageBox, message, list=choices, default=False, simple=True)
 		if idx:
 			dialog["list"].moveToIndex(idx)
-		
+
 	def keyRestore2(self, retval):
 		if retval:
 			if SystemInfo["canMultiBoot"]:
