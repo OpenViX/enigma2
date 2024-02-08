@@ -94,10 +94,9 @@ class AVSwitch:
 		# print(f"[AVSwitch][readAvailableModes] {SystemInfo['AvailableVideomodes']}")
 
 	def readPreferredModes(self):
-		modes = []
-		modes = eAVSwitch.getInstance().getPreferredModes(1)
+		self.modes_preferred = eAVSwitch.getInstance().getPreferredModes(1)
 		# print("[AVSwitch] reading preferred modes", modes)
-		if not modes:
+		if not self.modes_preferred:
 			self.modes_preferred = SystemInfo["AvailableVideomodes"]
 			print(f"[AVSwitch][readPreferredModes]none, so using {self.modes_preferred}")
 		if self.modes_preferred != self.last_modes_preferred:
