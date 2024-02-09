@@ -5,6 +5,7 @@ from enigma import eAVSwitch, getDesktop
 from Components.config import ConfigBoolean, ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
 from Components.SystemInfo import SystemInfo
 from Tools.CList import CList
+from Tools.Directories import isPluginInstalled
 # from Tools.HardwareInfo import HardwareInfo
 
 config.av = ConfigSubsection()
@@ -92,6 +93,8 @@ class AVSwitch:
 		SystemInfo["AvailableVideomodes"] = []
 		SystemInfo["AvailableVideomodes"] = eAVSwitch.getInstance().readAvailableModes().split(" ")
 		# print(f"[AVSwitch][readAvailableModes] {SystemInfo['AvailableVideomodes']}")
+		if isPluginInstalled("AutoResolution"):
+			return SystemInfo["AvailableVideomodes"]
 
 	def readPreferredModes(self):
 		self.modes_preferred = eAVSwitch.getInstance().getPreferredModes(1)
