@@ -367,12 +367,6 @@ def runScreenTest():
 			# we need session.scart to access it from within menu.xml
 			session.scart = AutoScartControl(session)
 
-		profile("Init:AutoVideoMode")
-		from Tools.Directories import isPluginInstalled  # noqa: E402  don't move this import
-		if config.av.fixres.value != "disabled" and not isPluginInstalled("AutoResolution"):
-			import Screens.VideoMode
-			Screens.VideoMode.autostart(session)
-
 	profile("RunReactor")
 	profile_final()
 	runReactor()
