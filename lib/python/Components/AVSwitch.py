@@ -345,51 +345,6 @@ def InitAVSwitch():
 	# when YUV is not enabled, don't let the user select it
 	if config.av.yuvenabled.value:
 		colorformat_choices["yuv"] = _("YPbPr")
-	config.av.fixres = ConfigSelection(choices={"disabled": _("Disabled"), "all": _("All resolutions"), "hd": _("only HD")}, default="disabled")
-	choicelist = []
-	for i in range(5, 16):
-		choicelist.append(("%d" % i, ngettext("%d second", "%d seconds", i) % i))
-	config.av.fixres_label_timeout = ConfigSelection(default="5", choices=[("0", _("Not Shown"))] + choicelist)
-	config.av.fixres_delay = ConfigSelectionNumber(min=500, max=15000, stepwidth=500, default=500, wraparound=True)
-	config.av.fixres_deinterlace = ConfigYesNo(default=False)
-	config.av.fixres_sd = ConfigSelection(choices={
-		"720p": _("720p"),
-		"1080i": _("1080i")
-	}, default="720p")
-	config.av.fixres_480p24 = ConfigSelection(choices={
-		"480p24": _("480p 24Hz"),
-		"720p24": _("720p 24Hz"),
-		"1080p24": _("1080p 24Hz")
-	}, default="1080p24")
-	config.av.fixres_720p24 = ConfigSelection(choices={
-		"720p24": _("720p 24Hz"),
-		"1080p24": _("1080p 24Hz")
-	}, default="1080p24")
-	config.av.fixres_1080p24 = ConfigSelection(choices={
-		"1080p24": _("1080p 24Hz"),
-		"1080p25": _("1080p 25Hz")
-	}, default="1080p24")
-	config.av.fixres_1080p25 = ConfigSelection(choices={
-		"1080p25": _("1080p 25Hz"),
-		"1080p50": _("1080p 50Hz")
-	}, default="1080p25")
-	config.av.fixres_1080p30 = ConfigSelection(choices={
-		"1080p30": _("1080p 30Hz"),
-		"1080p60": _("1080p 60Hz")
-	}, default="1080p30")
-	config.av.fixres_2160p24 = ConfigSelection(choices={
-		"2160p24": _("2160p 24Hz"),
-		"2160p25": _("2160p 25Hz"),
-		"2160p30": _("2160p 30Hz")
-	}, default="2160p24")
-	config.av.fixres_2160p25 = ConfigSelection(choices={
-		"2160p25": _("2160p 25Hz"),
-		"2160p50": _("2160p 50Hz")
-	}, default="2160p25")
-	config.av.fixres_2160p30 = ConfigSelection(choices={
-		"2160p30": _("2160p 30Hz"),
-		"2160p60": _("2160p 60Hz")
-	}, default="2160p30")
 	config.av.colorformat = ConfigSelection(choices=colorformat_choices, default="rgb")
 	config.av.aspectratio = ConfigSelection(choices={
 		"4_3_letterbox": _("4:3 Letterbox"),
