@@ -361,6 +361,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 			if not self.ImageBackupDone and not config.softwareupdate.autoimagebackup.value and config.imagemanager.backuplocation.value:
 				choices.append((_("Perform a full image backup"), "imagebackup"))
 			choices.append((_("Update channel list only"), "channels"))
+			choices.append((_("Show packages to be updated"), "showlist"))
 			choices.append((_("Cancel"), ""))
 			self["actions"].setEnabled(True)
 			upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight)
