@@ -1,5 +1,3 @@
-from enigma import eAVSwitch
-
 from Components.AVSwitch import iAVSwitch as iAV
 from Components.config import config, getConfigListEntry
 from Components.SystemInfo import SystemInfo
