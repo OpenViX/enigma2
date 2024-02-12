@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-01-07 14:10+0200\n"
+"PO-Revision-Date: 2024-02-07 19:20+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #, python-format
 msgid ""
@@ -2172,7 +2172,7 @@ msgid "An empty filename is illegal."
 msgstr "Tyhjä nimi ei ole sallittu."
 
 msgid "An error occurred while downloading the packetlist. Please try again."
-msgstr "Tapahtui virhe pakettiluetteloa ladattaessa. Yritä uudestaan."
+msgstr "Tapahtui virhe pakettilistaa ladattaessa. Yritä uudestaan."
 
 msgid "An unknown error occurred!"
 msgstr "Tuntematon virhe!"
@@ -2497,8 +2497,8 @@ msgstr "Äänen ja tekstityksen kielivalinnat"
 msgid "Automatic reload"
 msgstr "Automaattinen uudelleenlataus"
 
-msgid "Automatic resolution"
-msgstr "Automaattinen resoluutio"
+msgid "Automatic resolution *"
+msgstr "Automaattinen resoluutio *"
 
 msgid "Automatic resolution label"
 msgstr "Resoluution vaihtumisen ilmoitus"
@@ -3167,14 +3167,14 @@ msgstr "Muuta toiston ja viiveen asetuksia?"
 msgid "Change step size"
 msgstr "Muuta askelkokoa"
 
-msgid "Change the Colordepth for UHD"
-msgstr "Vaihda UHD:n värisyvyyttä"
+msgid "Change the Colordepth for UHD - this may cause unexpected results or black screen"
+msgstr "Muuta UHD:n värisyvyyttä - tämä voi aiheuttaa odottamattomia tuloksia tai mustan ruudun"
 
-msgid "Change the Colorimetry for HDR"
-msgstr "Vaihda HDR:n väriavaruutta"
+msgid "Change the Colorimetry for HDR - this may cause unexpected results or black screen"
+msgstr "Muuta HDR:n kolorimetriaa - tämä voi aiheuttaa odottamattomia tuloksia tai mustan ruudun"
 
-msgid "Change the Colorspace from Auto to RGB"
-msgstr "Vaihda väriavaruus automaattisesta RGB:ksi"
+msgid "Change Colorspace setting - this may cause unexpected results or black screen"
+msgstr "Muuta väriavaruusasetusta - tämä voi aiheuttaa odottamattomia tuloksia tai mustan ruudun"
 
 msgid "Channel"
 msgstr "Kanava"
@@ -3797,8 +3797,8 @@ msgstr "Määrittää mahdolliset taaksepäinkelauksen nopeudet."
 msgid "Configure the primary EPG language."
 msgstr "Määrittää ensisijaisen ohjelmaoppaan kielen."
 
-msgid "Configure the refresh rate of the screen. Multi means refresh rate depends on the source 24/50/60Hz"
-msgstr "Määritä näytön virkistystaajuus. Multi tarkoittaa vaihtelevaa taajuutta ohjelmalähteen mukaan: 24/50/60Hz"
+msgid "Configure screen refresh rate. Multi & Auto rates depend on the source 24/50/60Hz"
+msgstr "Määritä näytön virkistystaajuus. Multi & Auto -taajuudet riippuvat lähteestä 24/50/60Hz"
 
 msgid "Configure the second audio language."
 msgstr "Määrittää toissijaisen äänen kielen."
@@ -5026,7 +5026,7 @@ msgid "Do you want to install plugins"
 msgstr "Haluatko asentaa pluginin?"
 
 msgid "Do you want to install the package:\n"
-msgstr "Haluatko asentaa IPKG-paketin:\n"
+msgstr "Haluatko asentaa ohjelmapaketin:\n"
 
 msgid "Do you want to play DVD in drive?"
 msgstr "Haluatko toistaa asemassa olevan DVD:n?"
@@ -6622,11 +6622,11 @@ msgstr "Kiintolevyn asetukset"
 msgid "HDMI"
 msgstr "HDMI"
 
-msgid "HDMI Colordepth"
+msgid "HDMI Color depth"
 msgstr "HDMI Värisyvyys"
 
 msgid "HDMI Colorimetry"
-msgstr "HDMI Väriavaruus"
+msgstr "HDMI Kolorimetria"
 
 msgid "HDMI Colorspace"
 msgstr "HDMI Väriavaruus"
@@ -7411,7 +7411,7 @@ msgid "Is this setting ok?"
 msgstr "Käytä näitä asetuksia?"
 
 msgid "Is this video mode ok?"
-msgstr "Otetaanko tämä video-tila käyttöön?"
+msgstr "Otetaanko tämä videotila käyttöön?"
 
 msgid "Isle of Man"
 msgstr "Isle of Man"
@@ -11795,7 +11795,7 @@ msgid "Select video input with up/down buttons"
 msgstr "Valitse video-sisäänmeno ylös/alas-näppäimillä"
 
 msgid "Select video mode"
-msgstr "Valitse video-tila"
+msgstr "Valitse videotila"
 
 msgid "Select whether your SCR device is externally powered."
 msgstr "Valitse onko SCR-laitteesi jännite syötetty ulkoisesti."
@@ -12216,7 +12216,7 @@ msgid "Show 2160p 30fps as"
 msgstr "Näytä 2160p 30fps näin:"
 
 msgid "Show 480/576p 24fps as"
-msgstr "Näytä 1080p 24fps näin:"
+msgstr "Näytä 480/576p 24fps näin:"
 
 msgid "Show 720p 24fps as"
 msgstr "Näytä 720p 24fps näin:"
@@ -13543,7 +13543,8 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"07.01.2024\n"
+"--- 07.02.2024 ---\n"
+"\n"
 "http://www.huoltovalikko.com"
 
 msgid "TS file is too large for ISO9660 level 1!"
@@ -13985,7 +13986,7 @@ msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as
 msgstr "Tämä asetus määrittää kuinka 720p 24Hz näytetään sinun TV:ssä. (koska kaikki TV:t eivät suoraan tue tätä resoluutiota)"
 
 msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Tämä asetus määrittää kuinka SD-kuva 24Hz näytetään. (koska kaikki TV:t eivät suoraan tue tätä resoluutiota)"
+msgstr "Tämä asetus määrittää kuinka SD progressiivinen 24Hz näytetään. (koska kaikki TV:t eivät suoraan tue tätä resoluutiota)"
 
 msgid "This option allows you to choose how to display elapsed time. As + or -"
 msgstr "Tämä asetus määrittää kuinka kulunut aika näytetään. Joko + tai -"
@@ -15113,11 +15114,11 @@ msgstr ""
 "Seuraavaa tuloporttia tutkitaan automaattisesti 10 sekunnin kuluttua."
 
 msgid "Video mode selection."
-msgstr "Video-tilan valinta."
+msgstr "Videotilan valinta."
 
 #, python-format
 msgid "Video mode: %s"
-msgstr "Video-tila: %s"
+msgstr "Videotila: %s"
 
 msgid "Video output"
 msgstr "Video-ulostulo"
@@ -19308,3 +19309,66 @@ msgstr "Haluatko varmuuskopioida eMMC-paikat? Tämä lisää 1 - 5 minuuttia eMM
 
 msgid "Copy eMMC slots confirmation"
 msgstr "eMMC-paikkojen kopioinnin vahvistus"
+
+msgid "Package manager"
+msgstr "Ohjelmapakettien hallinnointi"
+
+msgid "Package Manager"
+msgstr "Ohjelmapakettien hallinnointi"
+
+msgid "Refresh list"
+msgstr "Päivitä lista"
+
+msgid "Downloading a new packet list. Please wait..."
+msgstr "Ladataan uutta pakettilistaa. Odota..."
+
+msgid "Removal has completed."
+msgstr "Poistaminen on valmis."
+
+msgid "Update has completed."
+msgstr "Päivitys on valmis."
+
+msgid "Show packages to be updated"
+msgstr "Näytä päivitettävät ohjelmapaketit"
+
+msgid "Packages to update"
+msgstr "Päivitettävät ohjelmapaketit"
+
+msgid "Do you want to update the package:\n"
+msgstr "Haluatko päivittää ohjelmapaketin:\n"
+
+msgid "Installed"
+msgstr "Asennettu"
+
+msgid "Upgradeable"
+msgstr "Päivitettävissä"
+
+msgid "Installable"
+msgstr "Asennettavissa"
+
+msgid "opkg update"
+msgstr "Pakettilistojen (opkg) päivitys"
+
+msgid "Running opkg update"
+msgstr "Opkg päivitys käynnissä"
+
+msgid "Downloading the latest package list. Please wait..."
+msgstr "Päivitetään uusinta pakettilistaa. Odota..."
+
+msgid "Package list loading"
+msgstr "Pakettilistan lataus"
+
+msgid "Loading the package list. Please wait..."
+msgstr "Ladataan pakettilistaa. Odota..."
+
+msgid "Force resolution override*"
+msgstr "Pakota resoluution ohitus*"
+
+msgid "Only use if you must force the output resolution - otherwise select 'Refresh Rate = auto'"
+msgstr "Käytä vain, jos sinun täytyy pakottaa ulostuloresoluutio - muussa tapauksessa valitse 'Virkistystaajuus = auto'"
+
+msgid "Show resolution label"
+msgstr "\"Näytä resoluutiotieto"
+
+msgid "Video mode: %s not available"
+msgstr "Videotila: %s ei ole käytettävissä"

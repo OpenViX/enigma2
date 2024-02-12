@@ -368,7 +368,7 @@ static int savePNGto(FILE *fp, gPixmap *pixmap)
 	return 0;
 }
 
-int loadSVG(ePtr<gPixmap> &result, const char *filename, int cached, int width, int height, float scale)
+int loadSVG(ePtr<gPixmap> &result, const char *filename, int cached, int width, int height, float scale, int keepAspect, int align)
 {
 	result = nullptr;
 	int size = 0;
@@ -388,6 +388,8 @@ int loadSVG(ePtr<gPixmap> &result, const char *filename, int cached, int width, 
 	NSVGrasterizer *rast = nullptr;
 	double xscale = 1.0;
 	double yscale = 1.0;
+	double tx = 0.0;
+	double ty = 0.0;
 
 	image = nsvgParseFromFile(filename, "px", 96.0);
 	if (image == nullptr)
@@ -400,34 +402,53 @@ int loadSVG(ePtr<gPixmap> &result, const char *filename, int cached, int width, 
 		return 0;
 	}
 
-	if (height > 0)
-		yscale = ((double) height) / image->height;
+	if (width > 0 && height > 0 && keepAspect) {
+		double sourceWidth = image->width;
+		double sourceHeight = image->height;
+		double widthScale = 0, heightScale = 0;
+		if (sourceWidth > 0)
+			widthScale = (double)width / sourceWidth;
+		if (sourceHeight > 0)
+			heightScale = (double)height / sourceHeight;                
 
-	if (width > 0)
-	{
-		xscale = ((double) width) / image->width;
-		if (height <= 0)
+		double scale = std::min(widthScale, heightScale);
+		yscale = scale;
+		xscale = scale;
+		int new_width = (int)(image->width * xscale);
+		int new_height = (int)(image->height * scale);
+		if (align == 2) tx = width - new_width; // Right alignment
+		else if (align == 4) tx = (int)(((double)(width - new_width))/2); // Center alignment
+		ty = (int)(((double)(height - new_height))/2);
+	} else {
+		if (height > 0)
+			yscale = ((double) height) / image->height;
+
+		if (width > 0)
 		{
-			yscale = xscale;
-			height = (int)(image->height * yscale);
+			xscale = ((double) width) / image->width;
+			if (height <= 0)
+			{
+				yscale = xscale;
+				height = (int)(image->height * yscale);
+			}
 		}
-	}
-	else if (height > 0)
-	{
-		xscale = yscale;
-		width = (int)(image->width * xscale);
-	}
-	else if (scale > 0)
-	{
-		xscale = (double) scale;
-		yscale = (double) scale;
-		width = (int)(image->width * scale);
-		height = (int)(image->height * scale);
-	}
-	else
-	{
-		width = (int)image->width;
-		height = (int)image->height;
+		else if (height > 0)
+		{
+			xscale = yscale;
+			width = (int)(image->width * xscale);
+		}
+		else if (scale > 0)
+		{
+			xscale = (double) scale;
+			yscale = (double) scale;
+			width = (int)(image->width * scale);
+			height = (int)(image->height * scale);
+		}
+		else
+		{
+			width = (int)image->width;
+			height = (int)image->height;
+		}
 	}
 
 	result = new gPixmap(width, height, 32, cached ? PixmapCache::PixmapDisposed : NULL, -1);
@@ -440,7 +461,7 @@ int loadSVG(ePtr<gPixmap> &result, const char *filename, int cached, int width, 
 
 	eDebug("[ePNG] loadSVG %s %dx%d from %dx%d", filename, width, height, (int)image->width, (int)image->height);
 	// Rasterizes SVG image, returns RGBA image (non-premultiplied alpha)
-	nsvgRasterizeFull(rast, image, 0, 0, xscale, yscale, (unsigned char*)result->surface->data, width, height, width * 4, 1);
+	nsvgRasterizeFull(rast, image, tx, ty, xscale, yscale, (unsigned char*)result->surface->data, width, height, width * 4, 1);
 
 	if (cached)
 		PixmapCache::Set(cachefile, result);
@@ -451,12 +472,12 @@ int loadSVG(ePtr<gPixmap> &result, const char *filename, int cached, int width, 
 	return 0;
 }
 
-int loadImage(ePtr<gPixmap> &result, const char *filename, int accel, int width, int height, int cached, float scale)
+int loadImage(ePtr<gPixmap> &result, const char *filename, int accel, int width, int height, int cached, float scale, int keepAspect, int align)
 {
 	if (endsWith(filename, ".png"))
 		return loadPNG(result, filename, accel, cached == -1 ? 1 : cached);
 	else if (endsWith(filename, ".svg"))
-		return loadSVG(result, filename, cached == -1 ? 1 : cached, width, height, scale);
+		return loadSVG(result, filename, cached == -1 ? 1 : cached, width, height, scale, keepAspect, align);
 	else if (endsWith(filename, ".jpg"))
 		return loadJPG(result, filename, cached == -1 ? 0 : cached);
 

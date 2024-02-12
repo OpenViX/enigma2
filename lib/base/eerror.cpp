@@ -144,7 +144,8 @@ int formatTime(char *buf, int bufferSize, int flags)
 	if (!(flags & _DBGFLG_NOTIME)) {
 		if (debugTime & 1) {
 			clock_gettime(CLOCK_MONOTONIC, &tp);
-			pos += snprintf(buf, bufferSize, "<%6lu.%04lu> ", tp.tv_sec, tp.tv_nsec/100000);
+/* Cast to (long long) is to cater for older 32-bit time fields */
+			pos += snprintf(buf, bufferSize, "<%6lld.%06lld> ", (long long)tp.tv_sec, (long long)tp.tv_nsec/1000);
 		}
 
 		if (debugTime & 2) {
@@ -152,8 +153,9 @@ int formatTime(char *buf, int bufferSize, int flags)
 			struct timeval tim;
 			gettimeofday(&tim, NULL);
 			localtime_r(&tim.tv_sec, &loctime);
-			pos += snprintf(buf + pos, bufferSize - pos, "%02d:%02d:%02d.%04lu ", 
-				loctime.tm_hour, loctime.tm_min, loctime.tm_sec, tim.tv_usec / 100L);
+/* Cast to (long long) is to cater for older 32-bit time fields */
+			pos += snprintf(buf + pos, bufferSize - pos, "%02d:%02d:%02d.%04lld ",
+				loctime.tm_hour, loctime.tm_min, loctime.tm_sec, (long long)tim.tv_usec / 100L);
 		}
 	}
 

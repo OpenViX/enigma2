@@ -190,7 +190,7 @@ class PackageInfoHandler:
 			self.directory = [self.directory]
 
 		for directory in self.directory:
-			packages += crawlDirectory(directory, ".*\.info$")  # noqa: W605
+			packages += crawlDirectory(directory, r".*\.info$")  # noqa: W605
 
 		for package in packages:
 			self.readInfo(package[0] + "/", package[0] + "/" + package[1])

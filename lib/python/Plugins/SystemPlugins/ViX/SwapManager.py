@@ -87,14 +87,7 @@ class StartSwap:
 class VIXSwap(Screen):
 	skin = ["""
 	<screen name="VIXSwap" position="center,center" size="%d,%d">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<widget name="key_red" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_yellow" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="key_blue" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
+		<panel name="__DynamicColorButtonTemplate__"/>
 		<widget name="autostart_off" position="%d,%d" zPosition="1" pixmap="skin_default/icons/lock_off.png" size="%d,%d" alphatest="blend" scale="1"/>
 		<widget name="autostart_on" position="%d,%d" zPosition="2" pixmap="skin_default/icons/lock_on.png" size="%d,%d" alphatest="blend" scale="1"/>
 		<widget name="lab1" position="%d,%d" size="%d,%d" font="Regular;%d" valign="center" transparent="1"/>
@@ -107,14 +100,6 @@ class VIXSwap(Screen):
 		<widget name="active" position="%d,%d" size="%d,%d" font="Regular;%d" valign="center" halign="center" backgroundColor="green"/>
 	</screen>""",
 		560, 250,  # screen
-		0, 0, 140, 40,  # colors
-		140, 0, 140, 40,
-		280, 0, 140, 40,
-		420, 0, 140, 40,
-		0, 0, 140, 40, 20,
-		140, 0, 140, 40, 20,
-		280, 0, 140, 40, 20,
-		420, 0, 140, 40, 20,
 		10, 50, 32, 32,  # lock off
 		10, 50, 32, 32,  # lock on
 		50, 50, 360, 30, 20,

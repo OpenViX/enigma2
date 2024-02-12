@@ -4,6 +4,7 @@ from Screens.InfoBarGenerics import hasActiveSubservicesForCurrentChannel
 from Components.Element import cached
 from Components.Converter.Poll import Poll
 from Components.Converter.VAudioInfo import StdAudioDesc
+from Components.config import config
 from Tools.Transponder import ConvertToHumanReadable
 
 WIDESCREEN = [3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10]
@@ -213,7 +214,7 @@ class ServiceInfo(Poll, Converter):
 		elif self.type == self.IS_CRYPTED:
 			return info.getInfo(iServiceInformation.sIsCrypted) == 1
 		elif self.type == self.SUBSERVICES_AVAILABLE:
-			return hasActiveSubservicesForCurrentChannel(':'.join(info.getInfoString(iServiceInformation.sServiceref).split(':')[:11]))
+			return hasActiveSubservicesForCurrentChannel(service)
 		elif self.type == self.HAS_HBBTV:
 			return info.getInfoString(iServiceInformation.sHBBTVUrl) != ""
 		elif self.type == self.AUDIOTRACKS_AVAILABLE:

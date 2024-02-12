@@ -3,4 +3,4 @@
 
 
 def Hex2strColor(rgb):
-	return "\c%08x" % rgb  # noqa: W605
+	return r"\c%08x" % rgb  # noqa: W605

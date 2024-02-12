@@ -48,6 +48,12 @@ SCOPE_USERETC = SCOPE_HOME
 PATH_CREATE = 0
 PATH_DONTCREATE = 1
 
+#
+# ${libdir} = /usr/lib
+# ${sysconfdir} = /etc/enigma2
+# ${datadir} = /usr/share
+#
+
 defaultPaths = {
 	SCOPE_HOME: ("", PATH_DONTCREATE),  # User home directory
 	SCOPE_LANGUAGE: (eEnv.resolve("${datadir}/enigma2/po/"), PATH_DONTCREATE),

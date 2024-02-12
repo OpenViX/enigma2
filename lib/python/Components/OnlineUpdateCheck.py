@@ -98,10 +98,10 @@ class FeedsStatusCheck:
 					except:
 						print("[OnlineUpdateCheck][getFeedStatus] ERROR:", sys.exc_info()[0])
 						trafficLight = -2
-				if SystemInfo["imagetype"] == "developer" and "openvixdev" in SystemInfo["feedsurl"]:
+				elif SystemInfo["imagetype"] == "developer" and "openvixdev" in SystemInfo["feedsurl"]:
 					print("[OnlineUpdateCheck][getFeedStatus] Official developer feeds")
 					trafficLight = "developer"
-				elif officialReleaseFeedsUri not in SystemInfo["feedsurl"]:  # if not using official feeds mark as alien. There is no status test for alien feeds (including official developer feeds).
+				else:  # if not using official feeds mark as alien. There is no status test for alien feeds (including official developer feeds).
 					print("[OnlineUpdateCheck][getFeedStatus] Alien feeds url: %s" % SystemInfo["feedsurl"])
 					status = 0
 					trafficLight = "alien"
@@ -249,7 +249,7 @@ class OnlineUpdateCheckPoller:
 
 	def JobStart(self):
 		config.softwareupdate.updatefound.setValue(False)
-		if (SystemInfo["imagetype"] != "release" and feedsstatuscheck.getFeedsBool() == "unknown") or (SystemInfo["imagetype"] == "release" and feedsstatuscheck.getFeedsBool() in ("stable", "unstable")):
+		if feedsstatuscheck.getFeedsBool() in ("alien", "developer", "stable", "unstable"):
 			print("[OnlineUpdateCheckPoller] Starting background check.")
 			feedsstatuscheck.startCheck()
 		else:

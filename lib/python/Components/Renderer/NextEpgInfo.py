@@ -16,7 +16,7 @@ class NextEpgInfo(Renderer, VariableText):
 		self.hideLabel = 0
 		self.timecolor = ""
 		self.labelcolor = ""
-		self.foregroundColor = "\c00f0f0f0"  # noqa: W605
+		self.foregroundColor = r"\c00f0f0f0"  # noqa: W605
 		self.numOfSpaces = 1
 
 	GUI_WIDGET = eLabel

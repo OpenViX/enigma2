@@ -5,6 +5,7 @@ from enigma import eAVSwitch, getDesktop
 from Components.config import ConfigBoolean, ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
 from Components.SystemInfo import SystemInfo
 from Tools.CList import CList
+from Tools.Directories import isPluginInstalled
 # from Tools.HardwareInfo import HardwareInfo
 
 config.av = ConfigSubsection()
@@ -22,11 +23,27 @@ class AVSwitch:
 	rates["576i"] = {"50Hz": {50: "576i"}}
 	rates["480p"] = {"60Hz": {60: "480p"}}
 	rates["576p"] = {"50Hz": {50: "576p"}}
-	rates["720p"] = {"50Hz": {50: "720p50"}, "60Hz": {60: "720p"}, "multi": {50: "720p50", 60: "720p", 24: "720p24"}}
-	rates["1080i"] = {"50Hz": {50: "1080i50"}, "60Hz": {60: "1080i"}, "multi": {50: "1080i50", 60: "1080i", 24: "1080p24"}}
-	rates["1080p"] = {"50Hz": {50: "1080p50"}, "60Hz": {60: "1080p"}, "multi": {50: "1080p50", 60: "1080p", 24: "1080p24"}}
-	rates["2160p"] = {"50Hz": {50: "2160p50"}, "60Hz": {60: "2160p"}, "multi": {50: "2160p50", 60: "2160p", 24: "2160p24"}}
-	rates["2160p30"] = {"25Hz": {50: "2160p25"}, "30Hz": {60: "2160p30"}, "multi": {50: "2160p25", 60: "2160p30", 24: "2160p24"}}
+	rates["720p"] = {"50Hz": {50: "720p50"},
+				"60Hz": {60: "720p"},
+				"multi": {50: "720p50", 60: "720p"},
+				"auto": {50: "720p50", 60: "720p", 24: "720p24"}}
+	rates["1080i"] = {"50Hz": {50: "1080i50"},
+				"60Hz": {60: "1080i"},
+				"multi": {50: "1080i50", 60: "1080i"},
+				"auto": {50: "1080i50", 60: "1080i", 24: "1080i24"}}
+	rates["1080p"] = {"50Hz": {50: "1080p50"},
+				"60Hz": {60: "1080p"},
+				"multi": {50: "1080p50", 60: "1080p"},
+				"auto": {50: "1080p50", 60: "1080p", 24: "1080p24"}}
+	rates["2160p30"] = {"25Hz": {50: "2160p25"},
+				"30Hz": {60: "2160p30"},
+				"multi": {50: "2160p25", 60: "2160p30"},
+				"auto": {50: "2160p25", 60: "2160p30", 24: "2160p24"}}
+	rates["2160p"] = {"50Hz": {50: "2160p50"},
+				"60Hz": {60: "2160p"},
+				"multi": {50: "2160p50", 60: "2160p"},
+				"auto": {50: "2160p50", 60: "2160p", 24: "2160p24"}}
+
 	rates["PC"] = {
 		"1024x768": {60: "1024x768"},  # not possible on DM7025
 		"800x600": {60: "800x600"},  # also not possible
@@ -61,7 +78,7 @@ class AVSwitch:
 	if SystemInfo["hasScart"]:
 		modes["Scart"] = ["PAL", "NTSC", "Multi"]
 
-	print("[AVSwitch] Modes-B are %s" % modes)
+	print(f"[AVSwitch] Modes found are: {modes}")
 
 	def __init__(self):
 		self.last_modes_preferred = []
@@ -69,27 +86,22 @@ class AVSwitch:
 		self.current_mode = None
 		self.current_port = None
 		self.readAvailableModes()
-		self.createConfig()
 		self.readPreferredModes()
+		self.createConfig()
 
 	def readAvailableModes(self):
-		try:
-			with open("/proc/stb/video/videomode_choices", "r") as fd:
-				modes = fd.read()[:-1]
-		except (IOError, OSError):
-			print("[AVSwitch] couldn't read available videomodes.")
-			modes = []
-			return modes
-		return modes.split(" ")
+		SystemInfo["AvailableVideomodes"] = []
+		SystemInfo["AvailableVideomodes"] = eAVSwitch.getInstance().readAvailableModes().split(" ")
+		# print(f"[AVSwitch][readAvailableModes] {SystemInfo['AvailableVideomodes']}")
+		if isPluginInstalled("AutoResolution"):
+			return SystemInfo["AvailableVideomodes"]
 
 	def readPreferredModes(self):
-		try:
-			with open("/proc/stb/video/videomode_preferred", "r") as fd:
-				modes = fd.read()[:-1]
-			self.modes_preferred = modes.split(" ")
-		except (IOError, OSError):
-			print("[AVSwitch] reading preferred modes failed, using all modes")
-			self.modes_preferred = self.readAvailableModes()
+		self.modes_preferred = eAVSwitch.getInstance().getPreferredModes(1)
+		# print("[AVSwitch] reading preferred modes", modes)
+		if not self.modes_preferred:
+			self.modes_preferred = SystemInfo["AvailableVideomodes"]
+			print(f"[AVSwitch][readPreferredModes]none, so using {self.modes_preferred}")
 		if self.modes_preferred != self.last_modes_preferred:
 			self.last_modes_preferred = self.modes_preferred
 			self.on_hotplug("HDMI")  # Must be HDMI.
@@ -97,25 +109,27 @@ class AVSwitch:
 	# Check if a high-level mode with a given rate is available.
 	#
 	def isModeAvailable(self, port, mode, rate):
-		rate = self.rates[mode][rate]
-		for mode in rate.values():
-			if mode not in self.readAvailableModes():
+		rateNew = self.rates[mode][rate]
+		for modeNew in rateNew.values():
+			# print(f"[AVSwitch][isModeAvailable] modeNew:{modeNew} videomodes:{SystemInfo['AvailableVideomodes']}")
+			if modeNew not in SystemInfo["AvailableVideomodes"]:
+				# print(f"[AVSwitch][isModeAvailable] modeNew:{modeNew} not available")
 				return False
+		# print(f"[AVSwitch][isModeAvailable] modeNew:{modeNew} available")
 		return True
 
 	def isWidescreenMode(self, port, mode):
 		return mode in self.widescreen_modes
 
 	def setMode(self, port, mode, rate, force=None):
-		print("[AVSwitch] setMode - port: %s, mode: %s, rate: %s" % (port, mode, rate))
-		# config.av.videoport.setValue(port)
-		# we can ignore "port"
+		print(f"[AVSwitch] setMode - port: {port}, mode: {mode}, rate: {rate}")
 		self.current_mode = mode
 		self.current_port = port
 		modes = self.rates[mode][rate]
 		mode_50 = modes.get(50)
 		mode_60 = modes.get(60)
 		mode_24 = modes.get(24)
+		print(f"[AVSwitch] setMode modes - setup_mode: {mode}, available:  mode_50: {mode_50}, mode_60: {mode_60}, mode_24: {mode_24}")
 		if mode_50 is None or force == 60:
 			mode_50 = mode_60
 		if mode_60 is None or force == 50:
@@ -127,18 +141,23 @@ class AVSwitch:
 		try:
 			with open("/proc/stb/video/videomode_50hz", "w") as fd:
 				fd.write(mode_50)
-		except (IOError, OSError):
-			print("[AVSwitch] cannot open /proc/stb/video/videomode_50hz")
-		try:
+				print(f"[AVSwitch][setMode][videomode_50hz] set to {mode_50}")
 			with open("/proc/stb/video/videomode_60hz", "w") as fd:
 				fd.write(mode_60)
+				print(f"[AVSwitch][setMode][videomode_60hz] set to {mode_60}")
 		except (IOError, OSError):
-			print("[AVSwitch] cannot open /proc/stb/video/videomode_60hz")
+			print("[AVSwitch] cannot open /proc/stb/video/videomode_50hz or videomode_60hz")
+			try:
+				eAVSwitch.getInstance().setVideoMode(mode_50)
+				print(f"[AVSwitch][videomode] set to: {mode_50}")  # fallback if no possibility to setup 50/60 hz mode
+			except (IOError, OSError):
+				print("[AVSwitch] fallback to mode 50 failed.")
 
 		if SystemInfo["Has24hz"]:
 			try:
 				with open("/proc/stb/video/videomode_24hz", "w") as fd:
 					fd.write(mode_24)
+					print(f"[AVSwitch][setMode][videomode_24hz] set to {mode_24}")
 			except (IOError, OSError):
 				print("[AVSwitch] cannot open /proc/stb/video/videomode_24hz")
 
@@ -147,15 +166,8 @@ class AVSwitch:
 				# use 50Hz mode (if available) for booting
 				with open("/etc/videomode", "w") as fd:
 					fd.write(mode_50)
-			except IOError:
+			except (IOError, OSError):
 				print("[AVSwitch] GigaBlue writing initial videomode to /etc/videomode failed.")
-		try:
-			set_mode = modes.get(int(rate))
-		except Exception:  # Don't support 50Hz, 60Hz for 1080p.
-			set_mode = mode_50
-		print("[AVSwitch] set mode is %s" % set_mode)
-		with open("/proc/stb/video/videomode", "w") as fd:
-			fd.write(set_mode)
 		map = {"cvbs": 0, "rgb": 1, "svideo": 2, "yuv": 3}
 		self.setColorFormat(map[config.av.colorformat.value])
 
@@ -169,19 +181,15 @@ class AVSwitch:
 			config.av.videorate[mode].setValue(rate)
 			config.av.videorate[mode].save()
 
-	def isPortAvailable(self, port):
-		# fixme
-		return True
-
-	def isPortUsed(self, port):
+	def isPortUsed(self, port):  # used by VideoWizard
 		if port == "HDMI":
 			self.readPreferredModes()
 			return len(self.modes_preferred) != 0
 		else:
 			return True
 
-	def getPortList(self):
-		return [port for port in self.modes if self.isPortAvailable(port)]
+	def getPortList(self):  # used by VideoWizard
+		return [port for port in self.modes]
 
 	# Get a list with all modes, with all rates, for a given port.
 	def getModeList(self, port):
@@ -195,14 +203,12 @@ class AVSwitch:
 		return res
 
 	def createConfig(self, *args):
-		# hw_type = HardwareInfo().get_device_name()
-		# has_hdmi = HardwareInfo().has_hdmi()
 		lst = []
 		config.av.videomode = ConfigSubDict()
 		config.av.videorate = ConfigSubDict()
 		# create list of output ports
-		portlist = self.getPortList()
-		print("[AVSwitch] portlist is %s" % portlist)
+		portlist = [port for port in self.modes]
+		print(f"[AVSwitch][createConfig] portlist is {portlist}")
 		for port in portlist:
 			descr = port
 			if "HDMI" in port:
@@ -213,7 +219,15 @@ class AVSwitch:
 			if len(modes):
 				config.av.videomode[port] = ConfigSelection(choices=[mode for (mode, rates) in modes])
 			for (mode, rates) in modes:
-				config.av.videorate[mode] = ConfigSelection(choices=rates)
+				ratelist = []
+				for rate in rates:
+					if rate == "auto":
+						if SystemInfo["Has24hz"]:
+							ratelist.append((rate, mode == "2160p30" and "auto (25Hz/30Hz/24Hz)" or "auto (50Hz/60Hz/24Hz)"))
+					else:
+						ratelist.append((rate, rate == "multi" and (mode == "2160p30" and "multi (25Hz/30Hz)" or "multi (50Hz/60Hz)") or rate))
+				config.av.videorate[mode] = ConfigSelection(choices=ratelist)
+				print(f"[AVSwitch][createConfig] mode:{mode} rates:{ratelist}")
 		config.av.videoport = ConfigSelection(choices=lst)
 
 	def setInput(self, input):
@@ -237,45 +251,41 @@ class AVSwitch:
 	def setConfiguredMode(self):
 		port = config.av.videoport.value
 		if port not in config.av.videomode:
-			print("[AVSwitch] current port not available, not setting videomode")
+			print(f"[AVSwitch] current port: {port} not available, not setting videomode:{config.av.videomode}")
 			return
 		mode = config.av.videomode[port].value
 		if mode not in config.av.videorate:
-			print("[AVSwitch] current mode not available, not setting videomode")
+			print(f"[AVSwitch] current mode:{mode} not available in config.av.videorate:{config.av.videorate}")
 			return
 		rate = config.av.videorate[mode].value
 		self.setMode(port, mode, rate)
 
-	def setAspect(self, cfgelement):
-		print("[AVSwitch] setting aspect: %s" % cfgelement.value)
-		with open("/proc/stb/video/aspect", "w") as fd:
-			fd.write(cfgelement.value)
+	def setAspect(self, configElement):
+		eAVSwitch.getInstance().setAspect(configElement.value, 1)
+		print(f"[AVSwitch] setting aspect:{configElement.value}")
 
-	def setWss(self, cfgelement):
-		if not cfgelement.value:
+	def setWss(self, configElement):
+		if not configElement.value:
 			wss = "auto(4:3_off)"
 		else:
 			wss = "auto"
-		print("[AVSwitch] setting wss: %s" % wss)
+		print(f"[AVSwitch] setting wss:{wss} configElement.value:{configElement.value}")
 		with open("/proc/stb/denc/0/wss", "w") as fd:
 			fd.write(wss)
 
-	def setPolicy43(self, cfgelement):
-		print("[AVSwitch] setting policy: %s" % cfgelement.value)
-		with open("/proc/stb/video/policy", "w") as fd:
-			fd.write(cfgelement.value)
+	def setPolicy43(self, configElement):
+		print(f"[AVSwitch] setting policy43:{configElement.value}")
+		eAVSwitch.getInstance().setPolicy43(configElement.value, 1)
 
-	def setPolicy169(self, cfgelement):
-		if path.exists("/proc/stb/video/policy2"):
-			print("[AVSwitch] setting policy2: %s" % cfgelement.value)
-			with open("/proc/stb/video/policy2", "w") as fd:
-				fd.write(cfgelement.value)
+	def setPolicy169(self, configElement):
+		print(f"[AVSwitch] setting policy169:{configElement.value}")
+		eAVSwitch.getInstance().setPolicy169(configElement.value, 1)
 
 	def getOutputAspect(self):
 		ret = (16, 9)
 		port = config.av.videoport.value
 		if port not in config.av.videomode:
-			print("[AVSwitch] current port not available in getOutputAspect!!! force 16:9")
+			print(f"[AVSwitch] current port:{port} not available in config.av.videomode:{config.av.videomode} force 16:9")
 		else:
 			mode = config.av.videomode[port].value
 			force_widescreen = self.isWidescreenMode(port, mode)
@@ -335,51 +345,6 @@ def InitAVSwitch():
 	# when YUV is not enabled, don't let the user select it
 	if config.av.yuvenabled.value:
 		colorformat_choices["yuv"] = _("YPbPr")
-	config.av.autores = ConfigSelection(choices={"disabled": _("Disabled"), "all": _("All resolutions"), "hd": _("only HD")}, default="disabled")
-	choicelist = []
-	for i in range(5, 16):
-		choicelist.append(("%d" % i, ngettext("%d second", "%d seconds", i) % i))
-	config.av.autores_label_timeout = ConfigSelection(default="5", choices=[("0", _("Not Shown"))] + choicelist)
-	config.av.autores_delay = ConfigSelectionNumber(min=0, max=15000, stepwidth=500, default=500, wraparound=True)
-	config.av.autores_deinterlace = ConfigYesNo(default=False)
-	config.av.autores_sd = ConfigSelection(choices={
-		"720p": _("720p"),
-		"1080i": _("1080i")
-	}, default="720p")
-	config.av.autores_480p24 = ConfigSelection(choices={
-		"480p24": _("480p 24Hz"),
-		"720p24": _("720p 24Hz"),
-		"1080p24": _("1080p 24Hz")
-	}, default="1080p24")
-	config.av.autores_720p24 = ConfigSelection(choices={
-		"720p24": _("720p 24Hz"),
-		"1080p24": _("1080p 24Hz")
-	}, default="1080p24")
-	config.av.autores_1080p24 = ConfigSelection(choices={
-		"1080p24": _("1080p 24Hz"),
-		"1080p25": _("1080p 25Hz")
-	}, default="1080p24")
-	config.av.autores_1080p25 = ConfigSelection(choices={
-		"1080p25": _("1080p 25Hz"),
-		"1080p50": _("1080p 50Hz")
-	}, default="1080p25")
-	config.av.autores_1080p30 = ConfigSelection(choices={
-		"1080p30": _("1080p 30Hz"),
-		"1080p60": _("1080p 60Hz")
-	}, default="1080p30")
-	config.av.autores_2160p24 = ConfigSelection(choices={
-		"2160p24": _("2160p 24Hz"),
-		"2160p25": _("2160p 25Hz"),
-		"2160p30": _("2160p 30Hz")
-	}, default="2160p24")
-	config.av.autores_2160p25 = ConfigSelection(choices={
-		"2160p25": _("2160p 25Hz"),
-		"2160p50": _("2160p 50Hz")
-	}, default="2160p25")
-	config.av.autores_2160p30 = ConfigSelection(choices={
-		"2160p30": _("2160p 30Hz"),
-		"2160p60": _("2160p 60Hz")
-	}, default="2160p30")
 	config.av.colorformat = ConfigSelection(choices=colorformat_choices, default="rgb")
 	config.av.aspectratio = ConfigSelection(choices={
 		"4_3_letterbox": _("4:3 Letterbox"),
@@ -468,7 +433,7 @@ def InitAVSwitch():
 			choiceslist = procChoices.split(" ")
 			choices = [(item, _(item)) for item in choiceslist]
 			default = choiceslist[0]
-			print("[AVSwitch][readChoices from Proc] choices=%s, default=%s" % (choices, default))
+			# print("[AVSwitch][readChoices from Proc] choices=%s, default=%s" % (choices, default))
 		return (choices, default)
 
 	iAVSwitch.setInput("ENCODER")  # Init on startup.

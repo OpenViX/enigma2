@@ -10,8 +10,7 @@ from Screens.Screen import Screen
 class VIXMenu(Screen, ProtectedScreen):
 	skin = ["""
 		<screen name="VIXMenu" position="center,center" size="%d,%d">
-			<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" scale="1" alphatest="blend"/>
-			<widget source="key_red" render="Label" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
+			<panel name="__DynamicColorButtonTemplate__"/>
 			<widget source="menu" render="Listbox" position="%d,%d" size="%d,%d" scrollbarMode="showOnDemand">
 				<convert type="TemplatedMultiContent">
 					{"template": [
@@ -35,8 +34,6 @@ class VIXMenu(Screen, ProtectedScreen):
 			<widget source="status" render="Label" position="%d,%d" zPosition="10" size="%d,%d" halign="center" valign="center" font="Regular;%d" transparent="1" shadowColor="black" shadowOffset="-1,-1" />
 		</screen>""",
 			610, 410,  # screen
-			0, 0, 140, 40,  # key red image
-			0, 0, 140, 40, 20,  # key red text
 			15, 60, 330, 286,  # first menu Listbox
 			2, 0, 330, 26,  # template one
 			22,  # fonts

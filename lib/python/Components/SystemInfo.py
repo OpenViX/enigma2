@@ -33,12 +33,6 @@ class BoxInformation:
 			print("[BoxInfo] ERROR: %s is not available!  The system is unlikely to boot or operate correctly." % file)
 
 	def processValue(self, value):
-		if value.upper() in ("FALSE", "NO", "OFF", "DISABLED"):
-			return False
-		elif value.upper() in ("TRUE", "YES", "ON", "ENABLED"):
-			return True
-		elif value.upper() == "NONE":
-			return None
 		try:
 			return literal_eval(value)
 		except:
@@ -48,7 +42,7 @@ class BoxInformation:
 		return sorted(self.immutableList)
 
 	def getEnigmaConfList(self):  # not used by us
-		return []
+		return []  # return an empty list because we do not import a file called "enigma.conf"
 
 	def getItemsList(self):
 		return sorted(list(self.boxInfo.keys()))
@@ -56,8 +50,8 @@ class BoxInformation:
 	def getItem(self, item, default=None):
 		return self.boxInfo.get(item, default)
 
-	def setItem(self, item, value, immutable=False, forceOverride=False):
-		if item in self.immutableList and not forceOverride:
+	def setItem(self, item, value, immutable=False):
+		if item in self.immutableList:
 			print("[BoxInfo] Error: Item '%s' is immutable and can not be %s!" % (item, "changed" if item in self.boxInfo else "added"))
 			return False
 		if immutable and item not in self.immutableList:
@@ -65,8 +59,8 @@ class BoxInformation:
 		self.boxInfo[item] = value
 		return True
 
-	def deleteItem(self, item, forceOverride=False):
-		if item in self.immutableList and not forceOverride:
+	def deleteItem(self, item):
+		if item in self.immutableList:
 			print("[BoxInfo] Error: Item '%s' is immutable and can not be deleted!" % item)
 		elif item in self.boxInfo:
 			del self.boxInfo[item]
@@ -77,7 +71,30 @@ class BoxInformation:
 BoxInfo = BoxInformation()
 
 
-SystemInfo = BoxInfo.boxInfo
+class SystemInformation(dict):
+	def __getitem__(self, item):
+		return BoxInfo.boxInfo[item]
+
+	def __setitem__(self, item, value):
+		BoxInfo.setItem(item, value, immutable=False)
+
+	def __delitem__(self, item):
+		BoxInfo.deleteItem(item)
+
+	def get(self, item, default=None):
+		return BoxInfo.boxInfo.get(item, default)
+
+	def __prohibited(self, *args, **kws):
+		print("[SystemInfo] operation not permitted")
+
+	clear = __prohibited
+	update = __prohibited
+	setdefault = __prohibited
+	pop = __prohibited
+	popitem = __prohibited
+
+
+SystemInfo = SystemInformation()
 
 
 ARCHITECTURE = BoxInfo.getItem("architecture")

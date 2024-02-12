@@ -21,7 +21,7 @@ for file in sys.argv[1:]:
 	for i in p.findall("info"):
 		if not info:
 			info = i
-	assert info
+	assert info is not None
 
 	for i in info[:]:
 		if i.tag not in ["name", "packagename", "packagetype", "shortdescription"]:

@@ -200,14 +200,7 @@ class VIXDevicesPanel(Screen):
 			</convert>
 		</widget>
 		<widget name="lab1" position="%d,%d" size="%d,%d" font="Regular;%d" halign="center" transparent="1" valign="center" zPosition="+1" />
-		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<widget name="key_red" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
-		<widget name="key_yellow" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
-		<widget name="key_blue" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
+		<panel name="__DynamicColorButtonTemplate__"/>
 	</screen>""",
 		560, 495,  # screen
 		10, 50, 540, 400,  # Listbox
@@ -217,14 +210,6 @@ class VIXDevicesPanel(Screen):
 		24, 20,  # fonts
 		80,
 		10, 10, 540, 425, 25,
-		0, 0, 140, 40,  # colors
-		140, 0, 140, 40,
-		280, 0, 140, 40,
-		420, 0, 140, 40,
-		0, 0, 140, 40, 20,
-		140, 0, 140, 40, 20,
-		280, 0, 140, 40, 20,
-		420, 0, 140, 40, 20,
 			]  # noqa: E124
 
 	def __init__(self, session):
@@ -362,18 +347,11 @@ class VIXDevicesPanel(Screen):
 class DeviceMountSetup(Screen, ConfigListScreen):
 	skin = ["""
 	<screen position="center,center" size="%d,%d">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="%d,%d" size="%d,%d" alphatest="blend" scale="1"/>
-		<widget name="key_red" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-		<widget name="key_green" position="%d,%d" zPosition="1" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
+		<panel name="__DynamicColorButtonTemplate__"/>
 		<widget name="config" position="%d,%d" size="%d,%d" itemHeight="%d" font="Regular;%d" scrollbarMode="showOnDemand"/>
 		<widget name="lab1" position="%d,%d" size="%d,%d" font="Regular;%d" halign="center" valign="center" backgroundColor="#9f1313"/>
 	</screen>""",
 		560, 450,  # screen
-		0, 0, 140, 40,  # colors
-		140, 0, 140, 40,
-		0, 0, 140, 40, 20,
-		140, 0, 140, 40, 20,
 		0, 50, 560, 275, 26, 20,  # config
 		0, 365, 560, 20, 18,
 			]  # noqa: E124
