@@ -39,7 +39,7 @@ class RatingIcon(Renderer):
 					if age <= 15:
 						age += 3
 
-					pngEnding = "ratings/%d%s.png" % (age, "_s" if self.small else "" )
+					pngEnding = "ratings/%d%s.png" % (age, "_s" if self.small else "")
 					print(pngEnding)
 					pngname = resolveFilename(SCOPE_GUISKIN, pngEnding)
 					self.instance.setPixmapFromFile(pngname)
