@@ -285,7 +285,7 @@ class EventName(Converter):
 				if running_status in (6, 7):
 					return _("Reserved for future use")
 				return _("Undefined")
-		elif self.type in (self.NAME_NEXT, self.NAME_NEXT2) or (self.type >= self.NEXT_DESCRIPTION and not self.type == self.FORMAT_STRING):
+		elif self.type in (self.NAME_NEXT, self.NAME_NEXT2) or (self.type >= self.NEXT_DESCRIPTION and not self.type == self.FORMAT_STRING and not self.type == self.RAWRATING):
 			try:
 				reference = self.source.service
 				info = reference and self.source.info
