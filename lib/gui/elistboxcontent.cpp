@@ -1234,7 +1234,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 
 				int cornerRadius = pCornerRadius ? PyLong_AsLong(pCornerRadius) : 0;
 				int cornerEdges = pCornerEdges ? PyLong_AsLong(pCornerEdges) : 0;
-				if (cornerRadius || cornerEdges)
+				if (cornerRadius)
 					bwidth = 0; // border not supported for rounded edges
 
 				if (m_font.find(fnt) == m_font.end())
@@ -1247,14 +1247,14 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				painter.clip(rect);
 
 				{
-					if(cornerRadius && (pbackColor || pbackColorSelected))
+					if(cornerRadius && cornerEdges && (pbackColor || pbackColorSelected))
 					{
+						painter.setRadius(cornerRadius, cornerEdges);
 						if(selected && !pbackColorSelected)
 							pbackColorSelected = pbackColor;
 						unsigned int color = PyLong_AsUnsignedLongMask(selected ? pbackColorSelected : pbackColor);
 						painter.setBackgroundColor(gRGB(color));
-						painter.setRadius(cornerRadius, cornerEdges);
-						painter.drawRectangle(itemRect);
+						painter.drawRectangle(rect);
 					}
 					else 
 					{
@@ -1484,14 +1484,14 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				eRect rect(x, y, width, height);
 				painter.clip(rect);
 
-				{
+				flags |= (type == TYPE_PIXMAP_ALPHATEST) ? gPainter::BT_ALPHATEST : (type == TYPE_PIXMAP_ALPHABLEND) ? gPainter::BT_ALPHABLEND : 0;
+				if(radius && edges)
+					painter.setRadius(radius, edges);
+				else {
 					gRegion rc(rect);
 					bool mustClear = (selected && pbackColorSelected) || (!selected && pbackColor);
 					clearRegion(painter, style, local_style, ePyObject(), ePyObject(), pbackColor, pbackColorSelected, selected, rc, sel_clip, offset, m_itemsize, cursorValid, mustClear, isverticallb);
 				}
-				flags |= (type == TYPE_PIXMAP_ALPHATEST) ? gPainter::BT_ALPHATEST : (type == TYPE_PIXMAP_ALPHABLEND) ? gPainter::BT_ALPHABLEND : 0;
-				if(radius && edges)
-					painter.setRadius(radius, edges);
 				painter.blit(pixmap, rect, rect, flags);
 				painter.clippop();
 				break;
