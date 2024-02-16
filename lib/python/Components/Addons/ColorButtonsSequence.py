@@ -114,7 +114,7 @@ class ColorButtonsSequence(GUIAddon):
 						if pic:
 							res.append(MultiContentEntryPixmapAlphaBlend(
 								pos=(xPos, yPos),
-								size=(textWidth + textPaddings*2, height),
+								size =(textWidth + textPaddings * 2, height),
 								png=pic,
 								backcolor=0x000000, backcolor_sel=None, flags=BT_SCALE, corner_radius=self.cornerRadius))
 						res.append(MultiContentEntryText(
@@ -123,12 +123,12 @@ class ColorButtonsSequence(GUIAddon):
 								text=buttonText, color=textColor, color_sel=textColor))
 				else:
 					res.append(MultiContentEntryText(
-								pos=(xPos, yPos), size=(textWidth + textPaddings*2, height - 2),
+								pos =(xPos, yPos), size =(textWidth + textPaddings * 2, height - 2),
 								font=0, flags=textFlags,
 								text=buttonText, color=textColor, color_sel=textColor, backcolor=backColor, corner_radius=self.cornerRadius))
 
 
-				xPos += textWidth + textPaddings*2 + self.spacingButtons
+				xPos += textWidth + textPaddings * 2 + self.spacingButtons
 			if xPos > width and self.layoutStyle != "fluid":
 				self.layoutStyle = "fluid"
 				return self.buildEntry(sequence)
