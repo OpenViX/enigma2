@@ -127,7 +127,6 @@ class ColorButtonsSequence(GUIAddon):
 								font=0, flags=textFlags,
 								text=buttonText, color=textColor, color_sel=textColor, backcolor=backColor, corner_radius=self.cornerRadius))
 
-
 				xPos += textWidth + textPaddings * 2 + self.spacingButtons
 			if xPos > width and self.layoutStyle != "fluid":
 				self.layoutStyle = "fluid"
