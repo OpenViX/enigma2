@@ -107,7 +107,7 @@ class ColorButtonsSequence(GUIAddon):
 					textFlags = RT_HALIGN_CENTER | RT_VALIGN_CENTER
 					textPaddings = self.spacingPixmapText
 					backColor = buttonBgColor
-					
+
 				if self.renderType == "ImageTextOver":
 					if x in self.pixmaps:
 						pic = LoadPixmap(resolveFilename(SCOPE_GUISKIN, self.pixmaps[x]))
