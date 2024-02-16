@@ -26,7 +26,7 @@ class ColorButtonsSequence(GUIAddon):
 		self.colorIndicatorStyle = "pixmap"
 		self.orientations = {"orHorizontal": eListbox.orHorizontal, "orVertical": eListbox.orVertical}
 		self.orientation = eListbox.orHorizontal
-		self.renderType = "ImageTextRight" # Currently supported are ImageTextRight, ImageTextOver and ColorTextOver
+		self.renderType = "ImageTextRight"  # Currently supported are ImageTextRight, ImageTextOver and ColorTextOver
 		self.alignment = "left"
 		self.cornerRadius = 0
 		self.pixmaps = {}
