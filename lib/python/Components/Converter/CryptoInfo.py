@@ -80,9 +80,9 @@ class CryptoInfo(Poll, Converter):
 										textvalue = "%s - %s (Caid: %s, Prov: %s,)" % (source, caid, caid, prov)
 									#new oscam ecm.info with port parametr
 									elif reader != "" and source == "net" and port != "":
-										textvalue = "%s - Caid: %s, Prov: %s, Reader: %s, %s (%s:%s) - %s" % (source, caid, prov, reader, protocol, server, port, ecm_time.replace('msec', 'ms'))
+										textvalue = "%s - Caid: %s, Prov: %s, Reader: %s, %s (%s:%s@%s) - %s" % (source, caid, prov, reader, protocol, server, port, hops, ecm_time.replace('msec', 'ms'))
 									elif reader != "" and source == "net":
-										textvalue = "%s - Caid: %s, Prov: %s, Reader: %s, %s (%s) - %s" % (source, caid, prov, reader, protocol, server, ecm_time.replace('msec', 'ms'))
+										textvalue = "%s - Caid: %s, Prov: %s, Reader: %s, %s (%s@%s) - %s" % (source, caid, prov, reader, protocol, server, hops, ecm_time.replace('msec', 'ms'))
 									elif reader != "" and source != "net":
 										textvalue = "%s - Caid: %s, Prov: %s, Reader: %s, %s (local) - %s" % (source, caid, prov, reader, protocol, ecm_time.replace('msec', 'ms'))
 									elif server == "" and port == "" and protocol != "":
