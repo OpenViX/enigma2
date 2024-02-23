@@ -3740,6 +3740,8 @@ class InfoBarSubserviceSelection:
 					keys = ["red", "", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"] + [""] * (len(subservices) - 10)
 					selection += 2
 				self.session.openWithCallback(self.subserviceSelected, ChoiceBox, title=_("Please select a sub service"), list=tlist, selection=selection, keys=keys, skin_name="SubserviceSelection")
+			else:
+				self.openTimerList()  # no sub services, so take default for Green
 
 	def subserviceSelected(self, service):
 		if service and len(service) > 1:
