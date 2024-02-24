@@ -53,7 +53,6 @@ from Tools import Notifications
 from Tools.Directories import pathExists, fileExists
 from Tools.KeyBindings import getKeyDescription, getKeyBindingKeys
 from Tools.General import isIPTV
-from pickle import loads as pickle_loads
 
 import NavigationInstance
 

@@ -54,12 +54,12 @@ class ScreenHeader(GUIAddon):
 				yPos = self.instance.size().height() * 2 // 3 - 3
 				itemHeight = self.instance.size().height() // 3
 			res.append(MultiContentEntryText(
-					pos=(0, yPos),
-					size=(self.instance.size().width(), itemHeight),
-					font=2 if isOneItem and idx == 0 else idx, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER,
-					text=x.text,
-					color=foreColor, color_sel=foreColor,
-					backcolor=self.backgroundColor, backcolor_sel=self.backgroundColor))
+				pos=(0, yPos),
+				size=(self.instance.size().width(), itemHeight),
+				font=2 if isOneItem and idx == 0 else idx, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER,
+				text=x.text,
+				color=foreColor, color_sel=foreColor,
+				backcolor=self.backgroundColor, backcolor_sel=self.backgroundColor))
 		return res
 
 	def postWidgetCreate(self, instance):
