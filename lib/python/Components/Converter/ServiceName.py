@@ -16,7 +16,8 @@ class ServiceName(Converter):
 	PROVIDER = 3
 	REFERENCE = 4
 	EDITREFERENCE = 5
-	FORMAT_STRING = 6
+	STREAM_URL = 6
+	FORMAT_STRING = 7
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -36,6 +37,8 @@ class ServiceName(Converter):
 				self.type = self.NAME_ONLY
 			elif type == "NameAndEvent":
 				self.type = self.NAME_EVENT
+			elif type == "StreamUrl":
+				self.type = self.STREAM_URL
 			else:
 				self.type = self.NAME
 
@@ -87,6 +90,17 @@ class ServiceName(Converter):
 			if nref:
 				service = nref
 			return service.toString()
+		elif self.type == self.STREAM_URL:
+			srpart = "//%s:%s/" % (config.misc.softcam_streamrelay_url.getHTML(), config.misc.softcam_streamrelay_port.value)
+			if not service:
+				refstr = info.getInfoString(iServiceInformation.sServiceref)
+				path = refstr and eServiceReference(refstr).getPath()
+				if not path.startswith("//") and path.find(srpart) == -1:
+					return path
+				else:
+					return ""
+			path = service.getPath()
+			return "" if path.startswith("//") and path.find(srpart) == -1 else path
 		elif self.type == self.FORMAT_STRING:
 			name = self.getName(service, info)
 			numservice = hasattr(self.source, "serviceref") and self.source.serviceref
