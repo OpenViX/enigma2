@@ -519,7 +519,7 @@ class RecordTimerEntry(TimerEntry):
 
 		if next_state == self.StatePrepared:
 			if not self.justplay and not self.freespace():
-				Notifications.AddPopup(text=_(f"Write error while recording. Disk full?\n{self.name}"), type=MessageBox.TYPE_ERROR, timeout=5, id="DiskFullMessage")
+				Notifications.AddPopup(text=_("Write error while recording. Disk full?\n%s") % self.name, type=MessageBox.TYPE_ERROR, timeout=5, id="DiskFullMessage")
 				self.failed = True
 				self.next_activation = time()
 				self.end = time() + 5
@@ -652,7 +652,7 @@ class RecordTimerEntry(TimerEntry):
 								self.InfoBarInstance.session.pip.servicePath = self.InfoBarInstance.servicelist and self.InfoBarInstance.servicelist.getCurrentServicePath()
 								self.log(11, "zapping as PiP")
 								if notify:
-									Notifications.AddPopup(text=_(f"Zapped to timer service {self.service_ref.getServiceName()} as PiP!"), type=MessageBox.TYPE_INFO, timeout=5)
+									Notifications.AddPopup(text=_("Zapped to timer service %s as PiP!") % self.service_ref.getServiceName(), type=MessageBox.TYPE_INFO, timeout=5)
 								return True
 							else:
 								del self.InfoBarInstance.session.pip
@@ -663,7 +663,7 @@ class RecordTimerEntry(TimerEntry):
 					else:
 						self.log(11, "zapping")
 						if notify:
-							Notifications.AddPopup(text=_(f"Zapped to timer service {self.service_ref.getServiceName()}!"), type=MessageBox.TYPE_INFO, timeout=5)
+							Notifications.AddPopup(text=_("Zapped to timer service %s!") % self.service_ref.getServiceName(), type=MessageBox.TYPE_INFO, timeout=5)
 
 						# If the user is looking at a MovieList then we need to update this
 						# lastservice, so that we get back to the updated one when closing the
@@ -736,7 +736,7 @@ class RecordTimerEntry(TimerEntry):
 			if self.afterEvent == AFTEREVENT.STANDBY or (not wasRecTimerWakeup and self.autostate and self.afterEvent == AFTEREVENT.AUTO) or self.wasInStandby:
 				self.keypress()  # this unbinds the keypress detection
 				if not Screens.Standby.inStandby:  # not already in standby
-					Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox, _(f"A finished record timer wants to set your\n{SystemInfo['MachineBrand']} {SystemInfo['MachineName']} to standby. Do that now?"), timeout=180)
+					Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox, _("A finished record timer wants to set your\n%s %s to standby. Do that now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), timeout=180)
 			elif self.afterEvent == AFTEREVENT.DEEPSTANDBY or (wasRecTimerWakeup and self.afterEvent == AFTEREVENT.AUTO and Screens.Standby.inStandby):
 				if (abs(NavigationInstance.instance.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(NavigationInstance.instance.RecordTimer.getNextZapTime() - time()) <= 900) or NavigationInstance.instance.RecordTimer.getStillRecording():
 					print("[RecordTimer] Recording or Recording due is next 15 mins, not return to deepstandby")
@@ -751,7 +751,7 @@ class RecordTimerEntry(TimerEntry):
 				if int(ClientsStreaming("NUMBER").getText()) > 0:
 					if not Screens.Standby.inStandby:  # not already in standby
 						Notifications.AddNotificationWithCallback(self.sendStandbyNotification, MessageBox,
-							_(f"A finished record timer wants to set your\n{SystemInfo['MachineBrand']} {SystemInfo['MachineName']} to standby. Do that now?")
+							_("A finished record timer wants to set your\n%s %s to standby. Do that now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"])
 							+ _("\n(DeepStandby request changed to Standby owing to there being streaming clients.)"), timeout=180)
 					return True
 
@@ -759,7 +759,7 @@ class RecordTimerEntry(TimerEntry):
 					if Screens.Standby.inStandby:  # in standby
 						quitMainloop(1)
 					else:
-						Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _(f"A finished record timer wants to shut down\nyour {SystemInfo['MachineBrand']} {SystemInfo['MachineName']}. Shutdown now?"), timeout=180)
+						Notifications.AddNotificationWithCallback(self.sendTryQuitMainloopNotification, MessageBox, _("A finished record timer wants to shut down\nyour %s %s. Shutdown now?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), timeout=180)
 			return True
 
 	def keypress(self, key=None, flag=1):
@@ -811,7 +811,7 @@ class RecordTimerEntry(TimerEntry):
 				type = _("zap")
 			elif self.always_zap:
 				type = _("zap and record")
-			message = _(f"You must switch to the service {type} ({self.service_ref.getServiceName()} - '{self.name}')!\n")
+			message = _("You must switch to the service %s (%s - '%s')!\n") % (type, self.service_ref.getServiceName(), self.name)
 			if self.repeated:
 				message += _("Attention, this is repeated timer!\n")
 			message += _("Timeshift is running. Select an action.\n")
@@ -921,7 +921,7 @@ class RecordTimerEntry(TimerEntry):
 			# TODO: this has to be done.
 		elif event == iRecordableService.evStart:
 			RecordingsState(1)
-			text = _(f"A recording has been started:\n{self.name}")
+			text = _("A recording has been started:\n%s") % self.name
 			notify = config.usage.show_message_when_recording_starts.value and not Screens.Standby.inStandby and self.InfoBarInstance and self.InfoBarInstance.execing
 			if self.dirnameHadToFallback:
 				text = "\n".join((text, _("Please note that the previously selected media could not be accessed and therefore the default directory is being used instead.")))
@@ -1100,7 +1100,7 @@ class RecordTimer(Timer):
 			if conflict_list:
 				checkit = True
 				if newTimer in conflict_list:
-					timer_text += _(f"\nTimer '{newTimer.name}' disabled!")
+					timer_text += _("\nTimer '%s' disabled!") % newTimer.name
 		if checkit:
 			from Tools.Notifications import AddPopup
 			from Screens.MessageBox import MessageBox
