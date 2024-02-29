@@ -1,5 +1,6 @@
 from chardet import detect
 
+
 class VariableText:
 	"""VariableText can be used for components which have a variable text, based on any widget with setText call"""
 
