@@ -1,3 +1,5 @@
+from chardet import detect
+
 class VariableText:
 	"""VariableText can be used for components which have a variable text, based on any widget with setText call"""
 
@@ -8,7 +10,12 @@ class VariableText:
 		self.onChanged = []
 
 	def setText(self, text):
-		self.message = text
+		atext = text.encode('UTF-8', 'surrogateescape')
+		if text != atext.decode('UTF-8', 'ignore'):
+			encoding = detect(atext)['encoding'] or 'ascii'
+			self.message = atext.decode(encoding)
+		else:
+			self.message = text
 		if self.instance:
 			self.instance.setText(str(self.message) or "")
 		for x in self.onChanged:

@@ -47,7 +47,7 @@ def getItemDisplayNameText(itemRef, info, removeExtension=None):
 	name = getItemDisplayName(itemRef, info, removeExtension)
 	aname = name.encode('UTF-8', 'surrogateescape')
 	if name != aname.decode('UTF-8', 'ignore'):
-		encoding = detect(aname)['encoding']
+		encoding = detect(aname)['encoding'] or 'ascii'
 		return aname.decode(encoding)
 	return name
 

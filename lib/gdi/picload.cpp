@@ -942,7 +942,10 @@ void ePicLoad::gotMessage(const Message &msg)
 		case Message::decode_finished: // called from main thread
 			//eDebug("[ePicLoad] decode finished... %s", m_filepara->file);
 			if(m_filepara->callback)
+			{
+				eDebug("[ePicLoad] picinfo... %s", m_filepara->picinfo.c_str());
 				PictureData(m_filepara->picinfo.c_str());
+			}
 			else
 			{
 				if(m_filepara != NULL)
