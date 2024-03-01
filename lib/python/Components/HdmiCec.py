@@ -725,9 +725,9 @@ class HdmiCec:
 	def debugRx(self, length, cmd, ctrl0):
 		txt = self.now()
 		if cmd == 0 and length == 0:
-			txt += "<Polling Message> -"		
+			txt += "<Polling Message> -"
 		else:
-		
+
 			if cmd == 0:
 				txt += "<Feature Abort>" + 13 * " " + "<  " + f"{cmd:02X}" + " "
 			else:
@@ -735,7 +735,7 @@ class HdmiCec:
 			if cmd == 0x9e and ctrl0 < len(CEC):
 				txt += f"{ctrl0:02X}" + 3 * " " + f"[version: {CEC[ctrl0]}]"
 			else:
-				txt += f"{ctrl0:02X}"				 				
+				txt += f"{ctrl0:02X}"
 		txt += "\n"
 		self.fdebug(txt)
 
