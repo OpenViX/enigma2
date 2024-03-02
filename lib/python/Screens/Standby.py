@@ -303,21 +303,11 @@ class TryQuitMainloop(MessageBox):
 
 	def sendCEC(self):
 		print("[Standby][sendCEC] entered ")
-		import struct
 		from enigma import eHdmiCEC  # noqa: E402
-		physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
-		msgaddress = 0x0f  # use broadcast for active source command
-		cmd0 = 0x9d  # 157 sourceinactive
-		data0 = struct.pack("BB", int(physicaladdress // 256), int(physicaladdress % 256))
-		data0 = data0.decode("UTF-8", "ignore")
-		cmd1 = 0x44  # 68 keypoweroff
-		data1 = struct.pack("B", 0x6c)
-		data1 = data1.decode("UTF-8", "ignore")
-		cmd2 = 0x36  # 54 standby
-		data2 = ""
-		eHdmiCEC.getInstance().sendMessage(msgaddress, cmd0, data0, len(data0))
-		eHdmiCEC.getInstance().sendMessage(msgaddress, cmd1, data1, len(data1))
-		eHdmiCEC.getInstance().sendMessage(msgaddress, cmd2, data2, len(data2))
+		msgaddress = 0x00
+		cmd = 0x36  # 54 standby
+		data = ""
+		eHdmiCEC.getInstance().sendMessage(msgaddress, cmd, data, len(data))
 		print("[Standby][sendCEC] departed ")
 
 	def close(self, value):
