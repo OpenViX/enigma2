@@ -11,12 +11,12 @@ class VariableText:
 		self.onChanged = []
 
 	def setText(self, text):
-		atext = text.encode('UTF-8', 'surrogateescape')
-		if text != atext.decode('UTF-8', 'ignore'):
-			encoding = detect(atext)['encoding'] or 'ascii'
-			self.message = atext.decode(encoding)
-		else:
-			self.message = text
+		self.message = text	
+		if text:
+			atext = text.encode('UTF-8', 'surrogateescape')
+			if text != atext.decode('UTF-8', 'ignore'):
+				encoding = detect(atext)['encoding'] or 'ascii'
+				self.message = atext.decode(encoding)
 		if self.instance:
 			self.instance.setText(str(self.message) or "")
 		for x in self.onChanged:
