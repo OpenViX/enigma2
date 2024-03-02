@@ -18,7 +18,7 @@ class VariableText:
 				encoding = detect(atext)['encoding'] or 'ascii'
 				self.message = atext.decode(encoding)
 		if self.instance:
-			self.instance.setText(str(self.message) or "")
+			self.instance.setText(self.message or "")
 		for x in self.onChanged:
 			x()
 
