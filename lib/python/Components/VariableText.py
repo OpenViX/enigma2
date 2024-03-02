@@ -11,7 +11,7 @@ class VariableText:
 		self.onChanged = []
 
 	def setText(self, text):
-		self.message = text	
+		self.message = text
 		if text:
 			atext = text.encode('UTF-8', 'surrogateescape')
 			if text != atext.decode('UTF-8', 'ignore'):
