@@ -383,7 +383,7 @@ class VIXStartCam(Screen):
 				if data.find(startselectedcam) >= 0:
 					filewrite = open("/tmp/SoftcamsScriptsRunning.tmp", "w")
 					fileread = open("/tmp/SoftcamsScriptsRunning")
-					filewrite.writelines([x for x in fileread.readlines() if startselectedcam not in x])
+					filewrite.writelines([cam for cam in fileread.readlines() if startselectedcam not in cam])
 					fileread.close()
 					filewrite.close()
 					rename("/tmp/SoftcamsScriptsRunning.tmp", "/tmp/SoftcamsScriptsRunning")
@@ -415,7 +415,7 @@ class VIXStartCam(Screen):
 					output.close()
 					fileread = open("/tmp/SoftcamsDisableCheck")
 					filewrite = open("/tmp/SoftcamsDisableCheck.tmp", "w")
-					filewrite.writelines([x for x in fileread.readlines() if startselectedcam not in x])
+					filewrite.writelines([cam for cam in fileread.readlines() if startselectedcam not in cam])
 					fileread.close()
 					filewrite.close()
 					rename("/tmp/SoftcamsDisableCheck.tmp", "/tmp/SoftcamsDisableCheck")
@@ -752,7 +752,7 @@ class SoftcamAutoPoller:
 							f = open(camconf, "r")
 							for line in f.readlines():
 								if line.find("httpport") != -1:
-									port = re.sub("\D", "", line)  # noqa: W605
+									port = re.sub(r"\D", "", line)
 							f.close()
 							print("[SoftcamManager] Checking if " + softcamcheck + " is frozen")
 							if port == "":
@@ -826,7 +826,7 @@ class SoftcamAutoPoller:
 										if parts[0].startswith("yes"):
 											allow = parts[0]
 								if line.find("WEBINFO LISTEN PORT") != -1:
-									port = re.sub("\D", "", line)  # noqa: W605
+									port = re.sub(r"\D", "", line)
 							f.close()
 							if allow.lower().find("yes") != -1:
 								print("[SoftcamManager] Checking if " + softcamcheck + " is frozen")

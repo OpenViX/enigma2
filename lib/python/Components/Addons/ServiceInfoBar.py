@@ -1,21 +1,15 @@
-from Components.Addons.GUIAddon import GUIAddon
-
 from enigma import eListbox, eListboxPythonMultiContent, BT_ALIGN_CENTER, iPlayableService, iRecordableService, eServiceReference, iServiceInformation, gFont, RT_HALIGN_LEFT, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_HALIGN_CENTER, eTimer, getDesktop, eSize, eStreamServer
-
 from skin import parseScale, applySkinFactor, parseColor, parseFont
 
-from Components.MultiContent import MultiContentEntryPixmapAlphaBlend, MultiContentEntryText
-from Components.ServiceEventTracker import ServiceEventTracker
+from Components.Addons.GUIAddon import GUIAddon
+from Components.Converter.PliExtraInfo import createCurrentCaidLabel
 from Components.Converter.ServiceInfo import getVideoHeight
 from Components.Converter.VAudioInfo import StdAudioDesc
-from Components.Converter.PliExtraInfo import createCurrentCaidLabel
 from Components.Label import Label
+from Components.MultiContent import MultiContentEntryPixmapAlphaBlend, MultiContentEntryText
+from Components.ServiceEventTracker import ServiceEventTracker
 from Components.Sources.StreamService import StreamServiceList
-
-from Components.config import config
-
 from Screens.InfoBarGenerics import hasActiveSubservicesForCurrentChannel
-
 from Tools.Directories import resolveFilename, SCOPE_GUISKIN
 from Tools.LoadPixmap import LoadPixmap
 
@@ -142,11 +136,11 @@ class ServiceInfoBar(GUIAddon):
 			service = self.nav.getCurrentService()
 			info = service and service.info()
 			isRef = isinstance(service, eServiceReference)
-			#self.current_info = info
+			# self.current_info = info
 			if not info:
 				return None
 			video_height = None
-			video_aspect = None
+			# video_aspect = None
 			video_height = getVideoHeight(info)
 			if key == "videoRes":
 				if video_height >= 720 and video_height < 1500:
@@ -267,11 +261,11 @@ class ServiceInfoBar(GUIAddon):
 				else:
 					textWidth = self._calcTextWidth(self.current_crypto, font=self.font, size=eSize(self.getDesktopWith() // 3, 0))
 					res.append(MultiContentEntryText(
-							pos=(xPos - textWidth, yPos - 2), size=(textWidth, self.instance.size().height()),
-							font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_TOP,
-							text=self.current_crypto,
-							color=self.foreColor, color_sel=self.foreColor,
-							backcolor=None, backcolor_sel=None))
+						pos=(xPos - textWidth, yPos - 2), size=(textWidth, self.instance.size().height()),
+						font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_TOP,
+						text=self.current_crypto,
+						color=self.foreColor, color_sel=self.foreColor,
+						backcolor=None, backcolor_sel=None))
 					if self.alignment == "right":
 						xPos -= textWidth + self.spacing
 					else:

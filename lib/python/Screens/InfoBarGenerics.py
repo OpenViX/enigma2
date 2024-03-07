@@ -53,7 +53,6 @@ from Tools import Notifications
 from Tools.Directories import pathExists, fileExists
 from Tools.KeyBindings import getKeyDescription, getKeyBindingKeys
 from Tools.General import isIPTV
-from pickle import loads as pickle_loads
 
 import NavigationInstance
 
@@ -62,11 +61,11 @@ from keyids import KEYFLAGS, KEYIDS, KEYIDNAMES
 
 from time import time, localtime, strftime
 from bisect import insort
-import os
+from os import listdir, path as ospath
 from sys import maxsize
 import itertools
 import datetime
-import pickle
+from pickle import load as pickle_load, dump as pickle_dump, HIGHEST_PROTOCOL as pickle_HIGHEST_PROTOCOL
 from gettext import dgettext
 from re import match
 
@@ -105,9 +104,9 @@ def setResumePoint(session):
 				for k, v in list(resumePointCache.items()):
 					if v[0] < lru:
 						candidate = k
-						filepath = os.path.realpath(candidate.split(':')[-1])
+						filepath = ospath.realpath(candidate.split(':')[-1])
 						mountpoint = findMountPoint(filepath)
-						if os.path.ismount(mountpoint) and not os.path.exists(filepath):
+						if ospath.ismount(mountpoint) and not ospath.exists(filepath):
 							del resumePointCache[candidate]
 				saveResumePoints()
 
@@ -137,7 +136,7 @@ def saveResumePoints():
 	global resumePointCache, resumePointCacheLast
 	try:
 		f = open('/etc/enigma2/resumepoints.pkl', 'wb')
-		pickle.dump(resumePointCache, f, pickle.HIGHEST_PROTOCOL)
+		pickle_dump(resumePointCache, f, pickle_HIGHEST_PROTOCOL)
 		f.close()
 	except Exception as ex:
 		print("[InfoBarGenerics] Failed to write resumepoints:%s" % ex)
@@ -147,7 +146,7 @@ def saveResumePoints():
 def loadResumePoints():
 	try:
 		file = open('/etc/enigma2/resumepoints.pkl', 'rb')
-		PickleFile = pickle.load(file)
+		PickleFile = pickle_load(file)
 		file.close()
 		return PickleFile
 	except Exception as ex:
@@ -169,7 +168,7 @@ class whitelist:
 
 
 def reload_whitelist_vbi():
-	whitelist.vbi = [line.strip() for line in open('/etc/enigma2/whitelist_vbi', 'r').readlines()] if os.path.isfile('/etc/enigma2/whitelist_vbi') else []
+	whitelist.vbi = [line.strip() for line in open('/etc/enigma2/whitelist_vbi', 'r').readlines()] if ospath.isfile('/etc/enigma2/whitelist_vbi') else []
 
 
 reload_whitelist_vbi()
@@ -180,7 +179,7 @@ class InfoBarStreamRelay:
 	FILENAME = "/etc/enigma2/whitelist_streamrelay"
 
 	def __init__(self):
-		self.__srefs = self.__sanitizeData(open(self.FILENAME, 'r').readlines()) if os.path.isfile(self.FILENAME) else []
+		self.__srefs = self.__sanitizeData(open(self.FILENAME, 'r').readlines()) if ospath.isfile(self.FILENAME) else []
 
 	def __sanitizeData(self, data):
 		return list(set([line.strip() for line in data if line and isinstance(line, str) and match("^(?:[0-9A-F]+[:]){10}$", line.strip())])) if isinstance(data, list) else []
@@ -234,7 +233,7 @@ def reload_subservice_groupslist(force=False):
 	if subservice_groupslist is None or force:
 		try:
 			groupedservices = "/etc/enigma2/groupedservices"
-			if not os.path.isfile(groupedservices):
+			if not ospath.isfile(groupedservices):
 				groupedservices = "/usr/share/enigma2/groupedservices"
 			subservice_groupslist = [list(g) for k, g in itertools.groupby([line.split('#')[0].strip() for line in open(groupedservices).readlines()], lambda x: not x) if not k]
 		except:
@@ -404,7 +403,7 @@ class InfoBarScreenSaver:
 			ref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 			if ref and not (hasattr(self.session, "pipshown") and self.session.pipshown):
 				ref = ref.toString().split(":")
-				flag = ref[2] == "2" or os.path.splitext(ref[10])[1].lower() in AUDIO_EXTENSIONS
+				flag = ref[2] == "2" or ospath.splitext(ref[10])[1].lower() in AUDIO_EXTENSIONS
 		if time and flag:
 			self.screenSaverTimer.startLongTimer(time)
 		else:
@@ -997,10 +996,10 @@ class InfoBarShowHide(InfoBarScreenSaver):
 					audio_pid = None
 					if av_val.find("|") > -1:
 						split = av_val.split("|")
-						audio_pid = pickle_loads(split[0].encode())
-						subs_pid = pickle_loads(split[1].encode())
+						audio_pid = pickle_load(split[0].encode())
+						subs_pid = pickle_load(split[1].encode())
 					elif av_val and av_val != "":
-						audio_pid = pickle_loads(av_val.encode())
+						audio_pid = pickle_load(av_val.encode())
 					audio = service and service.audioTracks()
 					playinga_idx = audio and audio.getCurrentTrack()
 					if audio_pid and audio_pid != -1 and playinga_idx != audio_pid:
@@ -2298,11 +2297,11 @@ class InfoBarSeek:
 			self.activityTimer.stop()
 			self.activity = 0
 			hdd = 0
-		if os.path.exists("/proc/stb/lcd/symbol_hdd"):
+		if ospath.exists("/proc/stb/lcd/symbol_hdd"):
 			file = open("/proc/stb/lcd/symbol_hdd", "w")
 			file.write('%d' % int(hdd))
 			file.close()
-		if os.path.exists("/proc/stb/lcd/symbol_hddprogress"):
+		if ospath.exists("/proc/stb/lcd/symbol_hddprogress"):
 			file = open("/proc/stb/lcd/symbol_hddprogress", "w")
 			file.write('%d' % int(self.activity))
 			file.close()
@@ -2727,7 +2726,7 @@ class InfoBarTimeshiftState(InfoBarPVRState):
 		self.pvrStateDialog.hide()
 
 	def __timeshiftEventName(self, state):
-		if os.path.exists("%spts_livebuffer_%s.meta" % (config.usage.timeshift_path.value, self.pts_currplaying)):
+		if ospath.exists("%spts_livebuffer_%s.meta" % (config.usage.timeshift_path.value, self.pts_currplaying)):
 			readmetafile = open("%spts_livebuffer_%s.meta" % (config.usage.timeshift_path.value, self.pts_currplaying), "r")
 			servicerefname = readmetafile.readline()[0:-1]  # noqa: F841 servicerefname assigned, not used
 			eventname = readmetafile.readline()[0:-1]
@@ -2850,7 +2849,7 @@ class InfoBarExtensions:
 	def getCCcamInfo(self):
 		softcams = []
 		if pathExists('/usr/softcams/'):
-			softcams = os.listdir('/usr/softcams/')
+			softcams = listdir('/usr/softcams/')
 		for softcam in softcams:
 			if softcam.lower().startswith('cccam') and config.cccaminfo.showInExtensions.value:
 				return [((boundFunction(self.getCCname), boundFunction(self.openCCcamInfo), lambda: True), None)] or []
@@ -2863,7 +2862,7 @@ class InfoBarExtensions:
 	def getOScamInfo(self):
 		softcams = []
 		if pathExists('/usr/softcams/'):
-			softcams = os.listdir('/usr/softcams/')
+			softcams = listdir('/usr/softcams/')
 		for softcam in softcams:
 			if softcam.lower().startswith(('oscam', 'ncam')) and config.oscaminfo.showInExtensions.value:
 				return [((boundFunction(self.getOSname), boundFunction(self.openOScamInfo), lambda: True), None)] or []
@@ -3740,6 +3739,8 @@ class InfoBarSubserviceSelection:
 					keys = ["red", "", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"] + [""] * (len(subservices) - 10)
 					selection += 2
 				self.session.openWithCallback(self.subserviceSelected, ChoiceBox, title=_("Please select a sub service"), list=tlist, selection=selection, keys=keys, skin_name="SubserviceSelection")
+			else:
+				self.openTimerList()  # no sub services, so take default for Green
 
 	def subserviceSelected(self, service):
 		if service and len(service) > 1:

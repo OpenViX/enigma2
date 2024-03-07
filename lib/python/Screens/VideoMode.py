@@ -21,12 +21,9 @@ class VideoSetup(Setup):
 		iAV.on_hotplug.remove(self.createSetup)
 
 	def createSetup(self):
-		level = config.usage.setup_level.index
 		self.list = [
 			getConfigListEntry(_("Video output"), config.av.videoport, _("Configures which video output connector will be used."))
 		]
-		if config.av.videoport.value == "Scart":
-			config.av.fixres.value = "disabled"
 		# if we have modes for this port:
 		if config.av.videoport.value in config.av.videomode or config.av.videoport.value == "Scart":
 			# add mode- and rate-selection:
@@ -51,7 +48,7 @@ class VideoSetup(Setup):
 
 		if config.av.videoport.value == "Scart":
 			self.list.append(getConfigListEntry(_("Color format"), config.av.colorformat, _("Configure which color format should be used on the SCART output.")))
-			if level >= 1:
+			if config.usage.setup_level.index >= 1:
 				self.list.append(getConfigListEntry(_("WSS on 4:3"), config.av.wss, _("When enabled, content with an aspect ratio of 4:3 will be stretched to fit the screen.")))
 				if SystemInfo["ScartSwitch"]:
 					self.list.append(getConfigListEntry(_("Auto scart switching"), config.av.vcrswitch, _("When enabled, your receiver will detect activity on the VCR SCART input.")))
@@ -68,7 +65,7 @@ class VideoSetup(Setup):
 			self.list.append(getConfigListEntry(_("HDR10 Support"), config.av.hdr10_support, _("Enable or disable to force HDR10 Modes for UHD")))
 			self.list.append(getConfigListEntry(_("Allow 12bit"), config.av.allow_12bit, _("Enable or disable the 12 Bit Color Mode")))
 			self.list.append(getConfigListEntry(_("Allow 10bit"), config.av.allow_10bit, _("Enable or disable the 10 Bit Color Mode")))
-		if level >= 1:
+		if config.usage.setup_level.index >= 1:
 			if SystemInfo["CanDownmixAC3"]:
 				self.list.append(getConfigListEntry(_("AC3 downmix"), config.av.downmix_ac3, _("Choose whether multi channel ac3 sound tracks should be downmixed to stereo.")))
 			if SystemInfo["CanDownmixDTS"]:

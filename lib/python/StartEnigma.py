@@ -208,7 +208,7 @@ class Session:
 		# close all open dialogs by emptying the dialog stack
 		# remove any return values and callbacks for a swift exit
 		while self.current_dialog is not None and type(self.current_dialog) is not InfoBar.InfoBar:
-			print("[SkinReloader] closing %s" % type(self.current_dialog))
+			print(f"[SkinReloader] closing {type(self.current_dialog)}")
 			self.current_dialog.returnValue = None
 			self.current_dialog.callback = None
 			self.execEnd()
@@ -439,11 +439,11 @@ profile("PYTHON_START")
 from Components.SystemInfo import SystemInfo  # noqa: E402  don't move this import
 
 print("[StartEnigma]  Starting Python Level Initialisation.")
-print("[StartEnigma]  Image Type -> '%s'" % SystemInfo["imagetype"])
-print("[StartEnigma]  Image Version -> '%s'" % SystemInfo["imageversion"])
-print("[StartEnigma]  Image Build -> '%s'" % SystemInfo["imagebuild"])
+print(f"[StartEnigma]  Image Type -> {SystemInfo['imagetype']}")
+print(f"[StartEnigma]  Image Version -> {SystemInfo['imageversion']}")
+print(f"[StartEnigma]  Image Build -> {SystemInfo['imagebuild']}")
 if SystemInfo["imagetype"] != "release":
-	print("[StartEnigma]  Image DevBuild -> '%s'" % SystemInfo["imagedevbuild"])
+	print(f"[StartEnigma]  Image DevBuild -> {SystemInfo['imagedevbuild']}")
 
 
 # SetupDevices sets up defaults:- language, keyboard, parental & expert config.
