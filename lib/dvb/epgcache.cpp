@@ -599,7 +599,7 @@ void eEPGCache::sectionRead(const uint8_t *data, int source, eEPGChannelData *ch
 		TM = parseDVBtime((const uint8_t*)eit_event + 2, &event_hash);
 
 		std::vector<int>::iterator m_it=find(onid_blacklist.begin(),onid_blacklist.end(),onid);
-		if (if (m_it != onid_blacklist.end() || (source != EPG_IMPORT && getIsEpgEventSupressed(service))))
+		if (m_it != onid_blacklist.end() || (source != EPG_IMPORT && getIsEpgEventSupressed(service)))
 			goto next;
 
 		if ( (TM != 3599) &&		// NVOD Service
