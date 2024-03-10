@@ -175,9 +175,9 @@ OpenTvTitle::OpenTvTitle(const uint8_t * const buffer, uint16_t startMjd)
 		duration = UINT16(&buffer[4]) << 1;
 
 		//genre content
-		//uint8_t flag1 = buffer[6];
-		//uint8_t flag2 = buffer[7];
-		//uint8_t flag3 = buffer[8];
+		genreId = buffer[6];
+		//uint8_t flag = buffer[7];
+		parentalRating = buffer[8] & 0x0f;
 
 		char tmp[OPENTV_EVENT_TITLE_LENGTH];
 		memset(tmp, '\0', OPENTV_EVENT_TITLE_LENGTH);
@@ -229,6 +229,16 @@ uint16_t OpenTvTitle::getEventId(void) const
 uint32_t OpenTvTitle::getDuration(void) const
 {
 	return duration;
+}
+
+uint8_t OpenTvTitle::getGenreId(void) const
+{
+	return genreId;
+}
+
+uint8_t OpenTvTitle::getParentalRating(void) const
+{
+	return parentalRating;
 }
 
 void OpenTvTitle::setChannelId(uint16_t channelid)

@@ -1822,13 +1822,17 @@ void eEPGChannelData::OPENTV_checkCompletion(uint32_t data_crc)
 			{
 				std::vector<int> sids;
 				std::vector<eDVBChannelID> chids;
+				std::vector<uint8_t> event_types;
+				std::vector<eit_parental_rating> parental_ratings;
 				eDVBChannelID chid = channel->getChannelID();
 				chid.transport_stream_id = m_OPENTV_channels_map[channelid].transportStreamId;
 				chid.original_network_id = m_OPENTV_channels_map[channelid].originalNetworkId;
 				chids.push_back(chid);
 				sids.push_back(m_OPENTV_channels_map[channelid].serviceId);
+				event_types.push_back(it->second.genreId);
+				parental_ratings.push_back(getOpenTvParentalRating(chid.dvbnamespace.get(), it->second.parentalRating));
 				if (eEPGCache::getInstance())
-					eEPGCache::getInstance()->submitEventData(sids, chids, it->second.startTime, it->second.duration, m_OPENTV_descriptors_map[it->second.title_crc].c_str(), "", "", 0, it->second.eventId, eEPGCache::OPENTV);
+					eEPGCache::getInstance()->submitEventData(sids, chids, it->second.startTime, it->second.duration, m_OPENTV_descriptors_map[it->second.title_crc].c_str(), "", "", event_types, parental_ratings, it->second.eventId, eEPGCache::OPENTV);
 			}
 		}
 		m_OPENTV_descriptors_map.clear();
@@ -1896,6 +1900,8 @@ void eEPGChannelData::OPENTV_TitlesSection(const uint8_t *d)
 			ote.startTime = (*title)->getStartTime();
 			ote.duration = (*title)->getDuration();
 			ote.title_crc = (*title)->getCRC32();
+			ote.genreId = (*title)->getGenreId();
+			ote.parentalRating = (*title)->getParentalRating();
 			m_OPENTV_EIT_map[etm] = ote;
 
 			if (m_OPENTV_descriptors_map.find(ote.title_crc) == m_OPENTV_descriptors_map.end())
@@ -1927,11 +1933,15 @@ void eEPGChannelData::OPENTV_SummariesSection(const uint8_t *d)
 				{
 					std::vector<int> sids;
 					std::vector<eDVBChannelID> chids;
+					std::vector<uint8_t> event_types;
+					std::vector<eit_parental_rating> parental_ratings;
 					eDVBChannelID chid = channel->getChannelID();
 					chid.transport_stream_id = m_OPENTV_channels_map[channelid].transportStreamId;
 					chid.original_network_id = m_OPENTV_channels_map[channelid].originalNetworkId;
 					chids.push_back(chid);
 					sids.push_back(m_OPENTV_channels_map[channelid].serviceId);
+					event_types.push_back(ote.genreId);
+					parental_ratings.push_back(getOpenTvParentalRating(chid.dvbnamespace.get(), ote.parentalRating));
 
 					// hack to fix split titles
 					std::string sTitle = m_OPENTV_descriptors_map[ote.title_crc];
@@ -1940,7 +1950,7 @@ void eEPGChannelData::OPENTV_SummariesSection(const uint8_t *d)
 					removePrefixesFromEventName(sTitle, sSummary);
 
 					if (eEPGCache::getInstance())
-						eEPGCache::getInstance()->submitEventData(sids, chids, ote.startTime, ote.duration, sTitle.c_str(), "", sSummary.c_str(), 0, ote.eventId, eEPGCache::OPENTV);
+						eEPGCache::getInstance()->submitEventData(sids, chids, ote.startTime, ote.duration, sTitle.c_str(), "", sSummary.c_str(), event_types, parental_ratings, ote.eventId, eEPGCache::OPENTV);
 				}
 				m_OPENTV_EIT_map.erase(otce);
 			}
@@ -1949,6 +1959,54 @@ void eEPGChannelData::OPENTV_SummariesSection(const uint8_t *d)
 	haveData |= eEPGCache::OPENTV;
 
 	OPENTV_checkCompletion(otss.getCrc32());
+}
+eit_parental_rating eEPGChannelData::getOpenTvParentalRating(int dvbnamespace, int parental_rating)
+{
+	eit_parental_rating epr;
+
+	switch ((dvbnamespace >> 16) & 0xffff)
+	{
+	case 0x011A: // country code 'GBR'
+		/* 28.2e sends data {0,1,2,3,4,5}
+		classification {"",U,PG,12,15,18}
+		convert to ETSI min age with 3x */
+		parental_rating = parental_rating * 3;
+		epr.country_code[0] = 'O';
+		epr.country_code[1] = 'T';
+		epr.country_code[2] = '1';
+		break;
+	case 0x0082: // country code 'ITA'
+		/* 13.0e sends data {0,1,2,3,4,5}
+		classification {"",T,BA,12,14,18}
+		convert to ETSI min age with 3x */
+		epr.country_code[0] = 'O';
+		epr.country_code[1] = 'T';
+		epr.country_code[2] = '2';
+		parental_rating = parental_rating * 3;
+		break;
+	case 0x0618: // country code 'AUS'
+		epr.country_code[0] = 'O';
+		epr.country_code[1] = 'T';
+		epr.country_code[2] = '3';
+		break;
+	case 0x0640: // country code 'NZL'
+		epr.country_code[0] = 'O';
+		epr.country_code[1] = 'T';
+		epr.country_code[2] = '4';
+		break;
+	default: // country code 'ETSI'
+		epr.country_code[0] = 'O';
+		epr.country_code[1] = 'T';
+		epr.country_code[2] = 'V';
+		break;
+	}
+
+	if (parental_rating > 15)
+		epr.rating = 0;
+	else
+		epr.rating = parental_rating;
+
+	return epr;
 }
 
 void eEPGChannelData::cleanupOPENTV()
