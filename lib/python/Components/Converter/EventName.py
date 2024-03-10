@@ -2,7 +2,7 @@ from enigma import eEPGCache
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached
-from Components.Converter.genre import getGenreStringSub
+from Components.Converter.genre import getGenreStringSub, getGenreStringLong
 from Components.config import config
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from time import time, localtime, mktime, strftime
@@ -65,6 +65,56 @@ class AusClassifications(dict):
 		self.update([(i, (c, self.LONGTEXT[c], self.IMAGES[c])) for i, c in enumerate(self.SHORTTEXT)])
 
 
+class GBrClassifications(dict):
+	# British Board of Film Classification
+	#            0   1   2    3    4    5    6     7     8     9     10    11    12    13    14    15
+	SHORTTEXT = ("", "", "", "U", "U", "U", "PG", "PG", "PG", "12", "12", "12", "15", "15", "15", "18")
+	LONGTEXT = {
+		"": _("Not Classified"),
+		"U": _("U - Suitable for all"),
+		"PG": _("PG - Parental Guidance"),
+		"12": _("Suitable for ages 12+"),
+		"15": _("Suitable for ages 15+"),
+		"18": _("Suitable only for Adults")
+	}
+	IMAGES = {
+		"": "ratings/blank.png",
+		"U": "ratings/GBR-U.png",
+		"PG": "ratings/GBR-PG.png",
+		"12": "ratings/GBR-12.png",
+		"15": "ratings/GBR-15.png",
+		"18": "ratings/GBR-18.png"
+	}
+
+	def __init__(self):
+		self.update([(i, (c, self.LONGTEXT[c], self.IMAGES[c])) for i, c in enumerate(self.SHORTTEXT)])
+
+
+class ItaClassifications(dict):
+	# The classifications used by Sky Italia
+	#            0   1   2    3    4    5    6     7     8     9     10    11    12    13    14    15
+	SHORTTEXT = ("", "", "", "T", "T", "T", "BA", "BA", "BA", "12", "12", "12", "14", "14", "14", "18")
+	LONGTEXT = {
+		"": _("Non Classificato"),
+		"T": _("Per Tutti"),
+		"BA": _("Bambini Accompagnati"),
+		"12": _("Dai 12 anni in su"),
+		"14": _("Dai 14 anni in su"),
+		"18": _("Dai 18 anni in su")
+	}
+	IMAGES = {
+		"": "ratings/blank.png",
+		"T": "ratings/ITA-T.png",
+		"BA": "ratings/ITA-BA.png",
+		"12": "ratings/ITA-12.png",
+		"14": "ratings/ITA-14.png",
+		"18": "ratings/ITA-18.png"
+	}
+
+	def __init__(self):
+		self.update([(i, (c, self.LONGTEXT[c], self.IMAGES[c])) for i, c in enumerate(self.SHORTTEXT)])
+
+
 # Each country classification object in the map tuple must be an object that
 # supports obj.get(key[, default]). It need not actually be a dict object.
 #
@@ -75,7 +125,20 @@ class AusClassifications(dict):
 
 countries = {
 	"ETSI": (ETSIClassifications(), lambda age: (_("bc%d") % age, _("Rating defined by broadcaster - %d") % age, "ratings/ETSI-na.png")),
-	"AUS": (AusClassifications(), lambda age: (_("BC%d") % age, _("Rating defined by broadcaster - %d") % age, "ratings/AUS-na.png"))
+	"AUS": (AusClassifications(), lambda age: (_("BC%d") % age, _("Rating defined by broadcaster - %d") % age, "ratings/AUS-na.png")),
+	"GBR": (GBrClassifications(), lambda age: (_("BC%d") % age, _("Rating defined by broadcaster - %d") % age, "ratings/GBR-na.png")),
+	"ITA": (ItaClassifications(), lambda age: (_("BC%d") % age, _("Rating defined by broadcaster - %d") % age, "ratings/ITA-na.png"))
+}
+
+
+# OpenTV country codes: epgchanneldata.cpp
+# eEPGChannelData::getOpenTvParentalRating
+opentv_countries = {
+	"OT1": "GBR",
+	"OT2": "ITA",
+	"OT3": "AUS",
+	"OT4": "NZL",
+	"OTV": "ETSI"
 }
 
 
@@ -220,6 +283,8 @@ class EventName(Converter):
 			if rating:
 				age = rating.getRating()
 				country = rating.getCountryCode().upper()
+				if country in opentv_countries:
+					country = opentv_countries[country]
 				if country in countries:
 					c = countries[country]
 				else:
@@ -245,9 +310,13 @@ class EventName(Converter):
 					country = rating.getCountryCode().upper()
 				else:
 					country = "ETSI"
-				if config.misc.epggenrecountry.value:
-					country = config.misc.epggenrecountry.value
-				return self.separator.join((genretext for genretext in (self.trimText(getGenreStringSub(genre[0], genre[1], country=country)) for genre in genres) if genretext))
+				if country in opentv_countries:
+					country = opentv_countries[country] + "OpenTV"
+					return self.separator.join((genretext for genretext in (self.trimText(getGenreStringLong(genre[0], genre[1], country=country)) for genre in genres) if genretext))
+				else:
+					if config.misc.epggenrecountry.value:
+						country = config.misc.epggenrecountry.value
+					return self.separator.join((genretext for genretext in (self.trimText(getGenreStringSub(genre[0], genre[1], country=country)) for genre in genres) if genretext))
 		elif self.type == self.NAME_NOW:
 			return pgettext("now/next: 'now' event label", "Now") + ": " + self.trimText(event.getEventName())
 		elif self.type == self.SHORT_DESCRIPTION:
