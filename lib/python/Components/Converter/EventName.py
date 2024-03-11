@@ -31,7 +31,7 @@ class ETSIClassifications(dict):
 			return "ratings/ETSI-%d.png" % age
 
 	def __init__(self):
-		self.update([(i, (self.shortRating(c), self.longRating(c), self.imageRating(c))) for i, c in enumerate(range(0, 15))])
+		self.update([(i, (self.shortRating(c), self.longRating(c), self.imageRating(c))) for i, c in enumerate(range(0, 18))])
 
 
 class AusClassifications(dict):
