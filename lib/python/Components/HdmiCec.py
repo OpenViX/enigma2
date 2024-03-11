@@ -1,6 +1,6 @@
 import chardet
 import datetime
-from os import path, uname
+from os import path, uname, remove
 import struct
 from sys import maxsize
 
@@ -392,7 +392,7 @@ class HdmiCec:
 			ctrl2 = message.getControl2()
 			msgaddress = message.getAddress()  # 0 = TV, 5 = receiver 15 = broadcast
 			if CECcmd != "<Polling Message>":
-				print(f"[HdmiCEC][messageReceived0]: msgaddress={msgaddress}  CECcmd={CECcmd}, cmd={cmd}, ctrl0={ctrl0}, datalength={length}")
+				print(f"[HdmiCEC][messageReceived0]: msgaddress={msgaddress}  CECcmd={CECcmd}, cmd={cmd:02X}, ctrl0={ctrl0}, datalength={length}")
 				if config.hdmicec.debug.value != "0":
 					self.debugRx(length, cmd, ctrl0)
 				if msgaddress > 15:  # workaround for wrong address from driver (e.g. hd51, message comes from tv -> address is only sometimes 0, dm920, same tv -> address is always 0)
@@ -533,7 +533,15 @@ class HdmiCec:
 				else:
 					cmd = 0x04
 			elif message == "standby":
-				cmd = 0x36
+				cecTimerWakeup = False
+				if path.exists("/tmp/was_cectimer_wakeup",):
+					with open("/tmp/was_cectimer_wakeup", "r") as f:
+						file = f.read()
+						cecTimerWakeup = int(file) and True or False
+					remove("/tmp/was_cectimer_wakeup")
+				print(f"[HdmiCec][sendMessage]: send message={message}  cecTimerWakeup=", cecTimerWakeup)
+				if not cecTimerWakeup:
+					cmd = 0x36
 			elif message == "osdname":
 				cmd = 0x47
 				data = uname()[1]
