@@ -105,13 +105,13 @@ def createCurrentCaidLabel(info, currentCaid=None):
 				stateDecoding = dvbCIUI.getDecodingState(slot)
 				if stateDecoding == 2:
 					decodingCiSlot = slot
-		
+
 	if not pathExists("/tmp/ecm.info") and decodingCiSlot == -1:
 		return "FTA"
-		
+
 	if decodingCiSlot > -1 and not pathExists("/tmp/ecm.info"):
 		return "CI%d" % (decodingCiSlot)
-		
+
 	for caid_entry in caid_data:
 		if int(caid_entry[0], 16) <= int(current_caid, 16) <= int(caid_entry[1], 16):
 			res = caid_entry[4]
