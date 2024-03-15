@@ -415,13 +415,7 @@ eEPGCache::eEPGCache()
 	CONNECT(eDVBLocalTimeHandler::getInstance()->m_timeUpdated, eEPGCache::timeUpdated);
 	CONNECT(cleanTimer->timeout, eEPGCache::cleanLoop);
 
-	std::ifstream onid_file;
-	onid_file.open("/etc/enigma2/blacklist.onid");
-	int tmp_onid;
-
-	while (onid_file >> std::hex >>tmp_onid)
-		onid_blacklist.insert(onid_blacklist.end(),1,tmp_onid);
-	onid_file.close();
+	reloadEITConfig(ALL);
 
 	instance=this;
 }
@@ -590,7 +584,7 @@ void eEPGCache::sectionRead(const uint8_t *data, int source, eEPGChannelData *ch
 	eventMap::iterator prevEventIt = servicemap.byEvent.end();
 	timeMap::iterator prevTimeIt = servicemap.byTime.end();
 
-	while (ptr<len)
+	while (ptr < len)
 	{
 		uint16_t event_hash;
 		eit_event_size = eit_event->getDescriptorsLoopLength()+EIT_LOOP_SIZE;
@@ -598,8 +592,7 @@ void eEPGCache::sectionRead(const uint8_t *data, int source, eEPGChannelData *ch
 		duration = fromBCD(eit_event->duration_1)*3600+fromBCD(eit_event->duration_2)*60+fromBCD(eit_event->duration_3);
 		TM = parseDVBtime((const uint8_t*)eit_event + 2, &event_hash);
 
-		std::vector<int>::iterator m_it=find(onid_blacklist.begin(),onid_blacklist.end(),onid);
-		if (m_it != onid_blacklist.end() || (source != EPG_IMPORT && getIsEpgEventSupressed(service)))
+		if (source != EPG_IMPORT && getIsBlacklisted(service)) // Check is the service blacklisted for getting data from EIT or now/next
 			goto next;
 
 		if ( (TM != 3599) &&		// NVOD Service
@@ -1897,18 +1890,6 @@ void eEPGCache::submitEventData(const std::vector<eServiceReferenceDVB>& service
 		chids.push_back(chid);
 		int sid = serviceRef->getServiceID().get();
 		sids.push_back(sid);
-
-		uniqueEPGKey serviceKey(sid, chid.original_network_id.get(), chid.transport_stream_id.get());		
-		if (std::find(epgkey_blacklist.begin(), epgkey_blacklist.end(), serviceKey) == epgkey_blacklist.end()) {
-			epgkey_blacklist.push_back(serviceKey);
-		}
-
-		// disable EIT event parsing when using EPG_IMPORT
-		ePtr<eDVBService> service;
-		if (!eDVBDB::getInstance()->getService(*serviceRef, service) && service->useEIT())
-		{
-			service->m_flags |= eDVBService::dxNoEIT;
-		}
 	}
 	submitEventData(sids, chids, start, duration, title, short_summary, long_description, event_types, parental_ratings, eventId, EPG_IMPORT);
 }
@@ -2115,12 +2096,60 @@ unsigned int eEPGCache::getEpgSources()
 	return m_enabledEpgSources;
 }
 
-bool eEPGCache::getIsEpgEventSupressed(const uniqueEPGKey epgKey)
+bool eEPGCache::getIsBlacklisted(const uniqueEPGKey epgKey)
 {
-	if (std::find(epgkey_blacklist.begin(), epgkey_blacklist.end(), epgKey) != epgkey_blacklist.end()) {
+	if (std::find(eit_blacklist.begin(), eit_blacklist.end(), epgKey) != eit_blacklist.end()) {
 		return true;
 	}
 	return false;
+}
+
+bool eEPGCache::getIsWhitelisted(const uniqueEPGKey epgKey)
+{
+	if (std::find(eit_whitelist.begin(), eit_whitelist.end(), epgKey) != eit_whitelist.end()) {
+		return true;
+	}
+	return false;
+}
+
+void eEPGCache::reloadEITConfig(int listType)
+{
+	if (listType == ALL || listType == WHITELIST) {
+		eit_whitelist.clear();
+		std::ifstream eitwhitelist_file;
+		eitwhitelist_file.open("/etc/enigma2/whitelist.eit");
+		std::string line = "";
+		while(getline(eitwhitelist_file, line))
+		{
+			std::string srefStr = replace_all(line, "\n", "");
+			eServiceReferenceDVB sref = eServiceReferenceDVB(srefStr);
+			eDVBChannelID chid;
+			sref.getChannelID(chid);
+			uniqueEPGKey serviceKey(sref.getServiceID().get(), chid.original_network_id.get(), chid.transport_stream_id.get());
+			eit_whitelist.push_back(serviceKey);
+			line = "";
+		}
+		eitwhitelist_file.close();
+	}
+
+	if (listType == ALL || listType == BLACKLIST) {
+		eit_blacklist.clear();
+		std::ifstream eitblacklist_file;
+		eitblacklist_file.open("/etc/enigma2/blacklist.eit");
+		std::string line = "";
+		while(getline(eitblacklist_file, line))
+		{
+			std::string srefStr = replace_all(line, "\n", "");
+			eServiceReferenceDVB sref = eServiceReferenceDVB(srefStr);
+			eDVBChannelID chid;
+			sref.getChannelID(chid);
+			uniqueEPGKey serviceKey(sref.getServiceID().get(), chid.original_network_id.get(), chid.transport_stream_id.get());
+			eit_blacklist.push_back(serviceKey);
+			line = "";
+		}
+		eitblacklist_file.close();
+	}
+	
 }
 
 static const char* getStringFromPython(ePyObject obj)
