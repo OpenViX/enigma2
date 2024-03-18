@@ -1,6 +1,5 @@
 import codecs
 import re
-import six
 
 from Components.config import config, configfile
 from Components.NimManager import nimmanager
@@ -521,11 +520,11 @@ class LamedbWriter():
 					service["flags"],
 					":%x" % service["ATSC_source_id"] if "ATSC_source_id" in service else ""))
 
-				control_chars = ''.join(list(map(six.unichr, list(range(0, 32)) + list(range(127, 160)))))
+				control_chars = ''.join(list(map(chr, list(range(0, 32)) + list(range(127, 160)))))
 				control_char_re = re.compile('[%s]' % re.escape(control_chars))
 				if 'provider_name' in service.keys():
-					service_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
-					provider_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["provider_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
+					service_name = control_char_re.sub('', service["service_name"])
+					provider_name = control_char_re.sub('', service["provider_name"])
 				else:
 					service_name = service["service_name"]
 
@@ -665,11 +664,11 @@ class LamedbWriter():
 					service["flags"],
 					":%x" % service["ATSC_source_id"] if "ATSC_source_id" in service else ":0"))
 
-				control_chars = ''.join(list(map(six.unichr, list(range(0, 32)) + list(range(127, 160)))))
+				control_chars = ''.join(list(map(chr, list(range(0, 32)) + list(range(127, 160)))))
 				control_char_re = re.compile('[%s]' % re.escape(control_chars))
 				if 'provider_name' in service.keys():
-					service_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["service_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
-					provider_name = control_char_re.sub('', six.ensure_text(six.ensure_str(service["provider_name"], encoding='latin-1'), encoding='utf-8', errors='ignore'))
+					service_name = control_char_re.sub('', service["service_name"])
+					provider_name = control_char_re.sub('', service["provider_name"])
 				else:
 					service_name = service["service_name"]
 
