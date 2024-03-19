@@ -138,7 +138,7 @@ class GetEcmInfo:
 						ecm = _('Ecm:') + ' '
 						if info.get('ecm time', None):
 							ecm += info.get('ecm time', '')
-						self.textvalue = address + ((" - " + self.createCurrentDevice(device)) if device else "") + '\n' + protocol + '  ' + hops + '  ' + ecm
+						self.textvalue = address + ((" - " + self.createCurrentDevice(device, True)) if device else "") + '\n' + protocol + '  ' + hops + '  ' + ecm
 			else:
 				decode = info.get('decode', None)
 				if decode:
