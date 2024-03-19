@@ -13,6 +13,7 @@ from Tools.Directories import pathExists
 from skin import parameters
 
 dvbCIUI = eDVBCI_UI.getInstance()
+ecmdata = GetEcmInfo()
 
 caid_data = (
 	("0x100", "0x1ff", "Seca", "S", "SECA", True),
@@ -76,26 +77,29 @@ def addspace(text):
 
 
 def getCryptoInfo(info):
-	ecmdata = GetEcmInfo()
 	if info and info.getInfo(iServiceInformation.sIsCrypted) == 1:
 		data = ecmdata.getEcmData()
 		current_source = data[0]
 		current_caid = data[1]
 		current_provid = data[2]
 		current_ecmpid = data[3]
+		current_device = data[4]
 	else:
 		current_source = ""
+		current_device = ""
 		current_caid = "0"
 		current_provid = "0"
 		current_ecmpid = "0"
-	return current_source, current_caid, current_provid, current_ecmpid
+	return current_source, current_caid, current_provid, current_ecmpid, current_device
 
-
-def createCurrentCaidLabel(info, currentCaid=None):
+def createCurrentCaidLabel(info, currentCaid=None, currentDevice=None):
 	if currentCaid:
 		current_caid = currentCaid
+		current_device = currentDevice
 	else:
-		current_caid = getCryptoInfo(info)[1]
+		crypto_info = getCryptoInfo(info)
+		current_caid = crypto_info[1]
+		current_device = crypto_info[4]
 	res = ""
 	decodingCiSlot = -1
 	NUM_CI = SystemInfo["CommonInterface"]
@@ -117,7 +121,8 @@ def createCurrentCaidLabel(info, currentCaid=None):
 			res = caid_entry[4]
 	if decodingCiSlot > -1:
 		return "CI%d + %s" % (decodingCiSlot, res)
-	return res
+	device_str = ecmdata.createCurrentDevice(current_device, False)
+	return res + (("@" + device_str) if device_str else "")
 
 
 class PliExtraInfo(Poll, Converter, object):
@@ -263,8 +268,10 @@ class PliExtraInfo(Poll, Converter, object):
 			self.current_caid = data[1]
 			self.current_provid = data[2]
 			self.current_ecmpid = data[3]
+			self.current_device = data[4]
 		else:
 			self.current_source = ""
+			self.current_device = ""
 			self.current_caid = "0"
 			self.current_provid = "0"
 			self.current_ecmpid = "0"
@@ -295,7 +302,7 @@ class PliExtraInfo(Poll, Converter, object):
 		return res
 
 	def createCurrentCaidLabel(self, info):
-		return createCurrentCaidLabel(info, self.current_caid)
+		return createCurrentCaidLabel(info, self.current_caid, self.current_device)
 
 	def createCryptoSeca(self, info):
 		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)

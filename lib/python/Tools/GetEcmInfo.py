@@ -4,7 +4,7 @@ import time
 from Components.config import config
 
 ECM_INFO = '/tmp/ecm.info'
-EMPTY_ECM_INFO = '', '0', '0', '0'
+EMPTY_ECM_INFO = '', '0', '0', '0', ''
 
 old_ecm_time = time.time()
 info = {}
@@ -15,6 +15,22 @@ data = EMPTY_ECM_INFO
 class GetEcmInfo:
 	def __init__(self):
 		pass
+
+	def createCurrentDevice(self, current_device, isLong):
+		if "/sci0" in current_device.lower():
+			return _("Card reader 1") if isLong else "CRD 1"
+		elif "/sci1" in current_device.lower():
+			return _("Card reader 2") if isLong else "CRD 2"
+		elif "/ttyusb0" in current_device.lower():
+			return _("USB reader 1") if isLong else "USB 1"
+		elif "/ttyusb1" in current_device.lower():
+			return _("USB reader 2") if isLong else "USB 2"
+		elif "/ttyusb2" in current_device.lower():
+			return _("USB reader 3") if isLong else "USB 3"
+		elif "/ttyusb3" in current_device.lower():
+			return _("USB reader 4") if isLong else "USB 4"
+		elif "/ttyusb4" in current_device.lower():
+			return _("USB reader 5") if isLong else "USB 5"
 
 	def pollEcmData(self):
 		global data
@@ -67,6 +83,7 @@ class GetEcmInfo:
 			# info is dictionary
 			using = info.get('using', '')
 			protocol = info.get('protocol', '')
+			device = ''
 			if using or protocol:
 				if config.usage.show_cryptoinfo.value == '0':
 					self.textvalue = ' '
@@ -80,9 +97,13 @@ class GetEcmInfo:
 						if info.get('address', None):
 							address = info.get('address', '')
 						elif info.get('from', None):
-							address = info.get('from', '')
+							from_arr = info.get('from', '').split("-")
+							address = from_arr[0].strip()
+							if len(from_arr) > 1:
+								device = from_arr[1].strip()
 						else:
 							address = ''
+							device = ''
 						hops = info.get('hops', None)
 						if hops and hops != '0':
 							hops = ' @' + hops
@@ -98,8 +119,10 @@ class GetEcmInfo:
 						if info.get('address', None):
 							address += info.get('address', '')
 						elif info.get('from', None):
-							address += info.get('from', '')
-
+							from_arr = info.get('from', '').split("-")
+							address = from_arr[0].strip()
+							if len(from_arr) > 1:
+								device = from_arr[1].strip()
 						protocol = _('Protocol:') + ' '
 						if info.get('protocol', None):
 							protocol += info.get('protocol', '')
@@ -113,7 +136,7 @@ class GetEcmInfo:
 						ecm = _('Ecm:') + ' '
 						if info.get('ecm time', None):
 							ecm += info.get('ecm time', '')
-						self.textvalue = address + '\n' + protocol + '  ' + hops + '  ' + ecm
+						self.textvalue = address + ((" - " + self.createCurrentDevice(device)) if device else "") + '\n' + protocol + '  ' + hops + '  ' + ecm
 			else:
 				decode = info.get('decode', None)
 				if decode:
@@ -179,7 +202,8 @@ class GetEcmInfo:
 		except:
 			ecm = ''
 			self.textvalue = ""
+			device = ''
 			decCI = '0'
 			provid = '0'
 			ecmpid = '0'
-		return self.textvalue, decCI, provid, ecmpid
+		return self.textvalue, decCI, provid, ecmpid, device
