@@ -89,6 +89,8 @@ struct hash_uniqueEPGKey
 struct EventCacheItem {
 	eventMap byEvent;
 	timeMap byTime;
+	int sources;
+	EventCacheItem(): sources(0) {}
 };
 
 typedef std::tr1::unordered_map<uniqueEPGKey, EventCacheItem, hash_uniqueEPGKey, uniqueEPGKey::equal> eventCache;
@@ -108,7 +110,7 @@ class eEPGCache: public eMainloop, private eThread, public sigc::trackable
 {
 #ifndef SWIG
 	DECLARE_REF(eEPGCache)
-	bool FixOverlapping(EventCacheItem &servicemap, time_t TM, int duration, const timeMap::iterator &tm_it, const uniqueEPGKey &service);
+
 public:
 	struct Message
 	{
