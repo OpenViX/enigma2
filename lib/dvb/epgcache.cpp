@@ -743,16 +743,16 @@ void eEPGCache::cleanLoop()
 			if ( updated )
 			{
 				contentMaps::iterator x =
-					content_time_tables.find( DBIt->first );
-				if ( x != content_time_tables.end() )
+					content_time_tables.find(DBIt->first);
+				if (x != content_time_tables.end())
 				{
 					timeMap &tmMap = DBIt->second.byTime;
-					for ( contentMap::iterator i = x->second.begin(); i != x->second.end(); )
+					for (contentMap::iterator i = x->second.begin(); i != x->second.end();)
 					{
-						for ( contentTimeMap::iterator it(i->second.begin());
+						for (contentTimeMap::iterator it(i->second.begin());
 							it != i->second.end(); )
 						{
-							if ( tmMap.find(it->second.first) == tmMap.end() )
+							if (tmMap.find(it->second.first) == tmMap.end())
 								i->second.erase(it++);
 							else
 								++it;
