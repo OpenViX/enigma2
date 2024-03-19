@@ -386,7 +386,7 @@ void eventData::save(FILE *f)
 void eventData::cacheCorrupt(const char* context)
 {
 
-	eDebug("[eventData] EPG Cache is corrupt (%s), you should restart Enigma!", context);
+	eDebug("[eEPGCache][eventData][cacheCorrupt] EPG Cache is corrupt (%s), you should restart Enigma!", context);
 	if (!isCacheCorrupt)
 	{
 		isCacheCorrupt = true;
@@ -445,7 +445,7 @@ void eEPGCache::timeUpdated()
 			messages.send(Message(Message::timeChanged));
 	}
 	else
-		eDebug("[eEPGCache] time updated.. but cache file not set yet.. dont start epg!!");
+		eDebug("[eEPGCache] time updated.. but cache file not set yet.. do not start epg!!");
 }
 
 bool eEPGCache::FixOverlapping(EventCacheItem &servicemap, time_t TM, int duration, const timeMap::iterator &tm_it, const uniqueEPGKey &service)
@@ -526,7 +526,7 @@ bool eEPGCache::FixOverlapping(EventCacheItem &servicemap, time_t TM, int durati
 void eEPGCache::sectionRead(const uint8_t *data, int source, eEPGChannelData *channel)
 {
 	const eit_t *eit = (const eit_t*) data;
-
+	// eDebug("[eEPGCache:sectionRead] source is [%d])", source);
 	int len = eit->getSectionLength() - 1;
 	int ptr = EIT_SIZE;
 	if ( ptr >= len )
@@ -744,6 +744,8 @@ next:
 #ifdef EPG_DEBUG
 		if ( servicemap.byEvent.size() != servicemap.byTime.size() )
 		{
+			eDebug("[eEPGCache] Service (%04X:%04X:%04X) eventmap.size(%d) != timemap.size(%d)!",
+					service.onid, service.tsid, service.sid, eventmap.size(), timemap.size());
 			{
 				CFile f("/media/hdd/event_map.txt", "w+");
 				int i = 0;
@@ -851,15 +853,15 @@ void eEPGCache::cleanLoop()
 					if ( b != DBIt->second.byEvent.end() )
 					{
 						// release Heap Memory for this entry   (new ....)
-//						eDebug("[eEPGCache] delete old event (evmap)");
+						// eDebug("[eEPGCache] delete old event (evmap)");
 						DBIt->second.byEvent.erase(b);
 					}
 
 					// remove entry from timeMap
-//					eDebug("[eEPGCache] release heap mem");
+					// eDebug("[eEPGCache] release heap mem");
 					delete It->second;
 					DBIt->second.byTime.erase(It++);
-//					eDebug("[eEPGCache] delete old event (timeMap)");
+					// eDebug("[eEPGCache] delete old event (timeMap)");
 					updated = true;
 				}
 				else
@@ -955,7 +957,7 @@ void eEPGCache::load()
 	if (f == NULL)
 	{
 		/* No EPG on harddisk, so try internal flash */
-		eDebug("[eEPGCache] %s not found, try /epg.dat", EPGDAT);
+		eDebug("[eEPGCache][load] %s not found, try /epg.dat", EPGDAT);
 		EPGDAT = EPGDAT_IN_FLASH;
 		f = fopen(EPGDAT, "rb");
 		if (f == NULL)
@@ -966,7 +968,7 @@ void eEPGCache::load()
 	{
 		unlink(EPGDATX);
 		renameResult = rename(EPGDAT, EPGDATX);
-		if (renameResult) eDebug("[eEPGCache] failed to rename %s", EPGDAT);
+		if (renameResult) eDebug("[eEPGCache][load] failed to rename %s", EPGDAT);
 	}
 	{
 		int size=0;
@@ -976,7 +978,7 @@ void eEPGCache::load()
 		ret = fread( &magic, sizeof(int), 1, f);
 		if (magic != 0x98765432)
 		{
-			eDebug("[eEPGCache] epg file has incorrect byte order.. dont read it");
+			eDebug("[eEPGCache][load] epg file has incorrect byte order.. dont read it");
 			fclose(f);
 			return;
 		}
@@ -1020,7 +1022,7 @@ void eEPGCache::load()
 				}
 			}
 			eventData::load(f);
-			eDebug("[eEPGCache] %d events read from %s", cnt, EPGDAT);
+			eDebug("[eEPGCache][load] %d events read from %s", cnt, EPGDAT);
 #ifdef ENABLE_PRIVATE_EPG
 			char text2[11];
 			ret = fread( text2, 11, 1, f);
@@ -1060,14 +1062,14 @@ void eEPGCache::load()
 #endif // ENABLE_PRIVATE_EPG
 		}
 		else
-			eDebug("[eEPGCache] don't read old epg database");
+			eDebug("[eEPGCache][load] don't read old epg database");
 		posix_fadvise(fileno(f), 0, 0, POSIX_FADV_DONTNEED);
 		fclose(f);
 		// We got this far, so the EPG file is okay.
 		if (renameResult == 0)
 		{
 			renameResult = rename(EPGDATX, EPGDAT);
-			if (renameResult) eDebug("[eEPGCache] failed to rename epg.dat back");
+			if (renameResult) eDebug("[eEPGCache][load] failed to rename epg.dat back");
 		}
 	}
 	(void)ret;
@@ -1088,7 +1090,7 @@ void eEPGCache::save()
 	FILE *f = fopen(EPGDAT, "wb");
 	if (!f)
 	{
-		eDebug("[eEPGCache] Failed to open %s: %m", EPGDAT);
+		eDebug("[eEPGCache][save] Failed to open %s: %m", EPGDAT);
 		EPGDAT = EPGDAT_IN_FLASH;
 		f = fopen(EPGDAT, "wb");
 		if (!f)
@@ -1098,7 +1100,7 @@ void eEPGCache::save()
 	char* buf = realpath(EPGDAT, NULL);
 	if (!buf)
 	{
-		eDebug("[eEPGCache] realpath to %s failed in save: %m", EPGDAT);
+		eDebug("[eEPGCache][save] realpath to %s failed in save: %m", EPGDAT);
 		fclose(f);
 		return;
 	}
@@ -1108,7 +1110,7 @@ void eEPGCache::save()
 	struct statfs s = {};
 	off64_t tmp;
 	if (statfs(buf, &s) < 0) {
-		eDebug("[eEPGCache] statfs %s failed in save: %m", buf);
+		eDebug("[eEPGCache][save] statfs %s failed in save: %m", buf);
 		fclose(f);
 		free(buf);
 		return;
@@ -1152,7 +1154,7 @@ void eEPGCache::save()
 			++cnt;
 		}
 	}
-	eDebug("[eEPGCache] %d events written to %s", cnt, EPGDAT);
+	eDebug("[eEPGCache][save] %d events written to %s", cnt, EPGDAT);
 	eventData::save(f);
 #ifdef ENABLE_PRIVATE_EPG
 	const char* text3 = "PRIVATE_EPG";
@@ -1272,7 +1274,7 @@ RESULT eEPGCache::lookupEventId(const eServiceReference &service, int event_id, 
 		else
 		{
 			result = 0;
-			eDebug("[eEPGCache] event %04x not found in epgcache", event_id);
+			eDebug("[eEPGCache][lookupEventId] event %04x not found in epgcache", event_id);
 		}
 	}
 	return -1;
@@ -1285,7 +1287,7 @@ RESULT eEPGCache::saveEventToFile(const char* filename, const eServiceReference 
 	const eventData *data = nullptr;
 	if ( eit_event_id != -1 )
 	{
-		eDebug("[eEPGCache] %s epg event id %x", __func__, eit_event_id);
+		eDebug("[eEPGCache][saveEventToFile] %s epg event id %x", __func__, eit_event_id);
 		ret = lookupEventId(service, eit_event_id, data);
 	}
 	if ( (ret != 0) && (begTime != -1) )
@@ -1300,7 +1302,7 @@ RESULT eEPGCache::saveEventToFile(const char* filename, const eServiceReference 
 		int fd = open(filename, O_CREAT|O_WRONLY, 0666);
 		if (fd < 0)
 		{
-			eDebug("[eEPGCache] Failed to create file: %s", filename);
+			eDebug("[eEPGCache][saveEventToFile] Failed to create file: %s", filename);
 			return fd;
 		}
 		const eit_event_struct *event = data->get();
@@ -1898,6 +1900,7 @@ void eEPGCache::submitEventData(const std::vector<int>& sids, const std::vector<
 	long duration, const char* title, const char* short_summary,
 	const char* long_description, char event_type, int event_id, int source)
 {
+	/* eDebug("[eEPGCache:import] submitEventData entered title=%d short=%d long=%d", title, short_summary, long_description); */
 	std::vector<uint8_t> event_types;
 	std::vector<eit_parental_rating> parental_ratings;
 	if(event_type != 0)
@@ -3063,13 +3066,13 @@ void eEPGCache::crossepgImportEPGv21(std::string dbroot)
 	int channels_count, events_count = 0, aliases_groups_count;
 	unsigned char revision;
 
-	eDebug("[EPGC] start crossepg import");
+	eDebug("[epgcache][CrossEPG V21 patch] start crossepg import");
 
 	sprintf(headers_file, "%s/crossepg.headers.db", dbroot.c_str());
 	headers = fopen(headers_file, "r");
 	if (!headers)
 	{
-		eDebug("[EPGC] cannot open crossepg headers db");
+		eDebug("[epgcache][CrossEPG V21 patch] cannot open crossepg headers db");
 		return;
 	}
 
@@ -3077,7 +3080,7 @@ void eEPGCache::crossepgImportEPGv21(std::string dbroot)
 	descriptors = fopen (descriptors_file, "r");
 	if (!descriptors)
 	{
-		eDebug("[EPGC] cannot open crossepg descriptors db");
+		eDebug("[epgcache][CrossEPG V21 patch] cannot open crossepg descriptors db");
 		fclose(headers);
 		return;
 	}
@@ -3086,7 +3089,7 @@ void eEPGCache::crossepgImportEPGv21(std::string dbroot)
 	aliases = fopen(aliases_file, "r");
 	if (!aliases)
 	{
-	eDebug("[EPGC] cannot open crossepg aliases db");
+		eDebug("[epgcache][CrossEPG V21 patch] cannot open crossepg aliases db");
 		fclose(headers);
 		fclose(descriptors);
 		return;
@@ -3096,7 +3099,7 @@ void eEPGCache::crossepgImportEPGv21(std::string dbroot)
 	fread (tmp, 13, 1, headers);
 	if (memcmp (tmp, "_xEPG_HEADERS", 13) != 0)
 	{
-		eDebug("[EPGC] crossepg db invalid magic");
+		eDebug("[epgcache][CrossEPG V21 patch] crossepg db invalid magic");
 		fclose(headers);
 		fclose(descriptors);
 		fclose(aliases);
@@ -3106,7 +3109,7 @@ void eEPGCache::crossepgImportEPGv21(std::string dbroot)
 	fread (&revision, sizeof (unsigned char), 1, headers);
 	if (revision != 0x07)
 	{
-		eDebug("[EPGC] crossepg db invalid revision");
+		eDebug("[epgcache][CrossEPG V21 patch] crossepg db invalid revision");
 		fclose(headers);
 		fclose(descriptors);
 		fclose(aliases);
@@ -3117,7 +3120,7 @@ void eEPGCache::crossepgImportEPGv21(std::string dbroot)
 	fread (tmp, 13, 1, aliases);
 	if (memcmp (tmp, "_xEPG_ALIASES", 13) != 0)
 	{
-	eDebug("[EPGC] crossepg aliases db invalid magic");
+		eDebug("[epgcache][CrossEPG V21 patch] crossepg aliases db invalid magic");
 		fclose(headers);
 		fclose(descriptors);
 		fclose(aliases);
@@ -3126,7 +3129,7 @@ void eEPGCache::crossepgImportEPGv21(std::string dbroot)
 	fread (&revision, sizeof (unsigned char), 1, aliases);
 	if (revision != 0x07)
 	{
-		eDebug("[EPGC] crossepg aliases db invalid revision");
+		eDebug("[epgcache][CrossEPG V21 patch] crossepg aliases db invalid revision");
 		fclose(headers);
 		fclose(descriptors);
 	fclose(aliases);
@@ -3168,7 +3171,7 @@ void eEPGCache::crossepgImportEPGv21(std::string dbroot)
 		}
 	}
 
-	eDebug("[EPGC] %d aliases groups in crossepg db", aliases_groups_count);
+	eDebug("[epgcache][CrossEPG V21 patch] %d aliases groups in crossepg db", aliases_groups_count);
 
 	/* import data */
 	fseek(headers, sizeof(time_t)*2, SEEK_CUR);
@@ -3352,6 +3355,6 @@ void eEPGCache::crossepgImportEPGv21(std::string dbroot)
 	fclose(descriptors);
 	fclose(aliases);
 
-	eDebug("[EPGC] imported %d events from crossepg db", events_count);
-	eDebug("[EPGC] %i bytes for cache used", eventData::CacheSize);
+	eDebug("[epgcache][CrossEPG V21 patch] imported %d events from crossepg db", events_count);
+	eDebug("[epgcache][CrossEPG V21 patch] %i bytes for cache used", eventData::CacheSize);
 }
