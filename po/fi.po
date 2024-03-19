@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-02-28 19:12+0200\n"
+"PO-Revision-Date: 2024-03-19 06:52+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2982,6 +2982,9 @@ msgstr "CaID: "
 
 msgid "Cable"
 msgstr "Kaapeli (DVB-C)"
+
+msgid "cable"
+msgstr "kaapeli (DVB-C)"
 
 msgid "Cable Scan"
 msgstr "Kaapeliverkon haku"
@@ -13543,7 +13546,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 28.02.2024 ---\n"
+"--- 19.03.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -13633,6 +13636,9 @@ msgstr "Tennis"
 
 msgid "Terrestrial"
 msgstr "Antennivastaanotto"
+
+msgid "terrestrial"
+msgstr "antenni (DVB-T)"
 
 msgid "Test DiSEqC settings"
 msgstr "Testaa DiSEqC-asetukset"
