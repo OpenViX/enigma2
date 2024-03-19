@@ -19,6 +19,7 @@
 #include <lib/dvb/lowlevel/eit.h>
 #include <dvbsi++/content_identifier_descriptor.h>
 #include <dvbsi++/descriptor_tag.h>
+#include <unordered_set>
 
 /* Interval between "garbage collect" cycles */
 #define CLEAN_INTERVAL 60000    //  1 min
@@ -863,6 +864,7 @@ void eEPGCache::load()
 			{
 				clearCompleteEPGCache();
 			}
+			std::unordered_set<uniqueEPGKey, hash_uniqueEPGKey > overlaps;
 			ret = fread( &size, sizeof(int), 1, f);
 			eventDB.rehash(size); /* Reserve buckets in advance */
 			while(size--)
@@ -872,6 +874,15 @@ void eEPGCache::load()
 				ret = fread( &key, sizeof(uniqueEPGKey), 1, f);
 				ret = fread( &size, sizeof(int), 1, f);
 				EventCacheItem& item = eventDB[key]; /* Constructs new entry */
+				bool overlap = false; // Actually overlaps, zero-length event or not time ordered
+				time_t last_end = 0;
+				if (!item.byTime.empty())
+				{
+					timeMap::iterator last_entry = item.byTime.end();
+					--last_entry;
+					last_end = last_entry->second->getStartTime() + last_entry->second->getDuration();
+				}
+
 				while(size--)
 				{
 					uint8_t len=0;
@@ -890,8 +901,17 @@ void eEPGCache::load()
 					eventData::CacheSize += sizeof(eventData) + event->n_crc * sizeof(uint32_t);
 					item.byEvent[event->getEventID()] = event;
 					item.byTime[event->getStartTime()] = event;
+					time_t this_start = event->getStartTime();
+					time_t this_end = this_start + event->getDuration();
+					if (this_start < last_end || this_start ==  this_end)
+						overlap = true;
+					else
+						last_end = this_end;
+
 					++cnt;
 				}
+				if (overlap)
+					overlaps.insert(key);
 			}
 			eventData::load(f);
 			eDebug("[eEPGCache][load] %d events read from %s", cnt, EPGDAT);
@@ -932,6 +952,37 @@ void eEPGCache::load()
 				}
 			}
 #endif // ENABLE_PRIVATE_EPG
+			for (std::unordered_set<uniqueEPGKey, hash_uniqueEPGKey >::iterator it = overlaps.begin();
+				it != overlaps.end();
+				it++)
+			{
+				EventCacheItem &servicemap = eventDB[*it];
+				eventMap &eventmap = servicemap.byEvent;
+				timeMap &timemap = servicemap.byTime;
+				time_t last_end = 0;
+				for (timeMap::iterator It = timemap.begin(); It != timemap.end(); )
+				{
+					time_t start_time = It->second->getStartTime();
+					time_t end_time = start_time + It->second->getDuration();
+					if (start_time < last_end || start_time == end_time)
+					{
+						/* eDebug("[eEPGCache][load] load: Service (%04X:%04X:%04X) delete overlapping/zero-length event %04X at time %ld.",
+							it->onid, it->tsid, it->sid,
+							It->second->getEventID(), (long)start_time); */
+						if (eventmap.erase(It->second->getEventID()) == 0)
+						{
+							eDebug("[eEPGCache][load] Event %04X not found in time map at %ld.", It->second->getEventID(), start_time);
+						}
+						delete It->second;
+						timemap.erase(It++);
+					}
+					else
+					{
+						last_end = end_time;
+						++It;
+					}
+				}
+			}
 		}
 		else
 			eDebug("[eEPGCache][load] don't read old epg database");
