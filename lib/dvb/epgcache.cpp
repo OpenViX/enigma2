@@ -2772,11 +2772,11 @@ void eEPGCache::privateSectionRead(const uniqueEPGKey &current_service, const ui
 
 	contentTimeMap &time_event_map =
 		content_time_table[content_id];
-	for ( contentTimeMap::iterator it( time_event_map.begin() );
+	for ( contentTimeMap::iterator it(time_event_map.begin() );
 		it != time_event_map.end(); ++it )
 	{
-		eventMap::iterator evIt( evMap.find(it->second.second) );
-		if ( evIt != evMap.end() )
+		eventMap::iterator evIt(evMap.find(it->second.second));
+		if (evIt != evMap.end())
 		{
 			// time_event_map can have other timestamp -> get timestamp from eventData
 			time_t ev_time = evIt->second->getStartTime();
