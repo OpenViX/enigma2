@@ -17,6 +17,8 @@ class GetEcmInfo:
 		pass
 
 	def createCurrentDevice(self, current_device, isLong):
+		if not current_device:
+			return ""
 		if "/sci0" in current_device.lower():
 			return _("Card reader 1") if isLong else "CRD 1"
 		elif "/sci1" in current_device.lower():
