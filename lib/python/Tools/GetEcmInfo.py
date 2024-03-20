@@ -99,10 +99,12 @@ class GetEcmInfo:
 						if info.get('address', None):
 							address = info.get('address', '')
 						elif info.get('from', None):
-							from_arr = info.get('from', '').split("-")
-							address = from_arr[0].strip()
-							if len(from_arr) > 1:
-								device = from_arr[1].strip()
+							address = info.get('from', '')
+							if "local" in address:
+								from_arr = address.split("-")
+								address = from_arr[0].strip()
+								if len(from_arr) > 1:
+									device = from_arr[1].strip()
 						else:
 							address = ''
 							device = ''
@@ -121,10 +123,12 @@ class GetEcmInfo:
 						if info.get('address', None):
 							address += info.get('address', '')
 						elif info.get('from', None):
-							from_arr = info.get('from', '').split("-")
-							address = from_arr[0].strip()
-							if len(from_arr) > 1:
-								device = from_arr[1].strip()
+							address = info.get('from', '')
+							if "local" in address:
+								from_arr = address.split("-")
+								address = from_arr[0].strip()
+								if len(from_arr) > 1:
+									device = from_arr[1].strip()
 						protocol = _('Protocol:') + ' '
 						if info.get('protocol', None):
 							protocol += info.get('protocol', '')
@@ -138,7 +142,8 @@ class GetEcmInfo:
 						ecm = _('Ecm:') + ' '
 						if info.get('ecm time', None):
 							ecm += info.get('ecm time', '')
-						self.textvalue = address + ((" - " + self.createCurrentDevice(device, True)) if device else "") + '\n' + protocol + '  ' + hops + '  ' + ecm
+						device_str = self.createCurrentDevice(device, True)
+						self.textvalue = address + ((" - " + device_str) if device else "") + '\n' + protocol + '  ' + hops + '  ' + ecm
 			else:
 				decode = info.get('decode', None)
 				if decode:
