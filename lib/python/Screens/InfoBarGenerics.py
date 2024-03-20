@@ -252,17 +252,16 @@ def getPossibleSubservicesForCurrentChannel(current_service):
 
 
 def getActiveSubservicesForCurrentChannel(service):
-	info = service and service.info()
-	sRef = info and info.getInfoString(iServiceInformation.sServiceref)
-	url = "http://%s:%s/" % (config.misc.softcam_streamrelay_url.getHTML(), config.misc.softcam_streamrelay_port.value)
-	splittedRef = sRef.split(url.replace(":", "%3a"))
-	if len(splittedRef) > 1:
-		sRef = splittedRef[1].split(":")[0].replace("%3a", ":")
-	current_service = ':'.join(sRef.split(':')[:11])
-	if info:
+	activeSubservices = []
+	if info := service and service.info():
+		sRef = info.getInfoString(iServiceInformation.sServiceref)
+		url = "http://%s:%s/" % (config.misc.softcam_streamrelay_url.getHTML(), config.misc.softcam_streamrelay_port.value)
+		splittedRef = sRef.split(url.replace(":", "%3a"))
+		if len(splittedRef) > 1:
+			sRef = splittedRef[1].split(":")[0].replace("%3a", ":")
+		current_service = ':'.join(sRef.split(':')[:11])
 		if current_service:
 			possibleSubservices = getPossibleSubservicesForCurrentChannel(current_service)
-			activeSubservices = []
 			epgCache = eEPGCache.getInstance()
 			for subservice in possibleSubservices:
 				events = epgCache.lookupEvent(['BDTS', (subservice, 0, -1)])
