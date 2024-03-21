@@ -29,7 +29,7 @@ class MovieInfo(Converter):
 	MOVIE_REC_FILESIZE = 4  # filesize of recording
 	MOVIE_FULL_DESCRIPTION = 5  # combination of short and long description when available
 	MOVIE_NAME = 6  # recording name
-	FORMAT_STRING = 6  # it is formatted string based on parameter and with defined separator
+	FORMAT_STRING = 7  # it is formatted string based on parameter and with defined separator
 
 	KEYWORDS = {
 		# Arguments...

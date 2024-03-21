@@ -209,10 +209,14 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 					self.openMoviePlayer(service)
 
 	def showMovies(self, defaultRef=None):
-		self.lastservice = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		curPlayService = self.session.nav.getCurrentService()
+		info = curPlayService and curPlayService.info()
+		r_ref = info and info.getInfoString(enigma.iServiceInformation.sServiceref)
+		self.lastservice = r_ref and enigma.eServiceReference(r_ref) or self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		if self.lastservice and ':0:/' in self.lastservice.toString():
 			self.lastservice = enigma.eServiceReference(config.movielist.curentlyplayingservice.value)
-		self.session.openWithCallback(self.movieSelected, Screens.MovieSelection.MovieSelection, defaultRef or enigma.eServiceReference(config.usage.last_movie_played.value))  # , timeshiftEnabled=self.timeshiftEnabled()) skip running stat here for no reason
+		
+		self.session.openWithCallback(self.movieSelected, Screens.MovieSelection.MovieSelection, defaultRef or enigma.eServiceReference(config.usage.last_movie_played.value), timeshiftEnabled=self.timeshiftEnabled())
 
 	def movieSelected(self, service):
 		ref = self.lastservice

@@ -1,13 +1,51 @@
 # -*- coding: utf-8 -*-
-
+from enigma import eServiceCenter, iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eEPGCache
 from Components.Converter.Converter import Converter
 from Components.config import config
-from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eEPGCache
 from ServiceReference import resolveAlternate
 from Components.Element import cached
 from Tools.Directories import fileExists
 from Tools.Transponder import ConvertToHumanReadable
 from Session import SessionObject
+
+def getRealServiceRef(ref):
+	if isinstance(ref, eServiceReference):
+		service_ref_str = ref.toString()
+	else:
+		service_ref_str = ref
+	service_ref_cleaned = service_ref_str
+	if service_ref_str.find("127.0.0.1") > -1: #ICAM SkyDE channels
+		service_ref_cleaned = service_ref_str.split("17999/")[1].split(":")[0].replace("%3a", ":")
+	return service_ref_cleaned
+
+def getCompareReference(ref):
+	splitted = ref.split(":")
+	compare_ref = ":".join(splitted[:11])
+	return compare_ref
+
+def getServiceNum(service, myRoot, isalternatenum = True):
+	channelnum = ""
+	markeroffset = 0
+	bouquetoffset = 0
+	serviceHandler = eServiceCenter.getInstance()
+	services = serviceHandler.list(eServiceReference('1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 22) || (type == 25) || (type == 134) || (type == 195) FROM BOUQUET "bouquets.tv" ORDER BY bouquet'))
+	bouquets = services and services.getContent("SN", True)
+	for bouquet in bouquets:
+		if not isalternatenum or eServiceReference(bouquet[0]) == myRoot:
+			services = serviceHandler.list(eServiceReference(bouquet[0]))
+			channels = services and services.getContent("SN", True)
+			for idx in range(1, len(channels) + 1):
+				if not channels[idx-1][0].startswith("1:64:"):
+					if getRealServiceRef(service) == getRealServiceRef(channels[idx-1][0]) or ":".join(getCompareReference(getRealServiceRef(service)).split(":")[:10]) == getCompareReference(":".join(getRealServiceRef(channels[idx-1][0]).split(":")[:10])):
+						if isalternatenum:
+							channelnum = str(idx - markeroffset)
+						else:
+							channelnum = str(idx - markeroffset + bouquetoffset)
+						break
+				else:
+					markeroffset = markeroffset + 1
+			bouquetoffset = bouquetoffset + len(channels)
+	return channelnum
 
 
 class ServiceName(Converter):
@@ -109,10 +147,10 @@ class ServiceName(Converter):
 			return "" if path.startswith("//") and path.find(srpart) == -1 else path
 		elif self.type == self.FORMAT_STRING:
 			name = self.getName(service, info)
+			provider = self.getProvider(service, info)
 			numservice = hasattr(self.source, "serviceref") and self.source.serviceref
 			num = numservice and self.getNumber(numservice, info) or ""
 			orbpos, tp_data = self.getOrbitalPos(service, info)
-			provider = self.getProvider(service, info, tp_data)
 			tuner_system = service and info and self.getServiceSystem(service, info, tp_data)
 			res_str = ""
 			for x in self.parts[1:]:
@@ -131,7 +169,7 @@ class ServiceName(Converter):
 	text = property(getText)
 
 	def changed(self, what):
-		if what[0] != self.CHANGED_SPECIFIC or what[1] in (iPlayableService.evStart, iPlayableService.evNewProgramInfo):
+		if what[0] != self.CHANGED_SPECIFIC or what[1] in (iPlayableService.evStart, ):
 			Converter.changed(self, what)
 
 	def getName(self, ref, info):
@@ -141,48 +179,55 @@ class ServiceName(Converter):
 		return name.replace('\xc2\x86', '').replace('\xc2\x87', '').replace('_', ' ')
 
 	def getNumber(self, ref, info):
-		if not ref:
-			ref = eServiceReference(info.getInfoString(iServiceInformation.sServiceref))
-		num = ref and ref.getChannelNum() or None
-		if num is not None:
-			num = str(num)
-		return num
+		from Screens.InfoBar import InfoBar
+		channelSelectionServicelist = InfoBar.instance and InfoBar.instance.servicelist
+		channelnum = ''
+		ref = ref or eServiceReference(info.getInfoString(iServiceInformation.sServiceref))
+		if channelSelectionServicelist and channelSelectionServicelist.inBouquet():
+			myRoot = channelSelectionServicelist.getRoot()
+			channelnum = getServiceNum(ref, myRoot)
+		return channelnum
 
-	def getProvider(self, ref, info, tp_data=None):
+	def getProvider(self, ref, info):
 		if ref:
-			return info.getInfoString(ref, iServiceInformation.sProvider)
+			return ref.getProvider()
 		return info.getInfoString(iServiceInformation.sProvider)
 
 	def getOrbitalPos(self, ref, info):
 		orbitalpos = ""
+		tp_data = None
 		if ref:
 			tp_data = info.getInfoObject(ref, iServiceInformation.sTransponderData)
 		else:
 			tp_data = info.getInfoObject(iServiceInformation.sTransponderData)
+		
 
 		if tp_data is not None:
 			try:
 				position = tp_data["orbital_position"]
 				if position > 1800:  # west
-					orbitalpos = "%.1f " % (float(3600 - position) / 10) + _("W")
+					orbitalpos = "%.1f° " % (float(3600 - position) / 10) + _("W")
 				else:
-					orbitalpos = "%.1f " % (float(position) / 10) + _("E")
+					orbitalpos = "%.1f° " % (float(position) / 10) + _("E")
 			except:
 				pass
 		return orbitalpos, tp_data
-
+		
 	def getServiceSystem(self, ref, info, feraw):
 		if ref:
 			sref = info.getInfoObject(ref, iServiceInformation.sServiceref)
 		else:
 			sref = info.getInfoObject(iServiceInformation.sServiceref)
-
+		
 		if not sref:
 			sref = ref.toString()
-
+			
 		if sref and "%3a//" in sref:
 			return "IPTV"
-
-		fedata = ConvertToHumanReadable(feraw)
-
-		return fedata.get("system") or ""
+			
+		fedata = None
+		
+		if feraw:
+			fedata = ConvertToHumanReadable(feraw)
+			
+		return fedata and fedata.get("system") or ""

@@ -110,7 +110,9 @@ class AudioSelection(ConfigListScreen, Screen):
 
 	def setAVInfo(self, service):
 		playinga_idx = service and service.audioTracks().getCurrentTrack() or -1
-		ref = self.session.nav.getCurrentlyPlayingServiceReference()
+		info = service and service.info()
+		ref = info and info.getInfoString(iServiceInformation.sServiceref)
+		ref = ref and eServiceReference(ref)
 		x = ref.toString().split(":")
 		ref_str = ":".join(x[:10])
 
@@ -512,7 +514,9 @@ class AudioSelection(ConfigListScreen, Screen):
 		track = int(audio)
 		if isinstance(track, int):
 			service = self.session.nav.getCurrentService()
-			ref = self.session.nav.getCurrentlyPlayingServiceReference()
+			info = service and service.info()
+			ref = info and info.getInfoString(iServiceInformation.sServiceref)
+			ref = ref and eServiceReference(ref)
 			if service.audioTracks().getNumberOfTracks() > track:
 				self.audioTracks.selectTrack(track)
 				if isIPTV(ref):
@@ -620,8 +624,10 @@ class AudioSelection(ConfigListScreen, Screen):
 	def keyOk(self):
 		if self.focus == FOCUS_STREAMS and self["streams"].list:
 			cur = self["streams"].getCurrent()
-			ref = self.session.nav.getCurrentlyPlayingServiceReference()
 			service = self.session.nav.getCurrentService()
+			info = service and service.info()
+			ref = info and info.getInfoString(iServiceInformation.sServiceref)
+			ref = ref and eServiceReference(ref)
 			if self.settings.menupage.value == PAGE_AUDIO and cur[0] is not None:
 				self.changeAudio(cur[0])
 				self.__updatedInfo()
