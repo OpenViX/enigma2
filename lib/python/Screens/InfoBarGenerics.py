@@ -980,8 +980,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 
 	def avChange(self):
 		service = self.session.nav.getCurrentService()
-		info = service and service.info()
-		ref_p = info and info.getInfoString(iServiceInformation.sServiceref)
+		ref_p = self.session.nav.getCurrentServiceRef()
 		isStream = ref_p and ref_p.find("%3a//") > -1
 		x = ref_p and ref_p.split(":")
 		x_play = x and ":".join(x[:10]) or ""
