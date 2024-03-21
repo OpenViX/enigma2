@@ -48,7 +48,7 @@ class CurrentService(PerServiceBase, Source):
 		return None
 
 	serviceref = property(getCurrentServiceRef)
-
+	
 	def newService(self, ref):
 		if ref and isinstance(ref, bool):
 			self.srv = None
@@ -57,7 +57,7 @@ class CurrentService(PerServiceBase, Source):
 			self.info = eServiceCenter.getInstance().info(ref)
 		else:
 			self.srv = ref
-
+			
 		for x in self.onManualNewService:
 			x()
 

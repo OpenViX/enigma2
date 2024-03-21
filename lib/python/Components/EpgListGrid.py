@@ -619,12 +619,8 @@ class EPGListGrid(EPGListBase):
 						pos=(left + xpos + self.eventBorderWidth, evY), size=(ewidth - 2 * self.eventBorderWidth, evH),
 						png=infoPix, flags=BT_ALIGN_CENTER))
 				else:
-					evW -= self.eventTextSidesMargin * 2
-					evX += self.eventTextSidesMargin
-					if evW < 0:
-						evW = 0
 					res.append(MultiContentEntryText(
-						pos=(evX, evY), size=(evW, evH),
+						pos=(evX + self.eventTextSidesMargin, evY), size=(evW - self.eventTextSidesMargin * 2, evH),
 						font=1, flags=int(config.epgselection.grid.event_alignment.value),
 						text=ev[1],
 						color=foreColor, color_sel=foreColorSel,

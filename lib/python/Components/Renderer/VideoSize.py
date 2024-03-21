@@ -21,8 +21,12 @@ class VideoSize(Renderer, VariableText):
 		if info is None:
 			self.text = ""
 			return
-		xresol = info.getInfo(iServiceInformation.sVideoWidth)
-		yresol = info.getInfo(iServiceInformation.sVideoHeight)
+		try:
+			xresol = info.getInfo(iServiceInformation.sVideoWidth)
+			yresol = info.getInfo(iServiceInformation.sVideoHeight)
+		except:
+			xresol = info.getInfo(service, iServiceInformation.sVideoWidth)
+			yresol = info.getInfo(service, iServiceInformation.sVideoHeight)
 		if xresol > 0:
 			self.text = str(xresol) + 'x' + str(yresol)
 		else:
