@@ -7204,7 +7204,7 @@ msgid "Infobar EPG"
 msgstr "Tietopalkki-ohjelmaopas"
 
 msgid "Infobar EPG activation"
-msgstr "Tietopalkki-ohjelmaopppan aktivointi"
+msgstr "Tietopalkki-ohjelmaoppaan aktivointi"
 
 msgid "Infobar Grid EPG"
 msgstr "Tietopalkin taulukko-ohjelmaopas"
