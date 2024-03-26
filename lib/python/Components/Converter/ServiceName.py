@@ -14,7 +14,7 @@ def getRealServiceRef(ref):
 	else:
 		service_ref_str = ref
 	service_ref_cleaned = service_ref_str
-	if service_ref_str.find("127.0.0.1") > -1: #ICAM SkyDE channels
+	if service_ref_str.find("127.0.0.1") > -1:  # ICAM SkyDE channels
 		service_ref_cleaned = service_ref_str.split("17999/")[1].split(":")[0].replace("%3a", ":")
 	return service_ref_cleaned
 
