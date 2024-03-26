@@ -717,10 +717,10 @@ class SelectionEventInfo:
 		self.timer = eTimer()
 		self.timer.callback.append(self.updateEventInfo)
 		self.onShown.append(self.__onShow)
-		
+
 	def __stopTimer(self):
 		self.timer.stop()
-		
+
 	def __onShow(self):
 		self["Service"].newService(None)
 		self.__selectionChanged()
@@ -2364,7 +2364,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 			self.setCurrentSelection(self.session.nav.getCurrentlyPlayingServiceOrGroup())
 		if not preview_zap:
 			self.hide()
-			
+
 	def newServicePlayed(self):
 		ret = self.new_service_played
 		self.new_service_played = False

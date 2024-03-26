@@ -1344,7 +1344,7 @@ class InfoBarChannelSelection:
 				"ChannelMinusPressedLong": (self.zapUpPip, _("Switch the PiP to the previous channel")),
 			}, description=_("Channel selection"))
 		self.onClose.append(self.__onClose)
-		
+
 	def newService(self, ref):
 		self["Service"].newService(ref)
 

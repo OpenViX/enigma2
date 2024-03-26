@@ -177,7 +177,7 @@ class ServiceInfo(Poll, Converter):
 			serviceInfo = info.getInfoString(iServiceInformation.sServiceref).split(':')
 		else:
 			serviceInfo = info.getInfoString(service, iServiceInformation.sServiceref).split(':')
-			
+
 		return len(serviceInfo) < 3 or serviceInfo[2] != '2'
 
 	def getServiceInfoString(self, info, what, convert=lambda x: "%d" % x):

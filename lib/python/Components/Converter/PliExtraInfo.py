@@ -74,7 +74,7 @@ def addspace(text):
 	if text:
 		text += "  "
 	return text
-	
+
 
 def getCryptoInfo(info):
 	if info and info.getInfo(iServiceInformation.sIsCrypted) == 1:
@@ -277,7 +277,7 @@ class PliExtraInfo(Poll, Converter, object):
 			self.current_caid = "0"
 			self.current_provid = "0"
 			self.current_ecmpid = "0"
-			
+
 	def createCurrentCaidLabel(self, info):
 		return createCurrentCaidLabel(info, self.current_caid, self.current_device)
 
@@ -831,15 +831,15 @@ class PliExtraInfo(Poll, Converter, object):
 	def getTextByType(self, textType):
 		try:
 			service = self.source.service
-			
+
 			if service is None and textType != "CurrentCrypto":
 				return ""
-				
+
 			info = service and service.info()
 
 			if not info and textType != "CurrentCrypto":
 				return ""
-				
+
 			if textType == "CurrentCrypto":
 				if int(config.usage.show_cryptoinfo.value) > 0:
 					self.getCryptoInfo(info)

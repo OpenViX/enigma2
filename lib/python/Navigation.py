@@ -244,7 +244,7 @@ class Navigation:
 
 	def getCurrentlyPlayingServiceOrGroup(self):
 		return self.currentlyPlayingServiceOrGroup
-	
+
 	def getCurrentServiceRef(self):
 		curPlayService = self.getCurrentService()
 		info = curPlayService and curPlayService.info()

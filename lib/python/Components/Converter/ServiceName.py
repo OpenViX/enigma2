@@ -203,7 +203,7 @@ class ServiceName(Converter):
 			tp_data = info.getInfoObject(ref, iServiceInformation.sTransponderData)
 		else:
 			tp_data = info.getInfoObject(iServiceInformation.sTransponderData)
-		
+
 		if tp_data is not None:
 			try:
 				position = tp_data["orbital_position"]
@@ -214,22 +214,22 @@ class ServiceName(Converter):
 			except:
 				pass
 		return orbitalpos, tp_data
-		
+
 	def getServiceSystem(self, ref, info, feraw):
 		if ref:
 			sref = info.getInfoObject(ref, iServiceInformation.sServiceref)
 		else:
 			sref = info.getInfoObject(iServiceInformation.sServiceref)
-		
+
 		if not sref:
 			sref = ref.toString()
-			
+
 		if sref and "%3a//" in sref:
 			return "IPTV"
-			
+
 		fedata = None
-		
+
 		if feraw:
 			fedata = ConvertToHumanReadable(feraw)
-			
+
 		return fedata and fedata.get("system") or ""
