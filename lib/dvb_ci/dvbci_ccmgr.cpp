@@ -121,6 +121,9 @@ void eDVBCICcSession::send(const unsigned char *tag, const void *data, int len)
 
 void eDVBCICcSession::addProgram(uint16_t program_number, std::vector<uint16_t>& pids)
 {
+	// add program means probably decoding on this slot is about to begin. So mark this slot as ready for descramble
+	eDVBCI_UI::getInstance()->setDecodingState(m_slot->getSlotID(), 1);
+	
 	// first open ca device and set descrambler key if it's not set yet
 	set_descrambler_key();
 
@@ -131,9 +134,7 @@ void eDVBCICcSession::addProgram(uint16_t program_number, std::vector<uint16_t>&
 
 	for (std::vector<uint16_t>::iterator it = pids.begin(); it != pids.end(); ++it)
 		descrambler_set_pid(m_descrambler_fd, m_slot->getSlotID(), 1, *it);
-	
-	// add program means probably decoding on this slot is about to begin. So mark this slot as ready for descramble
-	eDVBCI_UI::getInstance()->setDecodingState(m_slot->getSlotID(), 1);
+
 }
 
 void eDVBCICcSession::removeProgram(uint16_t program_number, std::vector<uint16_t>& pids)
