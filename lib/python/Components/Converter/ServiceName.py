@@ -35,8 +35,8 @@ def getServiceNum(service, myRoot, isalternatenum=True):
 			services = serviceHandler.list(eServiceReference(bouquet[0]))
 			channels = services and services.getContent("SN", True)
 			for idx in range(1, len(channels) + 1):
-				if not channels[idx-1][0].startswith("1:64:"):
-					if getRealServiceRef(service) == getRealServiceRef(channels[idx-1][0]) or ":".join(getCompareReference(getRealServiceRef(service)).split(":")[:10]) == getCompareReference(":".join(getRealServiceRef(channels[idx-1][0]).split(":")[:10])):
+				if not channels[idx - 1][0].startswith("1:64:"):
+					if getRealServiceRef(service) == getRealServiceRef(channels[idx - 1][0]) or ":".join(getCompareReference(getRealServiceRef(service)).split(":")[:10]) == getCompareReference(":".join(getRealServiceRef(channels[idx - 1][0]).split(":")[:10])):
 						if isalternatenum:
 							channelnum = str(idx - markeroffset)
 						else:
