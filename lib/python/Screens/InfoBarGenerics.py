@@ -281,6 +281,7 @@ def getActiveSubservicesForCurrentChannel(service):
 				activeSubservices.append((subservice.getName(), subservice.toString()))
 	return activeSubservices
 
+
 def hasActiveSubservicesForCurrentChannel(service):
 	activeSubservices = getActiveSubservicesForCurrentChannel(service)
 	return bool(activeSubservices and len(activeSubservices))
@@ -364,6 +365,7 @@ class InfoBarUnhandledKey:
 		if self.flags == self.uflags:
 			self.unhandledKeyDialog.show()
 			self.hideUnhandledKeySymbolTimer.start(2000, True)
+
 
 class InfoBarScreenSaver:
 	def __init__(self):

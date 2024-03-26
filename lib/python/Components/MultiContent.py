@@ -28,6 +28,7 @@ def __resolvePixmap(pixmap):
 def MultiContentTemplateColor(n):
 	return 0xff000000 | n
 
+
 def MultiContentEntryRectangle(pos=(0, 0), size=(0, 0), backgroundColor=None, backgroundColorSelected=None, borderWidth=None, borderColor=None, borderColorSelected=None, cornerRadius=0, cornerEdges=15):
 	return eListboxPythonMultiContent.TYPE_RECT, int(pos[0]), int(pos[1]), int(size[0]), int(size[1]), __resolveColor(backgroundColor), __resolveColor(backgroundColorSelected), borderWidth, __resolveColor(borderColor), __resolveColor(borderColorSelected), cornerRadius, cornerEdges
 

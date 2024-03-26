@@ -8,6 +8,7 @@ from Tools.Directories import fileExists
 from Tools.Transponder import ConvertToHumanReadable
 from Session import SessionObject
 
+
 def getRealServiceRef(ref):
 	if isinstance(ref, eServiceReference):
 		service_ref_str = ref.toString()
@@ -18,10 +19,12 @@ def getRealServiceRef(ref):
 		service_ref_cleaned = service_ref_str.split("17999/")[1].split(":")[0].replace("%3a", ":")
 	return service_ref_cleaned
 
+
 def getCompareReference(ref):
 	splitted = ref.split(":")
 	compare_ref = ":".join(splitted[:11])
 	return compare_ref
+
 
 def getServiceNum(service, myRoot, isalternatenum=True):
 	channelnum = ""
@@ -201,7 +204,6 @@ class ServiceName(Converter):
 		else:
 			tp_data = info.getInfoObject(iServiceInformation.sTransponderData)
 		
-
 		if tp_data is not None:
 			try:
 				position = tp_data["orbital_position"]
