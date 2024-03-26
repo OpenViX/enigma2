@@ -23,7 +23,7 @@ def getCompareReference(ref):
 	compare_ref = ":".join(splitted[:11])
 	return compare_ref
 
-def getServiceNum(service, myRoot, isalternatenum = True):
+def getServiceNum(service, myRoot, isalternatenum=True):
 	channelnum = ""
 	markeroffset = 0
 	bouquetoffset = 0
