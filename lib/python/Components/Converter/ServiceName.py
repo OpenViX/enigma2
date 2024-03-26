@@ -6,6 +6,7 @@ from ServiceReference import resolveAlternate
 from Components.Element import cached
 from Tools.Directories import fileExists
 from Tools.Transponder import ConvertToHumanReadable
+from Session import SessionObject
 
 def getRealServiceRef(ref):
 	if isinstance(ref, eServiceReference):
@@ -133,11 +134,16 @@ class ServiceName(Converter):
 			if not service:
 				refstr = info.getInfoString(iServiceInformation.sServiceref)
 				path = refstr and eServiceReference(refstr).getPath()
+				if not path:
+					curService = SessionObject.session.nav.getCurrentlyPlayingServiceReference()
+					path = curService and curService.toString().split(":")[10].replace("%3a", ":")
 				if not path.startswith("//") and path.find(srpart) == -1:
 					return path
 				else:
 					return ""
 			path = service.getPath()
+			if not path:
+				path = service.toString().split(":")[10].replace("%3a", ":")
 			return "" if path.startswith("//") and path.find(srpart) == -1 else path
 		elif self.type == self.FORMAT_STRING:
 			name = self.getName(service, info)

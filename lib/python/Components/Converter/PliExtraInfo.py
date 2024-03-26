@@ -106,7 +106,8 @@ def createCurrentCaidLabel(info, currentCaid=None, currentDevice=None):
 		if dvbCIUI:
 			for slot in range(NUM_CI):
 				stateDecoding = dvbCIUI.getDecodingState(slot)
-				if stateDecoding == 2:
+				stateSlot = dvbCIUI.getState(slot)
+				if stateDecoding == 2 and stateSlot not in (-1, 0, 3):
 					decodingCiSlot = slot
 
 	if not pathExists("/tmp/ecm.info") and decodingCiSlot == -1:
@@ -302,7 +303,6 @@ class PliExtraInfo(Poll, Converter, object):
 
 		res += Hex2strColor(colors[3])  # white (this acts like a color "reset" for following strings
 		return res
-
 	def createCryptoSeca(self, info):
 		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
 		if int('0x100', 16) <= int(self.current_caid, 16) <= int('0x1ff', 16):
