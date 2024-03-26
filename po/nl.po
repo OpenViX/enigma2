@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-17 21:39+0000\n"
-"PO-Revision-Date: 2024-01-18 16:29+0100\n"
+"POT-Creation-Date: 2024-03-26 05:04+0000\n"
+"PO-Revision-Date: 2024-03-26 14:00+0100\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -29,13 +29,6 @@ msgid ""
 msgstr ""
 "\n"
 "(verzoek tot afsluiten veranderd naar stand-by omdat er een stream-klant actief is.)"
-
-msgid ""
-"\n"
-"After pressing OK, please wait!"
-msgstr ""
-"\n"
-"Druk op OK en een ogenblik geduld!"
 
 msgid ""
 "\n"
@@ -1213,24 +1206,6 @@ msgstr "1.2"
 msgid "1024 Mb"
 msgstr "1024 Mb"
 
-msgid "1080i"
-msgstr "1080i"
-
-msgid "1080p 24Hz"
-msgstr "1080p 24Hz"
-
-msgid "1080p 25Hz"
-msgstr "1080p 25Hz"
-
-msgid "1080p 30Hz"
-msgstr "1080p 30Hz"
-
-msgid "1080p 50Hz"
-msgstr "1080p 50Hz"
-
-msgid "1080p 60Hz"
-msgstr "1080p 60Hz"
-
 msgid "10bit"
 msgstr "10bit"
 
@@ -1281,21 +1256,6 @@ msgstr "1X"
 
 msgid "1st Infobar timeout"
 msgstr "1e informatiebalk timeout"
-
-msgid "2160p 24Hz"
-msgstr "2160p 24Hz"
-
-msgid "2160p 25Hz"
-msgstr "2160p 25Hz"
-
-msgid "2160p 30Hz"
-msgstr "2160p 30Hz"
-
-msgid "2160p 50Hz"
-msgstr "2160p 50Hz"
-
-msgid "2160p 60Hz"
-msgstr "2160p 60Hz"
 
 msgid "23.976"
 msgstr "23.976"
@@ -1382,9 +1342,6 @@ msgstr "422"
 msgid "444"
 msgstr "444"
 
-msgid "480p 24Hz"
-msgstr "480p 24Hz"
-
 msgid "4:3"
 msgstr "4:3"
 
@@ -1420,12 +1377,6 @@ msgstr "6"
 
 msgid "64 Mb"
 msgstr "64 Mb"
-
-msgid "720p"
-msgstr "720p"
-
-msgid "720p 24Hz"
-msgstr "720p 24Hz"
 
 msgid "756 Mb"
 msgstr "756 Mb"
@@ -1987,9 +1938,6 @@ msgstr "Alle leeftijden"
 msgid "All frequency"
 msgstr "Alle frequenties"
 
-msgid "All resolutions"
-msgstr "Alle resoluties"
-
 msgid "All satellites 1 (USALS)"
 msgstr "Alle satellieten 1 (USALS)"
 
@@ -2055,9 +2003,6 @@ msgstr "De softcam manager kan vanuit de extensies worden geopend."
 
 msgid "Allows the softcam to be checked if it stopped working, and restarted automatically if needed."
 msgstr "Er kan gecontroleerd worden of de softcam gestopt is en indien nodig deze kan automatisch worden gestart."
-
-msgid "Allows you to adjust the amount of time the resolution infomation display on screen."
-msgstr "Stelt de tijdsduur in dat resolutie-informatie op het tv-scherm getoond wordt."
 
 msgid "Allows you to close the window automatically."
 msgstr "Het window kan automatisch gesloten worden."
@@ -2131,6 +2076,12 @@ msgstr "Alternatieve radiomodus"
 msgid "Alternative services tuner priority"
 msgstr "Alternatieve tunerprioriteit"
 
+msgid "Altri"
+msgstr "Anderen"
+
+msgid "Altri Programmi"
+msgstr "Andere programma's"
+
 msgid "Always hide infobar"
 msgstr "Informatiebalk altijd verbergen"
 
@@ -2158,6 +2109,9 @@ msgstr "Er is een fout opgetreden bij het downloaden van de pakketlijst. Probeer
 msgid "An unknown error occurred!"
 msgstr "Er is een onbekende fout opgetreden!"
 
+msgid "Ancient"
+msgstr "Antiek"
+
 msgid "Andorra"
 msgstr "Andorra"
 
@@ -2182,6 +2136,9 @@ msgstr "Animatiesnelheid"
 msgid "Animations"
 msgstr "Animatie"
 
+msgid "Animazione"
+msgstr "Animatie"
+
 msgid "Anime"
 msgstr "Anime"
 
@@ -2190,6 +2147,9 @@ msgstr "Antarctica"
 
 msgid "Antigua and Barbuda"
 msgstr "Antigua and Barbuda"
+
+msgid "Antiques"
+msgstr "Antiek"
 
 msgid "Any activity"
 msgstr "Elke activiteit"
@@ -2309,8 +2269,17 @@ msgstr "Argentina"
 msgid "Armenia"
 msgstr "Armenia"
 
+msgid "Art/Literature"
+msgstr "Kunst/Literatuur"
+
+msgid "Arte e Cultura"
+msgstr "Kunst & Cultuur"
+
 msgid "Artist"
 msgstr "Artiest"
+
+msgid "Arts"
+msgstr "Kunst"
 
 msgid "Arts & Culture"
 msgstr "Kunst & Cultuur"
@@ -2357,8 +2326,14 @@ msgstr "Er moet minstens één weekdag worden geselecteerd"
 msgid "Athletics"
 msgstr "Atletiek"
 
+msgid "Atletica"
+msgstr "Atletiek"
+
 msgid "Attention, this is repeated timer!\n"
 msgstr "Let op: dit is een herhalende timer!\n"
+
+msgid "Attualita"
+msgstr "Actualiteit"
 
 msgid "Audio"
 msgstr "Audio"
@@ -2480,12 +2455,6 @@ msgstr "Automatische taalinstellingen"
 msgid "Automatic reload"
 msgstr "Automatisch herladen"
 
-msgid "Automatic resolution"
-msgstr "Automatische resolutie"
-
-msgid "Automatic resolution label"
-msgstr "Automatische resolutieinfo"
-
 msgid "Automatic save"
 msgstr "Automatisch opslaan"
 
@@ -2537,11 +2506,17 @@ msgstr "Australische talen zijn:"
 msgid "Available shares:"
 msgstr "Beschikbare shares:"
 
+msgid "Avventura"
+msgstr "Avontuur"
+
 msgid "Axas E4HD Ultra"
 msgstr "Axas E4HD Ultra"
 
 msgid "Azerbaijan"
 msgstr "Azerbaijan"
+
+msgid "Azione"
+msgstr "Actie"
 
 msgid "B"
 msgstr "B"
@@ -2665,6 +2640,12 @@ msgstr "Bahrain"
 msgid "Ballet"
 msgstr "Ballet"
 
+msgid "Bambini"
+msgstr "Kinderen"
+
+msgid "Bambini Accompagnati"
+msgstr "Kinderen onder toezicht"
+
 msgid "Band"
 msgstr "Band"
 
@@ -2691,6 +2672,9 @@ msgstr "Basis functies"
 
 msgid "Basic info"
 msgstr "Basis info"
+
+msgid "Basket"
+msgstr "Basketbal"
 
 msgid "Basketball"
 msgstr "Basketbal"
@@ -2859,6 +2843,9 @@ msgstr "Bouvet Island"
 msgid "BoxInfo"
 msgstr "BoxInfo"
 
+msgid "Boxe"
+msgstr "Boksen"
+
 msgid "Boxen"
 msgstr "Boksen"
 
@@ -2929,6 +2916,9 @@ msgstr "Burundi"
 
 msgid "Bus: "
 msgstr "Bus: "
+
+msgid "Business"
+msgstr "Zaken"
 
 msgid "Business & Finance"
 msgstr "Zaken & financiën"
@@ -3064,6 +3054,9 @@ msgstr "Cable scan executable niet gevonden '%s'!"
 msgid "Cabo Verde"
 msgstr "Cabo Verde"
 
+msgid "Caccia"
+msgstr "Jacht"
+
 msgid "Cache thumbnails"
 msgstr "Miniatuurafbeeldingen cachen"
 
@@ -3075,6 +3068,9 @@ msgstr "Caid"
 
 msgid "Caid:Srvid"
 msgstr "Caid:Srvid"
+
+msgid "Calcio"
+msgstr "Voetbal"
 
 msgid "Calculate"
 msgstr "Bereken"
@@ -3161,6 +3157,12 @@ msgstr "Capaciteit: "
 msgid "Card info (CCcam-Reader)"
 msgstr "Kaartinfo (CCcam-lezer)"
 
+msgid "Card reader 1"
+msgstr "Kaartlezer 1"
+
+msgid "Card reader 2"
+msgstr "Kaartlezer 2"
+
 msgid "Cards:"
 msgstr "Kaarten:"
 
@@ -3172,6 +3174,9 @@ msgstr "Kaarten: 0"
 
 msgid "Cardserial"
 msgstr "Kaart serie"
+
+msgid "Cartoni Animati"
+msgstr "Tekenfilm"
 
 msgid "Cartoon"
 msgstr "Tekenfilm"
@@ -3209,6 +3214,9 @@ msgstr "Chad"
 msgid "Challenge"
 msgstr "Uitdaging"
 
+msgid "Change Colorspace setting - this may cause unexpected results or black screen"
+msgstr "Verander de Colorspace-instelling - dit kan onverwachte gevolgen hebben of een zwart scherm"
+
 msgid "Change PIN"
 msgstr "Wijzig pincode"
 
@@ -3239,14 +3247,11 @@ msgstr "Pas de herhalings- en vertragingsinstellingen aan?"
 msgid "Change step size"
 msgstr "Wijzig stapgrootte"
 
-msgid "Change the Colordepth for UHD"
-msgstr "Verander de kleurruimte voor UHD"
+msgid "Change the Colordepth for UHD - this may cause unexpected results or black screen"
+msgstr "Verander de kleurdiepte voor UHD - dit kan onverwachte gevolgen hebben of een zwart scherm"
 
-msgid "Change the Colorimetry for HDR"
-msgstr "Verander de kleurruimte voor HDR"
-
-msgid "Change the Colorspace from Auto to RGB"
-msgstr "Verander de kleurruimte van Auto naar RGB"
+msgid "Change the Colorimetry for HDR - this may cause unexpected results or black screen"
+msgstr "Verander de colorimetrie voor HDR - dit kan onverwachte gevolgen hebben of een zwart scherm"
 
 msgid "Channel"
 msgstr "Kanaal"
@@ -3316,6 +3321,9 @@ msgstr "Hoofdstuk"
 
 msgid "Chapter:"
 msgstr "Hoofdstuk:"
+
+msgid "Chat Show"
+msgstr "Praatprogramma"
 
 msgid "Check"
 msgstr "Controleer"
@@ -3521,6 +3529,9 @@ msgstr "Christmas Island"
 msgid "Chronik"
 msgstr "Kroniek"
 
+msgid "Ciclismo"
+msgstr "Fietsen"
+
 msgid "Cinema"
 msgstr "Cinema"
 
@@ -3532,6 +3543,9 @@ msgstr "Circulair links"
 
 msgid "Circular right"
 msgstr "Circulair rechts"
+
+msgid "Classical"
+msgstr "Klassiek"
 
 msgid "Classical Music"
 msgstr "Klassieke muziek"
@@ -3591,6 +3605,9 @@ msgstr "Sluit titelselectie"
 msgid "Close window on success"
 msgstr "Sluit window bij slagen"
 
+msgid "Club/Dance"
+msgstr "Club/Dans"
+
 msgid "Cocos (Keeling) Islands"
 msgstr "Cocos (Keeling) Islands"
 
@@ -3637,6 +3654,9 @@ msgstr "Komedie"
 msgid "Comic"
 msgstr "Grappig"
 
+msgid "Comico"
+msgstr "Grappig"
+
 msgid "Command order"
 msgstr "Commando volgorde"
 
@@ -3648,6 +3668,9 @@ msgstr "Uit te voeren opdracht"
 
 msgid "Command type"
 msgstr "Type opdracht"
+
+msgid "Commedia"
+msgstr "Komedie"
 
 msgid "Common Interface"
 msgstr "Common interface"
@@ -3777,6 +3800,9 @@ msgstr "Configureer interface"
 msgid "Configure nameservers"
 msgstr "Configureer nameservers"
 
+msgid "Configure screen refresh rate. Multi & Auto rates depend on the source 24/50/60Hz"
+msgstr "Stel de verversingsfrequentie van het scherm in. 'Multi' & \"Auto' betekent dat de waarde afhangt van de bron 24/50/60Hz"
+
 msgid "Configure the DiSEqC mode for this LNB."
 msgstr "Stel hier de juiste DiSEqC modus voor uw LNB in."
 
@@ -3902,9 +3928,6 @@ msgstr "Stel de mogelijke terugspoelsnelheden in."
 
 msgid "Configure the primary EPG language."
 msgstr "Kies EPG taal 1."
-
-msgid "Configure the refresh rate of the screen. Multi means refresh rate depends on the source 24/50/60Hz"
-msgstr "Stel de verversingsfrequentie van het scherm in. 'Multi' betekent dat de waarde afhangt van de bron 24/50/60Hz"
 
 msgid "Configure the second audio language."
 msgstr "Kies audiotaal 2."
@@ -4103,6 +4126,12 @@ msgstr "Core dumps zijn behulpzaam voor ontwikkelaars in het geval van een FATAL
 
 msgid "Correct invalid EPG data"
 msgstr "Corrigeer ongeldige EPG-data"
+
+msgid "Corto"
+msgstr "Kort"
+
+msgid "Cortometraggio"
+msgstr "Korte film"
 
 msgid "Costa Rica"
 msgstr "Costa Rica"
@@ -4470,6 +4499,15 @@ msgstr "DvD-speler"
 msgid "DVD titlelist"
 msgstr "DvD-titellijst"
 
+msgid "Dai 12 anni in su"
+msgstr "Voor 12 jaar en ouder"
+
+msgid "Dai 14 anni in su"
+msgstr "Voor 14 jaar en ouder"
+
+msgid "Dai 18 anni in su"
+msgstr "Voor 18 jaar en ouder"
+
 msgid "Daily"
 msgstr "Dagelijks"
 
@@ -4478,6 +4516,9 @@ msgstr "Dans"
 
 msgid "Danish"
 msgstr "Deens"
+
+msgid "Danza"
+msgstr "Dans"
 
 msgid "Darts"
 msgstr "Dart"
@@ -4760,9 +4801,6 @@ msgstr "Vertraging in milliseconde nadat het scrollen van tekst op het display b
 
 msgid "Delay in milliseconds before start of scrolling text on display."
 msgstr "Vertraging in milliseconde voor het scrollen van tekst op het display begint."
-
-msgid "Delay time"
-msgstr "Vertragingstijd"
 
 msgid "Delay when closing a stream relay service before reallocating the tuner for another service. Using '0' is only recommended for boxes with multiple satellite tuners."
 msgstr "Vertraging na het sluiten van een streamrely-service voordat de tuner aan een andere service kan worden toegewezen. Het gebruik van \"0\" wordt alleen aanbevolen voor ontvangers met meerdere satelliettuners."
@@ -5252,6 +5290,12 @@ msgstr "Wilt u het volgende pakket upgraden:\n"
 msgid "Do you want to update your %s %s?"
 msgstr "Wilt u uw %s %s updaten?"
 
+msgid "Docudrama"
+msgstr "Docudrama"
+
+msgid "Documentario"
+msgstr "Dcumentaire"
+
 msgid "Documentary"
 msgstr "Dcumentaire"
 
@@ -5316,11 +5360,11 @@ msgstr "Download plugins"
 msgid "Downloading"
 msgstr "Bezig met downloaden"
 
-msgid "Downloading a new packet list. Please wait..."
-msgstr "Downloadt een nieuwe pakketlijst. Even wachten..."
-
 msgid "Downloading plugin information. Please wait..."
 msgstr "Haalt plugininformatie op. Even wachten..."
+
+msgid "Downloading the latest package list. Please wait..."
+msgstr "Downloadt een nieuwe pakketlijst. Even wachten..."
 
 msgid "Downloads"
 msgstr "Downloads"
@@ -5333,6 +5377,9 @@ msgstr "Drama"
 
 msgid "Drama and Films"
 msgstr "Drama en Film"
+
+msgid "Drammatico"
+msgstr "Drama"
 
 #, python-format
 msgid "Drivers:\t%s\n"
@@ -5468,6 +5515,9 @@ msgstr "Oostelijke limiet instellen"
 msgid "Eastern"
 msgstr "Oostelijk"
 
+msgid "Easy Listening"
+msgstr "Easy Listening"
+
 msgid "Ecm Info"
 msgstr "ECM Info"
 
@@ -5485,6 +5535,9 @@ msgstr "ECM laatste"
 
 msgid "Ecm:"
 msgstr "Ecm:"
+
+msgid "Economia"
+msgstr "Economie"
 
 msgid "Economics"
 msgstr "Economie"
@@ -5538,6 +5591,9 @@ msgstr "Onderwijs/Informatie"
 
 msgid "Education/Science/Factual"
 msgstr "Onderwijs/Wetenschap/Feiten"
+
+msgid "Educational"
+msgstr "Opleiding"
 
 msgid "Egypt"
 msgstr "Egypt"
@@ -5883,11 +5939,17 @@ msgstr "Gelijk aan"
 msgid "Equatorial Guinea"
 msgstr "Equatorial Guinea"
 
+msgid "Equestri"
+msgstr "Ruitersport"
+
 msgid "Equestrian"
 msgstr "Ruitersport"
 
 msgid "Eritrea"
 msgstr "Eritrea"
+
+msgid "Erotic"
+msgstr "Erotiek"
 
 msgid "Erotik"
 msgstr "Erotiek"
@@ -5967,6 +6029,12 @@ msgstr "Programma  overzicht"
 
 msgid "Event view menu"
 msgstr "Programma overzicht menu"
+
+msgid "Eventi Speciali"
+msgstr "Speciale gebeurtenis"
+
+msgid "Events"
+msgstr "Gebeurtenis"
 
 msgid "Every 12 hours"
 msgstr "Elke 12 uur"
@@ -6252,6 +6320,9 @@ msgstr "Fabrieksinstellingen"
 msgid "Factory Reset: Clearing data"
 msgstr "Fabrieksinstellingen: verwijdert gegevens"
 
+msgid "Factual"
+msgstr "Feitelijkheden"
+
 msgid "Factual Topics"
 msgstr "Feitelijkheden"
 
@@ -6299,11 +6370,20 @@ msgstr "Familie"
 msgid "Fan %d"
 msgstr "Ventilator %d"
 
+msgid "Fantascienza"
+msgstr "Fantasie"
+
+msgid "Fantastico"
+msgstr "Fantasie"
+
 msgid "Fantasy"
 msgstr "Fantasie"
 
 msgid "Faroe Islands"
 msgstr "Faroe Islands"
+
+msgid "Fashion"
+msgstr "Mode"
 
 msgid "Fast"
 msgstr "Snel"
@@ -6338,6 +6418,12 @@ msgstr "Fastscan"
 msgid "Favourites"
 msgstr "Favorieten"
 
+msgid "Feature"
+msgstr "Functie"
+
+msgid "Features"
+msgstr "Functies"
+
 msgid "Feeds status: Official developer feeds"
 msgstr "Feeds status: Officiële ontwikkelaars feeds"
 
@@ -6359,6 +6445,12 @@ msgstr "Feeds status: Onstabiel"
 msgid "Feeds status: Updating"
 msgstr "Feeds status: bezig met updaten"
 
+msgid "Festival"
+msgstr "Festival"
+
+msgid "Fiction"
+msgstr "Fictie"
+
 msgid "Fiji"
 msgstr "Fiji"
 
@@ -6378,6 +6470,12 @@ msgstr "Bestandssysteemcontrole"
 
 msgid "Film"
 msgstr "Film"
+
+msgid "Film Animazione"
+msgstr "Animatie film"
+
+msgid "Film per Adulti"
+msgstr "Film voor volwassenen"
 
 msgid "Film-Noir"
 msgstr "Film-Noir"
@@ -6451,6 +6549,9 @@ msgstr "Plat volgens positie op de AB"
 msgid "Folk"
 msgstr "Volk"
 
+msgid "Folk and Country"
+msgstr "Folk & Country"
+
 msgid "Folkloric"
 msgstr "Folklore"
 
@@ -6469,8 +6570,8 @@ msgstr "Voetbalclub"
 msgid "Football - International"
 msgstr "Voetbal - Internationaal"
 
-msgid "Force de-interlace"
-msgstr "Forceer de-interlace"
+msgid "Football USA"
+msgstr "Rugby"
 
 msgid "Force legacy signal stats"
 msgstr "Forceer oude signaal statistieken"
@@ -6697,6 +6798,9 @@ msgstr "Algemeen sociaal"
 msgid "General Sports"
 msgstr "Algemene sporten"
 
+msgid "Generale"
+msgstr "Algemeen"
+
 msgid "Generic"
 msgstr "Algemeen"
 
@@ -6739,8 +6843,14 @@ msgstr "Plugin-gegevens worden opgehaald. Even wachten..."
 msgid "Ghana"
 msgstr "Ghana"
 
+msgid "Giallo"
+msgstr "Geel"
+
 msgid "Gibraltar"
 msgstr "Gibraltar"
+
+msgid "Gioco"
+msgstr "Spel"
 
 msgid "Go back 24 hours"
 msgstr "Spring 24 uur terug"
@@ -6823,6 +6933,9 @@ msgstr "Grafisch"
 msgid "Graphics Grid EPG"
 msgstr "Grafische meervoudige EPG"
 
+msgid "Great Britain"
+msgstr "Groot-Brittannië"
+
 msgid "Greece"
 msgstr "Greece"
 
@@ -6873,6 +6986,9 @@ msgstr "Guatemala"
 
 msgid "Guernsey"
 msgstr "Guernsey"
+
+msgid "Guerra"
+msgstr "Oorlog"
 
 msgid "Guinea"
 msgstr "Guinea"
@@ -6946,7 +7062,7 @@ msgstr "HDD instellingen"
 msgid "HDMI"
 msgstr "HDMI"
 
-msgid "HDMI Colordepth"
+msgid "HDMI Color depth"
 msgstr "HDMI-kleurdiepte"
 
 msgid "HDMI Colorimetry"
@@ -7111,6 +7227,9 @@ msgstr "Hoge bitrate ondersteuning"
 msgid "Highlight current events"
 msgstr "Markeer actuele programma's"
 
+msgid "Hip Hop"
+msgstr "Hip Hop"
+
 msgid "Historical"
 msgstr "Histories"
 
@@ -7135,6 +7254,9 @@ msgstr "Geschiedenis toetsfunctie"
 msgid "History next"
 msgstr "Historie volgende"
 
+msgid "Hobby"
+msgstr "Hobby"
+
 msgid "Hobbys"
 msgstr "Hobby's"
 
@@ -7152,6 +7274,9 @@ msgstr "Holy See"
 
 msgid "Home"
 msgstr "Thuis"
+
+msgid "Home and Garden"
+msgstr "Huis en Tuin"
 
 msgid "Homebuild URL"
 msgstr "Zelf ingestelde URL"
@@ -7336,12 +7461,6 @@ msgstr "Als een toets door de gebruiker kan worden aangepast, wordt deze gemarke
 
 msgid "If enabled and PiP is available, PiP will be used for the download. If disabled or Pip is unavailable the download will be done as a fake recording."
 msgstr "Indien PiP beschikbaar en ingeschakeld is, zal PiP gebruikt worden voor de download. Indien PiP niet beschikbaar of uitgeschakeld is, zal de download geschieden als een nep-opname."
-
-msgid "If enabled the output resolution of the box will try to match the resolution of the video content"
-msgstr "Indien ingeschakeld zal getracht worden de output-resolutie van uw box overeen te laten komen met de resolutie van de video inhoud"
-
-msgid "If enabled the video will always be de-interlaced."
-msgstr "Indien ingeschakeld zal de video altijd worden gede-interlaced."
 
 msgid "If enabled, a log will be kept of CEC protocol traffic ('hdmicec.log')."
 msgstr "Indien ingeschakeld zal een log van het CEC-verkeer worden bijgehouden ('hdmicec.log')."
@@ -7611,6 +7730,9 @@ msgstr "Bron voor tuner info"
 msgid "Information"
 msgstr "Informatie"
 
+msgid "Informazione"
+msgstr "Informatie"
+
 msgid "Infotainment"
 msgstr "Infotainment"
 
@@ -7658,6 +7780,9 @@ msgstr "Initialiseer apparaten"
 
 msgid "Initializing storage device..."
 msgstr "Opslagmedium initialiseren..."
+
+msgid "Inizio e Fine Trasmissioni"
+msgstr "Begin en einde van de uitzending"
 
 msgid "Inotify Monitoring"
 msgstr "Inotify monitoring"
@@ -7714,6 +7839,12 @@ msgstr "Installeer lokale extensie"
 msgid "Install picons on"
 msgstr "Installeer picons op"
 
+msgid "Installable"
+msgstr "Installeerbaar"
+
+msgid "Installed"
+msgstr "Geïnstalleerd"
+
 #, python-format
 msgid "Installed:\t%s\n"
 msgstr "Geïnstalleerd:\t%s\n"
@@ -7766,6 +7897,45 @@ msgstr "Interval tussen de opdrachten indien herhaald:"
 
 msgid "Interview"
 msgstr "Interview"
+
+msgid "Intrattenimento"
+msgstr "Amusement"
+
+msgid "Inutilizzato 0xc9"
+msgstr "Ongebruikt 0xc9"
+
+msgid "Inutilizzato 0xca"
+msgstr "Ongebruikt 0xca"
+
+msgid "Inutilizzato 0xcb"
+msgstr "Ongebruikt 0xcb"
+
+msgid "Inutilizzato 0xcc"
+msgstr "Ongebruikt 0xcc"
+
+msgid "Inutilizzato 0xcd"
+msgstr "Ongebruikt 0xcd"
+
+msgid "Inutilizzato 0xce"
+msgstr "Ongebruikt 0xcce"
+
+msgid "Inutilizzato 0xcf"
+msgstr "Ongebruikt 0xcf"
+
+msgid "Inutilizzato 0xd0"
+msgstr "Ongebruikt 0xd0"
+
+msgid "Inutilizzato 0xd1"
+msgstr "Ongebruikt 0xd1"
+
+msgid "Inutilizzato 0xd2"
+msgstr "Ongebruikt 0xd2"
+
+msgid "Inutilizzato 0xd3"
+msgstr "Ongebruikt 0xd3"
+
+msgid "Inutilizzato 0xe4"
+msgstr "Ongebruikt 0xe4"
 
 msgid "Invalid"
 msgstr "Ongeldig"
@@ -8253,6 +8423,9 @@ msgstr "Laad, bewaar en verwijder EPG-cache"
 msgid "Loading skin"
 msgstr "Skin wordt geladen"
 
+msgid "Loading the package list. Please wait..."
+msgstr "Downloadt de pakketlijst. Even wachten..."
+
 msgid "Local box"
 msgstr "Lokale box"
 
@@ -8402,6 +8575,33 @@ msgstr "Madagascar"
 
 msgid "Magazin"
 msgstr "Magazine"
+
+msgid "Magazine"
+msgstr "Magazine"
+
+msgid "Magazine Caccia e Pesca"
+msgstr "Jacht & Vis magazine"
+
+msgid "Magazine Cinema"
+msgstr "Filmmagazine"
+
+msgid "Magazine Cultura"
+msgstr "Cultuurmagazine"
+
+msgid "Magazine Musica"
+msgstr "Muziekmagazine"
+
+msgid "Magazine Natura"
+msgstr "Natuurmagazine"
+
+msgid "Magazine Scienza"
+msgstr "Wetenschapsmagazine"
+
+msgid "Magazine Sport"
+msgstr "Sportmagazine"
+
+msgid "Magazine Viaggi"
+msgstr "Reismagazine"
 
 msgid "Main Menu"
 msgstr "Hoofdmenu"
@@ -8624,6 +8824,9 @@ msgstr "Minimum leeftijd %d jaar"
 msgid "Minimum send interval"
 msgstr "Minimum zendinterval"
 
+msgid "Miniserie"
+msgstr "Miniserie"
+
 msgid "Minority Sports"
 msgstr "Minderheden sporten"
 
@@ -8641,6 +8844,9 @@ msgstr "Diverse"
 
 msgid "Missing "
 msgstr "Ontbrekend "
+
+msgid "Moda"
+msgstr "Mode"
 
 msgid "Mode"
 msgstr "Modus"
@@ -8694,6 +8900,9 @@ msgstr "Monaco"
 msgid "Monday"
 msgstr "maandag"
 
+msgid "Mondo e Tendenze"
+msgstr "Wereld & trends"
+
 msgid "Mongolia"
 msgstr "Mongolia"
 
@@ -8724,8 +8933,14 @@ msgstr "Rotor time-out"
 msgid "Motorcycling"
 msgstr "Motorrijden"
 
+msgid "Motori"
+msgstr "Motoren"
+
 msgid "Motoring"
 msgstr "Autorijden"
+
+msgid "Motors"
+msgstr "Motoren"
 
 msgid "Motorsport"
 msgstr "Motorsport"
@@ -8976,8 +9191,14 @@ msgstr "Muziek"
 msgid "Music/Ballet/Dance"
 msgstr "Muziek/Ballet/Dans"
 
+msgid "Musica"
+msgstr "Muziek"
+
 msgid "Musical"
 msgstr "Musical"
+
+msgid "Musicale"
+msgstr "Muzikaal"
 
 msgid "Musik"
 msgstr "Muziek"
@@ -9097,10 +9318,16 @@ msgstr "Beschrijving"
 msgid "National"
 msgstr "Nationaal"
 
+msgid "National Music"
+msgstr "Ntionale muziek"
+
 msgid "National News"
 msgstr "Nationaal nieuws"
 
 msgid "Natur"
+msgstr "Natuur"
+
+msgid "Natura"
 msgstr "Natuur"
 
 msgid "Nature"
@@ -9214,11 +9441,17 @@ msgstr "Nieuws"
 msgid "News Magazine"
 msgstr "Nieuwsmagazine"
 
+msgid "News and Weather"
+msgstr "Nieuws en Weer"
+
 msgid "News/Current Affairs"
 msgstr "Nieuws/Actualiteiten"
 
 msgid "News/Current Affairs/Social"
 msgstr "Nieuws/Actualiteiten/Sociaal"
+
+msgid "News/Documentary"
+msgstr "Niews/Dcumentaire"
 
 msgid "Next"
 msgstr "Straks"
@@ -9247,6 +9480,9 @@ msgstr "Nee"
 
 msgid "No (supported) DVDROM found!"
 msgstr "Geen (ondersteunde) DVD-ROM gevonden!"
+
+msgid "No Category"
+msgstr "Ongecategoriseerd"
 
 msgid "No Connection"
 msgstr "Geen verbinding"
@@ -9349,6 +9585,9 @@ msgstr ""
 
 msgid "No delay"
 msgstr "Geen vertraging"
+
+msgid "No description available."
+msgstr "Geen beschrijving beschikbaar."
 
 msgid "No displayable files on this medium found!"
 msgstr "Geen weer te geven bestanden op dit medium gevonden!"
@@ -9462,6 +9701,13 @@ msgstr "Node-ID"
 msgid "NodeID: "
 msgstr "Node-ID: "
 
+msgid "Non Classificato"
+msgstr "Niet geclassificeerd"
+
+#
+msgid "Non Definito"
+msgstr "Niet gedefinieerd"
+
 msgid "None"
 msgstr "Geen"
 
@@ -9492,9 +9738,6 @@ msgstr "Niet gedefinieerd"
 
 msgid "Not Flashing"
 msgstr "Niet bezig met flashen"
-
-msgid "Not Shown"
-msgstr "Niet zichtbaar"
 
 msgid "Not associated"
 msgstr "Niet geassocieerd"
@@ -9546,6 +9789,9 @@ msgstr "Geen upgrades beschikbaar"
 msgid "Nothing, just leave this menu"
 msgstr "Niets, alleen dit menu verlaten"
 
+msgid "Notiziario"
+msgstr "Nieuwsbrief"
+
 msgctxt "now/next: 'now' event label"
 msgid "Now"
 msgstr "Nu"
@@ -9575,6 +9821,9 @@ msgstr "Aantal zichtbare rijen"
 
 msgid "Number or SMS style data entry"
 msgstr "Getal of SMS-type"
+
+msgid "Nuoto"
+msgstr "Zwemmen"
 
 msgid "OE-A-Branding"
 msgstr "OE-A-Branding"
@@ -9858,6 +10107,9 @@ msgstr "PCR PID"
 msgid "PDC"
 msgstr "PDC"
 
+msgid "PG - Parental Guidance"
+msgstr "Ouderlijk toezicht aanbevolen"
+
 msgid "PGS file"
 msgstr "PGS-bestand"
 
@@ -9921,6 +10173,9 @@ msgstr "PVR"
 
 msgid "Package Manager"
 msgstr "Package Manager"
+
+msgid "Package list loading"
+msgstr "Pakketlijst wordt vernieuwd"
 
 msgid "Package list update"
 msgstr "Pakketlijst vernieuwen"
@@ -10051,6 +10306,9 @@ msgstr "Gepauzeerd"
 msgid "Peak load (max queued requests per workerthread)"
 msgstr "Piekbelasting (max rij verzoeken per workerthread)"
 
+msgid "Per Tutti"
+msgstr "Voor iedereen"
+
 msgid "Percentage"
 msgstr "Percentage"
 
@@ -10086,6 +10344,9 @@ msgstr "Perzisch"
 
 msgid "Peru"
 msgstr "Peru"
+
+msgid "Pesca"
+msgstr "Vissen"
 
 msgid "Philippines"
 msgstr "Philippines"
@@ -10541,6 +10802,9 @@ msgstr "Polarisatie"
 msgid "Polish"
 msgstr "Pools"
 
+msgid "Politica"
+msgstr "Politiek"
+
 msgid "Political Issues"
 msgstr "Politieke zaken"
 
@@ -10550,8 +10814,14 @@ msgstr "Politiek"
 msgid "Politik"
 msgstr "Politiek"
 
+msgid "Poliziesco"
+msgstr "Politie"
+
 msgid "Pop"
 msgstr "Pop"
+
+msgid "Popoli"
+msgstr "Volkeren"
 
 msgid "Popup"
 msgstr "Popup"
@@ -11036,6 +11306,9 @@ msgstr "RGB"
 msgid "RIGHT"
 msgstr "RECHTS"
 
+msgid "Racing"
+msgstr "Racen"
+
 msgid "Radio"
 msgstr "Radio"
 
@@ -11043,7 +11316,13 @@ msgid "Radio Channel Selection"
 msgstr "Radio zenderkeuze"
 
 msgid "Radsport"
-msgstr "wielersport"
+msgstr "Wielersport"
+
+msgid "Ragazzi"
+msgstr "Jeugd"
+
+msgid "Ragazzi e Musica"
+msgstr "Jeugd en muziek"
 
 msgid "Rallying"
 msgstr "Racen"
@@ -11273,9 +11552,6 @@ msgstr ""
 msgid "Reflash recommended!"
 msgstr "Opnieuw flashen wordt aanbevolen!"
 
-msgid "Refresh list"
-msgstr "Ververs lijst"
-
 msgid "Refresh rate"
 msgstr "Herhalingsfrequentie"
 
@@ -11294,6 +11570,9 @@ msgstr "Regionaal"
 msgid "Regional News"
 msgstr "Regionaal nieuws"
 
+msgid "Regionale"
+msgstr "Regionaal"
+
 msgid "Reisen"
 msgstr "Reizen"
 
@@ -11311,6 +11590,12 @@ msgstr "Relevante PIDs routering"
 
 msgid "Religion"
 msgstr "Religie"
+
+msgid "Religione"
+msgstr "Religieus"
+
+msgid "Religious"
+msgstr "Religieus"
 
 msgid "Reload blacklists"
 msgstr "Herlaad zwarte lijst"
@@ -11682,6 +11967,9 @@ msgstr "Omgekeerde favorietenknoppen"
 msgid "Reverse list"
 msgstr "Keer lijst om"
 
+msgid "Review"
+msgstr "Review"
+
 msgid "Revue"
 msgstr "Revue"
 
@@ -11706,6 +11994,9 @@ msgstr "Lang-rechts"
 msgid "Rock"
 msgstr "Rock"
 
+msgid "Rock/Pop"
+msgstr "Rock/Pop"
+
 msgid "Roll-off"
 msgstr "Roll-off"
 
@@ -11717,6 +12008,9 @@ msgstr "Romania"
 
 msgid "Romanian"
 msgstr "Roemeens"
+
+msgid "Romantico"
+msgstr "Romantiek"
 
 msgid "Romantik"
 msgstr "Romantiek"
@@ -11771,6 +12065,9 @@ msgstr "Voer uw shell scripts uit."
 
 msgid "Running"
 msgstr "Actief"
+
+msgid "Running opkg update"
+msgstr "opkg update loopt"
 
 msgid "Russian"
 msgstr "Russisch"
@@ -12088,6 +12385,12 @@ msgstr "Schematijd"
 msgid "Schedule wake from deep standby"
 msgstr "Plan ontwaken vanuit deep stand-by"
 
+msgid "Sci"
+msgstr "Sci"
+
+msgid "Sci-FI"
+msgstr "Sci-Fi"
+
 msgid "Sci-Fi"
 msgstr "Sci-Fi"
 
@@ -12102,6 +12405,9 @@ msgstr "Science Fiction"
 
 msgid "Science-Fiction"
 msgstr "Science-Fiction"
+
+msgid "Scienza"
+msgstr "Wetenschap"
 
 msgid "Screen proportions"
 msgstr "Schermformaat"
@@ -12893,9 +13199,6 @@ msgstr "Stel de scrollsnelheid voor de tekst op het scherm in."
 msgid "Set the sort method for this directory"
 msgstr "Kies de sortering voor deze map"
 
-msgid "Set the time before checking video source for resolution/refresh rate infomation."
-msgstr "Stel de tijd in voordat u de videobron op resolutie/verversingsfrequentie controleert."
-
 msgid "Set the time delay before hiding the infobar."
 msgstr "Stel de tijd in waarna de infobalk verdwijnt."
 
@@ -13010,30 +13313,6 @@ msgstr "Toon"
 msgid "Show %s"
 msgstr "Toon %s"
 
-msgid "Show 1080p 24fps as"
-msgstr "Toon 1080p 24fps als"
-
-msgid "Show 1080p 25fps as"
-msgstr "Toon 1080p 25fps als"
-
-msgid "Show 1080p 30fps as"
-msgstr "Toon 1080p 30fps als"
-
-msgid "Show 2160p 24fps as"
-msgstr "Toon 2160p 24fps als"
-
-msgid "Show 2160p 25fps as"
-msgstr "Toon 2160p 25fps als"
-
-msgid "Show 2160p 30fps as"
-msgstr "Toon 2160p 30fps als"
-
-msgid "Show 480/576p 24fps as"
-msgstr "Toon480/576p 24fps als"
-
-msgid "Show 720p 24fps as"
-msgstr "Toon 720p 24fps als"
-
 msgid "Show CCcam Info in extensions?"
 msgstr "Toon CCcam in extensiemenu?"
 
@@ -13088,9 +13367,6 @@ msgstr "Toon RFmod instellingen"
 msgid "Show Readers/Proxies"
 msgstr "Toon lezers/proxies"
 
-msgid "Show SD as"
-msgstr "Toon SD als"
-
 msgid "Show Single EPG"
 msgstr "Zender EPG"
 
@@ -13129,6 +13405,9 @@ msgstr "Laat animatie zien wanneer bezet"
 
 msgid "Show autotimer list"
 msgstr "Toon Autotimers"
+
+msgid "Show available subservices"
+msgstr "Toon beschikbare subkanalen"
 
 msgid "Show background behind subtitles"
 msgstr "Toon achtergrond achter ondertitels"
@@ -13416,6 +13695,9 @@ msgstr "Show/Spelshow"
 msgid "Show/hide infobar"
 msgstr "Toon/verberg infobar"
 
+msgid "Showbiz"
+msgstr "Showbiz"
+
 msgid "Shows live tv or informations on LCD."
 msgstr "Toon live TV of informatie op LCD."
 
@@ -13496,6 +13778,9 @@ msgstr "Single step (GOP)"
 
 msgid "Sint Maarten (Dutch part)"
 msgstr "Sint Maarten (Nederlandse deelt)"
+
+msgid "Sit Com"
+msgstr "Sit Com"
 
 msgid "Sitcom"
 msgstr "Sitcom"
@@ -13674,6 +13959,9 @@ msgstr "Glad"
 msgid "Snooker"
 msgstr "Snooker"
 
+msgid "Snooker/Pool"
+msgstr "Snooker/Pool"
+
 #, python-format
 msgid "SoC:\t%s\n"
 msgstr "SoC:\t%s\n"
@@ -13689,6 +13977,9 @@ msgstr "Voetbal"
 
 msgid "Social/Political/Economics"
 msgstr "Sociaal/Politiek/Economie"
+
+msgid "Societa"
+msgstr "Maatschappij"
 
 msgid "Society & Culture"
 msgstr "Samenleving & cultuur"
@@ -13843,6 +14134,9 @@ msgstr "Sorteer de instellingenschermen alfabetisch"
 msgid "Sort the EPG list"
 msgstr "Sorteer EPG-lijst"
 
+msgid "Soul/Rhythm Blues"
+msgstr "Soul/Rhythm Blues"
+
 msgid "Sound"
 msgstr "Geluid"
 
@@ -13885,6 +14179,9 @@ msgstr "Speciaal 2"
 msgid "Speed:"
 msgstr "Snelheid:"
 
+msgid "Spettacolo"
+msgstr "Show"
+
 msgid "Spiele"
 msgstr "Spellen"
 
@@ -13907,7 +14204,7 @@ msgid "Sports"
 msgstr "Sport"
 
 msgid "Sports Magazines"
-msgstr "sportmagazine"
+msgstr "Sportmagazine"
 
 msgid "Sprache"
 msgstr "Taal"
@@ -14111,6 +14408,9 @@ msgstr "Sla positie op"
 msgid "Stored position"
 msgstr "Opgeslagen positie"
 
+msgid "Storia"
+msgstr "Geschiedenis"
+
 msgid "Stream"
 msgstr "Stream"
 
@@ -14224,6 +14524,15 @@ msgstr "Ondertitel instellingen"
 
 msgid "Sudan"
 msgstr "Sudan"
+
+msgid "Suitable for ages 12+"
+msgstr "Geschikt voor 12 jaar en ouder"
+
+msgid "Suitable for ages 15+"
+msgstr "Geschikt voor 15 jaar en ouder"
+
+msgid "Suitable only for Adults"
+msgstr "Geschikt voor volwassenen"
 
 msgid "Sun"
 msgstr "Zo"
@@ -14472,17 +14781,29 @@ msgstr "Tanzania, United Republic of"
 msgid "Task warning on shutdown"
 msgstr "Waarschuwing actieve taken bij afsluiten"
 
+msgid "Teatro"
+msgstr "Theater"
+
 msgid "Technik"
 msgstr "Techniek"
 
 msgid "Technology"
 msgstr "Technologie"
 
+msgid "Telefilm"
+msgstr "Telefilm"
+
+msgid "Telenovela"
+msgstr "Soap"
+
 msgid "Teletext"
 msgstr "Teletext"
 
 msgid "Teletext subtitle color"
 msgstr "Kleur teletekstondertitels"
+
+msgid "Televendita"
+msgstr "Telewinkel"
 
 msgid "Telnet"
 msgstr "Telnet"
@@ -14877,35 +15198,8 @@ msgstr "Met deze optie bepaalt u de virtuele luidsprekeropstelling."
 msgid "This option allows you to choose from the two channel lists that are available."
 msgstr "Hier kiest u tussen twee lijsttypes (afhankelijk van uw skin kunnen er twee met een verschillende indeling zijn)."
 
-msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TVs support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 1080p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
-
-msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TVs support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 1080p 25Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
-
-msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TVs support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 1080p 30Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
-
-msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TVs support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 2160p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
-
-msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TVs support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 2160p 25Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
-
-msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TVs support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 2160p 30Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
-
-msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TVs support these resolutions)"
-msgstr "Hier kunt u aangeven hoe 720p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
-
-msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TV's support these resolutions)"
-msgstr "Hier kunt u aangeven hoe SD progressief 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
-
 msgid "This option allows you to choose how to display elapsed time. As + or -"
 msgstr "Hier kunt u aangeven of de verstreken tijd als + of - wordt vertoond"
-
-msgid "This option allows you to choose how to display standard defintion video on your TV."
-msgstr "Hier kunt u aangeven SD op uw TV moet worden weergegeven."
 
 msgid "This option allows you to choose how to display the remaining/elapsed time for Media playback."
 msgstr "Hier kunt u instellen of u de resterende en/of de verstreken tijd wilt zien voor het afspelen van opnames."
@@ -15364,6 +15658,9 @@ msgstr "Transponder"
 msgid "Transponder Time"
 msgstr "Transpondertijd"
 
+msgid "Transport"
+msgstr "Transport"
+
 msgid "Transport Stream Type"
 msgstr "Transportstream type"
 
@@ -15519,6 +15816,9 @@ msgstr "Type: "
 msgid "Types of backups to remove when stale."
 msgstr "Type back-up dat verwijderd wordt indien te oud."
 
+msgid "U - Suitable for all"
+msgstr "U - Geschikt voor iedereen"
+
 msgid "UNKNOWN"
 msgstr "ONBEKEND"
 
@@ -15539,6 +15839,21 @@ msgstr "USALS kalibratie"
 
 msgid "USB"
 msgstr "USB"
+
+msgid "USB reader 1"
+msgstr "USB-lezer 1"
+
+msgid "USB reader 2"
+msgstr "USB-lezer 2"
+
+msgid "USB reader 3"
+msgstr "USB-lezer 3"
+
+msgid "USB reader 4"
+msgstr "USB-lezer 4"
+
+msgid "USB reader 5"
+msgstr "USB-lezer 5"
 
 msgid "Uganda"
 msgstr "Uganda"
@@ -15563,6 +15878,9 @@ msgstr "Toon voor dit kanaal de gestippelde lijn bovenin"
 
 msgid "Undefined"
 msgstr "Niet gedefinieerd"
+
+msgid "Under 5"
+msgstr "Onder 5"
 
 msgid "Undetermined"
 msgstr "Onbepaald"
@@ -15618,6 +15936,9 @@ msgstr "Niet ondersteund"
 msgid "Unterhaltung"
 msgstr "Onderhouding"
 
+msgid "Unused 0x22"
+msgstr "Ongebruikt 0x22"
+
 msgid "Unused 0x71"
 msgstr "Ongebruikt 0x71"
 
@@ -15627,8 +15948,35 @@ msgstr "Ongebruikt 0x72"
 msgid "Unused 0x80"
 msgstr "Ongebruikt 0x80"
 
+msgid "Unused 0x8d"
+msgstr "Ongebruikt 0x8d"
+
+msgid "Unused 0x8e"
+msgstr "Ongebruikt 0x8e"
+
+msgid "Unused 0x8f"
+msgstr "Ongebruikt 0x8f"
+
+msgid "Unused 0x91"
+msgstr "Ongebruikt 0x91"
+
+msgid "Unused 0x92"
+msgstr "Ongebruikt 0x92"
+
+msgid "Unused 0x93"
+msgstr "Ongebruikt 0x93"
+
+msgid "Unused 0x94"
+msgstr "Ongebruikt 0x94"
+
 msgid "Unused 0xb2"
 msgstr "Ongebruikt 0xb2"
+
+msgid "Unused 0xc3"
+msgstr "Ongebruikt 0xc3"
+
+msgid "Unused 0xc7"
+msgstr "Ongebruikt 0xc7"
 
 #, python-format
 msgid ""
@@ -15694,6 +16042,9 @@ msgstr ""
 "Upgrade is bezig.\n"
 "Wacht tot uw %s %s weer is opgestart.\n"
 "Dit kan een paar minuten duren"
+
+msgid "Upgradeable"
+msgstr "Kan worden geupgradet"
 
 msgid "Upgrading"
 msgstr "Bezig met update"
@@ -15983,8 +16334,11 @@ msgstr "Voor geldige ONID/TSID kijk op www.lyngsat.com..."
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
+msgid "Varieta"
+msgstr "Variëteit"
+
 msgid "Variety"
-msgstr "variëteit"
+msgstr "Variëteit"
 
 msgid "Various"
 msgstr "Verschillende"
@@ -16028,6 +16382,9 @@ msgstr "ViX SWAP manager"
 msgid "ViX Script runner"
 msgstr "ViX Script runner"
 
+msgid "Viaggi"
+msgstr "Reizen"
+
 msgid "Video & Audio Settings"
 msgstr "Video- en audio-instellingen"
 
@@ -16039,10 +16396,6 @@ msgstr "Video PID"
 
 msgid "Video clipping"
 msgstr "Video clipping"
-
-#, python-format
-msgid "Video content: %ix%i%s %iHz"
-msgstr "Video inhoud: %ix%i%s %iHz"
 
 msgid "Video enhancement"
 msgstr "Videoverbeteringsinstelling"
@@ -16068,10 +16421,6 @@ msgstr ""
 
 msgid "Video mode selection."
 msgstr "Videomodus selectie."
-
-#, python-format
-msgid "Video mode: %s"
-msgstr "Videomodus: %s"
 
 msgid "Video output"
 msgstr "Video-output"
@@ -16299,6 +16648,9 @@ msgstr "Opnames afspelen"
 
 msgid "Water Sport"
 msgstr "Watersporten"
+
+msgid "Watersports"
+msgstr "Watersport"
 
 msgid "We advise flashing the new image to a regular MultiBoot slot and restoring a settings backup."
 msgstr "Wij adviseren het flashen van een nieuw image naar een MultiBoot slot en het herstellen van een instellingen back-up."
@@ -16688,6 +17040,12 @@ msgstr "Met deze optie kunt u systeemtaken in de extensielijst (onder de bauwe k
 
 msgid "Without popup"
 msgstr "Zonder pop-up"
+
+msgid "World Affairs"
+msgstr "Wereld zaken"
+
+msgid "World Cultures"
+msgstr "Wereld culturen"
 
 #, python-format
 msgid "Would you save the entered PIN %s persistent?"
@@ -17384,6 +17742,9 @@ msgstr "onderin"
 msgid "broadcasting/press"
 msgstr "omroep/pers"
 
+msgid "cable"
+msgstr "kabel"
+
 msgid "caid:"
 msgstr "caid:"
 
@@ -17514,7 +17875,7 @@ msgid "documentary (general)"
 msgstr "documentaire (algemeen)"
 
 msgid "dolby"
-msgstr "Dolby"
+msgstr "dolby"
 
 msgid "don't convert"
 msgstr "niet converteren"
@@ -17773,6 +18134,9 @@ msgstr "hops:"
 
 msgid "horizontal"
 msgstr "horizontaal"
+
+msgid "if set will display subservices else timers."
+msgstr "toont subkanalen of timers, afhankelijk van instelling"
 
 msgid "increase uphop by 1"
 msgstr "verhoog uphop met 1"
@@ -18041,11 +18405,11 @@ msgstr "op ALLEEN LEZEN medium."
 msgid "once"
 msgstr "éénmalig"
 
-msgid "only HD"
-msgstr "alleen HD"
-
 msgid "only when available"
 msgstr "alleen indien beschikbaar"
+
+msgid "opkg update"
+msgstr "opkg update"
 
 msgid "original"
 msgstr "origineel"
@@ -18380,6 +18744,9 @@ msgstr "template bestand"
 msgid "tennis/squash"
 msgstr "tennis/squash"
 
+msgid "terrestrial"
+msgstr "aards"
+
 msgid "this bouquet is protected by a parental control pin"
 msgstr "deze favorietenlijst is beveiligd met een kinderslot-pincode"
 
@@ -18580,6 +18947,13 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ "\n"
 #~ "Geavanceerde opties en instellingen."
 
+#~ msgid ""
+#~ "\n"
+#~ "After pressing OK, please wait!"
+#~ msgstr ""
+#~ "\n"
+#~ "Druk op OK en een ogenblik geduld!"
+
 #, python-format
 #~ msgid ""
 #~ "\n"
@@ -18724,11 +19098,53 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "100 MB/s"
 #~ msgstr "100 MB/s"
 
+#~ msgid "1080i"
+#~ msgstr "1080i"
+
+#~ msgid "1080p 24Hz"
+#~ msgstr "1080p 24Hz"
+
+#~ msgid "1080p 25Hz"
+#~ msgstr "1080p 25Hz"
+
+#~ msgid "1080p 30Hz"
+#~ msgstr "1080p 30Hz"
+
+#~ msgid "1080p 50Hz"
+#~ msgstr "1080p 50Hz"
+
+#~ msgid "1080p 60Hz"
+#~ msgstr "1080p 60Hz"
+
 #~ msgid "20 MB/s"
 #~ msgstr "20 MB/s"
 
+#~ msgid "2160p 24Hz"
+#~ msgstr "2160p 24Hz"
+
+#~ msgid "2160p 25Hz"
+#~ msgstr "2160p 25Hz"
+
+#~ msgid "2160p 30Hz"
+#~ msgstr "2160p 30Hz"
+
+#~ msgid "2160p 50Hz"
+#~ msgstr "2160p 50Hz"
+
+#~ msgid "2160p 60Hz"
+#~ msgstr "2160p 60Hz"
+
+#~ msgid "480p 24Hz"
+#~ msgstr "480p 24Hz"
+
 #~ msgid "50 MB/s"
 #~ msgstr "50 MB/s"
+
+#~ msgid "720p"
+#~ msgstr "720p"
+
+#~ msgid "720p 24Hz"
+#~ msgstr "720p 24Hz"
 
 #~ msgid "A search for available updates is currently in progress."
 #~ msgstr "Bezig met zoeken naar updates."
@@ -18757,8 +19173,14 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Advanced software plugin"
 #~ msgstr "Geavanceerde software plugin"
 
+#~ msgid "All resolutions"
+#~ msgstr "Alle resoluties"
+
 #~ msgid "Allow unstable (experimental) feeds"
 #~ msgstr "Accepteer onstabiele (experimentele) feeds"
+
+#~ msgid "Allows you to adjust the amount of time the resolution infomation display on screen."
+#~ msgstr "Stelt de tijdsduur in dat resolutie-informatie op het tv-scherm getoond wordt."
 
 #~ msgid "Allows you to tag your image backup to a box. (default is box name/type)"
 #~ msgstr "U kunt de naam van de image back-ups aanpassen (standaard is stb name/type)."
@@ -18802,6 +19224,12 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Author: "
 #~ msgstr "Auteur: "
 
+#~ msgid "Automatic resolution"
+#~ msgstr "Automatische resolutie"
+
+#~ msgid "Automatic resolution label"
+#~ msgstr "Automatische resolutieinfo"
+
 #~ msgid "Background delete option"
 #~ msgstr "Verwijder op de achtergrond"
 
@@ -18832,6 +19260,15 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Cannot reboot to deleted image"
 #~ msgstr "Kan niet rebooten naar een verwijderd image"
+
+#~ msgid "Change the Colordepth for UHD"
+#~ msgstr "Verander de kleurruimte voor UHD"
+
+#~ msgid "Change the Colorimetry for HDR"
+#~ msgstr "Verander de kleurruimte voor HDR"
+
+#~ msgid "Change the Colorspace from Auto to RGB"
+#~ msgstr "Verander de kleurruimte van Auto naar RGB"
 
 #~ msgid "Clear HDMI-CEC fixed address"
 #~ msgstr "Verwijder HDMI-CEC vaste adres"
@@ -18871,6 +19308,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Default settings"
 #~ msgstr "Standaard instellingen"
 
+#~ msgid "Delay time"
+#~ msgstr "Vertragingstijd"
+
 #~ msgid "Details for plugin: "
 #~ msgstr "Details voor plugin: "
 
@@ -18898,9 +19338,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Edit upgrade source url."
 #~ msgstr "Upgrade url bewerken."
-
-#~ msgid "Electronic Program Guide"
-#~ msgstr "Elektronische programmagids"
 
 #~ msgid "Enable Vu+ MultiBoot"
 #~ msgstr "Vu+ MultiBoot inschakelen"
@@ -18953,6 +19390,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Following tasks will be done after you press OK!"
 #~ msgstr "Nadat u op OK drukt worden de volgende taken uitgevoerd!"
 
+#~ msgid "Force de-interlace"
+#~ msgstr "Forceer de-interlace"
+
 #, fuzzy
 #~ msgid "G"
 #~ msgstr "GB"
@@ -19004,6 +19444,12 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #, fuzzy
 #~ msgid "IMDB Search"
 #~ msgstr "IMDb zoeken"
+
+#~ msgid "If enabled the output resolution of the box will try to match the resolution of the video content"
+#~ msgstr "Indien ingeschakeld zal getracht worden de output-resolutie van uw box overeen te laten komen met de resolutie van de video inhoud"
+
+#~ msgid "If enabled the video will always be de-interlaced."
+#~ msgstr "Indien ingeschakeld zal de video altijd worden gede-interlaced."
 
 #~ msgid "Init Vu+ MultiBoot"
 #~ msgstr "Init Vu+ MultiBoot"
@@ -19060,9 +19506,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "No data received yet"
 #~ msgstr "Nog geen data ontvangen"
-
-#~ msgid "No description available."
-#~ msgstr "Geen beschrijving beschikbaar."
 
 #~ msgid "No network connection available."
 #~ msgstr "Geen netwerkverbinding beschikbaar."
@@ -19170,6 +19613,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Recording and playback"
 #~ msgstr "Opname en afspelen"
 
+#~ msgid "Refresh list"
+#~ msgstr "Ververs lijst"
+
 #~ msgid "Reload"
 #~ msgstr "Herlaad"
 
@@ -19251,8 +19697,38 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Set pin code persistent"
 #~ msgstr "Make the PIN blijvend"
 
+#~ msgid "Set the time before checking video source for resolution/refresh rate infomation."
+#~ msgstr "Stel de tijd in voordat u de videobron op resolutie/verversingsfrequentie controleert."
+
 #~ msgid "Show /tmp/ecm.info"
 #~ msgstr "Toon /tmp/ecm.info"
+
+#~ msgid "Show 1080p 24fps as"
+#~ msgstr "Toon 1080p 24fps als"
+
+#~ msgid "Show 1080p 25fps as"
+#~ msgstr "Toon 1080p 25fps als"
+
+#~ msgid "Show 1080p 30fps as"
+#~ msgstr "Toon 1080p 30fps als"
+
+#~ msgid "Show 2160p 24fps as"
+#~ msgstr "Toon 2160p 24fps als"
+
+#~ msgid "Show 2160p 25fps as"
+#~ msgstr "Toon 2160p 25fps als"
+
+#~ msgid "Show 2160p 30fps as"
+#~ msgstr "Toon 2160p 30fps als"
+
+#~ msgid "Show 480/576p 24fps as"
+#~ msgstr "Toon480/576p 24fps als"
+
+#~ msgid "Show 720p 24fps as"
+#~ msgstr "Toon 720p 24fps als"
+
+#~ msgid "Show SD as"
+#~ msgstr "Toon SD als"
 
 #~ msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
 #~ msgstr "Toon de kanaalinformatie in twee regels in het kanaalselectiescherm. U kunt kiezen tussen de huidige programmabeschrijving onder de kanaalnaam of de huidige programmabeschrijving naast de kanaalnaam en het volgende programma de tweede regel."
@@ -19350,6 +19826,33 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "There are no updates available."
 #~ msgstr "Er zijn momenteel geen updates beschikbaar."
 
+#~ msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TVs support these resolutions)"
+#~ msgstr "Hier kunt u aangeven hoe 1080p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
+
+#~ msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TVs support these resolutions)"
+#~ msgstr "Hier kunt u aangeven hoe 1080p 25Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
+
+#~ msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TVs support these resolutions)"
+#~ msgstr "Hier kunt u aangeven hoe 1080p 30Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
+
+#~ msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TVs support these resolutions)"
+#~ msgstr "Hier kunt u aangeven hoe 2160p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
+
+#~ msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TVs support these resolutions)"
+#~ msgstr "Hier kunt u aangeven hoe 2160p 25Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
+
+#~ msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TVs support these resolutions)"
+#~ msgstr "Hier kunt u aangeven hoe 2160p 30Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
+
+#~ msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TVs support these resolutions)"
+#~ msgstr "Hier kunt u aangeven hoe 720p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
+
+#~ msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TV's support these resolutions)"
+#~ msgstr "Hier kunt u aangeven hoe SD progressief 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
+
+#~ msgid "This option allows you to choose how to display standard defintion video on your TV."
+#~ msgstr "Hier kunt u aangeven SD op uw TV moet worden weergegeven."
+
 #~ msgid "This option allows you to disable sorting of the menus"
 #~ msgstr "Hier kunt u het sorteren van menu's inschakelen"
 
@@ -19427,6 +19930,14 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #, python-format
 #~ msgid "ViX version: %s"
 #~ msgstr "ViX versie: %s"
+
+#, python-format
+#~ msgid "Video content: %ix%i%s %iHz"
+#~ msgstr "Video inhoud: %ix%i%s %iHz"
+
+#, python-format
+#~ msgid "Video mode: %s"
+#~ msgstr "Videomodus: %s"
 
 #~ msgid "View details"
 #~ msgstr "Bekijk details"
@@ -19581,6 +20092,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "n/A"
 #~ msgstr "NVT"
+
+#~ msgid "only HD"
+#~ msgstr "alleen HD"
 
 #~ msgid "packages selected."
 #~ msgstr "pakketten geselecteerd."
