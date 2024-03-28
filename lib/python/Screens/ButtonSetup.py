@@ -136,7 +136,6 @@ def getButtonSetupFunctions():
 	ButtonSetupFunctions.append((_("Show event details"), "Infobar/openEventView", "EPG"))
 	ButtonSetupFunctions.append((_("Show Single EPG"), "Infobar/openSingleServiceEPG", "EPG"))
 	ButtonSetupFunctions.append((_("Show Multi EPG"), "Infobar/openMultiServiceEPG", "EPG"))
-	ButtonSetupFunctions.append((_("Show Grid EPG"), "Infobar/openGridEPG", "EPG"))
 	ButtonSetupFunctions.append((_("Show select audio track"), "Infobar/audioSelection", "InfoBar"))
 	ButtonSetupFunctions.append((_("Show subtitle selection"), "Infobar/subtitleSelection", "InfoBar"))
 	ButtonSetupFunctions.append((_("Toggle default subtitles"), "Infobar/toggleDefaultSubtitles", "InfoBar"))
