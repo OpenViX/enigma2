@@ -165,5 +165,5 @@ class EventInfo(PerServiceBase, Source):
 			self.service = None
 			self.changed((self.CHANGED_CLEAR,))
 			return
-		self.service = ref
+		self.service = ref and ref.toString()
 		self.changed((self.CHANGED_ALL,))
