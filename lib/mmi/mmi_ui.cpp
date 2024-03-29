@@ -1,6 +1,7 @@
 #include <lib/mmi/mmi_ui.h>
 #include <lib/dvb_ci/dvbci_session.h> // for parseLengthField
 
+#include <regex>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -117,7 +118,7 @@ int eMMI_UI::processMMIData(int slot_id, const unsigned char *tag, const void *d
 			memcpy(str, ((unsigned char*)d), textlen);
 			str[textlen] = '\0';
 			std::string converted_str = convertDVBUTF8(str, textlen, -1, 1, 0);
-			if (converted_str == "error 10")
+			if (std::regex_match(converted_str, std::regex("^[^0-9]*\\s10")))
 				isError10 = true;
 			mmiScreenAddText(slot_id, pos++, (char*)converted_str.c_str());
 			eDebug("[eMMI_UI] %s", converted_str.c_str());

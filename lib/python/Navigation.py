@@ -38,6 +38,7 @@ class Navigation:
 		self.record_event = []
 		self.currentlyPlayingServiceReference = None
 		self.currentlyPlayingServiceOrGroup = None
+		self.originalPlayingServiceReference = None
 		self.currentlyPlayingService = None
 		self.currentServiceIsStreamRelay = False
 		self.skipServiceReferenceReset = False
@@ -243,7 +244,7 @@ class Navigation:
 		return self.currentlyPlayingServiceReference
 
 	def getCurrentlyPlayingServiceOrGroup(self):
-		return self.currentlyPlayingServiceOrGroup
+		return self.originalPlayingServiceReference or self.currentlyPlayingServiceOrGroup
 
 	def getCurrentServiceRef(self):
 		curPlayService = self.getCurrentService()
