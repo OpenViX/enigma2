@@ -3,7 +3,6 @@ from enigma import iPlayableService, iServiceInformation, eServiceReference, eEP
 from Components.PerServiceDisplay import PerServiceBase
 from Components.Element import cached
 from Components.Sources.Source import Source
-from Components.Converter.ServiceName import getRealServiceRef
 
 
 # Fake eServiceEvent to fill Event_Now and Event_Next in Infobar for Streams
@@ -166,5 +165,5 @@ class EventInfo(PerServiceBase, Source):
 			self.service = None
 			self.changed((self.CHANGED_CLEAR,))
 			return
-		self.service = getRealServiceRef(ref)
+		self.service = ref
 		self.changed((self.CHANGED_ALL,))
