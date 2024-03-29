@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from enigma import eServiceCenter, iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eEPGCache
+from enigma import iServiceInformation, iPlayableService, iPlayableServicePtr, eServiceReference, eEPGCache
 from Components.Converter.Converter import Converter
 from Components.config import config
 from ServiceReference import resolveAlternate
@@ -7,49 +7,6 @@ from Components.Element import cached
 from Tools.Directories import fileExists
 from Tools.Transponder import ConvertToHumanReadable
 from Session import SessionObject
-
-
-def getRealServiceRef(ref):
-	if isinstance(ref, eServiceReference):
-		service_ref_str = ref.toString()
-	else:
-		service_ref_str = ref
-	service_ref_cleaned = service_ref_str
-	if service_ref_str.find("127.0.0.1") > -1:  # ICAM SkyDE channels
-		service_ref_cleaned = service_ref_str.split("17999/")[1].split(":")[0].replace("%3a", ":")
-	return service_ref_cleaned
-
-
-def getCompareReference(ref):
-	splitted = ref.split(":")
-	compare_ref = ":".join(splitted[:11])
-	return compare_ref
-
-
-def getServiceNum(service, myRoot, isalternatenum=True):
-	channelnum = ""
-	markeroffset = 0
-	bouquetoffset = 0
-	serviceHandler = eServiceCenter.getInstance()
-	services = serviceHandler.list(eServiceReference('1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 22) || (type == 25) || (type == 134) || (type == 195) FROM BOUQUET "bouquets.tv" ORDER BY bouquet'))
-	bouquets = services and services.getContent("SN", True)
-	for bouquet in bouquets:
-		if not isalternatenum or eServiceReference(bouquet[0]) == myRoot:
-			services = serviceHandler.list(eServiceReference(bouquet[0]))
-			channels = services and services.getContent("SN", True)
-			for idx in range(1, len(channels) + 1):
-				if not channels[idx - 1][0].startswith("1:64:"):
-					if getRealServiceRef(service) == getRealServiceRef(channels[idx - 1][0]) or ":".join(getCompareReference(getRealServiceRef(service)).split(":")[:10]) == getCompareReference(":".join(getRealServiceRef(channels[idx - 1][0]).split(":")[:10])):
-						if isalternatenum:
-							channelnum = str(idx - markeroffset)
-						else:
-							channelnum = str(idx - markeroffset + bouquetoffset)
-						break
-				else:
-					markeroffset = markeroffset + 1
-			bouquetoffset = bouquetoffset + len(channels)
-	return channelnum
-
 
 class ServiceName(Converter):
 	NAME = 0
@@ -109,8 +66,7 @@ class ServiceName(Converter):
 				else:
 					return "%s - %s" % (name, act_event.getEventName())
 			elif self.type != self.NAME_ONLY and config.usage.show_infobar_channel_number.value and hasattr(self.source, "serviceref") and self.source.serviceref and '0:0:0:0:0:0:0:0:0' not in self.source.serviceref.toString():
-				numservice = self.source.serviceref
-				num = self.getNumber(numservice, info)
+				num = self.getNumber()
 				if num is not None:
 					return str(num) + '   ' + name
 				else:
@@ -151,8 +107,7 @@ class ServiceName(Converter):
 		elif self.type == self.FORMAT_STRING:
 			name = self.getName(service, info)
 			provider = self.getProvider(service, info)
-			numservice = hasattr(self.source, "serviceref") and self.source.serviceref
-			num = numservice and self.getNumber(numservice, info) or ""
+			num = self.getNumber()
 			orbpos, tp_data = self.getOrbitalPos(service, info)
 			tuner_system = service and info and self.getServiceSystem(service, info, tp_data)
 			res_str = ""
@@ -181,14 +136,9 @@ class ServiceName(Converter):
 			name = info.getName()
 		return name.replace('\xc2\x86', '').replace('\xc2\x87', '').replace('_', ' ')
 
-	def getNumber(self, ref, info):
-		from Screens.InfoBar import InfoBar
-		channelSelectionServicelist = InfoBar.instance and InfoBar.instance.servicelist
-		channelnum = ''
-		ref = ref or eServiceReference(info.getInfoString(iServiceInformation.sServiceref))
-		if channelSelectionServicelist and channelSelectionServicelist.inBouquet():
-			myRoot = channelSelectionServicelist.getRoot()
-			channelnum = getServiceNum(ref, myRoot, config.usage.alternative_number_mode.value)
+	def getNumber(self):
+		numservice = hasattr(self.source, "serviceref") and self.source.serviceref
+		channelnum = numservice and str(numservice.getChannelNum()) or ""
 		return channelnum
 
 	def getProvider(self, ref, info):
