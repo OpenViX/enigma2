@@ -188,7 +188,7 @@ class ServiceName(Converter):
 		ref = ref or eServiceReference(info.getInfoString(iServiceInformation.sServiceref))
 		if channelSelectionServicelist and channelSelectionServicelist.inBouquet():
 			myRoot = channelSelectionServicelist.getRoot()
-			channelnum = getServiceNum(ref, myRoot)
+			channelnum = getServiceNum(ref, myRoot, config.usage.alternative_number_mode.value)
 		return channelnum
 
 	def getProvider(self, ref, info):
