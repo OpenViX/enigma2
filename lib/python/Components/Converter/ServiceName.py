@@ -30,7 +30,7 @@ class ServiceName(Converter):
 			"NameAndEvent": self.NAME_EVENT,
 			"StreamUrl": self.STREAM_URL,
 			"Name": self.NAME}
-			
+
 		self.parts = [(arg.strip() if i or arg.strip() in self.KEYWORDS else arg) for i, arg in enumerate(type.split(","))]
 		if len(self.parts) > 1:
 			self.type = self.FORMAT_STRING
