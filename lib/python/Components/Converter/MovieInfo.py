@@ -56,14 +56,14 @@ class MovieInfo(Converter):
 
 		parse = ","
 		type.replace(";", parse)  # Some builds use ";" as a separator, most use ",".
-		args = [arg.strip() for arg in type.split(parse)]
+		args = [(arg.strip() if i or arg.strip() in self.KEYWORDS else arg) for i, arg in enumerate(type.split(parse))]
 
 		self.parts = args
-		if len(self.parts) > 1:
+		if len(self.parts) > 1 and self.parts[0] not in self.KEYWORDS:
 			self.type = self.FORMAT_STRING
 			self.separatorChar = self.parts[0]
 
-		if self.type != self.FORMAT_STRING:
+		else:
 			for arg in args:
 				name, value = self.KEYWORDS.get(arg, ("Error", None))
 				if name == "Error":

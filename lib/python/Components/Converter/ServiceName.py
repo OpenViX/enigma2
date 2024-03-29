@@ -22,25 +22,21 @@ class ServiceName(Converter):
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		self.epgQuery = eEPGCache.getInstance().lookupEventTime
-		self.parts = type.split(",")
+		self.KEYWORDS = {
+			"Provider": self.PROVIDER,
+			"Reference": self.REFERENCE,
+			"EditReference": self.EDITREFERENCE,
+			"NameOnly": self.NAME_ONLY,
+			"NameAndEvent": self.NAME_EVENT,
+			"StreamUrl": self.STREAM_URL,
+			"Name": self.NAME}
+			
+		self.parts = [(arg.strip() if i or arg.strip() in self.KEYWORDS else arg) for i, arg in enumerate(type.split(","))]
 		if len(self.parts) > 1:
 			self.type = self.FORMAT_STRING
 			self.separatorChar = self.parts[0]
 		else:
-			if type == "Provider":
-				self.type = self.PROVIDER
-			elif type == "Reference":
-				self.type = self.REFERENCE
-			elif type == "EditReference":
-				self.type = self.EDITREFERENCE
-			elif type == "NameOnly":
-				self.type = self.NAME_ONLY
-			elif type == "NameAndEvent":
-				self.type = self.NAME_EVENT
-			elif type == "StreamUrl":
-				self.type = self.STREAM_URL
-			else:
-				self.type = self.NAME
+			self.type = self.KEYWORDS.get(type, self.NAME)
 
 	@cached
 	def getText(self):
