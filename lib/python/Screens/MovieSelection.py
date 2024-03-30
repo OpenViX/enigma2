@@ -578,6 +578,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 		self.feedbackTimer = None
 		self.pathselectEnabled = False
+		self.shouldReload = False
 
 		self.numericalTextInput = NumericalTextInput.NumericalTextInput(mapping=NumericalTextInput.MAP_SEARCH_UPCASE)
 		self["chosenletter"] = Label("")
@@ -1099,8 +1100,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.show()
 		self.reloadList(self.selectedmovie, home=True)
 		del self.selectedmovie
-		if config.movielist.show_live_tv_in_movielist.value:
-			self.LivePlayTimer.start(100)
+		#if config.movielist.show_live_tv_in_movielist.value:
+		#	self.LivePlayTimer.start(100)
 
 	def hidewaitingtext(self):
 		self.hidewaitingTimer.stop()
@@ -1115,6 +1116,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			checkplaying = checkplaying.toString()
 		if checkplaying is None or (config.movielist.curentlyplayingservice.value != checkplaying and ':0:/' not in self.session.nav.getCurrentlyPlayingServiceReference().toString()):
 			self.session.nav.playService(eServiceReference(config.movielist.curentlyplayingservice.value))
+
 		self.LivePlayTimer.stop()
 
 	def getCurrent(self):
@@ -1580,9 +1582,9 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.saveconfig()
 		from Screens.InfoBar import InfoBar
 		infobar = InfoBar.instance
-		if self.session.nav.getCurrentlyPlayingServiceReference():
-			if not infobar.timeshiftEnabled() and ':0:/' not in self.session.nav.getCurrentlyPlayingServiceReference().toString():
-				self.session.nav.stopService()
+		#if self.session.nav.getCurrentlyPlayingServiceReference():
+			#if not infobar.timeshiftEnabled() and ':0:/' not in self.session.nav.getCurrentlyPlayingServiceReference().toString():
+			#	self.session.nav.stopService()
 		self.close(None)
 
 	def saveconfig(self):

@@ -1,6 +1,6 @@
 # shamelessly copied from pliExpertInfo (Vali, Mirakels, Littlesat)
 
-from enigma import iServiceInformation, iPlayableService
+from enigma import iServiceInformation, iPlayableService, eDVBCI_UI
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.config import config
@@ -8,8 +8,12 @@ from Tools.Transponder import ConvertToHumanReadable
 from Tools.GetEcmInfo import GetEcmInfo
 from Tools.Hex2strColor import Hex2strColor
 from Components.Converter.Poll import Poll
-from Tools.Directories import pathExists
 from skin import parameters
+from Tools.Directories import pathExists
+from Components.SystemInfo import SystemInfo
+
+dvbCIUI = eDVBCI_UI.getInstance()
+ecmdata = GetEcmInfo()
 
 caid_data = (
 	("0x100", "0x1ff", "Seca", "S", "SECA", True),
@@ -73,30 +77,54 @@ def addspace(text):
 
 
 def getCryptoInfo(info):
-	ecmdata = GetEcmInfo()
 	if info and info.getInfo(iServiceInformation.sIsCrypted) == 1:
 		data = ecmdata.getEcmData()
 		current_source = data[0]
 		current_caid = data[1]
 		current_provid = data[2]
 		current_ecmpid = data[3]
+		current_device = data[4]
 	else:
 		current_source = ""
+		current_device = ""
 		current_caid = "0"
 		current_provid = "0"
 		current_ecmpid = "0"
-	return current_source, current_caid, current_provid, current_ecmpid
+	return current_source, current_caid, current_provid, current_ecmpid, current_device
 
 
-def createCurrentCaidLabel(info):
-	current_source, current_caid, current_provid, current_ecmpid = getCryptoInfo(info)
-	res = "---"
-	if not pathExists("/tmp/ecm.info"):
+def createCurrentCaidLabel(info, currentCaid=None, currentDevice=None):
+	if currentCaid:
+		current_caid = currentCaid
+		current_device = currentDevice
+	else:
+		crypto_info = getCryptoInfo(info)
+		current_caid = crypto_info[1]
+		current_device = crypto_info[4]
+	res = ""
+	decodingCiSlot = -1
+	NUM_CI = SystemInfo["CommonInterface"]
+	if NUM_CI and NUM_CI > 0:
+		if dvbCIUI:
+			for slot in range(NUM_CI):
+				stateDecoding = dvbCIUI.getDecodingState(slot)
+				stateSlot = dvbCIUI.getState(slot)
+				if stateDecoding == 2 and stateSlot not in (-1, 0, 3):
+					decodingCiSlot = slot
+
+	if not pathExists("/tmp/ecm.info") and decodingCiSlot == -1:
 		return "FTA"
+
+	if decodingCiSlot > -1 and not pathExists("/tmp/ecm.info"):
+		return "CI%d" % (decodingCiSlot)
+
 	for caid_entry in caid_data:
 		if int(caid_entry[0], 16) <= int(current_caid, 16) <= int(caid_entry[1], 16):
 			res = caid_entry[4]
-	return res
+	if decodingCiSlot > -1:
+		return "CI%d + %s" % (decodingCiSlot, res)
+	device_str = ecmdata.createCurrentDevice(current_device, False)
+	return res + (("@" + device_str) if device_str else "")
 
 
 class PliExtraInfo(Poll, Converter, object):
@@ -242,11 +270,16 @@ class PliExtraInfo(Poll, Converter, object):
 			self.current_caid = data[1]
 			self.current_provid = data[2]
 			self.current_ecmpid = data[3]
+			self.current_device = data[4]
 		else:
 			self.current_source = ""
+			self.current_device = ""
 			self.current_caid = "0"
 			self.current_provid = "0"
 			self.current_ecmpid = "0"
+
+	def createCurrentCaidLabel(self, info):
+		return createCurrentCaidLabel(info, self.current_caid, self.current_device)
 
 	def createCryptoBar(self, info):
 		res = ""
@@ -271,16 +304,6 @@ class PliExtraInfo(Poll, Converter, object):
 				res += color + caid_entry[3]
 
 		res += Hex2strColor(colors[3])  # white (this acts like a color "reset" for following strings
-		return res
-
-	def createCurrentCaidLabel(self):
-		res = ""
-		if not pathExists("/tmp/ecm.info"):
-			return "FTA"
-		for caid_entry in caid_data:
-			if int(caid_entry[0], 16) <= int(self.current_caid, 16) <= int(caid_entry[1], 16):
-				res = caid_entry[4]
-
 		return res
 
 	def createCryptoSeca(self, info):
@@ -806,234 +829,242 @@ class PliExtraInfo(Poll, Converter, object):
 		return self.getTextByType(self.type)
 
 	def getTextByType(self, textType):
-		service = self.source.service
-		if service is None:
-			return ""
-		info = service and service.info()
+		try:
+			service = self.source.service
 
-		if not info:
-			return ""
-
-		if textType == "CurrentCrypto":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCurrentCaidLabel()
-			else:
+			if service is None and textType != "CurrentCrypto":
 				return ""
 
-		if textType == "CryptoBar":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoBar(info)
-			else:
+			info = service and service.info()
+
+			if not info and textType != "CurrentCrypto":
 				return ""
 
-		if textType == "CryptoSeca":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoSeca(info)
+			if textType == "CurrentCrypto":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCurrentCaidLabel()
+				else:
+					return ""
+
+			if textType == "CryptoBar":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoBar(info)
+				else:
+					return ""
+
+			if textType == "CryptoSeca":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoSeca(info)
+				else:
+					return ""
+
+			if textType == "CryptoVia":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoVia(info)
+				else:
+					return ""
+
+			if textType == "CryptoIrdeto":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoIrdeto(info)
+				else:
+					return ""
+
+			if textType == "CryptoNDS":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoNDS(info)
+				else:
+					return ""
+
+			if textType == "CryptoConax":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoConax(info)
+				else:
+					return ""
+
+			if textType == "CryptoCryptoW":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoCryptoW(info)
+				else:
+					return ""
+
+			if textType == "CryptoBeta":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoBeta(info)
+				else:
+					return ""
+
+			if textType == "CryptoNagra":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoNagra(info)
+				else:
+					return ""
+
+			if textType == "CryptoBiss":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoBiss(info)
+				else:
+					return ""
+
+			if textType == "CryptoDre":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoDre(info)
+				else:
+					return ""
+
+			if textType == "CryptoTandberg":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoTandberg(info)
+				else:
+					return ""
+
+			if textType == "CryptoSpecial":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoSpecial(info)
+				else:
+					return ""
+
+			if textType == "CryptoNameCaid":
+				if int(config.usage.show_cryptoinfo.value) > 0:
+					self.getCryptoInfo(info)
+					return self.createCryptoNameCaid(info)
+				else:
+					return ""
+
+			if textType == "ResolutionString":
+				return self.createResolution(info)
+
+			if textType == "VideoCodec":
+				return self.createVideoCodec(info)
+
+			if self.updateFEdata:
+				self.updateFEdata = False
+				feinfo = service.frontendInfo()
+				if feinfo:
+					self.feraw = feinfo.getAll(config.usage.infobar_frontend_source.value == "settings")
+					if self.feraw:
+						self.fedata = ConvertToHumanReadable(self.feraw)
+
+			feraw = self.feraw
+			if not feraw:
+				feraw = info.getInfoObject(iServiceInformation.sTransponderData)
+				fedata = ConvertToHumanReadable(feraw)
 			else:
+				fedata = self.fedata
+
+			if textType in self.info_fields:
+				return self.createInfoString(textType, fedata, feraw, info)
+
+			if textType == "PIDInfo":
+				return self.createPIDInfo(info)
+
+			if textType == "ServiceRef":
+				return self.createServiceRef(info)
+
+			if not feraw:
 				return ""
 
-		if textType == "CryptoVia":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoVia(info)
-			else:
-				return ""
+			if textType == "TransponderFrequency":
+				return self.createFrequency(feraw)
 
-		if textType == "CryptoIrdeto":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoIrdeto(info)
-			else:
-				return ""
+			if textType == "TransponderFrequencyMHz":
+				return self.createFrequency(fedata)
 
-		if textType == "CryptoNDS":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoNDS(info)
-			else:
-				return ""
+			if textType == "TransponderSymbolRate":
+				return self.createSymbolRate(fedata, feraw)
 
-		if textType == "CryptoConax":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoConax(info)
-			else:
-				return ""
+			if textType == "TransponderPolarization":
+				return self.createPolarization(fedata)
 
-		if textType == "CryptoCryptoW":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoCryptoW(info)
-			else:
-				return ""
+			if textType == "TransponderFEC":
+				return self.createFEC(fedata, feraw)
 
-		if textType == "CryptoBeta":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoBeta(info)
-			else:
-				return ""
+			if textType == "TransponderModulation":
+				return self.createModulation(fedata)
 
-		if textType == "CryptoNagra":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoNagra(info)
-			else:
-				return ""
+			if textType == "OrbitalPosition":
+				return self.createOrbPos(feraw)
 
-		if textType == "CryptoBiss":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoBiss(info)
-			else:
-				return ""
+			if textType == "TunerType":
+				return self.createTunerType(feraw)
 
-		if textType == "CryptoDre":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoDre(info)
-			else:
-				return ""
+			if textType == "TunerSystem":
+				return self.createTunerSystem(fedata)
 
-		if textType == "CryptoTandberg":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoTandberg(info)
-			else:
-				return ""
+			if self.type == "OrbitalPositionOrTunerSystem":
+				return self.createOrbPosOrTunerSystem(fedata, feraw)
 
-		if textType == "CryptoSpecial":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoSpecial(info)
-			else:
-				return ""
+			if textType == "TerrestrialChannelNumber":
+				return self.createChannelNumber(fedata, feraw)
 
-		if textType == "CryptoNameCaid":
-			if int(config.usage.show_cryptoinfo.value) > 0:
-				self.getCryptoInfo(info)
-				return self.createCryptoNameCaid(info)
-			else:
-				return ""
+			if textType == "TransponderInfoMisPls":
+				return self.createMisPls(fedata)
 
-		if textType == "ResolutionString":
-			return self.createResolution(info)
-
-		if textType == "VideoCodec":
-			return self.createVideoCodec(info)
-
-		if self.updateFEdata:
-			self.updateFEdata = False
-			feinfo = service.frontendInfo()
-			if feinfo:
-				self.feraw = feinfo.getAll(config.usage.infobar_frontend_source.value == "settings")
-				if self.feraw:
-					self.fedata = ConvertToHumanReadable(self.feraw)
-
-		feraw = self.feraw
-		if not feraw:
-			feraw = info.getInfoObject(iServiceInformation.sTransponderData)
-			fedata = ConvertToHumanReadable(feraw)
-		else:
-			fedata = self.fedata
-
-		if textType in self.info_fields:
-			return self.createInfoString(textType, fedata, feraw, info)
-
-		if textType == "PIDInfo":
-			return self.createPIDInfo(info)
-
-		if textType == "ServiceRef":
-			return self.createServiceRef(info)
-
-		if not feraw:
-			return ""
-
-		if textType == "TransponderFrequency":
-			return self.createFrequency(feraw)
-
-		if textType == "TransponderFrequencyMHz":
-			return self.createFrequency(fedata)
-
-		if textType == "TransponderSymbolRate":
-			return self.createSymbolRate(fedata, feraw)
-
-		if textType == "TransponderPolarization":
-			return self.createPolarization(fedata)
-
-		if textType == "TransponderFEC":
-			return self.createFEC(fedata, feraw)
-
-		if textType == "TransponderModulation":
-			return self.createModulation(fedata)
-
-		if textType == "OrbitalPosition":
-			return self.createOrbPos(feraw)
-
-		if textType == "TunerType":
-			return self.createTunerType(feraw)
-
-		if textType == "TunerSystem":
-			return self.createTunerSystem(fedata)
-
-		if self.type == "OrbitalPositionOrTunerSystem":
-			return self.createOrbPosOrTunerSystem(fedata, feraw)
-
-		if textType == "TerrestrialChannelNumber":
-			return self.createChannelNumber(fedata, feraw)
-
-		if textType == "TransponderInfoMisPls":
-			return self.createMisPls(fedata)
-
-		return _("?%s?") % textType
+			return _("?%s?") % textType
+		except:
+			return "FTA"
 
 	text = property(getText)
 
 	@cached
 	def getBool(self):
-		service = self.source.service
-		info = service and service.info()
+		try:
+			service = self.source.service
+			info = service and service.info()
 
-		if not info:
-			return False
+			if not info:
+				return False
 
-		request_caid = None
-		for x in self.ca_table:
-			if x[0] == self.type:
-				request_caid = x[1]
-				request_selected = x[2]
-				break
+			request_caid = None
+			for x in self.ca_table:
+				if x[0] == self.type:
+					request_caid = x[1]
+					request_selected = x[2]
+					break
 
-		if request_caid is None:
-			return False
+			if request_caid is None:
+				return False
 
-		if info.getInfo(iServiceInformation.sIsCrypted) != 1:
-			return False
+			if info.getInfo(iServiceInformation.sIsCrypted) != 1:
+				return False
 
-		data = self.ecmdata.getEcmData()
+			data = self.ecmdata.getEcmData()
 
-		if data is None:
-			return False
+			if data is None:
+				return False
 
-		current_caid = data[1]
+			current_caid = data[1]
 
-		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
+			available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
 
-		for caid_entry in caid_data:
-			if caid_entry[3] == request_caid:
-				if request_selected:
-					if int(caid_entry[0], 16) <= int(current_caid, 16) <= int(caid_entry[1], 16):
-						return True
-				else:  # request available
-					try:
-						for caid in available_caids:
-							if int(caid_entry[0], 16) <= caid <= int(caid_entry[1], 16):
-								return True
-					except:
-						pass
+			for caid_entry in caid_data:
+				if caid_entry[3] == request_caid:
+					if request_selected:
+						if int(caid_entry[0], 16) <= int(current_caid, 16) <= int(caid_entry[1], 16):
+							return True
+					else:  # request available
+						try:
+							for caid in available_caids:
+								if int(caid_entry[0], 16) <= caid <= int(caid_entry[1], 16):
+									return True
+						except:
+							pass
+		except:
+			pass
 
 		return False
 

@@ -447,9 +447,9 @@ class MovieList(GUIComponent):
 
 		if serviceref.flags & eServiceReference.isGroup:
 			# Collection
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconCollection, flags=BT_ALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(ih, self.itemHeight), png=self.iconCollection, flags=BT_ALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
 			if self.getCurrent() in self.markList:
-				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
+				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(ih, self.itemHeight), png=self.iconMarked))
 			res.append(MultiContentEntryText(pos=(self.spaceLeft + col0iconSize + space, 0), size=(width - 220, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
 			recordingCount = ngettext("%d Recording", "%d Recordings", data.collectionCount) % data.collectionCount
 			res.append(MultiContentEntryText(pos=(width - 220 - r, 0), size=(220, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=recordingCount))

@@ -1,9 +1,10 @@
-from enigma import iPlayableService
-
 from Components.config import config
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
+from enigma import iPlayableService, iPlayableServicePtr
 from Components.Element import cached, ElementError
+from time import localtime, strftime, time
+from Session import SessionObject
 
 
 class ServicePosition(Poll, Converter):
@@ -64,7 +65,9 @@ class ServicePosition(Poll, Converter):
 
 	def getSeek(self):
 		s = self.source.service
-		return s and s.seek()
+		if isinstance(s, iPlayableServicePtr):
+			return s and s.seek()
+		return None
 
 	@cached
 	def getPosition(self):
@@ -89,7 +92,7 @@ class ServicePosition(Poll, Converter):
 	@cached
 	def getCutlist(self):
 		service = self.source.service
-		cue = service and service.cueSheet()
+		cue = service and isinstance(service, iPlayableServicePtr) and service.cueSheet()
 		return cue and cue.getCutList()
 
 	@cached

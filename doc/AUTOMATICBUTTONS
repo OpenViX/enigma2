@@ -122,7 +122,7 @@ Superimpose texted over a coloured background (no graphic).
 Attributes:
   connection: comma separated list of the buttons this widget will control.
   pixmaps: comma separated list that contains "key_name" then a ":" then the path to the graphic to be used.
-  spacing: is the spacing between the text and the next button.
+  spacing: is the spacing between buttons.
 
 In "connection" and "pixmap" add the buttons you want this widget to display.
 

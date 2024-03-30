@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-02-28 19:12+0200\n"
+"PO-Revision-Date: 2024-03-29 21:30+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2982,6 +2982,9 @@ msgstr "CaID: "
 
 msgid "Cable"
 msgstr "Kaapeli (DVB-C)"
+
+msgid "cable"
+msgstr "kaapeli (DVB-C)"
 
 msgid "Cable Scan"
 msgstr "Kaapeliverkon haku"
@@ -7011,8 +7014,8 @@ msgstr "'Kyllä' valinnalla suosikit näytetään joka kerta kun avaat EPG:n."
 msgid "If set to 'yes' the channel list will be shown after switching between radio and TV modes."
 msgstr "'Kyllä' valinnalla kanavalista näytetään, kun vaihdetaan radio- ja TV-tilojen välillä."
 
-msgid "If set to 'yes' the channel number will be displayed in the infobar."
-msgstr "'Kyllä' valinnalla kanavanumero näytetään tietopalkissa."
+msgid "If set to 'yes' the channel number will be displayed in the infobar and some other places (when supported by the skin)."
+msgstr "'Kyllä' valinnalla kanavanumero näytetään tietopalkissa ja joissakin muissa paikoissa (kun teema sitä tukee)."
 
 msgid "If set to 'yes' the infobar will be displayed when a new event starts."
 msgstr "'Kyllä' valinnalla tietopalkki näytetään, kun uusi ohjelma alkaa."
@@ -7201,7 +7204,7 @@ msgid "Infobar EPG"
 msgstr "Tietopalkki-ohjelmaopas"
 
 msgid "Infobar EPG activation"
-msgstr "Tietopalkki-ohjelmaopppan aktivointi"
+msgstr "Tietopalkki-ohjelmaoppaan aktivointi"
 
 msgid "Infobar Grid EPG"
 msgstr "Tietopalkin taulukko-ohjelmaopas"
@@ -13543,7 +13546,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 28.02.2024 ---\n"
+"--- 29.03.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -13633,6 +13636,9 @@ msgstr "Tennis"
 
 msgid "Terrestrial"
 msgstr "Antennivastaanotto"
+
+msgid "terrestrial"
+msgstr "antenni (DVB-T)"
 
 msgid "Test DiSEqC settings"
 msgstr "Testaa DiSEqC-asetukset"
@@ -19378,3 +19384,27 @@ msgstr "Näytä käytettävissä olevat alipalvelut"
 
 msgid "if set will display subservices else timers."
 msgstr "Jos asetettu näyttää alipalvelut muutoin ajastimet."
+
+msgid "Card reader 1"
+msgstr "Kortinlukija 1"
+
+msgid "Card reader 2"
+msgstr "Kortinlukija 2"
+
+msgid "USB reader 1"
+msgstr "USB-lukija 1"
+
+msgid "USB reader 2"
+msgstr "USB-lukija 2"
+
+msgid "USB reader 3"
+msgstr "USB-lukija 3"
+
+msgid "USB reader 4"
+msgstr "USB-lukija 4"
+
+msgid "USB reader 5"
+msgstr "USB-lukija 5"
+
+msgid "Hide and confirm invalid key message"
+msgstr "Piilota ja vahvista virheellinen avainviesti"

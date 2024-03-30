@@ -6,6 +6,7 @@
 #include <lib/dvb_ci/aes_xcbc_mac.h>
 #include <lib/dvb_ci/descrambler.h>
 #include <lib/dvb_ci/dvbci_ccmgr_helper.h>
+#include <lib/dvb_ci/dvbci_ui.h>
 
 #include <openssl/aes.h>
 
@@ -120,6 +121,9 @@ void eDVBCICcSession::send(const unsigned char *tag, const void *data, int len)
 
 void eDVBCICcSession::addProgram(uint16_t program_number, std::vector<uint16_t>& pids)
 {
+	// add program means probably decoding on this slot is about to begin. So mark this slot as ready for descramble
+	eDVBCI_UI::getInstance()->setDecodingState(m_slot->getSlotID(), 1);
+	
 	// first open ca device and set descrambler key if it's not set yet
 	set_descrambler_key();
 
@@ -130,6 +134,7 @@ void eDVBCICcSession::addProgram(uint16_t program_number, std::vector<uint16_t>&
 
 	for (std::vector<uint16_t>::iterator it = pids.begin(); it != pids.end(); ++it)
 		descrambler_set_pid(m_descrambler_fd, m_slot->getSlotID(), 1, *it);
+
 }
 
 void eDVBCICcSession::removeProgram(uint16_t program_number, std::vector<uint16_t>& pids)
@@ -141,6 +146,9 @@ void eDVBCICcSession::removeProgram(uint16_t program_number, std::vector<uint16_
 
 	for (std::vector<uint16_t>::iterator it = pids.begin(); it != pids.end(); ++it)
 		descrambler_set_pid(m_descrambler_fd, m_slot->getSlotID(), 0, *it);
+
+	// removing program means probably decoding on this slot is ending. So mark this slot as not descrambling
+	eDVBCI_UI::getInstance()->setDecodingState(m_slot->getSlotID(), 0);
 }
 
 void eDVBCICcSession::cc_open_req()

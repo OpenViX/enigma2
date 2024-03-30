@@ -98,11 +98,16 @@ class StreamRelaySetup(Setup):
 
 	def formatOrbPos(self, sref):
 		orbpos = self.getOrbPos(sref)
-		if isinstance(orbpos, int) and 1 <= orbpos <= 3600:  # sanity
-			if orbpos > 1800:
-				return str((float(3600 - orbpos)) / 10.0) + "\xb0" + "W"
-			else:
-				return str((float(orbpos)) / 10.0) + "\xb0" + "E"
+		if isinstance(orbpos, int):
+			if 1 <= orbpos <= 3600:  # sanity
+				if orbpos > 1800:
+					return str((float(3600 - orbpos)) / 10.0) + "\xb0" + "W"
+				else:
+					return str((float(orbpos)) / 10.0) + "\xb0" + "E"
+			elif orbpos == 0xEEEE:
+				return _("terrestrial")
+			elif orbpos == 0xFFFF:
+				return _("cable")
 		return ""
 
 	def sort(self, item):

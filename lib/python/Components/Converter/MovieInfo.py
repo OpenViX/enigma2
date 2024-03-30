@@ -29,7 +29,7 @@ class MovieInfo(Converter):
 	MOVIE_REC_FILESIZE = 4  # filesize of recording
 	MOVIE_FULL_DESCRIPTION = 5  # combination of short and long description when available
 	MOVIE_NAME = 6  # recording name
-	FORMAT_STRING = 6  # it is formatted string based on parameter and with defined separator
+	FORMAT_STRING = 7  # it is formatted string based on parameter and with defined separator
 
 	KEYWORDS = {
 		# Arguments...
@@ -56,14 +56,14 @@ class MovieInfo(Converter):
 
 		parse = ","
 		type.replace(";", parse)  # Some builds use ";" as a separator, most use ",".
-		args = [arg.strip() for arg in type.split(parse)]
+		args = [(arg.strip() if i or arg.strip() in self.KEYWORDS else arg) for i, arg in enumerate(type.split(parse))]
 
 		self.parts = args
-		if len(self.parts) > 1:
+		if len(self.parts) > 1 and self.parts[0] not in self.KEYWORDS:
 			self.type = self.FORMAT_STRING
 			self.separatorChar = self.parts[0]
 
-		if self.type != self.FORMAT_STRING:
+		else:
 			for arg in args:
 				name, value = self.KEYWORDS.get(arg, ("Error", None))
 				if name == "Error":

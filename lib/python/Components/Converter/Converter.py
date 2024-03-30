@@ -17,5 +17,5 @@ class Converter(Element):
 		if text == "":
 			text = part
 		else:
-			text = f"{text} {self.separatorChar} {part}"
+			text = f"{text}{self.separatorChar or " "}{part}"
 		return text

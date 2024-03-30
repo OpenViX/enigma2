@@ -52,7 +52,6 @@ from RecordTimer import RecordTimerEntry, parseEvent, AFTEREVENT, findSafeRecord
 from Tools import Notifications
 from Tools.Directories import pathExists, fileExists
 from Tools.KeyBindings import getKeyDescription, getKeyBindingKeys
-from Tools.General import isIPTV
 
 import NavigationInstance
 
@@ -252,17 +251,16 @@ def getPossibleSubservicesForCurrentChannel(current_service):
 
 
 def getActiveSubservicesForCurrentChannel(service):
-	info = service and service.info()
-	sRef = info and info.getInfoString(iServiceInformation.sServiceref)
-	url = "http://%s:%s/" % (config.misc.softcam_streamrelay_url.getHTML(), config.misc.softcam_streamrelay_port.value)
-	splittedRef = sRef.split(url.replace(":", "%3a"))
-	if len(splittedRef) > 1:
-		sRef = splittedRef[1].split(":")[0].replace("%3a", ":")
-	current_service = ':'.join(sRef.split(':')[:11])
-	if info:
+	activeSubservices = []
+	if info := service and service.info():
+		sRef = info.getInfoString(iServiceInformation.sServiceref)
+		url = "http://%s:%s/" % (config.misc.softcam_streamrelay_url.getHTML(), config.misc.softcam_streamrelay_port.value)
+		splittedRef = sRef.split(url.replace(":", "%3a"))
+		if len(splittedRef) > 1:
+			sRef = splittedRef[1].split(":")[0].replace("%3a", ":")
+		current_service = ':'.join(sRef.split(':')[:11])
 		if current_service:
 			possibleSubservices = getPossibleSubservicesForCurrentChannel(current_service)
-			activeSubservices = []
 			epgCache = eEPGCache.getInstance()
 			for subservice in possibleSubservices:
 				events = epgCache.lookupEvent(['BDTS', (subservice, 0, -1)])
@@ -984,9 +982,9 @@ class InfoBarShowHide(InfoBarScreenSaver):
 
 	def avChange(self):
 		service = self.session.nav.getCurrentService()
-		ref_p = self.session.nav.getCurrentlyPlayingServiceReference()
-		isStream = isIPTV(ref_p)
-		x = ref_p and ref_p.toString().split(":")
+		ref_p = self.session.nav.getCurrentServiceRef()
+		isStream = ref_p and ref_p.find("%3a//") > -1
+		x = ref_p and ref_p.split(":")
 		x_play = x and ":".join(x[:10]) or ""
 		if isStream:
 			try:
@@ -1323,6 +1321,7 @@ class InfoBarChannelSelection:
 		self.servicelist = self.session.instantiateDialog(ChannelSelection)
 		self.servicelist2 = self.session.instantiateDialog(PiPZapSelection)
 		self.tscallback = None
+		self.servicelist.onZapping.append(self.serviceStarted)
 
 		self["ChannelSelectActions"] = HelpableActionMap(self, "InfobarChannelSelection",
 			{
@@ -1345,6 +1344,9 @@ class InfoBarChannelSelection:
 				"ChannelMinusPressedLong": (self.zapUpPip, _("Switch the PiP to the previous channel")),
 			}, description=_("Channel selection"))
 		self.onClose.append(self.__onClose)
+
+	def newService(self, ref):
+		self["Service"].newService(ref)
 
 	def __onClose(self):
 		if self.servicelist:
@@ -3836,7 +3838,7 @@ class VideoMode(Screen):
 
 		self["actions"] = NumberActionMap(["InfobarVmodeButtonActions"],
 			{
-			"vmodeSelection": self.selectVMode
+				"vmodeSelection": self.selectVMode
 			})  # noqa: E123
 
 		self.Timer = eTimer()

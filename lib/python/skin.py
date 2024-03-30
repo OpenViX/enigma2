@@ -370,9 +370,9 @@ def parseParameter(s):
 		return colors[s].argb()
 	elif s.find(";") != -1:  # Font.
 		font, size = [x.strip() for x in s.split(";", 1)]
-		return [font, int(size)]
+		return [font, parseScale(size)]
 	else:  # Integer.
-		return int(s)
+		return parseScale(s)
 
 
 def parseScale(s):
@@ -946,9 +946,9 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 		for alias in tag.findall("alias"):
 			name = alias.attrib.get("name")
 			font = alias.attrib.get("font")
-			size = int(alias.attrib.get("size"))
-			height = int(alias.attrib.get("height", size))  # To be calculated some day.
-			width = int(alias.attrib.get("width", size))  # To be calculated some day.
+			size = parseScale(alias.attrib.get("size"))
+			height = parseScale(alias.attrib.get("height", size))  # To be calculated some day.
+			width = parseScale(alias.attrib.get("width", size))  # To be calculated some day.
 			if name and font and size:
 				fonts[name] = (font, size, height, width)
 				# print("[Skin] Add font alias: name='%s', font='%s', size=%d, height=%s, width=%d." % (name, font, size, height, width))
@@ -1285,10 +1285,11 @@ def readSkin(screen, skin, names, desktop):
 					raise SkinError("For connection '%s' a renderer must be defined with a 'render=' attribute" % wconnection)
 			for converter in widget.findall("convert"):
 				ctype = converter.get("type")
+				nostrip = converter.get("nostrip") and converter.get("nostrip").lower() in ("1", "enabled", "nostrip", "on", "true", "yes")
 				assert ctype, "[Skin] The 'convert' tag needs a 'type' attribute!"
 				# print("[Skin] DEBUG: Converter='%s'." % ctype)
 				try:
-					parms = converter.text.strip()
+					parms = converter.text if nostrip else converter.text.strip()
 				except Exception:
 					parms = ""
 				# print("[Skin] DEBUG: Params='%s'." % parms)

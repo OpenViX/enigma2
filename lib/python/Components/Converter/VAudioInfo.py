@@ -1,4 +1,4 @@
-from enigma import iPlayableService
+from enigma import iPlayableService, iPlayableServicePtr
 
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
@@ -90,7 +90,7 @@ class VAudioInfo(Poll, Converter, object):
 
 	def getAudio(self):
 		service = self.source.service
-		audio = service.audioTracks()
+		audio = isinstance(service, iPlayableServicePtr) and service.audioTracks()
 		if audio:
 			self.current_track = audio.getCurrentTrack()
 			self.number_of_tracks = audio.getNumberOfTracks()

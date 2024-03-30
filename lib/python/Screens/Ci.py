@@ -45,6 +45,7 @@ def InitCiConfig():
 			config.ci[slot].use_static_pin = ConfigYesNo(default=True)
 			config.ci[slot].static_pin = ConfigPIN(default=0)
 			config.ci[slot].show_ci_messages = ConfigYesNo(default=True)
+			config.ci[slot].supress_error10_message = ConfigYesNo(default=False)
 			if SystemInfo["CI%dSupportsHighBitrates" % slot]:
 				with open("/proc/stb/tsmux/ci%d_tsclk_choices" % slot) as fd:
 					procChoices = fd.read().strip()
@@ -330,6 +331,7 @@ class CiMessageHandler:
 		self.auto_close = False
 		self.ci = {}
 		self.dlgs = {}
+		self.err10supressed = False
 		eDVBCI_UI.getInstance().ciStateChanged.get().append(self.ciStateChanged)
 
 	def setSession(self, session):
@@ -348,6 +350,11 @@ class CiMessageHandler:
 					if config.ci[slot].show_ci_messages.value:
 						show_ui = True
 					screen_data = handler.getMMIScreen(slot)
+					if handler.isError10(slot) and config.ci[slot].supress_error10_message.value:
+						if not self.err10supressed:
+							self.err10supressed = True
+							handler.answerMenu(slot, 0)
+						show_ui = False
 					if config.ci[slot].use_static_pin.value:
 						if screen_data is not None and len(screen_data):
 							ci_tag = screen_data[0][0]
@@ -471,6 +478,7 @@ class CiSelection(Screen):
 		self.list.append((_("Enter persistent PIN code"), ConfigNothing(), 5, slot))
 		self.list.append((_("Reset persistent PIN code"), ConfigNothing(), 6, slot))
 		self.list.append(getConfigListEntry(_("Show CI messages"), config.ci[slot].show_ci_messages, 3, slot))
+		self.list.append(getConfigListEntry(_("Hide and confirm invalid key message"), config.ci[slot].supress_error10_message, 3, slot))
 		self.list.append(getConfigListEntry(_("Multiple service support"), config.ci[slot].canDescrambleMultipleServices, 3, slot))
 		if SystemInfo["CI%dSupportsHighBitrates" % slot]:
 			self.list.append(getConfigListEntry(_("High bitrate support"), config.ci[slot].highBitrate))

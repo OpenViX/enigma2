@@ -315,7 +315,7 @@ class RemoteControlType(ConfigListScreen, Screen):
 
 	def getDefaultRcType(self):
 		boxtype = SystemInfo["model"]
-		procBoxtype = iRcTypeControl.SystemInfo["boxtype"]
+		procBoxtype = iRcTypeControl.getBoxType()
 		print("[InputDevice] procBoxtype = %s, self.boxType = %s" % (procBoxtype, boxtype))
 		for x in self.defaultRcList:
 			if x[0] in boxtype or x[0] in procBoxtype:
