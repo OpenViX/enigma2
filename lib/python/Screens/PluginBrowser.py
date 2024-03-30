@@ -321,7 +321,7 @@ class PluginDownloadBrowser(Screen):
 			"ok": self.go,
 			"back": self.requestClose,
 		})
-		self["PluginDownloadActions"] = ActionMap(["ColorActions"],	{"red": self.delete} if self.type == self.DOWNLOAD else {"green": self.download})
+		self["PluginDownloadActions"] = ActionMap(["ColorActions"], {"red": self.delete} if self.type == self.DOWNLOAD else {"green": self.download})
 		if path.isfile('/usr/bin/opkg'):
 			self.ipkg = '/usr/bin/opkg'
 			self.ipkg_install = self.ipkg + ' install'
