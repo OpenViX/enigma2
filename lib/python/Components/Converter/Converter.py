@@ -14,8 +14,4 @@ class Converter(Element):
 		self.source.handleCommand(cmd)
 
 	def appendToStringWithSeparator(self, text, part):
-		if text == "":
-			text = part
-		else:
-			text = f"{text}{self.separatorChar or " "}{part}"
-		return text
+		return f"{text}{self.separatorChar or ' '}{part}" if text else part
