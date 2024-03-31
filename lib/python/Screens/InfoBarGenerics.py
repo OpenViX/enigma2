@@ -695,11 +695,6 @@ class InfoBarShowHide(InfoBarScreenSaver):
 		if isStandardInfoBar(self):
 			self.secondInfoBarScreen = self.session.instantiateDialog(SecondInfoBar)
 			self.secondInfoBarScreen.show()
-			self.secondInfoBarScreen.onShow.append(self.__SecondInfobarOnShow)
-			self.secondInfoBarScreen.onHide.append(self.__SecondInfobarOnHide)
-
-		self.InfobarPluginScreens = [self.session.instantiateDialog(plugin) for plugin in plugins.getPlugins(where=PluginDescriptor.WHERE_INFOBAR_SCREEN)]
-		self.SecondInfobarPluginScreens = [self.session.instantiateDialog(plugin) for plugin in plugins.getPlugins(where=PluginDescriptor.WHERE_SECONDINFOBAR_SCREEN)]
 
 		from Screens.InfoBar import InfoBar
 		InfoBarInstance = InfoBar.instance
@@ -732,8 +727,6 @@ class InfoBarShowHide(InfoBarScreenSaver):
 		self.__state = self.STATE_SHOWN
 		for x in self.onShowHideNotifiers:
 			x(True)
-		for PluginScreen in self.InfobarPluginScreens:
-			PluginScreen.show()
 		self.startHideTimer()
 		VolumeControl.instance and VolumeControl.instance.showMute()
 
@@ -764,18 +757,6 @@ class InfoBarShowHide(InfoBarScreenSaver):
 		self.resetAlpha()
 		for x in self.onShowHideNotifiers:
 			x(False)
-		for PluginScreen in self.InfobarPluginScreens:
-			PluginScreen.hide()
-
-	def __SecondInfobarOnShow(self):
-		for PluginScreen in self.InfobarPluginScreens:
-			PluginScreen.hide()
-		for PluginScreen in self.SecondInfobarPluginScreens:
-			PluginScreen.show()
-
-	def __SecondInfobarOnHide(self):
-		for PluginScreen in self.SecondInfobarPluginScreens:
-			PluginScreen.hide()
 
 	def resetAlpha(self):
 		if config.usage.show_infobar_do_dimming.value and self.lastResetAlpha is False:
