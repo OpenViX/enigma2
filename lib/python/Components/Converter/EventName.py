@@ -231,7 +231,7 @@ class EventName(Converter):
 
 		if len(self.parts) > 1 and self.parts[0] not in self.KEYWORDS:
 			self.type = self.FORMAT_STRING
-			self.separatorChar = self.parts[0]
+			self.separator = self.parts[0]
 		else:
 			for arg in args:
 				name, value = self.KEYWORDS.get(arg, ("Error", None))
