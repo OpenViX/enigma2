@@ -1100,8 +1100,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.show()
 		self.reloadList(self.selectedmovie, home=True)
 		del self.selectedmovie
-		# if config.movielist.show_live_tv_in_movielist.value:
-		# 	self.LivePlayTimer.start(100)
+		if config.movielist.show_live_tv_in_movielist.value:
+			self.LivePlayTimer.start(100)
 
 	def hidewaitingtext(self):
 		self.hidewaitingTimer.stop()
