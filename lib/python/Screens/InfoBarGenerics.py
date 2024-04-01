@@ -64,7 +64,7 @@ from os import listdir, path as ospath
 from sys import maxsize
 import itertools
 import datetime
-from pickle import load as pickle_load, dump as pickle_dump, HIGHEST_PROTOCOL as pickle_HIGHEST_PROTOCOL
+from pickle import load as pickle_load, loads as pickle_loads, dump as pickle_dump, HIGHEST_PROTOCOL as pickle_HIGHEST_PROTOCOL
 from gettext import dgettext
 from re import match
 
@@ -998,10 +998,10 @@ class InfoBarShowHide(InfoBarScreenSaver):
 					audio_pid = None
 					if av_val.find("|") > -1:
 						split = av_val.split("|")
-						audio_pid = pickle_load(split[0].encode())
-						subs_pid = pickle_load(split[1].encode())
+						audio_pid = pickle_loads(split[0].encode())
+						subs_pid = pickle_loads(split[1].encode())
 					elif av_val and av_val != "":
-						audio_pid = pickle_load(av_val.encode())
+						audio_pid = pickle_loads(av_val.encode())
 					audio = service and service.audioTracks()
 					playinga_idx = audio and audio.getCurrentTrack()
 					if audio_pid and audio_pid != -1 and playinga_idx != audio_pid:
