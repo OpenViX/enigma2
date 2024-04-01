@@ -1577,6 +1577,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			return
 
 		self.saveconfig()
+		# This is commented out because we don't see any obvious reason for stopping the service on exit
 		# from Screens.InfoBar import InfoBar
 		# infobar = InfoBar.instance
 		# if self.session.nav.getCurrentlyPlayingServiceReference():
