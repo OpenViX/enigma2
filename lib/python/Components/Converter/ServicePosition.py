@@ -1,10 +1,9 @@
+from enigma import iPlayableService, iPlayableServicePtr
+
 from Components.config import config
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
-from enigma import iPlayableService, iPlayableServicePtr
 from Components.Element import cached, ElementError
-from time import localtime, strftime, time
-from Session import SessionObject
 
 
 class ServicePosition(Poll, Converter):

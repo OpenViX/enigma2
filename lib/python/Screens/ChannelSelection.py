@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from os import listdir, rename, remove, path as os_path
 import re
-from time import localtime, time, strftime
+from time import localtime, strftime, time
 
 from enigma import eActionMap, eServiceReference, eEPGCache, eServiceCenter, eRCInput, eTimer, ePoint, eDVBDB, iPlayableService, iServiceInformation, getPrevAsciiCode, eDVBLocalTimeHandler
 
@@ -47,7 +47,6 @@ from Tools.LoadPixmap import LoadPixmap
 import Tools.Notifications
 from Tools.NumericalTextInput import NumericalTextInput
 import Tools.Transponder
-from time import time
 
 
 try:

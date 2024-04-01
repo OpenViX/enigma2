@@ -251,7 +251,7 @@ class PluginBrowser(Screen, ProtectedScreen):
 		self.firsttime = False
 
 	def PluginDownloadBrowserClosed(self, returnValue):
-		if returnValue == None:
+		if returnValue is None:
 			self.updateList()
 			self.checkWarnings()
 		elif returnValue == 0:
