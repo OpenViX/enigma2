@@ -1115,7 +1115,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		if checkplaying:
 			checkplaying = checkplaying.toString()
 		if checkplaying is None or (config.movielist.curentlyplayingservice.value != checkplaying and ':0:/' not in self.session.nav.getCurrentlyPlayingServiceReference().toString()):
-			self.session.nav.playService(eServiceReference(config.movielist.curentlyplayingservice.value))
+			self.session.nav.playService(eServiceReference(config.movielist.curentlyplayingservice.value), forceRestart=True)
 
 		self.LivePlayTimer.stop()
 
