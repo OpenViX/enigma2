@@ -1100,8 +1100,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self.show()
 		self.reloadList(self.selectedmovie, home=True)
 		del self.selectedmovie
-		#if config.movielist.show_live_tv_in_movielist.value:
-		#	self.LivePlayTimer.start(100)
+		# if config.movielist.show_live_tv_in_movielist.value:
+		# 	self.LivePlayTimer.start(100)
 
 	def hidewaitingtext(self):
 		self.hidewaitingTimer.stop()
@@ -1580,11 +1580,11 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			return
 
 		self.saveconfig()
-		from Screens.InfoBar import InfoBar
-		infobar = InfoBar.instance
-		#if self.session.nav.getCurrentlyPlayingServiceReference():
-			#if not infobar.timeshiftEnabled() and ':0:/' not in self.session.nav.getCurrentlyPlayingServiceReference().toString():
-			#	self.session.nav.stopService()
+		# from Screens.InfoBar import InfoBar
+		# infobar = InfoBar.instance
+		# if self.session.nav.getCurrentlyPlayingServiceReference():
+		# 	if not infobar.timeshiftEnabled() and ':0:/' not in self.session.nav.getCurrentlyPlayingServiceReference().toString():
+		# 	self.session.nav.stopService()
 		self.close(None)
 
 	def saveconfig(self):
