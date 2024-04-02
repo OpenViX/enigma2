@@ -436,7 +436,7 @@ class MovieList(GUIComponent):
 		dateWidth = self.dateWidth
 		if not config.movielist.use_fuzzy_dates.value:
 			dateWidth += 30
-		
+
 		ih = self.itemHeight
 		iconSize = ih
 		if switch == 'p':
