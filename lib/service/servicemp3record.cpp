@@ -81,7 +81,7 @@ RESULT eServiceMP3Record::prepare(const char *filename, time_t begTime, time_t e
 			if (!ret)
 			{
 				std::string fname = m_filename;
-				fname.erase(fname.length()-6, 6);
+				fname.erase(fname.length()-2, 2);
 				fname += "eit";
 				eEPGCache::getInstance()->saveEventToFile(fname.c_str(), m_ref, eit_event_id, begTime, endTime);
 			}
@@ -255,23 +255,23 @@ void eServiceMP3Record::restartRecordingFromEos()
 
 	std::string oldFilename = m_filename;
 	eDebug("[eMP3ServiceRecordMod] current filename=%s", oldFilename.c_str());
-	m_filename = m_filename.replace(m_filename.find(".ts"),7,"_001.ts");
+	m_filename = m_filename.replace(m_filename.find(".ts"),3,"_001.ts");
 	eDebug("[eMP3ServiceRecordMod] new filename=%s", m_filename.c_str());
 
 	m_state = stateIdle;
 	start(false);
 
 	//copy eit
-	std::string cureit = oldFilename.replace(oldFilename.find(".ts"),7,".eit");
-	std::string neweit = m_filename.replace(m_filename.find(".ts"),7,".eit");
+	std::string cureit = oldFilename.replace(oldFilename.find(".ts"),3,".tseit");
+	std::string neweit = m_filename.replace(m_filename.find(".ts"),3,".tseit");
 	std::ifstream srceit(cureit.c_str(), std::ios::binary);
 	std::ofstream dsteit(neweit.c_str(), std::ios::binary);
 	dsteit << srceit.rdbuf();
 	eDebug("[eMP3ServiceRecordMod] copied eit");
 
 	//copy meta
-	std::string curmeta = oldFilename.replace(oldFilename.find(".ts"),7,".ts.meta");
-	std::string newmeta = m_filename.replace(m_filename.find(".ts"),7,".ts.meta");
+	std::string curmeta = oldFilename.replace(oldFilename.find(".ts"),3,".ts.meta");
+	std::string newmeta = m_filename.replace(m_filename.find(".ts"),3,".ts.meta");
 	std::ifstream srcmeta(curmeta.c_str(), std::ios::binary);
 	std::ofstream dstmeta(newmeta.c_str(), std::ios::binary);
 	dstmeta << srcmeta.rdbuf();
