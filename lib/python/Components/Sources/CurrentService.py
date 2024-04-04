@@ -40,10 +40,10 @@ class CurrentService(PerServiceBase, Source):
 		return self.navcore.getCurrentlyPlayingServiceReference()
 
 	service = property(getCurrentService)
-	
+
 	def getCurrentServiceWithFallback(self):
 		return self.srv or self.navcore.getCurrentService()
-	
+
 	# this gets current service (set manually) with a fallback to the selected service from navigation.
 	# Typically that is used in ServiceName convertor.
 	servicealt = property(getCurrentServiceWithFallback)
