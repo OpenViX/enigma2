@@ -270,6 +270,13 @@ class ChoiceBox(Screen):
 		else:
 			self["description"].setText("")
 
+	def getIsDescriptionAvailable(self):
+		if self.list:
+			for x in self.list:
+				if len(x[0]) > 2 and isinstance(x[0][2], str):
+					return True
+		return False
+
 	def cancel(self):
 		self.close(None)
 
