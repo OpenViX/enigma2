@@ -40,7 +40,7 @@ class ServiceName(Converter):
 
 	@cached
 	def getText(self):
-		service = self.source.servicealt if hasattr(self.source, "servicealt") else self.source.service
+		service = self.source.servicealt if hasattr(self.source, "servicealt") and self.source.servicealt else self.source.service
 		info = None
 		if isinstance(service, eServiceReference):
 			info = self.source.info
@@ -87,20 +87,10 @@ class ServiceName(Converter):
 			return service.toString()
 		elif self.type == self.STREAM_URL:
 			srpart = "//%s:%s/" % (config.misc.softcam_streamrelay_url.getHTML(), config.misc.softcam_streamrelay_port.value)
-			if not service:
-				refstr = info.getInfoString(iServiceInformation.sServiceref)
-				path = refstr and eServiceReference(refstr).getPath()
-				if not path:
-					curService = SessionObject.session.nav.getCurrentServiceRef()
-					path = curService and curService.toString().split(":")[10].replace("%3a", ":")
-				if not path.startswith("//") and path.find(srpart) == -1:
-					return path
-				else:
-					return ""
-			path = SessionObject.session.nav.getCurrentServiceRef().getPath()
-			if not path:
-				path = service.toString().split(":")[10].replace("%3a", ":")
-			return "" if path.startswith("//") and path.find(srpart) == -1 else path
+			path = service.toString().split(":")[10].replace("%3a", ":")
+			if "://" in path and "http" not in path:
+				path = SessionObject.session.nav.getCurrentServiceRef().toString().split(":")[10].replace("%3a", ":")
+			return "" if path.startswith("//") and path.find(srpart) > -1 and "://" not in path else path
 		elif self.type == self.FORMAT_STRING:
 			name = self.getName(service, info)
 			provider = self.getProvider(service, info)
