@@ -1577,12 +1577,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			return
 
 		self.saveconfig()
-		# This is commented out because we don't see any obvious reason for stopping the service on exit
-		# from Screens.InfoBar import InfoBar
-		# infobar = InfoBar.instance
-		# if self.session.nav.getCurrentlyPlayingServiceReference():
-		# 	if not infobar.timeshiftEnabled() and ':0:/' not in self.session.nav.getCurrentlyPlayingServiceReference().toString():
-		# 	self.session.nav.stopService()
+		# This is needed for DVB subtitles to show after stop playing recording & exit
+		from Screens.InfoBar import InfoBar
+		infobar = InfoBar.instance
+		if self.session.nav.getCurrentlyPlayingServiceReference():
+			if not infobar.timeshiftEnabled() and ':0:/' not in self.session.nav.getCurrentlyPlayingServiceReference().toString():
+				self.session.nav.stopService()
 		self.close(None)
 
 	def saveconfig(self):
