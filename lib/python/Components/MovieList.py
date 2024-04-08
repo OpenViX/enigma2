@@ -247,6 +247,7 @@ class MovieList(GUIComponent):
 		self._playInForeground = None
 		self._char = ''
 		self.iconsPadding = 0
+		self.paddingFactor = 20
 
 		if root is not None:
 			self.reload(root)
@@ -384,6 +385,9 @@ class MovieList(GUIComponent):
 
 		def spaceRight(value):
 			self.spaceRight = parseScale(value)
+		
+		def paddingFactor(value):
+			self.paddingFactor = parseScale(value)
 
 		def durationWidth(value):
 			self.durationWidth = parseScale(value)
@@ -411,7 +415,7 @@ class MovieList(GUIComponent):
 		self.itemHeight = itemHeight
 		self.l.setItemHeight(itemHeight)
 		self.instance.resize(eSize(self.listWidth, self.listHeight // itemHeight * itemHeight))
-		self.iconsPadding = itemHeight * 0.2
+		self.iconsPadding = itemHeight * self.paddingFactor // 100
 
 	def setFontsize(self):
 		self.l.setFont(0, gFont(self.fontName, self.fontSize + config.movielist.fontsize.value))
@@ -523,16 +527,16 @@ class MovieList(GUIComponent):
 			# icon/progress
 			if data:
 				if switch == 'i' and data.icon is not None:
-					res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + self.iconsPadding + colX, self.iconsPadding), size=(iconSize - self.iconsPadding * 2, ih - self.iconsPadding * 2), png=data.icon, flags=BT_HALIGN_CENTER | BT_VALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
+					res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + self.iconsPadding + colX + (r if showPicons else 0), self.iconsPadding), size=(iconSize - self.iconsPadding*2, ih - self.iconsPadding*2), png=data.icon, flags=BT_HALIGN_CENTER | BT_VALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
 				elif switch in ('p', 's'):
 					if data.part > 0:
 						pbarY = (self.itemHeight - self.pbarHeight) // 2 if self.pbarShift is None else self.pbarShift
 						res.append(MultiContentEntryProgress(pos=(self.spaceLeft + colX, pbarY), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
 					elif data.icon is not None:
 						if self.pbarShift is None:
-							res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX, 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
+							res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX + (r if showPicons else 0), 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
 						else:
-							res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX, self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
+							res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX + (r if showPicons else 0), self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
 			return iconSize
 
 		if piconWidth > 0:
