@@ -385,7 +385,7 @@ class MovieList(GUIComponent):
 
 		def spaceRight(value):
 			self.spaceRight = parseScale(value)
-		
+
 		def paddingFactor(value):
 			self.paddingFactor = parseScale(value)
 
