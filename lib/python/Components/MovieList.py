@@ -527,7 +527,7 @@ class MovieList(GUIComponent):
 			# icon/progress
 			if data:
 				if switch == 'i' and data.icon is not None:
-					res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + self.iconsPadding + colX + (r if showPicons else 0), self.iconsPadding), size=(iconSize - self.iconsPadding*2, ih - self.iconsPadding*2), png=data.icon, flags=BT_HALIGN_CENTER | BT_VALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
+					res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + self.iconsPadding + colX + (r if showPicons else 0), self.iconsPadding), size=(iconSize - self.iconsPadding * 2, ih - self.iconsPadding * 2), png=data.icon, flags=BT_HALIGN_CENTER | BT_VALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
 				elif switch in ('p', 's'):
 					if data.part > 0:
 						pbarY = (self.itemHeight - self.pbarHeight) // 2 if self.pbarShift is None else self.pbarShift
