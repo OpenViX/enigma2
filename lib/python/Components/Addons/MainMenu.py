@@ -27,17 +27,17 @@ class MainMenu(GUIAddon):
 		self.longestMenuTextWidth = 0
 		self.minWidth = 100
 		self.maxWidth = 700
-		
+
 	def onContainerShown(self):
 		self.textRenderer.GUIcreate(self.relatedScreen.instance)
 		self.source.onListUpdated.append(self.constructMenu)
 		self.constructMenu()
 
 	GUI_WIDGET = eListbox
-	
+
 	def getDesktopWith(self):
 		return getDesktop(0).size().width()
-	
+
 	def _calcTextWidth(self, text, font=None, size=None):
 		if size:
 			self.textRenderer.instance.resize(size)
@@ -51,7 +51,7 @@ class MainMenu(GUIAddon):
 		yPos = 5
 
 		res = [None]
-		
+
 		if self.iconSize > 0:
 			res.append(MultiContentEntryPixmapAlphaBlend(
 						pos=(xPos, yPos),
@@ -68,11 +68,11 @@ class MainMenu(GUIAddon):
 				backcolor=None, backcolor_sel=None))
 
 		return res
-		
+
 	def selectionChanged(self):
 		if self.instance and hasattr(self, "source"):
 			self.source.setConnectedGuiElement(self)
-			
+
 	def setFont(self, value):
 		self.font = parseFont(value, ((1, 1), (1, 1)))
 		self.l.setFont(0, self.font)
@@ -82,10 +82,10 @@ class MainMenu(GUIAddon):
 
 	def setMaxWidth(self, value):
 		self.maxWidth = parseScale(value)
-	
+
 	def setIconSize(self, value):
 		self.iconSize = parseScale(value)
-		
+
 	def setForegroundColor(self, value):
 		self.foregroundColor = parseColor(value).argb()
 
@@ -116,7 +116,7 @@ class MainMenu(GUIAddon):
 				self.longestMenuTextWidth = textWidth
 		curSize = self.instance.size()
 		dest_width = self.iconSize + 20 * 2 + 10
-		dest_width += self.longestMenuTextWidth 
+		dest_width += self.longestMenuTextWidth
 		if dest_width > self.maxWidth:
 			dest_width = self.maxWidth
 		if dest_width > self.minWidth:

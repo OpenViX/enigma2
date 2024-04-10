@@ -46,7 +46,7 @@ to generate HTML."""
 
 	def count(self):
 		return len(self.__list)
-		
+
 	def setConnectedGuiElement(self, guiElement):
 		self.connectedGuiElement = guiElement
 		index = guiElement.instance.getCurrentIndex()
