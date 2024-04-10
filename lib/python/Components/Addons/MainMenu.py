@@ -117,7 +117,7 @@ class MainMenu(GUIAddon):
 			if textWidth > self.longestMenuTextWidth:
 				self.longestMenuTextWidth = textWidth
 		curSize = self.instance.size()
-		dest_width = self.iconSize + 20*2 + 10
+		dest_width = self.iconSize + 20 * 2 + 10
 		dest_width += self.longestMenuTextWidth 
 		if dest_width > self.maxWidth:
 			dest_width = self.maxWidth
