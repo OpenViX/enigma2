@@ -28,14 +28,12 @@ class MainMenu(GUIAddon):
 		self.minWidth = 100
 		self.maxWidth = 700
 		
-
 	def onContainerShown(self):
 		self.textRenderer.GUIcreate(self.relatedScreen.instance)
 		self.source.onListUpdated.append(self.constructMenu)
 		self.constructMenu()
 
 	GUI_WIDGET = eListbox
-	
 	
 	def getDesktopWith(self):
 		return getDesktop(0).size().width()
