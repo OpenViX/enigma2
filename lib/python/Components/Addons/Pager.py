@@ -151,12 +151,15 @@ class Pager(GUIAddon):
 		instance.allowNativeKeys(False)
 
 	def getSourceOrientation(self):
-		if isinstance(self.source, List):  # Components.Sources.List
-			orig_source = self.source.master.master
-		else:
-			orig_source = self.source
-		if hasattr(orig_source, "instance") and hasattr(orig_source.instance, "getOrientation"):
-			return orig_source.instance.getOrientation()
+		try:
+			if isinstance(self.source, List):  # Components.Sources.List
+				orig_source = self.source.connectedGuiElement or self.source.master.master
+			else:
+				orig_source = self.source
+			if hasattr(orig_source, "instance") and hasattr(orig_source.instance, "getOrientation"):
+				return orig_source.instance.getOrientation()
+		except:
+			pass
 		return eListbox.orVertical
 
 	def getCurrentIndex(self):
