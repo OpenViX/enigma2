@@ -36,8 +36,6 @@ class GetEcmInfo:
 		elif "emulator" in current_device.lower():
 			return _("Emulator") if isLong else "EMU"
 
-
-
 	def pollEcmData(self):
 		global data
 		global old_ecm_time
