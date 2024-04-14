@@ -33,6 +33,10 @@ class GetEcmInfo:
 			return _("USB reader 4") if isLong else "USB 4"
 		elif "/ttyusb4" in current_device.lower():
 			return _("USB reader 5") if isLong else "USB 5"
+		elif "emulator" in current_device.lower():
+			return _("Emulator") if isLong else "EMU"
+
+
 
 	def pollEcmData(self):
 		global data

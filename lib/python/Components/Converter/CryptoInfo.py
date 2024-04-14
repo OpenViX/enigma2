@@ -4,6 +4,7 @@ from Components.Element import cached
 from Components.config import config
 from enigma import iServiceInformation
 from Tools.GetEcmInfo import GetEcmInfo
+from Tools.Directories import pathExists
 
 
 class CryptoInfo(Poll, Converter):
@@ -39,7 +40,7 @@ class CryptoInfo(Poll, Converter):
 					info = service and service.info()
 					if info:
 						try:
-							if info.getInfoObject(iServiceInformation.sCAIDs):
+							if info.getInfoObject(iServiceInformation.sCAIDs) or pathExists("/tmp/ecm.info"):
 								ecm_info = self.ecmdata.getInfoRaw()
 								if ecm_info:
 									# caid
