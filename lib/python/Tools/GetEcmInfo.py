@@ -134,16 +134,16 @@ class GetEcmInfo:
 								device = "constcw"
 							if "const" in address.lower():
 								address = ""
-							if "Local" in address:
+							if "local" in address.lower():
 								from_arr = address.split("-")
-								address = from_arr[0].strip().replace("Local", "")
+								address = from_arr[0].strip().replace("Local", "").replace("local", "")
 								if len(from_arr) > 1:
 									device = from_arr[1].strip()
 						protocol = _('Protocol:') + ' '
 						if info.get('protocol', None):
-							protocol += info.get('protocol', '').replace("-s2s", "-S2s").replace("ext", "Ext").replace("mcs", "Mcs").replace("Cccam", "CCcam")
+							protocol += info.get('protocol', '').replace("-s2s", "-S2s").replace("ext", "Ext").replace("mcs", "Mcs").replace("Cccam", "CCcam").replace("cccam", "CCcam")
 						elif info.get('using', None):
-							protocol += info.get('using', '').replace("-s2s", "-S2s").replace("ext", "Ext").replace("mcs", "Mcs").replace("Cccam", "CCcam")
+							protocol += info.get('using', '').replace("-s2s", "-S2s").replace("ext", "Ext").replace("mcs", "Mcs").replace("Cccam", "CCcam").replace("cccam", "CCcam")
 
 						hops = _('Hops:') + ' '
 						if info.get('hops', None):
