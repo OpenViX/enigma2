@@ -71,6 +71,10 @@ class MainMenu(GUIAddon):
 
 		return res
 
+	def moveSelection(self, index):
+		if self.instance is not None:
+			self.instance.moveSelectionTo(index)
+
 	def selectionChanged(self):
 		if self.instance and hasattr(self, "source"):
 			self.source.setConnectedGuiElement(self)
