@@ -20,19 +20,19 @@ class GetEcmInfo:
 		if not current_device:
 			return ""
 		if "/sci0" in current_device.lower():
-			return _("Card Reader 1") if isLong else "CRD 1"
+			return _("Card reader 1") if isLong else "CRD 1"
 		elif "/sci1" in current_device.lower():
-			return _("Card Reader 2") if isLong else "CRD 2"
+			return _("Card reader 2") if isLong else "CRD 2"
 		elif "/ttyusb0" in current_device.lower():
-			return _("USB Reader 1") if isLong else "USB 1"
+			return _("USB reader 1") if isLong else "USB 1"
 		elif "/ttyusb1" in current_device.lower():
-			return _("USB Reader 2") if isLong else "USB 2"
+			return _("USB reader 2") if isLong else "USB 2"
 		elif "/ttyusb2" in current_device.lower():
-			return _("USB Reader 3") if isLong else "USB 3"
+			return _("USB reader 3") if isLong else "USB 3"
 		elif "/ttyusb3" in current_device.lower():
-			return _("USB Reader 4") if isLong else "USB 4"
+			return _("USB reader 4") if isLong else "USB 4"
 		elif "/ttyusb4" in current_device.lower():
-			return _("USB Reader 5") if isLong else "USB 5"
+			return _("USB reader 5") if isLong else "USB 5"
 		elif "emulator" in current_device.lower():
 			return _("Emulator") if isLong else "EMU"
 		elif "const" in current_device.lower():
