@@ -38,7 +38,6 @@ class GetEcmInfo:
 		elif "const" in current_device.lower():
 			return _("Constcw") if isLong else "CCW"
 
-
 	def pollEcmData(self):
 		global data
 		global old_ecm_time
