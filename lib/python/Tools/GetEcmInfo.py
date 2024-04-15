@@ -154,6 +154,30 @@ class GetEcmInfo:
 							ecm += info.get('ecm time', '')
 						device_str = self.createCurrentDevice(device, True)
 						self.textvalue = address + ((device_str) if device else "") + '\n' + protocol + '  ' + hops + '  ' + ecm
+				elif config.usage.show_cryptoinfo.value == '3':
+					# CCcam
+					if using == 'fta':
+						self.textvalue = _("Free To Air")
+					else:
+						address = ' '
+						if info.get('reader', None):
+							address += info.get('reader', '')
+						elif info.get('from', None):
+							address = info.get('from', '').replace(":0", "").replace("cache", "cache ")
+							if "const" in protocol.lower():
+								device = "constcw"
+							if "const" in address.lower():
+								address = ""
+							if "local" in address.lower():
+								from_arr = address.split("-")
+								address = from_arr[0].strip().replace("Local", "").replace("local", "")
+								if len(from_arr) > 1:
+									device = from_arr[1].strip()
+						protocol = _('Protocol:') + ' '
+						if info.get('protocol', None):
+							protocol += info.get('protocol', '').capitalize().replace("-s2s", "-S2s").replace("ext", "Ext").replace("mcs", "Mcs").replace("Cccam", "CCcam").replace("cccam", "CCcam")
+						elif info.get('using', None):
+							protocol += info.get('using', '').capitalize().replace("-s2s", "-S2s").replace("ext", "Ext").replace("mcs", "Mcs").replace("Cccam", "CCcam").replace("cccam", "CCcam")
 			else:
 				decode = info.get('decode', None)
 				if decode:
