@@ -20,21 +20,24 @@ class GetEcmInfo:
 		if not current_device:
 			return ""
 		if "/sci0" in current_device.lower():
-			return _("Card reader 1") if isLong else "CRD 1"
+			return _("Card Reader 1") if isLong else "CRD 1"
 		elif "/sci1" in current_device.lower():
-			return _("Card reader 2") if isLong else "CRD 2"
+			return _("Card Reader 2") if isLong else "CRD 2"
 		elif "/ttyusb0" in current_device.lower():
-			return _("USB reader 1") if isLong else "USB 1"
+			return _("USB Reader 1") if isLong else "USB 1"
 		elif "/ttyusb1" in current_device.lower():
-			return _("USB reader 2") if isLong else "USB 2"
+			return _("USB Reader 2") if isLong else "USB 2"
 		elif "/ttyusb2" in current_device.lower():
-			return _("USB reader 3") if isLong else "USB 3"
+			return _("USB Reader 3") if isLong else "USB 3"
 		elif "/ttyusb3" in current_device.lower():
-			return _("USB reader 4") if isLong else "USB 4"
+			return _("USB Reader 4") if isLong else "USB 4"
 		elif "/ttyusb4" in current_device.lower():
-			return _("USB reader 5") if isLong else "USB 5"
+			return _("USB Reader 5") if isLong else "USB 5"
 		elif "emulator" in current_device.lower():
 			return _("Emulator") if isLong else "EMU"
+		elif "const" in current_device.lower():
+			return _("Constcw") if isLong else "CCW"
+
 
 	def pollEcmData(self):
 		global data
@@ -95,14 +98,16 @@ class GetEcmInfo:
 					# CCcam
 					if using == 'fta':
 						self.textvalue = _("Free To Air")
-					elif using == 'emu':
-						self.textvalue = "EMU (%ss)" % (info.get('ecm time', '?'))
+					elif protocol == 'emu':
+						self.textvalue = "Emu (%ss)" % (info.get('ecm time', '?'))
+					elif protocol == 'constcw':
+						self.textvalue = "Constcw (%ss)" % (info.get('ecm time', '?'))
 					else:
 						if info.get('address', None):
 							address = info.get('address', '')
 						elif info.get('from', None):
-							address = info.get('from', '')
-							if "local" in address:
+							address = info.get('from', '').replace(":0", "").replace("cache", "cache ")
+							if "Local" in address:
 								from_arr = address.split("-")
 								address = from_arr[0].strip()
 								if len(from_arr) > 1:
@@ -125,17 +130,21 @@ class GetEcmInfo:
 						if info.get('address', None):
 							address += info.get('address', '')
 						elif info.get('from', None):
-							address = info.get('from', '')
-							if "local" in address:
+							address = info.get('from', '').replace(":0", "").replace("cache", "cache ")
+							if "const" in protocol.lower():
+								device = "constcw"
+							if "const" in address.lower():
+								address = ""
+							if "Local" in address:
 								from_arr = address.split("-")
-								address = from_arr[0].strip()
+								address = from_arr[0].strip().replace("Local", "")
 								if len(from_arr) > 1:
 									device = from_arr[1].strip()
 						protocol = _('Protocol:') + ' '
 						if info.get('protocol', None):
-							protocol += info.get('protocol', '')
+							protocol += info.get('protocol', '').replace("-s2s", "-S2s").replace("ext", "Ext").replace("mcs", "Mcs").replace("Cccam", "CCcam")
 						elif info.get('using', None):
-							protocol += info.get('using', '')
+							protocol += info.get('using', '').replace("-s2s", "-S2s").replace("ext", "Ext").replace("mcs", "Mcs").replace("Cccam", "CCcam")
 
 						hops = _('Hops:') + ' '
 						if info.get('hops', None):
@@ -145,7 +154,7 @@ class GetEcmInfo:
 						if info.get('ecm time', None):
 							ecm += info.get('ecm time', '')
 						device_str = self.createCurrentDevice(device, True)
-						self.textvalue = address + ((" - " + device_str) if device else "") + '\n' + protocol + '  ' + hops + '  ' + ecm
+						self.textvalue = address + ((device_str) if device else "") + '\n' + protocol + '  ' + hops + '  ' + ecm
 			else:
 				decode = info.get('decode', None)
 				if decode:
