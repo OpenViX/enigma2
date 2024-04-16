@@ -14,10 +14,10 @@ class CryptoInfo(Poll, Converter):
 
 		self.type = type
 		self.active = False
-		if int(config.usage.show_cryptoinfo.value) > 0:
-			self.visible = True
-		else:
+		if config.usage.show_cryptoinfo.value == "0":
 			self.visible = False
+		else:
+			self.visible = True
 		self.textvalue = ""
 		self.poll_interval = 1000
 		self.poll_enabled = True
@@ -25,7 +25,7 @@ class CryptoInfo(Poll, Converter):
 
 	@cached
 	def getText(self):
-		if int(config.usage.show_cryptoinfo.value) < 1:
+		if config.usage.show_cryptoinfo.value == "0":
 			self.visible = False
 			data = ''
 		else:
