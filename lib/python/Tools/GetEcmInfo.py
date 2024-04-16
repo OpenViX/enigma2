@@ -121,8 +121,10 @@ class GetEcmInfo:
 						address = (_("Reader:") if alt else _("Server:")) + " " + x.replace(":0", "").replace("cache", "cache ")
 						if "const" in protocol.lower():
 							device = "constcw"
-						if "const" in address.lower():
+						if "const" in address.lower() or "emu" in address.lower():
 							address = ""
+						if "emu" in protocol.lower():
+							device = "emulator"
 						if "local" in address.lower():
 							from_arr = address.split("-")
 							address = from_arr[0].strip().replace("Local", "").replace("local", "")
