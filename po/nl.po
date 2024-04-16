@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-27 15:35+0000\n"
-"PO-Revision-Date: 2024-03-29 12:29+0100\n"
+"POT-Creation-Date: 2024-04-15 23:37+0000\n"
+"PO-Revision-Date: 2024-04-16 14:25+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -4061,6 +4061,9 @@ msgstr "Verbonden: "
 msgid "Connection using the supplied FTP parameters failed. Please recheck the details and try again."
 msgstr "Verbinding met de ingestelde FTP-parameters is mislukt. Controleer de instellingen en probeer opnieuw."
 
+msgid "Constcw"
+msgstr "Aangepast"
+
 msgid "Constellation & FFT mode"
 msgstr "Constellatie & FFT-modus"
 
@@ -5615,6 +5618,9 @@ msgstr "Leeg slot"
 
 msgid "Empty trash can"
 msgstr "Prullenbak leegmaken"
+
+msgid "Emulator"
+msgstr "Emulator"
 
 msgid "Enable"
 msgstr "Aan"
@@ -7498,8 +7504,8 @@ msgstr "Als u 'ja' kiest, zullen bij het openen van de EPG altijd de favorietenl
 msgid "If set to 'yes' the channel list will be shown after switching between radio and TV modes."
 msgstr "Als u 'ja' kiest, zal altijd de kanaallijst worden getoond bij het gaan van TV naar radio en omgekeerd."
 
-msgid "If set to 'yes' the channel number will be displayed in the infobar."
-msgstr "Als u 'ja' kiest, zal het kanaalnummer in de informatiebalk worden getoond."
+msgid "If set to 'yes' the channel number will be displayed in the infobar and some other places (when supported by the skin)."
+msgstr "Als u 'ja' kiest, zal het kanaalnummer in de informatiebalk worden getoond en ook op sommige andere plaatsen (indien door de skin ondersteund)."
 
 msgid "If set to 'yes' the infobar will be displayed when a new event starts."
 msgstr "Als u 'ja' kiest, zal de informatiebalk worden getoond als er een nieuw programma start."
@@ -15804,6 +15810,9 @@ msgstr "Twee"
 msgid "Two lines"
 msgstr "Twee regels"
 
+msgid "Two lines Alt"
+msgstr "Twee regels alternatief"
+
 msgid "Type"
 msgstr "Type"
 
@@ -17977,7 +17986,7 @@ msgid "execute cuts (requires MovieCut plugin)"
 msgstr "voer cuts uit (vereist MovieCut plugin)"
 
 msgid "exit DVD player or return to file browser"
-msgstr "DVD-speler afsluiten of terug naar bestandslijst"
+msgstr "sluit DVD-speler af of keer terug naar bestandslijst"
 
 msgid "experimental film/video"
 msgstr "experimentele film/video"
@@ -18139,7 +18148,7 @@ msgid "horizontal"
 msgstr "horizontaal"
 
 msgid "if set will display subservices else timers."
-msgstr "toont subkanalen of timers, afhankelijk van instelling"
+msgstr "toont subkanalen of timers, afhankelijk van instelling."
 
 msgid "increase uphop by 1"
 msgstr "verhoog uphop met 1"
@@ -18580,7 +18589,7 @@ msgid "shortest first"
 msgstr "kortste eerst"
 
 msgid "show DVD main menu"
-msgstr "DVD hoofdmenu weergeven"
+msgstr "toon DVD-hoofdmenu"
 
 msgid "show all cards"
 msgstr "toon alle kaarten"
@@ -18619,7 +18628,7 @@ msgid "show cards with uphop 9"
 msgstr "toon kaarten met uphop 9"
 
 msgid "show event details"
-msgstr "EPG details weergeven"
+msgstr "toon EPG-details"
 
 msgid "show mediaplayer on mainmenu"
 msgstr "toon mediaplayer in hoofdmenu"
