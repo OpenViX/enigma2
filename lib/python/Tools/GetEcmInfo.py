@@ -90,13 +90,13 @@ class GetEcmInfo:
 		try:
 			using = info.get("using", "")
 			protocol = info.get("protocol", "")
-			alt = config.usage.show_cryptoinfo.value in ("3", "4")
+			alt = config.usage.show_cryptoinfo.value in ("2", "4")
 			if using or protocol:
 				if config.usage.show_cryptoinfo.value == "0":
 					self.textvalue = ""
 				elif using == "fta":
 					self.textvalue = _("Free To Air")
-				elif config.usage.show_cryptoinfo.value in ("1", "4"):  # "One line"
+				elif config.usage.show_cryptoinfo.value in ("1", "2"):  # "One line" or "One line Alt"
 					# CCcam
 					if protocol == "emu":
 						self.textvalue = (x := info.get("ecm time", "")) and "Emu (%ss)" % x
@@ -115,7 +115,7 @@ class GetEcmInfo:
 						devtext = self.createCurrentDevice(device, False) if device else address
 						self.textvalue = "  ".join([x for x in (devtext, hops, ecm) if x])
 
-				elif config.usage.show_cryptoinfo.value in ("2", "3"):  # "Two lines" or "Two lines Alt"
+				elif config.usage.show_cryptoinfo.value in ("3", "4"):  # "Two lines" or "Two lines Alt"
 					# CCcam
 					if x := (info.get("reader") if alt else info.get("address")) or info.get("from"):
 						address = (_("Reader:") if alt else _("Server:")) + " " + x.replace(":0", "").replace("cache", "cache ")
