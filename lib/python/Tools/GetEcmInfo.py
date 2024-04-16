@@ -90,32 +90,33 @@ class GetEcmInfo:
 		try:
 			using = info.get("using", "")
 			protocol = info.get("protocol", "")
+			alt = config.usage.show_cryptoinfo.value in ("3", "4")
 			if using or protocol:
 				if config.usage.show_cryptoinfo.value == "0":
 					self.textvalue = ""
 				elif using == "fta":
 					self.textvalue = _("Free To Air")
-				elif config.usage.show_cryptoinfo.value == "1":  # "One line"
+				elif config.usage.show_cryptoinfo.value in ("1", "4"):  # "One line"
 					# CCcam
 					if protocol == "emu":
 						self.textvalue = (x := info.get("ecm time", "")) and "Emu (%ss)" % x
 					elif protocol == "constcw":
 						self.textvalue = (x := info.get("ecm time", "")) and "Constcw (%ss)" % x
 					else:
-						if x := info.get("address", None) or info.get("from", None):
+						if x := (info.get("reader") if alt else info.get("address")) or info.get("from", None):
 							address = x.replace(":0", "").replace("cache", "cache ")
 							if "local" in address.lower():
 								from_arr = address.split("-")
 								address = from_arr[0].strip()
 								if len(from_arr) > 1:
 									device = from_arr[1].strip()
-						hops = (x := info.get("hops", "")) and x != "0" and " @" + x or ""
-						ecm = (x := info.get("ecm time", "")) and " (%ss)" % x
-						self.textvalue = (self.createCurrentDevice(device, False) if device else address) + hops + ecm
+						hops = (x := info.get("hops", "")) and x != "0" and "@" + x or ""
+						ecm = (x := info.get("ecm time", "")) and "(%ss)" % x
+						devtext = self.createCurrentDevice(device, False) if device else address
+						self.textvalue = "  ".join([x for x in (devtext, hops, ecm) if x])
 
-				elif int(config.usage.show_cryptoinfo.value) > 1:  # "Two lines" or "Two lines Alt"
+				elif config.usage.show_cryptoinfo.value in ("2", "3"):  # "Two lines" or "Two lines Alt"
 					# CCcam
-					alt = config.usage.show_cryptoinfo.value == "3"
 					if x := (info.get("reader") if alt else info.get("address")) or info.get("from"):
 						address = (_("Reader:") if alt else _("Server:")) + " " + x.replace(":0", "").replace("cache", "cache ")
 						if "const" in protocol.lower():
@@ -130,7 +131,8 @@ class GetEcmInfo:
 					protocol = (x := info.get("protocol", "")) and _("Protocol:") + " " + x.replace("-s2s", "-S2s").replace("ext", "Ext").replace("mcs", "Mcs").replace("Cccam", "CCcam").replace("cccam", "CCcam")
 					hops = (x := info.get("hops", "")) and _("Hops:") + " " + x
 					ecm = (x := info.get("ecm time", "")) and _("Ecm:") + " " + x
-					self.textvalue = address + (self.createCurrentDevice(device, True) if device else "") + "\n" + protocol + "  " + hops + "  " + ecm
+					devtext = self.createCurrentDevice(device, True) if device else ""
+					self.textvalue = "  ".join([x for x in (address, devtext) if x]) + "\n" + "  ".join([x for x in (protocol, hops, ecm) if x])
 
 			elif info.get("decode"):
 				# gbox (untested)
