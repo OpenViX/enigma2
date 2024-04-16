@@ -126,21 +126,21 @@ class EventInfo(PerServiceBase, Source):
 			}, with_event=True)
 		self.now_or_next = now_or_next
 		self.epgQuery = eEPGCache.getInstance().lookupEventTime
-		self.service = None
+		self.__service = None
 
 	@cached
 	def getEvent(self):
-		isPtr = not isinstance(self.service, eServiceReference)
-		service = self.navcore.getCurrentService() if isPtr else self.service
+		isPtr = not isinstance(self.__service, eServiceReference)
+		service = self.navcore.getCurrentService() if isPtr else self.__service
 		if isPtr:
 			info = service and service.info()
 			ret = info and info.getEvent(self.now_or_next)
 		else:
-			info = eServiceCenter.getInstance().info(self.service)
-			ret = info and info.getEvent(self.service, self.now_or_next)
+			info = eServiceCenter.getInstance().info(self.__service)
+			ret = info and info.getEvent(self.__service, self.now_or_next)
 		if info:
 			if not ret or ret.getEventName() == "":
-				refstr = info.getInfoString(iServiceInformation.sServiceref) if isPtr else self.service.toString()
+				refstr = info.getInfoString(iServiceInformation.sServiceref) if isPtr else self.__service.toString()
 				ret = self.epgQuery(eServiceReference(refstr), -1, self.now_or_next and 1 or 0)
 				if not ret and refstr.split(':')[0] in ['4097', '5001', '5002', '5003']:  # No EPG Try to get Meta
 					ev = pServiceEvent(info, self.now_or_next, service)
@@ -162,8 +162,8 @@ class EventInfo(PerServiceBase, Source):
 
 	def updateSource(self, ref):
 		if not ref:
-			self.service = None
+			self.__service = None
 			self.changed((self.CHANGED_CLEAR,))
 			return
-		self.service = ref
+		self.__service = ref
 		self.changed((self.CHANGED_ALL,))
