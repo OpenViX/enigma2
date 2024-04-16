@@ -100,7 +100,7 @@ class GetEcmInfo:
 					if protocol == "emu":
 						self.textvalue = (x := info.get("ecm time", "")) and "Emu (%ss)" % x
 					elif protocol == "constcw":
-						self.textvalue = (x:= info.get("ecm time", "")) and "Constcw (%ss)" % x
+						self.textvalue = (x := info.get("ecm time", "")) and "Constcw (%ss)" % x
 					else:
 						if x := info.get("address", None) or info.get("from", None):
 							address = x.replace(":0", "").replace("cache", "cache ")
