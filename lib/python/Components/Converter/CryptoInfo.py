@@ -4,6 +4,7 @@ from Components.Element import cached
 from Components.config import config
 from enigma import iServiceInformation
 from Tools.GetEcmInfo import GetEcmInfo
+from Tools.Directories import pathExists
 
 
 class CryptoInfo(Poll, Converter):
@@ -13,10 +14,10 @@ class CryptoInfo(Poll, Converter):
 
 		self.type = type
 		self.active = False
-		if int(config.usage.show_cryptoinfo.value) > 0:
-			self.visible = True
-		else:
+		if config.usage.show_cryptoinfo.value == "0":
 			self.visible = False
+		else:
+			self.visible = True
 		self.textvalue = ""
 		self.poll_interval = 1000
 		self.poll_enabled = True
@@ -24,7 +25,7 @@ class CryptoInfo(Poll, Converter):
 
 	@cached
 	def getText(self):
-		if int(config.usage.show_cryptoinfo.value) < 1:
+		if config.usage.show_cryptoinfo.value == "0":
 			self.visible = False
 			data = ''
 		else:
@@ -39,7 +40,7 @@ class CryptoInfo(Poll, Converter):
 					info = service and service.info()
 					if info:
 						try:
-							if info.getInfoObject(iServiceInformation.sCAIDs):
+							if info.getInfoObject(iServiceInformation.sCAIDs) or pathExists("/tmp/ecm.info"):
 								ecm_info = self.ecmdata.getInfoRaw()
 								if ecm_info:
 									# caid
@@ -64,20 +65,26 @@ class CryptoInfo(Poll, Converter):
 									# port
 									port = from_splitted[1].strip() if len(from_splitted) > 1 else ""
 									# source
-									if from_splitted[0].strip() == "local":
+									if protocol == "emu":
+										source = "emu"
+									elif protocol == "constcw":
+										source = "constcw"
+									elif from_splitted[0].strip() == "local":
 										source = "sci"
 									else:
 										source = "net"
 									# hops
 									hops = ecm_info.get("hops", "")
 									# system
-									# system = ecm_info.get("system", "")
+									system = ecm_info.get("system", "")
 									# provider
-									# provider = ecm_info.get("provider", "")
+									provider = ecm_info.get("provider", "")
 									# reader
 									reader = ecm_info.get("reader", "")
 									if source == "emu":
-										textvalue = f"{source} - {caid} ({caid}:{prov})"
+										textvalue = f"{source} - {caid} ({caid}:{prov})- {reader} - {ecm_time.replace('msec', 'ms')}"
+									elif source == "constcw":
+										textvalue = f"{source} - {caid} ({caid}:{prov})- {reader} - {ecm_time.replace('msec', 'ms')}"
 									# new oscam ecm.info with port parametr
 									elif reader != "" and source == "net" and port != "":
 										textvalue = f"{source} - {caid}:{prov} - {reader}, {protocol} ({server}:{port}@{hops}) - {ecm_time.replace('msec', 'ms')}"
@@ -95,7 +102,7 @@ class CryptoInfo(Poll, Converter):
 										except:
 											pass
 								else:
-									textvalue = "No parse cannot emu"
+									textvalue = "No parse cannot Emu"
 							else:
 								textvalue = "Free-to-air"
 						except:

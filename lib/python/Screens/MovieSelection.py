@@ -1108,7 +1108,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		self["waitingtext"].hide()
 
 	def LivePlay(self):
-		checkplaying = self.session.nav.getCurrentlyPlayingServiceReference() and self.session.nav.getCurrentlyPlayingServiceReference().toString()
+		checkplaying = self.session.nav.getCurrentlyPlayingServiceOrGroup() and self.session.nav.getCurrentlyPlayingServiceOrGroup().toString()
 		if checkplaying and ':0:/' not in checkplaying:
 			config.movielist.curentlyplayingservice.value = checkplaying
 		if checkplaying is None or (config.movielist.curentlyplayingservice.value != checkplaying and ':0:/' not in checkplaying):
@@ -1577,12 +1577,12 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			return
 
 		self.saveconfig()
-		# This is commented out because we don't see any obvious reason for stopping the service on exit
-		# from Screens.InfoBar import InfoBar
-		# infobar = InfoBar.instance
-		# if self.session.nav.getCurrentlyPlayingServiceReference():
-		# 	if not infobar.timeshiftEnabled() and ':0:/' not in self.session.nav.getCurrentlyPlayingServiceReference().toString():
-		# 	self.session.nav.stopService()
+		# This is needed for DVB subtitles to show after stop playing recording & exit
+		from Screens.InfoBar import InfoBar
+		infobar = InfoBar.instance
+		if self.session.nav.getCurrentlyPlayingServiceReference():
+			if not infobar.timeshiftEnabled() and ':0:/' not in self.session.nav.getCurrentlyPlayingServiceReference().toString():
+				self.session.nav.stopService()
 		self.close(None)
 
 	def saveconfig(self):
@@ -1599,9 +1599,10 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				"movieoff": config.usage.on_movie_eof.value})
 			self.saveLocalSettings()
 			self._updateButtonTexts()
-			self["list"].setItemsPerPage()
-			self["list"].setFontsize()
 			self.reloadList()
+			self["list"].setFontsize()
+			self["list"].setItemsPerPage()
+			self["list"].refreshDisplay()
 			self.updateDescription()
 
 	def can_sortby(self, item):

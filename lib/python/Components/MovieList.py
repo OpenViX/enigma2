@@ -246,6 +246,8 @@ class MovieList(GUIComponent):
 		self._playInBackground = None
 		self._playInForeground = None
 		self._char = ''
+		self.iconsPadding = 0
+		self.paddingFactor = 20
 
 		if root is not None:
 			self.reload(root)
@@ -384,6 +386,9 @@ class MovieList(GUIComponent):
 		def spaceRight(value):
 			self.spaceRight = parseScale(value)
 
+		def paddingFactor(value):
+			self.paddingFactor = parseScale(value)
+
 		def durationWidth(value):
 			self.durationWidth = parseScale(value)
 
@@ -410,6 +415,7 @@ class MovieList(GUIComponent):
 		self.itemHeight = itemHeight
 		self.l.setItemHeight(itemHeight)
 		self.instance.resize(eSize(self.listWidth, self.listHeight // itemHeight * itemHeight))
+		self.iconsPadding = itemHeight * self.paddingFactor // 100
 
 	def setFontsize(self):
 		self.l.setFont(0, gFont(self.fontName, self.fontSize + config.movielist.fontsize.value))
@@ -435,10 +441,10 @@ class MovieList(GUIComponent):
 		if not config.movielist.use_fuzzy_dates.value:
 			dateWidth += 30
 
-		iconSize = self.iconsWidth
+		ih = self.itemHeight
+		iconSize = ih
 		if switch == 'p':
 			iconSize = self.pbarLargeWidth
-		ih = self.itemHeight
 		col0iconSize = piconWidth if showPicons else iconSize
 		space = self.spaceIconeText
 		r = self.spaceRight
@@ -447,24 +453,24 @@ class MovieList(GUIComponent):
 
 		if serviceref.flags & eServiceReference.isGroup:
 			# Collection
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconCollection, flags=BT_ALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + self.iconsPadding, self.iconsPadding), size=(col0iconSize - self.iconsPadding * 2, ih - self.iconsPadding * 2), png=self.iconCollection, flags=BT_HALIGN_CENTER | BT_VALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
 			if self.getCurrent() in self.markList:
-				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
-			res.append(MultiContentEntryText(pos=(self.spaceLeft + col0iconSize + space, 0), size=(width - 220, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
+				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + self.iconsPadding, self.iconsPadding), size=(col0iconSize - self.iconsPadding * 2, ih - self.iconsPadding * 2), png=self.iconMarked, flags=BT_HALIGN_CENTER | BT_VALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
+			res.append(MultiContentEntryText(pos=(self.spaceLeft + self.iconsPadding + col0iconSize + space, 0), size=(width - 220, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
 			recordingCount = ngettext("%d Recording", "%d Recordings", data.collectionCount) % data.collectionCount
 			res.append(MultiContentEntryText(pos=(width - 220 - r, 0), size=(220, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=recordingCount))
 			return res
 		if serviceref.flags & eServiceReference.mustDescent:
 			# Directory
 			if data.txt == ".Trash":
-				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconTrash, flags=BT_ALIGN_CENTER))
-				res.append(MultiContentEntryText(pos=(self.spaceLeft + col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=_("Deleted items")))
+				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + self.iconsPadding, self.iconsPadding), size=(col0iconSize - self.iconsPadding * 2, self.itemHeight - self.iconsPadding * 2), png=self.iconTrash, flags=BT_HALIGN_CENTER | BT_VALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
+				res.append(MultiContentEntryText(pos=(self.spaceLeft + self.iconsPadding + col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=_("Deleted items")))
 				res.append(MultiContentEntryText(pos=(width - 145 - r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=_("Trash can")))
 				return res
-			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconFolder, flags=BT_ALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
+			res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + self.iconsPadding, self.iconsPadding), size=(col0iconSize - self.iconsPadding * 2, self.itemHeight - self.iconsPadding * 2), png=self.iconFolder, flags=BT_HALIGN_CENTER | BT_VALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
 			if self.getCurrent() in self.markList:
-				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft, 0), size=(col0iconSize, self.itemHeight), png=self.iconMarked))
-			res.append(MultiContentEntryText(pos=(self.spaceLeft + col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
+				res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + self.iconsPadding, self.iconsPadding), size=(col0iconSize - self.iconsPadding * 2, self.itemHeight - self.iconsPadding * 2), png=self.iconMarked, flags=BT_HALIGN_CENTER | BT_VALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
+			res.append(MultiContentEntryText(pos=(self.spaceLeft + self.iconsPadding + col0iconSize + space, 0), size=(width - 145, self.itemHeight), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
 			res.append(MultiContentEntryText(pos=(width - 145 - r, 0), size=(145, self.itemHeight), font=1, flags=RT_HALIGN_RIGHT | RT_VALIGN_CENTER, text=_("Directory")))
 			return res
 		if data.dirty:
@@ -521,19 +527,16 @@ class MovieList(GUIComponent):
 			# icon/progress
 			if data:
 				if switch == 'i' and data.icon is not None:
-					if self.partIconeShift is None:
-						res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX, 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
-					else:
-						res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX, self.partIconeShift), size=(iconSize, data.icon.size().height()), png=data.icon))
+					res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + self.iconsPadding + colX + (r if showPicons else 0), self.iconsPadding), size=(iconSize - self.iconsPadding * 2, ih - self.iconsPadding * 2), png=data.icon, flags=BT_HALIGN_CENTER | BT_VALIGN_CENTER | BT_SCALE | BT_KEEP_ASPECT_RATIO))
 				elif switch in ('p', 's'):
 					if data.part > 0:
 						pbarY = (self.itemHeight - self.pbarHeight) // 2 if self.pbarShift is None else self.pbarShift
 						res.append(MultiContentEntryProgress(pos=(self.spaceLeft + colX, pbarY), size=(iconSize, self.pbarHeight), percent=data.part, borderWidth=2, foreColor=data.partcol, foreColorSelected=None, backColor=None, backColorSelected=None))
 					elif data.icon is not None:
 						if self.pbarShift is None:
-							res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX, 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
+							res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX + (r if showPicons else 0), 0), size=(iconSize, ih), png=data.icon, flags=BT_ALIGN_CENTER))
 						else:
-							res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX, self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
+							res.append(MultiContentEntryPixmapAlphaBlend(pos=(self.spaceLeft + colX + (r if showPicons else 0), self.pbarShift), size=(iconSize, self.pbarHeight), png=data.icon))
 			return iconSize
 
 		if piconWidth > 0:
@@ -553,7 +556,7 @@ class MovieList(GUIComponent):
 		colX += space
 
 		# Recording name
-		res.append(MultiContentEntryText(pos=(self.spaceLeft + colX, 0), size=(width - iconSize - space - durationWidth - dateWidth - r - colX, ih), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
+		res.append(MultiContentEntryText(pos=(self.spaceLeft + self.iconsPadding + colX, 0), size=(width - iconSize - space - durationWidth - dateWidth - r - colX, ih), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER, text=data.txt))
 		colX = width - iconSize - space - durationWidth - dateWidth - r
 
 		if piconWidth > 0:

@@ -259,7 +259,8 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		self.okbuttonClick()
 
 	def layoutFinished(self):
-		if self.menuImage:
+		self.screenContentChanged()
+		if self.menuImage and "menuimage" in self:
 			self["menuimage"].instance.setPixmap(self.menuImage)
 
 	def loadMenuImage(self):
@@ -337,6 +338,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 			self.menulength = len(self.list)
 			self["menu"].setList(self.list)
 		self["menu"].updateList(self.list)
+		self.screenContentChanged()
 
 	def keyNumberGlobal(self, number):
 		self.number = self.number * 10 + number

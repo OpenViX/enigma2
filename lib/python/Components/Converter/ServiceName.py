@@ -40,7 +40,7 @@ class ServiceName(Converter):
 
 	@cached
 	def getText(self):
-		service = self.source.service
+		service = self.source.servicealt if hasattr(self.source, "servicealt") and self.source.servicealt else self.source.service
 		info = None
 		if isinstance(service, eServiceReference):
 			info = self.source.info
@@ -87,20 +87,10 @@ class ServiceName(Converter):
 			return service.toString()
 		elif self.type == self.STREAM_URL:
 			srpart = "//%s:%s/" % (config.misc.softcam_streamrelay_url.getHTML(), config.misc.softcam_streamrelay_port.value)
-			if not service:
-				refstr = info.getInfoString(iServiceInformation.sServiceref)
-				path = refstr and eServiceReference(refstr).getPath()
-				if not path:
-					curService = SessionObject.session.nav.getCurrentlyPlayingServiceReference()
-					path = curService and curService.toString().split(":")[10].replace("%3a", ":")
-				if not path.startswith("//") and path.find(srpart) == -1:
-					return path
-				else:
-					return ""
-			path = service.getPath()
-			if not path:
-				path = service.toString().split(":")[10].replace("%3a", ":")
-			return "" if path.startswith("//") and path.find(srpart) == -1 else path
+			path = service.toString().split(":")[10].replace("%3a", ":")
+			if "://" in path and "http" not in path:
+				path = SessionObject.session.nav.getCurrentServiceRef().toString().split(":")[10].replace("%3a", ":")
+			return "" if path.startswith("//") and path.find(srpart) > -1 and "://" not in path else path
 		elif self.type == self.FORMAT_STRING:
 			name = self.getName(service, info)
 			provider = self.getProvider(service, info)
@@ -129,19 +119,27 @@ class ServiceName(Converter):
 
 	def getName(self, ref, info):
 		name = ref and info.getName(ref)
-		if name is None:
+		if not name:
+			name = ref and hasattr(self.source, "serviceref") and self.source.serviceref and info.getName(self.source.serviceref)
+		if not name:
 			name = info.getName()
 		return name.replace('\xc2\x86', '').replace('\xc2\x87', '').replace('_', ' ')
 
 	def getNumber(self):
 		numservice = hasattr(self.source, "serviceref") and self.source.serviceref
-		channelnum = numservice and str(numservice.getChannelNum()) or ""
+		cnannelNumInt = numservice and numservice.getChannelNum() or 0
+		channelnum = str(cnannelNumInt) if cnannelNumInt else ""
 		return channelnum
 
 	def getProvider(self, ref, info):
+		prov = ''
 		if ref:
-			return ref.getProvider()
-		return info.getInfoString(iServiceInformation.sProvider)
+			prov = ref.getProvider()
+		if not prov:
+			prov = not ref and info.getInfoString(iServiceInformation.sProvider)
+		if not prov:
+			prov = hasattr(self.source, "serviceref") and self.source.serviceref.getProvider()
+		return prov
 
 	def getOrbitalPos(self, ref, info):
 		orbitalpos = ""

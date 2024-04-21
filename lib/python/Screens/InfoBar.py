@@ -209,8 +209,7 @@ class InfoBar(InfoBarBase, InfoBarShowHide,
 					self.openMoviePlayer(service)
 
 	def showMovies(self, defaultRef=None):
-		r_ref = self.session.nav.getCurrentServiceRef()
-		self.lastservice = r_ref and enigma.eServiceReference(r_ref) or self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		self.lastservice = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		if self.lastservice and ':0:/' in self.lastservice.toString():
 			self.lastservice = enigma.eServiceReference(config.movielist.curentlyplayingservice.value)
 
@@ -319,6 +318,9 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		if not config.movielist.stop_service.value and Screens.InfoBar.InfoBar.instance:
 			Screens.InfoBar.InfoBar.instance.callServiceStarted()
 		self.session.nav.playService(self.lastservice)
+		# Simulate service start event due to the fact when exit from playing
+		# a recording there is no evStart event because the same service is already playing
+		self.session.screen["CurrentService"].newService(self.lastservice)
 		config.usage.last_movie_played.value = self.cur_service.toString()
 		config.usage.last_movie_played.save()
 

@@ -530,7 +530,7 @@
 		<item level="0" text="Disk space to reserve for recordings (in GB)" description="Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can.">config.usage.movielist_trashcan_reserve</item>
 		<item level="0" text="Font size" description="This allows you change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size">config.movielist.fontsize</item>
 		<item level="0" text="Number of rows" description="Number of rows to display">config.movielist.itemsperpage</item>
-		<item level="0" text="Use slim screen" description="Use the alternative screen">config.movielist.useslim</item>
+		<item level="0" text="Use slim screen" description="Use the alternative screen" conditional="findSkinScreen('MovieSelectionSlim')">config.movielist.useslim</item>
 		<item level="0" text="Use adaptive date display" description="Adaptive date display allows recent dates to be displayed as 'Today' or 'Yesterday'.  It hides the year for recordings made this year.  It hides the day of the week for recordings made in previous years.">config.movielist.use_fuzzy_dates</item>
 		<item level="0" text="Enable automatic collections" description="When enabled, recordings are grouped by name into collections automatically.">config.movielist.enable_collections</item>
 		<item level="0" text="Sort" description="Set the default sorting method.">self.cfg.moviesort</item>

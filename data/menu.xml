@@ -149,7 +149,7 @@ self.session.open(SABnzbdSetupScreen)
 			<item key="softcam_setup" level="2" text="Settings" weight="1"><setup id="softcamsetup" /></item>
 			<item key="cccaminfo" level="2" text="CCcam Info" weight="90" requires="CCcamInstalled"><screen module="CCcamInfo" screen="CCcamInfoMain" /></item>
 			<item key="oscam/Ncaminfo" level="2" text="OScam/Ncam Info" weight="91" requires="OScamInstalled"><screen module="OScamInfo" screen="OscamInfoMenu" /></item>
-			<item key="streamrelay_settings" level="2" text="Stream Relay Settings" weight="100" requires="HasInitCam"><screen module="StreamRelaySetup" screen="StreamRelaySetup" /></item>
+			<item key="streamrelay_settings" level="2" text="Stream Relay Settings" weight="100"><screen module="StreamRelaySetup" screen="StreamRelaySetup" /></item>
 			<item key="softcam_initD" level="2" text="Softcam Script" weight="110" requires="HasInitCam"><screen module="SoftcamScript" /></item>				
 		</menu>
 
