@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-04-17 09:33+0300\n"
+"PO-Revision-Date: 2024-04-29 20:53+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -1555,7 +1555,7 @@ msgid "A background update check is in progress, please wait a few minutes and t
 msgstr "Päivityksien taustatarkistus on käynnissä, odota muutama minuutti ja yritä uudelleen."
 
 msgid "A client is streaming from this box!"
-msgstr "Etäasiakas striimmaa tästä laitteesta!"
+msgstr "Etäasiakas suoratoistaa tästä laitteesta!"
 
 #, python-format
 msgid ""
@@ -13546,7 +13546,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 17.04.2024 ---\n"
+"--- 29.04.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
