@@ -20,7 +20,6 @@ from Plugins.Plugin import PluginDescriptor
 from Components.Timeshift import InfoBarTimeshift
 
 from Screens.Screen import Screen
-from Screens.AudioSelection import getAVDict
 from Screens.HelpMenu import HelpableScreen
 from Screens import ScreenSaver
 from Screens.ChannelSelection import ChannelSelection, PiPZapSelection, BouquetSelector, EpgBouquetSelector, service_types_tv
@@ -666,19 +665,12 @@ class InfoBarShowHide(InfoBarScreenSaver):
 		self.__event_tracker = ServiceEventTracker(screen=self,
 			eventmap={
 				iPlayableService.evStart: self.serviceStarted,
-				iPlayableService.evEnd: self.serviceEnded,
-				iPlayableService.evUpdatedInfo: self.queueChange,
 			}
 		)
 
 		InfoBarScreenSaver.__init__(self)
 		self.__state = self.STATE_SHOWN
 		self.__locked = 0
-
-		self.av_config = getAVDict()
-
-		self._waitForEventInfoTimer = eTimer()
-		self._waitForEventInfoTimer.callback.append(self.avChange)
 
 		self.hideTimer = eTimer()
 		self.hideTimer.callback.append(self.doTimerHide)
@@ -813,9 +805,6 @@ class InfoBarShowHide(InfoBarScreenSaver):
 			if config.usage.show_infobar_on_zap.value:
 				self.doShow()
 		self.showHideVBI()
-
-	def serviceEnded(self):
-		self._waitForEventInfoTimer.stop()
 
 	def startHideTimer(self):
 		if self.__state == self.STATE_SHOWN and not self.__locked:
@@ -979,39 +968,6 @@ class InfoBarShowHide(InfoBarScreenSaver):
 
 	def checkStreamrelay(self, service):
 		return streamrelay.checkService(service)
-
-	def queueChange(self):
-		self._waitForEventInfoTimer.stop()
-		self._waitForEventInfoTimer.start(50, True)
-
-	def avChange(self):
-		service = self.session.nav.getCurrentService()
-		ref_p = self.session.nav.getCurrentServiceRef()
-		isStream = ref_p and ref_p.find("%3a//") > -1
-		x = ref_p and ref_p.split(":")
-		x_play = x and ":".join(x[:10]) or ""
-		if isStream:
-			try:
-				if x_play in self.av_config:
-					av_val = self.av_config[x_play]
-					subs_pid = None
-					audio_pid = None
-					if av_val.find("|") > -1:
-						split = av_val.split("|")
-						audio_pid = pickle_loads(split[0].encode())
-						subs_pid = pickle_loads(split[1].encode())
-					elif av_val and av_val != "":
-						audio_pid = pickle_loads(av_val.encode())
-					audio = service and service.audioTracks()
-					playinga_idx = audio and audio.getCurrentTrack()
-					if audio_pid and audio_pid != -1 and playinga_idx != audio_pid:
-						audio.selectTrack(audio_pid)
-
-					self.enableSubtitle(subs_pid)
-
-				self._waitForEventInfoTimer.stop()
-			except:
-				self._waitForEventInfoTimer.stop()
 
 
 class BufferIndicator(Screen):
