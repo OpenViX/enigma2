@@ -423,7 +423,7 @@ def fileHas(f, content, mode="r"):
 def fileReadXML(filename, default=None, *args, **kwargs):
 	dom = None
 	try:
-		with open(filename, "r") as fd:
+		with open(filename, "r", encoding="utf-8") as fd:
 			dom = parse(fd).getroot()
 	except:
 		print("[fileReadXML] failed to read", filename)
