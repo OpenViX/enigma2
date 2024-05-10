@@ -476,10 +476,8 @@ void eDVBService::setCacheEntry(cacheID id, int pid)
 			}
 		}
 		if (!hasFoundItem) {
-			std::vector<std::string> ref_split = split(m_reference_str, ":");
-			std::vector<std::string> ref_split_r(ref_split.begin(), ref_split.begin() + 10);
-			std::string ref_s;
-			join_str(ref_split_r, ':', ref_s);
+			eServiceReference ref = eServiceReference(m_reference_str);
+			std::string ref_s = ref.toReferenceString();
 			int pid_val = pid > 0 ? pid : -1;
 			eIPTVDBItem item(ref_s, id == cacheID::cMPEGAPID ? pid_val : -1, id == cacheID::cAC3PID ? pid_val : -1, id == cacheID::cAC4PID ? pid_val : -1,
 							id == cacheID::cDDPPID ? pid_val : -1, id == cacheID::cAACHEAPID ? pid_val : -1, id == cacheID::cAACAPID ? pid_val : -1,
@@ -1117,16 +1115,10 @@ void eDVBDB::saveIptvServicelist()
 {
 	std::ofstream outputFile("/etc/enigma2/config_av");
 	for(std::vector<eIPTVDBItem>::iterator it = iptv_services.begin(); it != iptv_services.end(); ++it) {
-		std::string line = it->s_ref + "|" 
-				+ std::to_string(it->v_pid) + "|"
-				+ std::to_string(it->ampeg_pid) + "|"
-				+ std::to_string(it->aac3_pid) + "|"
-				+ std::to_string(it->aac4_pid) + "|"
-				+ std::to_string(it->addp_pid) + "|"
-				+ std::to_string(it->aaach_pid) + "|"
-				+ std::to_string(it->aaac_pid) + "|"
-				+ std::to_string(it->adra_pid) + "|"
-				+ std::to_string(it->subtitle_pid);
+		char buffer[256];
+		sprintf(buffer, "%s|%d|%d|%d|%d|%d|%d|%d|%d|%d", it->s_ref.c_str(), it->v_pid, it->ampeg_pid, it->aac3_pid, it->aac4_pid, it->addp_pid,
+					it->aaach_pid, it->aaac_pid, it->adra_pid, it->subtitle_pid);
+		std::string line = buffer;
 		outputFile << line << '\n';
 	}
 	outputFile.close();
@@ -1441,21 +1433,23 @@ eDVBDB::eDVBDB()
 	while(getline(iptv_services_store_file, line))
 	{
 		line = replace_all(line, "\n", "");
-		std::vector<std::string> ref_split = split(line, "|");
-		std::vector<std::string> ref_split_r(ref_split.begin() + 1, ref_split.end());
-		std::string ref_s;
-		join_str(ref_split_r, '|', ref_s);
-		std::string s_ref = ref_split[0];
-		int ampeg_pid = -1;
-		int aac3_pid = -1;
-		int aac4_pid = -1;
-		int addp_pid = -1;
-		int aaach_pid = -1;
-		int aaac_pid = -1;
-		int adra_pid = -1;
-		int subtitle_pid = -1;
-		int video_pid = -1;
-		sscanf(ref_s.c_str(), "%d|%d|%d|%d|%d|%d|%d|%d|%d", &video_pid, &ampeg_pid, &aac3_pid, &aac4_pid, &addp_pid, &aaach_pid, &aaac_pid, &adra_pid, &subtitle_pid);
+		char buffer [256];
+		int service_type = 1, service_bit = 0, service_res = -1, service_id = -1, dvb_namespace, transport_stream_id = -1, 
+		original_network_id = -1, service_tsid = -1, service_number = -1, source_id = 0, ampeg_pid = -1, aac3_pid = -1, 
+		aac4_pid = -1, addp_pid = -1, aaach_pid = -1,aaac_pid = -1, adra_pid = -1, subtitle_pid = -1, video_pid = -1;
+
+		sscanf(line.c_str(), "%d:%d:%x:%x:%x:%x:%x:%d:%d:%x|%d|%d|%d|%d|%d|%d|%d|%d|%d", &service_type, &service_bit, &service_res, &service_id, 
+					  &dvb_namespace, &transport_stream_id, &original_network_id, &service_tsid, &service_number, &source_id, &video_pid, 
+					  &ampeg_pid, &aac3_pid, &aac4_pid, &addp_pid, &aaach_pid, &aaac_pid, &adra_pid, &subtitle_pid);
+		
+		sprintf(buffer, "%d:%d:%x:%x:%x:%x:%x:%d:%d:%x", service_type, service_bit, service_res, service_id, 
+					  dvb_namespace, transport_stream_id, original_network_id, service_tsid, service_number, source_id);
+
+		std::string s_ref = buffer;
+		makeUpper(s_ref);
+
+		eDebug("[eDVBDB] Readed from config_av ref: %s", s_ref.c_str());
+		
 		eIPTVDBItem iptvDBItem(s_ref, ampeg_pid, aac3_pid, aac4_pid, addp_pid, aaach_pid, aaac_pid, adra_pid, subtitle_pid, video_pid);
 		iptv_services.push_back(iptvDBItem);
 		line = "";
