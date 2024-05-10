@@ -82,6 +82,7 @@ class PictureInPictureZapping(Screen):
 		Screen.__init__(self, session)
 		self.title = _("PiPZap")
 
+
 class PictureInPicture(Screen):
 	def __init__(self, session):
 		global pip_config_initialized
