@@ -856,11 +856,7 @@ void eServiceMP3::setCacheEntry(bool isAudio, int pid)
 		}
 	}
 	if (!hasFoundItem) {
-		std::vector<std::string> ref_split = split(m_ref.toString(), ":");
-		std::vector<std::string> ref_split_r(ref_split.begin(), ref_split.begin() + 10);
-		std::string ref_s;
-		join_str(ref_split_r, ':', ref_s);
-		eIPTVDBItem item(ref_s, isAudio ? pid : -1, -1, -1, -1, -1, -1, -1, isAudio ? -1 : pid, -1);
+		eIPTVDBItem item(m_ref.toReferenceString(), isAudio ? pid : -1, -1, -1, -1, -1, -1, -1, isAudio ? -1 : pid, -1);
 		iptv_services.push_back(item);
 	}
 }
