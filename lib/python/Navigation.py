@@ -28,9 +28,6 @@ class Navigation:
 		NavigationInstance.instance = self
 		self.ServiceHandler = eServiceCenter.getInstance()
 
-		import Navigation as Nav
-		Nav.navcore = self
-
 		self.pnav = pNavigation()
 		self.pnav.m_event.get().append(self.dispatchEvent)
 		self.pnav.m_record_event.get().append(self.dispatchRecordEvent)
