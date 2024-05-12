@@ -14,6 +14,7 @@
 
 #include <lib/base/eerror.h>
 #include <lib/base/nconfig.h> // access to python config
+#include <lib/base/esimpleconfig.h> // access config file
 #include <lib/dvb/db.h>
 #include <lib/dvb/pmt.h>
 #include <lib/dvb_ci/dvbci.h>
@@ -1275,7 +1276,11 @@ eDVBCISlot::eDVBCISlot(eMainloop *context, int nr)
 	plugged = false;
 	m_ci_version = versionUnknown;
 	snprintf(configStr, 255, "config.ci.%d.enabled", slotid);
-	bool enabled = eConfigManager::getConfigBoolValue(configStr, true);
+	bool enabled = eSimpleConfig::getBool(configStr, true);
+	char config_key_operator_profile[255];
+	snprintf(config_key_operator_profile, 255, "config.ci.%d.disable_operator_profile", slotid);
+	bool operator_profile_disabled = eSimpleConfig::getBool(config_key_operator_profile, false);
+	m_operator_profiles_disabled = operator_profile_disabled;
 	if (enabled)
 		openDevice();
 	else
@@ -1287,7 +1292,7 @@ void eDVBCISlot::openDevice()
 	char filename[128];
 
 	plugged = true;
-
+	
 	sprintf(filename, "/dev/ci%d", slotid);
 
 //	possible_caids.insert(0x1702);
