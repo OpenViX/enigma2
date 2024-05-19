@@ -54,7 +54,12 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 					self["setupimage"] = Pixmap()
 
 	def changedEntry(self):
-		if isinstance(self["config"].getCurrent()[1], (ConfigBoolean, ConfigSelection)):
+		current = self["config"].getCurrent()
+		if current[1].isChanged():
+			self.manipulatedItems.append(current)  # keep track of all manipulated items including ones that have been removed from self["config"].list
+		elif current in self.manipulatedItems:
+			self.manipulatedItems.remove(current)
+		if isinstance(current[1], (ConfigBoolean, ConfigSelection)):
 			self.createSetup()
 		ConfigListScreen.changedEntry(self)  # force summary update immediately, not just on select/deselect
 

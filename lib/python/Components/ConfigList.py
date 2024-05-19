@@ -216,6 +216,7 @@ class ConfigListScreen:
 		self.setRestartMessage(None)
 		self.onChangedEntry = []
 		self.onSave = []
+		self.manipulatedItems = []  # keep track of all manipulated items including ones that have been removed from self["config"].list (currently used by Setup.py)
 		if self.noNativeKeys not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.noNativeKeys)
 		if self.handleInputHelpers not in self["config"].onSelectionChanged:
@@ -396,7 +397,7 @@ class ConfigListScreen:
 
 	def saveAll(self):
 		restart = False
-		for item in self["config"].list:
+		for item in set(self["config"].list + self.manipulatedItems):
 			if len(item) > 1:
 				if item[0].endswith("*") and item[1].isChanged():
 					restart = True
@@ -424,7 +425,7 @@ class ConfigListScreen:
 		self.closeConfigList((True,))
 
 	def closeConfigList(self, closeParameters=()):
-		if self["config"].isChanged():
+		if self["config"].isChanged() or self.manipulatedItems:
 			self.closeParameters = closeParameters
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, self.cancelMsg, default=False, type=MessageBox.TYPE_YESNO)
 		else:
@@ -433,7 +434,7 @@ class ConfigListScreen:
 	def cancelConfirm(self, result):
 		if not result:
 			return
-		for item in self["config"].list:
+		for item in set(self["config"].list + self.manipulatedItems):
 			if len(item) > 1:
 				item[1].cancel()
 		if not hasattr(self, "closeParameters"):
