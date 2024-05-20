@@ -1281,6 +1281,10 @@ eDVBCISlot::eDVBCISlot(eMainloop *context, int nr)
 	snprintf(config_key_operator_profile, 255, "config.ci.%d.disable_operator_profile", slotid);
 	bool operator_profile_disabled = eSimpleConfig::getBool(config_key_operator_profile, false);
 	m_operator_profiles_disabled = operator_profile_disabled;
+	char config_key_ca0_excluded[255];
+	snprintf(config_key_ca0_excluded, 255, "config.ci.%d.exclude_ca0_device", slotid);
+	bool ca0_excluded = eSimpleConfig::getBool(config_key_ca0_excluded, false);
+	m_ca0_excluded = ca0_excluded;
 	if (enabled)
 		openDevice();
 	else
