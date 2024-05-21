@@ -1,6 +1,6 @@
 # shamelessly copied from pliExpertInfo (Vali, Mirakels, Littlesat)
 
-from enigma import iServiceInformation, iPlayableService, eDVBCI_UI
+from enigma import eAVSwitch, iServiceInformation, iPlayableService, eDVBCI_UI
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.config import config
@@ -530,30 +530,8 @@ class PliExtraInfo(Poll, Converter, object):
 		return ""
 
 	def createResolution(self, info):
-		try:
-			yres = int(open("/proc/stb/vmpeg/0/yres", "r").read(), 16)
-			if yres > 4096 or yres == 0:
-				return ""
-		except:
-			return ""
-		try:
-			xres = int(open("/proc/stb/vmpeg/0/xres", "r").read(), 16)
-			if xres > 4096 or xres == 0:
-				return ""
-		except:
-			return ""
-		mode = ""
-		try:
-			mode = "p" if int(open("/proc/stb/vmpeg/0/progressive", "r").read(), 16) else "i"
-		except:
-			pass
-		fps = ""
-		try:
-			fps = str((int(open("/proc/stb/vmpeg/0/framerate", "r").read()) + 500) // 1000)
-		except:
-			pass
-
-		return "%sx%s%s%s" % (xres, yres, mode, fps)
+		avSwitch = eAVSwitch.getInstance()
+		return f"{avSwitch.getResolutionX(0)}x{avSwitch.getResolutionY(0)}{'p' if avSwitch.getProgressive() else 'i'}{(avSwitch.getFrameRate(0) + 500) // 1000}"
 
 	def createVideoCodec(self, info):
 		return codec_data.get(info.getInfo(iServiceInformation.sVideoType), _("N/A"))
