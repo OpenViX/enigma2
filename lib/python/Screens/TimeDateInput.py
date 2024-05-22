@@ -1,33 +1,14 @@
-from Screens.Screen import Screen
+from Screens.Setup import Setup
 from Components.config import config, ConfigClock, ConfigDateTime, getConfigListEntry
-from Components.ActionMap import NumberActionMap
-from Components.ConfigList import ConfigListScreen
-from Components.Label import Label
-from Components.Pixmap import Pixmap
 import time
 import datetime
 
 
-class TimeDateInput(ConfigListScreen, Screen):
+class TimeDateInput(Setup):
 	def __init__(self, session, config_time=None, config_date=None):
-		Screen.__init__(self, session)
-		self["key_green"] = self["oktext"] = Label(_("OK"))
-		self["key_red"] = self["canceltext"] = Label(_("Cancel"))
-		self["ok"] = Pixmap()
-		self["cancel"] = Pixmap()
-
 		self.createConfig(config_date, config_time)
-
-		self["actions"] = NumberActionMap(["SetupActions"],
-		{
-			"ok": self.keySelect,
-			"save": self.keyGo,
-			"cancel": self.keyCancel,
-		}, -2)
-
-		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=session, on_change=self.changedEntry)
-		self.createSetup()
+		Setup.__init__(self, session, None)
+		self.setTitle(_("Date/time input"))
 
 	def createConfig(self, conf_date, conf_time):
 		self.save_mask = 0
@@ -61,15 +42,12 @@ class TimeDateInput(ConfigListScreen, Screen):
 			self.timeinput_time.increment()
 			self["config"].invalidateCurrent()
 
-	def keySelect(self):
-		self.keyGo()
-
 	def getTimestamp(self, date, mytime):
 		d = time.localtime(date)
 		dt = datetime.datetime(d.tm_year, d.tm_mon, d.tm_mday, mytime[0], mytime[1])
 		return int(time.mktime(dt.timetuple()))
 
-	def keyGo(self):
+	def keySave(self):
 		time = self.getTimestamp(self.timeinput_date.value, self.timeinput_time.value)
 		if self.save_mask & 1:
 			self.timeinput_time.save()
