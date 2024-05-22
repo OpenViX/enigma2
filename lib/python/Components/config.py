@@ -65,7 +65,7 @@ KEY_9 = ACTIONKEY_9
 #   saved_value Is a text representation of _value, stored in the config file
 #
 # ConfigElement has (at least) the following methods:
-#   load()   loads _value from saved_value, or 
+#   load()   loads _value from saved_value, or
 #            loads the default if saved_value is 'None' (default) or invalid.
 #   save()   stores _value into saved_value, or stores 'None' if it should not be stored.
 #
