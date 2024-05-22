@@ -78,7 +78,7 @@ class PictureInPictureZapping(Screen):
 	def __init__(self, session):
 		skin = """<screen name="PictureInPictureZapping" flags="wfNoBorder" position="50,50" size="90,26" zPosition="-1">
 				<eLabel text="PiP-Zap" position="0,0" size="90,26" foregroundColor="#00ff66" font="Regular;26" />
-			</screen>"""
+			</screen>"""  # noqa: F841
 		Screen.__init__(self, session)
 		self.title = _("PiPZap")
 
