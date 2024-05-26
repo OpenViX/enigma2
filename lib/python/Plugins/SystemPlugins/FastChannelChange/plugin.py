@@ -540,15 +540,15 @@ def FCCSupportInit(reason, **kwargs):
 		FccInstance = FCCSupport(kwargs["session"])
 
 
-def showFCCExtentionMenu():
+def showFCCExtensionMenu():
 	currentScreenName = None
 	if FccInstance:
 		currentScreenName = FccInstance.session.current_dialog.__class__.__name__
 	return (currentScreenName == "InfoBar")
 
 
-def addExtentions(infobarExtensions):
-	infobarExtensions.addExtension((getExtensionName, ToggleUpdate, showFCCExtentionMenu), None)
+def addExtensions(infobarExtensions):
+	infobarExtensions.addExtension((getExtensionName, ToggleUpdate, showFCCExtensionMenu), None)
 
 
 def FCCStart(session, **kwargs):
@@ -577,7 +577,7 @@ def Plugins(**kwargs):
 			PluginDescriptor(name="FCCExtensionMenu",
 			description="Fast Channel Change menu",
 			where=[PluginDescriptor.WHERE_EXTENSIONSINGLE],
-			fnc=addExtentions))  # noqa: E122
+			fnc=addExtensions))  # noqa: E122
 
 		list.append(
 			PluginDescriptor(name=_("FCCSetup"),
