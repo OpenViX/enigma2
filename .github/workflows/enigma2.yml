@@ -52,7 +52,7 @@ jobs:
 
     - name: Install python ${{ matrix.python }} packages
       run: |
-        pip3 install six flake8
+        pip3 install flake8
 
 
 
