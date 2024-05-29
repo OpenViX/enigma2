@@ -2,7 +2,6 @@
 # similar things, like network connections being (un)plugged.
 from os import getpid
 import socket
-import six
 
 
 class NetlinkSocket(socket.socket):
@@ -12,7 +11,9 @@ class NetlinkSocket(socket.socket):
 		self.bind((getpid(), -1))
 
 	def parse(self):
-		data = six.ensure_str(self.recv(512), encoding="ascii", errors='ignore')
+		data = self.recv(512)
+		if isinstance(data, bytes):
+			data = data.decode()
 		data = [x for x in data.split('\x00') if x] + [""]  # avoid empty strings in the output except the final one
 		event = {}
 		for item in data:
@@ -31,7 +32,7 @@ class NetlinkSocket(socket.socket):
 # Quick unit test (you can run this on any Linux machine)
 if __name__ == '__main__':
 	nls = NetlinkSocket()
-	print("socket no:", nls.fileno())
+	# print("socket no:", nls.fileno())
 	while 1:
 		for item in nls.parse():
 			print(repr(item))
