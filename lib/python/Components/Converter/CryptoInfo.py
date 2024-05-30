@@ -76,9 +76,9 @@ class CryptoInfo(Poll, Converter):
 									# hops
 									hops = ecm_info.get("hops", "")
 									# system
-									system = ecm_info.get("system", "")
+									system = ecm_info.get("system", "")  # noqa: F841
 									# provider
-									provider = ecm_info.get("provider", "")
+									provider = ecm_info.get("provider", "")  # noqa: F841
 									# reader
 									reader = ecm_info.get("reader", "")
 									if source == "emu":

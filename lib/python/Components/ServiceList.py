@@ -404,9 +404,11 @@ class ServiceList(GUIComponent):
 
 	def getSelectionPosition(self):
 		# Adjust absolute index to index in displayed view
-		rowCount = self.listHeight // self.ItemHeight
-		index = self.getCurrentIndex() % rowCount
-		sely = self.instance.position().y() + self.ItemHeight * index
+		two_lines_val = int(config.usage.servicelist_twolines.value)
+		itemHeight = self.ItemHeight if not two_lines_val else self.ItemHeightTwoLine
+		rowsPerPage = self.listHeight // itemHeight
+		index = self.getCurrentIndex() % rowsPerPage
+		sely = self.instance.position().y() + itemHeight * index
 		if sely >= self.instance.position().y() + self.listHeight:
 			sely -= self.listHeight
 		return self.listWidth + self.instance.position().x(), sely

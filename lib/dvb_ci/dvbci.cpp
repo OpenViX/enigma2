@@ -14,6 +14,7 @@
 
 #include <lib/base/eerror.h>
 #include <lib/base/nconfig.h> // access to python config
+#include <lib/base/esimpleconfig.h> // access config file
 #include <lib/dvb/db.h>
 #include <lib/dvb/pmt.h>
 #include <lib/dvb_ci/dvbci.h>
@@ -1265,8 +1266,25 @@ eDVBCISlot::eDVBCISlot(eMainloop *context, int nr)
 	m_context = context;
 	m_ciplus_routing_tunernum = -1;
 	state = stateDisabled;
+	application_manager = 0;
+	mmi_session = 0;
+	ca_manager = 0;
+	cc_manager = 0;
+	use_count = 0;
+	linked_next = 0;
+	user_mapped = false;
+	plugged = false;
+	m_ci_version = versionUnknown;
 	snprintf(configStr, 255, "config.ci.%d.enabled", slotid);
-	bool enabled = eConfigManager::getConfigBoolValue(configStr, true);
+	bool enabled = eSimpleConfig::getBool(configStr, true);
+	char config_key_operator_profile[255];
+	snprintf(config_key_operator_profile, 255, "config.ci.%d.disable_operator_profile", slotid);
+	bool operator_profile_disabled = eSimpleConfig::getBool(config_key_operator_profile, false);
+	m_operator_profiles_disabled = operator_profile_disabled;
+	char config_key_ca0_excluded[255];
+	snprintf(config_key_ca0_excluded, 255, "config.ci.%d.exclude_ca0_device", slotid);
+	bool ca0_excluded = eSimpleConfig::getBool(config_key_ca0_excluded, false);
+	m_ca0_excluded = ca0_excluded;
 	if (enabled)
 		openDevice();
 	else
@@ -1277,16 +1295,8 @@ void eDVBCISlot::openDevice()
 {
 	char filename[128];
 
-	application_manager = 0;
-	mmi_session = 0;
-	ca_manager = 0;
-	cc_manager = 0;
-	use_count = 0;
-	linked_next = 0;
-	user_mapped = false;
 	plugged = true;
-	m_ci_version = versionUnknown;
-
+	
 	sprintf(filename, "/dev/ci%d", slotid);
 
 //	possible_caids.insert(0x1702);

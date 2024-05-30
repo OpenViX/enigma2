@@ -905,6 +905,19 @@ def InitUsageConfig():
 	config.crash.e2_debug_level = ConfigSelection(default=4, choices=[(3, _("No Logs")), (4, _("Debug Logs")), (5, _("Debug+ Logs"))])
 	config.crash.debugloglimit = ConfigSelectionNumber(min=1, max=10, stepwidth=1, default=4, wraparound=True)
 
+	def updateStackTracePrinter(configElement):
+		from Components.StackTrace import StackTracePrinter
+		if configElement.value:
+			if (os.path.isfile("/tmp/doPythonStackTrace")):
+				os.remove("/tmp/doPythonStackTrace")
+			from threading import current_thread
+			StackTracePrinter.getInstance().activate(current_thread().ident)
+		else:
+			StackTracePrinter.getInstance().deactivate()
+
+	config.crash.pystackonspinner = ConfigYesNo(default=True)
+	config.crash.pystackonspinner.addNotifier(updateStackTracePrinter, immediate_feedback=False, initial_call=True)
+
 # Just echo CHANGE var=val for the logger process to find.
 # Send a newline at the start in case some background process hasn't
 #
@@ -1076,28 +1089,57 @@ def InitUsageConfig():
 	config.autolanguage.audio_epglanguage_alternative = ConfigSelection(audio_language_choices[:1] + audio_language_choices[2:], default="")
 	config.autolanguage.audio_epglanguage_alternative.addNotifier(setEpgLanguageAlternative)
 
+	def getselectedlanguages(range):
+		return [eval("config.autolanguage.audio_autoselect%x.value" % x) for x in range]
+
+	def autolanguage(configElement):
+		config.autolanguage.audio_autoselect1.setChoices([x for x in audio_language_choices if x[0] and x[0] not in getselectedlanguages((2, 3, 4)) or not x[0] and not config.autolanguage.audio_autoselect2.value])
+		config.autolanguage.audio_autoselect2.setChoices([x for x in audio_language_choices if x[0] and x[0] not in getselectedlanguages((1, 3, 4)) or not x[0] and not config.autolanguage.audio_autoselect3.value])
+		config.autolanguage.audio_autoselect3.setChoices([x for x in audio_language_choices if x[0] and x[0] not in getselectedlanguages((1, 2, 4)) or not x[0] and not config.autolanguage.audio_autoselect4.value])
+		config.autolanguage.audio_autoselect4.setChoices([x for x in audio_language_choices if x[0] and x[0] not in getselectedlanguages((1, 2, 3)) or not x[0]])
+
 	config.autolanguage.audio_autoselect1 = ConfigSelection(choices=audio_language_choices, default=default_autoselect)
 	config.autolanguage.audio_autoselect2 = ConfigSelection(choices=audio_language_choices, default="")
 	config.autolanguage.audio_autoselect3 = ConfigSelection(choices=audio_language_choices, default="")
 	config.autolanguage.audio_autoselect4 = ConfigSelection(choices=audio_language_choices, default="")
+	config.autolanguage.audio_autoselect1.addNotifier(autolanguage, initial_call=False)
+	config.autolanguage.audio_autoselect2.addNotifier(autolanguage, initial_call=False)
+	config.autolanguage.audio_autoselect3.addNotifier(autolanguage, initial_call=False)
+	config.autolanguage.audio_autoselect4.addNotifier(autolanguage)
+
 	config.autolanguage.audio_defaultac3 = ConfigYesNo(default=True)
 	config.autolanguage.audio_defaultddp = ConfigYesNo(default=False)
 	config.autolanguage.audio_usecache = ConfigYesNo(default=True)
 
 	subtitle_language_choices = audio_language_choices[:1] + audio_language_choices[2:]
+
+	def getselectedsublanguages(range):
+		return [eval("config.autolanguage.subtitle_autoselect%x.value" % x) for x in range]
+
+	def autolanguagesub(configElement):
+		config.autolanguage.subtitle_autoselect1.setChoices([x for x in subtitle_language_choices if x[0] and x[0] not in getselectedsublanguages((2, 3, 4)) or not x[0] and not config.autolanguage.subtitle_autoselect2.value])
+		config.autolanguage.subtitle_autoselect2.setChoices([x for x in subtitle_language_choices if x[0] and x[0] not in getselectedsublanguages((1, 3, 4)) or not x[0] and not config.autolanguage.subtitle_autoselect3.value])
+		config.autolanguage.subtitle_autoselect3.setChoices([x for x in subtitle_language_choices if x[0] and x[0] not in getselectedsublanguages((1, 2, 4)) or not x[0] and not config.autolanguage.subtitle_autoselect4.value])
+		config.autolanguage.subtitle_autoselect4.setChoices([x for x in subtitle_language_choices if x[0] and x[0] not in getselectedsublanguages((1, 2, 3)) or not x[0]])
+		choicelist = [('0', _("None"))]
+		for y in range(1, 15 if config.autolanguage.subtitle_autoselect4.value else (7 if config.autolanguage.subtitle_autoselect3.value else (4 if config.autolanguage.subtitle_autoselect2.value else (2 if config.autolanguage.subtitle_autoselect1.value else 0)))):
+			choicelist.append((str(y), ", ".join([eval("config.autolanguage.subtitle_autoselect%x.getText()" % x) for x in (y & 1, y & 2, y & 4 and 3, y & 8 and 4) if x])))
+		if config.autolanguage.subtitle_autoselect3.value:
+			choicelist.append((str(y + 1), "All"))
+		config.autolanguage.equal_languages.setChoices(choicelist, default="0")
+	config.autolanguage.equal_languages = ConfigSelection(default="0", choices=[str(x) for x in range(0, 16)])
 	config.autolanguage.subtitle_autoselect1 = ConfigSelection(choices=subtitle_language_choices, default="")
 	config.autolanguage.subtitle_autoselect2 = ConfigSelection(choices=subtitle_language_choices, default="")
 	config.autolanguage.subtitle_autoselect3 = ConfigSelection(choices=subtitle_language_choices, default="")
 	config.autolanguage.subtitle_autoselect4 = ConfigSelection(choices=subtitle_language_choices, default="")
+	config.autolanguage.subtitle_autoselect1.addNotifier(autolanguagesub, initial_call=False)
+	config.autolanguage.subtitle_autoselect2.addNotifier(autolanguagesub, initial_call=False)
+	config.autolanguage.subtitle_autoselect3.addNotifier(autolanguagesub, initial_call=False)
+	config.autolanguage.subtitle_autoselect4.addNotifier(autolanguagesub)
 	config.autolanguage.subtitle_hearingimpaired = ConfigYesNo(default=False)
 	config.autolanguage.subtitle_defaultimpaired = ConfigYesNo(default=False)
 	config.autolanguage.subtitle_defaultdvb = ConfigYesNo(default=False)
 	config.autolanguage.subtitle_usecache = ConfigYesNo(default=True)
-	config.autolanguage.equal_languages = ConfigSelection(default="15", choices=[
-		("0", _("None")), ("1", "1"), ("2", "2"), ("3", "1,2"),
-		("4", "3"), ("5", "1,3"), ("6", "2,3"), ("7", "1,2,3"),
-		("8", "4"), ("9", "1,4"), ("10", "2,4"), ("11", "1,2,4"),
-		("12", "3,4"), ("13", "1,3,4"), ("14", "2,3,4"), ("15", _("All"))])
 
 	config.logmanager = ConfigSubsection()
 	config.logmanager.showinextensions = ConfigYesNo(default=False)

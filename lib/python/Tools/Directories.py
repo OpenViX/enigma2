@@ -423,7 +423,7 @@ def fileHas(f, content, mode="r"):
 def fileReadXML(filename, default=None, *args, **kwargs):
 	dom = None
 	try:
-		with open(filename, "r") as fd:
+		with open(filename, "r", encoding="utf-8") as fd:
 			dom = parse(fd).getroot()
 	except:
 		print("[fileReadXML] failed to read", filename)
@@ -666,7 +666,7 @@ def sanitizeFilename(filename):
 	and make sure we do not exceed Windows filename length limits.
 	Hence a less safe blacklist, rather than a whitelist.
 	"""
-	blacklist = ["\\", "/", ":", "*", "?", "\"", "<", ">", "|", "\0", "(", ")", " "]
+	blacklist = ["\\", "/", ":", "*", "?", "\"", "<", ">", "|", "\0"]
 	reserved = [
 		"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5",
 		"COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",

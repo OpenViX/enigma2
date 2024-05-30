@@ -94,7 +94,7 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 				config_mode_choices["loopthrough"] = _("Loop through from")
 			self.nimConfig.configMode.setChoices(config_mode_choices, "simple")
 
-	def createSetup(self):
+	def changedEntry(self):
 		self.adaptConfigModeChoices()
 		self.list = []
 
@@ -333,7 +333,7 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 			self.advancedUnicable, self.advancedConnected, self.toneburst, self.committedDiseqcCommand, self.uncommittedDiseqcCommand, self.singleSatEntry, self.commandOrder,
 			self.showAdditionalMotorOptions, self.cableScanType, self.multiType, self.cableConfigScanDetails, self.terrestrialCountriesEntry, self.cableCountriesEntry,
 			self.toneamplitude, self.scpc, self.t2mirawmode, self.forcelnbpower, self.forcetoneburst, self.externallyPowered):
-			self.createSetup()
+				self.changedEntry()
 
 	def run(self):
 		if self.nimConfig.configMode.value == "simple" and self.nimConfig.diseqcMode.value in ("single", "diseqc_a_b", "diseqc_a_b_c_d") and (not self.nim.isCombined() or self.nimConfig.configModeDVBS.value):
@@ -377,7 +377,7 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 			Wizard.instance.back()
 		else:
 			self.restartPrevService(close=False)
-			self.createSetup()
+			self.changedEntry()
 
 	def fillListWithAdvancedSatEntrys(self, Sat):
 		lnbnum = int(Sat.lnb.value)
@@ -564,7 +564,7 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 
 		return checkRecursiveConnect(self.slotid)
 
-	def keyOk(self):
+	def keySelect(self):
 		self.stopService()
 		if self["config"].getCurrent() == self.advancedSelectSatsEntry:
 			conf = self.nimConfig.advanced.sat[int(self.nimConfig.advanced.sats.value)].userSatellitesList
@@ -573,7 +573,7 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 			conf = self.nimConfig.userSatellitesList
 			self.session.openWithCallback(boundFunction(self.updateConfUserSatellitesList, conf), SelectSatsEntryScreen, userSatlist=conf.value)
 		else:
-			self.keySave()
+			ConfigListScreen.keySelect(self)
 
 	def updateConfUserSatellitesList(self, conf, val=None):
 		if val is not None:
@@ -640,7 +640,7 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 		self["description"] = Label("")
 		self["actions"] = ActionMap(["SetupActions", "SatlistShortcutAction"],
 		{
-			"ok": self.keyOk,
+			"ok": self.keySelect,
 			"save": self.keySave,
 			"cancel": self.keyCancel,
 			"changetype": self.changeConfigurationMode,
@@ -650,7 +650,7 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 		self.slotid = slotid
 		self.nim = nimmanager.nim_slots[slotid]
 		self.nimConfig = self.nim.config
-		self.createSetup()
+		self.changedEntry()
 		self.setTitle(_("Setup") + " " + self.nim.friendly_full_description)
 
 	def keyLeft(self):
@@ -658,7 +658,7 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 			return
 		ConfigListScreen.keyLeft(self)
 		if self["config"].getCurrent() in (self.advancedSelectSatsEntry, self.selectSatsEntry):
-			self.keyOk()
+			self.keySelect()
 		else:
 			self.newConfig()
 
@@ -673,7 +673,7 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 			return
 		ConfigListScreen.keyRight(self)
 		if self["config"].getCurrent() in (self.advancedSelectSatsEntry, self.selectSatsEntry):
-			self.keyOk()
+			self.keySelect()
 		else:
 			self.newConfig()
 
@@ -753,14 +753,14 @@ class NimSetup(ConfigListScreen, ServiceStopScreen, Screen):
 			self.nimConfig.configMode.selectNext()
 			self["config"].invalidate(self.configMode)
 			self.setTextKeyBlue()
-			self.createSetup()
+			self.changedEntry()
 
 	def nothingConnectedShortcut(self):
 		if self.isChanged():
 			for x in self["config"].list:
 				x[1].cancel()
 			self.setTextKeyBlue()
-			self.createSetup()
+			self.changedEntry()
 
 	def countrycodeToCountry(self, cc):
 		if not hasattr(self, 'countrycodes'):
@@ -1008,21 +1008,16 @@ class SelectSatsEntryScreen(Screen):
 		self["list"] = SelectionList(sat_list, enableWrapAround=True)
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
-			"red": self.cancel,
-			"green": self.save,
 			"yellow": self.sortBy,
 			"blue": self["list"].toggleAllSelection,
 			"save": self.save,
-			"cancel": self.cancel,
+			"cancel": self.close,
 			"ok": self["list"].toggleSelection,
 		}, -2)
 
 	def save(self):
 		val = [x[0][1] for x in self["list"].list if x[0][3]]
 		self.close(str(val))
-
-	def cancel(self):
-		self.close(None)
 
 	def sortBy(self):
 		lst = self["list"].list

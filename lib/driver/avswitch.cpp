@@ -138,10 +138,14 @@ bool eAVSwitch::isActive()
 int eAVSwitch::getAspect(int defaultVal, int flags) const
 {
 	int value = 0;
-	CFile::parseIntHex(&value, proc_videoaspect_r, __MODULE__, flags);
-	if (flags & FLAGS_DEBUG)
+	int ret = CFile::parseIntHex(&value, proc_videoaspect_r, __MODULE__, flags);
+	if (ret != 0)
+	{
+		value = defaultVal;
+	}
+	else if (flags & FLAGS_DEBUG)
 		eDebug("[%s] %s: %d", __MODULE__, "getAspect", value);
-	return defaultVal;
+	return value;
 }
 
 // read the preferred video modes

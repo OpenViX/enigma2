@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-15 23:37+0000\n"
-"PO-Revision-Date: 2024-04-16 14:25+0200\n"
+"POT-Creation-Date: 2024-05-09 09:44+0000\n"
+"PO-Revision-Date: 2024-05-18 12:12+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #, python-format
 msgid ""
@@ -9933,6 +9933,9 @@ msgstr "Een"
 msgid "One line"
 msgstr "Één regel"
 
+msgid "One line Alt"
+msgstr "Één regel Alt"
+
 msgid "OnlineVersionCheck"
 msgstr "Controle op update"
 
@@ -11370,6 +11373,9 @@ msgstr "Lezer statistieken"
 
 msgid "Reader/User"
 msgstr "Lezer/Gebruiker"
+
+msgid "Reader:"
+msgstr "Lezer:"
 
 #, python-format
 msgid "Ready to install \"%s\" ?"

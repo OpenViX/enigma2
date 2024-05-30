@@ -126,6 +126,7 @@ class eServiceMP3: public iPlayableService, public iPauseableService,
 public:
 	virtual ~eServiceMP3();
 
+	void setCacheEntry(bool isAudio, int pid);
 		// iPlayableService
 	RESULT connectEvent(const sigc::slot<void(iPlayableService*,int)> &event, ePtr<eConnection> &connection);
 	RESULT start();

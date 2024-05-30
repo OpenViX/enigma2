@@ -1010,26 +1010,37 @@ RESULT eServiceFactoryDVB::offlineOperations(const eServiceReference &ref, ePtr<
 
 RESULT eServiceFactoryDVB::lookupService(ePtr<eDVBService> &service, const eServiceReference &ref)
 {
-	if (!ref.path.empty()) // playback
+	eServiceReferenceDVB sRelayOrigSref;
+	bool res = ((const eServiceReferenceDVB&)ref).getSROriginal(sRelayOrigSref);
+	if (!ref.path.empty() && !res) // playback
 	{
 		eDVBMetaParser parser;
 		int ret=parser.parseFile(ref.path);
 		service = new eDVBService;
+		std::string sref = ref.toString();
+		if (sref.find("%3a//") != std::string::npos && ret) {
+			service->setServiceRef(ref.toString());
+			eDVBDB::getInstance()->parseServiceData(service, "");
+		}
 		if (!ret)
 			eDVBDB::getInstance()->parseServiceData(service, parser.m_service_data);
 	}
+	else if (res)
+	{
+		int err;
+		if ((err = eDVBDB::getInstance()->getService(sRelayOrigSref, service)) != 0)
+		{
+			eTrace("[eServiceFactoryDVB] lookupService SR original service failed!");
+			return err;
+		}
+	}
 	else
 	{
-			// TODO: handle the listing itself
-		// if (ref.... == -1) .. return "... bouquets ...";
-		// could be also done in another serviceFactory (with seperate ID) to seperate actual services and lists
-			// TODO: cache
-
 		/* we are sure to have a ..DVB reference as the info() call was forwarded here according to it's ID. */
 		int err;
 		if ((err = eDVBDB::getInstance()->getService((eServiceReferenceDVB&)ref, service)) != 0)
 		{
-			/* eTrace("[eServiceFactoryDVB] lookupService getService failed!"); */
+			eTrace("[eServiceFactoryDVB] lookupService getService failed!");
 			return err;
 		}
 	}
@@ -3365,8 +3376,9 @@ RESULT eDVBServicePlay::enableSubtitles(iSubtitleUser *user, SubtitleTrack &trac
 
 		m_subtitle_widget = user;
 		m_subtitle_parser->start(pid, composition_page_id, ancillary_page_id);
-		if (m_dvb_service)
+		if (m_dvb_service){
 			m_dvb_service->setCacheEntry(eDVBService::cSUBTITLE, ((pid&0xFFFF)<<16)|((composition_page_id&0xFF)<<8)|(ancillary_page_id&0xFF));
+		}
 	}
 	else
 		goto error_out;
@@ -3392,8 +3404,9 @@ RESULT eDVBServicePlay::disableSubtitles()
 		m_teletext_parser->setPageAndMagazine(-1, -1, "und");
 		m_subtitle_pages.clear();
 	}
-	if (m_dvb_service)
+	if (m_dvb_service){
 		m_dvb_service->setCacheEntry(eDVBService::cSUBTITLE, 0);
+	}
 	return 0;
 }
 

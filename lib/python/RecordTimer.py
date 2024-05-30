@@ -14,7 +14,8 @@ import Screens.InfoBar
 from Screens.MessageBox import MessageBox
 from Screens.PictureInPicture import PictureInPicture
 import Screens.Standby
-from Tools import Directories, Notifications, ASCIItranslit, Trashcan
+from Tools import Notifications, Trashcan
+from Tools.Directories import fileReadXML, getRecordingFilename, isPluginInstalled, resolveFilename, sanitizeFilename, SCOPE_CONFIG
 from Tools.XMLTools import stringToXML
 
 import NavigationInstance
@@ -346,10 +347,9 @@ class RecordTimerEntry(TimerEntry):
 			else:
 				filename += " - " + name  # standard
 
-		if config.recording.ascii_filenames.value:
-			filename = ASCIItranslit.legacyEncode(filename)
+		filename = sanitizeFilename(filename)
 
-		self.Filename = Directories.getRecordingFilename(filename, self.MountPath)
+		self.Filename = getRecordingFilename(filename, self.MountPath)
 		self.log(0, "Filename calculated as: '%s'" % self.Filename)
 		return self.Filename
 
@@ -664,7 +664,6 @@ class RecordTimerEntry(TimerEntry):
 						self.log(11, "zapping")
 						if notify:
 							Notifications.AddPopup(text=_("Zapped to timer service %s!") % self.service_ref.getServiceName(), type=MessageBox.TYPE_INFO, timeout=5)
-
 						# If the user is looking at a MovieList then we need to update this
 						# lastservice, so that we get back to the updated one when closing the
 						# list.
@@ -1007,7 +1006,7 @@ class RecordTimer(Timer):
 		self.onTimerRemoved = []
 		self.onTimerChanged = []
 
-		self.Filename = Directories.resolveFilename(Directories.SCOPE_CONFIG, "timers.xml")
+		self.Filename = resolveFilename(SCOPE_CONFIG, "timers.xml")
 
 		try:
 			self.loadTimer()
@@ -1023,7 +1022,7 @@ class RecordTimer(Timer):
 		# when activating a timer for servicetype 4097,
 		# and SystemApp has player enabled, then skip recording.
 		# Or always skip if in ("5001", "5002") as these cannot be recorded.
-		if w.service_ref.toString().startswith("4097:") and Directories.isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value is True or w.service_ref.toString()[:4] in ("5001", "5002"):
+		if w.service_ref.toString().startswith("4097:") and isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value is True or w.service_ref.toString()[:4] in ("5001", "5002"):
 			print("[RecordTimer][doActivate] found Serviceapp & player enabled - disable this timer recording")
 			w.state = RecordTimerEntry.StateEnded
 			from Tools.Notifications import AddPopup
@@ -1088,7 +1087,7 @@ class RecordTimer(Timer):
 		return False
 
 	def loadTimer(self, justLoad=False):		# justLoad is passed on to record()
-		root = Directories.fileReadXML(self.Filename, "<timers />")
+		root = fileReadXML(self.Filename, "<timers />")
 
 		# put out a message when at least one timer overlaps
 		checkit = False

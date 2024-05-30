@@ -144,7 +144,7 @@ class ChoiceBox(Screen):
 			if textsize[0] < textsize[1]:
 				textsize = (textsize[1], textsize[0] + 10)
 		listLen = len(self.list)
-		listMaxItems = int((desktop_h * 0.8 - textsize[1]) // itemheight)
+		listMaxItems = int(desktop_h * 0.8 - textsize[1]) // itemheight
 		scrollbar = self["list"].instance.getScrollbarWidth() + 5 if listLen > listMaxItems else 0
 		listWidth = int(min(self["list"].instance.getMaxItemTextWidth() + scrollbar, desktop_w * 0.9))
 		count = min(listLen, listMaxItems)
@@ -152,7 +152,7 @@ class ChoiceBox(Screen):
 			textsize = (listWidth, textsize[1])
 		width = max(listWidth, textsize[0])
 		listsize = (width, listMaxItems * itemheight)
-		listPos = separator + (textsize[1] if textsize[1] > 0 else 0)
+		listPos = separator + textsize[1] if textsize[1] > 0 else margin
 		# resize label
 		self["text"].instance.resize(eSize(*textsize))
 		self["text"].instance.move(ePoint(margin, margin))

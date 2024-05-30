@@ -342,7 +342,7 @@ int verify_cb(int ok, X509_STORE_CTX *ctx)
 	{
 		time_t now = time(NULL);
 		struct tm *t = localtime(&now);
-		if (t->tm_year < 2015)
+		if (t->tm_year < 2024)
 		{
 			eDebug("[CI RCC] seems our system clock is wrong - ignore!");
 			return 1;

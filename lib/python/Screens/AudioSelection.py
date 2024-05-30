@@ -1,3 +1,4 @@
+from enigma import iPlayableService, eTimer, eSize, eDVBDB, eServiceReference, eServiceCenter, iServiceInformation
 from Components.ActionMap import NumberActionMap
 from Components.config import config, ConfigSubsection, getConfigListEntry, ConfigNothing, ConfigSelection, ConfigOnOff, ConfigYesNo
 from Components.ConfigList import ConfigListScreen
@@ -22,27 +23,11 @@ from Tools.ISO639 import LanguageCodes
 from Tools.General import isIPTV
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
-from pickle import load as pickle_load, dump as pickle_dump, dumps as pickle_dumps
-from os import path as os_path
-
-from enigma import iPlayableService, eTimer, eSize, eDVBDB, eServiceReference, eServiceCenter, iServiceInformation
 
 FOCUS_CONFIG, FOCUS_STREAMS = range(2)
 [PAGE_AUDIO, PAGE_SUBTITLES] = ["audio", "subtitles"]
 
-CONFIG_FILE_AV = '/etc/enigma2/config_av'
-
 selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "selections/selectioncross.png"))  # for use in the future
-
-
-def getAVDict():
-	if os_path.exists(CONFIG_FILE_AV):
-		pkl_file = open(CONFIG_FILE_AV, 'rb')
-		if pkl_file:
-			avdict = pickle_load(pkl_file)
-			pkl_file.close()
-			return avdict
-	return {}
 
 
 class AudioSelection(ConfigListScreen, Screen):
@@ -102,27 +87,8 @@ class AudioSelection(ConfigListScreen, Screen):
 		self.focus = FOCUS_STREAMS
 		self.settings.menupage.addNotifier(self.fillList)
 
-	def saveAVDict(self, dict):
-		pkl_file = open(CONFIG_FILE_AV, 'wb')
-		if pkl_file:
-			pickle_dump(dict, pkl_file)
-			pkl_file.close()
-
-	def setAVInfo(self, service):
-		playinga_idx = service and service.audioTracks().getCurrentTrack() or -1
-		ref = self.session.nav.getCurrentServiceRef()
-		ref = ref and eServiceReference(ref)
-		x = ref.toString().split(":")
-		ref_str = ":".join(x[:10])
-
-		playing_idx = self.infobar.selected_subtitle
-
-		if playing_idx:
-			self.infobar.av_config[ref_str] = pickle_dumps(playinga_idx, 0).decode() + "|" + pickle_dumps(playing_idx, 0).decode()
-		else:
-			self.infobar.av_config[ref_str] = pickle_dumps(playinga_idx, 0).decode()
-
-		self.saveAVDict(self.infobar.av_config)
+	def saveAVDict(self):
+		eDVBDB.getInstance().saveIptvServicelist()
 
 	def readChoices(self, procx, choices):
 		choice_list = choices
@@ -518,7 +484,7 @@ class AudioSelection(ConfigListScreen, Screen):
 			if service.audioTracks().getNumberOfTracks() > track:
 				self.audioTracks.selectTrack(track)
 				if isIPTV(ref):
-					self.setAVInfo(service)
+					self.saveAVDict()
 
 	def keyLeft(self):
 		if self.focus == FOCUS_CONFIG:
@@ -638,7 +604,7 @@ class AudioSelection(ConfigListScreen, Screen):
 					self.enableSubtitle(cur[0][:5])
 					self.__updatedInfo()
 				if isIPTV(ref):
-					self.setAVInfo(service)
+					self.saveAVDict()
 			self.close(0)
 		elif self.focus == FOCUS_CONFIG:
 			self.keyRight()

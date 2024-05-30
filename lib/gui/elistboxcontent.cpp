@@ -172,7 +172,7 @@ int eListboxPythonStringContent::getMaxItemTextWidth()
 			}
 		}
 	}
-	
+
 	return m_max_text_width + (m_text_offset*2);
 }
 
@@ -290,7 +290,7 @@ void eListboxPythonStringContent::paint(gPainter &painter, eWindowStyle &style, 
 		if (item == Py_None)
 		{
 				/* seperator */
-			if (isverticallb) 
+			if (isverticallb)
 			{
 				int half_height = m_itemsize.height() / 2;
 				painter.fill(eRect(offset.x() + half_height, offset.y() + half_height - 2, m_itemsize.width() - m_itemsize.height(), 4));
@@ -1026,7 +1026,7 @@ int eListboxPythonMultiContent::getMaxItemTextWidth()
 		}
 
 	}
-	
+
 	return m_max_text_width + (m_text_offset*2);
 }
 
@@ -1052,7 +1052,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 		border_color = local_style->m_border_color;
 		isverticallb = m_listbox->getOrientation() == 1;
 	}
-	
+
 	painter.clip(itemregion);
 
 	if(local_style) {
@@ -1263,7 +1263,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 						painter.setBackgroundColor(gRGB(color));
 						painter.drawRectangle(rect);
 					}
-					else 
+					else
 					{
 						gRegion rc(rect);
 						bool mustClear = (selected && pbackColorSelected) || (!selected && pbackColor);
@@ -1511,7 +1511,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 		}
 	}
 
-	
+
 
 error_out:
 	if (buildfunc_ret)

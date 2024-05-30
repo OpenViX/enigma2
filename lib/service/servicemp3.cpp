@@ -9,6 +9,7 @@
 #include <lib/dvb/epgcache.h>
 #include <lib/dvb/decoder.h>
 #include <lib/dvb/dvb.h>
+#include <lib/dvb/db.h>
 #include <lib/components/file_eraser.h>
 #include <lib/gui/esubtitle.h>
 #include <lib/service/servicemp3.h>
@@ -457,6 +458,18 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	audioSink = videoSink = NULL;
 	m_decoder = NULL;
 
+	std::string sref = ref.toString();
+	if (!sref.empty()) {
+		std::vector<eIPTVDBItem> &iptv_services = eDVBDB::getInstance()->iptv_services;
+		for(std::vector<eIPTVDBItem>::iterator it = iptv_services.begin(); it != iptv_services.end(); ++it) {
+			if (sref.find(it->s_ref) != std::string::npos) {
+				m_currentAudioStream = it->ampeg_pid;
+				m_currentSubtitleStream = it->subtitle_pid;
+				m_cachedSubtitleStream = m_currentSubtitleStream;
+			}
+		}
+	}
+
 	CONNECT(m_subtitle_sync_timer->timeout, eServiceMP3::pushSubtitles);
 	CONNECT(m_pump.recv_msg, eServiceMP3::gstPoll);
 	CONNECT(m_nownext_timer->timeout, eServiceMP3::updateEpgCacheNowNext);
@@ -824,6 +837,29 @@ void eServiceMP3::updateEpgCacheNowNext()
 DEFINE_REF(eServiceMP3);
 
 DEFINE_REF(GstMessageContainer);
+
+void eServiceMP3::setCacheEntry(bool isAudio, int pid)
+{
+	bool hasFoundItem = false;
+	std::vector<eIPTVDBItem> &iptv_services = eDVBDB::getInstance()->iptv_services;
+	for(std::vector<eIPTVDBItem>::iterator it = iptv_services.begin(); it != iptv_services.end(); ++it) {
+		if (m_ref.toString().find(it->s_ref) != std::string::npos) {
+			hasFoundItem = true;
+			if (isAudio) {
+				it->ampeg_pid = pid;
+			}
+			else
+			{
+				it->subtitle_pid = pid;
+			}
+			break;
+		}
+	}
+	if (!hasFoundItem) {
+		eIPTVDBItem item(m_ref.toReferenceString(), isAudio ? pid : -1, -1, -1, -1, -1, -1, -1, isAudio ? -1 : pid, -1);
+		iptv_services.push_back(item);
+	}
+}
 
 RESULT eServiceMP3::connectEvent(const sigc::slot<void(iPlayableService*,int)> &event, ePtr<eConnection> &connection)
 {
@@ -1614,6 +1650,7 @@ int eServiceMP3::selectAudioStream(int i)
 	{
 		eDebug ("[eServiceMP3] switched to audio stream %i", current_audio);
 		m_currentAudioStream = i;
+		setCacheEntry(true, i);
 		return 0;
 	}
 	return -1;
@@ -2737,6 +2774,7 @@ RESULT eServiceMP3::enableSubtitles(iSubtitleUser *user, struct SubtitleTrack &t
 		m_decoder_time_valid_state = 0;
 		m_currentSubtitleStream = track.pid;
 		m_cachedSubtitleStream = m_currentSubtitleStream;
+		setCacheEntry(false, track.pid);
 		g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
 
 		m_subtitle_widget = user;
@@ -2760,6 +2798,7 @@ RESULT eServiceMP3::disableSubtitles()
 	eDebug("[eServiceMP3] disableSubtitles");
 	m_currentSubtitleStream = -1;
 	m_cachedSubtitleStream = m_currentSubtitleStream;
+	setCacheEntry(false, -1);
 	g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
 	m_subtitle_sync_timer->stop();
 	m_subtitle_pages.clear();

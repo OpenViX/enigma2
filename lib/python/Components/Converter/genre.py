@@ -1227,7 +1227,7 @@ def getGenreStringSub(hn, ln, country=None):
 def getGenreStringLong(hn, ln, country=None):
 	# if hn == 0:
 	# 	return _("Undefined content") + " " + str(ln)
-	if hn == 15 and "OpenTV" not in country and not (hasattr(config.plugins, "icetv") and config.plugins.icetv.enable_epg.value):
+	if hn == 15 and "OpenTV" not in str(country) and not (hasattr(config.plugins, "icetv") and config.plugins.icetv.enable_epg.value):
 		return _("User defined") + " " + str(ln)
 	main = getGenreStringMain(hn, ln, country=country)
 	sub = getGenreStringSub(hn, ln, country=country)
