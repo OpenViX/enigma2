@@ -510,6 +510,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 
 		self.createConfig()
 
+
 << << << < HEAD
 		blue_button = {"text": _("Edit DNS"), "function": self.KeyBlue, "helptext": _("Open nameserver configuration")}
 		ConfigListScreen.__init__(self, [], session=session, on_change=self.newConfig, fullUI=True, blue_button=blue_button)
