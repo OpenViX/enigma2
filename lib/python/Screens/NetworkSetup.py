@@ -376,8 +376,8 @@ class NameserverSetup(ConfigListScreen, HelpableScreen, Screen):
 		self.skinName = ["NameserverSetup", "Setup"]
 		self.backupNameserverList = iNetwork.getNameserverList()[:]
 		# print("[NetworkSetup][NameserverSetup] backup-list:%s" % self.backupNameserverList)
-		yellow_button={"text": _("Add"), "function": self.add, "helptext": _("Add a nameserver entry")}
-		blue_button={"text": _("Remove"), "function": self.remove, "helptext": _("Remove a nameserver entry")}
+		yellow_button = {"text": _("Add"), "function": self.add, "helptext": _("Add a nameserver entry")}
+		blue_button = {"text": _("Remove"), "function": self.remove, "helptext": _("Remove a nameserver entry")}
 		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry, fullUI=True, yellow_button=yellow_button, blue_button=blue_button)
 		self.createConfig()
 		self.createSetup()
@@ -504,7 +504,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 
 		self.createConfig()
 
-		blue_button={"text": _("Edit DNS"), "function": self.KeyBlue, "helptext": _("Open nameserver configuration")}
+		blue_button = {"text": _("Edit DNS"), "function": self.KeyBlue, "helptext": _("Open nameserver configuration")}
 		ConfigListScreen.__init__(self, [], session=session, on_change=self.newConfig, fullUI=True, blue_button=blue_button)
 
 		self.createSetup()
@@ -2535,7 +2535,7 @@ class NetworkuShareSetup(ConfigListScreen, HelpableScreen, Screen):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		self.skinName = ["NetworkuShareSetup", "Setup"]
-		yellow_button={"text": _("Shares"), "function": self.selectfolders, "helptext": _("Select shares")}
+		yellow_button = {"text": _("Shares"), "function": self.selectfolders, "helptext": _("Select shares")}
 		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True, yellow_button=yellow_button)
 		self.setTitle(_("uShare Setup"))
 		self.updateList()
@@ -2895,7 +2895,7 @@ class NetworkMiniDLNASetup(ConfigListScreen, HelpableScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
-		yellow_button={"text": _("Shares"), "function": self.selectfolders, "helptext": _("Selct shares")}
+		yellow_button = {"text": _("Shares"), "function": self.selectfolders, "helptext": _("Selct shares")}
 		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True, yellow_button=yellow_button)
 		self.setTitle(_("MiniDLNA Setup"))
 		self.skinName = "NetworkuShareSetup"
