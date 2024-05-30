@@ -510,17 +510,17 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 
 		self.createConfig()
 
-<<<<<<< HEAD
+<< << << < HEAD
 		blue_button = {"text": _("Edit DNS"), "function": self.KeyBlue, "helptext": _("Open nameserver configuration")}
 		ConfigListScreen.__init__(self, [], session=session, on_change=self.newConfig, fullUI=True, blue_button=blue_button)
-=======
+== == == =
 		self["ColorActions"] = HelpableActionMap(self, "ColorActions",
 		{
 			"blue": (self.KeyBlue, _("Open nameserver configuration")),
 		})
 
 		ConfigListScreen.__init__(self, [], session=session, on_change=self.newConfig, fullUI=True)
->>>>>>> d6fc9a56228(Revert "[NetworkSetup] hand colour button management to ConfigListScreen")
+>>>>>> > d6fc9a56228(Revert "[NetworkSetup] hand colour button management to ConfigListScreen")
 
 		self.createSetup()
 		self.onLayoutFinish.append(self.layoutFinished)
