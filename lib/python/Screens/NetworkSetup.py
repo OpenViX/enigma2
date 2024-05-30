@@ -520,7 +520,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 		})
 
 		ConfigListScreen.__init__(self, [], session=session, on_change=self.newConfig, fullUI=True)
->>>>>>> d6fc9a56228 (Revert "[NetworkSetup] hand colour button management to ConfigListScreen")
+>>>>>>> d6fc9a56228(Revert "[NetworkSetup] hand colour button management to ConfigListScreen")
 
 		self.createSetup()
 		self.onLayoutFinish.append(self.layoutFinished)
