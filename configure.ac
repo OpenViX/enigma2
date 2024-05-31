@@ -91,6 +91,7 @@ AM_CONDITIONAL(DM800, test "$BOXTYPE" == "dm800")
 AM_CONDITIONAL(DM8000, test "$BOXTYPE" == "dm8000")
 AM_CONDITIONAL(DM800SE, test "$BOXTYPE" == "dm800se")
 AM_CONDITIONAL(DM800SEV2, test "$BOXTYPE" == "dm800sev2")
+AM_CONDITIONAL(DM920, test "$BOXTYPE" == "dm920")
 AM_CONDITIONAL(E3HD, test "$BOXTYPE" == "e3hd")
 AM_CONDITIONAL(EBOX5000, test "$BOXTYPE" == "ebox5000")
 AM_CONDITIONAL(EBOX5100, test "$BOXTYPE" == "ebox5100")
@@ -400,6 +401,11 @@ fi
 if test `echo "$BOXTYPE" | cut -b 1-2` == "vu"; then
 	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
 	AC_DEFINE(FORCE_ADVANCED_REMOTE, 1,[define to fixup the input device identification when the remote control is actually an 'advanced' remote (with play/forward/rewind keys)])
+fi
+
+if test "$BOXTYPE" == "dm920"; then
+	AC_DEFINE(CONFIG_ION, 1,[define BOX use ION Allocator])
+	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
 fi
 
 if test `echo "$BOXTYPE" | cut -b 1-2` == "gb"; then

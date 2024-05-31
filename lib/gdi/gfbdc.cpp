@@ -15,7 +15,7 @@
 #include <lib/base/cfile.h>
 #endif
 
-#if defined(CONFIG_HISILICON_FB)
+#if defined(CONFIG_ION) || defined(CONFIG_HISILICON_FB)
 #include <lib/gdi/grc.h>
 
 extern void bcm_accel_blit(
@@ -25,17 +25,18 @@ extern void bcm_accel_blit(
 		int dst_x, int dst_y, int dwidth, int dheight,
 		int pal_addr, int flags);
 #endif
-
 #ifdef HAVE_HISILICON_ACCEL
 extern void  dinobot_accel_register(void *p1,void *p2);
 extern void  dinibot_accel_notify(void);
 #endif
+
 gFBDC::gFBDC()
 {
 	fb=new fbClass;
-
+#ifndef CONFIG_ION
 	if (!fb->Available())
 		eFatal("[gFBDC] no framebuffer available");
+#endif
 
 	int xres;
 	int yres;
@@ -171,8 +172,33 @@ void gFBDC::exec(const gOpcode *o)
 			gles_do_animation();
 		else
 			fb->blit();
+		gles_flush();
 #else
 		fb->blit();
+#endif
+#ifdef CONFIG_ION
+		if (surface_back.data_phys)
+		{
+			gUnmanagedSurface s(surface);
+			surface = surface_back;
+			surface_back = s;
+
+			fb->waitVSync();
+			if (surface.data_phys > surface_back.data_phys)
+			{
+				fb->setOffset(0);
+			}
+			else
+			{
+				fb->setOffset(surface_back.y);
+			}
+			bcm_accel_blit(
+				surface_back.data_phys, surface_back.x, surface_back.y, surface_back.stride, 0,
+				surface.data_phys, surface.x, surface.y, surface.stride,
+				0, 0, surface.x, surface.y,
+				0, 0, surface.x, surface.y,
+				0, 0);
+		}
 #endif
 #if defined(CONFIG_HISILICON_FB)
 		if(islocked()==0)
@@ -198,7 +224,7 @@ void gFBDC::exec(const gOpcode *o)
 		gles_set_buffer((unsigned int *)surface.data);
 		gles_set_animation(1, o->parm.setShowHideInfo->point.x(), o->parm.setShowHideInfo->point.y(), o->parm.setShowHideInfo->size.width(), o->parm.setShowHideInfo->size.height());
 #endif
-		break;
+				break;
 	}
 	case gOpcode::sendHide:
 	{
@@ -209,16 +235,28 @@ void gFBDC::exec(const gOpcode *o)
 		gles_set_buffer((unsigned int *)surface.data);
 		gles_set_animation(0, o->parm.setShowHideInfo->point.x(), o->parm.setShowHideInfo->point.y(), o->parm.setShowHideInfo->size.width(), o->parm.setShowHideInfo->size.height());
 #endif
-		break;
+				break;
 	}
 #ifdef USE_LIBVUGLES2
+	case gOpcode::sendShowItem:
+	{
+		gles_set_buffer((unsigned int *)surface.data);
+		gles_set_animation_listbox(o->parm.setShowItemInfo->dir, o->parm.setShowItemInfo->point.x(), o->parm.setShowItemInfo->point.y(), o->parm.setShowItemInfo->size.width(), o->parm.setShowItemInfo->size.height());
+		delete o->parm.setShowItemInfo;
+		break;
+	}
+	case gOpcode::setFlush:	
+	{
+		gles_set_flush(o->parm.setFlush->enable);
+		delete o->parm.setFlush;
+		break;
+	}
 	case gOpcode::setView:
 	{
 		gles_viewport(o->parm.setViewInfo->size.width(), o->parm.setViewInfo->size.height(), fb->Stride());
-		break;
+				break;
 	}
 #endif
-
 	default:
 		gDC::exec(o);
 		break;
@@ -257,10 +295,14 @@ void gFBDC::setResolution(int xres, int yres, int bpp)
 	#endif
 		)
 		return;
-
+#ifndef CONFIG_ION
 	if (gAccel::getInstance())
 		gAccel::getInstance()->releaseAccelMemorySpace();
-
+#else
+	gRC *grc = gRC::getInstance();
+	if (grc)
+		grc->lock();
+#endif
 	fb->SetMode(xres, yres, bpp);
 
 	surface.x = xres;
@@ -290,12 +332,14 @@ void gFBDC::setResolution(int xres, int yres, int bpp)
 		surface_back.data_phys = 0;
 	}
 
-	eDebug("[gFBDC] resolution: %dx%dx%d stride=%d, %dkB available for acceleration surfaces.",
-		 surface.x, surface.y, surface.bpp, fb->Stride(), (fb->Available() - fb_size)/1024);
+	eDebug("[gFBDC] resolution: %d x %d x %d (stride: %d) pages: %d", surface.x, surface.y, surface.bpp, fb->Stride(), fb->getNumPages());
 
+#ifndef CONFIG_ION
+	/* accel is already set in fb.cpp */
+	eDebug("[gFBDC] %dkB available for acceleration surfaces.", (fb->Available() - fb_size)/1024);
 	if (gAccel::getInstance())
 		gAccel::getInstance()->setAccelMemorySpace(fb->lfb + fb_size, surface.data_phys + fb_size, fb->Available() - fb_size);
-
+#endif
 #ifdef HAVE_HISILICON_ACCEL
 	dinobot_accel_register(&surface,&surface_back);
 #endif
@@ -318,6 +362,11 @@ void gFBDC::setResolution(int xres, int yres, int bpp)
 #endif
 
 	m_pixmap = new gPixmap(&surface);
+
+#ifdef CONFIG_ION
+	if (grc)
+		grc->unlock();
+#endif
 }
 
 void gFBDC::saveSettings()

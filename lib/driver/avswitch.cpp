@@ -255,7 +255,12 @@ int eAVSwitch::getResolutionY(int defaultVal, int flags) const
 int eAVSwitch::getFrameRate(int defaultVal, int flags) const
 {
 
+#ifdef DREAMBOX
+	const char *fileName = "/proc/stb/vmpeg/0/fallback_framerate";
+#else
 	const char *fileName = "/proc/stb/vmpeg/0/framerate";
+#endif
+
 	int value = 0;
 	int ret = CFile::parseInt(&value, fileName, __MODULE__, flags);
 	if (ret != 0)
