@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-05-22 18:33+0300\n"
+"PO-Revision-Date: 2024-05-31 18:04+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -1641,7 +1641,7 @@ msgstr ""
 msgid "A recording is currently running on the selected tuner. Please select a different tuner or consider to stop the recording to try again."
 msgstr "Tallennus on parhaillaan käynnissä valitussa virittimessä. Valitse toinen viritin tai lopeta tallennus ja yritä uudelleen."
 
-msgid "A recording is currently running. Please stop the recording before trying to scan."
+msgid "A recording is currently running. Please stop the recording before starting a service scan."
 msgstr "Tallennus on käynnissä. Sammuta se ennen kanavanhakua."
 
 msgid "A repeating timer or just once?"
@@ -13546,7 +13546,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 22.05.2024 ---\n"
+"--- 31.05.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -19435,3 +19435,15 @@ msgstr "Sulje pois ensimmäinen CA-laite"
 
 msgid "Date/time input"
 msgstr "Päivämäärän/ajan syöttö"
+
+msgid "Yellow button function"
+msgstr "Keltaisen painikkeen toiminto"
+
+msgid "Blue button function"
+msgstr "Sinisen painikkeen toiminto"
+
+msgid "Start fastscan"
+msgstr "Aloita pikahaku"
+
+msgid "Select shares"
+msgstr "Valitse jaot"
