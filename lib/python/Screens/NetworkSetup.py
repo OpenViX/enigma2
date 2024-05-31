@@ -510,18 +510,12 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 
 		self.createConfig()
 
-
-<< << << < HEAD
-		blue_button = {"text": _("Edit DNS"), "function": self.KeyBlue, "helptext": _("Open nameserver configuration")}
-		ConfigListScreen.__init__(self, [], session=session, on_change=self.newConfig, fullUI=True, blue_button=blue_button)
-== == == =
 		self["ColorActions"] = HelpableActionMap(self, "ColorActions",
 		{
 			"blue": (self.KeyBlue, _("Open nameserver configuration")),
 		})
 
 		ConfigListScreen.__init__(self, [], session=session, on_change=self.newConfig, fullUI=True)
->>>>>> > d6fc9a56228(Revert "[NetworkSetup] hand colour button management to ConfigListScreen")
 
 		self.createSetup()
 		self.onLayoutFinish.append(self.layoutFinished)
@@ -2552,12 +2546,7 @@ class NetworkuShareSetup(ConfigListScreen, HelpableScreen, Screen):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		self.skinName = ["NetworkuShareSetup", "Setup"]
-<<<<<<< HEAD
-		yellow_button = {"text": _("Shares"), "function": self.selectfolders, "helptext": _("Select shares")}
-		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True, yellow_button=yellow_button)
-=======
 		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True)
->>>>>>> d6fc9a56228 (Revert "[NetworkSetup] hand colour button management to ConfigListScreen")
 		self.setTitle(_("uShare Setup"))
 		self["key_yellow"] = Label(_("Shares"))
 		self["actions"] = ActionMap(["ColorActions"],
@@ -2921,12 +2910,7 @@ class NetworkMiniDLNASetup(ConfigListScreen, HelpableScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
-<<<<<<< HEAD
-		yellow_button = {"text": _("Shares"), "function": self.selectfolders, "helptext": _("Selct shares")}
-		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True, yellow_button=yellow_button)
-=======
 		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True)
->>>>>>> d6fc9a56228 (Revert "[NetworkSetup] hand colour button management to ConfigListScreen")
 		self.setTitle(_("MiniDLNA Setup"))
 		self.skinName = "NetworkuShareSetup"
 		self["key_yellow"] = Label(_("Shares"))
