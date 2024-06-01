@@ -376,7 +376,7 @@ class NameserverSetup(ConfigListScreen, HelpableScreen, Screen):
 		self.skinName = ["NameserverSetup", "Setup"]
 		self.backupNameserverList = iNetwork.getNameserverList()[:]
 		# print("[NetworkSetup][NameserverSetup] backup-list:%s" % self.backupNameserverList)
-		yellow_button={"text": _("Add"), "function": self.add, "helptext": _("Add a nameserver entry")}
+		yellow_button = {"text": _("Add"), "function": self.add, "helptext": _("Add a nameserver entry")}
 		blue_button = {"text": _("Remove"), "function": self.remove, "helptext": _("Remove a nameserver entry")}
 		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry, fullUI=True, yellow_button=yellow_button, blue_button=blue_button)
 		self.createConfig()
