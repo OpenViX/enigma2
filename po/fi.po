@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-05-31 18:04+0300\n"
+"PO-Revision-Date: 2024-06-01 14:08+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -12005,7 +12005,7 @@ msgid "Set as startup service"
 msgstr "Valitse käynnistyskanavaksi"
 
 msgid "Set default"
-msgstr "Oletus"
+msgstr "Aseta oletus"
 
 msgid "Set end time"
 msgstr "Aseta loppumisaika"
@@ -19447,3 +19447,9 @@ msgstr "Aloita pikahaku"
 
 msgid "Select shares"
 msgstr "Valitse jaot"
+
+msgid "Toggle Configuration Mode or AutoDisqc"
+msgstr "Vaihda asetustilaan tai AutoDisqc:n"
+
+msgid "Set all the settings back as they were"
+msgstr "Palauta kaikki asetukset entiselleen"
