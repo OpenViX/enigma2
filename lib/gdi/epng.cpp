@@ -492,12 +492,11 @@ int loadSVG(ePtr<gPixmap> &result, const char *filename, int cached, int width, 
 int loadImage(ePtr<gPixmap> &result, const char *filename, int accel, int width, int height, int cached, float scale, int keepAspect, int align)
 {
 	if (endsWith(filename, ".png"))
-		return loadPNG(result, filename, accel, 1);
+		return loadPNG(result, filename, accel, cached == -1 ? 1 : cached);
 	else if (endsWith(filename, ".svg"))
-		return loadSVG(result, filename, 1, width, height, scale, keepAspect, align);
+		return loadSVG(result, filename, cached == -1 ? 1 : cached, width, height, scale, keepAspect, align);
 	else if (endsWith(filename, ".jpg"))
-		return loadJPG(result, filename, 0);
-
+		return loadJPG(result, filename, cached == -1 ? 0 : cached);
 	return 0;
 }
 
