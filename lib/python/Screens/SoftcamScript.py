@@ -128,6 +128,3 @@ class SoftcamScript(Setup):
 		self.session.nav.playService(self.oldref, adjust=False)
 		if self.camtype == "None" or "e" in self.camtype:
 			Setup.keySave(self)
-
-	def restartSoftcam(self):
-		self.restart(device="s")
