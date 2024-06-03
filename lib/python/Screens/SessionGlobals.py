@@ -13,6 +13,7 @@ from Components.SystemInfo import BoxInfo
 
 MODEL = BoxInfo.getItem("model")
 
+
 class SessionGlobals(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
