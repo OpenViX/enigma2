@@ -351,7 +351,10 @@ def InitLcd():
 		def setLCDminitvfps(configElement):
 			ilcd.setLCDMiniTVFPS(configElement.value)
 
-		standby_default = 0
+		if SystemInfo["boxtype"] in ('dm900', 'dm920'):
+			standby_default = 4
+		else:
+			standby_default = 0
 
 		if not ilcd.isOled():
 			config.lcd.contrast = ConfigSlider(default=5, limits=(0, 20))
