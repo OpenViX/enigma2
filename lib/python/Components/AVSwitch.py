@@ -43,8 +43,11 @@ class AVSwitch:
 				"60Hz": {60: "2160p"},
 				"multi": {50: "2160p50", 60: "2160p"},
 				"auto": {50: "2160p50", 60: "2160p", 24: "2160p24"}}
+
 	if SystemInfo["boxtype"] in ("dm900", "dm920"):
-		del rates["2160p"]["auto"]
+		rates["2160p"] = {"50Hz": {50: "2160p50"},
+				"60Hz": {60: "2160p60"},
+				"multi": {50: "2160p50", 60: "2160p60"}}
 
 	rates["PC"] = {
 		"1024x768": {60: "1024x768"},  # not possible on DM7025
