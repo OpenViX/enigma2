@@ -29,9 +29,6 @@ public:
 #else
 public:
 	unsigned char *lfb;
-#ifdef CONFIG_ION
-	int m_accel_fd;
-#endif
 	void enableManualBlit();
 	void disableManualBlit();
 	int showConsole(int state);

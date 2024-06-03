@@ -238,13 +238,24 @@
 
 <!-- standby -->
 	<screen name="StandbySummary" position="0,0" size="400,240">
-		<widget source="global.CurrentTime" render="Label" position="0,5" size="380,60" font="FdLcD;60" noWrap="1" foregroundColor="yellow" halign="center">
-			<convert type="ClockToText">ShortDate</convert>
+		<widget source="global.CurrentTime" render="Label" position="0,0" size="400,36" font="FdLcD;35" halign="right" noWrap="1" foregroundColor="blue">
+			<convert type="ClockToText">FullDate</convert>
 		</widget>
-		<widget source="global.CurrentTime" render="Label" position="0,100" size="380,140" font="FdLcD;120" noWrap="1" foregroundColor="lightcyan" halign="center">
+		<widget source="global.CurrentTime" render="Label" position="0,38" size="400,160" font="FdLcD;150" halign="center" noWrap="1" foregroundColor="blue">
 			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
+		<widget source="global.OnlineStableUpdateState" render="Pixmap" pixmap="update_stable.png" position="280,207" size="30,30">
+			<convert type="ConditionalShowHide"/>
+		</widget>
+		<widget source="global.OnlineUnstableUpdateState" render="Pixmap" pixmap="update_unstable.png" position="280,207" size="30,30">
+			<convert type="ConditionalShowHide"/>
+		</widget>
+		<widget source="session.RecordState" render="Pixmap" pixmap="rec.png" position="350,207" size="50,26">
+			<convert type="ConditionalShowHide"/>
+		</widget>
+		<panel name="SummaryTunerStatusPanel" />
 	</screen>
+
 <!-- Plugin browser -->
 	<screen name="PluginBrowserSummary" position="0,0" size="400,240">
 		<widget source="parent.Title" render="Label" position="0,38" size="400,26" font="FdLcD;24" halign="left" noWrap="1" />

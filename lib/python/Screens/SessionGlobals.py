@@ -9,7 +9,6 @@ from Components.Sources.Boolean import Boolean
 from Components.Sources.RecordState import RecordState
 from Components.Converter.Combine import Combine
 from Components.Renderer.FrontpanelLed import FrontpanelLed
-from Components.SystemInfo import MODEL
 
 
 class SessionGlobals(Screen):
@@ -47,9 +46,5 @@ class SessionGlobals(Screen):
 		if nr_leds == 1:
 			FrontpanelLed(which=0, boolean=False, patterns=[PATTERN_OFF, PATTERN_BLINK, PATTERN_OFF, PATTERN_BLINK]).connect(combine)
 		elif nr_leds == 2:
-			if MODEL in ("dm900", "dm920"):
-				FrontpanelLed(which=1, boolean=False, patterns=[PATTERN_OFF, PATTERN_BLINK, PATTERN_ON, PATTERN_BLINK]).connect(combine)
-				FrontpanelLed(which=0, boolean=False, patterns=[PATTERN_ON, PATTERN_ON, PATTERN_OFF, PATTERN_OFF]).connect(combine)
-			else:
-				FrontpanelLed(which=0, boolean=False, patterns=[PATTERN_OFF, PATTERN_BLINK, PATTERN_ON, PATTERN_BLINK]).connect(combine)
-				FrontpanelLed(which=1, boolean=False, patterns=[PATTERN_ON, PATTERN_ON, PATTERN_OFF, PATTERN_OFF]).connect(combine)
+			FrontpanelLed(which=0, boolean=False, patterns=[PATTERN_OFF, PATTERN_BLINK, PATTERN_ON, PATTERN_BLINK]).connect(combine)
+			FrontpanelLed(which=1, boolean=False, patterns=[PATTERN_ON, PATTERN_ON, PATTERN_OFF, PATTERN_OFF]).connect(combine)

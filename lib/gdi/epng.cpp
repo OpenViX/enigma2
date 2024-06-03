@@ -3,15 +3,10 @@
 #include <png.h>
 #include <stdio.h>
 #include <lib/base/cfile.h>
-#include <lib/base/wrappers.h>
+#include <lib/base/estring.h>
 #include <lib/gdi/epng.h>
 #include <lib/gdi/pixmapcache.h>
 #include <unistd.h>
-#include <lib/base/estring.h>
-
-#include <map>
-#include <string>
-#include <lib/base/elock.h>
 
 extern "C" {
 #include <jpeglib.h>
@@ -128,7 +123,7 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 
 	result = new gPixmap(width, height, bit_depth * channels, cached ? PixmapCache::PixmapDisposed : NULL, accel);
 	gUnmanagedSurface *surface = result->surface;
-	
+
 	png_bytep *rowptr = new png_bytep[height];
 	for (unsigned int i = 0; i < height; i++)
 		rowptr[i] = ((png_byte*)(surface->data)) + i * surface->stride;
@@ -136,18 +131,6 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 
 	delete [] rowptr;
 
-	if (color_type == PNG_COLOR_TYPE_RGBA || color_type == PNG_COLOR_TYPE_GA)
-		surface->transparent = true;
-	else
-	{
-		png_bytep trans_alpha = NULL;
-		int num_trans = 0;
-		png_color_16p trans_color = NULL;
-
-		png_get_tRNS(png_ptr, info_ptr, &trans_alpha, &num_trans, &trans_color);
-		surface->transparent = (trans_alpha != NULL);
-	}
-	
 	int num_palette = -1, num_trans = -1;
 	if (color_type == PNG_COLOR_TYPE_PALETTE) {
 		if (png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE)) {
@@ -221,8 +204,8 @@ int loadJPG(ePtr<gPixmap> &result, const char *filename, ePtr<gPixmap> alpha, in
 	if (cached && (result = PixmapCache::Get(filename)))
 		return 0;
 
-	struct jpeg_decompress_struct cinfo;
-	struct my_error_mgr jerr;
+	struct jpeg_decompress_struct cinfo = {};
+	struct my_error_mgr jerr = {};
 	JSAMPARRAY buffer;
 	int row_stride;
 	CFile infile(filename, "rb");
@@ -265,13 +248,13 @@ int loadJPG(ePtr<gPixmap> &result, const char *filename, ePtr<gPixmap> alpha, in
 		}
 		if (grayscale)
 		{
-			eWarning("[loadJPG] we don't support grayscale + alpha at the moment");
+			eWarning("[loadJPG] no support for grayscale + alpha at the moment");
 			alpha = 0;
 		}
 	}
 
 	result = new gPixmap(cinfo.output_width, cinfo.output_height, grayscale ? 8 : 32, cached ? PixmapCache::PixmapDisposed : NULL);
-	result->surface->transparent = false;
+
 	row_stride = cinfo.output_width * cinfo.output_components;
 	buffer = (*cinfo.mem->alloc_sarray)((j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);
 	while (cinfo.output_scanline < cinfo.output_height) {
@@ -497,12 +480,14 @@ int loadImage(ePtr<gPixmap> &result, const char *filename, int accel, int width,
 		return loadSVG(result, filename, cached == -1 ? 1 : cached, width, height, scale, keepAspect, align);
 	else if (endsWith(filename, ".jpg"))
 		return loadJPG(result, filename, cached == -1 ? 0 : cached);
+
 	return 0;
 }
 
 int savePNG(const char *filename, gPixmap *pixmap)
 {
 	int result;
+
 	{
 		eDebug("[ePNG] saving to %s",filename);
 		CFile fp(filename, "wb");
