@@ -383,7 +383,11 @@ void eDVBCIInterfaces::ciRemoved(eDVBCISlot *slot)
 		if (slot->linked_next)
 			slot->linked_next->setSource(slot->current_source);
 		else // last CI in chain
+#ifdef DREAMBOX_DUAL_TUNER
+			setInputSource(slot->current_tuner, getTunerLetterDM(slot->current_tuner));
+#else
 			setInputSource(slot->current_tuner, eDVBCISlot::getTunerLetter(slot->current_tuner));
+#endif
 		slot->linked_next = 0;
 		slot->use_count=0;
 		slot->plugged=true;
@@ -831,7 +835,11 @@ void eDVBCIInterfaces::removePMTHandler(eDVBServicePMTHandler *pmthandler)
 				if (slot->linked_next)
 					slot->linked_next->setSource(slot->current_source);
 				else
+#ifdef DREAMBOX_DUAL_TUNER
+					setInputSource(slot->current_tuner, getTunerLetterDM(slot->current_tuner));
+#else
 					setInputSource(slot->current_tuner, eDVBCISlot::getTunerLetter(slot->current_tuner));
+#endif
 
 				if (base_slot != slot)
 				{
@@ -1219,7 +1227,11 @@ void eDVBCIInterfaces::setCIPlusRouting(int slotid)
 		new_input_source << "CI" << slot->getSlotID();
 
 		setInputSource(tunernum, new_input_source.str());
+#ifdef DREAMBOX_DUAL_TUNER
+		slot->setSource(getTunerLetterDM(tunernum));
+#else
 		slot->setSource(eDVBCISlot::getTunerLetter(tunernum));
+#endif
 
 		slot->setCIPlusRoutingParameter(tunernum, ciplus_routing_input, ciplus_routing_ci_input);
 		eDebug("[CI] CIRouting active slotid=%d tuner=%d old_input=%s old_ci_input=%s", slotid, tunernum, ciplus_routing_input.c_str(), ciplus_routing_ci_input.c_str());
