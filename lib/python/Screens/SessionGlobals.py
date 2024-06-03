@@ -9,9 +9,7 @@ from Components.Sources.Boolean import Boolean
 from Components.Sources.RecordState import RecordState
 from Components.Converter.Combine import Combine
 from Components.Renderer.FrontpanelLed import FrontpanelLed
-from Components.SystemInfo import BoxInfo
-
-MODEL = BoxInfo.getItem("model")
+from Components.SystemInfo import MODEL
 
 
 class SessionGlobals(Screen):
