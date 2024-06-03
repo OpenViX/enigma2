@@ -76,7 +76,7 @@ def getChipSetString():
 	try:
 		return str(open("/proc/stb/info/chipset").read().lower().replace("\n", "").replace("brcm", "").replace("bcm", ""))
 	except:
-		if getModel() == "dm920":
+		if getModel() in ("'dm900'", "'dm920'"):
 			return "7252s"
 		return "unknown"
 
