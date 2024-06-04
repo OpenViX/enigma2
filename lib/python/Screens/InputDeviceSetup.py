@@ -293,17 +293,8 @@ class RemoteControlType(ConfigListScreen, Screen):
 		Screen.__init__(self, session)
 		self.skinName = ["RemoteControlType", "Setup"]
 
-		self["actions"] = ActionMap(["SetupActions"],
-		{
-			"cancel": self.keyCancel,
-			"save": self.keySave,
-		}, -1)
-
-		self["key_green"] = StaticText(_("Save"))
-		self["key_red"] = StaticText(_("Cancel"))
-
 		self.list = []
-		ConfigListScreen.__init__(self, self.list, session=self.session)
+		ConfigListScreen.__init__(self, self.list, session=self.session, fullUI=True)
 
 		rctype = config.plugins.remotecontroltype.rctype.value
 		self.rctype = ConfigSelection(choices=self.rcList, default=str(rctype))

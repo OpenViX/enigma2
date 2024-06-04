@@ -376,15 +376,9 @@ class NameserverSetup(ConfigListScreen, HelpableScreen, Screen):
 		self.skinName = ["NameserverSetup", "Setup"]
 		self.backupNameserverList = iNetwork.getNameserverList()[:]
 		# print("[NetworkSetup][NameserverSetup] backup-list:%s" % self.backupNameserverList)
-		self["key_yellow"] = StaticText(_("Add"))
-		self["key_blue"] = StaticText(_("Delete"))
-
-		self["actions"] = HelpableActionMap(self, ["ColorActions"],
-			{
-			"yellow": (self.add, _("Add a nameserver entry")),
-			"blue": (self.remove, _("Remove a nameserver entry")),
-			})  # noqa: E123
-		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry, fullUI=True)
+		yellow_button = {"text": _("Add"), "function": self.add, "helptext": _("Add a nameserver entry")}
+		blue_button = {"text": _("Remove"), "function": self.remove, "helptext": _("Remove a nameserver entry")}
+		ConfigListScreen.__init__(self, [], session=session, on_change=self.changedEntry, fullUI=True, yellow_button=yellow_button, blue_button=blue_button)
 		self.createConfig()
 		self.createSetup()
 
@@ -510,12 +504,8 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 
 		self.createConfig()
 
-		self["ColorActions"] = HelpableActionMap(self, "ColorActions",
-		{
-			"blue": (self.KeyBlue, _("Open nameserver configuration")),
-		})
-
-		ConfigListScreen.__init__(self, [], session=session, on_change=self.newConfig, fullUI=True)
+		blue_button = {"text": _("Edit DNS"), "function": self.KeyBlue, "helptext": _("Open nameserver configuration")}
+		ConfigListScreen.__init__(self, [], session=session, on_change=self.newConfig, fullUI=True, blue_button=blue_button)
 
 		self.createSetup()
 		self.onLayoutFinish.append(self.layoutFinished)
@@ -538,7 +528,6 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 		self["Adaptertext"] = StaticText(_("Network:"))
 		self["Adapter"] = StaticText()
 		self["introduction2"] = StaticText(_("Enter adapter settings or disable adapter, then Save to action changed setup."))
-		self["key_blue"] = StaticText(_("Edit DNS"))
 
 	def layoutFinished(self):
 		self["DNS1"].setText(self.primaryDNS.getText())
@@ -2546,13 +2535,9 @@ class NetworkuShareSetup(ConfigListScreen, HelpableScreen, Screen):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		self.skinName = ["NetworkuShareSetup", "Setup"]
-		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True)
+		yellow_button = {"text": _("Shares"), "function": self.selectfolders, "helptext": _("Select shares")}
+		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True, yellow_button=yellow_button)
 		self.setTitle(_("uShare Setup"))
-		self["key_yellow"] = Label(_("Shares"))
-		self["actions"] = ActionMap(["ColorActions"],
-		{
-			"yellow": self.selectfolders,
-		})
 		self.updateList()
 
 	def updateList(self, ret=None):
@@ -2910,14 +2895,10 @@ class NetworkMiniDLNASetup(ConfigListScreen, HelpableScreen, Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
-		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True)
+		yellow_button = {"text": _("Shares"), "function": self.selectfolders, "helptext": _("Selct shares")}
+		ConfigListScreen.__init__(self, [], session=self.session, on_change=self.changedEntry, fullUI=True, yellow_button=yellow_button)
 		self.setTitle(_("MiniDLNA Setup"))
 		self.skinName = "NetworkuShareSetup"
-		self["key_yellow"] = Label(_("Shares"))
-		self["actions"] = ActionMap(["ColorActions"],
-		{
-			"yellow": self.selectfolders,
-		})
 		self.updateList()
 
 	def updateList(self, ret=None):
