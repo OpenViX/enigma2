@@ -47,7 +47,8 @@ class AVSwitch:
 	if SystemInfo["boxtype"] in ("dm900", "dm920"):
 		rates["2160p"] = {"50Hz": {50: "2160p50"},
 				"60Hz": {60: "2160p60"},
-				"multi": {50: "2160p50", 60: "2160p60"}}
+				"multi": {50: "2160p50", 60: "2160p60"},
+				"auto": {50: "2160p50", 60: "2160p60", 24: "2160p24"}}
 
 	rates["PC"] = {
 		"1024x768": {60: "1024x768"},  # not possible on DM7025
@@ -226,8 +227,7 @@ class AVSwitch:
 				ratelist = []
 				for rate in rates:
 					if rate == "auto":
-						if SystemInfo["Has24hz"]:
-							ratelist.append((rate, mode == "2160p30" and "auto (25Hz/30Hz/24Hz)" or "auto (50Hz/60Hz/24Hz)"))
+						ratelist.append((rate, mode == "2160p30" and "auto (25Hz/30Hz/24Hz)" or "auto (50Hz/60Hz/24Hz)"))
 					else:
 						ratelist.append((rate, rate == "multi" and (mode == "2160p30" and "multi (25Hz/30Hz)" or "multi (50Hz/60Hz)") or rate))
 				config.av.videorate[mode] = ConfigSelection(choices=ratelist)
