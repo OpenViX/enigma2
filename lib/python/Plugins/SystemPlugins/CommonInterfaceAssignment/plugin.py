@@ -283,19 +283,17 @@ class CIconfigMenu(Screen):
 			fp.write("\t<slot>\n")
 			fp.write("\t\t<id>%s</id>\n" % self.ci_slot)
 			for item in self.selectedcaid:
-				if len(self.selectedcaid):
-					fp.write("\t\t<caid id=\"%s\" />\n" % item[0])
+				fp.write("\t\t<caid id=\"%s\" />\n" % item[0])
 			for item in self.servicelist:
-				if len(self.servicelist):
-					name = item[0].replace('<', '&lt;')
-					name = name.replace('&', '&amp;')
-					name = name.replace('>', '&gt;')
-					name = name.replace('"', '&quot;')
-					name = name.replace("'", '&apos;')
-					if item[2] == 1:
-						fp.write("\t\t<provider name=\"%s\" dvbnamespace=\"%s\" />\n" % (stringToXML(name), item[3]))
-					else:
-						fp.write("\t\t<service name=\"%s\" ref=\"%s\" />\n" % (stringToXML(name), item[3]))
+				name = item[0].replace('<', '&lt;')
+				name = name.replace('&', '&amp;')
+				name = name.replace('>', '&gt;')
+				name = name.replace('"', '&quot;')
+				name = name.replace("'", '&apos;')
+				if item[2] == 1:
+					fp.write("\t\t<provider name=\"%s\" dvbnamespace=\"%s\" />\n" % (stringToXML(name), item[3]))
+				else:
+					fp.write("\t\t<service name=\"%s\" ref=\"%s\" />\n" % (stringToXML(name), item[3]))
 			fp.write("\t</slot>\n")
 			fp.write("</ci>\n")
 			fp.close()
@@ -321,7 +319,7 @@ class CIconfigMenu(Screen):
 				read_slot = str(getValue(slot.findall("id"), False))
 				i = 0
 				for caid in slot.findall("caid"):
-					read_caid = caid.get("id").encode("UTF-8")
+					read_caid = caid.get("id")
 					self.selectedcaid.append((str(read_caid), str(read_caid), i))
 					self.usingcaid.append(int(read_caid, 16))
 					i += 1
