@@ -69,14 +69,14 @@ def getIsBroadcom():
 
 def getModel():  # Because we can't call SystemInfo here
 	if fileExists(f := pathjoin(resolveFilename(SCOPE_LIBDIR), "enigma.info")):
-		return (m := [x.split("=")[1].strip() for x in open(f).readlines() if x.startswith("machinebuild=")]) and m[0] or None
+		return (m := [x.split("=")[1].strip().replace("'", "") for x in open(f).readlines() if x.startswith("machinebuild=")]) and m[0] or None
 
 
 def getChipSetString():
 	try:
 		return str(open("/proc/stb/info/chipset").read().lower().replace("\n", "").replace("brcm", "").replace("bcm", ""))
 	except:
-		if getModel() in ("'dm900'", "'dm920'"):
+		if getModel() in ("dm900", "dm920"):
 			return "7252s"
 		return "unknown"
 
