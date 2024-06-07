@@ -1,11 +1,12 @@
-from sys import modules, version_info
+import fcntl
+import socket
+import struct
+
 from os import path as ospath
+from os.path import join as pathjoin
+from sys import modules, version_info
 from time import time
 from Tools.Directories import fileExists, resolveFilename, SCOPE_LIBDIR
-from os.path import join as pathjoin
-import socket
-import fcntl
-import struct
 
 from enigma import getEnigmaVersionString
 
@@ -67,18 +68,16 @@ def getIsBroadcom():
 	return False
 
 
-def getModel():  # Because we can't call SystemInfo here
-	if fileExists(f := pathjoin(resolveFilename(SCOPE_LIBDIR), "enigma.info")):
-		return (m := [x.split("=")[1].strip().replace("'", "") for x in open(f).readlines() if x.startswith("machinebuild=")]) and m[0] or None
-
-
 def getChipSetString():
 	try:
 		return str(open("/proc/stb/info/chipset").read().lower().replace("\n", "").replace("brcm", "").replace("bcm", ""))
 	except:
-		if getModel() in ("dm900", "dm920"):
-			return "7252s"
-		return "unknown"
+		if fileExists("/proc/stb/info/model"):
+			getModel = str(open("/proc/stb/info/model").read())
+			if getModel[0:5] in ("dm900", "dm920"):
+				return "7252s"
+		else:
+			return "unknown"
 
 
 def getCPUSpeedMHzInt():
