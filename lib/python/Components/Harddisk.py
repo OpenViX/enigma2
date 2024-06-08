@@ -632,6 +632,7 @@ class HarddiskManager:
 			rootMajor = None
 			# rootMinor = None
 		# print("[Harddisk] DEBUG: rootMajor = '%s', rootMinor = '%s'" % (rootMajor, rootMinor))
+		boxModel = BoxInfo.getItem("model")
 		for device in sorted(listdir("/sys/block")):
 			try:
 				physicalDevice = ospath.realpath(ospath.join("/sys/block", device, "device"))
