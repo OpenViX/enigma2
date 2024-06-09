@@ -645,6 +645,7 @@ class HarddiskManager:
 				print("[Harddisk] Error: Device '%s' (%s) does not appear to have valid device numbers!" % (device, physicalDevice))
 				continue
 			devMajor = int(data.split(":")[0])
+			devMinor = int(data.split(":")[1])
 			if devMajor in blacklistedDisks:
 				# print("[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) is blacklisted." % (devMajor, device, physicalDevice))
 				continue
