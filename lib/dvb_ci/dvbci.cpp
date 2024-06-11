@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <string>
 
 #include <lib/base/init.h>
 #include <lib/base/init_num.h>
@@ -93,6 +94,13 @@ static std::string getTunerLetterDM(int NimNumber)
 	if (srcCI) {
 		std::string ret = std::string(srcCI);
 		free(srcCI);
+		if (ret.size() == 1){
+			int corr = 1;
+			if (NimNumber > 7) {
+				corr = -7;
+			}
+			return ret + std::to_string(NimNumber + corr);
+		}
 		return ret;
 	}
 	return eDVBCISlot::getTunerLetter(NimNumber);
