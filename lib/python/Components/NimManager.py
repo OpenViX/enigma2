@@ -1757,10 +1757,7 @@ def InitNimManager(nimmgr, update_slots=[]):
 		slot_id = slot.slot
 		if slot.isCombined() and slot.canBeCompatible("DVB-S") or slot.isCompatible("DVB-S"):
 			if slot.isFBCLink():
-				if MODEL in ("dm900", "dm920"):
-					config_mode_choices = {"loopthrough": _("FBC automatic"), "advanced": _("FBC SCR (Unicable/JESS)")}
-				else:
-					config_mode_choices = {"nothing": _("FBC automatic"), "advanced": _("FBC SCR (Unicable/JESS)")}
+				config_mode_choices = {"nothing": _("FBC automatic"), "advanced": _("FBC SCR (Unicable/JESS)")}
 			else:
 				# Just define all and redefine them in Satconfig.py as here all tuners are not defined yet
 				config_mode_choices = {"nothing": _("Disabled"), "simple": _("Simple"), "advanced": _("Advanced"), "equal": _("Equal to"), "satposdepends": _("Second cable of motorized LNB"), "loopthrough": _("Loop through from")}
