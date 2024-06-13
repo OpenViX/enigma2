@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-06-11 10:32+0300\n"
+"PO-Revision-Date: 2024-06-13 19:17+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2991,7 +2991,7 @@ msgstr "Kaapeliverkon haku"
 
 #, python-format
 msgid "Cable scan executable utility not found '%s'!"
-msgstr "Kaapelin skannauksen suoritettavaa apuohjelmaa ei löytynyt '%s'!"
+msgstr "Kaapeliverkon haun suoritettavaa apuohjelmaa ei löytynyt '%s'!"
 
 msgid "Cabo Verde"
 msgstr "Cabo Verde"
@@ -4188,7 +4188,7 @@ msgid "Current time"
 msgstr "Aika"
 
 msgid "Current transponder"
-msgstr "Valittu lähetin"
+msgstr "Valittu transponderi"
 
 msgid "Current value: "
 msgstr "Arvo: "
@@ -5383,7 +5383,7 @@ msgid "Enable Virgin EPG"
 msgstr "Ota käyttöön Virgin EPG"
 
 msgid "Enable auto cable scan"
-msgstr "Ota käyttöön autom. kaapelihaku"
+msgstr "Ota käyttöön autom. kaapeliverkon haku"
 
 msgid "Enable auto fastscan"
 msgstr "Ota käyttöön autom. pikahaku"
@@ -8019,7 +8019,7 @@ msgid "Manual scan"
 msgstr "Manuaalihaku"
 
 msgid "Manual transponder"
-msgstr "Manuaalinen lähetin"
+msgstr "Manuaalinen transponderi"
 
 msgid "Manufacturer"
 msgstr "Valmistaja"
@@ -8806,7 +8806,7 @@ msgid ""
 "No data on transponder!\n"
 "(Timeout reading PAT)"
 msgstr ""
-"Lähettimessä ei dataa!\n"
+"Transponderissa ei dataa!\n"
 "(Aikaraja ylittyi luettaessa PAT)"
 
 msgid "No delay"
@@ -10047,7 +10047,7 @@ msgid "Predefined"
 msgstr "Esiasetettu"
 
 msgid "Predefined transponder"
-msgstr "Ennalta määritelty lähetin"
+msgstr "Ennalta määritelty transponderi"
 
 msgid "Prefer AC3 track"
 msgstr "Ensisijaisena AC3-ääniraita"
@@ -12582,10 +12582,10 @@ msgid "Show translation packages"
 msgstr "Näytä käännöstiedostojen ohjelmapaketit"
 
 msgid "Show transponder info"
-msgstr "Näytä lähettimen tietoja"
+msgstr "Näytä transponderin tietoja"
 
 msgid "Show transponder remaining/elapsed as"
-msgstr "Näytä lähettimen jäljellä oleva/kulunut aika:"
+msgstr "Näytä transponderin jäljellä oleva/kulunut aika:"
 
 msgid "Show two lines per entry"
 msgstr "Näytä kaksi riviä per kanava"
@@ -13500,7 +13500,7 @@ msgid "Sync time using"
 msgstr "Synkronoi aika käyttäen"
 
 msgid "Synchronize system time using transponder or internet."
-msgstr "Synkronoi laitteen kello lähettimestä tai internetistä."
+msgstr "Synkronoi laitteen kello transponderista tai internetistä."
 
 msgid "Syrian Arab Republic"
 msgstr "Syrian Arab Republic"
@@ -13546,7 +13546,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 11.06.2024 ---\n"
+"--- 13.06.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -14485,10 +14485,10 @@ msgid "True"
 msgstr "Tosi"
 
 msgid "Try to find used transponders in cable network.. please wait..."
-msgstr "Haetaan kaapeliverkon lähetystaajuuksia...odota..."
+msgstr "Haetaan kaapeliverkon transpondereita ...odota..."
 
 msgid "Try to find used transponders in terrestrial network... please wait..."
-msgstr "Haetaan antenniverkon lähetystaajuuksia...odota..."
+msgstr "Haetaan antenniverkon transpondereita ...odota..."
 
 msgid "Trying to download a new packetlist. Please wait..."
 msgstr "Ladataan uusinta IPKG-ohjelmapakettiluetteloa. Odota..."
@@ -14989,7 +14989,7 @@ msgid "User defined 0x%02x"
 msgstr "Käyttäjän määrittelemä 0x%02x"
 
 msgid "User defined transponder"
-msgstr "Käyttäjän määrittelemä lähetin"
+msgstr "Käyttäjän määrittelemä transponderi"
 
 msgid "User installed plugins"
 msgstr "Käyttäjän asentamat lisäosat"
@@ -15656,7 +15656,7 @@ msgid "When the receiver wakes from standby, it will send a command to the TV to
 msgstr "Kun vastaanotin herää valmiustilasta, se lähettää TV:lle komennon myös sen herättämiseksi valmiustilasta."
 
 msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
-msgstr "Kun vaihdat kanavalle, normaalisti laite hakee lähettimen tietojen muutokset ja tallentaa ne. Valitse 'kyllä' vain, jos olet täysin varma tekemästäsi."
+msgstr "Kun vaihdat kanavalle, normaalisti laite hakee transponderin tietojen muutokset ja tallentaa ne. Valitse 'kyllä' vain, jos olet täysin varma tekemästäsi."
 
 msgid "Where do you want to backup your settings?"
 msgstr "Minne haluat varmuuskopioida asetukset?"
@@ -19453,3 +19453,18 @@ msgstr "Vaihda asetustilaan tai AutoDisqc:n"
 
 msgid "Set all the settings back as they were"
 msgstr "Palauta kaikki asetukset entiselleen"
+
+msgid "Menu button function"
+msgstr "Menu painikkeen toiminto"
+
+msgid "Looking for active transponders in the cable network. Please wait..."
+msgstr "Etsitään aktiivisia transpondereita kaapeliverkosta. Odota..."
+
+msgid "Start CableScan"
+msgstr "Aloita kaapeliverkon haku"
+
+msgid "Start Cablescan"
+msgstr "Aloita kaapeliverkon haku"
+
+msgid "Start Fastscan"
+msgstr "Aloita pikahaku"
