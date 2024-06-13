@@ -1,7 +1,7 @@
 from os import access, path, F_OK
 
 from Components.About import about
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, MODEL
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import fileReadXML
 
@@ -535,8 +535,8 @@ class NIM:
 			sattype = None
 
 		self.slot = slot
-		self.type = sattype
-		self.description = description
+		self.type = "DVB-S2X" if "45308X" in description.upper() and MODEL in ("dm900", "dm920") else sattype
+		self.description = "%s FBC" % description if "45308X" in description.upper() and MODEL in ("dm900", "dm920") else description 
 		self.number_of_slots = number_of_slots
 		self.has_outputs = has_outputs
 		self.internally_connectable = internally_connectable
@@ -962,7 +962,7 @@ class NimManager:
 				entry["supports_blind_scan"] = False
 
 			entry["fbc"] = [0, 0, 0]  # not fbc
-			if entry["name"] and ("fbc" in entry["name"].lower() or (entry["name"] in SystemInfo["HasFBCtuner"] and entry["frontend_device"] is not None and access("/proc/stb/frontend/%d/fbc_id" % entry["frontend_device"], F_OK))):
+			if entry["name"] and ("fbc" in entry["name"].lower() or ("45308X" in entry["name"].upper() and MODEL in ("dm900", "dm920")) or (entry["name"] in SystemInfo["HasFBCtuner"] and entry["frontend_device"] is not None and access("/proc/stb/frontend/%d/fbc_id" % entry["frontend_device"], F_OK))):
 				fbc_number += 1
 				if fbc_number <= (entry["type"] and "DVB-C" in entry["type"] and 1 or 2):
 					entry["fbc"] = [1, fbc_number, fbc_tuner]  # fbc root

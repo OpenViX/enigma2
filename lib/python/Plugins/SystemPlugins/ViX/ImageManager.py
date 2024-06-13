@@ -586,34 +586,33 @@ class VIXImageManager(Screen):
 	def keyRestore6(self, ret):
 		MAINDEST = "%s/%s" % (self.TEMPDESTROOT, SystemInfo["imagedir"])
 		print("[ImageManager] MAINDEST=%s" % MAINDEST)
-		if ret == 0:
-			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST							# normal non multiboot receiver
-			if SystemInfo["canMultiBoot"]:
-				if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
-					kz0 = SystemInfo["mtdkernel"]
-					rz0 = SystemInfo["mtdrootfs"]
-					CMD = "/usr/bin/ofgwrite -k%s -r%s '%s'" % (kz0, rz0, MAINDEST)  # slot0 treat as kernel/root only multiboot receiver
-				elif SystemInfo["HasHiSi"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:  # sf8008 type receiver using SD card in multiboot
-					CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
-					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
-					if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_6"):
-						copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
-				elif SystemInfo["HasKexecMultiboot"]:
-					if SystemInfo["HasKexecUSB"] and "mmcblk" not in self.MTDROOTFS:
-						CMD = "/usr/bin/ofgwrite -r%s -kzImage -s'%s/linuxrootfs' -m%s '%s'" % (self.MTDROOTFS, SystemInfo["boxtype"][2:], self.multibootslot, MAINDEST)
-					else:
-						CMD = "/usr/bin/ofgwrite -r%s -kzImage -m%s '%s'" % (self.MTDROOTFS, self.multibootslot, MAINDEST)
-					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
+		CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST							# normal non multiboot receiver
+		if SystemInfo["canMultiBoot"]:
+			if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
+				kz0 = SystemInfo["mtdkernel"]
+				rz0 = SystemInfo["mtdrootfs"]
+				CMD = "/usr/bin/ofgwrite -k%s -r%s '%s'" % (kz0, rz0, MAINDEST)  # slot0 treat as kernel/root only multiboot receiver
+			elif SystemInfo["HasHiSi"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:  # sf8008 type receiver using SD card in multiboot
+				CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
+				print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
+				if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_6"):
+					copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
+			elif SystemInfo["HasKexecMultiboot"]:
+				if SystemInfo["HasKexecUSB"] and "mmcblk" not in self.MTDROOTFS:
+					CMD = "/usr/bin/ofgwrite -r%s -kzImage -s'%s/linuxrootfs' -m%s '%s'" % (self.MTDROOTFS, SystemInfo["boxtype"][2:], self.multibootslot, MAINDEST)
 				else:
-					CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)  # Normal multiboot
-			elif SystemInfo["HasH9SD"]:
-				if fileHas("/proc/cmdline", "root=/dev/mmcblk0p1") is True and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 using SD card
-					CMD = "/usr/bin/ofgwrite -rmmcblk0p1 '%s'" % MAINDEST
-				elif fileExists("%s/rootfs.ubi" % MAINDEST) and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 no SD card - build has both roots causes ofgwrite issue
-					rename("%s/rootfs.tar.bz2" % MAINDEST, "%s/xx.txt" % MAINDEST)
-		else:
-			CMD = "/usr/bin/ofgwrite -rmtd4 -kmtd3  %s/" % MAINDEST  # Xtrend ET8500 with OS2 multiboot
-		print("[ImageManager] running commnd:", CMD)
+					CMD = "/usr/bin/ofgwrite -r%s -kzImage -m%s '%s'" % (self.MTDROOTFS, self.multibootslot, MAINDEST)
+				print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
+			else:
+				CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)  # Normal multiboot
+		elif SystemInfo["HasH9SD"]:
+			if fileHas("/proc/cmdline", "root=/dev/mmcblk0p1") is True and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 using SD card
+				CMD = "/usr/bin/ofgwrite -rmmcblk0p1 '%s'" % MAINDEST
+			elif fileExists("%s/rootfs.ubi" % MAINDEST) and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 no SD card - build has both roots causes ofgwrite issue
+				rename("%s/rootfs.tar.bz2" % MAINDEST, "%s/xx.txt" % MAINDEST)
+		elif SystemInfo["machinebuild"] in ("dm900", "dm920"):  # kernel:mmcblk0p1 root:mmcblk0p2
+			CMD = "/usr/bin/ofgwrite -r%s '%s'" % (self.MTDROOTFS, MAINDEST)  # No ofgwrite auto detection, so only flash root NOT kernel
+		print(f"[ImageManager] running command:{CMD} root:{self.MTDROOTFS}")
 		self.Console.ePopen(CMD, self.ofgwriteResult)
 		fbClass.getInstance().lock()
 

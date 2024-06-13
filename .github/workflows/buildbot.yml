@@ -2,7 +2,7 @@ name: buildbot
 
 on:
   push:
-    branches: [ Developer ]
+    branches: [ Developer, dm9x0 ]
 
   workflow_dispatch:
 
