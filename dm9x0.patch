@@ -1,0 +1,1817 @@
+diff --git a/.github/workflows/buildbot.yml b/.github/workflows/buildbot.yml
+index 0db1c7f0853..e46e714b074 100644
+--- a/.github/workflows/buildbot.yml
++++ b/.github/workflows/buildbot.yml
+@@ -2,7 +2,7 @@ name: buildbot
+ 
+ on:
+   push:
+-    branches: [ Developer ]
++    branches: [ Developer, dm9x0 ]
+ 
+   workflow_dispatch:
+ 
+diff --git a/.github/workflows/enigma2.yml b/.github/workflows/enigma2.yml
+index c681dd91b34..c955896a3ff 100644
+--- a/.github/workflows/enigma2.yml
++++ b/.github/workflows/enigma2.yml
+@@ -2,12 +2,12 @@ name: Enigma2 Python 3
+ 
+ on:
+   push:
+-    branches: [ Release, Developer, FCC ]
++    branches: [ Release, Developer, FCC, dm9x0 ]
+     paths-ignore:
+       - '**/README'
+       - '**/DOCS'
+   pull_request:
+-    branches: [Release, Developer, FCC ]
++    branches: [Release, Developer, FCC, dm9x0 ]
+     paths-ignore:
+       - '**/README'
+       - '**/DOCS'
+diff --git a/CI/build.sh b/CI/build.sh
+index e340647b4e3..f58eeae85cd 100755
+--- a/CI/build.sh
++++ b/CI/build.sh
+@@ -13,7 +13,7 @@ commit_files() {
+   rm -rf *.pyc
+   rm -rf *.pyo
+   rm -rf *.mo
+-  git checkout Developer
++  git checkout dm9x0
+   ./CI/chmod.sh
+   ./CI/dos2unix.sh
+   ./CI/PEP8.sh
+@@ -21,7 +21,7 @@ commit_files() {
+ 
+ upload_files() {
+   git remote add upstream https://${GITHUB_TOKEN}@github.com/OpenViX/enigma2.git > /dev/null 2>&1
+-  git push --quiet upstream Developer || echo "failed to push with error $?"
++  git push --quiet upstream dm9x0 || echo "failed to push with error $?"
+ }
+ 
+ setup_git
+diff --git a/configure.ac b/configure.ac
+index 094c1ff5691..05988050c51 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -91,6 +91,8 @@ AM_CONDITIONAL(DM800, test "$BOXTYPE" == "dm800")
+ AM_CONDITIONAL(DM8000, test "$BOXTYPE" == "dm8000")
+ AM_CONDITIONAL(DM800SE, test "$BOXTYPE" == "dm800se")
+ AM_CONDITIONAL(DM800SEV2, test "$BOXTYPE" == "dm800sev2")
++AM_CONDITIONAL(DM900, test "$BOXTYPE" == "dm900")
++AM_CONDITIONAL(DM920, test "$BOXTYPE" == "dm920")
+ AM_CONDITIONAL(E3HD, test "$BOXTYPE" == "e3hd")
+ AM_CONDITIONAL(EBOX5000, test "$BOXTYPE" == "ebox5000")
+ AM_CONDITIONAL(EBOX5100, test "$BOXTYPE" == "ebox5100")
+@@ -306,6 +308,17 @@ if test x"$withcolorlcd220" != xno ; then
+ fi
+ AM_CONDITIONAL(HAVE_COLORLCD220, test x"$withcolorlcd220" != xno)
+ 
++AC_ARG_WITH(colorlcd390,
++	AS_HELP_STRING([--with-colorlcd390], [use 390x240 16bpp color display, yes or no]),
++	[[withcolorlcd390=$withval]],
++	[[withcolorlcd390=no]]
++)
++if test x"$withcolorlcd390" != xno ; then
++	AC_DEFINE(HAVE_COLORLCD390, 1,[Define when using a 390x240 color display device])
++fi
++
++AM_CONDITIONAL(HAVE_COLORLCD390, test x"$withcolorlcd390" != xno)
++
+ AC_ARG_WITH(colorlcd400,
+ 	AS_HELP_STRING([--with-colorlcd400], [use 400x176 16bpp color display, yes or no]),
+ 	[[withcolorlcd400=$withval]],
+@@ -402,6 +415,14 @@ if test `echo "$BOXTYPE" | cut -b 1-2` == "vu"; then
+ 	AC_DEFINE(FORCE_ADVANCED_REMOTE, 1,[define to fixup the input device identification when the remote control is actually an 'advanced' remote (with play/forward/rewind keys)])
+ fi
+ 
++if test "$BOXTYPE" == "dm900" -o "$BOXTYPE" == "dm920"; then
++	AC_DEFINE(CONFIG_ION, 1,[define BOX use ION Allocator])
++	AC_DEFINE(HAVE_HDMIIN_DM, 1,[has hdmi in dm])
++	AC_DEFINE(LCD_DM900_Y_OFFSET, 4,[define LCD Y offset for dm900 and dm920])
++	AC_DEFINE(DREAMBOX_DUAL_TUNER, 1,[define it is dreambox dual tuner present])
++	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
++fi
++
+ if test `echo "$BOXTYPE" | cut -b 1-2` == "gb"; then
+ 	AC_DEFINE(KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE, 1,[define when rc sends a KEY_PLAY event for its KEY_PLAYPAUSE key])
+ 	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
+@@ -586,6 +607,7 @@ data/7segment/Makefile
+ data/display96/Makefile
+ data/display128/Makefile
+ data/display220/Makefile
++data/display390/Makefile
+ data/display400/Makefile
+ data/display480/Makefile
+ data/display720/Makefile
+diff --git a/data/Makefile.am b/data/Makefile.am
+index 72c31ec8d3a..123c4f64f6e 100644
+--- a/data/Makefile.am
++++ b/data/Makefile.am
+@@ -41,6 +41,10 @@ if HAVE_COLORLCD220
+ SUBDIRS += display220
+ endif
+ 
++if HAVE_COLORLCD390
++SUBDIRS += display390
++endif
++
+ if HAVE_COLORLCD400
+ SUBDIRS += display400
+ endif
+diff --git a/data/display400/skin_display.xml b/data/display400/skin_display.xml
+index 55d0d8a26e7..6d45e70db6f 100644
+--- a/data/display400/skin_display.xml
++++ b/data/display400/skin_display.xml
+@@ -238,24 +238,13 @@
+ 
+ <!-- standby -->
+ 	<screen name="StandbySummary" position="0,0" size="400,240">
+-		<widget source="global.CurrentTime" render="Label" position="0,0" size="400,36" font="FdLcD;35" halign="right" noWrap="1" foregroundColor="blue">
+-			<convert type="ClockToText">FullDate</convert>
++		<widget source="global.CurrentTime" render="Label" position="0,5" size="380,60" font="FdLcD;60" noWrap="1" foregroundColor="yellow" halign="center">
++			<convert type="ClockToText">ShortDate</convert>
+ 		</widget>
+-		<widget source="global.CurrentTime" render="Label" position="0,38" size="400,160" font="FdLcD;150" halign="center" noWrap="1" foregroundColor="blue">
++		<widget source="global.CurrentTime" render="Label" position="0,100" size="380,140" font="FdLcD;120" noWrap="1" foregroundColor="lightcyan" halign="center">
+ 			<convert type="ClockToText">Format:%H:%M</convert>
+ 		</widget>
+-		<widget source="global.OnlineStableUpdateState" render="Pixmap" pixmap="update_stable.png" position="280,207" size="30,30">
+-			<convert type="ConditionalShowHide"/>
+-		</widget>
+-		<widget source="global.OnlineUnstableUpdateState" render="Pixmap" pixmap="update_unstable.png" position="280,207" size="30,30">
+-			<convert type="ConditionalShowHide"/>
+-		</widget>
+-		<widget source="session.RecordState" render="Pixmap" pixmap="rec.png" position="350,207" size="50,26">
+-			<convert type="ConditionalShowHide"/>
+-		</widget>
+-		<panel name="SummaryTunerStatusPanel" />
+ 	</screen>
+-
+ <!-- Plugin browser -->
+ 	<screen name="PluginBrowserSummary" position="0,0" size="400,240">
+ 		<widget source="parent.Title" render="Label" position="0,38" size="400,26" font="FdLcD;24" halign="left" noWrap="1" />
+diff --git a/interfaces/ion.h b/interfaces/ion.h
+new file mode 100644
+index 00000000000..6370495f8d0
+--- /dev/null
++++ b/interfaces/ion.h
+@@ -0,0 +1,204 @@
++/*
++ * drivers/staging/android/uapi/ion.h
++ *
++ * Copyright (C) 2011 Google, Inc.
++ *
++ * This software is licensed under the terms of the GNU General Public
++ * License version 2, as published by the Free Software Foundation, and
++ * may be copied, distributed, and modified under those terms.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef _UAPI_LINUX_ION_H
++#define _UAPI_LINUX_ION_H
++
++#include <linux/ioctl.h>
++#include <linux/types.h>
++
++typedef int ion_user_handle_t;
++
++/**
++ * enum ion_heap_types - list of all possible types of heaps
++ * @ION_HEAP_TYPE_SYSTEM:	 memory allocated via vmalloc
++ * @ION_HEAP_TYPE_SYSTEM_CONTIG: memory allocated via kmalloc
++ * @ION_HEAP_TYPE_CARVEOUT:	 memory allocated from a prereserved
++ * 				 carveout heap, allocations are physically
++ * 				 contiguous
++ * @ION_HEAP_TYPE_DMA:		 memory allocated via DMA API
++ * @ION_NUM_HEAPS:		 helper for iterating over heaps, a bit mask
++ * 				 is used to identify the heaps, so only 32
++ * 				 total heap types are supported
++ */
++enum ion_heap_type {
++	ION_HEAP_TYPE_SYSTEM,
++	ION_HEAP_TYPE_SYSTEM_CONTIG,
++	ION_HEAP_TYPE_CARVEOUT,
++	ION_HEAP_TYPE_CHUNK,
++	ION_HEAP_TYPE_DMA,
++	ION_HEAP_TYPE_CUSTOM, /* must be last so device specific heaps always
++				 are at the end of this enum */
++	ION_NUM_HEAPS = 16,
++};
++
++#define ION_HEAP_SYSTEM_MASK		(1 << ION_HEAP_TYPE_SYSTEM)
++#define ION_HEAP_SYSTEM_CONTIG_MASK	(1 << ION_HEAP_TYPE_SYSTEM_CONTIG)
++#define ION_HEAP_CARVEOUT_MASK		(1 << ION_HEAP_TYPE_CARVEOUT)
++#define ION_HEAP_TYPE_DMA_MASK		(1 << ION_HEAP_TYPE_DMA)
++
++#define ION_NUM_HEAP_IDS		sizeof(unsigned int) * 8
++
++/**
++ * allocation flags - the lower 16 bits are used by core ion, the upper 16
++ * bits are reserved for use by the heaps themselves.
++ */
++#define ION_FLAG_CACHED 1		/* mappings of this buffer should be
++						cached, ion will do cache
++						maintenance when the buffer is
++						mapped for dma */
++#define ION_FLAG_CACHED_NEEDS_SYNC 2	/* mappings of this buffer will created
++						at mmap time, if this is set
++						caches must be managed manually */
++
++/**
++ * DOC: Ion Userspace API
++ *
++ * create a client by opening /dev/ion
++ * most operations handled via following ioctls
++ *
++ */
++
++/**
++ * struct ion_allocation_data - metadata passed from userspace for allocations
++ * @len:		size of the allocation
++ * @align:		required alignment of the allocation
++ * @heap_id_mask:	mask of heap ids to allocate from
++ * @flags:		flags passed to heap
++ * @handle:		pointer that will be populated with a cookie to use to 
++ *			refer to this allocation
++ *
++ * Provided by userspace as an argument to the ioctl
++ */
++struct ion_allocation_data {
++	size_t len;
++	size_t align;
++	unsigned int heap_id_mask;
++	unsigned int flags;
++	ion_user_handle_t handle;
++};
++
++/**
++ * struct ion_fd_data - metadata passed to/from userspace for a handle/fd pair
++ * @handle:	a handle
++ * @fd:		a file descriptor representing that handle
++ *
++ * For ION_IOC_SHARE or ION_IOC_MAP userspace populates the handle field with
++ * the handle returned from ion alloc, and the kernel returns the file
++ * descriptor to share or map in the fd field.  For ION_IOC_IMPORT, userspace
++ * provides the file descriptor and the kernel returns the handle.
++ */
++struct ion_fd_data {
++	ion_user_handle_t handle;
++	int fd;
++};
++
++/**
++ * struct ion_handle_data - a handle passed to/from the kernel
++ * @handle:	a handle
++ */
++struct ion_handle_data {
++	ion_user_handle_t handle;
++};
++
++/**
++ * struct ion_custom_data - metadata passed to/from userspace for a custom ioctl
++ * @cmd:	the custom ioctl function to call
++ * @arg:	additional data to pass to the custom ioctl, typically a user
++ *		pointer to a predefined structure
++ *
++ * This works just like the regular cmd and arg fields of an ioctl.
++ */
++struct ion_custom_data {
++	unsigned int cmd;
++	unsigned long arg;
++};
++
++struct ion_phys_data {
++	ion_user_handle_t handle;
++	unsigned long addr;
++	size_t len;
++};
++
++#define ION_IOC_MAGIC		'I'
++
++/**
++ * DOC: ION_IOC_ALLOC - allocate memory
++ *
++ * Takes an ion_allocation_data struct and returns it with the handle field
++ * populated with the opaque handle for the allocation.
++ */
++#define ION_IOC_ALLOC		_IOWR(ION_IOC_MAGIC, 0, \
++						struct ion_allocation_data)
++
++/**
++ * DOC: ION_IOC_FREE - free memory
++ *
++ * Takes an ion_handle_data struct and frees the handle.
++ */
++#define ION_IOC_FREE		_IOWR(ION_IOC_MAGIC, 1, struct ion_handle_data)
++
++/**
++ * DOC: ION_IOC_MAP - get a file descriptor to mmap
++ *
++ * Takes an ion_fd_data struct with the handle field populated with a valid
++ * opaque handle.  Returns the struct with the fd field set to a file
++ * descriptor open in the current address space.  This file descriptor
++ * can then be used as an argument to mmap.
++ */
++#define ION_IOC_MAP		_IOWR(ION_IOC_MAGIC, 2, struct ion_fd_data)
++
++/**
++ * DOC: ION_IOC_SHARE - creates a file descriptor to use to share an allocation
++ *
++ * Takes an ion_fd_data struct with the handle field populated with a valid
++ * opaque handle.  Returns the struct with the fd field set to a file
++ * descriptor open in the current address space.  This file descriptor
++ * can then be passed to another process.  The corresponding opaque handle can
++ * be retrieved via ION_IOC_IMPORT.
++ */
++#define ION_IOC_SHARE		_IOWR(ION_IOC_MAGIC, 4, struct ion_fd_data)
++
++/**
++ * DOC: ION_IOC_IMPORT - imports a shared file descriptor
++ *
++ * Takes an ion_fd_data struct with the fd field populated with a valid file
++ * descriptor obtained from ION_IOC_SHARE and returns the struct with the handle
++ * filed set to the corresponding opaque handle.
++ */
++#define ION_IOC_IMPORT		_IOWR(ION_IOC_MAGIC, 5, struct ion_fd_data)
++
++/**
++ * DOC: ION_IOC_SYNC - syncs a shared file descriptors to memory
++ *
++ * Deprecated in favor of using the dma_buf api's correctly (syncing
++ * will happend automatically when the buffer is mapped to a device).
++ * If necessary should be used after touching a cached buffer from the cpu,
++ * this will make the buffer in memory coherent.
++ */
++#define ION_IOC_SYNC		_IOWR(ION_IOC_MAGIC, 7, struct ion_fd_data)
++
++/**
++ * DOC: ION_IOC_CUSTOM - call architecture specific ion ioctl
++ *
++ * Takes the argument of the architecture specific ioctl to call and
++ * passes appropriate userdata for that ioctl
++ */
++#define ION_IOC_CUSTOM		_IOWR(ION_IOC_MAGIC, 6, struct ion_custom_data)
++
++#define ION_IOC_PHYS		_IOWR(ION_IOC_MAGIC, 8, struct ion_phys_data)
++
++#endif /* _UAPI_LINUX_ION_H */
+diff --git a/lib/driver/avswitch.cpp b/lib/driver/avswitch.cpp
+index 955c6c59fd7..7d601b56f40 100644
+--- a/lib/driver/avswitch.cpp
++++ b/lib/driver/avswitch.cpp
+@@ -255,7 +255,12 @@ int eAVSwitch::getResolutionY(int defaultVal, int flags) const
+ int eAVSwitch::getFrameRate(int defaultVal, int flags) const
+ {
+ 
++#ifdef DREAMBOX
++	const char *fileName = "/proc/stb/vmpeg/0/fallback_framerate";
++#else
+ 	const char *fileName = "/proc/stb/vmpeg/0/framerate";
++#endif
++
+ 	int value = 0;
+ 	int ret = CFile::parseInt(&value, fileName, __MODULE__, flags);
+ 	if (ret != 0)
+diff --git a/lib/dvb/decoder.cpp b/lib/dvb/decoder.cpp
+index 95f5609dd9c..4fb21ec1667 100644
+--- a/lib/dvb/decoder.cpp
++++ b/lib/dvb/decoder.cpp
+@@ -147,7 +147,11 @@ int eDVBAudio::startPid(int pid, int type)
+ 			bypass = 0x40;
+ 			break;
+ 		case aDDP:
++#ifdef DREAMBOX
++			bypass = 7;
++#else
+ 			bypass = 0x22;
++#endif
+ 			break;
+ 		}
+ 
+@@ -341,7 +345,11 @@ eDVBVideo::eDVBVideo(eDVBDemux *demux, int dev, bool fcc_enable)
+ #define VIDEO_STREAMTYPE_MPEG4_Part2 4
+ #define VIDEO_STREAMTYPE_VC1_SM 5
+ #define VIDEO_STREAMTYPE_MPEG1 6
++#ifdef DREAMBOX
++#define VIDEO_STREAMTYPE_H265_HEVC 22
++#else
+ #define VIDEO_STREAMTYPE_H265_HEVC 7
++#endif
+ #define VIDEO_STREAMTYPE_AVS 16
+ #define VIDEO_STREAMTYPE_AVS2 40
+ 
+diff --git a/lib/dvb/fbc.cpp b/lib/dvb/fbc.cpp
+index 6d8b06d3cc2..56a4c4f98d3 100644
+--- a/lib/dvb/fbc.cpp
++++ b/lib/dvb/fbc.cpp
+@@ -13,6 +13,24 @@
+ 
+ int eFBCTunerManager::ReadProcInt(int fe_index, const std::string & entry)
+ {
++#ifdef DREAMBOX
++	std::string value;
++	std::stringstream path;
++	std::ifstream file;
++
++	path << "/proc/stb/frontend/" << fe_index << "/" << entry;
++	file.open(path.str().c_str());
++
++	if(!file.is_open())
++		return(-1);
++
++	file >> value;
++
++	if(file.bad() || file.fail())
++		return(-1);
++	eDebug("[eFBCTunerManager::ReadProcInt] val: %s", value.c_str());
++	return(value == "A" ? 0 : 1);
++#else
+ 	int value;
+ 	std::stringstream path;
+ 	std::ifstream file;
+@@ -29,6 +47,7 @@ int eFBCTunerManager::ReadProcInt(int fe_index, const std::string & entry)
+ 		return(-1);
+ 
+ 	return(value);
++#endif
+ }
+ 
+ void eFBCTunerManager::WriteProcInt(int fe_index, const std::string & entry, int value)
+@@ -45,6 +64,41 @@ void eFBCTunerManager::WriteProcInt(int fe_index, const std::string & entry, int
+ 	file << value;
+ }
+ 
++void eFBCTunerManager::WriteProcStr(int fe_index, const std::string & entry, int value)
++{
++	std::stringstream path;
++	std::ofstream file;
++
++	path << "/proc/stb/frontend/" << fe_index << "/" << entry;
++	file.open(path.str().c_str());
++
++	if(!file.is_open())
++		return;
++	eDebug("[eFBCTunerManager::WriteProcStr] val: %d", value);
++	file << (value == 0 ? "A" : "B");
++}
++
++#ifdef DREAMBOX
++void eFBCTunerManager::LoadConnectChoices(int fe_index, std::string &choices)
++{
++	std::stringstream path;
++	std::ifstream file;
++	std::string line;
++	std::string::const_iterator it;
++	int fbc_id;
++
++	path << "/proc/stb/frontend/"  << fe_index << "/input_choices";
++	file.open(path.str().c_str());
++
++	if(!file.is_open())
++		return;
++
++	file >> choices;
++
++	if(file.bad() || file.fail())
++		return;
++}
++#else
+ void eFBCTunerManager::LoadConnectChoices(int fe_index, connect_choices_t &choices)
+ {
+ 	std::stringstream path;
+@@ -77,6 +131,7 @@ void eFBCTunerManager::LoadConnectChoices(int fe_index, connect_choices_t &choic
+ 		}
+ 	}
+ }
++#endif
+ 
+ DEFINE_REF(eFBCTunerManager);
+ 
+@@ -93,7 +148,7 @@ eFBCTunerManager::eFBCTunerManager(ePtr<eDVBResourceManager> res_mgr)
+ 	eSmartPtrList<eDVBRegisteredFrontend> &frontends = m_res_mgr->m_frontend;
+ 	eSmartPtrList<eDVBRegisteredFrontend> &frontends_simulate = m_res_mgr->m_simulate_frontend;
+ 	tuner_t	tuner;
+-	int		fe_id, fbc_prev_set_id;
++	int	fe_id, fbc_prev_set_id;
+ 
+ 	if(!m_instance)
+ 		m_instance = this;
+@@ -109,22 +164,34 @@ eFBCTunerManager::eFBCTunerManager(ePtr<eDVBResourceManager> res_mgr)
+ 			continue; // ignore DVB-C/T FBC tuners because they need no special treatment
+ 
+ 		fe_id = FESlotID(it);
+-		tuner.set_id = ReadProcInt(fe_id, "fbc_set_id");
+ 
++#ifdef DREAMBOX
++		tuner.set_id = ReadProcInt(fe_id, "input");
++#else
++		tuner.set_id = ReadProcInt(fe_id, "fbc_set_id");
++#endif
+ 		if(tuner.set_id >= 0)
+ 		{
+ 			if(fbc_prev_set_id != tuner.set_id)
+ 			{
+ 				fbc_prev_set_id = tuner.set_id;
++#ifdef DREAMBOX
++				LoadConnectChoices(fe_id, tuner.input_choices);
++#else
+ 				LoadConnectChoices(fe_id, tuner.connect_choices);
++#endif
+ 				tuner.id = 0;
+ 			}
+-
++#ifdef DREAMBOX
++			tuner.is_root = tuner.id < 2;
++#else
+ 			if(tuner.id < (int)tuner.connect_choices.size())
+ 				tuner.is_root = tuner.connect_choices.test(tuner.id);
+ 			else
+ 				tuner.is_root = false;
+ 
++#endif
++
+ 			tuner.default_id = tuner.is_root ? tuner.id : 0;
+ 			m_tuners[fe_id] = tuner;
+ 			SetProcFBCID(fe_id, tuner.default_id, false);
+@@ -141,8 +208,14 @@ eFBCTunerManager::eFBCTunerManager(ePtr<eDVBResourceManager> res_mgr)
+ 		if (!(it->m_frontend->supportsDeliverySystem(SYS_DVBS, false) || it->m_frontend->supportsDeliverySystem(SYS_DVBS2, false)))
+ 			continue;
+ 
++#ifdef DREAMBOX
++		if(ReadProcInt(FESlotID(it), "input") >= 0)
++			it->m_frontend->set_FBCTuner(true);
++#else
+ 		if(ReadProcInt(FESlotID(it), "fbc_set_id") >= 0)
+ 			it->m_frontend->set_FBCTuner(true);
++#endif
++		
+ 	}
+ }
+ 
+@@ -154,8 +227,12 @@ eFBCTunerManager::~eFBCTunerManager()
+ 
+ void eFBCTunerManager::SetProcFBCID(int fe_id, int fbc_connect, bool fbc_is_linked)
+ {
++#ifdef DREAMBOX
++	WriteProcStr(fe_id, "input", fbc_connect);
++#else
+ 	WriteProcInt(fe_id, "fbc_connect", fbc_connect);
+ 	WriteProcInt(fe_id, "fbc_link", fbc_is_linked ? 1 : 0);
++#endif
+ }
+ 
+ int eFBCTunerManager::FESlotID(eDVBRegisteredFrontend *fe)
+@@ -412,7 +489,7 @@ int eFBCTunerManager::IsCompatibleWith(ePtr<iDVBFrontendParameters> &feparm, eDV
+ 
+ 		if(IsSCR(*it))
+ 			continue;
+-
++		
+ 		// temporarily add this leaf to the current "linked" chain, at the tail
+ 
+ 		fe_insert_point = GetTail(*it);
+diff --git a/lib/dvb/fbc.h b/lib/dvb/fbc.h
+index a479961086a..b70f9b7dfc9 100644
+--- a/lib/dvb/fbc.h
++++ b/lib/dvb/fbc.h
+@@ -25,6 +25,7 @@ private:
+ 		int					id;
+ 		int					default_id;
+ 		connect_choices_t	connect_choices;
++		std::string			input_choices;
+ 	} tuner_t;
+ 
+ 	typedef std::map<int, tuner_t> tuners_t;
+@@ -42,7 +43,12 @@ private:
+ 
+ 	static int ReadProcInt(int, const std::string &);
+ 	static void WriteProcInt(int, const std::string &, int);
++	static void WriteProcStr(int, const std::string &, int);
++#ifdef DREAMBOX
++	static void LoadConnectChoices(int, std::string &);
++#else
+ 	static void LoadConnectChoices(int, connect_choices_t &);
++#endif
+ 	static void SetProcFBCID(int, int, bool);
+ 	static int FESlotID(eDVBRegisteredFrontend *);
+ 	static bool IsLinked(eDVBRegisteredFrontend *);
+diff --git a/lib/dvb_ci/dvbci.cpp b/lib/dvb_ci/dvbci.cpp
+index a4681b1ff39..a744ae6a70b 100644
+--- a/lib/dvb_ci/dvbci.cpp
++++ b/lib/dvb_ci/dvbci.cpp
+@@ -6,6 +6,7 @@
+ #include <fstream>
+ #include <sstream>
+ #include <iomanip>
++#include <string>
+ 
+ #include <lib/base/init.h>
+ #include <lib/base/init_num.h>
+@@ -33,6 +34,78 @@ eDVBCIInterfaces *eDVBCIInterfaces::instance = 0;
+ pthread_mutex_t eDVBCIInterfaces::m_pmt_handler_lock = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+ pthread_mutex_t eDVBCIInterfaces::m_slot_lock = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+ 
++static char* readInputCI(int NimNumber)
++{
++	char id1[] = "NIM Socket";
++	char id2[] = "Input_Name";
++	char keys1[] = "1234567890";
++	char keys2[] = "12ABCDabcd";
++	char *inputName = 0;
++	char buf[256];
++	FILE *f;
++
++	f = fopen("/proc/bus/nim_sockets", "rt");
++	if (f)
++	{
++		while (fgets(buf, sizeof(buf), f))
++		{
++			char *p = strcasestr(buf, id1);
++			if (!p)
++				continue;
++
++			p += strlen(id1);
++			p += strcspn(p, keys1);
++			if (*p && strtol(p, 0, 0) == NimNumber)
++				break;
++		}
++
++		while (fgets(buf, sizeof(buf), f))
++		{
++			if (strcasestr(buf, id1))
++				break;
++
++			char *p = strcasestr(buf, id2);
++			if (!p)
++				continue;
++
++			p = strchr(p + strlen(id2), ':');
++			if (!p)
++				continue;
++
++			p++;
++			p += strcspn(p, keys2);
++			size_t len = strspn(p, keys2);
++			if (len > 0)
++			{
++				inputName = strndup(p, len);
++				break;
++			}
++		}
++
++		fclose(f);
++	}
++
++	return inputName;
++}
++
++static std::string getTunerLetterDM(int NimNumber)
++{
++	char *srcCI = readInputCI(NimNumber);
++	if (srcCI) {
++		std::string ret = std::string(srcCI);
++		free(srcCI);
++		if (ret.size() == 1){
++			int corr = 1;
++			if (NimNumber > 7) {
++				corr = -7;
++			}
++			return ret + std::to_string(NimNumber + corr);
++		}
++		return ret;
++	}
++	return eDVBCISlot::getTunerLetter(NimNumber);
++}
++
+ eDVBCIInterfaces::eDVBCIInterfaces()
+  : m_messagepump_thread(this,1, "dvbci"), m_messagepump_main(eApp,1, "dvbci"), m_runTimer(eTimer::create(this))
+ {
+@@ -69,7 +142,11 @@ eDVBCIInterfaces::eDVBCIInterfaces()
+ 	}
+ 
+ 	for (eSmartPtrList<eDVBCISlot>::iterator it(m_slots.begin()); it != m_slots.end(); ++it)
++#ifdef DREAMBOX_DUAL_TUNER
++		it->setSource(getTunerLetterDM(0));
++#else 
+ 		it->setSource("A");
++#endif
+ 
+ 	for (int tuner_no = 0; tuner_no < 26; ++tuner_no) // NOTE: this assumes tuners are A .. Z max.
+ 	{
+@@ -80,7 +157,11 @@ eDVBCIInterfaces::eDVBCIInterfaces()
+ 		if(::access(path.str().c_str(), R_OK) < 0)
+ 			break;
+ 
++#ifdef DREAMBOX_DUAL_TUNER
++		setInputSource(tuner_no, getTunerLetterDM(tuner_no));
++#else 
+ 		setInputSource(tuner_no, eDVBCISlot::getTunerLetter(tuner_no));
++#endif
+ 	}
+ 
+ 	eDebug("[CI] done, found %d common interface slots", num_ci);
+@@ -310,7 +391,11 @@ void eDVBCIInterfaces::ciRemoved(eDVBCISlot *slot)
+ 		if (slot->linked_next)
+ 			slot->linked_next->setSource(slot->current_source);
+ 		else // last CI in chain
++#ifdef DREAMBOX_DUAL_TUNER
++			setInputSource(slot->current_tuner, getTunerLetterDM(slot->current_tuner));
++#else
+ 			setInputSource(slot->current_tuner, eDVBCISlot::getTunerLetter(slot->current_tuner));
++#endif
+ 		slot->linked_next = 0;
+ 		slot->use_count=0;
+ 		slot->plugged=true;
+@@ -581,7 +666,11 @@ void eDVBCIInterfaces::recheckPMTHandlers()
+ 							if (tunernum != -1)
+ 							{
+ 								setInputSource(tunernum, ci_source.str());
++#ifdef DREAMBOX_DUAL_TUNER
++								ci_it->setSource(getTunerLetterDM(tunernum));
++#else 
+ 								ci_it->setSource(eDVBCISlot::getTunerLetter(tunernum));
++#endif
+ 							}
+ 							else
+ 							{
+@@ -711,7 +800,11 @@ void eDVBCIInterfaces::removePMTHandler(eDVBServicePMTHandler *pmthandler)
+ 					{
+ 						case finish_use_tuner_a:
+ 						{
++#ifdef DREAMBOX_DUAL_TUNER
++							finish_source = getTunerLetterDM(0);
++#else  
+ 							finish_source = "A";
++#endif
+ 							break;
+ 						}
+ 
+@@ -734,7 +827,11 @@ void eDVBCIInterfaces::removePMTHandler(eDVBServicePMTHandler *pmthandler)
+ 					if(finish_source == "")
+ 					{
+ 						eDebug("[CI] warning: CI streaming finish mode not set, assuming \"tuner A\"");
++#ifdef DREAMBOX_DUAL_TUNER
++						finish_source = getTunerLetterDM(0);
++#else
+ 						finish_source = "A";
++#endif  
+ 					}
+ 
+ 					slot->setSource(finish_source);
+@@ -746,7 +843,11 @@ void eDVBCIInterfaces::removePMTHandler(eDVBServicePMTHandler *pmthandler)
+ 				if (slot->linked_next)
+ 					slot->linked_next->setSource(slot->current_source);
+ 				else
++#ifdef DREAMBOX_DUAL_TUNER
++					setInputSource(slot->current_tuner, getTunerLetterDM(slot->current_tuner));
++#else
+ 					setInputSource(slot->current_tuner, eDVBCISlot::getTunerLetter(slot->current_tuner));
++#endif
+ 
+ 				if (base_slot != slot)
+ 				{
+@@ -1134,7 +1235,11 @@ void eDVBCIInterfaces::setCIPlusRouting(int slotid)
+ 		new_input_source << "CI" << slot->getSlotID();
+ 
+ 		setInputSource(tunernum, new_input_source.str());
++#ifdef DREAMBOX_DUAL_TUNER
++		slot->setSource(getTunerLetterDM(tunernum));
++#else
+ 		slot->setSource(eDVBCISlot::getTunerLetter(tunernum));
++#endif
+ 
+ 		slot->setCIPlusRoutingParameter(tunernum, ciplus_routing_input, ciplus_routing_ci_input);
+ 		eDebug("[CI] CIRouting active slotid=%d tuner=%d old_input=%s old_ci_input=%s", slotid, tunernum, ciplus_routing_input.c_str(), ciplus_routing_ci_input.c_str());
+diff --git a/lib/dvb_ci/dvbci.h b/lib/dvb_ci/dvbci.h
+index 511944b9770..5d11f624b45 100644
+--- a/lib/dvb_ci/dvbci.h
++++ b/lib/dvb_ci/dvbci.h
+@@ -110,8 +110,8 @@ class eDVBCISlot: public iObject, public sigc::trackable
+ 	int setClockRate(const std::string &rate);
+ 	void determineCIVersion();
+ 	int setEnabled(bool);
+-	static std::string getTunerLetter(int tuner_no) { return std::string(1, char(65 + tuner_no)); }
+ public:
++	static std::string getTunerLetter(int tuner_no) { return std::string(1, char(65 + tuner_no)); }
+ 	enum {stateRemoved, stateInserted, stateInvalid, stateResetted, stateDisabled};
+ 	enum {versionUnknown = -1, versionCI = 0, versionCIPlus1 = 1, versionCIPlus2 = 2};
+ 	eDVBCISlot(eMainloop *context, int nr);
+diff --git a/lib/gdi/epng.cpp b/lib/gdi/epng.cpp
+index 449ccc9c14e..8745975b723 100644
+--- a/lib/gdi/epng.cpp
++++ b/lib/gdi/epng.cpp
+@@ -3,10 +3,15 @@
+ #include <png.h>
+ #include <stdio.h>
+ #include <lib/base/cfile.h>
+-#include <lib/base/estring.h>
++#include <lib/base/wrappers.h>
+ #include <lib/gdi/epng.h>
+ #include <lib/gdi/pixmapcache.h>
+ #include <unistd.h>
++#include <lib/base/estring.h>
++
++#include <map>
++#include <string>
++#include <lib/base/elock.h>
+ 
+ extern "C" {
+ #include <jpeglib.h>
+@@ -123,7 +128,7 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
+ 
+ 	result = new gPixmap(width, height, bit_depth * channels, cached ? PixmapCache::PixmapDisposed : NULL, accel);
+ 	gUnmanagedSurface *surface = result->surface;
+-
++	
+ 	png_bytep *rowptr = new png_bytep[height];
+ 	for (unsigned int i = 0; i < height; i++)
+ 		rowptr[i] = ((png_byte*)(surface->data)) + i * surface->stride;
+@@ -131,6 +136,18 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
+ 
+ 	delete [] rowptr;
+ 
++	if (color_type == PNG_COLOR_TYPE_RGBA || color_type == PNG_COLOR_TYPE_GA)
++		surface->transparent = true;
++	else
++	{
++		png_bytep trans_alpha = NULL;
++		int num_trans = 0;
++		png_color_16p trans_color = NULL;
++
++		png_get_tRNS(png_ptr, info_ptr, &trans_alpha, &num_trans, &trans_color);
++		surface->transparent = (trans_alpha != NULL);
++	}
++	
+ 	int num_palette = -1, num_trans = -1;
+ 	if (color_type == PNG_COLOR_TYPE_PALETTE) {
+ 		if (png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE)) {
+@@ -204,8 +221,8 @@ int loadJPG(ePtr<gPixmap> &result, const char *filename, ePtr<gPixmap> alpha, in
+ 	if (cached && (result = PixmapCache::Get(filename)))
+ 		return 0;
+ 
+-	struct jpeg_decompress_struct cinfo = {};
+-	struct my_error_mgr jerr = {};
++	struct jpeg_decompress_struct cinfo;
++	struct my_error_mgr jerr;
+ 	JSAMPARRAY buffer;
+ 	int row_stride;
+ 	CFile infile(filename, "rb");
+@@ -248,13 +265,13 @@ int loadJPG(ePtr<gPixmap> &result, const char *filename, ePtr<gPixmap> alpha, in
+ 		}
+ 		if (grayscale)
+ 		{
+-			eWarning("[loadJPG] no support for grayscale + alpha at the moment");
++			eWarning("[loadJPG] we don't support grayscale + alpha at the moment");
+ 			alpha = 0;
+ 		}
+ 	}
+ 
+ 	result = new gPixmap(cinfo.output_width, cinfo.output_height, grayscale ? 8 : 32, cached ? PixmapCache::PixmapDisposed : NULL);
+-
++	result->surface->transparent = false;
+ 	row_stride = cinfo.output_width * cinfo.output_components;
+ 	buffer = (*cinfo.mem->alloc_sarray)((j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);
+ 	while (cinfo.output_scanline < cinfo.output_height) {
+@@ -480,14 +497,12 @@ int loadImage(ePtr<gPixmap> &result, const char *filename, int accel, int width,
+ 		return loadSVG(result, filename, cached == -1 ? 1 : cached, width, height, scale, keepAspect, align);
+ 	else if (endsWith(filename, ".jpg"))
+ 		return loadJPG(result, filename, cached == -1 ? 0 : cached);
+-
+ 	return 0;
+ }
+ 
+ int savePNG(const char *filename, gPixmap *pixmap)
+ {
+ 	int result;
+-
+ 	{
+ 		eDebug("[ePNG] saving to %s",filename);
+ 		CFile fp(filename, "wb");
+diff --git a/lib/gdi/fb.cpp b/lib/gdi/fb.cpp
+index 66c1e5e56a8..99b7f599ed0 100644
+--- a/lib/gdi/fb.cpp
++++ b/lib/gdi/fb.cpp
+@@ -13,9 +13,19 @@
+ #define FBIO_WAITFORVSYNC _IOW('F', 0x20, uint32_t)
+ #endif
+ 
+-#ifndef FBIO_BLIT
++#ifdef CONFIG_ION
++
++#include <lib/gdi/accel.h>
++#include <interfaces/ion.h>
++#define ION_HEAP_TYPE_BMEM      (ION_HEAP_TYPE_CUSTOM + 1)
++#define ION_HEAP_ID_MASK        (1 << ION_HEAP_TYPE_BMEM)
++#define ACCEL_MEM_SIZE          (32*1024*1024)
++
++#elif !defined(FBIO_BLIT)
++
+ #define FBIO_SET_MANUAL_BLIT _IOW('F', 0x21, __u8)
+ #define FBIO_BLIT 0x22
++
+ #endif
+ 
+ fbClass *fbClass::instance;
+@@ -38,6 +48,10 @@ fbClass::fbClass(const char *fb)
+ 	cmap.green=green;
+ 	cmap.blue=blue;
+ 	cmap.transp=trans;
++	
++#ifdef CONFIG_ION
++	int ion;
++#endif
+ 
+ 	fbFd=open(fb, O_RDWR);
+ 	if (fbFd<0)
+@@ -60,15 +74,96 @@ fbClass::fbClass(const char *fb)
+ 		goto nolfb;
+ 	}
+ 
+-	available=fix.smem_len;
++	available = fix.smem_len;
+ 	m_phys_mem = fix.smem_start;
+ 	eDebug("[fb] %s: %dk video mem", fb, available/1024);
++#if defined(CONFIG_ION)
++	/* allocate accel memory here... its independent from the framebuffer */
++	ion = open("/dev/ion", O_RDWR | O_CLOEXEC);
++	if (ion >= 0)
++	{
++		struct ion_allocation_data alloc_data;
++		struct ion_fd_data share_data;
++		struct ion_handle_data free_data;
++		struct ion_phys_data phys_data;
++		int ret;
++		unsigned char *lion;
++
++		eDebug("[fb] Using ION allocator");
++
++		memset(&alloc_data, 0, sizeof(alloc_data));
++		alloc_data.len = ACCEL_MEM_SIZE;
++		alloc_data.align = 4096; // 4k aligned
++		alloc_data.heap_id_mask = ION_HEAP_ID_MASK;
++		ret = ioctl(ion, ION_IOC_ALLOC, &alloc_data);
++		if (ret < 0)
++		{
++			eDebug("[fb] ION_IOC_ALLOC failed");
++			eFatal("[fb] failed to allocate accel memory!!!");
++			return;
++		}
++
++		memset(&phys_data, 0, sizeof(phys_data));
++		phys_data.handle = alloc_data.handle;
++		ret = ioctl(ion, ION_IOC_PHYS, &phys_data);
++		if (ret < 0)
++		{
++			eDebug("[fb] ION_IOC_PHYS failed");
++			goto err_ioc_free;
++		}
++
++		memset(&share_data, 0, sizeof(share_data));
++		share_data.handle = alloc_data.handle;
++		ret = ioctl(ion, ION_IOC_SHARE, &share_data);
++		if (ret < 0)
++		{
++			eDebug("[fb] ION_IOC_SHARE failed");
++			goto err_ioc_free;
++		}
++
++		memset(&free_data, 0, sizeof(free_data));
++		free_data.handle = alloc_data.handle;
++		if (ioctl(ion, ION_IOC_FREE, &free_data) < 0)
++			eDebug("[fb] ION_IOC_FREE failed");
++
++		m_accel_fd = share_data.fd;
++		lion=(unsigned char*)mmap(0, ACCEL_MEM_SIZE, PROT_WRITE|PROT_READ, MAP_SHARED, share_data.fd, 0);
++
++		if (lion)
++		{
++			eDebug("[fb] %dkB available for acceleration surfaces (via ION).", ACCEL_MEM_SIZE / 1024);
++			gAccel::getInstance()->setAccelMemorySpace(lion, phys_data.addr, ACCEL_MEM_SIZE);
++		}
++		else
++		{
++			close(m_accel_fd);
++			eDebug("[fb] mmap lion failed");
++err_ioc_free:
++			eFatal("[fb] failed to allocate accel memory via ION!!!");
++			m_accel_fd = -1;
++			memset(&free_data, 0, sizeof(free_data));
++			free_data.handle = alloc_data.handle;
++			if (ioctl(ion, ION_IOC_FREE, &free_data) < 0)
++				eDebug("[fb] ION_IOC_FREE %m");
++		}
++		close(ion);
++	}
++	else
++	{
++		eFatal("[fb] failed to open ION device node! no allocate accel memory available !!");
++		m_accel_fd = -1;
++	}
++#else
++	eDebug("[fb] %dk video mem", available/1024);
+ 	lfb=(unsigned char*)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fbFd, 0);
++#endif
++#ifndef CONFIG_ION
+ 	if (!lfb)
+ 	{
+-		eDebug("[fb] mmap: %m");
++		eDebug("[fb] mmap %m");
+ 		goto nolfb;
+ 	}
++#endif
+ 
+ 	showConsole(0);
+ 
+@@ -80,7 +175,7 @@ nolfb:
+ 		::close(fbFd);
+ 		fbFd = -1;
+ 	}
+-	eDebug("[fb] framebuffer %s not available", fb);
++	eDebug("[fb] framebuffer not available");
+ 	return;
+ }
+ 
+@@ -101,6 +196,12 @@ int fbClass::showConsole(int state)
+ int fbClass::SetMode(int nxRes, int nyRes, int nbpp)
+ {
+ 	if (fbFd < 0) return -1;
++#ifdef CONFIG_ION
++	/* unmap old framebuffer with old size */
++	if (lfb)
++		munmap(lfb, stride * screeninfo.yres_virtual);
++#endif
++
+ 	screeninfo.xres_virtual=screeninfo.xres=nxRes;
+ 	screeninfo.yres_virtual=(screeninfo.yres=nyRes)*2;
+ 	screeninfo.height=0;
+@@ -140,7 +241,7 @@ int fbClass::SetMode(int nxRes, int nyRes, int nbpp)
+ 
+ 		if (ioctl(fbFd, FBIOPUT_VSCREENINFO, &screeninfo)<0)
+ 		{
+-			eDebug("[fb] FBIOPUT_VSCREENINFO: %m");
++			eDebug("[fb] FBIOPUT_VSCREENINFO %m");
+ 			return -1;
+ 		}
+ 		eDebug("[fb] double buffering not available.");
+@@ -148,7 +249,7 @@ int fbClass::SetMode(int nxRes, int nyRes, int nbpp)
+ 		eDebug("[fb] double buffering available!");
+ 
+ 	m_number_of_pages = screeninfo.yres_virtual / nyRes;
+-
++	
+ 	ioctl(fbFd, FBIOGET_VSCREENINFO, &screeninfo);
+ 
+ 	if ((screeninfo.xres != (unsigned int)nxRes) || (screeninfo.yres != (unsigned int)nyRes) ||
+@@ -164,9 +265,17 @@ int fbClass::SetMode(int nxRes, int nyRes, int nbpp)
+ 	fb_fix_screeninfo fix;
+ 	if (ioctl(fbFd, FBIOGET_FSCREENINFO, &fix)<0)
+ 	{
+-		eDebug("[fb] FBIOGET_FSCREENINFO: %m");
++		eDebug("[fb] FBIOGET_FSCREENINFO %m");
+ 	}
+ 	stride=fix.line_length;
++
++#ifdef CONFIG_ION
++    m_phys_mem = fix.smem_start;
++    available = fix.smem_len;
++	/* map new framebuffer */
++	lfb=(unsigned char*)mmap(0, stride * screeninfo.yres_virtual, PROT_WRITE|PROT_READ, MAP_SHARED, fbFd, 0);
++#endif
++
+ 	memset(lfb, 0, stride*yRes);
+ 	blit();
+ 	return 0;
+@@ -197,14 +306,20 @@ int fbClass::waitVSync()
+ void fbClass::blit()
+ {
+ 	if (fbFd < 0) return;
++#if !defined(CONFIG_ION)
+ 	if (m_manual_blit == 1) {
+ 		if (ioctl(fbFd, FBIO_BLIT) < 0)
+-			eDebug("[fb] FBIO_BLIT: %m");
++			eDebug("[fb] FBIO_BLIT %m");
+ 	}
++#endif
+ }
+ 
+ fbClass::~fbClass()
+ {
++#ifdef CONFIG_ION
++	if (m_accel_fd > -1)
++		close(m_accel_fd);
++#endif
+ 	if (lfb)
+ 	{
+ 		msync(lfb, available, MS_SYNC);
+@@ -252,21 +367,26 @@ void fbClass::unlock()
+ 
+ void fbClass::enableManualBlit()
+ {
+-	unsigned char tmp = 1;
+ 	if (fbFd < 0) return;
++#ifndef CONFIG_ION
++	unsigned char tmp = 1;
+ 	if (ioctl(fbFd,FBIO_SET_MANUAL_BLIT, &tmp)<0)
+-		eDebug("[fb] enable FBIO_SET_MANUAL_BLIT: %m");
++		eDebug("[fb] FBIO_SET_MANUAL_BLIT %m");
+ 	else
+ 		m_manual_blit = 1;
++#endif
+ }
+ 
+ void fbClass::disableManualBlit()
+ {
++#ifndef CONFIG_ION
+ 	unsigned char tmp = 0;
+ 	if (fbFd < 0) return;
+ 	if (ioctl(fbFd,FBIO_SET_MANUAL_BLIT, &tmp)<0)
+-		eDebug("[fb] disable FBIO_SET_MANUAL_BLIT: %m");
++		eDebug("[fb] FBIO_SET_MANUAL_BLIT %m");
+ 	else
+ 		m_manual_blit = 0;
++#endif
+ }
+ 
++
+diff --git a/lib/gdi/fb.h b/lib/gdi/fb.h
+index 0eb04915dce..6656dd84c57 100644
+--- a/lib/gdi/fb.h
++++ b/lib/gdi/fb.h
+@@ -29,6 +29,9 @@ public:
+ #else
+ public:
+ 	unsigned char *lfb;
++#ifdef CONFIG_ION
++	int m_accel_fd;
++#endif
+ 	void enableManualBlit();
+ 	void disableManualBlit();
+ 	int showConsole(int state);
+diff --git a/lib/gdi/gfbdc.cpp b/lib/gdi/gfbdc.cpp
+index 19964401458..ffaf9873c4e 100644
+--- a/lib/gdi/gfbdc.cpp
++++ b/lib/gdi/gfbdc.cpp
+@@ -15,7 +15,7 @@
+ #include <lib/base/cfile.h>
+ #endif
+ 
+-#if defined(CONFIG_HISILICON_FB)
++#if defined(CONFIG_ION) || defined(CONFIG_HISILICON_FB)
+ #include <lib/gdi/grc.h>
+ 
+ extern void bcm_accel_blit(
+@@ -25,17 +25,18 @@ extern void bcm_accel_blit(
+ 		int dst_x, int dst_y, int dwidth, int dheight,
+ 		int pal_addr, int flags);
+ #endif
+-
+ #ifdef HAVE_HISILICON_ACCEL
+ extern void  dinobot_accel_register(void *p1,void *p2);
+ extern void  dinibot_accel_notify(void);
+ #endif
++
+ gFBDC::gFBDC()
+ {
+ 	fb=new fbClass;
+-
++#ifndef CONFIG_ION
+ 	if (!fb->Available())
+ 		eFatal("[gFBDC] no framebuffer available");
++#endif
+ 
+ 	int xres;
+ 	int yres;
+@@ -171,9 +172,34 @@ void gFBDC::exec(const gOpcode *o)
+ 			gles_do_animation();
+ 		else
+ 			fb->blit();
++		gles_flush();
+ #else
+ 		fb->blit();
+ #endif
++#ifdef CONFIG_ION
++		if (surface_back.data_phys)
++		{
++			gUnmanagedSurface s(surface);
++			surface = surface_back;
++			surface_back = s;
++
++			fb->waitVSync();
++			if (surface.data_phys > surface_back.data_phys)
++			{
++				fb->setOffset(0);
++			}
++			else
++			{
++				fb->setOffset(surface_back.y);
++			}
++			bcm_accel_blit(
++				surface_back.data_phys, surface_back.x, surface_back.y, surface_back.stride, 0,
++				surface.data_phys, surface.x, surface.y, surface.stride,
++				0, 0, surface.x, surface.y,
++				0, 0, surface.x, surface.y,
++				0, 0);
++		}
++#endif
+ #if defined(CONFIG_HISILICON_FB)
+ 		if(islocked()==0)
+ 		{
+@@ -198,7 +224,7 @@ void gFBDC::exec(const gOpcode *o)
+ 		gles_set_buffer((unsigned int *)surface.data);
+ 		gles_set_animation(1, o->parm.setShowHideInfo->point.x(), o->parm.setShowHideInfo->point.y(), o->parm.setShowHideInfo->size.width(), o->parm.setShowHideInfo->size.height());
+ #endif
+-		break;
++				break;
+ 	}
+ 	case gOpcode::sendHide:
+ 	{
+@@ -209,16 +235,28 @@ void gFBDC::exec(const gOpcode *o)
+ 		gles_set_buffer((unsigned int *)surface.data);
+ 		gles_set_animation(0, o->parm.setShowHideInfo->point.x(), o->parm.setShowHideInfo->point.y(), o->parm.setShowHideInfo->size.width(), o->parm.setShowHideInfo->size.height());
+ #endif
+-		break;
++				break;
+ 	}
+ #ifdef USE_LIBVUGLES2
++	case gOpcode::sendShowItem:
++	{
++		gles_set_buffer((unsigned int *)surface.data);
++		gles_set_animation_listbox(o->parm.setShowItemInfo->dir, o->parm.setShowItemInfo->point.x(), o->parm.setShowItemInfo->point.y(), o->parm.setShowItemInfo->size.width(), o->parm.setShowItemInfo->size.height());
++		delete o->parm.setShowItemInfo;
++		break;
++	}
++	case gOpcode::setFlush:	
++	{
++		gles_set_flush(o->parm.setFlush->enable);
++		delete o->parm.setFlush;
++		break;
++	}
+ 	case gOpcode::setView:
+ 	{
+ 		gles_viewport(o->parm.setViewInfo->size.width(), o->parm.setViewInfo->size.height(), fb->Stride());
+-		break;
++				break;
+ 	}
+ #endif
+-
+ 	default:
+ 		gDC::exec(o);
+ 		break;
+@@ -257,10 +295,14 @@ void gFBDC::setResolution(int xres, int yres, int bpp)
+ 	#endif
+ 		)
+ 		return;
+-
++#ifndef CONFIG_ION
+ 	if (gAccel::getInstance())
+ 		gAccel::getInstance()->releaseAccelMemorySpace();
+-
++#else
++	gRC *grc = gRC::getInstance();
++	if (grc)
++		grc->lock();
++#endif
+ 	fb->SetMode(xres, yres, bpp);
+ 
+ 	surface.x = xres;
+@@ -290,12 +332,14 @@ void gFBDC::setResolution(int xres, int yres, int bpp)
+ 		surface_back.data_phys = 0;
+ 	}
+ 
+-	eDebug("[gFBDC] resolution: %dx%dx%d stride=%d, %dkB available for acceleration surfaces.",
+-		 surface.x, surface.y, surface.bpp, fb->Stride(), (fb->Available() - fb_size)/1024);
++	eDebug("[gFBDC] resolution: %d x %d x %d (stride: %d) pages: %d", surface.x, surface.y, surface.bpp, fb->Stride(), fb->getNumPages());
+ 
++#ifndef CONFIG_ION
++	/* accel is already set in fb.cpp */
++	eDebug("[gFBDC] %dkB available for acceleration surfaces.", (fb->Available() - fb_size)/1024);
+ 	if (gAccel::getInstance())
+ 		gAccel::getInstance()->setAccelMemorySpace(fb->lfb + fb_size, surface.data_phys + fb_size, fb->Available() - fb_size);
+-
++#endif
+ #ifdef HAVE_HISILICON_ACCEL
+ 	dinobot_accel_register(&surface,&surface_back);
+ #endif
+@@ -318,6 +362,11 @@ void gFBDC::setResolution(int xres, int yres, int bpp)
+ #endif
+ 
+ 	m_pixmap = new gPixmap(&surface);
++
++#ifdef CONFIG_ION
++	if (grc)
++		grc->unlock();
++#endif
+ }
+ 
+ void gFBDC::saveSettings()
+diff --git a/lib/gdi/grc.h b/lib/gdi/grc.h
+index 2c218c56167..c2df1bb42f5 100644
+--- a/lib/gdi/grc.h
++++ b/lib/gdi/grc.h
+@@ -259,6 +259,11 @@ public:
+ 	virtual ~gRC();
+ 
+ 	void submit(const gOpcode &o);
++	
++#ifdef CONFIG_ION
++	void lock();
++	void unlock();
++#endif
+ 
+ 	sigc::signal<void()> notify;
+ 
+diff --git a/lib/gdi/lcd.cpp b/lib/gdi/lcd.cpp
+index f86e2d644f3..1b39b34407a 100644
+--- a/lib/gdi/lcd.cpp
++++ b/lib/gdi/lcd.cpp
+@@ -30,10 +30,13 @@ eLCD *eLCD::getInstance()
+ 
+ void eLCD::setSize(int xres, int yres, int bpp)
+ {
++	_stride = xres * bpp / 8;
++	_buffer = new unsigned char[xres * yres * bpp / 8];
++#ifdef LCD_DM900_Y_OFFSET
++	xres -= LCD_DM900_Y_OFFSET;
++#endif
+ 	res = eSize(xres, yres);
+-	_buffer = new unsigned char[xres * yres * bpp/8];
+-	memset(_buffer, 0, res.height() * res.width() * bpp / 8);
+-	_stride = res.width() * bpp / 8;
++	memset(_buffer, 0, xres * yres * bpp / 8);
+ 	eDebug("[eLCD] (%dx%dx%d) buffer %p %d bytes, stride %d", xres, yres, bpp, _buffer, xres * yres * bpp / 8, _stride);
+ }
+ 
+@@ -399,7 +402,20 @@ void eDBoxLCD::update()
+ 		}
+ 		else
+ 		{
++#if defined(LCD_DM900_Y_OFFSET)
++			unsigned char gb_buffer[_stride * res.height()];
++			for (int offset = 0; offset < ((_stride * res.height()) >> 2); offset++)
++			{
++				unsigned int src = 0;
++				if (offset % (_stride >> 2) >= LCD_DM900_Y_OFFSET)
++					src = ((unsigned int *)_buffer)[offset - LCD_DM900_Y_OFFSET];
++				//                                             blue                         red                  green low                     green high
++				((unsigned int *)gb_buffer)[offset] = ((src >> 3) & 0x001F001F) | ((src << 3) & 0xF800F800) | ((src >> 8) & 0x00E000E0) | ((src << 8) & 0x07000700);
++			}
++			write(lcdfd, gb_buffer, _stride * res.height());
++#else
+ 			write(lcdfd, _buffer, _stride * res.height());
++#endif
+ 		}
+ 	}
+ 	else /* lcd_type == 1 */
+@@ -437,4 +453,4 @@ void eDBoxLCD::update()
+ void eDBoxLCD::dumpLCD(bool png)
+ {
+ 	return;
+-}
++}
+\ No newline at end of file
+diff --git a/lib/python/Components/AVSwitch.py b/lib/python/Components/AVSwitch.py
+index 3b3228792f3..18a40f551fc 100644
+--- a/lib/python/Components/AVSwitch.py
++++ b/lib/python/Components/AVSwitch.py
+@@ -44,6 +44,12 @@ class AVSwitch:
+ 				"multi": {50: "2160p50", 60: "2160p"},
+ 				"auto": {50: "2160p50", 60: "2160p", 24: "2160p24"}}
+ 
++	if SystemInfo["boxtype"] in ("dm900", "dm920"):
++		rates["2160p"] = {"50Hz": {50: "2160p50"},
++				"60Hz": {60: "2160p60"},
++				"multi": {50: "2160p50", 60: "2160p60"},
++				"auto": {50: "2160p50", 60: "2160p60", 24: "2160p24"}}
++
+ 	rates["PC"] = {
+ 		"1024x768": {60: "1024x768"},  # not possible on DM7025
+ 		"800x600": {60: "800x600"},  # also not possible
+@@ -107,7 +113,6 @@ class AVSwitch:
+ 			self.on_hotplug("HDMI")  # Must be HDMI.
+ 
+ 	# Check if a high-level mode with a given rate is available.
+-	#
+ 	def isModeAvailable(self, port, mode, rate):
+ 		rateNew = self.rates[mode][rate]
+ 		for modeNew in rateNew.values():
+@@ -222,7 +227,7 @@ class AVSwitch:
+ 				ratelist = []
+ 				for rate in rates:
+ 					if rate == "auto":
+-						if SystemInfo["Has24hz"]:
++						if SystemInfo["Has24hz"] or SystemInfo["boxtype"] in ("dm900", "dm920"):
+ 							ratelist.append((rate, mode == "2160p30" and "auto (25Hz/30Hz/24Hz)" or "auto (50Hz/60Hz/24Hz)"))
+ 					else:
+ 						ratelist.append((rate, rate == "multi" and (mode == "2160p30" and "multi (25Hz/30Hz)" or "multi (50Hz/60Hz)") or rate))
+@@ -270,8 +275,11 @@ class AVSwitch:
+ 		else:
+ 			wss = "auto"
+ 		print(f"[AVSwitch] setting wss:{wss} configElement.value:{configElement.value}")
+-		with open("/proc/stb/denc/0/wss", "w") as fd:
+-			fd.write(wss)
++		try:
++			with open("/proc/stb/denc/0/wss", "w") as fd:
++				fd.write(wss)
++		except (IOError, OSError):
++			pass
+ 
+ 	def setPolicy43(self, configElement):
+ 		print(f"[AVSwitch] setting policy43:{configElement.value}")
+@@ -634,6 +642,7 @@ def InitAVSwitch():
+ 		config.av.autovolume.addNotifier(setAutoVolume)
+ 	else:
+ 		config.av.autovolume = ConfigNothing()
++
+ 	if SystemInfo["supportPcmMultichannel"]:
+ 		def setPCMMultichannel(configElement):
+ 			open(SystemInfo["supportPcmMultichannel"], "w").write(configElement.value and "enable" or "disable")
+diff --git a/lib/python/Components/About.py b/lib/python/Components/About.py
+index bf5a28f805a..a81a96484a3 100644
+--- a/lib/python/Components/About.py
++++ b/lib/python/Components/About.py
+@@ -1,10 +1,13 @@
+-from sys import modules, version_info
+-from os import path as ospath
+-from time import time
+-import socket
+ import fcntl
++import socket
+ import struct
+ 
++from os import path as ospath
++from os.path import join as pathjoin
++from sys import modules, version_info
++from time import time
++from Tools.Directories import fileExists, resolveFilename, SCOPE_LIBDIR
++
+ from enigma import getEnigmaVersionString
+ 
+ 
+@@ -69,7 +72,12 @@ def getChipSetString():
+ 	try:
+ 		return str(open("/proc/stb/info/chipset").read().lower().replace("\n", "").replace("brcm", "").replace("bcm", ""))
+ 	except:
+-		return _("unavailable")
++		if fileExists("/proc/stb/info/model"):
++			getModel = str(open("/proc/stb/info/model").read())
++			if getModel[0:5] in ("dm900", "dm920"):
++				return "7252s"
++		else:
++			return "unknown"
+ 
+ 
+ def getCPUSpeedMHzInt():
+@@ -110,7 +118,7 @@ def getCPUSpeedString():
+ 		else:
+ 			cpu_speed = "%s MHz" % str(int(cpu_speed))
+ 		return cpu_speed
+-	return _("unavailable")
++	return "unknown"
+ 
+ 
+ def getCPUArch():
+diff --git a/lib/python/Components/Harddisk.py b/lib/python/Components/Harddisk.py
+index 30c2c8a8218..9836825bcf3 100644
+--- a/lib/python/Components/Harddisk.py
++++ b/lib/python/Components/Harddisk.py
+@@ -4,7 +4,7 @@ from fcntl import ioctl
+ from time import sleep, time
+ 
+ from enigma import eTimer
+-from Components.SystemInfo import SystemInfo
++from Components.SystemInfo import SystemInfo, BoxInfo
+ import Components.Task
+ from Tools.CList import CList
+ 
+@@ -632,6 +632,7 @@ class HarddiskManager:
+ 			rootMajor = None
+ 			# rootMinor = None
+ 		# print("[Harddisk] DEBUG: rootMajor = '%s', rootMinor = '%s'" % (rootMajor, rootMinor))
++		boxModel = BoxInfo.getItem("model")
+ 		for device in sorted(listdir("/sys/block")):
+ 			try:
+ 				physicalDevice = ospath.realpath(ospath.join("/sys/block", device, "device"))
+@@ -644,18 +645,24 @@ class HarddiskManager:
+ 				print("[Harddisk] Error: Device '%s' (%s) does not appear to have valid device numbers!" % (device, physicalDevice))
+ 				continue
+ 			devMajor = int(data.split(":")[0])
++			devMinor = int(data.split(":")[1])
+ 			if devMajor in blacklistedDisks:
+ 				# print("[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) is blacklisted." % (devMajor, device, physicalDevice))
+ 				continue
+-			if devMajor == 179 and not SystemInfo["HasSDnomount"]:		# Lets handle Zgemma SD card mounts - uses SystemInfo to determine SDcard status
+-				# print("[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) doesn't have 'HasSDnomount' set." % (devMajor, device, physicalDevice))
+-				continue
+-			if devMajor == 179 and devMajor == rootMajor and not SystemInfo["HasSDnomount"][0]:
+-				# print("[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) is the root disk." % (devMajor, device, physicalDevice))
+-				continue
+-			if SystemInfo["HasSDnomount"] and device.startswith("%s" % (SystemInfo["HasSDnomount"][1])) and SystemInfo["HasSDnomount"][0]:
+-				# print("[Harddisk] DEBUG: Major device number '%s' for device '%s' (%s) starts with 'mmcblk0' and has 'HasSDnomount' set." % (devMajor, device, physicalDevice))
+-				continue
++			print(f"[Harddisk] DEBUG: boxModel:{boxModel} device:{device} devMajor = '{devMajor}', devMinor = '{devMinor}'")
++			if devMajor == 179 and boxModel in ("dm900", "dm920"):
++				if devMinor != 0:
++					continue
++			else:
++				if devMajor == 179 and not SystemInfo["HasSDnomount"]:		# Lets handle Zgemma SD card mounts - uses SystemInfo to determine SDcard status
++					# print(f"[Harddisk] DEBUG: Major device number '{devMajor,}' for device '{device}' ({physicalDevice}) doesn't have 'HasSDnomount' set.")
++					continue
++				if devMajor == 179 and devMajor == rootMajor and not SystemInfo["HasSDnomount"][0]:
++					# print(f"[Harddisk] DEBUG: Major device number '{devMajor} for device '{device} ({physicalDevice}) is the root disk.")
++					continue
++				if SystemInfo["HasSDnomount"] and device.startswith(f"{SystemInfo['HasSDnomount'][1]}") and SystemInfo["HasSDnomount"][0]:
++					# print("f[Harddisk] DEBUG: Major device number '{devMajor} for device '{device}' ({physicalDevice}) starts with 'mmcblk0' and has 'HasSDnomount' set.")
++					continue
+ 			description = self.getUserfriendlyDeviceName(device, physicalDevice)
+ 			isCdrom = devMajor in opticalDisks or device.startswith("sr")
+ 			if isCdrom:
+@@ -699,6 +706,8 @@ class HarddiskManager:
+ 						# self.partitions.append(Partition(mountpoint = self.getMountpoint(device), description = description, force_mounted, device = device))
+ 						# print("[Harddisk] DEBUG: Partition(mountpoint=%s, description=%s, force_mounted=True, device=%s)" % (self.getMountpoint(device), description, device))
+ 						for partition in partitions:
++							if devMajor == 179 and boxModel in ("dm900", "dm920") and partition != "mmcblk0p3":
++								continue
+ 							description = self.getUserfriendlyDeviceName(partition, physicalDevice)
+ 							print("[Harddisk] Found partition '%s', description='%s', device='%s'." % (partition, description, physicalDevice))
+ 							# part = Partition(mountpoint=self.getMountpoint(partition), description=description, force_mounted=True, device=partition)
+diff --git a/lib/python/Components/Lcd.py b/lib/python/Components/Lcd.py
+index 2fb9294ac49..501e124b070 100644
+--- a/lib/python/Components/Lcd.py
++++ b/lib/python/Components/Lcd.py
+@@ -351,7 +351,10 @@ def InitLcd():
+ 		def setLCDminitvfps(configElement):
+ 			ilcd.setLCDMiniTVFPS(configElement.value)
+ 
+-		standby_default = 0
++		if SystemInfo["boxtype"] in ('dm900', 'dm920'):
++			standby_default = 4
++		else:
++			standby_default = 0
+ 
+ 		if not ilcd.isOled():
+ 			config.lcd.contrast = ConfigSlider(default=5, limits=(0, 20))
+diff --git a/lib/python/Components/NimManager.py b/lib/python/Components/NimManager.py
+index 2ecd94c3f84..c13cbf87463 100644
+--- a/lib/python/Components/NimManager.py
++++ b/lib/python/Components/NimManager.py
+@@ -1,7 +1,7 @@
+ from os import access, path, F_OK
+ 
+ from Components.About import about
+-from Components.SystemInfo import SystemInfo
++from Components.SystemInfo import SystemInfo, MODEL
+ from Tools.BoundFunction import boundFunction
+ from Tools.Directories import fileReadXML
+ 
+@@ -535,8 +535,8 @@ class NIM:
+ 			sattype = None
+ 
+ 		self.slot = slot
+-		self.type = sattype
+-		self.description = description
++		self.type = "DVB-S2X" if "45308X" in description.upper() and MODEL in ("dm900", "dm920") else sattype
++		self.description = "%s FBC" % description if "45308X" in description.upper() and MODEL in ("dm900", "dm920") else description 
+ 		self.number_of_slots = number_of_slots
+ 		self.has_outputs = has_outputs
+ 		self.internally_connectable = internally_connectable
+@@ -962,7 +962,7 @@ class NimManager:
+ 				entry["supports_blind_scan"] = False
+ 
+ 			entry["fbc"] = [0, 0, 0]  # not fbc
+-			if entry["name"] and ("fbc" in entry["name"].lower() or (entry["name"] in SystemInfo["HasFBCtuner"] and entry["frontend_device"] is not None and access("/proc/stb/frontend/%d/fbc_id" % entry["frontend_device"], F_OK))):
++			if entry["name"] and ("fbc" in entry["name"].lower() or ("45308X" in entry["name"].upper() and MODEL in ("dm900", "dm920")) or (entry["name"] in SystemInfo["HasFBCtuner"] and entry["frontend_device"] is not None and access("/proc/stb/frontend/%d/fbc_id" % entry["frontend_device"], F_OK))):
+ 				fbc_number += 1
+ 				if fbc_number <= (entry["type"] and "DVB-C" in entry["type"] and 1 or 2):
+ 					entry["fbc"] = [1, fbc_number, fbc_tuner]  # fbc root
+diff --git a/lib/python/Components/SystemInfo.py b/lib/python/Components/SystemInfo.py
+index 37119cb8750..f3ff95d3f09 100644
+--- a/lib/python/Components/SystemInfo.py
++++ b/lib/python/Components/SystemInfo.py
+@@ -314,9 +314,9 @@ SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable ha
+ 	{"720p", "1080i"}  # Widescreen modes.
+ )
+ 
+-SystemInfo["FbcTunerPowerAlwaysOn"] = SystemInfo["boxtype"] in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse")
++SystemInfo["FbcTunerPowerAlwaysOn"] = SystemInfo["boxtype"] in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse", "dm900", "dm920")
+ SystemInfo["HasPhysicalLoopthrough"] = ["Vuplus DVB-S NIM(AVL2108)", "GIGA DVB-S2 NIM (Internal)"]
+-SystemInfo["HasFBCtuner"] = ["Vuplus DVB-C NIM(BCM3158)", "Vuplus DVB-C NIM(BCM3148)", "Vuplus DVB-S NIM(7376 FBC)", "Vuplus DVB-S NIM(45308X FBC)", "Vuplus DVB-S NIM(45208 FBC)", "DVB-S2 NIM(45208 FBC)", "DVB-S2X NIM(45308X FBC)", "DVB-S2 NIM(45308 FBC)", "DVB-C NIM(3128 FBC)", "BCM45208", "BCM45308X", "BCM3158"]
++SystemInfo["HasFBCtuner"] = ["Vuplus DVB-C NIM(BCM3158)", "Vuplus DVB-C NIM(BCM3148)", "Vuplus DVB-S NIM(7376 FBC)", "Vuplus DVB-S NIM(45308X FBC)", "Vuplus DVB-S NIM(45208 FBC)", "DVB-S2 NIM(45208 FBC)", "DVB-S2X NIM(45308X FBC)", "DVB-S2 NIM(45308 FBC)", "DVB-C NIM(3128 FBC)", "BCM45208", "BCM45308X", "BCM45308X FBC", "BCM3158"]
+ SystemInfo["FCCactive"] = False
+ SystemInfo["rc_model"] = rc_model.getRcFolder()
+ SystemInfo["mapKeyInfoToEpgFunctions"] = SystemInfo["rc_model"] in ("vu", "vu2", "vu3", "vu4")  # due to button limitations of the remote control
+diff --git a/lib/python/Plugins/SystemPlugins/ViX/ImageManager.py b/lib/python/Plugins/SystemPlugins/ViX/ImageManager.py
+index 020ff6645c7..d88c8437f7f 100644
+--- a/lib/python/Plugins/SystemPlugins/ViX/ImageManager.py
++++ b/lib/python/Plugins/SystemPlugins/ViX/ImageManager.py
+@@ -586,34 +586,33 @@ class VIXImageManager(Screen):
+ 	def keyRestore6(self, ret):
+ 		MAINDEST = "%s/%s" % (self.TEMPDESTROOT, SystemInfo["imagedir"])
+ 		print("[ImageManager] MAINDEST=%s" % MAINDEST)
+-		if ret == 0:
+-			CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST							# normal non multiboot receiver
+-			if SystemInfo["canMultiBoot"]:
+-				if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
+-					kz0 = SystemInfo["mtdkernel"]
+-					rz0 = SystemInfo["mtdrootfs"]
+-					CMD = "/usr/bin/ofgwrite -k%s -r%s '%s'" % (kz0, rz0, MAINDEST)  # slot0 treat as kernel/root only multiboot receiver
+-				elif SystemInfo["HasHiSi"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:  # sf8008 type receiver using SD card in multiboot
+-					CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
+-					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
+-					if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_6"):
+-						copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
+-				elif SystemInfo["HasKexecMultiboot"]:
+-					if SystemInfo["HasKexecUSB"] and "mmcblk" not in self.MTDROOTFS:
+-						CMD = "/usr/bin/ofgwrite -r%s -kzImage -s'%s/linuxrootfs' -m%s '%s'" % (self.MTDROOTFS, SystemInfo["boxtype"][2:], self.multibootslot, MAINDEST)
+-					else:
+-						CMD = "/usr/bin/ofgwrite -r%s -kzImage -m%s '%s'" % (self.MTDROOTFS, self.multibootslot, MAINDEST)
+-					print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
++		CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST							# normal non multiboot receiver
++		if SystemInfo["canMultiBoot"]:
++			if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
++				kz0 = SystemInfo["mtdkernel"]
++				rz0 = SystemInfo["mtdrootfs"]
++				CMD = "/usr/bin/ofgwrite -k%s -r%s '%s'" % (kz0, rz0, MAINDEST)  # slot0 treat as kernel/root only multiboot receiver
++			elif SystemInfo["HasHiSi"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:  # sf8008 type receiver using SD card in multiboot
++				CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
++				print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
++				if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_6"):
++					copyfile("/boot/STARTUP_%s" % self.multibootslot, "/boot/STARTUP")
++			elif SystemInfo["HasKexecMultiboot"]:
++				if SystemInfo["HasKexecUSB"] and "mmcblk" not in self.MTDROOTFS:
++					CMD = "/usr/bin/ofgwrite -r%s -kzImage -s'%s/linuxrootfs' -m%s '%s'" % (self.MTDROOTFS, SystemInfo["boxtype"][2:], self.multibootslot, MAINDEST)
+ 				else:
+-					CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)  # Normal multiboot
+-			elif SystemInfo["HasH9SD"]:
+-				if fileHas("/proc/cmdline", "root=/dev/mmcblk0p1") is True and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 using SD card
+-					CMD = "/usr/bin/ofgwrite -rmmcblk0p1 '%s'" % MAINDEST
+-				elif fileExists("%s/rootfs.ubi" % MAINDEST) and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 no SD card - build has both roots causes ofgwrite issue
+-					rename("%s/rootfs.tar.bz2" % MAINDEST, "%s/xx.txt" % MAINDEST)
+-		else:
+-			CMD = "/usr/bin/ofgwrite -rmtd4 -kmtd3  %s/" % MAINDEST  # Xtrend ET8500 with OS2 multiboot
+-		print("[ImageManager] running commnd:", CMD)
++					CMD = "/usr/bin/ofgwrite -r%s -kzImage -m%s '%s'" % (self.MTDROOTFS, self.multibootslot, MAINDEST)
++				print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
++			else:
++				CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)  # Normal multiboot
++		elif SystemInfo["HasH9SD"]:
++			if fileHas("/proc/cmdline", "root=/dev/mmcblk0p1") is True and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 using SD card
++				CMD = "/usr/bin/ofgwrite -rmmcblk0p1 '%s'" % MAINDEST
++			elif fileExists("%s/rootfs.ubi" % MAINDEST) and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 no SD card - build has both roots causes ofgwrite issue
++				rename("%s/rootfs.tar.bz2" % MAINDEST, "%s/xx.txt" % MAINDEST)
++		elif SystemInfo["machinebuild"] in ("dm900", "dm920"):  # kernel:mmcblk0p1 root:mmcblk0p2
++			CMD = "/usr/bin/ofgwrite -r%s '%s'" % (self.MTDROOTFS, MAINDEST)  # No ofgwrite auto detection, so only flash root NOT kernel
++		print(f"[ImageManager] running command:{CMD} root:{self.MTDROOTFS}")
+ 		self.Console.ePopen(CMD, self.ofgwriteResult)
+ 		fbClass.getInstance().lock()
+ 
+diff --git a/lib/python/Plugins/SystemPlugins/ViX/MountManager.py b/lib/python/Plugins/SystemPlugins/ViX/MountManager.py
+index b477a5d5bfa..6113f5e28a0 100644
+--- a/lib/python/Plugins/SystemPlugins/ViX/MountManager.py
++++ b/lib/python/Plugins/SystemPlugins/ViX/MountManager.py
+@@ -10,7 +10,7 @@ from Components.ConfigList import ConfigListScreen
+ from Components.config import getConfigListEntry, ConfigSelection, NoSave
+ from Components.Console import Console
+ from Components.Sources.List import List
+-from Components.SystemInfo import SystemInfo
++from Components.SystemInfo import SystemInfo, BoxInfo
+ from Screens.MessageBox import MessageBox
+ from Screens.Screen import Screen
+ from Screens.Standby import QUIT_REBOOT, TryQuitMainloop
+@@ -41,6 +41,7 @@ def readFile(filename):
+ 
+ def getProcPartitions(partitionList):
+ 	partitions = []
++	boxModel = BoxInfo.getItem("model")
+ 	with open("/proc/partitions", "r") as fd:
+ 		for line in fd.readlines():
+ 			line = line.strip()
+@@ -53,21 +54,26 @@ def getProcPartitions(partitionList):
+ 			devMajor = int(devmajor)
+ 			if devMajor in blacklistedDisks:  # Ignore all blacklisted devices.
+ 				continue
+-			if devMajor == 179:
+-				if not SystemInfo["HasSDnomount"]:  # Only interested in h9/i55/h9combo(+dups) mmc partitions.  h9combo(+dups) uses mmcblk1p[0-3].
++			if devMajor == 179 and boxModel in ("dm900", "dm920"):
++				print("[MountManager]2 device='%s', devmajor='%s', devminor='%s'." % (device, devmajor, devminor))
++				if device != "mmcblk0p3":
+ 					continue
+-				if SystemInfo["HasH9SD"]:
+-					if not re.search("mmcblk0p1", device):  # h9/i55 only mmcblk0p1 mmc partition
++			else:
++				if devMajor == 179:
++					if not SystemInfo["HasSDnomount"]:  # Only interested in h9/i55/h9combo(+dups) mmc partitions.  h9combo(+dups) uses mmcblk1p[0-3].
+ 						continue
+-					if SystemInfo["HasMMC"]:  # With h9/i55 reject mmcblk0p1 mmc partition if root device.
++					if SystemInfo["HasH9SD"]:
++						if not re.search("mmcblk0p1", device):  # h9/i55 only mmcblk0p1 mmc partition
++							continue
++						if SystemInfo["HasMMC"]:  # With h9/i55 reject mmcblk0p1 mmc partition if root device.
++							continue
++					if SystemInfo["HasSDnomount"][0] and not re.search("mmcblk1p[0-3]", device):  # h9combo(+dups) uses mmcblk1p[0-3] include
++						continue
++				if devMajor == 8:
++					if not re.search("sd[a-z][1-9]", device):  # If storage use partitions only.
++						continue
++					if SystemInfo["HasHiSi"] and path.exists("/dev/sda4") and re.search("sd[a][1-4]", device):  # Sf8008 using SDcard for slots ---> exclude
+ 						continue
+-				if SystemInfo["HasSDnomount"][0] and not re.search("mmcblk1p[0-3]", device):  # h9combo(+dups) uses mmcblk1p[0-3] include
+-					continue
+-			if devMajor == 8:
+-				if not re.search("sd[a-z][1-9]", device):  # If storage use partitions only.
+-					continue
+-				if SystemInfo["HasHiSi"] and path.exists("/dev/sda4") and re.search("sd[a][1-4]", device):  # Sf8008 using SDcard for slots ---> exclude
+-					continue
+ 			if device in partitions:  # If device is already in partition list ignore it.
+ 				continue
+ 			buildPartitionInfo(device, partitionList)
+diff --git a/lib/python/Screens/Satconfig.py b/lib/python/Screens/Satconfig.py
+index 9cb43fd3e96..b64ffc2da21 100644
+--- a/lib/python/Screens/Satconfig.py
++++ b/lib/python/Screens/Satconfig.py
+@@ -858,7 +858,7 @@ class NimSelection(Screen):
+ 				if x.isCompatible("DVB-S"):
+ 					if nimConfig.configMode.value in ("loopthrough", "equal", "satposdepends"):
+ 						if x.isFBCLink():
+-							text = _("FBC automatic\nconnected to")
++							text = "%s %s" % (_("FBC automatic\nconnected to"), nimmanager.getNim(int(nimConfig.connectedTo.value)).slot_name)
+ 						else:
+ 							text = "%s %s" % ({"loopthrough": _("Loop through from"), "equal": _("Equal to"), "satposdepends": _("Second cable of motorized LNB")}[nimConfig.configMode.value],
+ 								nimmanager.getNim(int(nimConfig.connectedTo.value)).slot_name)
+diff --git a/lib/python/Screens/SessionGlobals.py b/lib/python/Screens/SessionGlobals.py
+index 6577b9052b0..a759f04c7b9 100644
+--- a/lib/python/Screens/SessionGlobals.py
++++ b/lib/python/Screens/SessionGlobals.py
+@@ -9,6 +9,7 @@ from Components.Sources.Boolean import Boolean
+ from Components.Sources.RecordState import RecordState
+ from Components.Converter.Combine import Combine
+ from Components.Renderer.FrontpanelLed import FrontpanelLed
++from Components.SystemInfo import MODEL
+ 
+ 
+ class SessionGlobals(Screen):
+@@ -46,5 +47,9 @@ class SessionGlobals(Screen):
+ 		if nr_leds == 1:
+ 			FrontpanelLed(which=0, boolean=False, patterns=[PATTERN_OFF, PATTERN_BLINK, PATTERN_OFF, PATTERN_BLINK]).connect(combine)
+ 		elif nr_leds == 2:
+-			FrontpanelLed(which=0, boolean=False, patterns=[PATTERN_OFF, PATTERN_BLINK, PATTERN_ON, PATTERN_BLINK]).connect(combine)
+-			FrontpanelLed(which=1, boolean=False, patterns=[PATTERN_ON, PATTERN_ON, PATTERN_OFF, PATTERN_OFF]).connect(combine)
++			if MODEL in ("dm900", "dm920"):
++				FrontpanelLed(which=1, boolean=False, patterns=[PATTERN_OFF, PATTERN_BLINK, PATTERN_OFF, PATTERN_BLINK]).connect(combine)
++				FrontpanelLed(which=0, boolean=False, patterns=[PATTERN_ON, PATTERN_ON, PATTERN_OFF, PATTERN_OFF]).connect(combine)
++			else:
++				FrontpanelLed(which=0, boolean=False, patterns=[PATTERN_OFF, PATTERN_BLINK, PATTERN_ON, PATTERN_BLINK]).connect(combine)
++				FrontpanelLed(which=1, boolean=False, patterns=[PATTERN_ON, PATTERN_ON, PATTERN_OFF, PATTERN_OFF]).connect(combine)
+diff --git a/lib/python/Screens/UserInterfacePositioner.py b/lib/python/Screens/UserInterfacePositioner.py
+index 91d39cab265..43e204eae29 100644
+--- a/lib/python/Screens/UserInterfacePositioner.py
++++ b/lib/python/Screens/UserInterfacePositioner.py
+@@ -1,20 +1,23 @@
+-from Screens.MessageBox import MessageBox
+-from Screens.Screen import Screen
++from os import access, R_OK
++import traceback
++from enigma import getDesktop
++
+ from Components.ActionMap import ActionMap
+ from Components.config import config, configfile, getConfigListEntry, ConfigSelectionNumber, ConfigSelection, ConfigSlider, ConfigYesNo, NoSave, ConfigNumber
+ from Components.ConfigList import ConfigListScreen
+-from Components.SystemInfo import SystemInfo
+-from Components.Sources.StaticText import StaticText
+ from Components.Console import Console
++from Components.Sources.StaticText import StaticText
++from Components.SystemInfo import SystemInfo, BRAND
++from Screens.Screen import Screen
++from Screens.MessageBox import MessageBox
+ from Tools.Directories import fileCheck, fileExists
+-from enigma import getDesktop
+-from os import access, R_OK
+-import traceback
+ 
+ 
+ def getFilePath(setting):
+-	return "/proc/stb/fb/dst_%s" % (setting)
+-
++	if BRAND in ("dreambox", ):
++		return "/proc/stb/vmpeg/0/dst_%s" % (setting)
++	else:
++		return "/proc/stb/fb/dst_%s" % (setting)
+ 
+ def setPositionParameter(parameter, configElement):
+ 	f = open(getFilePath(parameter), "w")
+@@ -65,7 +68,7 @@ def InitOsd():
+ 
+ def InitOsdPosition():
+ 	SystemInfo["CanChangeOsdAlpha"] = access('/proc/stb/video/alpha', R_OK) and True or False
+-	SystemInfo["CanChangeOsdPosition"] = access('/proc/stb/fb/dst_left', R_OK) and True or False
++	SystemInfo["CanChangeOsdPosition"] = (access('/proc/stb/fb/dst_left', R_OK) or access('/proc/stb/vmpeg/0/dst_left', R_OK)) and True or False
+ 	SystemInfo["OsdSetup"] = SystemInfo["CanChangeOsdPosition"]
+ 
+ 	if SystemInfo["CanChangeOsdAlpha"] is True or SystemInfo["CanChangeOsdPosition"] is True:
