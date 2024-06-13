@@ -30,10 +30,13 @@ eLCD *eLCD::getInstance()
 
 void eLCD::setSize(int xres, int yres, int bpp)
 {
+	_stride = xres * bpp / 8;
+	_buffer = new unsigned char[xres * yres * bpp / 8];
+#ifdef LCD_DM900_Y_OFFSET
+	xres -= LCD_DM900_Y_OFFSET;
+#endif
 	res = eSize(xres, yres);
-	_buffer = new unsigned char[xres * yres * bpp/8];
-	memset(_buffer, 0, res.height() * res.width() * bpp / 8);
-	_stride = res.width() * bpp / 8;
+	memset(_buffer, 0, xres * yres * bpp / 8);
 	eDebug("[eLCD] (%dx%dx%d) buffer %p %d bytes, stride %d", xres, yres, bpp, _buffer, xres * yres * bpp / 8, _stride);
 }
 
@@ -399,7 +402,20 @@ void eDBoxLCD::update()
 		}
 		else
 		{
+#if defined(LCD_DM900_Y_OFFSET)
+			unsigned char gb_buffer[_stride * res.height()];
+			for (int offset = 0; offset < ((_stride * res.height()) >> 2); offset++)
+			{
+				unsigned int src = 0;
+				if (offset % (_stride >> 2) >= LCD_DM900_Y_OFFSET)
+					src = ((unsigned int *)_buffer)[offset - LCD_DM900_Y_OFFSET];
+				//                                             blue                         red                  green low                     green high
+				((unsigned int *)gb_buffer)[offset] = ((src >> 3) & 0x001F001F) | ((src << 3) & 0xF800F800) | ((src >> 8) & 0x00E000E0) | ((src << 8) & 0x07000700);
+			}
+			write(lcdfd, gb_buffer, _stride * res.height());
+#else
 			write(lcdfd, _buffer, _stride * res.height());
+#endif
 		}
 	}
 	else /* lcd_type == 1 */

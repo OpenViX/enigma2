@@ -10,7 +10,7 @@ from Components.ConfigList import ConfigListScreen
 from Components.config import getConfigListEntry, ConfigSelection, NoSave
 from Components.Console import Console
 from Components.Sources.List import List
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, BoxInfo
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import QUIT_REBOOT, TryQuitMainloop
@@ -41,6 +41,7 @@ def readFile(filename):
 
 def getProcPartitions(partitionList):
 	partitions = []
+	boxModel = BoxInfo.getItem("model")
 	with open("/proc/partitions", "r") as fd:
 		for line in fd.readlines():
 			line = line.strip()
@@ -53,21 +54,26 @@ def getProcPartitions(partitionList):
 			devMajor = int(devmajor)
 			if devMajor in blacklistedDisks:  # Ignore all blacklisted devices.
 				continue
-			if devMajor == 179:
-				if not SystemInfo["HasSDnomount"]:  # Only interested in h9/i55/h9combo(+dups) mmc partitions.  h9combo(+dups) uses mmcblk1p[0-3].
+			if devMajor == 179 and boxModel in ("dm900", "dm920"):
+				print("[MountManager]2 device='%s', devmajor='%s', devminor='%s'." % (device, devmajor, devminor))
+				if device != "mmcblk0p3":
 					continue
-				if SystemInfo["HasH9SD"]:
-					if not re.search("mmcblk0p1", device):  # h9/i55 only mmcblk0p1 mmc partition
+			else:
+				if devMajor == 179:
+					if not SystemInfo["HasSDnomount"]:  # Only interested in h9/i55/h9combo(+dups) mmc partitions.  h9combo(+dups) uses mmcblk1p[0-3].
 						continue
-					if SystemInfo["HasMMC"]:  # With h9/i55 reject mmcblk0p1 mmc partition if root device.
+					if SystemInfo["HasH9SD"]:
+						if not re.search("mmcblk0p1", device):  # h9/i55 only mmcblk0p1 mmc partition
+							continue
+						if SystemInfo["HasMMC"]:  # With h9/i55 reject mmcblk0p1 mmc partition if root device.
+							continue
+					if SystemInfo["HasSDnomount"][0] and not re.search("mmcblk1p[0-3]", device):  # h9combo(+dups) uses mmcblk1p[0-3] include
 						continue
-				if SystemInfo["HasSDnomount"][0] and not re.search("mmcblk1p[0-3]", device):  # h9combo(+dups) uses mmcblk1p[0-3] include
-					continue
-			if devMajor == 8:
-				if not re.search("sd[a-z][1-9]", device):  # If storage use partitions only.
-					continue
-				if SystemInfo["HasHiSi"] and path.exists("/dev/sda4") and re.search("sd[a][1-4]", device):  # Sf8008 using SDcard for slots ---> exclude
-					continue
+				if devMajor == 8:
+					if not re.search("sd[a-z][1-9]", device):  # If storage use partitions only.
+						continue
+					if SystemInfo["HasHiSi"] and path.exists("/dev/sda4") and re.search("sd[a][1-4]", device):  # Sf8008 using SDcard for slots ---> exclude
+						continue
 			if device in partitions:  # If device is already in partition list ignore it.
 				continue
 			buildPartitionInfo(device, partitionList)

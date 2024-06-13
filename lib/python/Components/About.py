@@ -1,9 +1,12 @@
-from sys import modules, version_info
-from os import path as ospath
-from time import time
-import socket
 import fcntl
+import socket
 import struct
+
+from os import path as ospath
+from os.path import join as pathjoin
+from sys import modules, version_info
+from time import time
+from Tools.Directories import fileExists, resolveFilename, SCOPE_LIBDIR
 
 from enigma import getEnigmaVersionString
 
@@ -69,7 +72,12 @@ def getChipSetString():
 	try:
 		return str(open("/proc/stb/info/chipset").read().lower().replace("\n", "").replace("brcm", "").replace("bcm", ""))
 	except:
-		return _("unavailable")
+		if fileExists("/proc/stb/info/model"):
+			getModel = str(open("/proc/stb/info/model").read())
+			if getModel[0:5] in ("dm900", "dm920"):
+				return "7252s"
+		else:
+			return "unknown"
 
 
 def getCPUSpeedMHzInt():
@@ -110,7 +118,7 @@ def getCPUSpeedString():
 		else:
 			cpu_speed = "%s MHz" % str(int(cpu_speed))
 		return cpu_speed
-	return _("unavailable")
+	return "unknown"
 
 
 def getCPUArch():
