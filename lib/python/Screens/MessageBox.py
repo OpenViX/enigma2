@@ -296,7 +296,7 @@ class MessageBox(Screen, HelpableScreen):
 			self["selectedChoice"].setText(self["list"].getCurrent()[0])
 
 	def __repr__(self):
-		return "%s(%s)" % (str(type(self)), self.text)
+		return "%s(%s)" % (str(type(self)), self.text if hasattr(self, "text") else "<title>")
 
 	def getListWidth(self):
 		return self["list"].instance.getMaxItemTextWidth()
