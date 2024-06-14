@@ -44,6 +44,12 @@ class AVSwitch:
 				"multi": {50: "2160p50", 60: "2160p"},
 				"auto": {50: "2160p50", 60: "2160p", 24: "2160p24"}}
 
+	if SystemInfo["boxtype"] in ("dm900", "dm920"):
+		rates["2160p"] = {"50Hz": {50: "2160p50"},
+				"60Hz": {60: "2160p60"},
+				"multi": {50: "2160p50", 60: "2160p60"},
+				"auto": {50: "2160p50", 60: "2160p60", 24: "2160p24"}}
+
 	rates["PC"] = {
 		"1024x768": {60: "1024x768"},  # not possible on DM7025
 		"800x600": {60: "800x600"},  # also not possible
@@ -107,7 +113,6 @@ class AVSwitch:
 			self.on_hotplug("HDMI")  # Must be HDMI.
 
 	# Check if a high-level mode with a given rate is available.
-	#
 	def isModeAvailable(self, port, mode, rate):
 		rateNew = self.rates[mode][rate]
 		for modeNew in rateNew.values():
@@ -222,7 +227,7 @@ class AVSwitch:
 				ratelist = []
 				for rate in rates:
 					if rate == "auto":
-						if SystemInfo["Has24hz"]:
+						if SystemInfo["Has24hz"] or SystemInfo["boxtype"] in ("dm900", "dm920"):
 							ratelist.append((rate, mode == "2160p30" and "auto (25Hz/30Hz/24Hz)" or "auto (50Hz/60Hz/24Hz)"))
 					else:
 						ratelist.append((rate, rate == "multi" and (mode == "2160p30" and "multi (25Hz/30Hz)" or "multi (50Hz/60Hz)") or rate))
@@ -270,8 +275,11 @@ class AVSwitch:
 		else:
 			wss = "auto"
 		print(f"[AVSwitch] setting wss:{wss} configElement.value:{configElement.value}")
-		with open("/proc/stb/denc/0/wss", "w") as fd:
-			fd.write(wss)
+		try:
+			with open("/proc/stb/denc/0/wss", "w") as fd:
+				fd.write(wss)
+		except (IOError, OSError):
+			pass
 
 	def setPolicy43(self, configElement):
 		print(f"[AVSwitch] setting policy43:{configElement.value}")
@@ -634,6 +642,7 @@ def InitAVSwitch():
 		config.av.autovolume.addNotifier(setAutoVolume)
 	else:
 		config.av.autovolume = ConfigNothing()
+
 	if SystemInfo["supportPcmMultichannel"]:
 		def setPCMMultichannel(configElement):
 			open(SystemInfo["supportPcmMultichannel"], "w").write(configElement.value and "enable" or "disable")

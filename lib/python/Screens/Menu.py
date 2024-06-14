@@ -1,4 +1,4 @@
-from skin import findSkinScreen, parameters, menus, menuicons
+from skin import findSkinScreen, parameters, menuicons
 
 from Components.ActionMap import HelpableNumberActionMap, HelpableActionMap
 from Components.config import config, ConfigDictionarySet, configfile, NoSave
@@ -244,7 +244,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		title = self.__class__.__name__ == "MenuSort" and _("Menusort (%s)") % title or title
 		self["title"] = StaticText(title)
 		self.setTitle(title)
-		self.loadMenuImage()
+		self.setImage(self.menuID, "menu")
 
 		self.number = 0
 		self.nextNumberTimer = eTimer()
@@ -260,17 +260,6 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 
 	def layoutFinished(self):
 		self.screenContentChanged()
-		if self.menuImage and "menuimage" in self:
-			self["menuimage"].instance.setPixmap(self.menuImage)
-
-	def loadMenuImage(self):
-		self.menuImage = None
-		if menus and self.menuID:
-			menuImage = menus.get(self.menuID, menus.get("default", ""))
-			if menuImage:
-				self.menuImage = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, menuImage))
-				if self.menuImage:
-					self["menuimage"] = Pixmap()
 
 	def createMenuList(self):
 		if self.__class__.__name__ != "MenuSort":
