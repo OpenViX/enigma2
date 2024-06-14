@@ -194,7 +194,7 @@ class Screen(dict):
 	def setImage(self, image, source=None):
 		self.screenImage = None
 		if image and (images := {"menu": menus, "setup": setups}.get(source, screens)):
-			if (x := images.get(image, images.get("default", ""))) and isfile(x := resolveFilename(GUI_SKIN_ID, x)):
+			if (x := images.get(image, images.get("default", ""))) and isfile(x := resolveFilename(SCOPE_GUISKIN, x)):
 				self.screenImage = x
 				if self.screenImage and "Image" not in self:
 					self["Image"] = Pixmap()
@@ -294,7 +294,7 @@ class Screen(dict):
 				# w.instance.thisown = 0
 			applyAllAttributes(w.instance, desktop, w.skinAttributes, self.scale)
 		if self.screenImage:
-			self["Image"].instance.setPixmap(LoadPixmap(self.screenImage))
+			self["Image"].setPixmap(LoadPixmap(self.screenImage))
 		for f in self.onLayoutFinish:
 			if not isinstance(f, type(self.close)):
 				exec(f, globals(), locals())  # Python 3
