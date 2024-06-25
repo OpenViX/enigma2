@@ -193,7 +193,7 @@ class LanguageSelection(Screen):
 		from Screens.PluginBrowser import PluginDownloadBrowser
 		self.session.openWithCallback(self.update_after_installLanguage, PluginDownloadBrowser, 0)
 
-	def update_after_installLanguage(self):
+	def update_after_installLanguage(self, retval=None):
 		language.InitLang()
 		self.updateList()
 		self.updateCache()

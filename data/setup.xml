@@ -338,7 +338,7 @@
 		<item level="0" text="Automatically update Client/Server View" description="Automatically update Client/Server View">config.oscaminfo.autoupdate</item>
 		<item level="0" text="Update interval (in seconds)" description="Update interval (in seconds)" conditional="config.oscaminfo.autoupdate.value">config.oscaminfo.intervall</item>
 	</setup>
-	<setup key="softcamscriptsetup" title="">
+	<setup key="softcamscriptsetup" title="Softcam Script">
 		<item level="0" text="SoftcamScript select camscript" description="Select a softcam script from the available list.">config.misc.softcams</item>
 		<item level="0" text="SoftcamScript enable/disable cam restart" description="Allow reinitialisation of selected cam script.">config.misc.softcamrestarts</item>
 	</setup>

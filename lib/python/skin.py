@@ -47,6 +47,7 @@ config.skin.display_skin = ConfigText(default=DEFAULT_DISPLAY_SKIN)
 
 currentPrimarySkin = None
 currentDisplaySkin = None
+currentLoadingSkin = None
 onLoadCallbacks = []
 
 # Skins are loaded in order of priority.  Skin with highest priority is
@@ -146,9 +147,11 @@ def loadSkinData(desktop):
 
 
 def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screenID=GUI_SKIN_ID):
-	global windowStyles
+	global windowStyles, currentLoadingSkin
+	retval = False
 	filename = resolveFilename(scope, filename)
 	if isfile(filename):
+		currentLoadingSkin = filename
 		print("[Skin] Loading skin file '%s'." % filename)
 		domSkin = fileReadXML(filename)
 		if domSkin:
@@ -175,8 +178,9 @@ def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screen
 				# Element is not a screen or windowstyle element so no need for it any longer.
 			reloadWindowStyles()  # Reload the window style to ensure all skin changes are taken into account.
 			print("[Skin] Loading skin file '%s' complete." % filename)
-			return True
-	return False
+			retval = True
+	currentLoadingSkin = None
+	return retval
 
 
 def addOnLoadCallback(callback):
@@ -194,7 +198,7 @@ class SkinError(Exception):
 		self.msg = message
 
 	def __str__(self):
-		return "[Skin] {%s}: %s!  Please contact the skin's author!" % (config.skin.primary_skin.value, self.msg)
+		return "[Skin] {%s}: %s!  Please contact the skin's author!" % (currentLoadingSkin or config.skin.primary_skin.value, self.msg)
 
 # Convert a coordinate string into a number.  Used to convert object position and
 # size attributes into a number.
