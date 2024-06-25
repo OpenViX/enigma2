@@ -333,7 +333,8 @@ class ScreenSummary(Screen):
 		names = parent.skinName
 		if not isinstance(names, list):
 			names = [names]
-		self.skinName = ["%s_summary" % x for x in names]
+		self.skinName = [f"{x}Summary" for x in names]
+		self.skinName += [f"{x}_summary" for x in names]  # Used by some screens in /enigma2/data/display and enigma2-display-skins repo.
 		className = self.__class__.__name__
 		if className != "ScreenSummary" and className not in self.skinName:  # e.g. if a module uses Screens.Setup.SetupSummary the skin needs to be available directly
 			self.skinName.append(className)
