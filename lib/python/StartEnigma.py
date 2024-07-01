@@ -638,9 +638,9 @@ if not VuRecovery:
 	from Components.VolumeControl import VolumeControl  # noqa: E402
 	from Tools.StbHardware import setFPWakeuptime, setRTCtime  # noqa: E402
 
-	profile("StackTracePrinter")
-	from Components.StackTrace import StackTracePrinter  # noqa: E402
-	StackTracePrinterInst = StackTracePrinter()
+profile("StackTracePrinter")
+from Components.StackTrace import StackTracePrinter  # noqa: E402
+StackTracePrinterInst = StackTracePrinter()
 
 profile("Init:skin")
 print("[StartEnigma]  Initialising Skins.")
