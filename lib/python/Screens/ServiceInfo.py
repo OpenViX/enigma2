@@ -1,9 +1,12 @@
+from os.path import isfile
+
 from enigma import eListboxPythonMultiContent, gFont, iServiceInformation, eServiceCenter, eDVBFrontendParametersSatellite, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER
 
 from Components.ActionMap import ActionMap
 from Components.GUIComponent import GUIComponent
 from Components.Label import Label
 from Components.MenuList import MenuList
+from Components.Renderer.Picon import getPiconName
 from Screens.Screen import Screen
 from ServiceReference import ServiceReference
 from Tools.Transponder import ConvertToHumanReadable, getChannelNumber
@@ -195,7 +198,7 @@ class ServiceInfo(Screen):
 			fillList = [
 				(_("Service name"), name, TYPE_TEXT),
 				(_("Videocodec, size & format"), resolution, TYPE_TEXT),
-				(_("Service reference"), ":".join(refstr.split(":")[:9]) if ":/" in refstr or "%3a//" in refstr else refstr, TYPE_TEXT)
+				(_("Service reference"), (srefShort := (":".join(refstr.split(":")[:9]) if ":/" in refstr or "%3a//" in refstr else refstr)), TYPE_TEXT)
 			]
 			if self.IPTV:  # IPTV 4097 5001, no PIDs shown
 				fillList.append((_("URL"), refstr.split(":")[10].replace("%3a", ":"), TYPE_TEXT))
@@ -222,6 +225,9 @@ class ServiceInfo(Screen):
 				])
 				if self.show_all is True:
 					fillList.extend(self.sub_list)
+
+			if (piconPath := getPiconName(srefShort)) and isfile(piconPath):
+				fillList.append((_("Picon"), piconPath, TYPE_TEXT))
 
 			self.fillList(fillList)
 		elif self.transponder_info:
