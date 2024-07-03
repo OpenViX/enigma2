@@ -229,7 +229,7 @@
 	</screen>
 
 <!-- misc-->
-	<screen name="SimpleSummary" position="0,0" size="400,240">
+	<screen name="ScreenSummary" position="0,0" size="400,240">
 		<widget source="Title" render="Label" position="0,38" size="400,26" font="FdLcD;24" halign="left" noWrap="1" />
 		<panel name="SummaryIconsPanel" />
 		<panel name="SummaryTunerStatusPanel" />
