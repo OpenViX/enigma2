@@ -398,7 +398,7 @@
 		<panel name="LCDTime" />
 	</screen>
 	<screen name="MessageBoxSimpleSummary" position="0,0" size="720,576"> 
-		<panel name="MessageBox_summary" />
+		<panel name="MessageBoxSummary" />
 	</screen>
 	
 	<!-- MOVIE SELECTION-->

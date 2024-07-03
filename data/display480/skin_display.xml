@@ -326,7 +326,7 @@
 		<widget source="parent.selectedChoice" render="Label" position="0,220" size="400,70" font="FdLcD;40" halign="center" valign="center" noWrap="1" />
 	</screen>
 	<screen name="MessageBoxSimpleSummary" position="0,0" size="480,320">
-		<panel name="MessageBox_summary" />
+		<panel name="MessageBoxSummary" />
 	</screen>
 
 <!-- standby -->
