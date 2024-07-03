@@ -14,7 +14,7 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.ParentalControlSetup import ProtectedScreen
-from Screens.Screen import Screen, ScreenSummary
+from Screens.Screen import Screen
 
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import resolveFilename, SCOPE_SKINS, SCOPE_CURRENT_SKIN
@@ -42,11 +42,6 @@ def MenuEntryPixmap(key, png_cache):
 		if pngPath:
 			png = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, pngPath), cached=True, width=w, height=0 if pngPath.endswith(".svg") else h)
 	return png
-
-
-class MenuSummary(ScreenSummary):
-	def __init__(self, session, parent):
-		ScreenSummary.__init__(self, session, parent=parent)
 
 
 class Menu(Screen, HelpableScreen, ProtectedScreen):
@@ -350,9 +345,6 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 	def closeRecursive(self):
 		self.resetNumberKey()
 		self.close(True)
-
-	def createSummary(self):
-		return MenuSummary
 
 	def isProtected(self):
 		if config.ParentalControl.setuppinactive.value:
