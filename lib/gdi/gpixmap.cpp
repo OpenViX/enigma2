@@ -471,10 +471,10 @@ void gPixmap::drawRectangle(const gRegion &region, const eRect &area, const gRGB
 	
 	if(!direction)
 		gradientBuf = createGradientBuffer2(gradientSize, backgroundColor, backgroundColor);
-	 else if(gradientColors.at(1) == gradientColors.at(2))
-	 	gradientBuf = createGradientBuffer2(gradientSize, gradientColors.at(0), gradientColors.at(1));
+	else if(gradientColors.size() == 2 || gradientColors.at(1) == gradientColors.at(2))
+		gradientBuf = createGradientBuffer2(gradientSize, gradientColors.at(0), gradientColors.at(1));
 	else
-	 	gradientBuf = createGradientBuffer3(gradientSize, gradientColors);
+		gradientBuf = createGradientBuffer3(gradientSize, gradientColors);
 
 	CornerData cornerData(radius, edges, area.width(), area.height(), borderWidth, borderCol);
 
@@ -1953,7 +1953,7 @@ void gPixmap::blit(const gPixmap &src, const eRect &_pos, const gRegion &clip, i
 			}
 #ifdef GPIXMAP_DEBUG
 			s.stop();
-			eDebug("[gPixmap] [BLITBENCH] CPU scale blit (%d bytes) took %u us", srcarea.surface() * src.surface->bypp, s.elapsed_us());
+			eDebug("[gPixmap] [BLITBENCH] CPU scale blit %dx%d transparent %d (%d bytes) took %u us", pos.width(), pos.height(), src.surface->transparent, srcarea.surface() * src.surface->bypp, s.elapsed_us());
 #ifdef GPIXMAP_CHECK_THRESHOLD
 			if (accel)
 			{
@@ -2127,7 +2127,45 @@ void gPixmap::blit(const gPixmap &src, const eRect &_pos, const gRegion &clip, i
 				uint32_t *srcp=(uint32_t*)srcptr;
 				uint16_t *dstp=(uint16_t*)dstptr;
 
-				if (flag & blitAlphaTest)
+				if (flag & blitAlphaBlend)
+				{
+					while (width--)
+					{
+						if (!((*srcp) & 0xFF000000))
+						{
+							srcp++;
+							dstp++;
+						}
+						else
+						{
+							gRGB icol = *srcp++;
+#if BYTE_ORDER == LITTLE_ENDIAN
+							uint32_t jcol = bswap_16(*dstp);
+#else
+							uint32_t jcol = *dstp;
+#endif
+							int bg_b = (jcol >> 8) & 0xF8;
+							int bg_g = (jcol >> 3) & 0xFC;
+							int bg_r = (jcol << 3) & 0xF8;
+
+							int a = icol.a;
+							int r = icol.r;
+							int g = icol.g;
+							int b = icol.b;
+
+							r = ((r - bg_r) * a) / 255 + bg_r;
+							g = ((g - bg_g) * a) / 255 + bg_g;
+							b = ((b - bg_b) * a) / 255 + bg_b;
+
+#if BYTE_ORDER == LITTLE_ENDIAN
+							*dstp++ = bswap_16((b >> 3) << 11 | (g >> 2) << 5 | r >> 3);
+#else
+							*dstp++ = (b >> 3) << 11 | (g >> 2) << 5 | r >> 3;
+#endif
+						}
+					}
+				}
+				else if (flag & blitAlphaTest)
 				{
 					while (width--)
 					{
@@ -2135,7 +2173,8 @@ void gPixmap::blit(const gPixmap &src, const eRect &_pos, const gRegion &clip, i
 						{
 							++srcp;
 							++dstp;
-						} else
+						}
+						else
 						{
 							uint32_t icol = *srcp++;
 #if BYTE_ORDER == LITTLE_ENDIAN
@@ -2165,7 +2204,7 @@ void gPixmap::blit(const gPixmap &src, const eRect &_pos, const gRegion &clip, i
 			eWarning("[gPixmap] cannot blit %dbpp from %dbpp", surface->bpp, src.surface->bpp);
 #ifdef GPIXMAP_DEBUG
 		s.stop();
-		eDebug("[gPixmap] [BLITBENCH] cpu blit (%d bytes) took %u us", srcarea.surface() * src.surface->bypp, s.elapsed_us());
+		eDebug("[gPixmap] [BLITBENCH] cpu blit %dx%d transparent %d (%d bytes) took %u us", pos.width(), pos.height(), src.surface->transparent, srcarea.surface() * src.surface->bypp, s.elapsed_us());
 #ifdef GPIXMAP_CHECK_THRESHOLD
 		if (accel)
 		{
@@ -2296,12 +2335,12 @@ void gPixmap::line(const gRegion &clip, ePoint start, ePoint dst, unsigned int c
 	int lasthit = 0;
 	for(i=1; i<=dx; i++)
 	{
-				/* i don't like this clipping loop, but the only */
-				/* other choice i see is to calculate the intersections */
-				/* before iterating through the pixels. */
+		/* i don't like this clipping loop, but the only */
+		/* other choice i see is to calculate the intersections */
+		/* before iterating through the pixels. */
 
-				/* one could optimize this because of the ordering */
-				/* of the bands. */
+		/* one could optimize this because of the ordering */
+		/* of the bands. */
 
 		lasthit = 0;
 		int a = lasthit;
@@ -2314,7 +2353,8 @@ void gPixmap::line(const gRegion &clip, ePoint start, ePoint dst, unsigned int c
 				lasthit = a = 0;
 			else
 				goto fail;
-		} else if (!clip.rects[a].contains(x, y))
+		} 
+		else if (!clip.rects[a].contains(x, y))
 		{
 			do
 			{
@@ -2356,7 +2396,7 @@ fail:
 
 gColor gPalette::findColor(const gRGB rgb) const
 {
-		/* grayscale? */
+	/* grayscale? */
 	if (!data)
 		return (rgb.r + rgb.g + rgb.b) / 3;
 
