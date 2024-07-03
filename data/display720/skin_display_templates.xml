@@ -354,7 +354,7 @@
 	</screen>
 	
 	<!-- CHOICEBOX -->
-	<screen name="ChoiceBox_summary" position="0,0" size="720,576">
+	<screen name="ChoiceBoxSummary" position="0,0" size="720,576">
 		<widget source="parent.summary_list" render="Label" position="10,50" size="700,110" foregroundColor="yellow" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
 		<widget source="parent.summary_selection" render="Label" position="10,200" size="700,160" foregroundColor="white" font="FdLcDLight;65" halign="center" valign="top" zPosition="2" />
 		<panel name="LCDTime" />
@@ -367,7 +367,7 @@
 	</screen>
 	
 	<!-- JOBVIEW SUMMARY -->
-	<screen name="JobView_summary" position="0,0" size="720,576"> 
+	<screen name="JobViewSummary" position="0,0" size="720,576"> 
 		<widget source="parent.summary_job_name" render="Label" position="10,50" size="700,110" foregroundColor="yellow" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
 		<widget source="parent.summary_job_task" render="Label" position="10,200" size="700,160" foregroundColor="white" font="FdLcDLight;65" halign="center" valign="top" zPosition="2" />
 		<widget source="parent.summary_job_progress" render="Label" position="20,410" size="680,60" foregroundColor="white" font="FdLcDLight;60" halign="left" valign="center" zPosition="3">
@@ -392,12 +392,12 @@
 	</screen>
 	
 	<!-- MESSAGEBOX -->
-	<screen name="MessageBox_summary" position="0,0" size="720,576"> 
+	<screen name="MessageBoxSummary" position="0,0" size="720,576"> 
 		<widget source="parent.Text" render="Label" position="10,50" size="700,310" foregroundColor="yellow" font="FdLcD;70" halign="center" valign="center" zPosition="2" />
 		<widget source="parent.selectedChoice" render="Label" position="10,380" size="700,70" foregroundColor="white" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" />
 		<panel name="LCDTime" />
 	</screen>
-	<screen name="MessageBoxSimple_summary" position="0,0" size="720,576"> 
+	<screen name="MessageBoxSimpleSummary" position="0,0" size="720,576"> 
 		<panel name="MessageBox_summary" />
 	</screen>
 	
@@ -441,7 +441,7 @@
 	</screen>
 	
 	<!-- NUMBERZAP -->    
-	<screen name="NumberZap_summary" position="0,0" size="720,576">
+	<screen name="NumberZapSummary" position="0,0" size="720,576">
 		<widget source="parent.servicename_summary" render="Label" position="10,50" size="700,110" foregroundColor="yellow" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
 		<widget source="parent.number_summary" render="Label" position="10,190" size="700,250" foregroundColor="white" font="FdLcD;90" halign="center" valign="center" zPosition="2" />
 		<panel name="LCDTime" />
@@ -463,7 +463,7 @@
 	</screen>
 	
 	<!-- ET PORTAL -->       
-	<screen name="EtPortalScreen_summary" position="0,0" size="720,576">
+	<screen name="EtPortalScreenSummary" position="0,0" size="720,576">
 		<eLabel text="EtPortal" position="15,20" foregroundColor="yellow" size="670,120" font="FdLcD;70" halign="center" valign="top" noWrap="1" />
 		<widget source="parent.label" render="Label" position="white" size="670,200" font="FdLcD;60" halign="center" valign="top" />
 		<panel name="LCDTime" />
@@ -489,13 +489,13 @@
 	</screen>
 
 	<!-- ExtensionsList -->
-	<screen name="ExtensionsList_summary" position="0,0" size="720,576">
+	<screen name="ExtensionsListSummary" position="0,0" size="720,576">
 		<widget source="parent.Title" render="Label" position="10,20" size="670,376" font="FdLcD;70" halign="center" valign="center" />
 		<panel name="LCDTime" />
 	</screen> 
 
 	<!-- EPG -->
-	<screen name="EPGExtensionsList_summary" position="0,0" size="720,576">
+	<screen name="EPGExtensionsListSummary" position="0,0" size="720,576">
 		<widget source="parent.Title" render="Label" position="10,20" size="670,250" font="FdLcD;80" halign="center" valign="center" foregroundColor="#e5b243" />
 		<panel name="LCDTime" />
 	</screen> 
