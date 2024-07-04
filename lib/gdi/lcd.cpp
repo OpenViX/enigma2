@@ -413,27 +413,6 @@ void eDBoxLCD::update()
 				((unsigned int *)gb_buffer)[offset] = ((src >> 3) & 0x001F001F) | ((src << 3) & 0xF800F800) | ((src >> 8) & 0x00E000E0) | ((src << 8) & 0x07000700);
 			}
 			write(lcdfd, gb_buffer, _stride * res.height());
-#elif defined(DREAMBOX)
-				// gggrrrrrbbbbbggg bit order from memory
-				// gggbbbbbrrrrrggg bit order to LCD
-				unsigned char gb_buffer[_stride * res.height()];
-				if (!(0x03 & (_stride * res.height())))
-				{ // fast
-					for (int offset = 0; offset < ((_stride * res.height()) >> 2); offset++)
-					{
-						unsigned int src = ((unsigned int *)_buffer)[offset];
-						((unsigned int *)gb_buffer)[offset] = src & 0xE007E007 | (src & 0x1F001F00) >> 5 | (src & 0x00F800F8) << 5;
-					}
-				}
-				else
-				{ // slow
-					for (int offset = 0; offset < _stride * res.height(); offset += 2)
-					{
-						gb_buffer[offset] = (_buffer[offset] & 0x07) | ((_buffer[offset + 1] << 3) & 0xE8);
-						gb_buffer[offset + 1] = (_buffer[offset + 1] & 0xE0) | ((_buffer[offset] >> 3) & 0x1F);
-					}
-				}
-				ret = write(lcdfd, gb_buffer, _stride * res.height());
 #else
 			write(lcdfd, _buffer, _stride * res.height());
 #endif
