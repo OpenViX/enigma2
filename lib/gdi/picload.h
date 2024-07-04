@@ -23,6 +23,7 @@ struct Cfilepara
 	int oy;
 	std::string picinfo;
 	bool callback;
+	bool transparent;
 
 	Cfilepara(const char *mfile, int mid, std::string size):
 		file(strdup(mfile)),
@@ -31,8 +32,13 @@ struct Cfilepara
 		palette_size(0),
 		bits(24),
 		id(mid),
+		max_x(0),
+		max_y(0),
+		ox(0),
+		oy(0),
 		picinfo(""),
-		callback(true)
+		callback(true),
+		transparent(true)
 	{
 		if (is_valid_utf8(mfile))
 			picinfo += std::string(mfile) + "\n" + size + "\n";
@@ -108,8 +114,11 @@ class ePicLoad: public eMainloop, public eThread, public sigc::trackable, public
 {
 	DECLARE_REF(ePicLoad);
 
+	enum{ F_PNG, F_JPEG, F_BMP, F_GIF, F_SVG};
+
 	void decodePic();
 	void decodeThumb();
+	void resizePic();
 
 	Cfilepara *m_filepara;
 	Cexif *m_exif;
@@ -137,6 +146,7 @@ class ePicLoad: public eMainloop, public eThread, public sigc::trackable, public
 			decode_Pic,
 			decode_Thumb,
 			decode_finished,
+			decode_error,
 			quit
 		};
 		Message(int type=0)
