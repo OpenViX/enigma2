@@ -2,8 +2,9 @@ from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.Label import Label
 from Components.ScrollLabel import ScrollLabel
+from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 
 from enigma import eTimer
 from sys import modules
@@ -190,6 +191,7 @@ class CommitInfo(Screen):
 		)
 
 		self["key_red"] = Button(_("Cancel"))
+		self.onUpdate = []
 
 		self.Timer = eTimer()
 		self.Timer.callback.append(self.readGithubCommitLogs)
@@ -198,14 +200,20 @@ class CommitInfo(Screen):
 	def readGithubCommitLogs(self):
 		self.setTitle(gitcommitinfo.getScreenTitle())
 		self["AboutScrollLabel"].setText(gitcommitinfo.readGithubCommitLogs())
+		self.update()
 
 	def updateCommitLogs(self):
 		if gitcommitinfo.getScreenTitle() in gitcommitinfo.cachedProjects:
 			self.setTitle(gitcommitinfo.getScreenTitle())
 			self["AboutScrollLabel"].setText(gitcommitinfo.cachedProjects[gitcommitinfo.getScreenTitle()])
+			self.update()
 		else:
 			self["AboutScrollLabel"].setText(_("Please wait"))
 			self.Timer.start(50, True)
+
+	def update(self):
+		for x in self.onUpdate:
+			x()
 
 	def left(self):
 		gitcommitinfo.left()
@@ -217,3 +225,33 @@ class CommitInfo(Screen):
 
 	def closeRecursive(self):
 		self.close(("menu", "menu"))
+
+	def createSummary(self):
+		return CommitInfoSummary
+
+
+class CommitInfoSummary(ScreenSummary):
+	def __init__(self, session, parent):
+		ScreenSummary.__init__(self, session, parent=parent)
+		self.commitText = []
+		self["commitText"] = StaticText()
+		self.timer = eTimer()
+		self.timer.callback.append(self.update)
+		if self.changed not in parent.onUpdate:
+			parent.onUpdate.append(self.changed)
+		self.changed()
+
+	def update(self):
+		self.timer.stop()
+		if self.commitText:
+			self.commitText.append(self.commitText.pop(0))
+			self["commitText"].text = "\n\n".join(self.commitText)
+			self.timer.start(2000, 1)
+
+	def changed(self):
+		self.timer.stop()
+		self["Title"].text = self.parent.getTitle()
+		if self.parent["AboutScrollLabel"].getText():
+			self.commitText = self.parent["AboutScrollLabel"].getText().split("\n\n")
+			self["commitText"].text = "\n\n".join(self.commitText)
+			self.timer.start(3000, 1)
