@@ -1748,7 +1748,7 @@ void gPixmap::blit(const gPixmap &src, const eRect &_pos, const gRegion &clip, i
 
 	//		eDebug("[gPixmap] srcarea after scale: %d %d %d %d",
 	//			srcarea.x(), srcarea.y(), srcarea.width(), srcarea.height());
-	if (cornerRadius && surface->bpp == 32)
+		if (cornerRadius && surface->bpp == 32)
 		{
 			if (src.surface->bpp == 32)
 			{
@@ -2115,8 +2115,8 @@ void gPixmap::blit(const gPixmap &src, const eRect &_pos, const gRegion &clip, i
 			uint8_t *srcptr=(uint8_t*)src.surface->data;
 			uint8_t *dstptr=(uint8_t*)surface->data;
 
-			srcptr+=srcarea.left()+srcarea.top()*src.surface->stride;
-			dstptr+=area.left()+area.top()*surface->stride;
+			srcptr += srcarea.left() * src.surface->bypp + srcarea.top() * src.surface->stride;
+			dstptr += area.left() * surface->bypp + area.top() * surface->stride;
 
 			if (flag & blitAlphaBlend)
 				eWarning("[gPixmap] ignore unsupported 32bpp -> 16bpp alphablend!");
