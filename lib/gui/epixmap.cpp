@@ -66,9 +66,10 @@ void ePixmap::setBorderColor(const gRGB &color)
 
 void ePixmap::checkSize()
 {
+	bool force_alphablending_setting = eConfigManager::getConfigBoolValue("config.skin.pixmap_force_alphablending", false);
 	/* when we have no pixmap, or a pixmap of different size, we need
 	   to enable transparency in any case. */
-	if (m_pixmap && m_pixmap->size() == size() && !m_alphatest)
+	if (m_pixmap && m_pixmap->size() == size() && !m_alphatest && (!m_pixmap->isPNG || !force_alphablending_setting))
 		setTransparent(0);
 	else
 		setTransparent(1);
