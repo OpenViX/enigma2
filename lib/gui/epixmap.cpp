@@ -2,7 +2,6 @@
 #include <lib/gui/epixmap.h>
 #include <lib/gdi/epng.h>
 #include <lib/gui/ewidgetdesktop.h>
-#include <lib/base/nconfig.h> // access to python config
 
 ePixmap::ePixmap(eWidget *parent)
         :eWidget(parent), m_alphatest(false), m_scale(false), m_have_border_color(false), m_border_width(0)
@@ -11,8 +10,12 @@ ePixmap::ePixmap(eWidget *parent)
 
 void ePixmap::setAlphatest(int alphatest)
 {
-	m_alphatest = alphatest;
-	setTransparent(alphatest);
+	if (m_force_blending && m_pixmap && m_pixmap->isPNG) {
+		m_alphatest = gPainter::BT_ALPHABLEND;
+	} else {
+		m_alphatest = alphatest;
+	}
+	setTransparent(m_alphatest);
 }
 
 void ePixmap::setScale(int scale)
@@ -66,10 +69,9 @@ void ePixmap::setBorderColor(const gRGB &color)
 
 void ePixmap::checkSize()
 {
-	bool force_alphablending_setting = eConfigManager::getConfigBoolValue("config.skin.pixmap_force_alphablending", false);
 	/* when we have no pixmap, or a pixmap of different size, we need
 	   to enable transparency in any case. */
-	if (m_pixmap && m_pixmap->size() == size() && !m_alphatest && (!m_pixmap->isPNG || !force_alphablending_setting))
+	if (m_pixmap && m_pixmap->size() == size() && !m_alphatest)
 		setTransparent(0);
 	else
 		setTransparent(1);
@@ -97,12 +99,11 @@ int ePixmap::event(int event, void *data, void *data2)
 
 		if (m_pixmap)
 		{
-			bool force_alphablending = m_pixmap->isPNG && eConfigManager::getConfigBoolValue("config.skin.pixmap_force_alphablending", false);
 			int flags = 0;
 			if (m_alphatest == 0)
-				flags = force_alphablending ? gPainter::BT_ALPHABLEND : 0;
+				flags = 0;
 			else if (m_alphatest == 1)
-				flags = force_alphablending ? gPainter::BT_ALPHABLEND : gPainter::BT_ALPHATEST;
+				flags = gPainter::BT_ALPHATEST;
 			else if (m_alphatest == 2)
 				flags = gPainter::BT_ALPHABLEND;
 			if (m_scale)
@@ -128,6 +129,7 @@ int ePixmap::event(int event, void *data, void *data2)
 		return 0;
 	}
 	case evtChangedPixmap:
+		setAlphatest(m_alphatest);
 		checkSize();
 		invalidate();
 		return 0;
