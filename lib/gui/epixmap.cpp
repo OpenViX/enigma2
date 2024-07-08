@@ -96,12 +96,11 @@ int ePixmap::event(int event, void *data, void *data2)
 
 		if (m_pixmap)
 		{
-			bool force_alphablending = m_pixmap->isPNG && eConfigManager::getConfigBoolValue("config.skin.pixmap_force_alphablending", false);
 			int flags = 0;
 			if (m_alphatest == 0)
-				flags = force_alphablending ? gPainter::BT_ALPHABLEND : 0;
+				flags = 0;
 			else if (m_alphatest == 1)
-				flags = force_alphablending ? gPainter::BT_ALPHABLEND : gPainter::BT_ALPHATEST;
+				flags = m_pixmap->isPNG && eConfigManager::getConfigBoolValue("config.skin.pixmap_force_alphablending", false) ? gPainter::BT_ALPHABLEND : gPainter::BT_ALPHATEST;
 			else if (m_alphatest == 2)
 				flags = gPainter::BT_ALPHABLEND;
 			if (m_scale)
