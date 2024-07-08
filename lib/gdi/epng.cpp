@@ -127,7 +127,6 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 	channels = png_get_channels(png_ptr, info_ptr);
 
 	result = new gPixmap(width, height, bit_depth * channels, cached ? PixmapCache::PixmapDisposed : NULL, accel);
-	result->isPNG = true;
 	gUnmanagedSurface *surface = result->surface;
 	
 	png_bytep *rowptr = new png_bytep[height];
