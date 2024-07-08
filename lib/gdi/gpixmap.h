@@ -225,6 +225,7 @@ public:
 	gPixmap(int width, int height, int bpp, gPixmapDisposeCallback on_dispose, int accel = accelAuto);
 
 	gUnmanagedSurface *surface;
+	bool isPNG = false;
 
 	inline bool needClut() const { return surface && surface->bpp <= 8; }
 #endif
