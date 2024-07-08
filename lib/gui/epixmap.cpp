@@ -2,7 +2,7 @@
 #include <lib/gui/epixmap.h>
 #include <lib/gdi/epng.h>
 #include <lib/gui/ewidgetdesktop.h>
-#include <lib/base/nconfig.h> // access to python config
+#include <lib/base/esimpleconfig.h>
 
 ePixmap::ePixmap(eWidget *parent)
         :eWidget(parent), m_alphatest(false), m_scale(false), m_have_border_color(false), m_border_width(0)
@@ -100,7 +100,7 @@ int ePixmap::event(int event, void *data, void *data2)
 			if (m_alphatest == 0)
 				flags = 0;
 			else if (m_alphatest == 1)
-				flags = m_pixmap->isPNG && eConfigManager::getConfigBoolValue("config.skin.pixmap_force_alphablending", false) ? gPainter::BT_ALPHABLEND : gPainter::BT_ALPHATEST;
+				flags = m_pixmap->isPNG && eSimpleConfig::getBool("config.usage.pixmap_force_alphablending", false) ? gPainter::BT_ALPHABLEND : gPainter::BT_ALPHATEST;
 			else if (m_alphatest == 2)
 				flags = gPainter::BT_ALPHABLEND;
 			if (m_scale)
