@@ -2765,7 +2765,8 @@ exit:
 
 RESULT eServiceMP3::enableSubtitles(iSubtitleUser *user, struct SubtitleTrack &track)
 {
-	if (m_currentSubtitleStream != track.pid)
+	bool autoturnon = eConfigManager::getConfigBoolValue("config.subtitles.pango_autoturnon", true);
+	if (m_currentSubtitleStream != track.pid || autoturnon)
 	{
 		g_object_set (G_OBJECT (m_gst_playbin), "current-text", -1, NULL);
 		m_subtitle_sync_timer->stop();
