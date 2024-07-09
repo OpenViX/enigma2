@@ -28,7 +28,7 @@ private:
 		evtChangedPixmap = evtUserWidget,
 	};
 	bool m_have_border_color;
-	bool m_force_blending = eConfigManager::getConfigBoolValue("config.skin.pixmap_force_alphablending", false);
+	int m_force_blending = eConfigManager::getConfigIntValue("config.skin.pixmap_force_alphablending", 0);
 	int m_border_width;
 	gRGB m_border_color;
 };
