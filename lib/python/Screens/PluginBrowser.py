@@ -269,7 +269,7 @@ class PluginDownloadBrowser(Screen):
 	REMOVE = 1
 	UPDATE = 2
 	PLUGIN_PREFIX = 'enigma2-plugin-'
-	PLUGIN_PREFIX2 = []
+	PLUGIN_PREFIXES = []
 	lastDownloadDate = None
 
 	def __init__(self, session, type=0, needupdate=True, skin_name=None):
@@ -352,35 +352,35 @@ class PluginDownloadBrowser(Screen):
 
 	def createPluginFilter(self):
 		# Create Plugin Filter
-		self.PLUGIN_PREFIX2 = []
+		self.PLUGIN_PREFIXES = []
 		if config.misc.pluginbrowser.bootlogos.value:
-			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'bootlogos')
+			self.PLUGIN_PREFIXES.append(self.PLUGIN_PREFIX + 'bootlogos')
 		if config.misc.pluginbrowser.drivers.value:
-			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'drivers')
+			self.PLUGIN_PREFIXES.append(self.PLUGIN_PREFIX + 'drivers')
 		if config.misc.pluginbrowser.extensions.value:
-			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'extensions')
+			self.PLUGIN_PREFIXES.append(self.PLUGIN_PREFIX + 'extensions')
 		if config.misc.pluginbrowser.m2k.value:
-			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'm2k')
+			self.PLUGIN_PREFIXES.append(self.PLUGIN_PREFIX + 'm2k')
 		if config.misc.pluginbrowser.picons.value:
-			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'picons')
+			self.PLUGIN_PREFIXES.append(self.PLUGIN_PREFIX + 'picons')
 		if config.misc.pluginbrowser.security.value:
-			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'security')
+			self.PLUGIN_PREFIXES.append(self.PLUGIN_PREFIX + 'security')
 		if config.misc.pluginbrowser.settings.value:
-			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'settings')
+			self.PLUGIN_PREFIXES.append(self.PLUGIN_PREFIX + 'settings')
 		if config.misc.pluginbrowser.skin.value:
-			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'skin')
+			self.PLUGIN_PREFIXES.append(self.PLUGIN_PREFIX + 'skin')
 		if config.misc.pluginbrowser.display.value:
-			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'display')
+			self.PLUGIN_PREFIXES.append(self.PLUGIN_PREFIX + 'display')
 		if config.misc.pluginbrowser.softcams.value:
-			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'softcams')
+			self.PLUGIN_PREFIXES.append(self.PLUGIN_PREFIX + 'softcams')
 		if config.misc.pluginbrowser.systemplugins.value:
-			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'systemplugins')
+			self.PLUGIN_PREFIXES.append(self.PLUGIN_PREFIX + 'systemplugins')
 		if config.misc.pluginbrowser.weblinks.value:
-			self.PLUGIN_PREFIX2.append(self.PLUGIN_PREFIX + 'weblinks')
+			self.PLUGIN_PREFIXES.append(self.PLUGIN_PREFIX + 'weblinks')
 		if config.misc.pluginbrowser.kernel.value:
-			self.PLUGIN_PREFIX2.append('kernel-module-')
+			self.PLUGIN_PREFIXES.append('kernel-module-')
 		if config.misc.pluginbrowser.po.value:
-			self.PLUGIN_PREFIX2.append('enigma2-locale-')
+			self.PLUGIN_PREFIXES.append('enigma2-locale-')
 
 	def go(self):
 		sel = self["list"].l.getCurrentSelection()
@@ -615,7 +615,7 @@ class PluginDownloadBrowser(Screen):
 			if len(plugin) >= 1:
 				if not plugin[0].endswith('-dev') and not plugin[0].endswith('-staticdev') and not plugin[0].endswith('-dbg') and not plugin[0].endswith('-doc') and not plugin[0].endswith('-common') and not plugin[0].endswith('-meta') and plugin[0] not in self.installedplugins and ((not config.pluginbrowser.po.value and not plugin[0].endswith('-po')) or config.pluginbrowser.po.value) and ((not config.pluginbrowser.src.value and not plugin[0].endswith('-src')) or config.pluginbrowser.src.value):
 					# Plugin filter
-					for s in self.PLUGIN_PREFIX2:
+					for s in self.PLUGIN_PREFIXES:
 						if plugin[0].startswith(s):
 							if self.run == 1 and self.type == self.DOWNLOAD:
 								self.installedplugins.append(plugin[0])
