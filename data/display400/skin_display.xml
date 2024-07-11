@@ -27,6 +27,7 @@
 		<color name="orange" value="#00ffc000" />
 		<color name="red" value="#00ff4a3c" />
 		<color name="redtransparent" value="#084c0000" />
+		<color name="lightcyan" value="#00e0ffff" />
 	</colors>
 
 	<fonts>
