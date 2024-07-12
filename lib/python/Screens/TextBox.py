@@ -12,7 +12,7 @@ class TextBox(Screen):
 		if "TextBox" not in self.skinName:
 			self.skinName.append("TextBox")
 		if isinstance(skin_name, str):
-			self.skinName.insert(skin_name, 0)
+			self.skinName.insert(0, skin_name)
 		self.text = text
 		self.label = "text"
 		if isinstance(label, str):
