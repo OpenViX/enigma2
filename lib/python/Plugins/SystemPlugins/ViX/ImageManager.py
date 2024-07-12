@@ -1753,3 +1753,17 @@ class ImageManagerSetup(Setup):
 			configElement.value = configElement.value.strip("/")  # remove any trailing slash
 		else:
 			configElement.value = configElement.default
+
+
+class KexecWarning(TextBox):
+	def __init__(self, session):
+		TextBox.__init__(self, session, text=self.warningText(), title="Kexec warning title")
+	
+	def warningText(self):
+		return "\n\n".join([
+			_("Kexec message"),
+			_("Paragraph 1"),
+			_("Paragraph 2"),
+			_("Paragraph 3"),
+			_("Paragraph 4"),
+			_("Paragraph 5"),])
