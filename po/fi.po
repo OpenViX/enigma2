@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-07-10 10:00+0300\n"
+"PO-Revision-Date: 2024-07-14 17:03+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13546,7 +13546,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 10.07.2024 ---\n"
+"--- 14.07.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -19486,3 +19486,27 @@ msgstr "Tekstitykset ovat aina käytössä tallenteen toistoa varten servicemp3/
 
 msgid "Only alpha test to alpha blend"
 msgstr "Vain alfatesti alfasekoitukseen"
+
+msgid "Kexec message"
+msgstr "Kexec-sanoma"
+
+msgid "Paragraph 1"
+msgstr "Kohta 1"
+
+msgid "Paragraph 2"
+msgstr "Kohta 2"
+
+msgid "Paragraph 3"
+msgstr "Kohta 3"
+
+msgid "Paragraph 4"
+msgstr "Kohta 4"
+
+msgid "Paragraph 5"
+msgstr "Kohta 5"
+
+msgid "Kexec warning"
+msgstr "Kexec-varoitus"
+
+msgid "Vu+ ImageManager wizard"
+msgstr "Vu+ Imagen hallinnoinnin avustaja"
