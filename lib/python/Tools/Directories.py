@@ -92,14 +92,17 @@ def addInList(*paths):
 skinResolveList = []
 lcdskinResolveList = []
 fontsResolveList = []
+resolvedCache = {}
 
+c = 0
 
 def clearResolveLists():
-	global skinResolveList, lcdskinResolveList, fontsResolveList
+	global skinResolveList, lcdskinResolveList, fontsResolveList, resolvedCache, c
 	skinResolveList = []
 	lcdskinResolveList = []
 	fontsResolveList = []
-
+	resolvedCache.clear()
+	c = 0
 
 def resolveFilename(scope, base="", path_prefix=None):
 	# You can only use the ~/ if we have a prefix directory.
@@ -113,6 +116,11 @@ def resolveFilename(scope, base="", path_prefix=None):
 	if scope not in defaultPaths:  # If an invalid scope is specified log an error and return None.
 		print("[Directories] Error: Invalid scope=%s provided to resolveFilename!" % scope)
 		return None
+	if (cacheKey := f"{scope} {base}") in resolvedCache:
+		global c
+		c += 1
+		print(f"[resolveFilename] Found in resolve cache: scope={scope}, base={base}, cache size={len(resolvedCache)}, cache successful lookups={c}")
+		return resolvedCache[cacheKey]
 	path, flag = defaultPaths[scope]  # Ensure that the defaultPath directory that should exist for this scope does exist.
 	if flag == PATH_CREATE and not pathExists(path):
 		try:
@@ -252,6 +260,7 @@ def resolveFilename(scope, base="", path_prefix=None):
 		path = path[len(plugins) + 1:]
 	if suffix is not None:  # If a suffix was supplied restore it.
 		path = "%s:%s" % (path, suffix)
+	resolvedCache[cacheKey] = path
 	return path
 
 
