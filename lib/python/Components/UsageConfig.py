@@ -36,6 +36,7 @@ def InitUsageConfig():
 		config.misc.remotecontrol_text_support = ConfigYesNo(default=False)
 
 	config.misc.usegstplaybin3 = ConfigYesNo(default=False)
+	config.misc.use_nonblock_io = ConfigYesNo(default=False)
 
 	config.usage = ConfigSubsection()
 	config.usage.subnetwork = ConfigYesNo(default=True)
