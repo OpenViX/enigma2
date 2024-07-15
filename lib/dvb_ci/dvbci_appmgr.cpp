@@ -4,6 +4,8 @@
 #include <lib/dvb_ci/dvbci_appmgr.h>
 #include <lib/dvb_ci/dvbci_ui.h>
 #include <lib/base/estring.h>
+#include <stdexcept>
+#include <exception>
 
 eDVBCIApplicationManagerSession::eDVBCIApplicationManagerSession(eDVBCISlot *tslot)
 {
@@ -30,35 +32,42 @@ int eDVBCIApplicationManagerSession::receivedAPDU(const unsigned char *tag,const
 		{
 		case 0x21:
 		{
-			int dl;
-			eDebug("[CI%d AM] application info:", slot->getSlotID());
-			eDebug("[CI%d AM]   len: %d", slot->getSlotID(), len);
-			eDebug("[CI%d AM]   application_type: %d", slot->getSlotID(), ((unsigned char*)data)[0]);
-			eDebug("[CI%d AM]   application_manufacturer: %02x %02x", slot->getSlotID(), ((unsigned char*)data)[2], ((unsigned char*)data)[1]);
-			eDebug("[CI%d AM]   manufacturer_code: %02x %02x", slot->getSlotID(), ((unsigned char*)data)[4],((unsigned char*)data)[3]);
-			dl=((unsigned char*)data)[5];
-			if ((dl + 6) > len)
+			try
 			{
-				eDebug("[CI%d AM] warning, invalid length (%d vs %d)", slot->getSlotID(), dl+6, len);
-				dl=len-6;
-			}
-			char str[dl + 1];
-			memcpy(str, ((char*)data) + 6, dl);
-			str[dl] = '\0';
+				int dl;
+				eDebug("[CI%d AM] application info:", slot->getSlotID());
+				eDebug("[CI%d AM]   len: %d", slot->getSlotID(), len);
+				eDebug("[CI%d AM]   application_type: %d", slot->getSlotID(), ((unsigned char*)data)[0]);
+				eDebug("[CI%d AM]   application_manufacturer: %02x %02x", slot->getSlotID(), ((unsigned char*)data)[2], ((unsigned char*)data)[1]);
+				eDebug("[CI%d AM]   manufacturer_code: %02x %02x", slot->getSlotID(), ((unsigned char*)data)[4],((unsigned char*)data)[3]);
+				dl=((unsigned char*)data)[5];
+				if ((dl + 6) > len)
+				{
+					eDebug("[CI%d AM] warning, invalid length (%d vs %d)", slot->getSlotID(), dl+6, len);
+					dl=len-6;
+				}
+				char str[dl + 1];
+				memcpy(str, ((char*)data) + 6, dl);
+				str[dl] = '\0';
 
-			m_app_name = str;
-			if(m_app_name.size() > 0 && !isUTF8(m_app_name)) {
-				eDebug("[CI%d AM]   menu string is not UTF8 hex output:%s\nstr output:%s\n",slot->getSlotID(),string_to_hex(m_app_name).c_str(),m_app_name.c_str());
-				m_app_name = convertLatin1UTF8(m_app_name);
-				eDebug("[CI%d AM]   fixed menu string: %s", slot->getSlotID(), m_app_name.c_str());
-			}
-			else {
-				eDebug("[CI%d AM]   menu string: %s", slot->getSlotID(), m_app_name.c_str());
-			}
-			/* emit */ eDVBCI_UI::getInstance()->m_messagepump.send(eDVBCIInterfaces::Message(eDVBCIInterfaces::Message::appNameChanged, slot->getSlotID(), m_app_name.c_str()));
+				m_app_name = str;
+				if(m_app_name.size() > 0 && !isUTF8(m_app_name)) {
+					eDebug("[CI%d AM]   menu string is not UTF8 hex output:%s\nstr output:%s\n",slot->getSlotID(),string_to_hex(m_app_name).c_str(),m_app_name.c_str());
+					m_app_name = convertLatin1UTF8(m_app_name);
+					eDebug("[CI%d AM]   fixed menu string: %s", slot->getSlotID(), m_app_name.c_str());
+				}
+				else {
+					eDebug("[CI%d AM]   menu string: %s", slot->getSlotID(), m_app_name.c_str());
+				}
+				/* emit */ eDVBCI_UI::getInstance()->m_messagepump.send(eDVBCIInterfaces::Message(eDVBCIInterfaces::Message::appNameChanged, slot->getSlotID(), m_app_name.c_str()));
 
-			/* emit */ eDVBCI_UI::getInstance()->m_messagepump.send(eDVBCIInterfaces::Message(eDVBCIInterfaces::Message::slotStateChanged, slot->getSlotID(), 2));
-			break;
+				/* emit */ eDVBCI_UI::getInstance()->m_messagepump.send(eDVBCIInterfaces::Message(eDVBCIInterfaces::Message::slotStateChanged, slot->getSlotID(), 2));
+				break;
+			}
+			catch(std::exception ex)
+			{   
+			eDebug("[CI%d AM] catch in AM for utf-8 %s", slot->getSlotID(), ex.what());
+ 			} 			
 		}
 		default:
 			eWarning("[CI%d AM] unknown APDU tag 9F 80 %02x", slot->getSlotID(), tag[2]);
