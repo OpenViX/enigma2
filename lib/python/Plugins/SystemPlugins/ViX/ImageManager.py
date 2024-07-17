@@ -1766,5 +1766,5 @@ class KexecWarning(TextBox):
 			_("3. Create an empty 'STARTUP_RECOVERY' file at the root of your HDD/USB drive and hold the the Power button for more than 12 seconds to reboot into Recovery mode"),
 			_("4. Login into the Recovery image using SSH or telnet."),
 			_("5. If you wish to backup eMMC slots 1,2,3 then enter 'tar -cvzf /media/hdd/linuxrootfs1.tar.gz /linuxrootfsX' where X is the slot number"),
-			_("6. Then enter 'kexec-multiboot-recovery.sh ' "),
+			_("6. Then enter './kexec-multiboot-recovery.sh ' "),
 			_("7. The script will copy the required files and then reboot"),])
