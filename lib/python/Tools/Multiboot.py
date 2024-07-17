@@ -6,7 +6,7 @@ from os import path, rmdir, rename, sep, stat
 
 from Components.Console import Console
 from Components.SystemInfo import SystemInfo, BoxInfo as BoxInfoRunningInstance, BoxInformation
-from Tools.Directories import fileExists
+from Tools.Directories import copyfile, fileExists
 
 if SystemInfo["HasKexecMultiboot"]:
 	from PIL import Image, ImageDraw, ImageFont
@@ -34,60 +34,67 @@ def getMultibootslots():
 			break
 		if path.exists(device):
 			Console(binary=True).ePopen(f"mount {device} {tmpname}")
-			if path.isfile(path.join(tmpname, "STARTUP")):
+			if path.isfile(path.join(tmpname, "STARTUP")):  # Multiboot receiver
+				if SystemInfo["HasKexecMultiboot"] and not path.isfile(path.join(tmpname, "kexec-multiboot-recovery.sh")) and path.isfile("/etc/init.d/kexec-multiboot-recovery.sh"):
+					copyfile("/etc/init.d/kexec-multiboot-recovery.sh", "%s" % path.join(tmpname, "kexec-multiboot-recovery.sh"))
 				SystemInfo["MBbootdevice"] = device
 				device2 = device.rsplit("/", 1)[1]
 				print(f"[Multiboot][[getMultibootslots]1 *** Bootdevice found: {device2}")
 				SystemInfo["BootDevice"] = device2
-				for file in glob.glob(path.join(tmpname, "STARTUP_*")):
-					slotnumber = file.rsplit("_", 3 if "BOXMODE" in file else 1)[1]
-					slotname = file.rsplit("_", 3 if "BOXMODE" in file else 1)[0]
-					slotname = file.rsplit("/", 1)[1]
-					slotname = slotname if len(slotname) > 1 else ""
-					slotname = ""  # nullify for current moment
-					if "STARTUP_ANDROID" in file:
-						SystemInfo["AndroidMode"] = True
-						continue
-					if "STARTUP_RECOVERY" in file:
-						SystemInfo["RecoveryMode"] = True
-						slotnumber = "0"
-					if slotnumber.isdigit() and slotnumber not in bootslots:
-						line = open(file).read().replace("'", "").replace('"', "").replace("\n", " ").replace("ubi.mtd", "mtd").replace("bootargs=", "")
-						slot = dict([(x.split("=", 1)[0].strip(), x.split("=", 1)[1].strip()) for x in line.strip().split(" ") if "=" in x])
-						if slotnumber == "0":
-							slot["slotType"] = ""
-							slot["startupfile"] = path.basename(file)
-						else:
-							slot["slotType"] = "eMMC" if "mmc" in slot["root"] else "USB"
-						if SystemInfo["HasKexecMultiboot"] and int(slotnumber) > 3:
-							SystemInfo["HasKexecUSB"] = True
-						if "root" in slot.keys():
-							if "UUID=" in slot["root"]:
-								slotx = getUUIDtoSD(slot["root"])
-								UUID = slot["root"]
-								UUIDnum += 1
-								if slotx is not None:
-									slot["root"] = slotx
-								slot["kernel"] = f"/linuxrootfs{slotnumber}/zImage"
-							if path.exists(slot["root"]) or slot["root"] == "ubi0:ubifs":
+				if path.exists("/sys/firmware/devicetree/base/chosen/bootargs"):  # check no kernel corruption
+					for file in glob.glob(path.join(tmpname, "STARTUP_*")):
+						slotnumber = file.rsplit("_", 3 if "BOXMODE" in file else 1)[1]
+						slotname = file.rsplit("_", 3 if "BOXMODE" in file else 1)[0]
+						slotname = file.rsplit("/", 1)[1]
+						slotname = slotname if len(slotname) > 1 else ""
+						slotname = ""  # nullify for current moment
+						if "STARTUP_ANDROID" in file:
+							SystemInfo["AndroidMode"] = True
+							continue
+						if "STARTUP_RECOVERY" in file:
+							SystemInfo["RecoveryMode"] = True
+							slotnumber = "0"
+						if slotnumber.isdigit() and slotnumber not in bootslots:
+							line = open(file).read().replace("'", "").replace('"', "").replace("\n", " ").replace("ubi.mtd", "mtd").replace("bootargs=", "")
+							slot = dict([(x.split("=", 1)[0].strip(), x.split("=", 1)[1].strip()) for x in line.strip().split(" ") if "=" in x])
+							if slotnumber == "0":
+								slot["slotType"] = ""
 								slot["startupfile"] = path.basename(file)
-								slot["slotname"] = slotname
-								SystemInfo["HasMultibootMTD"] = slot.get("mtd")
-								if not SystemInfo["HasKexecMultiboot"] and "sda" in slot["root"]:		# Not Kexec Vu+ receiver -- sf8008 type receiver with sd card, reset value as SD card slot has no rootsubdir
-									slot["rootsubdir"] = None
-									slot["slotType"] = "SDCARD"
-								else:
-									SystemInfo["HasRootSubdir"] = slot.get("rootsubdir")
+							else:
+								slot["slotType"] = "eMMC" if "mmc" in slot["root"] else "USB"
+							if SystemInfo["HasKexecMultiboot"] and int(slotnumber) > 3:
+								SystemInfo["HasKexecUSB"] = True
+							if "root" in slot.keys():
+								if "UUID=" in slot["root"]:
+									slotx = getUUIDtoSD(slot["root"])
+									UUID = slot["root"]
+									UUIDnum += 1
+									if slotx is not None:
+										slot["root"] = slotx
+									slot["kernel"] = f"/linuxrootfs{slotnumber}/zImage"
+								if path.exists(slot["root"]) or slot["root"] == "ubi0:ubifs":
+									slot["startupfile"] = path.basename(file)
+									slot["slotname"] = slotname
+									SystemInfo["HasMultibootMTD"] = slot.get("mtd")
+									if not SystemInfo["HasKexecMultiboot"] and "sda" in slot["root"]:		# Not Kexec Vu+ receiver -- sf8008 type receiver with sd card, reset value as SD card slot has no rootsubdir
+										slot["rootsubdir"] = None
+										slot["slotType"] = "SDCARD"
+									else:
+										SystemInfo["HasRootSubdir"] = slot.get("rootsubdir")
 
-								if "kernel" not in slot.keys():
-									slot["kernel"] = f"{slot['root'].split('p')[0]}p{int(slot['root'].split('p')[1]) - 1}"  # oldstyle MB kernel = root-1
+									if "kernel" not in slot.keys():
+										slot["kernel"] = f"{slot['root'].split('p')[0]}p{int(slot['root'].split('p')[1]) - 1}"  # oldstyle MB kernel = root-1
+								else:
+									continue
+								bootslots[int(slotnumber)] = slot
+							elif slotnumber == "0":
+								bootslots[int(slotnumber)] = slot
 							else:
 								continue
-							bootslots[int(slotnumber)] = slot
-						elif slotnumber == "0":
-							bootslots[int(slotnumber)] = slot
-						else:
-							continue
+				else:  # kernel corruption set corruption flag
+					print(f"[multiboot][getMultibootslots]3 bootargs?: {path.exists("/sys/firmware/devicetree/base/chosen/bootargs")}")
+					SystemInfo["resetMBoot"] = True
+					bootslots = {}
 			Console(binary=True).ePopen(f"umount {tmpname}")
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
