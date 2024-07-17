@@ -16,4 +16,9 @@ const char *enigma2_branch = ENIGMA2_BRANCH;
 #endif
 const char *enigma2_rev = ENIGMA2_REV;
 
+#ifndef ENIGMA2_COMMIT_HASH
+#define ENIGMA2_COMMIT_HASH ""
+#endif
+const char *enigma2_hash = ENIGMA2_COMMIT_HASH;
+
 const char *enigma2_version = (ENIGMA2_COMMIT_DATE "-" ENIGMA2_BRANCH);
