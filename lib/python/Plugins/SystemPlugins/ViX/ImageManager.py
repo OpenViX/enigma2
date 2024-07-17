@@ -1736,16 +1736,15 @@ class ImageManagerSetup(Setup):
 		Setup.__init__(self, session=session, setup="viximagemanager", plugin="SystemPlugins/ViX")
 
 	def keySave(self):
+		if " " in config.imagemanager.folderprefix.value:
+			config.imagemanager.folderprefix.value = config.imagemanager.folderprefix.value.replace(" ", "")
 		if config.imagemanager.folderprefix.value == "":
 			config.imagemanager.folderprefix.value = defaultprefix
 		for configElement in (config.imagemanager.developer_username, config.imagemanager.developer_password):
 			if not configElement.value:
 				configElement.value = configElement.default
 		self.check_URL_format(config.imagemanager.imagefeed_MyBuild)
-		for x in self["config"].list:
-			x[1].save()
-		configfile.save()
-		self.close()
+		Setup.keySave(self)
 
 	def check_URL_format(self, configElement):
 		if configElement.value:
