@@ -191,13 +191,13 @@ def GetImagelist(Recovery=None):
 
 def createInfo(slot, imagedir="/"):
 	BoxInfo = BoxInformation(root=imagedir) if SystemInfo["MultiBootSlot"] != slot else BoxInfoRunningInstance
-	Creator = BoxInfo.getItem("distro", " ").capitalize()
+	Creator = BoxInfo.getItem("distro", "").capitalize()
 	BuildImgVersion = BoxInfo.getItem("imgversion")
-	BuildType = BoxInfo.getItem("imagetype", " ")[0:3]
+	BuildType = BoxInfo.getItem("imagetype", "")[0:3]
 	BuildVer = BoxInfo.getItem("imagebuild")
 	BuildDate = VerDate(imagedir)
-	BuildDev = str(BoxInfo.getItem("imagedevbuild")).zfill(3) if BuildType != "rel" else ""
-	return " ".join([str(x) for x in (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, "(%s)" % BuildDate) if x])
+	BuildDev = str(idb).zfill(3) if BuildType and BuildType != "rel" and (idb := BoxInfo.getItem("imagedevbuild")) else ""
+	return " ".join([str(x).strip() for x in (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, "(%s)" % BuildDate) if x and str(x).strip()])
 
 
 def VerDate(imagedir):
