@@ -164,7 +164,10 @@ def GetImagelist(Recovery=None):
 				BuildVersion = createInfo(slot, imagedir=imagedir)
 			else:
 				print("[multiboot] [GetImagelist] using BoxInfo")
-				Creator = open(f"{imagedir}/etc/issue").readlines()[-2].capitalize().strip()[:-6]
+				try:
+					Creator = open(f"{imagedir}/etc/issue").readlines()[-2].capitalize().strip()[:-6]
+				except IndexError:  # /etc/issue no standard file content
+					Creator = _("Unknown image")
 				if SystemInfo["HasKexecMultiboot"] and path.isfile(path.join(imagedir, "etc/vtiversion.info")):
 					Vti = open(path.join(imagedir, "etc/vtiversion.info")).read()
 					date = VerDate(imagedir)
