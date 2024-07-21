@@ -84,7 +84,7 @@ class FeedsStatusCheck:
 					try:
 						print("[OnlineUpdateCheck][getFeedStatus] checking feeds state")
 						req = Request("http://openvix.co.uk/TrafficLightState.php")
-						d = urlopen(req)
+						d = urlopen(req, timeout=3)
 						trafficLight = d.read().decode()
 						if trafficLight == "stable":
 							status = 0
