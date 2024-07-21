@@ -353,6 +353,7 @@
 		<item level="2" text="Maximum number of days" description="Logs older than the specified number of days will be deleted.">config.crash.daysloglimit</item>
 		<item level="2" text="Maximum total space used (MB)" description="When maximum space for all logs is reached, the oldest logs will be deleted.">config.crash.sizeloglimit</item>
 		<item level="2" text="Debug log time format *" description="This is the prefix of each entry in the debug log. 'boot time' is the number of seconds since the receiver was last booted.">config.crash.logtimeformat</item>
+		<item level="2" text="Log python stack trace on spinner" description="Set to yes for debugging the root cause of a spinner.">config.crash.pystackonspinner</item>
 		<item level="2" text="Enable core dumps *" description="Core dumps are helpful for developers in case of a FATAL SIGNAL crash in the C++ code. Typical core dump size is 110 MB so adjust maximum space used and choose proper location.">config.crash.coredump</item>
 	</setup>
 	<setup key="timeshift" title="Timeshift">
