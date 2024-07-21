@@ -46,6 +46,8 @@ class FeedsStatusCheck:
 		return False
 
 	def NetworkUp(self, host="8.8.8.8", port=53, timeout=2):  # Box can access outside the local network
+		return True  # bypass this function
+
 		# Avoids DNS resolution
 		# Avoids application layer (HTTP/FTP/IMAP)
 		# Avoids calls to external utilities
