@@ -204,15 +204,9 @@ def createInfo(slot, imagedir="/"):
 
 
 def VerDate(imagedir):
-	date1 = date2 = date3 = "00000000"
-	if fileExists(path.join(imagedir, "var/lib/opkg/status")):
-		date1 = datetime.fromtimestamp(stat(path.join(imagedir, "var/lib/opkg/status")).st_mtime).strftime("%Y-%m-%d")
-	date2 = datetime.fromtimestamp(stat(path.join(imagedir, "usr/bin/enigma2")).st_mtime).strftime("%Y-%m-%d")
-	if fileExists(path.join(imagedir, "usr/share/bootlogo.mvi")):
-		date3 = datetime.fromtimestamp(stat(path.join(imagedir, "usr/share/bootlogo.mvi")).st_mtime).strftime("%Y-%m-%d")
-	date = max(date1, date2, date3)  # this is comparing strings
-	date = datetime.strptime(date, '%Y-%m-%d').strftime("%d-%m-%Y")
-	return date
+	def mtime(fpath):
+		return fileExists(file := path.join(imagedir, fpath)) and int(stat(file).st_mtime) or 0
+	return datetime.fromtimestamp(max(mtime("var/lib/opkg/status"), mtime("usr/bin/enigma2"), mtime("usr/share/bootlogo.mvi"))).strftime("%d-%m-%Y")
 
 
 def emptySlot(slot):
