@@ -199,7 +199,7 @@ def createInfo(slot, imagedir="/"):
 	BuildType = BoxInfo.getItem("imagetype", "")[0:3]
 	BuildVer = BoxInfo.getItem("imagebuild")
 	BuildDate = VerDate(imagedir)
-	BuildDev = str(idb).zfill(3) if BuildType and BuildType != "rel" and (idb := BoxInfo.getItem("imagedevbuild")) else ""
+	BuildDev = str(idb).zfill(3) if BuildType and not BuildType.lower().startswith("rel") and (idb := BoxInfo.getItem("imagedevbuild")) else ""
 	return " ".join([str(x).strip() for x in (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, "(%s)" % BuildDate) if x and str(x).strip()])
 
 
