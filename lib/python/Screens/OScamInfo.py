@@ -417,7 +417,7 @@ class OscamInfoMenu(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		NAMEBIN2 = check_NAMEBIN2()
-		self.setTitle(_("%s Info - Main Menu" % NAMEBIN2))
+		self.setTitle(_("%s Info - Main Menu") % NAMEBIN2)
 		self.menu = [_("Show Ecm info"), _("Show Clients"), _("Show Readers/Proxies"), _("Show Log"), _("Card info (CCcam-Reader)"), _("Ecm Statistics"), _("Setup")]
 		self.osc = OscamInfo()
 		self["mainmenu"] = oscMenuList([])
