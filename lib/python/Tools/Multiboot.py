@@ -196,8 +196,11 @@ def createInfo(slot, imagedir="/"):
 	Creator = BoxInfo.getItem("distro", "").capitalize()
 	BuildImgVersion = BoxInfo.getItem("imgversion")
 	BuildType = BoxInfo.getItem("imagetype", "")[0:3]
-	BuildVer = BoxInfo.getItem("imagebuild")
-	BuildDate = VerDate(imagedir)
+	BuildVer = BoxInfo.getItem("imagebuild", "")
+	try:
+		BuildDate = datetime.strptime(BoxInfo.getItem("compiledate"), '%Y%m%d').strftime("%d-%m-%Y")
+	except (TypeError, ValueError):  # sanity for enigma.info containing bad/no entry
+		BuildDate = VerDate(imagedir)
 	BuildDev = str(idb).zfill(3) if BuildType and not BuildType.lower().startswith("rel") and (idb := BoxInfo.getItem("imagedevbuild")) else ""
 	return " ".join([str(x).strip() for x in (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, "(%s)" % BuildDate) if x and str(x).strip()])
 
