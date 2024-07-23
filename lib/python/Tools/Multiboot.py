@@ -163,19 +163,18 @@ def GetImagelist(Recovery=None):
 				print("[multiboot] [GetImagelist] using enigma.info")
 				BuildVersion = createInfo(slot, imagedir=imagedir)
 			else:
-				print("[multiboot] [GetImagelist] using BoxInfo")
+				print("[multiboot] [GetImagelist] using etc/issue")
+				date = VerDate(imagedir)
 				try:
 					Creator = open(f"{imagedir}/etc/issue").readlines()[-2].capitalize().strip()[:-6]
 				except IndexError:  # /etc/issue no standard file content
 					Creator = _("Unknown image")
 				if SystemInfo["HasKexecMultiboot"] and path.isfile(path.join(imagedir, "etc/vtiversion.info")):
 					Vti = open(path.join(imagedir, "etc/vtiversion.info")).read()
-					date = VerDate(imagedir)
 					Creator = Vti[0:3]
 					Build = Vti[-8:-1]
 					BuildVersion = f"{Creator} {Build} ({date}) "
 				else:
-					date = VerDate(imagedir)
 					Creator = Creator.replace("-release", " ")
 					BuildVersion = f"{Creator} ({date})"
 			if SystemInfo["HasKexecMultiboot"] and Recovery and config.usage.bootlogo_identify.value:
