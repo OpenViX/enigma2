@@ -3,6 +3,7 @@ from os import listdir, path, stat
 from Plugins.Plugin import PluginDescriptor
 from Components.config import config
 from Components.SystemInfo import SystemInfo
+from Tools.BoundFunction import boundFunction
 
 from .BackupManager import BackupManagerautostart
 from .ImageManager import ImageManagerautostart
@@ -65,19 +66,20 @@ if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
 		setLanguageFromBackup(backupAvailable)
 
 
-def VIXMenu(session):
+def VIXMenu(session, close=None, **kwargs):
 	from .import ui
-	return ui.VIXMenu(session)
+	session.openWithCallback(boundFunction(VIXMenuCallback, close), ui.VIXMenu)
 
 
-def UpgradeMain(session, **kwargs):
-	session.open(VIXMenu)
+def VIXMenuCallback(close, answer=None):
+	if close and answer:
+		close(True)
 
 
 def startSetup(menuid):
 	if menuid != "setup":
 		return []
-	return [(_("ViX"), UpgradeMain, "vix_menu", 1010)]
+	return [(_("ViX"), VIXMenu, "vix_menu", 1010)]
 
 
 def RestoreWizard(*args, **kwargs):
@@ -123,6 +125,11 @@ def BackupManager(session):
 
 def BackupManagerMenu(session, **kwargs):
 	session.open(BackupManager)
+
+
+def KexecWarning(session):
+	from .ImageManager import KexecWarning
+	return KexecWarning(session)
 
 
 def ImageManager(session):
@@ -195,15 +202,19 @@ def filescan(**kwargs):
 
 
 def Plugins(**kwargs):
+	plist = []
+	if SystemInfo.get("resetMBoot"):
+		plist.append(PluginDescriptor(name=_("Kexec warning"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(20, KexecWarning)))
+	
 	if SystemInfo["MultiBootSlot"] == 0:  # only in recovery image
-		plist = [PluginDescriptor(name=_("Image Manager"), where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=ImageManagerStart)]
+		plist.append(PluginDescriptor(name=_("Image Manager"), where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=ImageManagerStart))
 		if not config.misc.firstrun.value:
 			plist.append(PluginDescriptor(name=_("Vu+ ImageManager wizard"), where=PluginDescriptor.WHERE_WIZARD, needsRestart=False, fnc=(30, ImageManager)))
 		return plist
 
-	plist = [
+	plist += [
 		PluginDescriptor(where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=startSetup),
-		PluginDescriptor(name=_("ViX Image Management"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=UpgradeMain),
+		PluginDescriptor(name=_("ViX Image Management"), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=VIXMenu),
 		PluginDescriptor(where=PluginDescriptor.WHERE_MENU, fnc=SoftcamSetup),
 		PluginDescriptor(where=PluginDescriptor.WHERE_MENU, fnc=PackageManagerSetup)]
 	if config.softcammanager.showinextensions.value:

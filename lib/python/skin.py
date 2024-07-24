@@ -48,6 +48,7 @@ config.skin.display_skin = ConfigText(default=DEFAULT_DISPLAY_SKIN)
 currentPrimarySkin = None
 currentDisplaySkin = None
 currentLoadingSkin = None
+currentScreenName = None
 onLoadCallbacks = []
 
 # Skins are loaded in order of priority.  Skin with highest priority is
@@ -198,7 +199,7 @@ class SkinError(Exception):
 		self.msg = message
 
 	def __str__(self):
-		return "[Skin] {%s}: %s!  Please contact the skin's author!" % (currentLoadingSkin or config.skin.primary_skin.value, self.msg)
+		return "[Skin] {%s}: %s!  Please contact the skin's author!" % (currentLoadingSkin or (currentDisplaySkin if currentScreenName and currentScreenName.lower().endswith("summary") else currentPrimarySkin), self.msg)
 
 # Convert a coordinate string into a number.  Used to convert object position and
 # size attributes into a number.
@@ -430,8 +431,8 @@ def collectAttributes(skinAttributes, node, context, skinPath=None, ignore=(), f
 			if attrib in filenames:
 				# DEBUG: Why does a SCOPE_CURRENT_LCDSKIN image replace the GUI image?!?!?!
 				pngfile = resolveFilename(SCOPE_CURRENT_SKIN, value, path_prefix=skinPath)
-				if not isfile(pngfile) and isfile(resolveFilename(SCOPE_CURRENT_LCDSKIN, value, path_prefix=skinPath)):
-					pngfile = resolveFilename(SCOPE_CURRENT_LCDSKIN, value, path_prefix=skinPath)
+				if not isfile(pngfile) and isfile(resolved := resolveFilename(SCOPE_CURRENT_LCDSKIN, value, path_prefix=skinPath)):
+					pngfile = resolved
 				value = pngfile
 			# Bit of a hack this, really.  When a window has a flag (e.g. wfNoBorder)
 			# it needs to be set at least before the size is set, in order for the
@@ -1198,6 +1199,8 @@ def readSkin(screen, skin, names, desktop):
 				myScreen = None
 	else:
 		name = "<embedded-in-%s>" % screen.__class__.__name__
+	global currentScreenName
+	currentScreenName = name
 	if myScreen is None:  # Otherwise try embedded skin.
 		myScreen = getattr(screen, "parsedSkin", None)
 	if myScreen is None and getattr(screen, "skin", None):  # Try uncompiled embedded skin.
@@ -1451,6 +1454,7 @@ def readSkin(screen, skin, names, desktop):
 	# things around.
 	screen = None
 	usedComponents = None
+	currentScreenName = None
 
 
 def findWidgets(name):

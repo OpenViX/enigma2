@@ -268,7 +268,7 @@
 	</screen>
 
 	<!-- CHOICEBOX -->
-	<screen name="ChoiceBox_summary" position="0,0" size="800,480">
+	<screen name="ChoiceBoxSummary" position="0,0" size="800,480">
 		<widget source="parent.summary_list" render="Label" position="40,50" size="720,110" foregroundColor="white" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
 		<widget source="parent.summary_selection" render="Label" position="40,200" size="720,160" foregroundColor="white" font="FdLcDLight;65" halign="center" valign="top" zPosition="2" />
 	</screen>
@@ -279,7 +279,7 @@
 	</screen>
 
 	<!-- JOBVIEW SUMMARY -->
-	<screen name="JobView_summary" position="0,0" size="800,480"> 
+	<screen name="JobViewSummary" position="0,0" size="800,480"> 
 		<widget source="parent.summary_job_name" render="Label" position="40,50" size="720,110" foregroundColor="white" font="FdLcD;85" halign="left" valign="center" zPosition="2" />
 		<widget source="parent.summary_job_task" render="Label" position="40,200" size="720,100" foregroundColor="white" font="FdLcD;75" halign="left" valign="center" zPosition="2" />
 		<widget source="parent.summary_job_progress" render="Progress" position="38,348" size="724,84" borderWidth="2" foregroundColor="white" zPosition="3"/>
@@ -296,18 +296,18 @@
 		</widget>
 	</screen>
 
-	<!-- MESSAGEBOX -->
+	<!-- ABOUT -->
 	<screen name="AboutSummary" position="0,0" size="800,480">
 		<widget source="AboutText" render="Label" position="20,20" size="760,440" font="FdLcDLight;58" halign="center" valign="center" zPosition="2" />
 	</screen>
 
 	<!-- MESSAGEBOX -->
-	<screen name="MessageBox_summary" position="0,0" size="800,480"> 
+	<screen name="MessageBoxSummary" position="0,0" size="800,480"> 
 		<widget source="parent.Text" render="Label" position="40,50" size="720,310" foregroundColor="white" font="FdLcD;70" halign="center" valign="center" zPosition="2" />
 		<widget source="parent.selectedChoice" render="Label" position="40,380" size="720,70" foregroundColor="white" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" />
 	</screen>
-	<screen name="MessageBoxSimple_summary" position="0,0" size="800,480"> 
-		<panel name="MessageBox_summary" />
+	<screen name="MessageBoxSimpleSummary" position="0,0" size="800,480"> 
+		<panel name="MessageBoxSummary" />
 	</screen>
 
 	<!-- MOVIE SELECTION-->
@@ -349,7 +349,7 @@
 	</screen>
 
 	<!-- NUMBERZAP -->
-	<screen name="NumberZap_summary" position="0,0" size="800,480">
+	<screen name="NumberZapSummary" position="0,0" size="800,480">
 		<widget source="parent.servicename_summary" render="Label" position="40,50" size="720,110" foregroundColor="white" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
 		<widget source="parent.number_summary" render="Label" position="40,190" size="720,250" foregroundColor="white" font="FdLcD;90" halign="center" valign="center" zPosition="2" />
 	</screen>
@@ -388,13 +388,13 @@
 	</screen>
 
 	<!-- ET PORTAL -->
-	<screen name="EtPortalScreen_summary" position="0,0" size="800,480">
+	<screen name="EtPortalScreenSummary" position="0,0" size="800,480">
 		<eLabel text="EtPortal" position="15,20" foregroundColor="white" size="670,120" font="FdLcD;70" halign="center" valign="top" noWrap="1" />
 		<widget source="parent.label" render="Label" position="white" size="670,200" font="FdLcD;60" halign="center" valign="top" />
 	</screen>
 
 	<!-- misc -->
-	<screen name="SimpleSummary" position="0,0" size="800,480"> 
+	<screen name="ScreenSummary" position="0,0" size="800,480"> 
 		<widget source="Title" render="Label" position="40,190" size="720,200" font="FdLcD;60" halign="center" valign="top" />
 	</screen>
 
@@ -408,12 +408,12 @@
 	</screen>
 
 	<!-- ExtensionsList -->
-	<screen name="ExtensionsList_summary" position="0,0" size="800,480">
+	<screen name="ExtensionsListSummary" position="0,0" size="800,480">
 		<widget source="parent.Title" render="Label" position="40,20" size="720,376" font="FdLcD;70" halign="center" valign="center" />
 	</screen> 
 
 	<!-- EPG -->
-	<screen name="EPGExtensionsList_summary" position="0,0" size="800,480">
+	<screen name="EPGExtensionsListSummary" position="0,0" size="800,480">
 		<widget source="parent.Title" render="Label" position="40,20" size="720,250" font="FdLcD;80" halign="center" valign="center" foregroundColor="white" />
 	</screen>
 
@@ -443,6 +443,25 @@
 		<widget source="parent.list" render="Label" position="fill" font="FdLcD;50" halign="center" valign="center">
 			<convert type="StringListSelection" />
 		</widget>
+	</screen>
+
+	<screen name="NimSelectionSummary" position="fill">
+		<widget source="parent.Title" render="Label" position="40,50" size="720,100" foregroundColor="white" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
+		<widget source="parent.nimlist" render="Listbox" position="40,190" size="720,160" scrollbarMode="showNever">
+			<convert type="TemplatedMultiContent">
+				{"template": [
+					MultiContentEntryText(pos = (0,0), size = (720,160), flags = RT_HALIGN_CENTER|RT_VALIGN_CENTER, text = 1), # index 1 is the nim name,
+				],
+				"fonts": [gFont("FdLcDLight",60),],
+				"itemHeight": 160
+				}
+			</convert>
+		</widget>
+	</screen>
+
+	<screen name="CommitInfoSummary" position="fill">
+		<widget source="Title" render="Label" position="40,50" size="720,100" foregroundColor="white" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
+		<widget source="commitText" render="Label" position="20,180" size="760,300" font="FdLcDLight;45" halign="center" zPosition="2" />
 	</screen>
 		
 </skin>

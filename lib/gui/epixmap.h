@@ -2,6 +2,7 @@
 #define __lib_gui_epixmap_h
 
 #include <lib/gui/ewidget.h>
+#include <lib/base/nconfig.h> // access to python config
 
 class ePixmap: public eWidget
 {
@@ -27,6 +28,7 @@ private:
 		evtChangedPixmap = evtUserWidget,
 	};
 	bool m_have_border_color;
+	int m_force_blending = eConfigManager::getConfigIntValue("config.skin.pixmap_force_alphablending", 0);
 	int m_border_width;
 	gRGB m_border_color;
 };

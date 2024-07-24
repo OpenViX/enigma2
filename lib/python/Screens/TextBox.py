@@ -7,8 +7,12 @@ from Components.ScrollLabel import ScrollLabel
 class TextBox(Screen):
 	def __init__(self, session, text="", title=None, skin_name=None, label=None):
 		Screen.__init__(self, session)
+		if isinstance(self.skinName, str):
+			self.skinName = [self.skinName]
+		if "TextBox" not in self.skinName:
+			self.skinName.append("TextBox")
 		if isinstance(skin_name, str):
-			self.skinName = [skin_name, "TextBox"]
+			self.skinName.insert(0, skin_name)
 		self.text = text
 		self.label = "text"
 		if isinstance(label, str):

@@ -350,7 +350,7 @@ class VIXDevicesPanel(Screen):
 			self.Console.ePopen("mount -a", self.setTimer)
 
 
-class DeviceMountSetup(Screen, ConfigListScreen):
+class DeviceMountSetup(ConfigListScreen, Screen):
 	skin = ["""
 	<screen position="center,center" size="%d,%d">
 		<panel name="__DynamicColorButtonTemplate__"/>

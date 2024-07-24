@@ -401,7 +401,17 @@ void runMainloop()
 
 const char *getEnigmaVersionString()
 {
+	return enigma2_version;
+}
+
+const char *getEnigmaLastCommitDate()
+{
 	return enigma2_date;
+}
+
+const char *getEnigmaLastCommitHash()
+{
+	return enigma2_hash;
 }
 
 const char *getGStreamerVersionString()

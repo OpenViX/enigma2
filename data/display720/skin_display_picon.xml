@@ -35,7 +35,7 @@
 	<!-- MAIN -->
 	
 	<!-- CHANNEL SELECTION-->
-	<screen name="ChannelSelection_summary" position="0,0" size="720,576"> 
+	<screen name="ChannelSelectionSummary" position="0,0" size="720,576"> 
 		<panel name="LCDPiconChannelSelectionProgramName" />
 		<panel name="LCDPiconChannelSelectionProgress" />
 		<panel name="LCDPiconChannelSelectionRemainingTime" />
@@ -47,14 +47,14 @@
 		<panel name="LCDTunerInfo" />
 		<panel name="LCDTime" />
 	</screen>
-	<screen name="ChannelSelectionRadio_summary" position="0,0" size="720,576">
+	<screen name="ChannelSelectionRadioSummary" position="0,0" size="720,576">
 		<widget source="parent.RdsDecoder" render="Label" position="10,200" size="700,150" foregroundColor="white" font="FdLcDLight;65" halign="center" valign="center" zPosition="2">
 			<convert type="RdsInfo">RtpText</convert>
 		</widget>
 	</screen>
 	
 	<!-- EPG -->
-	<screen name="GraphicalEPGPIG_summary" position="0,0" size="720,576">
+	<screen name="GraphicalEPGPIGSummary" position="0,0" size="720,576">
 		<panel name="LCDPiconEPGProgramName" />
 		<panel name="LCDPiconEPGProgress" />
 		<panel name="LCDPiconEPGRemainingTime" />
@@ -66,13 +66,13 @@
 		<panel name="LCDTunerInfo" />
 		<panel name="LCDTime" />
 	</screen>
-	<screen name="GraphicalEPG_summary" position="0,0" size="720,576">
+	<screen name="GraphicalEPGSummary" position="0,0" size="720,576">
 		<panel name="GraphicalEPGPIG_summary" />
 	</screen>
-	<screen name="GraphicalInfoBarEPG_summary" position="0,0" size="720,576">
+	<screen name="GraphicalInfoBarEPGSummary" position="0,0" size="720,576">
 		<panel name="GraphicalEPGPIG_summary" />
 	</screen>
-	<screen name="EPGSelectionMulti_summary" position="0,0" size="720,576">
+	<screen name="EPGSelectionMultiSummary" position="0,0" size="720,576">
 		<panel name="GraphicalEPGPIG_summary" />
 	</screen>
 	

@@ -4,6 +4,8 @@
 
 #include <lib/base/cfile.h>
 #include <lib/base/estring.h>
+#include <lib/base/wrappers.h>
+#include <lib/gdi/picexif.h>
 #include <lib/gdi/picload.h>
 
 extern "C" {
@@ -29,6 +31,76 @@ static std::string getSize(const char* file)
 	if (stat64(file, &s) < 0)
 		return "";
 	return std::to_string((long)(s.st_size / 1024)) + " kB";
+}
+
+static int convert_8Bit_to_24Bit(Cfilepara *filepara, unsigned char *dest)
+{
+	if( (!filepara) || (!dest))
+		return -1;
+
+	unsigned char *src = filepara->pic_buffer;
+	gRGB * palette     = filepara->palette;
+	int pixel_cnt      = filepara->ox * filepara->oy;
+
+	if( (!src) || (!palette) || (!pixel_cnt))
+		return -1;
+
+	for( int i = 0; i < pixel_cnt; i++)
+	{
+		*dest++ = palette[*src].r;
+		*dest++ = palette[*src].g;
+		*dest++ = palette[*src++].b;
+	}
+	return 0;
+}
+
+static unsigned char *simple_resize_24(unsigned char *orgin, int ox, int oy, int dx, int dy)
+{
+	unsigned char *cr = new unsigned char[dx * dy * 3];
+	if (cr == NULL)
+	{
+		eDebug("[ePicLoad] Error malloc");
+		return orgin;
+	}
+	const int stride = 3 * dx;
+	#pragma omp parallel for
+	for (int j = 0; j < dy; ++j)
+	{
+		unsigned char* k = cr + (j * stride);
+		const unsigned char* p = orgin + (j * oy / dy * ox) * 3;
+		for (int i = 0; i < dx; i++)
+		{
+			const unsigned char* ip = p + (i * ox / dx) * 3;
+			*k++ = ip[0];
+			*k++ = ip[1];
+			*k++ = ip[2];
+		}
+	}
+	delete [] orgin;
+	return cr;
+}
+
+static unsigned char *simple_resize_8(unsigned char *orgin, int ox, int oy, int dx, int dy)
+{
+	unsigned char* cr = new unsigned char[dx * dy];
+	if (cr == NULL)
+	{
+		eDebug("[ePicLoad] Error malloc");
+		return(orgin);
+	}
+	const int stride = dx;
+	#pragma omp parallel for
+	for (int j = 0; j < dy; ++j)
+	{
+		unsigned char* k = cr + (j * stride);
+		const unsigned char* p = orgin + (j * oy / dy * ox);
+		for (int i = 0; i < dx; i++)
+		{
+			*k++ = p[i * ox / dx];
+		}
+	}
+	delete [] orgin;
+	return cr;
 }
 
 static unsigned char *color_resize(unsigned char * orgin, int ox, int oy, int dx, int dy)
@@ -297,16 +369,21 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 
 	png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (png_ptr == NULL)
+	{
+		eDebug("[ePicLoad] Error png_create_read_struct");
 		return;
+	}
 	png_infop info_ptr = png_create_info_struct(png_ptr);
 	if (info_ptr == NULL)
 	{
+		eDebug("[ePicLoad] Error png_create_info_struct");
 		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
 		return;
 	}
 
 	if (setjmp(png_jmpbuf(png_ptr)))
 	{
+		eDebug("[ePicLoad] Error setjmp");
 		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 		return;
 	}
@@ -315,28 +392,53 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 
 	png_read_info(png_ptr, info_ptr);
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
+	int pixel_cnt = width * height;
 
-	if (!forceRGB && (color_type == PNG_COLOR_TYPE_GRAY || color_type & PNG_COLOR_MASK_PALETTE))
+	filepara->ox = width;
+	filepara->oy = height;
+	
+	// This is a hack to support 8bit pngs with transparency since the detection is not really correct for some reason....
+	if (color_type == PNG_COLOR_TYPE_PALETTE && bit_depth == 8) {
+		color_type = PNG_COLOR_TYPE_RGBA;
+	}
+	
+
+	if (color_type == PNG_COLOR_TYPE_RGBA || color_type == PNG_COLOR_TYPE_GA) {
+		filepara->transparent = true;
+		filepara->bits = 32; // Here set bits to 32 explicitly to simulate alpha transparency if it is not explicitly set
+	}
+	else
+	{
+		png_bytep trans_alpha = NULL;
+		int num_trans = 0;
+		png_color_16p trans_color = NULL;
+
+		png_get_tRNS(png_ptr, info_ptr, &trans_alpha, &num_trans, &trans_color);
+		filepara->transparent = (trans_alpha != NULL);
+	}
+
+	if ((bit_depth <= 8) && (color_type == PNG_COLOR_TYPE_GRAY || color_type & PNG_COLOR_MASK_PALETTE))
 	{
 		if (bit_depth < 8)
-		{
 			png_set_packing(png_ptr);
-			bit_depth = 8;
-		}
-		unsigned char *pic_buffer = new unsigned char[height * width];
-		filepara->ox = width;
-		filepara->oy = height;
-		filepara->pic_buffer = pic_buffer;
-		filepara->bits = 8;
 
-		png_bytep *rowptr=new png_bytep[height];
-		for (unsigned int i=0; i!=height; i++)
+		unsigned char *pic_buffer = new unsigned char[pixel_cnt];
+		if (!pic_buffer)
 		{
-			rowptr[i]=(png_byte*)pic_buffer;
-			pic_buffer += width;
+			eDebug("[ePicLoad] Error malloc");
+			png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
+			return;
 		}
-		png_read_rows(png_ptr, rowptr, 0, height);
-		delete [] rowptr;
+
+		int number_passes = png_set_interlace_handling(png_ptr);
+		png_read_update_info(png_ptr, info_ptr);
+
+		for (int pass = 0; pass < number_passes; pass++)
+		{
+			fbptr = (png_byte *)pic_buffer;
+			for (unsigned int i = 0; i < height; i++, fbptr += width)
+				png_read_row(png_ptr, fbptr, NULL);
+		}
 
 		if (png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE))
 		{
@@ -346,30 +448,52 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 			filepara->palette_size = num_palette;
 			if (num_palette)
 				filepara->palette = new gRGB[num_palette];
-			for (int i=0; i<num_palette; i++)
+
+			for (unsigned int i = 0; i < num_palette; i++)
 			{
-				filepara->palette[i].a=0;
-				filepara->palette[i].r=palette[i].red;
-				filepara->palette[i].g=palette[i].green;
-				filepara->palette[i].b=palette[i].blue;
+				filepara->palette[i].a = 0;
+				filepara->palette[i].r = palette[i].red;
+				filepara->palette[i].g = palette[i].green;
+				filepara->palette[i].b = palette[i].blue;
 			}
+
 			if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
 			{
 				png_byte *trans;
 				png_get_tRNS(png_ptr, info_ptr, &trans, &num_palette, 0);
-				for (int i=0; i<num_palette; i++)
-					filepara->palette[i].a=255-trans[i];
+				for (unsigned int i = 0; i < num_palette; i++)
+					filepara->palette[i].a = 255 - trans[i];
 			}
 		}
+		else
+		{
+			int c_cnt = 1 << bit_depth;
+			int c_step = (256 - 1) / (c_cnt - 1);
+			filepara->palette_size = c_cnt;
+			filepara->palette = new gRGB[c_cnt];
+			for (unsigned int i = 0; i < c_cnt; i++)
+			{
+				filepara->palette[i].a = 0;
+				filepara->palette[i].r = i * c_step;
+				filepara->palette[i].g = i * c_step;
+				filepara->palette[i].b = i * c_step;
+			}
+		}
+		filepara->pic_buffer = pic_buffer;
+		filepara->bits = 8;
+		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 	}
 	else
 	{
 		if (bit_depth == 16)
 			png_set_strip_16(png_ptr);
+
 		if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
 			png_set_gray_to_rgb(png_ptr);
-		if (color_type & PNG_COLOR_MASK_PALETTE)
-			png_set_palette_to_rgb(png_ptr);
+
+		if ((color_type == PNG_COLOR_TYPE_PALETTE) || (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) || (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)))
+			png_set_expand(png_ptr);
+
 		if (color_type & PNG_COLOR_MASK_ALPHA || png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
 		{
 			png_set_strip_alpha(png_ptr);
@@ -381,30 +505,68 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 			bg.index = 0;
 			png_set_background(png_ptr, &bg, PNG_BACKGROUND_GAMMA_SCREEN, 0, 1.0);
 		}
+		int number_passes = png_set_interlace_handling(png_ptr);
 		png_read_update_info(png_ptr, info_ptr);
 
-		if (width * 3 != png_get_rowbytes(png_ptr, info_ptr))
+		int bpp = png_get_rowbytes(png_ptr, info_ptr) / width;
+		eDebug("[ePicLoad] RGB data from PNG file int bpp %x)", bpp);
+		if ((bpp != 4) && (bpp != 3))
 		{
 			eDebug("[ePicLoad] Error processing (did not get RGB data from PNG file)");
 			png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 			return;
 		}
 
-		unsigned char *pic_buffer = new unsigned char[height * width * 3];
-		filepara->ox = width;
-		filepara->oy = height;
-		filepara->pic_buffer = pic_buffer;
+		unsigned char *pic_buffer = new unsigned char[pixel_cnt * bpp];
+		if (!pic_buffer)
+		{
+			eDebug("[ePicLoad] Error malloc");
+			png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
+			return;
+		}
 
-		int number_passes = png_set_interlace_handling(png_ptr);
-		for(int pass = 0; pass < number_passes; pass++)
+		for (int pass = 0; pass < number_passes; pass++)
 		{
 			fbptr = (png_byte *)pic_buffer;
-			for (i = 0; i < height; i++, fbptr += width * 3)
+			for (unsigned int i = 0; i < height; i++, fbptr += width * bpp)
 				png_read_row(png_ptr, fbptr, NULL);
 		}
 		png_read_end(png_ptr, info_ptr);
+		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
+
+		if (bpp == 4)
+		{
+			unsigned char *pic_buffer24 = new unsigned char[pixel_cnt * 3];
+			if (!pic_buffer24)
+			{
+				eDebug("[ePicLoad] Error malloc");
+				delete[] pic_buffer;
+				return;
+			}
+
+			unsigned char *src = pic_buffer;
+			unsigned char *dst = pic_buffer24;
+			int bg_r = (background >> 16) & 0xFF;
+			int bg_g = (background >> 8) & 0xFF;
+			int bg_b = background & 0xFF;
+			for (unsigned int i = 0; i < pixel_cnt; i++)
+			{
+				int r = (int)*src++;
+				int g = (int)*src++;
+				int b = (int)*src++;
+				int a = (int)*src++;
+
+				*dst++ = ((r - bg_r) * a) / 255 + bg_r;
+				*dst++ = ((g - bg_g) * a) / 255 + bg_g;
+				*dst++ = ((b - bg_b) * a) / 255 + bg_b;
+			}
+			delete[] pic_buffer;
+			filepara->pic_buffer = pic_buffer24;
+		}
+		else
+			filepara->pic_buffer = pic_buffer;
+		filepara->bits = 24;
 	}
-	png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 }
 
 //-------------------------------------------------------------------
@@ -805,6 +967,9 @@ void ePicLoad::decodePic()
 		case F_SVG:	svg_load(m_filepara);
 				break;
 	}
+
+	if(m_filepara->pic_buffer != NULL)
+		resizePic();
 }
 
 void ePicLoad::decodeThumb()
@@ -912,15 +1077,68 @@ void ePicLoad::decodeThumb()
 				imy = (int)( (m_conf.thumbnailsize * ((double)m_filepara->oy)) / ((double)m_filepara->ox) );
 			}
 
-			// eDebug("[ePicLoad] getThumb resize from %dx%d to %dx%d", m_filepara->ox, m_filepara->oy, imx, imy);
-			m_filepara->pic_buffer = color_resize(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
+			if (m_filepara->bits == 8)
+				m_filepara->pic_buffer = simple_resize_8(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
+			else
+				m_filepara->pic_buffer = color_resize(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
+
 			m_filepara->ox = imx;
 			m_filepara->oy = imy;
 
-			if (jpeg_save(cachefile.c_str(), m_filepara->ox, m_filepara->oy, m_filepara->pic_buffer))
-				eDebug("[ePicLoad] getThumb: error saving cachefile");
+			if (m_filepara->bits == 8)
+			{
+				unsigned char * tmp = new unsigned char [m_filepara->ox * m_filepara->oy * 3];
+				if(tmp)
+				{
+					if(!convert_8Bit_to_24Bit(m_filepara, tmp))
+					{
+						if(jpeg_save(cachefile.c_str(), m_filepara->ox, m_filepara->oy, tmp))
+							eDebug("[ePicLoad] error saving cachefile");
+					}
+					else
+						eDebug("[ePicLoad] error saving cachefile");
+					delete [] tmp;
+				}
+				else
+					eDebug("[ePicLoad] Error malloc");
+			}
+			else
+				if(jpeg_save(cachefile.c_str(), m_filepara->ox, m_filepara->oy, m_filepara->pic_buffer))
+					eDebug("[ePicLoad] getThumb: error saving cachefile");
 		}
+		resizePic();
 	}
+}
+
+void ePicLoad::resizePic()
+{
+	int imx, imy;
+
+	if (m_conf.aspect_ratio == 0)  // do not keep aspect ration but just fill the destination area
+	{
+		imx = m_filepara->max_x;
+		imy = m_filepara->max_y;
+	}
+	else if ((m_conf.aspect_ratio * m_filepara->oy * m_filepara->max_x / m_filepara->ox) <= m_filepara->max_y)
+	{
+		imx = m_filepara->max_x;
+		imy = (int)(m_conf.aspect_ratio * m_filepara->oy * m_filepara->max_x / m_filepara->ox);
+	}
+	else
+	{
+		imx = (int)((1.0/m_conf.aspect_ratio) * m_filepara->ox * m_filepara->max_y / m_filepara->oy);
+		imy = m_filepara->max_y;
+	}
+
+	if (m_filepara->bits == 8)
+		m_filepara->pic_buffer = simple_resize_8(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
+	else if (m_conf.resizetype)
+		m_filepara->pic_buffer = color_resize(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
+	else
+		m_filepara->pic_buffer = simple_resize_24(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
+
+	m_filepara->ox = imx;
+	m_filepara->oy = imy;
 }
 
 void ePicLoad::gotMessage(const Message &msg)
@@ -941,7 +1159,7 @@ void ePicLoad::gotMessage(const Message &msg)
 			break;
 		case Message::decode_finished: // called from main thread
 			//eDebug("[ePicLoad] decode finished... %s", m_filepara->file);
-			if(m_filepara->callback)
+			if((m_filepara != NULL) && (m_filepara->callback))
 			{
 				eDebug("[ePicLoad] picinfo... %s", m_filepara->picinfo.c_str());
 				PictureData(m_filepara->picinfo.c_str());
@@ -959,6 +1177,9 @@ void ePicLoad::gotMessage(const Message &msg)
 					m_exif = NULL;
 				}
 			}
+			break;
+		case Message::decode_error:
+			msg_main.send(Message(Message::decode_finished));
 			break;
 		default:
 			eDebug("[ePicLoad] unhandled thread message");

@@ -105,6 +105,8 @@ class About(AboutBase):
 			imageSubBuild = ".%s" % SystemInfo["imagedevbuild"]
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (SystemInfo["imageversion"], SystemInfo["imagebuild"], imageSubBuild, SystemInfo["imagetype"].title())
 
+		AboutText += _("Installed:\t%s\n") % about.getFlashDateString()
+
 		VuPlustxt = "Vu+ Multiboot - " if SystemInfo["HasKexecMultiboot"] else ""
 		if fileHas("/proc/cmdline", "rootsubdir=linuxrootfs0"):
 			AboutText += _("Boot Device: \tRecovery Slot\n")
@@ -147,10 +149,7 @@ class About(AboutBase):
 		else:
 			AboutText += _("4097 iptv player:\tDefault player\n")
 		AboutText += _("Python:\t%s\n") % about.getPythonVersionString()
-		flashDate = about.getFlashDateString()
-		AboutText += _("Installed:\t%s\n") % flashDate
-		lastUpdate = about.getLastUpdate()
-		AboutText += _("Last update:\t%s\n") % lastUpdate
+		AboutText += _("Last E2 update:\t%s (%s)\n") % (about.getLastCommitHash(), about.getLastCommitDate())
 		AboutText += _("E2 (re)starts:\t%s\n") % config.misc.startCounter.value
 		uptime = about.getBoxUptime()
 		if uptime:
@@ -623,7 +622,7 @@ class AboutSummary(ScreenSummary):
 		self["AboutText"] = StaticText()
 		self.aboutText.append(_("OpenViX: %s") % SystemInfo["imageversion"] + "." + SystemInfo["imagebuild"] + "\n")
 		self.aboutText.append(_("Model: %s %s\n") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
-		self.aboutText.append(_("Updated: %s") % about.getLastUpdate() + "\n")
+		self.aboutText.append(_("Updated: %s") % about.getLastCommitDate() + "\n")
 		tempinfo = ""
 		if path.exists("/proc/stb/sensors/temp0/value"):
 			with open("/proc/stb/sensors/temp0/value", "r") as f:

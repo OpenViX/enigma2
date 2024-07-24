@@ -638,11 +638,12 @@ if not VuRecovery:
 	from Components.VolumeControl import VolumeControl  # noqa: E402
 	from Tools.StbHardware import setFPWakeuptime, setRTCtime  # noqa: E402
 
-	profile("StackTracePrinter")
-	from Components.StackTrace import StackTracePrinter  # noqa: E402
-	StackTracePrinterInst = StackTracePrinter()
+profile("StackTracePrinter")
+from Components.StackTrace import StackTracePrinter  # noqa: E402
+StackTracePrinterInst = StackTracePrinter()
 
 profile("Init:skin")
+config.skin.pixmap_force_alphablending = ConfigSelection(default="0", choices=[("2", _("Always")), ("1", _("Only alpha test to alpha blend")), ("0", _("Use skin setting"))])
 print("[StartEnigma]  Initialising Skins.")
 from skin import InitSkins  # noqa: E402
 InitSkins()

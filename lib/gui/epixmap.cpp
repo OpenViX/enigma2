@@ -10,8 +10,14 @@ ePixmap::ePixmap(eWidget *parent)
 
 void ePixmap::setAlphatest(int alphatest)
 {
-	m_alphatest = alphatest;
-	setTransparent(alphatest);
+	if (m_force_blending > 0 && m_pixmap && m_pixmap->isPNG) {
+		if (m_force_blending == 2 || (m_force_blending == 1 && alphatest == 1))
+			m_alphatest = gPainter::BT_ALPHABLEND;
+	} else {
+		m_alphatest = alphatest;
+	}
+
+	setTransparent(m_alphatest);
 }
 
 void ePixmap::setScale(int scale)
@@ -125,6 +131,9 @@ int ePixmap::event(int event, void *data, void *data2)
 		return 0;
 	}
 	case evtChangedPixmap:
+		if (m_force_blending == 2){
+			setAlphatest(m_alphatest);
+		}
 		checkSize();
 		invalidate();
 		return 0;

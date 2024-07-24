@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-06-13 19:17+0300\n"
+"PO-Revision-Date: 2024-07-23 20:18+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2217,7 +2217,7 @@ msgid "Any activity"
 msgstr "Mikä tahansa toiminta"
 
 msgid "Arabic"
-msgstr "Arabia"
+msgstr "arabialainen"
 
 msgid "Architektur"
 msgstr "Arkkitehtuurinen"
@@ -2845,7 +2845,7 @@ msgid "Bulgaria"
 msgstr "Bulgaria"
 
 msgid "Bulgarian"
-msgstr "Bulgarialainen"
+msgstr "bulgarialainen"
 
 msgid "Burkina Faso"
 msgstr "Burkina Faso"
@@ -3320,6 +3320,9 @@ msgstr "Piirisarja:\tHiSilicon %s\n"
 msgid "Chipset: %s"
 msgstr "Piirisarja: %s"
 
+msgid "Chinese"
+msgstr "kiinalainen"
+
 msgid "Choose Bouquet"
 msgstr "Valitse suosikkilista"
 
@@ -3627,10 +3630,10 @@ msgid "Configure alignment of the timeline date."
 msgstr "Muuta aikajanan päivämäärän sijainnin asetuksia."
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
-msgstr "Määritä ylimääräinen viive parantaaksesi ulkoisten tekstitysten ajoitusta."
+msgstr "Määrittää ylimääräisen viiveen parantamaan ulkoisen tekstityksen ajoitusta."
 
 msgid "Configure an additional delay to improve subtitle synchronisation."
-msgstr "Määritä ylimääräinen viive parantaaksesi tekstitysten ajoitusta."
+msgstr "Määrittää ylimääräisen viiveen parantamaan tekstitysten ajoitusta."
 
 msgid "Configure duration of inactivity before the hard disk drive goes to standby"
 msgstr "Määritä joutoaika, jonka jälkeen kiintolevy siirtyy valmiustilaan"
@@ -3654,7 +3657,7 @@ msgid "Configure if and how wide the service name column will be shown in the ch
 msgstr "Määrittää kuinka leveänä kanavanimet näytetään kanavalistassa."
 
 msgid "Configure if behind the subtitles a background is shown."
-msgstr "Valitse näytetäänkö tekstityksen tausta."
+msgstr "Määrittää näkyykö tekstityksen takana tausta."
 
 msgid "Configure if picons will be shown in the service list."
 msgstr "Määrittää näytetäänkö kanavalogot kanavalistassa."
@@ -3666,7 +3669,7 @@ msgid "Configure if service picons will be shown in the channel selection list."
 msgstr "Määrittää näytetäänkö kanavalogot kanavalistassa."
 
 msgid "Configure if the subtitle should switch between normal, italic, bold and bolditalic"
-msgstr "Muokkaa ulkoisen tekstityksen fonttia, vaihtoehtoina: normaali, kursivoitu, lihavoitu ja lihavoitu kursiivi"
+msgstr "Määrittää pitääkö tekstityksen vaihtaa normaalin, kursivoidun, lihavoidun ja lihavoidun kursiivin välillä"
 
 msgid "Configure interface"
 msgstr "Määritä verkkosovitin"
@@ -3696,7 +3699,7 @@ msgid "Configure the behavior when reaching the end of a movie, during movie pla
 msgstr "Määritä toiminto, kun saavutetaan tallenteen loppu toiston aikana."
 
 msgid "Configure the border width of the subtitles. The dark border makes the subtitles easier to read on a light background."
-msgstr "Määritä tekstityksen reunuksen leveys. Tumma reunus helpottaa tekstityksen lukemista vaalealla taustalla."
+msgstr "Määrittää tekstityksen reunuksen leveyden. Tumma reunus helpottaa tekstityksen lukemista vaalealla taustalla."
 
 msgid "Configure the brightness level of the front panel display for dimmed operation."
 msgstr "Määritä etupaneelin näytön kirkkaus himmennetyssä tilassa."
@@ -3729,7 +3732,7 @@ msgid "Configure the first subtitle language (highest priority)."
 msgstr "Määrittää ensisijaisen tekstityksen kielen (korkein prioriteetti)."
 
 msgid "Configure the font size of the subtitles."
-msgstr "Määrittää tekstityksen koon."
+msgstr "Määrittää tekstityksen fonttikoon."
 
 msgid "Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size."
 msgstr "Määritä tekstin koko suhteessa teeman määritykseen, joten 1 suurentaa kokoa yhdellä merkkikoolla ja -1 pienentää yhdellä"
@@ -3747,7 +3750,7 @@ msgid "Configure the gateway."
 msgstr "Määritä verkon yhdyskäytävä."
 
 msgid "Configure the horizontal alignment of the subtitles."
-msgstr "Määrittää tekstityksen vaakasijainnin."
+msgstr "Määrittää tekstitysten vaakasuoran kohdistuksen."
 
 msgid "Configure the infobar fading speed"
 msgstr "Määritä tietopalkin häivytysnopeus"
@@ -3837,13 +3840,13 @@ msgid "Configure the third subtitle language."
 msgstr "Määrittää kolmannen tekstityskielen."
 
 msgid "Configure the transparency of the black background of graphical DVB subtitles."
-msgstr "Määrittää DVB-tekstityksen mustan taustavärin läpinäkyvyyden."
+msgstr "Määrittää DVB-tekstityksen mustan taustan läpinäkyvyyden."
 
 msgid "Configure the tuner mode."
 msgstr "Määrittää virittimen toimintatilan."
 
 msgid "Configure the vertical position of the subtitles, measured from the bottom of the screen."
-msgstr "Määrittää tekstityksen kohdan pystysuunnassa, mitattuna kuvaruudun alareunasta."
+msgstr "Määrittää tekstityksen pystysuoran sijainnin näytön alareunasta mitattuna."
 
 msgid "Configure the width allocated to the picon."
 msgstr "Määritä kanavalogolle varattu leveys."
@@ -4233,7 +4236,7 @@ msgid "Cyprus"
 msgstr "Kypros"
 
 msgid "Czech"
-msgstr "Tšekki"
+msgstr "tšekki"
 
 msgid "Czechia"
 msgstr "Czechia"
@@ -4291,7 +4294,7 @@ msgid "DVB CI Delay"
 msgstr "DVB CI-viive"
 
 msgid "DVB subtitle black transparency"
-msgstr "DVB-tekstin mustan reunan läpinäkyvyys"
+msgstr "DVB-tekstityksen mustan läpinäkyvyys"
 
 msgid "DVB type"
 msgstr "DVB tyyppi"
@@ -4339,7 +4342,7 @@ msgid "Dance"
 msgstr "Tanssi"
 
 msgid "Danish"
-msgstr "Tanskalainen"
+msgstr "tanskalainen"
 
 msgid "Darts"
 msgstr "Tikanheitto"
@@ -5148,7 +5151,7 @@ msgid "Dual core"
 msgstr "Tuplaydin"
 
 msgid "Dutch"
-msgstr "Hollanti"
+msgstr "hollantilainen"
 
 msgid "Dynamic contrast"
 msgstr "Dynaaminen kontrasti"
@@ -5513,7 +5516,7 @@ msgid "Energie"
 msgstr "Energia"
 
 msgid "English"
-msgstr "Englanti"
+msgstr "englantilainen"
 
 msgid "Enigma2 debug level."
 msgstr "Enigma2 debug-taso."
@@ -5670,7 +5673,7 @@ msgid "Estonia"
 msgstr "Viro"
 
 msgid "Estonian"
-msgstr "Viro"
+msgstr "virolainen"
 
 msgid "Ethernet network interface"
 msgstr "Verkkokortti"
@@ -6116,7 +6119,7 @@ msgid "Finland"
 msgstr "Suomi"
 
 msgid "Finnish"
-msgstr "Suomi"
+msgstr "suomalainen"
 
 msgid "FirstPage"
 msgstr "Ensimmäinen sivu"
@@ -6218,7 +6221,7 @@ msgid "Free: "
 msgstr "Vapaana: "
 
 msgid "French"
-msgstr "Ranska"
+msgstr "ranskalainen"
 
 msgid "French Guiana"
 msgstr "French Guiana"
@@ -6401,7 +6404,7 @@ msgid "Georgia"
 msgstr "Georgia"
 
 msgid "German"
-msgstr "Saksa"
+msgstr "saksalainen"
 
 msgid "Germany"
 msgstr "Saksa"
@@ -6695,7 +6698,7 @@ msgid "Heard Island and McDonald Islands"
 msgstr "Heard Island and McDonald Islands"
 
 msgid "Hebrew"
-msgstr "Hebrea"
+msgstr "heprealainen"
 
 msgid "Height"
 msgstr "Korkeus"
@@ -6896,7 +6899,7 @@ msgid "Hue"
 msgstr "Sävy"
 
 msgid "Hungarian"
-msgstr "Unkari"
+msgstr "unkarilainen"
 
 msgid "Hungary"
 msgstr "Unkari"
@@ -7426,7 +7429,7 @@ msgid "It seems you have hit your API limit - please try again later."
 msgstr "Olet ylittänyt API-rajan. Yritä myöhemmin uudestaan."
 
 msgid "Italian"
-msgstr "Italia"
+msgstr "italialainen"
 
 msgid "Italy"
 msgstr "Italia"
@@ -7662,8 +7665,8 @@ msgid "Last speed"
 msgstr "Aikaisempi nopeus"
 
 #, python-format
-msgid "Last update:\t%s\n"
-msgstr "Päivitys:\t%s\n"
+msgid "Last E2 update:\t%s (%s)\n"
+msgstr "Viimeisin E2 päivitys:\t%s (%s)\n"
 
 #, python-format
 msgid "Last update: %s"
@@ -7689,7 +7692,7 @@ msgid "Latvia"
 msgstr "Latvia"
 
 msgid "Latvian"
-msgstr "Latvia"
+msgstr "latvialainen"
 
 msgid "Leave DVD player?"
 msgstr "Poistutaanko DVD-soittimesta?"
@@ -7815,7 +7818,7 @@ msgid "Lithuania"
 msgstr "Liettua"
 
 msgid "Lithuanian"
-msgstr "Liettua"
+msgstr "liettualainen"
 
 msgid "Live"
 msgstr "Suora"
@@ -8951,7 +8954,7 @@ msgid "Norway"
 msgstr "Norja"
 
 msgid "Norwegian"
-msgstr "Norja"
+msgstr "norjalainen"
 
 msgid "Not Classified"
 msgstr "Ei luokiteltu"
@@ -9912,7 +9915,7 @@ msgid "Polarization"
 msgstr "Polarisaatio"
 
 msgid "Polish"
-msgstr "Puola"
+msgstr "puolalainen"
 
 msgid "Political Issues"
 msgstr "Poliittiset Kysymykset"
@@ -9954,7 +9957,7 @@ msgid "Portugal"
 msgstr "Portugali"
 
 msgid "Portuguese"
-msgstr "Portugali"
+msgstr "portugalilainen"
 
 msgid "Position"
 msgstr "Sijainti"
@@ -11078,7 +11081,7 @@ msgid "Running"
 msgstr "Käynnissä"
 
 msgid "Russian"
-msgstr "Venäjä"
+msgstr "venäläinen"
 
 msgid "Russian Federation"
 msgstr "Venäjä"
@@ -12813,7 +12816,7 @@ msgid "Slot%s %s %s: %s%s"
 msgstr "Paikka%s %s %s: %s%s"
 
 msgid "Slovak"
-msgstr "Slovakia"
+msgstr "slovakialainen"
 
 msgid "Slovakia"
 msgstr "Slovakia"
@@ -12822,7 +12825,7 @@ msgid "Slovenia"
 msgstr "Slovenia"
 
 msgid "Slovenian"
-msgstr "Slovenia"
+msgstr "slovenialainen"
 
 msgid "Slow"
 msgstr "Hidas"
@@ -13035,7 +13038,7 @@ msgid "Spain"
 msgstr "Espania"
 
 msgid "Spanish"
-msgstr "Espanja"
+msgstr "espanjalainen"
 
 msgid "Special"
 msgstr "Erikois"
@@ -13315,7 +13318,7 @@ msgid "Subtitle alignment"
 msgstr "Tekstityksen keskitys"
 
 msgid "Subtitle border width"
-msgstr "Tekstin reunan leveys"
+msgstr "Tekstityksen reunan leveys"
 
 msgid "Subtitle delay when timing is bad"
 msgstr "Tekstityksen viive ajoituksen ollessa huono"
@@ -13413,7 +13416,7 @@ msgid "Sweden"
 msgstr "Ruotsi"
 
 msgid "Swedish"
-msgstr "Ruotsi"
+msgstr "ruotsalainen"
 
 msgid "Swimming"
 msgstr "Uinti"
@@ -13546,7 +13549,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 13.06.2024 ---\n"
+"--- 23.07.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -13672,7 +13675,7 @@ msgid "Text color"
 msgstr "Tekstin väri"
 
 msgid "Thai"
-msgstr "Thai"
+msgstr "thaimaalainen"
 
 msgid "Thailand"
 msgstr "Thaimaa"
@@ -14557,7 +14560,7 @@ msgid "Turkey"
 msgstr "Turkki"
 
 msgid "Turkish"
-msgstr "Turkki"
+msgstr "turkkilainen"
 
 msgid "Turkmenistan"
 msgstr "Turkmenistan"
@@ -14635,7 +14638,7 @@ msgid "Ukraine"
 msgstr "Ukraina"
 
 msgid "Ukrainian"
-msgstr "Ukraina"
+msgstr "ukrainalainen"
 
 msgid "Umweltbewusstsein"
 msgstr "Ympäristötietoisuus"
@@ -14893,7 +14896,7 @@ msgid "Use original DVB subtitle position"
 msgstr "Käytä alkuperäisen DVB-tekstityksen paikkaa"
 
 msgid "Use original teletext position"
-msgstr "Käytä alkuperäistä teksti-TV tekstin paikkaa"
+msgstr "Käytä alkuperäistä teksti-TV tekstityksen paikkaa"
 
 msgid "Use piconlcd directory for picons on color LCD"
 msgstr "Käytä picon_lcd hakemistoa värinäytön kanavalogoille"
@@ -15569,7 +15572,7 @@ msgid "When enabled, recordings are grouped by name into collections automatical
 msgstr "Kun päällä, tallenteet ryhmitetään nimen mukaan kokoelmiksi automaattisesti."
 
 msgid "When enabled, reformat subtitles to match the width of the screen."
-msgstr "Kun päällä, tekstityksen leveys sovitetaan ruudun leveyteen."
+msgstr "Kun päällä, tekstityksen leveys sovitetaan näytön leveyteen."
 
 msgid "When enabled, show channel numbers in the channel selection screen."
 msgstr "Kun päällä, näytä kanavanvalinnassa kanavanumerot."
@@ -15776,7 +15779,7 @@ msgid "Yellow"
 msgstr "Keltainen"
 
 msgid "Yellow DVB subtitles"
-msgstr "Keltaiset DVB-tekstit"
+msgstr "Keltainen DVB-tekstitys"
 
 msgid "Yellow button (long)"
 msgstr "Keltainen näppäin (pitkä)"
@@ -19195,7 +19198,7 @@ msgid "Homebuild URL"
 msgstr "Itse luodun imagen URL"
 
 msgid "If you are running your own build server and want to download your own images directly into ImageManager you can link to the URL of your JSON index. Don't forget to add '%s' where the box name should be inserted into the url. If you need help with implementing this please ask on the forum."
-msgstr "Jos käytät omaa koontipalvelinta ja haluat ladata omat imagesi suoraan Imagen Hallinnointiin, voit linkittää JSON-hakemistosi URL-osoitteeseen. Älä unohda lisätä '%s', johon boksin nimi tulee lisätä URL-osoitteeseen. Jos tarvitset apua tämän toteuttamisessa, kysy foorumilta."
+msgstr "Jos käytät omaa koontipalvelinta ja haluat ladata omat imagesi suoraan Imagen Hallinnointiin, voit linkittää JSON-hakemistosi URL-osoitteeseen. Älä unohda lisätä '%s', johon laitteen nimi tulee lisätä URL-osoitteeseen. Jos tarvitset apua tämän toteuttamisessa, kysy foorumilta."
 
 msgid "slot%s %s - %s (current image)"
 msgstr "paikka%s %s - %s (nykyinen image)"
@@ -19219,7 +19222,7 @@ msgid "The backup creates a snapshot of the image exactly as it is at the curren
 msgstr "Varmuuskopio luo tilannekuvan imagesta täsmälleen sellaisena kuin se on kyseisellä hetkellä."
 
 msgid "It allows making changes to the box with the knowledge that the box can be safely reverted back to a previous known working state."
-msgstr "Se mahdollistaa muutosten tekemisen boksiin tietäen, että boksi voidaan turvallisesti palauttaa aiempaan tunnetusti toimivaan tilaan."
+msgstr "Se mahdollistaa muutosten tekemisen laitteeseen tietäen, että laite voidaan turvallisesti palauttaa aiempaan tunnetusti toimivaan tilaan."
 
 msgid "To make an image backup select GREEN from Image Manager main screen."
 msgstr "Jos haluat tehdä imagen varmuuskopion, valitse Imagen hallinnoinnin päänäytöstä VIHREÄ."
@@ -19468,3 +19471,66 @@ msgstr "Aloita kaapeliverkon haku"
 
 msgid "Start Fastscan"
 msgstr "Aloita pikahaku"
+
+msgid "Always"
+msgstr "Aina"
+
+msgid "Alpha blending is the process of combining an image with a background to create the appearance of partial or full transparency. 'Always' may cause receivers that don't support hardware acceleration to render images more slowly. Also some skins may show strange side effects."
+msgstr "Alfasekoitus on prosessi, jossa kuva yhdistetään taustaan osittaisen tai täydellisen läpinäkyvyyden luomiseksi. 'Aina' saattaa saada vastaanottimet, jotka eivät tue laitteistokiihdytystä, renderöimään kuvia hitaammin. Myös jotkin teemat voivat näyttää outoja sivuvaikutuksia."
+
+msgid "Use skin setting"
+msgstr "Käytä teeman asetusta"
+
+msgid "Force alpha blending"
+msgstr "Pakota alfasekoitus"
+
+msgid "Subtitles always enabled for movie playback by servicemp3/servicehisilicon."
+msgstr "Tekstitykset ovat aina käytössä tallenteen toistoa varten servicemp3/servicehisiconin avulla."
+
+msgid "Only alpha test to alpha blend"
+msgstr "Vain alfatesti alfasekoitukseen"
+
+msgid "Alert - the system has found an issue with the Vu+ Kexec Multiboot images - read the following information carefully"
+msgstr "Varoitus - järjestelmä on löytänyt ongelman Vu+ Kexec Multiboot -imageista - lue seuraavat tiedot huolellisesti"
+
+msgid "1. Try to reboot the box and check if this warning disappears"
+msgstr "1. Yritä käynnistää laite uudelleen ja tarkista, katoaako tämä varoitus"
+
+msgid "2. Try to re install Vu+ Multiboot as usual"
+msgstr "2. Yritä asentaa Vu+ Multiboot uudelleen tavalliseen tapaan"
+
+msgid "3. If you wish to try and recover your Multiboot system then proceed as follows......."
+msgstr "3. Jos haluat yrittää palauttaa Multiboot-järjestelmän, toimi seuraavasti......."
+
+msgid "4. Login into the Recovery image using SSH or telnet."
+msgstr "4. Kirjaudu Palautustilaan SSH:n tai telnetin avulla."
+
+msgid "5. If you wish to backup eMMC slots 1,2,3 then enter 'tar -cvzf /media/hdd/linuxrootfsX.tar.gz /linuxrootfsX' where X is the slot number and repeat the command for each installed image slot in flash (so you have backup of installed flash images)"
+msgstr "5. Jos haluat varmuuskopioida eMMC-paikat 1,2,3, kirjoita 'tar -cvzf /media/hdd/linuxrootfsX.tar.gz /linuxrootfsX', jossa X on paikan numero, ja toista komento jokaiselle asennetulle imagepaikalle flash-muistissa (jolloin sinulla on varmuuskopio asennetuista flash-imageista)"
+
+msgid "6. Then enter '/etc/init.d/kexec-multiboot-recovery.sh start' "
+msgstr "6. Kirjoita sitten '/etc/init.d/kexec-multiboot-recovery.sh start' "
+
+msgid "7. The script will copy the required files and then reboot"
+msgstr "7. Scripti kopioi tarvittavat tiedostot ja käynnistää laitteen sitten uudelleen"
+
+msgid "Kexec warning"
+msgstr "Kexec-varoitus"
+
+msgid "Vu+ ImageManager wizard"
+msgstr "Vu+ Imagen hallinnoinnin avustaja"
+
+msgid "Use non blocking CA device access"
+msgstr "Käytä estotonta CA-laitteen käyttöoikeutta"
+
+msgid "When enabled, the CA device is not blocked when accessed."
+msgstr "Kun tämä on käytössä, CA-laitetta ei estetä, kun sitä käytetään."
+
+msgid "Unknown image"
+msgstr "Tuntematon image"
+
+msgid "Log python stack trace on spinner"
+msgstr "Lokita python-pinon jäljitys spinnerissä"
+
+msgid "Set to yes for debugging the root cause of a spinner."
+msgstr "Aseta kyllä, jos haluat selvittää spinnerin perimmäisen syyn."

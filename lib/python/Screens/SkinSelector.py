@@ -126,7 +126,7 @@ class SkinSelector(Screen, HelpableScreen):
 					skinEntry.append("%s  %s" % (skinEntry[0], skinEntry[1]))
 					# 0=SortKey, 1=Label, 2=Flag, 3=Directory, 4=Skin, 5=Resolution, 6=SkinSize, 7=Preview, 8=Label + Flag
 					skinList.append(tuple([skinEntry[0].upper()] + skinEntry))
-		skinList.sort()
+		skinList.sort(key=lambda s: tuple([(int(x) if x.isnumeric() else x.lower()) for x in re.split(r'(\d+)', s[0]) if x]))
 		self["skins"].setList(skinList)
 		# Set the list pointer to the current skin...
 		for index in range(len(skinList)):

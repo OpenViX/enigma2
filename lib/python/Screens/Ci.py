@@ -455,7 +455,7 @@ class CiSelection(Screen):
 		self.state[slot] = state
 		if self.slot > 1:
 			self.list.append(("**************************", ConfigNothing(), 3, slot))
-		self.list.append((_("CI %s enabled" % (slot)), config.ci[slot].enabled, -1, slot))
+		self.list.append((_("CI %s enabled") % slot, config.ci[slot].enabled, -1, slot))
 		self.list.append((_("Reset"), ConfigNothing(), 0, slot))
 		self.list.append((_("Init"), ConfigNothing(), 1, slot))
 

@@ -46,6 +46,8 @@ class FeedsStatusCheck:
 		return False
 
 	def NetworkUp(self, host="8.8.8.8", port=53, timeout=2):  # Box can access outside the local network
+		return True  # bypass this function
+
 		# Avoids DNS resolution
 		# Avoids application layer (HTTP/FTP/IMAP)
 		# Avoids calls to external utilities
@@ -84,7 +86,7 @@ class FeedsStatusCheck:
 					try:
 						print("[OnlineUpdateCheck][getFeedStatus] checking feeds state")
 						req = Request("http://openvix.co.uk/TrafficLightState.php")
-						d = urlopen(req)
+						d = urlopen(req, timeout=3)
 						trafficLight = d.read().decode()
 						if trafficLight == "stable":
 							status = 0

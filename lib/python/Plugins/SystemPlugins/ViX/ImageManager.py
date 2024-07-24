@@ -11,9 +11,9 @@ from time import localtime, time, strftime, mktime
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
-from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock, configfile
+from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock
 from Components.Console import Console
-from Components.Harddisk import harddiskmanager, getProcMounts
+from Components.Harddisk import harddiskmanager, getProcMounts, bytesToHumanReadable
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
@@ -311,8 +311,7 @@ class VIXImageManager(Screen):
 			else:
 				self.BackupDirectory = config.imagemanager.backuplocation.value + "imagebackups/"
 				s = statvfs(config.imagemanager.backuplocation.value)
-				free = (s.f_bsize * s.f_bavail) // (1024 * 1024)
-				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + str(free) + _("MB") + "\n" + _("Select an image to flash."))
+				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + bytesToHumanReadable(s.f_bsize * s.f_bavail) + "\n" + _("Select an image to flash."))
 			try:
 				if not path.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0o755)
@@ -1736,16 +1735,15 @@ class ImageManagerSetup(Setup):
 		Setup.__init__(self, session=session, setup="viximagemanager", plugin="SystemPlugins/ViX")
 
 	def keySave(self):
+		if " " in config.imagemanager.folderprefix.value:
+			config.imagemanager.folderprefix.value = config.imagemanager.folderprefix.value.replace(" ", "")
 		if config.imagemanager.folderprefix.value == "":
 			config.imagemanager.folderprefix.value = defaultprefix
 		for configElement in (config.imagemanager.developer_username, config.imagemanager.developer_password):
 			if not configElement.value:
 				configElement.value = configElement.default
 		self.check_URL_format(config.imagemanager.imagefeed_MyBuild)
-		for x in self["config"].list:
-			x[1].save()
-		configfile.save()
-		self.close()
+		Setup.keySave(self)
 
 	def check_URL_format(self, configElement):
 		if configElement.value:
@@ -1753,3 +1751,19 @@ class ImageManagerSetup(Setup):
 			configElement.value = configElement.value.strip("/")  # remove any trailing slash
 		else:
 			configElement.value = configElement.default
+
+
+class KexecWarning(TextBox):
+	def __init__(self, session):
+		TextBox.__init__(self, session, text=self.warningText(), title="Kexec warning title")
+
+	def warningText(self):
+		return "\n\n".join([
+			_("Alert - the system has found an issue with the Vu+ Kexec Multiboot images - read the following information carefully"),
+			_("1. Try to reboot the box and check if this warning disappears"),
+			_("2. Try to re install Vu+ Multiboot as usual"),
+			_("3. If you wish to try and recover your Multiboot system then proceed as follows......."),
+			_("4. Login into the Recovery image using SSH or telnet."),
+			_("5. If you wish to backup eMMC slots 1,2,3 then enter 'tar -cvzf /media/hdd/linuxrootfsX.tar.gz /linuxrootfsX' where X is the slot number and repeat the command for each installed image slot in flash (so you have backup of installed flash images)"),
+			_("6. Then enter '/etc/init.d/kexec-multiboot-recovery.sh start' "),
+			_("7. The script will copy the required files and then reboot"),])

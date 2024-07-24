@@ -174,13 +174,13 @@ class MessageBox(Screen, HelpableScreen):
 					return itemHeight if itemHeight else defaultItemHeight
 		return defaultItemHeight  # if itemHeight not in skinAttributes
 
-	def getPixmapWidth(self):
-		defaultPixmapWidth = 53
+	def getPixmapSize(self):
+		defaultPixmapWidth = (53, 53)
 		try:  # protect from skin errors
-			return self["ErrorPixmap"].visible and hasattr(self["ErrorPixmap"], 'getSize') and isinstance(self["ErrorPixmap"].getSize(), tuple) and len(self["ErrorPixmap"].getSize()) and self["ErrorPixmap"].getSize()[0] or \
-				self["QuestionPixmap"].visible and hasattr(self["QuestionPixmap"], 'getSize') and isinstance(self["QuestionPixmap"].getSize(), tuple) and len(self["QuestionPixmap"].getSize()) and self["QuestionPixmap"].getSize()[0] or \
-				self["InfoPixmap"].visible and hasattr(self["InfoPixmap"], 'getSize') and isinstance(self["InfoPixmap"].getSize(), tuple) and len(self["InfoPixmap"].getSize()) and self["InfoPixmap"].getSize()[0] or \
-				self["WarningPixmap"].visible and hasattr(self["WarningPixmap"], 'getSize') and isinstance(self["WarningPixmap"].getSize(), tuple) and len(self["WarningPixmap"].getSize()) and self["WarningPixmap"].getSize()[0] or \
+			return self["ErrorPixmap"].visible and hasattr(self["ErrorPixmap"], 'getSize') and isinstance(self["ErrorPixmap"].getSize(), tuple) and len(self["ErrorPixmap"].getSize()) and self["ErrorPixmap"].getSize() or \
+				self["QuestionPixmap"].visible and hasattr(self["QuestionPixmap"], 'getSize') and isinstance(self["QuestionPixmap"].getSize(), tuple) and len(self["QuestionPixmap"].getSize()) and self["QuestionPixmap"].getSize() or \
+				self["InfoPixmap"].visible and hasattr(self["InfoPixmap"], 'getSize') and isinstance(self["InfoPixmap"].getSize(), tuple) and len(self["InfoPixmap"].getSize()) and self["InfoPixmap"].getSize() or \
+				self["WarningPixmap"].visible and hasattr(self["WarningPixmap"], 'getSize') and isinstance(self["WarningPixmap"].getSize(), tuple) and len(self["WarningPixmap"].getSize()) and self["WarningPixmap"].getSize() or \
 				defaultPixmapWidth
 		except Exception as err:
 			print("[MessageBox] defaultPixmapWidth, %s: '%s'" % (type(err).__name__, err))
@@ -192,9 +192,10 @@ class MessageBox(Screen, HelpableScreen):
 		desktop_w = getDesktop(0).size().width()
 		desktop_h = getDesktop(0).size().height()
 		pixmapWidth = 0
+		pixmapHeight = 0
 		pixmapMargin = 0
 		if self.picon:
-			pixmapWidth = self.getPixmapWidth()
+			pixmapWidth, pixmapHeight = self.getPixmapSize()
 			pixmapMargin = applySkinFactor(4)
 		textsize = (0, 0)
 		if self["text"].text:
@@ -222,7 +223,7 @@ class MessageBox(Screen, HelpableScreen):
 		self["list"].instance.move(ePoint(margin + pixmapWidth + pixmapMargin, listPos))
 
 		wsizex = margin * 2 + width + pixmapWidth + pixmapMargin
-		wsizey = listPos + (count * itemheight) + margin
+		wsizey = max(listPos + (count * itemheight) + margin, pixmapMargin*2 + pixmapHeight)
 		wsize = (wsizex, wsizey)
 		self.instance.resize(eSize(*wsize))
 

@@ -11,7 +11,7 @@ from Components.Button import Button
 from Components.config import configfile, config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, ConfigLocations, NoSave, ConfigClock, ConfigDirectory
 from Components.Console import Console
 from Components.FileList import MultiFileSelectList, FileList
-from Components.Harddisk import harddiskmanager
+from Components.Harddisk import harddiskmanager, bytesToHumanReadable
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
@@ -265,7 +265,8 @@ class VIXBackupManager(Screen):
 				self["lab1"].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select a backup to restore:"))
 			else:
 				self.BackupDirectory = config.backupmanager.backuplocation.value + "backup/"
-				self["lab1"].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("Select a backup to restore:"))
+				s = statvfs(config.imagemanager.backuplocation.value)
+				self["lab1"].setText(_("Device: ") + config.backupmanager.backuplocation.value + " " + _("Free space:") + " " + bytesToHumanReadable(s.f_bsize * s.f_bavail) + "\n" + _("Select a backup to restore:"))
 			try:
 				if not path.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0o755)
@@ -303,12 +304,6 @@ class VIXBackupManager(Screen):
 			self.session.open(VIXBackupManagerLogView, filename)
 
 	def setupDone(self, test=None):
-		if config.backupmanager.folderprefix.value == "":
-			config.backupmanager.folderprefix.value = defaultprefix
-			config.backupmanager.folderprefix.save()
-		if not config.backupmanager.folderprefix.value.startswith(defaultprefix):  # If the prefix doesn't start with the defaultprefix it is a tag...
-			config.backupmanager.folderprefix.value = defaultprefix + "-" + config.backupmanager.folderprefix.value
-			config.backupmanager.folderprefix.save()
 		self.populate_List()
 		self.doneConfiguring()
 
@@ -945,6 +940,16 @@ class VIXBackupManagerMenu(Setup):
 		config.backupmanager.backupdirs.save()
 		config.backupmanager.save()
 		config.save()
+
+	def keySave(self):
+		if " " in config.backupmanager.folderprefix.value:
+			config.backupmanager.folderprefix.value = config.backupmanager.folderprefix.value.replace(" ", "")
+		if config.backupmanager.folderprefix.value == "":
+			config.backupmanager.folderprefix.value = defaultprefix
+		if not config.backupmanager.folderprefix.value.startswith(defaultprefix):  # If the prefix doesn't start with the defaultprefix it is a tag...
+			config.backupmanager.folderprefix.value = defaultprefix + "-" + config.backupmanager.folderprefix.value
+		Setup.keySave(self)
+		
 
 
 class VIXBackupManagerLogView(TextBox):
