@@ -11,7 +11,7 @@ from time import localtime, time, strftime, mktime
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.ChoiceList import ChoiceList, ChoiceEntryComponent
-from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock, configfile
+from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection, ConfigText, ConfigNumber, NoSave, ConfigClock
 from Components.Console import Console
 from Components.Harddisk import harddiskmanager, getProcMounts, bytesToHumanReadable
 from Components.Label import Label
