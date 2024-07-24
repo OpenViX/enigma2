@@ -195,8 +195,10 @@ def createInfo(slot, imagedir="/"):
 	BoxInfo = BoxInformation(root=imagedir) if SystemInfo["MultiBootSlot"] != slot else BoxInfoRunningInstance
 	Creator = (distro := str(BoxInfo.getItem("displaydistro", ""))) and (distro := distro.split()[0]) and distro[:1].upper() + distro[1:] or str(BoxInfo.getItem("distro", "")).capitalize()
 	BuildImgVersion = str(BoxInfo.getItem("imgversion", "")).replace("-release", "")  # replace("-release", "") for PLi 9.0
-	BuildType = str(BoxInfo.getItem("imagetype", "rel"))[:3]
-	BuildDev = str(idb).zfill(3) if BuildType and not BuildType.lower().startswith("rel") and (idb := BoxInfo.getItem("imagedevbuild")) else ""
+	BuildType = str(BoxInfo.getItem("imagetype", "rel"))
+	if BuildType.lower().startswith("dev"):
+		BuildType = BuildType[:3]
+	BuildDev = str(idb).zfill(3) if Creator.lower().startswith(("openvix", "openpli")) and BuildType and not BuildType.lower().startswith("rel") and (idb := BoxInfo.getItem("imagedevbuild")) else ""
 	if BuildType.lower().startswith("rel"):
 		BuildType = ""  # don't bother displaying "release" in the interface as this is the default image type
 	BuildVer = str(BoxInfo.getItem("imagebuild", ""))
@@ -208,12 +210,20 @@ def createInfo(slot, imagedir="/"):
 	except (TypeError, ValueError):
 		pass
 
+	if BuildVer and len(BuildVer) == 3 and BuildVer.isnumeric():
+		BuildImgVersion = BuildImgVersion + "." + BuildVer
+		BuildVer = ""
+	
+	if BuildDev and len(BuildDev) == 3 and BuildDev.isnumeric():
+		BuildImgVersion = BuildImgVersion + "." + BuildDev
+		BuildDev = ""
+
 	try:
 		BuildDate = datetime.strptime(CompileDate, '%Y%m%d').strftime("%d-%m-%Y")
 	except (TypeError, ValueError):  # sanity for enigma.info containing bad/no entry
 		BuildDate = VerDate(imagedir)
 
-	return " ".join([str(x).strip() for x in (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, "(%s)" % BuildDate) if x and str(x).strip()])
+	return " ".join([str(x).strip() for x in (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, f"({BuildDate})") if x and str(x).strip()])
 
 
 def VerDate(imagedir):
