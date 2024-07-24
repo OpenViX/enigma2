@@ -193,16 +193,37 @@ def GetImagelist(Recovery=None):
 
 def createInfo(slot, imagedir="/"):
 	BoxInfo = BoxInformation(root=imagedir) if SystemInfo["MultiBootSlot"] != slot else BoxInfoRunningInstance
-	Creator = BoxInfo.getItem("distro", "").capitalize()
-	BuildImgVersion = BoxInfo.getItem("imgversion")
-	BuildType = BoxInfo.getItem("imagetype", "")[0:3]
-	BuildVer = BoxInfo.getItem("imagebuild", "")
+	Creator = (distro := str(BoxInfo.getItem("displaydistro", ""))) and (distro := distro.split()[0]) and distro[:1].upper() + distro[1:] or str(BoxInfo.getItem("distro", "")).capitalize()
+	BuildImgVersion = str(BoxInfo.getItem("imgversion", "")).replace("-release", "")  # replace("-release", "") for PLi 9.0
+	BuildType = str(BoxInfo.getItem("imagetype", "rel"))
+	if BuildType.lower().startswith("dev"):
+		BuildType = BuildType[:3]
+	BuildDev = str(idb).zfill(3) if Creator.lower().startswith(("openvix", "openpli")) and BuildType and not BuildType.lower().startswith("rel") and (idb := BoxInfo.getItem("imagedevbuild")) else ""
+	if BuildType.lower().startswith("rel"):
+		BuildType = ""  # don't bother displaying "release" in the interface as this is the default image type
+	BuildVer = str(BoxInfo.getItem("imagebuild", ""))
+	CompileDate = str(BoxInfo.getItem("compiledate", ""))
+
+	try:  # checking for valid YYYYMMDD format date in BuildVer, if so, don't display it
+		if BuildVer and (CompileDate == BuildVer or len(BuildVer) == 8 and BuildVer.startswith("20") and BuildVer.isnumeric() and datetime.strptime(BuildVer, '%Y%m%d')):
+			BuildVer = ""
+	except (TypeError, ValueError):
+		pass
+
+	if BuildVer and len(BuildVer) == 3 and BuildVer.isnumeric():
+		BuildImgVersion = BuildImgVersion + "." + BuildVer
+		BuildVer = ""
+	
+	if BuildDev and len(BuildDev) == 3 and BuildDev.isnumeric():
+		BuildImgVersion = BuildImgVersion + "." + BuildDev
+		BuildDev = ""
+
 	try:
-		BuildDate = datetime.strptime(BoxInfo.getItem("compiledate"), '%Y%m%d').strftime("%d-%m-%Y")
+		BuildDate = datetime.strptime(CompileDate, '%Y%m%d').strftime("%d-%m-%Y")
 	except (TypeError, ValueError):  # sanity for enigma.info containing bad/no entry
 		BuildDate = VerDate(imagedir)
-	BuildDev = str(idb).zfill(3) if BuildType and not BuildType.lower().startswith("rel") and (idb := BoxInfo.getItem("imagedevbuild")) else ""
-	return " ".join([str(x).strip() for x in (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, "(%s)" % BuildDate) if x and str(x).strip()])
+
+	return " ".join([str(x).strip() for x in (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, f"({BuildDate})") if x and str(x).strip()])
 
 
 def VerDate(imagedir):
