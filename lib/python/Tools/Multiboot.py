@@ -36,7 +36,13 @@ def getMultibootslots():
 			Console(binary=True).ePopen(f"mount {device} {tmpname}")
 			if path.isfile(path.join(tmpname, "STARTUP")):  # Multiboot receiver
 				if SystemInfo["HasKexecMultiboot"] and not path.isfile(path.join(tmpname, "etc/init.d/kexec-multiboot-recovery.sh")) and path.isfile("/etc/init.d/kexec-multiboot-recovery.sh"):  # check Recovery & slot image for recovery script
-					copyfile("/etc/init.d/kexec-multiboot-recovery.sh", "%s" % path.join(tmpname, "etc/init.d/kexec-multiboot-recovery.sh"))
+					if path.isfile(path.join(tmpname, "etc/issue")):
+						try:
+							Creator = open(path.join(tmpname, "etc/issue")).readlines()[-2].lower()
+						except IndexError:  # /etc/issue no standard file content
+							Creator = _("Unknown image")
+						if Creator[0:6] in ("openvi", "openbh"):
+							copyfile("/etc/init.d/kexec-multiboot-recovery.sh", "%s" % path.join(tmpname, "etc/init.d/kexec-multiboot-recovery.sh"))
 				SystemInfo["MBbootdevice"] = device
 				device2 = device.rsplit("/", 1)[1]
 				print(f"[Multiboot][[getMultibootslots]1 *** Bootdevice found: {device2}")
