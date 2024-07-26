@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-07-23 20:18+0300\n"
+"PO-Revision-Date: 2024-07-26 13:31+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -1477,7 +1477,7 @@ msgid "5"
 msgstr "5"
 
 msgid "5001 + 5002"
-msgstr ""
+msgstr "5001 + 5002"
 
 msgid "5001 only"
 msgstr "vain 5001"
@@ -2217,7 +2217,7 @@ msgid "Any activity"
 msgstr "Mikä tahansa toiminta"
 
 msgid "Arabic"
-msgstr "arabialainen"
+msgstr "Arabia"
 
 msgid "Architektur"
 msgstr "Arkkitehtuurinen"
@@ -2670,7 +2670,7 @@ msgid "Belarus"
 msgstr "Valko-Venäjä"
 
 msgid "Belgian"
-msgstr "Belgialainen"
+msgstr "Belgia"
 
 msgid "Belgium"
 msgstr "Belgia"
@@ -2845,7 +2845,7 @@ msgid "Bulgaria"
 msgstr "Bulgaria"
 
 msgid "Bulgarian"
-msgstr "bulgarialainen"
+msgstr "Bulgaria"
 
 msgid "Burkina Faso"
 msgstr "Burkina Faso"
@@ -3321,7 +3321,7 @@ msgid "Chipset: %s"
 msgstr "Piirisarja: %s"
 
 msgid "Chinese"
-msgstr "kiinalainen"
+msgstr "Kiina"
 
 msgid "Choose Bouquet"
 msgstr "Valitse suosikkilista"
@@ -4236,10 +4236,10 @@ msgid "Cyprus"
 msgstr "Kypros"
 
 msgid "Czech"
-msgstr "tšekki"
+msgstr "Tšekki"
 
 msgid "Czechia"
-msgstr "Czechia"
+msgstr "Tšekki"
 
 msgid "DAC"
 msgstr "DAC"
@@ -4342,7 +4342,7 @@ msgid "Dance"
 msgstr "Tanssi"
 
 msgid "Danish"
-msgstr "tanskalainen"
+msgstr "Tanska"
 
 msgid "Darts"
 msgstr "Tikanheitto"
@@ -5151,7 +5151,7 @@ msgid "Dual core"
 msgstr "Tuplaydin"
 
 msgid "Dutch"
-msgstr "hollantilainen"
+msgstr "Hollanti"
 
 msgid "Dynamic contrast"
 msgstr "Dynaaminen kontrasti"
@@ -5516,7 +5516,7 @@ msgid "Energie"
 msgstr "Energia"
 
 msgid "English"
-msgstr "englantilainen"
+msgstr "Englanti"
 
 msgid "Enigma2 debug level."
 msgstr "Enigma2 debug-taso."
@@ -5673,7 +5673,7 @@ msgid "Estonia"
 msgstr "Viro"
 
 msgid "Estonian"
-msgstr "virolainen"
+msgstr "Viro"
 
 msgid "Ethernet network interface"
 msgstr "Verkkokortti"
@@ -6119,7 +6119,7 @@ msgid "Finland"
 msgstr "Suomi"
 
 msgid "Finnish"
-msgstr "suomalainen"
+msgstr "Suomi"
 
 msgid "FirstPage"
 msgstr "Ensimmäinen sivu"
@@ -6221,7 +6221,7 @@ msgid "Free: "
 msgstr "Vapaana: "
 
 msgid "French"
-msgstr "ranskalainen"
+msgstr "Ranska"
 
 msgid "French Guiana"
 msgstr "French Guiana"
@@ -6404,7 +6404,7 @@ msgid "Georgia"
 msgstr "Georgia"
 
 msgid "German"
-msgstr "saksalainen"
+msgstr "Saksa"
 
 msgid "Germany"
 msgstr "Saksa"
@@ -6698,7 +6698,7 @@ msgid "Heard Island and McDonald Islands"
 msgstr "Heard Island and McDonald Islands"
 
 msgid "Hebrew"
-msgstr "heprealainen"
+msgstr "Heprea"
 
 msgid "Height"
 msgstr "Korkeus"
@@ -6899,7 +6899,7 @@ msgid "Hue"
 msgstr "Sävy"
 
 msgid "Hungarian"
-msgstr "unkarilainen"
+msgstr "Unkari"
 
 msgid "Hungary"
 msgstr "Unkari"
@@ -7429,7 +7429,7 @@ msgid "It seems you have hit your API limit - please try again later."
 msgstr "Olet ylittänyt API-rajan. Yritä myöhemmin uudestaan."
 
 msgid "Italian"
-msgstr "italialainen"
+msgstr "Italia"
 
 msgid "Italy"
 msgstr "Italia"
@@ -7692,7 +7692,7 @@ msgid "Latvia"
 msgstr "Latvia"
 
 msgid "Latvian"
-msgstr "latvialainen"
+msgstr "Latvia"
 
 msgid "Leave DVD player?"
 msgstr "Poistutaanko DVD-soittimesta?"
@@ -7818,7 +7818,7 @@ msgid "Lithuania"
 msgstr "Liettua"
 
 msgid "Lithuanian"
-msgstr "liettualainen"
+msgstr "Liettua"
 
 msgid "Live"
 msgstr "Suora"
@@ -8954,7 +8954,7 @@ msgid "Norway"
 msgstr "Norja"
 
 msgid "Norwegian"
-msgstr "norjalainen"
+msgstr "Norja"
 
 msgid "Not Classified"
 msgstr "Ei luokiteltu"
@@ -9915,7 +9915,7 @@ msgid "Polarization"
 msgstr "Polarisaatio"
 
 msgid "Polish"
-msgstr "puolalainen"
+msgstr "Puola"
 
 msgid "Political Issues"
 msgstr "Poliittiset Kysymykset"
@@ -9957,7 +9957,7 @@ msgid "Portugal"
 msgstr "Portugali"
 
 msgid "Portuguese"
-msgstr "portugalilainen"
+msgstr "Portugali"
 
 msgid "Position"
 msgstr "Sijainti"
@@ -11081,7 +11081,7 @@ msgid "Running"
 msgstr "Käynnissä"
 
 msgid "Russian"
-msgstr "venäläinen"
+msgstr "Venäjä"
 
 msgid "Russian Federation"
 msgstr "Venäjä"
@@ -12816,7 +12816,7 @@ msgid "Slot%s %s %s: %s%s"
 msgstr "Paikka%s %s %s: %s%s"
 
 msgid "Slovak"
-msgstr "slovakialainen"
+msgstr "Slovakia"
 
 msgid "Slovakia"
 msgstr "Slovakia"
@@ -12825,7 +12825,7 @@ msgid "Slovenia"
 msgstr "Slovenia"
 
 msgid "Slovenian"
-msgstr "slovenialainen"
+msgstr "Slovenia"
 
 msgid "Slow"
 msgstr "Hidas"
@@ -13038,7 +13038,7 @@ msgid "Spain"
 msgstr "Espania"
 
 msgid "Spanish"
-msgstr "espanjalainen"
+msgstr "Espanja"
 
 msgid "Special"
 msgstr "Erikois"
@@ -13416,7 +13416,7 @@ msgid "Sweden"
 msgstr "Ruotsi"
 
 msgid "Swedish"
-msgstr "ruotsalainen"
+msgstr "Ruotsi"
 
 msgid "Swimming"
 msgstr "Uinti"
@@ -13549,7 +13549,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 23.07.2024 ---\n"
+"--- 26.07.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -13675,7 +13675,7 @@ msgid "Text color"
 msgstr "Tekstin väri"
 
 msgid "Thai"
-msgstr "thaimaalainen"
+msgstr "Thaimaa"
 
 msgid "Thailand"
 msgstr "Thaimaa"
@@ -14560,7 +14560,7 @@ msgid "Turkey"
 msgstr "Turkki"
 
 msgid "Turkish"
-msgstr "turkkilainen"
+msgstr "Turkki"
 
 msgid "Turkmenistan"
 msgstr "Turkmenistan"
@@ -14638,7 +14638,7 @@ msgid "Ukraine"
 msgstr "Ukraina"
 
 msgid "Ukrainian"
-msgstr "ukrainalainen"
+msgstr "Ukraina"
 
 msgid "Umweltbewusstsein"
 msgstr "Ympäristötietoisuus"
