@@ -164,8 +164,7 @@ class SkinSelector(Screen, HelpableScreen):
 				self.close()
 			else:
 				print("[SkinSelector] Selected skin: '%s' (Trying to restart again!)" % pathjoin(self.rootDir, skin))
-				restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, _("To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?") % label, MessageBox.TYPE_YESNO)
-				restartBox.setTitle(_("SkinSelector: Restart GUI"))
+				self.showRestartMessage(_("To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?") % label)
 		elif skin == self.currentSkin:
 			print("[SkinSelector] Selected skin: '%s' (Pending skin '%s' cancelled!)" % (pathjoin(self.rootDir, skin), pathjoin(self.rootDir, self.config.value)))
 			self.config.value = skin
@@ -173,12 +172,15 @@ class SkinSelector(Screen, HelpableScreen):
 			self.close()
 		else:
 			print("[SkinSelector] Selected skin: '%s'" % pathjoin(self.rootDir, skin))
-			if config.usage.fast_skin_reload.value:
-				self.saveConfig()
-				self.session.reloadSkin()
-			else:
-				restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, _("To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?") % label, MessageBox.TYPE_YESNO)
-				restartBox.setTitle(_("SkinSelector: Restart GUI"))
+			self.showRestartMessage(_("To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?") % label)
+
+	def showRestartMessage(self, msg):
+		if config.usage.fast_skin_reload.value:
+			self.saveConfig()
+			self.session.reloadSkin()
+		else:
+			restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, msg, MessageBox.TYPE_YESNO)
+			restartBox.setTitle(_("SkinSelector: Restart GUI"))
 
 	def restartGUI(self, answer):
 		if answer is True:
