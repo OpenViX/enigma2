@@ -8,7 +8,6 @@ from Components.Label import Label
 from Components.ActionMap import ActionMap
 from Components.NimManager import nimmanager
 from Components.config import config, ConfigSubsection, ConfigSelection, ConfigYesNo, ConfigInteger, ConfigFloat
-from Components.Sources.StaticText import StaticText
 from Components.ProgressBar import ProgressBar
 from Components.Pixmap import Pixmap
 from Components.ServiceList import refreshServiceList

@@ -219,7 +219,7 @@ def createInfo(slot, imagedir="/"):
 	if BuildVer and len(BuildVer) == 3 and BuildVer.isnumeric():
 		BuildImgVersion = BuildImgVersion + "." + BuildVer
 		BuildVer = ""
-	
+
 	if BuildDev and len(BuildDev) == 3 and BuildDev.isnumeric():
 		BuildImgVersion = BuildImgVersion + "." + BuildDev
 		BuildDev = ""

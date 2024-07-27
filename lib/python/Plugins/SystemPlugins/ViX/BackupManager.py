@@ -949,7 +949,6 @@ class VIXBackupManagerMenu(Setup):
 		if not config.backupmanager.folderprefix.value.startswith(defaultprefix):  # If the prefix doesn't start with the defaultprefix it is a tag...
 			config.backupmanager.folderprefix.value = defaultprefix + "-" + config.backupmanager.folderprefix.value
 		Setup.keySave(self)
-		
 
 
 class VIXBackupManagerLogView(TextBox):

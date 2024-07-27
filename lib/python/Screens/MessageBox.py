@@ -223,7 +223,7 @@ class MessageBox(Screen, HelpableScreen):
 		self["list"].instance.move(ePoint(margin + pixmapWidth + pixmapMargin, listPos))
 
 		wsizex = margin * 2 + width + pixmapWidth + pixmapMargin
-		wsizey = max(listPos + (count * itemheight) + margin, pixmapMargin*2 + pixmapHeight)
+		wsizey = max(listPos + (count * itemheight) + margin, pixmapMargin * 2 + pixmapHeight)
 		wsize = (wsizex, wsizey)
 		self.instance.resize(eSize(*wsize))
 
