@@ -727,8 +727,6 @@ def InitUsageConfig():
 
 	config.usage.boolean_graphic = ConfigSelection(default="no", choices={"no": _("no"), "yes": _("yes"), "only_bool": _("yes, but not in multi selections")})
 	config.usage.fast_skin_reload = ConfigYesNo(default=False)
-	if not SystemInfo["DeveloperImage"]:
-		config.usage.fast_skin_reload.value = False
 
 	if SystemInfo["hasXcoreVFD"]:
 		def set12to8characterVFD(configElement):
