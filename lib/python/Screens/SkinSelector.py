@@ -13,6 +13,7 @@ from Components.Sources.StaticText import StaticText
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen, ScreenSummary
+from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop, QUIT_RESTART
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_LCDSKIN, SCOPE_SKIN
 
@@ -36,8 +37,9 @@ class SkinSelector(Screen, HelpableScreen):
 		self["preview"] = Pixmap()
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
+		self["key_menu"] = StaticText(_("MENU"))
 		self["description"] = StaticText(_("Please wait... Loading list..."))
-		self["skinActions"] = HelpableActionMap(self, ["CancelSaveActions", "OkActions", "NavigationActions"], {
+		self["skinActions"] = HelpableActionMap(self, ["CancelSaveActions", "OkActions", "NavigationActions", "MenuActions"], {
 			"cancel": (self.keyCancel, _("Cancel any changes to the currently active skin")),
 			"close": (self.closeRecursive, _("Cancel any changes to the currently active skin and exit all menus")),
 			"save": (self.keySave, _("Save and activate the currently selected skin")),
@@ -51,7 +53,8 @@ class SkinSelector(Screen, HelpableScreen):
 			"last": (self.keyPageDown, _("Move down a screen")),
 			"down": (self.keyDown, _("Move down a line")),
 			"pageDown": (self.keyPageDown, _("Move down a screen")),
-			"bottom": (self.keyPageDown, _("Move down a screen"))
+			"bottom": (self.keyPageDown, _("Move down a screen")),
+			"menu": (self.keyMenu, _("Open menu"))
 		}, prio=-1, description=_("Skin Selection Actions"))
 		self.picload = ePicLoad()
 		self.picload.PictureData.get().append(self.showPic)
@@ -215,6 +218,9 @@ class SkinSelector(Screen, HelpableScreen):
 	def keyBottom(self):
 		self["skins"].moveEnd()
 		self.loadPreview()
+
+	def keyMenu(self):
+		self.session.open(Setup, setup="skinselection")
 
 	def changedEntry(self):
 		for x in self.onChangedEntry:
