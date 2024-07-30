@@ -1,0 +1,44 @@
+<menu key="vixmenu" level="0" text="ViX">
+		<item key="backup_manager" level="0" text="Backup manager">
+			<code>
+from Plugins.SystemPlugins.ViX.BackupManager import VIXBackupManager
+self.session.open(VIXBackupManager)
+			</code>
+		</item>
+		<item key="image_manager" level="0" text="Image manager">
+			<code>
+from Plugins.SystemPlugins.ViX.ImageManager import VIXImageManager
+self.session.open(VIXImageManager)
+			</code>
+		</item>
+		<item key="ipkg_install" level="0" text="Install local extension">
+			<code>
+from Plugins.SystemPlugins.ViX.IPKInstaller import VIXIPKInstaller
+self.session.open(VIXIPKInstaller)
+			</code>
+		</item>
+		<item key="mount_manager" level="0" text="Mount manager">
+			<code>
+from Plugins.SystemPlugins.ViX.MountManager import VIXDevicesPanel
+self.session.open(VIXDevicesPanel)
+			</code>
+		</item>
+		<item key="script_runner" level="0" text="Script runner">
+			<code>
+from Plugins.SystemPlugins.ViX.ScriptRunner import VIXScriptRunner
+self.session.open(VIXScriptRunner)
+			</code>
+		</item>
+		<item key="swap_manager" level="0" text="Swap manager">
+			<code>
+from Plugins.SystemPlugins.ViX.SwapManager import VIXSwap
+self.session.open(VIXSwap)
+			</code>
+		</item>
+		<item key="h9sdcard_manager" level="0" text="H9SDcard Manager" requires="HasH9SD">
+			<code>
+from Plugins.SystemPlugins.ViX.H9SDmanager import H9SDmanager
+self.session.open(H9SDmanager)
+			</code>
+		</item>
+</menu>
