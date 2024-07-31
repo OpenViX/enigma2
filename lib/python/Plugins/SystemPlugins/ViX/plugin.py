@@ -1,8 +1,11 @@
 from os import listdir, path, stat
+from sys import modules
+import xml.etree.cElementTree
 
 from Plugins.Plugin import PluginDescriptor
 from Components.config import config
 from Components.SystemInfo import SystemInfo
+from Screens.Menu import Menu
 from Tools.BoundFunction import boundFunction
 
 from .BackupManager import BackupManagerautostart
@@ -66,9 +69,13 @@ if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
 		setLanguageFromBackup(backupAvailable)
 
 
+file = open("%s/menu.xml" % path.dirname(modules[__name__].__file__), 'r')
+mdom = xml.etree.cElementTree.parse(file)
+file.close()
+
+
 def VIXMenu(session, close=None, **kwargs):
-	from .import ui
-	session.openWithCallback(boundFunction(VIXMenuCallback, close), ui.VIXMenu)
+	session.openWithCallback(boundFunction(VIXMenuCallback, close), Menu, mdom.getroot())
 
 
 def VIXMenuCallback(close, answer=None):
