@@ -248,12 +248,20 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		if self.layoutFinished not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.layoutFinished)
 
+		self["description"] = StaticText("")
+		if self.updateDescription not in self["menu"].onSelectionChanged:
+			self["menu"].onSelectionChanged.append(self.updateDescription)
+
+	def updateDescription(self):
+		self["description"].text = self["menu"].getCurrent() and len(self["menu"].getCurrent()) > 4 and self["menu"].getCurrent()[4] or ""
+
 	def __onExecBegin(self):
 		self.onExecBegin.remove(self.__onExecBegin)
 		self.okbuttonClick()
 
 	def layoutFinished(self):
 		self.screenContentChanged()
+		self.updateDescription()
 
 	def createMenuList(self):
 		if self.__class__.__name__ != "MenuSort":
