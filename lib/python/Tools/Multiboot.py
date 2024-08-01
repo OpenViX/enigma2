@@ -35,8 +35,14 @@ def getMultibootslots():
 		if path.exists(device):
 			Console(binary=True).ePopen(f"mount {device} {tmpname}")
 			if path.isfile(path.join(tmpname, "STARTUP")):  # Multiboot receiver
-				if SystemInfo["HasKexecMultiboot"] and not path.isfile(path.join(tmpname, "etc/init.d/kexec-multiboot-recovery.sh")) and path.isfile("/etc/init.d/kexec-multiboot-recovery.sh"):  # check Recovery & slot image for recovery script
-					copyfile("/etc/init.d/kexec-multiboot-recovery.sh", "%s" % path.join(tmpname, "etc/init.d/kexec-multiboot-recovery.sh"))
+				if SystemInfo["HasKexecMultiboot"] and not path.isfile(dest := path.join(tmpname, "etc/init.d/kexec-multiboot-recovery")) and path.isfile("/etc/init.d/kexec-multiboot-recovery"):  # check Recovery & slot image for recovery script
+					if path.isfile(etc_issue := path.join(tmpname, "etc/issue")):
+						try:
+							Creator = open(etc_issue).readlines()[-2].lower().split(maxsplit=1)[0]
+						except IndexError:  # /etc/issue non standard file content
+							Creator = ""
+						if Creator in ("openvix", "openbh"):
+							copyfile("/etc/init.d/kexec-multiboot-recovery", dest)
 				SystemInfo["MBbootdevice"] = device
 				device2 = device.rsplit("/", 1)[1]
 				print(f"[Multiboot][[getMultibootslots]1 *** Bootdevice found: {device2}")
@@ -213,7 +219,7 @@ def createInfo(slot, imagedir="/"):
 	if BuildVer and len(BuildVer) == 3 and BuildVer.isnumeric():
 		BuildImgVersion = BuildImgVersion + "." + BuildVer
 		BuildVer = ""
-	
+
 	if BuildDev and len(BuildDev) == 3 and BuildDev.isnumeric():
 		BuildImgVersion = BuildImgVersion + "." + BuildDev
 		BuildDev = ""

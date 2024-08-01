@@ -3,10 +3,9 @@ import socket
 import struct
 
 from os import path as ospath
-from os.path import join as pathjoin
 from sys import modules, version_info
 from time import time
-from Tools.Directories import fileExists, resolveFilename, SCOPE_LIBDIR
+from Tools.Directories import fileExists
 
 from enigma import getEnigmaLastCommitDate, getEnigmaLastCommitHash
 

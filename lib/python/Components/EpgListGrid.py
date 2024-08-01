@@ -989,7 +989,6 @@ class TimelineText(GUIComponent):
 						color=foreColor,
 						backcolor=backColor,
 						border_width=self.borderWidth, border_color=self.borderColor))
-				
 
 			res.append(MultiContentEntryText(
 				pos=(5, 0),
@@ -998,11 +997,11 @@ class TimelineText(GUIComponent):
 				text=_(datestr),
 				color=foreColor,
 				backcolor=backColor))
-				
+
 			if not self.fullBorder:
 				res.append(MultiContentEntryText(
-					pos=(serviceRect.width() - self.borderWidth*2, 0),
-					size=(self.borderWidth, self.listHeight + self.borderWidth*2),
+					pos=(serviceRect.width() - self.borderWidth * 2, 0),
+					size=(self.borderWidth, self.listHeight + self.borderWidth * 2),
 					text=" ",
 					color=foreColor,
 					backcolor=self.borderColor,

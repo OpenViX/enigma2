@@ -7,7 +7,6 @@ from skin import findSkinScreen  # noqa: F401  used in <item conditional="..."> 
 from Components.config import ConfigBoolean, ConfigNothing, ConfigSelection, config
 from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
-from Components.Pixmap import Pixmap
 from Components.SystemInfo import SystemInfo
 from Components.Sources.StaticText import StaticText
 from Screens.HelpMenu import HelpableScreen

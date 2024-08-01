@@ -5,7 +5,6 @@ from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Screens.MessageBox import MessageBox
 from Components.config import config, ConfigSelection, ConfigYesNo, ConfigSubsection, ConfigText
-from Components.ConfigList import ConfigListScreen
 from Components.NimManager import nimmanager
 from Components.Label import Label
 from Components.Pixmap import Pixmap

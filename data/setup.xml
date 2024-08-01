@@ -98,7 +98,9 @@
 		<item level="1" text="History buttons mode" description="Configure the function of the &lt;  &gt; buttons.">config.usage.historymode</item>
 		<item level="2" text="Show True/False as graphical switch" description="Enable to display all true/false, yes/no, on/off and enable/disable set up options as a graphical switch.">config.usage.boolean_graphic</item>
 		<item level="1" text="Show setup default values" description="In Setup screens choose whether to show the default value of the selected item in the description field.">config.usage.setupShowDefault</item>
-		<item level="2" text="Allow fast skin reload" requires="DeveloperImage" description="When changing skins this allows the skin to load without requiring an enigma restart.">config.usage.fast_skin_reload</item>
+	</setup>
+	<setup key="skinselection" title="Skin selection">
+		<item level="0" text="Allow fast skin reload" description="This feature is for skin developers. It allows the skin to load without requiring an enigma restart.">config.usage.fast_skin_reload</item>
 	</setup>
 	<setup key="channelselection" title="Channel selection">
 		<item level="1" text="Alternative numbering mode" description="When enabled, channel numbering will start at '1' for every bouquet.">config.usage.alternative_number_mode</item>

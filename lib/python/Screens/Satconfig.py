@@ -27,8 +27,7 @@ class NimSetup(Setup, ServiceStopScreen):
 		self.slotid = slotid
 		self.nim = nimmanager.nim_slots[slotid]
 		self.nimConfig = self.nim.config
-		Setup.__init__(self, session, yellow_button={'function': self.key_yellow, 'helptext': _("Toggle Configuration Mode or AutoDisqc")},
-					   blue_button={'function': self.key_blue, 'helptext': _("Set all the settings back as they were")})
+		Setup.__init__(self, session, yellow_button={'function': self.key_yellow, 'helptext': _("Toggle Configuration Mode or AutoDisqc")}, blue_button={'function': self.key_blue, 'helptext': _("Set all the settings back as they were")})
 		ServiceStopScreen.__init__(self)
 		self.createSetup()
 		self.setTitle(_("Setup") + " " + self.nim.friendly_full_description)
@@ -343,7 +342,7 @@ class NimSetup(Setup, ServiceStopScreen):
 			self.advancedUnicable, self.advancedConnected, self.toneburst, self.committedDiseqcCommand, self.uncommittedDiseqcCommand, self.singleSatEntry, self.commandOrder,
 			self.showAdditionalMotorOptions, self.cableScanType, self.multiType, self.cableConfigScanDetails, self.terrestrialCountriesEntry, self.cableCountriesEntry,
 			self.toneamplitude, self.scpc, self.t2mirawmode, self.forcelnbpower, self.forcetoneburst, self.externallyPowered):
-				self.createSetup()
+			self.createSetup()
 
 	def run(self):
 		if self.nimConfig.configMode.value == "simple" and self.nimConfig.diseqcMode.value in ("single", "diseqc_a_b", "diseqc_a_b_c_d") and (not self.nim.isCombined() or self.nimConfig.configModeDVBS.value):

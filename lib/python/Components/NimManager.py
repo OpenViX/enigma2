@@ -536,7 +536,7 @@ class NIM:
 
 		self.slot = slot
 		self.type = "DVB-S2X" if "45308X" in description.upper() and MODEL in ("dm900", "dm920") else sattype
-		self.description = "%s FBC" % description if "45308X" in description.upper() and MODEL in ("dm900", "dm920") else description 
+		self.description = "%s FBC" % description if "45308X" in description.upper() and MODEL in ("dm900", "dm920") else description
 		self.number_of_slots = number_of_slots
 		self.has_outputs = has_outputs
 		self.internally_connectable = internally_connectable

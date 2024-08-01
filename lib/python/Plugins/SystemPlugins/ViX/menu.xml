@@ -1,0 +1,44 @@
+<menu key="vixmenu" level="0" text="ViX">
+		<item key="backup_manager" level="0" text="Backup manager" description="Manage settings backup.">
+			<code>
+from Plugins.SystemPlugins.ViX.BackupManager import VIXBackupManager
+self.session.open(VIXBackupManager)
+			</code>
+		</item>
+		<item key="image_manager" level="0" text="Image manager" description="Backup/Flash/ReBoot system image.">
+			<code>
+from Plugins.SystemPlugins.ViX.ImageManager import VIXImageManager
+self.session.open(VIXImageManager)
+			</code>
+		</item>
+		<item key="ipkg_install" level="0" text="Install local extension" description="Install IPK's from your tmp folder.">
+			<code>
+from Plugins.SystemPlugins.ViX.IPKInstaller import VIXIPKInstaller
+self.session.open(VIXIPKInstaller)
+			</code>
+		</item>
+		<item key="mount_manager" level="0" text="Mount manager" description="Manage your devices mount points.">
+			<code>
+from Plugins.SystemPlugins.ViX.MountManager import VIXDevicesPanel
+self.session.open(VIXDevicesPanel)
+			</code>
+		</item>
+		<item key="script_runner" level="0" text="Script runner" description="Run your shell scripts.">
+			<code>
+from Plugins.SystemPlugins.ViX.ScriptRunner import VIXScriptRunner
+self.session.open(VIXScriptRunner)
+			</code>
+		</item>
+		<item key="swap_manager" level="0" text="Swap manager" description="Create and Manage your SWAP files.">
+			<code>
+from Plugins.SystemPlugins.ViX.SwapManager import VIXSwap
+self.session.open(VIXSwap)
+			</code>
+		</item>
+		<item key="h9sdcard_manager" level="0" text="H9SDcard Manager" description="Move Nand root to SD card" requires="HasH9SD">
+			<code>
+from Plugins.SystemPlugins.ViX.H9SDmanager import H9SDmanager
+self.session.open(H9SDmanager)
+			</code>
+		</item>
+</menu>

@@ -2,7 +2,7 @@ from os.path import isfile
 
 from enigma import eRCInput, eTimer, eWindow  # , getDesktop
 
-from skin import GUI_SKIN_ID, applyAllAttributes, menus, screens, setups
+from skin import GUI_SKIN_ID, applyAllAttributes, menus, screens, setups  # noqa: F401
 from Components.config import config
 from Components.GUIComponent import GUIComponent
 from Components.Pixmap import Pixmap
