@@ -462,7 +462,6 @@ class ConfigListScreen:
 		self["configActions"].setEnabled(value)
 		self["navigationActions"].setEnabled(value)
 		self["menuConfigActions"].setEnabled(value)
-		self["charConfigActions"].setEnabled(value)
 		self["editConfigActions"].setEnabled(value)
 
 	def dummyVKBActions(self, value):  # Temporary support for legacy code and plugins that hasn't yet been updated.
