@@ -199,7 +199,7 @@ class CableTransponderSearchSupport:
 		self.cable_search_session.close(True)
 
 	def getCableTransponderData(self, dataString):
-		dataString = str(dataString)
+		dataString = dataString.decode()
 		print("[getCableTransponderData] ", dataString)
 		# prepend any remaining data from the previous call
 		dataString = self.remainingdata + dataString
@@ -409,7 +409,7 @@ class TerrestrialTransponderSearchSupport:
 				self.terrestrialTransponderSearch(freq, bandWidth)
 
 	def getTerrestrialTransponderData(self, dataString):
-		dataString = str(dataString)
+		dataString = dataString.decode()
 		print("[getTerrestrialTransponderData] ", dataString)
 		if self.terrestrial_tunerName.startswith("Sundtek"):
 			dataString = self.remaining_data + dataString
