@@ -445,7 +445,7 @@ class TerrestrialTransponderSearchSupport:
 							tmpstr += title
 					self.terrestrial_search_session["text"].setText(tmpstr)
 		else:
-			self.terrestrial_search_data += str
+			self.terrestrial_search_data += dataString
 
 	def setTerrestrialTransponderData(self):
 		data = self.terrestrial_search_data.split()
