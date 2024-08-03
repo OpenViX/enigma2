@@ -913,6 +913,10 @@ void eDVBScan::channelDone()
 							T2DeliverySystemDescriptor &d = (T2DeliverySystemDescriptor&)**desc;
 							t2transponder.set(d);
 
+							// temporary workaround (add hard coded T2 namespace)
+							ns = 0xeeee0000;
+							eDebug("[eDVBScan] temporary workaround (add hard coded T2 namespace in T2_DELIVERY_SYSTEM_DESCRIPTOR %08x)", ns);
+
 							for (T2CellConstIterator cell = d.getCells()->begin();
 								cell != d.getCells()->end(); ++cell)
 							{
@@ -923,6 +927,8 @@ void eDVBScan::channelDone()
 									ePtr<eDVBFrontendParameters> feparm = new eDVBFrontendParameters;
 									feparm->setDVBT(t2transponder);
 									addChannelToScan(feparm);
+									eDebug("[eDVBScan] addChannelToScan in T2_DELIVERY_SYSTEM_DESCRIPTOR)");
+									
 								}
 							}
 						}
