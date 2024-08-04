@@ -913,9 +913,20 @@ void eDVBScan::channelDone()
 							T2DeliverySystemDescriptor &d = (T2DeliverySystemDescriptor&)**desc;
 							t2transponder.set(d);
 
-							// temporary workaround (add hard coded T2 namespace)
-							ns = 0xeeee0000;
-							eDebug("[eDVBScan] temporary workaround (add hard coded T2 namespace in T2_DELIVERY_SYSTEM_DESCRIPTOR %08x)", ns);
+							// workaround to fetch T2 namespace for LCN output
+							ns = 0xeeee0000; // dummy as default
+							ePtr<iDVBFrontend> fe;
+							ePtr<iDVBTransponderData> trdata;
+							if (!m_channel->getFrontend(fe))
+							{
+								fe->getTransponderData(trdata, true);
+								int freq = trdata->getFrequency();
+								long hash = 0xEEEE0000;
+								hash |= (freq/1000000)&0xFFFF;
+								eDebug("[eDVBScan] namespace hash in T2_DELIVERY_SYSTEM_DESCRIPTOR %08x)", hash);
+								ns = buildNamespace(onid, tsid, hash);
+								eDebug("[eDVBScan] buildNamespace output in T2_DELIVERY_SYSTEM_DESCRIPTOR %08x)", ns);
+							} // end workaround
 
 							for (T2CellConstIterator cell = d.getCells()->begin();
 								cell != d.getCells()->end(); ++cell)
@@ -927,7 +938,7 @@ void eDVBScan::channelDone()
 									ePtr<eDVBFrontendParameters> feparm = new eDVBFrontendParameters;
 									feparm->setDVBT(t2transponder);
 									addChannelToScan(feparm);
-									eDebug("[eDVBScan] addChannelToScan in T2_DELIVERY_SYSTEM_DESCRIPTOR)");
+									eDebug("[eDVBScan] addChannelToScan in T2_DELIVERY_SYSTEM_DESCRIPTOR");
 									
 								}
 							}
@@ -952,6 +963,7 @@ void eDVBScan::channelDone()
 							ePtr<eDVBFrontendParameters> feparm = new eDVBFrontendParameters;
 							feparm->setDVBT(t2transponder);
 							addChannelToScan(feparm);
+							eDebug("[eDVBScan] addChannelToScan in FREQUENCY_LIST_DESCRIPTOR");
 						}
 						break;
 					}
