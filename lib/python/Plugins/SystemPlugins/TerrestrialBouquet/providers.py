@@ -2,6 +2,7 @@ providers = {
 	"other":{},
 	"uk": {
 		"name": _("UK"),
+		"bouquetname": "FreeView",
 		"sections": {
 			1: _("Entertainment"),
 			100: _("High Definition"),
