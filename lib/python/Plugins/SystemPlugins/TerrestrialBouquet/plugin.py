@@ -182,7 +182,7 @@ class PluginSetup(Setup, TerrestrialBouquet):
 				self.closeRecursive()
 
 
-def PluginCallback(close, answer):
+def PluginCallback(close, answer=None):
 	if close and answer:
 		close(True)
 
