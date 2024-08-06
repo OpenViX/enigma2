@@ -594,6 +594,7 @@ class ConfigBoolean(ConfigElement):
 		strv = self.tostring(self.value)
 		return strv.lower() != sv.lower()
 
+
 class ConfigEnableDisable(ConfigBoolean):
 	def __init__(self, default=False, graphic=True):
 		ConfigBoolean.__init__(self, default=default, descriptions={False: _("Disable"), True: _("Enable")}, graphic=graphic)
