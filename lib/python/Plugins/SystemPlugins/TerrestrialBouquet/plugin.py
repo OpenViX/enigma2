@@ -64,7 +64,7 @@ class TerrestrialBouquet:
 		msg = _("Try running a manual scan of terrestrial frequencies. If this fails maybe there is no lcn data available in your area.")
 		self.services.clear()
 		if not (LCNs := self.readLcnDb()):
-			return self.lcndb + _("empty or missing.") + " " + msg
+			return (_("%s is empty or missing.") % self.lcndb) + " " +  msg
 		for mode in (MODE_TV, MODE_RADIO):
 			terrestrials = self.getTerrestrials(mode)
 			for k in terrestrials:
