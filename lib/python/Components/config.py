@@ -589,7 +589,7 @@ class ConfigBoolean(ConfigElement):
 		return ("1", "enable", "on", "true", "yes")
 
 	def isChanged(self):
-		#Make booleans checks with saved value non case sensitive
+		# Make booleans checks with saved value non case sensitive
 		sv = self.saved_value or self.tostring(self.default)
 		strv = self.tostring(self.value)
 		return strv.lower() != sv.lower()

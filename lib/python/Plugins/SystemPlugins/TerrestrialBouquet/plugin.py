@@ -47,7 +47,7 @@ class TerrestrialBouquet:
 	def readLcnDb(self):
 		try:  # may not exist
 			f = open(self.lcndb)
-		except Exception as e:
+		except Exception as e:  # noqa: F841
 			return {}
 		LCNs = {}
 		for line in f:
@@ -74,7 +74,7 @@ class TerrestrialBouquet:
 		self.services = {k: v for k, v in sorted(list(self.services.items()), key=lambda x: ("lcn" in x[1] and x[1]["lcn"] or 65535, "signal" in x[1] and abs(x[1]["signal"] - 65536) or 65535))}
 		LCNsUsed = []  # duplicates (we are already ordered by highest signal strength)
 		for k in list(self.services.keys()):  # use list to avoid RuntimeError: dictionary changed size during iteration
-			if not "lcn" in self.services[k] or self.services[k]["lcn"] in LCNsUsed:
+			if "lcn" not in self.services[k] or self.services[k]["lcn"] in LCNsUsed:
 				if self.config.skipduplicates.value:
 					del self.services[k]
 				else:
@@ -88,7 +88,7 @@ class TerrestrialBouquet:
 	def readBouquetIndex(self, mode):
 		try:  # may not exist
 			return open(self.path + "/%s%s" % (self.bouquetsIndexFilename[:-2], "tv" if mode == MODE_TV else "radio"), "r").read()
-		except Exception as e:
+		except Exception as e:  # noqa: F841
 			return ""
 
 	def writeBouquetIndex(self, bouquetIndexContent, mode):
