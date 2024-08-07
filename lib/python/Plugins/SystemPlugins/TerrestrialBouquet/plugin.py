@@ -22,7 +22,6 @@ class TerrestrialBouquet:
 	def __init__(self):
 		self.config = config.plugins.terrestrialbouquet
 		self.path = "/etc/enigma2"
-		self.lcndb = self.path + "/lcndb"
 		self.bouquetsIndexFilename = "bouquets.tv"
 		self.bouquetFilename = "userbouquet.TerrestrialBouquet.tv"
 		self.bouquetName = _('Terrestrial')
@@ -38,25 +37,21 @@ class TerrestrialBouquet:
 				if service.getUnsignedData(4) >> 16 == 0xeeee:  # filter (only terrestrial)
 					stype, sid, tsid, onid, ns = [int(x, 16) for x in service.toString().split(":", 7)[2:7]]
 					name = ServiceReference.getServiceName(service)
-					terrestrials["%04x:%04x:%04x" % (onid, tsid, sid)] = {"name": name, "namespace": ns, "onid": onid, "tsid": tsid, "sid": sid, "type": stype}
+					terrestrials["%08x:%04x:%04x:%04x" % (ns, onid, tsid, sid)] = {"name": name, "namespace": ns, "onid": onid, "tsid": tsid, "sid": sid, "type": stype}
 		return terrestrials
 
 	def getAllowedTypes(self, mode):
 		return self.VIDEO_ALLOWED_TYPES if mode == MODE_TV else self.AUDIO_ALLOWED_TYPES  # tv (live and NVOD) and radio allowed service types
 
 	def readLcnDb(self):
-		try:  # may not exist
-			f = open(self.lcndb)
-		except Exception as e:  # noqa: F841
-			return {}
 		LCNs = {}
-		for line in f:
-			line = line and line.strip().lower()
-			if line and len(line) == 38 and line.startswith("eeee"):
-				lcn, signal = tuple([int(x) for x in line[24:].split(":", 1)])
-				key = line[9:23]
-				LCNs[key] = {"lcn": lcn, "signal": signal}
-		return {k: v for k, v in sorted(list(LCNs.items()), key=lambda x: (x[1]["lcn"], abs(x[1]["signal"] - 65535)))}
+		if LCNData := eDVBDB.getInstance().getLcnDBData():
+			for service in LCNData:
+				ns, onid, tsid, sid, lcn, signal = service
+				if ns  >> 16 == 0xeeee:  # filter (only terrestrial)
+					LCNs["%08x:%04x:%04x:%04x" % (ns, onid, tsid, sid)] = {"lcn": lcn, "signal": signal}
+			LCNs = {k: v for k, v in sorted(list(LCNs.items()), key=lambda x: (x[1]["lcn"], abs(x[1]["signal"] - 65535)))} if LCNs else LCNs
+		return LCNs
 
 	def rebuild(self):
 		if not self.config.enabled.value:
@@ -64,7 +59,7 @@ class TerrestrialBouquet:
 		msg = _("Try running a manual scan of terrestrial frequencies. If this fails maybe there is no lcn data available in your area.")
 		self.services.clear()
 		if not (LCNs := self.readLcnDb()):
-			return (_("%s is empty or missing.") % self.lcndb) + " " +  msg
+			return (_("There is currently no LCN data stored.")) + " " +  msg
 		for mode in (MODE_TV, MODE_RADIO):
 			terrestrials = self.getTerrestrials(mode)
 			for k in terrestrials:
