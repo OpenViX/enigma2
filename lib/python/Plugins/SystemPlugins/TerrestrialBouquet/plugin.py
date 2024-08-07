@@ -2,13 +2,11 @@ from enigma import eDVBDB
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigSelection
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import MessageBox
+from Screens.ChannelSelection import MODE_TV, MODE_RADIO
 from Screens.Setup import Setup
 from Tools.BoundFunction import boundFunction
 from ServiceReference import ServiceReference
 from .providers import providers
-
-MODE_TV = 1
-MODE_RADIO = 2
 
 choices = [(k, providers[k].get("name", _("Other"))) for k in providers.keys()]
 config.plugins.terrestrialbouquet = ConfigSubsection()
@@ -31,7 +29,7 @@ class TerrestrialBouquet:
 
 	def getTerrestrials(self, mode):
 		terrestrials = {}
-		query = "1:7:%s:0:0:0:0:0:0:0:%s ORDER BY name" % (mode, " || ".join(["(type == %s)" % i for i in self.getAllowedTypes(mode)]))
+		query = "1:7:%s:0:0:0:0:0:0:0:%s ORDER BY name" % (1 if mode == MODE_TV else 2, " || ".join(["(type == %s)" % i for i in self.getAllowedTypes(mode)]))
 		if (servicelist := ServiceReference.list(ServiceReference(query))) is not None:
 			while (service := servicelist.getNext()) and service.valid():
 				if service.getUnsignedData(4) >> 16 == 0xeeee:  # filter (only terrestrial)
