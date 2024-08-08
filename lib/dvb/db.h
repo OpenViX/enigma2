@@ -164,6 +164,7 @@ public:
 
 	RESULT addService(const eServiceReferenceDVB &referenc, eDVBService *service);
 	RESULT getService(const eServiceReferenceDVB &reference, ePtr<eDVBService> &service);
+	RESULT getLcnDBData(std::map<eServiceReferenceDVB, LCNData> &data);
 	RESULT flush();
 
 	RESULT startQuery(ePtr<iDVBChannelListQuery> &query, eDVBChannelQuery *q, const eServiceReference &source);

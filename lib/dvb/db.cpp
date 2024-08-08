@@ -2555,6 +2555,12 @@ RESULT eDVBDB::getService(const eServiceReferenceDVB &reference, ePtr<eDVBServic
 	return 0;
 }
 
+RESULT eDVBDB::getLcnDBData(std::map<eServiceReferenceDVB, LCNData> &data)
+{
+	data = m_lcnmap;
+	return 0;
+}
+
 RESULT eDVBDB::flush()
 {
 	saveServicelist();
