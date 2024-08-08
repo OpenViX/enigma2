@@ -186,7 +186,7 @@ def PluginMain(session, close=None, **kwargs):
 
 
 def PluginStart(menuid, **kwargs):
-	return menuid == "scan" and [(_("Terrestrial Bouquet"), PluginMain, "PluginMain", 1)] or []
+	return menuid == "scan" and [(_("Terrestrial Bouquet"), PluginMain, "PluginMain", None)] or []
 
 
 def Plugins(**kwargs):
