@@ -191,4 +191,14 @@ def PluginStart(menuid, **kwargs):
 
 def Plugins(**kwargs):
 	from Components.NimManager import nimmanager
-	return [PluginDescriptor(name=_("Terrestrial Bouquet"), description=_("Create an ordered bouquet of terrestrial services based on LCN data from your local transmitter."), where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=PluginStart),] if nimmanager.hasNimType("DVB-T") else []
+	if nimmanager.hasNimType("DVB-T"):
+		from Screens.ServiceScan import ServiceScan
+		__origfunc = ServiceScan.ok
+		def __newfunc(self, *args, **kwargs):
+			if self["scan"].isDone() and "Terrestrial" in str(self.scanList):
+				from Plugins.SystemPlugins.TerrestrialBouquet.plugin import TerrestrialBouquet
+				print("[TerrestrialBouquet] rebuilding terrestrial bouquet -", TerrestrialBouquet().rebuild() or "was successful")
+			__origfunc(self, *args, **kwargs)  # now run ServiceScan.ok
+		ServiceScan.ok = __newfunc
+		return [PluginDescriptor(name=_("Terrestrial Bouquet"), description=_("Create an ordered bouquet of terrestrial services based on LCN data from your local transmitter."), where=PluginDescriptor.WHERE_MENU, needsRestart=False, fnc=PluginStart)]
+	return []

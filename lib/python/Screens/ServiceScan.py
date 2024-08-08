@@ -11,7 +11,6 @@ from Components.Sources.FrontendInfo import FrontendInfo
 from Components.config import config
 from Components.PluginComponent import plugins
 from Plugins.Plugin import PluginDescriptor
-from Tools.Directories import isPluginInstalled
 
 
 class ServiceScanSummary(Screen):
@@ -40,12 +39,6 @@ class ServiceScan(Screen):
 
 	def ok(self):
 		if self["scan"].isDone():
-			if "Terrestrial" in str(self.scanList) and isPluginInstalled("TerrestrialBouquet"):
-				try:
-					from Plugins.SystemPlugins.TerrestrialBouquet.plugin import TerrestrialBouquet
-					print("[ServiceScan] rebuilding terrestrial bouquet", TerrestrialBouquet().rebuild() or "was successful")
-				except Exception as e:
-					print(e)
 			if self.currentInfobar.__class__.__name__ == "InfoBar":
 				selectedService = self["servicelist"].getCurrentSelection()
 				if selectedService and self.currentServiceList is not None:
