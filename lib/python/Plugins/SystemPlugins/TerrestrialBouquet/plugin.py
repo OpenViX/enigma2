@@ -118,7 +118,7 @@ class TerrestrialBouquet:
 		bouquet_list = []
 		bouquet_list.append("#NAME %s\n" % providers[self.config.providers.value].get("bouquetname", self.bouquetName))
 		for number in range(1, (highestLCN) // 1000 * 1000 + 1001):   # ceil bouquet length to nearest 1000, range needs + 1
-			if number in active_sections:
+			if mode == MODE_TV and number in active_sections:
 				bouquet_list.append(self.bouquetMarker(sections[number]))
 			if number in lcnindex:
 				bouquet_list.append(self.bouquetServiceLine(self.services[lcnindex[number]]))
