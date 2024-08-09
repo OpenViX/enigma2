@@ -783,6 +783,10 @@ void eDVBScan::channelDone()
 						cable.set(d);
 						feparm->setDVBC(cable);
 
+						unsigned long hash=0;
+						feparm->getHash(hash);
+						ns = buildNamespace(onid, tsid, hash);
+
 						addChannelToScan(feparm);
 						break;
 					}
@@ -938,8 +942,8 @@ void eDVBScan::channelDone()
 					{
 						case LOGICAL_CHANNEL_DESCRIPTOR:
 						{
-							if (system != iDVBFrontend::feTerrestrial)
-								break; // when current locked transponder is no terrestrial transponder ignore this descriptor
+							if (!(system == iDVBFrontend::feTerrestrial || system == iDVBFrontend::feCable))
+								break; // when current locked transponder is not terrestrial or cable ignore this descriptor
 
 							if (ns.get() == 0)
 								break; // invalid namespace
