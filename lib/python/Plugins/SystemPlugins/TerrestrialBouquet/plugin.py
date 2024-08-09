@@ -46,7 +46,7 @@ class TerrestrialBouquet:
 		if LCNData := eDVBDB.getInstance().getLcnDBData():
 			for service in LCNData:
 				ns, onid, tsid, sid, lcn, signal = service
-				if ns  >> 16 == 0xeeee:  # filter (only terrestrial)
+				if ns >> 16 == 0xeeee:  # filter (only terrestrial)
 					LCNs["%08x:%04x:%04x:%04x" % (ns, onid, tsid, sid)] = {"lcn": lcn, "signal": signal}
 			LCNs = {k: v for k, v in sorted(list(LCNs.items()), key=lambda x: (x[1]["lcn"], abs(x[1]["signal"] - 65535)))} if LCNs else LCNs
 		return LCNs
@@ -57,7 +57,7 @@ class TerrestrialBouquet:
 		msg = _("Try running a manual scan of terrestrial frequencies. If this fails maybe there is no lcn data available in your area.")
 		self.services.clear()
 		if not (LCNs := self.readLcnDb()):
-			return (_("There is currently no LCN data stored.")) + " " +  msg
+			return (_("There is currently no LCN data stored.")) + " " + msg
 		for mode in (MODE_TV, MODE_RADIO):
 			terrestrials = self.getTerrestrials(mode)
 			for k in terrestrials:
@@ -200,6 +200,7 @@ def Plugins(**kwargs):
 	if nimmanager.hasNimType("DVB-T"):
 		from Screens.ServiceScan import ServiceScan
 		__origfunc = ServiceScan.ok
+
 		def __newfunc(self, *args, **kwargs):
 			if self["scan"].isDone() and "Terrestrial" in str(self.scanList):
 				from Plugins.SystemPlugins.TerrestrialBouquet.plugin import TerrestrialBouquet
