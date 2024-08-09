@@ -10,4 +10,7 @@ providers = {
 			230: _("News"),
 			260: _("BBC Interactive"),
 			670: _("Adult"),
-			700: _("Radio"), }}}
+			700: _("Radio"),}},
+	"australia": {
+		"name": _("Australia"),
+		"duplicates": {"lower": 350, "upper": 399}}}

@@ -102,20 +102,26 @@ class TerrestrialBouquet:
 		allowed_service_types = not self.config.makeradiobouquet.value and self.VIDEO_ALLOWED_TYPES + self.AUDIO_ALLOWED_TYPES or self.getAllowedTypes(mode)
 		lcnindex = {v["lcn"]: k for k, v in self.services.items() if not v.get("duplicate") and v.get("lcn") and v.get("type") in allowed_service_types}
 		highestLCN = max(list(lcnindex.keys()))
-		duplicates = {} if self.config.skipduplicates.value else {i + 1 + highestLCN: v for i, v in enumerate(sorted([v for v in self.services.values() if v.get("duplicate") and v.get("type") in allowed_service_types], key=lambda x: x["name"].lower()))}
 		sections = providers[self.config.providers.value].get("sections", {})
 		active_sections = [max((x for x in list(sections.keys()) if int(x) <= key)) for key in list(lcnindex.keys())] if sections else []
+		if not self.config.skipduplicates.value and (duplicates := sorted([(k, v) for k, v in self.services.items() if v.get("duplicate") and v.get("type") in allowed_service_types], key=lambda x: x[1]["name"].lower())):
+			duplicate_range = {"lower": highestLCN + 1, "upper": 65535} | providers[self.config.providers.value].get("duplicates", {})
+			for i in range(duplicate_range["lower"], duplicate_range["upper"] + 1):
+				if i not in lcnindex:
+					duplicate = duplicates.pop(0)
+					lcnindex[i] = duplicate[0]
+					if not len(duplicates):
+						break
+			sections[duplicate_range["lower"]] = _("Duplicates")
+			active_sections.append(duplicate_range["lower"])
+			highestLCN = max(list(lcnindex.keys()))
 		bouquet_list = []
 		bouquet_list.append("#NAME %s\n" % providers[self.config.providers.value].get("bouquetname", self.bouquetName))
-		for number in range(1, (highestLCN + len(duplicates)) // 1000 * 1000 + 1001):   # ceil bouquet length to nearest 1000, range needs + 1
+		for number in range(1, (highestLCN) // 1000 * 1000 + 1001):   # ceil bouquet length to nearest 1000, range needs + 1
 			if number in active_sections:
 				bouquet_list.append(self.bouquetMarker(sections[number]))
 			if number in lcnindex:
 				bouquet_list.append(self.bouquetServiceLine(self.services[lcnindex[number]]))
-				if number == highestLCN and duplicates:
-					bouquet_list.append(self.bouquetMarker(_("Duplicates")))
-			elif number in duplicates:
-				bouquet_list.append(self.bouquetServiceLine(duplicates[number]))
 			else:
 				bouquet_list.append("#SERVICE 1:320:0:0:0:0:0:0:0:0:\n")  # bouquet spacer
 		bouquetFile = open(self.path + "/" + self.bouquetFilename[:-2] + ("tv" if mode == MODE_TV else "radio"), "w")
