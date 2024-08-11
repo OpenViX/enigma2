@@ -305,19 +305,19 @@
 		<panel name="SummaryClockPanel" />
 	</screen>
 	<screen name="QuickEPGSummary" position="0,0" size="480,320">
-		<panel name="EPGSelection_summary" />
+		<panel name="EPGSelectionSummary" />
 	</screen>
 	<screen name="GraphicalEPGSummary" position="0,0" size="480,320">
-		<panel name="EPGSelection_summary" />
+		<panel name="EPGSelectionSummary" />
 	</screen>
 	<screen name="GraphicalEPGPIGSummary" position="0,0" size="480,320">
-		<panel name="EPGSelection_summary" />
+		<panel name="EPGSelectionSummary" />
 	</screen>
 	<screen name="GraphicalInfoBarEPGSummary" position="0,0" size="480,320">
-		<panel name="EPGSelection_summary" />
+		<panel name="EPGSelectionSummary" />
 	</screen>
 	<screen name="EPGSelectionMultiSummary" position="0,0" size="480,320">
-		<panel name="EPGSelection_summary" />
+		<panel name="EPGSelectionSummary" />
 	</screen>
 
 <!-- messagebox-->
