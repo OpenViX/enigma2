@@ -2742,7 +2742,7 @@ RESULT eDVBDB::clearBouquet(const std::string &filename, const int type)
 	std::string bouquetname = "userbouquet." + filename + ext;
 	std::string bouquetquery = "FROM BOUQUET \"" + bouquetname + "\" ORDER BY bouquet";
 	eServiceReference bouquetref(eServiceReference::idDVB, eServiceReference::flagDirectory, bouquetquery);
-	bouquetref.setData(0, type); /* bouquet 'servicetype' tv */
+	bouquetref.setData(0, type);
 	eBouquet *bouquet = NULL;
 	if (!db->getBouquet(bouquetref, bouquet) && bouquet)
 	{
@@ -2771,7 +2771,7 @@ RESULT eDVBDB::removeBouquet(const std::string &filename, const int type)
 	std::string bouquetname = "userbouquet." + filename + ext;
 	std::string bouquetquery = "FROM BOUQUET \"" + bouquetname + "\" ORDER BY bouquet";
 	eServiceReference bouquetref(eServiceReference::idDVB, eServiceReference::flagDirectory, bouquetquery);
-	bouquetref.setData(0, type); /* bouquet 'servicetype' tv */
+	bouquetref.setData(0, type);
 	eBouquet *bouquet = NULL;
 	if (!db->getBouquet(bouquetref, bouquet) && bouquet)
 	{
