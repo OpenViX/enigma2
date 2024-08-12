@@ -2509,12 +2509,12 @@ RESULT eDVBDB::removeFlags(unsigned int flagmask, eDVBChannelID chid, unsigned i
 	return 0;
 }
 
-RESULT eDVBDB::addOrUpdateBouquet(const std::string &name, ePyObject services, const int type)
+RESULT eDVBDB::addOrUpdateBouquet(const std::string &name, ePyObject services, const int type, bool isAddedFirst)
 {
-	return addOrUpdateBouquet(name, name, services, type);
+	return addOrUpdateBouquet(name, name, services, type, isAddedFirst);
 }
 
-RESULT eDVBDB::addOrUpdateBouquet(const std::string &name, const std::string &filename, ePyObject services, const int type)
+RESULT eDVBDB::addOrUpdateBouquet(const std::string &name, const std::string &filename, ePyObject services, const int type, bool isAddedFirst)
 {
 	std::string ext = ".tv";
 	if (type == 2) {
@@ -2539,7 +2539,10 @@ RESULT eDVBDB::addOrUpdateBouquet(const std::string &name, const std::string &fi
 		/* bouquet doesn't yet exist, create a new one */
 		if (!db->getBouquet(rootref, bouquet) && bouquet)
 		{
-			bouquet->m_services.push_back(bouquetref);
+			if (isAddedFirst)
+				bouquet->m_services.push_front(bouquetref);
+			else
+				bouquet->m_services.push_back(bouquetref);
 			bouquet->flushChanges();
 		}
 		/* loading the bouquet seems to be the only way to add it to the bouquet list */
