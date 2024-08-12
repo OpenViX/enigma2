@@ -760,18 +760,18 @@ class HarddiskManager:
 
 	def splitDeviceName(self, devName):
 		devNameLen = len(devName)
-		device = devName.rstrip("0123456789")
-		deviceLen = len(device)
-		if devName.startswith("mmcblk"):  # This works for devices in the form: mmcblk0pX
-			if device.endswith("p") and deviceLen < devNameLen:
+		device = devName
+		partition = 0
+		pdevice = devName.rstrip("0123456789")
+		deviceLen = len(pdevice)
+		if devName.startswith("mmcblk"):
+			if pdevice.endswith("p") and deviceLen < devNameLen:  # This works for devices in the form: mmcblk0pX
 				device = devName[0:deviceLen - 1]
 				partition = int(devName[deviceLen:])
-			else:
-				device = devName
-				partition = 0
-		else:  # This works for devices in the form: sdaX, hdaX, srX or any device that has a numeric suffix.
+		elif devName[:2] != "sr":  # this works for: sr0 (which is in fact dev="sr0", part="")
+			device = pdevice  # This works for other devices in the form: sdaX, hdaX, or any device that has a numeric suffix.
 			partition = int(devName[deviceLen:]) if deviceLen < devNameLen else 0
-		# print("[Harddisk] splitDeviceName DEBUG: devName = '%s', device = '%s', partition = '%d'" % (devName, device, partition))
+		print(f"[Harddisk] splitDeviceName DEBUG: devName = '{devName}', device = '{device}', partition = '{partition}'")
 		return device, partition
 
 	def getAutofsMountpoint(self, device):
