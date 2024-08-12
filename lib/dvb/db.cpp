@@ -2511,70 +2511,7 @@ RESULT eDVBDB::removeFlags(unsigned int flagmask, eDVBChannelID chid, unsigned i
 
 RESULT eDVBDB::addOrUpdateBouquet(const std::string &name, ePyObject services, const int type)
 {
-	std::string ext = ".tv";
-	if (type == 2) {
-		ext = ".radio";
-	}
-	ePtr<iDVBChannelList> db;
-	ePtr<eDVBResourceManager> res;
-	eDVBResourceManager::getInstance(res);
-	res->getChannelList(db);
-	std::string bouquetname = "userbouquet." + name + ext;
-	std::string bouquetquery = "FROM BOUQUET \"" + bouquetname + "\" ORDER BY bouquet";
-	eServiceReference bouquetref(eServiceReference::idDVB, eServiceReference::flagDirectory, bouquetquery);
-	bouquetref.setData(0, type); 
-	eBouquet *bouquet = NULL;
-	eServiceReference rootref(eServiceReference::idDVB, eServiceReference::flagDirectory, "FROM BOUQUET \"bouquets" + ext + "\" ORDER BY bouquet");
-	if (!db->getBouquet(bouquetref, bouquet) && bouquet)
-	{
-		bouquet->m_services.clear();
-	}
-	else
-	{
-		/* bouquet doesn't yet exist, create a new one */
-		if (!db->getBouquet(rootref, bouquet) && bouquet)
-		{
-			bouquet->m_services.push_back(bouquetref);
-			bouquet->flushChanges();
-		}
-		/* loading the bouquet seems to be the only way to add it to the bouquet list */
-		loadBouquet(bouquetname.c_str());
-		/* and now that it has been added to the list, we can find it */
-		db->getBouquet(bouquetref, bouquet);
-		bouquet->setListName(name);
-	}
-	if (!PyList_Check(services)) {
-		const char *errstr = "eDVBDB::appendServicesToBouquet second parameter is not a python list!!!";
-		PyErr_SetString(PyExc_TypeError, errstr);
-		return -1;
-	}
-	int size = PyList_Size(services);
-	while(size)
-	{
-		--size;
-		ePyObject refstr = PyList_GET_ITEM(services, size);
-		if (!PyUnicode_Check(refstr))
-		{
-			char buf[255];
-			snprintf(buf, 255, "eDVBDB::appendServicesToBouquet entry in service list is not a string.. it is '%s'!!", PyObject_Type(refstr));
-			PyErr_SetString(PyExc_TypeError, buf);
-			return -1;
-		}
-		const char *tmpstr = PyUnicode_AsUTF8(refstr);
-		eDebug("[eDVBDB] ParsedReference: %s", tmpstr);
-		eServiceReference ref(tmpstr);
-		if (ref.valid())
-		{
-			eDebug("eDVBDB::appendServicesToBouquet push ref %s", tmpstr);
-			bouquet->m_services.push_front(ref);
-		}
-		else
-			eDebug("[DB] eDVBDB::appendServicesToBouquet '%s' is not a valid service reference... ignore!!", tmpstr);
-	}
-
-	bouquet->flushChanges();
-	renumberBouquet();
-	return 0;
+	return addOrUpdateBouquet(name, name, services, type);
 }
 
 RESULT eDVBDB::addOrUpdateBouquet(const std::string &name, const std::string &filename, ePyObject services, const int type)

@@ -146,8 +146,8 @@ public:
 	RESULT addCAID(const eServiceReference &service, unsigned int caid);
 	RESULT addFlag(const eServiceReference &service, unsigned int flagmask);
 	RESULT removeFlag(const eServiceReference &service, unsigned int flagmask);
-	RESULT addOrUpdateBouquet(const std::string &name, SWIG_PYOBJECT(ePyObject) services, const int type);
 	RESULT addOrUpdateBouquet(const std::string &name, const std::string &filename, SWIG_PYOBJECT(ePyObject) services, const int type);
+	RESULT addOrUpdateBouquet(const std::string &name, SWIG_PYOBJECT(ePyObject) services, const int type);
 	RESULT appendServiceToBouquet(const std::string &filename, const eServiceReference &service, const int type);
 	RESULT appendServicesToBouquet(const std::string &filename, SWIG_PYOBJECT(ePyObject) services, const int type);
 	RESULT clearBouquet(const std::string &filename, const int type);
