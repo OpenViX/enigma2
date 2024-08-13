@@ -814,7 +814,10 @@ class HarddiskManager:
 			if isCdrom:
 				print("[Harddisk] Found optical disk '%s' (%s)." % (device, physicalDevice))
 				self.cd = ospath.join("/dev", device) if device.startswith("sr") else devicePath
-				self.partitions.append(Partition(mountpoint=self.getMountpoint(hddDev), description=description, force_mounted=True, device=hddDev))
+				part = Partition(mountpoint=self.getMountpoint(hddDev), description=description, force_mounted=True, device=hddDev)
+				self.partitions.append(part)
+				if part.mountpoint:  # Plugins won't expect unmounted devices.
+					self.on_partition_list_change("add", part)
 			else:  # Lets get to work on real HDD.
 				data = readFile(ospath.join(devicePath, "removable"))
 				removable = False if data is None else bool(int(data))
