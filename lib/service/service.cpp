@@ -172,6 +172,9 @@ std::string eServiceReference::toString() const
 		ret += ':';
 		ret += encode(name);
 	}
+	if (!prov.empty()) {
+		ret += "•" + prov;
+	}
 	return ret;
 }
 
