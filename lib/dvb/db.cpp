@@ -1211,7 +1211,7 @@ void eDVBDB::deleteBouquet(const std::string filename, int type)
 		if (entry->d_type == DT_REG)
 		{
 			std::string path = entry->d_name;
-			if (filename == path)
+			if (path.find(bouquetname) != std::string::npos)
 			{
 				std::remove(path.c_str());
 				m_bouquets.erase(bouquetname);
