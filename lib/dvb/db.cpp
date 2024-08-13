@@ -2575,7 +2575,7 @@ RESULT eDVBDB::addOrUpdateBouquet(const std::string &name, const std::string &fi
 			bouquet->flushChanges();
 		}
 		/* loading the bouquet seems to be the only way to add it to the bouquet list */
-		loadBouquet(bouquetname.c_str());
+		loadBouquet(filename.c_str());
 		/* and now that it has been added to the list, we can find it */
 		db->getBouquet(bouquetref, bouquet);
 		bouquet->setListName(name);
