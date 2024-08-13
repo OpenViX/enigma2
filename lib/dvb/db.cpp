@@ -1192,6 +1192,34 @@ void eDVBDB::saveIptvServicelist()
 	outputFile.close();
 }
 
+void eDVBDB::deleteBouquet(const std::string filename, int type)
+{
+	std::string ext = ".tv";
+	if (type == 2) {
+		ext = ".radio";
+	}
+	std::string bouquetname = "userbouquet." + filename + ext;
+	std::string p = eEnv::resolve("${sysconfdir}/enigma2/");
+	DIR *dir = opendir(p.c_str());
+	if (!dir)
+	{
+		eDebug("[eDVBDB] Cannot open directory where the userbouquets should be expected..");
+		return;
+	}
+	dirent *entry;
+	while((entry = readdir(dir)) != NULL)
+		if (entry->d_type == DT_REG)
+		{
+			std::string path = entry->d_name;
+			if (filename == path)
+			{
+				std::remove(path.c_str());
+				m_bouquets.erase(bouquetname);
+			}
+		}
+	closedir(dir);
+}
+
 void eDVBDB::loadBouquet(const char *path)
 {
 	std::vector<std::string> userbouquetsfiles;
@@ -2585,35 +2613,6 @@ RESULT eDVBDB::addOrUpdateBouquet(const std::string &name, const std::string &fi
 	return 0;
 }
 
-RESULT eDVBDB::appendServiceToBouquet(const std::string &filename, const eServiceReference &service, const int type)
-{
-	std::string ext = ".tv";
-	if (type == 2) {
-		ext = ".radio";
-	}
-	ePtr<iDVBChannelList> db;
-	ePtr<eDVBResourceManager> res;
-	eDVBResourceManager::getInstance(res);
-	res->getChannelList(db);
-	std::string bouquetname = "userbouquet." + filename + ext;
-	std::string bouquetquery = "FROM BOUQUET \"" + bouquetname + "\" ORDER BY bouquet";
-	eServiceReference bouquetref(eServiceReference::idDVB, eServiceReference::flagDirectory, bouquetquery);
-	bouquetref.setData(0, type); 
-	eBouquet *bouquet = NULL;
-	if (!db->getBouquet(bouquetref, bouquet) && bouquet)
-	{
-		bouquet->m_services.push_front(service);
-		bouquet->flushChanges();
-		renumberBouquet();
-	}
-	else
-	{
-		return -1;
-	}
-	
-	return 0;
-}
-
 RESULT eDVBDB::appendServicesToBouquet(const std::string &filename, ePyObject services, const int type)
 {
 	std::string ext = ".tv";
@@ -2669,35 +2668,6 @@ RESULT eDVBDB::appendServicesToBouquet(const std::string &filename, ePyObject se
 	return 0;
 }
 
-RESULT eDVBDB::clearBouquet(const std::string &filename, const int type)
-{
-	std::string ext = ".tv";
-	if (type == 2) {
-		ext = ".radio";
-	}
-	ePtr<iDVBChannelList> db;
-	ePtr<eDVBResourceManager> res;
-	eDVBResourceManager::getInstance(res);
-	res->getChannelList(db);
-	std::string bouquetname = "userbouquet." + filename + ext;
-	std::string bouquetquery = "FROM BOUQUET \"" + bouquetname + "\" ORDER BY bouquet";
-	eServiceReference bouquetref(eServiceReference::idDVB, eServiceReference::flagDirectory, bouquetquery);
-	bouquetref.setData(0, type); 
-	eBouquet *bouquet = NULL;
-	if (!db->getBouquet(bouquetref, bouquet) && bouquet)
-	{
-		bouquet->m_services.clear();
-	}
-	else
-	{
-		return -1;
-	}
-
-	bouquet->flushChanges();
-	renumberBouquet();
-	return 0;
-}
-
 RESULT eDVBDB::removeBouquet(const std::string &filename, const int type)
 {
 	std::string ext = ".tv";
@@ -2713,9 +2683,15 @@ RESULT eDVBDB::removeBouquet(const std::string &filename, const int type)
 	eServiceReference bouquetref(eServiceReference::idDVB, eServiceReference::flagDirectory, bouquetquery);
 	bouquetref.setData(0, type); 
 	eBouquet *bouquet = NULL;
+	eServiceReference rootref(eServiceReference::idDVB, eServiceReference::flagDirectory, "FROM BOUQUET \"bouquets" + ext + "\" ORDER BY bouquet");
 	if (!db->getBouquet(bouquetref, bouquet) && bouquet)
 	{
-		//TODO: Add remove bouquet code here
+		if (!db->getBouquet(rootref, bouquet) && bouquet)
+		{
+			bouquet->m_services.remove(bouquetref);
+			bouquet->flushChanges();
+			deleteBouquet(filename, type);
+		}
 	}
 	else
 	{

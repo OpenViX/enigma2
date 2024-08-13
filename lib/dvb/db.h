@@ -148,9 +148,7 @@ public:
 	RESULT removeFlag(const eServiceReference &service, unsigned int flagmask);
 	RESULT addOrUpdateBouquet(const std::string &name, const std::string &filename, SWIG_PYOBJECT(ePyObject) services, const int type, bool isAddedFirst = false);
 	RESULT addOrUpdateBouquet(const std::string &name, SWIG_PYOBJECT(ePyObject) services, const int type, bool isAddedFirst = false);
-	RESULT appendServiceToBouquet(const std::string &filename, const eServiceReference &service, const int type);
 	RESULT appendServicesToBouquet(const std::string &filename, SWIG_PYOBJECT(ePyObject) services, const int type);
-	RESULT clearBouquet(const std::string &filename, const int type);
 	RESULT removeBouquet(const std::string &filename, const int type);
 	void removeServicesFlag(unsigned int flagmask);
 	PyObject *readSatellites(SWIG_PYOBJECT(ePyObject) sat_list, SWIG_PYOBJECT(ePyObject) sat_dict, SWIG_PYOBJECT(ePyObject) tp_dict);
@@ -178,6 +176,7 @@ public:
 	RESULT getBouquet(const eServiceReference &ref, eBouquet* &bouquet);
 //////
 	void loadBouquet(const char *path);
+	void deleteBouquet(const std::string filename, int type);
 	void searchAllReferences(std::vector<eServiceReference> &result, int tsid, int onid, int sid);
 	eDVBDB();
 	virtual ~eDVBDB();
