@@ -2693,7 +2693,7 @@ RESULT eDVBDB::removeBouquet(const std::string &filename)
 		{
 			bouquet->m_services.remove(bouquetref);
 			bouquet->flushChanges();
-			deleteBouquet(filename, type);
+			deleteBouquet(filename);
 		}
 	}
 	else
