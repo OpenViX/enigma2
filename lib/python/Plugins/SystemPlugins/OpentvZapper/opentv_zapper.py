@@ -58,7 +58,7 @@ class DefaultAdapter:
 		return True
 
 	def stop(self):
-		if self.currentService == (self.navcore and self.navcore.getCurrentlyPlayingServiceReference()):  # check the user hasn't zapped in the mean time
+		if self.currentService is eServiceReference and self.navcore and (playingref := self.navcore.getCurrentlyPlayingServiceReference()) and self.currentService == playingref:  # check the user hasn't zapped in the mean time
 			if self.currentBouquet is not None:
 				ChannelSelection.instance.setRoot(self.currentBouquet)
 			self.navcore.playService(self.previousService)
