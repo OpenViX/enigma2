@@ -39,6 +39,8 @@ class VolumeControl:
 		self.hideVolTimer = eTimer()
 		self.hideVolTimer.callback.append(self.volHide)
 
+		self.stepVolTimer = eTimer()
+
 	def openDialogs(self):
 		self.volumeDialog = self.session.instantiateDialog(Volume)
 		self.volumeDialog.setAnimationMode(0)
@@ -106,3 +108,12 @@ class VolumeControl:
 				self.volumeDialog.setValue(vol)
 				self.volumeDialog.show()
 				self.hideVolTimer.start(3000, True)
+
+	def stepVolume(self):
+		if self.stepVolTimer.isActive():
+			step = config.av.volume_stepsize_fastmode.value
+		else:
+			self.getInputConfig()
+			step = config.av.volume_stepsize.value
+		self.stepVolTimer.start(self.repeat, True)
+		return step
