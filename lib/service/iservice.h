@@ -103,7 +103,8 @@ public:
 		return name; 
 	}
 	std::string getProvider() const { return prov; }
-	void setName( const std::string &n ) { name=n; }
+	void setName( const std::string &s ) { name=s; }
+	void setProvider( const std::string &s ) { prov=s; }
 	int getChannelNum() const { return number; }
 	void setChannelNum(const int n) { number = n; }
 
