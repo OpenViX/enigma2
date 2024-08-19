@@ -400,6 +400,7 @@ def InitAVSwitch():
 	config.av.wss = ConfigEnableDisable(default=True)
 	config.av.generalAC3delay = ConfigSelectionNumber(-1000, 1000, 5, default=0)
 	config.av.generalPCMdelay = ConfigSelectionNumber(-1000, 1000, 5, default=0)
+	config.av.volume_hide_mute = ConfigYesNo(default=True)
 	config.av.vcrswitch = ConfigEnableDisable(default=False)
 	config.av.aspect.setValue("16:9")
 	config.av.aspect.addNotifier(iAVSwitch.setAspect)
