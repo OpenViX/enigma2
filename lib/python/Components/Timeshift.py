@@ -180,7 +180,6 @@ class InfoBarTimeshift:
 		if self.ptsTimerEntryStateChange in self.session.nav.RecordTimer.on_state_change:
 			self.session.nav.RecordTimer.on_state_change.remove(self.ptsTimerEntryStateChange)
 
-
 	def __seekableStatusChanged(self):
 		# print("[Timeshift]__seekableStatusChanged")
 		self["TimeshiftActivateActions"].setEnabled(not self.isSeekable() and self.timeshiftEnabled() and int(config.timeshift.startdelay.value))

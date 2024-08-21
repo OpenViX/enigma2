@@ -588,7 +588,7 @@ class AudioSelection(ConfigListScreen, Screen):
 	def keyOk(self):
 		if self.focus == FOCUS_STREAMS and self["streams"].list:
 			cur = self["streams"].getCurrent()
-			service = self.session.nav.getCurrentService()
+			service = self.session.nav.getCurrentService()  # noqa: F841
 			ref = self.session.nav.getCurrentServiceRef()
 			ref = ref and eServiceReference(ref)
 			if self.settings.menupage.value == PAGE_AUDIO and cur[0] is not None:

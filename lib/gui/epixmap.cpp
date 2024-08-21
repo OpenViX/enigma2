@@ -22,9 +22,21 @@ void ePixmap::setAlphatest(int alphatest)
 
 void ePixmap::setScale(int scale)
 {
+	// support old python code beacause the old code will only support BT_SCALE
+	scale = (scale) ? gPainter::BT_SCALE : 0;
+
 	if (m_scale != scale)
 	{
 		m_scale = scale;
+		invalidate();
+	}
+}
+
+void ePixmap::setPixmapScale(int flags)
+{
+	if (m_scale != flags)
+	{
+		m_scale = flags;
 		invalidate();
 	}
 }
@@ -108,9 +120,8 @@ int ePixmap::event(int event, void *data, void *data2)
 				flags = gPainter::BT_ALPHATEST;
 			else if (m_alphatest == 2)
 				flags = gPainter::BT_ALPHABLEND;
-			if (m_scale)
-				flags |= gPainter::BT_SCALE;
-
+			
+			flags |= m_scale;
 			painter.setRadius(cornerRadius, getCornerRadiusEdges());
 			painter.blit(m_pixmap, eRect(ePoint(0, 0), s), eRect(), flags);
 		}

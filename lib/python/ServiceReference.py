@@ -42,7 +42,7 @@ eServiceReference.isPlayback = lambda serviceref: "0:0:0:0:0:0:0:0:0" in service
 
 # Apply ServiceReference method proxies to the eServiceReference object so the two classes can be used interchangeably
 # These are required for ServiceReference backwards compatibility
-eServiceReference.isRecordable = lambda serviceref: serviceref.flags & eServiceReference.isGroup or (serviceref.type == eServiceReference.idDVB or serviceref.type == eServiceReference.idDVB + 0x100 or serviceref.type == 0x2000 or serviceref.type == eServiceReference.idServiceMP3)
+eServiceReference.isRecordable = lambda serviceref: serviceref.flags & eServiceReference.isGroup or (serviceref.type == eServiceReference.idDVB or serviceref.type == eServiceReference.idDVB + 0x100 or serviceref.type == 0x2000 or serviceref.type == 0x1001 or serviceref.type == eServiceReference.idServiceMP3)
 
 
 def __repr(serviceref):

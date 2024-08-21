@@ -96,6 +96,8 @@ class VideoSetup(Setup):
 				self.list.append(getConfigListEntry(_("3D Surround"), config.av.surround_3d, _("This option allows you to enable 3D Surround Sound for an output.")))
 			if SystemInfo["Can3DSpeaker"] and config.av.surround_3d.value != "none":
 				self.list.append(getConfigListEntry(_("3D Surround Speaker Position"), config.av.surround_3d_speaker, _("This option allows you to change the virtual loudspeaker position.")))
+			self.list.append((_("Audio volume step size"), config.av.volume_stepsize, _("Configure the general audio volume step size (limit 1-10).")))
+			self.list.append((_("Hide mute icon"), config.av.volume_hide_mute, _("If volume muted, hide mute icon or mute information after few seconds.")))
 			if SystemInfo["CanAutoVolume"]:
 				self.list.append(getConfigListEntry(_("Auto Volume Level"), config.av.autovolume, _("This option configures output for Auto Volume Level.")))
 			if SystemInfo["Canedidchecking"]:

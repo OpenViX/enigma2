@@ -1364,7 +1364,7 @@ class InfoBarChannelSelection:
 			self.servicelist.historyZap(+1)
 
 	def switchChannelUp(self, servicelist=None):
-		if not self.secondInfoBarScreen.shown:
+#		if not self.secondInfoBarScreen.shown:
 			servicelist = servicelist or self.servicelist
 			self.keyHide()
 			if not config.usage.show_bouquetalways.value:
@@ -1378,7 +1378,7 @@ class InfoBarChannelSelection:
 		self.switchChannelUp(self.servicelist2 if SystemInfo.get("NumVideoDecoders", 1) > 1 else None)
 
 	def switchChannelDown(self, servicelist=None):
-		if not self.secondInfoBarScreen.shown:
+#		if not self.secondInfoBarScreen.shown:
 			servicelist = servicelist or self.servicelist
 			self.keyHide()
 			if not config.usage.show_bouquetalways.value:
