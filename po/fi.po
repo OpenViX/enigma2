@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-08-01 17:12+0300\n"
+"PO-Revision-Date: 2024-08-22 16:05+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13549,7 +13549,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 01.08.2024 ---\n"
+"--- 22.08.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -15488,7 +15488,7 @@ msgid "When enabled a forced download will be possible from the extensions menu 
 msgstr "Kun sallittu, pakotettu lataus on mahdollista laajennusvalikosta (sininen näppäin). Näkyy seuraavan uudelleenkäynnistyksen jälkeen."
 
 msgid "When enabled enigma2 will load unlinked userbouquets. This means that userbouquets that are available, but not included in the bouquets.tv or bouquets.radio files, will still be loaded. This allows you for example to keep your own user bouquet while installed settings are upgraded"
-msgstr "Kun päällä, Enigma2 näyttää piilotetut suosikkilistat. Suosikkilistat jotka ovat saatavilla, mutta eivät ole bouquets.tv tai bouquets.radio tiedostoissa, ladataan silti. Tämä antaa sinun pitää omat suosikkilistasi samalla kun asennettuja päivitetään"
+msgstr "Kun päällä, Enigma2 näyttää piilotetut suosikkilistat. Suosikkilistat jotka ovat saatavilla, mutta eivät ole bouquets.tv tai bouquets.radio tiedostoissa, näytetään silti. Tämä antaa sinun pitää omat suosikkilistasi samalla kun asennettuja päivitetään"
 
 msgid "When enabled the online checker will also check for experimental versions"
 msgstr "Kun päällä, päivitys etsii myös kokeiluversioita"
@@ -19537,3 +19537,21 @@ msgstr "Aseta kyllä, jos haluat selvittää spinnerin perimmäisen syyn."
 
 msgid "Skin selection"
 msgstr "Teeman valinta"
+
+msgid "Audio volume step size"
+msgstr "Äänenvoimakkuuden askelkoko"
+
+msgid "Configure the general audio volume step size (limit 1-10)."
+msgstr "Määrittele yleinen äänenvoimakkuuden askelkoko (rajoitus 1-10)."
+
+msgid "Hide mute icon"
+msgstr "Piilota mykistyskuvake"
+
+msgid "If volume muted, hide mute icon or mute information after few seconds."
+msgstr "Jos äänenvoimakkuus on mykistetty, piilota mykistyskuvake tai mykistystiedot muutaman sekunnin kuluttua."
+
+msgid "Top"
+msgstr "Ylinpänä"
+
+msgid "Bottom"
+msgstr "Alinpana"
