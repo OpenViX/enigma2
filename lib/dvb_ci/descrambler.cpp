@@ -9,7 +9,6 @@
 #include <lib/dvb_ci/descrambler.h>
 
 #include <lib/base/eerror.h>
-#include <lib/base/nconfig.h> // access python config
 
 #ifndef CA_SET_PID
 /**
@@ -161,18 +160,11 @@ int descrambler_set_pid(int desc_fd, int index, int enable, int pid)
 
 int descrambler_init(int slot, uint8_t ca_demux_id)
 {
-	bool use_nonblock_io = eConfigManager::getConfigBoolValue("config.misc.use_nonblock_io", false);
 	int desc_fd;
 
 	std::string filename = "/dev/dvb/adapter0/ca" + std::to_string(ca_demux_id);
 
-	unsigned int flags = O_RDWR;
-
-	if (use_nonblock_io) {
-		flags |= O_NONBLOCK;
-	}
-
-	desc_fd = open(filename.c_str(), flags);
+	desc_fd = open(filename.c_str(), O_RDWR);
 	if (desc_fd == -1) {
 		eWarning("[CI%d descrambler] can not open %s", slot, filename.c_str());
 	}
