@@ -651,7 +651,6 @@ def isPluginInstalled(pluginname, pluginfile="plugin", pluginType=None):
 def sanitizeFilename(filename, maxlen=255):  # 255 is max length in ext4 (and most other file systems)
 	"""Return a fairly safe version of the filename.
 
-	Based on https://pypi.org/project/sanitize-filename/
 	We don't limit ourselves to ascii, because we want to keep municipality
 	names, etc, but we do want to get rid of anything potentially harmful,
 	and make sure we do not exceed filename length limits.
@@ -663,16 +662,10 @@ def sanitizeFilename(filename, maxlen=255):  # 255 is max length in ext4 (and mo
 		"COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",
 		"LPT6", "LPT7", "LPT8", "LPT9",
 	]  # Reserved words on Windows
-	filename = "".join(c for c in filename if c not in blacklist and ord(c) > 31)  # Remove any blacklisted chars. Remove all charcters below code point 32.
-	filename = normalize("NFKD", filename)
-	filename = filename.rstrip(". ")  # Windows does not allow these at end
-	filename = filename.strip()
-	if all([x == "." for x in filename]):
+	# Remove any blacklisted chars. Remove all charcters below code point 32. Normalize. Strip.
+	filename = normalize("NFKD", "".join(c for c in filename if c not in blacklist and ord(c) > 31)).strip()
+	if all([x == "." for x in filename]) or filename in reserved:  # if filename is a string of dots
 		filename = "__" + filename
-	if filename in reserved:
-		filename = "__" + filename
-	if len(filename) == 0:
-		filename = "__"
 	# Most Unix file systems typically allow filenames of up to 255 bytes.
 	# However, the actual number of characters allowed can vary due to the
 	# representation of Unicode characters. Therefore length checks must
@@ -681,22 +674,13 @@ def sanitizeFilename(filename, maxlen=255):  # 255 is max length in ext4 (and mo
 	# Also we cannot leave the byte truncate in the middle of a multi-byte
 	# utf8 character! So, convert to bytes, truncate then get back to unicode,
 	# ignoring errors along the way, the result will be valid unicode.
-	if len(fe := filename.encode(encoding='utf-8', errors='ignore')) > maxlen:  # check filename length in bytes (and save byte string for later)
-		parts = filename.split(".")
-		if len(parts) > 1:
-			ext = b"." + parts.pop().encode(encoding='utf-8', errors='ignore')  # convert to bytes
-			filename = filename[:-len(ext)].encode(encoding='utf-8', errors='ignore')  # convert to bytes
-		else:
-			ext = b""
-			filename = fe  # fe is already bytes
-		if filename == b"":
-			filename = b"__"
-		if len(ext) > maxlen - 1:
-			ext = ext[maxlen - 1:]
-		filename = filename[:maxlen - len(ext)]
-		filename = filename.decode(encoding='utf-8', errors='ignore') + ext.decode(encoding='utf-8', errors='ignore')  # convert back to unicode
-		# Re-check last character (if there was no extension)
-		filename = filename.rstrip(". ")
-		if len(filename) == 0:
-			filename = "__"
+	# Prioritise maintaining the complete extension if possible.
+	root, ext = pathSplitext(filename.encode(encoding='utf-8', errors='ignore'))
+	if len(ext) > maxlen - (1 if root else 0):  # leave at least one char for root if root
+		ext = ext[maxlen - (1 if root else 0):]
+	# convert back to unicode, ignoring any incomplete utf8 multibyte chars
+	filename = root[:maxlen - len(ext)].decode(encoding='utf-8', errors='ignore') + ext.decode(encoding='utf-8', errors='ignore')
+	filename = filename.rstrip(". ")  # Windows does not allow these at end
+	if len(filename) == 0:
+		filename = "__"
 	return filename
