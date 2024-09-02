@@ -6,7 +6,7 @@ from os.path import basename as pathBasename, dirname as pathDirname, exists as 
 from os import access, chmod, listdir, makedirs, mkdir, readlink, rename, rmdir, sep, stat as os_stat, statvfs, symlink, utime, walk, F_OK, R_OK, W_OK
 
 from enigma import eEnv, getDesktop
-from re import compile, split, search
+from re import compile, search
 from stat import S_IMODE
 from sys import _getframe as getframe
 from unicodedata import normalize
@@ -658,12 +658,13 @@ def isPluginInstalled(pluginname, pluginfile="plugin", pluginType=None):
 	return False
 
 
-def sanitizeFilename(filename):
+def sanitizeFilename(filename, maxlen=255):  # 255 is max length in ext4 (and most other file systems)
 	"""Return a fairly safe version of the filename.
 
+	Based on https://pypi.org/project/sanitize-filename/
 	We don't limit ourselves to ascii, because we want to keep municipality
 	names, etc, but we do want to get rid of anything potentially harmful,
-	and make sure we do not exceed Windows filename length limits.
+	and make sure we do not exceed filename length limits.
 	Hence a less safe blacklist, rather than a whitelist.
 	"""
 	blacklist = ["\\", "/", ":", "*", "?", "\"", "<", ">", "|", "\0"]
@@ -672,9 +673,7 @@ def sanitizeFilename(filename):
 		"COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",
 		"LPT6", "LPT7", "LPT8", "LPT9",
 	]  # Reserved words on Windows
-	filename = "".join(c for c in filename if c not in blacklist)
-	# Remove all charcters below code point 32
-	filename = "".join(c for c in filename if 31 < ord(c))
+	filename = "".join(c for c in filename if c not in blacklist and ord(c) > 31)  # Remove any blacklisted chars. Remove all charcters below code point 32.
 	filename = normalize("NFKD", filename)
 	filename = filename.rstrip(". ")  # Windows does not allow these at end
 	filename = filename.strip()
@@ -684,20 +683,28 @@ def sanitizeFilename(filename):
 		filename = "__" + filename
 	if len(filename) == 0:
 		filename = "__"
-	if len(filename) > 255:
-		parts = split(r"/|\\", filename)[-1].split(".")
+	# Most Unix file systems typically allow filenames of up to 255 bytes.
+	# However, the actual number of characters allowed can vary due to the
+	# representation of Unicode characters. Therefore length checks must
+	# be done in bytes, not unicode.
+	#
+	# Also we cannot leave the byte truncate in the middle of a multi-byte
+	# utf8 character! So, convert to bytes, truncate then get back to unicode,
+	# ignoring errors along the way, the result will be valid unicode.
+	if len(fe := filename.encode(encoding='utf-8', errors='ignore')) > maxlen:  # check filename length in bytes (and save byte string for later)
+		parts = filename.split(".")
 		if len(parts) > 1:
-			ext = "." + parts.pop()
-			filename = filename[:-len(ext)]
+			ext = b"." + parts.pop().encode(encoding='utf-8', errors='ignore')  # convert to bytes
+			filename = filename[:-len(ext)].encode(encoding='utf-8', errors='ignore')  # convert to bytes
 		else:
-			ext = ""
-		if filename == "":
-			filename = "__"
-		if len(ext) > 254:
-			ext = ext[254:]
-		maxl = 255 - len(ext)
-		filename = filename[:maxl]
-		filename = filename + ext
+			ext = b""
+			filename = fe  # fe is already bytes
+		if filename == b"":
+			filename = b"__"
+		if len(ext) > maxlen - 1:
+			ext = ext[maxlen - 1:]
+		filename = filename[:maxlen - len(ext)]
+		filename = filename.decode(encoding='utf-8', errors='ignore') + ext.decode(encoding='utf-8', errors='ignore')  # convert back to unicode
 		# Re-check last character (if there was no extension)
 		filename = filename.rstrip(". ")
 		if len(filename) == 0:
