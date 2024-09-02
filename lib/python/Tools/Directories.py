@@ -437,20 +437,10 @@ def fileReadXML(filename, default=None, *args, **kwargs):
 
 
 def getRecordingFilename(basename, dirname=None):
-	# Filter out non-allowed characters.
-	non_allowed_characters = "/.\\:*?<>|\""
-	basename = basename.replace("\xc2\x86", "").replace("\xc2\x87", "")
-	filename = ""
-	for c in basename:
-		if c in non_allowed_characters or ord(c) < 32:
-			c = "_"
-		filename += c
-	# Max filename length for ext4 is 255 (minus 8 characters for .ts.meta)
-	# but we cannot leave the byte truncate in the middle of a
-	# multi-byte utf8 character!
-	# So convert to bytes, truncate then get back to unicode, ignoring
-	# errors along the way, the result will be valid unicode.
-	filename = filename.encode(encoding='utf-8', errors='ignore')[:247].decode(encoding='utf-8', errors='ignore')
+	# The "replaces" remove dvb emphasis chars.
+	# Also, "." is replaced with "_" which respects the original code. (Why was this required?)
+	# Max filename length for ext4 is 255 bytes (minus 8 bytes for ".ts.meta")
+	filename = sanitizeFilename(basename.replace("\xc2\x86", "").replace("\xc2\x87", "").replace(".", "_"), maxlen=247)
 	if dirname is not None:
 		if not dirname.startswith("/"):
 			dirname = pathJoin(defaultRecordingLocation(), dirname)
