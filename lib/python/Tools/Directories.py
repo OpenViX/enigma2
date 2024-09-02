@@ -675,9 +675,10 @@ def sanitizeFilename(filename, maxlen=255):  # 255 is max length in ext4 (and mo
 	# utf8 character! So, convert to bytes, truncate then get back to unicode,
 	# ignoring errors along the way, the result will be valid unicode.
 	# Prioritise maintaining the complete extension if possible.
+	# Any truncation of root or ext will be done at the end of the string
 	root, ext = pathSplitext(filename.encode(encoding='utf-8', errors='ignore'))
 	if len(ext) > maxlen - (1 if root else 0):  # leave at least one char for root if root
-		ext = ext[maxlen - (1 if root else 0):]
+		ext = ext[:maxlen - (1 if root else 0)]
 	# convert back to unicode, ignoring any incomplete utf8 multibyte chars
 	filename = root[:maxlen - len(ext)].decode(encoding='utf-8', errors='ignore') + ext.decode(encoding='utf-8', errors='ignore')
 	filename = filename.rstrip(". ")  # Windows does not allow these at end
