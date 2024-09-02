@@ -439,8 +439,8 @@ def fileReadXML(filename, default=None, *args, **kwargs):
 def getRecordingFilename(basename, dirname=None):
 	# The "replaces" remove dvb emphasis chars.
 	# Also, "." is replaced with "_" which respects the original code. (Why was this required?)
-	# Max filename length for ext4 is 255 bytes (minus 8 bytes for ".ts.meta")
-	filename = sanitizeFilename(basename.replace("\xc2\x86", "").replace("\xc2\x87", "").replace(".", "_"), maxlen=247)
+	# Max filename length for ext4 is 255 bytes (minus 8 bytes for ".ts.meta", minus 4 bytes for "_%03d")
+	filename = sanitizeFilename(basename.replace("\xc2\x86", "").replace("\xc2\x87", "").replace(".", "_"), maxlen=243)
 	if dirname is not None:
 		if not dirname.startswith("/"):
 			dirname = pathJoin(defaultRecordingLocation(), dirname)
