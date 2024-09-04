@@ -119,8 +119,20 @@ class Navigation:
 		if ref is None:
 			self.stopService()
 			return 0
-		from Components.ServiceEventTracker import InfoBarCount
-		InfoBarInstance = InfoBarCount == 1 and InfoBar.instance
+		InfoBarInstance = InfoBar.instance
+
+		# for iptv services force an evStart event immediately on zapping so the gui updates and the user doesn't feel like the box is frozen
+		if "%3a//" in ref.toString():
+			self.currentlyPlayingServiceReference = ref
+			self.currentlyPlayingServiceOrGroup = ref
+			self.originalPlayingServiceReference = ref
+			
+			if InfoBarInstance:
+				InfoBarInstance.session.screen["CurrentService"].newService(ref)
+				InfoBarInstance.session.screen["Event_Now"].updateSource(ref)
+				InfoBarInstance.session.screen["Event_Next"].updateSource(ref)
+				InfoBarInstance.serviceStarted()
+
 		if not checkParentalControl or parentalControl.isServicePlayable(ref, boundFunction(self.playService, checkParentalControl=False, forceRestart=forceRestart, adjust=adjust)):
 			if ref.flags & eServiceReference.isGroup:
 				oldref = self.currentlyPlayingServiceReference or eServiceReference()
