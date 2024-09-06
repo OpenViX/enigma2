@@ -337,7 +337,7 @@ def InitLcd():
 			ilcd.setFlipped(configElement.value)
 
 		def setLCDmode(configElement):
-			ilcd.setMode(configElement.value)
+			ilcd.setMode("1" if configElement.value else "0")
 
 		def setLCDpower(configElement):
 			ilcd.setPower(configElement.value)
