@@ -121,18 +121,6 @@ class Navigation:
 			return 0
 		InfoBarInstance = InfoBar.instance
 
-		# for iptv services force an evStart event immediately on zapping so the gui updates and the user doesn't feel like the box is frozen
-		if "%3a//" in ref.toString():
-			self.currentlyPlayingServiceReference = ref
-			self.currentlyPlayingServiceOrGroup = ref
-			self.originalPlayingServiceReference = ref
-			
-			if InfoBarInstance:
-				InfoBarInstance.session.screen["CurrentService"].newService(ref)
-				InfoBarInstance.session.screen["Event_Now"].updateSource(ref)
-				InfoBarInstance.session.screen["Event_Next"].updateSource(ref)
-				InfoBarInstance.serviceStarted()
-
 		if not checkParentalControl or parentalControl.isServicePlayable(ref, boundFunction(self.playService, checkParentalControl=False, forceRestart=forceRestart, adjust=adjust)):
 			if ref.flags & eServiceReference.isGroup:
 				oldref = self.currentlyPlayingServiceReference or eServiceReference()
@@ -211,15 +199,23 @@ class Navigation:
 					self.retryServicePlayTimer = eTimer()
 					self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
 					self.retryServicePlayTimer.start(config.misc.softcam_streamrelay_delay.value, True)
-				elif self.pnav.playService(playref):
-					# print("[Navigation] Failed to start", playref)
-					self.currentlyPlayingServiceReference = None
-					self.currentlyPlayingServiceOrGroup = None
-					if oldref and "://" in oldref.getPath():
-						print("[Navigation] Streaming was active -> try again")  # use timer to give the streamserver the time to deallocate the tuner
-						self.retryServicePlayTimer = eTimer()
-						self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
-						self.retryServicePlayTimer.start(500, True)
+				else:
+					if self.pnav.playService(playref):
+						# print("[Navigation] Failed to start", playref)
+						self.currentlyPlayingServiceReference = None
+						self.currentlyPlayingServiceOrGroup = None
+						if oldref and "://" in oldref.getPath():
+							print("[Navigation] Streaming was active -> try again")  # use timer to give the streamserver the time to deallocate the tuner
+							self.retryServicePlayTimer = eTimer()
+							self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
+							self.retryServicePlayTimer.start(500, True)
+					else:  # self.pnav.playService was successful so force evStart here immediately because that doesn't happen for iptv services so the box appears frozen
+						self.currentlyPlayingServiceOrGroup = self.currentlyPlayingServiceReference
+						if InfoBarInstance:
+							InfoBarInstance.session.screen["CurrentService"].newService(self.currentlyPlayingServiceReference)
+							InfoBarInstance.session.screen["Event_Now"].updateSource(self.currentlyPlayingServiceReference)
+							InfoBarInstance.session.screen["Event_Next"].updateSource(self.currentlyPlayingServiceReference)
+							InfoBarInstance.serviceStarted()
 				self.skipServiceReferenceReset = False
 				if setPriorityFrontend:
 					setPreferredTuner(int(config.usage.frontend_priority.value))
