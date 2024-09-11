@@ -144,8 +144,13 @@ RESULT eBouquet::flushChanges()
 				goto err;
 			if ( i->name.length() ) {
 				std::string fullName = i->name;
+				std::string provPart = "•";
 				if (i->prov.length())
-					fullName += "•" + i->prov;
+				{
+					provPart += i->prov;
+					if (fullName.find(provPart) == std::string::npos)
+						fullName += provPart;
+				}
 				if ( fprintf(f, "#DESCRIPTION %s\r\n", fullName.c_str()) < 0 )
 					goto err;
 			}
@@ -1391,7 +1396,7 @@ void eDVBDB::loadBouquet(const char *path)
 	{
 		for(unsigned int i=0; i<userbouquetsfiles.size(); ++i)
 		{
-			if (m_load_unlinked_userbouquets)
+			if (m_load_unlinked_userbouquets > 0)
 			{
 				eDebug("[eDVBDB] Adding additional userbouquet %s", userbouquetsfiles[i].c_str());
 				char buf[256];
@@ -1401,7 +1406,7 @@ void eDVBDB::loadBouquet(const char *path)
 					snprintf(buf, sizeof(buf), "1:7:2:0:0:0:0:0:0:0:FROM BOUQUET \"%s\" ORDER BY bouquet", userbouquetsfiles[i].c_str());
 				eServiceReference tmp(buf);
 				loadBouquet(userbouquetsfiles[i].c_str());
-				if (!strcmp(userbouquetsfiles[i].c_str(), "userbouquet.LastScanned.tv"))
+				if (!strcmp(userbouquetsfiles[i].c_str(), "userbouquet.LastScanned.tv") || m_load_unlinked_userbouquets == 2)
 					list.push_back(tmp);
 				else
 					list.push_front(tmp);
@@ -1513,7 +1518,7 @@ int eDVBDB::renumberBouquet(eBouquet &bouquet, int startChannelNum)
 eDVBDB *eDVBDB::instance;
 
 eDVBDB::eDVBDB()
-	: m_numbering_mode(false), m_load_unlinked_userbouquets(true)
+	: m_numbering_mode(false), m_load_unlinked_userbouquets(1)
 {
 	instance = this;
 	

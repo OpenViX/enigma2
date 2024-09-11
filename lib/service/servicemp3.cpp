@@ -2233,7 +2233,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 			{
 				GstBufferingMode mode;
 				gst_message_parse_buffering(msg, &(m_bufferInfo.bufferPercent));
-				eLog(6, "[eServiceMP3] Buffering %u percent done", m_bufferInfo.bufferPercent);
+				eTrace("[eServiceMP3] Buffering %u percent done", m_bufferInfo.bufferPercent);
 				gst_message_parse_buffering_stats(msg, &mode, &(m_bufferInfo.avgInRate), &(m_bufferInfo.avgOutRate), &(m_bufferInfo.bufferingLeft));
 				m_event((iPlayableService*)this, evBuffering);
 				/*
@@ -2319,7 +2319,7 @@ void eServiceMP3::HandleTocEntry(GstMessage *msg)
 			if (gst_toc_entry_get_entry_type (entry) == GST_TOC_ENTRY_TYPE_EDITION)
 			{
 				/* extra debug info for testing purposes CVR should_be_removed later on */
-				eLog(5, "[eServiceMP3] toc_type %s", gst_toc_entry_type_get_nick(gst_toc_entry_get_entry_type (entry)));
+				eTrace("[eServiceMP3] toc_type %s", gst_toc_entry_type_get_nick(gst_toc_entry_get_entry_type (entry)));
 				gint y = 0;
 				for (GList* x = gst_toc_entry_get_sub_entries (entry); x; x = x->next)
 				{
@@ -2348,7 +2348,7 @@ void eServiceMP3::HandleTocEntry(GstMessage *msg)
 							{
 								m_cue_entries.insert(cueEntry(pts, type));
 								/* extra debug info for testing purposes CVR should_be_removed later on */
-								eLog(5, "[eServiceMP3] toc_subtype %s,Nr = %d, start= %#" G_GINT64_MODIFIER "x",
+								eTrace("[eServiceMP3] toc_subtype %s,Nr = %d, start= %#" G_GINT64_MODIFIER "x",
 										gst_toc_entry_type_get_nick(gst_toc_entry_get_entry_type (sub_entry)), y + 1, pts);
 							}
 						}
@@ -2634,10 +2634,10 @@ void eServiceMP3::pullSubtitle(GstBuffer *buffer)
 		}
 		gint64 buf_pos = GST_BUFFER_PTS(buffer);
 		size_t len = map.size;
-		eLog(6, "[eServiceMP3] gst_buffer_get_size %zu map.size %zu", gst_buffer_get_size(buffer), len);
+		eTrace("[eServiceMP3] gst_buffer_get_size %zu map.size %zu", gst_buffer_get_size(buffer), len);
 		gint64 duration_ns = GST_BUFFER_DURATION(buffer);
 		int subType = m_subtitleStreams[m_currentSubtitleStream].type;
-		eLog(6, "[eServiceMP3] pullSubtitle type=%d size=%zu", subType, len);
+		eTrace("[eServiceMP3] pullSubtitle type=%d size=%zu", subType, len);
 		if ( subType )
 		{
 			if ( subType < stVOB )
@@ -2654,7 +2654,7 @@ void eServiceMP3::pullSubtitle(GstBuffer *buffer)
 				if (!line.empty() && line[line.length()-1] == '\n')
 					line.erase(line.length()-1);
 
-				eLog(6, "[eServiceMP3] got new text subtitle @ buf_pos = %lld ns (in pts=%lld), dur=%lld: '%s' ", buf_pos, buf_pos/11111, duration_ns, line.c_str());
+				eTrace("[eServiceMP3] got new text subtitle @ buf_pos = %lld ns (in pts=%lld), dur=%lld: '%s' ", buf_pos, buf_pos/11111, duration_ns, line.c_str());
 
 				uint32_t start_ms = ((buf_pos / 1000000ULL) * convert_fps) + (delay / 90);
 				uint32_t end_ms = start_ms + (duration_ns / 1000000ULL);

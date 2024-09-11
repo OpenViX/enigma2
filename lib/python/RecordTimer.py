@@ -15,7 +15,7 @@ from Screens.MessageBox import MessageBox
 from Screens.PictureInPicture import PictureInPicture
 import Screens.Standby
 from Tools import Notifications, Trashcan
-from Tools.Directories import fileReadXML, getRecordingFilename, isPluginInstalled, resolveFilename, sanitizeFilename, SCOPE_CONFIG
+from Tools.Directories import fileReadXML, getRecordingFilename, isPluginInstalled, resolveFilename, SCOPE_CONFIG
 from Tools.XMLTools import stringToXML
 
 import NavigationInstance
@@ -346,8 +346,6 @@ class RecordTimerEntry(TimerEntry):
 				filename += " - " + name + " - " + self.description
 			else:
 				filename += " - " + name  # standard
-
-		filename = sanitizeFilename(filename)
 
 		self.Filename = getRecordingFilename(filename, self.MountPath)
 		self.log(0, "Filename calculated as: '%s'" % self.Filename)

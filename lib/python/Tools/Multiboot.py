@@ -207,6 +207,8 @@ def createInfo(slot, imagedir="/"):
 	BuildDev = str(idb).zfill(3) if Creator.lower().startswith(("openvix", "openpli")) and BuildType and not BuildType.lower().startswith("rel") and (idb := BoxInfo.getItem("imagedevbuild")) else ""
 	if BuildType.lower().startswith("rel"):
 		BuildType = ""  # don't bother displaying "release" in the interface as this is the default image type
+	elif (iv := BoxInfo.getItem("imgversion")) and BoxInfo.getItem("imagetype") == iv:
+		BuildType = ""  # do not display anything if "imagetype" and "imgversion" are identical
 	BuildVer = str(BoxInfo.getItem("imagebuild", ""))
 	CompileDate = str(BoxInfo.getItem("compiledate", ""))
 

@@ -1,5 +1,5 @@
 from time import time
-from os import path
+from os.path import exists
 
 from enigma import eServiceCenter, eServiceReference, eTimer, pNavigation, getBestPlayableServiceReference, iServiceInformation, iPlayableService, setPreferredTuner, eDVBLocalTimeHandler, iRecordableServicePtr
 
@@ -64,14 +64,10 @@ class Navigation:
 		elif self.__nextPowerManagerAfterEventActionAuto:
 			wakeup = "/tmp/was_powertimer_wakeup"  # set wakeup flags as a PowerTimer WakeToStandby was actioned.
 		if wakeup:
-			fwakeup = open(f"{wakeup}", "w")  # set wakeup timer type
-			fwakeup.write("1")
-			fwakeup.close()
-			if path.exists(f"{wakeup}"):
+			open(f"{wakeup}", "w").write("1")  # set wakeup timer type
+			if exists(f"{wakeup}"):
 				print(f"[Navigation] TIMER: wakeup to standby detected, flag set: {wakeup}.")
-			fcec = open("/tmp/was_cectimer_wakeup", "w")  # tell Cec was timer wakeup, so don't issue Standby to TV
-			fcec.write("1")
-			fcec.close()
+			open("/tmp/was_cectimer_wakeup", "w").write("1")  # tell Cec was timer wakeup, so don't issue Standby to TV
 			self.standbytimer = eTimer()
 			self.standbytimer.callback.append(self.gotostandby)
 			self.standbytimer.start(15000, True)
@@ -116,29 +112,15 @@ class Navigation:
 			print("[Navigation] ignore request to play already running service(1)")
 			return 1
 		print("[Navigation] playing ref", ref and ref.toString())
-		if path.exists("/proc/stb/lcd/symbol_signal") and config.lcd.mode.value == "1":
-			try:
-				if "0:0:0:0:0:0:0:0:0" not in ref.toString():
-					signal = 1
-				else:
-					signal = 0
-				f = open("/proc/stb/lcd/symbol_signal", "w")
-				f.write(str(signal))
-				f.close()
-			except:
-				f = open("/proc/stb/lcd/symbol_signal", "w")
-				f.write("0")
-				f.close()
-		elif path.exists("/proc/stb/lcd/symbol_signal") and config.lcd.mode.value == "0":
-			f = open("/proc/stb/lcd/symbol_signal", "w")
-			f.write("0")
-			f.close()
+
+		if exists("/proc/stb/lcd/symbol_signal"):
+			open("/proc/stb/lcd/symbol_signal", "w").write("1" if ref and "0:0:0:0:0:0:0:0:0" not in ref.toString() and config.lcd.mode.value else "0")
 
 		if ref is None:
 			self.stopService()
 			return 0
-		from Components.ServiceEventTracker import InfoBarCount
-		InfoBarInstance = InfoBarCount == 1 and InfoBar.instance
+		InfoBarInstance = InfoBar.instance
+
 		if not checkParentalControl or parentalControl.isServicePlayable(ref, boundFunction(self.playService, checkParentalControl=False, forceRestart=forceRestart, adjust=adjust)):
 			if ref.flags & eServiceReference.isGroup:
 				oldref = self.currentlyPlayingServiceReference or eServiceReference()
@@ -217,15 +199,23 @@ class Navigation:
 					self.retryServicePlayTimer = eTimer()
 					self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
 					self.retryServicePlayTimer.start(config.misc.softcam_streamrelay_delay.value, True)
-				elif self.pnav.playService(playref):
-					# print("[Navigation] Failed to start", playref)
-					self.currentlyPlayingServiceReference = None
-					self.currentlyPlayingServiceOrGroup = None
-					if oldref and "://" in oldref.getPath():
-						print("[Navigation] Streaming was active -> try again")  # use timer to give the streamserver the time to deallocate the tuner
-						self.retryServicePlayTimer = eTimer()
-						self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
-						self.retryServicePlayTimer.start(500, True)
+				else:
+					if self.pnav.playService(playref):
+						# print("[Navigation] Failed to start", playref)
+						self.currentlyPlayingServiceReference = None
+						self.currentlyPlayingServiceOrGroup = None
+						if oldref and "://" in oldref.getPath():
+							print("[Navigation] Streaming was active -> try again")  # use timer to give the streamserver the time to deallocate the tuner
+							self.retryServicePlayTimer = eTimer()
+							self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
+							self.retryServicePlayTimer.start(500, True)
+					else:  # self.pnav.playService was successful so force evStart here immediately because that doesn't happen for iptv services so the box appears frozen
+						self.currentlyPlayingServiceOrGroup = self.currentlyPlayingServiceReference
+						if InfoBarInstance:
+							InfoBarInstance.session.screen["CurrentService"].newService(self.currentlyPlayingServiceReference)
+							InfoBarInstance.session.screen["Event_Now"].updateSource(self.currentlyPlayingServiceReference)
+							InfoBarInstance.session.screen["Event_Next"].updateSource(self.currentlyPlayingServiceReference)
+							InfoBarInstance.serviceStarted()
 				self.skipServiceReferenceReset = False
 				if setPriorityFrontend:
 					setPreferredTuner(int(config.usage.frontend_priority.value))
@@ -284,10 +274,8 @@ class Navigation:
 			self.pnav.stopService()
 		self.currentlyPlayingServiceReference = None
 		self.currentlyPlayingServiceOrGroup = None
-		if path.exists("/proc/stb/lcd/symbol_signal"):
-			f = open("/proc/stb/lcd/symbol_signal", "w")
-			f.write("0")
-			f.close()
+		if exists("/proc/stb/lcd/symbol_signal"):
+			open("/proc/stb/lcd/symbol_signal", "w").write("0")
 
 	def pause(self, p):
 		return self.pnav and self.pnav.pause(p)
