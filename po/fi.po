@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-09-12 10:38+0300\n"
+"PO-Revision-Date: 2024-09-12 18:29+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -19555,3 +19555,21 @@ msgstr "Ylinpänä"
 
 msgid "Bottom"
 msgstr "Alinpana"
+
+msgid "Select bouquets"
+msgstr "Valitse suosikkilistat"
+
+msgid "Toggle all"
+msgstr "Vaihda kaikki valinnat"
+
+msgid "Select bouquets to permanently remove"
+msgstr "Valitse pysyvästi poistettavat suosikkilistat"
+
+msgid "Remove selected"
+msgstr "Poista valitut"
+
+msgid "Select bouquets to restore"
+msgstr "Valitse palautettavat suosikkilistat"
+
+msgid "Restore selected"
+msgstr "Palauta valitut"
