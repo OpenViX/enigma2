@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-08-25 18:44+0300\n"
+"PO-Revision-Date: 2024-09-12 10:38+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -6054,13 +6054,13 @@ msgid "Feeds status: Stable"
 msgstr "Syötteiden tila: Stabiili"
 
 msgid "Feeds status: Unexpected"
-msgstr "Syötteiden tila: Epästabiili"
+msgstr "Syötteiden tila: Odottamaton"
 
 msgid "Feeds status: Unknown"
 msgstr "Syötteiden tila: Tuntematon"
 
 msgid "Feeds status: Unknown, user feeds url"
-msgstr "Syötteiden tila: Tuntematon"
+msgstr "Syötteiden tila: Tuntematon, käyttäjän syötteet"
 
 msgid "Feeds status: Unstable"
 msgstr "Syötteiden tila: Epästabiili"
@@ -12928,7 +12928,7 @@ msgid "Sorry feeds are down for maintenance, please try again later. If this iss
 msgstr "Ohjelmasyötteet eivät ole käytössä huollon takia, yritä myöhemmin uudelleen. Jos tämä ongelma jatkuu, niin tarkista openvix.co.uk tai world-of-satellite.com."
 
 msgid "Sorry feeds seem be in an unstable state, if you wish to use them please enable 'Allow unstable (experimental) updates' in \"Software update settings\"."
-msgstr "Syötteet ovat epästabiilien versioiden tilassa, jos haluat käyttää niitä, ota käyttöön 'Salli epästabiilit (kokeiluversio) päivitykset' \"ohjelmapäivitysten asetuksista\"."
+msgstr "Syötteet ovat epästabiilien versioiden tilassa, jos haluat käyttää niitä, ota käyttöön 'Salli epästabiilit (kokeiluversio) päivitykset' \"Ohjelmiston päivityksen asetuksista\"."
 
 msgid "Sorry the feeds are down for maintenance"
 msgstr "Syötteet ovat pois käytöstä huollon vuoksi"
@@ -13549,7 +13549,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 25.08.2024 ---\n"
+"--- 12.09.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
