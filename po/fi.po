@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-09-12 18:29+0300\n"
+"PO-Revision-Date: 2024-09-13 16:41+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2273,7 +2273,7 @@ msgid "Are you sure you want to exit this wizard?"
 msgstr "Haluatko lopettaa avustustoiminnon?"
 
 msgid "Are you sure you want to purge all deleted user bouquets?"
-msgstr "Haluatko tyhjentää poistetut suosikkilistat?"
+msgstr "Haluatko hävittää poistetut suosikkilistat?"
 
 msgid "Are you sure you want to reload the EPG data from:\n"
 msgstr "Haluatko varmasti uudelleenladata EPG-tiedot täältä:\n"
@@ -4866,7 +4866,7 @@ msgid "Disable background scanning"
 msgstr "Poista taustahaku käytöstä"
 
 msgid "Disable move mode"
-msgstr "Poistu siirtotilasta"
+msgstr "Poistu suosikkien järjestelystä"
 
 msgid "Disabled"
 msgstr "Ei käytössä"
@@ -5282,7 +5282,7 @@ msgid "Edit Timer"
 msgstr "Muokkaa ajastusta"
 
 msgid "Edit alternatives"
-msgstr "Vaihtoehtojen lisäys ja poisto"
+msgstr "Muokkaa vaihtoehtoja"
 
 msgid "Edit chapters of current title"
 msgstr "Muokkaa kappaleita"
@@ -5298,7 +5298,7 @@ msgstr "Muokkaa asetuksia"
 
 #, python-format
 msgid "Edit the Nameserver configuration of your %s %s.\n"
-msgstr "Muokkaan %s %s:n nimipalvelimen asetuksia.\n"
+msgstr "Muokkaa %s %s:n nimipalvelimen asetuksia.\n"
 
 #, python-format
 msgid "Edit the network configuration of your %s %s.\n"
@@ -5405,7 +5405,7 @@ msgid "Enable blinking rec symbol on the LCD Display"
 msgstr "Aktivoi vilkkuva REC-symboli LCD-näytössä"
 
 msgid "Enable bouquet edit"
-msgstr "Kanavalistojen lisäys ja poisto"
+msgstr "Ota suosikkilistan muokkaus käyttöön"
 
 msgid "Enable client mode"
 msgstr "Asiakas-tila päälle"
@@ -10319,7 +10319,7 @@ msgid "Puppets"
 msgstr "Nuket"
 
 msgid "Purge deleted user bouquets"
-msgstr "Tyhjennä poistetut suosikkilistat"
+msgstr "Hävitä poistetut suosikkilistat"
 
 msgid "Put A/V receiver in standby"
 msgstr "Laita A/V-vastaanotin valmiustilaan"
@@ -13549,7 +13549,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 12.09.2024 ---\n"
+"--- 13.09.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -16237,13 +16237,13 @@ msgid "[Timeshift] Merging records failed!"
 msgstr "[Ajansiirto] Tallenteiden yhdistäminen epäonnistui!"
 
 msgid "[alternative edit]"
-msgstr "[Vaihtoehtojen lisäys ja poisto]"
+msgstr "[Vaihtoehtojen muokkaus]"
 
 msgid "[bouquet edit]"
-msgstr "[Kanavalistojen lisäys ja poisto]"
+msgstr "[Suosikkilistan muokkaus]"
 
 msgid "[favourite edit]"
-msgstr "[Suosikkien lisäys ja poisto]"
+msgstr "[Suosikkien muokkaus]"
 
 msgid "[move mode]"
 msgstr "[Suosikkien järjestely]"
