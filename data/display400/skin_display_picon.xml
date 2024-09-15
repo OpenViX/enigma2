@@ -456,4 +456,30 @@
 		<panel name="SummaryTunerStatusPanel" />
 		<panel name="SummaryClockPanel" />
 	</screen>
+	<!-- OAWEATHER -->
+	<screen name="OAWeatherPluginSummary" position="0,0" size="400,240">
+		<widget font="FdLcD;40" foregroundColor="yellow" halign="center" noWrap="1" position="5,5" render="Label" size="390,45" source="session.OAWeather" transparent="1" zPosition="1">
+			<convert type="OAWeather">city</convert>
+		</widget>
+		<eLabel position="5,55" size="395,3" backgroundColor="blue" zPosition="1" />
+		<widget position="5,65" render="OAWeatherPixmap" scale="1" size="135,135" source="session.OAWeather" transparent="1" zPosition="1" >
+			<convert type="OAWeather">weathericon,current</convert>
+		</widget>
+		<ePixmap pixmap="/usr/share/enigma2/display/skin_default/temperature_high_low_icon.png" position="140,60" size="30,30" scale="1" transparent="1" zPosition="1" />
+		<widget font="FdLcD;30" position="175,60" render="Label" size="200,35" source="session.OAWeather" zPosition="1" >
+			<convert type="OAWeather">temperature_high_low,current</convert>
+		</widget>
+		<ePixmap pixmap="/usr/share/enigma2/display/skin_default/temperature_icon.png" position="140,100" size="30,30" scale="1" transparent="1" zPosition="1" />
+		<widget font="FdLcD;30" position="175,100" render="Label" size="200,35" source="session.OAWeather" zPosition="1">
+			<convert type="OAWeather">temperature_current</convert>
+		</widget>
+		<ePixmap pixmap="/usr/share/enigma2/display/skin_default/humidity_icon.png" position="140,140" size="30,30" scale="1" transparent="1" zPosition="1" />
+		<widget font="FdLcD;30" position="175,140" render="Label" size="200,35" source="session.OAWeather" zPosition="1">
+			<convert type="OAWeather">humidity</convert>
+		</widget>
+		<ePixmap pixmap="/usr/share/enigma2/display/skin_default/wind_icon.png" position="140,180" size="30,30" scale="1" transparent="1" zPosition="1" />
+		<widget font="FdLcD;30" position="175,180" render="Label" size="220,35" source="session.OAWeather" zPosition="1">
+			<convert type="OAWeather">winddisplay</convert>
+		</widget>
+	</screen>
 </skin>
