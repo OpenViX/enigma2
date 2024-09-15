@@ -84,5 +84,32 @@
 		<panel name="LCDRecordIcon" />
 	</screen>
 
+	<!-- OAWEATHER -->
+	<screen name="OAWeatherPluginSummary" position="0,0" size="800,480">
+		<widget font="FdLcD;80" foregroundColor="yellow" halign="center" noWrap="1" position="10,10" render="Label" size="780,90" source="session.OAWeather" transparent="1" zPosition="1">
+			<convert type="OAWeather">city</convert>
+		</widget>
+		<eLabel position="10,110" size="780,5" backgroundColor="blue" zPosition="1" />
+		<widget position="10,135" render="OAWeatherPixmap" scale="1" size="270,270" source="session.OAWeather" transparent="1" zPosition="1" >
+			<convert type="OAWeather">weathericon,current</convert>
+		</widget>
+		<ePixmap pixmap="/usr/share/enigma2/display/skin_default/temperature_high_low_icon.png" position="280,120" size="60,60" scale="1" transparent="1" zPosition="1" />
+		<widget font="FdLcD;60" position="350,120" render="Label" size="400,70" source="session.OAWeather" zPosition="1" >
+			<convert type="OAWeather">temperature_high_low,current</convert>
+		</widget>
+		<ePixmap pixmap="/usr/share/enigma2/display/skin_default/temperature_icon.png" position="280,200" size="60,60" scale="1" transparent="1" zPosition="1" />
+		<widget font="FdLcD;60" position="350,200" render="Label" size="400,70" source="session.OAWeather" zPosition="1">
+			<convert type="OAWeather">temperature_current</convert>
+		</widget>
+		<ePixmap pixmap="/usr/share/enigma2/display/skin_default/humidity_icon.png" position="280,280" size="60,60" scale="1" transparent="1" zPosition="1" />
+		<widget font="FdLcD;60" position="350,280" render="Label" size="400,70" source="session.OAWeather" zPosition="1">
+			<convert type="OAWeather">humidity</convert>
+		</widget>
+		<ePixmap pixmap="/usr/share/enigma2/display/skin_default/wind_icon.png" position="280,360" size="60,60" scale="1" transparent="1" zPosition="1" />
+		<widget font="FdLcD;60" position="350,360" render="Label" size="440,70" source="session.OAWeather" zPosition="1">
+			<convert type="OAWeather">winddisplay</convert>
+		</widget>
+	</screen>
+	
 	<include filename="skin_display_templates.xml"/>
 </skin>
