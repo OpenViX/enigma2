@@ -397,15 +397,6 @@ case $ret in
 	43)
 		init 1
 		;;
-	44)
-		# little hack but it will be fixed soon in drivers
-		/usr/lib/enigma2/python/Plugins/SystemPlugins/MICOMUpgrade/bin/fbclear
-		@bindir@/showiframe /usr/lib/enigma2/python/Plugins/SystemPlugins/MICOMUpgrade/wait.mvi
-		echo fpupload >/proc/vfd && sleep 3 && dd bs=256k if=/tmp/micom.bin of=/dev/mcu
-		@bindir@/showiframe /usr/lib/enigma2/python/Plugins/SystemPlugins/MICOMUpgrade/reboot.mvi
-		# Wait forever for the user to power off
-		while(true) ; do sleep 60 ; done
-		;;
 	*)
 		rm -f /tmp/.listen.camd.socket.ignore
 		;;
