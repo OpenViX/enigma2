@@ -366,14 +366,6 @@ case $ret in
 	3)
 		rm -f /tmp/.listen.camd.socket.ignore
 		;;
-	4)
-		/sbin/rmmod lcd
-		/usr/sbin/fpupgrade --upgrade 2>&1 | tee /home/root/fpupgrade.log
-		sleep 1;
-		/sbin/rmmod fp
-		/sbin/modprobe fp
-		/sbin/reboot
-		;;
 	12)
 		if [ -e /dev/block/by-name/bootoptions ]; then
 			mkdir -p /tmp/bootoptions
