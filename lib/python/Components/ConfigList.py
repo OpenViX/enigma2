@@ -145,7 +145,7 @@ class ConfigList(GUIComponent):
 	def moveBottom(self):
 		if self.instance is not None:
 			self.instance.moveSelection(self.instance.moveEnd)
-	
+
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
 			attribs = []

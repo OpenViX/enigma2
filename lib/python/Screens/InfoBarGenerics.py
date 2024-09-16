@@ -1364,29 +1364,29 @@ class InfoBarChannelSelection:
 			self.servicelist.historyZap(+1)
 
 	def switchChannelUp(self, servicelist=None):
-#		if not self.secondInfoBarScreen.shown:
-			servicelist = servicelist or self.servicelist
-			self.keyHide()
-			if not config.usage.show_bouquetalways.value:
-				if "keep" not in config.usage.servicelist_cursor_behavior.value:
-					servicelist.moveUp()
-			else:
-				servicelist.showFavourites()
-			self.session.execDialog(servicelist)
+		# if not self.secondInfoBarScreen.shown:
+		servicelist = servicelist or self.servicelist
+		self.keyHide()
+		if not config.usage.show_bouquetalways.value:
+			if "keep" not in config.usage.servicelist_cursor_behavior.value:
+				servicelist.moveUp()
+		else:
+			servicelist.showFavourites()
+		self.session.execDialog(servicelist)
 
 	def switchChannelUpLong(self):
 		self.switchChannelUp(self.servicelist2 if SystemInfo.get("NumVideoDecoders", 1) > 1 else None)
 
 	def switchChannelDown(self, servicelist=None):
-#		if not self.secondInfoBarScreen.shown:
-			servicelist = servicelist or self.servicelist
-			self.keyHide()
-			if not config.usage.show_bouquetalways.value:
-				if "keep" not in config.usage.servicelist_cursor_behavior.value:
-					servicelist.moveDown()
-			else:
-				servicelist.showFavourites()
-			self.session.execDialog(servicelist)
+		# if not self.secondInfoBarScreen.shown:
+		servicelist = servicelist or self.servicelist
+		self.keyHide()
+		if not config.usage.show_bouquetalways.value:
+			if "keep" not in config.usage.servicelist_cursor_behavior.value:
+				servicelist.moveDown()
+		else:
+			servicelist.showFavourites()
+		self.session.execDialog(servicelist)
 
 	def switchChannelDownLong(self):
 		self.switchChannelDown(self.servicelist2 if SystemInfo.get("NumVideoDecoders", 1) > 1 else None)
