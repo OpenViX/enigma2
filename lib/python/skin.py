@@ -241,9 +241,9 @@ def parseCoordinate(s, e, size=0, font=None):
 			return 0
 		# No test on "e" because it's already a variable
 		if "center" in s:
-			center = (e - size) / 2.0  # noqa: F841
+			center = (e - size) / 2  # noqa: F841
 		if "c" in s:
-			c = e / 2.0  # noqa: F841 do not remove c variable
+			c = e / 2  # noqa: F841 do not remove c variable
 		if "w" in s:
 			s = s.replace("w", "*w")
 			w = float(font in fonts and fonts[font][3] or 0)  # noqa: F841
@@ -251,7 +251,7 @@ def parseCoordinate(s, e, size=0, font=None):
 			s = s.replace("h", "*h")
 			h = float(font in fonts and fonts[font][2] or 0)  # noqa: F841
 		if "%" in s:
-			s = s.replace("%", "*e / 100.0")  # noqa: F841
+			s = s.replace("%", "*e / 100")  # noqa: F841
 		if "f" in s:
 			f = getSkinFactor()  # noqa: F841
 		# Don't bother trying an int() conversion,
