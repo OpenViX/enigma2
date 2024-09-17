@@ -113,11 +113,11 @@ class ScreenHeader(GUIAddon):
 		attribs = []
 		for (attrib, value) in self.skinAttributes[:]:
 			if attrib == "titleFont":
-				self.titleFont = parseFont(value, ((1, 1), (1, 1)))
+				self.titleFont = parseFont(value, parent.scale)
 			if attrib == "titleSingleFont":
-				self.titleSingleFont = parseFont(value, ((1, 1), (1, 1)))
+				self.titleSingleFont = parseFont(value, parent.scale)
 			elif attrib == "pathFont":
-				self.pathFont = parseFont(value, ((1, 1), (1, 1)))
+				self.pathFont = parseFont(value, parent.scale)
 			elif attrib == "titleForegroundColor":
 				self.titleForeground = parseColor(value).argb()
 			elif attrib == "pathForegroundColor":

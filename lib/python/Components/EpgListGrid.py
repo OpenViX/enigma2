@@ -113,11 +113,11 @@ class EPGListGrid(EPGListBase):
 			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == ("ServiceFontInfobar" if self.isInfobar else "ServiceFontGraphical"):
-					font = parseFont(value, ((1, 1), (1, 1)))
+					font = parseFont(value, screen.scale)
 					self.serviceFontName = font.family
 					self.serviceFontSize = font.pointSize
 				elif attrib == ("EntryFontInfobar" if self.isInfobar else "EntryFontGraphical"):
-					font = parseFont(value, ((1, 1), (1, 1)))
+					font = parseFont(value, screen.scale)
 					self.eventFontName = font.family
 					self.eventFontSize = font.pointSize
 
@@ -899,7 +899,7 @@ class TimelineText(GUIComponent):
 				elif attrib == "borderWidth":
 					self.borderWidth = parseScale(value)
 				elif attrib == "TimelineFont":
-					font = parseFont(value, ((1, 1), (1, 1)))
+					font = parseFont(value, screen.scale)
 					self.timelineFontName = font.family
 					self.timelineFontSize = font.pointSize
 				elif attrib == "itemHeight":

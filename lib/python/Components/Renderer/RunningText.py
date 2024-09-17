@@ -115,7 +115,7 @@ class RunningText(Renderer):
 			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "font":
-					self.txfont = parseFont(value, ((1, 1), (1, 1)))
+					self.txfont = parseFont(value, screen.scale)
 				elif attrib == "foregroundColor":
 					self.scroll_label.setForegroundColor(parseColor(value))
 				elif attrib in ("shadowColor", "borderColor"):  # fake for openpli-enigma2
