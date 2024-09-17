@@ -481,6 +481,12 @@ class AttributeParser:
 		for attrib, value in attrs:
 			self.applyOne(attrib, value)
 
+	def applyHorizontalScale(self, value):
+		return int(value) if self.scaleTuple[0][0] == self.scaleTuple[0][1] else int(int(value) * self.scaleTuple[0][0] / self.scaleTuple[0][1])
+
+	def applyVerticalScale(self, value):
+		return int(value) if self.scaleTuple[0][0] == self.scaleTuple[0][1] else int(int(value) * self.scaleTuple[1][0] / self.scaleTuple[1][1])
+
 	def conditional(self, value):
 		pass
 
@@ -533,16 +539,16 @@ class AttributeParser:
 		self.guiObject.setWidgetBorderColor(parseColor(value))
 
 	def widgetBorderWidth(self, value):
-		self.guiObject.setWidgetBorderWidth(parseScale(value))
+		self.guiObject.setWidgetBorderWidth(self.applyVerticalScale(parseScale(value)))
 
 	def zPosition(self, value):
 		self.guiObject.setZPosition(int(value))
 
 	def itemHeight(self, value):
-		self.guiObject.setItemHeight(parseScale(value))
+		self.guiObject.setItemHeight(self.applyVerticalScale(parseScale(value)))
 
 	def itemWidth(self, value):
-		self.guiObject.setItemWidth(parseScale(value))
+		self.guiObject.setItemWidth(self.applyHorizontalScale(parseScale(value)))
 
 	def itemCornerRadius(self, value):
 		radius, edgeValue = parseRadius(value)
@@ -711,17 +717,17 @@ class AttributeParser:
 		self.guiObject.setBorderColor(parseColor(value))
 
 	def borderWidth(self, value):
-		self.guiObject.setBorderWidth(parseScale(value))
+		self.guiObject.setBorderWidth(self.applyVerticalScale(parseScale(value)))
 
 	def cornerRadius(self, value):
 		radius, edgeValue = parseRadius(value)
 		self.guiObject.setCornerRadius(radius, edgeValue)
 
 	def scrollbarSliderBorderWidth(self, value):
-		self.guiObject.setScrollbarBorderWidth(parseScale(value))
+		self.guiObject.setScrollbarBorderWidth(self.applyHorizontalScale(parseScale(value)))
 
 	def scrollbarWidth(self, value):
-		self.guiObject.setScrollbarWidth(parseScale(value))
+		self.guiObject.setScrollbarWidth(self.applyHorizontalScale(parseScale(value)))
 
 	def scrollbarSliderBorderColor(self, value):
 		self.guiObject.setScrollbarBorderColor(parseColor(value))
@@ -1105,19 +1111,20 @@ class SizeTuple(tuple):
 
 class SkinContext:
 	def __init__(self, parent=None, pos=None, size=None, font=None):
-		if parent is not None:
-			if pos is not None:
-				pos, size = parent.parse(pos, size, font)
-				self.x, self.y = pos
-				self.w, self.h = size
-			else:
-				self.x = None
-				self.y = None
-				self.w = None
-				self.h = None
+		if parent is not None and pos is not None:
+			pos, size = parent.parse(pos, size, font)
+			self.x, self.y = pos
+			self.w, self.h = size
+			self.scale = parent.scale
+		else:
+			self.x = None
+			self.y = None
+			self.w = None
+			self.h = None
+			self.scale = ((1, 1), (1, 1))
 
 	def __str__(self):
-		return "Context (%s,%s)+(%s,%s) " % (self.x, self.y, self.w, self.h)
+		return "Context (%s,%s)+(%s,%s)" % (self.x, self.y, self.w, self.h)
 
 	def parse(self, pos, size, font):
 		if pos == "fill":
@@ -1127,8 +1134,8 @@ class SkinContext:
 			self.h = 0
 		else:
 			w, h = size.split(",")
-			w = parseCoordinate(w, self.w, 0, font)
-			h = parseCoordinate(h, self.h, 0, font)
+			w = parseCoordinate(w, self.w, 0, font, self.scale[0])
+			h = parseCoordinate(h, self.h, 0, font, self.scale[1])
 			if pos == "bottom":
 				pos = (self.x, self.y + self.h - h)
 				size = (self.w, h)
@@ -1150,7 +1157,7 @@ class SkinContext:
 			else:
 				size = (w, h)
 				pos = pos.split(",")
-				pos = (self.x + parseCoordinate(pos[0], self.w, size[0], font), self.y + parseCoordinate(pos[1], self.h, size[1], font))
+				pos = (self.x + parseCoordinate(pos[0], self.w, size[0], font, self.scale[0]), self.y + parseCoordinate(pos[1], self.h, size[1], font, self.scale[1]))
 		return (SizeTuple(pos), SizeTuple(size))
 
 
@@ -1163,8 +1170,8 @@ class SkinContextStack(SkinContext):
 			size = (self.w, self.h)
 		else:
 			w, h = size.split(",")
-			w = parseCoordinate(w, self.w, 0, font)
-			h = parseCoordinate(h, self.h, 0, font)
+			w = parseCoordinate(w, self.w, 0, font, self.scale[0])
+			h = parseCoordinate(h, self.h, 0, font, self.scale[1])
 			if pos == "bottom":
 				pos = (self.x, self.y + self.h - h)
 				size = (self.w, h)
@@ -1180,7 +1187,7 @@ class SkinContextStack(SkinContext):
 			else:
 				size = (w, h)
 				pos = pos.split(",")
-				pos = (self.x + parseCoordinate(pos[0], self.w, size[0], font), self.y + parseCoordinate(pos[1], self.h, size[1], font))
+				pos = (self.x + parseCoordinate(pos[0], self.w, size[0], font, self.scale[0]), self.y + parseCoordinate(pos[1], self.h, size[1], font, self.scale[1]))
 		return (SizeTuple(pos), SizeTuple(size))
 
 
@@ -1238,6 +1245,8 @@ def readSkin(screen, skin, names, desktop):
 	context.y = s.top()
 	context.w = s.width()
 	context.h = s.height()
+	resolution = tuple([int(x.strip()) for x in myScreen.attrib.get("resolution", f"{context.w},{context.h}").split(",")])
+	context.scale = ((context.w, resolution[0]), (context.h, resolution[1]))
 	del s
 	collectAttributes(screen.skinAttributes, myScreen, context, skinPath, ignore=("name",))
 	context = SkinContext(context, myScreen.attrib.get("position"), myScreen.attrib.get("size"))
