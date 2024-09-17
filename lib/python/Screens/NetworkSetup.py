@@ -96,7 +96,7 @@ class NSCommon:
 		result = result.decode()
 		# print("[NetworkSetup][installComplete] retval, result", retval, "   ", result)
 		if "Cannot install package" in result:
-			self.session.openWithCallback(self.updateService(), MessageBox, ("%s" % result), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)			
+			self.session.openWithCallback(self.updateService(), MessageBox, ("%s" % result), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		elif self.reboot_at_end:
 			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox,
 				_('Your %s %s needs to be restarted to complete the installation of %s\nDo you want to reboot now ?') % (SystemInfo["MachineBrand"], SystemInfo["MachineName"], self.getTitle()), MessageBox.TYPE_YESNO)
@@ -116,7 +116,7 @@ class NSCommon:
 		self.ConsoleB.ePopen("/usr/bin/opkg remove " + pkgname + " --force-remove --autoremove", callback)
 
 	def doInstall(self, callback, pkgname):
-		print("[NetworkSetup][doInstall]")	
+		print("[NetworkSetup][doInstall]")
 		self.message = self.session.open(MessageBox, _("Please wait..."), MessageBox.TYPE_INFO, timeout=10, enable_input=True)
 		self.message.setTitle(_("Installing Service"))
 		self.ConsoleB.ePopen("/usr/bin/opkg install " + pkgname, callback)
