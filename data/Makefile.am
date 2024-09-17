@@ -5,6 +5,7 @@ dist_pkgdata_DATA = \
 	keymap.xml \
 	menu.xml \
 	black.mvi \
+	networkwizard.xml \
 	rcpositions.xml \
 	recovery.xml \
 	setup.xml \
@@ -12,7 +13,7 @@ dist_pkgdata_DATA = \
 	startwizard.xml \
 	userinterfacepositionerwizard.xml \
 	videowizard.xml \
-	vuwizard.xml \	
+	vuwizard.xml \
 	freesat.t1 \
 	freesat.t2 \
 	unicable.xml \

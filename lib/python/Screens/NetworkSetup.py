@@ -23,23 +23,16 @@ from Components.SystemInfo import SystemInfo
 from Plugins.Plugin import PluginDescriptor
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
+from Screens.NetworkWizard import NetworkWizard
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
 from Screens.TextBox import TextBox
-from Tools.Directories import fileExists, isPluginInstalled, resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_PLUGINS
+from Tools.Directories import fileExists, isPluginInstalled, resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
 
-
-networkWizard = False
-XML_networkWizard = False
 wirelessLan = False
 
-if os_path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
-	XML_networkWizard = True
-if isPluginInstalled("NetworkWizard"):
-	networkWizard = True
-	from Plugins.SystemPlugins.NetworkWizard.NetworkWizard import NetworkWizard
 if isPluginInstalled("WirelessLan"):
 	wirelessLan = True
 	from Plugins.SystemPlugins.WirelessLan.Wlan import brcmWLConfig, iStatus, wpaSupplicant
@@ -305,8 +298,7 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 				active_int = False
 			self.list.append(self.buildInterfaceList(x[1], _(x[0]), default_int, active_int))
 
-		if XML_networkWizard:
-			self["key_blue"].setText(_("Network wizard"))
+		self["key_blue"].setText(_("Network wizard"))
 		self["list"].list = self.list
 
 	def setDefaultInterface(self):
@@ -360,12 +352,9 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 			self.session.open(MessageBox, _("Finished configuring your network"), type=MessageBox.TYPE_INFO, timeout=10, default=False)
 
 	def openNetworkWizard(self):
-		if networkWizard and XML_networkWizard:
-			selection = self["list"].getCurrent()
-			if selection is not None:
-				self.session.openWithCallback(self.AdapterSetupClosed, NetworkWizard, selection[0])
-		else:
-			self.session.open(MessageBox, _("The network wizard extension is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO, timeout=10)
+		selection = self["list"].getCurrent()
+		if selection is not None:
+			self.session.openWithCallback(self.AdapterSetupClosed, NetworkWizard, selection[0])
 
 
 class NameserverSetup(ConfigListScreen, HelpableScreen, Screen):
@@ -1027,11 +1016,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 						menuEntryDescription = _("Extended network setup plugin...")
 					self.extendedSetup = ("extendedSetup", menuEntryDescription, self.extended)
 					menu.append((menuEntryName, self.extendedSetup))
-
-		if XML_networkWizard:
-			menu.append((_("Network wizard"), "openwizard"))
-			# kernel_ver = about.getKernelVersionString()
-			# if kernel_ver <= "3.5.0":
+		menu.append((_("Network wizard"), "openwizard"))
 		menu.append((_("Network MAC settings"), "mac"))
 		return menu
 

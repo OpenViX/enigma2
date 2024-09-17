@@ -9,7 +9,6 @@ from Components.config import config, ConfigYesNo, NoSave, ConfigSubsection, Con
 from Components.Console import Console
 from Components.Network import iNetwork
 
-config.misc.networkenabled.value = False
 liste = ["WPA/WPA2", "WPA2", "WPA", "WEP", "Unencrypted"]
 
 weplist = ["ASCII", "HEX"]
