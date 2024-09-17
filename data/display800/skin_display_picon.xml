@@ -106,8 +106,11 @@
 			<convert type="OAWeather">humidity</convert>
 		</widget>
 		<ePixmap pixmap="/usr/share/enigma2/display/skin_default/wind_icon.png" position="280,360" size="60,60" scale="1" transparent="1" zPosition="1" />
-		<widget font="FdLcD;60" position="350,360" render="Label" size="440,70" source="session.OAWeather" zPosition="1">
-			<convert type="OAWeather">winddisplay</convert>
+		<widget font="FdLcD;60" position="350,360" render="Label" size="60,70" source="session.OAWeather" zPosition="1">
+			<convert type="OAWeather">winddirarrow</convert>
+		</widget>
+		<widget font="FdLcD;60" position="410,360" render="Label" size="380,70" source="session.OAWeather" zPosition="1">
+			<convert type="OAWeather">windspeed</convert>
 		</widget>
 	</screen>
 	
