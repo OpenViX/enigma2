@@ -79,10 +79,6 @@ class MainMenu(GUIAddon):
 		if self.instance and hasattr(self, "source"):
 			self.source.setConnectedGuiElement(self)
 
-	def setFont(self, value):
-		self.font = parseFont(value, ((1, 1), (1, 1)))
-		self.l.setFont(0, self.font)
-
 	def setMinWidth(self, value):
 		self.minWidth = parseScale(value)
 
@@ -134,7 +130,7 @@ class MainMenu(GUIAddon):
 		attribs = []
 		for (attrib, value) in self.skinAttributes[:]:
 			if attrib == "font":
-				self.font = parseFont(value, ((1, 1), (1, 1)))
+				self.font = parseFont(value, parent.scale)
 			elif attrib == "foregroundColor":
 				self.foregroundColor = parseColor(value).argb()
 			elif attrib == "foregroundColorSelected":

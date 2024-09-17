@@ -343,7 +343,7 @@ class MovieList(GUIComponent):
 			print("[MovieList] wrong '%s' skin parameters" % string)
 
 		def font(value):
-			font = parseFont(value, ((1, 1), (1, 1)))
+			font = parseFont(value, parent.scale)
 			self.fontName = font.family
 			self.fontSize = font.pointSize
 

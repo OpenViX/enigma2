@@ -26,7 +26,7 @@ class EPGListSingle(EPGListBase):
 			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib in ('EventFontSingle', 'EventFontMulti', 'EventFont'):
-					font = parseFont(value, ((1, 1), (1, 1)))
+					font = parseFont(value, screen.scale)
 					self.eventFontName = font.family
 					self.eventFontSize = font.pointSize
 				elif attrib == "sidesMargin":

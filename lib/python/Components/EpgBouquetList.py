@@ -43,7 +43,7 @@ class EPGBouquetList(GUIComponent):
 			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == "font":
-					font = parseFont(value, ((1, 1), (1, 1)))
+					font = parseFont(value, screen.scale)
 					self.bouquetFontName = font.family
 					self.bouquetFontSize = font.pointSize
 				elif attrib == "foregroundColor":
