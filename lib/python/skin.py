@@ -770,6 +770,9 @@ class AttributeParser:
 	def dividechar(self, value):
 		pass
 
+	def resolution(self, value):
+		pass
+
 
 def ifHasValue(value, function):
 	return function(value) if value is not None else None
