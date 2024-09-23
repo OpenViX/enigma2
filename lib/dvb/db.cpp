@@ -2654,11 +2654,11 @@ RESULT eDVBDB::appendServicesToBouquet(const std::string &filename, ePyObject se
 	return 0;
 }
 
-RESULT eDVBDB::removeBouquet(const std::string &filename)
+RESULT eDVBDB::removeBouquet(const std::string &filename_regex)
 {
 	std::string ext = ".tv";
 	int type = 1;
-	if (filename.find(".radio") != std::string::npos) {
+	if (filename_regex.find(".radio") != std::string::npos) {
 		ext = ".radio";
 		type = 2;
 	}
@@ -2678,7 +2678,7 @@ RESULT eDVBDB::removeBouquet(const std::string &filename)
 		if (entry->d_type == DT_REG)
 		{
 			std::string path = entry->d_name;
-			if (std::regex_search(path, std::regex("^" + filename + "$")))
+			if (std::regex_search(path, std::regex(filename_regex)))
 			{
 				std::string bouquetquery = "FROM BOUQUET \"" + path + "\" ORDER BY bouquet";
 				eServiceReference bouquetref(eServiceReference::idDVB, eServiceReference::flagDirectory, bouquetquery);

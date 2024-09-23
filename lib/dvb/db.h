@@ -150,7 +150,7 @@ public:
 	RESULT addOrUpdateBouquet(const std::string &name, const std::string &filename, SWIG_PYOBJECT(ePyObject) services, bool isAddedFirst = false);
 	RESULT addOrUpdateBouquet(const std::string &name, SWIG_PYOBJECT(ePyObject) services, const int type, bool isAddedFirst = false);
 	RESULT appendServicesToBouquet(const std::string &filename, SWIG_PYOBJECT(ePyObject) services);
-	RESULT removeBouquet(const std::string &filename);
+	RESULT removeBouquet(const std::string &filename_regex);
 	RESULT addChannelToDB(const eServiceReference &service, const eDVBFrontendParameters &feparam, SWIG_PYOBJECT(ePyObject) cachedPids, SWIG_PYOBJECT(ePyObject) caPids, const int serviceFlags);
 	void removeServicesFlag(unsigned int flagmask);
 	PyObject *readSatellites(SWIG_PYOBJECT(ePyObject) sat_list, SWIG_PYOBJECT(ePyObject) sat_dict, SWIG_PYOBJECT(ePyObject) tp_dict);
