@@ -21,6 +21,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <exception>
+#include <regex>
 
 /*
  * Copyright (C) 2017 Marcus Metzler <mocm@metzlerbros.de>
@@ -2677,7 +2678,7 @@ RESULT eDVBDB::removeBouquet(const std::string &filename)
 		if (entry->d_type == DT_REG)
 		{
 			std::string path = entry->d_name;
-			if (path.find(filename) != std::string::npos)
+			if (std::regex_search(path, std::regex("^" + filename + "$")))
 			{
 				std::string bouquetquery = "FROM BOUQUET \"" + path + "\" ORDER BY bouquet";
 				eServiceReference bouquetref(eServiceReference::idDVB, eServiceReference::flagDirectory, bouquetquery);
