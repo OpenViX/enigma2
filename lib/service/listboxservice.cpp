@@ -800,8 +800,12 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 			isBackupAvailable = true;
 		}
 
-		if (orig_ref_str.find("|<|") != std::string::npos) {
-			catchUpDays = std::stoi(split(split(orig_ref_str, "|<|")[1], "@")[0]);
+		if (orig_ref_str.find("|*|") != std::string::npos) {
+			if (isBackupAvailable){
+				catchUpDays = std::stoi(split(split(orig_ref_str, "|*|")[1], "@")[0]);
+			} else {
+				catchUpDays = std::stoi(split(split(orig_ref_str, "|*|")[1], ":")[0]);
+			}
 		}
 
 		/* get service information */
