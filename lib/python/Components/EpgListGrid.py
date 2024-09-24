@@ -20,6 +20,8 @@ MAX_TIMELINES = 6
 # Use this to remind us what is going on...
 SECS_IN_MIN = 60
 
+buildEntryExtensionFunctions = []
+
 
 class EPGListGrid(EPGListBase):
 	def __init__(self, session, isInfobar, selChangedCB=None):
@@ -682,6 +684,8 @@ class EPGListGrid(EPGListBase):
 							res.append(MultiContentEntryPixmapAlphaBlend(
 								pos=(pos[0] - pix_width - (5 if isTimerIconAdded else 10), pos[1]), size=(pix_width, pix_height),
 								png=autoTimerIcon))
+		for f in buildEntryExtensionFunctions:
+			f(res, service, serviceName, events, picon, channel)
 		return res
 
 	def getSelectionPosition(self):

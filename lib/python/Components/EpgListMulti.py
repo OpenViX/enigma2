@@ -10,6 +10,7 @@ from Components.config import config
 # Use this to remind us what is going on...
 SECS_IN_MIN = 60
 
+buildEntryExtensionFunctions = []
 
 class EPGListMulti(EPGListBase):
 	def __init__(self, session, epgConfig, selChangedCB=None):
@@ -100,6 +101,10 @@ class EPGListMulti(EPGListBase):
 					res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r5.left() + width, (r5.height() - clockSize) // 2, clockSize, clockSize, autoTimerIcon))
 				width -= 5
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, r5.left(), r5.top(), width, r5.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, EventName))
+
+		for f in buildEntryExtensionFunctions:
+			f(res, service, eventId, beginTime, duration, EventName, nowTime, serviceName, changeCount)
+
 		return res
 
 	def fillEPG(self, services, stime=None):

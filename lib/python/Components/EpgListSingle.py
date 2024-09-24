@@ -10,6 +10,8 @@ from Components.EpgListBase import EPGListBase
 # Use this to remind us what is going on...
 SECS_IN_MIN = 60
 
+buildEntryExtensionFunctions = []
+
 
 class EPGListSingle(EPGListBase):
 	def __init__(self, session, epgConfig, selChangedCB=None):
@@ -100,6 +102,10 @@ class EPGListSingle(EPGListBase):
 				eventW -= pix_width + 6
 				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, posX - pix_width - 6, (r3.height() - pix_height) // 2, pix_width, pix_height, autoTimerIcon))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), eventW, r3.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, eventName))
+
+		for f in buildEntryExtensionFunctions:
+			f(res, service, eventId, beginTime, duration, eventName)
+
 		return res
 
 	def fillSimilarList(self, refstr, eventId):
