@@ -22,6 +22,7 @@ SECS_IN_MIN = 60
 
 
 class EPGListGrid(EPGListBase):
+	buildEntryExtensionFunctions = []
 	def __init__(self, session, isInfobar, selChangedCB=None):
 		EPGListBase.__init__(self, session, selChangedCB)
 
@@ -682,6 +683,8 @@ class EPGListGrid(EPGListBase):
 							res.append(MultiContentEntryPixmapAlphaBlend(
 								pos=(pos[0] - pix_width - (5 if isTimerIconAdded else 10), pos[1]), size=(pix_width, pix_height),
 								png=autoTimerIcon))
+		for f in EPGListGrid.buildEntryExtensionFunctions:
+			f(res, service, serviceName, events, picon, channel)
 		return res
 
 	def getSelectionPosition(self):
