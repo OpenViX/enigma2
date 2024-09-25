@@ -104,7 +104,7 @@ class EPGListSingle(EPGListBase):
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), eventW, r3.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, eventName))
 
 		for f in EPGListSingle.buildEntryExtensionFunctions:
-			f(res, service, eventId, beginTime, duration, eventName)
+			f(res, self, service, eventId, beginTime, duration, eventName)
 
 		return res
 
