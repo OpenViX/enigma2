@@ -23,6 +23,7 @@ SECS_IN_MIN = 60
 
 class EPGListGrid(EPGListBase):
 	buildEntryExtensionFunctions = []
+
 	def __init__(self, session, isInfobar, selChangedCB=None):
 		EPGListBase.__init__(self, session, selChangedCB)
 

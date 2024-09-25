@@ -13,6 +13,7 @@ SECS_IN_MIN = 60
 
 class EPGListMulti(EPGListBase):
 	buildEntryExtensionFunctions = []
+
 	def __init__(self, session, epgConfig, selChangedCB=None):
 		EPGListBase.__init__(self, session, selChangedCB)
 
