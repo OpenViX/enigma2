@@ -30,7 +30,7 @@ from Screens.Standby import TryQuitMainloop
 from Screens.TextBox import TextBox
 from Tools.Directories import fileExists, isPluginInstalled, resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
-
+from Tools import Notifications
 wirelessLan = False
 
 if isPluginInstalled("WirelessLan"):
@@ -106,7 +106,7 @@ class NSCommon:
 
 	def operationComplete(self, reboot=False):
 		if reboot:
-			self.session.open(TryQuitMainloop, 2)
+			Notifications.AddNotification(TryQuitMainloop, 2)
 		self.message.close()
 		self.close()
 
