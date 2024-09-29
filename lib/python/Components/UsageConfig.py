@@ -767,13 +767,20 @@ def InitUsageConfig():
 	config.epg.virgin.addNotifier(EpgSettingsChanged)
 	config.epg.opentv.addNotifier(EpgSettingsChanged)
 
-	config.epg.histminutes = ConfigSelectionNumber(min=0, max=720, stepwidth=15, default=0, wraparound=True)
 	config.epg.joinAbbreviatedEventNames = ConfigYesNo(default=True)
 	config.epg.eventNamePrefixes = ConfigText(default="")
 	config.epg.eventNamePrefixMode = ConfigSelection(choices=[(0, _("Off")), (1, _("Remove")), (2, _("Move to description"))])
 
+	def wdhm(number):
+		units = ((_("week"), _("day"), _("hour"), _("minute")), (_("weeks"), _("days"), _("hours"), _("minutes")), (7 * 24 * 60, 24 * 60, 60, 1))
+		for i, d in enumerate(units[2]): 
+			if unit := int(number / d):
+				return "%s %s" % (unit, units[0 if unit == 1 else 1][i])
+		return "0 minutes"
+	choices = [(str(i), wdhm(i)) for i in [i * 15 for i in range(0, 4)] + [i * 60 for i in range(1, 9)] + [i * 120 for i in range(5, 12)] + [i * 24 * 60 for i in range(1, 8)]]
+	config.epg.histminutes = ConfigSelection(default=0, choices=choices)
 	def EpgHistorySecondsChanged(configElement):
-		eEPGCache.getInstance().setEpgHistorySeconds(config.epg.histminutes.value * 60)
+		eEPGCache.getInstance().setEpgHistorySeconds(int(configElement.value) * 60)
 	config.epg.histminutes.addNotifier(EpgHistorySecondsChanged)
 
 	config.epg.cacheloadsched = ConfigYesNo(default=False)
