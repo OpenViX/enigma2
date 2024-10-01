@@ -777,7 +777,7 @@ def InitUsageConfig():
 			if unit := int(number / d):
 				return "%s %s" % (unit, units[0 if unit == 1 else 1][i])
 		return "0 minutes"
-	choices = [(str(i), wdhm(i)) for i in [i * 15 for i in range(0, 4)] + [i * 60 for i in range(1, 9)] + [i * 120 for i in range(5, 12)] + [i * 24 * 60 for i in range(1, 8)]]
+	choices = [(i, wdhm(i)) for i in [i * 15 for i in range(0, 4)] + [i * 60 for i in range(1, 9)] + [i * 120 for i in range(5, 12)] + [i * 24 * 60 for i in range(1, 8)]]
 	config.epg.histminutes = ConfigSelection(default=0, choices=choices)
 	def EpgHistorySecondsChanged(configElement):
 		eEPGCache.getInstance().setEpgHistorySeconds(int(configElement.value) * 60)
