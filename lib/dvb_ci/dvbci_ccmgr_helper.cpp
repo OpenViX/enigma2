@@ -24,7 +24,7 @@ int get_random(uint8_t *dest, int len)
 	fd = open(urnd, O_RDONLY);
 	if (fd <= 0)
 	{
-		eWarning("[CI RCC] cannot open %s", urnd);
+		eWarning("[dvbci_ccmgr_helper][CI RCC]1 cannot open %s", urnd);
 		return -1;
 	}
 
@@ -139,7 +139,7 @@ bool get_authdata(uint8_t *host_id, uint8_t *dhsk, uint8_t *akh, unsigned int sl
 	fd = open(filename, O_RDONLY);
 	if (fd <= 0)
 	{
-		eDebug("[CI%d RCC] can not open %s", slot, filename);
+		eDebug("[dvbci_ccmgr_helper][get_authdata][CI%d RCC]2 can not open %s", slot, filename);
 		return false;
 	}
 
@@ -147,7 +147,7 @@ bool get_authdata(uint8_t *host_id, uint8_t *dhsk, uint8_t *akh, unsigned int sl
 	{
 		if (read(fd, chunk, sizeof(chunk)) != sizeof(chunk))
 		{
-			eDebug("[CI%d RCC] can not read auth_data", slot);
+			eDebug("[dvbci_ccmgr_helper][get_authdata][CI%d RCC]3 can not read auth_data", slot);
 			close(fd);
 			return false;
 		}
@@ -158,7 +158,7 @@ bool get_authdata(uint8_t *host_id, uint8_t *dhsk, uint8_t *akh, unsigned int sl
 	memcpy(host_id, chunk, 8);
 	memcpy(dhsk, &chunk[8], 256);
 	memcpy(akh, &chunk[8 + 256], 32);
-
+	eDebug("[dvbci_ccmgr_helper][get_authdata][CI%d RCC]3 return true", slot);
 	return true;
 }
 
@@ -168,17 +168,18 @@ bool write_authdata(unsigned int slot, const uint8_t *host_id, const uint8_t *dh
 	int fd;
 	uint8_t buf[PAIR_SIZE * MAX_PAIRS];
 	int entries;
-
+	eDebug("[dvbci_ccmgr_helper][write_authdata][CI%d RCC] PAIR_SIZE: %d MAX_PAIRS: %d ", slot, PAIR_SIZE, MAX_PAIRS);
 	for (entries = 0; entries < MAX_PAIRS; entries++)
 	{
 		int offset = PAIR_SIZE * entries;
 		if (!get_authdata(&buf[offset], &buf[offset + 8], &buf[offset + 8 + 256], slot, entries))
+		{
 			break;
-
+		}
 		/* check if we got this pair already */
 		if (!memcmp(&buf[offset + 8 + 256], akh, 32))
 		{
-			eDebug("[CI%d RCC] data already stored", slot);
+			eDebug("[dvbci_ccmgr_helper][CI%d RCC] data already stored", slot);
 			return true;
 		}
 	}
@@ -196,21 +197,22 @@ bool write_authdata(unsigned int slot, const uint8_t *host_id, const uint8_t *dh
 	memcpy(buf + 8 + 256, akh, 32);
 	entries++;
 
-	eDebug("[CI%d RCC] %d entries for writing", slot, entries);
+	eDebug("dvbci_ccmgr_helper][write_authdata][CI%d RCC] %d entries for writing filename %s", slot, entries, filename);
 
 	get_authdata_filename(filename, sizeof(filename), slot);
 	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR);
 	if (fd < 0)
 	{
-		eWarning("[CI%d RCC] can not open %s", slot, filename);
+		eWarning("[dvbci_ccmgr_helper][write_authdata]][CI%d RCC]4 can not open %s", slot, filename);
 		return false;
 	}
 
 	if (write(fd, buf, PAIR_SIZE * entries) != PAIR_SIZE * entries)
-		eWarning("[CI%d RCC] error in write", slot);
-
+	{
+		eWarning("dvbci_ccmgr_helper][write_authdata][CI%d RCC] error in write", slot);
+	}
 	close(fd);
-
+	eDebug("[dvbci_ccmgr_helper][write_authdata][CI%d RCC]3 return true", slot);
 	return true;
 }
 
@@ -222,13 +224,13 @@ bool parameter_init(unsigned int slot, uint8_t* dh_p, uint8_t* dh_g, uint8_t* dh
 	fd = open("/etc/ciplus/param", O_RDONLY);
 	if (fd <= 0)
 	{
-		eDebug("[CI%d RCC] can not param file", slot);
+		eDebug("[dvbci_ccmgr_helper][CI%d RCC]5 can not param file", slot);
 		return false;
 	}
 
 	if (read(fd, buf, sizeof(buf)) != sizeof(buf))
 	{
-		eDebug("[CI%d RCC] can not read parameters", slot);
+		eDebug("[dvbci_ccmgr_helper][CI%d RCC]6 can not read parameters", slot);
 		close(fd);
 		return false;
 	}
@@ -255,13 +257,13 @@ RSA *rsa_privatekey_open(const char *filename)
 	fp = fopen(filename, "r");
 	if (!fp)
 	{
-		eWarning("[CI RCC] can not open %s", filename);
+		eWarning("[CI RCC]7 can not open %s", filename);
 		return NULL;
 	}
 
 	PEM_read_RSAPrivateKey(fp, &r, NULL, NULL);
 	if (!r)
-		eWarning("[CI RCC] can not read %s", filename);
+		eWarning("[CI RCC]8 can not read %s", filename);
 
 	fclose(fp);
 
@@ -276,13 +278,13 @@ X509 *certificate_open(const char *filename)
 	fp = fopen(filename, "r");
 	if (!fp)
 	{
-		eWarning("[CI RCC] can not open %s", filename);
+		eWarning("[CI RCC]9 can not open %s", filename);
 		return NULL;
 	}
 
 	cert = PEM_read_X509(fp, NULL, NULL, NULL);
 	if (!cert)
-		eWarning("[CI RCC] can not read %s", filename);
+		eWarning("[CI RCC]10 can not read %s", filename);
 
 	fclose(fp);
 
@@ -341,8 +343,9 @@ int verify_cb(int ok, X509_STORE_CTX *ctx)
 	if (X509_STORE_CTX_get_error(ctx) == X509_V_ERR_CERT_NOT_YET_VALID)
 	{
 		time_t now = time(NULL);
-		struct tm *t = localtime(&now);
-		if (t->tm_year < 2024)
+		struct tm t = {};
+		localtime_r(&now, &t);
+		if (t.tm_year < 2024)
 		{
 			eDebug("[CI RCC] seems our system clock is wrong - ignore!");
 			return 1;
@@ -383,13 +386,13 @@ X509 *certificate_load_and_check(X509_STORE *store, const char *filename)
 	cert = certificate_open(filename);
 	if (!cert)
 	{
-		eWarning("[CI RCC] can not open %s", filename);
+		eWarning("[CI RCC]11 can not open %s", filename);
 		return NULL;
 	}
 
 	if (!certificate_validate(store, cert))
 	{
-		eWarning("[CI RCC] can not validate %s", filename);
+		eWarning("[CI RCC]12 can not validate %s", filename);
 		X509_free(cert);
 		return NULL;
 	}
@@ -406,13 +409,13 @@ X509 *certificate_import_and_check(X509_STORE *store, const uint8_t *data, int l
 	cert = d2i_X509(NULL, &data, len);
 	if (!cert)
 	{
-		eWarning("[CI RCC] can not read certificate");
+		eWarning("[CI RCC]13 can not read certificate");
 		return NULL;
 	}
 
 	if (!certificate_validate(store, cert))
 	{
-		eWarning("[CI RCC] can not vaildate certificate\n");
+		eWarning("[CI RCC]14 can not vaildate certificate\n");
 		X509_free(cert);
 		return NULL;
 	}

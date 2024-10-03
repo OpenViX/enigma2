@@ -9,6 +9,7 @@
 #include <lib/dvb_ci/dvbci_ui.h>
 
 #include <openssl/aes.h>
+#include <openssl/err.h>
 
 
 eDVBCICcSession::eDVBCICcSession(eDVBCISlot *slot, int version):
@@ -30,8 +31,9 @@ eDVBCICcSession::eDVBCICcSession(eDVBCISlot *slot, int version):
 
 	memset(buf, 0, 1);
 	if (!m_ci_elements.set(STATUS_FIELD, buf, 1))
+	{
 		eWarning("[CI%d RCC] can not set status", m_slot->getSlotID());
-
+	}
 	memset(buf, 0, 32);
 	buf[31] = 0x01; // URI_PROTOCOL_V1
 	if (version >= 2)
@@ -40,8 +42,9 @@ eDVBCICcSession::eDVBCICcSession(eDVBCISlot *slot, int version):
 		buf[31] |= 0x04; // URI_PROTOCOL_V4
 
 	if (!m_ci_elements.set(URI_VERSIONS, buf, 32))
+	{
 		eWarning("[CI%d RCC] can not set uri_versions", m_slot->getSlotID());
-
+	}
 	if (!get_authdata(host_id, m_dhsk, buf, m_slot->getSlotID(), m_akh_index))
 	{
 		memset(buf, 0, sizeof(buf));
@@ -49,10 +52,13 @@ eDVBCICcSession::eDVBCICcSession(eDVBCISlot *slot, int version):
 	}
 
 	if (!m_ci_elements.set(AKH, buf, 32))
-		eWarning("[CI%d RCC] can not set AKH", m_slot->getSlotID());
-
+	{
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not set AKH", m_slot->getSlotID());
+	}
 	if (!m_ci_elements.set(HOST_ID, host_id, 8))
-		eWarning("[CI%d RCC] can not set host_id", m_slot->getSlotID());
+	{
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not set host_id", m_slot->getSlotID());
+	}
 }
 
 eDVBCICcSession::~eDVBCICcSession()
@@ -95,7 +101,7 @@ int eDVBCICcSession::receivedAPDU(const unsigned char *tag, const void *data, in
 			case 0x07: cc_sac_data_req((const uint8_t *)data, len); break;
 			case 0x09: cc_sac_sync_req((const uint8_t *)data, len); break;
 			default:
-				eWarning("[CI%d RCC] unknown APDU tag %02x", m_slot->getSlotID(), tag[2]); break;
+				eWarning("[dvbci_ccmgr][CI%d RCC] unknown APDU tag %02x", m_slot->getSlotID(), tag[2]); break;
 		}
 	}
 
@@ -134,7 +140,6 @@ void eDVBCICcSession::addProgram(uint16_t program_number, std::vector<uint16_t>&
 
 	for (std::vector<uint16_t>::iterator it = pids.begin(); it != pids.end(); ++it)
 		descrambler_set_pid(m_descrambler_fd, m_slot->getSlotID(), 1, *it);
-
 }
 
 void eDVBCICcSession::removeProgram(uint16_t program_number, std::vector<uint16_t>& pids)
@@ -166,10 +171,10 @@ void eDVBCICcSession::cc_data_req(const uint8_t *data, unsigned int len)
 	int id_bitmask;
 	int answ_len;
 	unsigned int rp = 0;
-
+	eDebug("[dvbci_ccmgr][cc_data_req][CI%d RCC]0 rp %u\n",  m_slot->getSlotID(), rp);
 	if (len < 2)
 	{
-		eWarning("[CI%d RCC] too short data", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][cc_data_req][CI%d RCC] too short data", m_slot->getSlotID());
 		return;
 	}
 
@@ -186,7 +191,7 @@ void eDVBCICcSession::cc_data_req(const uint8_t *data, unsigned int len)
 	unsigned int dest_len = sizeof(dest);
 	if (dest_len < 2)
 	{
-		eWarning("[CI%d RCC] not enough space", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][cc_data_req][CI%d RCC] not enough space", m_slot->getSlotID());
 		return;
 	}
 
@@ -196,7 +201,7 @@ void eDVBCICcSession::cc_data_req(const uint8_t *data, unsigned int len)
 	answ_len = data_req_loop(&dest[2], dest_len - 2, &data[rp], len - rp, dt_nr);
 	if (answ_len <= 0)
 	{
-		eWarning("[CI%d RCC] can not get data", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][cc_data_req][CI%d RCC] can not get data", m_slot->getSlotID());
 		return;
 	}
 
@@ -227,7 +232,7 @@ void eDVBCICcSession::cc_sac_data_req(const uint8_t *data, unsigned int len)
 	if (len < 10)
 		return;
 
-	eTraceNoNewLineStart("[CI%d RCC] cc_sac_data_req: ", m_slot->getSlotID());
+	eTraceNoNewLineStart("[dvbci_ccmgr][CI%d RCC] cc_sac_data_req: ", m_slot->getSlotID());
 	traceHexdump(data, len);
 
 	memcpy(tmp, data, 8);
@@ -236,12 +241,12 @@ void eDVBCICcSession::cc_sac_data_req(const uint8_t *data, unsigned int len)
 
 	if (!sac_check_auth(data, len))
 	{
-		eWarning("[CI%d RCC] check_auth of message failed", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] check_auth of message failed", m_slot->getSlotID());
 		return;
 	}
 
 	serial = UINT32(&data[rp], 4);
-	//eDebug("%u\n", serial);
+	eDebug("[dvbci_ccmgr]CI%d RCC] serial %u\n",  m_slot->getSlotID(), serial);
 
 	/* skip serial & header */
 	rp += 8;
@@ -254,7 +259,7 @@ void eDVBCICcSession::cc_sac_data_req(const uint8_t *data, unsigned int len)
 
 	if (len < rp + 1)
 	{
-		eWarning("[CI%d RCC] check_auth of message too short", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] check_auth of message too short", m_slot->getSlotID());
 		return;
 	}
 
@@ -265,7 +270,7 @@ void eDVBCICcSession::cc_sac_data_req(const uint8_t *data, unsigned int len)
 
 	if (dest_len < 10)
 	{
-		eWarning("[CI%d RCC] not enough space", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] not enough space", m_slot->getSlotID());
 		return;
 	}
 
@@ -278,7 +283,7 @@ void eDVBCICcSession::cc_sac_data_req(const uint8_t *data, unsigned int len)
 	answ_len = data_req_loop(&dest[pos], dest_len - 10, &data[rp], len - rp, dt_nr);
 	if (answ_len <= 0)
 	{
-		eWarning("[CI%d RCC] can not get data", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not get data", m_slot->getSlotID());
 		return;
 	}
 	pos += answ_len;
@@ -293,11 +298,11 @@ void eDVBCICcSession::cc_sac_sync_req(const uint8_t *data, unsigned int len)
 	unsigned int serial;
 	int pos = 0;
 
-	eTraceNoNewLineStart("[CI%d RCC] cc_sac_sync_req: ", m_slot->getSlotID());
+	eTraceNoNewLineStart("[dvbci_ccmgr][CI%d RCC] cc_sac_sync_req: ", m_slot->getSlotID());
 	traceHexdump(data, len);
 
 	serial = UINT32(data, 4);
-	eTrace("[CI%d RCC] serial %u\n", m_slot->getSlotID(), serial);
+	eTrace("[dvbci_ccmgr][CI%d RCC] serial %u\n", m_slot->getSlotID(), serial);
 
 	pos += BYTE32(&dest[pos], serial);
 	pos += BYTE32(&dest[pos], 0x01000000);
@@ -314,7 +319,7 @@ void eDVBCICcSession::cc_sac_send(const uint8_t *tag, uint8_t *data, unsigned in
 {
 	if (pos < 8)
 	{
-		eWarning("[CI%d RCC] too short data", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] too short data", m_slot->getSlotID());
 		return;
 	}
 
@@ -347,7 +352,7 @@ int eDVBCICcSession::data_get_loop(const uint8_t *data, unsigned int datalen, un
 		if (pos + dt_len > datalen)
 			return 0;
 
-		eTraceNoNewLineStart("[CI%d RCC] set element %d: ", m_slot->getSlotID(), dt_id);
+		eTraceNoNewLineStart("[dvbci_ccmgr][data_get_loop][CI%d RCC] set element %d: ", m_slot->getSlotID(), dt_id);
 		traceHexdump(&data[pos], dt_len);
 
 		m_ci_elements.set(dt_id, &data[pos], dt_len);
@@ -378,14 +383,14 @@ int eDVBCICcSession::data_req_loop(uint8_t *dest, unsigned int dest_len, const u
 		len = m_ci_elements.get_buf(NULL, dt_id);
 		if ((len + 3) > dest_len)
 		{
-			eWarning("[CI%d RCC] req element %d: not enough space", m_slot->getSlotID(), dt_id);
+			eWarning("[dvbci_ccmgr][data_req_loop][CI%d RCC] req element %d: not enough space", m_slot->getSlotID(), dt_id);
 			return -1;
 		}
 
 		len = m_ci_elements.get_req(dest, dt_id);
 		if (len > 0)
 		{
-			eTraceNoNewLineStart("[CI%d RCC] req element %d: ", m_slot->getSlotID(), dt_id);
+			eTraceNoNewLineStart("[dvbci_ccmgr][data_req_loop][CI%d RCC] req element %d: ", m_slot->getSlotID(), dt_id);
 			traceHexdump(&dest[3], len - 3);
 		}
 
@@ -434,7 +439,7 @@ int eDVBCICcSession::data_get_handle_new(unsigned int id)
 			break;
 
 		default:
-			eWarning("[CI%d RCC] unhandled id %u", m_slot->getSlotID(), id);
+			eWarning("[dvbci_ccmgr][data_get_handle_new][CI%d RCC] unhandled id %x", m_slot->getSlotID(), id);
 			break;
 	}
 
@@ -457,10 +462,10 @@ int eDVBCICcSession::data_req_handle_new(unsigned int id)
 					m_akh_index = 5;
 
 				if (!m_ci_elements.set(AKH, akh, 32))
-					eWarning("[CI%d RCC] can not set AKH in elements", m_slot->getSlotID());
+					eWarning("[dvbci_ccmgr][CI%d RCC] can not set AKH in elements", m_slot->getSlotID());
 
 				if (!m_ci_elements.set(HOST_ID, host_id, 8))
-					eWarning("[CI%d RCC] can not set host_id in elements", m_slot->getSlotID());
+					eWarning("[dvbci_ccmgr][CI%d RCC] can not set host_id in elements", m_slot->getSlotID());
 			}
 			break;
 		}
@@ -497,9 +502,10 @@ int eDVBCICcSession::generate_akh()
 int eDVBCICcSession::compute_dh_key()
 {
 	int len = DH_size(m_dh);
+	eWarning("[dvbci_ccmgr][CI%d RCC][compute_dh_key()] DH_size(m_dh: %x", m_slot->getSlotID(), len);	
 	if (len > 256)
 	{
-		eWarning("[CI%d RCC] too long shared key", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] too long shared key", m_slot->getSlotID());
 		return -1;
 	}
 
@@ -532,7 +538,7 @@ int eDVBCICcSession::compute_dh_key()
 		eDebug("[CI%d RCC] too small public key", m_slot->getSlotID());
 	if (codes & DH_CHECK_PUBKEY_TOO_LARGE)
 		eDebug("[CI%d RCC] too large public key", m_slot->getSlotID());
-
+	eDebug("[dvbci_ccmgr][comput_dh_key][CI%d RCC] DH_check_pub_key OK", m_slot->getSlotID());
 	int gap = 256 - len;
 	memset(m_dhsk, 0, gap);
 	DH_compute_key(m_dhsk + gap, bn_in, m_dh);
@@ -561,7 +567,7 @@ bool eDVBCICcSession::check_dh_challenge()
 
 	m_akh_index = 5;
 
-	eDebug("[CI%d RCC] writing...", m_slot->getSlotID());
+	eDebug("[dvbci_ccmgr][check_dh_challenge][CI%d RCC] writing auth...", m_slot->getSlotID());
 	write_authdata(m_slot->getSlotID(), m_ci_elements.get_ptr(HOST_ID), m_dhsk, m_ci_elements.get_ptr(AKH));
 
 	return true;
@@ -589,22 +595,23 @@ int eDVBCICcSession::generate_dh_key()
 	len = BN_num_bytes(pub_key);
 	if (len > 256)
 	{
-		eWarning("[CI%d RCC] too long public key", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] too long public key", m_slot->getSlotID());
 		return -1;
 	}
-
+	eDebug("[dvbci_ccmgr][generate_dh_key][CI%d RCC]3 generate key len %x...", m_slot->getSlotID(), len);
 #if 0
+	eDebug("[dvbci_ccmgr][generate_dh_key][CI%d RCC]4 generate key...", m_slot->getSlotID());
 	// verify DHPH
 	BN_CTX *ctx = BN_CTX_new();
 	BIGNUM *out = BN_new();
 
 	if (BN_cmp(BN_value_one(), m_dh->pub_key) >= 0)
-		eWarning("[CI%d RCC] DHPH <= 1!!!", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] DHPH <= 1!!!", m_slot->getSlotID());
 	if (BN_cmp(m_dh->pub_key, m_dh->p) >= 0)
-		eWarning("[CI%d RCC] DHPH >= dh_p!!!", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] DHPH >= dh_p!!!", m_slot->getSlotID());
 	BN_mod_exp(out, m_dh->pub_key, m_dh->q, m_dh->p, ctx);
 	if (BN_cmp(out, BN_value_one()) != 0)
-		eWarning("[CI%d RCC] DHPH ^ dh_q mod dh_p != 1!!!", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] DHPH ^ dh_q mod dh_p != 1!!!", m_slot->getSlotID());
 
 	BN_free(out);
 	BN_CTX_free(ctx);
@@ -615,7 +622,7 @@ int eDVBCICcSession::generate_dh_key()
 	BN_bn2bin(pub_key, &dhph[gap]);
 
 	m_ci_elements.set(DHPH, dhph, sizeof(dhph));
-
+	eDebug("[dvbci_ccmgr][generate_dh_key][CI%d RCC]5 generate key...", m_slot->getSlotID());
 	return 0;
 }
 
@@ -657,7 +664,7 @@ int eDVBCICcSession::generate_sign_A()
 	m_rsa_device_key = rsa_privatekey_open("/etc/ciplus/device.pem");
 	if (!m_rsa_device_key)
 	{
-		eWarning("[CI%d RCC] can not read private key", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not read private key", m_slot->getSlotID());
 		return -1;
 	}
 
@@ -665,7 +672,7 @@ int eDVBCICcSession::generate_sign_A()
 	RSA_private_encrypt(sizeof(dbuf), dbuf, sign_A, m_rsa_device_key, RSA_NO_PADDING);
 
 	m_ci_elements.set(SIGNATURE_A, sign_A, sizeof(sign_A));
-
+	eDebug("[dvbci_ccmgr][generate_sign_A][CI%d RCC]3 generated sign...", m_slot->getSlotID());
 	return 0;
 }
 
@@ -674,18 +681,18 @@ int eDVBCICcSession::restart_dh_challenge()
 	if (!m_ci_elements.valid(AUTH_NONCE))
 		return -1;
 
-	//eDebug("[CI%d RCC] rechecking...", m_slot->getSlotID());
+//	eDebug("[dvbci_ccmgr][restart_dh_challenge][CI%d RCC] rechecking...", m_slot->getSlotID());
 
 	m_root_ca_store = X509_STORE_new();
 	if (!m_root_ca_store)
 	{
-		eWarning("[CI%d RCC] can not create root_ca", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][restart_dh_challenge][CI%d RCC] can not create root_ca", m_slot->getSlotID());
 		return -1;
 	}
 
 	if (X509_STORE_load_locations(m_root_ca_store, "/etc/ciplus/root.pem", NULL) != 1)
 	{
-		eWarning("[CI%d RCC] can not load root_ca", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][restart_dh_challenge][CI%d RCC] can not load root_ca", m_slot->getSlotID());
 		return -1;
 	}
 
@@ -694,25 +701,26 @@ int eDVBCICcSession::restart_dh_challenge()
 
 	if (!m_cust_cert || !m_device_cert)
 	{
-		eWarning("[CI%d RCC] can not check loader certificates", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][restart_dh_challenge][CI%d RCC] can not check loader certificates", m_slot->getSlotID());
 		return -1;
 	}
 
 	if (!ci_element_set_certificate(HOST_BRAND_CERT, m_cust_cert))
-		eWarning("[CI%d RCC] can not store brand certificate", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not store brand certificate", m_slot->getSlotID());
 
 	if (!ci_element_set_certificate(HOST_DEV_CERT, m_device_cert))
-		eWarning("[CI%d RCC] can not store device certificate", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not store device certificate", m_slot->getSlotID());
 
 	if (!ci_element_set_hostid_from_certificate(HOST_ID, m_device_cert))
-		eWarning("[CI%d RCC] can not store HOST_ID", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not store HOST_ID", m_slot->getSlotID());
 
 	m_ci_elements.invalidate(CICAM_ID);
 	m_ci_elements.invalidate(DHPM);
 	m_ci_elements.invalidate(SIGNATURE_B);
 	m_ci_elements.invalidate(AKH);
-
+	eDebug("[dvbci_ccmgr][restart_dh_challenge][CI%d RCC] generate key...", m_slot->getSlotID());
 	generate_dh_key();
+	eDebug("[dvbci_ccmgr][restart_dh_challenge][CI%d RCC] generate sign...", m_slot->getSlotID());
 	generate_sign_A();
 
 	return 0;
@@ -724,7 +732,7 @@ int eDVBCICcSession::generate_uri_confirm()
 	uint8_t uck[32];
 	uint8_t uri_confirm[32];
 
-	//eDebug("[CI%d RCC] uri_confirm...", m_slot->getSlotID());
+//	eDebug("[dvbci_ccmgr][CI%d RCC] uri_confirm...", m_slot->getSlotID());
 
 	// UCK
 	SHA256_Init(&sha);
@@ -756,7 +764,7 @@ void eDVBCICcSession::check_new_key()
 	if (!m_ci_elements.valid(KEY_REGISTER))
 		return;
 
-	//eDebug("[CI%d RCC] key checking...", m_slot->getSlotID());
+//	eDebug("[dvbci_ccmgr][CI%d RCC] key checking...", m_slot->getSlotID());
 
 	kp = m_ci_elements.get_ptr(KP);
 	m_ci_elements.get_buf(&slot, KEY_REGISTER);
@@ -786,7 +794,7 @@ void eDVBCICcSession::check_new_key()
  * Sets new key or old one if /dev/caX device has changed */
 void eDVBCICcSession::set_descrambler_key()
 {
-	eDebug("[CI%d RCC] set_descrambler_key", m_slot->getSlotID());
+	eDebug("[dvbci_ccmgr][CI%d RCC] set_descrambler_key", m_slot->getSlotID());
 	bool set_key = (m_current_ca_demux_id != m_slot->getCADemuxID()) || (m_slot->getTunerNum() > 7);
 
 	if (m_descrambler_fd != -1 && m_current_ca_demux_id != m_slot->getCADemuxID())
@@ -804,7 +812,7 @@ void eDVBCICcSession::set_descrambler_key()
 
 	if  (m_descrambler_fd != -1 && (set_key || m_descrambler_new_key))
 	{
-		eDebug("[CI%d RCC] setting key: new ca device: %d, new key: %d", m_slot->getSlotID(), set_key, m_descrambler_new_key);
+		eDebug("[dvbci_ccmgr][CI%d RCC] setting key: new ca device: %d, new key: %d", m_slot->getSlotID(), set_key, m_descrambler_new_key);
 		descrambler_set_key(m_descrambler_fd, m_slot, m_descrambler_odd_even, m_descrambler_key_iv);
 		if (m_descrambler_new_key)
 		{
@@ -854,12 +862,12 @@ int eDVBCICcSession::generate_SAK_SEK()
 
 bool eDVBCICcSession::sac_check_auth(const uint8_t *data, unsigned int len)
 {
-	struct aes_xcbc_mac_ctx ctx;
+	struct aes_xcbc_mac_ctx ctx = {};
 	uint8_t calced_signature[16];
 
 	if (len < 16)
 	{
-		eWarning("[CI%d RCC] signature too short", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] signature too short", m_slot->getSlotID());
 		return false;
 	}
 
@@ -870,7 +878,7 @@ bool eDVBCICcSession::sac_check_auth(const uint8_t *data, unsigned int len)
 
 	if (memcmp(&data[len - 16], calced_signature, 16))
 	{
-		eWarning("[CI%d RCC] signature wrong", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] signature wrong", m_slot->getSlotID());
 		return false;
 	}
 
@@ -881,7 +889,7 @@ bool eDVBCICcSession::sac_check_auth(const uint8_t *data, unsigned int len)
 
 int eDVBCICcSession::sac_gen_auth(uint8_t *out, uint8_t *in, unsigned int len)
 {
-	struct aes_xcbc_mac_ctx ctx;
+	struct aes_xcbc_mac_ctx ctx = {};
 
 	aes_xcbc_mac_init(&ctx, m_sak);
 	aes_xcbc_mac_process(&ctx, (uint8_t *)"\x04", 1); /* header len */
@@ -913,14 +921,14 @@ X509 *eDVBCICcSession::import_ci_certificates(unsigned int id)
 
 	if (!m_ci_elements.valid(id))
 	{
-		eWarning("[CI%d RCC] %u not valid", m_slot->getSlotID(), id);
+		eWarning("[dvbci_ccmgr][CI%d RCC] %u not valid", m_slot->getSlotID(), id);
 		return NULL;
 	}
 
 	cert = certificate_import_and_check(m_root_ca_store, m_ci_elements.get_ptr(id), m_ci_elements.get_buf(NULL, id));
 	if (!cert)
 	{
-		eWarning("[CI%d RCC] can not verify certificate %u", m_slot->getSlotID(), id);
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not verify certificate %u", m_slot->getSlotID(), id);
 		return NULL;
 	}
 
@@ -937,19 +945,19 @@ int eDVBCICcSession::check_ci_certificates()
 
 	if ((m_ci_cust_cert = import_ci_certificates(CICAM_BRAND_CERT)) == NULL)
 	{
-		eWarning("[CI%d RCC] can not import CICAM brand certificate", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not import CICAM brand certificate", m_slot->getSlotID());
 		return -1;
 	}
 
 	if ((m_ci_device_cert = import_ci_certificates(CICAM_DEV_CERT)) == NULL)
 	{
-		eWarning("[CI%d RCC] can not import CICAM device certificate", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not import CICAM device certificate", m_slot->getSlotID());
 		return -1;
 	}
 
 	if (!ci_element_set_hostid_from_certificate(CICAM_ID, m_ci_device_cert))
 	{
-		eWarning("[CI%d RCC] can not store CICAM_ID", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not store CICAM_ID", m_slot->getSlotID());
 		return -1;
 	}
 
@@ -964,12 +972,12 @@ bool eDVBCICcSession::ci_element_set_certificate(unsigned int id, X509 *cert)
 	cert_len = i2d_X509(cert, &cert_der);
 	if (cert_len <= 0)
 	{
-		eWarning("[CI%d RCC] can not encode certificate", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not encode certificate", m_slot->getSlotID());
 		return false;
 	}
 
 	if (!m_ci_elements.set(id, cert_der, cert_len)) {
-		eWarning("[CI%d RCC] can not store certificate id %u", m_slot->getSlotID(), id);
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not store certificate id %u", m_slot->getSlotID(), id);
 		return false;
 	}
 
@@ -986,7 +994,7 @@ bool eDVBCICcSession::ci_element_set_hostid_from_certificate(unsigned int id, X5
 
 	if ((id != 5) && (id != 6))
 	{
-		eWarning("[CI%d RCC] wrong datatype_id %u for device id", m_slot->getSlotID(), id);
+		eWarning("[dvbci_ccmgr][CI%d RCC] wrong datatype_id %u for device id", m_slot->getSlotID(), id);
 		return false;
 	}
 
@@ -995,17 +1003,17 @@ bool eDVBCICcSession::ci_element_set_hostid_from_certificate(unsigned int id, X5
 
 	if (strlen(hostid) != 16)
 	{
-		eWarning("[CI%d RCC] bad device id", m_slot->getSlotID());
+		eWarning("[dvbci_ccmgr][CI%d RCC] bad device id", m_slot->getSlotID());
 		return false;
 	}
 
-	//eDebug("[CI%d RCC] DEVICE_ID: %s", m_slot->getSlotID(), hostid);
+//	eDebug("[dvbci_ccmgr][CI%d RCC] DEVICE_ID: %s", m_slot->getSlotID(), hostid);
 
 	str2bin(bin_hostid, hostid, 16);
 
 	if (!m_ci_elements.set(id, bin_hostid, sizeof(bin_hostid)))
 	{
-		eWarning("[CI%d RCC] can not store device id %u", m_slot->getSlotID(), id);
+		eWarning("[dvbci_ccmgr][CI%d RCC] can not store device id %u", m_slot->getSlotID(), id);
 		return false;
 	}
 

@@ -420,8 +420,16 @@ if test "$BOXTYPE" == "dm900" -o "$BOXTYPE" == "dm920"; then
 	AC_DEFINE(HAVE_HDMIIN_DM, 1,[has hdmi in dm])
 	AC_DEFINE(LCD_DM900_Y_OFFSET, 4,[define LCD Y offset for dm900 and dm920])
 	AC_DEFINE(DREAMBOX_DUAL_TUNER, 1,[define it is dreambox dual tuner present])
-	AC_DEFINE(USE_ALTERNATE_CA_HANDLING, 1,[define it so to use additional ca device freeing])
 	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
+fi
+
+if test "$BOXTYPE" == "dm900"; then
+	AC_DEFINE(DM900, 1, [Dreambox hardware])
+fi
+
+if test "$BOXTYPE" == "dm920"; then
+	AC_DEFINE(DM920, 1, [Dreambox hardware])
+	AC_DEFINE(USE_ALTERNATE_CA_HANDLING, 1,[define it so to use additional ca device freeing])
 fi
 
 if test `echo "$BOXTYPE" | cut -b 1-2` == "gb"; then
