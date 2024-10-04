@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-09-28 15:51+0300\n"
+"PO-Revision-Date: 2024-10-04 19:32+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3634,8 +3634,8 @@ msgstr "Määrittää ylimääräisen viiveen parantamaan tekstitysten ajoitusta
 msgid "Configure duration of inactivity before the hard disk drive goes to standby"
 msgstr "Määritä joutoaika, jonka jälkeen kiintolevy siirtyy valmiustilaan"
 
-msgid "Configure for how many minutes finished events should remain visible in the EPG. Useful when you need information about an event which has just finished, or has been delayed."
-msgstr "Määrittää kuinka monta minuuttia päättyneiden ohjelmien ohjelmatietoja pidetään näkyvillä ohjelmaoppaassa. Käytännöllinen, kun haluat tietoja ohjelmasta joka on juuri päättynyt tai ohjelma on viivästynyt."
+msgid "Configure how long finished events should remain visible in the EPG. Useful when you need information about an event which has just finished, or has been delayed (or for plugins that support catchup)."
+msgstr "Määritä, kuinka kauan päättyneiden ohjelmien tulee olla näkyvissä EPG:ssä. Hyödyllinen, kun tarvitset tietoa ohjelmasta, joka on juuri päättynyt tai joka on viivästynyt (tai lisäosille, joilla ohjelman voi aloittaa alusta)."
 
 msgid "Configure how recording filenames are constructed."
 msgstr "Määritä tallenteiden tiedostonimien rakenne."
@@ -7966,7 +7966,7 @@ msgid "Main menu"
 msgstr "Päävalikko"
 
 msgid "Maintain old EPG data for"
-msgstr "Säilytä vanhoja ohjelmatietoja (min)"
+msgstr "Säilytä vanhoja ohjelmatietoja"
 
 msgid "Make settings backup"
 msgstr "Tee asetusten varmuuskopio"
@@ -13545,7 +13545,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 28.09.2024 ---\n"
+"--- 04.10.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -19572,3 +19572,18 @@ msgstr "Valitse palautettavat suosikkilistat"
 
 msgid "Restore selected"
 msgstr "Palauta valitut"
+
+msgid "week"
+msgstr "viikko"
+
+msgid "hour"
+msgstr "tunti"
+
+msgid "weeks"
+msgstr "viikkoa"
+
+msgid "days"
+msgstr "päivää"
+
+msgid "hours"
+msgstr "tuntia"
