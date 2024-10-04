@@ -19587,3 +19587,7 @@ msgstr "päivää"
 
 msgid "hours"
 msgstr "tuntia"
+
+msgid "0 minutes"
+msgstr "0 minuuttia"
+
