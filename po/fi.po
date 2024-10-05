@@ -19597,5 +19597,8 @@ msgstr "Sulje CA-laite ohjelman lopussa"
 msgid "Offset CA device index"
 msgstr "Offset CA-laiteindeksi"
 
+msgid "Offset and close CA device"
+msgstr "Offset ja sulje CA-laite"
+
 msgid "Descrambling options"
 msgstr "Salauksen purkuvaihtoehdot"
