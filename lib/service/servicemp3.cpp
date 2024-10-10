@@ -475,7 +475,10 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 				{
 					m_currentAudioStream = it->ampeg_pid;
 					m_currentSubtitleStream = it->subtitle_pid;
-					m_cachedSubtitleStream = m_currentSubtitleStream;
+					if (m_currentSubtitleStream == -1)
+						m_cachedSubtitleStream = -2;
+					else
+						m_cachedSubtitleStream = m_currentSubtitleStream;
 					eDebug("[eServiceMP3] Init start iptv_service use sref pid's");				
 				}
 			}
@@ -714,7 +717,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		else
 		{
 			m_subs_to_pull_handler_id = g_signal_connect (subsink, "new-buffer", G_CALLBACK (gstCBsubtitleAvail), this);
-			g_object_set (G_OBJECT (subsink), "caps", gst_caps_from_string("text/plain; text/x-plain; text/x-raw; text/x-pango-markup; subpicture/x-dvd; subpicture/x-pgs"), NULL);
+			g_object_set (G_OBJECT (subsink), "caps", gst_caps_from_string("text/plain; text/x-plain; text/x-raw; text/x-pango-markup; subpicture/x-dvd; subpicture/x-dvb; subpicture/x-pgs"), NULL);
 			g_object_set (G_OBJECT (m_gst_playbin), "text-sink", subsink, NULL);
 			g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
 		}
@@ -1715,6 +1718,8 @@ subtype_t getSubtitleType(GstPad* pad, gchar *g_codec=NULL)
 			{
 				if ( !strcmp(g_type, "subpicture/x-dvd") )
 					type = stVOB;
+				else if ( !strcmp(g_type, "subpicture/x-dvb") )
+					type = stDVB;
 				else if ( !strcmp(g_type, "text/x-pango-markup") )
 					type = stSRT;
 				else if ( !strcmp(g_type, "text/plain") || !strcmp(g_type, "text/x-plain") || !strcmp(g_type, "text/x-raw") )
@@ -2894,6 +2899,17 @@ RESULT eServiceMP3::getSubtitleList(std::vector<struct SubtitleTrack> &subtitlel
 		case stVOB:
 		case stPGS:
 			break;
+		case stDVB:
+		{
+			struct SubtitleTrack track = {};
+			track.type = 0;
+			track.pid = stream_idx;
+			track.page_number = int(type);
+			track.magazine_number = 0;
+			track.language_code = IterSubtitleStream->language_code;
+			subtitlelist.push_back(track);
+			break;
+		}
 		default:
 		{
 			struct SubtitleTrack track = {};
