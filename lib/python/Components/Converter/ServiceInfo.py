@@ -162,8 +162,8 @@ class ServiceInfo(Poll, Converter):
 	@cached
 	def getBoolean(self):
 		service = self.source.service
-		info = service and service.info()
 		isRef = isinstance(service, eServiceReference)
+		info = service.info() if (service and not isRef) else None
 		if not info:
 			return False
 		video_height = 0
