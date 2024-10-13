@@ -157,6 +157,17 @@
 		<panel name="SummaryTunerStatusPanel" />
 		<panel name="SummaryClockPanel" />
 	</screen>
+	<screen name="CatchupPlayerSummary" position="fill"> 
+		<widget source="session.CurrentService" render="Label" position="20,50" size="360,170" font="FdLcD;40" halign="center" valign="bottom" zPosition="2">
+			<convert type="ServiceName">Name</convert>
+		</widget>
+		<widget source="parent.progress_summary" render="Progress" position="20,150" size="360,16" borderColor="white" borderWidth="2" zPosition="2"/>
+		<widget source="parent.time_elapsed_summary" render="Label" position="20,180" size="240,40" font="FdLcD;32" halign="left" valign="center"/>
+		<widget source="parent.time_remaining_summary" render="Label" position="140,180" size="240,40" font="FdLcD;32" halign="right" valign="center"/>
+		<widget source="global.CurrentTime" render="Label" position="240,10" size="150,50" font="FdLcD;40" halign="right">
+			<convert type="ClockToText">Default</convert>
+		</widget>
+	</screen>
 	<screen name="MovieContextMenuSummary" position="0,0" size="400,240">
 		<widget source="parent.Title" render="Label" position="0,38" size="400,45" font="FdLcD;40" halign="left" valign="top" noWrap="1" />
 		<widget source="selected" render="Label" position="0,86" size="400,28" font="FdLcD;22" halign="left" valign="top" />

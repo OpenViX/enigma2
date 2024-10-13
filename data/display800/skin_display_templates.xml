@@ -327,7 +327,7 @@
 		<widget source="selected" render="Label" position="40,270" size="720,200" font="FdLcDLight;60" halign="center" valign="top" />
 	</screen>
 
-	<!-- MOVIE PLAYER-->
+	<!-- MOVIE PLAYER -->
 	<screen name="InfoBarMoviePlayerSummary" position="0,0" size="800,480"> 
 		<widget source="session.CurrentService" render="Label" position="40,90" size="720,260" font="FdLcD;75" foregroundColor="white" halign="center" valign="center" zPosition="2">
 			<convert type="ServiceName">Name</convert>
@@ -344,6 +344,19 @@
 		</widget>
 		<widget name="statusicon_summary" position="357,370" size="85,85" pixmaps="play.png,pause.png,stop.png,forward.png,backward.png,slow.png" zPosition="2" />
 		<widget source="global.CurrentTime" render="Label" position="540,10" size="220,84" font="FdLcD;84" halign="left">
+			<convert type="ClockToText">Default</convert>
+		</widget>
+	</screen>
+
+	<screen name="CatchupPlayerSummary" position="0,0" size="800,480" resolution="800,480"> 
+		<widget source="session.CurrentService" render="Label" position="40,90" size="720,260" font="Regular;75" foregroundColor="white" halign="center" valign="center" zPosition="2">
+			<convert type="ServiceName">Name</convert>
+		</widget>
+		<widget source="parent.progress_summary" render="Progress" position="40,340" size="720,30" borderColor="white" borderWidth="2" zPosition="2"/>
+		<widget source="parent.time_elapsed_summary" render="Label" position="40,385" size="320,70" font="Regular;60" foregroundColor="white" halign="left" valign="center"/>
+		<widget source="parent.time_remaining_summary" render="Label" position="440,385" size="320,70" font="Regular;60" foregroundColor="white" halign="right" valign="center"/>
+		<widget name="parent.statusicon_summary" position="357,370" size="85,85" pixmaps="play.png,pause.png,stop.png,forward.png,backward.png,slow.png" zPosition="2" />
+		<widget source="global.CurrentTime" render="Label" position="540,10" size="220,84" font="Regular;84" halign="left">
 			<convert type="ClockToText">Default</convert>
 		</widget>
 	</screen>
@@ -375,18 +388,6 @@
 	</screen>
 
 	<!-- STANDBY -->
-	<screen name="StandbySummary" position="0,0" size="800,480"> 
-		<widget source="global.CurrentTime" render="Label" position="40,40" size="720,110" font="FdLcD;100" foregroundColor="white" halign="center" valign="center" zPosition="1">
-			<convert type="ClockToText">ShortDate</convert>
-		</widget>
-		<widget source="global.CurrentTime" render="Label" position="40,190" size="720,180" font="FdLcD;165" foregroundColor="white" halign="center" valign="center" zPosition="1">
-			<convert type="ClockToText">Default</convert>
-		</widget>
-		<widget source="session.FrontendInfo" render="Label" position="40,380" size="720,70" font="FdLcD;65" foregroundColor="white" halign="left" valign="center" zPosition="2">
-			<convert type="FrontendInfo">USE_TUNERS_STRING</convert>
-		</widget>
-	</screen>
-
 	<!-- ET PORTAL -->
 	<screen name="EtPortalScreenSummary" position="0,0" size="800,480">
 		<eLabel text="EtPortal" position="15,20" foregroundColor="white" size="670,120" font="FdLcD;70" halign="center" valign="top" noWrap="1" />

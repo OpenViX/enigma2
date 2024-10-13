@@ -357,6 +357,18 @@
 		<panel name="Yellow_Clock_Panel" />
 	</screen>
 
+	<screen name="CatchupPlayerSummary" position="fill"> 
+		<widget source="session.CurrentService" render="Label" position="20,50" size="440,170" font="FdLcD;40" halign="center" valign="bottom" zPosition="2">
+			<convert type="ServiceName">Name</convert>
+		</widget>
+		<widget source="parent.progress_summary" render="Progress" position="20,230" size="440,16" borderColor="white" borderWidth="2" zPosition="2"/>
+		<widget source="parent.time_elapsed_summary" render="Label" position="20,265" size="320,40" font="FdLcD;32" halign="left" valign="center"/>
+		<widget source="parent.time_remaining_summary" render="Label" position="220,265" size="240,40" font="FdLcD;32" halign="right" valign="center"/>
+		<widget source="global.CurrentTime" render="Label" position="310,10" size="150,50" font="FdLcD;40" halign="right">
+			<convert type="ClockToText">Default</convert>
+		</widget>
+	</screen>
+
 	<screen name="MovieContextMenuSummary" position="0,0" size="480,320">
 		<widget source="parent.Title" render="Label" position="top" size="*,14" font="FdLcD;12" halign="left" valign="top" noWrap="1" />
 		<widget source="selected" render="Label" position="top" size="*,32" font="FdLcD;16" />
