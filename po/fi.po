@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-08-25 18:44+0300\n"
+"PO-Revision-Date: 2024-10-13 14:33+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -16,12 +16,8 @@ msgstr ""
 "X-Generator: Poedit 3.4.4\n"
 
 #, python-format
-msgid ""
-"\n"
-" %s is also enabled for autofs network mount"
-msgstr ""
-"\n"
-" %s on myös käytössä autofs verkkoliitokselle"
+msgid "%s is also enabled for autofs network mount \n"
+msgstr "%s on myös käytössä autofs verkkoliitokselle \n"
 
 msgid ""
 "\n"
@@ -2273,7 +2269,7 @@ msgid "Are you sure you want to exit this wizard?"
 msgstr "Haluatko lopettaa avustustoiminnon?"
 
 msgid "Are you sure you want to purge all deleted user bouquets?"
-msgstr "Haluatko tyhjentää poistetut suosikkilistat?"
+msgstr "Haluatko hävittää poistetut suosikkilistat?"
 
 msgid "Are you sure you want to reload the EPG data from:\n"
 msgstr "Haluatko varmasti uudelleenladata EPG-tiedot täältä:\n"
@@ -3638,8 +3634,8 @@ msgstr "Määrittää ylimääräisen viiveen parantamaan tekstitysten ajoitusta
 msgid "Configure duration of inactivity before the hard disk drive goes to standby"
 msgstr "Määritä joutoaika, jonka jälkeen kiintolevy siirtyy valmiustilaan"
 
-msgid "Configure for how many minutes finished events should remain visible in the EPG. Useful when you need information about an event which has just finished, or has been delayed."
-msgstr "Määrittää kuinka monta minuuttia päättyneiden ohjelmien ohjelmatietoja pidetään näkyvillä ohjelmaoppaassa. Käytännöllinen, kun haluat tietoja ohjelmasta joka on juuri päättynyt tai ohjelma on viivästynyt."
+msgid "Configure how long finished events should remain visible in the EPG. Useful when you need information about an event which has just finished, or has been delayed (or for plugins that support catchup)."
+msgstr "Määritä, kuinka kauan päättyneiden ohjelmien tulee olla näkyvissä EPG:ssä. Hyödyllinen, kun tarvitset tietoa ohjelmasta, joka on juuri päättynyt tai joka on viivästynyt (tai lisäosille, joilla ohjelman voi aloittaa alusta)."
 
 msgid "Configure how recording filenames are constructed."
 msgstr "Määritä tallenteiden tiedostonimien rakenne."
@@ -4866,7 +4862,7 @@ msgid "Disable background scanning"
 msgstr "Poista taustahaku käytöstä"
 
 msgid "Disable move mode"
-msgstr "Poistu siirtotilasta"
+msgstr "Poistu suosikkien järjestelystä"
 
 msgid "Disabled"
 msgstr "Ei käytössä"
@@ -5282,7 +5278,7 @@ msgid "Edit Timer"
 msgstr "Muokkaa ajastusta"
 
 msgid "Edit alternatives"
-msgstr "Vaihtoehtojen lisäys ja poisto"
+msgstr "Muokkaa vaihtoehtoja"
 
 msgid "Edit chapters of current title"
 msgstr "Muokkaa kappaleita"
@@ -5298,7 +5294,7 @@ msgstr "Muokkaa asetuksia"
 
 #, python-format
 msgid "Edit the Nameserver configuration of your %s %s.\n"
-msgstr "Muokkaan %s %s:n nimipalvelimen asetuksia.\n"
+msgstr "Muokkaa %s %s:n nimipalvelimen asetuksia.\n"
 
 #, python-format
 msgid "Edit the network configuration of your %s %s.\n"
@@ -5405,7 +5401,7 @@ msgid "Enable blinking rec symbol on the LCD Display"
 msgstr "Aktivoi vilkkuva REC-symboli LCD-näytössä"
 
 msgid "Enable bouquet edit"
-msgstr "Kanavalistojen lisäys ja poisto"
+msgstr "Ota suosikkilistan muokkaus käyttöön"
 
 msgid "Enable client mode"
 msgstr "Asiakas-tila päälle"
@@ -6054,13 +6050,13 @@ msgid "Feeds status: Stable"
 msgstr "Syötteiden tila: Stabiili"
 
 msgid "Feeds status: Unexpected"
-msgstr "Syötteiden tila: Epästabiili"
+msgstr "Syötteiden tila: Odottamaton"
 
 msgid "Feeds status: Unknown"
 msgstr "Syötteiden tila: Tuntematon"
 
 msgid "Feeds status: Unknown, user feeds url"
-msgstr "Syötteiden tila: Tuntematon"
+msgstr "Syötteiden tila: Tuntematon, käyttäjän syötteet"
 
 msgid "Feeds status: Unstable"
 msgstr "Syötteiden tila: Epästabiili"
@@ -7012,7 +7008,7 @@ msgid "If set to 'yes' signal values (SNR, etc) will be calculated from API V3. 
 msgstr "'Kyllä' valinnalla lasketaan signaalin arvoja (SNR, jne) API V3:sta. Tämä on vanha API-versio, joka on nyt korvattu."
 
 msgid "If set to 'yes' the bouquets will be shown each time you open the EPG."
-msgstr "'Kyllä' valinnalla suosikit näytetään joka kerta kun avaat EPG:n."
+msgstr "'Kyllä' valinnalla suosikkilistat näytetään joka kerta kun avaat EPG:n."
 
 msgid "If set to 'yes' the channel list will be shown after switching between radio and TV modes."
 msgstr "'Kyllä' valinnalla kanavalista näytetään, kun vaihdetaan radio- ja TV-tilojen välillä."
@@ -7970,7 +7966,7 @@ msgid "Main menu"
 msgstr "Päävalikko"
 
 msgid "Maintain old EPG data for"
-msgstr "Säilytä vanhoja ohjelmatietoja (min)"
+msgstr "Säilytä vanhoja ohjelmatietoja"
 
 msgid "Make settings backup"
 msgstr "Tee asetusten varmuuskopio"
@@ -10319,7 +10315,7 @@ msgid "Puppets"
 msgstr "Nuket"
 
 msgid "Purge deleted user bouquets"
-msgstr "Tyhjennä poistetut suosikkilistat"
+msgstr "Hävitä poistetut suosikkilistat"
 
 msgid "Put A/V receiver in standby"
 msgstr "Laita A/V-vastaanotin valmiustilaan"
@@ -12333,7 +12329,7 @@ msgid "Show background when tuned to a radio channel."
 msgstr "Näytä taustakuva kun kuunnellaan radiokanavaa."
 
 msgid "Show bouquet on launch"
-msgstr "Näytä avattaessa suosikkilista"
+msgstr "Näytä suosikkilistat avattaessa"
 
 msgid "Show channel number in infobar"
 msgstr "Näytä kanavanumero tietopalkissa"
@@ -12928,7 +12924,7 @@ msgid "Sorry feeds are down for maintenance, please try again later. If this iss
 msgstr "Ohjelmasyötteet eivät ole käytössä huollon takia, yritä myöhemmin uudelleen. Jos tämä ongelma jatkuu, niin tarkista openvix.co.uk tai world-of-satellite.com."
 
 msgid "Sorry feeds seem be in an unstable state, if you wish to use them please enable 'Allow unstable (experimental) updates' in \"Software update settings\"."
-msgstr "Syötteet ovat epästabiilien versioiden tilassa, jos haluat käyttää niitä, ota käyttöön 'Salli epästabiilit (kokeiluversio) päivitykset' \"ohjelmapäivitysten asetuksista\"."
+msgstr "Syötteet ovat epästabiilien versioiden tilassa, jos haluat käyttää niitä, ota käyttöön 'Salli epästabiilit (kokeiluversio) päivitykset' \"Ohjelmiston päivityksen asetuksista\"."
 
 msgid "Sorry the feeds are down for maintenance"
 msgstr "Syötteet ovat pois käytöstä huollon vuoksi"
@@ -13549,7 +13545,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 25.08.2024 ---\n"
+"--- 13.10.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -16237,13 +16233,13 @@ msgid "[Timeshift] Merging records failed!"
 msgstr "[Ajansiirto] Tallenteiden yhdistäminen epäonnistui!"
 
 msgid "[alternative edit]"
-msgstr "[Vaihtoehtojen lisäys ja poisto]"
+msgstr "[Vaihtoehtojen muokkaus]"
 
 msgid "[bouquet edit]"
-msgstr "[Kanavalistojen lisäys ja poisto]"
+msgstr "[Suosikkilistan muokkaus]"
 
 msgid "[favourite edit]"
-msgstr "[Suosikkien lisäys ja poisto]"
+msgstr "[Suosikkien muokkaus]"
 
 msgid "[move mode]"
 msgstr "[Suosikkien järjestely]"
@@ -18808,6 +18804,9 @@ msgstr "Ajasta varmuuskopiot"
 msgid "Script runner"
 msgstr "Skriptien ajo"
 
+msgid "Script runner - runs from /usr/script"
+msgstr "Skriptien ajo - suoritetaan hakemistosta /usr/script"
+
 msgid "Script runner settings"
 msgstr "Skriptien ajon asetukset"
 
@@ -19555,3 +19554,51 @@ msgstr "Ylinpänä"
 
 msgid "Bottom"
 msgstr "Alinpana"
+
+msgid "Select bouquets"
+msgstr "Valitse suosikkilistat"
+
+msgid "Toggle all"
+msgstr "Vaihda kaikki valinnat"
+
+msgid "Select bouquets to permanently remove"
+msgstr "Valitse pysyvästi poistettavat suosikkilistat"
+
+msgid "Remove selected"
+msgstr "Poista valitut"
+
+msgid "Select bouquets to restore"
+msgstr "Valitse palautettavat suosikkilistat"
+
+msgid "Restore selected"
+msgstr "Palauta valitut"
+
+msgid "week"
+msgstr "viikko"
+
+msgid "hour"
+msgstr "tunti"
+
+msgid "weeks"
+msgstr "viikkoa"
+
+msgid "days"
+msgstr "päivää"
+
+msgid "hours"
+msgstr "tuntia"
+
+msgid "0 minutes"
+msgstr "0 minuuttia"
+
+msgid "Close CA device at programm end"
+msgstr "Sulje CA-laite ohjelman lopussa"
+
+msgid "Offset CA device index"
+msgstr "Offset CA-laiteindeksi"
+
+msgid "Offset and close CA device"
+msgstr "Offset ja sulje CA-laite"
+
+msgid "Descrambling options"
+msgstr "Salauksen purkuvaihtoehdot"

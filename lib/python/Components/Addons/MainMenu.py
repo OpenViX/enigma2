@@ -1,6 +1,6 @@
 from Components.Addons.GUIAddon import GUIAddon
 
-from enigma import eListbox, eListboxPythonMultiContent, gFont, RT_HALIGN_LEFT, RT_VALIGN_CENTER, getDesktop, eSize
+from enigma import eListbox, eListboxPythonMultiContent, gFont, RT_BLEND, RT_HALIGN_LEFT, RT_VALIGN_CENTER, getDesktop, eSize
 
 from skin import applySkinFactor, parseFont, parseColor, parseScale
 
@@ -64,7 +64,7 @@ class MainMenu(GUIAddon):
 		res.append(MultiContentEntryText(
 				pos=(xPos, 0),
 				size=(textWidth, self.itemHeight),
-				font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER,
+				font=0, flags=RT_BLEND | RT_HALIGN_LEFT | RT_VALIGN_CENTER,
 				text=item_text,
 				color=self.foregroundColor, color_sel=self.foregroundColorSelected,
 				backcolor=None, backcolor_sel=None))
@@ -78,10 +78,6 @@ class MainMenu(GUIAddon):
 	def selectionChanged(self):
 		if self.instance and hasattr(self, "source"):
 			self.source.setConnectedGuiElement(self)
-
-	def setFont(self, value):
-		self.font = parseFont(value, ((1, 1), (1, 1)))
-		self.l.setFont(0, self.font)
 
 	def setMinWidth(self, value):
 		self.minWidth = parseScale(value)
@@ -134,7 +130,7 @@ class MainMenu(GUIAddon):
 		attribs = []
 		for (attrib, value) in self.skinAttributes[:]:
 			if attrib == "font":
-				self.font = parseFont(value, ((1, 1), (1, 1)))
+				self.font = parseFont(value, parent.scale)
 			elif attrib == "foregroundColor":
 				self.foregroundColor = parseColor(value).argb()
 			elif attrib == "foregroundColorSelected":

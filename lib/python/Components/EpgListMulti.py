@@ -12,6 +12,8 @@ SECS_IN_MIN = 60
 
 
 class EPGListMulti(EPGListBase):
+	buildEntryExtensionFunctions = []
+
 	def __init__(self, session, epgConfig, selChangedCB=None):
 		EPGListBase.__init__(self, session, selChangedCB)
 
@@ -100,6 +102,10 @@ class EPGListMulti(EPGListBase):
 					res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, r5.left() + width, (r5.height() - clockSize) // 2, clockSize, clockSize, autoTimerIcon))
 				width -= 5
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, r5.left(), r5.top(), width, r5.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, EventName))
+
+		for f in EPGListMulti.buildEntryExtensionFunctions:
+			f(res, self, service, eventId, beginTime, duration, EventName, nowTime, serviceName, changeCount)
+
 		return res
 
 	def fillEPG(self, services, stime=None):

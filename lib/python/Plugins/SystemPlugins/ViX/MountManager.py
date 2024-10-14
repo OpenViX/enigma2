@@ -227,8 +227,8 @@ class VIXDevicesPanel(Screen):
 		self["key_blue"] = Label(_("Mount"))
 		self["lab1"] = Label(_("Please wait while scanning for devices..."))
 		self.onChangedEntry = []
-		self.partitionlist = []
-		self["list"] = List(self.partitionlist)
+		self.partitionList = []
+		self["list"] = List(self.partitionList)
 		self["list"].onSelectionChanged.append(self.selectionChanged)
 		self["actions"] = ActionMap(["WizardActions", "ColorActions", "MenuActions"], {
 			"back": self.close,

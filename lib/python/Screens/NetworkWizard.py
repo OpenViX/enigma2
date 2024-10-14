@@ -10,7 +10,7 @@ from Components.SystemInfo import getBoxDisplayName
 from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
 from Screens.WizardLanguage import WizardLanguage
-from Tools.Directories import isPluginInstalled, resolveFilename, SCOPE_PLUGINS
+from Tools.Directories import isPluginInstalled, resolveFilename, SCOPE_SKIN
 
 WlanPluginInstalled = False
 if isPluginInstalled("WirelessLan"):
@@ -41,7 +41,7 @@ class NetworkWizard(WizardLanguage, Rc):
 		</screen>"""
 
 	def __init__(self, session, interface=None):
-		self.xmlfile = resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")
+		self.xmlfile = resolveFilename(SCOPE_SKIN, "networkwizard.xml")
 		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)
 		Rc.__init__(self)
 		self.session = session

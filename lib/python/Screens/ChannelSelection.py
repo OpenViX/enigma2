@@ -16,6 +16,7 @@ from Components.NimManager import nimmanager
 import Components.ParentalControl
 from Components.PluginComponent import plugins
 from Components.Renderer.Picon import getPiconName
+from Components.SelectionList import SelectionList, SelectionEntryComponent
 from Components.ServiceList import ServiceList, refreshServiceList
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.Sources.Event import Event
@@ -147,6 +148,30 @@ def removed_userbouquets_available():
 		if file.startswith("userbouquet") and file.endswith(".del"):
 			return True
 	return False
+
+
+class BouquetSelectionBox(Screen):
+	def __init__(self, session, title=None, onlyDeleted=False, greenText=None):
+		Screen.__init__(self, session)
+		self.title = title if title else _("Select bouquets")
+		self.skinName = ["BouquetSelectionBox", "Setup"]
+		path = "/etc/enigma2"
+		bouquetList = [x for x in listdir(path) if x.startswith("userbouquet") and (not onlyDeleted or x.endswith(".del"))]
+		[SelectionEntryComponent(x[12:-4], os_path.join(path, x), "", False) for x in bouquetList]
+		self["config"] = SelectionList([SelectionEntryComponent(x[12:len(x) - (4 if onlyDeleted else 0)], os_path.join(path, x), "", False) for x in bouquetList], enableWrapAround=True)
+		self["key_red"] = StaticText(_("Cancel"))
+		self["key_green"] = StaticText(greenText if greenText else _("Save"))
+		self["key_yellow"] = StaticText(_("Toggle all"))
+		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
+		{
+			"ok": self["config"].toggleSelection,
+			"save": self.keySave,
+			"cancel": self.close,
+			"yellow": self["config"].toggleAllSelection,
+		}, -2)
+
+	def keySave(self):
+		self.close([x[0][1] for x in self["config"].list if x[0][3]])
 
 
 class ChannelContextMenu(Screen):
@@ -428,30 +453,28 @@ class ChannelContextMenu(Screen):
 			self.close()
 
 	def purgeDeletedBouquets(self):
-		self.session.openWithCallback(self.purgeDeletedBouquetsCallback, MessageBox, _("Are you sure you want to purge all deleted user bouquets?"))
+		self.session.openWithCallback(self.purgeDeletedBouquetsCallback, BouquetSelectionBox, title=_("Select bouquets to permanently remove"), onlyDeleted=True, greenText=_("Remove selected"))
 
-	def purgeDeletedBouquetsCallback(self, answer):
+	def purgeDeletedBouquetsCallback(self, answer=None):
 		if answer:
-			for file in listdir("/etc/enigma2/"):
-				if file.startswith("userbouquet") and file.endswith(".del"):
-					file = "/etc/enigma2/" + file
-					print("[ChannelSelection] permantly remove file ", file)
-					remove(file)
+			for file in answer:
+				remove(file)
 			self.close()
 
 	def restoreDeletedBouquets(self):
-		for file in listdir("/etc/enigma2/"):
-			if file.startswith("userbouquet") and file.endswith(".del"):
-				file = "/etc/enigma2/" + file
-				print("[ChannelSelection] restore file ", file[:-4])
+		self.session.openWithCallback(self.restoreDeletedBouquetsCallback, BouquetSelectionBox, title=_("Select bouquets to restore"), onlyDeleted=True, greenText=_("Restore selected"))
+
+	def restoreDeletedBouquetsCallback(self, answer=None):
+		if answer:
+			for file in answer:
 				rename(file, file[:-4])
-		eDVBDBInstance = eDVBDB.getInstance()
-		eDVBDBInstance.setLoadUnlinkedUserbouquets(1)
-		eDVBDBInstance.reloadBouquets()
-		eDVBDBInstance.setLoadUnlinkedUserbouquets(int(config.misc.load_unlinked_userbouquets.value))
-		refreshServiceList()
-		self.csel.showFavourites()
-		self.close()
+			eDVBDBInstance = eDVBDB.getInstance()
+			eDVBDBInstance.setLoadUnlinkedUserbouquets(i if (i := int(config.misc.load_unlinked_userbouquets.value)) else 2)  # if load_unlinked_userbouquets is off put the restored bouquets at the end, otherwise respect load_unlinked_userbouquets
+			eDVBDBInstance.reloadBouquets()
+			eDVBDBInstance.setLoadUnlinkedUserbouquets(int(config.misc.load_unlinked_userbouquets.value))
+			refreshServiceList()
+			self.csel.showFavourites()
+			self.close()
 
 	def playMain(self):
 		sel = self.csel.getCurrentSelection()

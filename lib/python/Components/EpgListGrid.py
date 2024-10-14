@@ -22,6 +22,8 @@ SECS_IN_MIN = 60
 
 
 class EPGListGrid(EPGListBase):
+	buildEntryExtensionFunctions = []
+
 	def __init__(self, session, isInfobar, selChangedCB=None):
 		EPGListBase.__init__(self, session, selChangedCB)
 
@@ -113,11 +115,11 @@ class EPGListGrid(EPGListBase):
 			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib == ("ServiceFontInfobar" if self.isInfobar else "ServiceFontGraphical"):
-					font = parseFont(value, ((1, 1), (1, 1)))
+					font = parseFont(value, screen.scale)
 					self.serviceFontName = font.family
 					self.serviceFontSize = font.pointSize
 				elif attrib == ("EntryFontInfobar" if self.isInfobar else "EntryFontGraphical"):
-					font = parseFont(value, ((1, 1), (1, 1)))
+					font = parseFont(value, screen.scale)
 					self.eventFontName = font.family
 					self.eventFontSize = font.pointSize
 
@@ -682,6 +684,8 @@ class EPGListGrid(EPGListBase):
 							res.append(MultiContentEntryPixmapAlphaBlend(
 								pos=(pos[0] - pix_width - (5 if isTimerIconAdded else 10), pos[1]), size=(pix_width, pix_height),
 								png=autoTimerIcon))
+		for f in EPGListGrid.buildEntryExtensionFunctions:
+			f(res, self, service, serviceName, events, picon, channel)
 		return res
 
 	def getSelectionPosition(self):
@@ -899,7 +903,7 @@ class TimelineText(GUIComponent):
 				elif attrib == "borderWidth":
 					self.borderWidth = parseScale(value)
 				elif attrib == "TimelineFont":
-					font = parseFont(value, ((1, 1), (1, 1)))
+					font = parseFont(value, screen.scale)
 					self.timelineFontName = font.family
 					self.timelineFontSize = font.pointSize
 				elif attrib == "itemHeight":

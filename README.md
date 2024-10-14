@@ -48,8 +48,8 @@
 
 ----------
 5. Disable apparmor profile
-   Curently due to this Ubuntu/bitbake issue..https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2056555
-   This command nust be entered after every boot....
+   Currently due to this Ubuntu/bitbake issue..https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2056555
+   This command must be entered after every restart of the build PC....
    
    sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 

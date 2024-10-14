@@ -23,23 +23,16 @@ from Components.SystemInfo import SystemInfo
 from Plugins.Plugin import PluginDescriptor
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
+from Screens.NetworkWizard import NetworkWizard
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
 from Screens.TextBox import TextBox
-from Tools.Directories import fileExists, isPluginInstalled, resolveFilename, SCOPE_CURRENT_SKIN, SCOPE_PLUGINS
+from Tools.Directories import fileExists, isPluginInstalled, resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
-
-
-networkWizard = False
-XML_networkWizard = False
+from Tools import Notifications
 wirelessLan = False
 
-if os_path.exists(resolveFilename(SCOPE_PLUGINS, "SystemPlugins/NetworkWizard/networkwizard.xml")):
-	XML_networkWizard = True
-if isPluginInstalled("NetworkWizard"):
-	networkWizard = True
-	from Plugins.SystemPlugins.NetworkWizard.NetworkWizard import NetworkWizard
 if isPluginInstalled("WirelessLan"):
 	wirelessLan = True
 	from Plugins.SystemPlugins.WirelessLan.Wlan import brcmWLConfig, iStatus, wpaSupplicant
@@ -100,7 +93,11 @@ class NSCommon:
 			self.operationComplete()
 
 	def installComplete(self, result=None, retval=None, extra_args=None):
-		if self.reboot_at_end:
+		result = result.decode()
+		# print("[NetworkSetup][installComplete] retval, result", retval, "   ", result)
+		if "Cannot install package" in result:
+			self.session.openWithCallback(self.updateService(), MessageBox, ("%s" % result), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+		elif self.reboot_at_end:
 			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox,
 				_('Your %s %s needs to be restarted to complete the installation of %s\nDo you want to reboot now ?') % (SystemInfo["MachineBrand"], SystemInfo["MachineName"], self.getTitle()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_("Reboot required"))
@@ -109,7 +106,7 @@ class NSCommon:
 
 	def operationComplete(self, reboot=False):
 		if reboot:
-			self.session.open(TryQuitMainloop, 2)
+			Notifications.AddNotification(TryQuitMainloop, 2)
 		self.message.close()
 		self.close()
 
@@ -119,7 +116,8 @@ class NSCommon:
 		self.ConsoleB.ePopen("/usr/bin/opkg remove " + pkgname + " --force-remove --autoremove", callback)
 
 	def doInstall(self, callback, pkgname):
-		self.message = self.session.open(MessageBox, _("Please wait..."), MessageBox.TYPE_INFO, enable_input=False)
+		print("[NetworkSetup][doInstall]")
+		self.message = self.session.open(MessageBox, _("Please wait..."), MessageBox.TYPE_INFO, timeout=10, enable_input=True)
 		self.message.setTitle(_("Installing Service"))
 		self.ConsoleB.ePopen("/usr/bin/opkg install " + pkgname, callback)
 
@@ -305,8 +303,7 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 				active_int = False
 			self.list.append(self.buildInterfaceList(x[1], _(x[0]), default_int, active_int))
 
-		if XML_networkWizard:
-			self["key_blue"].setText(_("Network wizard"))
+		self["key_blue"].setText(_("Network wizard"))
 		self["list"].list = self.list
 
 	def setDefaultInterface(self):
@@ -360,12 +357,9 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 			self.session.open(MessageBox, _("Finished configuring your network"), type=MessageBox.TYPE_INFO, timeout=10, default=False)
 
 	def openNetworkWizard(self):
-		if networkWizard and XML_networkWizard:
-			selection = self["list"].getCurrent()
-			if selection is not None:
-				self.session.openWithCallback(self.AdapterSetupClosed, NetworkWizard, selection[0])
-		else:
-			self.session.open(MessageBox, _("The network wizard extension is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO, timeout=10)
+		selection = self["list"].getCurrent()
+		if selection is not None:
+			self.session.openWithCallback(self.AdapterSetupClosed, NetworkWizard, selection[0])
 
 
 class NameserverSetup(ConfigListScreen, HelpableScreen, Screen):
@@ -1027,11 +1021,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 						menuEntryDescription = _("Extended network setup plugin...")
 					self.extendedSetup = ("extendedSetup", menuEntryDescription, self.extended)
 					menu.append((menuEntryName, self.extendedSetup))
-
-		if XML_networkWizard:
-			menu.append((_("Network wizard"), "openwizard"))
-			# kernel_ver = about.getKernelVersionString()
-			# if kernel_ver <= "3.5.0":
+		menu.append((_("Network wizard"), "openwizard"))
 		menu.append((_("Network MAC settings"), "mac"))
 		return menu
 

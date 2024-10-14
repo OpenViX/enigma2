@@ -2,7 +2,7 @@ name: buildbot
 
 on:
   push:
-    branches: [ Developer, dm9x0 ]
+    branches: [ Developer ]
 
   workflow_dispatch:
 
@@ -18,7 +18,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Build python CI
         run: |

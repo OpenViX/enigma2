@@ -12,6 +12,8 @@ SECS_IN_MIN = 60
 
 
 class EPGListSingle(EPGListBase):
+	buildEntryExtensionFunctions = []
+
 	def __init__(self, session, epgConfig, selChangedCB=None):
 		EPGListBase.__init__(self, session, selChangedCB)
 
@@ -26,7 +28,7 @@ class EPGListSingle(EPGListBase):
 			attribs = []
 			for (attrib, value) in self.skinAttributes:
 				if attrib in ('EventFontSingle', 'EventFontMulti', 'EventFont'):
-					font = parseFont(value, ((1, 1), (1, 1)))
+					font = parseFont(value, screen.scale)
 					self.eventFontName = font.family
 					self.eventFontSize = font.pointSize
 				elif attrib == "sidesMargin":
@@ -100,6 +102,10 @@ class EPGListSingle(EPGListBase):
 				eventW -= pix_width + 6
 				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, posX - pix_width - 6, (r3.height() - pix_height) // 2, pix_width, pix_height, autoTimerIcon))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), eventW, r3.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, eventName))
+
+		for f in EPGListSingle.buildEntryExtensionFunctions:
+			f(res, self, service, eventId, beginTime, duration, eventName)
+
 		return res
 
 	def fillSimilarList(self, refstr, eventId):
@@ -115,7 +121,7 @@ class EPGListSingle(EPGListBase):
 
 	def fillEPG(self, service):
 		now = int(time())
-		epgTime = now - config.epg.histminutes.value * SECS_IN_MIN
+		epgTime = now - int(config.epg.histminutes.value) * SECS_IN_MIN
 		test = ['RIBDT', (service.toString(), 0, epgTime, -1)]
 		self.list = self.queryEPG(test)
 

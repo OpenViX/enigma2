@@ -1,6 +1,6 @@
 from Components.Addons.GUIAddon import GUIAddon
 
-from enigma import eListbox, eListboxPythonMultiContent, BT_ALIGN_CENTER, RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_CENTER, BT_SCALE, eSize, getDesktop, gFont
+from enigma import eListbox, eListboxPythonMultiContent, BT_ALIGN_CENTER, RT_VALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_BLEND, BT_SCALE, eSize, getDesktop, gFont
 
 from skin import parseScale, parseColor, parseFont, applySkinFactor
 
@@ -109,6 +109,7 @@ class ColorButtonsSequence(GUIAddon):
 					backColor = buttonBgColor
 
 				if self.renderType == "ImageTextOver":
+					textFlags = textFlags | RT_BLEND
 					if x in self.pixmaps:
 						pic = LoadPixmap(resolveFilename(SCOPE_GUISKIN, self.pixmaps[x]))
 						if pic:
@@ -169,7 +170,7 @@ class ColorButtonsSequence(GUIAddon):
 					self.instance.setOrientation(eListbox.orHorizontal)
 					self.l.setOrientation(eListbox.orHorizontal)
 			elif attrib == "font":
-				self.font = parseFont(value, ((1, 1), (1, 1)))
+				self.font = parseFont(value, parent.scale)
 			elif attrib == "foregroundColor":
 				self.foreColor = parseColor(value).argb()
 			elif attrib == "textColors":

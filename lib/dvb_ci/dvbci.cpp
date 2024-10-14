@@ -262,9 +262,12 @@ int eDVBCIInterfaces::reset(int slotid)
 	eDVBCISlot *slot;
 
 	singleLock s(m_slot_lock);
+	eDebug("[dvbci][eDVBCIInterfaces::reset][CI]1 Slot %d: getslot %d", slot, slot->getSlotID());
 	if( (slot = getSlot(slotid)) == 0 )
+	{
+		eDebug("[dvbci][eDVBCIInterfaces::reset][CI]2 Slot %d: slot 0 NO reset", slot->getSlotID());	
 		return -1;
-
+	}
 	return slot->reset();
 }
 
@@ -679,7 +682,7 @@ void eDVBCIInterfaces::recheckPMTHandlers()
 								 *
 								 * No need to set tuner input (setInputSource), because we have no tuner.
 								 */
-
+								eDebug("[CI] (1)  No associated frontend Slot %d, usecount now %d", ci_it->getSlotID(), ci_it->use_count);
 								switch(m_stream_interface)
 								{
 									case interface_use_dvr:
@@ -1277,7 +1280,7 @@ int eDVBCISlot::send(const unsigned char *data, size_t len)
 	singleLock s(eDVBCIInterfaces::m_slot_lock);
 	int res=0;
 	unsigned int i;
-	eTraceNoNewLineStart("[CI%d] < ", slotid);
+	eTraceNoNewLineStart("[dvbci][send][CI%d] < ", slotid);
 	for(i = 0; i < len; i++)
 		eTraceNoNewLine("%02x ",data[i]);
 	eTraceNoNewLine("\n");
@@ -1299,9 +1302,12 @@ int eDVBCISlot::send(const unsigned char *data, size_t len)
 void eDVBCISlot::data(int what)
 {
 	singleLock s(eDVBCIInterfaces::m_slot_lock);
-	eTrace("[CI%d] what %d\n", slotid, what);
-	if(what == eSocketNotifier::Priority) {
-		if(state != stateRemoved) {
+	eTrace("[dvbci][data][CI%d] what %d state %d\n", slotid, what, state);
+	if(what == eSocketNotifier::Priority)
+	{
+		if(state != stateRemoved)
+		{
+			eDebug("[dvbci][data][CI%d] eSocketNotifier::Priority stateRemoved state= %d", slotid, state);
 			state = stateRemoved;
 			while(sendqueue.size())
 			{
@@ -1317,11 +1323,16 @@ void eDVBCISlot::data(int what)
 	}
 
 	if (state == stateInvalid)
+	{
+		eDebug("[dvbci][data][CI%d] non Dreambox stateInvalid .....reset requested", slotid);	
 		reset();
+	}
 
-	if(state != stateInserted) {
-		eDebug("[CI%d] ci inserted", slotid);
+	if(state != stateInserted)
+	{
+		eDebug("[dvbci][data][CI%d] ci inserted state= %d", slotid, state);
 		state = stateInserted;
+		eDebug("[dvbci][data][CI%d] ci inserted reset stateInserted state= %d", slotid, state);		
 		/* emit */ eDVBCI_UI::getInstance()->m_messagepump.send(eDVBCIInterfaces::Message(eDVBCIInterfaces::Message::slotStateChanged, getSlotID(), 1));
 		notifier->setRequested(eSocketNotifier::Read|eSocketNotifier::Priority);
 		/* enable PRI to detect removal or errors */
@@ -1333,7 +1344,7 @@ void eDVBCISlot::data(int what)
 		r = ::read(fd, data, 4096);
 		if(r > 0) {
 			int i;
-			eTraceNoNewLineStart("[CI%d] > ", slotid);
+			eTraceNoNewLineStart("[dvbci][data][CI%d] reading data > ", slotid);
 			for(i=0;i<r;i++)
 				eTraceNoNewLine("%02x ",data[i]);
 			eTraceNoNewLine("\n");
@@ -1386,6 +1397,10 @@ eDVBCISlot::eDVBCISlot(eMainloop *context, int nr)
 	snprintf(config_key_operator_profile, 255, "config.ci.%d.disable_operator_profile", slotid);
 	bool operator_profile_disabled = eSimpleConfig::getBool(config_key_operator_profile, false);
 	m_operator_profiles_disabled = operator_profile_disabled;
+	char config_key_alt_ca[255];
+	snprintf(config_key_alt_ca, 255, "config.ci.%d.alternative_ca_handling", slotid);
+	int alt_ca = eSimpleConfig::getInt(config_key_alt_ca, 0);
+	m_alt_ca_handling = alt_ca;
 	if (enabled)
 		openDevice();
 	else
@@ -1397,7 +1412,7 @@ void eDVBCISlot::openDevice()
 	char filename[128];
 
 	plugged = true;
-	
+
 	sprintf(filename, "/dev/ci%d", slotid);
 
 //	possible_caids.insert(0x1702);
@@ -1405,8 +1420,7 @@ void eDVBCISlot::openDevice()
 //	possible_services.insert(eServiceReference("1:0:1:2A:4:85:C00000:0:0:0:"));
 
 	fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
-
-	eTrace("[CI%d] has fd %d", slotid, fd);
+	eTrace("[dvbci][opendevice][CI%d] has fd %d state %d", slotid, fd, state);
 	state = stateInvalid;
 
 	if (fd >= 0)
@@ -1432,6 +1446,7 @@ void eDVBCISlot::closeDevice()
 	notifier->stop();
 	data(eSocketNotifier::Priority);
 	state = stateDisabled;
+	eTrace("[dvbci][closedevice][CI] has state %d", state);	
 }
 
 void eDVBCISlot::setAppManager(eDVBCIApplicationManagerSession *session)
@@ -1466,21 +1481,22 @@ int eDVBCISlot::getSlotID()
 
 int eDVBCISlot::getVersion()
 {
+	eTrace("[dvbci][getVersion][CI%d] m_ci_version %d", slotid, m_ci_version);
 	return m_ci_version;
 }
 
 void eDVBCISlot::determineCIVersion()
 {
 	char lv1Info[256] = { 0 };
-
-	if (ioctl(fd, 1, lv1Info) < 0) {
-		eTrace("[CI%d] ioctl not supported: assume CI+ version 1", slotid);
+	if (ioctl(fd, 1, lv1Info) < 0)
+	{
+		eTrace("[dvbci][determineCIVersion][CI%d] ioctl not supported: assume CI+ version 1", slotid);
 		m_ci_version = versionCIPlus1;
 		return;
 	}
 
 	if (strlen(lv1Info) == 0) {
-		eTrace("[CI%d] no LV1 info: assume CI+ version 1", slotid);
+		eTrace("[dvbci][determineCIVersion][CI%d] no LV1 info: assume CI+ version 1", slotid);
 		m_ci_version = versionCIPlus1;
 		return;
 	}
@@ -1503,12 +1519,12 @@ void eDVBCISlot::determineCIVersion()
 	}
 
 	if(!compatId) {
-		eTrace("[CI%d] CI CAM detected", slotid);
+		eTrace("[dvbci][determineCIVersion][CI%d] CI CAM detected", slotid);
 		m_ci_version = versionCI;
 		return;
 	}
 
-	eTrace("[CI%d] CI+ compatibility ID: %s", slotid, compatId);
+	eTrace("[dvbci][determineCIVersion][CI%d] CI+ compatibility ID: %s", slotid, compatId);
 
 	char *label, *id, flag = '+';
 	int version = versionCI;
@@ -1525,12 +1541,12 @@ void eDVBCISlot::determineCIVersion()
 					flag = *id++;
 
 				version = strtol(id, 0, 0);
-				eDebug("[CI%d] CI+ %c%d CAM detected", slotid, flag, version);
+				eDebug("[dvbci][determineCIVersion][CI%d] CI+ %c%d CAM detected", slotid, flag, version);
 				break;
 			}
 		}
 	}
-
+	eTrace("[dvbci][determineCIVersion][CI%d] CI+ version %d", slotid, version);
 	m_ci_version = version;
 }
 
@@ -1549,12 +1565,11 @@ void eDVBCISlot::setCIPlusRoutingParameter(int tunernum, std::string ciplus_rout
 
 int eDVBCISlot::reset()
 {
-	eDebug("[CI%d] reset requested", slotid);
-
+	eDebug("[dvbci][reset][CI%d] reset requested state = %d", slotid, state);
 	if (state == stateInvalid)
 	{
 		unsigned char buf[256];
-		eDebug("[CI%d] flush", slotid);
+		eDebug("[dvbci][reset][CI%d] flush", slotid);
 		while(::read(fd, buf, 256)>0);
 		state = stateResetted;
 	}
@@ -1566,13 +1581,13 @@ int eDVBCISlot::reset()
 	}
 
 	ioctl(fd, 0);
-
+	eDebug("[dvbci][reset][CI%d] reset ioctl requested, state = %d", slotid, state);
 	return 0;
 }
 
 int eDVBCISlot::startMMI()
 {
-	eDebug("[CI%d] startMMI()", slotid);
+	eDebug("[dvbci][startMMI][CI%d] startMMI()", slotid);
 
 	if(application_manager)
 		application_manager->startMMI();
@@ -1582,7 +1597,7 @@ int eDVBCISlot::startMMI()
 
 int eDVBCISlot::stopMMI()
 {
-	eDebug("[CI%d] stopMMI()", slotid);
+	eDebug("[dvbci][stopMMI][CI%d] stopMMI()", slotid);
 
 	if(mmi_session)
 		mmi_session->stopMMI();
@@ -1592,7 +1607,7 @@ int eDVBCISlot::stopMMI()
 
 int eDVBCISlot::answerText(int answer)
 {
-	eDebug("[CI%d] answerText(%d)", slotid, answer);
+	eDebug("[dvbci][anserText][CI%d] answerText(%d)", slotid, answer);
 
 	if(mmi_session)
 		mmi_session->answerText(answer);
@@ -1610,7 +1625,7 @@ int eDVBCISlot::getMMIState()
 
 int eDVBCISlot::answerEnq(char *value)
 {
-	eDebug("[CI%d] answerENQ(%s)", slotid, value);
+	eDebug("[dvbci][anserEnq][CI%d] answerENQ(%s)", slotid, value);
 
 	if(mmi_session)
 		mmi_session->answerEnq(value);
@@ -1620,7 +1635,7 @@ int eDVBCISlot::answerEnq(char *value)
 
 int eDVBCISlot::cancelEnq()
 {
-	eDebug("[CI%d] cancelENQ", slotid);
+	eDebug("[dvbci][cancel][CI%d] cancelENQ", slotid);
 
 	if(mmi_session)
 		mmi_session->cancelEnq();
@@ -1637,14 +1652,14 @@ int eDVBCISlot::setCaParameter(eDVBServicePMTHandler *pmthandler)
 	eUsePtr<iDVBChannel> channel;
 	ePtr<iDVBFrontend> frontend;
 
-	eDebug("[CI%d] setCaParameter", slotid);
+	eDebug("[dvbci][setCaParameter][CI%d] setCaParameter", slotid);
 
 	if (!pmthandler->getDataDemux(demux))
 	{
 		if (!demux->getCADemuxID(dmx_id))
 		{
 			m_ca_demux_id = dmx_id;
-			eDebug("[CI%d] CA demux_id = %d", slotid, m_ca_demux_id);
+			eDebug("[dvbci][setCaParameter][CI%d] CA demux_id = %d", slotid, m_ca_demux_id);
 		}
 		else
 			m_ca_demux_id = -1;
@@ -1678,7 +1693,7 @@ int eDVBCISlot::setCaParameter(eDVBServicePMTHandler *pmthandler)
 				m_tunernum = -1;
 			}
 		}
-		eDebug("[CI%d] tunernum = %d", slotid, m_tunernum);
+		eDebug("[dvbci][setCaParameter][CI%d] tunernum = %d", slotid, m_tunernum);
 	}
 
 	return 0;
@@ -1688,7 +1703,7 @@ int eDVBCISlot::sendCAPMT(eDVBServicePMTHandler *pmthandler, const std::vector<u
 {
 	if (!ca_manager)
 	{
-		eDebug("[CI%d] no ca_manager (no CI plugged?)", slotid);
+		eDebug("[dvbci][sendCAPMT][CI%d] no ca_manager (no CI plugged?)", slotid);
 		return -1;
 	}
 	const std::vector<uint16_t> &caids = ids.empty() ? ca_manager->getCAIDs() : ids;
@@ -1712,7 +1727,7 @@ int eDVBCISlot::sendCAPMT(eDVBServicePMTHandler *pmthandler, const std::vector<u
 			(pmt_version == it->second) &&
 			!sendEmpty )
 		{
-			eDebug("[CI%d] dont send self capmt version twice", slotid);
+			eDebug("[dvbci][sendCAPMT][CI%d] dont send self capmt version twice", slotid);
 			return -1;
 		}
 
@@ -1723,7 +1738,7 @@ int eDVBCISlot::sendCAPMT(eDVBServicePMTHandler *pmthandler, const std::vector<u
 		{
 			unsigned char raw_data[2048];
 
-//			eDebug("[CI%d] send %s capmt for service %04x",
+//			eDebug("[dvbci][sendCAPMT][CI%d] send %s capmt for service %04x",
 //				slotid, it != running_services.end() ? "UPDATE" : running_services.empty() ? "ONLY" : "ADD",
 //				program_number);
 
@@ -1731,7 +1746,7 @@ int eDVBCISlot::sendCAPMT(eDVBServicePMTHandler *pmthandler, const std::vector<u
 				it != running_services.end() ? 0x05 /*update*/ : running_services.empty() ? 0x03 /*only*/ : 0x04 /*add*/, 0x01, caids );
 			while( i != ptr->getSections().end() )
 			{
-		//			eDebug("[CI%d] append", slotid);
+//				eDebug("[dvbci][sendCAPMT][CI%d] append", slotid);
 				capmt.append(*i++);
 			}
 			capmt.writeToBuffer(raw_data);
@@ -1814,11 +1829,11 @@ int eDVBCISlot::setSource(const std::string &source)
 
 	if(CFile::write(buf, source.c_str()) == -1)
 	{
-		eDebug("[CI%d] setSource: %s failed!", slotid, source.c_str());
+		eDebug("[dvbci][setSource][CI%d] setSource: %s failed!", slotid, source.c_str());
 		return 0;
 	}
 
-	eDebug("[CI%d] setSource: %s", slotid, source.c_str());
+	eDebug("[dvbci][setSource][CI%d] setSource: %s", slotid, source.c_str());
 	return 0;
 }
 
@@ -1833,7 +1848,7 @@ int eDVBCISlot::setClockRate(const std::string &rate)
 
 int eDVBCISlot::setEnabled(bool enabled)
 {
-	eDebug("[CI%d] Enabled: %d, state %d", slotid, enabled, state);
+	eDebug("[dvbci][setEnabled][CI%d] Enabled: %d, state %d", slotid, enabled, state);
 	if (enabled && state != stateDisabled)
 		return 0;
 

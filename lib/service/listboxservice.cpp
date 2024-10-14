@@ -795,13 +795,13 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 		std::string service_res_str =  toLower(split(orig_ref_str, ":")[2]);
 
 		bool isBackupAvailable = false;
-		int catchUpDays = 0;
-		if (orig_ref_str.find("@") != std::string::npos) {
+		bool isCatchUpAvailable = false;
+		if (orig_ref_str.find("&backupref=") != std::string::npos) {
 			isBackupAvailable = true;
 		}
 
-		if (orig_ref_str.find("|<|") != std::string::npos) {
-			catchUpDays = std::stoi(split(split(orig_ref_str, "|<|")[1], "@")[0]);
+		if (orig_ref_str.find("catchupdays=") != std::string::npos) {
+			isCatchUpAvailable = true;
 		}
 
 		/* get service information */
@@ -924,7 +924,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					painter.clippop();
 				}
 
-				if (m_pixmaps[picCatchup] && catchUpDays > 0)
+				if (m_pixmaps[picCatchup] && isCatchUpAvailable)
 				{
 					eSize pixmap_size = m_pixmaps[picCatchup]->size();
 					xlpos -= 15 + pixmap_size.width();

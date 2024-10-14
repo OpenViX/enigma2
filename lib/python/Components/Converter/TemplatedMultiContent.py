@@ -1,4 +1,5 @@
 from Components.Converter.StringList import StringList
+from Components.Renderer.Listbox import Listbox
 
 from enigma import eListbox
 
@@ -8,7 +9,7 @@ class TemplatedMultiContent(StringList):
 
 	def __init__(self, args):
 		StringList.__init__(self, args)
-		from enigma import BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALPHATEST, BT_ALPHABLEND, BT_FIXRATIO, BT_HALIGN_LEFT, BT_HALIGN_CENTER, BT_HALIGN_RIGHT, BT_VALIGN_TOP, BT_VALIGN_CENTER, BT_VALIGN_BOTTOM, BT_ALIGN_CENTER, RT_HALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_BOTTOM, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, eListboxPythonMultiContent, gFont  # noqa: F401
+		from enigma import BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALPHATEST, BT_ALPHABLEND, BT_FIXRATIO, BT_HALIGN_LEFT, BT_HALIGN_CENTER, BT_HALIGN_RIGHT, BT_VALIGN_TOP, BT_VALIGN_CENTER, BT_VALIGN_BOTTOM, BT_ALIGN_CENTER, RT_HALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_BOTTOM, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, RT_BLEND, eListboxPythonMultiContent, gFont  # noqa: F401
 		from skin import parseFont, getSkinFactor  # noqa: F401
 		from Components.MultiContent import MultiContentEntryPixmap, MultiContentEntryPixmapAlphaBlend, MultiContentEntryPixmapAlphaTest, MultiContentEntryProgress, MultiContentEntryProgressPixmap, MultiContentEntryText, MultiContentTemplateColor  # noqa: F401
 		f = getSkinFactor()
@@ -17,6 +18,7 @@ class TemplatedMultiContent(StringList):
 		del loc["args"]
 		self.active_style = None
 		self.template = eval(args, {}, loc)
+		self.scale = None
 		self.orientations = {"orHorizontal": eListbox.orHorizontal, "orVertical": eListbox.orVertical}
 		assert "fonts" in self.template
 		assert "itemHeight" in self.template
@@ -43,9 +45,32 @@ class TemplatedMultiContent(StringList):
 		if what[0] == self.CHANGED_SPECIFIC and what[1] == "style":  # If only template changed, don't reload list.
 			pass
 		elif self.source:
+			if self.scale is None and isinstance(self.master, Listbox) and (scale := getattr(self.master, "scale", None)):
+				self.scale = scale
+				self.active_style = None
 			self.content.setList(self.source.list)
 		self.setTemplate()
 		self.downstream_elements.changed(what)
+
+	def scaleTemplate(self, template, itemheight, itemwidth):
+		from enigma import gFont
+		scaleFactorVertical = self.scale[1][0] / self.scale[1][1]
+		scaleFactorHorizontal = self.scale[0][0] / self.scale[0][1]
+		itemheight = int(itemheight * scaleFactorVertical)
+		if itemwidth is not None:
+			itemwidth = int(itemwidth * scaleFactorHorizontal)
+		scaledtemplate = []
+		fonts = []
+		for font in self.template["fonts"]:
+			fonts.append(gFont(font.family, int(font.pointSize * scaleFactorVertical)))
+		for content in template:
+			elments = list(content)
+			elments[1] = int(elments[1] * scaleFactorVertical)
+			elments[2] = int(elments[2] * scaleFactorHorizontal)
+			elments[3] = int(elments[3] * scaleFactorVertical)
+			elments[4] = int(elments[4] * scaleFactorHorizontal)
+			scaledtemplate.append(tuple(elments))
+		return scaledtemplate, itemheight, itemwidth, fonts
 
 	def setTemplate(self):
 		if self.source:
@@ -71,6 +96,10 @@ class TemplatedMultiContent(StringList):
 					itemwidth = templates[style][4]
 					orientation = templates[style][5]
 
+			if self.scale is not None and (self.scale[0][0] != self.scale[0][1] or self.scale[1][0] != self.scale[1][1]):
+				template, itemheight, itemwidth, fonts = self.scaleTemplate(template, itemheight, itemwidth)
+				for index, font in enumerate(fonts):
+					self.content.setFont(index, font)
 			self.content.setTemplate(template)
 			if orientation is not None and itemwidth is not None:
 				self.content.setOrientation(self.orientations.get(orientation, self.orientations["orVertical"]))
