@@ -228,7 +228,7 @@ RESULT eDVBService::getName(const eServiceReference &ref, std::string &name)
 
 	if (!res_provider.empty() && m_provider_name.empty()) {
 		m_provider_name = res_provider;
-	} 
+	}
 
 	return 0;
 }
@@ -293,7 +293,7 @@ int eDVBService::isPlayable(const eServiceReference &ref, const eServiceReferenc
 				if (pModule != NULL)
 				{
 					pFunc = PyObject_GetAttrString(pModule, "isPlayable");
-					if (pFunc) 
+					if (pFunc)
 					{
 						pArgs = PyTuple_New(1);
 						pArg = PyUnicode_FromString(ref.toString().c_str());
@@ -1032,7 +1032,7 @@ void eDVBDB::saveServicelist(const char *file)
 					if (g)
 						fprintf(g, ",MIS/PLS:%d:%d:%d", sat.is_id, sat.pls_code & 0x3FFFF, sat.pls_mode & 3);
 				}
-				// Old lamedb format cannot have multiple optional values so we must pad lamedb with default multistream 
+				// Old lamedb format cannot have multiple optional values so we must pad lamedb with default multistream
 				// values if they will be followed by t2mi values. In lamedb5 format this is not necessary.
 				else if (static_cast<unsigned int>(sat.t2mi_plp_id) != eDVBFrontendParametersSatellite::No_T2MI_PLP_Id)
 				{
@@ -1500,7 +1500,7 @@ eDVBDB::eDVBDB()
 	: m_numbering_mode(false), m_load_unlinked_userbouquets(1)
 {
 	instance = this;
-	
+
 	iptv_services.clear();
 	std::ifstream iptv_services_store_file;
 	iptv_services_store_file.open("/etc/enigma2/config_av");
@@ -1509,22 +1509,22 @@ eDVBDB::eDVBDB()
 	{
 		line = replace_all(line, "\n", "");
 		char buffer [256];
-		int service_type = 1, service_bit = 0, service_res = -1, service_id = -1, dvb_namespace, transport_stream_id = -1, 
-		original_network_id = -1, service_tsid = -1, service_number = -1, source_id = 0, ampeg_pid = -1, aac3_pid = -1, 
+		int service_type = 1, service_bit = 0, service_res = -1, service_id = -1, dvb_namespace, transport_stream_id = -1,
+		original_network_id = -1, service_tsid = -1, service_number = -1, source_id = 0, ampeg_pid = -1, aac3_pid = -1,
 		aac4_pid = -1, addp_pid = -1, aaach_pid = -1,aaac_pid = -1, adra_pid = -1, subtitle_pid = -1, video_pid = -1;
 
-		sscanf(line.c_str(), "%d:%d:%x:%x:%x:%x:%x:%d:%d:%x|%d|%d|%d|%d|%d|%d|%d|%d|%d", &service_type, &service_bit, &service_res, &service_id, 
-					  &dvb_namespace, &transport_stream_id, &original_network_id, &service_tsid, &service_number, &source_id, &video_pid, 
+		sscanf(line.c_str(), "%d:%d:%x:%x:%x:%x:%x:%d:%d:%x|%d|%d|%d|%d|%d|%d|%d|%d|%d", &service_type, &service_bit, &service_res, &service_id,
+					  &dvb_namespace, &transport_stream_id, &original_network_id, &service_tsid, &service_number, &source_id, &video_pid,
 					  &ampeg_pid, &aac3_pid, &aac4_pid, &addp_pid, &aaach_pid, &aaac_pid, &adra_pid, &subtitle_pid);
-		
-		sprintf(buffer, "%d:%d:%x:%x:%x:%x:%x:%d:%d:%x", service_type, service_bit, service_res, service_id, 
+
+		sprintf(buffer, "%d:%d:%x:%x:%x:%x:%x:%d:%d:%x", service_type, service_bit, service_res, service_id,
 					  dvb_namespace, transport_stream_id, original_network_id, service_tsid, service_number, source_id);
 
 		std::string s_ref = buffer;
 		makeUpper(s_ref);
 
 		eDebug("[eDVBDB] Readed from config_av ref: %s", s_ref.c_str());
-		
+
 		eIPTVDBItem iptvDBItem(s_ref, ampeg_pid, aac3_pid, aac4_pid, addp_pid, aaach_pid, aaac_pid, adra_pid, subtitle_pid, video_pid);
 		iptv_services.push_back(iptvDBItem);
 		line = "";
@@ -2044,7 +2044,7 @@ PyObject *eDVBDB::readTerrestrials(ePyObject ter_list, ePyObject tp_dict)
 
 			Py_DECREF(tplist);
 		}
-		else if (ter_flags || ter_countrycode) 
+		else if (ter_flags || ter_countrycode)
 		{
 			if (ter_flags)
 			{
@@ -2213,7 +2213,7 @@ PyObject *eDVBDB::getLcnDBData()
 			PyList_Append(dest, tuple);
 			Py_DECREF(tuple);
 		}
-	} 
+	}
 	else
 		Py_RETURN_NONE;
 	return dest;
@@ -2540,7 +2540,7 @@ RESULT eDVBDB::addOrUpdateBouquet(const std::string &name, const std::string &fi
 	res->getChannelList(db);
 	std::string bouquetquery = "FROM BOUQUET \"" + filename + "\" ORDER BY bouquet";
 	eServiceReference bouquetref(eServiceReference::idDVB, eServiceReference::flagDirectory, bouquetquery);
-	bouquetref.setData(0, type); 
+	bouquetref.setData(0, type);
 	eBouquet *bouquet = NULL;
 	eServiceReference rootref(eServiceReference::idDVB, eServiceReference::flagDirectory, "FROM BOUQUET \"bouquets" + ext + "\" ORDER BY bouquet");
 	if (!db->getBouquet(bouquetref, bouquet) && bouquet)
@@ -2612,11 +2612,11 @@ RESULT eDVBDB::appendServicesToBouquet(const std::string &filename, ePyObject se
 	res->getChannelList(db);
 	std::string bouquetquery = "FROM BOUQUET \"" + filename + "\" ORDER BY bouquet";
 	eServiceReference bouquetref(eServiceReference::idDVB, eServiceReference::flagDirectory, bouquetquery);
-	bouquetref.setData(0, type); 
+	bouquetref.setData(0, type);
 	eBouquet *bouquet = NULL;
 	if (!db->getBouquet(bouquetref, bouquet) && bouquet)
 	{
-		
+
 		if (!PyList_Check(services)) {
 			const char *errstr = "eDVBDB::appendServicesToBouquet second parameter is not a python list!!!";
 			PyErr_SetString(PyExc_TypeError, errstr);
@@ -2650,7 +2650,7 @@ RESULT eDVBDB::appendServicesToBouquet(const std::string &filename, ePyObject se
 	}
 	else
 		return -1;
-	
+
 	return 0;
 }
 
@@ -2682,7 +2682,7 @@ RESULT eDVBDB::removeBouquet(const std::string &filename_regex)
 			{
 				std::string bouquetquery = "FROM BOUQUET \"" + path + "\" ORDER BY bouquet";
 				eServiceReference bouquetref(eServiceReference::idDVB, eServiceReference::flagDirectory, bouquetquery);
-				bouquetref.setData(0, type); 
+				bouquetref.setData(0, type);
 				eBouquet *bouquet = NULL;
 				eServiceReference rootref(eServiceReference::idDVB, eServiceReference::flagDirectory, "FROM BOUQUET \"bouquets" + ext + "\" ORDER BY bouquet");
 				if (!db->getBouquet(bouquetref, bouquet) && bouquet)
@@ -2709,7 +2709,7 @@ RESULT eDVBDB::removeBouquet(const std::string &filename_regex)
 			}
 		}
 	closedir(dir);
-	
+
 	return 0;
 }
 
@@ -2741,7 +2741,7 @@ RESULT eDVBDB::addChannelToDB(const eServiceReference &service, const eDVBFronte
 					int cPid = PyLong_AsLong(cachedPidValObj);
 					s->setCacheEntry((eDVBService::cacheID)cID, cPid);
 				}
-			} 
+			}
 		}
 	}
 	CAID_LIST m_ca;

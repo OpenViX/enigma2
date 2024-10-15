@@ -48,7 +48,7 @@ fbClass::fbClass(const char *fb)
 	cmap.green=green;
 	cmap.blue=blue;
 	cmap.transp=trans;
-	
+
 #ifdef CONFIG_ION
 	int ion;
 #endif
@@ -249,7 +249,7 @@ int fbClass::SetMode(int nxRes, int nyRes, int nbpp)
 		eDebug("[fb] double buffering available!");
 
 	m_number_of_pages = screeninfo.yres_virtual / nyRes;
-	
+
 	ioctl(fbFd, FBIOGET_VSCREENINFO, &screeninfo);
 
 	if ((screeninfo.xres != (unsigned int)nxRes) || (screeninfo.yres != (unsigned int)nyRes) ||
@@ -270,8 +270,8 @@ int fbClass::SetMode(int nxRes, int nyRes, int nbpp)
 	stride=fix.line_length;
 
 #ifdef CONFIG_ION
-    m_phys_mem = fix.smem_start;
-    available = fix.smem_len;
+	m_phys_mem = fix.smem_start;
+	available = fix.smem_len;
 	/* map new framebuffer */
 	lfb=(unsigned char*)mmap(0, stride * screeninfo.yres_virtual, PROT_WRITE|PROT_READ, MAP_SHARED, fbFd, 0);
 #endif
@@ -388,5 +388,3 @@ void fbClass::disableManualBlit()
 		m_manual_blit = 0;
 #endif
 }
-
-

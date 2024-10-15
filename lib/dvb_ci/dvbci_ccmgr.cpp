@@ -506,7 +506,7 @@ int eDVBCICcSession::generate_akh()
 int eDVBCICcSession::compute_dh_key()
 {
 	int len = DH_size(m_dh);
-	eWarning("[dvbci_ccmgr][CI%d RCC][compute_dh_key()] DH_size(m_dh: %x", m_slot->getSlotID(), len);	
+	eWarning("[dvbci_ccmgr][CI%d RCC][compute_dh_key()] DH_size(m_dh: %x", m_slot->getSlotID(), len);
 	if (len > 256)
 	{
 		eWarning("[dvbci_ccmgr][CI%d RCC] too long shared key", m_slot->getSlotID());
