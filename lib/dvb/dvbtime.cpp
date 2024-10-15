@@ -557,7 +557,7 @@ void eDVBLocalTimeHandler::updateTime( time_t tp_time, eDVBChannel *chan, int up
 			}
 		}
 
- 		 /*emit*/ m_timeUpdated();
+		/*emit*/ m_timeUpdated();
 	}
 
 	if ( restart_tdt )

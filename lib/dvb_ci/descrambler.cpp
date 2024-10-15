@@ -163,7 +163,7 @@ int descrambler_set_pid(int desc_fd, eDVBCISlot *slot, int enable, int pid)
 int descrambler_init(eDVBCISlot *slot, uint8_t ca_demux_id)
 {
 	int desc_fd;
-	
+
 	std::string filename = "/dev/dvb/adapter0/ca" + std::to_string(ca_demux_id);
 
 	if (slot->getDescramblingOptions() > 1)
