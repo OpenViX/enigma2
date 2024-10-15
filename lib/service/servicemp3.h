@@ -294,6 +294,8 @@ private:
 	int selectAudioStream(int i);
 	std::vector<audioStream> m_audioStreams;
 	std::vector<subtitleStream> m_subtitleStreams;
+	std::vector<audioStream> m_audioStreams_temp;
+	std::vector<subtitleStream> m_subtitleStreams_temp;
 	iSubtitleUser *m_subtitle_widget;
 	gdouble m_currentTrickRatio;
 	friend class eServiceFactoryMP3;
