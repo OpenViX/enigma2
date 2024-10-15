@@ -31,6 +31,12 @@ selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, 
 
 
 class AudioSelection(ConfigListScreen, Screen):
+	TYPE_ALL = 0
+	TYPE_AUDIO = 1
+	TYPE_SUBTITLE = 2
+	hooks = []
+	audioHooks = []
+	subtitleHooks = []
 	def __init__(self, session, infobar=None, page=PAGE_AUDIO):
 		Screen.__init__(self, session)
 		self["streams"] = List([], enableWrapAround=True)
@@ -81,6 +87,20 @@ class AudioSelection(ConfigListScreen, Screen):
 		]
 		self.settings.menupage = ConfigSelection(choices=choicelist, default=page)
 		self.onLayoutFinish.append(self.__layoutFinished)
+
+	def runHooks(self, type):
+		if type == self.TYPE_ALL:
+			for hook in AudioSelection.hooks:
+				if callable(hook):
+					hook()
+		elif type == self.TYPE_AUDIO:
+			for hook in AudioSelection.audioHooks:
+				if callable(hook):
+					hook()
+		elif type == self.TYPE_SUBTITLE:
+			for hook in AudioSelection.subtitleHooks:
+				if callable(hook):
+					hook()
 
 	def __layoutFinished(self):
 		self["config"].instance.setSelectionEnable(False)
@@ -588,23 +608,25 @@ class AudioSelection(ConfigListScreen, Screen):
 	def keyOk(self):
 		if self.focus == FOCUS_STREAMS and self["streams"].list:
 			cur = self["streams"].getCurrent()
-			service = self.session.nav.getCurrentService()  # noqa: F841
 			ref = self.session.nav.getCurrentServiceRef()
 			ref = ref and eServiceReference(ref)
 			if self.settings.menupage.value == PAGE_AUDIO and cur[0] is not None:
 				self.changeAudio(cur[0])
 				self.__updatedInfo()
+				self.runHooks(self.TYPE_AUDIO)
 			if self.settings.menupage.value == PAGE_SUBTITLES and cur[0] is not None:
 				if self.infobar.selected_subtitle and self.infobar.selected_subtitle[:4] == cur[0][:4]:
 					self.enableSubtitle(None)
 					selectedidx = self["streams"].getIndex()
 					self.__updatedInfo()
 					self["streams"].setIndex(selectedidx)
+					self.runHooks(self.TYPE_SUBTITLE)
 				else:
 					self.enableSubtitle(cur[0][:5])
 					self.__updatedInfo()
 				if isIPTV(ref):
 					self.saveAVDict()
+			self.runHooks(self.TYPE_ALL)
 			self.close(0)
 		elif self.focus == FOCUS_CONFIG:
 			self.keyRight()
