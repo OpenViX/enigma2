@@ -31,6 +31,9 @@ selectionpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, 
 
 
 class AudioSelection(ConfigListScreen, Screen):
+	TYPE_ALL = 0
+	TYPE_AUDIO = 1
+	TYPE_SUBTITLE = 2
 	hooks = []
 	audioHooks = []
 	subtitleHooks = []
@@ -86,15 +89,15 @@ class AudioSelection(ConfigListScreen, Screen):
 		self.onLayoutFinish.append(self.__layoutFinished)
 
 	def runHooks(self, type):
-		if type == 0:
+		if type == self.TYPE_ALL:
 			for hook in AudioSelection.hooks:
 				if callable(hook):
 					hook()
-		elif type == 1:
+		elif type == self.TYPE_AUDIO:
 			for hook in AudioSelection.audioHooks:
 				if callable(hook):
 					hook()
-		else:
+		elif type == self.TYPE_SUBTITLE:
 			for hook in AudioSelection.subtitleHooks:
 				if callable(hook):
 					hook()
@@ -610,20 +613,20 @@ class AudioSelection(ConfigListScreen, Screen):
 			if self.settings.menupage.value == PAGE_AUDIO and cur[0] is not None:
 				self.changeAudio(cur[0])
 				self.__updatedInfo()
-				self.runHooks(1)
+				self.runHooks(self.TYPE_AUDIO)
 			if self.settings.menupage.value == PAGE_SUBTITLES and cur[0] is not None:
 				if self.infobar.selected_subtitle and self.infobar.selected_subtitle[:4] == cur[0][:4]:
 					self.enableSubtitle(None)
 					selectedidx = self["streams"].getIndex()
 					self.__updatedInfo()
 					self["streams"].setIndex(selectedidx)
-					self.runHooks(2)
+					self.runHooks(self.TYPE_SUBTITLE)
 				else:
 					self.enableSubtitle(cur[0][:5])
 					self.__updatedInfo()
 				if isIPTV(ref):
 					self.saveAVDict()
-			self.runHooks(0)
+			self.runHooks(self.TYPE_ALL)
 			self.close(0)
 		elif self.focus == FOCUS_CONFIG:
 			self.keyRight()
