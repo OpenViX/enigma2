@@ -22,6 +22,7 @@ class Input(VariableText, GUIComponent, NumericalTextInput):
 		self.visible_width = visible_width
 		self.offset = 0
 		self.overwrite = maxSize or self.type == self.NUMBER
+		self.onChangedEntry = []
 		self.setText(text)
 
 	def __len__(self):
@@ -56,6 +57,9 @@ class Input(VariableText, GUIComponent, NumericalTextInput):
 					self.text += (x == " " and " " or "*")
 			else:
 				self.text = str(self.Text) + " "
+		for cb in self.onChangedEntry:
+			if callable(cb):
+				cb()
 
 	def setText(self, text):
 		if not len(text):
