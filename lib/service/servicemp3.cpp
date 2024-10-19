@@ -469,6 +469,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_pump(eApp, 1, "Servicemp3")
 {
 	m_subtitle_sync_timer = eTimer::create(eApp);
+	m_dvb_subtitle_sync_timer = eTimer::create(eApp);
 	m_stream_tags = 0;
 	m_currentAudioStream = -1;
 	m_currentSubtitleStream = -1;
@@ -513,6 +514,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	}
 
 	CONNECT(m_subtitle_sync_timer->timeout, eServiceMP3::pushSubtitles);
+	CONNECT(m_dvb_subtitle_sync_timer->timeout, eServiceMP3::pushDVBSubtitles);
 	CONNECT(m_pump.recv_msg, eServiceMP3::gstPoll);
 	CONNECT(m_nownext_timer->timeout, eServiceMP3::updateEpgCacheNowNext);
 	m_aspect = m_width = m_height = m_framerate = m_progressive = m_gamma = -1;
@@ -1832,6 +1834,12 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 					subsink = gst_bin_get_by_name(GST_BIN(m_gst_playbin), "subtitle_sink");
 					if (subsink)
 					{
+						/*
+						 * FIX: Seems that subtitle sink have a delay of receiving subtitles buffer.
+						 * So we move ahead the PTS of the subtitle sink by 2 seconds.
+						 * Then we do aditional sync of subtitles if they arrive ahead of PTS
+						 */
+						g_object_set (G_OBJECT (subsink), "ts-offset", -2LL * GST_SECOND, NULL);
 #ifdef GSTREAMER_SUBTITLE_SYNC_MODE_BUG
 						/*
 						 * HACK: disable sync mode for now, gstreamer suffers from a bug causing sparse streams to loose sync, after pause/resume / skip
@@ -2941,7 +2949,8 @@ void eServiceMP3::subtitle_redraw(int page_id)
 		}
 	}
 	Page.m_display_size = m_display_size;
-	pushDVBSubtitles(Page);
+	m_dvb_subtitle_pages.push_back(Page);
+	pushDVBSubtitles();
 	Page.m_regions.clear();
 }
 
@@ -3734,9 +3743,13 @@ void eServiceMP3::pullSubtitle(GstBuffer *buffer)
 	}
 }
 
-void eServiceMP3::pushDVBSubtitles(const eDVBSubtitlePage &p)
+void eServiceMP3::pushDVBSubtitles()
 {
-	m_dvb_subtitle_pages.push_back(p);
+	pts_t running_pts = 0;
+	int32_t next_timer = 0, decoder_ms;
+
+	if (getPlayPosition(running_pts) < 0)
+		eTrace("[eServiceMP3] Cant get current decoder time.");
 
 	while (1)
 	{
@@ -3745,36 +3758,29 @@ void eServiceMP3::pushDVBSubtitles(const eDVBSubtitlePage &p)
 		if (!m_dvb_subtitle_pages.empty())
 		{
 			dvb_page = m_dvb_subtitle_pages.front();
-			show_time = dvb_page.m_show_time;
-			m_subtitle_widget->setPage(dvb_page);
-			m_dvb_subtitle_pages.pop_front();
+			show_time = dvb_page.m_show_time / 1000000ULL;
 		}
 		else
 			return;
 
+		decoder_ms = running_pts / 90LL;
+
 		// If subtitle is overdue or within 20ms the video timing then display it.
+		// If cant get decoder PTS then display the subtitles.
 		// If not, pause subtitle processing until the subtitle should be shown
-		// int diff = show_time - pos;
-		// if (diff < 20*90)
-		// {
-		// 	//eDebug("[eDVBServicePlay] Showing subtitle with pts:%lld Video pts:%lld diff:%.03fs. Page stack size %d", show_time, pos, diff / 90000.0f, m_dvb_subtitle_pages.size());
-		// 	if (type == TELETEXT)
-		// 	{
-		// 		m_subtitle_widget->setPage(page);
-		// 		m_subtitle_pages.pop_front();
-		// 	}
-		// 	else
-		// 	{
-		// 		m_subtitle_widget->setPage(dvb_page);
-		// 		m_dvb_subtitle_pages.pop_front();
-		// 	}
-		// }
-		// else
-		// {
-		// 	//eDebug("[eDVBServicePlay] Delay early subtitle by %.03fs. Page stack size %d", diff / 90000.0f, m_dvb_subtitle_pages.size());
-		// 	m_subtitle_sync_timer->start(diff / 90, 1);
-		// 	break;
-		// }
+		pts_t diff = show_time - decoder_ms;
+		if (diff < 20 || decoder_ms == 0LL)
+		{
+			eTrace("[eServiceMP3] Showing subtitles at %u . Current decoder time: %lld", show_time, decoder_ms);
+			m_subtitle_widget->setPage(dvb_page);
+			m_dvb_subtitle_pages.pop_front();
+		}
+		else
+		{
+			eDebug("[eServiceMP3] Delay early subtitle by %.03fs. Page stack size %d", diff / 1000.0f, m_dvb_subtitle_pages.size());
+			m_dvb_subtitle_sync_timer->start(diff, 1);
+			break;
+		}
 	}
 }
 
@@ -3892,6 +3898,8 @@ RESULT eServiceMP3::enableSubtitles(iSubtitleUser *user, struct SubtitleTrack &t
 	eDebug ("[eServiceMP3][enableSubtitles] entered: subtitle stream %i track.pid %i", m_currentSubtitleStream, track.pid - 1);
 	g_object_set (G_OBJECT (m_gst_playbin), "current-text", -1, NULL);
 	m_subtitle_sync_timer->stop();
+	m_dvb_subtitle_sync_timer->stop();
+	m_dvb_subtitle_pages.clear();
 	m_subtitle_pages.clear();
 	m_prev_decoder_time = -1;
 	m_decoder_time_valid_state = 0;
@@ -3923,7 +3931,9 @@ RESULT eServiceMP3::disableSubtitles()
 	setCacheEntry(false, -1);
 	g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
 	m_subtitle_sync_timer->stop();
+	m_dvb_subtitle_sync_timer->stop();
 	m_subtitle_pages.clear();
+	m_dvb_subtitle_pages.clear();
 	m_prev_decoder_time = -1;
 	m_decoder_time_valid_state = 0;
 	if (m_subtitle_widget) m_subtitle_widget->destroy();
