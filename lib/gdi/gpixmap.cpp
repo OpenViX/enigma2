@@ -468,7 +468,7 @@ void gPixmap::drawRectangle(const gRegion &region, const eRect &area, const gRGB
 	uint32_t *gradientBuf = nullptr;
 
 	const int gradientSize = (gradientFullSize) ? gradientFullSize : (direction == GRADIENT_VERTICAL) ? area.height() : area.width();
-	
+
 	if(!direction)
 		gradientBuf = createGradientBuffer2(gradientSize, backgroundColor, backgroundColor);
 	else if(gradientColors.size() == 2 || gradientColors.at(1) == gradientColors.at(2))
@@ -599,7 +599,7 @@ void gPixmap::drawRectangle(const gRegion &region, const eRect &area, const gRGB
 							dst->g += (((src->g - dst->g) * src->a) >> 8);
 							dst->r += (((src->r - dst->r) * src->a) >> 8);
 							dst->a += (((0xFF - dst->a) * src->a) >> 8);
-							
+
 							++dst;
 							++src;
 							--width;

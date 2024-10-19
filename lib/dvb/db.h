@@ -47,7 +47,7 @@ public:
 			return eServiceReferenceDVB(eDVBNamespace(NS), eTransportStreamID(TSID), eOriginalNetworkID(ONID), eServiceID(SID), 0);
 		else
 			return eServiceReferenceDVB();
-		
+
 	}
 
 	void Update(uint16_t lcn, uint32_t signal)
@@ -89,7 +89,7 @@ class eIPTVDBItem
 		int adra_pid;
 		int subtitle_pid;
 		int v_pid;
-		eIPTVDBItem(const std::string sref, const int ampegpid, const int aac3pid, const int aac4pid, const int addppid, const int aaachpid, 
+		eIPTVDBItem(const std::string sref, const int ampegpid, const int aac3pid, const int aac4pid, const int addppid, const int aaachpid,
 					const int aaacpid, const int adrapid, const int subtitlepid, const int vpid) {
 			s_ref = sref;
 			ampeg_pid = ampegpid;
@@ -124,7 +124,7 @@ class eDVBDB: public iDVBChannelList
 	std::map<eServiceReferenceDVB, ePtr<eDVBService> > m_services;
 
 	std::map<std::string, eBouquet> m_bouquets;
-	
+
 	bool m_numbering_mode;
 	int m_load_unlinked_userbouquets;
 #ifdef SWIG

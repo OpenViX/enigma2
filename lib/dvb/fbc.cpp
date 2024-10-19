@@ -215,7 +215,7 @@ eFBCTunerManager::eFBCTunerManager(ePtr<eDVBResourceManager> res_mgr)
 		if(ReadProcInt(FESlotID(it), "fbc_set_id") >= 0)
 			it->m_frontend->set_FBCTuner(true);
 #endif
-		
+
 	}
 }
 
@@ -489,7 +489,7 @@ int eFBCTunerManager::IsCompatibleWith(ePtr<iDVBFrontendParameters> &feparm, eDV
 
 		if(IsSCR(*it))
 			continue;
-		
+
 		// temporarily add this leaf to the current "linked" chain, at the tail
 
 		fe_insert_point = GetTail(*it);

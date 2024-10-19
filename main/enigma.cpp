@@ -140,7 +140,7 @@ public:
 	}
 };
 
-bool replace(std::string& str, const std::string& from, const std::string& to) 
+bool replace(std::string& str, const std::string& from, const std::string& to)
 {
 	size_t start_pos = str.find(from);
 	if(start_pos == std::string::npos)
@@ -167,7 +167,7 @@ static const std::string getConfigCurrentSpinner(const char* key)
 	}
 
 	return "spinner"; // fallback on default system spinner
-} 
+}
 
 int exit_code;
 
@@ -320,7 +320,7 @@ int main(int argc, char **argv)
 			rfilename = eEnv::resolve(filename);
 			loadPNG(wait[i], rfilename.c_str());
 
-			if (!wait[i]) 
+			if (!wait[i])
 			{
 				// spinner failed
 				if (i==0)
