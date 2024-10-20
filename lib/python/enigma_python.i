@@ -1,27 +1,27 @@
 /*
   NOTE: you have two options when adding classes so that
   they are callable *from* python.
-  
+
    - either you %include the header file
    - or you re-declare it
-   
+
   In both cases, you must #include the required
   header file (i.e. the header file itself), otherwise
   enigma_python_wrap.cxx won't build.
-  
+
 	In case you import the whole header file,
 	please make sure that no unimportant stuff
 	is wrapped, as this makes the wrapper stuff
-	much more complex and it can probably break 
+	much more complex and it can probably break
 	very easily because of missing typemaps etc.
-	
+
 	you could make use of dizzy macros to ensure
 	that some stuff is left out when parsed as SWIG
-	definitions, but be sure to not modify the binary 
+	definitions, but be sure to not modify the binary
 	representation. DON'T USE #ifdef SWIG_COMPILE
 	for leaving out stuff (unless you *really* know
 	what you are doing,of course!). you WILL break it.
-		
+
 	The better way (with more work) is to re-declare
 	the class. It won't be compiled, so you can
 	leave out stuff as you like.
@@ -29,7 +29,7 @@
 
 
 Oh, things like "operator= is private in this context" etc.
-is usually caused by not marking PSignals as immutable. 
+is usually caused by not marking PSignals as immutable.
 */
 
 %module enigma
@@ -324,7 +324,7 @@ public:
 
 %{
 RESULT SwigFromPython(ePtr<gPixmap> &result, PyObject *obj)
-{	
+{
 	ePtr<gPixmap> *res;
 
 	res = 0;
@@ -341,24 +341,24 @@ RESULT SwigFromPython(ePtr<gPixmap> &result, PyObject *obj)
 }
 PyObject *New_eServiceReference(const eServiceReference &ref)
 {
-    eServiceReference *result = new eServiceReference(ref);
-    return SWIG_NewPointerObj((void*)(result), SWIGTYPE_p_eServiceReference, 1);
+	eServiceReference *result = new eServiceReference(ref);
+	return SWIG_NewPointerObj((void*)(result), SWIGTYPE_p_eServiceReference, 1);
 }
 PyObject *New_iRecordableServicePtr(const ePtr<iRecordableService> &ptr)
 {
-    ePtr<iRecordableService> *result = new ePtr<iRecordableService>(ptr);
+	ePtr<iRecordableService> *result = new ePtr<iRecordableService>(ptr);
 #ifndef SWIGTYPE_p_ePtrT_iRecordableService_t
 #define SWIGTYPE_p_ePtrT_iRecordableService_t SWIGTYPE_p_ePtrTiRecordableService_t
 #endif
-    return SWIG_NewPointerObj((void*)(result), SWIGTYPE_p_ePtrT_iRecordableService_t, 1);
+	return SWIG_NewPointerObj((void*)(result), SWIGTYPE_p_ePtrT_iRecordableService_t, 1);
 }
 PyObject *New_iCECMessagePtr(const ePtr<iCECMessage> &ptr)
 {
-    ePtr<iCECMessage> *result = new ePtr<iCECMessage>(ptr);
+	ePtr<iCECMessage> *result = new ePtr<iCECMessage>(ptr);
 #ifndef SWIGTYPE_p_ePtrT_iCECMessage_t
 #define SWIGTYPE_p_ePtrT_iCECMessage_t SWIGTYPE_p_ePtrTiCECMessage_t
 #endif
-    return SWIG_NewPointerObj((void*)(result), SWIGTYPE_p_ePtrT_iCECMessage_t, 1);
+	return SWIG_NewPointerObj((void*)(result), SWIGTYPE_p_ePtrT_iCECMessage_t, 1);
 }
 %}
 
@@ -434,8 +434,8 @@ void setFCCEnable(int);
 %{
 void setFCCEnable(int enable)
 {
-        eFCCServiceManager *fcc_mng = eFCCServiceManager::getInstance();
-        if (fcc_mng) setFCCEnable(enable);
+		eFCCServiceManager *fcc_mng = eFCCServiceManager::getInstance();
+		if (fcc_mng) setFCCEnable(enable);
 }
 %}
 
@@ -447,7 +447,7 @@ PyObject *getFontFaces()
 	ePyObject result = PyList_New(v.size());
 	for (size_t i = 0; i < v.size(); i++)
 		PyList_SET_ITEM(result, i, PyUnicode_FromString(v[i].c_str()));
-        return result;
+		return result;
 }
 %}
 

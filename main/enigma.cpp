@@ -153,8 +153,8 @@ static const std::string getConfigCurrentSpinner(const char* key)
 {
 	auto value = eSimpleConfig::getString(key);
 
-	 // if value is NOT empty, means config.skin.primary_skin exists in settings file, so return SCOPE_CURRENT_SKIN + "/spinner"
-	 // ( /usr/share/enigma2/MYSKIN/spinner ) BUT check if /usr/share/enigma2/MYSKIN/spinner/wait1.png exist
+	// if value is NOT empty, means config.skin.primary_skin exists in settings file, so return SCOPE_CURRENT_SKIN + "/spinner"
+	// ( /usr/share/enigma2/MYSKIN/spinner ) BUT check if /usr/share/enigma2/MYSKIN/spinner/wait1.png exist
 	if (!value.empty())
 	{
 		replace(value, "skin.xml", "spinner");

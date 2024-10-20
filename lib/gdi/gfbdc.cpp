@@ -313,7 +313,7 @@ void gFBDC::setResolution(int xres, int yres, int bpp)
 	surface.data = fb->lfb;
 	
 	for (int y=0; y<yres; y++)    // make whole screen transparent 
-		memset(fb->lfb+ y * xres * 4, 0x00, xres * 4);	
+		memset(fb->lfb+ y * xres * 4, 0x00, xres * 4);
 
 	surface.data_phys = fb->getPhysAddr();
 

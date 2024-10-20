@@ -508,7 +508,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 				m_currentAudioStream = it->ampeg_pid;
 				m_currentSubtitleStream = it->subtitle_pid;
 				m_cachedSubtitleStream = m_currentSubtitleStream;
-				eDebug("[eServiceMP3] Init start iptv_service use sref pid's A: %d; S: %d", m_currentAudioStream, it->subtitle_pid);				
+				eDebug("[eServiceMP3] Init start iptv_service use sref pid's A: %d; S: %d", m_currentAudioStream, it->subtitle_pid);
 			}
 		}
 	}
@@ -2768,7 +2768,7 @@ void eServiceMP3::subtitle_redraw(int page_id)
 				eDebug("REGION FFFFFFOUND   reg->region_id == region->region_id");
 				break;
 			}
-				
+
 			reg = reg->next;
 		}
 		if (reg)
@@ -3207,7 +3207,7 @@ void eServiceMP3::pullSubtitle(GstBuffer *buffer)
 					segment_type = data[pos++];
 					page_id = (data[pos] << 8) | data[pos + 1];
 					pos += 2;
-    				segment_len = (data[pos] << 8) | data[pos + 1];
+					segment_len = (data[pos] << 8) | data[pos + 1];
 					pos += 2;
 					if ((len - pos) < segment_len) {
 						eWarning("segment_length was told to be %u, but we only have %d bytes left", segment_len, len - pos);
