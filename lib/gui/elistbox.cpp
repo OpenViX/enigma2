@@ -716,7 +716,7 @@ void eListbox::recalcSize()
 	}
 
 	if (m_items_per_page < 0) /* TODO: whyever - our size could be invalid, or itemheigh could be wrongly specified. */
- 		m_items_per_page = 0;
+		m_items_per_page = 0;
 
 	moveSelection(justCheck);
 }
