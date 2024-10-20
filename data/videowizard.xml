@@ -4,6 +4,7 @@ from Components.AVSwitch import iAVSwitch as avSwitch
 	<step id="inputselection" nextstep="modeselection" timeout="10" timeoutaction="selectnext">
 		<condition>
 self.condition = len(self.listInputChannels()) > 1
+self.selection = "HDMI"
 if len(self.listInputChannels()) == 1:
 	self.selection = "HDMI"
 	self.inputSelectionMoved()

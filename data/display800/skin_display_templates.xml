@@ -349,14 +349,13 @@
 	</screen>
 
 	<screen name="CatchupPlayerSummary" position="0,0" size="800,480" resolution="800,480"> 
-		<widget source="session.CurrentService" render="Label" position="40,90" size="720,260" font="Regular;75" foregroundColor="white" halign="center" valign="center" zPosition="2">
+		<widget source="session.CurrentService" render="Label" position="40,90" size="720,260" font="FdLcD;30" foregroundColor="white" halign="center" valign="center" zPosition="2">
 			<convert type="ServiceName">Name</convert>
 		</widget>
 		<widget source="parent.progress_summary" render="Progress" position="40,340" size="720,30" borderColor="white" borderWidth="2" zPosition="2"/>
-		<widget source="parent.time_elapsed_summary" render="Label" position="40,385" size="320,70" font="Regular;60" foregroundColor="white" halign="left" valign="center"/>
-		<widget source="parent.time_remaining_summary" render="Label" position="440,385" size="320,70" font="Regular;60" foregroundColor="white" halign="right" valign="center"/>
-		<widget name="parent.statusicon_summary" position="357,370" size="85,85" pixmaps="play.png,pause.png,stop.png,forward.png,backward.png,slow.png" zPosition="2" />
-		<widget source="global.CurrentTime" render="Label" position="540,10" size="220,84" font="Regular;84" halign="left">
+		<widget source="parent.time_elapsed_summary" render="Label" position="40,385" size="320,70" font="FdLcD;28" foregroundColor="white" halign="left" valign="center"/>
+		<widget source="parent.time_remaining_summary" render="Label" position="440,385" size="320,70" font="FdLcD;28" foregroundColor="white" halign="right" valign="center"/>
+		<widget source="global.CurrentTime" render="Label" position="e-440,10" size="400,84" font="FdLcD;35" halign="right">
 			<convert type="ClockToText">Default</convert>
 		</widget>
 	</screen>
