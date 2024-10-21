@@ -965,7 +965,7 @@
 
 	<map context="TvRadioActions">
 		<key id="KEY_TV" mapto="keyTV" flags="m" />
-		<key id="KEY_TV2" mapto="keyTV" flags="m" />
+		<key id="KEY_TV2" mapto="toggleTvRadio" flags="m" />
 		<key id="KEY_RADIO" mapto="keyRadio" flags="m" />
 		<key id="KEY_AUDIO" mapto="audio" flags="m" />
 	</map>
