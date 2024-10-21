@@ -2135,17 +2135,17 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 
 	def keyTV(self):
 		if SystemInfo["toggleTvRadioButtonEvents"]:
-			self.toogleTvRadio()
+			self.toggleTvRadio()
 		else:
 			self.setModeTv()
 
 	def keyRadio(self):
 		if SystemInfo["toggleTvRadioButtonEvents"]:
-			self.toogleTvRadio()
+			self.toggleTvRadio()
 		else:
 			self.setModeRadio()
 
-	def toogleTvRadio(self):
+	def toggleTvRadio(self):
 		if self.radioTV:
 			self.setModeTv()
 		else:
@@ -2959,17 +2959,17 @@ class SimpleChannelSelection(ChannelSelectionBase):
 
 	def keyTV(self):
 		if SystemInfo["toggleTvRadioButtonEvents"]:
-			self.toogleTvRadio()
+			self.toggleTvRadio()
 		else:
 			self.setModeTv()
 
 	def keyRadio(self):
 		if SystemInfo["toggleTvRadioButtonEvents"]:
-			self.toogleTvRadio()
+			self.toggleTvRadio()
 		else:
 			self.setModeRadio()
 
-	def toogleTvRadio(self):
+	def toggleTvRadio(self):
 		if self.radioTV:
 			self.setModeTv()
 		else:
