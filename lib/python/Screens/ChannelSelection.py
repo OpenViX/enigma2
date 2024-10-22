@@ -72,18 +72,18 @@ class InsertService(Setup):
 	def createConfig(self):
 		choices = [("Select Service", _("Press 'OK' to select from service list")), ("IPTV stream", _("IPTV stream"))]
 		if SystemInfo.get("hdmifhdin") or SystemInfo.get("hdmihdin"):
-			choices.append(("HDMI-in", _("HDMI-In")))
+			choices.append(("HDMI-in", _("HDMI-IN")))
 		self.servicetype = ConfigSelection(choices=choices)
 		play_system_choices = [("1", "DVB"), ("4097", "HiSilicon" if SystemInfo.get("mediaservice") == "servicehisilicon" else "GStreamer")]
 		if isPluginInstalled("ServiceApp"):
 			play_system_choices.append(("5002", "Exteplayer3"))
 		self.streamtype = ConfigSelection(choices=play_system_choices)
-		self.streamurl = ConfigText("http://url_to_stream", fixed_size=False)
-		self.servicename = ConfigText("service_name", fixed_size=False)
+		self.streamurl = ConfigText("http://", fixed_size=False)
+		self.servicename = ConfigText("", fixed_size=False)
 
 	def createSetup(self):
 		if self.servicetype.value == "HDMI-in":
-			self.servicerefstring = '8192:0:1:0:0:0:0:0:0:0::%s' % self.servicename.value
+			self.servicerefstring = '8192:0:1:0:0:0:0:0:0:0::%s' % _("HDMI-IN")
 		else:
 			self.servicerefstring = '%s:0:1:0:0:0:0:0:0:0:%s:%s' % (self.streamtype.value, self.streamurl.value.replace(':', '%3a'), self.servicename.value)
 		self.title  = '%s [%s]' % (_("Add a Service"), self.servicerefstring)
@@ -92,7 +92,7 @@ class InsertService(Setup):
 			if self.servicetype.value != "HDMI-in":
 				SetupList.append((_("Stream Type"), self.streamtype, _("Select stream type.")))
 				SetupList.append((_("Stream URL"), self.streamurl, _("Enter the URL to stream from.")))
-			SetupList.append((_("Service Name"), self.servicename, _("Enter service name that will be shown in the bouquet.")))
+				SetupList.append((_("Service Name"), self.servicename, _("Enter service name that will be shown in the bouquet.")))
 		self["config"].list = SetupList
 
 	def changedEntry(self):
