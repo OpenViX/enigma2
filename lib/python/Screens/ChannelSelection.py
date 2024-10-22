@@ -295,7 +295,7 @@ class ChannelContextMenu(Screen):
 						_append_when_current_valid(current, menu, actions, (_("Stop using as startup service"), self.unsetStartupService), level=0, key="1")
 					else:
 						_append_when_current_valid(current, menu, actions, (_("Set as startup service"), self.setStartupService), level=0, key="1")
-					if False:  # disable... SystemInfo["3DMode"]:
+					if SystemInfo["3DMode"]:
 						if eDVBDB.getInstance().getFlag(eServiceReference(current.toString())) & FLAG_IS_DEDICATED_3D:
 							_append_when_current_valid(current, menu, actions, (_("Unmark service as a dedicated 3D service"), self.removeDedicated3DFlag), level=0, key="bullet")
 						else:
@@ -417,22 +417,22 @@ class ChannelContextMenu(Screen):
 					_append_when_current_valid(current, menu, actions, (_("Abort alternatives edit"), self.bouquetMarkAbort), level=0, key="bullet")
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "NumberActions", "MenuActions"], actions)
 
-#	def set3DMode(self, value):
-#		if config.osd.threeDmode.value == "auto" and self.session.nav.currentlyPlayingServiceReference == self.csel.getCurrentSelection():
-#			from Screens.VideoMode import applySettings  # this import is no longer available
-#			applySettings(value and "sidebyside" or config.osd.threeDmode.value)
+	def set3DMode(self, value):
+		if config.osd.threeDmode.value == "auto" and self.session.nav.currentlyPlayingServiceReference == self.csel.getCurrentSelection():
+			from Screens.VideoMode import applySettings
+			applySettings(value and "sidebyside" or config.osd.threeDmode.value)
 
-#	def addDedicated3DFlag(self):
-#		eDVBDB.getInstance().addFlag(eServiceReference(self.csel.getCurrentSelection().toString()), FLAG_IS_DEDICATED_3D)
-#		eDVBDB.getInstance().reloadBouquets()
-#		self.set3DMode(True)
-#		self.close()
+	def addDedicated3DFlag(self):
+		eDVBDB.getInstance().addFlag(eServiceReference(self.csel.getCurrentSelection().toString()), FLAG_IS_DEDICATED_3D)
+		eDVBDB.getInstance().reloadBouquets()
+		self.set3DMode(True)
+		self.close()
 
-#	def removeDedicated3DFlag(self):
-#		eDVBDB.getInstance().removeFlag(eServiceReference(self.csel.getCurrentSelection().toString()), FLAG_IS_DEDICATED_3D)
-#		eDVBDB.getInstance().reloadBouquets()
-#		self.set3DMode(False)
-#		self.close()
+	def removeDedicated3DFlag(self):
+		eDVBDB.getInstance().removeFlag(eServiceReference(self.csel.getCurrentSelection().toString()), FLAG_IS_DEDICATED_3D)
+		eDVBDB.getInstance().reloadBouquets()
+		self.set3DMode(False)
+		self.close()
 
 	def toggleVBI(self):
 		Screens.InfoBar.InfoBar.instance.ToggleHideVBI(self.csel.getCurrentSelection())
