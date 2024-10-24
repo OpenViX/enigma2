@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-22 19:20+0000\n"
-"PO-Revision-Date: 2024-10-24 11:44+0200\n"
+"PO-Revision-Date: 2024-10-24 13:32+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -1004,11 +1004,9 @@ msgstr "%s downloads"
 msgid "%s files cannot be bulk renamed"
 msgstr "%s bestanden kunnen niet en masse hernoemd worden"
 
-#, fuzzy, python-format
+#, python-format
 msgid "%s is also enabled for autofs network mount \n"
-msgstr ""
-"\n"
-" %s is ook werkzaam voor autofs netwerk-mount"
+msgstr "%s is ook werkzaam voor autofs netwerk-mount\n"
 
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
@@ -1180,9 +1178,8 @@ msgstr "/T"
 msgid "/s"
 msgstr "/s"
 
-#, fuzzy
 msgid "0 minutes"
-msgstr "minuten"
+msgstr "0 minuten"
 
 msgid "1 day"
 msgstr "1 dag"
@@ -1197,7 +1194,7 @@ msgid "1 second"
 msgstr "1 seconde"
 
 msgid "1. Try to reboot the box and check if this warning disappears"
-msgstr ""
+msgstr "1. Probeer de ontvanger te herstarten en controleer of het probleem is opgelost"
 
 msgid "1.0"
 msgstr "1.0"
@@ -1263,7 +1260,7 @@ msgid "1st Infobar timeout"
 msgstr "1e informatiebalk timeout"
 
 msgid "2. Try to re install Vu+ Multiboot as usual"
-msgstr ""
+msgstr "2. Probeer om Vu+ Multiboot als gewoonlijk te herinstalleren"
 
 msgid "23.976"
 msgstr "23.976"
@@ -1287,7 +1284,7 @@ msgid "3"
 msgstr "3"
 
 msgid "3. If you wish to try and recover your Multiboot system then proceed as follows......."
-msgstr ""
+msgstr "3. Als u wil proberen uw Multiboot-systeem te herstellen, ga dan als volgt te werk..."
 
 msgid "30"
 msgstr "30"
@@ -1320,7 +1317,7 @@ msgid "4"
 msgstr "4"
 
 msgid "4. Login into the Recovery image using SSH or telnet."
-msgstr ""
+msgstr "4. Log in het Recovery-image met gebruik making van SSH of telnet."
 
 msgid "4097 + 5001"
 msgstr "4097 + 5001"
@@ -1369,7 +1366,7 @@ msgid "5"
 msgstr "5"
 
 msgid "5. If you wish to backup eMMC slots 1,2,3 then enter 'tar -cvzf /media/hdd/linuxrootfsX.tar.gz /linuxrootfsX' where X is the slot number and repeat the command for each installed image slot in flash (so you have backup of installed flash images)"
-msgstr ""
+msgstr "5. Als u een back-up wil maken van eMMC slots 1,2,3 gebruik dan het commando 'tar -cvzf /media/hdd/linuxrootfsX.tar.gz /linuxrootfsX', waarin X het slotnummer is en herhaal het commando voor elk geïnstalleerd image-slot in flash (zodat u een back-up hebt van alle geïnstalleerde images)."
 
 msgid "5001 + 5002"
 msgstr "5001 + 5002"
@@ -1387,13 +1384,13 @@ msgid "6"
 msgstr "6"
 
 msgid "6. Then enter '/etc/init.d/kexec-multiboot-recovery start' "
-msgstr ""
+msgstr "6. Gebruik vervolgens het commando '/etc/init.d/kexec-multiboot-recovery start' "
 
 msgid "64 Mb"
 msgstr "64 Mb"
 
 msgid "7. The script will copy the required files and then will automatically reboot the box"
-msgstr ""
+msgstr "7. Het script zal de vereiste bestanden kopiëren en de ontvanger automatisch herstarten"
 
 msgid "756 Mb"
 msgstr "756 Mb"
@@ -1560,7 +1557,6 @@ msgstr ""
 msgid "A recording is currently running on the selected tuner. Please select a different tuner or consider to stop the recording to try again."
 msgstr "Een opname is nu bezig op de geselecteerde tuner. Gebruik een andere tuner of stop de opname voor u gaat scannen."
 
-#, fuzzy
 msgid "A recording is currently running. Please stop the recording before starting a service scan."
 msgstr "Een opname is nu bezig. Stop de opname voor u gaat scannen."
 
@@ -1758,9 +1754,8 @@ msgstr "Voeg taal toe"
 msgid "Add Timer"
 msgstr "Voeg timer toe"
 
-#, fuzzy
 msgid "Add a Service"
-msgstr "Voeg zender toe"
+msgstr "Voeg een zender toe"
 
 msgid "Add a mark"
 msgstr "Plaats markering"
@@ -1780,9 +1775,8 @@ msgstr "Voeg opnametimer toe voor huidige programma"
 msgid "Add a record timer or an autotimer for current event"
 msgstr "Voeg opnametimer of Autotimer toe voor huidige programma"
 
-#, fuzzy
 msgid "Add a service or stream to the current bouquet"
-msgstr "Zenders toevoegen aan deze favorietenlijst?"
+msgstr "Zender of stream toevoegen aan de huidige favorietenlijst"
 
 msgid "Add a zap timer for current event"
 msgstr "Voeg zaptimer toe voor huidig programma"
@@ -1844,9 +1838,8 @@ msgstr "Zender toevoegen aan favorieten"
 msgid "Add services to this bouquet?"
 msgstr "Zenders toevoegen aan deze favorietenlijst?"
 
-#, fuzzy
 msgid "Add the currently playing service to a bouquet"
-msgstr "Zender toevoegen aan favorietenlijst"
+msgstr "Voeg huidige zender aan een favorietenlijst"
 
 msgid "Add timer"
 msgstr "Timer"
@@ -1939,7 +1932,7 @@ msgid "Album"
 msgstr "Album"
 
 msgid "Alert - the system has found an issue with the Vu+ Kexec Multiboot images - read the following information carefully"
-msgstr ""
+msgstr "Alert - het systeem heeft een probleem gevonden met de Vu+ Kexec Multiboot images - lees de volgende informatie zorgvuldig"
 
 msgid "Algeria"
 msgstr "Algeria"
@@ -2083,7 +2076,7 @@ msgid "Alpha"
 msgstr "Alfa"
 
 msgid "Alpha blending is the process of combining an image with a background to create the appearance of partial or full transparency. 'Always' may cause receivers that don't support hardware acceleration to render images more slowly. Also some skins may show strange side effects."
-msgstr ""
+msgstr "Alpha blending is het proces van het combineren van een afbeelding met de achtergrond om het effect van een volledige of gedeeltelijke transparantie te bereiken. 'Altijd' kan het opbouwen van afbeeldingen op ontvangers die geen hardware acceleratie ondersteunen vertragen. Ook kunnen sommige skins rare effecten vertonen."
 
 msgid "Alphabetical under headings"
 msgstr "Alfabetisch onder de kopteksten"
@@ -2115,9 +2108,8 @@ msgstr "Anderen"
 msgid "Altri Programmi"
 msgstr "Andere programma's"
 
-#, fuzzy
 msgid "Always"
-msgstr "Altijd vragen"
+msgstr "Altijd"
 
 msgid "Always hide infobar"
 msgstr "Informatiebalk altijd verbergen"
@@ -2411,9 +2403,8 @@ msgstr "Audiospoor (%s) taal"
 msgid "Audio track selection, downmix and other audio options"
 msgstr "Audiotrack keuze, downmix en andere opties"
 
-#, fuzzy
 msgid "Audio volume step size"
-msgstr "Automatisch volumeniveau"
+msgstr "Stapgrootte audio volume"
 
 msgid "Australia"
 msgstr "Australië"
@@ -2436,9 +2427,8 @@ msgstr "Uitschakelen"
 msgid "Auto Detect"
 msgstr "Automatisch detecteren"
 
-#, fuzzy
 msgid "Auto DiSEqC"
-msgstr "Auto Diseqc"
+msgstr "Auto DiSEqC"
 
 msgid "Auto EXIF Orientation rotation/flipping"
 msgstr "Auto EXIF-orientatie: rotatie/spiegelen"
@@ -2826,9 +2816,8 @@ msgstr "Blauwe toets (lang)"
 msgid "Blue button (short)"
 msgstr "Blauwe toets (kort)"
 
-#, fuzzy
 msgid "Blue button function"
-msgstr "Blauwe toets (lang)"
+msgstr "Functie blauwe toets"
 
 msgid "Blue long"
 msgstr "Lang-blauw"
@@ -2874,9 +2863,8 @@ msgstr "Bosnia and Herzegovina"
 msgid "Botswana"
 msgstr "Botswana"
 
-#, fuzzy
 msgid "Bottom"
-msgstr "onderin"
+msgstr "Onderin"
 
 msgid "Boulevard"
 msgstr "Boulevard"
@@ -3641,7 +3629,7 @@ msgid "Close"
 msgstr "Sluiten"
 
 msgid "Close CA device at programm end"
-msgstr ""
+msgstr "Sluit het CA-apparaat aan het einde van het programma"
 
 msgid "Close PiP on exit"
 msgstr "Sluit PiP met de exit-toets"
@@ -3811,9 +3799,8 @@ msgstr "Stel een extra vertraging in om de synchronisatie van ondertitels te ver
 msgid "Configure duration of inactivity before the hard disk drive goes to standby"
 msgstr "Stel in na hoeveel tijd niet gebruikt te zijn de harde schijf moet gaan slapen"
 
-#, fuzzy
 msgid "Configure how long finished events should remain visible in the EPG. Useful when you need information about an event which has just finished, or has been delayed (or for plugins that support catchup)."
-msgstr "Bepaal hoelang oude info in de EPG zichtbaar moet blijven. Nuttig als u informatie zoekt over een programma dat net is afgelopen of dat verlaat is."
+msgstr "Bepaal hoelang oude info in de EPG zichtbaar moet blijven. Nuttig als u informatie zoekt over een programma dat net is afgelopen of dat verlaat is (of voor plugins die hiervan gebruik kunnen maken)."
 
 msgid "Configure how recording filenames are constructed."
 msgstr "Stel in hoe de namen van opnames worden samengesteld."
@@ -3926,9 +3913,8 @@ msgstr "Bepaal de functie van de < > toetsen."
 msgid "Configure the gateway."
 msgstr "Configureer de gateway."
 
-#, fuzzy
 msgid "Configure the general audio volume step size (limit 1-10)."
-msgstr "Kies audiotaal 1 (hoogste prioriteit)."
+msgstr "Bepaal de generieke audio volume stapgrootte (1-10)."
 
 msgid "Configure the horizontal alignment of the subtitles."
 msgstr "Configureer de horizontale uitlijning van de ondertitels."
@@ -4588,7 +4574,7 @@ msgid "Date style"
 msgstr "Datumstijl"
 
 msgid "Date/time input"
-msgstr ""
+msgstr "Datum/tijd invoer"
 
 msgid "Dating"
 msgstr "Datering"
@@ -4960,9 +4946,8 @@ msgstr "Decodeer ontvangen http streams"
 msgid "Descramble sending http streams"
 msgstr "Decodeer verzonden http streams"
 
-#, fuzzy
 msgid "Descrambling options"
-msgstr "Beschrijving"
+msgstr "Decryptie opties"
 
 msgid "Description"
 msgstr "Beschrijving"
@@ -5122,9 +5107,8 @@ msgstr "Scannen op de achtergrond uitschakelen"
 msgid "Disable move mode"
 msgstr "Verplaatsmodus deactiveren"
 
-#, fuzzy
 msgid "Disable operator profiles"
-msgstr "Beschikbare formaten"
+msgstr "Schakel providerprofielen uit"
 
 msgid "Disable startup"
 msgstr "Schakel opstarten uit"
@@ -5918,9 +5902,8 @@ msgstr "Voer blijvende PIN in"
 msgid "Enter pin code"
 msgstr "Voer pincode in"
 
-#, fuzzy
 msgid "Enter service name that will be shown in the bouquet."
-msgstr "Stel in of en hoe de servicetype-iconen worden getoond in nummerzap."
+msgstr "Geef de kanaalnaam in die in de favorietenlijst getoond moet worden."
 
 msgid "Enter service number"
 msgstr "Voer kanaalnummer in"
@@ -5941,7 +5924,7 @@ msgid "Enter the IP address of the receiver to use for fallback tuners."
 msgstr "Geef het IP-adres van de gast-ontvanger voor het gebruik van de faalback tuners."
 
 msgid "Enter the URL to stream from."
-msgstr ""
+msgstr "Geef de URL in van waaruit gestreamd moet worden."
 
 msgid "Enter the URL/IP of the fallback remote receiver, e.g. '192.168.0.1'. The other details such as 'http://' and port number will be filled in automatically when you select save."
 msgstr "Geef de URL/IP van de fallback gast-ontvanger, b.v. '192.168.0.1'. De andere details, zoals 'http://' en poortnummer worden automatisch ingevuld tijdens het opslaan."
@@ -6643,9 +6626,8 @@ msgstr "Voetbal - Internationaal"
 msgid "Football USA"
 msgstr "Rugby"
 
-#, fuzzy
 msgid "Force alpha blending"
-msgstr "geforceerd geactiveerd"
+msgstr "Forceer alpha blending"
 
 msgid "Force legacy signal stats"
 msgstr "Forceer oude signaal statistieken"
@@ -7157,9 +7139,8 @@ msgstr "HDMI-CEC"
 msgid "HDMI-CEC Setup"
 msgstr "HDMI-CEC instellingen"
 
-#, fuzzy
 msgid "HDMI-IN"
-msgstr "HDMI"
+msgstr "HDMI-in"
 
 msgid "HDMIin"
 msgstr "HDMI-in"
@@ -7279,7 +7260,7 @@ msgid "Hide known extensions"
 msgstr "Verberg bekende extensies"
 
 msgid "Hide mute icon"
-msgstr ""
+msgstr "Verberg mute-ikoon"
 
 msgid "Hide number markers"
 msgstr "Verberg nummer markeringen"
@@ -7616,7 +7597,7 @@ msgid "If using multiple uncommitted switches the DiSEqC commands must be sent m
 msgstr "Indien u meerdere uncommitted switches gebruikt, moeten DiSEqC meerdere amlen verzonden worden. Stel het aantal in op het aantal switches minus één."
 
 msgid "If volume muted, hide mute icon or mute information after few seconds."
-msgstr ""
+msgstr "Verberg het mute-ikoon na enkele seconden als het volume dicht staat"
 
 msgid "If you are an OpenViX developer you can enter your login details to have direct access to OpenViX developer images for your receiver. This feature is only available via 'https' connections."
 msgstr "Als u een OpenViX-ontwikkelaar bent, hunt u uw login gegevens invoeren om direct toegang tot de OpenViX otwikkkelaars images te hebben. Dit is alleen mogelijk via een 'https'-verbinding."
@@ -8192,9 +8173,8 @@ msgstr "Kernel:\t%s\n"
 msgid "Kernel: %s"
 msgstr "Kernel: %s"
 
-#, fuzzy
 msgid "Kexec warning"
-msgstr "Waarschuwing"
+msgstr "Kexec Waarschuwing"
 
 msgid "Key"
 msgstr "Sleutel"
@@ -8332,9 +8312,9 @@ msgstr "Lao People's Democratic Republic"
 msgid "Large"
 msgstr "Groot"
 
-#, fuzzy, python-format
+#, python-format
 msgid "Last E2 update:\t%s (%s)\n"
-msgstr "Laatste update:\t%s\n"
+msgstr "Laatste E2 update:\t%s (%s)\n"
 
 msgid "Last Req."
 msgstr "Laatste verzoek."
@@ -8572,7 +8552,7 @@ msgid "Log Manager"
 msgstr "Logmanager"
 
 msgid "Log python stack trace on spinner"
-msgstr ""
+msgstr "Log python stack trace op spinner"
 
 msgid "Log results to harddisk"
 msgstr "Schrijf resultaten naar de harde schijf"
@@ -9968,10 +9948,10 @@ msgid "Offline decode delay (ms)"
 msgstr "Offline decodeer vertraging (ms)"
 
 msgid "Offset CA device index"
-msgstr ""
+msgstr "Offset CA-apparaat index"
 
 msgid "Offset and close CA device"
-msgstr ""
+msgstr "Offset en sluit CA-apparaat"
 
 msgid "Olympia"
 msgstr "Olympiade"
@@ -10025,7 +10005,7 @@ msgid "Only active when in standby"
 msgstr "Uitsluitend actief in stand-by"
 
 msgid "Only alpha test to alpha blend"
-msgstr ""
+msgstr "Alleen alpha test naar alpha blend"
 
 msgid "Only change this setting if you are using a SCR device that has been reprogrammed with a custom programmer. For further information check with the person that reprogrammed the device."
 msgstr "Verander deze instelling alleen als u een SCR-apparaat gebruikt dat geprogrammeerd is met een aangepaste 'programmer'. Voor meer informatie overleg met degene die de aanpassing heeft gedaan."
@@ -10452,7 +10432,7 @@ msgid "PiP"
 msgstr "PiP"
 
 msgid "PiPZap"
-msgstr ""
+msgstr "PiPZap"
 
 msgid "Picon"
 msgstr "Picon"
@@ -11109,9 +11089,8 @@ msgstr "Druk op  '0' om te schakelen tussen de PiP-modi"
 msgid "Press 'Menu' to select a storage device"
 msgstr "Druk op 'Menu' om een opslagruimte te kiezen"
 
-#, fuzzy
 msgid "Press 'OK' to select from service list"
-msgstr "Druk op OK om een kanaal te kiezen."
+msgstr "Druk op 'OK' om een kanaal te kiezen."
 
 msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."
 msgstr "Druk op GROEN (Reboot) om van image te veranderen, op GEEL (Verwijder) om een image te verwijderen of op BLAUW (Herstel) om alle images te herstellen."
@@ -11833,9 +11812,8 @@ msgstr "Verwijder 'nieuw gevonden' vlag"
 msgid "Remove plugins"
 msgstr "Plugins verwijderen"
 
-#, fuzzy
 msgid "Remove selected"
-msgstr "Verwijder geselecteerde satellieten"
+msgstr "Verwijder selectie"
 
 msgid "Remove selected satellite"
 msgstr "Verwijder geselecteerde satellieten"
@@ -12030,9 +12008,8 @@ msgstr "Herstel standaard waardes"
 msgid "Restore deleted user bouquets"
 msgstr "Herstel verwijderde favorietenlijsten"
 
-#, fuzzy
 msgid "Restore selected"
-msgstr "Herstel standaard waardes"
+msgstr "Herstel selecties"
 
 msgid "Restore wizard"
 msgstr "Herstel-wizard"
@@ -12620,9 +12597,8 @@ msgstr "Zoekbalk activeren"
 msgid "Seekbar sensibility"
 msgstr "Zoekbalk gevoeligheid"
 
-#, fuzzy
 msgid "Selct shares"
-msgstr "Shares"
+msgstr "Selecteer shares"
 
 msgid "Select"
 msgstr "Selecteer"
@@ -12762,7 +12738,7 @@ msgstr "Kies een ontvanger om te gebruiken als fallback-tuner. Als de gast-ontva
 
 #, python-format
 msgid "Select a service from the service list, or left/right to enter IPTV stream details%s"
-msgstr ""
+msgstr "Kies een dienst uit de servicelijst. of Links/Rechts om de IPTV stream details%s in te geven"
 
 msgid "Select a softcam script from the available list."
 msgstr "Kies een softcam script uit de lijst."
@@ -12790,21 +12766,17 @@ msgstr "Kies een image om te flashen."
 msgid "Select audio track"
 msgstr "Kies audiospoor"
 
-#, fuzzy
 msgid "Select bouquets"
-msgstr "Kies slot"
+msgstr "Kies favorietenlijsten"
 
-#, fuzzy
 msgid "Select bouquets to permanently remove"
-msgstr "Favorietenlijst aan kinderslot toevoegen"
+msgstr "Kies favorietenlijsten die permanent verwijderd moeten worden"
 
-#, fuzzy
 msgid "Select bouquets to restore"
-msgstr "Kies een back-up om te herstellen:"
+msgstr "Kies favorietenlijsten om te herstellen:"
 
-#, fuzzy
 msgid "Select channel"
-msgstr "Kies EPG-kanaal"
+msgstr "Kies kanaal"
 
 msgid "Select channel from history"
 msgstr "Kies het kanaal uit geschiedenis"
@@ -12902,9 +12874,8 @@ msgstr "Hier geeft u aan of de zoekbalk wordt geactiveerd met pijl-L/R (lang) of
 msgid "Select service to add..."
 msgstr "Selecteer zender om toe te voegen..."
 
-#, fuzzy
 msgid "Select shares"
-msgstr "Kies dagen"
+msgstr "Kies shares"
 
 msgid "Select slot"
 msgstr "Kies slot"
@@ -12912,9 +12883,8 @@ msgstr "Kies slot"
 msgid "Select sort method:"
 msgstr "Selecteer sorteermodus:"
 
-#, fuzzy
 msgid "Select stream type."
-msgstr "Selecteer herhalingsfrequentie"
+msgstr "Selecteer stream type."
 
 msgid "Select target folder"
 msgstr "Kies doelmap"
@@ -13142,9 +13112,8 @@ msgstr "Kanaalnummer, picon en kanaalnaam"
 msgid "Service Title mode"
 msgstr "Kanaal titel modus"
 
-#, fuzzy
 msgid "Service Type"
-msgstr "Kanaalnaam"
+msgstr "Kanaal type"
 
 msgid "Service font size"
 msgstr "Kanaalnaam lettergrootte"
@@ -13243,9 +13212,8 @@ msgstr "Stel de LED kleur in of schakel de LED uit."
 msgid "Set a temporary sort method for this directory"
 msgstr "Kies de sortering voor deze map"
 
-#, fuzzy
 msgid "Set all the settings back as they were"
-msgstr "Sla alle wijzigingen op en sluit af"
+msgstr "Negeer alle wijzigingen"
 
 msgid "Set as startup service"
 msgstr "Kies kanaal na opstarten"
@@ -13376,7 +13344,7 @@ msgid "Set to what you want the button to do."
 msgstr "Kies wat een toets moet doen."
 
 msgid "Set to yes for debugging the root cause of a spinner."
-msgstr ""
+msgstr "Kies 'Ja' om de oorzaal van de spinner te debuggen."
 
 msgid "Set voltage and 22KHz"
 msgstr "Voltage en 22KHz instellen"
@@ -13976,7 +13944,6 @@ msgstr "Skin instellen"
 msgid "Skin install"
 msgstr "Skin installeren"
 
-#, fuzzy
 msgid "Skin selection"
 msgstr "Skinkeuze"
 
@@ -14389,17 +14356,14 @@ msgstr "Stand-by LED"
 msgid "Start"
 msgstr "Start"
 
-#, fuzzy
 msgid "Start CableScan"
-msgstr "Kabelscan"
+msgstr "Start kabelscan"
 
-#, fuzzy
 msgid "Start Cablescan"
-msgstr "Start test"
+msgstr "Start kabelscan"
 
-#, fuzzy
 msgid "Start Fastscan"
-msgstr "Fastscan"
+msgstr "Start Fastscan"
 
 msgid "Start Wizard - Screen Alignment"
 msgstr "Startwizard - Schermuitlijning"
@@ -14591,13 +14555,11 @@ msgstr "Streamrelay poort"
 msgid "Stream Relay url"
 msgstr "Streamrelay url"
 
-#, fuzzy
 msgid "Stream Type"
-msgstr "Stream"
+msgstr "Stream type"
 
-#, fuzzy
 msgid "Stream URL"
-msgstr "Stream"
+msgstr "Stream URL"
 
 msgid "Stream request"
 msgstr "Stream-verzoek"
@@ -14684,7 +14646,7 @@ msgid "Subtitles"
 msgstr "Ondertitels"
 
 msgid "Subtitles always enabled for movie playback by servicemp3/servicehisilicon."
-msgstr ""
+msgstr "Ondertitels altijd ingesteld voor het afspelen door servicemp3/servicehisilicon."
 
 msgid "Subtitles off"
 msgstr "Ondertitels uit"
@@ -14738,9 +14700,8 @@ msgstr "PiP/hoofdbeeld wisselen"
 msgid "Swap SNR in '%' with SNR in 'db'"
 msgstr "Wissel tussen SNR in '%' en 'dB'"
 
-#, fuzzy
 msgid "Swap manager"
-msgstr "Back-up manager"
+msgstr "Swap manager"
 
 msgid "Swap services"
 msgstr "Zenders omwisselen"
@@ -15307,9 +15268,8 @@ msgstr "Deze verandering zal alle eMMC slots overschrijven."
 msgid "This device is already mounted as HDD."
 msgstr "Dit apparaat is al gemount als HDD."
 
-#, fuzzy
 msgid "This feature is for skin developers. It allows the skin to load without requiring an enigma restart."
-msgstr "Dit maakt het mogelijk van skin te veranderen zonder Enigma2 te herstarten."
+msgstr "Deze optie is voor skin-ontwikkelaars. Dit maakt het mogelijk van skin te veranderen zonder Enigma2 te herstarten."
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
@@ -15687,9 +15647,8 @@ msgstr "Naar ondertitelselectie"
 msgid "Today"
 msgstr "Vandaag"
 
-#, fuzzy
 msgid "Toggle Configuration Mode or AutoDisqc"
-msgstr "Configuratie modus: %s"
+msgstr "Toggle configuratiemode or AutoDisqc"
 
 msgid "Toggle Digital downmix"
 msgstr "Wissel digitale downmix"
@@ -15712,9 +15671,8 @@ msgstr "Op huidige positie een snijmarkering wijzigen"
 msgid "Toggle a selection mark"
 msgstr "Toggle de selectiemarkering"
 
-#, fuzzy
 msgid "Toggle all"
-msgstr "Toggle markering"
+msgstr "Toggle alle"
 
 msgid "Toggle aspect ratio"
 msgstr "Wissel aspectverhouding"
@@ -15773,9 +15731,8 @@ msgstr "Toneburst A/B"
 msgid "Tonga"
 msgstr "Tonga"
 
-#, fuzzy
 msgid "Top"
-msgstr "Pop"
+msgstr "Bovenin"
 
 msgid "Total"
 msgstr "Totaal"
@@ -16101,9 +16058,8 @@ msgstr "Onbekend"
 msgid "Unknown error"
 msgstr "Onbekende fout"
 
-#, fuzzy
 msgid "Unknown image"
-msgstr "Onbekend"
+msgstr "Onbekend image"
 
 msgid "Unmount."
 msgstr "Unmount."
@@ -16354,9 +16310,8 @@ msgstr "Gebruik apart picon-pakket voor het paneeldisplay"
 msgid "Use skin default"
 msgstr "Gebruik de default skin"
 
-#, fuzzy
 msgid "Use skin setting"
-msgstr "Deze settings gebruiken?"
+msgstr "Gebruik skininstelling"
 
 msgid "Use slim screen"
 msgstr "Gebruik slim screen"
@@ -17298,9 +17253,8 @@ msgstr "Gele-toets (lang)"
 msgid "Yellow button (short)"
 msgstr "Gele-toets (kort)"
 
-#, fuzzy
 msgid "Yellow button function"
-msgstr "Gele-toets (lang)"
+msgstr "Functie gele-toets"
 
 msgid "Yellow long"
 msgstr "Lang-geel"
@@ -18002,9 +17956,8 @@ msgstr "dagelijks"
 msgid "day"
 msgstr "dag"
 
-#, fuzzy
 msgid "days"
-msgstr "%d dagen"
+msgstr "dagen"
 
 msgid "decrease uphop by 1"
 msgstr "verlaag uphop met 1"
@@ -18312,13 +18265,11 @@ msgstr "hops:"
 msgid "horizontal"
 msgstr "horizontaal"
 
-#, fuzzy
 msgid "hour"
-msgstr "1 uur"
+msgstr "uur"
 
-#, fuzzy
 msgid "hours"
-msgstr "%d uur"
+msgstr "uren"
 
 msgid "if set will display subservices else timers."
 msgstr "toont subkanalen of timers, afhankelijk van instelling."
@@ -18596,9 +18547,8 @@ msgstr "alleen indien beschikbaar"
 msgid "opkg update"
 msgstr "opkg update"
 
-#, fuzzy
 msgid "or HDMI input"
-msgstr "HDMI-ingang"
+msgstr "0f HDMI-ingang"
 
 msgid "original"
 msgstr "origineel"
@@ -19047,16 +18997,14 @@ msgstr "inschakelen naar stand-by"
 msgid "water sport"
 msgstr "watersport"
 
-#, fuzzy
 msgid "week"
-msgstr "wekelijks"
+msgstr "week"
 
 msgid "weekly"
 msgstr "wekelijks"
 
-#, fuzzy
 msgid "weeks"
-msgstr "wekelijks"
+msgstr "weken"
 
 msgid "west"
 msgstr "west"
