@@ -348,10 +348,6 @@ private:
 	GstElement *m_gst_playbin, *audioSink, *videoSink;
 	GstTagList *m_stream_tags;
 	bool m_coverart;
-	subtitle_page *m_pages;
-	eSize m_display_size;
-	bool m_seen_eod;
-	pts_t m_show_time;
 	std::list<eDVBSubtitlePage> m_dvb_subtitle_pages;
 
 	eFixedMessagePump<ePtr<GstMessageContainer> > m_pump;
@@ -388,15 +384,12 @@ private:
 	subtitle_pages_map_t m_subtitle_pages;
 	ePtr<eTimer> m_subtitle_sync_timer;
 	ePtr<eTimer> m_dvb_subtitle_sync_timer;
+	ePtr<eDVBSubtitleParser> m_dvb_subtitle_parser;
+	ePtr<eConnection> m_new_dvb_subtitle_page_connection;
+	void newDVBSubtitlePage(const eDVBSubtitlePage &p);
 
 	pts_t m_prev_decoder_time;
 	int m_decoder_time_valid_state;
-
-	void subtitle_redraw_all();
-	void subtitle_reset();
-	void subtitle_redraw(int page_id);
-	int subtitle_process_pixel_data(subtitle_region *region, subtitle_region_object *object, int *linenr, int *linep, uint8_t *data);
-	void subtitle_process_line(subtitle_region *region, subtitle_region_object *object, int line, uint8_t *data, int len);
 
 	void pushDVBSubtitles();
 	void pushSubtitles();

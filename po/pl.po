@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: hiuman\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-17 11:46+0000\n"
-"PO-Revision-Date: 2021-12-08 17:21+0100\n"
+"PO-Revision-Date: 2024-10-24 12:10+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -12,9 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Poedit 2.2\n"
-"X-Poedit-Language: Polish\n"
-"X-Poedit-Country: POLAND\n"
+"X-Generator: Poedit 3.5\n"
 
 #, python-format
 msgid ""
@@ -42,11 +40,13 @@ msgstr ""
 "\n"
 "Po naciśnięciu OK czekaj!"
 
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Backup your %s %s settings."
-msgstr "Backup ustawień systemowych"
+msgstr ""
+"\n"
+"Utwórz kopię zapasową ustawień %s %s."
 
 msgid ""
 "\n"
@@ -81,6 +81,8 @@ msgid ""
 "\n"
 "Online update of your %s %s software."
 msgstr ""
+"\n"
+"Aktualizacja online oprogramowania %s %s."
 
 msgid ""
 "\n"
@@ -89,23 +91,20 @@ msgstr ""
 "\n"
 "Wciśnij OK aby kontynuować."
 
-#, fuzzy
 msgid ""
 "\n"
 "Recording in progress."
-msgstr "Typ nagrania"
-
-#, fuzzy, python-format
-msgid ""
+msgstr ""
 "\n"
-"Restore your %s %s settings."
-msgstr "Przywróć ustawienia systemowe"
+"Nagrywanie w toku."
 
 #, python-format
 msgid ""
 "\n"
 "Restore your %s %s with a new firmware."
 msgstr ""
+"\n"
+"Przywróć %s %s przy użyciu nowego oprogramowania."
 
 msgid ""
 "\n"
@@ -146,28 +145,25 @@ msgstr ""
 msgid " "
 msgstr ""
 
-#, fuzzy, python-format
+#, python-format
 msgid "  (%s x %s)"
-msgstr "%s (%s)\n"
+msgstr "  (%s x %s)"
 
-#, fuzzy
 msgid " (+5 volt terrestrial)"
-msgstr "Naziemna"
+msgstr " (+5 V naziemne)"
 
-#, fuzzy
 msgid " (0 - all networks)"
-msgstr "Lista dostępnych sieci"
+msgstr " (0 - wszystkie sieci)"
 
-#, fuzzy, python-format
+#, python-format
 msgid " (Channel %s)"
-msgstr "Kanał"
+msgstr " (Kanał %s)"
 
 msgid " (auto detection)"
-msgstr ""
+msgstr " (automatyczne wykrywanie)"
 
-#, fuzzy
 msgid " (disabled)"
-msgstr "wyłączony"
+msgstr " (wyłączony)"
 
 msgid " (higher than any auto)"
 msgstr ""
@@ -2378,15 +2374,13 @@ msgid "Audio"
 msgstr ""
 
 msgid "Audio & Video"
-msgstr ""
+msgstr "Dźwięk i Obraz"
 
-#, fuzzy
 msgid "Audio PID"
-msgstr "Video PID"
+msgstr "Audio PID"
 
-#, fuzzy
 msgid "Audio channel"
-msgstr "Kanał"
+msgstr "Kanał audio"
 
 msgid "Audio language selection 1"
 msgstr "Preferowana ścieżka audio 1"
@@ -2488,20 +2482,17 @@ msgstr ""
 msgid "Automatic"
 msgstr "Automatycznie"
 
-#, fuzzy
 msgid "Automatic Language"
-msgstr "Skanowanie automatyczne"
+msgstr "Język automatyczny"
 
 msgid "Automatic Scan"
 msgstr "Skanowanie automatyczne"
 
-#, fuzzy
 msgid "Automatic image backup"
-msgstr "Skanowanie automatyczne"
+msgstr "Automatyczne tworzenie kopii zapasowej obrazu"
 
-#, fuzzy
 msgid "Automatic language"
-msgstr "Skanowanie automatyczne"
+msgstr "Język automatyczny"
 
 #, fuzzy
 msgid "Automatic reload"
@@ -2842,23 +2833,20 @@ msgstr ""
 msgid "Bus: "
 msgstr "Bus: "
 
-#, fuzzy
 msgid "Button Setup"
-msgstr "Ustawienia sieci"
+msgstr "Ustawienia przycisków"
 
-#, fuzzy
 msgid "Button setup"
-msgstr "Ustawienia pozycjonera"
+msgstr "Ustawienia przycisków"
 
 msgid "Button setup for"
-msgstr ""
+msgstr "Konfiguracja przycisków dla"
 
-#, fuzzy
 msgid "ButtonSetup"
-msgstr "Ustawienia"
+msgstr "Ustawienia przycisków"
 
 msgid "By Team ViX"
-msgstr ""
+msgstr "Przez zespół ViX"
 
 msgid "Bypass HDMI EDID Check"
 msgstr ""
@@ -3143,13 +3131,11 @@ msgstr "Kanał"
 msgid "Channel List Context Menu"
 msgstr ""
 
-#, fuzzy
 msgid "Channel Name"
-msgstr "Kanał"
+msgstr "Nazwa kanału"
 
-#, fuzzy
 msgid "Channel Selection"
-msgstr "Wybór języka"
+msgstr "Wybór kanału"
 
 #, fuzzy
 msgid "Channel down"
@@ -3184,9 +3170,8 @@ msgstr "Kanału nie ma na liście serwisów"
 msgid "Channel preview mode"
 msgstr "Podzielony tryb podglądu"
 
-#, fuzzy
 msgid "Channel selection"
-msgstr "Wybór języka"
+msgstr "Wybór kanału"
 
 #, fuzzy
 msgid "Channel up"
@@ -4845,20 +4830,17 @@ msgid ""
 "minutes to consider as a bulletin, or 0 to disable."
 msgstr ""
 
-#, fuzzy
 msgid "Detected devices:"
-msgstr "Zabezpiecz kanały"
+msgstr "Wykryte urządzenia:"
 
-#, fuzzy
 msgid "Detected tuners:"
-msgstr "Usunięte pliki"
+msgstr "Wykryte tunery:"
 
-#, fuzzy
 msgid "Device"
-msgstr "O serwisie"
+msgstr "Urządzenie"
 
 msgid "Device %s"
-msgstr "Urządzenia %s"
+msgstr "Urządzenie %s"
 
 msgid "Device mounts"
 msgstr ""
@@ -4866,9 +4848,8 @@ msgstr ""
 msgid "Devicename:"
 msgstr "Nazwa urządzenia:"
 
-#, fuzzy
 msgid "Devices"
-msgstr "Kanały"
+msgstr "Urządzenia"
 
 msgid "DiSEqC"
 msgstr "DiSEqC"
@@ -6328,11 +6309,11 @@ msgid "From:"
 msgstr ""
 
 msgid "Front Panel Display"
-msgstr ""
+msgstr "Wyświetlacz (panel przedni)"
 
 #, fuzzy
 msgid "Front panel settings"
-msgstr "Aktualne ustawienia:"
+msgstr "Ustawienia panelu przedniego"
 
 msgid "Full factory reset"
 msgstr ""
@@ -7258,9 +7239,8 @@ msgstr ""
 msgid "Initialize"
 msgstr "Zainicjuj"
 
-#, fuzzy
 msgid "Initialize Devices"
-msgstr "Zainicjuj"
+msgstr "Inicjalizacja urządzeń"
 
 msgid "Initializing storage device..."
 msgstr "Inicjowanie urządzenia pamięci masowej..."
@@ -7765,9 +7745,8 @@ msgstr ""
 msgid "List available networks"
 msgstr "Lista dostępnych sieci"
 
-#, fuzzy
 msgid "List of storage devices"
-msgstr "brak urządzeń przechowywania danych"
+msgstr "Lista urządzeń pamięci masowej"
 
 #, python-format
 msgid "List version %d, found %d channel"
@@ -8076,10 +8055,10 @@ msgid "Medium is not empty!"
 msgstr "Nośnik nie jest pusty!"
 
 msgid "Memory"
-msgstr ""
+msgstr "Pamięć"
 
 msgid "Memory index"
-msgstr ""
+msgstr "Indeks pamięci"
 
 msgid "Menu"
 msgstr "Menu"
@@ -8419,7 +8398,7 @@ msgid "Multi EPG"
 msgstr ""
 
 msgid "MultiBoot Image Selector"
-msgstr ""
+msgstr "Selektor obrazów MultiBoot"
 
 msgid "MultiBootSelector Actions"
 msgstr ""
@@ -9339,11 +9318,9 @@ msgstr ""
 msgid "Paraguay"
 msgstr ""
 
-#, fuzzy
 msgid "Parent directory"
-msgstr "katalog początkowy"
+msgstr "Katalog nadrzędny"
 
-#, fuzzy
 msgid "Parental Control"
 msgstr "Kontrola rodzicielska"
 
@@ -9359,21 +9336,17 @@ msgstr ""
 msgid "Password"
 msgstr "Hasło"
 
-#, fuzzy
 msgid "Password (httpwd)"
-msgstr "Hasło"
+msgstr "Hasło (httpwd)"
 
-#, fuzzy
 msgid "Password Setup"
-msgstr "Hasło"
+msgstr "Ustawienia hasła"
 
-#, fuzzy
 msgid "Password changed"
-msgstr "Hasło"
+msgstr "Hasło zmienione"
 
-#, fuzzy
 msgid "Password:"
-msgstr "Hasło"
+msgstr "Hasło:"
 
 msgid "Pause"
 msgstr ""
@@ -10538,13 +10511,11 @@ msgstr "Nagrywanie zawsze ma priorytet"
 msgid "Recordings in progress: %d"
 msgstr "Typ nagrania"
 
-#, fuzzy
 msgid "Recordings, Playback & Timeshift"
-msgstr "Nagrywanie zawsze ma priorytet"
+msgstr "Nagrywanie, Odtwarzanie & Timeshift"
 
-#, fuzzy
 msgid "Recovery Mode"
-msgstr "Nagrania"
+msgstr ""
 
 #, fuzzy
 msgid "Red"
@@ -11798,8 +11769,8 @@ msgid "Select the previous item in list or move cursor left"
 msgstr ""
 
 msgid ""
-"Select the protocol used by your SCR device. Choices are 'SCR "
-"Unicable' (Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."
+"Select the protocol used by your SCR device. Choices are 'SCR Unicable' "
+"(Unicable), or 'SCR JESS' (JESS, also known as Unicable II)."
 msgstr ""
 
 msgid ""
@@ -12891,12 +12862,14 @@ msgstr "Szerokość geograficzna"
 msgid "Site longitude"
 msgstr "Długość geograficzna"
 
-#, fuzzy
 msgid "Skin"
-msgstr "Skiny"
+msgstr "Skórka"
 
 msgid "Skin Selection Actions"
 msgstr ""
+
+msgid "Skin Selection"
+msgstr "Wybór Skóry"
 
 #, fuzzy
 msgid "Skin Setting"
@@ -13269,13 +13242,11 @@ msgstr "Testuj"
 msgid "Standby"
 msgstr "Czuwanie"
 
-#, fuzzy
 msgid "Standby & Restart"
-msgstr "do stanu gotowości/restartu"
+msgstr "Wyłącz & Czuwanie"
 
-#, fuzzy
 msgid "Standby / restart"
-msgstr "do stanu gotowości/restartu"
+msgstr "Gotowość / restart"
 
 #, fuzzy
 msgid "Standby LED"
@@ -13465,7 +13436,7 @@ msgid ""
 msgstr ""
 
 msgid "Storage"
-msgstr ""
+msgstr "Dyski HDD"
 
 #, fuzzy
 msgid "Store at index"
@@ -13782,7 +13753,9 @@ msgstr ""
 
 #. TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 msgid "TRANSLATOR_INFO"
-msgstr "Polskie tłumaczenie HIUMAN"
+msgstr ""
+"Polskie tłumaczenie HIUMAN, Pololoko111/n"
+"Ostatnia aktualizacja 2024.10.24"
 
 msgid "TS file is too large for ISO9660 level 1!"
 msgstr "Plik TS jest za duży dla ISO9660 poziom 1!"
@@ -14750,7 +14723,7 @@ msgid "Transcoding: "
 msgstr ""
 
 msgid "Translations"
-msgstr ""
+msgstr "Tłumaczenia"
 
 msgid "Transmission mode"
 msgstr "Tryb transmisji"
@@ -14814,21 +14787,17 @@ msgstr ""
 msgid "Tune failed!"
 msgstr "Dostrojenie nie powiodło się!"
 
-#, fuzzy
 msgid "Tuner"
-msgstr "Ustawienia"
+msgstr "Tuner"
 
-#, fuzzy
 msgid "Tuner :"
-msgstr "Ustawienia"
+msgstr "Tuner :"
 
-#, fuzzy
 msgid "Tuner Setup"
-msgstr "Typ tunera"
+msgstr "Konfiguracja tunera"
 
-#, fuzzy
 msgid "Tuner is not supported"
-msgstr "nieobslugiwany"
+msgstr "Tuner nie jest obsługiwany"
 
 msgid "Tuner live values"
 msgstr ""
@@ -14836,9 +14805,8 @@ msgstr ""
 msgid "Tuner miscellaneous"
 msgstr ""
 
-#, fuzzy
 msgid "Tuner not available."
-msgstr "Aktualizacje nie dostępne."
+msgstr "Tuner niedostępny."
 
 msgid "Tuner settings values"
 msgstr ""
@@ -14847,15 +14815,14 @@ msgstr ""
 msgid "Tuner slot"
 msgstr "Typ tunera"
 
-#, fuzzy
 msgid "Tuner status:"
-msgstr "Typ tunera"
+msgstr "Status tunera:"
 
 msgid "Tuner type"
 msgstr "Typ tunera"
 
 msgid "Tuners & Scanning"
-msgstr ""
+msgstr "Tunery i skanowanie"
 
 msgid "Tuning Info: Live Values"
 msgstr ""
@@ -14866,9 +14833,8 @@ msgstr ""
 msgid "Tunisia"
 msgstr ""
 
-#, fuzzy
 msgid "Turkey"
-msgstr "Turecki"
+msgstr "Turecja"
 
 msgid "Turkish"
 msgstr "Turecki"
@@ -15304,20 +15270,17 @@ msgstr ""
 msgid "User Band %d (%s)"
 msgstr ""
 
-#, fuzzy
 msgid "User Interface"
-msgstr "Interfejs: "
+msgstr "Interfejs użytkownika"
 
 msgid "User defined"
 msgstr "Zdefiniowany przez użytkownika"
 
-#, fuzzy
 msgid "User defined transponder"
-msgstr "Zdefiniowany transponder"
+msgstr "Transponder zdefiniowany przez użytkownika"
 
-#, fuzzy
 msgid "User interface settings"
-msgstr "Ustawienia DNS"
+msgstr "Ustawienia interfejsu użytkownika"
 
 msgid "User interface visibility"
 msgstr ""
@@ -15402,9 +15365,9 @@ msgstr "Pionowa (V)"
 msgid "Vertical turning speed"
 msgstr "Prędkość obrotu rotora"
 
-#, fuzzy, python-format
+#, python-format
 msgid "ViX version: %s"
-msgstr "Nowa wersja:"
+msgstr "Wersja ViX: %s"
 
 msgid "Video & Audio Settings"
 msgstr ""
@@ -18688,6 +18651,12 @@ msgstr "Rozmiar: %sTB"
 
 msgid "Size: unavailable"
 msgstr "Rozmiar: niedostępny"
+
+msgid "Softcam Management"
+msgstr "Zarządzanie Softcam"
+
+msgid "Softcam Manager"
+msgstr "Menedżer softcam"
 
 msgid "Softcam manager"
 msgstr "Menedżer softcam"

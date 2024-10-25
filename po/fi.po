@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-10-13 14:33+0300\n"
+"PO-Revision-Date: 2024-10-22 19:24+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -10772,7 +10772,7 @@ msgid "Remove items from trash can after (days)"
 msgstr "Tyhjennä roskakori (päivää) jälkeen"
 
 msgid "Remove new found flag"
-msgstr "Poista uusi kanava merkintä"
+msgstr "Poista uusi kanavamerkintä"
 
 msgid "Remove plugins"
 msgstr "Poista lisäosia"
@@ -13545,7 +13545,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 13.10.2024 ---\n"
+"--- 22.10.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -19602,3 +19602,48 @@ msgstr "Offset ja sulje CA-laite"
 
 msgid "Descrambling options"
 msgstr "Salauksen purkuvaihtoehdot"
+
+msgid "Press 'OK' to select from service list"
+msgstr "Valitse kanavalistasta painamalla 'OK'"
+
+msgid "IPTV stream"
+msgstr "IPTV-streami"
+
+msgid "HDMI-IN"
+msgstr "HDMI-IN"
+
+msgid "Add a Service"
+msgstr "Lisää kanava"
+
+msgid "Service Type"
+msgstr "Kanavan tyyppi"
+
+msgid "Select a service from the service list, or left/right to enter IPTV stream details%s"
+msgstr "Valitse kanava kanavaluettelosta tai vasemmalle/oikealle syöttääksesi IPTV-streamin tiedot%s"
+
+msgid "or HDMI input"
+msgstr "tai HDMI-tulo"
+
+msgid "Stream Type"
+msgstr "Streamin tyyppi"
+
+msgid "Select stream type."
+msgstr "Valitse streamin tyyppi."
+
+msgid "Stream URL"
+msgstr "Streamin URL"
+
+msgid "Enter the URL to stream from."
+msgstr "Anna URL-osoite, josta striimaat."
+
+msgid "Enter service name that will be shown in the bouquet."
+msgstr "Syötä kanavan nimi, joka näytetään suosikkilistassa."
+
+msgid "Select channel"
+msgstr "Valitse kanava"
+
+msgid "Add the currently playing service to a bouquet"
+msgstr "Lisää parhaillaan toistettava kanava suosikkilistaan"
+
+msgid "Add a service or stream to the current bouquet"
+msgstr "Lisää kanava tai streami nykyiseen suosikkilistaan"
