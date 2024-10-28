@@ -467,7 +467,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	eDebug("[eServiceMP3] Init start %s", ref.toString().c_str());
 	if (!sref.empty())
 	{
-		eDebug("[eServiceMP3] Init start !sref.empty()");	
+		eDebug("[eServiceMP3] Init start !sref.empty()");
 		std::vector<eIPTVDBItem> &iptv_services = eDVBDB::getInstance()->iptv_services;
 		for(std::vector<eIPTVDBItem>::iterator it = iptv_services.begin(); it != iptv_services.end(); ++it)
 		{
@@ -476,7 +476,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 				m_currentAudioStream = it->ampeg_pid;
 				m_currentSubtitleStream = it->subtitle_pid;
 				m_cachedSubtitleStream = m_currentSubtitleStream;
-				eDebug("[eServiceMP3] Init start iptv_service use sref pid's A: %d; S: %d", m_currentAudioStream, it->subtitle_pid);				
+				eDebug("[eServiceMP3] Init start iptv_service use sref pid's A: %d; S: %d", m_currentAudioStream, it->subtitle_pid);
 			}
 		}
 	}
@@ -2672,7 +2672,7 @@ void eServiceMP3::pullSubtitle(GstBuffer *buffer)
 			{
 				uint8_t * data = map.data;
 				m_dvb_subtitle_parser->processBuffer(data, len, buf_pos / 1000000ULL);
-			} 
+			}
 			else if ( subType < stVOB )
 			{
 				int delay = eConfigManager::getConfigIntValue("config.subtitles.pango_subtitles_delay");
@@ -2727,7 +2727,7 @@ void eServiceMP3::pushDVBSubtitles()
 		}
 		else
 			return;
-		
+
 		decoder_ms = running_pts / 90;
 
 		// If subtitle is overdue or within 20ms the video timing then display it.

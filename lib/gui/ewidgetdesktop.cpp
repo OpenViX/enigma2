@@ -150,7 +150,7 @@ void eWidgetDesktop::recalcClipRegions(eWidget *root)
 				continue;  /* WAIT, don't we need to invalidate,whatever */
 
 					/* CHECKME: don't we need to recalculate everything? after all, our buffer has changed and is likely to be cleared */
-		 	gRegion visible_before = root->m_visible_with_childs;
+			gRegion visible_before = root->m_visible_with_childs;
 
 			comp->m_background_region = gRegion(eRect(comp->m_position, comp->m_screen_size));
 
