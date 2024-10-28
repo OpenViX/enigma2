@@ -263,7 +263,7 @@ void eListbox::moveSelection(long dir)
 			}
 			while (newsel != oldsel && !m_content->currentCursorSelectable());
 			break;
-		case pageUp: 
+		case pageUp:
 		case prevPage: {
 			int pageind;
 			do
@@ -437,7 +437,7 @@ void eListbox::updateScrollBar()
 		}
 		return;
 	}
-	
+
 	int entries = m_content->size();
 	if (m_content_changed)
 	{
@@ -569,7 +569,7 @@ int eListbox::event(int event, void *data, void *data2)
 				style->setStyle(painter, eWindowStyle::styleListboxNormal);
 				if (m_style.m_background_color_set)
 					painter.setBackgroundColor(m_style.m_background_color);
-				
+
 				if (cornerRadius && cornerRadiusEdges)
 				{
 					painter.setRadius(cornerRadius, cornerRadiusEdges);
@@ -591,7 +591,7 @@ int eListbox::event(int event, void *data, void *data2)
 			{
 				yoffset = m_scrollbar->size().height() + 5;
 			}
-			
+
 			if (m_orientation == orVertical)
 			{
 				for (int y = 0, i = 0; i <= m_items_per_page; y += m_itemheight, ++i)
@@ -716,7 +716,7 @@ void eListbox::recalcSize()
 	}
 
 	if (m_items_per_page < 0) /* TODO: whyever - our size could be invalid, or itemheigh could be wrongly specified. */
- 		m_items_per_page = 0;
+		m_items_per_page = 0;
 
 	moveSelection(justCheck);
 }
@@ -801,8 +801,8 @@ void eListbox::entryRemoved(int index)
 		moveSelection(moveUp);
 	else
 		moveSelection(justCheck);
-	
-	if (m_orientation == orVertical) 
+
+	if (m_orientation == orVertical)
 	{
 		if ((m_top <= index) && (index < (m_top + m_items_per_page)))
 		{
@@ -822,7 +822,7 @@ void eListbox::entryRemoved(int index)
 
 void eListbox::entryChanged(int index)
 {
-	if (m_orientation == orVertical) 
+	if (m_orientation == orVertical)
 	{
 		if ((m_top <= index) && (index < (m_top + m_items_per_page)))
 		{
