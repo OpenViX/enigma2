@@ -94,14 +94,7 @@ public:
 	std::string prov;
 	int number;
 #endif
-	std::string getName() const { 
-		if (!name.empty()) {
-			std::vector<std::string> name_split = split(name, "•");
-			std::string name_res = name_split[0];
-			return name_res; 
-		}
-		return name; 
-	}
+	std::string getName() const { return name; }
 	std::string getProvider() const { return prov; }
 	void setName( const std::string &s ) { name=s; }
 	void setProvider( const std::string &s ) { prov=s; }
