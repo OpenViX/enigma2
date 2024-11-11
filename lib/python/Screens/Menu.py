@@ -14,6 +14,7 @@ from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.Screen import Screen
+from Screens.Setup import Setup
 
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import resolveFilename, SCOPE_SKINS, SCOPE_CURRENT_SKIN
@@ -23,7 +24,7 @@ from enigma import eTimer
 
 import xml.etree.cElementTree
 
-from Screens.Setup import Setup
+from gettext import dgettext
 
 # read the menu... recovery.xml is an abreviated version of menu.xml used for slot 0 (recovery image).
 file = open(resolveFilename(SCOPE_SKINS, 'menu.xml' if SystemInfo["MultiBootSlot"] != 0 else 'recovery.xml'), 'r')
@@ -65,7 +66,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		#        string (as we want to reference
 		#        stuff which is just imported)
 		if arg[0] != "":
-			exec("from %s import %s" % (arg[0], arg[1].split(",")[0]))
+			exec(f"from {arg[0]} import {arg[1].split(',')[0]}", globals())
 			self.openDialog(*eval(arg[1]))
 
 	def nothing(self):  # dummy
@@ -90,15 +91,15 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		conditional = node.get("conditional")
 		if conditional and not eval(conditional):
 			return
-		menu_text = _(x) if (x := node.get("text")) else "* fix me *"
+		menu_text = (dgettext(self.pluginLanguageDomain, x) if self.pluginLanguageDomain else _(x)) if (x := node.get("text")) else "* fix me *"
 		weight = node.get("weight", 50)
-		description = _(x) if (x := node.get("description", "")) else None
+		description = (dgettext(self.pluginLanguageDomain, x) if self.pluginLanguageDomain else _(x)) if (x := node.get("description", "")) else None
 		menupng = MenuEntryPixmap(key, self.png_cache)
 		x = node.get("flushConfigOnClose")
 		if x:
-			a = boundFunction(self.session.openWithCallback, self.menuClosedWithConfigFlush, Menu, node)
+			a = boundFunction(self.session.openWithCallback, self.menuClosedWithConfigFlush, Menu, node, PluginLanguageDomain=self.pluginLanguageDomain)
 		else:
-			a = boundFunction(self.session.openWithCallback, self.menuClosed, Menu, node)
+			a = boundFunction(self.session.openWithCallback, self.menuClosed, Menu, node, PluginLanguageDomain=self.pluginLanguageDomain)
 		# TODO add check if !empty(node.childNodes)
 		destList.append((menu_text, a, key, weight, description, menupng))
 
@@ -127,9 +128,9 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 		conditional = node.get("conditional")
 		if conditional and not eval(conditional):
 			return
-		item_text = _(x) if (x := node.get("text")) else "* fix me *"
+		item_text = (dgettext(self.pluginLanguageDomain, x) if self.pluginLanguageDomain else _(x)) if (x := node.get("text")) else "* fix me *"
 		weight = node.get("weight", 50)
-		description = _(x) if (x := node.get("description", "")) else None
+		description = (dgettext(self.pluginLanguageDomain, x) if self.pluginLanguageDomain else _(x)) if (x := node.get("description", "")) else None
 		menupng = MenuEntryPixmap(key, self.png_cache)
 		for x in node:
 			if x.tag == 'screen':
@@ -187,8 +188,9 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 				return
 		destList.append((item_text, self.nothing, key, weight, description, menupng))
 
-	def __init__(self, session, parent):
+	def __init__(self, session, parent, PluginLanguageDomain=None):
 		self.parentmenu = parent
+		self.pluginLanguageDomain = PluginLanguageDomain
 		Screen.__init__(self, session)
 		self.menuHorizontalSkinName = "MenuHorizontal"
 		self.menuHorizontal = self.__class__.__name__ != "MenuSort" and config.usage.menu_style.value == "horizontal" and findSkinScreen(self.menuHorizontalSkinName)
@@ -234,7 +236,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 				"blue": (self.keyBlue, _("Sort menu")),
 			}, prio=0, description=_("Common Menu Actions"))
 		title = parent.get("title", "")
-		title = title and _(title) or _(parent.get("text", ""))
+		title = title and (dgettext(self.pluginLanguageDomain, title) if self.pluginLanguageDomain else _(title)) or _(parent.get("text", ""))
 		title = self.__class__.__name__ == "MenuSort" and _("Menusort (%s)") % title or title
 		self["title"] = StaticText(title)
 		self.setTitle(title)
@@ -364,7 +366,7 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 
 	def keyBlue(self):
 		if "user" in config.usage.menu_sort_mode.value:
-			self.session.openWithCallback(self.menuSortCallBack, MenuSort, self.parentmenu)
+			self.session.openWithCallback(self.menuSortCallBack, MenuSort, self.parentmenu, PluginLanguageDomain=self.pluginLanguageDomain)
 		else:
 			return 0
 
@@ -385,11 +387,11 @@ class Menu(Screen, HelpableScreen, ProtectedScreen):
 
 
 class MenuSort(Menu):
-	def __init__(self, session, parentmenu):
+	def __init__(self, session, parentmenu, PluginLanguageDomain=None):
 		self.somethingChanged = False
 		self.okbuttontext = _("Toggle show/hide of the current selection")
 		self.exitbuttontext = _("Exit Menusort")
-		Menu.__init__(self, session, parentmenu)
+		Menu.__init__(self, session, parentmenu, PluginLanguageDomain=PluginLanguageDomain)
 		self.skinName = ["MenuSort", "Menu"]
 		self["key_red"] = StaticText(_("Exit"))
 		self["key_green"] = StaticText(_("Save changes"))

@@ -455,8 +455,8 @@ class EPGServiceZap:
 		currentService = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		if currentService and currentService.isPlayback():
 			# in movie playback, so store the resume point before zapping
-			from Screens.InfoBarGenerics import setResumePoint
-			setResumePoint(self.session)
+			from Screens.InfoBarGenerics import resumePointsInstance
+			resumePointsInstance.setResumePoint(self.session)
 		self.zapSelectedService(True)
 		self.refreshTimer.start(1)
 		if not self.currch or self.currch == self.prevch:

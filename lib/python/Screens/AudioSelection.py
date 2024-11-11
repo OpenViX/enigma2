@@ -37,6 +37,7 @@ class AudioSelection(ConfigListScreen, Screen):
 	hooks = []
 	audioHooks = []
 	subtitleHooks = []
+
 	def __init__(self, session, infobar=None, page=PAGE_AUDIO):
 		Screen.__init__(self, session)
 		self["streams"] = List([], enableWrapAround=True)

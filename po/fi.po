@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-10-22 19:24+0300\n"
+"PO-Revision-Date: 2024-11-01 17:38+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13545,7 +13545,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 22.10.2024 ---\n"
+"--- 01.11.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -14565,16 +14565,16 @@ msgid "Turks and Caicos Islands"
 msgstr "Turks and Caicos Islands"
 
 msgid "Turn off HDMI-IN PiP mode"
-msgstr "Sulje HDMI-tulon PiP-tila"
+msgstr "Sulje HDMI-IN -tulon PiP-tila"
 
-msgid "Turn off HDMI-IN full screen mode"
-msgstr "Sulje HDMI-tulon kokoruututila"
+msgid "Switch off HDMI-IN input"
+msgstr "Kytke HDMI-IN -tulo pois päältä"
 
 msgid "Turn on HDMI-IN PiP mode"
-msgstr "Avaa HDMI-tulo PiP-tilaan"
+msgstr "Avaa HDMI-IN -tulo PiP-tilaan"
 
-msgid "Turn on HDMI-IN full screen mode"
-msgstr "Avaa HDMI-tulo kokoruututilaan"
+msgid "Switch to HDMI-IN"
+msgstr "Vaihda HDMI-IN -tuloon"
 
 msgid "Turn on the control LED."
 msgstr "Kytke virta-LED päälle."
@@ -19376,7 +19376,7 @@ msgid "Only use if you must force the output resolution - otherwise select 'Refr
 msgstr "Käytä vain, jos sinun täytyy pakottaa ulostuloresoluutio - muussa tapauksessa valitse 'Virkistystaajuus = auto'"
 
 msgid "Show resolution label"
-msgstr "\"Näytä resoluutiotieto"
+msgstr "Näytä resoluutiotieto"
 
 msgid "Video mode: %s not available"
 msgstr "Videotila: %s ei ole käytettävissä"
@@ -19647,3 +19647,46 @@ msgstr "Lisää parhaillaan toistettava kanava suosikkilistaan"
 
 msgid "Add a service or stream to the current bouquet"
 msgstr "Lisää kanava tai streami nykyiseen suosikkilistaan"
+
+msgid "HDMI-IN Recording settings"
+msgstr "HDMI-IN -tallennusasetukset"
+
+msgid "HDMI Recording Settings"
+msgstr "HDMI-tallennusasetukset"
+
+msgid "Bitrate"
+msgstr "Bittinopeus"
+
+msgid "The bitrate of the video encoder. Larger value improves quality and increases file size."
+msgstr "Videokooderin bittinopeus. Suurempi arvo parantaa laatua ja lisää tiedostokokoa."
+
+msgid "The width of the picture. The input will be scaled to match this value."
+msgstr "Kuvan leveys. Syöte skaalataan vastaamaan tätä arvoa."
+
+msgid "The height of the picture. The input will be scaled to match this value."
+msgstr "Kuvan korkeus. Syöte skaalataan vastaamaan tätä arvoa."
+
+msgid "Frame rate"
+msgstr "Kuvataajuus"
+
+msgid "Recording frame rate, ideally matching source frame rate or integer multiple. If in doubt, set to 60."
+msgstr "Tallennuksen kuvataajuus, joka sopii ihanteellisesti lähteen kuvataajuudelle tai kokonaisluku kerrannaiselle. Jos olet epävarma, aseta arvoksi 60."
+
+msgid "Interlaced"
+msgstr "Lomitettu"
+
+msgid "In most cases this should be set to No. Only enable if you have a very specific need."
+msgstr "Useimmissa tapauksissa tämä tulee asettaa arvoon Ei. Ota käyttöön vain, jos sinulla on hyvin erityinen tarve."
+
+msgid "The aspect ratio of the recording."
+msgstr "Tallenteen kuvasuhde."
+
+msgid "Show HDMIRecord setup..."
+msgstr "Näytä HDMI-tallennusasetukset..."
+
+msgid ""
+"Recording HDMI In not possible on this receiver, timer ended!\n"
+"Please recheck it!"
+msgstr ""
+"HDMI-IN -tallennus ei ole mahdollista tällä vastaanottimella, ajastin loppui!\n"
+"Tarkista se!"

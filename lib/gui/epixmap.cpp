@@ -4,7 +4,7 @@
 #include <lib/gui/ewidgetdesktop.h>
 
 ePixmap::ePixmap(eWidget *parent)
-        :eWidget(parent), m_alphatest(false), m_scale(false), m_have_border_color(false), m_border_width(0)
+		:eWidget(parent), m_alphatest(false), m_scale(false), m_have_border_color(false), m_border_width(0)
 {
 }
 
@@ -120,7 +120,7 @@ int ePixmap::event(int event, void *data, void *data2)
 				flags = gPainter::BT_ALPHATEST;
 			else if (m_alphatest == 2)
 				flags = gPainter::BT_ALPHABLEND;
-			
+
 			flags |= m_scale;
 			painter.setRadius(cornerRadius, getCornerRadiusEdges());
 			painter.blit(m_pixmap, eRect(ePoint(0, 0), s), eRect(), flags);

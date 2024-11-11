@@ -389,10 +389,6 @@ RESULT eStaticServiceDVBPVRInformation::getName(const eServiceReference &ref, st
 		m_parser.m_name = name;
 	}
 
-	std::string res_name = "";
-	std::string res_provider = "";
-	eServiceReference::parseNameAndProviderFromName(name, res_name, res_provider);
-	name = res_name;
 	m_parser.m_name = name;
 	if (m_parser.m_prov.empty() && !ref.prov.empty()) m_parser.m_prov = ref.prov;
 
@@ -430,7 +426,7 @@ int eStaticServiceDVBPVRInformation::getLength(const eServiceReference &ref)
 		getName(ref, name); // This also updates m_parser.name
 	}
 	m_parser.m_data_ok = 1;
- 	m_parser.m_length = len;
+	m_parser.m_length = len;
 	m_parser.m_filesize = s.st_size;
 	m_parser.updateMeta(ref.path);
 	return (int)(m_parser.m_length / 90000);
@@ -1512,8 +1508,8 @@ RESULT eDVBServicePlay::pause(ePtr<iPauseableService> &ptr)
 	eServiceReferenceDVB sRelayOrigSref;
 	bool isSRService = ((const eServiceReferenceDVB&)m_reference).getSROriginal(sRelayOrigSref);
 		/* note: we check for timeshift to be enabled,
-		   not neccessary active. if you pause when timeshift
-		   is not active, you should activate it when unpausing */
+			not neccessary active. if you pause when timeshift
+			is not active, you should activate it when unpausing */
 	if ((!m_is_pvr) && (!m_timeshift_enabled) && (m_reference.path.empty() || isSRService))
 	{
 		ptr = nullptr;
@@ -2120,6 +2116,24 @@ std::string eDVBServicePlay::getInfoString(int w)
 		demux << h.getDemuxID();
 		return demux.str();
 	}
+	case sVideoInfo:
+	{
+		std::string videoInfo;
+		if (m_decoder)
+		{
+			char buff[100];
+			snprintf(buff, sizeof(buff), "%d|%d|%d|%d|%d|%d",
+					m_decoder->getVideoWidth(),
+					m_decoder->getVideoHeight(),
+					m_decoder->getVideoFrameRate(),
+					m_decoder->getVideoProgressive(),
+					m_decoder->getVideoAspect(),
+					m_decoder->getVideoGamma()
+				 );
+			videoInfo = buff;
+		}
+		return videoInfo;
+	}
 	default:
 		break;
 	}
@@ -2309,10 +2323,10 @@ int eDVBServicePlay::selectAudioStream(int i)
 				a.) we have an entry in the service db for the current service,
 				b.) we are not playing back something,
 				c.) we are not selecting the default entry. (we wouldn't change
-				    anything in the best case, or destroy the default setting in
-				    case the real default is not yet available.)
+					anything in the best case, or destroy the default setting in
+					case the real default is not yet available.)
 				d.) we have only one audiostream (overwrite the cache to make sure
-				    the cache contains the correct audio pid and type)
+					the cache contains the correct audio pid and type)
 			*/
 	if (m_dvb_service && ((i != -1) || (program.audioStreams.size() == 1)
 		|| ((m_dvb_service->getCacheEntry(eDVBService::cMPEGAPID) == -1)
@@ -2689,13 +2703,13 @@ int eDVBServicePlay::isTimeshiftActive()
 
 int eDVBServicePlay::isTimeshiftEnabled()
 {
-        return m_timeshift_enabled;
+		return m_timeshift_enabled;
 }
 
 RESULT eDVBServicePlay::saveTimeshiftFile()
 {
 	if (!m_timeshift_enabled)
-                return -1;
+		return -1;
 
 	m_save_timeshift = 1;
 

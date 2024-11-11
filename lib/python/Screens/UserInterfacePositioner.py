@@ -3,14 +3,14 @@ import traceback
 from enigma import getDesktop
 
 from Components.ActionMap import ActionMap
-from Components.config import config, configfile, getConfigListEntry, ConfigSelectionNumber, ConfigSelection, ConfigSlider, ConfigYesNo, NoSave, ConfigNumber
+from Components.config import config, configfile, getConfigListEntry, ConfigSelectionNumber, NoSave, ConfigNumber
 from Components.ConfigList import ConfigListScreen
 from Components.Console import Console
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo, BRAND
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
-from Tools.Directories import fileCheck, fileExists
+from Tools.Directories import fileExists
 
 
 def getFilePath(setting):
@@ -202,4 +202,3 @@ class UserInterfacePositioner(ConfigListScreen, Screen):
 		config.osd.dst_height.save()
 		configfile.save()
 		self.close()
-

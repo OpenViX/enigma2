@@ -105,8 +105,8 @@ justStubInfo = StubInfo()
 
 
 def lastPlayPosFromCache(ref):
-	from Screens.InfoBarGenerics import resumePointCache
-	return resumePointCache.get(ref.toString(), None)
+	from Screens.InfoBarGenerics import resumePointsInstance
+	return resumePointsInstance.resumePointCache.get(ref.toString(), None)
 
 
 def moviePlayState(cutsFileName, ref, length):
@@ -161,8 +161,8 @@ def moviePlayState(cutsFileName, ref, length):
 def resetMoviePlayState(cutsFileName, ref=None):
 	try:
 		if ref is not None:
-			from Screens.InfoBarGenerics import delResumePoint
-			delResumePoint(ref)
+			from Screens.InfoBarGenerics import resumePointsInstance
+			resumePointsInstance.delResumePoint(ref)
 		f = open(cutsFileName, 'rb')
 		cutlist = []
 		while True:
@@ -266,7 +266,6 @@ class MovieList(GUIComponent):
 		self.iconTrash = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/trashcan.png"))
 		self.runningTimers = {}
 		self.updateRecordings()
-		self.updatePlayPosCache()
 
 	def get_playInBackground(self):
 		return self._playInBackground
@@ -297,10 +296,6 @@ class MovieList(GUIComponent):
 			self._playInForeground = value
 
 	playInForeground = property(get_playInForeground, set_playInForeground)
-
-	def updatePlayPosCache(self):
-		from Screens.InfoBarGenerics import updateresumePointCache
-		updateresumePointCache()
 
 	def updateRecordings(self, timer=None):
 		if timer is not None:

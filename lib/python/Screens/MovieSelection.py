@@ -1255,8 +1255,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			from Screens.InfoBar import MoviePlayer
 			MoviePlayerInstance = MoviePlayer.instance
 			if MoviePlayerInstance is not None:
-				from Screens.InfoBarGenerics import setResumePoint
-				setResumePoint(MoviePlayer.instance.session)
+				from Screens.InfoBarGenerics import resumePointsInstance
+				resumePointsInstance.setResumePoint(MoviePlayer.instance.session)
 			self.session.nav.stopService()
 			if playInBackground != current:
 				# come back to play the new one
@@ -1267,8 +1267,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			from Screens.InfoBar import MoviePlayer
 			MoviePlayerInstance = MoviePlayer.instance
 			if MoviePlayerInstance is not None:
-				from Screens.InfoBarGenerics import setResumePoint
-				setResumePoint(MoviePlayer.instance.session)
+				from Screens.InfoBarGenerics import resumePointsInstance
+				resumePointsInstance.setResumePoint(MoviePlayer.instance.session)
 			self.session.nav.stopService()
 			if playInForeground != current:
 				self.callLater(self.preview)
@@ -1293,8 +1293,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			from Screens.InfoBar import MoviePlayer
 			MoviePlayerInstance = MoviePlayer.instance
 			if MoviePlayerInstance is not None:
-				from Screens.InfoBarGenerics import setResumePoint
-				setResumePoint(MoviePlayer.instance.session)
+				from Screens.InfoBarGenerics import resumePointsInstance
+				resumePointsInstance.setResumePoint(MoviePlayer.instance.session)
 			self.session.nav.stopService()
 			if config.movielist.show_live_tv_in_movielist.value:
 				self.LivePlayTimer.start(100)
@@ -1304,8 +1304,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			from Screens.InfoBar import MoviePlayer
 			MoviePlayerInstance = MoviePlayer.instance
 			if MoviePlayerInstance is not None:
-				from Screens.InfoBarGenerics import setResumePoint
-				setResumePoint(MoviePlayer.instance.session)
+				from Screens.InfoBarGenerics import resumePointsInstance
+				resumePointsInstance.setResumePoint(MoviePlayer.instance.session)
 				self.closeMoviePlayerOnExit = True
 			self.session.nav.stopService()
 			if config.movielist.show_live_tv_in_movielist.value:
@@ -2364,8 +2364,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 					continue
 				try:
 					moveServiceFiles(itemRef, trash)
-					from Screens.InfoBarGenerics import delResumePoint
-					delResumePoint(itemRef)
+					from Screens.InfoBarGenerics import resumePointsInstance
+					resumePointsInstance.delResumePoint(itemRef)
 					deletedList.append(itemRef)
 				except Exception as ex:
 					print("[MovieSelection] Couldn't move to trash '%s'. %s" % (path, ex))
@@ -2408,8 +2408,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 				else:
 					if offline.deleteFromDisk(0):
 						raise Exception("Offline delete failed")
-				from Screens.InfoBarGenerics import delResumePoint
-				delResumePoint(itemRef)
+				from Screens.InfoBarGenerics import resumePointsInstance
+				resumePointsInstance.delResumePoint(itemRef)
 				deletedList.append(itemRef)
 			except Exception as ex:
 				print("[MovieSelection] Couldn't delete '%s'. %s" % (path, ex))
@@ -2417,8 +2417,13 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 		if deletedList:
 			path2 = path + ".del"
-			if offline is None and os.path.isdir(path2):		# directory not deleted by eraser and .del added to path name
-				shutil.rmtree(path2)
+			if offline is None:  # directory not deleted by eraser and .del added to path name
+				# print("[MovieSelection][permanentDeleteListConfirmed] shutil path", path2)
+				try:
+					shutil.rmtree(path2)
+				except FileNotFoundError:
+					pass
+
 			self["list"].removeServices(deletedList)
 			deletedCount = len(deletedList)
 			self.showActionFeedback(_("Deleted '%s'") % name if deletedCount == 1 else _("Deleted %d items") % deletedCount)
@@ -2426,7 +2431,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 		# some things didn't delete. Ask whether we should try doing a permanent delete instead
 		if failedList:
 			failedCount = len(failedList)
-			msg = _("Couldn't delete '%s'.") % failedList[0] if failedCount == 1 else _("Couldn't delete %d items.") % failedCount
+			msg = _("Couldn't delete '%s'.") % str(failedList[0]) if failedCount == 1 else _("Couldn't delete %d items.") % failedCount
 			mbox = self.session.open(MessageBox, msg, MessageBox.TYPE_ERROR)
 			mbox.setTitle(self.getTitle())
 

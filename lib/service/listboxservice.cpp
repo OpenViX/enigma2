@@ -871,7 +871,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				yoffs = m_has_next_event ? ctrlHeight - 2 : 5;
 			}
 			if (!isMarker && !isDirectory) {
-				ePtr<gPixmap> &pixmap =  service_res_str == "1f" ? m_pixmaps[pic4K] : (service_res_str == "19" || service_res_str == "11") ? 
+				ePtr<gPixmap> &pixmap =  service_res_str == "1f" ? m_pixmaps[pic4K] : (service_res_str == "19" || service_res_str == "11") ?
 					m_pixmaps[picHD] : m_pixmaps[picSD];
 
 				if (pixmap)

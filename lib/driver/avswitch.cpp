@@ -8,6 +8,7 @@
 #include <lib/base/init_num.h>
 #include <lib/base/eerror.h>
 #include <lib/base/ebase.h>
+#include <lib/base/modelinformation.h>
 #include <lib/driver/avswitch.h>
 
 const char *__MODULE__ = "eAVSwitch";
@@ -28,18 +29,33 @@ eAVSwitch::eAVSwitch()
 {
 	ASSERT(!instance);
 	instance = this;
-	m_video_mode = 0;
+	m_set_video_mode = 0;
 	m_active = false;
-	m_fp_fd = open("/dev/dbox/fp0", O_RDONLY|O_NONBLOCK);
-	if (m_fp_fd == -1)
+	struct stat buffer = {};
+#ifdef HAVE_HDMIIN_DM
+	m_b_has_proc_hdmi_rx_monitor = (stat(proc_hdmi_rx_monitor, &buffer) == 0);
+#else
+	m_b_has_proc_hdmi_rx_monitor = false;
+#endif
+	eModelInformation &modelinformation = eModelInformation::getInstance();
+	m_b_has_proc_videomode_50 = (stat(proc_videomode_50, &buffer) == 0);
+	m_b_has_proc_videomode_60 = (stat(proc_videomode_60, &buffer) == 0);
+
+	m_b_hdmiin_fhd = modelinformation.getValue("hdmifhdin") == "True";
+
+	if (modelinformation.getValue("scart") == "True")
 	{
-		eDebug("[eAVSwitch] failed to open /dev/dbox/fp0 to monitor vcr scart slow blanking changed: %m");
-		m_fp_notifier=0;
-	}
-	else
-	{
-		m_fp_notifier = eSocketNotifier::create(eApp, m_fp_fd, eSocketNotifier::Read|POLLERR);
-		CONNECT(m_fp_notifier->activated, eAVSwitch::fp_event);
+		m_fp_fd = open("/dev/dbox/fp0", O_RDONLY|O_NONBLOCK);
+		if (m_fp_fd == -1)
+		{
+			eDebug("[eAVSwitch] failed to open /dev/dbox/fp0 to monitor vcr scart slow blanking changed: %m");
+			m_fp_notifier=0;
+		}
+		else
+		{
+			m_fp_notifier = eSocketNotifier::create(eApp, m_fp_fd, eSocketNotifier::Read|POLLERR);
+			CONNECT(m_fp_notifier->activated, eAVSwitch::fp_event);
+		}
 	}
 }
 
@@ -290,6 +306,64 @@ std::string eAVSwitch::getVideoMode(const std::string &defaultVal, int flags) co
 	return result;
 }
 
+// startStopHDMIIn
+
+void eAVSwitch::startStopHDMIIn(bool on, bool audio, int flags)
+{
+
+	eDebug("[%s] %s: audio:%d on:%d", __MODULE__, "startStopHDMIIn", audio, on);
+	eDebug("[eAVSwitch][startStopHDMIIn] m_b_has_proc_hdmi_rx_monitor %d", m_b_has_proc_hdmi_rx_monitor);
+	std::string state = on ? "on" : "off";
+
+	if (on)
+	{
+		m_video_mode = CFile::read(proc_videomode, __MODULE__, flags);
+		if (m_b_has_proc_videomode_50)
+			m_video_mode_50 = CFile::read(proc_videomode_50, __MODULE__, flags);
+		if (m_b_has_proc_videomode_60)
+			m_video_mode_60 = CFile::read(proc_videomode_60, __MODULE__, flags);
+
+		std::string mode = m_b_hdmiin_fhd ? "1080p" : "720p";
+
+		CFile::writeStr(proc_videomode, mode, __MODULE__, flags);
+		if (m_b_has_proc_videomode_50)
+			CFile::writeStr(proc_videomode_50, mode, __MODULE__, flags);
+		if (m_b_has_proc_videomode_60)
+			CFile::writeStr(proc_videomode_60, mode, __MODULE__, flags);
+
+		if (m_b_has_proc_hdmi_rx_monitor)
+		{
+			if (audio)
+				CFile::writeStr(proc_hdmi_rx_monitor_audio, state, __MODULE__, flags);
+			CFile::writeStr(proc_hdmi_rx_monitor, state, __MODULE__, flags);
+		}
+	}
+	else
+	{
+		if (m_b_has_proc_hdmi_rx_monitor)
+		{
+			CFile::writeStr(proc_hdmi_rx_monitor_audio, state, __MODULE__, flags);
+			CFile::writeStr(proc_hdmi_rx_monitor, state, __MODULE__, flags);
+		}
+		CFile::writeStr(proc_videomode, m_video_mode, __MODULE__, flags);
+		if (m_b_has_proc_videomode_50)
+			CFile::writeStr(proc_videomode_50, m_video_mode_50, __MODULE__, flags);
+		if (m_b_has_proc_videomode_60)
+			CFile::writeStr(proc_videomode_60, m_video_mode_60, __MODULE__, flags);
+	}
+}
+
+// disable HDMIIn / used in StartEnigma.py
+void eAVSwitch::disableHDMIIn(int flags) const
+{
+	eDebug("[eAVSwitch][disableHDMIIn] m_b_has_proc_hdmi_rx_monitor %d", m_b_has_proc_hdmi_rx_monitor);
+	if (!m_b_has_proc_hdmi_rx_monitor)
+		return;
+
+	CFile::writeStr(proc_hdmi_rx_monitor_audio, "off", __MODULE__, flags);
+	CFile::writeStr(proc_hdmi_rx_monitor, "off", __MODULE__, flags);
+}
+
 void eAVSwitch::setInput(int val)
 {
 	/*
@@ -412,7 +486,7 @@ void eAVSwitch::setVideomode(int mode)
 	const char *pal="pal";
 	const char *ntsc="ntsc";
 
-	if (mode == m_video_mode)
+	if (mode == m_set_video_mode)
 		return;
 
 	if (mode == 2)
@@ -465,7 +539,7 @@ void eAVSwitch::setVideomode(int mode)
 		close(fd);
 	}
 
-	m_video_mode = mode;
+	m_set_video_mode = mode;
 }
 
 void eAVSwitch::setWSS(int val) // 0 = auto, 1 = auto(4:3_off)

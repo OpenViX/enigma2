@@ -1020,12 +1020,23 @@ class RecordTimer(Timer):
 		# when activating a timer for servicetype 4097,
 		# and SystemApp has player enabled, then skip recording.
 		# Or always skip if in ("5001", "5002") as these cannot be recorded.
+		if "8192" in w.service_ref.toString():
+			print(f"[RecordTimer][doActivate] service ref {w.service_ref.toString()}")
 		if w.service_ref.toString().startswith("4097:") and isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value is True or w.service_ref.toString()[:4] in ("5001", "5002"):
 			print("[RecordTimer][doActivate] found Serviceapp & player enabled - disable this timer recording")
 			w.state = RecordTimerEntry.StateEnded
 			from Tools.Notifications import AddPopup
 			from Screens.MessageBox import MessageBox
 			AddPopup(_("Recording IPTV with systemapp enabled, timer ended!\nPlease recheck it!"), type=MessageBox.TYPE_ERROR, timeout=0, id="TimerRecordingFailed")
+		# when activating a timer for HDMI In,
+		# and SystemApp has player enabled, then skip recording.
+		# Or always skip if in ("5001", "5002") as these cannot be recorded.
+		elif "8192" in w.service_ref.toString() and not SystemInfo["CanHDMIinRecord"]:
+			print("[RecordTimer][doActivate] found HDMI In and cannot record on Hdmi In - disable this timer recording")
+			w.state = RecordTimerEntry.StateEnded
+			from Tools.Notifications import AddPopup
+			from Screens.MessageBox import MessageBox
+			AddPopup(_("Recording HDMI In not possible on this receiver, timer ended!\nPlease recheck it!"), type=MessageBox.TYPE_ERROR, timeout=0, id="TimerRecordingFailed")
 		# when activating a timer which has already passed,
 		# simply abort the timer. don't run trough all the stages.
 		elif w.shouldSkip():

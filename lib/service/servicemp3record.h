@@ -33,7 +33,6 @@ private:
 	std::string m_filename;
 	eServiceReference m_ref;
 	ePtr<eConnection> m_con_record_event;
-	ePtr<eTimer> m_streamingsrc_timeout;
 	std::string m_useragent;
 	std::string m_extra_headers;
 	eFixedMessagePump<ePtr<GstMessageContainer> > m_pump;

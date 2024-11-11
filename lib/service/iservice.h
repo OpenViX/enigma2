@@ -23,7 +23,8 @@ public:
 		idDVB,
 		idFile,
 		idUser=0x1000,
-		idServiceMP3=0x1001
+		idServiceMP3=0x1001,
+		idServiceHDMIIn       = 0x2000				// 8192
 	};
 	int type;
 
@@ -94,14 +95,7 @@ public:
 	std::string prov;
 	int number;
 #endif
-	std::string getName() const { 
-		if (!name.empty()) {
-			std::vector<std::string> name_split = split(name, "•");
-			std::string name_res = name_split[0];
-			return name_res; 
-		}
-		return name; 
-	}
+	std::string getName() const { return name; }
 	std::string getProvider() const { return prov; }
 	void setName( const std::string &s ) { name=s; }
 	void setProvider( const std::string &s ) { prov=s; }
@@ -209,7 +203,7 @@ public:
 	bool operator<(const eServiceReference &c) const
 	{
 		if (!c) return 0;
-		
+
 		if (type < c.type)
 			return 1;
 
@@ -425,6 +419,7 @@ public:
 		sCenterDVBSubs,
 
 		sGamma,
+		sVideoInfo,
 
 		sUser = 0x100
 	};

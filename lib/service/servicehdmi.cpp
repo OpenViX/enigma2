@@ -2,8 +2,10 @@
 #include <lib/base/eerror.h>
 #include <lib/base/init_num.h>
 #include <lib/base/init.h>
+#include <lib/base/modelinformation.h>
 #include <lib/base/nconfig.h>
 #include <lib/base/object.h>
+#include <lib/driver/avswitch.h>
 #include <lib/dvb/decoder.h>
 #include <lib/dvb/encoder.h>
 #include <lib/service/servicehdmi.h>
@@ -105,7 +107,8 @@ long long eStaticServiceHDMIInfo::getFileSize(const eServiceReference &ref)
 eServiceHDMI::eServiceHDMI(eServiceReference ref)
  : m_ref(ref), m_decoder_index(0), m_noaudio(false)
 {
-
+	eModelInformation &modelinformation = eModelInformation::getInstance();
+	m_b_hdmiin_fhd = modelinformation.getValue("hdmifhdin") == "True";
 }
 
 eServiceHDMI::~eServiceHDMI()
@@ -122,18 +125,26 @@ RESULT eServiceHDMI::connectEvent(const sigc::slot<void(iPlayableService*,int)> 
 
 RESULT eServiceHDMI::start()
 {
+	eAVSwitch::getInstance()->startStopHDMIIn(true, !m_noaudio, 1);
+#ifndef HAVE_HDMIIN_DM
 	m_decoder = new eTSMPEGDecoder(NULL, m_decoder_index);
 	m_decoder->setVideoPID(1, 0);
 	if (!m_noaudio)
 		m_decoder->setAudioPID(1, 0);
 	m_decoder->play();
+#endif
 	m_event(this, evStart);
+	m_event((iPlayableService*)this, evVideoSizeChanged);
+	m_event((iPlayableService*)this, evVideoGammaChanged);
 	return 0;
 }
 
 RESULT eServiceHDMI::stop()
 {
+	eAVSwitch::getInstance()->startStopHDMIIn(false, true, 1);
+#ifndef HAVE_HDMIIN_DM
 	m_decoder = NULL;
+#endif
 	m_event(this, evStopped);
 	return 0;
 }
@@ -166,12 +177,39 @@ RESULT eServiceHDMI::getName(std::string &name)
 
 int eServiceHDMI::getInfo(int w)
 {
+	switch (w)
+	{
+		case sVideoHeight: return m_b_hdmiin_fhd ? 1080 : 720;
+		case sVideoWidth: return m_b_hdmiin_fhd ? 1920 : 1280;
+		case sFrameRate: return 50;
+		case sProgressive: return 1;
+		case sGamma: return 0;
+		case sAspect: return 1;
+	}
+
 	return resNA;
 }
 
 std::string eServiceHDMI::getInfoString(int w)
 {
-	return "";
+	switch (w)
+	{
+	case sVideoInfo:
+	{
+		char buff[100];
+		snprintf(buff, sizeof(buff), "%d|%d|50|1|0|1",
+				m_b_hdmiin_fhd ? 1080 : 720,
+				m_b_hdmiin_fhd ? 1920 : 1280
+				);
+		std::string videoInfo = buff;
+		return videoInfo;
+	}
+	case sServiceref:
+		return m_ref.toString();
+	default:
+		break;
+	}
+	return iServiceInformation::getInfoString(w);
 }
 
 ePtr<iServiceInfoContainer> eServiceHDMI::getInfoObject(int w)
@@ -218,7 +256,7 @@ RESULT eServiceHDMIRecord::start(bool simulate)
 RESULT eServiceHDMIRecord::stop()
 {
 	if (!m_simulate)
-		eDebug("[eServiceHDMIRecord] stop recording!");
+		eDebug("[eServiceHDMIRecord][stop] stop recording!");
 	if (m_state == stateRecording)
 	{
 		if (m_thread)
@@ -234,12 +272,11 @@ RESULT eServiceHDMIRecord::stop()
 
 		m_state = statePrepared;
 	} else if (!m_simulate)
-		eDebug("[eServiceHDMIRecord] (was not recording)");
+		eDebug("[eServiceHDMIRecord][stop] (was not recording)");
 	if (m_state == statePrepared)
 	{
 		m_thread = NULL;
-		if (!m_simulate && eEncoder::getInstance())
-			eEncoder::getInstance()->freeEncoder(m_encoder_fd);
+		if (eEncoder::getInstance()) eEncoder::getInstance()->freeEncoder(m_encoder_fd);
 		m_encoder_fd = -1;
 		m_state = stateIdle;
 	}
@@ -249,12 +286,19 @@ RESULT eServiceHDMIRecord::stop()
 
 int eServiceHDMIRecord::doPrepare()
 {
-	if (!m_simulate && m_encoder_fd < 0)
+	eDebug("[eServiceHDMIRecord][doPrepare] Record to %s , encoder_fd is %d", m_filename.c_str(), m_encoder_fd);
+	if (m_encoder_fd < 0)
 	{
 		if (eEncoder::getInstance())
+		{
 			m_encoder_fd = eEncoder::getInstance()->allocateHDMIEncoder(m_ref.toString(), m_buffersize);
+		}
+		eDebug("[eServiceHDMIRecord][doPrepare] Hdmi encoder %s , encoder_fd is %d", m_filename.c_str(), m_encoder_fd);
 		if (m_encoder_fd < 0)
+		{
+			eDebug("[eServiceHDMIRecord][doPrepare] Hdmi encoder %s , encoder_fd is %d", m_filename.c_str(), m_encoder_fd);		
 			return -1;
+		}
 	}
 	m_state = statePrepared;
 	return 0;
@@ -262,6 +306,7 @@ int eServiceHDMIRecord::doPrepare()
 
 int eServiceHDMIRecord::doRecord()
 {
+	eDebug("[eServiceHDMIRecord][doRecord] entered Recording to %s...", m_filename.c_str());
 	int err = doPrepare();
 	if (err)
 	{
@@ -272,12 +317,12 @@ int eServiceHDMIRecord::doRecord()
 
 	if (!m_thread && !m_simulate)
 	{
-		eDebug("[eServiceHDMIRecord] Recording to %s...", m_filename.c_str());
+		eDebug("[eServiceHDMIRecord][doRecord] Recording to %s...", m_filename.c_str());
 		::remove(m_filename.c_str());
 		int fd = ::open(m_filename.c_str(), O_WRONLY | O_CREAT | O_LARGEFILE | O_CLOEXEC, 0666);
 		if (fd < 0)
 		{
-			eDebug("[eServiceHDMIRecord] can't open recording file: %m");
+			eDebug("[eServiceHDMIRecord][doRecord] can't open recording file: %m");
 			m_error = errOpenRecordFile;
 			m_event((iRecordableService*)this, evRecordFailed);
 			return errOpenRecordFile;

@@ -12,6 +12,7 @@
 #include <lib/base/wrappers.h>
 #include <lib/base/cfile.h>
 #include <lib/nav/core.h>
+#include <lib/base/nconfig.h>
 #include <lib/dvb/encoder.h>
 #include <lib/dvb/pmt.h>
 #include <lib/service/service.h>
@@ -64,21 +65,25 @@ eEncoder::eEncoder()
 			snprintf(filename, sizeof(filename), "/proc/stb/encoder/%d/decoder", index);
 
 			if (CFile::parseInt(&decoder_index, filename) < 0)
+			{
 				break;
-
+			}
 			/* the connected video decoder for "Xtrend" transcoding / encoding or for Broadcom HDMI recording */
 			if((navigation_instance_normal = new eNavigation(service_center, decoder_index)) == nullptr)
 				break;
 
 			if(bcm_encoder)
 			{
+				eDebug("[eEncoder][eEncoder] +++ have bcm encoder and encoder %d", index);
 				/* use a non-existing (+4) video decoder for Broadcom transcoding, we don't want a decoder there */
 				if((navigation_instance_alternative = new eNavigation(service_center, index + 4)) == nullptr)
 					break;
 			}
 			else
+			{
+				eDebug("[eEncoder][eEncoder] +++ have encoder %d", index);
 				navigation_instance_alternative = nullptr;
-
+			}
 			encoder.push_back(EncoderContext(navigation_instance_normal, navigation_instance_alternative));
 		}
 	}
@@ -114,18 +119,19 @@ int eEncoder::allocateEncoder(const std::string &serviceref, int &buffersize,
 	// extract file path from serviceref, this is needed for Broadcom file transcoding
 	if(serviceref.compare(0, sizeof(fileref) - 1, std::string(fileref), 0, std::string::npos) == 0)
 		source_file = serviceref.substr(sizeof(fileref) - 1, std::string::npos);
-
-	eDebug("[allocateEncoder] serviceref: %s", serviceref.c_str());
-	eDebug("[allocateEncoder] serviceref substr: %s", serviceref.substr(0, sizeof(fileref) - 1).c_str());
-	eDebug("[allocateEncoder] source_file: \"%s\"", source_file.c_str());
+	eDebug("[eEncoder][allocateEncoder] serviceref: %s", serviceref.c_str());
+	eDebug("[eEncoder][allocateEncoder] serviceref substr: %s", serviceref.substr(0, sizeof(fileref) - 1).c_str());
+	eDebug("[eEncoder][allocateEncoder] source_file: \"%s\"", source_file.c_str());
 
 	for(encoder_index = 0; encoder_index < (int)encoder.size(); encoder_index++)
 		if(encoder[encoder_index].state == EncoderContext::state_idle)
+		{
 			break;
+		}
 
 	if(encoder_index >= (int)encoder.size())
 	{
-		eWarning("[eEncoder] no encoders free");
+		eWarning("[eEncoder][allocateEncoder] no encoders free");
 		return(-1);
 	}
 
@@ -202,7 +208,7 @@ int eEncoder::allocateEncoder(const std::string &serviceref, int &buffersize,
 	{
 		if((encoder[encoder_index].file_fd = open(source_file.c_str(), O_RDONLY, 0)) < 0)
 		{
-			eWarning("[eEncoder] open source file failed");
+			eWarning("[eEncoder][allocateEncoder] open source file failed");
 			return(-1);
 		}
 	}
@@ -211,12 +217,13 @@ int eEncoder::allocateEncoder(const std::string &serviceref, int &buffersize,
 
 	if((encoder[encoder_index].encoder_fd = open(filename, bcm_encoder ? O_RDWR : O_RDONLY)) < 0)
 	{
-		eWarning("[eEncoder] open encoder failed");
+		eWarning("[eEncoder][allocateEncoder] open encoder failed");
 		return(-1);
 	}
 
 	if(bcm_encoder)
 	{
+		eDebug("[eEncoder][allocateEncoder] using bcm encoder");
 		buffersize = 188 * 256; /* broadcom magic value */
 		encoder[encoder_index].state = EncoderContext::state_wait_pmt;
 
@@ -236,7 +243,7 @@ int eEncoder::allocateEncoder(const std::string &serviceref, int &buffersize,
 
 			default:
 			{
-				eWarning("[eEncoder] only encoder 0 and encoder 1 implemented");
+				eWarning("[eEncoder][allocateEncoder] only encoder 0 and encoder 1 implemented");
 				close(encoder[encoder_index].encoder_fd);
 				encoder[encoder_index].encoder_fd = -1;
 				return(-1);
@@ -263,10 +270,11 @@ int eEncoder::allocateHDMIEncoder(const std::string &serviceref, int &buffersize
 {
 	/* these are hardcoded because they're ignored anyway */
 
-	static const int hdmi_encoding_bitrate = 100000;
+
+	static const int hdmi_encoding_bitrate = 10240000;
 	static const int hdmi_encoding_width = 1280;
 	static const int hdmi_encoding_height = 720;
-	static const int hdmi_encoding_framerate = 25000;
+	static const int hdmi_encoding_framerate = 50000;
 	static const int hdmi_encoding_interlaced = 0;
 	static const int hdmi_encoding_aspect_ratio = 0;
 	static const char *hdmi_encoding_vcodec = "h264";
@@ -321,7 +329,7 @@ int eEncoder::allocateHDMIEncoder(const std::string &serviceref, int &buffersize
 
 	if(encoder[0].navigation_instance->playService(serviceref) < 0)
 	{
-		eWarning("[eEncoder] navigation->playservice failed");
+		eWarning("[eEncoder][allocateHDMIEncoder] navigation->playservice failed");
 		return(-1);
 	}
 
@@ -329,10 +337,10 @@ int eEncoder::allocateHDMIEncoder(const std::string &serviceref, int &buffersize
 
 	if((encoder[0].encoder_fd = open(filename, O_RDONLY)) < 0)
 	{
-		eWarning("[eEncoder] open encoder failed");
+		eWarning("[eEncoder][allocateHDMIEncoder] open encoder failed");
 		return(-1);
 	}
-
+	eDebug("[eEncoder][allocateHDMIEncoder] using encoder %s", filename);
 	encoder[0].state = EncoderContext::state_running;
 
 	return(encoder[0].encoder_fd);
@@ -346,7 +354,7 @@ void eEncoder::freeEncoder(int encoderfd)
 
 	if(encoderfd < 0)
 	{
-		eWarning("[eEncoder] trying to release incorrect encoder %d", encoderfd);
+		eWarning("[eEncoder][allocateHDMIEncoder] trying to release incorrect encoder %d", encoderfd);
 		return;
 	}
 
@@ -356,7 +364,7 @@ void eEncoder::freeEncoder(int encoderfd)
 
 	if(encoder_index >= (int)encoder.size())
 	{
-		eWarning("[eEncoder] encoder with fd=%d not found", encoderfd);
+		eWarning("[eEncoder][allocateHDMIEncoder] encoder with fd=%d not found", encoderfd);
 		return;
 	}
 
@@ -366,7 +374,7 @@ void eEncoder::freeEncoder(int encoderfd)
 		case(EncoderContext::state_finishing):
 		case(EncoderContext::state_destroyed):
 		{
-			eWarning("[eEncoder] trying to release inactive encoder %d fd=%d, state=%d", encoder_index, encoderfd, encoder[encoder_index].state);
+			eWarning("[eEncoder][allocateHDMIEncoder] trying to release inactive encoder %d fd=%d, state=%d", encoder_index, encoderfd, encoder[encoder_index].state);
 			return;
 		}
 		default:
@@ -423,14 +431,14 @@ int eEncoder::getUsedEncoderCount()
 
 void eEncoder::navigation_event(int encoder_index, int event)
 {
-	eDebug("[eEncoder] navigation event: %d %d", encoder_index, event);
+	eDebug("[eEncoder][navigation event]: %d %d", encoder_index, event);
 
 	if((encoder_index < 0) || (encoder_index >= (int)encoder.size()))
 		return;
 
 	if(event == eDVBServicePMTHandler::eventTuned)
 	{
-		eDebug("[eEncoder] navigation event tuned: %d %d", encoder_index, event);
+		eDebug("[eEncoder][navigation event] tuned: encoder_index %d event %d", encoder_index, event);
 
 		if(encoder[encoder_index].state == EncoderContext::state_wait_pmt)
 		{
@@ -448,7 +456,7 @@ void eEncoder::navigation_event(int encoder_index, int event)
 
 			if((vpid > 0) && (apid > 0) && (pmtpid > 0))
 			{
-				eDebug("[eEncoder] info complete, vpid: %d (0x%x), apid: %d (0x%x), pmptpid: %d (0x%x)", vpid, vpid, apid, apid, pmtpid, pmtpid);
+				eDebug("[eEncoder][navigation event] info complete, vpid: %d (0x%x), apid: %d (0x%x), pmptpid: %d (0x%x)", vpid, vpid, apid, apid, pmtpid, pmtpid);
 
 				pids.push_back(pmtpid);
 				pids.push_back(vpid);
@@ -458,13 +466,13 @@ void eEncoder::navigation_event(int encoder_index, int event)
 						ioctl(encoder[encoder_index].encoder_fd, IOCTL_BROADCOM_SET_VPID_MIPS, vpid) ||
 						ioctl(encoder[encoder_index].encoder_fd, IOCTL_BROADCOM_SET_APID_MIPS, apid))
 				{
-					eDebug("[eEncoder] set ioctl(mips) failed");
+					eDebug("[eEncoder][navigation event] set ioctl(mips) failed");
 
 					if(ioctl(encoder[encoder_index].encoder_fd, IOCTL_BROADCOM_SET_PMTPID_ARM, pmtpid) ||
 							ioctl(encoder[encoder_index].encoder_fd, IOCTL_BROADCOM_SET_VPID_ARM, vpid) ||
 							ioctl(encoder[encoder_index].encoder_fd, IOCTL_BROADCOM_SET_APID_ARM, apid))
 					{
-						eWarning("[eEncoder] set ioctl(arm) failed too, giving up");
+						eWarning("[eEncoder][navigation event] set ioctl(arm) failed too, giving up");
 						freeEncoder(encoder[encoder_index].encoder_fd);
 						return;
 					}
@@ -478,7 +486,7 @@ void eEncoder::navigation_event(int encoder_index, int event)
 
 					if(tservice == nullptr)
 					{
-						eWarning("[eEncoder] tap service failed");
+						eWarning("[eEncoder][navigation event] tap service failed");
 						freeEncoder(encoder[encoder_index].encoder_fd);
 						return;
 					}
@@ -491,7 +499,7 @@ void eEncoder::navigation_event(int encoder_index, int event)
 
 					if(encoder[encoder_index].stream_thread != nullptr)
 					{
-						eWarning("[eEncoder] datapump already running");
+						eWarning("[eEncoder][navigation event] datapump already running");
 						return;
 					}
 
@@ -520,12 +528,12 @@ void eEncoder::EncoderContext::thread(void)
 {
 	hasStarted();
 
-	eDebug("[EncoderContext %x] start ioctl transcoding", (int)pthread_self());
+	eDebug("[eEncoder][EncoderContext %x] start ioctl transcoding", (int)pthread_self());
 
 	if(ioctl(encoder_fd, IOCTL_BROADCOM_START_TRANSCODING, 0))
 		eWarning("[eEncoder] thread encoder failed");
 
-	eDebug("[EncoderContext %x] finish ioctl transcoding", (int)pthread_self());
+	eDebug("[eEncoder][EncoderContext %x] finish ioctl transcoding", (int)pthread_self());
 }
 
 eAutoInitPtr<eEncoder> init_eEncoder(eAutoInitNumbers::service + 1, "Encoders");

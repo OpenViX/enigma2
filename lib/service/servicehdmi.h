@@ -13,7 +13,7 @@ class eServiceFactoryHDMI: public iServiceHandler
 public:
 	eServiceFactoryHDMI();
 	virtual ~eServiceFactoryHDMI();
-	enum { id = 0x2000 };
+	enum { id = eServiceReference::idServiceHDMIIn };
 
 	RESULT play(const eServiceReference &, ePtr<iPlayableService> &ptr);
 	RESULT record(const eServiceReference &, ePtr<iRecordableService> &ptr);
@@ -82,6 +82,7 @@ private:
 	int m_decoder_index;
 	bool m_noaudio;
 	ePtr<iTSMPEGDecoder> m_decoder;
+	bool m_b_hdmiin_fhd;
 };
 
 class eServiceHDMIRecord: public eDVBServiceBase, public iRecordableService, public sigc::trackable

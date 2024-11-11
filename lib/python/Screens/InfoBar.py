@@ -22,7 +22,7 @@ from Screens.InfoBarGenerics import InfoBarShowHide, \
 	InfoBarServiceNotifications, InfoBarPVRState, InfoBarCueSheetSupport, InfoBarBuffer, \
 	InfoBarSummarySupport, InfoBarMoviePlayerSummarySupport, InfoBarTimeshiftState, InfoBarTeletextPlugin, InfoBarExtensions, \
 	InfoBarSubtitleSupport, InfoBarPiP, InfoBarPlugins, InfoBarServiceErrorPopupSupport, InfoBarJobman, InfoBarZoom, \
-	InfoBarHdmi, setResumePoint, delResumePoint  # noqa: E402
+	InfoBarHdmi, resumePointsInstance  # noqa: E402
 from Screens.ButtonSetup import InfoBarButtonSetup  # noqa: E402
 
 profile("LOAD:InitBar_Components")
@@ -253,7 +253,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 			# Only try to set a resumepoint if currently playing something
 			ref = player.session.nav.getCurrentlyPlayingServiceOrGroup()
 			if ref is not None and ref.isPlayback():
-				setResumePoint(player.session)
+				resumePointsInstance.setResumePoint(player.session)
 			if nextService:
 				player.lastservice = nextService
 			player.close()
@@ -354,7 +354,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 			self.leavePlayerConfirmed([True, how])
 
 	def leavePlayer(self):
-		setResumePoint(self.session)
+		resumePointsInstance.setResumePoint(self.session)
 		self.handleLeave(config.usage.on_movie_stop.value)
 
 	def leavePlayerOnExit(self):
@@ -374,7 +374,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 
 	def leavePlayerOnExitCallback(self, answer):
 		if answer:
-			setResumePoint(self.session)
+			resumePointsInstance.setResumePoint(self.session)
 			self.handleLeave("quit")
 
 	def hidePipOnExitCallback(self, answer):
@@ -474,7 +474,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 			return
 		ref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 		if ref:
-			delResumePoint(ref)
+			resumePointsInstance.delResumePoint(ref)
 		self.handleLeave(config.usage.on_movie_eof.value)
 
 	def up(self):

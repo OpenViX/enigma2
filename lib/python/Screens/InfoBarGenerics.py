@@ -81,84 +81,72 @@ def isMoviePlayerInfoBar(self):
 	return self.__class__.__name__ == "MoviePlayer"
 
 
-def setResumePoint(session):
-	global resumePointCache, resumePointCacheLast
-	service = session.nav.getCurrentService()
-	ref = session.nav.getCurrentlyPlayingServiceOrGroup()
-	if (service is not None) and (ref is not None):  # and (ref.type != 1):
-		# ref type 1 has its own memory...
-		seek = service.seek()
-		if seek:
-			pos = seek.getPlayPosition()
-			if not pos[0]:
-				key = ref.toString()
-				lru = int(time())
-				sl = seek.getLength()
-				if sl:
-					sl = sl[1]
-				else:
-					sl = None
-				resumePointCache[key] = [lru, pos[1], sl]
-				for k, v in list(resumePointCache.items()):
-					if v[0] < lru:
-						candidate = k
-						filepath = ospath.realpath(candidate.split(':')[-1])
-						mountpoint = findMountPoint(filepath)
-						if ospath.ismount(mountpoint) and not ospath.exists(filepath):
-							del resumePointCache[candidate]
-				saveResumePoints()
+class ResumePoints():
+	def __init__(self):
+		self.resumePointFile = "/etc/enigma2/resumepoints.pkl"
+		self.resumePointCache = {}
+		self.loadResumePoints()
+		self.cacheCleanTimer = eTimer()
+		self.cacheCleanTimer.callback.append(self.cleanCache)
+		self.cleanCache()  # get rid of stale entries on reboot
 
+	def loadResumePoints(self):
+		self.resumePointCache.clear()
+		if fileExists(self.resumePointFile):
+			with open(self.resumePointFile, "rb") as f:
+				self.resumePointCache.update(pickle_load(f))
 
-def delResumePoint(ref):
-	global resumePointCache, resumePointCacheLast
-	try:
-		del resumePointCache[ref.toString()]
-	except KeyError:
-		pass
-	saveResumePoints()
+	def saveResumePoints(self):
+		with open(self.resumePointFile, "wb") as f:
+			pickle_dump(self.resumePointCache, f, pickle_HIGHEST_PROTOCOL)
 
+	def delResumePoint(self, ref):
+		if (sref := ref.toString()) in self.resumePointCache:
+			del self.resumePointCache[sref]
+			self.saveResumePoints()
 
-def getResumePoint(session):
-	global resumePointCache
-	ref = session.nav.getCurrentlyPlayingServiceOrGroup()
-	if (ref is not None) and (ref.type != 1):
-		try:
-			entry = resumePointCache[ref.toString()]
+	def cleanCache(self):
+		changed = False
+		now = int(time())
+		self.cacheCleanTimer.stop()
+		for sref, v in list(self.resumePointCache.items()):
+			if "%3a//" in sref:  # resume point is stream
+				if now > v[0] + 7 * 24 * 60 * 60:  # keep stream resume points maximum one week
+					del self.resumePointCache[sref]
+					changed = True
+			else:
+				filepath = ospath.realpath(sref.split(':')[-1])
+				mountpoint = findMountPoint(filepath)
+				if ospath.ismount(mountpoint) and not ospath.exists(filepath):
+					del self.resumePointCache[sref]
+					changed = True
+		if changed:
+			self.saveResumePoints()
+		self.cacheCleanTimer.startLongTimer(24 * 60 * 60)  # clean up daily
+
+	def setResumePoint(self, session):
+		service = session.nav.getCurrentService()
+		ref = session.nav.getCurrentlyPlayingServiceOrGroup()
+		if service is not None and ref is not None:  # and (ref.type != 1):
+			# ref type 1 has its own memory...
+			seek = service.seek()
+			if seek:
+				pos = seek.getPlayPosition()
+				if not pos[0]:
+					sref = ref.toString()
+					sl = x[1] if (x := seek.getLength()) else None
+					self.resumePointCache[sref] = [int(time()), pos[1], sl]
+					self.saveResumePoints()
+
+	def getResumePoint(self, session):
+		ref = session.nav.getCurrentlyPlayingServiceOrGroup()
+		if (ref is not None) and (ref.type != 1) and (sref := ref.toString()) in self.resumePointCache:
+			entry = self.resumePointCache[sref]
 			entry[0] = int(time())  # update LRU timestamp
 			return entry[1]
-		except KeyError:
-			return None
 
 
-def saveResumePoints():
-	global resumePointCache, resumePointCacheLast
-	try:
-		f = open('/etc/enigma2/resumepoints.pkl', 'wb')
-		pickle_dump(resumePointCache, f, pickle_HIGHEST_PROTOCOL)
-		f.close()
-	except Exception as ex:
-		print("[InfoBarGenerics] Failed to write resumepoints:%s" % ex)
-	resumePointCacheLast = int(time())
-
-
-def loadResumePoints():
-	try:
-		file = open('/etc/enigma2/resumepoints.pkl', 'rb')
-		PickleFile = pickle_load(file)
-		file.close()
-		return PickleFile
-	except Exception as ex:
-		print("[InfoBarGenerics] Failed to load resumepoints:%s" % ex)
-		return {}
-
-
-def updateresumePointCache():
-	global resumePointCache
-	resumePointCache = loadResumePoints()
-
-
-resumePointCache = loadResumePoints()
-resumePointCacheLast = int(time())
+resumePointsInstance = ResumePoints()
 
 
 class whitelist:
@@ -1496,6 +1484,7 @@ class InfoBarMenu:
 				"showNetworkSetup": (self.showNetworkMounts, _("Show network mounts ")),
 				"showSystemSetup": (self.showSystemMenu, _("Show network mounts ")),
 				"showRFmod": (self.showRFSetup, _("Show RFmod setup")),
+				"showHDMIRecord": (self.showHDMiRecordSetup, _("Show HDMIRecord setup...")),
 				"toggleAspectRatio": (self.toggleAspectRatio, _("Toggle aspect ratio")),
 			}, description=_("Menu"))
 		self.session.infobar = None
@@ -1545,6 +1534,11 @@ class InfoBarMenu:
 
 	def showRFSetup(self):
 		self.session.openWithCallback(self.mainMenuClosed, Setup, 'RFmod')
+
+	def showHDMiRecordSetup(self):
+		if SystemInfo["HDMIin"]:
+			self.session.openWithCallback(self.mainMenuClosed, Setup, 'HDMIRecord')
+
 
 
 class InfoBarSimpleEventView:
@@ -3989,7 +3983,7 @@ class InfoBarCueSheetSupport:
 					last = pts
 					break
 			else:
-				last = getResumePoint(self.session)
+				last = resumePointsInstance.getResumePoint(self.session)
 			if last is None:
 				return
 			# only resume if at least 10 seconds ahead, or <10 seconds before the end.
@@ -4509,8 +4503,9 @@ class InfoBarHdmi:
 		if SystemInfo['HasHDMIin']:
 			if not self.hdmi_enabled_full:
 				self.addExtension((self.getHDMIInFullScreen, self.HDMIInFull, lambda: True), "blue")
-			if not self.hdmi_enabled_pip:
-				self.addExtension((self.getHDMIInPiPScreen, self.HDMIInPiP, lambda: True), "green")
+# 			HDMIinPiP causes issues in all tested boxes
+# 			if SystemInfo["HDMIinPiP"] and not self.hdmi_enabled_pip:
+# 				self.addExtension((self.getHDMIInPiPScreen, self.HDMIInPiP, lambda: True), "green")
 
 		self["HDMIActions"] = HelpableActionMap(self, "InfobarHDMIActions",
 			{
@@ -4524,10 +4519,12 @@ class InfoBarHdmi:
 			self.session.pip.playService(eServiceReference('8192:0:1:0:0:0:0:0:0:0:'))
 			self.session.pip.show()
 			self.session.pipshown = True
-		else:
+			self.session.pip.servicePath = self.servicelist.getCurrentServicePath()
+		elif SystemInfo["HDMIinPiP"]:
 			curref = self.session.pip.getCurrentService()
 			if curref and curref.type != 8192:
 				self.session.pip.playService(eServiceReference('8192:0:1:0:0:0:0:0:0:0:'))
+				self.session.pip.servicePath = self.servicelist.getCurrentServicePath()
 			else:
 				self.session.pipshown = False
 				del self.session.pip
@@ -4541,16 +4538,10 @@ class InfoBarHdmi:
 			self.session.nav.playService(slist.servicelist.getCurrent())
 
 	def getHDMIInFullScreen(self):
-		if not self.hdmi_enabled_full:
-			return _("Turn on HDMI-IN full screen mode")
-		else:
-			return _("Turn off HDMI-IN full screen mode")
+		return _("Switch to HDMI-IN") if not self.hdmi_enabled_full else _("Switch off HDMI-IN input")
 
 	def getHDMIInPiPScreen(self):
-		if not self.hdmi_enabled_pip:
-			return _("Turn on HDMI-IN PiP mode")
-		else:
-			return _("Turn off HDMI-IN PiP mode")
+		return _("Turn on HDMI-IN PiP mode") if not self.hdmi_enabled_pip else _("Turn off HDMI-IN PiP mode")
 
 	def HDMIInPiP(self):
 		if not hasattr(self.session, 'pip') and not self.session.pipshown:
