@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-22 19:20+0000\n"
+"POT-Creation-Date: 2024-11-19 21:07+0000\n"
 "PO-Revision-Date: 2024-10-24 13:32+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
@@ -1177,9 +1177,6 @@ msgstr "/T"
 
 msgid "/s"
 msgstr "/s"
-
-msgid "0 minutes"
-msgstr "0 minuten"
 
 msgid "1 day"
 msgstr "1 dag"
@@ -2780,6 +2777,10 @@ msgstr "Biografie"
 msgid "Biography"
 msgstr "Biografie"
 
+#, fuzzy
+msgid "Bitrate"
+msgstr "Bitrate:"
+
 msgid "Bitrate:"
 msgstr "Bitrate:"
 
@@ -2827,6 +2828,10 @@ msgstr "Bolivia (Plurinational State of)"
 
 msgid "Bollywood"
 msgstr "Bollywood"
+
+#, python-format
+msgid "Bolt:%s\n"
+msgstr ""
 
 msgid "Bonaire, Sint Eustatius and Saba"
 msgstr "Bonaire, Sint Eustatius and Saba"
@@ -6650,6 +6655,10 @@ msgstr "Geef volume opdrachten door"
 msgid "Found non-standard softcam, trying to start, this may fail."
 msgstr "Een niet-standaard softcam gevonden; probeer deze te starten maar dit kan mislukken."
 
+#, fuzzy
+msgid "Frame rate"
+msgstr "Herhalingsfrequentie"
+
 msgid "Frame size in full view"
 msgstr "Framegrootte in vol beeld"
 
@@ -7129,6 +7138,10 @@ msgstr "HDMI kleurruimte"
 
 msgid "HDMI HDR Type"
 msgstr "HDMI HDR type"
+
+#, fuzzy
+msgid "HDMI Recording Settings"
+msgstr "Opname-en afspeelinstellingen"
 
 msgid "HDMI input"
 msgstr "HDMI-ingang"
@@ -7687,6 +7700,9 @@ msgstr "Kies in instelschermen of de standaard waarde van de geselecteerde ingan
 msgid "In live view wait this many seconds after a numeric key press before assuming the required channel number has been entered. Default: 5 seconds. Setting zero will require confirmation with 'OK'. "
 msgstr "Tijdens live-TV wacht het systeem dit aantal seconden na het ingeven van een cijfer tot er naar dat kanaalnummer gezapt wordt, De standaard waarde is 5 seconde. '0' betekent dat u met 'OK' moet bevestigen. "
 
+msgid "In most cases this should be set to No. Only enable if you have a very specific need."
+msgstr ""
+
 msgid "In order to record a timer, the TV was switched to the recording service!\n"
 msgstr "Voor een geplande opname is nu de juiste zender ingeschakeld!\n"
 
@@ -7944,6 +7960,10 @@ msgstr "Interface"
 #
 msgid "Interface: "
 msgstr "Interface: "
+
+#, fuzzy
+msgid "Interlaced"
+msgstr "Interface"
 
 msgid "Intermediate"
 msgstr "Tussenliggend"
@@ -11550,6 +11570,14 @@ msgstr "Opname"
 msgid "Recording 4097, 5001 and 5002 streams not possible with external players, so convert recordings to servicetype 1."
 msgstr "Opname van 4097, 5001 en 5002 streams is niet mogelijk met externe spelers; converteer deze naar servicetype 1."
 
+#, fuzzy
+msgid ""
+"Recording HDMI In not possible on this receiver, timer ended!\n"
+"Please recheck it!"
+msgstr ""
+"Opname van IPTV met systeemapp is ingeschakeld, timer afgelopen!\n"
+"Controleer deze!"
+
 msgid ""
 "Recording IPTV with systemapp enabled, timer ended!\n"
 "Please recheck it!"
@@ -11559,6 +11587,9 @@ msgstr ""
 
 msgid "Recording and playback settings"
 msgstr "Opname-en afspeelinstellingen"
+
+msgid "Recording frame rate, ideally matching source frame rate or integer multiple. If in doubt, set to 60."
+msgstr ""
 
 #, python-format
 msgid "Recording in progress: %s"
@@ -13454,6 +13485,10 @@ msgstr "ECM info weergeven"
 msgid "Show Grid EPG"
 msgstr "Toon Grafische-EPG"
 
+#, fuzzy
+msgid "Show HDMIRecord setup..."
+msgstr "Toon RFmod instellingen"
+
 msgid "Show Log"
 msgstr "Toon log"
 
@@ -14739,6 +14774,10 @@ msgstr "Schakel tussen de twee laatst bekeken kanalen"
 msgid "Switch config"
 msgstr "Wissel configuratie"
 
+#, fuzzy
+msgid "Switch off HDMI-IN input"
+msgstr "Schakel over naar HDMI-in"
+
 msgid "Switch the PiP to the next channel"
 msgstr "Ga in PiP naar volgende kanaal"
 
@@ -14749,6 +14788,10 @@ msgid "Switch to Grid EPG"
 msgstr "Kies grid-EPG"
 
 msgid "Switch to HDMI in mode"
+msgstr "Schakel over naar HDMI-in"
+
+#, fuzzy
+msgid "Switch to HDMI-IN"
 msgstr "Schakel over naar HDMI-in"
 
 msgid "Switch to Multi EPG"
@@ -15099,6 +15142,10 @@ msgstr ""
 "De TMDb-plugin is niet geïnstalleerd!\n"
 "Installeer die."
 
+#, fuzzy
+msgid "The aspect ratio of the recording."
+msgstr "Kies de beschrijving van de opname."
+
 msgid "The backup creates a snapshot of the image exactly as it is at the current instant."
 msgstr "De back-up maakt een exact snapshot van het image zoals het op dit moment is."
 
@@ -15107,6 +15154,9 @@ msgstr "De back-up locatie heeft onvoldoende ruimte."
 
 msgid "The backup location does not have enough free space.\n"
 msgstr "De back-up locatie heeft onvoldoende ruimte.\n"
+
+msgid "The bitrate of the video encoder. Larger value improves quality and increases file size."
+msgstr ""
 
 #, python-format
 msgid ""
@@ -15137,6 +15187,9 @@ msgstr "De map %s bestaat al."
 
 msgid "The following files were found..."
 msgstr "De volgende bestanden zijn gevonden..."
+
+msgid "The height of the picture. The input will be scaled to match this value."
+msgstr ""
 
 msgid "The image will then be downloaded to the 'Backup location'."
 msgstr "Het image zal worden gedownload naar de back-up locatie."
@@ -15193,6 +15246,9 @@ msgid ""
 msgstr ""
 "De gebruikersinterface van uw %s %s wordt herstart\n"
 "vanwege een fout in StartEnigma.py"
+
+msgid "The width of the picture. The input will be scaled to match this value."
+msgstr ""
 
 msgid ""
 "The wireless LAN plugin is not installed!\n"
@@ -15899,14 +15955,8 @@ msgstr "Turks and Caicos Islands"
 msgid "Turn off HDMI-IN PiP mode"
 msgstr "Schakel HDMI-in PiP modus uit"
 
-msgid "Turn off HDMI-IN full screen mode"
-msgstr "Schakel HDMI-in vol-sherm modus uit"
-
 msgid "Turn on HDMI-IN PiP mode"
 msgstr "Schakel HDMI-in PiP modus in"
-
-msgid "Turn on HDMI-IN full screen mode"
-msgstr "Schakel HDMI-in vol-sherm modus in"
 
 msgid "Turn on the control LED."
 msgstr "Schakel de controle LED in."
@@ -19233,6 +19283,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "0"
 #~ msgstr "30"
 
+#~ msgid "0 minutes"
+#~ msgstr "0 minuten"
+
 #, fuzzy
 #~ msgid "1,1"
 #~ msgstr "1.1"
@@ -20086,6 +20139,12 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Tuning Info: Settings Values"
 #~ msgstr "Tunerinfo: tunerinstellingen"
+
+#~ msgid "Turn off HDMI-IN full screen mode"
+#~ msgstr "Schakel HDMI-in vol-sherm modus uit"
+
+#~ msgid "Turn on HDMI-IN full screen mode"
+#~ msgstr "Schakel HDMI-in vol-sherm modus in"
 
 #, python-format
 #~ msgid ""
