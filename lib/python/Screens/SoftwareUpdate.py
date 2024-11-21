@@ -215,6 +215,8 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		self.setEndMessage(ngettext("Update completed, %d package was installed.", "Update completed, %d packages were installed.", self.packages) % self.packages)
 
 	def ipkgCallback(self, event, param):
+		if not self.ipkg:
+			return
 		if event == IpkgComponent.EVENT_DOWNLOAD:
 			self.status.setText(_("Downloading"))
 		elif event == IpkgComponent.EVENT_UPGRADE:

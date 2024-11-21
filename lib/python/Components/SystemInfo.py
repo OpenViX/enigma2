@@ -257,7 +257,7 @@ SystemInfo["FastChannelChange"] = False
 SystemInfo["Blindscan_t2_available"] = fileCheck("/proc/stb/info/vumodel") and SystemInfo["boxtype"].startswith("vu")
 SystemInfo["HasTranscoding"] = pathExists("/proc/stb/encoder/0") or fileCheck("/dev/bcm_enc0")
 SystemInfo["HasH265Encoder"] = fileHas("/proc/stb/encoder/0/vcodec_choices", "h265")
-SystemInfo["CanNotDoSimultaneousTranscodeAndPIP"] = SystemInfo["boxtype"] in ("vusolo4k", "gbquad4k", "gbue4k")
+SystemInfo["CanNotDoSimultaneousTranscodeAndPIP"] = SystemInfo["boxtype"] in ("vusolo4k", "gbquad4k", "gbquad4kpro", "gbue4k")
 SystemInfo["hasXcoreVFD"] = SystemInfo["boxtype"] in ("osmega", "spycat4k", "spycat4kmini", "spycat4kcomb") and fileCheck("/sys/module/brcmstb_%s/parameters/pt6302_cgram" % SystemInfo["boxtype"])
 SystemInfo["HasHDMIin"] = SystemInfo["hdmifhdin"] or SystemInfo["hdmihdin"]
 SystemInfo["HDMIinPiP"] = SystemInfo["HasHDMIin"] and BRAND != "dreambox"

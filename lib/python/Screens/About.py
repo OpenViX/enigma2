@@ -68,6 +68,10 @@ class About(AboutBase):
 
 		AboutText += _("SoC:\t%s\n") % SystemInfo["socfamily"].upper()
 
+		if SystemInfo["boxtype"] in ("gbquad4k", "gbue4k", "gbx34k", "gbquad4kpro"):
+			with open("/sys/firmware/devicetree/base/bolt/tag") as f:
+				AboutText += _("Bolt:%s\n") % f.read().strip()[0:4]
+
 		tempinfo = ""
 		if path.exists("/proc/stb/sensors/temp0/value"):
 			with open("/proc/stb/sensors/temp0/value", "r") as f:

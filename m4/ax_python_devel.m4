@@ -72,7 +72,7 @@
 #   modified version of the Autoconf Macro, you may extend this special
 #   exception to the GPL to apply to your modified version as well.
 
-#serial 36 --------------Updated to cross compile for OE-Alliance Enigma2 git builds
+#serial 37 --------------Updated to cross compile for OE-Alliance Enigma2 git builds
 
 AU_ALIAS([AC_PYTHON_DEVEL], [AX_PYTHON_DEVEL])
 AC_DEFUN([AX_PYTHON_DEVEL],[
@@ -299,7 +299,7 @@ EOD`
 			PYTHON_LIBS="-L$ac_python_libdir -lpython$ac_python_version"
 		fi
 
-		if test -z "PYTHON_LIBS"; then
+		if test -z "$PYTHON_LIBS"; then
 			AC_MSG_WARN([
   Cannot determine location of your Python DSO. Please check it was installed with
   dynamic libraries enabled, or try setting PYTHON_LIBS by hand.
@@ -336,15 +336,7 @@ EOD`
 			if test "${plat_python_path}" != "${python_path}"; then
 				python_path="-I$python_path -I$plat_python_path"
 			else
-				# OpenPli 3.9 build finds python native, so needs sed to create correct python 3.9 path
-				# check OpenPli 3.9 path length(build lib) vs OE-A path length(host lib)
-				if [[ "${#python_path}" -gt 24 ]]
-				then
-					plat_python_path=`echo "$plat_python_path" | sed "s/-native//"`
-					python_path="-I$plat_python_path"
-				else
-					python_path="-I$ac_python_libdir_XCompile$python_path"
-				fi
+				python_path="-I$ac_python_libdir_XCompile$python_path"
 			fi
 		fi
 		PYTHON_CPPFLAGS=$python_path
