@@ -370,6 +370,7 @@ case $ret in
 		/sbin/reboot
 		;;
 	3)
+		rm -fR /home/root/.cache/gstreamer-1.0
 		rm -f /tmp/.listen.camd.socket.ignore
 		;;
 	12)
@@ -381,6 +382,11 @@ case $ret in
 			echo "rescue" > /proc/stb/fp/boot_mode
 		fi
 		/sbin/reboot
+		;;
+	15)
+		rm -fR /home/root/.cache/gstreamer-1.0
+		rm -f /tmp/.listen.camd.socket.ignore
+		/usr/bin/kodi
 		;;
 	16)
 		if [ -e /dev/block/by-name/flag ]; then
