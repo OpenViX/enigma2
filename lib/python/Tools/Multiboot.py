@@ -85,9 +85,8 @@ def getMultibootslots():
 									if not SystemInfo["HasKexecMultiboot"] and "sda" in slot["root"]:		# Not Kexec Vu+ receiver -- sf8008 type receiver with sd card, reset value as SD card slot has no rootsubdir
 										slot["rootsubdir"] = None
 										slot["slotType"] = "SDCARD"
-									else:
+									elif "STARTUP_RECOVERY" not in file:
 										SystemInfo["HasRootSubdir"] = slot.get("rootsubdir")
-
 									if "kernel" not in slot.keys():
 										slot["kernel"] = f"{slot['root'].split('p')[0]}p{int(slot['root'].split('p')[1]) - 1}"  # oldstyle MB kernel = root-1
 								else:

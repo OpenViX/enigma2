@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2024-11-21 20:15+0200\n"
+"PO-Revision-Date: 2024-11-28 20:36+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -1506,7 +1506,7 @@ msgid "<Default movie location>"
 msgstr "<Oletushakemisto>"
 
 msgid "<Default+Picon>"
-msgstr "<Oletus+logo>"
+msgstr "<Oletus+kanavalogo>"
 
 msgid "<Default>"
 msgstr "<Oletus>"
@@ -3301,16 +3301,8 @@ msgid "China"
 msgstr "Kiina"
 
 #, python-format
-msgid "Chipset:\t%s\n"
-msgstr "Piirisarja:\t%s\n"
-
-#, python-format
-msgid "Chipset:\tBroadcom %s\n"
-msgstr "Piirisarja:\tBroadcom %s\n"
-
-#, python-format
-msgid "Chipset:\tHiSilicon %s\n"
-msgstr "Piirisarja:\tHiSilicon %s\n"
+msgid "Chipset:\t%s %s\n"
+msgstr "Piirisarja:\t%s %s\n"
 
 #, python-format
 msgid "Chipset: %s"
@@ -3854,7 +3846,7 @@ msgid "Configure this tuner using simple or advanced options, or loop it through
 msgstr "Määritä tämä viritin käyttäen yksinkertaisia tai laajoja asetuksia tai kytke se toiseen virittimeen tai kopioi asetukset toisesta virittimestä tai poista se käytöstä."
 
 msgid "Configure to show the channel names, picons, or both in the EPG."
-msgstr "Määritä näytetäänkö ohjelmaluettelossa kanavan nimi, logo vai molemmat."
+msgstr "Määritä näytetäänkö ohjelmaoppaassa kanavan nimi, kanavalogo vai molemmat."
 
 msgid "Configure whether (and for how long) a second infobar will be shown when OK is pressed twice. The second infobar contains additional information about the current channel."
 msgstr "Määrittää näytetäänkö (ja kuinka kauan) toinen tietopalkki, kun OK-näppäintä painetaan kahdesti. Toinen tietopalkki sisältää lisätietoja valitusta kanavasta."
@@ -3863,7 +3855,7 @@ msgid "Configure whether or not an rotor position will be displayed on infobar"
 msgstr "Valitse näytetäänkö moottorin asentotieto tietopalkissa"
 
 msgid "Configure whether service picons will be shown in number zap."
-msgstr "Määritä näytetäänkö/miten näytetään kanavatyypin kuvakkeet."
+msgstr "Määritä näytetäänkö/miten näytetään kanavalogot kanavan vaihdossa."
 
 msgid "Configure which color format should be used on the SCART output."
 msgstr "Määritä mitä värijärjestelmää käytetään SCART-ulostulossa."
@@ -9504,25 +9496,25 @@ msgid "PiP"
 msgstr "Pip-kuva"
 
 msgid "Picon"
-msgstr "Logo"
+msgstr "Kanavalogo"
 
 msgid "Picon Width"
 msgstr "Kanavalogon leveys"
 
 msgid "Picon and Service Name"
-msgstr "Logo ja kanavan nimi"
+msgstr "Kanavalogo ja kanavan nimi"
 
 msgid "Picon and Service Number"
-msgstr "Logo ja kanavan nimi"
+msgstr "Kanavalogo ja kanavan nimi"
 
 msgid "Picon width"
 msgstr "Kanavalogon leveys"
 
 msgid "Picon, Service Number and Service Name"
-msgstr "Logo, Kanavan numero ja nimi"
+msgstr "Kanavalogo, Kanavan numero ja nimi"
 
 msgid "Picons: Show in channel list"
-msgstr "Logot: näytä kanavalistassa"
+msgstr "Kanavalogot: näytä kanavalistassa"
 
 msgid "Picture in Picture (PIP)"
 msgstr "Kuva kuvassa (PIP)"
@@ -11918,7 +11910,7 @@ msgid "Service Number and Service Name"
 msgstr "Kanavan numero ja kanavan nimi"
 
 msgid "Service Number, Picon and Service Name"
-msgstr "Kanavan numero, logo ja kanavan nimi"
+msgstr "Kanavan numero, kanavalogo ja kanavan nimi"
 
 msgid "Service Title mode"
 msgstr "Kanavan otsikkotila"
@@ -13545,7 +13537,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 21.11.2024 ---\n"
+"--- 28.11.2024 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -14895,13 +14887,13 @@ msgid "Use original teletext position"
 msgstr "Käytä alkuperäistä teksti-TV tekstityksen paikkaa"
 
 msgid "Use piconlcd directory for picons on color LCD"
-msgstr "Käytä picon_lcd hakemistoa värinäytön kanavalogoille"
+msgstr "Käytä piconlcd-hakemistoa LCD-värinäytön kanavalogoille"
 
 msgid "Use power measurement"
 msgstr "Käytä virranmittausta"
 
 msgid "Use separate Picon pack for Front Display"
-msgstr "Käytä erillistä kanavalogo pakettia etunäytössä"
+msgstr "Käytä erillistä kanavalogo-pakettia etunäytössä"
 
 msgid "Use skin default"
 msgstr "Käytä oletusteemaa"
@@ -19693,3 +19685,21 @@ msgstr ""
 
 msgid "There has been a '%s', please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com"
 msgstr "On tapahtunut '%s', yritä myöhemmin uudelleen. Jos ongelma jatkuu, tarkista openvix.co.uk tai world-of-satellite.com."
+
+msgid "Picon type priority"
+msgstr "Kanavalogon tyypin prioriteetti"
+
+msgid "Set the lookup priority when searching for picons. If all your picons are png set to 'png only' to save on lookup time."
+msgstr "Aseta haun prioriteetti, kun haet kanavalogoja. Jos kaikki kanavalogot ovat tyyppiä png, aseta 'vain png', jotta säästät hakuaikaa."
+
+msgid "png only"
+msgstr "vain png"
+
+msgid "svg only"
+msgstr "vain svg"
+
+msgid "png, then svg"
+msgstr "png, sitten svg"
+
+msgid "svg, then png"
+msgstr "svg, sitten png"

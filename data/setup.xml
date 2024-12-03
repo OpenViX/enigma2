@@ -28,6 +28,7 @@
 		<item level="2" text="Enable new GStreamer playback" description="If enabled, the new GStreamer playback engine will be used.">config.misc.usegstplaybin3</item>
 		<item level="2" text="Remote control source*" requires="DeveloperImage" description="In Developer images only. Allows swapping between oe-alliance/branding or oe-alliance/remotes for button position mapping and rc graphic.">config.misc.RCSource</item>
 		<item level="0" text="Force alpha blending" description="Alpha blending is the process of combining an image with a background to create the appearance of partial or full transparency. 'Always' may cause receivers that don't support hardware acceleration to render images more slowly. Also some skins may show strange side effects.">config.skin.pixmap_force_alphablending</item>
+		<item level="0" text="Picon type priority" description="Set the lookup priority when searching for picons. If all your picons are png set to 'png only' to save on lookup time.">config.usage.picon_lookup_priority</item>
 	</setup>
 	<setup key="streamrelay" title="Stream Relay Settings">
 		<item level="2" text="Stream Relay url" description="The IP address of the streamrelay server that is used to descramble services that can only be decrypted via stream relay.">config.misc.softcam_streamrelay_url</item>

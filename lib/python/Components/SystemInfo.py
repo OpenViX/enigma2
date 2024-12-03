@@ -2,9 +2,9 @@ from ast import literal_eval
 from os import listdir
 from hashlib import md5
 from os.path import isfile, join as pathjoin
+from re import split
 from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager
 
-from Components.About import getChipSetString
 from Components.RcModel import rc_model
 from Tools.Directories import fileCheck, fileExists, fileHas, pathExists, resolveFilename, SCOPE_LIBDIR, SCOPE_SKIN, fileReadLines
 from Tools.HardwareInfo import HardwareInfo
@@ -70,42 +70,22 @@ class BoxInformation:
 
 BoxInfo = BoxInformation()
 
-
-class SystemInformation(dict):
-	def __getitem__(self, item):
-		return BoxInfo.boxInfo[item]
-
-	def __setitem__(self, item, value):
-		BoxInfo.setItem(item, value, immutable=False)
-
-	def __delitem__(self, item):
-		BoxInfo.deleteItem(item)
-
-	def get(self, item, default=None):
-		return BoxInfo.boxInfo.get(item, default)
-
-	def __prohibited(self, *args, **kws):
-		print("[SystemInfo] operation not permitted")
-
-	clear = __prohibited
-	update = __prohibited
-	setdefault = __prohibited
-	pop = __prohibited
-	popitem = __prohibited
-
-
-SystemInfo = SystemInformation()
+#This line makes the BoxInfo backwards compatible with SystemInfo without duplicating the dictionary.
+SystemInfo = BoxInfo.boxInfo
 
 
 ARCHITECTURE = BoxInfo.getItem("architecture")
 BRAND = BoxInfo.getItem("brand")
 MODEL = BoxInfo.getItem("model")
 SOC_FAMILY = BoxInfo.getItem("socfamily")
+SOC_BRAND = split('(\d.*)', SOC_FAMILY)[0]
+CHIPSET = split('(\d.*)', SOC_FAMILY)[1]
 DISPLAYTYPE = BoxInfo.getItem("displaytype")
 MTDROOTFS = BoxInfo.getItem("mtdrootfs")
 DISPLAYMODEL = BoxInfo.getItem("displaymodel")
 DISPLAYBRAND = BoxInfo.getItem("displaybrand")
 MACHINEBUILD = BoxInfo.getItem("machinebuild")
+OEA = split('(\d.*)', BoxInfo.getItem("oe"))[1]
 
 
 def getBoxType():  # this function mimics the function of the same name in branding module
@@ -207,8 +187,9 @@ SystemInfo["DeveloperImage"] = SystemInfo["imagetype"].lower() != "release"
 SystemInfo["CommonInterface"] = eDVBCIInterfaces.getInstance().getNumOfSlots()
 SystemInfo["CommonInterfaceCIDelay"] = fileCheck("/proc/stb/tsmux/rmx_delay")
 for cislot in range(0, SystemInfo["CommonInterface"]):
-	SystemInfo["CI%dSupportsHighBitrates" % cislot] = fileCheck("/proc/stb/tsmux/ci%d_tsclk" % cislot)
-	SystemInfo["CI%dRelevantPidsRoutingSupport" % cislot] = fileCheck("/proc/stb/tsmux/ci%d_relevant_pids_routing" % cislot)
+	SystemInfo[f"CI{cislot}SupportsHighBitrates"] = fileCheck(f"/proc/stb/tsmux/ci{cislot}_tsclk")
+	SystemInfo[f"CI{cislot}SupportsHighBitratesChoices"] = fileCheck(f"/proc/stb/tsmux/ci{cislot}_tsclk_choices")
+	SystemInfo[f"CI{cislot}RelevantPidsRoutingSupport"] = fileCheck(f"/proc/stb/tsmux/ci{cislot}_relevant_pids_routing")
 SystemInfo["NumVideoDecoders"] = getNumVideoDecoders()
 SystemInfo["Udev"] = not fileExists("/dev/.devfsd")
 SystemInfo["HasFullHDSkinSupport"] = SystemInfo["boxtype"] not in ("vipertwin",)
@@ -300,13 +281,13 @@ SystemInfo["hasRCA"] = SystemInfo["rca"]
 SystemInfo["hasScart"] = SystemInfo["scart"]
 SystemInfo["hasScartYUV"] = SystemInfo["scartyuv"]
 SystemInfo["hasYUV"] = SystemInfo["yuv"]
-SystemInfo["VideoModes"] = getChipSetString() in (  # 2160p and 1080p capable hardware...
-	"5272s", "7251", "7251s", "7252", "7252s", "7278", "7366", "7376", "7444s", "72604", "3798mv200", "3798cv200", "3798mv200h", "3798mv300", "hi3798mv200", "hi3798mv200h", "hi3798mv200advca", "hi3798cv200", "hi3798mv300"
+SystemInfo["VideoModes"] = CHIPSET in (  # 2160p and 1080p capable hardware...
+	"5272s", "7251", "7251s", "7252", "7252s", "7278", "7366", "7376", "7444s", "72604", "3798cv200", "3798mv200", "3798mv200advca", "3798mv200h", "3798mv300"
 ) and (
 	["720p", "1080p", "2160p", "2160p30", "1080i", "576p", "576i", "480p", "480i"],  # Normal modes.
 	{"720p", "1080p", "2160p", "2160p30", "1080i"}  # Widescreen modes.
-) or getChipSetString() in (  # 1080p capable hardware...
-	"7241", "7356", "73565", "7358", "7362", "73625", "7424", "7425", "7552", "3716mv410", "3716mv430", "hi3716mv430"
+) or CHIPSET in (  # 1080p capable hardware...
+	"7241", "7356", "73565", "7358", "7362", "73625", "7424", "7425", "7552", "3716mv410", "3716mv430"
 ) and (
 	["720p", "1080p", "1080i", "576p", "576i", "480p", "480i"],  # Normal modes.
 	{"720p", "1080p", "1080i"}  # Widescreen modes.

@@ -989,9 +989,9 @@ msgstr "%s (%s)\n"
 msgid "%s - %s (%s%d min)"
 msgstr ""
 
-#, fuzzy, python-format
+#, python-format
 msgid "%s Info - Configuration"
-msgstr "Ręczna konfiguracja"
+msgstr "%s Info - Konfiguracja"
 
 #, python-format
 msgid "%s Info - Main Menu"
@@ -2000,9 +2000,8 @@ msgstr "Wszystkie"
 msgid "All ages"
 msgstr ""
 
-#, fuzzy
 msgid "All frequency"
-msgstr "Częstotliwość"
+msgstr "Wszystkie częstotliwości"
 
 msgid "All satellites 1 (USALS)"
 msgstr ""
@@ -3910,49 +3909,39 @@ msgstr ""
 msgid "Configfile %s saved."
 msgstr ""
 
-#, fuzzy
 msgid "Configuration mode"
-msgstr "Konfigurowanie"
+msgstr "Tryb konfiguracji"
 
-#, fuzzy, python-format
+#, python-format
 msgid "Configuration mode: %s"
-msgstr "Konfigurowanie"
+msgstr "Tryb konfiguracji: %s"
 
-#, fuzzy
 msgid "Configuration..."
-msgstr "Konfigurowanie"
+msgstr "Konfiguracja..."
 
-#, fuzzy
 msgid "Configure ATSC"
-msgstr "Konfigurowanie"
+msgstr "Konfigurowanie ATSC"
 
-#, fuzzy
 msgid "Configure DVB-C"
-msgstr "Konfigurowanie"
+msgstr "Konfigurowanie DVB-C"
 
-#, fuzzy
 msgid "Configure DVB-S"
-msgstr "Konfigurowanie"
+msgstr "Konfigurowanie DVB-S"
 
-#, fuzzy
 msgid "Configure DVB-T"
-msgstr "Konfigurowanie"
+msgstr "Konfigurowanie DVB-T"
 
-#, fuzzy
 msgid "Configure Vu Multiboot interface"
-msgstr "Konfiguracja interfejsu"
+msgstr "Konfigurowanie interfejsu Vu Multiboot"
 
-#, fuzzy
 msgid "Configure alignment of service events."
-msgstr "Konfiguracja DNS"
+msgstr "Skonfiguruj wyrównanie zdarzeń serwisowych."
 
-#, fuzzy
 msgid "Configure alignment of the service names."
-msgstr "Konfiguracja DNS"
+msgstr "Skonfiguruj wyrównanie nazw usług."
 
-#, fuzzy
 msgid "Configure alignment of the service numbers."
-msgstr "Konfiguracja DNS"
+msgstr "Skonfiguruj wyrównanie numerów usług."
 
 msgid "Configure alignment of the timeline date."
 msgstr ""
@@ -5216,7 +5205,7 @@ msgid "Device %s"
 msgstr "Urządzenie %s"
 
 msgid "Device mounts"
-msgstr ""
+msgstr "Montowania urządzeń"
 
 msgid "Device: "
 msgstr "Urządzenia: "
@@ -5648,9 +5637,8 @@ msgstr "Pobierz"
 msgid "Download confirmation"
 msgstr "Potwierdzenie pobrania"
 
-#, fuzzy
 msgid "Download plugins"
-msgstr "Pobieranie"
+msgstr "Pobierz wtyczki"
 
 msgid "Downloading"
 msgstr "Pobieranie"
@@ -6694,10 +6682,10 @@ msgid "FULL IMAGE BACKUP"
 msgstr ""
 
 msgid "Factory Reset"
-msgstr ""
+msgstr "Przywracanie ustawień fabrycznych"
 
 msgid "Factory Reset: Clearing data"
-msgstr ""
+msgstr "Przywracanie ustawień fabrycznych: czyszczenie danych"
 
 msgid "Factual"
 msgstr ""
@@ -6801,7 +6789,7 @@ msgid "Fastscan"
 msgstr "Szybko"
 
 msgid "Favourites"
-msgstr "Ulubione"
+msgstr "Listy kanałów"
 
 msgid "Feature"
 msgstr ""
@@ -9001,7 +8989,7 @@ msgid "Log %s-%s"
 msgstr ""
 
 msgid "Log Manager"
-msgstr ""
+msgstr "Menedżer logów"
 
 msgid "Log python stack trace on spinner"
 msgstr ""
@@ -9016,18 +9004,16 @@ msgid "Login as an OpenViX developer"
 msgstr "Zaloguj się jako programista OpenViX"
 
 msgid "Logs"
-msgstr "Dzienniki"
+msgstr "Logi"
 
-#, fuzzy
 msgid "Logs folder location"
-msgstr "<Ostatnia lokalizacja timera>"
+msgstr "Lokalizacja folderu logów"
 
 msgid "Logs older than the specified number of days will be deleted."
 msgstr ""
 
-#, fuzzy
 msgid "Logs settings"
-msgstr "Edytuj ustawienia"
+msgstr "Ustawienia logów"
 
 msgid "Long << / >>"
 msgstr ""
@@ -9518,7 +9504,7 @@ msgid "Mount: "
 msgstr "Zamontuj: "
 
 msgid "Mounts"
-msgstr ""
+msgstr "Montowania"
 
 msgid "Move"
 msgstr "Przenieś"
@@ -9735,7 +9721,7 @@ msgid "Multi EPG"
 msgstr ""
 
 msgid "MultiBoot Image Selector"
-msgstr "Selektor obrazów MultiBoot"
+msgstr "Wybór obrazów MultiBoot"
 
 msgid "MultiBootSelector Actions"
 msgstr ""
@@ -9987,20 +9973,17 @@ msgstr "Test sieci"
 msgid "Network scan"
 msgstr "Skanowanie sieci"
 
-#, fuzzy
 msgid "Network servers:"
-msgstr "Test sieci"
+msgstr "Serwery sieciowe:"
 
-#, fuzzy
 msgid "Network settings"
-msgstr "Aktywuj ustawienia sieci"
+msgstr "Ustawienia sieci"
 
 msgid "Network test"
 msgstr "Test sieci"
 
-#, fuzzy
 msgid "Network wizard"
-msgstr "Wyjdź z kreatora sieci"
+msgstr "Kreator sieci"
 
 msgid "Network:"
 msgstr "Sieć:"
@@ -10270,9 +10253,8 @@ msgstr ""
 msgid "No updates found, Press OK to exit this screen."
 msgstr ""
 
-#, fuzzy
 msgid "No user installed plugins found"
-msgstr "Czy chcesz zainstalować pakiet:\n"
+msgstr "Nie znaleziono żadnych zainstalowanych przez użytkownika wtyczek"
 
 msgid "No wireless networks found! Searching..."
 msgstr "Nie znaleziono sieci bezprzewodowych! Wyszukiwanie ..."
@@ -10512,9 +10494,8 @@ msgstr ""
 msgid "On"
 msgstr "Włącz"
 
-#, fuzzy
 msgid "On Screen Display"
-msgstr "Wyświetlacz (panel przedni)"
+msgstr "Ustawienia OSD"
 
 msgid "On end of movie"
 msgstr ""
@@ -10809,27 +10790,23 @@ msgstr ""
 msgid "PVR"
 msgstr ""
 
-#, fuzzy
 msgid "Package Manager"
 msgstr "Menadżer pakietów"
 
-#, fuzzy
 msgid "Package list loading"
-msgstr "Aktualizacja listy pakietów"
+msgstr "Ładowanie listy pakietów"
 
 msgid "Package list update"
 msgstr "Aktualizacja listy pakietów"
 
-#, fuzzy
 msgid "Package manager"
 msgstr "Menadżer pakietów"
 
 msgid "Packages"
 msgstr "Pakiety"
 
-#, fuzzy
 msgid "Packages to update"
-msgstr "Aktualizacja listy pakietów"
+msgstr "Pakiety do aktualizacji"
 
 msgid "Page down"
 msgstr ""
@@ -12567,36 +12544,30 @@ msgstr "Usuwam tymczasowe mocowania..."
 msgid "Rename"
 msgstr "Zmień nazwę"
 
-#, fuzzy
 msgid "Rename channel"
-msgstr "Zmień nazwę"
+msgstr "Zmień nazwę kanału"
 
-#, fuzzy
 msgid "Rename entry"
-msgstr "Skasuj wpis"
+msgstr "Zmień nazwę wpisu"
 
-#, fuzzy
 msgid "Rename failed!"
-msgstr "Dostrojenie nie powiodło się!"
+msgstr "Zmiana nazwy nie powiodła się!"
 
 msgid "Rename name and description for new events"
 msgstr ""
 
-#, fuzzy
 msgid "Rename to:"
-msgstr "Zmień nazwę"
+msgstr "Zmień nazwę na:"
 
-#, fuzzy, python-format
+#, python-format
 msgid "Renamed %s!"
-msgstr "Zmień nazwę"
+msgstr "Zmieniono nazwę %s!"
 
-#, fuzzy
 msgid "Renovation"
-msgstr "Rozdzielczość"
+msgstr "Renowacja"
 
-#, fuzzy
 msgid "Repeat"
-msgstr "Powtórzenia"
+msgstr "Powtórz"
 
 msgid "Repeat Display Message"
 msgstr ""
@@ -12604,20 +12575,17 @@ msgstr ""
 msgid "Repeat how often"
 msgstr ""
 
-#, fuzzy
 msgid "Repeat leave standby messages"
-msgstr "Traktuj głębokie czuwanie jak stan czuwania"
+msgstr "Powtarzaj wiadomości o pozostawaniu w gotowości"
 
-#, fuzzy
 msgid "Repeat type"
-msgstr "Powtórzenia"
+msgstr "Powtórz typ"
 
 msgid "Repeating event currently recording... What do you want to do?"
 msgstr "Powtarzane wydarzenie właśnie jest nagrywane... Co chcesz zrobić?"
 
-#, fuzzy
 msgid "Repeating the event currently recording... What do you want to do?"
-msgstr "Powtarzane wydarzenie właśnie jest nagrywane... Co chcesz zrobić?"
+msgstr "Powtarzanie aktualnie nagrywanego wydarzenia... Co chcesz zrobić?"
 
 msgid "Repeats"
 msgstr "Powtórzenia"
@@ -12689,9 +12657,8 @@ msgstr "Restart"
 msgid "Restart %s %s."
 msgstr "Uruchom ponownie %s %s."
 
-#, fuzzy
 msgid "Restart GUI"
-msgstr "Zrestartować GUI teraz?"
+msgstr "Zrestartuj GUI"
 
 msgid "Restart GUI now?"
 msgstr "Zrestartować GUI teraz?"
@@ -13261,12 +13228,11 @@ msgstr "Wybór Skóry"
 msgid "Scienza"
 msgstr ""
 
-#, fuzzy
 msgid "Screen proportions"
-msgstr "Zapamiętaj pozycje"
+msgstr "Proporcje ekranu"
 
 msgid "Script runner"
-msgstr "Uruchamiacz skryptów"
+msgstr "Uruchom skrypt"
 
 msgid "Script runner - runs from /usr/script"
 msgstr ""
@@ -13886,32 +13852,26 @@ msgstr ""
 msgid "Server %s-%s"
 msgstr "Kanały"
 
-#, fuzzy
 msgid "Server:"
-msgstr "O serwisie"
+msgstr "Serwer:"
 
-#, fuzzy
 msgid "Servers"
-msgstr "Kanały"
+msgstr "Serwery"
 
-#, fuzzy
 msgid "Servers:"
-msgstr "Kanały"
+msgstr "Serwery:"
 
 msgid "Service"
-msgstr "O serwisie"
+msgstr "Kanał"
 
-#, fuzzy
 msgid "Service & PIDs"
-msgstr "Kanały"
+msgstr "Serwis i PID-y"
 
-#, fuzzy
 msgid "Service ID"
-msgstr "O serwisie"
+msgstr "ID kanału"
 
-#, fuzzy
 msgid "Service Name"
-msgstr "Skanowanie kanałów"
+msgstr "Nazwa kanału"
 
 msgid "Service Number and Picon"
 msgstr ""
@@ -14295,9 +14255,8 @@ msgstr ""
 msgid "Show Log"
 msgstr ""
 
-#, fuzzy
 msgid "Show Log Manager in extensions list ?"
-msgstr "Zarządzaj rozszerzeniami"
+msgstr "Czy pokazać Log Managera na liście rozszerzeń? "
 
 msgid "Show Media playback Remaining/Elapsed as"
 msgstr ""
@@ -14512,13 +14471,11 @@ msgstr ""
 msgid "Show movies"
 msgstr ""
 
-#, fuzzy
 msgid "Show network mounts "
-msgstr "Nie znaleziono sieci"
+msgstr "Pokaż punkty sieciowe "
 
-#, fuzzy
 msgid "Show notifications"
-msgstr "Pokazuj 'trybiki' gdy zajęty"
+msgstr "Pokaż powiadomienia"
 
 msgid "Show on-screen notifications (pop up) to warn the OpenTV download is in progress."
 msgstr ""
@@ -15276,29 +15233,25 @@ msgid "Standby"
 msgstr "Czuwanie"
 
 msgid "Standby & Restart"
-msgstr "Wyłącz & Czuwanie"
+msgstr "Czuwanie & Restart"
 
 msgid "Standby / restart"
 msgstr "Gotowość / restart"
 
-#, fuzzy
 msgid "Standby LED"
-msgstr "Czuwanie"
+msgstr "Dioda LED czuwania"
 
 msgid "Start"
 msgstr "Rozpocznij"
 
-#, fuzzy
 msgid "Start CableScan"
-msgstr "Skanowanie kablówki"
+msgstr "Uruchom CableScan"
 
-#, fuzzy
 msgid "Start Cablescan"
-msgstr "Testuj"
+msgstr "Uruchom Cablescan"
 
-#, fuzzy
 msgid "Start Fastscan"
-msgstr "Szybko"
+msgstr "Uruchom Fastscan"
 
 msgid "Start Wizard - Screen Alignment"
 msgstr ""
@@ -15874,7 +15827,9 @@ msgstr "Dodaj/usuń timer dla bieżącej audycji"
 
 #. TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 msgid "TRANSLATOR_INFO"
-msgstr "Polskie tłumaczenie HIUMAN, Pololoko111/nOstatnia aktualizacja 2024.10.24"
+msgstr ""
+"Polskie tłumaczenie HIUMAN, pololoko111\n"
+"Ostatnia aktualizacja 2024.11.28"
 
 msgid "TS file is too large for ISO9660 level 1!"
 msgstr "Plik TS jest za duży dla ISO9660 poziom 1!"
@@ -17467,9 +17422,8 @@ msgstr "Zdefiniowany przez użytkownika"
 msgid "User defined transponder"
 msgstr "Transponder zdefiniowany przez użytkownika"
 
-#, fuzzy
 msgid "User installed plugins"
-msgstr "Instalowanie"
+msgstr "Wtyczki użytkownika"
 
 msgid "User interface settings"
 msgstr "Ustawienia interfejsu użytkownika"
@@ -20667,20 +20621,17 @@ msgstr ""
 #~ msgid "Set fixed"
 #~ msgstr "Ustaw stały"
 
-#, fuzzy
 #~ msgid "Show SD as"
-#~ msgstr "pokaż wszystkie tagi"
+#~ msgstr "Pokaż SD jako"
 
-#, fuzzy
 #~ msgid "Skin Setup"
-#~ msgstr "Ustawienia"
+#~ msgstr "Konfiguracja skórki"
 
 #~ msgid "Skins"
 #~ msgstr "Skiny"
 
-#, fuzzy
 #~ msgid "SoftcamManager"
-#~ msgstr "Konfiguracja menedżera oprogramowania"
+#~ msgstr "Menedżer Softcam"
 
 #~ msgid "Software"
 #~ msgstr "Oprogramowanie"

@@ -3,6 +3,7 @@ from re import sub
 
 from enigma import ePixmap, eServiceReference
 
+from Components.config import config
 from Components.Harddisk import harddiskmanager
 from Components.Renderer.Renderer import Renderer
 from Tools.Alternatives import GetWithAlternative
@@ -49,14 +50,21 @@ class PiconLocator:
 			self.__onMountpointRemoved(part.mountpoint)
 
 	def findPicon(self, service):
+		ext_priority = {
+			"png_only": (".png",),
+			"svg_only": (".svg",),
+			"png_svg": (".png", ".svg"),
+			"svg_png": (".svg", ".png")}
+			
+		exts = ext_priority[config.usage.picon_lookup_priority.value]
 		if self.activePiconPath is not None:
-			for ext in (".png", ".svg"):
+			for ext in exts:
 				pngname = self.activePiconPath + service + ext
 				if pathExists(pngname):
 					return pngname
 		else:
 			for path in self.searchPaths:
-				for ext in (".png", ".svg"):
+				for ext in exts:
 					pngname = path + service + ext
 					if pathExists(pngname):
 						self.activePiconPath = path
@@ -89,9 +97,8 @@ class PiconLocator:
 			fields[2] = "1"
 			pngname = self.findPicon("_".join(fields))
 		if not pngname:  # picon by channel name
-			utf8_name = sanitizeFilename(eServiceReference(serviceRef).getServiceName()).lower()
-			legacy_name = sub("[^a-z0-9]", "", utf8_name.replace("&", "and").replace("+", "plus").replace("*", "star"))  # legacy ascii service name picons
-			if utf8_name:
+			if (sname := eServiceReference(serviceRef).getServiceName()) and "SID 0x" not in sname and (utf8_name := sanitizeFilename(sname).lower()) and utf8_name != "__":  # avoid lookups on zero length service names
+				legacy_name = sub("[^a-z0-9]", "", utf8_name.replace("&", "and").replace("+", "plus").replace("*", "star"))  # legacy ascii service name picons
 				pngname = self.findPicon(utf8_name) or legacy_name and self.findPicon(legacy_name) or self.findPicon(sub(r"(fhd|uhd|hd|sd|4k)$", "", utf8_name).strip()) or legacy_name and self.findPicon(sub(r"(fhd|uhd|hd|sd|4k)$", "", legacy_name).strip())
 		return pngname
 
