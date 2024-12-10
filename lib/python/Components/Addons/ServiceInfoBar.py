@@ -15,7 +15,7 @@ from Tools.Directories import resolveFilename, SCOPE_GUISKIN
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Hex2strColor import Hex2strColor
 
-import NavigationInstance
+import NavigationInstance, re
 
 
 class ServiceInfoBar(GUIAddon):
@@ -147,6 +147,11 @@ class ServiceInfoBar(GUIAddon):
 			# self.current_info = info
 			if not info:
 				return None
+			sref = ""
+			if isRef:
+				sref = service.toString()
+			else:
+				sref = info.getInfoString(iServiceInformation.sServiceref)
 			video_height = None
 			# video_aspect = None
 			video_height = getVideoHeight(info)
@@ -228,6 +233,24 @@ class ServiceInfoBar(GUIAddon):
 					self.tuner_string = string
 				if string:
 					return key
+			elif key == "catchup":
+				match = re.search(r"catchupdays=(\d*)", sref)
+				if match and int(match.group(1)) > 0:
+					return key
+			elif key == "servicetype":
+				if "%3a//" in sref.lower() and "127.0.0.1" not in sref and "localhost" not in sref and service.streamed() is not None:
+					return "iptv"
+				elif not isRef:
+					if self.frontendInfoSource:
+						tuner_system = self.frontendInfoSource.frontend_type
+						if tuner_system:
+							if "DVB-S" in tuner_system:
+								return "sat"
+							elif "DVB-C" in tuner_system:
+								return "cable"
+							elif "DVB-T" in tuner_system:
+								return "terestrial"
+
 		return None
 
 	def buildEntry(self, sequence):

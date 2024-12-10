@@ -318,7 +318,7 @@ class ChannelContextMenu(Screen):
 						else:
 							bouquetCnt = len(bouquets)
 						if not self.inBouquet or bouquetCnt > 1:
-							menu.append(ChoiceEntryComponent(text=(_("Add the currently playing service to a bouquet"), self.addServiceToBouquetSelected), key="4"))  # skip using "_append_when_current_valid" because if we are trying to insert into an empty bouquet "current" will be None, so menu entry will not show
+							menu.append(ChoiceEntryComponent(text=(_("Add the currently selected service to a bouquet"), self.addServiceToBouquetSelected), key="4"))  # skip using "_append_when_current_valid" because if we are trying to insert into an empty bouquet "current" will be None, so menu entry will not show
 							self.addFunction = self.addServiceToBouquetSelected
 						if not self.inBouquet:
 							_append_when_current_valid(current, menu, actions, (_("Remove entry"), self.removeEntry), level=0, key="7")
