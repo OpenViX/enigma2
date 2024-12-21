@@ -344,6 +344,12 @@ fi
 
 wait ${enigma2pid}
 
+# If enigma2 exited from an OS signal the was_controlled_shutdown flag
+# will not have been cleared.
+# So ensure that it is.
+#
+sed -i '/^config\.usage\.power\.was_controlled_shutdown=/d' @sysconfdir@/enigma2/settings
+
 # enigma2 exit codes:
 #
 # 1 - halt
