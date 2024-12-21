@@ -322,14 +322,6 @@ else
 	ret=$?
 fi
 
-
-# If we are here there was not a power outage so return "config.usage.power.was_controlled_shutdown" to default state.
-if [ -f @sysconfdir@/enigma2/settings ]; then
-    grep -v "^config\.usage\.power\.was_controlled_shutdown=" @sysconfdir@/enigma2/settings > @sysconfdir@/enigma2/settings.tmp
-    mv @sysconfdir@/enigma2/settings.tmp @sysconfdir@/enigma2/settings
-fi
-
-
 enigma2pid=$!
 
 # Enable generation of core dumps with ELF header included.
@@ -343,6 +335,12 @@ if [ "$(grep -i config.crash.coredump=true @sysconfdir@/enigma2/settings)" != ""
 fi
 
 wait ${enigma2pid}
+
+# If enigma2 exited from an OS signal the was_controlled_shutdown flag
+# will not have been cleared.
+# So ensure that it is.
+#
+sed -i '/^config\.usage\.power\.was_controlled_shutdown=/d' @sysconfdir@/enigma2/settings
 
 # enigma2 exit codes:
 #
