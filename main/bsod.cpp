@@ -90,10 +90,21 @@ static bool bsodhandled = false;
 
 void bsodFatal(const char *component)
 {
-	/* show no more than one bsod while shutting down/crashing */
-	if (bsodhandled)
-		return;
-	bsodhandled = true;
+	/* We cannot return from a signal handler - that just re-runs the
+	 * failing code and repeats the same signal!
+	 * Just accept that arriving here twice is real trouble....
+	 * Although a call for a Python error (component == NULL) is OK.
+	 */
+	if (component) {    /* So not a bsodFatal(0) call from Python */
+		if (bsodhandled) {
+			fprintf(stderr, "Second signal received in signal handler - giving up.\n");
+			exit(3);
+		}
+		bsodhandled = true;
+	}
+	else {              /* Is a Python call */
+	    if (bsodhandled) return;
+        }
 
 	if (!component)
 		component = "Enigma2";
