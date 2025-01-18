@@ -287,6 +287,25 @@ class PowerKey:
 			self.session.open(Screens.Standby.Standby)
 
 
+class PowerUpState:
+	def __init__(self, session):
+		goToDeep = not config.usage.power.was_controlled_shutdown.value and config.usage.power.uncontrolled_shutdown_action.value == "deep"
+		goToStandby = config.usage.power.was_controlled_shutdown.value and config.usage.power.wake_up_to_standby.value or not config.usage.power.was_controlled_shutdown.value and (config.usage.power.uncontrolled_shutdown_action.value == "standby" or config.usage.power.uncontrolled_shutdown_action.value == "last" and config.usage.power.last_known_state.value == "standby")
+		print("[PowerUpState] config.usage.power.was_controlled_shutdown.value", config.usage.power.was_controlled_shutdown.value)
+		print("[PowerUpState] config.usage.power.uncontrolled_shutdown_action.value", "'%s'" % config.usage.power.uncontrolled_shutdown_action.value)
+		print("[PowerUpState] config.usage.power.wake_up_to_standby.value", "'%s'" % config.usage.power.wake_up_to_standby.value)
+		print("[PowerUpState] config.usage.power.last_known_state.value", "'%s'" % config.usage.power.last_known_state.value)
+		print("[PowerUpState] goToDeep", goToDeep)
+		print("[PowerUpState] goToStandby", goToStandby)
+		if goToDeep:
+			session.open(Screens.Standby.TryQuitMainloop, Screens.Standby.QUIT_SHUTDOWN)
+		elif goToStandby:
+			if not Screens.Standby.inStandby and session.current_dialog and session.current_dialog.ALLOW_SUSPEND and session.in_exec:
+				session.open(Screens.Standby.Standby)
+		else:
+			Screens.Standby.lastPowerState("normal")
+
+
 class AutoScartControl:
 	def __init__(self, session):
 		self.force = False
@@ -367,9 +386,21 @@ def runScreenTest():
 			# we need session.scart to access it from within menu.xml
 			session.scart = AutoScartControl(session)
 
+	profile("Init:PowerUpState")
+	PowerUpState(session)
+
+	config.usage.power.was_controlled_shutdown.value = False
+	config.usage.power.was_controlled_shutdown.save()
+	configfile.save()
+
 	profile("RunReactor")
 	profile_final()
 	runReactor()
+
+	# config.usage.power.was_controlled_shutdown is returned to the default option by "enigma2.sh".
+	# This entry has been left here for when enigma is being run from the command line.
+	config.usage.power.was_controlled_shutdown.value = True
+	config.usage.power.was_controlled_shutdown.save()
 
 	if not VuRecovery:
 		profile("wakeup")
@@ -618,6 +649,7 @@ config.misc.RCSource.addNotifier(RCSelectionChanged, immediate_feedback=False)
 
 profile("Standby")
 import Screens.Standby  # noqa: E402
+
 
 from Screens.Menu import MainMenu, mdom  # noqa: E402
 from GlobalActions import globalActionMap  # noqa: E402

@@ -20,10 +20,10 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.ChoiceBox import ChoiceBox
 from Screens.InfoBar import InfoBar
 from Screens.InfoBarGenerics import InfoBarSeek, InfoBarScreenSaver, InfoBarAudioSelection, InfoBarCueSheetSupport, InfoBarNotifications, InfoBarSubtitleSupport
-from Screens.InputBox import InputBox
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
+from Screens.VirtualKeyBoard import VirtualKeyBoard
 from ServiceReference import ServiceReference
 from Tools.Directories import fileExists, resolveFilename, SCOPE_CONFIG, SCOPE_PLAYLIST, SCOPE_CURRENT_SKIN
 from Tools.BoundFunction import boundFunction
@@ -194,7 +194,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 				"prevBouquet": (self.prevBouquet, self.prevBouquetHelpText),
 				"nextBouquet": (self.nextBouquet, self.nextBouquetHelptext),
 				"delete": (self.deletePlaylistEntry, _("Delete playlist entry")),
-				"shift_stop": (self.clear_playlist, _("Clear playlist")),
+				"shift_stop": (self.confirm_clear_playlist, _("Clear playlist")),
 				"shift_record": (self.playlist.PlayListShuffle, _("Shuffle playlist")),
 				"subtitles": (self.subtitleSelection, _("Subtitle selection")),
 			}, -2)
@@ -699,7 +699,7 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 		self.updateCurrentInfo()
 
 	def save_playlist(self):
-		self.session.openWithCallback(self.save_playlist2, InputBox, title=_("Please enter filename (empty = use current date)"), windowTitle=_("Save playlist"), text=self.playlistname)
+		self.session.openWithCallback(self.save_playlist2, VirtualKeyBoard, title=_("Please enter filename (empty = use current date)"), text=self.playlistname)
 
 	def save_playlist2(self, name):
 		if name is not None:
@@ -763,6 +763,12 @@ class MediaPlayer(Screen, InfoBarBase, InfoBarScreenSaver, InfoBarSeek, InfoBarA
 			except OSError as e:
 				print("delete failed:", e)
 				self.session.open(MessageBox, _("Delete failed!"), MessageBox.TYPE_ERROR)
+
+	def confirm_clear_playlist(self):
+		def confirm(answer=False):
+			if answer:
+				self.clear_playlist()
+		self.session.openWithCallback(confirm, MessageBox, _("Do you really want to clear this playlist?"), type=MessageBox.TYPE_YESNO, default=False)
 
 	def clear_playlist(self):
 		self.isAudioCD = False

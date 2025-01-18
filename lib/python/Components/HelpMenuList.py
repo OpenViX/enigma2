@@ -48,8 +48,12 @@ class HelpMenuList(List):
 	def __init__(self, helplist, callback, rcPos=None):
 		List.__init__(self)
 		self.callback = callback
-		formatFlags = 0
 		self.rcPos = rcPos
+		self.helplist = helplist
+		self.createHelpList()
+
+	def createHelpList(self):
+		formatFlags = 0
 		self.rcKeyIndex = None
 		self.buttonMap = {}
 		self.longSeen = False
@@ -65,16 +69,16 @@ class HelpMenuList(List):
 			"flat+remotegroups": (False, self._sortInd)
 		}.get(config.usage.help_sortorder.value, (False, None))
 
-		if rcPos is None:
+		if self.rcPos is None:
 			if sortKey in (self._sortPos, self._sortInd):
 				sortKey = None
 		else:
 			if sortKey == self._sortInd:
-				self.rcKeyIndex = dict((x[1], x[0]) for x in enumerate(rcPos.getRcKeyList()))
+				self.rcKeyIndex = dict((x[1], x[0]) for x in enumerate(self.rcPos.getRcKeyList()))
 
 		buttonsProcessed = set()
 		helpSeen = defaultdict(list)
-		sortedHelplist = sorted(helplist, key=lambda hle: hle[0].prio)
+		sortedHelplist = sorted(self.helplist, key=lambda hle: hle[0].prio)
 		actionMapHelp = defaultdict(list)
 
 		for (actionmap, context, actions) in sortedHelplist:
@@ -136,7 +140,7 @@ class HelpMenuList(List):
 		l = []
 		extendedPadding = (None, ) if formatFlags & self.EXTENDED else ()
 
-		for (actionmap, context, actions) in sorted(helplist, key=self._sortHeadingsAlpha):
+		for (actionmap, context, actions) in sorted(self.helplist, key=self._sortHeadingsAlpha):
 			amId = actMapId()
 			if headings and amId in actionMapHelp and getattr(actionmap, "description", None):
 				if sortKey:
@@ -153,7 +157,7 @@ class HelpMenuList(List):
 				l.append((None, _("Other functions"), None) + extendedPadding)
 
 			otherHelp = []
-			for (actionmap, context, actions) in helplist:
+			for (actionmap, context, actions) in self.helplist:
 				amId = actMapId()
 				if amId in actionMapHelp:
 					otherHelp.extend(actionMapHelp[amId])

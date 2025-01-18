@@ -1,101 +1,319 @@
-from os import remove
 
+from os import mkdir, remove
+from os import listdir, mkdir, rmdir
+from os.path import exists, ismount, join
 from twisted.internet import reactor
-from twisted.internet.protocol import Protocol, Factory
+from twisted.internet.protocol import Factory, Protocol
 
-from Components.Harddisk import harddiskmanager
+from enigma import eTimer
+
+from Session import SessionObject
+from Components.Console import Console
+from Components.Harddisk import harddiskmanager, bytesToHumanReadable, getProcMounts
 from Plugins.Plugin import PluginDescriptor
+from Screens.MessageBox import MessageBox
+from Tools.Directories import fileReadLines, fileWriteLines
 
+HOTPLUG_SOCKET = "/tmp/hotplug.socket"
+
+# globals
 hotplugNotifier = []
-audioCd = False
-
-
-def AudiocdAdded():
-	global audioCd
-	return True if audioCd else False
-
-
-def processHotplugData(self, eventData):
-	print("[Hotplug] DEBUG:", eventData)
-	action = eventData.get("ACTION")
-	device = eventData.get("DEVPATH")
-	physDevPath = eventData.get("PHYSDEVPATH")
-	mediaState = eventData.get("X_E2_MEDIA_STATUS")
-	global audioCd
-
-	dev = device.split("/")[-1]
-	print("[Hotplug] DEBUG: device = %s action = %s mediaState = %s physDevPath = %s dev = %s" % (device, action, mediaState, physDevPath, dev))
-	if action == "add":
-		error, blacklisted, removable, is_cdrom, partitions, medium_found = harddiskmanager.addHotplugPartition(dev, physDevPath)
-	elif action == "remove":
-		harddiskmanager.removeHotplugPartition(dev)
-	elif action == "audiocdadd":
-		audioCd = True
-		mediaState = "audiocd"
-		error, blacklisted, removable, is_cdrom, partitions, medium_found = harddiskmanager.addHotplugPartition(dev, physDevPath)
-		print("[Hotplug] Adding Audio CD.")
-	elif action == "audiocdremove":
-		audioCd = False
-		# Removing the invalid playlist.e2pls if its still the audio cd's list.
-		# Default setting is to save last playlist on closing Mediaplayer. If
-		# audio cd is removed after Mediaplayer was closed, the playlist
-		# remains in if no other media was played.
-		try:
-			with open("/etc/enigma2/playlist.e2pls", "r") as fd:
-				file = fd.readline().strip()
-		except (IOError, OSError):
-			file = None
-		if file and ".cda" in file:
-			try:
-				remove("/etc/enigma2/playlist.e2pls")
-			except (IOError, OSError):
-				pass
-		harddiskmanager.removeHotplugPartition(dev)
-		print("[Hotplug] Removing Audio CD.")
-	elif mediaState is not None:
-		if mediaState == "1":
-			harddiskmanager.removeHotplugPartition(dev)
-			harddiskmanager.addHotplugPartition(dev, physDevPath)
-		elif mediaState == "0":
-			harddiskmanager.removeHotplugPartition(dev)
-	for callback in hotplugNotifier:
-		try:
-			callback(dev, action or mediaState)
-		except AttributeError:
-			hotplugNotifier.remove(callback)
+audiocd = False
 
 
 class Hotplug(Protocol):
+	def __init__(self):
+		self.received = ""
+
 	def connectionMade(self):
-		print("[Hotplug] Connection made.")
+		# print("[Hotplug] Connection made.")
 		self.received = ""
 
 	def dataReceived(self, data):
-		data = data.decode()
+		if isinstance(data, bytes):
+			data = data.decode()
 		self.received += data
-		print("[Hotplug] Data received: '%s'." % ", ".join(self.received.split("\0")[:-1]))
+		print(f"[Hotplug] Data received: '{", ".join(self.received.split("\0")[:-1])}'.")
 
 	def connectionLost(self, reason):
-		print("[Hotplug] Connection lost.")
+		# print(f"[Hotplug] Connection lost reason '{reason}'.")
 		eventData = {}
-		for item in self.received.split("\0")[:-1]:
-			index = item.find("=")
-			var, val = item[:index], item[index + 1:]
-			eventData[var] = val
-		print("[Hotplug] Calling processHotplugData, reason = %s eventData = %s." % (reason, eventData))
-		processHotplugData(self, eventData)
+		if "\n" in self.received:
+			data = self.received[:-1].split("\n")
+			eventData["mode"] = 1
+		else:
+			data = self.received.split("\0")[:-1]
+			eventData["mode"] = 0
+		for values in data:
+			variable, value = values.split("=", 1)
+			eventData[variable] = value
+		if data and eventData:
+			hotPlugManager.processHotplugData(eventData)
+
+
+def AudiocdAdded():
+	global audiocd
+	return audiocd
+
+
+def cleanMediaDirs():
+	mounts = getProcMounts()
+	mounts = [x[1] for x in mounts if x[1].startswith("/media/")]
+	for directory in listdir("/media"):
+		if directory not in ("audiocd", "autofs", "net", "hdd"):
+			mediaDirectory = join("/media/", directory)
+			if mediaDirectory not in mounts and not ismount(mediaDirectory):
+				print(f"[Hotplug][cleanMediaDirs] remove directory {mediaDirectory} because of unmount")
+				try:
+					rmdir(mediaDirectory)
+				except OSError as err:
+					print(f"[Hotplug][cleanMediaDirs] Error {err.errno}: Failed delete '{mediaDirectory}'!  ({err.strerror})")
 
 
 def autostart(reason, **kwargs):
 	if reason == 0:
+		print("[Hotplug] Starting hotplug handler.")
 		try:
-			remove("/tmp/hotplug.socket")
-		except (IOError, OSError):
+			if exists(HOTPLUG_SOCKET):
+				remove(HOTPLUG_SOCKET)
+		except OSError:
 			pass
+		cleanMediaDirs()  # Initial cleanup
 		factory = Factory()
 		factory.protocol = Hotplug
-		reactor.listenUNIX("/tmp/hotplug.socket", factory)
+		reactor.listenUNIX(HOTPLUG_SOCKET, factory)
+
+
+class HotPlugManager:
+	def __init__(self):
+		self.newCount = 0
+		self.addTimer = eTimer()
+		self.addTimer.callback.append(self.processAddDevice)
+		self.removeTimer = eTimer()
+		self.removeTimer.callback.append(self.processRemoveDevice)
+		self.deviceData = []
+		self.addedDevice = []
+		self.callMount = False
+
+	def processAddDevice(self):
+		self.addTimer.stop()
+		if self.deviceData:
+			eventData = self.deviceData.pop()
+			print(f"[Hotplug][processDeviceData] eventData:{eventData}")
+			DEVPATH = eventData.get("DEVPATH")
+			DEVNAME = eventData.get("DEVNAME")
+			ID_MODEL = eventData.get("ID_MODEL")
+			if eventData["DEVTYPE"] == "disk":
+				harddiskmanager.addHotplugPartition(DEVNAME, DEVPATH, ID_MODEL)
+				self.addTimer.start(100)
+				return
+
+			ID_FS_TYPE = "auto"  # eventData.get("ID_FS_TYPE")
+			# ID_BUS = eventData.get("ID_BUS")
+			ID_FS_UUID = eventData.get("ID_FS_UUID")
+			ID_PART_ENTRY_SIZE = int(eventData.get("ID_PART_ENTRY_SIZE", 0))
+			print(f"[Hotplug][processDeviceData] DEVPATH:{DEVPATH} DEVNAME:{DEVNAME} ID_FS_UUID:{ID_FS_UUID} ID_MODEL:{ID_MODEL} ID_PART_ENTRY_SIZE:{ID_PART_ENTRY_SIZE}")
+			notFound = True
+			mounts = fileReadLines("/proc/mounts")
+			mountPoint = "/media/usb"
+			mountPointDevice = DEVNAME.replace("/dev/", "/media/")
+			mountPointHdd = None if [x.split()[1] for x in mounts if "/media/hdd" in x] else "/media/hdd"
+			knownDevices = fileReadLines("/etc/udev/known_devices", default=[])
+			knownDevice = ""
+			if mounts:
+				usbMounts = [x.split()[1] for x in mounts if "/media/usb" in x]
+				nr = 1
+				while mountPoint in usbMounts:
+					nr += 1
+					mountPoint = f"/media/usb{nr}"
+
+				for mount in mounts:
+					if DEVNAME in mount and DEVNAME.replace("/dev/", "/media/") not in mount:
+						print(f"[Hotplug][processDeviceData] device '{DEVNAME}' found in mounts -> {mount}")
+						notFound = False
+						break
+
+			if notFound and knownDevices:
+				for device in knownDevices:
+					deviceData = device.split(":")
+					if len(deviceData) == 2 and deviceData[0] == ID_FS_UUID:
+						print("[Hotplug][processDeviceData] UUID found in known_devices")
+						knownDevice = deviceData[1]
+						notFound = knownDevice != "None"  # Ignore this device
+						break
+
+			if notFound:
+				fstab = fileReadLines("/etc/fstab")
+				fstabDevice = [x.split()[1] for x in fstab if ID_FS_UUID in x]
+				if fstabDevice and fstabDevice[0] not in mounts:  # Check if device is already in fstab and if the mountpoint not used
+					if not exists(fstabDevice[0]):
+						mkdir(fstabDevice[0], 0o755)
+					self.callMount = True
+					notFound = False
+					self.newCount += 1
+
+			if notFound and mountPointHdd:  # If device is the first and /media/hdd not mounted
+				knownDevices.append(f"{ID_FS_UUID}:{mountPointHdd}")
+				fileWriteLines("/etc/udev/known_devices", knownDevices)
+				fstab = fileReadLines("/etc/fstab")
+				newFstab = [x for x in fstab if f"UUID={ID_FS_UUID}" not in x]
+				newFstab.append(f"UUID={ID_FS_UUID} {mountPointHdd} {ID_FS_TYPE} defaults 0 0")
+				fileWriteLines("/etc/fstab", newFstab)
+				if not exists(mountPointHdd):
+					mkdir(mountPoint, 0o755)
+				self.callMount = True
+				notFound = False
+				self.newCount += 1
+
+			if notFound:
+				text = f"{_("A new storage device has been connected:")}\n{ID_MODEL} - ({bytesToHumanReadable(ID_PART_ENTRY_SIZE * 512)})\n"
+
+				def newDeviceCallback(answer):
+					if answer:
+						if answer in (2, 3, 4, 5):
+							self.newCount += 1
+						fstab = fileReadLines("/etc/fstab")
+						if answer in (2, 3) and not exists(mountPoint):
+							mkdir(mountPoint, 0o755)
+						if answer == 4 and not exists(mountPointHdd):
+							mkdir(mountPointHdd, 0o755)
+						if answer == 1:  # Permanently ignore this device
+							knownDevices.append(f"{ID_FS_UUID}:None")
+						elif answer == 2:  # Temporarily mount
+							Console().ePopen(f"/bin/mount -t {ID_FS_TYPE} {DEVNAME} {mountPoint}")
+						elif answer == 3:  # permanently mount as media/usb----
+							knownDevices.append(f"{ID_FS_UUID}:{mountPoint}")
+							newFstab = [x for x in fstab if f"UUID={ID_FS_UUID}" not in x]
+							newFstab.append(f"UUID={ID_FS_UUID} {mountPoint} {ID_FS_TYPE} defaults 0 0")
+							fileWriteLines("/etc/fstab", newFstab)
+							self.callMount = True
+						elif answer == 4:  # Permanently mount as /media/hdd
+							knownDevices.append(f"{ID_FS_UUID}:{mountPointHdd}")
+							newFstab = [x for x in fstab if f"UUID={ID_FS_UUID}" not in x]
+							newFstab.append(f"UUID={ID_FS_UUID} {mountPointHdd} {ID_FS_TYPE} defaults 0 0")
+							fileWriteLines("/etc/fstab", newFstab)
+							self.callMount = True
+						elif answer == 5:  # Permanently mount as device name e.g. sda1
+							knownDevices.append(f"{ID_FS_UUID}:{mountPointDevice}")
+							newFstab = [x for x in fstab if f"UUID={ID_FS_UUID}" not in x]
+							newFstab.append(f"UUID={ID_FS_UUID} {mountPointDevice} {ID_FS_TYPE} defaults 0 0")
+							fileWriteLines("/etc/fstab", newFstab)
+							self.callMount = True
+						if answer in (1, 3, 4, 5):
+							fileWriteLines("/etc/udev/known_devices", knownDevices)
+					self.addedDevice.append((DEVNAME, DEVPATH, ID_MODEL))
+					self.addTimer.start(1000)
+
+				default = 3
+				choiceList = [
+					(_("Do nothing"), 0),
+					(_("Permanently ignore this device"), 1),
+					(_("Temporarily mount as %s") % mountPoint, 2),
+					(_("Permanently mount as %s") % mountPoint, 3)
+				]
+				if mountPointHdd:
+					default = 4
+					choiceList.append(
+						(_("Permanently mount as %s") % mountPointHdd, 4),
+					)
+				choiceList.append(
+					(_("Permanently mount as %s") % mountPointDevice, 5),
+				)
+				print(f"[Hotplug][modalsend]default:{default} choiceList:{choiceList}")
+				SessionObject().session.openWithCallback(newDeviceCallback, MessageBox, text, list=choiceList, default=default, simple=True, title=_("New Storage Device"))
+			else:
+				self.addedDevice.append((DEVNAME, DEVPATH, ID_MODEL))
+				self.addTimer.start(1000)
+		else:
+			if self.newCount:
+				if self.callMount:
+					self.callMount = False
+					Console().ePopen("/bin/mount -a")
+				self.newCount = 0
+				for device, physicalDevicePath, model in self.addedDevice:
+					harddiskmanager.addHotplugPartition(device, physicalDevicePath, model=model)
+
+	def processRemoveDevice(self):
+		self.removeTimer.stop()
+		cleanMediaDirs()
+
+	def processHotplugData(self, eventData):
+		mode = eventData.get("mode")
+		print("[Hotplug] DEBUG: ", eventData)
+		action = eventData.get("ACTION")
+		if mode == 1:
+			if action == "add":
+				self.addTimer.stop()
+				ID_TYPE = eventData.get("ID_TYPE")
+				DEVTYPE = eventData.get("DEVTYPE")
+				if ID_TYPE == "disk" and DEVTYPE in ("partition", "disk"):
+					self.deviceData.append(eventData)
+					self.addTimer.start(1000)
+
+			elif action == "remove":
+				ID_TYPE = eventData.get("ID_TYPE")
+				DEVTYPE = eventData.get("DEVTYPE")
+				# ID_FS_UUID = eventData.get("ID_FS_UUID")
+				if ID_TYPE == "disk" and DEVTYPE in ("partition", "disk"):
+					device = eventData.get("DEVNAME")
+					harddiskmanager.removeHotplugPartition(device)
+					self.removeTimer.stop()
+					self.removeTimer.start(2000)
+			elif action == "ifup":
+				interface = eventData.get("INTERFACE")  # noqa: F841
+			elif action == "ifdown":
+				interface = eventData.get("INTERFACE")  # noqa: F841
+			elif action == "online":
+				state = eventData.get("STATE")  # noqa: F841
+
+		else:
+			device = eventData.get("DEVPATH", "").split("/")[-1]
+			physicalDevicePath = eventData.get("PHYSDEVPATH")
+			mediaState = eventData.get("X_E2_MEDIA_STATUS")
+			global audiocd
+
+			if action == "add":
+				error, blacklisted, removable, is_cdrom, partitions, medium_found = harddiskmanager.addHotplugPartition(device, physicalDevicePath)
+			elif action == "remove":
+				harddiskmanager.removeHotplugPartition(device)
+			elif action == "audiocdadd":
+				audiocd = True
+				mediaState = "audiocd"
+				error, blacklisted, removable, is_cdrom, partitions, medium_found = harddiskmanager.addHotplugAudiocd(device, physicalDevicePath)
+				print("[Hotplug] Adding AudioCD.")
+			elif action == "audiocdremove":
+				audiocd = False
+				file = []
+				# Removing the invalid playlist.e2pls If its still the audio cd's list
+				# Default setting is to save last playlist on closing Mediaplayer.
+				# If audio cd is removed after Mediaplayer was closed,
+				# the playlist remains in if no other media was played.
+				if isfile("/etc/enigma2/playlist.e2pls"):
+					with open("/etc/enigma2/playlist.e2pls") as f:
+						file = f.readline().strip()
+				if file and ".cda" in file:
+					try:
+						remove("/etc/enigma2/playlist.e2pls")
+					except OSError:
+						pass
+				harddiskmanager.removeHotplugPartition(device)
+				print("[Hotplug] Removing AudioCD.")
+			elif mediaState is not None:
+				if mediaState == "1":
+					harddiskmanager.removeHotplugPartition(device)
+					harddiskmanager.addHotplugPartition(device, physicalDevicePath)
+				elif mediaState == "0":
+					harddiskmanager.removeHotplugPartition(device)
+
+			for callback in hotplugNotifier:
+				try:
+					callback(device, action or mediaState)
+				except AttributeError:
+					hotplugNotifier.remove(callback)
+
+
+hotPlugManager = HotPlugManager()
 
 
 def Plugins(**kwargs):
-	return PluginDescriptor(name=_("Hotplug"), description=_("Listener for hotplug events."), where=[PluginDescriptor.WHERE_AUTOSTART], needsRestart=True, fnc=autostart)
+	return PluginDescriptor(name="Hotplug", description="Hotplug handler.", where=PluginDescriptor.WHERE_AUTOSTART, needsRestart=True, fnc=autostart)

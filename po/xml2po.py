@@ -34,6 +34,8 @@ parser.setContentHandler(contentHandler)
 parser.setProperty(property_lexical_handler, contentHandler)
 
 for arg in argv[1:]:
+	if "../.git" in arg:  # skip /.git/ and /.github/
+		continue
 	if isdir(arg):
 		for file in listdir(arg):
 			if file.endswith(".xml"):

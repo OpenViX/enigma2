@@ -611,7 +611,7 @@ class VIXImageManager(Screen):
 				rename("%s/rootfs.tar.bz2" % MAINDEST, "%s/xx.txt" % MAINDEST)
 		elif SystemInfo["machinebuild"] in ("dm900", "dm920"):  # kernel:mmcblk0p1 root:mmcblk0p2
 			CMD = "/usr/bin/ofgwrite -r%s '%s'" % (self.MTDROOTFS, MAINDEST)  # No ofgwrite auto detection, so only flash root NOT kernel
-		print(f"[ImageManager] running command:{CMD} root:{self.MTDROOTFS}")
+		print(f"[ImageManager] running command:{CMD} root:{getattr(self, 'MTDROOTFS', 'not set')}")
 		self.Console.ePopen(CMD, self.ofgwriteResult)
 		fbClass.getInstance().lock()
 

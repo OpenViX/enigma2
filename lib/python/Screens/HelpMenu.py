@@ -2,9 +2,10 @@ from Screens.Screen import Screen
 from Screens.TextBox import TextBox
 from Tools.KeyBindings import keyBindings
 from Tools.BoundFunction import boundFunction
+from Components.config import config
 from Components.Label import Label
 from Components.ActionMap import ActionMap
-from Components.Sources.HelpMenuList import HelpMenuList
+from Components.HelpMenuList import HelpMenuList
 from Components.Sources.StaticText import StaticText
 from Screens.Rc import Rc
 from enigma import eActionMap
@@ -19,12 +20,11 @@ class HelpMenu(Screen, Rc):
 			_("Other buttons will jump to the help for that button, if there is help."),
 			_("If an action is user-configurable, its help entry will be flagged (C)"),
 			_("A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s)."),
-			_("The order and grouping of the help information list can be controlled using MENU>Setup>User Interface>Settings>Sort order for help screen.")])
+			_("The order and grouping of the help information list can be controlled using MENU>Setup>User Interface>Settings>Sort order for help screen or pressing long help")])
 
 	def __init__(self, session, list):
 		Screen.__init__(self, session)
-		self.setup_title = _("Help")
-		Screen.setTitle(self, self.setup_title)
+		Screen.setTitle(self, _("Help"))
 		Rc.__init__(self)
 		self["list"] = HelpMenuList(list, self.close, rcPos=self.getRcPositions())
 		self["longshift_key0"] = Label("")
@@ -68,6 +68,7 @@ class HelpMenu(Screen, Rc):
 
 		self["helpActions"] = ActionMap(["HelpActions"], {
 			"displayHelp": self.showHelp,
+			"displayHelpLong": self.toggleConfig,
 		})
 
 		self.onLayoutFinish.append(self.doOnLayoutFinish)
@@ -140,6 +141,12 @@ class HelpMenu(Screen, Rc):
 
 	def showHelp(self):
 		self.session.open(TextBox, self.helpText(), _("Help Screen"))
+
+	def toggleConfig(self):
+		config.usage.help_sortorder.selectNext()
+		config.usage.help_sortorder.save()
+		Screen.setTitle(self, "%s - %s" % (_("Help"), config.usage.help_sortorder.getText()))
+		self["list"].createHelpList()
 
 
 class HelpableScreen:

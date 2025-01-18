@@ -138,7 +138,7 @@ def InitUsageConfig():
 	config.usage.movieplayer_pvrstate = ConfigYesNo(default=True)
 
 	config.usage.setupShowDefault = ConfigSelection(default="spaces", choices=[
-		("", _("Don't show default")),
+		(None, _("Don't show default")),
 		("spaces", _("Show default after description")),
 		("newline", _("Show default on new line"))
 	])
@@ -728,6 +728,22 @@ def InitUsageConfig():
 	config.usage.boolean_graphic = ConfigSelection(default="no", choices={"no": _("no"), "yes": _("yes"), "only_bool": _("yes, but not in multi selections")})
 	config.usage.fast_skin_reload = ConfigYesNo(default=False)
 
+	# boot power state actions
+	config.usage.power = ConfigSubsection()
+	config.usage.power.wake_up_to_standby = ConfigYesNo()
+	config.usage.power.was_controlled_shutdown = ConfigBoolean(default=True)
+	config.usage.power.uncontrolled_shutdown_action = ConfigSelection(default="last", choices=[
+		("normal", _("Boot normally")),
+		("standby", _("Go to standby")),
+		("deep", _("Go to deep standby")),
+		("last", _("Go to last known state"))
+	])
+	config.usage.power.last_known_state = ConfigSelection(default="normal", choices=[
+		"normal",
+		"standby",
+		"deep",
+	])
+
 	if SystemInfo["hasXcoreVFD"]:
 		def set12to8characterVFD(configElement):
 			open(SystemInfo["hasXcoreVFD"], "w").write(not configElement.value and "1" or "0")
@@ -1013,7 +1029,7 @@ def InitUsageConfig():
 			subtitle_delay_choicelist.append((str(i), _("%2.1f sec") % (i / 90000.)))
 	config.subtitles.subtitle_noPTSrecordingdelay = ConfigSelection(default="315000", choices=subtitle_delay_choicelist)
 
-	config.subtitles.dvb_subtitles_yellow = ConfigYesNo(default=False)
+	config.subtitles.dvb_subtitles_color = ConfigSelection(default="0", choices=[("0", _("Off")), ("1", _("Yellow")), ("2", _("Green")), ("3", _("Magenta")), ("4", _("Cyan"))])
 	config.subtitles.dvb_subtitles_original_position = ConfigSelection(default="0", choices=[("0", _("Original")), ("1", _("Fixed")), ("2", _("Relative"))])
 	config.subtitles.dvb_subtitles_centered = ConfigYesNo(default=False)
 	config.subtitles.subtitle_bad_timing_delay = ConfigSelection(default="0", choices=subtitle_delay_choicelist)

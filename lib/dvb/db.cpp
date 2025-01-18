@@ -244,21 +244,20 @@ int eDVBService::isPlayable(const eServiceReference &ref, const eServiceReferenc
 	eServiceReferenceDVB sRelayOrigSref;
 	ePtr<iPlayableService> refCur;
 	eNavigation::getInstance()->getCurrentService(refCur);
-	if (refCur) {
+	if (refCur)
+	{
 		ePtr<iServiceInformation> tmp_info;
 		refCur->info(tmp_info);
 		std::string ref_s = tmp_info->getInfoString(iServiceInformation::sServiceref);
 		eServiceReferenceDVB currentlyPlaying = eServiceReferenceDVB(ref_s);
 		isStreamRelayService = currentlyPlaying.getSROriginal(sRelayOrigSref);
-	} else {
-		return 1;
 	}
 
 	ePtr<eDVBResourceManager> res_mgr;
 	bool remote_fallback_enabled = eConfigManager::getConfigBoolValue("config.usage.remote_fallback_enabled", false);
 
 	if (eDVBResourceManager::getInstance(res_mgr))
-		eDebug("[eDVBService] isPlayble... no res manager!!");
+		eDebug("[eDVBService] isPlayble... no resource manager!!");
 	else
 	{
 		eDVBChannelID chid, chid_ignore, chid_ignore_sr;
@@ -267,9 +266,12 @@ int eDVBService::isPlayable(const eServiceReference &ref, const eServiceReferenc
 		((const eServiceReferenceDVB&)ref).getChannelID(chid);
 		((const eServiceReferenceDVB&)ignore).getChannelID(chid_ignore);
 
-		if (isStreamRelayService) {
+		if (isStreamRelayService)
+		{
 			sRelayOrigSref.getChannelID(chid_ignore_sr);
-		} else {
+		}
+		else
+		{
 			chid_ignore_sr = eDVBChannelID();
 		}
 

@@ -20,9 +20,11 @@ class ScrollLabel(GUIComponent):
 		self.splitchar = "|"
 		self.keepsplitchar = 0
 		self.onSelectionChanged = []
+		self.scrollbarmargin = 20
 
 	def applySkin(self, desktop, parent):
 		scrollbarWidth = skin.applySlider(self.scrollbar, 10, 1)
+		self.scrollbarmargin += scrollbarWidth
 		ret = False
 		if self.skinAttributes:
 			widget_attribs = []
@@ -75,13 +77,15 @@ class ScrollLabel(GUIComponent):
 			skin.applyAllAttributes(self.instance, desktop, widget_attribs, parent.scale)
 			skin.applyAllAttributes(self.scrollbar, desktop, scrollbar_attribs + widget_attribs, parent.scale)
 			ret = True
-		self.pageWidth = self.long_text.size().width()
 		lineheight = fontRenderClass.getInstance().getLineHeight(self.long_text.getFont()) or 30  # assume a random lineheight if nothing is visible
 		lines = int(self.long_text.size().height() // lineheight)
-		self.pageHeight = int(lines * lineheight)
+		self.pageHeight = int(lines * lineheight)  # height of the visible text area
+		# resize text area to avoid text overlapping the scrollbar
+		self.long_text.resize(eSize(self.long_text.size().width() - self.scrollbarmargin, self.pageHeight))
+		self.pageWidth = self.long_text.size().width()
 		self.instance.move(self.long_text.position())
-		self.instance.resize(eSize(self.pageWidth, self.pageHeight + int(lineheight // 6)))
-		self.scrollbar.move(ePoint(self.pageWidth - scrollbarWidth, 0))
+		self.instance.resize(eSize(self.pageWidth + self.scrollbarmargin, self.pageHeight + int(lineheight // 6)))
+		self.scrollbar.move(ePoint(self.pageWidth + self.scrollbarmargin - scrollbarWidth, 0))
 		self.scrollbar.resize(eSize(scrollbarWidth, self.pageHeight + int(lineheight // 6)))
 		self.scrollbar.setOrientation(eSlider.orVertical)
 		self.scrollbar.setRange(0, 100)
@@ -112,8 +116,8 @@ class ScrollLabel(GUIComponent):
 			else:
 				self.long_text.setText(text)
 			self.TotalTextHeight = self.long_text.calculateSize().height()
-			self.long_text.resize(eSize(self.pageWidth - 30, self.TotalTextHeight))
-			self.split and self.right_text.resize(eSize(self.pageWidth - self.column - 30, self.TotalTextHeight))
+			self.long_text.resize(eSize(self.pageWidth, self.TotalTextHeight))
+			self.split and self.right_text.resize(eSize(self.pageWidth - self.column, self.TotalTextHeight))
 			if showBottom:
 				self.lastPage()
 			else:

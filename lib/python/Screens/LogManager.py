@@ -154,8 +154,7 @@ class LogManager(Screen):
 		self.selectedFiles = config.logmanager.sentfiles.value
 		self.defaultDir = config.crash.debug_path.value
 		self.matchingPattern = 'Enigma2_crash_'
-		self.filelist = MultiFileSelectList(self.selectedFiles, self.defaultDir, showDirectories=False, matchingPattern=self.matchingPattern)
-		self["list"] = self.filelist
+		self["list"] = MultiFileSelectList(self.selectedFiles, self.defaultDir, showDirectories=False, matchingPattern=self.matchingPattern)
 		self["LogsSize"] = self.logsinfo = LogInfo(config.crash.debug_path.value, LogInfo.USED, update=False)
 		self.onLayoutFinish.append(self.layoutFinished)
 		if self.selectionChanged not in self["list"].onSelectionChanged:
@@ -177,12 +176,13 @@ class LogManager(Screen):
 
 	def layoutFinished(self):
 		self["LogsSize"].update(config.crash.debug_path.value)
+		self.listReverse()
 		idx = 0
 		self["list"].moveToIndex(idx)
-		self.setWindowTitle()
+		self.setWindowTitle(_("Crash Logs"))
 
-	def setWindowTitle(self):
-		self.setTitle(self.defaultDir)
+	def setWindowTitle(self, text):
+		self.setTitle(self.defaultDir + " - " + text)
 
 	def up(self):
 		self["list"].up()
@@ -221,12 +221,15 @@ class LogManager(Screen):
 			self["key_red"].setText(_("Crash Logs"))
 			self.logtype = "debuglogs"
 			self.matchingPattern = "Enigma2_debug_"
+			self.setWindowTitle(_("Debug Logs"))
 		else:
 			self["key_red"].setText(_("Debug Logs"))
 			self.logtype = "crashlogs"
 			self.matchingPattern = "Enigma2_crash_"
+			self.setWindowTitle(_("Crash Logs"))
 		self["list"].matchingPattern = re.compile(self.matchingPattern)
 		self["list"].changeDir(self.defaultDir)
+		self.listReverse()
 
 	def showLog(self):
 		try:
@@ -285,6 +288,10 @@ class LogManager(Screen):
 				remove(self.defaultDir + self.sel[0])
 			self["list"].changeDir(self.defaultDir)
 			self["LogsSize"].update(config.crash.debug_path.value)
+
+	def listReverse(self):
+		self["list"].list.reverse()
+		self["list"].l.setList(self["list"].list)
 
 
 class LogManagerViewLog(Screen):

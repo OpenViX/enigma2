@@ -4,7 +4,7 @@ from time import time
 from enigma import eAVSwitch, eDVBVolumecontrol, eTimer, eDVBLocalTimeHandler, eServiceReference, eStreamServer, iRecordableService, quitMainloop
 
 from Components.ActionMap import ActionMap
-from Components.config import config
+from Components.config import config, configfile
 from Components.Console import Console
 import Components.ParentalControl
 from Components.SystemInfo import SystemInfo
@@ -46,6 +46,12 @@ def sendCEC():
 	data = ""
 	eHdmiCEC.getInstance().sendMessage(msgaddress, cmd, data, len(data))
 	print("[Standby][sendCEC] departed ")
+
+
+def lastPowerState(state):
+	config.usage.power.last_known_state.value = state
+	config.usage.power.last_known_state.save()
+	configfile.save()
 
 
 class Standby2(Screen):
@@ -136,6 +142,7 @@ class Standby2(Screen):
 	def __onClose(self):
 		global inStandby
 		inStandby = None
+		lastPowerState("normal")
 		self.standbyStopServiceTimer.stop()
 		self.timeHandler and self.timeHandler.m_timeUpdated.get().remove(self.stopService)
 		if self.paused_service:
@@ -157,6 +164,7 @@ class Standby2(Screen):
 	def __onFirstExecBegin(self):
 		global inStandby
 		inStandby = self
+		lastPowerState("standby")
 		self.session.screen["Standby"].boolean = True
 		config.misc.standbyCounter.value += 1
 
@@ -324,6 +332,7 @@ class TryQuitMainloop(MessageBox):
 				if path.exists("/usr/scripts/standby_enter.sh"):
 					Console().ePopen("/usr/scripts/standby_enter.sh")
 			self.session.nav.stopService()
+			lastPowerState("deep" if self.retval == QUIT_SHUTDOWN else "normal")
 			self.quitScreen = self.session.instantiateDialog(QuitMainloopScreen, retvalue=self.retval)
 			self.quitScreen.show()
 			print("[Standby] quitMainloop #1")

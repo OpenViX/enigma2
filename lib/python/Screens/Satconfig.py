@@ -17,7 +17,7 @@ from Screens.ServiceStopScreen import ServiceStopScreen
 from Screens.AutoDiseqc import AutoDiseqc
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import fileExists
-
+from skin import parameters
 from time import mktime, localtime, time
 from datetime import datetime
 
@@ -114,7 +114,7 @@ class NimSetup(Setup, ServiceStopScreen):
 			self.configModeATSC = self.externallyPowered = None
 
 		self.have_advanced = False
-		self.indent = "  %s" if self.nim.isCombined() else "%s"
+		self.indent = (parameters.get("SetupIndent", "  ") + "%s") if self.nim.isCombined() else "%s"
 		if not hasattr(self, "terrestrialCountriesEntry"):
 			self.terrestrialCountriesEntry = None
 		if not hasattr(self, "cableCountriesEntry"):

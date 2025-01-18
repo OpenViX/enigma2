@@ -1043,7 +1043,7 @@ void eDVBSubtitleParser::subtitle_redraw(int page_id)
 			}
 
 			int bcktrans = eConfigManager::getConfigIntValue("config.subtitles.dvb_subtitles_backtrans");
-			bool yellow = eConfigManager::getConfigBoolValue("config.subtitles.dvb_subtitles_yellow");
+			int color = eConfigManager::getConfigIntValue("config.subtitles.dvb_subtitles_color");
 
 			for (int i=0; i<clut_size; ++i)
 			{
@@ -1057,9 +1057,36 @@ void eDVBSubtitleParser::subtitle_redraw(int page_id)
 						y -= 16;
 						cr -= 128;
 						cb -= 128;
-						palette[i].r = MAX(MIN(((298 * y            + 460 * cr) / 256), 255), 0);
-						palette[i].g = MAX(MIN(((298 * y -  55 * cb - 137 * cr) / 256), 255), 0);
-						palette[i].b = yellow?0:MAX(MIN(((298 * y + 543 * cb  ) / 256), 255), 0);
+						if (color == 1) // yellow
+						{
+							palette[i].r = MAX(MIN(((298 * y            + 460 * cr) / 256), 255), 0);
+							palette[i].g = MAX(MIN(((298 * y -  55 * cb - 137 * cr) / 256), 255), 0);
+							palette[i].b = 0;
+						}
+						else if (color == 2) // green
+						{
+							palette[i].r = 0;
+							palette[i].g = MAX(MIN(((298 * y) / 256), 255), 0);
+							palette[i].b = 0;
+						}
+						else if (color == 3) // magenta
+						{
+							palette[i].r = MAX(MIN(((298 * y + 460 * cr) / 256), 255), 0);
+							palette[i].g = 0;
+							palette[i].b = MAX(MIN(((298 * y + 543 * cb) / 256), 255), 0);
+						}
+						else if (color == 4) // cyan
+						{
+							palette[i].r = 0;
+							palette[i].g = MAX(MIN(((298 * y + 543 * cb) / 256), 255), 0);
+							palette[i].b = MAX(MIN(((298 * y + 543 * cb) / 256), 255), 0);
+						}
+						else // original
+						{
+							palette[i].r = MAX(MIN(((298 * y            + 460 * cr) / 256), 255), 0);
+							palette[i].g = MAX(MIN(((298 * y -  55 * cb - 137 * cr) / 256), 255), 0);
+							palette[i].b = MAX(MIN(((298 * y + 543 * cb) / 256), 255), 0);
+						}
 						if (bcktrans)
 						{
 							if (palette[i].r || palette[i].g || palette[i].b)

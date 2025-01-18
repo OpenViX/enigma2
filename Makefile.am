@@ -1,4 +1,4 @@
-SUBDIRS = etc include lib main data po tools
+SUBDIRS = etc include lib main data po tools hotplug
 
 ACLOCAL_AMFLAGS = -I m4
 

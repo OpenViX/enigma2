@@ -701,6 +701,7 @@ po/Makefile
 main/Makefile
 tools/Makefile
 tools/enigma2.sh
+hotplug/Makefile
 enigma2.pc
 ])
 AC_OUTPUT

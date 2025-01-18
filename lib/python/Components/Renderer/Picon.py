@@ -55,7 +55,7 @@ class PiconLocator:
 			"svg_only": (".svg",),
 			"png_svg": (".png", ".svg"),
 			"svg_png": (".svg", ".png")}
-			
+
 		exts = ext_priority[config.usage.picon_lookup_priority.value]
 		if self.activePiconPath is not None:
 			for ext in exts:
