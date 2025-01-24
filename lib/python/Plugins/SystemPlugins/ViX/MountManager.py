@@ -2,7 +2,7 @@ import errno
 from os import mkdir, path, rename, statvfs, system
 import re
 
-from enigma import eTimer
+from enigma import getDeviceDB, eTimer
 
 from Components.ActionMap import ActionMap
 from Components.Label import Label
@@ -93,12 +93,22 @@ def buildPartitionInfo(partition, partitionList):
 	# print("[MountManager] physicalDevice: %s" % physicalDevice)
 	# print("[MountManager] Type: %s" % SystemInfo["MountManager"])
 
+	print(f"[MountManager][port] physicalDevice:{physicalDevice}")
+	print(f"[MountManager][port] list(getDeviceDB().items() {list(getDeviceDB().items())}")
+	portDescription = ""
+	for physdevprefix, pdescription in list(getDeviceDB().items()):
+		print(f"[MountManager][port] physdevprefix:{physdevprefix} pdescription:{pdescription}")
+		if physicalDevice.replace("/sys", "").startswith(physdevprefix):
+			portDescription = pdescription
+	print(f"[MountManager] portDescription:{portDescription}")
+
 	description = readFile(path.join(physicalDevice, "model"))
 	if description is None:
 		description = readFile(path.join(physicalDevice, "name"))
 	if description is None:
 		description = _("Device %s") % partition
-	description = str(description).replace("\n", "")
+	print(f"[MountManager] description:{description}")
+	description = portDescription + " " + str(description).replace("\n", "")
 
 	hotplugBuses = ("usb", "mmc", "ata")
 	busTranslate = ("usb", "sd", "hdd")
@@ -109,7 +119,9 @@ def buildPartitionInfo(partition, partitionList):
 			break
 	# print("[MountManager1]bus: %s count : %s" % (bus, count))
 	pngType = busTranslate[count]
-	name = _("%s: " % pngType.upper())
+	name = ""
+	if not portDescription:
+		name = _("%s: " % pngType.upper())
 	name += description
 
 	if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "vixcore/dev_%s.png" % pngType)):

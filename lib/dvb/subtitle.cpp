@@ -1087,7 +1087,7 @@ void eDVBSubtitleParser::subtitle_redraw(int page_id)
 							palette[i].g = MAX(MIN(((298 * y -  55 * cb - 137 * cr) / 256), 255), 0);
 							palette[i].b = MAX(MIN(((298 * y + 543 * cb) / 256), 255), 0);
 						}
-						if (bcktrans)
+						if (bcktrans >= 0)
 						{
 							if (palette[i].r || palette[i].g || palette[i].b)
 								palette[i].a = (entries[i].T) & 0xFF;

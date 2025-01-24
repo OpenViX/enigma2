@@ -380,7 +380,6 @@ class AudioSelection(ConfigListScreen, Screen):
 							description = types[x[2]]
 						except Exception:
 							description = _("unknown") + ": %s" % x[2]
-						number = str(int(number) + 1)
 					streams.append((x, "", number, description, language, selected, selectionpng if selected == "X" else None))
 					idx += 1
 			conflist.append(getConfigListEntry(_("To audio selection"), self.settings.menupage))

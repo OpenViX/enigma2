@@ -5,7 +5,7 @@ from os.path import exists, ismount, join
 from twisted.internet import reactor
 from twisted.internet.protocol import Factory, Protocol
 
-from enigma import eTimer
+from enigma import getDeviceDB, eTimer
 
 from Session import SessionObject
 from Components.Console import Console
@@ -166,7 +166,12 @@ class HotPlugManager:
 				self.newCount += 1
 
 			if notFound:
-				text = f"{_("A new storage device has been connected:")}\n{ID_MODEL} - ({bytesToHumanReadable(ID_PART_ENTRY_SIZE * 512)})\n"
+				description = ""
+				for physdevprefix, pdescription in list(getDeviceDB().items()):
+					if DEVPATH.startswith(physdevprefix):
+						description = f"\n{pdescription}"
+
+				text = f"{_("A new storage device has been connected:")}\n{ID_MODEL} - ({bytesToHumanReadable(ID_PART_ENTRY_SIZE * 512)})\n{description}"
 
 				def newDeviceCallback(answer):
 					if answer:
@@ -241,7 +246,7 @@ class HotPlugManager:
 		mode = eventData.get("mode")
 		print("[Hotplug] DEBUG: ", eventData)
 		action = eventData.get("ACTION")
-		if mode == 1:
+		if mode == 1 and eventData.get("MODE", "") != "CD":
 			if action == "add":
 				self.addTimer.stop()
 				ID_TYPE = eventData.get("ID_TYPE")
