@@ -637,7 +637,7 @@ Screen.globalScreen = Globals()
 
 
 # must be above skins and InputDevices
-config.misc.RCSource = ConfigSelection(default="branding", choices=[("branding", _("OE-A-Branding")), ("hardware", _("OE-A-Remotes"))])
+config.misc.RCSource = ConfigSelection(default="hardware", choices=[("branding", _("OE-A-Branding")), ("hardware", _("OE-A-Remotes"))])
 
 
 def RCSelectionChanged(configelement):

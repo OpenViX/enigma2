@@ -1,7 +1,6 @@
 
-from os import mkdir, remove
-from os import listdir, mkdir, rmdir
-from os.path import exists, ismount, join
+from os import listdir, mkdir, remove, rmdir
+from os.path import exists, isfile, ismount, join
 from twisted.internet import reactor
 from twisted.internet.protocol import Factory, Protocol
 
@@ -169,7 +168,7 @@ class HotPlugManager:
 				description = ""
 				for physdevprefix, pdescription in list(getDeviceDB().items()):
 					if DEVPATH.startswith(physdevprefix):
-						description = f"\n{pdescription}"
+						description = f"\n{_(pdescription)}"
 
 				text = f"{_("A new storage device has been connected:")}\n{ID_MODEL} - ({bytesToHumanReadable(ID_PART_ENTRY_SIZE * 512)})\n{description}"
 

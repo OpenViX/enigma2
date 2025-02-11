@@ -1,6 +1,5 @@
 from os import listdir, path, stat
 
-from Components.About import about
 from Components.config import config
 from Components.Console import Console
 from Components.Pixmap import Pixmap
@@ -8,7 +7,7 @@ from Components.SystemInfo import SystemInfo
 from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
 from Screens.WizardLanguage import WizardLanguage
-from Tools.Directories import fileExists, fileHas, resolveFilename, SCOPE_PLUGINS
+from Tools.Directories import fileHas, resolveFilename, SCOPE_PLUGINS
 from Tools.Multiboot import bootmviSlot, createInfo
 
 

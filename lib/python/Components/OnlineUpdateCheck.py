@@ -8,7 +8,6 @@ from Components.SystemInfo import SystemInfo
 import Components.Task
 
 import socket
-import sys
 from urllib.request import urlopen, Request
 
 error = 0
