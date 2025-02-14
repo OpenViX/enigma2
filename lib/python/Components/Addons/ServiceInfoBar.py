@@ -46,7 +46,7 @@ class ServiceInfoBar(GUIAddon):
 		self.autoresizeMode = "auto"  # possible values: auto, fixed, condensed
 		self.font = gFont("Regular", 18)
 		self.__event_tracker = None
-		self.current_crypto = "---"
+		self.current_crypto = ""
 		self.tuner_string = ""
 		self.textRenderer = Label("")
 		self.permanentIcons = []
@@ -54,6 +54,7 @@ class ServiceInfoBar(GUIAddon):
 		self.streamServer = eStreamServer.getInstance()
 		self.currentServiceSource = None
 		self.frontendInfoSource = None
+		self.is_cryptedDetected = False
 		self.tuner_colors = parameters.get("FrontendInfoColors", (0x0000FF00, 0x00FFFF00, 0x007F7F7F))  # tuner active, busy, available colors
 
 	def onContainerShown(self):
@@ -115,7 +116,7 @@ class ServiceInfoBar(GUIAddon):
 			info = service and service.info()
 			if info:
 				new_crypto = createCurrentCaidLabel(info)
-				if new_crypto != self.current_crypto:
+				if new_crypto != self.current_crypto and self.is_cryptedDetected:
 					self.current_crypto = new_crypto
 					self.updateAddon()
 
@@ -126,9 +127,12 @@ class ServiceInfoBar(GUIAddon):
 
 		for x in self.elements:
 			enabledKey = self.detectVisible(x) if x != "separator" else "separator"
+			is_off = enabledKey and "_off" in enabledKey
+			enabledKey = enabledKey and enabledKey.replace("_off", "")
 			if enabledKey:
-				filteredElements.append(enabledKey)
-			elif self.autoresizeMode in ["auto", "fixed"] or x in self.permanentIcons:
+				if not is_off:
+					filteredElements.append(enabledKey)
+			elif self.autoresizeMode in ["auto", "fixed"] or (x in self.permanentIcons and not is_off):
 				filteredElements.append(x + "!")
 
 		filteredElements = list(self.remove_doubles(filteredElements))
@@ -153,6 +157,16 @@ class ServiceInfoBar(GUIAddon):
 				sref = service.toString()
 			else:
 				sref = info.getInfoString(iServiceInformation.sServiceref)
+
+			is_streamed = False
+
+			if not isRef:
+				if service.streamed() is not None and (((self.streamServer is not None and self.streamServer.getConnectedClients()) or StreamServiceList) and True or False):
+					is_streamed = True
+
+			if "%3a//" in sref and not is_streamed:
+				self.is_cryptedDetected = False
+
 			video_height = None
 			# video_aspect = None
 			video_height = getVideoHeight(info)
@@ -179,7 +193,10 @@ class ServiceInfoBar(GUIAddon):
 							return key
 						idx += 1
 			elif key == "crypt" and not isRef:
+				if "%3a//" in sref and not is_streamed:
+					return key + "_off"
 				if info.getInfo(iServiceInformation.sIsCrypted) == 1:
+					self.is_cryptedDetected = True
 					return key
 			elif key == "audiotrack" and not isRef:
 				audio = service.audioTracks()
@@ -202,6 +219,10 @@ class ServiceInfoBar(GUIAddon):
 				if service.streamed() is not None and ((self.streamServer.getConnectedClients() or StreamServiceList) and True or False):
 					return key
 			elif key == "currentCrypto":
+				if "%3a//" in sref and not is_streamed:
+					self.refreshCryptoInfo.stop()
+					self.current_crypto = ""
+					return key + "_off"
 				if not isRef:
 					self.current_crypto = createCurrentCaidLabel(info)
 				self.refreshCryptoInfo.start(1000)
@@ -313,18 +334,19 @@ class ServiceInfoBar(GUIAddon):
 						res_string = self.tuner_string
 					else:
 						res_string = self.current_crypto
-					textWidth = self._calcTextWidth(res_string, font=self.font, size=eSize(self.getDesktopWith() // 3, 0))
-					res.append(MultiContentEntryText(
-						pos=(xPos - textWidth - 2, yPos - 2), size=(textWidth + 2, self.instance.size().height()),
-						font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_TOP,
-						text=res_string,
-						color=self.foreColor, color_sel=self.foreColor,
-						textBWidth=1, textBColor=0x000000,
-						backcolor=self.textBackColor, backcolor_sel=self.textBackColor))
-					if self.alignment == "right":
-						xPos -= textWidth + self.spacing
-					else:
-						xPos += textWidth + self.spacing
+					if res_string:
+						textWidth = self._calcTextWidth(res_string, font=self.font, size=eSize(self.getDesktopWith() // 3, 0))
+						res.append(MultiContentEntryText(
+							pos=(xPos - textWidth - 2, yPos - 2), size=(textWidth + 2, self.instance.size().height()),
+							font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_TOP,
+							text=res_string,
+							color=self.foreColor, color_sel=self.foreColor,
+							textBWidth=1, textBColor=0x000000,
+							backcolor=self.textBackColor, backcolor_sel=self.textBackColor))
+						if self.alignment == "right":
+							xPos -= textWidth + self.spacing
+						else:
+							xPos += textWidth + self.spacing
 		return res
 
 	def getDesktopWith(self):
