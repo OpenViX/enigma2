@@ -184,16 +184,19 @@ class Navigation:
 			else:
 				playref = ref
 			if self.pnav:
-				self.currentlyPlayingServiceReference = playref
-				playref, is_stream_relay = streamrelay.streamrelayChecker(playref)
-				if not SystemInfo["FCCactive"] or ("%3a//" in ref.toString() and not is_stream_relay):
+				if not SystemInfo["FCCactive"]:
 					self.pnav.stopService()
 				else:
 					self.skipServiceReferenceReset = True
 
+				self.currentlyPlayingServiceReference = playref
+				playref, is_stream_relay = streamrelay.streamrelayChecker(playref)
+
+				if SystemInfo["FCCactive"] and "%3a//" in ref.toString() and not is_stream_relay:
+					self.pnav.stopService()
+
 				for f in Navigation.playServiceExtensions:
-					if not is_stream_relay:
-						playref, is_handled = f(self, playref, event, InfoBarInstance)
+					playref, is_handled = f(self, playref, event, InfoBarInstance)
 
 				self.currentlyPlayingServiceOrGroup = ref
 
