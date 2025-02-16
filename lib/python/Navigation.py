@@ -121,6 +121,7 @@ class Navigation:
 
 		oldref = self.currentlyPlayingServiceOrGroup
 		current_service_source = None
+		is_handled = False
 		if InfoBarInstance:
 			current_service_source = InfoBarInstance.session.screen["CurrentService"]
 
@@ -183,15 +184,16 @@ class Navigation:
 			else:
 				playref = ref
 			if self.pnav:
-				if not SystemInfo["FCCactive"]:
+				self.currentlyPlayingServiceReference = playref
+				playref, is_stream_relay = streamrelay.streamrelayChecker(playref)
+				if not SystemInfo["FCCactive"] or ("%3a//" in ref.toString() and not is_stream_relay):
 					self.pnav.stopService()
 				else:
 					self.skipServiceReferenceReset = True
-				self.currentlyPlayingServiceReference = playref
-				playref = streamrelay.streamrelayChecker(playref)
 
 				for f in Navigation.playServiceExtensions:
-					playref, is_handled = f(self, playref, event, InfoBarInstance)
+					if not is_stream_relay:
+						playref, is_handled = f(self, playref, event, InfoBarInstance)
 
 				self.currentlyPlayingServiceOrGroup = ref
 
@@ -279,7 +281,7 @@ class Navigation:
 		if ref:
 			if ref.flags & eServiceReference.isGroup:
 				ref = getBestPlayableServiceReference(ref, eServiceReference(), simulate)
-			ref = streamrelay.streamrelayChecker(ref)
+			ref = streamrelay.streamrelayChecker(ref)[0]
 			for f in Navigation.recordServiceExtensions:
 				ref = f(self, ref)
 			service = ref and self.pnav and self.pnav.recordService(ref, simulate)
