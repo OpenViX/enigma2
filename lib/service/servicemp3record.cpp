@@ -152,6 +152,7 @@ int eServiceMP3Record::doPrepare()
 		{
 			stream_uri = m_ref.path;
 		}
+
 		eDebug("[eMP3ServiceRecord] doPrepare uri=%s", stream_uri.c_str());
 		uri = g_strdup_printf ("%s", stream_uri.c_str());
 

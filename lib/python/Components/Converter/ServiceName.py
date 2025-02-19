@@ -40,7 +40,7 @@ class ServiceName(Converter):
 
 	@cached
 	def getText(self):
-		service = self.source.servicealt if hasattr(self.source, "servicealt") and self.source.servicealt else self.source.service
+		service = self.source.service
 		info = None
 		if isinstance(service, eServiceReference):
 			info = self.source.info
@@ -74,6 +74,13 @@ class ServiceName(Converter):
 			return self.getProvider(service, info)
 		elif self.type == self.REFERENCE or self.type == self.EDITREFERENCE and hasattr(self.source, "editmode") and self.source.editmode:
 			if not service:
+				if self.source.info:
+					sref = hasattr(self.source, "serviceref") and self.source.serviceref
+					sref = sref or service
+					nref = resolveAlternate(sref)
+					if nref:
+						sref = nref
+					return sref.toString()
 				refstr = info.getInfoString(iServiceInformation.sServiceref)
 				path = refstr and eServiceReference(refstr).getPath()
 				if path and fileExists("%s.meta" % path):
@@ -118,14 +125,12 @@ class ServiceName(Converter):
 			Converter.changed(self, what)
 
 	def getName(self, ref, info):
-		name = ref and info.getName(ref)
-		if not name:
-			name = ref and hasattr(self.source, "serviceref") and self.source.serviceref and info.getName(self.source.serviceref)
+		sref = hasattr(self.source, "serviceref") and self.source.serviceref
+		name = (ref and info.getName(ref)) or (sref and (self.source.info and self.source.info.getName(sref)) or sref.getName())
 		if not name:
 			if not ref:
 				name = info.getName()
-			else:
-				name = info.getName(ref) or ref.getName()
+
 		return name.replace('\xc2\x86', '').replace('\xc2\x87', '').replace('_', ' ')
 
 	def getNumber(self):
@@ -135,22 +140,24 @@ class ServiceName(Converter):
 		return channelnum
 
 	def getProvider(self, ref, info):
-		prov = ''
-		if ref:
-			prov = ref.getProvider()
+		sref = hasattr(self.source, "serviceref") and self.source.serviceref
+		prov = (ref and info.getInfoString(ref, iServiceInformation.sProvider)) or (sref and ref and (self.source.info and self.source.info.getInfoString(sref, iServiceInformation.sProvider)) or sref.getProvider())
 		if not prov:
-			prov = not ref and info.getInfoString(iServiceInformation.sProvider)
-		if not prov:
-			prov = hasattr(self.source, "serviceref") and self.source.serviceref.getProvider()
+			if not ref:
+				prov = info.getInfoString(iServiceInformation.sProvider)
 		return prov
 
 	def getOrbitalPos(self, ref, info):
 		orbitalpos = ""
 		tp_data = None
+		sref = hasattr(self.source, "serviceref") and self.source.serviceref
 		if ref:
 			tp_data = info.getInfoObject(ref, iServiceInformation.sTransponderData)
-		else:
+		elif not self.source.info:
 			tp_data = info.getInfoObject(iServiceInformation.sTransponderData)
+		else:
+			tp_data = sref and self.source.info.getInfoObject(sref, iServiceInformation.sTransponderData)
+			
 
 		if tp_data is not None:
 			try:

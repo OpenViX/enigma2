@@ -144,7 +144,6 @@ class Navigation:
 		self.originalPlayingServiceReference = ref
 
 		if InfoBarInstance and current_service_source:
-			current_service_source.serviceref = ref
 			current_service_source.newService(ref)
 			InfoBarInstance.session.screen["Event_Now"].updateSource(self.currentlyPlayingServiceReference)
 			InfoBarInstance.session.screen["Event_Next"].updateSource(self.currentlyPlayingServiceReference)
@@ -168,7 +167,6 @@ class Navigation:
 							print("[Navigation] Failed to start: ", alternativeref.toString())
 							self.currentlyPlayingServiceReference = None
 							self.currentlyPlayingServiceOrGroup = None
-							self.originalPlayingServiceReference = None
 							if oldref and "://" in oldref.getPath():
 								print("[Navigation] Streaming was active -> try again")  # use timer to give the streamserver the time to deallocate the tuner
 								self.retryServicePlayTimer = eTimer()
@@ -239,7 +237,6 @@ class Navigation:
 					self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
 					self.retryServicePlayTimer.start(config.misc.softcam_streamrelay_delay.value, True)
 				elif not is_handled and self.pnav.playService(playref):
-						current_service_source.serviceref = None
 						self.currentlyPlayingServiceReference = None
 						self.originalPlayingServiceReference = None
 						self.currentlyPlayingServiceOrGroup = None
@@ -254,7 +251,7 @@ class Navigation:
 				if self.currentlyPlayingServiceReference and self.currentlyPlayingServiceReference.toString() in streamrelay.data:
 					self.currentServiceIsStreamRelay = True
 				if InfoBarInstance and "%3a//" in playref.toString() and not is_handled:
-					current_service_source.serviceref = None
+					self.originalPlayingServiceReference = None
 					InfoBarInstance.serviceStarted()
 				return 0
 		elif oldref and InfoBarInstance and InfoBarInstance.servicelist.servicelist.setCurrent(oldref, adjust):
@@ -265,12 +262,10 @@ class Navigation:
 		return self.currentlyPlayingServiceReference
 
 	def getCurrentlyPlayingServiceOrGroup(self):
-		if not self.currentlyPlayingServiceOrGroup:
-			return None
-		return self.originalPlayingServiceReference or self.currentlyPlayingServiceOrGroup
+		return self.currentlyPlayingServiceOrGroup
 
 	def getCurrentServiceReferenceOriginal(self):
-		return self.originalPlayingServiceReference
+		return self.originalPlayingServiceReference or self.currentlyPlayingServiceOrGroup
 
 	def getCurrentServiceRef(self):
 		curPlayService = self.getCurrentService()
