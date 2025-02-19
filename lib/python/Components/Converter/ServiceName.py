@@ -94,9 +94,12 @@ class ServiceName(Converter):
 			return service.toString()
 		elif self.type == self.STREAM_URL:
 			srpart = "//%s:%s/" % (config.misc.softcam_streamrelay_url.getHTML(), config.misc.softcam_streamrelay_port.value)
-			path = service.toString().split(":")[10].replace("%3a", ":")
+			path = ""
+			if not service:
+				refstr = info.getInfoString(iServiceInformation.sServiceref)
+				path = refstr and refstr.split(":")[10].replace("%3a", ":")
 			if "://" in path and "http" not in path:
-				path = SessionObject().session.nav.getCurrentServiceRef().toString().split(":")[10].replace("%3a", ":")
+				path = SessionObject().session.nav.getCurrentServiceReference().toString().split(":")[10].replace("%3a", ":")
 			return "" if path.startswith("//") and path.find(srpart) > -1 and "://" not in path else path
 		elif self.type == self.FORMAT_STRING:
 			name = self.getName(service, info)
