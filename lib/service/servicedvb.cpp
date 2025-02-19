@@ -1006,30 +1006,27 @@ RESULT eServiceFactoryDVB::offlineOperations(const eServiceReference &ref, ePtr<
 
 RESULT eServiceFactoryDVB::lookupService(ePtr<eDVBService> &service, const eServiceReference &ref)
 {
-	if (!ref.path.empty()) // playback
+	if (!ref.path.empty() && !ref.isStreamRelay) // playback
 	{
-		if(ref.isStreamRelay) // check StreamRelay
-		{
-			eTrace("[eServiceFactoryDVB] lookupService for: %s / originalServiceReferenceStr: %s", ref.toString().c_str(), ref.compareSref.c_str());
-			eServiceReferenceDVB m_parsed_ref = eServiceReferenceDVB(ref.compareSref);
-			if(m_parsed_ref.valid()) // Get the origial eDVBService only if originalServiceReferenceStr is a valid sref
-			{
-				int err;
-				if ((err = eDVBDB::getInstance()->getService((eServiceReferenceDVB&)m_parsed_ref, service)) != 0)
-				{
-					eTrace("[eServiceFactoryDVB] lookupService getService for originalServiceReferenceStr failed!");
-					return err;
-				}
-				eTrace("[eServiceFactoryDVB] lookupService success for: %s / originalServiceReferenceStr: %s", ref.toString().c_str(), ref.compareSref.c_str());
-				return 0;
-			}
-		}
-
 		eDVBMetaParser parser;
 		int ret=parser.parseFile(ref.path);
 		service = new eDVBService;
+		std::string sref = ref.toString();
+		if (sref.find("%3a//") != std::string::npos && ret) {
+			service->setServiceRef(ref.toString());
+			eDVBDB::getInstance()->parseServiceData(service, "");
+		}
 		if (!ret)
 			eDVBDB::getInstance()->parseServiceData(service, parser.m_service_data);
+	}
+	else if (ref.isStreamRelay)
+	{
+		int err;
+		if ((err = eDVBDB::getInstance()->getService(eServiceReferenceDVB(ref.compareSref), service)) != 0)
+		{
+			eTrace("[eServiceFactoryDVB] lookupService SR original service failed!");
+			return err;
+		}
 	}
 	else
 	{

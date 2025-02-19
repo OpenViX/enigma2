@@ -267,11 +267,6 @@ class Navigation:
 	def getCurrentServiceReferenceOriginal(self):
 		return self.originalPlayingServiceReference or self.currentlyPlayingServiceOrGroup
 
-	def getCurrentServiceRef(self):
-		curPlayService = self.getCurrentService()
-		info = curPlayService and curPlayService.info()
-		return info and info.getInfoString(iServiceInformation.sServiceref)
-
 	def recordService(self, ref, simulate=False):
 		service = None
 		if not simulate:
