@@ -538,8 +538,7 @@ class InfoBarButtonSetup():
 					return 0
 			elif selected[0] == "Module":
 				try:
-					exec("from %s import %s" % (selected[1], selected[2]))
-					exec("self.session.open(%s)" % ",".join(selected[2:]))
+					exec(f"from {selected[1]} import {selected[2]}\nself.session.open({','.join(selected[2:])})")
 				except Exception as e:
 					print("[ButtonSetup] error during executing module %s, screen %s, %s" % (selected[1], selected[2], e))
 					import traceback

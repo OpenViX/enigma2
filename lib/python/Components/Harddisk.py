@@ -216,7 +216,7 @@ class Harddisk:
 		for physdevprefix, pdescription in list(getDeviceDB().items()):
 			print(f"[Harddisk][port] physdevprefix:{physdevprefix} pdescription:{pdescription}")
 			if self.phys_path.replace("/sys", "").startswith(physdevprefix):
-				portDescription = pdescription
+				portDescription = _(pdescription)
 		print(f"[Harddisk][bus] portDescription:{portDescription}")
 		return portDescription
 

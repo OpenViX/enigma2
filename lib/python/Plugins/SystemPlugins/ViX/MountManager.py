@@ -99,7 +99,7 @@ def buildPartitionInfo(partition, partitionList):
 	for physdevprefix, pdescription in list(getDeviceDB().items()):
 		print(f"[MountManager][port] physdevprefix:{physdevprefix} pdescription:{pdescription}")
 		if physicalDevice.replace("/sys", "").startswith(physdevprefix):
-			portDescription = f"\n{_(pdescription)}"
+			portDescription = _(pdescription)
 	print(f"[MountManager] portDescription:{portDescription}")
 
 	description = readFile(path.join(physicalDevice, "model"))
@@ -121,7 +121,7 @@ def buildPartitionInfo(partition, partitionList):
 	pngType = busTranslate[count]
 	name = ""
 	if not portDescription:
-		name = _("%s: " % pngType.upper())
+		name = _("%s: ") % pngType.upper()
 	name += description
 
 	if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "vixcore/dev_%s.png" % pngType)):

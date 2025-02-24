@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-27 23:35+0000\n"
-"PO-Revision-Date: 2025-02-09 18:02+0200\n"
+"PO-Revision-Date: 2025-02-23 17:00+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -6118,9 +6118,6 @@ msgstr "Kalastus"
 msgid "Fitness & Health"
 msgstr "Fitness & Terveys"
 
-msgid "Fix CEC address setting, default is 1.0.0.0"
-msgstr "Määritä CEC-osoite, oletus on 1.0.0.0"
-
 msgid "Fixed"
 msgstr "Kiinteä"
 
@@ -12001,9 +11998,6 @@ msgstr "Aseta oletus"
 msgid "Set end time"
 msgstr "Aseta loppumisaika"
 
-msgid "Set fixed CEC address"
-msgstr "Aseta kiinteä CEC-osoite"
-
 msgid "Set fps for external subtitles"
 msgstr "Aseta ulkoisen tekstityksen nopeus (fps)"
 
@@ -13537,7 +13531,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 09.02.2025 ---\n"
+"--- 23.02.2025 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -19790,3 +19784,78 @@ msgstr "Palautus ei ole valmis – tarkista viestit tai debug-loki"
 
 msgid "Remote:\t%s\n"
 msgstr "Kaukosäädin:\t%s\n"
+
+msgid "Enabled *"
+msgstr "Käytössä *"
+
+msgid "Allow CEC address change *"
+msgstr "Salli CEC-osoitteen muutos *"
+
+msgid "When enabled will allow CEC address change. *Reboot required to activate"
+msgstr "Kun käytössä, niin sallii CEC-osoitteen muutoksen. *Aktivointi vaatii uudelleenkäynnistyksen."
+
+msgid "CEC address *"
+msgstr "CEC-osoite *"
+
+msgid "CEC address, to override enable CEC address change. *Reboot required to activate"
+msgstr "CEC-osoite, ohittaaksesi ota CEC-osoitteen muuttaminen käyttöön. *Aktivointi vaatii uudelleenkäynnistyksen."
+
+msgid "Front panel USB"
+msgstr "Etupaneelin USB"
+
+msgid "Front USB"
+msgstr "Etuosan USB"
+
+msgid "Front USB 3.0"
+msgstr "Etuosan USB 3.0"
+
+msgid "Rear USB-C"
+msgstr "Takaosan USB-C"
+
+msgid "MicroSD"
+msgstr "MicroSD"
+
+msgid "Rear MicroSD"
+msgstr "Takaosan MicroSD"
+
+msgid "Lower USB"
+msgstr "Alempi USB"
+
+msgid "Upper USB"
+msgstr "Ylempi USB"
+
+msgid "Rear USB"
+msgstr "Takaosan USB"
+
+msgid "Rear Right USB"
+msgstr "Takaosan oikea USB"
+
+msgid "Rear Left USB"
+msgstr "Takaosan vasen USB"
+
+msgid "Rear Left USB 3.0"
+msgstr "Takaosan vasen USB 3.0"
+
+msgid "Rear Lower USB"
+msgstr "Takaosan alempi USB"
+
+msgid "Rear Lower USB 3.0"
+msgstr "Takaosan alempi USB 3.0"
+
+msgid "Rear Upper USB"
+msgstr "Takaosan ylempi USB"
+
+msgid "Rear Upper USB 3.0"
+msgstr "Takaosan ylempi USB 3.0"
+
+msgid "SATA"
+msgstr "SATA"
+
+msgid "SD"
+msgstr "SD"
+
+msgid "eMMC"
+msgstr "eMMC"
+
+msgid "eSATA"
+msgstr "eSATA"

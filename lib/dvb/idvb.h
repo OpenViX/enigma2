@@ -251,24 +251,6 @@ public:
 		chid = eDVBChannelID(getDVBNamespace(), getTransportStreamID(), getOriginalNetworkID());
 	}
 
-	bool getSROriginal(eServiceReferenceDVB &sref) const
-	{
-		std::string s_ref = this->toString();
-		std::string sr_url = eConfigManager::getConfigValue("config.misc.softcam_streamrelay_url");
-		sr_url = replace_all(replace_all(replace_all(sr_url, "[", ""), "]", ""), ", ", ".");
-		std::string sr_port = eConfigManager::getConfigValue("config.misc.softcam_streamrelay_port");
-		if (s_ref.find(sr_url + "%3a" + sr_port) != std::string::npos) {
-			std::vector<std::string> s_split = split(s_ref, ":");
-			std::string url_sr = s_split[s_split.size() - 2];
-			std::vector<std::string> sr_split = split(url_sr, "/");
-			std::string ref_orig = sr_split.back();
-			ref_orig = replace_all(ref_orig, "%3a", ":");
-			sref = eServiceReferenceDVB(ref_orig);
-			return true;
-		}
-		return false;
-	}
-
 	eServiceReferenceDVB()
 		:eServiceReference(eServiceReference::idDVB, 0)
 	{

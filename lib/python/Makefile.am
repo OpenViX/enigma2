@@ -16,4 +16,5 @@ install_PYTHON = \
 	skin.py \
 	StartEnigma.py \
 	timer.py \
+	TranslationHelper.py \
 	upgrade.py

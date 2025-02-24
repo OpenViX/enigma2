@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/ioctl.h>
+#include <shadow.h>
+#include <crypt.h>
+#include <pwd.h>
 #include <libsig_comp.h>
 #include <linux/dvb/version.h>
 
@@ -417,6 +420,44 @@ const char *getEnigmaLastCommitHash()
 const char *getGStreamerVersionString()
 {
 	return gst_version_string();
+}
+
+bool checkLogin(const char *user, const char *password)
+{
+	bool authenticated = false;
+
+	if (user && password)
+	{
+		char *buffer = (char *)malloc(4096);
+		if (buffer)
+		{
+			struct passwd pwd = {};
+			struct passwd *pwdresult = NULL;
+			std::string crypt;
+			getpwnam_r(user, &pwd, buffer, 4096, &pwdresult);
+			if (pwdresult)
+			{
+				struct crypt_data cryptdata = {};
+				char *cryptresult = NULL;
+				cryptdata.initialized = 0;
+				crypt = pwd.pw_passwd;
+				if (crypt == "*" || crypt == "x")
+				{
+					struct spwd spwd = {};
+					struct spwd *spwdresult = NULL;
+					getspnam_r(user, &spwd, buffer, 4096, &spwdresult);
+					if (spwdresult)
+					{
+						crypt = spwd.sp_pwdp;
+					}
+				}
+				cryptresult = crypt_r(password, crypt.c_str(), &cryptdata);
+				authenticated = cryptresult && cryptresult == crypt;
+			}
+			free(buffer);
+		}
+	}
+	return authenticated;
 }
 
 #include <malloc.h>

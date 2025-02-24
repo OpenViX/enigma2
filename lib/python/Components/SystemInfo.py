@@ -303,8 +303,19 @@ SystemInfo["FbcTunerPowerAlwaysOn"] = SystemInfo["boxtype"] in ("vusolo4k", "vud
 SystemInfo["HasPhysicalLoopthrough"] = ["Vuplus DVB-S NIM(AVL2108)", "GIGA DVB-S2 NIM (Internal)"]
 SystemInfo["HasFBCtuner"] = ["Vuplus DVB-C NIM(BCM3158)", "Vuplus DVB-C NIM(BCM3148)", "Vuplus DVB-S NIM(7376 FBC)", "Vuplus DVB-S NIM(45308X FBC)", "Vuplus DVB-S NIM(45208 FBC)", "DVB-S2 NIM(45208 FBC)", "DVB-S2X NIM(45308X FBC)", "DVB-S2 NIM(45308 FBC)", "DVB-C NIM(3128 FBC)", "BCM45208", "BCM45308X", "BCM45308X FBC", "BCM3158"]
 SystemInfo["FCCactive"] = False
+
+# The remote names used in the code below are the names used by oe-mirrors/branding-module,
+# so we must compare against rc_model.getRcFolder() which is also part of branding-module.
+# Remote names at oe-alliance/remotes are different in some cases so we must stick to
+# one standard on both sides of the comparison.
 SystemInfo["rc_model"] = rc_model.getRcFolder()
-SystemInfo["mapKeyInfoToEpgFunctions"] = RCNAME in ("vu", "vu2", "vu3", "vu4")  # due to button limitations of the remote control
-SystemInfo["hasDuplicateVideoAndPvrButtons"] = RCNAME in ("edision3",)  # Allow multiple functions only if both buttons are present
-SystemInfo["toggleTvRadioButtonEvents"] = RCNAME in ("abcom", "ax4", "beyonwiz1", "beyonwiz2", "gb3", "gb4", "gb5", "gb6", "gb7", "octagon1", "octagon3", "octagon4", "qviart5", "qviart7", "sf8008", "sf8008m", "uclan1", "uniboxhde")  # due to button limitations of the remote control
+SystemInfo["mapKeyInfoToEpgFunctions"] = SystemInfo["rc_model"] in ("vu", "vu2", "vu3", "vu4")  # due to button limitations of the remote control
+SystemInfo["hasDuplicateVideoAndPvrButtons"] = SystemInfo["rc_model"] in ("edision3",)  # Allow multiple functions only if both buttons are present
+SystemInfo["toggleTvRadioButtonEvents"] = SystemInfo["rc_model"] in ("abcom", "ax4", "beyonwiz1", "beyonwiz2", "gb3", "gb4", "gb5", "gb6", "gb7", "octagon1", "octagon3", "octagon4", "qviart5", "qviart7", "sf8008", "sf8008m", "uclan1", "uniboxhde")  # due to button limitations of the remote control
 SystemInfo["rc_default"] = SystemInfo["rc_model"] in ("dmm0", )
+
+# If any remotes are missing from oe-mirrors/branding-module they should be added. The
+# xml file format at oe-alliance/remotes is different from oe-mirrors/branding-module,
+# but OpenViX/OpenBH can read both formats. It seems files of both formats are now being
+# added to oe-mirrors/branding-module. For us this is not a problem but may be for other
+# distros that can't handle that format.

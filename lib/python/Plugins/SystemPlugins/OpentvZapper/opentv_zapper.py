@@ -442,7 +442,7 @@ class AutoScheduleTimer:
 
 	def doneConfiguring(self):  # called from plugin on save
 		now = int(time())
-		if self.config.schedule.value:
+		if self.config.enabled.value and self.config.schedule.value:
 			if autoScheduleTimer is not None:
 				print("[%s][doneConfiguring] Schedule Enabled at" % self.schedulename, strftime("%c", localtime(now)))
 				autoScheduleTimer.scheduledate()
