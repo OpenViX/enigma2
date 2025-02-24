@@ -108,7 +108,7 @@ class ServiceInfoBar(GUIAddon):
 	def scheduleAddonUpdate(self):
 		if hasattr(self, "refreshAddon"):
 			self.refreshAddon.stop()
-			self.refreshAddon.start(300)
+			self.refreshAddon.start(200)
 
 	def checkCrypto_update(self):
 		if NavigationInstance.instance is not None:
@@ -147,24 +147,15 @@ class ServiceInfoBar(GUIAddon):
 	def detectVisible(self, key):
 		if self.nav is not None:
 			service = self.nav.getCurrentService()
+			pending_service_ref = self.nav.getCurrentServiceReferenceOriginal()
+			pending_sref = pending_service_ref and pending_service_ref.toString() or ""
 			info = service and service.info()
 			isRef = isinstance(service, eServiceReference)
 			# self.current_info = info
 			if not info:
 				return None
-			sref = ""
-			if isRef:
-				sref = service.toString()
-			else:
-				sref = info.getInfoString(iServiceInformation.sServiceref)
 
-			is_streamed = False
-
-			if not isRef:
-				if service.streamed() is not None and (((self.streamServer is not None and self.streamServer.getConnectedClients()) or StreamServiceList) and True or False):
-					is_streamed = True
-
-			if "%3a//" in sref and not is_streamed:
+			if "%3a//" in pending_sref and pending_service_ref and not pending_service_ref.getStreamRelay():
 				self.is_cryptedDetected = False
 
 			video_height = None
@@ -193,7 +184,7 @@ class ServiceInfoBar(GUIAddon):
 							return key
 						idx += 1
 			elif key == "crypt" and not isRef:
-				if "%3a//" in sref and not is_streamed:
+				if "%3a//" in pending_sref and pending_service_ref and not pending_service_ref.getStreamRelay():
 					return key + "_off"
 				if info.getInfo(iServiceInformation.sIsCrypted) == 1:
 					self.is_cryptedDetected = True
@@ -219,7 +210,7 @@ class ServiceInfoBar(GUIAddon):
 				if service.streamed() is not None and ((self.streamServer.getConnectedClients() or StreamServiceList) and True or False):
 					return key
 			elif key == "currentCrypto":
-				if "%3a//" in sref and not is_streamed:
+				if "%3a//" in pending_sref and pending_service_ref and not pending_service_ref.getStreamRelay():
 					self.refreshCryptoInfo.stop()
 					self.current_crypto = ""
 					return key + "_off"
@@ -256,11 +247,11 @@ class ServiceInfoBar(GUIAddon):
 				if string:
 					return key
 			elif key == "catchup":
-				match = re.search(r"catchupdays=(\d*)", sref)
+				match = re.search(r"catchupdays=(\d*)", pending_sref)
 				if match and int(match.group(1)) > 0:
 					return key
 			elif key == "servicetype":
-				if "%3a//" in sref.lower() and "127.0.0.1" not in sref and "localhost" not in sref and service.streamed() is not None:
+				if "%3a//" in pending_sref.lower() and pending_service_ref and not pending_service_ref.getStreamRelay():
 					return "iptv"
 				elif not isRef:
 					if self.frontendInfoSource:
