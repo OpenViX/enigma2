@@ -170,7 +170,8 @@ class HotPlugManager:
 					if DEVPATH.startswith(physdevprefix):
 						description = _(pdescription)
 
-				text = f"{_("A new storage device has been connected:")}\n{ID_MODEL} - ({bytesToHumanReadable(ID_PART_ENTRY_SIZE * 512)})\n{description}"
+				text = _("A new storage device has been connected:")
+				text = f"{text}\n{ID_MODEL} - ({bytesToHumanReadable(ID_PART_ENTRY_SIZE * 512)})\n{description}"
 
 				def newDeviceCallback(answer):
 					if answer:

@@ -127,7 +127,7 @@ def addInstallTask(job, package):
 	task = Components.Task.LoggingTask(job, _("Update packages..."))
 	task.setTool("opkg")
 	task.args.append("update")
-	task = Components.Task.LoggingTask(job, _(f"Install '{package}'"))
+	task = Components.Task.LoggingTask(job, _("Install '%s'") % package)
 	task.setTool("opkg")
 	task.args.append("install")
 	task.args.append(package)
@@ -868,7 +868,7 @@ class HarddiskManager:
 			description = readFile(ospath.join(physicalDevice, "name"))
 			if description is None:
 				# print(f"[Harddisk][getUserfriendlyDeviceName] Error: Couldn't read harddisk model on '{device}' ('{physicalDevice}')!")
-				description = _(f"Device {dev}")
+				description = _("Device %s") % dev
 		if part:  # and part != 1:  # Not wholedisk and not partition 1.
 			description = "%s %s" % (description, _("(Partition %d)") % part)
 		return description

@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-07 19:53+0100\n"
-"PO-Revision-Date: 2025-01-01 09:40+0100\n"
+"POT-Creation-Date: 2025-03-03 18:43+0100\n"
+"PO-Revision-Date: 2025-03-03 19:10+0100\n"
 "Last-Translator: Rob van der Does <robvddoes@gmail.com>\n"
 "Language-Team: ViX/DAX\n"
 "Language: it\n"
@@ -1583,6 +1583,9 @@ msgstr "È possibile creare un backup completo dell'immagine in qualsiasi moment
 msgid "A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s)."
 msgstr "Un'evidenziazione sull'immagine del telecomando mostra a quale pulsante fa riferimento la guida. Se più di un pulsante esegue la funzione indicata, verrà mostrata più di un'evidenziazione. Il testo sotto l'elenco indica se la funzione prevede una pressione prolungata dei pulsanti."
 
+msgid "A new storage device has been connected:"
+msgstr "È stato collegato un nuovo dispositivo di archiviazione:"
+
 #, python-format
 msgid ""
 "A recording has been started:\n"
@@ -2044,6 +2047,9 @@ msgstr "Consenti 10 bit"
 msgid "Allow 12bit"
 msgstr "Consenti 12 bit"
 
+msgid "Allow CEC address change *"
+msgstr "Consenti la modifica dell'indirizzo CEC *"
+
 msgid "Allow fast skin reload"
 msgstr "Rilettura automatica"
 
@@ -2058,6 +2064,9 @@ msgstr "Consente sottotitoli per non udenti"
 
 msgid "Allow unstable (experimental) updates"
 msgstr "Consente aggiornamenti instabili (sperimentali)"
+
+msgid "Allows swapping between oe-alliance/branding or oe-alliance/remotes for button position mapping and rc graphic."
+msgstr "Consente lo scambio tra oe-alliance/branding o oe-alliance/remotes per la mappatura della posizione dei pulsanti e la grafica rc."
 
 msgid "Allows the %s %s to load the saved EPG data regularly."
 msgstr "Permette al %s %s di ricaricare l'EPG a intervalli regolari."
@@ -3108,6 +3117,12 @@ msgstr "CCcam non può essere eseguito mentre MGcamd è in esecuzione"
 msgid "CCcam can't run whilst MGcamd is running."
 msgstr "CCcam non può essere eseguito mentre MGcamd è in esecuzione"
 
+msgid "CEC address *"
+msgstr "Indirizzo CEC *"
+
+msgid "CEC address, to override enable CEC address change. *Reboot required to activate"
+msgstr "Indirizzo CEC, per sovrascrivere abilitare la modifica dell'indirizzo CEC. *Riavvio richiesto per attivare"
+
 msgid "CH"
 msgstr "CH"
 
@@ -3116,7 +3131,7 @@ msgid "CH%s"
 msgstr "CH%s"
 
 msgid "CHANGE BOUQUET"
-msgstr "MODIFICA BOUQUET"
+msgstr "CAMBIA BOUQUET"
 
 #, python-format
 msgid "CI %s enabled"
@@ -5925,6 +5940,9 @@ msgstr ""
 msgid "Enabled"
 msgstr "Abilitato"
 
+msgid "Enabled *"
+msgstr "Abilitato *"
+
 msgid "Encrypted TV"
 msgstr "TV Codificato"
 
@@ -6690,9 +6708,6 @@ msgstr "Pesca"
 msgid "Fitness & Health"
 msgstr "fitness e salute"
 
-msgid "Fix CEC address setting, default is 1.0.0.0"
-msgstr "Correggi l'impostazione dell'indirizzo CEC, il valore predefinito è 1.0.0.0"
-
 msgid "Fixed"
 msgstr "Fissato"
 
@@ -6857,6 +6872,15 @@ msgstr "Da:"
 
 msgid "Front Panel Display"
 msgstr "Display LCD"
+
+msgid "Front USB"
+msgstr "USB frontale"
+
+msgid "Front USB 3.0"
+msgstr "USB 3.0 frontale"
+
+msgid "Front panel USB"
+msgstr "USB pannello frontale"
 
 msgid "Front panel settings"
 msgstr "Configurazioni Display LCD"
@@ -7825,9 +7849,6 @@ msgstr "Spegnimento immediato"
 msgid "Immediately restart selected cams."
 msgstr "Riavvia immediatamente le camme selezionate."
 
-msgid "In Developer images only. Allows swapping between oe-alliance/branding or oe-alliance/remotes for button position mapping and rc graphic."
-msgstr "Solo nelle immagini Developer. Consente lo scambio tra oe-alliance/branding o oe-alliance/remotes per la mappatura della posizione dei pulsanti e la grafica rc."
-
 msgid "In Setup screens choose whether to show the default value of the selected item in the description field."
 msgstr "Permette di scegliere se mostrare o no il valore di default nel campo descrizione dell'opzione selezionata."
 
@@ -8755,6 +8776,9 @@ msgstr "In cascata da:"
 msgid "Lower Framerate save CPU Time"
 msgstr "Bassa freq. fotogrammi risparmia CPU"
 
+msgid "Lower USB"
+msgstr "USB inferiore"
+
 msgid "Lower case"
 msgstr "Minuscole"
 
@@ -9030,6 +9054,9 @@ msgstr "Messaggi"
 
 msgid "Mexico"
 msgstr ""
+
+msgid "MicroSD"
+msgstr "MicroSD"
 
 msgid "Micronesia (Federated States of)"
 msgstr ""
@@ -10580,6 +10607,7 @@ msgstr "Rimuovere definitivamente tutte le registrazioni dal cestino?"
 msgid "Permanently ignore this device"
 msgstr "Ignora definitivamente questo dispositivo"
 
+#, python-format
 msgid "Permanently mount as %s"
 msgstr "Monta definitivamente come %s"
 
@@ -11681,6 +11709,36 @@ msgstr "Aggiornare il frontprocessor e riavviare subito?"
 msgid "Really upgrade your %s %s and reboot now?"
 msgstr "Aggiornare %s %s e riavviare subito?"
 
+msgid "Rear Left USB"
+msgstr "USB posteriore sinistro"
+
+msgid "Rear Left USB 3.0"
+msgstr "USB 3.0 posteriore sinistro"
+
+msgid "Rear Lower USB"
+msgstr "USB posteriore inferiore"
+
+msgid "Rear Lower USB 3.0"
+msgstr "USB 3.0 posteriore inferiore"
+
+msgid "Rear MicroSD"
+msgstr "MicroSD posteriore"
+
+msgid "Rear Right USB"
+msgstr "USB posteriore destro"
+
+msgid "Rear USB"
+msgstr "USB posteriore"
+
+msgid "Rear USB-C"
+msgstr "USB-C posteriore"
+
+msgid "Rear Upper USB"
+msgstr "USB posteriore superiore"
+
+msgid "Rear Upper USB 3.0"
+msgstr "USB 3.0 posteriore superiore"
+
 msgid "Reboot"
 msgstr "Riavvio completo"
 
@@ -11903,6 +11961,10 @@ msgstr "Sorgente del telecomando*"
 
 msgid "Remote control type"
 msgstr "Tipo di telecomando"
+
+#, python-format
+msgid "Remote:\t%s\n"
+msgstr "Telecomando:\t%s\n"
 
 msgid "Removal has completed."
 msgstr "Rimozione è stata completata."
@@ -12379,6 +12441,9 @@ msgstr "Impostazioni SABnzbd"
 msgid "SAT"
 msgstr ""
 
+msgid "SATA"
+msgstr "SATA"
+
 msgid "SCPC optimized search range"
 msgstr "Campo di ricerca ottimizzato per SCPC"
 
@@ -12393,6 +12458,9 @@ msgstr "SCR Unicable"
 
 msgid "SCREEN"
 msgstr ""
+
+msgid "SD"
+msgstr "SD"
 
 msgid "SDCARD"
 msgstr ""
@@ -12838,17 +12906,13 @@ msgid "Select 'Yes' to remove all media player resume data. Selecting this optio
 msgstr "Seleziona 'Sì' per rimuovere tutti i punti di ripristino del Player. La selezione di questa opzione rimuoverà i dati utilizzati per consentire la ripresa dalla posizione interrotta l'ultima volta. La posizione di riproduzione non viene influenzata."
 
 msgid "Select 'Yes' to remove all network data. Selecting this option will remove all network data including automounts and network connection data including connection accounts and passwords. This could cause some Enigma2 functions to fail if they are configured to use these network resources."
-msgstr ""
-"Seleziona 'Sì' per rimuovere tutti i dati di rete. Selezionando questa opzione verranno rimossi tutti i dati di rete, inclusi i mount automatici e i dati di connessione di rete, inclusi gli account di connessione e le password. Ciò potrebbe causare il fallimento di alcune funzioni di Enigma2 se sono configurate per utilizzare "
-"queste risorse di rete."
+msgstr "Seleziona 'Sì' per rimuovere tutti i dati di rete. Selezionando questa opzione verranno rimossi tutti i dati di rete, inclusi i mount automatici e i dati di connessione di rete, inclusi gli account di connessione e le password. Ciò potrebbe causare il fallimento di alcune funzioni di Enigma2 se sono configurate per utilizzare queste risorse di rete."
 
 msgid "Select 'Yes' to remove all other files and directories not covered by the options above."
 msgstr "Seleziona 'Sì' per eliminare tutti i file e la cartella che non appartengono a una delle opzioni precedenti"
 
 msgid "Select 'Yes' to remove all plugin configuration data. Selecting this option will remove all plugin configuration data that is stored in the Enigma2 configuration folder. This will cause all affected plugins to return to their default settings. This could cause some plugins to not function until configured."
-msgstr ""
-"Seleziona 'Sì' per rimuovere tutti i dati di configurazione del plugin. Selezionando questa opzione verranno rimossi tutti i dati di configurazione del plugin memorizzati nella cartella di configurazione di Enigma2. Ciò farà sì che tutti i plugin interessati tornino alle loro impostazioni predefinite. Ciò potrebbe causare il "
-"mancato funzionamento di alcuni plugin finché non vengono configurati."
+msgstr "Seleziona 'Sì' per rimuovere tutti i dati di configurazione del plugin. Selezionando questa opzione verranno rimossi tutti i dati di configurazione del plugin memorizzati nella cartella di configurazione di Enigma2. Ciò farà sì che tutti i plugin interessati tornino alle loro impostazioni predefinite. Ciò potrebbe causare il mancato funzionamento di alcuni plugin finché non vengono configurati."
 
 msgid "Select 'Yes' to remove all settings, tuning data, timers, resume pointers etc. Selecting this option will restore the configuration to the initial settings before any configuration settings were applied. This is the most reliable form of Factory Reset."
 msgstr "Seleziona 'Sì' per eliminare tutte le impostazioni, liste canali, timer, punti di ripristino ecc. Questo è il modo migliore per ripristinare le impostazioni di fabbrica ."
@@ -13430,9 +13494,6 @@ msgstr "Imposta predefiniti"
 
 msgid "Set end time"
 msgstr "Imposta ora fine"
-
-msgid "Set fixed CEC address"
-msgstr "Imposta indirizzo CEC statico"
 
 msgid "Set fps for external subtitles"
 msgstr "Imposta fps per sottotitoli esterni"
@@ -14407,9 +14468,6 @@ msgstr "Configurazione MiniDLNA mancante"
 
 msgid "Sorry your uShare config is missing"
 msgstr "Configurazione uShare mancante"
-
-msgid "Sorry, but the file is not compatible with this image version."
-msgstr "Il file non è compatibile con questa versione dell’immagine."
 
 msgid "Sorry, but the restore failed."
 msgstr "Ripristino fallito!"
@@ -16454,6 +16512,9 @@ msgstr "Uphops: "
 msgid "Upon completion the receiver will reboot and display the First Install Wizard."
 msgstr "Al termine, il ricevitore si riavvierà e visualizzerà la procedura guidata di prima installazione."
 
+msgid "Upper USB"
+msgstr "USB superiore"
+
 msgid "Upper case"
 msgstr "Maiuscolo"
 
@@ -16990,6 +17051,9 @@ msgstr "Attendere, scansione in corso…"
 msgid "Waiting"
 msgstr "In attesa"
 
+msgid "Waiting for mount"
+msgstr "In attesa de la mount."
+
 msgid "Waiting for mount."
 msgstr "attendere la mount."
 
@@ -17227,6 +17291,9 @@ msgstr "Abilitando questa funzione il ricevitore si riattiverà automaticamente 
 
 msgid "When enabled the set top box is able to wakeup on LAN"
 msgstr "Se abilitata, il box è in grado di riattivarsi dalla LAN"
+
+msgid "When enabled will allow CEC address change. *Reboot required to activate"
+msgstr "Se abilitato, consentirà la modifica dell'indirizzo CEC. *Riavvio richiesto per l'attivazione"
 
 msgid "When enabled, AIT data will be included in http streams. This allows a client receiver to use HbbTV."
 msgstr ""
@@ -18312,7 +18379,10 @@ msgid "drama (general)"
 msgstr "drammatico (generico)"
 
 msgid "eMMC"
-msgstr ""
+msgstr "eMMC"
+
+msgid "eSATA"
+msgstr "eSATA"
 
 msgid "east"
 msgstr "Est"

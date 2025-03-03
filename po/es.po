@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-07 19:53+0100\n"
-"PO-Revision-Date: 2024-12-29 10:13+0100\n"
+"POT-Creation-Date: 2025-03-03 12:09+0100\n"
+"PO-Revision-Date: 2025-03-03 12:26+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: www.CostaBlancaTranslations.com <maria@CostaBlancaTranslations.com>\n"
 "Language: es\n"
@@ -1642,6 +1642,9 @@ msgstr "Se puede crear una copia de seguridad completa de la imagen en cualquier
 msgid "A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s)."
 msgstr "Un resaltado en la imagen del control remoto muestra a qué botón se refiere la ayuda. Si más de un botón realiza la función indicada, se mostrará más de un resaltado. El texto debajo de la lista indica si la función es para una pulsación prolongada del botón o los botones."
 
+msgid "A new storage device has been connected:"
+msgstr "Se ha conectado un nuevo dispositivo de almacenamiento:"
+
 #, python-format
 msgid ""
 "A recording has been started:\n"
@@ -2158,6 +2161,9 @@ msgstr "Permitir 10bit"
 msgid "Allow 12bit"
 msgstr "Permitir 12bit"
 
+msgid "Allow CEC address change *"
+msgstr "Permitir cambio de dirección de CEC *"
+
 msgid "Allow fast skin reload"
 msgstr "Permitir recarga rápida del skin"
 
@@ -2172,6 +2178,9 @@ msgstr "Permitir subtítulos para sordos"
 
 msgid "Allow unstable (experimental) updates"
 msgstr "Permitir actualizaciones inestables (experimentales)"
+
+msgid "Allows swapping between oe-alliance/branding or oe-alliance/remotes for button position mapping and rc graphic."
+msgstr "Permite cambiar entre oe-alliance/branding o oe-alliance/remotes para asignar la posición de los botones y el gráfico del mando"
 
 msgid "Allows the %s %s to load the saved EPG data regularly."
 msgstr "Permite que la %s %s cargar los datos grabados en el EPG periódicamente."
@@ -3294,6 +3303,12 @@ msgstr "CCcam no puede funcionar mientras funciona MGcamd"
 
 msgid "CCcam can't run whilst MGcamd is running."
 msgstr "CCcam no puede funcionar mientras funciona MGcamd."
+
+msgid "CEC address *"
+msgstr "Dirección CEC *"
+
+msgid "CEC address, to override enable CEC address change. *Reboot required to activate"
+msgstr "Dirección CEC, para anular la habilitación del cambio de dirección CEC. *Se requiere reiniciar para activar"
 
 msgid "CH"
 msgstr "CH"
@@ -6313,13 +6328,15 @@ msgstr "Habilitar para resaltar eventos que están actualmente en curso."
 msgid "Enable usage of tuners from another Enigma2 receiver on the local network. Remote tuners will be used when tuners are not available on this receiver. (No free tuner or service type is not available.)"
 msgstr "Habilite el uso de sintonizadores de otro receptor Enigma2 en la red local. Se utilizarán sintonizadores remotos cuando no haya sintonizadores disponibles en este receptor. (Cuándo no hay sintonizadores libres ni ningún tipo de servicio disponible)."
 
-#
 msgid "Enabled"
 msgstr "Activado"
 
+msgid "Enabled *"
+msgstr "Activado *"
+
 #
 msgid "Encrypted TV"
-msgstr "TV Encriptado:"
+msgstr "TV Encriptado"
 
 #
 msgid "Encrypted: "
@@ -7153,9 +7170,6 @@ msgstr "Pesca"
 msgid "Fitness & Health"
 msgstr "Salud y bienestar"
 
-msgid "Fix CEC address setting, default is 1.0.0.0"
-msgstr "Fijar la configuración de la dirección CEC, el valor predeterminado es 1.0.0.0"
-
 msgid "Fixed"
 msgstr "Fijo"
 
@@ -7337,6 +7351,16 @@ msgstr "De:"
 #
 msgid "Front Panel Display"
 msgstr "Panel frontal"
+
+msgid "Front USB"
+msgstr "USB frontal"
+
+msgid "Front USB 3.0"
+msgstr "USB 3.0 frontal"
+
+#
+msgid "Front panel USB"
+msgstr "USB del panel frontal"
 
 #
 msgid "Front panel settings"
@@ -8339,9 +8363,6 @@ msgstr "Apagado inmediato"
 
 msgid "Immediately restart selected cams."
 msgstr "Reiniciar inmediatamente las softcams seleccionadas."
-
-msgid "In Developer images only. Allows swapping between oe-alliance/branding or oe-alliance/remotes for button position mapping and rc graphic."
-msgstr "Solo en imágenes para desarrolladores. Permite cambiar entre oe-alliance/branding o oe-alliance/remotes para asignar la posición de los botones y el gráfico del mando"
 
 msgid "In Setup screens choose whether to show the default value of the selected item in the description field."
 msgstr "En las pantallas de configuración, elija si desea mostrar el valor predeterminado del elemento seleccionado en el campo de descripción."
@@ -9366,6 +9387,9 @@ msgstr "Bucle a"
 msgid "Lower Framerate save CPU Time"
 msgstr "Una menor velocidad de cuadros ahorra tiempo de CPU"
 
+msgid "Lower USB"
+msgstr "USB inferior"
+
 msgid "Lower case"
 msgstr "Minúscula"
 
@@ -9664,6 +9688,9 @@ msgstr "Mensajes"
 
 msgid "Mexico"
 msgstr "Méjico"
+
+msgid "MicroSD"
+msgstr "MicroSD"
 
 msgid "Micronesia (Federated States of)"
 msgstr "Micronesia"
@@ -11363,6 +11390,7 @@ msgstr "¿Borrar permanentemente todas las grabaciones en la papelera?"
 msgid "Permanently ignore this device"
 msgstr "Ignorar este dispositivo de forma permanente"
 
+#, python-format
 msgid "Permanently mount as %s"
 msgstr "Montar permanentemente como %s"
 
@@ -12604,6 +12632,36 @@ msgstr "¿Seguro que quieres actualizar el procesador frontal y reiniciar ahora?
 msgid "Really upgrade your %s %s and reboot now?"
 msgstr "¿Seguro que actualizas tu %s %s y reinicias ahora?"
 
+msgid "Rear Left USB"
+msgstr "USB trasero izquierdo"
+
+msgid "Rear Left USB 3.0"
+msgstr "USB 3.0 trasero izquierdo"
+
+msgid "Rear Lower USB"
+msgstr "USB trasero inferior"
+
+msgid "Rear Lower USB 3.0"
+msgstr "USB 3.0 trasero inferior"
+
+msgid "Rear MicroSD"
+msgstr "MicroSD trasero"
+
+msgid "Rear Right USB"
+msgstr "USB trasero derecho"
+
+msgid "Rear USB"
+msgstr "USB trasero"
+
+msgid "Rear USB-C"
+msgstr "USB-C trasero derecho"
+
+msgid "Rear Upper USB"
+msgstr "USB trasero superior"
+
+msgid "Rear Upper USB 3.0"
+msgstr "USB 3.0 trasero superior"
+
 #
 msgid "Reboot"
 msgstr "Reiniciar"
@@ -12841,6 +12899,10 @@ msgstr "Fuente de mando*"
 
 msgid "Remote control type"
 msgstr "Tipo de mando"
+
+#, python-format
+msgid "Remote:\t%s\n"
+msgstr "Mando:\t%s\n"
 
 msgid "Removal has completed."
 msgstr "La eliminación se ha completado."
@@ -13381,6 +13443,9 @@ msgstr "Configuración SABnzbd"
 msgid "SAT"
 msgstr "SAT"
 
+msgid "SATA"
+msgstr "SATA"
+
 msgid "SCPC optimized search range"
 msgstr "Rango de búsqueda optimizado de SCPC"
 
@@ -13397,6 +13462,9 @@ msgstr "SCR Unicable"
 
 msgid "SCREEN"
 msgstr "SCREEN"
+
+msgid "SD"
+msgstr "SD"
 
 msgid "SDCARD"
 msgstr "SDCARD"
@@ -14521,9 +14589,6 @@ msgstr "Elegir defecto"
 msgid "Set end time"
 msgstr "Configurar la hora final."
 
-msgid "Set fixed CEC address"
-msgstr "Establecer dirección CEC fija"
-
 msgid "Set fps for external subtitles"
 msgstr "Establecer fps para subtítulos externos"
 
@@ -15593,9 +15658,6 @@ msgstr "Falta la configuración de MiniDLNA."
 
 msgid "Sorry your uShare config is missing"
 msgstr "Falta la configuración de uShare"
-
-msgid "Sorry, but the file is not compatible with this image version."
-msgstr "El archivo no es compatible con esta versión de imagen."
 
 msgid "Sorry, but the restore failed."
 msgstr "La restauración ha fallado."
@@ -17801,6 +17863,9 @@ msgstr "Saltos superiores:"
 msgid "Upon completion the receiver will reboot and display the First Install Wizard."
 msgstr "Una vez finalizado, el receptor se reiniciará y mostrará el Asistente de primera instalación."
 
+msgid "Upper USB"
+msgstr "USB superior"
+
 msgid "Upper case"
 msgstr "Mayuscula"
 
@@ -18373,6 +18438,9 @@ msgstr "Por favor espera mientras se busca..."
 msgid "Waiting"
 msgstr "Esperando"
 
+msgid "Waiting for mount"
+msgstr "Esperando para montaje"
+
 msgid "Waiting for mount."
 msgstr "Esperando para montaje."
 
@@ -18623,6 +18691,9 @@ msgstr "Cuando esta opción está habilitada, el receptor se reactivará automá
 
 msgid "When enabled the set top box is able to wakeup on LAN"
 msgstr "Cuando está habilitado, el decodificador puede activarse en LAN"
+
+msgid "When enabled will allow CEC address change. *Reboot required to activate"
+msgstr "Cuando está habilitado, se permitirá el cambio de dirección CEC. *Se requiere reiniciar para activar"
 
 msgid "When enabled, AIT data will be included in http streams. This allows a client receiver to use HbbTV."
 msgstr "Cuando está activado, los datos AIT se incluirán en los flujos http. Permite que un receptor cliente utilice HbbTV."
@@ -19761,6 +19832,9 @@ msgstr "drama (general)"
 
 msgid "eMMC"
 msgstr "eMMC"
+
+msgid "eSATA"
+msgstr "eSATA"
 
 #
 msgid "east"

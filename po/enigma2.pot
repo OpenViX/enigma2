@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-07 19:53+0100\n"
+"POT-Creation-Date: 2025-03-03 12:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1469,6 +1469,9 @@ msgid "A full image backup can be created at any time."
 msgstr ""
 
 msgid "A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s)."
+msgstr ""
+
+msgid "A new storage device has been connected:"
 msgstr ""
 
 #, python-format
@@ -5622,6 +5625,15 @@ msgstr ""
 msgid "From:"
 msgstr ""
 
+msgid "Front USB"
+msgstr ""
+
+msgid "Front USB 3.0"
+msgstr ""
+
+msgid "Front panel USB"
+msgstr ""
+
 msgid "Full factory reset"
 msgstr ""
 
@@ -7122,6 +7134,9 @@ msgstr ""
 msgid "Loop through from"
 msgstr ""
 
+msgid "Lower USB"
+msgstr ""
+
 msgid "Lower case"
 msgstr ""
 
@@ -7355,6 +7370,9 @@ msgid "Messages"
 msgstr ""
 
 msgid "Mexico"
+msgstr ""
+
+msgid "MicroSD"
 msgstr ""
 
 msgid "Micronesia (Federated States of)"
@@ -9599,6 +9617,36 @@ msgstr ""
 msgid "Really upgrade your %s %s and reboot now?"
 msgstr ""
 
+msgid "Rear Left USB"
+msgstr ""
+
+msgid "Rear Left USB 3.0"
+msgstr ""
+
+msgid "Rear Lower USB"
+msgstr ""
+
+msgid "Rear Lower USB 3.0"
+msgstr ""
+
+msgid "Rear MicroSD"
+msgstr ""
+
+msgid "Rear Right USB"
+msgstr ""
+
+msgid "Rear USB"
+msgstr ""
+
+msgid "Rear USB-C"
+msgstr ""
+
+msgid "Rear Upper USB"
+msgstr ""
+
+msgid "Rear Upper USB 3.0"
+msgstr ""
+
 msgid "Reboot"
 msgstr ""
 
@@ -9765,6 +9813,10 @@ msgid "Remote box"
 msgstr ""
 
 msgid "Remote control type"
+msgstr ""
+
+#, python-format
+msgid "Remote:\t%s\n"
 msgstr ""
 
 msgid "Removal has completed."
@@ -10179,6 +10231,9 @@ msgstr ""
 msgid "SAT"
 msgstr ""
 
+msgid "SATA"
+msgstr ""
+
 msgid "SCPC optimized search range"
 msgstr ""
 
@@ -10192,6 +10247,9 @@ msgid "SCR Unicable"
 msgstr ""
 
 msgid "SCREEN"
+msgstr ""
+
+msgid "SD"
 msgstr ""
 
 msgid "SDCARD"
@@ -11685,9 +11743,6 @@ msgid "Sorry your MiniDLNA config is missing"
 msgstr ""
 
 msgid "Sorry your uShare config is missing"
-msgstr ""
-
-msgid "Sorry, but the file is not compatible with this image version."
 msgstr ""
 
 msgid "Sorry, but the restore failed."
@@ -13346,6 +13401,9 @@ msgstr ""
 msgid "Upon completion the receiver will reboot and display the First Install Wizard."
 msgstr ""
 
+msgid "Upper USB"
+msgstr ""
+
 msgid "Upper case"
 msgstr ""
 
@@ -13755,6 +13813,9 @@ msgid "Wait please while scanning..."
 msgstr ""
 
 msgid "Waiting"
+msgstr ""
+
+msgid "Waiting for mount"
 msgstr ""
 
 msgid "Waiting for mount."
@@ -14707,6 +14768,9 @@ msgid "drama (general)"
 msgstr ""
 
 msgid "eMMC"
+msgstr ""
+
+msgid "eSATA"
 msgstr ""
 
 msgid "east"
@@ -16075,6 +16139,9 @@ msgstr ""
 msgid "Alignment of timeline date"
 msgstr ""
 
+msgid "Allow CEC address change *"
+msgstr ""
+
 msgid "Allow fast skin reload"
 msgstr ""
 
@@ -16088,6 +16155,9 @@ msgid "Allow subtitles for hearing impaired"
 msgstr ""
 
 msgid "Allow unstable (experimental) updates"
+msgstr ""
+
+msgid "Allows swapping between oe-alliance/branding or oe-alliance/remotes for button position mapping and rc graphic."
 msgstr ""
 
 msgid "Allows the %s %s to load the saved EPG data regularly."
@@ -16229,6 +16299,12 @@ msgid "Broadcasters sometimes prefix event names with 'New: ' or 'Live: '. Choos
 msgstr ""
 
 msgid "Broadcasters sometimes split long event names into the event description using ... Choose whether to prevent this behaviour."
+msgstr ""
+
+msgid "CEC address *"
+msgstr ""
+
+msgid "CEC address, to override enable CEC address change. *Reboot required to activate"
 msgstr ""
 
 msgid "Can be used for different fps between external subtitles and video."
@@ -16825,6 +16901,9 @@ msgstr ""
 msgid "Enable to highlight events that are currently in progress."
 msgstr ""
 
+msgid "Enabled *"
+msgstr ""
+
 msgid "Enigma2 debug level."
 msgstr ""
 
@@ -16874,9 +16953,6 @@ msgid "Final scroll delay"
 msgstr ""
 
 msgid "Finetune"
-msgstr ""
-
-msgid "Fix CEC address setting, default is 1.0.0.0"
 msgstr ""
 
 msgid "Font size"
@@ -17054,9 +17130,6 @@ msgid "Ignore DVB-S namespace sub network"
 msgstr ""
 
 msgid "Ignore DVB-T namespace sub network"
-msgstr ""
-
-msgid "In Developer images only. Allows swapping between oe-alliance/branding or oe-alliance/remotes for button position mapping and rc graphic."
 msgstr ""
 
 msgid "In Setup screens choose whether to show the default value of the selected item in the description field."
@@ -17585,9 +17658,6 @@ msgid "Set LED Color or disable the LED."
 msgstr ""
 
 msgid "Set end time"
-msgstr ""
-
-msgid "Set fixed CEC address"
 msgstr ""
 
 msgid "Set fps for external subtitles"
@@ -18302,6 +18372,9 @@ msgid "When enabled the receiver will automatically wake from standby when the T
 msgstr ""
 
 msgid "When enabled the set top box is able to wakeup on LAN"
+msgstr ""
+
+msgid "When enabled will allow CEC address change. *Reboot required to activate"
 msgstr ""
 
 msgid "When enabled, AIT data will be included in http streams. This allows a client receiver to use HbbTV."
