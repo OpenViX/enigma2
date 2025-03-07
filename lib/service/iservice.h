@@ -65,6 +65,7 @@ public:
 	void setPath( const std::string &n ) { path=n; }
 	void setCompareSref( const std::string &n, bool isSR = false) { compareSref=n; isStreamRelay=isSR; }
 	bool getStreamRelay() const { return isStreamRelay; }
+	std::string getCompareSref() const { return compareSref; }
 	
 
 	unsigned int getUnsignedData(unsigned int num) const
