@@ -111,6 +111,9 @@ class Navigation:
 		self.playService(self.currentlyPlayingServiceOrGroup, forceRestart=True)
 
 	def playService(self, ref, checkParentalControl=True, forceRestart=False, adjust=True, event=None):
+		if exists("/proc/stb/lcd/symbol_signal") and hasattr(config.lcd, "mode"):
+			open("/proc/stb/lcd/symbol_signal", "w").write("1" if ref and "0:0:0:0:0:0:0:0:0" not in ref.toString() and config.lcd.mode.value else "0")
+
 		# Some plugins send None as ref becasue want to shutdown enigma play system.
 		# So we have to stop current service if someone send None.
 		if ref is None:
@@ -125,19 +128,16 @@ class Navigation:
 		if InfoBarInstance:
 			current_service_source = InfoBarInstance.session.screen["CurrentService"]
 
-		if "%3a//" in ref.toString():
-			self.currentlyPlayingServiceReference = None
-			self.currentlyPlayingService = None
-			if current_service_source:
-				current_service_source.newService(False)
-
 		if ref and oldref and ref == oldref and not forceRestart:
 			print("[Navigation] ignore request to play already running service(1)")
 			return 1
 		print("[Navigation] playing ref", ref and ref.toString())
 
-		if exists("/proc/stb/lcd/symbol_signal") and hasattr(config.lcd, "mode"):
-			open("/proc/stb/lcd/symbol_signal", "w").write("1" if ref and "0:0:0:0:0:0:0:0:0" not in ref.toString() and config.lcd.mode.value else "0")
+		if "%3a//" in ref.toString():
+			self.currentlyPlayingServiceReference = None
+			self.currentlyPlayingService = None
+			if current_service_source:
+				current_service_source.newService(False)
 
 		self.currentlyPlayingServiceReference = ref
 		self.currentlyPlayingServiceOrGroup = ref
