@@ -133,12 +133,6 @@ class Navigation:
 			return 1
 		print("[Navigation] playing ref", ref and ref.toString())
 
-		if "%3a//" in ref.toString():
-			self.currentlyPlayingServiceReference = None
-			self.currentlyPlayingService = None
-			if current_service_source:
-				current_service_source.newService(False)
-
 		self.currentlyPlayingServiceReference = ref
 		self.currentlyPlayingServiceOrGroup = ref
 		self.originalPlayingServiceReference = ref

@@ -40,7 +40,7 @@ class ServiceName(Converter):
 
 	@cached
 	def getText(self):
-		service = self.source.service
+		service = self.source.service or (hasattr(self.source, "serviceref") and self.source.serviceref)
 		info = None
 		if isinstance(service, eServiceReference):
 			info = self.source.info
