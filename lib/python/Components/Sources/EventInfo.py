@@ -118,6 +118,7 @@ class EventInfo(PerServiceBase, Source):
 
 	def __init__(self, navcore, now_or_next):
 		self.now_or_next = now_or_next
+		self.__service = None
 		self.timer = eTimer()
 		self.timer.callback.append(boundFunction(self.gotEvent, iPlayableService.evUpdatedEventInfo, True))
 		Source.__init__(self)
@@ -129,7 +130,6 @@ class EventInfo(PerServiceBase, Source):
 				iPlayableService.evEnd: self.gotEvent
 			}, with_event=True)
 		self.epgQuery = eEPGCache.getInstance().lookupEventTime
-		self.__service = None
 
 	@cached
 	def getEvent(self):
@@ -156,7 +156,7 @@ class EventInfo(PerServiceBase, Source):
 	def gotEvent(self, what, from_timer=False):
 		self.timer.stop()
 		print("[EventInfo] gotEvent, type:", ("'now'" if self.now_or_next == self.NOW else "'next'") + ",", "what:", "'%s'" % str({iPlayableService.evStart: "evStart", iPlayableService.evUpdatedInfo: "evUpdatedInfo", iPlayableService.evUpdatedEventInfo: "evUpdatedEventInfo", iPlayableService.evEnd: "evEnd"}.get(what, "Unknown")) + ",", "is timed repeat:", str(from_timer))
-		if what == iPlayableService.evEnd:
+		if what == iPlayableService.evEnd and not self.__service:
 			self.changed((self.CHANGED_CLEAR,))
 		else:
 			self.changed((self.CHANGED_ALL,))

@@ -1,6 +1,7 @@
-from os import listdir, path, popen
+from os import listdir, path as ospath, popen
 from re import search
-from enigma import eTimer, getDesktop
+from sys import version_info
+from enigma import eTimer, getDesktop, getEnigmaLastCommitDate, getEnigmaLastCommitHash
 from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -11,14 +12,94 @@ from Components.Network import iNetwork
 from Components.NimManager import nimmanager
 from Components.Pixmap import MultiPixmap
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo, CHIPSET, SOC_BRAND
+from Components.SystemInfo import SystemInfo, CHIPSET, KERNEL, MODEL, SOC_BRAND
 from Screens.GitCommitInfo import CommitInfo
 from Screens.Screen import Screen, ScreenSummary
 from Screens.SoftwareUpdate import UpdatePlugin
 from Screens.TextBox import TextBox
-from Tools.Directories import fileHas, pathExists, isPluginInstalled
+from Tools.Directories import fileHas, fileReadLines, isPluginInstalled
 from Tools.Multiboot import GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
+
+
+def getFlashDateString():
+	if ospath.isfile('/etc/install'):
+		with open("/etc/install", "r") as f:
+			return _formatDate(f.read())
+	else:
+		return _("unknown")
+
+
+def driversDate():
+	return _formatDate(SystemInfo["driversdate"])
+
+
+def getLastCommitDate():
+	return _formatDate(getEnigmaLastCommitDate().replace("-", ""))
+
+
+def getLastCommitHash():
+	return getEnigmaLastCommitHash()[:7]
+
+
+def _formatDate(Date):
+	# expected input = "YYYYMMDD"
+	if len(Date) != 8 or not Date.isnumeric():
+		return _("unknown")
+	from Components.config import config
+	return config.usage.date.dateFormatAbout.value % {"year": Date[0:4], "month": Date[4:6], "day": Date[6:8]}
+
+
+def getFFmpegVersionString():
+	lines = fileReadLines("/var/lib/opkg/info/ffmpeg.control")
+	if lines:
+		for line in lines:
+			if line[0:8] == "Version:":
+				return line[9:].split("+")[0]
+	return _("Not Installed")
+
+
+def getGStreamerVersionString():
+	try:
+		from glob import glob
+		gst = [x.split("Version: ") for x in open(glob("/var/lib/opkg/info/gstreamer[0-9].[0-9].control")[0], "r") if x.startswith("Version:")][0]
+		return gst[1].split("+")[0].split("-")[0].replace("\n", "")
+	except:
+		return _("unknown")
+
+
+def getsystemTemperature():
+	tempinfo = ""
+	if ospath.exists("/proc/stb/sensors/temp0/value"):
+		with open("/proc/stb/sensors/temp0/value", "r") as f:
+			tempinfo = f.read()
+	elif ospath.exists("/proc/stb/fp/temp_sensor"):
+		with open("/proc/stb/fp/temp_sensor", "r") as f:
+			tempinfo = f.read()
+	elif ospath.exists("/proc/stb/sensors/temp/value"):
+		with open("/proc/stb/sensors/temp/value", "r") as f:
+			tempinfo = f.read()
+	return tempinfo
+
+
+def getprocessorTemperature():
+	tempinfo = ""
+	if ospath.exists("/proc/stb/fp/temp_sensor_avs"):
+		with open("/proc/stb/fp/temp_sensor_avs", "r") as f:
+			tempinfo = f.read()
+	elif ospath.exists("/sys/devices/virtual/thermal/thermal_zone0/temp"):
+		try:
+			with open("/sys/devices/virtual/thermal/thermal_zone0/temp", "r") as f:
+				tempinfo = f.read()
+				tempinfo = tempinfo[:-4]
+		except:
+			tempinfo = ""
+	elif ospath.exists("/proc/hisi/msp/pm_cpu"):
+		try:
+			tempinfo = search(r"temperature = (\d+) degree", open("/proc/hisi/msp/pm_cpu").read()).group(1)  # noqa: W605
+		except:
+			tempinfo = ""
+	return tempinfo
 
 
 class AboutBase(TextBox):
@@ -56,55 +137,33 @@ class About(AboutBase):
 		Brands = {"meson": "MESON", "bcm": "Broadcom", "hisi": "Hisilicon"}
 		AboutText = ""
 		AboutText += _("Model:\t%s %s\n") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"])
-		AboutText += _("Chipset:\t%s %s\n") % (Brands.get(SOC_BRAND, SOC_BRAND), CHIPSET)
-
-		AboutText += _("CPU:\t%s %s %s\n") % (about.getCPUArch(), about.getCPUSpeedString(), about.getCpuCoresString())
-
-		AboutText += _("SoC:\t%s\n") % SystemInfo["socfamily"].upper()
-
-		if SystemInfo["boxtype"] in ("gbquad4k", "gbue4k", "gbx34k", "gbquad4kpro"):
+		AboutText += _("Chipset:\t%s %s\n") % (Brands.get(SOC_BRAND, SOC_BRAND), CHIPSET.replace("hi", "HI").replace("cv", "CV").replace("mv", "MV"))
+		CPUArch = about.getCPUArch(MODEL)
+		AboutText += _("CPU:\t%s %s %s\n") % (CPUArch[0], CPUArch[1], CPUArch[2])
+		# AboutText += _("SoC:\t%s\n") % SystemInfo["socfamily"].upper()
+		if ospath.exists('/sys/firmware/devicetree/base/bolt/tag'):
 			with open("/sys/firmware/devicetree/base/bolt/tag") as f:
-				AboutText += _("Bolt:%s\n") % f.read().strip()[0:4]
+				bootLoader = f.read().replace('\x00', '').replace('\n', '')
+				if SystemInfo["boxtype"] in ("gbquad4k", "gbue4k", "gbquad4kpro"):
+					AboutText += _("Bolt:\t%s\n") % bootLoader
+				else:
+					AboutText += _("Bootloader:\t%s\n") % bootLoader
 		AboutText += _("Remote:\t%s\n") % SystemInfo["RCName"]
 
-		tempinfo = ""
-		if path.exists("/proc/stb/sensors/temp0/value"):
-			with open("/proc/stb/sensors/temp0/value", "r") as f:
-				tempinfo = f.read()
-		elif path.exists("/proc/stb/fp/temp_sensor"):
-			with open("/proc/stb/fp/temp_sensor", "r") as f:
-				tempinfo = f.read()
-		elif path.exists("/proc/stb/sensors/temp/value"):
-			with open("/proc/stb/sensors/temp/value", "r") as f:
-				tempinfo = f.read()
-		if tempinfo and int(tempinfo.replace("\n", "")) > 0:
-			AboutText += _("System temp:\t%s") % tempinfo.replace("\n", "").replace(" ", "") + "\xb0" + "C\n"
+		SystemTemperature = getsystemTemperature()
+		if SystemTemperature and int(SystemTemperature.replace("\n", "")) > 0:
+			AboutText += _("System temperature:\t%s") % SystemTemperature.replace("\n", "").replace(" ", "") + "\xb0" + "C\n"
 
-		tempinfo = ""
-		if path.exists("/proc/stb/fp/temp_sensor_avs"):
-			with open("/proc/stb/fp/temp_sensor_avs", "r") as f:
-				tempinfo = f.read()
-		elif path.exists("/sys/devices/virtual/thermal/thermal_zone0/temp"):
-			try:
-				with open("/sys/devices/virtual/thermal/thermal_zone0/temp", "r") as f:
-					tempinfo = f.read()
-					tempinfo = tempinfo[:-4]
-			except:
-				tempinfo = ""
-		elif path.exists("/proc/hisi/msp/pm_cpu"):
-			try:
-				tempinfo = search(r"temperature = (\d+) degree", open("/proc/hisi/msp/pm_cpu").read()).group(1)  # noqa: W605
-			except:
-				tempinfo = ""
-		if tempinfo and int(tempinfo) > 0:
-			AboutText += _("Processor temp:\t%s") % tempinfo.replace("\n", "").replace(" ", "") + "\xb0" + "C\n"
+		ProcessorTemperature = getprocessorTemperature()
+		if ProcessorTemperature and int(ProcessorTemperature) > 0:
+			AboutText += _("Processor temperature:\t%s") % ProcessorTemperature.replace("\n", "").replace(" ", "") + "\xb0" + "C\n"
 
 		imageSubBuild = ""
 		if SystemInfo["imagetype"] != "release":
 			imageSubBuild = ".%s" % SystemInfo["imagedevbuild"]
 		AboutText += _("Image:\t%s.%s%s (%s)\n") % (SystemInfo["imageversion"], SystemInfo["imagebuild"], imageSubBuild, SystemInfo["imagetype"].title())
 
-		AboutText += _("Installed:\t%s\n") % about.getFlashDateString()
+		AboutText += _("Installed:\t%s\n") % getFlashDateString()
 
 		VuPlustxt = _("Vu+ Multiboot") + " - " if SystemInfo["HasKexecMultiboot"] else ""
 		if fileHas("/proc/cmdline", "rootsubdir=linuxrootfs0"):
@@ -127,11 +186,11 @@ class About(AboutBase):
 				else:
 					image -= 1
 			slotType = {"eMMC": _("eMMC"), "SDCARD": _("SDCARD"), "USB": _("USB")}.get(SystemInfo["canMultiBoot"][slot]["slotType"].replace(" ", ""), SystemInfo["canMultiBoot"][slot]["slotType"].replace(" ", ""))
-			part = _("slot %s (%s)") % (slot, slotType)
+			part = _("slot %s  (%s)") % (slot, slotType)
 			bootmode = _("bootmode = %s") % GetCurrentImageMode() if SystemInfo["canMode12"] else ""
-			AboutText += (_("Image Slot:\tStartup %s - %s %s") % (str(slot), part, bootmode)) + "\n"
+			AboutText += (_("Image Slot:\t %s %s") % (part, bootmode)) + "\n"
 
-		if SystemInfo["MachineName"] in ("ET8500") and path.exists("/proc/mtd"):
+		if SystemInfo["MachineName"] in ("ET8500") and ospath.exists("/proc/mtd"):
 			self.dualboot = self.dualBoot()
 			if self.dualboot:
 				AboutText += _("ET8500 Multiboot: Installed\n")
@@ -139,15 +198,16 @@ class About(AboutBase):
 		skinWidth = getDesktop(0).size().width()
 		skinHeight = getDesktop(0).size().height()
 
-		AboutText += _("Drivers:\t%s\n") % about.driversDate()
-		AboutText += _("Kernel:\t%s\n") % SystemInfo["kernel"]
-		AboutText += _("GStreamer:\t%s\n") % about.getGStreamerVersionString().replace("GStreamer ", "")
+		AboutText += _("Drivers:\t%s\n") % driversDate()
+		AboutText += _("Kernel:\t%s\n") % KERNEL
+		AboutText += _("GStreamer:\t%s\n") % getGStreamerVersionString().replace("GStreamer ", "")
+		AboutText += _("FFmpeg version:\t%s\n") % getFFmpegVersionString()
 		if isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value:
 			AboutText += _("4097 iptv player:\t%s\n") % config.plugins.serviceapp.servicemp3.player.value
 		else:
 			AboutText += _("4097 iptv player:\tDefault player\n")
-		AboutText += _("Python:\t%s\n") % SystemInfo["python"]
-		AboutText += _("Last E2 update:\t%s (%s)\n") % (about.getLastCommitHash(), about.getLastCommitDate())
+		AboutText += _("Python:\t%s.%s.%s\n") % (version_info.major, version_info.minor, version_info.micro)
+		AboutText += _("Last E2 update:\t%s (%s)\n") % (getLastCommitHash(), getLastCommitDate())
 		AboutText += _("E2 (re)starts:\t%s\n") % config.misc.startCounter.value
 		uptime = about.getBoxUptime()
 		if uptime:
@@ -163,13 +223,6 @@ class About(AboutBase):
 		elif fp_version != 0:
 			fp_version = _("FP version:\t%s") % fp_version
 			AboutText += fp_version + "\n"
-
-		bootloader = ""
-		if path.exists('/sys/firmware/devicetree/base/bolt/tag'):
-			f = open('/sys/firmware/devicetree/base/bolt/tag', 'r')
-			bootloader = f.readline().replace('\x00', '').replace('\n', '')
-			f.close()
-			AboutText += _("Bootloader:\t%s\n") % (bootloader)
 
 		self["AboutScrollLabel"].setText(AboutText)
 
@@ -316,9 +369,9 @@ class Devices(Screen):
 				if self.mountinfo:
 					self.mountinfo += "\n"
 				self.mountinfo += "%s (%sB, %sB %s)" % (ipaddress, mounttotal, mountfree, _("free"))
-		if pathExists("/media/autofs"):
+		if ospath.exists("/media/autofs"):
 			for entry in sorted(listdir("/media/autofs")):
-				mountEntry = path.join("/media/autofs", entry)
+				mountEntry = ospath.join("/media/autofs", entry)
 				self.mountinfo += _("%s is also enabled for autofs network mount \n") % (mountEntry)
 		if self.mountinfo:
 			self["mounts"].setText(self.mountinfo)
@@ -620,24 +673,13 @@ class AboutSummary(ScreenSummary):
 		self["AboutText"] = StaticText()
 		self.aboutText.append(_("OpenViX: %s") % SystemInfo["imageversion"] + "." + SystemInfo["imagebuild"] + "\n")
 		self.aboutText.append(_("Model: %s %s\n") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
-		self.aboutText.append(_("Updated: %s") % about.getLastCommitDate() + "\n")
-		tempinfo = ""
-		if path.exists("/proc/stb/sensors/temp0/value"):
-			with open("/proc/stb/sensors/temp0/value", "r") as f:
-				tempinfo = f.read()
-		elif path.exists("/proc/stb/fp/temp_sensor"):
-			with open("/proc/stb/fp/temp_sensor", "r") as f:
-				tempinfo = f.read()
-		elif path.exists("/proc/stb/sensors/temp/value"):
-			with open("/proc/stb/sensors/temp/value", "r") as f:
-				tempinfo = f.read()
-		if tempinfo and int(tempinfo.replace("\n", "")) > 0:
-			self.aboutText.append(_("System temperature: %s") % tempinfo.replace("\n", "") + "\xb0" + "C\n")
-		if path.exists("/proc/stb/info/chipset"):
-			chipset = open("/proc/stb/info/chipset", "r").read()
-			self.aboutText.append(_("Chipset: %s") % chipset.replace("\n", "") + "\n")
-		self.aboutText.append(_("Kernel: %s") % about.getKernelVersionString() + "\n")
-		self.aboutText.append(_("Drivers: %s") % about.driversDate() + "\n")
+		self.aboutText.append(_("Updated: %s") % getLastCommitDate() + "\n")
+		SystemTemperature = getsystemTemperature()
+		if SystemTemperature and int(SystemTemperature.replace("\n", "")) > 0:
+			self.aboutText.append(_("System temperature: %s") % SystemTemperature.replace("\n", "") + "\xb0" + "C\n")
+		self.aboutText.append(_("Chipset: %s") % CHIPSET.replace("\n", "").upper() + "\n")
+		self.aboutText.append(_("Kernel: %s") % KERNEL + "\n")
+		self.aboutText.append(_("Drivers: %s") % driversDate() + "\n")
 		self["AboutText"].text = "".join(self.aboutText)
 		self.timer = eTimer()
 		self.timer.callback.append(self.update)

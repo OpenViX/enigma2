@@ -568,9 +568,8 @@ class VIXBackupManager(Screen):
 							devmounts = []
 							self.plugfile = self.plugfiles[3]
 							# print("[BackupManager] self.plugfile, self.plugfiles", self.plugfile, self.plugfiles)
-							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if path.isdir(path.join("/media/", media)) and path.exists("/media/%s/%s" % (media, self.plugfile))]:
-								if media not in ("autofs", "net"):  # noqa: F821
-									devmounts.append(dir)
+							for dir in ["/media/%s/%s" % (media, self.plugfile) for media in listdir("/media/") if media not in ("autofs", "net") and path.isdir(path.join("/media/", media)) and path.exists("/media/%s/%s" % (media, self.plugfile))]:
+								devmounts.append(dir)
 							if len(devmounts):
 								for x in devmounts:
 									print("[BackupManager] search dir = %s" % devmounts)
@@ -754,63 +753,30 @@ class BackupSelection(Screen):
 
 
 class XtraPluginsSelection(Screen):
-	skin = ["""
-		<screen name="BackupSelection" position="center,center" size="%d,%d">
-			<panel name="__DynamicColorButtonTemplate__"/>
-			<widget name="checkList" position="%d,%d" size="%d,%d" itemHeight="%d" font="Regular;%d" transparent="1" scrollbarMode="showOnDemand"/>
-		</screen>""",
-			560, 400,  # screen
-			5, 50, 550, 250, 25, 19,
-			]  # noqa: E124
-
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		self.setTitle(_("Select extra packages folder"))
+		self.skinName = "Setup"
+		self.title = _("Select folder containing plugins(.ipk) and Save")
 
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 
-		defaultDir = config.backupmanager.backuplocation.value
-		self.filelist = FileList(defaultDir, showFiles=True, matchingPattern="^.*.(ipk)")
-		self["checkList"] = self.filelist
+		self["config"] = FileList(config.backupmanager.backuplocation.value, showFiles=True, matchingPattern="^.*.(ipk)")
 
 		self["actions"] = ActionMap(
-			["DirectionActions", "OkCancelActions", "ShortcutActions", "MenuActions"],
+			["DirectionActions", "SetupActions"],
 			{
-				"cancel": self.exit,
-				"red": self.exit,
-				"green": self.saveSelection,
+				"cancel": self.close,
+				"save": self.saveSelection,
 				"ok": self.okClicked,
-				"left": self.left,
-				"right": self.right,
-				"down": self.down,
-				"up": self.up,
-				"menu": self.exit,
+				"left": self["config"].pageUp,
+				"right": self["config"].pageDown,
+				"down": self["config"].down,
+				"up": self["config"].up,
 			}, -1)
-		self.onLayoutFinish.append(self.layoutFinished)
-
-	def layoutFinished(self):
-		idx = 0
-		self["checkList"].moveToIndex(idx)
-		self.setWindowTitle()
-
-	def setWindowTitle(self):
-		self.setTitle(_("Select folder containing plugins(.ipk) and Save"))
-
-	def up(self):
-		self["checkList"].up()
-
-	def down(self):
-		self["checkList"].down()
-
-	def left(self):
-		self["checkList"].pageUp()
-
-	def right(self):
-		self["checkList"].pageDown()
 
 	def saveSelection(self):
-		current = self["checkList"].getCurrent()[0]
+		current = self["config"].getCurrent()[0]
 		# print("[BackupManager][saveSelection] current[0] ", current[0])
 		ipkList = FileList(current[0], showDirectories=False, showFiles=True, showMountpoints=False, matchingPattern="^.*.(ipk)")
 		if ipkList.getFilename() is not None:
@@ -822,15 +788,9 @@ class XtraPluginsSelection(Screen):
 		else:
 			self.session.open(MessageBox, _("Please select folder that contains .ipk packages."), MessageBox.TYPE_INFO, timeout=10)
 
-	def exit(self):
-		self.close(None)
-
 	def okClicked(self):
-		if self.filelist.canDescent():
-			self.filelist.descent()
-
-	def closeRecursive(self):
-		self.close(True)
+		if self["config"].canDescent():
+			self["config"].descent()
 
 
 class VIXBackupManagerMenu(Setup):

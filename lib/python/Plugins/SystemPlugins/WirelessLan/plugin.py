@@ -18,15 +18,14 @@ from .Wlan import iWlan, iStatus, getWlanConfigName, existBcmWifi
 plugin_path = eEnv.resolve("${libdir}/enigma2/python/Plugins/SystemPlugins/WirelessLan")
 
 
-liste = ["Unencrypted", "WEP", "WPA", "WPA/WPA2", "WPA2"]
-
-weplist = ["ASCII", "HEX"]
+encryptList = ["Unencrypted", "WEP", "WPA", "WPA/WPA2", "WPA2"]
+wepList = ["ASCII", "HEX"]
 
 config.plugins.wlan = ConfigSubsection()
 config.plugins.wlan.essid = NoSave(ConfigText(default="", fixed_size=False))
 config.plugins.wlan.hiddenessid = NoSave(ConfigYesNo(default=False))
-config.plugins.wlan.encryption = NoSave(ConfigSelection(liste, default="WPA2"))
-config.plugins.wlan.wepkeytype = NoSave(ConfigSelection(weplist, default="ASCII"))
+config.plugins.wlan.encryption = NoSave(ConfigSelection(encryptList, default="WPA2"))
+config.plugins.wlan.wepkeytype = NoSave(ConfigSelection(wepList, default="ASCII"))
 config.plugins.wlan.psk = NoSave(ConfigPassword(default="", fixed_size=False))
 
 
@@ -70,17 +69,17 @@ class WlanStatus(Screen):
 		self.session = session
 		self.iface = iface
 
-		self["LabelBSSID"] = StaticText(_('Accesspoint:'))
-		self["LabelESSID"] = StaticText(_('SSID:'))
-		self["LabelQuality"] = StaticText(_('Link quality:'))
-		self["LabelSignal"] = StaticText(_('Signal strength:'))
-		self["LabelBitrate"] = StaticText(_('Bitrate:'))
-		self["LabelEnc"] = StaticText(_('Encryption:'))
+		self["LabelBSSID"] = StaticText(_("Accesspoint:"))
+		self["LabelESSID"] = StaticText(_("SSID:"))
+		self["LabelQuality"] = StaticText(_("Link quality:"))
+		self["LabelSignal"] = StaticText(_("Signal strength:"))
+		self["LabelBitrate"] = StaticText(_("Bitrate:"))
+		self["LabelEnc"] = StaticText(_("Encryption:"))
 
-		self["LabelChannel"] = StaticText(_('Channel:'))
-		self["LabelEncType"] = StaticText(_('Encryption Type:'))
-		self["LabelFrequency"] = StaticText(_('Frequency:'))
-		self["LabelFrequencyNorm"] = StaticText(_('Frequency Norm:'))
+		self["LabelChannel"] = StaticText(_("Channel:"))
+		self["LabelEncType"] = StaticText(_("Encryption Type:"))
+		self["LabelFrequency"] = StaticText(_("Frequency:"))
+		self["LabelFrequencyNorm"] = StaticText(_("Frequency Norm:"))
 
 		self["BSSID"] = StaticText()
 		self["ESSID"] = StaticText()
@@ -123,6 +122,7 @@ class WlanStatus(Screen):
 		self.setTitle(_("Wireless network state"))
 
 	def resetList(self):
+		print("[WiFi plugin] call getDataForInterface")
 		iStatus.getDataForInterface(self.iface, self.getInfoCB)
 
 	def getInfoCB(self, data, status):
@@ -147,7 +147,7 @@ class WlanStatus(Screen):
 					if "quality" in self:
 						self["quality"].setText(quality)
 
-					if status[self.iface]["bitrate"] == '0':
+					if status[self.iface]["bitrate"] == "0":
 						bitrate = _("Unsupported")
 					else:
 						bitrate = str(status[self.iface]["bitrate"]) + " Mb/s"
@@ -328,7 +328,7 @@ class WlanScan(Screen):
 		currentListIndex = None
 
 		for ap in self.oldlist.keys():
-			data = self.oldlist[ap]['data']
+			data = self.oldlist[ap]["data"]
 			if data is not None:
 				tmpList.append(data)
 
@@ -343,7 +343,7 @@ class WlanScan(Screen):
 					if entry[0] == currentListEntry[0]:
 						currentListIndex = idx
 					idx += 1
-			self['list'].setList(self.newAPList)
+			self["list"].setList(self.newAPList)
 			if currentListIndex is not None:
 				self["list"].setIndex(currentListIndex)
 			self["list"].updateList(self.newAPList)
@@ -361,9 +361,9 @@ class WlanScan(Screen):
 			compList = []
 			for ap in aps:
 				a = aps[ap]
-				if a['active']:
-					tmpList.append((a['essid'], a['bssid']))
-					compList.append((a['essid'], a['bssid'], a['encrypted'], a['iface'], a['maxrate'], a['signal'], a['frequency_norm']))
+				if a["active"]:
+					tmpList.append((a["essid"], a["bssid"]))
+					compList.append((a["essid"], a["bssid"], a["encrypted"], a["iface"], a["maxrate"], a["signal"], a["frequency_norm"]))
 
 			for entry in tmpList:
 				if entry[0] == "":
@@ -373,15 +373,15 @@ class WlanScan(Screen):
 			for entry in compList:
 				self.cleanList.append((entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6]))
 				if entry[0] not in self.oldlist:
-					self.oldlist[entry[0]] = {'data': entry}
+					self.oldlist[entry[0]] = {"data": entry}
 				else:
-					self.oldlist[entry[0]]['data'] = entry
+					self.oldlist[entry[0]]["data"] = entry
 
 		for entry in self.cleanList:
 			self.APList.append(self.buildEntryComponent(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6]))
 
 		if refresh is False:
-			self['list'].setList(self.APList)
+			self["list"].setList(self.APList)
 		self.listLength = len(self.APList)
 		self.setInfo()
 		self.rescanTimer.start(5000)
@@ -396,7 +396,7 @@ class WlanScan(Screen):
 
 	def buildWlanList(self):
 		self.WlanList = []
-		for entry in self['list'].list:
+		for entry in self["list"].list:
 			self.WlanList.append((entry[0], entry[0]))
 
 	def getLength(self):
@@ -428,9 +428,9 @@ def configStrings(iface):
 		psk = config.plugins.wlan.psk.value
 		essid = config.plugins.wlan.essid.value
 		ret += '\tpre-up wl-config.sh -m ' + encryption.lower() + ' -k ' + psk + ' -s "' + essid + '" \n'
-		ret += '\tpost-down wl-down.sh\n'
+		ret += "\tpost-down wl-down.sh\n"
 	else:
-		if driver == 'madwifi' and config.plugins.wlan.hiddenessid.value:
+		if driver == "madwifi" and config.plugins.wlan.hiddenessid.value:
 			ret += "\tpre-up iwconfig " + iface + " essid \"" + re_escape(config.plugins.wlan.essid.value) + "\" || true\n"
 		ret += "\tpre-up wpa_supplicant -i" + iface + " -c" + getWlanConfigName(iface) + " -B -dd -D" + driver + " || true\n"
 		ret += "\tpre-down wpa_cli -i" + iface + " terminate || true\n"

@@ -1,9 +1,11 @@
-from os import system, path as os_path, unlink, rename
+import glob
+from os import rename, system, unlink
+from os.path import exists
 import netifaces as ni
 from random import Random
 import string
 import time
-import glob
+
 from enigma import eTimer, eConsoleAppContainer
 
 from Components.ActionMap import ActionMap, NumberActionMap, HelpableActionMap
@@ -87,7 +89,7 @@ class NSCommon:
 	def removeComplete(self, result=None, retval=None, extra_args=None):
 		if self.reboot_at_end:
 			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox,
-				_('Your %s %s needs to be restarted to complete the removal of %s\nDo you want to reboot now ?') % (SystemInfo["MachineBrand"], SystemInfo["MachineName"], self.getTitle()), MessageBox.TYPE_YESNO)
+				_("Your %s %s needs to be restarted to complete the removal of %s\nDo you want to reboot now ?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"], self.getTitle()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_("Reboot required"))
 		else:
 			self.operationComplete()
@@ -99,7 +101,7 @@ class NSCommon:
 			self.session.openWithCallback(self.updateService(), MessageBox, ("%s" % result), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		elif self.reboot_at_end:
 			restartbox = self.session.openWithCallback(self.operationComplete, MessageBox,
-				_('Your %s %s needs to be restarted to complete the installation of %s\nDo you want to reboot now ?') % (SystemInfo["MachineBrand"], SystemInfo["MachineName"], self.getTitle()), MessageBox.TYPE_YESNO)
+				_("Your %s %s needs to be restarted to complete the installation of %s\nDo you want to reboot now ?") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"], self.getTitle()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_("Reboot required"))
 		else:
 			self.message.close()
@@ -116,7 +118,6 @@ class NSCommon:
 		self.ConsoleB.ePopen("/usr/bin/opkg remove " + pkgname + " --force-remove --autoremove", callback)
 
 	def doInstall(self, callback, pkgname):
-		print("[NetworkSetup][doInstall]")
 		self.message = self.session.open(MessageBox, _("Please wait..."), MessageBox.TYPE_INFO, timeout=10, enable_input=True)
 		self.message.setTitle(_("Installing Service"))
 		self.ConsoleB.ePopen("/usr/bin/opkg install " + pkgname, callback)
@@ -283,10 +284,10 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 			self["introduction"].setText(self.edittext)
 			self["DefaultInterfaceAction"].setEnabled(False)
 
-		if num_configured_if < 2 and os_path.exists("/etc/default_gw"):
+		if num_configured_if < 2 and exists("/etc/default_gw"):
 			unlink("/etc/default_gw")
 
-		if os_path.exists("/etc/default_gw"):
+		if exists("/etc/default_gw"):
 			fp = open("/etc/default_gw", "r")
 			result = fp.read()
 			fp.close()
@@ -310,7 +311,7 @@ class NetworkAdapterSelection(Screen, HelpableScreen):
 		selection = self["list"].getCurrent()
 		old_default_gw = None
 		num_configured_if = len(iNetwork.getConfiguredAdapters())
-		if os_path.exists("/etc/default_gw"):
+		if exists("/etc/default_gw"):
 			fp = open("/etc/default_gw", "r")
 			old_default_gw = fp.read()
 			fp.close()
@@ -441,7 +442,7 @@ class NetworkMacSetup(ConfigListScreen, HelpableScreen, Screen):
 
 	def getmac(self, iface):
 		nit = ni.ifaddresses(iface)
-		return nit[ni.AF_LINK][0]['addr']
+		return nit[ni.AF_LINK][0]["addr"]
 
 	def createSetup(self):
 		self["config"].list = [getConfigListEntry(_("MAC address"), self.getConfigMac) if self.curMac else (_("No MAC interface found"),)]
@@ -576,7 +577,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 			self.encryptionlist.append(("Unencrypted", _("Unencrypted")))
 			self.encryptionlist.append(("WEP", _("WEP")))
 			self.encryptionlist.append(("WPA", _("WPA")))
-			if not os_path.exists("/tmp/bcm/" + self.iface):
+			if not exists(f"/tmp/bcm/{self.iface}"):
 				self.encryptionlist.append(("WPA/WPA2", _("WPA or WPA2")))
 			self.encryptionlist.append(("WPA2", _("WPA2")))
 			self.weplist = []
@@ -632,7 +633,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 						self.extended = callFnc
 						if "configStrings" in p.fnc:
 							self.configStrings = p.fnc["configStrings"]
-						isExistBcmWifi = os_path.exists("/tmp/bcm/" + self.iface)
+						isExistBcmWifi = exists(f"/tmp/bcm/{self.iface}")
 						if not isExistBcmWifi:
 							self.hiddenSSID = getConfigListEntry(_("Hidden network"), config.plugins.wlan.hiddenessid)
 							self.list.append(self.hiddenSSID)
@@ -723,7 +724,6 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 			if self.extended is not None and self.configStrings is not None:
 				iNetwork.setAdapterAttribute(self.iface, "configStrings", self.configStrings(self.iface))
 				self.ws.writeConfig(self.iface)
-
 			if self.activateInterfaceEntry.value is False:
 				iNetwork.deactivateInterface(self.iface, self.deactivateInterfaceCB)
 				iNetwork.writeNetworkConfig()
@@ -765,7 +765,7 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 
 	def ConfigfinishedCB(self, data):
 		if data is not None and data:
-			self.close('ok')
+			self.close("ok")
 
 	def keyCancelConfirm(self, result):
 		if not result:
@@ -817,7 +817,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		self.setTitle(_("Network Setup"))
-
+		print(f"[AdapterSetupConfiguration] entry.... iface:{iface}")
 		self.session = session
 		self.iface = iface
 		self.restartLanRef = None
@@ -910,7 +910,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 			self.session.open(NetworkAdapterTest, self.iface)
 		if self["menulist"].getCurrent()[1] == "dns":
 			self.session.open(NameserverSetup)
-		if self["menulist"].getCurrent()[1] == 'mac':
+		if self["menulist"].getCurrent()[1] == "mac":
 			self.session.open(NetworkMacSetup)
 		if self["menulist"].getCurrent()[1] == "scanwlan":
 			if wirelessLan and self.queryWirelessDevice(self.iface):
@@ -3116,8 +3116,8 @@ class NetworkPassword(Setup):
 
 	def createSetup(self):
 		instructions = _("Setting a network password is mandatory in OpenViX %s if you wish to use network services. \nTo set a password using the virtual keyboard press the 'text' button on your remote control.") % SystemInfo["imageversion"]
-		self.list.append(getConfigListEntry(_('New password'), self.password, instructions))
-		self['config'].list = self.list
+		self.list.append(getConfigListEntry(_("New password"), self.password, instructions))
+		self["config"].list = self.list
 
 	def keySave(self):
 		password = self.password.value

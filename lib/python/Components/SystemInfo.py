@@ -1,12 +1,12 @@
 from ast import literal_eval
-from os import listdir
 from hashlib import md5
+from os import listdir
 from os.path import isfile, join as pathjoin
 from re import split
 from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager
 
 from Components.RcModel import rc_model
-from Tools.Directories import fileCheck, fileExists, fileHas, pathExists, resolveFilename, SCOPE_LIBDIR, SCOPE_SKIN, fileReadLines
+from Tools.Directories import fileCheck, fileExists, fileHas, pathExists, resolveFilename, SCOPE_LIBDIR, SCOPE_SKIN, fileReadLine, fileReadLines
 from Tools.HardwareInfo import HardwareInfo
 
 
@@ -74,13 +74,21 @@ BoxInfo = BoxInformation()
 SystemInfo = BoxInfo.boxInfo
 
 
+if BoxInfo.getItem("model") in ("dm900", "dm920", "et13000"):
+	CHIPSET = "7252s"
+elif BoxInfo.getItem("model") in ("hd51", "vs1500", "h7", "h17"):
+	CHIPSET = "7251s"
+else:
+	chipset = fileReadLine("/proc/stb/info/chipset")
+	CHIPSET = chipset.lower().replace("\n", "").replace("bcm", "").replace("brcm", "")
+
 ARCHITECTURE = BoxInfo.getItem("architecture")
 BRAND = BoxInfo.getItem("brand")
 MODEL = BoxInfo.getItem("model")
 RCNAME = BoxInfo.getItem('rcname')
 SOC_FAMILY = BoxInfo.getItem("socfamily")
 SOC_BRAND = split(r'(\d.*)', SOC_FAMILY)[0]
-CHIPSET = split(r'(\d.*)', SOC_FAMILY)[1]
+KERNEL = BoxInfo.getItem("kernel")
 DISPLAYTYPE = BoxInfo.getItem("displaytype")
 MTDROOTFS = BoxInfo.getItem("mtdrootfs")
 DISPLAYMODEL = BoxInfo.getItem("displaymodel")
@@ -246,7 +254,7 @@ SystemInfo["hasXcoreVFD"] = SystemInfo["boxtype"] in ("osmega", "spycat4k", "spy
 SystemInfo["HasHDMIin"] = SystemInfo["hdmifhdin"] or SystemInfo["hdmihdin"]
 SystemInfo["HDMIinPiP"] = SystemInfo["HasHDMIin"] and BRAND != "dreambox"
 SystemInfo["CanHDMIinRecord"] = fileExists("/proc/stb/encoder/0/decoder")
-SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz")
+SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz") or MODEL in ("h7")
 SystemInfo["canBackupEMC"] = MODEL in ("hd51", "h7") and ("disk.img", "%s" % SystemInfo["MBbootdevice"]) or MODEL in ("osmio4k", "osmio4kplus", "osmini4k") and ("emmc.img", "%s" % SystemInfo["MBbootdevice"]) or SystemInfo["HasHiSi"] and ("usb_update.bin", "none")
 SystemInfo["canMode12"] = MODEL in ("hd51", "h7") and ("brcm_cma=440M@328M brcm_cma=192M@768M", "brcm_cma=520M@248M brcm_cma=200M@768M")
 SystemInfo["HasMMC"] = fileHas("/proc/cmdline", "root=/dev/mmcblk") or "mmcblk" in SystemInfo["mtdrootfs"]
@@ -284,12 +292,13 @@ SystemInfo["hasRCA"] = SystemInfo["rca"]
 SystemInfo["hasScart"] = SystemInfo["scart"]
 SystemInfo["hasScartYUV"] = SystemInfo["scartyuv"]
 SystemInfo["hasYUV"] = SystemInfo["yuv"]
-SystemInfo["VideoModes"] = CHIPSET in (  # 2160p and 1080p capable hardware...
+
+SystemInfo["VideoModes"] = CHIPSET.replace("hi", "") in (  # 2160p and 1080p capable hardware...
 	"5272s", "7251", "7251s", "7252", "7252s", "7278", "7366", "7376", "7444s", "72604", "3798cv200", "3798mv200", "3798mv200advca", "3798mv200h", "3798mv300"
 ) and (
 	["720p", "1080p", "2160p", "2160p30", "1080i", "576p", "576i", "480p", "480i"],  # Normal modes.
 	{"720p", "1080p", "2160p", "2160p30", "1080i"}  # Widescreen modes.
-) or CHIPSET in (  # 1080p capable hardware...
+) or CHIPSET.replace("hi", "") in (  # 1080p capable hardware...
 	"7241", "7356", "73565", "7358", "7362", "73625", "7424", "7425", "7552", "3716mv410", "3716mv430"
 ) and (
 	["720p", "1080p", "1080i", "576p", "576i", "480p", "480i"],  # Normal modes.

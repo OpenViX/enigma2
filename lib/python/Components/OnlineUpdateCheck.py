@@ -1,14 +1,13 @@
 from time import time
+import socket
+from urllib.request import urlopen, Request
 
 from enigma import eTimer
 from Components.About import about
 from Components.config import config
 from Components.Ipkg import IpkgComponent
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, KERNEL
 import Components.Task
-
-import socket
-from urllib.request import urlopen, Request
 
 error = 0
 
@@ -293,7 +292,7 @@ def kernelMismatch():
 	import zlib
 	import re
 
-	kernelversion = about.getKernelVersionString().strip()
+	kernelversion = KERNEL
 	if kernelversion == "unknown":
 		print("[OnlineUpdateCheck][kernelMismatch] unable to retrieve kernel version from STB")
 		return False
