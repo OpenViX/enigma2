@@ -7,6 +7,13 @@ from sys import modules
 from time import time
 
 
+def getKernelVersionString():  # output from this function may not match kernel version from enigma.info (BoxInfo). This version is more accurate.
+	try:
+		return open("/proc/version").read().split(" ", 3)[2].split("-", 1)[0]
+	except:
+		return _("unknown")
+
+
 def getCPUArch(MODEL):
 	if MODEL.startswith("osmio4k"):
 		CPUArch = "ARM V7"
