@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-15 10:09+0200\n"
-"PO-Revision-Date: 2025-03-15 13:41+0200\n"
+"POT-Creation-Date: 2025-03-19 18:26+0200\n"
+"PO-Revision-Date: 2025-03-19 19:37+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3079,7 +3079,7 @@ msgid "CEC address *"
 msgstr "CEC-osoite *"
 
 msgid "CEC address, to override enable CEC address change. *Reboot required to activate"
-msgstr "CEC-osoite, ohittaaksesi ota CEC-osoitteen muuttaminen käyttöön. *Aktivointi vaatii uudelleenkäynnistyksen."
+msgstr "CEC-osoite, ohittaaksesi ota CEC-osoitteen muuttaminen käyttöön. *Aktivointi vaatii uudelleenkäynnistyksen"
 
 msgid "CH"
 msgstr "CH"
@@ -3390,7 +3390,7 @@ msgid "Channels"
 msgstr "Kanavat"
 
 msgid "Chap."
-msgstr "Osa"
+msgstr "Kap."
 
 msgid "Chapter"
 msgstr "Kappale"
@@ -3493,7 +3493,7 @@ msgid "Choose between Daily, Weekly, Weekdays or user defined."
 msgstr "Valitse päivittäin, viikoittain, ma-pe tai käyttäjän määrittämä."
 
 msgid "Choose between High Dynamic Range (HDR) or Picture in Picture (PIP). Both are not possible at the same time. A FULL REBOOT is required for it to take effect"
-msgstr "Valitse joko HDR (High Dynamic Range) tai PIP (Picture in Picture). Molemmat eivät voi olla päällä yhtaikaa. Vaatii laitteen täyden uudelleenkäynnistyksen."
+msgstr "Valitse joko HDR (High Dynamic Range) tai PIP (Picture in Picture). Molemmat eivät voi olla päällä yhtaikaa. Vaatii laitteen täyden uudelleenkäynnistyksen"
 
 msgid "Choose files"
 msgstr "Valitse tiedostot"
@@ -3884,7 +3884,7 @@ msgid "Configure the amount of time that will be presented."
 msgstr "Määritä näytettävä aika."
 
 msgid "Configure the behavior of the 'pause' key when movie playback is already paused."
-msgstr "Määritä 'pause'-näppäimen toiminto, kun tallenteen toisto on jo pause-tilassa"
+msgstr "Määritä 'pause'-näppäimen toiminto, kun tallenteen toisto on jo pause-tilassa."
 
 msgid "Configure the behavior when movie playback is manually stopped."
 msgstr "Määritä toiminto, kun tallenteen toisto pysäytetään."
@@ -3932,7 +3932,7 @@ msgid "Configure the font size of the subtitles."
 msgstr "Määrittää tekstityksen fonttikoon."
 
 msgid "Configure the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size."
-msgstr "Määritä tekstin koko suhteessa teeman määritykseen, joten 1 suurentaa kokoa yhdellä merkkikoolla ja -1 pienentää yhdellä"
+msgstr "Määritä tekstin koko suhteessa teeman määritykseen, joten 1 suurentaa kokoa yhdellä merkkikoolla ja -1 pienentää yhdellä."
 
 msgid "Configure the fourth audio language."
 msgstr "Määrittää neljännen äänen kielen."
@@ -3992,7 +3992,7 @@ msgid "Configure the number of rows shown."
 msgstr "Määritä näytettävä rivimäärä."
 
 msgid "Configure the offline decoding delay (in milliseconds). The configured delay is observed at each control word parity change."
-msgstr "Määrittää offline-purun viive (millisekunteina). Määritettyä viivettä seurataan jokaisesta ohjaussanan pariteetin muutoksesta. "
+msgstr "Määrittää offline-purun viive (millisekunteina). Määritettyä viivettä seurataan jokaisesta ohjaussanan pariteetin muutoksesta."
 
 msgid "Configure the possible fast forward speeds."
 msgstr "Määrittää mahdolliset eteenpäinkelauksen nopeudet."
@@ -4172,10 +4172,7 @@ msgid "Control LED can be turned on or off here."
 msgstr "Power LED voidaan kytkeä päälle tai pois tästä."
 
 msgid "Control how finished timers are shown in the timer list. If set to hide, disabled timers will still be shown"
-msgstr "Määrittää miten suoritetut ajastukset näytetään ajastusluettelossa. Jos asetus on 'Piilossa', keskeytetyt ajastukset ovat silti näkyvissä."
-
-msgid "Converting ext3 to ext4..."
-msgstr "Muunnetaan ext3:sta ext4:ksi..."
+msgstr "Määrittää miten suoritetut ajastukset näytetään ajastusluettelossa. Jos asetus on 'Piilossa', keskeytetyt ajastukset ovat silti näkyvissä"
 
 msgid "Cook Islands"
 msgstr "Cook Islands"
@@ -4341,14 +4338,14 @@ msgstr "Luodaan sivutustiedostoa..."
 msgid "Creating directory %s failed."
 msgstr "Hakemiston %s luominen epäonnistui."
 
-msgid "Creating filesystem."
+msgid "Creating file system"
 msgstr "Luodaan tiedostojärjestelmää"
 
 msgid "Creating list of installed plugins..."
 msgstr "Luodaan luettelo asennetuista lisäosista..."
 
-msgid "Creating partition."
-msgstr "Luodaan osiota."
+msgid "Creating partition"
+msgstr "Luodaan osiota"
 
 msgid "Creating zip..."
 msgstr "Luodaan zip..."
@@ -5535,7 +5532,7 @@ msgid "EPG button action"
 msgstr "EPG näppäimen toiminto"
 
 msgid "EPG event name prefixes to remove"
-msgstr "Poistettavat EPG ohjelmanimen etuliitteet "
+msgstr "Poistettavat EPG ohjelmanimen etuliitteet"
 
 msgid "EPG filename"
 msgstr "Ohjelmaoppaan tiedostonimi"
@@ -7614,7 +7611,7 @@ msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit onl
 msgstr "Jos päällä, näytössä näytetään 12 merkkiä 8 sijaan, mutta vain latin-1 -käännöksenä."
 
 msgid "If enabled, the new GStreamer playback engine will be used."
-msgstr "Jos päällä, käytetään uutta GStreamer-ohjelmakoodia "
+msgstr "Jos päällä, käytetään uutta GStreamer-ohjelmakoodia"
 
 msgid "If set to 'Standard' number buttons page up/down/left/right."
 msgstr "Jos asetettu vakioksi, numeronäppäimet sivu ylös/alas/vasemmalle/oikealle."
@@ -7929,8 +7926,8 @@ msgstr "Alusta"
 msgid "Initialize Devices"
 msgstr "Alusta"
 
-msgid "Initializing storage device..."
-msgstr "Alustetaan tallennuslaitetta..."
+msgid "Initializing storage device as ext4..."
+msgstr "Alustetaan tallennuslaitetta ext4:ksi..."
 
 msgid "Inizio e Fine Trasmissioni"
 msgstr "Lähetyksen alku ja loppu"
@@ -7945,7 +7942,7 @@ msgid "Input"
 msgstr "Valitse"
 
 msgid "Input "
-msgstr "Valitse"
+msgstr "Valitse "
 
 msgid "Input Device Setup"
 msgstr "Syöttölaitteen asetukset"
@@ -8016,7 +8013,7 @@ msgid "Installing..."
 msgstr "Asennetaan..."
 
 msgid "Instant record"
-msgstr "Pikatallennus..."
+msgstr "Pikatallennus"
 
 msgid "Instant recording"
 msgstr "Pikatallennus"
@@ -11195,7 +11192,7 @@ msgid "Preschool"
 msgstr "Alakouluikäiset"
 
 msgid "Press '0' to toggle PiP mode"
-msgstr "Vaihda pääkuvan ja PiP-kuvan välillä painamalla 0-näppäintä."
+msgstr "Vaihda pääkuvan ja PiP-kuvan välillä painamalla 0-näppäintä"
 
 msgid "Press 'Menu' to select a storage device"
 msgstr "Paina 'MENU' valitaksesi tallennuslaitteen"
@@ -11252,7 +11249,7 @@ msgid "Press OK to show details"
 msgstr "Paina OK nähdäksesi yksityiskohdat"
 
 msgid "Press OK to toggle the selection"
-msgstr "Vaihda valinta OK-näppäimellä."
+msgstr "Vaihda valinta OK-näppäimellä"
 
 msgid "Press OK to toggle the selection."
 msgstr "Muuta valintaa OK-näppäimellä."
@@ -12005,8 +12002,8 @@ msgstr "Poistetaan kanavia"
 msgid "Removing directory %s failed. (Maybe not empty.)"
 msgstr "Hakemiston %s poisto epäonnistui. (Ei ehkä ole tyhjä.)"
 
-msgid "Removing partition table."
-msgstr "Poistetaan levyosioita."
+msgid "Removing partition table"
+msgstr "Poistetaan levyosioita"
 
 msgid "Removing service"
 msgstr "Poistetaan kanavia"
@@ -12081,8 +12078,8 @@ msgstr "Vaadi hyväksyntä http-palveluille"
 msgid "Required medium type:"
 msgstr "Tarvittava tallennusmedia:"
 
-msgid "Rereading partition table."
-msgstr "Levyosioita luetaan uudelleen."
+msgid "Rereading partition table"
+msgstr "Levyosioita luetaan uudelleen"
 
 msgid "Reserved"
 msgstr "Varattu"
@@ -14010,10 +14007,10 @@ msgid "Signal finder"
 msgstr "Signaalimittari"
 
 msgid "Signal quality"
-msgstr "Yhteyden laatu:"
+msgstr "Signaalin laatu"
 
 msgid "Signal strength:"
-msgstr "Signaalinvoimakkuus:"
+msgstr "Signaalin voimakkuus:"
 
 msgid "Signal: "
 msgstr "Signaali: "
@@ -15030,7 +15027,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 15.03.2025 ---\n"
+"--- 19.03.2025 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -15413,7 +15410,7 @@ msgstr "Ladattavia soittolistoja ei ole!"
 
 #, python-format
 msgid "There has been a '%s', please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com"
-msgstr "On tapahtunut '%s', yritä myöhemmin uudelleen. Jos ongelma jatkuu, tarkista openvix.co.uk tai world-of-satellite.com."
+msgstr "On tapahtunut '%s', yritä myöhemmin uudelleen. Jos ongelma jatkuu, tarkista openvix.co.uk tai world-of-satellite.com"
 
 msgid "There has been an error, please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com"
 msgstr "Tapahtui virhe, yritä myöhemmin uudelleen. Jos virhe jatkuu tarkista openvix.co.uk tai world-of-satellite.com sivuilta"
@@ -15494,7 +15491,7 @@ msgid "This option allows you choose how to display elapsed time as + or -"
 msgstr "Tämän asetuksen avulla voit valita, kuinka kulunut aika näytetään, joko + tai -"
 
 msgid "This option allows you choose how to display remaining time, or elapsed time, or both."
-msgstr "Tämän asetuksen avulla voit valita, kuinka jäljellä oleva aika, kulunut aika tai molemmat näytetään"
+msgstr "Tämän asetuksen avulla voit valita, kuinka jäljellä oleva aika, kulunut aika tai molemmat näytetään."
 
 msgid "This option allows you choose how to display the Time or nothing in Standby"
 msgstr "Tämän asetuksen avulla voit valita, kuinka aika näytetään valmiustilassa tai ei näytetä mitään"
@@ -16244,6 +16241,9 @@ msgstr "Tuntematon virhe"
 msgid "Unknown image"
 msgstr "Tuntematon image"
 
+msgid "Unmount"
+msgstr "Pura liitos"
+
 msgid "Unmount."
 msgstr "Pura liitos."
 
@@ -16909,14 +16909,11 @@ msgstr "Odota, tietoja haetaan..."
 msgid "Waiting"
 msgstr "Odottaa"
 
-msgid "Waiting for mount"
-msgstr "Odotetaan liittämistä"
-
 msgid "Waiting for mount."
 msgstr "Odotetaan liittämistä."
 
-msgid "Waiting for partition."
-msgstr "Odotetaan osiointia."
+msgid "Waiting for partition"
+msgstr "Odotetaan osiointia"
 
 msgid "Wake A/V receiver from standby"
 msgstr "Käynnistä A/V-vastaanotin valmiustilasta"
@@ -18056,7 +18053,7 @@ msgid "boot time"
 msgstr "Käynnistysaika"
 
 msgid "boot time and local time"
-msgstr "Käynnistys,- ja paikallinen aika"
+msgstr "Käynnistysaika ja paikallinen aika"
 
 #, python-format
 msgid "bootmode = %s"

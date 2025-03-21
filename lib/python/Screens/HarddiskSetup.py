@@ -1,6 +1,6 @@
 from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
-from Components.Harddisk import harddiskmanager
+from Components.Harddisk import harddiskmanager, StorageDevice
 from Components.MenuList import MenuList
 from Components.Label import Label
 from Components.Task import job_manager
@@ -12,7 +12,7 @@ class HarddiskSetup(Screen):
 	def __init__(self, session, hdd, action, text, question):
 		Screen.__init__(self, session)
 		self.setTitle(text)
-
+		self.text = text
 		self.action = action
 		self.question = question
 		self.curentservice = None
@@ -33,7 +33,6 @@ class HarddiskSetup(Screen):
 		})
 
 	def hddQuestion(self, answer=False):
-		print('[HarddiskSetup] answer:', answer)
 		if Screens.InfoBar.InfoBar.instance.timeshiftEnabled():
 			message = self.question + "\n\n" + _("You seem to be in timeshft, the service will briefly stop as timeshift stops.")
 			message += '\n' + _("Do you want to continue?")
@@ -44,7 +43,7 @@ class HarddiskSetup(Screen):
 
 	def stopTimeshift(self, confirmed):
 		if confirmed:
-			self.curentservice = self.session.nav.getCurrentlyPlayingServiceReference()
+			self.currentservice = self.session.nav.getCurrentlyPlayingServiceReference()
 			self.session.nav.stopService()
 			Screens.InfoBar.InfoBar.instance.stopTimeshiftcheckTimeshiftRunningCallback(True)
 			self.hddConfirmed(True)
@@ -55,7 +54,7 @@ class HarddiskSetup(Screen):
 		try:
 			job_manager.AddJob(self.action())
 			for job in job_manager.getPendingJobs():
-				if job.name in (_("Initializing storage device..."), _("Checking filesystem..."), _("Converting ext3 to ext4...")):
+				if job.name in (_("Initializing storage device as ext4..."), _("Checking filesystem...")):
 					self.showJobView(job)
 					break
 		except Exception as ex:
@@ -93,8 +92,17 @@ class HarddiskSelection(Screen):
 		})
 
 	def doIt(self, selection):
+		selection = self["hddlist"].getCurrent()[1]
+		disk = selection.device
+		storageDevice = {
+			"devicePoint": f"/dev/{disk}",
+			"disk": disk,
+			"device": disk,
+			"size": 0
+		}
+		self.storageDevice = StorageDevice(storageDevice)
 		self.session.openWithCallback(self.close, HarddiskSetup, selection,
-			action=selection.createInitializeJob,
+			action=self.storageDevice.createInitializeJob,
 			text=_("Initialize"),
 			question=_("Do you really want to initialize this device?\nAll the data on the device will be lost!"))
 
@@ -104,8 +112,6 @@ class HarddiskSelection(Screen):
 			self.doIt(selection[1])
 			self.close(True)
 
-# This is actually just HarddiskSelection but with correct type
-
 
 class HarddiskFsckSelection(HarddiskSelection):
 	def __init__(self, session):
@@ -114,6 +120,18 @@ class HarddiskFsckSelection(HarddiskSelection):
 		self.skinName = "HarddiskSelection"
 
 	def doIt(self, selection):
+		options = {"partitionType": "gpt", "partitions": [{"fsType": "ext4"}], "mountDevice": True}
+		selection = self["hddlist"].getCurrent()[1]
+		disk = selection.device
+		fsType = options.get("fsType")
+		storageDevice = {
+			"devicePoint": f"/dev/{disk}",
+			"disk": disk,
+			"device": disk,
+			"fsType": fsType,
+			"size": 0
+		}
+		self.storageDevice = StorageDevice(storageDevice)
 		self.session.openWithCallback(self.close, HarddiskSetup, selection,
 			action=selection.createCheckJob,
 			text=_("Check"),
