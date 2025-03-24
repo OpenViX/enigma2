@@ -123,8 +123,8 @@ class ParentalControl:
 			else:
 				Tools.Notifications.AddNotificationParentalControl(boundFunction(self.servicePinEntered, ref), PinInput, triesEntry=config.ParentalControl.retries.servicepin, pinList=self.getPinList(), service=ServiceReference(ref).getServiceName(), title=title, windowTitle=_("Parental control"))
 			import NavigationInstance
-			if NavigationInstance.instance and NavigationInstance.instance.currentlyPlayingServiceReference:
-				NavigationInstance.instance.stopService()  # kill current service since we are on protected service and canceled the pin
+			if NavigationInstance.instance and NavigationInstance.instance.currentlyPlayingServiceReference and 'FROM BOUQUET "userbouquet.' not in service:
+				NavigationInstance.instance.stopService()  # kill current service since we are on protected service and may cancel the pin
 			return False
 		else:
 			return True
