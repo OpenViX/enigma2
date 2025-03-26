@@ -1546,29 +1546,31 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def sortBy(self, newType):
 		print("[MovieSelection] SORTBY:", newType)
-		self.settings["moviesort"] = newType
-		# If we are using per-directory sort methods then set it now...
-		#
-		if config.movielist.settings_per_directory.value:
-			self.saveLocalSettings()
-		else:
-			# ..otherwise, if we are setting permanent sort methods, save it,
-			# while, for temporary sort methods, indicate to MovieList.py to
-			# use a temporary sort override.
+		if newType < MovieList.TRASHSORT_SHOWRECORD:
+			self.settings["moviesort"] = newType
+			# If we are using per-directory sort methods then set it now...
 			#
-			if config.movielist.perm_sort_changes.value:
-				config.movielist.moviesort.setValue(newType)
-				config.movielist.moviesort.save()
+			if config.movielist.settings_per_directory.value:
+				self.saveLocalSettings()
 			else:
-				self["list"].temp_sort = newType
-		self.setSortType(newType)
-		# Unset specific trash-sorting if other sort chosen while in Trash
-		if MovieList.InTrashFolder:
-			config.usage.trashsort_deltime.value = "no"
-		if newType == MovieList.TRASHSORT_SHOWRECORD:
-			config.usage.trashsort_deltime.value = "show record time"
-		elif newType == MovieList.TRASHSORT_SHOWDELETE:
-			config.usage.trashsort_deltime.value = "show delete time"
+				# ..otherwise, if we are setting permanent sort methods, save it,
+				# while, for temporary sort methods, indicate to MovieList.py to
+				# use a temporary sort override.
+				#
+				if config.movielist.perm_sort_changes.value:
+					config.movielist.moviesort.setValue(newType)
+					config.movielist.moviesort.save()
+				else:
+					self["list"].temp_sort = newType
+			self.setSortType(newType)
+			# Unset specific trash-sorting if other sort chosen while in Trash
+			if MovieList.InTrashFolder:
+				config.usage.trashsort_deltime.value = "no"
+		else:
+			if newType == MovieList.TRASHSORT_SHOWRECORD:
+				config.usage.trashsort_deltime.value = "show record time"
+			elif newType == MovieList.TRASHSORT_SHOWDELETE:
+				config.usage.trashsort_deltime.value = "show delete time"
 		self.reloadList()
 
 	def showDescription(self, newType):
@@ -1675,6 +1677,8 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 	def getPixmapSortIndex(self, which):
 		index = int(which)
+		if (index == MovieList.TRASHSORT_SHOWRECORD) or (index == MovieList.TRASHSORT_SHOWDELETE):
+			index = MovieList.SORT_RECORDED
 		return index - 1
 
 	def sortbyMenuCallback(self, choice):
