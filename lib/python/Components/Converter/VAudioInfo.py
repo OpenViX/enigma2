@@ -9,33 +9,32 @@ from Components.Element import cached
 # order given.
 #
 _acedits = (
+	("MPEG-4 AAC audio", "AAC"),
+	("MPEG-4 AAC", "AAC"),
+	("MPEG/L3", "MP2"),
+	("Free Lossless Audio Codec(FLAC)", "FLAC"),
+	("private1-lpcm", "AAC"),
+	("-", ""),
 	("A_", ""),
-	("AC-3", "AC3"),
 	("(ATSC A/52)", ""),
 	("(ATSC A/52B)", ""),
-	(" Layer 2 (MP2)", ""),
-	(" Layer 3 (MP3)", "MP3"),
-	("-1", ""),
-	("-2", ""),
-	("2-", ""),
-	("-4 AAC", "AAC"),
-	("4-AAC", "HE-AAC"),
-	("audio", ""),
-	("/L3", ""),
-	("/mpeg", "AAC"),
-	("/x-", ""),
-	("raw", "Dolby TrueHD"),
-	("E-AC3", "AC3+"),
+	("AC3", "AC3"),
 	("EAC3", "AC3+"),
-	("IPCM", "AC3"),
+	("IPCM", "AC3+"),
+	("DVD LPCM", "AAC"),
 	("LPCM", "AC3+"),
 	("AAC_PLUS", "AAC+"),
 	("AAC_LATM", "AAC"),
 	("WMA/PRO", "WMA Pro"),
+	("audio/x-", ""),
+	(" audio", ""),
+	("audio/x-true-hd", "Dolby TrueHD"),
+	("raw", "Dolby TrueHD"),
+	("HEAAC", "HE-AAC"),
+	("MPEG1", ""),
+	(" Layer 2 (MP2)", "MP2"),
+	(" Layer 3 (MP3)", "MP3"),
 	("MPEG", "MPEG1 Layer II"),
-	("MPEG1 Layer II AAC", "AAC"),
-	("MPEG1 Layer IIAAC", "AAC"),
-	("MPEG1 Layer IIMP3", "MP3"),
 )
 
 
@@ -57,28 +56,28 @@ class VAudioInfo(Poll, Converter, object):
 		self.poll_enabled = True
 		self.lang_strings = ("english", "englisch", "eng")
 		self.codecs = {
-			"01_dolbydigitalplus": ("digital+", "digitalplus", "ac3+",),
+			"01_dolbydigitalplus" : ("ac3+", "digital+", "digitalplus",),
 			"02_dolbydigital": ("ac3", "dolbydigital",),
 			"03_mp3": ("mp3",),
 			"04_wma": ("wma",),
 			"05_flac": ("flac",),
-			"06_he-aac": ("he-aac",),
-			"07_aac": ("aac",),
-			"08_lpcm": ("lpcm",),
-			"09_dts-hd": ("dts-hd",),
-			"10_dts": ("dts",),
-			"11_pcm": ("pcm",),
-			"12_mpeg": ("mpeg",),
-			"13_dolbytruehd": ("truehd",),
+			"06_mpeg": ("mpeg",),
+			"07_lpcm": ("lpcm",),
+			"08_dts-hd": ("dts-hd",),
+			"09_dts": ("dts",),
+			"10_pcm": ("pcm",),
+			"11_aac": ("aac",),
+			"12_he-aac": ("he-aac",),
+			"13_truehd": ("truehd",),
 			"14_aacplus": ("aac+",),
 			"15_ipcm": ("ipcm",),
 			"16_wma-pro": ("wma pro",),
 			"17_vorbis": ("vorbis",),
 			"18_opus": ("opus",),
 			"19_amr": ("amr",),
+			"20_mp2": ("mp2",),
 		}
 		self.codec_info = {
-			"dolbytruehd": ("51", "20", "71"),
 			"dolbydigitalplus": ("51", "20", "71"),
 			"dolbydigital": ("51", "20", "71"),
 			"wma": ("8", "9"),
@@ -109,7 +108,7 @@ class VAudioInfo(Poll, Converter, object):
 		return languages
 
 	def getAudioCodec(self, info):
-		description_str = _("N/A")
+		description_str = _(" ")
 		if self.getAudio():
 			languages = self.getLanguage()
 			description = StdAudioDesc(self.audio_info.getDescription()) or ""
@@ -148,7 +147,7 @@ class VAudioInfo(Poll, Converter, object):
 					return self.getAudioCodec(info)
 				if self.type == self.GET_AUDIO_ICON:
 					return self.getAudioIcon(info)
-		return _("invalid type")
+		return _(" ")
 
 	text = property(getText)
 

@@ -442,7 +442,7 @@ fi
 AM_CONDITIONAL(HAVE_BWLCD128, test x"$withbwlcd128" != xno)
 
 AC_ARG_WITH(oldpvr,
-	AS_HELP_STRING([--with-oldpvr], [use /dev/misc/pvr instead of /dev/dvb/adapterX/dvrX, yes or no]),
+	AS_HELP_STRING([--with-oldpvr], [use /dev/misc/pvr instead of /dev/dvb/adapterX/dvrX, yes or no]), 
 	[[witholdpvr=$withval]],
 	[[witholdpvr=no]]
 )
@@ -461,6 +461,7 @@ if test `echo "$BOXTYPE" | cut -b 1-4` == "odin"; then
 fi
 
 if test `echo "$BOXTYPE" | cut -b 1-2` == "vu"; then
+	AC_DEFINE(PASSTHROUGHT_FIX, 1 ,[define when passthrough is not entirely supported by drivers (usually Vu+)])
 	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration does not have alphablending support, though the autodetection might indicate that it does])
 	AC_DEFINE(FORCE_ADVANCED_REMOTE, 1,[define to fixup the input device identification when the remote control is actually an 'advanced' remote (with play/forward/rewind keys)])
 fi

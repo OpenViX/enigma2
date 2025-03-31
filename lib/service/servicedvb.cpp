@@ -10,6 +10,9 @@
 #include <lib/dvb/db.h>
 #include <lib/dvb/decoder.h>
 
+#include <lib/base/cfile.h>
+#include <lib/dvb/pmtparse.h>
+
 #include <lib/components/file_eraser.h>
 #include <lib/service/servicedvbrecord.h>
 #include <lib/service/event.h>
@@ -2296,6 +2299,17 @@ int eDVBServicePlay::selectAudioStream(int i)
 		eDebug("[eDVBServicePlay] set audio pid %04x failed", apid);
 		return -4;
 	}
+
+#ifdef PASSTHROUGHT_FIX
+	if (apidtype == eDVBPMTParser::audioStream::atAC3 || apidtype == eDVBPMTParser::audioStream::atAAC || apidtype == eDVBPMTParser::audioStream::atDDP) {
+		std::string pass = CFile::read("/proc/stb/audio/ac3");
+		if (replace_all(replace_all(pass, "\r", ""), "\n", "") == "passthrough")
+		{
+			eDebug("[eDVBServicePlay] Setting 'passthrough' to force correct operation");
+			CFile::writeStr("/proc/stb/audio/ac3", "passthrough");
+		}
+	}
+#endif
 
 	if (position != -1)
 	{

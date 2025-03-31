@@ -667,6 +667,11 @@ class InfoBarShowHide(InfoBarScreenSaver):
 		self.hideTimer.callback.append(self.doTimerHide)
 		self.hideTimer.start(5000, True)
 
+		# For seekable services sometimes video starts playing from last marker
+		# Use this timer to seek it to the beginning
+		self.movieStartFixer = eTimer()
+		self.movieStartFixer.callback.append(self.doFixMovieStart)
+
 		self.onShow.append(self.__onShow)
 		self.onHide.append(self.__onHide)
 
@@ -791,7 +796,14 @@ class InfoBarShowHide(InfoBarScreenSaver):
 		if fnc in self.onShowHideNotifiers:
 			self.onShowHideNotifiers.remove(fnc)
 
+	def doFixMovieStart(self):
+		self.jumpPreviousNextMark(lambda x: -x - 5 * 90000, start=True)
+
 	def serviceStarted(self):
+		# For seekable services sometimes video starts playing from last marker
+		# Start timer to seek it to the beginning
+		self.movieStartFixer.stop()
+		self.movieStartFixer.start(250, True)
 		if self.execing:
 			if config.usage.show_infobar_on_zap.value:
 				self.doShow()
@@ -4052,7 +4064,8 @@ class InfoBarCueSheetSupport:
 		r = seek.getPlayPosition()
 		if r[0]:
 			return None
-		return int(r[1])
+		pos = int(r[1]) if r[1] else 0
+		return 0 if pos < 0 else pos 
 
 	def cueGetEndCutPosition(self):
 		ret = False

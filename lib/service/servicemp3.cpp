@@ -18,6 +18,8 @@
 #include <lib/gdi/gpixmap.h>
 #include <lib/dvb/subtitle.h>
 
+#include <lib/base/cfile.h>
+
 #include <string>
 #include <lib/base/estring.h>
 
@@ -1648,20 +1650,6 @@ int eServiceMP3::getCurrentTrack()
 
 RESULT eServiceMP3::selectTrack(unsigned int i)
 {
-	bool validposition = false;
-	pts_t ppos = 0;
-	if (getPlayPosition(ppos) >= 0)
-	{
-		validposition = true;
-		ppos -= 90000;
-		if (ppos < 0)
-			ppos = 0;
-	}
-	if (validposition)
-	{
-		/* flush */
-		seekTo(ppos);
-	}
 	return selectAudioStream(i);
 }
 
@@ -1674,6 +1662,41 @@ int eServiceMP3::selectAudioStream(int i)
 	{
 		eDebug ("[eServiceMP3] switched to audio stream %i", current_audio);
 		m_currentAudioStream = i;
+#ifdef PASSTHROUGHT_FIX
+		GstPad* pad = 0;
+		g_signal_emit_by_name (m_gst_playbin, "get-audio-pad", i, &pad);
+		GstCaps* caps = gst_pad_get_current_caps(pad);
+		gst_object_unref(pad);
+		if (caps) {
+			GstStructure* str = gst_caps_get_structure(caps, 0);
+			const gchar *g_type = gst_structure_get_name(str);
+			audiotype_t apidtype = gstCheckAudioPad(str);
+			gst_caps_unref(caps);
+			if (apidtype == atAC3 || apidtype == atAAC || apidtype == atUnknown || apidtype == atPCM) {
+				std::string pass = CFile::read("/proc/stb/audio/ac3");
+				if (replace_all(replace_all(pass, "\r", ""), "\n", "") == "passthrough")
+				{
+					eDebug("[eServiceMP3] Setting 'passthrough' to force correct operation");
+					CFile::writeStr("/proc/stb/audio/ac3", "passthrough");
+				}
+			}
+
+		}
+#endif
+		bool validposition = false;
+		pts_t ppos = 0;
+		if (getPlayPosition(ppos) >= 0)
+		{
+			validposition = true;
+			ppos -= 90000;
+			if (ppos < 0)
+				ppos = 90000;
+		}
+		if (validposition)
+		{
+			/* flush */
+			seekTo(ppos);
+		}
 		setCacheEntry(true, i);
 		return 0;
 	}
@@ -2547,9 +2570,9 @@ audiotype_t eServiceMP3::gstCheckAudioPad(GstStructure* structure)
 		}
 	}
 
-	else if ( gst_structure_has_name (structure, "audio/x-ac3") || gst_structure_has_name (structure, "audio/ac3") )
+	else if ( gst_structure_has_name (structure, "audio/x-ac3") || gst_structure_has_name (structure, "audio/x-eac3") || gst_structure_has_name (structure, "audio/ac3") || gst_structure_has_name (structure, "audio/eac3") )
 		return atAC3;
-	else if ( gst_structure_has_name (structure, "truehd") || gst_structure_has_name (structure, "audio/ac3") )
+	else if ( gst_structure_has_name (structure, "truehd") || gst_structure_has_name (structure, "audio/eac3") )
 		return atAC3;
 	else if ( gst_structure_has_name (structure, "audio/x-dts") || gst_structure_has_name (structure, "audio/dts") )
 		return atDTS;
