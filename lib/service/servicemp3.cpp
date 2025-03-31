@@ -2570,16 +2570,14 @@ audiotype_t eServiceMP3::gstCheckAudioPad(GstStructure* structure)
 		}
 	}
 
-	else if ( gst_structure_has_name (structure, "audio/x-ac3") || gst_structure_has_name (structure, "audio/x-eac3") || gst_structure_has_name (structure, "audio/ac3") || gst_structure_has_name (structure, "audio/eac3") )
-		return atAC3;
-	else if ( gst_structure_has_name (structure, "truehd") || gst_structure_has_name (structure, "audio/eac3") )
+	else if ( gst_structure_has_name (structure, "audio/x-ac3") || gst_structure_has_name (structure, "audio/x-eac3") || 
+			  gst_structure_has_name (structure, "audio/ac3") || gst_structure_has_name (structure, "audio/eac3") || 
+			  gst_structure_has_name (structure, "audio/x-raw") || gst_structure_has_name (structure, "audio/x-true-hd") )
 		return atAC3;
 	else if ( gst_structure_has_name (structure, "audio/x-dts") || gst_structure_has_name (structure, "audio/dts") )
 		return atDTS;
-	else if ( gst_structure_has_name (structure, "audio/x-raw") )
-		return atPCM;
 
-	return atUnknown;
+	return atPCM;
 }
 
 void eServiceMP3::gstPoll(ePtr<GstMessageContainer> const &msg)
