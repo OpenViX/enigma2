@@ -314,7 +314,7 @@ protected:
 	ePtr<eTimer> m_nownext_timer;
 	void updateEpgCacheNowNext();
 
-#ifdef PASSTHROUGHT_FIX
+#ifdef PASSTHROUGH_FIX
 	ePtr<eTimer> m_passthrought_fix_timer;
 	void forcePassthrough();
 #endif

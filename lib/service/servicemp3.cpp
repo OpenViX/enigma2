@@ -435,7 +435,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_dvb_subtitle_sync_timer = eTimer::create(eApp);
 	m_dvb_subtitle_parser = new eDVBSubtitleParser();
 	m_dvb_subtitle_parser->connectNewPage(sigc::mem_fun(*this, &eServiceMP3::newDVBSubtitlePage), m_new_dvb_subtitle_page_connection);
-#ifdef PASSTHROUGHT_FIX
+#ifdef PASSTHROUGH_FIX
 	m_passthrought_fix_timer = eTimer::create(eApp);
 #endif
 	m_stream_tags = 0;
@@ -486,7 +486,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	CONNECT(m_dvb_subtitle_sync_timer->timeout, eServiceMP3::pushDVBSubtitles);
 	CONNECT(m_pump.recv_msg, eServiceMP3::gstPoll);
 	CONNECT(m_nownext_timer->timeout, eServiceMP3::updateEpgCacheNowNext);
-#ifdef PASSTHROUGHT_FIX
+#ifdef PASSTHROUGH_FIX
 	CONNECT(m_passthrought_fix_timer->timeout, eServiceMP3::forcePassthrough);
 #endif
 	m_aspect = m_width = m_height = m_framerate = m_progressive = m_gamma = -1;
@@ -807,7 +807,7 @@ eServiceMP3::~eServiceMP3()
 	m_new_dvb_subtitle_page_connection = 0;
 }
 
-#ifdef PASSTHROUGHT_FIX
+#ifdef PASSTHROUGH_FIX
 void eServiceMP3::forcePassthrough()
 {
 	eDebug("[eServiceMP3] Setting 'passthrough' to force correct operation");
@@ -1700,7 +1700,7 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 		{
 			eDebug ("[eServiceMP3] switched to audio stream %i", current_audio);
 			m_currentAudioStream = i;
-#ifdef PASSTHROUGHT_FIX
+#ifdef PASSTHROUGH_FIX
 			GstPad* pad = 0;
 			g_signal_emit_by_name (m_gst_playbin, "get-audio-pad", i, &pad);
 			GstCaps* caps = gst_pad_get_current_caps(pad);
@@ -1714,8 +1714,8 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 					std::string pass = CFile::read("/proc/stb/audio/ac3");
 					if (replace_all(replace_all(pass, "\r", ""), "\n", "") == "passthrough")
 					{
-						int longAudioDelay = eConfigManager::getConfigIntValue("config.av.passthrought_fix_long", 1200);
-						int shortAudioDelay = eConfigManager::getConfigIntValue("config.av.passthrought_fix_short", 100);
+						int longAudioDelay = eConfigManager::getConfigIntValue("config.av.passthrough_fix_long", 1200);
+						int shortAudioDelay = eConfigManager::getConfigIntValue("config.av.passthrough_fix_short", 100);
 						m_passthrought_fix_timer->stop();
 						m_passthrought_fix_timer->start(apidtype == atEAC3 && i > 0 && current_audio_orig > -1 ? longAudioDelay : shortAudioDelay, true);
 					}
