@@ -715,7 +715,7 @@ class MovieList(GUIComponent):
 				data.directorySize = None
 				self.list.append((eServiceReference.fromDirectory(currentFolder), None, 0, data))
 				numberOfDirs += 1
-			elif parent and (parent not in defaultInhibitDirs) and not currentFolder.endswith(config.usage.default_path.value):
+			elif parent and (parent not in defaultInhibitDirs):
 				# enigma wants an extra '/' appended
 				if not parent.endswith('/'):
 					parent += '/'
