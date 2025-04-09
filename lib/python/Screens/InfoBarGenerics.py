@@ -3925,6 +3925,8 @@ class InfoBarCueSheetSupport:
 		self.__blockDownloadCuesheet = False
 		self.__recording = None
 		self.__recordingCuts = []
+		self.resumeTimer = eTimer()
+		self.resumeTimer.callback.append(self.triggerResumeLogic)
 
 	def __evStopped(self):
 		if isMoviePlayerInfoBar(self):
@@ -3954,25 +3956,7 @@ class InfoBarCueSheetSupport:
 		iRecordableService.evGstRecordEnded,
 	)
 
-	def __gotRecordEvent(self, record, event):
-		if record.getPtrString() != self.__recording.getPtrString():
-			return
-		if event in self.__endEvents:
-			if self.__gotRecordEvent in NavigationInstance.instance.record_event:
-				NavigationInstance.instance.record_event.remove(self.__gotRecordEvent)
-
-			# When the recording ends, the mapping of
-			# cut points from time to file offset changes
-			# slightly. Upload the recording cut marks to
-			# catch these changes.
-
-			self.updateFromRecCuesheet()
-
-			self.__recording = None
-		elif event == iRecordableService.evNewEventInfo:
-			self.updateFromRecCuesheet()
-
-	def __serviceStarted(self):
+	def triggerResumeLogic(self):
 		if self.is_closing:
 			return
 
@@ -4007,6 +3991,28 @@ class InfoBarCueSheetSupport:
 					Notifications.AddNotificationWithCallback(self.playLastCB, MessageBox, _("Do you want to resume playback?") + "\n" + (_("Resume position at %s") % ("%d:%02d:%02d" % (x / 3600, x % 3600 / 60, x % 60))), timeout=30, default="yes" in config.usage.on_movie_start.value)
 				elif config.usage.on_movie_start.value == "resume":
 					Notifications.AddNotificationWithCallback(self.playLastCB, MessageBox, _("Resuming playback"), timeout=2, type=MessageBox.TYPE_INFO)
+
+	def __gotRecordEvent(self, record, event):
+		if record.getPtrString() != self.__recording.getPtrString():
+			return
+		if event in self.__endEvents:
+			if self.__gotRecordEvent in NavigationInstance.instance.record_event:
+				NavigationInstance.instance.record_event.remove(self.__gotRecordEvent)
+
+			# When the recording ends, the mapping of
+			# cut points from time to file offset changes
+			# slightly. Upload the recording cut marks to
+			# catch these changes.
+
+			self.updateFromRecCuesheet()
+
+			self.__recording = None
+		elif event == iRecordableService.evNewEventInfo:
+			self.updateFromRecCuesheet()
+
+	def __serviceStarted(self):
+		self.resumeTimer.stop()
+		self.resumeTimer.start(config.av.passthrough_fix_long.value + 1000, True)
 
 	def __findRecording(self):
 		if isMoviePlayerInfoBar(self):
@@ -4052,7 +4058,8 @@ class InfoBarCueSheetSupport:
 		r = seek.getPlayPosition()
 		if r[0]:
 			return None
-		return int(r[1])
+		pos = int(r[1]) if r[1] else 0
+		return 0 if pos < 0 else pos
 
 	def cueGetEndCutPosition(self):
 		ret = False

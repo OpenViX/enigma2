@@ -3,10 +3,8 @@ import enigma
 import time
 
 from Components.config import config
-from Components.GUIComponent import GUIComponent
-from Components import Harddisk
+from Components.Harddisk import findMountPoint
 import Components.Task
-from Components.VariableText import VariableText
 
 
 def isTrashFolder(path):
@@ -20,7 +18,7 @@ def getTrashFolder(path=None):
 		if path is None or ospath.realpath(path) == "/media/autofs":
 			return ""
 		else:
-			trashcan = Harddisk.findMountPoint(ospath.realpath(path))
+			trashcan = findMountPoint(ospath.realpath(path))
 			if "/movie" in path:
 				trashcan = ospath.join(trashcan, "movie")
 			elif config.usage.default_path.value in path:
@@ -33,7 +31,7 @@ def getTrashFolder(path=None):
 
 def createTrashFolder(path=None):
 	trash = getTrashFolder(path)
-	print("[Trashcan] Debug path %s => %s" % (path, trash))
+	print(f"[Trashcan] Debug path {path} => {trash}")
 	if trash and access(ospath.split(trash)[0], W_OK):
 		if not ospath.isdir(trash):
 			try:
@@ -204,37 +202,3 @@ class CleanTrashTask(Components.Task.PythonTask):
 						bytesToRemove -= st_size
 						size -= st_size
 					print("[Trashcan][CleanTrashTask][work] " + str(trashfolder) + ": Size now:", "{:,}".format(size))
-
-
-class TrashInfo(VariableText, GUIComponent):
-	FREE = 0
-	USED = 1
-	SIZE = 2
-
-	def __init__(self, path, type, update=True):
-		GUIComponent.__init__(self)
-		VariableText.__init__(self)
-		self.type = type
-		if update and path != "/media/autofs/":
-			self.update(path)
-
-	def update(self, path):
-		try:
-			total_size = get_size(getTrashFolder(path))
-		except OSError:
-			return -1
-
-		if self.type == self.USED:
-			try:
-				if total_size < 10000000:
-					total_size = _("%d KB") % (total_size >> 10)
-				elif total_size < 10000000000:
-					total_size = _("%d MB") % (total_size >> 20)
-				else:
-					total_size = _("%d GB") % (total_size >> 30)
-				self.setText(_("Trashcan:") + " " + total_size)
-			except:
-				# occurs when f_blocks is 0 or a similar error
-				self.setText("-?-")
-
-	GUI_WIDGET = enigma.eLabel

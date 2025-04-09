@@ -315,8 +315,8 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		config.misc.standbyCounter.removeNotifier(self.standbyCountChanged)
 		from Screens.MovieSelection import playlist
 		del playlist[:]
-		if not config.movielist.stop_service.value and Screens.InfoBar.InfoBar.instance:
-			Screens.InfoBar.InfoBar.instance.callServiceStarted()
+		if not config.movielist.stop_service.value and InfoBar.instance:
+			InfoBar.instance.callServiceStarted()
 		self.session.nav.playService(self.lastservice)
 		# Simulate service start event due to the fact when exit from playing
 		# a recording there is no evStart event because the same service is already playing

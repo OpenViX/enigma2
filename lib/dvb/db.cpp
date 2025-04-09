@@ -491,6 +491,10 @@ void eDVBService::setCacheEntry(cacheID id, int pid)
 			eServiceReference ref = eServiceReference(m_reference_str);
 			std::string ref_s = ref.toReferenceString();
 			int pid_val = pid > 0 ? pid : -1;
+			if (endsWith(ref_s, ":")) 
+			{
+				ref_s = ref_s.substr(0, ref_s.size()-1);
+			}
 			eIPTVDBItem item(ref_s, id == cacheID::cMPEGAPID ? pid_val : -1, id == cacheID::cAC3PID ? pid_val : -1, id == cacheID::cAC4PID ? pid_val : -1,
 							id == cacheID::cDDPPID ? pid_val : -1, id == cacheID::cAACHEAPID ? pid_val : -1, id == cacheID::cAACAPID ? pid_val : -1,
 							id == cacheID::cDRAAPID ? pid_val : -1, id == cacheID::cSUBTITLE ? pid_val : -1, id == cacheID::cVPID ? pid_val : -1);
@@ -1514,13 +1518,26 @@ eDVBDB::eDVBDB()
 	{
 		line = replace_all(line, "\n", "");
 		char buffer [256];
+		char path[1000];
+		bool notFile = false;
+		int ssret;
 		int service_type = 1, service_bit = 0, service_res = -1, service_id = -1, dvb_namespace, transport_stream_id = -1,
 		original_network_id = -1, service_tsid = -1, service_number = -1, source_id = 0, ampeg_pid = -1, aac3_pid = -1,
 		aac4_pid = -1, addp_pid = -1, aaach_pid = -1,aaac_pid = -1, adra_pid = -1, subtitle_pid = -1, video_pid = -1;
 
-		sscanf(line.c_str(), "%d:%d:%x:%x:%x:%x:%x:%d:%d:%x|%d|%d|%d|%d|%d|%d|%d|%d|%d", &service_type, &service_bit, &service_res, &service_id,
-					  &dvb_namespace, &transport_stream_id, &original_network_id, &service_tsid, &service_number, &source_id, &video_pid,
+		ssret = sscanf(line.c_str(), "%d:%d:%x:%x:%x:%x:%x:%d:%d:%x:%999[^|]|%d|%d|%d|%d|%d|%d|%d|%d|%d", &service_type, &service_bit, &service_res, &service_id,
+					  &dvb_namespace, &transport_stream_id, &original_network_id, &service_tsid, &service_number, &source_id, path, &video_pid,
 					  &ampeg_pid, &aac3_pid, &aac4_pid, &addp_pid, &aaach_pid, &aaac_pid, &adra_pid, &subtitle_pid);
+
+		switch(ssret) {
+			case 10:
+				strncpy(path, "", 1000);
+				ssret = sscanf(line.c_str(), "%d:%d:%x:%x:%x:%x:%x:%d:%d:%x|%d|%d|%d|%d|%d|%d|%d|%d|%d", &service_type, &service_bit, &service_res, &service_id,
+					&dvb_namespace, &transport_stream_id, &original_network_id, &service_tsid, &service_number, &source_id, &video_pid,
+					&ampeg_pid, &aac3_pid, &aac4_pid, &addp_pid, &aaach_pid, &aaac_pid, &adra_pid, &subtitle_pid);
+				notFile = true;
+				break;
+		}
 
 		sprintf(buffer, "%d:%d:%x:%x:%x:%x:%x:%d:%d:%x", service_type, service_bit, service_res, service_id,
 					  dvb_namespace, transport_stream_id, original_network_id, service_tsid, service_number, source_id);
@@ -1528,9 +1545,9 @@ eDVBDB::eDVBDB()
 		std::string s_ref = buffer;
 		makeUpper(s_ref);
 
-		eDebug("[eDVBDB] Readed from config_av ref: %s", s_ref.c_str());
+		eDebug("[eDVBDB] Readed from config_av ref: %s", (s_ref + (notFile ? "" : (std::string(":") + path))).c_str());
 
-		eIPTVDBItem iptvDBItem(s_ref, ampeg_pid, aac3_pid, aac4_pid, addp_pid, aaach_pid, aaac_pid, adra_pid, subtitle_pid, video_pid);
+		eIPTVDBItem iptvDBItem(s_ref + (notFile ? "" : (std::string(":") + path)), ampeg_pid, aac3_pid, aac4_pid, addp_pid, aaach_pid, aaac_pid, adra_pid, subtitle_pid, video_pid);
 		iptv_services.push_back(iptvDBItem);
 		line = "";
 	}

@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-19 21:07+0000\n"
-"PO-Revision-Date: 2024-10-24 13:32+0200\n"
+"POT-Creation-Date: 2025-04-01 05:16+0000\n"
+"PO-Revision-Date: 2025-04-02 15:48+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: iso-8859-15\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 msgid ""
 "\n"
@@ -728,18 +728,6 @@ msgstr "%d %b"
 msgid "%d %b %Y"
 msgstr "%d %b %Y"
 
-#, python-format
-msgid "%d GB"
-msgstr "%d GB"
-
-#, python-format
-msgid "%d KB"
-msgstr "%d KB"
-
-#, python-format
-msgid "%d MB"
-msgstr "%d MB"
-
 #. TRANSLATORS: full date representation dayname daynum monthname year in strftime() format! See 'man strftime'
 #. _("%A %e %B %Y")
 #. TRANSLATORS: short time representation hour:minute in strftime() format! See 'man strftime'
@@ -807,10 +795,6 @@ msgstr[1] "%d opdrachten draaien op de achtergrond!"
 #, python-format
 msgid "%d jobs are running in the background!"
 msgstr "%d opdrachten draaien op de achtergrond!"
-
-#, python-format
-msgid "%d kB"
-msgstr "%d kB"
 
 #, python-format
 msgid "%d marked item"
@@ -1467,6 +1451,9 @@ msgstr "Er is een back-up gevonden."
 msgid "A client is streaming from this box!"
 msgstr "Een klant streamt vanaf deze STB!"
 
+msgid "A color filter can be used for better readability of DVB subtitles."
+msgstr "Een kleurenfilter kan worden gebruik voor een betere leesbaarheid van DVB-ondertitels."
+
 #, python-format
 msgid ""
 "A configuration file (%s) has been modified since it was installed.\n"
@@ -1535,6 +1522,9 @@ msgstr "Een volledige image back-up kan op elk moment gemaakt worden."
 
 msgid "A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s)."
 msgstr "Een markering op de afbeelding van de afstandsbediening geeft aan voor welke toets de helpinfo getoond wordt. Als meerdere toetsen dezelfde functie hebben, worden die aalle gemarkeerd. Aparte tekst geeft aan of de info geldt voor het lang indrukken van de toets."
+
+msgid "A new storage device has been connected:"
+msgstr "Er is een nieuw opslagmedium aangesloten:"
 
 #, python-format
 msgid ""
@@ -1835,8 +1825,8 @@ msgstr "Zender toevoegen aan favorieten"
 msgid "Add services to this bouquet?"
 msgstr "Zenders toevoegen aan deze favorietenlijst?"
 
-msgid "Add the currently playing service to a bouquet"
-msgstr "Voeg huidige zender aan een favorietenlijst"
+msgid "Add the currently selected service to a bouquet"
+msgstr "Voeg de momenteel geselecteerde zender aan een favorietenlijst"
 
 msgid "Add timer"
 msgstr "Timer"
@@ -1916,6 +1906,9 @@ msgstr "Na bevestiging zal een back-up worden gemaakt en zal het image geflashed
 msgid "After event"
 msgstr "Na opname"
 
+msgid "After power loss"
+msgstr "Na stroomuitval"
+
 msgid "Agenten"
 msgstr "Agenten"
 
@@ -1991,6 +1984,9 @@ msgstr "Staat 10bit toe"
 msgid "Allow 12bit"
 msgstr "Staat 12bit toe"
 
+msgid "Allow CEC address change *"
+msgstr "Sta CEC-adresverandering toe"
+
 msgid "Allow fast skin reload"
 msgstr "Skin snel herladen toestaan"
 
@@ -2005,6 +2001,9 @@ msgstr "Accepteer ondertitels voor slechthorenden"
 
 msgid "Allow unstable (experimental) updates"
 msgstr "Accepteer niet geteste (experimentele) updates"
+
+msgid "Allows swapping between oe-alliance/branding or oe-alliance/remotes for button position mapping and rc graphic."
+msgstr "Staat het wisselen toe tussen oe-alliance/branding en oe-alliance/remotes voor het plaatsen van toets-posities en AB-plaatjes."
 
 msgid "Allows the %s %s to load the saved EPG data regularly."
 msgstr "Laat de %s %s regelmatig de opgeslagen EPG-data lezen."
@@ -2777,9 +2776,8 @@ msgstr "Biografie"
 msgid "Biography"
 msgstr "Biografie"
 
-#, fuzzy
 msgid "Bitrate"
-msgstr "Bitrate:"
+msgstr "Bitrate"
 
 msgid "Bitrate:"
 msgstr "Bitrate:"
@@ -2830,8 +2828,8 @@ msgid "Bollywood"
 msgstr "Bollywood"
 
 #, python-format
-msgid "Bolt:%s\n"
-msgstr ""
+msgid "Bolt:\t%s\n"
+msgstr "Bout:\t%s\n"
 
 msgid "Bonaire, Sint Eustatius and Saba"
 msgstr "Bonaire, Sint Eustatius and Saba"
@@ -2854,6 +2852,9 @@ msgstr "Boot Device: \tRecovery Slot\n"
 
 msgid "Boot Logo Identification"
 msgstr "Bootlogo identificatie"
+
+msgid "Boot normally"
+msgstr "Boot normaal"
 
 #, python-format
 msgid "Bootloader:\t%s\n"
@@ -3044,6 +3045,12 @@ msgstr "CCcam en MGcamd kunnen niet beide actief zijn"
 
 msgid "CCcam can't run whilst MGcamd is running."
 msgstr "CCcam kan niet draaien terwijl MGcamd draait."
+
+msgid "CEC address *"
+msgstr "CEC-adres"
+
+msgid "CEC address, to override enable CEC address change. *Reboot required to activate"
+msgstr "CEC-adres, om 'instellen CEC-adresverandering' te overschrijven. *Reboot vereist om te activeren"
 
 msgid "CH"
 msgstr "CH"
@@ -3428,16 +3435,8 @@ msgid "China"
 msgstr "China"
 
 #, python-format
-msgid "Chipset:\t%s\n"
-msgstr "Chipset:\t%s\n"
-
-#, python-format
-msgid "Chipset:\tBroadcom %s\n"
-msgstr "Chipset:\tBroadcom %s\n"
-
-#, python-format
-msgid "Chipset:\tHiSilicon %s\n"
-msgstr "Chipset:\tHiSilicon %s\n"
+msgid "Chipset:\t%s %s\n"
+msgstr "Chipset:\t%s %s\n"
 
 #, python-format
 msgid "Chipset: %s"
@@ -4146,9 +4145,6 @@ msgstr "Controle LED kan hier worden in- of uitgeschakeld."
 msgid "Control how finished timers are shown in the timer list. If set to hide, disabled timers will still be shown"
 msgstr "Stel in hoe afgewerkte timers in de lijst moeten staan. Indien 'verbergen' is gekozen, worden uitgeschakelde timers nog steeds getoond"
 
-msgid "Converting ext3 to ext4..."
-msgstr "Converteert ext3 naar ext4...."
-
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
@@ -4313,14 +4309,14 @@ msgstr "Creëert SWAP..."
 msgid "Creating directory %s failed."
 msgstr "Het aanmaken van de map %s is mislukt."
 
-msgid "Creating filesystem."
-msgstr "Creëert bestandssysteem."
+msgid "Creating file system"
+msgstr "Creëert bestandssysteem"
 
 msgid "Creating list of installed plugins..."
 msgstr "Maakt een lijst met beschikbare plugins..."
 
-msgid "Creating partition."
-msgstr "Creëert partitie."
+msgid "Creating partition"
+msgstr "Creëert partitie"
 
 msgid "Creating zip..."
 msgstr "Creërt zip..."
@@ -4419,6 +4415,9 @@ msgstr "Cutlist editor"
 msgid "Cutlist editor..."
 msgstr "Cutlist editor..."
 
+msgid "Cyan"
+msgstr "Cyaan"
+
 msgid "Cycle through infobar displays"
 msgstr "Blader door de verschillende weergaves van de infobar"
 
@@ -4502,6 +4501,9 @@ msgstr "DVB ondertitels PID & taal"
 
 msgid "DVB subtitle black transparency"
 msgstr "DVB ondertitels zwart transparantie"
+
+msgid "DVB subtitles color filter"
+msgstr "Kleurfilter DVB ondertitels"
 
 msgid "DVB type"
 msgstr "Soort DVB"
@@ -5179,6 +5181,9 @@ msgstr ""
 "Wilt u het bestandssysteem echt controleren?\n"
 "Dit kan heel lang duren!"
 
+msgid "Do you really want to clear this playlist?"
+msgstr "Wilt u echt deze playlistecht verwijderen?"
+
 #, python-format
 msgid "Do you really want to delete %s?"
 msgstr "Wilt u %s echt verwijderen?"
@@ -5822,6 +5827,9 @@ msgstr "Maakt het mogelijk de tuners van een remote E2-STB te gebruiken, als gee
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
+msgid "Enabled *"
+msgstr "Ingeschakeld *"
+
 msgid "Encrypted TV"
 msgstr "Gecodeerde Tv"
 
@@ -6338,6 +6346,10 @@ msgstr "FEC"
 msgid "FEC:"
 msgstr "FEC:"
 
+#, python-format
+msgid "FFmpeg version:\t%s\n"
+msgstr "FFmpeg-versie::\t%s\n"
+
 msgid "FHD"
 msgstr "FHD"
 
@@ -6577,9 +6589,6 @@ msgstr "Vissen"
 msgid "Fitness & Health"
 msgstr "Fitness & Gezondheid"
 
-msgid "Fix CEC address setting, default is 1.0.0.0"
-msgstr "Fix CEC adresinstelling, default is 1.0.0.0"
-
 msgid "Fixed"
 msgstr "Vast"
 
@@ -6655,9 +6664,8 @@ msgstr "Geef volume opdrachten door"
 msgid "Found non-standard softcam, trying to start, this may fail."
 msgstr "Een niet-standaard softcam gevonden; probeer deze te starten maar dit kan mislukken."
 
-#, fuzzy
 msgid "Frame rate"
-msgstr "Herhalingsfrequentie"
+msgstr "Framerate"
 
 msgid "Frame size in full view"
 msgstr "Framegrootte in vol beeld"
@@ -6745,6 +6753,15 @@ msgstr "Van:"
 
 msgid "Front Panel Display"
 msgstr "Paneeldisplay"
+
+msgid "Front USB"
+msgstr "USB-voorkant"
+
+msgid "Front USB 3.0"
+msgstr "USB 3.0 voorkant"
+
+msgid "Front panel USB"
+msgstr "USB voorpaneel"
 
 msgid "Front panel settings"
 msgstr "Paneeldisplay"
@@ -6932,11 +6949,17 @@ msgstr "Ga naar de huidige tijd, ga daarna naar het kanaal"
 msgid "Go to current time, then the start service, then home of list"
 msgstr "Ga naar de huidige tijd, ga daarna naar het kanaal, daarna naar het begin van de lijsten"
 
+msgid "Go to deep standby"
+msgstr "Ga naar deep stand-by "
+
 msgid "Go to first movie or last item"
 msgstr "Ga naar de eerste opname of het laatste item"
 
 msgid "Go to first movie or top of list"
 msgstr "Ga naar de eerste opname of naar het eerste item"
+
+msgid "Go to last known state"
+msgstr "Ga naar de laatst bekende status"
 
 msgid "Go to next bouquet"
 msgstr "Ga naar de volgende favorietenlijst"
@@ -6961,6 +6984,9 @@ msgstr "Ga naar een specifieke datum/tijd"
 
 msgid "Go to specific date/time"
 msgstr "Ga naar een specifieke datum/tijd"
+
+msgid "Go to standby"
+msgstr "Ga naar stand-by "
 
 msgid "Go up the list"
 msgstr "Ga naar boven in de lijst"
@@ -7139,9 +7165,8 @@ msgstr "HDMI kleurruimte"
 msgid "HDMI HDR Type"
 msgstr "HDMI HDR type"
 
-#, fuzzy
 msgid "HDMI Recording Settings"
-msgstr "Opname-en afspeelinstellingen"
+msgstr "HDMI -opname-instellingen"
 
 msgid "HDMI input"
 msgstr "HDMI-ingang"
@@ -7410,9 +7435,6 @@ msgstr "Hostname:"
 msgid "Hostname: "
 msgstr "Hostname: "
 
-msgid "Hotplug"
-msgstr "Hotplug"
-
 msgid "Hour"
 msgstr "Uur"
 
@@ -7662,8 +7684,8 @@ msgid "Image Manager allows downloading images from OpenViX image server and fro
 msgstr "De Image Manager kan images downloaden van de OpenViX-server en van een aantal andere distributies."
 
 #, python-format
-msgid "Image Slot:\tStartup %s - %s %s"
-msgstr "Image Slot:\tStartup %s - %s %s"
+msgid "Image Slot:\t %s %s"
+msgstr "Image Slot:\t %s %s"
 
 msgid "Image View On"
 msgstr "Beeld aan"
@@ -7691,9 +7713,6 @@ msgstr "Onmiddellijk uitschakelen"
 msgid "Immediately restart selected cams."
 msgstr "Herstart geselecteerde cams onmiddellijk."
 
-msgid "In Developer images only. Allows swapping between oe-alliance/branding or oe-alliance/remotes for button position mapping and rc graphic."
-msgstr "Alleen voor developper-images: staat het wisselen toe tussen oe-alliance/branding en oe-alliance/remotes voor het plaatsen van toets-posities en AB-plaatjes."
-
 msgid "In Setup screens choose whether to show the default value of the selected item in the description field."
 msgstr "Kies in instelschermen of de standaard waarde van de geselecteerde ingang moet worden getoond."
 
@@ -7701,7 +7720,7 @@ msgid "In live view wait this many seconds after a numeric key press before assu
 msgstr "Tijdens live-TV wacht het systeem dit aantal seconden na het ingeven van een cijfer tot er naar dat kanaalnummer gezapt wordt, De standaard waarde is 5 seconde. '0' betekent dat u met 'OK' moet bevestigen. "
 
 msgid "In most cases this should be set to No. Only enable if you have a very specific need."
-msgstr ""
+msgstr "In de meeste gevallen moet NEE worden ingesteld. Schakel alleen in in een zeer specifiek geval."
 
 msgid "In order to record a timer, the TV was switched to the recording service!\n"
 msgstr "Voor een geplande opname is nu de juiste zender ingeschakeld!\n"
@@ -7862,8 +7881,8 @@ msgstr "Formatteer"
 msgid "Initialize Devices"
 msgstr "Initialiseer apparaten"
 
-msgid "Initializing storage device..."
-msgstr "Opslagmedium initialiseren..."
+msgid "Initializing storage device as ext4..."
+msgstr "Opslagmedium initialiseren als EXT4..."
 
 msgid "Inizio e Fine Trasmissioni"
 msgstr "Begin en einde van de uitzending"
@@ -7923,6 +7942,9 @@ msgstr "Installeer lokale extensie"
 msgid "Install picons on"
 msgstr "Installeer picons op"
 
+msgid "Install plugin"
+msgstr "Installeer plugin"
+
 msgid "Installable"
 msgstr "Installeerbaar"
 
@@ -7961,9 +7983,8 @@ msgstr "Interface"
 msgid "Interface: "
 msgstr "Interface: "
 
-#, fuzzy
 msgid "Interlaced"
-msgstr "Interface"
+msgstr "Interlaced"
 
 msgid "Intermediate"
 msgstr "Tussenliggend"
@@ -8475,9 +8496,6 @@ msgstr "Lijst met bestanden"
 msgid "Listen to the radio"
 msgstr "Luister naar radio"
 
-msgid "Listener for hotplug events."
-msgstr "Luistert naar hotplug gebeurtenissen."
-
 msgid "Lists reloaded!"
 msgstr "Links zijn herladen!"
 
@@ -8619,6 +8637,9 @@ msgstr "Doorlus van"
 msgid "Lower Framerate save CPU Time"
 msgstr "Lagere framerate gebruikt minder processortijd"
 
+msgid "Lower USB"
+msgstr "Onderste USB"
+
 msgid "Lower case"
 msgstr "Kleine letters"
 
@@ -8696,6 +8717,9 @@ msgstr "Sportmagazine"
 
 msgid "Magazine Viaggi"
 msgstr "Reismagazine"
+
+msgid "Magenta"
+msgstr "Magenta"
 
 msgid "Main Menu"
 msgstr "Hoofdmenu"
@@ -8889,6 +8913,9 @@ msgstr "Berichten"
 
 msgid "Mexico"
 msgstr "Mexico"
+
+msgid "MicroSD"
+msgstr "MicroSD"
 
 msgid "Micronesia (Federated States of)"
 msgstr "Micronesia (Federated States of)"
@@ -9511,6 +9538,9 @@ msgstr "Nieuw"
 msgid "New Caledonia"
 msgstr "New Caledonia"
 
+msgid "New Storage Device"
+msgstr "Nieuw opslagmedium"
+
 msgid "New Zealand"
 msgstr "New Zealand"
 
@@ -9826,6 +9856,9 @@ msgstr "Niet gedefinieerd"
 
 msgid "Not Flashing"
 msgstr "Niet bezig met flashen"
+
+msgid "Not Installed"
+msgstr "Niet geïnstalleerd"
 
 msgid "Not associated"
 msgstr "Niet geassocieerd"
@@ -10436,6 +10469,13 @@ msgstr "Permanente sorteer aanpassingen"
 msgid "Permanently delete all recordings in the trash can?"
 msgstr "Alle bestanden in de prullenbak nu permanent verwijderen?"
 
+msgid "Permanently ignore this device"
+msgstr "Negeer dit apparaat permanent"
+
+#, python-format
+msgid "Permanently mount as %s"
+msgstr "Mount permanent als %s"
+
 msgid "Persian"
 msgstr "Perzisch"
 
@@ -10465,6 +10505,9 @@ msgstr "Picon en kanaalnaam"
 
 msgid "Picon and Service Number"
 msgstr "Picon en kanaalnaam"
+
+msgid "Picon type priority"
+msgstr "Picon type prioriteit"
 
 msgid "Picon width"
 msgstr "Picon breedte"
@@ -11210,8 +11253,8 @@ msgstr ""
 "Als dit probleem aanhoudt kunt u het forum raadplegen"
 
 #, python-format
-msgid "Processor temp:\t%s"
-msgstr "Processortemp:\t%s"
+msgid "Processor temperature:\t%s"
+msgstr "Processortemperatuur:\t%s"
 
 msgid "Profile"
 msgstr "Profiel"
@@ -11331,8 +11374,8 @@ msgid "Python frontend for /tmp/mmi.socket"
 msgstr "Python frontend voor /tmp/mmi.socket"
 
 #, python-format
-msgid "Python:\t%s\n"
-msgstr "Python:\t%s\n"
+msgid "Python:\t%s.%s.%s\n"
+msgstr "Python:\t%s.%s.%s\n"
 
 msgid "Qatar"
 msgstr "Qatar"
@@ -11524,6 +11567,36 @@ msgstr "De frontprocessor nu bijwerken en opnieuw opstarten?"
 msgid "Really upgrade your %s %s and reboot now?"
 msgstr "Uw %s %s echt upgraden en herstarten?"
 
+msgid "Rear Left USB"
+msgstr "USB achter links"
+
+msgid "Rear Left USB 3.0"
+msgstr "USB 3.0 achter links"
+
+msgid "Rear Lower USB"
+msgstr "USB beneden achter"
+
+msgid "Rear Lower USB 3.0"
+msgstr "USB 3.0 beneden achter"
+
+msgid "Rear MicroSD"
+msgstr "MicroSD achter"
+
+msgid "Rear Right USB"
+msgstr "USB rechts achter"
+
+msgid "Rear USB"
+msgstr "USB achter"
+
+msgid "Rear USB-C"
+msgstr "USB-C achter"
+
+msgid "Rear Upper USB"
+msgstr "USB achter boven"
+
+msgid "Rear Upper USB 3.0"
+msgstr "USB 3.0 achter boven"
+
 msgid "Reboot"
 msgstr "Herstarten"
 
@@ -11570,12 +11643,11 @@ msgstr "Opname"
 msgid "Recording 4097, 5001 and 5002 streams not possible with external players, so convert recordings to servicetype 1."
 msgstr "Opname van 4097, 5001 en 5002 streams is niet mogelijk met externe spelers; converteer deze naar servicetype 1."
 
-#, fuzzy
 msgid ""
 "Recording HDMI In not possible on this receiver, timer ended!\n"
 "Please recheck it!"
 msgstr ""
-"Opname van IPTV met systeemapp is ingeschakeld, timer afgelopen!\n"
+"Opname van HDMI-in is met deze ontvanger niet mogelijk; timer is beeindigd!\n"
 "Controleer deze!"
 
 msgid ""
@@ -11589,7 +11661,7 @@ msgid "Recording and playback settings"
 msgstr "Opname-en afspeelinstellingen"
 
 msgid "Recording frame rate, ideally matching source frame rate or integer multiple. If in doubt, set to 60."
-msgstr ""
+msgstr "Opname framerate, die idealiter met de framerate van het bronmateriaal overeenkomt of een veelvoud daarvan. Bij twijfel gebruikt u 60."
 
 #, python-format
 msgid "Recording in progress: %s"
@@ -11747,6 +11819,10 @@ msgstr "Bron afstandsbediening*"
 msgid "Remote control type"
 msgstr "Type afstandsbediening"
 
+#, python-format
+msgid "Remote:\t%s\n"
+msgstr "Remote:\t%s\n"
+
 msgid "Removal has completed."
 msgstr "Verwijdering is gereed."
 
@@ -11840,6 +11916,9 @@ msgstr "Verwijder items uit de prullenbak na x (dagen)"
 msgid "Remove new found flag"
 msgstr "Verwijder 'nieuw gevonden' vlag"
 
+msgid "Remove plugin"
+msgstr "Verwijder plugin"
+
 msgid "Remove plugins"
 msgstr "Plugins verwijderen"
 
@@ -11874,8 +11953,8 @@ msgstr "Verwijdert kanaal"
 msgid "Removing directory %s failed. (Maybe not empty.)"
 msgstr "Verwijderen van map %s mislukt (map niet leeg?)"
 
-msgid "Removing partition table."
-msgstr "Verwijdert partitietabel."
+msgid "Removing partition table"
+msgstr "Verwijdert partitietabel"
 
 msgid "Removing service"
 msgstr "Verwijdert kanaal"
@@ -11951,8 +12030,8 @@ msgstr "Vereist authenticatie voor http streams"
 msgid "Required medium type:"
 msgstr "Benodigd mediumtype:"
 
-msgid "Rereading partition table."
-msgstr "Leest partitietabel opnieuw."
+msgid "Rereading partition table"
+msgstr "Leest partitietabel opnieuw"
 
 msgid "Reserved"
 msgstr "Gereserveerd"
@@ -12213,6 +12292,9 @@ msgstr "SABnzbd instellingen"
 msgid "SAT"
 msgstr "SAT"
 
+msgid "SATA"
+msgstr "SATA"
+
 msgid "SCPC optimized search range"
 msgstr "Geoptimaliseerd zoekbereik voor SCPC"
 
@@ -12227,6 +12309,9 @@ msgstr "SCR Unicable"
 
 msgid "SCREEN"
 msgstr "SCHERM"
+
+msgid "SD"
+msgstr "SD"
 
 msgid "SDCARD"
 msgstr "SDCARD"
@@ -12836,9 +12921,6 @@ msgstr "Selecteer bestemming voor:"
 msgid "Select display of record icon based on 'Sref only' or 'Sref + Stream url' where applicable."
 msgstr "Kies tussen tonen van opname-icoon op basis van 'alleen Sref' of 'Sref + stream url'."
 
-msgid "Select extra packages folder"
-msgstr "Kies de folder met extra plugins"
-
 msgid "Select files/folders to backup"
 msgstr "Kies bestanden/mappen voor de back-up"
 
@@ -13259,9 +13341,6 @@ msgstr "Standaard waarde"
 msgid "Set end time"
 msgstr "Stel eindtijd in"
 
-msgid "Set fixed CEC address"
-msgstr "Stel vast HDMI-CEC adres in"
-
 msgid "Set fps for external subtitles"
 msgstr "Stel de fps in voor de externe ondertitels"
 
@@ -13325,6 +13404,9 @@ msgstr "Stel het controle interval in minuten in."
 
 msgid "Set the jump-size of the seekbar."
 msgstr "Stel hier de grootte van de tijdsprong van de zoekbalk in."
+
+msgid "Set the lookup priority when searching for picons. If all your picons are png set to 'png only' to save on lookup time."
+msgstr "Stel de prioriteit in voor het zoeken naar picons. Als u alleen PNG-picons gebruikt, stelt u 'alleen PNG' in, om de zoektijd te bekorten."
 
 msgid "Set the name the recording will get."
 msgstr "Geef de naam die de opname krijgt."
@@ -13485,9 +13567,8 @@ msgstr "ECM info weergeven"
 msgid "Show Grid EPG"
 msgstr "Toon Grafische-EPG"
 
-#, fuzzy
 msgid "Show HDMIRecord setup..."
-msgstr "Toon RFmod instellingen"
+msgstr "Toon HDMIRecord instellingen..."
 
 msgid "Show Log"
 msgstr "Toon log"
@@ -14114,10 +14195,6 @@ msgstr "Snooker"
 msgid "Snooker/Pool"
 msgstr "Snooker/Pool"
 
-#, python-format
-msgid "SoC:\t%s\n"
-msgstr "SoC:\t%s\n"
-
 msgid "Soap"
 msgstr "Soap"
 
@@ -14225,9 +14302,6 @@ msgstr "MiniDLNA configuratie ontbreekt"
 
 msgid "Sorry your uShare config is missing"
 msgstr "Configuratie van uShare ontbreekt"
-
-msgid "Sorry, but the file is not compatible with this image version."
-msgstr "Het bestand is niet verenigbaar met deze versie van de firmware."
 
 msgid "Sorry, but the restore failed."
 msgstr "Het terugplaatsen is mislukt."
@@ -14774,9 +14848,8 @@ msgstr "Schakel tussen de twee laatst bekeken kanalen"
 msgid "Switch config"
 msgstr "Wissel configuratie"
 
-#, fuzzy
 msgid "Switch off HDMI-IN input"
-msgstr "Schakel over naar HDMI-in"
+msgstr "Schakel naar HDMI-in"
 
 msgid "Switch the PiP to the next channel"
 msgstr "Ga in PiP naar volgende kanaal"
@@ -14790,9 +14863,8 @@ msgstr "Kies grid-EPG"
 msgid "Switch to HDMI in mode"
 msgstr "Schakel over naar HDMI-in"
 
-#, fuzzy
 msgid "Switch to HDMI-IN"
-msgstr "Schakel over naar HDMI-in"
+msgstr "Schakel naar HDMI-in"
 
 msgid "Switch to Multi EPG"
 msgstr "Kies multi-EPG"
@@ -14861,8 +14933,8 @@ msgid "System & Modulation"
 msgstr "Systeem & modulatie"
 
 #, python-format
-msgid "System temp:\t%s"
-msgstr "Systeemtemp:\t%s"
+msgid "System temperature:\t%s"
+msgstr "Systeemtemperatuur: \t%s"
 
 #, python-format
 msgid "System temperature: %s"
@@ -15007,6 +15079,10 @@ msgstr "Telnetpoort"
 msgid "Temp folder"
 msgstr "Tijdelijke map"
 
+#, python-format
+msgid "Temporarily mount as %s"
+msgstr "Mount tijdelijk als %s"
+
 msgid "Tennis"
 msgstr "Tennis"
 
@@ -15142,9 +15218,8 @@ msgstr ""
 "De TMDb-plugin is niet geïnstalleerd!\n"
 "Installeer die."
 
-#, fuzzy
 msgid "The aspect ratio of the recording."
-msgstr "Kies de beschrijving van de opname."
+msgstr "De beeldverhouding van de opname."
 
 msgid "The backup creates a snapshot of the image exactly as it is at the current instant."
 msgstr "De back-up maakt een exact snapshot van het image zoals het op dit moment is."
@@ -15156,7 +15231,7 @@ msgid "The backup location does not have enough free space.\n"
 msgstr "De back-up locatie heeft onvoldoende ruimte.\n"
 
 msgid "The bitrate of the video encoder. Larger value improves quality and increases file size."
-msgstr ""
+msgstr "De bitrate van de video-encoder. Een grotere waarde verbetert de beeldkwaliteit en maakt de bestandsomvang groter."
 
 #, python-format
 msgid ""
@@ -15189,7 +15264,7 @@ msgid "The following files were found..."
 msgstr "De volgende bestanden zijn gevonden..."
 
 msgid "The height of the picture. The input will be scaled to match this value."
-msgstr ""
+msgstr "De beeldhoogte. Het beeld zal worden aangepast tot deze waarde."
 
 msgid "The image will then be downloaded to the 'Backup location'."
 msgstr "Het image zal worden gedownload naar de back-up locatie."
@@ -15203,8 +15278,8 @@ msgstr "De naam van de ontvanger kan worden toegevoegd aan de bestandsnaam, maar
 msgid "The new image will overwrite the previous one including any client images that were also configured, so care needs to be taken to make any full image backups (including client images) before overwriting the recovery image."
 msgstr "Het nieuwe image zal voorgaande images overschrijven, inclusief client-images die ook geconfigureerd zijn; u moet dus oppassen met het maken van een volledige image-back-up (inclusief de client back-ups) voordat u het recovery image overschrijft."
 
-msgid "The order and grouping of the help information list can be controlled using MENU>Setup>User Interface>Settings>Sort order for help screen."
-msgstr "De volgorde en groepering van help informatie kan worden ingesteld via MENU>Instellingen>Gebruikersinterface>Instellingen>Volgorde voor helpscherm."
+msgid "The order and grouping of the help information list can be controlled using MENU>Setup>User Interface>Settings>Sort order for help screen or pressing long help"
+msgstr "De volgorde en groepering van help informatie kan worden ingesteld via MENU>Instellingen>Gebruikersinterface>Instellingen>Volgorde voor helpscherm of door lang-help te drukken."
 
 msgid "The password can not be blank."
 msgstr "Het wachtwoordveld mag niet leeg zijn."
@@ -15248,7 +15323,7 @@ msgstr ""
 "vanwege een fout in StartEnigma.py"
 
 msgid "The width of the picture. The input will be scaled to match this value."
-msgstr ""
+msgstr "De beeldbreedte. Het beeld zal worden aangepast aan deze waarde."
 
 msgid ""
 "The wireless LAN plugin is not installed!\n"
@@ -15276,6 +15351,10 @@ msgstr "Er zijn geen playlists om te verwijderen!"
 
 msgid "There are no saved playlists to load!"
 msgstr "Er zijn geen playlists om te laden!"
+
+#, python-format
+msgid "There has been a '%s', please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com"
+msgstr "Er is een '%s', opgetreden. Als het probleem aanhoudt, controleert u op openvix.co.uk of op world-of-satellite.com wat er aan de hand is"
 
 msgid "There has been an error, please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com"
 msgstr "Er is een fout opgetreden. Als het probleem aanhoudt, controleert u op openvix.co.uk of op world-of-satellite.com wat er aan de hand is"
@@ -16111,6 +16190,9 @@ msgstr "Onbekende fout"
 msgid "Unknown image"
 msgstr "Onbekend image"
 
+msgid "Unmount"
+msgstr "Unmount"
+
 msgid "Unmount."
 msgstr "Unmount."
 
@@ -16244,6 +16326,9 @@ msgstr "Uphops: "
 
 msgid "Upon completion the receiver will reboot and display the First Install Wizard."
 msgstr "Wanneer gereed zal de ontvanger herstarten en de installatie wizard tonen."
+
+msgid "Upper USB"
+msgstr "Bovenste USB"
 
 msgid "Upper case"
 msgstr "Hoofdletters"
@@ -16700,6 +16785,9 @@ msgstr "Vu+ 4K image installeer opties"
 msgid "Vu+ ImageManager wizard"
 msgstr "Vu+ ImageManager wizard"
 
+msgid "Vu+ Multiboot"
+msgstr "Vu+ Multiboot"
+
 msgid ""
 "Vu+ Multiboot - PLEASE WAIT WHILE INITIALISING!\n"
 "  - will take upto 5 minutes plus 5 minutes per restored eMMC slot.\n"
@@ -16773,8 +16861,8 @@ msgstr "Aan het wachten"
 msgid "Waiting for mount."
 msgstr "Wacht op mount."
 
-msgid "Waiting for partition."
-msgstr "Wacht op partitie."
+msgid "Waiting for partition"
+msgstr "Wacht op partitie"
 
 msgid "Wake A/V receiver from standby"
 msgstr "Wakeup versterker vanuit stand-by"
@@ -16793,6 +16881,9 @@ msgstr "Inschakelen naar stand-by"
 
 msgid "Wake the receiver from standby when the wake command is sent from the TV."
 msgstr "Schakel de ontvanger in als de TV aangaat."
+
+msgid "Wake up to standby"
+msgstr "Inschakelen naar stand-by"
 
 msgid "Wakeup"
 msgstr "Wakeup"
@@ -17001,6 +17092,9 @@ msgstr "Indien ingeschakeld zal uw ontvanger automatisch inschakelen als de TV a
 msgid "When enabled the set top box is able to wakeup on LAN"
 msgstr "Indien ingeschakeld is het mogelijk de STB via 'wakeup on LAN' vanuit deep stand-by te laten starten"
 
+msgid "When enabled will allow CEC address change. *Reboot required to activate"
+msgstr "Indien ingeschakeld is een CEC-adresverandering toegestaan. *Reboot vereist om te activeren"
+
 msgid "When enabled, AIT data will be included in http streams. This allows a client receiver to use HbbTV."
 msgstr "Indien geactiveerd, zal AIT-data in HTTP-stream worden meegestuurd. Dit maakt het gebruik van HbbTV door een klant-box mogelijk."
 
@@ -17044,9 +17138,6 @@ msgstr "Indien ingeschakeld zullen grafische DVB-ondertitels de voorkeur hebben 
 
 msgid "When enabled, graphical DVB subtitles will be displayed at their original position."
 msgstr "Indien ingeschakeld zullen grafische DVB-ondertitels op hun originele plaats worden vertoond."
-
-msgid "When enabled, graphical DVB subtitles will be displayed in yellow, instead of the original color."
-msgstr "Indien ingeschakeld worden grafische DVB-ondertitels vertoond in geel in plaats van in de originele kleur."
 
 msgid "When enabled, http streams are descrambled on the server side. The (remote) client receiver does not have to do descrambling."
 msgstr "Indien ingeschakeld worden streams altijd door de server gedecodeerd. De klant-box hoeft niet te decoderen."
@@ -17126,6 +17217,9 @@ msgstr "Indien 'Ja' is gekozen, zal uw ontvanger automatisch activiteit op de VC
 msgid "When flashing from the recovery image it is possible to flash it to the recovery slot."
 msgstr "Indien het Recovery Image geflashed wordt, is het mogelijk dit te flashen naar het recovery slot."
 
+msgid "When in normal use or standby (not deep standby), what should the %s %s do when booting after a power loss or other uncontrolled shutdown?"
+msgstr "Indie in normaal gebruik of stand-by (not deep standby): wat moet de %s %s doen wanneer na stroomuitval of een ongecontroleerde uitval de box weer boot?"
+
 msgid "When maximum space for all logs is reached, the oldest logs will be deleted."
 msgstr "Maximale ruimte die de logs in beslag mogen nemen. Als die overschreden wordt,worden de oudste het eerste verwijderd."
 
@@ -17161,6 +17255,9 @@ msgstr "Als de ontvanger uit stand-by komt, zal ook de TV aangezet worden."
 
 msgid "When tuned to a service the system will normally scan the transponder for any changes and save them. Only set to 'yes' if you're absolutely sure of what you're doing."
 msgstr "Als uw ontvanger op een kanaal is afgestemd, wordt normaal gesproken de transponder gescand op veranderingen. Schakel dit alleen uit, als u zeker bent van wat u doet."
+
+msgid "When waking from deep standby, should the %s %s go directly to standby mode?"
+msgstr "Als de %s %s uit deep stand-by komt, moet deze dan direct naar stand-by gaan?"
 
 msgid "Where should the recording be saved?"
 msgstr "Waar moet de opname opgeslagen worden?"
@@ -17293,9 +17390,6 @@ msgstr "Jaar"
 
 msgid "Yellow"
 msgstr "Geel"
-
-msgid "Yellow DVB subtitles"
-msgstr "Gele DVB-ondertitels"
 
 msgid "Yellow button (long)"
 msgstr "Gele-toets (lang)"
@@ -18072,6 +18166,9 @@ msgstr "drama (algemeen)"
 msgid "eMMC"
 msgstr "eMMC"
 
+msgid "eSATA"
+msgstr "eSATA"
+
 msgid "east"
 msgstr "oost"
 
@@ -18344,9 +18441,6 @@ msgstr "markeerpunt invoegen"
 
 msgid "instant record"
 msgstr "directe opname"
-
-msgid "invalid type"
-msgstr "ongeldig type"
 
 msgid "jazz"
 msgstr "jazz"
@@ -18627,6 +18721,12 @@ msgstr "even wachten..."
 msgid "pm"
 msgstr "am"
 
+msgid "png only"
+msgstr "Alleen  PNG"
+
+msgid "png, then svg"
+msgstr "PNG, daarna SVG"
+
 msgid "popular culture/traditional arts"
 msgstr "populaire cultuur/traditionele kunst"
 
@@ -18829,8 +18929,8 @@ msgid "skip forward"
 msgstr "vooruit spoelen"
 
 #, python-format
-msgid "slot %s (%s)"
-msgstr "slot %s (%s)"
+msgid "slot %s  (%s)"
+msgstr "slot %s  (%s)"
 
 #, python-format
 msgid "slot%s %s - %s"
@@ -18893,6 +18993,12 @@ msgstr "stapgrootte"
 
 msgid "stereo"
 msgstr "stereo"
+
+msgid "svg only"
+msgstr "Alleen SVG"
+
+msgid "svg, then png"
+msgstr "SVG, daarna PNG"
 
 msgid "sw"
 msgstr "ZW"
@@ -19258,6 +19364,22 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgstr "%d B"
 
 #, python-format
+#~ msgid "%d GB"
+#~ msgstr "%d GB"
+
+#, python-format
+#~ msgid "%d KB"
+#~ msgstr "%d KB"
+
+#, python-format
+#~ msgid "%d MB"
+#~ msgstr "%d MB"
+
+#, python-format
+#~ msgid "%d kB"
+#~ msgstr "%d kB"
+
+#, python-format
 #~ msgid "%d.%03d GB"
 #~ msgstr "%d.%03d GB"
 
@@ -19474,6 +19596,14 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Change the Colorspace from Auto to RGB"
 #~ msgstr "Verander de kleurruimte van Auto naar RGB"
 
+#, python-format
+#~ msgid "Chipset:\tBroadcom %s\n"
+#~ msgstr "Chipset:\tBroadcom %s\n"
+
+#, python-format
+#~ msgid "Chipset:\tHiSilicon %s\n"
+#~ msgstr "Chipset:\tHiSilicon %s\n"
+
 #~ msgid "Clear HDMI-CEC fixed address"
 #~ msgstr "Verwijder HDMI-CEC vaste adres"
 
@@ -19504,6 +19634,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Continue"
 #~ msgstr "Doorgaan"
+
+#~ msgid "Converting ext3 to ext4..."
+#~ msgstr "Converteert ext3 naar ext4...."
 
 #~ msgid "Current CEC address"
 #~ msgstr "Huidig CEC adres"
@@ -19596,6 +19729,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "FBC socket %s"
 #~ msgstr "FBC socket %s"
 
+#~ msgid "Fix CEC address setting, default is 1.0.0.0"
+#~ msgstr "Fix CEC adresinstelling, default is 1.0.0.0"
+
 #, python-format
 #~ msgid "Flash directory '%s' not allowed!"
 #~ msgstr "Flash-map'%s' is niet toegestaan!"
@@ -19652,6 +19788,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Hide and confirm invalid key message"
 #~ msgstr "Verberg en bevestig ongeldige-knop melding"
 
+#~ msgid "Hotplug"
+#~ msgstr "Hotplug"
+
 #
 #, fuzzy
 #~ msgid "I"
@@ -19697,6 +19836,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Left from servicename (only available in single line mode)"
 #~ msgstr "Links van kanaalnaam (alleen beschikbaar in de één regel modus)"
+
+#~ msgid "Listener for hotplug events."
+#~ msgstr "Luistert naar hotplug gebeurtenissen."
 
 #~ msgid "Manage extensions"
 #~ msgstr "Beheer van extensies"
@@ -19900,6 +20042,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Select directory for logfile"
 #~ msgstr "Kies map voor logbestand"
 
+#~ msgid "Select extra packages folder"
+#~ msgstr "Kies de folder met extra plugins"
+
 #~ msgid "Select files for backup."
 #~ msgstr "Selecteer bestanden voor back-up."
 
@@ -19924,6 +20069,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Set fixed"
 #~ msgstr "Zet fixed"
+
+#~ msgid "Set fixed CEC address"
+#~ msgstr "Stel vast HDMI-CEC adres in"
 
 #~ msgid "Set pin code persistent"
 #~ msgstr "Make the PIN blijvend"
@@ -19996,6 +20144,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Sorry, %s has not been installed!"
 #~ msgstr "Sorry, %s is niet geïnstalleerd!"
 
+#~ msgid "Sorry, but the file is not compatible with this image version."
+#~ msgstr "Het bestand is niet verenigbaar met deze versie van de firmware."
+
 #~ msgid "Sorry, no backups found!"
 #~ msgstr "Sorry, geen back-up gevonden!"
 
@@ -20024,6 +20175,10 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Sync NTP every (minutes)"
 #~ msgstr "Synchroniseer NTP elke X minuten"
+
+#, python-format
+#~ msgid "System temp:\t%s"
+#~ msgstr "Systeemtemp:\t%s"
 
 #~ msgid "TB"
 #~ msgstr "TB"
@@ -20273,8 +20428,14 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "When enabled, external subtitles will always be turned on for movie playback."
 #~ msgstr "Indien ingeschakeld worden externe ondertitels altijd getoond."
 
+#~ msgid "When enabled, graphical DVB subtitles will be displayed in yellow, instead of the original color."
+#~ msgstr "Indien ingeschakeld worden grafische DVB-ondertitels vertoond in geel in plaats van in de originele kleur."
+
 #~ msgid "Where do you want to backup your settings?"
 #~ msgstr "Waar wilt u de instellingen opslaan?"
+
+#~ msgid "Yellow DVB subtitles"
+#~ msgstr "Gele DVB-ondertitels"
 
 #~ msgid "Yes, always"
 #~ msgstr "Ja, altijd"
@@ -20352,6 +20513,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "from"
 #~ msgstr "van"
+
+#~ msgid "invalid type"
+#~ msgstr "ongeldig type"
 
 #~ msgid "is strongly advised."
 #~ msgstr "wordt sterk aangeraden."

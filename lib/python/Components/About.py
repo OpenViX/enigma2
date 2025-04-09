@@ -1,10 +1,10 @@
 from fcntl import ioctl
+from os import path as ospath
 from socket import AF_INET, SOCK_DGRAM, inet_ntoa, socket
 from struct import pack
-
-from os import path as ospath
 from sys import modules
 from time import time
+from Tools.Directories import fileExists
 
 
 def getKernelVersionString():  # output from this function may not match kernel version from enigma.info (BoxInfo). This version is more accurate.
@@ -15,23 +15,27 @@ def getKernelVersionString():  # output from this function may not match kernel 
 
 
 def getCPUArch(MODEL):
-	if MODEL.startswith("osmio4k"):
-		CPUArch = "ARM V7"
-	elif "ARM" in getCPUString():
-		CPUArch = getCPUString()
-	else:
-		CPUArch = _("Mipsel")
+	Architecture = checkCPUArch()
+	CPUArch = Architecture if "ARM" in Architecture else _("Mipsel")
 	return [CPUArch, getCPUSpeedString(MODEL), getCpuCoresString()]
 
 
-def getChipSetString(MODEL):
-	try:
-		return str(open("/proc/stb/info/chipset").read().lower().replace("\n", "").replace("brcm", "").replace("bcm", ""))
-	except:
-		if MODEL in ("dm900", "dm920"):
-			return "7252s"
+def checkCPUArch():
+	if fileExists("/proc/cpuinfo"):
+		return [x.split(": ")[1].split(" ")[0] for x in open("/proc/cpuinfo").readlines() if x.startswith(("system type", "model name", "Processor")) and len(x.split(": ")) > 1][0]
+	else:
+		return _("unavailable")
+
+
+def getCPUSpeedString(MODEL):
+	cpu_speed = float(getCPUSpeedMHzInt(MODEL))
+	if cpu_speed > 0:
+		if cpu_speed >= 1000:
+			cpu_speed = f"{str(round(cpu_speed / 1000, 1))} GHz"
 		else:
-			return "unknown"
+			cpu_speed = f"{str(int(cpu_speed))} MHz"
+		return cpu_speed
+	return _("unknown")
 
 
 def getCPUSpeedMHzInt(MODEL):
@@ -65,38 +69,6 @@ def getCPUSpeedMHzInt(MODEL):
 	return int(cpu_speed)
 
 
-def getCPUSpeedString(MODEL):
-	cpu_speed = float(getCPUSpeedMHzInt(MODEL))
-	if cpu_speed > 0:
-		if cpu_speed >= 1000:
-			cpu_speed = f"{str(round(cpu_speed / 1000, 1))} GHz"
-		else:
-			cpu_speed = f"{str(int(cpu_speed))} MHz"
-		return cpu_speed
-	return "unknown"
-
-
-def getCPUString():
-	try:
-		return [x.split(": ")[1].split(" ")[0] for x in open("/proc/cpuinfo").readlines() if x.startswith(("system type", "model name", "Processor")) and len(x.split(": ")) > 1][0]
-	except:
-		return _("unavailable")
-
-
-def getKernelVersionString():  # required by OpenWebif
-	try:
-		return open("/proc/version").read().split(" ", 3)[2].split("-", 1)[0]
-	except:
-		return _("unknown")
-
-
-def getCpuCoresInt():
-	try:
-		return int(open("/sys/devices/system/cpu/present").read().split("-")[1]) + 1
-	except:
-		return 0
-
-
 def getCpuCoresString():
 	cores = getCpuCoresInt()
 	return {
@@ -106,6 +78,13 @@ def getCpuCoresString():
 		4: _("Quad core"),
 		8: _("Octo core")
 	}.get(cores, _("%d cores") % cores)
+
+
+def getCpuCoresInt():
+	try:
+		return int(open("/sys/devices/system/cpu/present").read().split("-")[1]) + 1
+	except:
+		return 0
 
 
 def _ifinfo(sock, addr, ifname):
@@ -122,10 +101,10 @@ def getIfConfig(ifname):
 	infos = {}
 	sock = socket(AF_INET, SOCK_DGRAM)
 	# Offsets defined in /usr/include/linux/sockios.h on linux 2.6.
-	infos["addr"] = 0x8915  # SIOCGIFADDR
-	infos["brdaddr"] = 0x8919  # SIOCGIFBRDADDR
-	infos["hwaddr"] = 0x8927  # SIOCSIFHWADDR
-	infos["netmask"] = 0x891b  # SIOCGIFNETMASK
+	infos["addr"] = 0x8915  	# SIOCGIFADDR get remote PA address
+	infos["brdaddr"] = 0x8919  	# SIOCGIFBRDADDR get broadcast PA address
+	infos["hwaddr"] = 0x8927  	# SIOCSIFHWADDR get hardware address
+	infos["netmask"] = 0x891b  	# SIOCGIFNETMASK get network PA mask
 	try:
 		for k, v in infos.items():
 			ifreq[k] = _ifinfo(sock, v, ifname)
@@ -133,7 +112,7 @@ def getIfConfig(ifname):
 		print(f"[About] getIfConfig Ex: {str(ex)}")
 		pass
 	sock.close()
-	print("[About] ifreq: ", ifreq)
+	print(f"[About] ifreq:{ifreq}")
 	return ifreq
 
 
@@ -141,7 +120,7 @@ def getIfTransferredData(ifname):
 	with open("/proc/net/dev", "r") as f:
 		for line in f:
 			if ifname in line:
-				data = line.split("%s:" % ifname)[1].split()
+				data = line.split(f"{ifname}:")[1].split()
 				rx_bytes, tx_bytes = (data[0], data[8])
 				return rx_bytes, tx_bytes
 

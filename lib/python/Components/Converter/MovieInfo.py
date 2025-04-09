@@ -96,7 +96,7 @@ class MovieInfo(Converter):
 		return description + extended
 
 	def getFriendlyFilesize(self, filesize):
-		if filesize is None:
+		if filesize in (None, 0):  # filesize for unread collections is 0
 			return ""
 		return bytesToHumanReadable(filesize)
 

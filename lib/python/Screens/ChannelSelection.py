@@ -328,6 +328,14 @@ class ChannelContextMenu(Screen):
 						if not self.inBouquet:
 							_append_when_current_valid(current, menu, actions, (_("Add service to favourites"), self.addServiceToBouquetSelected), level=0, key="4")
 							self.addFunction = self.addServiceToBouquetSelected
+
+					if self.parentalControlEnabled:
+						if self.parentalControl.getProtectionLevel(csel.getCurrentSelection().toCompareString()) == -1:
+							_append_when_current_valid(current, menu, actions, (_("Add to parental protection"), boundFunction(self.addParentalProtection, current)), level=0, key="bullet")
+						else:
+							_append_when_current_valid(current, menu, actions, (_("Remove from parental protection"), boundFunction(self.removeParentalProtection, current)), level=0, key="bullet")
+						if config.ParentalControl.hideBlacklist.value and not parentalControl.sessionPinCached and config.ParentalControl.storeservicepin.value != "never":
+							_append_when_current_valid(current, menu, actions, (_("Unhide parental control services"), self.unhideParentalServices), level=0, key="bullet")
 				else:
 					if 'FROM SATELLITES' in current_root.getPath() and current and _("Services") in eServiceCenter.getInstance().info(current).getName(current):
 						unsigned_orbpos = current.getUnsignedData(4) >> 16

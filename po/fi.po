@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-19 18:26+0200\n"
-"PO-Revision-Date: 2025-03-19 19:37+0200\n"
+"POT-Creation-Date: 2025-04-04 22:51+0300\n"
+"PO-Revision-Date: 2025-04-08 08:10+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 msgid ""
 "\n"
@@ -728,18 +728,6 @@ msgstr "%d %b"
 msgid "%d %b %Y"
 msgstr "%d %b %Y"
 
-#, python-format
-msgid "%d GB"
-msgstr "%d GB"
-
-#, python-format
-msgid "%d KB"
-msgstr "%d KB"
-
-#, python-format
-msgid "%d MB"
-msgstr "%d MB"
-
 #. TRANSLATORS: full date representation dayname daynum monthname year in strftime() format! See 'man strftime'
 #. _("%A %e %B %Y")
 #. TRANSLATORS: short time representation hour:minute in strftime() format! See 'man strftime'
@@ -809,16 +797,18 @@ msgid "%d jobs are running in the background!"
 msgstr "%d työtä on käynnissä taustalla!"
 
 #, python-format
-msgid "%d kB"
-msgstr "%d kt"
-
-#, python-format
 msgid "%d marked item"
 msgstr "%d merkattu kohde"
 
 #, python-format
 msgid "%d marked items"
 msgstr "%d merkattua kohdetta"
+
+#, python-format
+msgid "%d milisecond"
+msgid_plural "%d miliseconds"
+msgstr[0] "%d millisekunti"
+msgstr[1] "%d millisekuntia"
 
 #, python-format
 msgid "%d min"
@@ -4225,11 +4215,11 @@ msgstr "Tiedostoa %s ei voitu avata!"
 
 #, python-format
 msgid "Could not record due to a conflicting timer %s"
-msgstr "Ei voida tallentaa ristiriitaisen ajastuksen takia %s"
+msgstr "Ei voida tallentaa ristiriitaisen ajastuksen %s takia"
 
 #, python-format
 msgid "Could not record due to an invalid service %s"
-msgstr "Ei voida tallentaa virheellisen kanavan takia %s"
+msgstr "Ei voida tallentaa virheellisen kanavan %s takia"
 
 #, python-format
 msgid "Could not save configfile %s!"
@@ -5946,7 +5936,7 @@ msgid "Enter service name that will be shown in the bouquet."
 msgstr "Syötä kanavan nimi, joka näytetään suosikkilistassa."
 
 msgid "Enter service number"
-msgstr "Syötä palvelunumero"
+msgstr "Syötä kanavan numero"
 
 msgid "Enter the FTP password of the host receiver (required for any server running OpenViX 5.4 or greater)."
 msgstr "Anna isäntälaitteen FTP-salasana."
@@ -7237,7 +7227,7 @@ msgid "HH:mm:ss"
 msgstr "HH:mm:ss"
 
 msgid "HI cleanup for external subtitles"
-msgstr "Kuulovammaisille tarkoitetun tekstityksen puhdistus ulkoisista tekstityksistä"
+msgstr "Kuulovammaisten tekstityksen puhdistus ulkoisista tekstityksistä"
 
 msgid "HISTORY"
 msgstr "HISTORIA"
@@ -10072,7 +10062,7 @@ msgid "On end of movie"
 msgstr "Vaihda tallenteen lopun toimintoa"
 
 msgid "On end of movie (as menu)"
-msgstr "Vaihda tallenteen lopun toimintoa"
+msgstr "Vaihda tallenteen lopun toimintoa (näytä valikkona)"
 
 msgid "On except in same named directory"
 msgstr "Poikkeuksena saman nimisessä kansiossa"
@@ -10439,6 +10429,12 @@ msgstr "Partitio: %s Liitos: %s liitos poistettu onnistuneesti; jos kaikkien par
 
 msgid "Passthrough"
 msgstr "Läpivienti"
+
+msgid "Passthrough audio handling delay AC3"
+msgstr "AC3 -äänen läpiviennin käsittelyviive"
+
+msgid "Passthrough audio handling delay AC3+"
+msgstr "AC3+ -äänen läpiviennin käsittelyviive"
 
 msgid "Password"
 msgstr "Salasana"
@@ -12037,7 +12033,7 @@ msgid "Renovation"
 msgstr "Saneeraus"
 
 msgid "Repeat"
-msgstr "Toistokerrat"
+msgstr "Toista"
 
 msgid "Repeat Display Message"
 msgstr "Toista kuvaruutuviesti"
@@ -12198,10 +12194,10 @@ msgid "Retrieving image slots - Please wait..."
 msgstr "Haetaan image-paikkoja, odota..."
 
 msgid "Return to movie list"
-msgstr "Avaa tallenneluettelo"
+msgstr "Palaa tallenneluetteloon"
 
 msgid "Return to previous service"
-msgstr "Palaa TV-kanavalle"
+msgstr "Palaa edelliselle kanavalle"
 
 msgid "Reunion"
 msgstr "Reunion"
@@ -13473,7 +13469,7 @@ msgid "Set the scrolling speed of text on the front display."
 msgstr "\"Määritä tekstin vieritysnopeus etupaneelissa."
 
 msgid "Set the sort method for this directory"
-msgstr "Aseta tämän hakemiston hakutyyppi"
+msgstr "Aseta tämän hakemiston lajittelumenetelmä"
 
 msgid "Set the time delay before hiding the infobar."
 msgstr "Määritä viive ennen tietopalkin sulkemista."
@@ -15027,7 +15023,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 19.03.2025 ---\n"
+"--- 08.04.2025 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -16552,6 +16548,12 @@ msgstr "Käytä roskakoria tallenneluettelossa"
 
 msgid "Used service scan type"
 msgstr "Käytetty kanavahakutyyppi"
+
+msgid "Used to specify delay when switching between services and AC3 passthrough is enabled."
+msgstr "Käytetään määrittämään viive, kun vaihdetaan kanavien välillä ja AC3 -läpivienti on käytössä."
+
+msgid "Used to specify delay when switching between services and AC3+/Atmos passthrough is enabled."
+msgstr "Käytetään määrittämään viive, kun vaihdetaan kanavien välillä ja AC3+/Atmos -läpivienti on käytössä."
 
 msgid "Used:"
 msgstr "Käytetty:"
@@ -18493,9 +18495,6 @@ msgstr "Aseta tähän merkki"
 
 msgid "instant record"
 msgstr "Pikatallennus"
-
-msgid "invalid type"
-msgstr "Epäkelpo tyyppi"
 
 msgid "jazz"
 msgstr "jazz"
