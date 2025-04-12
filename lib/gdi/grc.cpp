@@ -852,12 +852,15 @@ void gDC::exec(const gOpcode *o)
 		ASSERT(m_current_font);
 		para->setFont(m_current_font);
 
+		std::string dots = reinterpret_cast<const char*>(u8"…");
+
 		if (flags & gPainter::RT_ELLIPSIS)
 		{
 			if (flags & gPainter::RT_WRAP) // Remove wrap
 				flags -= gPainter::RT_WRAP;
 			std::string text = o->parm.renderText->text;
-			text += u8"…";
+			
+			text += dots;
 
 			eTextPara testpara(o->parm.renderText->area);
 			testpara.setFont(m_current_font);
@@ -872,7 +875,7 @@ void gDC::exec(const gOpcode *o)
 				if ((int)text.size() > ns)
 				{
 					text.resize(ns);
-					text += u8"…";
+					text += dots;
 				}
 				if (o->parm.renderText->text)
 					free(o->parm.renderText->text);

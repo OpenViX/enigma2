@@ -356,14 +356,61 @@ def parseFont(s, scale=((1, 1), (1, 1))):
 			size = f[1] if size is None else size
 	return gFont(name, int(size) * scale[0][0] // scale[0][1])
 
-
-def parseColor(s):
-	if s[0] != "#":
+def parseColor(value, default=0x00FFFFFF):
+	if value[0] == "#":
 		try:
-			return colors[s]
-		except KeyError:
-			raise SkinError("Color '%s' must be #aarrggbb or valid named color" % s)
-	return gRGB(int(s[1:], 0x10))
+			value = gRGB(int(value[1:], 0x10))
+		except ValueError:
+			value = gRGB(default)
+	elif value in colors:
+		value = colors[value]
+	else:
+		value = gRGB(default)
+	return value
+
+def parseGradient(value):
+	def validColor(value):
+		if value[0] == "#" and len(value) in (9, 7):
+			isColor = True
+		elif value in colors:
+			isColor = True
+		else:
+			isColor = False
+		return isColor
+
+	data = [x.strip() for x in value.split(",")]
+	gradientColors = [gRGB(0x00000000), gRGB(0x00FFFFFF), gRGB(0x00FFFFFF)]  # Start color, center color, end color.
+	for index, color in enumerate(data):
+		if not validColor(color) or index > 2:
+			break
+		gradientColors[index] = parseColor(color)
+	if index == 2:
+		gradientColors[2] = gradientColors[1]
+	argCount = len(data) - index
+	if index > 1 and argCount:
+		options = {
+			"horizontal": eWidget.GRADIENT_HORIZONTAL,
+			"vertical": eWidget.GRADIENT_VERTICAL,
+		}
+		direction = parseOptions(options, "gradient", data[index], eWidget.GRADIENT_VERTICAL)
+		alphaBlend = 1 if argCount > 1 and parseBoolean("alphablend", data[index + 1]) else 0
+	else:
+		direction = eWidget.GRADIENT_VERTICAL
+		alphaBlend = 0
+	return (gradientColors[0], gradientColors[1], gradientColors[2], direction, alphaBlend)
+
+def parseOptions(options, attribute, value, default):
+	if options and isinstance(options, dict):
+		if value in options.keys():
+			value = options[value]
+		else:
+			value = default
+	else:
+		value = default
+	return value
+
+def parseBoolean(attribute, value):
+	return value.lower() in ("1", attribute, "enabled", "on", "true", "yes")
 
 
 def parseParameter(s):
@@ -567,6 +614,12 @@ class AttributeParser:
 		radius, edgeValue = parseRadius(value)
 		self.guiObject.setItemCornerRadiusSelected(radius, edgeValue)
 
+	def itemGradient(self, value):
+		self.guiObject.setItemGradient(*parseGradient(value))
+
+	def itemGradientSelected(self, value):
+		self.guiObject.setItemGradientSelected(*parseGradient(value))
+
 	def pixmap(self, value):
 		if value.endswith(".svg"):  # if grafic is svg force alphatest to "blend"
 			self.guiObject.setAlphatest(BT_ALPHABLEND)
@@ -684,13 +737,28 @@ class AttributeParser:
 				print("[Skin] Error: Invalid flag '%s'!" % f)
 
 	def backgroundColor(self, value):
-		self.guiObject.setBackgroundColor(parseColor(value))
+		if "," in value:
+			self.guiObject.setBackgroundGradient(*parseGradient(value))
+		else:
+			self.guiObject.setBackgroundColor(parseColor(value, 0x00000000))
 
 	def backgroundColorSelected(self, value):
-		self.guiObject.setBackgroundColorSelected(parseColor(value))
+		if "," in value:
+			self.guiObject.setBackgroundGradientSelected(*parseGradient(value))
+		else:
+			self.guiObject.setBackgroundColorSelected(parseColor(value, 0x00000000))
+
+	def backgroundGradient(self, value):
+		self.guiObject.setBackgroundGradient(*parseGradient(value))
+
+	def backgroundGradientSelected(self, value):
+		self.guiObject.setBackgroundGradientSelected(*parseGradient(value))
 
 	def foregroundColor(self, value):
-		self.guiObject.setForegroundColor(parseColor(value))
+		if "," in value:
+			self.guiObject.setForegroundGradient(*parseGradient(value))  # Only for eSlider.
+		else:
+			self.guiObject.setForegroundColor(parseColor(value, 0x00FFFFFF))
 
 	def foregroundColorSelected(self, value):
 		self.guiObject.setForegroundColorSelected(parseColor(value))

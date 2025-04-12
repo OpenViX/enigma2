@@ -110,7 +110,7 @@ int eLabel::event(int event, void *data, void *data2)
 			if (!m_nowrap)
 				flags |= gPainter::RT_WRAP;
 
-			if (m_blend)
+			if (isGradientSet() || m_blend)
 				flags |= gPainter::RT_BLEND;
 
 				/* if we don't have shadow, m_shadow_offset will be 0,0 */

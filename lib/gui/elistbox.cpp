@@ -15,8 +15,9 @@ eListbox::eListbox(eWidget *parent) :
 	memset(static_cast<void*>(&m_style), 0, sizeof(m_style));
 	m_style.m_text_offset = ePoint(1,1);
 
-	for (int x = 0; x < 2; x++)
+	for (int x = 0; x < 4; x++)
 	{
+		m_style.m_gradient_set[x] = false;
 		if (eListbox::defaultItemRadius[x] && eListbox::defaultItemRadiusEdges[x])
 			setItemCornerRadiusInternal(eListbox::defaultItemRadius[x], eListbox::defaultItemRadiusEdges[x], x);
 		else
@@ -1018,13 +1019,13 @@ struct eListboxStyle *eListbox::getLocalStyle(void)
 	return &m_style;
 }
 
-void eListbox::setItemCornerRadiusInternal(int radius, int edges, int index)
+void eListbox::setItemCornerRadiusInternal(int radius, uint8_t edges, int index)
 {
 	m_style.m_itemCornerRadius[index] = radius;
 	m_style.m_itemCornerRadiusEdges[index] = edges;
 }
 
-void eListbox::setItemCornerRadius(int radius, int edges)
+void eListbox::setItemCornerRadius(int radius, uint8_t edges)
 {
 	for (int x = 0; x < 2; x++)
 	{
@@ -1032,7 +1033,26 @@ void eListbox::setItemCornerRadius(int radius, int edges)
 	}
 }
 
-void eListbox::setItemCornerRadiusSelected(int radius, int edges)
+void eListbox::setItemCornerRadiusSelected(int radius, uint8_t edges)
 {
 	setItemCornerRadiusInternal(radius, edges, 1);
+}
+
+void eListbox::setItemGradientInternal(uint8_t index, const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend)
+{
+	m_style.m_gradient_colors[index] = {startcolor, midcolor, endcolor};
+	m_style.m_gradient_direction[index] = direction;
+	m_style.m_gradient_alphablend[index] = alphablend;
+	m_style.m_gradient_set[index] = true;
+	invalidate();
+}
+
+void eListbox::setItemGradient(const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend)
+{
+	setItemGradientInternal(0, startcolor, midcolor, endcolor, direction, alphablend);
+}
+
+void eListbox::setItemGradientSelected(const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend)
+{
+	setItemGradientInternal(1, startcolor, midcolor, endcolor, direction, alphablend);
 }
