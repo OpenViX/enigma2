@@ -5,6 +5,7 @@ from skin import parameters, parseFont, parseScale, applySkinFactor
 
 from Components.config import config
 from Components.EpgListBase import EPGListBase
+from Components.MultiContent import MultiContentEntryPixmapAlphaBlend
 
 # Various value are in minutes, while others are in seconds.
 # Use this to remind us what is going on...
@@ -78,6 +79,7 @@ class EPGListSingle(EPGListBase):
 		r1 = self._weekdayRect
 		r2 = self._datetimeRect
 		r3 = self._descrRect
+		posX = r3.left() + r3.width()
 		split = int(r2.width() * 0.55)
 		t = localtime(beginTime)
 		et = localtime(beginTime + duration)
@@ -100,8 +102,21 @@ class EPGListSingle(EPGListBase):
 				pix_width = pix_size.width()
 				pix_height = pix_size.height()
 				eventW -= pix_width + 6
-				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, posX - pix_width - 6, (r3.height() - pix_height) // 2, pix_width, pix_height, autoTimerIcon))
+				posX -= pix_width + 6
+				res.append((eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, posX, (r3.height() - pix_height) // 2, pix_width, pix_height, autoTimerIcon))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, r3.left(), r3.top(), eventW, r3.height(), 0, RT_HALIGN_LEFT | RT_VALIGN_CENTER, eventName))
+
+		if self.detectCatchupAvailable(beginTime, service) and self.catchUpIcon:
+			pix_size = self.catchUpIcon.size()
+			pix_width = pix_size.width()
+			pix_height = pix_size.height()
+			eventW -= pix_width + 6
+			posX -= pix_width + 6
+			res.append(MultiContentEntryPixmapAlphaBlend(
+							pos=(posX, (r3.height() - pix_height) // 2),
+							size=(pix_width, pix_height),
+							png=self.catchUpIcon,
+							flags=0))
 
 		for f in EPGListSingle.buildEntryExtensionFunctions:
 			f(res, self, service, eventId, beginTime, duration, eventName)

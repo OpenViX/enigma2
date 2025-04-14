@@ -6,6 +6,10 @@ from Tools.Alternatives import CompareWithAlternatives
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
 from Tools.LoadPixmap import LoadPixmap
 from skin import parseScale
+from time import time
+
+import datetime
+import re
 
 
 class EPGListBase(GUIComponent):
@@ -38,6 +42,7 @@ class EPGListBase(GUIComponent):
 		]
 
 		self.autotimericon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/epgclock_autotimer.png"))
+		self.catchUpIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/catchup.png"))
 		try:
 			from Plugins.SystemPlugins.IceTV import loadIceTVIcon
 			self.icetvicon = loadIceTVIcon("epgclock_icetv.png")
@@ -164,3 +169,13 @@ class EPGListBase(GUIComponent):
 			import traceback
 			traceback.print_exc()
 			return []
+		
+	def detectCatchupAvailable(self, stime, service):
+		sref = service.toString() if isinstance(service, eServiceReference) else service
+		now = time()
+		if stime and "catchupdays=" in sref and stime < now:
+			match = re.search(r"catchupdays=(\d*)", sref)
+			catchup_days = int(match.groups(1)[0])
+			if now - stime <= datetime.timedelta(days=catchup_days).total_seconds():
+				return True
+		return False

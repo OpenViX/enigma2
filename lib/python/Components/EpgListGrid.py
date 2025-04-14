@@ -656,7 +656,13 @@ class EPGListGrid(EPGListBase):
 								flags=BT_SCALE))
 
 				# Recording icons.
-				if timerIcon is not None and ewidth > timerIcon.size().width():
+				timer_icon_width = timerIcon.size().width() if timerIcon else 0
+				auto_timer_icon_width = 0
+				if timerIcon is not None:
+					if autoTimerIcon:
+						auto_timer_icon_width = autoTimerIcon.size().width()
+				pos_x = left + xpos + ewidth - 10
+				if timerIcon is not None and ewidth > (timer_icon_width + auto_timer_icon_width):
 					if config.epgselection.grid.rec_icon_height.value != "hide":
 						pix_size = timerIcon.size()
 						pix_width = pix_size.width()
@@ -668,12 +674,11 @@ class EPGListGrid(EPGListBase):
 							recIconHeight = top + 3
 						else:
 							recIconHeight = top + height - pix_height - 10
-						if matchType == 0:
-							pos = (left + xpos + ewidth - pix_width - 10, recIconHeight)
-							isTimerIconAdded = True
-						else:
-							pos = (left + xpos + ewidth - pix_width - 10, recIconHeight)
-							isTimerIconAdded = True
+
+						pos_x = left + xpos + ewidth - pix_width - 10
+						pos = (pos_x, recIconHeight)
+						isTimerIconAdded = True
+
 						res.append(MultiContentEntryPixmapAlphaBlend(
 							pos=pos, size=(pix_width, pix_height),
 							png=timerIcon))
@@ -681,9 +686,21 @@ class EPGListGrid(EPGListBase):
 							pix_size = autoTimerIcon.size()
 							pix_width = pix_size.width()
 							pix_height = pix_size.height()
+							pos_x = pos[0] - pix_width - (5 if isTimerIconAdded else 10)
 							res.append(MultiContentEntryPixmapAlphaBlend(
-								pos=(pos[0] - pix_width - (5 if isTimerIconAdded else 10), pos[1]), size=(pix_width, pix_height),
+								pos=(pos_x, pos[1]), size=(pix_width, pix_height),
 								png=autoTimerIcon))
+
+				if self.detectCatchupAvailable(stime, service) and self.catchUpIcon:
+					pix_size = self.catchUpIcon.size()
+					pix_width = pix_size.width()
+					pix_height = pix_size.height()
+					res.append(MultiContentEntryPixmapAlphaBlend(
+									pos=(pos_x - pix_width - 5, top + 10),
+									size=(pix_width, pix_height),
+									png=self.catchUpIcon,
+									flags=0))
+				
 		for f in EPGListGrid.buildEntryExtensionFunctions:
 			f(res, self, service, serviceName, events, picon, channel)
 		return res

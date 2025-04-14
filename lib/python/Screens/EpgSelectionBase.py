@@ -73,6 +73,7 @@ channelDownActions = [
 
 
 class EPGSelectionBase(Screen, HelpableScreen):
+	catchupPlayerFunc = None
 	lastEnteredTime = None
 	lastEnteredDate = None
 	EMPTY = 0
@@ -103,6 +104,7 @@ class EPGSelectionBase(Screen, HelpableScreen):
 
 		self["key_menu"] = StaticText(_("MENU"))
 		self["key_info"] = StaticText(_("INFO"))
+		self["key_play"] = StaticText("")
 
 		helpDescription = _("EPG Commands")
 
@@ -129,6 +131,10 @@ class EPGSelectionBase(Screen, HelpableScreen):
 			"LongRecord": self.helpKeyAction("reclong")
 		}, prio=-1, description=helpDescription)
 		self["epgactions"] = HelpableActionMap(self, "EPGSelectActions", {}, -1)
+
+		self["CatchUpActions"] = HelpableActionMap(self, "EPGCatchUpActions", {
+			"play": (self.playCatchup, _("Play archive")),
+		}, prio=-2, description=_("Catchup player commands"))
 
 		self.noAutotimer = _("The AutoTimer plugin is not installed!\nPlease install it.")
 		self.noEPGSearch = _("The EPGSearch plugin is not installed!\nPlease install it.")
@@ -275,6 +281,20 @@ class EPGSelectionBase(Screen, HelpableScreen):
 			self.refreshTimer.start(3000)
 		except ImportError:
 			self.session.open(MessageBox, self.noAutotimer, type=MessageBox.TYPE_INFO, timeout=10)
+
+	def setupKeyPlayButtonDisplay(self, stime, service):
+		if self["list"].detectCatchupAvailable(stime, service) and callable(self.catchupPlayerFunc):
+			self["key_play"].setText(_("PLAY"))
+		else:
+			self["key_play"].setText("")
+
+	def playCatchup(self):
+		if not callable(self.catchupPlayerFunc):
+			return
+		event, service = self["list"].getCurrent()[:2]
+		stime = event and event.getBeginTime()
+		if self["list"].detectCatchupAvailable(stime, service):
+			self.catchupPlayerFunc(event, service)
 
 	def openTimerList(self):
 		self.closeEventViewDialog()
@@ -428,13 +448,13 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		timer = self.session.nav.RecordTimer.getTimerForEvent(service, event)
 		self.setActionButtonText("addEditTimer", _("Change Timer") if timer is not None else _("Add Timer"))
 		self.setActionButtonText("addEditAutoTimer", _("Edit AutoTimer") if timer is not None and timer.autoTimerId else _("Add AutoTimer"))
+		self.setupKeyPlayButtonDisplay(event.getBeginTime(), service)
 
 	def closeEventViewDialog(self):
 		if self.eventviewDialog:
 			self.eventviewDialog.hide()
 			del self.eventviewDialog
 			self.eventviewDialog = None
-
 
 class EPGServiceZap:
 	def __init__(self, zapFunc):
