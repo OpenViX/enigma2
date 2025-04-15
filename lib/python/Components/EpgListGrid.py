@@ -702,10 +702,10 @@ class EPGListGrid(EPGListBase):
 					else:
 						recIconHeight = top + height - pix_height - 10
 					res.append(MultiContentEntryPixmapAlphaBlend(
-									pos=(pos_x - pix_width - 6, recIconHeight),
-									size=(pix_width, pix_height),
-									png=self.catchUpIcon,
-									flags=0))
+						pos=(pos_x - pix_width - 6, recIconHeight),
+						size=(pix_width, pix_height),
+						png=self.catchUpIcon,
+						flags=0))
 
 		for f in EPGListGrid.buildEntryExtensionFunctions:
 			f(res, self, service, serviceName, events, picon, channel)
