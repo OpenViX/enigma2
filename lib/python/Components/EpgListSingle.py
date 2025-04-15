@@ -113,10 +113,10 @@ class EPGListSingle(EPGListBase):
 			eventW -= pix_width + 10
 			posX -= pix_width + 10
 			res.append(MultiContentEntryPixmapAlphaBlend(
-							pos=(posX, (r3.height() - pix_height) // 2),
-							size=(pix_width, pix_height),
-							png=self.catchUpIcon,
-							flags=0))
+				pos=(posX, (r3.height() - pix_height) // 2),
+				size=(pix_width, pix_height),
+				png=self.catchUpIcon,
+				flags=0))
 
 		for f in EPGListSingle.buildEntryExtensionFunctions:
 			f(res, self, service, eventId, beginTime, duration, eventName)
