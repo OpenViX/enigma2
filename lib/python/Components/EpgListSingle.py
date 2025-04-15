@@ -110,8 +110,8 @@ class EPGListSingle(EPGListBase):
 			pix_size = self.catchUpIcon.size()
 			pix_width = pix_size.width()
 			pix_height = pix_size.height()
-			eventW -= pix_width + 6
-			posX -= pix_width + 6
+			eventW -= pix_width + 10
+			posX -= pix_width + 10
 			res.append(MultiContentEntryPixmapAlphaBlend(
 							pos=(posX, (r3.height() - pix_height) // 2),
 							size=(pix_width, pix_height),

@@ -661,7 +661,7 @@ class EPGListGrid(EPGListBase):
 				if timerIcon is not None:
 					if autoTimerIcon:
 						auto_timer_icon_width = autoTimerIcon.size().width()
-				pos_x = left + xpos + ewidth - 10
+				pos_x = left + xpos + ewidth - 5
 				if timerIcon is not None and ewidth > (timer_icon_width + auto_timer_icon_width):
 					if config.epgselection.grid.rec_icon_height.value != "hide":
 						pix_size = timerIcon.size()
@@ -695,8 +695,14 @@ class EPGListGrid(EPGListBase):
 					pix_size = self.catchUpIcon.size()
 					pix_width = pix_size.width()
 					pix_height = pix_size.height()
+					if config.epgselection.grid.rec_icon_height.value == "middle":
+						recIconHeight = top + (height - pix_height) // 2
+					elif config.epgselection.grid.rec_icon_height.value == "top":
+						recIconHeight = top + 3
+					else:
+						recIconHeight = top + height - pix_height - 10
 					res.append(MultiContentEntryPixmapAlphaBlend(
-									pos=(pos_x - pix_width - 5, top + 10),
+									pos=(pos_x - pix_width - 6, recIconHeight),
 									size=(pix_width, pix_height),
 									png=self.catchUpIcon,
 									flags=0))
