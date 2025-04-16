@@ -283,6 +283,8 @@ class EPGSelectionBase(Screen, HelpableScreen):
 			self.session.open(MessageBox, self.noAutotimer, type=MessageBox.TYPE_INFO, timeout=10)
 
 	def setupKeyPlayButtonDisplay(self, stime, service):
+		if "key_play" not in self:
+			return
 		if self["list"].detectCatchupAvailable(stime, service) and callable(self.catchupPlayerFunc):
 			self["key_play"].setText(_("PLAY"))
 		else:
