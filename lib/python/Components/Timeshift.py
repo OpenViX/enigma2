@@ -93,6 +93,7 @@ class InfoBarTimeshift:
 		self["TimeshiftFileActions"].setEnabled(False)
 
 		self.switchToLive = True
+		self.shouldRestartSubtitles = False
 		self.ptsStop = False
 		self.ts_rewind_timer = eTimer()
 		self.ts_rewind_timer.callback.append(self.rewindService)
@@ -269,6 +270,9 @@ class InfoBarTimeshift:
 	def __evInfoChanged(self):
 		# print("[Timeshift]__evInfoChanged")
 		# print("[Timeshift]service_changed", self.service_changed)
+		if self.shouldRestartSubtitles:
+			self.__seekableStatusChanged()
+			self.shouldRestartSubtitles = False
 		if self.service_changed:
 			self.service_changed = 0
 
@@ -441,6 +445,8 @@ class InfoBarTimeshift:
 				self.ts_rewind_timer.start(1000, 1)
 			else:
 				self.ts_rewind_timer.start(100, 1)
+		self.__seekableStatusChanged()
+		
 
 	def rewindService(self):
 		if SystemInfo["brand"] in ("gigablue", "xp"):
