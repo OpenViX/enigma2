@@ -65,6 +65,15 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 			VKB_SAVE_TEXT: ("Save", _("Save")),
 			VKB_SEARCH_TEXT: ("Search", _("Search"))
 		}.get(style, ("Enter", "ENTERICON"))
+		self.cell_background_color = parameters.get("VirtualKeyBoardCellBackgroundColor", None)
+		self.cell_border_width = parameters.get("VirtualKeyBoardCellBorderWidth", 2)
+		self.cell_border_highlight_width = parameters.get("VirtualKeyBoardCellBorderHighlightWidth", 4)
+		self.cell_border_color = parameters.get("VirtualKeyBoardCellBorderColor", 0x00000000)
+		self.cell_select_color = parameters.get("VirtualKeyBoardCellSelectedColor", None)
+		self.cell_exit_color = parameters.get("VirtualKeyBoardCellExitColor", None)
+		self.cell_ok_color = parameters.get("VirtualKeyBoardCellEnterColor", None)
+		self.cell_shift_color = parameters.get("VirtualKeyBoardCellShiftColor", None)
+		self.cell_upper_color = parameters.get("VirtualKeyBoardCellUpperColor", None)
 		self.bg = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_bg.png"))  # Legacy support only!
 		self.bg_l = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_bg_l.png"))
 		self.bg_m = LoadPixmap(path=resolveFilename(SCOPE_CURRENT_SKIN, "buttons/vkey_bg_m.png"))
@@ -118,6 +127,24 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 			"LOCK": (key_blue_l, key_blue_m, key_blue_r),
 			"CAPSLOCK": (key_blue_l, key_blue_m, key_blue_r),
 			"CAPSLOCKICON": (key_blue_l, key_blue_m, key_blue_r)
+		}
+		self.keyHighlightColors = {  # This is a table of cell highlight components (left, middle and right)
+			"EXIT": self.cell_exit_color,
+			"EXITICON": self.cell_exit_color,
+			"DONE": self.cell_ok_color,
+			"ENTER": self.cell_ok_color,
+			"ENTERICON": self.cell_ok_color,
+			"OK": self.cell_ok_color,
+			"SAVE": self.cell_ok_color,
+			# "LOC": (key_yellow_l, key_yellow_m, key_yellow_r),
+			# "LOCALE": (key_yellow_l, key_yellow_m, key_yellow_r),
+			# "LOCALEICON": (key_yellow_l, key_yellow_m, key_yellow_r),
+			"SHIFT": self.cell_upper_color,
+			"SHIFTICON": self.cell_upper_color,
+			"CAPS": self.cell_shift_color,
+			"LOCK": self.cell_shift_color,
+			"CAPSLOCK": self.cell_shift_color,
+			"CAPSLOCKICON": self.cell_shift_color
 		}
 		self.shiftMsgs = [
 			_("Lower case"),
@@ -230,6 +257,21 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 			"SPACEICONALT": "self['text'].char(' '.encode('UTF-8'))"
 		}
 		self.footer = ["EXITICON", "LEFTICON", "RIGHTICON", SPACE, SPACE, SPACE, SPACE, SPACE, SPACE, SPACE, "SHIFTICON", "LOCALEICON", "CLEARICON", "DELETEICON"]
+		self.bulgarian = [
+			[
+				["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", ".", "BACKSPACEICON"],
+				["FIRSTICON", ",", "\u0443", "\u0435", "\u0438", "\u0448", "\u0449", "\u043a", "\u0441", "\u0434", "\u0437", "\u0446", ";", "\\"],
+				["LASTICON", "\u044c", "\u044f", "\u0430", "\u043e", "\u0436", "\u0433", "\u0442", "\u043d", "\u0432", "\u043c", "\u0447", self.green, self.green],
+				["CAPSLOCKICON", "CAPSLOCKICON", "\u044e", "\u0439", "\u044a", "\u044d", "\u0444", "\u0445", "\u043f", "\u0440", "\u043b", "\u0431", "CAPSLOCKICON", "CAPSLOCKICON"],
+				self.footer
+			], [
+				["~", "!", "?", "+", "$", "%", "=", ":", "/", "_", "\u2116", "\u0406", "V", "BACKSPACEICON"],
+				["FIRSTICON", "\u044b", "\u0423", "\u0415", "\u0418", "\u0428", "\u0429", "\u041a", "\u0421", "\u0414", "\u0417", "\u0426", ";", "|"],
+				["LASTICON", "\u042c", "\u042f", "\u0410", "\u041e", "\u0416", "\u0413", "\u0422", "\u041d", "\u0412", "\u041c", "\u0427", self.green, self.green],
+				["CAPSLOCKICON", "CAPSLOCKICON", "\u042e", "\u0419", "\u042a", "\u042d", "\u0424", "\u0425", "\u041f", "\u0420", "\u041b", "\u0411", "CAPSLOCKICON", "CAPSLOCKICON"],
+				self.footer
+			]
+		]
 		self.czech = [
 			[
 				[";", "+", "\u011B", "\u0161", "\u010D", "\u0159", "\u017E", "\u00FD", "\u00E1", "\u00ED", "\u00E9", "=", "", "BACKSPACEICON"],
@@ -452,6 +494,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 			"ar_SY": [_("Arabic"), _("Syrian Arab Republic"), self.arabic(self.english)],
 			"ar_AE": [_("Arabic"), _("United Arab Emirates"), self.arabic(self.english)],
 			"ar_YE": [_("Arabic"), _("Yemen"), self.arabic(self.english)],
+			"bg_BG": [_("Bulgarian"), _("Bulgaria"), self.bulgarian],
 			"cs_CZ": [_("Czech"), _("Czechia"), self.czech],
 			"nl_NL": [_("Dutch"), _("Netherlands"), self.dutch(self.english)],
 			"en_AU": [_("English"), _("Australian"), self.english],
@@ -527,7 +570,7 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		self["key_text"] = StaticText(_("TEXT"))
 		self["key_help"] = StaticText(_("HELP"))
 		width, height = parameters.get("VirtualKeyBoard", applySkinFactor(45, 45))
-		if self.bg_l is None or self.bg_m is None or self.bg_r is None:
+		if self.bg_l is None or self.bg_m is None or self.bg_r is None or self.cell_background_color is not None:
 			self.width = width
 			self.height = height
 		else:
@@ -914,31 +957,43 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 			if key != prevKey:
 				xData = x + self.padding[0]
 				start, width = self.findStartAndWidth(self.index)
-				if self.bg_l is None or self.bg_m is None or self.bg_r is None:  # If available display the cell background.
+				if self.cell_background_color is None:
+					if self.bg_l is None or self.bg_m is None or self.bg_r is None:  # If available display the cell background.
+						x += self.width * width
+					else:
+						w = self.bg_l.size().width()
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.bg_l))
+						x += w
+						w = self.bg_m.size().width() + (self.width * (width - 1))
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.bg_m, flags=BT_SCALE))
+						x += w
+						w = self.bg_r.size().width()
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.bg_r))
+						x += w
+				else:
+					res.append(MultiContentEntryText(pos=(x, 0), size=(self.width * width, self.height), font=1, text=" ", color=self.cell_background_color, backcolor=self.cell_background_color, border_width=self.cell_border_width, border_color=self.cell_border_color))
 					x += self.width * width
+				if self.cell_ok_color is None:
+					highlight = self.keyHighlights.get(key.upper(), (None, None, None))  # Check if the cell needs to be highlighted.
+					if highlight[0] is None or highlight[1] is None or highlight[2] is None:  # If available display the cell highlight.
+						xHighlight += self.width * width
+					else:
+						w = highlight[0].size().width()
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(xHighlight, 0), size=(w, self.height), png=highlight[0]))
+						xHighlight += w
+						w = highlight[1].size().width() + (self.width * (width - 1))
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(xHighlight, 0), size=(w, self.height), png=highlight[1], flags=BT_SCALE))
+						xHighlight += w
+						w = highlight[2].size().width()
+						res.append(MultiContentEntryPixmapAlphaBlend(pos=(xHighlight, 0), size=(w, self.height), png=highlight[2]))
+						xHighlight += w
 				else:
-					w = self.bg_l.size().width()
-					res.append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.bg_l))
-					x += w
-					w = self.bg_m.size().width() + (self.width * (width - 1))
-					res.append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.bg_m, flags=BT_SCALE))
-					x += w
-					w = self.bg_r.size().width()
-					res.append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.bg_r))
-					x += w
-				highlight = self.keyHighlights.get(key.upper(), (None, None, None))  # Check if the cell needs to be highlighted.
-				if highlight[0] is None or highlight[1] is None or highlight[2] is None:  # If available display the cell highlight.
-					xHighlight += self.width * width
-				else:
-					w = highlight[0].size().width()
-					res.append(MultiContentEntryPixmapAlphaBlend(pos=(xHighlight, 0), size=(w, self.height), png=highlight[0]))
-					xHighlight += w
-					w = highlight[1].size().width() + (self.width * (width - 1))
-					res.append(MultiContentEntryPixmapAlphaBlend(pos=(xHighlight, 0), size=(w, self.height), png=highlight[1], flags=BT_SCALE))
-					xHighlight += w
-					w = highlight[2].size().width()
-					res.append(MultiContentEntryPixmapAlphaBlend(pos=(xHighlight, 0), size=(w, self.height), png=highlight[2]))
-					xHighlight += w
+					highlight = self.keyHighlightColors.get(key.upper(), None)  # Check if the cell needs to be highlighted.
+					if highlight is None:
+						xHighlight += self.width * width
+					else:
+						res.append(MultiContentEntryText(pos=(xHighlight+self.cell_border_width, self.cell_border_width), size=((self.width * width) - (self.cell_border_width * 2), self.height - (self.cell_border_width * 2)), font=1, text=" ", color=self.cell_ok_color, border_width=self.cell_border_highlight_width, border_color=highlight))
+						xHighlight += self.width * width
 				if self.alignment[0] == 1:  # Determine the cell alignment.
 					alignH = RT_HALIGN_LEFT
 				elif self.alignment[0] == 2:
@@ -986,22 +1041,28 @@ class VirtualKeyBoard(Screen, HelpableScreen):
 		return res + text
 
 	def markSelectedKey(self):
-		if self.sel_l is None or self.sel_m is None or self.sel_r is None:
+		if self.cell_select_color is None and (self.sel_l is None or self.sel_m is None or self.sel_r is None):
 			return
 		if self.previousSelectedKey is not None:
-			del self.list[self.previousSelectedKey // self.keyboardWidth][-3:]
+			if self.cell_select_color is None:
+				del self.list[self.previousSelectedKey // self.keyboardWidth][-3:]
+			else:
+				del self.list[self.previousSelectedKey // self.keyboardWidth][-1:]
 		if self.selectedKey > self.maxKey:
 			self.selectedKey = self.maxKey
 		start, width = self.findStartAndWidth(self.selectedKey)
 		x = start * self.width
-		w = self.sel_l.size().width()
-		self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.sel_l))
-		x += w
-		w = self.sel_m.size().width() + (self.width * (width - 1))
-		self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.sel_m, flags=BT_SCALE))
-		x += w
-		w = self.sel_r.size().width()
-		self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.sel_r))
+		if self.cell_select_color is None:
+			w = self.sel_l.size().width()
+			self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.sel_l))
+			x += w
+			w = self.sel_m.size().width() + (self.width * (width - 1))
+			self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.sel_m, flags=BT_SCALE))
+			x += w
+			w = self.sel_r.size().width()
+			self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryPixmapAlphaBlend(pos=(x, 0), size=(w, self.height), png=self.sel_r))
+		else:
+			self.list[self.selectedKey // self.keyboardWidth].append(MultiContentEntryText(pos=(x+self.cell_border_width, self.cell_border_width), size=((self.width * width) - (self.cell_border_width * 2), self.height - (self.cell_border_width * 2)), font=1, text=" ", color=self.cell_ok_color, border_width=self.cell_border_highlight_width, border_color=self.cell_select_color))
 		self.previousSelectedKey = self.selectedKey
 		self["list"].setList(self.list)
 
