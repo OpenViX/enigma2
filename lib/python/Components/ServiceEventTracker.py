@@ -70,8 +70,7 @@ class ServiceEventTracker:
 		if func_list:
 			nav = set.navcore
 			cur_ref = nav.getCurrentlyPlayingServiceOrGroup()
-			navGetCurrentService = nav.getCurrentService()
-			old_service_running = set.oldRef and cur_ref and cur_ref == set.oldRef and navGetCurrentService and set.oldServiceStr == navGetCurrentService.getPtrString()
+			old_service_running = set.oldRef and cur_ref and cur_ref == set.oldRef and hasattr(nav.getCurrentService(), "getPtrString") and set.oldServiceStr == nav.getCurrentService().getPtrString()
 			if not old_service_running and set.oldServiceStr:
 				set.oldServiceStr = None
 				set.oldRef = None

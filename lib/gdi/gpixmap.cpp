@@ -467,7 +467,8 @@ void gPixmap::drawRectangle(const gRegion &region, const eRect &area, const gRGB
 	borderCol ^= 0xFF000000;
 	uint32_t *gradientBuf = nullptr;
 
-	const int gradientSize = (gradientFullSize) ? gradientFullSize : (direction == GRADIENT_VERTICAL) ? area.height() : area.width();
+	const int maxGradientSize = (direction == GRADIENT_VERTICAL) ? area.height() : area.width();
+	const int gradientSize = (gradientFullSize) ? MAX(gradientFullSize, maxGradientSize) : maxGradientSize;
 
 	if(!direction)
 		gradientBuf = createGradientBuffer2(gradientSize, backgroundColor, backgroundColor);
@@ -567,7 +568,104 @@ void gPixmap::drawRectangle(const gRegion &region, const eRect &area, const gRGB
 		eRect mRect = eRect(area.left(), area.top() + top, area.width(), area.height() - top - bottom);
 		mRect &= region.rects[i];
 		const int blendRatio = 12;
-		if (!mRect.empty())
+		if (direction == GRADIENT_VERTICAL)
+		{
+
+			// draw center rect
+			if (!mRect.empty())
+			{
+				if (alphablend && !cornerData.radiusSet)
+				{
+					for (int y = mRect.top(); y < mRect.bottom(); ++y)
+					{
+						uint32_t *dstptr = (uint32_t*)(((uint8_t*)surface->data) + y * surface->stride + mRect.left() * surface->bypp);
+						const gRGB *src = (gRGB*)&gradientBuf[y - area.top()];
+						gRGB *dst = (gRGB*)dstptr;
+						int width = mRect.width();
+						const uint8_t alpha = src->a;
+						const uint8_t blue = src->b;
+						const uint8_t green = src->g;
+						const uint8_t red = src->r;
+
+						while (width >= blendRatio)
+						{
+							for (int i = 0; i < blendRatio; ++i)
+							{
+								dst[i].b += (((blue - dst[i].b) * alpha) >> 8);
+								dst[i].g += (((green - dst[i].g) * alpha) >> 8);
+								dst[i].r += (((red - dst[i].r) * alpha) >> 8);
+								dst[i].a += (((0xFF - dst[i].a) * alpha) >> 8);
+							}
+
+							dst += blendRatio;
+							width -= blendRatio;
+						}
+
+						while (width > 0)
+						{
+							dst->b += (((blue - dst->b) * alpha) >> 8);
+							dst->g += (((green - dst->g) * alpha) >> 8);
+							dst->r += (((red - dst->r) * alpha) >> 8);
+							dst->a += (((0xFF - dst->a) * alpha) >> 8);
+							
+							++dst;
+							--width;
+						}
+					}
+				}
+				else
+				{
+					for (int y = mRect.top(); y < mRect.bottom(); y++)
+					{
+						uint32_t *dst = (uint32_t *)(((uint8_t *)surface->data) + y * surface->stride + mRect.left() * surface->bypp);
+						int yInOriginalArea = y - area.top();
+						backColor = gradientBuf[yInOriginalArea];
+						int x = mRect.width();
+						while (x)
+						{
+							*dst++ = backColor;
+							x--;
+						}
+					}
+				} // if blitAlphaBlend
+			}	  // if center
+
+			if (top && !topRect.empty())
+			{
+				for (int y = topRect.top(); y < topRect.bottom(); y++)
+				{
+					uint32_t *dst = (uint32_t *)(((uint8_t *)surface->data) + y * surface->stride + topRect.left() * surface->bypp);
+					int yInOriginalArea = y - area.top();
+					backColor = gradientBuf[yInOriginalArea];
+					int x = topRect.width();
+					while (x)
+					{
+						*dst++ = backColor;
+						x--;
+					}
+				}
+			} // if top
+
+			if (bottom && !bottomRect.empty())
+			{
+				for (int y = bottomRect.top(); y < bottomRect.bottom(); y++)
+				{
+					uint32_t *dst = (uint32_t *)(((uint8_t *)surface->data) + y * surface->stride + bottomRect.left() * surface->bypp);
+					int yInOriginalArea = y - area.top();
+					backColor = gradientBuf[yInOriginalArea];
+					int x = bottomRect.width();
+					while (x)
+					{
+						*dst++ = backColor;
+						x--;
+					}
+				}
+			} // if bottom
+		}
+		else
+		{
+
+			if (!mRect.empty())
 			{
 				if (alphablend && !cornerData.radiusSet)
 				{
@@ -599,7 +697,7 @@ void gPixmap::drawRectangle(const gRegion &region, const eRect &area, const gRGB
 							dst->g += (((src->g - dst->g) * src->a) >> 8);
 							dst->r += (((src->r - dst->r) * src->a) >> 8);
 							dst->a += (((0xFF - dst->a) * src->a) >> 8);
-
+							
 							++dst;
 							++src;
 							--width;
@@ -638,7 +736,8 @@ void gPixmap::drawRectangle(const gRegion &region, const eRect &area, const gRGB
 					uint32_t *gradientBuf2 = gradientBuf + bottomRect.left() - area.left();
 					std::memcpy(dst, gradientBuf2, linesize);
 				}
-			}
+			} // if bottom
+		}
 
 	}		  // for region
 
@@ -646,7 +745,7 @@ void gPixmap::drawRectangle(const gRegion &region, const eRect &area, const gRGB
 		free(gradientBuf);
 }
 
-void gPixmap::blitRounded32Bit(const gPixmap &src, const eRect &pos, const eRect &clip, int cornerRadius, int edges, int flag)
+void gPixmap::blitRounded32Bit(const gPixmap &src, const eRect &pos, const eRect &clip, int cornerRadius, uint8_t edges, int flag)
 {
 	CornerData cornerData(cornerRadius, edges, pos.width(), pos.height(), 0, 0xFF000000);
 	int corners = 0;
@@ -891,7 +990,7 @@ void gPixmap::blitRounded32Bit(const gPixmap &src, const eRect &pos, const eRect
 	}
 }
 
-void gPixmap::blitRounded32BitScaled(const gPixmap &src, const eRect &pos, const eRect &clip, int cornerRadius, int edges, int flag)
+void gPixmap::blitRounded32BitScaled(const gPixmap &src, const eRect &pos, const eRect &clip, int cornerRadius, uint8_t edges, int flag)
 {
 	CornerData cornerData(cornerRadius, edges, pos.width(), pos.height(), 0, 0xFF000000);
 	int corners = 0;
@@ -1184,7 +1283,7 @@ void gPixmap::blitRounded32BitScaled(const gPixmap &src, const eRect &pos, const
 	}
 }
 
-void gPixmap::blitRounded8Bit(const gPixmap &src, const eRect &pos, const eRect &clip, int cornerRadius, int edges, int flag)
+void gPixmap::blitRounded8Bit(const gPixmap &src, const eRect &pos, const eRect &clip, int cornerRadius, uint8_t edges, int flag)
 {
 
 	int corners = 0;
@@ -1342,7 +1441,7 @@ void gPixmap::blitRounded8Bit(const gPixmap &src, const eRect &pos, const eRect 
 	}
 }
 
-void gPixmap::blitRounded8BitScaled(const gPixmap &src, const eRect &pos, const eRect &clip, int cornerRadius, int edges, int flag)
+void gPixmap::blitRounded8BitScaled(const gPixmap &src, const eRect &pos, const eRect &clip, int cornerRadius, uint8_t edges, int flag)
 {
 	int corners = 0;
 	uint32_t pal[256];
@@ -1630,7 +1729,7 @@ void gPixmap::blitRounded8BitScaled(const gPixmap &src, const eRect &pos, const 
 	}
 }
 
-void gPixmap::blit(const gPixmap &src, const eRect &_pos, const gRegion &clip, int cornerRadius, int edges, int flag)
+void gPixmap::blit(const gPixmap &src, const eRect &_pos, const gRegion &clip, int cornerRadius, uint8_t edges, int flag)
 {
 	bool accel = (surface->data_phys && src.surface->data_phys);
 	bool accumulate = accel && (gAccel::getInstance()->accumulate() >= 0);

@@ -68,7 +68,7 @@ void eWidgetDesktop::calcWidgetClipRegion(eWidget *widget, gRegion &parent_visib
 		widget->m_visible_region.moveBy(widget->position());
 		widget->m_visible_region &= parent_visible; // in parent space!
 
-		if (!widget->isTransparent() && (widget->m_cornerRadius == 0 || parent))
+		if (!widget->isTransparent() && (!widget->m_gradient_alphablend || parent) && (widget->m_cornerRadius == 0 || parent))
 				/* remove everything this widget will contain from parent's visible list, unless widget is transparent. */
 			parent_visible -= widget->m_visible_region; // will remove child regions too!
 
@@ -150,7 +150,7 @@ void eWidgetDesktop::recalcClipRegions(eWidget *root)
 				continue;  /* WAIT, don't we need to invalidate,whatever */
 
 					/* CHECKME: don't we need to recalculate everything? after all, our buffer has changed and is likely to be cleared */
-			gRegion visible_before = root->m_visible_with_childs;
+		 	gRegion visible_before = root->m_visible_with_childs;
 
 			comp->m_background_region = gRegion(eRect(comp->m_position, comp->m_screen_size));
 
@@ -301,6 +301,12 @@ void eWidgetDesktop::paintLayer(eWidget *widget, int layer)
 		return;
 	gPainter painter(comp->m_dc);
 	painter.moveOffset(-comp->m_position);
+	if (widget->m_cornerRadius > 0 || widget->m_gradient_set)
+	{
+		painter.resetClip(comp->m_dirty_region);
+		painter.setBackgroundColor(gRGB(0, 0, 0, 0xFF));
+		painter.clear();
+	}
 	widget->doPaint(painter, comp->m_dirty_region, layer);
 	painter.resetOffset();
 }
@@ -523,6 +529,7 @@ void eWidgetDesktop::resize(eSize size)
 {
 	m_screen.m_dirty_region = gRegion(eRect(ePoint(0, 0), size));
 	m_screen.m_screen_size = size;
+
 #ifdef USE_LIBVUGLES2
 	gPainter painter(m_screen.m_dc);
 	painter.setView(size);

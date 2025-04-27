@@ -671,7 +671,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 	eListboxStyle *local_style = 0;
 	eRect itemRect = eRect(offset, m_itemsize);
 	int radius = 0;
-	int edges = 0;
+	uint8_t edges = 0;
 
 		/* get local listbox style, if present */
 	if (m_listbox)

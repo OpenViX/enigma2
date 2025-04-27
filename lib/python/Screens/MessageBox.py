@@ -1,6 +1,6 @@
 from enigma import eTimer, ePoint, eSize, getDesktop
 
-from Components.ActionMap import HelpableActionMap
+from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.config import config
 from Components.Label import Label
 from Components.MenuList import MenuList
@@ -55,6 +55,19 @@ class MessageBox(Screen, HelpableScreen):
 				# "leftRepeated": (self.left, _("Move up a page repeatedly")),
 				# "rightRepeated": (self.right, _("Move down a page repeatedly"))
 			}, prio=-1, description=_("MessageBox Functions"))
+			self["NumberActions"] = HelpableNumberActionMap(self, ["NumberActions",],
+			{
+				"0": (self.keyNumberGlobal, _("Direct item selection")),
+				"1": (self.keyNumberGlobal, _("Direct item selection")),
+				"2": (self.keyNumberGlobal, _("Direct item selection")),
+				"3": (self.keyNumberGlobal, _("Direct item selection")),
+				"4": (self.keyNumberGlobal, _("Direct item selection")),
+				"5": (self.keyNumberGlobal, _("Direct item selection")),
+				"6": (self.keyNumberGlobal, _("Direct item selection")),
+				"7": (self.keyNumberGlobal, _("Direct item selection")),
+				"8": (self.keyNumberGlobal, _("Direct item selection")),
+				"9": (self.keyNumberGlobal, _("Direct item selection")),
+			}, prio=0, description=_("MessageBox Direct Item Selection Actions"))
 		self.msgBoxID = msgBoxID
 		# These six lines can go with new skins that only use self["icon"]...
 		self["QuestionPixmap"] = Pixmap()
@@ -116,6 +129,9 @@ class MessageBox(Screen, HelpableScreen):
 		self["key_help"] = StaticText(_("HELP"))
 		self.timer = eTimer()
 		self.timer.callback.append(self.processTimer)
+		self.number = 0
+		self.nextNumberTimer = eTimer()
+		self.nextNumberTimer.callback.append(self.ok)
 		if self.layoutFinished not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.layoutFinished)
 
@@ -243,6 +259,9 @@ class MessageBox(Screen, HelpableScreen):
 			self.close(False)
 
 	def ok(self):
+		if self.number:
+			self["list"].moveToIndex(self.number - 1)
+			self.resetNumberKey()
 		if self["list"].getCurrent():
 			self.goEntry(self["list"].getCurrent())
 		else:
@@ -301,3 +320,19 @@ class MessageBox(Screen, HelpableScreen):
 
 	def getListWidth(self):
 		return self["list"].instance.getMaxItemTextWidth()
+
+	def keyNumberGlobal(self, number):
+		if self.list:
+			listlength = len(self.list)
+			self.number = self.number * 10 + number
+			if self.number and self.number <= listlength:
+				if number * 10 > listlength or self.number >= 10:
+					self.ok()
+				else:
+					self.nextNumberTimer.start(1500, True)
+			else:
+				self.resetNumberKey()
+
+	def resetNumberKey(self):
+		self.nextNumberTimer.stop()
+		self.number = 0

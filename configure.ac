@@ -642,7 +642,7 @@ AC_CHECK_FUNCS([klogctl])
 ENIGMA2_CFLAGS="-fno-rtti -rdynamic -funwind-tables"
 AC_SUBST(ENIGMA2_CFLAGS)
 
-AX_CXX_COMPILE_STDCXX([17], [ext], [mandatory])
+AX_CXX_COMPILE_STDCXX([20], [ext], [mandatory])
 AX_CHECK_COMPILE_FLAG([-Wattribute-alias], [CXXFLAGS="$CXXFLAGS -Wattribute-alias"])
 AX_CHECK_COMPILE_FLAG([-Wattribute-alias=1], [CXXFLAGS="$CXXFLAGS -Wattribute-alias=1"])
 

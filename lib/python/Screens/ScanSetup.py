@@ -12,7 +12,6 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.ServiceScan import ServiceScan
 from Tools.Directories import fileExists
-from Tools.HardwareInfo import HardwareInfo
 from Tools.Transponder import getChannelNumber, supportedChannels, channel2frequency
 
 
@@ -290,10 +289,7 @@ class CableTransponderSearchSupport:
 		except:
 			# older API
 			if nim_idx < 2:
-				if HardwareInfo().get_device_name() == "dm500hd":
-					bus = 2
-				else:
-					bus = nim_idx
+				bus = nim_idx
 			else:
 				if nim_idx == 2:
 					bus = 2  # DM8000 first nim is /dev/i2c/2

@@ -5,6 +5,7 @@ gdi_libenigma_gdi_a_CXXFLAGS = $(LIBSDL_CFLAGS)
 gdi_libenigma_gdi_a_SOURCES = \
 	gdi/accel.cpp \
 	gdi/bcm.cpp \
+	gdi/color.cpp \
 	gdi/compositing.cpp \
 	gdi/drawing.cpp \
 	gdi/epng.cpp \
@@ -27,6 +28,7 @@ gdi_libenigma_gdi_a_SOURCES = \
 gdiincludedir = $(pkgincludedir)/lib/gdi
 gdiinclude_HEADERS = \
 	gdi/accel.h \
+	gdi/color.h \
 	gdi/compositing.h \
 	gdi/drawing.h \
 	gdi/epng.h \

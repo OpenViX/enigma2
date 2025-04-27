@@ -5,7 +5,7 @@ from xml.etree import ElementTree
 
 from enigma import eTimer, RT_HALIGN_LEFT, eListboxPythonMultiContent, gFont, getDesktop
 
-from Components.About import about
+from Components.About import getIfConfig
 from Components.ActionMap import ActionMap, NumberActionMap
 from Components.config import config, getConfigListEntry
 from Components.ConfigList import ConfigListScreen
@@ -170,8 +170,8 @@ class OscamInfo:
 			else:
 				self.ip = "127.0.0.1"
 			# self.ip = local address 127.0.0.1 gets 403 in Oscam webif so try to pick up box IP address.
-			eth0 = about.getIfConfig("eth0")
-			wlan0 = about.getIfConfig("wlan0")
+			eth0 = getIfConfig("eth0")
+			wlan0 = getIfConfig("wlan0")
 			if "addr" in eth0:
 				self.ip = eth0["addr"]
 			if "addr" in wlan0:

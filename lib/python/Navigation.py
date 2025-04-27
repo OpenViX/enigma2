@@ -1,21 +1,21 @@
-from time import time
 from os.path import exists
+from time import time
 
-from enigma import eServiceCenter, eServiceReference, eTimer, pNavigation, getBestPlayableServiceReference, iServiceInformation, iPlayableService, setPreferredTuner, eDVBLocalTimeHandler, iRecordableServicePtr
+from enigma import eServiceCenter, eServiceReference, eTimer, pNavigation, getBestPlayableServiceReference, iPlayableService, setPreferredTuner, eDVBLocalTimeHandler, iRecordableServicePtr
 
-from Components.ParentalControl import parentalControl
 from Components.config import config
+from Components.ParentalControl import parentalControl
+from Components.Sources.StreamService import StreamServiceList
 from Components.SystemInfo import SystemInfo
+from Screens.InfoBar import InfoBar
+from Screens.InfoBarGenerics import streamrelay
+import Screens.Standby
+from ServiceReference import ServiceReference  # noqa: F401
 from Tools.BoundFunction import boundFunction
 from Tools.StbHardware import getFPWasTimerWakeup
-import RecordTimer
-import PowerTimer
-from ServiceReference import ServiceReference  # noqa: F401
-import Screens.Standby
 import NavigationInstance
-from Screens.InfoBar import InfoBar
-from Components.Sources.StreamService import StreamServiceList
-from Screens.InfoBarGenerics import streamrelay
+import PowerTimer
+import RecordTimer
 
 # TODO: remove pNavgation, eNavigation and rewrite this stuff in python.
 
@@ -197,7 +197,7 @@ class Navigation:
 				setPriorityFrontend = False
 				if SystemInfo["DVB-T_priority_tuner_available"] or SystemInfo["DVB-C_priority_tuner_available"] or SystemInfo["DVB-S_priority_tuner_available"] or SystemInfo["ATSC_priority_tuner_available"]:
 					str_service = playref.toString()
-					if '%3a//' not in str_service and not str_service.rsplit(":", 1)[1].startswith("/"):
+					if "%3a//" not in str_service and not str_service.rsplit(":", 1)[1].startswith("/"):
 						type_service = playref.getUnsignedData(4) >> 16
 						if type_service == 0xEEEE:
 							if SystemInfo["DVB-T_priority_tuner_available"] and config.usage.frontend_priority_dvbt.value != "-2":
@@ -231,14 +231,14 @@ class Navigation:
 					self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
 					self.retryServicePlayTimer.start(config.misc.softcam_streamrelay_delay.value, True)
 				elif not is_handled and self.pnav.playService(playref):
-						self.currentlyPlayingServiceReference = None
-						self.originalPlayingServiceReference = None
-						self.currentlyPlayingServiceOrGroup = None
-						if oldref and "://" in oldref.getPath():
-							print("[Navigation] Streaming was active -> try again")  # use timer to give the streamserver the time to deallocate the tuner
-							self.retryServicePlayTimer = eTimer()
-							self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
-							self.retryServicePlayTimer.start(500, True)
+					self.currentlyPlayingServiceReference = None
+					self.originalPlayingServiceReference = None
+					self.currentlyPlayingServiceOrGroup = None
+					if oldref and "://" in oldref.getPath():
+						print("[Navigation] Streaming was active -> try again")  # use timer to give the streamserver the time to deallocate the tuner
+						self.retryServicePlayTimer = eTimer()
+						self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
+						self.retryServicePlayTimer.start(500, True)
 				self.skipServiceReferenceReset = False
 				if setPriorityFrontend:
 					setPreferredTuner(int(config.usage.frontend_priority.value))

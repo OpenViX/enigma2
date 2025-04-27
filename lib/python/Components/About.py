@@ -7,13 +7,6 @@ from time import time
 from Tools.Directories import fileExists
 
 
-def getKernelVersionString():  # output from this function may not match kernel version from enigma.info (BoxInfo). This version is more accurate.
-	try:
-		return open("/proc/version").read().split(" ", 3)[2].split("-", 1)[0]
-	except:
-		return _("unknown")
-
-
 def getCPUArch(MODEL):
 	Architecture = checkCPUArch()
 	CPUArch = Architecture if "ARM" in Architecture else _("Mipsel")

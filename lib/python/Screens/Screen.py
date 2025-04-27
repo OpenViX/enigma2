@@ -316,10 +316,12 @@ class Screen(dict):
 		return None
 
 	def addSummary(self, summary):
+		print(f"[Screen][addSummary] class '{self.__class__.__name__}' adding summary '{str(None if summary is None else summary.__class__.__name__)}' to self.summaries: '{str(self.summaries)}'")
 		if summary is not None:
 			self.summaries.append(summary)
 
 	def removeSummary(self, summary):
+		print(f"[Screen][removeSummary] class '{self.__class__.__name__}' removing summary '{str(None if summary is None else summary.__class__.__name__)}' from self.summaries: '{str(self.summaries)}'")
 		if summary is not None:
 			self.summaries.remove(summary)
 

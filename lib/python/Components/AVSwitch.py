@@ -6,7 +6,6 @@ from Components.config import ConfigBoolean, ConfigEnableDisable, ConfigNothing,
 from Components.SystemInfo import SystemInfo
 from Tools.CList import CList
 from Tools.Directories import isPluginInstalled
-# from Tools.HardwareInfo import HardwareInfo
 
 config.av = ConfigSubsection()
 

@@ -5,6 +5,7 @@
 #include <lib/base/eptrlist.h> /* for eSmartPtrList */
 #include <lib/gui/ewindowstyle.h> /* for eWindowStyle */
 #include <lib/gui/ewidgetanimation.h>
+#include <vector>
 
 #define MAX_LAYER 16
 
@@ -24,7 +25,7 @@ public:
 	eSize size() const { return m_size; }
 	eSize csize() const { return m_client_size; }
 
-	void invalidate(const gRegion &region = gRegion::invalidRegion());
+	virtual void invalidate(const gRegion &region = gRegion::invalidRegion());
 
 		/* the window were to attach childs to. Normally, this
 		   is "this", but it can be overridden in case a widget
@@ -46,13 +47,23 @@ public:
 	void setStyle(eWindowStyle *style) { m_style = style; }
 
 	virtual void setBackgroundColor(const gRGB &col);
-	void clearBackgroundColor();
+	virtual void clearBackgroundColor() { m_have_background_color = false; }
 
-	void setBorderWidth(int pixel);
-	void setBorderColor(const gRGB &color);
+	virtual void setBorderWidth(int width) { setWidgetBorderWidth(width); }
+	virtual void setBorderColor(const gRGB &color) { setWidgetBorderColor(color); }
 
-	void setWidgetBorderWidth(int pixel) { setBorderWidth(pixel); }
-	void setWidgetBorderColor(const gRGB &color) { setBorderColor(color); }
+	virtual void setWidgetBorderWidth(int width) { 
+			m_border_width = width; 
+			invalidate(); 
+		}
+	virtual void setWidgetBorderColor(const gRGB &color) { 
+			m_border_color = color;
+			m_have_border_color = true;
+			invalidate(); 
+		}
+
+	virtual void setPadding(const eRect &padding) { m_padding = padding; }
+	virtual eRect getPadding() { return m_padding; }
 
 	void setZPosition(int z);
 	void setTransparent(int transp);
@@ -95,8 +106,6 @@ private:
 
 	void parentRemoved();
 
-	gRGB m_background_color;
-	int m_have_background_color;
 
 	eWidget *m_current_focus, *m_focus_owner;
 
@@ -106,18 +115,24 @@ private:
 
 	bool m_gradient_set;
 	bool m_gradient_alphablend;
-	int m_gradient_direction;
-	gRGB m_gradient_startcolor, m_gradient_endcolor;
+	uint8_t m_gradient_direction;
+	std::vector<gRGB> m_gradient_colors;
+
+	int m_cornerRadius;
+	uint8_t m_cornerRadiusEdges;
+
+
+protected:
+	void mayKillFocus();
+
+	gRGB m_background_color;
+	bool m_have_background_color = false;
 
 	bool m_have_border_color;
 	int m_border_width;
 	gRGB m_border_color;
+	eRect m_padding;
 
-	int m_cornerRadius;
-	int m_cornerRadiusEdges;
-
-protected:
-	void mayKillFocus();
 public:
 
 		// all in local space!
@@ -152,9 +167,20 @@ public:
 
 	void notifyShowHide();
 
-	void setCornerRadius(int radius, int edges);
-	int getCornerRadiusEdges() {return m_cornerRadiusEdges;}
+	void setBackgroundGradient(const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend);
+
+	void setCornerRadius(int radius, uint8_t edges);
+	uint8_t getCornerRadiusEdges() {return m_cornerRadiusEdges;}
 	int getCornerRadius();
+
+	bool isGradientSet() {return m_gradient_set;}
+
+	enum
+	{
+		GRADIENT_OFF = 0,
+		GRADIENT_VERTICAL = 1,
+		GRADIENT_HORIZONTAL = 2
+	};
 
 	enum
 	{
@@ -168,6 +194,7 @@ public:
 		RADIUS_RIGHT = 10,
 		RADIUS_ALL = 15,
 	};
+
 };
 
 extern eWidgetDesktop *getDesktop(int which);

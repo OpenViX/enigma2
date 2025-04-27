@@ -57,7 +57,7 @@ config.movielist.last_selected_tags = ConfigSet([], default=[])
 config.movielist.play_audio_internal = ConfigYesNo(default=True)
 config.movielist.settings_per_directory = ConfigYesNo(default=True)
 config.movielist.perm_sort_changes = ConfigYesNo(default=True)
-config.movielist.root = ConfigSelection(default="/media", choices=["/", "/media", "/media/hdd", "/media/hdd/movie", "/media/usb", "/media/usb/movie"])
+config.movielist.root = ConfigSelection(default="/media/hdd/movie", choices=["/", "/media", "/media/hdd", "/media/hdd/movie", "/media/usb", "/media/usb/movie"])
 config.movielist.hide_extensions = ConfigYesNo(default=False)
 config.movielist.stop_service = ConfigYesNo(default=True)
 config.movielist.enable_collections = ConfigSelection(default=0, choices=[(0, _("Off")), (1, _("On except in same named directory")), (2, _("On"))])
@@ -1598,6 +1598,11 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			return
 
 		self.saveconfig()
+		from Screens.InfoBar import InfoBar
+		infobar = InfoBar.instance
+		if self.session.nav.getCurrentlyPlayingServiceReference():
+			if not infobar.timeshiftEnabled() and ':0:/' not in self.session.nav.getCurrentlyPlayingServiceReference().toString():
+				infobar.shouldRestartSubtitles = True
 		self.close(None)
 
 	def saveconfig(self):

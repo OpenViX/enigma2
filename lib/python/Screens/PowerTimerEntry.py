@@ -1,6 +1,5 @@
 from Screens.TimerEntryBase import TimerEntryBase, TimerLogBase
 from Components.config import ConfigSelection, ConfigYesNo, ConfigInteger
-from Components.SystemInfo import SystemInfo
 from PowerTimer import AFTEREVENT, TIMERTYPE
 from time import time
 
@@ -32,11 +31,8 @@ class TimerEntry(TimerEntryBase):
 		autosleepinstandbyonly = self.timer.autosleepinstandbyonly
 		autosleepdelay = self.timer.autosleepdelay
 		autosleeprepeat = self.timer.autosleeprepeat
+		shutdownString = _("go to deep standby")
 
-		if SystemInfo["DeepstandbySupport"]:
-			shutdownString = _("go to deep standby")
-		else:
-			shutdownString = _("shut down")
 		self.timerentry_timertype = ConfigSelection(choices=[("wakeup", _("wakeup")), ("wakeuptostandby", _("wakeup to standby")), ("autostandby", _("auto standby")), ("autodeepstandby", _("auto deepstandby")), ("standby", _("go to standby")), ("deepstandby", shutdownString), ("reboot", _("reboot system")), ("restart", _("restart GUI"))], default=timertype)
 		self.timerentry_afterevent = ConfigSelection(choices=[("nothing", _("do nothing")), ("wakeuptostandby", _("wakeup to standby")), ("standby", _("go to standby")), ("deepstandby", shutdownString)], default=afterevent)
 

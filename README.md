@@ -13,7 +13,7 @@
 
 ## OpenViX python3 is built using oe-alliance build-environment and several git repositories: ##
 
-> [https://github.com/oe-alliance/oe-alliance-core/tree/5.4](https://github.com/oe-alliance/oe-alliance-core/tree/5.4 "OE-Alliance")
+> [https://github.com/oe-alliance/oe-alliance-core/tree/5.5.1](https://github.com/oe-alliance/oe-alliance-core/tree/5.5.1 "OE-Alliance")
 >
 > [https://github.com/OpenViX/enigma2/tree/Release](https://github.com/OpenViX/enigma2/tree/Release "openViX E2")
 
@@ -24,7 +24,7 @@
 
 1 - Install packages on your buildserver
 
-    sudo apt-get install -y autoconf automake bison bzip2 chrpath coreutils cpio curl cvs debianutils default-jre default-jre-headless diffstat flex g++ gawk gcc gcc-12 gcc-multilib g++-multilib gettext git gzip help2man info iputils-ping java-common libc6-dev libglib2.0-dev libncurses-dev libperl4-corelibs-perl libproc-processtable-perl libsdl1.2-dev libserf-dev libtool libxml2-utils make ncurses-bin patch perl pkg-config psmisc python3 python3-git python3-jinja2 python3-pexpect python3-pip python3-setuptools quilt socat sshpass subversion tar texi2html texinfo unzip wget xsltproc xterm xz-utils zip zlib1g-dev zstd fakeroot lz4 git-lfs
+    sudo apt-get install -y autoconf automake bison bzip2 chrpath cmake coreutils cpio curl cvs debianutils default-jre default-jre-headless diffstat flex g++ gawk gcc gcc-12 gcc-multilib g++-multilib gettext git gzip help2man info iputils-ping java-common libc6-dev libglib2.0-dev libncurses-dev libperl4-corelibs-perl libproc-processtable-perl libsdl1.2-dev libserf-dev libtool libxml2-utils make ncurses-bin patch perl pkg-config psmisc python3 python3-git python3-jinja2 python3-pexpect python3-pip python3-setuptools quilt socat sshpass subversion tar texi2html texinfo unzip wget xsltproc xterm xz-utils zip zlib1g-dev zstd fakeroot lz4 git-lfs
 
 ----------
 2 - Set python3 as preferred provider for python
@@ -47,11 +47,12 @@
     sudo sysctl -n -w fs.inotify.max_user_watches=524288
 
 ----------
-5 - Disable apparmor profile
+5 - Update apparmor profile
 
-    Currently due to this Ubuntu/bitbake issue: https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2056555
-    This command must be entered after every restart of the build PC.
+## Workaround for ubuntu issue [Allow bitbake to create user namespace](https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2056555) ##
+## Credit to Changqing Li (sandy-lcq), Karsten S. Opdal (karsten-s-opdal) and Ferry Toth (ftoth) ##
    
+    echo 'kernel.apparmor_restrict_unprivileged_userns=0' | sudo tee /etc/sysctl.d/60-apparmor-namespace.conf > /dev/null && sudo sysctl --system
     sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 
 ----------

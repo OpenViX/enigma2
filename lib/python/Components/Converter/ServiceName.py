@@ -76,11 +76,10 @@ class ServiceName(Converter):
 			if not service:
 				if self.source.info:
 					sref = hasattr(self.source, "serviceref") and self.source.serviceref
-					sref = sref or service
-					nref = resolveAlternate(sref)
+					nref = sref and resolveAlternate(sref)
 					if nref:
 						sref = nref
-					return sref.toString()
+					return sref and sref.toString()
 				refstr = info.getInfoString(iServiceInformation.sServiceref)
 				path = refstr and eServiceReference(refstr).getPath()
 				if path and fileExists("%s.meta" % path):

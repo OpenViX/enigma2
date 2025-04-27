@@ -69,10 +69,7 @@ class JobView(InfoBarNotifications, ConfigListScreen, Screen):
 		self.onHide.append(self.windowHide)
 
 		self.settings = ConfigSubsection()
-		if SystemInfo["DeepstandbySupport"]:
-			shutdownString = _("go to deep standby")
-		else:
-			shutdownString = _("shut down")
+		shutdownString = _("go to deep standby")
 		self.settings.afterEvent = ConfigSelection(choices=[("nothing", _("do nothing")), ("close", _("Close")), ("standby", _("go to standby")), ("deepstandby", shutdownString)], default=self.job.afterEvent or "nothing")
 		self.job.afterEvent = self.settings.afterEvent.value
 		self.afterEventChangeable = afterEventChangeable
@@ -104,35 +101,38 @@ class JobView(InfoBarNotifications, ConfigListScreen, Screen):
 			self.job.state_changed.remove(self.state_changed)
 
 	def state_changed(self):
-		j = self.job
-		self["job_progress"].range = j.end
-		self["summary_job_progress"].range = j.end
-		self["job_progress"].value = j.progress
-		self["summary_job_progress"].value = j.progress
-		# print "JobView::state_changed:", j.end, j.progress
-		self["job_status"].text = j.getStatustext()
-		if j.status == j.IN_PROGRESS:
-			self["job_task"].text = j.tasks[j.current_task].name
-			self["summary_job_task"].text = j.tasks[j.current_task].name
-		else:
-			self["job_task"].text = ""
-			self["summary_job_task"].text = j.getStatustext()
-		if j.status in (j.FINISHED, j.FAILED):
-			self.performAfterEvent()
-			if self.backgroundable:
-				self.backgroundable = False
-				self["key_blue"].setText("")
-				self["backgroundActions"].setEnabled(False)
-			if j.status == j.FINISHED:
-				self["key_green"].setText(_("OK"))
-				self["okActions"].setEnabled(True)
-				self.cancelable = False
-				self["key_red"].setText("")
-				self["abortActions"].setEnabled(False)
-			elif j.status == j.FAILED:
-				self.cancelable = True
-				self["key_red"].setText(_("Cancel"))
-				self["abortActions"].setEnabled(True)
+		try:  # Temporary try/except while looking for a better solution
+			j = self.job
+			self["job_progress"].range = j.end
+			self["summary_job_progress"].range = j.end
+			self["job_progress"].value = j.progress
+			self["summary_job_progress"].value = j.progress
+			# print "JobView::state_changed:", j.end, j.progress
+			self["job_status"].text = j.getStatustext()
+			if j.status == j.IN_PROGRESS:
+				self["job_task"].text = j.tasks[j.current_task].name
+				self["summary_job_task"].text = j.tasks[j.current_task].name
+			else:
+				self["job_task"].text = ""
+				self["summary_job_task"].text = j.getStatustext()
+			if j.status in (j.FINISHED, j.FAILED):
+				self.performAfterEvent()
+				if self.backgroundable:
+					self.backgroundable = False
+					self["key_blue"].setText("")
+					self["backgroundActions"].setEnabled(False)
+				if j.status == j.FINISHED:
+					self["key_green"].setText(_("OK"))
+					self["okActions"].setEnabled(True)
+					self.cancelable = False
+					self["key_red"].setText("")
+					self["abortActions"].setEnabled(False)
+				elif j.status == j.FAILED:
+					self.cancelable = True
+					self["key_red"].setText(_("Cancel"))
+					self["abortActions"].setEnabled(True)
+		except Exception:
+			pass
 
 	def background(self):
 		if self.backgroundable:

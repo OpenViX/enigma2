@@ -191,6 +191,8 @@ void eDVBServicePMTHandler::PMTready(int error)
 			else
 				eDebug("[eDVBServicePMTHandler] cannot call buildCAPMT");
 		}
+		if (m_service_type == pvrDescramble)
+			serviceEvent(eventStartPvrDescramble);
 	}
 }
 

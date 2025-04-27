@@ -5,10 +5,8 @@ from os.path import isfile, join as pathjoin
 from re import split
 from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager
 
-from Components.About import getKernelVersionString
 from Components.RcModel import rc_model
 from Tools.Directories import fileCheck, fileExists, fileHas, pathExists, resolveFilename, SCOPE_LIBDIR, SCOPE_SKIN, fileReadLine, fileReadLines
-from Tools.HardwareInfo import HardwareInfo
 
 
 class BoxInformation:
@@ -76,7 +74,8 @@ BoxInfo = BoxInformation()
 # to refect that found in "${STAGING_KERNEL_BUILDDIR}/kernel-abiversion" which is the version used in the
 # package names from the feeds. Therefore we will force the output of BoxInfo.getItem("kernel") to the
 # value from "/proc/version" which is the same.
-BoxInfo.boxInfo["kernel"] = getKernelVersionString().strip()  # force kernel revision
+Versions = fileReadLine("/proc/version")
+BoxInfo.boxInfo["kernel"] = Versions.split(" ", 3)[2].split("-", 1)[0].strip() if Versions else _("unknown")  # force kernel revision
 
 # This line makes the BoxInfo backwards compatible with SystemInfo without duplicating the dictionary.
 SystemInfo = BoxInfo.boxInfo
@@ -227,7 +226,6 @@ SystemInfo["LCDsymbol_hdd"] = SystemInfo["boxtype"] in ("mutant51",) and fileChe
 SystemInfo["HasNoDisplay"] = SystemInfo["boxtype"] in ("et4x00", "et5x00", "et6x00", "gb800se", "gb800solo", "gbx34k", "iqonios300hd", "mbmicro", "sf128", "sf138", "tmsingle", "tmnano2super", "tmnanose", "tmnanoseplus", "tmnanosem2", "tmnanosem2plus", "tmnanosecombo", "vusolo")
 SystemInfo["DisplayLED"] = SystemInfo["boxtype"] in ("gb800se", "gb800solo", "gbx1", "gbx2", "gbx3", "gbx3h")
 SystemInfo["LEDButtons"] = False  # SystemInfo["boxtype"] == "vuultimo", For some reason this causes a cpp crash on vuultimo (which we no longer build). The cause needs investigating or the dead code in surrounding modules that this change causes should be removed.
-SystemInfo["DeepstandbySupport"] = HardwareInfo().has_deepstandby()
 SystemInfo["Fan"] = fileCheck("/proc/stb/fp/fan")
 SystemInfo["FanPWM"] = SystemInfo["Fan"] and fileCheck("/proc/stb/fp/fan_pwm")
 SystemInfo["PowerLED"] = fileExists("/proc/stb/power/powerled")

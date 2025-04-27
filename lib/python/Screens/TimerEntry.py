@@ -6,7 +6,6 @@ from enigma import eEPGCache
 import Screens.ChannelSelection
 from ServiceReference import ServiceReference
 from Components.config import config, ConfigSelection, ConfigText, ConfigYesNo
-from Components.SystemInfo import SystemInfo
 from Components.UsageConfig import defaultMoviePath, preferredTimerPath
 from Screens.TimerEntryBase import TimerEntryBase, TimerLogBase
 from Screens.MovieSelection import getPreferredTagEditor
@@ -46,10 +45,7 @@ class TimerEntry(TimerEntryBase):
 		self.timerentry_justplay = ConfigSelection(choices=[
 			("zap", _("zap")), ("record", _("record")), ("zap+record", _("zap and record"))],
 			default={0: "record", 1: "zap", 2: "zap+record"}[justplay + 2 * always_zap])
-		if SystemInfo["DeepstandbySupport"]:
-			shutdownString = _("go to deep standby")
-		else:
-			shutdownString = _("shut down")
+		shutdownString = _("go to deep standby")
 		self.timerentry_afterevent = ConfigSelection(choices=[("nothing", _("do nothing")), ("standby", _("go to standby")), ("deepstandby", shutdownString), ("auto", _("auto"))], default=afterevent)
 		self.timerentry_recordingtype = ConfigSelection(choices=[("normal", _("normal")), ("descrambled+ecm", _("descramble and record ecm")), ("scrambled+ecm", _("don't descramble, record ecm"))], default=recordingtype)
 		self.timerentry_name = ConfigText(default=self.timer.name.replace('\x86', '').replace('\x87', ''), visible_width=50, fixed_size=False)
