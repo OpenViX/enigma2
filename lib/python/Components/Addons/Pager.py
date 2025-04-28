@@ -162,6 +162,8 @@ class Pager(GUIAddon):
 	def getCurrentIndex(self):
 		if hasattr(self.source, "index"):
 			return self.source.index
+		if hasattr(self.source, "currentIndex"):
+			return self.source.currentIndex
 		return self.source.l.getCurrentSelectionIndex()
 
 	def getSourceSize(self):
@@ -176,6 +178,8 @@ class Pager(GUIAddon):
 			return len(self.source.list)
 		elif hasattr(self.source, 'l') and hasattr(self.source.l, 'getListSize'):
 			return self.source.l.getListSize()
+		elif hasattr(self.source, "totalItemsCount"):
+			return self.source.totalItemsCount
 		return 0
 
 	def getListItemSize(self):

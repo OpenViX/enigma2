@@ -26,6 +26,7 @@ public:
 		m_sepline_color_set = 1;
 	}
 	void setSepLineThickness(int value) { m_sepline_thickness = value; }
+	int getListSize() { return size(); }
 #ifndef SWIG
 protected:
 	void cursorHome();
@@ -109,6 +110,7 @@ public:
 	void entryRemoved(int idx);
 	void setTemplate(SWIG_PYOBJECT(ePyObject) tmplate);
 	int getMaxItemTextWidth();
+	int getListSize() { return size(); }
 private:
 	std::map<int, ePtr<gFont> > m_font;
 };

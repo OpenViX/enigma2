@@ -54,6 +54,7 @@ protected:
 	virtual int getItemWidth() { return -1; }
 	virtual int getOrientation() { return 1; }
 	virtual int getMaxItemTextWidth() { return 1; }
+	virtual int getListSize() { return 0; }
 
 	eListbox *m_listbox;
 #endif
