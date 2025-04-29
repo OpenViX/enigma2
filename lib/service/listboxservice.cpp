@@ -726,19 +726,23 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 		/* blit background picture, if available (otherwise, clear only) */
 		if (local_style && local_style->m_background)
 			painter.blit(local_style->m_background, offset, eRect(), 0);
-		else if (local_style && !local_style->m_background && radius)
+		if (radius)
 		{
-			if(radius)
-				painter.setRadius(radius, edges);
+			painter.setRadius(radius, edges);
 			painter.drawRectangle(itemRect);
 		}
-		else
+		else if (local_style && !local_style->m_background)
 			painter.clear();
 	} else
 	{
 		if (local_style->m_background)
 			painter.blit(local_style->m_background, offset, eRect(), gPainter::BT_ALPHABLEND);
-		else if (selected && !local_style->m_selection && !local_style->m_selection_large && !radius)
+		if (selected && radius && !local_style->m_selection && !local_style->m_selection_large)
+		{
+			painter.setRadius(radius, edges);
+			painter.drawRectangle(itemRect);
+		}
+		else
 			painter.clear();
 	}
 
