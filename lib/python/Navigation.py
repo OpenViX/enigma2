@@ -248,7 +248,7 @@ class Navigation:
 					self.originalPlayingServiceReference = None
 					InfoBarInstance.serviceStarted()
 				return 0
-		elif oldref and InfoBarInstance and InfoBarInstance.servicelist.servicelist.setCurrent(oldref, adjust):
+		elif oldref and InfoBarInstance and InfoBarInstance.servicelist.servicelist.setCurrent(ref, adjust):
 			self.currentlyPlayingServiceOrGroup = InfoBarInstance.servicelist.servicelist.getCurrent()
 		return 1
 
