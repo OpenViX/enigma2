@@ -106,7 +106,7 @@ class ParentalControl:
 			age = age and age <= 15 and age + 3 or 0
 		return (age and age >= int(config.ParentalControl.age.value)) or service and service in self.blacklist
 
-	def isServicePlayable(self, ref, callback, session=None):
+	def isServicePlayable(self, ref, callback, session=None, pip_service=None):
 		self.session = session
 		if self.isProtected(ref):
 			# Check if the session pin is cached
@@ -124,7 +124,11 @@ class ParentalControl:
 				Tools.Notifications.AddNotificationParentalControl(boundFunction(self.servicePinEntered, ref), PinInput, triesEntry=config.ParentalControl.retries.servicepin, pinList=self.getPinList(), service=ServiceReference(ref).getServiceName(), title=title, windowTitle=_("Parental control"))
 			import NavigationInstance
 			if NavigationInstance.instance and NavigationInstance.instance.currentlyPlayingServiceReference and 'FROM BOUQUET "userbouquet.' not in service:
-				NavigationInstance.instance.stopService()  # kill current service since we are on protected service and may cancel the pin
+				if pip_service:
+					NavigationInstance.instance.pnav.clearPiPService()
+					pip_service.stop() # kill current pip service since we are on protected service and may cancel the pin
+				else:
+					NavigationInstance.instance.stopService()  # kill current service since we are on protected service and may cancel the pin
 			return False
 		else:
 			return True

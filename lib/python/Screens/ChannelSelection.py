@@ -2405,8 +2405,8 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 			ref = self.session.pip.getCurrentService()
 			if ref is None or ref != nref:
 				nref = self.session.pip.resolveAlternatePipService(nref)
-				if nref and (not checkParentalControl or Components.ParentalControl.parentalControl.isServicePlayable(nref, boundFunction(self.zap, enable_pipzap=True, checkParentalControl=False))):
-					zap_res = self.session.pip.playService(nref)
+				if nref and (not checkParentalControl or Components.ParentalControl.parentalControl.isServicePlayable(nref, boundFunction(self.zap, enable_pipzap=True, checkParentalControl=False), pip_service=self.session.pip.pipservice)):
+					zap_res = self.session.pip.playService(nref, checkParentalControl=False)
 					if zap_res == 1:
 						self.__evServiceStart()
 						self.showPipzapMessage()
