@@ -47,6 +47,7 @@ public:
 	virtual void paintBackground(gPainter &painter, const ePoint &offset, const eSize &size) = 0;
 	virtual void setStyle(gPainter &painter, int what) = 0;
 	virtual void drawFrame(gPainter &painter, const eRect &frame, int type) = 0;
+	virtual int drawFrameRadius(gPainter &painter, const eRect &frame, int radius, uint8_t edges) = 0;
 	virtual RESULT getFont(int what, ePtr<gFont> &font) = 0;
 	virtual gRGB getColor(int what) = 0;
 #endif
@@ -98,6 +99,7 @@ public:
 	void paintBackground(gPainter &painter, const ePoint &offset, const eSize &size);
 	void setStyle(gPainter &painter, int what);
 	void drawFrame(gPainter &painter, const eRect &frame, int what);
+	int drawFrameRadius(gPainter &painter, const eRect &frame, int radius, uint8_t edges);
 	RESULT getFont(int what, ePtr<gFont> &font);
 	gRGB getColor(int what);
 };

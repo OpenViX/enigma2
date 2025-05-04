@@ -11,6 +11,7 @@ eWindowStyleSkinned::eWindowStyleSkinned()
 	// m_background_color = gRGB(0x808080);
 
 	// TODO: initialize colors!!
+	m_listbox_border_set = 0;
 }
 
 void eWindowStyleSkinned::handleNewSize(eWindow *wnd, eSize &size, eSize &offset)
@@ -93,6 +94,19 @@ void eWindowStyleSkinned::drawFrame(gPainter &painter, const eRect &frame, int w
 		return;
 	}
 	drawBorder(painter, frame, m_border[bs], bpAll, gPainter::BT_ALPHABLEND);
+}
+
+int eWindowStyleSkinned::drawFrameRadius(gPainter &painter, const eRect &frame, int radius, uint8_t edges)
+{
+	if (m_listbox_border_set)
+	{
+		gRGB c = m_color[colListboxSelectedBorder];
+		painter.setBackgroundColor(c);
+		painter.setRadius(radius, edges);
+		painter.drawRectangle(frame);
+		return 1;
+	}
+	return 0;
 }
 
 void eWindowStyleSkinned::drawBorder(gPainter &painter, const eRect &pos, struct borderSet &border, int what, int flags)
@@ -265,7 +279,11 @@ void eWindowStyleSkinned::setPixmap(int bs, int bp, gPixmap &pixmap)
 void eWindowStyleSkinned::setColor(int what, const gRGB &col)
 {
 	if ((what < colMax) && (what >= 0))
+	{
+		if (what == colListboxSelectedBorder)
+			m_listbox_border_set = 1;
 		m_color[what] = col;
+	}
 }
 
 gRGB eWindowStyleSkinned::getColor(int what)
