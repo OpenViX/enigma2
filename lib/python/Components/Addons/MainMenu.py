@@ -77,6 +77,7 @@ class MainMenu(GUIAddon):
 
 	def selectionChanged(self):
 		if self.instance and hasattr(self, "source"):
+			self.source.setIndex(self.instance.getCurrentIndex()) # relay selection changed to underlaying list
 			self.source.setConnectedGuiElement(self)
 
 	def setMinWidth(self, value):
