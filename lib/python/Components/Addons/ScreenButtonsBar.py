@@ -89,7 +89,7 @@ class ScreenButtonsBar(GUIAddon):
 			if self.actionButtonsPosition == "farRight":
 				xPosAction += last_pixd_width + self.spacing
 
-		xPos = xPosAction if self.actionButtonsPosition != "farRight" else 0
+		xPos = (xPosAction + self.spacingBetweenActionAndColorGroups) if self.actionButtonsPosition != "farRight" else 0
 		yPos = 0
 		width_color_reserved = (width - xPosAction - self.spacingBetweenActionAndColorGroups) if self.actionButtonsPosition != "farRight" else xPosAction - self.spacingBetweenActionAndColorGroups
 		minSectorWidth = width_color_reserved // 4
@@ -164,7 +164,7 @@ class ScreenButtonsBar(GUIAddon):
 						text=buttonText, color=textColor, color_sel=textColor, backcolor=backColor, corner_radius=self.cornerRadius))
 
 				xPos += textWidth + textPaddings * 2 + self.spacingButtons
-			if xPos > width_color_reserved and self.layoutStyle != "fluid":
+			if xPos - ((xPosAction + self.spacingBetweenActionAndColorGroups) if self.actionButtonsPosition != "farRight" else 0) > width_color_reserved and self.layoutStyle != "fluid":
 				print("[ScreenButtonsBar] SWITCH TO FLUID: xPos = %d > width = %d" % (xPos, width_color_reserved))
 				self.layoutStyle = "fluid"
 				return self.buildEntry(sequence, sequenceAction)
