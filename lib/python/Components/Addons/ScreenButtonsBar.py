@@ -21,6 +21,7 @@ class ScreenButtonsBar(GUIAddon):
 		self.l.setItemHeight(35)
 		self.l.setItemWidth(35)
 		self.spacingButtons = applySkinFactor(40)
+		self.spacingButtonsTight = applySkinFactor(30)
 		self.spacingPixmapText = applySkinFactor(10)
 		self.layoutStyle = "fixed"
 		self.colorIndicatorStyle = "pixmap"
@@ -133,12 +134,13 @@ class ScreenButtonsBar(GUIAddon):
 				textWidth = self._calcTextWidth(buttonText, font=self.font, size=eSize(self.getDesktopWidth() // 3, 0))
 			else:
 				textWidth = 0
-			if self.layoutStyle != "fluid":
+			if self.layoutStyle == "fixed":
 				if textWidth < (minSectorWidth - self.spacingButtons - (self.spacingPixmapText if pic else 0) - pixd_width):
 					textWidth = minSectorWidth - self.spacingButtons - (self.spacingPixmapText if pic else 0) - pixd_width
 			if buttonText:
 				textFlags = RT_HALIGN_LEFT | RT_VALIGN_CENTER
 				textPaddings = 0
+				width_text = textWidth + textPaddings * 2
 				backColor = None
 				if self.renderType in ["ColorTextOver", "ImageTextOver"]:
 					textFlags = RT_HALIGN_CENTER | RT_VALIGN_CENTER
@@ -152,7 +154,7 @@ class ScreenButtonsBar(GUIAddon):
 						if pic:
 							res.append(MultiContentEntryPixmapAlphaBlend(
 								pos=(xPos, yPos),
-								size=(textWidth + textPaddings * 2, height),
+								size=(width_text, height),
 								png=pic,
 								backcolor=0x000000, backcolor_sel=None, flags=BT_SCALE, corner_radius=self.cornerRadius))
 						res.append(MultiContentEntryText(
@@ -160,16 +162,23 @@ class ScreenButtonsBar(GUIAddon):
 							font=0, flags=textFlags,
 							text=buttonText, color=textColor, color_sel=textColor))
 				else:
+					xPos_predicted = xPos + width_text + (self.spacingButtonsTight if self.layoutStyle == "fluidfull" else self.spacingButtons)
+					diff = xPos_predicted - ((xPosAction + self.spacingBetweenActionAndColorGroups) if self.actionButtonsPosition != "farRight" else 0)
+					if diff > width_color_reserved and self.layoutStyle == "fluidfull":
+						width_text -= diff
+						if width_text < 0:
+							width_text = 0
 					res.append(MultiContentEntryText(
-						pos=(xPos, yPos), size=(textWidth + textPaddings * 2, height - 2),
+						pos=(xPos, yPos), size=(width_text, height - 2),
 						font=0, flags=textFlags,
 						text=buttonText, color=textColor, color_sel=textColor, backcolor=backColor, corner_radius=self.cornerRadius))
 
-				xPos += textWidth + textPaddings * 2 + self.spacingButtons
-			if xPos - ((xPosAction + self.spacingBetweenActionAndColorGroups) if self.actionButtonsPosition != "farRight" else 0) > width_color_reserved and self.layoutStyle != "fluid":
-				print("[ScreenButtonsBar] SWITCH TO FLUID: xPos = %d > width = %d" % (xPos, width_color_reserved))
-				self.layoutStyle = "fluid"
-				return self.buildEntry(sequence, sequenceAction)
+				xPos += width_text + (self.spacingButtonsTight if self.layoutStyle == "fluidfull" else self.spacingButtons)
+			if xPos - ((xPosAction + self.spacingBetweenActionAndColorGroups) if self.actionButtonsPosition != "farRight" else 0) > width_color_reserved:
+				if self.layoutStyle == "fixed" or self.layoutStyle == "fluid":
+					print("[ScreenButtonsBar] SWITCH TO FLUID FULL (from %s): xPos = %d > width = %d" % (self.layoutStyle, xPos, width_color_reserved))
+					self.layoutStyle = "fluidfull"
+					return self.buildEntry(sequence, sequenceAction)
 
 		return res
 
@@ -200,6 +209,8 @@ class ScreenButtonsBar(GUIAddon):
 				self.pixmaps = dict(item.split(':') for item in value.split(','))
 			elif attrib == "spacingColor":
 				self.spacingButtons = parseScale(value)
+			elif attrib == "spacingColorTight":
+				self.spacingButtonsTight = parseScale(value)
 			elif attrib == "spacingAction":
 				self.spacing = parseScale(value)
 			elif attrib == "spacingPixmapText":
