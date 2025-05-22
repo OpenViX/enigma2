@@ -4012,7 +4012,7 @@ class InfoBarCueSheetSupport:
 
 	def __serviceStarted(self):
 		self.resumeTimer.stop()
-		self.resumeTimer.start(config.av.passthrough_fix_long.value + 1000, True)
+		self.resumeTimer.start(1000, True)
 
 	def __findRecording(self):
 		if isMoviePlayerInfoBar(self):

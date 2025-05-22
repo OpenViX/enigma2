@@ -450,6 +450,8 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_is_live = false;
 	m_use_prefillbuffer = false;
 	m_paused = false;
+	m_clear_buffers = true;
+	m_initial_start = false;
 	m_seek_paused = false;
 	m_cuesheet_loaded = false; /* cuesheet CVR */
 	m_use_chapter_entries = false; /* TOC chapter support CVR */
@@ -1093,10 +1095,12 @@ RESULT eServiceMP3::trickSeek(gdouble ratio)
 		gst_element_get_state(m_gst_playbin, &state, &pending, 1 * GST_SECOND);
 		if (state == GST_STATE_PLAYING && pending == GST_STATE_PAUSED)
 		{
+			m_clear_buffers = true;
 			if (m_currentAudioStream >= 0)
 				selectAudioStream(m_currentAudioStream, true);
 			else
 				selectAudioStream(0, true);
+			m_clear_buffers = false;
 		}
 		return 0;
 	}
@@ -1667,11 +1671,16 @@ int eServiceMP3::getCurrentTrack()
 
 RESULT eServiceMP3::selectTrack(unsigned int i)
 {
-	return selectAudioStream(i);
+	m_clear_buffers = true;
+	int result = selectAudioStream(i);
+	m_clear_buffers = false;
+	return result;
 }
 
-void eServiceMP3::clearBuffers()
+void eServiceMP3::clearBuffers(bool force)
 {
+	if (!m_clear_buffers && !force) return;
+
 	bool validposition = false;
 	pts_t ppos = 0;
 	if (getPlayPosition(ppos) >= 0)
@@ -1989,11 +1998,17 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						}
 
 						if (autoaudio)
-							selectTrack(autoaudio);
+							selectAudioStream(autoaudio);
 					}
 					else
 					{
-						selectTrack(m_currentAudioStream);
+						selectAudioStream(m_currentAudioStream);
+					}
+					m_clear_buffers = false;
+					if (!m_initial_start)
+					{
+						seekTo(0);
+						m_initial_start = true;
 					}
 					m_event((iPlayableService*)this, evGstreamerPlayStarted);
 				}	break;
