@@ -13,6 +13,7 @@ public:
 	void paintWindowDecoration(eWindow *wnd, gPainter &painter, const std::string &title);
 	void paintBackground(gPainter &painter, const ePoint &offset, const eSize &size);
 	void drawFrame(gPainter &painter, const eRect &frame, int what);
+	int drawFrameRadius(gPainter &painter, const eRect &frame, int radius, uint8_t edges);
 	RESULT getFont(int what, ePtr<gFont> &font);
 #endif
 	void setStyle(gPainter &painter, int what);
@@ -66,6 +67,7 @@ public:
 		colListboxMarkedForeground,
 		colListboxMarkedAndSelectedBackground,
 		colListboxMarkedAndSelectedForeground,
+		colListboxSelectedBorder,
 
 		colWindowTitleForeground,
 		colWindowTitleBackground,
@@ -89,6 +91,8 @@ private:
 	borderSet m_border[bsMax];
 
 	gRGB m_color[colMax];
+
+	int m_listbox_border_set;
 
 	eSize m_title_offset;
 	ePtr<gFont> m_fnt;

@@ -1883,7 +1883,7 @@ class NetworkOpenvpn(NSCommon, Screen):
 		self.skinName = "NetworkServiceSetup"
 		self.onChangedEntry = []
 		self["lab1"] = Label(_("Autostart:"))
-		self["labactive"] = Label(_(_("Disabled")))
+		self["labactive"] = Label(_("Disabled"))
 		self["lab2"] = Label(_("Current Status:"))
 		self["labstop"] = Label(_("Stopped"))
 		self["labrun"] = Label(_("Running"))

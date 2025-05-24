@@ -653,6 +653,7 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 
 		self["key_menu"] = StaticText(_("MENU"))
 		self["key_info"] = StaticText(_("INFO"))
+		self["key_0"] = StaticText(_("0"))  # toggleMark
 
 		self["movie_off"] = MultiPixmap()
 		self["movie_off"].hide()

@@ -6,14 +6,15 @@ from Components.ActionMap import HelpableActionMap
 from Components.ChoiceList import ChoiceEntryComponent, ChoiceList
 from Components.Console import Console
 from Components.Harddisk import Harddisk
+from Components.Label import Label
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, BoxInfo, getBoxDisplayName, KERNEL, MTDROOTFS, MODEL
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen, ScreenSummary
 from Screens.Standby import QUIT_REBOOT, QUIT_RESTART, TryQuitMainloop
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import copyfile
+from Tools.Directories import copyfile, fileWriteLine
 from Tools.Multiboot import emptySlot, GetImagelist, GetCurrentImageMode, restoreSlots
 
 
@@ -256,6 +257,92 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 	def createSummary(self):
 		return MultiBootSelectorSummary
+
+
+class ChkrootInit(Screen):
+	skin = """
+	<screen name="ChkrootInit" title="Chkroot MultiBoot Manager" position="center,center" size="900,600" resolution="1280,720">
+		<widget name="description" position="0,0" size="e,e-50" font="Regular;20" />
+		<widget source="key_red" render="Label" position="0,e-40" size="180,40" backgroundColor="key_red" conditional="key_red" font="Regular;20" foregroundColor="key_text" halign="center" valign="center">
+			<convert type="ConditionalShowHide" />
+		</widget>
+		<widget source="key_green" render="Label" position="190,e-40" size="180,40" backgroundColor="key_green" conditional="key_green" font="Regular;20" foregroundColor="key_text" halign="center" valign="center">
+			<convert type="ConditionalShowHide" />
+		</widget>
+		<widget source="key_help" render="Label" position="e-80,e-40" size="80,40" backgroundColor="key_back" conditional="key_help" font="Regular;20" foregroundColor="key_text" halign="center" valign="center">
+			<convert type="ConditionalShowHide" />
+		</widget>
+	</screen>"""
+
+	def __init__(self, session, *args):
+		Screen.__init__(self, session)
+		self.skinName = "ChkrootInit"
+		self.setTitle(_("Chkroot MultiBoot Manager"))
+		self["key_red"] = StaticText()
+		self["key_green"] = StaticText()
+		self["description"] = Label()
+		self["actions"] = HelpableActionMap(self, ["OkCancelActions", "ColorActions"], {
+			"ok": (self.close, _("Close the Chkroot MultiBoot Manager")),
+			"cancel": (self.close, _("Close the Chkroot MultiBoot Manager")),
+			"red": (self.disableChkroot, _("Disable the MultiBoot option")),
+			"green": (self.rootInit, _("Start the Chkroot initialization"))
+		}, prio=-1, description=_("Chkroot Manager Actions"))
+		self["key_red"].setText(_("Disable Chkroot"))
+		self["key_green"].setText(_("Initialize"))
+		self.descriptionSuffix = _("The %s %s will reboot within 1 seconds.") % getBoxDisplayName()
+		self["description"].setText("%s\n\n%s" % (_("Press GREEN to enable MultiBoot!"), self.descriptionSuffix))
+
+	def rootInit(self):
+		def rootInitCallback(*args, **kwargs):
+			self.session.open(TryQuitMainloop, QUIT_REBOOT)
+
+		self["description"].setText("%s\n\n%s" % (_("Chkroot MultiBoot Initialization in progress!"), self.descriptionSuffix))
+		device = "/dev/block/by-name/others"
+		mountpoint = "/boot"
+		if MODEL in ("dm900", "dm920"):  # mmcblk0p1 = 63488 mmcblk0p2 = 2031616 mmcblk0p3 = 13172703
+			with open("/sys/block/mmcblk0/mmcblk0p1/size", "r") as fd:
+				sectors = int(fd.read().strip())
+			rootMap = [
+				("mmcblk0p2", "linuxrootfs1"),
+				("mmcblk0p2", "linuxrootfs1")
+			]
+			rootMap.append(("mmcblk0p3" if sectors < 2097152 else "mmcblk0p2", "linuxrootfs2"))
+			rootMap.extend([
+				("mmcblk0p3", "linuxrootfs3"),
+				("mmcblk0p3", "linuxrootfs4"),
+				("mmcblk0p3", "linuxrootfs5"),
+				("mmcblk0p3", "linuxrootfs6")
+			])
+		else:
+			rootMap = [
+				(MTDROOTFS, "linuxrootfs1"),
+				(MTDROOTFS, "linuxrootfs1"),
+				(MTDROOTFS, "linuxrootfs2"),
+				(MTDROOTFS, "linuxrootfs3"),
+				(MTDROOTFS, "linuxrootfs4")
+			]
+
+		cmdList = [
+			f"mkfs.vfat -F 32 -n CHKROOT {device}",
+			f"mkdir -p {mountpoint}",
+			f"mount {device} {mountpoint}",
+		]
+
+		for idx, (rootdev, subdir) in enumerate(rootMap):
+			suffix = "" if idx == 0 else f"_{idx}"
+			cmdList.append(f"echo 'kernel=/dev/{KERNEL} root=/dev/{rootdev} rootsubdir={subdir}' > {mountpoint}/STARTUP{suffix}")
+
+		cmdList.append(f"umount {mountpoint}")
+		print(f"[MultiBootSelector][ChkrootInit] cmdlist:{cmdList}")
+		Console().eBatch(cmdList, rootInitCallback, debug=True)
+
+	def disableChkroot(self):
+		def disableChkrootCallback(answer):
+			if answer:
+				fileWriteLine("/etc/.disableChkroot", "disabled\n")
+				self.close()
+
+		self.session.openWithCallback(disableChkrootCallback, MessageBox, _("Permanently disable the MultiBoot option?"), simple=True)
 
 
 class MultiBootSelectorSummary(ScreenSummary):

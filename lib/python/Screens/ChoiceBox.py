@@ -1,6 +1,7 @@
+from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
-from Components.ActionMap import NumberActionMap
+from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.config import config, ConfigSubsection, ConfigText
 from Components.Label import Label
 from Components.ChoiceList import ChoiceEntryComponent, ChoiceList
@@ -14,7 +15,7 @@ config.misc.pluginlist.eventinfo_order = ConfigText(default="")
 config.misc.pluginlist.extension_order = ConfigText(default="")
 
 
-class ChoiceBox(Screen):
+class ChoiceBox(Screen, HelpableScreen):
 	def __init__(self, session, title="", list=None, keys=None, selection=0, skin_name=None, text="", reorderConfig="", windowTitle=None, var="", callbackList=None, *args, **kwargs):
 		# list is in the format (<display text>, [<parameters to pass to close callback>,])
 		# callbackList is in the format (<display text>, <callback func>, [<parameters>,])
@@ -25,6 +26,7 @@ class ChoiceBox(Screen):
 		if not skin_name:
 			skin_name = []
 		Screen.__init__(self, session)
+		HelpableScreen.__init__(self)
 
 		if isinstance(skin_name, str):
 			skin_name = [skin_name]
@@ -69,7 +71,6 @@ class ChoiceBox(Screen):
 			self.__keys = keys + (len(list) - len(keys)) * [""]
 
 		self.keymap = {}
-		pos = 0
 		if self.reorderConfig:
 			self.config_type = getattr(config.misc.pluginlist, self.reorderConfig)
 			if self.config_type.value:
@@ -91,46 +92,49 @@ class ChoiceBox(Screen):
 					else:
 						new_keys.append(not x.isdigit() and x or "")
 				self.__keys = new_keys
-		for x in list:
+		colors = {"red": self.keyRed, "green": self.keyGreen, "yellow": self.keyYellow, "blue": self.keyBlue}
+		colorActions = {}
+		selectionActions = {}
+		for i, x in enumerate(list):
 			if x:
-				strpos = str(self.__keys[pos])
-				self.list.append(ChoiceEntryComponent(key=strpos, text=x))
-				if self.__keys[pos] != "":
-					self.keymap[self.__keys[pos]] = list[pos]
-				self.summarylist.append((self.__keys[pos], x[0]))
-				pos += 1
+				key = str(self.__keys[i])
+				self.list.append(ChoiceEntryComponent(key=key, text=x))
+				if self.__keys[i] != "":
+					self.keymap[self.__keys[i]] = list[i]
+					if key in colors:
+						colorActions[key] = (colors[key], _("Select item directly"))
+					else:
+						selectionActions[key] = (self.keyNumberGlobal, _("Select item directly"))
+				self.summarylist.append((self.__keys[i], x[0]))
 
 		self["list"] = ChoiceList(list=self.list, selection=selection)
 		self["summary_list"] = StaticText()
 		self["summary_selection"] = StaticText()
-		self.updateSummary(selection)
+		if self.updateSummary not in self["list"].onSelectionChanged:
+			self["list"].onSelectionChanged.append(self.updateSummary)
+		self.updateSummary()
 
-		self["actions"] = NumberActionMap(["WizardActions", "InputActions", "ColorActions", "DirectionActions", "MenuActions"],
+		self["okActions"] = HelpableActionMap(self, ["OkCancelActions"], {"ok": (self.keySelect, _("Select the current item")), }, prio=0, description=_("Selection Actions"))
+		self["cancelActions"] = HelpableActionMap(self, ["OkCancelActions"], {"cancel": (self.cancel, _("Cancel the current action and exit")), }, prio=0, description=_("Cancel Actions"))
+		self["colorActions"] = HelpableActionMap(self, ["ColorActions"], colorActions, prio=-1, description=_("Selection Actions"))
+		self["selectionActions"] = HelpableNumberActionMap(self, ["NumberActions"], selectionActions, prio=-1, description=_("Selection Actions"))
+
+		self["navigationActions"] = HelpableActionMap(self, ["DirectionActions"],
 		{
-			"ok": self.go,
-			"1": self.keyNumberGlobal,
-			"2": self.keyNumberGlobal,
-			"3": self.keyNumberGlobal,
-			"4": self.keyNumberGlobal,
-			"5": self.keyNumberGlobal,
-			"6": self.keyNumberGlobal,
-			"7": self.keyNumberGlobal,
-			"8": self.keyNumberGlobal,
-			"9": self.keyNumberGlobal,
-			"0": self.keyNumberGlobal,
-			"red": self.keyRed,
-			"green": self.keyGreen,
-			"yellow": self.keyYellow,
-			"blue": self.keyBlue,
-			"up": self.up,
-			"down": self.down,
-			"left": self.left,
-			"right": self.right,
-			"shiftUp": self.additionalMoveUp,
-			"shiftDown": self.additionalMoveDown,
-			"menu": self.setDefaultChoiceList,
-			"back": self.cancel
-		}, prio=-2)
+			"up": (self.up, _("Move selection to the next item up")),
+			"down": (self.down, _("Move selection to the next item down")),
+			"left": (self.pageUp, _("Move selection one page up")),
+			"right": (self.pageDown, _("Move selection one page down")),
+		}, prio=-1, description=_("Navigation Actions"))
+		self["navigationActions"].setEnabled(len(list) > 1)
+
+		self["sortActions"] = HelpableActionMap(self, ["DirectionActions", "MenuActions"],
+		{
+			"menu": (self.setDefaultChoiceList, _("Reset the list order to the default")),
+			"shiftDown": (self.additionalMoveDown, _("Move the current item down the list")),
+			"shiftUp": (self.additionalMoveUp, _("Move the current item up the list")),
+		}, prio=-1, description=_("List Sort Actions"))
+		self["sortActions"].setEnabled(reorderConfig and len(list) > 1)
 
 	def autoResize(self):
 		margin = applySkinFactor(4)
@@ -168,36 +172,30 @@ class ChoiceBox(Screen):
 		# center window
 		self.instance.move(ePoint((desktop_w - wsizex) // 2, (desktop_h - wsizey) // 2))
 
-	def left(self):
-		if len(self["list"].list) > 0:
-			while True:
-				self["list"].instance.moveSelection(self["list"].instance.pageUp)
-				self.updateSummary(self["list"].l.getCurrentSelectionIndex())
-				if self["list"].l.getCurrentSelection()[0][0] != "--" or self["list"].l.getCurrentSelectionIndex() == 0:
-					break
+	def pageUp(self):
+		if self.list:
+			self["list"].pageUp()
+			if self["list"].getCurrent()[0][0] == ChoiceList.SPACER:  # if we landed on a spacer skip to previous item
+				self.up()
 
-	def right(self):
-		if len(self["list"].list) > 0:
-			while True:
-				self["list"].instance.moveSelection(self["list"].instance.pageDown)
-				self.updateSummary(self["list"].l.getCurrentSelectionIndex())
-				if self["list"].l.getCurrentSelection()[0][0] != "--" or self["list"].l.getCurrentSelectionIndex() == 0:
-					break
+	def pageDown(self):
+		if self.list:
+			self["list"].pageDown()
+			if self["list"].getCurrent()[0][0] != ChoiceList.SPACER:  # if we landed on a spacer skip to next item
+				self.down()
 
 	def up(self):
-		if len(self["list"].list) > 0:
+		if self.list:
 			while True:
-				self["list"].instance.moveSelection(self["list"].instance.moveUp)
-				self.updateSummary(self["list"].l.getCurrentSelectionIndex())
-				if self["list"].l.getCurrentSelection()[0][0] != "--" or self["list"].l.getCurrentSelectionIndex() == 0:
+				self["list"].up()
+				if self["list"].getCurrent()[0][0] != ChoiceList.SPACER or self["list"].getSelectionIndex() == 0:  # if we didn't land on a spacer stop loop
 					break
 
 	def down(self):
-		if len(self["list"].list) > 0:
+		if self.list:
 			while True:
-				self["list"].instance.moveSelection(self["list"].instance.moveDown)
-				self.updateSummary(self["list"].l.getCurrentSelectionIndex())
-				if self["list"].l.getCurrentSelection()[0][0] != "--" or self["list"].l.getCurrentSelectionIndex() == len(self["list"].list) - 1:
+				self["list"].down()
+				if self["list"].getCurrent()[0][0] != ChoiceList.SPACER or self["list"].getSelectionIndex() == len(self.list) - 1:  # if we didn't land on a spacer stop loop
 					break
 
 	# runs a number shortcut
@@ -205,11 +203,11 @@ class ChoiceBox(Screen):
 		self.goKey(str(number))
 
 	# runs the current selected entry
-	def go(self):
-		cursel = self["list"].l.getCurrentSelection()
+	def keySelect(self):
+		cursel = self["list"].getCurrent()
 		if cursel:
 			self.goEntry(cursel[0])
-		else:
+		else:  # list is empty
 			self.cancel()
 
 	# runs a specific entry
@@ -249,19 +247,18 @@ class ChoiceBox(Screen):
 	def keyBlue(self):
 		self.goKey("blue")
 
-	def updateSummary(self, curpos=0):
+	def updateSummary(self):
+		curpos = self["list"].getSelectionIndex()
 		self.displayDescription(curpos)
-		pos = 0
 		summarytext = ""
-		for entry in self.summarylist:
-			if curpos - 2 < pos < curpos + 5:
-				if pos == curpos:
+		for i, entry in enumerate(self.summarylist):
+			if curpos - 2 < i < curpos + 5:
+				if i == curpos:
 					summarytext += ">"
 					self["summary_selection"].setText(entry[1])
 				else:
 					summarytext += entry[0]
 				summarytext += ' ' + entry[1] + '\n'
-			pos += 1
 		self["summary_list"].setText(summarytext)
 
 	def displayDescription(self, curpos=0):
@@ -271,18 +268,20 @@ class ChoiceBox(Screen):
 			self["description"].setText("")
 
 	def cancel(self):
+		if self.updateSummary in self["list"].onSelectionChanged:
+			self["list"].onSelectionChanged.remove(self.updateSummary)
 		self.close(None)
 
 	def setDefaultChoiceList(self):
 		if self.reorderConfig:
 			if len(self.list) > 0 and self.config_type.value != "":
 				self.session.openWithCallback(self.setDefaultChoiceListCallback, MessageBox, _("Sort list to default and exit?"), MessageBox.TYPE_YESNO)
-		else:
-			self.cancel()
+			else:
+				self.session.open(MessageBox, _("The list is already sorted to the default."), MessageBox.TYPE_INFO, timeout=5)
 
 	def setDefaultChoiceListCallback(self, answer):
 		if answer:
-			self.config_type.value = ""
+			self.config_type.value = self.config_type.default
 			self.config_type.save()
 			self.cancel()
 
@@ -320,11 +319,13 @@ class PopupChoiceBox(ChoiceBox):
 		self.closeCB = closeCB
 
 	def show(self):
-		self["actions"].execBegin()
+		for action in ("okActions", "cancelActions", "colorActions", "selectionActions", "navigationActions"):
+			self[action].execBegin()
 		ChoiceBox.show(self)
 
 	def hide(self):
-		self["actions"].execEnd()
+		for action in ("okActions", "cancelActions", "colorActions", "selectionActions", "navigationActions"):
+			self[action].execEnd()
 		ChoiceBox.hide(self)
 
 	def goEntry(self, entry):

@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-15 17:17+0300\n"
-"PO-Revision-Date: 2025-04-15 19:43+0300\n"
+"POT-Creation-Date: 2025-05-20 13:06+0300\n"
+"PO-Revision-Date: 2025-05-20 16:13+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -939,6 +939,14 @@ msgid "%s"
 msgstr "%s"
 
 #, python-format
+msgid "%s "
+msgstr "%s "
+
+#, python-format
+msgid "%s   "
+msgstr "%s   "
+
+#, python-format
 msgid "%s %s advanced remote control (native)"
 msgstr "%s %s laaja kaukosäädin (natiivi)"
 
@@ -995,8 +1003,8 @@ msgid "%s files cannot be bulk renamed"
 msgstr "%s tiedostoa ei voi nimetä massana"
 
 #, python-format
-msgid "%s is also enabled for autofs network mount \n"
-msgstr "%s on myös käytössä autofs verkkoliitokselle \n"
+msgid "%s is also enabled for autofs network"
+msgstr "%s on myös käytössä autofs-verkossa"
 
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
@@ -2542,7 +2550,7 @@ msgid "Available format variables"
 msgstr "Formaatti-muuttujat"
 
 msgid "Available locales are:"
-msgstr "Käytettävissä olevat laitteet:"
+msgstr "Saatavilla olevat maa-alueet ovat:"
 
 msgid "Available shares:"
 msgstr "Käytettävissä olevat jaot:"
@@ -3168,6 +3176,9 @@ msgstr "Canada"
 msgid "Cancel"
 msgstr "Peruuta"
 
+msgid "Cancel Actions"
+msgstr "Peruutustoiminnot"
+
 msgid "Cancel any changed settings and exit"
 msgstr "Peruuta muutokset ja poistu"
 
@@ -3185,6 +3196,9 @@ msgstr "Peruuta tekstimuutokset ja poistu"
 
 msgid "Cancel save timeshift as movie"
 msgstr "Peruuta ajansiirron muunto tallenteeksi"
+
+msgid "Cancel the current action and exit"
+msgstr "Peruuta nykyinen toiminto ja poistu"
 
 msgid "Cancel the image selection and exit"
 msgstr "Peru imagen valinta ja poistu"
@@ -3464,6 +3478,15 @@ msgstr "Piirisarja:\t%s %s\n"
 msgid "Chipset: %s"
 msgstr "Piirisarja: %s"
 
+msgid "Chkroot Manager Actions"
+msgstr "Chkroot hallinnan toiminnot"
+
+msgid "Chkroot MultiBoot Initialization in progress!"
+msgstr "Chkroot MultiBootin alustaminen käynnissä!"
+
+msgid "Chkroot MultiBoot Manager"
+msgstr "Chkroot MultiBoot hallinta"
+
 msgid "Choose Bouquet"
 msgstr "Valitse suosikkilista"
 
@@ -3654,6 +3677,10 @@ msgstr "Kopioi TV:n kuva etupaneeliin"
 msgid "Close"
 msgstr "Sulje"
 
+#, python-format
+msgid "Close '%s' screen"
+msgstr "Sulje näyttö '%s'"
+
 msgid "Close CA device at programm end"
 msgstr "Sulje CA-laite ohjelman lopussa"
 
@@ -3662,6 +3689,9 @@ msgstr "Sulje PiP-kuva Exit-näppäimellä"
 
 msgid "Close screen"
 msgstr "Sulje näyttö"
+
+msgid "Close the Chkroot MultiBoot Manager"
+msgstr "Sulje Chkroot MultiBoot hallinta"
 
 msgid "Close title selection"
 msgstr "Sulje otsikon valinta"
@@ -3702,6 +3732,9 @@ msgstr "Väriformaatti"
 
 msgid "Color space"
 msgstr "Väriavaruus"
+
+msgid "Colour Actions"
+msgstr "Väritoiminnot"
 
 msgid "Combat Sports (without own category)"
 msgstr "Taistelu-urheilu (ilman omaa kategoriaa)"
@@ -3885,8 +3918,8 @@ msgstr "Määritä toiminto, kun tallenteen toisto pysäytetään."
 msgid "Configure the behavior when movie playback is started."
 msgstr "Määritä toiminto, kun tallenteen toisto aloitetaan."
 
-msgid "Configure the behavior when reaching the end of a movie, during movie playback."
-msgstr "Määritä toiminto, kun saavutetaan tallenteen loppu toiston aikana."
+msgid "Configure the behavior when reaching the end of a movie, during movie playback. This setting is overridden when 'use individual settings for each directory' is enabled (see MovieSelection settings)."
+msgstr "Määritä käyttäytyminen, kun elokuvan loppu saavutetaan elokuvan toiston aikana. Tämä asetus ohitetaan, kun 'käytä yksilöllisiä asetuksia jokaiselle hakemistolle' on käytössä (katso Tallenneluettelon asetukset)."
 
 msgid "Configure the border width of the subtitles. The dark border makes the subtitles easier to read on a light background."
 msgstr "Määrittää tekstityksen reunuksen leveyden. Tumma reunus helpottaa tekstityksen lukemista vaalealla taustalla."
@@ -4987,11 +5020,11 @@ msgstr "Tunnista seuraavat vastaanottimet ennen valmiustilaa"
 msgid "Detect programs split by news bulletins. Choose the maximum duration in minutes to consider as a bulletin, or 0 to disable."
 msgstr "Tunnista ohjelman jako uutisten tiedotteilla. Valitse maksimi tiedotteen kesto minuuteissa tai 0 poistaaksesi käytöstä."
 
-msgid "Detected devices:"
-msgstr "Tunnistetut laitteet:"
+msgid "Detected devices"
+msgstr "Tunnistetut laitteet"
 
-msgid "Detected tuners:"
-msgstr "Tunnistetut virittimet:"
+msgid "Detected tuners"
+msgstr "Tunnistetut virittimet"
 
 msgid "Detective"
 msgstr "Etsivä"
@@ -5067,6 +5100,9 @@ msgstr "Himmennyksen viive"
 msgid "Dim the LCD after specified time."
 msgstr "Himmennä LCD asetetun ajan jälkeen."
 
+msgid "Direct item selection"
+msgstr "Suora valikkokohteen valinta"
+
 msgid "Direct menu item selection"
 msgstr "Suora valikkokohteen valinta"
 
@@ -5115,6 +5151,9 @@ msgstr "Estä animaatiot"
 msgid "Disable Autostart"
 msgstr "Aut.käynnistys pois käytöstä"
 
+msgid "Disable Chkroot"
+msgstr "Chkroot pois käytöstä"
+
 msgid "Disable FCC during recordings"
 msgstr "Estä nopea kanavanvaihto tallennusten aikana"
 
@@ -5138,6 +5177,9 @@ msgstr "Poista operaattoriprofiilit käytöstä"
 
 msgid "Disable startup"
 msgstr "Käynnistys pois päältä"
+
+msgid "Disable the MultiBoot option"
+msgstr "Poista MultiBoot-vaihtoehto käytöstä"
 
 msgid "Disabled"
 msgstr "Ei käytössä"
@@ -5705,6 +5747,9 @@ msgstr "Aut.käynnistys käyttöön"
 msgid "Enable Bluetooth Audio"
 msgstr "Ota Bluetooth ääni käyttöön"
 
+msgid "Enable Chkroot MultiBoot"
+msgstr "Ota Chkroot MultiBoot käyttöön"
+
 msgid "Enable EIT EPG"
 msgstr "Ota käyttöön EIT EPG"
 
@@ -6163,6 +6208,9 @@ msgstr "Sulje ohjelmaopas"
 
 msgid "Exit Menusort"
 msgstr "Poistu valikon järjestelystä"
+
+msgid "Exit PluginBrowser"
+msgstr "Poistu lisäoa-selaimesta"
 
 msgid "Exit all menus"
 msgstr "Poistu kaikista valikoista"
@@ -6719,8 +6767,9 @@ msgstr "Vapaa swap:"
 msgid "Free:"
 msgstr "Vapaana:"
 
-msgid "Free: "
-msgstr "Vapaana: "
+#, python-format
+msgid "Free: %s "
+msgstr "Vapaana: %s "
 
 msgid "French"
 msgstr "Ranska"
@@ -8514,6 +8563,9 @@ msgstr "Linkitetyt tallenteet ja DVD-valikko"
 msgid "List EPG functions"
 msgstr "Listaa EPG-toiminnot"
 
+msgid "List Sort Actions"
+msgstr "Listan lajittelutoiminnot"
+
 msgid "List available networks"
 msgstr "Näytä verkot"
 
@@ -8598,7 +8650,7 @@ msgstr ""
 "- tarkista, ettei kaapeli ole vaurioitunut."
 
 msgid "Locale"
-msgstr "Paikallinen laite"
+msgstr "Maa-asetus"
 
 msgid "Location"
 msgstr "Hakemisto"
@@ -8946,6 +8998,9 @@ msgstr "Yhdistetään ajansiirron tiedostot"
 msgid "Message"
 msgstr "Viesti"
 
+msgid "MessageBox Direct Item Selection Actions"
+msgstr "Viestilaatikko Suora Nimike Valinta Toiminnot"
+
 msgid "MessageBox Functions"
 msgstr "Viestilaatikon toiminnot"
 
@@ -9120,6 +9175,10 @@ msgstr "Liitä."
 msgid "Mount: "
 msgstr "Liitos: "
 
+#, python-format
+msgid "Mount: %s  "
+msgstr "Liitos: %s  "
+
 msgid "Mounts"
 msgstr "Liitokset"
 
@@ -9176,6 +9235,24 @@ msgstr "Siirrä valikon kohtaa ylös"
 
 msgid "Move right"
 msgstr "Siirry oikealle"
+
+msgid "Move selection one page down"
+msgstr "Siirrä valinta yksi sivu alaspäin"
+
+msgid "Move selection one page up"
+msgstr "Siirrä valinta yksi sivu ylöspäin"
+
+msgid "Move selection to the next item down"
+msgstr "Siirrä valinta seuraavaan kohtaan alaspäin"
+
+msgid "Move selection to the next item up"
+msgstr "Siirrä valinta seuraavaan kohtaan ylöspäin"
+
+msgid "Move the current item down the list"
+msgstr "Siirrä nykyinen kohde listassa alaspäin"
+
+msgid "Move the current item up the list"
+msgstr "Siirrä nykyinen kohde listassa ylöspäin"
 
 msgid "Move the keyboard cursor down"
 msgstr "Siirrä virtuaali-näppäimistön kursoria alaspäin"
@@ -9501,6 +9578,9 @@ msgstr "Navigoi ylös/alas YLÖS/ALAS -näppäimillä ja sivu ylös/alas VASEN/O
 msgid "Navigation"
 msgstr "Navigointi"
 
+msgid "Navigation Actions"
+msgstr "Navigointitoiminnot"
+
 msgid "Nepal"
 msgstr "Nepal"
 
@@ -9552,8 +9632,8 @@ msgstr "Verkon palvelimet"
 msgid "Network scan"
 msgstr "Verkkohaku"
 
-msgid "Network servers:"
-msgstr "Verkon palvelimet:"
+msgid "Network servers"
+msgstr "Verkon palvelimet"
 
 msgid "Network settings"
 msgstr "Verkon asetukset"
@@ -10121,6 +10201,18 @@ msgstr "Vain aikataulutetut"
 msgid "Only select 'yes' if you are using a multiswich that requires a DiSEqC Port-A command signal. For all other setups select 'no'."
 msgstr "Valitse 'kyllä', jos käytät monikytkintä, joka vaatii DiSEqC portti-A komentosignaalin. Kaikille muille kokoonpanoille valitse 'ei'."
 
+msgid "Open 'Download Plugins' screen"
+msgstr "Avaa 'Lataa lisäosia' -näyttö"
+
+msgid "Open 'Install Plugins' screen"
+msgstr "Avaa 'Asenna lisäosia' -näyttö"
+
+msgid "Open 'Remove Plugins' screen"
+msgstr "Avaa 'Poista lisäosia' -näyttö"
+
+msgid "Open PluginBrowser setup screen"
+msgstr "Avaa Lisäosa-selaimen asetukset"
+
 msgid "Open RDS/RASS screen"
 msgstr "Avaa RDS/RASS näyttö"
 
@@ -10513,6 +10605,9 @@ msgstr "Pysyvät lajittelunäppäimen muutokset"
 
 msgid "Permanently delete all recordings in the trash can?"
 msgstr "Poista kaikki roskakorin tallenteet pysyvästi?"
+
+msgid "Permanently disable the MultiBoot option?"
+msgstr "Poista MultiBoot-vaihtoehto pysyvästi käytöstä?"
 
 msgid "Permanently ignore this device"
 msgstr "Unohda tämä laite pysyvästi"
@@ -10962,6 +11057,9 @@ msgstr "Odota... Luetteloa ladataan..."
 msgid "Plugin Browser"
 msgstr "Lisäosien valinta"
 
+msgid "Plugin Browser Actions"
+msgstr "Lisäosa-selaimen toiminnot"
+
 msgid "Plugin browser"
 msgstr "Lisäosien valinta"
 
@@ -11204,6 +11302,9 @@ msgstr "Valitse kanavalistasta painamalla 'OK'"
 
 msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."
 msgstr "Paina VIHREÄÄ (käynnistä uudelleen) vaihtaaksesi imagea, KELTAISTA (poista) poistaaksesi imagen tai SINISTÄ (palauta) palauttaaksesi kaikki poistetut imaget."
+
+msgid "Press GREEN to enable MultiBoot!"
+msgstr "Ota MultiBoot käyttöön painamalla VIHREÄÄ!"
 
 msgid "Press OK"
 msgstr "Paina OK"
@@ -12104,6 +12205,9 @@ msgstr "Poista katselun PIN-koodi"
 msgid "Reset playback position"
 msgstr "Nollaa toistokohta"
 
+msgid "Reset the list order to the default"
+msgstr "Palauta luettelon järjestys oletusarvoon"
+
 msgid "Reset video enhancement settings to system defaults?"
 msgstr "Nollaa kuvasäädöt oletusarvoihin?"
 
@@ -12951,6 +13055,9 @@ msgstr "Valitse tallennettava kanava"
 msgid "Select copy destination for:"
 msgstr "Valitse kohde kopioinnille:"
 
+msgid "Select current item"
+msgstr "Valitse nykyinen kohde"
+
 msgid "Select current service"
 msgstr "Valitse nykyinen palvelu"
 
@@ -13004,6 +13111,9 @@ msgstr "Valitse syöttölaite."
 
 msgid "Select interface"
 msgstr "Valitse verkkosovitin"
+
+msgid "Select item directly"
+msgstr "Valitse kohde suoraan"
 
 msgid "Select last browsed service"
 msgstr "Valitse viimeeksi käytetty kanava"
@@ -13065,6 +13175,9 @@ msgstr "Valitse tähän virittimeen asetettu käyttäjän taajuuusalue. Tämä t
 msgid "Select the character or action under the keyboard cursor"
 msgstr "Valitse kursorin alla oleva merkki tai toiminta"
 
+msgid "Select the current item"
+msgstr "Valitse nykyinen kohde"
+
 msgid "Select the current menu item"
 msgstr "Valitse nykyinen valikkokohde"
 
@@ -13078,7 +13191,7 @@ msgid "Select the highlighted image and reboot"
 msgstr "Valitse korostettu image ja käynnistä uudelleen"
 
 msgid "Select the locale from a menu"
-msgstr "Valitse paikka valikosta"
+msgstr "Valitse maa-asetusto valikosta"
 
 msgid "Select the manufacturer of your SCR device. If the manufacturer is not listed, set 'SCR' to 'user defined' and enter the device parameters manually according to its spec sheet."
 msgstr "Valitse SCR-laitteesi valmistaja. Jos valmistajaa ei löydy listalta, aseta 'SCR' 'käyttäjän määrittelemä' ja syötä laitteen parametrit käsin teknisistä tiedoista."
@@ -13196,6 +13309,9 @@ msgstr "Satelliittivalinta 2 (USALS)"
 
 msgid "Selecting this option allows you to configure a group of satellites in one block."
 msgstr "Tämän asetuksen avulla voit valita useita satelliitteja yhteen osioon."
+
+msgid "Selection Actions"
+msgstr "Valintatoiminnot"
 
 msgid "Selection and exit"
 msgstr "Valitse ja poistu"
@@ -13532,6 +13648,9 @@ msgstr "Asetukset, tiedot ja lisää toimintoja"
 
 msgid "Setup"
 msgstr "Asetukset"
+
+msgid "Setup Actions"
+msgstr "Asetustoiminnot"
 
 msgid "Setup how to control the channel changing."
 msgstr "Määritä kanavanvaihdon toiminta."
@@ -14542,6 +14661,9 @@ msgstr "Teksti-TV"
 msgid "Start test"
 msgstr "Aloita testi"
 
+msgid "Start the Chkroot initialization"
+msgstr "Käynnistä Chkroot-alustus"
+
 msgid "Start time"
 msgstr "Aloitusaika"
 
@@ -14624,7 +14746,7 @@ msgid "Stop playing this movie?"
 msgstr "Lopetetaanko tallenteen toistaminen?"
 
 msgid "Stop previous broadcasted service on return to movie list."
-msgstr "Pysäytä edellinen palvelu palattaessa tallenneluetteloon."
+msgstr "Pysäytä edellinen lähetetty kanava palattaessa tallenneluetteloon."
 
 msgid "Stop recording"
 msgstr "Pysäytä tallennus"
@@ -14639,7 +14761,7 @@ msgid "Stop recordings:"
 msgstr "Pysäytä tallennukset:"
 
 msgid "Stop service on return to movie list"
-msgstr "Kyllä, palataan tallenneluetteloon"
+msgstr "Pysäytä kanava palattaessa tallenneluetteloon"
 
 msgid "Stop test"
 msgstr "Lopeta testi"
@@ -15029,7 +15151,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 15.04.2025 ---\n"
+"--- 20.05.2025 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -15202,6 +15324,10 @@ msgstr "%s %s lukee tallennetun EPG-tiedon joka (tuntia)."
 msgid "The %s %s saves the EPG data every (hours)."
 msgstr "%s %s tallentaa EPG-tiedon joka (tuntia)."
 
+#, python-format
+msgid "The %s %s will reboot within 1 seconds."
+msgstr "%s %s käynnistyy uudelleen 1 sekunnin kuluessa."
+
 msgid ""
 "The AutoTimer plugin is not installed!\n"
 "Please install it."
@@ -15324,6 +15450,9 @@ msgstr "Kuvan korkeus. Syöte skaalataan vastaamaan tätä arvoa."
 
 msgid "The image will then be downloaded to the 'Backup location'."
 msgstr "Image ladataan sitten paikkaan 'Varmuuskopion sijainti'."
+
+msgid "The list is already sorted to the default."
+msgstr "Luettelo on jo lajiteltu oletusasetuksen mukaan."
 
 msgid "The loopthrough setting is wrong."
 msgstr "Läpisyötön asetus on väärä."
@@ -15889,7 +16018,7 @@ msgid "Toggle mark"
 msgstr "Vaihda merkki"
 
 msgid "Toggle new text inserts before or overwrites existing text"
-msgstr "Vaihda uuden tekstin asennusosat ensiksi tai ylikirjoita nykyinen teksti"
+msgstr "Lisää uutta tekstiä (INS) tai ylikirjoita nykyinen teksti (OVR)"
 
 msgid "Toggle picture In graphics"
 msgstr "Pikkukuva päälle/pois"
@@ -16564,6 +16693,10 @@ msgstr "Käytetään määrittämään viive, kun vaihdetaan kanavien välillä 
 msgid "Used:"
 msgstr "Käytetty:"
 
+#, python-format
+msgid "Used: %s  "
+msgstr "Käytetty: %s  "
+
 msgid "User - bouquets"
 msgstr "Käyttäjä - suosikit"
 
@@ -16786,6 +16919,9 @@ msgstr "Katso Video-CD..."
 
 msgid "View extensions"
 msgstr "Näytä laajennukset"
+
+msgid "View list of user installed plugins"
+msgstr "Näytä lista käyttäjän asentamista lisäosista"
 
 msgid "View mode"
 msgstr "Näyttötila"
@@ -18385,9 +18521,6 @@ msgstr "vapaana"
 msgid "free diskspace"
 msgstr "vapaata levytilaa"
 
-msgid "full"
-msgstr "täysi"
-
 msgid "further education"
 msgstr "jatkokoulutus"
 
@@ -18974,9 +19107,6 @@ msgstr "show/visailu (yleinen)"
 
 msgid "shuffle"
 msgstr "satunnaisjärjestys"
-
-msgid "shut down"
-msgstr "Sammuta"
 
 msgid "simple"
 msgstr "Suppea"

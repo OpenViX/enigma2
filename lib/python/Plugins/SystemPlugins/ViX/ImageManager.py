@@ -17,7 +17,7 @@ from Components.Harddisk import harddiskmanager, getProcMounts, bytesToHumanRead
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, CHKROOTMB
 import Components.Task
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -595,11 +595,12 @@ class VIXImageManager(Screen):
 		print("[ImageManager] MAINDEST=%s" % MAINDEST)
 		CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST							# normal non multiboot receiver
 		if SystemInfo["canMultiBoot"]:
+			rootsubdir = SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"]
 			if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
 				kz0 = SystemInfo["mtdkernel"]
 				rz0 = SystemInfo["mtdrootfs"]
 				CMD = "/usr/bin/ofgwrite -k%s -r%s '%s'" % (kz0, rz0, MAINDEST)  # slot0 treat as kernel/root only multiboot receiver
-			elif SystemInfo["HasHiSi"] and SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"] is None:  # sf8008 type receiver using SD card in multiboot
+			elif SystemInfo["HasHiSi"] and rootsubdir is None:  # sf8008 type receiver using SD card in multiboot
 				CMD = "/usr/bin/ofgwrite -r%s -k%s -m0 '%s'" % (self.MTDROOTFS, self.MTDKERNEL, MAINDEST)
 				print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
 				if fileExists("/boot/STARTUP") and fileExists("/boot/STARTUP_6"):
@@ -610,6 +611,8 @@ class VIXImageManager(Screen):
 				else:
 					CMD = "/usr/bin/ofgwrite -r%s -kzImage -m%s '%s'" % (self.MTDROOTFS, self.multibootslot, MAINDEST)
 				print("[ImageManager] running commnd:%s slot = %s" % (CMD, self.multibootslot))
+			elif CHKROOTMB:  # dm900/dm920 kernel:mmcblk0p1 root:mmcblk0p2 rootSubDir = None or mmcblk0p3
+				CMD = "/usr/bin/ofgwrite -r%s -c%s -m%s '%s'" % (self.MTDROOTFS, SystemInfo["MultiBootSlot"], self.multibootslot, MAINDEST)
 			else:
 				CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)  # Normal multiboot
 		elif SystemInfo["HasH9SD"]:
@@ -617,8 +620,6 @@ class VIXImageManager(Screen):
 				CMD = "/usr/bin/ofgwrite -rmmcblk0p1 '%s'" % MAINDEST
 			elif fileExists("%s/rootfs.ubi" % MAINDEST) and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 no SD card - build has both roots causes ofgwrite issue
 				rename("%s/rootfs.tar.bz2" % MAINDEST, "%s/xx.txt" % MAINDEST)
-		elif SystemInfo["machinebuild"] in ("dm900", "dm920"):  # kernel:mmcblk0p1 root:mmcblk0p2
-			CMD = "/usr/bin/ofgwrite -r%s '%s'" % (self.MTDROOTFS, MAINDEST)  # No ofgwrite auto detection, so only flash root NOT kernel
 		print(f"[ImageManager] running command:{CMD} root:{getattr(self, 'MTDROOTFS', 'not set')}")
 		self.Console.ePopen(CMD, self.ofgwriteResult)
 		fbClass.getInstance().lock()

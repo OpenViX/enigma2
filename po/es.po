@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-03 12:09+0100\n"
-"PO-Revision-Date: 2025-03-03 12:26+0100\n"
+"POT-Creation-Date: 2025-05-20 12:09+0200\n"
+"PO-Revision-Date: 2025-05-20 20:11+0200\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: www.CostaBlancaTranslations.com <maria@CostaBlancaTranslations.com>\n"
 "Language: es\n"
@@ -752,18 +752,6 @@ msgstr "%d %b"
 msgid "%d %b %Y"
 msgstr "%d %b %Y"
 
-#, python-format
-msgid "%d GB"
-msgstr "%d GB"
-
-#, python-format
-msgid "%d KB"
-msgstr "%d KB"
-
-#, python-format
-msgid "%d MB"
-msgstr "%d MB"
-
 #. TRANSLATORS: full date representation dayname daynum monthname year in strftime() format! See 'man strftime'
 #. _("%A %e %B %Y")
 #. TRANSLATORS: short time representation hour:minute in strftime() format! See 'man strftime'
@@ -838,16 +826,18 @@ msgid "%d jobs are running in the background!"
 msgstr "¡%d acciones están ejecutándose en el fondo!"
 
 #, python-format
-msgid "%d kB"
-msgstr "%d kB"
-
-#, python-format
 msgid "%d marked item"
 msgstr "%d elemento marcado"
 
 #, python-format
 msgid "%d marked items"
 msgstr "%d elementos marcados"
+
+#, python-format
+msgid "%d milisecond"
+msgid_plural "%d miliseconds"
+msgstr[0] "%d milisegundo"
+msgstr[1] "%d milisegundos"
 
 #
 #, python-format
@@ -986,6 +976,14 @@ msgid "%s"
 msgstr "%s"
 
 #, python-format
+msgid "%s "
+msgstr "%s "
+
+#, python-format
+msgid "%s   "
+msgstr ""
+
+#, python-format
 msgid "%s %s advanced remote control (native)"
 msgstr "Mando avanzando de %s %s (nativo)"
 
@@ -1048,8 +1046,8 @@ msgid "%s files cannot be bulk renamed"
 msgstr "%s archivos no se pueden renombrar en masa"
 
 #, python-format
-msgid "%s is also enabled for autofs network mount \n"
-msgstr "%s también está habilitado para el montaje de red autofs\n"
+msgid "%s is also enabled for autofs network"
+msgstr "%s también está habilitado para red autofs"
 
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
@@ -3073,8 +3071,8 @@ msgid "Bollywood"
 msgstr "Bollywood"
 
 #, python-format
-msgid "Bolt:%s\n"
-msgstr "Bolt:%s\n"
+msgid "Bolt:\t%s\n"
+msgstr "Bolt:\t%s\n"
 
 msgid "Bonaire, Sint Eustatius and Saba"
 msgstr "Bonaire, Sint Eustatius y Saba"
@@ -3415,6 +3413,10 @@ msgstr "Canada"
 msgid "Cancel"
 msgstr "Cancelar"
 
+#
+msgid "Cancel Actions"
+msgstr "Acciones de canales"
+
 msgid "Cancel any changed settings and exit"
 msgstr "Cancelar cualquier configuración modificada y salir"
 
@@ -3432,6 +3434,10 @@ msgstr "Cancelar cualquier cambio de texto y saliir"
 
 msgid "Cancel save timeshift as movie"
 msgstr "Cancelar guardar Timeshift como película"
+
+#
+msgid "Cancel the current action and exit"
+msgstr "Cancelar la acción actual y salir"
 
 #
 msgid "Cancel the image selection and exit"
@@ -3509,6 +3515,9 @@ msgstr "PiP en cascada"
 #
 msgid "Casting"
 msgstr "Fundición"
+
+msgid "Catchup player commands"
+msgstr ""
 
 msgid "Cayman Islands"
 msgstr "Islas de Cayman"
@@ -3733,6 +3742,15 @@ msgstr "Chipset:\t%s %s\n"
 msgid "Chipset: %s"
 msgstr "Chipset: %s"
 
+msgid "Chkroot Manager Actions"
+msgstr "Acciones del administrador de Chkroot"
+
+msgid "Chkroot MultiBoot Initialization in progress!"
+msgstr "¡Inicialización de Chkroot MultiBoot en progreso!"
+
+msgid "Chkroot MultiBoot Manager"
+msgstr "Administrador de Chkroot MultiBoot"
+
 msgid "Choose Bouquet"
 msgstr "Elegir grupo"
 
@@ -3935,6 +3953,10 @@ msgstr "Clonar pantalla de TV a LCD"
 msgid "Close"
 msgstr "Cerrar"
 
+#, python-format
+msgid "Close '%s' screen"
+msgstr "Cerrar '%s' pantalla"
+
 msgid "Close CA device at programm end"
 msgstr "Cerrar CA al terminar programa"
 
@@ -3944,6 +3966,9 @@ msgstr "Cerrar PiP al salir"
 
 msgid "Close screen"
 msgstr "Cerrar pantalla"
+
+msgid "Close the Chkroot MultiBoot Manager"
+msgstr ""
 
 #
 msgid "Close title selection"
@@ -3989,6 +4014,9 @@ msgstr "Formato de color"
 #
 msgid "Color space"
 msgstr "Espacio de color"
+
+msgid "Colour Actions"
+msgstr "Acciones de colores"
 
 msgid "Combat Sports (without own category)"
 msgstr "Deportes de combate (sin categoría propia)"
@@ -4188,8 +4216,8 @@ msgstr "Configurar el comportamiento cuando la reproducción de películas se pa
 msgid "Configure the behavior when movie playback is started."
 msgstr "Configurar el comportamiento cuando empieza la reproducción de películas."
 
-msgid "Configure the behavior when reaching the end of a movie, during movie playback."
-msgstr "Configurar el comportamiento cuando se llega al final de una película durante la reproducción."
+msgid "Configure the behavior when reaching the end of a movie, during movie playback. This setting is overridden when 'use individual settings for each directory' is enabled (see MovieSelection settings)."
+msgstr ""
 
 msgid "Configure the border width of the subtitles. The dark border makes the subtitles easier to read on a light background."
 msgstr "Configurar el ancho del borde de los subtítulos. Un borde oscuro sobre fondo claro facilita la lectura."
@@ -4483,9 +4511,6 @@ msgstr "Aquí se puede encender o apagar el LED de control."
 msgid "Control how finished timers are shown in the timer list. If set to hide, disabled timers will still be shown"
 msgstr "Controla cómo se muestran los temporizadores finalizados en la lista de temporizadores. Si se configura para ocultar, los temporizadores deshabilitados se seguirán mostrando"
 
-msgid "Converting ext3 to ext4..."
-msgstr "Convirtiendo ext3 a ext4..."
-
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
@@ -4659,14 +4684,14 @@ msgid "Creating directory %s failed."
 msgstr "Ha fallado la creación del directorio %s."
 
 #
-msgid "Creating filesystem."
-msgstr "Creando sistema de archivos."
+msgid "Creating file system"
+msgstr "Creando sistema de archivos"
 
 msgid "Creating list of installed plugins..."
 msgstr "Creando una lista de complementos instalados..."
 
-msgid "Creating partition."
-msgstr "Creando partición..."
+msgid "Creating partition"
+msgstr "Creando partición"
 
 msgid "Creating zip..."
 msgstr "Creando archivo zip..."
@@ -5368,12 +5393,12 @@ msgstr "Detectar las siguientes cajas antes del modo de espera"
 msgid "Detect programs split by news bulletins. Choose the maximum duration in minutes to consider as a bulletin, or 0 to disable."
 msgstr "Detecta programas divididos por boletines de noticias. Elige la duración máxima en minutos para considerarlo como boletín o 0 para deshabilitarlo."
 
-msgid "Detected devices:"
-msgstr "Dispositivos detectados:"
+msgid "Detected devices"
+msgstr "Dispositivos detectados"
 
 #
-msgid "Detected tuners:"
-msgstr "NIMs detectados:"
+msgid "Detected tuners"
+msgstr "NIMs detectados"
 
 msgid "Detective"
 msgstr "Detective"
@@ -5458,6 +5483,9 @@ msgstr "Retraso de atenuación"
 msgid "Dim the LCD after specified time."
 msgstr "Atenúa la pantalla LCD después del tiempo especificado."
 
+msgid "Direct item selection"
+msgstr "Selección directa de elementos"
+
 msgid "Direct menu item selection"
 msgstr "Selección directa de elementos del menú"
 
@@ -5514,6 +5542,9 @@ msgstr "Desactivar Animaciones"
 msgid "Disable Autostart"
 msgstr "Desactivar Autoinicio"
 
+msgid "Disable Chkroot"
+msgstr "Desactivar Chkroot"
+
 #
 msgid "Disable FCC during recordings"
 msgstr "Desactivar FCC durante grabaciones"
@@ -5542,6 +5573,9 @@ msgstr "Desactivar perfiles de operador"
 
 msgid "Disable startup"
 msgstr "Desactivar inicio"
+
+msgid "Disable the MultiBoot option"
+msgstr ""
 
 #
 msgid "Disabled"
@@ -6179,6 +6213,10 @@ msgstr "Habilitar el autoinicio"
 msgid "Enable Bluetooth Audio"
 msgstr "Habilitar audio de Bluetooth"
 
+#
+msgid "Enable Chkroot MultiBoot"
+msgstr "Habilitar MultiBoot Chkroot"
+
 msgid "Enable EIT EPG"
 msgstr "Habilitar EIT EPG"
 
@@ -6679,6 +6717,9 @@ msgstr "Abandonar EPG"
 msgid "Exit Menusort"
 msgstr "Salir del ordenamenú"
 
+msgid "Exit PluginBrowser"
+msgstr "Salir buscador de complementos"
+
 msgid "Exit all menus"
 msgstr "Salir de todos menues"
 
@@ -6913,6 +6954,10 @@ msgstr "FEC"
 
 msgid "FEC:"
 msgstr "FEC:"
+
+#, python-format
+msgid "FFmpeg version:\t%s\n"
+msgstr "FFmpeg versión:\t%s\n"
 
 msgid "FHD"
 msgstr "FHD"
@@ -7278,8 +7323,9 @@ msgstr "Intercambio libre:"
 msgid "Free:"
 msgstr "Libre:"
 
-msgid "Free: "
-msgstr "Libre: "
+#, python-format
+msgid "Free: %s "
+msgstr "Libre: %s "
 
 #
 msgid "French"
@@ -8334,8 +8380,8 @@ msgid "Image Manager allows downloading images from OpenViX image server and fro
 msgstr "Image Manager permite descargar imágenes del servidor de imágenes OpenViX y de una variedad de otras distribuciones."
 
 #, python-format
-msgid "Image Slot:\tStartup %s - %s %s"
-msgstr "Slot de imagen: Inicio %s - %s %s"
+msgid "Image Slot:\t %s %s"
+msgstr "Slot de imagen:\t %s %s"
 
 msgid "Image View On"
 msgstr "Vista de imagen encendida"
@@ -8550,8 +8596,8 @@ msgstr "Inicializar"
 msgid "Initialize Devices"
 msgstr "Inicializar dispositivos"
 
-msgid "Initializing storage device..."
-msgstr "Iniciando el dispositivo de almacenamiento..."
+msgid "Initializing storage device as ext4..."
+msgstr "Inicializando dispositivo de almacenamiento como ext4..."
 
 msgid "Inizio e Fine Trasmissioni"
 msgstr "Inicio y transmisiones finas"
@@ -9211,6 +9257,9 @@ msgstr "Enlazar los títulos con un menú de DVD"
 msgid "List EPG functions"
 msgstr "Lista de las funciones del EPG"
 
+msgid "List Sort Actions"
+msgstr "Acciones de ordenamiento de la lista"
+
 msgid "List available networks"
 msgstr "Enumerar redes disponibles"
 
@@ -9680,6 +9729,10 @@ msgstr "Fusionando archivos Timeshift"
 msgid "Message"
 msgstr "Mensaje"
 
+#
+msgid "MessageBox Direct Item Selection Actions"
+msgstr "Acciones de selección directa de elementos del MessageBox"
+
 msgid "MessageBox Functions"
 msgstr "Funciones de MessageBox"
 
@@ -9868,6 +9921,10 @@ msgstr "Montaje."
 msgid "Mount: "
 msgstr "Montaje: "
 
+#, python-format
+msgid "Mount: %s  "
+msgstr "Montaje: %s  "
+
 msgid "Mounts"
 msgstr "Montajes"
 
@@ -9931,6 +9988,27 @@ msgstr "Mover el elemento del menú hacia arriba"
 
 msgid "Move right"
 msgstr "Mover derecha"
+
+#
+msgid "Move selection one page down"
+msgstr "Mover la selección una página hacia abajo"
+
+#
+msgid "Move selection one page up"
+msgstr "Mover la selección una página hacia arriba"
+
+#
+msgid "Move selection to the next item down"
+msgstr "Mover la selección al siguiente elemento hacia abajo"
+
+msgid "Move selection to the next item up"
+msgstr "Mover la selección al siguiente elemento hacia arriba"
+
+msgid "Move the current item down the list"
+msgstr "Mover el elemento actual hacia abajo en la lista"
+
+msgid "Move the current item up the list"
+msgstr "Mover el elemento actual hacia arriba en la lista"
 
 msgid "Move the keyboard cursor down"
 msgstr "Mover el cursor del teclado hacia abajo"
@@ -10297,6 +10375,10 @@ msgstr "Navegar hacia arriba o hacia abajo con los botones ARRIBA/ABAJO y hacia 
 msgid "Navigation"
 msgstr "Navigación"
 
+#
+msgid "Navigation Actions"
+msgstr "Acciones de Navigación"
+
 msgid "Nepal"
 msgstr "Nepal"
 
@@ -10355,8 +10437,8 @@ msgstr "Pares de la red"
 msgid "Network scan"
 msgstr "Escanear red"
 
-msgid "Network servers:"
-msgstr "Servidores de red:"
+msgid "Network servers"
+msgstr "Servidores de red"
 
 #
 msgid "Network settings"
@@ -10743,6 +10825,10 @@ msgstr "No definido"
 msgid "Not Flashing"
 msgstr "No Flashing"
 
+#
+msgid "Not Installed"
+msgstr "No instalado"
+
 msgid "Not associated"
 msgstr "No asociado"
 
@@ -10974,6 +11060,19 @@ msgstr "Solo programado"
 
 msgid "Only select 'yes' if you are using a multiswich that requires a DiSEqC Port-A command signal. For all other setups select 'no'."
 msgstr "Seleccione \"Sí\" únicamente si está utilizando un multiswich que requiere una señal de comando DiSEqC Port-A. Para todas las demás configuraciones, seleccione \"No\"."
+
+msgid "Open 'Download Plugins' screen"
+msgstr "Abrir la pantalla 'Descargar complementos'"
+
+msgid "Open 'Install Plugins' screen"
+msgstr "Abrir la pantalla 'Installar complementos'"
+
+#
+msgid "Open 'Remove Plugins' screen"
+msgstr "Abrir la pantalla 'Eliminar complementos'"
+
+msgid "Open PluginBrowser setup screen"
+msgstr "Abra la pantalla de configuración de PluginBrowser"
 
 msgid "Open RDS/RASS screen"
 msgstr "Abrir pantalla de RDS/RASS"
@@ -11307,6 +11406,12 @@ msgstr "Partición: %s Montaje: %s desmontado exitosamente; si ahora todas las p
 msgid "Passthrough"
 msgstr "Passthrough"
 
+msgid "Passthrough audio handling delay AC3"
+msgstr ""
+
+msgid "Passthrough audio handling delay AC3+"
+msgstr ""
+
 #
 msgid "Password"
 msgstr "Contraseña"
@@ -11386,6 +11491,9 @@ msgstr "Cambios permanentes de ordenación de las teclas"
 
 msgid "Permanently delete all recordings in the trash can?"
 msgstr "¿Borrar permanentemente todas las grabaciones en la papelera?"
+
+msgid "Permanently disable the MultiBoot option?"
+msgstr ""
 
 msgid "Permanently ignore this device"
 msgstr "Ignorar este dispositivo de forma permanente"
@@ -11478,6 +11586,9 @@ msgstr "Reproducir DVD"
 #
 msgid "Play Music..."
 msgstr "Reproducir música"
+
+msgid "Play archive"
+msgstr "Reproducir el archivo"
 
 msgid "Play as picture in picture"
 msgstr "Reproducir como imagen en imagen (PiP)."
@@ -11897,6 +12008,9 @@ msgstr "Espera... Cargando lista..."
 msgid "Plugin Browser"
 msgstr "Buscador de complementos"
 
+msgid "Plugin Browser Actions"
+msgstr "Acciones de Buscador de complementos"
+
 msgid "Plugin browser"
 msgstr "Buscador de complementos"
 
@@ -12166,6 +12280,9 @@ msgstr "Pulse 'OK' para seleccionar de la lista de canales"
 msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."
 msgstr "Presione VERDE (Reiniciar) para cambiar de imagen, AMARILLO (Eliminar) para borrar una imagen o AZUL (Restaurar) para restaurar todas las imágenes eliminadas."
 
+msgid "Press GREEN to enable MultiBoot!"
+msgstr ""
+
 msgid "Press OK"
 msgstr "Pulse OK"
 
@@ -12281,8 +12398,8 @@ msgstr ""
 "Si el problema persiste, verifique o informe en el foro"
 
 #, python-format
-msgid "Processor temp:\t%s"
-msgstr "Temperatura del procesador: %s"
+msgid "Processor temperature:\t%s"
+msgstr "Temperatura del procesador:\t%s"
 
 msgid "Profile"
 msgstr "Perfil"
@@ -12417,8 +12534,8 @@ msgid "Python frontend for /tmp/mmi.socket"
 msgstr "Python frontal para /tmp/mmi.socket"
 
 #, python-format
-msgid "Python:\t%s\n"
-msgstr "Python:\t%s\n"
+msgid "Python:\t%s.%s.%s\n"
+msgstr "Python:\t%s.%s.%s\n"
 
 msgid "Qatar"
 msgstr "Qatar"
@@ -13067,7 +13184,8 @@ msgid "Removing directory %s failed. (Maybe not empty.)"
 msgstr "No se ha podido borrar el directorio %s. (Puede que no esté vacío)."
 
 #
-msgid "Removing partition table."
+#
+msgid "Removing partition table"
 msgstr "Eliminando tabla de partición"
 
 msgid "Removing service"
@@ -13151,7 +13269,8 @@ msgstr "Requerir autenticación para transmisiones http"
 msgid "Required medium type:"
 msgstr "Tipo de medio requerido:"
 
-msgid "Rereading partition table."
+#
+msgid "Rereading partition table"
 msgstr "Releer la tabla de partición."
 
 msgid "Reserved"
@@ -13176,6 +13295,9 @@ msgstr "Restablecer el código PIN persistente"
 
 msgid "Reset playback position"
 msgstr "Resetear la posición de reproducción"
+
+msgid "Reset the list order to the default"
+msgstr ""
 
 #
 msgid "Reset video enhancement settings to system defaults?"
@@ -14105,6 +14227,10 @@ msgstr "Seleccionar canal a grabar"
 msgid "Select copy destination for:"
 msgstr "Seleccionar ubicación de la copia de:"
 
+#
+msgid "Select current item"
+msgstr "Seleccionar elemento actual"
+
 msgid "Select current service"
 msgstr "Seleccionar canal actual"
 
@@ -14123,9 +14249,6 @@ msgstr "Seleccionar la ubicación de:"
 
 msgid "Select display of record icon based on 'Sref only' or 'Sref + Stream url' where applicable."
 msgstr "Seleccione la visualización del ícono de registro según 'Solo Sref' o 'Sref + URL de transmisión' cuando corresponda."
-
-msgid "Select extra packages folder"
-msgstr "Elige una carpeta para paquetes adicionales"
 
 #
 msgid "Select files/folders to backup"
@@ -14166,6 +14289,10 @@ msgstr "Seleccionar dispositivo de entrada."
 #
 msgid "Select interface"
 msgstr "Seleccionar interfaz"
+
+#
+msgid "Select item directly"
+msgstr "Seleccionar elemento directamente"
 
 msgid "Select last browsed service"
 msgstr "Seleccione el último servicio visitado"
@@ -14239,6 +14366,9 @@ msgstr "Seleccione la banda de usuario que se asignará a este sintonizador. Est
 
 msgid "Select the character or action under the keyboard cursor"
 msgstr "Seleccione la letra o la acción bajo el cursor del teclado"
+
+msgid "Select the current item"
+msgstr "Seleccionar el elemento actual"
 
 msgid "Select the current menu item"
 msgstr "Seleccionar el elemento del menú actual"
@@ -14381,6 +14511,10 @@ msgstr "Selección de satélites 2 (USALS)"
 
 msgid "Selecting this option allows you to configure a group of satellites in one block."
 msgstr "Seleccionar esta opción le permitirá configurar un grupo de satélites en un bloque."
+
+#
+msgid "Selection Actions"
+msgstr "Acciones de selección"
 
 msgid "Selection and exit"
 msgstr "Seleccionar y salir"
@@ -14738,6 +14872,9 @@ msgstr "Configuración, información y más funciones"
 #
 msgid "Setup"
 msgstr "Configuración"
+
+msgid "Setup Actions"
+msgstr "Acciones de Configuración"
 
 msgid "Setup how to control the channel changing."
 msgstr "Configura cómo controlar el cambio de canales."
@@ -15542,11 +15679,6 @@ msgstr "Billar"
 msgid "Snooker/Pool"
 msgstr "Billar/Pool"
 
-#
-#, python-format
-msgid "SoC:\t%s\n"
-msgstr "SoC:\t%s\n"
-
 msgid "Soap"
 msgstr "Telenovela"
 
@@ -15869,6 +16001,9 @@ msgstr "Comenzar teletexto"
 #
 msgid "Start test"
 msgstr "Comenzar prueba"
+
+msgid "Start the Chkroot initialization"
+msgstr ""
 
 #
 msgid "Start time"
@@ -16364,8 +16499,8 @@ msgid "System & Modulation"
 msgstr "Sistema y Modulación"
 
 #, python-format
-msgid "System temp:\t%s"
-msgstr "Temp del sistema: %s"
+msgid "System temperature:\t%s"
+msgstr "Temperatura del sistema:\t%s"
 
 #, python-format
 msgid "System temperature: %s"
@@ -16595,6 +16730,10 @@ msgstr "La %s %s recarga los datos guardados en EPG cada (horas)."
 msgid "The %s %s saves the EPG data every (hours)."
 msgstr "La %s %s guarda los datos guardados en EPG cada (horas)."
 
+#, python-format
+msgid "The %s %s will reboot within 1 seconds."
+msgstr ""
+
 msgid ""
 "The AutoTimer plugin is not installed!\n"
 "Please install it."
@@ -16720,6 +16859,9 @@ msgstr "La altura de la imagen. La entrada se escalará para que coincida con es
 
 msgid "The image will then be downloaded to the 'Backup location'."
 msgstr "Luego, la imagen se descargará a la 'Ubicación de copias de seguridad'."
+
+msgid "The list is already sorted to the default."
+msgstr ""
 
 msgid "The loopthrough setting is wrong."
 msgstr "La configuración del bucle es incorrecta."
@@ -17720,6 +17862,9 @@ msgstr "Error desconocido"
 msgid "Unknown image"
 msgstr "Imagen desconocido"
 
+msgid "Unmount"
+msgstr "Desmontar"
+
 msgid "Unmount."
 msgstr "Desmontar"
 
@@ -18051,8 +18196,19 @@ msgstr "Usar la papelera en la lista de películas."
 msgid "Used service scan type"
 msgstr "Tipo de búsqueda de canales usada."
 
+msgid "Used to specify delay when switching between services and AC3 passthrough is enabled."
+msgstr ""
+
+msgid "Used to specify delay when switching between services and AC3+/Atmos passthrough is enabled."
+msgstr ""
+
 msgid "Used:"
 msgstr "Utilizado:"
+
+#
+#, python-format
+msgid "Used: %s  "
+msgstr "Utilizado: %s"
 
 msgid "User - bouquets"
 msgstr "Usuario - Grupos"
@@ -18297,6 +18453,9 @@ msgstr "Ver vídeo CD..."
 msgid "View extensions"
 msgstr "Ver extensiones"
 
+msgid "View list of user installed plugins"
+msgstr "Ver la lista de complementos instalados por el usuario"
+
 msgid "View mode"
 msgstr "Ver modo"
 
@@ -18438,14 +18597,11 @@ msgstr "Por favor espera mientras se busca..."
 msgid "Waiting"
 msgstr "Esperando"
 
-msgid "Waiting for mount"
-msgstr "Esperando para montaje"
-
 msgid "Waiting for mount."
 msgstr "Esperando para montaje."
 
-msgid "Waiting for partition."
-msgstr "Esperando para partición."
+msgid "Waiting for partition"
+msgstr "Esperando para partición"
 
 msgid "Wake A/V receiver from standby"
 msgstr "Activar el receptor A/V desde el modo de espera"
@@ -20007,9 +20163,6 @@ msgstr "Libre"
 msgid "free diskspace"
 msgstr "Espacio libre en disco"
 
-msgid "full"
-msgstr "Completo"
-
 msgid "further education"
 msgstr "Formación superior"
 
@@ -20131,9 +20284,6 @@ msgstr "Insertar marca aquí"
 #
 msgid "instant record"
 msgstr "Grabación instantánea"
-
-msgid "invalid type"
-msgstr "Tipo inválido."
 
 msgid "jazz"
 msgstr "Jazz"
@@ -20674,10 +20824,6 @@ msgid "shuffle"
 msgstr "Reorganizar"
 
 #
-msgid "shut down"
-msgstr "Apagar"
-
-#
 msgid "simple"
 msgstr "Simple"
 
@@ -20691,7 +20837,7 @@ msgstr "Salto adelante"
 
 #
 #, python-format
-msgid "slot %s (%s)"
+msgid "slot %s  (%s)"
 msgstr "slot %s (%s)"
 
 #, python-format

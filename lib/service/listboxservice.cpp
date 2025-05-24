@@ -670,12 +670,18 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 
 	eListboxStyle *local_style = 0;
 	eRect itemRect = eRect(offset, m_itemsize);
+	int widget_radius = 0;
+	uint8_t widget_edges = 0;
 	int radius = 0;
 	uint8_t edges = 0;
 
 		/* get local listbox style, if present */
 	if (m_listbox)
+	{
 		local_style = m_listbox->getLocalStyle();
+		widget_radius = m_listbox->getCornerRadius();
+		widget_edges = m_listbox->getCornerRadiusEdges();
+	}
 
 	if (local_style) {
 		radius = local_style->cornerRadius(selected ? 1:0);
@@ -725,8 +731,17 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 	{
 		/* blit background picture, if available (otherwise, clear only) */
 		if (local_style && local_style->m_background)
+		{
+			if (widget_radius)
+				painter.setRadius(widget_radius, widget_edges);
 			painter.blit(local_style->m_background, offset, eRect(), 0);
-		else if (local_style && !local_style->m_background && radius)
+			if(radius)
+			{
+				painter.setRadius(radius, edges);
+			}
+			painter.drawRectangle(itemRect);
+		}
+		else if (local_style && !local_style->m_background)
 		{
 			if(radius)
 				painter.setRadius(radius, edges);
@@ -737,17 +752,37 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 	} else
 	{
 		if (local_style->m_background)
+		{
+			if (widget_radius)
+				painter.setRadius(widget_radius, widget_edges);
 			painter.blit(local_style->m_background, offset, eRect(), gPainter::BT_ALPHABLEND);
-		else if (selected && !local_style->m_selection && !local_style->m_selection_large && !radius)
-			painter.clear();
+		}
+
+		if (selected && !local_style->m_selection && !local_style->m_selection_large)
+		{
+			if (!radius)
+				painter.clear();
+			else
+			{
+				painter.setRadius(radius, edges);
+				painter.drawRectangle(itemRect);
+			}
+		}
 	}
 
 	if (cursorValid())
 	{
-		if (selected && local_style && local_style->m_selection && m_visual_mode != visSkinDefined){
+		
+		if (selected && local_style && local_style->m_selection && m_visual_mode != visSkinDefined)
+		{
+			if (radius)
+				painter.setRadius(radius, edges);
 			painter.blit(local_style->m_selection, offset, eRect(), gPainter::BT_ALPHABLEND);
 		}
-		if (selected && local_style && local_style->m_selection_large && m_visual_mode == visSkinDefined){
+		if (selected && local_style && local_style->m_selection_large && m_visual_mode == visSkinDefined)
+		{
+			if (radius)
+				painter.setRadius(radius, edges);
 			painter.blit(local_style->m_selection_large, offset, eRect(), gPainter::BT_ALPHABLEND);
 		}
 

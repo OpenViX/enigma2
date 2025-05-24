@@ -2,7 +2,7 @@ from os import path, unlink
 
 from enigma import eConsoleAppContainer, eDVBDB, eTimer
 
-from Components.ActionMap import ActionMap, NumberActionMap
+from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigText
 from Components.Harddisk import harddiskmanager
@@ -17,6 +17,7 @@ from Components.SystemInfo import SystemInfo
 from Plugins.Plugin import PluginDescriptor
 from Screens.ChoiceBox import ChoiceBox
 from Screens.Console import Console
+from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.Screen import Screen, ScreenSummary
@@ -57,11 +58,12 @@ class PluginBrowserSummary(ScreenSummary):
 		self["desc"].text = desc
 
 
-class PluginBrowser(Screen, ProtectedScreen):
+class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Plugin Browser"))
 		ProtectedScreen.__init__(self)
+		HelpableScreen.__init__(self)
 
 		self.firsttime = True
 
@@ -69,42 +71,33 @@ class PluginBrowser(Screen, ProtectedScreen):
 		self["key_green"] = Button(_("Download plugins"))
 		self["key_yellow"] = Button(_("User installed plugins"))
 		self["key_menu"] = StaticText(_("MENU"))
+		self["key_0"] = StaticText(_("0"))
+		self["key_previous"] = StaticText(_("PREVIOUS"))
+		self["key_next"] = StaticText(_("NEXT"))
 
 		self.list = []
 		self["list"] = PluginList(self.list)
 		if config.usage.sort_pluginlist.value:
 			self["list"].list.sort()
 
-		self["actions"] = ActionMap(["WizardActions", "MenuActions"],
+		self["okActions"] = HelpableActionMap(self, ["OkCancelActions"], {"ok": (self.keySelect, _("Select the current item")), }, description=_("Selection Actions"))
+		self["cancelActions"] = HelpableActionMap(self, ["OkCancelActions"], {"cancel": (self.close, _("Exit PluginBrowser")), }, prio=0, description=_("Cancel Actions"))
+		self["menuActions"] = HelpableActionMap(self, ["MenuActions"], {"menu": (self.close, _("Open PluginBrowser setup screen")), }, prio=0, description=_("Setup Actions"))
+		self["PluginDownloadActions"] = HelpableActionMap(self, ["ColorActions"],
 		{
-			"ok": self.save,
-			"back": self.close,
-			"menu": self.openSetup,
-		})
-		self["PluginDownloadActions"] = ActionMap(["ColorActions"],
+			"red": (self.delete, _("Open 'Remove Plugins' screen")),
+			"green": (self.download, _("Open 'Download Plugins' screen")),
+			"yellow": (self.userInstalledPlugins, _("View list of user installed plugins")),
+		}, description=_("Colour Actions"))
+		self["SortActions"] = HelpableNumberActionMap(self, ["DirectionActions", "NumberActions"],
 		{
-			"red": self.delete,
-			"green": self.download,
-			"yellow": self.userInstalledPlugins
-		})
-		self["DirectionActions"] = ActionMap(["DirectionActions"],
-		{
-			"shiftUp": self.moveUp,
-			"shiftDown": self.moveDown
-		})
-		self["NumberActions"] = NumberActionMap(["NumberActions"],
-		{
-			"1": self.keyNumberGlobal,
-			"2": self.keyNumberGlobal,
-			"3": self.keyNumberGlobal,
-			"4": self.keyNumberGlobal,
-			"5": self.keyNumberGlobal,
-			"6": self.keyNumberGlobal,
-			"7": self.keyNumberGlobal,
-			"8": self.keyNumberGlobal,
-			"9": self.keyNumberGlobal,
-			"0": self.keyNumberGlobal
-		})
+			"shiftUp": (self.moveUp, _("Move the current item up the list")),
+			"shiftDown": (self.moveDown, _("Move the current item down the list")),
+			"0": (self.keyNumberGlobal, _("Reset the list order to the default")),
+		}, description=_("List Sort Actions"))
+		self["NumberActions"] = HelpableNumberActionMap(self, ["NumberActions"], {
+			str(n): (self.keyNumberGlobal, _("Direct item selection")) for n in range(10)
+		}, description=_("Selection Actions"))
 
 		self.number = 0
 		self.nextNumberTimer = eTimer()
@@ -151,10 +144,10 @@ class PluginBrowser(Screen, ProtectedScreen):
 			plugins.resetWarnings()
 			self.session.open(MessageBox, text=text, type=MessageBox.TYPE_WARNING)
 
-	def save(self):
+	def keySelect(self):
 		self.run()
 
-	def run(self):
+	def run(self):  # Allow PluginBrowser based screens to be processed from the Wizard.
 		plugin = self["list"].getCurrent()[0]
 		plugin(session=self.session)
 
@@ -254,7 +247,7 @@ class PluginBrowser(Screen, ProtectedScreen):
 		self.session.open(AboutUserInstalledPlugins)
 
 
-class PluginDownloadBrowser(Screen):
+class PluginDownloadBrowser(Screen, HelpableScreen):
 	DOWNLOAD = 0
 	REMOVE = 1
 	UPDATE = 2
@@ -263,6 +256,7 @@ class PluginDownloadBrowser(Screen):
 
 	def __init__(self, session, type=0, needupdate=True, skin_name=None):
 		Screen.__init__(self, session)
+		HelpableScreen.__init__(self)
 		self.type = type
 		self.needupdate = needupdate
 		self.skinName = ["PluginDownloadBrowser"]
@@ -313,13 +307,13 @@ class PluginDownloadBrowser(Screen):
 		self["key_blue"] = StaticText(_("Remove plugins") if self.type == self.DOWNLOAD else _("Download plugins"))
 		self.run = 0
 		self.remainingdata = ""
-		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
+		self["actions"] = HelpableActionMap(self, ["SetupActions", "ColorActions"],
 		{
-			"ok": self.go,
-			"save": self.go,
-			"cancel": self.requestClose,
-			"blue": self.delete if self.type == self.DOWNLOAD else self.download,
-		})
+			"ok": (self.go, _("Select current item")),
+			"save": (self.go, _("Select current item")),
+			"cancel": (self.requestClose, _("Close '%s' screen") % self.title),
+			"blue": (self.delete if self.type == self.DOWNLOAD else self.download, _("Open 'Remove Plugins' screen") if self.type == self.DOWNLOAD else _("Open 'Install Plugins' screen")),
+		}, description=_("Plugin Browser Actions"))
 		if path.isfile('/usr/bin/opkg'):
 			self.ipkg = '/usr/bin/opkg'
 			self.ipkg_install = self.ipkg + ' install'

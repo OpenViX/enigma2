@@ -9,7 +9,7 @@ from time import sleep, time
 
 from enigma import getDeviceDB, eTimer
 from Components.Console import Console
-from Components.SystemInfo import SystemInfo, BoxInfo
+from Components.SystemInfo import SystemInfo, MODEL
 from Components.Task import Job, LoggingTask, ConditionTask, ReturncodePostcondition
 from Tools.CList import CList
 from Tools.Directories import fileReadLines, fileReadLine, fileWriteLines
@@ -763,9 +763,8 @@ class HarddiskManager:
 		except (IOError, OSError):
 			rootMajor = None
 			# rootMinor = None
-		# print(f"[Harddisk][enumerateBlockDevices] rootMajor = '{rootMajor}', rootMinor = '{rootMinor}'")
-		# print(f"[Harddisk][enumerateBlockDevices] Box model:{BoxInfo.getItem('model')}")
-		boxModel = BoxInfo.getItem("model")
+		# print(f"[Harddisk][enumerateBlockDevices] rootMajor = '{rootMajor}'")
+		# print(f"[Harddisk][enumerateBlockDevices] Box model:{MODEL}")
 		for device in sorted(listdir("/sys/block")):
 			try:
 				physicalDevice = realpath(join("/sys/block", device, "device"))
@@ -774,7 +773,7 @@ class HarddiskManager:
 				continue
 			devicePath = join("/sys/block/", device)
 			data = readFile(join(devicePath, "dev"))  # This is the device's major and minor device numbers.
-			# print(f"[Harddisk][enumerateBlockDevices]  boxModel:{boxModel} device:{device} data:{data}")
+			# print(f"[Harddisk][enumerateBlockDevices]  boxModel:{MODEL} device:{device} data:{data}")
 			if data is None:
 				print(f"[Harddisk][enumerateBlockDevices] Error: Device '{device}' ({physicalDevice}) does not appear to have valid device numbers!")
 				continue
@@ -784,8 +783,9 @@ class HarddiskManager:
 			if devMajor in blacklistedDisks:
 				# print(f"[Harddisk][enumerateBlockDevices]  Major device number '{devMajor}' for device '{device,}' ({physicalDevice}) is blacklisted.")
 				continue
-			# print(f"[Harddisk][enumerateBlockDevices]  boxModel:{boxModel} device:{device} devMajor = '{devMajor}', devMinor = '{devMinor}'")
-			if devMajor == 179 and boxModel in ("dm900", "dm920"):
+			# print(f"[Harddisk][enumerateBlockDevices]  boxModel:{MODEL} device:{device} devMajor = '{devMajor}', devMinor = '{devMinor}'")
+			# if devMajor == 179 and MODEL in ("dm900", "dm920") and not SystemInfo["HasChkrootMultiboot"]:
+			if devMajor == 179 and MODEL in ("dm900", "dm920"):
 				if devMinor != 0:
 					continue
 			else:
@@ -842,11 +842,11 @@ class HarddiskManager:
 						# self.partitions.append(Partition(mountpoint = self.getMountpoint(device), description = description, force_mounted, device = device))
 						# print(f"[Harddisk][enumerateBlockDevices]  Partition(mountpoint={self.getMountpoint(device)}, description={description}, force_mounted=True, device={device}")
 						for partition in partitions:
-							if devMajor == 179 and boxModel in ("dm900", "dm920") and partition != "mmcblk0p3":
+							if devMajor == 179 and MODEL in ("dm900", "dm920") and partition != "mmcblk0p3":
 								continue
 							description = self.getUserfriendlyDeviceName(partition, physicalDevice)
 							print(f"[Harddisk][enumerateBlockDevices]### Found partition '{partition}', description='{description}', device='{physicalDevice}' mountpoint='{self.getMountpoint(partition)}.")
-							if boxModel in ("dm900", "dm920") and partition == "mmcblk0p3" and self.getMountpoint(partition) is None:
+							if MODEL in ("dm900", "dm920") and partition == "mmcblk0p3" and self.getMountpoint(partition) is None:
 								mountpoint = "/media/data/"
 								newFstab = fileReadLines("/etc/fstab")
 								newFstab.append("/dev/mmcblk0p3 /media/data ext4 rw, relatime,data=ordered 0 0")

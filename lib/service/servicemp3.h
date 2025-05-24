@@ -327,6 +327,9 @@ private:
 	bool m_is_live;
 	bool m_use_prefillbuffer;
 	bool m_paused;
+	bool m_clear_buffers;
+	bool m_initial_start;
+	bool m_send_ev_start;
 	bool m_seek_paused;
 	bool m_autoturnon;
 	/* cuesheet load check */
@@ -398,7 +401,7 @@ private:
 	void pushSubtitles();
 	void pullSubtitle(GstBuffer *buffer);
 	void sourceTimeout();
-	void clearBuffers();
+	void clearBuffers(bool force=false);
 #ifdef PASSTHROUGH_FIX
 	void forcePassthrough();
 #endif

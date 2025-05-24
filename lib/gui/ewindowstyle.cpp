@@ -162,6 +162,20 @@ void eWindowStyleSimple::drawFrame(gPainter &painter, const eRect &frame, int wh
 	painter.line(frame.bottomLeft1(), frame.topLeft1());
 }
 
+int eWindowStyleSimple::drawFrameRadius(gPainter &painter, const eRect &frame, int radius, uint8_t edges)
+{
+	gColor c = m_border_color_br;
+
+	if (c)
+	{
+		painter.setBackgroundColor(c);
+		painter.setRadius(radius, edges);
+		painter.drawRectangle(frame);
+		return 1;
+	}
+	return 0;
+}
+
 RESULT eWindowStyleSimple::getFont(int what, ePtr<gFont> &fnt)
 {
 	fnt = 0;

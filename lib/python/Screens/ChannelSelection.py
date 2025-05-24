@@ -897,13 +897,21 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 		self["ChannelSelectBaseActions"].setEnabled(False)
 		self["helpActions"].setEnabled(False)
 		self['dialogactions'].setEnabled(True)
-		self.ChoiceBoxDialog['actions'].execBegin()
+		if isinstance(self.ChoiceBoxDialog, ChoiceBox):
+			for action in ("okActions", "cancelActions", "colorActions", "selectionActions", "navigationActions"):
+				self.ChoiceBoxDialog[action].execBegin()
+		else:  # MessageBox
+			self.ChoiceBoxDialog["actions"].execBegin()
 		self.ChoiceBoxDialog.show()
 
 	def closeChoiceBoxDialog(self):
 		self['dialogactions'].setEnabled(False)
 		if self.ChoiceBoxDialog:
-			self.ChoiceBoxDialog['actions'].execEnd()
+			if isinstance(self.ChoiceBoxDialog, ChoiceBox):
+				for action in ("okActions", "cancelActions", "colorActions", "selectionActions", "navigationActions"):
+					self.ChoiceBoxDialog[action].execEnd()
+			else:  # MessageBox
+				self.ChoiceBoxDialog["actions"].execEnd()
 			self.session.deleteDialog(self.ChoiceBoxDialog)
 		self['actions'].setEnabled(True)
 		self['recordingactions'].setEnabled(True)
@@ -2400,13 +2408,13 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 	def zap(self, enable_pipzap=False, preview_zap=False, checkParentalControl=True, ref=None):
 		self.curRoot = self.startRoot
 		nref = ref or self.getCurrentSelection()
-		ref = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		ref = self.session.nav.getCurrentServiceReferenceOriginal()
 		if enable_pipzap and self.dopipzap:
 			ref = self.session.pip.getCurrentService()
 			if ref is None or ref != nref:
 				nref = self.session.pip.resolveAlternatePipService(nref)
-				if nref and (not checkParentalControl or Components.ParentalControl.parentalControl.isServicePlayable(nref, boundFunction(self.zap, enable_pipzap=True, checkParentalControl=False))):
-					zap_res = self.session.pip.playService(nref)
+				if nref and (not checkParentalControl or Components.ParentalControl.parentalControl.isServicePlayable(nref, boundFunction(self.zap, enable_pipzap=True, checkParentalControl=False), pip_service=self.session.pip.pipservice)):
+					zap_res = self.session.pip.playService(nref, checkParentalControl=False)
 					if zap_res == 1:
 						self.__evServiceStart()
 						self.showPipzapMessage()
@@ -2414,9 +2422,16 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 						self.retryServicePlayTimer = eTimer()
 						self.retryServicePlayTimer.callback.append(boundFunction(self.zap, enable_pipzap=True, checkParentalControl=False))
 						self.retryServicePlayTimer.start(config.misc.softcam_streamrelay_delay.value, True)
-				else:
 					self.setStartRoot(self.curRoot)
-					self.setCurrentSelection(ref)
+					self.setCurrentSelection(self.session.pip.getCurrentService())
+				else:
+					# Reset pip service state since we probably canceled parental control pin
+					self.session.pip.pipservice = None
+					self.session.pip.currentService = None
+					self.session.pip.currentServiceReference = None
+					self.session.nav.pnav.clearPiPService()
+					self.setStartRoot(self.curRoot)
+					self.setCurrentSelection(nref)
 		elif ref is None or ref != nref:
 			Screens.InfoBar.InfoBar.instance.checkTimeshiftRunning(boundFunction(self.zapCheckTimeshiftCallback, enable_pipzap, preview_zap, nref))
 		elif not preview_zap:
@@ -2450,7 +2465,7 @@ class ChannelSelection(ChannelSelectionEdit, ChannelSelectionBase, ChannelSelect
 				self.setCurrentSelection(nref)
 		else:
 			self.setStartRoot(self.curRoot)
-			self.setCurrentSelection(self.session.nav.getCurrentlyPlayingServiceOrGroup())
+			self.setCurrentSelection(self.session.nav.getCurrentServiceReferenceOriginal())
 		if not preview_zap:
 			self.hide()
 

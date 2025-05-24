@@ -13,9 +13,9 @@ def row_delta_y():
 
 def ChoiceEntryComponent(key=None, text=None):
 	if text is None:
-		text = ["--"]
+		text = [ChoiceList.SPACER]
 	res = [text]
-	if text[0] == "--":
+	if text[0] == ChoiceList.SPACER:
 		# Do we want graphical separator (solid line with color) or dashed line
 		isUseGraphicalSeparator = parameters.get("ChoicelistUseGraphicalSeparator", 0)
 		x, y, w, h = parameters.get("ChoicelistDash", applySkinFactor(0, 2, 1280, 25))
@@ -56,6 +56,8 @@ def ChoiceEntryComponent(key=None, text=None):
 
 
 class ChoiceList(MenuList):
+	SPACER = "--"
+
 	def __init__(self, list, selection=0, enableWrapAround=False):
 		MenuList.__init__(self, list, enableWrapAround, eListboxPythonMultiContent)
 		font = fonts.get("ChoiceList", applySkinFactor("Regular", 20, 25))

@@ -276,14 +276,14 @@ class choicesList:  # XXX: we might want a better name for this
 
 	def __list__(self):
 		if self.type == choicesList.LIST_TYPE_LIST:
-			ret = [not isinstance(x, tuple) and x or x[0] for x in self.choices]
+			ret = [x[0] if isinstance(x, tuple) else x for x in self.choices]
 		else:
 			ret = list(self.choices.keys())
 		return ret or [""]
 
 	def __iter__(self):
 		if self.type == choicesList.LIST_TYPE_LIST:
-			ret = [not isinstance(x, tuple) and x or x[0] for x in self.choices]
+			ret = [x[0] if isinstance(x, tuple) else x for x in self.choices]
 		else:
 			ret = self.choices
 		return iter(ret or [""])
@@ -339,7 +339,7 @@ class choicesList:  # XXX: we might want a better name for this
 class descriptionList(choicesList):  # XXX: we might want a better name for this
 	def __list__(self):
 		if self.type == choicesList.LIST_TYPE_LIST:
-			ret = [not isinstance(x, tuple) and x or x[1] for x in self.choices]
+			ret = [x[1] if isinstance(x, tuple) else x for x in self.choices]
 		else:
 			ret = list(self.choices.values())
 		return ret or [""]
@@ -430,6 +430,12 @@ class ConfigSelection(ConfigElement):
 			self.value = default
 		if self.value != value:
 			self.changed()
+
+	def getChoices(self):
+		return self.choices.__list__()
+
+	def getDescriptions(self):
+		return self.description.__list__()
 
 	def setValue(self, value):
 		prev = str(self._value) if hasattr(self, "_value") else None
