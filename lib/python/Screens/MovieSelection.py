@@ -173,7 +173,7 @@ def diskFreeSpace():
 
 
 def trashcanSize(path):
-	if not path.startswith("/media/autofs"):
+	if path != "/media/autofs/":
 		try:
 			if size := get_size(getTrashFolder(path)):
 				return _("Trashcan:") + " " + bytesToHumanReadable(size)

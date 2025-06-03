@@ -540,9 +540,9 @@
 	</setup>
 	<setup key="movieselection" title="Movie List Setup">
 		<item level="0" text="Use trash can in movie list" description="When enabled, deleted recordings are moved to the trash can, instead of being deleted immediately.">config.usage.movielist_trashcan</item>
-		<item level="0" text="Remove items from trash can after (days)" description="Configure the number of days after which items are automatically removed from the trash can. A setting of 0 disables this.">config.usage.movielist_trashcan_days</item>
+		<item level="0" text="Remove items from trash can after (days)" description="Configure the number of days after which items are automatically removed from the trash can. If the setting is 0 all items in the trash can will be removed by the next delete event, which normally occurs when preparing to make a recording.">config.usage.movielist_trashcan_days</item>
 		<item level="0" text="Clean network trash cans" description="When enabled, network trash cans are probed for cleaning.">config.usage.movielist_trashcan_network_clean</item>
-		<item level="0" text="Disk space to reserve for recordings (in GB)" description="Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can.">config.usage.movielist_trashcan_reserve</item>
+		<item level="0" text="Disk space to reserve for recordings (in GB)" description="Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can, including, if necessary, items whose specified number of days in the trash can has not yet concluded.">config.usage.movielist_trashcan_reserve</item>
 		<item level="0" text="Font size" description="This allows you change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size">config.movielist.fontsize</item>
 		<item level="0" text="Number of rows" description="Number of rows to display">config.movielist.itemsperpage</item>
 		<item level="0" text="Use slim screen" description="Use the alternative screen" conditional="findSkinScreen('MovieSelectionSlim')">config.movielist.useslim</item>

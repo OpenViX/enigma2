@@ -331,7 +331,13 @@ class Devices(AboutBase):
 		if hddlist:
 			print("[About] hddlist = %s" % (hddlist))
 			for i in range(len(hddlist)):
-				hdd = hddlist[i][0].replace("/dev/mmcblk0", "/dev/mmcblk0p3")  # dm9x0:mmcblk0p3 multiboot root & storage
+				hdd = hddlist[i][0]
+				if MODEL in ("dm900", "dm920"):  # dm9x0:mmcblk0p3 multiboot root & storage
+					hdd = hdd.replace("/dev/mmcblk0", "/dev/mmcblk0p3")
+				elif SystemInfo["HasH9SD"]:
+					hdd = hdd.replace("/dev/mmcblk0", "/dev/mmcblk0p1")
+				elif SystemInfo["HasSDnomount"]:
+					hdd = hdd.replace("/dev/mmcblk1", "/dev/mmcblk1p")
 				hddsplit = hdd.split("/", 1)  # hddsplit[0]:description hddsplit[1]:device and space
 				hddDescription = hddsplit[0]  # device description
 				if "ATA" in hddDescription:
@@ -340,19 +346,19 @@ class Devices(AboutBase):
 					hddDescription = hddDescription.replace("(", "").replace(")", "").replace("   ", " ").replace("  ", " ").replace("/dev", " /dev")
 				hddDescription = hddDescription.split()  # split out fields without spaces
 				hddDescLen = len(hddDescription)
-				hddKey1 = ("/" + hddsplit[1].split(" ", 1)[0])  # device key e.g. /dev/sda /dev/sdb /dev/mmcblk0p1
+				hddKey1 = ("/" + hddsplit[1].split(" ", 1)[0])  # device key e.g. /dev/sda /dev/sdb /dev/mmcblk1p /dev/mmcblk0p1
 
 				if mountdict:
 					for device in mountdict:
 						if hddKey1 in device:
-							break  # use break here to excape the loop and NOT run its else clause
+							break  # use break here to escape the loop and NOT run its else clause
 					else:  # device not mounted
 						devicelist.append("%s" % hdd)
 						continue  # continues the outer loop so code below is skipped
 					# device is mounted so add device partition(s) attributes
-					keyRange = 5 if "dev/sd" in hddKey1 else 2  # assumes no more than 4 partitions on device
+					keyRange = 5 if hddKey1[0:-1] in ("/dev/sd", "/dev/mmcblk1") else 2  # assumes no more than 4 partitions on device
 					for count in range(1, keyRange):
-						hddKey = "%s" % hddKey1 + "%s" % str(count) if "dev/sd" in hddKey1 else hddKey1
+						hddKey = "%s" % hddKey1 + "%s" % str(count) if hddKey1[0:-1] in ("/dev/sd", "/dev/mmcblk1") else hddKey1
 						if hddKey in mountdict.keys():
 							freeline = _("%s ") % hddKey + _("%s   ") % mountdict[hddKey][1] + "\n  " + _("Mount: %s  ") % mountdict[hddKey][5] + _("Used: %s  ") % mountdict[hddKey][2] + _("Free: %s ") % mountdict[hddKey][3]
 							line = ""

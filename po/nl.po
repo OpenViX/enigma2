@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-01 05:16+0000\n"
-"PO-Revision-Date: 2025-04-02 15:48+0200\n"
+"POT-Creation-Date: 2025-05-24 10:38+0000\n"
+"PO-Revision-Date: 2025-05-26 15:03+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
 "Language: nl\n"
@@ -805,6 +805,12 @@ msgid "%d marked items"
 msgstr "%d gemarkeerde bestanden"
 
 #, python-format
+msgid "%d milisecond"
+msgid_plural "%d miliseconds"
+msgstr[0] "%d miliseconde"
+msgstr[1] "%d miliseconds"
+
+#, python-format
 msgid "%d min"
 msgstr "%d min"
 
@@ -933,6 +939,14 @@ msgid "%s"
 msgstr "%s"
 
 #, python-format
+msgid "%s "
+msgstr "%s "
+
+#, python-format
+msgid "%s   "
+msgstr "%s   "
+
+#, python-format
 msgid "%s %s advanced remote control (native)"
 msgstr "%s %s geavanceerde afstandsbediening"
 
@@ -989,8 +1003,8 @@ msgid "%s files cannot be bulk renamed"
 msgstr "%s bestanden kunnen niet en masse hernoemd worden"
 
 #, python-format
-msgid "%s is also enabled for autofs network mount \n"
-msgstr "%s is ook werkzaam voor autofs netwerk-mount\n"
+msgid "%s is also enabled for autofs network"
+msgstr "%s is ook ingeschakeld voor autofs-netwerk"
 
 #. TRANSLATORS: The satellite with name '%s' is no longer used after a configuration change. The user is asked whether or not the satellite should be deleted.
 #, python-format
@@ -1161,6 +1175,9 @@ msgstr "/T"
 
 msgid "/s"
 msgstr "/s"
+
+msgid "0"
+msgstr "0"
 
 msgid "1 day"
 msgstr "1 dag"
@@ -2711,7 +2728,7 @@ msgid "Before flashing an image 'Automatic settings backup' should be enabled in
 msgstr "Alvorens een image te flashen moet 'Automatische instellingen back-up' worden ingeschakeld in de instellingen van de Image Manager."
 
 msgid "Before sending the command to switch the TV to standby, the receiver tests if all the other devices plugged into TV are in standby. If they are not, the 'sourceactive' command will be sent to the TV instead of the 'standby' command."
-msgstr "Alvorens het commande om de TV in stand-by te zetten wordt verstuurd, test de ontvanger eerst of alle andere apparatuur die met de TV verbonden is in stand-by staan. Indien dat niet het geval is, wordt het 'bron aktief' commando naar de TV gestuurd in plaats van het 'stand-by' commando."
+msgstr "Alvorens het commande om de TV in stand-by te zetten wordt verstuurd, test de ontvanger eerst of alle andere apparatuur die met de TV verbonden is in stand-by staan. Indien dat niet het geval is, wordt het 'bron actief' commando naar de TV gestuurd in plaats van het 'stand-by' commando."
 
 msgid "Begin time"
 msgstr "Starttijd"
@@ -3149,6 +3166,9 @@ msgstr "Canada"
 msgid "Cancel"
 msgstr "Annuleer"
 
+msgid "Cancel Actions"
+msgstr "Annuleer acties"
+
 msgid "Cancel any changed settings and exit"
 msgstr "Annuleer wijzigingen en sluit af"
 
@@ -3166,6 +3186,9 @@ msgstr "Annuleer tekst en sluit af"
 
 msgid "Cancel save timeshift as movie"
 msgstr "Annuleer het opslaan van timeshift als opname"
+
+msgid "Cancel the current action and exit"
+msgstr "Annuleer huidige keuze en sluit af"
 
 msgid "Cancel the image selection and exit"
 msgstr "Annuleer image keuze en sluit af"
@@ -3236,6 +3259,9 @@ msgstr "Waterval PiP"
 
 msgid "Casting"
 msgstr "Casting"
+
+msgid "Catchup player commands"
+msgstr "Afspeelopdrachten inhalen"
 
 msgid "Cayman Islands"
 msgstr "Cayman Islands"
@@ -3442,6 +3468,15 @@ msgstr "Chipset:\t%s %s\n"
 msgid "Chipset: %s"
 msgstr "Chipset: %s"
 
+msgid "Chkroot Manager Actions"
+msgstr "Chkroot Manager acties"
+
+msgid "Chkroot MultiBoot Initialization in progress!"
+msgstr "Chkroot MultiBoot initialisatie is bezig!"
+
+msgid "Chkroot MultiBoot Manager"
+msgstr "Chkroot MultiBoot Manager"
+
 msgid "Choose Bouquet"
 msgstr "Kies favorieten"
 
@@ -3632,6 +3667,10 @@ msgstr "Kloon TV scherm naar LCD"
 msgid "Close"
 msgstr "Sluiten"
 
+#, python-format
+msgid "Close '%s' screen"
+msgstr "Sluit '%s' scherm"
+
 msgid "Close CA device at programm end"
 msgstr "Sluit het CA-apparaat aan het einde van het programma"
 
@@ -3640,6 +3679,9 @@ msgstr "Sluit PiP met de exit-toets"
 
 msgid "Close screen"
 msgstr "Sluit scherm"
+
+msgid "Close the Chkroot MultiBoot Manager"
+msgstr "Sluit de Chkroot MultiBoot Manager"
 
 msgid "Close title selection"
 msgstr "Sluit titelselectie"
@@ -3680,6 +3722,9 @@ msgstr "Kleurformaat"
 
 msgid "Color space"
 msgstr "Kleurruimte"
+
+msgid "Colour Actions"
+msgstr "Kleurenacties"
 
 msgid "Combat Sports (without own category)"
 msgstr "Vechtsporten (zonder eigen categorie)"
@@ -3863,8 +3908,8 @@ msgstr "Configureer het gedrag wanneer het afspelen handmatig gestopt is."
 msgid "Configure the behavior when movie playback is started."
 msgstr "Configureer het gedrag wanneer de film gestart is."
 
-msgid "Configure the behavior when reaching the end of a movie, during movie playback."
-msgstr "Configureer het gedrag aan het einde van de film."
+msgid "Configure the behavior when reaching the end of a movie, during movie playback. This setting is overridden when 'use individual settings for each directory' is enabled (see MovieSelection settings)."
+msgstr "Configureer het gedrag als tijdens het afspelen het einde bereikt wordt. Deze instelling wordt overschreven wanneer 'Bewaar de instellingen voor elke map' is ingesteld (zie Opnamelijstmenu --> Instellingen)."
 
 msgid "Configure the border width of the subtitles. The dark border makes the subtitles easier to read on a light background."
 msgstr "Bepaal de breeedte van de rand rond ondertitels. De donkere rand maakt het lezen op een lichte achtergrond makkelijker."
@@ -4968,11 +5013,11 @@ msgstr "Detecteert volgende apparaten alvorens naar stand-by te gaan"
 msgid "Detect programs split by news bulletins. Choose the maximum duration in minutes to consider as a bulletin, or 0 to disable."
 msgstr "Detecteert programma's die gesplitst worden door bulletins. Kies de maximale duur van een bulletin, of 0 om uit te schakelen."
 
-msgid "Detected devices:"
-msgstr "Gedetecteerde media:"
+msgid "Detected devices"
+msgstr "Gedetecteerde apparaten"
 
-msgid "Detected tuners:"
-msgstr "Gedetecteerde tuners:"
+msgid "Detected tuners"
+msgstr "Gedetecteerde tuners"
 
 msgid "Detective"
 msgstr "Detective"
@@ -5048,6 +5093,9 @@ msgstr "Dim vertraging"
 msgid "Dim the LCD after specified time."
 msgstr "Dim het LCD na de ingestelde tijd."
 
+msgid "Direct item selection"
+msgstr "Directe itemkeuze"
+
 msgid "Direct menu item selection"
 msgstr "Directe menukeuze"
 
@@ -5096,6 +5144,9 @@ msgstr "Animatie uitschakelen"
 msgid "Disable Autostart"
 msgstr "Schakel automatisch opstarten uit"
 
+msgid "Disable Chkroot"
+msgstr "Schakel Chkrootuit"
+
 msgid "Disable FCC during recordings"
 msgstr "Schakel FCC uit tijdens opnames"
 
@@ -5119,6 +5170,9 @@ msgstr "Schakel providerprofielen uit"
 
 msgid "Disable startup"
 msgstr "Schakel opstarten uit"
+
+msgid "Disable the MultiBoot option"
+msgstr "Schakel MultiBoot uit"
 
 msgid "Disabled"
 msgstr "Gedeactiveerd"
@@ -5685,6 +5739,9 @@ msgstr "Schakel automatisch opstarten in"
 msgid "Enable Bluetooth Audio"
 msgstr "Schakel Bluetooth audio in"
 
+msgid "Enable Chkroot MultiBoot"
+msgstr "Schakel  Chkroot MultiBoot in"
+
 msgid "Enable EIT EPG"
 msgstr "EIT EPG inschakelen"
 
@@ -6140,6 +6197,9 @@ msgstr "Verlaat EPG"
 
 msgid "Exit Menusort"
 msgstr "Verlaat MenuSort"
+
+msgid "Exit PluginBrowser"
+msgstr "Pluginbrowser afsluiten"
 
 msgid "Exit all menus"
 msgstr "Verlaat alle menu's"
@@ -6694,8 +6754,9 @@ msgstr "Vrije swap:"
 msgid "Free:"
 msgstr "Vrij:"
 
-msgid "Free: "
-msgstr "Vrij: "
+#, python-format
+msgid "Free: %s "
+msgstr "Vrij: %s "
 
 msgid "French"
 msgstr "French"
@@ -8475,6 +8536,9 @@ msgstr "Verbind titels met een DVD menu"
 msgid "List EPG functions"
 msgstr "Opsomming EPG functies"
 
+msgid "List Sort Actions"
+msgstr "Toon lijst sorteer acties"
+
 msgid "List available networks"
 msgstr "Lijst met beschikbare netwerken"
 
@@ -8905,6 +8969,9 @@ msgstr "Samenvoegen timeshiftbestanden"
 msgid "Message"
 msgstr "Bericht"
 
+msgid "MessageBox Direct Item Selection Actions"
+msgstr "MessageBox Direct Item Selectie acties"
+
 msgid "MessageBox Functions"
 msgstr "Messagebox functies"
 
@@ -9079,6 +9146,10 @@ msgstr "Mount."
 msgid "Mount: "
 msgstr "Mount: "
 
+#, python-format
+msgid "Mount: %s  "
+msgstr "Mount: %s  "
+
 msgid "Mounts"
 msgstr "Mounts"
 
@@ -9135,6 +9206,24 @@ msgstr "Verplaats menu item naar boven"
 
 msgid "Move right"
 msgstr "Ga naar rechts"
+
+msgid "Move selection one page down"
+msgstr "Verplaats selectie één pagina omlaag"
+
+msgid "Move selection one page up"
+msgstr "Verplaats selectie één pagina omhoog"
+
+msgid "Move selection to the next item down"
+msgstr "Verplaats selectie naar beneden"
+
+msgid "Move selection to the next item up"
+msgstr "Verplaats selectie één item omhoog"
+
+msgid "Move the current item down the list"
+msgstr "Verplaats het huidig menu-item omlaag"
+
+msgid "Move the current item up the list"
+msgstr "Verplaats het huidig menu-item omhoog"
 
 msgid "Move the keyboard cursor down"
 msgstr "Verplaats de cursor naar beneden"
@@ -9274,7 +9363,7 @@ msgid "MultiBoot Image Selector"
 msgstr "Multibootimage kiezen"
 
 msgid "MultiBootSelector Actions"
-msgstr "MultiBootselectie akties"
+msgstr "MultiBootselectie acties"
 
 msgid "MultiType"
 msgstr "Multitype"
@@ -9460,6 +9549,9 @@ msgstr "Navigeer op/neer met de OP/NEER toetsen en pagina op/neer met LINKS/RECH
 msgid "Navigation"
 msgstr "Navigatie"
 
+msgid "Navigation Actions"
+msgstr "Navigatie acties"
+
 msgid "Nepal"
 msgstr "Nepal"
 
@@ -9511,8 +9603,8 @@ msgstr "Network peers"
 msgid "Network scan"
 msgstr "Netwerk zoeken"
 
-msgid "Network servers:"
-msgstr "Netwerkservers:"
+msgid "Network servers"
+msgstr "Netwerkservers"
 
 msgid "Network settings"
 msgstr "Netwerk instellingen"
@@ -10081,6 +10173,18 @@ msgstr "Alleen geplande"
 msgid "Only select 'yes' if you are using a multiswich that requires a DiSEqC Port-A command signal. For all other setups select 'no'."
 msgstr "Kies alleen 'ja' als u een multiswich gebruikt die een DiSEqC Port-A commando gebruikt. In alle andere gevallen kiest u 'nee'."
 
+msgid "Open 'Download Plugins' screen"
+msgstr "Download plugins"
+
+msgid "Open 'Install Plugins' screen"
+msgstr "Installeer plugins"
+
+msgid "Open 'Remove Plugins' screen"
+msgstr "Verwijder plugins"
+
+msgid "Open PluginBrowser setup screen"
+msgstr "Pluginbrowser instellingen"
+
 msgid "Open RDS/RASS screen"
 msgstr "Open RDS/RASS scherm"
 
@@ -10394,6 +10498,12 @@ msgstr "Partitie: %s  Mount: %s unmount succesvol; indien nu alle partities zijn
 msgid "Passthrough"
 msgstr "Passthrough"
 
+msgid "Passthrough audio handling delay AC3"
+msgstr "Passthrough audio vertraging AC3"
+
+msgid "Passthrough audio handling delay AC3+"
+msgstr "Passthrough audio vertraging AC3+"
+
 msgid "Password"
 msgstr "Wachtwoord"
 
@@ -10468,6 +10578,9 @@ msgstr "Permanente sorteer aanpassingen"
 
 msgid "Permanently delete all recordings in the trash can?"
 msgstr "Alle bestanden in de prullenbak nu permanent verwijderen?"
+
+msgid "Permanently disable the MultiBoot option?"
+msgstr "Multiboot permanent uitschakelen?"
 
 msgid "Permanently ignore this device"
 msgstr "Negeer dit apparaat permanent"
@@ -10550,6 +10663,9 @@ msgstr "DVD afspelen"
 
 msgid "Play Music..."
 msgstr "Muziek afspelen..."
+
+msgid "Play archive"
+msgstr "Archief afepselen"
 
 msgid "Play as picture in picture"
 msgstr "Speel als picture-in-picture"
@@ -10915,6 +11031,9 @@ msgstr "Even geduld... De lijst wordt geladen..."
 msgid "Plugin Browser"
 msgstr "Pluginbrowser"
 
+msgid "Plugin Browser Actions"
+msgstr "Pluginbrowser acties"
+
 msgid "Plugin browser"
 msgstr "Pluginbrowser"
 
@@ -11157,6 +11276,9 @@ msgstr "Druk op 'OK' om een kanaal te kiezen."
 
 msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."
 msgstr "Druk op GROEN (Reboot) om van image te veranderen, op GEEL (Verwijder) om een image te verwijderen of op BLAUW (Herstel) om alle images te herstellen."
+
+msgid "Press GREEN to enable MultiBoot!"
+msgstr "Druk op GROEN om  MultiBoot in te schakelen"
 
 msgid "Press OK"
 msgstr "Druk op OK"
@@ -12054,6 +12176,9 @@ msgstr "Voer een nieuwe PIN in"
 msgid "Reset playback position"
 msgstr "Zet afspeelpunt terug naar begin"
 
+msgid "Reset the list order to the default"
+msgstr "Herstel de standaard volgorde "
+
 msgid "Reset video enhancement settings to system defaults?"
 msgstr "Standaard videoverbetering instellingen gebruiken?"
 
@@ -12903,6 +13028,9 @@ msgstr "Selecteer een zender voor opname"
 msgid "Select copy destination for:"
 msgstr "Selecteer kopiëer bestemming voor:"
 
+msgid "Select current item"
+msgstr "Selecteer huidig item"
+
 msgid "Select current service"
 msgstr "Selecteer huidig kanaal"
 
@@ -12956,6 +13084,9 @@ msgstr "Selecteer invoerapparaat."
 
 msgid "Select interface"
 msgstr "Selecteer interface"
+
+msgid "Select item directly"
+msgstr "Selecteer item direct"
 
 msgid "Select last browsed service"
 msgstr "Kies laatst bekeken kanaal"
@@ -13016,6 +13147,9 @@ msgstr "Kies de gebruikersband die u voor deze tuner wilt gebruiken. Dat is een 
 
 msgid "Select the character or action under the keyboard cursor"
 msgstr "Selecteer karakter of actie onder de cursor"
+
+msgid "Select the current item"
+msgstr "Selecteer huidigitem"
 
 msgid "Select the current menu item"
 msgstr "Selecteer huidig menu-item"
@@ -13148,6 +13282,9 @@ msgstr "Alle satellieten 2 (USALS)"
 
 msgid "Selecting this option allows you to configure a group of satellites in one block."
 msgstr "Met deze optie kunt u satellieten als groep veranderen."
+
+msgid "Selection Actions"
+msgstr "Keuze acties"
 
 msgid "Selection and exit"
 msgstr "Kies en sluit af"
@@ -13484,6 +13621,9 @@ msgstr "Instellingen, informatie en meer functies"
 
 msgid "Setup"
 msgstr "Instellingen"
+
+msgid "Setup Actions"
+msgstr "Instel acties"
 
 msgid "Setup how to control the channel changing."
 msgstr "Stel hier in hoe u van kanaal wilt veranderen."
@@ -14495,6 +14635,9 @@ msgstr "Start teletext"
 msgid "Start test"
 msgstr "Start test"
 
+msgid "Start the Chkroot initialization"
+msgstr "begin de Chkroot initialisatie"
+
 msgid "Start time"
 msgstr "Starttijd"
 
@@ -15146,6 +15289,10 @@ msgstr "Uw %s %s leest de opgeslagen EPG-data elke (aantal) uur."
 msgid "The %s %s saves the EPG data every (hours)."
 msgstr "Uw %s %s slaat de EPG-data elke (aantal) uur op."
 
+#, python-format
+msgid "The %s %s will reboot within 1 seconds."
+msgstr "%s %s zal binnen 1 seconde rebooten."
+
 msgid ""
 "The AutoTimer plugin is not installed!\n"
 "Please install it."
@@ -15268,6 +15415,9 @@ msgstr "De beeldhoogte. Het beeld zal worden aangepast tot deze waarde."
 
 msgid "The image will then be downloaded to the 'Backup location'."
 msgstr "Het image zal worden gedownload naar de back-up locatie."
+
+msgid "The list is already sorted to the default."
+msgstr "De lijst is al standaard gesorteerd"
 
 msgid "The loopthrough setting is wrong."
 msgstr "De loopthrough-instelling is verkeerd."
@@ -16502,8 +16652,18 @@ msgstr "Gebruik de prullenbak in movielijst"
 msgid "Used service scan type"
 msgstr "Gebruikte zoekmethode"
 
+msgid "Used to specify delay when switching between services and AC3 passthrough is enabled."
+msgstr "Wordt gebruikt om de vertraging in te stellen wanneer AC3 passthrough is ingeschakeld."
+
+msgid "Used to specify delay when switching between services and AC3+/Atmos passthrough is enabled."
+msgstr "Wordt gebruikt om de vertraging in te stellen wanneer AC3+/Atmos passthrough is ingeschakeld."
+
 msgid "Used:"
 msgstr "Gebruikt:"
+
+#, python-format
+msgid "Used: %s  "
+msgstr "Gebruikt: %s"
 
 msgid "User - bouquets"
 msgstr "Favorieten"
@@ -16727,6 +16887,9 @@ msgstr "Bekijk video CD..."
 
 msgid "View extensions"
 msgstr "Toon extensies"
+
+msgid "View list of user installed plugins"
+msgstr "Toon een lijst met door gebruiker geïnstalleerde plugins"
 
 msgid "View mode"
 msgstr "Bekijkmodus"
@@ -18325,9 +18488,6 @@ msgstr "vrij"
 msgid "free diskspace"
 msgstr "vrije ruimte"
 
-msgid "full"
-msgstr "vol"
-
 msgid "further education"
 msgstr "vervolgonderwijs"
 
@@ -18916,9 +19076,6 @@ msgstr "show/spelshow (algemeen)"
 msgid "shuffle"
 msgstr "shuffle"
 
-msgid "shut down"
-msgstr "uitschakelen"
-
 msgid "simple"
 msgstr "eenvoudig"
 
@@ -19401,10 +19558,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "-"
 #~ msgstr "-"
 
-#, fuzzy
-#~ msgid "0"
-#~ msgstr "30"
-
 #~ msgid "0 minutes"
 #~ msgstr "0 minuten"
 
@@ -19623,6 +19776,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Configure on which devices the background delete option should be used."
 #~ msgstr "Geef aan op welk apparaat op de achtergrond bestanden mogen worden verwijderd."
 
+#~ msgid "Configure the behavior when reaching the end of a movie, during movie playback."
+#~ msgstr "Configureer het gedrag aan het einde van de film."
+
 #~ msgid "Configure the speed of the background deletion process. Lower speed will consume less hard disk drive performance."
 #~ msgstr "Bepaal de snelheid waarmee bestanden op de achtergrond worden verwijderd. Een lage snelheid vergt minder prestaties van de schijf."
 
@@ -19684,9 +19840,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Edit upgrade source url."
 #~ msgstr "Upgrade url bewerken."
-
-#~ msgid "Enable Vu+ MultiBoot"
-#~ msgstr "Vu+ MultiBoot inschakelen"
 
 #~ msgid "Erase"
 #~ msgstr "Wis"
@@ -20402,9 +20555,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Visual impaired commentary"
 #~ msgstr "Audiodescriptie voor slechtzienden"
 
-#~ msgid "Vu+ MultiBoot Initialisation - will reboot after 10 seconds."
-#~ msgstr "Vu+ MultiBoot Initialisatie - zal na 10 seconden rebooten."
-
 #~ msgid ""
 #~ "Vu+ MultiBoot Initialisation in progress\n"
 #~ "\n"
@@ -20415,9 +20565,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ "\n"
 #~ "Zal rebooten na het herstellen van de eMMC slots\n"
 #~ "Dit kan 1 -> 5 minuten per slot duren."
-
-#~ msgid "Vu+ MultiBoot Manager"
-#~ msgstr "Vu+ MultiBoot Manager"
 
 #~ msgid "Welcome to the image upgrade wizard. The wizard will assist you in upgrading the firmware of your %s %s by providing a backup facility for your current settings and a short explanation of how to upgrade your firmware."
 #~ msgstr "Welkom bij de software-updatewizard. De wizard biedt u hulp bij het vernieuwen van de software in uw %s %s door het maken van een back-up van uw huidige instellingen en geeft u een korte uitleg over dit proces."
@@ -20514,6 +20661,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "from"
 #~ msgstr "van"
 
+#~ msgid "full"
+#~ msgstr "vol"
+
 #~ msgid "invalid type"
 #~ msgstr "ongeldig type"
 
@@ -20543,6 +20693,9 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "show softwaremanager on blue button"
 #~ msgstr "toon softwaremanager onder blauwe knop"
+
+#~ msgid "shut down"
+#~ msgstr "uitschakelen"
 
 #, python-format
 #~ msgid "slot%s - %s"
