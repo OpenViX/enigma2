@@ -724,14 +724,14 @@ class InfoBarShowHide(InfoBarScreenSaver):
 
 	def unDimming(self):
 		self.unDimmingTimer.stop()
-		self.doWriteAlpha(config.misc.osd_alpha.value)
+		self.doWriteAlpha(config.av.osd_alpha.value)
 
 	def doWriteAlpha(self, value):
 		if fileExists("/proc/stb/video/alpha"):
 			f = open("/proc/stb/video/alpha", "w")
 			f.write("%i" % (value))
 			f.close()
-			if value == config.misc.osd_alpha.value:
+			if value == config.av.osd_alpha.value:
 				self.lastResetAlpha = True
 			else:
 				self.lastResetAlpha = False
@@ -831,14 +831,14 @@ class InfoBarShowHide(InfoBarScreenSaver):
 	def doHide(self):
 		if self.__state != self.STATE_HIDDEN:
 			if self.dimmed > 0:
-				self.doWriteAlpha((config.misc.osd_alpha.value * self.dimmed / config.usage.show_infobar_dimming_speed.value))
+				self.doWriteAlpha((config.av.osd_alpha.value * self.dimmed / config.usage.show_infobar_dimming_speed.value))
 				self.DimmingTimer.start(5, True)
 			else:
 				self.DimmingTimer.stop()
 				self.hide()
 		elif self.__state == self.STATE_HIDDEN and self.secondInfoBarScreen and self.secondInfoBarScreen.shown:
 			if self.dimmed > 0:
-				self.doWriteAlpha((config.misc.osd_alpha.value * self.dimmed / config.usage.show_infobar_dimming_speed.value))
+				self.doWriteAlpha((config.av.osd_alpha.value * self.dimmed / config.usage.show_infobar_dimming_speed.value))
 				self.DimmingTimer.start(5, True)
 			else:
 				self.DimmingTimer.stop()
@@ -853,7 +853,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 			self.EventViewIsShown = False
 		# elif hasattr(self, "pvrStateDialog"):
 		# 	if self.dimmed > 0:
-		# 		self.doWriteAlpha((config.misc.osd_alpha.value*self.dimmed/config.usage.show_infobar_dimming_speed.value))
+		# 		self.doWriteAlpha((config.av.osd_alpha.value*self.dimmed/config.usage.show_infobar_dimming_speed.value))
 		# 		self.DimmingTimer.start(5, True)
 		# 	else:
 		# 		self.DimmingTimer.stop()
@@ -914,7 +914,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
 
 	def unlockShow(self):
 		if config.usage.show_infobar_do_dimming.value and self.lastResetAlpha is False:
-			self.doWriteAlpha(config.misc.osd_alpha.value)
+			self.doWriteAlpha(config.av.osd_alpha.value)
 		try:
 			self.__locked -= 1
 		except:

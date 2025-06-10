@@ -1,39 +1,29 @@
 from enigma import eTimer, eStreamServer
 
 from Components.ActionMap import ActionMap
-from Components.Button import Button
 from Components.Converter.ClientsStreaming import ClientsStreaming
-from Components.ScrollLabel import ScrollLabel
 from Components.Sources.StaticText import StaticText
-from Screens.Screen import Screen
+from Screens.About import AboutBase
 import skin  # noqa: F401
 
 
-class StreamingClientsInfo(Screen):
+class StreamingClientsInfo(AboutBase):
 	def __init__(self, session):
-		Screen.__init__(self, session)
+		AboutBase.__init__(self, session, labels=True)
 		self.timer = eTimer()
 		self.setTitle(_("Streaming Clients Info"))
 
-		self["ScrollLabel"] = ScrollLabel()
-
-		self["key_red"] = Button(_("Close"))
 		self["key_blue"] = StaticText()
-		self["actions"] = ActionMap(["ColorActions", "SetupActions", "DirectionActions"],
+		self["actions"] = ActionMap(["ColorActions"],
 			{
-				"cancel": self.exit,
-				"ok": self.exit,
-				"red": self.exit,
 				"blue": self.stopStreams,
-				"up": self["ScrollLabel"].pageUp,
-				"down": self["ScrollLabel"].pageDown
 			})  # noqa: E123
 
 		self.onLayoutFinish.append(self.start)
 
-	def exit(self):
+	def close(self):
 		self.stop()
-		self.close()
+		AboutBase.close(self)
 
 	def start(self):
 		if self.update_info not in self.timer.callback:
@@ -48,7 +38,8 @@ class StreamingClientsInfo(Screen):
 	def update_info(self):
 		clients = ClientsStreaming("INFO_RESOLVE")
 		text = clients.getText()
-		self["ScrollLabel"].setText(text or _("No clients streaming"))
+		self["AboutScrollLabel"].split = False  # don't split
+		self["AboutScrollLabel"].setText(text or _("No clients streaming"))
 		self["key_blue"].setText(text and _("Stop Streams") or "")
 		self.timer.startLongTimer(5)
 

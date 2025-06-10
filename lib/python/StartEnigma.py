@@ -686,16 +686,16 @@ from Components.InputDevice import InitInputDevices  # noqa: E402
 InitInputDevices()
 import Components.InputHotplug  # noqa: E402
 
-profile("UserInterface")
-print("[StartEnigma]  Initialising UserInterface.")
-from Screens.UserInterfacePositioner import InitOsd  # noqa: E402
-InitOsd()
-
 profile("AVSwitch")
 print("[StartEnigma]  Initialising AVSwitch.")
 from Components.AVSwitch import InitAVSwitch, InitiVideomodeHotplug  # noqa: E402
 InitAVSwitch()
 InitiVideomodeHotplug()
+
+profile("UserInterface")
+print("[StartEnigma]  Initialising UserInterface.")
+from Screens.UserInterfacePositioner import InitOsd  # noqa: E402
+InitOsd()
 
 profile("EpgConfig")
 from Components.EpgConfig import InitEPGConfig  # noqa: E402

@@ -13,7 +13,8 @@ from Components.Network import iNetwork
 from Components.NimManager import nimmanager
 from Components.Pixmap import MultiPixmap
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo, CHIPSET, KERNEL, MODEL, SOC_BRAND
+from Components.SystemInfo import BoxInfo, SystemInfo, CHIPSET, KERNEL, MODEL, SOC_BRAND
+from Components.UserInstalledPackages import UserInstalledPackages
 from Screens.GitCommitInfo import CommitInfo
 from Screens.Screen import Screen, ScreenSummary
 from Screens.SoftwareUpdate import UpdatePlugin
@@ -144,6 +145,7 @@ def df_h(find=None, binary=False):
 class AboutBase(TextBox):
 	def __init__(self, session, labels=None):
 		TextBox.__init__(self, session, label="AboutScrollLabel")
+		self.skinName = "AboutOE"
 		self.colors = parameters.get("AboutColors", [])  # First item must be default text colour. If parameter is missing adding colours will be skipped.
 		if labels:
 			self["lab1"] = StaticText(_("Virtuosso Image Xtreme"))
@@ -163,7 +165,6 @@ class About(AboutBase):
 	def __init__(self, session):
 		AboutBase.__init__(self, session, labels=True)
 		self.setTitle(_("About"))
-		self.skinName = "AboutOE"
 		self.populate()
 
 		self["key_green"] = Button(_("Translations"))
@@ -300,10 +301,42 @@ class About(AboutBase):
 		self.session.openWithCallback(self.populate, Setup, "about")
 
 
+class AboutBoxInfo(AboutBase):
+	def __init__(self, session):
+		AboutBase.__init__(self, session, labels=True)
+		self.setTitle(_("BoxInfo"))
+
+		BIlist = []
+		for item in BoxInfo.getEnigmaInfoList():
+			value = str(BoxInfo.getItem(item))
+			for x in ("http://", "https://"):  # Trim URLs to domain only
+				if value.startswith(x):
+					value = value.split(x)[1].split('/')[0] + " [...]"
+					break
+			BIlist.append("%s:\t %s\n" % (item, value))
+		self["AboutScrollLabel"].setText(''.join(BIlist))
+
+
+class AboutUserInstalledPlugins(AboutBase):
+	def __init__(self, session):
+		AboutBase.__init__(self, session, labels=True)
+		self.setTitle(_("User installed plugins"))
+		self.reader = UserInstalledPackages()
+		self.onLayoutFinish.append(self.startfetch)
+
+	def startfetch(self):
+		self.reader.run(self.callback)
+
+	def callback(self, plugins):
+		if plugins:
+			self["AboutScrollLabel"].setText("\n".join(sorted(plugins)))
+		else:
+			self["AboutScrollLabel"].setText(_("No user installed plugins found"))
+
+
 class Devices(AboutBase):
 	def __init__(self, session):
 		AboutBase.__init__(self, session, labels=True)
-		self.skinName = "AboutOE"
 		self.setTitle(_("Devices"))
 		self.onLayoutFinish.append(self.populate)
 
@@ -395,7 +428,6 @@ class SystemMemoryInfo(AboutBase):
 	def __init__(self, session):
 		AboutBase.__init__(self, session, labels=True)
 		self.setTitle(_("Memory"))
-		self.skinName = ["SystemMemoryInfo", "About"]
 		out_lines = open("/proc/meminfo").readlines()  # output is in kiB so multiply by 1024
 		self.AboutText = self.addColor(_("RAM")) + "\n"
 		for lidx in range(len(out_lines) - 1):

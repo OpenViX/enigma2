@@ -243,7 +243,7 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 			self.delete()
 
 	def userInstalledPlugins(self):
-		from Screens.AboutUserInstalledPlugins import AboutUserInstalledPlugins
+		from Screens.About import AboutUserInstalledPlugins
 		self.session.open(AboutUserInstalledPlugins)
 
 
