@@ -537,7 +537,12 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 		png_read_end(png_ptr, info_ptr);
 		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 
-		if (bpp == 4)
+		if (bpp == 4 && filepara->transparent)
+		{
+			filepara->bits = 32;
+			filepara->pic_buffer = pic_buffer;
+		}
+		else if (bpp == 4)
 		{
 			unsigned char *pic_buffer24 = new unsigned char[pixel_cnt * 3];
 			if (!pic_buffer24)
@@ -961,7 +966,7 @@ void ePicLoad::decodePic()
 	{
 		case F_PNG:	png_load(m_filepara, m_conf.background);
 				break;
-		case F_JPEG:	m_filepara->pic_buffer = jpeg_load(m_filepara->file, &m_filepara->ox, &m_filepara->oy, m_filepara->max_x, m_filepara->max_y);
+		case F_JPEG: m_filepara->pic_buffer = jpeg_load(m_filepara->file, &m_filepara->ox, &m_filepara->oy, m_filepara->max_x, m_filepara->max_y);
 				break;
 		case F_BMP:	m_filepara->pic_buffer = bmp_load(m_filepara->file, &m_filepara->ox, &m_filepara->oy);
 				break;
@@ -970,9 +975,6 @@ void ePicLoad::decodePic()
 		case F_SVG:	svg_load(m_filepara);
 				break;
 	}
-
-	if(m_filepara->pic_buffer != NULL)
-		resizePic();
 }
 
 void ePicLoad::decodeThumb()
@@ -1540,7 +1542,7 @@ int ePicLoad::getData(ePtr<gPixmap> &result)
 			}
 		}
 	}
-	else // 24-bit images
+	else // 24/32-bit images
 	{
 		#pragma omp parallel for
 		for (int y = 0; y < scry; ++y) {
@@ -1555,7 +1557,14 @@ int ePicLoad::getData(ePtr<gPixmap> &result)
 					srow[2] = irow[0];
 					srow[1] = irow[1];
 					srow[0] = irow[2];
-					srow[3] = 0xFF; // alpha
+					if (m_filepara->bits < 32)
+					{
+						srow[3] = 0xFF; // alpha opaque
+					}
+					else
+					{
+						srow[3] = irow[3]; // alpha
+					}
 					srow += 4;
 					xind += xscale;
 				}
@@ -1591,7 +1600,14 @@ int ePicLoad::getData(ePtr<gPixmap> &result)
 					srow[2] = r / sq;
 					srow[1] = g / sq;
 					srow[0] = b / sq;
-					srow[3] = 0xFF; // alpha
+					if (m_filepara->bits < 32)
+					{
+						srow[3] = 0xFF; // alpha opaque
+					}
+					else
+					{
+						srow[3] = irow[3]; // alpha
+					}
 					srow += 4;
 					xind += xscale;
 				}
@@ -1641,7 +1657,7 @@ RESULT ePicLoad::setPara(int width, int height, double aspectRatio, int as, bool
 	m_conf.resizetype = resizeType;
 
 	if(bg_str[0] == '#' && strlen(bg_str)==9)
-		m_conf.background = strtoul(bg_str+1, NULL, 16) | 0xFF000000;
+		m_conf.background = static_cast<uint32_t>(strtoul(bg_str+1, NULL, 16));
 	eDebug("[ePicLoad] setPara max-X=%d max-Y=%d aspect_ratio=%lf cache=%d resize=%d bg=#%08X auto_orient=%d",
 			m_conf.max_x, m_conf.max_y, m_conf.aspect_ratio,
 			(int)m_conf.usecache, (int)m_conf.resizetype, m_conf.background, m_conf.auto_orientation);
