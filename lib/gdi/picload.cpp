@@ -54,6 +54,33 @@ static int convert_8Bit_to_24Bit(Cfilepara *filepara, unsigned char *dest)
 	return 0;
 }
 
+static unsigned char *simple_resize_32(unsigned char *orgin, int ox, int oy, int dx, int dy)
+{
+	unsigned char *cr = new unsigned char[dx * dy * 4];
+	if (cr == NULL)
+	{
+		eDebug("[ePicLoad] Error malloc");
+		return orgin;
+	}
+	const int stride = 4 * dx;
+	#pragma omp parallel for
+	for (int j = 0; j < dy; ++j)
+	{
+		unsigned char* k = cr + (j * stride);
+		const unsigned char* p = orgin + (j * oy / dy * ox) * 4;
+		for (int i = 0; i < dx; i++)
+		{
+			const unsigned char* ip = p + (i * ox / dx) * 4;
+			*k++ = ip[0];
+			*k++ = ip[1];
+			*k++ = ip[2];
+			*k++ = ip[3];
+		}
+	}
+	delete [] orgin;
+	return cr;
+}
+
 static unsigned char *simple_resize_24(unsigned char *orgin, int ox, int oy, int dx, int dy)
 {
 	unsigned char *cr = new unsigned char[dx * dy * 3];
@@ -1139,8 +1166,10 @@ void ePicLoad::resizePic()
 		m_filepara->pic_buffer = simple_resize_8(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
 	else if (m_conf.resizetype)
 		m_filepara->pic_buffer = color_resize(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
-	else
+	else if (m_filepara->bits < 32)
 		m_filepara->pic_buffer = simple_resize_24(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
+	else
+		m_filepara->pic_buffer = simple_resize_32(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
 
 	m_filepara->ox = imx;
 	m_filepara->oy = imy;
