@@ -130,6 +130,57 @@ static unsigned char *simple_resize_8(unsigned char *orgin, int ox, int oy, int 
 	return cr;
 }
 
+static unsigned char *color_resize_32(unsigned char * orgin, int ox, int oy, int dx, int dy)
+{
+	unsigned char* cr = new unsigned char[dx * dy * 4];
+	if (cr == NULL)
+	{
+		eDebug("[ePicLoad] resize Error malloc");
+		return orgin;
+	}
+	const int stride = 4 * dx;
+	#pragma omp parallel for
+	for (int j = 0; j < dy; j++)
+	{
+		unsigned char* p = cr + (j * stride);
+		int ya = j * oy / dy;
+		int yb = (j + 1) * oy / dy;
+		if (yb >= oy)
+			yb = oy - 1;
+		for (int i = 0; i < dx; i++, p += 4)
+		{
+			int xa = i * ox / dx;
+			int xb = (i + 1) * ox / dx;
+			if (xb >= ox)
+				xb = ox - 1;
+			int r = 0;
+			int g = 0;
+			int b = 0;
+			int a = 0;
+			int sq = 0;
+			for (int l = ya; l <= yb; l++)
+			{
+				const unsigned char* q = orgin + ((l * ox + xa) * 4);
+				for (int k = xa; k <= xb; k++, q += 4, sq++)
+				{
+					r += q[0];
+					g += q[1];
+					b += q[2];
+					a += q[3]
+				}
+			}
+			if (sq == 0) // prevent division by zero
+				sq = 1;
+			p[0] = r / sq;
+			p[1] = g / sq;
+			p[2] = b / sq;
+			p[3] = a / sq;
+		}
+	}
+	delete [] orgin;
+	return cr;
+}
+
 static unsigned char *color_resize(unsigned char * orgin, int ox, int oy, int dx, int dy)
 {
 	unsigned char* cr = new unsigned char[dx * dy * 3];
@@ -1111,6 +1162,8 @@ void ePicLoad::decodeThumb()
 
 			if (m_filepara->bits == 8)
 				m_filepara->pic_buffer = simple_resize_8(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
+			else if (m_filepara->bits == 32)
+				m_filepara->pic_buffer = color_resize_32(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
 			else
 				m_filepara->pic_buffer = color_resize(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
 
@@ -1164,8 +1217,10 @@ void ePicLoad::resizePic()
 
 	if (m_filepara->bits == 8)
 		m_filepara->pic_buffer = simple_resize_8(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
-	else if (m_conf.resizetype)
+	else if (m_conf.resizetype && m_filepara->bits < 32)
 		m_filepara->pic_buffer = color_resize(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
+	else if (m_conf.resizetype)
+		m_filepara->pic_buffer = color_resize_32(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
 	else if (m_filepara->bits < 32)
 		m_filepara->pic_buffer = simple_resize_24(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
 	else
