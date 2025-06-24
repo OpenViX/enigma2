@@ -166,7 +166,7 @@ static unsigned char *color_resize_32(unsigned char * orgin, int ox, int oy, int
 					r += q[0];
 					g += q[1];
 					b += q[2];
-					a += q[3]
+					a += q[3];
 				}
 			}
 			if (sq == 0) // prevent division by zero
