@@ -1318,7 +1318,6 @@ void eDVBDB::loadBouquet(const char *path)
 			{
 				int offs = line[8] == ':' ? 10 : 9;
 				eServiceReference tmp(line+offs);
-				if ((!strcmp(path, "bouquets.tv") || !strcmp(path, "bouquets.radio")) && tmp.path.find("subbouquets.") != std::string::npos) continue;
 				if ( tmp.flags&eServiceReference::canDescent )
 				{
 					size_t pos = tmp.path.rfind('/');
@@ -2576,17 +2575,23 @@ RESULT eDVBDB::addOrUpdateBouquet(const std::string &name, const std::string &fi
 		/* bouquet doesn't yet exist, create a new one */
 		if (!db->getBouquet(rootref, bouquet) && bouquet)
 		{
-			if (isAddedFirst)
-				bouquet->m_services.push_front(bouquetref);
-			else
-				bouquet->m_services.push_back(bouquetref);
-			bouquet->flushChanges();
+			if (filename.find("subbouquet.") == std::string::npos)
+			{
+				if (isAddedFirst)
+					bouquet->m_services.push_front(bouquetref);
+				else
+					bouquet->m_services.push_back(bouquetref);
+				bouquet->flushChanges();
+			}
 		}
 		/* loading the bouquet seems to be the only way to add it to the bouquet list */
 		loadBouquet(filename.c_str());
 		/* and now that it has been added to the list, we can find it */
-		db->getBouquet(bouquetref, bouquet);
-		bouquet->setListName(name);
+		if (filename.find("subbouquet.") == std::string::npos)
+		{
+			db->getBouquet(bouquetref, bouquet);
+			bouquet->setListName(name);
+		}
 	}
 	if (!PyList_Check(services)) {
 		const char *errstr = "eDVBDB::appendServicesToBouquet second parameter is not a python list!!!";
