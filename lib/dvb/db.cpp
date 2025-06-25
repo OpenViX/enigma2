@@ -141,6 +141,7 @@ RESULT eBouquet::flushChanges()
 		{
 			eServiceReference tmp = *i;
 			std::string str = tmp.path;
+			if ((m_filename == "bouquets.tv" || m_filename == "bouquets.radio") && str.find("subbouquet.") != std::string::npos) continue;
 			if ( fprintf(f, "#SERVICE %s\r\n", tmp.toString().c_str()) < 0 )
 				goto err;
 			if ( i->name.length() ) {
@@ -1317,6 +1318,7 @@ void eDVBDB::loadBouquet(const char *path)
 			{
 				int offs = line[8] == ':' ? 10 : 9;
 				eServiceReference tmp(line+offs);
+				if ((!strcmp(path, "bouquets.tv") || !strcmp(path, "bouquets.radio")) && tmp.path.find("subbouquets.") != std::string::npos) continue;
 				if ( tmp.flags&eServiceReference::canDescent )
 				{
 					size_t pos = tmp.path.rfind('/');
@@ -2702,6 +2704,13 @@ RESULT eDVBDB::removeBouquet(const std::string &filename_regex)
 			std::string path = entry->d_name;
 			if (std::regex_search(path, std::regex(filename_regex)))
 			{
+				if (path.find("subbouquet.") != std::string::npos) {
+					int status = std::remove((p+path).c_str());
+					if (status != 0) {
+						eDebug("[eDVBDB] ERROR DELETING FILE %s", path.c_str());
+					}
+					continue;
+				}
 				std::string bouquetquery = "FROM BOUQUET \"" + path + "\" ORDER BY bouquet";
 				eServiceReference bouquetref(eServiceReference::idDVB, eServiceReference::flagDirectory, bouquetquery);
 				bouquetref.setData(0, type);
