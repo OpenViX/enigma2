@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-24 18:45+0300\n"
-"PO-Revision-Date: 2025-06-06 07:05+0300\n"
+"POT-Creation-Date: 2025-06-12 19:41+0300\n"
+"PO-Revision-Date: 2025-06-12 19:59+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -805,8 +805,8 @@ msgid "%d marked items"
 msgstr "%d merkattua kohdetta"
 
 #, python-format
-msgid "%d milisecond"
-msgid_plural "%d miliseconds"
+msgid "%d millisecond"
+msgid_plural "%d milliseconds"
 msgstr[0] "%d millisekunti"
 msgstr[1] "%d millisekuntia"
 
@@ -937,14 +937,6 @@ msgstr "%m/%d/%Y"
 #, python-format
 msgid "%s"
 msgstr "%s"
-
-#, python-format
-msgid "%s "
-msgstr "%s "
-
-#, python-format
-msgid "%s   "
-msgstr "%s   "
 
 #, python-format
 msgid "%s %s advanced remote control (native)"
@@ -2307,7 +2299,7 @@ msgstr "Haluatko varmasti tallentaa EPG:n tänne:\n"
 
 #, python-format
 msgid "Are you sure you want to update your %s %s?"
-msgstr "Haluatko päivittää %s %s:n?"
+msgstr "Haluatko todella päivittää %s %s:n?"
 
 msgid "Argentina"
 msgstr "Argentiina"
@@ -11069,9 +11061,6 @@ msgstr "Lisäosa-selaimen asetukset"
 msgid "Plugin install"
 msgstr "Lisäosan asentaminen"
 
-msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
-msgstr "Lisäosien listaus epäonnistui - väärä varmuuskopion sijainti tai levytila on lopussa."
-
 msgid "Plugins"
 msgstr "Lisäosat"
 
@@ -15151,7 +15140,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 06.06.2025 ---\n"
+"--- 12.06.2025 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -17744,11 +17733,15 @@ msgid "Your %s %s has no network access, please check your network settings and 
 msgstr "Sinun %s %s ei ole kytketty verkkoon, tarkista verkkoasetukset sekä verkkokaapeli ja yritä uudelleen."
 
 #, python-format
+msgid "Your %s %s has successfully flashed slot %s, enter 'Yes' to reboot new image or 'No' to return to Enigma2."
+msgstr "Laitteesi %s %s on onnistuneesti flashännyt paikan %s, valitse 'Kyllä' käynnistääksesi uuteen imageen tai 'Ei' palataksesi Enigma2:een."
+
+#, python-format
 msgid ""
 "Your %s %s is about to create a full image backup, this can take about 6 minutes to complete.\n"
 "Do you want to allow this?"
 msgstr ""
-"Sinun %s %s aikoo tehdä täyden varmuuskopion, ja se voi kestää noin kuusi minuuttia.\n"
+"Laitteesi %s %s aikoo tehdä täyden varmuuskopion, ja se voi kestää noin kuusi minuuttia.\n"
 "Sallitko tämän?"
 
 #, python-format
@@ -17810,10 +17803,6 @@ msgstr "%s %s käynnistyy uudelleen Palautustilaan"
 #, python-format
 msgid "Your %s %s is shutting down"
 msgstr "%s %s sammutetaan"
-
-#, python-format
-msgid "Your %s %s might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
-msgstr "%s %s saattaa olla nyt käyttökelvoton. Lue käsikirjasta lisäohjeita ennen kuin uudelleenkäynnistät %s %s:n."
 
 #, python-format
 msgid ""
@@ -17920,6 +17909,10 @@ msgstr "Vastaanottimessa ei ole internet-yhteyttä"
 
 msgid "Your receiver is not connected to the internet"
 msgstr "Vastaanotin ei ole kytketty internettiin"
+
+#, python-format
+msgid "Your receiver might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
+msgstr "Laitteesi saattaa olla nyt käyttökelvoton. Lue käsikirjasta lisäohjeita ennen kuin uudelleen käynnistät laitteesi %s %s."
 
 msgid ""
 "Your wireless LAN internet connection could not be started!\n"
@@ -18047,9 +18040,6 @@ msgstr "[Multiboot valitsin][lisää USB-Käynnistyspaikkoja] - USB (%s), vapaa 
 
 msgid "[TimeShift] Restarting Timeshift!"
 msgstr "[Ajansiirto] Käynnistetään ajansiirto uudelleen!"
-
-msgid "[Timeshift] Merging records failed!"
-msgstr "[Ajansiirto] Tallenteiden yhdistäminen epäonnistui!"
 
 msgid "[alternative edit]"
 msgstr "[Vaihtoehtojen muokkaus]"

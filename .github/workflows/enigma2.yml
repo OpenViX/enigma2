@@ -2,19 +2,19 @@ name: Enigma2 Python 3
 
 on:
   push:
-    branches: [ Release, Developer, FCC, dm9x0 ]
+    branches: [ Release, Developer ]
     paths-ignore:
       - '**/README'
       - '**/DOCS'
   pull_request:
-    branches: [Release, Developer, FCC, dm9x0 ]
+    branches: [Release, Developer]
     paths-ignore:
       - '**/README'
       - '**/DOCS'
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         gcc: [13]

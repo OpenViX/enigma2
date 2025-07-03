@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-20 12:09+0200\n"
-"PO-Revision-Date: 2025-05-20 20:11+0200\n"
+"POT-Creation-Date: 2025-06-12 10:25+0200\n"
+"PO-Revision-Date: 2025-06-12 18:27+0200\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: www.CostaBlancaTranslations.com <maria@CostaBlancaTranslations.com>\n"
 "Language: es\n"
@@ -834,8 +834,8 @@ msgid "%d marked items"
 msgstr "%d elementos marcados"
 
 #, python-format
-msgid "%d milisecond"
-msgid_plural "%d miliseconds"
+msgid "%d millisecond"
+msgid_plural "%d milliseconds"
 msgstr[0] "%d milisegundo"
 msgstr[1] "%d milisegundos"
 
@@ -974,14 +974,6 @@ msgstr "%m/%d/%Y"
 #, python-format
 msgid "%s"
 msgstr "%s"
-
-#, python-format
-msgid "%s "
-msgstr "%s "
-
-#, python-format
-msgid "%s   "
-msgstr ""
 
 #, python-format
 msgid "%s %s advanced remote control (native)"
@@ -3415,7 +3407,7 @@ msgstr "Cancelar"
 
 #
 msgid "Cancel Actions"
-msgstr "Acciones de canales"
+msgstr "Acciones de cancelar"
 
 msgid "Cancel any changed settings and exit"
 msgstr "Cancelar cualquier configuración modificada y salir"
@@ -4291,8 +4283,8 @@ msgstr "Configurar la latitud de tu ubicación."
 msgid "Configure the longitude of your location."
 msgstr "Configurar la longitud de tu ubicación."
 
-msgid "Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can."
-msgstr "Configurar el espacio en disco mínimo disponible para grabaciones. Cuando el espacio caiga por debajo de ese valor, los programas borrados se eliminarán de la papelera."
+msgid "Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can, including, if necessary, items whose specified number of days in the trash can has not yet concluded."
+msgstr "Configurar el espacio en disco mínimo disponible para grabaciones. Cuando la cantidad de espacio caiga por debajo de este valor, los elementos eliminados se quitarán de la papelera, incluidos, si es necesario, los elementos cuyo número especificado de días en la papelera aún no haya concluido."
 
 msgid "Configure the minimum width before showing the 'i' icon, '0' is equal to not showing the icon at all."
 msgstr "Configure el ancho mínimo antes de mostrar el ícono 'i', '0' es igual a no mostrar el ícono en absoluto."
@@ -4303,8 +4295,8 @@ msgstr "Configurar el nombre de servidor (DNS)."
 msgid "Configure the netmask."
 msgstr "Configurar la máscara de red."
 
-msgid "Configure the number of days after which items are automatically removed from the trash can. A setting of 0 disables this."
-msgstr "Configura la cantidad de días después de los cuales los elementos se eliminarán automáticamente de la papelera. Un valor de 0 deshabilita esta opción."
+msgid "Configure the number of days after which items are automatically removed from the trash can. If the setting is 0 all items in the trash can will be removed by the next delete event, which normally occurs when preparing to make a recording."
+msgstr "Configura la cantidad de días después de los cuales los elementos se eliminarán automáticamente de la papelera. Si el valor es 0, todos los elementos de la papelera se eliminarán en el próximo evento de eliminación, que normalmente ocurre cuando se prepara para realizar una grabación."
 
 msgid "Configure the number of days old timers are kept before they are automatically removed from the timer list."
 msgstr "Configurar los días en que se guardan los temporizadores antiguos antes de eliminarlos automáticamente de la lista."
@@ -12020,9 +12012,6 @@ msgstr "Configuración de buscador de complementos"
 msgid "Plugin install"
 msgstr "Instalación del complemento"
 
-msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
-msgstr "Error en la lista de complementos (por ejemplo, destino de copia de seguridad incorrecto o no queda espacio en el dispositivo de copia de seguridad)."
-
 #
 msgid "Plugins"
 msgstr "Complementos"
@@ -18641,6 +18630,9 @@ msgstr "Señal de reactivación de TV"
 msgid "Wallis and Futuna"
 msgstr ""
 
+msgid "Wan IP:"
+msgstr "Wan IP"
+
 msgid "War"
 msgstr "Guerra"
 
@@ -19325,6 +19317,10 @@ msgid "Your %s %s has no network access, please check your network settings and 
 msgstr "La %s %s no tiene acceso a la red, verifique su configuración de red y asegúrese de tener el cable de red conectado y vuelva a intentarlo."
 
 #, python-format
+msgid "Your %s %s has successfully flashed slot %s, enter 'Yes' to reboot new image or 'No' to return to Enigma2."
+msgstr "Su %s %s ha flasheado exitosamente la ranura %s, ingrese 'Sí' para reiniciar la nueva imagen o 'No' para regresar a Enigma2."
+
+#, python-format
 msgid ""
 "Your %s %s is about to create a full image backup, this can take about 6 minutes to complete.\n"
 "Do you want to allow this?"
@@ -19392,10 +19388,6 @@ msgstr "Reiniciando la %s %s en modo de recuperación."
 #, python-format
 msgid "Your %s %s is shutting down"
 msgstr "Apagando la %s %s"
-
-#, python-format
-msgid "Your %s %s might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
-msgstr "La %s %s podría estar inutilizable. Consulta el manual antes de reiniciar la %s %s."
 
 #, python-format
 msgid ""
@@ -19507,6 +19499,10 @@ msgstr "El receptor no está conectado a internet."
 
 msgid "Your receiver is not connected to the internet"
 msgstr "El receptor no está conectado a internet."
+
+#, python-format
+msgid "Your receiver might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
+msgstr "Tu deco podría estar inutilizable. Consulta el manual antes de reiniciar la %s %s."
 
 #
 msgid ""

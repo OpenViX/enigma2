@@ -246,12 +246,14 @@ void eWidget::setZPosition(int z)
 
 void eWidget::setTransparent(int transp)
 {
-	if (isTransparent() != transp)
+	if (isTransparent() && !transp)
 	{
-		if (transp)
-			m_vis |= wVisTransparent;
-		else
-			m_vis &= ~wVisTransparent;
+		m_vis &= ~wVisTransparent;
+		recalcClipRegionsWhenVisible();
+	}
+	else if (!isTransparent() && transp)
+	{
+		m_vis |= wVisTransparent;
 		recalcClipRegionsWhenVisible();
 	}
 }

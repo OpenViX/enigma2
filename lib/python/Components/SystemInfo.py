@@ -91,13 +91,15 @@ else:
 
 ARCHITECTURE = BoxInfo.getItem("architecture")
 BRAND = BoxInfo.getItem("brand")
-MODEL = BoxInfo.getItem("model")
+IMAGETYPE = BoxInfo.getItem("imagetype")
+MODEL = BoxInfo.getItem("model")  # similar to MACHINEBUILD but e.g. giga4K boxes are gb7252
 RCNAME = BoxInfo.getItem('rcname')
 SOC_FAMILY = BoxInfo.getItem("socfamily")
 SOC_BRAND = split(r'(\d.*)', SOC_FAMILY)[0]
-KERNEL = BoxInfo.getItem("kernel")
-DISPLAYTYPE = BoxInfo.getItem("displaytype")
+KERNEL = BoxInfo.getItem("kernel")  # Kernel version
+MTDKERNEL = BoxInfo.getItem("mtdkernel")
 MTDROOTFS = BoxInfo.getItem("mtdrootfs")
+DISPLAYTYPE = BoxInfo.getItem("displaytype")
 DISPLAYMODEL = BoxInfo.getItem("displaymodel")
 DISPLAYBRAND = BoxInfo.getItem("displaybrand")
 MACHINEBUILD = BoxInfo.getItem("machinebuild")
@@ -120,6 +122,7 @@ def getBoxType():  # this function mimics the function of the same name in brand
 
 
 BoxInfo.setItem("boxtype", getBoxType(), immutable=True)
+BOXTYPE = BoxInfo.getItem("boxtype")  # similar to MACHINEBUILD but handles oddities e.g. Octagon
 
 
 def getMachineName():  # this function mimics the function of the same name in branding module
@@ -137,10 +140,11 @@ def getMachineName():  # this function mimics the function of the same name in b
 
 
 BoxInfo.setItem("machinename", getMachineName(), immutable=True)
+MACHINENAME = BoxInfo.getItem("machinename")
 
 
 def getBoxDisplayName():  # This function returns a tuple like ("BRANDNAME", "BOXNAME")
-	return (DISPLAYBRAND, SystemInfo["machinename"])
+	return (DISPLAYBRAND, MACHINENAME)
 
 
 def getRCFile(ext):
@@ -173,10 +177,11 @@ SystemInfo["HasKexecMultiboot"] = fileHas("/proc/cmdline", "kexec=1")  # This ne
 from Tools.Multiboot import getMultibootslots, isFat32  # noqa: E402  This import needs to be here to avoid a SystemInfo load loop!
 SystemInfo["HasChkrootMultiboot"] = isFat32("/dev/block/by-name/others")
 SystemInfo["canchkroot"] = (fileExists("/dev/block/by-name/others") and not SystemInfo["HasChkrootMultiboot"] and not fileExists("/etc/.disableChkroot"))
-SystemInfo["HasHiSi"] = pathExists("/proc/hisi") and SystemInfo["boxtype"] not in ("vipertwin", "viper4kv20", "viper4kv40", "sfx6008", "sfx6018")  # This needs to be for later checks
+SystemInfo["HasHiSi"] = pathExists("/proc/hisi") and BOXTYPE not in ("vipertwin", "viper4kv20", "viper4kv40", "sfx6008", "sfx6018")  # This needs to be for later checks
 SystemInfo["canMultiBoot"] = getMultibootslots()
 # SystemInfo["MBbootdevice"] = device set in Tools/Multiboot.py
 # SystemInfo["MultiBootSlot"] = current slot set in Tools/Multiboot.py
+SystemInfo["DMRecovery"] = MODEL in ("dm900", "dm920") and fileExists("/proc/stb/fp/boot_mode")
 
 
 def getNumVideoDecoders():
@@ -197,14 +202,14 @@ def hasInitCam():
 	return bool([f for f in listdir("/etc/init.d") if f.startswith("softcam.") and f != "softcam.None"])
 
 
-SystemInfo["CanKexecVu"] = SystemInfo["boxtype"] in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse", "vuzero4k") and not SystemInfo["HasKexecMultiboot"]
+SystemInfo["CanKexecVu"] = MODEL in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse", "vuzero4k") and not SystemInfo["HasKexecMultiboot"]
 SystemInfo["HasUsbhdd"] = {}
 SystemInfo["ArchIsARM"] = ARCHITECTURE.startswith(("arm", "cortex"))
 SystemInfo["ArchIsARM64"] = "64" in ARCHITECTURE
 SystemInfo["HasInitCam"] = hasInitCam()
 SystemInfo["MachineBrand"] = DISPLAYBRAND
 SystemInfo["MachineName"] = SystemInfo["machinename"]
-SystemInfo["DeveloperImage"] = SystemInfo["imagetype"].lower() != "release"
+SystemInfo["DeveloperImage"] = IMAGETYPE.lower() != "release"
 SystemInfo["CommonInterface"] = eDVBCIInterfaces.getInstance().getNumOfSlots()
 SystemInfo["CommonInterfaceCIDelay"] = fileCheck("/proc/stb/tsmux/rmx_delay")
 for cislot in range(0, SystemInfo["CommonInterface"]):
@@ -213,7 +218,7 @@ for cislot in range(0, SystemInfo["CommonInterface"]):
 	SystemInfo[f"CI{cislot}RelevantPidsRoutingSupport"] = fileCheck(f"/proc/stb/tsmux/ci{cislot}_relevant_pids_routing")
 SystemInfo["NumVideoDecoders"] = getNumVideoDecoders()
 SystemInfo["Udev"] = not fileExists("/dev/.devfsd")
-SystemInfo["HasFullHDSkinSupport"] = SystemInfo["boxtype"] not in ("vipertwin",)
+SystemInfo["HasFullHDSkinSupport"] = MODEL not in ("vipertwin",)
 SystemInfo["PIPAvailable"] = MODEL not in ("i55plus") and SystemInfo["NumVideoDecoders"] > 1
 SystemInfo["CanMeasureFrontendInputPower"] = eDVBResourceManager.getInstance().canMeasureFrontendInputPower()
 SystemInfo["12V_Output"] = Misc_Options.getInstance().detected_12V_output()
@@ -225,10 +230,10 @@ SystemInfo["ConfigDisplay"] = SystemInfo["FrontpanelDisplay"] and SystemInfo["di
 SystemInfo["LCDSKINSetup"] = pathExists("/usr/share/enigma2/display") and not SystemInfo["7segment"]
 SystemInfo["OledDisplay"] = fileExists("/dev/dbox/oled0")
 SystemInfo["LcdDisplay"] = fileExists("/dev/dbox/lcd0")
-SystemInfo["LCDsymbol_hdd"] = SystemInfo["boxtype"] in ("mutant51",) and fileCheck("/proc/stb/lcd/symbol_hdd")
-SystemInfo["HasNoDisplay"] = SystemInfo["boxtype"] in ("et4x00", "et5x00", "et6x00", "gb800se", "gb800solo", "gbx34k", "iqonios300hd", "mbmicro", "sf128", "sf138", "tmsingle", "tmnano2super", "tmnanose", "tmnanoseplus", "tmnanosem2", "tmnanosem2plus", "tmnanosecombo", "vusolo")
-SystemInfo["DisplayLED"] = SystemInfo["boxtype"] in ("gb800se", "gb800solo", "gbx1", "gbx2", "gbx3", "gbx3h")
-SystemInfo["LEDButtons"] = False  # SystemInfo["boxtype"] == "vuultimo", For some reason this causes a cpp crash on vuultimo (which we no longer build). The cause needs investigating or the dead code in surrounding modules that this change causes should be removed.
+SystemInfo["LCDsymbol_hdd"] = MODEL in ("mutant51",) and fileCheck("/proc/stb/lcd/symbol_hdd")
+SystemInfo["HasNoDisplay"] = BOXTYPE in ("et4x00", "et5x00", "et6x00", "gb800se", "gb800solo", "gbx34k", "iqonios300hd", "mbmicro", "sf128", "sf138", "tmsingle", "tmnano2super", "tmnanose", "tmnanoseplus", "tmnanosem2", "tmnanosem2plus", "tmnanosecombo", "vusolo")
+SystemInfo["DisplayLED"] = MODEL in ("gb800se", "gb800solo", "gbx1", "gbx2", "gbx3", "gbx3h")
+SystemInfo["LEDButtons"] = False  # MODEL == "vuultimo", For some reason this causes a cpp crash on vuultimo (which we no longer build). The cause needs investigating or the dead code in surrounding modules that this change causes should be removed.
 SystemInfo["Fan"] = fileCheck("/proc/stb/fp/fan")
 SystemInfo["FanPWM"] = SystemInfo["Fan"] and fileCheck("/proc/stb/fp/fan_pwm")
 SystemInfo["PowerLED"] = fileExists("/proc/stb/power/powerled")
@@ -241,31 +246,31 @@ SystemInfo["LedSuspendColor"] = fileExists("/proc/stb/fp/ledsuspendledcolor")
 SystemInfo["Power24x7On"] = fileExists("/proc/stb/fp/power4x7on")
 SystemInfo["Power24x7Standby"] = fileExists("/proc/stb/fp/power4x7standby")
 SystemInfo["Power24x7Suspend"] = fileExists("/proc/stb/fp/power4x7suspend")
-SystemInfo["WakeOnLAN"] = SystemInfo["boxtype"] not in ("et8000", "et10000") and fileCheck("/proc/stb/power/wol") or fileCheck("/proc/stb/fp/wol")
+SystemInfo["WakeOnLAN"] = MODEL not in ("et8000", "et10000") and fileCheck("/proc/stb/power/wol") or fileCheck("/proc/stb/fp/wol")
 SystemInfo["hasHdmiCec"] = fileExists("/dev/hdmi_cec") or fileExists("/dev/misc/hdmi_cec0")
 SystemInfo["HasExternalPIP"] = MODEL not in ("et9x00", "et6x00", "et5x00") and fileCheck("/proc/stb/vmpeg/1/external")
 SystemInfo["VideoDestinationConfigurable"] = fileExists("/proc/stb/vmpeg/0/dst_left")
 SystemInfo["hasPIPVisibleProc"] = fileCheck("/proc/stb/vmpeg/1/visible")
-SystemInfo["VFD_scroll_repeats"] = not SystemInfo["7segment"] and SystemInfo["boxtype"] not in ("et8500",) and fileCheck("/proc/stb/lcd/scroll_repeats")
-SystemInfo["VFD_scroll_delay"] = not SystemInfo["7segment"] and SystemInfo["boxtype"] not in ("et8500",) and fileCheck("/proc/stb/lcd/scroll_delay")
-SystemInfo["VFD_initial_scroll_delay"] = not SystemInfo["7segment"] and SystemInfo["boxtype"] not in ("et8500",) and fileCheck("/proc/stb/lcd/initial_scroll_delay")
-SystemInfo["VFD_final_scroll_delay"] = not SystemInfo["7segment"] and SystemInfo["boxtype"] not in ("et8500",) and fileCheck("/proc/stb/lcd/final_scroll_delay")
+SystemInfo["VFD_scroll_repeats"] = not SystemInfo["7segment"] and MODEL not in ("et8500",) and fileCheck("/proc/stb/lcd/scroll_repeats")
+SystemInfo["VFD_scroll_delay"] = not SystemInfo["7segment"] and MODEL not in ("et8500",) and fileCheck("/proc/stb/lcd/scroll_delay")
+SystemInfo["VFD_initial_scroll_delay"] = not SystemInfo["7segment"] and MODEL not in ("et8500",) and fileCheck("/proc/stb/lcd/initial_scroll_delay")
+SystemInfo["VFD_final_scroll_delay"] = not SystemInfo["7segment"] and MODEL not in ("et8500",) and fileCheck("/proc/stb/lcd/final_scroll_delay")
 SystemInfo["LcdLiveTV"] = fileCheck("/proc/stb/fb/sd_detach") or fileCheck("/proc/stb/lcd/live_enable")
 SystemInfo["LCDMiniTV"] = fileExists("/proc/stb/lcd/mode")
-SystemInfo["LCDMiniTVPiP"] = SystemInfo["LCDMiniTV"] and SystemInfo["boxtype"] != "gb800ueplus"
+SystemInfo["LCDMiniTVPiP"] = SystemInfo["LCDMiniTV"] and MODEL != "gb800ueplus"
 SystemInfo["LcdPowerOn"] = fileExists("/proc/stb/power/vfd")
 SystemInfo["FastChannelChange"] = False
-SystemInfo["Blindscan_t2_available"] = fileCheck("/proc/stb/info/vumodel") and SystemInfo["boxtype"].startswith("vu")
-SystemInfo["Vu_EAC3_fix"] = SystemInfo["boxtype"] in ("vuultimo4k", "vuduo4kse")
+SystemInfo["Blindscan_t2_available"] = fileCheck("/proc/stb/info/vumodel") and MODEL.startswith("vu")
+SystemInfo["Vu_EAC3_fix"] = MODEL in ("vuultimo4k", "vuduo4kse")
 SystemInfo["HasTranscoding"] = pathExists("/proc/stb/encoder/0") or fileCheck("/dev/bcm_enc0")
 SystemInfo["HasH265Encoder"] = fileHas("/proc/stb/encoder/0/vcodec_choices", "h265")
-SystemInfo["CanNotDoSimultaneousTranscodeAndPIP"] = SystemInfo["boxtype"] in ("vusolo4k", "gbquad4k", "gbquad4kpro", "gbue4k")
-SystemInfo["hasXcoreVFD"] = SystemInfo["boxtype"] in ("osmega", "spycat4k", "spycat4kmini", "spycat4kcomb") and fileCheck("/sys/module/brcmstb_%s/parameters/pt6302_cgram" % SystemInfo["boxtype"])
+SystemInfo["CanNotDoSimultaneousTranscodeAndPIP"] = MODEL in ("vusolo4k", "gb7252")
+SystemInfo["hasXcoreVFD"] = MODEL in ("osmega", "spycat4k", "spycat4kmini", "spycat4kcomb") and fileCheck(f"/sys/module/brcmstb_{MODEL}/parameters/pt6302_cgram")
 SystemInfo["HasHDMIin"] = SystemInfo["hdmifhdin"] or SystemInfo["hdmihdin"]
 SystemInfo["HDMIinPiP"] = SystemInfo["HasHDMIin"] and BRAND != "dreambox"
 SystemInfo["CanHDMIinRecord"] = fileExists("/proc/stb/encoder/0/decoder")
 SystemInfo["Has24hz"] = fileCheck("/proc/stb/video/videomode_24hz") or MODEL in ("h7")
-SystemInfo["canBackupEMC"] = MODEL in ("hd51", "h7") and ("disk.img", "%s" % SystemInfo["MBbootdevice"]) or MODEL in ("osmio4k", "osmio4kplus", "osmini4k") and ("emmc.img", "%s" % SystemInfo["MBbootdevice"]) or SystemInfo["HasHiSi"] and ("usb_update.bin", "none")
+SystemInfo["canBackupEMC"] = MODEL in ("hd51", "h7", "h17") and ("disk.img", "%s" % SystemInfo["MBbootdevice"]) or MODEL in ("osmio4k", "osmio4kplus", "osmini4k") and ("emmc.img", "%s" % SystemInfo["MBbootdevice"]) or SystemInfo["HasHiSi"] and ("usb_update.bin", "none")
 SystemInfo["canMode12"] = MODEL in ("hd51", "h7") and ("brcm_cma=440M@328M brcm_cma=192M@768M", "brcm_cma=520M@248M brcm_cma=200M@768M")
 SystemInfo["HasMMC"] = fileHas("/proc/cmdline", "root=/dev/mmcblk") or "mmcblk" in SystemInfo["mtdrootfs"]
 SystemInfo["HasH9SD"] = MODEL in ("h9", "i55plus") and pathExists("/dev/mmcblk0p1")
@@ -317,8 +322,7 @@ SystemInfo["VideoModes"] = CHIPSET.replace("hi", "") in (  # 2160p and 1080p cap
 	["720p", "1080i", "576p", "576i", "480p", "480i"],  # Normal modes.
 	{"720p", "1080i"}  # Widescreen modes.
 )
-
-SystemInfo["FbcTunerPowerAlwaysOn"] = SystemInfo["boxtype"] in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse", "dm900", "dm920")
+SystemInfo["FbcTunerPowerAlwaysOn"] = MODEL in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse", "dm900", "dm920")
 SystemInfo["HasPhysicalLoopthrough"] = ["Vuplus DVB-S NIM(AVL2108)", "GIGA DVB-S2 NIM (Internal)"]
 SystemInfo["HasFBCtuner"] = ["Vuplus DVB-C NIM(BCM3158)", "Vuplus DVB-C NIM(BCM3148)", "Vuplus DVB-S NIM(7376 FBC)", "Vuplus DVB-S NIM(45308X FBC)", "Vuplus DVB-S NIM(45208 FBC)", "DVB-S2 NIM(45208 FBC)", "DVB-S2X NIM(45308X FBC)", "DVB-S2 NIM(45308 FBC)", "DVB-C NIM(3128 FBC)", "BCM45208", "BCM45308X", "BCM45308X FBC", "BCM3158"]
 SystemInfo["FCCactive"] = False

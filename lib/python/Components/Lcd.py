@@ -3,7 +3,7 @@ from sys import maxsize
 from enigma import eDBoxLCD, eTimer, eActionMap
 
 from Components.config import config, ConfigSubsection, ConfigSelection, ConfigSlider, ConfigYesNo, ConfigNothing
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, BOXTYPE, MODEL
 from Tools.Directories import fileExists
 from Screens.InfoBar import InfoBar
 from Screens.Screen import Screen
@@ -177,7 +177,7 @@ def standbyCounterChanged(dummy):
 def InitLcd():
 	if SystemInfo["HasNoDisplay"]:
 		detected = False
-	elif SystemInfo["boxtype"] in ('gbtrio4k',):
+	elif BOXTYPE in ('gbtrio4k',):
 		detected = True
 	else:
 		detected = eDBoxLCD.getInstance().detected()
@@ -351,7 +351,7 @@ def InitLcd():
 		def setLCDminitvfps(configElement):
 			ilcd.setLCDMiniTVFPS(configElement.value)
 
-		if SystemInfo["boxtype"] in ('dm900', 'dm920'):
+		if MODEL in ('dm900', 'dm920'):
 			standby_default = 4
 		else:
 			standby_default = 0
@@ -412,14 +412,14 @@ def InitLcd():
 			if "live_enable" in SystemInfo["LcdLiveTV"]:
 				config.misc.standbyCounter.addNotifier(standbyCounterChangedLCDLiveTV, initial_call=False)
 
-		if SystemInfo["LCDMiniTV"] and SystemInfo["boxtype"] not in ('gbquad4k', 'gbquad4kpro', 'gbue4k'):
+		if SystemInfo["LCDMiniTV"] and MODEL not in ("gb7252", ):
 			config.lcd.minitvmode = ConfigSelection([("0", _("normal")), ("1", _("MiniTV")), ("2", _("OSD")), ("3", _("MiniTV with OSD"))], "0")
 			config.lcd.minitvmode.addNotifier(setLCDminitvmode)
 			config.lcd.minitvpipmode = ConfigSelection([("0", _("off")), ("5", _("PIP")), ("7", _("PIP with OSD"))], "0")
 			config.lcd.minitvpipmode.addNotifier(setLCDminitvpipmode)
 			config.lcd.minitvfps = ConfigSlider(default=30, limits=(0, 30))
 			config.lcd.minitvfps.addNotifier(setLCDminitvfps)
-		elif can_lcdmodechecking and SystemInfo["boxtype"] in ('gbquad4k', 'gbquad4kpro', 'gbue4k'):
+		elif can_lcdmodechecking and MODEL in ("gb7252", ):
 			#  (0:normal, 1:video0, 2:fb, 3:vide0+fb, 4:video1, 5:vide0+video1, 6:video1+fb, 7:video0+video1+fb)
 			config.lcd.minitvmode = ConfigSelection(default="0", choices=[
 				("0", _("normal")),

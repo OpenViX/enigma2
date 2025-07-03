@@ -128,7 +128,7 @@ class ServiceName(Converter):
 
 	def getName(self, ref, info):
 		sref = hasattr(self.source, "serviceref") and self.source.serviceref
-		name = (ref and info.getName(ref)) or (sref and (self.source.info and self.source.info.getName(sref)) or sref.getName())
+		name = ref and hasattr(info, "getName") and info.getName(ref) or sref and hasattr(self.source.info, "getName") and self.source.info.getName(sref) or hasattr(sref, "getName") and sref.getName()
 		if not name:
 			if not ref:
 				name = info.getName()

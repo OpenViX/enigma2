@@ -3,7 +3,7 @@ from Components.config import config, configfile
 from Components.Console import Console
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import BOXTYPE, KERNEL, MTDROOTFS
 from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
 from Screens.WizardLanguage import WizardLanguage
@@ -47,11 +47,11 @@ patterns_skip = [
 	"enigma2-plugin-systemplugins-vix",
 ]
 
-STARTUP = "kernel=/zImage root=/dev/%s rootsubdir=linuxrootfs0" % SystemInfo["mtdrootfs"]					# /STARTUP
-STARTUP_RECOVERY = "kernel=/zImage root=/dev/%s rootsubdir=linuxrootfs0" % SystemInfo["mtdrootfs"] 			# /STARTUP_RECOVERY
-STARTUP_1 = "kernel=/linuxrootfs1/zImage root=/dev/%s rootsubdir=linuxrootfs1" % SystemInfo["mtdrootfs"] 	# /STARTUP_1
-STARTUP_2 = "kernel=/linuxrootfs2/zImage root=/dev/%s rootsubdir=linuxrootfs2" % SystemInfo["mtdrootfs"] 	# /STARTUP_2
-STARTUP_3 = "kernel=/linuxrootfs3/zImage root=/dev/%s rootsubdir=linuxrootfs3" % SystemInfo["mtdrootfs"] 	# /STARTUP_3
+STARTUP = "kernel=/zImage root=/dev/%s rootsubdir=linuxrootfs0" % MTDROOTFS					# /STARTUP
+STARTUP_RECOVERY = "kernel=/zImage root=/dev/%s rootsubdir=linuxrootfs0" % MTDROOTFS 			# /STARTUP_RECOVERY
+STARTUP_1 = "kernel=/linuxrootfs1/zImage root=/dev/%s rootsubdir=linuxrootfs1" % MTDROOTFS 	# /STARTUP_1
+STARTUP_2 = "kernel=/linuxrootfs2/zImage root=/dev/%s rootsubdir=linuxrootfs2" % MTDROOTFS 	# /STARTUP_2
+STARTUP_3 = "kernel=/linuxrootfs3/zImage root=/dev/%s rootsubdir=linuxrootfs3" % MTDROOTFS 	# /STARTUP_3
 
 
 class VuWizard(WizardLanguage, Rc):
@@ -102,8 +102,8 @@ class VuWizard(WizardLanguage, Rc):
 				with open("/STARTUP_3", 'w') as f:
 					f.write(STARTUP_3)
 				cmdlist = []
-				cmdlist.append("dd if=/dev/%s of=/zImage" % SystemInfo["mtdkernel"])					# backup old kernel
-				cmdlist.append("dd if=/usr/bin/kernel_auto.bin of=/dev/%s" % SystemInfo["mtdkernel"])  # create new kernel
+				cmdlist.append("dd if=/dev/%s of=/zImage" % KERNEL)					# backup old kernel
+				cmdlist.append("dd if=/usr/bin/kernel_auto.bin of=/dev/%s" % KERNEL)  # create new kernel
 				cmdlist.append("mv /usr/bin/STARTUP.cpio.gz /STARTUP.cpio.gz")						# copy userroot routine
 				for file in glob.glob("/media/*/vuplus/*/force.update", recursive=True):
 					cmdlist.append("mv %s %s" % (file, file.replace("force.update", "noforce.update")))						# remove Vu force update(Vu+ Zero4k)
@@ -115,21 +115,21 @@ class VuWizard(WizardLanguage, Rc):
 							if xline.find("/media/hdd") != -1 and "ext4" in xline:
 								hddExt4 = True
 								break
-				if hddExt4 and pathExists("/media/hdd/%s/linuxrootfs1" % SystemInfo["boxtype"]):
+				if hddExt4 and pathExists("/media/hdd/%s/linuxrootfs1" % BOXTYPE):
 					self.Console.eBatch(cmdlist, self.eMMCload, debug=True)
 				elif hddExt4:
-					if not pathExists("/media/hdd/%s" % SystemInfo["boxtype"]):
-						cmdlist.append("mkdir /media/hdd/%s" % SystemInfo["boxtype"])
+					if not pathExists("/media/hdd/%s" % BOXTYPE):
+						cmdlist.append("mkdir /media/hdd/%s" % BOXTYPE)
 					cmdlist.append("mkdir /tmp/mmc")
-					cmdlist.append("mount /dev/%s /tmp/mmc" % SystemInfo["mtdrootfs"])
-					cmdlist.append("rsync -aAXHS /tmp/mmc/ /media/hdd/%s/linuxrootfs1" % SystemInfo["boxtype"])
+					cmdlist.append("mount /dev/%s /tmp/mmc" % MTDROOTFS)
+					cmdlist.append("rsync -aAXHS /tmp/mmc/ /media/hdd/%s/linuxrootfs1" % BOXTYPE)
 					cmdlist.append("umount /tmp/mmc")
-					cmdlist.append("cp /zImage /media/hdd/%s/linuxrootfs1/" % SystemInfo["boxtype"])
+					cmdlist.append("cp /zImage /media/hdd/%s/linuxrootfs1/" % BOXTYPE)
 					self.Console.eBatch(cmdlist, self.eMMCload, debug=True)
 				else:
 					cmdlist.append("mkdir /tmp/mmc")
 					cmdlist.append("mkdir /linuxrootfs1")
-					cmdlist.append("mount /dev/%s /tmp/mmc" % SystemInfo["mtdrootfs"])
+					cmdlist.append("mount /dev/%s /tmp/mmc" % MTDROOTFS)
 					cmdlist.append("/bin/tar -jcf /tmp/linuxrootfs1.tar.bz2 -C /tmp/mmc --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./linuxrootfs* --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock .")
 					cmdlist.append("/bin/tar -jxf /tmp/linuxrootfs1.tar.bz2 -C /linuxrootfs1 .")
 					cmdlist.append("cp /zimage /linuxrootfs1/")
@@ -141,11 +141,11 @@ class VuWizard(WizardLanguage, Rc):
 	def eMMCload(self, *args, **kwargs):
 		cmdlist = []
 		for eMMCslot in range(1, 4):
-			if pathExists("/media/hdd/%s/linuxrootfs%s" % (SystemInfo["boxtype"], eMMCslot)):
-				cmdlist.append("cp -R /media/hdd/%s/linuxrootfs%s . /" % (SystemInfo["boxtype"], eMMCslot))
-				cmdlist.append("rm -r /media/hdd/%s/linuxrootfs%s" % (SystemInfo["boxtype"], eMMCslot))
+			if pathExists("/media/hdd/%s/linuxrootfs%s" % (BOXTYPE, eMMCslot)):
+				cmdlist.append("cp -R /media/hdd/%s/linuxrootfs%s . /" % (BOXTYPE, eMMCslot))
+				cmdlist.append("rm -r /media/hdd/%s/linuxrootfs%s" % (BOXTYPE, eMMCslot))
 		if cmdlist:
-			cmdlist.append("rm -rf /media/hdd/%s" % SystemInfo["boxtype"])
+			cmdlist.append("rm -rf /media/hdd/%s" % BOXTYPE)
 			self.Console.eBatch(cmdlist, self.reBoot, debug=False)
 		else:
 			self.reBoot()

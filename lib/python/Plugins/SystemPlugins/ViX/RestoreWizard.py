@@ -3,7 +3,7 @@ from os import listdir, path, stat
 from Components.config import config
 from Components.Console import Console
 from Components.Pixmap import Pixmap
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, DISPLAYBRAND, MACHINENAME
 from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
 from Screens.WizardLanguage import WizardLanguage
@@ -33,7 +33,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.Console = Console()
 
 	def getTranslation(self, text):
-		return _(text).replace("%s %s", "%s %s" % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]))
+		return _(text).replace("%s %s", "%s %s" % (DISPLAYBRAND, MACHINENAME))
 
 	def listDevices(self):
 		devmounts = []
@@ -158,7 +158,7 @@ class RestoreWizard(WizardLanguage, Rc):
 				print("[RestoreWizard] Stage 6: No Network")
 				self.didPluginRestore = True
 				self.NextStep = "reboot"
-				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s is not connected to the Internet. Please try using Backup manager to restore plugins later.") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+				self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s is not connected to the Internet. Please try using Backup manager to restore plugins later.") % (DISPLAYBRAND, MACHINENAME), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 				self.buildListRef.setTitle(_("Restore wizard"))
 			elif self.feeds == "ERROR":
 				self.NextStep = "pluginrestore"
@@ -206,15 +206,15 @@ class RestoreWizard(WizardLanguage, Rc):
 		print("[RestoreWizard] Stage 4: Feeds Test Result", result)
 		if result.find("wget returned 4") != -1:
 			self.NextStep = "reboot"
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available.") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available.") % (DISPLAYBRAND, MACHINENAME), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif result.find("wget returned 8") != -1:
 			self.NextStep = "reboot"
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later.") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later.") % (DISPLAYBRAND, MACHINENAME), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif result.find("bad address") != -1:
 			self.NextStep = "reboot"
-			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s is not connected to the Internet. Please try using the Backup manager to restore plugins later.") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"]), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
+			self.buildListRef = self.session.openWithCallback(self.buildListfinishedCB, MessageBox, _("Your %s %s is not connected to the Internet. Please try using the Backup manager to restore plugins later.") % (DISPLAYBRAND, MACHINENAME), type=MessageBox.TYPE_INFO, timeout=30, wizard=True)
 			self.buildListRef.setTitle(_("Restore wizard"))
 		elif result.find("wget returned 1") != -1 or result.find("wget returned 255") != -1 or result.find("404 Not Found") != -1:
 			self.NextStep = "reboot"

@@ -37,7 +37,7 @@ from enigma import eBackgroundFileEraser, eTimer, eServiceCenter, iServiceInform
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import config
 from Components.ServiceEventTracker import ServiceEventTracker
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, MODEL
 from Components.Task import job_manager as JobManager
 from RecordTimer import RecordTimerEntry, parseEvent
 from Screens.ChoiceBox import ChoiceBox
@@ -552,7 +552,7 @@ class InfoBarTimeshift:
 		self.stopTimeshiftcheckTimeshiftRunningCallback(True)
 		ts = self.getTimeshift()
 		if ts and not ts.startTimeshift():
-			if (SystemInfo["boxtype"] == "vuuno" or SystemInfo["boxtype"] == "vuduo") and ospath.exists("/proc/stb/lcd/symbol_timeshift"):
+			if (MODEL == "vuuno" or MODEL == "vuduo") and ospath.exists("/proc/stb/lcd/symbol_timeshift"):
 				if self.session.nav.RecordTimer.isRecording():
 					f = open("/proc/stb/lcd/symbol_timeshift", "w")
 					f.write("0")
@@ -936,66 +936,82 @@ class InfoBarTimeshift:
 		ptsmergeeventname = ""
 		ptsgetnextfile = False
 		ptsfilemerged = False
-
-		filelist = listdir(config.usage.default_path.value)
+		filepath = config.usage.default_path.value
+		filelist = listdir(filepath.encode())
+		files = []
+		print(f"[Timeshift][Timeshift] config.usage.default_path:{config.usage.default_path.value}")
 
 		if filelist is not None:
-			filelist.sort()
 
-		for filename in filelist:
-			if filename.endswith(".meta"):
-				# Get Event Info from meta file
-				readmetafile = open("%s%s" % (config.usage.default_path.value, filename), "r")
-				servicerefname = readmetafile.readline()[0:-1]
-				eventname = readmetafile.readline()[0:-1]
-				eventtitle = readmetafile.readline()[0:-1]
-				eventtime = readmetafile.readline()[0:-1]
-				eventtag = readmetafile.readline()[0:-1]
-				readmetafile.close()
+			print(f"[Timeshift][Timeshift] filelist:{filelist[0:20]}")
+			for filename2 in filelist:
+				try:
+					filesname = filename2.decode("utf-8", errors="strict")
+				except UnicodeDecodeError as e:
+					print("[Timeshift][Timeshift] Decoding Error utf-8:", e)
+					try:
+						filesname = filename2.decode("latin-1", errors="strict")
+					except UnicodeDecodeError as e:
+						print("[Timeshift][Timeshift] Decoding Error latin-1:", e)
+						continue
+				if filesname:
+					files.append(filesname)
+			if files is not None:
+				files.sort()
+			for filename in files:
+				# print(f"[Timeshift][Timeshift] filename in files:{filename}")
+				if fileExists("%s%s" % (config.usage.default_path.value, filename)) and filename.endswith(".meta"):
+					# print(f"[Timeshift][Timeshift] filename in files exists:{filename}")
+					# Get Event Info from meta file
+					readmetafile = open("%s%s" % (config.usage.default_path.value, filename), "r")
+					servicerefname = readmetafile.readline()[0:-1]
+					eventname = readmetafile.readline()[0:-1]
+					eventtitle = readmetafile.readline()[0:-1]
+					eventtime = readmetafile.readline()[0:-1]
+					eventtag = readmetafile.readline()[0:-1]
+					readmetafile.close()
 
-				if ptsgetnextfile:
-					ptsgetnextfile = False
-					ptsmergeSRC = filename[0:-5]
+					if ptsgetnextfile:
+						ptsgetnextfile = False
+						ptsmergeSRC = filename[0:-5]
+						if sanitizeFilename(eventname) == sanitizeFilename(ptsmergeeventname):
+							# print(f"[Timeshift][Timeshift] sanitize and copy EIT:{filename}")
+							# Copy EIT File
+							if fileExists("%s%s.eit" % (config.usage.default_path.value, ptsmergeSRC[0:-3])):
+								copyfile("%s%s.eit" % (config.usage.default_path.value, ptsmergeSRC[0:-3]), "%s%s.eit" % (config.usage.default_path.value, ptsmergeDEST[0:-3]))
 
-					if sanitizeFilename(eventname) == sanitizeFilename(ptsmergeeventname):
-						# Copy EIT File
-						if fileExists("%s%s.eit" % (config.usage.default_path.value, ptsmergeSRC[0:-3])):
-							copyfile("%s%s.eit" % (config.usage.default_path.value, ptsmergeSRC[0:-3]), "%s%s.eit" % (config.usage.default_path.value, ptsmergeDEST[0:-3]))
+							# Delete AP and SC Files
+							# print(f"[Timeshift][Timeshift] Delete AP and SC Files:{filename}")
+							if ospath.exists("%s%s.ap" % (config.usage.default_path.value, ptsmergeDEST)):
+								self.BgFileEraser.erase("%s%s.ap" % (config.usage.default_path.value, ptsmergeDEST))
+							if ospath.exists("%s%s.sc" % (config.usage.default_path.value, ptsmergeDEST)):
+								self.BgFileEraser.erase("%s%s.sc" % (config.usage.default_path.value, ptsmergeDEST))
 
-						# Delete AP and SC Files
-						if ospath.exists("%s%s.ap" % (config.usage.default_path.value, ptsmergeDEST)):
-							self.BgFileEraser.erase("%s%s.ap" % (config.usage.default_path.value, ptsmergeDEST))
-						if ospath.exists("%s%s.sc" % (config.usage.default_path.value, ptsmergeDEST)):
-							self.BgFileEraser.erase("%s%s.sc" % (config.usage.default_path.value, ptsmergeDEST))
+							# Add Merge Job to JobManager
+							JobManager.AddJob(MergeTimeshiftJob(self, "cat \"%s%s\" >> \"%s%s\"" % (config.usage.default_path.value, ptsmergeSRC, config.usage.default_path.value, ptsmergeDEST), ptsmergeSRC, ptsmergeDEST, eventname))
+							config.timeshift.isRecording.value = True
+							ptsfilemerged = True
+						else:
+							ptsgetnextfile = True
 
-						# Add Merge Job to JobManager
-						JobManager.AddJob(MergeTimeshiftJob(self, "cat \"%s%s\" >> \"%s%s\"" % (config.usage.default_path.value, ptsmergeSRC, config.usage.default_path.value, ptsmergeDEST), ptsmergeSRC, ptsmergeDEST, eventname))
-						config.timeshift.isRecording.value = True
-						ptsfilemerged = True
-					else:
+					if eventtag == "pts_merge" and not ptsgetnextfile:
+						# print(f"[Timeshift][Timeshift] pts_merge:{filename}")
 						ptsgetnextfile = True
+						ptsmergeDEST = filename[0:-5]
+						ptsmergeeventname = eventname
+						ptsfilemerged = False
 
-				if eventtag == "pts_merge" and not ptsgetnextfile:
-					ptsgetnextfile = True
-					ptsmergeDEST = filename[0:-5]
-					ptsmergeeventname = eventname
-					ptsfilemerged = False
+						# If still recording or transfering, try again later ...
+						if fileExists("%s%s" % (config.usage.default_path.value, ptsmergeDEST)):
+							statinfo = osstat("%s%s" % (config.usage.default_path.value, ptsmergeDEST))
+							if statinfo.st_mtime > (time() - 10.0):
+								self.pts_mergeRecords_timer.start(120000, True)
+								return
 
-					# If still recording or transfering, try again later ...
-					if fileExists("%s%s" % (config.usage.default_path.value, ptsmergeDEST)):
-						statinfo = osstat("%s%s" % (config.usage.default_path.value, ptsmergeDEST))
-						if statinfo.st_mtime > (time() - 10.0):
-							self.pts_mergeRecords_timer.start(120000, True)
-							return
-
-					# Rewrite Meta File to get rid of pts_merge tag
-					metafile = open("%s%s.meta" % (config.usage.default_path.value, ptsmergeDEST), "w")
-					metafile.write("%s\n%s\n%s\n%i\n" % (servicerefname, eventname.replace("\n", ""), eventtitle.replace("\n", ""), int(eventtime)))
-					metafile.close()
-
-		# Merging failed :(
-		if not ptsfilemerged and ptsgetnextfile:
-			Notifications.AddNotification(MessageBox, _("[Timeshift] Merging records failed!"), MessageBox.TYPE_ERROR)
+						# Rewrite Meta File to get rid of pts_merge tag
+						metafile = open("%s%s.meta" % (config.usage.default_path.value, ptsmergeDEST), "w")
+						metafile.write("%s\n%s\n%s\n%i\n" % (servicerefname, eventname.replace("\n", ""), eventtitle.replace("\n", ""), int(eventtime)))
+						metafile.close()
 
 	def ptsCreateAPSCFiles(self, filename):
 		if fileExists(filename, "r"):

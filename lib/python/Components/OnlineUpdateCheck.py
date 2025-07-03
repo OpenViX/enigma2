@@ -3,10 +3,10 @@ import socket
 from urllib.request import urlopen, Request
 
 from enigma import eTimer
-from Components.About import about
+from Components.About import getIfConfig
 from Components.config import config
 from Components.Ipkg import IpkgComponent
-from Components.SystemInfo import SystemInfo, KERNEL
+from Components.SystemInfo import SystemInfo, BOXTYPE, KERNEL
 import Components.Task
 
 error = 0
@@ -35,7 +35,7 @@ class FeedsStatusCheck:
 
 	def adapterAvailable(self):  # Box has an adapter configured and active
 		for adapter in ("eth0", "eth1", "wlan0", "wlan1", "wlan2", "wlan3", "ra0"):
-			if "addr" in about.getIfConfig(adapter):
+			if "addr" in getIfConfig(adapter):
 				print("[OnlineUpdateCheck][adapterAvailable] PASSED")
 				return True
 		print("[OnlineUpdateCheck][adapterAvailable] FAILED")
@@ -329,7 +329,7 @@ def kernelMismatch():
 def statusMessage():
 	# returns message if status message is found, else False.
 	# status-message.php goes in the root folder of the feeds webserver
-	uri = "http://%s/status-message.php?machine=%s&version=%s&build=%s" % (SystemInfo["feedsurl"].split("/")[2], SystemInfo["boxtype"], SystemInfo["imageversion"], SystemInfo["imagebuild"])
+	uri = "http://%s/status-message.php?machine=%s&version=%s&build=%s" % (SystemInfo["feedsurl"].split("/")[2], BOXTYPE, SystemInfo["imageversion"], SystemInfo["imagebuild"])
 	try:
 		req = Request(uri)
 		d = urlopen(req)

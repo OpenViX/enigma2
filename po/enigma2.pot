@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-20 12:09+0200\n"
+"POT-Creation-Date: 2025-06-12 18:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -796,8 +796,8 @@ msgid "%d marked items"
 msgstr ""
 
 #, python-format
-msgid "%d milisecond"
-msgid_plural "%d miliseconds"
+msgid "%d millisecond"
+msgid_plural "%d milliseconds"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -927,14 +927,6 @@ msgstr ""
 
 #, python-format
 msgid "%s"
-msgstr ""
-
-#, python-format
-msgid "%s "
-msgstr ""
-
-#, python-format
-msgid "%s   "
 msgstr ""
 
 #, python-format
@@ -9215,9 +9207,6 @@ msgstr ""
 msgid "Plugin browser"
 msgstr ""
 
-msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
-msgstr ""
-
 msgid "Poker"
 msgstr ""
 
@@ -13977,6 +13966,9 @@ msgstr ""
 msgid "Wallis and Futuna"
 msgstr ""
 
+msgid "Wan IP:"
+msgstr ""
+
 msgid "War"
 msgstr ""
 
@@ -14351,6 +14343,10 @@ msgid "Your %s %s has no network access, please check your network settings and 
 msgstr ""
 
 #, python-format
+msgid "Your %s %s has successfully flashed slot %s, enter 'Yes' to reboot new image or 'No' to return to Enigma2."
+msgstr ""
+
+#, python-format
 msgid ""
 "Your %s %s is about to create a full image backup, this can take about 6 minutes to complete.\n"
 "Do you want to allow this?"
@@ -14408,10 +14404,6 @@ msgstr ""
 
 #, python-format
 msgid "Your %s %s is shutting down"
-msgstr ""
-
-#, python-format
-msgid "Your %s %s might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
 msgstr ""
 
 #, python-format
@@ -14484,6 +14476,10 @@ msgid "Your receiver can use tone amplitude. Consult your receiver's manual for 
 msgstr ""
 
 msgid "Your receiver does not have an internet connection"
+msgstr ""
+
+#, python-format
+msgid "Your receiver might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
 msgstr ""
 
 msgid "Youth"
@@ -16709,7 +16705,7 @@ msgstr ""
 msgid "Configure the longitude of your location."
 msgstr ""
 
-msgid "Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can."
+msgid "Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can, including, if necessary, items whose specified number of days in the trash can has not yet concluded."
 msgstr ""
 
 msgid "Configure the minimum width before showing the 'i' icon, '0' is equal to not showing the icon at all."
@@ -16721,7 +16717,7 @@ msgstr ""
 msgid "Configure the netmask."
 msgstr ""
 
-msgid "Configure the number of days after which items are automatically removed from the trash can. A setting of 0 disables this."
+msgid "Configure the number of days after which items are automatically removed from the trash can. If the setting is 0 all items in the trash can will be removed by the next delete event, which normally occurs when preparing to make a recording."
 msgstr ""
 
 msgid "Configure the number of days old timers are kept before they are automatically removed from the timer list."

@@ -11,6 +11,8 @@ def InitEPGConfig():
 	config.epgselection.sort = ConfigSelection(default="0", choices=[("0", _("Time")), ("1", _("Alphanumeric"))])
 	config.epgselection.overjump = ConfigYesNo(default=False)
 
+	tmdb = isPluginInstalled("tmdb")
+
 	serviceTitleChoices = [
 		("servicename", _("Service Name")),
 		("picon", _("Picon")),
@@ -56,7 +58,7 @@ def InitEPGConfig():
 	config.epgselection.infobar.btn_epglong = ConfigSelection(choices=infoActions, default="")
 	config.epgselection.infobar.btn_info = ConfigSelection(choices=infoActions, default="openEventView")
 	config.epgselection.infobar.btn_infolong = ConfigSelection(choices=infoActions, default="openSingleEPG")
-	config.epgselection.infobar.btn_red = ConfigSelection(choices=epgActions, default="openTMDb" if isPluginInstalled("tmdb") else "openIMDb")
+	config.epgselection.infobar.btn_red = ConfigSelection(choices=epgActions, default="openTMDb" if tmdb else "openIMDb")
 	config.epgselection.infobar.btn_redlong = ConfigSelection(choices=epgActions, default="sortEPG")
 	config.epgselection.infobar.btn_green = ConfigSelection(choices=epgActions, default="addEditTimer")
 	config.epgselection.infobar.btn_greenlong = ConfigSelection(choices=epgActions, default="openTimerList")
@@ -73,7 +75,7 @@ def InitEPGConfig():
 	config.epgselection.single.eventfs = ConfigSelectionNumber(default=0, stepwidth=1, min=-8, max=10, wraparound=True)
 	choices = [(0, _("Use skin default"))] + [(i, _("%d") % i) for i in range(1, 41)]
 	config.epgselection.single.itemsperpage = ConfigSelection(default=0, choices=choices)
-	config.epgselection.single.btn_red = ConfigSelection(choices=epgActions, default="openTMDb" if isPluginInstalled("tmdb") else "openIMDb")
+	config.epgselection.single.btn_red = ConfigSelection(choices=epgActions, default="openTMDb" if tmdb else "openIMDb")
 	config.epgselection.single.btn_redlong = ConfigSelection(choices=epgActions, default="sortEPG")
 	config.epgselection.single.btn_green = ConfigSelection(choices=epgActions, default="addEditTimer")
 	config.epgselection.single.btn_greenlong = ConfigSelection(choices=epgActions, default="openTimerList")
@@ -106,7 +108,7 @@ def InitEPGConfig():
 	config.epgselection.multi.btn_infolong = ConfigSelection(choices=infoActions, default="openSingleEPG")
 	config.epgselection.multi.btn_rec = ConfigSelection(choices=recActions, default="addEditTimerMenu")
 	config.epgselection.multi.btn_reclong = ConfigSelection(choices=recActions, default="addEditZapTimerSilent")
-	config.epgselection.multi.btn_red = ConfigSelection(choices=epgActions, default="openTMDb" if isPluginInstalled("tmdb") else "openIMDb")
+	config.epgselection.multi.btn_red = ConfigSelection(choices=epgActions, default="openTMDb" if tmdb else "openIMDb")
 	config.epgselection.multi.btn_redlong = ConfigSelection(choices=epgActions, default="sortEPG")
 	config.epgselection.multi.btn_green = ConfigSelection(choices=epgActions, default="addEditTimer")
 	config.epgselection.multi.btn_greenlong = ConfigSelection(choices=epgActions, default="openTimerList")
@@ -159,7 +161,7 @@ def InitEPGConfig():
 	config.epgselection.grid.btn_reclong = ConfigSelection(choices=recActions, default="addEditZapTimerSilent")
 	config.epgselection.grid.btn_channelup = ConfigSelection(choices=channelUpActions, default="forward24Hours")
 	config.epgselection.grid.btn_channeldown = ConfigSelection(choices=channelDownActions, default="back24Hours")
-	config.epgselection.grid.btn_red = ConfigSelection(choices=epgActions, default="openTMDb" if isPluginInstalled("tmdb") else "openIMDb")
+	config.epgselection.grid.btn_red = ConfigSelection(choices=epgActions, default="openTMDb" if tmdb else "openIMDb")
 	config.epgselection.grid.btn_redlong = ConfigSelection(choices=epgActions, default="sortEPG")
 	config.epgselection.grid.btn_green = ConfigSelection(choices=epgActions, default="addEditTimer")
 	config.epgselection.grid.btn_greenlong = ConfigSelection(choices=epgActions, default="openTimerList")

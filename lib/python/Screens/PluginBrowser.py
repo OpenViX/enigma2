@@ -13,7 +13,7 @@ from Components.OnlineUpdateCheck import feedsstatuscheck, kernelMismatch
 from Components.PluginComponent import plugins
 from Components.PluginList import PluginList, PluginEntryComponent, PluginCategoryComponent, PluginDownloadComponent
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, DISPLAYBRAND, MACHINENAME
 from Plugins.Plugin import PluginDescriptor
 from Screens.ChoiceBox import ChoiceBox
 from Screens.Console import Console
@@ -225,7 +225,7 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 	def download(self):
 		config.misc.pluginbrowser.po.value = True
 		if not (feedsstatuscheck.adapterAvailable() and feedsstatuscheck.NetworkUp()):
-			self.session.openWithCallback(self.close, MessageBox, _("Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again.") % (SystemInfo["MachineBrand"], SystemInfo["MachineName"], feedsstatuscheck.adapterAvailable() and 'internet' or 'network'), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
+			self.session.openWithCallback(self.close, MessageBox, _("Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again.") % (DISPLAYBRAND, MACHINENAME, feedsstatuscheck.adapterAvailable() and 'internet' or 'network'), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
 			return
 		if kernelMismatch():
 			self.session.openWithCallback(self.close, MessageBox, _("The Linux kernel has changed, plugins are not compatible. \nInstall latest image using USB stick or Image Manager."), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)

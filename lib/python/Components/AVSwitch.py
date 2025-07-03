@@ -3,7 +3,7 @@ from os import path
 from enigma import eAVSwitch, eDVBVolumecontrol, getDesktop
 
 from Components.config import ConfigBoolean, ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, BOXTYPE, MODEL
 from Tools.CList import CList
 from Tools.Directories import isPluginInstalled
 
@@ -43,7 +43,7 @@ class AVSwitch:
 				"multi": {50: "2160p50", 60: "2160p"},
 				"auto": {50: "2160p50", 60: "2160p", 24: "2160p24"}}
 
-	if SystemInfo["boxtype"] in ("dm900", "dm920"):
+	if MODEL in ("dm900", "dm920"):
 		rates["2160p"] = {"50Hz": {50: "2160p50"},
 				"60Hz": {60: "2160p60"},
 				"multi": {50: "2160p50", 60: "2160p60"},
@@ -226,7 +226,7 @@ class AVSwitch:
 				ratelist = []
 				for rate in rates:
 					if rate == "auto":
-						if SystemInfo["Has24hz"] or SystemInfo["boxtype"] in ("dm900", "dm920"):
+						if SystemInfo["Has24hz"] or MODEL in ("dm900", "dm920"):
 							ratelist.append((rate, mode == "2160p30" and "auto (25Hz/30Hz/24Hz)" or "auto (50Hz/60Hz/24Hz)"))
 					else:
 						ratelist.append((rate, rate == "multi" and (mode == "2160p30" and "multi (25Hz/30Hz)" or "multi (50Hz/60Hz)") or rate))
@@ -343,7 +343,7 @@ iAVSwitch = AVSwitch()
 
 
 def InitAVSwitch():
-	delay_choices = [(i, ngettext("%d milisecond", "%d miliseconds", i) % i) for i in list(range(0, 3000, 100))]  # noqa: F821
+	delay_choices = [(i, ngettext("%d millisecond", "%d milliseconds", i) % i) for i in list(range(0, 3000, 100))]  # noqa: F821
 	config.av.passthrough_fix_long = ConfigSelection(choices=delay_choices, default=1200)
 	config.av.passthrough_fix_short = ConfigSelection(choices=delay_choices, default=100)
 	config.av.yuvenabled = ConfigBoolean(default=True)
@@ -511,7 +511,7 @@ def InitAVSwitch():
 					("10bit", _("10bit")),
 					("12bit", _("12bit"))]
 		default = "auto"
-		if SystemInfo["boxtype"] == "gbquad4kpro" and config.av.videomode[config.av.videoport.value].value == "2160p":
+		if BOXTYPE == "gbquad4kpro" and config.av.videomode[config.av.videoport.value].value == "2160p":
 			choices = [("10bit", "10bit"), ("12bit", "12bit")]
 			default = "10bit"
 		elif SystemInfo["havehdmicolordepthchoices"] and SystemInfo["CanProc"]:
@@ -846,7 +846,7 @@ def InitAVSwitch():
 				open("/proc/stb/vmpeg/0/pep_apply", "w").write("1")
 			except (IOError, OSError):
 				print("[AVSwitch] couldn't write pep_scaler_sharpness")
-		if SystemInfo["boxtype"] in ("gbquad", "gbquadplus"):
+		if BOXTYPE in ("gbquad", "gbquadplus"):
 			config.av.scaler_sharpness = ConfigSlider(default=5, limits=(0, 26))
 		else:
 			config.av.scaler_sharpness = ConfigSlider(default=13, limits=(0, 26))
