@@ -181,7 +181,7 @@ class ChoiceBox(Screen, HelpableScreen):
 	def pageDown(self):
 		if self.list:
 			self["list"].pageDown()
-			if self["list"].getCurrent()[0][0] != ChoiceList.SPACER:  # if we landed on a spacer skip to next item
+			if self["list"].getCurrent()[0][0] == ChoiceList.SPACER:  # if we landed on a spacer skip to next item
 				self.down()
 
 	def up(self):
