@@ -485,6 +485,13 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 		eDebug("[ePicLoad] Interlaced PNG 8bit -> 32bit");
 	}
 
+	// When we have RGBA 8bit PNG expand it to standard 32bit png so to preserve alpha channel and to allow proper alphablending
+	if (color_type == PNG_COLOR_TYPE_RGBA && bit_depth == 8) {
+		png_set_expand(png_ptr);
+		bit_depth = 32;
+		eDebug("[ePicLoad] RGBA PNG 8bit -> 32bit");
+	}
+
 
 	if (color_type == PNG_COLOR_TYPE_RGBA || color_type == PNG_COLOR_TYPE_GA) {
 		filepara->transparent = true;
@@ -574,10 +581,10 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 		if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA)
 			png_set_gray_to_rgb(png_ptr);
 
-		if ((color_type == PNG_COLOR_TYPE_PALETTE) || (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) || (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)))
+		if (bit_depth < 32 && ((color_type == PNG_COLOR_TYPE_PALETTE) || (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) || (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))))
 			png_set_expand(png_ptr);
 
-		if (color_type & PNG_COLOR_MASK_ALPHA || png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
+		if (bit_depth < 32 && (color_type & PNG_COLOR_MASK_ALPHA || png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)))
 		{
 			png_set_strip_alpha(png_ptr);
 			png_color_16 bg;
@@ -592,6 +599,7 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 		png_read_update_info(png_ptr, info_ptr);
 
 		int bpp = png_get_rowbytes(png_ptr, info_ptr) / width;
+		if (bit_depth == 32) bpp = 4;
 		eDebug("[ePicLoad] RGB data from PNG file int bpp %x)", bpp);
 		if ((bpp != 4) && (bpp != 3))
 		{
@@ -650,10 +658,14 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 			}
 			delete[] pic_buffer;
 			filepara->pic_buffer = pic_buffer24;
+			filepara->bits = 24;
 		}
 		else
+		{
 			filepara->pic_buffer = pic_buffer;
-		filepara->bits = 24;
+			filepara->bits = 24;
+		}
+		
 	}
 }
 
