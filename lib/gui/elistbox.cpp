@@ -562,11 +562,12 @@ int eListbox::event(int event, void *data, void *data2)
 			gRegion entryrect = m_orientation == orVertical ? eRect(0, 0, size().width(), m_itemheight) : eRect(0, 0, m_itemwidth, size().height());
 			const gRegion &paint_region = *(gRegion*)data;
 
+			int cornerRadius = getCornerRadius();
+			int cornerRadiusEdges = getCornerRadiusEdges();
+
+			painter.clip(paint_region);
 			if (!isTransparent())
 			{
-				int cornerRadius = getCornerRadius();
-				int cornerRadiusEdges = getCornerRadiusEdges();
-				painter.clip(paint_region);
 				style->setStyle(painter, eWindowStyle::styleListboxNormal);
 				if (m_style.m_background_color_set)
 					painter.setBackgroundColor(m_style.m_background_color);
@@ -574,12 +575,48 @@ int eListbox::event(int event, void *data, void *data2)
 				if (cornerRadius && cornerRadiusEdges)
 				{
 					painter.setRadius(cornerRadius, cornerRadiusEdges);
-					painter.drawRectangle(eRect(ePoint(0, 0), size()));
+					if (!m_style.m_background)
+					{
+						painter.drawRectangle(eRect(ePoint(0, 0), size()));
+					}
+					else
+					{
+						if (!m_style.m_transparent_background)
+						{
+							painter.blit(m_style.m_background, eRect(ePoint(0, 0), size()), eRect(), 0);
+						}
+						else
+						{
+							painter.blit(m_style.m_background, eRect(ePoint(0, 0), size()), eRect(), gPainter::BT_ALPHABLEND);
+						}
+
+					}
 				}
 				else
 					painter.clear();
-				painter.clippop();
 			}
+			else
+			{
+				if (cornerRadius && cornerRadiusEdges)
+				{
+					painter.setRadius(cornerRadius, cornerRadiusEdges);
+				}
+
+				if (m_style.m_background)
+				{
+					if (!m_style.m_transparent_background)
+					{
+						painter.blit(m_style.m_background, eRect(ePoint(0, 0), size()), eRect(), 0);
+					}
+					else
+					{
+						painter.blit(m_style.m_background, eRect(ePoint(0, 0), size()), eRect(), gPainter::BT_ALPHABLEND);
+					}
+				}
+			}
+			painter.clippop();
+
+
 
 			int xoffset = 0;
 			int yoffset = 0;
