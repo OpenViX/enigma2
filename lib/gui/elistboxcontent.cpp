@@ -816,14 +816,14 @@ static void clearRegionHelper(gPainter &painter, eListboxStyle *local_style, con
 			if (isverticallb)
 			{
 				if (local_style->m_transparent_background)
-					painter.blit(local_style->m_background, ePoint(offset.x(), offset.y() + (size.height() - local_style->m_background->size().height()) / 2), eRect(), gPainter::BT_ALPHATEST);
+					painter.blit(local_style->m_background, ePoint(offset.x(), offset.y() + (size.height() - local_style->m_background->size().height()) / 2), eRect(), gPainter::BT_ALPHABLEND);
 				else
 					painter.blit(local_style->m_background, ePoint(offset.x(), offset.y() + (size.height() - local_style->m_background->size().height()) / 2), eRect(), 0);
 			}
 			else
 			{
 				if (local_style->m_transparent_background)
-					painter.blit(local_style->m_background, ePoint(offset.x() + (size.width() - local_style->m_background->size().width()) / 2, offset.y()), eRect(), gPainter::BT_ALPHATEST);
+					painter.blit(local_style->m_background, ePoint(offset.x() + (size.width() - local_style->m_background->size().width()) / 2, offset.y()), eRect(), gPainter::BT_ALPHABLEND);
 				else
 					painter.blit(local_style->m_background, ePoint(offset.x() + (size.width() - local_style->m_background->size().width()) / 2, offset.y()), eRect(), 0);
 			}
@@ -1361,7 +1361,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 							pwidth = PyTuple_GET_ITEM(item, 3),
 							pheight = PyTuple_GET_ITEM(item, 4),
 							pfilled_perc = PyTuple_GET_ITEM(item, 5),
-							ppixmap, pborderWidth, pforeColor, pforeColorSelected, pbackColor, pbackColorSelected;
+							ppixmap, pborderWidth, pforeColor, pforeColorSelected, pbackColor, pbackColorSelected, pCornerRadius, pCornerEdges;
 				int idx = 6;
 				if (type == TYPE_PROGRESS)
 				{
@@ -1414,11 +1414,20 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 						pbackColorSelected=ePyObject();
 				}
 
+				if (size > idx)
+					pCornerRadius = PyTuple_GET_ITEM(item, idx++);
+
+				if (size > idx)
+					pCornerEdges = PyTuple_GET_ITEM(item, idx++);
+
 				int x = (PyFloat_Check(px) ? (int)PyFloat_AsDouble(px) : PyLong_AsLong(px)) + offset.x();
 				int y = (PyFloat_Check(py) ? (int)PyFloat_AsDouble(py) : PyLong_AsLong(py)) + offset.y();
 				int width = PyFloat_Check(pwidth) ? (int)PyFloat_AsDouble(pwidth) : PyLong_AsLong(pwidth);
 				int height = PyFloat_Check(pheight) ? (int)PyFloat_AsDouble(pheight) : PyLong_AsLong(pheight);
 				int filled = PyFloat_Check(pfilled_perc) ? (int)PyFloat_AsDouble(pfilled_perc) : PyLong_AsLong(pfilled_perc);
+
+				int cornerRadius = pCornerRadius ? PyLong_AsLong(pCornerRadius) : 0;
+				uint8_t cornerEdges = pCornerEdges ? PyLong_AsLong(pCornerEdges) : 0;
 
 				if ((filled < 0) && data) /* if the string is in a negative number, it refers to the 'data' list. */
 					filled = PyLong_AsLong(PyTuple_GetItem(data, -filled));
@@ -1432,11 +1441,14 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				eRect rect(x, y, width, height);
 				painter.clip(rect);
 
+				if (!cornerRadius)
 				{
 					gRegion rc(rect);
 					bool mustClear = (selected && pbackColorSelected) || (!selected && pbackColor);
 					clearRegion(painter, style, local_style, pforeColor, pforeColorSelected, pbackColor, pbackColorSelected, selected, rc, sel_clip, offset, m_itemsize, cursorValid, mustClear, isverticallb);
 				}
+				else
+					bwidth = 0; // border not supported for rounded edges
 
 				// border
 				if (bwidth) {
@@ -1455,6 +1467,19 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 
 				rect.setRect(x+bwidth, y+bwidth, (width-bwidth*2) * filled / 100, height-bwidth*2);
 
+				if (cornerRadius)
+				{
+					painter.setRadius(cornerRadius, cornerEdges);
+					if (!ppixmap)
+					{
+						if(selected && !pforeColorSelected)
+							pforeColorSelected = pforeColor;
+						unsigned int color = PyLong_AsUnsignedLongMask(selected ? pforeColorSelected : pforeColor);
+						painter.setBackgroundColor(gRGB(color));
+					}
+					
+				}
+
 				// progress
 				if (ppixmap)
 				{
@@ -1471,8 +1496,94 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 					painter.blit(pixmap, rect.topLeft(), rect, 0);
 				}
 				else
+				{
+					if (cornerRadius)
+						painter.drawRectangle(rect);
+					else
+						painter.fill(rect);
+				}
+
+				painter.clippop();
+				break;
+			}
+			case TYPE_RECT:
+			{
+				ePyObject px = PyTuple_GET_ITEM(item, 1),
+						  py = PyTuple_GET_ITEM(item, 2),
+						  pwidth = PyTuple_GET_ITEM(item, 3),
+						  pheight = PyTuple_GET_ITEM(item, 4),
+						  pbackColor, pbackColorSelected, pborderWidth, pborderColor, pborderColorselected, pCornerRadius, pCornerEdges;
+
+				if (size > 5)
+					pbackColor = lookupColor(PyTuple_GET_ITEM(item, 5), data);
+
+				if (size > 6)
+					pbackColorSelected = lookupColor(PyTuple_GET_ITEM(item, 6), data);
+
+				if (size > 7)
+				{
+					pborderWidth = PyTuple_GET_ITEM(item, 7);
+					if (pborderWidth == Py_None)
+						pborderWidth=ePyObject();
+				}
+				if (size > 8)
+					pborderColor = lookupColor(PyTuple_GET_ITEM(item, 8), data);
+
+				if (size > 9)
+					pborderColorselected = lookupColor(PyTuple_GET_ITEM(item, 9), data);
+
+				if (size > 10)
+					pCornerRadius = PyTuple_GET_ITEM(item, 10);
+
+				if (size > 11)
+					pCornerEdges = PyTuple_GET_ITEM(item, 11);
+
+
+				int x = (PyFloat_Check(px) ? (int)PyFloat_AsDouble(px) : PyLong_AsLong(px)) + offset.x();
+				int y = (PyFloat_Check(py) ? (int)PyFloat_AsDouble(py) : PyLong_AsLong(py)) + offset.y();
+				int width = PyFloat_Check(pwidth) ? (int)PyFloat_AsDouble(pwidth) : PyLong_AsLong(pwidth);
+				int height = PyFloat_Check(pheight) ? (int)PyFloat_AsDouble(pheight) : PyLong_AsLong(pheight);
+				int bwidth = pborderWidth ? PyLong_AsLong(pborderWidth) : 0;
+				int cornerRadius = pCornerRadius ? PyLong_AsLong(pCornerRadius) : 0;
+				uint8_t cornerEdges = pCornerEdges ? PyLong_AsLong(pCornerEdges) : 0;
+				if (cornerRadius)
+					bwidth = 0; // border not supported for rounded edges
+				
+				eRect rect(x, y, width, height);
+				painter.clip(rect);
+
+				// border
+				if (bwidth) {
+					if(selected && !pborderColorselected)
+						pborderColorselected = pborderColor;
+					unsigned int color = PyLong_AsUnsignedLongMask(selected ? pborderColorselected : pborderColor);
+					painter.setForegroundColor(gRGB(color));
+					rect.setRect(x, y, width, bwidth);
 					painter.fill(rect);
 
+					rect.setRect(x, y+bwidth, bwidth, height-bwidth);
+					painter.fill(rect);
+
+					rect.setRect(x+bwidth, y+height-bwidth, width-bwidth, bwidth);
+					painter.fill(rect);
+
+					rect.setRect(x+width-bwidth, y+bwidth, bwidth, height-bwidth);
+					painter.fill(rect);
+				}
+
+				rect.setRect(x+bwidth, y+bwidth, (width-bwidth*2), height-bwidth*2);
+
+				if(cornerRadius && cornerEdges && (pbackColor || pbackColorSelected))
+				{
+					painter.setRadius(cornerRadius, cornerEdges);
+				}
+				
+				if(selected && !pbackColorSelected)
+					pbackColorSelected = pbackColor;
+				unsigned int color = PyLong_AsUnsignedLongMask(selected ? pbackColorSelected : pbackColor);
+				painter.setBackgroundColor(gRGB(color));
+				painter.drawRectangle(rect);
+			
 				painter.clippop();
 				break;
 			}
