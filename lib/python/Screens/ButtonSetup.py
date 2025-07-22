@@ -87,7 +87,9 @@ ButtonSetupKeys = [(_("Red"), "red", "Infobar/openSingleServiceEPG/1"),
 	(_("F4"), "f4", ""),
 	(_("F4 long"), "f4_long", ""),
 	(_("WWW"), "www", ""),
-	(_("WWW long"), "www_long", "")]
+	(_("WWW long"), "www_long", ""),
+	(_("Archive"), "archive", ""),
+	(_("Archive long"), "archive_long", "")]
 
 config.misc.ButtonSetup = ConfigSubsection()
 config.misc.ButtonSetup.additional_keys = ConfigYesNo(default=True)

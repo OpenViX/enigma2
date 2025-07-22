@@ -38,7 +38,6 @@ class MenuList(GUIComponent):
 	def setList(self, list):
 		self.list = list
 		self.l.setList(self.list)
-		self.selectionChanged()
 
 	def moveToIndex(self, idx):
 		if self.instance is not None:
