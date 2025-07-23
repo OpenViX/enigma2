@@ -515,7 +515,7 @@ void eListboxPythonConfigContent::paint(gPainter &painter, eWindowStyle &style, 
 	// Draw frame here so to be drawn under icons
 	if (selected && (!local_style || !local_style->m_selection) && (!local_style || !local_style->m_border_set))
 			style.drawFrame(painter, eRect(offset, m_itemsize), eWindowStyle::frameListboxEntry);
-		
+
 	bool sep = false;
 
 	if (m_list && cursorValid)
@@ -1477,7 +1477,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 						unsigned int color = PyLong_AsUnsignedLongMask(selected ? pforeColorSelected : pforeColor);
 						painter.setBackgroundColor(gRGB(color));
 					}
-					
+
 				}
 
 				// progress
@@ -1548,7 +1548,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				uint8_t cornerEdges = pCornerEdges ? PyLong_AsLong(pCornerEdges) : 0;
 				if (cornerRadius)
 					bwidth = 0; // border not supported for rounded edges
-				
+
 				eRect rect(x, y, width, height);
 				painter.clip(rect);
 
@@ -1577,13 +1577,13 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				{
 					painter.setRadius(cornerRadius, cornerEdges);
 				}
-				
+
 				if(selected && !pbackColorSelected)
 					pbackColorSelected = pbackColor;
 				unsigned int color = PyLong_AsUnsignedLongMask(selected ? pbackColorSelected : pbackColor);
 				painter.setBackgroundColor(gRGB(color));
 				painter.drawRectangle(rect);
-			
+
 				painter.clippop();
 				break;
 			}
