@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-12 19:41+0300\n"
-"PO-Revision-Date: 2025-06-12 19:59+0300\n"
+"POT-Creation-Date: 2025-07-23 00:54+0300\n"
+"PO-Revision-Date: 2025-07-24 21:53+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2200,6 +2200,12 @@ msgstr "Arabia"
 
 msgid "Architektur"
 msgstr "Arkkitehtuurinen"
+
+msgid "Archive"
+msgstr "Arkisto"
+
+msgid "Archive long"
+msgstr "Arkisto pitkä"
 
 msgid "Are You Sure ?"
 msgstr "Oletko varma ?"
@@ -6856,6 +6862,10 @@ msgstr "Lapsille"
 msgid "G"
 msgstr "G"
 
+#, python-format
+msgid "GCC version:\t%s\n"
+msgstr "GCC versio:\t%s\n"
+
 msgid "GREEN"
 msgstr "VIHREÄ"
 
@@ -7002,6 +7012,10 @@ msgstr "Gibraltar"
 
 msgid "Gioco"
 msgstr "Peli"
+
+#, python-format
+msgid "Glibc version:\t%s\n"
+msgstr "Glibc versio:\t%s\n"
 
 msgid "Go back 24 hours"
 msgstr "Hyppää takaisin 24 tuntia"
@@ -7164,9 +7178,6 @@ msgstr "Voimistelu"
 
 msgid "H"
 msgstr "H"
-
-msgid "H7/H9/H9COMBO/H10 new Model"
-msgstr "H7/H9/H9COMBO/H10 uusi malli"
 
 msgid "H9 SDcard manager"
 msgstr "H9 SD-kortin hallinnointi"
@@ -7542,6 +7553,9 @@ msgstr "Unkari"
 
 msgid "I"
 msgstr "I"
+
+msgid "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 new Model"
+msgstr "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 uusi malli"
 
 msgid "IDLE"
 msgstr "TYHJÄKÄYNTI"
@@ -10260,6 +10274,10 @@ msgid "Open the service list"
 msgstr "Avaa kanavalista"
 
 #, python-format
+msgid "OpenSSL version:\t%s\n"
+msgstr "OpenSSL versio:\t%s\n"
+
+#, python-format
 msgid ""
 "OpenTV EPG download completed.\n"
 "Next download: %s"
@@ -10420,6 +10438,9 @@ msgstr "EDELLINEN KAPPALE"
 
 msgid "PRIMETIME"
 msgstr "PRIMETIME"
+
+msgid "PULSe 4K/4K Mini"
+msgstr "PULSe 4K/4K Mini"
 
 msgid "PVR"
 msgstr "PVR"
@@ -12415,6 +12436,10 @@ msgstr "Venäjä"
 msgid "Russian Federation"
 msgstr "Venäjä"
 
+#, python-format
+msgid "Rust version:\t%s\n"
+msgstr "Rust versio:\t%s\n"
+
 msgid "Rwanda"
 msgstr "Ruanda"
 
@@ -12540,6 +12565,10 @@ msgstr "Samba-asetukset"
 
 msgid "Samba Setup"
 msgstr "Samba-asetukset"
+
+#, python-format
+msgid "Samba:\t%s\n"
+msgstr "Samba:\t%s\n"
 
 msgid "Same resolution as skin"
 msgstr "Sama resoluutio kuin teemassa"
@@ -15131,6 +15160,9 @@ msgstr "TMDb-haku"
 msgid "TMDb search"
 msgstr "TMDb-haku"
 
+msgid "TMDb search for current event"
+msgstr "Nykyisen ohjelman TMDb-haku"
+
 msgid "TMDb search for highlighted event"
 msgstr "TMDb-haku korostetusta ohjelmasta"
 
@@ -15140,7 +15172,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 12.06.2025 ---\n"
+"--- 24.07.2025 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -16258,6 +16290,10 @@ msgstr "TUNTEMATON"
 
 msgid "UP"
 msgstr "YLÖS"
+
+#, python-format
+msgid "UPX version:\t%s\n"
+msgstr "UPX versio:\t%s\n"
 
 msgid "URL"
 msgstr "URL"

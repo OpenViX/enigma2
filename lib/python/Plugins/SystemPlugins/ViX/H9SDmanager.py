@@ -47,6 +47,9 @@ class H9SDmanager(Screen):
 	def layoutFinished(self):
 		self.setTitle(_("H9 SDcard manager"))
 
+	def reboot(self):
+		self.session.open(TryQuitMainloop, 2)
+
 	def SDInit(self):
 		if SystemInfo["HasH9SD"]:
 			self.TITLE = _("Init Zgemma H9 SDCARD - please reboot after use.")
@@ -56,9 +59,7 @@ class H9SDmanager(Screen):
 			cmdlist.append("umount /dev/mmcblk0p1")
 			cmdlist.append("dd if=/dev/zero of=/dev/mmcblk0p1 bs=1M count=150")
 			cmdlist.append("mkfs.ext4 -L 'H9-ROOTFS' /dev/mmcblk0p1")
-			# cmdlist.append("parted -s /dev/mmcblk0 rm 1")
-			# cmdlist.append("parted -s /dev/mmcblk0 mklabel gpt")
-			# cmdlist.append("parted -s /dev/mmcblk0 mkpart rootfs2 ext4 0% 100%")
+
 			cmdlist.append("mkdir /tmp/mmc")
 			cmdlist.append("mount /dev/mmcblk0p1 /tmp/mmc")
 			cmdlist.append("mkdir /tmp/root")
@@ -72,20 +73,17 @@ class H9SDmanager(Screen):
 		else:
 			self.close()
 
-	def reboot(self):
-		self.session.open(TryQuitMainloop, 2)
-
 	def USBInit(self):
 		self.TITLE = _("Init Zgemma H9 USB/SDA1 - please reboot after use.")
 		cmdlist = []
 		cmdlist.append("opkg update")
 		cmdlist.append("opkg install rsync")
-		cmdlist.append("umount /dev/mmcblk0p1")
+		cmdlist.append("umount /dev/sda1")
 		cmdlist.append("dd if=/dev/zero of=/dev/sda1 bs=1M count=150")
 		cmdlist.append("mkfs.ext4 -L 'H9-ROOTFS' /dev/sda1")
 		# cmdlist.append("mkfs.ext4 -L 'rootfs2' /dev/sda1")
 		cmdlist.append("mkdir /tmp/mmc")
-		cmdlist.append("mount /dev/mmcblk0p1 /tmp/mmc")
+		cmdlist.append("mount /dev/sda1 /tmp/mmc")
 		cmdlist.append("mkdir /tmp/root")
 		cmdlist.append("mount --bind / /tmp/root")
 		cmdlist.append("rsync -aAX /tmp/root/ /tmp/mmc/")

@@ -616,9 +616,13 @@ class VIXImageManager(Screen):
 			else:
 				CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)  # Normal multiboot
 		elif SystemInfo["HasH9SD"]:
-			if fileHas("/proc/cmdline", "root=/dev/mmcblk0p1") is True and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 using SD card
+			if fileHas("/proc/cmdline", "root=/dev/mmcblk0p1") is True:  # h9 using SD card
 				CMD = "/usr/bin/ofgwrite -rmmcblk0p1 '%s'" % MAINDEST
-			elif fileExists("%s/rootfs.ubi" % MAINDEST) and fileExists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 no SD card - build has both roots causes ofgwrite issue
+				rename("%s/rootfs.ubi" % MAINDEST, "%s/xx.txt" % MAINDEST)  # h9 usb card - build has both roots causes ofgwrite issue
+			elif fileHas("/proc/cmdline", "root=/dev/sda1") is True:  # h9 using usb
+				CMD = "/usr/bin/ofgwrite -rsda1 '%s'" % MAINDEST
+				rename("%s/rootfs.ubi" % MAINDEST, "%s/xx.txt" % MAINDEST)  # h9 usb card - build has both roots causes ofgwrite issue
+			else:  # h9 no SD card - build has both roots causes ofgwrite issue
 				rename("%s/rootfs.tar.bz2" % MAINDEST, "%s/xx.txt" % MAINDEST)
 		print(f"[ImageManager] running command:{CMD} root:{getattr(self, 'MTDROOTFS', 'not set')}")
 		self.Console.ePopen(CMD, self.ofgwriteResult)

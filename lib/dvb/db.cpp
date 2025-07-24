@@ -2683,6 +2683,7 @@ RESULT eDVBDB::appendServicesToBouquet(const std::string &filename, ePyObject se
 
 RESULT eDVBDB::removeBouquet(const std::string &filename_regex)
 {
+	eDebug("[eDVBDB] RegEx expression: '%s'", filename_regex.c_str());
 	std::string ext = ".tv";
 	int type = 1;
 	if (filename_regex.find(".radio") != std::string::npos) {
@@ -2705,12 +2706,14 @@ RESULT eDVBDB::removeBouquet(const std::string &filename_regex)
 		if (entry->d_type == DT_REG)
 		{
 			std::string path = entry->d_name;
+			eDebug("[eDVBDB] Processing bouquet '%s' for deletion.", path.c_str());
 			if (std::regex_search(path, std::regex(filename_regex)))
 			{
+				eDebug("[eDVBDB] Found match with expression '%s' in path: '%s'", filename_regex.c_str(), (p+path).c_str());
 				if (path.find("subbouquet.") != std::string::npos) {
 					int status = std::remove((p+path).c_str());
 					if (status != 0) {
-						eDebug("[eDVBDB] ERROR DELETING FILE %s", path.c_str());
+						eDebug("[eDVBDB] ERROR DELETING FILE '%s'", path.c_str());
 					}
 					continue;
 				}
@@ -2723,22 +2726,15 @@ RESULT eDVBDB::removeBouquet(const std::string &filename_regex)
 				{
 					if (!db->getBouquet(rootref, bouquet) && bouquet)
 					{
+						eDebug("[eDVBDB] Found bouquet for removal with path: '%s'", (p+path).c_str());
 						int status = std::remove((p+path).c_str());
 						if (status != 0) {
-							eDebug("[eDVBDB] ERROR DELETING FILE %s", path.c_str());
+							eDebug("[eDVBDB] ERROR DELETING FILE '%s'", path.c_str());
 						}
 						m_bouquets.erase(path);
 						bouquet->m_services.remove(bouquetref);
 						bouquet->flushChanges();
 					}
-					else
-					{
-						return -1;
-					}
-				}
-				else
-				{
-					return -1;
 				}
 			}
 		}
