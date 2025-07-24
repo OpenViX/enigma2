@@ -265,8 +265,10 @@ class About(AboutBase):
 		AboutText += _("Glibc version:\t%s\n") % getGlibcVersion()
 		AboutText += _("FFmpeg version:\t%s\n") % getVersionFromOpkg("ffmpeg")
 		AboutText += _("OpenSSL version:\t%s\n") % getVersionFromOpkg("openssl")
-		AboutText += _("Rust version:\t%s\n") % str(BoxInfo.getItem("rust"))
-		AboutText += _("UPX version:\t%s\n") % (BoxInfo.getItem("upx"))
+		if BoxInfo.getItem("rust"):
+			AboutText += _("Rust version:\t%s\n") % str(BoxInfo.getItem("rust"))
+		if BoxInfo.getItem("upx"):
+			AboutText += _("UPX version:\t%s\n") % str(BoxInfo.getItem("upx"))
 		if isPluginInstalled("ServiceApp") and config.plugins.serviceapp.servicemp3.replace.value:
 			AboutText += _("4097 iptv player:\t%s\n") % config.plugins.serviceapp.servicemp3.player.value
 		else:
