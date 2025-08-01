@@ -19,7 +19,7 @@ class TemplatedMultiContent(StringList):
 		self.active_style = None
 		self.template = eval(args, {}, loc)
 		self.scale = None
-		self.orientations = {"orHorizontal": eListbox.orHorizontal, "orVertical": eListbox.orVertical}
+		self.orientations = {"orHorizontal": eListbox.orHorizontal, "orVertical": eListbox.orVertical, "orGrid": eListbox.orGrid}
 		assert "fonts" in self.template
 		assert "itemHeight" in self.template
 		assert "template" in self.template or "templates" in self.template
