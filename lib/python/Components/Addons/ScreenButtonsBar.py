@@ -163,7 +163,7 @@ class ScreenButtonsBar(GUIAddon):
 								pos=(xPos, yPos),
 								size=(width_text, height),
 								png=pic,
-								backcolor=0x000000, backcolor_sel=None, flags=BT_SCALE, corner_radius=self.cornerRadius))
+								backcolor=0x000000, backcolor_sel=None, flags=BT_SCALE, cornerRadius=self.cornerRadius))
 						res.append(MultiContentEntryText(
 							pos=(xPos + textPaddings, yPos), size=(textWidth, height - 2),
 							font=0, flags=textFlags,
@@ -172,7 +172,7 @@ class ScreenButtonsBar(GUIAddon):
 					res.append(MultiContentEntryText(
 						pos=(xPos, yPos), size=(width_text, height - 2),
 						font=0, flags=textFlags,
-						text=buttonText, color=textColor, color_sel=textColor, backcolor=backColor, corner_radius=self.cornerRadius))
+						text=buttonText, color=textColor, color_sel=textColor, backcolor=backColor, cornerRadius=self.cornerRadius))
 
 				if shouldBreak:
 					break

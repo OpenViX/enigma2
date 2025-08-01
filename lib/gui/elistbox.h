@@ -110,7 +110,7 @@ struct eListboxStyle
 class eListbox: public eWidget
 {
 	void updateScrollBar();
-public:
+public: 
 	eListbox(eWidget *parent);
 	~eListbox();
 
@@ -125,7 +125,7 @@ public:
 	};
 	void setScrollbarMode(int mode);
 	void setWrapAround(bool);
-	enum { orHorizontal, orVertical };
+	enum { orHorizontal, orVertical, orGrid };
 	void setOrientation(int orientation);
 
 	void setContent(iListboxContent *content);
@@ -235,6 +235,7 @@ public:
 protected:
 	int event(int event, void *data=0, void *data2=0);
 	void recalcSize();
+	ePoint getItemPostion(int index);
 
 private:
 	int m_scrollbar_mode, m_prev_scrollbar_page;
@@ -243,7 +244,7 @@ private:
 
 	int m_scrollbar_width;
 	int m_scrollbar_height;
-	int m_top, m_left, m_selected;
+	int m_top, m_left, m_max_columns, m_max_rows, m_selected;
 	int m_itemheight;
 	int m_itemwidth;
 	int m_orientation;
