@@ -217,6 +217,7 @@ public:
 	}
 	void setItemGradient(const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend);
 	void setItemGradientSelected(const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend);
+	void redrawItemByIndex(int index) { entryChanged(index); }
 
 #ifndef SWIG
 	struct eListboxStyle *getLocalStyle(void);

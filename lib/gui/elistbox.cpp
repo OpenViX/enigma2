@@ -1142,13 +1142,18 @@ void eListbox::entryChanged(int index)
 			invalidate(inv);
 		}
 	}
-	else
+	else if (m_orientation == orHorizontal)
 	{
 		if ((m_left <= index) && (index < (m_left + m_items_per_page)))
 		{
 			gRegion inv = eRect(m_itemwidth * (index-m_left), 0, m_itemwidth, size().height());
 			invalidate(inv);
 		}
+	}
+	else
+	{
+		gRegion inv = eRect(getItemPostion(index), eSize(m_itemwidth, m_itemheight));
+		invalidate(inv);
 	}
 }
 
