@@ -1,6 +1,6 @@
 from ast import literal_eval
 from hashlib import md5
-from os import listdir
+from os import listdir, access, R_OK
 from os.path import isfile, join as pathjoin
 from re import split
 from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager
@@ -104,6 +104,7 @@ DISPLAYMODEL = BoxInfo.getItem("displaymodel")
 DISPLAYBRAND = BoxInfo.getItem("displaybrand")
 MACHINEBUILD = BoxInfo.getItem("machinebuild")
 CHKROOTMB = BoxInfo.getItem("chkrootmb")
+UBIMB = BoxInfo.getItem("hasUBIMB")
 OEA = split(r'(\d.*)', BoxInfo.getItem("oe"))[1]
 
 
@@ -175,12 +176,13 @@ SystemInfo["resetMBoot"] = False  # Kexec kernel issue-this needs to be here so 
 SystemInfo["HasKexecUSB"] = False  # This needs to be here so it can be reset by getMultibootslots!
 SystemInfo["HasKexecMultiboot"] = fileHas("/proc/cmdline", "kexec=1")  # This needs to be here so it can be tested by getMultibootslots!
 from Tools.Multiboot import getMultibootslots, isFat32  # noqa: E402  This import needs to be here to avoid a SystemInfo load loop!
-SystemInfo["HasChkrootMultiboot"] = isFat32("/dev/block/by-name/others")
-SystemInfo["canchkroot"] = (fileExists("/dev/block/by-name/others") and not SystemInfo["HasChkrootMultiboot"] and not fileExists("/etc/.disableChkroot"))
+SystemInfo["HasChkrootMultiboot"] = isFat32("/dev/block/by-name/others") or fileExists("/dev/block/by-name/startup")
+SystemInfo["canchkroot"] = (UBIMB or fileExists("/dev/block/by-name/others")) and not SystemInfo["HasChkrootMultiboot"] and not fileExists("/etc/.disableChkroot")
 SystemInfo["HasHiSi"] = pathExists("/proc/hisi") and BOXTYPE not in ("vipertwin", "viper4kv20", "viper4kv40", "sfx6008", "sfx6018")  # This needs to be for later checks
 SystemInfo["canMultiBoot"] = getMultibootslots()
 # SystemInfo["MBbootdevice"] = device set in Tools/Multiboot.py
 # SystemInfo["MultiBootSlot"] = current slot set in Tools/Multiboot.py
+SystemInfo["MTDBLACK"] = ""  # HDD device set in Harddisk.py
 SystemInfo["DMRecovery"] = MODEL in ("dm900", "dm920") and fileExists("/proc/stb/fp/boot_mode")
 
 
@@ -202,6 +204,9 @@ def hasInitCam():
 	return bool([f for f in listdir("/etc/init.d") if f.startswith("softcam.") and f != "softcam.None"])
 
 
+SystemInfo["CanChangeOsdAlpha"] = access('/proc/stb/video/alpha', R_OK) and True or False
+SystemInfo["CanChangeOsdPosition"] = (access('/proc/stb/fb/dst_left', R_OK) or access('/proc/stb/vmpeg/0/dst_left', R_OK)) and True or False
+SystemInfo["OsdSetup"] = SystemInfo["CanChangeOsdPosition"]
 SystemInfo["CanKexecVu"] = MODEL in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse", "vuzero4k") and not SystemInfo["HasKexecMultiboot"]
 SystemInfo["HasUsbhdd"] = {}
 SystemInfo["ArchIsARM"] = ARCHITECTURE.startswith(("arm", "cortex"))
@@ -307,6 +312,9 @@ SystemInfo["hasRCA"] = SystemInfo["rca"]
 SystemInfo["hasScart"] = SystemInfo["scart"]
 SystemInfo["hasScartYUV"] = SystemInfo["scartyuv"]
 SystemInfo["hasYUV"] = SystemInfo["yuv"]
+SystemInfo["needsVideoJudderDriverFix"] = BOXTYPE in ("gbquad4kpro",)
+SystemInfo["scalerSharpnessWorkaround"] = BOXTYPE in ("gbquad", "gbquadplus")
+SystemInfo["dmVideoRates"] = MODEL in ("dm900", "dm920")
 
 SystemInfo["VideoModes"] = CHIPSET.replace("hi", "") in (  # 2160p and 1080p capable hardware...
 	"5272s", "7251", "7251s", "7252", "7252s", "7278", "7366", "7376", "7444s", "72604", "3798cv200", "3798mv200", "3798mv200advca", "3798mv200h", "3798mv300"

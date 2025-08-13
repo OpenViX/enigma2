@@ -352,6 +352,10 @@ def runScreenTest():
 	if not VuRecovery:
 		CiHandler.setSession(session)
 
+	profile("Init:Components.AVSwitch.VideoJudderDriverFixTask")
+	from Components.AVSwitch import startVideoJudderDriverFixTask
+	startVideoJudderDriverFixTask()
+
 	screensToRun = [p.fnc for p in plugins.getPlugins(PluginDescriptor.WHERE_WIZARD)]
 	profile("wizards")
 	screensToRun += wizardManager.getWizards()  # noqa: F405

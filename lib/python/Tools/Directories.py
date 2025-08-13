@@ -89,16 +89,16 @@ def addInList(*paths):
 	return [path for path in paths if pathIsdir(path)]
 
 
-skinResolveList = []
-lcdskinResolveList = []
-fontsResolveList = []
+class ResolveList:
+	skin = []
+	lcdskin = []
+	fonts = []
 
 
 def clearResolveLists():
-	global skinResolveList, lcdskinResolveList, fontsResolveList
-	skinResolveList = []
-	lcdskinResolveList = []
-	fontsResolveList = []
+	ResolveList.skin.clear()
+	ResolveList.lcdskin.clear()
+	ResolveList.fonts.clear()
 
 
 def resolveFilename(scope, base="", path_prefix=None):
@@ -156,34 +156,32 @@ def resolveFilename(scope, base="", path_prefix=None):
 					relative = "%s%s%s" % (pluginCode[0], sep, pluginCode[1])
 					path = pathJoin(plugins, relative)
 	elif scope == SCOPE_GUISKIN:
-		global skinResolveList
-		if not skinResolveList:
+		if not ResolveList.skin:
 			# This import must be here as this module finds the config file as part of the config initialisation.
 			from Components.config import config
 			skin = pathDirname(config.skin.primary_skin.value)
-			skinResolveList = addInList(
+			ResolveList.skin = addInList(
 				pathJoin(scopeConfig, skin),
 				pathJoin(scopeConfig, "skin_common"),
 				scopeConfig
 			)
 			if "skin_default" not in skin:
-				skinResolveList += addInList(pathJoin(scopeGUISkin, skin))
-			skinResolveList += addInList(
+				ResolveList.skin += addInList(pathJoin(scopeGUISkin, skin))
+			ResolveList.skin += addInList(
 				pathJoin(scopeGUISkin, "skin_fallback_%d" % getPrimarySkinResolution()),
 				pathJoin(scopeGUISkin, "skin_default"),
 				scopeGUISkin
 			)
-		path = itemExists(skinResolveList, base)
+		path = itemExists(ResolveList.skin, base)
 	elif scope == SCOPE_LCDSKIN:
-		global lcdskinResolveList
-		if not lcdskinResolveList:
+		if not ResolveList.lcdskin:
 			# This import must be here as this module finds the config file as part of the config initialisation.
 			from Components.config import config
 			if hasattr(config.skin, "display_skin"):
 				skin = pathDirname(config.skin.display_skin.value)
 			else:
 				skin = ""
-			lcdskinResolveList = addInList(
+			ResolveList.lcdskin = addInList(
 				pathJoin(scopeConfig, "display", skin),
 				pathJoin(scopeConfig, "display", "skin_common"),
 				scopeConfig,
@@ -192,25 +190,24 @@ def resolveFilename(scope, base="", path_prefix=None):
 				pathJoin(scopeLCDSkin, "skin_default"),
 				scopeLCDSkin
 			)
-		path = itemExists(lcdskinResolveList, base)
+		path = itemExists(ResolveList.lcdskin, base)
 	elif scope == SCOPE_FONTS:
-		global fontsResolveList
-		if not fontsResolveList:
+		if not ResolveList.fonts:
 			# This import must be here as this module finds the config file as part of the config initialisation.
 			from Components.config import config
 			skin = pathDirname(config.skin.primary_skin.value)
 			display = pathDirname(config.skin.display_skin.value) if hasattr(config.skin, "display_skin") else None
-			fontsResolveList = addInList(
+			ResolveList.fonts = addInList(
 				pathJoin(scopeConfig, "fonts"),
 				pathJoin(scopeConfig, skin, "fonts"),
 				pathJoin(scopeConfig, skin)
 			)
 			if display:
-				fontsResolveList += addInList(
+				ResolveList.fonts += addInList(
 					pathJoin(scopeConfig, "display", display, "fonts"),
 					pathJoin(scopeConfig, "display", display)
 				)
-			fontsResolveList += addInList(
+			ResolveList.fonts += addInList(
 				pathJoin(scopeConfig, "skin_common"),
 				scopeConfig,
 				pathJoin(scopeGUISkin, skin, "fonts"),
@@ -219,16 +216,16 @@ def resolveFilename(scope, base="", path_prefix=None):
 				pathJoin(scopeGUISkin, "skin_default")
 			)
 			if display:
-				fontsResolveList += addInList(
+				ResolveList.fonts += addInList(
 					pathJoin(scopeLCDSkin, display, "fonts"),
 					pathJoin(scopeLCDSkin, display)
 				)
-			fontsResolveList += addInList(
+			ResolveList.fonts += addInList(
 				pathJoin(scopeLCDSkin, "skin_default", "fonts"),
 				pathJoin(scopeLCDSkin, "skin_default"),
 				scopeFonts
 			)
-		path = itemExists(fontsResolveList, base)
+		path = itemExists(ResolveList.fonts, base)
 	elif scope == SCOPE_PLUGIN:
 		file = pathJoin(scopePlugins, base)
 		if pathExists(file):

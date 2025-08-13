@@ -171,6 +171,8 @@ class ScrollLabel(GUIComponent):
 	def getText(self):
 		return self.message
 
+	text = property(getText, setText)
+
 	def selectionChanged(self):
 		for x in self.onSelectionChanged:
 			x()

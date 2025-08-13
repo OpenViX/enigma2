@@ -143,10 +143,12 @@ class ServiceName(Converter):
 
 	def getProvider(self, ref, info):
 		sref = hasattr(self.source, "serviceref") and self.source.serviceref
-		prov = ((ref and ref.getProvider()) or (ref and info.getInfoString(ref, iServiceInformation.sProvider))) or (sref and ref and (self.source.info and self.source.info.getInfoString(sref, iServiceInformation.sProvider)) or sref.getProvider())
+		prov = ((ref and hasattr(ref, "getProvider") and ref.getProvider()) or (ref and info.getInfoString(ref, iServiceInformation.sProvider))) or (sref and ref and (self.source.info and self.source.info.getInfoString(sref, iServiceInformation.sProvider)) or (hasattr(sref, "getProvider") and sref.getProvider()))
 		if not prov:
 			if not ref:
 				prov = info.getInfoString(iServiceInformation.sProvider)
+			else:
+				prov = ""
 		return prov
 
 	def getOrbitalPos(self, ref, info):

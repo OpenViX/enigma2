@@ -457,7 +457,7 @@
 		<panel name="SummaryClockPanel" />
 	</screen>
 	<!-- OAWEATHER -->
-	<screen name="OAWeatherPluginSummary" position="0,0" size="400,240">
+	<screen name="OAWeatherOverviewSummary" position="0,0" size="400,240">
 		<widget font="FdLcD;40" foregroundColor="yellow" halign="center" noWrap="1" position="5,5" render="Label" size="390,45" source="session.OAWeather" transparent="1" zPosition="1">
 			<convert type="OAWeather">city</convert>
 		</widget>

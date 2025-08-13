@@ -34,7 +34,7 @@ class Pager(GUIAddon):
 		self.max_pages = 10
 		self.current_page_style = "bubbletext"  # possible is bubbletext and graphic
 		self.textRenderer = Label("")
-		self.bubbletext_corner_radius = 12
+		self.bubbletext_cornerRadius = 12
 		self.bubbletext_bk_color = 0x02444444
 		self.bubbletext_padding = 10
 
@@ -96,7 +96,7 @@ class Pager(GUIAddon):
 						size=(textWidth + self.bubbletext_padding * 2, height),
 						font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_CENTER,
 						text=" ",
-						corner_radius=self.bubbletext_corner_radius,
+						cornerRadius=self.bubbletext_cornerRadius,
 						backcolor=self.bubbletext_bk_color, backcolor_sel=self.bubbletext_bk_color))
 					res.append(MultiContentEntryText(
 							pos=(xPos + self.bubbletext_padding - 1, 0), size=(textWidth + 2, height),
@@ -226,7 +226,7 @@ class Pager(GUIAddon):
 			self.selChange(currentPageIndex, pagesCount)
 		else:
 			l_orientation = self.getSourceOrientation()
-			if l_orientation == eListbox.orVertical:
+			if l_orientation == eListbox.orVertical or l_orientation == eListbox.orGrid:
 				listControledlSize = self.getSourceSize().height()
 			else:
 				listControledlSize = self.getSourceSize().width()
@@ -235,6 +235,8 @@ class Pager(GUIAddon):
 				current_index = self.getCurrentIndex()
 				listCount = self.getListCount()
 				if l_orientation == eListbox.orVertical:
+					itemControlledSizeParam = self.getListItemSize().height()
+				elif l_orientation == eListbox.orGrid:
 					itemControlledSizeParam = self.getListItemSize().height()
 				else:
 					itemControlledSizeParam = self.getListItemSize().width()

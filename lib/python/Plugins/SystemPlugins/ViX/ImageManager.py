@@ -17,7 +17,7 @@ from Components.Harddisk import harddiskmanager, getProcMounts, bytesToHumanRead
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo, BOXTYPE, CHKROOTMB, DISPLAYBRAND, IMAGETYPE, MACHINEBUILD, MACHINENAME, MODEL, MTDKERNEL, MTDROOTFS
+from Components.SystemInfo import SystemInfo, BOXTYPE, CHKROOTMB, DISPLAYBRAND, IMAGETYPE, MACHINEBUILD, MACHINENAME, MODEL, MTDKERNEL, MTDROOTFS, UBIMB
 import Components.Task
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -592,11 +592,14 @@ class VIXImageManager(Screen):
 
 	def keyRestore6(self, ret):
 		MAINDEST = "%s/%s" % (self.TEMPDESTROOT, SystemInfo["imagedir"])
-		print("[ImageManager] MAINDEST=%s" % MAINDEST)
+		print(f"[ImageManager] MAINDEST={MAINDEST} UBIMB:{UBIMB} CHKROOTMB:{CHKROOTMB}")
 		CMD = "/usr/bin/ofgwrite -r -k '%s'" % MAINDEST							# normal non multiboot receiver
 		if SystemInfo["canMultiBoot"]:
 			rootsubdir = None if not SystemInfo["HasRootSubdir"] else SystemInfo["canMultiBoot"][self.multibootslot]["rootsubdir"]
-			if self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
+			if UBIMB:
+				if self.multibootslot != 0:
+					CMD = "/usr/bin/ofgwrite -r%s -c%s -m%s '%s'" % (self.MTDROOTFS, SystemInfo["MultiBootSlot"], self.multibootslot, MAINDEST)
+			elif self.multibootslot == 0 and SystemInfo["HasKexecMultiboot"]:		# reset Vu Multiboot slot0
 				kz0 = MTDKERNEL
 				rz0 = MTDROOTFS
 				CMD = "/usr/bin/ofgwrite -k%s -r%s '%s'" % (kz0, rz0, MAINDEST)  # slot0 treat as kernel/root only multiboot receiver
@@ -616,13 +619,7 @@ class VIXImageManager(Screen):
 			else:
 				CMD = "/usr/bin/ofgwrite -r -k -m%s '%s'" % (self.multibootslot, MAINDEST)  # Normal multiboot
 		elif SystemInfo["HasH9SD"]:
-			if fileHas("/proc/cmdline", "root=/dev/mmcblk0p1") is True:  # h9 using SD card
-				CMD = "/usr/bin/ofgwrite -rmmcblk0p1 '%s'" % MAINDEST
-				rename("%s/rootfs.ubi" % MAINDEST, "%s/xx.txt" % MAINDEST)  # h9 usb card - build has both roots causes ofgwrite issue
-			elif fileHas("/proc/cmdline", "root=/dev/sda1") is True:  # h9 using usb
-				CMD = "/usr/bin/ofgwrite -rsda1 '%s'" % MAINDEST
-				rename("%s/rootfs.ubi" % MAINDEST, "%s/xx.txt" % MAINDEST)  # h9 usb card - build has both roots causes ofgwrite issue
-			else:  # h9 no SD card - build has both roots causes ofgwrite issue
+			if path.exists("%s/rootfs.tar.bz2" % MAINDEST):  # h9 no SD card - build has both roots causes ofgwrite issue
 				rename("%s/rootfs.tar.bz2" % MAINDEST, "%s/xx.txt" % MAINDEST)
 		print(f"[ImageManager] running command:{CMD} root:{getattr(self, 'MTDROOTFS', 'not set')}")
 		self.Console.ePopen(CMD, self.ofgwriteResult)

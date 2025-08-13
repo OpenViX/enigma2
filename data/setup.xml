@@ -256,6 +256,9 @@
 		<item level="2" text="Interlaced" description="In most cases this should be set to No. Only enable if you have a very specific need.">config.hdmirecord.interlaced</item>
 		<item level="1" text="Aspect ratio" description="The aspect ratio of the recording.">config.hdmirecord.aspectratio</item>
 	</setup>
+	<setup key="UBISlotManager" title="Slot Manager">
+		<item level="0" text="Target location" description="Choose the target device for the slots.">self.UBISlotManagerLocation</item>
+	</setup>	
 	<setup key="harddisk" title="HDD settings">
 		<item level="0" text="Hard disk standby after" description="Configure duration of inactivity before the hard disk drive goes to standby">config.usage.hdd_standby</item>
 	</setup>

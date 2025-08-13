@@ -33,20 +33,20 @@ def MultiContentEntryRectangle(pos=(0, 0), size=(0, 0), backgroundColor=None, ba
 	return eListboxPythonMultiContent.TYPE_RECT, int(pos[0]), int(pos[1]), int(size[0]), int(size[1]), __resolveColor(backgroundColor), __resolveColor(backgroundColorSelected), borderWidth, __resolveColor(borderColor), __resolveColor(borderColorSelected), cornerRadius, cornerEdges
 
 
-def MultiContentEntryText(pos=(0, 0), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_TOP, text="", color=None, color_sel=None, backcolor=None, backcolor_sel=None, border_width=None, border_color=None, corner_radius=0, corner_edges=15, textBWidth=0, textBColor=None):
-	return eListboxPythonMultiContent.TYPE_TEXT, pos[0], pos[1], size[0], size[1], font, flags, text, __resolveColor(color), __resolveColor(color_sel), __resolveColor(backcolor), __resolveColor(backcolor_sel), border_width, __resolveColor(border_color), corner_radius, corner_edges, textBWidth, __resolveColor(textBColor)
+def MultiContentEntryText(pos=(0, 0), size=(0, 0), font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_TOP, text="", color=None, color_sel=None, backcolor=None, backcolor_sel=None, border_width=None, border_color=None, cornerRadius=0, cornerEdges=15, textBWidth=0, textBColor=None):
+	return eListboxPythonMultiContent.TYPE_TEXT, pos[0], pos[1], size[0], size[1], font, flags, text, __resolveColor(color), __resolveColor(color_sel), __resolveColor(backcolor), __resolveColor(backcolor_sel), border_width, __resolveColor(border_color), cornerRadius, cornerEdges, textBWidth, __resolveColor(textBColor)
 
 
-def MultiContentEntryPixmap(pos=(0, 0), size=(0, 0), png=None, backcolor=None, backcolor_sel=None, flags=0, corner_radius=0, corner_edges=15):
-	return eListboxPythonMultiContent.TYPE_PIXMAP, pos[0], pos[1], size[0], size[1], __resolvePixmap(png), __resolveColor(backcolor), __resolveColor(backcolor_sel), flags, corner_radius, corner_edges
+def MultiContentEntryPixmap(pos=(0, 0), size=(0, 0), png=None, backcolor=None, backcolor_sel=None, flags=0, cornerRadius=0, cornerEdges=15):
+	return eListboxPythonMultiContent.TYPE_PIXMAP, pos[0], pos[1], size[0], size[1], __resolvePixmap(png), __resolveColor(backcolor), __resolveColor(backcolor_sel), flags, cornerRadius, cornerEdges
 
 
-def MultiContentEntryPixmapAlphaTest(pos=(0, 0), size=(0, 0), png=None, backcolor=None, backcolor_sel=None, flags=0, corner_radius=0, corner_edges=15):
-	return eListboxPythonMultiContent.TYPE_PIXMAP_ALPHATEST, pos[0], pos[1], size[0], size[1], __resolvePixmap(png), __resolveColor(backcolor), __resolveColor(backcolor_sel), flags, corner_radius, corner_edges
+def MultiContentEntryPixmapAlphaTest(pos=(0, 0), size=(0, 0), png=None, backcolor=None, backcolor_sel=None, flags=0, cornerRadius=0, cornerEdges=15):
+	return eListboxPythonMultiContent.TYPE_PIXMAP_ALPHATEST, pos[0], pos[1], size[0], size[1], __resolvePixmap(png), __resolveColor(backcolor), __resolveColor(backcolor_sel), flags, cornerRadius, cornerEdges
 
 
-def MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(0, 0), png=None, backcolor=None, backcolor_sel=None, flags=0, corner_radius=0, corner_edges=15):
-	return eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, pos[0], pos[1], size[0], size[1], __resolvePixmap(png), __resolveColor(backcolor), __resolveColor(backcolor_sel), flags, corner_radius, corner_edges
+def MultiContentEntryPixmapAlphaBlend(pos=(0, 0), size=(0, 0), png=None, backcolor=None, backcolor_sel=None, flags=0, cornerRadius=0, cornerEdges=15):
+	return eListboxPythonMultiContent.TYPE_PIXMAP_ALPHABLEND, pos[0], pos[1], size[0], size[1], __resolvePixmap(png), __resolveColor(backcolor), __resolveColor(backcolor_sel), flags, cornerRadius, cornerEdges
 
 
 def MultiContentEntryProgress(pos=(0, 0), size=(0, 0), percent=None, borderWidth=None, foreColor=None, foreColorSelected=None, backColor=None, backColorSelected=None, cornerRadius=0, cornerEdges=15):

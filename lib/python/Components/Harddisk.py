@@ -845,7 +845,10 @@ class HarddiskManager:
 							if devMajor == 179 and MODEL in ("dm900", "dm920") and partition != "mmcblk0p3":
 								continue
 							description = self.getUserfriendlyDeviceName(partition, physicalDevice)
-							print(f"[Harddisk][enumerateBlockDevices]### Found partition '{partition}', description='{description}', device='{physicalDevice}' mountpoint='{self.getMountpoint(partition)}.")
+							print(f"[Harddisk][enumerateBlockDevices]### Found partition '{partition}', description='{description}', device='{physicalDevice}' mountpoint={self.getMountpoint(partition)}.")
+							if self.getMountpoint(partition) == "/media/hdd/" and partition.startswith("sd") or partition.startswith("mmcblk0"):
+								SystemInfo["MTDBLACK"] = partition
+								print(f"[Harddisk][enumerateBlockDevices]### MTDBLACK:{SystemInfo['MTDBLACK']}")
 							if MODEL in ("dm900", "dm920") and partition == "mmcblk0p3" and self.getMountpoint(partition) is None:
 								mountpoint = "/media/data/"
 								newFstab = fileReadLines("/etc/fstab")

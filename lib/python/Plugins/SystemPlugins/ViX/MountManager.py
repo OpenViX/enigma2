@@ -10,7 +10,7 @@ from Components.ConfigList import ConfigListScreen
 from Components.config import getConfigListEntry, ConfigSelection, NoSave
 from Components.Console import Console
 from Components.Sources.List import List
-from Components.SystemInfo import SystemInfo, DISPLAYBRAND, MACHINENAME, MODEL
+from Components.SystemInfo import SystemInfo, DISPLAYBRAND, MACHINENAME, MODEL, UBIMB
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import QUIT_REBOOT, TryQuitMainloop
@@ -151,6 +151,10 @@ def buildPartitionInfo(partition, partitionList):
 				break
 	print("[MountManager1][buildPartitionInfo] mediamount", mediamount)
 	if mediamount == "/" and SystemInfo["HasKexecMultiboot"]:
+		return
+	if mediamount == "/" and UBIMB:
+		return
+	if UBIMB and SystemInfo["BootDevice"][0:3] in mediamount:  # don,t show boot device
 		return
 	if mediamount == _("None") or mediamount is None:
 		description = _("Size: ") + _("unavailable")

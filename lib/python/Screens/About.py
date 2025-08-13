@@ -14,7 +14,7 @@ from Components.Network import iNetwork
 from Components.NimManager import nimmanager
 from Components.Pixmap import MultiPixmap
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import BoxInfo, SystemInfo, CHIPSET, DISPLAYBRAND, KERNEL, MACHINENAME, MODEL, SOC_BRAND
+from Components.SystemInfo import BoxInfo, SystemInfo, CHIPSET, DISPLAYBRAND, KERNEL, MACHINENAME, MODEL, SOC_BRAND, UBIMB
 from Components.UserInstalledPackages import UserInstalledPackages
 from Screens.GitCommitInfo import CommitInfo
 from Screens.Screen import Screen, ScreenSummary
@@ -24,6 +24,8 @@ from Tools.Directories import fileHas, fileReadLines, isPluginInstalled
 from Tools.Hex2strColor import Hex2strColor
 from Tools.Multiboot import GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
+
+from twisted.internet import threads
 
 
 def getFlashDateString():
@@ -229,14 +231,6 @@ class About(AboutBase):
 		elif "BootDevice" in SystemInfo and SystemInfo["BootDevice"]:
 			AboutText += _("Boot Device:\t%s%s\n") % (VuPlustxt, SystemInfo["BootDevice"])
 
-		if SystemInfo["HasH9SD"]:
-			parttype = "eMMC"
-			bootargs = open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()
-			if "rootfstype=ext4" in bootargs:
-				parttype = "usb" if "root=/dev/sda1" in bootargs else "SDcard"
-			part = "        - %s slot in use for Image root \n" % parttype
-			AboutText += _("%s") % part
-
 		if SystemInfo["canMultiBoot"]:
 			slot = image = SystemInfo["MultiBootSlot"]
 			if SystemInfo["HasHiSi"] and "sda" in SystemInfo["canMultiBoot"][slot]["root"]:
@@ -404,9 +398,13 @@ class Devices(AboutBase):
 
 				if mountdict:
 					for device in mountdict:
+						if UBIMB and SystemInfo["BootDevice"][0:3] in device:  # don,t show boot device
+							continue
 						if hddKey1 in device:
 							break  # use break here to escape the loop and NOT run its else clause
 					else:  # device not mounted
+						if UBIMB and SystemInfo["BootDevice"][0:3] in device:  # don,t show boot device
+							continue
 						devicelist.append("%s" % hdd)
 						continue  # continues the outer loop so code below is skipped
 					# device is mounted so add device partition(s) attributes
@@ -521,8 +519,6 @@ class SystemNetworkInfo(AboutBase):
 			self.resetList()
 			self.onClose.append(self.cleanup)
 		self.onLayoutFinish.append(self.updateStatusbar)
-		self.timer = eTimer()
-		self.timer.callback.append(self.getWanIP)
 
 	def createscreen(self):
 		self.AboutText = ""
@@ -686,7 +682,7 @@ class SystemNetworkInfo(AboutBase):
 			iNetwork.getLinkState(self.iface, self.dataAvail)
 			self["devicepic"].setPixmapNum(0)
 		self["devicepic"].show()
-		self.timer.start(10, 1)
+		threads.deferToThread(self.getWanIP)
 
 	def getWanIP(self):
 		try:

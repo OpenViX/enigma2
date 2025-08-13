@@ -57,7 +57,8 @@ class VideoSetup(Setup):
 		if SystemInfo["havecolorimetry"]:
 			self.list.append(getConfigListEntry(_("HDMI Colorimetry"), config.av.hdmicolorimetry, _("Change the Colorimetry for HDR - this may cause unexpected results or black screen")))
 		if SystemInfo["havehdmicolordepth"]:
-			self.list.append(getConfigListEntry(_("HDMI Color depth"), config.av.hdmicolordepth, _("Change the Colordepth for UHD - this may cause unexpected results or black screen")))
+			if not SystemInfo["needsVideoJudderDriverFix"]:
+				self.list.append(getConfigListEntry(_("HDMI Color depth"), config.av.hdmicolordepth, _("Change the Colordepth for UHD - this may cause unexpected results or black screen")))
 		if SystemInfo["havehdmihdrtype"]:
 			self.list.append(getConfigListEntry(_("HDMI HDR Type"), config.av.hdmihdrtype, _("Enable or disable to force HDR Modes for UHD")))
 		if SystemInfo["HDRSupport"]:

@@ -227,7 +227,6 @@ self.session.scart.VCRSbChanged(3)
 		<item key="restart" level="0" text="Reboot"><screen module="Standby" screen="TryQuitMainloop">2</screen></item>
 		<item key="multiboot" level="0" text="MultiBoot Image Selector" requires="canMultiBoot"><screen module="MultiBootSelector">1</screen></item>
 		<item key="chroot_multiboot" level="0" text="Enable Chkroot MultiBoot" requires="canchkroot"><screen module="MultiBootSelector" screen="ChkrootInit" /></item>		
-		<item key="H9SDswap" level="0" text="H9SDroot" requires="HasH9SD"><screen module="H9SDswap">1</screen></item>
 		<item key="deep_standby" level="0" text="Deep Standby"><screen module="Standby" screen="TryQuitMainloop">1</screen></item>
 		<item key="maintenance_mode" level="0" text="Recovery Mode" requires="DMRecovery"><screen module="Standby" screen="TryQuitMainloop">16</screen></item>
 	</menu>

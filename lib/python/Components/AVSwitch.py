@@ -3,7 +3,7 @@ from os import path
 from enigma import eAVSwitch, eDVBVolumecontrol, getDesktop
 
 from Components.config import ConfigBoolean, ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
-from Components.SystemInfo import SystemInfo, BOXTYPE, MODEL
+from Components.SystemInfo import SystemInfo
 from Tools.CList import CList
 from Tools.Directories import isPluginInstalled
 
@@ -43,7 +43,7 @@ class AVSwitch:
 				"multi": {50: "2160p50", 60: "2160p"},
 				"auto": {50: "2160p50", 60: "2160p", 24: "2160p24"}}
 
-	if MODEL in ("dm900", "dm920"):
+	if SystemInfo["dmVideoRates"]:
 		rates["2160p"] = {"50Hz": {50: "2160p50"},
 				"60Hz": {60: "2160p60"},
 				"multi": {50: "2160p50", 60: "2160p60"},
@@ -219,7 +219,7 @@ class AVSwitch:
 				ratelist = []
 				for rate in rates:
 					if rate == "auto":
-						if SystemInfo["Has24hz"] or MODEL in ("dm900", "dm920"):
+						if SystemInfo["Has24hz"] or SystemInfo["dmVideoRates"]:
 							ratelist.append((rate, mode == "2160p30" and "auto (25Hz/30Hz/24Hz)" or "auto (50Hz/60Hz/24Hz)"))
 					else:
 						ratelist.append((rate, rate == "multi" and (mode == "2160p30" and "multi (25Hz/30Hz)" or "multi (50Hz/60Hz)") or rate))
@@ -498,15 +498,15 @@ def InitAVSwitch():
 
 	if SystemInfo["havehdmicolordepth"]:
 		def setHdmiColordepth(configElement):
-			open(SystemInfo["havehdmicolordepth"], "w").write(configElement.value)
+			open(SystemInfo["havehdmicolordepth"], "w").write("12bit" if SystemInfo["needsVideoJudderDriverFix"] else configElement.value)
 		choices = [("auto", _("Auto")),
 					("8bit", _("8bit")),
 					("10bit", _("10bit")),
 					("12bit", _("12bit"))]
 		default = "auto"
-		if BOXTYPE == "gbquad4kpro" and config.av.videomode[config.av.videoport.value].value == "2160p":
+		if SystemInfo["needsVideoJudderDriverFix"]:
 			choices = [("10bit", "10bit"), ("12bit", "12bit")]
-			default = "10bit"
+			default = "12bit"
 		elif SystemInfo["havehdmicolordepthchoices"] and SystemInfo["CanProc"]:
 			f = "/proc/stb/video/hdmi_colordepth_choices"
 			(choices, default) = readChoices(f, choices, default)
@@ -839,10 +839,8 @@ def InitAVSwitch():
 				open("/proc/stb/vmpeg/0/pep_apply", "w").write("1")
 			except (IOError, OSError):
 				print("[AVSwitch] couldn't write pep_scaler_sharpness")
-		if BOXTYPE in ("gbquad", "gbquadplus"):
-			config.av.scaler_sharpness = ConfigSlider(default=5, limits=(0, 26))
-		else:
-			config.av.scaler_sharpness = ConfigSlider(default=13, limits=(0, 26))
+		scalerDefault = 5 if SystemInfo["scalerSharpnessWorkaround"] else 13
+		config.av.scaler_sharpness = ConfigSlider(default=scalerDefault, limits=(0, 26))
 		config.av.scaler_sharpness.addNotifier(setScaler_sharpness)
 	else:
 		config.av.scaler_sharpness = NoSave(ConfigNothing())
@@ -894,3 +892,27 @@ def stopHotplug():
 
 def InitiVideomodeHotplug(**kwargs):
 	startHotplug()
+
+
+iVideoJudderDriverFixTask = None
+
+
+class VideoJudderDriverFixTask:
+	def __init__(self):
+		self.onClose = []
+		from enigma import iPlayableService
+		from Components.ServiceEventTracker import ServiceEventTracker
+		self.inited = False
+		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evVideoFramerateChanged: self.__evVideoFramerateChanged})
+
+	def __evVideoFramerateChanged(self):
+		if not self.inited:
+			with open("/proc/stb/video/hdmi_colordepth", "w") as fd:
+				fd.write("10bit")
+			self.inited = True
+
+
+def startVideoJudderDriverFixTask():
+	global iVideoJudderDriverFixTask
+	if SystemInfo["needsVideoJudderDriverFix"]:
+		iVideoJudderDriverFixTask = VideoJudderDriverFixTask()
