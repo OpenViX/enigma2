@@ -4,7 +4,7 @@ from enigma import eTimer, getDesktop, eActionMap, gFont, gRGB
 from Components.Label import Label
 from Components.config import config
 from Screens.Screen import Screen
-from skin import subtitlefonts, parseFont
+from skin import subtitleFonts, parseFont, getSkinFactor
 import skin  # noqa: F401
 
 
@@ -25,11 +25,11 @@ class SubtitleDisplay(Screen):
 
 	def __layoutFinished(self):
 		# Not expecting skins to contain this element
-		regular_font = subtitlefonts["Subtitle_Regular"]
+		regular_font = subtitleFonts.get("Subtitle_Regular", {})
 		label = self['subtitles']
 		font_size = int(config.subtitles.subtitle_fontsize.value)
-		font_face = regular_font["font_face"]
-		font = parseFont(f"{font_face};{font_size * 1.6}")
+		font_face = regular_font.get("font_face", "Regular")
+		font = parseFont(f"{font_face};{font_size * getSkinFactor()}")
 		label.instance.setFont(font)
 		label.instance.setZPosition(1)
 		label.instance.setNoWrap(1)
@@ -39,9 +39,9 @@ class SubtitleDisplay(Screen):
 		foreColor_conf = config.subtitles.pango_subtitle_colors.value
 		if foreColor_conf == "2":
 			label.instance.setForegroundColor(gRGB(0x00ffff00))
-		border_width = regular_font["borderWidth"]
-		if border_width > 0:
-			border_color = regular_font["borderColor"]
+		border_width = regular_font.get("borderWidth", 0)
+		border_color = regular_font.get("borderColor", None)
+		if border_width > 0 and border_color:
 			label.instance.setBorderWidth(border_width)
 			label.instance.setBorderColor(border_color)
 
