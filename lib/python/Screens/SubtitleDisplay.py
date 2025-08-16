@@ -1,8 +1,10 @@
 from sys import maxsize
 
-from enigma import eTimer, getDesktop, eActionMap, gFont
+from enigma import eTimer, getDesktop, eActionMap, gFont, gRGB
 from Components.Label import Label
+from Components.config import config
 from Screens.Screen import Screen
+from skin import subtitlefonts, parseFont
 import skin  # noqa: F401
 
 
@@ -11,9 +13,9 @@ class SubtitleDisplay(Screen):
 		Screen.__init__(self, session)
 		eActionMap.getInstance().bindAction('', -maxsize - 1, self.__keypress)
 
-		self.messageShown = False
-		self['message'] = Label()
-		self['message'].hide()
+		self.subtitlesShown = False
+		self['subtitles'] = Label()
+		self['subtitles'].hide()
 
 		self.onClose.append(self.__close)
 		self.onLayoutFinish.append(self.__layoutFinished)
@@ -23,41 +25,53 @@ class SubtitleDisplay(Screen):
 
 	def __layoutFinished(self):
 		# Not expecting skins to contain this element
-		label = self['message']
-		label.instance.setFont(gFont("Regular", 50))
+		regular_font = subtitlefonts["Subtitle_Regular"]
+		label = self['subtitles']
+		font_size = int(config.subtitles.subtitle_fontsize.value)
+		font_face = regular_font["font_face"]
+		font = parseFont(f"{font_face};{font_size * 1.6}")
+		label.instance.setFont(font)
 		label.instance.setZPosition(1)
 		label.instance.setNoWrap(1)
 		label.instance.setHAlign(1)
 		label.instance.setVAlign(1)
+		label.instance.setBackgroundColor(gRGB(0xff000000))
+		foreColor_conf = config.subtitles.pango_subtitle_colors.value
+		if foreColor_conf == "2":
+			label.instance.setForegroundColor(gRGB(0x00ffff00))
+		border_width = regular_font["borderWidth"]
+		if border_width > 0:
+			border_color = regular_font["borderColor"]
+			label.instance.setBorderWidth(border_width)
+			label.instance.setBorderColor(border_color)
+
+
 
 	def __keypress(self, key, flag):
 		# Releasing the subtitle button after a long press unintentionally pops up the subtitle dialog,
 		# This blocks it without causing issues for anyone that sets the buttons up the other way round
-		if self.messageShown:
+		if self.subtitlesShown:
 			# whilst the notification is shown any keydown event dismisses the notification
 			if flag == 0:
-				self.hideMessage()
+				self.hideSubtitles()
 			else:  # any key repeat or keyup event is discarded
 				return 1
 
-	def showMessage(self, message, hideScreen):
+	def showSubtitles(self, subtitles):
 		padding = (40, 10)
-		label = self['message']
-		label.setText(message)
+		label = self['subtitles']
+		label.setText(subtitles)
 		size = label.getSize()
 		label.resize(size[0] + padding[0] * 2, size[1] + padding[1] * 2)
 		label.move((getDesktop(0).size().width() - size[0] - padding[0]) // 2, getDesktop(0).size().height() - size[1] - padding[1] * 2 - 30)
 		label.show()
-		self.messageShown = True
+		self.subtitlesShown = True
 		self.show()
-		self.hideTimer = eTimer()
-		self.hideTimer.callback.append(self.hideScreen if hideScreen else self.hideMessage)
-		self.hideTimer.start(2000, True)
 
-	def hideMessage(self):
-		self.messageShown = False
-		self['message'].hide()
+	def hideSubtitles(self):
+		self.subtitlesShown = False
+		self['subtitles'].hide()
 
 	def hideScreen(self):
-		self.hideMessage()
+		self.hideSubtitles()
 		self.hide()
