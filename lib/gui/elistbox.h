@@ -250,6 +250,7 @@ private:
 	int m_itemwidth;
 	int m_orientation;
 	int m_items_per_page;
+	int m_items_per_page_with_partials;
 	int m_selection_enabled;
 	void setItemCornerRadiusInternal(int radius, uint8_t edges, int index);
 	void setItemGradientInternal(uint8_t index, const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend);

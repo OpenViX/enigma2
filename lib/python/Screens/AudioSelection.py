@@ -376,7 +376,7 @@ class AudioSelection(ConfigListScreen, Screen):
 						description = "teletext"
 						number = "%x%02x" % (x[3] and x[3] or 8, x[2])
 					elif x[0] == 2:
-						types = (_("unknown"), _("embedded"), _("SSA file"), _("ASS file"), _("SRT file"), _("VOB file"), _("PGS file"))
+						types = (_("unknown"), _("embedded"), "SSA", "ASS", "SRT", "VOB", "PGS")
 						try:
 							description = types[x[2]]
 						except Exception:
@@ -631,7 +631,7 @@ class AudioSelection(ConfigListScreen, Screen):
 					if len(cur[0]) > 5 and callable(cur[0][5]):
 						cur[0][5](cur[0])
 					else:
-						if len(self.infobar.selected_subtitle) > 5:
+						if self.infobar.selected_subtitle and len(self.infobar.selected_subtitle) > 5:
 							self.infobar.selected_subtitle[5](None)
 						self.enableSubtitle(cur[0][:5])
 					self.__updatedInfo()

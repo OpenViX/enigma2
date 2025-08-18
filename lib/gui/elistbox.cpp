@@ -10,12 +10,12 @@ eListbox::eListbox(eWidget *parent) :
 	eWidget(parent), m_scrollbar_mode(showNever), m_prev_scrollbar_page(-1),
 	m_content_changed(false), m_enabled_wrap_around(false), m_scrollbar_width(10), m_scrollbar_height(10),
 	m_top(0), m_left(0), m_max_columns(0), m_max_rows(0), m_selected(0), m_itemheight(25), m_itemwidth(25), m_orientation(orVertical),
-	m_items_per_page(0), m_selection_enabled(1), m_native_keys_bound(false), m_scrollbar(nullptr)
+	m_items_per_page(0), m_items_per_page_with_partials(0), m_selection_enabled(1), m_native_keys_bound(false), m_scrollbar(nullptr)
 {
 	memset(static_cast<void*>(&m_style), 0, sizeof(m_style));
 	m_style.m_text_offset = ePoint(1,1);
 
-	for (int x = 0; x < 4; x++)
+	for (int x = 0; x < 4; x++) 
 	{
 		m_style.m_gradient_set[x] = false;
 		if (eListbox::defaultItemRadius[x] && eListbox::defaultItemRadiusEdges[x])
@@ -898,7 +898,7 @@ int eListbox::event(int event, void *data, void *data2)
 			else
 			{
 				int line = 0;
-				int m_max_items = m_max_columns * m_max_rows;
+				int m_max_items = m_items_per_page_with_partials;
 				for (int posx = 0, posy = 0, i = 0; i < m_max_items; posx += m_itemwidth, ++i)
 				{
 					if (i > 0)
@@ -1020,6 +1020,7 @@ void eListbox::recalcSize()
 		m_max_columns = w / m_itemwidth;
 		m_max_rows = h / m_itemheight;
 		m_items_per_page = m_max_columns * m_max_rows;
+		m_items_per_page_with_partials = m_max_columns * ((h + m_itemheight - 1) / m_itemheight);
 	}
 
 	if (m_items_per_page < 0) /* TODO: whyever - our size could be invalid, or itemheigh could be wrongly specified. */
@@ -1136,7 +1137,7 @@ void eListbox::entryChanged(int index)
 {
 	if (m_orientation == orVertical)
 	{
-		if ((m_top <= index) && (index < (m_top + m_items_per_page)))
+		if ((m_top <= index) && (index <= (m_top + m_items_per_page)))
 		{
 			gRegion inv = eRect(0, m_itemheight * (index-m_top), size().width(), m_itemheight);
 			invalidate(inv);
@@ -1144,7 +1145,7 @@ void eListbox::entryChanged(int index)
 	}
 	else if (m_orientation == orHorizontal)
 	{
-		if ((m_left <= index) && (index < (m_left + m_items_per_page)))
+		if ((m_left <= index) && (index <= (m_left + m_items_per_page + 1)))
 		{
 			gRegion inv = eRect(m_itemwidth * (index-m_left), 0, m_itemwidth, size().height());
 			invalidate(inv);
