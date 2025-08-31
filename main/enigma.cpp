@@ -422,6 +422,11 @@ const char *getGStreamerVersionString()
 	return gst_version_string();
 }
 
+int getE2Flags()
+{
+	return 1;
+}
+
 bool checkLogin(const char *user, const char *password)
 {
 	bool authenticated = false;
