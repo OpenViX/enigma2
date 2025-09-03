@@ -1292,7 +1292,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 					goto error_out;
 				}
 
-				eRect rect(x+bwidth, y+bwidth, width-bwidth*2, height-bwidth*2);
+				eRect rect(x, y, width, height);
 				painter.clip(rect);
 
 				{
@@ -1317,7 +1317,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 							painter.drawRectangle(rect, blend);
 						} else if (bwidth && pborderColor) {
 							painter.setRadius(cornerRadius, cornerEdges);
-							painter.setBackgroundColor(gRGB(0xFE000000));
+							painter.setBackgroundColor(gRGB(0xFF000000));
 							uint32_t color = PyLong_AsUnsignedLongMask(pborderColor);
 							painter.setBorder(gRGB(color), bwidth);
 							bwidth = 0;
@@ -1446,7 +1446,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				int filled = PyFloat_Check(pfilled_perc) ? (int)PyFloat_AsDouble(pfilled_perc) : PyLong_AsLong(pfilled_perc);
 
 				int cornerRadius = pCornerRadius ? PyLong_AsLong(pCornerRadius) : 0;
-				uint8_t cornerEdges = pCornerEdges ? PyLong_AsLong(pCornerEdges) : 0;
+				uint8_t cornerEdges = pCornerEdges ? PyLong_AsLong(pCornerEdges) : 15;
 
 				if ((filled < 0) && data) /* if the string is in a negative number, it refers to the 'data' list. */
 					filled = PyLong_AsLong(PyTuple_GetItem(data, -filled));
@@ -1566,7 +1566,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				int height = PyFloat_Check(pheight) ? (int)PyFloat_AsDouble(pheight) : PyLong_AsLong(pheight);
 				int bwidth = pborderWidth ? PyLong_AsLong(pborderWidth) : 0;
 				int cornerRadius = pCornerRadius ? PyLong_AsLong(pCornerRadius) : 0;
-				uint8_t cornerEdges = pCornerEdges ? PyLong_AsLong(pCornerEdges) : 0;
+				uint8_t cornerEdges = pCornerEdges ? PyLong_AsLong(pCornerEdges) : 15;
 
 				eRect rect(x, y, width, height);
 				painter.clip(rect);
@@ -1592,7 +1592,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 							painter.drawRectangle(rect, blend);
 						} else if (bwidth && pborderColor) {
 							painter.setRadius(cornerRadius, cornerEdges);
-							painter.setBackgroundColor(gRGB(0xFE000000));
+							painter.setBackgroundColor(gRGB(0xFF000000));
 							uint32_t color = PyLong_AsUnsignedLongMask((selected && pborderColorSelected) ? pborderColorSelected : pborderColor);
 							painter.setBorder(gRGB(color), bwidth);
 							bwidth = 0;
