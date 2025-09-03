@@ -1296,34 +1296,40 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				painter.clip(rect);
 
 				{
-					bool mustClear = (selected && pbackColorSelected) || (!selected && pbackColor);
+					bool mustClear = ((selected && pbackColorSelected) || (selected && pbackColor)) || (!selected && pbackColor);
 					if(cornerRadius && cornerEdges)
 					{
-						bool blend = false;
-						painter.setRadius(cornerRadius, cornerEdges);
-						if(mustClear) {
+						if (pbackColor) {
+							bool blend = false;
+							painter.setRadius(cornerRadius, cornerEdges);
 							if(selected && !pbackColorSelected)
 								pbackColorSelected = pbackColor;
 							gRGB color = gRGB((uint32_t)PyLong_AsUnsignedLongMask(selected ? pbackColorSelected : pbackColor));
 							painter.setBackgroundColor(color);
 							blend = color.a > 0;
-						}
-						 else {
-							 painter.setBackgroundColor(gRGB(0xFF000000));
-							 blend = true;
-						 }
-						if(bwidth && pborderColor)
-						{
+							
+							if(bwidth && pborderColor)
+							{
+								uint32_t color = PyLong_AsUnsignedLongMask(pborderColor);
+								painter.setBorder(gRGB(color), bwidth);
+							}
+							bwidth = 0;
+							painter.drawRectangle(rect, blend);
+						} else if (bwidth && pborderColor) {
+							painter.setRadius(cornerRadius, cornerEdges);
+							painter.setBackgroundColor(gRGB(0xFE000000));
 							uint32_t color = PyLong_AsUnsignedLongMask(pborderColor);
 							painter.setBorder(gRGB(color), bwidth);
+							bwidth = 0;
+							painter.drawRectangle(rect, true);
+						} else {
+							gRegion rc(rect);
+							clearRegion(painter, style, local_style, pforeColor, pforeColorSelected, pbackColor, pbackColorSelected, selected, rc, sel_clip, offset, m_itemsize, cursorValid, mustClear, isverticallb);
 						}
-						bwidth = 0;
-						painter.drawRectangle(rect, blend);
 					}
 					else
 					{
 						gRegion rc(rect);
-						bool mustClear = (selected && pbackColorSelected) || (!selected && pbackColor);
 						clearRegion(painter, style, local_style, pforeColor, pforeColorSelected, pbackColor, pbackColorSelected, selected, rc, sel_clip, offset, m_itemsize, cursorValid, mustClear, isverticallb);
 					}
 				}
@@ -1565,27 +1571,40 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				eRect rect(x, y, width, height);
 				painter.clip(rect);
 				{
-					bool mustClear = (selected && pbackColorSelected) || (!selected && pbackColor);
+					bool mustClear = (selected && pbackColorSelected) || (selected && pbackColor) || (!selected && pbackColor);
 					if (cornerRadius && cornerEdges)
 					{
-						bool blend = false;
-						gRGB color = gRGB((uint32_t)PyLong_AsUnsignedLongMask(selected ? pbackColorSelected : pbackColor));
-						painter.setRadius(cornerRadius, cornerEdges);
-						if(mustClear) {
-							painter.setBackgroundColor(color);
-							blend = color.a > 0;
-						} else {
-							painter.setBackgroundColor(gRGB(0xFF000000));
-							blend = true;
-						}
-						
-						if(bwidth && pborderColor)
-						{
+						if (pbackColor) {
+							bool blend = false;
+							if (selected && !pbackColorSelected) pbackColorSelected = pbackColor;
+							gRGB color = gRGB((uint32_t)PyLong_AsUnsignedLongMask(selected ? pbackColorSelected : pbackColor));
+							painter.setRadius(cornerRadius, cornerEdges);
+							if(mustClear) {
+								painter.setBackgroundColor(color);
+								blend = color.a > 0;
+							} else {
+								painter.setBackgroundColor(gRGB(0xFE000000));
+								blend = true;
+							}
+							
+							if(bwidth && pborderColor)
+							{
+								uint32_t color = PyLong_AsUnsignedLongMask((selected && pborderColorSelected) ? pborderColorSelected : pborderColor);
+								painter.setBorder(gRGB(color), bwidth);
+							}
+							bwidth = 0;
+							painter.drawRectangle(rect, blend);
+						} else if (bwidth && pborderColor) {
+							painter.setRadius(cornerRadius, cornerEdges);
+							painter.setBackgroundColor(gRGB(0xFE000000));
 							uint32_t color = PyLong_AsUnsignedLongMask((selected && pborderColorSelected) ? pborderColorSelected : pborderColor);
 							painter.setBorder(gRGB(color), bwidth);
+							bwidth = 0;
+							painter.drawRectangle(rect, true);
+						} else {
+							gRegion rc(rect);
+							clearRegion(painter, style, local_style, pforeColor, pforeColorSelected, pbackColor, pbackColorSelected, selected, rc, sel_clip, offset, itemRect.size(), cursorValid, mustClear);
 						}
-						bwidth = 0;
-						painter.drawRectangle(rect, blend); 
 					}
 					else
 					{
