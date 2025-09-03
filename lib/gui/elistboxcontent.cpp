@@ -1296,14 +1296,14 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				painter.clip(rect);
 
 				{
-					bool mustClear = ((selected && pbackColorSelected) || (selected && pbackColor)) || (!selected && pbackColor);
+					bool mustClear = (selected && pbackColorSelected) || pbackColor;
+					if(selected && !pbackColorSelected) pbackColorSelected = pbackColor;
+
 					if(cornerRadius && cornerEdges)
 					{
 						if (pbackColor) {
 							bool blend = false;
 							painter.setRadius(cornerRadius, cornerEdges);
-							if(selected && !pbackColorSelected)
-								pbackColorSelected = pbackColor;
 							gRGB color = gRGB((uint32_t)PyLong_AsUnsignedLongMask(selected ? pbackColorSelected : pbackColor));
 							painter.setBackgroundColor(color);
 							blend = color.a > 0;
@@ -1571,22 +1571,18 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				eRect rect(x, y, width, height);
 				painter.clip(rect);
 				{
-					bool mustClear = (selected && pbackColorSelected) || (selected && pbackColor) || (!selected && pbackColor);
+					bool mustClear = (selected && pbackColorSelected) || pbackColor;
+					if (selected && !pbackColorSelected) pbackColorSelected = pbackColor;
+
 					if (cornerRadius && cornerEdges)
 					{
 						if (pbackColor) {
 							bool blend = false;
-							if (selected && !pbackColorSelected) pbackColorSelected = pbackColor;
 							gRGB color = gRGB((uint32_t)PyLong_AsUnsignedLongMask(selected ? pbackColorSelected : pbackColor));
 							painter.setRadius(cornerRadius, cornerEdges);
-							if(mustClear) {
-								painter.setBackgroundColor(color);
-								blend = color.a > 0;
-							} else {
-								painter.setBackgroundColor(gRGB(0xFE000000));
-								blend = true;
-							}
-							
+							painter.setBackgroundColor(color);
+							blend = color.a > 0;
+
 							if(bwidth && pborderColor)
 							{
 								uint32_t color = PyLong_AsUnsignedLongMask((selected && pborderColorSelected) ? pborderColorSelected : pborderColor);
