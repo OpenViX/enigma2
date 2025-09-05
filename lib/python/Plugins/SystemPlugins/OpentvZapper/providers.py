@@ -5,7 +5,7 @@ providers = {
 	"Astra 28.2": { 						# Must keep Astra provider, or OpenTVZapper will crash
 		"service_provider": "BSkyB",
 		"transponder": {
-			'orbital_position': 282,		# 28.2°E
+			'orbital_position': 282,		# 28.2E
 			'inversion': 2,					# 0=Off, 1=On, 2=Auto
 			'symbol_rate': 27500000,		# ks/s
 			'namespace': 18481152,
