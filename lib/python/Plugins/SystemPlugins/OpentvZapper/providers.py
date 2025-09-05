@@ -12,7 +12,7 @@ providers = {
 			'system': 0,					# 0 = DVB-S, 1 = DVB-S2
 			'polarization': 1,				# 0 = H, 1 = V
 			'original_network_id': 2,
-			'fec_inner': 2,					# 0=Auto, 1=1/2, 2=2/3, 3=3/4, 4=5/6, 5=7/8, 6=8/9, 7=9/10
+			'fec_inner': 2,					# 0=Auto, 1=1/2, 2=2/3, 3=3/4, 4=5/6, 5=7/8, 6=8/9, 7=3/5, 8=4/5, 9=9/10, 10=6/7, 15=None
 			'frequency': 11778000,			# Hz
 			'flags': 0,
 			'transport_stream_id': 2004,
@@ -44,7 +44,7 @@ providers = {
 			'system': 1,					# 0 = DVB-S, 1 = DVB-S2
 			'polarization': 0,				# 0 = H, 1 = V
 			'original_network_id': 169,
-			'fec_inner': 7,					# 0=Auto, 1=1/2, 2=2/3, 3=3/4, 4=5/6, 5=7/8, 6=8/9, 7=9/10, 8=None, 9=3/5
+			'fec_inner': 7,					# 0=Auto, 1=1/2, 2=2/3, 3=3/4, 4=5/6, 5=7/8, 6=8/9, 7=3/5, 8=4/5, 9=9/10, 10=6/7, 15=None
 			'frequency': 12530000,			# Hz
 			'flags': 0,
 			'transport_stream_id': 3,
@@ -65,7 +65,7 @@ providers = {
 			'service_type': 1,
 			'service_provider': 'SKYNZ',
 			'service_line': 'p:SKYNZ',
-			'service_cachedpids': [],
+			'service_cachedpids': None,
 			'service_capids': None,
 		},
 	},
@@ -81,7 +81,7 @@ providers = {
 #			'system': 1,					# 0 = DVB-S, 1 = DVB-S2
 #			'polarization': 1,				# 0 = H, 1 = V
 #			'original_network_id': 318,
-#			'fec_inner': 3,					# 0=Auto, 1=1/2, 2=2/3, 3=3/4, 4=5/6, 5=7/8, 6=8/9, 7=9/10, 8=None
+#			'fec_inner': 3,					# 0=Auto, 1=1/2, 2=2/3, 3=3/4, 4=5/6, 5=7/8, 6=8/9, 7=3/5, 8=4/5, 9=9/10, 10=6/7, 15=None
 #			'frequency': 11766000,			# Hz
 #			'flags': 0,
 #			'transport_stream_id': 5200,
@@ -100,7 +100,7 @@ providers = {
 #			'service_id': 3635,				# SID
 #			'transport_stream_id': 5200,
 #			'service_type': 1,
-#			'service_cachedpids': [],
+#			'service_cachedpids': None,
 #			'service_capids': None,
 #		},
 #	},
