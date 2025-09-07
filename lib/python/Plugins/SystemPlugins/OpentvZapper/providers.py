@@ -40,7 +40,7 @@ providers = {
 			'inversion': 2,					# 0=Off, 1=On, 2=Auto
 			'symbol_rate': 30000000,		# ks/s
 			'namespace': 104857600,
-			'system': 1,					# 0 = DVB-S, 1 = DVB-S2
+			'system': 1,					# 0 = DVB-S, 1 =DVB-S2
 			'polarization': 0,				# 0 = H, 1 = V
 			'original_network_id': 169,
 			'fec_inner': 7,					# 0=Auto, 1=1/2, 2=2/3, 3=3/4, 4=5/6, 5=7/8, 6=8/9, 7=3/5, 8=4/5, 9=9/10, 10=6/7, 15=None
