@@ -1027,9 +1027,11 @@ class HarddiskManager:
 	def HDDCount(self):
 		return len(self.hdd)
 
-	def HDDList(self):
+	def HDDList(self, device=None):
 		list = []
 		for hd in self.hdd:
+			if device == hd.device:
+				continue
 			print(f"[Harddsk][HDDList] {hd.model()} {hd.bus()} /dev/{hd.device}.")
 			hdd = f"{hd.bus()}  {hd.model()}  /dev/{hd.device}"
 			cap = hd.capacity()

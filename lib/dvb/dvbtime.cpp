@@ -397,6 +397,8 @@ void eDVBLocalTimeHandler::updateTime( time_t tp_time, eDVBChannel *chan, int up
 				gettimeofday(&tnow, 0);
 				tnow.tv_sec = rtc_time;
 				settimeofday(&tnow, 0);
+				if ( (time_difference <= -60) || (time_difference >= 60) )  // bigger difference than one minute
+					m_timeUpdatedMinutes();
 			}
 			else if ( !time_difference )
 				eDebug("[eDVBLocalTimerHandler] no change needed");
@@ -555,6 +557,9 @@ void eDVBLocalTimeHandler::updateTime( time_t tp_time, eDVBChannel *chan, int up
 				now.tm_min,
 				now.tm_sec);
 			}
+
+			if ( (time_difference <= -60) || (time_difference >= 60) )  // bigger difference than one minute
+				m_timeUpdatedMinutes();
 		}
 
 		/*emit*/ m_timeUpdated();

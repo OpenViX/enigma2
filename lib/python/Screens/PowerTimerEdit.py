@@ -43,6 +43,7 @@ class PowerTimerEditList(Screen):
 		self["key_green"] = Button(_("Add"))
 		self["key_yellow"] = Button("")
 		self["key_blue"] = Button("")
+		self["key_info"] = StaticText(_("INFO"))
 
 		self["description"] = Label()
 

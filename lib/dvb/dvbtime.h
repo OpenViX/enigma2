@@ -108,6 +108,7 @@ public:
 	void setUseDVBTime(bool b);
 	void syncDVBTime();
 	PSignal0<void> m_timeUpdated;
+	PSignal0<void> m_timeUpdatedMinutes;  // just for python callbacks on clock updates > 60 secs
 	time_t nowTime() const { return m_time_ready ? ::time(0)+m_time_difference : -1; }
 	bool ready() const { return m_time_ready; }
 	static eDVBLocalTimeHandler *getInstance() { return instance; }

@@ -8,7 +8,7 @@ from Components.GUIComponent import GUIComponent
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend
 from Components.Renderer.Picon import getPiconName
 from Components.config import config
-from RecordTimer import RecordTimer
+from RecordTimer import RecordTimer, isPlaylist
 from Tools.Alternatives import CompareWithAlternatives
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
@@ -533,7 +533,7 @@ class EPGListGrid(EPGListBase):
 				duration = ev[3]
 
 				xpos, ewidth = self.calcEventPosAndWidthHelper(stime, duration, start, end, width)
-				serviceref = "1" + service[4:] if service[:4] in config.recording.setstreamto1.value else service  # converts 4097, 5001, 5002 to 1
+				serviceref = "1" + service[4:] if service[:4] in config.recording.setstreamto1.value and not isPlaylist(service) else service  # converts 4097, 5001, 5002 to 1
 				serviceTimers = self.filteredTimerList.get(':'.join(serviceref.split(':')[:11]))
 				if serviceTimers is not None:
 					# Code below: "+ (20 if config.recording.margin_before.value == 0 else 0)"

@@ -182,6 +182,10 @@ wasRecTimerWakeup = False
 # please do not translate log messages
 
 
+def isPlaylist(sref):  # skip converting these to type 1 as they are not DVB compliant
+	return len(sref_split := str(sref).split(":")) > 10 and sref_split[10].split("?", 1)[0].endswith((".m3u", ".m3u8"))
+
+
 class RecordTimerEntry(TimerEntry):
 	def __init__(self, serviceref, begin, end, name, description, eit, disabled=False, justplay=False, afterEvent=AFTEREVENT.AUTO, checkOldTimers=False, dirname=None, tags=None, descramble="notset", record_ecm="notset", isAutoTimer=False, always_zap=False, rename_repeat=True, conflict_detection=True, pipzap=False, autoTimerId=None, ice_timer_id=None):
 		TimerEntry.__init__(self, int(begin), int(end))
@@ -194,7 +198,7 @@ class RecordTimerEntry(TimerEntry):
 
 		assert isinstance(serviceref, eServiceReference)
 
-		if serviceref and serviceref.toString()[:4] in config.recording.setstreamto1.value:  # check if to convert IPTV services (4097, etc) to "1"
+		if serviceref and serviceref.toString()[:4] in config.recording.setstreamto1.value and not isPlaylist(serviceref.toString()):  # check if to convert IPTV services (4097, etc) to "1"
 			serviceref = eServiceReference("1" + serviceref.toString()[4:])
 
 		if serviceref and serviceref.isRecordable():
@@ -576,7 +580,7 @@ class RecordTimerEntry(TimerEntry):
 				self.first_try_prepare = False
 				cur_ref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()
 				rec_ref = self.service_ref and self.service_ref.ref
-				if cur_ref and not cur_ref.getPath() or rec_ref.toString()[:4] in config.recording.setstreamto1.value:  # "or" check if IPTV services (4097, etc)
+				if cur_ref and not cur_ref.getPath() or rec_ref.toString()[:4] in config.recording.setstreamto1.value and not isPlaylist(rec_ref.toString()):  # "or" check if IPTV services (4097, etc)
 					if self.always_zap:
 						return False
 					if Screens.Standby.inStandby:
@@ -951,7 +955,7 @@ def createTimer(xml):
 	begin = int(xml.get("begin"))
 	end = int(xml.get("end"))
 	pre_serviceref = xml.get("serviceref")
-	serviceref = eServiceReference("1" + pre_serviceref[4:]) if pre_serviceref[:4] in config.recording.setstreamto1.value else eServiceReference(pre_serviceref)  # check if to convert IPTV services (4097, etc) to "1"
+	serviceref = eServiceReference("1" + pre_serviceref[4:]) if pre_serviceref[:4] in config.recording.setstreamto1.value and not isPlaylist(pre_serviceref) else eServiceReference(pre_serviceref)  # check if to convert IPTV services (4097, etc) to "1"
 	description = str(xml.get("description"))
 	repeated = str(xml.get("repeated"))
 	rename_repeat = int(xml.get("rename_repeat") or "1")

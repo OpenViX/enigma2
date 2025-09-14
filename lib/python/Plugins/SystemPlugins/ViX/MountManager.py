@@ -75,6 +75,10 @@ def getProcPartitions(partitionList):
 						continue
 			if device in partitions:  # If device is already in partition list ignore it.
 				continue
+			if UBIMB and SystemInfo["canMultiBoot"] and SystemInfo["BootDevice"][0:3] == device[0:3]:  # don,t show boot device
+				partitions.append(device)
+				# print(f"[MountManager]3 device={device} device[0:3]:{device[0:3]}")
+				continue
 			buildPartitionInfo(device, partitionList)
 			partitions.append(device)
 
@@ -149,12 +153,8 @@ def buildPartitionInfo(partition, partitionList):
 						_format = res.stdout.decode().strip()
 				rw = parts[3]			# read/write
 				break
-	print("[MountManager1][buildPartitionInfo] mediamount", mediamount)
+	print(f"[MountManager1][buildPartitionInfo] mediamount:{mediamount}")
 	if mediamount == "/" and SystemInfo["HasKexecMultiboot"]:
-		return
-	if mediamount == "/" and UBIMB:
-		return
-	if UBIMB and SystemInfo["BootDevice"][0:3] in mediamount:  # don,t show boot device
 		return
 	if mediamount == _("None") or mediamount is None:
 		description = _("Size: ") + _("unavailable")

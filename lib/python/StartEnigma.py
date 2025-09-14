@@ -430,7 +430,7 @@ def runScreenTest():
 			else:
 				config.misc.pluginWakeupName.value = ""  # next wakeup not a plugin
 			config.misc.pluginWakeupName.save()
-			if not config.misc.SyncTimeUsing.value == "dvb":
+			if config.misc.SyncTimeUsing.value != "dvb":
 				print("[StartEnigma] dvb time sync disabled... so set RTC now to current linux time!", strftime("%Y/%m/%d %H:%M", localtime(nowTime)))
 				setRTCtime(nowTime)
 			print("[StartEnigma] set wakeup time to", strftime("%Y/%m/%d %H:%M", localtime(wptime)))

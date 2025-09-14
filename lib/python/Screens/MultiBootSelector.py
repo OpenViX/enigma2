@@ -249,6 +249,8 @@ class MultiBootSelector(Screen, HelpableScreen):
 		self.updateKeys()
 
 	def updateKeys(self):
+		if UBIMB and SystemInfo["MultiBootSlot"] == 0:
+			return
 		currentSelected = self["config"].getCurrent()
 		if currentSelected[0][1] == "Queued":  # list not loaded yet so abort
 			return
@@ -372,7 +374,7 @@ class UBISlotManager(Setup):
 	def __init__(self, session):
 		def getGreenHelpText():
 			return {
-				ACTION_SELECT: _("Select a device to create multiboot slots"),
+				ACTION_SELECT: _("Select Device for FORMAT!! & Creation of multiboot slots"),
 				ACTION_CREATE: _("Create slots for the selected device")
 			}.get(self.green, _("Help text uninitialized"))
 
@@ -436,11 +438,13 @@ class UBISlotManager(Setup):
 			cmdlist.append(f"/usr/sbin/parted --script {TARGET_DEVICE} mklabel gpt")
 			cmdlist.append(f"/usr/sbin/partprobe {TARGET_DEVICE}")
 			cmdlist.append(f"/usr/sbin/parted --script {TARGET_DEVICE} mkpart startup fat32 8192s 5MB")
-			cmdlist.append(f"/usr/sbin/parted --script {TARGET_DEVICE} mkpart rootfs ext4 5MB 100%")
+			cmdlist.append(f"/usr/sbin/parted --script {TARGET_DEVICE} unit MiB mkpart rootfs ext4 5MiB -- -256MiB")
+			cmdlist.append(f"/usr/sbin/parted --script {TARGET_DEVICE} unit MiB mkpart swap linux-swap -- -256MiB 100%")
 			cmdlist.append(f"/usr/sbin/partprobe {TARGET_DEVICE}")
 			cmdlist.append(f"/usr/sbin/mkfs.vfat -F 32 -n STARTUP {PART(1)}")
-			cmdlist.append(f"/sbin/mkfs.ext4 -F -L rootfs {PART(2)}")
 			# cmdlist.append(f"/sbin/mkfs.ext4 -O ^64bit,^extent,^flex_bg,^huge_file,^dir_nlink,^extra_isize,^metadata_csum -F -L rootfs {PART(2)}")
+			cmdlist.append(f"/sbin/mkfs.ext4 -F -L rootfs {PART(2)}")
+			cmdlist.append(f"/sbin/mkswap -L swap {PART(3)}")
 			cmdlist.append(f"/bin/mkdir -p {MOUNTPOINT}")
 			cmdlist.append(f"/bin/umount {MOUNTPOINT} > /dev/null 2>&1")
 			cmdlist.append(f"/bin/mount {PART(1)} {MOUNTPOINT}")
@@ -519,7 +523,8 @@ class UBISlotManager(Setup):
 			for (name, hdd) in harddiskmanager.HDDList():
 				MTDBLACK = SystemInfo["MTDBLACK"]
 				MTDBLACK = "mmcblk0" if MTDBLACK.startswith("mmcblk0") else MTDBLACK
-				if MTDBLACK in (hdd.dev_path.replace("/dev/", "")) or hdd.dev_path.startswith("/dev/romblock"):
+				print(f"[UBISlotManager] readDevices: MTDBLACK:{MTDBLACK} hddevpath:{hdd.dev_path} hddevpathnodev:{hdd.dev_path.replace("/dev/", "")[0:3]}")
+				if MTDBLACK[0:3] == hdd.dev_path.replace("/dev/", "")[0:3] or hdd.dev_path.startswith("/dev/romblock"):
 					continue
 				deviceID = hdd.dev_path.split("/")[-1]
 				self.deviceData[deviceID] = (hdd.dev_path, name)

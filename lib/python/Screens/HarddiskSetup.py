@@ -3,6 +3,7 @@ from Components.ActionMap import ActionMap
 from Components.Harddisk import harddiskmanager, StorageDevice
 from Components.MenuList import MenuList
 from Components.Label import Label
+from Components.SystemInfo import SystemInfo
 from Components.Task import job_manager
 from Screens.MessageBox import MessageBox
 import Screens.InfoBar
@@ -79,11 +80,12 @@ class HarddiskSelection(Screen):
 		self.setTitle(_("Initialize Devices"))
 
 		self.skinName = "HarddiskSelection"  # For derived classes
+		bootDevice = None if not SystemInfo["BootDevice"] else SystemInfo["BootDevice"][0:3]
 		if harddiskmanager.HDDCount() == 0:
 			tlist = [(_("no storage devices found"), 0)]
 			self["hddlist"] = MenuList(tlist)
 		else:
-			self["hddlist"] = MenuList(harddiskmanager.HDDList())
+			self["hddlist"] = MenuList(harddiskmanager.HDDList(device=bootDevice))
 
 		self["actions"] = ActionMap(["OkCancelActions"],
 		{

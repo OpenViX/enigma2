@@ -215,6 +215,7 @@ typedef long time_t;
 %immutable eHdmiCEC::addressChanged;
 %immutable ePythonMessagePump::recv_msg;
 %immutable eDVBLocalTimeHandler::m_timeUpdated;
+%immutable eDVBLocalTimeHandler::m_timeUpdatedMinutes;
 %immutable eFCCServiceManager::m_fcc_event;
 %immutable iCryptoInfo::clientname;
 %immutable iCryptoInfo::clientinfo;

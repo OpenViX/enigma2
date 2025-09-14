@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 12:34+0300\n"
-"PO-Revision-Date: 2025-08-01 22:55+0300\n"
+"POT-Creation-Date: 2025-09-02 14:37+0300\n"
+"PO-Revision-Date: 2025-09-04 15:27+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.7\n"
 
 msgid ""
 "\n"
@@ -1746,8 +1746,8 @@ msgid "Add"
 msgstr "Lisää"
 
 #, python-format
-msgid "Add 4 more Vu+ Multiboot USB slots after slot %s ?"
-msgstr "Lisää 4 Vu+ Multiboot USB-paikkaa paikan %s jälkeen ?"
+msgid "Add 4 more Multiboot USB slots after slot %s ?"
+msgstr "Lisää 4 Multiboot USB-paikkaa paikan %s jälkeen ?"
 
 msgid "Add AutoTimer"
 msgstr "Lisää automaattiajastus"
@@ -4335,6 +4335,9 @@ msgstr "Luo"
 msgid "Create DVD-ISO"
 msgstr "Luo DVD-ISO"
 
+msgid "Create MultiBoot System -> will INITIALISE chosen usb device"
+msgstr "Luo MultiBoot-järjestelmä -> ALUSTAA valitun USB-laitteen"
+
 msgid "Create Slots"
 msgstr "Luo imagen paikat"
 
@@ -5757,9 +5760,6 @@ msgstr "Aut.käynnistys käyttöön"
 
 msgid "Enable Bluetooth Audio"
 msgstr "Ota Bluetooth ääni käyttöön"
-
-msgid "Enable Chkroot MultiBoot"
-msgstr "Ota Chkroot MultiBoot käyttöön"
 
 msgid "Enable EIT EPG"
 msgstr "Ota käyttöön EIT EPG"
@@ -12981,6 +12981,9 @@ msgstr "Valitse CAId"
 msgid "Select Device"
 msgstr "Valitse laite"
 
+msgid "Select Device for FORMAT!! & Creation of multiboot slots"
+msgstr "Valitse laite FORMATOINTIIN!! & MultiBoot-paikkojen luontiin"
+
 msgid "Select EPG channel"
 msgstr "Valitse EPG-kanava"
 
@@ -13001,9 +13004,6 @@ msgstr "Valitse satelliitit"
 
 msgid "Select a backup to restore:"
 msgstr "Valitse palautettava varmuuskopio:"
-
-msgid "Select a device to create multiboot slots"
-msgstr "Valitse laite multiboot-paikkojen luomista varten"
 
 msgid "Select a package to install:"
 msgstr "Valitse asennettava ohjelmapaketti:"
@@ -15170,7 +15170,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 01.08.2025 ---\n"
+"--- 04.09.2025 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 

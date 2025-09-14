@@ -398,13 +398,9 @@ class Devices(AboutBase):
 
 				if mountdict:
 					for device in mountdict:
-						if UBIMB and SystemInfo["BootDevice"][0:3] in device:  # don,t show boot device
-							continue
 						if hddKey1 in device:
 							break  # use break here to escape the loop and NOT run its else clause
 					else:  # device not mounted
-						if UBIMB and SystemInfo["BootDevice"][0:3] in device:  # don,t show boot device
-							continue
 						devicelist.append("%s" % hdd)
 						continue  # continues the outer loop so code below is skipped
 					# device is mounted so add device partition(s) attributes
