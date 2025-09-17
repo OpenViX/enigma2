@@ -34,21 +34,21 @@ providers = {
 
 	"Koreasat-6 160 NZ": {
 		"transponder": {
-			'orbital_position': 1600,		# 160.0°E
-			'inversion': 2,					# 0=Off, 1=On, 2=Auto
-			'symbol_rate': 30000000,		# ks/s
+			'orbital_position': 1600,
+			'inversion': eDVBFrontendParametersSatellite.Inversion_Unknown,
+			'symbol_rate': 30000000,
 			'namespace': 104857600,
-			'system': 1,					# 0 = DVB-S, 1 = DVB-S2
-			'polarization': 0,				# 0 = H, 1 = V
+			'system': eDVBFrontendParametersSatellite.System_DVB_S2,
+			'polarization': eDVBFrontendParametersSatellite.Polarisation_Horizontal,
 			'original_network_id': 169,
-			'fec_inner': 7,					# 0=Auto, 1=1/2, 2=2/3, 3=3/4, 4=5/6, 5=7/8, 6=8/9, 7=3/5, 8=4/5, 9=9/10, 10=6/7, 15=None
-			'frequency': 12530000,			# Hz
+			'fec_inner': eDVBFrontendParametersSatellite.FEC_3_5,
+			'frequency': 12530000,
 			'flags': 0,
 			'transport_stream_id': 3,
-			'modulation': 1,				# 0=Auto, 1=QPSK, 2=8PSK, 3=16APSK, 4=32APSK, 5=BPSK
+			'modulation': eDVBFrontendParametersSatellite.Modulation_QPSK,
 			'dvb_type': 'dvbs2',
-			'pilot': 2,						# 0=Off, 1=On, 2=Auto
-			'rolloff': 0,					# 0=0.35, 1=0.25, 2=0.20, 3=Auto
+			'pilot': eDVBFrontendParametersSatellite.Pilot_Unknown,
+			'rolloff': eDVBFrontendParametersSatellite.RollOff_alpha_0_35,
 			'services': {},
 		},
 
