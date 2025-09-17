@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-02 14:37+0300\n"
-"PO-Revision-Date: 2025-09-04 15:27+0300\n"
+"POT-Creation-Date: 2025-09-17 14:12+0300\n"
+"PO-Revision-Date: 2025-09-17 16:10+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -112,6 +112,9 @@ msgstr " ja"
 
 msgid " unicable LNB input of rotor"
 msgstr " unicable LNB roottorin tulo"
+
+msgid " will create a recovery backup only for slot 1 else image backup"
+msgstr " luo palautusvarmuuskopion vain paikasta 1, muuten varmuuskopioidaan image"
 
 msgid "%-H:%M"
 msgstr "%-H:%M"
@@ -2618,11 +2621,11 @@ msgstr "Tarkistus taustalla"
 msgid "Background color"
 msgstr "Taustan väri"
 
-msgid "Backing up eMMC partitions for USB flash ..."
-msgstr "Varmuuskopioidaan eMMC-osioita USB:lle ..."
+msgid "Backing up eMMC partitions for recovery image ..."
+msgstr "eMMC-osioiden varmuuskopioiminen palautusimagea varten ..."
 
-msgid "Backing up eMMC partitions for USB flash..."
-msgstr "Varmuuskopioidaan eMMC-osioita USB:lle..."
+msgid "Backing up eMMC partitions for recovery image.."
+msgstr "eMMC-osioiden varmuuskopioiminen palautusimagea varten.."
 
 msgid "Backing up files..."
 msgstr "Varmuuskopioidaan tiedostoja..."
@@ -5347,10 +5350,19 @@ msgstr "Haluatko jatkaa?"
 
 msgid ""
 "Do you want to create a full image backup?\n"
-"This can take about 6 minutes to complete."
+"This can take upto 15 minutes to complete."
 msgstr ""
-"Haluatko ottaa varmuuskopion imagesta?\n"
-"Tämä saattaa kestää noin kuusi minuuttia."
+"Haluatko luoda täyden varmuuskopion?\n"
+"Tämä voi kestää jopa 15 minuuttia."
+
+msgid ""
+"Do you want to create a full image backup?\n"
+"This can take upto 20 minutes to complete\n"
+" your "
+msgstr ""
+"Haluatko luoda täyden varmuuskopion?\n"
+"Tämä voi kestää jopa 20 minuuttia.\n"
+"sinun "
 
 msgid ""
 "Do you want to delete all the selected files:\n"
@@ -12119,6 +12131,10 @@ msgstr "Uudelleennimeäminen epäonnistui!"
 msgid "Rename name and description for new events"
 msgstr "Muokkaa nimi ja kuvaus uusille tapahtumille"
 
+#, python-format
+msgid "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick"
+msgstr "Nimeä unforce_%s.txt uudelleen tiedostoksi force_%s.txt ja siirrä se USB-tikkusi juurihakemistoon"
+
 msgid "Rename to:"
 msgstr "Muuta nimeksi:"
 
@@ -12464,6 +12480,10 @@ msgstr "SD-kortti"
 
 msgid "SETUP"
 msgstr "ASETUKSET"
+
+#, python-format
+msgid "SF8008 indicate type of backup %s"
+msgstr "SF8008 ilmoittaa varmuuskopion tyypin %s"
 
 msgid "SHIFT: "
 msgstr "SHIFT: "
@@ -15170,7 +15190,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 04.09.2025 ---\n"
+"--- 17.09.2025 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -15618,6 +15638,12 @@ msgstr "Tämä ominaisuus on teemankehittäjille. Sen avulla teema latautuu ilma
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
 msgstr "Tämä kenttä sallii etsiä ylimääräisen symbolinopeuden %s asti."
+
+msgid "This file forces a reboot after the update."
+msgstr "Tämä tiedosto pakottaa uudelleenkäynnistyksen päivityksen jälkeen."
+
+msgid "This file forces the update."
+msgstr "Tämä tiedosto pakottaa päivityksen."
 
 msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr "Tämä on monityyppinen viritin. Käytettävissä olevat optiot riippuvat hardiksesta."
@@ -17481,6 +17507,9 @@ msgstr "Kun vaihdat kanavalle, normaalisti laite hakee transponderin tietojen mu
 msgid "When waking from deep standby, should the %s %s go directly to standby mode?"
 msgstr "Pitäisikö %s %s siirtyä suoraan valmiustilaan käynnistyessään virransäästötilasta?"
 
+msgid "When you enter the recovery menu then it will force the image to be installed in the linux selection"
+msgstr "Kun siirryt palautusvalikkoon, se pakottaa imagen asentamisen Linux-valintaan"
+
 msgid "Where should the recording be saved?"
 msgstr "Minne ajastus tallennetaan?"
 
@@ -17771,14 +17800,14 @@ msgstr "Sinun %s %s ei ole kytketty verkkoon, tarkista verkkoasetukset sekä ver
 
 #, python-format
 msgid "Your %s %s has successfully flashed slot %s, enter 'Yes' to reboot new image or 'No' to return to Enigma2."
-msgstr "Laitteesi %s %s on onnistuneesti flashännyt paikan %s, valitse 'Kyllä' käynnistääksesi uuteen imageen tai 'Ei' palataksesi Enigma2:een."
+msgstr "Sinun %s %s on onnistuneesti flashännyt paikan %s, valitse 'Kyllä' käynnistääksesi uuteen imageen tai 'Ei' palataksesi Enigma2:een."
 
 #, python-format
 msgid ""
-"Your %s %s is about to create a full image backup, this can take about 6 minutes to complete.\n"
+"Your %s %s is about to create a full image backup, this can take from 10 to 15  minutes to complete.\n"
 "Do you want to allow this?"
 msgstr ""
-"Laitteesi %s %s aikoo tehdä täyden varmuuskopion, ja se voi kestää noin kuusi minuuttia.\n"
+"Sinun %s %s on luomassa täyttä varmuuskopiota. Tämä voi kestää 10–15 minuuttia.\n"
 "Sallitko tämän?"
 
 #, python-format
@@ -19005,6 +19034,13 @@ msgstr "Poista tämä merkki"
 
 msgid "rename"
 msgstr "Uudelleennimeä"
+
+msgid "rename this file to 'force' to force an update without confirmation"
+msgstr "nimeä tämä tiedosto uudelleen muotoon 'force' pakottaaksesi päivityksen ilman vahvistusta"
+
+#, python-format
+msgid "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
+msgstr "nimeä tämä unforce_%s.txt uudelleen tiedostoksi force_%s.txt pakottaaksesi päivityksen ilman vahvistusta"
 
 msgid "repeat playlist"
 msgstr "Toista soittolista"

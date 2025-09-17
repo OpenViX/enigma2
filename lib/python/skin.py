@@ -1417,7 +1417,7 @@ def readSkin(screen, skin, names, desktop):
 					raise SkinError("For connection '%s' a renderer must be defined with a 'render=' attribute" % wconnection)
 			for converter in widget.findall("convert"):
 				ctype = converter.get("type")
-				nostrip = converter.get("nostrip") and parseBoolean(converter.get("nostrip"), value)
+				nostrip = converter.get("nostrip") and parseBoolean("nostrip", converter.get("nostrip"))
 				assert ctype, "[Skin] The 'convert' tag needs a 'type' attribute!"
 				# print("[Skin] DEBUG: Converter='%s'." % ctype)
 				try:
@@ -1640,7 +1640,7 @@ def applySkinFactor(*d):
 	"""
 	if len(d) == 1:
 		return int(d[0] * getSkinFactor())
-	return tuple([int(value * getSkinFactor()) if isinstance(value, (int, float)) else value for value in d])
+	return tuple(int(value * getSkinFactor()) if isinstance(value, (int, float)) else value for value in d)
 
 
 def findSkinScreen(names):
