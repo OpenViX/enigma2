@@ -172,8 +172,11 @@ def resolveDevice(devicepath):
 
 
 def GetCurrentImageMode():
-	return bool(SystemInfo["canMultiBoot"]) and SystemInfo["canMode12"] and int(open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read().replace("\0", "").split("=")[-1])
-
+	if SystemInfo["canMultiBoot"] and SystemInfo["canMode12"]:
+		imageMode = open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read().replace("\0", "").split(".")[1].split(" ")[0].split("=")
+		return bool(int(imageMode[1])) if imageMode[0] == "boxmode" else " "
+	else:
+		return " "
 
 def GetImagelist(Recovery=None):
 	Imagelist = {}
