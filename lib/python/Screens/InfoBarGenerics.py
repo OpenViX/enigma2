@@ -4402,14 +4402,14 @@ class InfoBarSubtitleSupport:
 		subtitle = self.getCurrentServiceSubtitle()
 		subtitlelist = subtitle and subtitle.getSubtitleList()
 		if subtitlelist is None or len(subtitlelist) == 0:
-			self.subtitle_window.showSubtitles(_("No subtitles available"), True)
+			Notifications.AddPopup(text=_("No subtitles available"), type=MessageBox.TYPE_INFO, timeout=3, id="DefaultSubtitlesToggle")
 		elif self.selected_subtitle:
 			self.toggleenableSubtitle(None)
-			self.subtitle_window.showSubtitles(_("Subtitles off"), True)
+			Notifications.AddPopup(text=_("Subtitles off"), type=MessageBox.TYPE_INFO, timeout=3, id="DefaultSubtitlesToggle")
 			self.selected_subtitle = None
 		else:
 			self.toggleenableSubtitle(subtitlelist[0])
-			self.subtitle_window.showSubtitles(_("Subtitles on"), False)
+			Notifications.AddPopup(text=_("Subtitles on"), type=MessageBox.TYPE_INFO, timeout=3, id="DefaultSubtitlesToggle")
 
 	def toggleenableSubtitle(self, newSubtitle):
 		if self.selected_subtitle != newSubtitle:
