@@ -178,6 +178,7 @@ def GetCurrentImageMode():
 	else:
 		return " "
 
+
 def GetImagelist(Recovery=None):
 	Imagelist = {}
 	tmp.dir = tempfile.mkdtemp(prefix="GetImagelist")
