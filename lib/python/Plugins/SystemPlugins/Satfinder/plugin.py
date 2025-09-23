@@ -848,7 +848,7 @@ class SatfinderExtra(Satfinder):
 
 	def monitorTunerLock(self, currentProcess):
 		while True:
-			if self.currentProcess != currentProcess:
+			if self.currentProcess != currentProcess or self.frontend is None:
 				return
 			frontendStatus = {}
 			self.frontend.getFrontendStatus(frontendStatus)
