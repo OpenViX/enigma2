@@ -4,6 +4,7 @@ import struct
 import subprocess
 import tempfile
 from os import path, rmdir, rename, sep, stat
+import re
 
 from Components.Console import Console
 from Components.SystemInfo import SystemInfo, BoxInfo as BoxInfoRunningInstance, BoxInformation, BOXTYPE, CHKROOTMB, MODEL, MTDROOTFS, UBIMB
@@ -173,10 +174,9 @@ def resolveDevice(devicepath):
 
 def GetCurrentImageMode():
 	if SystemInfo["canMultiBoot"] and SystemInfo["canMode12"]:
-		imageMode = open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read().replace("\0", "").split(".")[1].split(" ")[0].split("=")
-		return int(imageMode[1]) if imageMode[0] == "boxmode" else " "
-	else:
-		return " "
+		bootargs = open("/sys/firmware/devicetree/base/chosen/bootargs", "r").read()
+		if (r := re.search(r"\bboxmode=(\d+)\b", bootargs)):
+			return int(r.group(1))
 
 
 def GetImagelist(Recovery=None):
