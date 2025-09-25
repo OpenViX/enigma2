@@ -412,9 +412,10 @@
 
 	<!-- Servicescan -->
 	<screen name="ServiceScanSummary" position="0,0" size="800,480">
-		<widget source="parent.Title" render="Label" position="40,20" size="720,376" font="FdLcD;70" halign="center" valign="center"  />
-		<widget name="scan_progress" position="40,400" size="720,25" borderWidth="2"  foregroundColor="white" />
-		<widget source="global.CurrentTime" render="Label" position="500,490" size="182,52" halign="right" font="FdLcD;50">
+		<widget name="Title" render="Label" position="40,80" size="720,90" font="FdLcD;70" halign="center" valign="center" />
+		<widget name="scan_progress" position="40,400" size="720,25" borderWidth="2" foregroundColor="white" />
+		<widget name="Service" position="70,220" size="720,170" font="FdLcD;50" transparent="1" />
+		<widget source="global.CurrentTime" render="Label" position="590,15" size="200,75" halign="left" font="FdLcD;70">
 			<convert type="ClockToText">Default</convert>
 		</widget>
 	</screen>
