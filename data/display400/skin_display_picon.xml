@@ -456,6 +456,15 @@
 		<panel name="SummaryTunerStatusPanel" />
 		<panel name="SummaryClockPanel" />
 	</screen>
+	<!-- Servicescan -->
+	<screen name="ServiceScanSummary" position="0,0" size="400,240">
+		<widget name="Title" render="Label" position="20,45" size="360,50" font="FdLcD;40" halign="center" valign="center" />
+		<widget name="scan_progress" position="20,200" size="360,25" borderWidth="2" foregroundColor="white" />
+		<widget name="Service" position="40,110" size="320,80" font="FdLcD;30" transparent="1" />
+		<widget source="global.CurrentTime" render="Label" position="295,15" size="100,40" halign="left" font="FdLcD;30">
+			<convert type="ClockToText">Default</convert>
+		</widget>
+	</screen>
 	<!-- OAWEATHER -->
 	<screen name="OAWeatherOverviewSummary" position="0,0" size="400,240">
 		<widget font="FdLcD;40" foregroundColor="yellow" halign="center" noWrap="1" position="5,5" render="Label" size="390,45" source="session.OAWeather" transparent="1" zPosition="1">
