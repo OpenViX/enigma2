@@ -9,6 +9,9 @@ from time import time, localtime, mktime, strftime
 
 
 class ETSIClassifications(dict):
+	#            0         1         2          3        4         5          6         7         8         9        10        11        12        13        14        15
+	COLORS = (0x000000, 0x00A822, 0x00A822, 0x00A822, 0x007DCA, 0x007DCA, 0x007DCA, 0xFF7900, 0xFF7900, 0xFF7900, 0xFF5594, 0xFF5594, 0xFF5594, 0xD70723, 0xD70723, 0xD70723)
+
 	def shortRating(self, age):
 		if age == 0:
 			return _("All ages")
@@ -30,8 +33,11 @@ class ETSIClassifications(dict):
 			age += 3
 			return "ratings/ETSI-%d.png" % age
 
+	def colorRating(self, age):
+		return self.COLORS[age]
+
 	def __init__(self):
-		self.update([(i, (self.shortRating(c), self.longRating(c), self.imageRating(c))) for i, c in enumerate(range(0, 16))])
+		self.update([(i, (self.shortRating(c), self.longRating(c), self.imageRating(c), self.colorRating(i))) for i, c in enumerate(range(0, 16))])
 
 
 class AusClassifications(dict):
@@ -61,8 +67,11 @@ class AusClassifications(dict):
 		"R": "ratings/AUS-R.png"
 	}
 
+	#            0         1         2          3        4         5          6         7         8         9        10        11        12        13        14        15
+	COLORS = (0x000000, 0x00A822, 0x00A822, 0x00A822, 0x007DCA, 0x007DCA, 0x007DCA, 0xFF7900, 0xFF7900, 0xFF7900, 0xFF5594, 0xFF5594, 0xFF5594, 0xD70723, 0xD70723, 0xD70723)
+
 	def __init__(self):
-		self.update([(i, (c, self.LONGTEXT[c], self.IMAGES[c])) for i, c in enumerate(self.SHORTTEXT)])
+		self.update([(i, (c, self.LONGTEXT[c], self.IMAGES[c], self.COLORS[i])) for i, c in enumerate(self.SHORTTEXT)])
 
 
 class GBrClassifications(dict):
@@ -86,8 +95,11 @@ class GBrClassifications(dict):
 		"18": "ratings/GBR-18.png"
 	}
 
+	#            0         1         2          3        4         5          6         7         8         9        10        11        12        13        14        15
+	COLORS = (0x000000, 0x000000, 0x000000, 0x00A822, 0x00A822, 0x00A822, 0xFAB800, 0xFAB800, 0xFAB800, 0xFF7900, 0xFF7900, 0xFF7900, 0xFF5594, 0xFF5594, 0xFF5594, 0xD70723)
+
 	def __init__(self):
-		self.update([(i, (c, self.LONGTEXT[c], self.IMAGES[c])) for i, c in enumerate(self.SHORTTEXT)])
+		self.update([(i, (c, self.LONGTEXT[c], self.IMAGES[c], self.COLORS[i])) for i, c in enumerate(self.SHORTTEXT)])
 
 
 class ItaClassifications(dict):
@@ -111,8 +123,11 @@ class ItaClassifications(dict):
 		"18": "ratings/ITA-18.png"
 	}
 
+	#            0         1         2          3        4         5          6         7         8         9        10        11        12        13        14        15
+	COLORS = (0x000000, 0x00A822, 0x00A822, 0x00A822, 0x007DCA, 0x007DCA, 0x007DCA, 0xFF7900, 0xFF7900, 0xFF7900, 0xFF5594, 0xFF5594, 0xFF5594, 0xD70723, 0xD70723, 0xD70723)
+
 	def __init__(self):
-		self.update([(i, (c, self.LONGTEXT[c], self.IMAGES[c])) for i, c in enumerate(self.SHORTTEXT)])
+		self.update([(i, (c, self.LONGTEXT[c], self.IMAGES[c], self.COLORS[i])) for i, c in enumerate(self.SHORTTEXT)])
 
 
 # Each country classification object in the map tuple must be an object that
@@ -171,6 +186,8 @@ class EventName(Converter):
 
 	FORMAT_STRING = 34
 
+	RAWRATINGANDCOUNTRY = 40
+
 	KEYWORDS = {
 		# Arguments...
 		"Name": ("type", NAME),
@@ -198,6 +215,7 @@ class EventName(Converter):
 		"ThirdNameOnly": ("type", THIRD_NAME2),
 		"ThirdDescription": ("type", THIRD_DESCRIPTION),
 		"RawRating": ("type", RAWRATING),
+		"RawRatingAndCountry": ("type", RAWRATINGANDCOUNTRY),
 		"RatingCountry": ("type", RATINGCOUNTRY),
 		"RatingIcon": ("type", RATINGICON),
 		# Options...
@@ -212,6 +230,7 @@ class EventName(Converter):
 	RATSHORT = 0
 	RATLONG = 1
 	RATICON = 2
+	RATCOLOR = 3
 
 	RATNORMAL = 0
 	RATDEFAULT = 1
@@ -354,7 +373,7 @@ class EventName(Converter):
 				if running_status in (6, 7):
 					return _("Reserved for future use")
 				return _("Undefined")
-		elif self.type in (self.NAME_NEXT, self.NAME_NEXT2) or (self.type >= self.NEXT_DESCRIPTION and not self.type == self.FORMAT_STRING and not self.type == self.RAWRATING):
+		elif self.type in (self.NAME_NEXT, self.NAME_NEXT2) or (self.type >= self.NEXT_DESCRIPTION and not self.type == self.FORMAT_STRING and not self.type == self.RAWRATING and not self.type == self.RAWRATINGANDCOUNTRY):
 			try:
 				reference = self.source.service
 				info = reference and self.source.info
@@ -386,6 +405,10 @@ class EventName(Converter):
 			rating = event.getParentalData()
 			if rating:
 				return rating.getCountryCode().upper()
+		elif self.type == self.RAWRATINGANDCOUNTRY:
+			rating = event.getParentalData()
+			if rating:
+				return "%d;%s" % (rating.getRating(), rating.getCountryCode().upper())
 		elif self.type == self.FORMAT_STRING:
 			begin = event.getBeginTime()
 			end = begin + event.getDuration()
