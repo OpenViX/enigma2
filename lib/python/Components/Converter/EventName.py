@@ -408,7 +408,18 @@ class EventName(Converter):
 		elif self.type == self.RAWRATINGANDCOUNTRY:
 			rating = event.getParentalData()
 			if rating:
-				return "%d;%s" % (rating.getRating(), rating.getCountryCode().upper())
+				age = rating.getRating()
+				country = rating.getCountryCode().upper()
+				if country in opentv_countries:
+					country = opentv_countries[country]
+				if country in countries:
+					c = countries[country]
+				else:
+					c = countries["ETSI"]
+				rating = c[self.RATNORMAL].get(age, c[self.RATDEFAULT](age))
+				ageText = rating[self.RATSHORT].strip().replace("+", "")
+				color = rating[self.RATCOLOR]
+				return "%s;%s" % (ageText, hex(color))
 		elif self.type == self.FORMAT_STRING:
 			begin = event.getBeginTime()
 			end = begin + event.getDuration()
