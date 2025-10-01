@@ -154,6 +154,10 @@ class ConfigList(GUIComponent):
 					self.sepLineColor = parseColor(value).argb()
 				elif attrib == "sepLineThickness":
 					self.sepLineThickness = int(value)
+				elif attrib == "separatorLineColor":
+					self.sepLineColor = parseColor(value).argb()
+				elif attrib == "separatorLineSize":
+					self.sepLineThickness = int(value)
 				else:
 					attribs.append((attrib, value))
 			self.skinAttributes = attribs
