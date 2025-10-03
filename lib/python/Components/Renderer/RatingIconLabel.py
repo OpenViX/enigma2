@@ -9,6 +9,8 @@ class RatingIconLabel(Renderer):
 		self.colors = {}
 		self.extendDirection = "right"
 		self.sidesMargin = 20
+		self.initialWidth = 0
+		self.initialXPos = 0
 
 	GUI_WIDGET = eLabel
 
@@ -28,6 +30,8 @@ class RatingIconLabel(Renderer):
 				attribs.append((attrib, value))
 		self.skinAttributes = attribs
 		result = Renderer.applySkin(self, desktop, parent)
+		self.initialWidth = self.instance.size().width()
+		self.initialXPos = self.instance.position().x()
 		self.changed((self.CHANGED_DEFAULT,))
 		return result
 
@@ -51,7 +55,7 @@ class RatingIconLabel(Renderer):
 							self.hideLabel()
 							return
 						ageText = split_text[0]
-						color = int(split_text[1], 16)
+						color = parseColor(split_text[1])
 					else:
 						age = int(self.source.text.replace("+", ""))
 						if age <= 15:
@@ -66,11 +70,11 @@ class RatingIconLabel(Renderer):
 					textSize = self.instance.calculateSize()
 					self.instance.setNoWrap(0)
 					newWidth = textSize.width() + self.sidesMargin
-					if newWidth < size.width():
-						newWidth = size.width()
+					if newWidth < self.initialWidth:
+						newWidth = self.initialWidth
 
 					if self.extendDirection == "left":
-						rightEdgePos = pos.x() + size.width()
+						rightEdgePos = self.initialXPos + self.initialWidth
 						self.move(rightEdgePos - newWidth, pos.y())
 
 					if self.extendDirection != "none":

@@ -419,7 +419,7 @@ class EventName(Converter):
 				rating = c[self.RATNORMAL].get(age, c[self.RATDEFAULT](age))
 				ageText = rating[self.RATSHORT].strip().replace("+", "")
 				color = rating[self.RATCOLOR]
-				return "%s;%s" % (ageText, hex(color))
+				return f"{ageText};#{color:08X}"
 		elif self.type == self.FORMAT_STRING:
 			begin = event.getBeginTime()
 			end = begin + event.getDuration()
