@@ -83,19 +83,10 @@ class PiconLocator:
 		fields = GetWithAlternative(serviceRef).split(":", 10)[:10]
 		if not fields or len(fields) < 10:
 			return ""
-		pngname = self.findPicon("_".join(fields))
-		if not pngname and not fields[6].endswith("0000"):
-			# remove "sub-network" from namespace
-			fields[6] = fields[6][:-4] + "0000"
-			pngname = self.findPicon("_".join(fields))
-		if not pngname and fields[0] != "1":
-			# fallback to 1 for IPTV streams
-			fields[0] = "1"
-			pngname = self.findPicon("_".join(fields))
-		if not pngname and fields[2] not in ("1", "2"):
-			# fallback to "1" for TV services that are not already "1". Skip check for radio services ("2").
-			fields[2] = "1"
-			pngname = self.findPicon("_".join(fields))
+		basenames = ["_".join(fields), (p := "1_0_1_%s_0_0_0") % (x := ("_".join(fields[3:7]))), p % (x[:-4] + "0000")]
+		for basename in dict.fromkeys(basenames).keys():  # skip duplicates, maintain order
+			if pngname := self.findPicon(basename):
+				break
 		if not pngname:  # picon by channel name
 			if (sname := eServiceReference(serviceRef).getServiceName()) and "SID 0x" not in sname and (utf8_name := sanitizeFilename(sname).lower()) and utf8_name != "__":  # avoid lookups on zero length service names
 				legacy_name = sub("[^a-z0-9]", "", utf8_name.replace("&", "and").replace("+", "plus").replace("*", "star"))  # legacy ascii service name picons
