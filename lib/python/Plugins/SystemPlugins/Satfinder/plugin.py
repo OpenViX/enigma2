@@ -816,6 +816,8 @@ class SatfinderExtra(Satfinder):
 		return "%0.1f%s" % (abs(op) / 10., "W" if op < 0 else "E")
 
 	def tunerLock(self):
+		if self.frontend is None:
+			return False
 		frontendStatus = {}
 		self.frontend.getFrontendStatus(frontendStatus)
 		return frontendStatus["tuner_state"] == "LOCKED"
@@ -831,7 +833,7 @@ class SatfinderExtra(Satfinder):
 				print("[Satfinder][waitTunerLock] tuner lock timeout reached, seconds:", lock_timeout)
 				return False
 
-			if self.currentProcess != currentProcess:
+			if self.currentProcess != currentProcess or self.frontend is None:
 				return False
 
 			frontendStatus = {}
@@ -848,7 +850,7 @@ class SatfinderExtra(Satfinder):
 
 	def monitorTunerLock(self, currentProcess):
 		while True:
-			if self.currentProcess != currentProcess:
+			if self.currentProcess != currentProcess or self.frontend is None:
 				return
 			frontendStatus = {}
 			self.frontend.getFrontendStatus(frontendStatus)

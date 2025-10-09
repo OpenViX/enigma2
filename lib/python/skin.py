@@ -5,7 +5,7 @@ from os.path import basename, dirname, isfile
 
 from Components.config import ConfigSubsection, ConfigText, config
 from Components.Sources.Source import ObsoleteSource
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, BoxInfo  # import for usage in include conditional
 from Tools.Directories import SCOPE_CONFIG, SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT_SKIN, SCOPE_FONTS, SCOPE_SKIN, SCOPE_SKIN_IMAGE, resolveFilename, fileReadXML, clearResolveLists  # noqa: F401
 from Tools.Import import my_import
 from Tools.LoadPixmap import LoadPixmap
@@ -982,7 +982,8 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 
 	for tag in domSkin.findall("include"):
 		filename = tag.attrib.get("filename")
-		if filename:
+		conditional = not (c := tag.attrib.get("conditional")) or eval(c)
+		if filename and conditional:
 			resolved = resolveFilename(scope, filename, path_prefix=pathSkin)
 			if isfile(resolved):
 				loadSkin(resolved, scope=scope, desktop=desktop, screenID=screenID)

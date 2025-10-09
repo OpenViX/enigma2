@@ -55,7 +55,7 @@ class SubtitleDisplay(Screen):
 			else:  # any key repeat or keyup event is discarded
 				return 1
 
-	def showSubtitles(self, subtitles):
+	def showSubtitles(self, subtitles, hideScreen):
 		padding = (40, 10)
 		label = self['subtitles']
 		label.setText(subtitles)
@@ -65,6 +65,9 @@ class SubtitleDisplay(Screen):
 		label.show()
 		self.subtitlesShown = True
 		self.show()
+		self.hideTimer = eTimer()
+		self.hideTimer.callback.append(self.hideScreen if hideScreen else self.hideSubtitles)
+		self.hideTimer.start(2000, True)
 
 	def hideSubtitles(self):
 		self.subtitlesShown = False

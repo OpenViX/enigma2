@@ -240,7 +240,7 @@ class About(AboutBase):
 					image -= 1
 			slotType = {"eMMC": _("eMMC"), "SDCARD": _("SDCARD"), "USB": _("USB")}.get(SystemInfo["canMultiBoot"][slot]["slotType"].replace(" ", ""), SystemInfo["canMultiBoot"][slot]["slotType"].replace(" ", ""))
 			part = _("slot %s  (%s)") % (slot, slotType)
-			bootmode = _("bootmode = %s") % GetCurrentImageMode() if SystemInfo["canMode12"] else ""
+			bootmode = SystemInfo["canMode12"] and (mode := GetCurrentImageMode()) and _("bootmode = %s") % str(mode) or ""
 			AboutText += (_("Image Slot:\t %s %s") % (part, bootmode)) + "\n"
 
 		if MACHINENAME in ("ET8500") and ospath.exists("/proc/mtd"):

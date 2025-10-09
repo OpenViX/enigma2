@@ -46,7 +46,6 @@ providers = {
 			'flags': 0,
 			'transport_stream_id': 3,
 			'modulation': eDVBFrontendParametersSatellite.Modulation_QPSK,
-			'dvb_type': 'dvbs2',
 			'pilot': eDVBFrontendParametersSatellite.Pilot_Unknown,
 			'rolloff': eDVBFrontendParametersSatellite.RollOff_alpha_0_35,
 			'services': {},
