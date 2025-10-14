@@ -40,7 +40,7 @@ class UserInstalledPackages:
 				elif line.startswith("Installed-Time: ") and (tmp_it := line.replace("Installed-Time: ", "").strip()).isnumeric():
 					p_installed = int(tmp_it)
 				elif "Auto-Installed: yes" in line.strip():
-					p_auto_installed = False
+					p_auto_installed = True
 			if p_name:
 				packages[p_name] = {"depends": p_depends, "installed": p_installed, "auto-installed": p_auto_installed}
 				for x in p_provides:
