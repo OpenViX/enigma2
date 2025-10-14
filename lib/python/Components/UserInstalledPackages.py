@@ -1,30 +1,21 @@
-from Components.Console import Console
-
-
 class UserInstalledPackages:
 	# fetch a list of user install packages, not including their depends
 
 	def __init__(self):
-		self.callback = None
-		self.Console = Console()
+		self.opkg_package_list = "/var/lib/opkg/status"
+		self.autopackages = ("opkg", "openvix-base", "run-postinsts")  # Auto installed packages not marked "Auto-Installed: yes" in "/var/lib/opkg/status"
 
 	def run(self, callback=None):
-		self.callback = callback
-		self.Console.ePopen("opkg status", self.readOPKG)
-
-	def readOPKG(self, result, retval, extra_args):
-		plugins_out = []
 		dependencies = []
-		if result:
+		if result := open(self.opkg_package_list).read():
 			packages, provides = self.parseResult(result)
 			for package in packages:
 				for depends in packages[package]["depends"]:
 					d_package = provides.get(depends)
 					if d_package and d_package in packages and abs(packages[package]["installed"] - packages[d_package]["installed"]) < 300:  # less than 5 minutes between installing the package and a dependency (accounting for really slow connections)
 						dependencies.append(d_package)
-			plugins_out = [p for p in packages if p not in dependencies]
-		if callable(self.callback):
-			self.callback(plugins_out)
+			plugins_out = [p for p in packages if p not in self.autopackages and p not in dependencies and not packages[p]["auto-installed"]]
+		callback(plugins_out)
 
 	def parseResult(self, result):
 		packages = {}
@@ -36,6 +27,7 @@ class UserInstalledPackages:
 			p_depends = []
 			p_provides = []
 			p_installed = 0
+			p_auto_installed = False
 			for line in lines:
 				if line.startswith("Package: "):
 					p_name = line.replace("Package: ", "").strip()
@@ -47,9 +39,15 @@ class UserInstalledPackages:
 					p_depends += [x.strip().split(" ", 1)[0] for x in tmp_dep.split(",")]
 				elif line.startswith("Installed-Time: ") and (tmp_it := line.replace("Installed-Time: ", "").strip()).isnumeric():
 					p_installed = int(tmp_it)
+				elif "Auto-Installed: yes" in line.strip():
+					p_auto_installed = False
 			if p_name:
-				packages[p_name] = {"depends": p_depends, "installed": p_installed}
+				packages[p_name] = {"depends": p_depends, "installed": p_installed, "auto-installed": p_auto_installed}
 				for x in p_provides:
 					provides[x] = p_name
 				provides[p_name] = p_name
 		return packages, provides
+
+
+if __name__ == "__main__":
+	UserInstalledPackages().run(lambda x: print("\n".join(x)))
