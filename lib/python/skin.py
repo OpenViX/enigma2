@@ -1,6 +1,6 @@
 from xml.etree.cElementTree import Element, ElementTree, fromstring
 
-from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWidget, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gMainDC, gRGB, BT_ALPHATEST, BT_ALPHABLEND, BT_HALIGN_CENTER, BT_HALIGN_LEFT, BT_HALIGN_RIGHT, BT_KEEP_ASPECT_RATIO, BT_SCALE, BT_VALIGN_BOTTOM, BT_VALIGN_CENTER, BT_VALIGN_TOP
+from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWidget, eStack, eRectangle, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gMainDC, gRGB, BT_ALPHATEST, BT_ALPHABLEND, BT_HALIGN_CENTER, BT_HALIGN_LEFT, BT_HALIGN_RIGHT, BT_KEEP_ASPECT_RATIO, BT_SCALE, BT_VALIGN_BOTTOM, BT_VALIGN_CENTER, BT_VALIGN_TOP
 from os.path import basename, dirname, isfile
 
 from Components.config import ConfigSubsection, ConfigText, config
@@ -1294,6 +1294,102 @@ class SkinContextStack(SkinContext):
 		return (SizeTuple(pos), SizeTuple(size))
 
 
+class SkinContextVertical(SkinContext):
+	def __init__(self, parent=None, pos=None, size=None, font=None):
+		super().__init__(parent, pos, size, font)
+		self.by = self.h + self.y
+		self.bh = self.h
+		self.bottomCount = 0
+
+	def parse(self, pos, size, font):
+		if pos == "fill":
+			pos = (self.x, self.y)
+			size = (self.w, self.h)
+			self.w = 0
+			self.h = 0
+		else:
+			(width, height) = size.split(",")
+			width = parseCoordinate(width, self.w, 0, font, self.scale[0])
+			height = parseCoordinate(height, self.h, 0, font, self.scale[1])
+			left = self.x
+			positions = pos.split(",")
+			if len(positions) == 2 and positions[1] in ("top", "bottom") and positions[0].isdigit():
+				left += int(int(positions[0]) * self.scale[0][0] / self.scale[0][1])
+				pos = positions[1]
+			if pos == "bottom":
+				if self.bottomCount:
+					self.by -= self.spacing
+				self.bottomCount += 1
+				self.by = self.by - height
+				pos = (left, self.by)
+				size = (width, height)
+				self.h -= (height + self.spacing)
+			elif pos == "top":
+				pos = (left, self.y)
+				size = (width, height)
+				self.h -= (height + self.spacing)
+				self.y += (height + self.spacing)
+			elif pos == "center":
+				pos = (left, (self.h - height) / 2)
+				size = (width, height)
+			else:
+				size = (width, height)
+				pos = pos.split(",")
+				pos = (self.x + parseCoordinate(pos[0], self.w, size[0], font, self.scale[0]), self.y + parseCoordinate(pos[1], self.h, size[1], font, self.scale[1]))
+				self.h -= (height + self.spacing)
+				self.y += (height + self.spacing)
+		# print(f"[Skin] SkinContextVertical DEBUG: Scale={self.scale}, Pos={SizeTuple(pos)}, Size={SizeTuple(size)}.")
+		return (SizeTuple(pos), SizeTuple(size))
+
+
+class SkinContextHorizontal(SkinContext):
+	def __init__(self, parent=None, pos=None, size=None, font=None):
+		super().__init__(parent, pos, size, font)
+		self.rx = self.w + self.x
+		self.rw = self.w
+		self.rightCount = 0
+
+	def parse(self, pos, size, font):
+		if pos == "fill":
+			pos = (self.x, self.y)
+			size = (self.w, self.h)
+			self.w = 0
+			self.h = 0
+		else:
+			(width, height) = size.split(",")
+			width = parseCoordinate(width, self.w, 0, font, self.scale[0])
+			height = parseCoordinate(height, self.h, 0, font, self.scale[1])
+			top = self.y
+			positions = pos.split(",")
+			if len(positions) == 2 and positions[0] in ("left", "right") and positions[1].isdigit():
+				top += int(int(positions[1]) * self.scale[0][0] / self.scale[0][1])
+				pos = positions[0]
+			if pos == "left":
+				pos = (self.x, top)
+				size = (width, height)
+				self.x += (width + self.spacing)
+				self.w -= (width + self.spacing)
+			elif pos == "right":
+				if self.rightCount:
+					self.rx -= self.spacing
+				self.rightCount += 1
+				self.rx -= width
+				pos = (self.rx, top)
+				size = (width, height)
+				self.w -= (width + self.spacing)
+			elif pos == "center":
+				pos = ((self.w - width) / 2, top)
+				size = (width, height)
+			else:
+				size = (width, height)
+				pos = pos.split(",")
+				pos = (self.x + parseCoordinate(pos[0], self.w, size[0], font, self.scale[0]), self.y + parseCoordinate(pos[1], self.h, size[1], font, self.scale[1]))
+				self.w -= (width + self.spacing)
+				self.x += (width + self.spacing)
+		# print(f"[Skin] SkinContextHorizontal DEBUG: Scale={self.scale}, Pos={SizeTuple(pos)}, Size={SizeTuple(size)}.")
+		return (SizeTuple(pos), SizeTuple(size))
+
+
 def readSkin(screen, skin, names, desktop):
 	if not isinstance(names, list):
 		names = [names]
@@ -1359,6 +1455,28 @@ def readSkin(screen, skin, names, desktop):
 
 	def processNone(widget, context):
 		pass
+
+	def proccesStackAddition(widget, stack, target):
+		if stack:
+			target.stackIndex = stack.index
+			pos = widget.attrib.get("position")
+			align = eWidget.eStackAlignNone
+			if stack.layout == 0:  # horizontal
+				if "left" in pos:
+					align = eWidget.eStackAlignLeft
+				elif "right" in pos:
+					align = eWidget.eStackAlignRight
+				elif "center" in pos:
+					align = eWidget.eStackAlignCenter
+			else:
+				if "top" in pos:
+					align = eWidget.eStackAlignTop
+				elif "bottom" in pos:
+					align = eWidget.eStackAlignBottom
+				elif "center" in pos:
+					align = eWidget.eStackAlignCenter
+			target.skinAttributes.append(("align", align))
+		return target
 
 	def processWidget(widget, context):
 		# Okay, we either have 1:1-mapped widgets ("old style"), or 1:n-mapped
@@ -1498,6 +1616,16 @@ def readSkin(screen, skin, names, desktop):
 		collectAttributes(w.skinAttributes, widget, context, skinPath, ignore=("name",))
 		screen.additionalWidgets.append(w)
 
+	def processRectangle(widget, context, stack=None):
+		item = additionalWidget()
+		item.widget = eRectangle
+		item.skinAttributes = []
+		collectAttributes(item.skinAttributes, widget, context, skinPath, ignore=("name",))
+		item = proccesStackAddition(widget, stack, item)
+		screen.additionalWidgets.append(item)
+		if stack:
+			stack.children.append(item)
+
 	def processScreen(widget, context):
 		for w in list(widget):
 			conditional = w.attrib.get("conditional")
@@ -1534,12 +1662,43 @@ def readSkin(screen, skin, names, desktop):
 			raise SkinError("Failed to create skin context (position='%s', size='%s', font='%s') in context '%s': %s" % (widget.attrib.get("position"), widget.attrib.get("size"), widget.attrib.get("font"), context, err))
 		processScreen(widget, c)
 
+	def processStack(widget, context, stack=None):
+		item = additionalWidget()
+		item.widget = eStack
+		layout = widget.attrib.get("layout")
+		item.layout = 0 if layout == "horizontal" else 1
+		classes = {
+			"vertical": SkinContextVertical,
+			"horizontal": SkinContextHorizontal,
+		}
+		contextClass = classes.get(layout, SkinContext)
+		try:
+			item.skinAttributes = []
+			item.children = []
+			contextScreen = contextClass(context, widget.attrib.get("position"), widget.attrib.get("size"), widget.attrib.get("font"))
+			spacing = widget.attrib.get("spacing")
+			if spacing:
+				contextScreen.spacing = int(spacing)
+			item.index = len(screen.stacks)
+			item.skinAttributes.append(("size", (contextScreen.w, contextScreen.h)))
+			item.skinAttributes.append(("position", (contextScreen.x, contextScreen.y)))
+			item.skinAttributes.append(("spacing", contextScreen.spacing))
+			item = proccesStackAddition(widget, stack, item)
+			screen.stacks.append(item)
+		except Exception as err:
+			raise SkinError(f"Failed to create skin context (position='{widget.attrib.get('position')}', size='{widget.attrib.get('size')}', font='{widget.attrib.get('font')}') in context '{context}': {err}")
+		processScreen(widget, contextScreen, item)
+		if stack:
+			stack.children.append(item)
+
 	processors = {
 		None: processNone,
 		"widget": processWidget,
 		"applet": processApplet,
 		"eLabel": processLabel,
 		"ePixmap": processPixmap,
+		"eRectangle": processRectangle,
+		"eStack": processStack,
 		"panel": processPanel
 	}
 
