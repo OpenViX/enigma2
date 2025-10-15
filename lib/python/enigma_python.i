@@ -62,6 +62,8 @@ is usually caused by not marking PSignals as immutable.
 #include <lib/gui/einputstring.h>
 #include <lib/gui/einputnumber.h>
 #include <lib/gui/epixmap.h>
+#include <lib/gui/erectangle.h>
+#include <lib/gui/estack.h>
 #include <lib/gui/ebutton.h>
 #include <lib/gui/ewindow.h>
 #include <lib/gui/ewidgetdesktop.h>
@@ -243,6 +245,8 @@ typedef long time_t;
 %include <lib/gui/einputstring.h>
 %include <lib/gui/einputnumber.h>
 %include <lib/gui/epixmap.h>
+%include <lib/gui/erectangle.h>
+%include <lib/gui/estack.h>
 %include <lib/gui/ecanvas.h>
 %include <lib/gui/ebutton.h>
 %include <lib/gui/ewindow.h>

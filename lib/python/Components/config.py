@@ -2267,13 +2267,15 @@ class ConfigFile:
 				return str(cmap[key].value)
 		return None
 
-	def getResolvedKey(self, key):
+	def getResolvedKey(self, key, silent=False):
 		names = key.split('.')
 		if len(names) > 1:
 			if names[0] == "config":
 				ret = self.__resolveValue(names[1:], config.content.items)
 				if ret and len(ret):
 					return ret
+		if silent:
+			return None
 		# print("[Config] getResolvedKey", key, "empty variable.")
 		return ""
 
