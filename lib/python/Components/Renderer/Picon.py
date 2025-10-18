@@ -79,6 +79,8 @@ class PiconLocator:
 				self.searchPaths.append(value)
 
 	def getPiconName(self, serviceRef):
+		if serviceRef is None:
+			return ""
 		# remove the path and name fields, and replace ":" by "_"
 		fields = GetWithAlternative(serviceRef).split(":", 10)[:10]
 		if not fields or len(fields) < 10:
