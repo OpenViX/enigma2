@@ -1080,16 +1080,6 @@ class BackupFiles(Screen):
 			self.selectedFiles.append("/usr/sundtek")
 		if path.exists("/etc/rc3.d/S99tuner.sh") and "/etc/rc3.d/S99tuner.sh" not in self.selectedFiles:
 			self.selectedFiles.append("/etc/rc3.d/S99tuner.sh")
-		if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/favourites.xml") and "/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/favourites.xml" not in self.selectedFiles:
-			self.selectedFiles.append("/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/favourites.xml")
-		if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/providers/terrestrial_finder.xml") and "/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/providers/terrestrial_finder.xml" not in self.selectedFiles:
-			self.selectedFiles.append("/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/providers/terrestrial_finder.xml")
-		if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom"):
-			for custommix in glob.glob("/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/*CustomMix.xml"):
-				if custommix not in self.selectedFiles:
-					self.selectedFiles.append(custommix)
-		if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/favourites.xml") and "/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/favourites.xml" not in self.selectedFiles:
-			self.selectedFiles.append("/usr/lib/enigma2/python/Plugins/SystemPlugins/AutoBouquetsMaker/custom/favourites.xml")
 
 		# temp measure: clear "/etc/samba" from settings as this is a system config location, not user files
 		if "/etc/samba" in self.selectedFiles:
