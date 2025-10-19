@@ -524,20 +524,10 @@ class VIXBackupManager(Screen):
 			self.Stage6()
 
 	def Stage3Complete(self, result, retval, extra_args):
-		plugins = []
+		plugins = [p.split()[0] for line in result.split("\n") if (p := line.strip())]
 		if path.exists("/tmp/ExtraInstalledPlugins"):
-			self.pluginslist = []
-			for line in result.split("\n"):
-				if line:
-					parts = line.strip().split()
-					plugins.append(parts[0])
 			with open("/tmp/ExtraInstalledPlugins", "r") as fd:
-				tmppluginslist = fd.readlines()
-			for line in tmppluginslist:
-				if line:
-					parts = line.strip().split()
-					if len(parts) > 0 and parts[0] not in plugins:
-						self.pluginslist.append(parts[0])
+				self.pluginslist = [p for line in fd.readlines() if (p := line.strip()) and p not in plugins]
 
 		if path.exists("/tmp/3rdPartyPlugins"):
 			self.pluginslist2 = []
