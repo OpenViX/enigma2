@@ -14,7 +14,7 @@ from Components.Harddisk import harddiskmanager, bytesToHumanReadable
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo, DISPLAYBRAND, IMAGETYPE, KERNEL, MACHINENAME
+from Components.SystemInfo import SystemInfo, DISPLAYBRAND, IMAGETYPE, MACHINENAME
 import Components.Task
 from Components.UserInstalledPackages import UserInstalledPackages
 from Screens.MessageBox import MessageBox
@@ -988,7 +988,6 @@ class BackupFiles(Screen):
 		self.Stage2Completed = False
 		self.Stage3Completed = False
 		self.Stage4Completed = False
-		self.Stage5Completed = False
 
 	def createBackupJob(self):
 		job = Components.Task.Job(_("Backup manager"))
@@ -1009,28 +1008,20 @@ class BackupFiles(Screen):
 		task.check = lambda: self.Stage2Completed
 		task.weighting = 1
 
-		task = Components.Task.PythonTask(job, _("Backing up files..."))
+		task = Components.Task.PythonTask(job, _("Preparing extra plugins..."))
 		task.work = self.Stage3
 		task.weighting = 1
 
-		task = Components.Task.ConditionTask(job, _("Backing up files..."), timeoutCount=600)
+		task = Components.Task.ConditionTask(job, _("Preparing extra plugins..."), timeoutCount=600)
 		task.check = lambda: self.Stage3Completed
 		task.weighting = 1
 
-		task = Components.Task.PythonTask(job, _("Preparing extra plugins..."))
+		task = Components.Task.PythonTask(job, _("Backing up files..."))
 		task.work = self.Stage4
 		task.weighting = 1
 
-		task = Components.Task.ConditionTask(job, _("Preparing extra plugins..."), timeoutCount=600)
-		task.check = lambda: self.Stage4Completed
-		task.weighting = 1
-
-		task = Components.Task.PythonTask(job, _("Backing up files..."))
-		task.work = self.Stage5
-		task.weighting = 1
-
 		task = Components.Task.ConditionTask(job, _("Backing up files..."), timeoutCount=600)
-		task.check = lambda: self.Stage5Completed
+		task.check = lambda: self.Stage4Completed
 		task.weighting = 1
 
 		task = Components.Task.PythonTask(job, _("Backup complete..."))
@@ -1109,18 +1100,6 @@ class BackupFiles(Screen):
 		print("[BackupManager] Listing ExtraInstalledPlugins completed. Plugins found:", (plugins_out or "None"))
 
 	def Stage3(self):
-		# Files for reference only. No longer used by the restore process.
-		# The version check is no longer be necessary since auto-installed packages are no longer listed in the plugins backup.
-		# For more information please consult commit https://github.com/OpenViX/vix-core/commit/53a95067677651a3f2579a1b0d1f70172ccc493b
-		print("[BackupManager] Finding kernel version:", KERNEL)
-		with open("/tmp/backupkernelversion", "w") as output:
-			output.write(KERNEL)
-		print("[BackupManager] Finding image version:", SystemInfo["imageversion"])
-		with open("/tmp/backupimageversion", "w") as output:
-			output.write(SystemInfo["imageversion"])
-		self.Stage3Completed = True
-
-	def Stage4(self):
 		if config.backupmanager.xtraplugindir.value and path.exists(config.backupmanager.xtraplugindir.value):
 			with open("/tmp/3rdPartyPlugins", "w") as output:
 				for file in listdir(config.backupmanager.xtraplugindir.value):
@@ -1130,11 +1109,11 @@ class BackupFiles(Screen):
 			with open("/tmp/3rdPartyPluginsLocation", "w") as output:
 				output.write(config.backupmanager.xtraplugindir.value)
 				output.close()
-		self.Stage4Completed = True
+		self.Stage3Completed = True
 
 	tar_flist = "/tmp/_backup-files.list"  # Filename for backup list
 
-	def Stage5(self):
+	def Stage4(self):
 		# Return config.usage.power.was_controlled_shutdown to the default value so it doesn't polute the settings file saved by the backup
 		config.usage.power.was_controlled_shutdown.value = config.usage.power.was_controlled_shutdown.default
 		config.usage.power.was_controlled_shutdown.save()
@@ -1142,8 +1121,6 @@ class BackupFiles(Screen):
 
 		tmplist = config.backupmanager.backupdirs.value
 		tmplist.append("/tmp/ExtraInstalledPlugins")
-		tmplist.append("/tmp/backupkernelversion")  # Files for reference only. No longer used by the restore process.
-		tmplist.append("/tmp/backupimageversion")  # Files for reference only. No longer used by the restore process.
 		if path.exists("/tmp/3rdPartyPlugins"):
 			tmplist.append("/tmp/3rdPartyPlugins")
 		if path.exists("/tmp/3rdPartyPluginsLocation"):
@@ -1169,7 +1146,7 @@ class BackupFiles(Screen):
 		if config.backupmanager.showboxname.value:
 			boxname = "-" + SystemInfo["machinebuild"]
 		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + boxname + "-" + SystemInfo["imagetype"][0:3] + backupType + SystemInfo["imageversion"] + "." + SystemInfo["imagebuild"] + imageSubBuild + "-" + backupdate.strftime("%Y%m%d-%H%M") + ".tar.gz"
-		with open(BackupFiles.tar_flist, "w") as tfl:			# Need to create a list of what to backup, so that spaces and special characters don't get lost on, or mangle, the command line
+		with open(BackupFiles.tar_flist, "w") as tfl:  # Need to create a list of what to backup, so that spaces and special characters don't get lost on, or mangle, the command line
 			for fn in tmplist:
 				tfl.write(fn + "\n")
 		self.ConsoleB.ePopen("tar -T " + BackupFiles.tar_flist + " -czvf " + self.Backupfile, self.Stage4Complete)
@@ -1179,7 +1156,7 @@ class BackupFiles(Screen):
 			chmod(self.Backupfile, 0o644)
 			print("[BackupManager] Complete.")
 			remove("/tmp/ExtraInstalledPlugins")
-			self.Stage5Completed = True
+			self.Stage4Completed = True
 		else:
 			self.session.openWithCallback(self.BackupComplete, MessageBox, _("Backup failed - e. g. wrong backup destination or no space left on backup device."), MessageBox.TYPE_INFO, timeout=10)
 			print("[BackupManager] Result.", result)
@@ -1194,7 +1171,6 @@ class BackupFiles(Screen):
 		self.Stage2Completed = True
 		self.Stage3Completed = True
 		self.Stage4Completed = True
-		self.Stage5Completed = True
 
 		# Return config.usage.power.was_controlled_shutdown to the normal running state
 		config.usage.power.was_controlled_shutdown.value = not config.usage.power.was_controlled_shutdown.default
