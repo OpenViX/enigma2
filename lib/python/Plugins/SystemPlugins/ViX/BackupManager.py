@@ -818,7 +818,6 @@ class VIXBackupManagerMenu(Setup):
 		self.session.open(XtraPluginsSelection)
 
 	def backupfiles_choosen(self, ret):
-		self.backupdirs = " ".join(config.backupmanager.backupdirs.value)
 		config.backupmanager.backupdirs.save()
 		config.backupmanager.save()
 		config.save()
@@ -1100,7 +1099,6 @@ class BackupFiles(Screen):
 		now = datetime.now()
 		output.write(now.strftime("%Y-%m-%d %H:%M") + ": Backup started\n")
 		output.close()
-		self.backupdirs = " ".join(config.backupmanager.backupdirs.value)
 		print("[BackupManager] Listing installed plugins")
 		self.pluginreader.run(self.Stage2Complete)
 
@@ -1150,7 +1148,6 @@ class BackupFiles(Screen):
 			tmplist.append("/tmp/3rdPartyPlugins")
 		if path.exists("/tmp/3rdPartyPluginsLocation"):
 			tmplist.append("/tmp/3rdPartyPluginsLocation")
-		self.backupdirs = " ".join(tmplist)
 		config.misc.restorewizardrun.setValue(True)
 		config.misc.restorewizardrun.save()
 		configfile.save()
