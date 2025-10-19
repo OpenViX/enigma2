@@ -1042,44 +1042,32 @@ class BackupFiles(Screen):
 
 	def JobStart(self):
 		self.selectedFiles = config.backupmanager.backupdirs.value
-		if path.exists("/etc/udev/known_devices") and "/etc/udev/known_devices" not in self.selectedFiles:
-			self.selectedFiles.append("/etc/udev/known_devices")
-		if path.exists("/var/lib/bluetooth/") and "/var/lib/bluetooth/" not in self.selectedFiles:
-			self.selectedFiles.append("/var/lib/bluetooth/")
-		if path.exists("/etc/CCcam.cfg") and "/etc/CCcam.cfg" not in self.selectedFiles:
-			self.selectedFiles.append("/etc/CCcam.cfg")
-		if path.exists("/etc/CCcam.channelinfo") and "/etc/CCcam.channelinfo" not in self.selectedFiles:
-			self.selectedFiles.append("/etc/CCcam.channelinfo")
-		if path.exists("/etc/CCcam.providers") and "/etc/CCcam.providers" not in self.selectedFiles:
-			self.selectedFiles.append("/etc/CCcam.providers")
-		if path.exists("/etc/wpa_supplicant.ath0.conf") and "/etc/wpa_supplicant.ath0.conf" not in self.selectedFiles:
-			self.selectedFiles.append("/etc/wpa_supplicant.ath0.conf")
-		if path.exists("/etc/wpa_supplicant.wlan0.conf") and "/etc/wpa_supplicant.wlan0.conf" not in self.selectedFiles:
-			self.selectedFiles.append("/etc/wpa_supplicant.wlan0.conf")
-		if path.exists("/etc/auto.network") and "/etc/auto.network" not in self.selectedFiles:
-			self.selectedFiles.append("/etc/auto.network")
-		if path.exists("/usr/crossepg/crossepg.config") and "/usr/crossepg/crossepg.config" not in self.selectedFiles:
-			self.selectedFiles.append("/usr/crossepg/crossepg.config")
-		if path.exists("/usr/crossepg/providers") and "/usr/crossepg/providers" not in self.selectedFiles:
-			self.selectedFiles.append("/usr/crossepg/providers")
-		if path.exists("/usr/lib/sabnzbd") and "/usr/lib/sabnzbd" not in self.selectedFiles:
-			self.selectedFiles.append("/usr/lib/sabnzbd")
-		if path.exists("/etc/ciplus") and "/etc/ciplus" not in self.selectedFiles:
-			self.selectedFiles.append("/etc/ciplus")
-		if path.exists("/etc/samba/smb-user.conf") and "/etc/samba/smb-user.conf" not in self.selectedFiles:
-			self.selectedFiles.append("/etc/samba/smb-user.conf")
-		if path.exists("/etc/samba/private") and "/etc/samba/private" not in self.selectedFiles:
-			self.selectedFiles.append("/etc/samba/private")
+		backupLocations = [
+			"/etc/auto.network",
+			"/etc/CCcam.cfg",
+			"/etc/CCcam.channelinfo",
+			"/etc/CCcam.providers",
+			"/etc/ciplus",
+			"/etc/rc3.d/S99tuner.sh",
+			"/etc/samba/private",
+			"/etc/samba/smb-user.conf",
+			"/etc/udev/known_devices",
+			"/etc/wpa_supplicant.ath0.conf",
+			"/etc/wpa_supplicant.wlan0.conf",
+			"/opt",
+			"/usr/crossepg/crossepg.config",
+			"/usr/crossepg/providers",
+			"/usr/lib/sabnzbd",
+			"/usr/script",
+			"/usr/sundtek",
+			"/var/lib/bluetooth/",
+		]
+		for location in backupLocations:
+			if location not in self.selectedFiles and path.exists(location):
+				self.selectedFiles.append(location)
+
 		if path.exists("/usr/keys") and "/etc/CCcam.cfg" not in self.selectedFiles:
 			self.selectedFiles.append("/usr/keys")
-		if path.exists("/opt") and "/opt" not in self.selectedFiles:
-			self.selectedFiles.append("/opt")
-		if path.exists("/usr/script") and "/usr/script" not in self.selectedFiles:
-			self.selectedFiles.append("/usr/script")
-		if path.exists("/usr/sundtek") and "/usr/sundtek" not in self.selectedFiles:
-			self.selectedFiles.append("/usr/sundtek")
-		if path.exists("/etc/rc3.d/S99tuner.sh") and "/etc/rc3.d/S99tuner.sh" not in self.selectedFiles:
-			self.selectedFiles.append("/etc/rc3.d/S99tuner.sh")
 
 		# temp measure: clear "/etc/samba" from settings as this is a system config location, not user files
 		if "/etc/samba" in self.selectedFiles:
