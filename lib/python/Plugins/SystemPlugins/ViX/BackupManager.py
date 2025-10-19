@@ -1048,6 +1048,7 @@ class BackupFiles(Screen):
 			"/etc/CCcam.channelinfo",
 			"/etc/CCcam.providers",
 			"/etc/ciplus",
+			"/etc/openvpn",
 			"/etc/rc3.d/S99tuner.sh",
 			"/etc/samba/private",
 			"/etc/samba/smb-user.conf",
