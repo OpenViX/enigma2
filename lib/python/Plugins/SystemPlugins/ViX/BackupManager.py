@@ -491,7 +491,7 @@ class VIXBackupManager(Screen):
 		print("[BackupManager] Restoring Stage 3: Feeds Checks")
 		if self.feeds == "OK":
 			print("[BackupManager] Restoring Stage 3: Feeds are OK")
-			self.Console.ePopen("opkg list-installed", self.Stage3Complete)
+			self.Console.ePopen("opkg list", self.Stage3Part2)
 		elif self.feeds == "NONETWORK":
 			print("[BackupManager] Restoring Stage 3: No network connection, plugin restore not possible")
 			AddPopupWithCallback(
@@ -523,26 +523,27 @@ class VIXBackupManager(Screen):
 			print("[BackupManager] Restoring Stage 3: Feeds state is unknown aborting")
 			self.Stage6()
 
+	def Stage3Part2(self, result, retval, extra_args):
+		self.opkg_available_packages = {p.split()[0] for line in result.split("\n") if (p := line.strip())}  # list of all packages available from the feeds
+		self.Console.ePopen("opkg list-installed", self.Stage3Complete)
+
 	def Stage3Complete(self, result, retval, extra_args):
-		plugins = [p.split()[0] for line in result.split("\n") if (p := line.strip())]
+		plugins = {p.split()[0] for line in result.split("\n") if (p := line.strip())}
 		if path.exists("/tmp/ExtraInstalledPlugins"):
 			with open("/tmp/ExtraInstalledPlugins", "r") as fd:
-				self.pluginslist = [p for line in fd.readlines() if (p := line.strip()) and p not in plugins]
+				self.pluginslist = [p for line in fd.readlines() if (p := line.strip()) and p in self.opkg_available_packages and p not in plugins]
 
 		if path.exists("/tmp/3rdPartyPlugins"):
 			self.pluginslist2 = []
 			self.plugfiles = []
 			self.thirdpartyPluginsLocation = " "
 			if config.backupmanager.xtraplugindir.value:
-				self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.value
-				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(" ", "%20")
+				self.thirdpartyPluginsLocation = config.backupmanager.xtraplugindir.value.replace(" ", "%20")
 				self.plugfiles = self.thirdpartyPluginsLocation.split("/", 3)
 			elif path.exists("/tmp/3rdPartyPluginsLocation"):
 				with open("/tmp/3rdPartyPluginsLocation", "r") as fd:
 					self.thirdpartyPluginsLocation = fd.readlines()
-				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation)
-				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace("\n", "")
-				self.thirdpartyPluginsLocation = self.thirdpartyPluginsLocation.replace(" ", "%20")
+				self.thirdpartyPluginsLocation = "".join(self.thirdpartyPluginsLocation).replace("\n", "").replace(" ", "%20")
 				self.plugfiles = self.thirdpartyPluginsLocation.split("/", 3)
 			print("[BackupManager] thirdpartyPluginsLocation split = %s" % self.plugfiles)
 			with open("/tmp/3rdPartyPlugins", "r") as fd:
