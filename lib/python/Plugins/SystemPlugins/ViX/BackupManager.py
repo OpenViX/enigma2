@@ -528,10 +528,10 @@ class VIXBackupManager(Screen):
 		self.Console.ePopen("opkg list-installed", self.Stage3Complete)
 
 	def Stage3Complete(self, result, retval, extra_args):
-		plugins = {p.split()[0] for line in result.split("\n") if (p := line.strip())}
+		opkg_installed_packages = {p.split()[0] for line in result.split("\n") if (p := line.strip())}
 		if path.exists("/tmp/ExtraInstalledPlugins"):
 			with open("/tmp/ExtraInstalledPlugins", "r") as fd:
-				self.pluginslist = [p for line in fd.readlines() if (p := line.strip()) and p in self.opkg_available_packages and p not in plugins]
+				self.pluginslist = [p for line in fd.readlines() if (p := line.strip()) and p in self.opkg_available_packages and p not in opkg_installed_packages]
 
 		if path.exists("/tmp/3rdPartyPlugins"):
 			self.pluginslist2 = []
@@ -552,7 +552,7 @@ class VIXBackupManager(Screen):
 			for line in tmppluginslist2:
 				if line:
 					parts = line.strip().split("_")
-					if parts[0] not in plugins:
+					if parts[0] not in opkg_installed_packages:
 						ipk = parts[0]
 						if path.exists(self.thirdpartyPluginsLocation):
 							available = listdir(self.thirdpartyPluginsLocation)
