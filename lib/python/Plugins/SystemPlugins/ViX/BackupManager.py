@@ -174,10 +174,7 @@ class VIXBackupManager(Screen):
 	def selectionChanged(self):
 		item = self["list"].getCurrent()
 		desc = self["backupstatus"].text
-		if item:
-			name = item
-		else:
-			name = ""
+		name = item or ""
 		for cb in self.onChangedEntry:
 			cb(name, desc)
 
@@ -186,10 +183,7 @@ class VIXBackupManager(Screen):
 		for job in Components.Task.job_manager.getPendingJobs():
 			if job.name.startswith(_("Backup manager")):
 				self.BackupRunning = True
-		if self.BackupRunning:
-			self["key_green"].setText(_("View progress"))
-		else:
-			self["key_green"].setText(_("New backup"))
+		self["key_green"].text = _("View progress") if self.BackupRunning else _("New backup")
 		self.activityTimer.startLongTimer(5)
 		self.populate_List()
 
@@ -765,7 +759,7 @@ class VIXBackupManagerMenu(Setup):
 		Setup.__init__(self, session, setup, plugin, PluginLanguageDomain)
 
 		self["actions2"] = ActionMap(
-			["SetupActions", "ColorActions", "VirtualKeyboardActions", "MenuActions"],
+			["ColorActions"],
 			{
 				"yellow": self.chooseFiles,
 				"blue": self.chooseXtraPluginDir,
