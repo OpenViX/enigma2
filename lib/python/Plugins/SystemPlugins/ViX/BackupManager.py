@@ -567,6 +567,8 @@ class VIXBackupManager(Screen):
 								continue
 					if available:
 						self.pluginslist2.append(path.join(thirdpartyPluginsLocation, available[0]))
+						if ipk in self.pluginslist:
+							self.pluginslist.remove(ipk)  # local version takes priority
 
 		print("[BackupManager] Restoring Stage 3: Complete")
 		self.Stage3Completed = True
