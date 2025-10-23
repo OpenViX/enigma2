@@ -674,47 +674,30 @@ class BackupSelection(Screen):
 		self["actions"] = ActionMap(
 			["DirectionActions", "OkCancelActions", "ShortcutActions", "MenuActions"],
 			{
-				"cancel": self.exit,
-				"red": self.exit,
+				"cancel": self.close,
+				"red": self.close,
 				"yellow": self.changeSelectionState,
 				"green": self.saveSelection,
 				"ok": self.okClicked,
-				"left": self.left,
-				"right": self.right,
-				"down": self.down,
-				"up": self.up,
-				"menu": self.exit,
+				"left": self["checkList"].pageUp,
+				"right": self["checkList"].pageDown,
+				"down": self["checkList"].down,
+				"up": self["checkList"].up,
+				"menu": self.close,
 			}, -1)
 		if self.selectionChanged not in self["checkList"].onSelectionChanged:
 			self["checkList"].onSelectionChanged.append(self.selectionChanged)
 		self.onLayoutFinish.append(self.layoutFinished)
 
 	def layoutFinished(self):
-		idx = 0
-		self["checkList"].moveToIndex(idx)
+		self["checkList"].moveToIndex(0)
 		self.selectionChanged()
 
 	def selectionChanged(self):
 		cursor = self["checkList"].getCurrent()
 		if not cursor:
 			return
-		current = cursor[0]
-		if current[2] is True:
-			self["key_yellow"].setText(_("Deselect"))
-		else:
-			self["key_yellow"].setText(_("Select"))
-
-	def up(self):
-		self["checkList"].up()
-
-	def down(self):
-		self["checkList"].down()
-
-	def left(self):
-		self["checkList"].pageUp()
-
-	def right(self):
-		self["checkList"].pageDown()
+		self["key_yellow"].text = _("Deselect") if cursor[0][2] is True else _("Select")
 
 	def changeSelectionState(self):
 		self["checkList"].changeSelectionState()
@@ -726,17 +709,11 @@ class BackupSelection(Screen):
 		config.backupmanager.backupdirs.save()
 		config.backupmanager.save()
 		config.save()
-		self.close(None)
-
-	def exit(self):
-		self.close(None)
+		self.close()
 
 	def okClicked(self):
 		if self.filelist.canDescent():
 			self.filelist.descent()
-
-	def closeRecursive(self):
-		self.close(True)
 
 
 class XtraPluginsSelection(Screen):
@@ -805,7 +782,7 @@ class VIXBackupManagerMenu(Setup):
 	def chooseXtraPluginDir(self):
 		self.session.open(XtraPluginsSelection)
 
-	def backupfiles_choosen(self, ret):
+	def backupfiles_choosen(self):
 		config.backupmanager.backupdirs.save()
 		config.backupmanager.save()
 		config.save()
