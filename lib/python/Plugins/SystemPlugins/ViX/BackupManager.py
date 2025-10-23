@@ -605,17 +605,26 @@ class VIXBackupManager(Screen):
 
 	def Stage5(self):
 		if self.doPluginsRestore:
+			self.index = 0
+			self.pluginslistcombined = self.pluginslist + self.pluginslist2
 			print("[BackupManager] Restoring Stage 5: starting plugin restore")
-			cmd = "opkg install " + " ".join(self.pluginslist + self.pluginslist2)
-			print("[BackupManager] Console command: '%s'" % cmd)
-			self.ConsoleB.ePopen(cmd, self.Stage5Complete)
+			self.installNextPackage()
 		else:
 			print("[BackupManager] Restoring Stage 5: plugin restore not requested")
 			self.Stage6()
 
+	def installNextPackage(self):
+		cmd = "opkg install " + self.pluginslistcombined[self.index]
+		print("[BackupManager] Console command: '%s'" % cmd)
+		self.ConsoleB.ePopen(cmd, self.Stage5Complete)
+
 	def Stage5Complete(self, result, retval, extra_args):
 		if result:
-			print("[BackupManager] opkg install result:\n", result)
+			print("[BackupManager] opkg install result:\n", result.decode(errors="ignore"))
+		self.index += 1
+		if self.index < len(self.pluginslistcombined):
+			self.installNextPackage()
+		else:
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
 			print("[BackupManager] Restoring Stage 5: Completed")
