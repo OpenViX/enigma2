@@ -272,6 +272,15 @@ class Screen(dict):
 		self.createGUIScreen(self.instance, self.desktop)
 
 	def createGUIScreen(self, parent, desktop, updateonly=False):
+		def addToStack(widget):
+			if hasattr(widget, "stackIndex") and widget.stackIndex != -1:
+				stack = self.stacks[widget.stackIndex]
+				stack.instance.addChild(widget.instance)
+
+		for widget in self.stacks:
+			widget.instance = widget.widget(parent, widget.layout)
+			applyAllAttributes(widget.instance, desktop, widget.skinAttributes, self.scale)
+			addToStack(widget)
 		for val in self.renderer:
 			if isinstance(val, GUIComponent):
 				if not updateonly:

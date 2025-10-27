@@ -4399,17 +4399,18 @@ class InfoBarSubtitleSupport:
 			self.subtitle_window.hide()
 
 	def toggleDefaultSubtitles(self):
+		from Screens.SubtitleDisplay import HIDE_SCREEN_TYPE_YES, HIDE_SCREEN_TYPE_NO
 		subtitle = self.getCurrentServiceSubtitle()
 		subtitlelist = subtitle and subtitle.getSubtitleList()
 		if subtitlelist is None or len(subtitlelist) == 0:
-			self.subtitle_window.showSubtitles(_("No subtitles available"), True)
+			self.subtitle_window.showSubtitles(_("No subtitles available"), HIDE_SCREEN_TYPE_YES)
 		elif self.selected_subtitle:
 			self.toggleenableSubtitle(None)
-			self.subtitle_window.showSubtitles(_("Subtitles off"), True)
+			self.subtitle_window.showSubtitles(_("Subtitles off"), HIDE_SCREEN_TYPE_YES)
 			self.selected_subtitle = None
 		else:
 			self.toggleenableSubtitle(subtitlelist[0])
-			self.subtitle_window.showSubtitles(_("Subtitles on"), False)
+			self.subtitle_window.showSubtitles(_("Subtitles on"), HIDE_SCREEN_TYPE_NO)
 
 	def toggleenableSubtitle(self, newSubtitle):
 		if self.selected_subtitle != newSubtitle:

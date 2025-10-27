@@ -7,6 +7,10 @@ from Screens.Screen import Screen
 from skin import subtitleFonts, parseFont, getSkinFactor
 import skin  # noqa: F401
 
+HIDE_SCREEN_TYPE_NONE = 0
+HIDE_SCREEN_TYPE_YES = 1
+HIDE_SCREEN_TYPE_NO = 2
+
 
 class SubtitleDisplay(Screen):
 	def __init__(self, session):
@@ -55,7 +59,7 @@ class SubtitleDisplay(Screen):
 			else:  # any key repeat or keyup event is discarded
 				return 1
 
-	def showSubtitles(self, subtitles, hideScreen):
+	def showSubtitles(self, subtitles, hideScreenType=HIDE_SCREEN_TYPE_NONE):
 		padding = (40, 10)
 		label = self['subtitles']
 		label.setText(subtitles)
@@ -65,9 +69,10 @@ class SubtitleDisplay(Screen):
 		label.show()
 		self.subtitlesShown = True
 		self.show()
-		self.hideTimer = eTimer()
-		self.hideTimer.callback.append(self.hideScreen if hideScreen else self.hideSubtitles)
-		self.hideTimer.start(2000, True)
+		if hideScreenType != HIDE_SCREEN_TYPE_NONE:
+			self.hideTimer = eTimer()
+			self.hideTimer.callback.append(self.hideScreen if hideScreenType == HIDE_SCREEN_TYPE_YES else self.hideSubtitles)
+			self.hideTimer.start(2000, True)
 
 	def hideSubtitles(self):
 		self.subtitlesShown = False
