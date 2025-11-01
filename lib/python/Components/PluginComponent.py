@@ -145,7 +145,7 @@ class PluginComponent:
 		return res
 
 	def getPluginsForMenuWithDescription(self, menuid):
-		return [(x[0], p.description) for p in self.getPlugins(PluginDescriptor.WHERE_MENU) if (x := p(menuid))]
+		return [(x, p.description) for p in self.getPlugins(PluginDescriptor.WHERE_MENU) for x in p(menuid)]
 
 	def clearPluginList(self):
 		self.pluginList = []
