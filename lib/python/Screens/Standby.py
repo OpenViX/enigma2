@@ -235,7 +235,7 @@ class QuitMainloopScreen(Screen):
 			QUIT_SHUTDOWN: _("Your %s %s is shutting down") % (DISPLAYBRAND, MACHINENAME),
 			QUIT_REBOOT: _("Your %s %s is rebooting") % (DISPLAYBRAND, MACHINENAME),
 			QUIT_RESTART: _("The user interface of your %s %s is restarting") % (DISPLAYBRAND, MACHINENAME),
-			QUIT_KODI: _("The user interface of your %s %s will be stopped to run Kodi") % DISPLAYBRAND,
+			QUIT_KODI: _("The user interface of your %s %s will be stopped to run Kodi") % (DISPLAYBRAND, MACHINENAME),
 			QUIT_ANDROID: _("Your %s %s is rebooting into Android Mode") % (DISPLAYBRAND, MACHINENAME),
 			QUIT_MAINT: _("Your %s %s is rebooting into Recovery Mode") % (DISPLAYBRAND, MACHINENAME),
 			QUIT_UPGRADE_FP: _("Your frontprocessor will be upgraded\nPlease wait until your %s %s reboots\nThis may take a few minutes") % (DISPLAYBRAND, MACHINENAME),
