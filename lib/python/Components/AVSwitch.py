@@ -333,6 +333,7 @@ class AVSwitch:
 
 
 iAVSwitch = AVSwitch()
+avSwitch = iAVSwitch  # Not used by OpenViX. For compatibility with OpenATV. Used by kodi plugin.
 
 
 def InitAVSwitch():
