@@ -29,11 +29,11 @@ class MenuList(GUIComponent):
 		for f in self.onSelectionChanged:
 			f()
 
-	def getSelectionIndex(self):
-		return self.l.getCurrentSelectionIndex()
-
 	def getSelectedIndex(self):
 		return self.l.getCurrentSelectionIndex()
+
+	def getList(self):
+		return self.list
 
 	def setList(self, list):
 		self.list = list
@@ -61,24 +61,25 @@ class MenuList(GUIComponent):
 		if self.instance is not None:
 			self.instance.moveSelection(self.instance.pageDown)
 
-	# Add new moveUp method for symmetry with ConfigList
 	def moveUp(self):
 		if self.instance is not None:
 			self.instance.moveSelection(self.instance.moveUp)
 
-	# Add new moveDown method for symmetry with ConfigList
 	def moveDown(self):
 		if self.instance is not None:
 			self.instance.moveSelection(self.instance.moveDown)
 
-	# Maintain the old up method for legacy compatibility
-	def up(self):
-		self.moveUp()
-
-	# Maintain the old down method for legacy compatibility
-	def down(self):
-		self.moveDown()
-
 	def selectionEnabled(self, enabled):
 		if self.instance is not None:
 			self.instance.setSelectionEnable(enabled)
+
+	# Maintain old methods for legacy compatibility
+	getSelectionIndex = getSelectedIndex
+	up = moveUp
+	down = moveDown
+
+	# Add some compatibility for OpenATV function names (used by some plugins in common)
+	getCurrentIndex = getSelectedIndex
+	setCurrentIndex = moveToIndex
+	index = property(getCurrentIndex, setCurrentIndex)
+	current = property(getCurrent)

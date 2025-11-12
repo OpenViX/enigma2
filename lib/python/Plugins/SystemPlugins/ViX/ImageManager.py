@@ -373,7 +373,7 @@ class VIXImageManager(Screen):
 	def keyDelete(self):
 		self.sel = self["list"].getCurrent()  # (name, link)
 		if self.sel is not None:
-			self["list"].moveToIndex(self["list"].getSelectionIndex() if len(self["list"].list) > self["list"].getSelectionIndex() + 1 else max(len(self["list"].list) - 2, 0))  # hold the selection current possition if the list is long enough, else go to last item
+			self["list"].moveToIndex(self["list"].getSelectedIndex() if len(self["list"].list) > self["list"].getSelectedIndex() + 1 else max(len(self["list"].list) - 2, 0))  # hold the selection current possition if the list is long enough, else go to last item
 			try:
 				# print("[ImageManager][keyDelete] selected image=%s" % (self.sel[1]))
 				if self.sel[1].endswith(".zip"):

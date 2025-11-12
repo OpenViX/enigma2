@@ -188,7 +188,7 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 
 	def move(self, direction):
 		if len(self.list) > 1:
-			currentIndex = self["list"].getSelectionIndex()
+			currentIndex = self["list"].getSelectedIndex()
 			swapIndex = (currentIndex + direction) % len(self.list)
 			if currentIndex == 0 and swapIndex != 1:
 				self.list = self.list[1:] + [self.list[0]]
