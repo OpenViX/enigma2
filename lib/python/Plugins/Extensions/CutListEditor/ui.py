@@ -109,7 +109,7 @@ class CutListContextMenu(FixedMenu):
 			menu.append((_("execute cuts (requires MovieCut plugin)"), self.callMovieCut))
 
 		FixedMenu.__init__(self, session, _("Cut"), menu)
-		self.skinName = "Menu"
+		self.skinName = ["CutListContextMenu", "FixedMenu", "Menu"]
 
 	def startCut(self):
 		self.close(self.RET_STARTCUT)
