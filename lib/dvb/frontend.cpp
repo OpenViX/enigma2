@@ -597,24 +597,9 @@ int eDVBFrontend::openFrontend()
 	if (!m_simulate)
 	{
 		eDebug("[eDVBFrontend%d] opening frontend", m_dvbid);
-		/* eDebug("[eDVBFrontend] 0 fd0lock @frontend %d", fd0lock); */
 		/* eDebug("[eDVBFrontend] 0 m_fd @frontend %d", m_fd); */
 		if (m_fd < 0)
 		{
-			int tmp_fd = -1;
-			tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
-			/* eDebug("[eDVBFrontend] 0 Opened tmp_fd: %d", tmp_fd); */
-			if (tmp_fd == 0)
-			{
-				::close(tmp_fd);
-				tmp_fd = -1;
-				fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
-				/* eDebugNoSimulate("[eDVBFrontend] 0 opening null fd returned: %d", fd0lock); */
-			}
-			if (tmp_fd != -1)
-			{
-				::close(tmp_fd);
-			}
 			m_fd = ::open(m_filename.c_str(), O_RDWR | O_NONBLOCK | O_CLOEXEC);
 			eDebugNoSimulate("[eDVBFrontend] opened frontend m_filename: %s", m_filename.c_str());
 			eDebugNoSimulate("[eDVBFrontend] opened frontend m_fd: %d", m_fd);
