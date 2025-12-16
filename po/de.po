@@ -10094,7 +10094,7 @@ msgid "On"
 msgstr "An"
 
 msgid "On Screen Display"
-msgstr "VFD/LCD"
+msgstr "OSD"
 
 msgid "On end of movie"
 msgstr "Am Ende eines Films"
