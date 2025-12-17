@@ -104,7 +104,7 @@ msgid " unicable LNB input of rotor"
 msgstr ""
 
 msgid " will create a recovery backup only for slot 1 else image backup"
-msgstr ""
+msgstr " utworzy kopię zapasową tylko dla slotu 1, w przeciwnym razie utworzy kopię zapasową obrazu"
 
 #, fuzzy
 msgid "%-H:%M"
@@ -804,12 +804,12 @@ msgstr "%d minuta"
 msgid "%d marked items"
 msgstr "%d minut"
 
-#, fuzzy, python-format
+#, python-format
 msgid "%d millisecond"
 msgid_plural "%d milliseconds"
-msgstr[0] "%d sekunda"
-msgstr[1] "%d sekundy"
-msgstr[2] "%d sekund"
+msgstr[0] "%d milisekunda"
+msgstr[1] "%d milisekundy"
+msgstr[2] "%d milisekund"
 
 #, python-format
 msgid "%d min"
@@ -860,9 +860,9 @@ msgstr[2] "%d sekund"
 msgid "%d seconds"
 msgstr "%d sekunda"
 
-#, fuzzy, python-format
+#, python-format
 msgid "%d slots have been created on the device.\n"
-msgstr "Wyniki zostały zapisane w %s."
+msgstr "Na urządzeniu utworzono %d slotów.\n"
 
 #, fuzzy, python-format
 msgid "%d wireless network found!"
@@ -1549,9 +1549,8 @@ msgstr ""
 msgid "A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s)."
 msgstr ""
 
-#, fuzzy
 msgid "A new storage device has been connected:"
-msgstr "brak urządzeń przechowywania danych"
+msgstr "Podłączono nowe urządzenie pamięci masowej:"
 
 #, python-format
 msgid ""
@@ -1763,7 +1762,7 @@ msgstr "Dodaj"
 
 #, python-format
 msgid "Add 4 more Multiboot USB slots after slot %s ?"
-msgstr ""
+msgstr "Dodać 4 kolejne sloty USB Multiboot po slocie %s?"
 
 #, fuzzy
 msgid "Add AutoTimer"
@@ -2725,13 +2724,11 @@ msgstr "Tło"
 msgid "Background color"
 msgstr "Tło"
 
-#, fuzzy
 msgid "Backing up eMMC partitions for recovery image ..."
-msgstr "Tworzenie kopii zapasowej partycji eMMC dla pamięci flash USB..."
+msgstr "Tworzenie kopii zapasowej partycji eMMC na potrzeby recovery ..."
 
-#, fuzzy
 msgid "Backing up eMMC partitions for recovery image.."
-msgstr "Tworzenie kopii zapasowej partycji eMMC dla pamięci flash USB..."
+msgstr "Tworzenie kopii zapasowej partycji eMMC na potrzeby recovery"
 
 msgid "Backing up files..."
 msgstr "Tworzenie kopii zapasowych plików..."
@@ -2995,9 +2992,8 @@ msgstr ""
 msgid "Boot Logo Identification"
 msgstr "Pokazuj 'trybiki' gdy zajęty"
 
-#, fuzzy
 msgid "Boot normally"
-msgstr "Format"
+msgstr "Uruchom normalnie"
 
 #, python-format
 msgid "Bootloader:\t%s\n"
@@ -3628,11 +3624,10 @@ msgid "Chkroot Manager Actions"
 msgstr "Komunikacja"
 
 msgid "Chkroot MultiBoot Initialization in progress!"
-msgstr ""
+msgstr "Inicjalizacja Chkroot MultiBoot w toku!"
 
-#, fuzzy
 msgid "Chkroot MultiBoot Manager"
-msgstr "Menedżer obrazów Multiboot"
+msgstr "Menedżer Chkroot MultiBoot"
 
 #, fuzzy
 msgid "Choose Bouquet"
@@ -3853,7 +3848,7 @@ msgid "Close screen"
 msgstr "Zamknij wybór tytułu"
 
 msgid "Close the Chkroot MultiBoot Manager"
-msgstr ""
+msgstr "Zamknij menedżera Chkroot MultiBoot"
 
 msgid "Close title selection"
 msgstr "Zamknij wybór tytułu"
@@ -4521,11 +4516,10 @@ msgid "Create DVD-ISO"
 msgstr "Utwórz DVD-ISO"
 
 msgid "Create MultiBoot System -> will INITIALISE chosen usb device"
-msgstr ""
+msgstr "Utwórz system MultiBoot -> zainicjalizuje wybrane urządzenie USB"
 
-#, fuzzy
 msgid "Create Slots"
-msgstr "Stwórz"
+msgstr "Utwórz sloty"
 
 #, fuzzy
 msgid "Create Timer"
@@ -4547,9 +4541,8 @@ msgstr "utwórz katalog"
 msgid "Create separate radio userbouquet"
 msgstr ""
 
-#, fuzzy
 msgid "Create slots for the selected device"
-msgstr "Wybierz subserwis..."
+msgstr "Utwórz sloty dla wybranego urządzenia"
 
 msgid "Create:"
 msgstr "Stwórz:"
@@ -5293,7 +5286,7 @@ msgid "Developer username"
 msgstr "Nazwa użytkownika programisty"
 
 msgid "Device"
-msgstr "Urządzenie"
+msgstr "Połączenie LAN/WLAN"
 
 #, python-format
 msgid "Device %s"
@@ -5412,9 +5405,8 @@ msgstr ""
 msgid "Disable Autostart"
 msgstr "Wyłącz uruchamianie"
 
-#, fuzzy
 msgid "Disable Chkroot"
-msgstr "Wyłącz uruchamianie"
+msgstr "Wyłącz Chkroot"
 
 #, fuzzy
 msgid "Disable FCC during recordings"
@@ -5446,7 +5438,7 @@ msgid "Disable startup"
 msgstr "Wyłącz uruchamianie"
 
 msgid "Disable the MultiBoot option"
-msgstr ""
+msgstr "Wyłącz opcję MultiBoot"
 
 msgid "Disabled"
 msgstr "Wyłączone"
@@ -13897,7 +13889,7 @@ msgid "Select destination for:"
 msgstr "Wybierz miejsce dla:"
 
 msgid "Select device and then Slot Creation"
-msgstr ""
+msgstr "Wybierz urządzenie, a następnie Utwórz slot"
 
 msgid "Select display of record icon based on 'Sref only' or 'Sref + Stream url' where applicable."
 msgstr ""
@@ -15265,9 +15257,8 @@ msgstr ""
 msgid "Slot %s / FBC virtual %s"
 msgstr ""
 
-#, fuzzy
 msgid "Slot Manager"
-msgstr "Menedżer softcam"
+msgstr "Menedżer slotów"
 
 #, fuzzy
 msgid "Slot Manager Actions"
@@ -15277,9 +15268,9 @@ msgstr "Lokalizacja"
 msgid "Slot%s %s %s: %s - %s mode%s"
 msgstr ""
 
-#, fuzzy, python-format
+#, python-format
 msgid "Slot%s %s %s: %s%s"
-msgstr "slot%s - %s "
+msgstr "Slot%s %s %s: %s%s"
 
 msgid "Slovak"
 msgstr "Słowacki"
@@ -16191,7 +16182,7 @@ msgstr "Dodaj/usuń timer dla bieżącej audycji"
 msgid "TRANSLATOR_INFO"
 msgstr ""
 "Polskie tłumaczenie HIUMAN, pololoko111\n"
-"Ostatnia aktualizacja 2024.11.28"
+"Ostatnia aktualizacja 2025.12.17"
 
 msgid "TS file is too large for ISO9660 level 1!"
 msgstr "Plik TS jest za duży dla ISO9660 poziom 1!"
