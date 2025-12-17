@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-24 10:38+0000\n"
+"POT-Creation-Date: 2025-12-02 09:37+0000\n"
 "PO-Revision-Date: 2025-05-26 15:03+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
@@ -112,6 +112,9 @@ msgstr " en"
 
 msgid " unicable LNB input of rotor"
 msgstr " Unicable LNB invoer van motor"
+
+msgid " will create a recovery backup only for slot 1 else image backup"
+msgstr ""
 
 msgid "%-H:%M"
 msgstr "%-H:%M"
@@ -804,9 +807,9 @@ msgstr "%d gemarkeerde bestanden"
 msgid "%d marked items"
 msgstr "%d gemarkeerde bestanden"
 
-#, python-format
-msgid "%d milisecond"
-msgid_plural "%d miliseconds"
+#, fuzzy, python-format
+msgid "%d millisecond"
+msgid_plural "%d milliseconds"
 msgstr[0] "%d miliseconde"
 msgstr[1] "%d miliseconds"
 
@@ -855,6 +858,10 @@ msgstr[1] "%d seconden"
 #, python-format
 msgid "%d seconds"
 msgstr "%d seconde"
+
+#, fuzzy, python-format
+msgid "%d slots have been created on the device.\n"
+msgstr "De resultaten zijn bewaard op %s."
 
 #, python-format
 msgid "%d wireless network found!"
@@ -937,14 +944,6 @@ msgstr "%m/%d/%Y"
 #, python-format
 msgid "%s"
 msgstr "%s"
-
-#, python-format
-msgid "%s "
-msgstr "%s "
-
-#, python-format
-msgid "%s   "
-msgstr "%s   "
 
 #, python-format
 msgid "%s %s advanced remote control (native)"
@@ -1191,6 +1190,10 @@ msgstr "1 minuut"
 msgid "1 second"
 msgstr "1 seconde"
 
+#, fuzzy
+msgid "1,1"
+msgstr "1.1"
+
 msgid "1. Try to reboot the box and check if this warning disappears"
 msgstr "1. Probeer de ontvanger te herstarten en controleer of het probleem is opgelost"
 
@@ -1271,6 +1274,9 @@ msgstr "25"
 
 msgid "256 Mb"
 msgstr "256 Mb"
+
+msgid "2678400000"
+msgstr ""
 
 msgid "29.97"
 msgstr "29.97"
@@ -1742,8 +1748,8 @@ msgstr "Adaptieve datumweergave geeft recente dagen weer al 'vandaag' en 'gister
 msgid "Add"
 msgstr "Voeg toe"
 
-#, python-format
-msgid "Add 4 more Vu+ Multiboot USB slots after slot %s ?"
+#, fuzzy, python-format
+msgid "Add 4 more Multiboot USB slots after slot %s ?"
 msgstr "Voeg 4 meer Vu+ Multiboot USB slots toe na slot %s?"
 
 msgid "Add AutoTimer"
@@ -2202,6 +2208,14 @@ msgstr "Arabisch"
 msgid "Architektur"
 msgstr "Architectuur"
 
+#, fuzzy
+msgid "Archive"
+msgstr "Architectuur"
+
+#, fuzzy
+msgid "Archive long"
+msgstr "activeer PiP lang"
+
 msgid "Are You Sure ?"
 msgstr "Weet u het zeker?"
 
@@ -2609,10 +2623,12 @@ msgstr "Achtergrond controle"
 msgid "Background color"
 msgstr "Achtergrondkleur"
 
-msgid "Backing up eMMC partitions for USB flash ..."
+#, fuzzy
+msgid "Backing up eMMC partitions for recovery image ..."
 msgstr "Maakt back-up van eMMC partities voor USB flash..."
 
-msgid "Backing up eMMC partitions for USB flash..."
+#, fuzzy
+msgid "Backing up eMMC partitions for recovery image.."
 msgstr "Maakt back-up van eMMC partities voor USB flash..."
 
 msgid "Backing up files..."
@@ -3004,6 +3020,10 @@ msgstr "Ontvangen bytes:"
 
 msgid "Bytes sent:"
 msgstr "Verzonden bytes:"
+
+#, fuzzy
+msgid "C"
+msgstr "C"
 
 msgctxt "Abbreviation of \"Configurable\""
 msgid "C"
@@ -3540,6 +3560,9 @@ msgstr "Kies de volgorde waarin de items in het helpscherm worden weergegeven"
 msgid "Choose the style of the second infobar. The 'Standard' view normally includes technical data. The 'Simple' view shows minimal technical data."
 msgstr "Kies de stijl van de tweede informatiebalk. De 'standaard' bevat meer technische data; de 'simpele' toont minimale technische gegevens."
 
+msgid "Choose the target device for the slots."
+msgstr ""
+
 msgid "Choose time interval to which the graphics will be rounded off."
 msgstr "Kies het tijdsinterval waarop de grafische indeling wordt afgerond."
 
@@ -3983,7 +4006,8 @@ msgstr "Configureer de breedtegraad van uw lokatie."
 msgid "Configure the longitude of your location."
 msgstr "Configureer de lengtegraad van uw lokatie."
 
-msgid "Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can."
+#, fuzzy
+msgid "Configure the minimum amount of disk space to be available for recordings. When the amount of space drops below this value, deleted items will be removed from the trash can, including, if necessary, items whose specified number of days in the trash can has not yet concluded."
 msgstr "Bepaal hoeveel ruimte er minimaal beschikbaar moet zijn voor opnames. Als deze waarde bereikt wordt, zulle bestanden uit de prullenbak worden verwijderd."
 
 msgid "Configure the minimum width before showing the 'i' icon, '0' is equal to not showing the icon at all."
@@ -3995,7 +4019,8 @@ msgstr "Configureer uw nameserver (DNS)."
 msgid "Configure the netmask."
 msgstr "Configureer de netmask."
 
-msgid "Configure the number of days after which items are automatically removed from the trash can. A setting of 0 disables this."
+#, fuzzy
+msgid "Configure the number of days after which items are automatically removed from the trash can. If the setting is 0 all items in the trash can will be removed by the next delete event, which normally occurs when preparing to make a recording."
 msgstr "Configureer het aantal dagen waarna opnames uit de prullenbak worden verwijderd. De instelling 0 schakelt dit uit."
 
 msgid "Configure the number of days old timers are kept before they are automatically removed from the timer list."
@@ -4320,6 +4345,13 @@ msgstr "Creëer"
 msgid "Create DVD-ISO"
 msgstr "DVD-ISO maken"
 
+msgid "Create MultiBoot System -> will INITIALISE chosen usb device"
+msgstr ""
+
+#, fuzzy
+msgid "Create Slots"
+msgstr "Creëer"
+
 msgid "Create Timer"
 msgstr "Maak timer"
 
@@ -4337,6 +4369,10 @@ msgstr "Map aanmaken"
 
 msgid "Create separate radio userbouquet"
 msgstr "Maak een aparte favorietenlijst voor radio"
+
+#, fuzzy
+msgid "Create slots for the selected device"
+msgstr "Druk op OK om een kanaal te kiezen."
 
 msgid "Create:"
 msgstr "Creëer:"
@@ -4477,6 +4513,10 @@ msgstr "Czech"
 
 msgid "Czechia"
 msgstr "Czechia"
+
+#, fuzzy
+msgid "D"
+msgstr "3D"
 
 msgid "DAC"
 msgstr "DAC"
@@ -5323,9 +5363,19 @@ msgstr "Wilt u de standaard skin veranderen?"
 msgid "Do you want to continue?"
 msgstr "Wilt u doorgaan?"
 
+#, fuzzy
 msgid ""
 "Do you want to create a full image backup?\n"
-"This can take about 6 minutes to complete."
+"This can take upto 15 minutes to complete."
+msgstr ""
+"Wilt u een volledige imageback-up maken?\n"
+"Dit kan wel 6 minuten duren."
+
+#, fuzzy
+msgid ""
+"Do you want to create a full image backup?\n"
+"This can take upto 20 minutes to complete\n"
+" your "
 msgstr ""
 "Wilt u een volledige imageback-up maken?\n"
 "Dit kan wel 6 minuten duren."
@@ -5739,9 +5789,6 @@ msgstr "Schakel automatisch opstarten in"
 msgid "Enable Bluetooth Audio"
 msgstr "Schakel Bluetooth audio in"
 
-msgid "Enable Chkroot MultiBoot"
-msgstr "Schakel  Chkroot MultiBoot in"
-
 msgid "Enable EIT EPG"
 msgstr "EIT EPG inschakelen"
 
@@ -6129,6 +6176,10 @@ msgstr "Estonia"
 msgid "Estonian"
 msgstr "Estisch"
 
+#, fuzzy
+msgid "EtPortal"
+msgstr "Portugal"
+
 msgid "Ethernet network interface"
 msgstr "Ethernet netwerkinterface"
 
@@ -6323,6 +6374,10 @@ msgstr "Extreme sport"
 
 msgid "Extrude from left"
 msgstr "Groei vanaf links"
+
+#, fuzzy
+msgid "F"
+msgstr "F1"
 
 msgid "F1"
 msgstr "F1"
@@ -6842,11 +6897,21 @@ msgstr "Volledig doorzichtig"
 msgid "Full view resolution"
 msgstr "Vol scherm resolutie"
 
-msgid "Fußball"
+#, fuzzy
+msgid "FuÃball"
 msgstr "Voetbal"
 
-msgid "Für Kinder"
+#, fuzzy
+msgid "FÃ¼r Kinder"
 msgstr "Voor kinderen"
+
+#, fuzzy
+msgid "G"
+msgstr "GB"
+
+#, fuzzy, python-format
+msgid "GCC version:\t%s\n"
+msgstr "FP-versie:\t%s"
 
 msgid "GREEN"
 msgstr "GROEN"
@@ -6994,6 +7059,10 @@ msgstr "Gibraltar"
 
 msgid "Gioco"
 msgstr "Spel"
+
+#, fuzzy, python-format
+msgid "Glibc version:\t%s\n"
+msgstr "FP-versie:\t%s"
 
 msgid "Go back 24 hours"
 msgstr "Spring 24 uur terug"
@@ -7154,29 +7223,9 @@ msgstr "Guyana"
 msgid "Gymnastics"
 msgstr "Gymnastiek"
 
-msgid "H7/H9/H9COMBO/H10 new Model"
-msgstr "H7/H9/H9COMBO/H10 nieuw model"
-
-msgid "H9 SDcard manager"
-msgstr "H9 SD-kaart manager"
-
-msgid "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
-msgstr "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
-
-msgid "H9 SDcard switch ERROR! - already on Nand"
-msgstr "H9 SD-kaart switch FOUT! - reeds op Nand"
-
-msgid "H9 SDcard switch ERROR! - already on mmc"
-msgstr "H9 SD-kaart switch FOUT! - reeds op mmc"
-
-msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
-msgstr "H9 USB switch ERROR! - H9 root files not transferred toUSB"
-
-msgid "H9 USB switch ERROR! - already on USB"
-msgstr "H9 USB switch FOUT! - reeds op USB"
-
-msgid "H9 switch Nand and SDcard"
-msgstr "H9 switch Nand en SD-kaart"
+#, fuzzy
+msgid "H"
+msgstr "CH"
 
 msgid "H9SDcard Manager"
 msgstr "H9SD-kaart Manager"
@@ -7324,6 +7373,9 @@ msgstr "Helpscherm"
 
 msgid "Help long"
 msgstr "Lang-Help"
+
+msgid "Help text uninitialized"
+msgstr ""
 
 msgid "Helps setting up your antenna"
 msgstr "Helpt uw schotel op te zetten"
@@ -7529,11 +7581,27 @@ msgstr "Hongaars"
 msgid "Hungary"
 msgstr "Hungary"
 
+#
+#, fuzzy
+msgid "I"
+msgstr "IP"
+
+#, fuzzy
+msgid "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 new Model"
+msgstr "H7/H9/H9COMBO/H10 nieuw model"
+
 msgid "IDLE"
 msgstr "IDLE"
 
+msgid "IGNORE"
+msgstr ""
+
 msgid "IMAGE DOWNLOADS"
 msgstr "IMAGE DOWNLOADS"
+
+#, fuzzy
+msgid "IMDB Search"
+msgstr "IMDb zoeken"
 
 msgid "IMDB search for current event"
 msgstr "IMDB zoekslag naar huidig programma"
@@ -7903,18 +7971,6 @@ msgstr "Infotainment"
 msgid "Init"
 msgstr "Initialiseren"
 
-msgid "Init SDcard"
-msgstr "Init SD-kaart"
-
-msgid "Init USB/SDA1"
-msgstr "Init USB/SDA1"
-
-msgid "Init Zgemma H9 SDCARD - please reboot after use."
-msgstr "Init Zgemma H9 SD-kaart - start opnieuw op.."
-
-msgid "Init Zgemma H9 USB/SDA1 - please reboot after use."
-msgstr "Init Zgemma H9 USB/SDA1 - start opnieuw op."
-
 msgid "Init modules"
 msgstr "Modules initialiseren"
 
@@ -8174,6 +8230,9 @@ msgstr "Italiaans"
 msgid "Italy"
 msgstr "Italy"
 
+msgid "J"
+msgstr ""
+
 msgid "JUMP 24 HOURS"
 msgstr "SPRING 24 UUR"
 
@@ -8308,8 +8367,8 @@ msgstr "Klassieker"
 msgid "Kneipensport"
 msgstr "Kroegsport"
 
-msgid "Komödie"
-msgstr "Komedie"
+msgid "KomÃ¶die"
+msgstr ""
 
 msgid "Korea (Democratic People's Republic of)"
 msgstr "Korea (Democratic People's Republic of)"
@@ -8326,7 +8385,8 @@ msgstr "Oorlog"
 msgid "Krimi"
 msgstr "Thriller"
 
-msgid "Kriminalität"
+#, fuzzy
+msgid "KriminalitÃ¤t"
 msgstr "Criminaliteit"
 
 msgid "Kultur"
@@ -9416,7 +9476,8 @@ msgstr "Myanmar"
 msgid "Mystery"
 msgstr "Mysterie"
 
-msgid "Märchen"
+#, fuzzy
+msgid "MÃ¤rchen"
 msgstr "Sprookje"
 
 msgid "N"
@@ -10239,6 +10300,10 @@ msgstr "Open de satellitenlijst"
 msgid "Open the service list"
 msgstr "Open de kanaallijst"
 
+#, fuzzy, python-format
+msgid "OpenSSL version:\t%s\n"
+msgstr "FFmpeg-versie::\t%s\n"
+
 #, python-format
 msgid ""
 "OpenTV EPG download completed.\n"
@@ -10401,6 +10466,9 @@ msgstr "VORIGE NUMMER"
 
 msgid "PRIMETIME"
 msgstr "PRIMETIME"
+
+msgid "PULSe 4K/4K Mini"
+msgstr ""
 
 msgid "PVR"
 msgstr "PVR"
@@ -11043,9 +11111,6 @@ msgstr "Pluginbrowser instellingen"
 msgid "Plugin install"
 msgstr "Plugin installeren"
 
-msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
-msgstr "Plugin-lijst mislukt - mogelijk a.g.v. een verkeerde back-up locatie of te weinig ruimte op het medium."
-
 msgid "Plugins"
 msgstr "Applicaties"
 
@@ -11106,7 +11171,8 @@ msgstr "Poort D"
 msgid "Port:"
 msgstr "Poort:"
 
-msgid "Porträt"
+#, fuzzy
+msgid "PortrÃ¤t"
 msgstr "Portret"
 
 msgid "Portugal"
@@ -11277,7 +11343,8 @@ msgstr "Druk op 'OK' om een kanaal te kiezen."
 msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."
 msgstr "Druk op GROEN (Reboot) om van image te veranderen, op GEEL (Verwijder) om een image te verwijderen of op BLAUW (Herstel) om alle images te herstellen."
 
-msgid "Press GREEN to enable MultiBoot!"
+#, fuzzy
+msgid "Press GREEN to enable MultiBoot process"
 msgstr "Druk op GROEN om  MultiBoot in te schakelen"
 
 msgid "Press OK"
@@ -11333,9 +11400,6 @@ msgstr "Druk op OK om de selectie te (de)activeren."
 
 msgid "Press OK, save and exit..."
 msgstr "Klik op OK, sla op en sluit af..."
-
-msgid "Press appropiate Init to move Nand root to SDcard or USB."
-msgstr "Druk op de juiste init om Nand root naar SD-kaart of USB te verplaatsen."
 
 msgid ""
 "Press up/down to scroll through the selected log\n"
@@ -11541,6 +11605,9 @@ msgstr "RDS/RASS scherm"
 msgid "REC"
 msgstr "OPN"
 
+msgid "REC "
+msgstr ""
+
 msgid "REC Symbol"
 msgstr "OPN-symbool"
 
@@ -11677,6 +11744,9 @@ msgstr "Nu herstarten?"
 
 msgid "Really shutdown now?"
 msgstr "Nu uitschakelen?"
+
+msgid "Really start Kodi and stop user interface now?"
+msgstr ""
 
 #, python-format
 msgid "Really store at index %2d for current position?"
@@ -12099,6 +12169,10 @@ msgstr "Hernoemen mislukt!"
 msgid "Rename name and description for new events"
 msgstr "Pas de naam en de beschrijving voor nieuwe timers aan"
 
+#, python-format
+msgid "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick"
+msgstr ""
+
 msgid "Rename to:"
 msgstr "Hernoem in:"
 
@@ -12399,6 +12473,10 @@ msgstr "Russisch"
 msgid "Russian Federation"
 msgstr "Russian Federation"
 
+#, fuzzy, python-format
+msgid "Rust version:\t%s\n"
+msgstr "FP-versie:\t%s"
+
 msgid "Rwanda"
 msgstr "Rwanda"
 
@@ -12443,6 +12521,10 @@ msgstr "SDCARD"
 
 msgid "SETUP"
 msgstr "SETUP"
+
+#, python-format
+msgid "SF8008 indicate type of backup %s"
+msgstr ""
 
 msgid "SHIFT: "
 msgstr "SHIFT: "
@@ -12525,6 +12607,10 @@ msgstr "Samba"
 
 msgid "Samba Setup"
 msgstr "Samba-instellingen"
+
+#, fuzzy, python-format
+msgid "Samba:\t%s\n"
+msgstr "GStreamer:\t%s\n"
 
 msgid "Same resolution as skin"
 msgstr "Zelfde resolutie als de skin"
@@ -12953,6 +13039,13 @@ msgstr "Kies 'Ja' om de ontvanger uit deep stand-by te halen, of kies 'Nee' om d
 msgid "Select CAId"
 msgstr "Selecteer CAId"
 
+#, fuzzy
+msgid "Select Device"
+msgstr "Kies een opname"
+
+msgid "Select Device for FORMAT!! & Creation of multiboot slots"
+msgstr ""
+
 msgid "Select EPG channel"
 msgstr "Kies EPG-kanaal"
 
@@ -12961,6 +13054,14 @@ msgstr "Kies 'snelle DiSEqC' als uw antennesysteem dat ondersteunt. Als u er nie
 
 msgid "Select Folders"
 msgstr "Kies mappen"
+
+#, fuzzy
+msgid "Select Green to action"
+msgstr "Kies actie"
+
+#, fuzzy
+msgid "Select Green to start slot creation"
+msgstr "Tijdzone instellen."
 
 msgid "Select Satellites"
 msgstr "Kies satellieten"
@@ -13045,6 +13146,10 @@ msgstr "Kies de standaard actie voor de INFO-toets"
 
 msgid "Select destination for:"
 msgstr "Selecteer bestemming voor:"
+
+#, fuzzy
+msgid "Select device and then Slot Creation"
+msgstr "Tijdzone instellen."
 
 msgid "Select display of record icon based on 'Sref only' or 'Sref + Stream url' where applicable."
 msgstr "Kies tussen tonen van opname-icoon op basis van 'alleen Sref' of 'Sref + stream url'."
@@ -14291,6 +14396,14 @@ msgstr "Slot %s / FBC in %s"
 msgid "Slot %s / FBC virtual %s"
 msgstr "Slot %s / FBC virtueel %s"
 
+#, fuzzy
+msgid "Slot Manager"
+msgstr "Softcammanager"
+
+#, fuzzy
+msgid "Slot Manager Actions"
+msgstr "Chkroot Manager acties"
+
 #, python-format
 msgid "Slot%s %s %s: %s - %s mode%s"
 msgstr "Slot%s %s %s: %s - %s mode%s"
@@ -14638,6 +14751,10 @@ msgstr "Start test"
 msgid "Start the Chkroot initialization"
 msgstr "begin de Chkroot initialisatie"
 
+#, fuzzy
+msgid "Start the UBI Multiboot initialization"
+msgstr "begin de Chkroot initialisatie"
+
 msgid "Start time"
 msgstr "Starttijd"
 
@@ -14958,12 +15075,6 @@ msgstr "Swap manager"
 msgid "Swap services"
 msgstr "Zenders omwisselen"
 
-msgid "SwaptoNand"
-msgstr "Swap-naar-Nand"
-
-msgid "SwaptoSD"
-msgstr "Swap-naar-SD"
-
 msgid "Swaziland"
 msgstr "Swaziland"
 
@@ -15116,6 +15227,10 @@ msgstr "TMDb zoeken"
 msgid "TMDb search"
 msgstr "TMDb zoeken"
 
+#, fuzzy
+msgid "TMDb search for current event"
+msgstr "TMDb zoekslag naar huidig programma"
+
 msgid "TMDb search for highlighted event"
 msgstr "TMDb zoekslag naar geselecteerd programma"
 
@@ -15128,6 +15243,9 @@ msgstr "TS bestand is te groot voor ISO9660 level1!"
 
 msgid "TSID"
 msgstr "TSID"
+
+msgid "TUNER:"
+msgstr ""
 
 msgid "TUNING"
 msgstr "TUNING"
@@ -15173,6 +15291,10 @@ msgstr "Dans"
 
 msgid "Tanzania, United Republic of"
 msgstr "Tanzania, United Republic of"
+
+#, fuzzy
+msgid "Target location"
+msgstr "Verander locatie"
 
 msgid "Task warning on shutdown"
 msgstr "Waarschuwing actieve taken bij afsluiten"
@@ -15289,8 +15411,8 @@ msgstr "Uw %s %s leest de opgeslagen EPG-data elke (aantal) uur."
 msgid "The %s %s saves the EPG data every (hours)."
 msgstr "Uw %s %s slaat de EPG-data elke (aantal) uur op."
 
-#, python-format
-msgid "The %s %s will reboot within 1 seconds."
+#, fuzzy, python-format
+msgid "The %s %s will reboot after enabling."
 msgstr "%s %s zal binnen 1 seconde rebooten."
 
 msgid ""
@@ -15472,6 +15594,10 @@ msgstr ""
 "De gebruikersinterface van uw %s %s wordt herstart\n"
 "vanwege een fout in StartEnigma.py"
 
+#, fuzzy, python-format
+msgid "The user interface of your %s %s will be stopped to run Kodi"
+msgstr "De gebruikersinterface van uw %s %s wordt herstart"
+
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr "De beeldbreedte. Het beeld zal worden aangepast aan deze waarde."
 
@@ -15559,6 +15685,13 @@ msgstr "Deze optie is voor skin-ontwikkelaars. Dit maakt het mogelijk van skin t
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
 msgstr "Hiermee kunt u aanvullend zoeken met een symbol rate tot %s."
+
+msgid "This file forces a reboot after the update."
+msgstr ""
+
+#, fuzzy
+msgid "This file forces the update."
+msgstr "De lijst is al standaard gesorteerd"
 
 msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr "Dit is een multi-type tuner. De beschikbare opties hangen van de hardware af."
@@ -16053,7 +16186,8 @@ msgstr "Spoor"
 msgid "Traditional Music"
 msgstr "Traditionele muziek"
 
-msgid "Tragödie"
+#, fuzzy
+msgid "TragÃ¶die"
 msgstr "Tragedie"
 
 msgid "Transcoding: "
@@ -16237,6 +16371,10 @@ msgstr "ONBEKEND"
 
 msgid "UP"
 msgstr "OP"
+
+#, fuzzy, python-format
+msgid "UPX version:\t%s\n"
+msgstr "FP-versie:\t%s"
 
 msgid "URL"
 msgstr "URL"
@@ -17063,6 +17201,9 @@ msgstr "Wakeup signaal van TV"
 msgid "Wallis and Futuna"
 msgstr "Wallis and Futuna"
 
+msgid "Wan IP:"
+msgstr ""
+
 msgid "War"
 msgstr "Oorlog"
 
@@ -17422,6 +17563,9 @@ msgstr "Als uw ontvanger op een kanaal is afgestemd, wordt normaal gesproken de 
 msgid "When waking from deep standby, should the %s %s go directly to standby mode?"
 msgstr "Als de %s %s uit deep stand-by komt, moet deze dan direct naar stand-by gaan?"
 
+msgid "When you enter the recovery menu then it will force the image to be installed in the linux selection"
+msgstr ""
+
 msgid "Where should the recording be saved?"
 msgstr "Waar moet de opname opgeslagen worden?"
 
@@ -17710,8 +17854,12 @@ msgid "Your %s %s has no network access, please check your network settings and 
 msgstr "Uw %s %s heeft geen netwerkverbinding. Controleer uw netwerkinstellingen en probeer het opnieuw."
 
 #, python-format
+msgid "Your %s %s has successfully flashed slot %s, enter 'Yes' to reboot new image or 'No' to return to Enigma2."
+msgstr ""
+
+#, fuzzy, python-format
 msgid ""
-"Your %s %s is about to create a full image backup, this can take about 6 minutes to complete.\n"
+"Your %s %s is about to create a full image backup, this can take from 10 to 15  minutes to complete.\n"
 "Do you want to allow this?"
 msgstr ""
 "Uw %s %s staat op het punt een image back-up te maken; dit kan wel 6 minuten duren.\n"
@@ -17776,10 +17924,6 @@ msgstr "Uw %s %s wordt opnieuw gestart in herstelmodus"
 #, python-format
 msgid "Your %s %s is shutting down"
 msgstr "Uw %s %s is aan het afsluiten"
-
-#, python-format
-msgid "Your %s %s might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
-msgstr "Uw  %s %s kan nu onbruikbaar zijn geworden. Raadpleeg voordat u uw %s %s herstart de handleiding."
 
 #, python-format
 msgid ""
@@ -17886,6 +18030,10 @@ msgstr "Uw ontvanger heeft geen internetverbinding"
 
 msgid "Your receiver is not connected to the internet"
 msgstr "Uw ontvanger heeft geen internet verbinding"
+
+#, fuzzy, python-format
+msgid "Your receiver might be unusable now. Please consult the manual for further assistance before rebooting your %s %s."
+msgstr "Uw  %s %s kan nu onbruikbaar zijn geworden. Raadpleeg voordat u uw %s %s herstart de handleiding."
 
 msgid ""
 "Your wireless LAN internet connection could not be started!\n"
@@ -18011,9 +18159,6 @@ msgstr "[MultiBootSelector][voeg USB STARTUP slot toe] - USB (%s) heeft slechts 
 
 msgid "[TimeShift] Restarting Timeshift!"
 msgstr "[TimeShift] Timeshift wordt herstart!"
-
-msgid "[Timeshift] Merging records failed!"
-msgstr "[Timeshift] Samenvoegen van opnames is milukt!"
 
 msgid "[alternative edit]"
 msgstr "[alternatieven bewerken]"
@@ -18944,6 +19089,13 @@ msgstr "verwijder dit merkteken"
 msgid "rename"
 msgstr "hernoem"
 
+msgid "rename this file to 'force' to force an update without confirmation"
+msgstr ""
+
+#, python-format
+msgid "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
+msgstr ""
+
 msgid "repeat playlist"
 msgstr "herhaal afspeellijst"
 
@@ -19397,1320 +19549,3 @@ msgstr "zapte"
 
 msgid "| separated list of prefixes you'd like to be removed from event names, separated with |, e.g. New:|Live:"
 msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, gescheiden door |, e.g. New:|Live:"
-
-#~ msgid ""
-#~ "\n"
-#~ "Advanced options and settings."
-#~ msgstr ""
-#~ "\n"
-#~ "Geavanceerde opties en instellingen."
-
-#~ msgid ""
-#~ "\n"
-#~ "After pressing OK, please wait!"
-#~ msgstr ""
-#~ "\n"
-#~ "Druk op OK en een ogenblik geduld!"
-
-#, python-format
-#~ msgid ""
-#~ "\n"
-#~ "Backup your %s %s settings."
-#~ msgstr ""
-#~ "\n"
-#~ "Maak een back-up van de instellingen van uw %s %s."
-
-#~ msgid ""
-#~ "\n"
-#~ "Edit the upgrade source address."
-#~ msgstr ""
-#~ "\n"
-#~ "Wijzig het bronadres voor upgrades ."
-
-#, python-format
-#~ msgid ""
-#~ "\n"
-#~ "Manage extensions or plugins for your %s %s"
-#~ msgstr ""
-#~ "\n"
-#~ "Beheer extensies en plugins voor uw %s %s"
-
-#, python-format
-#~ msgid ""
-#~ "\n"
-#~ "Online update of your %s %s software."
-#~ msgstr ""
-#~ "\n"
-#~ "Online bijwerken van uw %s %s software."
-
-#~ msgid ""
-#~ "\n"
-#~ "Press OK on your remote control to continue."
-#~ msgstr ""
-#~ "\n"
-#~ "Druk op OK om door te gaan."
-
-#, python-format
-#~ msgid ""
-#~ "\n"
-#~ "Restore your %s %s settings."
-#~ msgstr ""
-#~ "\n"
-#~ "De instellingen van uw %s %s terugplaatsen."
-
-#, python-format
-#~ msgid ""
-#~ "\n"
-#~ "Restore your %s %s with a new firmware."
-#~ msgstr ""
-#~ "\n"
-#~ "Plaats nieuwe firmware in uw %s %s."
-
-#~ msgid ""
-#~ "\n"
-#~ "Restore your backups by date."
-#~ msgstr ""
-#~ "\n"
-#~ "Zet de back-up van een bepaalde datum terug."
-
-#~ msgid ""
-#~ "\n"
-#~ "Scan for local extensions and install them."
-#~ msgstr ""
-#~ "\n"
-#~ "Zoek naar lokale extensies en installeer die."
-
-#~ msgid ""
-#~ "\n"
-#~ "Select your backup device.\n"
-#~ "Current device: "
-#~ msgstr ""
-#~ "\n"
-#~ "Kies een back-up medium.\n"
-#~ "Huidig medium: "
-
-#~ msgid ""
-#~ "\n"
-#~ "View, install and remove available or installed packages."
-#~ msgstr ""
-#~ "\n"
-#~ "Bekijk, installeer en verwijder beschikbare of geïnstalleerde pakketten."
-
-#, python-format
-#~ msgid "%.0f GB"
-#~ msgstr "%.0f GB"
-
-#, python-format
-#~ msgid "%.0f MB"
-#~ msgstr "%.0f MB"
-
-#, python-format
-#~ msgid "%.0f kB"
-#~ msgstr "%.0f kB"
-
-#, python-format
-#~ msgid "%.2f GB"
-#~ msgstr "%.2f GB"
-
-#, python-format
-#~ msgid "%02d MB"
-#~ msgstr "%02d MB"
-
-#, python-format
-#~ msgid "%d B"
-#~ msgstr "%d B"
-
-#, python-format
-#~ msgid "%d GB"
-#~ msgstr "%d GB"
-
-#, python-format
-#~ msgid "%d KB"
-#~ msgstr "%d KB"
-
-#, python-format
-#~ msgid "%d MB"
-#~ msgstr "%d MB"
-
-#, python-format
-#~ msgid "%d kB"
-#~ msgstr "%d kB"
-
-#, python-format
-#~ msgid "%d.%03d GB"
-#~ msgstr "%d.%03d GB"
-
-#, python-format
-#~ msgid "%s %s software because updates are available."
-#~ msgstr "%s %s software want er zijn updates beschikbaar."
-
-#, python-format
-#~ msgid "%s GB"
-#~ msgstr "%s GB"
-
-#, python-format
-#~ msgid "%s Log ( %s-Version: %s )"
-#~ msgstr "%s Log ( %s-Versie: %s )"
-
-#~ msgid "(FTA Service)"
-#~ msgstr "(FTA kanaal)"
-
-#~ msgid "-"
-#~ msgstr "-"
-
-#~ msgid "0 minutes"
-#~ msgstr "0 minuten"
-
-#, fuzzy
-#~ msgid "1,1"
-#~ msgstr "1.1"
-
-#~ msgid "10 MB/s"
-#~ msgstr "10 MB/s"
-
-#~ msgid "100 MB/s"
-#~ msgstr "100 MB/s"
-
-#~ msgid "1080i"
-#~ msgstr "1080i"
-
-#~ msgid "1080p 24Hz"
-#~ msgstr "1080p 24Hz"
-
-#~ msgid "1080p 25Hz"
-#~ msgstr "1080p 25Hz"
-
-#~ msgid "1080p 30Hz"
-#~ msgstr "1080p 30Hz"
-
-#~ msgid "1080p 50Hz"
-#~ msgstr "1080p 50Hz"
-
-#~ msgid "1080p 60Hz"
-#~ msgstr "1080p 60Hz"
-
-#~ msgid "20 MB/s"
-#~ msgstr "20 MB/s"
-
-#~ msgid "2160p 24Hz"
-#~ msgstr "2160p 24Hz"
-
-#~ msgid "2160p 25Hz"
-#~ msgstr "2160p 25Hz"
-
-#~ msgid "2160p 30Hz"
-#~ msgstr "2160p 30Hz"
-
-#~ msgid "2160p 50Hz"
-#~ msgstr "2160p 50Hz"
-
-#~ msgid "2160p 60Hz"
-#~ msgstr "2160p 60Hz"
-
-#~ msgid "3D"
-#~ msgstr "3D"
-
-#~ msgid "3D Mode"
-#~ msgstr "3D modus"
-
-#~ msgid "480p 24Hz"
-#~ msgstr "480p 24Hz"
-
-#~ msgid "50 MB/s"
-#~ msgstr "50 MB/s"
-
-#~ msgid "720p"
-#~ msgstr "720p"
-
-#~ msgid "720p 24Hz"
-#~ msgstr "720p 24Hz"
-
-#~ msgid "A search for available updates is currently in progress."
-#~ msgstr "Bezig met zoeken naar updates."
-
-#~ msgid "A small overview of the available icon states and actions."
-#~ msgstr "Een klein overzicht van gebruikte icoon-statussen en acties."
-
-#~ msgid "AboutBoxInfo"
-#~ msgstr "About BoxInfo"
-
-#~ msgid "Activate MAC address configuration"
-#~ msgstr "Activeer MAC-adres configuratie"
-
-#~ msgid "Activate current configuration"
-#~ msgstr "Activeer huidige configuratie"
-
-#~ msgid "Activate network adapter configuration"
-#~ msgstr "Start de netwerkadapter configuratie"
-
-#~ msgid "Advanced restore"
-#~ msgstr "Geavanceerd herstellen"
-
-#~ msgid "Advanced software"
-#~ msgstr "Geavanceerde software"
-
-#~ msgid "Advanced software plugin"
-#~ msgstr "Geavanceerde software plugin"
-
-#~ msgid "All resolutions"
-#~ msgstr "Alle resoluties"
-
-#~ msgid "Allow unstable (experimental) feeds"
-#~ msgstr "Accepteer onstabiele (experimentele) feeds"
-
-#~ msgid "Allows you to adjust the amount of time the resolution infomation display on screen."
-#~ msgstr "Stelt de tijdsduur in dat resolutie-informatie op het tv-scherm getoond wordt."
-
-#~ msgid "Allows you to tag your image backup to a box. (default is box name/type)"
-#~ msgstr "U kunt de naam van de image back-ups aanpassen (standaard is stb name/type)."
-
-#~ msgid "Android Mode"
-#~ msgstr "Android mode"
-
-#~ msgid ""
-#~ "Are you sure you want to delete\n"
-#~ "the following backup:\n"
-#~ msgstr ""
-#~ "Weet u zeker dat u de volgende\n"
-#~ "back-up wilt verwijderen:\n"
-
-#, python-format
-#~ msgid "Are you sure you want to delete image slot %s ?"
-#~ msgstr "Weet u zeker dat u het image in slot %s wilt verwijderen?"
-
-#~ msgid "Are you sure you want to purge all deleted user bouquets?"
-#~ msgstr "Weet u zeker dat u alle verwijderde favorietenlijsten definitief wilt verwijderen?"
-
-#, python-format
-#~ msgid ""
-#~ "Are you sure you want to restore\n"
-#~ "the following backup:\n"
-#~ "%s\n"
-#~ "Your receiver will restart after the backup has been restored!"
-#~ msgstr ""
-#~ "Weet u zeker dat u de volgende\n"
-#~ "back-up wilt flashen:\n"
-#~ "%s\n"
-#~ "Uw ontvanger zal herstarten nadat de back-up is teruggeplaatst!"
-
-#~ msgid ""
-#~ "Are you sure you want to restore the backup?\n"
-#~ "Your receiver will restart after the backup has been restored!"
-#~ msgstr ""
-#~ "Weet u zeker dat u de back-up wilt flashen?\n"
-#~ "Uw ontvanger zal herstarten als het proces gereed is!"
-
-#~ msgid "Author: "
-#~ msgstr "Auteur: "
-
-#~ msgid "Automatic resolution"
-#~ msgstr "Automatische resolutie"
-
-#~ msgid "Automatic resolution label"
-#~ msgstr "Automatische resolutieinfo"
-
-#~ msgid "Background delete option"
-#~ msgstr "Verwijder op de achtergrond"
-
-#~ msgid "Background delete speed"
-#~ msgstr "Snelheid verwijderen op de achtergrond"
-
-#~ msgid "Backup failed."
-#~ msgstr "Back-up is mislukt."
-
-#~ msgid "Backup is running..."
-#~ msgstr "Back-up wordt uitgevoerd..."
-
-#~ msgid "Backup system settings"
-#~ msgstr "Back-up uw instellingen"
-
-#, python-format
-#~ msgid "Build: %s"
-#~ msgstr "Build: %s"
-
-#~ msgid "CAID"
-#~ msgstr "CAID"
-
-#~ msgid "CAID:SrvID"
-#~ msgstr "CAID:SrvID"
-
-#~ msgid "Cannot delete current image"
-#~ msgstr "Kan huidige image verwijderen"
-
-#~ msgid "Cannot reboot to deleted image"
-#~ msgstr "Kan niet rebooten naar een verwijderd image"
-
-#~ msgid "Change the Colordepth for UHD"
-#~ msgstr "Verander de kleurruimte voor UHD"
-
-#~ msgid "Change the Colorimetry for HDR"
-#~ msgstr "Verander de kleurruimte voor HDR"
-
-#~ msgid "Change the Colorspace from Auto to RGB"
-#~ msgstr "Verander de kleurruimte van Auto naar RGB"
-
-#, python-format
-#~ msgid "Chipset:\tBroadcom %s\n"
-#~ msgstr "Chipset:\tBroadcom %s\n"
-
-#, python-format
-#~ msgid "Chipset:\tHiSilicon %s\n"
-#~ msgstr "Chipset:\tHiSilicon %s\n"
-
-#~ msgid "Clear HDMI-CEC fixed address"
-#~ msgstr "Verwijder HDMI-CEC vaste adres"
-
-#~ msgid "Clear fixed"
-#~ msgstr "Verwijder vaste"
-
-#, python-format
-#~ msgid "Client Info ( %s-Version: %s )"
-#~ msgstr "KlantInfo ( %s-Version: %s )"
-
-#~ msgid "Collection"
-#~ msgstr "Collectie"
-
-#~ msgid "Communication"
-#~ msgstr "Communicatie"
-
-#~ msgid "Configure on which devices the background delete option should be used."
-#~ msgstr "Geef aan op welk apparaat op de achtergrond bestanden mogen worden verwijderd."
-
-#~ msgid "Configure the behavior when reaching the end of a movie, during movie playback."
-#~ msgstr "Configureer het gedrag aan het einde van de film."
-
-#~ msgid "Configure the speed of the background deletion process. Lower speed will consume less hard disk drive performance."
-#~ msgstr "Bepaal de snelheid waarmee bestanden op de achtergrond worden verwijderd. Een lage snelheid vergt minder prestaties van de schijf."
-
-#~ msgid "Configure your network settings, and press OK to start the scan"
-#~ msgstr "Stel uw netwerk in en druk op 'OK' om de scan te starten"
-
-#~ msgid "Connected"
-#~ msgstr "Verbonden"
-
-#~ msgid "Continue"
-#~ msgstr "Doorgaan"
-
-#~ msgid "Converting ext3 to ext4..."
-#~ msgstr "Converteert ext3 naar ext4...."
-
-#~ msgid "Current CEC address"
-#~ msgstr "Huidig CEC adres"
-
-#~ msgid "Current version:"
-#~ msgstr "Actuele versie:"
-
-#, fuzzy
-#~ msgid "D"
-#~ msgstr "3D"
-
-#~ msgid "Default settings"
-#~ msgstr "Standaard instellingen"
-
-#~ msgid "Delay time"
-#~ msgstr "Vertragingstijd"
-
-#~ msgid "Depth"
-#~ msgstr "Diepte"
-
-#~ msgid "Details for plugin: "
-#~ msgstr "Details voor plugin: "
-
-#~ msgid "Device: none available"
-#~ msgstr "Apparaat: geen beschikbaar"
-
-#~ msgid "Display and user interface"
-#~ msgstr "Scherm- en gebruikersinterface"
-
-#~ msgid ""
-#~ "Do you want to flash Recovery image?\n"
-#~ "This will change all eMMC slots."
-#~ msgstr ""
-#~ "Wilt u het Recovery Image flashen?\n"
-#~ "Dit zal alle eMMC slots veranderen."
-
-#~ msgid "DownLoad"
-#~ msgstr "DownLoad"
-
-#~ msgid "ECM-Time"
-#~ msgstr "ECM Tijd"
-
-#~ msgid "ERROR"
-#~ msgstr "FOUT"
-
-#~ msgid "Edit upgrade source url."
-#~ msgstr "Upgrade url bewerken."
-
-#~ msgid "Erase"
-#~ msgstr "Wis"
-
-#, fuzzy
-#~ msgid "EtPortal"
-#~ msgstr "Portugal"
-
-#~ msgid "Everywhere"
-#~ msgstr "Overal"
-
-#~ msgid "Exit MAC address configuration"
-#~ msgstr "Verlaat MAC-adres configuratie"
-
-#~ msgid "Exit movie player..."
-#~ msgstr "Moviespeler afsluiten..."
-
-#~ msgid "Exit nameserver configuration"
-#~ msgstr "Verlaat nameserver configuratie"
-
-#~ msgid "Exit network adapter configuration"
-#~ msgstr "Verlaat netwerkadapterconfiguratie"
-
-#
-#~ msgid "Extended Software"
-#~ msgstr "Uitgebreide software"
-
-#
-#~ msgid "Extended Software Plugin"
-#~ msgstr "Uitgebreide software plugin"
-
-#~ msgid "Extensions management"
-#~ msgstr "Applicatiebeheer"
-
-#, fuzzy
-#~ msgid "F"
-#~ msgstr "F1"
-
-#, python-format
-#~ msgid "FBC socket %s"
-#~ msgstr "FBC socket %s"
-
-#~ msgid "Fix CEC address setting, default is 1.0.0.0"
-#~ msgstr "Fix CEC adresinstelling, default is 1.0.0.0"
-
-#, python-format
-#~ msgid "Flash directory '%s' not allowed!"
-#~ msgstr "Flash-map'%s' is niet toegestaan!"
-
-#~ msgid "Following tasks will be done after you press OK!"
-#~ msgstr "Nadat u op OK drukt worden de volgende taken uitgevoerd!"
-
-#~ msgid "Force de-interlace"
-#~ msgstr "Forceer de-interlace"
-
-#, fuzzy
-#~ msgid "G"
-#~ msgstr "GB"
-
-#~ msgid "GB"
-#~ msgstr "GB"
-
-#, fuzzy
-#~ msgid "H"
-#~ msgstr "CH"
-
-#~ msgid "HDMI-CEC address editing actions"
-#~ msgstr "HDMI-CEC adresinstellingen"
-
-#~ msgid ""
-#~ "Help Screen\n"
-#~ "\n"
-#~ "Brief help information for buttons in your current context.\n"
-#~ "\n"
-#~ "Navigate up/down with UP/DOWN buttons and page up/down with LEFT/RIGHT. EXIT to return to the help screen. OK to perform the action described in the currently highlighted help.\n"
-#~ "\n"
-#~ "Other buttons will jump to the help for that button, if there is help.\n"
-#~ "\n"
-#~ "If an action is user-configurable, its help entry will be flagged (C)\n"
-#~ "\n"
-#~ "A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s).\n"
-#~ "\n"
-#~ "The order and grouping of the help information list can be controlled using MENU>Setup>User Interface>Settings>Sort order for help screen."
-#~ msgstr ""
-#~ "Help-scherm\n"
-#~ "\n"
-#~ "Korte help-info voor toetsen in uw huidige context.\n"
-#~ "\n"
-#~ "Navigeer op/neer met de OP/NEER toetsen en pagina vooruit/achteruit met de LINKS/RECHTS toetsen. EXIT om terug te keren naar het help-scherm. OK om de beschreven actie uit te voeren die op het help-scherm gekozen is.\n"
-#~ "\n"
-#~ "Andere toetsen zullen naar de help voor die toets springen, als er help is.\n"
-#~ "\n"
-#~ "Als een actie door de gebruiker ingesteld kan worden, wordt deze gemarkeerd met (C)\n"
-#~ "\n"
-#~ "Op het plaatje van de AB wordt de toets gemarkeerd waarvoor de help getoond wordt. Als meer dan één toets dezelfde functie heeft, worden die alle gemarkeerd. Als een functie geldt voor het lang indrukken van een toets, wordt dat aangegeven.\n"
-#~ "\n"
-#~ "Volgorde en groepering van de help-info kan worden ingesteld in de gebruikersinterface."
-
-#~ msgid "Hide and confirm invalid key message"
-#~ msgstr "Verberg en bevestig ongeldige-knop melding"
-
-#~ msgid "Hotplug"
-#~ msgstr "Hotplug"
-
-#
-#, fuzzy
-#~ msgid "I"
-#~ msgstr "IP"
-
-#, fuzzy
-#~ msgid "IMDB Search"
-#~ msgstr "IMDb zoeken"
-
-#~ msgid "If enabled the output resolution of the box will try to match the resolution of the video content"
-#~ msgstr "Indien ingeschakeld zal getracht worden de output-resolutie van uw box overeen te laten komen met de resolutie van de video inhoud"
-
-#~ msgid "If enabled the video will always be de-interlaced."
-#~ msgstr "Indien ingeschakeld zal de video altijd worden gede-interlaced."
-
-#~ msgid "Init Vu+ MultiBoot"
-#~ msgstr "Init Vu+ MultiBoot"
-
-#~ msgid "Install a new image with a USB stick"
-#~ msgstr "Installeer een nieuwe image met een USB-stick"
-
-#~ msgid "Install a new image with your web browser"
-#~ msgstr "Installeer een nieuwe image met uw browser"
-
-#~ msgid "Install extensions"
-#~ msgstr "Installeer extensies"
-
-#~ msgid "Install or remove finished."
-#~ msgstr "Installeren of verwijderen voltooid."
-
-#~ msgid "Installation finished."
-#~ msgstr "Installatie mislukt."
-
-#~ msgid "Instant recording..."
-#~ msgstr "Directe opname..."
-
-#~ msgid "Internal hdd only"
-#~ msgstr "Alleen interne HDD"
-
-#, python-format
-#~ msgid "Last update: %s"
-#~ msgstr "Laatste update: %s"
-
-#~ msgid "Left from servicename (only available in single line mode)"
-#~ msgstr "Links van kanaalnaam (alleen beschikbaar in de één regel modus)"
-
-#~ msgid "Listener for hotplug events."
-#~ msgstr "Luistert naar hotplug gebeurtenissen."
-
-#~ msgid "Manage extensions"
-#~ msgstr "Beheer van extensies"
-
-#, python-format
-#~ msgid "Manage your %s %s's software"
-#~ msgstr "Beheer de software van uw %s %s"
-
-#~ msgid "Mark service as a dedicated 3D service"
-#~ msgstr "Markeer kanaal als 3D"
-
-#~ msgid "Max backups to keep (0==all)"
-#~ msgstr "Max aantal back-ups te bewaren (0==alle)"
-
-#~ msgid "Multiboot image manager"
-#~ msgstr "Multiboot image manager"
-
-#~ msgid "Multimedia"
-#~ msgstr "Multimedia"
-
-#~ msgid "Namespace"
-#~ msgstr "Namespace"
-
-#~ msgid "New version:"
-#~ msgstr "Nieuwe versie:"
-
-#~ msgid "No backup needed"
-#~ msgstr "Geen back-up nodig"
-
-#~ msgid "No data received yet"
-#~ msgstr "Nog geen data ontvangen"
-
-#~ msgid "No network connection available."
-#~ msgstr "Geen netwerkverbinding beschikbaar."
-
-#~ msgid "No, do nothing."
-#~ msgstr "Nee, geen actie."
-
-#~ msgid "No, just start my %s %s"
-#~ msgstr "Nee, uitsluitend %s %s starten"
-
-#~ msgid "No, never"
-#~ msgstr "Nee, nooit"
-
-#~ msgid "Note: slot list does not show current image or empty slots."
-#~ msgstr "Opm.: De slot-lijst toont het huidige image en lege slots niet."
-
-#~ msgid "OK, guide me through the upgrade process"
-#~ msgstr "OK, mij tijdens de software update begeleiden"
-
-#~ msgid "OSD 3D Setup"
-#~ msgstr "OSD 3D-Instellingen"
-
-#~ msgid "Only extensions."
-#~ msgstr "Alleen extensies."
-
-#~ msgid "Open infobar EPG..."
-#~ msgstr "Open Informatiebalk EPG..."
-
-#~ msgid "OpenTV download setup"
-#~ msgstr "OpenTV download instellingen"
-
-#~ msgid "Overwrite configuration files during software upgrade?"
-#~ msgstr "Overschrijven configuratiebestanden tijdens de upgrade?"
-
-#~ msgid "Overwrite configuration files?"
-#~ msgstr "Configuratiebestanden overschrijven?"
-
-#~ msgid "PID"
-#~ msgstr "PID"
-
-#~ msgid "Packet management"
-#~ msgstr "Pakketbeheer"
-
-#~ msgid "Percentage right (only available in single line mode)"
-#~ msgstr "Percentage rechts (alleen beschikbaar in de één regel modus)"
-
-#~ msgid "Perform a settings backup, making a backup before updating is strongly advised."
-#~ msgstr "Maak een settingsback-up; het maken van een back-up alvorens te updaten wordt sterk geadviseerd."
-
-#~ msgid "Please select a valid directory."
-#~ msgstr "Kies een geldige map."
-
-#~ msgid "Please select medium to use as backup location"
-#~ msgstr "Selecteer het te gebruiken medium als back-up lokatie"
-
-#~ msgid "Plugin details"
-#~ msgstr "Plugin details"
-
-#~ msgid "Plugin manager activity information"
-#~ msgstr "Pluginmanager activiteitinformatie"
-
-#~ msgid "Plugin manager help"
-#~ msgstr "Pluginmanager helpfunctie"
-
-#~ msgid "Polarisation:"
-#~ msgstr "Polarisatie:"
-
-#~ msgid ""
-#~ "Press Green key to enable MultiBoot\n"
-#~ "\n"
-#~ "Will reboot within 10 seconds,\n"
-#~ "unless you have eMMC slots to restore.\n"
-#~ "Restoring eMMC slots can take from 1 -> 5 minutes per slot."
-#~ msgstr ""
-#~ "Druk op GROEN om MultiBoot in te schakelen\n"
-#~ "\n"
-#~ "Zal binnen 10 seconds rebooten,\n"
-#~ "tenzij u eMMC-slots wilt herstellen .\n"
-#~ "Herstellen van eMMC slots kan 1 -> 5 minutes per slot duren."
-
-#~ msgid "Press INFO on your remote control for additional information."
-#~ msgstr "Druk op INFO voor aanvullende informatie."
-
-#~ msgid "Press MENU on your remote control for additional options."
-#~ msgstr "Druk op MENU voor extra opties."
-
-#~ msgid "Press OK to activate the settings."
-#~ msgstr "Druk op OK om instellingen te activeren."
-
-#~ msgid "Press OK to set the MAC address."
-#~ msgstr "Druk op OK om MAC-adres in te stellen."
-
-#~ msgid "Process"
-#~ msgstr "Proces"
-
-#~ msgid "Progress bar right (only available in single line mode)"
-#~ msgstr "Voortgangsbalk rechts (alleen beschikbaar in de één regel modus)"
-
-#~ msgid "Query before backup starts"
-#~ msgstr "Vraag alvorens back-up te starten"
-
-#~ msgid "Query before image backup starts"
-#~ msgstr "Vraag alvorens image back-up te starten"
-
-#~ msgid "Receiver or driver does not support FCC"
-#~ msgstr "Ontvanger of driver ondersteunt geen FCC"
-
-#~ msgid "Recording & Playback"
-#~ msgstr "Opname & afspelen"
-
-#~ msgid "Recording and playback"
-#~ msgstr "Opname en afspelen"
-
-#~ msgid "Refresh list"
-#~ msgstr "Ververs lijst"
-
-#~ msgid "Reload"
-#~ msgstr "Herlaad"
-
-#, python-format
-#~ msgid "Removal of this slot will not show in %s Gui.  Are you sure you want to delete image slot %s ?"
-#~ msgstr "Het verwijderen van dit slot zal niet zichtbaar zijn in de GUI van de %s. Weet u zeker dat u het image in slot %s wilt verwijderen?"
-
-#~ msgid "Remove confirmation"
-#~ msgstr "Verwijder bevestiging"
-
-#~ msgid "Remove finished."
-#~ msgstr "Verwijderen voltooid."
-
-#~ msgid "Restore backups"
-#~ msgstr "Back-ups terugzetten"
-
-#~ msgid "Restore system settings"
-#~ msgstr "Instellingen terugzetten"
-
-#~ msgid "Restoring..."
-#~ msgstr "Bezig met terugzetten..."
-
-#~ msgid "SWAP place:"
-#~ msgstr "SWAP lokatie:"
-
-#~ msgid "Satellite equipment"
-#~ msgstr "Satelliet apparatuur"
-
-#~ msgid "Scroll menu"
-#~ msgstr "Menu scrollen"
-
-#
-#~ msgid "Searching for available updates. Please wait..."
-#~ msgstr "Zoekt naar beschikbare updates. Even wachten..."
-
-#~ msgid "Searching for new installed or removed packages. Please wait..."
-#~ msgstr "Zoeken naar nieuw geïnstalleerde of verwijderde pakketten. Even wachten..."
-
-#~ msgid "Select 'no' to flash a MultiBoot slot."
-#~ msgstr "Kies 'Nee' om een MultiBoot slot te flashen."
-
-#~ msgid "Select an image to flash:"
-#~ msgstr "Kies een image om te flashen:"
-
-#~ msgid "Select backup files"
-#~ msgstr "Kies back-up bestanden"
-
-#~ msgid "Select backup location"
-#~ msgstr "Kies een back-up lokatie"
-
-#~ msgid "Select between entering an IP address or a domain."
-#~ msgstr "Kies tussen ingave van IP-adres of domein."
-
-#~ msgid "Select directory for logfile"
-#~ msgstr "Kies map voor logbestand"
-
-#~ msgid "Select extra packages folder"
-#~ msgstr "Kies de folder met extra plugins"
-
-#~ msgid "Select files for backup."
-#~ msgstr "Selecteer bestanden voor back-up."
-
-#~ msgid "Select upgrade source"
-#~ msgstr "Kies de upgrade-bron"
-
-#~ msgid "Select upgrade source to edit."
-#~ msgstr "Kies de te wijzigen upgrade-bron."
-
-#~ msgid "Select your provider, and press OK to start the scan"
-#~ msgstr "Kies uw provider en druk OK om de scan te starten"
-
-#~ msgid "Serv.Name"
-#~ msgstr "Serv.Naam"
-
-#, python-format
-#~ msgid "Server Info ( %s-Version: %s )"
-#~ msgstr "Serverinfo (  %s-Versie: %s )"
-
-#~ msgid "Service type 4097 incorrect for PiP!"
-#~ msgstr "Service type 4097 incorrect voor PiP!"
-
-#~ msgid "Set fixed"
-#~ msgstr "Zet fixed"
-
-#~ msgid "Set fixed CEC address"
-#~ msgstr "Stel vast HDMI-CEC adres in"
-
-#~ msgid "Set pin code persistent"
-#~ msgstr "Make the PIN blijvend"
-
-#~ msgid "Set the time before checking video source for resolution/refresh rate infomation."
-#~ msgstr "Stel de tijd in voordat u de videobron op resolutie/verversingsfrequentie controleert."
-
-#~ msgid "Show /tmp/ecm.info"
-#~ msgstr "Toon /tmp/ecm.info"
-
-#~ msgid "Show 1080p 24fps as"
-#~ msgstr "Toon 1080p 24fps als"
-
-#~ msgid "Show 1080p 25fps as"
-#~ msgstr "Toon 1080p 25fps als"
-
-#~ msgid "Show 1080p 30fps as"
-#~ msgstr "Toon 1080p 30fps als"
-
-#~ msgid "Show 2160p 24fps as"
-#~ msgstr "Toon 2160p 24fps als"
-
-#~ msgid "Show 2160p 25fps as"
-#~ msgstr "Toon 2160p 25fps als"
-
-#~ msgid "Show 2160p 30fps as"
-#~ msgstr "Toon 2160p 30fps als"
-
-#~ msgid "Show 480/576p 24fps as"
-#~ msgstr "Toon480/576p 24fps als"
-
-#~ msgid "Show 720p 24fps as"
-#~ msgstr "Toon 720p 24fps als"
-
-#~ msgid "Show SD as"
-#~ msgstr "Toon SD als"
-
-#~ msgid "Show in extensions list ?"
-#~ msgstr "Toon in extensiemenu?"
-
-#~ msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
-#~ msgstr "Toon de kanaalinformatie in twee regels in het kanaalselectiescherm. U kunt kiezen tussen de huidige programmabeschrijving onder de kanaalnaam of de huidige programmabeschrijving naast de kanaalnaam en het volgende programma de tweede regel."
-
-#~ msgid "Side by Side"
-#~ msgstr "Naast elkaar"
-
-#~ msgid "Skin Setup"
-#~ msgstr "Skin instellingen"
-
-#~ msgid "Skins"
-#~ msgstr "Skins"
-
-#~ msgid "Software"
-#~ msgstr "Software"
-
-#
-#~ msgid "Software management"
-#~ msgstr "Softwarebeheer"
-
-#~ msgid "Software manager setup"
-#~ msgstr "Softwarebeheer instellingen"
-
-#~ msgid "Software restore"
-#~ msgstr "Software herstellen"
-
-#~ msgid "Softwaremanager information"
-#~ msgstr "Sofwarebeheer informatie"
-
-#, python-format
-#~ msgid "Sorry, %s has not been installed!"
-#~ msgstr "Sorry, %s is niet geïnstalleerd!"
-
-#~ msgid "Sorry, but the file is not compatible with this image version."
-#~ msgstr "Het bestand is niet verenigbaar met deze versie van de firmware."
-
-#~ msgid "Sorry, no backups found!"
-#~ msgstr "Sorry, geen back-up gevonden!"
-
-#~ msgid "Sorry, no details available!"
-#~ msgstr "Sorry, geen details beschikbaar!"
-
-#~ msgid ""
-#~ "Sorry, your backup destination is not writeable.\n"
-#~ "Please select a different one."
-#~ msgstr ""
-#~ "Uw back-up bestemming kan niet beschreven worden.\n"
-#~ "Kies een andere."
-
-#~ msgid "Subtitle selection..."
-#~ msgstr "Ondertitel-selectie..."
-
-#, python-format
-#~ msgid "Support at %s"
-#~ msgstr "Support op %s"
-
-#~ msgid "Swap enabled at startup"
-#~ msgstr "Swap ingeschakeld bij opstarten"
-
-#~ msgid "Symbolrate:"
-#~ msgstr "Symbolrate:"
-
-#~ msgid "Sync NTP every (minutes)"
-#~ msgstr "Synchroniseer NTP elke X minuten"
-
-#, python-format
-#~ msgid "System temp:\t%s"
-#~ msgstr "Systeemtemp:\t%s"
-
-#~ msgid "TB"
-#~ msgstr "TB"
-
-#~ msgid "The backup failed. Please choose a different backup location."
-#~ msgstr "Back-up is mislukt. Kies een andere back-up lokatie."
-
-#~ msgid ""
-#~ "The network wizard extension is not installed!\n"
-#~ "Please install it."
-#~ msgstr ""
-#~ "De Netwerkwizard-plugin is niet geïnstalleerd!\n"
-#~ "Installeer deze eerst."
-
-#~ msgid ""
-#~ "The software management extension is not installed!\n"
-#~ "Please install it."
-#~ msgstr ""
-#~ "De Softwaremanagement-plugin is niet geïnstalleerd!\n"
-#~ "Installeer deze eerst."
-
-#~ msgid "The timer file (pm_timers.xml) is corrupt and could not be loaded."
-#~ msgstr "Het timer-bestand (pm-timer.xml) is beschadigd en kan niet worden geladen."
-
-#~ msgid "The timer file (timers.xml) is corrupt and could not be loaded."
-#~ msgstr "Het timer-bestand (timer.xml) is beschadigd en kan niet worden geladen."
-
-#~ msgid "The wizard can backup your current settings. Do you want to do a backup now?"
-#~ msgstr "De wizard kan uw huidige settings opslaan. Wilt u nu een back-up maken?"
-
-#~ msgid "There are at least "
-#~ msgstr "Er zijn ten minste "
-
-#, python-format
-#~ msgid "There are at least %s updates available."
-#~ msgstr "Er zijn minstens %s updates beschikbaar."
-
-#~ msgid "There are currently no outstanding actions."
-#~ msgstr "Er zijn geen uitstaande acties."
-
-#~ msgid "There are no items currently available for this screen."
-#~ msgstr "Er zijn momenteel geen onderdelen beschikbaar voor dit scherm."
-
-#~ msgid "There are no updates available."
-#~ msgstr "Er zijn momenteel geen updates beschikbaar."
-
-#~ msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Hier kunt u aangeven hoe 1080p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
-
-#~ msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Hier kunt u aangeven hoe 1080p 25Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
-
-#~ msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Hier kunt u aangeven hoe 1080p 30Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
-
-#~ msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Hier kunt u aangeven hoe 2160p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
-
-#~ msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Hier kunt u aangeven hoe 2160p 25Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
-
-#~ msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Hier kunt u aangeven hoe 2160p 30Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
-
-#~ msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Hier kunt u aangeven hoe 720p 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)"
-
-#~ msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TV's support these resolutions)"
-#~ msgstr "Hier kunt u aangeven hoe SD progressief 24Hz op uw TV moet worden weergegeven (omdat niet alle Tv's deze resolutie ondersteunen)."
-
-#~ msgid "This option allows you to choose how to display standard defintion video on your TV."
-#~ msgstr "Hier kunt u aangeven SD op uw TV moet worden weergegeven."
-
-#~ msgid "This option allows you to disable sorting of the menus"
-#~ msgstr "Hier kunt u het sorteren van menu's inschakelen"
-
-#~ msgid "This option lets you adjust the 3D depth"
-#~ msgstr "Hier kunt u de 3D-diepte instellen"
-
-#~ msgid "This option lets you choose the 3D mode"
-#~ msgstr "Hier kunt u de gewenste 3D-modus kiezen"
-
-#~ msgid "This option lets you show the option in the extension screen"
-#~ msgstr "Hiermee stelt u in of de optie in de extensielijst wordt getoond"
-
-#~ msgid "This plugin is installed."
-#~ msgstr "Deze plugin is geïnstalleerd."
-
-#~ msgid "This plugin is not installed."
-#~ msgstr "Deze plugin is niet geïnstalleerd."
-
-#~ msgid "This plugin will be installed."
-#~ msgstr "Deze plugin wordt geïnstalleerd."
-
-#~ msgid "This plugin will be removed."
-#~ msgstr "Deze plugin wordt verwijderd."
-
-#~ msgid "Time of backup to start"
-#~ msgstr "Tijd waarop back-up moet starten"
-
-#~ msgid "Timer selection..."
-#~ msgstr "Timer selectie..."
-
-#~ msgid "Top and Bottom"
-#~ msgstr "Boven en -onderkant"
-
-#~ msgid "Transponder Information"
-#~ msgstr "Transponderinformatie"
-
-#
-#~ msgid "Tuning Info: Live Values"
-#~ msgstr "Tunerinfo: terugmeldingen"
-
-#~ msgid "Tuning Info: Settings Values"
-#~ msgstr "Tunerinfo: tunerinstellingen"
-
-#~ msgid "Turn off HDMI-IN full screen mode"
-#~ msgstr "Schakel HDMI-in vol-sherm modus uit"
-
-#~ msgid "Turn on HDMI-IN full screen mode"
-#~ msgstr "Schakel HDMI-in vol-sherm modus in"
-
-#, python-format
-#~ msgid ""
-#~ "UNSTABLE: The feeds currently contain unstable experimental updates. You can continue at your own risk but doing so may render your %s %s unusable and in need of a complete reflash.\n"
-#~ "\n"
-#~ "Are you sure you want to continue?"
-#~ msgstr ""
-#~ "ONSTABIEL: De feeds bevatten momenteel onstabiele, experimentele updates. U kunt op eigen risico doorgaan, maar dat kan erin resulteren dat uw %s %s onbruikbaar wordt en dat u deze opnieuw moet flashen.\n"
-#~ "\n"
-#~ "Weet u zeker dat u door wil gaan?"
-
-#~ msgid "Undo install"
-#~ msgstr "Installatie ongedaan maken"
-
-#
-#~ msgid "Undo uninstall"
-#~ msgstr "Ongedaan"
-
-#
-#~ msgid "Uninstall"
-#~ msgstr "De-installeer"
-
-#~ msgid "Unmark service as a dedicated 3D service"
-#~ msgstr "Verwijder de markering als 3D-kanaal"
-
-#~ msgid "Update Interval"
-#~ msgstr "Updateinterval"
-
-#
-#~ msgid "Updatefeed not available."
-#~ msgstr "Updatefeed niet beschikbaar."
-
-#~ msgid "Updating cache"
-#~ msgstr "Bezig cache te updaten"
-
-#~ msgid "Updating software catalog"
-#~ msgstr "Softwarecatalogus wordt geupdate"
-
-#~ msgid "Use the cursor keys to select an installed image and then Erase button."
-#~ msgstr "Gebruik de pijlthestoetsen om een geinstalleerd image te kiezen en vervolgens de 'wis-toets'."
-
-#~ msgid "Using fixed address"
-#~ msgstr "Gebruik een vast adres"
-
-#, python-format
-#~ msgid "ViX version: %s"
-#~ msgstr "ViX versie: %s"
-
-#, python-format
-#~ msgid "Video content: %ix%i%s %iHz"
-#~ msgstr "Video inhoud: %ix%i%s %iHz"
-
-#, python-format
-#~ msgid "Video mode: %s"
-#~ msgstr "Videomodus: %s"
-
-#~ msgid "View details"
-#~ msgstr "Bekijk details"
-
-#~ msgid "View list of available "
-#~ msgstr "Bekijk de lijst met beschikbare "
-
-#~ msgid "View list of available CommonInterface extensions"
-#~ msgstr "Bekijk de lijst met beschikbare commonInterface extensies"
-
-#~ msgid "View list of available EPG extensions."
-#~ msgstr "Bekijk de lijst met beschikbare EPG-extensies."
-
-#
-#~ msgid "View list of available Satellite equipment extensions."
-#~ msgstr "Bekijk de lijst met beschikbare satellietapparatuur extensies."
-
-#~ msgid "View list of available communication extensions."
-#~ msgstr "Bekijk de lijst met beschikbare communicatie extensies."
-
-#~ msgid "View list of available default settings"
-#~ msgstr "Bekijk de lijst met beschikbare standaardinstellingen"
-
-#~ msgid "View list of available display and userinterface extensions."
-#~ msgstr "Bekijk de lijst met beschikbare scherm en gebruikersinterface extensies."
-
-#~ msgid "View list of available multimedia extensions."
-#~ msgstr "Bekijk de lijst van beschikbare multimedia extensies."
-
-#~ msgid "View list of available networking extensions"
-#~ msgstr "Bekijk de lijst met beschikbare netwerk extensies"
-
-#~ msgid "View list of available recording extensions"
-#~ msgstr "Bekijk de lijst met beschikbare opname extensies"
-
-#~ msgid "View list of available skins"
-#~ msgstr "Bekijk de lijst met beschikbare skins"
-
-#~ msgid "View list of available software extensions"
-#~ msgstr "Bekijk de lijst met beschikbare software extensies"
-
-#~ msgid "View list of available system extensions"
-#~ msgstr "Bekijk de lijst met beschikbare systeem extensies"
-
-#~ msgid "Visual impaired commentary"
-#~ msgstr "Audiodescriptie voor slechtzienden"
-
-#~ msgid ""
-#~ "Vu+ MultiBoot Initialisation in progress\n"
-#~ "\n"
-#~ "Will reboot after restoring any eMMC slots\n"
-#~ "This can take from 1 -> 5 minutes per slot."
-#~ msgstr ""
-#~ "Vu+ MultiBoot Initialisatie in uitvoering\n"
-#~ "\n"
-#~ "Zal rebooten na het herstellen van de eMMC slots\n"
-#~ "Dit kan 1 -> 5 minuten per slot duren."
-
-#~ msgid "Welcome to the image upgrade wizard. The wizard will assist you in upgrading the firmware of your %s %s by providing a backup facility for your current settings and a short explanation of how to upgrade your firmware."
-#~ msgstr "Welkom bij de software-updatewizard. De wizard biedt u hulp bij het vernieuwen van de software in uw %s %s door het maken van een back-up van uw huidige instellingen en geeft u een korte uitleg over dit proces."
-
-#~ msgid "When enabled the feeds and software updates may contain unstable experimental versions. Enable this at your own risk."
-#~ msgstr "Indien geactiveerd kunnen feeds en software updates die onstabiele, experimentele versies bevatten, gebruikt worden. Inschakelen geschiedt op uw eigen risico."
-
-#~ msgid "When enabled, external subtitles will always be turned on for movie playback."
-#~ msgstr "Indien ingeschakeld worden externe ondertitels altijd getoond."
-
-#~ msgid "When enabled, graphical DVB subtitles will be displayed in yellow, instead of the original color."
-#~ msgstr "Indien ingeschakeld worden grafische DVB-ondertitels vertoond in geel in plaats van in de originele kleur."
-
-#~ msgid "Where do you want to backup your settings?"
-#~ msgstr "Waar wilt u de instellingen opslaan?"
-
-#~ msgid "Yellow DVB subtitles"
-#~ msgstr "Gele DVB-ondertitels"
-
-#~ msgid "Yes, always"
-#~ msgstr "Ja, altijd"
-
-#~ msgid "Yes, backup my settings!"
-#~ msgstr "Ja, mijn instellingen opslaan!"
-
-#~ msgid "Yes, restore the settings now"
-#~ msgstr "Ja, de gegevens nu terugplaatsen"
-
-#~ msgid "Yes, shut down now."
-#~ msgstr "Ja, ik wil nu afsluiten."
-
-#~ msgid "You can cancel the installation."
-#~ msgstr "Installatie kan worden geannuleerd."
-
-#~ msgid "You can cancel the removal."
-#~ msgstr "Verwijderen kan worden geannuleerd."
-
-#~ msgid "You can install this plugin."
-#~ msgstr "Deze plugin kunt u installeren."
-
-#~ msgid "You can remove this plugin."
-#~ msgstr "Deze plugin kunt u verwijderen."
-
-#~ msgid "You have chosen to backup your settings. Please press OK to start the backup now."
-#~ msgstr "U heeft gekozen een back-up van uw instellingen te maken. Druk op OK om te beginnen."
-
-#~ msgid "You have chosen to restore your settings. Enigma2 will restart after restore. Please press OK to start the restore now."
-#~ msgstr "U heeft gekozen om uw instellingen te herstellen. Enigma2 zal herstarten na het herstel. Druk op OK om te beginnen met het herstel."
-
-#~ msgid "You have decided not to flash image."
-#~ msgstr "U heeft besloten geen image te flashen."
-
-#~ msgid ""
-#~ "You need a PC connected to your %s %s. If you need further instructions, please visit the website http://www.dm7025.de.\n"
-#~ "Your %s %s will now be halted. After you have performed the update instructions from the website, your new firmware will ask you to restore your settings."
-#~ msgstr ""
-#~ "U moet uw PC met uw %s %s verbinden. Voor meer informatie verwijzen wij u naar de website http://www.dm7025.de.\n"
-#~ "De %s %s word nu uitgeschakeld. Indien u deze aanwijzingen nauwgezet volgt, zal de %s %s u na de update vragen of u uw instellingen terug wilt plaatsen."
-
-#~ msgid "Your %s %s is shutting down. Please wait..."
-#~ msgstr "Uw %s %s wordt nu afgesloten. Even wachten..."
-
-#~ msgid "Your backup succeeded. We will now continue to explain the further upgrade process."
-#~ msgstr "De back-up is geslaagd. U krijgt nu een korte uitleg over het vervolg van het updateproces."
-
-#~ msgid ""
-#~ "Your frontprocessor firmware must be upgraded.\n"
-#~ "Press OK to start upgrade."
-#~ msgstr ""
-#~ "De firmware voor de frontprocessor moet bijgewerkt worden.\n"
-#~ "Druk op OK om dit proces te starten."
-
-#~ msgid "[VuplusKexec][create Vu Multiboot environment] - Unable to complete, Vu+ Multiboot files missing"
-#~ msgstr "[VuplusKexec][creëer Vu Multiboot omgeving] - Kan niet vervolgen, Vu+ Multiboot bestanden ontbreken"
-
-#~ msgid "alphabetic"
-#~ msgstr "alfabetisch"
-
-#~ msgid "alphabetic reverse"
-#~ msgstr "omgekeerd alfabetisch"
-
-#~ msgid "by date"
-#~ msgstr "op datum"
-
-#~ msgid "epg cache backup"
-#~ msgstr "epg cache back-up"
-
-#~ msgid "extensions."
-#~ msgstr "extensies."
-
-#~ msgid "flat alphabetic reverse"
-#~ msgstr "omgekeerd plat alfabetisch"
-
-#~ msgid "from"
-#~ msgstr "van"
-
-#~ msgid "full"
-#~ msgstr "vol"
-
-#~ msgid "invalid type"
-#~ msgstr "ongeldig type"
-
-#~ msgid "is strongly advised."
-#~ msgstr "wordt sterk aangeraden."
-
-#~ msgid "making a backup before updating"
-#~ msgstr "maakt een back-up alvorens te updaten"
-
-#~ msgid "movie/drama (general)"
-#~ msgstr "film/drama (algemeen)"
-
-#~ msgid "n/A"
-#~ msgstr "NVT"
-
-#~ msgid "only HD"
-#~ msgstr "alleen HD"
-
-#~ msgid "packages selected."
-#~ msgstr "pakketten geselecteerd."
-
-#~ msgid "reverse by date"
-#~ msgstr "omgekeerd chronologisch"
-
-#~ msgid "show softwaremanager in plugin menu"
-#~ msgstr "toon softwaremanager in pluginbrowser"
-
-#~ msgid "show softwaremanager on blue button"
-#~ msgstr "toon softwaremanager onder blauwe knop"
-
-#~ msgid "shut down"
-#~ msgstr "uitschakelen"
-
-#, python-format
-#~ msgid "slot%s - %s"
-#~ msgstr "slot%s - %s"
-
-#, python-format
-#~ msgid "slot%s - %s "
-#~ msgstr "slot%s - %s "
-
-#, python-format
-#~ msgid "slot%s - %s (current image)"
-#~ msgstr "slot%s - %s (huidige image)"
-
-#~ msgid "start directory"
-#~ msgstr "startmap"
-
-#~ msgid "updates available."
-#~ msgstr "updates beschikbaar."

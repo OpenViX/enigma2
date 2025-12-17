@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-11 22:20+0000\n"
+"POT-Creation-Date: 2025-12-02 09:37+0000\n"
 "PO-Revision-Date: 2025-06-13 09:44+0200\n"
 "Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
 "Language-Team: AndyBlacburn, j-ot&Trial\n"
@@ -111,6 +111,9 @@ msgstr " und"
 
 msgid " unicable LNB input of rotor"
 msgstr " Unicable LNB Eingang vom Motor"
+
+msgid " will create a recovery backup only for slot 1 else image backup"
+msgstr ""
 
 msgid "%-H:%M"
 msgstr "%-H:%M"
@@ -803,9 +806,9 @@ msgstr "%d markiertes Objekt"
 msgid "%d marked items"
 msgstr "%d markierte Objekte"
 
-#, python-format
-msgid "%d milisecond"
-msgid_plural "%d miliseconds"
+#, fuzzy, python-format
+msgid "%d millisecond"
+msgid_plural "%d milliseconds"
 msgstr[0] "%d Millisekunden"
 msgstr[1] "%d Sekunden"
 
@@ -854,6 +857,10 @@ msgstr[1] "%d Sekunden"
 #, python-format
 msgid "%d seconds"
 msgstr "%d Sekunden"
+
+#, fuzzy, python-format
+msgid "%d slots have been created on the device.\n"
+msgstr "Die Ergebnisse des Tests wurden in der Datei %s gespeichert."
 
 #, python-format
 msgid "%d wireless network found!"
@@ -936,14 +943,6 @@ msgstr "%m/%d/%Y"
 #, python-format
 msgid "%s"
 msgstr "%s"
-
-#, python-format
-msgid "%s "
-msgstr "%s "
-
-#, python-format
-msgid "%s   "
-msgstr ""
 
 #, python-format
 msgid "%s %s advanced remote control (native)"
@@ -1190,6 +1189,10 @@ msgstr "1 Minute"
 msgid "1 second"
 msgstr "1 Sekunde"
 
+#, fuzzy
+msgid "1,1"
+msgstr "1.1"
+
 msgid "1. Try to reboot the box and check if this warning disappears"
 msgstr "1. Versuche die Box zu rebooten und prüfe ob die Warnung verschwindet"
 
@@ -1269,6 +1272,9 @@ msgid "25"
 msgstr "25"
 
 msgid "256 Mb"
+msgstr ""
+
+msgid "2678400000"
 msgstr ""
 
 msgid "29.97"
@@ -1741,8 +1747,8 @@ msgstr "Angepasste Zeitanzeige erlaubt es kürzliche Ereignisse als \"Heute\" od
 msgid "Add"
 msgstr "Hinzufügen"
 
-#, python-format
-msgid "Add 4 more Vu+ Multiboot USB slots after slot %s ?"
+#, fuzzy, python-format
+msgid "Add 4 more Multiboot USB slots after slot %s ?"
 msgstr "Füge 4 weitere VU+ Multiboot USB Slots hinter Slot %s?"
 
 msgid "Add AutoTimer"
@@ -2201,6 +2207,14 @@ msgstr "Arabisch"
 msgid "Architektur"
 msgstr ""
 
+#, fuzzy
+msgid "Archive"
+msgstr "Wiedergabe Archiv"
+
+#, fuzzy
+msgid "Archive long"
+msgstr "aktiviere PiP lang"
+
 msgid "Are You Sure ?"
 msgstr "Bist Du sicher?"
 
@@ -2608,10 +2622,12 @@ msgstr "Hintergrundprüfung"
 msgid "Background color"
 msgstr "Hintergrundfarbe"
 
-msgid "Backing up eMMC partitions for USB flash ..."
+#, fuzzy
+msgid "Backing up eMMC partitions for recovery image ..."
 msgstr "Sicherung der eMMC Partitionen für den USB-Stick..."
 
-msgid "Backing up eMMC partitions for USB flash..."
+#, fuzzy
+msgid "Backing up eMMC partitions for recovery image.."
 msgstr "Sicherung der eMMC Partitionen für den USB-Stick..."
 
 msgid "Backing up files..."
@@ -3001,6 +3017,9 @@ msgstr "Byte empfangen:"
 
 msgid "Bytes sent:"
 msgstr "Byte gesendet:"
+
+msgid "C"
+msgstr ""
 
 msgctxt "Abbreviation of \"Configurable\""
 msgid "C"
@@ -3540,6 +3559,9 @@ msgstr "Wähle die Sortierung für die Einträge im Hilfe Fenster"
 
 msgid "Choose the style of the second infobar. The 'Standard' view normally includes technical data. The 'Simple' view shows minimal technical data."
 msgstr "Wähle den Stil der zweiten Infobar. Der 'Standard' enthält einige technische Details. Der 'Einfache' zeigt nur wenige technische Details."
+
+msgid "Choose the target device for the slots."
+msgstr ""
 
 msgid "Choose time interval to which the graphics will be rounded off."
 msgstr "Wähle das Zeitraster auf das die Grafiken gerundet werden."
@@ -4321,6 +4343,13 @@ msgstr "Erstellen"
 msgid "Create DVD-ISO"
 msgstr "DVD-ISO erstellen"
 
+msgid "Create MultiBoot System -> will INITIALISE chosen usb device"
+msgstr ""
+
+#, fuzzy
+msgid "Create Slots"
+msgstr "Erstellen"
+
 msgid "Create Timer"
 msgstr "Erstelle Timer"
 
@@ -4338,6 +4367,10 @@ msgstr "Verzeichnis erstellen"
 
 msgid "Create separate radio userbouquet"
 msgstr "Erzeuge separates Radio userbouquet"
+
+#, fuzzy
+msgid "Create slots for the selected device"
+msgstr "Drücke OK um einen Sender auszuwählen."
 
 msgid "Create:"
 msgstr "Erstellen:"
@@ -4478,6 +4511,9 @@ msgstr "Tchechisch"
 
 msgid "Czechia"
 msgstr "Tchechien"
+
+msgid "D"
+msgstr ""
 
 msgid "DAC"
 msgstr ""
@@ -5321,9 +5357,19 @@ msgstr "Willst Du den Standard-Skin wechseln"
 msgid "Do you want to continue?"
 msgstr "Weiter machen?"
 
+#, fuzzy
 msgid ""
 "Do you want to create a full image backup?\n"
-"This can take about 6 minutes to complete."
+"This can take upto 15 minutes to complete."
+msgstr ""
+"Soll ein Image Backup erstellt werden?\n"
+"Der Vorgang kann etwa 6 Minuten dauern."
+
+#, fuzzy
+msgid ""
+"Do you want to create a full image backup?\n"
+"This can take upto 20 minutes to complete\n"
+" your "
 msgstr ""
 "Soll ein Image Backup erstellt werden?\n"
 "Der Vorgang kann etwa 6 Minuten dauern."
@@ -5737,9 +5783,6 @@ msgstr "Aktiviere Autostart"
 msgid "Enable Bluetooth Audio"
 msgstr "Aktiviere BlueTooth Audio"
 
-msgid "Enable Chkroot MultiBoot"
-msgstr "Aktiviere Chkroot MultiBoot"
-
 msgid "Enable EIT EPG"
 msgstr "EIT EPG aktivieren"
 
@@ -6125,6 +6168,10 @@ msgstr "Estland"
 msgid "Estonian"
 msgstr "Estnisch"
 
+#, fuzzy
+msgid "EtPortal"
+msgstr "Portugal"
+
 msgid "Ethernet network interface"
 msgstr "Ethernet Netzwerkadapter"
 
@@ -6319,6 +6366,10 @@ msgstr ""
 
 msgid "Extrude from left"
 msgstr "Pressen von links"
+
+#, fuzzy
+msgid "F"
+msgstr "F2"
 
 msgid "F1"
 msgstr ""
@@ -6837,11 +6888,19 @@ msgstr "Volle Transparenz"
 msgid "Full view resolution"
 msgstr "Vollbild Auflösung"
 
-msgid "Fußball"
+msgid "FuÃball"
 msgstr ""
 
-msgid "Für Kinder"
+msgid "FÃ¼r Kinder"
 msgstr ""
+
+#, fuzzy
+msgid "G"
+msgstr "GB"
+
+#, fuzzy, python-format
+msgid "GCC version:\t%s\n"
+msgstr "Version:\t%s"
 
 msgid "GREEN"
 msgstr ""
@@ -6990,6 +7049,10 @@ msgstr "Gibraltar"
 
 msgid "Gioco"
 msgstr ""
+
+#, fuzzy, python-format
+msgid "Glibc version:\t%s\n"
+msgstr "Version:\t%s"
 
 msgid "Go back 24 hours"
 msgstr "24 Stunden zurück springen"
@@ -7150,29 +7213,8 @@ msgstr "Guyana"
 msgid "Gymnastics"
 msgstr "Gymnastik"
 
-msgid "H7/H9/H9COMBO/H10 new Model"
-msgstr "H7/H9/H9COMBO/H10 neues Modell"
-
-msgid "H9 SDcard manager"
-msgstr "H9 SD-Karten Verwaltung"
-
-msgid "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
-msgstr "H9 SD-Karte Wechselfehler! - H9 root Dateien noch nicht auf SD-Karte verschoben"
-
-msgid "H9 SDcard switch ERROR! - already on Nand"
-msgstr "H9 SD-Karte Wechselfehler! - Steht schon auf Nand"
-
-msgid "H9 SDcard switch ERROR! - already on mmc"
-msgstr "H9 SD-Karte Wechselfehler! - Steht schon auf MMC"
-
-msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
-msgstr "H9 USB Wechselfehler! - H9 root Dateien noch nicht auf USB verschoben"
-
-msgid "H9 USB switch ERROR! - already on USB"
-msgstr "H9 USB Wechselfehler! - Steht schon auf USB"
-
-msgid "H9 switch Nand and SDcard"
-msgstr "H9 wechsle Nand und SD-Karte"
+msgid "H"
+msgstr ""
 
 msgid "H9SDcard Manager"
 msgstr "H9 SD-Karten Verwaltung"
@@ -7320,6 +7362,9 @@ msgstr "Hilfe"
 
 msgid "Help long"
 msgstr "Hilfe lang"
+
+msgid "Help text uninitialized"
+msgstr ""
 
 msgid "Helps setting up your antenna"
 msgstr "Hilft die Schüssel einzurichten"
@@ -7525,11 +7570,26 @@ msgstr "Ungarisch"
 msgid "Hungary"
 msgstr "Ungarn"
 
+#, fuzzy
+msgid "I"
+msgstr "IP"
+
+#, fuzzy
+msgid "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 new Model"
+msgstr "H7/H9/H9COMBO/H10 neues Modell"
+
 msgid "IDLE"
+msgstr ""
+
+msgid "IGNORE"
 msgstr ""
 
 msgid "IMAGE DOWNLOADS"
 msgstr ""
+
+#, fuzzy
+msgid "IMDB Search"
+msgstr "IMDb Suche"
 
 msgid "IMDB search for current event"
 msgstr "IMDB Suche nach laufenden Programm"
@@ -7895,18 +7955,6 @@ msgstr "Infotainment"
 msgid "Init"
 msgstr "Initialisieren"
 
-msgid "Init SDcard"
-msgstr ""
-
-msgid "Init USB/SDA1"
-msgstr ""
-
-msgid "Init Zgemma H9 SDCARD - please reboot after use."
-msgstr "Init Zgemma H9 SDCARD - Bitte neu starten nach Benutzung."
-
-msgid "Init Zgemma H9 USB/SDA1 - please reboot after use."
-msgstr "Init Zgemma H9 USB/SDA1 - Bitte neu starten nach Benutzung."
-
 msgid "Init modules"
 msgstr "Module initialisieren"
 
@@ -8165,6 +8213,9 @@ msgstr "Italienisch"
 msgid "Italy"
 msgstr "Italien"
 
+msgid "J"
+msgstr ""
+
 msgid "JUMP 24 HOURS"
 msgstr "Springe 24 Stunden"
 
@@ -8299,7 +8350,7 @@ msgstr ""
 msgid "Kneipensport"
 msgstr ""
 
-msgid "Komödie"
+msgid "KomÃ¶die"
 msgstr ""
 
 msgid "Korea (Democratic People's Republic of)"
@@ -8317,7 +8368,7 @@ msgstr ""
 msgid "Krimi"
 msgstr ""
 
-msgid "Kriminalität"
+msgid "KriminalitÃ¤t"
 msgstr ""
 
 msgid "Kultur"
@@ -9406,7 +9457,7 @@ msgstr "Myanmar"
 msgid "Mystery"
 msgstr ""
 
-msgid "Märchen"
+msgid "MÃ¤rchen"
 msgstr ""
 
 msgid "N"
@@ -10222,6 +10273,10 @@ msgstr "Öffne Satellitenliste"
 msgid "Open the service list"
 msgstr "Öffne Senderliste"
 
+#, fuzzy, python-format
+msgid "OpenSSL version:\t%s\n"
+msgstr "FFmpeg Version:%s\n"
+
 #, python-format
 msgid ""
 "OpenTV EPG download completed.\n"
@@ -10381,6 +10436,9 @@ msgstr ""
 
 msgid "PRIMETIME"
 msgstr "PrimeTime"
+
+msgid "PULSe 4K/4K Mini"
+msgstr ""
 
 msgid "PVR"
 msgstr ""
@@ -11082,7 +11140,7 @@ msgstr "Port D"
 msgid "Port:"
 msgstr "Port:"
 
-msgid "Porträt"
+msgid "PortrÃ¤t"
 msgstr ""
 
 msgid "Portugal"
@@ -11253,7 +11311,8 @@ msgstr "Drücke OK um einen Sender auszuwählen."
 msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."
 msgstr "Drücke (Grün) Reboot zum Wechseln, Löschen (Gelb zum Löschen, Wiederherstellen (Blau) - alle Gelöschten wieder herstellen."
 
-msgid "Press GREEN to enable MultiBoot!"
+#, fuzzy
+msgid "Press GREEN to enable MultiBoot process"
 msgstr "Drücke Grün um Multiboot zu aktivieren"
 
 msgid "Press OK"
@@ -11309,9 +11368,6 @@ msgstr "Drücke OK um die Auswahl umzuschalten."
 
 msgid "Press OK, save and exit..."
 msgstr "Drücke OK für Speichern und Verlassen..."
-
-msgid "Press appropiate Init to move Nand root to SDcard or USB."
-msgstr "Drücke passenden Init um Nans root auf SD-Karte oder USB-Laufwerk zu verschieben."
 
 msgid ""
 "Press up/down to scroll through the selected log\n"
@@ -11517,6 +11573,9 @@ msgstr "RDS/RASS Anzeige"
 msgid "REC"
 msgstr ""
 
+msgid "REC "
+msgstr ""
+
 msgid "REC Symbol"
 msgstr "Aufnahme Symbol"
 
@@ -11655,6 +11714,9 @@ msgstr "Trotzdem neu starten?"
 
 msgid "Really shutdown now?"
 msgstr "Trotzdem ausschalten?"
+
+msgid "Really start Kodi and stop user interface now?"
+msgstr ""
 
 #, python-format
 msgid "Really store at index %2d for current position?"
@@ -12076,6 +12138,10 @@ msgstr "Umbenennen fehlgeschlagen!"
 msgid "Rename name and description for new events"
 msgstr "Name und Beschreibung neuer Sendungen ändern"
 
+#, python-format
+msgid "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick"
+msgstr ""
+
 msgid "Rename to:"
 msgstr "Umbenennen in:"
 
@@ -12375,6 +12441,10 @@ msgstr "Russisch"
 msgid "Russian Federation"
 msgstr "Russian Federation"
 
+#, fuzzy, python-format
+msgid "Rust version:\t%s\n"
+msgstr "Version:\t%s"
+
 msgid "Rwanda"
 msgstr "Rwanda"
 
@@ -12418,6 +12488,10 @@ msgid "SDCARD"
 msgstr ""
 
 msgid "SETUP"
+msgstr ""
+
+#, python-format
+msgid "SF8008 indicate type of backup %s"
 msgstr ""
 
 msgid "SHIFT: "
@@ -12500,6 +12574,10 @@ msgstr "Samba/CIFS"
 
 msgid "Samba Setup"
 msgstr "Samba Einstellungen"
+
+#, fuzzy, python-format
+msgid "Samba:\t%s\n"
+msgstr "GStreamer:\t%s\n"
 
 msgid "Same resolution as skin"
 msgstr "Gleiche Auflösung wie Skin"
@@ -12929,6 +13007,13 @@ msgstr "Wähle 'Ja' um die Box aus dem Tiefschlaf aufzuwecken oder 'Nein' um den
 msgid "Select CAId"
 msgstr "CAID auswählen"
 
+#, fuzzy
+msgid "Select Device"
+msgstr "Wähle Film"
+
+msgid "Select Device for FORMAT!! & Creation of multiboot slots"
+msgstr ""
+
 msgid "Select EPG channel"
 msgstr "Wähle EPG-Kanal"
 
@@ -12937,6 +13022,14 @@ msgstr "Wähle schnelles DiSEqC wen es dein System unterstützt. Wenn Du unsiche
 
 msgid "Select Folders"
 msgstr "Wähle Verzeichnisse"
+
+#, fuzzy
+msgid "Select Green to action"
+msgstr "Wähle Aktion"
+
+#, fuzzy
+msgid "Select Green to start slot creation"
+msgstr "Zeitzone oder Region konfigurieren."
 
 msgid "Select Satellites"
 msgstr "Wähle Satelliten"
@@ -13021,6 +13114,10 @@ msgstr "Wähle Standardaktion von Info-Taste"
 
 msgid "Select destination for:"
 msgstr "Wähle Ziel für:"
+
+#, fuzzy
+msgid "Select device and then Slot Creation"
+msgstr "Setze die Zeitzone der Region."
 
 msgid "Select display of record icon based on 'Sref only' or 'Sref + Stream url' where applicable."
 msgstr "Wähle Aufnahmeicon nur bei Referenz oder Referenz+URL wo verfügbar."
@@ -14264,6 +14361,14 @@ msgstr ""
 msgid "Slot %s / FBC virtual %s"
 msgstr ""
 
+#, fuzzy
+msgid "Slot Manager"
+msgstr "Softcam Verwaltung"
+
+#, fuzzy
+msgid "Slot Manager Actions"
+msgstr "Chkroot Aktionen"
+
 #, python-format
 msgid "Slot%s %s %s: %s - %s mode%s"
 msgstr "Slot%s %s: %s %s - %s Mode%s"
@@ -14611,6 +14716,10 @@ msgstr "Test starten"
 msgid "Start the Chkroot initialization"
 msgstr ""
 
+#, fuzzy
+msgid "Start the UBI Multiboot initialization"
+msgstr "Chkroot Multiboot Initialisierung läuft"
+
 msgid "Start time"
 msgstr "Startzeit"
 
@@ -14929,12 +15038,6 @@ msgstr "Wechsel Manager"
 msgid "Swap services"
 msgstr "Sender tauschen"
 
-msgid "SwaptoNand"
-msgstr ""
-
-msgid "SwaptoSD"
-msgstr ""
-
 msgid "Swaziland"
 msgstr "Swaziland"
 
@@ -15087,6 +15190,10 @@ msgstr "TMDb Suche"
 msgid "TMDb search"
 msgstr "TMDb Suche"
 
+#, fuzzy
+msgid "TMDb search for current event"
+msgstr "TMDB Suche nach laufenden Programm"
+
 msgid "TMDb search for highlighted event"
 msgstr "TMDB Suche nach laufenden Programm"
 
@@ -15099,6 +15206,9 @@ msgstr "TS-Datei ist zu groß für ISO9660 level 1!"
 
 msgid "TSID"
 msgstr "TSID"
+
+msgid "TUNER:"
+msgstr ""
 
 msgid "TUNING"
 msgstr ""
@@ -15144,6 +15254,10 @@ msgstr ""
 
 msgid "Tanzania, United Republic of"
 msgstr "Tanzania, United Republic of"
+
+#, fuzzy
+msgid "Target location"
+msgstr "Ändere Zielverzeichnis"
 
 msgid "Task warning on shutdown"
 msgstr "Task Warnung beim Ausschalten"
@@ -15260,8 +15374,8 @@ msgstr "Die %s %s liest die EPG Daten alle x Stunden."
 msgid "The %s %s saves the EPG data every (hours)."
 msgstr "Die %s %s speichert die EPG alle x Stunden."
 
-#, python-format
-msgid "The %s %s will reboot within 1 seconds."
+#, fuzzy, python-format
+msgid "The %s %s will reboot after enabling."
 msgstr " %s %s wird in 1 Sekunde neu starten."
 
 msgid ""
@@ -15443,6 +15557,10 @@ msgstr ""
 "Die Benutzeroberfläche der %s %s startet\n"
 "wegen eines Fehlers in StartEnigma.py neu"
 
+#, fuzzy, python-format
+msgid "The user interface of your %s %s will be stopped to run Kodi"
+msgstr "Die Benutzeroberfläche der %s %s startet neu"
+
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr "Bildbreite: Die Eingangsbilder werden skaliert um die Wert zu erfüllen."
 
@@ -15533,6 +15651,13 @@ msgstr "Dieses Feature ist für Skin Entwickler. Es erlaubt Skins ohne Enigma Ne
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
 msgstr "Dieses Feld erlaubt es eine weitere Symbolrate bis zu %s zu durchsuchen."
+
+msgid "This file forces a reboot after the update."
+msgstr ""
+
+#, fuzzy
+msgid "This file forces the update."
+msgstr "Die Sortierung ist schon auf Standard."
 
 msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr "Dies ist ein Multi-Tuner. Zur Verfügung stehende Optionen hängen von der Hardware ab."
@@ -16027,7 +16152,7 @@ msgstr "Spur"
 msgid "Traditional Music"
 msgstr "Folk/traditionelle Musik"
 
-msgid "Tragödie"
+msgid "TragÃ¶die"
 msgstr ""
 
 msgid "Transcoding: "
@@ -16206,6 +16331,10 @@ msgstr "Unbekannt"
 
 msgid "UP"
 msgstr ""
+
+#, fuzzy, python-format
+msgid "UPX version:\t%s\n"
+msgstr "Version:\t%s"
 
 msgid "URL"
 msgstr ""
@@ -17392,6 +17521,9 @@ msgstr "Wenn ein Sender eingestellt ist durchsucht die Box den Transponder nach 
 msgid "When waking from deep standby, should the %s %s go directly to standby mode?"
 msgstr "Wenn die Box eingeschaltet wird soll %s %s direkt in Bereitschaft gehen?"
 
+msgid "When you enter the recovery menu then it will force the image to be installed in the linux selection"
+msgstr ""
+
 msgid "Where should the recording be saved?"
 msgstr "Wo soll die Aufnahme gespeichert werden?"
 
@@ -17683,9 +17815,9 @@ msgstr "Die %s %s ist nicht mit dem Internet verbunden. Bitte überprüfe die Ne
 msgid "Your %s %s has successfully flashed slot %s, enter 'Yes' to reboot new image or 'No' to return to Enigma2."
 msgstr "Deine %s %s hat Slot %s erfolgreich geflashed wähle 'Ja' um das neue Image zu booten oder 'Nein' um zu Enigma2 zurückzukehren."
 
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"Your %s %s is about to create a full image backup, this can take about 6 minutes to complete.\n"
+"Your %s %s is about to create a full image backup, this can take from 10 to 15  minutes to complete.\n"
 "Do you want to allow this?"
 msgstr ""
 "Deine %s %s erstellt ein Image Backup. Die dauert etwa 6 Minuten.\n"
@@ -17986,9 +18118,6 @@ msgstr "[MultiBootSelector][add USB STARTUP slots] - USB (%s) hat nur %sMB freie
 
 msgid "[TimeShift] Restarting Timeshift!"
 msgstr "[TimeShift] TimeShift erneut starten!"
-
-msgid "[Timeshift] Merging records failed!"
-msgstr "[TimeShift] Zusammenfügen der Aufnahmen fehlgeschlagen!"
 
 msgid "[alternative edit]"
 msgstr "[Alternativen]"
@@ -18918,6 +19047,13 @@ msgstr "Diese Markierung entfernen"
 msgid "rename"
 msgstr "umbenennen"
 
+msgid "rename this file to 'force' to force an update without confirmation"
+msgstr ""
+
+#, python-format
+msgid "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
+msgstr ""
+
 msgid "repeat playlist"
 msgstr "Wiederholung der Wiedergabeliste"
 
@@ -19370,1203 +19506,3 @@ msgstr "umgeschaltet"
 
 msgid "| separated list of prefixes you'd like to be removed from event names, separated with |, e.g. New:|Live:"
 msgstr "| getrennte Liste von Ausdrücken die aus Sendungsnamen entfernt werden sollen, z.B. New:|Live:"
-
-#~ msgid ""
-#~ "\n"
-#~ "Advanced options and settings."
-#~ msgstr ""
-#~ "\n"
-#~ "Erweiterte Optionen und Einstellungen."
-
-#~ msgid ""
-#~ "\n"
-#~ "After pressing OK, please wait!"
-#~ msgstr ""
-#~ "\n"
-#~ "Nachdem OK gedrückt wurde, bitte warten!"
-
-#, python-format
-#~ msgid ""
-#~ "\n"
-#~ "Backup your %s %s settings."
-#~ msgstr ""
-#~ "\n"
-#~ "Sichern der %s %s Einstellungen."
-
-#~ msgid ""
-#~ "\n"
-#~ "Edit the upgrade source address."
-#~ msgstr ""
-#~ "\n"
-#~ "Upgrade Quell-Adresse bearbeiten."
-
-#, python-format
-#~ msgid ""
-#~ "\n"
-#~ "Manage extensions or plugins for your %s %s"
-#~ msgstr ""
-#~ "\n"
-#~ "Verwaltung der Erweiterungen und Plugins der %s %s"
-
-#, python-format
-#~ msgid ""
-#~ "\n"
-#~ "Online update of your %s %s software."
-#~ msgstr ""
-#~ "\n"
-#~ "Online Aktualisierung der %s %s Firmware."
-
-#~ msgid ""
-#~ "\n"
-#~ "Press OK on your remote control to continue."
-#~ msgstr ""
-#~ "\n"
-#~ "Drücke OK auf der Fernbedienung, um fortzufahren."
-
-#, python-format
-#~ msgid ""
-#~ "\n"
-#~ "Restore your %s %s settings."
-#~ msgstr ""
-#~ "\n"
-#~ "Wiederherstellen der %s %s Einstellungen."
-
-#, python-format
-#~ msgid ""
-#~ "\n"
-#~ "Restore your %s %s with a new firmware."
-#~ msgstr ""
-#~ "\n"
-#~ "Wiederherstellen der %s %s mit einer neuen Firmware."
-
-#~ msgid ""
-#~ "\n"
-#~ "Restore your backups by date."
-#~ msgstr ""
-#~ "\n"
-#~ "Wiederherstellen der nach Datum sortierten Sicherungen."
-
-#~ msgid ""
-#~ "\n"
-#~ "Scan for local extensions and install them."
-#~ msgstr ""
-#~ "\n"
-#~ "Nach lokalen Erweiterungen suchen und diese installieren."
-
-#~ msgid ""
-#~ "\n"
-#~ "Select your backup device.\n"
-#~ "Current device: "
-#~ msgstr ""
-#~ "\n"
-#~ "Wähle das Sicherungs-Verzeichnis.\n"
-#~ "Aktuelles Verzeichnis: "
-
-#~ msgid ""
-#~ "\n"
-#~ "View, install and remove available or installed packages."
-#~ msgstr ""
-#~ "\n"
-#~ "Anzeigen, installieren und entfernen verfügbarer oder installierter Pakete."
-
-#, python-format
-#~ msgid "%.0f GB"
-#~ msgstr "%.0f GB"
-
-#, python-format
-#~ msgid "%.0f MB"
-#~ msgstr "%.0f MB"
-
-#, python-format
-#~ msgid "%.0f kB"
-#~ msgstr "%.0f kB"
-
-#, python-format
-#~ msgid "%.2f GB"
-#~ msgstr "%.2f GB"
-
-#, python-format
-#~ msgid "%02d MB"
-#~ msgstr "%02d MB"
-
-#, python-format
-#~ msgid "%d B"
-#~ msgstr "%d B"
-
-#, python-format
-#~ msgid "%d GB"
-#~ msgstr "%d GB"
-
-#, python-format
-#~ msgid "%d KB"
-#~ msgstr "%d KB"
-
-#, python-format
-#~ msgid "%d MB"
-#~ msgstr "%d MB"
-
-#, python-format
-#~ msgid "%d kB"
-#~ msgstr "%d kB"
-
-#, python-format
-#~ msgid "%d.%03d GB"
-#~ msgstr "%d.%03d GB"
-
-#, python-format
-#~ msgid "%s %s software because updates are available."
-#~ msgstr "%s %s Software, da Aktualisierungen verfügbar sind."
-
-#, python-format
-#~ msgid "%s GB"
-#~ msgstr "%s GB"
-
-#~ msgid "(FTA Service)"
-#~ msgstr "(FTA Sender)"
-
-#, fuzzy
-#~ msgid "1,1"
-#~ msgstr "1.1"
-
-#~ msgid "1080i"
-#~ msgstr "1080i"
-
-#~ msgid "1080p 24Hz"
-#~ msgstr "1080p 24Hz"
-
-#~ msgid "1080p 25Hz"
-#~ msgstr "1080p 25Hz"
-
-#~ msgid "1080p 30Hz"
-#~ msgstr "1080p 30Hz"
-
-#~ msgid "1080p 50Hz"
-#~ msgstr "1080p 50Hz"
-
-#~ msgid "1080p 60Hz"
-#~ msgstr "1080p 60Hz"
-
-#~ msgid "2160p 24Hz"
-#~ msgstr "2160p 24Hz"
-
-#~ msgid "2160p 25Hz"
-#~ msgstr "2160p 25Hz"
-
-#~ msgid "2160p 30Hz"
-#~ msgstr "2160p 30Hz"
-
-#~ msgid "2160p 50Hz"
-#~ msgstr "2160p 50Hz"
-
-#~ msgid "2160p 60Hz"
-#~ msgstr "2160p 60Hz"
-
-#~ msgid "3D Mode"
-#~ msgstr "3D Betriebsart"
-
-#~ msgid "480p 24Hz"
-#~ msgstr "480p 24Hz"
-
-#~ msgid "720p"
-#~ msgstr "720p"
-
-#~ msgid "720p 24Hz"
-#~ msgstr "720p 24Hz"
-
-#~ msgid "A search for available updates is currently in progress."
-#~ msgstr "Es wird gerade nach neuen Updates gesucht."
-
-#~ msgid "A small overview of the available icon states and actions."
-#~ msgstr "Eine kurze Übersicht der verfügbaren Iconzustände und Aktionen."
-
-#~ msgid "Activate MAC address configuration"
-#~ msgstr "Aktiviere aktuelle MAC-Adresse"
-
-#~ msgid "Activate current configuration"
-#~ msgstr "Aktiviere aktuelle Konfiguration"
-
-#~ msgid "Activate network adapter configuration"
-#~ msgstr "Netzwerkkonfiguration aktivieren"
-
-#~ msgid "Advanced restore"
-#~ msgstr "Erweiterte Wiederherstellung"
-
-#~ msgid "Advanced software"
-#~ msgstr "Erweiterte Software"
-
-#~ msgid "Advanced software plugin"
-#~ msgstr "Erweitertes Software Plugin"
-
-#~ msgid "All resolutions"
-#~ msgstr "Alle Auflösungen"
-
-#~ msgid "Allows you to adjust the amount of time the resolution infomation display on screen."
-#~ msgstr "Erlaubt es die Zeit einzustellen für die das Fenster mit der neuen Auflösung angezeigt wird."
-
-#~ msgid "Allows you to tag your image backup to a box. (default is box name/type)"
-#~ msgstr "Erlaubt es das Backuo des Images einer Box zuzuordnen. (Voreinstellung ist Name/Typ)"
-
-#~ msgid "Android Mode"
-#~ msgstr "Android Modus"
-
-#~ msgid ""
-#~ "Are you sure you want to delete\n"
-#~ "the following backup:\n"
-#~ msgstr ""
-#~ "Sicher das Folgendes gelöscht werden soll?\n"
-#~ "Backup(s):\n"
-
-#, python-format
-#~ msgid "Are you sure you want to delete image slot %s ?"
-#~ msgstr "Bist Du sicher das dieser Image Slot %s gelöscht werden soll?"
-
-#~ msgid "Are you sure you want to purge all deleted user bouquets?"
-#~ msgstr "Alle gelöschten Favoritenlisten löschen?"
-
-#, python-format
-#~ msgid ""
-#~ "Are you sure you want to restore\n"
-#~ "the following backup:\n"
-#~ "%s\n"
-#~ "Your receiver will restart after the backup has been restored!"
-#~ msgstr ""
-#~ "Sicher das Folgendes wiederhergestellt werden soll?\n"
-#~ "Backup:%s\n"
-#~ "\n"
-#~ "Der Receiver wird neu gestartet wenn das Backup wiederhergestellt wurde!"
-
-#~ msgid ""
-#~ "Are you sure you want to restore the backup?\n"
-#~ "Your receiver will restart after the backup has been restored!"
-#~ msgstr ""
-#~ "Sicher das dieses Backup wiederhergestellt werden soll?\n"
-#~ "Die Box wird neu gestartet wenn das Backup wiederhergestellt wurde!"
-
-#~ msgid "Author: "
-#~ msgstr "Autor: "
-
-#~ msgid "Automatic resolution"
-#~ msgstr "Automatische Auflösung"
-
-#~ msgid "Automatic resolution label"
-#~ msgstr "Info Auflösung"
-
-#~ msgid "Background delete option"
-#~ msgstr "Löschen im Hintergrund"
-
-#~ msgid "Background delete speed"
-#~ msgstr "Löschen im Hintergrund Geschwindigkeit"
-
-#~ msgid "Backup failed."
-#~ msgstr "Sicherung fehlgeschlagen."
-
-#~ msgid "Backup is running..."
-#~ msgstr "Sicherung wird ausgeführt..."
-
-#~ msgid "Backup system settings"
-#~ msgstr "Einstellungen sichern"
-
-#~ msgid "CAID"
-#~ msgstr "CAID"
-
-#~ msgid "Cannot delete current image"
-#~ msgstr "Kann aktuelles Image nicht löschen"
-
-#~ msgid "Cannot reboot to deleted image"
-#~ msgstr "Kann nicht neu starten um Image zu löschen"
-
-#~ msgid "Change the Colordepth for UHD"
-#~ msgstr "Diese Option erlaubt die Konfiguration der Bittiefe für UHD"
-
-#~ msgid "Change the Colorimetry for HDR"
-#~ msgstr "Diese Option erlaubt die Konfiguration der Farbmetrik für HDR"
-
-#~ msgid "Change the Colorspace from Auto to RGB"
-#~ msgstr "Diese Option erlaubt es den Farbraum von Auto auf RGB zu stellen"
-
-#, python-format
-#~ msgid "Chipset:\tBroadcom %s\n"
-#~ msgstr "Chipsatz:\tBroadCom%s\n"
-
-#, python-format
-#~ msgid "Chipset:\tHiSilicon %s\n"
-#~ msgstr "Chipsatz:\tHiSilicon%s\n"
-
-#~ msgid "Clear HDMI-CEC fixed address"
-#~ msgstr "Lösche die feste Adresse von HDMI-CEC"
-
-#~ msgid "Clear fixed"
-#~ msgstr "Neue Adresse"
-
-#~ msgid "Collection"
-#~ msgstr "Zusammenstellung"
-
-#~ msgid "Communication"
-#~ msgstr "Kommunikation"
-
-#~ msgid "Configure on which devices the background delete option should be used."
-#~ msgstr "Einstellen auf welchen Laufwerken im Hintergrund gelöscht werden soll."
-
-#~ msgid "Configure the behavior when reaching the end of a movie, during movie playback."
-#~ msgstr "Konfiguriere das Verhalten beim Erreichen des Endes eines Films bei der Wiedergabe."
-
-#~ msgid "Configure the speed of the background deletion process. Lower speed will consume less hard disk drive performance."
-#~ msgstr "Konfiguriere die Löschgeschwindigkeit im Hintergrund. Eine niedrige Geschwindigkeit behindert andere Operationen weniger."
-
-#~ msgid "Configure your network settings, and press OK to start the scan"
-#~ msgstr "Konfiguriere das Netzwerk und drücken OK um den Vorgang zu starten"
-
-#~ msgid "Connected"
-#~ msgstr "Verbunden"
-
-#~ msgid "Continue"
-#~ msgstr "Weiter"
-
-#~ msgid "Converting ext3 to ext4..."
-#~ msgstr "Wandle Dateisystem ext3 in ext4 um..."
-
-#~ msgid "Current CEC address"
-#~ msgstr "Aktuelle CEC-Adresse"
-
-#~ msgid "Current version:"
-#~ msgstr "Derzeitige Version:"
-
-#~ msgid "Default settings"
-#~ msgstr "Voreinstellungen"
-
-#~ msgid "Delay time"
-#~ msgstr "Zeitverzögerung"
-
-#~ msgid "Depth"
-#~ msgstr "Tiefe"
-
-#~ msgid "Details for plugin: "
-#~ msgstr "Details für Plugin: "
-
-#~ msgid "Device: none available"
-#~ msgstr "Gerät: keines verfügbar"
-
-#~ msgid "Display and user interface"
-#~ msgstr "Anzeige und Benutzeroberfläche"
-
-#~ msgid ""
-#~ "Do you want to flash Recovery image?\n"
-#~ "This will change all eMMC slots."
-#~ msgstr ""
-#~ "Recovery Image flashen?\n"
-#~ "Dies wird alle eMMC Slots verändern."
-
-#~ msgid "DownLoad"
-#~ msgstr "Runterladen"
-
-#~ msgid "ECM-Time"
-#~ msgstr "ECM Zeit"
-
-#~ msgid "Edit upgrade source url."
-#~ msgstr "Update Quell-Url bearbeiten."
-
-#~ msgid "Erase"
-#~ msgstr "Löschen"
-
-#, fuzzy
-#~ msgid "EtPortal"
-#~ msgstr "Portugal"
-
-#~ msgid "Everywhere"
-#~ msgstr "Überall"
-
-#~ msgid "Exit MAC address configuration"
-#~ msgstr "MAC-Adresse Konfiguration verlassen"
-
-#~ msgid "Exit movie player..."
-#~ msgstr "Movieplayer beenden..."
-
-#~ msgid "Exit nameserver configuration"
-#~ msgstr "DNS Konfiguration beenden"
-
-#~ msgid "Exit network adapter configuration"
-#~ msgstr "Netzwerkadapter-Konfiguration verlassen"
-
-#~ msgid "Extended Software"
-#~ msgstr "Erweiterte Software"
-
-#~ msgid "Extended Software Plugin"
-#~ msgstr "Erweitertes Software Plugin"
-
-#~ msgid "Extensions management"
-#~ msgstr "Erweiterungsverwaltung"
-
-#, fuzzy
-#~ msgid "F"
-#~ msgstr "F2"
-
-#~ msgid "Fix CEC address setting, default is 1.0.0.0"
-#~ msgstr "Korrigiere CEC Adresse, Standard ist 1.0.0.0"
-
-#, python-format
-#~ msgid "Flash directory '%s' not allowed!"
-#~ msgstr "Flash Verzeichnis %s nicht erlaubt!"
-
-#~ msgid "Following tasks will be done after you press OK!"
-#~ msgstr "Folgendes wird ausgeführt, nachdem OK gedrückt wurde!"
-
-#~ msgid "Force de-interlace"
-#~ msgstr "DeInterlacing erzwingen"
-
-#, fuzzy
-#~ msgid "G"
-#~ msgstr "GB"
-
-#~ msgid "GB"
-#~ msgstr "GB"
-
-#~ msgid "HDMI-CEC address editing actions"
-#~ msgstr "HDMI-CEC-Adresse Kommandos bearbeiten"
-
-#~ msgid ""
-#~ "Help Screen\n"
-#~ "\n"
-#~ "Brief help information for buttons in your current context.\n"
-#~ "\n"
-#~ "Navigate up/down with UP/DOWN buttons and page up/down with LEFT/RIGHT. EXIT to return to the help screen. OK to perform the action described in the currently highlighted help.\n"
-#~ "\n"
-#~ "Other buttons will jump to the help for that button, if there is help.\n"
-#~ "\n"
-#~ "If an action is user-configurable, its help entry will be flagged (C)\n"
-#~ "\n"
-#~ "A highlight on the remote control image shows which button the help refers to. If more than one button performs the indicated function, more than one highlight will be shown. Text below the list indicates whether the function is for a long press of the button(s).\n"
-#~ "\n"
-#~ "The order and grouping of the help information list can be controlled using MENU>Setup>User Interface>Settings>Sort order for help screen."
-#~ msgstr ""
-#~ "Hilfe Seite\n"
-#~ "\n"
-#~ "Kurzhilfe für die Tasten im aktuellen Modus\n"
-#~ "\n"
-#~ "Navigiere zeilenweise hoch/runter mit HOCH/RUNTER und seitenweise mit LINKS/RECHTS. EXIT um zur Hilfeseite zurückzukehren. OK um den gewählten Befehl auszuführen.\n"
-#~ "\n"
-#~ "Andere Tasten springen zur Hilfe für diese Taste wenn es dazu eine Hilfe gibt.\n"
-#~ "\n"
-#~ "Wenn die Funktion konfiguriert werden kann ist es mit (C) markiert.\n"
-#~ "\n"
-#~ "Eine hervorgehobene Taste auf dem Bild der Fernbedienung zeigt die Taste zu der die angezeigte Hilfe gehört. Wenn mehrere Tasten zu der Hilfe passen werden diese Tasten markiert. Text unter der Liste zeigt das es zu einem langen Tastendruck gehört.\n"
-#~ "\n"
-#~ "Die Gruppierung und Sortierung der Hilfeinformationen kann in Menü>Einstellungen>Benutzerinterface>Einstellungen>Sortierung für die Hilfe eingestellt werden."
-
-#, fuzzy
-#~ msgid "I"
-#~ msgstr "IP"
-
-#, fuzzy
-#~ msgid "IMDB Search"
-#~ msgstr "IMDb Suche"
-
-#~ msgid "If enabled the output resolution of the box will try to match the resolution of the video content"
-#~ msgstr "Wenn aktiviert wird versucht die Auflösung des Bildes der Auflösung des Films anzupassen"
-
-#~ msgid "If enabled the video will always be de-interlaced."
-#~ msgstr "Wenn aktiviert wird das Video immer von der Box DeInterlaced."
-
-#~ msgid "Install a new image with a USB stick"
-#~ msgstr "Neues Image mittels USB Stick installieren"
-
-#~ msgid "Install a new image with your web browser"
-#~ msgstr "Neues Image mittels Webbrowser installieren"
-
-#~ msgid "Install extensions"
-#~ msgstr "Erweiterungen installieren"
-
-#~ msgid "Install or remove finished."
-#~ msgstr "Installation oder Deinstallation beendet."
-
-#~ msgid "Installation finished."
-#~ msgstr "Installation beendet."
-
-#~ msgid "Instant recording..."
-#~ msgstr "Sofortaufnahme..."
-
-#~ msgid "Internal hdd only"
-#~ msgstr "Nur interne Festplatte"
-
-#, python-format
-#~ msgid "Last update: %s"
-#~ msgstr "Letztes Update: %s"
-
-#~ msgid "Manage extensions"
-#~ msgstr "Erweiterungen verwalten"
-
-#, python-format
-#~ msgid "Manage your %s %s's software"
-#~ msgstr "Verwaltung der Software der %s %s"
-
-#~ msgid "Mark service as a dedicated 3D service"
-#~ msgstr "3D Flag für diesen Sender setzen"
-
-#~ msgid "Max backups to keep (0==all)"
-#~ msgstr "Max. Anzahl von Backups der Einstellungen behalten (0 = alle)"
-
-#~ msgid "Multiboot image manager"
-#~ msgstr "Multiboot Image Verwaltung"
-
-#~ msgid "Multimedia"
-#~ msgstr "Multimedia"
-
-#~ msgid "Namespace"
-#~ msgstr "Namensraum"
-
-#~ msgid "New version:"
-#~ msgstr "Neue Version:"
-
-#~ msgid "No backup needed"
-#~ msgstr "Keine Sicherung benötigt"
-
-#~ msgid "No data received yet"
-#~ msgstr "Bisher keine Daten empfangen"
-
-#~ msgid "No network connection available."
-#~ msgstr "Keine Netzwerkverbindung verfügbar."
-
-#~ msgid "No, do nothing."
-#~ msgstr "Nein, nichts tun."
-
-#~ msgid "No, just start my %s %s"
-#~ msgstr "Nein, nur die %s %s starten"
-
-#~ msgid "No, never"
-#~ msgstr "Nein, niemals"
-
-#~ msgid "Note: slot list does not show current image or empty slots."
-#~ msgstr "Info:Slot Liste zeigt nicht das aktuelle Image oder leere Slots."
-
-#~ msgid "OK, guide me through the upgrade process"
-#~ msgstr "OK, führe mich durch den Aktualisierungsprozess"
-
-#~ msgid "OSD 3D Setup"
-#~ msgstr "OSD 3D Einstellungen"
-
-#~ msgid "Only extensions."
-#~ msgstr "Nur Erweiterungen."
-
-#~ msgid "Open infobar EPG..."
-#~ msgstr "Öffne InfoBar EPG..."
-
-#~ msgid "OpenTV download setup"
-#~ msgstr "OpenTV Einstellungen"
-
-#~ msgid "Overwrite configuration files during software upgrade?"
-#~ msgstr "Konfigurationsdateien beim Software-Update überschreiben ?"
-
-#~ msgid "Overwrite configuration files?"
-#~ msgstr "Konfigurationsdatei überschreiben?"
-
-#~ msgid "Packet management"
-#~ msgstr "Paketverwaltung"
-
-#~ msgid "Perform a settings backup, making a backup before updating is strongly advised."
-#~ msgstr "Einstellungen zu sichern bevor ein Update durchgeführt wird ist sehr zu empfehlen."
-
-#~ msgid "Please select an acceptable directory."
-#~ msgstr "Bitte ein zulässiges Verzeichnis wählen."
-
-#~ msgid "Please select medium to use as backup location"
-#~ msgstr "Bitte wähle einen Ort für Sicherungen"
-
-#~ msgid "Plugin details"
-#~ msgstr "Plugin Angaben"
-
-#~ msgid "Plugin listing failed - e. g. wrong backup destination or no space left on backup device."
-#~ msgstr "Erzeuge Plugin Liste fehlgeschlagen. Entweder falscher Ort oder nicht mehr genug freier Speicher auf dem Gerät."
-
-#~ msgid "Plugin manager activity information"
-#~ msgstr "Aktivitäten Erweiterungsverwaltung"
-
-#~ msgid "Plugin manager help"
-#~ msgstr "Hilfe Erweiterungsverwaltung"
-
-#~ msgid "Polarisation:"
-#~ msgstr "Polarisation:"
-
-#~ msgid ""
-#~ "Press Green key to enable MultiBoot\n"
-#~ "\n"
-#~ "Will reboot within 10 seconds,\n"
-#~ "unless you have eMMC slots to restore.\n"
-#~ "Restoring eMMC slots can take from 1 -> 5 minutes per slot."
-#~ msgstr ""
-#~ "Dürcke GRÜN um Multiboot einzuschalten\n"
-#~ "\n"
-#~ "Box startet in 10 Sekunden neu\n"
-#~ "es sei denn es gibt einen eMMC Slot zur Wiederherstellung.\n"
-#~ "Wiederherstellung dauert 1..5 Minuten pro Slot."
-
-#~ msgid "Press INFO on your remote control for additional information."
-#~ msgstr "INFO drücken für zusätzliche Informationen."
-
-#~ msgid "Press MENU on your remote control for additional options."
-#~ msgstr "Menu drücken für zusätzliche Optionen."
-
-#~ msgid "Press OK to activate the settings."
-#~ msgstr "OK drücken zum Aktivieren."
-
-#~ msgid "Press OK to set the MAC address."
-#~ msgstr "OK drücken um die MAC-Adresse zu setzen."
-
-#~ msgid "Process"
-#~ msgstr "Aktivitätsanzeige"
-
-#~ msgid "Query before backup starts"
-#~ msgstr "Frage bevor Backup der Einstellungen startet"
-
-#~ msgid "Query before image backup starts"
-#~ msgstr "Frage bevor Backup des Images startet"
-
-#~ msgid "Receiver or driver does not support FCC"
-#~ msgstr "Receiver oder Treiber unterstützen kein FCC"
-
-#~ msgid "Recording & Playback"
-#~ msgstr "Aufnahme und Wiedergabe"
-
-#~ msgid "Recording and playback"
-#~ msgstr "Aufnahme und Wiedergabe"
-
-#~ msgid "Reload"
-#~ msgstr "Aktualisieren"
-
-#, python-format
-#~ msgid "Removal of this slot will not show in %s Gui.  Are you sure you want to delete image slot %s ?"
-#~ msgstr "Löschen von diesem Slot wird nicht in der GUI von %s angezeigt. Bist Du sicher das Du Slot %s löschen willst?"
-
-#~ msgid "Remove confirmation"
-#~ msgstr "Entfernen Bestätigung"
-
-#~ msgid "Remove finished."
-#~ msgstr "Löschen beendet."
-
-#~ msgid "Restore backups"
-#~ msgstr "Einstellungen wiederherstellen"
-
-#~ msgid "Restore system settings"
-#~ msgstr "Einstellungen wiederherstellen"
-
-#~ msgid "Restoring..."
-#~ msgstr "Wiederherstellung..."
-
-#~ msgid "SWAP place:"
-#~ msgstr "SWAP Ort:"
-
-#~ msgid "Satellite equipment"
-#~ msgstr "Satellitenausrüstung"
-
-#~ msgid "Scroll menu"
-#~ msgstr "Scroll Menü"
-
-#~ msgid "Searching for available updates. Please wait..."
-#~ msgstr "Suche nach verfügbaren Updates. Bitte warten..."
-
-#~ msgid "Searching for new installed or removed packages. Please wait..."
-#~ msgstr "Suche nach neu installierten oder deinstallierten Erweiterungen. Bitte warten..."
-
-#~ msgid "Select 'no' to flash a MultiBoot slot."
-#~ msgstr "Wähle 'Nein' um einen Multiboot Slot zu flashen."
-
-#~ msgid "Select an image to flash:"
-#~ msgstr "Wähle ein Image zum Wiederherstellen:"
-
-#~ msgid "Select backup files"
-#~ msgstr "Wähle die zu sichernden Dateien"
-
-#~ msgid "Select backup location"
-#~ msgstr "Wähle das Sicherungs Verzeichnis"
-
-#~ msgid "Select between entering an IP address or a domain."
-#~ msgstr "Wähle zwischen IP-Adresse oder Domain."
-
-#~ msgid "Select directory for logfile"
-#~ msgstr "Wähle Verzeichnis für Log-Datei"
-
-#~ msgid "Select extra packages folder"
-#~ msgstr "Wähle einen Ordner der Extra-Packete enthält"
-
-#~ msgid "Select files for backup."
-#~ msgstr "Wähle Dateien zum sichern."
-
-#~ msgid "Select upgrade source"
-#~ msgstr "Wähle eine Update-Quelle"
-
-#~ msgid "Select upgrade source to edit."
-#~ msgstr "Wähle eine Update-Quelle zum Bearbeiten."
-
-#~ msgid "Select your provider, and press OK to start the scan"
-#~ msgstr "Bitte wähle den Anbieter aus und bestätige mit OK, um die Suche zu starten"
-
-#~ msgid "Service type 4097 incorrect for PiP!"
-#~ msgstr "Service-Typ 4097 falsch für PiP!"
-
-#~ msgid "Set fixed"
-#~ msgstr "Adresse fest einstellen"
-
-#~ msgid "Set fixed CEC address"
-#~ msgstr "Setze feste HDMI-CEC Adresse"
-
-#~ msgid "Set pin code persistent"
-#~ msgstr "Setze Pin-Code dauerhaft"
-
-#~ msgid "Set the time before checking video source for resolution/refresh rate infomation."
-#~ msgstr "Verzögerung einstellen nach der Auflösung/Wiederholrate des Videos geprüft wird."
-
-#~ msgid "Show /tmp/ecm.info"
-#~ msgstr "Zeige /tmp/ecm.info"
-
-#~ msgid "Show 1080p 24fps as"
-#~ msgstr "Zeige 1080p 24FPS als"
-
-#~ msgid "Show 1080p 25fps as"
-#~ msgstr "Zeige 1080p 25FPS als"
-
-#~ msgid "Show 1080p 30fps as"
-#~ msgstr "Zeige 1080p 30FPS als"
-
-#~ msgid "Show 2160p 24fps as"
-#~ msgstr "Zeige 2160p 24FPS als"
-
-#~ msgid "Show 2160p 25fps as"
-#~ msgstr "Zeige 2160p 25FPS als"
-
-#~ msgid "Show 2160p 30fps as"
-#~ msgstr "Zeige 2160p 30FPS als"
-
-#~ msgid "Show 480/576p 24fps as"
-#~ msgstr "Zeige 480/576p 24FPS als"
-
-#~ msgid "Show 720p 24fps as"
-#~ msgstr "Zeige 720p 24FPS als"
-
-#~ msgid "Show SD as"
-#~ msgstr "Zeige SD als"
-
-#~ msgid "Show in extensions list ?"
-#~ msgstr "Zeige in Erweiterungen?"
-
-#~ msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
-#~ msgstr "Zeige die Programminformationen in der Senderliste mit 2 Zeilen. Du kannst wählen ob die aktuelle Beschreibung in der 2. Zeile stehen soll oder ob sie hinter dem Sendernamen stehen soll und in der zweiten Zeile dann die Beschreibung der nächsten Sendung."
-
-#~ msgid "Side by Side"
-#~ msgstr "Side by Side"
-
-#~ msgid "Skin Setup"
-#~ msgstr "Skin Einstellungen"
-
-#~ msgid "Skins"
-#~ msgstr "Skins"
-
-#~ msgid "Software"
-#~ msgstr "Software"
-
-#~ msgid "Software management"
-#~ msgstr "Softwareverwaltung"
-
-#~ msgid "Software manager setup"
-#~ msgstr "Softwareverwaltung Einstellungen"
-
-#~ msgid "Software restore"
-#~ msgstr "Software wiederherstellen"
-
-#~ msgid "Softwaremanager information"
-#~ msgstr "Information Softwareverwaltung"
-
-#, python-format
-#~ msgid "Sorry, %s has not been installed!"
-#~ msgstr "Entschuldigung %s wurde nicht installiert!"
-
-#~ msgid "Sorry, but the file is not compatible with this image version."
-#~ msgstr "Tut uns leid aber die Datei is nicht kompatibel mit dieser Image-Version."
-
-#~ msgid "Sorry, no backups found!"
-#~ msgstr "Entschuldigung keine Backups gefunden!"
-
-#~ msgid "Sorry, no details available!"
-#~ msgstr "Entschuldigung, keine Details verfügbar!"
-
-#~ msgid ""
-#~ "Sorry, your backup destination is not writeable.\n"
-#~ "Please select a different one."
-#~ msgstr ""
-#~ "Entschuldigung das Backupverzeichnis kann nicht beschrieben werden.\n"
-#~ "Bitte ein anderes Verzeichnis wählen."
-
-#~ msgid "Subtitle selection..."
-#~ msgstr "Untertitel Auswahl..."
-
-#, python-format
-#~ msgid "Support at %s"
-#~ msgstr "Unterstützung unter %s"
-
-#~ msgid "Symbolrate:"
-#~ msgstr "Symbolrate:"
-
-#~ msgid "Sync NTP every (minutes)"
-#~ msgstr "Synchronisiere Zeit alle XX Minuten"
-
-#, python-format
-#~ msgid "System temp:\t%s"
-#~ msgstr "Systemtemperatur: %s"
-
-#~ msgid "TB"
-#~ msgstr "TB"
-
-#~ msgid "The backup failed. Please choose a different backup location."
-#~ msgstr "Die Sicherung ist fehlgeschlagen. Bitte einen anderes Sicherungs Verzeichnis auswählen."
-
-#~ msgid ""
-#~ "The network wizard extension is not installed!\n"
-#~ "Please install it."
-#~ msgstr ""
-#~ "Das NetzwerkWizard Plugin ist nicht installiert!\n"
-#~ "Bitte installiere es."
-
-#~ msgid ""
-#~ "The software management extension is not installed!\n"
-#~ "Please install it."
-#~ msgstr ""
-#~ "Das Softwaremanagement Plugin ist nicht installiert!\n"
-#~ "Bitte installiere es."
-
-#~ msgid "The timer file (pm_timers.xml) is corrupt and could not be loaded."
-#~ msgstr "Die Timer-Datei (pm_timers.xml) ist kaputt und konnte nicht geladen werden."
-
-#~ msgid "The timer file (timers.xml) is corrupt and could not be loaded."
-#~ msgstr "Die Timer-Datei (timers.xml) ist kaputt und konnte nicht geladen werden."
-
-#~ msgid "The wizard can backup your current settings. Do you want to do a backup now?"
-#~ msgstr "Der Assistent kann jetzt die Einstellungen sichern. Soll dies nun durchgeführt werden?"
-
-#~ msgid "There are at least "
-#~ msgstr "Es sind mindestens "
-
-#, python-format
-#~ msgid "There are at least %s updates available."
-#~ msgstr "Es sind mindestens %s Updates verfügbar."
-
-#~ msgid "There are currently no outstanding actions."
-#~ msgstr "Es sind keine Aktivitäten geplant."
-
-#~ msgid "There are no items currently available for this screen."
-#~ msgstr "Für diese Seite sind aktuell keine Einträge vorhanden."
-
-#~ msgid "There are no updates available."
-#~ msgstr "Es sind keine Updates verfügbar."
-
-#~ msgid "This option allows you to choose how to display 1080p 24Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Diese Option erlaubt es einzustellen wie ein 1080p 24Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
-
-#~ msgid "This option allows you to choose how to display 1080p 25Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Diese Option erlaubt es einzustellen wie ein 1080p 25Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
-
-#~ msgid "This option allows you to choose how to display 1080p 30Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Diese Option erlaubt es einzustellen wie ein 1080p 30Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
-
-#~ msgid "This option allows you to choose how to display 2160p 24Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Diese Option erlaubt es einzustellen wie ein 2160p 24Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
-
-#~ msgid "This option allows you to choose how to display 2160p 25Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Diese Option erlaubt es einzustellen wie ein 2160p 25Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
-
-#~ msgid "This option allows you to choose how to display 2160p 30Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Diese Option erlaubt es einzustellen wie ein 2160p 30Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
-
-#~ msgid "This option allows you to choose how to display 720p 24Hz on your TV. (as not all TVs support these resolutions)"
-#~ msgstr "Diese Option erlaubt es einzustellen wie ein 720p 24Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
-
-#~ msgid "This option allows you to choose how to display SD progressive 24Hz on your TV. (as not all TV's support these resolutions)"
-#~ msgstr "Diese Option erlaubt es einzustellen wie ein progressives 24Hz Video angezeigt wird. (Nicht alle Fernseher unterstützen alle Formate)"
-
-#~ msgid "This option allows you to choose how to display standard defintion video on your TV."
-#~ msgstr "Diese Option erlaubt es einzustellen wie ein SD Video angezeigt wird."
-
-#~ msgid "This option allows you to disable sorting of the menus"
-#~ msgstr "Diese Option erlaubt dir die Sortierung in den Menüs auszuschalten"
-
-#~ msgid "This option lets you adjust the 3D depth"
-#~ msgstr "Diese Option erlaubt es die 3D Tiefe einzustellen"
-
-#~ msgid "This option lets you choose the 3D mode"
-#~ msgstr "Diese Option lässt dich den 3D Modus zu aktivieren"
-
-#~ msgid "This option lets you show the option in the extension screen"
-#~ msgstr "Diese Option erlaubt es die Option in Erweiterungen anzuzeigen"
-
-#~ msgid "This plugin is installed."
-#~ msgstr "Diese Erweiterung ist installiert."
-
-#~ msgid "This plugin is not installed."
-#~ msgstr "Diese Erweiterung ist nicht installiert."
-
-#~ msgid "This plugin will be installed."
-#~ msgstr "Diese Erweiterung wird installiert."
-
-#~ msgid "This plugin will be removed."
-#~ msgstr "Diese Erweiterung wird deinstalliert."
-
-#~ msgid "Time of backup to start"
-#~ msgstr "Zeit wann Backup gestartet werden soll"
-
-#~ msgid "Timer selection..."
-#~ msgstr "Timer-Auswahl..."
-
-#~ msgid "Top and Bottom"
-#~ msgstr "Oben und Unten"
-
-#~ msgid "Transponder Information"
-#~ msgstr "Transponder Information"
-
-#~ msgid "Tuning Info: Live Values"
-#~ msgstr "Tuning Info: reale Werte"
-
-#~ msgid "Tuning Info: Settings Values"
-#~ msgstr "Tuning Info: gesetzte Werte"
-
-#~ msgid "Turn off HDMI-IN full screen mode"
-#~ msgstr "Deaktiviere HDMI-In Vollbild"
-
-#~ msgid "Turn on HDMI-IN full screen mode"
-#~ msgstr "Aktiviere HDMI-In Vollbild"
-
-#~ msgid "Undo install"
-#~ msgstr "Installation zurücksetzen"
-
-#~ msgid "Undo uninstall"
-#~ msgstr "Deinstallation zurücksetzen"
-
-#~ msgid "Uninstall"
-#~ msgstr "Deinstallieren"
-
-#~ msgid "Unmark service as a dedicated 3D service"
-#~ msgstr "3D Flag für diesen Sender zurücksetzen"
-
-#~ msgid "Update Interval"
-#~ msgstr "Update Zeitintervall"
-
-#~ msgid "Updatefeed not available."
-#~ msgstr "Updatefeed nicht verfügbar."
-
-#~ msgid "Updating cache"
-#~ msgstr "Cache Aktualisieren"
-
-#~ msgid "Updating software catalog"
-#~ msgstr "Softwarekatalog wird aktualisiert"
-
-#~ msgid "Use the cursor keys to select an installed image and then Erase button."
-#~ msgstr "Benutze die Cursortasten um ein installiertes Image zu wählen und dann den Lösche Button."
-
-#~ msgid "Using fixed address"
-#~ msgstr "Benutze feste Adresse"
-
-#, python-format
-#~ msgid "ViX version: %s"
-#~ msgstr "ViX Version: %s"
-
-#, python-format
-#~ msgid "Video content: %ix%i%s %iHz"
-#~ msgstr "Video Format: %ix%i%s %iHz"
-
-#, python-format
-#~ msgid "Video mode: %s"
-#~ msgstr "Video Modus: %s"
-
-#~ msgid "View details"
-#~ msgstr "Zeige Details"
-
-#~ msgid "View list of available "
-#~ msgstr "Zeige Liste der Verfügbaren "
-
-#~ msgid "View list of available CommonInterface extensions"
-#~ msgstr "Zeige Liste der verfügbaren Common Interface-Erweiterungen"
-
-#~ msgid "View list of available EPG extensions."
-#~ msgstr "Zeige Liste der verfügbaren EPG-Erweiterungen."
-
-#~ msgid "View list of available Satellite equipment extensions."
-#~ msgstr "Zeige Liste der verfügbaren Satellitenausrüstungs-Plugins."
-
-#~ msgid "View list of available communication extensions."
-#~ msgstr "Zeige Liste der verfügbaren Kommunikations-Erweiterungen."
-
-#~ msgid "View list of available default settings"
-#~ msgstr "Zeige Liste der verfügbaren Standardeinstellungen"
-
-#~ msgid "View list of available display and userinterface extensions."
-#~ msgstr "Zeige Liste der verfügbaren Anzeige- und Benutzeroberflächen-Erweiterungen."
-
-#~ msgid "View list of available multimedia extensions."
-#~ msgstr "Zeige Liste der verfügbaren Multimedia-Erweiterungen."
-
-#~ msgid "View list of available networking extensions"
-#~ msgstr "Zeige Liste der verfügbaren Netzwerk-Erweiterungen"
-
-#~ msgid "View list of available recording extensions"
-#~ msgstr "Zeige Liste der verfügbaren Aufnahme-Erweiterungen"
-
-#~ msgid "View list of available skins"
-#~ msgstr "Teige Liste der verfügbaren Skins"
-
-#~ msgid "View list of available software extensions"
-#~ msgstr "Zeige Liste der verfügbaren Software-Erweiterungen"
-
-#~ msgid "View list of available system extensions"
-#~ msgstr "Zeige  Liste der verfügbaren System-Erweiterungen"
-
-#~ msgid "Visual impaired commentary"
-#~ msgstr "Kommentar für Sehgeschädigte"
-
-#~ msgid ""
-#~ "Vu+ MultiBoot Initialisation in progress\n"
-#~ "\n"
-#~ "Will reboot after restoring any eMMC slots\n"
-#~ "This can take from 1 -> 5 minutes per slot."
-#~ msgstr ""
-#~ "VU+ Multiboot Initialisierung läuft\n"
-#~ "\n"
-#~ "Box wird neu gestartet nachdem eMMC Slots wiederhergestellt wurden\n"
-#~ "Es kann pro Slot 1..5 Minuten dauern."
-
-#~ msgid "Welcome to the image upgrade wizard. The wizard will assist you in upgrading the firmware of your %s %s by providing a backup facility for your current settings and a short explanation of how to upgrade your firmware."
-#~ msgstr "Willkommen im Image-Upgrade-Assistenten. Der Assistent wird bei der Aktualisierung der Firmware der %s %s helfen. Mit diesem Assistenten können die aktuellen Einstellungen gesichert werden und es gibt eine kleine Einweisung wie die Firmware aktualisiert werden kann."
-
-#~ msgid "When enabled, external subtitles will always be turned on for movie playback."
-#~ msgstr "Wenn aktiviert werden externe Untertitel bei Filmwiedergabe immer eingeschaltet."
-
-#~ msgid "When enabled, graphical DVB subtitles will be displayed in yellow, instead of the original color."
-#~ msgstr "Wenn aktiviert werden grafische DVB Untertitel in Gelb statt der Originalfarbe dargestellt."
-
-#~ msgid "Where do you want to backup your settings?"
-#~ msgstr "Wohin die Einstellungen sichern?"
-
-#~ msgid "Yellow DVB subtitles"
-#~ msgstr "DVB Untertitel Gelb"
-
-#~ msgid "Yes, always"
-#~ msgstr "Ja, immer"
-
-#~ msgid "Yes, backup my settings!"
-#~ msgstr "Ja, meine Einstellungen sichern!"
-
-#~ msgid "Yes, restore the settings now"
-#~ msgstr "Ja, die Einstellungen jetzt wiederherstellen"
-
-#~ msgid "Yes, shut down now."
-#~ msgstr "Ja, jetzt herunterfahren."
-
-#~ msgid "You can cancel the installation."
-#~ msgstr "Die Installation kann abgebrochen werden."
-
-#~ msgid "You can cancel the removal."
-#~ msgstr "Das Löschen kann abgebrochen werden."
-
-#~ msgid "You can install this plugin."
-#~ msgstr "Du kannst diese Erweiterung installieren."
-
-#~ msgid "You can remove this plugin."
-#~ msgstr "Du kannst diese Erweiterung deinstallieren."
-
-#~ msgid "You have chosen to backup your settings. Please press OK to start the backup now."
-#~ msgstr "Du hast dich entschieden deine Einstellungen zu sichern. Drücke OK, um den Vorgang zu starten."
-
-#~ msgid "You have chosen to restore your settings. Enigma2 will restart after restore. Please press OK to start the restore now."
-#~ msgstr "Du hast dich entschlossen, deine Einstellungen wiederherzustellen. Enigma2 wird nach der Wiederherstellung neu starten. Bitte drücke OK um mit der Wiederherstellung zu beginnen."
-
-#~ msgid "You have decided not to flash image."
-#~ msgstr "Du hast dich entschieden das Image nicht zu flashen."
-
-#~ msgid ""
-#~ "You need a PC connected to your %s %s. If you need further instructions, please visit the website http://www.dm7025.de.\n"
-#~ "Your %s %s will now be halted. After you have performed the update instructions from the website, your new firmware will ask you to restore your settings."
-#~ msgstr ""
-#~ "Ein PC muss mit der %s %s verbunden sein.Für weiterführende Informationen besuche die Webseite http://www.dm7025.de.\n"
-#~ "Die %s %s wird nun ausgeschaltet. Nachdem das Update wie auf der Webseite beschrieben durchgeführt wurde, wird die neue Firmware fragen, ob die Einstellungen wiederhergestellt werden sollen."
-
-#~ msgid "Your %s %s is shutting down. Please wait..."
-#~ msgstr "Die %s %s schaltet sich nun aus. Bitte warte einen Moment..."
-
-#~ msgid "Your backup succeeded. We will now continue to explain the further upgrade process."
-#~ msgstr "Die Sicherung ist geglückt. Die Box wird nun den weiteren Aktualisierungs-Prozess erklären."
-
-#~ msgid ""
-#~ "Your frontprocessor firmware must be upgraded.\n"
-#~ "Press OK to start upgrade."
-#~ msgstr ""
-#~ "Ihre Frontprozessor-Firmware muss aktualisiert werden.\n"
-#~ "Drücke OK, um das Upgrade zu starten."
-
-#~ msgid "[VuplusKexec][create Vu Multiboot environment] - Unable to complete, Vu+ Multiboot files missing"
-#~ msgstr "[VuplusKexec][create Vu Multiboot environment] - Kann nicht beendet werden, Vu+ Multiboot Dateien fehlen"
-
-#~ msgid "alphabetic"
-#~ msgstr "alphabetisch"
-
-#~ msgid "alphabetic reverse"
-#~ msgstr "umgekehrtes Alphabet"
-
-#~ msgid "by date"
-#~ msgstr "Nach Datum"
-
-#~ msgid "epg cache backup"
-#~ msgstr "Backup vom EPG Cache"
-
-#~ msgid "extensions."
-#~ msgstr "Erweiterungen."
-
-#~ msgid "flat alphabetic reverse"
-#~ msgstr "Strikt umgedreht alphabetisch"
-
-#~ msgid "from"
-#~ msgstr "von"
-
-#~ msgid "full"
-#~ msgstr "voll"
-
-#~ msgid "invalid type"
-#~ msgstr "ungültiger Typ"
-
-#~ msgid "is strongly advised."
-#~ msgstr "wird sehr empfohlen."
-
-#~ msgid "making a backup before updating"
-#~ msgstr "Backup anlegen vor einem Update"
-
-#~ msgid "movie/drama (general)"
-#~ msgstr "Film/Drama (allgemein)"
-
-#~ msgid "only HD"
-#~ msgstr "nur HD"
-
-#~ msgid "packages selected."
-#~ msgstr "Pakete ausgewählt."
-
-#~ msgid "reverse by date"
-#~ msgstr "umgekehrt nach Datum"
-
-#~ msgid "show softwaremanager in plugin menu"
-#~ msgstr "Zeige Softwareverwaltung in Erweiterungen"
-
-#~ msgid "show softwaremanager on blue button"
-#~ msgstr "Zeige Softwareverwaltung auf blauen Button"
-
-#~ msgid "shut down"
-#~ msgstr "Ausschalten"
-
-#, python-format
-#~ msgid "slot%s - %s"
-#~ msgstr "Slot%s - %s"
-
-#, python-format
-#~ msgid "slot%s - %s "
-#~ msgstr "Slot%s - %s "
-
-#, python-format
-#~ msgid "slot%s - %s (current image)"
-#~ msgstr "Slot%s - %s (aktuelle Image)"
-
-#~ msgid "start directory"
-#~ msgstr "Anfangsverzeichnis"
-
-#~ msgid "updates available."
-#~ msgstr "Updates verfügbar."
