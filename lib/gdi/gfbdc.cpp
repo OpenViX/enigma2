@@ -5,6 +5,9 @@
 
 #include <lib/gdi/accel.h>
 
+#include <algorithm>
+#include <cstring>
+
 #include <time.h>
 #include <sys/time.h>
 
@@ -120,6 +123,29 @@ void gFBDC::setPalette()
 	fb->PutCMAP();
 }
 
+int gFBDC::getSurfaceOffset(const gUnmanagedSurface &s) const
+{
+	if (!s.data_phys)
+		return 0;
+
+	return (s.data_phys - fb->getPhysAddr()) / s.stride;
+}
+
+void gFBDC::rotateSurfaces()
+{
+	if (m_number_of_pages > 2 && surface_third.data_phys)
+	{
+		gUnmanagedSurface previously_displayed = surface_back;
+		surface_back = surface;
+		surface = surface_third;
+		surface_third = previously_displayed;
+	}
+	else if (surface_back.data_phys)
+	{
+		std::swap(surface, surface_back);
+	}
+}
+
 void gFBDC::exec(const gOpcode *o)
 {
 	switch (o->opcode)
@@ -132,6 +158,12 @@ void gFBDC::exec(const gOpcode *o)
 	}
 	case gOpcode::flip:
 	{
+#if defined(CONFIG_ION)
+		fb->setOffset(getSurfaceOffset(surface));
+
+		if (surface_back.data_phys)
+			rotateSurfaces();
+#else
 		if (surface_back.data_phys)
 		{
 			gUnmanagedSurface s(surface);
@@ -143,6 +175,7 @@ void gFBDC::exec(const gOpcode *o)
 			else
 				fb->setOffset(0);
 		}
+#endif
 		break;
 	}
 	case gOpcode::waitVSync:
@@ -177,28 +210,20 @@ void gFBDC::exec(const gOpcode *o)
 #else
 		fb->blit();
 #endif
-#ifdef CONFIG_ION
+#if defined(CONFIG_ION)
 		if (surface_back.data_phys)
 		{
-			gUnmanagedSurface s(surface);
-			surface = surface_back;
-			surface_back = s;
-
 			fb->waitVSync();
-			if (surface.data_phys > surface_back.data_phys)
-			{
-				fb->setOffset(0);
-			}
-			else
-			{
-				fb->setOffset(surface_back.y);
-			}
+			fb->setOffset(getSurfaceOffset(surface));
+
+			rotateSurfaces();
+
 			bcm_accel_blit(
-				surface_back.data_phys, surface_back.x, surface_back.y, surface_back.stride, 0,
-				surface.data_phys, surface.x, surface.y, surface.stride,
-				0, 0, surface.x, surface.y,
-				0, 0, surface.x, surface.y,
-				0, 0);
+			surface_back.data_phys, surface_back.x, surface_back.y, surface_back.stride, 0,
+			surface.data_phys, surface.x, surface.y, surface.stride,
+			0, 0, surface.x, surface.y,
+			0, 0, surface.x, surface.y,
+			0, 0);
 		}
 #endif
 #if defined(CONFIG_HISILICON_FB)
@@ -306,32 +331,74 @@ void gFBDC::setResolution(int xres, int yres, int bpp)
 #endif
 	fb->SetMode(xres, yres, bpp);
 
+	unsigned char *base_addr = fb->lfb;
+	unsigned long base_phys = fb->getPhysAddr();
+
 	surface.x = xres;
 	surface.y = yres;
 	surface.bpp = bpp;
 	surface.bypp = bpp / 8;
 	surface.stride = fb->Stride();
-	surface.data = fb->lfb;
-	
-	for (int y=0; y<yres; y++)    // make whole screen transparent 
-		memset(fb->lfb+ y * xres * 4, 0x00, xres * 4);	
+	surface.data = base_addr;
 
-	surface.data_phys = fb->getPhysAddr();
+	for (int y=0; y<yres; y++)    // make whole screen transparent
+		memset(fb->lfb+ y * xres * 4, 0x00, xres * 4);
 
-	int fb_size = surface.stride * surface.y;
+	surface.data_phys = base_phys;
 
-	if (fb->getNumPages() > 1)
+	m_number_of_pages = fb->getNumPages();
+
+	int fb_page_size = surface.stride * surface.y;
+	int fb_size = fb_page_size;
+
+#if defined(CONFIG_ION)
+	if (m_number_of_pages > 1)
 	{
 		surface_back = surface;
-		surface_back.data = fb->lfb + fb_size;
-		surface_back.data_phys = surface.data_phys + fb_size;
-		fb_size *= 2;
+		fb_size += fb_page_size;
+
+		// the hardware starts on the first page; draw to the next one first
+		surface_back.data = base_addr;
+		surface_back.data_phys = base_phys;
+
+		surface.data = base_addr + fb_page_size;
+		surface.data_phys = base_phys + fb_page_size;
 	}
 	else
 	{
 		surface_back.data = 0;
 		surface_back.data_phys = 0;
 	}
+
+	if (m_number_of_pages > 2)
+	{
+		surface_third = surface;
+		surface_third.data = base_addr + fb_page_size * 2;
+		surface_third.data_phys = base_phys + fb_page_size * 2;
+		fb_size += fb_page_size;
+	}
+	else
+	{
+		surface_third.data = 0;
+		surface_third.data_phys = 0;
+	}
+#else
+	if (m_number_of_pages > 1)
+	{
+		surface_back = surface;
+		surface_back.data = base_addr + fb_page_size;
+		surface_back.data_phys = base_phys + fb_page_size;
+		fb_size = fb_page_size * 2;
+	}
+	else
+	{
+		surface_back.data = 0;
+		surface_back.data_phys = 0;
+	}
+
+        surface_third.data = 0;
+        surface_third.data_phys = 0;
+#endif
 
 	eDebug("[gFBDC] resolution: %d x %d x %d (stride: %d) pages: %d", surface.x, surface.y, surface.bpp, fb->Stride(), fb->getNumPages());
 
@@ -352,6 +419,7 @@ void gFBDC::setResolution(int xres, int yres, int bpp)
 	}
 
 	surface_back.clut = surface.clut;
+	surface_third.clut = surface.clut;
 
 #if defined(CONFIG_HISILICON_FB)
 	if(islocked()==0)
