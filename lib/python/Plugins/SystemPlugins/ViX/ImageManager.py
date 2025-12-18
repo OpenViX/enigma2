@@ -398,9 +398,9 @@ class VIXImageManager(Screen):
 
 	def keyBackup(self):
 		if MACHINEBUILD[0:7] == "osmio4k":
-			message = (_("Do you want to create a full image backup?\nThis can take upto 20 minutes to complete\n your ") + f"{MACHINEBUILD}" + _(" will create a recovery backup only for slot 1 else image backup"))
+			message = _("Do you want to create a full image backup?") + "\n" + (_("This can take up to %s minutes to complete.") % "20") + "\n" + (_("Your %s will create a recovery backup only for slot 1 else image backup.") % MACHINEBUILD)
 		else:
-			message = _("Do you want to create a full image backup?\nThis can take upto 15 minutes to complete.")
+			message = _("Do you want to create a full image backup?") + "\n" + (_("This can take up to %s minutes to complete.") % "15")
 		ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Backup confirmation"))
 
@@ -508,9 +508,9 @@ class VIXImageManager(Screen):
 		if not recordings:
 			next_rec_time = self.session.nav.RecordTimer.getNextRecordingTime()
 		if recordings or (next_rec_time > 0 and (next_rec_time - time()) < 360):
-			message = _("Recording(s) are in progress or coming up in few seconds!\nDo you still want to flash image\n%s?") % self.sel[0]
+			message = _("Recording(s) are in progress or coming up in few seconds!") + "\n" + _("Do you still want to flash image\n%s?") % self.sel[0]
 		else:
-			message = _("Do you want to flash image\n%s") % self.sel[0]
+			message = _("Do you want to flash image\n%s?") % self.sel[0]
 		if SystemInfo["canMultiBoot"] is False:
 			if config.imagemanager.autosettingsbackup.value:
 				self.doSettingsBackup()
@@ -1053,7 +1053,7 @@ class ImageBackup(Screen):
 		if int(free) < 200:
 			AddPopupWithCallback(
 				self.BackupComplete,
-				_("The backup location does not have enough free space." + "\n" + self.BackupDevice + "only has " + str(free) + "MB free."),
+				_("The backup location does not have enough free space.") + "\n" + (_("%s only has %s MB free.") % (self.BackupDevice, str(free))),
 				MessageBox.TYPE_INFO,
 				10,
 				"RamCheckFailedNotification"
