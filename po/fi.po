@@ -5342,7 +5342,7 @@ msgid ""
 "Do you still want to flash image\n"
 "%s?"
 msgstr ""
-"Haluatko flashata imagen\n"
+"Haluatko silti flashata imagen\n"
 "%s?"
 
 msgid "Do you want to backup eMMC slots? This will add from 1 -> 5 minutes per eMMC slot"
