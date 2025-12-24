@@ -1003,7 +1003,7 @@ class ImageBackup(Screen):
 				task.work = self.doBackup3
 				task.weighting = 5
 
-				task = Components.Task.ConditionTask(job, _("Backing up eMMC partitions for recovery image.."), timeoutCount=4000)
+				task = Components.Task.ConditionTask(job, _("Backing up eMMC partitions for recovery image ..."), timeoutCount=4000)
 				task.check = lambda: self.Stage3Completed
 				task.weighting = 15
 
