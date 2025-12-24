@@ -19064,7 +19064,7 @@ msgid "When waking from deep standby, should the %s %s go directly to standby mo
 msgstr "Al salir de hibernación, ¿debería el %s %s pasar directamente al modo de espera?"
 
 msgid "When you enter the recovery menu then it will force the image to be installed in the linux selection"
-msgstr ""
+msgstr "Cuando ingrese al menú de recuperación, forzará la instalación de la imagen en la selección de Linux."
 
 msgid "Where should the recording be saved?"
 msgstr "¿Dónde quieres guardar la grabación?"
@@ -19485,7 +19485,7 @@ msgstr ""
 
 #, python-format
 msgid "Your %s will create a recovery backup only for slot 1 else image backup."
-msgstr ""
+msgstr "Si esta es la ranura 1, su %s creará una copia de seguridad de recuperación; de lo contrario, creará una copia de seguridad de imagen."
 
 msgid "Your STB will restart after pressing OK on your remote control."
 msgstr "La STB se reiniciará cuando pulses 'OK' en el mando a distancia."
@@ -20732,11 +20732,11 @@ msgid "rename"
 msgstr "Renombrar"
 
 msgid "rename this file to 'force' to force an update without confirmation"
-msgstr ""
+msgstr "cambie el nombre de este archivo a 'force' para forzar una actualización sin confirmación"
 
 #, python-format
 msgid "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
-msgstr ""
+msgstr "cambie el nombre de el archivo unforce_%s.txt a force_%s.txt para forzar una actualización sin confirmación"
 
 #
 msgid "repeat playlist"
