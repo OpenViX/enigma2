@@ -45,19 +45,27 @@ class DefaultAdapter:
 		self.previousService = None
 		self.currentService = ""
 		self.currentBouquet = None
+		self.standby_prev_running_service = None
 
 	def play(self, service):
 		self.currentBouquet = ChannelSelection.instance is not None and ChannelSelection.instance.getRoot()
 		self.previousService = self.navcore.getCurrentlyPlayingServiceReference()
+		if self.previousService is None:
+			from Screens.Standby import inStandby
+			if inStandby:
+				self.standby_prev_running_service = inStandby.prev_running_service
 		self.navcore.playService(service)
 		self.currentService = self.navcore.getCurrentlyPlayingServiceReference()
 		return True
 
 	def stop(self):
+		from Screens.Standby import inStandby
 		if isinstance(self.currentService, eServiceReference) and isinstance(playingref := self.navcore and self.navcore.getCurrentlyPlayingServiceReference(), eServiceReference) and self.currentService == playingref:  # check the user hasn't zapped in the mean time
 			if self.currentBouquet is not None:
 				ChannelSelection.instance.setRoot(self.currentBouquet)
-			self.navcore.playService(self.previousService)
+			self.navcore.playService(None if inStandby else self.previousService)
+		if inStandby and self.standby_prev_running_service:
+			inStandby.prev_running_service = self.standby_prev_running_service
 
 
 class RecordAdapter:
@@ -235,7 +243,7 @@ class Opentv_Zapper():
 		self.force = False
 		if self.downloading:
 			self.enddownloadtimer.startLongTimer(download_duration)
-			print("[%s]download running..." % (debug_name))
+			print("[%s] download running..." % (debug_name))
 			print("[%s] %s" % (debug_name, "using '%s' adapter" % self.adaptername if self.adaptername else "a download is already in progress"))
 			if not inStandby and config.plugins.opentvzapper.notifications.value:
 				Notifications.AddPopup(text=_("OpenTV EPG download starting."), type=MessageBox.TYPE_INFO, timeout=5, id=debug_name)

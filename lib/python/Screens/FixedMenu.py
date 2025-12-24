@@ -1,6 +1,5 @@
 from Components.ActionMap import ActionMap
 from Components.Sources.List import List
-from Components.Sources.StaticText import StaticText
 from Screens.Screen import Screen
 
 
@@ -21,4 +20,4 @@ class FixedMenu(Screen):
 				"cancel": self.close
 			})  # noqa: E123
 
-		self["title"] = StaticText(title)
+		self.title = title

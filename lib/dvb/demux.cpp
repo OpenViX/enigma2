@@ -82,20 +82,6 @@ int eDVBDemux::openDemux(void)
 	char filename[32] = {};
 	snprintf(filename, sizeof(filename), "/dev/dvb/adapter%d/demux%d", adapter, demux);
 	eDebug("[eDVBDemux] open demux %s", filename);
-	int tmp_fd = -1;
-	tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
-	/* eDebug("[eDVBDemux] Twol00 Opened tmp_fd: %d", tmp_fd); */
-	if (tmp_fd == 0)
-	{
-		::close(tmp_fd);
-		tmp_fd = -1;
-		fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
-		/* eDebug("[eDVBDemux] opening null fd returned: %d", fd0lock); */
-	}
-	if (tmp_fd != -1)
-	{
-		::close(tmp_fd);
-	}
 	return ::open(filename, O_RDWR | O_CLOEXEC);
 }
 
@@ -107,20 +93,6 @@ int eDVBDemux::openDVR(int flags)
 	char filename[32];
 	snprintf(filename, sizeof(filename), "/dev/dvb/adapter%d/dvr%d", adapter, demux);
 	eDebug("[eDVBDemux] open dvr %s", filename);
-	int tmp_fd = -1;
-	tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
-	/* eDebug("[eDVBDemux] Twol00 Opened tmp_fd: %d", tmp_fd); */
-	if (tmp_fd == 0)
-	{
-		::close(tmp_fd);
-		tmp_fd = -1;
-		fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
-		/* eDebug("[eDVBDemux] opening null fd returned: %d", fd0lock); */
-	}
-	if (tmp_fd != -1)
-	{
-		::close(tmp_fd);
-	}
 	return ::open(filename, flags);
 #endif
 }
@@ -831,20 +803,6 @@ RESULT eDVBTSRecorder::start()
 
 	char filename[128];
 	snprintf(filename, 128, "/dev/dvb/adapter%d/demux%d", m_demux->adapter, m_demux->demux);
-	int tmp_fd = -1;
-	tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
-	/* eDebug("[eDVBTSRecorder] Opened tmp_fd: %d", tmp_fd); */
-	if (tmp_fd == 0)
-	{
-		::close(tmp_fd);
-		tmp_fd = -1;
-		fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
-		/* eDebug("[eDVBTSRecorder] opening null fd returned: %d", fd0lock); */
-	}
-	if (tmp_fd != -1)
-	{
-		::close(tmp_fd);
-	}
 
 #if HAVE_HISILICON
 	m_source_fd = ::open(filename, O_RDONLY | O_CLOEXEC | O_NONBLOCK);

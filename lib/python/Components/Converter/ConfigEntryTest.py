@@ -42,9 +42,9 @@ class ConfigEntryTest(Converter):
 		if self.argError:
 			print(f"[ConfigEntryTest] Got invalid arguments '{self.converter_arguments}', force True!")
 			return True
-		if self.checkSourceBoolean and not self.source.boolean:
+		if self.checkSourceBoolean and not getattr(self.source, "boolean", False):
 			return False
-		if self.checkInvertSourceBoolean and self.source.boolean:
+		if self.checkInvertSourceBoolean and not getattr(self.source, "boolean", False):
 			return False
 		value = configfile.getResolvedKey(self.configKey, silent=True)  # Invalid/non-existent keys will return None.
 		if value is None and not self.ignore:

@@ -645,20 +645,6 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	}
 	else if ( m_sourceinfo.containertype == ctVCD )
 	{
-		int tmp_fd = -1;
-		tmp_fd = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
-		/* eDebug("[servicemp3] Twol00 Opened tmp_fd: %d", tmp_fd); */
-		if (tmp_fd == 0)
-		{
-			::close(tmp_fd);
-			tmp_fd = -1;
-			fd0lock = ::open("/dev/null", O_RDONLY | O_CLOEXEC);
-			/* eDebug("[servicemp3] opening null fd returned: %d", fd0lock); */
-		}
-		if (tmp_fd != -1)
-		{
-			::close(tmp_fd);
-		}
 		int ret = -1;
 		int fd = open(filename,O_RDONLY);
 		if (fd >= 0)
@@ -1203,9 +1189,17 @@ RESULT eServiceMP3::seekRelative(int direction, pts_t to)
 	pts_t ppos;
 	if (getPlayPosition(ppos) < 0) return -1;
 	ppos += to * direction;
+
 	if (ppos < 0)
 		ppos = 0;
-	return seekTo(ppos);
+
+	int res = seekTo(ppos);
+
+	// Do double seek to same position so to overcome problem with seeking backward and passthrough on for some boxes
+	if (res > -1)
+		seekTo(ppos);
+
+	return res;
 }
 
 gint eServiceMP3::match_sinktype(const GValue *velement, const gchar *type)
@@ -1746,8 +1740,8 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 					{
 						clearBuffers();
 					}
-				} 
-				else 
+				}
+				else
 				{
 					clearBuffers();
 				}
@@ -2023,8 +2017,6 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 					m_clear_buffers = false;
 					if (!m_initial_start)
 					{
-						if (!m_sourceinfo.is_streaming)
-							seekTo(0);
 						m_initial_start = true;
 					}
 					m_event((iPlayableService*)this, evGstreamerPlayStarted);

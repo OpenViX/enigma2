@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-12 10:25+0200\n"
-"PO-Revision-Date: 2025-06-12 18:27+0200\n"
+"POT-Creation-Date: 2025-12-24 09:07+0100\n"
+"PO-Revision-Date: 2025-12-24 10:19+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: www.CostaBlancaTranslations.com <maria@CostaBlancaTranslations.com>\n"
 "Language: es\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.8\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
 
 msgid ""
@@ -889,6 +889,11 @@ msgstr "%d segundos"
 
 #
 #, python-format
+msgid "%d slots have been created on the device.\n"
+msgstr "Se han creado %d ranuras en el dispositivo.\n"
+
+#
+#, python-format
 msgid "%d wireless network found!"
 msgid_plural "%d wireless networks found!"
 msgstr[0] "¡%d red wifi encontrada!"
@@ -1053,6 +1058,10 @@ msgstr "%s de %s GB"
 #, python-format
 msgid "%s of %s MB"
 msgstr "%s de %s MB"
+
+#, python-format
+msgid "%s only has %s MB free."
+msgstr "%s solo tiene %s MB disponibles."
 
 #, python-format
 msgid "%s scheduled update"
@@ -1857,8 +1866,8 @@ msgid "Add"
 msgstr "Añadir"
 
 #, python-format
-msgid "Add 4 more Vu+ Multiboot USB slots after slot %s ?"
-msgstr "¿Agregar 4 slots USB Vu+ Multiboot más después de el slot %s?"
+msgid "Add 4 more Multiboot USB slots after slot %s ?"
+msgstr "¿Agregar 4 slots USB Multiboot más después de el slot %s?"
 
 msgid "Add AutoTimer"
 msgstr "Añadir autotemporizador"
@@ -2357,12 +2366,17 @@ msgstr "Antigüedades"
 msgid "Any activity"
 msgstr "Cualquier actividad"
 
-#
 msgid "Arabic"
 msgstr "Árabe"
 
 msgid "Architektur"
 msgstr "Architektur"
+
+msgid "Archive"
+msgstr "Activar"
+
+msgid "Archive long"
+msgstr "Activar (largo)"
 
 msgid "Are You Sure ?"
 msgstr "¿Está Seguro?"
@@ -2814,11 +2828,8 @@ msgstr "Búsqueda de fondo"
 msgid "Background color"
 msgstr "Color de fondo"
 
-msgid "Backing up eMMC partitions for USB flash ..."
-msgstr "Realizar copias de seguridad de particiones eMMC para memoria flash USB..."
-
-msgid "Backing up eMMC partitions for USB flash..."
-msgstr "Realizar copias de seguridad de particiones eMMC para memoria flash USB..."
+msgid "Backing up eMMC partitions for recovery image ..."
+msgstr "Realizar copias de seguridad de particiones eMMC para la imagen de recuperación..."
 
 msgid "Backing up files..."
 msgstr "Realizando copias de seguridad de archivos..."
@@ -3806,6 +3817,9 @@ msgstr "Eligir el orden en el que se muestran los elementos en las ventanas de a
 msgid "Choose the style of the second infobar. The 'Standard' view normally includes technical data. The 'Simple' view shows minimal technical data."
 msgstr "Seleccione el estilo de la segunda barra de información. La vista \"Estándar\" normalmente incluye datos técnicos. La vista \"Simple\" muestra datos técnicos mínimos."
 
+msgid "Choose the target device for the slots."
+msgstr "Seleccione el dispositivo de destino para las ranuras."
+
 msgid "Choose time interval to which the graphics will be rounded off."
 msgstr "Elegir el intervalo de tiempo en el que se redondean los gráficos."
 
@@ -4637,6 +4651,12 @@ msgstr "Crear"
 msgid "Create DVD-ISO"
 msgstr "Crear DVD-ISO"
 
+msgid "Create MultiBoot System -> will INITIALISE chosen usb device"
+msgstr "Crear sistema de arranque múltiple -> INICIALIZARÁ el dispositivo USB elegido"
+
+msgid "Create Slots"
+msgstr "Crear ranuras"
+
 #
 msgid "Create Timer"
 msgstr "Crear temporizador"
@@ -4657,6 +4677,10 @@ msgstr "Crear directorio"
 
 msgid "Create separate radio userbouquet"
 msgstr "Crear un grupo separado para radio "
+
+#
+msgid "Create slots for the selected device"
+msgstr "Crear ranuras para el dispositivo seleccionado"
 
 msgid "Create:"
 msgstr "Crear:"
@@ -5728,6 +5752,14 @@ msgstr "¿Seguro que quieres borrar tu marcador %s?"
 msgid "Do you really want to stop the current recording and delete timer %s?"
 msgstr "¿Realmente desea detener la grabación actual y eliminar el temporizador %s?"
 
+#, python-format
+msgid ""
+"Do you still want to flash image\n"
+"%s?"
+msgstr ""
+"¿Aún quieres flashear la imagen\n"
+"%s?"
+
 msgid "Do you want to backup eMMC slots? This will add from 1 -> 5 minutes per eMMC slot"
 msgstr "¿Quieres hacer una copia de seguridad de los slots eMMC? Esto agregará entre 1 y 5 minutos por ranura eMMC"
 
@@ -5743,12 +5775,9 @@ msgstr "¿Quieres cambiar la skin predeterminada?"
 msgid "Do you want to continue?"
 msgstr "¿Qué quieres continuar?"
 
-msgid ""
-"Do you want to create a full image backup?\n"
-"This can take about 6 minutes to complete."
-msgstr ""
-"¿Quieres crear una copia de seguridad de imagen completa?\n"
-"Este proceso puede tardar unos 6 minutos."
+#
+msgid "Do you want to create a full image backup?"
+msgstr "¿Quieres crear una copia de seguridad de imagen completa?"
 
 msgid ""
 "Do you want to delete all the selected files:\n"
@@ -5768,7 +5797,7 @@ msgstr "¿Quieres hacer otra búsqueda manual de canales?"
 #, python-format
 msgid ""
 "Do you want to flash image\n"
-"%s"
+"%s?"
 msgstr ""
 "¿Quieres flashear la imagen\n"
 "%s?"
@@ -6204,10 +6233,6 @@ msgstr "Habilitar el autoinicio"
 #
 msgid "Enable Bluetooth Audio"
 msgstr "Habilitar audio de Bluetooth"
-
-#
-msgid "Enable Chkroot MultiBoot"
-msgstr "Habilitar MultiBoot Chkroot"
 
 msgid "Enable EIT EPG"
 msgstr "Habilitar EIT EPG"
@@ -6949,7 +6974,7 @@ msgstr "FEC:"
 
 #, python-format
 msgid "FFmpeg version:\t%s\n"
-msgstr "FFmpeg versión:\t%s\n"
+msgstr "Versión de FFmpeg:\t%s\n"
 
 msgid "FHD"
 msgstr "FHD"
@@ -6965,7 +6990,7 @@ msgstr "FORWARD"
 
 #, python-format
 msgid "FP version:\t%s"
-msgstr "FP versión:\t%s"
+msgstr "Versión de FP:\t%s"
 
 msgid "FTA TV"
 msgstr "FTA TV"
@@ -7430,6 +7455,10 @@ msgstr "Para niños"
 msgid "G"
 msgstr "G"
 
+#, python-format
+msgid "GCC version:\t%s\n"
+msgstr "Versión de GCC:\t%s\n"
+
 msgid "GREEN"
 msgstr "VERDE"
 
@@ -7583,6 +7612,10 @@ msgstr "Gibraltar"
 
 msgid "Gioco"
 msgstr "Gioco"
+
+#, python-format
+msgid "Glibc version:\t%s\n"
+msgstr "Versión de Glibc:\t%s\n"
 
 msgid "Go back 24 hours"
 msgstr "Retroceder 24 horas."
@@ -7755,30 +7788,6 @@ msgstr "Gymnastica"
 msgid "H"
 msgstr "H"
 
-msgid "H7/H9/H9COMBO/H10 new Model"
-msgstr "H7/H9/H9COMBO/H10 nuevo Model"
-
-msgid "H9 SDcard manager"
-msgstr "Administrador de H9 SDcard"
-
-msgid "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
-msgstr "¡ERROR de cambio de tarjeta SD H9! - Los archivos raíz de H9 no se transfieren a la tarjeta SD"
-
-msgid "H9 SDcard switch ERROR! - already on Nand"
-msgstr "¡ERROR de cambio de tarjeta SD H9! - ya está en Nand"
-
-msgid "H9 SDcard switch ERROR! - already on mmc"
-msgstr "¡ERROR de cambio de tarjeta SD H9! - ya está en mmc"
-
-msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
-msgstr "ERROR USB H9: los archivos raíz H9 no se transfieren al USB"
-
-msgid "H9 USB switch ERROR! - already on USB"
-msgstr "H9 USB ERROR! - already on USB"
-
-msgid "H9 switch Nand and SDcard"
-msgstr "H9 Nand y SDcard"
-
 msgid "H9SDcard Manager"
 msgstr "Administrador de H9SDcard"
 
@@ -7926,6 +7935,9 @@ msgstr "Pantalla de ayuda"
 
 msgid "Help long"
 msgstr "Ayuda (largo)"
+
+msgid "Help text uninitialized"
+msgstr "Texto de ayuda sin inicializar"
 
 msgid "Helps setting up your antenna"
 msgstr "Ayuda a configurar la antena"
@@ -8148,6 +8160,9 @@ msgstr "Húngaria"
 
 msgid "I"
 msgstr "I"
+
+msgid "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 new Model"
+msgstr "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 nuevo Model"
 
 msgid "IDLE"
 msgstr "INACTIVO"
@@ -8543,18 +8558,6 @@ msgstr "Infoentretenimiento"
 #
 msgid "Init"
 msgstr "Iniciar"
-
-msgid "Init SDcard"
-msgstr "Iniciar SDcard"
-
-msgid "Init USB/SDA1"
-msgstr "Iniciar USB/SDA1"
-
-msgid "Init Zgemma H9 SDCARD - please reboot after use."
-msgstr "Iniciar Zgemma H9 SDCARD - reinicie después de su uso."
-
-msgid "Init Zgemma H9 USB/SDA1 - please reboot after use."
-msgstr "Iniciar Zgemma H9 USB/SDA1 - reinicie después de su uso."
 
 #
 msgid "Init modules"
@@ -11125,6 +11128,10 @@ msgid "Open the service list"
 msgstr "Abrir la lista de canales"
 
 #, python-format
+msgid "OpenSSL version:\t%s\n"
+msgstr "Versión de OpenSSL:\t%s\n"
+
+#, python-format
 msgid ""
 "OpenTV EPG download completed.\n"
 "Next download: %s"
@@ -11289,6 +11296,9 @@ msgstr "PREVIOUSSONG"
 
 msgid "PRIMETIME"
 msgstr "Horario de máxima audiencia"
+
+msgid "PULSe 4K/4K Mini"
+msgstr "PULSe 4K/4K Mini"
 
 msgid "PVR"
 msgstr "PVR"
@@ -12269,8 +12279,8 @@ msgstr "Pulse 'OK' para seleccionar de la lista de canales"
 msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."
 msgstr "Presione VERDE (Reiniciar) para cambiar de imagen, AMARILLO (Eliminar) para borrar una imagen o AZUL (Restaurar) para restaurar todas las imágenes eliminadas."
 
-msgid "Press GREEN to enable MultiBoot!"
-msgstr ""
+msgid "Press GREEN to enable MultiBoot process"
+msgstr "Presione VERDE para habilitar el proceso MultiBoot"
 
 msgid "Press OK"
 msgstr "Pulse OK"
@@ -12340,9 +12350,6 @@ msgstr "Pulsa OK para alternar la selección."
 #
 msgid "Press OK, save and exit..."
 msgstr "Presione OK, guardar y salir..."
-
-msgid "Press appropiate Init to move Nand root to SDcard or USB."
-msgstr "Presione la apropiada para mover la raíz Nand a la tarjeta SD o USB."
 
 msgid ""
 "Press up/down to scroll through the selected log\n"
@@ -12727,6 +12734,9 @@ msgstr "¿Seguro que quieres reiniciar ahora?"
 msgid "Really shutdown now?"
 msgstr "¿Seguro que quieres apagar ahora?"
 
+msgid "Really start Kodi and stop user interface now?"
+msgstr "¿Iniciar Kodi y detener la interfaz de usuario ahora?"
+
 #, python-format
 msgid "Really store at index %2d for current position?"
 msgstr "¿Realmente almacenar en el índice %2d para la posición actual?"
@@ -12851,16 +12861,6 @@ msgstr "Tipo de grabación"
 #
 msgid "Recording(s) are in progress or coming up in few seconds!"
 msgstr "Grabación(es) en proceso o a punto de comenzar."
-
-#, python-format
-msgid ""
-"Recording(s) are in progress or coming up in few seconds!\n"
-"Do you still want to flash image\n"
-"%s?"
-msgstr ""
-"¡Las grabaciones están en proceso o se realizarán en unos segundos!\n"
-"¿Aún quieres mostrar la imagen\n"
-"%s?"
 
 #
 msgid "Recording/media selection"
@@ -13200,6 +13200,10 @@ msgstr "Renombrado fallido."
 msgid "Rename name and description for new events"
 msgstr "Cambiar el nombre y la descripción de los nuevos eventos"
 
+#, python-format
+msgid "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick"
+msgstr "Cambie el nombre de unforce_%s.txt a force_%s.txt y muévalo a la raíz del pincho USB"
+
 msgid "Rename to:"
 msgstr "Renombrar a:"
 
@@ -13535,6 +13539,10 @@ msgstr "Ruso"
 msgid "Russian Federation"
 msgstr "Federación Rusa"
 
+#, python-format
+msgid "Rust version:\t%s\n"
+msgstr "Versión Rust:\t%s\n"
+
 msgid "Rwanda"
 msgstr "Ruanda"
 
@@ -13582,6 +13590,10 @@ msgstr "SDCARD"
 
 msgid "SETUP"
 msgstr "SETUP"
+
+#, python-format
+msgid "SF8008 indicate type of backup %s"
+msgstr "SF8008, indique el tipo de copia de seguridad %s"
 
 msgid "SHIFT: "
 msgstr "SHIFT: "
@@ -13665,6 +13677,10 @@ msgstr "Samba"
 
 msgid "Samba Setup"
 msgstr "Configuración Samba"
+
+#, python-format
+msgid "Samba:\t%s\n"
+msgstr "Samba:\t%s\n"
 
 msgid "Same resolution as skin"
 msgstr "Misma resolución que la skin"
@@ -14132,6 +14148,13 @@ msgid "Select CAId"
 msgstr "Seleccionar CAId"
 
 #
+msgid "Select Device"
+msgstr "Seleccionar dispositivo"
+
+msgid "Select Device for FORMAT!! & Creation of multiboot slots"
+msgstr "Seleccionar dispositivo para formatear y crear ranuras de multiboot"
+
+#
 msgid "Select EPG channel"
 msgstr "Seleccionar canal EPG"
 
@@ -14140,6 +14163,13 @@ msgstr "Seleccione Fast DiSEqC si su sistema de antena lo admite. Si no está se
 
 msgid "Select Folders"
 msgstr "Seleccionar carpetas"
+
+#
+msgid "Select Green to action"
+msgstr "Seleccionar Verde para accionar"
+
+msgid "Select Green to start slot creation"
+msgstr "Seleccione Verde para iniciar la creación de la ranura"
 
 #
 msgid "Select Satellites"
@@ -14235,6 +14265,9 @@ msgstr "Seleccionar acción defeco de la tecla INFO"
 
 msgid "Select destination for:"
 msgstr "Seleccionar la ubicación de:"
+
+msgid "Select device and then Slot Creation"
+msgstr "Seleccione el dispositivo y luego Creación de ranura"
 
 msgid "Select display of record icon based on 'Sref only' or 'Sref + Stream url' where applicable."
 msgstr "Seleccione la visualización del ícono de registro según 'Solo Sref' o 'Sref + URL de transmisión' cuando corresponda."
@@ -15620,6 +15653,12 @@ msgstr "Slot %s / FBC en %s"
 msgid "Slot %s / FBC virtual %s"
 msgstr "Slot %s / FBC virtual %s"
 
+msgid "Slot Manager"
+msgstr "Administrador de ranuras"
+
+msgid "Slot Manager Actions"
+msgstr "Acciones del administrador de ranuras"
+
 #, python-format
 msgid "Slot%s %s %s: %s - %s mode%s"
 msgstr "Slot%s %s %s: %s - %s modo%s"
@@ -15994,6 +16033,9 @@ msgstr "Comenzar prueba"
 msgid "Start the Chkroot initialization"
 msgstr ""
 
+msgid "Start the UBI Multiboot initialization"
+msgstr "Iniciar la inicialización de UBI Multiboot"
+
 #
 msgid "Start time"
 msgstr "Hora de inicio"
@@ -16353,12 +16395,6 @@ msgstr "Administrador de intercambio"
 msgid "Swap services"
 msgstr "Cambiar canal"
 
-msgid "SwaptoNand"
-msgstr "Cambiar a NAND"
-
-msgid "SwaptoSD"
-msgstr "Cambiar a SD"
-
 msgid "Swaziland"
 msgstr "Suazilandia"
 
@@ -16528,6 +16564,9 @@ msgstr "Búsqueda TMDb"
 msgid "TMDb search"
 msgstr "Búsqueda TMDb"
 
+msgid "TMDb search for current event"
+msgstr "Búsqueda TMDB del programa actual"
+
 msgid "TMDb search for highlighted event"
 msgstr "Búsqueda TMDB del programa destacado"
 
@@ -16592,6 +16631,9 @@ msgstr "Baile"
 
 msgid "Tanzania, United Republic of"
 msgstr "Tanzanía, República Unida de"
+
+msgid "Target location"
+msgstr "Ubicación objetivo"
 
 msgid "Task warning on shutdown"
 msgstr "Advertencia de tarea al apagar"
@@ -16720,8 +16762,8 @@ msgid "The %s %s saves the EPG data every (hours)."
 msgstr "La %s %s guarda los datos guardados en EPG cada (horas)."
 
 #, python-format
-msgid "The %s %s will reboot within 1 seconds."
-msgstr ""
+msgid "The %s %s will reboot after enabling."
+msgstr "El %s %s se reiniciará después de habilitarlo."
 
 msgid ""
 "The AutoTimer plugin is not installed!\n"
@@ -16804,9 +16846,6 @@ msgstr "La copia de seguridad crea una instantánea de la imagen exactamente com
 
 msgid "The backup location does not have enough free space."
 msgstr "El destino de copias de seguridad no tiene espacio suficiente."
-
-msgid "The backup location does not have enough free space.\n"
-msgstr "El destino de copias de seguridad no tiene espacio suficiente.\n"
 
 msgid "The bitrate of the video encoder. Larger value improves quality and increases file size."
 msgstr "La copia de seguridad crea una instantánea de la imagen exactamente como es en el instante actual."
@@ -16911,6 +16950,11 @@ msgstr ""
 "La interfaz de usuario de %s %s se está reiniciando\n"
 "por un error en StartTest.py."
 
+#
+#, python-format
+msgid "The user interface of your %s %s will be stopped to run Kodi"
+msgstr "La interfaz de usuario de su %s %s se detendrá para ejecutar Kodi"
+
 msgid "The width of the picture. The input will be scaled to match this value."
 msgstr "El ancho de la imagen. La entrada se escalará para que coincida con este valor."
 
@@ -16996,6 +17040,10 @@ msgstr "Te permite cambiar el número de filas mostradas."
 msgid "This allows you to set the number of digits you can input when selecting channels using number input."
 msgstr "Esto le permite establecer la cantidad de dígitos que puede ingresar al seleccionar canales usando la entrada de números."
 
+#, python-format
+msgid "This can take up to %s minutes to complete."
+msgstr "Esto puede tardar hasta %s minutos en completarse."
+
 msgid "This change will overwrite all eMMC slots."
 msgstr "Este cambio sobrescribirá todas las slots eMMC."
 
@@ -17008,6 +17056,12 @@ msgstr "Esta función está destinada a los desarrolladores de skins. Permite qu
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
 msgstr "Este campo le permite buscar una tasa de símbolo adicional hasta %s."
+
+msgid "This file forces a reboot after the update."
+msgstr "Este archivo fuerza un reinicio después de la actualización."
+
+msgid "This file forces the update."
+msgstr "Este archivo fuerza la actualización."
 
 msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr "Este es un sintonizador multitipo. Las opciones disponibles dependen del hardware."
@@ -17745,6 +17799,10 @@ msgstr "DESCONOCIDO"
 msgid "UP"
 msgstr "ARRIBA"
 
+#, python-format
+msgid "UPX version:\t%s\n"
+msgstr "Versión de UPX:\t%s\n"
+
 msgid "URL"
 msgstr "URL"
 
@@ -18186,10 +18244,10 @@ msgid "Used service scan type"
 msgstr "Tipo de búsqueda de canales usada."
 
 msgid "Used to specify delay when switching between services and AC3 passthrough is enabled."
-msgstr ""
+msgstr "Se utiliza para especificar el retraso cuando se cambia entre servicios y se habilita el paso directo AC3."
 
 msgid "Used to specify delay when switching between services and AC3+/Atmos passthrough is enabled."
-msgstr ""
+msgstr "Se utiliza para especificar el retraso cuando se cambia entre servicios y se habilita el paso directo AC3+/Atmos."
 
 msgid "Used:"
 msgstr "Utilizado:"
@@ -19005,6 +19063,9 @@ msgstr "Cuando esté sintonizado en un canal, el sistema busca normalmente en el
 msgid "When waking from deep standby, should the %s %s go directly to standby mode?"
 msgstr "Al salir de hibernación, ¿debería el %s %s pasar directamente al modo de espera?"
 
+msgid "When you enter the recovery menu then it will force the image to be installed in the linux selection"
+msgstr "Cuando ingrese al menú de recuperación, forzará la instalación de la imagen en la selección de Linux."
+
 msgid "Where should the recording be saved?"
 msgstr "¿Dónde quieres guardar la grabación?"
 
@@ -19322,10 +19383,10 @@ msgstr "Su %s %s ha flasheado exitosamente la ranura %s, ingrese 'Sí' para rein
 
 #, python-format
 msgid ""
-"Your %s %s is about to create a full image backup, this can take about 6 minutes to complete.\n"
+"Your %s %s is about to create a full image backup, this can take from 10 to 15  minutes to complete.\n"
 "Do you want to allow this?"
 msgstr ""
-"La %s %s está a punto de crear una copia de seguridad de imagen completa. Esto puede tardar unos 6 minutos en completarse.\n"
+"La %s %s está a punto de crear una copia de seguridad de imagen completa. Esto puede tardar unos 15 minutos en completarse.\n"
 "¿Permitir esto?"
 
 #, python-format
@@ -19421,6 +19482,10 @@ msgid ""
 msgstr ""
 "Se reiniciará la %s %s después de eliminar el canal.\n"
 "¿Quieres eliminarlo ahora?"
+
+#, python-format
+msgid "Your %s will create a recovery backup only for slot 1 else image backup."
+msgstr "Si esta es la ranura 1, su %s creará una copia de seguridad de recuperación; de lo contrario, creará una copia de seguridad de imagen."
 
 msgid "Your STB will restart after pressing OK on your remote control."
 msgstr "La STB se reiniciará cuando pulses 'OK' en el mando a distancia."
@@ -19631,9 +19696,6 @@ msgstr "[MultiBootSelector][agregar slots de INICIO USB]: el USB (%s) solo tiene
 
 msgid "[TimeShift] Restarting Timeshift!"
 msgstr "Reiniciando TimeShift [TimeShift]"
-
-msgid "[Timeshift] Merging records failed!"
-msgstr "Ha fallado la fusión de grabaciones [Timeshift]."
 
 #
 msgid "[alternative edit]"
@@ -20668,6 +20730,13 @@ msgstr "Borrar esta marca"
 
 msgid "rename"
 msgstr "Renombrar"
+
+msgid "rename this file to 'force' to force an update without confirmation"
+msgstr "cambie el nombre de este archivo a 'force' para forzar una actualización sin confirmación"
+
+#, python-format
+msgid "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
+msgstr "cambie el nombre de el archivo unforce_%s.txt a force_%s.txt para forzar una actualización sin confirmación"
 
 #
 msgid "repeat playlist"

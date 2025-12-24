@@ -748,7 +748,7 @@ msgstr "%d %b %y"
 msgid "%d Min"
 msgid_plural "%d Mins"
 msgstr[0] "%d Min"
-msgstr[1] "%d Mins"
+msgstr[1] "%d Min"
 
 #, python-format
 msgid "%d Recording"
@@ -1179,7 +1179,7 @@ msgid "0"
 msgstr "0"
 
 msgid "1 day"
-msgstr ""
+msgstr "1 Tag"
 
 msgid "1 hour"
 msgstr "1 Stunde"
@@ -1414,7 +1414,7 @@ msgid "<Default movie location>"
 msgstr "<Standard Filmverzeichnis>"
 
 msgid "<Default+Picon>"
-msgstr "<Standard mit PIcon>"
+msgstr "<Standard mit Picon>"
 
 msgid "<Default>"
 msgstr "<Standard>"
@@ -1697,7 +1697,7 @@ msgid "Accesspoint:"
 msgstr "Zugangspunkt:"
 
 msgid "Action"
-msgstr ""
+msgstr "Aktion"
 
 msgid "Activate"
 msgstr "Aktiviere"
@@ -1923,7 +1923,7 @@ msgid "After event"
 msgstr "Nach der Sendung"
 
 msgid "After power loss"
-msgstr ""
+msgstr "Nach Stromausfall"
 
 msgid "Agenten"
 msgstr ""
@@ -2001,7 +2001,7 @@ msgid "Allow 12bit"
 msgstr "12bit erlauben"
 
 msgid "Allow CEC address change *"
-msgstr ""
+msgstr "Erlaube CEC Adressänderung"
 
 msgid "Allow fast skin reload"
 msgstr "Erlaube schnellen Skinwechsel"
@@ -2046,7 +2046,7 @@ msgid "Allows you to enable the debug logs. They contain very detailed informati
 msgstr "Debug Log erlauben. Das Debug Log enthält detaillierte Informationen über alles was das System macht. Neustart der Box ist erforderlich!"
 
 msgid "Allows you to enable/disable displaying icons on the front panel."
-msgstr "Anzeige von PIcons auf dem Display am Gerät erlauben."
+msgstr "Anzeige von Picons auf dem Display am Gerät erlauben."
 
 msgid "Allows you to give your image filename a custom prefix."
 msgstr "Erlaubt es deinem Image einen eigenen Namen zu geben."
@@ -3590,7 +3590,7 @@ msgid "Choose whether to scan for free services only or whether to include paid/
 msgstr "Wähle ob nur freie oder auch bezahlte/verschlüsselte Sender gesucht werden sollen."
 
 msgid "Choose which level of menu/settings to display. 'Expert' level shows all items."
-msgstr "Wähle Level der Anzeige für Menü/Einstellungen. 'Expert'-Level zeigt alle Punkte."
+msgstr "Wähle Level der Anzeige für Menü/Einstellungen. 'Experte' zeigt alle Punkte."
 
 msgid "Choose which tuner to configure."
 msgstr "Wähle welcher Tuner konfiguriert werden soll."
@@ -3871,10 +3871,10 @@ msgid "Configure if behind the subtitles a background is shown."
 msgstr "Konfiguriere ob hinter Untertiteln  der Hintergrund gezeigt werden."
 
 msgid "Configure if picons will be shown in the service list."
-msgstr "Konfigurieren ob und wie PIcons in der Senderliste gezeigt werden."
+msgstr "Konfigurieren ob und wie Picons in der Senderliste gezeigt werden."
 
 msgid "Configure if picons will be shown in the timer list."
-msgstr "Konfigurieren ob und wie PIcons in der Senderliste gezeigt werden."
+msgstr "Konfigurieren ob und wie Picons in der Senderliste gezeigt werden."
 
 msgid "Configure if service picons will be shown in the channel selection list."
 msgstr "Konfigurieren ob Sender-Icons in der Senderliste gezeigt werden."
@@ -4063,7 +4063,7 @@ msgid "Configure the vertical position of the subtitles, measured from the botto
 msgstr "Konfiguriere die vertikale Position von Untertiteln, gemessen vom unteren Bildrand."
 
 msgid "Configure the width allocated to the picon."
-msgstr "Konfiguriere die freigehaltene Breite für PIcon."
+msgstr "Konfiguriere die freigehaltene Breite für Picon."
 
 msgid "Configure the width allocated to the service name."
 msgstr "Konfiguriere die freigehaltene Breite für den Sendernamen."
@@ -4072,7 +4072,7 @@ msgid "Configure this tuner using simple or advanced options, or loop it through
 msgstr "Konfiguriere diese Tuner einfach oder erweitert, leite ihn durch zu einem anderen Tuner, kopiere die Konfiguration von einem anderen Tuner oder deaktiviere ihn."
 
 msgid "Configure to show the channel names, picons, or both in the EPG."
-msgstr "Konfiguriere ob PIcon, Sendername oder beides im EPG angezeigt werden soll."
+msgstr "Konfiguriere ob Picon, Sendername oder beides im EPG angezeigt werden soll."
 
 msgid "Configure whether (and for how long) a second infobar will be shown when OK is pressed twice. The second infobar contains additional information about the current channel."
 msgstr "Stelle ein ob (und wie lange) die SecondInfoBar angezeigt werden soll wenn OK zweimal gedrückt wird. Die SecondInfoBar enthält zusätzliche Informationen zum eingestellten Sender. Der Skin muss es unterstützen und bestimmt was angezeigt wird."
@@ -4081,7 +4081,7 @@ msgid "Configure whether or not an rotor position will be displayed on infobar"
 msgstr "Einstellen ob die Rotorposition in InfoBar angezeigt werden soll"
 
 msgid "Configure whether service picons will be shown in number zap."
-msgstr "Konfigurieren ob PIcons bei Senderwahl mit Ziffern gezeigt werden sollen."
+msgstr "Konfigurieren ob Picons bei Senderwahl mit Ziffern gezeigt werden sollen."
 
 msgid "Configure which color format should be used on the SCART output."
 msgstr "Stell ein welches Farbformat an SCART ausgegeben werden soll (CVBS, RGB, YUV, RGB)."
@@ -7987,7 +7987,7 @@ msgid "Install extensions."
 msgstr "Erweiterungen installieren."
 
 msgid "Install lcd picons on"
-msgstr "Installiere LCD PIcon in"
+msgstr "Installiere LCD Picon in"
 
 msgid "Install local extension"
 msgstr "Lokale Erweiterungen installieren"
@@ -10094,7 +10094,7 @@ msgid "On"
 msgstr "An"
 
 msgid "On Screen Display"
-msgstr "VFD/LCD"
+msgstr "OSD"
 
 msgid "On end of movie"
 msgstr "Am Ende eines Films"
@@ -10588,28 +10588,28 @@ msgid "PiPZap"
 msgstr ""
 
 msgid "Picon"
-msgstr "PIcon"
+msgstr "Picon"
 
 msgid "Picon Width"
-msgstr "PIcon Breite"
+msgstr "Picon Breite"
 
 msgid "Picon and Service Name"
-msgstr "PIcon und Sendername"
+msgstr "Picon und Sendername"
 
 msgid "Picon and Service Number"
-msgstr "PIcon und Sendernummer"
+msgstr "Picon und Sendernummer"
 
 msgid "Picon type priority"
-msgstr "PIcon Priorität"
+msgstr "Picon Priorität"
 
 msgid "Picon width"
-msgstr "PIcon Breite"
+msgstr "Picon Breite"
 
 msgid "Picon, Service Number and Service Name"
-msgstr "PIcon, Sendernummer und Sendername"
+msgstr "Picon, Sendernummer und Sendername"
 
 msgid "Picons: Show in channel list"
-msgstr "PIcons: Zeige in Senderliste"
+msgstr "Picons: Zeige in Senderliste"
 
 msgid "Picture in Picture (PIP)"
 msgstr "Bild in Bild (PiP)"
@@ -12463,10 +12463,10 @@ msgid "SWAP manager"
 msgstr "Swap Verwaltung"
 
 msgid "SWAP name:"
-msgstr ""
+msgstr "Swap Name:"
 
 msgid "SWAP size:"
-msgstr "SWAP Größe:"
+msgstr "Swap Größe:"
 
 msgid "Saga"
 msgstr ""
@@ -12718,7 +12718,7 @@ msgid "Screen proportions"
 msgstr "Bild Proportionen"
 
 msgid "Script runner"
-msgstr "Scipte ausführen"
+msgstr "Scripte ausführen"
 
 msgid "Script runner - runs from /usr/script"
 msgstr "Scriptstarter - startet aus /usr/script"
@@ -12823,7 +12823,7 @@ msgid "Select '1.0' for standard committed switches, '1.1' for uncommitted switc
 msgstr "Wähle '1.0' für standard sommited Switche, '1.1' für uncomitted Schwitche und '1.2' für Anlagen die einen Positionierer verwenden."
 
 msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select 'none'. If you are unsure select 'none'."
-msgstr "W#hle 'A' oder 'B' wenn die Anlage es benötigt sonst wähle 'keine'. Wenn Du unsicher bis wähle 'keine'."
+msgstr "Wähle 'A' oder 'B' wenn die Anlage es benötigt sonst wähle 'keine'. Wenn Du unsicher bis wähle 'keine'."
 
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Wähle 'FBC SCR' wenn dieser Tuner ein Unicable Gerät verwendet. Für alle anderen Systeme wähle 'FBC automatisch'."
@@ -12867,7 +12867,7 @@ msgid "Select 'Yes' to remove all plugin configuration data. Selecting this opti
 msgstr "Wähle 'Ja' um alle Plugin-Einstellungen zu löschen die sich im Einstellungsordner von Enigma (/etc/enigma2) befinden. Alle betroffenen Plugins kehren zu ihren Standardeinstellungen zurück. Einige Plugins können auch die Arbeit verweigern."
 
 msgid "Select 'Yes' to remove all settings, tuning data, timers, resume pointers etc. Selecting this option will restore the configuration to the initial settings before any configuration settings were applied. This is the most reliable form of Factory Reset."
-msgstr "W#hle 'Ja' um alle Einstellungen, Senderlisten, Timer, Wiederaufnahmepunkte usw. zu löschen. Dies ist die beste Möglichkeit Werkseinstellungen wiederzuerlangen."
+msgstr "Wähle 'Ja' um alle Einstellungen, Senderlisten, Timer, Wiederaufnahmepunkte usw. zu löschen. Dies ist die beste Möglichkeit Werkseinstellungen wiederzuerlangen."
 
 msgid "Select 'Yes' to remove all timer configuration data. Selecting this option will clear all timers, autotimers and power timers."
 msgstr "Wähle 'Ja' um alle Timer, AutoTimer und PowerTimer zu löschen."
@@ -12968,7 +12968,7 @@ msgstr "Wähle Aktion"
 
 #, python-format
 msgid "Select action for timer %s:"
-msgstr "Wäjle Aktion für Timer %s:"
+msgstr "Wähle Aktion für Timer %s:"
 
 msgid "Select all"
 msgstr "Alle auswählen"
@@ -13327,13 +13327,13 @@ msgid "Service Name"
 msgstr "Sendername"
 
 msgid "Service Number and Picon"
-msgstr "Sendernummer und PIcon"
+msgstr "Sendernummer und Picon"
 
 msgid "Service Number and Service Name"
 msgstr "Sendernummer und Sendername"
 
 msgid "Service Number, Picon and Service Name"
-msgstr "Sendernummer, PIcon und Sendername"
+msgstr "Sendernummer, Picon und Sendername"
 
 msgid "Service Title mode"
 msgstr "Sendertitel Modus"
@@ -13517,7 +13517,7 @@ msgid "Set the jump-size of the seekbar."
 msgstr "Wähle die Sprungweite für die Seekbar."
 
 msgid "Set the lookup priority when searching for picons. If all your picons are png set to 'png only' to save on lookup time."
-msgstr "Setze Priorität der Suche nach PIcons. Wenn alle PIcons PNG sind wähle 'png only' um Zeit bei der Suche zu sparen."
+msgstr "Setze Priorität der Suche nach Picons. Wenn alle Picons PNG sind wähle 'png only' um Zeit bei der Suche zu sparen."
 
 msgid "Set the name the recording will get."
 msgstr "Setze den Namen den die Aufnahme bekommen soll."
@@ -13898,19 +13898,19 @@ msgid "Show packages to be updated"
 msgstr "Zeige Pakete mit Update"
 
 msgid "Show picon background color"
-msgstr "Zeige Hintergrundfarbe von PIcon"
+msgstr "Zeige Hintergrundfarbe von Picon"
 
 msgid "Show picons during channel number input"
-msgstr "Zeige PIcon während der Eingabe der Sendernummer"
+msgstr "Zeige Picon während der Eingabe der Sendernummer"
 
 msgid "Show picons in service list"
-msgstr "Zeige PIcon in der Senderliste"
+msgstr "Zeige Picon in der Senderliste"
 
 msgid "Show picons in the movie list."
-msgstr "Zeige PIcon in der Filmliste."
+msgstr "Zeige Picon in der Filmliste."
 
 msgid "Show picons in timer list"
-msgstr "Zeige PIcon in der Senderliste"
+msgstr "Zeige Picon in der Senderliste"
 
 msgid "Show positioner movement"
 msgstr "Zeige Rotorbewegung"
@@ -14924,7 +14924,7 @@ msgid "Swap SNR in '%' with SNR in 'db'"
 msgstr "Wechsel SNR in '%' gegen SNR in 'dB'"
 
 msgid "Swap manager"
-msgstr "Wechsel Manager"
+msgstr "Swap Verwaltung"
 
 msgid "Swap services"
 msgstr "Sender tauschen"
@@ -15568,7 +15568,7 @@ msgid "This option allows you choose how to display the remaining/elapsed time f
 msgstr "Diese Option erlaubt dir zu wählen ob verbleibende/verstrichene Zeit oder beides für Transponder angezeigt wird."
 
 msgid "This option allows you choose the background color of transparent picons."
-msgstr "Diese Option erlaubt es die Hintergrundfarbe von transparenten PIcons festzulegen."
+msgstr "Diese Option erlaubt es die Hintergrundfarbe von transparenten Picons festzulegen."
 
 msgid "This option allows you enable smoothing filter to control the dithering process."
 msgstr "Diese Option erlaubt dir einen Glättefilter für das Dithering einzuschalten."
@@ -16551,13 +16551,13 @@ msgid "Use original teletext position"
 msgstr "Benutze originale Position der Videotext Untertitel"
 
 msgid "Use piconlcd directory for picons on color LCD"
-msgstr "Benutze picon_lcd Verzeichnis für PIcon auf Front-Display"
+msgstr "Benutze picon_lcd Verzeichnis für Picon auf Front-Display"
 
 msgid "Use power measurement"
 msgstr "Stromaufnahme messen"
 
 msgid "Use separate Picon pack for Front Display"
-msgstr "Benutze separate PIcon für Front-Display*"
+msgstr "Benutze separaten Picon-Satz für Front-Display*"
 
 msgid "Use skin default"
 msgstr "Benutze Skin Standards"

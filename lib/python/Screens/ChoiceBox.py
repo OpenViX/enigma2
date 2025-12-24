@@ -188,14 +188,14 @@ class ChoiceBox(Screen, HelpableScreen):
 		if self.list:
 			while True:
 				self["list"].up()
-				if self["list"].getCurrent()[0][0] != ChoiceList.SPACER or self["list"].getSelectionIndex() == 0:  # if we didn't land on a spacer stop loop
+				if self["list"].getCurrent()[0][0] != ChoiceList.SPACER or self["list"].getSelectedIndex() == 0:  # if we didn't land on a spacer stop loop
 					break
 
 	def down(self):
 		if self.list:
 			while True:
 				self["list"].down()
-				if self["list"].getCurrent()[0][0] != ChoiceList.SPACER or self["list"].getSelectionIndex() == len(self.list) - 1:  # if we didn't land on a spacer stop loop
+				if self["list"].getCurrent()[0][0] != ChoiceList.SPACER or self["list"].getSelectedIndex() == len(self.list) - 1:  # if we didn't land on a spacer stop loop
 					break
 
 	# runs a number shortcut
@@ -248,7 +248,7 @@ class ChoiceBox(Screen, HelpableScreen):
 		self.goKey("blue")
 
 	def updateSummary(self):
-		curpos = self["list"].getSelectionIndex()
+		curpos = self["list"].getSelectedIndex()
 		self.displayDescription(curpos)
 		summarytext = ""
 		for i, entry in enumerate(self.summarylist):
@@ -295,7 +295,7 @@ class ChoiceBox(Screen, HelpableScreen):
 
 	def additionalMove(self, direction):
 		if len(self.list) > 1:
-			currentIndex = self["list"].getSelectionIndex()
+			currentIndex = self["list"].getSelectedIndex()
 			swapIndex = (currentIndex + direction) % len(self.list)
 			if currentIndex == 0 and swapIndex != 1:
 				self.list = self.list[1:] + [self.list[0]]

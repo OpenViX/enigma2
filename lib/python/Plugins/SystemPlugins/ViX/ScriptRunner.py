@@ -41,6 +41,7 @@ class VIXScriptRunner(IpkgInstaller):
 				pkg = parts[0]
 				if pkg.find(".sh") >= 0:
 					list.append(pkg)
+			list.sort()  # sort the script list
 		IpkgInstaller.__init__(self, session, list)
 		self.setTitle(_("Script runner - runs from /usr/script"))
 

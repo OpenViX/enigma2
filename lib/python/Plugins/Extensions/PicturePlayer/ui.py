@@ -106,7 +106,7 @@ class picshow(Screen):
 			self["key_yellow"].setText("")
 
 	def KeyGreen(self):
-		self.session.openWithCallback(self.callbackView, Pic_Thumb, self.filelist.getFileList(), self.filelist.getSelectionIndex(), self.filelist.getCurrentDirectory())
+		self.session.openWithCallback(self.callbackView, Pic_Thumb, self.filelist.getFileList(), self.filelist.getSelectedIndex(), self.filelist.getCurrentDirectory())
 
 	def KeyYellow(self):
 		if not self.filelist.canDescent():
@@ -119,7 +119,7 @@ class picshow(Screen):
 		if self.filelist.canDescent():
 			self.filelist.descent()
 		else:
-			self.session.openWithCallback(self.callbackView, Pic_Full_View, self.filelist.getFileList(), self.filelist.getSelectionIndex(), self.filelist.getCurrentDirectory())
+			self.session.openWithCallback(self.callbackView, Pic_Full_View, self.filelist.getFileList(), self.filelist.getSelectedIndex(), self.filelist.getCurrentDirectory())
 
 	def setConf(self, retval=None):
 		self.setTitle(_("Picture player"))

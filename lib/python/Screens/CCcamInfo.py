@@ -1337,7 +1337,7 @@ class CCcamInfoRemoteBoxMenu(Screen):
 	def profileSelected(self):
 		self.saveConfigs()
 		if len(self.list) > 0:
-			idx = self["list"].getSelectionIndex()
+			idx = self["list"].getSelectedIndex()
 			cur = self.profiles[idx]
 			if cur.ip == "":
 				url = None
@@ -1350,7 +1350,7 @@ class CCcamInfoRemoteBoxMenu(Screen):
 
 	def delete(self):
 		if len(self.list) > 0:
-			idx = self["list"].getSelectionIndex()
+			idx = self["list"].getSelectedIndex()
 			del self.list[idx]
 			del self.profiles[idx]
 			self["list"].setList(self.list)
@@ -1379,12 +1379,12 @@ class CCcamInfoRemoteBoxMenu(Screen):
 
 	def edit(self):
 		if len(self.list) > 0:
-			idx = self["list"].getSelectionIndex()
+			idx = self["list"].getSelectedIndex()
 			self.session.openWithCallback(self.editCallback, CCcamInfoConfigMenu, self.profiles[idx])
 
 	def editCallback(self, callback):
 		if callback:
-			idx = self["list"].getSelectionIndex()
+			idx = self["list"].getSelectedIndex()
 			del self.list[idx]
 			del self.profiles[idx]
 			self.list.append(callback.name)
