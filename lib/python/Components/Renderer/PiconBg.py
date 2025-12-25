@@ -1,5 +1,5 @@
 from Components.Renderer.Renderer import Renderer
-from enigma import ePixmap
+from enigma import ePixmap, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_HALIGN_CENTER, BT_VALIGN_CENTER
 from Components.config import config
 from Tools.Directories import SCOPE_CURRENT_SKIN, resolveFilename
 
@@ -21,7 +21,7 @@ class PiconBg(Renderer):
 				pngname = resolveFilename(SCOPE_CURRENT_SKIN, "piconbg/" + config.usage.show_picon_bkgrn.value + ".png")
 				if self.pngname != pngname:
 					if pngname:
-						self.instance.setScale(1)
+						self.instance.setPixmapScaleFlags(BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER)
 						self.instance.setPixmapFromFile(pngname)
 						self.instance.show()
 					else:
