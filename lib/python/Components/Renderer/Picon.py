@@ -1,7 +1,7 @@
 from os import listdir, path as ospath
 from re import sub
 
-from enigma import ePixmap, eServiceReference
+from enigma import ePixmap, eServiceReference, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_HALIGN_CENTER, BT_VALIGN_CENTER
 
 from Components.config import config
 from Components.Harddisk import harddiskmanager
@@ -138,7 +138,7 @@ class Picon(Renderer):
 					pngname = self.defaultpngname
 				if self.pngname != pngname:
 					if pngname:
-						self.instance.setScale(1)
+						self.instance.setPixmapScaleFlags(BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER)
 						self.instance.setPixmapFromFile(pngname)
 						self.instance.show()
 					else:
