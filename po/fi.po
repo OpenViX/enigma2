@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-18 20:34+0200\n"
-"PO-Revision-Date: 2025-12-19 08:20+0200\n"
+"POT-Creation-Date: 2025-12-25 21:17+0200\n"
+"PO-Revision-Date: 2025-12-30 07:34+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2625,9 +2625,6 @@ msgstr "Taustan väri"
 msgid "Backing up eMMC partitions for recovery image ..."
 msgstr "eMMC-osioiden varmuuskopioiminen palautusimagea varten ..."
 
-msgid "Backing up eMMC partitions for recovery image.."
-msgstr "eMMC-osioiden varmuuskopioiminen palautusimagea varten.."
-
 msgid "Backing up files..."
 msgstr "Varmuuskopioidaan tiedostoja..."
 
@@ -4842,7 +4839,7 @@ msgstr "Oletushakemisto tallennuksille"
 
 #, python-format
 msgid "Default port is '%d'. Change if required."
-msgstr "Oletusportti on %d'. Vaihda tarvittaessa."
+msgstr "Oletusportti on '%d'. Vaihda tarvittaessa."
 
 msgid "Default recording type"
 msgstr "Oletus tallennustyyppi"
@@ -5906,7 +5903,7 @@ msgid "Enable to highlight events that are currently in progress."
 msgstr "Salli juuri menossa olevien ohjelmien korostus."
 
 msgid "Enable usage of tuners from another Enigma2 receiver on the local network. Remote tuners will be used when tuners are not available on this receiver. (No free tuner or service type is not available.)"
-msgstr "Käytä etävastaanottimen virittimiä kun paikallisia ei ole vapaana."
+msgstr "Ota käyttöön paikallisverkossa olevan toisen Enigma2-vastaanottimen virittimien käyttö. Etävirittimiä käytetään, kun virittimiä ei ole saatavilla tässä vastaanottimessa. (Vapaita ​​virittimiä tai kanavatyyppiä ei ole saatavilla.)"
 
 msgid "Enabled"
 msgstr "Käytössä"
@@ -6024,7 +6021,7 @@ msgid "Enter the URL to stream from."
 msgstr "Anna URL-osoite, josta striimaat."
 
 msgid "Enter the URL/IP of the fallback remote receiver, e.g. '192.168.0.1'. The other details such as 'http://' and port number will be filled in automatically when you select save."
-msgstr "Määritä etävastaanottimen URL/IP-osoite, esim. '192.168.0.1'. http:// ja porttia ei tarvitse syöttää, ne tulevat automaattisesti tallentaessa."
+msgstr "Anna etävastaanottimen URL-osoite/IP-osoite, esim. '192.168.0.1'. Muut tiedot, kuten 'http://' ja porttinumero, täytetään automaattisesti, kun valitset tallenna."
 
 msgid "Enter the domain of the host receiver. Do not include 'http://' or port number."
 msgstr "Anna isäntälaitteen toimialue. Älä syötä 'http://' tai portin numeroa."
@@ -15179,7 +15176,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 01.11.2025 ---\n"
+"--- 30.12.2025 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
