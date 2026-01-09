@@ -5,7 +5,8 @@ SUBDIRS = PositionerSetup Satfinder \
 	DefaultServicesScanner CommonInterfaceAssignment \
 	VideoClippingSetup \
 	VideoEnhancement WirelessLan ViX \
-	SABnzbdSetup FastScan SatelliteEquipmentControl DiseqcTester
+	SABnzbdSetup FastScan SatelliteEquipmentControl DiseqcTester \
+	SkinConfig
 
 if VUSOLO2
 SUBDIRS += CableScan
