@@ -7,7 +7,7 @@ from Screens.Standby import TryQuitMainloop
 from Screens.MessageBox import MessageBox
 from skin import loadSkin
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import resolveFilename, SCOPE_GUISKIN
+from Tools.Directories import fileExists, resolveFilename, SCOPE_GUISKIN
 from Components.config import config, ConfigYesNo, ConfigSelection
 
 import threading
@@ -66,8 +66,7 @@ def xml_to_dict(elem):
 
 
 def applyCustomLayouts():
-	print(current_skin_config)
-	root = current_skin_config["config"]
+	root = current_skin_config.get("config", {})
 	color_scheme = root.get("color_scheme", {}).get("value", None)
 	if color_scheme:
 		loadSkin(filename=color_scheme, scope=SCOPE_GUISKIN)
@@ -94,7 +93,7 @@ def find_screen_by_name(config, name):
 
 class SkinSetupConfig(Setup):
 	def __init__(self, session):
-		root = current_skin_config["config"]
+		root = current_skin_config.get("config", {})
 		color_scheme = root.get("color_scheme", {})
 		colors = file_tree.get("Colors", {})
 		color_scheme_choices = [("off", _("off"))]
@@ -226,12 +225,13 @@ def loadConfigToDict():
 	global current_skin_config
 	skinname = ospath.dirname(config.skin.primary_skin.value)
 	skin_conf = f"/etc/enigma2/SkinConfig/{skinname}_config.xml"
+	if not fileExists(skin_conf):
+		return
 	# Load XML
 	conf_xml = parse(skin_conf)
 	root = conf_xml.getroot()
 
 	current_skin_config = {root.tag: xml_to_dict(root)}
-	print(current_skin_config)
 
 
 def MenuCallback(close, answer=None):
