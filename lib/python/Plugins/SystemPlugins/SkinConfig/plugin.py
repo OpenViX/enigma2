@@ -1,6 +1,5 @@
 from os import path as ospath, fsync, rename, makedirs
 from pathlib import Path
-from xml.etree.cElementTree import parse
 from Plugins.Plugin import PluginDescriptor
 from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
