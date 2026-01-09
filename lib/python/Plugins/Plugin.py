@@ -79,6 +79,8 @@ class PluginDescriptor():
 	# allow plugin to assign to hotkey only
 	WHERE_BUTTONSETUP = 22
 
+	WHERE_SKINFASTRELOAD = 23
+
 	def __init__(self, name="Plugin", where=None, description="", icon=None, fnc=None, wakeupfnc=None, needsRestart=None, internal=False, weight=0):
 		if not where:
 			where = []
