@@ -369,6 +369,12 @@ def runScreenTest():
 			if result[0] == "reloadskin":
 				InitSkins(False)
 				session.openWithCallback(boundFunction(runNextScreen, session, []), InfoBar.InfoBar)
+				for p in plugins.getPlugins(PluginDescriptor.WHERE_SKINFASTRELOAD):
+					try:
+						p(reason=0)
+					except Exception:
+						print("[StartEnigma] Plugin raised exception at WHERE_SKINFASTRELOAD")
+						print_exc()
 				if result[1]:
 					session.deleteDialog(result[1])
 			else:
