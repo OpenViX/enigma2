@@ -7,7 +7,7 @@ from Screens.Standby import TryQuitMainloop
 from Screens.MessageBox import MessageBox
 from skin import loadSkin
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import fileExists, resolveFilename, SCOPE_GUISKIN
+from Tools.Directories import fileReadXML, resolveFilename, SCOPE_GUISKIN
 from Components.config import config, ConfigYesNo, ConfigSelection
 
 import threading
@@ -225,13 +225,8 @@ def loadConfigToDict():
 	global current_skin_config
 	skinname = ospath.dirname(config.skin.primary_skin.value)
 	skin_conf = f"/etc/enigma2/SkinConfig/{skinname}_config.xml"
-	if not fileExists(skin_conf):
-		return
-	# Load XML
-	conf_xml = parse(skin_conf)
-	root = conf_xml.getroot()
-
-	current_skin_config = {root.tag: xml_to_dict(root)}
+	if root := fileReadXML(skin_conf):
+		current_skin_config = {root.tag: xml_to_dict(root)}
 
 
 def MenuCallback(close, answer=None):
