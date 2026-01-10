@@ -173,11 +173,6 @@ class SkinSetupConfig(Setup):
 		self.showRestartMessage(_("To save and apply the selected skin configuration the GUI needs to restart. Would you like to save the selection and restart the GUI now?"))
 
 	def showRestartMessage(self, msg):
-			# Disable Fast skin reload for Skin settings due to that it not really works for color scheme variations
-			# if config.usage.fast_skin_reload.value:
-			# 	self.writeSkinConfig()
-			# 	self.session.reloadSkin()
-			# else:
 			restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, msg, MessageBox.TYPE_YESNO)
 			restartBox.setTitle(_("Skin Configurator: Restart GUI"))
 
@@ -191,12 +186,6 @@ class SkinSetupConfig(Setup):
 def sessionstart(reason, session, **kwargs):
 	if not reason:
 		applyCustomLayouts()
-
-
-def skinfastreload(reason, **kwargs):
-	loadFileSystemToDict()
-	loadConfigToDict()
-	applyCustomLayouts()
 
 
 def loadFileSystemToDict():
@@ -240,7 +229,6 @@ def SkinSetupMenu(session, close=None, **kwargs):
 def Plugins(path, **kwargs):
 	plugin = [
 		PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=sessionstart, needsRestart=False),
-		PluginDescriptor(where=PluginDescriptor.WHERE_SKINFASTRELOAD, fnc=skinfastreload, needsRestart=False),
 		PluginDescriptor(name=PROGRAM_NAME, description=PROGRAM_DESCRIPTION, where=PluginDescriptor.WHERE_MENU, fnc=startFromSkinMenu)
 	]
 
