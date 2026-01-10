@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-09 12:59+0200\n"
-"PO-Revision-Date: 2026-01-09 13:40+0200\n"
+"POT-Creation-Date: 2026-01-10 11:57+0200\n"
+"PO-Revision-Date: 2026-01-10 13:22+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3733,6 +3733,9 @@ msgstr "Kokoelman asetukset"
 msgid "Colombia"
 msgstr "Kolumbia"
 
+msgid "Color Theme"
+msgstr "Väriteema"
+
 msgid "Color format"
 msgstr "Väriformaatti"
 
@@ -4447,7 +4450,7 @@ msgid "Current settings:"
 msgstr "Käytetyt asetukset:"
 
 msgid "Current skin configuration plugin."
-msgstr "Nykyinen Teeman määritys -lisäosa."
+msgstr "Nykyisen teeman konfiguraatio -lisäosa."
 
 msgid "Current status:"
 msgstr "Nykyinen tila:"
@@ -10638,8 +10641,8 @@ msgstr "Pip-kuva"
 msgid "PiPZap"
 msgstr "PiP-kanavanvaihto"
 
-msgid "Pick an option."
-msgstr "Valitse vaihtoehto."
+msgid "Pick an option. After selection is saved GUI should be restarted to accept the changes."
+msgstr "Valitse vaihtoehto. Valinnan tallentamisen jälkeen käyttöliittymä tulee käynnistää uudelleen, jotta muutokset tulevat voimaan."
 
 msgid "Picon"
 msgstr "Kanavalogo"
@@ -11387,9 +11390,6 @@ msgstr "Edellinen"
 
 msgid "Primary DNS"
 msgstr "Ensisijainen DNS"
-
-msgid "Primary Skin Selection"
-msgstr "Ensisijaisen teeman valinta"
 
 msgid "Primetime"
 msgstr "Paras katseluaika - tunnit"
@@ -14243,7 +14243,7 @@ msgid "Skin"
 msgstr "Teema"
 
 msgid "Skin Configuration"
-msgstr "Teeman määritys"
+msgstr "Teeman konfiguraatio"
 
 msgid "Skin Configurator"
 msgstr "Teeman konfiguraattori"
@@ -15194,7 +15194,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 09.01.2026 ---\n"
+"--- 10.01.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -16018,7 +16018,7 @@ msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would 
 msgstr "Tallentaaksesi ja ottaaksesi valitun teeman '%s' käyttöön, pitää käyttöliittymä käynnistää uudelleen. Tallennetaanko ja käynnistetäänkö ?"
 
 msgid "To save and apply the selected skin configuration the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
-msgstr "Valitun teeman kokoonpanon tallentamiseksi ja käyttöönottamiseksi käyttöliittymä on käynnistettävä uudelleen. Haluatko tallentaa valinnan ja käynnistää käyttöliittymän uudelleen nyt?"
+msgstr "Valitun teeman konfiguraation tallentamiseksi ja käyttöönottamiseksi käyttöliittymä on käynnistettävä uudelleen. Haluatko tallentaa valinnan ja käynnistää käyttöliittymän uudelleen nyt?"
 
 msgid "To start a download select YELLOW from Image Manager main screen, then select the distro, and finally which image to download."
 msgstr "Aloita lataus valitsemalla KELTAINEN Imagen hallinnoinnin päänäytöstä, valitse sitten kirjasto ja lopuksi ladattava image."
