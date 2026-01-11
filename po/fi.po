@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-10 11:57+0200\n"
-"PO-Revision-Date: 2026-01-10 13:22+0200\n"
+"PO-Revision-Date: 2026-01-11 10:03+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -10876,13 +10876,13 @@ msgid "Please select a playlist..."
 msgstr "Valitse soittolista..."
 
 msgid "Please select a sub service"
-msgstr "Valitse alipalvelu"
+msgstr "Valitse alikanava"
 
 msgid "Please select a subservice to record..."
-msgstr "Valitse tallennettava alipalvelu..."
+msgstr "Valitse tallennettava alikanava..."
 
 msgid "Please select a subservice..."
-msgstr "Valitse alipalvelu..."
+msgstr "Valitse alikanava..."
 
 msgid "Please select device to use as SWAP file location."
 msgstr "Valitse laite, jota käytetään SWAP-tiedoston tallentamiseen."
@@ -11690,7 +11690,7 @@ msgid "Really delete completed timers?"
 msgstr "Poistetaanko tallennetut ajastukset?"
 
 msgid "Really exit the subservices quickzap?"
-msgstr "Poistu alipalveluiden pikavaihdosta?"
+msgstr "Poistu alikanavien pikavaihdosta?"
 
 msgid "Really reboot into Android Mode?"
 msgstr "Haluatko silti käynnistää uudelleen Android-tilaan?"
@@ -13838,7 +13838,7 @@ msgid "Show autotimer list"
 msgstr "Näytä automaattiajastusluettelo"
 
 msgid "Show available subservices"
-msgstr "Näytä käytettävissä olevat alipalvelut"
+msgstr "Näytä käytettävissä olevat alikanavat"
 
 msgid "Show background behind subtitles"
 msgstr "Näytä tekstityksen tausta"
@@ -14054,10 +14054,10 @@ msgid "Show sub-menu"
 msgstr "Näytä valikko"
 
 msgid "Show subservice selection"
-msgstr "Näytä kanavatyypin kuvakkeet"
+msgstr "Näytä alikanavien valinta"
 
 msgid "Show subservice selection list"
-msgstr "Näytä kanavatyypin valintalista"
+msgstr "Näytä alikanavien valintalista"
 
 msgid "Show subtitle selection"
 msgstr "Tekstitysvalinta"
@@ -14919,10 +14919,10 @@ msgid "Subnet"
 msgstr "Aliverkko"
 
 msgid "Subservice selection"
-msgstr "Alipalveluiden valinnat"
+msgstr "Alikanavien valinta"
 
 msgid "Subservices"
-msgstr "Alipalvelut"
+msgstr "Alikanavat"
 
 msgid "Subtitle"
 msgstr "Tekstitys"
@@ -15088,13 +15088,13 @@ msgid "Switch to filelist"
 msgstr "Vaihda tiedostolistaan"
 
 msgid "Switch to next sub service"
-msgstr "Vaihda seuraavaan alipalveluun"
+msgstr "Vaihda seuraavaan alikanavaan"
 
 msgid "Switch to playlist"
 msgstr "Vaihda soittolistaan"
 
 msgid "Switch to previous sub service"
-msgstr "Vaihda edelliseen alipalveluun"
+msgstr "Vaihda edelliseen alikanavaan"
 
 msgid "Switch to radio mode"
 msgstr "Vaihda Radio-tilaan"
@@ -15194,7 +15194,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 10.01.2026 ---\n"
+"--- 11.01.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -18687,7 +18687,7 @@ msgid "hours"
 msgstr "tuntia"
 
 msgid "if set will display subservices else timers."
-msgstr "Jos asetettu näyttää alipalvelut muutoin ajastimet."
+msgstr "Jos asetettu näyttää alikanavat muutoin ajastimet."
 
 msgid "increase uphop by 1"
 msgstr "Vähennä ylöshyppyä yhdellä"
