@@ -156,17 +156,15 @@ class SkinSetupConfig(Setup):
 		colors = file_tree.get("Colors", {})
 		if colors:
 			configlist.append(("Colors",))
-			configlist.append(("---",))
-			configlist.append(("   " + _("Color Theme"), self.color_scheme, _("Pick an option. After selection is saved GUI should be restarted to accept the changes.")))
+			configlist.append(("     " + _("Color Theme"), self.color_scheme, _("Pick an option. After selection is saved GUI should be restarted to accept the changes.")))
 			has_one = True
 		screens = file_tree.get("Screens", {})
 		if screens:
 			if has_one:
 				configlist.append(("---",))
 			configlist.append(("Screens",))
-			configlist.append(("---",))
 			for key, value in screens.items():
-				configlist.append(("   " + key, getattr(self, f"screen_{key.lower().replace(" ", "_")}"), _("Pick an option. After selection is saved GUI should be restarted to accept the changes.")))
+				configlist.append(("     " + key, getattr(self, f"screen_{key.lower().replace(" ", "_")}"), _("Pick an option. After selection is saved GUI should be restarted to accept the changes.")))
 		self["config"].list = configlist
 
 	def keySave(self):
