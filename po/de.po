@@ -725,7 +725,7 @@ msgid "%d %b"
 msgstr "%d %b"
 
 msgid "%d %b %Y"
-msgstr "%d %b %y"
+msgstr "%d %b %Y"
 
 #. TRANSLATORS: full date representation dayname daynum monthname year in strftime() format! See 'man strftime'
 #. _("%A %e %B %Y")
@@ -1069,7 +1069,7 @@ msgid "'%s' already exists"
 msgstr "'%s' existiert bereits"
 
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
-msgstr "'Netwerk Peer' erkennt andere Enigma2 Receiver automatisch im lokalen Netzwerk. Du kannst natürlich auch manuell URL oder IP Adresse eingeben."
+msgstr "'Netzwerk Peer' erkennt andere Enigma2 Receiver automatisch im lokalen Netzwerk. Du kannst natürlich auch manuell URL oder IP Adresse eingeben."
 
 msgid ""
 "'Save' changes active language.\n"
@@ -2082,7 +2082,7 @@ msgid "Allows you to show/hide OScam/Ncam Info in extensions -blue button."
 msgstr "OScam-/Ncam-Info in Erweiterungen (blaue Taste) anzeigen."
 
 msgid "Allows you to tag your backups to a box."
-msgstr "Erlaubt es, das Backuo der Einstellungen einer Box zuzuordnen."
+msgstr "Erlaubt es, das Backup der Einstellungen einer Box zuzuordnen."
 
 msgid "Alpha"
 msgstr "Buchstabe"
@@ -5009,7 +5009,7 @@ msgid "Detect next boxes before standby"
 msgstr "Erkenne nahe Boxen vor dem Ausschalten"
 
 msgid "Detect programs split by news bulletins. Choose the maximum duration in minutes to consider as a bulletin, or 0 to disable."
-msgstr "Erkennene Programmteilungen durch Nachrichten. Wähle die maximale Unterbrechungszeit in Minuten oder 0 zum Deaktivieren."
+msgstr "Erkenne Programmteilungen durch Nachrichten. Wähle die maximale Unterbrechungszeit in Minuten oder 0 zum Deaktivieren."
 
 msgid "Detected devices"
 msgstr "Erkannte Geräte"
@@ -5209,7 +5209,7 @@ msgid "Display the EIT now/next event data in infobar."
 msgstr "EIT jetzt/demnächst in Infobar anzeigen."
 
 msgid "Display the virtual keyboard for data entry"
-msgstr "Zeile virtuelle Tastatur zur Dateneingabe"
+msgstr "Zeige virtuelle Tastatur zur Dateneingabe"
 
 msgid "Djibouti"
 msgstr "Djibouti"
@@ -7650,7 +7650,7 @@ msgid "If set to 'yes' the channel list will be shown after switching between ra
 msgstr "Wenn 'Ja' eingestellt ist, wird die Senderliste angezeigt wenn zwischen Fernsehen und Radio gewechselt wird."
 
 msgid "If set to 'yes' the channel number will be displayed in the infobar and some other places (when supported by the skin)."
-msgstr "Wenn 'Ja' eingestellt ist, wird die Sendernummer im Infobar und an anderen Stellen angezeigt (wenn Skin es untertsützt)."
+msgstr "Wenn 'Ja' eingestellt ist, wird die Sendernummer im Infobar und an anderen Stellen angezeigt (wenn Skin es unterstützt)."
 
 msgid "If set to 'yes' the infobar will be displayed when a new event starts."
 msgstr "Wenn 'Ja' eingestellt ist, wird die Infobar angezeigt, wenn ein neues Programm anfängt."
@@ -7722,13 +7722,13 @@ msgstr ""
 "Drücke OK, wenn Du mit dem Ergebnis zufrieden bist."
 
 msgid "Ignore DVB-C namespace sub network"
-msgstr "Ingnoriere DVB-C Subnetzwerk"
+msgstr "Ignoriere DVB-C Subnetzwerk"
 
 msgid "Ignore DVB-S namespace sub network"
-msgstr "Ingnoriere DVB-S Subnetzwerk"
+msgstr "Ignoriere DVB-S Subnetzwerk"
 
 msgid "Ignore DVB-T namespace sub network"
-msgstr "Ingnoriere DVB-T Subnetzwerk"
+msgstr "Ignoriere DVB-T Subnetzwerk"
 
 msgid "Image Manager"
 msgstr "Image Verwaltung"
@@ -11250,7 +11250,7 @@ msgid "Press 'OK' to select from service list"
 msgstr "Drücke OK um einen Sender auszuwählen."
 
 msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."
-msgstr "Drücke Grün (Reboot) zum Wechseln von Images, Gelb (Löschen) zum Löschen eines Images, Blau (Wiederherstellen) zum Widederherstellen aller gelöschten Images."
+msgstr "Drücke Grün (Reboot) zum Wechseln von Images, Gelb (Löschen) zum Löschen eines Images, Blau (Wiederherstellen) zum Wiederherstellen aller gelöschten Images."
 
 msgid "Press GREEN to enable MultiBoot!"
 msgstr "Drücke Grün, um Multiboot zu aktivieren"
@@ -13455,7 +13455,7 @@ msgid "Set fps for external subtitles"
 msgstr "Frequenz für externe Untertitel einstellen"
 
 msgid "Set interface as the default Interface"
-msgstr "Setze Netzwerkadapter als Standardd"
+msgstr "Setze Netzwerkadapter als Standard"
 
 msgid "Set limits"
 msgstr "Grenzwerte setzen"
