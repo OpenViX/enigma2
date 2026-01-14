@@ -55,7 +55,7 @@ def getProcPartitions(partitionList):
 				continue
 			if devMajor == 179 and MODEL in ("dm900", "dm920"):
 				print("[MountManager]2 device='%s', devmajor='%s', devminor='%s'." % (device, devmajor, devminor))
-				if device != "mmcblk0p3":
+				if device not in ("mmcblk0p3", "mmcblk1p1"):
 					continue
 			else:
 				if devMajor == 179:
@@ -77,7 +77,6 @@ def getProcPartitions(partitionList):
 				continue
 			if UBIMB and SystemInfo["canMultiBoot"] and SystemInfo["BootDevice"][0:3] == device[0:3]:  # don,t show boot device
 				partitions.append(device)
-				# print(f"[MountManager]3 device={device} device[0:3]:{device[0:3]}")
 				continue
 			buildPartitionInfo(device, partitionList)
 			partitions.append(device)
@@ -121,7 +120,7 @@ def buildPartitionInfo(partition, partitionList):
 		if "/%s" % bus in physicalDevice:
 			break
 	# print("[MountManager1]bus: %s count : %s" % (bus, count))
-	pngType = busTranslate[count]
+	pngType = busTranslate[count] if partition != "mmcblk0p3" else "mmc"
 	name = ""
 	if not portDescription:
 		name = _("%s: ") % pngType.upper()
@@ -141,6 +140,8 @@ def buildPartitionInfo(partition, partitionList):
 		for line in f.readlines():
 			if line.find(partition) != -1:
 				parts = line.strip().split()
+				if MODEL in ("dm900", "dm920") and partition == "mmcblk0p3" and parts[1] == "/":
+					continue
 				mediamount = parts[1]		# media mount e.g. /media/xxxxx
 				_format = parts[2]		# _format e.g. ext4
 # Also, map any fuseblk fstype to the real file-system behind it...
@@ -192,6 +193,8 @@ def buildPartitionInfo(partition, partitionList):
 			("/media/usb3", "/media/usb3"),
 			("/media/sdcard", "/media/sdcard")
 		]
+		if MODEL in ("dm900", "dm920"):
+			Gmedia.append(("/media/data", "/media/data"))
 		item = NoSave(ConfigSelection(default="/media/%s" % partition, choices=Gmedia))
 		if _format == "Linux":
 			_format = "ext4"

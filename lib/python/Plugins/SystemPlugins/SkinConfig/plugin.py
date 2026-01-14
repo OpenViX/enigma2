@@ -1,13 +1,12 @@
 from os import path as ospath, fsync, rename, makedirs
 from pathlib import Path
-from xml.etree.cElementTree import parse
 from Plugins.Plugin import PluginDescriptor
 from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
 from Screens.MessageBox import MessageBox
 from skin import loadSkin
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import resolveFilename, SCOPE_GUISKIN
+from Tools.Directories import fileReadXML, resolveFilename, SCOPE_GUISKIN
 from Components.config import config, ConfigYesNo, ConfigSelection
 
 import threading
@@ -66,8 +65,7 @@ def xml_to_dict(elem):
 
 
 def applyCustomLayouts():
-	print(current_skin_config)
-	root = current_skin_config["config"]
+	root = current_skin_config.get("config", {})
 	color_scheme = root.get("color_scheme", {}).get("value", None)
 	if color_scheme:
 		loadSkin(filename=color_scheme, scope=SCOPE_GUISKIN)
@@ -94,7 +92,7 @@ def find_screen_by_name(config, name):
 
 class SkinSetupConfig(Setup):
 	def __init__(self, session):
-		root = current_skin_config["config"]
+		root = current_skin_config.get("config", {})
 		color_scheme = root.get("color_scheme", {})
 		colors = file_tree.get("Colors", {})
 		color_scheme_choices = [("off", _("off"))]
@@ -158,28 +156,21 @@ class SkinSetupConfig(Setup):
 		colors = file_tree.get("Colors", {})
 		if colors:
 			configlist.append(("Colors",))
-			configlist.append(("---",))
-			configlist.append(("Color Gamma", self.color_scheme, _("Pick an option.")))
+			configlist.append(("     " + _("Color Theme"), self.color_scheme, _("Pick an option. After selection is saved GUI should be restarted to accept the changes.")))
 			has_one = True
 		screens = file_tree.get("Screens", {})
 		if screens:
 			if has_one:
 				configlist.append(("---",))
 			configlist.append(("Screens",))
-			configlist.append(("---",))
 			for key, value in screens.items():
-				configlist.append((key, getattr(self, f"screen_{key.lower().replace(" ", "_")}"), _("Pick an option.")))
+				configlist.append(("     " + key, getattr(self, f"screen_{key.lower().replace(" ", "_")}"), _("Pick an option. After selection is saved GUI should be restarted to accept the changes.")))
 		self["config"].list = configlist
 
 	def keySave(self):
 		self.showRestartMessage(_("To save and apply the selected skin configuration the GUI needs to restart. Would you like to save the selection and restart the GUI now?"))
 
 	def showRestartMessage(self, msg):
-			# Disable Fast skin reload for Skin settings due to that it not really works for color scheme variations
-			# if config.usage.fast_skin_reload.value:
-			# 	self.writeSkinConfig()
-			# 	self.session.reloadSkin()
-			# else:
 			restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, msg, MessageBox.TYPE_YESNO)
 			restartBox.setTitle(_("Skin Configurator: Restart GUI"))
 
@@ -193,12 +184,6 @@ class SkinSetupConfig(Setup):
 def sessionstart(reason, session, **kwargs):
 	if not reason:
 		applyCustomLayouts()
-
-
-def skinfastreload(reason, **kwargs):
-	loadFileSystemToDict()
-	loadConfigToDict()
-	applyCustomLayouts()
 
 
 def loadFileSystemToDict():
@@ -226,12 +211,8 @@ def loadConfigToDict():
 	global current_skin_config
 	skinname = ospath.dirname(config.skin.primary_skin.value)
 	skin_conf = f"/etc/enigma2/SkinConfig/{skinname}_config.xml"
-	# Load XML
-	conf_xml = parse(skin_conf)
-	root = conf_xml.getroot()
-
-	current_skin_config = {root.tag: xml_to_dict(root)}
-	print(current_skin_config)
+	if root := fileReadXML(skin_conf):
+		current_skin_config = {root.tag: xml_to_dict(root)}
 
 
 def MenuCallback(close, answer=None):
@@ -246,7 +227,6 @@ def SkinSetupMenu(session, close=None, **kwargs):
 def Plugins(path, **kwargs):
 	plugin = [
 		PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=sessionstart, needsRestart=False),
-		PluginDescriptor(where=PluginDescriptor.WHERE_SKINFASTRELOAD, fnc=skinfastreload, needsRestart=False),
 		PluginDescriptor(name=PROGRAM_NAME, description=PROGRAM_DESCRIPTION, where=PluginDescriptor.WHERE_MENU, fnc=startFromSkinMenu)
 	]
 
