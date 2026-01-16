@@ -282,6 +282,10 @@ class VIXSoftcamManager(Screen):
 						self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				elif selcam.lower().startswith("scam"):
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
+				elif selcam.lower().startswith("gbox"):
+					if not path.exists("/var/keys/gbox.cfg"):
+						self.session.open(MessageBox, _("No config files found, please setup gbox first\nin /usr/keys."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
+					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
 				else:
 					self.session.open(MessageBox, _("Found non-standard softcam, trying to start, this may fail."), MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 					self.session.openWithCallback(self.showActivecam, VIXStartCam, self.sel[0])
