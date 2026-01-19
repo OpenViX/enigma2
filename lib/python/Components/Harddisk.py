@@ -32,6 +32,8 @@ blacklistedDisks = [
 	259  # MMC block devices (/dev/mmcblk0=0, /dev/mmcblk0p1=1, /dev/mmcblk1=8)
 ]
 
+dm9x0Minor = [0, 8]  # dm9x0 devMinor values for mmcblk0p3 (without and with sd card)
+
 # List of Linux major device numbers that represent optical drives.
 #
 opticalDisks = [
@@ -220,14 +222,14 @@ class Harddisk:
 		return busName
 
 	def port(self):
-		print(f"[Harddisk][port] physicalDevice:{self.phys_path}")
-		print(f"[Harddisk][port] list(getDeviceDB().items() {list(getDeviceDB().items())}")
+		# print(f"[Harddisk][port] physicalDevice:{self.phys_path}")
+		# print(f"[Harddisk][port] list(getDeviceDB().items() {list(getDeviceDB().items())}")
 		portDescription = ""
 		for physdevprefix, pdescription in list(getDeviceDB().items()):
-			print(f"[Harddisk][port] physdevprefix:{physdevprefix} pdescription:{pdescription}")
+			# print(f"[Harddisk][port] physdevprefix:{physdevprefix} pdescription:{pdescription}")
 			if self.phys_path.replace("/sys", "").startswith(physdevprefix):
 				portDescription = _(pdescription)
-		print(f"[Harddisk][bus] portDescription:{portDescription}")
+		# print(f"[Harddisk][port] portDescription:{portDescription}")
 		return portDescription
 
 	def diskSize(self):
@@ -786,7 +788,9 @@ class HarddiskManager:
 			# print(f"[Harddisk][enumerateBlockDevices]  boxModel:{MODEL} device:{device} devMajor = '{devMajor}', devMinor = '{devMinor}'")
 			# if devMajor == 179 and MODEL in ("dm900", "dm920") and not SystemInfo["HasChkrootMultiboot"]:
 			if devMajor == 179 and MODEL in ("dm900", "dm920"):
-				if devMinor != 0:
+				if devMinor not in dm9x0Minor:  # mmcblk0 is 0 if no SD card else 8
+					continue
+				if len(device) > 7:  # only want mmcblk0
 					continue
 			else:
 				if devMajor == 179 and not SystemInfo["HasSDnomount"]:		# Lets handle Zgemma SD card mounts - uses SystemInfo to determine SDcard status
@@ -846,17 +850,24 @@ class HarddiskManager:
 								continue
 							description = self.getUserfriendlyDeviceName(partition, physicalDevice)
 							print(f"[Harddisk][enumerateBlockDevices]### Found partition '{partition}', description='{description}', device='{physicalDevice}' mountpoint={self.getMountpoint(partition)}.")
-							if self.getMountpoint(partition) == "/media/hdd/" and partition.startswith("sd") or partition.startswith("mmcblk0"):
+							if self.getMountpoint(partition) == "/media/hdd/" and partition.startswith("sd") or partition.startswith("mmcblk0"):  # mmcblk0 used in MultiBootSelector
 								SystemInfo["MTDBLACK"] = partition
 								print(f"[Harddisk][enumerateBlockDevices]### MTDBLACK:{SystemInfo['MTDBLACK']}")
-							if MODEL in ("dm900", "dm920") and partition == "mmcblk0p3" and self.getMountpoint(partition) is None:
+							if MODEL in ("dm900", "dm920") and partition == "mmcblk0p3" and (self.getMountpoint(partition) is None or self.getMountpoint(partition) == "/"):
+								foundMount = False
 								mountpoint = "/media/data/"
 								newFstab = fileReadLines("/etc/fstab")
-								newFstab.append("/dev/mmcblk0p3 /media/data ext4 rw, relatime,data=ordered 0 0")
-								fileWriteLines("/etc/fstab", newFstab)
-								if not exists(mountpoint):
-									mkdir(mountpoint, 0o755)
-								self.console.ePopen("/bin/mount -a")
+								for mount in newFstab:
+									if mount.startswith("/dev/mmcblk0p3"):
+										print(f"[Harddisk][enumerateBlockDevices]### mmcblk0p3 Mountpointfound in fstab")
+										foundMount = True
+										break
+								if not foundMount:
+									newFstab.append("/dev/mmcblk0p3 /media/data ext4 rw, relatime,data=ordered 0 0")
+									fileWriteLines("/etc/fstab", newFstab)
+									if not exists(mountpoint):
+										mkdir(mountpoint, 0o755)
+									self.console.ePopen("/bin/mount -a")
 								part = Partition(mountpoint, description=description, force_mounted=True, device=partition)
 							else:
 								part = Partition(mountpoint=self.getMountpoint(partition, skiproot=True), description=description, force_mounted=True, device=partition)

@@ -184,6 +184,7 @@ def GetImagelist(Recovery=None):
 	tmp.dir = tempfile.mkdtemp(prefix="GetImagelist")
 	tmpname = tmp.dir
 	from Components.config import config		# here to prevent boot loop
+	slotRoot = ""
 	for slot in sorted(list(SystemInfo["canMultiBoot"].keys())):
 		if slot == 0:
 			if UBIMB:
@@ -199,11 +200,16 @@ def GetImagelist(Recovery=None):
 		Imagelist[slot] = {"imagename": _("Empty slot")}
 		imagedir = "/"
 		if SystemInfo["MultiBootSlot"] != slot or SystemInfo["HasHiSi"]:
-			if SystemInfo["HasMultibootMTD"]:
-				Console(binary=True).ePopen(f"mount -t ubifs {SystemInfo['canMultiBoot'][slot]['root']} {tmpname}")
-			else:
-				Console(binary=True).ePopen(f"mount {SystemInfo['canMultiBoot'][slot]['root']} {tmpname}")
+			print(f"[multiboot][GetImagelist] SystemInfo['canMultiBoot'][slot]['root']:{SystemInfo['canMultiBoot'][slot]['root']}")
+			if SystemInfo['canMultiBoot'][slot]['root'] != slotRoot:
+				print(f"[multiboot][GetImagelist] slotRoot]:{slotRoot}")
+				slotRoot = SystemInfo['canMultiBoot'][slot]['root']
+				if SystemInfo["HasMultibootMTD"]:
+					Console(binary=True).ePopen(f"mount -t ubifs {SystemInfo['canMultiBoot'][slot]['root']} {tmpname}")
+				else:
+					Console(binary=True).ePopen(f"mount {SystemInfo['canMultiBoot'][slot]['root']} {tmpname}")
 			imagedir = sep.join([_f for _f in [tmpname, SystemInfo["canMultiBoot"][slot].get("rootsubdir", "")] if _f])
+		print(f"[multiboot][GetImagelist] imagedir:{imagedir}")
 		if path.isfile(path.join(imagedir, "usr/bin/enigma2")):
 			if path.isfile(path.join(imagedir, "usr/lib/enigma.info")):
 				print("[multiboot] [GetImagelist] using enigma.info")
@@ -230,8 +236,7 @@ def GetImagelist(Recovery=None):
 			Imagelist[slot] = {"imagename": _("Deleted image")}
 		else:
 			Imagelist[slot] = {"imagename": _("Empty slot")}
-		if SystemInfo["MultiBootSlot"] != slot:
-			Console(binary=True).ePopen(f"umount {tmpname}")
+	Console(binary=True).ePopen(f"umount {tmpname}")
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
 	return Imagelist

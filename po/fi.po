@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-18 20:34+0200\n"
-"PO-Revision-Date: 2025-12-19 08:20+0200\n"
+"POT-Creation-Date: 2026-01-16 17:54+0200\n"
+"PO-Revision-Date: 2026-01-17 08:23+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -1070,7 +1070,7 @@ msgid "'%s' already exists"
 msgstr "Hakemisto %s on jo olemassa"
 
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
-msgstr "'Verkkoympäristösi' havaitsee automaattisesti toiset Enigma2-laitteet lähiverkossasi. Voit myös syöttää osoitteen tai IP:n käsin."
+msgstr "'Vertaiskone' havaitsee automaattisesti toiset Enigma2-laitteet lähiverkossasi. Voit myös syöttää URL:n tai IP:n käsin."
 
 msgid ""
 "'Save' changes active language.\n"
@@ -2625,9 +2625,6 @@ msgstr "Taustan väri"
 msgid "Backing up eMMC partitions for recovery image ..."
 msgstr "eMMC-osioiden varmuuskopioiminen palautusimagea varten ..."
 
-msgid "Backing up eMMC partitions for recovery image.."
-msgstr "eMMC-osioiden varmuuskopioiminen palautusimagea varten.."
-
 msgid "Backing up files..."
 msgstr "Varmuuskopioidaan tiedostoja..."
 
@@ -3736,6 +3733,9 @@ msgstr "Kokoelman asetukset"
 msgid "Colombia"
 msgstr "Kolumbia"
 
+msgid "Color Theme"
+msgstr "Väriteema"
+
 msgid "Color format"
 msgstr "Väriformaatti"
 
@@ -4449,6 +4449,9 @@ msgstr "Moottorin suuntaus: "
 msgid "Current settings:"
 msgstr "Käytetyt asetukset:"
 
+msgid "Current skin configuration plugin."
+msgstr "Nykyisen teeman konfiguraatio -lisäosa."
+
 msgid "Current status:"
 msgstr "Nykyinen tila:"
 
@@ -4842,7 +4845,7 @@ msgstr "Oletushakemisto tallennuksille"
 
 #, python-format
 msgid "Default port is '%d'. Change if required."
-msgstr "Oletusportti on %d'. Vaihda tarvittaessa."
+msgstr "Oletusportti on '%d'. Vaihda tarvittaessa."
 
 msgid "Default recording type"
 msgstr "Oletus tallennustyyppi"
@@ -5906,7 +5909,7 @@ msgid "Enable to highlight events that are currently in progress."
 msgstr "Salli juuri menossa olevien ohjelmien korostus."
 
 msgid "Enable usage of tuners from another Enigma2 receiver on the local network. Remote tuners will be used when tuners are not available on this receiver. (No free tuner or service type is not available.)"
-msgstr "Käytä etävastaanottimen virittimiä kun paikallisia ei ole vapaana."
+msgstr "Ota käyttöön paikallisverkossa olevan toisen Enigma2-vastaanottimen virittimien käyttö. Etävirittimiä käytetään, kun virittimiä ei ole saatavilla tässä vastaanottimessa. (Vapaita ​​virittimiä tai kanavatyyppiä ei ole saatavilla.)"
 
 msgid "Enabled"
 msgstr "Käytössä"
@@ -6024,7 +6027,7 @@ msgid "Enter the URL to stream from."
 msgstr "Anna URL-osoite, josta striimaat."
 
 msgid "Enter the URL/IP of the fallback remote receiver, e.g. '192.168.0.1'. The other details such as 'http://' and port number will be filled in automatically when you select save."
-msgstr "Määritä etävastaanottimen URL/IP-osoite, esim. '192.168.0.1'. http:// ja porttia ei tarvitse syöttää, ne tulevat automaattisesti tallentaessa."
+msgstr "Anna etävastaanottimen URL-osoite/IP-osoite, esim. '192.168.0.1'. Muut tiedot, kuten 'http://' ja porttinumero, täytetään automaattisesti, kun valitset tallenna."
 
 msgid "Enter the domain of the host receiver. Do not include 'http://' or port number."
 msgstr "Anna isäntälaitteen toimialue. Älä syötä 'http://' tai portin numeroa."
@@ -9621,10 +9624,10 @@ msgid "Network name (SSID)"
 msgstr "Verkkonimi (SSID)"
 
 msgid "Network peer"
-msgstr "Verkon palvelin"
+msgstr "Vertaiskone"
 
 msgid "Network peers"
-msgstr "Verkon palvelimet"
+msgstr "Vertaiskoneet"
 
 msgid "Network scan"
 msgstr "Verkkohaku"
@@ -9801,6 +9804,13 @@ msgid ""
 msgstr ""
 "Asetus-tiedostoa ei löytynyt, asenna Oscam-asetukset\n"
 "hakemistoon /etc/tuxbox/config."
+
+msgid ""
+"No config files found, please setup gbox first\n"
+"in /usr/keys."
+msgstr ""
+"Ei löytynyt asetustiedostoja, asenna gbox\n"
+"ensin hakemistoon /usr/keys."
 
 #, python-format
 msgid "No configs for specifies softcam %s."
@@ -10638,6 +10648,9 @@ msgstr "Pip-kuva"
 msgid "PiPZap"
 msgstr "PiP-kanavanvaihto"
 
+msgid "Pick an option. After selection is saved GUI should be restarted to accept the changes."
+msgstr "Valitse vaihtoehto. Valinnan tallentamisen jälkeen käyttöliittymä tulee käynnistää uudelleen, jotta muutokset tulevat voimaan."
+
 msgid "Picon"
 msgstr "Kanavalogo"
 
@@ -10870,13 +10883,13 @@ msgid "Please select a playlist..."
 msgstr "Valitse soittolista..."
 
 msgid "Please select a sub service"
-msgstr "Valitse alipalvelu"
+msgstr "Valitse alikanava"
 
 msgid "Please select a subservice to record..."
-msgstr "Valitse tallennettava alipalvelu..."
+msgstr "Valitse tallennettava alikanava..."
 
 msgid "Please select a subservice..."
-msgstr "Valitse alipalvelu..."
+msgstr "Valitse alikanava..."
 
 msgid "Please select device to use as SWAP file location."
 msgstr "Valitse laite, jota käytetään SWAP-tiedoston tallentamiseen."
@@ -11684,7 +11697,7 @@ msgid "Really delete completed timers?"
 msgstr "Poistetaanko tallennetut ajastukset?"
 
 msgid "Really exit the subservices quickzap?"
-msgstr "Poistu alipalveluiden pikavaihdosta?"
+msgstr "Poistu alikanavien pikavaihdosta?"
 
 msgid "Really reboot into Android Mode?"
 msgstr "Haluatko silti käynnistää uudelleen Android-tilaan?"
@@ -13832,7 +13845,7 @@ msgid "Show autotimer list"
 msgstr "Näytä automaattiajastusluettelo"
 
 msgid "Show available subservices"
-msgstr "Näytä käytettävissä olevat alipalvelut"
+msgstr "Näytä käytettävissä olevat alikanavat"
 
 msgid "Show background behind subtitles"
 msgstr "Näytä tekstityksen tausta"
@@ -14048,10 +14061,10 @@ msgid "Show sub-menu"
 msgstr "Näytä valikko"
 
 msgid "Show subservice selection"
-msgstr "Näytä kanavatyypin kuvakkeet"
+msgstr "Näytä alikanavien valinta"
 
 msgid "Show subservice selection list"
-msgstr "Näytä kanavatyypin valintalista"
+msgstr "Näytä alikanavien valintalista"
 
 msgid "Show subtitle selection"
 msgstr "Tekstitysvalinta"
@@ -14235,6 +14248,15 @@ msgstr "Hiihto"
 
 msgid "Skin"
 msgstr "Teema"
+
+msgid "Skin Configuration"
+msgstr "Teeman konfiguraatio"
+
+msgid "Skin Configurator"
+msgstr "Teeman konfiguraattori"
+
+msgid "Skin Configurator: Restart GUI"
+msgstr "Teeman konfiguraattori: käynnistä käyttöliittymä uudelleen"
 
 msgid "Skin Selection"
 msgstr "Teeman valinta"
@@ -14904,10 +14926,10 @@ msgid "Subnet"
 msgstr "Aliverkko"
 
 msgid "Subservice selection"
-msgstr "Alipalveluiden valinnat"
+msgstr "Alikanavien valinta"
 
 msgid "Subservices"
-msgstr "Alipalvelut"
+msgstr "Alikanavat"
 
 msgid "Subtitle"
 msgstr "Tekstitys"
@@ -15073,13 +15095,13 @@ msgid "Switch to filelist"
 msgstr "Vaihda tiedostolistaan"
 
 msgid "Switch to next sub service"
-msgstr "Vaihda seuraavaan alipalveluun"
+msgstr "Vaihda seuraavaan alikanavaan"
 
 msgid "Switch to playlist"
 msgstr "Vaihda soittolistaan"
 
 msgid "Switch to previous sub service"
-msgstr "Vaihda edelliseen alipalveluun"
+msgstr "Vaihda edelliseen alikanavaan"
 
 msgid "Switch to radio mode"
 msgstr "Vaihda Radio-tilaan"
@@ -15179,7 +15201,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 01.11.2025 ---\n"
+"--- 11.01.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -16001,6 +16023,9 @@ msgstr "Jos haluat tehdä imagen varmuuskopion, valitse Imagen hallinnoinnin pä
 #, python-format
 msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
 msgstr "Tallentaaksesi ja ottaaksesi valitun teeman '%s' käyttöön, pitää käyttöliittymä käynnistää uudelleen. Tallennetaanko ja käynnistetäänkö ?"
+
+msgid "To save and apply the selected skin configuration the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
+msgstr "Valitun teeman konfiguraation tallentamiseksi ja käyttöönottamiseksi käyttöliittymä on käynnistettävä uudelleen. Haluatko tallentaa valinnan ja käynnistää käyttöliittymän uudelleen nyt?"
 
 msgid "To start a download select YELLOW from Image Manager main screen, then select the distro, and finally which image to download."
 msgstr "Aloita lataus valitsemalla KELTAINEN Imagen hallinnoinnin päänäytöstä, valitse sitten kirjasto ja lopuksi ladattava image."
@@ -18669,7 +18694,7 @@ msgid "hours"
 msgstr "tuntia"
 
 msgid "if set will display subservices else timers."
-msgstr "Jos asetettu näyttää alipalvelut muutoin ajastimet."
+msgstr "Jos asetettu näyttää alikanavat muutoin ajastimet."
 
 msgid "increase uphop by 1"
 msgstr "Vähennä ylöshyppyä yhdellä"
