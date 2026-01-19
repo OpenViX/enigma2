@@ -3,7 +3,7 @@ from Components.config import config, configfile
 from Components.Console import Console
 from Components.Pixmap import Pixmap
 from Components.Sources.Boolean import Boolean
-from Components.SystemInfo import BOXTYPE, KERNEL, MTDROOTFS
+from Components.SystemInfo import BOXTYPE, MTDKERNEL, MTDROOTFS
 from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
 from Screens.WizardLanguage import WizardLanguage
@@ -102,8 +102,8 @@ class VuWizard(WizardLanguage, Rc):
 				with open("/STARTUP_3", 'w') as f:
 					f.write(STARTUP_3)
 				cmdlist = []
-				cmdlist.append("dd if=/dev/%s of=/zImage" % KERNEL)					# backup old kernel
-				cmdlist.append("dd if=/usr/bin/kernel_auto.bin of=/dev/%s" % KERNEL)  # create new kernel
+				cmdlist.append("dd if=/dev/%s of=/zImage" % MTDKERNEL)					# backup old kernel
+				cmdlist.append("dd if=/usr/bin/kernel_auto.bin of=/dev/%s" % MTDKERNEL)  # create new kernel
 				cmdlist.append("mv /usr/bin/STARTUP.cpio.gz /STARTUP.cpio.gz")						# copy userroot routine
 				for file in glob.glob("/media/*/vuplus/*/force.update", recursive=True):
 					cmdlist.append("mv %s %s" % (file, file.replace("force.update", "noforce.update")))						# remove Vu force update(Vu+ Zero4k)
