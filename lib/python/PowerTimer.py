@@ -118,8 +118,13 @@ class PowerTimerEntry(TimerEntry):
 			self.real_end = self.end
 
 		# Delay the timer by the back-off time
+		# (and delay the correct part)
 		#
-		self.begin = time() + self.backoff
+		if self.state + 1 == self.StateEnded:
+			self.end = time() + self.backoff
+		else:
+			self.begin = time() + self.backoff
+
 		if self.end <= self.begin:
 			self.end = self.begin
 
