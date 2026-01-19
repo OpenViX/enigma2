@@ -110,7 +110,8 @@ class PowerTimerEntry(TimerEntry):
 		self.log(10, "backoff: retry in %d minutes" % (int(self.backoff) / 60))
 		#
 		# If this is the first backoff of a repeat timer remember the original
-		# begin/end times, so that we can use *these* when setting up the repeat.
+		# begin/end times, so that we can use *these* when setting up the repeat
+		# and when writing out the pm_timer.xml file.
 		#
 		if self.repeated != 0 and not hasattr(self, "real_begin"):
 			self.real_begin = self.begin
@@ -149,9 +150,11 @@ class PowerTimerEntry(TimerEntry):
 				remove("/tmp/was_powertimer_wakeup")
 			# if this timer has been cancelled, just go to "end" state.
 			if self.cancelled:
+				self.log(5, "timer has been cancelled")
 				return True
 
 			if self.failed:
+				self.log(5, "timer has failed")
 				return True
 
 			if self.timerType == TIMERTYPE.WAKEUP:
@@ -223,6 +226,7 @@ class PowerTimerEntry(TimerEntry):
 								self.end = self.begin
 
 			elif self.timerType == TIMERTYPE.DEEPSTANDBY and self.wasPowerTimerWakeup:
+				self.log(5, "timer ignored: DEEPSTANDBY with wasPowerTimerWakeup set")
 				return True
 
 			elif self.timerType == TIMERTYPE.DEEPSTANDBY and not self.wasPowerTimerWakeup:
@@ -378,21 +382,19 @@ def createTimer(xml):
 	autosleepinstandbyonly = str(xml.get("autosleepinstandbyonly") or "no")
 	autosleepdelay = str(xml.get("autosleepdelay") or "0")
 	autosleeprepeat = str(xml.get("autosleeprepeat") or "once")
-	#
-	# If this is a repeating auto* timer then start it in 30 secs,
-	# which means it will start its repeating countdown from when enigma2
-	# starts each time rather then waiting until anything left over from the
-	# last enigma2 running.
-	#
-	if autosleeprepeat == "repeated":
-		begin = end = time() + 30
 
 	entry = PowerTimerEntry(begin, end, disabled, afterevent, timertype)
 	entry.autosleepinstandbyonly = autosleepinstandbyonly
 	entry.autosleepdelay = int(autosleepdelay)
 	entry.autosleeprepeat = autosleeprepeat
-	# Ensure that the timer repeated is cleared if we have an autosleeprepeat
+	# If this is a repeating auto* timer then start it in 30 secs,
+	# which means it will start its repeating countdown from when enigma2
+	# starts each time rather then waiting until anything left over from the
+	# last enigma2 running.
+	# Also, ensure that the timer repeated is cleared if we have an autosleeprepeat
+	#
 	if entry.autosleeprepeat == "repeated":
+		begin = end = time() + 30
 		entry.repeated = 0
 	else:
 		entry.repeated = int(repeated)
@@ -501,6 +503,16 @@ class PowerTimer(Timer):
 		for timer in self.timer_list + self.processed_timers:
 			if timer.dontSave:
 				continue
+			# If we have saved original begin/end times for a backed off timer
+			# use those values for begin/end, otherwise we'll end up setting
+			# the next occurrence after a "goto deepstandby" based on the
+			# backed-off time.
+			if hasattr(timer, "real_begin"):
+				begin = timer.real_begin
+				end = timer.real_end
+			else:
+				begin = timer.begin
+				end = timer.end
 			list.append(
 				'<timer'
 				' timertype="%s"'
@@ -513,8 +525,8 @@ class PowerTimer(Timer):
 				' autosleepdelay="%s"'
 				' autosleeprepeat="%s"' % (
 				timerTypes[timer.timerType],  # noqa: E122
-				int(timer.begin),  # noqa: E122
-				int(timer.end),  # noqa: E122
+				int(begin),  # noqa: E122
+				int(end),  # noqa: E122
 				int(timer.repeated),  # noqa: E122
 				afterEvents[timer.afterEvent],  # noqa: E122
 				int(timer.disabled),  # noqa: E122
