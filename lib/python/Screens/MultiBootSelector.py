@@ -351,7 +351,7 @@ class ChkrootInit(Screen):
 
 		for idx, (rootdev, subdir) in enumerate(rootMap):
 			suffix = "" if idx == 0 else f"_{idx}"
-			cmdList.append(f"echo 'kernel=/dev/{KERNEL} root=/dev/{rootdev} rootsubdir={subdir}' > {mountpoint}/STARTUP{suffix}")
+			cmdList.append(f"echo 'kernel=/dev/{MTDKERNEL} root=/dev/{rootdev} rootsubdir={subdir}' > {mountpoint}/STARTUP{suffix}")
 
 		cmdList.append(f"umount {mountpoint}")
 		print(f"[MultiBootSelector][ChkrootInit] cmdlist:{cmdList}")
