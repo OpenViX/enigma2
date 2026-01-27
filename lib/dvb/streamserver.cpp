@@ -73,6 +73,13 @@ void eStreamClient::notifier(int what)
 	{
 		rsn->stop();
 		stop();
+		// Free encoder on disconnect
+		if (encoderFd >= 0)
+		{
+			eDebug("[eStreamClient] connection lost: freeing encoder fd=%d", encoderFd);
+			if (eEncoder::getInstance()) eEncoder::getInstance()->freeEncoder(encoderFd);
+			encoderFd = -1;
+		}
 		parent->connectionLost(this);
 		return;
 	}
@@ -100,7 +107,7 @@ void eStreamClient::notifier(int what)
 					char *buffer = (char*)malloc(4096);
 					if (buffer)
 					{
-						struct passwd pwd;
+						struct passwd pwd = {};
 						struct passwd *pwdresult = NULL;
 						std::string crypt;
 						username = authentication.substr(0, pos);
@@ -108,13 +115,13 @@ void eStreamClient::notifier(int what)
 						getpwnam_r(username.c_str(), &pwd, buffer, 4096, &pwdresult);
 						if (pwdresult)
 						{
-							struct crypt_data cryptdata;
+							struct crypt_data cryptdata = {};
 							char *cryptresult = NULL;
 							cryptdata.initialized = 0;
 							crypt = pwd.pw_passwd;
 							if (crypt == "*" || crypt == "x")
 							{
-								struct spwd spwd;
+								struct spwd spwd = {};
 								struct spwd *spwdresult = NULL;
 								getspnam_r(username.c_str(), &spwd, buffer, 4096, &spwdresult);
 								if (spwdresult)
@@ -288,8 +295,16 @@ void eStreamClient::notifier(int what)
 
 void eStreamClient::stopStream()
 {
-	ePtr<eStreamClient> ref = this;
 	rsn->stop();
+	// Free encoder BEFORE connectionLost removes us from the list
+	// This ensures the encoder is released even if the destructor is delayed
+	if (encoderFd >= 0)
+	{
+		eDebug("[eStreamClient] stopStream: freeing encoder fd=%d", encoderFd);
+		if (eEncoder::getInstance()) eEncoder::getInstance()->freeEncoder(encoderFd);
+		encoderFd = -1;
+	}
+	ePtr<eStreamClient> ref = this;
 	parent->connectionLost(this);
 }
 
