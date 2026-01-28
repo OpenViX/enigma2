@@ -3,7 +3,7 @@ from hashlib import md5
 from os import listdir, access, R_OK
 from os.path import isfile, join as pathjoin
 from re import split
-from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager
+from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager, eDVBCSAEngine
 
 from Components.RcModel import rc_model
 from Tools.Directories import fileCheck, fileExists, fileHas, pathExists, resolveFilename, SCOPE_LIBDIR, SCOPE_SKIN, fileReadLine, fileReadLines
@@ -212,6 +212,7 @@ SystemInfo["HasUsbhdd"] = {}
 SystemInfo["ArchIsARM"] = ARCHITECTURE.startswith(("arm", "cortex"))
 SystemInfo["ArchIsARM64"] = "64" in ARCHITECTURE
 SystemInfo["HasInitCam"] = hasInitCam()
+SystemInfo["HasSoftCSA"] = eDVBCSAEngine.isAvailable()
 SystemInfo["MachineBrand"] = DISPLAYBRAND
 SystemInfo["MachineName"] = SystemInfo["machinename"]
 SystemInfo["DeveloperImage"] = IMAGETYPE.lower() != "release"

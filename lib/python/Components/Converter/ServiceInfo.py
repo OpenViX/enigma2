@@ -91,6 +91,7 @@ class ServiceInfo(Poll, Converter):
 	IS_VIDEO_MPEG2 = 41
 	IS_VIDEO_AVC = 42
 	IS_VIDEO_HEVC = 43
+	IS_SOFTCSA = 44
 
 	def __init__(self, type):
 		Poll.__init__(self)
@@ -102,6 +103,7 @@ class ServiceInfo(Poll, Converter):
 			"IsMultichannel": (self.IS_MULTICHANNEL, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"IsStereo": (self.IS_STEREO, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"IsCrypted": (self.IS_CRYPTED, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
+			"IsSoftCSA": (self.IS_SOFTCSA, (iPlayableService.evUpdatedInfo,)),
 			"IsWidescreen": (self.IS_WIDESCREEN, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"IsNotWidescreen": (self.IS_NOT_WIDESCREEN, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"SubservicesAvailable": (self.SUBSERVICES_AVAILABLE, (iPlayableService.evStart,)),
@@ -200,7 +202,9 @@ class ServiceInfo(Poll, Converter):
 					return True
 			return False
 		elif self.type == self.IS_CRYPTED and not isRef:
-			return info.getInfo(iServiceInformation.sIsCrypted) == 1
+			result = info.getInfo(iServiceInformation.sIsCrypted) == 1 and info.getInfo(iServiceInformation.sIsSoftCSA) != 1
+		elif self.type == self.IS_SOFTCSA and not isRef:
+			return info.getInfo(iServiceInformation.sIsSoftCSA) == 1
 		elif self.type == self.SUBSERVICES_AVAILABLE and not isRef:
 			return hasActiveSubservicesForCurrentChannel(service)
 		elif self.type == self.HAS_HBBTV and not isRef:
