@@ -116,7 +116,7 @@ void eDVBSoftDecoder::startDecoderWithDvrWait()
 	}
 
 	// Wait for DVR data (blocking)
-	int wait_timeout = eSimpleConfig::getInt("config.softcsa.waitForDataTimeout", 800);
+	int wait_timeout = eSimpleConfig::getInt("config.misc.softcsa.waitForDataTimeout", 800);
 	eDebug("[SoftDecoder] Waiting for DVR data (timeout=%dms)", wait_timeout);
 
 	if (!m_record->waitForFirstData(wait_timeout))
@@ -349,7 +349,7 @@ int eDVBSoftDecoder::setupRecorder()
 	}
 
 	// Start timeout timer for CW
-	int wait_timeout = eSimpleConfig::getInt("config.softcsa.waitForDataTimeout", 800);
+	int wait_timeout = eSimpleConfig::getInt("config.misc.softcsa.waitForDataTimeout", 800);
 	eDebug("[SoftDecoder] Waiting for first CW (timeout=%dms)", wait_timeout);
 
 	m_start_timer = eTimer::create(eApp);

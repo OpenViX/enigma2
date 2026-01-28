@@ -1,7 +1,6 @@
 #include <linux/ioctl.h>
 #include <linux/dvb/frontend.h>
 #include <linux/dvb/dmx.h>
-#include <linux/dvb/version.h>
 
 #include <lib/base/eerror.h>
 #include <lib/base/estring.h>
