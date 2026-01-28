@@ -977,7 +977,7 @@ int eDVBServicePMTHandler::tuneExt(eServiceReferenceDVB &ref, ePtr<iTsSource> &s
 			sRelayOrigSref.getChannelID(chid);
 			res = m_resourceManager->allocateChannel(chid, m_sr_channel, simulate);
 		}
-			
+
 
 		if (m_sr_channel) {
 			m_sr_channel->connectStateChange(

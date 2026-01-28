@@ -161,7 +161,6 @@ int eDVBServiceStream::doPrepare()
 		m_stream_ait = eConfigManager::getConfigBoolValue("config.streaming.stream_ait");
 		m_pids_active.clear();
 		m_state = statePrepared;
-		eDVBServicePMTHandler::serviceType servicetype = m_stream_ecm ? eDVBServicePMTHandler::scrambled_streamserver : eDVBServicePMTHandler::streamserver;
 		bool descramble = eConfigManager::getConfigBoolValue("config.streaming.descramble", true);
 		// Use scrambled_streamserver when descrambling is enabled (default)
 		// This ensures CA descriptors are parsed for SoftCSA ECM analysis

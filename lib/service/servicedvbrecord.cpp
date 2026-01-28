@@ -1,4 +1,6 @@
 #include <lib/service/servicedvbrecord.h>
+#include <lib/dvb/csasession.h>
+#include <lib/dvb/cahandler.h>
 #include <lib/base/eerror.h>
 #include <lib/dvb/db.h>
 #include <lib/dvb/dvb.h>
@@ -512,12 +514,6 @@ int eDVBServiceRecord::doRecord()
 					if (i != program.audioStreams.begin())
 						eDebugNoNewLine(", ");
 					eDebugNoNewLine("%04x", i->pid);
-
-					if (i->rdsPid != -1)
-					{
-						pids_to_record.insert(i->rdsPid);
-						eDebugNoNewLine(", (RDS %04x)", i->rdsPid);
-					}
 				}
 				eDebugNoNewLine(")");
 			}
