@@ -45,6 +45,8 @@ dvbinclude_HEADERS = \
 	dvb/cablescan.h \
 	dvb/cahandler.h \
 	dvb/crc32.h \
+	dvb/csaengine.h \
+	dvb/csasession.h \
 	dvb/db.h \
 	dvb/decoder.h \
 	dvb/demux.h \

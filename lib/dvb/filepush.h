@@ -71,7 +71,7 @@ public:
 	void stop();
 	void start(int sourcefd);
 
-	enum { evtEOF, evtReadError, evtWriteError, evtUser, evtStopped };
+	enum { evtEOF, evtReadError, evtWriteError, evtUser, evtStopped, evtStreamCorrupt };
 	sigc::signal<void(int)> m_event;
 
 	void sendEvent(int evt);
@@ -88,10 +88,14 @@ protected:
 	size_t m_buffersize;
 	unsigned char* m_buffer;
 	unsigned int m_overflow_count;
-private:
+	size_t m_buffer_fill;
+	size_t m_buffer_min_write;
 	int m_stop;
+private:
 	eFixedMessagePump<int> m_messagepump;
 	void recvEvent(const int &evt);
+	int m_protocol, m_session_id, m_stream_id, m_packet_no;
+	std::vector<unsigned char> m_reply;
 };
 
 #endif
