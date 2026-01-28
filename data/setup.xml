@@ -32,6 +32,12 @@
 		<item level="0" text="Wake up to standby" description="When waking from deep standby, should the %s %s go directly to standby mode?">config.usage.power.wake_up_to_standby</item>
 		<item level="0" text="After power loss" description="When in normal use or standby (not deep standby), what should the %s %s do when booting after a power loss or other uncontrolled shutdown?">config.usage.power.uncontrolled_shutdown_action</item>
 	</setup>
+	<setup key="SoftCSA" title="SoftCSA Settings">
+		<item level="0" text="Decoder Release Strategy *" description="How to release the hardware decoder when switching to software descrambling. 'Quick' releases immediately (faster zapping). 'Normal' performs clean shutdown first (more stable on some boxes). *Restart E2 for changes to take effect.">config.misc.softcsa.decoderRelease</item>
+		<item level="0" text="Sync Mode *" description="Select how the descrambled data stream is processed. 'Synchronous' waits for each write to complete (stable). 'Asynchronous' uses non-blocking writes (lower CPU, requires kernel AIO support - not available on all boxes). *Restart E2 for changes to take effect.">config.misc.softcsa.syncMode</item>
+		<item level="1" text="Decoder Start Timeout *" description="Maximum time to wait for the incoming data and descrambling keys (CW) before starting decoder. Usually both arrive much faster and this is only for special cases. *Restart E2 for changes to take effect.">config.misc.softcsa.waitForDataTimeout</item>
+		<item level="1" text="Read Accumulation *" description="Minimum data to accumulate before writing to the decoder. Higher values reduce CPU usage on boxes with small decoder buffer sizes. *Restart E2 for changes to take effect.">config.misc.softcsa.readAccumulateSize</item>
+	</setup>
 	<setup key="streamrelay" title="Stream Relay Settings">
 		<item level="2" text="Stream Relay url" description="The IP address of the streamrelay server that is used to descramble services that can only be decrypted via stream relay.">config.misc.softcam_streamrelay_url</item>
 		<item level="2" text="Stream Relay port" description="The port of the streamrelay server that is used to descramble services that can only be decrypted via stream relay.">config.misc.softcam_streamrelay_port</item>
