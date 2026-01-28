@@ -426,6 +426,7 @@ public:
 
 		sGamma,
 		sVideoInfo,
+		sIsSoftCSA,			/* 1 if current service uses software descrambling */
 
 		sUser = 0x100
 	};

@@ -85,6 +85,7 @@ is usually caused by not marking PSignals as immutable.
 #include <lib/actions/action.h>
 #include <lib/gdi/gfont.h>
 #include <lib/gdi/epng.h>
+#include <lib/dvb/csaengine.h>
 #include <lib/dvb/db.h>
 #include <lib/dvb/frontendparms.h>
 #include <lib/dvb/idvb.h>
@@ -96,6 +97,7 @@ is usually caused by not marking PSignals as immutable.
 #include <lib/dvb/dvbtime.h>
 #include <lib/dvb/pmt.h>
 #include <lib/dvb/cahandler.h>
+#include <lib/dvb/csaengine.h>
 #include <lib/dvb/fastscan.h>
 #include <lib/dvb/cablescan.h>
 #include <lib/dvb/encoder.h>
@@ -276,6 +278,7 @@ typedef long time_t;
 %include <lib/dvb/frontend.h>
 %include <lib/dvb/pmt.h>
 %include <lib/dvb/cahandler.h>
+%include <lib/dvb/csaengine.h>
 %include <lib/dvb/fastscan.h>
 %include <lib/dvb/cablescan.h>
 %include <lib/dvb/metaparser.h>

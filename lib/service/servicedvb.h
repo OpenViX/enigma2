@@ -13,8 +13,11 @@
 class eStaticServiceDVBInformation;
 class eStaticServiceDVBBouquetInformation;
 
-class eServiceFactoryDVB: public iServiceHandler
-{
+// Forward declarations for software descrambling
+class eDVBCSASession;
+class eDVBSoftDecoder;
+
+class eServiceFactoryDVB : public iServiceHandler {
 	DECLARE_REF(eServiceFactoryDVB);
 	ePtr<eStaticServiceDVBInformation> m_StaticServiceDVBInfo;
 	ePtr<eStaticServiceDVBBouquetInformation> m_StaticServiceDVBBouquetInfo;
@@ -209,6 +212,13 @@ protected:
 	ePtr<eDVBService> m_dvb_service;
 
 	ePtr<iTSMPEGDecoder> m_decoder;
+
+	// Software descrambling
+	ePtr<eDVBCSASession> m_csa_session;
+	ePtr<eConnection> m_csa_activated_conn;
+	ePtr<eDVBSoftDecoder> m_soft_decoder;
+	bool m_soft_decoder_video_info_valid;  // Track if video info is available from SoftDecoder
+
 	int m_is_primary;
 	int m_decoder_index;
 	int m_have_video_pid;
@@ -328,6 +338,20 @@ protected:
 	void video_event(struct iTSMPEGDecoder::videoEvent);
 
 	virtual ePtr<iTsSource> createTsSource(eServiceReferenceDVB &ref, int packetsize = 188);
+
+	ePtr<eConnection> m_con_record_event;
+	void recordEvent(int event);
+
+	// Software descrambling
+	virtual void setupSpeculativeDescrambling();
+	void onSessionActivated(bool active);
+	void onSoftDecoderAudioPidSelected(int pid);
+	void cleanupSoftwareDescrambling();
+
+	// Audio cache helper
+	void updateAudioCache(int apid, int apidtype);
+private:
+	bool m_stream_corruption_detected;
 };
 
 class eStaticServiceDVBBouquetInformation: public iStaticServiceInformation
