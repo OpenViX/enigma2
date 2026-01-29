@@ -4550,7 +4550,7 @@ msgid "DVB subtitles color filter"
 msgstr "Farbe DVB Untertitel"
 
 msgid "DVB type"
-msgstr "DVB Typ"
+msgstr "DVB-Typ"
 
 msgid "DVB-C"
 msgstr "DVB-C"
@@ -5903,7 +5903,7 @@ msgid "Encryption key"
 msgstr "WLAN-Sicherheitsschlüssel"
 
 msgid "Encryption key type"
-msgstr "Sicherheitsschlüssel Typ"
+msgstr "Sicherheitsschlüssel-Typ"
 
 msgid "Encryption:"
 msgstr "Verschlüsselung:"
@@ -5979,19 +5979,19 @@ msgid "Enter service number"
 msgstr "Gib Sendernummer ein"
 
 msgid "Enter the FTP password of the host receiver (required for any server running OpenViX 5.4 or greater)."
-msgstr "Gib FTP-Passwort für den Notfallreceiver an (muss für OpenViX >= 5.4 angegeben werden)."
+msgstr "Gib FTP-Passwort des Ausweichreceivers an (muss für OpenViX >= 5.4 angegeben werden)."
 
 msgid "Enter the FTP port of the host receiver (normally '21')."
-msgstr "Gib FTP-Port für den Notfallreceiver an (normalerweise '21')."
+msgstr "Gib FTP-Port des Ausweichreceivers an (normalerweise '21')."
 
 msgid "Enter the FTP username of the host receiver (normally 'root')."
-msgstr "Gib FTP-Benutzer für den Notfallreceiver an (normalerweise 'root')."
+msgstr "Gib FTP-Benutzer des Ausweichreceivers an (normalerweise 'root')."
 
 msgid "Enter the IP address of the host receiver."
-msgstr "Gib IP-Adresse des Notfallreceivers an."
+msgstr "Gib IP-Adresse des Ausweichreceivers an."
 
 msgid "Enter the IP address of the receiver to use for fallback tuners."
-msgstr "Gib IP-Adresse des Notfallreceivers an."
+msgstr "Gib IP-Adresse des Ausweichreceivers an."
 
 msgid "Enter the URL to stream from."
 msgstr "Gib URL eines Streams ein."
@@ -6000,7 +6000,7 @@ msgid "Enter the URL/IP of the fallback remote receiver, e.g. '192.168.0.1'. The
 msgstr "Gib die URL/IP des Ausweichreceivers, z.B. 192.168.0.1, an. Die anderen Einstellungen werden automatisch eingetragen, wenn 'speichern' gedrückt wurde."
 
 msgid "Enter the domain of the host receiver. Do not include 'http://' or port number."
-msgstr "Gib Domain des Notfallreceivers an. 'http://' oder Portnummer nicht mit angeben."
+msgstr "Gib Domain des Ausweichreceivers an. 'http://' oder Portnummer nicht mit angeben."
 
 msgid "Enter the frequency at which you LNB switches between low band and high band. For more information consult the spec sheet of your LNB."
 msgstr "Gib Frequenz ein wann LNB von Low- auf High-Band wechselt. Für weitere Informationen lies die Spezifikationen deines LNBs."
@@ -6476,13 +6476,13 @@ msgid "Fallback address type"
 msgstr "Ausweich-Adressart"
 
 msgid "Fallback receiver IP address"
-msgstr "Ausweich-Receiver IP-Adresse"
+msgstr "Ausweichreceiver-IP-Adresse"
 
 msgid "Fallback receiver streaming port"
-msgstr "Ausweich-Receiver Streaming-Port"
+msgstr "Ausweichreceiver-Streaming-Port"
 
 msgid "Fallback remote receiver URL"
-msgstr "Ausweich-Receiver URL"
+msgstr "Ausweichreceiver-URL"
 
 msgid "False"
 msgstr "Falsch"
@@ -6653,7 +6653,7 @@ msgid "Flash"
 msgstr ""
 
 msgid "Flash image unzip successful."
-msgstr "Unzip des Flash Images erfolgreich."
+msgstr "Unzip des Flash-Images erfolgreich."
 
 msgid "Flash regular slot"
 msgstr "Flashe regulären Slot"
@@ -7468,25 +7468,25 @@ msgid "Horse racing"
 msgstr "Pferderennen"
 
 msgid "Host domain"
-msgstr "Notfallreceiver Domain"
+msgstr "Ausweichreceiver-Domain"
 
 msgid "Host receiver FTP password"
-msgstr "Notfallreceiver FTP-Passwort"
+msgstr "Ausweichreceiver-FTP-Passwort"
 
 msgid "Host receiver FTP port"
-msgstr "Notfallreceiver FTP-Port"
+msgstr "Ausweichreceiver-FTP-Port"
 
 msgid "Host receiver FTP username"
-msgstr "Notfallreceiver FTP-Benutzername"
+msgstr "Ausweichreceiver-FTP-Benutzername"
 
 msgid "Host receiver IP address"
-msgstr "Notfallreceiver IP-Adresse"
+msgstr "Ausweichreceiver-IP-Adresse"
 
 msgid "Host receiver address type"
-msgstr "Notfallreceiver Adressart"
+msgstr "Ausweichreceiver-Adressart"
 
 msgid "Host receiver streaming port"
-msgstr "Notfallreceiver Streaming-Port"
+msgstr "Ausweichreceiver-Streaming-Port"
 
 msgid "Hostname:"
 msgstr "Hostname:"
@@ -7820,7 +7820,7 @@ msgstr ""
 "Skip abgebrochen."
 
 msgid "Incorrect service type for PiP!"
-msgstr "Falsche Senderart für PiP."
+msgstr "Falscher Sendertyp für PiP."
 
 msgid "Increase time scale"
 msgstr "Erhöhe Zeitspanne"
@@ -11741,7 +11741,7 @@ msgid "Recording"
 msgstr "Aufnahme"
 
 msgid "Recording 4097, 5001 and 5002 streams not possible with external players, so convert recordings to servicetype 1."
-msgstr "Aufnahme von 4097, 5001 und 5002 Streams nicht möglich bei externen Abspielern. Ändere Service-Typ auf 1."
+msgstr "Aufnahme von 4097, 5001 und 5002 Streams nicht möglich bei externen Abspielern. Ändere Servicetyp auf 1."
 
 msgid ""
 "Recording HDMI In not possible on this receiver, timer ended!\n"
@@ -11766,7 +11766,7 @@ msgid "Recording in progress: %s"
 msgstr "Aufnahme läuft: %s"
 
 msgid "Recording type"
-msgstr "Aufnahme-Typ"
+msgstr "Aufnahmetyp"
 
 msgid "Recording(s) are in progress or coming up in few seconds!"
 msgstr "Zurzeit sind Aufnahmen aktiv oder starten gleich."
@@ -12128,7 +12128,7 @@ msgid "Require authentication for http streams"
 msgstr "Verlange Authentifizierung für HTTP-Streams"
 
 msgid "Required medium type:"
-msgstr "Benötigte Rohlingstyp:"
+msgstr "Benötigter Rohlingtyp:"
 
 msgid "Rereading partition table"
 msgstr "Partitionstabelle erneut einlesen"
@@ -13104,7 +13104,7 @@ msgid "Select sort method:"
 msgstr "Wähle den Sortier-Modus:"
 
 msgid "Select stream type."
-msgstr "Wähle Streamart"
+msgstr "Wähle Streamtyp"
 
 msgid "Select target folder"
 msgstr "Wähle Zielverzeichnis"
@@ -13200,7 +13200,7 @@ msgid "Select the type of LNB/device being used (normally 'Universal'). If your 
 msgstr "Wähle den Typ von LNB/Gerät, das verwendet wird (normalerweise 'Universal'). Wenn dein LNB Typ nicht aufgeführt ist, wähle 'Benutzerdefiniert'."
 
 msgid "Select the type of Single Cable Reception device you are using."
-msgstr "Wähle den Unicable-Typ."
+msgstr "Wähle den Unicabletyp."
 
 msgid "Select to configure remote control type"
 msgstr "Wähle den Fernbedienungstyp."
@@ -13236,7 +13236,7 @@ msgid "Select your country. If not available select 'all'."
 msgstr "Wähle dein Land. Wenn nicht aufgeführt, wähle 'alle'."
 
 msgid "Select your provider and region. If not present in this list you will need to select one of the other 'service scan types'."
-msgstr "Wähle Provider und Region. Wenn nicht aufgeführt, musst du eine der anderen Suchmethoden probieren."
+msgstr "Wähle Provider und Region. Wenn nicht aufgeführt, probiere eine der anderen Suchmethoden."
 
 msgid "Select your region. If not available change 'Country' to 'all' and select one of the default alternatives."
 msgstr "Wähle deine Region. Wenn nicht aufgeführt, wechsle das Land auf 'alle', und wähle eine der Standardalternativen."
@@ -13651,7 +13651,7 @@ msgid "Short filenames"
 msgstr "Kurze Dateinamen"
 
 msgid "Should the FTP connection to the remote receiver be established in passive mode (normally 'no')?"
-msgstr "Soll die FTP-Verbindung zum Notfallreceiver passiv aufgebaut werden (normal 'Nein')?"
+msgstr "Soll die FTP-Verbindung zum Ausweichreceiver passiv aufgebaut werden (normal 'Nein')?"
 
 msgid "Show"
 msgstr "Zeige"
@@ -13946,7 +13946,7 @@ msgid "Show service list or movies"
 msgstr "Zeige Sender- oder Filmliste"
 
 msgid "Show service type icons"
-msgstr "Zeige Sendertype Icon"
+msgstr "Zeige Servicetype-Icon"
 
 msgid "Show setup default values"
 msgstr "Zeige Standard-Einstellungen"
@@ -15830,7 +15830,7 @@ msgid "Timer selection"
 msgstr "Timer-Liste"
 
 msgid "Timer type"
-msgstr "Timerart"
+msgstr "Timertyp"
 
 msgid "Timers"
 msgstr "Timer"
@@ -16130,7 +16130,7 @@ msgid "Tuner status:"
 msgstr "Tuner-Status:"
 
 msgid "Tuner type"
-msgstr "Tuner-Typ"
+msgstr "Tunertyp"
 
 msgid "Tuners & Scanning"
 msgstr "Tuner & Suchlauf"
@@ -17249,7 +17249,7 @@ msgid "When enabled, a warning will be displayed and the user will get an option
 msgstr "Soll eine Warnung angezeigt, und dem Benutzer die Möglichkeit gegeben werden, Timeshift zu stoppen oder fortzuführen?"
 
 msgid "When enabled, always descramble receiving http streams. This takes up more resources (descrambling demuxers), only enable if necessary. Individual streams are always descrambled if 0x100 is added to the service type, regardless of this setting."
-msgstr "Sollen empfangene Streams entschlüsselt werden? Diese Option benötigt mehr Ressourcen (Entschlüsselungs-Demuxer). Daher nur aktivieren, wenn nötig. Einzelne Streams werden immer entschlüsselt, wenn 0x100 als Service-Typ verwendet wird."
+msgstr "Sollen empfangene Streams entschlüsselt werden? Diese Option benötigt mehr Ressourcen (Entschlüsselungs-Demuxer). Daher nur aktivieren, wenn nötig. Einzelne Streams werden immer entschlüsselt, wenn 0x100 als Servicetyp verwendet wird."
 
 msgid "When enabled, authentication is required to watch http streams."
 msgstr "Ist eine Authentifizierung für HTTP-Streams noetig?"
