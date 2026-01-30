@@ -259,6 +259,7 @@ protected:
 
 		/* timeshift */
 	ePtr<iDVBTSRecorder> m_record;
+	ePtr<eDVBCSASession> m_timeshift_csa_session;
 	std::set<int> m_pids_active;
 
 	void updateTimeshiftPids();
