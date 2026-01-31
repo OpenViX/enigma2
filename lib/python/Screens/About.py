@@ -259,7 +259,7 @@ class About(AboutBase):
 		AboutText += _("Glibc version:\t%s\n") % getGlibcVersion()
 		AboutText += _("FFmpeg version:\t%s\n") % getVersionFromOpkg("ffmpeg")
 		if eDVBCSAEngine.isAvailable():
-			AboutText += _("Software descrambling version:\t%s %s\n") % (eDVBCSAEngine.getLibraryName(), eDVBCSAEngine.getLibraryVersion()) 
+			AboutText += _("Software descrambling version:\t%s %s\n") % (eDVBCSAEngine.getLibraryName(), eDVBCSAEngine.getLibraryVersion())
 		AboutText += _("OpenSSL version:\t%s\n") % getVersionFromOpkg("openssl")
 		if BoxInfo.getItem("rust"):
 			AboutText += _("Rust version:\t%s\n") % str(BoxInfo.getItem("rust"))
