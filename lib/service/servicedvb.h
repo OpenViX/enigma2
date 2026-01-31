@@ -245,6 +245,7 @@ protected:
 
 		/* pvr */
 	bool m_is_pvr;
+	pts_t m_pause_position;
 	int m_is_paused, m_timeshift_enabled, m_timeshift_active, m_timeshift_changed, m_save_timeshift;
 	int m_first_program_info;
 

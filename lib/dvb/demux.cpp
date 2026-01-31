@@ -699,12 +699,17 @@ int eDVBRecordFileThread::asyncWrite(int len)
 	return len;
 }
 
+// Static flag: Once AIO is detected as unsupported (ENOSYS), all future threads use sync mode
+// This persists until Enigma2 restart - no point retrying AIO on every channel change
+static bool s_aio_not_supported = false;
+
 int eDVBRecordFileThread::writeData(int len)
 {
 	if (!len || !m_buffer)
 		return 0;
 
-	if (m_sync_mode)
+	// Use sync mode if: explicitly configured OR AIO was detected as unsupported
+	if (m_sync_mode || s_aio_not_supported)
 	{
 		// Synchronous write mode with timeout to prevent blocking forever
 		struct pollfd pfd = {};
@@ -760,13 +765,32 @@ int eDVBRecordFileThread::writeData(int len)
 		len = asyncWrite(len);
 		if (len < 0)
 		{
-			eWarning("[eDVBDemux][eDVBRecordFileThread] asyncwrite failed: %d", len);
+			// Check for ENOSYS (AIO not supported by kernel) - automatic fallback to sync
+			if (errno == ENOSYS)
+			{
+				eWarning("[eDVBRecordFileThread] AIO not supported (ENOSYS), falling back to sync mode");
+				s_aio_not_supported = true;  // Remember globally for all future threads
+				m_sync_mode = true;
+				// Retry this write in sync mode (recursive call, now using sync path)
+				return writeData(m_buffersize);
+			}
+			eWarning("[eDVBRecordFileThread] asyncWrite failed: %d", len);
 			return len;
 		}
 		// Wait for previous aio to complete on this buffer before returning
 		int r = m_current_buffer->wait(&m_stop);
 		if (r < 0)
 		{
+			// Check for ENOSYS in wait (aio_return) - automatic fallback to sync
+			if (errno == ENOSYS)
+			{
+				eWarning("[eDVBRecordFileThread] AIO not supported (ENOSYS in wait), falling back to sync mode");
+				s_aio_not_supported = true;  // Remember globally for all future threads
+				m_sync_mode = true;
+				// Data was already submitted to asyncWrite, but we can't get the result
+				// Future writes will use sync mode
+				return len;
+			}
 			eWarning("[eDVBRecordFileThread] wait failed: %d", r);
 			return -1;
 		}
@@ -927,8 +951,10 @@ eDVBRecordScrambledThread::eDVBRecordScrambledThread(int packetsize, int buffers
 {
 	pthread_mutex_init(&m_data_ready_mutex, NULL);
 	pthread_cond_init(&m_data_ready_cond, NULL);
+	// Note: s_aio_not_supported may override sync_mode at runtime in writeData()
+	const char* mode = sync_mode ? "sync" : (s_aio_not_supported ? "sync (AIO unavailable)" : "async");
 	eDebug("[eDVBRecordScrambledThread] %s allocated %zu buffers of %zu kB (streaming=%d)",
-		sync_mode ? "sync" : "async", m_aio.size(), m_buffersize>>10, is_streaming);
+		mode, m_aio.size(), m_buffersize>>10, is_streaming);
 }
 
 eDVBRecordScrambledThread::~eDVBRecordScrambledThread()
@@ -985,7 +1011,7 @@ int eDVBRecordScrambledThread::writeData(int len)
 
 	// Parse AFTER descrambling for correct Access Points (.ap files)
 	// This is needed because asyncWrite/writeData skip parseData when m_serviceDescrambler is set
-	m_ts_parser.parseData(m_current_offset, m_buffer, len);
+		m_ts_parser.parseData(m_current_offset, m_buffer, len);
 
 	// Call the appropriate parent writeData based on target type:
 	// - Streaming (socket): use eDVBRecordStreamThread::writeData() for proper socket handling

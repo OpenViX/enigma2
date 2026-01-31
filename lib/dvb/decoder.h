@@ -165,13 +165,12 @@ public:
 		stateSlowMotion
 	};
 	RESULT set(); /* just apply settings, keep state */
+	RESULT flush();
 	RESULT play(); /* -> play */
 	RESULT pause(); /* -> pause */
 	RESULT setFastForward(int frames_to_skip); /* -> decoder fast forward */
 	RESULT setSlowMotion(int repeat); /* -> slow motion **/
 	RESULT setTrickmode(); /* -> highspeed fast forward */
-
-	RESULT flush();
 	RESULT showSinglePic(const char *filename);
 	RESULT setRadioPic(const std::string &filename);
 		/* what 0=auto, 1=video, 2=audio. */

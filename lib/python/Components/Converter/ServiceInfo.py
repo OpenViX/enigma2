@@ -202,7 +202,7 @@ class ServiceInfo(Poll, Converter):
 					return True
 			return False
 		elif self.type == self.IS_CRYPTED and not isRef:
-			result = info.getInfo(iServiceInformation.sIsCrypted) == 1 and info.getInfo(iServiceInformation.sIsSoftCSA) != 1
+			return info.getInfo(iServiceInformation.sIsCrypted) == 1 and info.getInfo(iServiceInformation.sIsSoftCSA) != 1
 		elif self.type == self.IS_SOFTCSA and not isRef:
 			return info.getInfo(iServiceInformation.sIsSoftCSA) == 1
 		elif self.type == self.SUBSERVICES_AVAILABLE and not isRef:

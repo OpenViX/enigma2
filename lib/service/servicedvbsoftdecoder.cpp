@@ -403,7 +403,7 @@ void eDVBSoftDecoder::streamHealthCheck()
 		else if (m_stall_count == 6)
 		{
 			eWarning("[SoftDecoder] Stream stalled too long - attempting recovery");
-			m_decoder->flush();
+			m_decoder->pause();
 			m_decoder->play();
 			m_stall_count = 0;
 			m_stream_stalled = false;
