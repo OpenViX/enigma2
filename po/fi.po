@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-26 14:45+0200\n"
-"PO-Revision-Date: 2026-01-26 19:23+0200\n"
+"POT-Creation-Date: 2026-01-31 22:05+0200\n"
+"PO-Revision-Date: 2026-02-01 10:21+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -4822,6 +4822,12 @@ msgstr "Debug tiedostoon"
 msgid "Debug+ Logs"
 msgstr "Debug+ lokit"
 
+msgid "Decoder Release Strategy *"
+msgstr "Dekooderin julkaisustrategia *"
+
+msgid "Decoder Start Timeout *"
+msgstr "Dekooderin käynnistyksen aikakatkaisu *"
+
 msgid "Decrement end time"
 msgstr "Vähennä loppuaikaa"
 
@@ -7549,6 +7555,9 @@ msgstr "Kuinka monta minuuttia haluat tallentaa?"
 msgid "How to display the date format for date items in the About screen."
 msgstr "Kuinka näytettään päivämäärän muoto päivämääräkohdille Tietoja-näytössä."
 
+msgid "How to release the hardware decoder when switching to software descrambling. 'Quick' releases immediately (faster zapping). 'Normal' performs clean shutdown first (more stable on some boxes). *Restart E2 for changes to take effect."
+msgstr "Kuinka vapauttaa laitteistodekooderi, kun siirrytään ohjelmistopohjaiseen salauksen purkamiseen. 'Pika' vapauttaa välittömästi (nopeampi kanavanvaihto). 'Normaali' suorittaa ensin puhtaan sammutuksen (vakaampi joissakin laitteissa). *Käynnistä E2 uudelleen, jotta muutokset tulevat voimaan."
+
 msgid "Http(s) stream start delay"
 msgstr "Http/https streamin käynnistysviive"
 
@@ -8938,6 +8947,9 @@ msgstr "Säilytettävien varmuuskopioiden maksimimäärä. Vanhat varmuuskopiot 
 
 msgid "Maximum number of days"
 msgstr "Maksimi päivien lukumäärä"
+
+msgid "Maximum time to wait for the incoming data and descrambling keys (CW) before starting decoder. Usually both arrive much faster and this is only for special cases. *Restart E2 for changes to take effect."
+msgstr "Enimmäisaika, jonka voi odottaa saapuvia tietoja ja dekoodausavaimia (CW) ennen dekooderin käynnistämistä. Yleensä molemmat saapuvat paljon nopeammin, ja tämä koskee vain erityistapauksia. *Käynnistä E2 uudelleen, jotta muutokset tulevat voimaan."
 
 msgid "Maximum total space used (MB)"
 msgstr "Maksimi tilankäyttö (MB)"
@@ -13126,6 +13138,10 @@ msgstr "Valitse vaakaerottelu:"
 msgid "Select how quickly the dish should move between satellites."
 msgstr "Valitse kuinka nopeasti antennin pitäisi liikkua satelliittien välillä."
 
+msgid "Select how the descrambled data stream is processed. 'Automatic' uses asynchronous writes (lower CPU usage) with automatic fallback to synchronous if kernel AIO is not supported. 'Synchronous' forces blocking writes (stable, most compatible). *Restart E2 for changes to take effect."
+msgstr ""
+"Valitse, miten dekoodattu streami käsitellään. 'Automaattinen' käyttää asynkronisia kirjoituksia (pienempi CPU-käyttö) ja siirtyy automaattisesti synkroniseen tilaan, jos ytimen AIO-toimintoa ei tueta. 'Synkroninen' pakottaa kirjoitukset estämään (vakaa, yhteensopivin). *Käynnistä E2 uudelleen, jotta muutokset tulevat voimaan."
+
 msgid "Select how the satellite dish is set up. i.e. fixed dish, single LNB, DiSEqC switch, positioner, etc."
 msgstr "Valitse kuinka satelliittiantenni on rakennettu eli kiinteä antenni, yksittäis LNB, DiSEqC-kytkin, kääntömoottori jne."
 
@@ -14429,6 +14445,9 @@ msgstr "Yhteiskunta"
 msgid "Society & Culture"
 msgstr "Yhteiskunta & Kulttuuri"
 
+msgid "SoftCSA Settings"
+msgstr "SoftCSA-asetukset"
+
 msgid "Softcam Actions"
 msgstr "Softcam-asetukset"
 
@@ -14467,6 +14486,10 @@ msgstr "Softcam komentosarja, valitse cam-komentosarja"
 
 msgid "Software Update"
 msgstr "Ohjelmiston päivitys"
+
+#, python-format
+msgid "Software descrambling version:\t%s %s\n"
+msgstr "Ohjelmiston salauksen purkuversio:\t%s %s\n"
 
 msgid "Software update"
 msgstr "Ohjelmiston päivitys"
@@ -15130,6 +15153,9 @@ msgstr "Symbolinopeus & FEC"
 msgid "Symbol rate:"
 msgstr "Symbolinopeus:"
 
+msgid "Sync Mode *"
+msgstr "Synkronointitila *"
+
 msgid "Sync failure moving back to origin !"
 msgstr "Synkronointivirhe, palataan takaisin alkuperäiseen !"
 
@@ -15138,6 +15164,9 @@ msgstr "Synkronoi aika käyttäen"
 
 msgid "Synchronize system time using transponder or internet."
 msgstr "Synkronoi laitteen kello transponderista tai internetistä."
+
+msgid "Synchronous"
+msgstr "Synkroninen"
 
 msgid "Syrian Arab Republic"
 msgstr "Syrian Arab Republic"
@@ -15201,7 +15230,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 26.01.2026 ---\n"
+"--- 01.02.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
