@@ -4823,7 +4823,7 @@ msgid "Debug+ Logs"
 msgstr "Debug+ lokit"
 
 msgid "Decoder Release Strategy *"
-msgstr "Dekooderin julkaisustrategia *"
+msgstr "Dekooderin vapautusstrategia *"
 
 msgid "Decoder Start Timeout *"
 msgstr "Dekooderin käynnistyksen aikakatkaisu *"
