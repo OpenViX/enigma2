@@ -397,7 +397,7 @@ class VIXImageManager(Screen):
 			self.keyBackup()
 
 	def keyBackup(self):
-		message = _("Do you want to create a %s image backup? This can take several minutes to complete." % MACHINEBUILD)
+		message = _("Do you want to create a %s image backup? This can take several minutes to complete.") % MACHINEBUILD
 		ybox = self.session.openWithCallback(self.keyBackup1, MessageBox, message, MessageBox.TYPE_YESNO)
 		ybox.setTitle(_("Backup confirmation"))
 
@@ -1478,7 +1478,7 @@ class ImageBackup(Screen):
 		elif SystemInfo["HasRootSubdir"]:
 			self.usbType = "-mmc"
 			with open(self.MAINDEST + "/force_%s_READ.ME" % MODEL, "w") as fileout:
-				line1 = _("Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick" % (MODEL, MODEL))
+				line1 = _("Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick") % (MODEL, MODEL)
 				line2 = _("When you enter the recovery menu then it will force the image to be installed in the linux selection")
 				fileout.write(line1)
 				fileout.write(line2)
