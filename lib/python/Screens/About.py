@@ -228,9 +228,10 @@ class About(AboutBase):
 		VuPlustxt = _("Vu+ Multiboot") + " - " if SystemInfo["HasKexecMultiboot"] else ""
 		if fileHas("/proc/cmdline", "rootsubdir=linuxrootfs0"):
 			AboutText += _("Boot Device: \tRecovery Slot\n")
-		elif "BootDevice" in SystemInfo and SystemInfo["BootDevice"]:
-			AboutText += _("Boot Device:\t%s%s\n") % (VuPlustxt, SystemInfo["BootDevice"])
-
+		else:
+			bootDevice = BoxInfo.getItem("mtdbootfs") if not SystemInfo["canMultiBoot"] else SystemInfo["BootDevice"]
+			if bootDevice:
+				AboutText += _("Boot Device:\t%s%s\n") % (VuPlustxt, bootDevice)
 		if SystemInfo["canMultiBoot"]:
 			slot = image = SystemInfo["MultiBootSlot"]
 			if SystemInfo["HasHiSi"] and "sda" in SystemInfo["canMultiBoot"][slot]["root"]:
