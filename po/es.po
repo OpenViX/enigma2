@@ -8160,7 +8160,7 @@ msgid "How to display the date format for date items in the About screen."
 msgstr "Cómo mostrar el formato de fecha para los elementos de fecha en la pantalla de información."
 
 msgid "How to release the hardware decoder when switching to software descrambling. 'Quick' releases immediately (faster zapping). 'Normal' performs clean shutdown first (more stable on some boxes). *Restart E2 for changes to take effect."
-msgstr "Cómo liberar el decodificador de hardware al cambiar a descifrado por software. La opción "Rápido" libera inmediatamente (zapping más rápido). La opción "Normal" realiza un apagado limpio primero (más estable en algunas máquinas). *Reinicie E2 para que los cambios surtan efecto."
+msgstr "Cómo liberar el decodificador de hardware al cambiar a descifrado por software. La opción 'Rápido' libera inmediatamente (zapping más rápido). La opción 'Normal' realiza un apagado limpio primero (más estable en algunas máquinas). *Reinicie E2 para que los cambios surtan efecto."
 
 msgid "Http(s) stream start delay"
 msgstr "Retraso en el inicio de la transmisión HTTP(s)"
@@ -14326,7 +14326,7 @@ msgid "Select how quickly the dish should move between satellites."
 msgstr "Seleccione la velocidad con la que la antena debe moverse entre los satélites."
 
 msgid "Select how the descrambled data stream is processed. 'Automatic' uses asynchronous writes (lower CPU usage) with automatic fallback to synchronous if kernel AIO is not supported. 'Synchronous' forces blocking writes (stable, most compatible). *Restart E2 for changes to take effect."
-msgstr "Seleccione cómo se procesa el flujo de datos descifrados. La opción "Automático" utiliza escrituras asíncronas (menor consumo de CPU) con retorno automático a escrituras síncronas si no se admite la AIO del kernel. La opción "Síncrono" fuerza escrituras bloqueantes (estable, máxima compatibilidad). *Reinicie E2 para que los cambios surtan efecto."
+msgstr "Seleccione cómo se procesa el flujo de datos descifrados. La opción 'Automático' utiliza escrituras asíncronas (menor consumo de CPU) con retorno automático a escrituras síncronas si no se admite la AIO del kernel. La opción 'Síncrono' fuerza escrituras bloqueantes (estable, máxima compatibilidad). *Reinicie E2 para que los cambios surtan efecto."
 
 msgid "Select how the satellite dish is set up. i.e. fixed dish, single LNB, DiSEqC switch, positioner, etc."
 msgstr "Seleccione cómo está configurada la antena parabólica, es decir, antena fija, LNB simple, conmutador DiSEqC, posicionador, etc."
