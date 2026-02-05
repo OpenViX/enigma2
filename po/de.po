@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-28 13:45+0000\n"
 "PO-Revision-Date: 2026-01-28 13:44+0200\n"
-"Last-Translator: Ralf Biedermann <ralf.biedermann@rbsoft.de>\n"
+"Last-Translator: 2stein\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, 2stein\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -1806,13 +1806,13 @@ msgid "Add bouquet to parental protection"
 msgstr "Jugendschutz der Favoritenliste aktivieren"
 
 msgid "Add directory to playlist"
-msgstr "Verzeichnis zur Wiedergabeliste hinzufügen"
+msgstr "Verzeichnis zur Playliste hinzufügen"
 
 msgid "Add file to playlist"
-msgstr "Datei zur Wiedergabeliste hinzufügen"
+msgstr "Datei zur Playliste hinzufügen"
 
 msgid "Add files to playlist"
-msgstr "Dateien zur Wiedergabeliste hinzufügen"
+msgstr "Dateien zur Playliste hinzufügen"
 
 msgid "Add marker"
 msgstr "Marker einfügen"
@@ -2028,7 +2028,7 @@ msgid "Allows the %s %s to save the EPG data regularly."
 msgstr "Regelmäßiges schreiben der EPG-Daten von der %s %s erlauben."
 
 msgid "Allows the TV remote to be used to control the receiver."
-msgstr "Soll die TV-Fernbedienung zur Steuerung des Receivers verwendet werden?"
+msgstr "Soll die TV-Fernbedienung zur Steuerung des E2-Receivers verwendet werden?"
 
 msgid "Allows the script runner to be launched from extensions."
 msgstr "Soll die Skriptausführung aus der Erweiterungsliste ermöglicht werden?"
@@ -2088,7 +2088,7 @@ msgid "Alpha"
 msgstr "Buchstabe"
 
 msgid "Alpha blending is the process of combining an image with a background to create the appearance of partial or full transparency. 'Always' may cause receivers that don't support hardware acceleration to render images more slowly. Also some skins may show strange side effects."
-msgstr "Alpha-Überblendung kombiniert Bilder transparent mit dem Hintergrund. 'Immer' kann bei Receivern ohne Hardware-Unterstützung zu langsamer Anzeige führen. Einige Skins zeigen dabei merkwürdiges Verhalten."
+msgstr "Alpha-Überblendung kombiniert Bilder transparent mit dem Hintergrund. 'Immer' kann bei E2-Receivern ohne Hardware-Unterstützung zu langsamer Anzeige führen. Einige Skins zeigen dabei merkwürdiges Verhalten."
 
 msgid "Alphabetical under headings"
 msgstr "Alphabetisch unter Überschriften"
@@ -2488,7 +2488,7 @@ msgid "Automatic Scan"
 msgstr "Automatische Suche"
 
 msgid "Automatic image backup"
-msgstr "Automatische Imagesicherung"
+msgstr "Automatisches Image-Backup"
 
 msgid "Automatic language"
 msgstr "Automatische Sprachwahl"
@@ -2503,7 +2503,7 @@ msgid "Automatic scan"
 msgstr "Automatisch suchen"
 
 msgid "Automatic settings backup"
-msgstr "Automatische Einstellungssicherung"
+msgstr "Automatisches Einstellungs-Backup"
 
 msgid "Automatic update interval"
 msgstr "Interval für automatische Updates"
@@ -2609,10 +2609,10 @@ msgid "Background color"
 msgstr "Hintergrundfarbe"
 
 msgid "Backing up eMMC partitions for USB flash ..."
-msgstr "Sicherung der eMMC Partitionen für den USB-Stick..."
+msgstr "Backup der eMMC Partitionen für den USB-Stick..."
 
 msgid "Backing up eMMC partitions for USB flash..."
-msgstr "Sicherung der eMMC Partitionen für den USB-Stick..."
+msgstr "Backup der eMMC Partitionen für den USB-Stick..."
 
 msgid "Backing up files..."
 msgstr "Sichert Dateien..."
@@ -2722,7 +2722,7 @@ msgid "Basque"
 msgstr "Baskisch"
 
 msgid "Before flashing an image 'Automatic settings backup' should be enabled in Image Manager setup menu."
-msgstr "Vor dem Flashen eines Images sollte 'Automatische Einstellungssicherung' in der Image-Verwaltung aktiviert werden."
+msgstr "Vor dem Flashen eines Images sollte 'Automatisches Einstellungs-Backup' in der Image-Verwaltung aktiviert werden."
 
 msgid "Before sending the command to switch the TV to standby, the receiver tests if all the other devices plugged into TV are in standby. If they are not, the 'sourceactive' command will be sent to the TV instead of the 'standby' command."
 msgstr "Vor dem Standby-Befehl prüft der E2-Receiver, ob alle am Fernseher angeschlossenen Geräte in Standby sind. Bei aktiven Geräten wird 'Quelle aktiv' statt 'Standby' gesendet."
@@ -3647,7 +3647,7 @@ msgid "Clear marks"
 msgstr "Entferne Markierungen"
 
 msgid "Clear playlist"
-msgstr "Leere Wiedergabeliste"
+msgstr "Leere Playliste"
 
 #, python-format
 msgid "Client %s-%s"
@@ -4231,7 +4231,7 @@ msgid "Could not find installed channel list."
 msgstr "Kann keine installierte Senderliste finden."
 
 msgid "Could not load medium! No disc inserted?"
-msgstr "Konnte das Medium nicht laden - keine DVD eingelegt?"
+msgstr "Konnte das Speichermedium nicht laden - keine DVD eingelegt?"
 
 msgid "Could not open picture in picture"
 msgstr "Bild-in-Bild konnte nicht geöffnet werden"
@@ -4955,7 +4955,7 @@ msgid "Delete playlist entry"
 msgstr "Wiedergabelisteneintrag löschen"
 
 msgid "Delete saved playlist"
-msgstr "Gespeicherte Wiedergabeliste löschen"
+msgstr "Gespeicherte Playliste löschen"
 
 msgid "Delete the character to the left of text cursor"
 msgstr "Lösche das Zeichen links vom Cursor"
@@ -5605,7 +5605,7 @@ msgid ""
 "ET8500 Multiboot: Yes to restore OS1 No to restore OS2:\n"
 " "
 msgstr ""
-"ET8500 Multiboot: Ja zum Wiederherstellen von OS1, Nein zum Wiederherstellen von OS2:\n"
+"ET8500 Multiboot: 'Ja' zum Wiederherstellen von OS1, 'Nein' zum Wiederherstellen von OS2:\n"
 " "
 
 msgid "EXIT"
@@ -5879,7 +5879,7 @@ msgid "Enable to highlight events that are currently in progress."
 msgstr "Aktiviere Hervorhebung der aktuellen Sendung."
 
 msgid "Enable usage of tuners from another Enigma2 receiver on the local network. Remote tuners will be used when tuners are not available on this receiver. (No free tuner or service type is not available.)"
-msgstr "Aktiviert Netzwerk-Tuner eines anderen Receivers. Diese werden genutzt, wenn lokale Tuner belegt sind oder die Empfangsart (Kabel/Sat) nicht verfügbar ist."
+msgstr "Aktiviert Netzwerk-Tuner eines anderen E2-Receivers. Diese werden genutzt, wenn lokale Tuner belegt sind oder die Empfangsart (Kabel/Sat) nicht verfügbar ist."
 
 msgid "Enabled"
 msgstr "Aktiviert"
@@ -7761,7 +7761,7 @@ msgid "ImageManager - %s - cannot flash eMMC slot from sd card slot."
 msgstr "Image-Verwaltung - %s - Kann nicht von SD-Card-Slot auf eMMC-Slot geflasht werden."
 
 msgid "ImageManager - no HDD unable to backup Vu Multiboot eMMC slots"
-msgstr "Image-Verwaltung - Keine Festplatte. Sicherung von eMMC Slots nicht möglich."
+msgstr "Image-Verwaltung - Keine Festplatte. Backup von eMMC Slots nicht möglich."
 
 msgid "Immediate shutdown"
 msgstr "Direkt ausschalten"
@@ -7776,7 +7776,7 @@ msgid "In live view wait this many seconds after a numeric key press before assu
 msgstr "Wartezeit in Sekunden vor Bestätigung der Sendernummer. Standard: 5 Sekunden. Bei 0 ist 'OK' zur Bestätigung erforderlich. "
 
 msgid "In most cases this should be set to No. Only enable if you have a very specific need."
-msgstr "In den meisten Fällen sollte es auf Nein gesetzt werden. Aktiviere es nur, wenn du eine spezielle Anwendung hast."
+msgstr "In den meisten Fällen sollte es auf 'Nein' gesetzt werden. Aktiviere es nur, wenn du eine spezielle Anwendung hast."
 
 msgid "In order to record a timer, the TV was switched to the recording service!\n"
 msgstr "Um die Timeraufnahme durchführen zu können, wurde auf den aufzunehmenden Sender umgeschaltet.\n"
@@ -8577,13 +8577,13 @@ msgid "Load EPG Cache"
 msgstr "EPG-Cache laden"
 
 msgid "Load playlist"
-msgstr "Wiedergabeliste laden"
+msgstr "Playliste laden"
 
 msgid "Load unlinked userbouquets"
 msgstr "Lade nicht verbundene Favoritenlisten"
 
 msgid "Load, Save & Delete EPG Cache"
-msgstr "EPG-Cache laden, sichern und löschen"
+msgstr "EPG-Cache laden, speichern und löschen"
 
 msgid "Loading skin"
 msgstr "Skin neu laden"
@@ -8787,7 +8787,7 @@ msgid "Maintain old EPG data for"
 msgstr "Behalte alte EPG-Daten (Minuten)"
 
 msgid "Make settings backup"
-msgstr "Erstelle Einstellungssicherung"
+msgstr "Erstelle Einstellungs-Backup"
 
 msgid "Make this mark an 'in' point"
 msgstr "Aus dieser Markierung einen 'innen'-Punkt machen"
@@ -8817,7 +8817,7 @@ msgid "Malta"
 msgstr "Malta"
 
 msgid "Manage settings backup."
-msgstr "Verwalte Backups der Einstellungen."
+msgstr "Verwalte Einstellungs-Backups."
 
 msgid "Manage your devices mount points."
 msgstr "Verwalte die Moutpoints."
@@ -8928,10 +8928,10 @@ msgid "Medien"
 msgstr ""
 
 msgid "Medium is not a writeable DVD!"
-msgstr "Das Medium ist keine beschreibbare DVD."
+msgstr "Das Speichermedium ist keine beschreibbare DVD."
 
 msgid "Medium is not empty!"
-msgstr "Das Medium ist nicht leer."
+msgstr "Das Speichermedium ist nicht leer."
 
 msgid "Melodrama"
 msgstr "Film/Drama"
@@ -9133,7 +9133,7 @@ msgid "Mount manager"
 msgstr "Mountpoint-Verwaltung"
 
 msgid "Mount."
-msgstr "Einhängen."
+msgstr "Mounten."
 
 msgid "Mount: "
 msgstr "Mount: "
@@ -9436,10 +9436,10 @@ msgid "NO"
 msgstr "Nein"
 
 msgid "NO, do not restore plugins"
-msgstr "NEIN, Plugins nicht wiederherstellen"
+msgstr "Nein, Plugins nicht wiederherstellen"
 
 msgid "NO, do not restore settings"
-msgstr "NEIN, Einstellungen nicht wiederherstellen"
+msgstr "Nein, Einstellungen nicht wiederherstellen"
 
 msgid ""
 "NOTE: This feature is intended for people who cannot disable overscan on their television / display.  Please first try to disable overscan before using this feature.\n"
@@ -9450,7 +9450,7 @@ msgid ""
 msgstr ""
 "Achtung: Dieses Feature ist für Leute gedacht, die Overscan am Fernseher nicht deaktivieren können - bitte zuerst versuchen, ob Overscan am Fernseher ausgeschaltet werden kann.\n"
 "Benutzung: Bild-Position und -Größe so einstellen, dass der graue Bereich gerade das Testbild im Hintergrund bedeckt.\n"
-"Wähle Ja, um fortzufahren und Nein um abzubrechen."
+"Wähle Ja, um fortzufahren und 'Nein' um abzubrechen."
 
 msgid "NTP"
 msgstr "NTP"
@@ -9721,50 +9721,44 @@ msgid ""
 "No config files found, please setup CCcam first\n"
 "in /etc/CCcam.cfg."
 msgstr ""
-"Keine Konfigdatei gefunden - bitte CCcam erst einrichten\n"
+"Keine Konfigurationsdatei gefunden - bitte CCcam erst einrichten\n"
 "in /etc/CCcam.cfg."
 
 msgid ""
 "No config files found, please setup Hypercam first\n"
 "in /etc/hypercam.cfg."
 msgstr ""
-"Keine Konfigdatei gefunden - bitte Hypercam erst einrichten\n"
-"in /etc/hypercam.cfg."
+"Keine Konfigurationsdatei gefunden - bitte Hypercam einrichten."
 
 msgid ""
 "No config files found, please setup MGcamd first\n"
 "in /usr/keys."
 msgstr ""
-"Keine Konfigdatei gefunden - bitte MGcamd erst einrichten\n"
-"in /usr/keys."
+"Keine Konfigurationsdatei gefunden - bitte MGcamd einrichten."
 
 msgid ""
 "No config files found, please setup Ncam first\n"
 "in /etc/tuxbox/config"
 msgstr ""
-"Keine Konfigurationsdatei für Ncam gefunden,\n"
-"bitte in /etc/tuxbox/config erstellen"
+"Keine Konfigurationsdatei für Ncam gefunden - bitte Ncam einrichten."
 
 msgid ""
 "No config files found, please setup Ncam first\n"
 "in /etc/tuxbox/config."
 msgstr ""
-"Keine Konfigurationsdatei für Ncam gefunden,\n"
-"bitte in /etc/tuxbox/config erstellen."
+"Keine Konfigurationsdatei für Ncam gefunden - bitte Ncam einrichten."
 
 msgid ""
 "No config files found, please setup Oscam first\n"
 "in /etc/tuxbox/config"
 msgstr ""
-"Keine Konfigurationsdateien gefunden, bitte zuerst OScam\n"
-"in /etc/tuxbox/config einrichten."
+"Keine Konfigurationsdateien gefunden - bitte OScam einrichten."
 
 msgid ""
 "No config files found, please setup Oscam first\n"
 "in /etc/tuxbox/config."
 msgstr ""
-"Keine Konfigdatei gefunden - bitte OScam erst\n"
-"in /etc/tuxbox/config einrichten."
+"Keine Konfigurationsdateien gefunden - bitte OScam einrichten."
 
 #, python-format
 msgid "No configs for specifies softcam %s."
@@ -9790,7 +9784,7 @@ msgid "No description available."
 msgstr "Keine Beschreibung verfügbar."
 
 msgid "No displayable files on this medium found!"
-msgstr "Keine darstellbaren Dateien auf diesem Medium gefunden."
+msgstr "Keine darstellbaren Dateien auf diesem Speichermedium gefunden."
 
 msgid "No event info found, recording indefinitely."
 msgstr "Keine EPG-Daten gefunden. Starte unbegrenzte Aufnahme."
@@ -10550,7 +10544,7 @@ msgid "Perform a settings backup"
 msgstr "Einstellungen sichern"
 
 msgid "Perform a settings backup before updating."
-msgstr "Vor Update-Einstellungen sichern."
+msgstr "Vor dem Update Einstellungen sichern."
 
 msgid "Perform an online update check in the background"
 msgstr "Hintergrundsuche nach Updates"
@@ -10797,7 +10791,7 @@ msgid "Please follow the instructions on the TV"
 msgstr "Folge den Angaben auf dem Fernseher"
 
 msgid "Please note that the previously selected media could not be accessed and therefore the default directory is being used instead."
-msgstr "Auf das zuletzt ausgewählte Medium konnte nicht zugegriffen werden, daher wird stattdessen das Standardverzeichnis verwendet."
+msgstr "Auf das zuletzt ausgewählte Speichermedium konnte nicht zugegriffen werden, daher wird stattdessen das Standardverzeichnis verwendet."
 
 msgid "Please note, images are large, generally over 100 MB so downloading over a slow or unstable connection is prohibitive."
 msgstr "Bedenke, dass Images in der Regel größer als 100 MB sind. Download über eine langsame oder instabile Verbindung ist nervend."
@@ -10815,10 +10809,10 @@ msgid "Please re-enter the new PIN code"
 msgstr "Den neuen PIN-Code erneut eingeben"
 
 msgid "Please select a playlist to delete..."
-msgstr "Wähle eine Wiedergabeliste zum Löschen"
+msgstr "Wähle eine Playliste zum Löschen"
 
 msgid "Please select a playlist..."
-msgstr "Wähle eine Wiedergabeliste"
+msgstr "Wähle eine Playliste"
 
 msgid "Please select a sub service"
 msgstr "Einen Unterkanal auswählen"
@@ -10836,7 +10830,7 @@ msgid "Please select folder that contains .ipk packages."
 msgstr "Einen Ordner wählen, der Pakete enthält."
 
 msgid "Please select medium to be scanned"
-msgstr "Medium zum Durchsuchen auswählen"
+msgstr "Speichermedium zum Durchsuchen auswählen"
 
 msgid "Please select the default action of the EPG button"
 msgstr "Standardaktion für EPG-Taste wählen"
@@ -11644,17 +11638,17 @@ msgid "Really reboot into Recovery Mode?"
 msgstr "Wirklich in Recovery-Modus booten?"
 
 msgid "Really reboot now?"
-msgstr "Trotzdem neu booten?"
+msgstr "Wirklich neu booten?"
 
 #, python-format
 msgid "Really reflash your %s %s and reboot now?"
 msgstr "Die %s %s wirklich flashen und neu starten?"
 
 msgid "Really restart now?"
-msgstr "Trotzdem neu starten?"
+msgstr "Wirklich neu starten?"
 
 msgid "Really shutdown now?"
-msgstr "Trotzdem ausschalten?"
+msgstr "Wirklich ausschalten?"
 
 #, python-format
 msgid "Really store at index %2d for current position?"
@@ -12555,7 +12549,7 @@ msgid "Save / Enter text and exit"
 msgstr "Text eingeben"
 
 msgid "Save EPG Cache"
-msgstr "EPG-Cache sichern"
+msgstr "EPG-Cache speichern"
 
 msgid "Save all changed settings and exit"
 msgstr "Alle Änderungen speichern"
@@ -12579,13 +12573,13 @@ msgid "Save every (in hours)"
 msgstr "Automatisch speichern alle x Stunden"
 
 msgid "Save playlist"
-msgstr "Wiedergabeliste speichern"
+msgstr "Playliste speichern"
 
 msgid "Save timer"
 msgstr "Timer speichern"
 
 msgid "Save timeshift and zap"
-msgstr "Timeshift sichern und umschalten"
+msgstr "Timeshift speichern und umschalten"
 
 msgid "Save timeshift as movie and continue recording"
 msgstr "Timeshift als Film speichern und Aufnahme fortsetzen"
@@ -13028,7 +13022,7 @@ msgid "Select display of record icon based on 'Sref only' or 'Sref + Stream url'
 msgstr "Wähle Aufnahmesymbol abhängig von Referenz oder Referenz + URL, wo verfügbar."
 
 msgid "Select files/folders to backup"
-msgstr "Wähle Dateien/Ordner für die Sicherung"
+msgstr "Wähle Dateien/Ordner für das Backup"
 
 msgid "Select first service in bouquet"
 msgstr "Wähle ersten Sender in der Senderliste"
@@ -14059,7 +14053,7 @@ msgid "Shows the watched status of the movie."
 msgstr "Zeige den Filmstatus in der Liste."
 
 msgid "Shuffle playlist"
-msgstr "Wiedergabeliste shuffle"
+msgstr "Playliste shuffle"
 
 msgid "Shut Down"
 msgstr "Ausschalten"
@@ -14998,7 +14992,7 @@ msgid "Switch to next sub service"
 msgstr "Schalte zum nächsten Unterkanal"
 
 msgid "Switch to playlist"
-msgstr "Wechsel in Wiedergabeliste"
+msgstr "Wechsel in Playliste"
 
 msgid "Switch to previous sub service"
 msgstr "Schalte zum vorhergehenden Unterkanal"
@@ -15509,7 +15503,7 @@ msgid "This %s %s cannot decode %s streams!"
 msgstr "Diese %s %s kann '%s' Streams nicht dekodieren."
 
 msgid "This DVD RW medium is already formatted - reformatting will erase all content on the disc."
-msgstr "Dieses wiederbeschreibbare Medium ist bereits formatiert. Durch eine Neuformatierung wird der gesamte Inhalt gelöscht."
+msgstr "Dieses wiederbeschreibbare Speichermedium ist bereits formatiert. Durch eine Neuformatierung wird der gesamte Inhalt gelöscht."
 
 msgid "This allows you change the font size relative to skin size, so 1 increases by 1 point size, and -1 decreases by 1 point size"
 msgstr "Dies ermöglicht, die Schriftgröße relativ zu den Skineinstellungen zu ändern, 1 erhöht die Größe um 1 und -1 verringert die Größe um 1"
@@ -15722,7 +15716,7 @@ msgstr ""
 "Sicher?"
 
 msgid "This will make a backup of the current settings and plugins which can be used later when setting up the new image in the First Install Wizard."
-msgstr "Dies wird Einstellungen und Plugins sichern. Die Sicherung kann später verwendet werden, wenn ein neues Image geflasht wurde."
+msgstr "Dies wird Einstellungen und Plugins sichern. Das Backup kann später verwendet werden, wenn ein neues Image geflasht wurde."
 
 msgid "This will permanently delete the current configuration. Although settings backup requested, there is No backup device attached, are you certain you want to continue with a factory reset?"
 msgstr "Dies wird die aktuelle Konfiguration permanent löschen. Es ist zu empfehlen, vorher eine Sicherrungskopie anzulegen. Sicher, dass Werkseinstellungen hergestellt werden sollen?"
@@ -15752,7 +15746,7 @@ msgid "Thursday"
 msgstr "Donnerstag"
 
 msgid "TiVo support"
-msgstr "TiVo Unterstützung"
+msgstr "TiVo-Unterstützung"
 
 msgid "Tiere"
 msgstr ""
@@ -15764,7 +15758,7 @@ msgid "Time Setup Actions"
 msgstr "Zeit-Einstellungen Aktionen"
 
 msgid "Time Update in Minutes:"
-msgstr "Zeit Aktualisierung in Minuten:"
+msgstr "Update-Aktualisierung in Minuten:"
 
 msgid "Time import should start"
 msgstr "Startzeit des Imports"
@@ -15779,7 +15773,7 @@ msgid "Time to execute command or script"
 msgstr "Zeit, um Befehl oder Skript auszuführen"
 
 msgid "Time update in minutes"
-msgstr "Zeit Aktualisierung in Minuten"
+msgstr "Update-Aktualisierung in Minuten"
 
 msgid "Time zone"
 msgstr "Zeitzone"
@@ -15822,8 +15816,7 @@ msgid ""
 "Timer overlap in timers.xml detected!\n"
 "Please recheck it!"
 msgstr ""
-"Timerüberlappung in der timers.xml entdeckt.\n"
-"Bitte überprüfen."
+"Timerüberlappung in der timers.xml entdeckt - bitte überprüfen."
 
 msgid "Timer recording location"
 msgstr "Timeraufnahme Verzeichnis"
@@ -15841,7 +15834,7 @@ msgid "Timeshift"
 msgstr "Timeshift"
 
 msgid "Timeshift is running. Select an action.\n"
-msgstr "Timeshift läuft. Wähle eine Aktion.\n"
+msgstr "Timeshift läuft - wähle eine Aktion.\n"
 
 msgid "Timeshift location"
 msgstr "Timeshift Verzeichnis"
@@ -15850,22 +15843,22 @@ msgid "Timeshift not possible!"
 msgstr "Timeshift nicht möglich."
 
 msgid "Timeshift save failed!"
-msgstr "Timeshift Sicherung fehlgeschlagen."
+msgstr "Timeshift-Speicherung fehlgeschlagen."
 
 msgid "Timeshift save recording (Select event)"
-msgstr "Timeshift Aufnahme speichern (Wähle eine Sendung)"
+msgstr "Timeshift-Aufnahme speichern (Wähle eine Sendung)"
 
 msgid "Timeshift save recording (stop after current event)"
-msgstr "Timeshift Aufnahme speichern (am Ende der aktuellen Sendung)"
+msgstr "Timeshift-Aufnahme speichern (am Ende der aktuellen Sendung)"
 
 msgid "Timeshift saved to your harddisk!"
-msgstr "Timeshift auf Festplatte gesichert."
+msgstr "Timeshift auf Festplatte gespeichert."
 
 msgid "Timeshift will get saved at the end of an event!"
-msgstr "Timeshift wird am Ende der Sendung gesichert."
+msgstr "Timeshift wird am Ende der Sendung gespeichert."
 
 msgid "Timeshift-save action on zap"
-msgstr "Timeshift Speicheraktion beim Umschalten"
+msgstr "Timeshift-Speicheraktion beim Umschalten"
 
 msgid "Timor-Leste"
 msgstr "Timor-Leste"
@@ -15893,7 +15886,7 @@ msgid "To flash an image first select it from the list of images in the Image Ma
 msgstr "Um ein Image zu flashen, wähle es in der Hauptansicht der Image-Verwaltung aus (das Image muss schon komplett heruntergeladen worden sein) und drücke 'Blau'."
 
 msgid "To make an image backup select GREEN from Image Manager main screen."
-msgstr "Um eine Sicherung zu erstellen, drücke 'Grün' in der Hauptansicht der Image-Verwaltung."
+msgstr "Um ein Backup zu erstellen, drücke 'Grün' in der Hauptansicht der Image-Verwaltung."
 
 #, python-format
 msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
@@ -15909,7 +15902,7 @@ msgid "Today"
 msgstr "Heute"
 
 msgid "Toggle Configuration Mode or AutoDisqc"
-msgstr "Umschalten Konfigurationsmodus oder AutoDisqc"
+msgstr "Konfigurationsmodus oder AutoDisqc umschalten"
 
 msgid "Toggle Digital downmix"
 msgstr "Digital Downmix umschalten"
@@ -15924,7 +15917,7 @@ msgid "Toggle LCD LiveTV"
 msgstr "Display Live-TV umschalten"
 
 msgid "Toggle PIP-ZAP"
-msgstr "Schalte PiPZap um"
+msgstr "PiPZap umschalten"
 
 msgid "Toggle a cut mark at the current position"
 msgstr "Schnittmarke an der aktuellen Position ändern"
@@ -15951,13 +15944,13 @@ msgid "Toggle default subtitles"
 msgstr "Ändere Standarduntertitel"
 
 msgid "Toggle infobar"
-msgstr "Schalte Infobar um"
+msgstr "Infobar umschalten"
 
 msgid "Toggle mark"
 msgstr "Ändere Markierung"
 
 msgid "Toggle new text inserts before or overwrites existing text"
-msgstr "Schalte um zwischen 'neuen Text einfügen' und 'bestehenden Text überschreiben'"
+msgstr "Schalte zwischen 'neuen Text einfügen' und 'bestehenden Text überschreiben' um"
 
 msgid "Toggle picture In graphics"
 msgstr "Bild in Grafik umschalten"
@@ -15978,7 +15971,7 @@ msgid "Tokelau"
 msgstr "Tokelau"
 
 msgid "Tone amplitude"
-msgstr "Spannungslevel 22KHz"
+msgstr "Spannungslevel 22 KHz"
 
 msgid "Tone mode"
 msgstr "Tone-Modus"
@@ -15990,7 +15983,7 @@ msgid "Toneburst A/B"
 msgstr "Toneburst A/B"
 
 msgid "Tonga"
-msgstr "Tonga"
+msgstr ""
 
 msgid "Top"
 msgstr ""
@@ -16003,7 +15996,7 @@ msgstr "Karten:"
 
 #, python-format
 msgid "Total clients streaming: %d (%s)"
-msgstr "Anzahl streamender Clients: %d (%s)"
+msgstr "Anzahl aktiver Clients: %d (%s)"
 
 msgid "Total handled client ecm's"
 msgstr "Insgesamt behandelte Client ECMs"
@@ -16054,7 +16047,7 @@ msgid "Transport"
 msgstr ""
 
 msgid "Transport Stream Type"
-msgstr "Transportstream Typ"
+msgstr "Transportstreamyp"
 
 msgid "Trash"
 msgstr "Mülleimer"
@@ -16735,7 +16728,7 @@ msgid "Valid ONID/TSID look at www.lyngsat.com..."
 msgstr "Gültige ONID/TSID schaue bei www.lyngsat.com nach"
 
 msgid "Vanuatu"
-msgstr "Vanuatu"
+msgstr ""
 
 msgid "Varieta"
 msgstr ""
@@ -16756,7 +16749,7 @@ msgid "Verschiedenes"
 msgstr ""
 
 msgid "Version: "
-msgstr "Version: "
+msgstr ""
 
 msgid "Vertical"
 msgstr "Vertikal"
@@ -16765,7 +16758,7 @@ msgid "Vertical turning speed"
 msgstr "Vertikale Geschwindigkeit"
 
 msgid "ViX"
-msgstr "ViX"
+msgstr ""
 
 msgid "ViX Backup manager"
 msgstr "ViX Backup-Verwaltung"
@@ -16783,7 +16776,7 @@ msgid "ViX SWAP manager"
 msgstr "ViX SWAP-Verwaltung"
 
 msgid "ViX Script runner"
-msgstr "ViX Skript ausführen"
+msgstr "ViX Skript-Ausführung"
 
 msgid "Viaggi"
 msgstr ""
@@ -16854,7 +16847,7 @@ msgid "View Movies..."
 msgstr "Filme ansehen"
 
 msgid "View Video CD..."
-msgstr "Video CD ansehen"
+msgstr "Video-CD ansehen"
 
 msgid "View extensions"
 msgstr "Erweiterungsliste anzeigen"
@@ -16866,7 +16859,7 @@ msgid "View mode"
 msgstr "Ansichts-Modus"
 
 msgid "View photos..."
-msgstr "Fotos ansehen"
+msgstr "Fotos anzeigen"
 
 msgid "View progress"
 msgstr "Fortschritt anzeigen"
@@ -16875,10 +16868,10 @@ msgid "View teletext"
 msgstr "Videotext anzeigen"
 
 msgid "View the changes"
-msgstr "Änderungen ansehen"
+msgstr "Änderungen anzeigen"
 
 msgid "View video CD..."
-msgstr "Video CD ansehen"
+msgstr "Video-CD anzeigen"
 
 msgid "Violence"
 msgstr "Gewalt"
@@ -16953,13 +16946,13 @@ msgid "WMA Pro downmix"
 msgstr "WMA Pro Downmix"
 
 msgid "WPA"
-msgstr "WPA"
+msgstr ""
 
 msgid "WPA or WPA2"
 msgstr "WPA oder WPA2"
 
 msgid "WPA2"
-msgstr "WPA2"
+msgstr ""
 
 msgid "WSS on 4:3"
 msgstr "WSS bei 4:3"
@@ -18816,7 +18809,7 @@ msgid "on"
 msgstr "an"
 
 msgid "on READ ONLY medium."
-msgstr "auf dem nicht beschreibbaren Medium."
+msgstr "auf dem nicht beschreibbaren Speichermedium."
 
 msgid "once"
 msgstr "einmalig"
@@ -18921,7 +18914,7 @@ msgid "rename"
 msgstr "umbenennen"
 
 msgid "repeat playlist"
-msgstr "Wiederholung der Wiedergabeliste"
+msgstr "Wiederholung der Playliste"
 
 msgid "repeated"
 msgstr "wiederholend"
@@ -18963,7 +18956,7 @@ msgid "save last directory on exit"
 msgstr "Anfangsverzeichnis beim Beenden speichern"
 
 msgid "save playlist on exit"
-msgstr "Wiedergabeliste beim Beenden speichern"
+msgstr "Playliste beim Beenden speichern"
 
 msgid "scan state"
 msgstr "Scan-Status"
@@ -19092,7 +19085,7 @@ msgid "softcam"
 msgstr "Softcam"
 
 msgid "sorting of playlists"
-msgstr "Sortierung der Wiedergabeliste"
+msgstr "Sortierung der Playliste"
 
 msgid "special (general)"
 msgstr "Spezial (allgemein)"
