@@ -4775,7 +4775,6 @@ msgid "Current settings:"
 msgstr "Configuración actual:"
 
 #
-#, fuzzy
 msgid "Current skin configuration plugin."
 msgstr "Complemento de configuración de skin actual."
 
@@ -10644,7 +10643,6 @@ msgstr ""
 "No se han encontrado archivos de configuración. Configura Oscam primero\n"
 "en /etc/tuxbox/config."
 
-#, fuzzy
 msgid ""
 "No config files found, please setup gbox first\n"
 "in /usr/keys."
@@ -17101,7 +17099,6 @@ msgstr "Te permite cambiar el número de filas mostradas."
 msgid "This allows you to set the number of digits you can input when selecting channels using number input."
 msgstr "Esto le permite establecer la cantidad de dígitos que puede ingresar al seleccionar canales usando la entrada de números."
 
-#, fuzzy
 msgid "This can take up to 20 minutes for recovery backup , 6 minutes for image backup."
 msgstr "Esto puede tardar hasta 20 minutos para la copia de recuperación o 6 minutos para la copia de imagen."
 

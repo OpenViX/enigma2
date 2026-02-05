@@ -405,7 +405,7 @@ class VIXImageManager(Screen):
 		if answer is True:
 			(self.EMMCIMG, self.MTDBOOT) = SystemInfo["canBackupEMC"] if SystemInfo["canBackupEMC"] else (None, None)
 			if self.EMMCIMG:
-				message = _("Do you want to backup the image slot or create a recovery backup?") + "\n" + _("This can take up to 20 minutes for recovery backup , 6 minutes for image backup.")
+				message = _("Do you want to backup the image slot or create a recovery backup?") + "\n" + _("This can take up to 20 minutes for recovery backup, 6 minutes for image backup.")
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, list=[(_("Image backup"), True), (_("Recovery backup"), False)])
 				ybox.setTitle(_("Backup confirmation"))
 			else:
