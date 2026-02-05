@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-12 18:28+0200\n"
+"POT-Creation-Date: 2026-02-04 20:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -848,6 +848,10 @@ msgid "%d seconds"
 msgstr ""
 
 #, python-format
+msgid "%d slots have been created on the device.\n"
+msgstr ""
+
+#, python-format
 msgid "%d wireless network found!"
 msgid_plural "%d wireless networks found!"
 msgstr[0] ""
@@ -1000,6 +1004,10 @@ msgstr ""
 
 #, python-format
 msgid "%s of %s MB"
+msgstr ""
+
+#, python-format
+msgid "%s only has %s MB free."
 msgstr ""
 
 #, python-format
@@ -1636,7 +1644,7 @@ msgid "Add"
 msgstr ""
 
 #, python-format
-msgid "Add 4 more Vu+ Multiboot USB slots after slot %s ?"
+msgid "Add 4 more Multiboot USB slots after slot %s ?"
 msgstr ""
 
 msgid "Add AutoTimer"
@@ -1982,6 +1990,12 @@ msgid "Arabic"
 msgstr ""
 
 msgid "Architektur"
+msgstr ""
+
+msgid "Archive"
+msgstr ""
+
+msgid "Archive long"
 msgstr ""
 
 msgid "Are You Sure ?"
@@ -2331,10 +2345,7 @@ msgstr ""
 msgid "Background color"
 msgstr ""
 
-msgid "Backing up eMMC partitions for USB flash ..."
-msgstr ""
-
-msgid "Backing up eMMC partitions for USB flash..."
+msgid "Backing up eMMC partitions for recovery image ..."
 msgstr ""
 
 msgid "Backing up files..."
@@ -3227,6 +3238,9 @@ msgstr ""
 msgid "Colombia"
 msgstr ""
 
+msgid "Color Theme"
+msgstr ""
+
 msgid "Color format"
 msgstr ""
 
@@ -3531,6 +3545,9 @@ msgstr ""
 msgid "Create DVD-ISO"
 msgstr ""
 
+msgid "Create Slots"
+msgstr ""
+
 msgid "Create Timer"
 msgstr ""
 
@@ -3541,6 +3558,9 @@ msgid "Create directory"
 msgstr ""
 
 msgid "Create separate radio userbouquet"
+msgstr ""
+
+msgid "Create slots for the selected device"
 msgstr ""
 
 msgid "Create:"
@@ -3621,6 +3641,9 @@ msgid "Current rotor position: "
 msgstr ""
 
 msgid "Current settings:"
+msgstr ""
+
+msgid "Current skin configuration plugin."
 msgstr ""
 
 msgid "Current status:"
@@ -4389,7 +4412,16 @@ msgstr ""
 msgid "Do you really want to stop the current recording and delete timer %s?"
 msgstr ""
 
+#, python-format
+msgid ""
+"Do you still want to flash image\n"
+"%s?"
+msgstr ""
+
 msgid "Do you want to backup eMMC slots? This will add from 1 -> 5 minutes per eMMC slot"
+msgstr ""
+
+msgid "Do you want to backup the image slot or create a recovery backup?"
 msgstr ""
 
 msgid "Do you want to burn this collection to DVD medium?"
@@ -4401,9 +4433,8 @@ msgstr ""
 msgid "Do you want to continue?"
 msgstr ""
 
-msgid ""
-"Do you want to create a full image backup?\n"
-"This can take about 6 minutes to complete."
+#, python-format
+msgid "Do you want to create a %s image backup? This can take several minutes to complete."
 msgstr ""
 
 msgid ""
@@ -4414,7 +4445,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Do you want to flash image\n"
-"%s"
+"%s?"
 msgstr ""
 
 msgid "Do you want to install plugins"
@@ -5687,6 +5718,10 @@ msgstr ""
 msgid "Für Kinder"
 msgstr ""
 
+#, python-format
+msgid "GCC version:\t%s\n"
+msgstr ""
+
 msgid "GREEN"
 msgstr ""
 
@@ -5825,6 +5860,10 @@ msgid "Gibraltar"
 msgstr ""
 
 msgid "Gioco"
+msgstr ""
+
+#, python-format
+msgid "Glibc version:\t%s\n"
 msgstr ""
 
 msgid "Go back 24 hours"
@@ -5980,30 +6019,6 @@ msgstr ""
 msgid "Gymnastics"
 msgstr ""
 
-msgid "H7/H9/H9COMBO/H10 new Model"
-msgstr ""
-
-msgid "H9 SDcard manager"
-msgstr ""
-
-msgid "H9 SDcard switch ERROR! - H9 root files not transferred to SD card"
-msgstr ""
-
-msgid "H9 SDcard switch ERROR! - already on Nand"
-msgstr ""
-
-msgid "H9 SDcard switch ERROR! - already on mmc"
-msgstr ""
-
-msgid "H9 USB switch ERROR! - H9 root files not transferred to USB"
-msgstr ""
-
-msgid "H9 USB switch ERROR! - already on USB"
-msgstr ""
-
-msgid "H9 switch Nand and SDcard"
-msgstr ""
-
 msgid "H: = Hourly / D: = Daily / W: = Weekly / M: = Monthly"
 msgstr ""
 
@@ -6119,6 +6134,9 @@ msgid "Help Screen"
 msgstr ""
 
 msgid "Help long"
+msgstr ""
+
+msgid "Help text uninitialized"
 msgstr ""
 
 msgid "Helps setting up your antenna"
@@ -6271,6 +6289,9 @@ msgstr ""
 msgid "Hungary"
 msgstr ""
 
+msgid "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 new Model"
+msgstr ""
+
 msgid "IDLE"
 msgstr ""
 
@@ -6396,6 +6417,9 @@ msgstr ""
 msgid "Image View On"
 msgstr ""
 
+msgid "Image backup"
+msgstr ""
+
 msgid "Image manager"
 msgstr ""
 
@@ -6489,18 +6513,6 @@ msgid "Infotainment"
 msgstr ""
 
 msgid "Init"
-msgstr ""
-
-msgid "Init SDcard"
-msgstr ""
-
-msgid "Init USB/SDA1"
-msgstr ""
-
-msgid "Init Zgemma H9 SDCARD - please reboot after use."
-msgstr ""
-
-msgid "Init Zgemma H9 USB/SDA1 - please reboot after use."
 msgstr ""
 
 msgid "Init modules"
@@ -8164,6 +8176,11 @@ msgid ""
 "in /etc/tuxbox/config."
 msgstr ""
 
+msgid ""
+"No config files found, please setup gbox first\n"
+"in /usr/keys."
+msgstr ""
+
 #, python-format
 msgid "No configs for specifies softcam %s."
 msgstr ""
@@ -8561,6 +8578,10 @@ msgid "Open the service list"
 msgstr ""
 
 #, python-format
+msgid "OpenSSL version:\t%s\n"
+msgstr ""
+
+#, python-format
 msgid ""
 "OpenTV EPG download completed.\n"
 "Next download: %s"
@@ -8715,6 +8736,9 @@ msgid "PREVIOUSSONG"
 msgstr ""
 
 msgid "PRIMETIME"
+msgstr ""
+
+msgid "PULSe 4K/4K Mini"
 msgstr ""
 
 msgid "PVR"
@@ -8905,6 +8929,9 @@ msgid "PiP"
 msgstr ""
 
 msgid "PiPZap"
+msgstr ""
+
+msgid "Pick an option. After selection is saved GUI should be restarted to accept the changes."
 msgstr ""
 
 msgid "Picon"
@@ -9342,7 +9369,7 @@ msgstr ""
 msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image or BLUE (Restore) to restore all deleted images."
 msgstr ""
 
-msgid "Press GREEN to enable MultiBoot!"
+msgid "Press GREEN to enable MultiBoot process"
 msgstr ""
 
 msgid "Press OK"
@@ -9394,9 +9421,6 @@ msgid "Press OK to toggle the selection."
 msgstr ""
 
 msgid "Press OK, save and exit..."
-msgstr ""
-
-msgid "Press appropiate Init to move Nand root to SDcard or USB."
 msgstr ""
 
 msgid ""
@@ -9702,6 +9726,9 @@ msgstr ""
 msgid "Really shutdown now?"
 msgstr ""
 
+msgid "Really start Kodi and stop user interface now?"
+msgstr ""
+
 #, python-format
 msgid "Really store at index %2d for current position?"
 msgstr ""
@@ -9797,13 +9824,6 @@ msgstr ""
 msgid "Recording(s) are in progress or coming up in few seconds!"
 msgstr ""
 
-#, python-format
-msgid ""
-"Recording(s) are in progress or coming up in few seconds!\n"
-"Do you still want to flash image\n"
-"%s?"
-msgstr ""
-
 msgid "Recording/media selection"
 msgstr ""
 
@@ -9815,6 +9835,9 @@ msgid "Recordings in progress: %d"
 msgstr ""
 
 msgid "Recovery Mode"
+msgstr ""
+
+msgid "Recovery backup"
 msgstr ""
 
 msgid "Red"
@@ -10049,6 +10072,10 @@ msgid "Rename entry"
 msgstr ""
 
 msgid "Rename failed!"
+msgstr ""
+
+#, python-format
+msgid "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick"
 msgstr ""
 
 msgid "Rename to:"
@@ -10315,6 +10342,10 @@ msgstr ""
 msgid "Russian Federation"
 msgstr ""
 
+#, python-format
+msgid "Rust version:\t%s\n"
+msgstr ""
+
 msgid "Rwanda"
 msgstr ""
 
@@ -10436,6 +10467,10 @@ msgid "Samba"
 msgstr ""
 
 msgid "Samba Setup"
+msgstr ""
+
+#, python-format
+msgid "Samba:\t%s\n"
 msgstr ""
 
 msgid "Same resolution as skin"
@@ -10823,6 +10858,12 @@ msgstr ""
 msgid "Select CAId"
 msgstr ""
 
+msgid "Select Device"
+msgstr ""
+
+msgid "Select Device for FORMAT!! & Creation of multiboot slots"
+msgstr ""
+
 msgid "Select EPG channel"
 msgstr ""
 
@@ -10830,6 +10871,12 @@ msgid "Select Fast DiSEqC if your aerial system supports this. If you are unsure
 msgstr ""
 
 msgid "Select Folders"
+msgstr ""
+
+msgid "Select Green to action"
+msgstr ""
+
+msgid "Select Green to start slot creation"
 msgstr ""
 
 msgid "Select Satellites"
@@ -10908,6 +10955,9 @@ msgid "Select default action of INFO button"
 msgstr ""
 
 msgid "Select destination for:"
+msgstr ""
+
+msgid "Select device and then Slot Creation"
 msgstr ""
 
 msgid "Select files/folders to backup"
@@ -11645,6 +11695,15 @@ msgstr ""
 msgid "Skiing"
 msgstr ""
 
+msgid "Skin Configuration"
+msgstr ""
+
+msgid "Skin Configurator"
+msgstr ""
+
+msgid "Skin Configurator: Restart GUI"
+msgstr ""
+
 msgid "Skin Selection Actions"
 msgstr ""
 
@@ -11727,6 +11786,12 @@ msgstr ""
 msgid "Slot %s / FBC virtual %s"
 msgstr ""
 
+msgid "Slot Manager"
+msgstr ""
+
+msgid "Slot Manager Actions"
+msgstr ""
+
 #, python-format
 msgid "Slot%s %s %s: %s - %s mode%s"
 msgstr ""
@@ -11805,6 +11870,10 @@ msgid "SoftcamCheck"
 msgstr ""
 
 msgid "Software Update"
+msgstr ""
+
+#, python-format
+msgid "Software descrambling version:\t%s %s\n"
 msgstr ""
 
 msgid "Software update"
@@ -12012,6 +12081,9 @@ msgid "Start test"
 msgstr ""
 
 msgid "Start the Chkroot initialization"
+msgstr ""
+
+msgid "Start the UBI Multiboot initialization"
 msgstr ""
 
 msgid "Start time"
@@ -12260,12 +12332,6 @@ msgstr ""
 msgid "Swap services"
 msgstr ""
 
-msgid "SwaptoNand"
-msgstr ""
-
-msgid "SwaptoSD"
-msgstr ""
-
 msgid "Swaziland"
 msgstr ""
 
@@ -12359,6 +12425,9 @@ msgstr ""
 msgid "Sync failure moving back to origin !"
 msgstr ""
 
+msgid "Synchronous"
+msgstr ""
+
 msgid "Syrian Arab Republic"
 msgstr ""
 
@@ -12407,6 +12476,9 @@ msgid "TMDb Search"
 msgstr ""
 
 msgid "TMDb search"
+msgstr ""
+
+msgid "TMDb search for current event"
 msgstr ""
 
 msgid "TMDb search for highlighted event"
@@ -12554,7 +12626,7 @@ msgid "Thailand"
 msgstr ""
 
 #, python-format
-msgid "The %s %s will reboot within 1 seconds."
+msgid "The %s %s will reboot after enabling."
 msgstr ""
 
 msgid ""
@@ -12614,9 +12686,6 @@ msgid "The backup creates a snapshot of the image exactly as it is at the curren
 msgstr ""
 
 msgid "The backup location does not have enough free space."
-msgstr ""
-
-msgid "The backup location does not have enough free space.\n"
 msgstr ""
 
 #, python-format
@@ -12695,6 +12764,10 @@ msgid ""
 "due to an error in StartEnigma.py"
 msgstr ""
 
+#, python-format
+msgid "The user interface of your %s %s will be stopped to run Kodi"
+msgstr ""
+
 msgid ""
 "The wireless LAN plugin is not installed!\n"
 "Please install it."
@@ -12740,6 +12813,9 @@ msgstr ""
 msgid "This DVD RW medium is already formatted - reformatting will erase all content on the disc."
 msgstr ""
 
+msgid "This can take up to 20 minutes for recovery backup , 6 minutes for image backup."
+msgstr ""
+
 msgid "This change will overwrite all eMMC slots."
 msgstr ""
 
@@ -12748,6 +12824,12 @@ msgstr ""
 
 #, python-format
 msgid "This field allows you to search an additional symbol rate up to %s."
+msgstr ""
+
+msgid "This file forces a reboot after the update."
+msgstr ""
+
+msgid "This file forces the update."
 msgstr ""
 
 msgid "This is a multitype tuner. Available options depend on the hardware."
@@ -12999,6 +13081,9 @@ msgstr ""
 
 #, python-format
 msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
+msgstr ""
+
+msgid "To save and apply the selected skin configuration the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
 msgstr ""
 
 msgid "To start a download select YELLOW from Image Manager main screen, then select the distro, and finally which image to download."
@@ -13285,6 +13370,10 @@ msgid "UNKNOWN"
 msgstr ""
 
 msgid "UP"
+msgstr ""
+
+#, python-format
+msgid "UPX version:\t%s\n"
 msgstr ""
 
 msgid "URL"
@@ -14103,6 +14192,9 @@ msgstr ""
 msgid "When the content has an aspect ratio of 4:3, choose whether to scale/stretch the picture."
 msgstr ""
 
+msgid "When you enter the recovery menu then it will force the image to be installed in the linux selection"
+msgstr ""
+
 msgid "Where to save temporary timeshift recordings?"
 msgstr ""
 
@@ -14348,7 +14440,7 @@ msgstr ""
 
 #, python-format
 msgid ""
-"Your %s %s is about to create a full image backup, this can take about 6 minutes to complete.\n"
+"Your %s %s is about to create a full image backup, this can take from 10 to 15  minutes to complete.\n"
 "Do you want to allow this?"
 msgstr ""
 
@@ -14588,9 +14680,6 @@ msgid "[MultiBootSelector][add USB STARTUP slots] - The USB (%s) only has %s fre
 msgstr ""
 
 msgid "[TimeShift] Restarting Timeshift!"
-msgstr ""
-
-msgid "[Timeshift] Merging records failed!"
 msgstr ""
 
 msgid "[alternative edit]"
@@ -15516,6 +15605,13 @@ msgstr ""
 msgid "rename"
 msgstr ""
 
+msgid "rename this file to 'force' to force an update without confirmation"
+msgstr ""
+
+#, python-format
+msgid "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
+msgstr ""
+
 msgid "repeat playlist"
 msgstr ""
 
@@ -16020,6 +16116,9 @@ msgstr ""
 msgid "Channel Selection"
 msgstr ""
 
+msgid "Create MultiBoot System -> will INITIALISE chosen usb device"
+msgstr ""
+
 msgid "Cron Timers"
 msgstr ""
 
@@ -16029,16 +16128,10 @@ msgstr ""
 msgid "Delete EPG Cache"
 msgstr ""
 
-msgid "Enable Chkroot MultiBoot"
-msgstr ""
-
 msgid "Fallback Configuration"
 msgstr ""
 
 msgid "Front Panel Display"
-msgstr ""
-
-msgid "H9SDroot"
 msgstr ""
 
 msgid "HDMI-CEC"
@@ -16099,6 +16192,9 @@ msgid "Skin"
 msgstr ""
 
 msgid "Skin Selection"
+msgstr ""
+
+msgid "SoftCSA Settings"
 msgstr ""
 
 msgid "Softcam Management"
@@ -16214,6 +16310,9 @@ msgid ""
 "Have you attached your USB WLAN Stick?\n"
 "\n"
 "Please choose what you want to do next."
+msgstr ""
+
+msgid "H9SDroot"
 msgstr ""
 
 msgid "Shut Down"
@@ -16511,6 +16610,9 @@ msgid "Choose the order in which items are displayed in Help windows"
 msgstr ""
 
 msgid "Choose the style of the second infobar. The 'Standard' view normally includes technical data. The 'Simple' view shows minimal technical data."
+msgstr ""
+
+msgid "Choose the target device for the slots."
 msgstr ""
 
 msgid "Choose time interval to which the graphics will be rounded off."
@@ -16861,6 +16963,12 @@ msgstr ""
 msgid "Debug to file"
 msgstr ""
 
+msgid "Decoder Release Strategy *"
+msgstr ""
+
+msgid "Decoder Start Timeout *"
+msgstr ""
+
 msgid "Deep Standby LED"
 msgstr ""
 
@@ -17182,6 +17290,9 @@ msgstr ""
 msgid "How to display the date format for date items in the About screen."
 msgstr ""
 
+msgid "How to release the hardware decoder when switching to software descrambling. 'Quick' releases immediately (faster zapping). 'Normal' performs clean shutdown first (more stable on some boxes). *Restart E2 for changes to take effect."
+msgstr ""
+
 msgid "Http(s) stream start delay"
 msgstr ""
 
@@ -17384,6 +17495,9 @@ msgid "Margin before recording (minutes)"
 msgstr ""
 
 msgid "Maximum number of days"
+msgstr ""
+
+msgid "Maximum time to wait for the incoming data and descrambling keys (CW) before starting decoder. Usually both arrive much faster and this is only for special cases. *Restart E2 for changes to take effect."
 msgstr ""
 
 msgid "Maximum total space used (MB)"
@@ -17723,6 +17837,9 @@ msgid "Select a softcam script from the available list."
 msgstr ""
 
 msgid "Select display of record icon based on 'Sref only' or 'Sref + Stream url' where applicable."
+msgstr ""
+
+msgid "Select how the descrambled data stream is processed. 'Automatic' uses asynchronous writes (lower CPU usage) with automatic fallback to synchronous if kernel AIO is not supported. 'Synchronous' forces blocking writes (stable, most compatible). *Restart E2 for changes to take effect."
 msgstr ""
 
 msgid "Select how to activate the Infobar EPG. This will affect Infobar behaviour"
@@ -18211,10 +18328,16 @@ msgstr ""
 msgid "Switch TV to correct input"
 msgstr ""
 
+msgid "Sync Mode *"
+msgstr ""
+
 msgid "Sync time using"
 msgstr ""
 
 msgid "Synchronize system time using transponder or internet."
+msgstr ""
+
+msgid "Target location"
 msgstr ""
 
 msgid "Task warning on shutdown"
@@ -18843,7 +18966,7 @@ msgstr ""
 
 msgid ""
 "Vu+ Multiboot - PLEASE WAIT WHILE INITIALISING!\n"
-"  - will take upto 5 minutes plus 5 minutes per restored eMMC slot.\n"
+"  - will take up to 5 minutes plus 5 minutes per restored eMMC slot.\n"
 "  - after installing Recovery and Slot1 image, receiver will reboot to Slot 1 setup wizard."
 msgstr ""
 
