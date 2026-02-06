@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-04 20:11+0100\n"
+"POT-Creation-Date: 2026-02-06 20:05+0100\n"
 "PO-Revision-Date: 2025-12-24 10:19+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: www.CostaBlancaTranslations.com <maria@CostaBlancaTranslations.com>\n"
@@ -5791,6 +5791,7 @@ msgstr "¿Quieres cambiar la skin predeterminada?"
 msgid "Do you want to continue?"
 msgstr "¿Qué quieres continuar?"
 
+#, python-format
 msgid "Do you want to create a %s image backup? This can take several minutes to complete."
 msgstr "¿Quieres crear una copia de seguridad de la imagen %s? Esto puede tardar varios minutos."
 
@@ -17099,7 +17100,7 @@ msgstr "Te permite cambiar el número de filas mostradas."
 msgid "This allows you to set the number of digits you can input when selecting channels using number input."
 msgstr "Esto le permite establecer la cantidad de dígitos que puede ingresar al seleccionar canales usando la entrada de números."
 
-msgid "This can take up to 20 minutes for recovery backup , 6 minutes for image backup."
+msgid "This can take up to 20 minutes for recovery backup, 6 minutes for image backup."
 msgstr "Esto puede tardar hasta 20 minutos para la copia de recuperación o 6 minutos para la copia de imagen."
 
 msgid "This change will overwrite all eMMC slots."
