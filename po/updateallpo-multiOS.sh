@@ -183,7 +183,7 @@ printf "Creating temporary file enigma2-xml.pot\n"
 export PYTHONIOENCODING=utf-8
 find $findoptions .. -name "*.xml" -exec "$python" "$xml2po" {} \+ > enigma2-xml.pot
 printf "Merging pot files to create: enigma2.pot\n"
-cat enigma2-py.pot enigma2-xml.pot | msguniq --no-wrap --no-location -o enigma2.pot -
+cat enigma2-py.pot enigma2-xml.pot | msguniq --no-wrap --no-location -s -o enigma2.pot -
 OLDIFS=$IFS
 IFS=" "
 for lang in "${languages[@]}" ; do
