@@ -534,4 +534,11 @@
 			</convert>
 		</widget>
 	</screen>
+
+<!-- SkinSelector -->
+	<screen name="SkinSelectorSummary" position="fill"> 
+		<panel name="Parent_Title" />
+		<widget source="Name" render="Label" position="20,80" size="440,150" foregroundColor="white" font="FdLcD;40" halign="center" valign="center" zPosition="2" />
+		<widget source="value" render="Label" position="20,250" size="440,50" foregroundColor="white" font="FdLcD;38" halign="center" valign="top" zPosition="2" />
+	</screen>
 </skin>
