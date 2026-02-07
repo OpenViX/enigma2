@@ -298,7 +298,7 @@
 
 	<!-- ABOUT -->
 	<screen name="AboutSummary" position="0,0" size="800,480">
-		<widget source="AboutText" render="Label" position="20,20" size="760,440" font="FdLcDLight;58" halign="center" valign="center" zPosition="2" />
+		<widget source="AboutText" render="Label" position="20,20" size="760,435" font="FdLcDLight;58" halign="center" valign="center" zPosition="2" />
 	</screen>
 
 	<!-- MESSAGEBOX -->
