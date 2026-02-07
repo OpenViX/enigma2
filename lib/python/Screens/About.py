@@ -438,9 +438,6 @@ class Devices(AboutBase):
 			[self.addColor(_("Detected devices").upper())] + (devicelist or [_("none")]) + [""] +
 			[self.addColor(_("Network servers").upper())] + (networkmountinfo or [_("none")]) + [""]))
 
-	def createSummary(self):
-		return AboutSummary
-
 
 class SystemMemoryInfo(AboutBase):
 	def __init__(self, session):
