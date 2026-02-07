@@ -723,24 +723,36 @@ class SystemNetworkInfo(AboutBase):
 
 class AboutSummary(ScreenSummary):
 	def __init__(self, session, parent):
+		self.parent = parent
+		self.refresh = parent.__class__.__name__ in ("StreamingClientsInfo",)  # refresh from parent, don't scroll
 		ScreenSummary.__init__(self, session, parent=parent)
 		self.skinName = "AboutSummary"
 		self["AboutText"] = StaticText()
-		self.aboutText = [self.clean(x) for x in parent["AboutScrollLabel"].text.split("\n")]
+		self.fetchParentText()
 		self["AboutText"].text = "\n".join(self.aboutText)
 		self.timer = eTimer()
 		self.timer.callback.append(self.update)
-		self.timer.start(3000, 1)
+		self.timer.start(10 if self.refresh else 3000, 1)
 
 	def update(self):
 		self.timer.stop()
-		if any(self.aboutText):
+		if self.refresh:
+			self.fetchParentText()
+			self.updateAboutText()
+			self.timer.start(5000, 1)
+		elif any(self.aboutText):
 			while True:  # we want the top line to always be populated
 				self.aboutText.append(self.aboutText.pop(0))
 				if self.aboutText[0]:
 					break
-			self["AboutText"].text = "\n".join(self.aboutText)
+			self.updateAboutText()
 			self.timer.start(2000, 1)
+
+	def fetchParentText(self):
+		self.aboutText = [self.clean(x) for x in self.parent["AboutScrollLabel"].text.split("\n")]
+
+	def updateAboutText(self):
+		self["AboutText"].text = "\n".join(self.aboutText)
 
 	def clean(self, x):
 		# remove colours, replace tabs with spaces, remove leading/trailing whitespace
