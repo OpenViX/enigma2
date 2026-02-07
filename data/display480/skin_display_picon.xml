@@ -27,6 +27,11 @@
 			<convert type="ClockToText"></convert>
 		</widget>
 	</screen>
+<!-- Title Panel -->
+	<screen name="Parent_Title">
+		<widget source="parent.title" render="Label" position="0,5" size="480,60" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+	</screen>
+
 <!-- Rec Panel -->
 	<screen name="MainRecordingPanel">
 		<widget source="session.RecordState" render="Pixmap" position="0,0" pixmap="/usr/share/enigma2/display/skin_default/record.png" transparent="1" alphatest="on" size="400,25" zPosition="1">
@@ -129,12 +134,12 @@
 	</screen>
 
 	<screen name="MovieContextMenuSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,110" font="FdLcD;30" halign="center" valign="center" />
+		<panel name="Parent_Title" />
 		<widget source="selected" render="Label" position="0,115" size="400,135" font="FdLcDLight;30" halign="center" valign="center" />
 	</screen>
 
 	<screen name="MovieSelectionSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,65" foregroundColor="#87CEFA" font="FdLcD;28" halign="center" valign="center" zPosition="14" />
+		<panel name="Parent_Title" />
 		<eLabel position="0,66" size="400,1" backgroundColor="white" />
 		<widget source="name" render="Label" position="0,67" size="400,138" font="FdLcD;34" halign="center" valign="center" />
 		<widget source="parent.Service" render="Label" position="0,206" size="400,46" font="FdLcD;34" halign="left" transparent="1">
@@ -207,7 +212,7 @@
 	</screen>
 <!-- menus -->
 	<screen name="MenuSummary" position="fill">
-		<widget source="parent.title" render="Label" position="top" size="*,105" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<panel name="Parent_Title" />
 		<eLabel position="top" size="*,1" backgroundColor="white" />
 		<widget source="parent.menu" render="Label" position="top" size="*,115" font="FdLcD;38" halign="center" valign="center">
 			<convert type="StringListSelection" />
@@ -215,7 +220,7 @@
 	</screen>
 <!-- Schnellstartmenue -->
 	<screen name="QuickMenuSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<panel name="Parent_Title" />
 		<eLabel position="0,87" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,88" size="400,152" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
@@ -226,7 +231,7 @@
 	</screen>
 <!-- Infopanel -->
 	<screen name="InfopanelSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<panel name="Parent_Title" />
 		<eLabel position="0,87" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,88" size="400,152" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
@@ -240,7 +245,7 @@
 	</screen>
 <!-- Servicescan -->
 	<screen name="ServiceScanSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<panel name="Parent_Title" />
 		<widget name="scan_progress" render="Progress" position="0,100" size="400,35"  borderWidth="2" />
 		<widget name="Service" position="0,150" size="400,85" font="FdLcD;38" halign="center" valign="center" />
 	</screen>
@@ -270,7 +275,7 @@
 	</screen>
 <!-- DevicesPanelSummary -->
 	<screen name="DevicesPanelSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,37" font="FdLcD;34" foregroundColor="#87CEFA" noWrap="1" halign="center" valign="top" />
+		<panel name="Parent_Title" />
 		<eLabel position="0,38" size="400,1" backgroundColor="white" />
 		<widget source="entry" render="Label" position="0,39" size="400,34" font="FdLcD;30" noWrap="1" halign="center" valign="center" transparent="1" />
 		<eLabel position="0,73" size="400,1" backgroundColor="white" />
@@ -370,7 +375,7 @@
 	</screen>
 <!-- console -->
 	<screen name="ConsoleSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<panel name="Parent_Title" />
 		<eLabel position="0,87" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,88" size="400,152" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
