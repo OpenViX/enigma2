@@ -519,5 +519,19 @@
 		<panel name="MainRecordingPanel" />
 		<panel name="SummaryClockPanel" />
 		<panel name="MainTunerInfoPanel" />
+
+<!-- NimSelection -->
+	<screen name="NimSelectionSummary" position="fill">
+		<panel name="Parent_Title" />
+		<widget source="parent.nimlist" render="Listbox" position="20,80" size="440,140" scrollbarMode="showNever">
+			<convert type="TemplatedMultiContent">
+				{"template": [
+					MultiContentEntryText(pos = (0,0), size = (440,140), flags = RT_HALIGN_CENTER|RT_VALIGN_CENTER, text = 1), # index 1 is the nim name,
+				],
+				"fonts": [gFont("FdLcD",38),],
+				"itemHeight": 140
+				}
+			</convert>
+		</widget>
 	</screen>
 </skin>
