@@ -45,8 +45,8 @@
 		<widget source="parent.title" render="Label" position="0,5" size="480,60" font="FdLcD;50" halign="center" valign="center" foregroundColor="yellow" />
 	</screen>
 
-<!-- main-->
-	<!-- menus-->
+<!-- main -->
+	<!-- menus -->
 	<screen name="MenuSummary" position="0,0" size="480,320">
 		<panel name="Parent_Title" />
 		<widget source="parent.menu" render="Label" position="0,65" size="480,85" font="FdLcD;40" halign="center" valign="center">
@@ -54,13 +54,13 @@
 		</widget>
 	</screen>
 
-	<!-- menus-->
+	<!-- menus -->
 	<screen name="MenuHorizontalSummary" position="0,0" size="480,320">
 		<widget source="title" render="Label" position="0,5" size="480,60" font="FdLcD;50" halign="center" valign="center" foregroundColor="yellow" />
 		<widget source="entry" render="Label" position="0,65" size="480,85" font="FdLcD;40" halign="center" valign="center" />
 	</screen>
 
-<!-- setup-->
+<!-- setup -->
 	<screen name="SetupSummary" position="0,0" size="480,320">
 		<widget source="SetupTitle" render="Label" position="0,5" size="480,60" font="FdLcD;45" halign="center" valign="center" foregroundColor="yellow" />
 		<widget source="SetupEntry" render="Label" position="0,65" size="480,90" font="FdLcD;40" halign="center" valign="center" />
@@ -147,7 +147,7 @@
 		<panel name="SummaryClockPanel" />
 	</screen>
 
-<!-- channelselection-->
+<!-- channelselection -->
 	<screen name="ChannelSelectionSummary" position="0,0" size="480,320">
 		<widget source="parent.ServiceEvent" render="Label" position="0,5" size="480,70" font="FdLcD;55" halign="center" valign="center" foregroundColor="yellow" >
 			<convert type="ServiceName">Name</convert>
@@ -320,7 +320,7 @@
 		<panel name="EPGSelectionSummary" />
 	</screen>
 
-<!-- messagebox-->
+<!-- messagebox -->
 	<screen name="MessageBoxSummary" position="0,0" size="480,320">
 		<widget source="parent.Text" render="Label" position="0,20" size="480,180" font="FdLcD;40" halign="center" valign="center" />
 		<widget source="parent.selectedChoice" render="Label" position="0,220" size="400,70" font="FdLcD;40" halign="center" valign="center" noWrap="1" />
@@ -339,7 +339,7 @@
 		</widget>
 	</screen>
 
-<!-- movieplayer-->
+<!-- movieplayer -->
 	<screen name="InfoBarMoviePlayerSummary" position="0,0" size="480,320">
 		<widget source="session.CurrentService" render="Label" position="0,5" size="480,120" font="FdLcD;50" halign="center" foregroundColor="yellow">
 			<convert type="ServiceName">Name</convert>
@@ -395,7 +395,7 @@
 		<panel name="Yellow_Clock_Panel" />
 	</screen>
 
-<!-- misc-->
+<!-- misc -->
 	<screen name="ScreenSummary" position="fill">
 		<widget source="Title" render="Label" position="top" size="*,100" font="FdLcD;40" halign="center" valign="center" />
 		<panel position="bottom" size="*,24" name="SummaryClockPanel" />
@@ -548,7 +548,7 @@
 			<convert type="ServicePosition">Remaining,Negate</convert>
 			<!--convert type="ServicePosition">Summary</convert-->
 		</widget>
-		<!-- Recording indicator-->
+		<!-- Recording indicator -->
 		<widget source="session.RecordState" render="FixedLabel" text="REC" position="350,0" size="50,22" halign="right" foregroundColor="#ff0000" font="FdLcD;19"  zPosition="1" noWrap="1" >
 			<convert type="ConfigEntryTest">config.usage.blinking_rec_symbol_during_recording,True,CheckSourceBoolean</convert>
 			<convert type="ConditionalShowHide">Blink</convert>
