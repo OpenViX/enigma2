@@ -29,7 +29,7 @@
 	</screen>
 <!-- Title Panel -->
 	<screen name="Parent_Title">
-		<widget source="parent.title" render="Label" position="0,5" size="480,60" font="FdLcD;38" foregroundColor="#87CEFA" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,5" size="480,60" font="FdLcD;50" foregroundColor="#87CEFA" halign="center" valign="center" />
 	</screen>
 
 <!-- Rec Panel -->
