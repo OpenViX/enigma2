@@ -390,7 +390,6 @@
 		<widget source="parent.Service" render="Label" position="241,161" size="240,100" font="FdLcD;40" halign="center" valign="bottom" noWrap="1">
 		  <convert type="MovieInfo">FileSize</convert>
 		</widget>
-		<panel name="SummaryIconsPanel" />
 		<panel name="SummaryTunerStatusPanel" />
 		<panel name="Yellow_Clock_Panel" />
 	</screen>
@@ -503,27 +502,23 @@
 		<panel name="Parent_Title" />
 		<widget source="entry" render="Label" position="0,65" size="480,90" font="FdLcD;40" halign="center" valign="center" />
 		<widget source="desc" render="Label" position="0,160" size="480,90" font="FdLcD;35" halign="center" valign="center" />
-		<panel name="SummaryIconsPanel" />
 		<panel name="SummaryClockPanel" />
 	</screen>
 	<screen name="VIXSwapSummary" position="0,0" size="480,320">
 		<panel name="Parent_Title" />
 		<widget source="parent.swapname_summary" render="Label" position="0,65" size="480,90" font="FdLcD;40" halign="center" valign="center" />
 		<widget source="parent.swapactive_summary" render="Label" position="0,160" size="480,90" font="FdLcD;35" halign="center" valign="center" />
-		<panel name="SummaryIconsPanel" />
 		<panel name="SummaryClockPanel" />
 	</screen>
 	<screen name="UpdatePluginSummary" position="0,0" size="480,320">
 		<panel name="Parent_Title" />
 		<widget source="parent.package" render="Label" position="0,65" size="480,90" font="FdLcD;40" halign="center" valign="center" />
 		<widget source="parent.status" render="Label" position="0,160" size="480,90" font="FdLcD;35" halign="center" valign="center" />
-		<panel name="SummaryIconsPanel" />
 		<panel name="SummaryClockPanel" />
 	</screen>
 	<screen name="SoftwareUpdateChangesSummary" position="0,0" size="480,320">
 		<widget source="parent.title_summary" render="Label" position="0,0" size="160,15" font="FdLcD;15" halign="left" noWrap="1" />
 		<widget source="parent.text_summary" render="Label" position="0,16" size="400,54" font="FdLcD;12" halign="left" transparent="1" />
-		<panel name="SummaryIconsPanel" />
 	</screen>
 
 	<!-- LCD screen EMC -->
