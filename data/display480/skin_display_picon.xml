@@ -524,6 +524,7 @@
 		<panel name="MainRecordingPanel" />
 		<panel name="SummaryClockPanel" />
 		<panel name="MainTunerInfoPanel" />
+	</screen>
 
 <!-- NimSelection -->
 	<screen name="NimSelectionSummary" position="fill">
