@@ -472,6 +472,7 @@
 		</widget>
 	</screen>
 
+	<!-- CommitInfo -->
 	<screen name="CommitInfoSummary" position="fill">
 		<widget source="Title" render="Label" position="40,50" size="720,100" foregroundColor="white" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
 		<widget source="commitText" render="Label" position="20,180" size="760,300" font="FdLcDLight;45" halign="center" zPosition="2" />
@@ -482,5 +483,20 @@
 		<widget source="parent.Title" render="Label" position="40,50" size="720,100" foregroundColor="white" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
 		<widget source="status_summary" render="Label" position="40,180" size="720,130" zPosition="1" font="FdLcDLight;55" halign="center" valign="center" />
 		<widget source="autostartstatus_summary" render="Label" position="40,320" size="720,140" font="FdLcDLight;50" halign="center" valign="center" transparent="1" />
+	</screen>
+
+	<!-- InputDeviceSelection -->
+	<screen name="InputDeviceSelectionSummary" position="fill">
+		<widget source="parent.Title" render="Label" position="40,50" size="720,100" foregroundColor="white" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
+		<widget source="parent.list" render="Listbox" position="40,190" size="720,160" scrollbarMode="showNever">
+			<convert type="TemplatedMultiContent">
+				{"template": [
+					MultiContentEntryText(pos = (0,0), size = (720,160), flags = RT_HALIGN_CENTER|RT_VALIGN_CENTER|RT_WRAP, text = 1), # index 1 is the interfacename
+				],
+				"fonts": [gFont("FdLcDLight",60),],
+				"itemHeight": 160
+				}
+			</convert>
+		</widget>
 	</screen>
 </skin>
