@@ -168,7 +168,7 @@ class PowerTimerEditList(Screen):
 		if len(self.list) == 0:
 			return
 		timer = self['timerlist'].getCurrent()
-		
+
 		print("[PowerTimerEditList] updateState timer", timer)
 		print("[PowerTimerEditList] updateState timer.timer", timer.timer)
 		print("[PowerTimerEditList] updateState timer.timerType", timer.timerType)
