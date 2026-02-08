@@ -211,10 +211,9 @@
 		<widget source="parent.service_summary" render="Label" position="0,101" size="400,139" font="FdLcD;55" halign="center" valign="center" transparent="1" />
 	</screen>
 <!-- menus -->
-	<screen name="MenuSummary" position="fill">
+	<screen name="MenuSummary" position="0,0" size="480,320">
 		<panel name="Parent_Title" />
-		<eLabel position="top" size="*,1" backgroundColor="white" />
-		<widget source="parent.menu" render="Label" position="top" size="*,115" font="FdLcD;38" halign="center" valign="center">
+		<widget source="parent.menu" render="Label" position="0,65" size="480,85" font="FdLcD;40" halign="center" valign="center">
 			<convert type="StringListSelection" />
 		</widget>
 	</screen>
