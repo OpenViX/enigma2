@@ -322,8 +322,8 @@
 
 <!-- messagebox -->
 	<screen name="MessageBoxSummary" position="0,0" size="480,320">
-		<widget source="parent.Text" render="Label" position="0,20" size="480,180" font="FdLcD;40" halign="center" valign="center" />
-		<widget source="parent.selectedChoice" render="Label" position="0,220" size="400,70" font="FdLcD;40" halign="center" valign="center" noWrap="1" />
+		<widget source="parent.Text" render="Label" position="0,10" size="480,230" font="FdLcD;40" halign="center" valign="center" />
+		<widget source="parent.selectedChoice" render="Label" position="0,260" size="480,50" font="FdLcD;40" halign="center" valign="center" noWrap="1" />
 	</screen>
 	<screen name="MessageBoxSimpleSummary" position="0,0" size="480,320">
 		<panel name="MessageBoxSummary" />

@@ -353,16 +353,17 @@
 		<panel name="SummaryClockPanel" />
 	</screen>
 <!-- System -->
-	<screen name="ChoiceBoxSummary" position="fill" >
-		<widget source="parent.summary_list" render="Label" position="fill" font="FdLcD;21" noWrap="1" valign="top" />
+	<screen name="ChoiceBoxSummary" position="0,0" size="480,320">
+		<panel name="Parent_Title" />
+		<widget source="parent.summary_selection" render="Label" position="10,90" size="460,150" font="FdLcD;38" halign="center" valign="center" noWrap="1"/>
 	</screen>
+<!-- messagebox -->
 	<screen name="MessageBoxSummary" position="0,0" size="480,320">
-		<widget source="parent.Text" render="Label" position="0,0" size="480,320" font="FdLcD;24" halign="center" />
-		<widget source="parent.selectedChoice" render="Label" position="0,135" size="400,28" font="FdLcD;26" foregroundColor="#F4FA58" halign="center" noWrap="1" />
+		<widget source="parent.Text" render="Label" position="0,10" size="480,230" font="FdLcD;40" halign="center" valign="center" />
+		<widget source="parent.selectedChoice" render="Label" position="0,260" size="480,50" font="FdLcD;40" halign="center" valign="center" noWrap="1" />
 	</screen>
 	<screen name="MessageBoxSimpleSummary" position="0,0" size="480,320">
-		<widget source="parent.Text" render="Label" position="0,0" size="480,320" font="FdLcD;24" halign="center" />
-		<widget source="parent.selectedChoice" render="Label" position="0,135" size="400,28" font="FdLcD;26" foregroundColor="#F4FA58" halign="center" noWrap="1" />
+		<panel name="MessageBoxSummary" />
 	</screen>
 	<screen name="AboutSummary" position="0,0" size="480,320">
 		<widget source="AboutText" render="Label" position="15,15" size="450,290" font="FdLcD;42" halign="center" valign="center" zPosition="2" />
