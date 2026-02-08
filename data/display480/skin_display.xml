@@ -441,7 +441,8 @@
 	</screen>
 
 	<screen name="ChoiceBoxSummary" position="0,0" size="480,320">
-		<widget source="parent.summary_list" render="Label" position="0,0" size="480,320" font="FdLcD;18" noWrap="1" />
+		<panel name="Parent_Title" />
+		<widget source="parent.summary_selection" render="Label" position="10,90" size="460,150" font="FdLcD;38" halign="center" valign="center" noWrap="1"/>
 	</screen>
 
 	<screen name="AboutSummary" position="0,0" size="480,320">
