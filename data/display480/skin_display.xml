@@ -396,8 +396,8 @@
 
 <!-- misc -->
 	<screen name="ScreenSummary" position="fill">
-		<widget source="Title" render="Label" position="top" size="*,100" font="FdLcD;40" halign="center" valign="center" />
-		<panel position="bottom" size="*,24" name="SummaryClockPanel" />
+		<widget source="Title" render="Label" position="0,5" size="480,60" font="FdLcD;50" halign="center" valign="center" foregroundColor="yellow" />
+		<panel name="SummaryClockPanel" />
 	</screen>
 	<screen name="WizardSummary" position="fill">
 		<widget source="text" render="Label" position="top" size="*,71" font="FdLcD;35" halign="center" />
