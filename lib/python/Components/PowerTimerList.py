@@ -25,6 +25,7 @@ class PowerTimerList(GUIComponent):
 		TIMERTYPE.REBOOT: _("Reboot"),
 		TIMERTYPE.RESTART: _("Restart GUI")
 	}
+
 	def buildTimerEntry(self, timer, processed):
 		timertype = self.timertype[timer.timerType]
 
