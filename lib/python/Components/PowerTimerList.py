@@ -15,17 +15,18 @@ class PowerTimerList(GUIComponent):
 	#  | <Service>     <Name of the Timer>  |
 	#  | <start, end>              <state>  |
 	#
+	timertype = {
+		TIMERTYPE.WAKEUP: _("Wake Up"),
+		TIMERTYPE.WAKEUPTOSTANDBY: _("Wake Up To Standby"),
+		TIMERTYPE.STANDBY: _("Standby"),
+		TIMERTYPE.AUTOSTANDBY: _("Auto Standby"),
+		TIMERTYPE.AUTODEEPSTANDBY: _("Auto Deep Standby"),
+		TIMERTYPE.DEEPSTANDBY: _("Deep Standby"),
+		TIMERTYPE.REBOOT: _("Reboot"),
+		TIMERTYPE.RESTART: _("Restart GUI")
+	}
 	def buildTimerEntry(self, timer, processed):
-		timertype = {
-			TIMERTYPE.WAKEUP: _("Wake Up"),
-			TIMERTYPE.WAKEUPTOSTANDBY: _("Wake Up To Standby"),
-			TIMERTYPE.STANDBY: _("Standby"),
-			TIMERTYPE.AUTOSTANDBY: _("Auto Standby"),
-			TIMERTYPE.AUTODEEPSTANDBY: _("Auto Deep Standby"),
-			TIMERTYPE.DEEPSTANDBY: _("Deep Standby"),
-			TIMERTYPE.REBOOT: _("Reboot"),
-			TIMERTYPE.RESTART: _("Restart GUI")
-		}[timer.timerType]
+		timertype = self.timertype[timer.timerType]
 
 		afterevent = {
 			AFTEREVENT.NONE: _("Nothing"),
