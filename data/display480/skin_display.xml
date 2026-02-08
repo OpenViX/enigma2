@@ -621,4 +621,10 @@
 		<widget source="status_summary" render="Label" position="10,90" size="460,100" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 		<widget source="autostartstatus_summary" render="Label" position="10,190" size="460,50" font="FdLcD;30" halign="center" valign="center" transparent="1" />
 	</screen>
+
+<!-- CommitInfo -->
+	<screen name="CommitInfoSummary" position="fill">
+		<panel name="Parent_Title" />
+		<widget source="commitText" render="Label" position="10,90" size="460,380" font="FdLcD;35" halign="center" zPosition="2" />
+	</screen>
 </skin>

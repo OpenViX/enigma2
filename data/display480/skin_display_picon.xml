@@ -553,4 +553,10 @@
 		<widget source="summarylangsel" render="Label" position="20,85" size="440,60" foregroundColor="white" font="FdLcD;50" halign="center" valign="top" zPosition="2" />
 		<widget name="flag" position="180,180" size="120,80" alphatest="blend" zPosition="100" scale="1" />
 	</screen>
+
+<!-- CommitInfo -->
+	<screen name="CommitInfoSummary" position="fill">
+		<panel name="Parent_Title" />
+		<widget source="commitText" render="Label" position="10,90" size="460,380" font="FdLcD;35" halign="center" zPosition="2" />
+	</screen>
 </skin>
