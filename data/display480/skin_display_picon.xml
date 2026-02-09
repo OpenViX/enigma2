@@ -17,11 +17,13 @@
 		<color color="#000000" name="WindowTitleBackground"/>
 	</windowstyle>
 	<fonts>
-		<!-- pick a funky name for the font, so we don't conflict  -->
+		<!-- pick a unique name for the font to not conflict with the GUI skin -->
 		<font filename="nmsbd.ttf" name="FdLcD" scale="100"/>
 	</fonts>
 	<colors>
-		<color name="TitleForeground" value="#87CEFA"/>
+		<!-- pick unique names for the colours to not conflict with the GUI skin -->
+		<color name="FdLcdBlue" value="#87CEFA"/>
+		<color name="FdLcdTitleForeground" value="#87CEFA" />
 	</colors>
 
 <!-- template V1.6.8 17.10.2015-->
@@ -32,7 +34,7 @@
 	</screen>
 <!-- Title Panel -->
 	<screen name="Parent_Title">
-		<widget source="parent.title" render="Label" position="0,5" size="480,60" font="FdLcD;50" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,5" size="480,60" font="FdLcD;50" foregroundColor="FdLcdTitleForeground" halign="center" valign="center" />
 	</screen>
 
 <!-- Rec Panel -->
@@ -99,11 +101,11 @@
 			<convert type="EventTime">Progress</convert>
 		</widget>
 		<eLabel position="0,112" size="400,1" backgroundColor="#BDBDBD" />
-		<widget source="parent.Event" render="Label" position="0,50" size="400,38" font="FdLcD;38" foregroundColor="TitleForeground" transparent="1" valign="center" halign="left">
+		<widget source="parent.Event" render="Label" position="0,50" size="400,38" font="FdLcD;38" foregroundColor="FdLcdBlue" transparent="1" valign="center" halign="left">
 			<convert type="EventTime">StartTime</convert>
 			<convert type="ClockToText"></convert>
 		</widget>
-		<widget source="parent.Event" render="Label" position="0,50" size="400,38" font="FdLcD;38" foregroundColor="TitleForeground" transparent="1" valign="center" halign="right">
+		<widget source="parent.Event" render="Label" position="0,50" size="400,38" font="FdLcD;38" foregroundColor="FdLcdBlue" transparent="1" valign="center" halign="right">
 			<convert type="EventTime">EndTime</convert>
 			<convert type="ClockToText"></convert>
 		</widget>
@@ -180,11 +182,11 @@
 			<convert type="EventTime">Progress</convert>
 		</widget>
 		<eLabel position="0,112" size="400,1" backgroundColor="#BDBDBD" />
-		<widget source="parent.ServiceEvent" render="Label" position="0,50" size="400,38" font="FdLcD;38" foregroundColor="TitleForeground" transparent="1" valign="center" halign="left">
+		<widget source="parent.ServiceEvent" render="Label" position="0,50" size="400,38" font="FdLcD;38" foregroundColor="FdLcdBlue" transparent="1" valign="center" halign="left">
 			<convert type="EventTime">StartTime</convert>
 			<convert type="ClockToText"></convert>
 		</widget>
-		<widget source="parent.ServiceEvent" render="Label" position="0,50" size="400,38" font="FdLcD;38" foregroundColor="TitleForeground" transparent="1" valign="center" halign="right">
+		<widget source="parent.ServiceEvent" render="Label" position="0,50" size="400,38" font="FdLcD;38" foregroundColor="FdLcdBlue" transparent="1" valign="center" halign="right">
 			<convert type="EventTime">EndTime</convert>
 			<convert type="ClockToText"></convert>
 		</widget>
@@ -195,7 +197,7 @@
 	</screen>
 <!-- RadioChannelselection  -->
 	<screen name="ChannelSelectionRadioSummary" position="0,0" size="480,320">
-		<widget source="session.CurrentService" render="Label" position="0,0" size="400,40" foregroundColor="TitleForeground" font="FdLcD;38" halign="center">
+		<widget source="session.CurrentService" render="Label" position="0,0" size="400,40" foregroundColor="FdLcdTitleForeground" font="FdLcD;38" halign="center">
 			<convert type="ServiceName">Name</convert>
 		</widget>
 		<widget source="parent.RdsDecoder" render="Label" position="0,45"  size="400,125" font="FdLcD;37" halign="center" valign="center">
@@ -228,7 +230,7 @@
 	</screen>
 <!-- Metrix-Menu -->
 	<screen name="MainSettingsViewSummary" position="0,0" size="480,320">
-		<widget source="parent.titleText" render="Label" position="0,0" size="400,178" font="FdLcD;35" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget source="parent.titleText" render="Label" position="0,0" size="400,178" font="FdLcD;35" foregroundColor="FdLcdTitleForeground" halign="center" valign="center" />
 		<panel name="SummaryClockPanel" />
 	</screen>
 <!-- Infopanel -->
@@ -239,7 +241,7 @@
 	</screen>
 <!-- setup -->
 	<screen name="SetupSummary" position="fill">
-		<widget source="SetupTitle" render="Label" position="top" size="*,85" font="FdLcD;38" foregroundColor="TitleForeground" halign="left"  valign="center" />
+		<widget source="SetupTitle" render="Label" position="top" size="*,85" font="FdLcD;38" foregroundColor="FdLcdTitleForeground" halign="left"  valign="center" />
 		<eLabel position="top" size="*,1" backgroundColor="white" />
 		<widget source="SetupEntry" render="Label" position="top" size="*,95" font="FdLcD;25" halign="left" valign="center" />
 		<eLabel position="top" size="*,1" backgroundColor="white" />
@@ -253,14 +255,14 @@
 	</screen>
 <!-- Network -->
 	<screen name="NetworkServicesSummary" position="0,0" size="480,320">
-		<widget source="title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget source="title" render="Label" position="0,0" size="400,85" font="FdLcD;38" foregroundColor="FdLcdTitleForeground" halign="center" valign="center" />
 		<eLabel position="0,87" size="400,1" backgroundColor="white" />
 		<widget source="status_summary" render="Label" position="0,90" size="400,100" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 		<widget source="autostartstatus_summary" render="Label" position="0,190" size="400,50" font="FdLcD;30" halign="center" valign="center" transparent="1" />
 	</screen>
 <!-- misc -->
 	<screen name="ScreenSummary" position="0,0" size="480,320">
-		<widget source="Title" render="Label" position="0,0" size="400,178" font="FdLcD;38" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget source="Title" render="Label" position="0,0" size="400,178" font="FdLcD;38" foregroundColor="FdLcdTitleForeground" halign="center" valign="center" />
 		<panel name="SummaryClockPanel" />
 	</screen>
 	<screen name="WizardSummary" position="fill">
@@ -332,26 +334,26 @@
 	</screen>
 
 	<screen name="EPGSelectionSummary" position="0,0" size="480,320">
-		<widget source="parent.Service" render="Label" position="0,0" size="400,38" foregroundColor="TitleForeground" font="FdLcD;34" transparent="1" halign="center" noWrap="1" >
+		<widget source="parent.Service" render="Label" position="0,0" size="400,38" foregroundColor="FdLcdTitleForeground" font="FdLcD;34" transparent="1" halign="center" noWrap="1" >
 			<convert type="ServiceName">Name</convert>
 		</widget>
 		<eLabel position="0,38" size="400,1" backgroundColor="white" />
 		<widget source="parent.Event" render="Label" position="0,40" size="400,160" font="FdLcD;36" halign="center" valign="center" >
 			<convert type="EventName">Name</convert>
 		</widget>
-		<widget source="parent.Event" render="Label" position="0,202" size="400,38" font="FdLcD;38" foregroundColor="TitleForeground" transparent="1" valign="center" halign="left">
+		<widget source="parent.Event" render="Label" position="0,202" size="400,38" font="FdLcD;38" foregroundColor="FdLcdTitleForeground" transparent="1" valign="center" halign="left">
 			<convert type="EventTime">StartTime</convert>
 			<convert type="ClockToText"></convert>
 		</widget>
 		<eLabel position="0,201" size="400,1" backgroundColor="white" />
-		<widget source="parent.Event" render="Label" position="0,202" size="400,38" font="FdLcD;38" foregroundColor="TitleForeground" transparent="1" valign="center" halign="right">
+		<widget source="parent.Event" render="Label" position="0,202" size="400,38" font="FdLcD;38" foregroundColor="FdLcdTitleForeground" transparent="1" valign="center" halign="right">
 			<convert type="EventTime">EndTime</convert>
 			<convert type="ClockToText"></convert>
 		</widget>
 	</screen>
 <!-- IMDbLCDScreen -->
 	<screen name="IMDbLCDScreen" position="0,0" size="480,320">
-		<widget name="headline"  position="0,0" size="400,178" font="FdLcD;35" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget name="headline"  position="0,0" size="400,178" font="FdLcD;35" foregroundColor="FdLcdTitleForeground" halign="center" valign="center" />
 		<panel name="SummaryClockPanel" />
 	</screen>
 <!-- System -->
@@ -372,7 +374,7 @@
 	</screen>
 <!-- LocationBox_summary -->
 	<screen name="LocationBoxSummary" position="0,0" size="480,320">
-		<widget source="parent.text" render="Label" position="0,0" size="400,178" font="FdLcD;40" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget source="parent.text" render="Label" position="0,0" size="400,178" font="FdLcD;40" foregroundColor="FdLcdBlue" halign="center" valign="center" />
 		<panel name="SummaryClockPanel" />
 	</screen>
 <!-- console -->
@@ -393,31 +395,31 @@
 <!-- PowerTimerEditListSummary -->
 	<screen name="PowerTimerEditListSummary" position="0,0" size="480,320">
 		<panel name="Parent_Title" />
-		<widget source="timertype" render="Label" position="10,110" size="460,40" font="FdLcD;38" foregroundColor="TitleForeground" noWrap="1" />
+		<widget source="timertype" render="Label" position="10,110" size="460,40" font="FdLcD;38" foregroundColor="FdLcdBlue" noWrap="1" />
 		<widget source="time" render="Label" position="10,163" size="460,40" font="FdLcD;34" transparent="1" />
 		<widget source="duration" render="Label" position="10,215" size="460,34" font="FdLcD;32" halign="left" transparent="1" />
 		<widget source="state" render="Label" position="10,215" size="460,34" font="FdLcD;32" halign="right" transparent="1" />
 	</screen>
 <!-- TimerLog_summary -->
 	<screen name="TimerLogSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,30" font="FdLcD;28" foregroundColor="TitleForeground" halign="center" noWrap="1" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,30" font="FdLcD;28" foregroundColor="FdLcdBlue" halign="center" noWrap="1" />
 		<eLabel position="0,31" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,32" size="400,208" font="FdLcD;26" transparent="1" halign="center" valign="center" />
 	</screen>
 <!-- AutoTimer -->
 	<screen name="AutoTimerOverviewSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,38" font="FdLcD;34" foregroundColor="TitleForeground" halign="center" noWrap="1" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,38" font="FdLcD;34" foregroundColor="FdLcdTitleForeground" halign="center" noWrap="1" />
 		<eLabel position="0,42" size="400,1" backgroundColor="white" />
 		<widget source="entry" render="Label" position="0,45" size="400,197" font="FdLcD;42" transparent="1" halign="center" valign="center" />
 	</screen>
 <!-- SoftwareUpdate -->
 	<screen name="UpdatePluginSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,32" font="FdLcD;28" foregroundColor="TitleForeground" halign="center" noWrap="1" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,32" font="FdLcD;28" foregroundColor="FdLcdTitleForeground" halign="center" noWrap="1" />
 		<widget source="parent.package" render="Label" position="0,33" size="400,174" font="FdLcD;33" halign="center" valign="center" />
 		<widget source="parent.status" render="Label" position="0,208" size="400,32" font="FdLcD;28" halign="left" transparent="1" />
 	</screen>
 	<screen name="SoftwareUpdateChangesSummary" position="0,0" size="480,320">
-		<widget source="parent.title_summary" render="Label" position="0,0" size="400,26" font="FdLcD;24" foregroundColor="TitleForeground" halign="center" noWrap="1" />
+		<widget source="parent.title_summary" render="Label" position="0,0" size="400,26" font="FdLcD;24" foregroundColor="FdLcdTitleForeground" halign="center" noWrap="1" />
 		<widget source="parent.text_summary" render="Label" position="0,28" size="400,212" font="FdLcD;24" halign="left" transparent="1" />
 	</screen>
 	<screen name="WizardSummary" position="0,0" size="480,320">
@@ -438,32 +440,32 @@
 	</screen>
 <!-- Neu -->
 	<screen name="BackupSelectionSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="FdLcdTitleForeground" halign="center" valign="center" />
 		<eLabel position="0,106" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,107" size="400,133" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
 	<screen name="RestoreScreenSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="FdLcdTitleForeground" halign="center" valign="center" />
 		<eLabel position="0,106" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,107" size="400,133" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
 	<screen name="installedPluginsSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="FdLcdTitleForeground" halign="center" valign="center" />
 		<eLabel position="0,106" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,107" size="400,133" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
 	<screen name="RestartNetworkSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="FdLcdTitleForeground" halign="center" valign="center" />
 		<eLabel position="0,106" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,107" size="400,133" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
 	<screen name="RestorePluginsSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="FdLcdTitleForeground" halign="center" valign="center" />
 		<eLabel position="0,106" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,107" size="400,133" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
 	<screen name="RestoreMenuSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,105" font="FdLcD;38" foregroundColor="FdLcdTitleForeground" halign="center" valign="center" />
 		<eLabel position="0,106" size="400,1" backgroundColor="white" />
 		<widget source="parent.summary_description" render="Label" position="0,107" size="400,133" zPosition="1" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
@@ -490,7 +492,7 @@
 	</screen>
 <!-- EMC Screen -->
 	<screen name="EMCSelectionSummary" position="0,0" size="480,320">
-		<widget source="parent.title" render="Label" position="0,0" size="400,72" font="FdLcD;32" foregroundColor="TitleForeground" halign="center" valign="center" />
+		<widget source="parent.title" render="Label" position="0,0" size="400,72" font="FdLcD;32" foregroundColor="FdLcdTitleForeground" halign="center" valign="center" />
 		<eLabel position="0,74" size="400,1" backgroundColor="white" />
 		<widget source="parent.Service" render="Label" position="0,74" size="400,131" font="FdLcD;34" halign="center" valign="center">
 			<convert type="ServiceName">Name</convert>
