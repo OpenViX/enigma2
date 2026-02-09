@@ -168,8 +168,6 @@ public:
 	void removeCaHandler();
 	bool isCiConnected();
 	void allocatePVRChannel();
-	bool isCiConnected();
-	bool isPmtReady() { return m_pmt_ready; }
 private:
 	bool m_have_cached_program;
 	program m_cached_program;
