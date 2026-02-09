@@ -121,7 +121,6 @@ class ServiceInfo(Screen):
 			"left": self["infolist"].pageUp
 		}, -1)
 
-		
 		self.onChangedEntry = []
 
 		self.setTitle(_("Service info"))
