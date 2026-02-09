@@ -652,4 +652,9 @@
 			</convert>
 		</widget>
 	</screen>
+
+<!-- ServiceInfo -->
+	<screen name="ServiceInfoSummary" position="fill">
+		<widget source="info" render="Label" position="10,10" size="460,300" font="FdLcD;32" noWrap="1" />
+	</screen>
 </skin>
