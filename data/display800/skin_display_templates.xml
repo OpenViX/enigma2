@@ -512,4 +512,12 @@
 		<panel name="LCDTitle" />
 		<widget source="parent.summary_description" render="Label" position="20,140" size="720,320" font="FdLcD;54" />
 	</screen>
+
+<!-- UpdatePlugin -->
+	<screen name="UpdatePluginSummary" position="fill">
+		<panel name="LCDTitle" />
+		<widget source="parent.package" render="Label" position="40,200" size="720,160" font="FdLcDLight;60" halign="center" valign="center" />
+		<widget source="parent.status" render="Label" position="20,340" size="760,120" font="FdLcD;54" halign="center" valign="center" />
+		<panel name="SummaryClockPanel" />
+	</screen>
 </skin>
