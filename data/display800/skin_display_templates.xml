@@ -28,7 +28,7 @@
 		</widget>
 	</screen>
 	<screen name="LCDInfoBarProgramName">
-		<widget source="session.Event_Now" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" foregroundColor="white" halign="center" valign="top" zPosition="2">
+		<widget source="session.Event_Now" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" valign="top" zPosition="2">
 			<convert type="EventName">Name</convert>
 		</widget>
 	</screen>
@@ -265,7 +265,7 @@
 	</screen>
 
 	<!-- CHOICEBOX -->
-	<screen name="ChoiceBoxSummary" position="0,0" size="800,480">
+	<screen name="ChoiceBoxSummary" position="fill">
 		<panel name="LCDTitle" />
 		<widget source="parent.summary_selection" render="Label" position="40,200" size="720,160" foregroundColor="white" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" />
 	</screen>
@@ -286,7 +286,7 @@
 	</screen>
 
 	<!-- MENU -->
-	<screen name="MenuSummary" position="0,0" size="800,480"> 
+	<screen name="MenuSummary" position="fill"> 
 		<panel name="LCDTitle" />
 		<widget source="parent.menu" render="Label" position="40,200" size="720,160" foregroundColor="white" font="FdLcDLight;65" halign="center" valign="top" zPosition="2">
 			<convert type="StringListSelection" />
@@ -294,21 +294,21 @@
 	</screen>
 
 	<!-- ABOUT -->
-	<screen name="AboutSummary" position="0,0" size="800,480">
+	<screen name="AboutSummary" position="fill">
 		<widget source="AboutText" render="Label" position="20,20" size="760,435" font="FdLcDLight;58" halign="center" valign="center" zPosition="2" />
 	</screen>
 
 	<!-- MESSAGEBOX -->
-	<screen name="MessageBoxSummary" position="0,0" size="800,480"> 
+	<screen name="MessageBoxSummary" position="fill"> 
 		<widget source="parent.Text" render="Label" position="40,50" size="720,310" foregroundColor="white" font="FdLcD;70" halign="center" valign="center" zPosition="2" />
 		<widget source="parent.selectedChoice" render="Label" position="40,380" size="720,70" foregroundColor="white" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" />
 	</screen>
-	<screen name="MessageBoxSimpleSummary" position="0,0" size="800,480"> 
+	<screen name="MessageBoxSimpleSummary" position="fill"> 
 		<panel name="MessageBoxSummary" />
 	</screen>
 
 	<!-- MOVIE SELECTION -->
-	<screen name="MovieSelectionSummary" position="0,0" size="800,480"> 
+	<screen name="MovieSelectionSummary" position="fill"> 
 		<panel name="LCDTitle" />
 		<widget source="name" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" foregroundColor="white" halign="center" valign="top" zPosition="2" />
 		<widget source="parent.Service" render="Label" position="40,400" size="320,70" font="FdLcD;60" foregroundColor="white" halign="left" valign="center">
@@ -319,13 +319,13 @@
 			<convert type="ClockToText">AsLength</convert>
 		</widget>
 	</screen>
-	<screen name="MovieContextMenuSummary" position="0,0" size="800,480">
+	<screen name="MovieContextMenuSummary" position="fill">
 		<panel name="LCDTitle" />
 		<widget source="selected" render="Label" position="40,270" size="720,200" font="FdLcDLight;60" halign="center" valign="top" />
 	</screen>
 
 	<!-- MOVIE PLAYER -->
-	<screen name="InfoBarMoviePlayerSummary" position="0,0" size="800,480"> 
+	<screen name="InfoBarMoviePlayerSummary" position="fill"> 
 		<widget source="session.CurrentService" render="Label" position="40,90" size="720,260" font="FdLcD;75" foregroundColor="white" halign="center" valign="center" zPosition="2">
 			<convert type="ServiceName">Name</convert>
 		</widget>
@@ -345,7 +345,7 @@
 		</widget>
 	</screen>
 
-	<screen name="CatchupPlayerSummary" position="0,0" size="800,480" resolution="800,480"> 
+	<screen name="CatchupPlayerSummary" position="fill"> 
 		<widget source="session.CurrentService" render="Label" position="40,90" size="720,260" font="FdLcD;75" foregroundColor="white" halign="center" valign="center" zPosition="2">
 			<convert type="ServiceName">Name</convert>
 		</widget>
@@ -358,34 +358,34 @@
 	</screen>
 
 	<!-- NUMBERZAP -->
-	<screen name="NumberZapSummary" position="0,0" size="800,480">
+	<screen name="NumberZapSummary" position="fill">
 		<widget source="parent.servicename_summary" render="Label" position="40,50" size="720,110" foregroundColor="white" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
 		<widget source="parent.number_summary" render="Label" position="40,190" size="720,250" foregroundColor="white" font="FdLcD;90" halign="center" valign="center" zPosition="2" />
 	</screen>
 
 	<!-- PLUGIN BROWSER -->
-	<screen name="PluginBrowserSummary" position="0,0" size="800,480"> 
+	<screen name="PluginBrowserSummary" position="fill"> 
 		<panel name="LCDTitle" />
-		<widget source="entry" render="Label" position="40,200" size="720,160" foregroundColor="white" font="FdLcDLight;65" halign="center" valign="top" zPosition="2" />
-		<widget source="desc" render="Label" position="40,360" size="720,160" foregroundColor="white" font="FdLcDLight;65" halign="center" valign="top" zPosition="2" />
+		<widget source="entry" render="Label" position="40,150" size="720,80" foregroundColor="white" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" noWrap="1" />
+		<widget source="desc" render="Label" position="40,260" size="720,200" foregroundColor="white" font="FdLcDLight;54" halign="center" valign="top" zPosition="2" />
 	</screen>
 
 	<!-- SETUP -->
-	<screen name="SetupSummary" position="0,0" size="800,480"> 
+	<screen name="SetupSummary" position="fill"> 
 		<widget source="SetupTitle" render="Label" position="40,50" size="720,100" foregroundColor="white" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
 		<widget source="SetupEntry" render="Label" position="40,190" size="720,160" foregroundColor="white" font="FdLcDLight;65" halign="center" valign="center" zPosition="2" />
 		<widget source="SetupValue" render="Label" position="40,380" size="720,70" foregroundColor="white" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" />
 	</screen>
 
 	<!-- SkinSelector -->
-	<screen name="SkinSelectorSummary" position="0,0" size="800,480"> 
+	<screen name="SkinSelectorSummary" position="fill"> 
 		<panel name="LCDTitle" />
 		<widget source="Name" render="Label" position="40,190" size="720,160" foregroundColor="white" font="FdLcDLight;65" halign="center" valign="center" zPosition="2" />
 		<widget source="value" render="Label" position="40,380" size="720,70" foregroundColor="white" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" />
 	</screen>
 
 	<!-- STANDBY -->
-	<screen name="StandbySummary" position="0,0" size="800,480"> 
+	<screen name="StandbySummary" position="fill"> 
 		<widget source="global.CurrentTime" render="Label" position="40,40" size="720,110" font="FdLcD;100" foregroundColor="white" halign="center" valign="center" zPosition="1">
 			<convert type="ClockToText">ShortDate</convert>
 		</widget>
@@ -398,18 +398,18 @@
 	</screen>
 
 	<!-- ET PORTAL -->
-	<screen name="EtPortalScreenSummary" position="0,0" size="800,480">
+	<screen name="EtPortalScreenSummary" position="fill">
 		<eLabel text="EtPortal" position="15,20" foregroundColor="white" size="670,120" font="FdLcD;70" halign="center" valign="top" noWrap="1" />
 		<widget source="parent.label" render="Label" position="white" size="670,200" font="FdLcD;60" halign="center" valign="top" />
 	</screen>
 
 	<!-- misc -->
-	<screen name="ScreenSummary" position="0,0" size="800,480"> 
+	<screen name="ScreenSummary" position="fill"> 
 		<widget source="Title" render="Label" position="40,190" size="720,200" font="FdLcD;60" halign="center" valign="top" />
 	</screen>
 
 	<!-- Servicescan -->
-	<screen name="ServiceScanSummary" position="0,0" size="800,480">
+	<screen name="ServiceScanSummary" position="fill">
 		<widget name="Title" render="Label" position="40,80" size="720,90" font="FdLcD;70" halign="center" valign="center" />
 		<widget name="scan_progress" position="40,400" size="720,25" borderWidth="2" foregroundColor="white" />
 		<widget name="Service" position="70,220" size="720,170" font="FdLcD;50" transparent="1" />
@@ -419,7 +419,7 @@
 	</screen>
 
 	<!-- TimerEditListSummary -->
-	<screen name="TimerEditListSummary" position="0,0" size="800,480">
+	<screen name="TimerEditListSummary" position="fill">
 		<panel name="LCDTitle" />
 		<widget source="service" render="Label" position="0,140" size="e,70" font="FdLcD;65" halign="center" valign="center" noWrap="1" />
 		<widget source="name" render="Label" position="0,230" size="e,60" font="FdLcD;50" halign="center" valign="center" />
@@ -429,7 +429,7 @@
 	</screen>
 
 	<!-- LanguageSelection -->
-	<screen name="LanguageSelectionSummary" position="0,0" size="800,480">
+	<screen name="LanguageSelectionSummary" position="fill">
 		<panel name="LCDTitle" />
 		<widget source="summarylangsel" render="Label" position="40,160" size="720,160" foregroundColor="white" font="FdLcDLight;65" halign="center" valign="top" zPosition="2" />
 		<widget name="flag" position="310,320" size="180,120" alphatest="blend" zPosition="100" scale="1" />
@@ -492,15 +492,15 @@
 	<!-- PowerTimerEditList -->
 	<screen name="PowerTimerEditListSummary" position="fill">
 		<panel name="LCDTitle" />
-		<widget source="timertype" render="Label" position="20,150" size="760,70" font="FdLcD;60" noWrap="1" />
-		<widget source="time" render="Label" position="20,240" size="760,60" font="FdLcD;54" transparent="1" />
-		<widget source="duration" render="Label" position="20,320" size="760,60" font="FdLcD;50" halign="left" transparent="1" />
-		<widget source="state" render="Label" position="20,320" size="760,60" font="FdLcD;50" halign="right" transparent="1" />
+		<widget source="timertype" render="Label" position="40,170" size="720,70" font="FdLcDLight;60" noWrap="1" />
+		<widget source="time" render="Label" position="40,270" size="720,60" font="FdLcDLight;54" transparent="1" />
+		<widget source="duration" render="Label" position="40,360" size="720,60" font="FdLcDLight;50" halign="left" transparent="1" />
+		<widget source="state" render="Label" position="40,360" size="720,60" font="FdLcDLight;50" halign="right" transparent="1" />
 	</screen>
 
 	<!-- ServiceInfo -->
 	<screen name="ServiceInfoSummary" position="fill">
-		<widget source="info" render="Label" position="20,20" size="760,440" font="FdLcD;48" noWrap="1" />
+		<widget source="info" render="Label" position="20,20" size="760,440" font="FdLcDLight;48" noWrap="1" />
 	</screen>
 
 	<!-- EventView -->
@@ -510,14 +510,20 @@
 
 	<screen name="EventViewSimpleSummary" position="fill">
 		<panel name="LCDTitle" />
-		<widget source="parent.summary_description" render="Label" position="20,140" size="720,320" font="FdLcD;54" />
+		<widget source="parent.summary_description" render="Label" position="20,140" size="720,320" font="FdLcDLight;54" />
 	</screen>
 
 <!-- UpdatePlugin -->
 	<screen name="UpdatePluginSummary" position="fill">
 		<panel name="LCDTitle" />
-		<widget source="parent.package" render="Label" position="40,200" size="720,160" font="FdLcDLight;60" halign="center" valign="center" />
-		<widget source="parent.status" render="Label" position="20,340" size="760,120" font="FdLcD;54" halign="center" valign="center" />
+		<widget source="parent.package" render="Label" position="40,200" size="720,160" font="FdLcDLight;65" halign="center" valign="top" />
+		<widget source="parent.status" render="Label" position="20,340" size="760,120" font="FdLcDLight;54" halign="center" valign="center" />
 		<panel name="SummaryClockPanel" />
+	</screen>
+
+<!-- AutoTimerOverview -->
+	<screen name="AutoTimerOverviewSummary" position="fill">
+		<panel name="LCDTitle" />
+        <widget source="entry" render="Label" position="20,200" size="720,260" font="FdLcDLight;54" halign="center" transparent="1" zPosition="1" />
 	</screen>
 </skin>
