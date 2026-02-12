@@ -54,7 +54,7 @@
 		</widget>
 	</screen>
 	<screen name="LCDInfoBarProgramName">
-		<widget source="session.Event_Now" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" valign="top" zPosition="2">
+		<widget source="session.Event_Now" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" zPosition="2">
 			<convert type="EventName">Name</convert>
 		</widget>
 	</screen>
@@ -93,7 +93,7 @@
 		</widget>
 	</screen>
 	<screen name="LCDChannelSelectionProgramName">
-		<widget source="parent.ServiceEvent" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" valign="top" zPosition="2">
+		<widget source="parent.ServiceEvent" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" zPosition="2">
 			<convert type="EventName">Name</convert>
 		</widget>
 	</screen>
@@ -121,7 +121,7 @@
 		</widget>
 	</screen>
 	<screen name="LCDEPGProgramName">
-		<widget source="parent.Event" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" valign="top" zPosition="2">
+		<widget source="parent.Event" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" zPosition="2">
 			<convert type="EventName">Name</convert>
 		</widget>
 	</screen>
@@ -293,7 +293,7 @@
 	<!-- CHOICEBOX -->
 	<screen name="ChoiceBoxSummary" position="fill">
 		<panel name="LCDTitle" />
-		<widget source="parent.summary_selection" render="Label" position="40,200" size="720,160" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" />
+		<widget source="parent.summary_selection" render="Label" position="40,200" size="720,160" font="FdLcDLight;60" halign="center" zPosition="2" />
 	</screen>
 
 	<!-- IMDB -->
@@ -314,20 +314,20 @@
 	<!-- MENU -->
 	<screen name="MenuSummary" position="fill"> 
 		<panel name="LCDTitle" />
-		<widget source="parent.menu" render="Label" position="40,200" size="720,160" font="FdLcDLight;65" halign="center" valign="top" zPosition="2">
+		<widget source="parent.menu" render="Label" position="40,200" size="720,160" font="FdLcDLight;65" halign="center" zPosition="2">
 			<convert type="StringListSelection" />
 		</widget>
 	</screen>
 
 	<!-- ABOUT -->
 	<screen name="AboutSummary" position="fill">
-		<widget source="AboutText" render="Label" position="20,20" size="760,435" font="FdLcDLight;58" halign="center" valign="center" zPosition="2" />
+		<widget source="AboutText" render="Label" position="20,20" size="760,435" font="FdLcDLight;52" halign="center" valign="center" zPosition="2" />
 	</screen>
 
 	<!-- MESSAGEBOX -->
 	<screen name="MessageBoxSummary" position="fill"> 
 		<widget source="parent.Text" render="Label" position="40,50" size="720,310" font="FdLcD;70" halign="center" valign="center" zPosition="2" />
-		<widget source="parent.selectedChoice" render="Label" position="40,380" size="720,70" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" />
+		<widget source="parent.selectedChoice" render="Label" position="40,380" size="720,70" font="FdLcDLight;60" halign="center" zPosition="2" />
 	</screen>
 	<screen name="MessageBoxSimpleSummary" position="fill"> 
 		<panel name="MessageBoxSummary" />
@@ -336,7 +336,7 @@
 	<!-- MOVIE SELECTION -->
 	<screen name="MovieSelectionSummary" position="fill"> 
 		<panel name="LCDTitle" />
-		<widget source="name" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" />
+		<widget source="name" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" zPosition="2" />
 		<widget source="parent.Service" render="Label" position="40,400" size="320,70" font="FdLcD;60" halign="left" valign="center">
 			<convert type="MovieInfo">FileSize</convert>
 		</widget>
@@ -347,7 +347,7 @@
 	</screen>
 	<screen name="MovieContextMenuSummary" position="fill">
 		<panel name="LCDTitle" />
-		<widget source="selected" render="Label" position="40,270" size="720,200" font="FdLcDLight;60" halign="center" valign="top" />
+		<widget source="selected" render="Label" position="40,270" size="720,200" font="FdLcDLight;60" halign="center" />
 	</screen>
 
 	<!-- MOVIE PLAYER -->
@@ -392,22 +392,22 @@
 	<!-- PLUGIN BROWSER -->
 	<screen name="PluginBrowserSummary" position="fill"> 
 		<panel name="LCDTitle" />
-		<widget source="entry" render="Label" position="40,150" size="720,80" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" noWrap="1" />
-		<widget source="desc" render="Label" position="40,260" size="720,200" font="FdLcDLight;54" halign="center" valign="top" zPosition="2" />
+		<widget source="entry" render="Label" position="40,150" size="720,80" font="FdLcDLight;60" halign="center" zPosition="2" noWrap="1" />
+		<widget source="desc" render="Label" position="40,260" size="720,200" font="FdLcDLight;54" halign="center" zPosition="2" />
 	</screen>
 
 	<!-- SETUP -->
 	<screen name="SetupSummary" position="fill"> 
-		<widget source="SetupTitle" render="Label" position="40,50" size="720,100" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
-		<widget source="SetupEntry" render="Label" position="40,190" size="720,160" font="FdLcDLight;65" halign="center" valign="center" zPosition="2" />
-		<widget source="SetupValue" render="Label" position="40,380" size="720,70" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" />
+		<widget source="SetupTitle" render="Label" position="20,40" size="720,90" font="FdLcD;75" halign="center" valign="center" zPosition="2" noWrap="1" />
+		<widget source="SetupEntry" render="Label" position="40,200" size="720,160" font="FdLcDLight;65" halign="center" zPosition="2" noWrap="1" />
+		<widget source="SetupValue" render="Label" position="40,360" size="720,70" font="FdLcDLight;60" halign="center" zPosition="2" noWrap="1" />
 	</screen>
 
 	<!-- SkinSelector -->
 	<screen name="SkinSelectorSummary" position="fill"> 
 		<panel name="LCDTitle" />
 		<widget source="Name" render="Label" position="40,190" size="720,160" font="FdLcDLight;65" halign="center" valign="center" zPosition="2" />
-		<widget source="value" render="Label" position="40,380" size="720,70" font="FdLcDLight;60" halign="center" valign="top" zPosition="2" />
+		<widget source="value" render="Label" position="40,380" size="720,70" font="FdLcDLight;60" halign="center" zPosition="2" />
 	</screen>
 
 	<!-- STANDBY -->
@@ -425,13 +425,13 @@
 
 	<!-- ET PORTAL -->
 	<screen name="EtPortalScreenSummary" position="fill">
-		<eLabel text="EtPortal" position="15,20" size="670,120" font="FdLcD;70" halign="center" valign="top" noWrap="1" />
-		<widget source="parent.label" render="Label" position="white" size="670,200" font="FdLcD;60" halign="center" valign="top" />
+		<eLabel text="EtPortal" position="15,20" size="670,120" font="FdLcD;70" halign="center" noWrap="1" />
+		<widget source="parent.label" render="Label" position="white" size="670,200" font="FdLcD;60" halign="center" />
 	</screen>
 
 	<!-- misc -->
 	<screen name="ScreenSummary" position="fill"> 
-		<widget source="Title" render="Label" position="40,190" size="720,200" font="FdLcD;60" halign="center" valign="top" />
+		<widget source="Title" render="Label" position="40,190" size="720,200" font="FdLcD;60" halign="center" />
 	</screen>
 
 	<!-- Servicescan -->
@@ -457,25 +457,25 @@
 	<!-- LanguageSelection -->
 	<screen name="LanguageSelectionSummary" position="fill">
 		<panel name="LCDTitle" />
-		<widget source="summarylangsel" render="Label" position="40,160" size="720,160" font="FdLcDLight;65" halign="center" valign="top" zPosition="2" />
+		<widget source="summarylangsel" render="Label" position="40,160" size="720,160" font="FdLcDLight;65" halign="center" zPosition="2" />
 		<widget name="flag" position="310,320" size="180,120" alphatest="blend" zPosition="100" scale="1" />
 	</screen>
 
 	<screen name="WizardSummary" position="fill">
 		<widget source="text" render="Label" position="top" size="*,180" font="FdLcD;60" halign="center" valign="center"/>
-		<widget source="parent.list" render="Label" position="fill" font="FdLcD;50" halign="center" valign="center">
+		<widget source="parent.list" render="Label" position="40,200" size="720,160" font="FdLcDLight;60" halign="center" >
 			<convert type="StringListSelection" />
 		</widget>
 	</screen>
 
 	<screen name="LanguageWizardSummary" position="0,0" size="480,320">
 		<widget source="parent.summarytext" render="Label" position="40,0" size="720,100" font="FdLcD;85" halign="center" valign="center" zPosition="2" />
-		<widget source="parent.summarylangname" render="Label" position="40,200" size="720,160" font="FdLcDLight;65" halign="center" valign="top" zPosition="2" />
+		<widget source="parent.summarylangname" render="Label" position="40,200" size="720,160" font="FdLcDLight;65" halign="center" zPosition="2" />
 	</screen>
 
 	<screen name="PackageManagerSummary" position="fill">
 		<panel name="LCDTitle" />
-		<widget source="parent.list" render="Label" position="fill" font="FdLcD;50" halign="center" valign="center">
+		<widget source="parent.list" render="Label" position="40,200" size="720,160" font="FdLcD;65" halign="center">
 			<convert type="StringListSelection" />
 		</widget>
 	</screen>
@@ -549,7 +549,7 @@
 <!-- UpdatePlugin -->
 	<screen name="UpdatePluginSummary" position="fill">
 		<panel name="LCDTitle" />
-		<widget source="parent.package" render="Label" position="40,200" size="720,160" font="FdLcDLight;65" halign="center" valign="top" />
+		<widget source="parent.package" render="Label" position="40,200" size="720,160" font="FdLcDLight;65" halign="center" />
 		<widget source="parent.status" render="Label" position="20,340" size="760,120" font="FdLcDLight;54" halign="center" valign="center" />
 		<panel name="SummaryClockPanel" />
 	</screen>
