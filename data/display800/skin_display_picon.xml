@@ -18,7 +18,7 @@
 
 	<fonts>
 		<font filename="nmsbd.ttf" name="FdLcD" scale="100"/>
-		<font filename="verdana.ttf" name="FdLcDLight" scale="100"/>
+		<font filename="OpenSans-Regular.ttf" name="FdLcDLight" scale="100"/>
 	</fonts>
 
 	<colors>
@@ -34,7 +34,7 @@
 
 	<!-- MAIN -->
 
-	<!-- CHANNEL SELECTION-->
+	<!-- CHANNEL SELECTION -->
 	<screen name="ChannelSelectionSummary" position="0,0" size="800,480"> 
 		<panel name="LCDPiconChannelSelectionProgramName" />
 		<panel name="LCDPiconChannelSelectionProgress" />
