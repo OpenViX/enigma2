@@ -263,6 +263,6 @@ class LanguageWizard(LanguageSelection, Rc):
 		return LanguageWizardSummary
 
 
-class LanguageWizardSummary(Screen):
+class LanguageWizardSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent)
+		ScreenSummary.__init__(self, session, parent)

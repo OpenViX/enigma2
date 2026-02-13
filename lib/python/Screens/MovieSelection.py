@@ -28,7 +28,7 @@ from Screens.InputBox import PinInput
 from Screens.LocationBox import MovieLocationBox
 from Screens.MessageBox import MessageBox
 from Screens.ParentalControlSetup import ProtectedScreen
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 import Screens.InfoBar
 from ServiceReference import ServiceReference
 from skin import parameters
@@ -388,9 +388,9 @@ class MovieBrowserConfiguration(Setup):
 		self.keyCancel()
 
 
-class MovieContextMenuSummary(Screen):
+class MovieContextMenuSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
+		ScreenSummary.__init__(self, session, parent=parent)
 		self["selected"] = StaticText("")
 		self.onShow.append(self.__onShow)
 		self.onHide.append(self.__onHide)
@@ -521,13 +521,13 @@ class SelectionEventInfo:
 			self["Service"].newService(item[0], item[3])
 
 
-class MovieSelectionSummary(Screen):
+class MovieSelectionSummary(ScreenSummary):
 	# Kludgy component to display current selection on LCD. Should use
 	# parent.Service as source for everything, but that seems to have a
 	# performance impact as the MovieSelection goes through hoops to prevent
 	# this when the info is not selected
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
+		ScreenSummary.__init__(self, session, parent=parent)
 		self["name"] = StaticText("")
 		self.onShow.append(self.__onShow)
 		self.onHide.append(self.__onHide)

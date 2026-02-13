@@ -20,7 +20,7 @@ from Plugins.Plugin import PluginDescriptor
 
 from Components.Timeshift import InfoBarTimeshift
 
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 from Screens.HelpMenu import HelpableScreen
 from Screens import ScreenSaver
 from Screens.ChannelSelection import ChannelSelection, PiPZapSelection, BouquetSelector, EpgBouquetSelector, service_types_tv
@@ -4216,7 +4216,7 @@ class InfoBarCueSheetSupport:
 				self.uploadCuesheet()
 
 
-class InfoBarSummary(Screen):
+class InfoBarSummary(ScreenSummary):
 	skin = """
 	<screen position="0,0" size="132,64">
 		<widget source="global.CurrentTime" render="Label" position="62,46" size="82,18" font="Regular;16" >
@@ -4248,7 +4248,7 @@ class InfoBarSummarySupport:
 		return InfoBarSummary
 
 
-class InfoBarMoviePlayerSummary(Screen):
+class InfoBarMoviePlayerSummary(ScreenSummary):
 	skin = """
 	<screen position="0,0" size="132,64">
 		<widget source="global.CurrentTime" render="Label" position="62,46" size="64,18" font="Regular;16" halign="right" >
@@ -4267,7 +4267,7 @@ class InfoBarMoviePlayerSummary(Screen):
 	</screen>"""
 
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
+		ScreenSummary.__init__(self, session, parent=parent)
 		self["state_summary"] = StaticText("")
 		self["speed_summary"] = StaticText("")
 		self["statusicon_summary"] = MultiPixmap()
