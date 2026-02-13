@@ -4,7 +4,7 @@
 	<include filename="skin_display_templates.xml"/>
 
 	<!-- CHANNEL SELECTION -->
-	<screen name="ChannelSelectionSummary" position="0,0" size="800,480"> 
+	<screen name="ChannelSelectionSummary" position="fill"> 
 		<panel name="LCDPiconChannelSelectionProgramName" />
 		<panel name="LCDPiconChannelSelectionProgress" />
 		<panel name="LCDPiconChannelSelectionRemainingTime" />
@@ -15,7 +15,7 @@
 	</screen>
 
 	<!-- EPG -->
-	<screen name="GraphicalEPGPIGSummary" position="0,0" size="800,480">
+	<screen name="GraphicalEPGPIGSummary" position="fill">
 		<panel name="LCDPiconEPGProgramName" />
 		<panel name="LCDPiconEPGProgress" />
 		<panel name="LCDPiconEPGRemainingTime" />
@@ -26,7 +26,7 @@
 	</screen>
 
 	<!-- INFOBAR -->
-	<screen name="InfoBarSummary" position="0,0" size="800,480"> 
+	<screen name="InfoBarSummary" position="fill" > 
 		<panel name="LCDPiconInfoBarProgramName" />
 		<panel name="LCDPiconInfoBarProgress" />
 		<panel name="LCDPiconInfoBarRemainingTime" />

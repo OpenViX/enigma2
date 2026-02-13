@@ -29,7 +29,7 @@
 
 	<!-- ## ANALOGUE CLOCK ## -->
 	<screen name="AnalogueClock">
-		<ePixmap pixmap="analogclock.png" position="0,0" size="800,480" transparent="1" alphatest="on" />
+		<ePixmap pixmap="analogclock.png" position="0,0" size="800,480" transparent="1" alphatest="on" scale="1"/>
 		<widget source="global.CurrentTime" render="AnalogClockLCD" position="center,center" size="700,540" hColor="FdLcdBlack" positionwidth="682" positionheight="550" linewidth="7" linesize="120" zPosition="3" alphatest="on">
 			<convert type="AnalogClock">Hours</convert>
 		</widget>
@@ -81,8 +81,8 @@
 		</widget>
 	</screen>
 	<screen name="LCDRecordIcon">
-		<!-- ><ePixmap pixmap="recording.png" position="420,395" size="218,60" alphatest="blend" zPosition="3" /> -->
-		<widget source="session.RecordState" render="Pixmap" pixmap="recording.png" position="590,190" size="163,70" zPosition="1" alphatest="blend">
+		<!-- ><ePixmap pixmap="recording.png" position="420,395" size="218,60" alphatest="blend" zPosition="3"  scale="1"/> -->
+		<widget source="session.RecordState" render="Pixmap" pixmap="recording.png" position="590,190" size="163,70" zPosition="1" alphatest="blend" scale="1">
 			<convert type="ConditionalShowHide" />
 		</widget>
 	</screen>
@@ -235,39 +235,39 @@
 		</widget>
 	</screen>
 	<screen name="LCDPiconStatusIcons">
-		<widget source="session.CurrentService" render="Pixmap" pixmap="dolbyprologic.png" position="410,110" size="163,70" zPosition="1" alphatest="blend">
+		<widget source="session.CurrentService" render="Pixmap" pixmap="dolbyprologic.png" position="410,110" size="163,70" zPosition="1" alphatest="blend" scale="1">
 			<convert type="ServiceInfo">IsStereo</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.CurrentService" render="Pixmap" pixmap="dolbydigital.png" position="410,110" size="163,70" zPosition="1" alphatest="blend">
+		<widget source="session.CurrentService" render="Pixmap" pixmap="dolbydigital.png" position="410,110" size="163,70" zPosition="1" alphatest="blend" scale="1">
 			<convert type="ServiceInfo">IsMultichannel</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.CurrentService" render="Pixmap" pixmap="169.png" position="410,190" size="163,70" zPosition="1" alphatest="blend">
+		<widget source="session.CurrentService" render="Pixmap" pixmap="169.png" position="410,190" size="163,70" zPosition="1" alphatest="blend" scale="1">
 			<convert type="ServiceInfo">IsWidescreen</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.CurrentService" render="Pixmap" pixmap="4.3.png" position="410,190" size="163,70" zPosition="1" alphatest="blend">
+		<widget source="session.CurrentService" render="Pixmap" pixmap="4.3.png" position="410,190" size="163,70" zPosition="1" alphatest="blend" scale="1">
 			<convert type="ServiceInfo">IsNotWidescreen</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>	
-		<widget source="session.CurrentService" render="Pixmap" pixmap="2160.png" position="590,110" size="163,70" zPosition="1" alphatest="blend">
+		<widget source="session.CurrentService" render="Pixmap" pixmap="2160.png" position="590,110" size="163,70" zPosition="1" alphatest="blend" scale="1">
 			<convert type="ServiceInfo">Is4K</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.CurrentService" render="Pixmap" pixmap="1080.png" position="590,110" size="163,70" zPosition="1" alphatest="blend">
+		<widget source="session.CurrentService" render="Pixmap" pixmap="1080.png" position="590,110" size="163,70" zPosition="1" alphatest="blend" scale="1">
 			<convert type="ServiceInfo">Is1080</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>		
-		<widget source="session.CurrentService" render="Pixmap" pixmap="720.png" position="590,110" size="163,70" zPosition="1" alphatest="blend">
+		<widget source="session.CurrentService" render="Pixmap" pixmap="720.png" position="590,110" size="163,70" zPosition="1" alphatest="blend" scale="1">
 			<convert type="ServiceInfo">Is720</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.CurrentService" render="Pixmap" pixmap="576.png" position="590,110" size="163,70" zPosition="1" alphatest="blend">
+		<widget source="session.CurrentService" render="Pixmap" pixmap="576.png" position="590,110" size="163,70" zPosition="1" alphatest="blend" scale="1">
 			<convert type="ServiceInfo">Is576</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
-		<widget source="session.CurrentService" render="Pixmap" pixmap="480.png" position="590,110" size="163,70" zPosition="1" alphatest="blend">
+		<widget source="session.CurrentService" render="Pixmap" pixmap="480.png" position="590,110" size="163,70" zPosition="1" alphatest="blend" scale="1">
 			<convert type="ServiceInfo">Is480</convert>
 			<convert type="ConditionalShowHide" />
 		</widget>
