@@ -3,17 +3,17 @@
 	<include filename="/usr/share/enigma2/display/skin_default/skin_display_templates.xml"/>
 
 	<!-- CHANNEL SELECTION -->
-	<screen name="ChannelSelectionSummary" position="fill"> 
+	<screen name="ChannelSelectionSummary" position="fill" resolution="800,480"> 
 		<panel name="LCDFullChannelSelectionPicon" />
 	</screen>
 
 	<!-- EPG -->
-	<screen name="GraphicalEPGPIGSummary" position="fill">
+	<screen name="GraphicalEPGPIGSummary" position="fill" resolution="800,480">
 		<panel name="LCDFullEPGPicon" />
 	</screen>
 
 	<!-- INFOBAR -->
-	<screen name="InfoBarSummary" position="fill"> 
+	<screen name="InfoBarSummary" position="fill" resolution="800,480"> 
 		<panel name="LCDFullPicon" />
 	</screen>
 </skin>
