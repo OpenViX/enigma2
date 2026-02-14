@@ -117,15 +117,15 @@ class SkinSelector(Screen, HelpableScreen):
 					elif skin == DEFAULT_SKIN:
 						skinEntry = [label, default, dir, skin, resolution, skinSize, preview]
 					elif skin == DEFAULT_DISPLAY_SKIN:
-						skinEntry = [default, default, dir, skin, resolution, skinSize, preview]
+						skinEntry = [label, default, dir, skin, resolution, skinSize, preview]
 					elif skin == displayPicon:
 						skinEntry = [label, defaultPicon, dir, skin, resolution, skinSize, preview]
 					else:
 						skinEntry = [label, "", dir, skin, resolution, skinSize, preview]
 					if skin == self.currentSkin:
-						skinEntry[1] = current
+						skinEntry[1] = (skinEntry[1] + current).replace("><", "/")
 					elif skin == self.config.value:
-						skinEntry[1] = pending
+						skinEntry[1] = (skinEntry[1] + pending).replace("><", "/")
 					skinEntry.append("%s  %s" % (skinEntry[0], skinEntry[1]))
 					# 0=SortKey, 1=Label, 2=Flag, 3=Directory, 4=Skin, 5=Resolution, 6=SkinSize, 7=Preview, 8=Label + Flag
 					skinList.append(tuple([skinEntry[0].upper()] + skinEntry))
