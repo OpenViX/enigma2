@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-07 10:52+0000\n"
+"POT-Creation-Date: 2026-02-14 20:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -708,6 +708,9 @@ msgstr ""
 
 #, python-format
 msgid "%d"
+msgstr ""
+
+msgid "%d %B"
 msgstr ""
 
 msgid "%d %B %Y"
@@ -6775,9 +6778,6 @@ msgstr ""
 msgid "Für Kinder"
 msgstr ""
 
-msgid "G"
-msgstr ""
-
 #, python-format
 msgid "GCC version:\t%s\n"
 msgstr ""
@@ -7086,9 +7086,6 @@ msgid "Guyana"
 msgstr ""
 
 msgid "Gymnastics"
-msgstr ""
-
-msgid "H"
 msgstr ""
 
 msgid "H9SDcard Manager"
@@ -7446,9 +7443,6 @@ msgid "Hungarian"
 msgstr ""
 
 msgid "Hungary"
-msgstr ""
-
-msgid "I"
 msgstr ""
 
 msgid "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 new Model"
@@ -8074,9 +8068,6 @@ msgid "Italian"
 msgstr ""
 
 msgid "Italy"
-msgstr ""
-
-msgid "J"
 msgstr ""
 
 msgid "JUMP 24 HOURS"
