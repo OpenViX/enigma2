@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-06 20:05+0100\n"
+"POT-Creation-Date: 2026-02-14 20:45+0100\n"
 "PO-Revision-Date: 2025-12-24 10:19+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: www.CostaBlancaTranslations.com <maria@CostaBlancaTranslations.com>\n"
@@ -739,6 +739,9 @@ msgstr "%b=%d "
 #, python-format
 msgid "%d"
 msgstr "%d"
+
+msgid "%d %B"
+msgstr "%d %B"
 
 #
 msgid "%d %B %Y"
@@ -3741,10 +3744,6 @@ msgstr "China"
 msgid "Chipset:\t%s %s\n"
 msgstr "Chipset:\t%s %s\n"
 
-#, python-format
-msgid "Chipset: %s"
-msgstr "Chipset: %s"
-
 msgid "Chkroot Manager Actions"
 msgstr "Acciones del administrador de Chkroot"
 
@@ -5978,10 +5977,6 @@ msgstr "Dramático"
 msgid "Drivers:\t%s\n"
 msgstr "Controladores:\t%s\n"
 
-#, python-format
-msgid "Drivers: %s"
-msgstr "Controladores: %s"
-
 msgid "Drogen"
 msgstr "Drogen"
 
@@ -7468,9 +7463,6 @@ msgstr "Fútbol"
 msgid "Für Kinder"
 msgstr "Para niños"
 
-msgid "G"
-msgstr "G"
-
 #, python-format
 msgid "GCC version:\t%s\n"
 msgstr "Versión de GCC:\t%s\n"
@@ -7800,9 +7792,6 @@ msgstr "Guyana"
 
 msgid "Gymnastics"
 msgstr "Gymnastica"
-
-msgid "H"
-msgstr "H"
 
 msgid "H9SDcard Manager"
 msgstr "Administrador de H9SDcard"
@@ -8176,9 +8165,6 @@ msgstr "Húngaro"
 #
 msgid "Hungary"
 msgstr "Húngaria"
-
-msgid "I"
-msgstr "I"
 
 msgid "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 new Model"
 msgstr "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 nuevo Model"
@@ -8875,9 +8861,6 @@ msgstr "Italiano"
 msgid "Italy"
 msgstr "Italia"
 
-msgid "J"
-msgstr "J"
-
 msgid "JUMP 24 HOURS"
 msgstr "SALTAR 24 HORAS"
 
@@ -8981,10 +8964,6 @@ msgstr "Kenya"
 #, python-format
 msgid "Kernel:\t%s\n"
 msgstr "Kernel:\t%s\n"
-
-#, python-format
-msgid "Kernel: %s"
-msgstr "Kernel: %s"
 
 msgid "Kexec warning"
 msgstr "Aviso Kexec"
@@ -9837,11 +9816,6 @@ msgstr "Modelo:\t%s %s\n"
 #
 msgid "Model: "
 msgstr "Modelo: "
-
-#
-#, python-format
-msgid "Model: %s %s\n"
-msgstr "Modelo: %s %s\n"
 
 msgid "Modern Dance"
 msgstr "Danza moderna"
@@ -11182,10 +11156,6 @@ msgstr "Descarga forzada de EPG de OpenTV"
 
 msgid "OpenVPN"
 msgstr "OpenVPN"
-
-#, python-format
-msgid "OpenViX: %s"
-msgstr "OpenViX: %s"
 
 msgid "OpenVpn Setup"
 msgstr "Abrir la configuración Vpn"
@@ -16587,10 +16557,6 @@ msgstr "Sistema y Modulación"
 msgid "System temperature:\t%s"
 msgstr "Temperatura del sistema:\t%s"
 
-#, python-format
-msgid "System temperature: %s"
-msgstr "Temperatura del sistema: %s"
-
 msgid "System: "
 msgstr "Sistema:"
 
@@ -18064,11 +18030,6 @@ msgstr "Intervalo de actualización (en segundos)."
 
 msgid "Update packages..."
 msgstr "Actualizar paquetes"
-
-#
-#, python-format
-msgid "Updated: %s"
-msgstr "Actualizado: %s"
 
 #
 msgid "Updating Cache"
