@@ -74,14 +74,14 @@ class HelpMenu(Screen, Rc):
 		self.onLayoutFinish.append(self.doOnLayoutFinish)
 
 	def doOnLayoutFinish(self):
-		self["list"].onSelectionChanged.append(self.SelectionChanged)
-		self.SelectionChanged()
+		self["list"].onSelectionChanged.append(self.selectionChanged)
+		self.selectionChanged()
 
 	def doOnClose(self):
 		eActionMap.getInstance().unbindAction('', self["list"].handleButton)
-		self["list"].onSelectionChanged.remove(self.SelectionChanged)
+		self["list"].onSelectionChanged.remove(self.selectionChanged)
 
-	def SelectionChanged(self):
+	def selectionChanged(self):
 		self.clearSelectedKeys()
 		selection = self["list"].getCurrent()
 

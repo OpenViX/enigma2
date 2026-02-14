@@ -1660,9 +1660,9 @@ class ImageManagerDownload(Screen):
 					if self.setIndex:
 						self["list"].moveToIndex(self.setIndex if self.setIndex < len(list) else len(list) - 1)
 				self.setIndex = 0
-			self.SelectionChanged()
+			self.selectionChanged()
 
-	def SelectionChanged(self):
+	def selectionChanged(self):
 		currentSelected = self["list"].getCurrent()
 		if currentSelected[0][1] == "Waiter":
 			self["key_green"].setText("")
@@ -1674,19 +1674,19 @@ class ImageManagerDownload(Screen):
 
 	def keyLeft(self):
 		self["list"].pageUp()
-		self.SelectionChanged()
+		self.selectionChanged()
 
 	def keyRight(self):
 		self["list"].pageDown()
-		self.SelectionChanged()
+		self.selectionChanged()
 
 	def keyUp(self):
 		self["list"].moveUp()
-		self.SelectionChanged()
+		self.selectionChanged()
 
 	def keyDown(self):
 		self["list"].moveDown()
-		self.SelectionChanged()
+		self.selectionChanged()
 
 	def keyDownload(self):
 		currentSelected = self["list"].getCurrent()
