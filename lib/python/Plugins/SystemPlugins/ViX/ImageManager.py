@@ -20,7 +20,6 @@ from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo, BOXTYPE, CHKROOTMB, DISPLAYBRAND, IMAGETYPE, MACHINEBUILD, MACHINENAME, MODEL, MTDKERNEL, MTDROOTFS, UBIMB
 import Components.Task
 from Screens.MessageBox import MessageBox
-from Screens.PluginBrowser import PluginBrowserSummary
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
@@ -1746,6 +1745,7 @@ class ImageManagerDownload(Screen):
 		return headers, scheme + "://" + hostname + port + parsed.path + query
 
 	def createSummary(self):
+		from Screens.PluginBrowser import PluginBrowserSummary
 		return PluginBrowserSummary
 
 
