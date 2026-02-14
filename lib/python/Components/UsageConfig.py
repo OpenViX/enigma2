@@ -13,6 +13,10 @@ from Components.NimManager import nimmanager
 from Components.ServiceList import refreshServiceList
 from Components.SystemInfo import SystemInfo
 
+
+[_("%d %B")]  # Time formats used by some third party skins
+
+
 # A raw writer for config changes to be read by the logger without
 # getting a time-stamp prepended.
 # stderr expect unicode, not str, so we decode as utf-8
