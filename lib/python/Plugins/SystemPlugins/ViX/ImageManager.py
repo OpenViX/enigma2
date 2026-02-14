@@ -20,6 +20,7 @@ from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo, BOXTYPE, CHKROOTMB, DISPLAYBRAND, IMAGETYPE, MACHINEBUILD, MACHINENAME, MODEL, MTDKERNEL, MTDROOTFS, UBIMB
 import Components.Task
 from Screens.MessageBox import MessageBox
+from Screens.PluginBrowser import PluginBrowserSummary
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
@@ -1588,6 +1589,7 @@ class ImageManagerDownload(Screen):
 		self.imagesList = {}
 		self.setIndex = 0
 		self.expanded = []
+		self.onChangedEntry = []
 		self["list"] = ChoiceList(list=[ChoiceEntryComponent("", ((_("No images found on the selected download server...if password check validity")), "Waiter"))])
 		self.getImageDistro()
 
@@ -1671,6 +1673,8 @@ class ImageManagerDownload(Screen):
 				self["key_green"].setText(_("Compress") if currentSelected[0][0] in self.expanded else _("Expand"))
 			else:
 				self["key_green"].setText(_("Download"))
+		for cb in self.onChangedEntry:
+			cb(currentSelected[0][0], "")
 
 	def keyLeft(self):
 		self["list"].pageUp()
@@ -1740,6 +1744,9 @@ class ImageManagerDownload(Screen):
 			base64bytes = base64.b64encode(('%s:%s' % (username, password)).encode())
 			headers = {("Authorization").encode(): ("Basic %s" % base64bytes.decode()).encode()}
 		return headers, scheme + "://" + hostname + port + parsed.path + query
+
+	def createSummary(self):
+		return PluginBrowserSummary
 
 
 class ImageManagerSetup(Setup):
