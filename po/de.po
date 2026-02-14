@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-07 10:20+0000\n"
+"POT-Creation-Date: 2026-02-13 14:03+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: 2stein\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, 2stein\n"
@@ -177,7 +177,7 @@ msgid "%-d.%-m.%Y"
 msgstr ""
 
 msgid "%-d.%m"
-msgstr ""
+msgstr "%-d.%-m."
 
 msgid "%-d.%m.%Y"
 msgstr ""
@@ -235,7 +235,7 @@ msgstr "%A, %-d. %B"
 
 #. TRANSLATORS: full date representation dayname daynum monthname year in strftime() format! See 'man strftime'
 msgid "%A %-d %B %Y"
-msgstr "%A, %-d %B %Y"
+msgstr "%A, %-d. %B %Y"
 
 msgid "%A %-d-%B"
 msgstr "%A, %-d-%B"
@@ -334,10 +334,10 @@ msgid "%A %Y/%m/%d"
 msgstr "%A, %Y/%m/%d"
 
 msgid "%A %d %B"
-msgstr "%A, %d %B"
+msgstr "%A, %d. %B"
 
 msgid "%A %d %B %Y"
-msgstr "%A, %d %B %Y"
+msgstr "%A, %d. %B %Y"
 
 msgid "%A %d-%B"
 msgstr "%A, %d-%B"
@@ -470,7 +470,7 @@ msgstr "%a, %-d"
 
 #. TRANSLATORS: long date representation short dayname daynum monthname year in strftime() format! See 'man strftime'
 msgid "%a %-d %B %Y"
-msgstr "%a, %-d.%B %Y"
+msgstr "%a, %-d. %B %Y"
 
 #. TRANSLATORS: short date representation short dayname daynum short monthname in strftime() format! See 'man strftime'
 msgid "%a %-d %b"
@@ -619,7 +619,7 @@ msgid "%a %d %b"
 msgstr "%a, %d.%b"
 
 msgid "%a %d %b %Y"
-msgstr "%a, %d.%b %Y"
+msgstr "%a, %d. %b %Y"
 
 msgid "%a %d-%B-%Y"
 msgstr "%a, %d-%B-%Y"
@@ -718,14 +718,17 @@ msgstr "%b=%d "
 msgid "%d"
 msgstr ""
 
+msgid "%d %B"
+msgstr "%d. %B"
+
 msgid "%d %B %Y"
-msgstr "%d %B %Y"
+msgstr "%d. %B %Y"
 
 msgid "%d %b"
-msgstr "%d %b"
+msgstr "%d. %b"
 
 msgid "%d %b %Y"
-msgstr "%d %b %Y"
+msgstr "%d. %b %Y"
 
 #. TRANSLATORS: full date representation dayname daynum monthname year in strftime() format! See 'man strftime'
 #. _("%A %e %B %Y")
@@ -1749,7 +1752,7 @@ msgstr "Hinzufügen"
 
 #, python-format
 msgid "Add 4 more Multiboot USB slots after slot %s ?"
-msgstr "Sollen 4 weitere Multiboot-USB-Slots nach Slot %s hinzugefügt werden?"
+msgstr "Sollen 4 weitere Multiboot-USB-Slots nach Slot%s hinzugefügt werden?"
 
 msgid "Add AutoTimer"
 msgstr "AutoTimer hinzufügen"
@@ -3815,7 +3818,7 @@ msgstr "Konfiguriere Scan Einzelheiten"
 
 #, python-format
 msgid "Configfile %s saved."
-msgstr "Konfigurationsdatei %s gespeichert."
+msgstr "Konfigurationsdatei '%s' gespeichert."
 
 msgid "Configuration mode"
 msgstr "Konfigurationsmodus"
@@ -4252,19 +4255,19 @@ msgstr "Bild-in-Bild konnte nicht geöffnet werden"
 
 #, python-format
 msgid "Could not open the file %s!"
-msgstr "Kann Datei %s nicht öffnen."
+msgstr "Kann Datei '%s' nicht öffnen."
 
 #, python-format
 msgid "Could not record due to a conflicting timer %s"
-msgstr "Aufnahme wegen in Konflikt stehendem Timer %s fehlgeschlagen"
+msgstr "Aufnahme wegen in Konflikt stehendem Timer '%s' fehlgeschlagen"
 
 #, python-format
 msgid "Could not record due to an invalid service %s"
-msgstr "Aufnahme wegen ungültigem Sender %s fehlgeschlagen"
+msgstr "Aufnahme wegen ungültigem Sender '%s' fehlgeschlagen"
 
 #, python-format
 msgid "Could not save configfile %s!"
-msgstr "Kann Config-Datei %s nicht speichern."
+msgstr "Kann Config-Datei '%s' nicht speichern."
 
 #, python-format
 msgid ""
@@ -4376,7 +4379,7 @@ msgstr "Erzeuge SWAP-Datei..."
 
 #, python-format
 msgid "Creating directory %s failed."
-msgstr "Erstellen des Verzeichnisses %s fehlgeschlagen."
+msgstr "Erstellen des Verzeichnisses '%s' fehlgeschlagen."
 
 msgid "Creating file system"
 msgstr "Dateisystem erstellen"
@@ -5143,7 +5146,7 @@ msgstr "Verzeichnis"
 
 #, python-format
 msgid "Directory %s does not exist."
-msgstr "Verzeichnis %s existiert nicht."
+msgstr "Verzeichnis '%s' existiert nicht."
 
 #, python-format
 msgid "Directory '%s' does not exist."
@@ -6884,9 +6887,6 @@ msgstr ""
 msgid "Für Kinder"
 msgstr ""
 
-msgid "G"
-msgstr ""
-
 #, python-format
 msgid "GCC version:\t%s\n"
 msgstr "GCC Version:\t%s\n"
@@ -7201,9 +7201,6 @@ msgstr "Guyana"
 
 msgid "Gymnastics"
 msgstr "Gymnastik"
-
-msgid "H"
-msgstr ""
 
 msgid "H9SDcard Manager"
 msgstr "H9 SD-Karten Verwaltung"
@@ -7561,9 +7558,6 @@ msgstr "Ungarisch"
 
 msgid "Hungary"
 msgstr "Ungarn"
-
-msgid "I"
-msgstr ""
 
 msgid "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 new Model"
 msgstr ""
@@ -8204,9 +8198,6 @@ msgstr "Italienisch"
 
 msgid "Italy"
 msgstr "Italien"
-
-msgid "J"
-msgstr ""
 
 msgid "JUMP 24 HOURS"
 msgstr "Springe 24 Stunden"
@@ -17776,7 +17767,7 @@ msgstr "Deine %s %s kann sich nicht mit dem Feed verbinden - bitte die Plugins m
 
 #, python-format
 msgid "Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again."
-msgstr "Die %s %s hat keinen Zugriff aus %s - bitte überprüfe die Netzwerkeinstellungen/Kabel, und versuche es erneut."
+msgstr "Die %s %s hat keinen Zugriff auf '%s' - bitte überprüfe die Netzwerkeinstellungen/Kabel, und versuche es erneut."
 
 #, python-format
 msgid "Your %s %s has no internet access, please check your network settings and make sure you have network cable connected and try again."
