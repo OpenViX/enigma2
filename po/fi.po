@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-07 18:57+0200\n"
-"PO-Revision-Date: 2026-02-08 15:08+0200\n"
+"POT-Creation-Date: 2026-02-14 23:43+0200\n"
+"PO-Revision-Date: 2026-02-15 10:48+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -718,6 +718,9 @@ msgstr "%b=%d "
 #, python-format
 msgid "%d"
 msgstr "%d"
+
+msgid "%d %B"
+msgstr "%d %B"
 
 msgid "%d %B %Y"
 msgstr "%d.%m.%Y"
@@ -6885,9 +6888,6 @@ msgstr "Jalkapallo"
 msgid "Für Kinder"
 msgstr "Lapsille"
 
-msgid "G"
-msgstr "G"
-
 #, python-format
 msgid "GCC version:\t%s\n"
 msgstr "GCC versio:\t%s\n"
@@ -7201,9 +7201,6 @@ msgstr "Guyana"
 
 msgid "Gymnastics"
 msgstr "Voimistelu"
-
-msgid "H"
-msgstr "H"
 
 msgid "H9SDcard Manager"
 msgstr "H9SD-kortin hallinnointi"
@@ -7561,9 +7558,6 @@ msgstr "Unkari"
 
 msgid "Hungary"
 msgstr "Unkari"
-
-msgid "I"
-msgstr "I"
 
 msgid "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 new Model"
 msgstr "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 uusi malli"
@@ -8206,9 +8200,6 @@ msgstr "Italia"
 
 msgid "Italy"
 msgstr "Italia"
-
-msgid "J"
-msgstr "J"
 
 msgid "JUMP 24 HOURS"
 msgstr "HYPPÄÄ 24 TUNTIA"
@@ -15211,7 +15202,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 08.02.2026 ---\n"
+"--- 15.02.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
