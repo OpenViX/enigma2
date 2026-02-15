@@ -554,13 +554,14 @@ int eDVBCAHandler::unregisterService(const eServiceReferenceDVB &ref, int adapte
 					 * to FTA/IPTV would leave the softcam in descrambling
 					 * state (e.g. ecm.info not removed).
 					 */
-					if (m_protocol3_established)
+					if (m_protocol3_established && caservice->getCAPMTVersion() >= 0)
 					{
 						for (ePtrList<ePMTClient>::iterator client_it = clients.begin(); client_it != clients.end(); ++client_it)
 						{
 							if (client_it->state() == eSocket::Connection)
 							{
-								caservice->writeCAPMTObject(*client_it, LIST_ONLY, CMD_NOT_SELECTED);
+								eDebug("[eDVBCAHandler] sending CMD_NOT_SELECTED for service %s", caservice->toString().c_str());
+								caservice->writeCAPMTObject(*client_it, LIST_UPDATE, CMD_NOT_SELECTED);
 							}
 						}
 					}
