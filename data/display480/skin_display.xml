@@ -264,16 +264,18 @@
 		<panel name="SummaryClockPanel" />
 	</screen>
 	<screen name="WizardSummary" position="fill">
-		<widget source="text" render="Label" position="top" size="*,71" font="FdLcD;35" halign="center" />
-		<widget source="parent.list" render="Label" position="fill" font="FdLcD;25" halign="center" >
+		<widget source="text" render="Label" position="10,50" size="460,100" font="FdLcD;40" halign="center" valign="center"/>
+		<widget source="parent.list" render="Label" position="10,210" size="460,100" font="FdLcDLight;40" halign="center" >
 			<convert type="StringListSelection" />
 		</widget>
 	</screen>
 	<screen name="VideoWizardSummary" position="fill">
-		<widget name="text" position="top" size="*,40" font="FdLcD;12" transparent="1" />
-		<widget source="parent.list" render="Label" position="fill" font="FdLcD;45" halign="center" >
-			<convert type="StringListSelection" />
-		</widget>
+		<panel name="WizardSummary"/>
+	</screen>
+	
+	<screen name="LanguageWizardSummary" position="fill">
+		<widget source="parent.summarytext" render="Label" position="20,0" size="440,70" font="FdLcD;65" halign="center" valign="center" zPosition="2" />
+		<widget source="parent.summarylangname" render="Label" position="20,140" size="440,110" font="FdLcDLight;65" halign="center" zPosition="2" />
 	</screen>
 
 <!-- Plugin browser -->
@@ -334,24 +336,6 @@
 		<widget source="parent.Title" render="Label" position="0,0" size="400,26" font="FdLcD;24" halign="center" noWrap="1" />
 		<widget source="entry" render="Label" position="0,40" size="400,125" font="FdLcD;28" halign="center" valign="center" />
 		<panel name="SummaryClockPanel" />
-	</screen>
-
-	<screen name="WizardSummary" position="0,0" size="480,320">
-		<widget source="text" render="Label" position="0,0" size="400,55" font="FdLcD;24" halign="center" />
-		<widget source="parent.list" render="Label" position="0,85" size="400,124" font="FdLcD;24" halign="center" >
-			<convert type="StringListSelection" />
-		</widget>
-	</screen>
-	<screen name="LanguageWizardSummary" position="0,0" size="480,320">
-		<widget source="parent.summarytext" render="Label" position="0,0" size="400,55" font="FdLcD;24" halign="center" />
-		<widget source="parent.summarylangname" render="Label" position="0,85" size="400,124" font="FdLcD;24" halign="center" />
-<!-- 		<widget source="parent.flag" render="Pixmap" position="0,0" size="110,40" backgroundColor="#ff000000" /> -->
-	</screen>
-	<screen name="VideoWizardSummary" position="fill">
-		<widget source="text" render="Label" position="0,0" size="400,50" font="FdLcD;24" halign="center" />
-		<widget source="parent.list" render="Label" position="0,85" size="400,124" font="FdLcD;24" halign="center" >
-			<convert type="StringListSelection" />
-		</widget>
 	</screen>
 
 <!-- DVD -->
