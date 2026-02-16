@@ -14,7 +14,7 @@
 	</screen>
 
 	<!-- EPG -->
-	<screen name="GraphicalEPGPIGSummary" position="fill" resolution="800,960">
+	<screen name="GraphicalEPGPIGSummary" position="fill" resolution="800,480">
 		<panel name="LCDEPGChannelName" />
 		<panel name="LCDEPGProgramName" />
 		<panel name="LCDEPGProgress" />
