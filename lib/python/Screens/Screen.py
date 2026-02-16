@@ -251,7 +251,7 @@ class Screen(dict):
 				f()
 
 	def applySkin(self):
-		skin_id = DISPLAY_SKIN_ID if isinstance(self, ScreenSummary) else GUI_SKIN_ID
+		skin_id = DISPLAY_SKIN_ID if isinstance(self, ScreenSummary) or self.__class__.__name__.endswith("Summary") else GUI_SKIN_ID
 		self.scale = ((getDesktop(skin_id).size().width(), getDesktop(skin_id).size().width()), (getDesktop(skin_id).size().height(), getDesktop(skin_id).size().height()))
 		zPosition = 0
 		for (key, value) in self.skinAttributes:
