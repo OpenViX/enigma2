@@ -2043,7 +2043,7 @@ msgid "Allows the script runner to be launched from extensions."
 msgstr "Soll die Skriptausführung aus der Erweiterungsliste ermöglicht werden?"
 
 msgid "Allows the softcam manager to be launched from extensions."
-msgstr "Soll die Ausführung der Softcam-Verwaltung aus der Erweiterungsliste ermöglicht werden?"
+msgstr "Soll die Ausführung des Softcam-Managers aus der Erweiterungsliste ermöglicht werden?"
 
 msgid "Allows the softcam to be checked if it stopped working, and restarted automatically if needed."
 msgstr "Soll regelmäßig geprüft werden, ob ein Softcam noch läuft, und gegebenenfalls neu gestartet werden?"
@@ -2085,7 +2085,7 @@ msgid "Allows you to show/hide CCcam Info in extensions -blue button."
 msgstr "CCcam-Info in der Erweiterungsliste (blaue Taste) anzeigen."
 
 msgid "Allows you to show/hide Log Manager in extensions (blue button)."
-msgstr "Soll die Log-Verwaltung in der Erweiterungsliste angezeigt werden?"
+msgstr "Soll der Log-Manager in der Erweiterungsliste angezeigt werden?"
 
 msgid "Allows you to show/hide OScam/Ncam Info in extensions -blue button."
 msgstr "OScam-/Ncam-Info in der Erweiterungsliste (blaue Taste) anzeigen."
@@ -2659,10 +2659,10 @@ msgid "Backup location"
 msgstr "Zielordner für Backup"
 
 msgid "Backup manager"
-msgstr "Backup-Verwaltung"
+msgstr "Backup-Manager"
 
 msgid "Backup manager settings"
-msgstr "Backup-Verwaltung-Einstellungen"
+msgstr "Backup-Manager-Einstellungen"
 
 msgid "Backup prefix"
 msgstr "Backup-Name"
@@ -2734,7 +2734,7 @@ msgid "Basque"
 msgstr "Baskisch"
 
 msgid "Before flashing an image 'Automatic settings backup' should be enabled in Image Manager setup menu."
-msgstr "Vor dem Flashen eines Images sollte 'Automatisches Einstellungs-Backup' in der Image-Verwaltung aktiviert werden."
+msgstr "Vor dem Flashen eines Images sollte 'Automatisches Einstellungs-Backup' im Image-Manager aktiviert werden."
 
 msgid "Before sending the command to switch the TV to standby, the receiver tests if all the other devices plugged into TV are in standby. If they are not, the 'sourceactive' command will be sent to the TV instead of the 'standby' command."
 msgstr "Vor dem Standby-Befehl prüft der E2-Receiver, ob alle am Fernseher angeschlossenen Geräte in Standby sind. Bei aktiven Geräten wird 'Quelle aktiv' statt 'Standby' gesendet."
@@ -3483,7 +3483,7 @@ msgid "Chkroot MultiBoot Initialization in progress!"
 msgstr "Chkroot-Multi-Boot Initialisierung läuft"
 
 msgid "Chkroot MultiBoot Manager"
-msgstr "Chkroot-Multi-Boot-Verwaltung"
+msgstr "Chkroot-Multi-Boot-Manager"
 
 msgid "Choose Bouquet"
 msgstr "Wähle Favoritenliste"
@@ -3696,7 +3696,7 @@ msgid "Close screen"
 msgstr "Anzeige schließen"
 
 msgid "Close the Chkroot MultiBoot Manager"
-msgstr "Chkroot-Multi-Boot-Verwaltung schließen"
+msgstr "Chkroot-Multi-Boot-Manager schließen"
 
 msgid "Close title selection"
 msgstr "Titelauswahl schließen"
@@ -4259,11 +4259,11 @@ msgstr "Kann Datei '%s' nicht öffnen."
 
 #, python-format
 msgid "Could not record due to a conflicting timer %s"
-msgstr "Aufnahme wegen in Konflikt stehendem Timer '%s' fehlgeschlagen"
+msgstr "Aufnahme wegen eines in Konflikt stehenden Timers '%s' fehlgeschlagen"
 
 #, python-format
 msgid "Could not record due to an invalid service %s"
-msgstr "Aufnahme wegen ungültigem Sender '%s' fehlgeschlagen"
+msgstr "Aufnahme wegen eines ungültigen Senders '%s' fehlgeschlagen"
 
 #, python-format
 msgid "Could not save configfile %s!"
@@ -4339,7 +4339,7 @@ msgid "Create DVD-ISO"
 msgstr "DVD-ISO erstellen"
 
 msgid "Create MultiBoot System -> will INITIALISE chosen usb device"
-msgstr "Erstelle Multiboot-System - wird das gewählte USB-Device initialisieren."
+msgstr "Erstelle Multiboot-System"
 
 msgid "Create Slots"
 msgstr "Erstelle die Slots"
@@ -4406,10 +4406,10 @@ msgid "Croatian"
 msgstr "Kroatisch"
 
 msgid "Cron Manager"
-msgstr "Cron-Verwaltung"
+msgstr "Cron-Manager"
 
 msgid "Cron Manager Setup"
-msgstr "Cron-Verwaltung-Einstellungen"
+msgstr "Cron-Manager-Einstellungen"
 
 msgid "Cron Timers"
 msgstr "CronTimer"
@@ -5181,7 +5181,7 @@ msgid "Disable Autostart"
 msgstr "Deaktiviere Autostart"
 
 msgid "Disable Chkroot"
-msgstr "Deaktiviere Chkroot-Multi-Boot"
+msgstr "Abbrechen"
 
 msgid "Disable FCC during recordings"
 msgstr "Deaktiviere FCC während Aufnahmen"
@@ -5867,7 +5867,7 @@ msgid "Enable multiple bouquets"
 msgstr "Aktiviere mehrere Favoritenlisten"
 
 msgid "Enable new GStreamer playback"
-msgstr "Aktiviere neue GStreamer Wiedergabe"
+msgstr "Aktiviere neue GStreamer-Wiedergabe"
 
 msgid "Enable or disable client mode."
 msgstr "Client-Modus aktivieren/deaktivieren."
@@ -7667,7 +7667,7 @@ msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit onl
 msgstr "Soll das Display 12 statt 8 Buchstaben anzeigen? (nur bei Latin-1/Translit)"
 
 msgid "If enabled, the new GStreamer playback engine will be used."
-msgstr "Soll GStreamer Wiedergabe verwendet werden?"
+msgstr "Soll GStreamer-Wiedergabe verwendet werden?"
 
 msgid "If set to 'Standard' number buttons page up/down/left/right."
 msgstr "Wenn auf 'Standard' gesetzt, funktionieren Zahlen-Tasten Seite hoch/runter/links/rechts."
@@ -7736,7 +7736,7 @@ msgid "If you are an OpenViX developer you can enter your login details to have 
 msgstr "Wenn du ein OpenViX-Entwickler bist, kannst du hier die Zugangsdaten eingeben und hast Zugriff auf die OpenViX-Entwickler-Images. Dieses Feature gibt es nur per 'https' Verbindung."
 
 msgid "If you are running your own build server and want to download your own images directly into ImageManager you can link to the URL of your JSON index. Don't forget to add '%s' where the box name should be inserted into the url. If you need help with implementing this please ask on the forum."
-msgstr "Wenn du deinen eigenen Build-Server betreibst und die Images direkt in der Image-Verwaltung herunterladen möchtest, kannst du einen Link auf die URL deines JSON Indexes erstellen. Wenn du Hilfe brauchst, frag im Forum nach."
+msgstr "Wenn du deinen eigenen Build-Server betreibst und die Images direkt im Image-Manager herunterladen möchtest, kannst du einen Link auf die URL deines JSON Indexes erstellen. Wenn du Hilfe brauchst, frag im Forum nach."
 
 msgid "If you are using a Circular polarised LNB select 'yes', otherwise select 'no'."
 msgstr "Wird ein zirkular polarisiertes LNB verwendet?"
@@ -7775,10 +7775,10 @@ msgid "Ignore DVB-T namespace sub network"
 msgstr "Ignoriere DVB-T Subnetzwerk"
 
 msgid "Image Manager"
-msgstr "Image-Verwaltung"
+msgstr "Image-Manager"
 
 msgid "Image Manager allows downloading images from OpenViX image server and from a range of other distros."
-msgstr "Image-Verwaltung ermöglicht OpenVIX Images aber auch Images vieler anderer Distributionen herunterzuladen."
+msgstr "Der Image-Manager ermöglicht, OpenVIX Images aber auch Images vieler anderer Distributionen herunterzuladen."
 
 #, python-format
 msgid "Image Slot:\t %s %s"
@@ -7791,10 +7791,10 @@ msgid "Image backup"
 msgstr "Image-Backup"
 
 msgid "Image manager"
-msgstr "Image-Verwaltung"
+msgstr "Image-Manager"
 
 msgid "Image manager settings"
-msgstr "Image-Verwaltung-Einstellungen"
+msgstr "Image-Manager-Einstellungen"
 
 #, python-format
 msgid "Image:\t%s.%s%s (%s)\n"
@@ -7802,10 +7802,10 @@ msgstr ""
 
 #, python-format
 msgid "ImageManager - %s - cannot flash eMMC slot from sd card slot."
-msgstr "Image-Verwaltung - %s - Kann nicht von SD-Card-Slot auf eMMC-Slot geflasht werden."
+msgstr "Image-Manager - %s - Kann nicht von SD-Card-Slot auf eMMC-Slot geflasht werden."
 
 msgid "ImageManager - no HDD unable to backup Vu Multiboot eMMC slots"
-msgstr "Image-Verwaltung - Keine Festplatte. Backup von eMMC Slots nicht möglich."
+msgstr "Image-Manager - Keine Festplatte. Backup von eMMC Slots nicht möglich."
 
 msgid "Immediate shutdown"
 msgstr "Direkt ausschalten"
@@ -8024,7 +8024,7 @@ msgid "Install lcd picons on"
 msgstr "Installiere Display Picon in"
 
 msgid "Install local extension"
-msgstr "Installiere lokale Plugins"
+msgstr "Lokale Plugin-Installation"
 
 msgid "Install picons on"
 msgstr "Picons installieren auf"
@@ -8191,7 +8191,7 @@ msgid "It seems you have hit your API limit - please try again later."
 msgstr "Es sieht so aus, als wenn ein API-Limit erreicht wurde - bitte später erneut versuchen."
 
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
-msgstr "Es sieht so aus, als wenn noch kein Verzeichnis konfiguriert wurde - bitte konfiguriere das Verzeichnis in der Backup-Verwaltung."
+msgstr "Es sieht so aus, als wenn noch kein Verzeichnis konfiguriert wurde - bitte konfiguriere das Verzeichnis im Backup-Manager."
 
 msgid "Italian"
 msgstr "Italienisch"
@@ -8671,7 +8671,7 @@ msgid "Log %s-%s"
 msgstr ""
 
 msgid "Log Manager"
-msgstr "Log-Verwaltung"
+msgstr "Log-Manager"
 
 msgid "Log python stack trace on spinner"
 msgstr "Python Stack-Trace, wenn der Spinner erscheint"
@@ -8680,7 +8680,7 @@ msgid "Log results to harddisk"
 msgstr "Ergebnisse auf die Festplatte schreiben"
 
 msgid "LogManager"
-msgstr "Log-Verwaltung"
+msgstr "Log-Manager"
 
 msgid "Login as an OpenViX developer"
 msgstr "Als OpenViX Entwickler anmelden"
@@ -9157,7 +9157,7 @@ msgid "Mount failed for '%s', error code = '%s'."
 msgstr "Mounten von '%s' ist fehlgeschlagen, Fehler: '%s'."
 
 msgid "Mount manager"
-msgstr "Mountpoint-Verwaltung"
+msgstr "Mountpoint-Manager"
 
 msgid "Mount."
 msgstr "Mounten."
@@ -11282,7 +11282,7 @@ msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image 
 msgstr "Drücke 'Grün' zum Wechseln von Images, 'Gelb' zum Löschen eines Images, 'Blau' zum Wiederherstellen aller gelöschten Images."
 
 msgid "Press GREEN to enable MultiBoot process"
-msgstr "Drücke 'Grün', um den Multiboot-Prozess zu aktivieren."
+msgstr "Drücke 'Grün', um Multiboot zu initialisieren."
 
 msgid "Press OK"
 msgstr "Drücke 'OK'"
@@ -12395,7 +12395,7 @@ msgid "Running"
 msgstr "Läuft"
 
 msgid "Running opkg update"
-msgstr "opkg Update läuft"
+msgstr "Opkg-Update läuft"
 
 msgid "Russian"
 msgstr "Russisch"
@@ -12492,7 +12492,7 @@ msgid "SWAP file not found. You have to create the file before you try to activa
 msgstr "SWAP-Datei nicht gefunden. SWAP-Datei muss erzeugt werden, bevor sie aktiviert werden kann."
 
 msgid "SWAP manager"
-msgstr "SWAP-Verwaltung"
+msgstr "SWAP-Manager"
 
 msgid "SWAP name:"
 msgstr "SWAP-Name:"
@@ -12754,10 +12754,10 @@ msgid "Screen proportions"
 msgstr "Bild-Proportionen"
 
 msgid "Script runner"
-msgstr "Skript-Ausführung"
+msgstr "Skript-Manager"
 
 msgid "Script runner - runs from /usr/script"
-msgstr "Skript-Ausführung - Startet von /usr/script"
+msgstr "Skript-Manager - Startet von /usr/script"
 
 msgid "Script runner settings"
 msgstr "Einstellungen der Skriptausführung"
@@ -13742,7 +13742,7 @@ msgid "Show Log"
 msgstr "Zeige Log"
 
 msgid "Show Log Manager in extensions list ?"
-msgstr "Log-Verwaltung in Erweiterungsliste"
+msgstr "Zeige Log-Manager in Erweiterungsliste"
 
 msgid "Show Media playback Remaining/Elapsed as"
 msgstr "Zeige Zeit bei Wiedergabe"
@@ -14328,10 +14328,10 @@ msgid "Slot %s / FBC virtual %s"
 msgstr "Slot%s/Virtueller FBC %s"
 
 msgid "Slot Manager"
-msgstr "Slot-Verwaltung"
+msgstr "Slot-Manager"
 
 msgid "Slot Manager Actions"
-msgstr "Slot-Verwaltung-Aktionen"
+msgstr "Slot-Manager-Aktionen"
 
 #, python-format
 msgid "Slot%s %s %s: %s - %s mode%s"
@@ -14402,19 +14402,19 @@ msgid "Softcam Actions"
 msgstr "Softcam-Aktionen"
 
 msgid "Softcam Management"
-msgstr "Softcam-Verwaltung"
+msgstr "Softcams"
 
 msgid "Softcam Manager"
-msgstr "Softcam-Verwaltung"
+msgstr "Softcams"
 
 msgid "Softcam Script"
 msgstr "Softcam-Skript"
 
 msgid "Softcam manager"
-msgstr "Softcam-Verwaltung"
+msgstr "Softcams"
 
 msgid "Softcam manager settings"
-msgstr "Softcam-Verwaltung-Einstellungen"
+msgstr "Softcams-Einstellungen"
 
 msgid "Softcam settings"
 msgstr "Softcam-Einstellungen"
@@ -14435,14 +14435,14 @@ msgid "SoftcamScript select camscript"
 msgstr "Wähle Softcam-Skript"
 
 msgid "Software Update"
-msgstr "Software aktualisieren"
+msgstr "Software-Update"
 
 #, python-format
 msgid "Software descrambling version:\t%s %s\n"
 msgstr "SoftCSA Version:\t%s %s\n"
 
 msgid "Software update"
-msgstr "Software aktualisieren"
+msgstr "Software-Update"
 
 msgid "Software update settings"
 msgstr "Software-Update-Einstellungen"
@@ -14460,7 +14460,7 @@ msgid "Some plugins are not available:\n"
 msgstr "Einige Plugins sind nicht verfügbar\n"
 
 msgid "Sorry but that location does not exist or is not setup. Please set it up in the Backup manager setup menu."
-msgstr "Dieses Verzeichnis gibt es nicht oder ist nicht konfiguriert - bitte in der Konfiguration der Backup-Verwaltung einrichten."
+msgstr "Dieses Verzeichnis gibt es nicht oder ist nicht konfiguriert - bitte in der Konfiguration des Backup-Managers einrichten."
 
 msgid "Sorry feeds are down for maintenance, please try again later. If this issue persists please check openvix.co.uk or world-of-satellite.com."
 msgstr "Zurzeit finden Wartungsarbeiten statt - bitte später erneut versuchen. Wenn das Problem bestehen bleibt, bitte auf openvix.co.uk oder world-of-satellite.com nachsehen."
@@ -14475,10 +14475,10 @@ msgid "Sorry the feeds are down for maintenance. Please try again later."
 msgstr "Wegen Wartungsarbeiten sind die Feeds zurzeit nicht erreichbar - bitte später erneut versuchen."
 
 msgid "Sorry the feeds are down for maintenance. Please try using Backup manager to restore plugins later."
-msgstr "Wegen Wartungsarbeiten sind die Feeds zurzeit nicht erreichbar - bitte Backup-Verwaltung später verwenden, um Plugins wiederherzustellen."
+msgstr "Wegen Wartungsarbeiten sind die Feeds zurzeit nicht erreichbar - bitte Backup-Manager später verwenden, um Plugins wiederherzustellen."
 
 msgid "Sorry the feeds are down for maintenance. Please try using the Backup manager to restore plugins later."
-msgstr "Wegen Wartungsarbeiten sind die Feeds zurzeit nicht erreichbar - bitte Backup-Verwaltung später verwenden, um Plugins wiederherzustellen."
+msgstr "Wegen Wartungsarbeiten sind die Feeds zurzeit nicht erreichbar - bitte Backup-Manager später verwenden, um Plugins wiederherzustellen."
 
 msgid "Sorry the feeds seem to be in an unstable state, if you wish to use them please enable 'Allow unstable (experimental) updates' in \"Software update settings\"."
 msgstr "Feeds sind auf instabil eingestellt. Wenn instabile Updates erlaubt werden sollen, muss das in den Einstellungen für Online-Update aktiviert werden."
@@ -15003,7 +15003,7 @@ msgid "Swap SNR in '%' with SNR in 'db'"
 msgstr "Tausche SNR in '%' gegen SNR in 'dB'"
 
 msgid "Swap manager"
-msgstr "SWAP-Verwaltung"
+msgstr "SWAP-Manager"
 
 msgid "Swap services"
 msgstr "Sender tauschen"
@@ -15346,7 +15346,7 @@ msgstr "Die %s %s speichert die EPG alle x Stunden."
 
 #, python-format
 msgid "The %s %s will reboot after enabling."
-msgstr "%s %s wird nach Aktivierung neu starten."
+msgstr "%s %s wird nach Initialisierung neu starten."
 
 msgid ""
 "The AutoTimer plugin is not installed!\n"
@@ -15395,14 +15395,14 @@ msgid ""
 "Install latest image using USB stick or Image Manager."
 msgstr ""
 "Der Linux-Kernel wurde geändert. Update ist nicht erlaubt.\n"
-"Installiere neuestes Image per USB oder Image-Verwaltung."
+"Installiere neuestes Image per USB oder Image-Manager."
 
 msgid ""
 "The Linux kernel has changed, plugins are not compatible. \n"
 "Install latest image using USB stick or Image Manager."
 msgstr ""
 "Der Linux-Kernel wurde geändert. Plugins sind nicht kompatibel.\n"
-"Installiere neuestes Image per USB oder Image-Verwaltung."
+"Installiere neuestes Image per USB oder Image-Manager."
 
 msgid "The PIN code has been changed successfully."
 msgstr "Der PIN-Code wurde erfolgreich geändert."
@@ -15977,13 +15977,13 @@ msgid "To audio selection"
 msgstr "Zur Audio-Auswahl"
 
 msgid "To be able to download any image local storage must already be configured, HDD, USB or SD, and also be selected as the 'Backup location' in Image Manager setup menu."
-msgstr "Bevor Images heruntergeladen werden können, muss ein lokales Verzeichnis auf HDD, USB oder SD in der Image-Verwaltung ausgewählt werden."
+msgstr "Bevor Images heruntergeladen werden können, muss ein lokales Verzeichnis auf HDD, USB oder SD im Image-Manager ausgewählt werden."
 
 msgid "To flash an image first select it from the list of images in the Image Manager main screen (the image will need to have already been downloaded) and then press BLUE."
-msgstr "Um ein Image zu flashen, wähle es in der Hauptansicht der Image-Verwaltung aus (das Image muss schon komplett heruntergeladen worden sein) und drücke 'Blau'."
+msgstr "Um ein Image zu flashen, wähle es in der Hauptansicht des Image-Managers aus (das Image muss schon komplett heruntergeladen worden sein) und drücke 'Blau'."
 
 msgid "To make an image backup select GREEN from Image Manager main screen."
-msgstr "Um ein Backup zu erstellen, drücke 'Grün' in der Hauptansicht der Image-Verwaltung."
+msgstr "Um ein Backup zu erstellen, drücke 'Grün' in der Hauptansicht des Image-Managers."
 
 #, python-format
 msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
@@ -15993,7 +15993,7 @@ msgid "To save and apply the selected skin configuration the GUI needs to restar
 msgstr "Ein Enigma2 Neustart ist erforderlich, um den gewälten Skin zu speichern und zu aktivieren - jetzt speichern und neu starten?"
 
 msgid "To start a download select YELLOW from Image Manager main screen, then select the distro, and finally which image to download."
-msgstr "Um ein Image herunterzuladen, wähle 'Gelb' in der Hauptansicht der Image-Verwaltung, dann wähle die Distribution und zum Schluss das Image, das du herunterladen möchtest."
+msgstr "Um ein Image herunterzuladen, wähle 'Gelb' in der Hauptansicht des Image-Managers, dann wähle die Distribution und zum Schluss das Image, das du herunterladen möchtest."
 
 msgid "To subtitle selection"
 msgstr "Zur Untertitel-Auswahl"
@@ -16861,22 +16861,22 @@ msgid "ViX"
 msgstr ""
 
 msgid "ViX Backup manager"
-msgstr "ViX Backup-Verwaltung"
+msgstr "ViX Backup-Manager"
 
 msgid "ViX Image Management"
-msgstr "ViX Image-Verwaltung"
+msgstr "ViX Image-Manager"
 
 msgid "ViX Image manager"
-msgstr "ViX Image-Verwaltung"
+msgstr "ViX Image-Manager"
 
 msgid "ViX Mount manager"
-msgstr "ViX Mountpoint-Verwaltung"
+msgstr "ViX Mountpoint-Manager"
 
 msgid "ViX SWAP manager"
-msgstr "ViX SWAP-Verwaltung"
+msgstr "ViX SWAP-Manager"
 
 msgid "ViX Script runner"
-msgstr "ViX Skript-Ausführung"
+msgstr "ViX Skript-Manager"
 
 msgid "Viaggi"
 msgstr ""
@@ -17010,7 +17010,7 @@ msgid "Vu+ 4K image install options"
 msgstr "Vu+ 4K Imageinstallation-Einstellungen"
 
 msgid "Vu+ ImageManager wizard"
-msgstr "Vu+ Image-Verwaltung Assistent"
+msgstr "Vu+ Image-Manager Assistent"
 
 msgid "Vu+ Multiboot"
 msgstr "VU+ Multiboot"
@@ -17763,7 +17763,7 @@ msgstr "Timeshift scheint aktiv zu sein. Timeshift stoppen? Streams und IPTV wer
 
 #, python-format
 msgid "Your %s %s could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."
-msgstr "Deine %s %s kann sich nicht mit dem Feed verbinden - bitte die Plugins mit der Backup-Verwaltung später wiederherstellen."
+msgstr "Deine %s %s kann sich nicht mit dem Feed verbinden - bitte die Plugins mit dem Backup-Manager später wiederherstellen."
 
 #, python-format
 msgid "Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again."
@@ -17805,7 +17805,7 @@ msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte Netzwerkeinstel
 
 #, python-format
 msgid "Your %s %s is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
-msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte die Plugins mit der Backup-Verwaltung später wiederherstellen, wenn eine Netzwerkverbindung besteht."
+msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte die Plugins mit dem Backup-Manager später wiederherstellen, wenn eine Netzwerkverbindung besteht."
 
 #, python-format
 msgid "Your %s %s is not connected to the Internet. Please check your network settings and try again."
@@ -17813,11 +17813,11 @@ msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte Netzwerkeinstel
 
 #, python-format
 msgid "Your %s %s is not connected to the Internet. Please try using Backup manager to restore plugins later."
-msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte die Plugins mit der Backup-Verwaltung später wiederherstellen."
+msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte die Plugins mit dem Backup-Manager später wiederherstellen."
 
 #, python-format
 msgid "Your %s %s is not connected to the Internet. Please try using the Backup manager to restore plugins later."
-msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte die Plugins mit der Backup-Verwaltung später wiederherstellen."
+msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte die Plugins mit dem Backup-Manager später wiederherstellen."
 
 #, python-format
 msgid ""
@@ -18848,7 +18848,7 @@ msgid "no or unknown card inserted"
 msgstr "Keine oder unbekannte Karte"
 
 msgid "no resource manager"
-msgstr "Keine Ressourcen-Verwaltung"
+msgstr "Kein Ressourcen-Manager"
 
 msgid "no storage devices found"
 msgstr "Kein Laufwerk gefunden"
@@ -18916,7 +18916,7 @@ msgid "only when available"
 msgstr "Nur, wenn verfügbar"
 
 msgid "opkg update"
-msgstr "opkg aktualisieren"
+msgstr "Opkg-Update"
 
 msgid "or HDMI input"
 msgstr "oder HDMI-Eingang"
