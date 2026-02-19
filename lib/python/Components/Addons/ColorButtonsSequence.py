@@ -61,7 +61,7 @@ class ColorButtonsSequence(GUIAddon):
 
 		pic = None
 		pixdWidth = 0
-		
+
 		widthUsed = 0
 		fluidPadding = 0
 		if self.layoutStyle == "fluid" and recursion and self.alignment == "left":
