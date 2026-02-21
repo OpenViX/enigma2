@@ -97,16 +97,6 @@ def find_screen_by_name(config, name):
 
 class SkinSetupConfig(Setup):
 	def __init__(self, session):
-		self["thumb"] = Pixmap()
-
-		def showThumb(configElement):
-			selectedVal = configElement.value
-			thumb = resolveFilename(SCOPE_GUISKIN, selectedVal + ".png")
-			if fileExists(thumb):
-				pixmap = LoadPixmap(thumb)
-				self["thumb"].setPixmap(pixmap)
-			else:
-				self["thumb"].setPixmap(None)
 		root = current_skin_config.get("config", {})
 		color_scheme = root.get("color_scheme", {})
 		colors = file_tree.get("Colors", {})
@@ -123,11 +113,23 @@ class SkinSetupConfig(Setup):
 				val_fixed = f"{path.replace(resolveFilename(SCOPE_GUISKIN), "")}"
 				val_choices.append((val_fixed, name.replace(".xml", "")))
 			val = ConfigSelection(default=find_screen_by_name(screens_configuration, key), choices=val_choices)
-			val.addNotifier(showThumb)
+			val.addNotifier(self.showThumb)
 			setattr(self, f"screen_{key.lower().replace(" ", "_")}", val)
 
 		Setup.__init__(self, session, None)
+		self["thumb"] = Pixmap()
 		self.title = _("Skin Configuration")
+
+	def showThumb(self, configElement):
+		if "thumb" not in self or not self["thumb"]:
+			return
+		selectedVal = configElement.value
+		thumb = resolveFilename(SCOPE_GUISKIN, selectedVal + ".png")
+		if fileExists(thumb):
+			pixmap = LoadPixmap(thumb)
+			self["thumb"].setPixmap(pixmap)
+		else:
+			self["thumb"].setPixmap(None)
 
 	def writeSkinConfig(self):
 		xml = []
