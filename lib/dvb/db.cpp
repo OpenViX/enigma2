@@ -2967,6 +2967,20 @@ void eDVBDB::searchAllReferences(std::vector<eServiceReference> &result, int tsi
 			sit->first.getServiceID() == Sid)
 			result.push_back(sit->first);
 	}
+	for (std::map<std::string, eBouquet>::iterator bit(m_bouquets.begin());bit != m_bouquets.end(); ++bit)
+	{
+		for (eBouquet::list::iterator sit2(bit->second.m_services.begin());sit2 != bit->second.m_services.end(); ++sit2)
+		{
+			eServiceReferenceDVB &ref = static_cast<eServiceReferenceDVB&>(*sit2);
+			if (ref.getTransportStreamID() == Tsid &&
+				ref.getOriginalNetworkID() == Onid &&
+				ref.getServiceID() == Sid)
+				{
+					if (std::find(result.begin(), result.end(), ref) == result.end()) 
+						result.push_back(ref);
+				}
+		}
+	}
 }
 
 DEFINE_REF(eDVBDBQueryBase);
