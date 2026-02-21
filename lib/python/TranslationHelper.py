@@ -34,4 +34,3 @@ translate = _("SATA")
 translate = _("SD")
 translate = _("eMMC")
 translate = _("eSATA")
-translate = _("%d %B")  # Time format used by some third party skins
