@@ -25,7 +25,7 @@
 		</widget>
 	</screen>
 <!-- channelselection -->
-	<screen name="ChannelSelectionSummary" position="0,0" size="480,320">
+	<screen name="ChannelSelectionSummary" position="fill" resolution="480,320">
 		<widget source="parent.Service" render="LcdPicon" position="20,0" size="284,170" zPosition="2" alphatest="blend">
 			<convert type="ServiceName">Reference</convert>
 		</widget>
@@ -50,7 +50,7 @@
 		<panel name="SummaryClockPanelTopRight" />
 		<panel name="RecordIconPanelTopRight" />
 	</screen>
-	<screen name="EPGSelectionSummary" position="0,0" size="480,320">
+	<screen name="EPGSelectionSummary" position="fill" resolution="480,320">
 		<widget source="parent.Service" render="LcdPicon" position="20,0" size="284,170" zPosition="2" alphatest="blend">
 			<convert type="ServiceName">Reference</convert>
 		</widget>
@@ -75,7 +75,7 @@
 		<panel name="SummaryClockPanelTopRight" />
 		<panel name="RecordIconPanelTopRight" />
 	</screen>
-	<screen name="InfoBarSummary" position="0,0" size="480,320">
+	<screen name="InfoBarSummary" position="fill" resolution="480,320">
 		<widget source="session.CurrentService" render="LcdPicon" position="20,0" size="284,170" zPosition="2" alphatest="blend">
 			<convert type="ServiceName">Reference</convert>
 		</widget>
