@@ -393,7 +393,7 @@ msgid "%B-%d-%Y"
 msgstr ""
 
 msgid "%H:%M"
-msgstr "%Ч:%М"
+msgstr ""
 
 msgid "%I:%M"
 msgstr ""
