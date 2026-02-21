@@ -73,13 +73,13 @@ class LcdPicon(Renderer):
 					pngname = self.defaultpngname
 				if self.pngname != pngname:
 					if pngname:
-						self.PicLoad.setPara((self.piconsize[0], self.piconsize[1], 0, 0, 1, 1, "#FF000000"))
+						self.PicLoad.setPara((self.piconsize[0], self.piconsize[1], 1, 1, 1, 1, "#FF000000"))
 						if self.PicLoad.startDecode(pngname):
 							# if this has failed, then another decode is probably already in progress
 							# throw away the old picload and try again immediately
 							self.PicLoad = ePicLoad()
 							self.PicLoad.PictureData.get().append(self.updatePicon)
-							self.PicLoad.setPara((self.piconsize[0], self.piconsize[1], 0, 0, 1, 1, "#FF000000"))
+							self.PicLoad.setPara((self.piconsize[0], self.piconsize[1], 1, 1, 1, 1, "#FF000000"))
 							self.PicLoad.startDecode(pngname)
 					else:
 						self.instance.hide()
