@@ -4,9 +4,11 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
 from Screens.MessageBox import MessageBox
+from Components.Pixmap import Pixmap
 from skin import loadSkin
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import fileReadXML, resolveFilename, SCOPE_GUISKIN
+from Tools.Directories import fileExists, fileReadXML, resolveFilename, SCOPE_GUISKIN
+from Tools.LoadPixmap import LoadPixmap
 from Components.config import config, ConfigYesNo, ConfigSelection
 
 import threading
@@ -72,7 +74,10 @@ def applyCustomLayouts():
 	screens = root.get("screens", {})
 	if screens:
 		for key, value in screens.items():
-			loadSkin(filename=value["value"], scope=SCOPE_GUISKIN)
+			if not isinstance(value, list):
+				value = [value]
+			for val in value:
+				loadSkin(filename=val["value"], scope=SCOPE_GUISKIN)
 
 
 def find_screen_by_name(config, name):
@@ -92,6 +97,16 @@ def find_screen_by_name(config, name):
 
 class SkinSetupConfig(Setup):
 	def __init__(self, session):
+		self["thumb"] = Pixmap()
+
+		def showThumb(configElement):
+			selectedVal = configElement.value
+			thumb = resolveFilename(SCOPE_GUISKIN, selectedVal + ".png")
+			if fileExists(thumb):
+				pixmap = LoadPixmap(thumb)
+				self["thumb"].setPixmap(pixmap)
+			else:
+				self["thumb"].setPixmap(None)
 		root = current_skin_config.get("config", {})
 		color_scheme = root.get("color_scheme", {})
 		colors = file_tree.get("Colors", {})
@@ -108,6 +123,7 @@ class SkinSetupConfig(Setup):
 				val_fixed = f"{path.replace(resolveFilename(SCOPE_GUISKIN), "")}"
 				val_choices.append((val_fixed, name.replace(".xml", "")))
 			val = ConfigSelection(default=find_screen_by_name(screens_configuration, key), choices=val_choices)
+			val.addNotifier(showThumb)
 			setattr(self, f"screen_{key.lower().replace(" ", "_")}", val)
 
 		Setup.__init__(self, session, None)
