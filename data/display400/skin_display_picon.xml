@@ -119,7 +119,7 @@
 		</widget>
 	</screen>
 
-<!-- main-->
+<!-- main -->
 	<screen name="InfoBarSummary" position="0,0" size="400,240">
 		<widget source="session.CurrentService" render="LcdPicon" position="0,33" size="220,130" zPosition="1" alphatest="on">
 			<convert type="ServiceName">Reference</convert>
@@ -139,7 +139,7 @@
 		<panel name="SummaryTunerStatusPanel" />
 	</screen>
 
-<!-- movieplayer-->
+<!-- movieplayer -->
 	<screen name="InfoBarMoviePlayerSummary" position="0,0" size="400,240">
 		<widget name="statusicon_summary" position="0,138" size="40,38" pixmaps="play.png,pause.png,stop.png,forward.png,backward.png,slow.png" />
 		<widget source="speed_summary" render="Label" position="44,160" size="160,32" font="FdLcD;26" halign="left" noWrap="1" />
@@ -180,7 +180,7 @@
 		<panel name="SummaryClockPanel" />
 	</screen>
 
-<!-- channelselection-->
+<!-- channelselection -->
 	<screen name="ChannelSelectionSummary" position="0,0" size="400,240">
 		<widget source="parent.ServiceEvent" render="LcdPicon" position="0,33" size="220,132" zPosition="1" alphatest="on">
 			<convert type="ServiceName">Reference</convert>
@@ -190,7 +190,7 @@
 		<panel name="SummaryClockPanel" />
 	</screen>
 
-<!-- menus-->
+<!-- menus -->
 	<screen name="MenuSummary" position="0,0" size="400,240">
 		<widget source="parent.title" render="Label" position="0,38" size="400,26" font="FdLcD;24" halign="left" noWrap="1" />
 		<widget source="parent.menu" render="Label" position="0,66" size="400,20" font="FdLcD;19" halign="left">
@@ -201,7 +201,7 @@
 		<panel name="SummaryClockPanel" />
 	</screen>
 
-<!-- setup-->
+<!-- setup -->
 	<screen name="SetupSummary" position="0,0" size="400,240">
 		<widget source="SetupTitle" render="Label" position="0,38" size="400,26" font="FdLcD;24" halign="left" valign="top" noWrap="1"  />
 		<widget source="SetupEntry" render="Label" position="0,66" size="400,20" font="FdLcD;19" halign="left" valign="top" />
@@ -210,7 +210,7 @@
 		<panel name="SummaryClockPanel" />
 	</screen>
 
-<!-- misc-->
+<!-- misc -->
 	<screen name="ScreenSummary" position="0,0" size="400,240">
 		<widget source="Title" render="Label" position="0,38" size="400,26" font="FdLcD;24" halign="left" noWrap="1" />
 		<panel name="SummaryIconsPanel" />
