@@ -53,14 +53,16 @@ public:
 	void destroy() { delete this; }
 
 	typedef enum { Subtitle_TTX, Subtitle_Regular, Subtitle_Bold, Subtitle_Italic, Subtitle_MAX } subfont_t;
+#ifndef SWIG
 	struct eSubtitleStyle
 	{
 		subfont_t face;
 		int have_foreground_color;
 		gRGB foreground_color, border_color;
-		int  border_width;
+		int border_width;
 		ePtr<gFont> font;
 	};
+#endif
 
 	static void setFontStyle(subfont_t face, gFont *font, int autoColor, const gRGB &col, const gRGB &borderCol, int borderWidth);
 

@@ -12,6 +12,7 @@
 class eDVBFrontendParameters: public iDVBFrontendParameters
 {
 	DECLARE_REF(eDVBFrontendParameters);
+#ifndef SWIG
 	union
 	{
 		eDVBFrontendParametersSatellite sat;
@@ -21,6 +22,7 @@ class eDVBFrontendParameters: public iDVBFrontendParameters
 	};
 	int m_type;
 	int m_flags;
+#endif
 public:
 	eDVBFrontendParameters();
 	~eDVBFrontendParameters()
