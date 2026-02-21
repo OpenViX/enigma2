@@ -35,15 +35,15 @@
 		<widget source="parent.ServiceEvent" render="Progress" position="20,230" size="440,20" borderWidth="1" >
 			<convert type="EventTime">Progress</convert>
 		</widget>
-		<widget source="parent.ServiceEvent" render="Label" position="e-270,260" size="130,40" font="FdLcD;40" halign="right" valign="center" foregroundColor="FdLcdTitleForeground">
+		<widget source="parent.ServiceEvent" render="Label" position="e-287,260" size="130,40" font="FdLcD;38" halign="right" valign="center" foregroundColor="FdLcdTitleForeground" transparent="1">
 			<convert type="EventTime">StartTime</convert>
 			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
-		<widget source="parent.ServiceEvent" render="Label" position="e-145,260" size="130,40" font="FdLcD;40" halign="left" valign="center" foregroundColor="FdLcdTitleForeground">
+		<widget source="parent.ServiceEvent" render="Label" position="e-155,260" size="135,40" font="FdLcD;38" halign="left" valign="center" foregroundColor="FdLcdTitleForeground" transparent="1">
 			<convert type="EventTime">EndTime</convert>
 			<convert type="ClockToText">Format: - %H:%M</convert>
 		</widget>
-		<widget source="parent.ServiceEvent" render="Label" position="20,260" size="200,40" font="FdLcD;40" valign="center" foregroundColor="FdLcdTitleForeground">
+		<widget source="parent.ServiceEvent" render="Label" position="20,260" size="200,40" font="FdLcD;38" valign="center" foregroundColor="FdLcdTitleForeground" transparent="1">
 			<convert type="EventTime">Remaining</convert>
 			<convert type="RemainingToText">VFD</convert>
 		</widget>
@@ -60,15 +60,15 @@
 		<widget source="parent.Event" render="Progress" position="20,230" size="440,20" borderWidth="1" >
 			<convert type="EventTime">Progress</convert>
 		</widget>
-		<widget source="parent.Event" render="Label" position="e-270,260" size="130,40" font="FdLcD;40" halign="center" valign="center" foregroundColor="FdLcdTitleForeground">
+		<widget source="parent.Event" render="Label" position="e-287,260" size="130,40" font="FdLcD;38" halign="right" valign="center" foregroundColor="FdLcdTitleForeground" transparent="1">
 			<convert type="EventTime">StartTime</convert>
 			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
-		<widget source="parent.Event" render="Label" position="e-145,260" size="130,40" font="FdLcD;40" halign="center" valign="center" foregroundColor="FdLcdTitleForeground">
+		<widget source="parent.Event" render="Label" position="e-155,260" size="135,40" font="FdLcD;38" halign="left" valign="center" foregroundColor="FdLcdTitleForeground" transparent="1">
 			<convert type="EventTime">EndTime</convert>
 			<convert type="ClockToText">Format: - %H:%M</convert>
 		</widget>
-		<widget source="parent.Event" render="Label" position="20,260" size="200,40" font="FdLcD;40" valign="center" foregroundColor="FdLcdTitleForeground">
+		<widget source="parent.Event" render="Label" position="20,260" size="200,40" font="FdLcD;38" valign="center" foregroundColor="FdLcdTitleForeground" transparent="1">
 			<convert type="EventTime">Remaining</convert>
 			<convert type="RemainingToText">VFD</convert>
 		</widget>
@@ -85,15 +85,15 @@
 		<widget source="session.Event_Now" render="Progress" position="20,230" size="440,20" borderWidth="1" >
 			<convert type="EventTime">Progress</convert>
 		</widget>
-		<widget source="session.Event_Now" render="Label" position="e-270,260" size="130,40" font="FdLcD;40" halign="center" valign="center" foregroundColor="FdLcdTitleForeground">
+		<widget source="session.Event_Now" render="Label" position="e-287,260" size="130,40" font="FdLcD;38" halign="right" valign="center" foregroundColor="FdLcdTitleForeground" transparent="1">
 			<convert type="EventTime">StartTime</convert>
 			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
-		<widget source="parent.session.Event_Now" render="Label" position="e-145,260" size="130,40" font="FdLcD;40" halign="center" valign="center" foregroundColor="FdLcdTitleForeground">
+		<widget source="session.Event_Now" render="Label" position="e-155,260" size="135,40" font="FdLcD;38" halign="left" valign="center" foregroundColor="FdLcdTitleForeground" transparent="1">
 			<convert type="EventTime">EndTime</convert>
 			<convert type="ClockToText">Format: - %H:%M</convert>
 		</widget>
-		<widget source="session.Event_Now" render="Label" position="20,260" size="200,40" font="FdLcD;40" valign="center" foregroundColor="FdLcdTitleForeground">
+		<widget source="session.Event_Now" render="Label" position="20,260" size="200,40" font="FdLcD;38" valign="center" foregroundColor="FdLcdTitleForeground" transparent="1">
 			<convert type="EventTime">Remaining</convert>
 			<convert type="RemainingToText">VFD</convert>
 		</widget>
