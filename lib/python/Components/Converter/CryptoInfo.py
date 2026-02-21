@@ -40,7 +40,7 @@ class CryptoInfo(Poll, Converter):
 					info = service and service.info()
 					if info:
 						try:
-							if info.getInfoObject(iServiceInformation.sCAIDs) or pathExists("/tmp/ecm.info"):
+							if info.getInfo(iServiceInformation.sIsCrypted) == 1 and (info.getInfoObject(iServiceInformation.sCAIDs) or pathExists("/tmp/ecm.info")):
 								ecm_info = self.ecmdata.getInfoRaw()
 								if ecm_info:
 									# caid
