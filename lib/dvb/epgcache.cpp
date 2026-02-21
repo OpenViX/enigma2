@@ -511,11 +511,11 @@ void eEPGCache::sectionRead(const uint8_t *data, int source, eEPGChannelData *ch
 
 		duration = fromBCD(eit_event->duration_1)*3600+fromBCD(eit_event->duration_2)*60+fromBCD(eit_event->duration_3);
 		start_time = parseDVBtime((const uint8_t*)eit_event + 2, &event_hash);
-
-		if (source != EPG_IMPORT && getIsBlacklisted(service)) // Check is the service blacklisted/whitelisted for getting data from EIT or now/next
-					goto next;
-		if (source == NOWNEXT && !getIsWhitelisted(service))
-					goto next;			
+		// eDebug("[eEPGCache:sectionRead]1 source=[%d] source=0x%X)", source, source);
+		if (source != EPG_IMPORT && getIsBlacklisted(service)) // if service blacklisted and not EPG import/CrossEPG ---> no update
+			goto next;
+		if (source == NOWNEXT && !getIsWhitelisted(service))  // if Whitelist and NOWNEXT ---> update 
+			goto next;
 		if ((start_time != 3599) &&  // NVOD Service
 			(now <= (start_time+duration)) &&  // skip old events
 			(start_time < (now+28*24*60*60)) &&  // no more than 4 weeks in future
@@ -554,12 +554,12 @@ void eEPGCache::sectionRead(const uint8_t *data, int source, eEPGChannelData *ch
 					goto next;
 				}
 
-				// eDebug("[eEPGCache] Removing event %04X at %ld.", ev_it->second->getEventID(), ev_it->second->getStartTime());
+				// eDebug("[eEPGCache] Removing event %04X at %lld.", ev_it->second->getEventID(), (long long)ev_it->second->getStartTime());
 
 				// Remove existing event
 				if (timemap.erase(ev_it->second->getStartTime()) == 0)
 				{
-					eDebug("[eEPGCache] Event %04X not found in time map at %ld.", event_id, ev_it->second->getStartTime());
+					eDebug("[eEPGCache] Event %04X not found in time map at %lld.", event_id, (long long)ev_it->second->getStartTime());
 				}
 				eventData *data = ev_it->second;
 				eventmap.erase(ev_it);
@@ -596,7 +596,7 @@ void eEPGCache::sectionRead(const uint8_t *data, int source, eEPGChannelData *ch
 
 					if (eventmap.erase(it->second->getEventID()) == 0)
 					{
-						eDebug("[eEPGCache] Event %04X not found in event map at %ld.", it->second->getEventID(), it->second->getStartTime());
+						eTrace("[eEPGCache] Event %04X not found in event map at %lld.", it->second->getEventID(), (long long)it->second->getStartTime());
 					}
 					delete it->second;
 					timemap.erase(it++);
@@ -609,7 +609,7 @@ void eEPGCache::sectionRead(const uint8_t *data, int source, eEPGChannelData *ch
 					break;
 			}
 
-			// eDebug("[eEPGCache] Inserting event %04X at %ld.", event_id, new_start);
+			// eDebug("[eEPGCache] Inserting event %04X at %lld.", event_id, (long long)new_start);
 
 			eventmap[event_id] = new_evt;
 			timemap[new_start] = new_evt;
@@ -971,7 +971,7 @@ void eEPGCache::load()
 							It->second->getEventID(), (long)start_time); */
 						if (eventmap.erase(It->second->getEventID()) == 0)
 						{
-							eDebug("[eEPGCache][load] Event %04X not found in time map at %ld.", It->second->getEventID(), start_time);
+							eTrace("[eEPGCache] Event %04X not found in time map at %lld.", It->second->getEventID(), (long long)start_time);
 						}
 						delete It->second;
 						timemap.erase(It++);

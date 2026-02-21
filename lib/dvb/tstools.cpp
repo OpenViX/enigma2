@@ -124,7 +124,7 @@ int eDVBTSTools::getPTS(off_t &offset, pts_t &pts, int fixed)
 						// obsolete data that happens to have a '1' there
 						continue;
 					}
-					eDebug("[eDVBTSTools] getPTS got it from sc file offset=%lld pts=%lld", local_offset, pts);
+					eDebug("[eDVBTSTools] getPTS got it from sc file offset=%lld pts=%lld", (long long)local_offset, pts);
 					if (fixed && fixupPTS(local_offset, pts))
 					{
 						eDebug("[eDVBTSTools]    But failed to fixup!");
@@ -170,7 +170,7 @@ int eDVBTSTools::getPTS(off_t &offset, pts_t &pts, int fixed)
 			const unsigned char* match = (const unsigned char*)memchr(packet+1, 0x47, 188-1);
 			if (match != NULL)
 			{
-				eDebug("[eDVBTSTools] getPTS resync %ju", (intmax_t)(match - packet));
+				eDebug("[eDVBTSTools] getPTS resync %td", match - packet);
 				offset += (match - packet) - 188;
 			}
 			else
@@ -208,7 +208,8 @@ int eDVBTSTools::getPTS(off_t &offset, pts_t &pts, int fixed)
 					pts |= ((unsigned long long)(packet[ 9]&0xFF)) << 1;
 					pts |= ((unsigned long long)(packet[10]&0x80)) >> 7;
 					offset -= 188;
-					eDebug("[eDVBTSTools] getPTS PCR %16llx found at %lld pid %02x (%02x %02x %02x %02x %02x %02x %02x %02x %02x %02x %02x)", pts, offset, pid, packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6], packet[7], packet[8], packet[9], packet[10]);
+					eDebug("[eDVBTSTools] getPTS PCR %16llx found at %lld pid %02x (%02x %02x %02x %02x %02x %02x %02x %02x %02x %02x %02x)",
+						pts, (long long)offset, pid, packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6], packet[7], packet[8], packet[9], packet[10]);
 					if (fixed && fixupPTS(offset, pts))
 						return -1;
 					return 0;
@@ -306,7 +307,7 @@ int eDVBTSTools::getPTS(off_t &offset, pts_t &pts, int fixed)
 			pts |= ((unsigned long long)(payload[13]&0xFE)) >> 1;
 			offset -= 188;
 
-			eDebug("[eDVBTSTools] getPTS PTS %16llx found at %lld pid %02x stream: %02x", pts, offset, pid, payload[3]);
+			eDebug("[eDVBTSTools] getPTS PTS %16llx found at %lld pid %02x stream: %02x", pts, (long long)offset, pid, payload[3]);
 
 				/* convert to zero-based */
 			if (fixed && fixupPTS(offset, pts))
@@ -462,7 +463,7 @@ int eDVBTSTools::getOffset(off_t &offset, pts_t &pts, int marg)
 			if (p != -1)
 			{
 				pts = p;
-				eDebug("[eDVBTSTools] getOffset aborting. Taking %lld as offset for %lld", offset, pts);
+				eDebug("[eDVBTSTools] getOffset aborting. Taking %lld as offset for %lld", (long long)offset, pts);
 				return 0;
 			}
 		}
@@ -495,7 +496,7 @@ void eDVBTSTools::calcBegin()
 			if (m_streaminfo.fixupPTS(begin, pts) == 0)
 			{
 				eDebug("[eDVBTSTools] calcBegin [@ML] m_streaminfo.getLastFrame returned %lld, %lld (%us), fixup to: %lld, %lld (%us)",
-				       m_offset_begin, m_pts_begin, (unsigned int)(m_pts_begin/90000), begin, pts, (unsigned int)(pts/90000));
+				       (long long)m_offset_begin, (long long)m_pts_begin, (unsigned int)(m_pts_begin/90000), (long long)begin, pts, (unsigned int)(pts/90000));
 			}
 			m_begin_valid = 1;
 		}
@@ -652,7 +653,7 @@ void eDVBTSTools::takeSamples()
 	bytes_per_sample -= bytes_per_sample % m_packet_size;
 
 	eDebug("[eDVBTSTools] takeSamples step %lld, pts begin %lld, pts end %lld, offs begin %lld, offs end %lld:",
-		bytes_per_sample, m_pts_begin, m_pts_end, m_offset_begin, m_offset_end);
+		(long long)bytes_per_sample, m_pts_begin, m_pts_end, (long long)m_offset_begin, (long long)m_offset_end);
 
 	for (off_t offset = m_offset_begin; offset < m_offset_end;)
 	{
@@ -695,7 +696,7 @@ int eDVBTSTools::takeSample(off_t off, pts_t &p)
 			}
 		}
 
-		eDebug("[eDVBTSTools] takeSample adding sample %lld: pts %lld -> pos %lld (diff %lld bytes)", offset_org, p, off, off-offset_org);
+		eDebug("[eDVBTSTools] takeSample adding sample %lld: pts %lld -> pos %lld (diff %lld bytes)", (long long)offset_org, p, (long long)off, (long long)(off-offset_org));
 		m_samples[p] = off;
 		return 0;
 	}

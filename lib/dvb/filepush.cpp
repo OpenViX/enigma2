@@ -334,9 +334,6 @@ void eFilePushThread::filterRecordData(const unsigned char *data, int len)
 {
 }
 
-
-
-
 eFilePushThreadRecorder::eFilePushThreadRecorder(unsigned char* buffer, size_t buffersize):
 	m_fd_source(-1),
 	m_buffersize(buffersize),
