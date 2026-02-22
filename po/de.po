@@ -171,13 +171,13 @@ msgid "%-d. %b %Y"
 msgstr ""
 
 msgid "%-d.%-m"
-msgstr ""
+msgstr "%-d.%-m."
 
 msgid "%-d.%-m.%Y"
 msgstr ""
 
 msgid "%-d.%m"
-msgstr "%-d.%-m."
+msgstr "%-d.%m."
 
 msgid "%-d.%m.%Y"
 msgstr ""
@@ -250,7 +250,7 @@ msgid "%A %-d. %B %Y"
 msgstr "%A, %-d. %B %Y"
 
 msgid "%A %-d.%-m"
-msgstr "%A, %-d.%-m"
+msgstr "%A, %-d.%-m."
 
 msgid "%A %-d.%-m.%Y"
 msgstr "%A, %-d.%-m.%Y"
@@ -502,7 +502,7 @@ msgid "%a %-d. %b %Y"
 msgstr "%a, %-d. %b %Y"
 
 msgid "%a %-d.%-m"
-msgstr "%a, %-d.%-m"
+msgstr "%a, %-d.%-m."
 
 msgid "%a %-d.%-m.%Y"
 msgstr "%a, %-d.%-m.%Y"
@@ -646,7 +646,7 @@ msgid "%a %d.%-m.%Y"
 msgstr "%s, %d.%-m.%Y"
 
 msgid "%a %d.%m"
-msgstr "%a, %d.%m"
+msgstr "%a, %d.%m."
 
 msgid "%a %d.%m.%Y"
 msgstr "%a, %d.%m.%Y"
@@ -2031,10 +2031,10 @@ msgid "Allows swapping between oe-alliance/branding or oe-alliance/remotes for b
 msgstr "Wähle OE-A-Branding oder OE-A-Remotes, um die Position der Buttons in der Grafik festzulegen."
 
 msgid "Allows the %s %s to load the saved EPG data regularly."
-msgstr "Regelmäßiges lesen der EPG-Daten von der %s %s erlauben."
+msgstr "Regelmäßiges Lesen der EPG-Daten von der %s %s erlauben."
 
 msgid "Allows the %s %s to save the EPG data regularly."
-msgstr "Regelmäßiges schreiben der EPG-Daten von der %s %s erlauben."
+msgstr "Regelmäßiges Schreiben der EPG-Daten von der %s %s erlauben."
 
 msgid "Allows the TV remote to be used to control the receiver."
 msgstr "Soll die TV-Fernbedienung zur Steuerung des E2-Receivers verwendet werden?"
@@ -2473,7 +2473,7 @@ msgid "Auto chapter split every ? minutes (0=never)"
 msgstr "Automatische Kapitelwechsel alle ? Minuten (0 = nie)"
 
 msgid "Auto flesh"
-msgstr "Auto Hauttöne"
+msgstr "Auto Hautton"
 
 msgid "Auto focus"
 msgstr "Autofokus"
@@ -4339,10 +4339,10 @@ msgid "Create DVD-ISO"
 msgstr "DVD-ISO erstellen"
 
 msgid "Create MultiBoot System -> will INITIALISE chosen usb device"
-msgstr "Erstelle Multiboot-System"
+msgstr "Initialisiere Multiboot"
 
 msgid "Create Slots"
-msgstr "Erstelle die Slots"
+msgstr "Erstelle Slots"
 
 msgid "Create Timer"
 msgstr "Erstelle Timer"
@@ -7778,7 +7778,7 @@ msgid "Image Manager"
 msgstr "Image-Manager"
 
 msgid "Image Manager allows downloading images from OpenViX image server and from a range of other distros."
-msgstr "Der Image-Manager ermöglicht, OpenVIX Images aber auch Images vieler anderer Distributionen herunterzuladen."
+msgstr "Der Image-Manager ermöglicht, OpenViX Images aber auch Images vieler anderer Distributionen herunterzuladen."
 
 #, python-format
 msgid "Image Slot:\t %s %s"
@@ -11292,14 +11292,14 @@ msgstr "Drücke 'OK' zum Fortfahren."
 
 #, python-format
 msgid "Press OK to activate the selected%s skin."
-msgstr "Drücke 'OK', um den gewählten Skin zu aktivieren (%s)."
+msgstr "Drücke 'OK', um den gewählten %s Skin zu aktivieren."
 
 msgid "Press OK to edit the settings."
 msgstr "Drücke 'OK' zum Editieren."
 
 #, python-format
 msgid "Press OK to get further details for %s"
-msgstr "Drücke 'OK' für weitere Details zu %s."
+msgstr "Drücke 'OK' für weitere Details zu '%s'."
 
 #, python-format
 msgid "Press OK to keep the currently selected%s skin."
@@ -17202,7 +17202,7 @@ msgid ""
 "\n"
 "Select Yes to change these settings or No to skip this step."
 msgstr ""
-"Willkommen bei OpenVIX!\n"
+"Willkommen bei OpenViX!\n"
 "\n"
 "Achtung: Dieser Bereich des Assistenten ist gedacht für Leute, die Overscan am Fernseher nicht deaktivieren können. Versuche zuerst, Overscan am Fernseher zu deaktivieren.\n"
 "\n"
