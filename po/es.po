@@ -7482,18 +7482,18 @@ msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
 msgstr ""
-"GUI necesita reiniciarse para aplicar el nuevo idioma.\n"
-"¿Quieres reiniciar GUI ahora?"
+"La GUI necesita reiniciarse para aplicar el nuevo idioma.\n"
+"¿Quieres reiniciar la GUI ahora?"
 
 msgid ""
 "GUI needs a restart to switch modes\n"
 "Do you want to restart the GUI now?"
 msgstr ""
-"GUI necesita reiniciarse para aplicar el nuevo modo.\n"
-"¿Quieres reiniciar GUI ahora?"
+"La GUI necesita reiniciarse para aplicar el nuevo modo.\n"
+"¿Quieres reiniciar la GUI ahora?"
 
 msgid "GUI settings"
-msgstr "Ajustes de GUI"
+msgstr "Ajustes de la GUI"
 
 msgid "Gabon"
 msgstr "Gabón"
@@ -13328,14 +13328,14 @@ msgstr "Reiniciar %s %s."
 
 #
 msgid "Restart GUI"
-msgstr "Reiniciar GUI"
+msgstr "Reiniciar la GUI"
 
 #
 msgid "Restart GUI now?"
-msgstr "¿Reiniciar GUI ahora?"
+msgstr "¿Reiniciar la GUI ahora?"
 
 msgid "Restart GUI."
-msgstr "Reiniciar GUI"
+msgstr "Reiniciar la GUI"
 
 #
 msgid "Restart last movie"
@@ -15547,7 +15547,7 @@ msgstr "Configurador de la skin"
 
 #
 msgid "Skin Configurator: Restart GUI"
-msgstr "Configurador de la skin: Reiniciar GUI"
+msgstr "Configurador de la skin: Reiniciar la GUI"
 
 #
 msgid "Skin Selection"
@@ -15578,7 +15578,7 @@ msgstr "Skin:\t%s"
 
 #
 msgid "SkinSelector: Restart GUI"
-msgstr "Selector de la skin: Reiniciar GUI"
+msgstr "Selector de la skin: Reiniciar la GUI"
 
 #
 msgid "Skip back"
@@ -19734,11 +19734,11 @@ msgstr "[modo mover]"
 
 #
 msgid "a gui to assign services/providers to common interface modules"
-msgstr "GUI para asignar canales, proveedores a módulos de interfaz común."
+msgstr "un GUI para asignar canales, proveedores a módulos de interfaz común."
 
 #
 msgid "a gui to assign services/providers/caids to common interface modules"
-msgstr "GUI para asignar canales, proveedores, CAIDS a módulos de interfaz común."
+msgstr "un GUI para asignar canales, proveedores, CAIDS a módulos de interfaz común."
 
 #
 msgid "about to start"
@@ -20767,7 +20767,7 @@ msgstr "Repetido"
 
 #
 msgid "restart GUI"
-msgstr "Reiniciar GUI"
+msgstr "Reiniciar la GUI"
 
 msgid "reverse alphabetic then newest first"
 msgstr "alfabética inversa y más nueva primero"
