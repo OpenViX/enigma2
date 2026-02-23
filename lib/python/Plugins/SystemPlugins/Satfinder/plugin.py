@@ -793,11 +793,11 @@ class SatfinderExtra(Satfinder):
 		transponders2 = [t for t in nit_current_content if "descriptor_tag" in t and t["descriptor_tag"] == 0x43 and t["transport_stream_id"] == self.tsid]
 		if transponders and "orbital_position" in transponders[0]:
 			orb_pos = self.getOrbitalPosition(transponders[0]["orbital_position"], transponders[0]["west_east_flag"])
-			self["pos"].setText(_("%s") % orb_pos)
+			self["pos"].setText(orb_pos)
 			print("[satfinder][getOrbPosFromNit] orb_pos", orb_pos)
 		elif transponders2 and "orbital_position" in transponders2[0]:
 			orb_pos = self.getOrbitalPosition(transponders2[0]["orbital_position"], transponders2[0]["west_east_flag"])
-			self["pos"].setText(_("%s?") % orb_pos)
+			self["pos"].setText(f"{orb_pos}?")
 			print("[satfinder][getOrbPosFromNit] orb_pos tentative, tsid match, onid mismatch between NIT and SDT", orb_pos)
 		else:
 			print("[satfinder][getOrbPosFromNit] no orbital position found")
