@@ -54,8 +54,7 @@ int eHttpsStream::openUrl(const std::string &url, std::string &newurl)
 	char statusmsg[100];
 	bool playlist = false;
 	bool contenttypeparsed = false;
-	//std::string PREFERRED_CIPHERS = "HIGH:!aNULL:!kRSA:!PSK:!SRP:!MD5:!RC4";
-	std::string PREFERRED_CIPHERS = "ALL:!aNULL:!eNULL";
+	std::string PREFERRED_CIPHERS = "HIGH:!aNULL:!MD5:!RC4";
 	const char *errstr = NULL;
 
 	close();
@@ -498,51 +497,53 @@ off_t eHttpsStream::offset()
 
 SSL_CTX* eHttpsStream::initCTX()
 {
-	const SSL_METHOD *method;
-	SSL_CTX *ctx;
-
-#if (OPENSSL_VERSION_NUMBER >= 0x10100000L)
-	if (!OPENSSL_init_ssl(OPENSSL_INIT_SSL_DEFAULT, NULL))
-	{
-		eDebug("[eHttpsStream] Error initializing OpenSSL");
-		return NULL;
-	}
-#else
-	SSL_library_init();
-	SSL_load_error_strings();
-	OpenSSL_add_all_algorithms();
-#endif
-
-	method = SSLv23_method();		/* Create new client-method instance TODO rename to TLS_method */
+	const SSL_METHOD *method = TLS_method();
 	if (!method)
 	{
-		eDebug("[eHttpsStream] Error initializing OpenSSL");
+		eDebug("[eHttpsStream] Failed to create TLS method");
 		return NULL;
 	}
 
-	ctx = SSL_CTX_new(method);		/* Create new context */
+	SSL_CTX *ctx = SSL_CTX_new(method);
 	if (!ctx)
 	{
-		eDebug("[eHttpsStream] Error initializing OpenSSL");
+		eDebug("[eHttpsStream] Failed to create SSL context");
 		return NULL;
 	}
 
+	SSL_CTX_set_min_proto_version(ctx, TLS1_2_VERSION);
+	SSL_CTX_set_options(ctx, SSL_OP_NO_COMPRESSION);
+
+	SSL_CTX_set_default_verify_paths(ctx);
 	if (!SSL_CTX_load_verify_locations(ctx, NULL, "/etc/ssl/certs"))
 	{
-		eDebug("[eHttpsStream] Error loading trust store");
+		eDebug("[eHttpsStream] Warning: failed to load trust store from /etc/ssl/certs");
 	}
 
-	/* TODO Add SSL_CTX_use_certificate_file controller by Enigma2 to allow client certificates */
-#if 0
-	if (!SSL_CTX_use_certificate_file(ctx, "/etc/enigma2/certificate.pem", SSL_FILETYPE_PEM))
+	/* load client certificate and key if both files exist */
+	FILE *fp = fopen("/etc/enigma2/certificate.pem", "r");
+	if (fp)
 	{
-		eDebug("[eHttpsStream] Error loading client certificate");
+		fclose(fp);
+		if (SSL_CTX_use_certificate_chain_file(ctx, "/etc/enigma2/certificate.pem") == 1)
+		{
+			if (SSL_CTX_use_PrivateKey_file(ctx, "/etc/enigma2/key.pem", SSL_FILETYPE_PEM) == 1)
+			{
+				if (SSL_CTX_check_private_key(ctx) == 1)
+					eDebug("[eHttpsStream] Client certificate loaded");
+				else
+					eWarning("[eHttpsStream] Client certificate and private key do not match");
+			}
+			else
+			{
+				eWarning("[eHttpsStream] Failed to load client private key from /etc/enigma2/key.pem");
+			}
+		}
+		else
+		{
+			eWarning("[eHttpsStream] Failed to load client certificate from /etc/enigma2/certificate.pem");
+		}
 	}
-	SSL_CTX_use_PrivateKey_file(ctx, "/etc/enigma2/key.pem", SSL_FILETYPE_PEM);
-#endif
-
-	const long flags = SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION;
-	SSL_CTX_set_options(ctx, flags);	/* Allow only TLS */
 
 	return ctx;
 }
@@ -552,7 +553,7 @@ void eHttpsStream::showCerts(SSL *ssl)
 	X509 *cert;
 	char *line;
 
-	cert = SSL_get_peer_certificate(ssl);	/* get the server's certificate */
+	cert = SSL_get1_peer_certificate(ssl);	/* get the server's certificate */
 	if (cert)
 	{
 		eDebug("[eHttpsStream] Show Server Sertificates");
