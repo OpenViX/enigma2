@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-14 23:43+0200\n"
-"PO-Revision-Date: 2026-02-19 17:55+0200\n"
+"POT-Creation-Date: 2026-02-23 14:54+0200\n"
+"PO-Revision-Date: 2026-02-23 16:21+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -942,10 +942,6 @@ msgid "%m/%d/%Y"
 msgstr "%m/%d/%Y"
 
 #, python-format
-msgid "%s"
-msgstr "%s"
-
-#, python-format
 msgid "%s %s advanced remote control (native)"
 msgstr "%s %s laaja kaukosäädin (natiivi)"
 
@@ -1063,10 +1059,6 @@ msgstr "%s/%s: %s"
 #, python-format
 msgid "%s: "
 msgstr "%s: "
-
-#, python-format
-msgid "%s?"
-msgstr "%s?"
 
 #, python-format
 msgid "'%s' already exists"
@@ -5136,7 +5128,7 @@ msgid "Direct playback of linked titles without menu"
 msgstr "Linkitettyjen tallenteiden toisto ilman valikkoa"
 
 msgid "Directories cannot be bulk renamed"
-msgstr "Kansioita ei voi massana uudelleennimetä"
+msgstr "Kansioita ei voi nimetä uudelleen joukkona"
 
 msgid "Directory"
 msgstr "Hakemisto"
@@ -6134,7 +6126,7 @@ msgstr "Virhe luettaessa web-sivua!"
 
 #, python-format
 msgid "Error renaming '%s'"
-msgstr "Virhe uudelleennimeämisessä '%s'"
+msgstr "Virhe nimettäessä uudelleen '%s'"
 
 #, python-format
 msgid ""
@@ -12112,13 +12104,13 @@ msgid "Removing temp mounts..."
 msgstr "Poistetaan väliaikaiset liitokset..."
 
 msgid "Rename"
-msgstr "Uudelleennimeä"
+msgstr "Nimeä uudelleen"
 
 msgid "Rename channel"
-msgstr "Uudelleennimeä kanava"
+msgstr "Nimeä kanava uudelleen"
 
 msgid "Rename entry"
-msgstr "Uudelleennimeä"
+msgstr "Nimeä merkintä uudelleen"
 
 msgid "Rename failed!"
 msgstr "Uudelleennimeäminen epäonnistui!"
@@ -15202,7 +15194,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 19.02.2026 ---\n"
+"--- 23.02.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -19048,7 +19040,7 @@ msgid "remove this mark"
 msgstr "Poista tämä merkki"
 
 msgid "rename"
-msgstr "Uudelleennimeä"
+msgstr "nimeä uudelleen"
 
 msgid "rename this file to 'force' to force an update without confirmation"
 msgstr "nimeä tämä tiedosto uudelleen muotoon 'force' pakottaaksesi päivityksen ilman vahvistusta"
