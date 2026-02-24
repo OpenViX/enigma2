@@ -46,7 +46,7 @@
 	
 	<!-- ## DEFAULT ## -->
 	<screen name="LCDTitle">
-		<widget source="parent.title" render="Label" position="20,40" size="720,90" font="FdLcD;75" halign="center" valign="center" zPosition="2" />
+		<widget source="parent.title" render="Label" position="40,40" size="720,90" font="FdLcD;75" halign="center" valign="center" zPosition="2" />
 	</screen>
 	<screen name="LCDInfoBarChannelName">
 		<widget source="session.CurrentService" render="RunningText" options="movetype=running,startpoint=0,direction=left,steptime=80,repeat=3,always=0,oneshot=1,startdelay=6000,wrap" position="40,40" size="720,90" font="FdLcD;75" halign="center" valign="center" zPosition="2">
@@ -54,7 +54,7 @@
 		</widget>
 	</screen>
 	<screen name="LCDInfoBarProgramName">
-		<widget source="session.Event_Now" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" zPosition="2">
+		<widget source="session.Event_Now" render="Label" position="40,150" size="720,160" font="FdLcDLight;60" halign="center" zPosition="2">
 			<convert type="EventName">Name</convert>
 		</widget>
 	</screen>
@@ -93,7 +93,7 @@
 		</widget>
 	</screen>
 	<screen name="LCDChannelSelectionProgramName">
-		<widget source="parent.ServiceEvent" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" zPosition="2">
+		<widget source="parent.ServiceEvent" render="Label" position="40,150" size="720,160" font="FdLcDLight;60" halign="center" zPosition="2">
 			<convert type="EventName">Name</convert>
 		</widget>
 	</screen>
@@ -121,7 +121,7 @@
 		</widget>
 	</screen>
 	<screen name="LCDEPGProgramName">
-		<widget source="parent.Event" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" zPosition="2">
+		<widget source="parent.Event" render="Label" position="40,150" size="720,160" font="FdLcDLight;60" halign="center" zPosition="2">
 			<convert type="EventName">Name</convert>
 		</widget>
 	</screen>
@@ -145,17 +145,17 @@
 
 	<!-- ## DEFAULT WITH PICON ## -->
 	<screen name="LCDPiconInfoBarProgramName">
-		 <widget source="session.Event_Now" render="Label" position="40,260" size="720,80" font="FdLcDLight;65" halign="center" valign="center" zPosition="2">
+		 <widget source="session.Event_Now" render="Label" position="40,253" size="720,88" font="FdLcDLight;65" halign="center" valign="center" zPosition="2">
 			<convert type="EventName">Name</convert>
 		</widget>
 	</screen>
 	<screen name="LCDPiconChannelSelectionProgramName">
-		<widget source="parent.ServiceEvent" render="Label" position="40,260" size="720,80" font="FdLcDLight;65" halign="center" valign="center" zPosition="2">
+		<widget source="parent.ServiceEvent" render="Label" position="40,253" size="720,88" font="FdLcDLight;65" halign="center" valign="center" zPosition="2">
 			<convert type="EventName">Name</convert>
 		</widget>	
 	</screen>
 	<screen name="LCDPiconEPGProgramName">
-		<widget source="parent.Event" render="Label" position="40,260" size="720,80" font="FdLcDLight;65" halign="center" valign="center" zPosition="2">
+		<widget source="parent.Event" render="Label" position="40,253" size="720,88" font="FdLcDLight;65" halign="center" valign="center" zPosition="2">
 			<convert type="EventName">Name</convert>
 		</widget>
 	</screen>
@@ -336,11 +336,11 @@
 	<!-- MOVIE SELECTION -->
 	<screen name="MovieSelectionSummary" position="fill" resolution="800,480"> 
 		<panel name="LCDTitle" />
-		<widget source="name" render="Label" position="40,150" size="720,150" font="FdLcDLight;60" halign="center" zPosition="2" />
+		<widget source="name" render="Label" position="40,150" size="720,245" font="FdLcDLight;60" halign="center" zPosition="2" />
 		<widget source="parent.Service" render="Label" position="40,400" size="320,70" font="FdLcD;60" halign="left" valign="center">
 			<convert type="MovieInfo">FileSize</convert>
 		</widget>
-		<widget source="parent.Service" render="Label" position="40,480" size="320,70" font="FdLcD;60" halign="left" valign="center">
+		<widget source="parent.Service" render="Label" position="440,400" size="320,70" font="FdLcD;60" halign="right" valign="center">
 			<convert type="ServiceTime">Duration</convert>
 			<convert type="ClockToText">AsLength</convert>
 		</widget>
@@ -386,9 +386,9 @@
 
 	<!-- SETUP -->
 	<screen name="SetupSummary" position="fill" resolution="800,480"> 
-		<widget source="SetupTitle" render="Label" position="20,40" size="720,90" font="FdLcD;75" halign="center" valign="center" zPosition="2" noWrap="1" />
+		<widget source="SetupTitle" render="Label" position="40,40" size="720,90" font="FdLcD;75" halign="center" valign="center" zPosition="2" noWrap="1" />
 		<widget source="SetupEntry" render="Label" position="40,200" size="720,160" font="FdLcDLight;65" halign="center" zPosition="2" noWrap="1" />
-		<widget source="SetupValue" render="Label" position="40,360" size="720,70" font="FdLcDLight;60" halign="center" zPosition="2" noWrap="1" />
+		<widget source="SetupValue" render="Label" position="40,380" size="720,80" font="FdLcDLight;60" halign="center" zPosition="2" noWrap="1" />
 	</screen>
 
 	<!-- SkinSelector -->
@@ -413,8 +413,8 @@
 
 	<!-- ET PORTAL -->
 	<screen name="EtPortalScreenSummary" position="fill" resolution="800,480">
-		<eLabel text="EtPortal" position="15,20" size="670,120" font="FdLcD;70" halign="center" noWrap="1" />
-		<widget source="parent.label" render="Label" position="white" size="670,200" font="FdLcD;60" halign="center" />
+		<eLabel text="EtPortal" position="40,40" size="720,120" font="FdLcD;70" halign="center" noWrap="1" />
+		<widget source="parent.label" render="Label" position="40,260" size="720,200" font="FdLcD;60" halign="center" />
 	</screen>
 
 	<!-- misc -->
@@ -426,7 +426,7 @@
 	<screen name="ServiceScanSummary" position="fill" resolution="800,480">
 		<widget name="Title" render="Label" position="40,80" size="720,90" font="FdLcD;70" halign="center" valign="center" />
 		<widget name="scan_progress" position="40,400" size="720,25" borderWidth="2" />
-		<widget name="Service" position="70,220" size="720,170" font="FdLcD;50" transparent="1" />
+		<widget name="Service" position="40,220" size="720,170" font="FdLcD;50" transparent="1" />
 		<widget source="global.CurrentTime" render="Label" position="590,15" size="200,75" halign="left" font="FdLcD;70">
 			<convert type="ClockToText">Default</convert>
 		</widget>
@@ -531,7 +531,7 @@
 
 	<screen name="EventViewSimpleSummary" position="fill" resolution="800,480">
 		<panel name="LCDTitle" />
-		<widget source="parent.summary_description" render="Label" position="20,140" size="720,320" font="FdLcDLight;54" />
+		<widget source="parent.summary_description" render="Label" position="20,140" size="760,320" font="FdLcDLight;54" />
 	</screen>
 
 <!-- UpdatePlugin -->
@@ -545,7 +545,7 @@
 <!-- AutoTimerOverview -->
 	<screen name="AutoTimerOverviewSummary" position="fill" resolution="800,480">
 		<panel name="LCDTitle" />
-        <widget source="entry" render="Label" position="20,200" size="720,260" font="FdLcDLight;54" halign="center" transparent="1" zPosition="1" />
+        <widget source="entry" render="Label" position="20,200" size="760,260" font="FdLcDLight;54" halign="center" transparent="1" zPosition="1" />
 	</screen>
 
 <!-- EPGSummary -->
@@ -564,7 +564,7 @@
 
 <!-- ChannelSelectionRadio -->
 	<screen name="ChannelSelectionRadioSummary" position="fill" resolution="800,480">
-		<widget source="parent.RdsDecoder" render="Label" position="40,200" size="720,150" font="FdLcDLight;65" halign="center" valign="center" zPosition="2">
+		<widget source="parent.RdsDecoder" render="Label" position="40,200" size="720,160" font="FdLcDLight;65" halign="center" valign="center" zPosition="2">
 			<convert type="RdsInfo">RtpText</convert>
 		</widget>
 	</screen>
