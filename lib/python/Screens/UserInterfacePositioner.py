@@ -1,4 +1,3 @@
-from os import access, R_OK
 import traceback
 from enigma import getDesktop
 

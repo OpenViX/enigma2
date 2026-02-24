@@ -9,7 +9,7 @@ from skin import loadSkin
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import fileExists, fileReadXML, resolveFilename, SCOPE_GUISKIN
 from Tools.LoadPixmap import LoadPixmap
-from Components.config import config, ConfigYesNo, ConfigSelection
+from Components.config import config, ConfigSelection
 
 import threading
 
@@ -40,30 +40,30 @@ def build_xml_tree(directory: Path):
 
 
 def xml_to_dict(elem):
-    result = {}
+	result = {}
 
-    # Add attributes (e.g. name="Timer List")
-    if elem.attrib:
-        result.update(elem.attrib)
+	# Add attributes (e.g. name="Timer List")
+	if elem.attrib:
+		result.update(elem.attrib)
 
-    # Add text content (CDATA included)
-    text = (elem.text or "").strip()
-    if text:
-        result["value"] = text
+	# Add text content (CDATA included)
+	text = (elem.text or "").strip()
+	if text:
+		result["value"] = text
 
-    # Process child elements
-    for child in elem:
-        child_dict = xml_to_dict(child)
+	# Process child elements
+	for child in elem:
+		child_dict = xml_to_dict(child)
 
-        if child.tag in result:
-            # Convert to list if multiple children with same tag
-            if not isinstance(result[child.tag], list):
-                result[child.tag] = [result[child.tag]]
-            result[child.tag].append(child_dict)
-        else:
-            result[child.tag] = child_dict
+		if child.tag in result:
+			# Convert to list if multiple children with same tag
+			if not isinstance(result[child.tag], list):
+				result[child.tag] = [result[child.tag]]
+			result[child.tag].append(child_dict)
+		else:
+			result[child.tag] = child_dict
 
-    return result
+	return result
 
 
 def applyCustomLayouts():
@@ -189,8 +189,8 @@ class SkinSetupConfig(Setup):
 		self.showRestartMessage(_("To save and apply the selected skin configuration the GUI needs to restart. Would you like to save the selection and restart the GUI now?"))
 
 	def showRestartMessage(self, msg):
-			restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, msg, MessageBox.TYPE_YESNO)
-			restartBox.setTitle(_("Skin Configurator: Restart GUI"))
+		restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, msg, MessageBox.TYPE_YESNO)
+		restartBox.setTitle(_("Skin Configurator: Restart GUI"))
 
 	def restartGUI(self, answer):
 		if answer is True:

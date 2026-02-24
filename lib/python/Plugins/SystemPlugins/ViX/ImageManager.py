@@ -5,7 +5,7 @@ import tempfile
 
 from enigma import eTimer, fbClass
 from os import path, stat, system, mkdir, makedirs, listdir, remove, rename, rmdir, sep as ossep, statvfs, chmod, walk
-from shutil import copy, copyfile, move, rmtree
+from shutil import copyfile, move, rmtree
 from time import localtime, time, strftime, mktime
 
 from Components.ActionMap import ActionMap
@@ -25,7 +25,7 @@ from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
 from Screens.TaskView import JobView
 from Screens.TextBox import TextBox
-from Tools.Directories import fileExists, pathExists, fileHas
+from Tools.Directories import fileExists, pathExists
 import Tools.CopyFiles
 from Tools.Multiboot import GetImagelist
 from Tools.Notifications import AddPopupWithCallback
@@ -1209,7 +1209,7 @@ class ImageBackup(Screen):
 					self.commands.append('echo "' + _("Create:") + " logo dump" + '"')
 					self.commands.append(f"dd if=/dev/mtd4 of={self.WORKDIR}/logo.bin")
 			else:
-				if not MODEL in ("h8"):
+				if MODEL not in ("h8",):
 					self.MKUBIFS_ARGS = "-m 2048 -e 126976 -c 4096 -F"
 					self.UBINIZE_ARGS = "-m 2048 -p 128KiB"
 				self.commands.append(f"touch {self.WORKDIR}/root.ubi")

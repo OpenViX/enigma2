@@ -2,7 +2,6 @@ from datetime import date, datetime
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
 import tarfile
-import glob
 from enigma import eTimer, eEnv, eDVBDB, quitMainloop
 
 from Components.ActionMap import ActionMap

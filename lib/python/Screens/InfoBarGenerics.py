@@ -64,7 +64,7 @@ from os import listdir, path as ospath
 from sys import maxsize
 import itertools
 import datetime
-from pickle import load as pickle_load, dump as pickle_dump, HIGHEST_PROTOCOL as pickle_HIGHEST_PROTOCOL
+from pickle import load as pickle_load, dump as pickle_dump
 from gettext import dgettext
 from re import match
 

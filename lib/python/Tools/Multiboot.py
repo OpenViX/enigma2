@@ -7,7 +7,7 @@ from os import path, rmdir, rename, sep, stat
 import re
 
 from Components.Console import Console
-from Components.SystemInfo import SystemInfo, BoxInfo as BoxInfoRunningInstance, BoxInformation, BOXTYPE, CHKROOTMB, MODEL, MTDROOTFS, UBIMB
+from Components.SystemInfo import SystemInfo, BoxInfo as BoxInfoRunningInstance, BoxInformation, BOXTYPE, CHKROOTMB, MTDROOTFS, UBIMB
 from Tools.Directories import copyfile, fileExists, fileReadLine
 
 if SystemInfo["HasKexecMultiboot"]:

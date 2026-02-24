@@ -14,7 +14,7 @@ from Components.Network import iNetwork
 from Components.NimManager import nimmanager
 from Components.Pixmap import MultiPixmap
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import BoxInfo, SystemInfo, CHIPSET, DISPLAYBRAND, KERNEL, MACHINENAME, MODEL, SOC_BRAND, UBIMB
+from Components.SystemInfo import BoxInfo, SystemInfo, CHIPSET, DISPLAYBRAND, KERNEL, MACHINENAME, MODEL, SOC_BRAND
 from Components.UserInstalledPackages import UserInstalledPackages
 from Screens.GitCommitInfo import CommitInfo
 from Screens.Screen import Screen, ScreenSummary
