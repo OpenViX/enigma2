@@ -404,11 +404,6 @@
 		<widget source="parent.summary_action" render="Label" position="0,66" size="400,20" font="FdLcD;19" halign="left" noWrap="1" />
 		<widget source="parent.summary_status" render="Label" position="0,41" size="400,18" font="FdLcD;16" halign="left" noWrap="1" />
 	</screen>
-	<screen name="AutoBouquetsMaker_MenuSummary" position="fill" resolution="480,320">
-		<widget source="SetupTitle" render="Label" position="0,5" size="480,70" font="FdLcD;45" halign="center" valign="center" foregroundColor="FdLcdTitleForeground" />
-		<widget source="SetupEntry" render="Label" position="0,71" size="480,90" font="FdLcD;40" halign="center" valign="center" />
-		<widget source="SetupValue" render="Label" position="0,161" size="400,16" font="FdLcD;14" halign="left" transparent="1" />
-	</screen>
 
 <!-- ServiceScanSummary -->
 	<screen name="ServiceScanSummary" position="fill" resolution="480,320">
