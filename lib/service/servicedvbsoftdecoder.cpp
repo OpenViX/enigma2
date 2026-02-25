@@ -24,7 +24,13 @@ eDVBSoftDecoder::eDVBSoftDecoder(eDVBServicePMTHandler& source_handler,
 	, m_stream_stalled(false)
 	, m_paused(false)
 	, m_last_health_check(0)
+	, m_audio_reset_original_track(0)
+	, m_current_audio_index(0)
 {
+	m_audio_reset_timer = eTimer::create(eApp);
+	CONNECT(m_audio_reset_timer->timeout, eDVBSoftDecoder::audioResetToggle);
+	m_audio_restore_timer = eTimer::create(eApp);
+	CONNECT(m_audio_restore_timer->timeout, eDVBSoftDecoder::audioResetRestore);
 	eDebug("[eDVBSoftDecoder] Created for decoder %d", decoder_index);
 }
 
@@ -35,6 +41,10 @@ eDVBSoftDecoder::~eDVBSoftDecoder()
 		m_start_timer->stop();
 	if (m_health_timer)
 		m_health_timer->stop();
+	if (m_audio_reset_timer)
+		m_audio_reset_timer->stop();
+	if (m_audio_restore_timer)
+		m_audio_restore_timer->stop();
 	if (m_first_cw_conn.connected())
 		m_first_cw_conn.disconnect();
 
@@ -188,6 +198,10 @@ void eDVBSoftDecoder::stop()
 		m_health_timer->stop();
 		m_health_timer = nullptr;
 	}
+	if (m_audio_reset_timer)
+		m_audio_reset_timer->stop();
+	if (m_audio_restore_timer)
+		m_audio_restore_timer->stop();
 	if (m_first_cw_conn.connected())
 		m_first_cw_conn.disconnect();
 
@@ -653,6 +667,7 @@ void eDVBSoftDecoder::updateDecoder(int vpid, int vpidtype, int pcrpid)
 								apid = cached_apid;
 								atype = program.audioStreams[s].type;
 								audio_index = s;
+								m_current_audio_index = audio_index;
 								eDebug("[eDVBSoftDecoder] Using cached audio: apid=%04x atype=%d (stream %u)", apid, atype, audio_index);
 								break;
 							}
@@ -670,6 +685,7 @@ void eDVBSoftDecoder::updateDecoder(int vpid, int vpidtype, int pcrpid)
 				if (audio_index >= program.audioStreams.size())
 					audio_index = 0;  // Fallback to first stream
 
+				m_current_audio_index = audio_index;
 				apid = program.audioStreams[audio_index].pid;
 				atype = program.audioStreams[audio_index].type;
 				eDebug("[eDVBSoftDecoder] Using default audio: apid=%04x atype=%d (stream %u of %zu)",
@@ -693,6 +709,19 @@ void eDVBSoftDecoder::updateDecoder(int vpid, int vpidtype, int pcrpid)
 			m_decoder->play();
 			eDebug("[eDVBSoftDecoder] Decoder PLAY with vpid=%04x vpidtype=%d", vpid, vpidtype);
 			m_decoder_ready();
+
+			// Start audio reset timer to fix audio dropouts on some boxes.
+			// After decoder start, briefly toggle the audio track to force
+			// the decoder to reinitialize audio output.
+			int audioResetDelay = eSimpleConfig::getInt("config.softcsa.audioResetDelay", 0);
+			if (!m_noaudio && audioResetDelay > 0)
+			{
+				m_audio_reset_timer->stop();
+				m_audio_restore_timer->stop();
+				m_audio_reset_original_track = m_current_audio_index;
+				m_audio_reset_timer->start(audioResetDelay, true);
+				eDebug("[eDVBSoftDecoder] Audio reset scheduled in %dms", audioResetDelay);
+			}
 		}
 		else
 		{
@@ -705,6 +734,47 @@ void eDVBSoftDecoder::videoEvent(struct iTSMPEGDecoder::videoEvent event)
 {
 	// Forward video events to parent
 	m_video_event(event);
+}
+
+void eDVBSoftDecoder::audioResetToggle()
+{
+	if (!m_running || !m_decoder)
+		return;
+
+	eDVBServicePMTHandler::program program;
+	if (m_source_handler.getProgramInfo(program))
+		return;
+
+	unsigned int numTracks = program.audioStreams.size();
+	if (numTracks == 0)
+		return;
+
+	if (numTracks > 1)
+	{
+		// Toggle to a different audio track to force decoder reinitialization
+		unsigned int alt = (m_audio_reset_original_track + 1) % numTracks;
+		eDebug("[eDVBSoftDecoder] Audio reset: toggling from track %u to %u (of %u)",
+		       m_audio_reset_original_track, alt, numTracks);
+		selectAudioTrack(alt);
+
+		// Start restore timer to switch back after brief delay
+		m_audio_restore_timer->start(100, true);
+	}
+	else
+	{
+		// Only 1 track: re-select it to force decoder reinit
+		eDebug("[eDVBSoftDecoder] Audio reset: re-selecting single track 0");
+		selectAudioTrack(0);
+	}
+}
+
+void eDVBSoftDecoder::audioResetRestore()
+{
+	if (!m_running || !m_decoder)
+		return;
+
+	eDebug("[eDVBSoftDecoder] Audio reset: restoring original track %u", m_audio_reset_original_track);
+	selectAudioTrack(m_audio_reset_original_track);
 }
 
 // ============================================================================
