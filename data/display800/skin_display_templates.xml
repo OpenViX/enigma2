@@ -46,7 +46,7 @@
 	
 	<!-- ## DEFAULT ## -->
 	<screen name="LCDTitle">
-		<widget source="parent.title" render="Label" position="40,40" size="720,90" font="FdLcD;75" halign="center" valign="center" zPosition="2" />
+		<widget source="parent.title" render="Label" position="20,40" size="760,90" font="FdLcD;70" halign="center" valign="center" zPosition="2" />
 	</screen>
 	<screen name="LCDInfoBarChannelName">
 		<widget source="session.CurrentService" render="RunningText" options="movetype=running,startpoint=0,direction=left,steptime=80,repeat=3,always=0,oneshot=1,startdelay=6000,wrap" position="40,40" size="720,90" font="FdLcD;75" halign="center" valign="center" zPosition="2">
