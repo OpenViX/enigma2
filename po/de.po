@@ -162,25 +162,25 @@ msgid "%-d-%b-%Y"
 msgstr "%-d-%b-%Y"
 
 msgid "%-d. %B %Y"
-msgstr ""
+msgstr "%-d. %B %Y"
 
 msgid "%-d. %b"
-msgstr ""
+msgstr "%-d. %b"
 
 msgid "%-d. %b %Y"
-msgstr ""
+msgstr "%-d. %b %Y"
 
 msgid "%-d.%-m"
 msgstr "%-d.%-m."
 
 msgid "%-d.%-m.%Y"
-msgstr ""
+msgstr "%-d.%-m.%Y"
 
 msgid "%-d.%m"
 msgstr "%-d.%m."
 
 msgid "%-d.%m.%Y"
-msgstr ""
+msgstr "%-d.%m.%Y"
 
 msgid "%-d/%-m"
 msgstr "%-d/%-m"
@@ -256,7 +256,7 @@ msgid "%A %-d.%-m.%Y"
 msgstr "%A, %-d.%-m.%Y"
 
 msgid "%A %-d.%m"
-msgstr "%A, %-d.%m"
+msgstr "%A, %-d.%m."
 
 msgid "%A %-d.%m.%Y"
 msgstr "%A, %-d.%m.%Y"
@@ -274,64 +274,64 @@ msgid "%A %-d/%m/%Y"
 msgstr "%A, %-d/%m/%Y"
 
 msgid "%A %-m/%-d"
-msgstr "%A, %-m/%-d"
+msgstr "%A %-m/%-d"
 
 msgid "%A %-m/%-d/%Y"
-msgstr "%A, %-m/%-d/%Y"
+msgstr "%A %-m/%-d/%Y"
 
 msgid "%A %-m/%d"
-msgstr "%A, %-m/%d"
+msgstr "%A %-m/%d"
 
 msgid "%A %-m/%d/%Y"
-msgstr "%A, %-m/%d/%Y"
+msgstr "%A %-m/%d/%Y"
 
 msgid "%A %B %-d"
-msgstr "%A, %B %-d"
+msgstr "%A %B %-d"
 
 msgid "%A %B %-d %Y"
-msgstr "%A, %B %-d %Y"
+msgstr "%A %B %-d %Y"
 
 msgid "%A %B %d"
-msgstr "%A, %B %d"
+msgstr "%A %B %d"
 
 msgid "%A %B %d %Y"
-msgstr "%A, %B %d %Y"
+msgstr "%A %B %d %Y"
 
 msgid "%A %B-%-d"
-msgstr "%A, %B-%-d"
+msgstr "%A %B-%-d"
 
 msgid "%A %B-%-d-%Y"
-msgstr "%A, %B-%-d-%Y"
+msgstr "%A %B-%-d-%Y"
 
 msgid "%A %B-%d"
-msgstr "%A, %B-%d"
+msgstr "%A %B-%d"
 
 msgid "%A %B-%d-%Y"
-msgstr "%A, %B-%d-%Y"
+msgstr "%A %B-%d-%Y"
 
 msgid "%A %Y %B %-d"
-msgstr "%A, %Y %B %-d"
+msgstr "%A %Y %B %-d"
 
 msgid "%A %Y %B %d"
-msgstr "%A, %Y %B %d"
+msgstr "%A %Y %B %d"
 
 msgid "%A %Y-%B-%-d"
-msgstr "%A, %Y-%B-%-d"
+msgstr "%A %Y-%B-%-d"
 
 msgid "%A %Y-%B-%d"
-msgstr "%A, %Y-%B-%d"
+msgstr "%A %Y-%B-%d"
 
 msgid "%A %Y/%-m/%-d"
-msgstr "%A, %Y/%-m/%-d"
+msgstr "%A %Y/%-m/%-d"
 
 msgid "%A %Y/%-m/%d"
-msgstr "%A, %Y/%-m/%d"
+msgstr "%A %Y/%-m/%d"
 
 msgid "%A %Y/%m/%-d"
-msgstr "%A, %Y/%m/%-d"
+msgstr "%A %Y/%m/%-d"
 
 msgid "%A %Y/%m/%d"
-msgstr "%A, %Y/%m/%d"
+msgstr "%A %Y/%m/%d"
 
 msgid "%A %d %B"
 msgstr "%A, %d. %B"
@@ -352,13 +352,13 @@ msgid "%A %d. %B %Y"
 msgstr "%A, %d. %B %Y"
 
 msgid "%A %d.%-m"
-msgstr "%A, %d.%-m"
+msgstr "%A, %d.%-m."
 
 msgid "%A %d.%-m.%Y"
 msgstr "%A, %d.%-m.%Y"
 
 msgid "%A %d.%m"
-msgstr "%A, %d.%m"
+msgstr "%A, %d.%m."
 
 msgid "%A %d.%m.%Y"
 msgstr "%A, %d.%m.%Y"
@@ -376,16 +376,16 @@ msgid "%A %d/%m/%Y"
 msgstr "%A, %d/%m/%Y"
 
 msgid "%A %m/%-d"
-msgstr "%A, %m/%-d"
+msgstr "%A %m/%-d"
 
 msgid "%A %m/%-d/%Y"
-msgstr "%A, %m/%-d/%Y"
+msgstr "%A %m/%-d/%Y"
 
 msgid "%A %m/%d"
-msgstr "%A, %m/%d"
+msgstr "%A %m/%d"
 
 msgid "%A %m/%d/%Y"
-msgstr "%A, %m/%d/%Y"
+msgstr "%A %m/%d/%Y"
 
 msgid "%B %-d %Y"
 msgstr "%B %-d %Y"
@@ -508,13 +508,13 @@ msgid "%a %-d.%-m.%Y"
 msgstr "%a, %-d.%-m.%Y"
 
 msgid "%a %-d.%m"
-msgstr "%a, %-d.%m"
+msgstr "%a, %-d.%m."
 
 msgid "%a %-d.%m.%Y"
 msgstr "%a, %-d.%m.%Y"
 
 msgid "%a %-d/%-m"
-msgstr "%a %-d/%-m"
+msgstr "%a, %-d/%-m"
 
 msgid "%a %-d/%-m/%Y"
 msgstr "%a, %-d/%-m/%Y"
@@ -526,88 +526,88 @@ msgid "%a %-d/%m/%Y"
 msgstr "%a, %-d/%m/%Y"
 
 msgid "%a %-m/%-d"
-msgstr "%a, %-m/%-d"
+msgstr "%a %-m/%-d"
 
 msgid "%a %-m/%-d/%Y"
-msgstr "%a, %-m/%-d/%Y"
+msgstr "%a %-m/%-d/%Y"
 
 msgid "%a %-m/%d"
-msgstr "%a, %-m/%d"
+msgstr "%a %-m/%d"
 
 msgid "%a %-m/%d/%Y"
-msgstr "%a, %-m/%d/%Y"
+msgstr "%a %-m/%d/%Y"
 
 msgid "%a %B %-d %Y"
-msgstr "%a, %B %-d %Y"
+msgstr "%a %B %-d %Y"
 
 msgid "%a %B %d %Y"
-msgstr "%a, %B %d %Y"
+msgstr "%a %B %d %Y"
 
 msgid "%a %B-%-d-%Y"
-msgstr "%a, %B-%-d-%Y"
+msgstr "%a %B-%-d-%Y"
 
 msgid "%a %B-%d-%Y"
-msgstr "%a, %B-%d-%Y"
+msgstr "%a %B-%d-%Y"
 
 msgid "%a %Y %B %-d"
-msgstr "%a, %Y %B %-d"
+msgstr "%a %Y %B %-d"
 
 msgid "%a %Y %B %d"
-msgstr "%a, %Y %B %d"
+msgstr "%a %Y %B %d"
 
 msgid "%a %Y %b %-d"
-msgstr "%a, %Y %b %-d"
+msgstr "%a %Y %b %-d"
 
 msgid "%a %Y %b %d"
-msgstr "%a, %Y %b %d"
+msgstr "%a %Y %b %d"
 
 msgid "%a %Y-%B-%-d"
-msgstr "%a, %Y-%B-%-d"
+msgstr "%a %Y-%B-%-d"
 
 msgid "%a %Y-%B-%d"
-msgstr "%a, %Y-%B-%d"
+msgstr "%a %Y-%B-%d"
 
 msgid "%a %Y-%b-%-d"
-msgstr "%a, %Y-%b-%-d"
+msgstr "%a %Y-%b-%-d"
 
 msgid "%a %Y-%b-%d"
-msgstr "%a, %Y-%b-%d"
+msgstr "%a %Y-%b-%d"
 
 msgid "%a %Y/%-m/%-d"
-msgstr "%a, %Y/%-m/%-d"
+msgstr "%a %Y/%-m/%-d"
 
 msgid "%a %Y/%-m/%d"
-msgstr "%a, %Y/%-m/%d"
+msgstr "%a %Y/%-m/%d"
 
 msgid "%a %Y/%m/%-d"
-msgstr "%a, %Y/%m/%-d"
+msgstr "%a %Y/%m/%-d"
 
 msgid "%a %Y/%m/%d"
-msgstr "%a, %Y/%m/%d"
+msgstr "%a %Y/%m/%d"
 
 msgid "%a %b %-d"
-msgstr "%a, %b %-d"
+msgstr "%a %b %-d"
 
 msgid "%a %b %-d %Y"
-msgstr "%a, %b %-d %Y"
+msgstr "%a %b %-d %Y"
 
 msgid "%a %b %d"
-msgstr "%a, %b %d"
+msgstr "%a %b %d"
 
 msgid "%a %b %d %Y"
-msgstr "%a, %b %d %Y"
+msgstr "%a %b %d %Y"
 
 msgid "%a %b-%-d"
-msgstr "%a, %b-%-d"
+msgstr "%a %b-%-d"
 
 msgid "%a %b-%-d-%Y"
-msgstr "%a, %b-%-d-%Y"
+msgstr "%a %b-%-d-%Y"
 
 msgid "%a %b-%d"
-msgstr "%a, %b-%d"
+msgstr "%a %b-%d"
 
 msgid "%a %b-%d-%Y"
-msgstr "%a, %b-%d-%Y"
+msgstr "%a %b-%d-%Y"
 
 msgid "%a %d"
 msgstr "%a, %d"
@@ -640,10 +640,10 @@ msgid "%a %d. %b %Y"
 msgstr "%a, %d. %b %Y"
 
 msgid "%a %d.%-m"
-msgstr "%a, %d.%-m"
+msgstr "%a, %d.%-m."
 
 msgid "%a %d.%-m.%Y"
-msgstr "%s, %d.%-m.%Y"
+msgstr "%a, %d.%-m.%Y"
 
 msgid "%a %d.%m"
 msgstr "%a, %d.%m."
@@ -881,25 +881,25 @@ msgid "%d-%b-%Y"
 msgstr "%d-%b-%Y"
 
 msgid "%d. %B %Y"
-msgstr ""
+msgstr "%d. %B %Y"
 
 msgid "%d. %b"
-msgstr ""
+msgstr "%d. %b"
 
 msgid "%d. %b %Y"
-msgstr ""
+msgstr "%d. %b %Y"
 
 msgid "%d.%-m"
-msgstr ""
+msgstr "%d.%-m."
 
 msgid "%d.%-m.%Y"
-msgstr ""
+msgstr "%d.%-m.%Y"
 
 msgid "%d.%m"
-msgstr ""
+msgstr "%d.%m."
 
 msgid "%d.%m.%Y"
-msgstr ""
+msgstr "%d.%m.%Y"
 
 msgid "%d/%-m"
 msgstr "%d/%-m"
