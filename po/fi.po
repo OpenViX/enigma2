@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 14:54+0200\n"
-"PO-Revision-Date: 2026-02-23 16:21+0200\n"
+"POT-Creation-Date: 2026-02-26 14:00+0200\n"
+"PO-Revision-Date: 2026-02-26 15:52+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -1055,10 +1055,6 @@ msgstr "%s%s (Oletus: %s)"
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
-
-#, python-format
-msgid "%s: "
-msgstr "%s: "
 
 #, python-format
 msgid "'%s' already exists"
@@ -2412,6 +2408,9 @@ msgstr "Äänen kielivalinta 4"
 
 msgid "Audio options"
 msgstr "Ääniasetukset"
+
+msgid "Audio reset delay after start *"
+msgstr "Äänen nollausviive käynnistyksen jälkeen *"
 
 #, python-format
 msgid "Audio track (%s) format"
@@ -4862,6 +4861,9 @@ msgstr "Viive polarisaation vaihdon jälkeen ennen vaihtokomentoa"
 
 msgid "Delay after continuous tone disable before diseqc"
 msgstr "Viive taajuusaluevaihdon jälkeen ennen diseqc-komentoa"
+
+msgid "Delay after decoder start before toggling the audio track to fix audio dropouts. The audio track is briefly switched and restored to force the decoder to reinitialise audio. Set to 'Disabled' if you don't experience audio dropouts. *Restart E2 for changes to take effect."
+msgstr "Viive dekooderin käynnistämisen jälkeen ennen ääniraidan vaihtamista äänen katkeamisen korjaamiseksi. Ääniraita vaihdetaan hetkeksi ja palautetaan, jotta dekooderi käynnistää äänen uudelleen. Aseta asetukseksi 'Poissa käytöstä', jos et koe äänen katkeamista. *Käynnistä E2 uudelleen, jotta muutokset tulevat voimaan."
 
 msgid "Delay after diseqc peripherial poweron command"
 msgstr "Viive diseqc-komennon jälkeen ennen virta päälle komentoa"
@@ -15194,7 +15196,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 23.02.2026 ---\n"
+"--- 26.02.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
