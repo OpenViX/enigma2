@@ -355,6 +355,13 @@ protected:
 	void updateAudioCache(int apid, int apidtype);
 private:
 	bool m_stream_corruption_detected;
+	pts_t m_original_timeshift_delay;
+	bool m_delay_calculated;
+	ePtr<eTimer> m_precise_recovery_timer;
+
+	void resetRecoveryState();
+	void handleEofRecovery();
+	void startPreciseRecoveryCheck();
 };
 
 class eStaticServiceDVBBouquetInformation: public iStaticServiceInformation
