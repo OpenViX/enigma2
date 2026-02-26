@@ -123,7 +123,7 @@ def buildPartitionInfo(partition, partitionList):
 	pngType = busTranslate[count] if partition != "mmcblk0p3" else "mmc"
 	name = ""
 	if not portDescription:
-		name = _("%s: ") % pngType.upper()
+		name = "%s: " % pngType.upper()
 	name += description
 
 	if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "vixcore/dev_%s.png" % pngType)):
