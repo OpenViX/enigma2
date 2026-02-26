@@ -2916,8 +2916,7 @@ void eDVBServicePlay::recordEvent(int event) {
 			eWarning("[eDVBServicePlay] recordEvent write error");
 			return;
 		case iDVBTSRecorder::eventStreamCorrupt: {
-			return; // Disabled for now.
-			// Do not re-trigger if a recovery is already in progress.
+			// re enable Timeshift recovery feature.
 			if (m_stream_corruption_detected)
 				return;
 
