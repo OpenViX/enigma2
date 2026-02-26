@@ -1077,7 +1077,10 @@ eDVBServicePlay::eDVBServicePlay(const eServiceReference &ref, eDVBService *serv
 	m_subtitle_sync_timer(eTimer::create(eApp)),
 	m_stream_corruption_detected(false),
 	m_soft_decoder_video_info_valid(false),
-	m_nownext_timer(eTimer::create(eApp))
+	m_nownext_timer(eTimer::create(eApp)),
+	m_original_timeshift_delay(0),
+	m_delay_calculated(false),
+	m_precise_recovery_timer(eTimer::create(eApp))
 {
 #ifdef PASSTHROUGH_FIX
 	m_passthrough_fix_timer = eTimer::create(eApp);
@@ -1091,6 +1094,7 @@ eDVBServicePlay::eDVBServicePlay(const eServiceReference &ref, eDVBService *serv
 	CONNECT(m_event_handler.m_eit_changed, eDVBServicePlay::gotNewEvent);
 	CONNECT(m_subtitle_sync_timer->timeout, eDVBServicePlay::checkSubtitleTiming);
 	CONNECT(m_nownext_timer->timeout, eDVBServicePlay::updateEpgCacheNowNext);
+	CONNECT(m_precise_recovery_timer->timeout, eDVBServicePlay::startPreciseRecoveryCheck);
 #ifdef PASSTHROUGH_FIX
 	CONNECT(m_passthrough_fix_timer->timeout, eDVBServicePlay::forcePassthrough);
 #endif
@@ -1226,6 +1230,95 @@ void eDVBServicePlay::updateEpgCacheNowNext()
 	if (update) m_event((iPlayableService*)this, evUpdatedEventInfo);
 }
 
+void eDVBServicePlay::resetRecoveryState() {
+	m_original_timeshift_delay = 0;
+	m_delay_calculated = false;
+	m_stream_corruption_detected = false;
+	if (m_precise_recovery_timer && m_precise_recovery_timer->isActive())
+		m_precise_recovery_timer->stop();
+}
+
+void eDVBServicePlay::handleEofRecovery() {
+	if (m_is_paused) {
+		return;
+	}
+
+	eDebug("[PreciseRecovery] Corruption detected. Pausing playback, recording continues.");
+
+	// Logic: Maintain the user's current timeshift delay (Live - Playback)
+	if (m_record) {
+		pts_t live_pts = 0, playback_pts = 0;
+		if (m_record->getCurrentPCR(live_pts) == 0 && getPlayPosition(playback_pts) == 0 && live_pts > playback_pts) {
+			m_original_timeshift_delay = live_pts - playback_pts;
+			m_delay_calculated = true;
+			eDebug("[PreciseRecovery] Original delay fingerprint set: %lld PTS", m_original_timeshift_delay);
+		}
+	}
+
+	// Pause PLAYBACK only
+	if (m_decoder && !m_is_paused) {
+		m_decoder->pause();
+		m_is_paused = 1;
+	}
+
+	// Start the monitoring timer
+	if (m_precise_recovery_timer)
+		m_precise_recovery_timer->start(100, false);
+}
+
+void eDVBServicePlay::startPreciseRecoveryCheck() {
+	if (!m_stream_corruption_detected || !m_record || !m_delay_calculated) {
+		if (m_precise_recovery_timer) m_precise_recovery_timer->stop();
+		return;
+	}
+
+	pts_t live_pts = 0, playback_pts = 0;
+
+	if (m_record->getCurrentPCR(live_pts) != 0 || getPlayPosition(playback_pts) != 0 || live_pts == 0) {
+		if (m_precise_recovery_timer) m_precise_recovery_timer->start(100, false);
+		return;
+	}
+
+	pts_t current_delay;
+	if (live_pts >= playback_pts)
+		current_delay = live_pts - playback_pts;
+	else
+		current_delay = (live_pts + 0x200000000LL) - playback_pts;
+
+	int recovery_delay_ms = eConfigManager::getConfigIntValue("config.timeshift.recoveryBufferDelay");
+	if (recovery_delay_ms <= 0) recovery_delay_ms = 300; 
+
+	const pts_t safety_buffer_pts = recovery_delay_ms * 90;
+	pts_t final_target_delay = m_original_timeshift_delay + safety_buffer_pts;
+
+#ifdef ENABLE_TIMESHIFT_HW_LATENCY_FIX
+	int hw_latency_ms = eConfigManager::getConfigIntValue("config.timeshift.hwLatencyCorrection");
+	if (hw_latency_ms <= 0) hw_latency_ms = 2000; 
+
+	if (hw_latency_ms > 5000) hw_latency_ms = 5000;
+
+	const pts_t latency_correction = hw_latency_ms * 90;
+
+	if (final_target_delay > latency_correction)
+		final_target_delay -= latency_correction;
+	else
+		final_target_delay = 9000; 
+#endif
+
+	if (current_delay >= final_target_delay) {
+		if (m_precise_recovery_timer) m_precise_recovery_timer->stop();
+		m_stream_corruption_detected = false;
+
+		if (m_is_paused) {
+			unpause();
+		}
+
+		m_event((iPlayableService*)this, evSeekableStatusChanged);
+	} else {
+		if (m_precise_recovery_timer) m_precise_recovery_timer->start(100, false);
+	}
+}
+
 void eDVBServicePlay::serviceEvent(int event)
 {
 	m_tune_state = event;
@@ -1251,14 +1344,29 @@ void eDVBServicePlay::serviceEvent(int event)
 		break;
 	}
 	case eDVBServicePMTHandler::eventNoResources:
-	case eDVBServicePMTHandler::eventNoPAT:
 	case eDVBServicePMTHandler::eventNoPATEntry:
-	case eDVBServicePMTHandler::eventNoPMT:
-	case eDVBServicePMTHandler::eventTuneFailed:
 	case eDVBServicePMTHandler::eventMisconfiguration:
 	{
 		eDebug("[eDVBServicePlay] DVB service failed to tune - error %d", event);
 		m_event((iPlayableService*)this, evTuneFailed);
+		break;
+	}
+	case eDVBServicePMTHandler::eventTuneFailed:
+	case eDVBServicePMTHandler::eventNoPAT:
+	case eDVBServicePMTHandler::eventNoPMT:
+	{
+		bool recovery_enabled = true;
+		if (recovery_enabled && m_timeshift_enabled && !m_stream_corruption_detected)
+		{
+			eDebug("[PreciseRecovery] Tune Failed/Signal Loss during timeshift. Initiating recovery.");
+			m_stream_corruption_detected = true;
+			handleEofRecovery();
+		}
+		else
+		{
+			eDebug("[eDVBServicePlay] DVB service failed to tune - error %d", event);
+			m_event((iPlayableService*)this, evTuneFailed);
+		}
 		break;
 	}
 	case eDVBServicePMTHandler::eventNewProgramInfo:
@@ -1408,6 +1516,11 @@ void eDVBServicePlay::serviceEventTimeshift(int event)
 			m_event((iPlayableService*)this, evSOF);
 		break;
 	case eDVBServicePMTHandler::eventEOF:
+		if (m_stream_corruption_detected)
+		{
+			eDebug("[eDVBServicePlay] Ignoring EOF during stream corruption recovery.");
+			break;
+		}
 		if ((!m_is_paused) && (m_skipmode >= 0))
 		{
 			if (m_timeshift_file_next.empty())
@@ -1772,12 +1885,22 @@ RESULT eDVBServicePlay::unpause()
 	{
 		m_slowmotion = 0;
 		m_is_paused = 0;
+		if (m_stream_corruption_detected)
+		{
+			eDebug("[PreciseRecovery] User resumed playback. Resetting recovery state.");
+			resetRecoveryState();
+		}
 		return m_soft_decoder->play();
 	}
 	if (m_decoder)
 	{
 		m_slowmotion = 0;
 		m_is_paused = 0;
+		if (m_stream_corruption_detected)
+		{
+			eDebug("[PreciseRecovery] User resumed playback. Resetting recovery state.");
+			resetRecoveryState();
+		}
 		return m_decoder->play();
 	} else
 		return -1;
@@ -2558,7 +2681,7 @@ void eDVBServicePlay::updateAudioCache(int apid, int apidtype)
 	const static struct {
 		int streamType;
 		eDVBService::cacheID cacheTag;
-	} audioMap [] = {
+	} audioMap[] = {
 		{ eDVBAudio::aMPEG,  eDVBService::cMPEGAPID,  },
 		{ eDVBAudio::aAC3,   eDVBService::cAC3PID,    },
 		{ eDVBAudio::aAC4,   eDVBService::cAC4PID,    },
@@ -2865,7 +2988,7 @@ RESULT eDVBServicePlay::startTimeshift()
 		fileout << "1";
 	}
 
-	delete [] templ;
+	delete[] templ;
 
 	if (m_timeshift_fd < 0)
 	{
@@ -2916,12 +3039,12 @@ void eDVBServicePlay::recordEvent(int event) {
 			eWarning("[eDVBServicePlay] recordEvent write error");
 			return;
 		case iDVBTSRecorder::eventStreamCorrupt: {
-			// re enable Timeshift recovery feature.
 			if (m_stream_corruption_detected)
 				return;
 
 			eWarning("[eDVBServicePlay] recordEvent eventStreamCorrupt, initiating recovery.");
 			m_stream_corruption_detected = true;
+			handleEofRecovery();
 			return;
 		}
 		default:
@@ -2933,6 +3056,8 @@ RESULT eDVBServicePlay::stopTimeshift(bool swToLive)
 {
 	if (!m_timeshift_enabled)
 		return -1;
+
+	resetRecoveryState();
 
 	// IMPORTANT: Stop the timeshift recorder BEFORE switching to live!
 	// Otherwise the SoftDecoder starts and allocates resources, then the old
@@ -3247,6 +3372,8 @@ void eDVBServicePlay::switchToLive()
 		return;
 
 	eDebug("[eDVBServicePlay] SwitchToLive");
+
+	resetRecoveryState();
 
 	resetTimeshift(0);
 
@@ -4200,7 +4327,7 @@ void eDVBServicePlay::setupSpeculativeDescrambling()
 		sigc::mem_fun(*this, &eDVBServicePlay::onSoftDecoderAudioPidSelected));
 
 	// Suppress SoftCSA activation when CI module handles decryption
-	m_csa_session->shouldSuppressActivation = [this]() {
+	m_csa_session->shouldSuppressActivation =[this]() {
 		return m_service_handler.isCiConnected();
 	};
 
