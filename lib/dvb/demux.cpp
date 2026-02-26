@@ -11,7 +11,6 @@
 
 #include <lib/base/eerror.h>
 #include <lib/base/cfile.h>
-#include <lib/dvb/dvb.h>
 #include <lib/dvb/idvb.h>
 #include <lib/dvb/demux.h>
 #include <lib/dvb/esection.h>
@@ -29,7 +28,7 @@ enum dmx_source {
 	DMX_SOURCE_FRONT1,
 	DMX_SOURCE_FRONT2,
 	DMX_SOURCE_FRONT3,
-	DMX_SOURCE_DVR0 = 16,
+	DMX_SOURCE_DVR0   = 16,
 	DMX_SOURCE_DVR1,
 	DMX_SOURCE_DVR2,
 	DMX_SOURCE_DVR3
@@ -54,7 +53,7 @@ static int determineBufferCount()
 	else if (megabytes > 100)
 		result = 16; // 256MB systems: Use 3MB demux buffers (dm8000, et5x00, vuduo)
 	else
-		result = 8; // Smaller boxes: Use 1.5MB buffer (dm7025)
+		result = 8; // Smaller boxes: Use 1.5MB buffer
 	return result;
 }
 
@@ -81,20 +80,19 @@ int eDVBDemux::openDemux(void)
 {
 	char filename[32] = {};
 	snprintf(filename, sizeof(filename), "/dev/dvb/adapter%d/demux%d", adapter, demux);
-	eDebug("[eDVBDemux] open demux %s", filename);
-	return ::open(filename, O_RDWR | O_CLOEXEC);
+	eTrace("[eDVBDemux] Open demux '%s'.", filename);
+	int fd = ::open(filename, O_RDWR | O_CLOEXEC);
+	if (fd < 0)
+		eDebug("[eDVBDemux] Error: Unable to open demux '%s'!", filename);
+	return fd;
 }
 
 int eDVBDemux::openDVR(int flags)
 {
-#ifdef HAVE_OLDPVR
-	return ::open("/dev/misc/pvr", flags);
-#else
 	char filename[32];
 	snprintf(filename, sizeof(filename), "/dev/dvb/adapter%d/dvr%d", adapter, demux);
 	eDebug("[eDVBDemux] open dvr %s", filename);
 	return ::open(filename, flags);
-#endif
 }
 
 DEFINE_REF(eDVBDemux)
@@ -268,7 +266,7 @@ RESULT eDVBSectionReader::start(const eDVBSectionFilterMask &mask)
 	if (fd < 0)
 		return -ENODEV;
 
-	eDebug("[eDVBSectionReader] DMX_SET_FILTER pid=%d", mask.pid);
+	eTrace("[eDVBSectionReader] DMX_SET_FILTER pid=%d", mask.pid);
 	notifier->start();
 
 	dmx_sct_filter_params sct = {};
@@ -343,7 +341,7 @@ void eDVBPESReader::data(int)
 
 eDVBPESReader::eDVBPESReader(eDVBDemux *demux, eMainloop *context, RESULT &res): m_demux(demux), m_active(0)
 {
-	eDebug("[eDVBPESReader] Created. Opening demux");
+	eWarning("[eDVBPESReader] Created. Opening demux");
 	m_fd = m_demux->openDemux();
 	if (m_fd >= 0)
 	{
@@ -499,7 +497,7 @@ int eDVBRecordFileThread::AsyncIO::wait(volatile int* stop_flag)
 		// Wait for current operation to complete with timeout
 		while (aio_error(&aio) == EINPROGRESS)
 		{
-			eTrace("[eDVBDemux][eDVBRecordFileThread] Waiting for I/O to complete");
+			eDebug("[eDVBRecordFileThread] Waiting for I/O to complete");
 			struct aiocb* paio = &aio;
 			struct timespec timeout = {1, 0}; // 1 second timeout
 			int r = aio_suspend(&paio, 1, &timeout);
@@ -637,7 +635,7 @@ int eDVBRecordFileThread::asyncWrite(int len)
 	// Only call parseData here if no descrambler is set.
 	// When a descrambler is active, eDVBRecordScrambledThread::writeData()
 	// calls parseData AFTER descrambling to ensure we parse clear data.
-	if (!m_serviceDescrambler)
+	if (!getProtocol() && !m_serviceDescrambler)
 	{
 		int parse_result = m_ts_parser.parseData(m_current_offset, m_buffer, len);
 		if (parse_result == -2)
@@ -657,7 +655,7 @@ int eDVBRecordFileThread::asyncWrite(int len)
 	int r = m_current_buffer->start(m_fd_dest, m_current_offset, len, m_buffer);
 	if (r < 0)
 	{
-		eWarning("[eDVBRecordFileThread] aio_write failed: %m");
+		eDebug("[eDVBRecordFileThread] aio_write failed: %m");
 		return r;
 	}
 	m_current_offset += len;
@@ -732,7 +730,7 @@ int eDVBRecordFileThread::writeData(int len)
 		// Only call parseData here if no descrambler is set.
 		// When a descrambler is active, eDVBRecordScrambledThread::writeData()
 		// calls parseData AFTER descrambling to ensure we parse clear data.
-		if (!m_serviceDescrambler)
+		if (!getProtocol() && !m_serviceDescrambler)
 		{
 			m_ts_parser.parseData(m_current_offset, m_buffer, len);
 		}
@@ -824,7 +822,7 @@ void eDVBRecordFileThread::flush()
 		}
 	}
 	int bufferCount = m_aio.size();
-	eTrace("[eDVBRecordFileThread] buffer usage histogram (%d buffers of %lu kB)", bufferCount, m_buffersize>>10);
+	eDebug("[eDVBRecordFileThread] buffer usage histogram (%d buffers of %lu kB)", bufferCount, m_buffersize>>10);
 	for (int i=0; i <= bufferCount; ++i)
 	{
 		if (m_buffer_use_histogram[i] != 0)
@@ -1015,7 +1013,8 @@ int eDVBRecordScrambledThread::writeData(int len)
 		m_serviceDescrambler->descramble(m_buffer, len);
 
 		// Parse AFTER descrambling for correct Access Points (.ap files)
-		m_ts_parser.parseData(m_current_offset, m_buffer, len);
+		if (!getProtocol())
+			m_ts_parser.parseData(m_current_offset, m_buffer, len);
 	}
 
 	// Call the appropriate parent writeData based on target type:
