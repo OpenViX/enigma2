@@ -4118,7 +4118,7 @@ msgid "Configuration mode: %s"
 msgstr "Modo de configuración: %s"
 
 msgid "Configuration..."
-msgstr "Cconfiguración"
+msgstr "Configuración"
 
 #
 msgid "Configure ATSC"
