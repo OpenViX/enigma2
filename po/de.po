@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-13 14:03+0000\n"
+"POT-Creation-Date: 2026-02-25 13:29+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: 2stein\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, 2stein\n"
@@ -271,7 +271,7 @@ msgid "%A %-d/%m"
 msgstr "%A, %-d/%m"
 
 msgid "%A %-d/%m/%Y"
-msgstr "%A, %-d/%m/%Y"
+msgstr "%A %-d/%m/%Y"
 
 msgid "%A %-m/%-d"
 msgstr "%A %-m/%-d"
@@ -334,16 +334,16 @@ msgid "%A %Y/%m/%d"
 msgstr "%A %Y/%m/%d"
 
 msgid "%A %d %B"
-msgstr "%A, %d. %B"
+msgstr "%A %d %B"
 
 msgid "%A %d %B %Y"
-msgstr "%A, %d. %B %Y"
+msgstr "%A %d %B %Y"
 
 msgid "%A %d-%B"
-msgstr "%A, %d-%B"
+msgstr "%A %d-%B"
 
 msgid "%A %d-%B-%Y"
-msgstr "%A, %d-%B-%Y"
+msgstr "%A %d-%B-%Y"
 
 msgid "%A %d. %B"
 msgstr "%A, %d. %B"
@@ -364,16 +364,16 @@ msgid "%A %d.%m.%Y"
 msgstr "%A, %d.%m.%Y"
 
 msgid "%A %d/%-m"
-msgstr "%A, %d/%-m"
+msgstr "%A %d/%-m"
 
 msgid "%A %d/%-m/%Y"
-msgstr "%A, %d/%-m/%Y"
+msgstr "%A %d/%-m/%Y"
 
 msgid "%A %d/%m"
-msgstr "%A, %d/%m"
+msgstr "%A %d/%m"
 
 msgid "%A %d/%m/%Y"
-msgstr "%A, %d/%m/%Y"
+msgstr "%A %d/%m/%Y"
 
 msgid "%A %m/%-d"
 msgstr "%A %m/%-d"
@@ -514,16 +514,16 @@ msgid "%a %-d.%m.%Y"
 msgstr "%a, %-d.%m.%Y"
 
 msgid "%a %-d/%-m"
-msgstr "%a, %-d/%-m"
+msgstr "%a %-d/%-m"
 
 msgid "%a %-d/%-m/%Y"
-msgstr "%a, %-d/%-m/%Y"
+msgstr "%a %-d/%-m/%Y"
 
 msgid "%a %-d/%m"
-msgstr "%a, %-d/%m"
+msgstr "%a %-d/%m"
 
 msgid "%a %-d/%m/%Y"
-msgstr "%a, %-d/%m/%Y"
+msgstr "%a %-d/%m/%Y"
 
 msgid "%a %-m/%-d"
 msgstr "%a %-m/%-d"
@@ -610,16 +610,16 @@ msgid "%a %b-%d-%Y"
 msgstr "%a %b-%d-%Y"
 
 msgid "%a %d"
-msgstr "%a, %d"
+msgstr "%a %d"
 
 msgid "%a %d %B %Y"
-msgstr "%a, %d. %B %Y"
+msgstr "%a %d %B %Y"
 
 msgid "%a %d %b"
-msgstr "%a, %d.%b"
+msgstr "%a %d %b"
 
 msgid "%a %d %b %Y"
-msgstr "%a, %d. %b %Y"
+msgstr "%a %d %b %Y"
 
 msgid "%a %d-%B-%Y"
 msgstr "%a, %d-%B-%Y"
@@ -652,31 +652,31 @@ msgid "%a %d.%m.%Y"
 msgstr "%a, %d.%m.%Y"
 
 msgid "%a %d/%-m"
-msgstr "%a, %d/%-m"
+msgstr "%a %d/%-m"
 
 msgid "%a %d/%-m/%Y"
-msgstr "%a, %d/%-m/%Y"
+msgstr "%a %d/%-m/%Y"
 
 msgid "%a %d/%m"
-msgstr "%a, %d/%m"
+msgstr "%a %d/%m"
 
 msgid "%a %d/%m/%Y"
-msgstr "%a, %d/%m/%Y"
+msgstr "%a %d/%m/%Y"
 
 msgid "%a %e %b  %-H:%M"
-msgstr "%a, %e %b  %-H:%M"
+msgstr "%a %e %b  %-H:%M"
 
 msgid "%a %m/%-d"
-msgstr "%a, %m/%-d"
+msgstr "%a %m/%-d"
 
 msgid "%a %m/%-d/%Y"
-msgstr "%a, %m/%-d/%Y"
+msgstr "%a %m/%-d/%Y"
 
 msgid "%a %m/%d"
-msgstr "%a, %m/%d"
+msgstr "%a %m/%d"
 
 msgid "%a %m/%d/%Y"
-msgstr "%a, %m/%d/%Y"
+msgstr "%a %m/%d/%Y"
 
 msgid "%b %-d"
 msgstr "%b %-d"
@@ -941,10 +941,6 @@ msgid "%m/%d/%Y"
 msgstr "%m/%d/%Y"
 
 #, python-format
-msgid "%s"
-msgstr "%s"
-
-#, python-format
 msgid "%s %s advanced remote control (native)"
 msgstr "%s %s erweiterte Fernbedienung (lokal)"
 
@@ -1058,14 +1054,6 @@ msgstr "%s%s (Standard: %s)"
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
-
-#, python-format
-msgid "%s: "
-msgstr ""
-
-#, python-format
-msgid "%s?"
-msgstr "%s?"
 
 #, python-format
 msgid "'%s' already exists"
@@ -1263,7 +1251,7 @@ msgid "1st Infobar timeout"
 msgstr "Infobar-Timeout"
 
 msgid "2. Try to re install Vu+ Multiboot as usual"
-msgstr "2. Versuche, Vu+ Multiboot erneut zu installieren"
+msgstr "2. Versuche, Vu+ Multi-Boot erneut zu installieren"
 
 msgid "23.976"
 msgstr "23.976"
@@ -1290,7 +1278,7 @@ msgid "3"
 msgstr "3"
 
 msgid "3. If you wish to try and recover your Multiboot system then proceed as follows......."
-msgstr "3. Wenn versucht werden soll, das Multiboot zu recovern, fahre wie folgt fort..."
+msgstr "3. Wenn versucht werden soll, das Multi-Boot zu recovern, fahre wie folgt fort..."
 
 msgid "30"
 msgstr "30"
@@ -1390,7 +1378,7 @@ msgid "6"
 msgstr "6"
 
 msgid "6. Then enter '/etc/init.d/kexec-multiboot-recovery start' "
-msgstr "6. Gib '/etc/init.d/kexec-multiboot-recovery start' ein, um Multiboot-Recovery zu starten "
+msgstr "6. Gib '/etc/init.d/kexec-multiboot-recovery start' ein, um Multi-Boot-Recovery zu starten "
 
 msgid "64 Mb"
 msgstr "64 MB"
@@ -1624,7 +1612,7 @@ msgid "AAC+ downmix"
 msgstr "AAC+-Downmix"
 
 msgid "ABOUT"
-msgstr ""
+msgstr "Über"
 
 msgid "AC3"
 msgstr "AC3"
@@ -1651,10 +1639,10 @@ msgid "AGC:"
 msgstr "AGC:"
 
 msgid "ARROWLEFT"
-msgstr ""
+msgstr "Pfeil links"
 
 msgid "ARROWRIGHT"
-msgstr ""
+msgstr "Pfeil rechts"
 
 msgid "ASS file"
 msgstr "ASS-Datei"
@@ -1666,10 +1654,10 @@ msgid "ATSC provider"
 msgstr "ATSC-Anbieter"
 
 msgid "AUDIO"
-msgstr ""
+msgstr "Audio"
 
 msgid "AUTOTIMER"
-msgstr ""
+msgstr "AutoTimer"
 
 #, python-format
 msgid "AV aspect is %s."
@@ -1752,7 +1740,7 @@ msgstr "Hinzufügen"
 
 #, python-format
 msgid "Add 4 more Multiboot USB slots after slot %s ?"
-msgstr "Sollen 4 weitere Multiboot-USB-Slots nach Slot%s hinzugefügt werden?"
+msgstr "Sollen 4 weitere Multi-Boot-USB-Slots nach Slot%s hinzugefügt werden?"
 
 msgid "Add AutoTimer"
 msgstr "AutoTimer hinzufügen"
@@ -1947,7 +1935,7 @@ msgid "Album"
 msgstr "Album"
 
 msgid "Alert - the system has found an issue with the Vu+ Kexec Multiboot images - read the following information carefully"
-msgstr "Warnung: Das System hat ein Problem mit den Vu+ Kexec-Multiboot-Images gefunden - lies die folgenden Informationen aufmerksam."
+msgstr "Warnung: Das System hat ein Problem mit den Vu+ Kexec-Multi-Boot-Images gefunden - lies die folgenden Informationen aufmerksam."
 
 msgid "Algeria"
 msgstr "Algeria"
@@ -2332,7 +2320,7 @@ msgid "Artist"
 msgstr "Künstler"
 
 msgid "Arts"
-msgstr ""
+msgstr "Kunst"
 
 msgid "Arts & Culture"
 msgstr "Kunst/Kultur"
@@ -2581,7 +2569,7 @@ msgid "B-Movie"
 msgstr ""
 
 msgid "BACK"
-msgstr ""
+msgstr "Zurück"
 
 #, python-format
 msgid "BC%d"
@@ -2591,13 +2579,13 @@ msgid "BER:"
 msgstr ""
 
 msgid "BLUE"
-msgstr ""
+msgstr "Blau"
 
 msgid "BOUQUET+"
-msgstr ""
+msgstr "Bouquet+"
 
 msgid "BOUQUET-"
-msgstr ""
+msgstr "Bouquet-"
 
 msgid "BT 2020 CL"
 msgstr ""
@@ -2800,7 +2788,7 @@ msgid "Biografie"
 msgstr ""
 
 msgid "Biography"
-msgstr ""
+msgstr "Biographie"
 
 msgid "Bitrate"
 msgstr "Bitrate"
@@ -2818,7 +2806,7 @@ msgid "Black screen till locked"
 msgstr "Schwarzes Bild bis Abschluss"
 
 msgid "Blindscan"
-msgstr ""
+msgstr "Blind-Scan"
 
 msgid "Blindscan terrestrial (if possible)"
 msgstr "DVB-T blindscan (wenn möglich)"
@@ -2833,7 +2821,7 @@ msgid "Block noise reduction"
 msgstr "Block Noise Reduzierung"
 
 msgid "Blue"
-msgstr "'Blau'"
+msgstr "Blau"
 
 msgid "Blue button (long)"
 msgstr "Blaue Taste (lang)"
@@ -2845,7 +2833,7 @@ msgid "Blue button function"
 msgstr "Blaue Taste"
 
 msgid "Blue long"
-msgstr "'Blau' lang"
+msgstr "Blau lang"
 
 msgid "Bolivia (Plurinational State of)"
 msgstr "Bolivia (Plurinational State of)"
@@ -2917,7 +2905,7 @@ msgid "Boxen"
 msgstr ""
 
 msgid "Boxing"
-msgstr ""
+msgstr "Boxen"
 
 msgid "Brazil"
 msgstr "Brazil"
@@ -2988,7 +2976,7 @@ msgid "Business"
 msgstr "Wirtschaft"
 
 msgid "Business & Finance"
-msgstr ""
+msgstr "Business & Finanzen"
 
 msgid "Button Setup"
 msgstr "Tasten-Einstellungen"
@@ -3297,7 +3285,7 @@ msgid "Chad"
 msgstr "Chad"
 
 msgid "Challenge"
-msgstr ""
+msgstr "Herausforderung"
 
 msgid "Change Colorspace setting - this may cause unexpected results or black screen"
 msgstr "Ändere Farbraumeinstellungen - Dies kann zu unerwarteten Effekten oder schwarzem Bild führen"
@@ -3775,7 +3763,7 @@ msgid "Command type"
 msgstr "Befehlstyp"
 
 msgid "Commedia"
-msgstr ""
+msgstr "Kommödie"
 
 msgid "Common Interface"
 msgstr "Common-Interface"
@@ -3843,7 +3831,7 @@ msgid "Configure DVB-T"
 msgstr "Konfiguriere DVB-T"
 
 msgid "Configure Vu Multiboot interface"
-msgstr "Konfiguriere Multiboot."
+msgstr "Konfiguriere Multi-Boot."
 
 msgid "Configure alignment of service events."
 msgstr "Konfiguriere Ausrichtung der Sendungen."
@@ -4339,7 +4327,7 @@ msgid "Create DVD-ISO"
 msgstr "DVD-ISO erstellen"
 
 msgid "Create MultiBoot System -> will INITIALISE chosen usb device"
-msgstr "Initialisiere Multiboot"
+msgstr "Initialisiere Multi-Boot"
 
 msgid "Create Slots"
 msgstr "Erstelle Slots"
@@ -4418,7 +4406,7 @@ msgid "Cuba"
 msgstr "Cuba"
 
 msgid "Cult"
-msgstr ""
+msgstr "Kult"
 
 msgid "Culture"
 msgstr "Kunst/Kultur"
@@ -4515,7 +4503,7 @@ msgid "DAC"
 msgstr ""
 
 msgid "DD-MM-YYYY"
-msgstr ""
+msgstr "DD-MM-YYYY"
 
 msgid "DHCP"
 msgstr "DHCP"
@@ -4555,7 +4543,7 @@ msgid "DMM normal"
 msgstr ""
 
 msgid "DOWN"
-msgstr ""
+msgstr "Runter"
 
 msgid "DTS"
 msgstr "DTS"
@@ -4711,94 +4699,94 @@ msgid "Day Mon-DD"
 msgstr "Tag Mon-DD"
 
 msgid "Dayname D Month Year"
-msgstr "Tagesname, T Monat Jahr"
+msgstr "Tagesname, T. Monat Jahr"
 
 msgid "Dayname D-Month-Year"
 msgstr "Tagesname, T-Monat-Jahr"
 
 msgid "Dayname D. Month Year"
-msgstr "Tagesname, T Monat Jahr"
+msgstr "Tagesname, T. Monat Jahr"
 
 msgid "Dayname D.M.Year"
-msgstr "Tagesname, T/M/Jahr"
+msgstr "Tagesname, T.M.Jahr"
 
 msgid "Dayname D.MM.Year"
-msgstr "Tagesname, T/MM/Jahr"
+msgstr "Tagesname, T.MM.Jahr"
 
 msgid "Dayname D/M/Year"
-msgstr "Tagesname, T/M/Jahr"
+msgstr "Tagesname T/M/Jahr"
 
 msgid "Dayname D/MM/Year"
-msgstr "Tagesname, T/MM/Jahr"
+msgstr "Tagesname T/MM/Jahr"
 
 msgid "Dayname DD Month Year"
-msgstr "Tagesname, TT Monat Jahr"
+msgstr "Tagesname TT Monat Jahr"
 
 msgid "Dayname DD-Month-Year"
 msgstr "Tagesname, TT-Monat-Jahr"
 
 msgid "Dayname DD. Month Year"
-msgstr "Tagesname, TT Monat Jahr"
+msgstr "Tagesname, TT. Monat Jahr"
 
 msgid "Dayname DD.M.Year"
-msgstr "Tagesname, TT/M/Jahr"
+msgstr "Tagesname, TT.M.Jahr"
 
 msgid "Dayname DD.MM.Year"
-msgstr "Tagesname, TT/MM/Jahr"
+msgstr "Tagesname, TT.MM.Jahr"
 
 msgid "Dayname DD/M/Year"
-msgstr "Tagesname, TT/M/Jahr"
+msgstr "Tagesname TT/M/Jahr"
 
 msgid "Dayname DD/MM/Year"
-msgstr "Tagesname, TT/MM/Jahr"
+msgstr "Tagesname TT/MM/Jahr"
 
 msgid "Dayname M/D/Year"
-msgstr "Tagesname, M/T/Jahr"
+msgstr "Tagesname M/T/Jahr"
 
 msgid "Dayname M/DD/Year"
-msgstr "Tagesname, M/TT/Jahr"
+msgstr "Tagesname M/TT/Jahr"
 
 msgid "Dayname MM/D/Year"
-msgstr "Tagesname, MM/T/Jahr"
+msgstr "Tagesname MM/T/Jahr"
 
 msgid "Dayname MM/DD/Year"
-msgstr "Tagesname, MM/TT/Jahr"
+msgstr "Tagesname MM/TT/Jahr"
 
 msgid "Dayname Month D Year"
-msgstr "Tagesname, Monat T Jahr"
+msgstr "Tagesname Monat T Jahr"
 
 msgid "Dayname Month DD Year"
-msgstr "Tagesname, Monat TT Jahr"
+msgstr "Tagesname Monat TT Jahr"
 
 msgid "Dayname Month-D-Year"
-msgstr "Tagesname, Monat-T-Jahr"
+msgstr "Tagesname Monat-T-Jahr"
 
 msgid "Dayname Month-DD-Year"
-msgstr "Tagesname, Monat-TT-Jahr"
+msgstr "Tagesname Monat-TT-Jahr"
 
 msgid "Dayname Year Month D"
-msgstr "Tagesname, Jahr Monat T"
+msgstr "Tagesname Jahr Monat T"
 
 msgid "Dayname Year Month DD"
-msgstr "Tagesname, Jahr Monat TT"
+msgstr "Tagesname Jahr Monat TT"
 
 msgid "Dayname Year-Month-D"
-msgstr "Tagesname, Jahr-Monat-T"
+msgstr "Tagesname Jahr-Monat-T"
 
 msgid "Dayname Year-Month-DD"
-msgstr "Tagesname, Jahr-Monat-TT"
+msgstr "Tagesname Jahr-Monat-TT"
 
 msgid "Dayname Year/M/D"
-msgstr "Tagesname, Jahr/M/T"
+msgstr "Tagesname Jahr/M/T"
 
 msgid "Dayname Year/M/DD"
-msgstr "Tagesname, Jahr/M/TT"
+msgstr "Tagesname Jahr/M/TT"
 
 msgid "Dayname Year/MM/D"
-msgstr "Tagesname, Jahr/MM/T"
+msgstr "Tagesname Jahr/MM/T"
 
 msgid "Dayname Year/MM/DD"
-msgstr "Tagesname, Jahr/MM/T"
+msgstr "Tagesname Jahr/MM/T"
 
 msgid "De-select"
 msgstr "Deselektieren"
@@ -4807,7 +4795,7 @@ msgid "Deactivate"
 msgstr "Deaktivieren"
 
 msgid "Debate"
-msgstr ""
+msgstr "Debatte"
 
 msgid "Debug"
 msgstr ""
@@ -5181,7 +5169,7 @@ msgid "Disable Autostart"
 msgstr "Deaktiviere Autostart"
 
 msgid "Disable Chkroot"
-msgstr "Abbrechen"
+msgstr "Deaktiviere Multi-Boot"
 
 msgid "Disable FCC during recordings"
 msgstr "Deaktiviere FCC während Aufnahmen"
@@ -5208,7 +5196,7 @@ msgid "Disable startup"
 msgstr "Deaktiviere Startup"
 
 msgid "Disable the MultiBoot option"
-msgstr "Deaktiviere MultiBoot"
+msgstr "Deaktiviere Multi-Boot"
 
 msgid "Disabled"
 msgstr "Deaktiviert"
@@ -5543,7 +5531,7 @@ msgid "Drop unconfigured satellites"
 msgstr "Vergesse nicht konfigurierte Satelliten"
 
 msgid "Dual core"
-msgstr ""
+msgstr "Dual-Core"
 
 msgid "Dutch"
 msgstr "Holländisch"
@@ -5568,10 +5556,10 @@ msgid "EJECTCD"
 msgstr ""
 
 msgid "END"
-msgstr ""
+msgstr "Ende"
 
 msgid "ENTER"
-msgstr ""
+msgstr "Enter"
 
 msgid "EPG"
 msgstr "EPG"
@@ -5616,7 +5604,7 @@ msgid "EPG settings"
 msgstr "EPG-Einstellungen"
 
 msgid "EPGSETUP"
-msgstr ""
+msgstr "EPG-Setup"
 
 #, python-format
 msgid "ERROR - failed to scan (%s)!"
@@ -5641,13 +5629,13 @@ msgid "ET8500 Image Restore"
 msgstr "ET8500 Image wiederherstellen"
 
 msgid "ET8500 Multiboot: Installed\n"
-msgstr "ET8500 Multiboot: installiert\n"
+msgstr "ET8500 Multi-Boot: installiert\n"
 
 msgid ""
 "ET8500 Multiboot: Yes to restore OS1 No to restore OS2:\n"
 " "
 msgstr ""
-"ET8500 Multiboot: 'Ja' zum Wiederherstellen von OS1, 'Nein' zum Wiederherstellen von OS2:\n"
+"ET8500 Multi-Boot: 'Ja' zum Wiederherstellen von OS1, 'Nein' zum Wiederherstellen von OS2:\n"
 " "
 
 msgid "EXIT"
@@ -6108,7 +6096,7 @@ msgid "Eritrea"
 msgstr "Eritrea"
 
 msgid "Erotic"
-msgstr ""
+msgstr "Erotik"
 
 msgid "Erotik"
 msgstr ""
@@ -6353,7 +6341,7 @@ msgid "Extra motor options"
 msgstr "Extra Rotoroptionen"
 
 msgid "Extreme"
-msgstr ""
+msgstr "Extrem"
 
 msgid "Extremsport"
 msgstr ""
@@ -6398,13 +6386,13 @@ msgid "FAILED"
 msgstr "FEHLGESCHLAGEN"
 
 msgid "FASTFORWARD"
-msgstr ""
+msgstr "Schnell vorwärts"
 
 msgid "FAV"
 msgstr ""
 
 msgid "FAVORITES"
-msgstr ""
+msgstr "Favoriten"
 
 msgid "FBC SCR (Unicable/JESS)"
 msgstr "FBC (Unicable/JESS)"
@@ -6454,13 +6442,13 @@ msgid "FHD"
 msgstr ""
 
 msgid "FLASH"
-msgstr "FLASH"
+msgstr "Flash"
 
 msgid "FLASHING"
-msgstr ""
+msgstr "Flaschen"
 
 msgid "FORWARD"
-msgstr ""
+msgstr "Forwärts"
 
 #, python-format
 msgid "FP version:\t%s"
@@ -6482,7 +6470,7 @@ msgid "FTP passive mode"
 msgstr "FTP-Passiv-Modus"
 
 msgid "FULL IMAGE BACKUP"
-msgstr ""
+msgstr "Volles Image-Backup"
 
 msgid "Factory Reset"
 msgstr "Werkseinstellungen"
@@ -6533,7 +6521,7 @@ msgid "Familie"
 msgstr ""
 
 msgid "Family"
-msgstr ""
+msgstr "Familie"
 
 #, python-format
 msgid "Fan %d"
@@ -6938,7 +6926,7 @@ msgid "Gangster"
 msgstr ""
 
 msgid "Gardening"
-msgstr "Garten"
+msgstr "Gärtnern"
 
 msgid "Garten"
 msgstr ""
@@ -7143,7 +7131,7 @@ msgid "Greek"
 msgstr "Griechisch"
 
 msgid "Green"
-msgstr "'Grün'"
+msgstr "Grün"
 
 msgid "Green button (long)"
 msgstr "Grüne Taste (lang)"
@@ -7152,7 +7140,7 @@ msgid "Green button (short)"
 msgstr "Grüne Taste (kurz)"
 
 msgid "Green long"
-msgstr "'Grün' lang"
+msgstr "Grün lang"
 
 msgid "Greenland"
 msgstr "Grönland"
@@ -7323,7 +7311,7 @@ msgid "HbbTV"
 msgstr ""
 
 msgid "Health & Fitness"
-msgstr ""
+msgstr "Gesundheit & Fitness"
 
 msgid "Heard Island and McDonald Islands"
 msgstr "Heard Island und McDonald Islands"
@@ -7407,7 +7395,7 @@ msgid "Hierarchy info"
 msgstr "Hierarchie Information"
 
 msgid "High"
-msgstr ""
+msgstr "Hoch"
 
 msgid "High bitrate support"
 msgstr "Kann hohe Datenraten verarbeiten"
@@ -7805,7 +7793,7 @@ msgid "ImageManager - %s - cannot flash eMMC slot from sd card slot."
 msgstr "Image-Manager - %s - Kann nicht von SD-Card-Slot auf eMMC-Slot geflasht werden."
 
 msgid "ImageManager - no HDD unable to backup Vu Multiboot eMMC slots"
-msgstr "Image-Manager - Keine Festplatte. Backup von eMMC Slots nicht möglich."
+msgstr "Image-Manager - Keine Festplatte. Backup von Multi-Boot eMMC Slots nicht möglich."
 
 msgid "Immediate shutdown"
 msgstr "Direkt ausschalten"
@@ -9379,22 +9367,22 @@ msgid "Multi EPG"
 msgstr "Multi-EPG"
 
 msgid "MultiBoot Image Selector"
-msgstr "Multiboot-Imageauswahl"
+msgstr "Multi-Boot-Imageauswahl"
 
 msgid "MultiBootSelector Actions"
-msgstr "Multibootauswahl Aktion"
+msgstr "Multi-Boot-Auswahl Aktionen"
 
 msgid "MultiType"
 msgstr ""
 
 msgid "Multiboot"
-msgstr "Multiboot"
+msgstr "Multi-Boot"
 
 msgid "Multiboot ERROR! - no STARTUP in boot partition."
-msgstr "Multiboot Fehler - Kein STARTUP in Boot-Partition."
+msgstr "Multi-Boot Fehler - Kein STARTUP in Boot-Partition."
 
 msgid "Multiboot only able to restore this backup to mmc slot1"
-msgstr "Multiboot kann dieses Backup nur auf MMC Slot 1 wiederherstellen"
+msgstr "Multi-Boot kann dieses Backup nur auf MMC Slot 1 wiederherstellen"
 
 msgid "Multiple service support"
 msgstr "Kann mehrere Sender entschlüsseln"
@@ -10585,7 +10573,7 @@ msgid "Permanently delete all recordings in the trash can?"
 msgstr "Alle Aufnahmen im Mülleimer löschen?"
 
 msgid "Permanently disable the MultiBoot option?"
-msgstr "Deaktiviere MultiBoot permanent"
+msgstr "Soll der Multi-Boot Menüeintrag entfernt werden?"
 
 msgid "Permanently ignore this device"
 msgstr "Gerät permanent ignorieren"
@@ -11282,7 +11270,7 @@ msgid "Press GREEN (Reboot) to switch images, YELLOW (Delete) to erase an image 
 msgstr "Drücke 'Grün' zum Wechseln von Images, 'Gelb' zum Löschen eines Images, 'Blau' zum Wiederherstellen aller gelöschten Images."
 
 msgid "Press GREEN to enable MultiBoot process"
-msgstr "Drücke 'Grün', um Multiboot zu initialisieren."
+msgstr "Drücke 'Grün', um Multi-Boot zu initialisieren."
 
 msgid "Press OK"
 msgstr "Drücke 'OK'"
@@ -11843,7 +11831,7 @@ msgid "Red colored"
 msgstr "Rot gefärbt"
 
 msgid "Red long"
-msgstr "'Rot' lang"
+msgstr "Rot lang"
 
 msgid "Reduce time scale"
 msgstr "Zeitskala verkleinern"
@@ -12865,7 +12853,7 @@ msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) devi
 msgstr "Wähle 'FBC SCR', wenn dieser Tuner ein Unicable Gerät verwendet. Für alle anderen Systeme wähle 'FBC automatisch'."
 
 msgid "Select 'Flash regular slot' to flash a regular MultiBoot slot or select 'Overwrite Recovery' to overwrite the Recovery image."
-msgstr "Wähle 'Flash in Slot', um in einen normalen Multiboot Slot zu flashen oder 'Überschreibe Recovery', um das Recovery Image zu überschreiben."
+msgstr "Wähle 'Flash in Slot', um in einen normalen Multi-Boot Slot zu flashen oder 'Überschreibe Recovery', um das Recovery Image zu überschreiben."
 
 msgid "Select 'Standard' to display the standard vertical menu layout, or 'Horizontal' to display the menu items in a row."
 msgstr "Wähle 'Standard für ein vertikales Menü-Layout oder 'Horizontal', um die Menüs in Zeilen anzuzeigen."
@@ -12969,7 +12957,7 @@ msgid "Select Device"
 msgstr "Device-Auswahl"
 
 msgid "Select Device for FORMAT!! & Creation of multiboot slots"
-msgstr "Device-Auswahl für Formatierung und Erstellung von Multiboot-Slots"
+msgstr "Device-Auswahl für Formatierung und Erstellung von Multi-Boot-Slots"
 
 msgid "Select EPG channel"
 msgstr "Wähle EPG-Sender"
@@ -14688,7 +14676,7 @@ msgid "Start the Chkroot initialization"
 msgstr "Starte die Chkroot-Multi-Boot-Initialisierung"
 
 msgid "Start the UBI Multiboot initialization"
-msgstr "Starte UBI-Multiboot Initialisierung"
+msgstr "Starte UBI-Multi-Boot Initialisierung"
 
 msgid "Start time"
 msgstr "Startzeit"
@@ -17013,14 +17001,14 @@ msgid "Vu+ ImageManager wizard"
 msgstr "Vu+ Image-Manager Assistent"
 
 msgid "Vu+ Multiboot"
-msgstr "VU+ Multiboot"
+msgstr "VU+ Multi-Boot"
 
 msgid ""
 "Vu+ Multiboot - PLEASE WAIT WHILE INITIALISING!\n"
 "  - will take up to 5 minutes plus 5 minutes per restored eMMC slot.\n"
 "  - after installing Recovery and Slot1 image, receiver will reboot to Slot 1 setup wizard."
 msgstr ""
-"Vu+ Multiboot - BITTE WÄHREND DER INITIALISIERUNG WARTEN!\n"
+"Vu+ Multi-Boot - BITTE WÄHREND DER INITIALISIERUNG WARTEN!\n"
 "  - dies dauert bis zu 5 Minuten + 5 Minuten für jeden zurückgeschriebenen eMMC Slot.\n"
 "  - nach Installation des Recovery- und Slot1-Images wird der E2-Receiver den Setup-Assistenten in Slot1 starten."
 
@@ -17161,7 +17149,7 @@ msgid "Watersports"
 msgstr "Wassersport"
 
 msgid "We advise flashing the new image to a regular MultiBoot slot and restoring a settings backup."
-msgstr "Wir empfehlen, das neue Image in einen Multiboot Slot zu flashen und ein Einstellungsbackup wiederherzustellen."
+msgstr "Wir empfehlen, das neue Image in einen Multi-Boot Slot zu flashen und ein Einstellungsbackup wiederherzustellen."
 
 msgid "Weather"
 msgstr "Wetter"
@@ -17221,7 +17209,7 @@ msgstr ""
 "\n"
 "Wähle 'Standard' für ein Standard Vu+ Image.\n"
 "\n"
-"Wähle 'Multiboot' für Vu+ Multiboot."
+"Wähle 'Multi-Boot' für Vu+ Multi-Boot."
 
 msgid ""
 "Welcome to the cutlist editor.\n"
@@ -17605,22 +17593,22 @@ msgid "YES"
 msgstr "Ja"
 
 msgid "YES, to restore plugins"
-msgstr "JA, um Plugins wiederherzustellen"
+msgstr "'Ja', um Plugins wiederherzustellen"
 
 msgid "YES, to restore settings"
-msgstr "JA, um Einstellungen wiederherzustellen"
+msgstr "'Ja', um Einstellungen wiederherzustellen"
 
 msgid "YPbPr"
 msgstr "YPbPr"
 
 msgid "YYYY-MM-DD"
-msgstr ""
+msgstr "YYYY-MM-DD"
 
 msgid "Year"
 msgstr "Jahr"
 
 msgid "Yellow"
-msgstr "'Gelb'"
+msgstr "Gelb"
 
 msgid "Yellow button (long)"
 msgstr "Gelbe Taste (lang)"
@@ -17632,7 +17620,7 @@ msgid "Yellow button function"
 msgstr "Gelbe Taste"
 
 msgid "Yellow long"
-msgstr "'Gelb' lang"
+msgstr "Gelb lang"
 
 msgid "Yemen"
 msgstr "Jemen"
@@ -18074,11 +18062,11 @@ msgid "Zoom from right"
 msgstr "Zoom von rechts"
 
 msgid "[MultiBootSelector][add USB STARTUP slots] - No EXT4 USB attached."
-msgstr "[MultiBootSelector][add USB STARTUP slots] - Kein EXT4 USB angeschlossen."
+msgstr "[Multi-Boot-Auswahl][füge USB STARTUP slots hinzu] - Kein EXT4 USB angeschlossen."
 
 #, python-format
 msgid "[MultiBootSelector][add USB STARTUP slots] - The USB (%s) only has %s free. At least 1024MB is required."
-msgstr "[MultiBootSelector][add USB STARTUP slots] - USB (%s) hat nur %s MB freien Speicherplatz. Mindestens 1024 MB werden benötigt."
+msgstr "[Multi-Boot-Auswahl][füge USB STARTUP slots hinzu] - USB (%s) hat nur %s MB freien Speicherplatz. Mindestens 1024 MB werden benötigt."
 
 msgid "[TimeShift] Restarting Timeshift!"
 msgstr "[Timeshift] Timeshift erneut starten."
@@ -18226,7 +18214,7 @@ msgid "blacklist"
 msgstr "Negativliste"
 
 msgid "blue"
-msgstr "'Blau'"
+msgstr "Blau"
 
 msgid "boot time"
 msgstr "Startzeit"
@@ -18578,7 +18566,7 @@ msgid "grab this frame as bitmap"
 msgstr "Diesen Frame als Bitmap speichern"
 
 msgid "green"
-msgstr "'Grün'"
+msgstr "Grün"
 
 msgid "h:mm"
 msgstr ""
@@ -18982,7 +18970,7 @@ msgid "recording..."
 msgstr "nimmt auf..."
 
 msgid "red"
-msgstr "'Rot'"
+msgstr "Rot"
 
 msgid "religion"
 msgstr "Religion"
@@ -19448,7 +19436,7 @@ msgid "wsw"
 msgstr "West-Süd-West"
 
 msgid "yellow"
-msgstr "'Gelb'"
+msgstr "Gelb"
 
 msgid "yes"
 msgstr "Ja"
