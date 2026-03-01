@@ -23,7 +23,6 @@
 #include <lib/dvb/tstools.h>
 #include <lib/python/python.h>
 #include <lib/base/nconfig.h> // access to python config
-#include <lib/base/esimpleconfig.h>
 #include <lib/base/httpsstream.h>
 #include <lib/base/httpstream.h>
 #include <lib/service/servicedvbfcc.h>
@@ -3546,7 +3545,7 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 #ifdef PASSTHROUGH_FIX
 void eDVBServicePlay::forceAudioReset()
 {
-	if (!eSimpleConfig::getBool("config.av.passthrough_fix", false))
+	if (!eConfigManager::getConfigBoolValue("config.av.passthrough_fix", false)
 		return;
 	// Toggle Bluetooth audio off->on->off to force audio driver reinitialization
 	std::string btaudio = CFile::read("/proc/stb/audio/btaudio");
