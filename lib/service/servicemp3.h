@@ -387,9 +387,6 @@ private:
 	subtitle_pages_map_t m_subtitle_pages;
 	ePtr<eTimer> m_subtitle_sync_timer;
 	ePtr<eTimer> m_dvb_subtitle_sync_timer;
-#ifdef PASSTHROUGH_FIX
-	ePtr<eTimer> m_passthrough_fix_timer;
-#endif
 	ePtr<eDVBSubtitleParser> m_dvb_subtitle_parser;
 	ePtr<eConnection> m_new_dvb_subtitle_page_connection;
 	void newDVBSubtitlePage(const eDVBSubtitlePage &p);
@@ -403,7 +400,7 @@ private:
 	void sourceTimeout();
 	void clearBuffers(bool force=false);
 #ifdef PASSTHROUGH_FIX
-	void forcePassthrough();
+	void forceAudioReset();
 #endif
 	sourceStream m_sourceinfo;
 	gulong m_subs_to_pull_handler_id;

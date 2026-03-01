@@ -3533,10 +3533,30 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 		if (!sendSeekableStateChanged && (m_decoder->getVideoProgressive() != -1) != wasSeekable)
 			sendSeekableStateChanged = true;
 	}
+#ifdef PASSTHROUGH_FIX
+	if (!m_noaudio)
+		forceAudioReset();
+#endif
 
 	if (sendSeekableStateChanged)
 		m_event((iPlayableService*)this, evSeekableStatusChanged);
 }
+
+#ifdef PASSTHROUGH_FIX
+void eDVBServicePlay::forceAudioReset()
+{
+	if (!eSimpleConfig::getBool("config.av.passthrough_fix", false))
+		return;
+	// Toggle Bluetooth audio off->on->off to force audio driver reinitialization
+	std::string btaudio = CFile::read("/proc/stb/audio/btaudio");
+	if (!btaudio.empty() && btaudio.find("off") != std::string::npos)
+	{
+		eDebug("[eDVBSoftDecoder] Force audio reset: toggling btaudio on and back off");
+		CFile::writeStr("/proc/stb/audio/btaudio", "on");
+		CFile::writeStr("/proc/stb/audio/btaudio", "off");
+	}
+}
+#endif
 
 void eDVBServicePlay::loadCuesheet()
 {
