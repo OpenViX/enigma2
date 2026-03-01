@@ -229,7 +229,7 @@ def loadConfigToDict():
 	global current_skin_config
 	skinname = ospath.dirname(config.skin.primary_skin.value)
 	skin_conf = f"/etc/enigma2/SkinConfig/{skinname}_config.xml"
-	if root := fileReadXML(skin_conf):
+	if fileExists(skin_conf) and (root := fileReadXML(skin_conf)):
 		current_skin_config = {root.tag: xml_to_dict(root)}
 
 
