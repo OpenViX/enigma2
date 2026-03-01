@@ -144,6 +144,9 @@ private:
 	void updatePids(bool withDecoder = true);
 	void updateDecoder(int vpid, int vpidtype, int pcrpid);
 
+	// Force audio reset after decoder start (fixes audio dropouts on some boxes)
+	void forceAudioReset();
+
 	// Audio track reset after decoder start (fixes audio dropouts on some boxes)
 	ePtr<eTimer> m_audio_reset_timer;
 	ePtr<eTimer> m_audio_restore_timer;

@@ -268,6 +268,9 @@ protected:
 	void switchToTimeshift();
 
 	void updateDecoder(bool sendSeekableStateChanged=false);
+#ifdef PASSTHROUGH_FIX
+	void forceAudioReset();
+#endif
 
 	int m_skipmode;
 	int m_fastforward;

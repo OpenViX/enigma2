@@ -4,6 +4,7 @@
 #include <lib/dvb/demux.h>
 #include <lib/base/eerror.h>
 #include <lib/base/esimpleconfig.h>
+#include <lib/base/cfile.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
 
@@ -720,6 +721,7 @@ void eDVBSoftDecoder::updateDecoder(int vpid, int vpidtype, int pcrpid)
 
 				// Notify parent about selected audio PID
 				m_audio_pid_selected(apid);
+
 			}
 		}
 
@@ -732,17 +734,10 @@ void eDVBSoftDecoder::updateDecoder(int vpid, int vpidtype, int pcrpid)
 			eDebug("[eDVBSoftDecoder] Decoder PLAY with vpid=%04x vpidtype=%d", vpid, vpidtype);
 			m_decoder_ready();
 
-			// Start audio reset timer to fix audio dropouts on some boxes.
-			// After decoder start, briefly toggle the audio track to force
-			// the decoder to reinitialize audio output.
-			int audioResetDelay = eSimpleConfig::getInt("config.softcsa.audioResetDelay", 0);
-			if (!m_noaudio && audioResetDelay > 0)
+			if (!m_noaudio)
 			{
-				m_audio_reset_timer->stop();
-				m_audio_restore_timer->stop();
-				m_audio_reset_original_track = m_current_audio_index;
-				m_audio_reset_timer->start(audioResetDelay, true);
-				eDebug("[eDVBSoftDecoder] Audio reset scheduled in %dms", audioResetDelay);
+				// Force audio reset after decoder start to fix audio dropouts
+				forceAudioReset();
 			}
 		}
 		else
@@ -756,6 +751,20 @@ void eDVBSoftDecoder::videoEvent(struct iTSMPEGDecoder::videoEvent event)
 {
 	// Forward video events to parent
 	m_video_event(event);
+}
+
+void eDVBSoftDecoder::forceAudioReset()
+{
+	if (!eSimpleConfig::getBool("config.av.passthrough_fix", false))
+		return;
+	// Toggle Bluetooth audio off->on->off to force audio driver reinitialization
+	std::string btaudio = CFile::read("/proc/stb/audio/btaudio");
+	if (!btaudio.empty() && btaudio.find("off") != std::string::npos)
+	{
+		eDebug("[eDVBSoftDecoder] Force audio reset: toggling btaudio on and back off");
+		CFile::writeStr("/proc/stb/audio/btaudio", "on");
+		CFile::writeStr("/proc/stb/audio/btaudio", "off");
+	}
 }
 
 void eDVBSoftDecoder::audioResetToggle()
