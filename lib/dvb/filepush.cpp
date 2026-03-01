@@ -346,10 +346,6 @@ eFilePushThreadRecorder::eFilePushThreadRecorder(unsigned char* buffer, size_t b
 {
 	CONNECT(m_messagepump.recv_msg, eFilePushThreadRecorder::recvEvent);
 
-	/* Read accumulation threshold: 32 KB fixed */
-	/* This reduces syscall overhead on boxes with small DVR read sizes (e.g. SF8008: 564 bytes) */
-	m_buffer_min_write = 32 * 1024;
-
 	/* Ensure min_write doesn't exceed buffer size */
 	if (m_buffer_min_write > m_buffersize)
 		m_buffer_min_write = m_buffersize;

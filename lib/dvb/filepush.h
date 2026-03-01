@@ -75,6 +75,11 @@ public:
 	enum { evtEOF, evtReadError, evtWriteError, evtUser, evtStopped, evtStreamCorrupt };
 	sigc::signal<void(int)> m_event;
 
+	int getProtocol() { return m_protocol;}
+	void setSession(int se, int st) { m_session_id = se; m_stream_id = st;}
+	static const size_t minWriteDefault = 32 * 1024;
+	static const size_t minWriteMPEG = 4 * 1024;
+	void setMinWrite(size_t s) { m_buffer_min_write = s; }
 	void sendEvent(int evt);
 protected:
 	// This method should write the data out and return the number of bytes written.
@@ -90,7 +95,7 @@ protected:
 	unsigned char* m_buffer;
 	unsigned int m_overflow_count;
 	size_t m_buffer_fill;
-	size_t m_buffer_min_write;
+	size_t m_buffer_min_write = minWriteDefault;
 	int m_stop;
 private:
 	eFixedMessagePump<int> m_messagepump;
