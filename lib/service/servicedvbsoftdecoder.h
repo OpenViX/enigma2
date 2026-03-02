@@ -144,14 +144,6 @@ private:
 	void updatePids(bool withDecoder = true);
 	void updateDecoder(int vpid, int vpidtype, int pcrpid);
 
-	// Audio track reset after decoder start (fixes audio dropouts on some boxes)
-	ePtr<eTimer> m_audio_reset_timer;
-	ePtr<eTimer> m_audio_restore_timer;
-	unsigned int m_audio_reset_original_track;
-	unsigned int m_current_audio_index;
-	void audioResetToggle();
-	void audioResetRestore();
-
 	// Video Event Signal
 	sigc::signal<void(struct iTSMPEGDecoder::videoEvent)> m_video_event;
 	ePtr<eConnection> m_video_event_conn;
