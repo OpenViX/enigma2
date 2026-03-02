@@ -1213,7 +1213,6 @@ def InitUsageConfig():
 		default=0,
 		choices=[(0, _("Disabled"))] + [(x, _("%d ms") % x) for x in range(100, 2001, 100)]
 	)
-	config.misc.softcsa.forceAudioReset = ConfigYesNo(default=False)
 	config.misc.softcam_streamrelay_url = ConfigIP(default=[127, 0, 0, 1], auto_jump=True)
 	config.misc.softcam_streamrelay_port = ConfigInteger(default=17999, limits=(0, 65535))
 	config.misc.softcam_streamrelay_delay = ConfigSelectionNumber(min=0, max=2000, stepwidth=50, default=100, wraparound=True)
