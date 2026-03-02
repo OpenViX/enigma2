@@ -723,7 +723,7 @@ void eDVBSoftDecoder::updateDecoder(int vpid, int vpidtype, int pcrpid)
 				// On Broadcom, MPEG audio decoders have tiny internal buffers
 				// and need frequent writes to avoid underruns. Reduce write
 				// threshold so data reaches the decoder with less delay.
-#if !defined(HAVE_HISILICON) && !defined(DREAMNEXTGEN)
+#if !defined(HAVE_HISILICON)
 				if (m_record)
 				{
 					bool mpeg = (atype == eDVBServicePMTHandler::audioStream::atMPEG);
@@ -810,7 +810,7 @@ int eDVBSoftDecoder::setAudioPID(int pid, int type)
 {
 	if (m_noaudio)
 		return 0;
-#if !defined(HAVE_HISILICON) && !defined(DREAMNEXTGEN)
+#if !defined(HAVE_HISILICON)
 	if (m_record)
 	{
 		bool mpeg = (type == eDVBServicePMTHandler::audioStream::atMPEG);

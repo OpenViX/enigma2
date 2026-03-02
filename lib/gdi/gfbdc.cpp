@@ -213,17 +213,17 @@ void gFBDC::exec(const gOpcode *o)
 #if defined(CONFIG_ION)
 		if (surface_back.data_phys)
 		{
-			fb->waitVSync();
-			fb->setOffset(getSurfaceOffset(surface));
+		fb->waitVSync();
+		fb->setOffset(getSurfaceOffset(surface));
 
-			rotateSurfaces();
+		rotateSurfaces();
 
-			bcm_accel_blit(
-			surface_back.data_phys, surface_back.x, surface_back.y, surface_back.stride, 0,
-			surface.data_phys, surface.x, surface.y, surface.stride,
-			0, 0, surface.x, surface.y,
-			0, 0, surface.x, surface.y,
-			0, 0);
+		bcm_accel_blit(
+		surface_back.data_phys, surface_back.x, surface_back.y, surface_back.stride, 0,
+		surface.data_phys, surface.x, surface.y, surface.stride,
+		0, 0, surface.x, surface.y,
+		0, 0, surface.x, surface.y,
+		0, 0);
 		}
 #endif
 #if defined(CONFIG_HISILICON_FB)
