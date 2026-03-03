@@ -112,10 +112,8 @@ public:
 	eRect intersect( const eRect &r ) const;
 	bool intersects( const eRect &r ) const;
 
-#ifndef SWIG
 	friend bool operator==( const eRect &, const eRect & );
 	friend bool operator!=( const eRect &, const eRect & );
-#endif
 
 	static eRect emptyRect() { return eRect(0, 0, 0, 0); }
 	static eRect invalidRect() { return eRect(); }
@@ -129,10 +127,8 @@ private:
 	int y2;
 };
 
-#ifndef SWIG
 bool operator==( const eRect &, const eRect & );
 bool operator!=( const eRect &, const eRect & );
-#endif
 
 
 /*****************************************************************************
