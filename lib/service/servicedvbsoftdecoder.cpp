@@ -770,6 +770,7 @@ void eDVBSoftDecoder::videoEvent(struct iTSMPEGDecoder::videoEvent event)
 	m_video_event(event);
 }
 
+// Toggle Bluetooth audio off->on->off to force audio driver reinitialization
 void eDVBSoftDecoder::forceAudioReset()
 {
 	if (!eSimpleConfig::getBool("config.av.passthrough_fix", false))
@@ -782,7 +783,7 @@ void eDVBSoftDecoder::forceAudioReset()
 		CFile::writeStr("/proc/stb/audio/btaudio", "off");
 	}
 }
-	// Toggle Bluetooth audio off->on->off to force audio driver reinitialization
+
 // ============================================================================
 // Playback Control - Delegate to decoder
 // ============================================================================

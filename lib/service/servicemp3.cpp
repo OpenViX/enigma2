@@ -496,6 +496,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	const char *filename;
 	std::string filename_str;
 	size_t pos = m_ref.path.find('#');
+	size_t pos_q = m_ref.path.find('?');
 	if (pos != std::string::npos && (m_ref.path.compare(0, 4, "http") == 0 || m_ref.path.compare(0, 4, "rtsp") == 0))
 	{
 		filename_str = m_ref.path.substr(0, pos);
@@ -514,11 +515,27 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		}
 	}
 	else
+	{
+		filename_str = m_ref.path;
 		filename = m_ref.path.c_str();
+	}
 
-	const char *ext = strrchr(filename, '.');
+	std::string realFilename_str;
+	const char *realFilename;
+
+	if (pos_q != std::string::npos)
+	{
+		realFilename_str = filename_str.substr(0, pos_q);
+		realFilename = realFilename_str.c_str();
+	}
+	else
+		realFilename = filename_str.c_str();
+
+	const char *ext = strrchr(realFilename, '.');
 	if (!ext)
-		ext = filename + strlen(filename);
+		ext = realFilename + strlen(realFilename);
+
+	eDebug("[ServiceMP3] ext = %s", ext);
 
 	m_sourceinfo.is_video = FALSE;
 	m_sourceinfo.audiotype = atUnknown;
@@ -714,20 +731,6 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 
 		if (suburi != NULL)
 			g_object_set (G_OBJECT (m_gst_playbin), "suburi", suburi, NULL);
-		else
-		{
-			char srt_filename[ext - filename + 5];
-			strncpy(srt_filename,filename, ext - filename);
-			srt_filename[ext - filename] = '\0';
-			strcat(srt_filename, ".srt");
-			if (::access(srt_filename, R_OK) >= 0)
-			{
-				gchar *luri = g_filename_to_uri(srt_filename, NULL, NULL);
-				eDebug("[eServiceMP3] subtitle uri: %s", luri);
-				g_object_set (m_gst_playbin, "suburi", luri, NULL);
-				g_free(luri);
-			}
-		}
 	} else
 	{
 		m_event((iPlayableService*)this, evUser+12);
@@ -794,6 +797,8 @@ eServiceMP3::~eServiceMP3()
 #ifdef PASSTHROUGH_FIX
 void eServiceMP3::forceAudioReset()
 {
+	if (!eConfigManager::getConfigBoolValue("config.av.passthrough_fix", false)
+		return;
 	// Toggle Bluetooth audio off->on->off to force audio driver reinitialization
 	std::string btaudio = CFile::read("/proc/stb/audio/btaudio");
 	if (!btaudio.empty() && btaudio.find("off") != std::string::npos)
@@ -802,8 +807,15 @@ void eServiceMP3::forceAudioReset()
 		CFile::writeStr("/proc/stb/audio/btaudio", "on");
 		CFile::writeStr("/proc/stb/audio/btaudio", "off");
 	}
-	//m_clear_buffers = true;
-	//clearBuffers();
+
+	if (btaudio.empty())
+	{
+		int currAudioIndex = getCurrentTrack();
+		selectAudioStream(currAudioIndex, true);
+	}
+	}
+	m_clear_buffers = true;
+	clearBuffers();
 }
 #endif
 

@@ -149,7 +149,7 @@ private:
 	void updatePids(bool withDecoder = true);
 	void updateDecoder(int vpid, int vpidtype, int pcrpid);
 
-	// Force audio reset after decoder start (fixes audio dropouts on some boxes)
+	// Force audio reset after decoder start (fixes audio dropouts on some problematic boxes)
 	void forceAudioReset();
 	// Video Event Signal
 	sigc::signal<void(struct iTSMPEGDecoder::videoEvent)> m_video_event;
