@@ -797,7 +797,7 @@ eServiceMP3::~eServiceMP3()
 #ifdef PASSTHROUGH_FIX
 void eServiceMP3::forceAudioReset()
 {
-	if (!eConfigManager::getConfigBoolValue("config.av.passthrough_fix", false)
+	if (!eConfigManager::getConfigBoolValue("config.av.passthrough_fix", false))
 		return;
 	// Toggle Bluetooth audio off->on->off to force audio driver reinitialization
 	std::string btaudio = CFile::read("/proc/stb/audio/btaudio");

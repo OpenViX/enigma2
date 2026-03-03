@@ -69,7 +69,8 @@ class VideoSetup(Setup):
 		if config.usage.setup_level.index >= 1:
 			if SystemInfo["CanDownmixAC3"]:
 				self.list.append(getConfigListEntry(_("AC3 downmix"), config.av.downmix_ac3, _("Choose whether multi channel ac3 sound tracks should be downmixed to stereo.")))
-				self.list.append(getConfigListEntry(_("Passthrough audio fix"), config.av.passthrough_fix, _("Enabled/Disable audio passthrough fix for SoftCSA, DVB and Gstreamer.")))
+				if SystemInfo["Vu_EAC3_fix"] and config.av.downmix_ac3.value == "passthrough":
+					self.list.append(getConfigListEntry(_("AC3+ Passthrough audio fix"), config.av.passthrough_fix, _("Enabled/Disable audio passthrough fix.")))
 			if SystemInfo["CanDownmixDTS"]:
 				self.list.append(getConfigListEntry(_("DTS downmix"), config.av.downmix_dts, _("Choose whether multi channel dts sound tracks should be downmixed to stereo.")))
 			if SystemInfo["CanDownmixAACPlus"]:
