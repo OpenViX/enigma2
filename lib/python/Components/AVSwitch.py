@@ -337,8 +337,7 @@ avSwitch = iAVSwitch  # Not used by OpenViX. For compatibility with OpenATV. Use
 
 
 def InitAVSwitch():
-	if SystemInfo["Vu_EAC3_fix"] and config.av.downmix_ac3.value == "passthrough":
-		config.av.passthrough_fix = ConfigBoolean(default=True)
+	config.av.passthrough_fix = ConfigBoolean(default=True)
 	config.av.yuvenabled = ConfigBoolean(default=True)
 	colorformat_choices = {
 		"cvbs": _("CVBS"),

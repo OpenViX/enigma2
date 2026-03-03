@@ -435,6 +435,9 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_dvb_subtitle_sync_timer = eTimer::create(eApp);
 	m_dvb_subtitle_parser = new eDVBSubtitleParser();
 	m_dvb_subtitle_parser->connectNewPage(sigc::mem_fun(*this, &eServiceMP3::newDVBSubtitlePage), m_new_dvb_subtitle_page_connection);
+#ifdef PASSTHROUGH_FIX
+	m_passthrough_fix_timer = eTimer::create(eApp);
+#endif
 	m_stream_tags = 0;
 	m_currentAudioStream = -1;
 	m_currentSubtitleStream = -1;
@@ -486,6 +489,9 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	CONNECT(m_dvb_subtitle_sync_timer->timeout, eServiceMP3::pushDVBSubtitles);
 	CONNECT(m_pump.recv_msg, eServiceMP3::gstPoll);
 	CONNECT(m_nownext_timer->timeout, eServiceMP3::updateEpgCacheNowNext);
+#ifdef PASSTHROUGH_FIX
+	CONNECT(m_passthrough_fix_timer->timeout, eServiceMP3::forceAudioReset);
+#endif
 
 	m_aspect = m_width = m_height = m_framerate = m_progressive = m_gamma = -1;
 
@@ -1740,7 +1746,11 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 					std::string pass = CFile::read("/proc/stb/audio/ac3");
 					if (replace_all(replace_all(pass, "\r", ""), "\n", "") == "passthrough")
 					{
-						forceAudioReset();
+						if (m_clear_buffers)
+						{
+							m_passthrough_fix_timer->stop();
+							m_passthrough_fix_timer->start(apidtype == atEAC3 && i > 0 && current_audio_orig > -1 ? 2000 : 100, true);
+						}
 					}
 					else
 					{
