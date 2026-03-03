@@ -2843,7 +2843,7 @@ void eServiceMP3::pushDVBSubtitles()
 		}
 		else
 		{
-			eDebug("[eServiceMP3] Delay early subtitle by %.03fs. Page stack size %zu", diff / 1000.0f, m_dvb_subtitle_pages.size());
+			eDebug("[eServiceMP3] Delay early subtitle by %.03fs. Page stack size %d", diff / 1000.0f, m_dvb_subtitle_pages.size());
 			m_dvb_subtitle_sync_timer->start(diff, 1);
 			break;
 		}
