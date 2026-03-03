@@ -3517,7 +3517,7 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 #ifdef PASSTHROUGH_FIX
 void eDVBServicePlay::forceAudioReset()
 {
-	if (!eConfigManager::getConfigBoolValue("config.av.passthrough_fix", false)
+	if (!eConfigManager::getConfigBoolValue("config.av.passthrough_fix", false))
 		return;
 	// Toggle Bluetooth audio off->on->off to force audio driver reinitialization
 	std::string btaudio = CFile::read("/proc/stb/audio/btaudio");
