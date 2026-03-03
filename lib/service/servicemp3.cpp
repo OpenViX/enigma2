@@ -435,9 +435,6 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_dvb_subtitle_sync_timer = eTimer::create(eApp);
 	m_dvb_subtitle_parser = new eDVBSubtitleParser();
 	m_dvb_subtitle_parser->connectNewPage(sigc::mem_fun(*this, &eServiceMP3::newDVBSubtitlePage), m_new_dvb_subtitle_page_connection);
-#ifdef PASSTHROUGH_FIX
-	m_passthrough_fix_timer = eTimer::create(eApp);
-#endif
 	m_stream_tags = 0;
 	m_currentAudioStream = -1;
 	m_currentSubtitleStream = -1;
@@ -489,9 +486,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	CONNECT(m_dvb_subtitle_sync_timer->timeout, eServiceMP3::pushDVBSubtitles);
 	CONNECT(m_pump.recv_msg, eServiceMP3::gstPoll);
 	CONNECT(m_nownext_timer->timeout, eServiceMP3::updateEpgCacheNowNext);
-#ifdef PASSTHROUGH_FIX
-	CONNECT(m_passthrough_fix_timer->timeout, eServiceMP3::forcePassthrough);
-#endif
+
 	m_aspect = m_width = m_height = m_framerate = m_progressive = m_gamma = -1;
 
 	m_state = stIdle;
@@ -501,6 +496,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	const char *filename;
 	std::string filename_str;
 	size_t pos = m_ref.path.find('#');
+	size_t pos_q = m_ref.path.find('?');
 	if (pos != std::string::npos && (m_ref.path.compare(0, 4, "http") == 0 || m_ref.path.compare(0, 4, "rtsp") == 0))
 	{
 		filename_str = m_ref.path.substr(0, pos);
@@ -519,11 +515,27 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		}
 	}
 	else
+	{
+		filename_str = m_ref.path;
 		filename = m_ref.path.c_str();
+	}
 
-	const char *ext = strrchr(filename, '.');
+	std::string realFilename_str;
+	const char *realFilename;
+
+	if (pos_q != std::string::npos)
+	{
+		realFilename_str = filename_str.substr(0, pos_q);
+		realFilename = realFilename_str.c_str();
+	}
+	else
+		realFilename = filename_str.c_str();
+
+	const char *ext = strrchr(realFilename, '.');
 	if (!ext)
-		ext = filename + strlen(filename);
+		ext = realFilename + strlen(realFilename);
+
+	eDebug("[ServiceMP3] ext = %s", ext);
 
 	m_sourceinfo.is_video = FALSE;
 	m_sourceinfo.audiotype = atUnknown;
@@ -719,20 +731,6 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 
 		if (suburi != NULL)
 			g_object_set (G_OBJECT (m_gst_playbin), "suburi", suburi, NULL);
-		else
-		{
-			char srt_filename[ext - filename + 5];
-			strncpy(srt_filename,filename, ext - filename);
-			srt_filename[ext - filename] = '\0';
-			strcat(srt_filename, ".srt");
-			if (::access(srt_filename, R_OK) >= 0)
-			{
-				gchar *luri = g_filename_to_uri(srt_filename, NULL, NULL);
-				eDebug("[eServiceMP3] subtitle uri: %s", luri);
-				g_object_set (m_gst_playbin, "suburi", luri, NULL);
-				g_free(luri);
-			}
-		}
 	} else
 	{
 		m_event((iPlayableService*)this, evUser+12);
@@ -797,10 +795,25 @@ eServiceMP3::~eServiceMP3()
 }
 
 #ifdef PASSTHROUGH_FIX
-void eServiceMP3::forcePassthrough()
+void eServiceMP3::forceAudioReset()
 {
-	eDebug("[eServiceMP3] Setting 'passthrough' to force correct operation");
-	CFile::writeStr("/proc/stb/audio/ac3", "passthrough");
+	if (!eConfigManager::getConfigBoolValue("config.av.passthrough_fix", false)
+		return;
+	// Toggle Bluetooth audio off->on->off to force audio driver reinitialization
+	std::string btaudio = CFile::read("/proc/stb/audio/btaudio");
+	if (!btaudio.empty() && btaudio.find("off") != std::string::npos)
+	{
+		eDebug("[eDVBSoftDecoder] Force audio reset: toggling btaudio on and back off");
+		CFile::writeStr("/proc/stb/audio/btaudio", "on");
+		CFile::writeStr("/proc/stb/audio/btaudio", "off");
+	}
+
+	if (btaudio.empty())
+	{
+		int currAudioIndex = getCurrentTrack();
+		selectAudioStream(currAudioIndex, true);
+	}
+	}
 	m_clear_buffers = true;
 	clearBuffers();
 }
@@ -1727,14 +1740,7 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 					std::string pass = CFile::read("/proc/stb/audio/ac3");
 					if (replace_all(replace_all(pass, "\r", ""), "\n", "") == "passthrough")
 					{
-						int longAudioDelay = eConfigManager::getConfigIntValue("config.av.passthrough_fix_long", 1200);
-						int shortAudioDelay = eConfigManager::getConfigIntValue("config.av.passthrough_fix_short", 100);
-						if (m_clear_buffers)
-						{
-							m_passthrough_fix_timer->stop();
-							m_passthrough_fix_timer->start(apidtype == atEAC3 && i > 0 && current_audio_orig > -1 ? longAudioDelay : shortAudioDelay, true);
-						}
-						
+						forceAudioReset();
 					}
 					else
 					{
