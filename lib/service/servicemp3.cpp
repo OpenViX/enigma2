@@ -813,7 +813,7 @@ void eServiceMP3::forceAudioReset()
 		int currAudioIndex = getCurrentTrack();
 		selectAudioStream(currAudioIndex, true);
 	}
-	}
+
 	m_clear_buffers = true;
 	clearBuffers();
 }
