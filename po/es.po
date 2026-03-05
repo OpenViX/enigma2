@@ -1543,6 +1543,9 @@ msgstr "?%s?"
 msgid "A"
 msgstr "A"
 
+msgid "AC3+ Passthrough audio fix"
+msgstr "Solución alternativa para el audio de paso AC3+"
+
 msgid ""
 "A background update check is in progress,\n"
 "please wait a few minutes and try again."
