@@ -11408,13 +11408,13 @@ msgid "Partition: %s  Mount: %s unmounted successfully; if all partitions now un
 msgstr "Partición: %s Montaje: %s desmontado exitosamente; si ahora todas las particiones están desmontadas, puede quitar el dispositivo."
 
 msgid "Passthrough"
-msgstr "Passthrough"
+msgstr "Paso directo"
 
 msgid "Passthrough audio handling delay AC3"
-msgstr ""
+msgstr "Retardo en el manejo del audio de paso AC3"
 
 msgid "Passthrough audio handling delay AC3+"
-msgstr ""
+msgstr "Retardo en el manejo del audio de paso AC3+"
 
 #
 msgid "Password"
