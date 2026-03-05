@@ -2,7 +2,7 @@ from os import path
 
 from enigma import eAVSwitch, eDVBVolumecontrol, getDesktop
 
-from Components.config import ConfigBoolean, ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
+from Components.config import ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
 from Components.SystemInfo import SystemInfo
 from Tools.CList import CList
 from Tools.Directories import isPluginInstalled
@@ -337,8 +337,8 @@ avSwitch = iAVSwitch  # Not used by OpenViX. For compatibility with OpenATV. Use
 
 
 def InitAVSwitch():
-	config.av.passthrough_fix = ConfigBoolean(default=True)
-	config.av.yuvenabled = ConfigBoolean(default=True)
+	config.av.passthrough_fix = ConfigYesNo(default=True)
+	config.av.yuvenabled = ConfigYesNo(default=True)
 	colorformat_choices = {
 		"cvbs": _("CVBS"),
 		"rgb": _("RGB"),
