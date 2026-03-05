@@ -2,6 +2,7 @@
 #define __servicemp3_h
 
 #include <lib/base/message.h>
+#include <lib/dvb/metaparser.h>
 #include <lib/service/iservice.h>
 #include <lib/dvb/pmt.h>
 #include <lib/dvb/subtitle.h>
@@ -35,6 +36,7 @@ class eStaticServiceMP3Info: public iStaticServiceInformation
 	DECLARE_REF(eStaticServiceMP3Info);
 	friend class eServiceFactoryMP3;
 	eStaticServiceMP3Info();
+	eDVBMetaParser m_parser;
 public:
 	RESULT getName(const eServiceReference &ref, std::string &name);
 	int getLength(const eServiceReference &ref);
@@ -221,17 +223,9 @@ public:
 		{
 		}
 
-		bool operator == (const audioStream& rhs)
-		{
-			audioStream lhs = *this;
-			return (lhs.type == rhs.type) && (lhs.language_code == rhs.language_code) && (lhs.codec == rhs.codec);
-		}
+		bool operator==(const audioStream& rhs) const { return type == rhs.type && language_code == rhs.language_code && codec == rhs.codec; }
 
-		bool operator != (const audioStream& rhs)
-		{
-			audioStream lhs = *this;
-			return !(lhs == rhs);
-		}
+		bool operator!=(const audioStream& rhs) const { return !(*this == rhs); }
 	};
 	struct subtitleStream
 	{
@@ -239,30 +233,21 @@ public:
 		subtype_t type;
 		std::string language_code; /* iso-639, if available. */
 		subtitleStream()
-			:pad(0)
-		{
-		}
-		bool operator == (const subtitleStream& rhs)
-		{
-			subtitleStream lhs = *this;
-			return (lhs.type == rhs.type) && (lhs.language_code == rhs.language_code);
-		}
+			:pad(0) { }
+		bool operator==(const subtitleStream& rhs) const { return type == rhs.type && language_code == rhs.language_code; }
 
-		bool operator != (const subtitleStream& rhs)
-		{
-			subtitleStream lhs = *this;
-			return !(lhs == rhs);
-		}
+		bool operator!=(const subtitleStream& rhs) const { return !(*this == rhs); }
 	};
 	struct sourceStream
 	{
 		audiotype_t audiotype;
 		containertype_t containertype;
 		bool is_video;
+		bool is_audio;
 		bool is_streaming;
 		bool is_hls;
 		sourceStream()
-			:audiotype(atUnknown), containertype(ctNone), is_video(FALSE), is_streaming(FALSE), is_hls(FALSE)
+			:audiotype(atUnknown), containertype(ctNone), is_video(FALSE), is_audio(FALSE), is_streaming(FALSE), is_hls(FALSE)
 		{
 		}
 	};
