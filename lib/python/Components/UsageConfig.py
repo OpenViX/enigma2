@@ -1208,7 +1208,7 @@ def InitUsageConfig():
 			(1, _("Synchronous"))
 	])
 	config.misc.softcsa.waitForDataTimeout = ConfigSelection(
-		default=800,
+		default=0,
 		choices=[(0, _("Disabled"))] + [(x, _("%d ms") % x) for x in range(100, 2001, 100)]
 	)
 	config.misc.softcsa.bufferTime = ConfigSelection(
