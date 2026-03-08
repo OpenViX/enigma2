@@ -269,8 +269,8 @@
 <!-- Plugin browser -->
 	<screen name="PluginBrowserSummary" position="fill" resolution="480,320">
 		<panel name="Parent_Title" />
-		<widget source="entry" render="Label" position="10,65" size="460,85" font="FdLcD;40" halign="center" valign="top" />
-		<widget source="desc" render="Label" position="10,155" size="460,165" font="FdLcD;35" halign="center" valign="top" />
+		<widget source="entry" render="Label" position="10,70" size="460,95" font="FdLcD;40" halign="center" valign="center" />
+		<widget source="desc" render="Label" position="10,170" size="460,145" font="FdLcD;35" halign="center" valign="center" />
 	</screen>
 
 <!-- JobView Summary -->
