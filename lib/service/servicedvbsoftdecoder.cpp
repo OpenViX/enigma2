@@ -4,7 +4,6 @@
 #include <lib/dvb/demux.h>
 #include <lib/base/eerror.h>
 #include <lib/base/esimpleconfig.h>
-#include <lib/base/cfile.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
 
@@ -358,7 +357,7 @@ int eDVBSoftDecoder::setupRecorder()
 	// Start record thread
 	m_record->start();
 
-	int wait_timeout = eSimpleConfig::getInt("config.softcsa.waitForDataTimeout", 800);
+	int wait_timeout = eSimpleConfig::getInt("config.misc.softcsa.waitForDataTimeout", 800);
 
 	// Disabled (0): start decoder immediately, no CW waiting
 	if (wait_timeout == 0)
