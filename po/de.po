@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-25 13:29+0000\n"
+"POT-Creation-Date: 2026-03-11 18:05+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: 2stein\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, 2stein\n"
@@ -805,12 +805,6 @@ msgstr "%d markiertes Objekt"
 #, python-format
 msgid "%d marked items"
 msgstr "%d markierte Elemente"
-
-#, python-format
-msgid "%d millisecond"
-msgid_plural "%d milliseconds"
-msgstr[0] "%d MilliSekunde"
-msgstr[1] "%d MilliSekunden"
 
 #, python-format
 msgid "%d min"
@@ -1622,6 +1616,9 @@ msgstr "AC3-Downmix"
 
 msgid "AC3 transcoding"
 msgstr "AC3-Transkodierung"
+
+msgid "AC3+ Passthrough audio fix"
+msgstr "AC3+ Passthrough Audio-Fix"
 
 msgid "ACQUIRING TSID/ONID"
 msgstr "Sammeln von TSID/ONID"
@@ -5910,6 +5907,9 @@ msgstr "Aktiviert"
 
 msgid "Enabled *"
 msgstr "Eingeschaltet"
+
+msgid "Enabled/Disable audio passthrough fix."
+msgstr "Aktiviere/Deaktiviere Audio-Passthrough-Fix"
 
 msgid "Encrypted TV"
 msgstr "Verschlüsselt TV"
@@ -10491,12 +10491,6 @@ msgstr "Partition: '%s', Mountpoint: '%s' erfolgreich freigegeben. Wenn alle Par
 msgid "Passthrough"
 msgstr "Durchschleifen"
 
-msgid "Passthrough audio handling delay AC3"
-msgstr "Passthrough Audio Verzögerung AC3"
-
-msgid "Passthrough audio handling delay AC3+"
-msgstr "Passthrough Audio Verzögerung AC3+"
-
 msgid "Password"
 msgstr "Passwort"
 
@@ -13173,7 +13167,7 @@ msgid "Select the current menu item"
 msgstr "Wähle aktuellen Eintrag"
 
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
-msgstr "Gewünschte Funktion auswählen und drücke 'OK', um sie zu belegen. Verwende 'CH+/-', um zwischen den Listen umzuschalten. Wähle zugeordnete Funktion aus und drücke 'OK', um die Belegung zu entfernen."
+msgstr "Gewünschte Funktion auswählen und 'OK' drücken, um sie zu belegen. Verwende 'CH+/-', um zwischen den Listen umzuschalten. Wähle zugeordnete Funktion aus und drücke 'OK', um die Belegung zu entfernen."
 
 msgid "Select the highlighted image and delete"
 msgstr "Verwende das gewählte Image und lösche"
@@ -16279,7 +16273,7 @@ msgid "Type: "
 msgstr "Typ: "
 
 msgid "Types of backups to remove when stale."
-msgstr "Backuptypen, die gelöscht werden sollen, wenn übefällig."
+msgstr "Backuptypen, die gelöscht werden sollen, wenn überfällig."
 
 msgid "U - Suitable for all"
 msgstr "U - Für alle passend"
@@ -16703,12 +16697,6 @@ msgstr "Verwende Mülleimer in Filmliste"
 
 msgid "Used service scan type"
 msgstr "Art der Sendersuche"
-
-msgid "Used to specify delay when switching between services and AC3 passthrough is enabled."
-msgstr "Spezifiziere Verzögerung beim Umschalten, wenn AC3 Passthrough verwendet wird."
-
-msgid "Used to specify delay when switching between services and AC3+/Atmos passthrough is enabled."
-msgstr "Spezifiziere Verzögerung beim Umschalten, wenn AC3+/Atmos Passthrough verwendet wird."
 
 msgid "Used:"
 msgstr "Verwendet:"
@@ -17377,7 +17365,7 @@ msgid "When enabled, recordings are grouped by name into collections automatical
 msgstr "Sollen Aufnahmen automatisch zu Sammlungen zusammengefasst werden?"
 
 msgid "When enabled, reformat subtitles to match the width of the screen."
-msgstr "Sollen Untertitel umformatiert, um an die Bildschirmbreite angepasst zu werden?"
+msgstr "Sollen Untertitel umformatiert werden, um an die Bildschirmbreite angepasst zu werden?"
 
 msgid "When enabled, show channel numbers in the channel selection screen."
 msgstr "Sollen Sendernummern in der Senderliste angezeigt werden?"
