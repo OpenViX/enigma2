@@ -1,6 +1,6 @@
 import os
 from enigma import eTimer, iPlayableService, iServiceInformation, eServiceReference, iServiceKeys, getDesktop
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
 from Screens.HelpMenu import HelpableScreen
@@ -16,9 +16,9 @@ from Components.Harddisk import harddiskmanager
 lastpath = ""
 
 
-class DVDSummary(Screen):
+class DVDSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent)
+		ScreenSummary.__init__(self, session, parent)
 		self["Title"] = Label("")
 		self["Time"] = Label("")
 		self["Chapter"] = Label("")

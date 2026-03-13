@@ -11,7 +11,8 @@ from Tools.camcontrol import CamControl
 from Tools.Directories import resolveFilename, SCOPE_HDD, SCOPE_TIMESHIFT, defaultRecordingLocation
 from Components.NimManager import nimmanager
 from Components.ServiceList import refreshServiceList
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo, MODEL
+
 
 # A raw writer for config changes to be read by the logger without
 # getting a time-stamp prepended.
@@ -1196,6 +1197,24 @@ def InitUsageConfig():
 	config.misc.softcamrestarts = ConfigSelection(default="", choices=[
 		("", _("Don't restart")),
 		("s", _("Restart softcam"))])
+	defaultValue = 1 if MODEL in ("gb7252", ) else 0
+	config.misc.softcsa = ConfigSubsection()
+	config.misc.softcsa.decoderRelease = ConfigSelection(default=0, choices=[
+			(0, _("Quick")),
+			(1, _("Normal"))
+	])
+	config.misc.softcsa.syncMode = ConfigSelection(default=defaultValue, choices=[
+			(0, _("Automatic")),
+			(1, _("Synchronous"))
+	])
+	config.misc.softcsa.waitForDataTimeout = ConfigSelection(
+		default=0,
+		choices=[(0, _("Disabled"))] + [(x, _("%d ms") % x) for x in range(100, 2001, 100)]
+	)
+	config.misc.softcsa.bufferTime = ConfigSelection(
+		default=0,
+		choices=[(0, _("Disabled"))] + [(x, _("%d ms") % x) for x in range(100, 2001, 100)]
+	)
 	config.misc.softcam_streamrelay_url = ConfigIP(default=[127, 0, 0, 1], auto_jump=True)
 	config.misc.softcam_streamrelay_port = ConfigInteger(default=17999, limits=(0, 65535))
 	config.misc.softcam_streamrelay_delay = ConfigSelectionNumber(min=0, max=2000, stepwidth=50, default=100, wraparound=True)

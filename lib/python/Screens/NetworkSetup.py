@@ -26,7 +26,7 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.NetworkWizard import NetworkWizard
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
 from Screens.TextBox import TextBox
@@ -3074,9 +3074,9 @@ class NetworkMiniDLNALog(LogBase):
 		LogBase.__init__(self, session, "/var/volatile/log/minidlna.log")
 
 
-class NetworkServicesSummary(Screen):
+class NetworkServicesSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
+		ScreenSummary.__init__(self, session, parent=parent)
 		self["title"] = StaticText("")
 		self["status_summary"] = StaticText("")
 		self["autostartstatus_summary"] = StaticText("")

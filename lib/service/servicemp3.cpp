@@ -21,6 +21,12 @@
 #include <lib/base/cfile.h>
 
 #include <string>
+#include <cstdint>
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <vector>
 #include <lib/base/estring.h>
 
 #include <gst/gst.h>
@@ -260,6 +266,10 @@ RESULT eStaticServiceMP3Info::getName(const eServiceReference &ref, std::string 
 		name = ref.name;
 	else
 	{
+		if (endsWith(ref.path, ".stream") && !m_parser.parseMeta(ref.path)) {
+			name = m_parser.m_name;
+			return 0;
+		}
 		size_t last = ref.path.rfind('/');
 		if (last != std::string::npos)
 			name = ref.path.substr(last+1);
@@ -270,8 +280,59 @@ RESULT eStaticServiceMP3Info::getName(const eServiceReference &ref, std::string 
 	return 0;
 }
 
-int eStaticServiceMP3Info::getLength(const eServiceReference &ref)
-{
+
+/**
+ * @brief eStaticServiceMP3Info::getLength
+ *
+ * Retrieve the playback length (in whole seconds) for the given service reference.
+ *
+ * Operation:
+ *  - Attempts to parse metadata via m_parser.parseMeta(ref.path). If parsing
+ *    succeeds (parseMeta returns 0), uses m_parser.m_length (interpreted in
+ *    MPEG timebase units) and returns m_parser.m_length / MPEG_TIMEBASE.
+ *  - If parsing fails, falls back to reading a sidecar ".cuts" file at
+ *    ref.path + ".cuts". The file is read as a sequence of records:
+ *      [uint64_t where (big-endian)] [uint32_t what (network byte order)]
+ *    For each record, if ntohl(what) == CUT_TYPE_LENGTH, returns
+ *    be64toh(where) / MPEG_TIMEBASE.
+ *
+ * Parameters:
+ *  - ref: reference to the service whose length is requested (path used for
+ *         metadata parsing and .cuts filename).
+ *
+ * Return value:
+ *  - non-negative int: length in seconds (fractional part discarded).
+ *  - -1: if metadata cannot be obtained, the .cuts file cannot be opened, or
+ *         no CUT_TYPE_LENGTH entry is found.
+ *
+ * Notes:
+ *  - MPEG_TIMEBASE is 90000.
+ *  - The function performs file I/O and endian conversions (ntohl, be64toh).
+ */
+int eStaticServiceMP3Info::getLength(const eServiceReference& ref) {
+	constexpr int MPEG_TIMEBASE = 90000;
+
+	eDebug("[eStaticServiceMP3Info] getLength called for ref: %s", ref.path.c_str());
+	if (m_parser.parseMeta(ref.path) == 0)
+		return static_cast<int>(m_parser.m_length / MPEG_TIMEBASE);
+
+	/* Fallback: read CUT_TYPE_LENGTH from .cuts file */
+	std::string filename = ref.path + ".cuts";
+	std::ifstream file(filename, std::ios::binary);
+
+	if (!file)
+		return -1;
+
+	uint64_t where;
+	uint32_t what;
+
+	while (file.read(reinterpret_cast<char*>(&where), sizeof(where)) && file.read(reinterpret_cast<char*>(&what), sizeof(what))) {
+		if (ntohl(what) == 5) // CUT_TYPE_LENGTH
+		{
+			return static_cast<int>(be64toh(where) / MPEG_TIMEBASE);
+		}
+	}
+
 	return -1;
 }
 
@@ -490,8 +551,9 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	CONNECT(m_pump.recv_msg, eServiceMP3::gstPoll);
 	CONNECT(m_nownext_timer->timeout, eServiceMP3::updateEpgCacheNowNext);
 #ifdef PASSTHROUGH_FIX
-	CONNECT(m_passthrough_fix_timer->timeout, eServiceMP3::forcePassthrough);
+	CONNECT(m_passthrough_fix_timer->timeout, eServiceMP3::forceAudioReset);
 #endif
+
 	m_aspect = m_width = m_height = m_framerate = m_progressive = m_gamma = -1;
 
 	m_state = stIdle;
@@ -501,6 +563,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	const char *filename;
 	std::string filename_str;
 	size_t pos = m_ref.path.find('#');
+	size_t pos_q = m_ref.path.find('?');
 	if (pos != std::string::npos && (m_ref.path.compare(0, 4, "http") == 0 || m_ref.path.compare(0, 4, "rtsp") == 0))
 	{
 		filename_str = m_ref.path.substr(0, pos);
@@ -519,11 +582,27 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		}
 	}
 	else
+	{
+		filename_str = m_ref.path;
 		filename = m_ref.path.c_str();
+	}
 
-	const char *ext = strrchr(filename, '.');
+	std::string realFilename_str;
+	const char *realFilename;
+
+	if (pos_q != std::string::npos)
+	{
+		realFilename_str = filename_str.substr(0, pos_q);
+		realFilename = realFilename_str.c_str();
+	}
+	else
+		realFilename = filename_str.c_str();
+
+	const char *ext = strrchr(realFilename, '.');
 	if (!ext)
-		ext = filename + strlen(filename);
+		ext = realFilename + strlen(realFilename);
+
+	eDebug("[ServiceMP3] ext = %s", ext);
 
 	m_sourceinfo.is_video = FALSE;
 	m_sourceinfo.audiotype = atUnknown;
@@ -580,17 +659,35 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	else if (strcasecmp(ext, ".m3u8") == 0)
 		m_sourceinfo.is_hls = TRUE;
 	else if (strcasecmp(ext, ".mp3") == 0)
+	{	
 		m_sourceinfo.audiotype = atMP3;
+		m_sourceinfo.is_audio = TRUE;
+	}
 	else if (strcasecmp(ext, ".wma") == 0)
+	{
 		m_sourceinfo.audiotype = atWMA;
+		m_sourceinfo.is_audio = TRUE;
+	}
 	else if (strcasecmp(ext, ".wav") == 0 || strcasecmp(ext, ".wave") == 0 || strcasecmp(ext, ".wv") == 0)
+	{
 		m_sourceinfo.audiotype = atPCM;
+		m_sourceinfo.is_audio = TRUE;
+	}
 	else if (strcasecmp(ext, ".dts") == 0)
+	{
 		m_sourceinfo.audiotype = atDTS;
+		m_sourceinfo.is_audio = TRUE;
+	}
 	else if (strcasecmp(ext, ".flac") == 0)
+	{
 		m_sourceinfo.audiotype = atFLAC;
+		m_sourceinfo.is_audio = TRUE;
+	}
 	else if (strcasecmp(ext, ".ac3") == 0)
+	{
 		m_sourceinfo.audiotype = atAC3;
+		m_sourceinfo.is_audio = TRUE;
+	}
 	else if (strcasecmp(ext, ".cda") == 0)
 		m_sourceinfo.containertype = ctCDA;
 	if (strcasecmp(ext, ".dat") == 0)
@@ -719,20 +816,6 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 
 		if (suburi != NULL)
 			g_object_set (G_OBJECT (m_gst_playbin), "suburi", suburi, NULL);
-		else
-		{
-			char srt_filename[ext - filename + 5];
-			strncpy(srt_filename,filename, ext - filename);
-			srt_filename[ext - filename] = '\0';
-			strcat(srt_filename, ".srt");
-			if (::access(srt_filename, R_OK) >= 0)
-			{
-				gchar *luri = g_filename_to_uri(srt_filename, NULL, NULL);
-				eDebug("[eServiceMP3] subtitle uri: %s", luri);
-				g_object_set (m_gst_playbin, "suburi", luri, NULL);
-				g_free(luri);
-			}
-		}
 	} else
 	{
 		m_event((iPlayableService*)this, evUser+12);
@@ -797,10 +880,25 @@ eServiceMP3::~eServiceMP3()
 }
 
 #ifdef PASSTHROUGH_FIX
-void eServiceMP3::forcePassthrough()
+void eServiceMP3::forceAudioReset()
 {
-	eDebug("[eServiceMP3] Setting 'passthrough' to force correct operation");
-	CFile::writeStr("/proc/stb/audio/ac3", "passthrough");
+	if (!eConfigManager::getConfigBoolValue("config.av.passthrough_fix", false))
+		return;
+	// Toggle Bluetooth audio off->on->off to force audio driver reinitialization
+	std::string btaudio = CFile::read("/proc/stb/audio/btaudio");
+	if (!btaudio.empty() && btaudio.find("off") != std::string::npos)
+	{
+		eDebug("[eDVBSoftDecoder] Force audio reset: toggling btaudio on and back off");
+		CFile::writeStr("/proc/stb/audio/btaudio", "on");
+		CFile::writeStr("/proc/stb/audio/btaudio", "off");
+	}
+
+	if (btaudio.empty())
+	{
+		int currAudioIndex = getCurrentTrack();
+		selectAudioStream(currAudioIndex, true);
+	}
+
 	m_clear_buffers = true;
 	clearBuffers();
 }
@@ -1216,13 +1314,35 @@ RESULT eServiceMP3::getPlayPosition(pts_t &pts)
 	if (!m_gst_playbin || m_state != stRunning)
 		return -1;
 
+	bool got_decoder_time = false;
 	if ((audioSink || videoSink) && !m_paused)
 	{
-		g_signal_emit_by_name(videoSink ? videoSink : audioSink, "get-decoder-time", &pos);
-		if (!GST_CLOCK_TIME_IS_VALID(pos)) return -1;
+		if (m_sourceinfo.is_audio && videoSink) {
+			g_signal_emit_by_name(audioSink, "get-decoder-time", &pos);
+			if (GST_CLOCK_TIME_IS_VALID(pos))
+				got_decoder_time = true;
+		} else if (!m_sourceinfo.is_audio) {
+			/* most stb's work better when pts is taken by audio but some video must be taken cause
+			 * audio is 0 or invalid */
+			/* avoid taking the audio play position if audio sink is in state NULL */
+			if (audioSink) {
+				g_signal_emit_by_name(audioSink, "get-decoder-time", &pos);
+				if (!GST_CLOCK_TIME_IS_VALID(pos) && videoSink)
+					g_signal_emit_by_name(videoSink, "get-decoder-time", &pos);
+				if (GST_CLOCK_TIME_IS_VALID(pos))
+					got_decoder_time = true;
+			} else if (videoSink) {
+				g_signal_emit_by_name(videoSink, "get-decoder-time", &pos);
+				if (GST_CLOCK_TIME_IS_VALID(pos))
+				got_decoder_time = true;
+			}
+		}
 	}
-	else
-	{
+	
+	if (!got_decoder_time) {
+		/* Fallback: query playbin position directly. This is needed when dvb sinks
+		* exist but get-decoder-time returns invalid values (e.g. MP4 playback on
+		* some chipsets like HiSilicon), or when no dvb sinks are available at all. */
 		GstFormat fmt = GST_FORMAT_TIME;
 		if (!gst_element_query_position(m_gst_playbin, fmt, &pos))
 		{
@@ -1727,14 +1847,11 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 					std::string pass = CFile::read("/proc/stb/audio/ac3");
 					if (replace_all(replace_all(pass, "\r", ""), "\n", "") == "passthrough")
 					{
-						int longAudioDelay = eConfigManager::getConfigIntValue("config.av.passthrough_fix_long", 1200);
-						int shortAudioDelay = eConfigManager::getConfigIntValue("config.av.passthrough_fix_short", 100);
 						if (m_clear_buffers)
 						{
 							m_passthrough_fix_timer->stop();
-							m_passthrough_fix_timer->start(apidtype == atEAC3 && i > 0 && current_audio_orig > -1 ? longAudioDelay : shortAudioDelay, true);
+							m_passthrough_fix_timer->start(apidtype == atEAC3 && i > 0 && current_audio_orig > -1 ? 2000 : 100, true);
 						}
-						
 					}
 					else
 					{
@@ -2195,6 +2312,8 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 					GstTagList *tags = NULL;
 					GstPad* pad = 0;
 					g_signal_emit_by_name (m_gst_playbin, "get-audio-pad", i, &pad);
+					if(!pad)
+						continue;
 					GstCaps* caps = gst_pad_get_current_caps(pad);
 					gst_object_unref(pad);
 					if (!caps)
@@ -2258,17 +2377,15 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 					subtitleStreams_temp.push_back(subs);
 				}
 
-				bool hasChanges = m_audioStreams.size() != audioStreams_temp.size() || std::equal(m_audioStreams.begin(), m_audioStreams.end(), audioStreams_temp.begin());
+				bool hasChanges = m_audioStreams != audioStreams_temp;
 				if (!hasChanges)
-					hasChanges = m_subtitleStreams.size() != subtitleStreams_temp.size() || std::equal(m_subtitleStreams.begin(), m_subtitleStreams.end(), subtitleStreams_temp.begin());
+					hasChanges = m_subtitleStreams != subtitleStreams_temp;
 
 				if (hasChanges)
 				{
 					eTrace("[eServiceMP3] audio or subtitle stream difference -- re enumerating");
-					m_audioStreams.clear();
-					m_subtitleStreams.clear();
-					std::copy(audioStreams_temp.begin(), audioStreams_temp.end(), back_inserter(m_audioStreams));
-					std::copy(subtitleStreams_temp.begin(), subtitleStreams_temp.end(), back_inserter(m_subtitleStreams));
+					m_audioStreams.assign(audioStreams_temp.begin(), audioStreams_temp.end());
+					m_subtitleStreams.assign(subtitleStreams_temp.begin(), subtitleStreams_temp.end());
 					eTrace("[eServiceMP3] evUpdatedInfo called for audiosubs");
 					m_event((iPlayableService*)this, evUpdatedInfo);
 				}
@@ -2855,6 +2972,9 @@ void eServiceMP3::pushSubtitles()
 	pts_t running_pts = 0;
 	int32_t next_timer = 0, decoder_ms, start_ms, end_ms, diff_start_ms, diff_end_ms;
 	subtitle_pages_map_t::iterator current;
+
+	if (m_currentSubtitleStream < 0 || m_currentSubtitleStream >= (int)m_subtitleStreams.size())
+		return;
 
 	// wait until clock is stable
 

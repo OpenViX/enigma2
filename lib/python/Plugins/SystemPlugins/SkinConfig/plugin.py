@@ -4,10 +4,12 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.Setup import Setup
 from Screens.Standby import TryQuitMainloop
 from Screens.MessageBox import MessageBox
+from Components.Pixmap import Pixmap
 from skin import loadSkin
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import fileReadXML, resolveFilename, SCOPE_GUISKIN
-from Components.config import config, ConfigYesNo, ConfigSelection
+from Tools.Directories import fileExists, fileReadXML, resolveFilename, SCOPE_GUISKIN
+from Tools.LoadPixmap import LoadPixmap
+from Components.config import config, ConfigSelection
 
 import threading
 
@@ -38,30 +40,30 @@ def build_xml_tree(directory: Path):
 
 
 def xml_to_dict(elem):
-    result = {}
+	result = {}
 
-    # Add attributes (e.g. name="Timer List")
-    if elem.attrib:
-        result.update(elem.attrib)
+	# Add attributes (e.g. name="Timer List")
+	if elem.attrib:
+		result.update(elem.attrib)
 
-    # Add text content (CDATA included)
-    text = (elem.text or "").strip()
-    if text:
-        result["value"] = text
+	# Add text content (CDATA included)
+	text = (elem.text or "").strip()
+	if text:
+		result["value"] = text
 
-    # Process child elements
-    for child in elem:
-        child_dict = xml_to_dict(child)
+	# Process child elements
+	for child in elem:
+		child_dict = xml_to_dict(child)
 
-        if child.tag in result:
-            # Convert to list if multiple children with same tag
-            if not isinstance(result[child.tag], list):
-                result[child.tag] = [result[child.tag]]
-            result[child.tag].append(child_dict)
-        else:
-            result[child.tag] = child_dict
+		if child.tag in result:
+			# Convert to list if multiple children with same tag
+			if not isinstance(result[child.tag], list):
+				result[child.tag] = [result[child.tag]]
+			result[child.tag].append(child_dict)
+		else:
+			result[child.tag] = child_dict
 
-    return result
+	return result
 
 
 def applyCustomLayouts():
@@ -72,7 +74,10 @@ def applyCustomLayouts():
 	screens = root.get("screens", {})
 	if screens:
 		for key, value in screens.items():
-			loadSkin(filename=value["value"], scope=SCOPE_GUISKIN)
+			if not isinstance(value, list):
+				value = [value]
+			for val in value:
+				loadSkin(filename=val["value"], scope=SCOPE_GUISKIN)
 
 
 def find_screen_by_name(config, name):
@@ -108,10 +113,23 @@ class SkinSetupConfig(Setup):
 				val_fixed = f"{path.replace(resolveFilename(SCOPE_GUISKIN), "")}"
 				val_choices.append((val_fixed, name.replace(".xml", "")))
 			val = ConfigSelection(default=find_screen_by_name(screens_configuration, key), choices=val_choices)
+			val.addNotifier(self.showThumb)
 			setattr(self, f"screen_{key.lower().replace(" ", "_")}", val)
 
 		Setup.__init__(self, session, None)
+		self["thumb"] = Pixmap()
 		self.title = _("Skin Configuration")
+
+	def showThumb(self, configElement):
+		if "thumb" not in self or not self["thumb"]:
+			return
+		selectedVal = configElement.value
+		thumb = resolveFilename(SCOPE_GUISKIN, selectedVal + ".png")
+		if fileExists(thumb):
+			pixmap = LoadPixmap(thumb)
+			self["thumb"].setPixmap(pixmap)
+		else:
+			self["thumb"].setPixmap(None)
 
 	def writeSkinConfig(self):
 		xml = []
@@ -171,8 +189,8 @@ class SkinSetupConfig(Setup):
 		self.showRestartMessage(_("To save and apply the selected skin configuration the GUI needs to restart. Would you like to save the selection and restart the GUI now?"))
 
 	def showRestartMessage(self, msg):
-			restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, msg, MessageBox.TYPE_YESNO)
-			restartBox.setTitle(_("Skin Configurator: Restart GUI"))
+		restartBox = self.session.openWithCallback(self.restartGUI, MessageBox, msg, MessageBox.TYPE_YESNO)
+		restartBox.setTitle(_("Skin Configurator: Restart GUI"))
 
 	def restartGUI(self, answer):
 		if answer is True:
@@ -211,7 +229,7 @@ def loadConfigToDict():
 	global current_skin_config
 	skinname = ospath.dirname(config.skin.primary_skin.value)
 	skin_conf = f"/etc/enigma2/SkinConfig/{skinname}_config.xml"
-	if root := fileReadXML(skin_conf):
+	if fileExists(skin_conf) and (root := fileReadXML(skin_conf)):
 		current_skin_config = {root.tag: xml_to_dict(root)}
 
 

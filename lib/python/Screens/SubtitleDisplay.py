@@ -1,6 +1,6 @@
 from sys import maxsize
 
-from enigma import eTimer, getDesktop, eActionMap, gFont, gRGB
+from enigma import eTimer, getDesktop, eActionMap, gRGB
 from Components.Label import Label
 from Components.config import config
 from Screens.Screen import Screen

@@ -5,7 +5,7 @@ from os.path import basename, dirname, isfile
 
 from Components.config import ConfigSubsection, ConfigText, config
 from Components.Sources.Source import ObsoleteSource
-from Components.SystemInfo import SystemInfo, BoxInfo  # import for usage in include conditional
+from Components.SystemInfo import SystemInfo, BoxInfo  # noqa: F401  # BoxInfo is imported for use in the include conditional
 from Tools.Directories import SCOPE_CONFIG, SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT_SKIN, SCOPE_FONTS, SCOPE_SKIN, SCOPE_SKIN_IMAGE, resolveFilename, fileReadXML, clearResolveLists  # noqa: F401
 from Tools.Import import my_import
 from Tools.LoadPixmap import LoadPixmap

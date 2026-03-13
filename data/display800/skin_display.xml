@@ -1,50 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- This skin is at github.com/OpenViX/enigma2/tree/master/data/display800 -->
 <skin>
-	<windowstyle id="1" type="skinned">
-		<color color="#000000" name="Background"/>
-		<color color="#ffffff" name="LabelForeground"/>
-		<color color="#000000" name="ListboxBackground"/>
-		<color color="#ffffff" name="ListboxForeground"/>
-		<color color="#000000" name="ListboxSelectedBackground"/>
-		<color color="#ffffff" name="ListboxSelectedForeground"/>
-		<color color="#000000" name="ListboxMarkedBackground"/>
-		<color color="#ffffff" name="ListboxMarkedForeground"/>
-		<color color="#000000" name="ListboxMarkedAndSelectedBackground"/>
-		<color color="#ffffff" name="ListboxMarkedAndSelectedForeground"/>
-		<color color="#ffffff" name="WindowTitleForeground"/>
-		<color color="#000000" name="WindowTitleBackground"/>
-	</windowstyle>
-
-	<fonts>
-		<font filename="nmsbd.ttf" name="FdLcD" scale="100"/>
-		<font filename="verdana.ttf" name="FdLcDLight" scale="100"/>
-	</fonts>
-
-	<colors>
-		<color name="transparent" value="#ffffffff" />
-		<color name="red" value="#00f50808" />
-		<color name="green" value="#0004c81b" />
-		<color name="yellow" value="#00edf506" />
-		<color name="blue" value="#00077cf5" />
-		<color name="white" value="#00ffffff" />
-		<color name="black" value="#00000000" />
-		<color name="grey" value="#00b3b3b3" />
-	</colors>
-
-	<!-- MAIN -->
-	
-	<!-- WIZARD -->
-
-	<screen name="WizardSummary" position="fill">
-		<widget source="text" render="Label" position="top" size="*,180" font="FdLcD;60" halign="center" valign="center"/>
-		<widget source="parent.list" render="Label" position="fill" font="FdLcD;50" halign="center" valign="center">
-			<convert type="StringListSelection" />
-		</widget>
-	</screen>
+	<include filename="skin_display_templates.xml"/>
 
 	<!-- CHANNEL SELECTION -->
-	<screen name="ChannelSelectionSummary" position="0,0" size="800,480"> 
+	<screen name="ChannelSelectionSummary" position="fill" resolution="800,480"> 
 		<panel name="LCDChannelSelectionChannelName" />
 		<panel name="LCDChannelSelectionProgramName" />
 		<panel name="LCDChannelSelectionProgress" />
@@ -52,14 +12,9 @@
 		<panel name="LCDChannelSelectionStartEndTime" />
 		<panel name="LCDRecordIcon" />
 	</screen>
-	<screen name="ChannelSelectionRadioSummary" position="0,0" size="800,480">
-		<widget source="parent.RdsDecoder" render="Label" position="40,200" size="720,150" foregroundColor="white" font="FdLcDLight;65" halign="center" valign="center" zPosition="2">
-			<convert type="RdsInfo">RtpText</convert>
-		</widget>
-	</screen>
 
 	<!-- EPG -->
-	<screen name="GraphicalEPGPIGSummary" position="0,0" size="800,480">
+	<screen name="GraphicalEPGPIGSummary" position="fill" resolution="800,480">
 		<panel name="LCDEPGChannelName" />
 		<panel name="LCDEPGProgramName" />
 		<panel name="LCDEPGProgress" />
@@ -67,21 +22,9 @@
 		<panel name="LCDEPGStartEndTime" />
 		<panel name="LCDRecordIcon" />
 	</screen>
-	<screen name="GraphicalEPGSummary" position="0,0" size="800,480">
-		<panel name="GraphicalEPGPIGSummary" />
-	</screen>
-	<screen name="GraphicalInfoBarEPGSummary" position="0,0" size="800,480">
-		<panel name="GraphicalEPGPIGSummary" />
-	</screen>
-	<screen name="EPGSelectionMultiSummary" position="0,0" size="800,480">
-		<panel name="GraphicalEPGPIGSummary" />
-	</screen>
-	<screen name="EPGSelectionSummary" position="0,0" size="800,480">
-		<panel name="GraphicalEPGPIGSummary" />
-	</screen>
 
 	<!-- INFOBAR -->
-	<screen name="InfoBarSummary" position="0,0" size="800,480"> 
+	<screen name="InfoBarSummary" position="fill" resolution="800,480"> 
 		<panel name="LCDInfoBarChannelName" />
 		<panel name="LCDInfoBarProgramName" />
 		<panel name="LCDInfoBarProgress" />
@@ -89,6 +32,4 @@
 		<panel name="LCDInfoBarStartEndTime" />
 		<panel name="LCDRecordIcon" />
 	</screen>
-
-	<include filename="skin_display_templates.xml"/>
 </skin>

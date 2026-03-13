@@ -1,4 +1,6 @@
 #include <lib/service/servicedvbrecord.h>
+#include <lib/dvb/csasession.h>
+#include <lib/dvb/cahandler.h>
 #include <lib/base/eerror.h>
 #include <lib/dvb/db.h>
 #include <lib/dvb/dvb.h>
@@ -31,6 +33,15 @@ eDVBServiceRecord::eDVBServiceRecord(const eServiceReferenceDVB &ref, bool isstr
 	m_streaming = 0;
 	m_simulate = false;
 	m_last_event_id = -1;
+
+	// Software descrambling initialization
+	m_use_software_descramble = false;
+}
+
+eDVBServiceRecord::~eDVBServiceRecord()
+{
+	// Ensure clean shutdown
+	stop();
 }
 
 void eDVBServiceRecord::serviceEvent(int event)
@@ -175,10 +186,33 @@ RESULT eDVBServiceRecord::stop()
 {
 	if (!m_simulate)
 		eDebug("[eDVBServiceRecord] stop recording!");
+
+	// Stop the recorder thread FIRST to prevent race condition:
+	// The thread accesses m_serviceDescrambler without synchronization,
+	// so we must ensure it's not running before we release the CSA session.
+	if (m_state == stateRecording && m_record)
+	{
+		m_record->stop();
+	}
+
+	// Now safe to remove descrambler and release session
+	if (m_csa_session && m_record)
+	{
+		eDebug("[eDVBServiceRecord] Removing CSA session from recorder");
+		m_record->setDescrambler(nullptr);
+	}
+
+	// Free CSA session if used
+	if (m_csa_session)
+	{
+		eDebug("[eDVBServiceRecord] Releasing CSA session");
+		m_csa_session = nullptr;
+		m_use_software_descramble = false;
+	}
+
+	// Recording already stopped above
 	if (m_state == stateRecording)
 	{
-		if (m_record)
-			m_record->stop();
 		if (m_target_fd >= 0)
 		{
 			::close(m_target_fd);
@@ -274,6 +308,55 @@ int eDVBServiceRecord::doPrepare()
 	return 0;
 }
 
+// Called to setup software descrambling for recording
+int eDVBServiceRecord::setupSoftwareDescrambler(eDVBServicePMTHandler::program& program)
+{
+	eDebug("[eDVBServiceRecord] Setting up CSA session for recording");
+
+	// Create session for recording (no decoder needed)
+	eServiceReferenceDVB ref(m_ref);
+	m_csa_session = new eDVBCSASession(ref);
+	if (!m_csa_session)
+	{
+		eWarning("[eDVBServiceRecord] Failed to create CSA session");
+		return -1;
+	}
+
+	// Initialize session - connects to CAHandler for CW reception
+	if (!m_csa_session->init())
+	{
+		eWarning("[eDVBServiceRecord] Failed to initialize CSA session");
+		m_csa_session = nullptr;
+		return -2;
+	}
+
+	// Start ECM monitor for CSA-ALT detection and ecm_mode extraction
+	// This is needed for timer recordings where no Live-TV is running
+	if (!program.caids.empty())
+	{
+		uint16_t ecm_pid = program.caids.front().capid;
+		uint16_t caid = program.caids.front().caid;
+		ePtr<iDVBDemux> demux;
+		if (m_service_handler.getDataDemux(demux) == 0 && demux)
+		{
+			eDebug("[eDVBServiceRecord] Starting ECM monitor on PID %d, CAID 0x%04X", ecm_pid, caid);
+			m_csa_session->startECMMonitor(demux, ecm_pid, caid);
+		}
+	}
+
+	// Activate session immediately - recording can't wait for ECM analysis
+	// If cache has CSA-ALT info, ecm_mode will be used from cache
+	// Otherwise default ecm_mode is used until first ECM arrives
+	m_csa_session->forceActivate();
+
+	eDebug("[eDVBServiceRecord] CSA session activated for recording");
+
+	// No startup buffering for recording (data goes directly to file)
+
+	m_use_software_descramble = true;
+	return 0;
+}
+
 int eDVBServiceRecord::doRecord()
 {
 	int err = doPrepare();
@@ -309,7 +392,7 @@ int eDVBServiceRecord::doRecord()
 			::close(fd);
 			return errNoDemuxAvailable;
 		}
-		demux->createTSRecorder(m_record, m_packet_size);
+		demux->createTSRecorder(m_record, m_packet_size, false);
 		if (!m_record)
 		{
 			eDebug("[eDVBServiceRecord] no ts recorder available.");
@@ -338,6 +421,23 @@ int eDVBServiceRecord::doRecord()
 			eDebug("[eDVBServiceRecord] getting program info failed.");
 		else
 		{
+			// Check if channel needs software descrambling
+			bool is_encrypted = program.isCrypted();
+			if (is_encrypted && !m_use_software_descramble)
+			{
+				eDebug("[eDVBServiceRecord] Channel is encrypted, setting up software descrambler");
+				setupSoftwareDescrambler(program);
+
+				// Always attach descrambler immediately
+				// - For algo=3 channels: will descramble when keys arrive
+				// - For CI channels: PASSTHROUGH mode, but TSC bits get cleared
+				if (m_csa_session)
+				{
+					eDebug("[eDVBServiceRecord] Attaching CSA session to recorder");
+					m_record->setDescrambler(static_cast<iServiceScrambled*>(m_csa_session.operator->()));
+				}
+			}
+
 			std::set<int> pids_to_record;
 
 			eServiceReferenceDVB ref = m_ref.getParentServiceReference();
@@ -419,12 +519,6 @@ int eDVBServiceRecord::doRecord()
 					if (i != program.audioStreams.begin())
 						eDebugNoNewLine(", ");
 					eDebugNoNewLine("%04x", i->pid);
-
-					if (i->rdsPid != -1)
-					{
-						pids_to_record.insert(i->rdsPid);
-						eDebugNoNewLine(", (RDS %04x)", i->rdsPid);
-					}
 				}
 				eDebugNoNewLine(")");
 			}

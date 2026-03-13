@@ -12,12 +12,12 @@ from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import DISPLAYBRAND, MACHINENAME
 from Screens.MessageBox import MessageBox
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 
 
-class WizardSummary(Screen):
+class WizardSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent)
+		ScreenSummary.__init__(self, session, parent)
 		self["text"] = StaticText("")
 		self.onShow.append(self.setCallback)
 

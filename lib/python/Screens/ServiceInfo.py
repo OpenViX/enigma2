@@ -1,13 +1,14 @@
 from os.path import isfile
 
-from enigma import eListboxPythonMultiContent, gFont, iServiceInformation, eServiceCenter, eDVBFrontendParametersSatellite, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER
+from enigma import eDVBFrontendParametersSatellite, eListboxPythonMultiContent, eServiceCenter, eTimer, gFont, iServiceInformation, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER
 
 from Components.ActionMap import ActionMap
 from Components.GUIComponent import GUIComponent
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.Renderer.Picon import getPiconName
-from Screens.Screen import Screen
+from Components.Sources.StaticText import StaticText
+from Screens.Screen import Screen, ScreenSummary
 from ServiceReference import ServiceReference
 from Tools.Transponder import ConvertToHumanReadable, getChannelNumber
 from skin import applySkinFactor, parameters, parseFont, parseScale
@@ -119,6 +120,8 @@ class ServiceInfo(Screen):
 			"right": self["infolist"].pageDown,
 			"left": self["infolist"].pageUp
 		}, -1)
+
+		self.onChangedEntry = []
 
 		self.setTitle(_("Service info"))
 		self["key_red"] = self["red"] = Label(_("Exit"))
@@ -386,6 +389,7 @@ class ServiceInfo(Screen):
 				else:
 					tlist.append(ServiceInfoListEntry(item[0] + ":", value, item[2], item[3]))
 		self["infolist"].setList(tlist)
+		self.selectionChanged()
 
 	def getServiceInfoValue(self, what):
 		if self.info:
@@ -434,3 +438,58 @@ class ServiceInfo(Screen):
 			if not tlist:
 				tlist.append(ServiceInfoListEntry(_("No ECMPids available (FTA Service)")))
 			self["infolist"].setList(tlist)
+			self.selectionChanged()
+
+	def selectionChanged(self):
+		info = self["infolist"].getList()
+		for f in self.onChangedEntry:
+			f(info)
+
+	def createSummary(self):
+		return ServiceInfoSummary
+
+
+class ServiceInfoSummary(ScreenSummary):
+	def __init__(self, session, parent):
+		ScreenSummary.__init__(self, session, parent=parent)
+		self["info"] = StaticText("")
+		self.out = []
+		self.onShow.append(self.addWatcher)
+		self.onHide.append(self.removeWatcher)
+		self.timer = eTimer()
+		self.timer.callback.append(self.update)
+
+	def addWatcher(self):
+		self.parent.onChangedEntry.append(self.selectionChanged)
+		self.parent.selectionChanged()
+
+	def removeWatcher(self):
+		self.parent.onChangedEntry.remove(self.selectionChanged)
+
+	def update(self):
+		self.timer.stop()
+		if self.out and len(self.out) > 1:
+			self.out.append(self.out.pop(0))
+			self.pushToDisplay()
+			self.timer.start(2000, 1)
+
+	def selectionChanged(self, info):
+		self.timer.stop()
+		del self.out[:]
+		for x in info:
+			left = ""
+			right = ""
+			if x and len(x) > 1:
+				if x[1] and len(x[1]) > 7:
+					left = x[1][7].strip()
+				if len(x) > 2 and x[2] and len(x[2]) > 7:
+					right = x[2][7].strip()
+			if left and right:
+				self.out.append(left + "\n  " + right)
+			elif left:
+				self.out.append(left)
+		self.pushToDisplay()
+		self.timer.start(3000, 1)
+
+	def pushToDisplay(self):
+		self["info"].text = "\n".join(self.out)

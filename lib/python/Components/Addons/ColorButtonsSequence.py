@@ -49,7 +49,7 @@ class ColorButtonsSequence(GUIAddon):
 		lList.append((sequence,))
 		self.l.setList(lList)
 
-	def buildEntry(self, sequence):
+	def buildEntry(self, sequence, recursion=False):
 		res = [None]
 		if len(sequence) == 0:
 			return res
@@ -61,6 +61,12 @@ class ColorButtonsSequence(GUIAddon):
 
 		pic = None
 		pixdWidth = 0
+
+		widthUsed = 0
+		fluidPadding = 0
+		if self.layoutStyle == "fluid" and recursion and self.alignment == "left":
+			freespace = int(width * len(sequence) / 4) - self.widthUsed if len(sequence) != 4 and int(width * (len(sequence) / 4)) > self.widthUsed else int(width - self.widthUsed)
+			fluidPadding = max(int(freespace / len(sequence)), 0)
 
 		for x, val in sequence.items():
 			textColor = self.foreColor
@@ -93,9 +99,10 @@ class ColorButtonsSequence(GUIAddon):
 				buttonText = ""
 
 			if buttonText:
-				textWidth = self._calcTextWidth(buttonText, font=self.font, size=eSize(self.getDesktopWith() // 3, 0))
+				textWidth = self._calcTextWidth(buttonText, font=self.font, size=eSize(self.getDesktopWidth() // 3, 0))
 			else:
 				textWidth = 0
+			widthUsed += textWidth + self.spacingButtons + (self.spacingPixmapText if pic else 0) + pixdWidth
 			if self.layoutStyle != "fluid":
 				if textWidth < (minSectorWidth - self.spacingButtons - (self.spacingPixmapText if pic else 0) - pixdWidth):
 					textWidth = minSectorWidth - self.spacingButtons - (self.spacingPixmapText if pic else 0) - pixdWidth
@@ -128,10 +135,11 @@ class ColorButtonsSequence(GUIAddon):
 						font=0, flags=textFlags,
 						text=buttonText, color=textColor, color_sel=textColor, backcolor=backColor, cornerRadius=self.cornerRadius))
 
-				xPos += textWidth + textPaddings * 2 + self.spacingButtons
-			if xPos > width and self.layoutStyle != "fluid":
-				self.layoutStyle = "fluid"
-				return self.buildEntry(sequence)
+				xPos += textWidth + textPaddings * 2 + self.spacingButtons + (fluidPadding if self.layoutStyle == "fluid" else 0)
+		if xPos > width and self.layoutStyle != "fluid" or not recursion and self.layoutStyle == "fluid":
+			self.widthUsed = widthUsed
+			self.layoutStyle = "fluid"
+			return self.buildEntry(sequence, True)
 
 		return res
 
@@ -193,5 +201,5 @@ class ColorButtonsSequence(GUIAddon):
 		self.textRenderer.text = text
 		return self.textRenderer.instance.calculateSize().width()
 
-	def getDesktopWith(self):
+	def getDesktopWidth(self):
 		return getDesktop(0).size().width()

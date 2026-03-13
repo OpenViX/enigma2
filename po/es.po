@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-24 09:07+0100\n"
+"POT-Creation-Date: 2026-02-14 20:45+0100\n"
 "PO-Revision-Date: 2025-12-24 10:19+0100\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: www.CostaBlancaTranslations.com <maria@CostaBlancaTranslations.com>\n"
@@ -739,6 +739,9 @@ msgstr "%b=%d "
 #, python-format
 msgid "%d"
 msgstr "%d"
+
+msgid "%d %B"
+msgstr "%d %B"
 
 #
 msgid "%d %B %Y"
@@ -1539,6 +1542,9 @@ msgstr "?%s?"
 #
 msgid "A"
 msgstr "A"
+
+msgid "AC3+ Passthrough audio fix"
+msgstr "Solución alternativa para el audio de paso AC3+"
 
 msgid ""
 "A background update check is in progress,\n"
@@ -3741,10 +3747,6 @@ msgstr "China"
 msgid "Chipset:\t%s %s\n"
 msgstr "Chipset:\t%s %s\n"
 
-#, python-format
-msgid "Chipset: %s"
-msgstr "Chipset: %s"
-
 msgid "Chkroot Manager Actions"
 msgstr "Acciones del administrador de Chkroot"
 
@@ -4014,6 +4016,9 @@ msgstr "Ajustes de la colección"
 msgid "Colombia"
 msgstr "Colombia"
 
+msgid "Color Theme"
+msgstr "Tema de color"
+
 msgid "Color format"
 msgstr "Formato de color"
 
@@ -4116,7 +4121,7 @@ msgid "Configuration mode: %s"
 msgstr "Modo de configuración: %s"
 
 msgid "Configuration..."
-msgstr "Cconfiguración"
+msgstr "Configuración"
 
 #
 msgid "Configure ATSC"
@@ -4771,6 +4776,10 @@ msgstr "Posición actual del rotor"
 msgid "Current settings:"
 msgstr "Configuración actual:"
 
+#
+msgid "Current skin configuration plugin."
+msgstr "Complemento de configuración de skin actual."
+
 msgid "Current status:"
 msgstr "Estado actual:"
 
@@ -5167,6 +5176,12 @@ msgstr "Depurar a archivo"
 
 msgid "Debug+ Logs"
 msgstr "Historiales + depuración"
+
+msgid "Decoder Release Strategy *"
+msgstr "Estrategia de lanzamiento del decodificador *"
+
+msgid "Decoder Start Timeout *"
+msgstr "Tiempo de espera de inicio del decodificador *"
 
 msgid "Decrement end time"
 msgstr "Disminuir la hora final."
@@ -5763,6 +5778,9 @@ msgstr ""
 msgid "Do you want to backup eMMC slots? This will add from 1 -> 5 minutes per eMMC slot"
 msgstr "¿Quieres hacer una copia de seguridad de los slots eMMC? Esto agregará entre 1 y 5 minutos por ranura eMMC"
 
+msgid "Do you want to backup the image slot or create a recovery backup?"
+msgstr "¿Quieres hacer una copia de la imagen actual o crear una copia de seguridad de recuperación completa?"
+
 #
 msgid "Do you want to burn this collection to DVD medium?"
 msgstr "¿Quieres grabar esta colección a disco DVD?"
@@ -5775,9 +5793,9 @@ msgstr "¿Quieres cambiar la skin predeterminada?"
 msgid "Do you want to continue?"
 msgstr "¿Qué quieres continuar?"
 
-#
-msgid "Do you want to create a full image backup?"
-msgstr "¿Quieres crear una copia de seguridad de imagen completa?"
+#, python-format
+msgid "Do you want to create a %s image backup? This can take several minutes to complete."
+msgstr "¿Quieres crear una copia de seguridad de la imagen %s? Esto puede tardar varios minutos."
 
 msgid ""
 "Do you want to delete all the selected files:\n"
@@ -5961,10 +5979,6 @@ msgstr "Dramático"
 #, python-format
 msgid "Drivers:\t%s\n"
 msgstr "Controladores:\t%s\n"
-
-#, python-format
-msgid "Drivers: %s"
-msgstr "Controladores: %s"
 
 msgid "Drogen"
 msgstr "Drogen"
@@ -7452,9 +7466,6 @@ msgstr "Fútbol"
 msgid "Für Kinder"
 msgstr "Para niños"
 
-msgid "G"
-msgstr "G"
-
 #, python-format
 msgid "GCC version:\t%s\n"
 msgstr "Versión de GCC:\t%s\n"
@@ -7474,18 +7485,18 @@ msgid ""
 "GUI needs a restart to apply a new language\n"
 "Do you want to restart the GUI now?"
 msgstr ""
-"GUI necesita reiniciarse para aplicar el nuevo idioma.\n"
-"¿Quieres reiniciar GUI ahora?"
+"La GUI necesita reiniciarse para aplicar el nuevo idioma.\n"
+"¿Quieres reiniciar la GUI ahora?"
 
 msgid ""
 "GUI needs a restart to switch modes\n"
 "Do you want to restart the GUI now?"
 msgstr ""
-"GUI necesita reiniciarse para aplicar el nuevo modo.\n"
-"¿Quieres reiniciar GUI ahora?"
+"La GUI necesita reiniciarse para aplicar el nuevo modo.\n"
+"¿Quieres reiniciar la GUI ahora?"
 
 msgid "GUI settings"
-msgstr "Ajustes de GUI"
+msgstr "Ajustes de la GUI"
 
 msgid "Gabon"
 msgstr "Gabón"
@@ -7784,9 +7795,6 @@ msgstr "Guyana"
 
 msgid "Gymnastics"
 msgstr "Gymnastica"
-
-msgid "H"
-msgstr "H"
 
 msgid "H9SDcard Manager"
 msgstr "Administrador de H9SDcard"
@@ -8143,6 +8151,9 @@ msgstr "¿Cuántos minutos quieres grabar?"
 msgid "How to display the date format for date items in the About screen."
 msgstr "Cómo mostrar el formato de fecha para los elementos de fecha en la pantalla de información."
 
+msgid "How to release the hardware decoder when switching to software descrambling. 'Quick' releases immediately (faster zapping). 'Normal' performs clean shutdown first (more stable on some boxes). *Restart E2 for changes to take effect."
+msgstr "Cómo liberar el decodificador de hardware al cambiar a descifrado por software. La opción 'Rápido' libera inmediatamente (zapping más rápido). La opción 'Normal' realiza un apagado limpio primero (más estable en algunas máquinas). *Reinicie E2 para que los cambios surtan efecto."
+
 msgid "Http(s) stream start delay"
 msgstr "Retraso en el inicio de la transmisión HTTP(s)"
 
@@ -8157,9 +8168,6 @@ msgstr "Húngaro"
 #
 msgid "Hungary"
 msgstr "Húngaria"
-
-msgid "I"
-msgstr "I"
 
 msgid "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 new Model"
 msgstr "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 nuevo Model"
@@ -8392,6 +8400,9 @@ msgstr "Slot de imagen:\t %s %s"
 
 msgid "Image View On"
 msgstr "Vista de imagen encendida"
+
+msgid "Image backup"
+msgstr "Copia de seguridad de imagen"
 
 msgid "Image manager"
 msgstr "Administrador de Imagen"
@@ -8853,9 +8864,6 @@ msgstr "Italiano"
 msgid "Italy"
 msgstr "Italia"
 
-msgid "J"
-msgstr "J"
-
 msgid "JUMP 24 HOURS"
 msgstr "SALTAR 24 HORAS"
 
@@ -8959,10 +8967,6 @@ msgstr "Kenya"
 #, python-format
 msgid "Kernel:\t%s\n"
 msgstr "Kernel:\t%s\n"
-
-#, python-format
-msgid "Kernel: %s"
-msgstr "Kernel: %s"
 
 msgid "Kexec warning"
 msgstr "Aviso Kexec"
@@ -9655,6 +9659,9 @@ msgstr "Número máximo de copias de seguridad que se deben conservar. Las copia
 msgid "Maximum number of days"
 msgstr "Número máximo de días"
 
+msgid "Maximum time to wait for the incoming data and descrambling keys (CW) before starting decoder. Usually both arrive much faster and this is only for special cases. *Restart E2 for changes to take effect."
+msgstr "Tiempo máximo de espera para los datos entrantes y las claves de descifrado (CW) antes de iniciar el decodificador. Normalmente, ambos llegan mucho más rápido y esto solo se aplica en casos especiales. *Reinicie E2 para que los cambios surtan efecto."
+
 msgid "Maximum total space used (MB)"
 msgstr "Espacio máximo total utilizado (MB):"
 
@@ -9812,11 +9819,6 @@ msgstr "Modelo:\t%s %s\n"
 #
 msgid "Model: "
 msgstr "Modelo: "
-
-#
-#, python-format
-msgid "Model: %s %s\n"
-msgstr "Modelo: %s %s\n"
 
 msgid "Modern Dance"
 msgstr "Danza moderna"
@@ -10619,6 +10621,13 @@ msgstr ""
 "No se han encontrado archivos de configuración. Configura Oscam primero\n"
 "en /etc/tuxbox/config."
 
+msgid ""
+"No config files found, please setup gbox first\n"
+"in /usr/keys."
+msgstr ""
+"No se encontraron archivos de configuración, primero configure gbox\n"
+"en /usr/keys."
+
 #, python-format
 msgid "No configs for specifies softcam %s."
 msgstr "No hay configuraciones para el softcam %s específico."
@@ -11151,10 +11160,6 @@ msgstr "Descarga forzada de EPG de OpenTV"
 msgid "OpenVPN"
 msgstr "OpenVPN"
 
-#, python-format
-msgid "OpenViX: %s"
-msgstr "OpenViX: %s"
-
 msgid "OpenVpn Setup"
 msgstr "Abrir la configuración Vpn"
 
@@ -11406,13 +11411,13 @@ msgid "Partition: %s  Mount: %s unmounted successfully; if all partitions now un
 msgstr "Partición: %s Montaje: %s desmontado exitosamente; si ahora todas las particiones están desmontadas, puede quitar el dispositivo."
 
 msgid "Passthrough"
-msgstr "Passthrough"
+msgstr "Paso directo"
 
 msgid "Passthrough audio handling delay AC3"
-msgstr ""
+msgstr "Retardo en el manejo del audio de paso AC3"
 
 msgid "Passthrough audio handling delay AC3+"
-msgstr ""
+msgstr "Retardo en el manejo del audio de paso AC3+"
 
 #
 msgid "Password"
@@ -11521,6 +11526,9 @@ msgstr "PiP"
 
 msgid "PiPZap"
 msgstr "PiPZap"
+
+msgid "Pick an option. After selection is saved GUI should be restarted to accept the changes."
+msgstr "Seleccione una opción. Tras guardar la selección, reinicie la interfaz gráfica para que se apliquen los cambios."
 
 msgid "Picon"
 msgstr "Picon"
@@ -12888,6 +12896,9 @@ msgstr "Grabaciones, reproducción y timeshift"
 msgid "Recovery Mode"
 msgstr "Modo de recuperación"
 
+msgid "Recovery backup"
+msgstr "Copia de recuperación"
+
 msgid "Red"
 msgstr "Rojo"
 
@@ -13320,14 +13331,14 @@ msgstr "Reiniciar %s %s."
 
 #
 msgid "Restart GUI"
-msgstr "Reiniciar GUI"
+msgstr "Reiniciar la GUI"
 
 #
 msgid "Restart GUI now?"
-msgstr "¿Reiniciar GUI ahora?"
+msgstr "¿Reiniciar la GUI ahora?"
 
 msgid "Restart GUI."
-msgstr "Reiniciar GUI"
+msgstr "Reiniciar la GUI"
 
 #
 msgid "Restart last movie"
@@ -13590,10 +13601,6 @@ msgstr "SDCARD"
 
 msgid "SETUP"
 msgstr "SETUP"
-
-#, python-format
-msgid "SF8008 indicate type of backup %s"
-msgstr "SF8008, indique el tipo de copia de seguridad %s"
 
 msgid "SHIFT: "
 msgstr "SHIFT: "
@@ -14289,6 +14296,9 @@ msgstr "Seleccionar resolución horizonal"
 
 msgid "Select how quickly the dish should move between satellites."
 msgstr "Seleccione la velocidad con la que la antena debe moverse entre los satélites."
+
+msgid "Select how the descrambled data stream is processed. 'Automatic' uses asynchronous writes (lower CPU usage) with automatic fallback to synchronous if kernel AIO is not supported. 'Synchronous' forces blocking writes (stable, most compatible). *Restart E2 for changes to take effect."
+msgstr "Seleccione cómo se procesa el flujo de datos descifrados. La opción 'Automático' utiliza escrituras asíncronas (menor consumo de CPU) con retorno automático a escrituras síncronas si no se admite la AIO del kernel. La opción 'Síncrono' fuerza escrituras bloqueantes (estable, máxima compatibilidad). *Reinicie E2 para que los cambios surtan efecto."
 
 msgid "Select how the satellite dish is set up. i.e. fixed dish, single LNB, DiSEqC switch, positioner, etc."
 msgstr "Seleccione cómo está configurada la antena parabólica, es decir, antena fija, LNB simple, conmutador DiSEqC, posicionador, etc."
@@ -15532,6 +15542,16 @@ msgstr "Esquiar"
 msgid "Skin"
 msgstr "Skin"
 
+msgid "Skin Configuration"
+msgstr "Configuración de skin"
+
+msgid "Skin Configurator"
+msgstr "Configurador de la skin"
+
+#
+msgid "Skin Configurator: Restart GUI"
+msgstr "Configurador de la skin: Reiniciar la GUI"
+
 #
 msgid "Skin Selection"
 msgstr "Selección de las skins"
@@ -15561,7 +15581,7 @@ msgstr "Skin:\t%s"
 
 #
 msgid "SkinSelector: Restart GUI"
-msgstr "Selector de la skin: Reiniciar GUI"
+msgstr "Selector de la skin: Reiniciar la GUI"
 
 #
 msgid "Skip back"
@@ -15725,6 +15745,9 @@ msgstr "Sociedad"
 msgid "Society & Culture"
 msgstr "Sociedad y cultura"
 
+msgid "SoftCSA Settings"
+msgstr "Ajustes de SoftCSA"
+
 msgid "Softcam Actions"
 msgstr "Acciones de Softcam"
 
@@ -15764,6 +15787,10 @@ msgstr "Seleccionar camscript"
 
 msgid "Software Update"
 msgstr "Actualización de software"
+
+#, python-format
+msgid "Software descrambling version:\t%s %s\n"
+msgstr "Versión de descifrado de software:\t%s %s\n"
 
 #
 msgid "Software update"
@@ -16503,6 +16530,9 @@ msgstr "Índice de símbolo y FEC"
 msgid "Symbol rate:"
 msgstr "Índice de símbolo:"
 
+msgid "Sync Mode *"
+msgstr "Modo sincronización"
+
 msgid "Sync failure moving back to origin !"
 msgstr "Fallo de sincronización en la vuelta al origen."
 
@@ -16511,6 +16541,9 @@ msgstr "Sincronizar tiempo con"
 
 msgid "Synchronize system time using transponder or internet."
 msgstr "Sincronizar hora de sistema mediante transpondedor o internet."
+
+msgid "Synchronous"
+msgstr "Sincrónico"
 
 msgid "Syrian Arab Republic"
 msgstr "República Árabe Siria"
@@ -16526,10 +16559,6 @@ msgstr "Sistema y Modulación"
 #, python-format
 msgid "System temperature:\t%s"
 msgstr "Temperatura del sistema:\t%s"
-
-#, python-format
-msgid "System temperature: %s"
-msgstr "Temperatura del sistema: %s"
 
 msgid "System: "
 msgstr "Sistema:"
@@ -17040,9 +17069,8 @@ msgstr "Te permite cambiar el número de filas mostradas."
 msgid "This allows you to set the number of digits you can input when selecting channels using number input."
 msgstr "Esto le permite establecer la cantidad de dígitos que puede ingresar al seleccionar canales usando la entrada de números."
 
-#, python-format
-msgid "This can take up to %s minutes to complete."
-msgstr "Esto puede tardar hasta %s minutos en completarse."
+msgid "This can take up to 20 minutes for recovery backup, 6 minutes for image backup."
+msgstr "Esto puede tardar hasta 20 minutos para la copia de recuperación o 6 minutos para la copia de imagen."
 
 msgid "This change will overwrite all eMMC slots."
 msgstr "Este cambio sobrescribirá todas las slots eMMC."
@@ -17450,6 +17478,9 @@ msgstr "Para realizar una copia de seguridad de la imagen, seleccione VERDE en l
 #, python-format
 msgid "To save and apply the selected '%s' skin the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
 msgstr "Para guardar y aplicar el skin '%s' seleccionado, es necesario reiniciar la GUI. ¿Desea guardar la selección y reiniciar la GUI ahora?"
+
+msgid "To save and apply the selected skin configuration the GUI needs to restart. Would you like to save the selection and restart the GUI now?"
+msgstr "Para guardar y aplicar la skin seleccionado, es necesario reiniciar la GUI. ¿Desea guardar la selección y reiniciar la GUI ahora?"
 
 msgid "To start a download select YELLOW from Image Manager main screen, then select the distro, and finally which image to download."
 msgstr "Para iniciar una descarga, seleccione AMARILLO en la pantalla principal del Administrador de imágenes, luego seleccione la distribución y, finalmente, qué imagen desea descargar."
@@ -18002,11 +18033,6 @@ msgstr "Intervalo de actualización (en segundos)."
 
 msgid "Update packages..."
 msgstr "Actualizar paquetes"
-
-#
-#, python-format
-msgid "Updated: %s"
-msgstr "Actualizado: %s"
 
 #
 msgid "Updating Cache"
@@ -18571,7 +18597,7 @@ msgstr "Multiboot de Vu+"
 
 msgid ""
 "Vu+ Multiboot - PLEASE WAIT WHILE INITIALISING!\n"
-"  - will take upto 5 minutes plus 5 minutes per restored eMMC slot.\n"
+"  - will take up to 5 minutes plus 5 minutes per restored eMMC slot.\n"
 "  - after installing Recovery and Slot1 image, receiver will reboot to Slot 1 setup wizard."
 msgstr ""
 "Vu+ Multiboot: ¡ESPERE MIENTRAS SE INICIALIZA!\n"
@@ -19483,10 +19509,6 @@ msgstr ""
 "Se reiniciará la %s %s después de eliminar el canal.\n"
 "¿Quieres eliminarlo ahora?"
 
-#, python-format
-msgid "Your %s will create a recovery backup only for slot 1 else image backup."
-msgstr "Si esta es la ranura 1, su %s creará una copia de seguridad de recuperación; de lo contrario, creará una copia de seguridad de imagen."
-
 msgid "Your STB will restart after pressing OK on your remote control."
 msgstr "La STB se reiniciará cuando pulses 'OK' en el mando a distancia."
 
@@ -19715,11 +19737,11 @@ msgstr "[modo mover]"
 
 #
 msgid "a gui to assign services/providers to common interface modules"
-msgstr "GUI para asignar canales, proveedores a módulos de interfaz común."
+msgstr "un GUI para asignar canales, proveedores a módulos de interfaz común."
 
 #
 msgid "a gui to assign services/providers/caids to common interface modules"
-msgstr "GUI para asignar canales, proveedores, CAIDS a módulos de interfaz común."
+msgstr "un GUI para asignar canales, proveedores, CAIDS a módulos de interfaz común."
 
 #
 msgid "about to start"
@@ -20748,7 +20770,7 @@ msgstr "Repetido"
 
 #
 msgid "restart GUI"
-msgstr "Reiniciar GUI"
+msgstr "Reiniciar la GUI"
 
 msgid "reverse alphabetic then newest first"
 msgstr "alfabética inversa y más nueva primero"

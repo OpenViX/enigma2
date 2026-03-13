@@ -13,8 +13,11 @@
 class eStaticServiceDVBInformation;
 class eStaticServiceDVBBouquetInformation;
 
-class eServiceFactoryDVB: public iServiceHandler
-{
+// Forward declarations for software descrambling
+class eDVBCSASession;
+class eDVBSoftDecoder;
+
+class eServiceFactoryDVB : public iServiceHandler {
 	DECLARE_REF(eServiceFactoryDVB);
 	ePtr<eStaticServiceDVBInformation> m_StaticServiceDVBInfo;
 	ePtr<eStaticServiceDVBBouquetInformation> m_StaticServiceDVBBouquetInfo;
@@ -209,6 +212,13 @@ protected:
 	ePtr<eDVBService> m_dvb_service;
 
 	ePtr<iTSMPEGDecoder> m_decoder;
+
+	// Software descrambling
+	ePtr<eDVBCSASession> m_csa_session;
+	ePtr<eConnection> m_csa_activated_conn;
+	ePtr<eDVBSoftDecoder> m_soft_decoder;
+	bool m_soft_decoder_video_info_valid;  // Track if video info is available from SoftDecoder
+
 	int m_is_primary;
 	int m_decoder_index;
 	int m_have_video_pid;
@@ -235,6 +245,7 @@ protected:
 
 		/* pvr */
 	bool m_is_pvr;
+	pts_t m_pause_position;
 	int m_is_paused, m_timeshift_enabled, m_timeshift_active, m_timeshift_changed, m_save_timeshift;
 	int m_first_program_info;
 
@@ -248,6 +259,7 @@ protected:
 
 		/* timeshift */
 	ePtr<iDVBTSRecorder> m_record;
+	ePtr<eDVBCSASession> m_timeshift_csa_session;
 	std::set<int> m_pids_active;
 
 	void updateTimeshiftPids();
@@ -256,6 +268,9 @@ protected:
 	void switchToTimeshift();
 
 	void updateDecoder(bool sendSeekableStateChanged=false);
+#ifdef PASSTHROUGH_FIX
+	void forceAudioReset();
+#endif
 
 	int m_skipmode;
 	int m_fastforward;
@@ -314,11 +329,6 @@ protected:
 	ePtr<eTimer> m_nownext_timer;
 	void updateEpgCacheNowNext();
 
-#ifdef PASSTHROUGH_FIX
-	ePtr<eTimer> m_passthrough_fix_timer;
-	void forcePassthrough();
-#endif
-
 		/* radiotext */
 	ePtr<eDVBRdsDecoder> m_rds_decoder;
 	ePtr<eConnection> m_rds_decoder_event_connection;
@@ -328,6 +338,21 @@ protected:
 	void video_event(struct iTSMPEGDecoder::videoEvent);
 
 	virtual ePtr<iTsSource> createTsSource(eServiceReferenceDVB &ref, int packetsize = 188);
+
+	ePtr<eConnection> m_con_record_event;
+	void recordEvent(int event);
+
+	// Software descrambling
+	virtual void setupSpeculativeDescrambling();
+	void onSessionActivated(bool active);
+	void onSoftDecoderReady();
+	void onSoftDecoderAudioPidSelected(int pid);
+	void cleanupSoftwareDescrambling();
+
+	// Audio cache helper
+	void updateAudioCache(int apid, int apidtype);
+private:
+	bool m_stream_corruption_detected;
 };
 
 class eStaticServiceDVBBouquetInformation: public iStaticServiceInformation

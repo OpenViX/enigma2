@@ -186,7 +186,16 @@ class ServiceInfoBar(GUIAddon):
 			elif key == "crypt" and not isRef:
 				if "%3a//" in pending_sref and pending_service_ref and not pending_service_ref.getStreamRelay():
 					return key + "_off"
-				if info.getInfo(iServiceInformation.sIsCrypted) == 1:
+				if info.getInfo(iServiceInformation.sIsCrypted) == 1 and info.getInfo(iServiceInformation.sIsSoftCSA) != 1:
+					self.isCryptedDetected = True
+					return "IS_CRYPT"
+				if info.getInfo(iServiceInformation.sIsSoftCSA) == 1:
+					self.isCryptedDetected = True
+					return "IS_CRYPT_CSA"
+			elif key == "cryptscsa" and not isRef:
+				if "%3a//" in pending_sref and pending_service_ref and not pending_service_ref.getStreamRelay():
+					return key + "_off"
+				if info.getInfo(iServiceInformation.sIsSoftCSA) == 1:
 					self.isCryptedDetected = True
 					return key
 			elif key == "audiotrack" and not isRef:

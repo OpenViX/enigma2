@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<skin>
+	<include filename="/usr/share/enigma2/display/skin_default/skin_display_picon.xml"/>
+
+	<screen name="InfoBarSummary" position="fill" resolution="480,320">
+		<widget source="session.CurrentService" render="LcdPicon" position="0,0" size="e,e" transparent="1" alphatest="blend" zPosition="2">
+			<convert type="ServiceName">Reference</convert>
+		</widget>
+	</screen>
+
+	<screen name="ChannelSelectionSummary" position="fill" resolution="480,320">
+		<widget source="parent.ServiceEvent" render="LcdPicon" position="0,0" size="e,e" transparent="1" alphatest="blend" zPosition="2">
+			<convert type="ServiceName">Reference</convert>
+		</widget>
+	</screen>
+
+	<screen name="EPGSelectionSummary" position="fill" resolution="480,320">
+		<widget source="parent.Service" render="LcdPicon" position="0,0" size="e,e" transparent="1" alphatest="blend" zPosition="2">
+			<convert type="ServiceName">Reference</convert>
+		</widget>
+	</screen>
+</skin>

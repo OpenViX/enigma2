@@ -9,7 +9,7 @@ from Components.TimerSanityCheck import TimerSanityCheck
 from Components.UsageConfig import preferredTimerPath
 from Components.Sources.StaticText import StaticText
 from RecordTimer import RecordTimerEntry, parseEvent, AFTEREVENT
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Screens.ParentalControlSetup import ProtectedScreen
@@ -542,9 +542,9 @@ class TimerSanityConflict(Screen):
 				self.key_blue_choice = self.EMPTY
 
 
-class TimerEditListSummary(Screen):
+class TimerEditListSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
+		ScreenSummary.__init__(self, session, parent=parent)
 		self["name"] = StaticText("")
 		self["service"] = StaticText("")
 		self["time"] = StaticText("")

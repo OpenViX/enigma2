@@ -5,7 +5,7 @@ from Components.config import config
 from Components.PowerTimerList import PowerTimerList
 from Components.Sources.StaticText import StaticText
 from PowerTimer import PowerTimerEntry, AFTEREVENT
-from Screens.Screen import Screen
+from Screens.Screen import Screen, ScreenSummary
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Screens.PowerTimerEntry import TimerEntry, TimerLog
@@ -169,7 +169,12 @@ class PowerTimerEditList(Screen):
 			return
 		timer = self['timerlist'].getCurrent()
 
+		print("[PowerTimerEditList] updateState timer", timer)
+		print("[PowerTimerEditList] updateState timer.timer", timer.timer)
+		print("[PowerTimerEditList] updateState timer.timerType", timer.timerType)
+
 		if timer:
+			timerType = timer.timerType
 			time = "%s %s ... %s" % (FuzzyTime(timer.begin)[0], FuzzyTime(timer.begin)[1], FuzzyTime(timer.end)[1])
 			duration = ("(%d " + _("mins") + ")") % ((timer.end - timer.begin) / 60)
 
@@ -184,11 +189,12 @@ class PowerTimerEditList(Screen):
 			else:
 				state = _("<unknown>")
 		else:
+			timerType = 0
 			time = ""
 			duration = ""
 			state = ""
 		for cb in self.onChangedEntry:
-			cb(time, duration, state)
+			cb(timerType, time, duration, state)
 
 	def fillTimerList(self):
 		# helper function to move finished timers to end of list
@@ -297,9 +303,10 @@ class PowerTimerEditList(Screen):
 		self.updateState()
 
 
-class PowerTimerEditListSummary(Screen):
+class PowerTimerEditListSummary(ScreenSummary):
 	def __init__(self, session, parent):
-		Screen.__init__(self, session, parent=parent)
+		ScreenSummary.__init__(self, session, parent=parent)
+		self["timertype"] = StaticText("")
 		self["time"] = StaticText("")
 		self["duration"] = StaticText("")
 		self["state"] = StaticText("")
@@ -313,7 +320,8 @@ class PowerTimerEditListSummary(Screen):
 	def removeWatcher(self):
 		self.parent.onChangedEntry.remove(self.selectionChanged)
 
-	def selectionChanged(self, time, duration, state):
+	def selectionChanged(self, timerType, time, duration, state):
+		self["timertype"].text = PowerTimerList.timertype.get(timerType, "")
 		self["time"].text = time
 		self["duration"].text = duration
 		self["state"].text = state

@@ -540,12 +540,12 @@ class GenresDEUIceTV:
 		1: (
 			_('Kunst'),  # 0x10 remapped from 0x01
 			_('Kultur'),  # 0x11 remapped from 0x01
-			_('Kriminalit\xc3\xa4t'),  # 0x12 remapped from 0x01
+			_('Kriminalität'),  # 0x12 remapped from 0x01
 			_('Krimi'),  # 0x13 remapped from 0x01
 			_('Comedy'),  # 0x14
 			_('Krieg'),  # 0x15 remapped from 0x01
 			_('Kraftsport'),  # 0x16 remapped from 0x01
-			_('Kom\xc3\xb6die'),  # 0x17 remapped from 0x01
+			_('Komödie'),  # 0x17 remapped from 0x01
 			_('Kneipensport'),  # 0x18 remapped from 0x01
 			_('Klassiker'),  # 0x19 remapped from 0x01
 			_('Kinder'),  # 0x1a remapped from 0x01
@@ -569,8 +569,8 @@ class GenresDEUIceTV:
 			_('Geschichte'),  # 0x29 remapped from 0x01
 			_('Garten'),  # 0x2a remapped from 0x01
 			_('Gangster'),  # 0x2b remapped from 0x01
-			_('F\xc3\xbcr Kinder'),  # 0x2c remapped from 0x01
-			_('Fu\xc3\x9fball'),  # 0x2d remapped from 0x01
+			_('Für Kinder'),  # 0x2c remapped from 0x01
+			_('Fußball'),  # 0x2d remapped from 0x01
 			_('Frauen'),  # 0x2e remapped from 0x01
 			_('Fantasy'),  # 0x2f remapped from 0x01
 		),
@@ -656,7 +656,7 @@ class GenresDEUIceTV:
 			_('Puppentrick'),  # 0xd1 remapped from 0x01
 			_('Psychologie'),  # 0xd2 remapped from 0x01
 			_('Prominent'),  # 0xd3 remapped from 0x01
-			_('Portr\xc3\xa4t'),  # 0xd4 remapped from 0x01
+			_('Porträt'),  # 0xd4 remapped from 0x01
 			_('Politik'),  # 0xd5 remapped from 0x01
 			_('Poker'),  # 0xd6 remapped from 0x01
 			_('Parodie'),  # 0xd7 remapped from 0x01
@@ -667,7 +667,7 @@ class GenresDEUIceTV:
 			_('Natur'),  # 0xdc remapped from 0x01
 			_('National'),  # 0xdd remapped from 0x01
 			_('Nachrichten'),  # 0xde remapped from 0x01
-			_('M\xc3\xa4rchen'),  # 0xdf remapped from 0x01
+			_('Märchen'),  # 0xdf remapped from 0x01
 		),
 		# Documentary
 		14: (
@@ -693,7 +693,7 @@ class GenresDEUIceTV:
 			_('Verkehr'),  # 0xf0 remapped from 0x01
 			_('Unterhaltung'),  # 0xf1 remapped from 0x01
 			_('Umweltbewusstsein'),  # 0xf2 remapped from 0x01
-			_('Trag\xc3\xb6die'),  # 0xf3 remapped from 0x01
+			_('Tragödie'),  # 0xf3 remapped from 0x01
 			_('Tiere'),  # 0xf4 remapped from 0x01
 			_('Thriller'),  # 0xf5 remapped from 0x01
 			_('Theater'),  # 0xf6 remapped from 0x01

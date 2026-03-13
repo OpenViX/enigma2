@@ -172,6 +172,16 @@ RESULT eBouquet::setListName(const std::string &name)
 	return 0;
 }
 
+const eDVBService::cacheID eDVBService::audioCacheTags[] = {
+	eDVBService::cMPEGAPID, eDVBService::cAC3PID,
+	eDVBService::cAACHEAPID, eDVBService::cDDPPID,
+	eDVBService::cDTSPID, eDVBService::cAACAPID,
+	eDVBService::cLPCMPID, eDVBService::cDTSHDPID,
+};
+
+const int eDVBService::nAudioCacheTags = sizeof(eDVBService::audioCacheTags) / sizeof(eDVBService::audioCacheTags[0]);
+
+
 eDVBService::eDVBService()
 	:m_cache(0), m_flags(0)
 {
@@ -411,6 +421,15 @@ bool eDVBService::cacheEmpty()
 	return true;
 }
 
+bool eDVBService::cacheAudioEmpty()
+{
+	if (m_cache)
+		for (int i=0; i < nAudioCacheTags; ++i)
+			if (m_cache[audioCacheTags[i]] != -1)
+				return false;
+	return true;
+}
+
 void eDVBService::initCache()
 {
 	m_cache = new int[cacheMax];
@@ -492,7 +511,7 @@ void eDVBService::setCacheEntry(cacheID id, int pid)
 			eServiceReference ref = eServiceReference(m_reference_str);
 			std::string ref_s = ref.toReferenceString();
 			int pid_val = pid > 0 ? pid : -1;
-			if (endsWith(ref_s, ":")) 
+			if (endsWith(ref_s, ":"))
 			{
 				ref_s = ref_s.substr(0, ref_s.size()-1);
 			}
@@ -2947,6 +2966,20 @@ void eDVBDB::searchAllReferences(std::vector<eServiceReference> &result, int tsi
 			sit->first.getOriginalNetworkID() == Onid &&
 			sit->first.getServiceID() == Sid)
 			result.push_back(sit->first);
+	}
+	for (std::map<std::string, eBouquet>::iterator bit(m_bouquets.begin());bit != m_bouquets.end(); ++bit)
+	{
+		for (eBouquet::list::iterator sit2(bit->second.m_services.begin());sit2 != bit->second.m_services.end(); ++sit2)
+		{
+			eServiceReferenceDVB &ref = static_cast<eServiceReferenceDVB&>(*sit2);
+			if (ref.getTransportStreamID() == Tsid &&
+				ref.getOriginalNetworkID() == Onid &&
+				ref.getServiceID() == Sid)
+				{
+					if (std::find(result.begin(), result.end(), ref) == result.end()) 
+						result.push_back(ref);
+				}
+		}
 	}
 }
 

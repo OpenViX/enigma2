@@ -11,7 +11,7 @@ from Components.Console import Console
 from Components.Harddisk import Harddisk, harddiskmanager
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
-from Components.SystemInfo import SystemInfo, getBoxDisplayName, BOXTYPE, KERNEL, MACHINEBUILD, MTDKERNEL, MTDROOTFS, UBIMB
+from Components.SystemInfo import SystemInfo, getBoxDisplayName, BOXTYPE, MTDKERNEL, MTDROOTFS, UBIMB
 from Screens.Console import Console as ConsoleScreen
 from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
@@ -19,7 +19,7 @@ from Screens.Screen import Screen, ScreenSummary
 from Screens.Standby import QUIT_REBOOT, QUIT_RESTART, TryQuitMainloop
 from Screens.Setup import Setup
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import copyfile, fileReadLine, fileReadLines, fileWriteLine
+from Tools.Directories import copyfile, fileReadLine, fileWriteLine
 from Tools.Multiboot import emptySlot, GetImagelist, GetCurrentImageMode, restoreSlots
 
 ACTION_SELECT = 0
@@ -280,23 +280,9 @@ class MultiBootSelector(Screen, HelpableScreen):
 
 
 class ChkrootInit(Screen):
-	skin = """
-	<screen name="ChkrootInit" title="Chkroot MultiBoot Manager" position="center,center" size="900,600" resolution="1280,720">
-		<widget name="description" position="0,0" size="e,e-50" font="Regular;20" />
-		<widget source="key_red" render="Label" position="0,e-40" size="180,40" backgroundColor="key_red" conditional="key_red" font="Regular;20" foregroundColor="key_text" halign="center" valign="center">
-			<convert type="ConditionalShowHide" />
-		</widget>
-		<widget source="key_green" render="Label" position="190,e-40" size="180,40" backgroundColor="key_green" conditional="key_green" font="Regular;20" foregroundColor="key_text" halign="center" valign="center">
-			<convert type="ConditionalShowHide" />
-		</widget>
-		<widget source="key_help" render="Label" position="e-80,e-40" size="80,40" backgroundColor="key_back" conditional="key_help" font="Regular;20" foregroundColor="key_text" halign="center" valign="center">
-			<convert type="ConditionalShowHide" />
-		</widget>
-	</screen>"""
-
 	def __init__(self, session, *args):
 		Screen.__init__(self, session)
-		self.skinName = "ChkrootInit"
+		self.skinName = ["Setup", "ChkrootInit"]
 		self.setTitle(_("Chkroot MultiBoot Manager"))
 		self["key_red"] = StaticText()
 		self["key_green"] = StaticText()
@@ -351,7 +337,7 @@ class ChkrootInit(Screen):
 
 		for idx, (rootdev, subdir) in enumerate(rootMap):
 			suffix = "" if idx == 0 else f"_{idx}"
-			cmdList.append(f"echo 'kernel=/dev/{KERNEL} root=/dev/{rootdev} rootsubdir={subdir}' > {mountpoint}/STARTUP{suffix}")
+			cmdList.append(f"echo 'kernel=/dev/{MTDKERNEL} root=/dev/{rootdev} rootsubdir={subdir}' > {mountpoint}/STARTUP{suffix}")
 
 		cmdList.append(f"umount {mountpoint}")
 		print(f"[MultiBootSelector][ChkrootInit] cmdlist:{cmdList}")
@@ -366,7 +352,7 @@ class ChkrootInit(Screen):
 		self.session.openWithCallback(disableChkrootCallback, MessageBox, _("Permanently disable the MultiBoot option?"), simple=True)
 
 	def UBIMBInit(self):
-		print(f"[MultiBootSelector][UBIMBInit]")
+		print("[MultiBootSelector][UBIMBInit]")
 		self.session.open(UBISlotManager)
 
 
@@ -456,15 +442,13 @@ class UBISlotManager(Setup):
 				self.session.open(TryQuitMainloop, QUIT_REBOOT)
 		print("[UBISlotManager] formatDeviceCallback ")
 		MOUNTPOINT = "/tmp/boot"
-		mtdRootFs = MTDROOTFS
-		mtdKernel = MTDKERNEL
 		device = self.UBISlotManagerDevice
 		PART_SUFFIX = "p" if "mmcblk" in device else ""
 		uuidRootFS = fileReadLine(f"/dev/uuid/{device}{PART_SUFFIX}2", default=None)
 		diskSize = self.partitionSizeGB(f"/dev/{device}")
 
 		rootfsName = "rootfs"
-		startupContent = f"kernel=/dev/{mtdKernel} ubi.mtd=rootfs root=ubi0:{rootfsName} flash=1 rootfstype=ubifs\n"
+		startupContent = f"kernel=/dev/{MTDKERNEL} ubi.mtd=rootfs root=ubi0:{rootfsName} flash=1 rootfstype=ubifs\n"
 
 		with open(f"{MOUNTPOINT}/STARTUP", "w") as fd:
 			fd.write(startupContent)
@@ -472,7 +456,7 @@ class UBISlotManager(Setup):
 			fd.write(startupContent)
 		count = min(diskSize, 4)
 		for i in range(1, count + 1):
-			startupContent = f"kernel=/dev/{mtdKernel} root=UUID={uuidRootFS} rootsubdir=linuxrootfs{i} rootfstype=ext4\n"
+			startupContent = f"kernel=/dev/{MTDKERNEL} root=UUID={uuidRootFS} rootsubdir=linuxrootfs{i} rootfstype=ext4\n"
 			with open(f"{MOUNTPOINT}/STARTUP_{i}", "w") as fd:
 				fd.write(startupContent)
 		Console().ePopen(["/bin/sync"])
@@ -513,7 +497,7 @@ class UBISlotManager(Setup):
 			with open(path) as fd:
 				blocks = int(fd.read().strip())
 				return ceil((blocks * 512) / (1024 * 1024 * 1024))
-		except Exception as e:
+		except Exception:
 			return 0
 
 	def readDevices(self, callback=None):

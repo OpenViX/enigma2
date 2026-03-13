@@ -22,7 +22,7 @@ category = dirlist[int(category) - 1]
 
 def add_where_extensionsmenu(name, fnc):
 	description = input("Plugin description: ")
-	return 'PluginDescriptor(name = "%s", description = _("%s"), where = PluginDescriptor.WHERE_EXTENSIONSMENU, fnc = %s)' % (name, description, fnc)
+	return f"PluginDescriptor(name={name}, description=_({description}), where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc={fnc})"
 
 
 def add_where_pluginmenu(name, fnc):
@@ -30,7 +30,7 @@ def add_where_pluginmenu(name, fnc):
 	icon = input("Icon (default: 'plugin.png': ")
 	if icon == "":
 		icon = "plugin.png"
-	return 'PluginDescriptor(name = "%s", description = _("%s"), icon = "%s", where = PluginDescriptor.WHERE_PLUGINMENU, fnc = %s)' % (name, description, icon, fnc)
+	return f"PluginDescriptor(name={name}, description=_({description}), icon={icon}, where=PluginDescriptor.WHERE_PLUGINMENU, fnc={fnc})"
 
 
 wherelist = [("WHERE_EXTENSIONSMENU", add_where_extensionsmenu), ("WHERE_PLUGINMENU", add_where_pluginmenu)]

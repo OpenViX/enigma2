@@ -104,7 +104,7 @@ class ScreenHeader(GUIAddon):
 				if hasattr(val, "text") and val.text and val not in sequence:
 					sequence.append(val)
 			elif val and isinstance(val, Pixmap) and val not in sequence:
-					sequence.append(val)
+				sequence.append(val)
 
 		self.updateAddon(sequence)
 

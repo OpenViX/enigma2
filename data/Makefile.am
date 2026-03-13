@@ -43,11 +43,15 @@ SUBDIRS += display220
 endif
 
 if HAVE_COLORLCD390
-SUBDIRS += display390
+## Experimental. Run display800 skin instead of display390 as should work at multiple resolutions
+## SUBDIRS += display390
+SUBDIRS += display800
 endif
 
 if HAVE_COLORLCD400
-SUBDIRS += display400
+## Experimental. Run display480 skin instead of display400 as should work at multiple resolutions
+## SUBDIRS += display400
+SUBDIRS += display480
 endif
 
 if HAVE_COLORLCD480
