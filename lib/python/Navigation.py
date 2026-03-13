@@ -124,7 +124,7 @@ class Navigation:
 
 		oldref = self.currentlyPlayingServiceOrGroup
 		current_service_source = None
-		is_handled = False
+		is_async_start = False
 		if InfoBarInstance:
 			current_service_source = InfoBarInstance.session.screen["CurrentService"]
 
@@ -188,7 +188,15 @@ class Navigation:
 					self.pnav.stopService()
 
 				for f in Navigation.playServiceExtensions:
-					playref, is_handled = f(self, playref, event, InfoBarInstance)
+					playref, *additional_values = f(self, playref, event, InfoBarInstance)
+					if len(additional_values) > 1 and additional_values[1] is True:
+						if not is_async_start:
+							is_async_start = additional_values[0]
+						break
+					elif len(additional_values) > 0 and not is_async_start:
+						is_async_start = additional_values[0]
+						if is_async_start:
+							break
 
 				self.currentlyPlayingServiceOrGroup = ref
 
@@ -230,7 +238,7 @@ class Navigation:
 					self.retryServicePlayTimer = eTimer()
 					self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
 					self.retryServicePlayTimer.start(config.misc.softcam_streamrelay_delay.value, True)
-				elif not is_handled and self.pnav.playService(playref):
+				elif not is_async_start and self.pnav.playService(playref):
 					self.currentlyPlayingServiceReference = None
 					self.originalPlayingServiceReference = None
 					self.currentlyPlayingServiceOrGroup = None
@@ -244,7 +252,7 @@ class Navigation:
 					setPreferredTuner(int(config.usage.frontend_priority.value))
 				if self.currentlyPlayingServiceReference and self.currentlyPlayingServiceReference.toString() in streamrelay.data:
 					self.currentServiceIsStreamRelay = True
-				if InfoBarInstance and "%3a//" in playref.toString() and not is_handled:
+				if InfoBarInstance and "%3a//" in playref.toString() and not is_async_start:
 					self.originalPlayingServiceReference = None
 					InfoBarInstance.serviceStarted()
 				return 0
@@ -270,7 +278,9 @@ class Navigation:
 				ref = getBestPlayableServiceReference(ref, eServiceReference(), simulate)
 			ref = streamrelay.streamrelayChecker(ref)[0]
 			for f in Navigation.recordServiceExtensions:
-				ref = f(self, ref)
+				ref, *additional_values = f(self, ref)
+				if len(additional_values) > 1 and additional_values[1] is True:
+					break
 			service = ref and self.pnav and self.pnav.recordService(ref, simulate)
 			if service is None:
 				print("[Navigation] record returned non-zero")
