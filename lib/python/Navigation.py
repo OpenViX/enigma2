@@ -124,7 +124,7 @@ class Navigation:
 
 		oldref = self.currentlyPlayingServiceOrGroup
 		current_service_source = None
-		is_handled = False
+		is_async_play = False
 		if InfoBarInstance:
 			current_service_source = InfoBarInstance.session.screen["CurrentService"]
 
@@ -187,8 +187,15 @@ class Navigation:
 				if SystemInfo["FCCactive"] and "%3a//" in ref.toString() and not is_stream_relay:
 					self.pnav.stopService()
 
+				playref_str_orig = playref.toString()
 				for f in Navigation.playServiceExtensions:
-					playref, is_handled = f(self, playref, event, InfoBarInstance)
+					ret = f(self, playref, event, InfoBarInstance)
+					if isinstance(ret, (ServiceReference, eServiceReference)):
+						playref = ret
+					else:
+						playref, is_async_play = ret
+					if is_async_play or playref.toString() != playref_str_orig:
+						break
 
 				self.currentlyPlayingServiceOrGroup = ref
 
@@ -230,7 +237,7 @@ class Navigation:
 					self.retryServicePlayTimer = eTimer()
 					self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
 					self.retryServicePlayTimer.start(config.misc.softcam_streamrelay_delay.value, True)
-				elif not is_handled and self.pnav.playService(playref):
+				elif not is_async_play and self.pnav.playService(playref):
 					self.currentlyPlayingServiceReference = None
 					self.originalPlayingServiceReference = None
 					self.currentlyPlayingServiceOrGroup = None
@@ -244,7 +251,7 @@ class Navigation:
 					setPreferredTuner(int(config.usage.frontend_priority.value))
 				if self.currentlyPlayingServiceReference and self.currentlyPlayingServiceReference.toString() in streamrelay.data:
 					self.currentServiceIsStreamRelay = True
-				if InfoBarInstance and "%3a//" in playref.toString() and not is_handled:
+				if InfoBarInstance and "%3a//" in playref.toString() and not is_async_play:
 					self.originalPlayingServiceReference = None
 					InfoBarInstance.serviceStarted()
 				return 0
