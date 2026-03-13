@@ -42,6 +42,7 @@ class Navigation:
 		self.originalPlayingServiceReference = None
 		self.currentServiceIsStreamRelay = False
 		self.skipServiceReferenceReset = False
+		self.retryServicePlayCount = 0
 		self.RecordTimer = RecordTimer.RecordTimer()
 		self.PowerTimer = PowerTimer.PowerTimer()
 		self.__wasTimerWakeup = False
@@ -123,6 +124,9 @@ class Navigation:
 		InfoBarInstance = InfoBar.instance
 
 		oldref = self.currentlyPlayingServiceOrGroup
+		if oldref is not None:
+			self.retryServicePlayCount = 0
+
 		current_service_source = None
 		is_async_play = False
 		if InfoBarInstance:
@@ -233,6 +237,7 @@ class Navigation:
 					self.currentServiceIsStreamRelay = False
 					self.currentlyPlayingServiceReference = None
 					self.currentlyPlayingServiceOrGroup = None
+					self.retryServicePlayCount = 1  # Pre-arm retry cycle in case play fails after delay.
 					print("[Navigation] Streamrelay was active -> delay the zap till tuner is freed")
 					self.retryServicePlayTimer = eTimer()
 					self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
@@ -242,10 +247,18 @@ class Navigation:
 					self.originalPlayingServiceReference = None
 					self.currentlyPlayingServiceOrGroup = None
 					if oldref and "://" in oldref.getPath():
-						print("[Navigation] Streaming was active -> try again")  # use timer to give the streamserver the time to deallocate the tuner
+						self.retryServicePlayCount = 1  # Start retry cycle for stream relay tuner deallocation.
+					if self.retryServicePlayCount > 0 and self.retryServicePlayCount <= 20:
+						print(f"[Navigation] Streaming was active -> try again (attempt {self.retryServicePlayCount}).")  # Use timer to give the stream server the time to deallocate the tuner.
 						self.retryServicePlayTimer = eTimer()
 						self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
 						self.retryServicePlayTimer.start(500, True)
+						self.retryServicePlayCount += 1
+					elif self.retryServicePlayCount > 20:
+						print(f"[Navigation] Gave up retrying after {self.retryServicePlayCount - 1} attempts.")
+						self.retryServicePlayCount = 0
+				else:
+					self.retryServicePlayCount = 0
 				self.skipServiceReferenceReset = False
 				if setPriorityFrontend:
 					setPreferredTuner(int(config.usage.frontend_priority.value))
