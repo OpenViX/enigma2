@@ -248,7 +248,7 @@ class Navigation:
 					self.currentlyPlayingServiceOrGroup = None
 					if oldref and "://" in oldref.getPath():
 						self.retryServicePlayCount = 1  # Start retry cycle for stream relay tuner deallocation.
-					if self.retryServicePlayCount > 0 and self.retryServicePlayCount <= 20:
+					if 0 < self.retryServicePlayCount <= 20:
 						print(f"[Navigation] Streaming was active -> try again (attempt {self.retryServicePlayCount}).")  # Use timer to give the stream server the time to deallocate the tuner.
 						self.retryServicePlayTimer = eTimer()
 						self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
