@@ -295,6 +295,7 @@ public:
 
 	bool cacheEmpty();
 	bool cacheAudioEmpty();
+	void updateAudioCache(int apid, int apidtype);
 
 	eDVBService();
 		/* m_service_name_sort is uppercase, with special chars removed, to increase sort performance. */
