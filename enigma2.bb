@@ -38,21 +38,22 @@ bindir = "/usr/bin"
 sbindir = "/usr/sbin"
 
 EXTRA_OECONF = "\
-    --enable-maintainer-mode --with-target=native --with-libsdl=no --with-boxtype=${MACHINE} \
-    --enable-dependency-tracking \
-    ${@bb.utils.contains("MACHINE_FEATURES", "textlcd", "--with-textlcd" , "", d)} \
-    ${@bb.utils.contains("MACHINE_FEATURES", "colorlcd", "--with-colorlcd" , "", d)} \
-    BUILD_SYS=${BUILD_SYS} \
-    HOST_SYS=${HOST_SYS} \
-    STAGING_INCDIR=${STAGING_INCDIR} \
-    STAGING_LIBDIR=${STAGING_LIBDIR} \
-    "
+	--enable-maintainer-mode --with-target=native --with-libsdl=no --with-boxtype=${MACHINE} \
+	--enable-dependency-tracking \
+	${@bb.utils.contains("MACHINE_FEATURES", "textlcd", "--with-textlcd" , "", d)} \
+	${@bb.utils.contains("MACHINE_FEATURES", "colorlcd", "--with-colorlcd" , "", d)} \
+	${@bb.utils.contains("MACHINE_FEATURES", "gigabluelcd", "--with-gigabluelcd" , "", d)} \
+	BUILD_SYS=${BUILD_SYS} \
+	HOST_SYS=${HOST_SYS} \
+	STAGING_INCDIR=${STAGING_INCDIR} \
+	STAGING_LIBDIR=${STAGING_LIBDIR} \
+	"
 
 do_install_append() {
-    install -d ${D}/usr/share/keymaps
+	install -d ${D}/usr/share/keymaps
 }
 
 python populate_packages_prepend () {
-    enigma2_plugindir = bb.data.expand('${libdir}/enigma2/python/Plugins', d)
-    do_split_packages(d, enigma2_plugindir, '(.*?/.*?)/.*', 'enigma2-plugin-%s', '%s ', recursive=True, match_path=True, prepend=True, extra_depends="enigma2")
+	enigma2_plugindir = bb.data.expand('${libdir}/enigma2/python/Plugins', d)
+	do_split_packages(d, enigma2_plugindir, '(.*?/.*?)/.*', 'enigma2-plugin-%s', '%s ', recursive=True, match_path=True, prepend=True, extra_depends="enigma2")
 }

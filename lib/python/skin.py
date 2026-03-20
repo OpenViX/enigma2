@@ -1,7 +1,8 @@
 from xml.etree.cElementTree import Element, ElementTree, fromstring
 
 from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWidget, eStack, eRectangle, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gMainDC, gRGB, BT_ALPHATEST, BT_ALPHABLEND, BT_HALIGN_CENTER, BT_HALIGN_LEFT, BT_HALIGN_RIGHT, BT_KEEP_ASPECT_RATIO, BT_SCALE, BT_VALIGN_BOTTOM, BT_VALIGN_CENTER, BT_VALIGN_TOP
-from os.path import basename, dirname, isfile
+from os.path import basename, dirname, isdir, isfile, join
+from os import listdir
 
 from Components.config import ConfigSubsection, ConfigText, config
 from Components.Sources.Source import ObsoleteSource
@@ -117,6 +118,13 @@ def InitSkins(booting=True):
 			break
 		print("[Skin] Error: Adding %s GUI skin '%s' has failed!" % (name, config.skin.primary_skin.value))
 		processed.append(skin)
+	# Check for skin related xml additions provided by third parties, such as plugins.
+	# Check for these in /etc/enigma2/<SkinName>/*.xml.
+	# Files should have clear, unique names like plugin_xyz_skin.xml.
+	if isdir(userFolder := join(resolveFilename(SCOPE_CONFIG), dirname(config.skin.primary_skin.value))):
+		for file in listdir(userFolder):
+			if file.lower().endswith(".xml"):
+				loadSkin(join(dirname(config.skin.primary_skin.value), file), scope=SCOPE_CONFIG, desktop=desktop, screenID=GUI_SKIN_ID)
 	# Add an optional skin related user skin "skin_user_<SkinName>.xml".  If there is
 	# not a skin related user skin then try to add an optional generic user skin.
 	loadedUser = False
