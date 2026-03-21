@@ -4,6 +4,7 @@ from Components.Console import Console
 # from Components.Language import language
 from Tools.Directories import SCOPE_KEYMAPS, pathExists, resolveFilename
 
+
 class Keyboard:
 	def __init__(self):
 		self.keyboardMaps = []
