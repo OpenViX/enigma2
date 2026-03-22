@@ -201,6 +201,7 @@
 		<widget source="global.CurrentTime" render="Label" position="0,105" size="460,220" font="FdLcD;160" noWrap="1" foregroundColor="FdLcdTitleForegroundOther" halign="center">
 			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
+		<panel name="RecordIconPanel" />
 	</screen>
 
 <!-- movieplayer -->
