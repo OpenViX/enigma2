@@ -243,7 +243,7 @@
 		<widget source="parent.Service" render="Label" position="241,161" size="240,100" font="FdLcD;40" halign="center" valign="bottom" noWrap="1">
 		  <convert type="MovieInfo">FileSize</convert>
 		</widget>
-		<panel name="SummaryTunerStatusPanel" />
+		<panel name="TunerPanel" />
 		<panel name="Colored_Clock_Panel" />
 	</screen>
 
