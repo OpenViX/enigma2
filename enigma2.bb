@@ -40,6 +40,8 @@ sbindir = "/usr/sbin"
 EXTRA_OECONF = "\
 	--enable-maintainer-mode --with-target=native --with-libsdl=no --with-boxtype=${MACHINE} \
 	--enable-dependency-tracking \
+	--with-e2rev=${GITPKGV} \
+	--with-oarev=${@bb.process.run('git -C %s rev-parse --short HEAD' % d.getVar('OEA-META-OE-BASE'))[0].strip()} \	
 	${@bb.utils.contains("MACHINE_FEATURES", "textlcd", "--with-textlcd" , "", d)} \
 	${@bb.utils.contains("MACHINE_FEATURES", "colorlcd", "--with-colorlcd" , "", d)} \
 	${@bb.utils.contains("MACHINE_FEATURES", "gigabluelcd", "--with-gigabluelcd" , "", d)} \
