@@ -157,14 +157,9 @@ def getScreenTitle():
 	return CommitLogs[project][1]
 
 
-def left():
+def updateIndex(n):
 	global project
-	project = project == 0 and len(CommitLogs) - 1 or project - 1
-
-
-def right():
-	global project
-	project = project != len(CommitLogs) - 1 and project + 1 or 0
+	project = (project + n) % len(CommitLogs)
 
 
 gitcommitinfo = modules[__name__]
@@ -216,11 +211,11 @@ class CommitInfo(Screen):
 			x()
 
 	def left(self):
-		gitcommitinfo.left()
+		gitcommitinfo.updateIndex(-1)
 		self.updateCommitLogs()
 
 	def right(self):
-		gitcommitinfo.right()
+		gitcommitinfo.updateIndex(+1)
 		self.updateCommitLogs()
 
 	def closeRecursive(self):
