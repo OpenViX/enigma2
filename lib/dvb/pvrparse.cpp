@@ -1196,6 +1196,7 @@ int eMPEGStreamParserTS::parseData(off_t offset, const void *data, unsigned int 
 		}
 	}
 	commit();
+	return 0;
 }
 
 void eMPEGStreamParserTS::addAccessPoint(off_t offset, pts_t pts, bool streamtime)
