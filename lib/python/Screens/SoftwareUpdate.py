@@ -12,7 +12,7 @@ from Components.Slider import Slider
 from Components.SystemInfo import SystemInfo, DISPLAYBRAND, MACHINENAME
 import Components.Task
 from Screens.ChoiceBox import ChoiceBox
-from Screens.GitCommitInfo import CommitInfo, gitcommitinfo
+from Screens.GitCommitInfo import CommitInfo
 from Screens.MessageBox import MessageBox
 from Components.OnlineUpdateCheck import feedsstatuscheck, kernelMismatch, statusMessage
 from Screens.ParentalControlSetup import ProtectedScreen
@@ -41,8 +41,8 @@ class SoftwareUpdateChanges(CommitInfo):
 		self["key_red"] = Button(_("Close"))
 
 	def readGithubCommitLogs(self):
-		self.setTitle(gitcommitinfo.getScreenTitle())
-		self["AboutScrollLabel"].setText(gitcommitinfo.readGithubCommitLogsSoftwareUpdate())
+		self.setTitle(self.gitcommitinfo.getScreenTitle())
+		self.gitcommitinfo.readGithubCommitLogsSoftwareUpdate()
 
 
 class UpdateChoices(ChoiceBox):

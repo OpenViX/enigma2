@@ -3,7 +3,7 @@ from hashlib import md5
 from os import listdir, access, R_OK
 from os.path import isfile, join as pathjoin
 from re import split
-from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager, eDVBCSAEngine, getE2Rev, getOARev
+from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager, eDVBCSAEngine, getEnigmaLastCommitHash, getOARev
 
 from Components.RcModel import rc_model
 from Tools.Directories import fileCheck, fileExists, fileHas, pathExists, resolveFilename, SCOPE_LIBDIR, SCOPE_SKIN, fileReadLine, fileReadLines
@@ -105,20 +105,7 @@ DISPLAYBRAND = BoxInfo.getItem("displaybrand")
 MACHINEBUILD = BoxInfo.getItem("machinebuild")
 CHKROOTMB = BoxInfo.getItem("chkrootmb")
 UBIMB = BoxInfo.getItem("hasUBIMB")
-
-try:
-	BRANCH = getE2Rev()
-	if "+" in BRANCH:
-		BRANCH = BRANCH.split("+")[1]
-	BRANCH = f"{BRANCH}"
-except IndexError:
-	BRANCH = ""
-try:
-	OEA = getOARev()
-	OEA = f"{OEA}" if OEA else split(r'(\d.*)', BoxInfo.getItem("oe"))[1]
-except Exception:
-	OEA = split(r'(\d.*)', BoxInfo.getItem("oe"))[1]
-
+OEA = split(r'(\d.*)', BoxInfo.getItem("oe"))[1]
 
 def getBoxType():  # this function mimics the function of the same name in branding module
 	if MACHINEBUILD == "sf8008":
@@ -228,6 +215,10 @@ SystemInfo["HasSoftCSA"] = eDVBCSAEngine.isAvailable()
 SystemInfo["MachineBrand"] = DISPLAYBRAND
 SystemInfo["MachineName"] = SystemInfo["machinename"]
 SystemInfo["DeveloperImage"] = IMAGETYPE.lower() != "release"
+SystemInfo["e2-branch"] = "Developer" if SystemInfo["DeveloperImage"] else "Release"
+SystemInfo["oea-branch"] = OEA
+SystemInfo["e2-sha"] = getEnigmaLastCommitHash()[:7]
+SystemInfo["oea-sha"] = getOARev()[:7]
 SystemInfo["CommonInterface"] = eDVBCIInterfaces.getInstance().getNumOfSlots()
 SystemInfo["CommonInterfaceCIDelay"] = fileCheck("/proc/stb/tsmux/rmx_delay")
 for cislot in range(0, SystemInfo["CommonInterface"]):
