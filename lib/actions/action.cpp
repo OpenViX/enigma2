@@ -209,6 +209,11 @@ void eActionMap::keyPressed(const std::string &device, int key, int flags)
 {
 	//eDebug("[eActionMap] key from %s: %d %d", device.c_str(), key, flags);
 
+	if (!strcmp(device.c_str(), "Hdmi-CEC")) // Bounce HDMI-CEC
+	{
+		eDebug("[eActionMap] bounce HDMI input key from %s: %d %d", device.c_str(), key, flags);		
+		return;
+	}
 	// Check for remotes that need key translations
 	std::map<std::string, eDeviceBinding>::iterator r = m_rcDevices.find(device);
 	if (r != m_rcDevices.end())
