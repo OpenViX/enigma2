@@ -32,7 +32,7 @@ class GithubCommitLogs:
 		self.queryPattern = "?sha=%s&page=%s"
 		self.compileTimstamp = int(datetime.strptime(getEnigmaLastCommitDate(), '%Y-%m-%d').timestamp())
 		self.userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
-		self.defaultBranch = "master" # for non OE-A Core / non Enigma2
+		self.defaultBranch = "master"  # for non OE-A Core / non Enigma2
 		self.readGithubCommitLogsTimer = eTimer()  # for receiving multiple pages
 		self.readGithubCommitLogsTimer.callback.append(self.readGithubCommitLogsTask)
 		self.readGithubCommitLogsSoftwareUpdateTimer = eTimer()  # for receiving multiple pages
