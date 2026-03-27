@@ -74,8 +74,6 @@ class GithubCommitLogs:
 		commitlog = []
 		try:
 			for c in self.fetchLog(url):
-				if c['commit']['message'].startswith('openbh:') or c['commit']['message'].startswith('openvix:'):
-					continue  # stop showing changelog markers, these will be dropped in 6.9
 				creator = c['commit']['author']['name']
 				title = c['commit']['message']
 				date = (date_obj := datetime.strptime(c['commit']['committer']['date'], '%Y-%m-%dT%H:%M:%SZ')).strftime('%x %X')
@@ -83,11 +81,16 @@ class GithubCommitLogs:
 						self.getScreenTitle() in ("OE-A Core", "Enigma2") and c["sha"].startswith(SystemInfo["e2-sha"] if self.getScreenTitle() == "Enigma2" else SystemInfo["oea-sha"])):
 					forced_stop = True
 					break  # we are only supposed to be showing commits newer than the image
+				if c['commit']['message'].startswith('openbh:') or c['commit']['message'].startswith('openvix:'):
+					continue  # stop showing changelog markers, these will be dropped in 6.9
 				commitlog.append(f"{date} {creator}\n{title}\n\n")
 		except Exception as err:
 			commitlog.append(self.fetchFailMsg(err))
 			forced_stop = True
 		if self.page == 1:
+			if not commitlog:
+				commitlog.append(_("No new commits found on this repository."))
+				forced_stop = True
 			self.parent.setText("".join(commitlog))
 		else:
 			self.parent.appendText("".join(commitlog))
@@ -112,14 +115,14 @@ class GithubCommitLogs:
 		commitlog = []
 		try:
 			for c in self.fetchLog(url):
-				if c['commit']['message'].startswith('openbh:') or c['commit']['message'].startswith('openvix:'):
-					continue  # stop showing changelog markers, these will be dropped in 6.9
 				creator = c['commit']['author']['name']
 				title = c['commit']['message']
 				date = (date_obj := datetime.strptime(c['commit']['committer']['date'], '%Y-%m-%dT%H:%M:%SZ')).strftime('%x %X')
 				# sha = c['commit']['tree']["sha"]
 				if self.getScreenTitle() not in ("OE-A Core", "Enigma2") and (self.compileTimstamp + 24 * 60 * 60) < int(date_obj.timestamp()):
 					continue  # when using a url without the hash avoid commits that are newer than the image, continue not break because the commits we want are later
+				if c['commit']['message'].startswith('openbh:') or c['commit']['message'].startswith('openvix:'):
+					continue  # stop showing changelog markers, these will be dropped in 6.9
 				commitlog.append(f"{date} {creator}\n{title}\n\n")
 		except Exception as err:
 			commitlog.append(self.fetchFailMsg(err))
