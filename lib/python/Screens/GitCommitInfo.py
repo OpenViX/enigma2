@@ -200,9 +200,6 @@ class CommitInfo(Screen):
 		self.gitcommitinfo.updateIndex(+1)
 		self.updateCommitLogs()
 
-	def closeRecursive(self):
-		self.close(("menu", "menu"))
-
 	def createSummary(self):
 		return CommitInfoSummary
 

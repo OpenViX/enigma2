@@ -28,21 +28,12 @@ class SoftwareUpdateChanges(CommitInfo):
 	def __init__(self, session):
 		CommitInfo.__init__(self, session)
 
-		self["actions"] = ActionMap(["SetupActions", "DirectionActions"],
-		{
-			'cancel': self.closeRecursive,
-			"red": self.closeRecursive,
-			"up": self["AboutScrollLabel"].pageUp,
-			"down": self["AboutScrollLabel"].pageDown,
-			"left": self.left,
-			"right": self.right
-		}, -1)
-
-		self["key_red"] = Button(_("Close"))
-
 	def readGithubCommitLogs(self):
 		self.setTitle(self.gitcommitinfo.getScreenTitle())
 		self.gitcommitinfo.readGithubCommitLogsSoftwareUpdate()
+
+	def close(self):
+		Screen.close(self, ("menu", "menu"))
 
 
 class UpdateChoices(ChoiceBox):
