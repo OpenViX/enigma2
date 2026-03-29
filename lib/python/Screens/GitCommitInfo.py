@@ -82,7 +82,7 @@ class GithubCommitLogs:
 						self.getScreenTitle() in ("OE-A Core", "Enigma2") and c["sha"].startswith(SystemInfo["e2-sha"] if self.getScreenTitle() == "Enigma2" else SystemInfo["oea-sha"])):
 					forced_stop = True
 					break  # we are only supposed to be showing commits newer than the image
-				if c['commit']['message'].startswith(self.skipCommits):
+				if self.getScreenTitle() != "Enigma2" and title.startswith(self.skipCommits) or title.startswith("openvix:") and not title.startswith(f"openvix: {SystemInfo['imagetype']} {SystemInfo['imageversion']}."):
 					continue
 				commitlog.append(f"{date} {creator}\n{title}\n\n")
 		except Exception as err:
@@ -122,7 +122,7 @@ class GithubCommitLogs:
 				# sha = c['commit']['tree']["sha"]
 				if self.getScreenTitle() not in ("OE-A Core", "Enigma2") and (self.compileTimstamp + 24 * 60 * 60) < int(date_obj.timestamp()):
 					continue  # when using a url without the hash avoid commits that are newer than the image, continue not break because the commits we want are later
-				if c['commit']['message'].startswith(self.skipCommits):
+				if self.getScreenTitle() != "Enigma2" and title.startswith(self.skipCommits) or title.startswith("openvix:") and not title.startswith(f"openvix: {SystemInfo['imagetype']} {SystemInfo['imageversion']}."):
 					continue
 				commitlog.append(f"{date} {creator}\n{title}\n\n")
 		except Exception as err:
