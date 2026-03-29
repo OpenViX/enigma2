@@ -37,6 +37,7 @@ class GithubCommitLogs:
 		self.readGithubCommitLogsTimer.callback.append(self.readGithubCommitLogsTask)
 		self.readGithubCommitLogsSoftwareUpdateTimer = eTimer()  # for receiving multiple pages
 		self.readGithubCommitLogsSoftwareUpdateTimer.callback.append(self.readGithubCommitLogsSoftwareUpdateTask)
+		self.skipCommits = ("openbh:", "openvix:", "PEP8 double aggressive")  # Stop showing changelog markers, these will be dropped in 6.9. Or PEP8 bot commits.
 
 	def fetchLog(self, url):
 		if url in self.APIcache:
@@ -81,8 +82,8 @@ class GithubCommitLogs:
 						self.getScreenTitle() in ("OE-A Core", "Enigma2") and c["sha"].startswith(SystemInfo["e2-sha"] if self.getScreenTitle() == "Enigma2" else SystemInfo["oea-sha"])):
 					forced_stop = True
 					break  # we are only supposed to be showing commits newer than the image
-				if c['commit']['message'].startswith('openbh:') or c['commit']['message'].startswith('openvix:'):
-					continue  # stop showing changelog markers, these will be dropped in 6.9
+				if c['commit']['message'].startswith(self.skipCommits):
+					continue
 				commitlog.append(f"{date} {creator}\n{title}\n\n")
 		except Exception as err:
 			commitlog.append(self.fetchFailMsg(err))
@@ -121,8 +122,8 @@ class GithubCommitLogs:
 				# sha = c['commit']['tree']["sha"]
 				if self.getScreenTitle() not in ("OE-A Core", "Enigma2") and (self.compileTimstamp + 24 * 60 * 60) < int(date_obj.timestamp()):
 					continue  # when using a url without the hash avoid commits that are newer than the image, continue not break because the commits we want are later
-				if c['commit']['message'].startswith('openbh:') or c['commit']['message'].startswith('openvix:'):
-					continue  # stop showing changelog markers, these will be dropped in 6.9
+				if c['commit']['message'].startswith(self.skipCommits):
+					continue
 				commitlog.append(f"{date} {creator}\n{title}\n\n")
 		except Exception as err:
 			commitlog.append(self.fetchFailMsg(err))
