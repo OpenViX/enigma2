@@ -45,6 +45,8 @@ class SubtitleRenderer():
 		if subtitleType == "SRT":
 			subs_parser = SubRipParser()
 			self.currentSubsList = TolerantDict(subs_parser.parse(text))
+			return True
+		return False
 
 	def stopSubtitles(self):
 		self.checkSubs.stop()

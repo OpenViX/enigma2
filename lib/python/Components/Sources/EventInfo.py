@@ -127,7 +127,9 @@ class EventInfo(PerServiceBase, Source):
 				iPlayableService.evStart: self.gotEvent,
 				iPlayableService.evUpdatedInfo: self.gotEvent,
 				iPlayableService.evUpdatedEventInfo: self.gotEvent,
-				iPlayableService.evEnd: self.gotEvent
+				iPlayableService.evEnd: self.gotEvent,
+				iPlayableService.evUpdateTags: self.gotEvent,
+				iPlayableService.evUpdateIDv3Cover: self.gotEvent,
 			}, with_event=True)
 		self.epgQuery = eEPGCache.getInstance().lookupEventTime
 
@@ -159,6 +161,7 @@ class EventInfo(PerServiceBase, Source):
 		if what == iPlayableService.evEnd and not self.__service:
 			self.changed((self.CHANGED_CLEAR,))
 		else:
+			self.__service = None
 			self.changed((self.CHANGED_ALL,))
 		# if evUpdatedEventInfo arrives before the event starts the fields will not change, so add an additional future timed event to make sure it does update.
 		if not from_timer and what in (iPlayableService.evUpdatedInfo, iPlayableService.evUpdatedEventInfo):
