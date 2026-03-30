@@ -1130,18 +1130,18 @@ class ImageBackup(Screen):
 		print("[ImageManager] Stage1: Creating backup Folders.")
 		if path.exists(self.WORKDIR):
 			rmtree(self.WORKDIR)
-		mkdir(self.WORKDIR, 0o644)
+		mkdir(self.WORKDIR, 0o755)
 		if path.exists(self.TMPDIR + "/root") and path.ismount(self.TMPDIR + "/root"):
 			system("umount " + self.TMPDIR + "/root")
 		elif path.exists(self.TMPDIR + "/root"):
 			rmtree(self.TMPDIR + "/root")
 		if path.exists(self.TMPDIR):
 			rmtree(self.TMPDIR)
-		makedirs(self.TMPDIR, 0o644)
-		makedirs(self.TMPDIR + "/root", 0o644)
-		makedirs(self.MAINDESTROOT, 0o644)
+		makedirs(self.TMPDIR, 0o755)
+		makedirs(self.TMPDIR + "/root", 0o755)
+		makedirs(self.MAINDESTROOT, 0o755)
 		self.commands = []
-		makedirs(self.MAINDEST, 0o644)
+		makedirs(self.MAINDEST, 0o755)
 		if SystemInfo["canMultiBoot"]:
 			slot = SystemInfo["MultiBootSlot"]
 		print("[ImageManager] Stage1: Making Kernel Image.")
