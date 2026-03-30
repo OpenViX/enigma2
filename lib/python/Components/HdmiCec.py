@@ -525,7 +525,7 @@ class HdmiCec:
 		if dataStructpack:				# keep cmd+data calls above this line so binary data converted
 			CECcmd = cmdList.get(cmd, "<Polling Message>").replace("<", "'").replace(">", "'")
 			print(f"[HdmiCec][sendMessage]: CECcmd={CECcmd}, dataStructpack=", dataStructpack)
-			encoder = chardet.detect(dataStructpack)["encoding"]
+			encoder = chardet.detect(dataStructpack)["encoding"] or "utf8"
 			data = dataStructpack.decode(encoding=encoder, errors="ignore")
 			print(f"[HdmiCec][sendMessage]: CECcmd={CECcmd}  cmd={cmd:X}, encoder={encoder}, data={data}" + "\n")
 		else:
