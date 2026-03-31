@@ -17,7 +17,7 @@ class SubRipParser(BaseParser):
 	# ---------------------------
 	# Text cleaning
 	# ---------------------------
-	def _removeTags(self, text):
+	def _remove_tags(self, text):
 		text = self._TAG_RE.sub("", text)
 		text = self._SSA_RE.sub("", text)
 		return text
@@ -25,7 +25,7 @@ class SubRipParser(BaseParser):
 	# ---------------------------
 	# Color parsing (fast path)
 	# ---------------------------
-	def _getColor(self, text, color):
+	def _get_color(self, text, color):
 		new_color = color or "default"
 
 		match = self._FONT_COLOR_RE.search(text)
@@ -53,7 +53,7 @@ class SubRipParser(BaseParser):
 	# ---------------------------
 	# Style parsing (branch-light)
 	# ---------------------------
-	def _getStyle(self, text, style):
+	def _get_style(self, text, style):
 		# Fast path: no tags at all
 		if "<" not in text:
 			return (None, None) if not style else (style, style)
