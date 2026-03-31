@@ -303,7 +303,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		self.returning = False
 		self.onClose.append(self.__onClose)
 		self.onShow.append(self.doButtonsCheck)
-		AudioSelection.fillSubtitleExt = self.subtitleListIject
+		AudioSelection.fillSubtitleExt = self.subtitleListInject
 		if self.onAudioSubTrackChanged not in AudioSelection.hooks:
 			AudioSelection.hooks.append(self.onAudioSubTrackChanged)
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
@@ -697,7 +697,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 
 		return matches
 
-	def subtitleListIject(self, subtitlesList):
+	def subtitleListInject(self, subtitlesList):
 		if len(subtitlesList) > 0:
 			i = subtitlesList[-1][1] + 1
 		else:
@@ -717,12 +717,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 	def loadAndParseSubs(self, stream_url):
 		try:
 			path = Path(stream_url)
-			intermediate_text = path.read_text(encoding='utf-8', errors='replace')
-			try:
-				intermediate_bytes = intermediate_text.encode('latin1')
-				subs_file = intermediate_bytes.decode(config.plugins.e2embyclient.encodding_nonutf_subs.value)
-			except:
-				subs_file = intermediate_text
+			subs_file = path.read_text(encoding='utf-8', errors='replace')
 			self.subtitle_renderer.loadSubtitles(subs_file, "SRT")
 			return True
 		except:
