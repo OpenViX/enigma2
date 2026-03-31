@@ -49,9 +49,11 @@ class SubtitleRenderer:
 		return False
 
 	def stopSubtitles(self):
+		self.subtitle_window.externalSubtitleStarted = False
 		self.check_subs.stop()
 		self.current_sub_pts = -1
 		self.current_subs_list = TolerantDict({})
 
 	def startSubtitle(self):
 		self.check_subs.start(10)
+		self.subtitle_window.externalSubtitleStarted = True
