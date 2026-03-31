@@ -628,6 +628,10 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		cleaned = re.sub(r"<bound method[^>]+>", "None", repr_string)
 		cleaned = cleaned.replace("PosixPath(", "").replace("))", ")").replace("None>", "None")
 		path = Path(file_path).with_suffix(".subconf")
+		# Check directory write permission
+		directory = path.parent
+		if not os.access(directory, os.W_OK):
+			return  # directory is read-only
 		with path.open("w", encoding="utf-8") as f:
 			f.write(cleaned)
 
