@@ -18,6 +18,7 @@ class SubtitleDisplay(Screen):
 		eActionMap.getInstance().bindAction('', -maxsize - 1, self.__keypress)
 
 		self.subtitlesShown = False
+		self.externalSubtitleStarted = False
 		self['subtitles'] = Label()
 		self['subtitles'].hide()
 
