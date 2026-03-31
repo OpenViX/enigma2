@@ -715,7 +715,9 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 	def onAudioSubTrackChanged(self):
 		if self.selected_subtitle and len(self.selected_subtitle) > 5:
 			return
-		self.delete_subconf(self.cur_service.getPath())
+		service = self.session.nav.getCurrentService()
+		if service:
+			self.delete_subconf(service.getPath())
 		self.curSubsIndex = -1
 
 	def loadAndParseSubs(self, stream_url):
