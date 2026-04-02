@@ -22,6 +22,7 @@
 	</fonts>
 
 	<colors>
+		<color name="FdLcdTitleForeground" value="#7fffff" /><!-- LightCyan -->
 		<color name="FdLcdRed" value="#00f50808" />
 		<color name="FdLcdBlack" value="#00000000" />
 	</colors>
@@ -46,7 +47,7 @@
 	
 	<!-- ## DEFAULT ## -->
 	<screen name="LCDTitle">
-		<widget source="parent.title" render="Label" position="20,40" size="760,90" font="FdLcD;70" halign="center" valign="center" zPosition="2" />
+		<widget source="parent.title" render="Label" position="20,10" size="760,90" font="FdLcD;70" halign="center" valign="center" zPosition="2" foregroundColor="FdLcdTitleForeground"/>
 	</screen>
 	<screen name="LCDInfoBarChannelName">
 		<widget source="session.CurrentService" render="RunningText" options="movetype=running,startpoint=0,direction=left,steptime=80,repeat=3,always=0,oneshot=1,startdelay=6000,wrap" position="40,40" size="720,90" font="FdLcD;75" halign="center" valign="center" zPosition="2">
@@ -435,11 +436,11 @@
 	<!-- TimerEditListSummary -->
 	<screen name="TimerEditListSummary" position="fill" resolution="800,480">
 		<panel name="LCDTitle" />
-		<widget source="service" render="Label" position="0,140" size="e,70" font="FdLcD;65" halign="center" valign="center" noWrap="1" />
-		<widget source="name" render="Label" position="0,230" size="e,60" font="FdLcD;50" halign="center" valign="center" />
-		<widget source="time" render="Label" position="0,310" size="c,60" font="FdLcD;60" halign="center" valign="center" transparent="1" />
-		<widget source="duration" render="Label" position="c,310" size="c,60" font="FdLcD;60" halign="center" valign="center" transparent="1" />
-		<widget source="state" render="Label" position="0,380" size="e,80" font="FdLcD;65" halign="center" valign="center" transparent="1" />
+		<widget source="service" render="Label" position="0,110" size="e,70" font="FdLcD;65" halign="center" valign="center" noWrap="1" />
+		<widget source="name" render="Label" position="0,190" size="e,60" font="FdLcD;50" halign="center" valign="center" />
+		<widget source="time" render="Label" position="0,260" size="e,65" font="FdLcD;60" halign="center" valign="center" transparent="1" />
+		<widget source="duration" render="Label" position="0,330" size="e,65" font="FdLcD;60" halign="center" valign="center" transparent="1" />
+		<widget source="state" render="Label" position="0,395" size="e,80" font="FdLcD;65" halign="center" valign="center" transparent="1" />
 	</screen>
 
 	<!-- LanguageSelection -->
