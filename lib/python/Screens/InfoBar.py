@@ -702,7 +702,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		return matches
 
 	def subtitleListInject(self, subtitlesList):
-		service = self.session.nav.getCurrentService()
+		service = self.session.nav.getCurrentlyPlayingServiceReference()
 		if not service:
 			return
 		if len(subtitlesList) > 0:
@@ -718,7 +718,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 	def onAudioSubTrackChanged(self):
 		if self.selected_subtitle and len(self.selected_subtitle) > 5:
 			return
-		service = self.session.nav.getCurrentService()
+		service = self.session.nav.getCurrentlyPlayingServiceReference()
 		if service:
 			self.delete_subconf(service.getPath())
 		self.curSubsIndex = -1
