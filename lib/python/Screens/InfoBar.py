@@ -322,6 +322,8 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 
 	def clearHooks(self):
 		AudioSelection.fillSubtitleExt = None
+		if self.onAudioSubTrackChanged in AudioSelection.hooks:
+			AudioSelection.hooks.remove(self.onAudioSubTrackChanged)
 
 	def __onClose(self):
 		# clear the instance value so the skin reloader works correctly
