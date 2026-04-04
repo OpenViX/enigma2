@@ -16,6 +16,9 @@ class SubtitleRenderer:
 		self.current_sub_end_pts = -1
 
 	def _check_pts_and_show_sub(self):
+		if not hasattr(self.player, "session") or self.player.session is None:
+			self.stopSubtitles()
+			return
 		seek = self.player.getSeek()
 		if seek is None:
 			return

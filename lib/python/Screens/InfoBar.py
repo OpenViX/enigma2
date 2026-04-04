@@ -702,11 +702,14 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		return matches
 
 	def subtitleListInject(self, subtitlesList):
+		service = self.session.nav.getCurrentService()
+		if not service:
+			return
 		if len(subtitlesList) > 0:
 			i = subtitlesList[-1][1] + 1
 		else:
 			i = 1
-		subtitletracks = self.find_related_srt_files(self.cur_service.getPath())
+		subtitletracks = self.find_related_srt_files(service.getPath())
 		for stream in subtitletracks:
 			subtitlesList.append((2, i, 4, i, stream["language"], self.runSubtitles, stream["path"]))
 
