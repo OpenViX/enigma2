@@ -137,8 +137,8 @@ class ServiceName(Converter):
 
 	def getNumber(self):
 		numservice = hasattr(self.source, "serviceref") and self.source.serviceref
-		cnannelNumInt = numservice and numservice.getChannelNum() or 0
-		channelnum = str(cnannelNumInt) if cnannelNumInt else ""
+		channelNumInt = numservice and numservice.getChannelNum() or 0
+		channelnum = str(channelNumInt) if channelNumInt else ""
 		return channelnum
 
 	def getProvider(self, ref, info):
