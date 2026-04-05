@@ -666,10 +666,16 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		return False
 
 	def loadSavedSubtitle(self, service):
-		subtitle_parsed = self.load_subconf(service.getPath())
-		if subtitle_parsed:
-			subtitle = (subtitle_parsed[0], subtitle_parsed[1], subtitle_parsed[2], subtitle_parsed[3], subtitle_parsed[4], self.runSubtitles, subtitle_parsed[6])
-			self.runSubtitles(subtitle=subtitle)
+		path = service.getPath()
+		if not path:
+			return
+		try:
+			subtitle_parsed = self.load_subconf(path)
+			if subtitle_parsed:
+				subtitle = (subtitle_parsed[0], subtitle_parsed[1], subtitle_parsed[2], subtitle_parsed[3], subtitle_parsed[4], self.runSubtitles, subtitle_parsed[6])
+				self.runSubtitles(subtitle=subtitle)
+		except:
+			pass  # this in case sometimes event comes too fast and is got by the MoviePlayer before the InfoBar, so the subconf file is not yet created, or any other issue with loading/parsing the file.
 
 	def __evServiceStartInit(self):
 		service = self.session.nav.getCurrentlyPlayingServiceReference()
