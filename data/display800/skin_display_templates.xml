@@ -538,9 +538,11 @@
 <!-- UpdatePlugin -->
 	<screen name="UpdatePluginSummary" position="fill" resolution="800,480">
 		<panel name="LCDTitle" />
-		<widget source="parent.package" render="Label" position="40,200" size="720,160" font="FdLcDLight;65" halign="center" />
+		<widget source="parent.package" render="Label" position="40,160" size="720,200" font="FdLcDLight;65" halign="center" />
 		<widget source="parent.status" render="Label" position="20,340" size="760,120" font="FdLcDLight;54" halign="center" valign="center" />
-		<panel name="SummaryClockPanel" />
+		<widget source="global.CurrentTime" render="Label" position="600,400" size="160,60" font="FdLcD;40" halign="right" valign="center" noWrap="1">
+			<convert type="ClockToText"></convert>
+		</widget>
 	</screen>
 
 <!-- AutoTimerOverview -->
