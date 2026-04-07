@@ -106,7 +106,6 @@ class NSCommon:
 		else:
 			self.close()
 
-				
 	def operationComplete(self, reboot=False):
 		if reboot:
 			Notifications.AddNotification(TryQuitMainloop, 2)
