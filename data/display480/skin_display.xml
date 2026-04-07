@@ -105,8 +105,8 @@
 			<convert type="ClockToText">Format:- %H:%M</convert>
 		</widget>
 		<widget source="session.Event_Now" render="Label" position="350,200" size="100,40" font="FdLcD;40" halign="right" valign="center" >
-			<convert type="EventTime">Remaining</convert>
-			<convert type="RemainingToText">FOLLOW</convert>
+			<convert type="EventTime">VFDRemaining</convert>
+			<convert type="RemainingToText">VFD</convert>
 		</widget>
 		<panel name="TunerPanel" />
 		<panel name="RecordIconPanel" />
@@ -133,8 +133,8 @@
 			<convert type="ClockToText">Format:- %H:%M</convert>
 		</widget>
 		<widget source="parent.ServiceEvent" render="Label" position="350,200" size="100,40" font="FdLcD;40" halign="right" valign="center" >
-			<convert type="EventTime">Remaining</convert>
-			<convert type="RemainingToText">FOLLOW</convert>
+			<convert type="EventTime">VFDRemaining</convert>
+			<convert type="RemainingToText">VFD</convert>
 		</widget>
 		<panel name="TunerPanel" />
 		<panel name="RecordIconPanel" />
@@ -161,8 +161,8 @@
 			<convert type="ClockToText">Format:- %H:%M</convert>
 		</widget>
 		<widget source="parent.Event" render="Label" position="350,200" size="100,40" font="FdLcD;40" halign="right" valign="center" >
-			<convert type="EventTime">Remaining</convert>
-			<convert type="RemainingToText">FOLLOW</convert>
+			<convert type="EventTime">VFDRemaining</convert>
+			<convert type="RemainingToText">VFD</convert>
 		</widget>
 		<panel name="TunerPanel" />
 		<panel name="RecordIconPanel" />
