@@ -11,7 +11,7 @@ class UserInstalledPackages:
 		self.embedded_packages_file = "/usr/lib/package.lst"
 
 	def run(self, callback=None):
-		dependencies = []
+		dependencies = set()
 		plugins_out = []
 		embedded_packages = False
 		status = False
@@ -25,19 +25,19 @@ class UserInstalledPackages:
 		except Exception as e:
 			print(f"[UserInstalledPackages] failed to read opkg status\n", e)
 		if embedded_packages and status:
-			packages, provides = self.parsestatus(status, embedded_packages)
+			packages, provides = self.parsestatus(status)
 			for package in packages:
 				for depends in packages[package]["depends"]:
 					d_package = provides.get(depends)
 					if d_package and d_package in packages:
-						dependencies.append(d_package)
-			plugins_out = [p for p in packages if p not in dependencies]
+						dependencies.add(d_package)
+			plugins_out = [p for p in packages if p not in dependencies and p not in embedded_packages]
 		callback(plugins_out)
 
-	def parsestatus(self, status, embedded_packages):
+	def parsestatus(self, status):
 		packages = {}
 		provides = {}
-		for package in [x for x in status.split("\n\n") if x.split("\n")[0].replace("Package: ", "").strip() not in embedded_packages]:
+		for package in [x for x in status.split("\n\n")]:
 			lines = package.splitlines()
 			p_name = None
 			p_depends = []
