@@ -19,6 +19,7 @@ class UserInstalledPackages:
 			embedded_packages = set([x for line in open(self.embedded_packages_file).read().splitlines() if (x := line.split()[0].strip())])
 		except Exception as e:
 			print(f"[UserInstalledPackages] failed to read {self.embedded_packages_file}\n", e)
+			embedded_packages = self.getEmbeddedPackagesOldMethod()  # retain this until the end of core 5.6, will only be used if /usr/lib/package.lst is missing
 		try:
 			status = subprocess.run(['opkg', 'status'], stdout=subprocess.PIPE, check=True).stdout.decode('utf-8')
 		except Exception as e:
@@ -56,6 +57,19 @@ class UserInstalledPackages:
 					provides[x] = p_name
 				provides[p_name] = p_name
 		return packages, provides
+
+	def getEmbeddedPackagesOldMethod(self):
+		# retain this until the end of core 5.6, will only be used if /usr/lib/package.lst is missing
+		embedded = []
+		try:
+			result = open("/var/lib/opkg/status").read()
+		except Exception:
+			print(f"[UserInstalledPackages] failed to read /var/lib/opkg/status\n", e)
+			result = ""
+		if result:
+			min_installed_time = min([int(parts[1]) for line in result.split("\n") if line.startswith("Installed-Time") and len(parts := line.strip().split()) > 1 and parts[1].isnumeric()])
+			embedded += [z for x in result.split("\n\n") if ("Installed-Time: " in x and "Installed-Time: " + str(min_installed_time) in x  or "Auto-Installed: yes" in x) and (y := x.split("\n")[0]).startswith("Package: ") and (z := y.replace("Package: ", "").strip())]
+		return embedded
 
 
 if __name__ == "__main__":
