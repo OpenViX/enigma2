@@ -68,7 +68,7 @@ class UserInstalledPackages:
 			result = ""
 		if result:
 			min_installed_time = min([int(parts[1]) for line in result.split("\n") if line.startswith("Installed-Time") and len(parts := line.strip().split()) > 1 and parts[1].isnumeric()])
-			embedded += [z for x in result.split("\n\n") if ("Installed-Time: " in x and "Installed-Time: " + str(min_installed_time) in x  or "Auto-Installed: yes" in x) and (y := x.split("\n")[0]).startswith("Package: ") and (z := y.replace("Package: ", "").strip())]
+			embedded += [z for x in result.split("\n\n") if ("Installed-Time: " in x and "Installed-Time: " + str(min_installed_time) in x or "Auto-Installed: yes" in x) and (y := x.split("\n")[0]).startswith("Package: ") and (z := y.replace("Package: ", "").strip())]
 		return embedded
 
 
