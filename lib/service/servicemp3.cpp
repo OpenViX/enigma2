@@ -762,11 +762,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	eDebug("[eServiceMP3] playbin uri=%s", uri);
 	if (suburi != NULL)
 		eDebug("[eServiceMP3] playbin suburi=%s", suburi);
-	bool useplaybin3 = eConfigManager::getConfigBoolValue("config.misc.usegstplaybin3", false);
-	if(useplaybin3)
-		m_gst_playbin = gst_element_factory_make("playbin3", "playbin");
-	else
-		m_gst_playbin = gst_element_factory_make("playbin", "playbin");
+	m_gst_playbin = gst_element_factory_make("playbin", "playbin");
 	if ( m_gst_playbin )
 	{
 		/*
