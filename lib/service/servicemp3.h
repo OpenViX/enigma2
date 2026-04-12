@@ -302,6 +302,16 @@ private:
 	int selectAudioStream(int i, bool skipAudioFix=false);
 	std::vector<audioStream> m_audioStreams;
 	std::vector<subtitleStream> m_subtitleStreams;
+
+	/* playbin3 support */
+	bool m_usePlaybin3;
+	std::vector<std::string> m_audioStreamIds;
+	std::vector<std::string> m_subtitleStreamIds;
+	std::vector<std::string> m_videoStreamIds;
+	void handleStreamCollection(GstMessage *msg);
+	void playbin3ParseStreams();
+	void playbin3SelectStreams();
+
 	iSubtitleUser *m_subtitle_widget;
 	gdouble m_currentTrickRatio;
 	friend class eServiceFactoryMP3;

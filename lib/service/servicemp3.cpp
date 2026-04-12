@@ -499,6 +499,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 #ifdef PASSTHROUGH_FIX
 	m_passthrough_fix_timer = eTimer::create(eApp);
 #endif
+	m_usePlaybin3 = false;
 	m_stream_tags = 0;
 	m_currentAudioStream = -1;
 	m_currentSubtitleStream = -1;
@@ -763,6 +764,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	if (suburi != NULL)
 		eDebug("[eServiceMP3] playbin suburi=%s", suburi);
 	bool useplaybin3 = eConfigManager::getConfigBoolValue("config.misc.usegstplaybin3", false);
+	m_usePlaybin3 = useplaybin3;
 	if(useplaybin3)
 		m_gst_playbin = gst_element_factory_make("playbin3", "playbin");
 	else
@@ -808,7 +810,8 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 			m_subs_to_pull_handler_id = g_signal_connect (subsink, "new-buffer", G_CALLBACK (gstCBsubtitleAvail), this);
 			g_object_set (G_OBJECT (subsink), "caps", gst_caps_from_string("text/plain; text/x-plain; text/x-raw; text/x-pango-markup; subpicture/x-dvd; subpicture/x-dvb; subpicture/x-pgs"), NULL);
 			g_object_set (G_OBJECT (m_gst_playbin), "text-sink", subsink, NULL);
-			g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
+			if (!m_usePlaybin3)
+				g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
 		}
 		GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE (m_gst_playbin));
 		gst_bus_set_sync_handler(bus, gstBusSyncHandler, this, NULL);
@@ -903,6 +906,170 @@ void eServiceMP3::forceAudioReset()
 	clearBuffers();
 }
 #endif
+
+/* playbin3 stream collection handling */
+void eServiceMP3::handleStreamCollection(GstMessage *msg)
+{
+	GstStreamCollection *collection = NULL;
+	gst_message_parse_stream_collection(msg, &collection);
+	if (!collection)
+		return;
+
+	m_audioStreamIds.clear();
+	m_subtitleStreamIds.clear();
+	m_videoStreamIds.clear();
+	m_audioStreams.clear();
+	m_subtitleStreams.clear();
+
+	guint n = gst_stream_collection_get_size(collection);
+	eDebug("[eServiceMP3] playbin3: stream collection with %u streams", n);
+
+	for (guint i = 0; i < n; i++)
+	{
+		GstStream *stream = gst_stream_collection_get_stream(collection, i);
+		if (!stream)
+			continue;
+		GstStreamType stype = gst_stream_get_stream_type(stream);
+		const gchar *stream_id = gst_stream_get_stream_id(stream);
+		if (!stream_id)
+			continue;
+
+		if (stype & GST_STREAM_TYPE_AUDIO)
+		{
+			m_audioStreamIds.push_back(std::string(stream_id));
+
+			audioStream audio = {};
+			audio.type = atUnknown;
+			audio.language_code = "und";
+			audio.codec = "";
+
+			GstCaps *caps = gst_stream_get_caps(stream);
+			if (caps)
+			{
+				GstStructure *str = gst_caps_get_structure(caps, 0);
+				const gchar *g_type = gst_structure_get_name(str);
+				eDebug("[eServiceMP3] playbin3: AUDIO STRUCT=%s id=%s", g_type, stream_id);
+				audio.type = gstCheckAudioPad(str);
+				audio.codec = g_type;
+				gst_caps_unref(caps);
+			}
+			GstTagList *tags = gst_stream_get_tags(stream);
+			if (tags && GST_IS_TAG_LIST(tags))
+			{
+				gchar *g_codec = NULL, *g_lang = NULL;
+				if (gst_tag_list_get_string(tags, GST_TAG_AUDIO_CODEC, &g_codec))
+				{
+					audio.codec = std::string(g_codec);
+					g_free(g_codec);
+				}
+				if (gst_tag_list_get_string(tags, GST_TAG_LANGUAGE_CODE, &g_lang))
+				{
+					audio.language_code = std::string(g_lang);
+					g_free(g_lang);
+				}
+				gst_tag_list_unref(tags);
+			}
+			eDebug("[eServiceMP3] playbin3: audio stream=%zu codec=%s language=%s", m_audioStreamIds.size() - 1, audio.codec.c_str(), audio.language_code.c_str());
+			m_audioStreams.push_back(audio);
+		}
+		else if (stype & GST_STREAM_TYPE_VIDEO)
+		{
+			m_videoStreamIds.push_back(std::string(stream_id));
+			eDebug("[eServiceMP3] playbin3: video stream id=%s", stream_id);
+		}
+		else if (stype & GST_STREAM_TYPE_TEXT)
+		{
+			m_subtitleStreamIds.push_back(std::string(stream_id));
+
+			subtitleStream subs;
+			subs.language_code = "und";
+			subs.type = stUnknown;
+
+			GstTagList *tags = gst_stream_get_tags(stream);
+			gchar *g_codec = NULL;
+			if (tags && GST_IS_TAG_LIST(tags))
+			{
+				gchar *g_lang = NULL;
+				if (gst_tag_list_get_string(tags, GST_TAG_LANGUAGE_CODE, &g_lang))
+				{
+					subs.language_code = g_lang;
+					g_free(g_lang);
+				}
+				gst_tag_list_get_string(tags, GST_TAG_SUBTITLE_CODEC, &g_codec);
+				gst_tag_list_unref(tags);
+			}
+			GstCaps *caps = gst_stream_get_caps(stream);
+			if (caps)
+			{
+				GstStructure *str = gst_caps_get_structure(caps, 0);
+				const gchar *g_type = gst_structure_get_name(str);
+				if (g_type)
+				{
+					if (!strcmp(g_type, "text/plain") || !strcmp(g_type, "text/x-plain") || !strcmp(g_type, "text/x-raw"))
+						subs.type = stPlainText;
+					else if (!strcmp(g_type, "text/x-pango-markup"))
+						subs.type = stSSA;
+					else if (!strcmp(g_type, "subpicture/x-dvb"))
+						subs.type = stDVB;
+					else if (!strcmp(g_type, "subpicture/x-pgs"))
+						subs.type = stPGS;
+					else if (!strcmp(g_type, "subpicture/x-dvd"))
+						subs.type = stVOB;
+				}
+				gst_caps_unref(caps);
+			}
+			eDebug("[eServiceMP3] playbin3: subtitle stream=%zu language=%s codec=%s", m_subtitleStreamIds.size() - 1, subs.language_code.c_str(), g_codec ? g_codec : "(null)");
+			g_free(g_codec);
+			m_subtitleStreams.push_back(subs);
+		}
+	}
+	gst_object_unref(collection);
+}
+
+void eServiceMP3::playbin3ParseStreams()
+{
+	int n_video = (int)m_videoStreamIds.size();
+	int n_audio = (int)m_audioStreamIds.size();
+	int n_text = (int)m_subtitleStreamIds.size();
+
+	eDebug("[eServiceMP3] playbin3: async-done - %d video, %d audio, %d subtitle", n_video, n_audio, n_text);
+
+	if (n_video + n_audio <= 0)
+	{
+		stop();
+		return;
+	}
+
+	/* streams already parsed in handleStreamCollection, just notify */
+	m_event((iPlayableService*)this, evUpdatedInfo);
+}
+
+void eServiceMP3::playbin3SelectStreams()
+{
+	GList *stream_list = NULL;
+
+	/* Always include first video stream */
+	if (!m_videoStreamIds.empty())
+		stream_list = g_list_append(stream_list, g_strdup(m_videoStreamIds[0].c_str()));
+
+	/* Include selected audio stream */
+	if (m_currentAudioStream >= 0 && m_currentAudioStream < (int)m_audioStreamIds.size())
+		stream_list = g_list_append(stream_list, g_strdup(m_audioStreamIds[m_currentAudioStream].c_str()));
+	else if (!m_audioStreamIds.empty())
+		stream_list = g_list_append(stream_list, g_strdup(m_audioStreamIds[0].c_str()));
+
+	/* Include selected subtitle stream */
+	if (m_currentSubtitleStream >= 0 && m_currentSubtitleStream < (int)m_subtitleStreamIds.size())
+		stream_list = g_list_append(stream_list, g_strdup(m_subtitleStreamIds[m_currentSubtitleStream].c_str()));
+
+	if (stream_list)
+	{
+		eDebug("[eServiceMP3] playbin3: sending SELECT_STREAMS event");
+		GstEvent *event = gst_event_new_select_streams(stream_list);
+		gst_element_send_event(m_gst_playbin, event);
+		g_list_free_full(stream_list, g_free);
+	}
+}
 
 void eServiceMP3::updateEpgCacheNowNext()
 {
@@ -1781,7 +1948,12 @@ int eServiceMP3::getNumberOfTracks()
 int eServiceMP3::getCurrentTrack()
 {
 	if (m_currentAudioStream == -1)
-		g_object_get (G_OBJECT (m_gst_playbin), "current-audio", &m_currentAudioStream, NULL);
+	{
+		if (!m_usePlaybin3)
+			g_object_get (G_OBJECT (m_gst_playbin), "current-audio", &m_currentAudioStream, NULL);
+		else
+			m_currentAudioStream = 0;
+	}
 	return m_currentAudioStream;
 }
 
@@ -1823,6 +1995,14 @@ void eServiceMP3::clearBuffers(bool force)
 
 int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 {
+	if (m_usePlaybin3)
+	{
+		m_currentAudioStream = i;
+		playbin3SelectStreams();
+		m_clear_buffers = true;
+		clearBuffers();
+		return 0;
+	}
 	int current_audio, current_audio_orig;
 	g_object_get (G_OBJECT (m_gst_playbin), "current-audio", &current_audio_orig, NULL);
 	g_object_set (G_OBJECT (m_gst_playbin), "current-audio", i, NULL);
@@ -2283,6 +2463,12 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 			HandleTocEntry(msg);
 			break;
 		}
+		case GST_MESSAGE_STREAM_COLLECTION:
+		{
+			if (m_usePlaybin3)
+				handleStreamCollection(msg);
+			break;
+		}
 		case GST_MESSAGE_ASYNC_DONE:
 		{
 			if(GST_MESSAGE_SRC(msg) != GST_OBJECT(m_gst_playbin))
@@ -2290,6 +2476,12 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 
 			if (m_send_ev_start)
 			{
+				if (m_usePlaybin3)
+				{
+					playbin3ParseStreams();
+				}
+				else
+				{
 				gint i, n_video = 0, n_audio = 0, n_text = 0;
 
 				g_object_get (m_gst_playbin, "n-video", &n_video, NULL);
@@ -2389,6 +2581,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 					eTrace("[eServiceMP3] evUpdatedInfo called for audiosubs");
 					m_event((iPlayableService*)this, evUpdatedInfo);
 				}
+				} /* end !m_usePlaybin3 */
 			}
 			else
 			{
@@ -2842,7 +3035,8 @@ void eServiceMP3::gstTextpadHasCAPS_synced(GstPad *pad)
 		{
 			GstTagList *tags = NULL;
 			gchar *g_lang = NULL;
-			g_signal_emit_by_name (m_gst_playbin, "get-text-tags", m_currentSubtitleStream, &tags);
+			if (!m_usePlaybin3)
+				g_signal_emit_by_name (m_gst_playbin, "get-text-tags", m_currentSubtitleStream, &tags);
 
 			subs.language_code = "und";
 			subs.type = getSubtitleType(pad);
@@ -3082,7 +3276,8 @@ RESULT eServiceMP3::enableSubtitles(iSubtitleUser *user, struct SubtitleTrack &t
 		return -1;
 	}
 	eDebug ("[eServiceMP3][enableSubtitles] entered: subtitle stream %i track.pid %i", m_currentSubtitleStream, track.pid - 1);
-	g_object_set (G_OBJECT (m_gst_playbin), "current-text", -1, NULL);
+	if (!m_usePlaybin3)
+		g_object_set (G_OBJECT (m_gst_playbin), "current-text", -1, NULL);
 	m_subtitle_sync_timer->stop();
 	m_dvb_subtitle_sync_timer->stop();
 	m_dvb_subtitle_pages.clear();
@@ -3092,7 +3287,10 @@ RESULT eServiceMP3::enableSubtitles(iSubtitleUser *user, struct SubtitleTrack &t
 	m_currentSubtitleStream = track.pid - 1;
 	m_cachedSubtitleStream = m_currentSubtitleStream;
 	setCacheEntry(false, track.pid - 1);
-	g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
+	if (m_usePlaybin3)
+		playbin3SelectStreams();
+	else
+		g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
 
 	if (track.type != stDVB)
 	{
@@ -3121,7 +3319,10 @@ RESULT eServiceMP3::disableSubtitles()
 	m_currentSubtitleStream = -1;
 	m_cachedSubtitleStream = m_currentSubtitleStream;
 	setCacheEntry(false, -1);
-	g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
+	if (m_usePlaybin3)
+		playbin3SelectStreams();
+	else
+		g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
 	m_subtitle_sync_timer->stop();
 	m_dvb_subtitle_sync_timer->stop();
 	m_subtitle_pages.clear();
