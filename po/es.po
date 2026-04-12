@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-14 20:45+0100\n"
-"PO-Revision-Date: 2025-12-24 10:19+0100\n"
+"POT-Creation-Date: 2026-04-11 11:37+0200\n"
+"PO-Revision-Date: 2026-04-12 14:36+0200\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: www.CostaBlancaTranslations.com <maria@CostaBlancaTranslations.com>\n"
 "Language: es\n"
@@ -68,11 +68,11 @@ msgstr "  (%s x %s)"
 
 #
 msgid " (+5 volt terrestrial)"
-msgstr "(terrestre  de +5 voltios)"
+msgstr " (terrestre de +5 voltios)"
 
 #
 msgid " (0 - all networks)"
-msgstr "(0 - todas las redes)"
+msgstr " (0 - todas las redes)"
 
 #, python-format
 msgid " (Channel %s)"
@@ -80,20 +80,20 @@ msgstr " (Canal %s)"
 
 #
 msgid " (auto detection)"
-msgstr "(detección automática)"
+msgstr " (detección automática)"
 
 #
 msgid " (disabled)"
-msgstr "(desactivado)"
+msgstr " (desactivado)"
 
 msgid " (higher than any auto)"
-msgstr "(más alto que cualquier auto)"
+msgstr " (más alto que cualquier auto)"
 
 msgid " (higher than rotor any auto)"
-msgstr "(más alto que el rotor auto)"
+msgstr " (más alto que el rotor auto)"
 
 msgid " (lower than any auto)"
-msgstr "(menos alto que cualquier auto)"
+msgstr " (menos alto que cualquier auto)"
 
 msgid " - Unicable/JESS LNBs not found"
 msgstr " - Ningún LNB de tipo Unicable/JESS encontrado"
@@ -110,16 +110,16 @@ msgid " - video1"
 msgstr " - video1"
 
 msgid " Press 'Menu' to select a storage device - none available"
-msgstr "Presione 'Menú' para seleccionar un dispositivo de almacenamiento (no hay ninguno disponible)"
+msgstr " Presione 'Menú' para seleccionar un dispositivo de almacenamiento (no hay ninguno disponible)"
 
 msgid " Warning: the selected tuner should not use SCR Unicable type for LNBs because each tuner need a own SCR number."
-msgstr "Consejo: el sintonizador seleccionado no debe utilizar el tipo SCR Unicable para LNB porque cada sintonizador necesita un número SCR propio."
+msgstr " Consejo: el sintonizador seleccionado no debe utilizar el tipo SCR Unicable para LNB porque cada sintonizador necesita un número SCR propio."
 
 msgid " and"
 msgstr " y"
 
 msgid " unicable LNB input of rotor"
-msgstr "Entrada LNB unicable del rotor"
+msgstr " entrada LNB unicable del rotor"
 
 #
 msgid "%-H:%M"
@@ -791,7 +791,7 @@ msgstr[1] "%d grabaciones"
 msgid "%d channel found"
 msgid_plural "%d channels found"
 msgstr[0] "%d canal encontrado"
-msgstr[1] "¡%d canales encontrados!"
+msgstr[1] "%d canales encontrados"
 
 #
 #, python-format
@@ -821,7 +821,7 @@ msgstr "%d artículos"
 msgid "%d job is running in the background!"
 msgid_plural "%d jobs are running in the background!"
 msgstr[0] "%d acción ejecutándose en segundo plano!"
-msgstr[1] "%d acciones ejecutándose en segundo plano."
+msgstr[1] "%d acciones ejecutándose en segundo plano!"
 
 #
 #, python-format
@@ -835,12 +835,6 @@ msgstr "%d elemento marcado"
 #, python-format
 msgid "%d marked items"
 msgstr "%d elementos marcados"
-
-#, python-format
-msgid "%d millisecond"
-msgid_plural "%d milliseconds"
-msgstr[0] "%d milisegundo"
-msgstr[1] "%d milisegundos"
 
 #
 #, python-format
@@ -980,10 +974,6 @@ msgid "%m/%d/%Y"
 msgstr "%m/%d/%Y"
 
 #, python-format
-msgid "%s"
-msgstr "%s"
-
-#, python-format
 msgid "%s %s advanced remote control (native)"
 msgstr "Mando avanzando de %s %s (nativo)"
 
@@ -1082,7 +1072,7 @@ msgstr ""
 msgid "%s updated package available"
 msgid_plural "%s updated packages available"
 msgstr[0] "%s paquete reciente disponible"
-msgstr[1] "%s paquetes recientes disponibles."
+msgstr[1] "%s paquetes recientes disponibles"
 
 #
 #, python-format
@@ -1106,18 +1096,10 @@ msgstr "%s%s(Defecto: %s)"
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
 
-#, python-format
-msgid "%s: "
-msgstr "%s: "
-
-#, python-format
-msgid "%s?"
-msgstr "%s?"
-
 #
 #, python-format
 msgid "'%s' already exists"
-msgstr "'%s' ya existe."
+msgstr "'%s' ya existe"
 
 msgid "'Network peer' automatically detects other Enigma2 receivers on the local network. You can also manually enter the URL or IP address."
 msgstr "'Network peer' detecta automáticamente otros receptores Enigma2 en la red local. También puede ingresar manualmente la URL o la dirección IP."
@@ -1255,7 +1237,7 @@ msgid "1,1"
 msgstr "1,1"
 
 msgid "1. Try to reboot the box and check if this warning disappears"
-msgstr "1. Intente reiniciar el deco y verifique si esta advertencia desaparece."
+msgstr "1. Intente reiniciar el deco y verifique si esta advertencia desaparece"
 
 #
 msgid "1.0"
@@ -1472,13 +1454,13 @@ msgid "6"
 msgstr "6"
 
 msgid "6. Then enter '/etc/init.d/kexec-multiboot-recovery start' "
-msgstr "6. Después ingrese '/etc/init.d/kexec-multiboot-recovery start'"
+msgstr "6. Después ingrese '/etc/init.d/kexec-multiboot-recovery start' "
 
 msgid "64 Mb"
 msgstr "64 Mb"
 
 msgid "7. The script will copy the required files and then will automatically reboot the box"
-msgstr "7. El script copiará los archivos necesarios y después reiniciará automáticamente el deco."
+msgstr "7. El script copiará los archivos necesarios y después reiniciará automáticamente el deco"
 
 msgid "756 Mb"
 msgstr "756Mb"
@@ -1542,9 +1524,6 @@ msgstr "?%s?"
 #
 msgid "A"
 msgstr "A"
-
-msgid "AC3+ Passthrough audio fix"
-msgstr "Solución alternativa para el audio de paso AC3+"
 
 msgid ""
 "A background update check is in progress,\n"
@@ -1740,6 +1719,9 @@ msgstr "Mezcla descendente AC3"
 msgid "AC3 transcoding"
 msgstr "Transcodificación AC3"
 
+msgid "AC3+ Passthrough audio fix"
+msgstr "Solución alternativa para el audio de paso AC3+"
+
 msgid "ACQUIRING TSID/ONID"
 msgstr "ADQUIRIENDO TSID/ONID"
 
@@ -1791,15 +1773,15 @@ msgstr "Abortar"
 
 #
 msgid "Abort alternatives edit"
-msgstr "Abortar la edición de alternativas."
+msgstr "Abortar la edición de alternativas"
 
 #
 msgid "Abort bouquet edit"
-msgstr "Abortar la edición de grupo."
+msgstr "Abortar la edición de grupo"
 
 #
 msgid "Abort favourites edit"
-msgstr "Abortar la edición de favoritos."
+msgstr "Abortar la edición de favoritos"
 
 #
 msgid "About"
@@ -1814,7 +1796,7 @@ msgid "Accept the current selection"
 msgstr "Aceptar la selección actual"
 
 msgid "Access extensions"
-msgstr "Acceso extensiones."
+msgstr "Acceso extensiones"
 
 #
 msgid "Accesspoint:"
@@ -1905,13 +1887,13 @@ msgid "Add a new title"
 msgstr "Añadir un nuevo título"
 
 msgid "Add a record timer"
-msgstr "Añadir un temporizador de grabaciónl."
+msgstr "Añadir un temporizador de grabación"
 
 msgid "Add a record timer for current event"
 msgstr "Añadir un temporizador de grabación para el programa actual"
 
 msgid "Add a record timer or an autotimer for current event"
-msgstr "Añadir un temporizador o autotemporizador para el programa actual."
+msgstr "Añadir un temporizador o autotemporizador para el programa actual"
 
 #
 msgid "Add a service or stream to the current bouquet"
@@ -1987,7 +1969,7 @@ msgstr "Añadir canal a favoritos"
 
 #
 msgid "Add services to this bouquet?"
-msgstr "Añadir canales al grupo"
+msgstr "¿Añade canales al grupo?"
 
 #
 msgid "Add the currently selected service to a bouquet"
@@ -2018,7 +2000,7 @@ msgid "Add to parental protection"
 msgstr "Añadir a protección paterna"
 
 msgid "Add/Edit an autotimer for current event"
-msgstr "Añadir/Editar autotemporizador para el programa actual."
+msgstr "Añadir/Editar autotemporizador para el programa actual"
 
 msgid "Add/Remove timer for current event"
 msgstr "Añadir/eliminar temporizador para el programa actual"
@@ -2185,7 +2167,7 @@ msgid "Allow unstable (experimental) updates"
 msgstr "Permitir actualizaciones inestables (experimentales)"
 
 msgid "Allows swapping between oe-alliance/branding or oe-alliance/remotes for button position mapping and rc graphic."
-msgstr "Permite cambiar entre oe-alliance/branding o oe-alliance/remotes para asignar la posición de los botones y el gráfico del mando"
+msgstr "Permite cambiar entre oe-alliance/branding o oe-alliance/remotes para asignar la posición de los botones y el gráfico del mando."
 
 msgid "Allows the %s %s to load the saved EPG data regularly."
 msgstr "Permite que la %s %s cargar los datos grabados en el EPG periódicamente."
@@ -2347,7 +2329,7 @@ msgid "Animation"
 msgstr "Animación"
 
 msgid "Animation Speed"
-msgstr "Velocidad de animación."
+msgstr "Velocidad de animación"
 
 #
 msgid "Animations"
@@ -2415,9 +2397,7 @@ msgstr "¿Seguro que quieres borrar todos los historiales seleccionados?\n"
 
 #
 msgid "Are you sure you want to delete image:"
-msgstr ""
-"¿Seguro que quieres borrar la imagen?\n"
-" "
+msgstr "¿Seguro que quieres borrar la imagen?"
 
 msgid "Are you sure you want to delete the EPG data from:\n"
 msgstr "¿Seguro que quieres volver a borrar los datos EPG de...?\n"
@@ -2454,9 +2434,7 @@ msgstr "¿Seguro que quieres salir de este asistente?"
 
 #
 msgid "Are you sure you want to overwrite the Recovery image?"
-msgstr ""
-"¿Seguro de que desea sobrescribir la imagen de recuperación?\n"
-" "
+msgstr "¿Seguro de que desea sobrescribir la imagen de recuperación?"
 
 msgid "Are you sure you want to reload the EPG data from:\n"
 msgstr "¿Seguro que quieres volver a cargar los datos EPG de...?\n"
@@ -2763,7 +2741,7 @@ msgid "Available format variables"
 msgstr "Variables de formato disponibles"
 
 msgid "Available locales are:"
-msgstr "Locales disponibles"
+msgstr "Locales disponibles:"
 
 msgid "Available shares:"
 msgstr "Intercambios disponibles:"
@@ -3699,7 +3677,7 @@ msgid "Checking ONID/TSID"
 msgstr "Comprobando ONID/TSID"
 
 msgid "Checking disk."
-msgstr "Comprobando disco"
+msgstr "Comprobando disco."
 
 #
 msgid "Checking filesystem..."
@@ -5942,6 +5920,9 @@ msgstr "Abajo"
 msgid "Download"
 msgstr "Descargar"
 
+msgid "Download and install any packages that have been updated since the last software update was performed."
+msgstr "Descargue e instale todos los paquetes que se hayan actualizado desde la última actualización de software."
+
 msgid "Download confirmation"
 msgstr "Confirmación de descarga"
 
@@ -6402,6 +6383,9 @@ msgstr "Activado"
 
 msgid "Enabled *"
 msgstr "Activado *"
+
+msgid "Enabled/Disable audio passthrough fix."
+msgstr "Activar/Desactivar solución alternativa para el audio de paso."
 
 #
 msgid "Encrypted TV"
@@ -8850,8 +8834,8 @@ msgstr "Israel"
 msgid "It allows making changes to the box with the knowledge that the box can be safely reverted back to a previous known working state."
 msgstr "Permite realizar cambios en la caja con la certeza de que esta puede volver de forma segura a un estado de funcionamiento previo conocido."
 
-msgid "It seems you have hit your API limit - please try again later."
-msgstr "Parece que ha alcanzado su límite de API: inténtelo nuevamente más tarde."
+msgid "It seems you have hit your API limit - please try again later.\n"
+msgstr "Parece que ha alcanzado su límite de API: inténtelo nuevamente más tarde.\n"
 
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
 msgstr "No has configurado una locación adicional. Elige una en el menú del administrador de copias"
@@ -9531,6 +9515,9 @@ msgstr "Menú principal"
 msgid "Maintain old EPG data for"
 msgstr "Conservar los datos antiguos del EPG"
 
+msgid "Make a full image backup if you want save an exact copy of your current image and its configuration."
+msgstr "Realiza una copia de seguridad completa de la imagen si desea guardar una copia exacta de su imagen actual y su configuración."
+
 msgid "Make settings backup"
 msgstr "Hacer una copia de seguridad de la configuración"
 
@@ -9545,6 +9532,9 @@ msgstr "Convertir marca en punto de salida"
 #
 msgid "Make this mark just a mark"
 msgstr "Convertir en marca normal"
+
+msgid "Making a settings backup is advised before doing a software update and can be used later should a full reflash be required."
+msgstr "Se recomienda realizar una copia de seguridad de la configuración antes de actualizar el software, ya que podrá utilizarse posteriormente en caso de que sea necesario reinstalar el sistema operativo por completo."
 
 msgid "Making a settings backup before updating is highly recommended."
 msgstr "Es muy recomendable realizar una copia de seguridad de la configuración antes de actualizar."
@@ -9639,6 +9629,9 @@ msgstr "Max copias de seguridad de imagen para mantener (0 == todas)"
 #
 msgid "Max memory positions"
 msgstr "Posiciones máximas de memoria"
+
+msgid "Max pages to retrieve"
+msgstr "Max páginas a cargar"
 
 #
 msgid "Max. bitrate: "
@@ -10690,6 +10683,9 @@ msgstr "Ningún módulo encontrado."
 msgid "No networks found"
 msgstr "No se han encontrado redes."
 
+msgid "No new commits found on this repository."
+msgstr "No se encontraron nuevos commits en este repositorio."
+
 msgid "No of items switch (increase or reduced)"
 msgstr "Nº de elementos intercambiados (aumentar o reducir)"
 
@@ -11412,12 +11408,6 @@ msgstr "Partición: %s Montaje: %s desmontado exitosamente; si ahora todas las p
 
 msgid "Passthrough"
 msgstr "Paso directo"
-
-msgid "Passthrough audio handling delay AC3"
-msgstr "Retardo en el manejo del audio de paso AC3"
-
-msgid "Passthrough audio handling delay AC3+"
-msgstr "Retardo en el manejo del audio de paso AC3+"
 
 #
 msgid "Password"
@@ -12400,6 +12390,9 @@ msgid ""
 msgstr ""
 "Problema al recuperar la lista de actualizaciones.\n"
 "Si el problema persiste, verifique o informe en el foro"
+
+msgid "Processing"
+msgstr "Procesando"
 
 #, python-format
 msgid "Processor temperature:\t%s"
@@ -16893,9 +16886,6 @@ msgstr "El destino elegido no existe. Se usará /media/hdd"
 msgid "The command to wake from standby will be sent multiple times."
 msgstr "El comando para reactivar el dispositivo desde el modo de espera se enviará varias veces."
 
-msgid "The commit log cannot be retrieved at the moment - please try again later."
-msgstr "No se puede recuperar el registro de commits en este momento: inténtelo nuevamente más tarde."
-
 msgid "The commit log cannot be retrieved at the moment - please try again later.\n"
 msgstr "No se puede recuperar el registro de commits en este momento: inténtelo nuevamente más tarde.\n"
 
@@ -17093,6 +17083,9 @@ msgstr "Este archivo fuerza la actualización."
 
 msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr "Este es un sintonizador multitipo. Las opciones disponibles dependen del hardware."
+
+msgid "This is the number of pages to download per repository being interogated. More pages shows more commits, but, bear in mind that Github API has a limit of 60 pages per hour."
+msgstr "Este es el número máximo de páginas que se descargarán por cada repositorio consultado. Cuantas más páginas se descarguen, más comentarios habrá, pero ten en cuenta que la API de GitHub tiene un límite de 60 páginas por hora."
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
 msgstr "Este es el orden en el que se envían los comandos DiSEqC al sistema de antena. El orden debe corresponder exactamente con el orden en el que se disponen los dispositivos físicos a lo largo del cable de señal (empezando por el extremo del receptor)."
@@ -18034,6 +18027,9 @@ msgstr "Intervalo de actualización (en segundos)."
 msgid "Update packages..."
 msgstr "Actualizar paquetes"
 
+msgid "Update to the newest version of any channel list package previously downloaded from the feeds. No other changes will be made."
+msgstr "Actualiza a la versión más reciente de cualquier paquete de lista de canales previamente descargado de las fuentes. No se realizarán otros cambios."
+
 #
 msgid "Updating Cache"
 msgstr "Actualizando caché"
@@ -18268,12 +18264,6 @@ msgstr "Usar la papelera en la lista de películas."
 #
 msgid "Used service scan type"
 msgstr "Tipo de búsqueda de canales usada."
-
-msgid "Used to specify delay when switching between services and AC3 passthrough is enabled."
-msgstr "Se utiliza para especificar el retraso cuando se cambia entre servicios y se habilita el paso directo AC3."
-
-msgid "Used to specify delay when switching between services and AC3+/Atmos passthrough is enabled."
-msgstr "Se utiliza para especificar el retraso cuando se cambia entre servicios y se habilita el paso directo AC3+/Atmos."
 
 msgid "Used:"
 msgstr "Utilizado:"
@@ -18539,12 +18529,18 @@ msgstr "Ver fotos..."
 msgid "View progress"
 msgstr "Ver proceso"
 
+msgid "View repository history"
+msgstr "Ver historial del repositorio"
+
 #
 msgid "View teletext"
 msgstr "Ver teletexto"
 
-msgid "View the changes"
-msgstr "Ver cambios"
+msgid "View the history of the principal repositories. These show up to the minute changes but may not reflect the exact state of any new build."
+msgstr "Consulta el historial de los repositorios principales. Estos muestran los cambios actualizados al minuto, pero es posible que no reflejen el estado exacto de las nuevas compilaciones."
+
+msgid "View the list of packages which have newer versions and are marked for updating."
+msgstr "Consulta la lista de paquetes que tienen versiones más recientes y que están marcados para su actualización."
 
 #
 msgid "View video CD..."
