@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-10 01:22+0300\n"
-"PO-Revision-Date: 2026-04-10 10:25+0300\n"
+"PO-Revision-Date: 2026-04-12 16:58+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -5853,9 +5853,6 @@ msgstr "Suosikkien järjestely"
 msgid "Enable multiple bouquets"
 msgstr "Salli useiden suosikkilistojen luonti ja käyttö"
 
-msgid "Enable new GStreamer playback"
-msgstr "Ota käyttöön uusi GStreamer-toisto"
-
 msgid "Enable or disable client mode."
 msgstr "Salli tai estä 'client moodi'."
 
@@ -7654,9 +7651,6 @@ msgstr "Jos päällä, CEC-protokollan liikenteestä pidetään lokia ('hdmicec.
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
 msgstr "Jos päällä, näytössä näytetään 12 merkkiä 8 sijaan, mutta vain latin-1 -käännöksenä."
 
-msgid "If enabled, the new GStreamer playback engine will be used."
-msgstr "Jos päällä, käytetään uutta GStreamer-ohjelmakoodia"
-
 msgid "If set to 'Standard' number buttons page up/down/left/right."
 msgstr "Jos asetettu vakioksi, numeronäppäimet sivu ylös/alas/vasemmalle/oikealle."
 
@@ -8822,7 +8816,7 @@ msgstr "Tee tästä merkistä lopetuspiste"
 msgid "Make this mark just a mark"
 msgstr "Tee tästä tavallinen merkki"
 
-msgid "Making a settings back is advised before doing a software update and can be used later should a full reflash be required."
+msgid "Making a settings backup is advised before doing a software update and can be used later should a full reflash be required."
 msgstr "Asetusten varmuuskopiointi on suositeltavaa ennen ohjelmistopäivityksen suorittamista, ja sitä voidaan käyttää myöhemmin, jos laitteen täydellinen uudelleen flashaus tarvitaan."
 
 msgid "Making a settings backup before updating is highly recommended."
@@ -15202,7 +15196,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 10.04.2026 ---\n"
+"--- 12.04.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
