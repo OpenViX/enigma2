@@ -134,7 +134,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		self.options = {
 			"changes": (_("View repository history"), "changes", _("View the history of the principal repositories. These show up to the minute changes but may not reflect the exact state of any new build.")),
 			"cold": (_("Upgrade and reboot system"), "cold", _("Download and install any packages that have been updated since the last software update was performed.")),
-			"backup": (_("Perform a settings backup"), "backup", _("Making a settings back is advised before doing a software update and can be used later should a full reflash be required.")),
+			"backup": (_("Perform a settings backup"), "backup", _("Making a settings backup is advised before doing a software update and can be used later should a full reflash be required.")),
 			"imagebackup": (_("Perform a full image backup"), "imagebackup", _("Make a full image backup if you want save an exact copy of your current image and its configuration.")),
 			"channels": (_("Update channel list only"), "channels", _("Update to the newest version of any channel list package previously downloaded from the feeds. No other changes will be made.")),
 			"showlist": (_("Show packages to be updated"), "showlist", _("View the list of packages which have newer versions and are marked for updating.")),
