@@ -975,7 +975,29 @@ void eServiceMP3::handleStreamCollection(GstMessage *msg)
 		else if (stype & GST_STREAM_TYPE_VIDEO)
 		{
 			m_videoStreamIds.push_back(std::string(stream_id));
-			eDebug("[eServiceMP3] playbin3: video stream id=%s", stream_id);
+			GstCaps *caps = gst_stream_get_caps(stream);
+			if (caps)
+			{
+				GstStructure *str = gst_caps_get_structure(caps, 0);
+				const gchar *g_type = gst_structure_get_name(str);
+				eDebug("[eServiceMP3] playbin3: video stream id=%s caps=%s", stream_id, g_type ? g_type : "(null)");
+				gst_caps_unref(caps);
+			}
+			else
+			{
+				eDebug("[eServiceMP3] playbin3: video stream id=%s caps=(none)", stream_id);
+			}
+			GstTagList *tags = gst_stream_get_tags(stream);
+			if (tags && GST_IS_TAG_LIST(tags))
+			{
+				gchar *g_codec = NULL;
+				if (gst_tag_list_get_string(tags, GST_TAG_VIDEO_CODEC, &g_codec))
+				{
+					eDebug("[eServiceMP3] playbin3: video codec=%s", g_codec);
+					g_free(g_codec);
+				}
+				gst_tag_list_unref(tags);
+			}
 		}
 		else if (stype & GST_STREAM_TYPE_TEXT)
 		{
@@ -1039,6 +1061,9 @@ void eServiceMP3::playbin3ParseStreams()
 		stop();
 		return;
 	}
+
+	/* send SELECT_STREAMS early so playbin3 creates decoder/sink elements */
+	playbin3SelectStreams();
 
 	/* streams already parsed in handleStreamCollection, just notify */
 	m_event((iPlayableService*)this, evUpdatedInfo);
@@ -2235,6 +2260,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 					{
 						audioSink = GST_ELEMENT_CAST(g_value_dup_object(&result));
 						g_value_unset(&result);
+						eDebug("[eServiceMP3] found audioSink at READY_TO_PAUSED");
 					}
 					gst_iterator_free(children);
 					children = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
@@ -2242,6 +2268,11 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 					{
 						videoSink = GST_ELEMENT_CAST(g_value_dup_object(&result));
 						g_value_unset(&result);
+						eDebug("[eServiceMP3] found videoSink at READY_TO_PAUSED");
+					}
+					else
+					{
+						eDebug("[eServiceMP3] videoSink not found at READY_TO_PAUSED%s", m_usePlaybin3 ? " (playbin3: will retry later)" : "");
 					}
 					gst_iterator_free(children);
 
@@ -2257,7 +2288,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						loadCuesheet();
 					updateEpgCacheNowNext();
 
-					if (!videoSink || m_ref.getData(0) == 2) // show radio pic
+					if ((!videoSink && !m_usePlaybin3) || m_ref.getData(0) == 2) // show radio pic (skip for playbin3, sinks may arrive later)
 					{
 						bool showRadioBackground = eConfigManager::getConfigBoolValue("config.misc.showradiopic", true);
 						std::string radio_pic = eConfigManager::getConfigValue(showRadioBackground ? "config.misc.radiopic" : "config.misc.blackradiopic");
@@ -2269,6 +2300,36 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 				case GST_STATE_CHANGE_PAUSED_TO_PLAYING:
 				{
 					m_paused = false;
+					if (m_usePlaybin3 && !videoSink)
+					{
+						/* playbin3: sinks may not be available at READY_TO_PAUSED, retry here */
+						GValue result = { 0, };
+						GstIterator *children = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
+						if (gst_iterator_find_custom(children, (GCompareFunc)match_sinktype, &result, (gpointer)"GstDVBVideoSink"))
+						{
+							videoSink = GST_ELEMENT_CAST(g_value_dup_object(&result));
+							g_value_unset(&result);
+							eDebug("[eServiceMP3] playbin3: found videoSink at PAUSED_TO_PLAYING");
+						}
+						else
+						{
+							eDebug("[eServiceMP3] playbin3: videoSink still not found at PAUSED_TO_PLAYING");
+						}
+						gst_iterator_free(children);
+						if (!audioSink)
+						{
+							children = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
+							if (gst_iterator_find_custom(children, (GCompareFunc)match_sinktype, &result, (gpointer)"GstDVBAudioSink"))
+							{
+								audioSink = GST_ELEMENT_CAST(g_value_dup_object(&result));
+								g_value_unset(&result);
+								eDebug("[eServiceMP3] playbin3: found audioSink at PAUSED_TO_PLAYING");
+							}
+							gst_iterator_free(children);
+						}
+						setAC3Delay(ac3_delay);
+						setPCMDelay(pcm_delay);
+					}
 					if (m_currentAudioStream < 0)
 					{
 						unsigned int autoaudio = 0;
