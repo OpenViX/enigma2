@@ -2530,6 +2530,46 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 				handleStreamCollection(msg);
 			break;
 		}
+		case GST_MESSAGE_STREAMS_SELECTED:
+		{
+			if (m_usePlaybin3)
+			{
+				eDebug("[eServiceMP3] playbin3: streams-selected received");
+				GValue result = { 0, };
+				if (!videoSink)
+				{
+					GstIterator *children = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
+					if (gst_iterator_find_custom(children, (GCompareFunc)match_sinktype, &result, (gpointer)"GstDVBVideoSink"))
+					{
+						videoSink = GST_ELEMENT_CAST(g_value_dup_object(&result));
+						g_value_unset(&result);
+						eDebug("[eServiceMP3] playbin3: found videoSink at STREAMS_SELECTED");
+					}
+					else
+					{
+						eDebug("[eServiceMP3] playbin3: videoSink not found at STREAMS_SELECTED");
+					}
+					gst_iterator_free(children);
+				}
+				if (!audioSink)
+				{
+					GstIterator *children = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
+					if (gst_iterator_find_custom(children, (GCompareFunc)match_sinktype, &result, (gpointer)"GstDVBAudioSink"))
+					{
+						audioSink = GST_ELEMENT_CAST(g_value_dup_object(&result));
+						g_value_unset(&result);
+						eDebug("[eServiceMP3] playbin3: found audioSink at STREAMS_SELECTED");
+					}
+					gst_iterator_free(children);
+				}
+				if (videoSink || audioSink)
+				{
+					setAC3Delay(ac3_delay);
+					setPCMDelay(pcm_delay);
+				}
+			}
+			break;
+		}
 		case GST_MESSAGE_ASYNC_DONE:
 		{
 			if(GST_MESSAGE_SRC(msg) != GST_OBJECT(m_gst_playbin))
