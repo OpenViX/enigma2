@@ -1084,8 +1084,10 @@ void eServiceMP3::playbin3ParseStreams()
 		return;
 	}
 
-	/* send SELECT_STREAMS early so playbin3 creates decoder/sink elements */
-	playbin3SelectStreams();
+	/* SELECT_STREAMS already sent at stream-collection time.
+	   Do not resend here — a duplicate SELECT_STREAMS while the
+	   pipeline is prerolling causes uridecodebin3 to flush/reconfigure,
+	   which triggers "Internal data stream error" from souphttpsrc. */
 
 	/* streams already parsed in handleStreamCollection, just notify */
 	m_event((iPlayableService*)this, evUpdatedInfo);
