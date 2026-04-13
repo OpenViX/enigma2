@@ -802,6 +802,24 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		}
 		g_object_set (G_OBJECT (m_gst_playbin), "flags", flags, NULL);
 		g_object_set (G_OBJECT (m_gst_playbin), "uri", uri, NULL);
+		if (m_usePlaybin3)
+		{
+			/* playbin3/decodebin3 may not auto-discover dvbmediasink elements
+			   via caps negotiation. Set sinks explicitly so decodebin3 builds
+			   the correct decoder chain from the start. */
+			GstElement *vsink = gst_element_factory_make("dvbvideosink", "dvbvideosink0");
+			if (vsink)
+			{
+				g_object_set(G_OBJECT(m_gst_playbin), "video-sink", vsink, NULL);
+				eDebug("[eServiceMP3] playbin3: set explicit video-sink (dvbvideosink)");
+			}
+			GstElement *asink = gst_element_factory_make("dvbaudiosink", "dvbaudiosink0");
+			if (asink)
+			{
+				g_object_set(G_OBJECT(m_gst_playbin), "audio-sink", asink, NULL);
+				eDebug("[eServiceMP3] playbin3: set explicit audio-sink (dvbaudiosink)");
+			}
+		}
 		GstElement *subsink = gst_element_factory_make("subsink", "subtitle_sink");
 		if (!subsink)
 			eDebug("[eServiceMP3] sorry, can't play: missing gst-plugin-subsink");
