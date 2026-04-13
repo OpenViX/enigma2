@@ -494,6 +494,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 {
 	m_subtitle_sync_timer = eTimer::create(eApp);
 	m_dvb_subtitle_sync_timer = eTimer::create(eApp);
+	m_playbin3_sink_retry_timer = eTimer::create(eApp);
 	m_dvb_subtitle_parser = new eDVBSubtitleParser();
 	m_dvb_subtitle_parser->connectNewPage(sigc::mem_fun(*this, &eServiceMP3::newDVBSubtitlePage), m_new_dvb_subtitle_page_connection);
 #ifdef PASSTHROUGH_FIX
@@ -554,6 +555,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 #ifdef PASSTHROUGH_FIX
 	CONNECT(m_passthrough_fix_timer->timeout, eServiceMP3::forceAudioReset);
 #endif
+	CONNECT(m_playbin3_sink_retry_timer->timeout, eServiceMP3::playbin3RetryVideoSink);
 
 	m_aspect = m_width = m_height = m_framerate = m_progressive = m_gamma = -1;
 
@@ -1046,6 +1048,10 @@ void eServiceMP3::handleStreamCollection(GstMessage *msg)
 		}
 	}
 	gst_object_unref(collection);
+
+	/* send SELECT_STREAMS immediately so decodebin3 starts building the
+	   decoder/sink chain before the pipeline reaches PAUSED state */
+	playbin3SelectStreams();
 }
 
 void eServiceMP3::playbin3ParseStreams()
@@ -1094,6 +1100,27 @@ void eServiceMP3::playbin3SelectStreams()
 		gst_element_send_event(m_gst_playbin, event);
 		g_list_free_full(stream_list, g_free);
 	}
+}
+
+void eServiceMP3::playbin3RetryVideoSink()
+{
+	if (videoSink)
+		return;
+	GValue result = { 0, };
+	GstIterator *children = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
+	if (gst_iterator_find_custom(children, (GCompareFunc)match_sinktype, &result, (gpointer)"GstDVBVideoSink"))
+	{
+		videoSink = GST_ELEMENT_CAST(g_value_dup_object(&result));
+		g_value_unset(&result);
+		eDebug("[eServiceMP3] playbin3: found videoSink via deferred retry");
+		setAC3Delay(ac3_delay);
+		setPCMDelay(pcm_delay);
+	}
+	else
+	{
+		eDebug("[eServiceMP3] playbin3: videoSink still not found after deferred retry");
+	}
+	gst_iterator_free(children);
 }
 
 void eServiceMP3::updateEpgCacheNowNext()
@@ -2313,7 +2340,8 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						}
 						else
 						{
-							eDebug("[eServiceMP3] playbin3: videoSink still not found at PAUSED_TO_PLAYING");
+							eDebug("[eServiceMP3] playbin3: videoSink still not found at PAUSED_TO_PLAYING, scheduling retry");
+							m_playbin3_sink_retry_timer->start(500, true);
 						}
 						gst_iterator_free(children);
 						if (!audioSink)

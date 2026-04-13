@@ -311,6 +311,8 @@ private:
 	void handleStreamCollection(GstMessage *msg);
 	void playbin3ParseStreams();
 	void playbin3SelectStreams();
+	void playbin3RetryVideoSink();
+	ePtr<eTimer> m_playbin3_sink_retry_timer;
 
 	iSubtitleUser *m_subtitle_widget;
 	gdouble m_currentTrickRatio;
