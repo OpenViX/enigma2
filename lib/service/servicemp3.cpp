@@ -500,6 +500,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_passthrough_fix_timer = eTimer::create(eApp);
 #endif
 	m_usePlaybin3 = false;
+	m_selectStreamsSeqnum = GST_SEQNUM_INVALID;
 	m_stream_tags = 0;
 	m_currentAudioStream = -1;
 	m_currentSubtitleStream = -1;
@@ -1068,6 +1069,64 @@ void eServiceMP3::handleStreamCollection(GstMessage *msg)
 	}
 	gst_object_unref(collection);
 
+	/* Assume playbin3 will select the first stream of each type by default.
+	   Pre-populate m_currentStreamSelection so that playbin3SelectStreams()
+	   will skip sending a redundant SELECT_STREAMS if our auto-selection
+	   matches the default. A redundant SELECT_STREAMS causes playbin3 to
+	   reconfigure/flush, triggering "Internal data stream error" from
+	   souphttpsrc on live HTTP streams. */
+	m_currentStreamSelection.clear();
+	if (!m_videoStreamIds.empty())
+		m_currentStreamSelection.push_back(m_videoStreamIds[0]);
+	if (!m_audioStreamIds.empty())
+		m_currentStreamSelection.push_back(m_audioStreamIds[0]);
+
+	/* Apply auto-audio-language selection before the first SELECT_STREAMS,
+	   so the correct audio stream is included from the start.
+	   Doing this later (e.g. at PAUSED_TO_PLAYING) would require resending
+	   SELECT_STREAMS, which causes flushing and "Internal data stream error"
+	   from souphttpsrc on live streams. */
+	if (m_currentAudioStream < 0 && !m_audioStreams.empty())
+	{
+		unsigned int autoaudio = 0;
+		int autoaudio_level = 5;
+		std::string configvalue;
+		std::vector<std::string> autoaudio_languages;
+		configvalue = eConfigManager::getConfigValue("config.autolanguage.audio_autoselect1");
+		if (configvalue != "" && configvalue != "None")
+			autoaudio_languages.push_back(configvalue);
+		configvalue = eConfigManager::getConfigValue("config.autolanguage.audio_autoselect2");
+		if (configvalue != "" && configvalue != "None")
+			autoaudio_languages.push_back(configvalue);
+		configvalue = eConfigManager::getConfigValue("config.autolanguage.audio_autoselect3");
+		if (configvalue != "" && configvalue != "None")
+			autoaudio_languages.push_back(configvalue);
+		configvalue = eConfigManager::getConfigValue("config.autolanguage.audio_autoselect4");
+		if (configvalue != "" && configvalue != "None")
+			autoaudio_languages.push_back(configvalue);
+		for (unsigned int i = 0; i < m_audioStreams.size(); i++)
+		{
+			if (!m_audioStreams[i].language_code.empty())
+			{
+				int x = 1;
+				for (std::vector<std::string>::iterator it = autoaudio_languages.begin(); x < autoaudio_level && it != autoaudio_languages.end(); x++, it++)
+				{
+					if ((*it).find(m_audioStreams[i].language_code) != std::string::npos)
+					{
+						autoaudio = i;
+						autoaudio_level = x;
+						break;
+					}
+				}
+			}
+		}
+		m_currentAudioStream = (int)autoaudio;
+	}
+	else if (m_currentAudioStream < 0)
+	{
+		m_currentAudioStream = 0;
+	}
+
 	/* send SELECT_STREAMS immediately so decodebin3 starts building the
 	   decoder/sink chain before the pipeline reaches PAUSED state */
 	playbin3SelectStreams();
@@ -1098,29 +1157,43 @@ void eServiceMP3::playbin3ParseStreams()
 
 void eServiceMP3::playbin3SelectStreams()
 {
-	GList *stream_list = NULL;
+	std::vector<std::string> newSelection;
 
 	/* Always include first video stream */
 	if (!m_videoStreamIds.empty())
-		stream_list = g_list_append(stream_list, g_strdup(m_videoStreamIds[0].c_str()));
+		newSelection.push_back(m_videoStreamIds[0]);
 
 	/* Include selected audio stream */
 	if (m_currentAudioStream >= 0 && m_currentAudioStream < (int)m_audioStreamIds.size())
-		stream_list = g_list_append(stream_list, g_strdup(m_audioStreamIds[m_currentAudioStream].c_str()));
+		newSelection.push_back(m_audioStreamIds[m_currentAudioStream]);
 	else if (!m_audioStreamIds.empty())
-		stream_list = g_list_append(stream_list, g_strdup(m_audioStreamIds[0].c_str()));
+		newSelection.push_back(m_audioStreamIds[0]);
 
 	/* Include selected subtitle stream */
 	if (m_currentSubtitleStream >= 0 && m_currentSubtitleStream < (int)m_subtitleStreamIds.size())
-		stream_list = g_list_append(stream_list, g_strdup(m_subtitleStreamIds[m_currentSubtitleStream].c_str()));
+		newSelection.push_back(m_subtitleStreamIds[m_currentSubtitleStream]);
 
-	if (stream_list)
+	if (newSelection.empty())
+		return;
+
+	/* Avoid sending duplicate SELECT_STREAMS (GstPlay pattern) */
+	if (newSelection == m_currentStreamSelection)
 	{
-		eDebug("[eServiceMP3] playbin3: sending SELECT_STREAMS event");
-		GstEvent *event = gst_event_new_select_streams(stream_list);
-		gst_element_send_event(m_gst_playbin, event);
-		g_list_free_full(stream_list, g_free);
+		eDebug("[eServiceMP3] playbin3: stream selection unchanged, skipping SELECT_STREAMS");
+		return;
 	}
+
+	GList *stream_list = NULL;
+	for (const auto &id : newSelection)
+		stream_list = g_list_append(stream_list, g_strdup(id.c_str()));
+
+	eDebug("[eServiceMP3] playbin3: sending SELECT_STREAMS event");
+	GstEvent *event = gst_event_new_select_streams(stream_list);
+	m_selectStreamsSeqnum = gst_event_get_seqnum(event);
+	gst_element_send_event(m_gst_playbin, event);
+	g_list_free_full(stream_list, g_free);
+
+	m_currentStreamSelection = newSelection;
 }
 
 void eServiceMP3::updateEpgCacheNowNext()
@@ -2357,48 +2430,55 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						setAC3Delay(ac3_delay);
 						setPCMDelay(pcm_delay);
 					}
-					if (m_currentAudioStream < 0)
+					if (!m_usePlaybin3)
 					{
-						unsigned int autoaudio = 0;
-						int autoaudio_level = 5;
-						std::string configvalue;
-						std::vector<std::string> autoaudio_languages;
-						configvalue = eConfigManager::getConfigValue("config.autolanguage.audio_autoselect1");
-						if (configvalue != "" && configvalue != "None")
-							autoaudio_languages.push_back(configvalue);
-						configvalue = eConfigManager::getConfigValue("config.autolanguage.audio_autoselect2");
-						if (configvalue != "" && configvalue != "None")
-							autoaudio_languages.push_back(configvalue);
-						configvalue = eConfigManager::getConfigValue("config.autolanguage.audio_autoselect3");
-						if (configvalue != "" && configvalue != "None")
-							autoaudio_languages.push_back(configvalue);
-						configvalue = eConfigManager::getConfigValue("config.autolanguage.audio_autoselect4");
-						if (configvalue != "" && configvalue != "None")
-							autoaudio_languages.push_back(configvalue);
-						for (unsigned int i = 0; i < m_audioStreams.size(); i++)
+						/* playbin2: select audio stream now (uses current-audio property) */
+						if (m_currentAudioStream < 0)
 						{
-							if (!m_audioStreams[i].language_code.empty())
+							unsigned int autoaudio = 0;
+							int autoaudio_level = 5;
+							std::string configvalue;
+							std::vector<std::string> autoaudio_languages;
+							configvalue = eConfigManager::getConfigValue("config.autolanguage.audio_autoselect1");
+							if (configvalue != "" && configvalue != "None")
+								autoaudio_languages.push_back(configvalue);
+							configvalue = eConfigManager::getConfigValue("config.autolanguage.audio_autoselect2");
+							if (configvalue != "" && configvalue != "None")
+								autoaudio_languages.push_back(configvalue);
+							configvalue = eConfigManager::getConfigValue("config.autolanguage.audio_autoselect3");
+							if (configvalue != "" && configvalue != "None")
+								autoaudio_languages.push_back(configvalue);
+							configvalue = eConfigManager::getConfigValue("config.autolanguage.audio_autoselect4");
+							if (configvalue != "" && configvalue != "None")
+								autoaudio_languages.push_back(configvalue);
+							for (unsigned int i = 0; i < m_audioStreams.size(); i++)
 							{
-								int x = 1;
-								for (std::vector<std::string>::iterator it = autoaudio_languages.begin(); x < autoaudio_level && it != autoaudio_languages.end(); x++, it++)
+								if (!m_audioStreams[i].language_code.empty())
 								{
-									if ((*it).find(m_audioStreams[i].language_code) != std::string::npos)
+									int x = 1;
+									for (std::vector<std::string>::iterator it = autoaudio_languages.begin(); x < autoaudio_level && it != autoaudio_languages.end(); x++, it++)
 									{
-										autoaudio = i;
-										autoaudio_level = x;
-										break;
+										if ((*it).find(m_audioStreams[i].language_code) != std::string::npos)
+										{
+											autoaudio = i;
+											autoaudio_level = x;
+											break;
+										}
 									}
 								}
 							}
-						}
 
-						if (autoaudio)
-							selectAudioStream(autoaudio);
+							if (autoaudio)
+								selectAudioStream(autoaudio);
+						}
+						else
+						{
+							selectAudioStream(m_currentAudioStream);
+						}
 					}
-					else
-					{
-						selectAudioStream(m_currentAudioStream);
-					}
+					/* playbin3: audio was already selected in handleStreamCollection
+					   via playbin3SelectStreams(). Resending SELECT_STREAMS here
+					   would cause flushing that breaks live sources. */
 					m_clear_buffers = false;
 					if (!m_initial_start)
 					{
@@ -2561,7 +2641,13 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 		{
 			if (m_usePlaybin3)
 			{
-				eDebug("[eServiceMP3] playbin3: streams-selected received");
+				guint32 msgSeqnum = gst_message_get_seqnum(msg);
+				if (m_selectStreamsSeqnum != GST_SEQNUM_INVALID && msgSeqnum != m_selectStreamsSeqnum)
+				{
+					eDebug("[eServiceMP3] playbin3: streams-selected seqnum %u does not match expected %u, skipping", msgSeqnum, m_selectStreamsSeqnum);
+					break;
+				}
+				eDebug("[eServiceMP3] playbin3: streams-selected received (seqnum %u)", msgSeqnum);
 				GValue result = { 0, };
 				if (!videoSink)
 				{

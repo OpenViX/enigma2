@@ -308,6 +308,8 @@ private:
 	std::vector<std::string> m_audioStreamIds;
 	std::vector<std::string> m_subtitleStreamIds;
 	std::vector<std::string> m_videoStreamIds;
+	std::vector<std::string> m_currentStreamSelection;
+	guint32 m_selectStreamsSeqnum;
 	void handleStreamCollection(GstMessage *msg);
 	void playbin3ParseStreams();
 	void playbin3SelectStreams();
