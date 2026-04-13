@@ -2972,6 +2972,7 @@ void eServiceMP3::playbinSourceSetup(GstElement *playbin, GstElement *source, gp
 	eServiceMP3 *_this = (eServiceMP3*)user_data;
 	if (source)
 	{
+		eDebug("[eServiceMP3] playbin3: source-setup for %s", GST_ELEMENT_NAME(source));
 		_this->configureSource(source);
 	}
 }
