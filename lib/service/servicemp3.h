@@ -360,6 +360,8 @@ private:
 	GstPad* gstCreateSubtitleSink(eServiceMP3* _this, subtype_t type);
 	void gstPoll(ePtr<GstMessageContainer> const &);
 	static void playbinNotifySource(GObject *object, GParamSpec *unused, gpointer user_data);
+	static void playbinSourceSetup(GstElement *playbin, GstElement *source, gpointer user_data);
+	void configureSource(GstElement *source);
 /* TOC processing CVR */
 	void HandleTocEntry(GstMessage *msg);
 	static gint match_sinktype(const GValue *velement, const gchar *type);

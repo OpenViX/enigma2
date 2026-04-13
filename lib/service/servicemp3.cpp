@@ -780,7 +780,10 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 
 		if ( m_sourceinfo.is_streaming )
 		{
-			g_signal_connect (G_OBJECT (m_gst_playbin), "notify::source", G_CALLBACK (playbinNotifySource), this);
+			if (m_usePlaybin3)
+				g_signal_connect(G_OBJECT(m_gst_playbin), "source-setup", G_CALLBACK(playbinSourceSetup), this);
+			else
+				g_signal_connect(G_OBJECT(m_gst_playbin), "notify::source", G_CALLBACK(playbinNotifySource), this);
 			if (m_download_buffer_path != "")
 			{
 				/* use progressive download buffering */
@@ -2959,74 +2962,88 @@ void eServiceMP3::playbinNotifySource(GObject *object, GParamSpec *unused, gpoin
 	g_object_get(object, "source", &source, NULL);
 	if (source)
 	{
-		if (g_object_class_find_property(G_OBJECT_GET_CLASS(source), "timeout") != 0)
+		_this->configureSource(source);
+		gst_object_unref(source);
+	}
+}
+
+void eServiceMP3::playbinSourceSetup(GstElement *playbin, GstElement *source, gpointer user_data)
+{
+	eServiceMP3 *_this = (eServiceMP3*)user_data;
+	if (source)
+	{
+		_this->configureSource(source);
+	}
+}
+
+void eServiceMP3::configureSource(GstElement *source)
+{
+	if (g_object_class_find_property(G_OBJECT_GET_CLASS(source), "timeout") != 0)
+	{
+		GstElementFactory *factory = gst_element_get_factory(source);
+		if (factory)
 		{
-			GstElementFactory *factory = gst_element_get_factory(source);
-			if (factory)
+			const gchar *sourcename = gst_plugin_feature_get_name(GST_PLUGIN_FEATURE(factory));
+			if (!strcmp(sourcename, "souphttpsrc"))
 			{
-				const gchar *sourcename = gst_plugin_feature_get_name(GST_PLUGIN_FEATURE(factory));
-				if (!strcmp(sourcename, "souphttpsrc"))
-				{
-					g_object_set(G_OBJECT(source), "timeout", HTTP_TIMEOUT, NULL);
-					g_object_set(G_OBJECT(source), "retries", 20, NULL);
-				}
+				g_object_set(G_OBJECT(source), "timeout", HTTP_TIMEOUT, NULL);
+				g_object_set(G_OBJECT(source), "retries", 20, NULL);
 			}
 		}
-		if (g_object_class_find_property(G_OBJECT_GET_CLASS(source), "ssl-strict") != 0)
+	}
+	if (g_object_class_find_property(G_OBJECT_GET_CLASS(source), "ssl-strict") != 0)
+	{
+		g_object_set(G_OBJECT(source), "ssl-strict", FALSE, NULL);
+	}
+	if (g_object_class_find_property(G_OBJECT_GET_CLASS(source), "user-agent") != 0 && !m_useragent.empty())
+	{
+		g_object_set(G_OBJECT(source), "user-agent", m_useragent.c_str(), NULL);
+	}
+	if (g_object_class_find_property(G_OBJECT_GET_CLASS(source), "extra-headers") != 0 && !m_extra_headers.empty())
+	{
+		GstStructure *extras = gst_structure_new_empty("extras");
+		size_t pos = 0;
+		while (pos != std::string::npos)
 		{
-			g_object_set(G_OBJECT(source), "ssl-strict", FALSE, NULL);
-		}
-		if (g_object_class_find_property(G_OBJECT_GET_CLASS(source), "user-agent") != 0 && !_this->m_useragent.empty())
-		{
-			g_object_set(G_OBJECT(source), "user-agent", _this->m_useragent.c_str(), NULL);
-		}
-		if (g_object_class_find_property(G_OBJECT_GET_CLASS(source), "extra-headers") != 0 && !_this->m_extra_headers.empty())
-		{
-			GstStructure *extras = gst_structure_new_empty("extras");
-			size_t pos = 0;
-			while (pos != std::string::npos)
+			std::string name, value;
+			size_t start = pos;
+			size_t len = std::string::npos;
+			pos = m_extra_headers.find('=', pos);
+			if (pos != std::string::npos)
 			{
-				std::string name, value;
-				size_t start = pos;
-				size_t len = std::string::npos;
-				pos = _this->m_extra_headers.find('=', pos);
+				len = pos - start;
+				pos++;
+				name = m_extra_headers.substr(start, len);
+				start = pos;
+				len = std::string::npos;
+				pos = m_extra_headers.find('&', pos);
 				if (pos != std::string::npos)
 				{
 					len = pos - start;
 					pos++;
-					name = _this->m_extra_headers.substr(start, len);
-					start = pos;
-					len = std::string::npos;
-					pos = _this->m_extra_headers.find('&', pos);
-					if (pos != std::string::npos)
-					{
-						len = pos - start;
-						pos++;
-					}
-					value = _this->m_extra_headers.substr(start, len);
 				}
-				if (!name.empty() && !value.empty())
-				{
-					GValue header;
-					eDebug("[eServiceMP3] setting extra-header '%s:%s'", name.c_str(), value.c_str());
-					memset(&header, 0, sizeof(GValue));
-					g_value_init(&header, G_TYPE_STRING);
-					g_value_set_string(&header, value.c_str());
-					gst_structure_set_value(extras, name.c_str(), &header);
-				}
-				else
-				{
-					eDebug("[eServiceMP3] Invalid header format %s", _this->m_extra_headers.c_str());
-					break;
-				}
+				value = m_extra_headers.substr(start, len);
 			}
-			if (gst_structure_n_fields(extras) > 0)
+			if (!name.empty() && !value.empty())
 			{
-				g_object_set(G_OBJECT(source), "extra-headers", extras, NULL);
+				GValue header;
+				eDebug("[eServiceMP3] setting extra-header '%s:%s'", name.c_str(), value.c_str());
+				memset(&header, 0, sizeof(GValue));
+				g_value_init(&header, G_TYPE_STRING);
+				g_value_set_string(&header, value.c_str());
+				gst_structure_set_value(extras, name.c_str(), &header);
 			}
-			gst_structure_free(extras);
+			else
+			{
+				eDebug("[eServiceMP3] Invalid header format %s", m_extra_headers.c_str());
+				break;
+			}
 		}
-		gst_object_unref(source);
+		if (gst_structure_n_fields(extras) > 0)
+		{
+			g_object_set(G_OBJECT(source), "extra-headers", extras, NULL);
+		}
+		gst_structure_free(extras);
 	}
 }
 
