@@ -347,6 +347,7 @@ eFilePushThreadRecorder::eFilePushThreadRecorder(unsigned char* buffer, size_t b
 	m_buffer_min_write(0),
 	m_messagepump(eApp, 0, "eFilePushThreadRecorder")
 {
+	m_protocol = m_stream_id = m_session_id = m_packet_no = 0;
 	CONNECT(m_messagepump.recv_msg, eFilePushThreadRecorder::recvEvent);
 
 	/* Ensure min_write doesn't exceed buffer size */
