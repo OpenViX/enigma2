@@ -29,10 +29,7 @@ class MessageBox(Screen, HelpableScreen):
 	def __init__(self, session, text, type=TYPE_YESNO, timeout=0, close_on_any_key=False, default=True, enable_input=True, msgBoxID=None, picon=True, simple=False, wizard=False, list=None, skin_name=None, timeout_default=None, title=None):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
-		if text:
-			self.text = _(text)
-		else:
-			self.text = text
+		self.text = text
 		if type in range(self.TYPE_MESSAGE + 1):
 			self.type = type
 		else:
