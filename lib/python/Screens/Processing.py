@@ -3,6 +3,8 @@ from enigma import eLabel, ePoint, eSize, eTimer, getDesktop
 from Components.Label import Label
 from Components.ProgressBar import ProgressBar
 from Screens.Screen import Screen
+from Session import SessionObject
+from Tools.decorators import classproperty
 
 
 class ProcessingScreen(Screen):
@@ -46,13 +48,13 @@ class ProcessingScreen(Screen):
 
 
 class Processing:
-	instance = None
+	_instance = None
 
 	def __init__(self, session):
-		if Processing.instance:
+		if Processing._instance:
 			print("[Processing] Error: Only one Processing instance is allowed!")
 		else:
-			Processing.instance = self
+			Processing._instance = self
 			self.processingDialog = session.instantiateDialog(ProcessingScreen)
 			self.processingDialog.setAnimationMode(0)
 			self.timer = eTimer()
@@ -76,9 +78,20 @@ class Processing:
 	def hideProgress(self):
 		self.timer.stop()
 		self.processingDialog.hide()
+		self.processingDialog.close()
+		Processing._instance = None
 
 	def setDescription(self, description):
 		self.processingDialog.setDescription(description)
 
 	def setProgress(self, progress):
 		self.processingDialog.setProgress(progress)
+
+	@classproperty
+	def instance(cls):
+		if cls._instance:
+			return cls._instance
+		else:
+			cls._instance = cls(SessionObject().session)
+			return cls._instance
+
