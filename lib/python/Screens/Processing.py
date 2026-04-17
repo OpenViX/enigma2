@@ -78,7 +78,7 @@ class Processing:
 	def hideProgress(self):
 		self.timer.stop()
 		self.processingDialog.hide()
-		self.processingDialog.close()
+		self.processingDialog = None
 		Processing._instance = None
 
 	def setDescription(self, description):
