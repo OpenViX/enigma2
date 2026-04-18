@@ -336,15 +336,20 @@ class ModalMessageBox:
 		self.dialog.activeTitle = self.dialog.title
 		self.dialog.reloadLayout()
 		self.dialog.close = self.close
+		self.dialog["actions"].setEnabled(True)
 		self.dialog.show()
 
 	def close(self, *retVal):
-		if self.callback and callable(self.callback):
-			self.callback(*retVal)
-		if self.dialog and self.dialog.enable_input:
-			self.dialog["actions"].execEnd()
-		self.dialog and self.dialog.hide()
-		self.dialog = None
+		if self.dialog:
+			if self.callback and callable(self.callback):
+				self.callback(*retVal)
+			if self.dialog.enable_input:
+				self.dialog["actions"].setEnabled(False)
+				self.dialog["actions"].execEnd()
+				self.dialog["actions"] = None
+				del self.dialog["actions"]
+			self.dialog.hide()
+			self.dialog = None
 		ModalMessageBox._instance = None
 
 	@classproperty
