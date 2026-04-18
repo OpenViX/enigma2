@@ -74,8 +74,6 @@ class MessageBox(Screen, HelpableScreen):
 		else:
 			self["list"].hide()
 		self["key_help"] = StaticText(_("HELP"))
-		if enable_input:
-			self.createActionMap()
 		self.timer = eTimer()
 		self.timer.callback.append(self.processTimer)
 		self.number = 0
@@ -83,6 +81,8 @@ class MessageBox(Screen, HelpableScreen):
 		self.nextNumberTimer.callback.append(self.ok)
 		if self.layoutFinished not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.layoutFinished)
+		if enable_input:
+			self.createActionMap()
 
 	def createActionMap(self, prio=-1):
 		if self.list:
