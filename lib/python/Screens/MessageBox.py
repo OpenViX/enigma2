@@ -289,7 +289,7 @@ class ModalMessageBox:
 
 	def showMessageBox(self, text="", timeout=0, list=None, default=True, close_on_any_key=False, timeout_default=None, windowTitle=None, msgBoxID=None, typeIcon=MessageBox.TYPE_YESNO, enable_input=True, callback=None, title=None, type=None):
 		self.closeDialog()  # just incase this gets called with the ModalMessageBox already open
-		title = title or windowTitle or MessageBox.TYPE_PREFIX.get(type, MessageBox.TYPE_PREFIX[MessageBox.TYPE_MESSAGE]) # windowTitle is not openvix, but is retained for compatability
+		title = title or windowTitle or MessageBox.TYPE_PREFIX.get(type, MessageBox.TYPE_PREFIX[MessageBox.TYPE_MESSAGE])  # windowTitle is not openvix, but is retained for compatability
 		self.dialog = self.session.instantiateDialog(MessageBox, text=text, type=type or typeIcon, timeout=timeout, close_on_any_key=close_on_any_key, default=default, enable_input=enable_input, msgBoxID=msgBoxID, list=list, skin_name="MessageBoxModal", timeout_default=timeout_default)
 		self.dialog.setAnimationMode(0)
 		self.callback = callback
