@@ -94,4 +94,3 @@ class Processing:
 		else:
 			cls._instance = cls(SessionObject().session)
 			return cls._instance
-
