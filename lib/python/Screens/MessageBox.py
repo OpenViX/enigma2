@@ -8,6 +8,8 @@ from Components.Pixmap import MultiPixmap
 from Components.Sources.StaticText import StaticText
 from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen
+from Tools.decorators import classproperty
+from Session import SessionObject
 from skin import parseScale, applySkinFactor
 
 
@@ -281,3 +283,74 @@ class MessageBox(Screen, HelpableScreen):
 	def resetNumberKey(self):
 		self.nextNumberTimer.stop()
 		self.number = 0
+
+	def reloadLayout(self):
+		for method in self.onLayoutFinish:
+			print("methods in self.onLayoutFinish", method)
+			if not isinstance(method, type(self.close)):
+				exec(method, globals(), locals())
+			else:
+				method()
+		self.layoutFinished()
+
+
+class ModalMessageBox:
+	_instance = None
+
+	def __init__(self, session):
+		if ModalMessageBox._instance:
+			print("[ModalMessageBox] Error: Only one ModalMessageBox instance is allowed!")
+		else:
+			ModalMessageBox._instance = self
+			self.dialog = session.instantiateDialog(MessageBox, "", enable_input=False, skin_name="MessageBoxModal")
+			self.dialog.setAnimationMode(0)
+
+	def showMessageBox(self, text=None, timeout=-1, list=None, default=True, close_on_any_key=False, timeout_default=None, windowTitle=None, msgBoxID=None, typeIcon=MessageBox.TYPE_YESNO, enable_input=True, callback=None, title=None):
+		self.dialog.text = text
+		self.dialog["text"].setText(text)
+		self.dialog.picon = False
+		if typeIcon == MessageBox.TYPE_YESNO:
+			self.dialog.list = [(_("Yes"), True), (_("No"), False)] if list is None else list
+			self.dialog["list"].setList(self.dialog.list)
+			if isinstance(default, bool):
+				self.dialog.startIndex = 0 if default else 1
+			elif isinstance(default, int):
+				self.dialog.startIndex = default
+			else:
+				print(f"[MessageBox] Error: The context of the default ({default}) can't be determined!")
+			self.dialog["list"].show()
+		else:
+			self.dialog["list"].hide()
+			self.dialog.list = None
+		self.callback = callback
+		self.dialog.timeout = timeout
+		self.dialog.msgBoxID = msgBoxID
+		self.dialog.enable_input = enable_input
+		if enable_input:
+			self.dialog.createActionMap(-20)
+			self.dialog["actions"].execBegin()
+		self.dialog.close_on_any_key = close_on_any_key
+		self.dialog.timeout_default = timeout_default
+		self.dialog.title = title or windowTitle or self.dialog.TYPE_PREFIX.get(type, _("Message"))
+		self.dialog.baseTitle = self.dialog.title
+		self.dialog.activeTitle = self.dialog.title
+		self.dialog.reloadLayout()
+		self.dialog.close = self.close
+		self.dialog.show()
+
+	def close(self, *retVal):
+		if self.callback and callable(self.callback):
+			self.callback(*retVal)
+		if self.dialog and self.dialog.enable_input:
+			self.dialog["actions"].execEnd()
+		self.dialog and self.dialog.hide()
+		self.dialog = None
+		ModalMessageBox._instance = None
+
+	@classproperty
+	def instance(cls):
+		if cls._instance:
+			return cls._instance
+		else:
+			cls._instance = cls(SessionObject().session)
+			return cls._instance
