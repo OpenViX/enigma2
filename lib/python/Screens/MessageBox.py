@@ -96,7 +96,7 @@ class MessageBox(Screen, HelpableScreen):
 				"up": (self.up, _("Move up a line")),
 				"down": (self.down, _("Move down a line")),
 				"left": (self.left, _("Move up a page")),
-				"right": (self.right, _("Move down a page")) } | {
+				"right": (self.right, _("Move down a page"))} | {
 				str(i): (self.keyNumberGlobal, _("Direct item selection")) for i in range(10)
 			}, prio=prio, description=_("MessageBox Actions"))
 		else:
