@@ -1,6 +1,6 @@
 from enigma import eTimer, ePoint, eSize, getDesktop
 
-from Components.ActionMap import HelpableNumberActionMap
+from Components.ActionMap import ActionMap, HelpableNumberActionMap
 from Components.config import config
 from Components.Label import Label
 from Components.MenuList import MenuList
@@ -286,9 +286,13 @@ class ModalMessageBox:
 			self.session = session
 			ModalMessageBox._instance = self
 			self.dialog = None
+			self.previousDialog = None
+			self.previousEnabledActions = []
 
 	def showMessageBox(self, text="", timeout=0, list=None, default=True, close_on_any_key=False, timeout_default=None, windowTitle=None, msgBoxID=None, typeIcon=MessageBox.TYPE_YESNO, enable_input=True, callback=None, title=None, type=None):
-		self.closeDialog()  # just incase this gets called with the ModalMessageBox already open
+		if self.dialog:
+			return  # sanity, nothing should be calling this with the dialog already open, so ignore it
+		self.disableParentActions()
 		title = title or windowTitle or MessageBox.TYPE_PREFIX.get(type, MessageBox.TYPE_PREFIX[MessageBox.TYPE_MESSAGE])  # windowTitle is not openvix, but is retained for compatability
 		self.dialog = self.session.instantiateDialog(MessageBox, text=text, type=type or typeIcon, timeout=timeout, close_on_any_key=close_on_any_key, default=default, enable_input=enable_input, msgBoxID=msgBoxID, list=list, skin_name="MessageBoxModal", timeout_default=timeout_default)
 		self.dialog.setAnimationMode(0)
@@ -298,18 +302,31 @@ class ModalMessageBox:
 		self.dialog.close = self.close
 		self.dialog.show()
 
-	def closeDialog(self):
+	def close(self, *retVal):
 		if self.dialog:
+			if self.callback and callable(self.callback):
+				self.callback(*retVal)
 			if "actions" in self.dialog:
 				self.dialog["actions"].execEnd()
 			self.dialog.doClose()
 			self.dialog = None
-
-	def close(self, *retVal):
-		if self.dialog and self.callback and callable(self.callback):
-			self.callback(*retVal)
-		self.closeDialog()
+		self.enableParentActions()
 		ModalMessageBox._instance = None
+
+	def disableParentActions(self):
+		self.previousDialog = self.session.current_dialog
+		for x in self.previousDialog:
+			if isinstance(self.previousDialog[x], ActionMap) and self.previousDialog[x].enabled:
+				self.previousEnabledActions.append(x)
+				self.previousDialog[x].setEnabled(False)
+
+	def enableParentActions(self):
+		if self.previousDialog:
+			for x in self.previousEnabledActions:
+				if x in self.previousDialog:  # sanity
+					self.previousDialog[x].setEnabled(True)
+			self.previousEnabledActions.clear()
+			self.previousDialog = None
 
 	@classproperty
 	def instance(cls):
