@@ -207,12 +207,16 @@ struct call_entry
 
 void eActionMap::keyPressed(const std::string &device, int key, int flags)
 {
-	//eDebug("[eActionMap] key from %s: %d %d", device.c_str(), key, flags);
+	eDebug("[eActionMap] key from %s: %d %d", device.c_str(), key, flags);
 
 	if (!strcmp(device.c_str(), "Hdmi-CEC")) // Bounce HDMI-CEC
 	{
-		eDebug("[eActionMap] bounce HDMI input key from %s: %d %d", device.c_str(), key, flags);		
-		return;
+		eDebug("[eActionMap] HDMI-CEC input key - bounce? from %s: %d %d", device.c_str(), key, flags);		
+		if (key == 139)  // key =139 is Menu command
+		{
+			eDebug("[eActionMap] bounced HDMI input key from %s: %d %d", device.c_str(), key, flags);			
+			return;
+		}
 	}
 	// Check for remotes that need key translations
 	std::map<std::string, eDeviceBinding>::iterator r = m_rcDevices.find(device);
