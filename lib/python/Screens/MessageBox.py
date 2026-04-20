@@ -294,11 +294,12 @@ class ModalMessageBox:
 			return  # sanity, nothing should be calling this with the dialog already open, so ignore it
 		self.disableParentActions()
 		title = title or windowTitle or MessageBox.TYPE_PREFIX.get(type, MessageBox.TYPE_PREFIX[MessageBox.TYPE_MESSAGE])  # windowTitle is not openvix, but is retained for compatability
-		self.dialog = self.session.instantiateDialog(MessageBox, text=text, type=type or typeIcon, timeout=timeout, close_on_any_key=close_on_any_key, default=default, enable_input=enable_input, msgBoxID=msgBoxID, list=list, skin_name="MessageBoxModal", timeout_default=timeout_default)
+		self.dialog = self.session.instantiateDialog(MessageBox, text=text, type=type or typeIcon, timeout=timeout, close_on_any_key=close_on_any_key, default=default, enable_input=enable_input, msgBoxID=msgBoxID, list=list, skin_name="MessageBoxModal", timeout_default=timeout_default, title=title)
 		self.dialog.setAnimationMode(0)
 		self.callback = callback
-		if "actions" in self.dialog:
-			self.dialog["actions"].execBegin()
+		for x in self.dialog:
+			if isinstance(self.dialog[x], ActionMap):
+				self.dialog[x].execBegin()
 		self.dialog.close = self.close
 		self.dialog.show()
 
@@ -306,8 +307,9 @@ class ModalMessageBox:
 		if self.dialog:
 			if self.callback and callable(self.callback):
 				self.callback(*retVal)
-			if "actions" in self.dialog:
-				self.dialog["actions"].execEnd()
+			for x in self.dialog:
+				if isinstance(self.dialog[x], ActionMap):
+					self.dialog[x].execEnd()
 			self.dialog.doClose()
 			self.dialog = None
 		self.enableParentActions()
