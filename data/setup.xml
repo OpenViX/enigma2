@@ -665,9 +665,9 @@
 			<item text="Switch TV to correct input" description="When receiver wakes from standby, it will command the TV to switch to the HDMI input the receiver is connected to.">config.hdmicec.report_active_source</item>
 			<item text="Use TV remote control" description="Allows the TV remote to be used to control the receiver.">config.hdmicec.report_active_menu</item>
 			<item text="Handle standby from TV" description="When enabled the receiver will automatically return to standby when the TV is turned off.">config.hdmicec.handle_tv_standby</item>
-			<item text="Handle wakeup from TV" description="When enabled the receiver will automatically wake from standby when the TV is turned on.">config.hdmicec.handle_tv_wakeup</item>
+			<item text="Handle wakeup from TV" description="When TV issues wakeup, receiver will action based on 'Wakeup signal from TV' setting.">config.hdmicec.handle_tv_wakeup</item>
 			<if conditional="config.hdmicec.handle_tv_wakeup.value">
-				<item text="Wakeup signal from TV" description="Wake the receiver from standby when the wake command is sent from the TV.">config.hdmicec.tv_wakeup_detection</item>
+				<item text="Wakeup signal from TV" description="Receiver will action TV wakeup request based on this setting">config.hdmicec.tv_wakeup_detection</item>
 			</if>
 			<item text="Allow CEC address change *" description="When enabled will allow CEC address change. *Reboot required to activate">config.hdmicec.change_physaddress</item>
 			<item text="CEC address *" description="CEC address, to override enable CEC address change. *Reboot required to activate">config.hdmicec.fixed_physical_address</item>
