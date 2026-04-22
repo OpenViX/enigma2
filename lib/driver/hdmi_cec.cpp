@@ -22,12 +22,14 @@ eHdmiCEC::eCECMessage::eCECMessage(int addr, int cmd, char *data, int length)
 	address = addr;
 	command = cmd;
 	if (length > (int)sizeof(messageData)) length = sizeof(messageData);
-	if (length && data) memcpy(messageData, data, length);
+	if (length && data) {
+		memcpy(messageData, data, length);
+		control0 = data[0];
+		control1 = data[1];
+		control2 = data[2];
+		control3 = data[3];
+	} 
 	dataLength = length;
-	control0 = data[0];
-	control1 = data[1];
-	control2 = data[2];
-	control3 = data[3];
 }
 
 int eHdmiCEC::eCECMessage::getAddress()
@@ -64,7 +66,7 @@ eHdmiCEC::eHdmiCEC()
 #endif
 
 	hdmiFd = ::open(HDMIDEV, O_RDWR | O_NONBLOCK | O_CLOEXEC);
-	eTrace("[eHdmiCEC] ****** open HDMIDEV: %s hdmiFd: %d", HDMIDEV, hdmiFd);		
+	eTrace("[eHdmiCEC] ****** open HDMIDEV: %s hdmiFd: %d", HDMIDEV, hdmiFd);
 	if (hdmiFd >= 0)
 	{
 #ifdef DREAMBOX
@@ -95,7 +97,7 @@ eHdmiCEC *eHdmiCEC::getInstance()
 
 void eHdmiCEC::reportPhysicalAddress()
 {
-	struct cec_message txmessage;
+	struct cec_message txmessage = {};
 	memset(&txmessage, 0, sizeof(txmessage));
 	txmessage.address = 0x0f; /* broadcast */
 	txmessage.data[0] = 0x84; /* report address */
@@ -404,7 +406,7 @@ void eHdmiCEC::sendMessage(struct cec_message &message)
 
 void eHdmiCEC::sendMessage(unsigned char address, unsigned char cmd, char *data, int length)
 {
-	struct cec_message message;
+	struct cec_message message = {};
 	message.address = address;
 	if (length > (int)(sizeof(message.data) - 1)) length = sizeof(message.data) - 1;
 	message.length = length + 1;
