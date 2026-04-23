@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-19 02:29+0300\n"
-"PO-Revision-Date: 2026-04-19 12:07+0300\n"
+"POT-Creation-Date: 2026-04-23 12:46+0300\n"
+"PO-Revision-Date: 2026-04-23 14:01+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -8289,9 +8289,6 @@ msgstr "Kexec-varoitus"
 msgid "Key"
 msgstr "Avain"
 
-msgid "Key Events"
-msgstr "Avain tapahtumat"
-
 msgid "Keyboard"
 msgstr "Näppäimistö"
 
@@ -8657,8 +8654,17 @@ msgstr "Lokit"
 msgid "Log %s-%s"
 msgstr "Loki %s-%s"
 
+msgid "Log All"
+msgstr "Kirjaa kaikki"
+
+msgid "Log Key Events"
+msgstr "Kirjaa tärkeät tapahtumat"
+
 msgid "Log Manager"
 msgstr "Lokien hallinta"
+
+msgid "Log Messages"
+msgstr "Kirjaa viestit"
 
 msgid "Log python stack trace on spinner"
 msgstr "Lokita python-pinon jäljitys spinnerissä"
@@ -8992,9 +8998,6 @@ msgstr "Viesti"
 
 msgid "MessageBox Actions"
 msgstr "Viestilaatikon toiminnot"
-
-msgid "Messages"
-msgstr "Viestit"
 
 msgid "Mexico"
 msgstr "Meksiko"
@@ -11763,6 +11766,9 @@ msgstr "Tallennus-näppäin (lyhyt)"
 
 msgid "Recall channel, panic button & number zap"
 msgstr "Palauta kanava, paniikkinäppäin ja numerokanavanvaihto"
+
+msgid "Receiver will action TV wakeup request based on this setting"
+msgstr "Vastaanotin käsittelee television herätyspyynnön tämän asetuksen mukaisesti"
 
 msgid "Record"
 msgstr "Tallenna"
@@ -15193,7 +15199,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 19.04.2026 ---\n"
+"--- 23.04.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -16176,7 +16182,7 @@ msgid "Transport Stream Type"
 msgstr "Syötteen tyyppi"
 
 msgid "Trash"
-msgstr "Roska"
+msgstr "Roskakori"
 
 msgid "Trash can"
 msgstr "Roskakori"
@@ -17135,9 +17141,6 @@ msgstr "Käynnistys"
 msgid "Wake Up To Standby"
 msgstr "Käynnisty valmiustilaan"
 
-msgid "Wake the receiver from standby when the wake command is sent from the TV."
-msgstr "Herätä vastaanotin valmiustilasta, kun herätyskomento lähetetään TV:stä."
-
 msgid "Wake up to standby"
 msgstr "Käynnisty valmiustilaan"
 
@@ -17333,6 +17336,9 @@ msgstr "Mikä viikonpäivä?"
 msgid "What do you want to scan?"
 msgstr "Mitä haluat hakea?"
 
+msgid "When TV issues wakeup, receiver will action based on 'Wakeup signal from TV' setting."
+msgstr "Kun televisio herää lepotilasta, vastaanotin toimii ”Käynnistyssignaali TV:ltä” -asetuksen mukaisesti."
+
 msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
 msgstr "Kun sallittu, pakotettu lataus on mahdollista laajennusvalikosta (sininen näppäin). Näkyy seuraavan uudelleenkäynnistyksen jälkeen."
 
@@ -17344,9 +17350,6 @@ msgstr "Kun päällä, päivitys etsii myös kokeiluversioita"
 
 msgid "When enabled the receiver will automatically return to standby when the TV is turned off."
 msgstr "Kun päällä, vastaanotin palaa automaattisesti valmiustilaan, kun TV sammutetaan."
-
-msgid "When enabled the receiver will automatically wake from standby when the TV is turned on."
-msgstr "Kun päällä, vastaanotin herää automaattisesti valmiustilasta, kun TV käynnistetään."
 
 msgid "When enabled the set top box is able to wakeup on LAN"
 msgstr "Kun valittu, niin bigiboksi voi herätä lähiverkossa"
@@ -18995,6 +18998,9 @@ msgstr "esikouluikäisten lastenohjelma"
 
 msgid "preserve bookmarks in cuts"
 msgstr "säilytä kirjanmerkit leikkauksissa"
+
+msgid "print debug"
+msgstr "tulosta vianmääritys"
 
 msgid "priority"
 msgstr "Prioriteetti"
