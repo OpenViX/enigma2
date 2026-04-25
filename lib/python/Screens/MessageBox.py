@@ -29,7 +29,7 @@ class MessageBox(Screen, HelpableScreen):
 	}
 
 	def __init__(self, session, text, type=TYPE_YESNO, timeout=0, close_on_any_key=False, default=True, enable_input=True, msgBoxID=None, picon=True, simple=False, wizard=False, list=None, skin_name=None, timeout_default=None, title=None):
-		Screen.__init__(self, session, mandatoryWidgets=["icon", "list", "text"])
+		Screen.__init__(self, session, mandatoryWidgets=["list", "text"])
 		HelpableScreen.__init__(self)
 		self.text = text
 		self.type = type if type in self.TYPE_PREFIX else self.TYPE_MESSAGE
@@ -41,7 +41,7 @@ class MessageBox(Screen, HelpableScreen):
 		self.picon = picon
 		if picon:
 			self["icon"].show()
-		self.skinName = ["MessageBox", "MessageBoxFallback"]  # MessageBoxFallback in skin_default
+		self.skinName = ["MessageBox"]
 		if simple:
 			self.skinName = ["MessageBoxSimple"] + self.skinName
 		if wizard:
