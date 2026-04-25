@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-23 12:46+0300\n"
-"PO-Revision-Date: 2026-04-23 14:01+0300\n"
+"PO-Revision-Date: 2026-04-25 07:20+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -1599,13 +1599,13 @@ msgid "A/V settings"
 msgstr "A/V-asetukset"
 
 msgid "AAC downmix"
-msgstr "AAC stereoksi"
+msgstr "AAC-ääni"
 
 msgid "AAC transcoding"
 msgstr "AAC uudelleenpakkaus"
 
 msgid "AAC+ downmix"
-msgstr "AAC+ stereoksi"
+msgstr "AAC+-ääni"
 
 msgid "ABOUT"
 msgstr "TIETOJA"
@@ -1614,7 +1614,7 @@ msgid "AC3"
 msgstr "AC3"
 
 msgid "AC3 downmix"
-msgstr "AC3 stereoksi"
+msgstr "AC3-ääni"
 
 msgid "AC3 transcoding"
 msgstr "AC3 uudelleenpakkaus"
@@ -3559,16 +3559,16 @@ msgid "Choose where to mount your devices to:"
 msgstr "Valitse minne laitteet liitetään:"
 
 msgid "Choose whether AAC sound tracks should be transcoded."
-msgstr "Valitse tehdäänkö AAC-ääniraidoille uudelleenpakkaus (transcoding)."
+msgstr "Valitse tehdäänkö AAC-ääniraidoille uudelleenpakkaus (transkoodaus)."
 
 msgid "Choose whether WMA Pro sound tracks should be downmixed."
-msgstr "Valitse tehdäänkö WMA Pro-ääniraidoille uudelleenpakkaus."
+msgstr "Valitse muunnetaanko WMA Pro-ääniraidat stereoksi."
 
 msgid "Choose whether multi channel aac sound tracks should be downmixed to stereo."
 msgstr "Valitse muunnetaanko monikanavaiset aac-ääniraidat stereoksi."
 
 msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
-msgstr "Valitse muunnetaanko monikanavaiset aac+ ääniraidat stereoksi."
+msgstr "Valitse muunnetaanko monikanavaiset aac+-ääniraidat stereoksi."
 
 msgid "Choose whether multi channel ac3 sound tracks should be downmixed to stereo."
 msgstr "Valitse muunnetaanko monikanavaiset ac3-ääniraidat stereoksi."
@@ -3577,7 +3577,7 @@ msgid "Choose whether multi channel dts sound tracks should be downmixed to ster
 msgstr "Valitse muunnetaanko monikanavaiset dts-ääniraidat stereoksi."
 
 msgid "Choose whether multi channel sound tracks should be output as PCM."
-msgstr "Valitse tuleeko monikanavaiset ääniraidat ulos PCM-muodossa."
+msgstr "Valitse, toistetaanko monikanavaisia ​​ääniraitoja PCM-muodossa."
 
 msgid "Choose whether or not to show an icon when a motorised dish is moving."
 msgstr "Valitse näytetäänkö kuvake moottoroidun antennin kääntyessä."
@@ -4543,7 +4543,7 @@ msgid "DTS"
 msgstr "DTS"
 
 msgid "DTS downmix"
-msgstr "DTS muunto stereoksi"
+msgstr "DTS-ääni"
 
 msgid "DTS-HD HR/DTS-HD MA/DTS"
 msgstr "DTS-HD HR/DTS-HD MA/DTS"
@@ -5508,7 +5508,7 @@ msgid "Downloads"
 msgstr "Lataukset"
 
 msgid "Downmix"
-msgstr "Downmix"
+msgstr "Muunto stereoksi"
 
 msgid "Drama"
 msgstr "Elokuva/draama"
@@ -15199,7 +15199,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 23.04.2026 ---\n"
+"--- 25.04.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -17078,7 +17078,7 @@ msgid "WLAN connection"
 msgstr "WLAN-yhteys"
 
 msgid "WMA Pro downmix"
-msgstr "WMA Pro stereoksi"
+msgstr "WMA Pro-ääni"
 
 msgid "WPA"
 msgstr "WPA"
