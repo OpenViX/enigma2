@@ -20,7 +20,7 @@ class MessageBox(Screen, HelpableScreen):
 	TYPE_ERROR = 3
 	TYPE_MESSAGE = 4
 
-	def __init__(self, session, text, type=TYPE_YESNO, timeout=0, close_on_any_key=False, default=True, enable_input=True, msgBoxID=None, picon=True, simple=False, wizard=False, list=None, skin_name=None, timeout_default=None, title=None):
+	def __init__(self, session, text, type=TYPE_YESNO, timeout=0, close_on_any_key=False, default=True, enable_input=True, msgBoxID=None, picon=True, simple=False, wizard=False, list=None, skin_name=None, timeout_default=None, title=None, **kwargs):
 		Screen.__init__(self, session, mandatoryWidgets=["list", "text"])
 		HelpableScreen.__init__(self)
 		self.TYPE_PREFIX = {self.TYPE_YESNO: _("Question"), self.TYPE_INFO: _("Information"), self.TYPE_WARNING: _("Warning"), self.TYPE_ERROR: _("Error"), self.TYPE_MESSAGE: _("Message")}
@@ -282,12 +282,11 @@ class ModalMessageBox:
 			self.previousDialog = None
 			self.previousEnabledActions = []
 
-	def showMessageBox(self, text="", timeout=0, list=None, default=True, close_on_any_key=False, timeout_default=None, windowTitle=None, msgBoxID=None, typeIcon=MessageBox.TYPE_YESNO, enable_input=True, callback=None, title=None, type=None):
+	def showMessageBox(self, text="", timeout=0, list=None, default=True, close_on_any_key=False, timeout_default=None, title=None, msgBoxID=None, type=None, enable_input=True, callback=None, **kwargs):
 		if self.dialog:
 			return  # sanity, nothing should be calling this with the dialog already open, so ignore it
 		self.disableParentActions()
-		title = title or windowTitle  # windowTitle is not openvix, but is retained for compatability
-		self.dialog = self.session.instantiateDialog(MessageBox, text=text, type=type or typeIcon, timeout=timeout, close_on_any_key=close_on_any_key, default=default, enable_input=enable_input, msgBoxID=msgBoxID, list=list, skin_name="MessageBoxModal", timeout_default=timeout_default, title=title)
+		self.dialog = self.session.instantiateDialog(MessageBox, text=text, type=type, timeout=timeout, close_on_any_key=close_on_any_key, default=default, enable_input=enable_input, msgBoxID=msgBoxID, list=list, skin_name="MessageBoxModal", timeout_default=timeout_default, title=title)
 		self.dialog.setAnimationMode(0)
 		self.callback = callback
 		for x in self.dialog:
