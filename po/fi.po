@@ -16911,7 +16911,7 @@ msgid "Viaggi"
 msgstr "Matkat"
 
 msgid "Video & Audio Settings"
-msgstr "Äänen ja kuvan -asetukset"
+msgstr "Äänen ja kuvan asetukset"
 
 msgid "Video Chip Mode*"
 msgstr "Video-sirun tila*"
