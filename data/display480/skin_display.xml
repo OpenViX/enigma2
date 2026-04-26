@@ -192,6 +192,9 @@
 	<screen name="MessageBoxSimpleSummary" position="fill" resolution="480,320">
 		<panel name="MessageBoxSummary" />
 	</screen>
+	<screen name="MessageBoxWizardSummary" position="fill" resolution="480,320">
+		<panel name="MessageBoxSummary" />
+	</screen>
 
 <!-- standby -->
 	<screen name="StandbySummary" position="fill" resolution="480,320">

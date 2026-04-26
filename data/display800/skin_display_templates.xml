@@ -333,6 +333,9 @@
 	<screen name="MessageBoxSimpleSummary" position="fill" resolution="800,480"> 
 		<panel name="MessageBoxSummary" />
 	</screen>
+	<screen name="MessageBoxWizardSummary" position="fill" resolution="800,480"> 
+		<panel name="MessageBoxSummary" />
+	</screen>
 
 	<!-- MOVIE SELECTION -->
 	<screen name="MovieSelectionSummary" position="fill" resolution="800,480"> 
