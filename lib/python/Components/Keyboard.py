@@ -1,7 +1,7 @@
 from os import listdir
 
-from Components.config import config
 from Components.Console import Console
+# from Components.Language import language
 from Tools.Directories import SCOPE_KEYMAPS, pathExists, resolveFilename
 
 
@@ -43,10 +43,10 @@ class Keyboard:
 		return self.keyboardMaps
 
 	def getDefaultKeyboardMap(self):
-		for map in self.keyboardMaps:
-			if "eng.kmap" == map[0] and config.osd.language.value.startswith("en_"):
-				return "eng.kmap"
-		return "default.kmap"		# this is US for some strange reason
+		# locale = language.getLocale()
+		# if locale.startswith("de_") and "de.kmap" in self.keyboardMaps:
+		# 	return "de.kmap"
+		return "default.kmap"
 
 
 keyboard = Keyboard()

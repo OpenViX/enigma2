@@ -922,7 +922,7 @@ int eMPEGStreamParserTS::processPacket(const unsigned char *pkt, off_t offset)
 			//}
 			//eDebugNoNewLine("\n");
 
-			return -2;
+			return 0; /* Return 0 (not -2): missing/invalid PES start code cannot extract a PTS from this packet, but stream not corrupt */
 		}
 
 		if (pkt[7] & 0x80) // PTS present?
@@ -1196,6 +1196,7 @@ int eMPEGStreamParserTS::parseData(off_t offset, const void *data, unsigned int 
 		}
 	}
 	commit();
+	return 0;
 }
 
 void eMPEGStreamParserTS::addAccessPoint(off_t offset, pts_t pts, bool streamtime)

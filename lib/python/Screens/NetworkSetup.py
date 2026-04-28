@@ -96,7 +96,7 @@ class NSCommon:
 
 	def installComplete(self, result=None, retval=None, extra_args=None):
 		result = result.decode()
-		# print("[NetworkSetup][installComplete] retval, result", retval, "   ", result)
+		print(f"[NetworkSetup][installComplete] retval:{retval} result;{result}")
 		if "Cannot install package" in result:
 			self.session.openWithCallback(self.updateService(), MessageBox, ("%s" % result), type=MessageBox.TYPE_INFO, timeout=10, close_on_any_key=True)
 		elif self.reboot_at_end:
@@ -104,7 +104,7 @@ class NSCommon:
 				_("Your %s %s needs to be restarted to complete the installation of %s\nDo you want to reboot now ?") % (DISPLAYBRAND, MACHINENAME, self.getTitle()), MessageBox.TYPE_YESNO)
 			restartbox.setTitle(_("Reboot required"))
 		else:
-			self.message.close()
+			self.close()
 
 	def operationComplete(self, reboot=False):
 		if reboot:

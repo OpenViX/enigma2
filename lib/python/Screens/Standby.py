@@ -58,12 +58,16 @@ def lastPowerState(state):
 
 class Standby2(Screen):
 	def Power(self):
+		print("[Standby][Standby2][Power] leave standby2")
 		if BRAND in ('dinobot') or SystemInfo["HasHiSi"] or BOXTYPE in ("sfx6008", "sfx6018"):
 			try:
 				open("/proc/stb/hdmi/output", "w").write("on")
+				print("[Standby] open hdmi on leave standby")
 			except:
 				pass
-		print("[Standby] leave standby")
+		self.setInput("ENCODER")  # set input to encoder
+		self.leaveMute()  # check audio status
+		print("[Standby] leave standby 2")
 		self.close(True)
 
 	def setMute(self):
@@ -136,8 +140,10 @@ class Standby2(Screen):
 		if BRAND in ('dinobot') or SystemInfo["HasHiSi"] or BOXTYPE in ("sfx6008", "sfx6018"):
 			try:
 				open("/proc/stb/hdmi/output", "w").write("off")
+				print("[Standby] close hdmi on enter standby")
 			except:
 				pass
+		print("[Standby] enter standby")
 		self.onFirstExecBegin.append(self.__onFirstExecBegin)
 		self.onClose.append(self.__onClose)
 
@@ -277,7 +283,7 @@ class TryQuitMainloop(MessageBox):
 		if recordings or (next_rec_time > 0 and (next_rec_time - time()) < 360):
 			default_yes = False
 			reason = _("Recording(s) are in progress or coming up in few seconds!") + '\n'
-		if eStreamServer.getInstance().getConnectedClients() or StreamServiceList:
+		if [stream for stream in eStreamServer.getInstance().getConnectedClients() if stream[0] != '127.0.0.1'] or StreamServiceList:
 			reason += _("A client is streaming from this box!") + '\n'
 
 		if reason and inStandby:
@@ -327,6 +333,7 @@ class TryQuitMainloop(MessageBox):
 		if self.connected:
 			self.connected = False
 			self.session.nav.record_event.remove(self.getRecordEvent)
+		print("[Standby][TryQuitMainloop][close] hdmicece enabled, retval", config.hdmicec.enabled.value, "   ", self.retval)
 		if config.hdmicec.enabled.value and self.retval == 1:
 			sendCEC()
 		if value:

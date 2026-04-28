@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-11 18:05+0000\n"
+"POT-Creation-Date: 2026-04-03 06:51+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: 2stein\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, 2stein\n"
@@ -5487,6 +5487,9 @@ msgstr "Runter"
 msgid "Download"
 msgstr "Herunterladen"
 
+msgid "Download and install any packages that have been updated since the last software update was performed."
+msgstr "Alle Pakete herunterladen und installieren, die seit der letzten Softwareaktualisierung aktualisiert wurden."
+
 msgid "Download confirmation"
 msgstr "Herunterladen-Bestätigung"
 
@@ -8175,8 +8178,8 @@ msgstr "Israel"
 msgid "It allows making changes to the box with the knowledge that the box can be safely reverted back to a previous known working state."
 msgstr "Es ermöglicht, Änderungen am E2-Receiver zu machen in der Gewissheit, zum letzten lauffähigen Zustand zurückkehren zu können."
 
-msgid "It seems you have hit your API limit - please try again later."
-msgstr "Es sieht so aus, als wenn ein API-Limit erreicht wurde - bitte später erneut versuchen."
+msgid "It seems you have hit your API limit - please try again later.\n"
+msgstr "Es sieht so aus, als wenn ein API-Limit erreicht wurde - bitte später erneut versuchen.\n"
 
 msgid "It seems you have not setup an extra location. Please set it up in the Backup manager setup menu."
 msgstr "Es sieht so aus, als wenn noch kein Verzeichnis konfiguriert wurde - bitte konfiguriere das Verzeichnis im Backup-Manager."
@@ -8802,6 +8805,9 @@ msgstr "Hauptmenü"
 msgid "Maintain old EPG data for"
 msgstr "Behalte alte EPG-Daten (Minuten)"
 
+msgid "Make a full image backup if you want save an exact copy of your current image and its configuration."
+msgstr "Erstelle ein vollständiges Image-Backup, wenn du eine exakte Kopie deines aktuellen Images und seiner Konfiguration speichern möchtest."
+
 msgid "Make settings backup"
 msgstr "Erstelle Einstellungs-Backup"
 
@@ -8813,6 +8819,9 @@ msgstr "Aus dieser Markierung einen 'außen'-Punkt machen"
 
 msgid "Make this mark just a mark"
 msgstr "Aus dieser Markierung nur eine Markierung machen"
+
+msgid "Making a settings back is advised before doing a software update and can be used later should a full reflash be required."
+msgstr "Es wird empfohlen, vor einer Softwareaktualisierung ein Einstellungs-Backup zu erstellen. Dieses kann später verwendet werden, falls ein vollständiges Neuflashen erforderlich ist."
 
 msgid "Making a settings backup before updating is highly recommended."
 msgstr "Es wird dringend empfohlen, ein Backup zu machen."
@@ -8897,6 +8906,9 @@ msgstr "Max. Anzahl von Image-Backups behalten (0 = alle)"
 
 msgid "Max memory positions"
 msgstr "Maximale Positionsspeicher"
+
+msgid "Max pages to retrieve"
+msgstr "Maximale Seitenanzahl zum Abrufen"
 
 msgid "Max. bitrate: "
 msgstr "Max. Bitrate: "
@@ -9823,6 +9835,9 @@ msgstr "Kein Modul gefunden"
 
 msgid "No networks found"
 msgstr "Keine Netzwerke gefunden"
+
+msgid "No new commits found on this repository."
+msgstr "Keine neuen Commits in diesem Repository gefunden."
 
 msgid "No of items switch (increase or reduced)"
 msgstr "Anzahl von Elementen wechseln (erhöhen oder verringern)"
@@ -15428,9 +15443,6 @@ msgstr "Das gewählte Verzeichnis existiert nicht. /media/hdd wird verwendet."
 msgid "The command to wake from standby will be sent multiple times."
 msgstr "Der Befehl zum Aufwachen aus Standby wird mehrfach gesendet."
 
-msgid "The commit log cannot be retrieved at the moment - please try again later."
-msgstr "Die Commit-Log-Datei kann im Moment nicht ermittelt werden - bitte später versuchen."
-
 msgid "The commit log cannot be retrieved at the moment - please try again later.\n"
 msgstr "Die Commit-Log-Datei kann im Moment nicht ermittelt werden - bitte später versuchen.\n"
 
@@ -15612,6 +15624,9 @@ msgstr "Diese Datei forciert das Udate."
 
 msgid "This is a multitype tuner. Available options depend on the hardware."
 msgstr "Dies ist ein Multi-Tuner. Zur Verfügung stehende Optionen hängen von der Hardware ab."
+
+msgid "This is the number of pages to download per repository being interogated. More pages shows more commits, but, bear in mind that Github API has a limit of 60 pages per hour."
+msgstr "Dies ist die Anzahl der Seiten, die pro abgefragtem Repository heruntergeladen werden. Mehr Seiten zeigen mehr Commits, aber beachte, dass die Github-API ein Limit von 60 Seiten pro Stunde hat."
 
 msgid "This is the order in which DiSEqC commands are sent to the aerial system. The order must correspond exactly with the order the physical devices are arranged along the signal cable (starting from the receiver end)."
 msgstr "Dies ist die Reihenfolge in der DiSEqC-Befehle geschickt werden. Die Reihenfolge muss den Positionen der Geräte entsprechen, die am Kabel angeschlossen sind (startend beim E2-Receiver)."
@@ -16478,6 +16493,9 @@ msgstr "Update Zeitintervall in Sekunden"
 msgid "Update packages..."
 msgstr "Pakete aktualisieren"
 
+msgid "Update to the newest version of any channel list package previously downloaded from the feeds. No other changes will be made."
+msgstr "Aktualisiere alle zuvor von den Feeds heruntergeladenen Senderlisten-Pakete auf die neueste Version. Es werden keine weiteren Änderungen vorgenommen."
+
 msgid "Updating Cache"
 msgstr "Cache Aktualisieren"
 
@@ -16940,11 +16958,17 @@ msgstr "Fotos anzeigen"
 msgid "View progress"
 msgstr "Fortschritt anzeigen"
 
+msgid "View repository history"
+msgstr "Repository-Verlauf anzeigen"
+
 msgid "View teletext"
 msgstr "Videotext anzeigen"
 
-msgid "View the changes"
-msgstr "Änderungen anzeigen"
+msgid "View the history of the principal repositories. These show up to the minute changes but may not reflect the exact state of any new build."
+msgstr "Zeige den Verlauf der wichtigsten Repositories an. Diese zeigen aktuelle Änderungen, spiegeln aber möglicherweise nicht den genauen Zustand eines neuen Builds wider."
+
+msgid "View the list of packages which have newer versions and are marked for updating."
+msgstr "Zeige die Liste der Pakete an, für die neuere Versionen verfügbar sind und die zur Aktualisierung vorgemerkt sind."
 
 msgid "View video CD..."
 msgstr "Video-CD anzeigen"

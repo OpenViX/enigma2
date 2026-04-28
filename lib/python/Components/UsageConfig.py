@@ -36,8 +36,6 @@ def InitUsageConfig():
 	else:
 		config.misc.remotecontrol_text_support = ConfigYesNo(default=False)
 
-	config.misc.usegstplaybin3 = ConfigYesNo(default=False)
-
 	config.usage = ConfigSubsection()
 	config.usage.subnetwork = ConfigYesNo(default=True)
 	config.usage.subnetwork_cable = ConfigYesNo(default=True)
@@ -1303,7 +1301,7 @@ def InitUsageConfig():
 	for i in [3] + list(range(5, 65, 5)):
 		choicelist.append(("%d" % i, _("%d sec") % i))
 	config.hdmicec.repeat_wakeup_timer = ConfigSelection(default="3", choices=[("0", _("Disabled"))] + choicelist)
-	config.hdmicec.debug = ConfigSelection(default="0", choices=[("0", _("Disabled")), ("1", _("Messages")), ("2", _("Key Events")), ("3", _("All"))])
+	config.hdmicec.debug = ConfigSelection(default="0", choices=[("0", _("Disabled")), ("1", _("print debug")), ("2", _("Log Messages")), ("3", _("Log Key Events")), ("4", _("Log All"))])
 	config.hdmicec.bookmarks = ConfigLocations(default="/hdd/")
 	config.hdmicec.log_path = ConfigDirectory("/hdd/")
 	config.hdmicec.next_boxes_detect = ConfigYesNo(default=False)  # Before switching the TV to standby, receiver tests if any devices plugged to TV are in standby. If they are not, the 'sourceinactive' command will be sent to the TV instead of the 'standby' command.

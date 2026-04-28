@@ -1,6 +1,6 @@
 from os import listdir, path, stat
 from sys import modules
-import xml.etree.cElementTree
+import xml.etree.ElementTree
 
 from Plugins.Plugin import PluginDescriptor
 from Components.config import config
@@ -70,7 +70,7 @@ if config.misc.firstrun.value and not config.misc.restorewizardrun.value:
 
 
 file = open("%s/menu.xml" % path.dirname(modules[__name__].__file__), 'r')
-mdom = xml.etree.cElementTree.parse(file)
+mdom = xml.etree.ElementTree.parse(file)
 file.close()
 
 

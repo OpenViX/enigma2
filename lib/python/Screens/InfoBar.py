@@ -1,9 +1,14 @@
 import os
+import ast
+import re
+from pathlib import Path
 from Tools.Profile import profile
+from Tools.SubtitleRenderer import SubtitleRenderer
 
 # workaround for required config entry dependencies.
 import Screens.MovieSelection
 
+from Screens.AudioSelection import AudioSelection
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.Label import Label
@@ -288,15 +293,25 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 			InfoBarPlugins, InfoBarPiP, InfoBarZoom, InfoBarButtonSetup
 		):
 			x.__init__(self)
-
+		self.subtitle_renderer = SubtitleRenderer(self)
+		self.curSubsIndex = -1
 		self.onChangedEntry = []
 		self.servicelist = slist
 		self.lastservice = lastservice or session.nav.getCurrentlyPlayingServiceOrGroup()
+		self.last_chnumber = self.lastservice and self.lastservice.getChannelNum() or 0
 		session.nav.playService(service)
 		self.cur_service = service
 		self.returning = False
 		self.onClose.append(self.__onClose)
 		self.onShow.append(self.doButtonsCheck)
+		AudioSelection.fillSubtitleExt = self.subtitleListInject
+		if self.onAudioSubTrackChanged not in AudioSelection.hooks:
+			AudioSelection.hooks.append(self.onAudioSubTrackChanged)
+
+		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
+			enigma.iPlayableService.evStart: self.__evServiceStartInit})
+		self.loadSavedSubtitle(service)
+
 		config.misc.standbyCounter.addNotifier(self.standbyCountChanged, initial_call=False)
 
 		if type(self) is MoviePlayer:
@@ -309,9 +324,15 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 			self["key_green"].setText(_("Timers"))
 		self["key_blue"].setText(_("Extensions"))
 
+	def clearHooks(self):
+		AudioSelection.fillSubtitleExt = None
+		if self.onAudioSubTrackChanged in AudioSelection.hooks:
+			AudioSelection.hooks.remove(self.onAudioSubTrackChanged)
+
 	def __onClose(self):
 		# clear the instance value so the skin reloader works correctly
 		MoviePlayer.instance = None
+		self.clearHooks()
 		config.misc.standbyCounter.removeNotifier(self.standbyCountChanged)
 		from Screens.MovieSelection import playlist
 		del playlist[:]
@@ -320,7 +341,7 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 		self.session.nav.playService(self.lastservice)
 		# Simulate service start event due to the fact when exit from playing
 		# a recording there is no evStart event because the same service is already playing
-		self.session.screen["CurrentService"].newService(self.lastservice)
+		self.session.screen["CurrentService"].newService(self.lastservice, self.last_chnumber)
 		config.usage.last_movie_played.value = self.cur_service.toString()
 		config.usage.last_movie_played.save()
 
@@ -355,6 +376,8 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 
 	def leavePlayer(self):
 		resumePointsInstance.setResumePoint(self.session)
+		self.selected_subtitle = (0, 0, 0, 0, "")
+		self.subtitle_renderer.stopSubtitles()
 		self.handleLeave(config.usage.on_movie_stop.value)
 
 	def leavePlayerOnExit(self):
@@ -602,6 +625,158 @@ class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarLongKeyDetection, InfoBar
 				elif config.usage.on_movie_eof.value == "loop":
 					return playlist[0], 1, len(playlist)
 		return None, 0, 0
+
+	def save_subconf(self, obj, file_path: str):
+		"""
+		Saves the tuple using repr() into <file_path>.subconf
+		"""
+		repr_string = repr(obj)
+		cleaned = re.sub(r"<bound method[^>]+>", "None", repr_string)
+		cleaned = cleaned.replace("PosixPath(", "").replace("))", ")").replace("None>", "None")
+		path = Path(file_path).with_suffix(".subconf")
+		# Check directory write permission
+		directory = path.parent
+		if not os.access(directory, os.W_OK):
+			return  # directory is read-only
+		with path.open("w", encoding="utf-8") as f:
+			f.write(cleaned)
+
+	def load_subconf(self, file_path: str):
+		"""
+		Loads the tuple from <file_path>.subconf
+		Removes any '<bound method ...>' entries and replaces them with None.
+		"""
+		path = Path(file_path).with_suffix(".subconf")
+		if not path.exists():
+			return None
+		raw = path.read_text(encoding="utf-8")
+
+		# Safely evaluate tuple literal
+		return ast.literal_eval(raw)
+
+	def delete_subconf(self, file_path: str):
+		"""
+		Deletes the <file>.subconf file if it exists.
+		"""
+		path = Path(file_path).with_suffix(".subconf")
+
+		if path.exists():
+			path.unlink()   # remove the file
+			return True
+		return False
+
+	def loadSavedSubtitle(self, service):
+		path = service.getPath()
+		if not path:
+			return
+		try:
+			subtitle_parsed = self.load_subconf(path)
+			if subtitle_parsed:
+				subtitle = (subtitle_parsed[0], subtitle_parsed[1], subtitle_parsed[2], subtitle_parsed[3], subtitle_parsed[4], self.runSubtitles, subtitle_parsed[6])
+				self.runSubtitles(subtitle=subtitle)
+		except:
+			pass  # this in case sometimes event comes too fast and is got by the MoviePlayer before the InfoBar, so the subconf file is not yet created, or any other issue with loading/parsing the file.
+
+	def __evServiceStartInit(self):
+		service = self.session.nav.getCurrentlyPlayingServiceReference()
+		if not service:
+			return
+		self.loadSavedSubtitle(service)
+
+	def extract_language_from_filename(self, path: Path) -> str | None:
+		"""
+		Extracts the language code from an .srt filename.
+		Returns None if no language code is detected.
+		"""
+		parts = path.stem.split(".")
+		if len(parts) <= 1:
+			return None  # no language token
+
+		lang = parts[-1]  # last token before extension
+
+		# Basic heuristic: language codes are usually 2–5 chars, letters or hyphens
+		if 2 <= len(lang) <= 5 and all(c.isalpha() or c == "-" for c in lang):
+			return lang
+
+		return None
+
+	def find_related_srt_files(self, file_path: str):
+		file_path_obj = Path(file_path).resolve()
+		base_name = file_path_obj.stem
+		directory = file_path_obj.parent
+
+		matches = []
+
+		for p in directory.glob(f"{base_name}*.srt"):
+			if not p.is_file():
+				continue
+
+			lang = self.extract_language_from_filename(p)
+			matches.append({
+				"path": p,
+				"language": lang
+			})
+
+		return matches
+
+	def subtitleListInject(self, subtitlesList):
+		service = self.session.nav.getCurrentlyPlayingServiceReference()
+		if not service:
+			return
+		if len(subtitlesList) > 0:
+			i = subtitlesList[-1][1] + 1
+		else:
+			i = 1
+		subtitletracks = self.find_related_srt_files(service.getPath())
+		for stream in subtitletracks:
+			subtitlesList.append((2, i, 4, i, stream["language"], self.runSubtitles, stream["path"]))
+
+			i += 1
+
+	def onAudioSubTrackChanged(self):
+		if self.selected_subtitle and len(self.selected_subtitle) > 5:
+			return
+		service = self.session.nav.getCurrentlyPlayingServiceReference()
+		if service:
+			self.delete_subconf(service.getPath())
+		self.curSubsIndex = -1
+
+	def loadAndParseSubs(self, stream_url):
+		try:
+			path = Path(stream_url)
+			subs_file = path.read_text(encoding='utf-8', errors='replace')
+			self.subtitle_renderer.loadSubtitles(subs_file, "SRT")
+			return True
+		except:
+			pass
+		return False
+
+	def runSubtitles(self, subtitle, sindex=-1):
+		if not subtitle and sindex > -1:
+			return
+
+		if not subtitle:
+			self.subtitle_renderer.stopSubtitles()
+			self.selected_subtitle = (0, 0, 0, 0, "")
+			self.curSubsIndex = -1
+			self.delete_subconf(self.cur_service.getPath())
+			return
+
+		print(f"Selected subtitle: {subtitle}")
+		self.enableSubtitle(None)
+		subs_uri = subtitle[6]
+		print(f"Loading subtitles from {subs_uri}")
+		self.loadAndRunSubs(subs_uri, subtitle)
+
+	def loadAndRunSubs(self, subs_uri, subtitle):
+		result = self.loadAndParseSubs(subs_uri)
+		if result:
+			self.subtitle_renderer.startSubtitle()
+			self.selected_subtitle = subtitle
+			self.curSubsIndex = subtitle[3]
+			self.save_subconf(subtitle, self.cur_service.getPath())
+		else:
+			pass  # TODO: add message, log, etc...
 
 	def displayPlayedName(self, ref, index, n):
 		import Tools.Notifications

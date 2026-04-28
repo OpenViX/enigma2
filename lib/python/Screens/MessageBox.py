@@ -1,13 +1,15 @@
 from enigma import eTimer, ePoint, eSize, getDesktop
 
-from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
+from Components.ActionMap import ActionMap, HelpableNumberActionMap
 from Components.config import config
 from Components.Label import Label
 from Components.MenuList import MenuList
-from Components.Pixmap import Pixmap, MultiPixmap
+from Components.Pixmap import MultiPixmap
 from Components.Sources.StaticText import StaticText
 from Screens.HelpMenu import HelpableScreen
 from Screens.Screen import Screen
+from Tools.decorators import classproperty
+from Session import SessionObject
 from skin import parseScale, applySkinFactor
 
 
@@ -18,79 +20,19 @@ class MessageBox(Screen, HelpableScreen):
 	TYPE_ERROR = 3
 	TYPE_MESSAGE = 4
 
-	TYPE_PREFIX = {
-		TYPE_YESNO: _("Question"),
-		TYPE_INFO: _("Information"),
-		TYPE_WARNING: _("Warning"),
-		TYPE_ERROR: _("Error"),
-		TYPE_MESSAGE: _("Message")
-	}
-
-	def __init__(self, session, text, type=TYPE_YESNO, timeout=0, close_on_any_key=False, default=True, enable_input=True, msgBoxID=None, picon=True, simple=False, wizard=False, list=None, skin_name=None, timeout_default=None, title=None):
-		Screen.__init__(self, session)
+	def __init__(self, session, text, type=TYPE_YESNO, timeout=0, close_on_any_key=False, default=True, enable_input=True, msgBoxID=None, picon=True, simple=False, wizard=False, list=None, skin_name=None, timeout_default=None, title=None, **kwargs):
+		Screen.__init__(self, session, mandatoryWidgets=["list", "text"])
 		HelpableScreen.__init__(self)
-		if text:
-			self.text = _(text)
-		else:
-			self.text = text
-		if type in range(self.TYPE_MESSAGE + 1):
-			self.type = type
-		else:
-			self.type = self.TYPE_MESSAGE
+		self.TYPE_PREFIX = {self.TYPE_YESNO: _("Question"), self.TYPE_INFO: _("Information"), self.TYPE_WARNING: _("Warning"), self.TYPE_ERROR: _("Error"), self.TYPE_MESSAGE: _("Message")}
+		self.text = text
+		self.type = type if type in self.TYPE_PREFIX else self.TYPE_MESSAGE
 		self.timeout = int(timeout)
 		self.close_on_any_key = close_on_any_key
-		if enable_input:
-			self["actions"] = HelpableActionMap(self, ["MsgBoxActions", "DirectionActions"], {
-				"cancel": (self.cancel, _("Cancel the selection")),
-				"ok": (self.ok, _("Accept the current selection")),
-				"alwaysOK": (self.alwaysOK, _("Always select OK")),
-				"up": (self.up, _("Move up a line")),
-				"down": (self.down, _("Move down a line")),
-				"left": (self.left, _("Move up a page")),
-				"right": (self.right, _("Move down a page"))
-				# These actions are *ONLY* defined on OpenPLi!
-				# I don't believe thay add any functionality even for OpenPLi.
-				# "upRepeated": (self.up, _("Move up a line repeatedly")),
-				# "downRepeated": (self.down, _("Move down a line repeatedly")),
-				# "leftRepeated": (self.left, _("Move up a page repeatedly")),
-				# "rightRepeated": (self.right, _("Move down a page repeatedly"))
-			}, prio=-1, description=_("MessageBox Functions"))
-			self["NumberActions"] = HelpableNumberActionMap(self, ["NumberActions",],
-			{
-				"0": (self.keyNumberGlobal, _("Direct item selection")),
-				"1": (self.keyNumberGlobal, _("Direct item selection")),
-				"2": (self.keyNumberGlobal, _("Direct item selection")),
-				"3": (self.keyNumberGlobal, _("Direct item selection")),
-				"4": (self.keyNumberGlobal, _("Direct item selection")),
-				"5": (self.keyNumberGlobal, _("Direct item selection")),
-				"6": (self.keyNumberGlobal, _("Direct item selection")),
-				"7": (self.keyNumberGlobal, _("Direct item selection")),
-				"8": (self.keyNumberGlobal, _("Direct item selection")),
-				"9": (self.keyNumberGlobal, _("Direct item selection")),
-			}, prio=0, description=_("MessageBox Direct Item Selection Actions"))
 		self.msgBoxID = msgBoxID
-		# These six lines can go with new skins that only use self["icon"]...
-		self["QuestionPixmap"] = Pixmap()
-		self["QuestionPixmap"].hide()
-		self["InfoPixmap"] = Pixmap()
-		self["InfoPixmap"].hide()
-		self["ErrorPixmap"] = Pixmap()
-		self["ErrorPixmap"].hide()
-		self["WarningPixmap"] = Pixmap()
-		self["WarningPixmap"].hide()
 		self["icon"] = MultiPixmap()
 		self["icon"].hide()
 		self.picon = picon
 		if picon:
-			# These five lines can go with new skins that only use self["icon"]...
-			if self.type == self.TYPE_YESNO:
-				self["QuestionPixmap"].show()
-			elif self.type == self.TYPE_INFO:
-				self["InfoPixmap"].show()
-			elif self.type == self.TYPE_ERROR:
-				self["ErrorPixmap"].show()
-			elif self.type == self.TYPE_WARNING:
-				self["WarningPixmap"].show()
 			self["icon"].show()
 		self.skinName = ["MessageBox"]
 		if simple:
@@ -119,11 +61,11 @@ class MessageBox(Screen, HelpableScreen):
 		if timeout > 0:
 			self.timerRunning = True
 		self["text"] = Label(self.text)
-		self["Text"] = StaticText(self.text)  # What is self["Text"] for?
-		self["selectedChoice"] = StaticText()
+		self["Text"] = StaticText(self.text)  # Used by summary screens
+		self["selectedChoice"] = StaticText()  # Used by summary screens
 		self["list"] = MenuList(self.list)
 		if self.list:
-			self["selectedChoice"].setText(self.list[0][0])
+			self["selectedChoice"].setText(self["list"].getCurrent()[0])
 		else:
 			self["list"].hide()
 		self["key_help"] = StaticText(_("HELP"))
@@ -134,10 +76,23 @@ class MessageBox(Screen, HelpableScreen):
 		self.nextNumberTimer.callback.append(self.ok)
 		if self.layoutFinished not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.layoutFinished)
+		if enable_input:
+			self["actions"] = HelpableNumberActionMap(self, ["MsgBoxActions", "DirectionActions", "NumberActions",],
+			{
+				"cancel": (self.cancel, _("Cancel the selection")),
+				"ok": (self.ok, _("Accept the current selection"))} | (({
+				"alwaysOK": (self.alwaysOK, _("Always select OK")),
+				"up": (self.up, _("Move up a line")),
+				"down": (self.down, _("Move down a line")),
+				"left": (self.left, _("Move up a page")),
+				"right": (self.right, _("Move down a page"))} | {
+				str(i): (self.keyNumberGlobal, _("Direct item selection")) for i in range(10)}
+				) if self.list else {}),
+			prio=-20, description=_("MessageBox Actions"))
 
 	def layoutFinished(self):
 		self["icon"].setPixmapNum(self.type)
-		prefix = self.TYPE_PREFIX.get(self.type, _("Unknown"))
+		prefix = self.TYPE_PREFIX.get(self.type, self.TYPE_PREFIX[self.TYPE_MESSAGE])
 		if self.baseTitle is None:
 			title = self.getTitle()
 			if title:
@@ -159,7 +114,7 @@ class MessageBox(Screen, HelpableScreen):
 		if self.activeTitle is None:
 			self.activeTitle = self.getTitle()
 			if "%s" in self.activeTitle:
-				self.activeTitle = self.activeTitle % self.TYPE_PREFIX.get(self.type, _("Unknown"))
+				self.activeTitle = self.activeTitle % self.TYPE_PREFIX.get(self.type, self.TYPE_PREFIX[self.TYPE_MESSAGE])
 		if self.baseTitle != self.activeTitle:
 			self.baseTitle = self.activeTitle
 		if self.timeout > 0:
@@ -193,11 +148,7 @@ class MessageBox(Screen, HelpableScreen):
 	def getPixmapSize(self):
 		defaultPixmapWidth = (53, 53)
 		try:  # protect from skin errors
-			return self["ErrorPixmap"].visible and hasattr(self["ErrorPixmap"], 'getSize') and isinstance(self["ErrorPixmap"].getSize(), tuple) and len(self["ErrorPixmap"].getSize()) and self["ErrorPixmap"].getSize() or \
-				self["QuestionPixmap"].visible and hasattr(self["QuestionPixmap"], 'getSize') and isinstance(self["QuestionPixmap"].getSize(), tuple) and len(self["QuestionPixmap"].getSize()) and self["QuestionPixmap"].getSize() or \
-				self["InfoPixmap"].visible and hasattr(self["InfoPixmap"], 'getSize') and isinstance(self["InfoPixmap"].getSize(), tuple) and len(self["InfoPixmap"].getSize()) and self["InfoPixmap"].getSize() or \
-				self["WarningPixmap"].visible and hasattr(self["WarningPixmap"], 'getSize') and isinstance(self["WarningPixmap"].getSize(), tuple) and len(self["WarningPixmap"].getSize()) and self["WarningPixmap"].getSize() or \
-				defaultPixmapWidth
+			return self["icon"].getSize()
 		except Exception as err:
 			print("[MessageBox] defaultPixmapWidth, %s: '%s'" % (type(err).__name__, err))
 		return defaultPixmapWidth
@@ -247,50 +198,30 @@ class MessageBox(Screen, HelpableScreen):
 		self.instance.move(ePoint((desktop_w - wsizex) // 2, (desktop_h - wsizey) // 2))
 
 	def cancel(self):
-		for x in self["list"].list:
-			# print "[MessageBox] DEBUG: (cancel) '%s' -> '%s'" % (str(x[0]), str(x[1]))
-			# Should we be looking at the second element to get the boolean value rather than the word?
-			if x[0].lower() == _('no') or x[0].lower() == _('false'):
-				if len(x) > 2:
-					x[2](None)
-				break
-		# Don't close again if the MessageBox was closed in the loop
-		if hasattr(self, "execing"):
-			self.close(False)
+		self.close(False)
 
 	def ok(self):
 		if self.number:
 			self["list"].moveToIndex(self.number - 1)
 			self.resetNumberKey()
-		if self["list"].getCurrent():
-			self.goEntry(self["list"].getCurrent())
+		if current := self["list"].getCurrent():
+			self.close(current[1])
 		else:
 			self.close(True)
 
-	def goEntry(self, entry=None):
-		if not entry:
-			entry = []
-		if entry and len(entry) > 3 and isinstance(entry[1], str) and entry[1] == "CALLFUNC":
-			arg = entry[3]
-			entry[2](arg)
-		elif entry and len(entry) > 2 and isinstance(entry[1], str) and entry[1] == "CALLFUNC":
-			entry[2](None)
-		elif entry:
-			self.close(entry[1])
-		else:
-			self.close(False)
-
 	def alwaysOK(self):
-		if self["list"].list:
-			for x in self["list"].list:
-				# print "[MessageBox] DEBUG: (cancel) '%s' -> '%s'" % (str(x[0]), str(x[1]))
-				# Should we be looking at the second element to get the boolean value rather than the word?
-				if x[0].lower() == _('yes') or x[0].lower() == _('true'):
-					if len(x) > 2:
-						self.goEntry(x)
-					else:
-						self.close(True)
+		# Just returning True in this function would be wrong because
+		# we don't know the return value of the item is True, i.e. it
+		# could be an object or variable that our callback is waiting
+		# to receive.
+		if self.list:
+			for x in self.list:
+				if x[0].lower() in (_('yes'), _('true')):
+					self.close(x[1])
 					break
+			else:
+				if any([x[1] is True for x in self.list]):   # only close if True is an option
+					self.close(True)
 		else:
 			self.close(True)
 
@@ -336,3 +267,65 @@ class MessageBox(Screen, HelpableScreen):
 	def resetNumberKey(self):
 		self.nextNumberTimer.stop()
 		self.number = 0
+
+
+class ModalMessageBox:
+	_instance = None
+
+	def __init__(self, session):
+		if ModalMessageBox._instance:
+			print("[ModalMessageBox] Error: Only one ModalMessageBox instance is allowed!")
+		else:
+			self.session = session
+			ModalMessageBox._instance = self
+			self.dialog = None
+			self.previousDialog = None
+			self.previousEnabledActions = []
+
+	def showMessageBox(self, text="", timeout=0, list=None, default=True, close_on_any_key=False, timeout_default=None, title=None, msgBoxID=None, type=None, enable_input=True, callback=None, **kwargs):
+		if self.dialog:
+			return  # sanity, nothing should be calling this with the dialog already open, so ignore it
+		self.disableParentActions()
+		self.dialog = self.session.instantiateDialog(MessageBox, text=text, type=type, timeout=timeout, close_on_any_key=close_on_any_key, default=default, enable_input=enable_input, msgBoxID=msgBoxID, list=list, skin_name="MessageBoxModal", timeout_default=timeout_default, title=title)
+		self.dialog.setAnimationMode(0)
+		self.callback = callback
+		for x in self.dialog:
+			if isinstance(self.dialog[x], ActionMap):
+				self.dialog[x].execBegin()
+		self.dialog.close = self.close
+		self.dialog.show()
+
+	def close(self, *retVal):
+		if self.dialog:
+			if self.callback and callable(self.callback):
+				self.callback(*retVal)
+			for x in self.dialog:
+				if isinstance(self.dialog[x], ActionMap):
+					self.dialog[x].execEnd()
+			self.dialog.doClose()
+			self.dialog = None
+		self.enableParentActions()
+		ModalMessageBox._instance = None
+
+	def disableParentActions(self):
+		self.previousDialog = self.session.current_dialog
+		for x in self.previousDialog:
+			if isinstance(self.previousDialog[x], ActionMap) and self.previousDialog[x].enabled:
+				self.previousEnabledActions.append(x)
+				self.previousDialog[x].setEnabled(False)
+
+	def enableParentActions(self):
+		if self.previousDialog:
+			for x in self.previousEnabledActions:
+				if x in self.previousDialog:  # sanity
+					self.previousDialog[x].setEnabled(True)
+			self.previousEnabledActions.clear()
+			self.previousDialog = None
+
+	@classproperty
+	def instance(cls):
+		if cls._instance:
+			return cls._instance
+		else:
+			cls._instance = cls(SessionObject().session)
+			return cls._instance

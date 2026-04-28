@@ -11,7 +11,7 @@ from stat import S_IMODE
 from sys import _getframe as getframe
 from unicodedata import normalize
 from traceback import print_exc
-from xml.etree.cElementTree import Element, fromstring, parse
+from xml.etree.ElementTree import Element, fromstring, parse
 
 SCOPE_HOME = 0  # DEBUG: Not currently used in Enigma2.
 SCOPE_LANGUAGE = 1

@@ -22,13 +22,13 @@ from Tools.LoadPixmap import LoadPixmap
 
 from enigma import eTimer
 
-import xml.etree.cElementTree
+import xml.etree.ElementTree
 
 from gettext import dgettext
 
 # read the menu... recovery.xml is an abreviated version of menu.xml used for slot 0 (recovery image).
 file = open(resolveFilename(SCOPE_SKINS, 'menu.xml' if SystemInfo["MultiBootSlot"] != 0 else 'recovery.xml'), 'r')
-mdom = xml.etree.cElementTree.parse(file)
+mdom = xml.etree.ElementTree.parse(file)
 file.close()
 
 

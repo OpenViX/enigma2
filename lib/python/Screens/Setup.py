@@ -1,4 +1,4 @@
-from xml.etree.cElementTree import fromstring
+from xml.etree.ElementTree import fromstring
 
 from gettext import dgettext
 from os.path import getmtime, join as pathjoin

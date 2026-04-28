@@ -343,7 +343,7 @@ class AboutUserInstalledPlugins(AboutBase):
 		self.onLayoutFinish.append(self.startfetch)
 
 	def startfetch(self):
-		self.reader.run(self.callback)
+		threads.deferToThread(self.reader.run, self.callback)
 
 	def callback(self, plugins):
 		if plugins:

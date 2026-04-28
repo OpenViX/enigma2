@@ -12,7 +12,7 @@ from Components.Slider import Slider
 from Components.SystemInfo import SystemInfo, DISPLAYBRAND, MACHINENAME
 import Components.Task
 from Screens.ChoiceBox import ChoiceBox
-from Screens.GitCommitInfo import CommitInfo, gitcommitinfo
+from Screens.GitCommitInfo import CommitInfo
 from Screens.MessageBox import MessageBox
 from Components.OnlineUpdateCheck import feedsstatuscheck, kernelMismatch, statusMessage
 from Screens.ParentalControlSetup import ProtectedScreen
@@ -28,21 +28,12 @@ class SoftwareUpdateChanges(CommitInfo):
 	def __init__(self, session):
 		CommitInfo.__init__(self, session)
 
-		self["actions"] = ActionMap(["SetupActions", "DirectionActions"],
-		{
-			'cancel': self.closeRecursive,
-			"red": self.closeRecursive,
-			"up": self["AboutScrollLabel"].pageUp,
-			"down": self["AboutScrollLabel"].pageDown,
-			"left": self.left,
-			"right": self.right
-		}, -1)
-
-		self["key_red"] = Button(_("Close"))
-
 	def readGithubCommitLogs(self):
-		self.setTitle(gitcommitinfo.getScreenTitle())
-		self["AboutScrollLabel"].setText(gitcommitinfo.readGithubCommitLogsSoftwareUpdate())
+		self.setTitle(self.gitcommitinfo.getScreenTitle())
+		self.gitcommitinfo.readGithubCommitLogsSoftwareUpdate()
+
+	def close(self):
+		Screen.close(self, ("menu", "menu"))
 
 
 class UpdateChoices(ChoiceBox):
@@ -139,6 +130,16 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		self.total_packages = None
 		if not self.isProtected():
 			self.onFirstExecBegin.append(self.checkNetworkState)
+
+		self.options = {
+			"changes": (_("View repository history"), "changes", _("View the history of the principal repositories. These show up to the minute changes but may not reflect the exact state of any new build.")),
+			"cold": (_("Upgrade and reboot system"), "cold", _("Download and install any packages that have been updated since the last software update was performed.")),
+			"backup": (_("Perform a settings backup"), "backup", _("Making a settings backup is advised before doing a software update and can be used later should a full reflash be required.")),
+			"imagebackup": (_("Perform a full image backup"), "imagebackup", _("Make a full image backup if you want save an exact copy of your current image and its configuration.")),
+			"channels": (_("Update channel list only"), "channels", _("Update to the newest version of any channel list package previously downloaded from the feeds. No other changes will be made.")),
+			"showlist": (_("Show packages to be updated"), "showlist", _("View the list of packages which have newer versions and are marked for updating.")),
+			"cancel": (_("Cancel"), ""),
+		}
 
 	def checkNetworkState(self):
 		self.trafficLight = feedsstatuscheck.getFeedsBool()
@@ -289,15 +290,14 @@ class UpdatePlugin(Screen, ProtectedScreen):
 						elif package_tmp[0].startswith('enigma2-plugin-picons-srp'):
 							ocram = ocram + '[ocram-picons] ' + package_tmp[0].split('enigma2-plugin-picons-srp-')[1].replace('.', ' ') + ' updated ' + package_tmp[2].replace('--', ' ') + '\n'
 					config.softwareupdate.updatefound.setValue(True)
-					choices = [(_("View the changes"), "changes"),
-						(_("Upgrade and reboot system"), "cold")]
+					choices = [self.options["showlist"], self.options["cold"]]
 					if not config.softwareupdate.autosettingsbackup.value and hasattr(config, "backupmanager") and config.backupmanager.backuplocation.value:
-						choices.append((_("Perform a settings backup"), "backup"))
+						choices.append(self.options["backup"])
 					if not config.softwareupdate.autoimagebackup.value and hasattr(config, "imagemanager") and config.imagemanager.backuplocation.value:
-						choices.append((_("Perform a full image backup"), "imagebackup"))
-					choices.append((_("Update channel list only"), "channels"))
-					choices.append((_("Show packages to be updated"), "showlist"))
-					choices.append((_("Cancel"), ""))
+						choices.append(self.options["imagebackup"])
+					choices.append(self.options["channels"])
+					choices.append(self.options["changes"])
+					choices.append(self.options["cancel"])
 					self["actions"].setEnabled(True)
 					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight)
 					upgrademessage.setTitle(self.getTitle())
@@ -362,16 +362,15 @@ class UpdatePlugin(Screen, ProtectedScreen):
 				message = _("The current update may be unstable.") + "\n" + _("Are you sure you want to update your %s %s?") % (DISPLAYBRAND, MACHINENAME) + packagesMsg
 			elif config.softwareupdate.updateisunstable.value == 0:
 				message = _("Do you want to update your %s %s?") % (DISPLAYBRAND, MACHINENAME) + packagesMsg
-			choices = [(_("View the changes"), "changes"),
-				(_("Upgrade and reboot system"), "cold")]
+			choices = [self.options["showlist"], self.options["cold"]]
 			if not self.SettingsBackupDone and not config.softwareupdate.autosettingsbackup.value and hasattr(config, "backupmanager") and config.backupmanager.backuplocation.value:
-				choices.append((_("Perform a settings backup"), "backup"))
+				choices.append(self.options["imagebackup"])
 				message += "\n" + _("Making a settings backup before updating is highly recommended.")
 			if not self.ImageBackupDone and not config.softwareupdate.autoimagebackup.value and hasattr(config, "imagemanager") and config.imagemanager.backuplocation.value:
-				choices.append((_("Perform a full image backup"), "imagebackup"))
-			choices.append((_("Update channel list only"), "channels"))
-			choices.append((_("Show packages to be updated"), "showlist"))
-			choices.append((_("Cancel"), ""))
+				choices.append(self.options["imagebackup"])
+			choices.append(self.options["channels"])
+			choices.append(self.options["changes"])
+			choices.append(self.options["cancel"])
 			self["actions"].setEnabled(True)
 			upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight)
 			upgrademessage.setTitle(self.getTitle())

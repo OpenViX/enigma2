@@ -47,7 +47,7 @@ class CurrentService(PerServiceBase, Source):
 
 	serviceref = property(getCurrentServiceRef)
 
-	def newService(self, ref):
+	def newService(self, ref, num=0):
 		if ref and isinstance(ref, bool):
 			self.info = None
 		elif ref:
@@ -57,6 +57,9 @@ class CurrentService(PerServiceBase, Source):
 
 		for x in self.onManualNewService:
 			x()
+
+		if num > 0:
+			self.serviceref.setChannelNum(num)
 
 		self.changed((self.CHANGED_SPECIFIC, iPlayableService.evStart))
 
