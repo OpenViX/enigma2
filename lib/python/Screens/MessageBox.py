@@ -282,7 +282,7 @@ class ModalMessageBox:
 			self.previousDialog = None
 			self.previousEnabledActions = []
 
-	def showMessageBox(self, text="", timeout=0, list=None, default=True, close_on_any_key=False, timeout_default=None, title=None, msgBoxID=None, type=None, enable_input=True, callback=None, **kwargs):
+	def showMessageBox(self, text="", timeout=0, list=None, default=True, close_on_any_key=False, timeout_default=None, title=None, msgBoxID=None, type=MessageBox.TYPE_YESNO, enable_input=True, callback=None, **kwargs):
 		if self.dialog:
 			return  # sanity, nothing should be calling this with the dialog already open, so ignore it
 		self.disableParentActions()
@@ -302,7 +302,7 @@ class ModalMessageBox:
 			for x in self.dialog:
 				if isinstance(self.dialog[x], ActionMap):
 					self.dialog[x].execEnd()
-			self.dialog.doClose()
+			self.session.deleteDialog(self.dialog)
 			self.dialog = None
 		self.enableParentActions()
 		ModalMessageBox._instance = None
