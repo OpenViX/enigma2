@@ -15354,14 +15354,14 @@ msgstr "Mostrar la información del servicio en dos líneas en la pantalla de se
 msgid "Show the tv player"
 msgstr "Mostrar el reproductor de TV."
 
-msgid "Show time elapsed as positive"
-msgstr "Ver el tiempo transcurrido en positivo."
+msgid "Show time elapsed as positive *"
+msgstr "Ver el tiempo transcurrido en positivo. *"
 
 msgid "Show time in 24 hour clock format."
 msgstr "Utilizar la hora en formato de reloj de 24 horas."
 
-msgid "Show time remaining/elapsed"
-msgstr "Ver el tiempo restante/transcurrido."
+msgid "Show time remaining/elapsed *"
+msgstr "Ver el tiempo restante/transcurrido. *"
 
 msgid "Show timer list"
 msgstr "Mostrar lista de temporizadores"
@@ -15373,8 +15373,8 @@ msgstr "Mostrar paquetes de traducción"
 msgid "Show transponder info"
 msgstr "Mostrar información del transpondedor"
 
-msgid "Show transponder remaining/elapsed as"
-msgstr "Ver el transpondedor restante/transcurrido como..."
+msgid "Show transponder remaining/elapsed as *"
+msgstr "Ver el transpondedor restante/transcurrido como *"
 
 msgid "Show two lines per entry"
 msgstr "Mostrar dos líneas por entrada"
