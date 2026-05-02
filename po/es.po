@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-11 11:37+0200\n"
-"PO-Revision-Date: 2026-04-12 14:36+0200\n"
+"POT-Creation-Date: 2026-05-03 01:11+0200\n"
+"PO-Revision-Date: 2026-05-03 01:42+0200\n"
 "Last-Translator: Andy Blackburn <andyblac@icloud.com>\n"
 "Language-Team: www.CostaBlancaTranslations.com <maria@CostaBlancaTranslations.com>\n"
 "Language: es\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
 
 msgid ""
@@ -6325,9 +6325,6 @@ msgstr "Habilitar modo movimiento"
 msgid "Enable multiple bouquets"
 msgstr "Habilitar múltiples grupos"
 
-msgid "Enable new GStreamer playback"
-msgstr "Habilitar la nueva reproducción de GStreamer"
-
 #
 msgid "Enable or disable client mode."
 msgstr "Habilitar/desactivar modo de cliente"
@@ -8262,9 +8259,6 @@ msgstr "Si está habilitado, se mantendrá un registro del tráfico del protocol
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
 msgstr "Si está habilitado, la pantalla muestra 12 caracteres en lugar de 8, pero solo en latin-1/translit"
 
-msgid "If enabled, the new GStreamer playback engine will be used."
-msgstr "Si está habilitado, se utilizará el nuevo reproductor de GStreamer."
-
 msgid "If set to 'Standard' number buttons page up/down/left/right."
 msgstr "Si se configura en 'Estándar', los botones numéricos, página arriba/abajo/izquierda/derecha."
 
@@ -8958,9 +8952,6 @@ msgstr "Aviso Kexec"
 msgid "Key"
 msgstr "Clave"
 
-msgid "Key Events"
-msgstr "Eventos clave"
-
 #
 msgid "Keyboard"
 msgstr "Teclado"
@@ -9363,8 +9354,17 @@ msgstr "Historial"
 msgid "Log %s-%s"
 msgstr "Historal %s-%s"
 
+msgid "Log All"
+msgstr "Registrar todo"
+
+msgid "Log Key Events"
+msgstr "Registrar eventos del botón"
+
 msgid "Log Manager"
 msgstr "Administrador de historiales"
+
+msgid "Log Messages"
+msgstr "Registrar mensajes"
 
 msgid "Log python stack trace on spinner"
 msgstr "Registrar el seguimiento de la pila de Python en el spinner"
@@ -9533,11 +9533,11 @@ msgstr "Convertir marca en punto de salida"
 msgid "Make this mark just a mark"
 msgstr "Convertir en marca normal"
 
-msgid "Making a settings backup is advised before doing a software update and can be used later should a full reflash be required."
-msgstr "Se recomienda realizar una copia de seguridad de la configuración antes de actualizar el software, ya que podrá utilizarse posteriormente en caso de que sea necesario reinstalar el sistema operativo por completo."
-
 msgid "Making a settings backup before updating is highly recommended."
 msgstr "Es muy recomendable realizar una copia de seguridad de la configuración antes de actualizar."
+
+msgid "Making a settings backup is advised before doing a software update and can be used later should a full reflash be required."
+msgstr "Se recomienda realizar una copia de seguridad de la configuración antes de actualizar el software, ya que podrá utilizarse posteriormente en caso de que sea necesario reinstalar el sistema operativo por completo."
 
 msgid "Malawi"
 msgstr "Malawi"
@@ -9724,15 +9724,8 @@ msgstr "Fusionando archivos Timeshift"
 msgid "Message"
 msgstr "Mensaje"
 
-#
-msgid "MessageBox Direct Item Selection Actions"
-msgstr "Acciones de selección directa de elementos del MessageBox"
-
-msgid "MessageBox Functions"
-msgstr "Funciones de MessageBox"
-
-msgid "Messages"
-msgstr "Mensajes"
+msgid "MessageBox Actions"
+msgstr "Acciones de MessageBox"
 
 msgid "Mexico"
 msgstr "Méjico"
@@ -12801,6 +12794,9 @@ msgstr "Tecla Rec (corto)"
 msgid "Recall channel, panic button & number zap"
 msgstr "Recordar canal, botón de pánico y número de zap"
 
+msgid "Receiver will action TV wakeup request based on this setting"
+msgstr "El receptor procesará la solicitud de activación del televisor según esta configuración."
+
 #
 msgid "Record"
 msgstr "Grabar"
@@ -15036,14 +15032,14 @@ msgstr "Mostrar actualización de software en extensiones"
 msgid "Show Software Update in Extensions (blue button menu). 'yes' adds it permanently. 'only when available' only shows it when updates are known to be available based on update polling."
 msgstr "Mostrar actualización de software en extensiones (menú del botón azul). 'Sí' lo agrega de forma permanente. 'Solo cuando esté disponible' solo lo muestra cuando se sabe que hay actualizaciones disponibles según el sondeo de actualizaciones."
 
-msgid "Show Time Remaining/Elapsed"
-msgstr "Ver tiempo restante/transcurrido"
+msgid "Show Time Remaining/Elapsed *"
+msgstr "Ver tiempo restante/transcurrido *"
 
 msgid "Show Timer List"
 msgstr "Ver lista de temporizadores"
 
-msgid "Show Transponder Remaining/Elapsed as"
-msgstr "Ver transpondedor restante/transcurrido como..."
+msgid "Show Transponder Remaining/Elapsed as *"
+msgstr "Ver transpondedor restante/transcurrido como *"
 
 msgid "Show True/False as graphical switch"
 msgstr "Mostrar Verdadero/Falso como interruptor gráfico"
@@ -18688,9 +18684,6 @@ msgstr "Reactivar"
 msgid "Wake Up To Standby"
 msgstr "Activar a modo de espera"
 
-msgid "Wake the receiver from standby when the wake command is sent from the TV."
-msgstr "Activa el receptor desde el modo de espera cuando se envía el comando de activación desde el televisor."
-
 #
 msgid "Wake up to standby"
 msgstr "Reactivar a modo de espera"
@@ -18902,6 +18895,9 @@ msgstr "¿Qué día de la semana?"
 msgid "What do you want to scan?"
 msgstr "¿Qué quieres buscar?"
 
+msgid "When TV issues wakeup, receiver will action based on 'Wakeup signal from TV' setting."
+msgstr "Cuando el televisor emite la señal de activación, el receptor actuará en función de la configuración de la 'Señal de activación del televisor'."
+
 msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
 msgstr "Cuando está habilitado, será posible realizar una descarga forzada desde el menú de extensiones (botón azul). Se muestra después del siguiente reinicio."
 
@@ -18913,9 +18909,6 @@ msgstr "Cuando está activado, el verificador online comprabará también las ve
 
 msgid "When enabled the receiver will automatically return to standby when the TV is turned off."
 msgstr "Cuando está habilitado, el receptor volverá automáticamente al modo de espera cuando se apague el televisor."
-
-msgid "When enabled the receiver will automatically wake from standby when the TV is turned on."
-msgstr "Cuando esta opción está habilitada, el receptor se reactivará automáticamente desde el modo de espera cuando se encienda el televisor."
 
 msgid "When enabled the set top box is able to wakeup on LAN"
 msgstr "Cuando está habilitado, el decodificador puede activarse en LAN"
@@ -20690,6 +20683,9 @@ msgstr "Programa para niños de preescolar."
 #
 msgid "preserve bookmarks in cuts"
 msgstr "preservar marcador en cortes"
+
+msgid "print debug"
+msgstr "imprimir depuración"
 
 #
 msgid "priority"
