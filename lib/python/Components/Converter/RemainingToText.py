@@ -92,10 +92,10 @@ class RemainingToText(Poll, Converter):
 			else:
 				return [(sign_r, remaining)]
 
-		def join(pairs, fmt, suffix=""):
+		def join(pairs, fmt):
 			if len(pairs) == 1:
 				sign, val = pairs[0]
-				return (sign or "") + fmt(val) + suffix
+				return (sign or "") + fmt(val)
 			else:
 				(s1, v1), (s2, v2) = pairs
 				return s1 + fmt(v1) + "  " + s2 + fmt(v2)
