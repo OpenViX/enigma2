@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-23 12:46+0300\n"
-"PO-Revision-Date: 2026-04-26 10:15+0300\n"
+"POT-Creation-Date: 2026-05-03 11:30+0300\n"
+"PO-Revision-Date: 2026-05-03 17:18+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -7700,7 +7700,7 @@ msgid "If set to 'yes', allows you to use timeshift with alternative audio plugi
 msgstr "'Kyllä' valittuna sallii käyttää ajansiirtoa vaihtoehtoisilla audio-lisäosilla."
 
 msgid "If set to 'yes', the infobar will be displayed when Fast Forwarding or Rewinding during media playback."
-msgstr "'Kyllä' valinnalla tietopalkki näytetään tallenteen katselussa pikakelausten aikana."
+msgstr "'Kyllä' valinnalla tietopalkki näytetään median toistossa pikakelausten aikana."
 
 msgid "If the receiver was woken from 'Deep Standby' and is currently in 'Standby' and no recordings are in progress return it to 'Deep Standby' once the EPG download has completed."
 msgstr "Jos vastaanotin herätettiin 'Virransäästötilasta' ja se on tällä hetkellä 'Valmiustilassa' eikä tallennuksia ole käynnissä, palauta se 'Virransäästötilaan', kun EPG:n lataus on valmis."
@@ -8948,7 +8948,7 @@ msgid "Mb/s"
 msgstr "Mb/s"
 
 msgid "Media playback Remaining/Elapsed as"
-msgstr "Näytä tallenteen jäljellä oleva/kulunut aika:"
+msgstr "Näytä toistettavan median jäljellä oleva/kulunut aika:"
 
 msgid "Media player"
 msgstr "Mediasoitin"
@@ -13768,7 +13768,7 @@ msgid "Show Log Manager in extensions list ?"
 msgstr "Näytä lokien hallinta laajennusvalikossa?"
 
 msgid "Show Media playback Remaining/Elapsed as"
-msgstr "Näytä tallenteen jäljellä oleva/kulunut aika:"
+msgstr "Näytä toistettavan median jäljellä oleva/kulunut aika:"
 
 msgid "Show MiniTV in the Front Display"
 msgstr "Näytä MiniTV etupaneelin näytössä"
@@ -13803,14 +13803,14 @@ msgstr "Näytä ohjelmapäivitys laajennuksissa"
 msgid "Show Software Update in Extensions (blue button menu). 'yes' adds it permanently. 'only when available' only shows it when updates are known to be available based on update polling."
 msgstr "Näytä ohjelmapäivitys laajennuksissa (sininen näppäin). 'Kyllä' lisää sen pysyvästi. 'Vain kun saatavilla' näyttää sen vain, kun päivitys on saatavilla perustuen tarkistustiheyteen."
 
-msgid "Show Time Remaining/Elapsed"
-msgstr "Näytä jäljellä oleva/kulunut aika"
+msgid "Show Time Remaining/Elapsed *"
+msgstr "Näytä jäljellä oleva/kulunut aika *"
 
 msgid "Show Timer List"
 msgstr "Näytä ajastusluettelo"
 
-msgid "Show Transponder Remaining/Elapsed as"
-msgstr "Näytä ohjelman jäljellä oleva/kulunut aika:"
+msgid "Show Transponder Remaining/Elapsed as *"
+msgstr "Näytä transponderin jäljellä oleva/kulunut aika: *"
 
 msgid "Show True/False as graphical switch"
 msgstr "Näytä Kyllä/Ei -kysymykset graafisina kytkiminä"
@@ -14082,14 +14082,14 @@ msgstr "Näytä kanavan tiedot kahdella rivillä kanavanvalintanäytössä."
 msgid "Show the tv player"
 msgstr "Näytä tv"
 
-msgid "Show time elapsed as positive"
-msgstr "Näytä kulunut aika positiivisena"
+msgid "Show time elapsed as positive *"
+msgstr "Näytä kulunut aika positiivisena *"
 
 msgid "Show time in 24 hour clock format."
 msgstr "Näytä aika 24h muodossa."
 
-msgid "Show time remaining/elapsed"
-msgstr "Näytä jäljellä oleva/kulunut aika"
+msgid "Show time remaining/elapsed *"
+msgstr "Näytä jäljellä oleva/kulunut aika *"
 
 msgid "Show timer list"
 msgstr "Näytä ajastusluettelo"
@@ -14100,8 +14100,8 @@ msgstr "Näytä käännöstiedostojen ohjelmapaketit"
 msgid "Show transponder info"
 msgstr "Näytä transponderin tietoja"
 
-msgid "Show transponder remaining/elapsed as"
-msgstr "Näytä transponderin jäljellä oleva/kulunut aika:"
+msgid "Show transponder remaining/elapsed as *"
+msgstr "Näytä transponderin jäljellä oleva/kulunut aika: *"
 
 msgid "Show two lines per entry"
 msgstr "Näytä kaksi riviä per kanava"
@@ -15199,7 +15199,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 26.04.2026 ---\n"
+"--- 03.05.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -15719,13 +15719,13 @@ msgid "This option allows you to choose how to display elapsed time. As + or -"
 msgstr "Tämä asetus määrittää kuinka kulunut aika näytetään. Joko + tai -"
 
 msgid "This option allows you to choose how to display the remaining/elapsed time for Media playback."
-msgstr "Tämä asetus määrittää kuinka tallenteen katselun jäljelläoleva/kulunut aika näytetään."
+msgstr "Tämä asetus määrittää kuinka toistettavan median jäljellä oleva/kulunut aika näytetään."
 
 msgid "This option allows you to choose how to display the remaining/elapsed time for live TV."
-msgstr "Tämä asetus määrittää kuinka TV-lähetyksen jäljelläoleva/kulunut aika näytetään."
+msgstr "Tämä asetus määrittää kuinka TV-lähetyksen jäljellä oleva/kulunut aika näytetään."
 
 msgid "This option allows you to choose how to display the remaining/elapsed time for media playback."
-msgstr "Tämä asetus määrittää kuinka tallenteen katselun jäljelläoleva/kulunut aika näytetään."
+msgstr "Tämä asetus määrittää kuinka toistettavan median jäljellä oleva/kulunut aika näytetään."
 
 msgid "This option allows you to choose what the first button press jumps to in channel list screen, (so pressing '2' jumps to 'A' or '2' first), when 'Quick Actions' preset actions are perfomed. "
 msgstr "Tämä asetus määrittää mitä ensimmäinen näppäimen painallus tekee kanavalistassa, ('2' painallus hyppää joko 'A' tai '2'' kohtaan ensin), kun suoritetaan 'Pikatoimintojen' määritettyjä asetuksia. "
