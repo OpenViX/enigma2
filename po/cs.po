@@ -17296,15 +17296,15 @@ msgid "Show the tv player"
 msgstr "zobrazit TV..."
 
 #
-msgid "Show time elapsed as positive"
-msgstr "Zobrazit uplynulý cas jako pozitivní"
+msgid "Show time elapsed as positive *"
+msgstr "Zobrazit uplynulý cas jako pozitivní *"
 
 msgid "Show time in 24 hour clock format."
 msgstr ""
 
 #
-msgid "Show time remaining/elapsed"
-msgstr "Zobrazit cas uplynulý/zbývající"
+msgid "Show time remaining/elapsed *"
+msgstr "Zobrazit cas uplynulý/zbývající *"
 
 #
 #, fuzzy
@@ -17322,8 +17322,8 @@ msgid "Show transponder info"
 msgstr "zobrazit info o transpondéru"
 
 #
-msgid "Show transponder remaining/elapsed as"
-msgstr "Zobrazit transpondér zbývající/hotový jako"
+msgid "Show transponder remaining/elapsed as *"
+msgstr "Zobrazit transpondér zbývající/hotový jako *"
 
 msgid "Show two lines per entry"
 msgstr ""

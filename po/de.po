@@ -3276,7 +3276,7 @@ msgid "Ch+ button"
 msgstr "'CH+'-Taste"
 
 msgid "Ch- button"
-msgstr "'CH−'-Taste"
+msgstr "'CH-'-Taste"
 
 msgid "Chad"
 msgstr "Chad"
@@ -14056,14 +14056,14 @@ msgstr "Zeige Senderinformationen zweizeilig in der Senderliste."
 msgid "Show the tv player"
 msgstr "TV-Wiedergabemodus"
 
-msgid "Show time elapsed as positive"
-msgstr "Zeige verstrichene Zeit positiv"
+msgid "Show time elapsed as positive *"
+msgstr "Zeige verstrichene Zeit positiv *"
 
 msgid "Show time in 24 hour clock format."
 msgstr "Zeige Zeit im 24 Stunden Format."
 
-msgid "Show time remaining/elapsed"
-msgstr "Zeige Zeit"
+msgid "Show time remaining/elapsed *"
+msgstr "Zeige Zeit *"
 
 msgid "Show timer list"
 msgstr "Zeige Timerliste"
@@ -14074,8 +14074,8 @@ msgstr "Zeige Pakete mit den Sprachdateien für die Übersetzung"
 msgid "Show transponder info"
 msgstr "Transponder-Info anzeigen"
 
-msgid "Show transponder remaining/elapsed as"
-msgstr "Zeige Transponder"
+msgid "Show transponder remaining/elapsed as *"
+msgstr "Zeige Transponder *"
 
 msgid "Show two lines per entry"
 msgstr "Zeige 2 Zeilen pro Eintrag"
