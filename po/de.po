@@ -1995,7 +1995,7 @@ msgid "Allow 12bit"
 msgstr "Erlaube 12 Bit"
 
 msgid "Allow CEC address change *"
-msgstr "Erlaube CEC Adressänderung"
+msgstr "Erlaube CEC Adressänderung *"
 
 msgid "Allow fast skin reload"
 msgstr "Erlaube schnellen Skinwechsel"
@@ -3061,7 +3061,7 @@ msgid "CCcam can't run whilst MGcamd is running."
 msgstr "CCcam kann nicht zusammen mit MGcamd laufen."
 
 msgid "CEC address *"
-msgstr "CEC-Adresse"
+msgstr "CEC-Adresse *"
 
 msgid "CEC address, to override enable CEC address change. *Reboot required to activate"
 msgstr "CEC-Adresse, überschreibt automatische CEC-Adressänderung. Erfordert Neustart des E2-Receivers."
@@ -3357,7 +3357,7 @@ msgid "Channel list preview"
 msgstr "Vorschau Senderliste"
 
 msgid "Channel list service mode*"
-msgstr "Senderliste Anzeigenformat"
+msgstr "Senderliste Anzeigenformat *"
 
 msgid "Channel list type"
 msgstr "Typ der Senderliste"
@@ -4801,7 +4801,7 @@ msgid "Debug Logs"
 msgstr "Debug Logs"
 
 msgid "Debug log time format *"
-msgstr "Debug-Log Zeitformat"
+msgstr "Debug-Log Zeitformat *"
 
 msgid "Debug to file"
 msgstr "Debug in Datei"
@@ -4810,10 +4810,10 @@ msgid "Debug+ Logs"
 msgstr "Debug+ Logs"
 
 msgid "Decoder Release Strategy *"
-msgstr "Dekoder-Freigabe-Strategie"
+msgstr "Dekoder-Freigabe-Strategie *"
 
 msgid "Decoder Start Timeout *"
-msgstr "Dekoder-Start-Timeout"
+msgstr "Dekoder-Start-Timeout *"
 
 msgid "Decrement end time"
 msgstr "Verringere End-Zeit"
@@ -5831,10 +5831,10 @@ msgid "Enable client mode"
 msgstr "Aktivieren Client-Modus"
 
 msgid "Enable core dumps *"
-msgstr "Core-Dumps"
+msgstr "Core-Dumps *"
 
 msgid "Enable debug logs *"
-msgstr "Debug-Log"
+msgstr "Aktiviere Debug-Log *"
 
 msgid "Enable fallback remote receiver"
 msgstr "Aktiviere Ausweichreceiver"
@@ -5909,7 +5909,7 @@ msgid "Enabled"
 msgstr "Aktiviert"
 
 msgid "Enabled *"
-msgstr "Eingeschaltet"
+msgstr "Eingeschaltet *"
 
 msgid "Enabled/Disable audio passthrough fix."
 msgstr "Aktiviere/Deaktiviere Audio-Passthrough-Fix"
@@ -11934,7 +11934,7 @@ msgid "Remote box"
 msgstr "Entfernter E2-Receiver"
 
 msgid "Remote control source*"
-msgstr "Fernbedienungs-Quelle"
+msgstr "Fernbedienungs-Quelle *"
 
 msgid "Remote control type"
 msgstr "Fernbedienungstyp"
@@ -12817,7 +12817,7 @@ msgid "Second infobar"
 msgstr "Second-Infobar"
 
 msgid "Second infobar style*"
-msgstr "Stil der Second-Infobar"
+msgstr "Stil der Second-Infobar *"
 
 msgid "Secondary DNS"
 msgstr "Zweiter DNS"
@@ -15099,7 +15099,7 @@ msgid "Symbol rate:"
 msgstr "Symbolrate:"
 
 msgid "Sync Mode *"
-msgstr "Sync-Modus"
+msgstr "Sync-Modus *"
 
 msgid "Sync failure moving back to origin !"
 msgstr "Sync-Fehler, gehe zurück zum Anfangspunkt."
@@ -16879,7 +16879,7 @@ msgid "Video & Audio Settings"
 msgstr "Bild&Ton-Einstellungen"
 
 msgid "Video Chip Mode*"
-msgstr "Videochipmodus"
+msgstr "Videochipmodus *"
 
 msgid "Video PID"
 msgstr "Video-PID"
