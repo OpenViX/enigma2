@@ -7,7 +7,7 @@
 
 DEFINE_REF(eHttpStream);
 
-eHttpStream::eHttpStream()
+eHttpStream::eHttpStream() 
 {
 	streamSocket = -1;
 	connectionStatus = FAILED;
@@ -23,14 +23,34 @@ eHttpStream::eHttpStream()
 		int delay = eConfigManager::getConfigIntValue("config.usage.http_startdelay");
 		startDelay = delay * 1000;
 	}
+
+	/* Ring buffer — default 2 MB, tunable via config.usage.http_buffersize (KB) */
+	int bufKB = eConfigManager::getConfigIntValue("config.usage.http_buffersize");
+	ringBufSize = (bufKB > 0 ? (size_t)bufKB : 2048) * 1024;
+	ringBuf = (unsigned char*)malloc(ringBufSize);
+	ringHead = 0;
+	ringTail = 0;
+	ringFill = 0;
+	ringEof = false;
+	threadAbort = false;
+	pthread_mutex_init(&ringMutex, NULL);
+	pthread_cond_init(&ringNotEmpty, NULL);
+	pthread_cond_init(&ringNotFull, NULL);
 }
 
 eHttpStream::~eHttpStream()
 {
+	threadAbort = true;
+	pthread_cond_broadcast(&ringNotFull);
+	pthread_cond_broadcast(&ringNotEmpty);
 	abort_badly();
 	kill();
 	free(tmpBuf);
+	free(ringBuf);
 	close();
+	pthread_mutex_destroy(&ringMutex);
+	pthread_cond_destroy(&ringNotEmpty);
+	pthread_cond_destroy(&ringNotFull);
 }
 
 int eHttpStream::openUrl(const std::string &url, std::string &newurl)
@@ -253,19 +273,23 @@ void eHttpStream::thread()
 	{
 		if (openUrl(currenturl, newurl) < 0)
 		{
-			/* connection failed */
 			eDebug("[eHttpStream] Thread end NO connection");
 			connectionStatus = FAILED;
+			pthread_mutex_lock(&ringMutex);
+			ringEof = true;
+			pthread_cond_broadcast(&ringNotEmpty);
+			pthread_mutex_unlock(&ringMutex);
 			return;
 		}
 		if (newurl == "")
 		{
-			/* we have a valid stream connection */
-			eDebug("[eHttpStream] Thread end - have connection");
+			/* connection established — start filling the ring buffer */
+			eDebug("[eHttpStream] Thread - connection established, filling buffer");
 			connectionStatus = CONNECTED;
+			fillRingBuffer();
 			return;
 		}
-		/* switch to new url */
+		/* follow redirect / playlist */
 		close();
 		currenturl = newurl;
 		newurl = "";
@@ -273,7 +297,10 @@ void eHttpStream::thread()
 	/* too many redirect / playlist levels */
 	eDebug("[eHttpStream] thread end NO connection");
 	connectionStatus = FAILED;
-	return;
+	pthread_mutex_lock(&ringMutex);
+	ringEof = true;
+	pthread_cond_broadcast(&ringNotEmpty);
+	pthread_mutex_unlock(&ringMutex);
 }
 
 int eHttpStream::close()
@@ -285,6 +312,135 @@ int eHttpStream::close()
 		streamSocket = -1;
 	}
 	return retval;
+}
+
+/* socketRead — reads raw bytes from the socket, transparently handling chunked
+ * transfer encoding.  No TS-packet alignment is applied here. */
+ssize_t eHttpStream::socketRead(void *buf, size_t count)
+{
+	if (!isChunked)
+		return timedRead(streamSocket, buf, count, 5000, 100);
+
+	size_t total_read = 0;
+	while (total_read < count)
+	{
+		if (currentChunkSize == 0)
+		{
+			ssize_t r;
+			do {
+				r = readLine(streamSocket, &tmpBuf, &tmpBufSize);
+				if (r < 0) return (total_read > 0) ? (ssize_t)total_read : -1;
+			} while (!*tmpBuf && r > 0); /* skip blank lines between chunks */
+			if (r == 0) break;
+			currentChunkSize = strtol(tmpBuf, NULL, 16);
+			if (currentChunkSize == 0) return (total_read > 0) ? (ssize_t)total_read : -1;
+		}
+
+		size_t to_read = count - total_read;
+		if (currentChunkSize < to_read) to_read = currentChunkSize;
+
+		ssize_t r = timedRead(streamSocket, ((char*)buf) + total_read, to_read,
+		                      total_read ? 100 : 5000, 100);
+		if (r <= 0) break;
+		currentChunkSize -= (size_t)r;
+		total_read += (size_t)r;
+	}
+	return (total_read > 0) ? (ssize_t)total_read : -1;
+}
+
+/* fillRingBuffer — producer loop: runs inside the streaming thread and pumps
+ * decoded HTTP data into the ring buffer until EOF, error, or abort. */
+void eHttpStream::fillRingBuffer()
+{
+	const size_t chunk = 65536; /* 64 KB at a time from the socket */
+	unsigned char *tmp = (unsigned char*)malloc(chunk);
+	if (tmp)
+	{
+		while (!threadAbort)
+		{
+			ssize_t got = socketRead(tmp, chunk);
+			if (got <= 0) break;
+
+			size_t written = 0;
+			while (written < (size_t)got && !threadAbort)
+			{
+				pthread_mutex_lock(&ringMutex);
+				while (ringFill == ringBufSize && !threadAbort)
+					pthread_cond_wait(&ringNotFull, &ringMutex);
+
+				if (threadAbort)
+				{
+					pthread_mutex_unlock(&ringMutex);
+					break;
+				}
+
+				size_t space    = ringBufSize - ringFill;
+				size_t to_write = (size_t)got - written;
+				if (to_write > space) to_write = space;
+
+				/* copy into ring buffer, handling wrap-around */
+				size_t first = ringBufSize - ringHead;
+				if (to_write <= first)
+				{
+					memcpy(ringBuf + ringHead, tmp + written, to_write);
+				}
+				else
+				{
+					memcpy(ringBuf + ringHead, tmp + written, first);
+					memcpy(ringBuf, tmp + written + first, to_write - first);
+				}
+				ringHead  = (ringHead + to_write) % ringBufSize;
+				ringFill += to_write;
+				written  += to_write;
+
+				pthread_cond_signal(&ringNotEmpty);
+				pthread_mutex_unlock(&ringMutex);
+			}
+		}
+		free(tmp);
+	}
+
+	/* signal EOF to any blocked reader */
+	pthread_mutex_lock(&ringMutex);
+	ringEof = true;
+	pthread_cond_broadcast(&ringNotEmpty);
+	pthread_mutex_unlock(&ringMutex);
+}
+
+/* readFromRing — consumer: copies up to count bytes out of the ring buffer,
+ * blocking until data is available or EOF/abort is signalled. */
+ssize_t eHttpStream::readFromRing(void *buf, size_t count)
+{
+	pthread_mutex_lock(&ringMutex);
+	while (ringFill == 0 && !ringEof && !threadAbort)
+		pthread_cond_wait(&ringNotEmpty, &ringMutex);
+
+	if (ringFill == 0)
+	{
+		pthread_mutex_unlock(&ringMutex);
+		return -1;
+	}
+
+	size_t to_read = count;
+	if (to_read > ringFill) to_read = ringFill;
+
+	/* copy from ring buffer, handling wrap-around */
+	size_t first = ringBufSize - ringTail;
+	if (to_read <= first)
+	{
+		memcpy(buf, ringBuf + ringTail, to_read);
+	}
+	else
+	{
+		memcpy(buf, ringBuf + ringTail, first);
+		memcpy((char*)buf + first, ringBuf, to_read - first);
+	}
+	ringTail  = (ringTail + to_read) % ringBufSize;
+	ringFill -= to_read;
+
+	pthread_cond_signal(&ringNotFull);
+	pthread_mutex_unlock(&ringMutex);
+	return (ssize_t)to_read;
 }
 
 ssize_t eHttpStream::syncNextRead(void *buf, ssize_t length)
@@ -319,77 +475,40 @@ ssize_t eHttpStream::syncNextRead(void *buf, ssize_t length)
 	return (length - partialPktSz);
 }
 
-ssize_t eHttpStream::httpChunkedRead(void *buf, size_t count)
-{
-	ssize_t ret = -1;
-	size_t total_read = partialPktSz;
-
-	// write partial packet from the previous read
-	if (partialPktSz > 0)
-	{
-		memcpy(buf, partialPkt, partialPktSz);
-		partialPktSz = 0;
-	}
-
-	if (!isChunked)
-	{
-		ret = timedRead(streamSocket,((char*)buf) + total_read , count - total_read, 5000, 100);
-		if (ret > 0)
-		{
-			ret += total_read;
-			ret = syncNextRead(buf, ret);
-		}
-	}
-	else
-	{
-		while (total_read < count)
-		{
-			if (0 == currentChunkSize)
-			{
-				do
-				{
-					ret = readLine(streamSocket, &tmpBuf, &tmpBufSize);
-					if (ret < 0) return -1;
-				} while (!*tmpBuf && ret > 0); /* skip CR LF from last chunk */
-				if (ret == 0)
-					break;
-				currentChunkSize = strtol(tmpBuf, NULL, 16);
-				if (currentChunkSize == 0) return -1;
-			}
-
-			size_t to_read = count - total_read;
-			if (currentChunkSize < to_read)
-				to_read = currentChunkSize;
-
-			// do not wait too long if we have something in the buffer already
-			ret = timedRead(streamSocket, ((char*)buf) + total_read, to_read, ((total_read)? 100 : 5000), 100);
-			if (ret <= 0)
-				break;
-			currentChunkSize -= ret;
-			total_read += ret;
-		}
-		if (total_read > 0)
-		{
-			ret = syncNextRead(buf, total_read);
-		}
-	}
-	return ret;
-}
 
 ssize_t eHttpStream::read(off_t offset, void *buf, size_t count)
 {
 	if (connectionStatus == BUSY)
 		return 0;
-	else if (connectionStatus == FAILED)
+	if (connectionStatus == FAILED)
 		return -1;
-	return httpChunkedRead(buf, count);
+
+	unsigned char *b = (unsigned char*)buf;
+	size_t pre = partialPktSz;
+	if (pre > 0)
+	{
+		/* prepend the partial TS packet saved from the previous read */
+		memcpy(b, partialPkt, pre);
+		partialPktSz = 0;
+	}
+
+	ssize_t got = readFromRing(b + pre, count - pre);
+	if (got <= 0)
+		return got;
+
+	return syncNextRead(buf, (ssize_t)(got + pre));
 }
 
 int eHttpStream::valid()
 {
 	if (connectionStatus == BUSY)
 		return 0;
-	return streamSocket >= 0;
+	if (connectionStatus == FAILED)
+		return 0;
+	pthread_mutex_lock(&ringMutex);
+	int ok = (ringFill > 0 || (!ringEof && streamSocket >= 0)) ? 1 : 0;
+	pthread_mutex_unlock(&ringMutex);
+	return ok;
 }
 
 off_t eHttpStream::length()
