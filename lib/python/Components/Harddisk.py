@@ -869,6 +869,23 @@ class HarddiskManager:
 										mkdir(mountpoint, 0o755)
 									self.console.ePopen("/bin/mount -a")
 								part = Partition(mountpoint, description=description, force_mounted=True, device=partition)
+							elif partition.startswith("sd"):
+								currentMount = self.getMountpoint(partition, skiproot=True)
+								usedMounts = {p.mountpoint for p in self.partitions if p.mountpoint}
+								possibleMountPoints = [f"/media/{x}" for x in ("usb8", "usb7", "usb6", "usb5", "usb4", "usb3", "usb2", "usb", "hdd") if f"/media/{x}/" not in usedMounts]
+								targetMount = possibleMountPoints.pop() if possibleMountPoints else (currentMount.rstrip("/") if currentMount else f"/media/{partition}")
+								print(f"[Harddisk][enumerateBlockDevices]### USB partition '{partition}' currentMount='{currentMount}' -> targetMount='{targetMount}'.")
+								if currentMount != targetMount + "/":
+									newFstab = fileReadLines("/etc/fstab")
+									if not any(f"/dev/{partition}" in line for line in newFstab):
+										newFstab.append(f"/dev/{partition} {targetMount} auto defaults 0 0")
+										fileWriteLines("/etc/fstab", newFstab)
+									if not exists(targetMount):
+										mkdir(targetMount, 0o755)
+									if currentMount:
+										self.console.ePopen(f"/bin/umount -lf /dev/{partition}")
+									self.console.ePopen("/bin/mount -a")
+								part = Partition(mountpoint=targetMount + "/", description=description, force_mounted=True, device=partition)
 							else:
 								part = Partition(mountpoint=self.getMountpoint(partition, skiproot=True), description=description, force_mounted=True, device=partition)
 							self.partitions.append(part)
