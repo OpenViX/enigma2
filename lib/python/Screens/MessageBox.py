@@ -88,7 +88,7 @@ class MessageBox(Screen, HelpableScreen):
 				"right": (self.right, _("Move down a page"))} | {
 				str(i): (self.keyNumberGlobal, _("Direct item selection")) for i in range(10)}
 				) if self.list else {}),
-			prio=-20, description=_("MessageBox Actions"))
+			prio=-1, description=_("MessageBox Actions"))
 
 	def layoutFinished(self):
 		self["icon"].setPixmapNum(self.type)
@@ -270,62 +270,26 @@ class MessageBox(Screen, HelpableScreen):
 
 
 class ModalMessageBox:
-	_instance = None
-
+	# this class is just for compatibility with other distros
 	def __init__(self, session):
-		if ModalMessageBox._instance:
-			print("[ModalMessageBox] Error: Only one ModalMessageBox instance is allowed!")
-		else:
-			self.session = session
-			ModalMessageBox._instance = self
-			self.dialog = None
-			self.previousDialog = None
-			self.previousEnabledActions = []
-
-	def showMessageBox(self, text="", timeout=0, list=None, default=True, close_on_any_key=False, timeout_default=None, title=None, msgBoxID=None, type=MessageBox.TYPE_YESNO, enable_input=True, callback=None, **kwargs):
-		if self.dialog:
-			return  # sanity, nothing should be calling this with the dialog already open, so ignore it
-		self.disableParentActions()
-		self.dialog = self.session.instantiateDialog(MessageBox, text=text, type=type, timeout=timeout, close_on_any_key=close_on_any_key, default=default, enable_input=enable_input, msgBoxID=msgBoxID, list=list, skin_name="MessageBoxModal", timeout_default=timeout_default, title=title)
-		self.dialog.setAnimationMode(0)
-		self.callback = callback
-		for x in self.dialog:
-			if isinstance(self.dialog[x], ActionMap):
-				self.dialog[x].execBegin()
-		self.dialog.close = self.close
-		self.dialog.show()
-
-	def close(self, *retVal):
-		if self.dialog:
-			if self.callback and callable(self.callback):
-				self.callback(*retVal)
-			for x in self.dialog:
-				if isinstance(self.dialog[x], ActionMap):
-					self.dialog[x].execEnd()
-			self.session.deleteDialog(self.dialog)
-			self.dialog = None
-		self.enableParentActions()
-		ModalMessageBox._instance = None
-
-	def disableParentActions(self):
-		self.previousDialog = self.session.current_dialog
-		for x in self.previousDialog:
-			if isinstance(self.previousDialog[x], ActionMap) and self.previousDialog[x].enabled:
-				self.previousEnabledActions.append(x)
-				self.previousDialog[x].setEnabled(False)
-
-	def enableParentActions(self):
-		if self.previousDialog:
-			for x in self.previousEnabledActions:
-				if x in self.previousDialog:  # sanity
-					self.previousDialog[x].setEnabled(True)
-			self.previousEnabledActions.clear()
-			self.previousDialog = None
+		self.session = session
+		self._timers = []
 
 	@classproperty
-	def instance(cls):
-		if cls._instance:
-			return cls._instance
-		else:
-			cls._instance = cls(SessionObject().session)
-			return cls._instance
+	def instance(cls):  # stateless factory, not singleton
+		return cls(SessionObject().session)
+
+	def showMessageBox(self, *args, **kwargs):
+		callback = kwargs.pop("callback", None)
+		if "skin_name" not in kwargs and "simple" not in kwargs:
+			kwargs["skin_name"] = "MessageBoxModal"
+
+		def run():
+			t.callback.clear()
+			self._timers.remove(t)
+			self.session.openWithCallback(lambda *result: callable(callback) and callback(*result), MessageBox, *args, **kwargs)
+
+		t = eTimer()  # ensure GUI-thread execution via Enigma2 main loop
+		t.callback.append(run)
+		t.start(0, True)
+		self._timers.append(t)
