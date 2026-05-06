@@ -19,7 +19,7 @@ class RemainingToText(Poll, Converter):
 	VFD_MINUTES_SECONDS = 11
 
 	TYPES = {
-		"Default": (DEFAULT, None),  # Mins
+		"InMinutes": (DEFAULT, None),  # Mins
 		"WithSeconds": (WITH_SECONDS, 1000),  # Hours Mins Secs
 		"NoSeconds": (NO_SECONDS, 60 * 1000),  # Hours Mins
 		"InSeconds": (IN_SECONDS, 1000),  # Secs
@@ -34,7 +34,7 @@ class RemainingToText(Poll, Converter):
 	}
 
 	CONFIG_TO_TYPE_MAP = {
-		"1": ("Default", "VFD"),
+		"1": ("InMinutes", "VFD"),
 		"2": ("MinutesSeconds", "VFDMinutesSeconds"),
 		"3": ("NoSeconds", "VFDNoSeconds"),
 		"4": ("WithSeconds", "VFDWithSeconds"),
@@ -59,9 +59,9 @@ class RemainingToText(Poll, Converter):
 			type = self.CONFIG_TO_TYPE_MAP[display][1 if is_vfd else 0]
 		# end inject user setting
 
-		if type and type not in self.TYPES:
-			print(f"[RemainingToText] Error: unknown converter argument '{type}'")
-			type = "Default"
+		if type not in self.TYPES:
+			print(f"[RemainingToText] Error: unknown converter argument '{str(type)}'. Must be one of {"|".join(sorted(self.TYPES))}.")
+			type = "InMinutes"
 		self.type, poll_interval = self.TYPES[type]
 
 		if poll_interval:
