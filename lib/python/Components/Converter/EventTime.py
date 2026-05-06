@@ -29,7 +29,7 @@ class EventTime(Poll, Converter):
 		"Remaining": (REMAINING, 60 * 1000),
 		"VFDRemaining": (REMAINING, 60 * 1000),  # "VFDRemaining" is redundant. "Remaining" could be used instead.
 		"StartTime": (STARTTIME, None),
-		"Progress": (PROGRESS, None),
+		"Progress": (PROGRESS, 30 * 1000),
 		"Duration": (DURATION, None),
 		"Elapsed": (ELAPSED, 60 * 1000),
 		"VFDElapsed": (ELAPSED, 60 * 1000),  # "VFDElapsed" is redundant. "Elapsed" could be used instead.
