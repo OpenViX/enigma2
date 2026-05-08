@@ -116,7 +116,14 @@ def getMultibootslots():
 					# print(f"[multiboot][getMultibootslots]3 bootargs?: {path.exists("/sys/firmware/devicetree/base/chosen/bootargs")}")
 					SystemInfo["resetMBoot"] = True
 					bootslots = {}
-			Console(binary=True).ePopen(f"umount {tmpname}")
+			result = subprocess.run(["umount", tmpname], capture_output=True, check=False)
+			if result.returncode != 0:
+				print(f"[multiboot][getMultibootslots] umount {tmpname} failed: {result.stderr.decode(errors='ignore').strip()}")
+	while path.ismount(tmp.dir):
+		result = subprocess.run(["umount", tmp.dir], capture_output=True, check=False)
+		if result.returncode != 0:
+			print(f"[multiboot][getMultibootslots] cleanup umount {tmp.dir} failed: {result.stderr.decode(errors='ignore').strip()}")
+			break
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
 	if bootslots:
@@ -236,7 +243,8 @@ def GetImagelist(Recovery=None):
 			Imagelist[slot] = {"imagename": _("Deleted image")}
 		else:
 			Imagelist[slot] = {"imagename": _("Empty slot")}
-	Console(binary=True).ePopen(f"umount {tmpname}")
+	if imagedir != "/":
+		Console(binary=True).ePopen(f"umount {tmpname}")
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
 	return Imagelist
