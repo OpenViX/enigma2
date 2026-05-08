@@ -380,7 +380,7 @@ def videoEnhancementSetupMain(session, **kwargs):
 def startSetup(menuid):
 	if menuid != "av":
 		return []
-	return [(_("Video enhancement"), videoEnhancementSetupMain, "videoenhancement_setup", None)]
+	return [(_("Video enhancement"), videoEnhancementSetupMain, "videoenhancement_setup", 50)]
 
 
 def Plugins(**kwargs):

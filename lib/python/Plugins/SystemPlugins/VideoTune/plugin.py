@@ -10,7 +10,7 @@ def startSetup(menuid):
 	if menuid != "av":
 		return []
 
-	return [(_("Testscreens"), videoFinetuneMain, "video_finetune", None)]
+	return [(_("Testscreens"), videoFinetuneMain, "video_finetune", 48)]
 
 
 def Plugins(**kwargs):
