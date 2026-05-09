@@ -15761,7 +15761,7 @@ msgid "This option allows you to switch audio to bluetooth speakers."
 msgstr "Tämä asetus sallii kytkeä äänen bluetooth-kaiuttimiin."
 
 msgid "This option allows you to view the old and new settings side by side."
-msgstr "Tämä asetus määrittää näytetäänkö vanhat ja uudet asetuksen rinnakkain."
+msgstr "Tämä asetus määrittää näytetäänkö vanhat ja uudet asetukset rinnakkain."
 
 msgid "This option configures output for Auto Volume Level."
 msgstr "Tämä asetus määrittää automaattisen äänenvoimakkuuden tason."
