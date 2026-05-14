@@ -653,7 +653,7 @@ def sanitizeFilename(filename, maxlen=255):  # 255 is max length in ext4 (and mo
 	and make sure we do not exceed filename length limits.
 	Hence a less safe blacklist, rather than a whitelist.
 	"""
-	blacklist = {"\\", "/", ":", "*", "?", "\"", "<", ">", "|", "\0"}
+	blacklist = set('\\/:*?"<>|\0')
 	reserved = {
 		"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5",
 		"COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",
@@ -661,7 +661,7 @@ def sanitizeFilename(filename, maxlen=255):  # 255 is max length in ext4 (and mo
 	}  # Reserved words on Windows
 	# Remove any blacklisted chars. Remove all charcters below code point 32. Normalize. Strip.
 	filename = normalize("NFKD", "".join(c for c in filename if c not in blacklist and ord(c) > 31)).strip()
-	if all([x == "." for x in filename]) or filename in reserved:  # if filename is a string of dots
+	if set(filename) == {"."} or filename in reserved:  # if filename is a string of dots
 		filename = "__" + filename
 	# Most Unix file systems typically allow filenames of up to 255 bytes.
 	# However, the actual number of characters allowed can vary due to the
