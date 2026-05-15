@@ -32,7 +32,7 @@
 		<item level="0" text="After power loss" description="When in normal use or standby (not deep standby), what should the %s %s do when booting after a power loss or other uncontrolled shutdown?">config.usage.power.uncontrolled_shutdown_action</item>
 	</setup>
 	<setup key="SoftCSA" title="SoftCSA Settings">
-		<item level="0" text="Decoder Release Strategy *" description="How to release the hardware decoder when switching to software descrambling. 'Quick' releases immediately (faster zapping). 'Normal' performs clean shutdown first (more stable on some boxes). *Restart E2 for changes to take effect.">config.misc.softcsa.decoderRelease</item>
+		<item level="0" text="Decoder Release Strategy *" description="How to release the hardware decoder when switching to software descrambling. 'Quick' releases immediately (faster zapping). 'Normal' performs clean shutdown first (more stable on some boxes). 'Aggressive' resets the HW-descrambler slots and also bypasses the in-process CSA-ALT cache. *Restart E2 for changes to take effect.">config.misc.softcsa.decoderRelease</item>
 		<item level="0" text="Sync Mode *" description="Select how the descrambled data stream is processed. 'Automatic' uses asynchronous writes (lower CPU usage) with automatic fallback to synchronous if kernel AIO is not supported. 'Synchronous' forces blocking writes (stable, most compatible). *Restart E2 for changes to take effect.">config.misc.softcsa.syncMode</item>
 		<item level="1" text="Decoder Start Timeout *" description="Maximum time to wait for the incoming data and descrambling keys (CW) before starting decoder. Usually both arrive much faster and this is only for special cases. *Restart E2 for changes to take effect.">config.misc.softcsa.waitForDataTimeout</item>
 	</setup>
@@ -250,7 +250,6 @@
 		<item level="2" text="Initial rewind speed" description="Configure the initial rewind speed. When you press the rewind button, rewinding will start at this speed.">config.seek.enter_backward</item>
 		<item level="2" text="Display message before playing next movie" description="When enabled, a popup message will be shown when a movie has finished and the next one will start.">config.usage.next_movie_msg</item>
 		<item level="2" text="Offline decode delay (ms)" description="Configure the offline decoding delay (in milliseconds). The configured delay is observed at each control word parity change.">config.recording.offline_decode_delay</item>
-
 	</setup>
 	<setup key="HDMIRecord" title="HDMI Recording Settings" showOpenWebif="1">
 		<item level="0" text="Bitrate" description="The bitrate of the video encoder. Larger value improves quality and increases file size.">config.hdmirecord.bitrate</item>
