@@ -1,7 +1,7 @@
 #ifndef __lib_base_httpstream_h
 #define __lib_base_httpstream_h
 
-#include <string> 
+#include <string>
 #include <pthread.h>
 #include <lib/base/ebase.h>
 #include <lib/base/itssource.h>
@@ -22,6 +22,7 @@ class eHttpStream: public iTsSource, public sigc::trackable, public eThread
 	char* tmpBuf;
 	size_t tmpBufSize;
 	int startDelay;
+	bool isStreamRelay;
 
 	/* Ring buffer for pre-fetched stream data */
 	unsigned char *ringBuf;
@@ -37,6 +38,7 @@ class eHttpStream: public iTsSource, public sigc::trackable, public eThread
 
 	int openUrl(const std::string &url, std::string &newurl);
 	void thread();
+	void detectStreamRelay(const std::string &url);
 	ssize_t socketRead(void *buf, size_t count);
 	void fillRingBuffer();
 	ssize_t readFromRing(void *buf, size_t count);

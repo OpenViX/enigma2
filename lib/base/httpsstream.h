@@ -25,6 +25,7 @@ class eHttpsStream: public iTsSource, public sigc::trackable, public eThread
 	char* tmpBuf;
 	size_t tmpBufSize;
 	int startDelay;
+	bool isStreamRelay;
 
 	/* Ring buffer for pre-fetched stream data */
 	unsigned char *ringBuf;
@@ -40,6 +41,7 @@ class eHttpsStream: public iTsSource, public sigc::trackable, public eThread
 
 	int openUrl(const std::string &url, std::string &newurl);
 	void thread();
+	void detectStreamRelay(const std::string &url);
 	ssize_t sslRead(void *buf, size_t count);
 	void fillRingBuffer();
 	ssize_t readFromRing(void *buf, size_t count);

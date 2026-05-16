@@ -7,7 +7,7 @@
 
 DEFINE_REF(eHttpStream);
 
-eHttpStream::eHttpStream() 
+eHttpStream::eHttpStream()
 {
 	streamSocket = -1;
 	connectionStatus = FAILED;
@@ -16,6 +16,7 @@ eHttpStream::eHttpStream()
 	partialPktSz = 0;
 	tmpBufSize = 32;
 	tmpBuf = (char*)malloc(tmpBufSize);
+	isStreamRelay = false;
 	if (eConfigManager::getConfigBoolValue("config.usage.remote_fallback_enabled", false))
 		startDelay = 500000;
 	else
@@ -252,6 +253,7 @@ error:
 int eHttpStream::open(const char *url)
 {
 	streamUrl = url;
+	detectStreamRelay(streamUrl);
 	/*
 	 * We're in gui thread context here, and establishing
 	 * a connection might block for up to 10 seconds.
@@ -275,10 +277,13 @@ void eHttpStream::thread()
 		{
 			eDebug("[eHttpStream] Thread end NO connection");
 			connectionStatus = FAILED;
-			pthread_mutex_lock(&ringMutex);
-			ringEof = true;
-			pthread_cond_broadcast(&ringNotEmpty);
-			pthread_mutex_unlock(&ringMutex);
+			if (!isStreamRelay)
+			{
+				pthread_mutex_lock(&ringMutex);
+				ringEof = true;
+				pthread_cond_broadcast(&ringNotEmpty);
+				pthread_mutex_unlock(&ringMutex);
+			}
 			return;
 		}
 		if (newurl == "")
@@ -286,7 +291,8 @@ void eHttpStream::thread()
 			/* connection established — start filling the ring buffer */
 			eDebug("[eHttpStream] Thread - connection established, filling buffer");
 			connectionStatus = CONNECTED;
-			fillRingBuffer();
+			if (!isStreamRelay)
+				fillRingBuffer();
 			return;
 		}
 		/* follow redirect / playlist */
@@ -297,10 +303,13 @@ void eHttpStream::thread()
 	/* too many redirect / playlist levels */
 	eDebug("[eHttpStream] thread end NO connection");
 	connectionStatus = FAILED;
-	pthread_mutex_lock(&ringMutex);
-	ringEof = true;
-	pthread_cond_broadcast(&ringNotEmpty);
-	pthread_mutex_unlock(&ringMutex);
+	if (!isStreamRelay)
+	{
+		pthread_mutex_lock(&ringMutex);
+		ringEof = true;
+		pthread_cond_broadcast(&ringNotEmpty);
+		pthread_mutex_unlock(&ringMutex);
+	}
 }
 
 int eHttpStream::close()
@@ -312,6 +321,16 @@ int eHttpStream::close()
 		streamSocket = -1;
 	}
 	return retval;
+}
+
+/* detectStreamRelay — check if the URL is a stream relay (localhost/loopback) */
+void eHttpStream::detectStreamRelay(const std::string &url)
+{
+	isStreamRelay = (url.find("0.0.0.0:") != std::string::npos ||
+	                 url.find("127.0.0.1:") != std::string::npos ||
+	                 url.find("localhost:") != std::string::npos);
+	if (isStreamRelay)
+		eDebug("[eHttpStream] Stream Relay detected - ring buffer disabled");
 }
 
 /* socketRead — reads raw bytes from the socket, transparently handling chunked
@@ -492,6 +511,14 @@ ssize_t eHttpStream::read(off_t offset, void *buf, size_t count)
 		partialPktSz = 0;
 	}
 
+	if (isStreamRelay)
+	{
+		ssize_t got = socketRead(b + pre, count - pre);
+		if (got <= 0)
+			return got;
+		return syncNextRead(buf, (ssize_t)(got + pre));
+	}
+
 	ssize_t got = readFromRing(b + pre, count - pre);
 	if (got <= 0)
 		return got;
@@ -505,6 +532,10 @@ int eHttpStream::valid()
 		return 0;
 	if (connectionStatus == FAILED)
 		return 0;
+
+	if (isStreamRelay)
+		return streamSocket >= 0;
+
 	pthread_mutex_lock(&ringMutex);
 	int ok = (ringFill > 0 || (!ringEof && streamSocket >= 0)) ? 1 : 0;
 	pthread_mutex_unlock(&ringMutex);
