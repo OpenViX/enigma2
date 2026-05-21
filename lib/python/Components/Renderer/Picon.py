@@ -107,7 +107,7 @@ class PiconLocator:
 
 	def __iterServiceNamePiconCandidates(self, serviceRef):
 		sname = eServiceReference(serviceRef).getServiceName().translate(self.CONTROL_CHARS)
-	
+
 		if not sname or "SID 0x" in sname:
 			return
 
@@ -115,10 +115,10 @@ class PiconLocator:
 		if utf8_name == "__":  # sname sanitized was zero length
 			return
 		yield utf8_name
-	
+
 		legacy_name = self.LEGACY_RE.sub("", utf8_name.translate(self.LEGACY_TRANSLATION))
 		yield legacy_name
-	
+
 		yield self.SUFFIX_RE.sub("", utf8_name).strip()    # utf8_no_suffix
 		yield self.SUFFIX_RE.sub("", legacy_name).strip()  # legacy_no_suffix
 
