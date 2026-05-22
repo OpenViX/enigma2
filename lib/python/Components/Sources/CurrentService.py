@@ -58,8 +58,8 @@ class CurrentService(PerServiceBase, Source):
 		for x in self.onManualNewService:
 			x()
 
-		if num > 0:
-			self.serviceref.setChannelNum(num)
+		if num > 0 and (sref := self.serviceref):
+			sref.setChannelNum(num)
 
 		self.changed((self.CHANGED_SPECIFIC, iPlayableService.evStart))
 

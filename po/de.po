@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 06:51+0000\n"
+"POT-Creation-Date: 2026-05-02 14:18+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: 2stein\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, 2stein\n"
@@ -1995,7 +1995,7 @@ msgid "Allow 12bit"
 msgstr "Erlaube 12 Bit"
 
 msgid "Allow CEC address change *"
-msgstr "Erlaube CEC Adressänderung"
+msgstr "Erlaube CEC Adressänderung *"
 
 msgid "Allow fast skin reload"
 msgstr "Erlaube schnellen Skinwechsel"
@@ -3061,7 +3061,7 @@ msgid "CCcam can't run whilst MGcamd is running."
 msgstr "CCcam kann nicht zusammen mit MGcamd laufen."
 
 msgid "CEC address *"
-msgstr "CEC-Adresse"
+msgstr "CEC-Adresse *"
 
 msgid "CEC address, to override enable CEC address change. *Reboot required to activate"
 msgstr "CEC-Adresse, überschreibt automatische CEC-Adressänderung. Erfordert Neustart des E2-Receivers."
@@ -3276,7 +3276,7 @@ msgid "Ch+ button"
 msgstr "'CH+'-Taste"
 
 msgid "Ch- button"
-msgstr "'CH−'-Taste"
+msgstr "'CH-'-Taste"
 
 msgid "Chad"
 msgstr "Chad"
@@ -3357,7 +3357,7 @@ msgid "Channel list preview"
 msgstr "Vorschau Senderliste"
 
 msgid "Channel list service mode*"
-msgstr "Senderliste Anzeigenformat"
+msgstr "Senderliste Anzeigenformat *"
 
 msgid "Channel list type"
 msgstr "Typ der Senderliste"
@@ -4801,7 +4801,7 @@ msgid "Debug Logs"
 msgstr "Debug Logs"
 
 msgid "Debug log time format *"
-msgstr "Debug-Log Zeitformat"
+msgstr "Debug-Log Zeitformat *"
 
 msgid "Debug to file"
 msgstr "Debug in Datei"
@@ -4810,10 +4810,10 @@ msgid "Debug+ Logs"
 msgstr "Debug+ Logs"
 
 msgid "Decoder Release Strategy *"
-msgstr "Dekoder-Freigabe-Strategie"
+msgstr "Dekoder-Freigabe-Strategie *"
 
 msgid "Decoder Start Timeout *"
-msgstr "Dekoder-Start-Timeout"
+msgstr "Dekoder-Start-Timeout *"
 
 msgid "Decrement end time"
 msgstr "Verringere End-Zeit"
@@ -5831,10 +5831,10 @@ msgid "Enable client mode"
 msgstr "Aktivieren Client-Modus"
 
 msgid "Enable core dumps *"
-msgstr "Core-Dumps"
+msgstr "Core-Dumps *"
 
 msgid "Enable debug logs *"
-msgstr "Debug-Log"
+msgstr "Aktiviere Debug-Log *"
 
 msgid "Enable fallback remote receiver"
 msgstr "Aktiviere Ausweichreceiver"
@@ -5853,9 +5853,6 @@ msgstr "Aktiviere Verschiebemodus"
 
 msgid "Enable multiple bouquets"
 msgstr "Aktiviere mehrere Favoritenlisten"
-
-msgid "Enable new GStreamer playback"
-msgstr "Aktiviere neue GStreamer-Wiedergabe"
 
 msgid "Enable or disable client mode."
 msgstr "Client-Modus aktivieren/deaktivieren."
@@ -5909,7 +5906,7 @@ msgid "Enabled"
 msgstr "Aktiviert"
 
 msgid "Enabled *"
-msgstr "Eingeschaltet"
+msgstr "Eingeschaltet *"
 
 msgid "Enabled/Disable audio passthrough fix."
 msgstr "Aktiviere/Deaktiviere Audio-Passthrough-Fix"
@@ -7657,9 +7654,6 @@ msgstr "Soll eine Log-Datei mit der CEC-Kommunikation angelegt werden? ('hdmicec
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
 msgstr "Soll das Display 12 statt 8 Buchstaben anzeigen? (nur bei Latin-1/Translit)"
 
-msgid "If enabled, the new GStreamer playback engine will be used."
-msgstr "Soll GStreamer-Wiedergabe verwendet werden?"
-
 msgid "If set to 'Standard' number buttons page up/down/left/right."
 msgstr "Wenn auf 'Standard' gesetzt, funktionieren Zahlen-Tasten Seite hoch/runter/links/rechts."
 
@@ -8293,9 +8287,6 @@ msgstr "Kexec Warnung"
 msgid "Key"
 msgstr "Key"
 
-msgid "Key Events"
-msgstr ""
-
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -8661,8 +8652,17 @@ msgstr "Logs"
 msgid "Log %s-%s"
 msgstr ""
 
+msgid "Log All"
+msgstr "Alle protokollieren"
+
+msgid "Log Key Events"
+msgstr "Key Ereignisse protokollieren"
+
 msgid "Log Manager"
 msgstr "Log-Manager"
+
+msgid "Log Messages"
+msgstr "Log-Messages"
 
 msgid "Log python stack trace on spinner"
 msgstr "Python Stack-Trace, wenn der Spinner erscheint"
@@ -8820,11 +8820,11 @@ msgstr "Aus dieser Markierung einen 'außen'-Punkt machen"
 msgid "Make this mark just a mark"
 msgstr "Aus dieser Markierung nur eine Markierung machen"
 
-msgid "Making a settings back is advised before doing a software update and can be used later should a full reflash be required."
-msgstr "Es wird empfohlen, vor einer Softwareaktualisierung ein Einstellungs-Backup zu erstellen. Dieses kann später verwendet werden, falls ein vollständiges Neuflashen erforderlich ist."
-
 msgid "Making a settings backup before updating is highly recommended."
 msgstr "Es wird dringend empfohlen, ein Backup zu machen."
+
+msgid "Making a settings backup is advised before doing a software update and can be used later should a full reflash be required."
+msgstr "Es wird empfohlen, vor einem Software-Update ein Einstellungs-Backup zu erstellen, das später bei einem vollständigen Neu-Flashen verwendet werden kann."
 
 msgid "Malawi"
 msgstr "Malawi"
@@ -8992,14 +8992,8 @@ msgstr "Timeshift-Dateien werden zusammengefügt"
 msgid "Message"
 msgstr "Meldung"
 
-msgid "MessageBox Direct Item Selection Actions"
-msgstr "MessageBox direkte Elementauswahl Aktionen"
-
-msgid "MessageBox Functions"
-msgstr "MessageBox Funktionen"
-
-msgid "Messages"
-msgstr "Meldungen"
+msgid "MessageBox Actions"
+msgstr "Nachrichten-Box Aktionen"
 
 msgid "Mexico"
 msgstr "Mexico"
@@ -9157,7 +9151,7 @@ msgid "Mount failed for '%s', error code = '%s'."
 msgstr "Mounten von '%s' ist fehlgeschlagen, Fehler: '%s'."
 
 msgid "Mount manager"
-msgstr "Mountpoint-Manager"
+msgstr "Mount-Manager"
 
 msgid "Mount."
 msgstr "Mounten."
@@ -11372,6 +11366,9 @@ msgstr ""
 "Es gibt ein Problem, die Updateliste herunterzuladen.\n"
 "Wenn das Problem länger besteht, im Forum checken/melden."
 
+msgid "Processing"
+msgstr "Ausführung"
+
 #, python-format
 msgid "Processor temperature:\t%s"
 msgstr "Prozessortemperatur:\t%s"
@@ -11744,6 +11741,9 @@ msgstr "Aufnahme-Taste (kurz)"
 msgid "Recall channel, panic button & number zap"
 msgstr "Letzter Sender, Panikknopf und Senderwahl"
 
+msgid "Receiver will action TV wakeup request based on this setting"
+msgstr "Der E2-Receiver führt die TV-Aufwachanforderung gemäß dieser Einstellung aus"
+
 msgid "Record"
 msgstr "Aufnahme"
 
@@ -11934,7 +11934,7 @@ msgid "Remote box"
 msgstr "Entfernter E2-Receiver"
 
 msgid "Remote control source*"
-msgstr "Fernbedienungs-Quelle"
+msgstr "Fernbedienungs-Quelle *"
 
 msgid "Remote control type"
 msgstr "Fernbedienungstyp"
@@ -12817,7 +12817,7 @@ msgid "Second infobar"
 msgstr "Second-Infobar"
 
 msgid "Second infobar style*"
-msgstr "Stil der Second-Infobar"
+msgstr "Stil der Second-Infobar *"
 
 msgid "Secondary DNS"
 msgstr "Zweiter DNS"
@@ -14056,14 +14056,14 @@ msgstr "Zeige Senderinformationen zweizeilig in der Senderliste."
 msgid "Show the tv player"
 msgstr "TV-Wiedergabemodus"
 
-msgid "Show time elapsed as positive"
-msgstr "Zeige verstrichene Zeit positiv"
+msgid "Show time elapsed as positive *"
+msgstr "Zeige verstrichene Zeit positiv *"
 
 msgid "Show time in 24 hour clock format."
 msgstr "Zeige Zeit im 24 Stunden Format."
 
-msgid "Show time remaining/elapsed"
-msgstr "Zeige Zeit"
+msgid "Show time remaining/elapsed *"
+msgstr "Zeige Zeit *"
 
 msgid "Show timer list"
 msgstr "Zeige Timerliste"
@@ -14074,8 +14074,8 @@ msgstr "Zeige Pakete mit den Sprachdateien für die Übersetzung"
 msgid "Show transponder info"
 msgstr "Transponder-Info anzeigen"
 
-msgid "Show transponder remaining/elapsed as"
-msgstr "Zeige Transponder"
+msgid "Show transponder remaining/elapsed as *"
+msgstr "Zeige Transponder *"
 
 msgid "Show two lines per entry"
 msgstr "Zeige 2 Zeilen pro Eintrag"
@@ -15099,7 +15099,7 @@ msgid "Symbol rate:"
 msgstr "Symbolrate:"
 
 msgid "Sync Mode *"
-msgstr "Sync-Modus"
+msgstr "Sync-Modus *"
 
 msgid "Sync failure moving back to origin !"
 msgstr "Sync-Fehler, gehe zurück zum Anfangspunkt."
@@ -16879,7 +16879,7 @@ msgid "Video & Audio Settings"
 msgstr "Bild&Ton-Einstellungen"
 
 msgid "Video Chip Mode*"
-msgstr "Videochipmodus"
+msgstr "Videochipmodus *"
 
 msgid "Video PID"
 msgstr "Video-PID"
@@ -17106,9 +17106,6 @@ msgstr "Einschalten"
 msgid "Wake Up To Standby"
 msgstr "Einschalten in Standby"
 
-msgid "Wake the receiver from standby when the wake command is sent from the TV."
-msgstr "Wecke den E2-Receiver aus Standby auf, wenn ein 'wake'-Befehl vom Fernseher kommt."
-
 msgid "Wake up to standby"
 msgstr "Einschalten in Standby"
 
@@ -17304,6 +17301,9 @@ msgstr "Welchen Tag der Woche?"
 msgid "What do you want to scan?"
 msgstr "Was durchsuchen?"
 
+msgid "When TV issues wakeup, receiver will action based on 'Wakeup signal from TV' setting."
+msgstr "Wenn der TV ein Aufwachsignal sendet, reagiert der E2-Receiver gemäß der Einstellung 'Aufwachsignal vom TV'."
+
 msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
 msgstr "Soll ein 'Erzwinge OpenTV-EPG-Herunterladen' im Pluginmenü angezeigt werden? Wird erst nach dem nächsten Neustart angezeigt."
 
@@ -17315,9 +17315,6 @@ msgstr "Sollen auch experimentelle Updates gesucht werden?"
 
 msgid "When enabled the receiver will automatically return to standby when the TV is turned off."
 msgstr "Soll der E2-Receiver in Standby versetzt werden, wenn der Fernseher ausgeschaltet wird?"
-
-msgid "When enabled the receiver will automatically wake from standby when the TV is turned on."
-msgstr "Soll der E2-Receiver eingeschaltet werden?, wenn der Fernseher eingeschaltet wird."
 
 msgid "When enabled the set top box is able to wakeup on LAN"
 msgstr "Soll das Aufwecken des E2-Receivers per WoL aktiviert werden?"
@@ -18962,6 +18959,9 @@ msgstr "Vorschulprogramm"
 
 msgid "preserve bookmarks in cuts"
 msgstr "Lesezeichen beim Schneiden erhalten"
+
+msgid "print debug"
+msgstr ""
 
 msgid "priority"
 msgstr "Priorität"

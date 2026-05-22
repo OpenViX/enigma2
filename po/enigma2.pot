@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-12 14:37+0200\n"
+"POT-Creation-Date: 2026-05-03 11:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5757,9 +5757,6 @@ msgstr ""
 msgid "Enable multiple bouquets"
 msgstr ""
 
-msgid "Enable new GStreamer playback"
-msgstr ""
-
 msgid "Enable or disable client mode."
 msgstr ""
 
@@ -7536,9 +7533,6 @@ msgstr ""
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
 msgstr ""
 
-msgid "If enabled, the new GStreamer playback engine will be used."
-msgstr ""
-
 msgid "If set to 'Standard' number buttons page up/down/left/right."
 msgstr ""
 
@@ -8164,9 +8158,6 @@ msgstr ""
 msgid "Key"
 msgstr ""
 
-msgid "Key Events"
-msgstr ""
-
 msgid "Keyboard"
 msgstr ""
 
@@ -8522,7 +8513,16 @@ msgstr ""
 msgid "Log %s-%s"
 msgstr ""
 
+msgid "Log All"
+msgstr ""
+
+msgid "Log Key Events"
+msgstr ""
+
 msgid "Log Manager"
+msgstr ""
+
+msgid "Log Messages"
 msgstr ""
 
 msgid "Log python stack trace on spinner"
@@ -8853,13 +8853,7 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-msgid "MessageBox Direct Item Selection Actions"
-msgstr ""
-
-msgid "MessageBox Functions"
-msgstr ""
-
-msgid "Messages"
+msgid "MessageBox Actions"
 msgstr ""
 
 msgid "Mexico"
@@ -11553,6 +11547,9 @@ msgstr ""
 msgid "Recall channel, panic button & number zap"
 msgstr ""
 
+msgid "Receiver will action TV wakeup request based on this setting"
+msgstr ""
+
 msgid "Record"
 msgstr ""
 
@@ -13565,13 +13562,13 @@ msgstr ""
 msgid "Show Software Update in Extensions (blue button menu). 'yes' adds it permanently. 'only when available' only shows it when updates are known to be available based on update polling."
 msgstr ""
 
-msgid "Show Time Remaining/Elapsed"
+msgid "Show Time Remaining/Elapsed *"
 msgstr ""
 
 msgid "Show Timer List"
 msgstr ""
 
-msgid "Show Transponder Remaining/Elapsed as"
+msgid "Show Transponder Remaining/Elapsed as *"
 msgstr ""
 
 msgid "Show True/False as graphical switch"
@@ -13844,13 +13841,13 @@ msgstr ""
 msgid "Show the tv player"
 msgstr ""
 
-msgid "Show time elapsed as positive"
+msgid "Show time elapsed as positive *"
 msgstr ""
 
 msgid "Show time in 24 hour clock format."
 msgstr ""
 
-msgid "Show time remaining/elapsed"
+msgid "Show time remaining/elapsed *"
 msgstr ""
 
 msgid "Show timer list"
@@ -13862,7 +13859,7 @@ msgstr ""
 msgid "Show transponder info"
 msgstr ""
 
-msgid "Show transponder remaining/elapsed as"
+msgid "Show transponder remaining/elapsed as *"
 msgstr ""
 
 msgid "Show two lines per entry"
@@ -16842,9 +16839,6 @@ msgstr ""
 msgid "Wake Up To Standby"
 msgstr ""
 
-msgid "Wake the receiver from standby when the wake command is sent from the TV."
-msgstr ""
-
 msgid "Wake up to standby"
 msgstr ""
 
@@ -17010,6 +17004,9 @@ msgstr ""
 msgid "What do you want to scan?"
 msgstr ""
 
+msgid "When TV issues wakeup, receiver will action based on 'Wakeup signal from TV' setting."
+msgstr ""
+
 msgid "When enabled a forced download will be possible from the extensions menu (blue button). Shows after next restart."
 msgstr ""
 
@@ -17020,9 +17017,6 @@ msgid "When enabled the online checker will also check for experimental versions
 msgstr ""
 
 msgid "When enabled the receiver will automatically return to standby when the TV is turned off."
-msgstr ""
-
-msgid "When enabled the receiver will automatically wake from standby when the TV is turned on."
 msgstr ""
 
 msgid "When enabled the set top box is able to wakeup on LAN"
@@ -18625,6 +18619,9 @@ msgid "pre-school children's program"
 msgstr ""
 
 msgid "preserve bookmarks in cuts"
+msgstr ""
+
+msgid "print debug"
 msgstr ""
 
 msgid "priority"

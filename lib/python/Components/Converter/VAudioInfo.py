@@ -35,6 +35,7 @@ _acedits = (
 	(" Layer 2 (MP2)", "MP2"),
 	(" Layer 3 (MP3)", "MP3"),
 	("MPEG", "MPEG1 Layer II"),
+	("AACHE", "HE-AAC")
 )
 
 

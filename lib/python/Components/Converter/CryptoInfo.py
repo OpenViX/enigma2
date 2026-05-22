@@ -7,108 +7,92 @@ from Tools.GetEcmInfo import GetEcmInfo
 from Tools.Directories import pathExists
 
 
-class CryptoInfo(Poll, Converter):
+class CryptoInfo(Converter, Poll):
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)
-
 		self.type = type
-		self.active = False
-		if config.usage.show_cryptoinfo.value == "0":
-			self.visible = False
-		else:
-			self.visible = True
-		self.textvalue = ""
 		self.poll_interval = 1000
 		self.poll_enabled = True
 		self.ecmdata = GetEcmInfo()
 
 	@cached
 	def getText(self):
-		if config.usage.show_cryptoinfo.value == "0":
-			self.visible = False
-			data = ''
-		else:
-			self.visible = True
-			if self.type == "VerboseInfo":
-				data = self.ecmdata.getEcmData()[0]
-			elif self.type == "FullInfo":
-				textvalue = ""
-				server = ""
-				service = self.source.service
-				if service:
-					info = service and service.info()
-					if info:
-						try:
-							if info.getInfo(iServiceInformation.sIsCrypted) == 1 and (info.getInfoObject(iServiceInformation.sCAIDs) or pathExists("/tmp/ecm.info")):
-								ecm_info = self.ecmdata.getInfoRaw()
-								if ecm_info:
-									# caid
-									caid = "%0.4X" % int(ecm_info.get('caid', ecm_info.get('CAID', '0')), 16)
-									# pid
-									# pid = "%0.4X" % int(ecm_info.get('pid', ecm_info.get('ECM PID', '0')), 16)
-									# oscam
-									prov = "%0.6X" % int(ecm_info.get('provid', ecm_info.get('prov', ecm_info.get('Provider', '0'))), 16)
+		if not int(config.usage.show_cryptoinfo.value):
+			return ""
 
-									if ecm_info.get("ecm time", "").find("msec") > -1:
-										ecm_time = ecm_info.get("ecm time", "")
-									else:
-										ecm_time = ecm_info.get("ecm time", "").replace(".", "").lstrip("0") + " msec"
+		service = self.source.service
+		info = service and service.info()
 
-									# from (oscam)
-									from_item = ecm_info.get("from", "")
-									from_splitted = from_item.split(":")
-									# protocol
-									protocol = ecm_info.get("protocol", "")
-									# server
-									server = from_splitted[0].strip()
-									# port
-									port = from_splitted[1].strip() if len(from_splitted) > 1 else ""
-									# source
-									if protocol == "emu":
-										source = "emu"
-									elif protocol == "constcw":
-										source = "constcw"
-									elif from_splitted[0].strip() == "local":
-										source = "sci"
-									else:
-										source = "net"
-									# hops
-									hops = ecm_info.get("hops", "")
-									# system
-									system = ecm_info.get("system", "")  # noqa: F841
-									# provider
-									provider = ecm_info.get("provider", "")  # noqa: F841
-									# reader
-									reader = ecm_info.get("reader", "")
-									if source == "emu":
-										textvalue = f"{source} - {caid} ({caid}:{prov})- {reader} - {ecm_time.replace('msec', 'ms')}"
-									elif source == "constcw":
-										textvalue = f"{source} - {caid} ({caid}:{prov})- {reader} - {ecm_time.replace('msec', 'ms')}"
-									# new oscam ecm.info with port parametr
-									elif reader != "" and source == "net" and port != "":
-										textvalue = f"{source} - {caid}:{prov} - {reader}, {protocol} ({server}:{port}@{hops}) - {ecm_time.replace('msec', 'ms')}"
-									elif reader != "" and source == "net":
-										textvalue = f"{source} - {caid}:{prov} - {reader}, {protocol} ({server}@{hops}) - {ecm_time.replace('msec', 'ms')}"
-									elif reader != "" and source != "net":
-										textvalue = f"{source} - {caid}:{prov} - {reader}, {protocol} (local) - {ecm_time.replace('msec', 'ms')}"
-									elif server == "" and port == "" and protocol != "":
-										textvalue = f"{source} - {caid}:{prov}, {protocol} - {ecm_time.replace('msec', 'ms')}"
-									elif server == "" and port == "" and protocol == "":
-										textvalue = f"{source} - {caid}- {ecm_time.replace('msec', 'ms')}, Prov: {prov}"
-									else:
-										try:
-											textvalue = f"{source} - {caid}:{prov}, {protocol} ({server}:{port}) - {ecm_time.replace('msec', 'ms')}"
-										except:
-											pass
-								else:
-									textvalue = "No parse cannot Emu"
-							else:
-								textvalue = "Free-to-air"
-						except:
-							pass
-				return textvalue
+		if not info:
+			return ""
+
+		is_crypted = bool(info.getInfo(iServiceInformation.sIsCrypted))
+
+		if self.type == "VerboseInfo":
+			return self.ecmdata.getEcmData()[0] if is_crypted else ""
+
+		if self.type == "FullInfo":
+			return self._getFullInfo(info, is_crypted)
+
+		return self.ecmdata.getInfo(self.type) if is_crypted else ""
+
+	def _getFullInfo(self, info, is_crypted):
+		if not is_crypted:
+			return "Free-to-air"
+
+		if not (info.getInfoObject(iServiceInformation.sCAIDs) or pathExists("/tmp/ecm.info")):
+			return ""
+
+		try:  # what exception is this try expecting?
+			ecm = self.ecmdata.getInfoRaw()
+			if not ecm:
+				return "No parse cannot Emu"
+
+			caid = "%0.4X" % int(ecm.get("caid", ecm.get("CAID", "0")), 16)
+			prov = "%0.6X" % int(ecm.get("provid", ecm.get("prov", ecm.get("Provider", "0"))), 16)
+			ecm_time = ecm.get("ecm time", "")
+
+			if "msec" not in ecm_time:
+				ecm_time = ecm_time.replace(".", "").lstrip("0") + " msec"
+
+			ecm_time = ecm_time.replace("msec", "ms")
+
+			protocol = ecm.get("protocol", "")
+			reader = ecm.get("reader", "")
+			hops = ecm.get("hops", "")
+
+			server, port = (x.strip() for x in ecm.get("from", "").partition(":")[::2])
+
+			if protocol == "emu":
+				source = "emu"
+			elif protocol == "constcw":
+				source = "constcw"
+			elif server == "local":
+				source = "sci"
 			else:
-				data = self.ecmdata.getInfo(self.type)
-		return data
+				source = "net"
+
+			if source in ("emu", "constcw"):
+				return f"{source} - {caid} ({caid}:{prov}) - {reader} - {ecm_time}"
+
+			if reader:
+				if source == "net":
+					host = f"{server}:{port}" if port else server
+					return f"{source} - {caid}:{prov} - {reader}, {protocol} ({host}@{hops}) - {ecm_time}"
+
+				return f"{source} - {caid}:{prov} - {reader}, {protocol} (local) - {ecm_time}"
+
+			if protocol:
+				if server or port:
+					return f"{source} - {caid}:{prov}, {protocol} ({server}:{port}) - {ecm_time}"
+
+				return f"{source} - {caid}:{prov}, {protocol} - {ecm_time}"
+
+			return f"{source} - {caid} - {ecm_time}, Prov: {prov}"
+
+		except Exception as e:
+			print("[CryptoInfo][_getFullInfo] exception\n", e)
+			return ""
+
 	text = property(getText)

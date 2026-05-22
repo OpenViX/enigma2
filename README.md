@@ -2,7 +2,7 @@
 
 ## OpenViX buildserver requirements: ##
 
->Ubuntu 24.04 LTS (GNU/Linux 6.8.0-39-generic x86_64) or Ubuntu 26.04 LTS (GNU/Linux 7.0.0-14-generic x86_64)
+>Ubuntu 24.04 LTS (GNU/Linux 6.8.0-39-generic x86_64) or (Ubuntu 26.04 LTS (GNU/Linux 7.0.0-14-generic x86_64) - for OE-A 6.0 and above builds)
 
 ## minimum hardware requirement for image build (building feeds may require more):
 

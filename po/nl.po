@@ -6861,7 +6861,7 @@ msgstr "Volledig doorzichtig"
 msgid "Full view resolution"
 msgstr "Vol scherm resolutie"
 
-msgid "FuÃball"
+msgid "FuÃ?ball"
 msgstr "Voetbal"
 
 msgid "FÃ¼r Kinder"
@@ -14055,14 +14055,14 @@ msgstr "Toon de kanaalinformatie op twee regels in de kanaallijst."
 msgid "Show the tv player"
 msgstr "TV-weergave modus"
 
-msgid "Show time elapsed as positive"
-msgstr "Toon verstreken tijd als positief"
+msgid "Show time elapsed as positive *"
+msgstr "Toon verstreken tijd als positief *"
 
 msgid "Show time in 24 hour clock format."
 msgstr "Toon klok in 24-uurs formaat."
 
-msgid "Show time remaining/elapsed"
-msgstr "Toon de resterende/verstreken tijd"
+msgid "Show time remaining/elapsed *"
+msgstr "Toon de resterende/verstreken tijd *"
 
 msgid "Show timer list"
 msgstr "Toon timers"
@@ -14073,8 +14073,8 @@ msgstr "Toon taalpakketten"
 msgid "Show transponder info"
 msgstr "Toon de transponderinformatie"
 
-msgid "Show transponder remaining/elapsed as"
-msgstr "Toon de resterende/verstreken programmatijd als"
+msgid "Show transponder remaining/elapsed as *"
+msgstr "Toon de resterende/verstreken programmatijd als *"
 
 msgid "Show two lines per entry"
 msgstr "Toon twee regels per ingang"

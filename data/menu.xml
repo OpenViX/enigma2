@@ -32,7 +32,7 @@
 		<!-- Menu / Setup / AV -->
 		<menu key="av" level="0" text="Audio &amp; Video" weight="1">
 			<item key="av_setup" level="0" text="Settings" weight="1"><screen module="VideoMode" screen="VideoSetup" /></item>
-			<item key="autolanguage_setup" level="1" text="Automatic Language"><setup id="autolanguagesetup" /></item>
+			<item key="autolanguage_setup" level="1" text="Automatic Language" weight="2"><setup id="autolanguagesetup" /></item>
 		</menu>
 
 		<!-- Menu / Setup / Tuners -->

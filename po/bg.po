@@ -14613,13 +14613,13 @@ msgstr ""
 msgid "Show the tv player"
 msgstr "Покажи ТВ плеъра..."
 
-msgid "Show time elapsed as positive"
+msgid "Show time elapsed as positive *"
 msgstr ""
 
 msgid "Show time in 24 hour clock format."
 msgstr ""
 
-msgid "Show time remaining/elapsed"
+msgid "Show time remaining/elapsed *"
 msgstr ""
 
 #, fuzzy
@@ -14633,7 +14633,7 @@ msgstr ""
 msgid "Show transponder info"
 msgstr "покажи инфо за транспондер"
 
-msgid "Show transponder remaining/elapsed as"
+msgid "Show transponder remaining/elapsed as *"
 msgstr ""
 
 msgid "Show two lines per entry"
