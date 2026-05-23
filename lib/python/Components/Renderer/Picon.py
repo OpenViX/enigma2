@@ -72,14 +72,15 @@ class PiconLocator:
 			self.__onMountpointRemoved(part.mountpoint)
 
 	def findPicon(self, service):
+		exts = self.EXT_PRIORITY[config.usage.picon_lookup_priority.value]  # must go here because this function is used externally
 		if self.activePiconPath:
-			for ext in self.exts:
+			for ext in exts:
 				pngname = join(self.activePiconPath, service + ext)
 				if pathExists(pngname):
 					return pngname
 		else:
 			for path in self.searchPaths:
-				for ext in self.exts:
+				for ext in exts:
 					pngname = join(path, service + ext)
 					if pathExists(pngname):
 						self.activePiconPath = path
@@ -135,7 +136,6 @@ class PiconLocator:
 		if not serviceRef:  # serviceRef could be None if something failed in the block above
 			return ""
 
-		self.exts = self.EXT_PRIORITY[config.usage.picon_lookup_priority.value]  # do here once, not while iterating
 		dedupe = set()
 		for generator in self.__iterServiceRefPiconCandidates(serviceRef), self.__iterServiceNamePiconCandidates(serviceRef):
 			for candidate in generator:
