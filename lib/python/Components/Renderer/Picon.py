@@ -171,13 +171,13 @@ class Picon(Renderer):
 			self.defaultpngname = ""
 
 	def applySkin(self, desktop, parent):
-		new_attrs = []
+		attribs = []
 		for attrib, value in self.skinAttributes:
 			if attrib == "path":
 				piconLocator.addSearchPath(value)
 				continue
-			new_attrs.append((attrib, value))
-		self.skinAttributes = new_attrs
+			attribs.append((attrib, value))
+		self.skinAttributes = attribs
 		rc = Renderer.applySkin(self, desktop, parent)
 		self.changed((self.CHANGED_DEFAULT,))
 		return rc
