@@ -2,7 +2,7 @@
 
 ## OpenViX buildserver requirements: ##
 
->Ubuntu 24.04 LTS (GNU/Linux 6.8.0-39-generic x86_64) or (Ubuntu 26.04 LTS (GNU/Linux 7.0.0-14-generic x86_64) - for OE-A 6.0 and above builds)
+>Ubuntu 24.04 LTS (GNU/Linux 6.8.0-39-generic x86_64) or (Ubuntu 26.04 LTS (GNU/Linux 7.0.0-14-generic x86_64) - for OE-A 5.6 see note 15)
 
 ## minimum hardware requirement for image build (building feeds may require more):
 
@@ -103,7 +103,7 @@
     make update
 
 ----------
-15 - Ubuntu 26.04 Users.
+15 - Ubuntu 26.04 Users, building OE-A 5.6.
 
     Edit openembedded-core/meta/classes-global/base-bbclass
         - change line 130 ---->            srctool = bb.utils.which(path, tool, executable=True)
