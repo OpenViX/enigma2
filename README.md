@@ -103,12 +103,22 @@
     make update
 
 ----------
-15 - Initialise the first machine so site.conf gets created
+15 - Ubuntu 26.04 Users.
+
+    Edit openembedded-core/meta/classes-global/base-bbclass
+        - change line 130 ---->            srctool = bb.utils.which(path, tool, executable=True)
+        - to 1line update ---->            srctool = (bb.utils.which(path, "gnu" + tool, executable=True) or bb.utils.which(path, tool, executable=True))
+  
+    Unzip OE5.6onUB26.04.zip attachment from post #968 in https://world-of-satellite.com/threads/build-my-own-vix-image.61295/page-49
+	Copy unzipped files from recipes-local into your OE-A 5.6 meta-local/recipes-local
+
+----------
+16 - Initialise the first machine so site.conf gets created
 
     MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make init
 
 ----------
-16 - Update site.conf
+17 - Update site.conf
 
     - BB_NUMBER_THREADS, PARALLEL_MAKE set to number of threads supported by the CPU
     - add/modify DL_DIR = " location for build sources " to point to a location where you can save 
@@ -116,16 +126,16 @@
     - Avoid wasting disk space creating spdx packages: INHERIT:remove = "create-spdx"
 
 ----------
-17 - Building image with feeds  e.g.:-
+18 - Building image with feeds  e.g.:-
 
     MACHINE=vuultimo4k DISTRO=openvix DISTRO_TYPE=release make image
 
 ----------
-18 - Building an image without feeds (Build time 1-2h)
+19 - Building an image without feeds (Build time 1-2h)
 
     MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make enigma2-image
 
 ----------
-19 - Building feeds only
+20 - Building feeds only
 
     MACHINE=zgemmah9combo DISTRO=openvix DISTRO_TYPE=release make feeds
