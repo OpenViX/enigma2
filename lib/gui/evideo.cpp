@@ -4,6 +4,7 @@
 
 ePtr<eTimer> eVideoWidget::fullsizeTimer;
 int eVideoWidget::pendingFullsize = 0;
+int eVideoWidget::forceFullsizeDecoder = 0;
 int eVideoWidget::posFullsizeLeft = 0;
 int eVideoWidget::posFullsizeTop = 0;
 int eVideoWidget::posFullsizeWidth = 0;
@@ -82,10 +83,11 @@ void eVideoWidget::setFullsize(bool force)
 {
 	for (int decoder=0; decoder < 2; ++decoder)
 	{
-		if (force || (pendingFullsize & (1 << decoder)))
+		if (force || (pendingFullsize & (1 << decoder)) || (forceFullsizeDecoder & (1 << decoder)))
 		{
 			eVideoWidget::setPosition(decoder, posFullsizeLeft, posFullsizeTop, posFullsizeWidth, posFullsizeHeight);
 			pendingFullsize &= ~(1 << decoder);
+			forceFullsizeDecoder &= ~(1 << decoder);
 		}
 	}
 }
@@ -94,11 +96,6 @@ void eVideoWidget::updatePosition(int disable)
 {
 	if (!disable)
 		m_state |= 4;
-
-	if (disable && !(m_state & 4))
-	{
-		return;
-	}
 
 	if ((m_state & 2) != 2)
 	{
@@ -131,12 +128,15 @@ void eVideoWidget::updatePosition(int disable)
 	{
 		setPosition(m_decoder, left, top, width, height);
 		pendingFullsize &= ~(1 << m_decoder);
+		forceFullsizeDecoder &= ~(1 << m_decoder);
 		m_state |= 8;
 	}
 	else
 	{
 		m_state &= ~8;
 		pendingFullsize |= (1 << m_decoder);
+		forceFullsizeDecoder |= (1 << m_decoder);
+		eVideoWidget::setPosition(m_decoder, posFullsizeLeft, posFullsizeTop, posFullsizeWidth, posFullsizeHeight);
 		fullsizeTimer->start(100, true);
 	}
 }
