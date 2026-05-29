@@ -43,7 +43,16 @@ int eVideoWidget::event(int event, void *data, void *data2)
 
 eVideoWidget::~eVideoWidget()
 {
-	updatePosition(1);
+	/* Only restore fullscreen if this widget has ever set the video position.
+	   m_state & 1 means updatePosition() was called and the position was committed.
+	   This avoids restoring fullscreen when the widget was never active. */
+	if (m_state & 1)
+	{
+		pendingFullsize |= (1 << m_decoder);
+		forceFullsizeDecoder |= (1 << m_decoder);
+		eVideoWidget::setPosition(m_decoder, posFullsizeLeft, posFullsizeTop, posFullsizeWidth, posFullsizeHeight);
+		fullsizeTimer->start(100, true);
+	}
 }
 
 void eVideoWidget::setFBSize(eSize size)
@@ -134,10 +143,10 @@ void eVideoWidget::updatePosition(int disable)
 	else
 	{
 		m_state &= ~8;
-		pendingFullsize |= (1 << m_decoder);
-		forceFullsizeDecoder |= (1 << m_decoder);
-		eVideoWidget::setPosition(m_decoder, posFullsizeLeft, posFullsizeTop, posFullsizeWidth, posFullsizeHeight);
-		fullsizeTimer->start(100, true);
+		/* Do NOT restore fullscreen here. The widget is only temporarily hidden
+		   (e.g. a child screen is opening on top). Restoring fullscreen now would
+		   cause a visible flash before the child screen finishes painting.
+		   Fullscreen is restored by the destructor when the widget is actually destroyed. */
 	}
 }
 
