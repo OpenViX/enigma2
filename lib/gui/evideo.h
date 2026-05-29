@@ -11,7 +11,6 @@ class eVideoWidget: public eLabel
 	int m_decoder;
 	static ePtr<eTimer> fullsizeTimer;
 	static int pendingFullsize;
-	static int forceFullsizeDecoder;
 	static int posFullsizeLeft;
 	static int posFullsizeTop;
 	static int posFullsizeWidth;
