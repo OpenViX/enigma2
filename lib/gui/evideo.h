@@ -15,6 +15,10 @@ class eVideoWidget: public eLabel
 	static int posFullsizeTop;
 	static int posFullsizeWidth;
 	static int posFullsizeHeight;
+	static int lastPigLeft[2];
+	static int lastPigTop[2];
+	static int lastPigWidth[2];
+	static int lastPigHeight[2];
 
 public:
 	eVideoWidget(eWidget *parent);
