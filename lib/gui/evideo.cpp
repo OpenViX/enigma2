@@ -1,6 +1,7 @@
 #include <lib/base/cfile.h>
 #include <lib/gui/evideo.h>
 #include <lib/gui/ewidgetdesktop.h>
+#include <fstream>
 
 ePtr<eTimer> eVideoWidget::fullsizeTimer;
 int eVideoWidget::pendingFullsize = 0;
@@ -8,6 +9,30 @@ int eVideoWidget::posFullsizeLeft = 0;
 int eVideoWidget::posFullsizeTop = 0;
 int eVideoWidget::posFullsizeWidth = 0;
 int eVideoWidget::posFullsizeHeight = 0;
+int eVideoWidget::lastPigLeft[2]   = {0, 0};
+int eVideoWidget::lastPigTop[2]    = {0, 0};
+int eVideoWidget::lastPigWidth[2]  = {0, 0};
+int eVideoWidget::lastPigHeight[2] = {0, 0};
+
+static int s_bounceFixEnabled = -1; /* -1=uninitialised, 0=off, 1=on */
+
+static bool bounceFixEnabled()
+{
+	if (s_bounceFixEnabled < 0)
+	{
+		std::ifstream f("/proc/stb/info/model");
+		std::string boxtype;
+		if (f && std::getline(f, boxtype))
+		{
+			s_bounceFixEnabled = (boxtype == "dm900" || boxtype == "dm920") ? 1 : 0;
+		}
+		else
+		{
+			s_bounceFixEnabled = 0;
+		}
+	}
+	return s_bounceFixEnabled == 1;
+}
 
 eVideoWidget::eVideoWidget(eWidget *parent)
 	:eLabel(parent), m_fb_size(720, 576), m_state(0), m_decoder(1)
@@ -16,6 +41,11 @@ eVideoWidget::eVideoWidget(eWidget *parent)
 	{
 		fullsizeTimer = eTimer::create(eApp);
 		fullsizeTimer->timeout.connect(sigc::bind(sigc::ptr_fun(&eVideoWidget::setFullsize), false));
+		if (bounceFixEnabled() && posFullsizeWidth == 0)
+		{
+			posFullsizeWidth = 720;
+			posFullsizeHeight = 576;
+		}
 	}
 	parent->setPositionNotifyChild(1);
 }
@@ -84,6 +114,11 @@ void eVideoWidget::setFullsize(bool force)
 	{
 		if (force || (pendingFullsize & (1 << decoder)))
 		{
+			if (bounceFixEnabled() && lastPigWidth[decoder] > 0 && lastPigHeight[decoder] > 0)
+			{
+				eVideoWidget::setPosition(decoder, posFullsizeLeft, posFullsizeTop, posFullsizeWidth, posFullsizeHeight);
+				eVideoWidget::setPosition(decoder, lastPigLeft[decoder], lastPigTop[decoder], lastPigWidth[decoder], lastPigHeight[decoder]);
+			}
 			eVideoWidget::setPosition(decoder, posFullsizeLeft, posFullsizeTop, posFullsizeWidth, posFullsizeHeight);
 			pendingFullsize &= ~(1 << decoder);
 		}
@@ -130,6 +165,10 @@ void eVideoWidget::updatePosition(int disable)
 	if (!disable)
 	{
 		setPosition(m_decoder, left, top, width, height);
+		lastPigLeft[m_decoder]   = left;
+		lastPigTop[m_decoder]    = top;
+		lastPigWidth[m_decoder]  = width;
+		lastPigHeight[m_decoder] = height;
 		pendingFullsize &= ~(1 << m_decoder);
 		m_state |= 8;
 	}
