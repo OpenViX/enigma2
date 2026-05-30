@@ -1233,10 +1233,8 @@ class ImageBackup(Screen):
 				self.commands.append(f"/bin/tar -jcf {self.WORKDIR}/rootfs.tar.bz2 -C {self.TMPDIR}/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock .")
 			self.commands.append("sync")
 			if MODEL in ("gb7252", "gbx34k"):
-				self.commands.append(f"dd if=/dev/mmcblk0p1 of={self.WORKDIR}/boot.bin")
 				self.commands.append(f"dd if=/dev/mmcblk0p3 of={self.WORKDIR}/rescue.bin")
-				print("[ImageManager] Stage2: Create: boot dump boot.bin:", MACHINEBUILD)
-				print("[ImageManager] Stage2: Create: rescue dump rescue.bin:", MACHINEBUILD)
+				print("[ImageManager] Stage2: Created: rescue dump rescue.bin:", MACHINEBUILD)
 		print("[ImageManager] ROOTFSTYPE:", self.ROOTFSTYPE)
 		self.ConsoleB.eBatch(self.commands, self.Stage2Complete, debug=False)
 
@@ -1449,13 +1447,14 @@ class ImageBackup(Screen):
 			move(f"{self.WORKDIR}/rootfs.{self.ROOTFSTYPE}", f"{self.MAINDEST}/{self.ROOTFSFILE}")
 
 		if MODEL in ("gb7252", "gbx34k"):
-			self.GB4Kbin = "boot.bin"
 			self.GB4Krescue = "rescue.bin"
-			move(f"{self.WORKDIR}/{self.GB4Kbin}", f"{self.MAINDEST}/{self.GB4Kbin}")
 			move(f"{self.WORKDIR}/{self.GB4Krescue}", f"{self.MAINDEST}/{self.GB4Krescue}")
-			system(f"cp -f /usr/share/gpt.bin {self.MAINDEST}/gpt.bin")
-			print("[ImageManager] Stage5: Create: gpt.bin:", MACHINEBUILD)
-
+			print(f"[ImageManager] Stage5: Create: boot.bin gpt.bin for {MACHINEBUILD} to {self.MAINDEST}")
+			for fileName in ("boot.bin", "gpt.bin", "boot4.bin", "gpt4.bin"):
+				if path.exists(f"/usr/share/{fileName}"):
+					system(f"cp -f /usr/share/{fileName} {self.MAINDEST}")					
+					print(f"[ImageManager] Stage5: copy: {fileName} for {MACHINEBUILD} to {self.MAINDEST}")
+					
 		with open(self.MAINDEST + "/imageversion", "w") as fileout:
 			line = f"{defaultprefix}-{MACHINEBUILD}-{IMAGETYPE}-backup-{SystemInfo['imageversion']}.{SystemInfo['imagebuild']}-{self.BackupDate}"
 			fileout.write(line)
