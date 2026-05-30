@@ -254,7 +254,7 @@ class About(AboutBase):
 
 		AboutText += _("Drivers:\t%s\n") % driversDate()
 		AboutText += _("Kernel:\t%s\n") % KERNEL
-		if MODEL in ("gb7252", "gbx34k"):
+		if SystemInfo["boxtype"] == "gbquad4kpro":
 			hwVersion = fileReadLine("/proc/stb/info/version")
 			if hwVersion:
 				match = search(r"\brev[0-9]+\b", hwVersion)
