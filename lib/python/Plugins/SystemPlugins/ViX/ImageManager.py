@@ -1452,9 +1452,9 @@ class ImageBackup(Screen):
 			print(f"[ImageManager] Stage5: Create: boot.bin gpt.bin for {MACHINEBUILD} to {self.MAINDEST}")
 			for fileName in ("boot.bin", "gpt.bin", "boot4.bin", "gpt4.bin"):
 				if path.exists(f"/usr/share/{fileName}"):
-					system(f"cp -f /usr/share/{fileName} {self.MAINDEST}")					
+					system(f"cp -f /usr/share/{fileName} {self.MAINDEST}")
 					print(f"[ImageManager] Stage5: copy: {fileName} for {MACHINEBUILD} to {self.MAINDEST}")
-					
+
 		with open(self.MAINDEST + "/imageversion", "w") as fileout:
 			line = f"{defaultprefix}-{MACHINEBUILD}-{IMAGETYPE}-backup-{SystemInfo['imageversion']}.{SystemInfo['imagebuild']}-{self.BackupDate}"
 			fileout.write(line)
