@@ -1,5 +1,6 @@
 #include <lib/dvb/csaengine.h>
 #include <lib/base/eerror.h>
+#include <lib/base/nconfig.h>
 #include <dlfcn.h>
 
 #define CSA_DEBUG 0
@@ -23,6 +24,14 @@ csa_dlopen_api g_csa_api = {
 
 bool csa_load_library()
 {
+	int softcsaEnable = eConfigManager::getConfigIntValue("config.misc.softcsa.Enable_Disable", 0);
+	// Enabled (0) Disabled (1) 
+	if (softcsaEnable == 1)
+	{
+		eWarning("[eDVBCSAEngine] softcsa disabled)");
+		return false;
+	}
+
 	// Already loaded successfully?
 	if (g_csa_api.available)
 		return true;

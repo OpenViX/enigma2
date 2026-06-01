@@ -4168,6 +4168,14 @@ void eDVBServicePlay::setupSpeculativeDescrambling()
 	if (!eDVBCSAEngine::isAvailable())
 		return;
 
+	int softcsaEnable = eConfigManager::getConfigIntValue("config.misc.softcsa.Enable_Disable", 0);
+	// Enabled (0) Disabled (1) 
+	if (softcsaEnable == 1)
+	{
+		eWarning("[eDVBServicePlay] softcsa disabled)");
+		return;
+	}
+
 	eDebug("[eDVBServicePlay] Encrypted channel, creating speculative CSA session");
 
 	// Create session (starts INACTIVE, will activate when CSA-ALT detected from ECM)

@@ -1197,6 +1197,10 @@ def InitUsageConfig():
 		("s", _("Restart softcam"))])
 	defaultValue = 1 if MODEL in ("gb7252", ) else 0
 	config.misc.softcsa = ConfigSubsection()
+	config.misc.softcsa.Enable_Disable = ConfigSelection(default=0, choices=[
+			(0, _("Enable")),
+			(1, _("Disable"))
+	])
 	config.misc.softcsa.decoderRelease = ConfigSelection(default=0, choices=[
 			(0, _("Quick")),
 			(1, _("Normal")),
