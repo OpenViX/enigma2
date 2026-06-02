@@ -646,14 +646,10 @@ void eDVBScan::PMTready(int err)
 			m_pmt_in_progress->second.serviceType = 2;  // digital radio sound service
 		else
 <<<<<<< HEAD
-<<<<<<< HEAD
 			m_pmt_in_progress->second.serviceType = 12; // data broadcast service (valid DVB type)
 =======
 			m_pmt_in_progress->second.serviceType = 100;
 >>>>>>> 3a706f68ea4 ([scan] extract and store PIDs and CAIDs from PMT during channel scan)
-=======
-			m_pmt_in_progress->second.serviceType = 12; // data broadcast service (valid DVB type)
->>>>>>> dfaee3a288 ([scan] fix duplicate services when PMT and SDT have different serviceTypes)
 		SCAN_eDebug("[eDVBScan] SID %04x: vpid=%04x (vtype=%d) apid=%04x (cacheId=%d) pcrpid=%04x caids=%d",
 			m_pmt_in_progress->first, videopid, videotype, audiopid, audioCacheId, pcrpid, (int)caids.size());
 	}
