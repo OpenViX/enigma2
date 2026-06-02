@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-17 15:33+0300\n"
-"PO-Revision-Date: 2026-05-17 16:03+0300\n"
+"POT-Creation-Date: 2026-06-02 12:38+0300\n"
+"PO-Revision-Date: 2026-06-02 13:56+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -5904,6 +5904,9 @@ msgstr "Salli juuri menossa olevien ohjelmien korostus."
 msgid "Enable usage of tuners from another Enigma2 receiver on the local network. Remote tuners will be used when tuners are not available on this receiver. (No free tuner or service type is not available.)"
 msgstr "Ota käyttöön paikallisverkossa olevan toisen Enigma2-vastaanottimen virittimien käyttö. Etävirittimiä käytetään, kun virittimiä ei ole saatavilla tässä vastaanottimessa. (Vapaita ​​virittimiä tai kanavatyyppiä ei ole saatavilla.)"
 
+msgid "Enable/Disable SoftCSA. *Restart E2 for changes to take effect."
+msgstr "Ota SoftCSA käyttöön/poista se käytöstä. *Käynnistä E2 uudelleen, jotta muutokset tulevat voimaan."
+
 msgid "Enabled"
 msgstr "Käytössä"
 
@@ -7310,6 +7313,10 @@ msgstr "Kiintolevyn automaattinen sammutus"
 msgid "Harddisk setup"
 msgstr "Kiintolevyn asetukset"
 
+#, python-format
+msgid "Hardware Version:\t%s\n"
+msgstr "Laitteistoversio:\t%s\n"
+
 msgid "HbbTV"
 msgstr "HbbTV"
 
@@ -7536,9 +7543,7 @@ msgid "How to display the date format for date items in the About screen."
 msgstr "Kuinka näytettään päivämäärän muoto päivämääräkohdille Tietoja-näytössä."
 
 msgid "How to release the hardware decoder when switching to software descrambling. 'Quick' releases immediately (faster zapping). 'Normal' performs clean shutdown first (more stable on some boxes). 'Aggressive' resets the HW-descrambler slots and also bypasses the in-process CSA-ALT cache. *Restart E2 for changes to take effect."
-msgstr ""
-"Kuinka vapauttaa laitteistodekooderin käyttö siirryttäessä ohjelmistopohjaiseen salauksenpurkuun. 'Nopea' vapauttaa laitteen välittömästi (nopeampi kanavanvaihto). 'Normaali' tekee ensin siistin sammutuksen (vakaampi joillakin laitteilla). 'Aggressiivinen' nollaa laitteistodekooderin paikat ja ohittaa myös käynnissä olevan CSA-ALT-"
-"välimuistin. *Käynnistä E2 uudelleen, jotta muutokset tulevat voimaan."
+msgstr "Kuinka vapauttaa laitteistodekooderin käyttö siirryttäessä ohjelmistopohjaiseen salauksenpurkuun. 'Nopea' vapauttaa laitteen välittömästi (nopeampi kanavanvaihto). 'Normaali' tekee ensin siistin sammutuksen (vakaampi joillakin laitteilla). 'Aggressiivinen' nollaa laitteistodekooderin paikat ja ohittaa myös käynnissä olevan CSA-ALT-välimuistin. *Käynnistä E2 uudelleen, jotta muutokset tulevat voimaan."
 
 msgid "Http(s) stream start delay"
 msgstr "Http/https streamin käynnistysviive"
@@ -15204,7 +15209,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 17.05.2026 ---\n"
+"--- 02.06.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -19097,6 +19102,9 @@ msgstr "moottori"
 
 msgid "rotor is not used"
 msgstr "moottori ei käytössä"
+
+msgid "runSoftCSA *"
+msgstr "runSoftCSA *"
 
 msgid "running..."
 msgstr "Käynnissä..."
