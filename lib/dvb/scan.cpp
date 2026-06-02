@@ -1258,14 +1258,10 @@ void eDVBScan::channelDone()
 			}
 
 <<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 2e7265ab61 ([scan] Fix audio track selection after rescan)
 			/* store cached PIDs from PMT - only for NEW services or services without cached PIDs
 			 * Don't overwrite existing cache entries as they may contain user preferences
 			 * Note: Audio PID is intentionally NOT cached - let user preferences (language settings,
 			 * "prefer audio track stored by service") determine audio track selection on tune */
-<<<<<<< HEAD
 			ePtr<eDVBService> target = i.first->second;
 			if (i.second || target->getCacheEntry(eDVBService::cVPID) == -1)
 			{
@@ -1281,28 +1277,19 @@ void eDVBScan::channelDone()
 			}
 =======
 			/* store cached PIDs from PMT - use service from m_new_services (may exist from SDT) */
-=======
->>>>>>> 2e7265ab61 ([scan] Fix audio track selection after rescan)
 			ePtr<eDVBService> target = i.first->second;
-			if (i.second || target->getCacheEntry(eDVBService::cVPID) == -1)
-			{
-				if (m_pmt_in_progress->second.videoPid != 0xFFFF)
-					target->setCacheEntry(eDVBService::cVPID, m_pmt_in_progress->second.videoPid);
-				if (m_pmt_in_progress->second.pcrPid != 0xFFFF)
-					target->setCacheEntry(eDVBService::cPCRPID, m_pmt_in_progress->second.pcrPid);
-				target->setCacheEntry(eDVBService::cPMTPID, m_pmt_in_progress->second.pmtPid);
+			if (m_pmt_in_progress->second.videoPid != 0xFFFF)
+				target->setCacheEntry(eDVBService::cVPID, m_pmt_in_progress->second.videoPid);
+			if (m_pmt_in_progress->second.audioPid != 0xFFFF)
+				target->setCacheEntry(m_pmt_in_progress->second.audioCacheId, m_pmt_in_progress->second.audioPid);
+			if (m_pmt_in_progress->second.pcrPid != 0xFFFF)
+				target->setCacheEntry(eDVBService::cPCRPID, m_pmt_in_progress->second.pcrPid);
+			target->setCacheEntry(eDVBService::cPMTPID, m_pmt_in_progress->second.pmtPid);
 
-<<<<<<< HEAD
 			/* store CAIDs from PMT */
 			if (!m_pmt_in_progress->second.caids.empty())
 				target->m_ca = m_pmt_in_progress->second.caids;
 >>>>>>> 3a706f68ea4 ([scan] extract and store PIDs and CAIDs from PMT during channel scan)
-=======
-				/* store CAIDs from PMT */
-				if (!m_pmt_in_progress->second.caids.empty())
-					target->m_ca = m_pmt_in_progress->second.caids;
-			}
->>>>>>> 2e7265ab61 ([scan] Fix audio track selection after rescan)
 		}
 		else
 			SCAN_eDebug("[eDVBScan] dont add... is scrambled!");
@@ -1712,29 +1699,21 @@ RESULT eDVBScan::processSDT(eDVBNamespace dvbnamespace, const ServiceDescription
 			ref.setServiceID(service_id);
 
 <<<<<<< HEAD
-<<<<<<< HEAD
 			/* copy cached PIDs and CAIDs from PMT if available (only if PMT was already processed)
 			 * Note: Audio PID is intentionally NOT cached - let user preferences determine audio track */
 =======
 			/* copy cached PIDs and CAIDs from PMT if available (only if PMT was already processed) */
 >>>>>>> 3a706f68ea4 ([scan] extract and store PIDs and CAIDs from PMT during channel scan)
-=======
-			/* copy cached PIDs and CAIDs from PMT if available (only if PMT was already processed)
-			 * Note: Audio PID is intentionally NOT cached - let user preferences determine audio track */
->>>>>>> 2e7265ab61 ([scan] Fix audio track selection after rescan)
 			if (it != m_pmts_to_read.end() && it->second.videoPid != 0xFFFF)
 			{
 				service->setCacheEntry(eDVBService::cVPID, it->second.videoPid);
 				if (it->second.videoType != -1)  // only set if not MPEG2 (default)
 					service->setCacheEntry(eDVBService::cVTYPE, it->second.videoType);
 <<<<<<< HEAD
-<<<<<<< HEAD
 =======
 				if (it->second.audioPid != 0xFFFF)
 					service->setCacheEntry(it->second.audioCacheId, it->second.audioPid);
 >>>>>>> 3a706f68ea4 ([scan] extract and store PIDs and CAIDs from PMT during channel scan)
-=======
->>>>>>> 2e7265ab61 ([scan] Fix audio track selection after rescan)
 				if (it->second.pcrPid != 0xFFFF)
 					service->setCacheEntry(eDVBService::cPCRPID, it->second.pcrPid);
 				service->setCacheEntry(eDVBService::cPMTPID, it->second.pmtPid);
@@ -1924,29 +1903,21 @@ RESULT eDVBScan::processVCT(eDVBNamespace dvbnamespace, const VirtualChannelTabl
 			ref.setSourceID(source_id);
 
 <<<<<<< HEAD
-<<<<<<< HEAD
 			/* copy cached PIDs and CAIDs from PMT if available (only if PMT was already processed)
 			 * Note: Audio PID is intentionally NOT cached - let user preferences determine audio track */
 =======
 			/* copy cached PIDs and CAIDs from PMT if available (only if PMT was already processed) */
 >>>>>>> 3a706f68ea4 ([scan] extract and store PIDs and CAIDs from PMT during channel scan)
-=======
-			/* copy cached PIDs and CAIDs from PMT if available (only if PMT was already processed)
-			 * Note: Audio PID is intentionally NOT cached - let user preferences determine audio track */
->>>>>>> 2e7265ab61 ([scan] Fix audio track selection after rescan)
 			if (it != m_pmts_to_read.end() && it->second.videoPid != 0xFFFF)
 			{
 				service->setCacheEntry(eDVBService::cVPID, it->second.videoPid);
 				if (it->second.videoType != -1)  // only set if not MPEG2 (default)
 					service->setCacheEntry(eDVBService::cVTYPE, it->second.videoType);
 <<<<<<< HEAD
-<<<<<<< HEAD
 =======
 				if (it->second.audioPid != 0xFFFF)
 					service->setCacheEntry(it->second.audioCacheId, it->second.audioPid);
 >>>>>>> 3a706f68ea4 ([scan] extract and store PIDs and CAIDs from PMT during channel scan)
-=======
->>>>>>> 2e7265ab61 ([scan] Fix audio track selection after rescan)
 				if (it->second.pcrPid != 0xFFFF)
 					service->setCacheEntry(eDVBService::cPCRPID, it->second.pcrPid);
 				service->setCacheEntry(eDVBService::cPMTPID, it->second.pmtPid);
