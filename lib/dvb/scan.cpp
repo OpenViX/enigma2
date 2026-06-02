@@ -645,11 +645,7 @@ void eDVBScan::PMTready(int err)
 		else if ( have_audio )
 			m_pmt_in_progress->second.serviceType = 2;  // digital radio sound service
 		else
-<<<<<<< HEAD
 			m_pmt_in_progress->second.serviceType = 12; // data broadcast service (valid DVB type)
-=======
-			m_pmt_in_progress->second.serviceType = 100;
->>>>>>> 3a706f68ea4 ([scan] extract and store PIDs and CAIDs from PMT during channel scan)
 		SCAN_eDebug("[eDVBScan] SID %04x: vpid=%04x (vtype=%d) apid=%04x (cacheId=%d) pcrpid=%04x caids=%d",
 			m_pmt_in_progress->first, videopid, videotype, audiopid, audioCacheId, pcrpid, (int)caids.size());
 	}
@@ -1257,7 +1253,6 @@ void eDVBScan::channelDone()
 				m_event(evtNewService);
 			}
 
-<<<<<<< HEAD
 			/* store cached PIDs from PMT - only for NEW services or services without cached PIDs
 			 * Don't overwrite existing cache entries as they may contain user preferences
 			 * Note: Audio PID is intentionally NOT cached - let user preferences (language settings,
@@ -1275,21 +1270,6 @@ void eDVBScan::channelDone()
 				if (!m_pmt_in_progress->second.caids.empty())
 					target->m_ca = m_pmt_in_progress->second.caids;
 			}
-=======
-			/* store cached PIDs from PMT - use service from m_new_services (may exist from SDT) */
-			ePtr<eDVBService> target = i.first->second;
-			if (m_pmt_in_progress->second.videoPid != 0xFFFF)
-				target->setCacheEntry(eDVBService::cVPID, m_pmt_in_progress->second.videoPid);
-			if (m_pmt_in_progress->second.audioPid != 0xFFFF)
-				target->setCacheEntry(m_pmt_in_progress->second.audioCacheId, m_pmt_in_progress->second.audioPid);
-			if (m_pmt_in_progress->second.pcrPid != 0xFFFF)
-				target->setCacheEntry(eDVBService::cPCRPID, m_pmt_in_progress->second.pcrPid);
-			target->setCacheEntry(eDVBService::cPMTPID, m_pmt_in_progress->second.pmtPid);
-
-			/* store CAIDs from PMT */
-			if (!m_pmt_in_progress->second.caids.empty())
-				target->m_ca = m_pmt_in_progress->second.caids;
->>>>>>> 3a706f68ea4 ([scan] extract and store PIDs and CAIDs from PMT during channel scan)
 		}
 		else
 			SCAN_eDebug("[eDVBScan] dont add... is scrambled!");
@@ -1698,22 +1678,13 @@ RESULT eDVBScan::processSDT(eDVBNamespace dvbnamespace, const ServiceDescription
 			ref.set(chid);
 			ref.setServiceID(service_id);
 
-<<<<<<< HEAD
 			/* copy cached PIDs and CAIDs from PMT if available (only if PMT was already processed)
 			 * Note: Audio PID is intentionally NOT cached - let user preferences determine audio track */
-=======
-			/* copy cached PIDs and CAIDs from PMT if available (only if PMT was already processed) */
->>>>>>> 3a706f68ea4 ([scan] extract and store PIDs and CAIDs from PMT during channel scan)
 			if (it != m_pmts_to_read.end() && it->second.videoPid != 0xFFFF)
 			{
 				service->setCacheEntry(eDVBService::cVPID, it->second.videoPid);
 				if (it->second.videoType != -1)  // only set if not MPEG2 (default)
 					service->setCacheEntry(eDVBService::cVTYPE, it->second.videoType);
-<<<<<<< HEAD
-=======
-				if (it->second.audioPid != 0xFFFF)
-					service->setCacheEntry(it->second.audioCacheId, it->second.audioPid);
->>>>>>> 3a706f68ea4 ([scan] extract and store PIDs and CAIDs from PMT during channel scan)
 				if (it->second.pcrPid != 0xFFFF)
 					service->setCacheEntry(eDVBService::cPCRPID, it->second.pcrPid);
 				service->setCacheEntry(eDVBService::cPMTPID, it->second.pmtPid);
@@ -1902,22 +1873,13 @@ RESULT eDVBScan::processVCT(eDVBNamespace dvbnamespace, const VirtualChannelTabl
 			ref.setServiceType(servicetype);
 			ref.setSourceID(source_id);
 
-<<<<<<< HEAD
 			/* copy cached PIDs and CAIDs from PMT if available (only if PMT was already processed)
 			 * Note: Audio PID is intentionally NOT cached - let user preferences determine audio track */
-=======
-			/* copy cached PIDs and CAIDs from PMT if available (only if PMT was already processed) */
->>>>>>> 3a706f68ea4 ([scan] extract and store PIDs and CAIDs from PMT during channel scan)
 			if (it != m_pmts_to_read.end() && it->second.videoPid != 0xFFFF)
 			{
 				service->setCacheEntry(eDVBService::cVPID, it->second.videoPid);
 				if (it->second.videoType != -1)  // only set if not MPEG2 (default)
 					service->setCacheEntry(eDVBService::cVTYPE, it->second.videoType);
-<<<<<<< HEAD
-=======
-				if (it->second.audioPid != 0xFFFF)
-					service->setCacheEntry(it->second.audioCacheId, it->second.audioPid);
->>>>>>> 3a706f68ea4 ([scan] extract and store PIDs and CAIDs from PMT during channel scan)
 				if (it->second.pcrPid != 0xFFFF)
 					service->setCacheEntry(eDVBService::cPCRPID, it->second.pcrPid);
 				service->setCacheEntry(eDVBService::cPMTPID, it->second.pmtPid);
