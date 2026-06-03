@@ -24,11 +24,9 @@ csa_dlopen_api g_csa_api = {
 
 bool csa_load_library()
 {
-	int softcsaEnable = eConfigManager::getConfigIntValue("config.misc.softcsa.Enable_Disable", 0);
-	// Enabled (0) Disabled (1) 
-	if (softcsaEnable == 1)
+	if (!eConfigManager::getConfigBoolValue("config.misc.softcsa.enabled", true))
 	{
-		eWarning("[eDVBCSAEngine] softcsa disabled)");
+		eWarning("[eDVBCSAEngine] softcsa disabled");
 		return false;
 	}
 
