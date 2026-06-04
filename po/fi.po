@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-02 12:38+0300\n"
-"PO-Revision-Date: 2026-06-02 13:56+0300\n"
+"POT-Creation-Date: 2026-06-03 21:19+0300\n"
+"PO-Revision-Date: 2026-06-03 21:55+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -5795,6 +5795,9 @@ msgstr "Ota käyttöön OpenTV:n lataus"
 msgid "Enable SWAP at startup"
 msgstr "SWAP päälle käynnistyksessä"
 
+msgid "Enable SoftCSA *"
+msgstr "Ota SoftCSA käyttöön *"
+
 msgid "Enable ViaSat EPG"
 msgstr "Ota käyttöön ViaSat EPG"
 
@@ -5889,6 +5892,9 @@ msgstr "Käynnistys päälle"
 msgid "Enable teletext caching"
 msgstr "Ota käyttöön teksti-tv:n välimuisti"
 
+msgid "Enable the software implementation of the DVB Common Scrambling Algorithm, used when needed, to descramble transport stream packets."
+msgstr "Ota käyttöön DVB Common Scrambling Algorithmin ohjelmistototeutus, jota käytetään tarvittaessa Transport Stream -pakettien salauksen purkamiseen."
+
 msgid "Enable this setting if your aerial system needs power"
 msgstr "Salli tämä asetus, jos antennijärjestelmäsi tarvitsee virtaa"
 
@@ -5903,9 +5909,6 @@ msgstr "Salli juuri menossa olevien ohjelmien korostus."
 
 msgid "Enable usage of tuners from another Enigma2 receiver on the local network. Remote tuners will be used when tuners are not available on this receiver. (No free tuner or service type is not available.)"
 msgstr "Ota käyttöön paikallisverkossa olevan toisen Enigma2-vastaanottimen virittimien käyttö. Etävirittimiä käytetään, kun virittimiä ei ole saatavilla tässä vastaanottimessa. (Vapaita ​​virittimiä tai kanavatyyppiä ei ole saatavilla.)"
-
-msgid "Enable/Disable SoftCSA. *Restart E2 for changes to take effect."
-msgstr "Ota SoftCSA käyttöön/poista se käytöstä. *Käynnistä E2 uudelleen, jotta muutokset tulevat voimaan."
 
 msgid "Enabled"
 msgstr "Käytössä"
@@ -15209,7 +15212,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 02.06.2026 ---\n"
+"--- 03.06.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -19102,9 +19105,6 @@ msgstr "moottori"
 
 msgid "rotor is not used"
 msgstr "moottori ei käytössä"
-
-msgid "runSoftCSA *"
-msgstr "runSoftCSA *"
 
 msgid "running..."
 msgstr "Käynnissä..."
