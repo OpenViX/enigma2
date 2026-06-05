@@ -919,6 +919,24 @@ void gDC::exec(const gOpcode *o)
 		}
 
 		para->setBlend(flags & gPainter::RT_BLEND);
+
+		// For RT_HALIGN_RIGHT, precisely expand the DC clip to prevent the last
+		// glyph's right-side bearing from being clipped by the render area boundary.
+		gRegion savedClip;
+		bool clipExpanded = false;
+		if (flags & gPainter::RT_HALIGN_RIGHT)
+		{
+			const eRect &bbox = para->getBoundBox();
+			int areaRight = o->parm.renderText->area.right() + offset.x();
+			int overflow = bbox.right() + offset.x() - areaRight;
+			if (overflow > 0)
+			{
+				savedClip = m_current_clip;
+				clipExpanded = true;
+				m_current_clip |= gRegion(eRect(areaRight, o->parm.renderText->area.top() + offset.y(),
+										overflow + 1, o->parm.renderText->area.height()));
+			}
+		}
 		
 		if (o->parm.renderText->border)
 		{
@@ -929,6 +947,8 @@ void gDC::exec(const gOpcode *o)
 		{
 			para->blit(*this, offset, m_background_color_rgb, m_foreground_color_rgb);
 		}
+		if (clipExpanded)
+			m_current_clip = savedClip;
 		delete o->parm.renderText;
 		break;
 	}

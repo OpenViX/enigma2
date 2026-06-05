@@ -733,11 +733,22 @@ void eListbox::updateScrollBar()
 		}
 		else
 		{
-			if (m_orientation == orVertical)
-				m_content->setSize(eSize(width, m_itemheight));
-			else if (m_orientation == orHorizontal)
-				m_content->setSize(eSize(m_itemwidth, height));
-			else
+			// showOnDemand with no scrollbar needed: still reserve scrollbar space
+			// so item width stays constant if scrollbar later appears (avoids
+			// clipping fixed-position template content when scrollbar toggles).
+			if (m_orientation == orVertical) {
+				if (m_scrollbar_mode == showOnDemand) {
+					m_content->setSize(eSize(width-m_scrollbar_width-5, m_itemheight));
+				} else {
+					m_content->setSize(eSize(width, m_itemheight));
+				}
+			} else if (m_orientation == orHorizontal) {
+				if (m_scrollbar_mode == showOnDemand) {
+					m_content->setSize(eSize(m_itemwidth, height-m_scrollbar_height-5));
+				} else {
+					m_content->setSize(eSize(m_itemwidth, height));
+				}
+			} else
 				m_content->setSize(eSize(m_itemwidth, m_itemwidth));
 
 			m_scrollbar->hide();
