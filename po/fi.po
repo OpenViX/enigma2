@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-06-03 21:19+0300\n"
-"PO-Revision-Date: 2026-06-03 21:55+0300\n"
+"PO-Revision-Date: 2026-06-06 10:45+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2837,7 +2837,7 @@ msgid "Blue button function"
 msgstr "Sinisen painikkeen toiminto"
 
 msgid "Blue long"
-msgstr "Pitkä sininen"
+msgstr "Sininen pitkä"
 
 msgid "Bolivia (Plurinational State of)"
 msgstr "Bolivia"
@@ -6080,10 +6080,10 @@ msgid "Environment"
 msgstr "Ympäristö"
 
 msgid "Epg/Guide"
-msgstr "Ohjelmaopaspainike"
+msgstr "Epg/Guide"
 
 msgid "Epg/Guide long"
-msgstr "Pitkä ohjelmaopaspainike"
+msgstr "Epg/Guide pitkä"
 
 msgid "Epos"
 msgstr "Eepos"
@@ -6369,10 +6369,10 @@ msgid "F1/F3/F4/F4-TURBO/TRIPLEX"
 msgstr "F1/F3/F4/F4-TURBO/TRIPLEX"
 
 msgid "F1/LAN"
-msgstr "F1/Kielipainike"
+msgstr "F1/LAN"
 
 msgid "F1/LAN long"
-msgstr "F1/Kielipainike pitkä"
+msgstr "F1/LAN pitkä"
 
 msgid "F2"
 msgstr "F2"
@@ -6577,7 +6577,7 @@ msgid "FastScan"
 msgstr "Nopea haku"
 
 msgid "Fastforward"
-msgstr "Eteenpäin kelausnopeudet"
+msgstr "Pikakelaus eteenpäin"
 
 msgid "Fastscan"
 msgstr "Nopea haku"
@@ -7149,7 +7149,7 @@ msgid "Green button (short)"
 msgstr "Vihreä näppäin (lyhyt)"
 
 msgid "Green long"
-msgstr "Pitkä vihreä"
+msgstr "Vihreä pitkä"
 
 msgid "Greenland"
 msgstr "Gröönlanti"
@@ -7342,13 +7342,13 @@ msgid "Heimwerker"
 msgstr "Askartelu"
 
 msgid "Help"
-msgstr "Ohjeita"
+msgstr "HELP"
 
 msgid "Help Screen"
 msgstr "Ohjenäyttö"
 
 msgid "Help long"
-msgstr "Pitkä punainen"
+msgstr "HELP pitkä"
 
 msgid "Help text uninitialized"
 msgstr "Ohjeteksti ei ole alustettu"
@@ -7894,10 +7894,10 @@ msgid "Info"
 msgstr "Tietoja"
 
 msgid "Info (EPG)"
-msgstr "Tietopalkki (EPG)"
+msgstr "INFO (EPG)"
 
 msgid "Info (EPG) Long"
-msgstr "Tietopalkki (EPG) pitkä"
+msgstr "INFO (EPG) pitkä"
 
 msgid "Info button (long)"
 msgstr "Info-näppäin (pitkä)"
@@ -8482,7 +8482,7 @@ msgid "Left from servicename"
 msgstr "Kanavanimestä vasemmalle"
 
 msgid "Left long"
-msgstr "Pitkä vasemmalle"
+msgstr "Vasen pitkä"
 
 msgid "Leichtathletik"
 msgstr "Yleisurheilu"
@@ -10782,7 +10782,7 @@ msgid "Playlist"
 msgstr "Soittolista"
 
 msgid "Playpause"
-msgstr "Tauko"
+msgstr "Toista/Tauko"
 
 msgid "Please add titles to the compilation."
 msgstr "Lisää tallenteita kokoelmaan."
@@ -11174,7 +11174,7 @@ msgid "Positioner setup log"
 msgstr "Kääntömoottorin asetusloki"
 
 msgid "Power"
-msgstr "Virta"
+msgstr "Virtapainike"
 
 msgid "Power LCD Display"
 msgstr "LCD-näyttö päälle/pois"
@@ -11210,7 +11210,7 @@ msgid "Power Timers"
 msgstr "Virta-ajastukset"
 
 msgid "Power long"
-msgstr "Virta pitkä"
+msgstr "Virtapainike pitkä"
 
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr "Virranhallinta. Lue lisätietoja vastaanottimesi manuaalista."
@@ -11879,7 +11879,7 @@ msgid "Red colored"
 msgstr "Punainen väritys"
 
 msgid "Red long"
-msgstr "Pitkä punainen"
+msgstr "Punainen pitkä"
 
 msgid "Reduce time scale"
 msgstr "Supista aika-asteikkoa"
@@ -12351,7 +12351,7 @@ msgid "Right from servicename"
 msgstr "Kanavanimestä oikealle"
 
 msgid "Right long"
-msgstr "Pitkä oikealle"
+msgstr "Oikea pitkä"
 
 msgid "Rock"
 msgstr "Rock"
@@ -12836,7 +12836,7 @@ msgid "Search west"
 msgstr "Etsintä länteen"
 
 msgid "Search/WEB"
-msgstr "Haku"
+msgstr "Haku/WEB"
 
 msgid "Searching"
 msgstr "Etsitään"
@@ -15212,7 +15212,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 03.06.2026 ---\n"
+"--- 06.06.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -17677,7 +17677,7 @@ msgid "Yellow button function"
 msgstr "Keltaisen painikkeen toiminto"
 
 msgid "Yellow long"
-msgstr "Pitkä keltainen"
+msgstr "Keltainen pitkä"
 
 msgid "Yemen"
 msgstr "Yemen"
@@ -18157,7 +18157,7 @@ msgid "activatePiP"
 msgstr "aktivoi PiP"
 
 msgid "activatePiP long"
-msgstr "aktivoi PiP pitkä"
+msgstr "Aktivoi PiP pitkä"
 
 msgid "active"
 msgstr "aktiivinen"
@@ -18762,7 +18762,7 @@ msgid "locked"
 msgstr "Lukittu"
 
 msgid "long"
-msgstr "Pitkä"
+msgstr "pitkä"
 
 msgid "longest first"
 msgstr "pisin ensin"
