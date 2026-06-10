@@ -131,8 +131,8 @@ class JobView(InfoBarNotifications, ConfigListScreen, Screen):
 					self.cancelable = True
 					self["key_red"].setText(_("Cancel"))
 					self["abortActions"].setEnabled(True)
-		except Exception:
-			pass
+		except Exception as err:
+			print("[JobView][state_changed]", err)
 
 	def background(self):
 		if self.backgroundable:
