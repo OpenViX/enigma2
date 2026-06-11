@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-03 21:19+0300\n"
-"PO-Revision-Date: 2026-06-11 14:39+0300\n"
+"POT-Creation-Date: 2026-06-11 19:17+0300\n"
+"PO-Revision-Date: 2026-06-11 20:46+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -826,14 +826,6 @@ msgid "%d ms"
 msgstr "%d ms"
 
 #, python-format
-msgid "%d of %d Bytes"
-msgstr "%d %d:sta Tavusta"
-
-#, python-format
-msgid "%d of %d KB"
-msgstr "%d %d:sta Kt"
-
-#, python-format
 msgid "%d pixel wide"
 msgid_plural "%d pixels wide"
 msgstr[0] "%d pikselin leveys"
@@ -999,14 +991,6 @@ msgstr "%s on myös käytössä autofs-verkossa"
 #, python-format
 msgid "%s is no longer used. Should it be deleted?"
 msgstr "%s ei ole enää käytössä. Poistetaanko se?"
-
-#, python-format
-msgid "%s of %s GB"
-msgstr "%s %s:sta Gt"
-
-#, python-format
-msgid "%s of %s MB"
-msgstr "%s %s:sta Mt"
 
 #, python-format
 msgid "%s only has %s MB free."
@@ -5500,6 +5484,14 @@ msgstr "Lataa lisäosia"
 
 msgid "Downloading"
 msgstr "Ladataan"
+
+#, python-format
+msgid "Downloading %s"
+msgstr "Ladataan %s"
+
+#, python-format
+msgid "Downloading %s of %s"
+msgstr "Ladataan %s / %s"
 
 msgid "Downloading plugin information. Please wait..."
 msgstr "Ladataan tietoja lisäosista. Odota..."
