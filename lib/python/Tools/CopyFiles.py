@@ -85,7 +85,6 @@ class DownloadTask(Task):
 		self.url = url.decode() if isinstance(url, bytes) else url
 		self.path = path
 		self.error_message = ""
-		self.last_recvbytes = 0
 		self.error_message = None
 		self.download = None
 		self.aborted = False
@@ -107,14 +106,12 @@ class DownloadTask(Task):
 		self.aborted = True
 
 	def download_progress(self, recvbytes, totalbytes):
-		if (recvbytes - self.last_recvbytes) > 100000:  # anti-flicker
-			if totalbytes > 0:  # avoid ZeroDivisionError if content-length is not available
-				self.progress = int(100 * (float(recvbytes) / float(totalbytes)))
-				self.name = _("Downloading %s of %s") % (bytesToHumanReadable(recvbytes), bytesToHumanReadable(totalbytes))
-			else:
-				self.progress = 0  # required to force display update
-				self.name = _("Downloading %s") % bytesToHumanReadable(recvbytes)
-			self.last_recvbytes = recvbytes
+		if totalbytes > 0:  # avoid ZeroDivisionError if content-length is not available
+			self.progress = int(100 * (float(recvbytes) / float(totalbytes)))
+			self.name = _("Downloading %s of %s") % (bytesToHumanReadable(recvbytes), bytesToHumanReadable(totalbytes))
+		else:
+			self.progress = 0  # required to force display update
+			self.name = _("Downloading %s") % bytesToHumanReadable(recvbytes)
 
 	def download_failed(self, failure_instance=None, error_message=""):
 		self.error_message = error_message
