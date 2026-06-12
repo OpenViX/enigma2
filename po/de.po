@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-27 07:11+0000\n"
+"POT-Creation-Date: 2026-06-12 11:25+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: 2stein\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, 2stein\n"
@@ -5796,6 +5796,9 @@ msgstr "OpenTV-EPG herunter laden aktivieren"
 msgid "Enable SWAP at startup"
 msgstr "SWAP-Autostart"
 
+msgid "Enable SoftCSA *"
+msgstr "Aktiviere SoftCSA *"
+
 msgid "Enable ViaSat EPG"
 msgstr "ViaSat-EPG aktivieren"
 
@@ -5889,6 +5892,9 @@ msgstr "Aktiviere Startup"
 
 msgid "Enable teletext caching"
 msgstr "Aktiviere Videotext Cache"
+
+msgid "Enable the software implementation of the DVB Common Scrambling Algorithm, used when needed, to descramble transport stream packets."
+msgstr "Aktiviere die Software-Implementierung des DVB Common Scrambling Algorithmus für die Entschlüsselung von Transport Stream Paketen, falls erforderlich."
 
 msgid "Enable this setting if your aerial system needs power"
 msgstr "Aktiviere diesen Punkt, wenn dein Empfangssystem Strom braucht"
@@ -7309,6 +7315,10 @@ msgstr "Festplatte Ruhezustand nach"
 
 msgid "Harddisk setup"
 msgstr "Festplatten-Einstellungen"
+
+#, python-format
+msgid "Hardware Version:\t%s\n"
+msgstr "Hardware Version:\t%s\n"
 
 msgid "HbbTV"
 msgstr ""
