@@ -105,6 +105,7 @@ public:
 	void setProgressbarBorderWidth(int value) { m_progressbar_border_width = value; }
 	void setNonplayableMargins(int value) { m_nonplayable_margins = value; }
 	void setItemsDistances(int value) { m_items_distances = value; }
+	void setPiconMargin(int value) { m_picon_margin = value; }
 	void setSidesMargin(int value) { m_sides_margin = value; }
 	void setMarkerAsLine(int value) { m_marker_as_line = value; }
 	void setChannelNumbersVisible(bool visible) { m_chanel_number_visible = visible; }
@@ -220,6 +221,7 @@ private:
 	int m_progressbar_border_width;
 	int m_nonplayable_margins;
 	int m_items_distances;
+	int m_picon_margin;
 	int m_sides_margin;
 	int m_marker_as_line;
 	gRGB m_markerline_color;
