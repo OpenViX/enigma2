@@ -4,7 +4,7 @@ from time import time
 
 from twisted.internet import reactor
 from twisted.internet.threads import deferToThread
-from twisted.web.client import Agent, RedirectAgent, BrowserLikePolicyForHTTPS
+from twisted.web.client import Agent, RedirectAgent, BrowserLikePolicyForHTTPS, ResponseDone
 from twisted.web.http_headers import Headers
 from twisted.internet.protocol import Protocol
 
@@ -61,15 +61,19 @@ class _DownloadProtocol(Protocol):
 		except Exception:
 			pass
 
-		if self.downloader.stopFlag:
-			try:
-				unlink(self.downloader.outputFile)
-			except OSError:
-				pass
+		if reason.check(ResponseDone) and not self.downloader.stopFlag:
+			if callable(self.downloader.endCallback):
+				self.downloader.endCallback(self.downloader.outputFile)
 			return
 
-		if callable(self.downloader.endCallback):
-			self.downloader.endCallback(self.downloader.outputFile)
+		try:
+			unlink(self.downloader.outputFile)
+		except OSError:
+			pass
+
+		if not self.downloader.stopFlag:
+			if callable(self.downloader.errorCallback):
+				self.downloader.errorCallback(reason)
 
 
 # ------------------------------------------------------------
