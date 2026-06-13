@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-11 19:17+0300\n"
-"PO-Revision-Date: 2026-06-11 20:46+0300\n"
+"POT-Creation-Date: 2026-06-12 23:18+0300\n"
+"PO-Revision-Date: 2026-06-13 17:19+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2925,6 +2925,9 @@ msgstr "Joskus lähetyksessä pitkät ohjelmanimet jaetaan ohjelmatietoon käytt
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
 
+msgid "Buffer descrambled data before starting playback. Fixes audio dropouts with passthrough AC3 by ensuring enough data is available when the decoder starts. Higher values are more stable but increase channel switch time. *Restart E2 for changes to take effect."
+msgstr "Puskuroi puretun datan ennen toiston aloittamista. Korjaa äänen katkokset AC3-läpiviennillä varmistamalla, että dataa on saatavilla riittävästi dekooderin käynnistyessä. Korkeammat arvot ovat vakaampia, mutta pidentävät kanavanvaihtoaikaa. *Käynnistä E2 uudelleen, jotta muutokset tulevat voimaan."
+
 #, python-format
 msgid "Buffering %d%%"
 msgstr "Puskuroi %d%%"
@@ -4798,6 +4801,9 @@ msgstr "Dekooderin vapautusstrategia *"
 
 msgid "Decoder Start Timeout *"
 msgstr "Dekooderin käynnistyksen aikakatkaisu *"
+
+msgid "Decoder playback buffer *"
+msgstr "Dekooderin toistopuskuri *"
 
 msgid "Decrement end time"
 msgstr "Vähennä loppuaikaa"
@@ -15204,7 +15210,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 11.06.2026 ---\n"
+"--- 13.06.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
