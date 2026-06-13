@@ -623,8 +623,11 @@ void eListboxServiceContent::setItemHeight(int height)
 
 bool eListboxServiceContent::checkServiceIsRecorded(eServiceReference ref)
 {
+	eNavigation *nav = eNavigation::getInstance();
+	if (!nav)
+		return false;
 	std::map<ePtr<iRecordableService>, eServiceReference, std::less<iRecordableService*> > recordedServices;
-	recordedServices = eNavigation::getInstance()->getRecordingsServices();
+	recordedServices = nav->getRecordingsServices();
 	for (std::map<ePtr<iRecordableService>, eServiceReference >::iterator it = recordedServices.begin(); it != recordedServices.end(); ++it)
 	{
 		if (ref.flags & eServiceReference::isGroup)
@@ -632,6 +635,8 @@ bool eListboxServiceContent::checkServiceIsRecorded(eServiceReference ref)
 			ePtr<iDVBChannelList> db;
 			ePtr<eDVBResourceManager> res;
 			eDVBResourceManager::getInstance(res);
+			if (!res)
+				continue;
 			res->getChannelList(db);
 			eBouquet *bouquet = NULL;
 			if (!db->getBouquet(ref, bouquet))
