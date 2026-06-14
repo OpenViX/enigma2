@@ -42,7 +42,16 @@ class _DownloadProtocol(Protocol):
 			return
 
 		self.recv += len(data)
-		self.fd.write(data)
+		try:
+			self.fd.write(data)
+		except OSError as err:
+			if callable(self.downloader.errorCallback):
+				self.downloader.errorCallback(err)
+			try:
+				self.transport.abortConnection()
+			except Exception:
+				pass
+			return
 
 		self.downloader.progress = self.recv
 
