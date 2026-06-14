@@ -24,23 +24,38 @@ eHDRStreamDetector::~eHDRStreamDetector()
 
 int eHDRStreamDetector::start(iDVBDemux *demux, int pid)
 {
-	if (!demux || pid <= 0)
+	if (pid <= 0)
 		return -1;
-	if (demux->createPESReader(eApp, m_reader) != 0 || !m_reader)
-		return -1;
-	m_reader->connectRead(sigc::mem_fun(*this, &eHDRStreamDetector::pesData), m_conn);
-	m_es.clear();
-	m_es.reserve(512 * 1024);
+
 	m_last_classify = 0;
 	m_first_sps_at = 0;
 	m_result = HevcHDR::HDR_SDR;
 	m_done = false;
-	if (m_reader->start(pid) != 0)
+
+	/* Try to set up a PES tap for bitstream-level HDR detection.
+	   On some hardware the video PID is consumed by the hardware decoder
+	   and DMX_SET_PES_FILTER will fail, or the demux may be unavailable.
+	   If so, we fall through to the timeout-only path so hdrResult() is
+	   still called (the Python layer then reads sGamma as a fallback). */
+	if (demux)
 	{
-		m_reader = 0;
-		m_conn = 0;
-		return -1;
+		if (demux->createPESReader(eApp, m_reader) == 0 && m_reader)
+		{
+			m_reader->connectRead(sigc::mem_fun(*this, &eHDRStreamDetector::pesData), m_conn);
+			m_es.clear();
+			m_es.reserve(512 * 1024);
+			if (m_reader->start(pid) != 0)
+			{
+				eDebug("[eHDRStreamDetector] PES tap on pid %04x failed, timeout-only mode", pid);
+				m_reader = 0;
+				m_conn = 0;
+			}
+		}
 	}
+
+	/* Always start the timeout – it acts as either a deadline for the
+	   PES-based classifier or a guaranteed delivery of an SDR/unknown
+	   result so that sGamma-based detection in Python can trigger. */
 	m_timeout->start(TAP_TIMEOUT_MS, true);
 	return 0;
 }

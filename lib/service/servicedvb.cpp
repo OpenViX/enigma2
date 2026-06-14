@@ -4456,8 +4456,7 @@ void eDVBServicePlay::startHDRDetection(int vpid)
 	m_hdr_type = 0;
 
 	ePtr<iDVBDemux> demux;
-	if (m_service_handler.getDataDemux(demux) || !demux)
-		return;
+	m_service_handler.getDataDemux(demux); /* may be null – start() handles that */
 
 	m_hdr_detector = new eHDRStreamDetector();
 	m_hdr_detector->resultChanged.connect(
@@ -4468,11 +4467,11 @@ void eDVBServicePlay::startHDRDetection(int vpid)
 
 void eDVBServicePlay::hdrResult(int result)
 {
-	if (result != m_hdr_type)
-	{
-		m_hdr_type = result;
-		m_event((iPlayableService*)this, evUpdatedInfo);
-	}
+	/* Always fire evUpdatedInfo on the first detection result so that
+	   the Python _readHDRType() fallback path (which reads sGamma) is
+	   triggered even when the bitstream result is 0 (SDR/unknown). */
+	m_hdr_type = result;
+	m_event((iPlayableService*)this, evUpdatedInfo);
 }
 
 // ==================== End Software Descrambling ====================
