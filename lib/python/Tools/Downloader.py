@@ -15,9 +15,9 @@ from urllib.request import Request, urlopen
 # USER_AGENTS
 # ------------------------------------------------------------
 class USER_AGENTS:
-    FIREFOX = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
-    CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
-    HBBTV = "HbbTV/1.1.1 (+PVR+RTSP+DL; Sonic; TV44; 1.32.455; 2.002) Bee/3.5"
+	FIREFOX = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
+	CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+	HBBTV = "HbbTV/1.1.1 (+PVR+RTSP+DL; Sonic; TV44; 1.32.455; 2.002) Bee/3.5"
 
 # ------------------------------------------------------------
 # NON-BLOCKING HEAD SUPPORT, run in deferToThread()
@@ -31,6 +31,33 @@ def get_content_length(url, headers=None):
 	except Exception:
 		return 0
 
+# ------------------------------------------------------------
+# SHARED HELPERS
+# ------------------------------------------------------------
+HTTP_DEFAULT_HEADERS = {
+	"User-Agent": USER_AGENTS.CHROME,
+	"Accept": "*/*",
+	"Accept-Encoding": "identity",
+	"Connection": "keep-alive",
+}
+
+def _makeAgent():
+	base = Agent(reactor, contextFactory=BrowserLikePolicyForHTTPS())
+	return RedirectAgent(base)
+
+def _normaliseHeaders(headers):
+	""" normalise to str """
+	return {
+		k.decode("utf-8") if isinstance(k, bytes) else str(k):
+		v.decode("utf-8") if isinstance(v, bytes) else str(v)
+		for k, v in (headers or {}).items()
+	}
+
+def _buildHeaders(headers=None):
+	return Headers({
+		k.encode("utf-8"): [v.encode("utf-8")]
+		for k, v in {**HTTP_DEFAULT_HEADERS, **(headers or {})}.items()
+	})
 
 # ------------------------------------------------------------
 # STREAM PROTOCOL (no UI logic)
@@ -99,10 +126,9 @@ class _DownloadProtocol(Protocol):
 class DownloadWithProgress:
 
 	def __init__(self, url, outputFile, *args, **kwargs):
+		""" url and outputFile should be str type """
 		self.url = url
 		self.outputFile = outputFile
-
-		userAgent = kwargs.get("userAgent", USER_AGENTS.CHROME)
 
 		self.progress = 0
 		self.totalSize = -1  # means size not set
@@ -120,23 +146,13 @@ class DownloadWithProgress:
 		# for speed/eta functions
 		self._startTime = None
 
-		# headers (Twisted-safe: bytes in, bytes out)
-		self.requestHeader = {
-			b"User-Agent": userAgent.encode("utf-8"),
-			b"Accept": b"*/*",
-			b"Accept-Encoding": b"identity",
-			b"Connection": b"keep-alive",
-		}
+		# headers (stored as strings internally)
+		self._rawHeaders = _normaliseHeaders(kwargs.get("headers", {}))
+		userAgent = kwargs.get("userAgent")
+		if userAgent:
+			self._rawHeaders.setdefault("User-Agent", userAgent)
 
-		userHeader = kwargs.get("headers", None)
-		if userHeader:
-			for k, v in userHeader.items():
-				k = k.encode("utf-8") if isinstance(k, str) else k
-				v = v.encode("utf-8") if isinstance(v, str) else v
-				self.requestHeader[k] = v
-
-		base = Agent(reactor, contextFactory=BrowserLikePolicyForHTTPS())
-		self.agent = RedirectAgent(base)
+		self._agent = _makeAgent()
 
 	def start(self):
 		self.progress = 0
@@ -150,8 +166,7 @@ class DownloadWithProgress:
 		return self
 
 	def _getHeadSize(self):
-		headers = {k.decode("utf-8"): v.decode("utf-8") for k, v in self.requestHeader.items()}  # for urllib compatibility
-		return get_content_length(self.url, headers)
+		return get_content_length(self.url, self._rawHeaders)
 
 	def _gotHeadSize(self, size):
 		# never override a known good value from GET
@@ -167,12 +182,9 @@ class DownloadWithProgress:
 	# --------------------------------------------------------
 	def _startGet(self):
 		try:
-			headers = Headers({
-				k: [v]
-				for k, v in self.requestHeader.items()
-			})
-
-			self._request = self.agent.request(
+			headers = _buildHeaders(headers=self._rawHeaders)  # userAgent is already passed by headers
+			
+			self._request = self._agent.request(
 				b"GET",
 				self.url.encode("utf-8"),
 				headers,
@@ -269,7 +281,7 @@ class DownloadWithProgress:
 		return self
 
 	def setAgent(self, userAgent):
-		self.requestHeader[b"User-Agent"] = userAgent.encode("utf-8")
+		self._rawHeaders["User-Agent"] = _normaliseHeaders({"User-Agent": userAgent})["User-Agent"]
 
 	def addErrback(self, errorCallback):  # Temporary support for deprecated callbacks.
 		print("[Downloader] Warning: DownloadWithProgress 'addErrback' is deprecated use 'addError' instead!")
