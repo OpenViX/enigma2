@@ -85,7 +85,7 @@ class DownloadWithProgress:
 		self.url = url
 		self.outputFile = outputFile
 
-		self.userAgent = kwargs.get("userAgent", "Enigma2 Downloader")
+		userAgent = kwargs.get("userAgent", "Enigma2 Downloader")
 
 		self.progress = 0
 		self.totalSize = -1  # means size not set
@@ -105,7 +105,7 @@ class DownloadWithProgress:
 
 		# headers (Twisted-safe: bytes in, bytes out)
 		self.requestHeader = {
-			b"User-Agent": self.userAgent.encode("utf-8"),
+			b"User-Agent": userAgent.encode("utf-8"),
 			b"Accept": b"*/*",
 			b"Accept-Encoding": b"identity",
 			b"Connection": b"keep-alive",
@@ -249,7 +249,7 @@ class DownloadWithProgress:
 		self.errorCallback = errorCallback
 
 	def setAgent(self, userAgent):
-		self.userAgent = userAgent
+		self.requestHeader[b"User-Agent"] = userAgent.encode("utf-8")
 
 	def addErrback(self, errorCallback):  # Temporary support for deprecated callbacks.
 		print("[Downloader] Warning: DownloadWithProgress 'addErrback' is deprecated use 'addError' instead!")
