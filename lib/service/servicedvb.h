@@ -15,6 +15,7 @@ class eStaticServiceDVBBouquetInformation;
 
 // Forward declarations for software descrambling
 class eDVBCSASession;
+class eHDRStreamDetector;
 class eDVBSoftDecoder;
 
 class eServiceFactoryDVB : public iServiceHandler {
@@ -333,6 +334,13 @@ protected:
 	ePtr<eDVBRdsDecoder> m_rds_decoder;
 	ePtr<eConnection> m_rds_decoder_event_connection;
 	void rdsDecoderEvent(int);
+
+		/* HDR detection */
+	ePtr<eHDRStreamDetector> m_hdr_detector;
+	int m_hdr_type;
+	int m_hdr_detect_vpid;
+	void startHDRDetection(int vpid);
+	void hdrResult(int result);
 
 	ePtr<eConnection> m_video_event_connection;
 	void video_event(struct iTSMPEGDecoder::videoEvent);

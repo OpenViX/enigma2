@@ -6,6 +6,8 @@ service_libenigma_service_a_CXXFLAGS = \
 service_libenigma_service_a_SOURCES = \
 	service/event.cpp \
 	service/listboxservice.cpp \
+	service/hevc_hdr.cpp \
+	service/hdrdetector.cpp \
 	service/service.cpp \
 	service/servicedvb.cpp \
 	service/servicedvbrecord.cpp \
@@ -24,6 +26,8 @@ service_libenigma_service_a_SOURCES = \
 serviceincludedir = $(pkgincludedir)/lib/service
 serviceinclude_HEADERS = \
 	service/event.h \
+	service/hevc_hdr.h \
+	service/hdrdetector.h \
 	service/iservice.h \
 	service/iservicescrambled.h \
 	service/listboxservice.h \
