@@ -241,25 +241,26 @@ class DownloadWithProgress:
 	# --------------------------------------------------------
 	def addProgress(self, progressCallback):
 		self.progressCallback = progressCallback
+		return self
 
 	def addEnd(self, endCallback):
 		self.endCallback = endCallback
+		return self
 
 	def addError(self, errorCallback):
 		self.errorCallback = errorCallback
+		return self
 
 	def setAgent(self, userAgent):
 		self.requestHeader[b"User-Agent"] = userAgent.encode("utf-8")
 
 	def addErrback(self, errorCallback):  # Temporary support for deprecated callbacks.
 		print("[Downloader] Warning: DownloadWithProgress 'addErrback' is deprecated use 'addError' instead!")
-		self.errorCallback = errorCallback
-		return self
+		return self.addError(errorCallback)
 
 	def addCallback(self, endCallback):  # Temporary support for deprecated callbacks.
 		print("[Downloader] Warning: DownloadWithProgress 'addCallback' is deprecated use 'addEnd' instead!")
-		self.endCallback = endCallback
-		return self
+		return self.addEnd(endCallback)
 
 	# --------------------------------------------------------
 	# SPEED / ETA, for use by newer UI
