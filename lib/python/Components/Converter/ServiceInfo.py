@@ -92,6 +92,12 @@ class ServiceInfo(Poll, Converter):
 	IS_VIDEO_AVC = 42
 	IS_VIDEO_HEVC = 43
 	IS_SOFTCSA = 44
+	IS_STREAM_RELAY = 45
+	HDR_TYPE = 46
+	IS_HDR10_FILE = 47
+	IS_HLG_FILE = 48
+	IS_DV_FILE = 49
+	IS_ANYHDR_FILE = 50
 
 	def __init__(self, type):
 		Poll.__init__(self)
@@ -143,7 +149,14 @@ class ServiceInfo(Poll, Converter):
 			"IsVideoMPEG2": (self.IS_VIDEO_MPEG2, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"IsVideoAVC": (self.IS_VIDEO_AVC, (iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 			"IsVideoHEVC": (self.IS_VIDEO_HEVC, (iPlayableService.evUpdatedInfo, iPlayableService.evVideoSizeChanged)),
+			"HDRType": (self.HDR_TYPE, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
+			"IsHDR10File": (self.IS_HDR10_FILE, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
+			"IsHLGFile": (self.IS_HLG_FILE, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
+			"IsDVFile": (self.IS_DV_FILE, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
+			"IsAnyHDRFile": (self.IS_ANYHDR_FILE, (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)),
 		}[type]
+		if self.type in (self.HDR_TYPE, self.IS_HDR10_FILE, self.IS_HLG_FILE, self.IS_DV_FILE, self.IS_ANYHDR_FILE):
+			self.poll_interval = 2000
 
 	def isVideoService(self, info, service):
 		if not service or not isinstance(service, eServiceReference):
@@ -160,6 +173,27 @@ class ServiceInfo(Poll, Converter):
 		if v == -2:
 			return info.getInfoString(what)
 		return convert(v)
+
+	def _readHDRType(self):
+		# sHDRType: 0=SDR 1=HDR10 2=HLG
+		# Falls back to sGamma (0=SDR 1=HDR 2=HDR10 3=HLG) when sHDRType is unavailable
+		service = self.source.service
+		info = service and service.info()
+		if not info:
+			return 0
+		try:
+			hdr = info.getInfo(iServiceInformation.sHDRType)
+			if hdr > 0:
+				return hdr
+			# sGamma: 2=HDR10(SMPTE ST2084), 3=HLG
+			gamma = info.getInfo(iServiceInformation.sGamma)
+			if gamma == 2:
+				return 1  # HDR10
+			if gamma == 3:
+				return 2  # HLG
+			return 0
+		except Exception:
+			return 0
 
 	@cached
 	def getBoolean(self):
@@ -258,6 +292,16 @@ class ServiceInfo(Poll, Converter):
 				return info.getInfo(iServiceInformation.sGamma) == 2
 			elif self.type == self.IS_HLG and not isRef:
 				return info.getInfo(iServiceInformation.sGamma) == 3
+			elif self.type == self.IS_HDR10_FILE:
+				return self._readHDRType() == 1
+			elif self.type == self.IS_HLG_FILE:
+				return self._readHDRType() == 2
+			elif self.type == self.IS_DV_FILE:
+				return self._readHDRType() == 3
+			elif self.type == self.IS_ANYHDR_FILE:
+				return self._readHDRType() > 0
+			elif self.type == self.HDR_TYPE and not isRef:
+				return self._readHDRType() > 0
 			elif self.type == self.IS_VIDEO_MPEG2 and not isRef:
 				return info.getInfo(iServiceInformation.sVideoType) == 0
 			elif self.type == self.IS_VIDEO_AVC and not isRef:
@@ -347,6 +391,8 @@ class ServiceInfo(Poll, Converter):
 			return str(getVideoHeight(info))
 		elif self.type == self.FRAMERATE:
 			return str(getFrameRate(info))
+		elif self.type == self.HDR_TYPE:
+			return self._readHDRType()
 		return -1
 
 	value = property(getValue)

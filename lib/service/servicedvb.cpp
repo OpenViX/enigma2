@@ -18,6 +18,7 @@
 #include <lib/dvb/pmtparse.h>
 
 #include <lib/components/file_eraser.h>
+#include <lib/service/hdrdetector.h>
 #include <lib/service/servicedvbrecord.h>
 #include <lib/service/event.h>
 #include <lib/dvb/metaparser.h>
@@ -1062,6 +1063,8 @@ eDVBServicePlay::eDVBServicePlay(const eServiceReference &ref, eDVBService *serv
 	m_is_primary(1),
 	m_decoder_index(0),
 	m_have_video_pid(0),
+	m_hdr_type(0),
+	m_hdr_detect_vpid(-1),
 	m_tune_state(-1),
 	m_noaudio(false),
 	m_is_stream(ref.path.find("://") != std::string::npos),
@@ -1548,6 +1551,8 @@ RESULT eDVBServicePlay::stop()
 	stopTimeshift(); /* in case time shift was enabled, remove buffer etc. */
 
 	cleanupSoftwareDescrambling();
+
+	if (m_hdr_detector) { m_hdr_detector->stop(); m_hdr_detector = 0; }
 
 	m_service_handler_timeshift.free();
 	m_service_handler.free();
@@ -2126,6 +2131,8 @@ int eDVBServicePlay::getInfo(int w)
 		return program.isCrypted();
 	case sIsSoftCSA:
 		return (m_csa_session && m_csa_session->isActive());
+	case sHDRType:
+		return m_hdr_type;
 	case sIsDedicated3D:
 		if (m_dvb_service) return m_dvb_service->isDedicated3D();
 		return false;
@@ -3418,6 +3425,9 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 		m_current_video_pid_type = vpidtype;
 		m_have_video_pid = (vpid > 0 && vpid < 0x2000);
 
+		if (!m_is_pvr && m_have_video_pid && vpidtype == eDVBVideo::H265_HEVC)
+			startHDRDetection(vpid);
+
 		if (!m_noaudio)
 		{
 			selectAudioStream();
@@ -4433,6 +4443,36 @@ void eDVBServicePlay::resetHwDescramblerSlot()
 
 	eDebug("[eDVBServicePlay] HW-descr reset: %s %zu PIDs, disabled=%d reset=%d, sleep=200ms",
 		ca_path.c_str(), pids.size(), disabled, reset);
+}
+
+// ==================== HDR Detection ====================
+
+void eDVBServicePlay::startHDRDetection(int vpid)
+{
+	if (m_hdr_detector && m_hdr_detect_vpid == vpid)
+		return; /* already running/done for this pid */
+	if (m_hdr_detector) { m_hdr_detector->stop(); m_hdr_detector = 0; }
+	m_hdr_detect_vpid = vpid;
+	m_hdr_type = 0;
+
+	ePtr<iDVBDemux> demux;
+	if (m_service_handler.getDataDemux(demux) || !demux)
+		return;
+
+	m_hdr_detector = new eHDRStreamDetector();
+	m_hdr_detector->resultChanged.connect(
+		sigc::mem_fun(*this, &eDVBServicePlay::hdrResult));
+	if (m_hdr_detector->start(demux, vpid) != 0)
+		m_hdr_detector = 0;
+}
+
+void eDVBServicePlay::hdrResult(int result)
+{
+	if (result != m_hdr_type)
+	{
+		m_hdr_type = result;
+		m_event((iPlayableService*)this, evUpdatedInfo);
+	}
 }
 
 // ==================== End Software Descrambling ====================

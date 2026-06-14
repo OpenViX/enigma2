@@ -555,6 +555,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 #endif
 
 	m_aspect = m_width = m_height = m_framerate = m_progressive = m_gamma = -1;
+	m_hdr_type = 0;
 
 	m_state = stIdle;
 	m_coverart = false;
@@ -1368,6 +1369,91 @@ RESULT eServiceMP3::isCurrentlySeekable()
 	return ret;
 }
 
+static int caps_hdr_value(GstCaps *caps)
+{
+	/* -1 = no colorimetry field, 0 = SDR, 1 = HDR10, 2 = HLG */
+	if (!caps) return -1;
+	int res = -1;
+	guint n = gst_caps_get_size(caps);
+	for (guint i = 0; i < n; i++)
+	{
+		GstStructure *str = gst_caps_get_structure(caps, i);
+		if (!str) continue;
+		const gchar *col = gst_structure_get_string(str, "colorimetry");
+		if (col)
+		{
+			if (res < 0) res = 0;
+			if (g_strrstr(col, "bt2100-pq") || g_strrstr(col, "smpte2084")) return 1;
+			if (g_strrstr(col, "bt2100-hlg") || g_strrstr(col, "arib-std-b67")) return 2;
+		}
+		if (gst_structure_has_field(str, "mastering-display-info") ||
+		    gst_structure_has_field(str, "content-light-level"))
+			if (res < 1) res = 1;
+	}
+	return res;
+}
+
+void eServiceMP3::updateHDRFromVideoPad()
+{
+	if (!m_gst_playbin)
+		return;
+
+	int hdr = -1;
+
+	/* primary: playbin video pad (pre-sink, carries parsed caps with native video) */
+	GstPad *pad = 0;
+	g_signal_emit_by_name(m_gst_playbin, "get-video-pad", 0, &pad);
+	if (pad)
+	{
+		GstCaps *caps = gst_pad_get_current_caps(pad);
+		if (caps) { hdr = caps_hdr_value(caps); gst_caps_unref(caps); }
+		gst_object_unref(pad);
+	}
+
+	/* fallback: search pipeline for a src pad exposing colorimetry */
+	if (hdr < 0)
+	{
+		GstIterator *it = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
+		GValue item = G_VALUE_INIT;
+		bool done = false;
+		while (!done)
+		{
+			switch (gst_iterator_next(it, &item))
+			{
+				case GST_ITERATOR_OK:
+				{
+					GstElement *el = GST_ELEMENT(g_value_get_object(&item));
+					if (el)
+					{
+						GstPad *sp = gst_element_get_static_pad(el, "src");
+						if (sp)
+						{
+							GstCaps *c = gst_pad_get_current_caps(sp);
+							if (c) { int v = caps_hdr_value(c); gst_caps_unref(c);
+								if (v >= 0) { hdr = v; if (v > 0) done = true; }
+							}
+							gst_object_unref(sp);
+						}
+					}
+					g_value_reset(&item);
+					break;
+				}
+				case GST_ITERATOR_RESYNC: gst_iterator_resync(it); break;
+				default: done = true; break;
+			}
+		}
+		g_value_unset(&item);
+		gst_iterator_free(it);
+	}
+
+	int newType = (hdr > 0) ? hdr : 0;
+	if (newType != m_hdr_type)
+	{
+		m_hdr_type = newType;
+		m_event((iPlayableService*)this, evUpdatedInfo);
+	}
+}
+
 RESULT eServiceMP3::info(ePtr<iServiceInformation>&i)
 {
 	i = this;
@@ -1412,6 +1498,7 @@ int eServiceMP3::getInfo(int w)
 	case sFrameRate: return m_framerate;
 	case sProgressive: return m_progressive;
 	case sGamma: return m_gamma;
+	case sHDRType: return m_hdr_type;
 	case sAspect: return m_aspect;
 	case sTagTitle:
 	case sTagArtist:
@@ -2391,6 +2478,8 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 				m_send_ev_start = true;
 			}
 
+			updateHDRFromVideoPad();
+
 			if (m_seek_paused)
 			{
 				m_seek_paused = false;
@@ -2439,6 +2528,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 							gst_structure_get_int (msgstruct, "height", &m_height);
 							if (strstr(eventname, "Changed"))
 								m_event((iPlayableService*)this, evVideoSizeChanged);
+						updateHDRFromVideoPad();
 						}
 						else if (!strcmp(eventname, "eventFrameRateChanged") || !strcmp(eventname, "eventFrameRateAvail"))
 						{
