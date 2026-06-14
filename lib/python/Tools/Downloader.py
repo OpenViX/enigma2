@@ -12,6 +12,14 @@ from urllib.request import Request, urlopen
 
 
 # ------------------------------------------------------------
+# USER_AGENTS
+# ------------------------------------------------------------
+class USER_AGENTS:
+    FIREFOX = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
+    CHROME = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+    HBBTV = "HbbTV/1.1.1 (+PVR+RTSP+DL; Sonic; TV44; 1.32.455; 2.002) Bee/3.5"
+
+# ------------------------------------------------------------
 # NON-BLOCKING HEAD SUPPORT, run in deferToThread()
 # ------------------------------------------------------------
 def get_content_length(url, headers=None):
@@ -94,7 +102,7 @@ class DownloadWithProgress:
 		self.url = url
 		self.outputFile = outputFile
 
-		userAgent = kwargs.get("userAgent", "Enigma2 Downloader")
+		userAgent = kwargs.get("userAgent", USER_AGENTS.CHROME)
 
 		self.progress = 0
 		self.totalSize = -1  # means size not set
