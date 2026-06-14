@@ -133,7 +133,8 @@ class DownloadWithProgress:
 		return self
 
 	def _getHeadSize(self):
-		return get_content_length(self.url, self.requestHeader)
+		headers = {k.decode("utf-8"): v.decode("utf-8") for k, v in self.requestHeader.items()}  # for urllib compatibility
+		return get_content_length(self.url, headers)
 
 	def _gotHeadSize(self, size):
 		# never override a known good value from GET
