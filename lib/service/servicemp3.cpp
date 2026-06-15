@@ -2743,6 +2743,16 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 
 			updateHDRFromVideoPad();
 
+			/* Start HEVC bitstream probe early so we capture the very first
+			 * I-frame of the stream.  For byte-stream HLG content the SPS
+			 * (carrying transfer_characteristics=18) is in those first packets;
+			 * if we wait until eventSizeChanged the decoder has already consumed
+			 * the SPS and the next one may be many seconds away (next IDR).
+			 * For hvc1/hev1 files the SPS is in codec_data and is pre-ingested
+			 * by startHDRProbe regardless of timing. */
+			if (!m_hdr_probe_active)
+				startHDRProbe();
+
 			if (m_seek_paused)
 			{
 				m_seek_paused = false;
@@ -2792,10 +2802,11 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 							if (strstr(eventname, "Changed"))
 								m_event((iPlayableService*)this, evVideoSizeChanged);
 						updateHDRFromVideoPad();
-							/* Start HEVC bitstream probe on first decoded frame.
-							 * The decoder is now producing output so GStreamer has
-							 * negotiated caps and HEVC src pads are discoverable. */
-							if (!m_hdr_probe_active)
+							/* If the early probe (ASYNC_DONE) already found an SPS,
+							 * leave it running — it has good data in flight.
+							 * If no SPS yet (HEVC pad wasn't ready at ASYNC_DONE,
+							 * or probe not started), restart now that caps are settled. */
+							if (!m_hdr_probe_active || m_hdr_probe_first_sps_at == 0)
 								startHDRProbe();
 						}
 						else if (!strcmp(eventname, "eventFrameRateChanged") || !strcmp(eventname, "eventFrameRateAvail"))
