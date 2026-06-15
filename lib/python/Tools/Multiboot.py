@@ -363,3 +363,44 @@ def isFat32(device):
 				return int.from_bytes(bootSector[36:40], "little") != 0
 	except Exception:
 		return False
+
+#	following added for OpenWebif canMultiBoot getCurrentSlotAndBootCodes getSlotImageList getBootCodeDescription activateSlot
+
+
+def canMultiBoot():
+	# print(f"[multiboot][canMultiBoot] ")
+	return SystemInfo["canMultiBoot"] != {}
+
+
+def getCurrentSlotAndBootCodes():
+	bootCode = " "
+	# print(f"[MultiBoot][getCurrentSlotAndBootCodes] bootSlot:{SystemInfo['MultiBootSlot']} bootCode:{bootCode}")
+	return SystemInfo["MultiBootSlot"], bootCode
+
+
+def getSlotImageList(callback):
+	imageList = GetImagelist()
+	# print(f"[MultiBoot][getSlotImageLists] keys:{imageList.keys()} {imageList}")
+	callback(imageList)
+
+
+def getBootCodeDescription(bootCodeEntry):
+	bootCodeDescriptions = {
+		"": _("Normal: No boot modes required."),
+		"1": _("Mode 1: Supports Kodi but PiP may not work"),
+		"12": _("Mode 12: Supports PiP but Kodi may not work")
+	}
+	return bootCodeDescriptions
+
+
+def activateSlot(slotCode, bootCode, callback):
+	# print(f"[MultiBoot][activateSlot] slotCode:{slotCode} bootCode:{bootCode}")
+	slot = int(slotCode)
+	tmp_dir = tempfile.mkdtemp(prefix="Webif_Multiboot")
+	Console().ePopen(f"mount {SystemInfo['MBbootdevice']} {tmp_dir}")
+	copyfile(path.join(tmp_dir, SystemInfo["canMultiBoot"][slot]["startupfile"]), path.join(tmp_dir, "STARTUP"))
+	if SystemInfo["HasMultibootMTD"]:
+		with open('/dev/block/by-name/flag', 'wb') as f:
+			f.write(struct.pack("B", int(slotCode)))
+	Console(binary=True).ePopen(f"umount {tmp_dir}")
+	callback(0, 0)
