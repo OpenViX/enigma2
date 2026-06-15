@@ -15,6 +15,7 @@
 #include <lib/service/servicemp3.h>
 #include <lib/service/servicemp3record.h>
 #include <lib/service/service.h>
+#include <lib/service/hevc_hdr.h>
 #include <lib/gdi/gpixmap.h>
 #include <lib/dvb/subtitle.h>
 
@@ -556,6 +557,12 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 
 	m_aspect = m_width = m_height = m_framerate = m_progressive = m_gamma = -1;
 	m_hdr_type = 0;
+	m_hdr_probe_id = 0;
+	m_hdr_probe_pad = NULL;
+	m_hdr_probe_active = false;
+	m_hdr_probe_last_classify = 0;
+	m_hdr_probe_first_sps_at = 0;
+	g_mutex_init(&m_hdr_probe_mutex);
 
 	m_state = stIdle;
 	m_coverart = false;
@@ -1035,6 +1042,7 @@ RESULT eServiceMP3::stop()
 	if (!m_gst_playbin || m_state == stStopped)
 		return -1;
 
+	stopHDRProbe();
 	eDebug("[eServiceMP3] stop %s", m_ref.path.c_str());
 	m_state = stStopped;
 
@@ -1392,6 +1400,162 @@ static int caps_hdr_value(GstCaps *caps)
 	}
 	return res;
 }
+
+/* ---------- HEVC bitstream probe (GStreamer thread -> main thread) ---------- */
+
+GstPadProbeReturn eServiceMP3::hdrProbeCallback(GstPad*, GstPadProbeInfo *info, gpointer user_data)
+{
+	eServiceMP3 *self = static_cast<eServiceMP3*>(user_data);
+	GstBuffer *buf = GST_PAD_PROBE_INFO_BUFFER(info);
+	if (!buf) return GST_PAD_PROBE_OK;
+
+	GstMapInfo map;
+	if (!gst_buffer_map(buf, &map, GST_MAP_READ))
+		return GST_PAD_PROBE_OK;
+
+	g_mutex_lock(&self->m_hdr_probe_mutex);
+	/* Stop feeding once we have enough data (main thread will decide) */
+	if (!self->m_hdr_probe_active ||
+	    self->m_hdr_probe_es.size() < (8 * 1024 * 1024))
+		self->m_hdr_probe_es.insert(self->m_hdr_probe_es.end(),
+		                            map.data, map.data + map.size);
+	g_mutex_unlock(&self->m_hdr_probe_mutex);
+
+	gst_buffer_unmap(buf, &map);
+	return GST_PAD_PROBE_OK;
+}
+
+void eServiceMP3::startHDRProbe()
+{
+	stopHDRProbe();
+	if (!m_gst_playbin) return;
+
+	/* Locate h265parse anywhere in the pipeline */
+	GstElement *parser = NULL;
+	GstIterator *it = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
+	GValue item = G_VALUE_INIT;
+	bool done = false;
+	while (!done)
+	{
+		switch (gst_iterator_next(it, &item))
+		{
+			case GST_ITERATOR_OK:
+			{
+				GstElement *el = GST_ELEMENT(g_value_get_object(&item));
+				GstElementFactory *f = el ? gst_element_get_factory(el) : NULL;
+				if (f)
+				{
+					const gchar *name = gst_plugin_feature_get_name(GST_PLUGIN_FEATURE(f));
+					if (name && strcmp(name, "h265parse") == 0)
+					{
+						parser = GST_ELEMENT(gst_object_ref(el));
+						done = true;
+					}
+				}
+				g_value_reset(&item);
+				break;
+			}
+			case GST_ITERATOR_RESYNC: gst_iterator_resync(it); break;
+			default: done = true; break;
+		}
+	}
+	g_value_unset(&item);
+	gst_iterator_free(it);
+
+	if (!parser)
+	{
+		eDebug("[eServiceMP3] HDR probe: h265parse not found in pipeline");
+		return;
+	}
+
+	GstPad *pad = gst_element_get_static_pad(parser, "src");
+	gst_object_unref(parser);
+	if (!pad)
+	{
+		eDebug("[eServiceMP3] HDR probe: h265parse has no src pad");
+		return;
+	}
+
+	g_mutex_lock(&m_hdr_probe_mutex);
+	m_hdr_probe_es.clear();
+	m_hdr_probe_es.reserve(512 * 1024);
+	m_hdr_probe_last_classify = 0;
+	m_hdr_probe_first_sps_at = 0;
+	m_hdr_probe_active = true;
+	g_mutex_unlock(&m_hdr_probe_mutex);
+
+	m_hdr_probe_id = gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER,
+	                                    hdrProbeCallback, this, NULL);
+	m_hdr_probe_pad = pad; /* takes ownership of ref */
+
+	m_hdr_probe_timer = eTimer::create(eApp);
+	CONNECT(m_hdr_probe_timer->timeout, eServiceMP3::checkHDRProbe);
+	m_hdr_probe_timer->start(200, false); /* check every 200ms */
+	eDebug("[eServiceMP3] HDR probe: started on h265parse src pad");
+}
+
+void eServiceMP3::stopHDRProbe()
+{
+	if (m_hdr_probe_timer) { m_hdr_probe_timer->stop(); m_hdr_probe_timer = 0; }
+	if (m_hdr_probe_pad && m_hdr_probe_id)
+	{
+		gst_pad_remove_probe(m_hdr_probe_pad, m_hdr_probe_id);
+		m_hdr_probe_id = 0;
+	}
+	if (m_hdr_probe_pad) { gst_object_unref(m_hdr_probe_pad); m_hdr_probe_pad = NULL; }
+	g_mutex_lock(&m_hdr_probe_mutex);
+	m_hdr_probe_active = false;
+	std::vector<uint8_t>().swap(m_hdr_probe_es);
+	g_mutex_unlock(&m_hdr_probe_mutex);
+}
+
+void eServiceMP3::checkHDRProbe()
+{
+	/* Copy accumulated data under lock, then classify outside lock */
+	std::vector<uint8_t> snap;
+	g_mutex_lock(&m_hdr_probe_mutex);
+	snap = m_hdr_probe_es; /* copy */
+	g_mutex_unlock(&m_hdr_probe_mutex);
+
+	if (snap.empty()) return;
+
+	/* Only re-classify every 64KB of new data */
+	if (snap.size() - m_hdr_probe_last_classify < (64 * 1024) &&
+	    snap.size() < (8 * 1024 * 1024))
+		return;
+	m_hdr_probe_last_classify = snap.size();
+
+	bool sawSPS = false;
+	int result = HevcHDR::classify(snap.data(), (int)snap.size(), &sawSPS);
+
+	if (result == HevcHDR::HDR_HDR10 || result == HevcHDR::HDR_HLG)
+	{
+		int newHdrType = (result == HevcHDR::HDR_HDR10) ? 1 : 2;
+		stopHDRProbe();
+		if (newHdrType != m_hdr_type)
+		{
+			m_hdr_type = newHdrType;
+			m_event((iPlayableService*)this, evUpdatedInfo);
+		}
+		return;
+	}
+
+	if (sawSPS)
+	{
+		if (!m_hdr_probe_first_sps_at) m_hdr_probe_first_sps_at = snap.size();
+		if (snap.size() - m_hdr_probe_first_sps_at >= (768 * 1024))
+		{
+			/* Read enough past first SPS without finding HDR -> SDR */
+			stopHDRProbe();
+			return;
+		}
+	}
+
+	if (snap.size() >= (8 * 1024 * 1024))
+		stopHDRProbe();
+}
+
+/* -------------------------------------------------------------------------- */
 
 void eServiceMP3::updateHDRFromVideoPad()
 {
@@ -2368,6 +2532,11 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 		}
 		case GST_MESSAGE_ASYNC_DONE:
 		{
+			/* Start HEVC bitstream probe for HDR detection.  This is the
+			 * primary HDR path for local files and streams: it works
+			 * regardless of GStreamer caps colorimetry support or hardware
+			 * gamma driver availability. */
+			startHDRProbe();
 			if(GST_MESSAGE_SRC(msg) != GST_OBJECT(m_gst_playbin))
 				break;
 
@@ -2545,8 +2714,19 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						else if (!strcmp(eventname, "eventGammaChanged"))
 						{
 							gst_structure_get_int (msgstruct, "gamma", &m_gamma);
-							if (strstr(eventname, "Changed"))
-								m_event((iPlayableService*)this, evVideoGammaChanged);
+							m_event((iPlayableService*)this, evVideoGammaChanged);
+							/* Derive m_hdr_type from the hardware decoder gamma.
+							 * gamma: 0=SDR 1=HDR(generic) 2=SMPTE ST2084/HDR10 3=HLG
+							 * This is more reliable than GStreamer caps colorimetry,
+							 * which many STB h265parse builds do not populate. */
+							int newHdrType = 0;
+							if (m_gamma == 2) newHdrType = 1;       /* HDR10 */
+							else if (m_gamma == 3) newHdrType = 2;  /* HLG */
+							if (newHdrType != m_hdr_type)
+							{
+								m_hdr_type = newHdrType;
+								m_event((iPlayableService*)this, evUpdatedInfo);
+							}
 						}
 						else if (!strcmp(eventname, "redirect"))
 						{

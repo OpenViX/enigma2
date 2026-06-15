@@ -398,6 +398,22 @@ private:
 	gint m_aspect, m_width, m_height, m_framerate, m_progressive, m_gamma;
 	int m_hdr_type;                  // 0=SDR 1=HDR10 2=HLG
 	void updateHDRFromVideoPad();
+
+	/* GStreamer buffer probe for direct HEVC bitstream HDR classification.
+	 * Runs in the GStreamer streaming thread; data is consumed by a periodic
+	 * timer in the main thread via a mutex-protected shared buffer. */
+	GMutex          m_hdr_probe_mutex;
+	std::vector<uint8_t> m_hdr_probe_es;
+	size_t          m_hdr_probe_last_classify;
+	size_t          m_hdr_probe_first_sps_at;
+	gulong          m_hdr_probe_id;
+	GstPad         *m_hdr_probe_pad;
+	bool            m_hdr_probe_active;
+	ePtr<eTimer>    m_hdr_probe_timer;
+	void startHDRProbe();
+	void stopHDRProbe();
+	void checkHDRProbe();
+	static GstPadProbeReturn hdrProbeCallback(GstPad*, GstPadProbeInfo*, gpointer);
 	std::string m_useragent;
 	std::string m_extra_headers;
 	RESULT trickSeek(gdouble ratio);

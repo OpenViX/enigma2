@@ -4123,8 +4123,27 @@ void eDVBServicePlay::video_event(struct iTSMPEGDecoder::videoEvent event)
 			m_event((iPlayableService*)this, evVideoProgressiveChanged);
 			break;
 		case iTSMPEGDecoder::videoEvent::eventGammaChanged:
+		{
 			m_event((iPlayableService*)this, evVideoGammaChanged);
+			/* Update HDR type from the hardware decoder gamma.
+			 * This fires once the decoder produces frames, which may be
+			 * after the TS-recorder-based detection already timed out on
+			 * an encrypted channel (scrambled data yields no valid SPS). */
+			int gamma = -1;
+			if (m_soft_decoder && m_csa_session && m_csa_session->isActive())
+				gamma = m_soft_decoder->getVideoGamma();
+			else if (m_decoder)
+				gamma = m_decoder->getVideoGamma();
+			int newHdrType = 0;
+			if (gamma == 2) newHdrType = 1;      /* SMPTE ST2084 -> HDR10 */
+			else if (gamma == 3) newHdrType = 2; /* HLG */
+			if (newHdrType != m_hdr_type)
+			{
+				m_hdr_type = newHdrType;
+				m_event((iPlayableService*)this, evUpdatedInfo);
+			}
 			break;
+		}
 		default:
 			break;
 	}
@@ -4456,7 +4475,13 @@ void eDVBServicePlay::startHDRDetection(int vpid)
 	m_hdr_type = 0;
 
 	ePtr<iDVBDemux> demux;
-	m_service_handler.getDataDemux(demux); /* may be null – start() handles that */
+	/* Prefer the decode demux: on encrypted channels it receives descrambled
+	 * data (from the CI/CAM or software CSA), so our TS recorder captures
+	 * clear video packets and can find HEVC NAL units.
+	 * Fall back to the data demux for FTA channels where the decode demux
+	 * may not be available yet. */
+	if (m_service_handler.getDecodeDemux(demux) || !demux)
+		m_service_handler.getDataDemux(demux);
 
 	m_hdr_detector = new eHDRStreamDetector();
 	m_hdr_detector->resultChanged.connect(
