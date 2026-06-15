@@ -1569,6 +1569,31 @@ void eServiceMP3::startHDRProbe()
 		return;
 	}
 
+	/* Fast path: check if the HEVC pad caps already carry colorimetry.
+	 * updateHDRFromVideoPad() only checked the playbin video pad and static
+	 * "src" pads.  Demuxer dynamic pads (video_0 etc.) are found here first.
+	 * For MKV/MP4, the demuxer maps ColourTransferCharacteristics / the colr
+	 * box directly into pad-caps colorimetry — the same data ffprobe reads. */
+	{
+		GstCaps *caps = gst_pad_get_current_caps(hevc_pad);
+		if (caps)
+		{
+			int hdrFromCaps = caps_hdr_value(caps);
+			gst_caps_unref(caps);
+			if (hdrFromCaps > 0)
+			{
+				eDebug("[eServiceMP3] HDR probe: result %d from HEVC pad colorimetry", hdrFromCaps);
+				gst_object_unref(hevc_pad);
+				if (hdrFromCaps != m_hdr_type)
+				{
+					m_hdr_type = hdrFromCaps;
+					m_event((iPlayableService*)this, evUpdatedInfo);
+				}
+				return;
+			}
+		}
+	}
+
 	g_mutex_lock(&m_hdr_probe_mutex);
 	m_hdr_probe_es.clear();
 	m_hdr_probe_es.reserve(512 * 1024);
@@ -1673,46 +1698,67 @@ void eServiceMP3::updateHDRFromVideoPad()
 		gst_object_unref(pad);
 	}
 
-	/* fallback: search pipeline for a src pad exposing colorimetry */
+	/* fallback: search pipeline for ANY src pad exposing colorimetry.
+	 * Demuxers (matroskademux, qtdemux) expose video on dynamic src pads
+	 * named "video_0" etc., NOT on a static pad named "src".  Iterating
+	 * all src pads (as startHDRProbe does) finds the pad that carries
+	 * ColourTransferCharacteristics / colr-box colorimetry from the container
+	 * header — the same data source that ffprobe reads. */
 	if (hdr < 0)
 	{
-		GstIterator *it = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
-		GValue item = G_VALUE_INIT;
-		bool done = false;
-		while (!done)
+		GstIterator *eit = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
+		GValue eitem = G_VALUE_INIT;
+		bool edone = false;
+		while (!edone)
 		{
-			switch (gst_iterator_next(it, &item))
+			switch (gst_iterator_next(eit, &eitem))
 			{
 				case GST_ITERATOR_OK:
 				{
-					GstElement *el = GST_ELEMENT(g_value_get_object(&item));
+					GstElement *el = GST_ELEMENT(g_value_get_object(&eitem));
 					if (el)
 					{
-						GstPad *sp = gst_element_get_static_pad(el, "src");
-						if (sp)
+						GstIterator *pit = gst_element_iterate_src_pads(el);
+						GValue pitem = G_VALUE_INIT;
+						bool pdone = false;
+						while (!pdone)
 						{
-							GstCaps *c = gst_pad_get_current_caps(sp);
-							if (c) { int v = caps_hdr_value(c); gst_caps_unref(c);
-								if (v >= 0) { hdr = v; if (v > 0) done = true; }
+							switch (gst_iterator_next(pit, &pitem))
+							{
+								case GST_ITERATOR_OK:
+								{
+									GstPad *sp = GST_PAD(g_value_get_object(&pitem));
+									GstCaps *c = gst_pad_get_current_caps(sp);
+									if (c) { int v = caps_hdr_value(c); gst_caps_unref(c);
+										if (v >= 0) { hdr = v; if (v > 0) pdone = edone = true; }
+									}
+									g_value_reset(&pitem);
+									break;
+								}
+								case GST_ITERATOR_RESYNC: gst_iterator_resync(pit); break;
+								default: pdone = true; break;
 							}
-							gst_object_unref(sp);
 						}
+						g_value_unset(&pitem);
+						gst_iterator_free(pit);
 					}
-					g_value_reset(&item);
+					g_value_reset(&eitem);
 					break;
 				}
-				case GST_ITERATOR_RESYNC: gst_iterator_resync(it); break;
-				default: done = true; break;
+				case GST_ITERATOR_RESYNC: gst_iterator_resync(eit); break;
+				default: edone = true; break;
 			}
 		}
-		g_value_unset(&item);
-		gst_iterator_free(it);
+		g_value_unset(&eitem);
+		gst_iterator_free(eit);
 	}
 
-	int newType = (hdr > 0) ? hdr : 0;
-	if (newType != m_hdr_type)
+	/* Only update m_hdr_type when caps give a positive result.
+	 * Do NOT reset a previously probed HDR result just because
+	 * caps lack colorimetry (e.g. older STB GStreamer builds). */
+	if (hdr > 0 && hdr != m_hdr_type)
 	{
-		m_hdr_type = newType;
+		m_hdr_type = hdr;
 		m_event((iPlayableService*)this, evUpdatedInfo);
 	}
 }
