@@ -41,6 +41,10 @@ public:
 	virtual ~eHDRStreamDetector();
 	int  start(iDVBDemux *demux, int pid);
 	void stop();
+	/* true if the TS recorder is actively capturing (false = timeout-only mode,
+	 * e.g. createTSRecorder failed because the decode demux has a PID conflict
+	 * with the hardware decoder filter). */
+	bool isRecording() const { return m_recorder != nullptr && !m_done; }
 	int  getResult() const { return m_result; }
 	sigc::signal<void(int)> resultChanged;
 };
