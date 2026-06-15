@@ -4513,14 +4513,13 @@ void eDVBServicePlay::startHDRDetection(int vpid)
 	 * clear TS packets and the bitstream probe can find valid NAL units. */
 	if (m_csa_session)
 	{
-		m_csa_session->firstCwReceived.connect(
+		m_hdr_cw_conn = m_csa_session->firstCwReceived.connect(
 			[this, vpid]()
 			{
 				eDebug("[eDVBServicePlay] first CW received, restarting HDR detection");
 				m_hdr_detect_vpid = -1; /* force restart */
 				startHDRDetection(vpid);
-			},
-			m_hdr_cw_conn);
+			});
 	}
 }
 
