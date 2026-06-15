@@ -4467,9 +4467,21 @@ void eDVBServicePlay::startHDRDetection(int vpid)
 
 void eDVBServicePlay::hdrResult(int result)
 {
-	/* Always fire evUpdatedInfo on the first detection result so that
-	   the Python _readHDRType() fallback path (which reads sGamma) is
-	   triggered even when the bitstream result is 0 (SDR/unknown). */
+	/* If the HEVC bitstream tap produced no HDR evidence (result == 0, either
+	   because the hardware does not deliver a software copy of the video PES
+	   via DMX_OUT_TAP, or because the stream genuinely is SDR), fall back to
+	   the hardware decoder's own gamma report.  This is always available once
+	   the decoder has started and avoids the need for a Python-side fallback. */
+	if (result == 0)
+	{
+		int gamma = -1;
+		if (m_soft_decoder && m_csa_session && m_csa_session->isActive())
+			gamma = m_soft_decoder->getVideoGamma();
+		else if (m_decoder)
+			gamma = m_decoder->getVideoGamma();
+		if (gamma == 2) result = 1;      /* SMPTE ST2084 → HDR10 */
+		else if (gamma == 3) result = 2; /* HLG */
+	}
 	m_hdr_type = result;
 	m_event((iPlayableService*)this, evUpdatedInfo);
 }
