@@ -1401,7 +1401,51 @@ static int caps_hdr_value(GstCaps *caps)
 	return res;
 }
 
-/* ---------- HEVC bitstream probe (GStreamer thread -> main thread) ---------- */
+/* Extract parameter-set NAL units from the HEVCDecoderConfigurationRecord
+ * (hvcC, ISO 14496-15 §8.3.3) stored in GStreamer codec_data cap.
+ * For MP4/MKV files with stream-format=hvc1/hev1, the SPS (and VPS/PPS) live
+ * here rather than in the regular buffer stream, so the bitstream probe would
+ * never see the SPS — and therefore miss HLG whose only indicator is
+ * transfer_characteristics=18 in the SPS VUI. */
+static void preingest_hevc_codec_data(GstCaps *caps, std::vector<uint8_t> &out)
+{
+	if (!caps || gst_caps_get_size(caps) == 0) return;
+	GstStructure *str = gst_caps_get_structure(caps, 0);
+	if (!str) return;
+	const GValue *cdval = gst_structure_get_value(str, "codec_data");
+	if (!cdval) return;
+	GstBuffer *cdbuf = gst_value_get_buffer(cdval);
+	if (!cdbuf) return;
+	GstMapInfo map;
+	if (!gst_buffer_map(cdbuf, &map, GST_MAP_READ)) return;
+	const uint8_t *d = map.data;
+	gsize sz = map.size;
+	/* Fixed hvcC header is 22 bytes; byte 22 = numOfArrays */
+	static const uint8_t sc[4] = {0, 0, 0, 1};
+	if (sz > 22)
+	{
+		uint8_t numArrays = d[22];
+		gsize pos = 23;
+		for (uint8_t a = 0; a < numArrays && pos + 3 <= sz; a++)
+		{
+			pos++;  /* array_completeness(1) | reserved(1) | nal_unit_type(6) */
+			uint16_t numNalus = ((uint16_t)d[pos] << 8) | d[pos + 1];
+			pos += 2;
+			for (uint16_t n = 0; n < numNalus && pos + 2 <= sz; n++)
+			{
+				uint16_t naluLen = ((uint16_t)d[pos] << 8) | d[pos + 1];
+				pos += 2;
+				if (pos + naluLen > sz) break;
+				out.insert(out.end(), sc, sc + 4);
+				out.insert(out.end(), d + pos, d + pos + naluLen);
+				pos += naluLen;
+			}
+		}
+	}
+	gst_buffer_unmap(cdbuf, &map);
+}
+
+
 
 GstPadProbeReturn eServiceMP3::hdrProbeCallback(GstPad*, GstPadProbeInfo *info, gpointer user_data)
 {
@@ -1528,6 +1572,12 @@ void eServiceMP3::startHDRProbe()
 	g_mutex_lock(&m_hdr_probe_mutex);
 	m_hdr_probe_es.clear();
 	m_hdr_probe_es.reserve(512 * 1024);
+	/* Pre-populate from hvcC codec_data so the SPS is visible to classify()
+	 * even for hvc1/hev1 streams where parameter sets are not in-band. */
+	{
+		GstCaps *caps = gst_pad_get_current_caps(hevc_pad);
+		if (caps) { preingest_hevc_codec_data(caps, m_hdr_probe_es); gst_caps_unref(caps); }
+	}
 	m_hdr_probe_last_classify = 0;
 	m_hdr_probe_first_sps_at = 0;
 	m_hdr_probe_active = true;

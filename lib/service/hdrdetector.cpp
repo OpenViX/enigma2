@@ -12,7 +12,7 @@
 /* 3 s is enough for an I-frame with a typical GOP on any stream rate,
    and it is short enough for the hardware gamma fallback to be queried
    before the user notices a delay. */
-#define TAP_TIMEOUT_MS 3000
+#define TAP_TIMEOUT_MS 10000
 
 DEFINE_REF(eHDRStreamDetector);
 
