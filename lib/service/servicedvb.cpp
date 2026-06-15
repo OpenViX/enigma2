@@ -4121,14 +4121,20 @@ void eDVBServicePlay::video_event(struct iTSMPEGDecoder::videoEvent event)
 				m_soft_decoder_video_info_valid = true;
 				m_event((iPlayableService*)this, evUpdatedInfo);
 			}
-			/* First decoded frame: descrambling (CI or softCSA) is now live.
-			 * Restart detection with a fresh recorder so any scrambled data
-			 * accumulated before the CAM finished negotiating is discarded.
-			 * For FTA channels the restart is cheap (no scrambled data to
-			 * discard, and the new run simply finds the result faster).
-			 * Skip restart if we already have a confirmed result. */
+			/* First decoded frame — descrambling is now live.
+			 * Only restart HDR detection if the early recorder (started in
+			 * updateDecoder) has not yet seen an SPS.  No SPS after the first
+			 * decoded frame means the recorder was capturing scrambled data and
+			 * produced no valid NAL units — restart it fresh so it reads clear TS.
+			 * If an SPS was already found, the recorder has good data in flight;
+			 * leave it running and let it complete normally.  This avoids
+			 * discarding a clean early capture (FTA / fast CI) and then racing
+			 * against the next I-frame which may be many seconds away. */
 			if (m_hdr_detect_vpid > 0 && m_hdr_type == 0)
-				startHDRDetection(m_hdr_detect_vpid);
+			{
+				if (!m_hdr_detector || !m_hdr_detector->hasSPS())
+					startHDRDetection(m_hdr_detect_vpid);
+			}
 			break;
 		case iTSMPEGDecoder::videoEvent::eventFrameRateChanged:
 			m_event((iPlayableService*)this, evVideoFramerateChanged);
