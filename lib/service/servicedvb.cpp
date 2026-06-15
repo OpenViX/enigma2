@@ -4486,17 +4486,54 @@ void eDVBServicePlay::startHDRDetection(int vpid)
 	m_hdr_detect_vpid = vpid;
 	m_hdr_type = 0;
 
-	ePtr<iDVBDemux> demux;
-	/* Called after the first decoded frame (eventSizeChanged): descrambling
-	 * (CI or softCSA) is already active so the decode demux carries clear data. */
-	if (m_service_handler.getDecodeDemux(demux) || !demux)
-		m_service_handler.getDataDemux(demux);
+	/* Demux selection strategy:
+	 *
+	 * The decode demux is ALWAYS the authoritative source of clear data once
+	 * eventSizeChanged has fired — the hardware decoder just produced a frame
+	 * from it, so it is definitively carrying clear HEVC packets.
+	 *
+	 * We try decode demux first for everyone.  On STBs where the kernel driver
+	 * refuses a second PID filter on the decode demux (PID conflict with the
+	 * hardware decoder's own filter), isRecording() returns false and we fall
+	 * back to the data demux — UNLESS this is a softCSA channel, where the
+	 * data demux still has scrambled TS (the software CSA writes clear packets
+	 * only into the decode demux).
+	 *
+	 * For external softcam (OSCam/CCcam) the decode demux is also the right
+	 * choice: many STBs inject CWs into the hardware decoder's descrambler
+	 * via a proprietary path that does NOT update the Linux CA demux interface,
+	 * so the data demux may still carry scrambled TS even after the first
+	 * decoded frame. */
+	bool isSoftCSA = (m_csa_session && m_csa_session->isActive());
+
+	ePtr<iDVBDemux> demuxA, demuxB;
+	m_service_handler.getDecodeDemux(demuxA);
+	if (!isSoftCSA)
+		m_service_handler.getDataDemux(demuxB);  /* fallback if decode demux has PID conflict */
 
 	m_hdr_detector = new eHDRStreamDetector();
 	m_hdr_detector->resultChanged.connect(
 		sigc::mem_fun(*this, &eDVBServicePlay::hdrResult));
-	if (m_hdr_detector->start(demux, vpid) != 0)
+
+	if (m_hdr_detector->start(demuxA, vpid) != 0)
+	{
 		m_hdr_detector = 0;
+		return;
+	}
+
+	/* If the recorder didn't start (PID conflict / createTSRecorder failure),
+	 * immediately retry on the fallback demux rather than waiting 10 s for the
+	 * timeout to fire an SDR result. */
+	if (!m_hdr_detector->isRecording() && demuxB)
+	{
+		eDebug("[eDVBServicePlay] HDR: primary demux recorder failed, retrying on fallback");
+		m_hdr_detector->stop();
+		m_hdr_detector = new eHDRStreamDetector();
+		m_hdr_detector->resultChanged.connect(
+			sigc::mem_fun(*this, &eDVBServicePlay::hdrResult));
+		if (m_hdr_detector->start(demuxB, vpid) != 0)
+			m_hdr_detector = 0;
+	}
 }
 
 void eDVBServicePlay::hdrResult(int result)
