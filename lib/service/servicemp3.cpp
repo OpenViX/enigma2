@@ -1468,11 +1468,11 @@ void eServiceMP3::startHDRProbe()
 		return;
 	}
 
-	GstPad *pad = gst_element_get_static_pad(parser, "src");
+	GstPad *pad = gst_element_get_static_pad(parser, "sink");
 	gst_object_unref(parser);
 	if (!pad)
 	{
-		eDebug("[eServiceMP3] HDR probe: h265parse has no src pad");
+		eDebug("[eServiceMP3] HDR probe: h265parse has no sink pad");
 		return;
 	}
 
@@ -1491,7 +1491,7 @@ void eServiceMP3::startHDRProbe()
 	m_hdr_probe_timer = eTimer::create(eApp);
 	CONNECT(m_hdr_probe_timer->timeout, eServiceMP3::checkHDRProbe);
 	m_hdr_probe_timer->start(200, false); /* check every 200ms */
-	eDebug("[eServiceMP3] HDR probe: started on h265parse src pad");
+	eDebug("[eServiceMP3] HDR probe: started on h265parse sink pad (Annex-B input)");
 }
 
 void eServiceMP3::stopHDRProbe()

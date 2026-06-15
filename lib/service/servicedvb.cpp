@@ -1065,6 +1065,7 @@ eDVBServicePlay::eDVBServicePlay(const eServiceReference &ref, eDVBService *serv
 	m_have_video_pid(0),
 	m_hdr_type(0),
 	m_hdr_detect_vpid(-1),
+	m_hdr_ci_restarted(false),
 	m_tune_state(-1),
 	m_noaudio(false),
 	m_is_stream(ref.path.find("://") != std::string::npos),
@@ -4115,6 +4116,22 @@ void eDVBServicePlay::video_event(struct iTSMPEGDecoder::videoEvent event)
 				m_soft_decoder_video_info_valid = true;
 				m_event((iPlayableService*)this, evUpdatedInfo);
 			}
+			/* CI descrambling: the first decoded frame means the CI has finished
+			 * negotiating and clear TS is flowing into the decode demux.  Restart
+			 * HDR detection now so the TS recorder sees valid HEVC NAL units.
+			 * Conditions: HEVC PID being watched, channel is encrypted (isCrypted),
+			 * no active software CSA session (that case uses firstCwReceived instead),
+			 * and we haven't already done this restart for the current service. */
+			if (!m_hdr_ci_restarted && m_hdr_detect_vpid > 0
+			    && !(m_csa_session && m_csa_session->isActive())
+			    && m_service_handler.isCiConnected())
+			{
+				m_hdr_ci_restarted = true;
+				int vpid = m_hdr_detect_vpid;
+				eDebug("[eDVBServicePlay] CI active, first frame decoded - restarting HDR detection");
+				m_hdr_detect_vpid = -1; /* force restart */
+				startHDRDetection(vpid);
+			}
 			break;
 		case iTSMPEGDecoder::videoEvent::eventFrameRateChanged:
 			m_event((iPlayableService*)this, evVideoFramerateChanged);
@@ -4393,6 +4410,7 @@ void eDVBServicePlay::cleanupSoftwareDescrambling()
 	}
 
 	m_csa_activated_conn = nullptr;
+	m_hdr_cw_conn = sigc::connection(); /* disconnect first-CW HDR restart */
 	m_soft_decoder_video_info_valid = false;
 }
 
@@ -4473,6 +4491,7 @@ void eDVBServicePlay::startHDRDetection(int vpid)
 	if (m_hdr_detector) { m_hdr_detector->stop(); m_hdr_detector = 0; }
 	m_hdr_detect_vpid = vpid;
 	m_hdr_type = 0;
+	m_hdr_ci_restarted = false;
 
 	ePtr<iDVBDemux> demux;
 	/* Prefer the decode demux: on encrypted channels it receives descrambled
@@ -4488,6 +4507,21 @@ void eDVBServicePlay::startHDRDetection(int vpid)
 		sigc::mem_fun(*this, &eDVBServicePlay::hdrResult));
 	if (m_hdr_detector->start(demux, vpid) != 0)
 		m_hdr_detector = 0;
+
+	/* For software-descrambled channels: restart detection once the first
+	 * Control Word arrives — that is when the decode demux starts receiving
+	 * clear TS packets and the bitstream probe can find valid NAL units. */
+	if (m_csa_session)
+	{
+		m_csa_session->firstCwReceived.connect(
+			[this, vpid]()
+			{
+				eDebug("[eDVBServicePlay] first CW received, restarting HDR detection");
+				m_hdr_detect_vpid = -1; /* force restart */
+				startHDRDetection(vpid);
+			},
+			m_hdr_cw_conn);
+	}
 }
 
 void eDVBServicePlay::hdrResult(int result)
