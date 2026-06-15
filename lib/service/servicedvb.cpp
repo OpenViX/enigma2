@@ -1065,7 +1065,6 @@ eDVBServicePlay::eDVBServicePlay(const eServiceReference &ref, eDVBService *serv
 	m_have_video_pid(0),
 	m_hdr_type(0),
 	m_hdr_detect_vpid(-1),
-	m_hdr_ci_restarted(false),
 	m_tune_state(-1),
 	m_noaudio(false),
 	m_is_stream(ref.path.find("://") != std::string::npos),
@@ -3427,7 +3426,17 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 		m_have_video_pid = (vpid > 0 && vpid < 0x2000);
 
 		if (!m_is_pvr && m_have_video_pid && vpidtype == eDVBVideo::H265_HEVC)
-			startHDRDetection(vpid);
+		{
+			/* Record the HEVC PID. Detection starts on the first decoded frame
+			 * (eventSizeChanged) so that descrambling (CI or softCSA) is already
+			 * live before we tap the decode demux. */
+			if (m_hdr_detect_vpid != vpid)
+			{
+				if (m_hdr_detector) { m_hdr_detector->stop(); m_hdr_detector = 0; }
+				m_hdr_detect_vpid = vpid;
+				m_hdr_type = 0;
+			}
+		}
 
 		if (!m_noaudio)
 		{
@@ -4116,22 +4125,15 @@ void eDVBServicePlay::video_event(struct iTSMPEGDecoder::videoEvent event)
 				m_soft_decoder_video_info_valid = true;
 				m_event((iPlayableService*)this, evUpdatedInfo);
 			}
-			/* CI descrambling: the first decoded frame means the CI has finished
-			 * negotiating and clear TS is flowing into the decode demux.  Restart
-			 * HDR detection now so the TS recorder sees valid HEVC NAL units.
-			 * Conditions: HEVC PID being watched, channel is encrypted (isCrypted),
-			 * no active software CSA session (that case uses firstCwReceived instead),
-			 * and we haven't already done this restart for the current service. */
-			if (!m_hdr_ci_restarted && m_hdr_detect_vpid > 0
-			    && !(m_csa_session && m_csa_session->isActive())
-			    && m_service_handler.isCiConnected())
-			{
-				m_hdr_ci_restarted = true;
-				int vpid = m_hdr_detect_vpid;
-				eDebug("[eDVBServicePlay] CI active, first frame decoded - restarting HDR detection");
-				m_hdr_detect_vpid = -1; /* force restart */
-				startHDRDetection(vpid);
-			}
+			/* Start HDR detection on the first decoded frame.
+			 * At this point the decoder is producing output, which means any
+			 * descrambling (CI module or software CSA) is already active and
+			 * the decode demux carries clear HEVC packets. This single trigger
+			 * handles FTA, CI-encrypted and softCSA channels uniformly without
+			 * needing separate firstCwReceived or isCiConnected checks.
+			 * Restart if m_hdr_type==0 (no HDR found yet) and no active run. */
+			if (!m_hdr_detector && m_hdr_detect_vpid > 0 && m_hdr_type == 0)
+				startHDRDetection(m_hdr_detect_vpid);
 			break;
 		case iTSMPEGDecoder::videoEvent::eventFrameRateChanged:
 			m_event((iPlayableService*)this, evVideoFramerateChanged);
@@ -4410,7 +4412,6 @@ void eDVBServicePlay::cleanupSoftwareDescrambling()
 	}
 
 	m_csa_activated_conn = nullptr;
-	m_hdr_cw_conn = sigc::connection(); /* disconnect first-CW HDR restart */
 	m_soft_decoder_video_info_valid = false;
 }
 
@@ -4486,19 +4487,13 @@ void eDVBServicePlay::resetHwDescramblerSlot()
 
 void eDVBServicePlay::startHDRDetection(int vpid)
 {
-	if (m_hdr_detector && m_hdr_detect_vpid == vpid)
-		return; /* already running/done for this pid */
 	if (m_hdr_detector) { m_hdr_detector->stop(); m_hdr_detector = 0; }
 	m_hdr_detect_vpid = vpid;
 	m_hdr_type = 0;
-	m_hdr_ci_restarted = false;
 
 	ePtr<iDVBDemux> demux;
-	/* Prefer the decode demux: on encrypted channels it receives descrambled
-	 * data (from the CI/CAM or software CSA), so our TS recorder captures
-	 * clear video packets and can find HEVC NAL units.
-	 * Fall back to the data demux for FTA channels where the decode demux
-	 * may not be available yet. */
+	/* Called after the first decoded frame (eventSizeChanged): descrambling
+	 * (CI or softCSA) is already active so the decode demux carries clear data. */
 	if (m_service_handler.getDecodeDemux(demux) || !demux)
 		m_service_handler.getDataDemux(demux);
 
@@ -4507,39 +4502,11 @@ void eDVBServicePlay::startHDRDetection(int vpid)
 		sigc::mem_fun(*this, &eDVBServicePlay::hdrResult));
 	if (m_hdr_detector->start(demux, vpid) != 0)
 		m_hdr_detector = 0;
-
-	/* For software-descrambled channels: restart detection once the first
-	 * Control Word arrives — that is when the decode demux starts receiving
-	 * clear TS packets and the bitstream probe can find valid NAL units. */
-	if (m_csa_session)
-	{
-		m_hdr_cw_conn = m_csa_session->firstCwReceived.connect(
-			[this, vpid]()
-			{
-				eDebug("[eDVBServicePlay] first CW received, restarting HDR detection");
-				m_hdr_detect_vpid = -1; /* force restart */
-				startHDRDetection(vpid);
-			});
-	}
 }
 
 void eDVBServicePlay::hdrResult(int result)
 {
-	/* If the HEVC bitstream tap produced no HDR evidence (result == 0, either
-	   because the hardware does not deliver a software copy of the video PES
-	   via DMX_OUT_TAP, or because the stream genuinely is SDR), fall back to
-	   the hardware decoder's own gamma report.  This is always available once
-	   the decoder has started and avoids the need for a Python-side fallback. */
-	if (result == 0)
-	{
-		int gamma = -1;
-		if (m_soft_decoder && m_csa_session && m_csa_session->isActive())
-			gamma = m_soft_decoder->getVideoGamma();
-		else if (m_decoder)
-			gamma = m_decoder->getVideoGamma();
-		if (gamma == 2) result = 1;      /* SMPTE ST2084 → HDR10 */
-		else if (gamma == 3) result = 2; /* HLG */
-	}
+	m_hdr_detector = 0; /* mark detection complete; allows retry on next eventSizeChanged */
 	m_hdr_type = result;
 	m_event((iPlayableService*)this, evUpdatedInfo);
 }
