@@ -339,8 +339,6 @@ protected:
 	ePtr<eHDRStreamDetector> m_hdr_detector;
 	int m_hdr_type;
 	int m_hdr_detect_vpid;
-	bool m_hdr_ci_restarted;         /* true once we've done the post-CI-start restart */
-	sigc::connection m_hdr_cw_conn;  /* disconnects on reassign, one-shot via firstCwReceived */
 	void startHDRDetection(int vpid);
 	void hdrResult(int result);
 

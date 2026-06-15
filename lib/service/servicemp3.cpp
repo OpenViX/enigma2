@@ -1411,14 +1411,40 @@ GstPadProbeReturn eServiceMP3::hdrProbeCallback(GstPad*, GstPadProbeInfo *info, 
 
 	GstMapInfo map;
 	if (!gst_buffer_map(buf, &map, GST_MAP_READ))
-		return GST_PAD_PROBE_OK;
+		return GST_PAD_PROBE_OK;  /* DMA/opaque buffer — skip silently */
 
 	g_mutex_lock(&self->m_hdr_probe_mutex);
-	/* Stop feeding once we have enough data (main thread will decide) */
-	if (!self->m_hdr_probe_active ||
-	    self->m_hdr_probe_es.size() < (8 * 1024 * 1024))
-		self->m_hdr_probe_es.insert(self->m_hdr_probe_es.end(),
-		                            map.data, map.data + map.size);
+	if (self->m_hdr_probe_active && self->m_hdr_probe_es.size() < (8 * 1024 * 1024))
+	{
+		const uint8_t *d = map.data;
+		gsize sz = map.size;
+		/* Detect Annex-B (00 00 01 or 00 00 00 01 start codes) vs
+		 * length-prefixed hvc1/hev1 (4-byte big-endian NAL length).
+		 * Convert length-prefixed to Annex-B so HevcHDR::classify works
+		 * regardless of what stream-format the downstream sink negotiated. */
+		bool annexb = sz >= 3 && d[0] == 0 && d[1] == 0 &&
+		              (d[2] == 1 || (sz >= 4 && d[2] == 0 && d[3] == 1));
+		if (annexb)
+		{
+			self->m_hdr_probe_es.insert(self->m_hdr_probe_es.end(), d, d + sz);
+		}
+		else
+		{
+			/* Length-prefixed: convert each NAL unit to Annex-B */
+			static const uint8_t sc[4] = {0, 0, 0, 1};
+			gsize pos = 0;
+			while (pos + 4 <= sz)
+			{
+				uint32_t nlen = ((uint32_t)d[pos] << 24) | ((uint32_t)d[pos+1] << 16)
+				              | ((uint32_t)d[pos+2] << 8) | d[pos+3];
+				pos += 4;
+				if (nlen == 0 || pos + nlen > sz) break;
+				self->m_hdr_probe_es.insert(self->m_hdr_probe_es.end(), sc, sc + 4);
+				self->m_hdr_probe_es.insert(self->m_hdr_probe_es.end(), d + pos, d + pos + nlen);
+				pos += nlen;
+			}
+		}
+	}
 	g_mutex_unlock(&self->m_hdr_probe_mutex);
 
 	gst_buffer_unmap(buf, &map);
@@ -1430,49 +1456,72 @@ void eServiceMP3::startHDRProbe()
 	stopHDRProbe();
 	if (!m_gst_playbin) return;
 
-	/* Locate h265parse anywhere in the pipeline */
-	GstElement *parser = NULL;
-	GstIterator *it = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
-	GValue item = G_VALUE_INIT;
-	bool done = false;
-	while (!done)
+	/* Find the first src pad in the pipeline that outputs video/x-h265.
+	 * Search by caps rather than by element name — STB pipelines often do not
+	 * include a standard h265parse element and use proprietary HEVC decoders.
+	 * Demuxer src pads are encountered first and always carry CPU-accessible
+	 * buffers (unlike hardware decoder sink/src pads which may be DMA-only). */
+	GstPad *hevc_pad = NULL;
+	GstIterator *eit = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
+	GValue eitem = G_VALUE_INIT;
+	bool edone = false;
+	while (!edone)
 	{
-		switch (gst_iterator_next(it, &item))
+		switch (gst_iterator_next(eit, &eitem))
 		{
 			case GST_ITERATOR_OK:
 			{
-				GstElement *el = GST_ELEMENT(g_value_get_object(&item));
-				GstElementFactory *f = el ? gst_element_get_factory(el) : NULL;
-				if (f)
+				GstElement *el = GST_ELEMENT(g_value_get_object(&eitem));
+				if (el)
 				{
-					const gchar *name = gst_plugin_feature_get_name(GST_PLUGIN_FEATURE(f));
-					if (name && strcmp(name, "h265parse") == 0)
+					GstIterator *pit = gst_element_iterate_src_pads(el);
+					GValue pitem = G_VALUE_INIT;
+					bool pdone = false;
+					while (!pdone)
 					{
-						parser = GST_ELEMENT(gst_object_ref(el));
-						done = true;
+						switch (gst_iterator_next(pit, &pitem))
+						{
+							case GST_ITERATOR_OK:
+							{
+								GstPad *pad = GST_PAD(g_value_get_object(&pitem));
+								GstCaps *caps = gst_pad_get_current_caps(pad);
+								if (caps)
+								{
+									for (guint i = 0; i < gst_caps_get_size(caps) && !hevc_pad; i++)
+									{
+										const gchar *sname = gst_structure_get_name(
+											gst_caps_get_structure(caps, i));
+										if (sname && g_str_has_prefix(sname, "video/x-h265"))
+										{
+											hevc_pad = GST_PAD(gst_object_ref(pad));
+											pdone = edone = true;
+										}
+									}
+									gst_caps_unref(caps);
+								}
+								g_value_reset(&pitem);
+								break;
+							}
+							case GST_ITERATOR_RESYNC: gst_iterator_resync(pit); break;
+							default: pdone = true; break;
+						}
 					}
+					g_value_unset(&pitem);
+					gst_iterator_free(pit);
 				}
-				g_value_reset(&item);
+				g_value_reset(&eitem);
 				break;
 			}
-			case GST_ITERATOR_RESYNC: gst_iterator_resync(it); break;
-			default: done = true; break;
+			case GST_ITERATOR_RESYNC: gst_iterator_resync(eit); break;
+			default: edone = true; break;
 		}
 	}
-	g_value_unset(&item);
-	gst_iterator_free(it);
+	g_value_unset(&eitem);
+	gst_iterator_free(eit);
 
-	if (!parser)
+	if (!hevc_pad)
 	{
-		eDebug("[eServiceMP3] HDR probe: h265parse not found in pipeline");
-		return;
-	}
-
-	GstPad *pad = gst_element_get_static_pad(parser, "sink");
-	gst_object_unref(parser);
-	if (!pad)
-	{
-		eDebug("[eServiceMP3] HDR probe: h265parse has no sink pad");
+		eDebug("[eServiceMP3] HDR probe: no HEVC src pad found in pipeline");
 		return;
 	}
 
@@ -1484,14 +1533,14 @@ void eServiceMP3::startHDRProbe()
 	m_hdr_probe_active = true;
 	g_mutex_unlock(&m_hdr_probe_mutex);
 
-	m_hdr_probe_id = gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER,
+	m_hdr_probe_id = gst_pad_add_probe(hevc_pad, GST_PAD_PROBE_TYPE_BUFFER,
 	                                    hdrProbeCallback, this, NULL);
-	m_hdr_probe_pad = pad; /* takes ownership of ref */
+	m_hdr_probe_pad = hevc_pad; /* takes ownership of ref */
 
 	m_hdr_probe_timer = eTimer::create(eApp);
 	CONNECT(m_hdr_probe_timer->timeout, eServiceMP3::checkHDRProbe);
-	m_hdr_probe_timer->start(200, false); /* check every 200ms */
-	eDebug("[eServiceMP3] HDR probe: started on h265parse sink pad (Annex-B input)");
+	m_hdr_probe_timer->start(200, false);
+	eDebug("[eServiceMP3] HDR probe: started on HEVC src pad");
 }
 
 void eServiceMP3::stopHDRProbe()
@@ -2532,11 +2581,6 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 		}
 		case GST_MESSAGE_ASYNC_DONE:
 		{
-			/* Start HEVC bitstream probe for HDR detection.  This is the
-			 * primary HDR path for local files and streams: it works
-			 * regardless of GStreamer caps colorimetry support or hardware
-			 * gamma driver availability. */
-			startHDRProbe();
 			if(GST_MESSAGE_SRC(msg) != GST_OBJECT(m_gst_playbin))
 				break;
 
@@ -2698,6 +2742,11 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 							if (strstr(eventname, "Changed"))
 								m_event((iPlayableService*)this, evVideoSizeChanged);
 						updateHDRFromVideoPad();
+							/* Start HEVC bitstream probe on first decoded frame.
+							 * The decoder is now producing output so GStreamer has
+							 * negotiated caps and HEVC src pads are discoverable. */
+							if (!m_hdr_probe_active)
+								startHDRProbe();
 						}
 						else if (!strcmp(eventname, "eventFrameRateChanged") || !strcmp(eventname, "eventFrameRateAvail"))
 						{
