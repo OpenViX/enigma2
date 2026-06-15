@@ -3427,15 +3427,11 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 
 		if (!m_is_pvr && m_have_video_pid && vpidtype == eDVBVideo::H265_HEVC)
 		{
-			/* Record the HEVC PID. Detection starts on the first decoded frame
-			 * (eventSizeChanged) so that descrambling (CI or softCSA) is already
-			 * live before we tap the decode demux. */
+			/* Start detection immediately so FTA channels accumulate data
+			 * right away.  For encrypted channels eventSizeChanged will restart
+			 * with a fresh recorder once clear data is flowing. */
 			if (m_hdr_detect_vpid != vpid)
-			{
-				if (m_hdr_detector) { m_hdr_detector->stop(); m_hdr_detector = 0; }
-				m_hdr_detect_vpid = vpid;
-				m_hdr_type = 0;
-			}
+				startHDRDetection(vpid);
 		}
 
 		if (!m_noaudio)
@@ -4125,14 +4121,13 @@ void eDVBServicePlay::video_event(struct iTSMPEGDecoder::videoEvent event)
 				m_soft_decoder_video_info_valid = true;
 				m_event((iPlayableService*)this, evUpdatedInfo);
 			}
-			/* Start HDR detection on the first decoded frame.
-			 * At this point the decoder is producing output, which means any
-			 * descrambling (CI module or software CSA) is already active and
-			 * the decode demux carries clear HEVC packets. This single trigger
-			 * handles FTA, CI-encrypted and softCSA channels uniformly without
-			 * needing separate firstCwReceived or isCiConnected checks.
-			 * Restart if m_hdr_type==0 (no HDR found yet) and no active run. */
-			if (!m_hdr_detector && m_hdr_detect_vpid > 0 && m_hdr_type == 0)
+			/* First decoded frame: descrambling (CI or softCSA) is now live.
+			 * Restart detection with a fresh recorder so any scrambled data
+			 * accumulated before the CAM finished negotiating is discarded.
+			 * For FTA channels the restart is cheap (no scrambled data to
+			 * discard, and the new run simply finds the result faster).
+			 * Skip restart if we already have a confirmed result. */
+			if (m_hdr_detect_vpid > 0 && m_hdr_type == 0)
 				startHDRDetection(m_hdr_detect_vpid);
 			break;
 		case iTSMPEGDecoder::videoEvent::eventFrameRateChanged:
