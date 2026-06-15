@@ -339,6 +339,7 @@ protected:
 	ePtr<eHDRStreamDetector> m_hdr_detector;
 	int m_hdr_type;
 	int m_hdr_detect_vpid;
+	bool m_hdr_firstframe_restarted; /* true once eventSizeChanged restart was done */
 	void startHDRDetection(int vpid);
 	void hdrResult(int result);
 

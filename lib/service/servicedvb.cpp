@@ -1065,6 +1065,7 @@ eDVBServicePlay::eDVBServicePlay(const eServiceReference &ref, eDVBService *serv
 	m_have_video_pid(0),
 	m_hdr_type(0),
 	m_hdr_detect_vpid(-1),
+	m_hdr_firstframe_restarted(false),
 	m_tune_state(-1),
 	m_noaudio(false),
 	m_is_stream(ref.path.find("://") != std::string::npos),
@@ -3425,13 +3426,16 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 		m_current_video_pid_type = vpidtype;
 		m_have_video_pid = (vpid > 0 && vpid < 0x2000);
 
-		if (!m_is_pvr && m_have_video_pid && vpidtype == eDVBVideo::H265_HEVC)
+		if ((!m_is_pvr || m_is_stream) && m_have_video_pid && vpidtype == eDVBVideo::H265_HEVC)
 		{
-			/* Start detection immediately so FTA channels accumulate data
+			/* Start detection immediately so FTA/stream channels accumulate data
 			 * right away.  For encrypted channels eventSizeChanged will restart
 			 * with a fresh recorder once clear data is flowing. */
 			if (m_hdr_detect_vpid != vpid)
+			{
+				m_hdr_firstframe_restarted = false;
 				startHDRDetection(vpid);
+			}
 		}
 
 		if (!m_noaudio)
@@ -4122,18 +4126,15 @@ void eDVBServicePlay::video_event(struct iTSMPEGDecoder::videoEvent event)
 				m_event((iPlayableService*)this, evUpdatedInfo);
 			}
 			/* First decoded frame — descrambling is now live.
-			 * Only restart HDR detection if the early recorder (started in
-			 * updateDecoder) has not yet seen an SPS.  No SPS after the first
-			 * decoded frame means the recorder was capturing scrambled data and
-			 * produced no valid NAL units — restart it fresh so it reads clear TS.
-			 * If an SPS was already found, the recorder has good data in flight;
-			 * leave it running and let it complete normally.  This avoids
-			 * discarding a clean early capture (FTA / fast CI) and then racing
-			 * against the next I-frame which may be many seconds away. */
-			if (m_hdr_detect_vpid > 0 && m_hdr_type == 0)
+			 * Always restart detection exactly once on this event, discarding
+			 * any data accumulated before the CAM was ready (scrambled noise
+			 * can falsely match HEVC start codes and fool SPS detection).
+			 * Skip only if we already have a confirmed HDR result.
+			 * The one-shot flag prevents repeated restarts on resolution changes. */
+			if (m_hdr_detect_vpid > 0 && m_hdr_type == 0 && !m_hdr_firstframe_restarted)
 			{
-				if (!m_hdr_detector || !m_hdr_detector->hasSPS())
-					startHDRDetection(m_hdr_detect_vpid);
+				m_hdr_firstframe_restarted = true;
+				startHDRDetection(m_hdr_detect_vpid);
 			}
 			break;
 		case iTSMPEGDecoder::videoEvent::eventFrameRateChanged:
@@ -4546,6 +4547,12 @@ void eDVBServicePlay::hdrResult(int result)
 {
 	m_hdr_detector = 0; /* mark detection complete; allows retry on next eventSizeChanged */
 	m_hdr_type = result;
+	/* Fire all three events so every skin pattern is covered:
+	 * - evVideoGammaChanged: skins that track gamma/HDR changes
+	 * - evVideoSizeChanged:  skins that refresh video info on size events
+	 * - evUpdatedInfo:       general service-info listeners (ServiceInfo converter) */
+	m_event((iPlayableService*)this, evVideoGammaChanged);
+	m_event((iPlayableService*)this, evVideoSizeChanged);
 	m_event((iPlayableService*)this, evUpdatedInfo);
 }
 

@@ -45,9 +45,6 @@ public:
 	 * e.g. createTSRecorder failed because the decode demux has a PID conflict
 	 * with the hardware decoder filter). */
 	bool isRecording() const { return m_recorder != nullptr && !m_done; }
-	/* true once an SPS NAL was found in the accumulated ES.  If false after
-	 * a significant amount of data, the recorder is likely seeing scrambled TS. */
-	bool hasSPS() const { return m_first_sps_at > 0; }
 	int  getResult() const { return m_result; }
 	sigc::signal<void(int)> resultChanged;
 };
