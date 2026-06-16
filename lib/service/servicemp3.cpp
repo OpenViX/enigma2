@@ -1379,7 +1379,7 @@ RESULT eServiceMP3::isCurrentlySeekable()
 
 static int caps_hdr_value(GstCaps *caps)
 {
-	/* -1 = no colorimetry field, 0 = SDR, 1 = HDR10, 2 = HLG */
+	/* -1 = no colorimetry field, 0 = SDR, 1 = HDR10, 2 = HLG, 3 = generic HDR */
 	if (!caps) return -1;
 	int res = -1;
 	guint n = gst_caps_get_size(caps);
@@ -1393,6 +1393,8 @@ static int caps_hdr_value(GstCaps *caps)
 			if (res < 0) res = 0;
 			if (g_strrstr(col, "bt2100-pq") || g_strrstr(col, "smpte2084")) return 1;
 			if (g_strrstr(col, "bt2100-hlg") || g_strrstr(col, "arib-std-b67")) return 2;
+			/* BT.2020 traditional gamma — plain HDR (driver gamma=1, TC=14/15) */
+			if (g_strrstr(col, "bt2020-10") || g_strrstr(col, "bt2020-12")) { if (res < 3) res = 3; }
 		}
 		if (gst_structure_has_field(str, "mastering-display-info") ||
 		    gst_structure_has_field(str, "content-light-level"))
@@ -1652,9 +1654,10 @@ void eServiceMP3::checkHDRProbe()
 	bool sawSPS = false;
 	int result = HevcHDR::classify(snap.data(), (int)snap.size(), &sawSPS);
 
-	if (result == HevcHDR::HDR_HDR10 || result == HevcHDR::HDR_HLG)
+	if (result == HevcHDR::HDR_HDR10 || result == HevcHDR::HDR_HLG || result == HevcHDR::HDR_GENERIC)
 	{
-		int newHdrType = (result == HevcHDR::HDR_HDR10) ? 1 : 2;
+		int newHdrType = (result == HevcHDR::HDR_HDR10) ? 1 :
+		                 (result == HevcHDR::HDR_HLG)   ? 2 : 3;
 		stopHDRProbe();
 		if (newHdrType != m_hdr_type)
 		{
@@ -2878,6 +2881,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 							int newHdrType = 0;
 							if (m_gamma == 2) newHdrType = 1;       /* HDR10 */
 							else if (m_gamma == 3) newHdrType = 2;  /* HLG */
+							else if (m_gamma == 1) newHdrType = 3;  /* plain HDR */
 							if (newHdrType != m_hdr_type)
 							{
 								m_hdr_type = newHdrType;

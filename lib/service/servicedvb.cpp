@@ -4158,6 +4158,7 @@ void eDVBServicePlay::video_event(struct iTSMPEGDecoder::videoEvent event)
 			int newHdrType = 0;
 			if (gamma == 2) newHdrType = 1;      /* SMPTE ST2084 -> HDR10 */
 			else if (gamma == 3) newHdrType = 2; /* HLG */
+			else if (gamma == 1) newHdrType = 3; /* plain HDR */
 			if (newHdrType != m_hdr_type)
 			{
 				m_hdr_type = newHdrType;
