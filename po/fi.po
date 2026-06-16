@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-12 23:18+0300\n"
-"PO-Revision-Date: 2026-06-13 17:19+0300\n"
+"POT-Creation-Date: 2026-06-15 19:45+0300\n"
+"PO-Revision-Date: 2026-06-15 21:41+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -9076,6 +9076,12 @@ msgctxt "Video output mode"
 msgid "Mode"
 msgstr "Tila"
 
+msgid "Mode 12: Supports PiP but Kodi may not work"
+msgstr "Tila 12: Tukee PiP-toimintoa, mutta Kodi ei välttämättä toimi"
+
+msgid "Mode 1: Supports Kodi but PiP may not work"
+msgstr "Tila 1: Tukee Kodia, mutta PiP-toiminto ei välttämättä toimi"
+
 msgid "Model"
 msgstr "Malli"
 
@@ -9965,6 +9971,9 @@ msgstr "Norfolk Island"
 
 msgid "Normal"
 msgstr "Normaali"
+
+msgid "Normal: No boot modes required."
+msgstr "Normaali: Käynnistystiloja ei tarvita."
 
 msgid "North"
 msgstr "Pohjoista leveyttä"
@@ -15210,7 +15219,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 13.06.2026 ---\n"
+"--- 15.06.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
