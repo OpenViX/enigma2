@@ -73,6 +73,7 @@ class ServiceInfoBar(GUIAddon):
 					iPlayableService.evNewProgramInfo: self.scheduleAddonUpdate,
 					iPlayableService.evCuesheetChanged: self.scheduleAddonUpdate,
 					iPlayableService.evTunedIn: self.scheduleAddonUpdate,
+					iPlayableService.evVideoGammaChanged: self.scheduleAddonUpdate,
 				}
 			)
 		self.currentServiceSource = self.source.screen["CurrentService"]
@@ -232,11 +233,15 @@ class ServiceInfoBar(GUIAddon):
 				if self.records_running > 0:
 					return key
 			elif key == "gamma" and not isRef:
-				if info.getInfo(iServiceInformation.sGamma) == 1:
+				hdr = info.getInfo(iServiceInformation.sHDRType)
+				is_hdr = hdr == 3 if hdr > 0 else info.getInfo(iServiceInformation.sGamma) == 1
+				is_hdr10 = hdr == 1 if hdr > 0 else info.getInfo(iServiceInformation.sGamma) == 2
+				is_hlg = hdr == 2 if hdr > 0 else info.getInfo(iServiceInformation.sGamma) == 3
+				if is_hdr:
 					return "IS_HDR"
-				if info.getInfo(iServiceInformation.sGamma) == 2:
+				if is_hdr10:
 					return "IS_HDR10"
-				if info.getInfo(iServiceInformation.sGamma) == 3:
+				if is_hlg:
 					return "IS_HLG"
 			elif key == "tuners":
 				string = ""
