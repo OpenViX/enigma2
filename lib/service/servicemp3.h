@@ -396,7 +396,9 @@ private:
 	RESULT seekToImpl(pts_t to);
 
 	gint m_aspect, m_width, m_height, m_framerate, m_progressive, m_gamma;
-	int m_hdr_type;                  // 0=SDR 1=HDR10 2=HLG
+	int m_hdr_type;                  // 0=SDR 1=HDR10 2=HLG 3=HDR
+
+#ifdef HAS_SOFTWARE_HDR_DETECTION
 	void updateHDRFromVideoPad();
 
 	/* GStreamer buffer probe for direct HEVC bitstream HDR classification.
@@ -414,6 +416,7 @@ private:
 	void stopHDRProbe();
 	void checkHDRProbe();
 	static GstPadProbeReturn hdrProbeCallback(GstPad*, GstPadProbeInfo*, gpointer);
+#endif /* HAS_SOFTWARE_HDR_DETECTION */
 	std::string m_useragent;
 	std::string m_extra_headers;
 	RESULT trickSeek(gdouble ratio);
