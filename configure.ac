@@ -233,7 +233,7 @@ if test "$BOXTYPE" == "vuduo4k"    -o "$BOXTYPE" == "vuduo4kse"  \
      -o "$BOXTYPE" == "vusolo4k"   -o "$BOXTYPE" == "vuultimo4k"  \
      -o "$BOXTYPE" == "vuuno4k"    -o "$BOXTYPE" == "vuuno4kse"   \
      -o "$BOXTYPE" == "vuzero4k"   \
-     -o "$MACHINEBUILD" == "gbquad4kpro"; then
+     -o "$BOXTYPE" == "gb7252"; then
 	AC_DEFINE(HAS_SOFTWARE_HDR_DETECTION, 1, [Enable software HDR detection via HEVC bitstream parsing])
 fi
 AM_CONDITIONAL(HAS_SOFTWARE_HDR_DETECTION, \
@@ -241,7 +241,7 @@ AM_CONDITIONAL(HAS_SOFTWARE_HDR_DETECTION, \
 	  -o "$BOXTYPE" == "vusolo4k"   -o "$BOXTYPE" == "vuultimo4k"  \
 	  -o "$BOXTYPE" == "vuuno4k"    -o "$BOXTYPE" == "vuuno4kse"   \
 	  -o "$BOXTYPE" == "vuzero4k"   \
-	  -o "$MACHINEBUILD" == "gbquad4kpro")
+	  -o "$BOXTYPE" == "gb7252")
 
 AC_ARG_WITH(accelerationthreshold,
 	AS_HELP_STRING([--with-accelerationthreshold=n], [use acceleration threshold of n bytes]),
