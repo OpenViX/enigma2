@@ -175,6 +175,7 @@ int classify(const uint8_t *buf, int len, bool *sawSPS) {
 	int effTc = (altTc >= 0) ? altTc : bestTc;
 	if (effTc == 16 || (seiFlags & 1)) return HDR_HDR10;
 	if (effTc == 18) return HDR_HLG;
+	if (effTc == 14 || effTc == 15) return HDR_GENERIC; /* BT.2020 traditional gamma */
 	return HDR_SDR;
 }
 

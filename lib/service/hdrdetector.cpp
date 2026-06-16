@@ -177,7 +177,7 @@ void eHDRStreamDetector::tsData(int)
 		bool sawSPS = false;
 		int result = HevcHDR::classify(&m_es[0], (int)m_es.size(), &sawSPS);
 
-		if (result == HevcHDR::HDR_HDR10 || result == HevcHDR::HDR_HLG)
+		if (result == HevcHDR::HDR_HDR10 || result == HevcHDR::HDR_HLG || result == HevcHDR::HDR_GENERIC)
 		{
 			finish(result);
 			return;
