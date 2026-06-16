@@ -18,7 +18,9 @@
 #include <lib/dvb/pmtparse.h>
 
 #include <lib/components/file_eraser.h>
+#ifdef HAS_SOFTWARE_HDR_DETECTION
 #include <lib/service/hdrdetector.h>
+#endif
 #include <lib/service/servicedvbrecord.h>
 #include <lib/service/event.h>
 #include <lib/dvb/metaparser.h>
@@ -1064,8 +1066,10 @@ eDVBServicePlay::eDVBServicePlay(const eServiceReference &ref, eDVBService *serv
 	m_decoder_index(0),
 	m_have_video_pid(0),
 	m_hdr_type(0),
+#ifdef HAS_SOFTWARE_HDR_DETECTION
 	m_hdr_detect_vpid(-1),
 	m_hdr_firstframe_restarted(false),
+#endif
 	m_tune_state(-1),
 	m_noaudio(false),
 	m_is_stream(ref.path.find("://") != std::string::npos),
@@ -1553,7 +1557,9 @@ RESULT eDVBServicePlay::stop()
 
 	cleanupSoftwareDescrambling();
 
+#ifdef HAS_SOFTWARE_HDR_DETECTION
 	if (m_hdr_detector) { m_hdr_detector->stop(); m_hdr_detector = 0; }
+#endif
 
 	m_service_handler_timeshift.free();
 	m_service_handler.free();
@@ -3428,6 +3434,7 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 
 		if ((!m_is_pvr || m_is_stream) && m_have_video_pid && vpidtype == eDVBVideo::H265_HEVC)
 		{
+#ifdef HAS_SOFTWARE_HDR_DETECTION
 			/* Start detection immediately so FTA/stream channels accumulate data
 			 * right away.  For encrypted channels eventSizeChanged will restart
 			 * with a fresh recorder once clear data is flowing. */
@@ -3436,6 +3443,7 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 				m_hdr_firstframe_restarted = false;
 				startHDRDetection(vpid);
 			}
+#endif
 		}
 
 		if (!m_noaudio)
@@ -4131,11 +4139,13 @@ void eDVBServicePlay::video_event(struct iTSMPEGDecoder::videoEvent event)
 			 * can falsely match HEVC start codes and fool SPS detection).
 			 * Skip only if we already have a confirmed HDR result.
 			 * The one-shot flag prevents repeated restarts on resolution changes. */
+#ifdef HAS_SOFTWARE_HDR_DETECTION
 			if (m_hdr_detect_vpid > 0 && m_hdr_type == 0 && !m_hdr_firstframe_restarted)
 			{
 				m_hdr_firstframe_restarted = true;
 				startHDRDetection(m_hdr_detect_vpid);
 			}
+#endif
 			break;
 		case iTSMPEGDecoder::videoEvent::eventFrameRateChanged:
 			m_event((iPlayableService*)this, evVideoFramerateChanged);
@@ -4488,6 +4498,7 @@ void eDVBServicePlay::resetHwDescramblerSlot()
 
 // ==================== HDR Detection ====================
 
+#ifdef HAS_SOFTWARE_HDR_DETECTION
 void eDVBServicePlay::startHDRDetection(int vpid)
 {
 	if (m_hdr_detector) { m_hdr_detector->stop(); m_hdr_detector = 0; }
@@ -4556,6 +4567,7 @@ void eDVBServicePlay::hdrResult(int result)
 	m_event((iPlayableService*)this, evVideoSizeChanged);
 	m_event((iPlayableService*)this, evUpdatedInfo);
 }
+#endif /* HAS_SOFTWARE_HDR_DETECTION */
 
 // ==================== End Software Descrambling ====================
 
