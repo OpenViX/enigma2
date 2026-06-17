@@ -22,10 +22,10 @@ class USER_AGENTS:
 # ------------------------------------------------------------
 # NON-BLOCKING HEAD SUPPORT, run in deferToThread()
 # ------------------------------------------------------------
-def get_content_length(url, headers=None):
+def get_content_length(url, headers=None, timeout=5):
 	try:
 		req = Request(url, headers=headers or {}, method="HEAD")
-		with urlopen(req, timeout=5) as r:
+		with urlopen(req, timeout=timeout) as r:
 			val = r.headers.get("Content-Length")
 			return int(val) if val else 0
 	except Exception:
@@ -133,6 +133,10 @@ class DownloadWithProgress:
 		if userAgent:
 			self._rawHeaders.setdefault("User-Agent", _normaliseHeaders({"User-Agent": userAgent})["User-Agent"])
 
+		# connection timeout
+		self._connectTimeout = int(kwargs.get("connectTimeout", 5))
+		self._connectTimer = None
+
 		self._agent = _makeAgent()
 
 	def start(self):
@@ -147,7 +151,7 @@ class DownloadWithProgress:
 		return self
 
 	def _getHeadSize(self):
-		return get_content_length(self.url, self._rawHeaders)
+		return get_content_length(self.url, self._rawHeaders, self._connectTimeout)
 
 	def _gotHeadSize(self, size):
 		if self._done:
@@ -176,6 +180,10 @@ class DownloadWithProgress:
 
 			self._request.addCallbacks(self._responseReceived, self._requestFailed)
 
+			# CONNECT TIMEOUT WATCHDOG
+			if self._connectTimeout:
+				self._connectTimer = reactor.callLater(self._connectTimeout, self._onConnectTimeout)
+
 		except Exception as err:
 			self._finalise(error=err)
 
@@ -183,6 +191,7 @@ class DownloadWithProgress:
 	# RESPONSE
 	# --------------------------------------------------------
 	def _responseReceived(self, response):
+		self._cancelConnectionTimeout()
 
 		if self._done:
 			return
@@ -213,6 +222,29 @@ class DownloadWithProgress:
 		response.deliverBody(self.protocol)
 
 	# --------------------------------------------------------
+	# CONNECTION TIMEOUT HANDLING
+	# --------------------------------------------------------
+	def _cancelConnectionTimeout(self):
+		if self._connectTimer and self._connectTimer.active():
+			self._connectTimer.cancel()
+			self._connectTimer = None
+
+	def _onConnectTimeout(self):
+		if self._done:
+			return
+
+		self._connectTimer = None
+
+		# cancel request if still pending
+		if self._request:
+			try:
+				self._request.cancel()
+			except Exception:
+				pass
+
+		self._finalise(error=Exception("Connect timeout"))
+
+	# --------------------------------------------------------
 	# UI FLUSH
 	# --------------------------------------------------------
 	def _flushUi(self):
@@ -233,8 +265,11 @@ class DownloadWithProgress:
 	# ERROR HANDLING
 	# --------------------------------------------------------
 	def _requestFailed(self, failure):
+		self._cancelConnectionTimeout()
+
 		if self._done:
 			return
+
 		self._finalise(error=failure)
 
 	# --------------------------------------------------------
@@ -251,6 +286,8 @@ class DownloadWithProgress:
 		# Finalise download lifecycle exactly once.
 		# Cleans up network/file resources and dispatches final callbacks.
 		# if success=False and error=None means cancelled by stop()
+
+		self._cancelConnectionTimeout()
 
 		if self._done:
 			return
