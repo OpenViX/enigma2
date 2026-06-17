@@ -150,7 +150,7 @@ class DownloadWithProgress:
 		self._rawHeaders = _normaliseHeaders(kwargs.get("headers", {}))
 		userAgent = kwargs.get("userAgent")
 		if userAgent:
-			self._rawHeaders.setdefault("User-Agent", userAgent)
+			self._rawHeaders.setdefault("User-Agent", _normaliseHeaders({"User-Agent": userAgent})["User-Agent"])
 
 		self._agent = _makeAgent()
 
