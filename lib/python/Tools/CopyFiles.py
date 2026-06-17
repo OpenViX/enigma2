@@ -113,10 +113,8 @@ class DownloadTask(Task):
 			self.progress = 0  # required to force display update
 			self.name = _("Downloading %s") % bytesToHumanReadable(recvbytes)
 
-	def download_failed(self, failure_instance=None, error_message=""):
+	def download_failed(self, error_message=""):
 		self.error_message = error_message
-		if error_message == "" and failure_instance is not None:
-			self.error_message = failure_instance.getErrorMessage()
 		Task.processFinished(self, 1)
 
 	def download_finished(self, string=""):
