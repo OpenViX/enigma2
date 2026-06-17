@@ -63,29 +63,19 @@ def _buildHeaders(headers=None):
 # STREAM PROTOCOL (no UI logic)
 # ------------------------------------------------------------
 class _DownloadProtocol(Protocol):
-	def __init__(self, downloader, fd):
+	def __init__(self, downloader):
 		self.downloader = downloader
-		self.fd = fd
 		self.recv = 0
 
 	def dataReceived(self, data):
-		if self.downloader.stopFlag:
-			try:
-				self.transport.abortConnection()
-			except Exception:
-				pass
+		if self.downloader._done:
 			return
 
 		self.recv += len(data)
 		try:
-			self.fd.write(data)
+			self.downloader.fd.write(data)
 		except OSError as err:
-			if callable(self.downloader.errorCallback):
-				self.downloader.errorCallback(err)
-			try:
-				self.transport.abortConnection()
-			except Exception:
-				pass
+			self.downloader._finalise(error=err)
 			return
 
 		self.downloader.progress = self.recv
@@ -100,24 +90,13 @@ class _DownloadProtocol(Protocol):
 			reactor.callLater(0.2, self.downloader._flushUi)
 
 	def connectionLost(self, reason):
-		try:
-			self.fd.close()
-		except Exception:
-			pass
-
-		if reason.check(ResponseDone) and not self.downloader.stopFlag:
-			if callable(self.downloader.endCallback):
-				self.downloader.endCallback(self.downloader.outputFile)
+		if self.downloader._done:
 			return
 
-		try:
-			unlink(self.downloader.outputFile)
-		except OSError:
-			pass
-
-		if not self.downloader.stopFlag:
-			if callable(self.downloader.errorCallback):
-				self.downloader.errorCallback(reason)
+		if reason.check(ResponseDone):
+			self.downloader._finalise(success=True)
+		else:
+			self.downloader._finalise(error=reason)
 
 
 # ------------------------------------------------------------
@@ -137,7 +116,9 @@ class DownloadWithProgress:
 		self.endCallback = None
 		self.errorCallback = None
 
-		self.stopFlag = False
+		self.protocol = None
+		self.fd = None
+		self._done = False
 
 		self._pendingProgress = None
 		self._uiScheduled = False
@@ -169,6 +150,8 @@ class DownloadWithProgress:
 		return get_content_length(self.url, self._rawHeaders)
 
 	def _gotHeadSize(self, size):
+		if self._done:
+			return
 		# never override a known good value from GET
 		if self.totalSize > 0:
 			return
@@ -183,7 +166,7 @@ class DownloadWithProgress:
 	def _startGet(self):
 		try:
 			headers = _buildHeaders(headers=self._rawHeaders)  # userAgent is already passed by headers
-			
+
 			self._request = self._agent.request(
 				b"GET",
 				self.url.encode("utf-8"),
@@ -194,23 +177,19 @@ class DownloadWithProgress:
 			self._request.addCallbacks(self._responseReceived, self._requestFailed)
 
 		except Exception as err:
-			if callable(self.errorCallback):
-				self.errorCallback(err)
+			self._finalise(error=err)
 
 	# --------------------------------------------------------
 	# RESPONSE
 	# --------------------------------------------------------
 	def _responseReceived(self, response):
 
+		if self._done:
+			return
+
 		# STRICT HTTP GATE
 		if not (200 <= response.code < 300):  # if not 2XX code means request failed
-			try:
-				response.transport.abortConnection()
-			except Exception:
-				pass
-
-			if callable(self.errorCallback):
-				self.errorCallback(Exception("HTTP %d" % response.code))
+			self._finalise(error=Exception(f"HTTP {response.code}"))
 			return
 
 		# content-length hint from server
@@ -224,19 +203,23 @@ class DownloadWithProgress:
 			pass
 
 		try:  # catch any exception while trying to create the local file
-			fd = open(self.outputFile, "wb")
+			self.fd = open(self.outputFile, "wb")
 		except Exception as err:
-			if callable(self.errorCallback):
-				self.errorCallback(err)
+			self._finalise(error=err)
 			return
 
-		response.deliverBody(_DownloadProtocol(self, fd))
+		self.protocol = _DownloadProtocol(self)
+
+		response.deliverBody(self.protocol)
 
 	# --------------------------------------------------------
 	# UI FLUSH
 	# --------------------------------------------------------
 	def _flushUi(self):
 		self._uiScheduled = False
+
+		if self._done:
+			return
 
 		if self._pendingProgress and callable(self.progressCallback):
 			progress, total = self._pendingProgress
@@ -250,20 +233,67 @@ class DownloadWithProgress:
 	# ERROR HANDLING
 	# --------------------------------------------------------
 	def _requestFailed(self, failure):
-		if callable(self.errorCallback):
-			self.errorCallback(failure)
+		if self._done:
+			return
+		self._finalise(error=failure)
 
 	# --------------------------------------------------------
 	# CONTROL
 	# --------------------------------------------------------
 	def stop(self):
-		self.stopFlag = True
+		self._finalise()
 
+	# --------------------------------------------------------
+	# SINGLE EXIT POINT
+	# --------------------------------------------------------
+	def _finalise(self, success=False, error=None):
+
+		# Finalise download lifecycle exactly once.
+		# Cleans up network/file resources and dispatches final callbacks.
+		# if success=False and error=None means cancelled by stop()
+
+		if self._done:
+			return
+
+		self._done = True
+
+		# 1. stop network
 		if self._request:
 			try:
+				# cancel request before response body starts
 				self._request.cancel()
 			except Exception:
 				pass
+
+		if self.protocol and (transport := getattr(self.protocol, "transport", None)):
+			try:
+				# abort active response body stream
+				transport.abortConnection()
+			except Exception:
+				pass
+
+		# 2. close file descriptor
+		if self.fd:
+			try:
+				self.fd.close()
+			except Exception:
+				pass
+			self.fd = None
+
+		# 3. remove partial file
+		if not success:
+			try:
+				unlink(self.outputFile)
+			except OSError:
+				pass
+
+		# 4. callbacks ( no callback on cancelled (i.e. forced stop()) )
+		if success:
+			if callable(self.endCallback):
+				self.endCallback(self.outputFile)
+
+		elif error and callable(self.errorCallback):
+			self.errorCallback(error)
 
 	# --------------------------------------------------------
 	# CALLBACKS
