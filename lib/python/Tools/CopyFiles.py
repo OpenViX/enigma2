@@ -73,7 +73,7 @@ class DownloaderPostcondition(Condition):
 		return task.returncode == 0
 
 	def getErrorMessage(self, task):
-		return self.error_message
+		return task.error_message or ""
 
 
 class DownloadTask(Task):
@@ -84,7 +84,6 @@ class DownloadTask(Task):
 		self.job = job
 		self.url = url.decode() if isinstance(url, bytes) else url
 		self.path = path
-		self.error_message = ""
 		self.error_message = None
 		self.download = None
 		self.aborted = False
