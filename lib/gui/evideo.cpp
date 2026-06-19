@@ -164,6 +164,18 @@ void eVideoWidget::updatePosition(int disable)
 
 	if (!disable)
 	{
+		if (bounceFixEnabled()
+			&& left == posFullsizeLeft && top == posFullsizeTop
+			&& width == posFullsizeWidth && height == posFullsizeHeight
+			&& lastPigWidth[m_decoder] > 0 && lastPigHeight[m_decoder] > 0
+			&& (lastPigWidth[m_decoder] != posFullsizeWidth || lastPigHeight[m_decoder] != posFullsizeHeight))
+		{
+			/* dm9xx: decoder may be in a reset/fullscreen state and ignore a direct
+			 * fullscreen command. Bounce via the stored PIG position to force the
+			 * driver to acknowledge the transition (same trick as setFullsize). */
+			setPosition(m_decoder, posFullsizeLeft, posFullsizeTop, posFullsizeWidth, posFullsizeHeight);
+			setPosition(m_decoder, lastPigLeft[m_decoder], lastPigTop[m_decoder], lastPigWidth[m_decoder], lastPigHeight[m_decoder]);
+		}
 		setPosition(m_decoder, left, top, width, height);
 		lastPigLeft[m_decoder]   = left;
 		lastPigTop[m_decoder]    = top;
