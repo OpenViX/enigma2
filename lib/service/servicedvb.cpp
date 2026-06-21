@@ -3432,15 +3432,16 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 		m_current_video_pid_type = vpidtype;
 		m_have_video_pid = (vpid > 0 && vpid < 0x2000);
 
-		if ((!m_is_pvr || m_is_stream) && m_have_video_pid && vpidtype == eDVBVideo::H265_HEVC)
+		if (m_have_video_pid && vpidtype == eDVBVideo::H265_HEVC)
 		{
 #ifdef HAS_SOFTWARE_HDR_DETECTION
-			/* Start detection immediately so FTA/stream channels accumulate data
-			 * right away.  For encrypted channels eventSizeChanged will restart
-			 * with a fresh recorder once clear data is flowing. */
+			/* Start detection immediately so channels accumulate data right away.
+			 * For encrypted live channels eventSizeChanged will restart with a
+			 * fresh recorder once clear data is flowing (m_hdr_firstframe_restarted).
+			 * For PVR the content is already clear so skip the first-frame restart. */
 			if (m_hdr_detect_vpid != vpid)
 			{
-				m_hdr_firstframe_restarted = false;
+				m_hdr_firstframe_restarted = m_is_pvr;
 				startHDRDetection(vpid);
 			}
 #endif
