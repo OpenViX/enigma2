@@ -313,7 +313,7 @@ class DownloadWithProgress:
 		if self.protocol and (transport := getattr(self.protocol, "transport", None)):
 			try:
 				# abort active response body stream
-				transport.abortConnection()
+				transport.stopProducing()
 			except Exception:
 				pass
 
