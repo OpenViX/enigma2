@@ -13,7 +13,7 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import ModalMessageBox
 from Tools.Directories import fileReadLines, fileWriteLines
 
-HOTPLUG_SOCKET = "/tmp/hotplug.socket"
+HOTPLUG_SOCKET = "/var/run/hotplug.socket"
 
 # globals
 hotplugNotifier = []
