@@ -93,8 +93,6 @@ class ServiceInfo(Poll, Converter):
 	IS_VIDEO_HEVC = 43
 	IS_SOFTCSA = 44
 
-
-i
 	def __init__(self, type):
 		Poll.__init__(self)
 		Converter.__init__(self, type)
