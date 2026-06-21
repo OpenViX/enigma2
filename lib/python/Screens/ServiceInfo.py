@@ -193,7 +193,22 @@ class ServiceInfo(Screen):
 					resolution += ("i", "p", "")[self.info.getInfo(iServiceInformation.sProgressive)]
 					aspect = self.getServiceInfoValue(iServiceInformation.sAspect)
 					resolution += " - %s" % (aspect in (1, 2, 5, 6, 9, 0xA, 0xD, 0xE) and "4:3" or "16:9")
-				gamma = ("SDR", "HDR", "HDR10", "HLG", "")[self.info.getInfo(iServiceInformation.sGamma)]
+				hdr = self.info.getInfo(iServiceInformation.sHDRType)
+				if hdr >= 0:
+					if hdr == 0:
+						gamma = "SDR"
+						if self.info.getInfo(iServiceInformation.sGamma) == 1:
+							gamma = "HDR"
+						elif self.info.getInfo(iServiceInformation.sGamma) == 2:
+							gamma = "HDR10"
+						elif self.info.getInfo(iServiceInformation.sGamma) == 3:
+							gamma = "HLG"
+					elif hdr == 1:
+						gamma = "HDR10"
+					elif hdr == 2:
+						gamma = "HLG"
+					elif hdr == 3:
+						gamma = "HDR"
 				if gamma:
 					resolution += " - %s" % gamma
 			self.toggle_pid_button()
