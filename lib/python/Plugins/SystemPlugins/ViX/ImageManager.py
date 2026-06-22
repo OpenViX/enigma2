@@ -19,6 +19,7 @@ from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo, BOXTYPE, CHKROOTMB, DISPLAYBRAND, IMAGETYPE, MACHINEBUILD, MACHINENAME, MODEL, MTDKERNEL, MTDROOTFS, UBIMB
 import Components.Task
+from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Setup import Setup
@@ -534,12 +535,11 @@ class VIXImageManager(Screen):
 			choices.append(((_("slot%s %s - %s (current image)") if x == currentimageslot else _("slot%s %s - %s")) % (x, SystemInfo["canMultiBoot"][x]["slotname"], imagedict[x]["imagename"]), (x)))
 			if x == currentimageslot:
 				idx = i
-		dialog = self.session.openWithCallback(self.keyRestore2, MessageBox, message, list=choices, default=False, simple=True)
-		if idx:
-			dialog["list"].moveToIndex(idx)
+		self.session.openWithCallback(self.keyRestore2, ChoiceBox, title=message, list=choices, selection=idx)
 
 	def keyRestore2(self, retval):
 		if retval:
+			retval = retval[1]
 			if SystemInfo["canMultiBoot"]:
 				self.multibootslot = retval
 				print("ImageManager", retval)
