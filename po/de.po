@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-12 11:25+0000\n"
+"POT-Creation-Date: 2026-06-22 16:28+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: 2stein\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, 2stein\n"
@@ -825,14 +825,6 @@ msgid "%d ms"
 msgstr "%d ms"
 
 #, python-format
-msgid "%d of %d Bytes"
-msgstr "%d von %d Bytes"
-
-#, python-format
-msgid "%d of %d KB"
-msgstr "%d von %d KB"
-
-#, python-format
 msgid "%d pixel wide"
 msgid_plural "%d pixels wide"
 msgstr[0] "%d Pixel breit"
@@ -998,14 +990,6 @@ msgstr "%s ist auch für AutoFS Verbindungen aktiviert."
 #, python-format
 msgid "%s is no longer used. Should it be deleted?"
 msgstr "Der Satellit '%s' wird nicht mehr benötigt - soll er gelöscht werden?"
-
-#, python-format
-msgid "%s of %s GB"
-msgstr "%s von %s GB"
-
-#, python-format
-msgid "%s of %s MB"
-msgstr "%s von %s MB"
 
 #, python-format
 msgid "%s only has %s MB free."
@@ -2937,6 +2921,9 @@ msgstr "Anbieter kürzen manchmal lange Inhaltsangaben mit …. Wähle, wie das 
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
 
+msgid "Buffer descrambled data before starting playback. Fixes audio dropouts with passthrough AC3 by ensuring enough data is available when the decoder starts. Higher values are more stable but increase channel switch time. *Restart E2 for changes to take effect."
+msgstr "Puffert entschlüsselte Daten vor Beginn der Wiedergabe. Behebt Tonaussetzer bei AC3-Passthrough, indem sichergestellt wird, dass beim Start des Dekoders genügend Daten verfügbar sind. Höhere Werte sind stabiler, erhöhen aber die Umschaltzeit zwischen Sendern. Starte Enigma2 neu, um die Änderung zu aktivieren."
+
 #, python-format
 msgid "Buffering %d%%"
 msgstr "Pufferung %d%%"
@@ -4818,6 +4805,9 @@ msgstr "Dekoder-Freigabe-Strategie *"
 msgid "Decoder Start Timeout *"
 msgstr "Dekoder-Start-Timeout *"
 
+msgid "Decoder playback buffer *"
+msgstr "Dekoder-Wiedergabepuffer *"
+
 msgid "Decrement end time"
 msgstr "Verringere End-Zeit"
 
@@ -5501,6 +5491,14 @@ msgstr "Plugins installieren"
 
 msgid "Downloading"
 msgstr "Herunterladen"
+
+#, python-format
+msgid "Downloading %s"
+msgstr "Lade %s herunter"
+
+#, python-format
+msgid "Downloading %s of %s"
+msgstr "Lade %s von %s herunter"
 
 msgid "Downloading plugin information. Please wait..."
 msgstr "Lade Plugin-Informationen herunter - bitte warten..."
@@ -9074,6 +9072,12 @@ msgctxt "Video output mode"
 msgid "Mode"
 msgstr "Modus [Video-Ausgang]"
 
+msgid "Mode 12: Supports PiP but Kodi may not work"
+msgstr "Modus 12: Unterstützt PiP, aber Kodi funktioniert möglicherweise nicht"
+
+msgid "Mode 1: Supports Kodi but PiP may not work"
+msgstr "Modus 1: Unterstützt Kodi, aber PiP funktioniert möglicherweise nicht"
+
 msgid "Model"
 msgstr "Modell"
 
@@ -9944,7 +9948,10 @@ msgid "Norfolk Island"
 msgstr "Norfolk Island"
 
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
+
+msgid "Normal: No boot modes required."
+msgstr "Normal: Keine Boot-Modi erforderlich."
 
 msgid "North"
 msgstr "Nord"
