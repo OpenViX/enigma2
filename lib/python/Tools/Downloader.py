@@ -338,7 +338,7 @@ class DownloadWithProgress:
 				self.endCallback(self.outputFile)
 
 		elif error and callable(self.errorCallback):
-			self.errorCallback(error)
+			self.errorCallback(error.getErrorMessage() if hasattr(error, "getErrorMessage") else str(error))
 
 	# --------------------------------------------------------
 	# CALLBACKS
