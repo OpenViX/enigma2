@@ -114,7 +114,7 @@ class HotPlugManager:
 			notFound = True
 			mounts = fileReadLines("/proc/mounts")
 			mountPoint = "/media/usb"
-			mountPointDevice = DEVNAME.replace("/dev/", "/media/")
+			mountPointDevice = "/media/mmc" if DEVNAME == "/dev/mmcblk1p1" else DEVNAME.replace("/dev/", "/media/")
 			mountPointHdd = None if [x.split()[1] for x in mounts if "/media/hdd" in x] else "/media/hdd"
 			knownDevices = fileReadLines("/etc/udev/known_devices", default=[])
 			knownDevice = ""
@@ -181,6 +181,8 @@ class HotPlugManager:
 							mkdir(mountPoint, 0o755)
 						if answer == 4 and not exists(mountPointHdd):
 							mkdir(mountPointHdd, 0o755)
+						if answer == 5 and not exists(mountPointDevice):
+							mkdir(mountPointDevice, 0o755)
 						if answer == 1:  # Permanently ignore this device
 							knownDevices.append(f"{ID_FS_UUID}:None")
 						elif answer == 2:  # Temporarily mount
