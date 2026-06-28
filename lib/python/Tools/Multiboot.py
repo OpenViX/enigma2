@@ -192,6 +192,7 @@ def GetImagelist(Recovery=None):
 	tmpname = tmp.dir
 	from Components.config import config		# here to prevent boot loop
 	slotRoot = ""
+	imagedir = "/"  # init here in case len(SystemInfo["canMultiBoot"].keys()) == 0
 	for slot in sorted(list(SystemInfo["canMultiBoot"].keys())):
 		if slot == 0:
 			if UBIMB:
