@@ -67,7 +67,7 @@ def getMultibootslots():
 							continue
 						if "STARTUP_RECOVERY" in file:
 							slotnumber = "0"
-							SystemInfo["RecoveryMode"] = True if BOXTYPE != "gbquad4kpro" else False
+							SystemInfo["RecoveryMode"] = BOXTYPE != "gbquad4kpro"
 						if "STARTUP_FLASH" in file:
 							slotnumber = "0"
 						if slotnumber.isdigit() and slotnumber not in bootslots:
