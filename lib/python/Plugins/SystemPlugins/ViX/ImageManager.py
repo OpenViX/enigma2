@@ -309,6 +309,7 @@ class VIXImageManager(Screen):
 			self["mainactions"].setEnabled(False)
 			self.mountAvailable = False
 			self["key_green"].hide()
+			self["key_yellow"].hide()
 			self["lab1"].setText(_("Device: None available") + "\n" + _("Press 'Menu' to select a storage device"))
 		else:
 			if mount not in config.imagemanager.backuplocation.choices.choices:
@@ -332,11 +333,14 @@ class VIXImageManager(Screen):
 			self["mainactions"].setEnabled(True)
 			self.mountAvailable = True
 			self["key_green"].show()
+			self["key_yellow"].show()
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, ImageManagerSetup)
 
 	def doDownload(self):
+		if not path.exists(self.BackupDirectory):  # we need a real folder to save the download.
+			return
 		choices = [(x[DISTRO], x) for x in FEED_URLS]
 		if config.imagemanager.imagefeed_MyBuild.value.startswith("http"):
 			choices.insert(0, ("My build", ("My build", config.imagemanager.imagefeed_MyBuild.value, "getMachineMake")))
@@ -385,6 +389,8 @@ class VIXImageManager(Screen):
 			self.refreshList()
 
 	def GreenPressed(self):
+		if not path.exists(self.BackupDirectory):  # we need a real folder to save the download.
+			return
 		backup = None
 		self.BackupRunning = False
 		for job in Components.Task.job_manager.getPendingJobs():
