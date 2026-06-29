@@ -5,8 +5,6 @@ from enigma import eListbox, eListboxPythonMultiContent, BT_ALIGN_CENTER
 from skin import parseScale, applySkinFactor
 
 from Components.MultiContent import MultiContentEntryPixmapAlphaBlend
-from Components.Sources.Boolean import Boolean
-from Components.Sources.StaticText import StaticText
 
 from Tools.Directories import resolveFilename, SCOPE_GUISKIN
 from Tools.LoadPixmap import LoadPixmap
@@ -73,7 +71,7 @@ class ButtonSequence(GUIAddon):
 	def constructButtonSequence(self):
 		sequence = []
 		for x, val in self.sources.items():
-			if (isinstance(val, Boolean) and val.boolean) or (isinstance(val, StaticText) and val.text):
+			if hasattr(val, "boolean") and val.boolean or hasattr(val, "visible") and val.visible:
 				if x not in sequence:
 					sequence.append(x)
 
