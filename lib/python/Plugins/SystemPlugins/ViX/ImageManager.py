@@ -467,7 +467,7 @@ class VIXImageManager(Screen):
 		self.sel = self["list"].getCurrent()  # (name, link)
 		if not self.sel:
 			return
-		print("[ImageManager][keyRestore] self.sel SystemInfo['MultiBootSlot']", self.sel[0], "   ", SystemInfo["MultiBootSlot"])
+		print(f"[ImageManager][keyRestore] self.sel: {self.sel[0]}, SystemInfo['MultiBootSlot']: {str(SystemInfo['MultiBootSlot'])}")
 		if SystemInfo["MultiBootSlot"] == 0 and self.isVuKexecCompatibleImage(self.sel[0]):  # only if Vu multiboot has been enabled and the image is compatible
 			message = [_("Are you sure you want to overwrite the Recovery image?")]
 			if "VuSlot0" in self.sel[0]:
@@ -518,46 +518,41 @@ class VIXImageManager(Screen):
 			message = _("Recording(s) are in progress or coming up in few seconds!") + "\n" + _("Do you still want to flash image\n%s?") % self.sel[0]
 		else:
 			message = _("Do you want to flash image\n%s?") % self.sel[0]
-		if SystemInfo["canMultiBoot"] is False:
-			if config.imagemanager.autosettingsbackup.value:
-				self.doSettingsBackup()
-			else:
-				self.keyRestore3()
 		if SystemInfo["HasHiSi"]:
 			if pathExists("/dev/sda4"):
 				self.HasSDmmc = True
-		imagedict = GetImagelist()
+		imagedict = GetImagelist() if SystemInfo["canMultiBoot"] else {}
 		choices = []
 		currentimageslot = SystemInfo["MultiBootSlot"]
 		idx = 0
+		# this loop only runs if SystemInfo["canMultiBoot"]
 		for i, x in enumerate(imagedict.keys()):
 			choices.append(((_("slot%s %s - %s (current image)") if x == currentimageslot else _("slot%s %s - %s")) % (x, SystemInfo["canMultiBoot"][x]["slotname"], imagedict[x]["imagename"]), (x)))
 			if x == currentimageslot:
 				idx = i
+		# if not SystemInfo["canMultiBoot"] creates a yes/no messagebox for non-multiboot
 		dialog = self.session.openWithCallback(self.keyRestore2, MessageBox, message, list=choices, default=False, simple=True)
 		if idx:
 			dialog["list"].moveToIndex(idx)
 
 	def keyRestore2(self, retval):
+		print("[ImageManager][keyRestore2] retval", str(retval))
 		if retval:
 			if SystemInfo["canMultiBoot"]:
 				self.multibootslot = retval
-				print("ImageManager", retval)
 				self.MTDKERNEL = SystemInfo["canMultiBoot"][self.multibootslot]["kernel"].split("/")[2]
 				if SystemInfo["HasMultibootMTD"]:
 					self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"]
 				else:
 					self.MTDROOTFS = SystemInfo["canMultiBoot"][self.multibootslot]["root"].split("/")[2]
-			if SystemInfo["HasHiSi"] and SystemInfo["MultiBootSlot"] > 4 and self.multibootslot < 4:
-				self.session.open(MessageBox, _("ImageManager - %s - cannot flash eMMC slot from sd card slot.") % BOXTYPE, MessageBox.TYPE_INFO, timeout=10)
-				return
-			if self.sel:
-				if SystemInfo["MultiBootSlot"] != 0 and config.imagemanager.autosettingsbackup.value:
-					self.doSettingsBackup()
-				else:
-					self.keyRestore3()
+				if SystemInfo["HasHiSi"] and SystemInfo["MultiBootSlot"] > 4 and self.multibootslot < 4:
+					self.session.open(MessageBox, _("ImageManager - %s - cannot flash eMMC slot from sd card slot.") % BOXTYPE, MessageBox.TYPE_INFO, timeout=10)
+					return
+			# skip making a backup on recovery slot... non-multiboot will succeed here because SystemInfo["MultiBootSlot"] will equal None
+			if SystemInfo["MultiBootSlot"] != 0 and config.imagemanager.autosettingsbackup.value:
+				self.doSettingsBackup()
 			else:
-				self.session.open(MessageBox, _("There is no image to flash."), MessageBox.TYPE_INFO, timeout=10)
+				self.keyRestore3()
 
 	def keyRestore3(self, *args, **kwargs):
 		self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares."), MessageBox.TYPE_INFO, timeout=240, enable_input=False)
