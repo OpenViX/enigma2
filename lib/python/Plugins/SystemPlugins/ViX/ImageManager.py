@@ -339,7 +339,7 @@ class VIXImageManager(Screen):
 		self.session.openWithCallback(self.setupDone, ImageManagerSetup)
 
 	def doDownload(self):
-		if not path.exists(self.BackupDirectory):  # we need a real folder to save the download.
+		if not self.mountAvailable:  # we need a real folder to save the download.
 			return
 		choices = [(x[DISTRO], x) for x in FEED_URLS]
 		if config.imagemanager.imagefeed_MyBuild.value.startswith("http"):
@@ -389,7 +389,7 @@ class VIXImageManager(Screen):
 			self.refreshList()
 
 	def GreenPressed(self):
-		if not path.exists(self.BackupDirectory):  # we need a real folder to save the download.
+		if not self.mountAvailable:  # we need a real folder to save the download.
 			return
 		backup = None
 		self.BackupRunning = False
