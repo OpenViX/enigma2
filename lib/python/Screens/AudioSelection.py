@@ -105,8 +105,8 @@ class AudioSelection(ConfigListScreen, Screen):
 					hook()
 
 	def __layoutFinished(self):
-		self.moveFocusToStreams()
 		self.settings.menupage.addNotifier(self.fillList)
+		self.settings.menupage.addNotifier(self.moveFocusToStreams)
 
 	def saveAVDict(self):
 		eDVBDB.getInstance().saveIptvServicelist()
@@ -571,12 +571,12 @@ class AudioSelection(ConfigListScreen, Screen):
 			self["streams"].selectNext()
 		self.updateColorButtons()
 
-	def moveFocusToStreams(self):
+	def moveFocusToStreams(self, configElement=None):
 		self["config"].instance.setSelectionEnable(False)
 		self["streams"].style = "default"
 		self.focus = FOCUS_STREAMS
 
-	def moveFocusToConfig(self):
+	def moveFocusToConfig(self, configElement=None):
 		self["config"].instance.setSelectionEnable(True)
 		self["streams"].style = "notselected"
 		self.focus = FOCUS_CONFIG
