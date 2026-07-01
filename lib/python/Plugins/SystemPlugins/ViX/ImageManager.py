@@ -30,23 +30,7 @@ import Tools.CopyFiles
 from Tools.Multiboot import GetImagelist
 from Tools.Notifications import AddPopupWithCallback
 
-
-def getMountChoices():
-	choices = []
-	for p in harddiskmanager.getMountedPartitions():
-		if path.exists(p.mountpoint):
-			d = path.normpath(p.mountpoint)
-			entry = (p.mountpoint, d)
-			if p.mountpoint != "/" and entry not in choices:
-				choices.append(entry)
-	choices.sort()
-	return choices
-
-
-def getMountDefault(choices):
-	choices = {x[1]: x[0] for x in choices}
-	default = choices.get("/media/hdd") or choices.get("/media/usb")
-	return default
+from . import getMountChoices, getMountDefault
 
 
 def __onPartitionChange(*args, **kwargs):
@@ -104,17 +88,23 @@ FEED_URLS = [
 
 autoImageManagerTimer = None
 
-if path.exists(config.imagemanager.backuplocation.value + "imagebackups/imagerestore"):
-	try:
-		rmtree(config.imagemanager.backuplocation.value + "imagebackups/imagerestore")
-	except Exception:
-		pass
-TMPDIR = config.imagemanager.backuplocation.value + "imagebackups/" + config.imagemanager.folderprefix.value + "-" + MACHINEBUILD + "-" + IMAGETYPE + "-mount"
-if path.exists(TMPDIR + "/root") and path.ismount(TMPDIR + "/root"):
-	try:
-		system("umount " + TMPDIR + "/root")
-	except Exception:
-		pass
+
+def cleanup():  # do in function to keep the namespace clean
+	restore_path = path.join(config.imagemanager.backuplocation.value, "imagebackups", "imagerestore")
+	if path.exists(restore_path):
+		try:
+			rmtree(restore_path)
+		except Exception:
+			pass
+	tmp_root = path.join(config.imagemanager.backuplocation.value, "imagebackups", f"{config.imagemanager.folderprefix.value}-{MACHINEBUILD}-{IMAGETYPE}-mount", "root")
+	if path.exists(tmp_root) and path.ismount(tmp_root):
+		try:
+			system(f"umount {tmp_root}")
+		except Exception:
+			pass
+
+
+cleanup()
 
 
 def ImageManagerautostart(reason, session=None, **kwargs):
@@ -300,10 +290,23 @@ class VIXImageManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		if config.imagemanager.backuplocation.value.endswith("/"):
-			mount = config.imagemanager.backuplocation.value, config.imagemanager.backuplocation.value[:-1]
-		else:
-			mount = config.imagemanager.backuplocation.value + "/", config.imagemanager.backuplocation.value
+		# --------------------------------------------------------------------------------------
+		# TO DO:
+		#
+		# As far as I can work out this section is complete nonsense because:
+		# 1) In the case of ConfigSelection, if the value in the settings file is not in
+		#    the "choices" list that value will not be loaded. Instead .value will return
+		#    the default. In a case where "choices" list is zero length .value will return "".
+		#
+		# 2) Any swapping from the value in the settings file to /media/hdd would have been
+		#    done internally inside the ConfigSelection before this code is ever reached.
+		#
+		# So the only time we would see the "Device: None available" message is if "choices"
+		# is zero length. And we would never see the "The chosen location does not exist,
+		# using /media/hdd." message ever. And "Press 'Menu' to select a storage device"
+		# would not be of any help because "Backup location" would not be populated.
+		# --------------------------------------------------------------------------------------
+		mount = config.imagemanager.backuplocation.value, path.normpath(config.imagemanager.backuplocation.value)
 		hdd = "/media/hdd/", "/media/hdd"
 		if mount not in config.imagemanager.backuplocation.choices.choices and hdd not in config.imagemanager.backuplocation.choices.choices:
 			self["mainactions"].setEnabled(False)
@@ -313,14 +316,13 @@ class VIXImageManager(Screen):
 			self["lab1"].setText(_("Device: None available") + "\n" + _("Press 'Menu' to select a storage device"))
 		else:
 			if mount not in config.imagemanager.backuplocation.choices.choices:
-				self.BackupDirectory = "/media/hdd/imagebackups/"
-				config.imagemanager.backuplocation.value = "/media/hdd/"
+				config.imagemanager.backuplocation.value = hdd[0]
 				config.imagemanager.backuplocation.save()
 				self["lab1"].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select an image to flash."))
 			else:
-				self.BackupDirectory = config.imagemanager.backuplocation.value + "imagebackups/"
 				s = statvfs(config.imagemanager.backuplocation.value)
-				self["lab1"].setText(_("Device: ") + config.imagemanager.backuplocation.value + " " + _("Free space:") + " " + bytesToHumanReadable(s.f_bsize * s.f_bavail) + "\n" + _("Select an image to flash."))
+				self["lab1"].setText(_("Device: ") + path.normpath(config.imagemanager.backuplocation.value) + " - " + _("Free space:") + " " + bytesToHumanReadable(s.f_bsize * s.f_bavail) + "\n" + _("Select an image to flash."))
+			self.BackupDirectory = path.join(config.imagemanager.backuplocation.value, "imagebackups", "")
 			try:
 				if not path.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0o755)
@@ -562,7 +564,7 @@ class VIXImageManager(Screen):
 
 	def keyRestore3(self, *args, **kwargs):
 		self.restore_infobox = self.session.open(MessageBox, _("Please wait while the flash prepares."), MessageBox.TYPE_INFO, timeout=240, enable_input=False)
-		if "/media/autofs" in config.imagemanager.backuplocation.value or "/media/net" in config.imagemanager.backuplocation.value:
+		if config.imagemanager.backuplocation.value.startswith(("/media/autofs", "/media/net")):
 			self.TEMPDESTROOT = tempfile.mkdtemp(prefix="imageRestore")
 		else:
 			self.TEMPDESTROOT = self.BackupDirectory + "imagerestore"
@@ -904,7 +906,7 @@ class ImageBackup(Screen):
 		self.fullBackup = not slotBackup
 		print(f"[ImageManager] self.fullBackup:{self.fullBackup}")
 		self.BackupDevice = config.imagemanager.backuplocation.value
-		self.BackupDirectory = f"{config.imagemanager.backuplocation.value}imagebackups/"
+		self.BackupDirectory = path.join(self.BackupDevice, "imagebackups", "")
 		self.BackupDate = strftime("%Y%m%d_%H%M%S", localtime())
 		print(f"[ImageManager] Device:{self.BackupDevice} Directory:{self.BackupDirectory}")
 		backupType = "-SoftwareUpdate-" if updatebackup else "-"
@@ -1057,7 +1059,7 @@ class ImageBackup(Screen):
 				remove(f"{self.BackupDirectory}{config.imagemanager.folderprefix.value}-{MACHINEBUILD}-{IMAGETYPE}-swapfile_backup")
 		except Exception as e:
 			print(str(e))
-			print("[ImageManager] Device: " + config.imagemanager.backuplocation.value + ", i don't seem to have write access to this device.")
+			print("[ImageManager] Device: " + self.BackupDevice + ", I don't seem to have write access to this device.")
 
 		s = statvfs(self.BackupDevice)
 		free = (s.f_bsize * s.f_bavail) // (1024 * 1024)
