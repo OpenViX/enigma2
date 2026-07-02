@@ -23,6 +23,7 @@ from Tools.ISO639 import LanguageCodes
 from Tools.General import isIPTV
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
+from Tools.BoundFunction import boundFunction
 
 FOCUS_CONFIG, FOCUS_STREAMS = range(2)
 [PAGE_AUDIO, PAGE_SUBTITLES] = ["audio", "subtitles"]
@@ -42,10 +43,9 @@ class AudioSelection(ConfigListScreen, Screen):
 	def __init__(self, session, infobar=None, page=PAGE_AUDIO):
 		Screen.__init__(self, session)
 		self["streams"] = List([], enableWrapAround=True)
-		self["key_red"] = Boolean(False)
-		self["key_green"] = Boolean(False)
-		self["key_yellow"] = Boolean(True)
-		self["key_blue"] = Boolean(False)
+		self.colors = ("red", "green", "yellow", "blue")
+		for color in self.colors:
+			self[f"key_{color}"] = Boolean(False)
 		self.protectContextMenu = True
 		ConfigListScreen.__init__(self, [])
 		self.infobar = infobar or self.session.infobar
@@ -58,12 +58,12 @@ class AudioSelection(ConfigListScreen, Screen):
 		self.cached_subtitle_checked = False
 		self.__selected_subtitle = None
 		self["actions"] = NumberActionMap(["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "InfobarAudioSelectionActions", "InfobarSubtitleSelectionActions"], {
-			"red": self.keyRed,
-			"green": self.keyGreen,
-			"yellow": self.keyYellow,
+			"red": boundFunction(self.colorkey, self.colors.index("red")),
+			"green": boundFunction(self.colorkey, self.colors.index("green")),
+			"yellow": boundFunction(self.colorkey, self.colors.index("yellow")),
+			"blue": boundFunction(self.colorkey, self.colors.index("blue")),
 			"subtitleSelection": self.keyAudioSubtitle,
 			"audioSelection": self.keyAudioSubtitle,
-			"blue": self.keyBlue,
 			"ok": self.keyOk,
 			"cancel": self.cancel,
 			"up": self.keyUp,
@@ -105,9 +105,8 @@ class AudioSelection(ConfigListScreen, Screen):
 					hook()
 
 	def __layoutFinished(self):
-		self["config"].instance.setSelectionEnable(False)
-		self.focus = FOCUS_STREAMS
 		self.settings.menupage.addNotifier(self.fillList)
+		self.settings.menupage.addNotifier(self.moveFocusToStreams)
 
 	def saveAVDict(self):
 		eDVBDB.getInstance().saveIptvServicelist()
@@ -121,16 +120,25 @@ class AudioSelection(ConfigListScreen, Screen):
 			choice_list = [(item, _(item)) for item in choiceslist]
 		return choice_list
 
+	def updateColorButtons(self):
+		for color in self.colors:
+			self[f"key_{color}"].setBoolean(False)
+
+		visible_rows = self["config"].instance.size().height() // self["config"].l.getItemSize().height()
+		if self["config"].getCurrentIndex() < visible_rows:  # display color buttons on the first page only
+
+			for i, color in enumerate(self.colors):
+				if i < visible_rows and i < len(self["config"].list) and self["config"].list[i][0]:
+					self[f"key_{color}"].setBoolean(True)
+
 	def fillList(self, arg=None):
 		streams = []
 		conflist = []
 		selectedidx = 0
 		self.subtitlelist = []
 
-		self["key_red"].setBoolean(False)
-		self["key_green"].setBoolean(False)
-		self["key_yellow"].setBoolean(False)
-		self["key_blue"].setBoolean(False)
+		for color in self.colors:
+			self[f"key_{color}"].setBoolean(False)
 
 		self.subtitlelist = self.getSubtitleList()
 		print("[AudiSelection][fillList] subtitlelist=%s" % (self.subtitlelist))
@@ -388,15 +396,8 @@ class AudioSelection(ConfigListScreen, Screen):
 			if self.infobar.selected_subtitle and self.infobar.selected_subtitle != (0, 0, 0, 0) and ".DVDPlayer'>" not in repr(self.infobar):
 				conflist.append(getConfigListEntry(_("Subtitle quickmenu"), ConfigNothing(), None))
 
-		if len(conflist) > 0 and conflist[0][0]:
-			self["key_red"].setBoolean(True)
-		if len(conflist) > 1 and conflist[1][0]:
-			self["key_green"].setBoolean(True)
-		if len(conflist) > 2 and conflist[2][0]:
-			self["key_yellow"].setBoolean(True)
-		if len(conflist) > 3 and conflist[3][0]:
-			self["key_blue"].setBoolean(True)
 		self["config"].list = conflist
+		self.updateColorButtons()
 		self["streams"].list = streams
 		self["streams"].setIndex(selectedidx)
 
@@ -515,8 +516,8 @@ class AudioSelection(ConfigListScreen, Screen):
 		elif self.focus == FOCUS_STREAMS:
 			self["streams"].setIndex(0)
 
-	def keyRight(self, config=False):
-		if config or self.focus == FOCUS_CONFIG:
+	def keyRight(self):
+		if self.focus == FOCUS_CONFIG:
 			index = self["config"].getCurrentIndex()
 			if self.settings.menupage.value == PAGE_AUDIO:
 				if self.subtitlelist and index == 0:  # Subtitle selection screen
@@ -534,32 +535,8 @@ class AudioSelection(ConfigListScreen, Screen):
 					self.session.open(QuickSubtitlesConfigMenu, self.infobar)  # sub title config screen
 			else:
 				ConfigListScreen.keyRight(self)
-		if self.focus == FOCUS_STREAMS and self["streams"].count() and config is False:
+		if self.focus == FOCUS_STREAMS and self["streams"].count():
 			self["streams"].setIndex(self["streams"].count() - 1)
-
-	def keyRed(self):
-		if self["key_red"].getBoolean():
-			self.colorkey(0)
-		else:
-			return 0
-
-	def keyGreen(self):
-		if self["key_green"].getBoolean():
-			self.colorkey(1)
-		else:
-			return 0
-
-	def keyYellow(self):
-		if self["key_yellow"].getBoolean():
-			self.colorkey(2)
-		else:
-			return 0
-
-	def keyBlue(self):
-		if self["key_blue"].getBoolean():
-			self.colorkey(3)
-		else:
-			return 0
 
 	def keyAudioSubtitle(self):
 		if self.settings.menupage.value == PAGE_AUDIO:
@@ -568,31 +545,41 @@ class AudioSelection(ConfigListScreen, Screen):
 			self.settings.menupage.setValue("audio")
 
 	def colorkey(self, idx):
-		self["config"].setCurrentIndex(idx)
-		self.keyRight(True)
+		if idx < len(self["config"].list) and self["config"].list[idx][0]:
+			self.moveFocusToConfig()
+			self["config"].setCurrentIndex(idx)
+			self.keyRight()
 
 	def keyUp(self):
 		if self.focus == FOCUS_CONFIG:
 			self["config"].instance.moveSelection(self["config"].instance.moveUp)
 		elif self.focus == FOCUS_STREAMS:
 			if self["streams"].getIndex() == 0:
-				self["config"].instance.setSelectionEnable(True)
-				self["streams"].style = "notselected"
+				self.moveFocusToConfig()
 				self["config"].setCurrentIndex(len(self["config"].getList()) - 1)
-				self.focus = FOCUS_CONFIG
 			else:
 				self["streams"].selectPrevious()
+		self.updateColorButtons()
 
 	def keyDown(self):
 		if self.focus == FOCUS_CONFIG:
 			if self["config"].getCurrentIndex() < len(self["config"].getList()) - 1:
 				self["config"].instance.moveSelection(self["config"].instance.moveDown)
 			else:
-				self["config"].instance.setSelectionEnable(False)
-				self["streams"].style = "default"
-				self.focus = FOCUS_STREAMS
+				self.moveFocusToStreams()
 		elif self.focus == FOCUS_STREAMS:
 			self["streams"].selectNext()
+		self.updateColorButtons()
+
+	def moveFocusToStreams(self, configElement=None):
+		self["config"].instance.setSelectionEnable(False)
+		self["streams"].style = "default"
+		self.focus = FOCUS_STREAMS
+
+	def moveFocusToConfig(self, configElement=None):
+		self["config"].instance.setSelectionEnable(True)
+		self["streams"].style = "notselected"
+		self.focus = FOCUS_CONFIG
 
 	def volumeUp(self):
 		VolumeControl.instance and VolumeControl.instance.volUp()

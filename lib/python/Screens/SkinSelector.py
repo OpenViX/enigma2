@@ -170,8 +170,7 @@ class SkinSelector(Screen, HelpableScreen):
 				self.showRestartMessage(_("To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?") % label)
 		elif skin == self.currentSkin:
 			print("[SkinSelector] Selected skin: '%s' (Pending skin '%s' cancelled!)" % (pathjoin(self.rootDir, skin), pathjoin(self.rootDir, self.config.value)))
-			self.config.value = skin
-			self.config.save()
+			self.saveConfig()
 			self.close()
 		else:
 			print("[SkinSelector] Selected skin: '%s'" % pathjoin(self.rootDir, skin))

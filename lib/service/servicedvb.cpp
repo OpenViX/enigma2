@@ -18,6 +18,9 @@
 #include <lib/dvb/pmtparse.h>
 
 #include <lib/components/file_eraser.h>
+#ifdef HAS_SOFTWARE_HDR_DETECTION
+#include <lib/service/hdrdetector.h>
+#endif
 #include <lib/service/servicedvbrecord.h>
 #include <lib/service/event.h>
 #include <lib/dvb/metaparser.h>
@@ -1062,6 +1065,11 @@ eDVBServicePlay::eDVBServicePlay(const eServiceReference &ref, eDVBService *serv
 	m_is_primary(1),
 	m_decoder_index(0),
 	m_have_video_pid(0),
+	m_hdr_type(0),
+#ifdef HAS_SOFTWARE_HDR_DETECTION
+	m_hdr_detect_vpid(-1),
+	m_hdr_firstframe_restarted(false),
+#endif
 	m_tune_state(-1),
 	m_noaudio(false),
 	m_is_stream(ref.path.find("://") != std::string::npos),
@@ -1548,6 +1556,10 @@ RESULT eDVBServicePlay::stop()
 	stopTimeshift(); /* in case time shift was enabled, remove buffer etc. */
 
 	cleanupSoftwareDescrambling();
+
+#ifdef HAS_SOFTWARE_HDR_DETECTION
+	if (m_hdr_detector) { m_hdr_detector->stop(); m_hdr_detector = 0; }
+#endif
 
 	m_service_handler_timeshift.free();
 	m_service_handler.free();
@@ -2126,6 +2138,8 @@ int eDVBServicePlay::getInfo(int w)
 		return program.isCrypted();
 	case sIsSoftCSA:
 		return (m_csa_session && m_csa_session->isActive());
+	case sHDRType:
+		return m_hdr_type;
 	case sIsDedicated3D:
 		if (m_dvb_service) return m_dvb_service->isDedicated3D();
 		return false;
@@ -3418,6 +3432,21 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 		m_current_video_pid_type = vpidtype;
 		m_have_video_pid = (vpid > 0 && vpid < 0x2000);
 
+		if (m_have_video_pid && vpidtype == eDVBVideo::H265_HEVC)
+		{
+#ifdef HAS_SOFTWARE_HDR_DETECTION
+			/* Start detection immediately so channels accumulate data right away.
+			 * For encrypted live channels eventSizeChanged will restart with a
+			 * fresh recorder once clear data is flowing (m_hdr_firstframe_restarted).
+			 * For PVR the content is already clear so skip the first-frame restart. */
+			if (m_hdr_detect_vpid != vpid)
+			{
+				m_hdr_firstframe_restarted = m_is_pvr;
+				startHDRDetection(vpid);
+			}
+#endif
+		}
+
 		if (!m_noaudio)
 		{
 			selectAudioStream();
@@ -4105,6 +4134,19 @@ void eDVBServicePlay::video_event(struct iTSMPEGDecoder::videoEvent event)
 				m_soft_decoder_video_info_valid = true;
 				m_event((iPlayableService*)this, evUpdatedInfo);
 			}
+			/* First decoded frame — descrambling is now live.
+			 * Always restart detection exactly once on this event, discarding
+			 * any data accumulated before the CAM was ready (scrambled noise
+			 * can falsely match HEVC start codes and fool SPS detection).
+			 * Skip only if we already have a confirmed HDR result.
+			 * The one-shot flag prevents repeated restarts on resolution changes. */
+#ifdef HAS_SOFTWARE_HDR_DETECTION
+			if (m_hdr_detect_vpid > 0 && m_hdr_type == 0 && !m_hdr_firstframe_restarted)
+			{
+				m_hdr_firstframe_restarted = true;
+				startHDRDetection(m_hdr_detect_vpid);
+			}
+#endif
 			break;
 		case iTSMPEGDecoder::videoEvent::eventFrameRateChanged:
 			m_event((iPlayableService*)this, evVideoFramerateChanged);
@@ -4113,8 +4155,28 @@ void eDVBServicePlay::video_event(struct iTSMPEGDecoder::videoEvent event)
 			m_event((iPlayableService*)this, evVideoProgressiveChanged);
 			break;
 		case iTSMPEGDecoder::videoEvent::eventGammaChanged:
+		{
 			m_event((iPlayableService*)this, evVideoGammaChanged);
+			/* Update HDR type from the hardware decoder gamma.
+			 * This fires once the decoder produces frames, which may be
+			 * after the TS-recorder-based detection already timed out on
+			 * an encrypted channel (scrambled data yields no valid SPS). */
+			int gamma = -1;
+			if (m_soft_decoder && m_csa_session && m_csa_session->isActive())
+				gamma = m_soft_decoder->getVideoGamma();
+			else if (m_decoder)
+				gamma = m_decoder->getVideoGamma();
+			int newHdrType = 0;
+			if (gamma == 2) newHdrType = 1;      /* SMPTE ST2084 -> HDR10 */
+			else if (gamma == 3) newHdrType = 2; /* HLG */
+			else if (gamma == 1) newHdrType = 3; /* plain HDR */
+			if (newHdrType != m_hdr_type)
+			{
+				m_hdr_type = newHdrType;
+				m_event((iPlayableService*)this, evUpdatedInfo);
+			}
 			break;
+		}
 		default:
 			break;
 	}
@@ -4151,6 +4213,9 @@ void eDVBServicePlay::setQpipMode(bool value, bool audio)
 
 		m_decoder->set();
 	}
+
+	if (m_soft_decoder)
+		m_soft_decoder->setNoAudio(m_noaudio, m_current_audio_pid);
 }
 
 // ==================== Software Descrambling ====================
@@ -4164,6 +4229,14 @@ void eDVBServicePlay::setupSpeculativeDescrambling()
 	// libdvbcsa missing -> software descrambling not possible, skip all setup
 	if (!eDVBCSAEngine::isAvailable())
 		return;
+
+	int softcsaEnable = eConfigManager::getConfigIntValue("config.misc.softcsa.Enable_Disable", 0);
+	// Enabled (0) Disabled (1) 
+	if (softcsaEnable == 1)
+	{
+		eWarning("[eDVBServicePlay] softcsa disabled)");
+		return;
+	}
 
 	eDebug("[eDVBServicePlay] Encrypted channel, creating speculative CSA session");
 
@@ -4423,6 +4496,79 @@ void eDVBServicePlay::resetHwDescramblerSlot()
 	eDebug("[eDVBServicePlay] HW-descr reset: %s %zu PIDs, disabled=%d reset=%d, sleep=200ms",
 		ca_path.c_str(), pids.size(), disabled, reset);
 }
+
+// ==================== HDR Detection ====================
+
+#ifdef HAS_SOFTWARE_HDR_DETECTION
+void eDVBServicePlay::startHDRDetection(int vpid)
+{
+	if (m_hdr_detector) { m_hdr_detector->stop(); m_hdr_detector = 0; }
+	m_hdr_detect_vpid = vpid;
+	m_hdr_type = 0;
+
+	/* Demux selection strategy:
+	 *
+	 * The decode demux is ALWAYS the authoritative source of clear data once
+	 * eventSizeChanged has fired — the hardware decoder just produced a frame
+	 * from it, so it is definitively carrying clear HEVC packets.
+	 *
+	 * We try decode demux first for everyone.  On STBs where the kernel driver
+	 * refuses a second PID filter on the decode demux (PID conflict with the
+	 * hardware decoder's own filter), isRecording() returns false and we fall
+	 * back to the data demux — UNLESS this is a softCSA channel, where the
+	 * data demux still has scrambled TS (the software CSA writes clear packets
+	 * only into the decode demux).
+	 *
+	 * For external softcam (OSCam/CCcam) the decode demux is also the right
+	 * choice: many STBs inject CWs into the hardware decoder's descrambler
+	 * via a proprietary path that does NOT update the Linux CA demux interface,
+	 * so the data demux may still carry scrambled TS even after the first
+	 * decoded frame. */
+	bool isSoftCSA = (m_csa_session && m_csa_session->isActive());
+
+	ePtr<iDVBDemux> demuxA, demuxB;
+	m_service_handler.getDecodeDemux(demuxA);
+	if (!isSoftCSA)
+		m_service_handler.getDataDemux(demuxB);  /* fallback if decode demux has PID conflict */
+
+	m_hdr_detector = new eHDRStreamDetector();
+	m_hdr_detector->resultChanged.connect(
+		sigc::mem_fun(*this, &eDVBServicePlay::hdrResult));
+
+	if (m_hdr_detector->start(demuxA, vpid) != 0)
+	{
+		m_hdr_detector = 0;
+		return;
+	}
+
+	/* If the recorder didn't start (PID conflict / createTSRecorder failure),
+	 * immediately retry on the fallback demux rather than waiting 10 s for the
+	 * timeout to fire an SDR result. */
+	if (!m_hdr_detector->isRecording() && demuxB)
+	{
+		eDebug("[eDVBServicePlay] HDR: primary demux recorder failed, retrying on fallback");
+		m_hdr_detector->stop();
+		m_hdr_detector = new eHDRStreamDetector();
+		m_hdr_detector->resultChanged.connect(
+			sigc::mem_fun(*this, &eDVBServicePlay::hdrResult));
+		if (m_hdr_detector->start(demuxB, vpid) != 0)
+			m_hdr_detector = 0;
+	}
+}
+
+void eDVBServicePlay::hdrResult(int result)
+{
+	m_hdr_detector = 0; /* mark detection complete; allows retry on next eventSizeChanged */
+	m_hdr_type = result;
+	/* Fire all three events so every skin pattern is covered:
+	 * - evVideoGammaChanged: skins that track gamma/HDR changes
+	 * - evVideoSizeChanged:  skins that refresh video info on size events
+	 * - evUpdatedInfo:       general service-info listeners (ServiceInfo converter) */
+	m_event((iPlayableService*)this, evVideoGammaChanged);
+	m_event((iPlayableService*)this, evVideoSizeChanged);
+	m_event((iPlayableService*)this, evUpdatedInfo);
+}
+#endif /* HAS_SOFTWARE_HDR_DETECTION */
 
 // ==================== End Software Descrambling ====================
 

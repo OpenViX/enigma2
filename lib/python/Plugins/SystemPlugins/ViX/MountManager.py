@@ -195,6 +195,7 @@ def buildPartitionInfo(partition, partitionList):
 		]
 		if MODEL in ("dm900", "dm920"):
 			Gmedia.append(("/media/data", "/media/data"))
+			Gmedia.append(("/media/mmc", "/media/mmc"))
 		item = NoSave(ConfigSelection(default="/media/%s" % partition, choices=Gmedia))
 		if _format == "Linux":
 			_format = "ext4"

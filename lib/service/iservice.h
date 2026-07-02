@@ -428,6 +428,8 @@ public:
 		sVideoInfo,
 		sIsSoftCSA,			/* 1 if current service uses software descrambling */
 
+		sHDRType,			/* 0=SDR 1=HDR10 2=HLG 3=HDR */
+
 		sUser = 0x100
 	};
 	enum {

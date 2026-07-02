@@ -22,28 +22,13 @@ from Screens.Setup import Setup
 from Screens.TextBox import TextBox
 from Tools.Notifications import AddPopupWithCallback
 
+from . import getMountChoices, getMountDefault
+
 autoBackupManagerTimer = None
 SETTINGSRESTOREQUESTIONID = "RestoreSettingsNotification"
 PLUGINRESTOREQUESTIONID = "RestorePluginsNotification"
 NOPLUGINS = "NoPluginsNotification"
 defaultprefix = SystemInfo["distro"][4:]
-
-
-def getMountChoices():
-	choices = []
-	for p in harddiskmanager.getMountedPartitions():
-		if path.exists(p.mountpoint):
-			d = path.normpath(p.mountpoint)
-			if p.mountpoint != "/":
-				choices.append((p.mountpoint, d))
-	choices.sort()
-	return choices
-
-
-def getMountDefault(choices):
-	choices = {x[1]: x[0] for x in choices}
-	default = choices.get("/media/hdd") or choices.get("/media/usb")
-	return default
 
 
 def __onPartitionChange(*args, **kwargs):
@@ -198,10 +183,23 @@ class VIXBackupManager(Screen):
 		Components.Task.job_manager.in_background = in_background
 
 	def populate_List(self):
-		if config.backupmanager.backuplocation.value.endswith("/"):
-			mount = config.backupmanager.backuplocation.value, config.backupmanager.backuplocation.value[:-1]
-		else:
-			mount = config.backupmanager.backuplocation.value + "/", config.backupmanager.backuplocation.value
+		# --------------------------------------------------------------------------------------
+		# TO DO:
+		#
+		# As far as I can work out this section is complete nonsense because:
+		# 1) In the case of ConfigSelection, if the value in the settings file is not in
+		#    the "choices" list that value will not be loaded. Instead .value will return
+		#    the default. In a case where "choices" list is zero length .value will return "".
+		#
+		# 2) Any swapping from the value in the settings file to /media/hdd would have been
+		#    done internally inside the ConfigSelection before this code is ever reached.
+		#
+		# So the only time we would see the "Device: None available" message is if "choices"
+		# is zero length. And we would never see the "The chosen location does not exist,
+		# using /media/hdd." message ever. And "Press 'Menu' to select a storage device"
+		# would not be of any help because "Backup location" would not be populated.
+		# --------------------------------------------------------------------------------------
+		mount = config.backupmanager.backuplocation.value, path.normpath(config.backupmanager.backuplocation.value)
 		hdd = "/media/hdd/", "/media/hdd"
 		if mount not in config.backupmanager.backuplocation.choices.choices and hdd not in config.backupmanager.backuplocation.choices.choices:
 			self["myactions"] = ActionMap(
@@ -227,14 +225,13 @@ class VIXBackupManager(Screen):
 					"log": self.showLog,
 				}, -1)
 			if mount not in config.backupmanager.backuplocation.choices.choices:
-				self.BackupDirectory = "/media/hdd/backup/"
-				config.backupmanager.backuplocation.value = "/media/hdd/"
+				config.backupmanager.backuplocation.value = hdd[0]
 				config.backupmanager.backuplocation.save()
 				self["lab1"].setText(_("The chosen location does not exist, using /media/hdd.") + "\n" + _("Select a backup to restore:"))
 			else:
-				self.BackupDirectory = config.backupmanager.backuplocation.value + "backup/"
-				s = statvfs(config.imagemanager.backuplocation.value)
-				self["lab1"].setText(_("Device: ") + config.backupmanager.backuplocation.value + " " + _("Free space:") + " " + bytesToHumanReadable(s.f_bsize * s.f_bavail) + "\n" + _("Select a backup to restore:"))
+				s = statvfs(config.backupmanager.backuplocation.value)
+				self["lab1"].setText(_("Device: ") + path.normpath(config.backupmanager.backuplocation.value) + " - " + _("Free space:") + " " + bytesToHumanReadable(s.f_bsize * s.f_bavail) + "\n" + _("Select a backup to restore:"))
+			self.BackupDirectory = path.join(config.backupmanager.backuplocation.value, "backup", "")
 			try:
 				if not path.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0o755)
@@ -260,7 +257,7 @@ class VIXBackupManager(Screen):
 					self["key_red"].hide()
 					self["key_yellow"].hide()
 			except:
-				self["lab1"].setText(_("Device: ") + config.backupmanager.backuplocation.value + "\n" + _("There is a problem with this device. Please reformat it and try again."))
+				self["lab1"].setText(_("Device: ") + path.normpath(config.backupmanager.backuplocation.value) + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX')
@@ -940,7 +937,7 @@ class BackupFiles(Screen):
 		self.backuptype = backuptype
 		self.BackupDevice = config.backupmanager.backuplocation.value
 		print("[BackupManager] Device: " + self.BackupDevice)
-		self.BackupDirectory = config.backupmanager.backuplocation.value + "backup/"
+		self.BackupDirectory = path.join(self.BackupDevice, "backup", "")
 		print("[BackupManager] Directory: " + self.BackupDirectory)
 		self.Stage1Completed = False
 		self.Stage2Completed = False
@@ -1031,7 +1028,7 @@ class BackupFiles(Screen):
 				mkdir(self.BackupDirectory, 0o755)
 		except Exception as e:
 			print(str(e))
-			print("[BackupManager] Device: " + config.backupmanager.backuplocation.value + ", i don't seem to have write access to this device.")
+			print("[BackupManager] Device: " + path.normpath(self.BackupDevice) + ", i don't seem to have write access to this device.")
 
 		s = statvfs(self.BackupDevice)
 		free = (s.f_bsize * s.f_bavail) // (1024 * 1024)

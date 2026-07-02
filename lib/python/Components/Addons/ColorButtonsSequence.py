@@ -151,7 +151,7 @@ class ColorButtonsSequence(GUIAddon):
 	def constructColorButtonSequence(self):
 		sequence = {}
 		for x, val in self.sources.items():
-			if hasattr(val, "text") and val.text:
+			if hasattr(val, "text") and (hasattr(val, "boolean") and val.boolean or hasattr(val, "visible") and val.visible):
 				sequence[x] = val
 
 		self.updateAddon(sequence)

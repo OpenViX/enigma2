@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-17 15:33+0300\n"
-"PO-Revision-Date: 2026-05-17 16:03+0300\n"
+"POT-Creation-Date: 2026-06-15 19:45+0300\n"
+"PO-Revision-Date: 2026-06-27 08:23+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -826,14 +826,6 @@ msgid "%d ms"
 msgstr "%d ms"
 
 #, python-format
-msgid "%d of %d Bytes"
-msgstr "%d %d:sta Tavusta"
-
-#, python-format
-msgid "%d of %d KB"
-msgstr "%d %d:sta Kt"
-
-#, python-format
 msgid "%d pixel wide"
 msgid_plural "%d pixels wide"
 msgstr[0] "%d pikselin leveys"
@@ -999,14 +991,6 @@ msgstr "%s on myös käytössä autofs-verkossa"
 #, python-format
 msgid "%s is no longer used. Should it be deleted?"
 msgstr "%s ei ole enää käytössä. Poistetaanko se?"
-
-#, python-format
-msgid "%s of %s GB"
-msgstr "%s %s:sta Gt"
-
-#, python-format
-msgid "%s of %s MB"
-msgstr "%s %s:sta Mt"
 
 #, python-format
 msgid "%s only has %s MB free."
@@ -2819,7 +2803,7 @@ msgid "Blinking REC"
 msgstr "Vilkkuva REC"
 
 msgid "Blinking REC Symbol"
-msgstr "Vilkkuva REC-symboli"
+msgstr "Vilkkuva tallennussymboli"
 
 msgid "Block noise reduction"
 msgstr "Pakkausneliöiden pehmennys"
@@ -2837,7 +2821,7 @@ msgid "Blue button function"
 msgstr "Sinisen painikkeen toiminto"
 
 msgid "Blue long"
-msgstr "Pitkä sininen"
+msgstr "Sininen pitkä"
 
 msgid "Bolivia (Plurinational State of)"
 msgstr "Bolivia"
@@ -2940,6 +2924,9 @@ msgstr "Joskus lähetyksessä pitkät ohjelmanimet jaetaan ohjelmatietoon käytt
 
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
+
+msgid "Buffer descrambled data before starting playback. Fixes audio dropouts with passthrough AC3 by ensuring enough data is available when the decoder starts. Higher values are more stable but increase channel switch time. *Restart E2 for changes to take effect."
+msgstr "Puskuroi puretun datan ennen toiston aloittamista. Korjaa äänen katkokset AC3-läpiviennillä varmistamalla, että dataa on saatavilla riittävästi dekooderin käynnistyessä. Korkeammat arvot ovat vakaampia, mutta pidentävät kanavanvaihtoaikaa. *Käynnistä E2 uudelleen, jotta muutokset tulevat voimaan."
 
 #, python-format
 msgid "Buffering %d%%"
@@ -4815,6 +4802,9 @@ msgstr "Dekooderin vapautusstrategia *"
 msgid "Decoder Start Timeout *"
 msgstr "Dekooderin käynnistyksen aikakatkaisu *"
 
+msgid "Decoder playback buffer *"
+msgstr "Dekooderin toistopuskuri *"
+
 msgid "Decrement end time"
 msgstr "Vähennä loppuaikaa"
 
@@ -5501,6 +5491,14 @@ msgstr "Lataa lisäosia"
 msgid "Downloading"
 msgstr "Ladataan"
 
+#, python-format
+msgid "Downloading %s"
+msgstr "Ladataan %s"
+
+#, python-format
+msgid "Downloading %s of %s"
+msgstr "Ladataan %s / %s"
+
 msgid "Downloading plugin information. Please wait..."
 msgstr "Ladataan tietoja lisäosista. Odota..."
 
@@ -5795,6 +5793,9 @@ msgstr "Ota käyttöön OpenTV:n lataus"
 msgid "Enable SWAP at startup"
 msgstr "SWAP päälle käynnistyksessä"
 
+msgid "Enable SoftCSA *"
+msgstr "Ota SoftCSA käyttöön *"
+
 msgid "Enable ViaSat EPG"
 msgstr "Ota käyttöön ViaSat EPG"
 
@@ -5824,7 +5825,7 @@ msgid "Enable blinking for ui elements. For example for recording icon"
 msgstr "Ota vilkkuminen käyttöön käyttöliittymäelementeissä. Esimerkiksi tallennuskuvakkeelle"
 
 msgid "Enable blinking rec symbol on the LCD Display"
-msgstr "Aktivoi vilkkuva REC-symboli LCD-näytössä"
+msgstr "Ota käyttöön vilkkuva tallennussymboli LCD-näytössä"
 
 msgid "Enable bouquet edit"
 msgstr "Ota suosikkilistan muokkaus käyttöön"
@@ -5888,6 +5889,9 @@ msgstr "Käynnistys päälle"
 
 msgid "Enable teletext caching"
 msgstr "Ota käyttöön teksti-tv:n välimuisti"
+
+msgid "Enable the software implementation of the DVB Common Scrambling Algorithm, used when needed, to descramble transport stream packets."
+msgstr "Ota käyttöön DVB Common Scrambling Algorithmin ohjelmistototeutus, jota käytetään tarvittaessa Transport Stream -pakettien salauksen purkamiseen."
 
 msgid "Enable this setting if your aerial system needs power"
 msgstr "Salli tämä asetus, jos antennijärjestelmäsi tarvitsee virtaa"
@@ -6074,10 +6078,10 @@ msgid "Environment"
 msgstr "Ympäristö"
 
 msgid "Epg/Guide"
-msgstr "Ohjelmaopaspainike"
+msgstr "Epg/Guide"
 
 msgid "Epg/Guide long"
-msgstr "Pitkä ohjelmaopaspainike"
+msgstr "Epg/Guide pitkä"
 
 msgid "Epos"
 msgstr "Eepos"
@@ -6363,10 +6367,10 @@ msgid "F1/F3/F4/F4-TURBO/TRIPLEX"
 msgstr "F1/F3/F4/F4-TURBO/TRIPLEX"
 
 msgid "F1/LAN"
-msgstr "F1/Kielipainike"
+msgstr "F1/LAN"
 
 msgid "F1/LAN long"
-msgstr "F1/Kielipainike pitkä"
+msgstr "F1/LAN pitkä"
 
 msgid "F2"
 msgstr "F2"
@@ -6571,7 +6575,7 @@ msgid "FastScan"
 msgstr "Nopea haku"
 
 msgid "Fastforward"
-msgstr "Eteenpäin kelausnopeudet"
+msgstr "Pikakelaus eteenpäin"
 
 msgid "Fastscan"
 msgstr "Nopea haku"
@@ -7143,7 +7147,7 @@ msgid "Green button (short)"
 msgstr "Vihreä näppäin (lyhyt)"
 
 msgid "Green long"
-msgstr "Pitkä vihreä"
+msgstr "Vihreä pitkä"
 
 msgid "Greenland"
 msgstr "Gröönlanti"
@@ -7310,6 +7314,10 @@ msgstr "Kiintolevyn automaattinen sammutus"
 msgid "Harddisk setup"
 msgstr "Kiintolevyn asetukset"
 
+#, python-format
+msgid "Hardware Version:\t%s\n"
+msgstr "Laitteistoversio:\t%s\n"
+
 msgid "HbbTV"
 msgstr "HbbTV"
 
@@ -7332,13 +7340,13 @@ msgid "Heimwerker"
 msgstr "Askartelu"
 
 msgid "Help"
-msgstr "Ohjeita"
+msgstr "HELP"
 
 msgid "Help Screen"
 msgstr "Ohjenäyttö"
 
 msgid "Help long"
-msgstr "Pitkä punainen"
+msgstr "HELP pitkä"
 
 msgid "Help text uninitialized"
 msgstr "Ohjeteksti ei ole alustettu"
@@ -7536,9 +7544,7 @@ msgid "How to display the date format for date items in the About screen."
 msgstr "Kuinka näytettään päivämäärän muoto päivämääräkohdille Tietoja-näytössä."
 
 msgid "How to release the hardware decoder when switching to software descrambling. 'Quick' releases immediately (faster zapping). 'Normal' performs clean shutdown first (more stable on some boxes). 'Aggressive' resets the HW-descrambler slots and also bypasses the in-process CSA-ALT cache. *Restart E2 for changes to take effect."
-msgstr ""
-"Kuinka vapauttaa laitteistodekooderin käyttö siirryttäessä ohjelmistopohjaiseen salauksenpurkuun. 'Nopea' vapauttaa laitteen välittömästi (nopeampi kanavanvaihto). 'Normaali' tekee ensin siistin sammutuksen (vakaampi joillakin laitteilla). 'Aggressiivinen' nollaa laitteistodekooderin paikat ja ohittaa myös käynnissä olevan CSA-ALT-"
-"välimuistin. *Käynnistä E2 uudelleen, jotta muutokset tulevat voimaan."
+msgstr "Kuinka vapauttaa laitteistodekooderin käyttö siirryttäessä ohjelmistopohjaiseen salauksenpurkuun. 'Nopea' vapauttaa laitteen välittömästi (nopeampi kanavanvaihto). 'Normaali' tekee ensin siistin sammutuksen (vakaampi joillakin laitteilla). 'Aggressiivinen' nollaa laitteistodekooderin paikat ja ohittaa myös käynnissä olevan CSA-ALT-välimuistin. *Käynnistä E2 uudelleen, jotta muutokset tulevat voimaan."
 
 msgid "Http(s) stream start delay"
 msgstr "Http/https streamin käynnistysviive"
@@ -7821,7 +7827,7 @@ msgid "In progress"
 msgstr "Käynnissä"
 
 msgid "In the Standby Record on the LCD Display"
-msgstr "Valmiustilassa tallennus etupaneelin näytössä"
+msgstr "Valmiustilassa tallennussymboli LCD-näytössä"
 
 msgid "Inactive"
 msgstr "Ei käytössä"
@@ -7886,10 +7892,10 @@ msgid "Info"
 msgstr "Tietoja"
 
 msgid "Info (EPG)"
-msgstr "Tietopalkki (EPG)"
+msgstr "INFO (EPG)"
 
 msgid "Info (EPG) Long"
-msgstr "Tietopalkki (EPG) pitkä"
+msgstr "INFO (EPG) pitkä"
 
 msgid "Info button (long)"
 msgstr "Info-näppäin (pitkä)"
@@ -8474,7 +8480,7 @@ msgid "Left from servicename"
 msgstr "Kanavanimestä vasemmalle"
 
 msgid "Left long"
-msgstr "Pitkä vasemmalle"
+msgstr "Vasen pitkä"
 
 msgid "Leichtathletik"
 msgstr "Yleisurheilu"
@@ -9069,6 +9075,12 @@ msgstr "Tila"
 msgctxt "Video output mode"
 msgid "Mode"
 msgstr "Tila"
+
+msgid "Mode 12: Supports PiP but Kodi may not work"
+msgstr "Tila 12: Tukee PiP-toimintoa, mutta Kodi ei välttämättä toimi"
+
+msgid "Mode 1: Supports Kodi but PiP may not work"
+msgstr "Tila 1: Tukee Kodia, mutta PiP-toiminto ei välttämättä toimi"
 
 msgid "Model"
 msgstr "Malli"
@@ -9960,6 +9972,9 @@ msgstr "Norfolk Island"
 msgid "Normal"
 msgstr "Normaali"
 
+msgid "Normal: No boot modes required."
+msgstr "Normaali: Käynnistystiloja ei tarvita."
+
 msgid "North"
 msgstr "Pohjoista leveyttä"
 
@@ -10774,7 +10789,7 @@ msgid "Playlist"
 msgstr "Soittolista"
 
 msgid "Playpause"
-msgstr "Tauko"
+msgstr "Toista/Tauko"
 
 msgid "Please add titles to the compilation."
 msgstr "Lisää tallenteita kokoelmaan."
@@ -11166,7 +11181,7 @@ msgid "Positioner setup log"
 msgstr "Kääntömoottorin asetusloki"
 
 msgid "Power"
-msgstr "Virta"
+msgstr "Virtapainike"
 
 msgid "Power LCD Display"
 msgstr "LCD-näyttö päälle/pois"
@@ -11202,7 +11217,7 @@ msgid "Power Timers"
 msgstr "Virta-ajastukset"
 
 msgid "Power long"
-msgstr "Virta pitkä"
+msgstr "Virtapainike pitkä"
 
 msgid "Power management. Consult your receiver's manual for more information."
 msgstr "Virranhallinta. Lue lisätietoja vastaanottimesi manuaalista."
@@ -11571,13 +11586,13 @@ msgid "REC "
 msgstr "REC "
 
 msgid "REC Symbol"
-msgstr "REC symboli"
+msgstr "Tallennussymboli"
 
 msgid "REC Symbol in Standby"
-msgstr "REC symboli valmiustilassa"
+msgstr "Tallennussymboli valmiustilassa"
 
 msgid "REC Symbol in use"
-msgstr "REC symboli käytössä"
+msgstr "Tallennussymboli käytössä"
 
 msgid "RECALL"
 msgstr "PALAUTA"
@@ -11871,7 +11886,7 @@ msgid "Red colored"
 msgstr "Punainen väritys"
 
 msgid "Red long"
-msgstr "Pitkä punainen"
+msgstr "Punainen pitkä"
 
 msgid "Reduce time scale"
 msgstr "Supista aika-asteikkoa"
@@ -12343,7 +12358,7 @@ msgid "Right from servicename"
 msgstr "Kanavanimestä oikealle"
 
 msgid "Right long"
-msgstr "Pitkä oikealle"
+msgstr "Oikea pitkä"
 
 msgid "Rock"
 msgstr "Rock"
@@ -12828,7 +12843,7 @@ msgid "Search west"
 msgstr "Etsintä länteen"
 
 msgid "Search/WEB"
-msgstr "Haku"
+msgstr "Haku/WEB"
 
 msgid "Searching"
 msgstr "Etsitään"
@@ -13082,7 +13097,7 @@ msgid "Select current item"
 msgstr "Valitse nykyinen kohde"
 
 msgid "Select current service"
-msgstr "Valitse nykyinen palvelu"
+msgstr "Valitse nykyinen kanava"
 
 msgid "Select days"
 msgstr "Valitse päivät"
@@ -13145,7 +13160,7 @@ msgid "Select item directly"
 msgstr "Valitse kohde suoraan"
 
 msgid "Select last browsed service"
-msgstr "Valitse viimeeksi käytetty kanava"
+msgstr "Valitse viimeksi esikatseltu kanava"
 
 msgid "Select location"
 msgstr "Hakemiston valinta"
@@ -15184,19 +15199,19 @@ msgid "TIMESHIFT"
 msgstr "AJANSIIRTO"
 
 msgid "TMDB search for current event"
-msgstr "Nykyisen ohjelman TMDb-haku"
+msgstr "Nykyisen ohjelman TMDB-haku"
 
 msgid "TMDb Search"
-msgstr "TMDb-haku"
+msgstr "TMDB-haku"
 
 msgid "TMDb search"
-msgstr "TMDb-haku"
+msgstr "TMDB-haku"
 
 msgid "TMDb search for current event"
-msgstr "Nykyisen ohjelman TMDb-haku"
+msgstr "Nykyisen ohjelman TMDB-haku"
 
 msgid "TMDb search for highlighted event"
-msgstr "TMDb-haku korostetusta ohjelmasta"
+msgstr "TMDB-haku korostetusta ohjelmasta"
 
 #. TRANSLATORS: Add here whatever should be shown in the "translator" about screen, up to 6 lines (use \n for newline)
 msgid "TRANSLATOR_INFO"
@@ -15204,7 +15219,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 17.05.2026 ---\n"
+"--- 27.06.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -15453,7 +15468,7 @@ msgid ""
 "The TMDb plugin is not installed!\n"
 "Please install it."
 msgstr ""
-"TMDb-lisäosaa ei ole asennettu!\n"
+"TMDB-lisäosaa ei ole asennettu!\n"
 "Asenna se."
 
 msgid "The aspect ratio of the recording."
@@ -17669,7 +17684,7 @@ msgid "Yellow button function"
 msgstr "Keltaisen painikkeen toiminto"
 
 msgid "Yellow long"
-msgstr "Pitkä keltainen"
+msgstr "Keltainen pitkä"
 
 msgid "Yemen"
 msgstr "Yemen"
@@ -18149,7 +18164,7 @@ msgid "activatePiP"
 msgstr "aktivoi PiP"
 
 msgid "activatePiP long"
-msgstr "aktivoi PiP pitkä"
+msgstr "Aktivoi PiP pitkä"
 
 msgid "active"
 msgstr "aktiivinen"
@@ -18754,7 +18769,7 @@ msgid "locked"
 msgstr "Lukittu"
 
 msgid "long"
-msgstr "Pitkä"
+msgstr "pitkä"
 
 msgid "longest first"
 msgstr "pisin ensin"

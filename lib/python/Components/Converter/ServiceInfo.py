@@ -253,11 +253,14 @@ class ServiceInfo(Poll, Converter):
 			elif self.type == self.IS_SDR and not isRef:
 				return info.getInfo(iServiceInformation.sGamma) == 0
 			elif self.type == self.IS_HDR and not isRef:
-				return info.getInfo(iServiceInformation.sGamma) == 1
+				hdr = info.getInfo(iServiceInformation.sHDRType)
+				return hdr == 3 if hdr > 0 else info.getInfo(iServiceInformation.sGamma) == 1
 			elif self.type == self.IS_HDR10 and not isRef:
-				return info.getInfo(iServiceInformation.sGamma) == 2
+				hdr = info.getInfo(iServiceInformation.sHDRType)
+				return hdr == 1 if hdr > 0 else info.getInfo(iServiceInformation.sGamma) == 2
 			elif self.type == self.IS_HLG and not isRef:
-				return info.getInfo(iServiceInformation.sGamma) == 3
+				hdr = info.getInfo(iServiceInformation.sHDRType)
+				return hdr == 2 if hdr > 0 else info.getInfo(iServiceInformation.sGamma) == 3
 			elif self.type == self.IS_VIDEO_MPEG2 and not isRef:
 				return info.getInfo(iServiceInformation.sVideoType) == 0
 			elif self.type == self.IS_VIDEO_AVC and not isRef:
@@ -347,6 +350,8 @@ class ServiceInfo(Poll, Converter):
 			return str(getVideoHeight(info))
 		elif self.type == self.FRAMERATE:
 			return str(getFrameRate(info))
+		elif self.type == self.HDR_TYPE:
+			return self._readHDRType()
 		return -1
 
 	value = property(getValue)

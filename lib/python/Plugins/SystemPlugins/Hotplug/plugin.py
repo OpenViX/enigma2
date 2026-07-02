@@ -8,6 +8,7 @@ from enigma import getDeviceDB, eTimer
 
 from Components.Console import Console
 from Components.Harddisk import harddiskmanager, bytesToHumanReadable, getProcMounts
+from Components.SystemInfo import MODEL
 from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import ModalMessageBox
 from Tools.Directories import fileReadLines, fileWriteLines
@@ -114,7 +115,12 @@ class HotPlugManager:
 			notFound = True
 			mounts = fileReadLines("/proc/mounts")
 			mountPoint = "/media/usb"
-			mountPointDevice = DEVNAME.replace("/dev/", "/media/")
+			mmcPrefix = "/dev/mmcblk1p"
+			if DEVNAME.startswith(mmcPrefix) and DEVNAME[len(mmcPrefix):].isdigit() and MODEL in ("dm900", "dm920"):
+				partition = DEVNAME[len(mmcPrefix):]
+				mountPointDevice = "/media/mmc" if partition == "1" else f"/media/mmc{partition}"
+			else:
+				mountPointDevice = DEVNAME.replace("/dev/", "/media/")
 			mountPointHdd = None if [x.split()[1] for x in mounts if "/media/hdd" in x] else "/media/hdd"
 			knownDevices = fileReadLines("/etc/udev/known_devices", default=[])
 			knownDevice = ""
@@ -181,6 +187,8 @@ class HotPlugManager:
 							mkdir(mountPoint, 0o755)
 						if answer == 4 and not exists(mountPointHdd):
 							mkdir(mountPointHdd, 0o755)
+						if answer == 5 and not exists(mountPointDevice):
+							mkdir(mountPointDevice, 0o755)
 						if answer == 1:  # Permanently ignore this device
 							knownDevices.append(f"{ID_FS_UUID}:None")
 						elif answer == 2:  # Temporarily mount

@@ -354,7 +354,7 @@ void eListboxServiceContent::sort()
 DEFINE_REF(eListboxServiceContent);
 
 eListboxServiceContent::eListboxServiceContent()
-	:m_visual_mode(visModeSimple), m_size(0), m_current_marked(false), m_itemheight(25), m_hide_number_marker(false), m_servicetype_icon_mode(0), m_crypto_icon_mode(0), m_record_indicator_mode(0), m_column_width(0), m_progressbar_height(6), m_progressbar_border_width(2), m_nonplayable_margins(10), m_items_distances(8), m_sides_margin(0), m_marker_as_line(0), m_markerline_color_set(0)
+	:m_visual_mode(visModeSimple), m_size(0), m_current_marked(false), m_itemheight(25), m_hide_number_marker(false), m_servicetype_icon_mode(0), m_crypto_icon_mode(0), m_record_indicator_mode(0), m_column_width(0), m_progressbar_height(6), m_progressbar_border_width(2), m_nonplayable_margins(10), m_items_distances(8), m_picon_margin(0), m_sides_margin(0), m_marker_as_line(0), m_markerline_color_set(0)
 {
 	memset(m_color_set, 0, sizeof(m_color_set));
 	cursorHome();
@@ -623,8 +623,11 @@ void eListboxServiceContent::setItemHeight(int height)
 
 bool eListboxServiceContent::checkServiceIsRecorded(eServiceReference ref)
 {
+	eNavigation *nav = eNavigation::getInstance();
+	if (!nav)
+		return false;
 	std::map<ePtr<iRecordableService>, eServiceReference, std::less<iRecordableService*> > recordedServices;
-	recordedServices = eNavigation::getInstance()->getRecordingsServices();
+	recordedServices = nav->getRecordingsServices();
 	for (std::map<ePtr<iRecordableService>, eServiceReference >::iterator it = recordedServices.begin(); it != recordedServices.end(); ++it)
 	{
 		if (ref.flags & eServiceReference::isGroup)
@@ -632,6 +635,8 @@ bool eListboxServiceContent::checkServiceIsRecorded(eServiceReference ref)
 			ePtr<iDVBChannelList> db;
 			ePtr<eDVBResourceManager> res;
 			eDVBResourceManager::getInstance(res);
+			if (!res)
+				continue;
 			res->getChannelList(db);
 			eBouquet *bouquet = NULL;
 			if (!db->getBouquet(ref, bouquet))
@@ -971,7 +976,9 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 
 			if (hasPicon)
 			{
-				eRect piconArea =  eRect(xoffs, offset.y(), 125, m_itemheight);
+				int piconH = m_itemheight - 2 * m_picon_margin;
+				int piconY = offset.y() + m_picon_margin;
+				eRect piconArea =  eRect(xoffs, piconY, 125, piconH);
 				/* PIcons are usually about 100:60. Make it a
 				* bit wider in case the icons are diffently
 				* shaped, and to add a bit of margin between
@@ -985,13 +992,13 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					painter.clip(piconArea);
 					if (isPIconSVG) {
 						painter.blit(piconPixmap,
-						eRect(xoffs, offset.y(), 125, m_itemheight),
+						eRect(xoffs, piconY, 125, piconH),
 						eRect(),
 						pflags
 						);
 					} else {
 						painter.blitScale(piconPixmap,
-							eRect(xoffs, offset.y(), 125, m_itemheight),
+							eRect(xoffs, piconY, 125, piconH),
 							piconArea,
 							pflags);
 					}
@@ -1403,7 +1410,9 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				}
 
 				if (hasPicons) {
-					eRect piconArea =  eRect(xoffs, offset.y(), piconWidth, m_itemheight);
+					int piconH = m_itemheight - 2 * m_picon_margin;
+					int piconY = offset.y() + m_picon_margin;
+					eRect piconArea =  eRect(xoffs, piconY, piconWidth, piconH);
 					/* PIcons are usually about 100:60. Make it a
 					* bit wider in case the icons are diffently
 					* shaped, and to add a bit of margin between
@@ -1417,13 +1426,13 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 						painter.clip(piconArea);
 						if (isPIconSVG) {
 							painter.blit(piconPixmap,
-							eRect(xoffs, offset.y(), piconWidth, m_itemheight),
+							eRect(xoffs, piconY, piconWidth, piconH),
 							eRect(),
 							pflags
 							);
 						} else {
 							painter.blitScale(piconPixmap,
-								eRect(xoffs, offset.y(), piconWidth, m_itemheight),
+								eRect(xoffs, piconY, piconWidth, piconH),
 								piconArea,
 								pflags);
 						}

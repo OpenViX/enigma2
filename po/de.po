@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-02 14:18+0000\n"
+"POT-Creation-Date: 2026-06-22 16:28+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: 2stein\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, 2stein\n"
@@ -825,14 +825,6 @@ msgid "%d ms"
 msgstr "%d ms"
 
 #, python-format
-msgid "%d of %d Bytes"
-msgstr "%d von %d Bytes"
-
-#, python-format
-msgid "%d of %d KB"
-msgstr "%d von %d KB"
-
-#, python-format
 msgid "%d pixel wide"
 msgid_plural "%d pixels wide"
 msgstr[0] "%d Pixel breit"
@@ -998,14 +990,6 @@ msgstr "%s ist auch für AutoFS Verbindungen aktiviert."
 #, python-format
 msgid "%s is no longer used. Should it be deleted?"
 msgstr "Der Satellit '%s' wird nicht mehr benötigt - soll er gelöscht werden?"
-
-#, python-format
-msgid "%s of %s GB"
-msgstr "%s von %s GB"
-
-#, python-format
-msgid "%s of %s MB"
-msgstr "%s von %s MB"
 
 #, python-format
 msgid "%s only has %s MB free."
@@ -1921,6 +1905,9 @@ msgstr "Nach Stromausfall"
 
 msgid "Agenten"
 msgstr ""
+
+msgid "Aggressive"
+msgstr "Aggressiv"
 
 msgid "Aland Islands"
 msgstr "Aland Islands"
@@ -2933,6 +2920,9 @@ msgstr "Anbieter kürzen manchmal lange Inhaltsangaben mit …. Wähle, wie das 
 
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
+
+msgid "Buffer descrambled data before starting playback. Fixes audio dropouts with passthrough AC3 by ensuring enough data is available when the decoder starts. Higher values are more stable but increase channel switch time. *Restart E2 for changes to take effect."
+msgstr "Puffert entschlüsselte Daten vor Beginn der Wiedergabe. Behebt Tonaussetzer bei AC3-Passthrough, indem sichergestellt wird, dass beim Start des Dekoders genügend Daten verfügbar sind. Höhere Werte sind stabiler, erhöhen aber die Umschaltzeit zwischen Sendern. Starte Enigma2 neu, um die Änderung zu aktivieren."
 
 #, python-format
 msgid "Buffering %d%%"
@@ -4815,6 +4805,9 @@ msgstr "Dekoder-Freigabe-Strategie *"
 msgid "Decoder Start Timeout *"
 msgstr "Dekoder-Start-Timeout *"
 
+msgid "Decoder playback buffer *"
+msgstr "Dekoder-Wiedergabepuffer *"
+
 msgid "Decrement end time"
 msgstr "Verringere End-Zeit"
 
@@ -5499,6 +5492,14 @@ msgstr "Plugins installieren"
 msgid "Downloading"
 msgstr "Herunterladen"
 
+#, python-format
+msgid "Downloading %s"
+msgstr "Lade %s herunter"
+
+#, python-format
+msgid "Downloading %s of %s"
+msgstr "Lade %s von %s herunter"
+
 msgid "Downloading plugin information. Please wait..."
 msgstr "Lade Plugin-Informationen herunter - bitte warten..."
 
@@ -5793,6 +5794,9 @@ msgstr "OpenTV-EPG herunter laden aktivieren"
 msgid "Enable SWAP at startup"
 msgstr "SWAP-Autostart"
 
+msgid "Enable SoftCSA *"
+msgstr "Aktiviere SoftCSA *"
+
 msgid "Enable ViaSat EPG"
 msgstr "ViaSat-EPG aktivieren"
 
@@ -5886,6 +5890,9 @@ msgstr "Aktiviere Startup"
 
 msgid "Enable teletext caching"
 msgstr "Aktiviere Videotext Cache"
+
+msgid "Enable the software implementation of the DVB Common Scrambling Algorithm, used when needed, to descramble transport stream packets."
+msgstr "Aktiviere die Software-Implementierung des DVB Common Scrambling Algorithmus für die Entschlüsselung von Transport Stream Paketen, falls erforderlich."
 
 msgid "Enable this setting if your aerial system needs power"
 msgstr "Aktiviere diesen Punkt, wenn dein Empfangssystem Strom braucht"
@@ -7307,6 +7314,10 @@ msgstr "Festplatte Ruhezustand nach"
 msgid "Harddisk setup"
 msgstr "Festplatten-Einstellungen"
 
+#, python-format
+msgid "Hardware Version:\t%s\n"
+msgstr "Hardware Version:\t%s\n"
+
 msgid "HbbTV"
 msgstr ""
 
@@ -7532,8 +7543,8 @@ msgstr "Wie viele Minuten aufnehmen?"
 msgid "How to display the date format for date items in the About screen."
 msgstr "Wie soll das Datum im About Screen dargestellt werden."
 
-msgid "How to release the hardware decoder when switching to software descrambling. 'Quick' releases immediately (faster zapping). 'Normal' performs clean shutdown first (more stable on some boxes). *Restart E2 for changes to take effect."
-msgstr "Wähle wie der Hardware-Dekoder freigegeben werden soll, wenn zu Software-Entschlüsselung gewechselt wird. 'Quick' gibt sofort frei (schnellers Umschalten). 'Normal' beendet den Dekoder regulär (stabiler auf manchen Boxen). Starte Enigma2 neu, um die Änderung zu aktivieren."
+msgid "How to release the hardware decoder when switching to software descrambling. 'Quick' releases immediately (faster zapping). 'Normal' performs clean shutdown first (more stable on some boxes). 'Aggressive' resets the HW-descrambler slots and also bypasses the in-process CSA-ALT cache. *Restart E2 for changes to take effect."
+msgstr "Wähle, wie der Hardware-Dekoder freigegeben werden soll, wenn zu Software-Entschlüsselung gewechselt wird. 'Quick' gibt sofort frei (schnelleres Umschalten). 'Normal' beendet den Dekoder regulär (stabiler auf manchen Boxen). 'Aggressiv' setzt die HW-Entschlüsserungs-Slots zurück und umgeht zusätzlich den prozessinternen CSA-ALT-Cache. Starte Enigma2 neu, um die Änderung zu aktivieren."
 
 msgid "Http(s) stream start delay"
 msgstr "HTTP(S) Verzögerung beim Start eines Streams"
@@ -9061,6 +9072,12 @@ msgctxt "Video output mode"
 msgid "Mode"
 msgstr "Modus [Video-Ausgang]"
 
+msgid "Mode 12: Supports PiP but Kodi may not work"
+msgstr "Modus 12: Unterstützt PiP, aber Kodi funktioniert möglicherweise nicht"
+
+msgid "Mode 1: Supports Kodi but PiP may not work"
+msgstr "Modus 1: Unterstützt Kodi, aber PiP funktioniert möglicherweise nicht"
+
 msgid "Model"
 msgstr "Modell"
 
@@ -9931,7 +9948,10 @@ msgid "Norfolk Island"
 msgstr "Norfolk Island"
 
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
+
+msgid "Normal: No boot modes required."
+msgstr "Normal: Keine Boot-Modi erforderlich."
 
 msgid "North"
 msgstr "Nord"
@@ -13777,14 +13797,14 @@ msgstr "Software Update in Erweiterungsliste"
 msgid "Show Software Update in Extensions (blue button menu). 'yes' adds it permanently. 'only when available' only shows it when updates are known to be available based on update polling."
 msgstr "Zeige Software Update in Erweiterungsliste (Blaue Taste). 'Ja' zeigt es permanent. 'Nur wenn verfügbar' zeigt den Punkt nur, wenn Updates verfügbar sind."
 
-msgid "Show Time Remaining/Elapsed"
-msgstr "Zeige Zeit bei TV"
+msgid "Show Time Remaining/Elapsed *"
+msgstr "Zeige Zeit 'Verbleibend/Verstrichen' *"
 
 msgid "Show Timer List"
 msgstr "Zeige Timerliste"
 
-msgid "Show Transponder Remaining/Elapsed as"
-msgstr "Zeige Transponder"
+msgid "Show Transponder Remaining/Elapsed as *"
+msgstr "Zeige Transponder 'Verbleibend/Verstrichen' als *"
 
 msgid "Show True/False as graphical switch"
 msgstr "Zeige 'Ja'/'Nein' als Schalter"
@@ -15300,7 +15320,7 @@ msgstr "Testtyp"
 msgid "Testscreens"
 msgstr "Testbilder"
 
-msgid "Testscreens that are helpfull to fine-tune your display"
+msgid "Testscreens that are helpful to fine-tune your display"
 msgstr "Testbilder, die dabei helfen können, die Bildqualität zu optimieren"
 
 msgid "Text"

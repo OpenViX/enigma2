@@ -20,7 +20,7 @@ from Screens.GitCommitInfo import CommitInfo
 from Screens.Screen import Screen, ScreenSummary
 from Screens.SoftwareUpdate import UpdatePlugin
 from Screens.TextBox import TextBox
-from Tools.Directories import fileHas, fileReadLines, isPluginInstalled
+from Tools.Directories import fileHas, fileReadLine, fileReadLines, isPluginInstalled
 from Tools.Hex2strColor import Hex2strColor
 from Tools.Multiboot import GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
@@ -254,6 +254,13 @@ class About(AboutBase):
 
 		AboutText += _("Drivers:\t%s\n") % driversDate()
 		AboutText += _("Kernel:\t%s\n") % KERNEL
+		if SystemInfo["boxtype"] == "gbquad4kpro":
+			hwVersion = fileReadLine("/proc/stb/info/version")
+			if hwVersion:
+				match = search(r"\brev[0-9]+\b", hwVersion)
+				if match:
+					hwVersion = match.group(0)
+				AboutText += _("Hardware Version:\t%s\n") % hwVersion
 		AboutText += _("Samba:\t%s\n") % getVersionFromOpkg("samba")
 		AboutText += _("GStreamer:\t%s\n") % getGStreamerVersionString().replace("GStreamer ", "")
 		AboutText += _("GCC version:\t%s\n") % getGccVersion()

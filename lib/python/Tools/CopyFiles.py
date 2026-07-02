@@ -1,3 +1,4 @@
+from Components.Harddisk import bytesToHumanReadable
 from Components.Task import PythonTask, Task, Job, job_manager as JobManager, Condition
 from Tools.Directories import fileExists
 from enigma import eTimer
@@ -72,7 +73,7 @@ class DownloaderPostcondition(Condition):
 		return task.returncode == 0
 
 	def getErrorMessage(self, task):
-		return self.error_message
+		return task.error_message or ""
 
 
 class DownloadTask(Task):
@@ -83,8 +84,6 @@ class DownloadTask(Task):
 		self.job = job
 		self.url = url.decode() if isinstance(url, bytes) else url
 		self.path = path
-		self.error_message = ""
-		self.last_recvbytes = 0
 		self.error_message = None
 		self.download = None
 		self.aborted = False
@@ -106,22 +105,15 @@ class DownloadTask(Task):
 		self.aborted = True
 
 	def download_progress(self, recvbytes, totalbytes):
-		if (recvbytes - self.last_recvbytes) > 100000:  # anti-flicker
+		if totalbytes > 0:  # avoid ZeroDivisionError if content-length is not available
 			self.progress = int(100 * (float(recvbytes) / float(totalbytes)))
-			if (((float(totalbytes) / 1024) / 1024) / 1024) >= 1:
-				self.name = _("Downloading") + ' ' + _("%s of %s GB") % (str(round((((float(recvbytes) / 1024) / 1024) / 1024), 2)), str(round((((float(totalbytes) / 1024) / 1024) / 1024), 2)))
-			elif ((float(totalbytes) / 1024) / 1024) >= 1:
-				self.name = _("Downloading") + ' ' + _("%s of %s MB") % (str(round(((float(recvbytes) / 1024) / 1024), 2)), str(round(((float(totalbytes) / 1024) / 1024), 2)))
-			elif (totalbytes / 1024) >= 1:
-				self.name = _("Downloading") + ' ' + _("%d of %d KB") % (recvbytes / 1024, totalbytes / 1024)
-			else:
-				self.name = _("Downloading") + ' ' + _("%d of %d Bytes") % (recvbytes, totalbytes)
-			self.last_recvbytes = recvbytes
+			self.name = _("Downloading %s of %s") % (bytesToHumanReadable(recvbytes), bytesToHumanReadable(totalbytes))
+		else:
+			self.progress = 0  # required to force display update
+			self.name = _("Downloading %s") % bytesToHumanReadable(recvbytes)
 
-	def download_failed(self, failure_instance=None, error_message=""):
+	def download_failed(self, error_message=""):
 		self.error_message = error_message
-		if error_message == "" and failure_instance is not None:
-			self.error_message = failure_instance.getErrorMessage()
 		Task.processFinished(self, 1)
 
 	def download_finished(self, string=""):

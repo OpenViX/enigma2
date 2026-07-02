@@ -54,6 +54,13 @@ KEY_0 = ACTIONKEY_0
 KEY_9 = ACTIONKEY_9
 
 
+setupOnSave = {}  # Currently not used by openvix but added for compatibility. This is used to trigger setup callbacks on save, it is populated by setup modules which want to use it. It's used in openwebif to trigger setup callbacks when saving settings via the web interface. It is a dictionary with section names as keys and callback functions as values.
+
+
+def setOnSaveCallback(setup, callback):
+	setupOnSave[setup] = callback
+
+
 # ConfigElement, the base class of all ConfigElements.
 #
 # ConfigElement stores:

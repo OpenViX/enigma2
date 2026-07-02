@@ -67,7 +67,7 @@ def getMultibootslots():
 							continue
 						if "STARTUP_RECOVERY" in file:
 							slotnumber = "0"
-							SystemInfo["RecoveryMode"] = True if BOXTYPE != "gbquad4kpro" else False
+							SystemInfo["RecoveryMode"] = BOXTYPE != "gbquad4kpro"
 						if "STARTUP_FLASH" in file:
 							slotnumber = "0"
 						if slotnumber.isdigit() and slotnumber not in bootslots:
@@ -116,7 +116,14 @@ def getMultibootslots():
 					# print(f"[multiboot][getMultibootslots]3 bootargs?: {path.exists("/sys/firmware/devicetree/base/chosen/bootargs")}")
 					SystemInfo["resetMBoot"] = True
 					bootslots = {}
-			Console(binary=True).ePopen(f"umount {tmpname}")
+			result = subprocess.run(["umount", tmpname], capture_output=True, check=False)
+			if result.returncode != 0:
+				print(f"[multiboot][getMultibootslots] umount {tmpname} failed: {result.stderr.decode(errors='ignore').strip()}")
+	while path.ismount(tmp.dir):
+		result = subprocess.run(["umount", tmp.dir], capture_output=True, check=False)
+		if result.returncode != 0:
+			print(f"[multiboot][getMultibootslots] cleanup umount {tmp.dir} failed: {result.stderr.decode(errors='ignore').strip()}")
+			break
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
 	if bootslots:
@@ -185,6 +192,7 @@ def GetImagelist(Recovery=None):
 	tmpname = tmp.dir
 	from Components.config import config		# here to prevent boot loop
 	slotRoot = ""
+	imagedir = "/"  # init here in case len(SystemInfo["canMultiBoot"].keys()) == 0
 	for slot in sorted(list(SystemInfo["canMultiBoot"].keys())):
 		if slot == 0:
 			if UBIMB:
@@ -236,7 +244,8 @@ def GetImagelist(Recovery=None):
 			Imagelist[slot] = {"imagename": _("Deleted image")}
 		else:
 			Imagelist[slot] = {"imagename": _("Empty slot")}
-	Console(binary=True).ePopen(f"umount {tmpname}")
+	if imagedir != "/":
+		Console(binary=True).ePopen(f"umount {tmpname}")
 	if not path.ismount(tmp.dir):
 		rmdir(tmp.dir)
 	return Imagelist
@@ -355,3 +364,44 @@ def isFat32(device):
 				return int.from_bytes(bootSector[36:40], "little") != 0
 	except Exception:
 		return False
+
+#	following added for OpenWebif canMultiBoot getCurrentSlotAndBootCodes getSlotImageList getBootCodeDescription activateSlot
+
+
+def canMultiBoot():
+	# print(f"[multiboot][canMultiBoot] ")
+	return SystemInfo["canMultiBoot"] != {}
+
+
+def getCurrentSlotAndBootCodes():
+	bootCode = " "
+	# print(f"[MultiBoot][getCurrentSlotAndBootCodes] bootSlot:{SystemInfo['MultiBootSlot']} bootCode:{bootCode}")
+	return SystemInfo["MultiBootSlot"], bootCode
+
+
+def getSlotImageList(callback):
+	imageList = GetImagelist()
+	# print(f"[MultiBoot][getSlotImageLists] keys:{imageList.keys()} {imageList}")
+	callback(imageList)
+
+
+def getBootCodeDescription(bootCodeEntry):
+	bootCodeDescriptions = {
+		"": _("Normal: No boot modes required."),
+		"1": _("Mode 1: Supports Kodi but PiP may not work"),
+		"12": _("Mode 12: Supports PiP but Kodi may not work")
+	}
+	return bootCodeDescriptions
+
+
+def activateSlot(slotCode, bootCode, callback):
+	# print(f"[MultiBoot][activateSlot] slotCode:{slotCode} bootCode:{bootCode}")
+	slot = int(slotCode)
+	tmp_dir = tempfile.mkdtemp(prefix="Webif_Multiboot")
+	Console().ePopen(f"mount {SystemInfo['MBbootdevice']} {tmp_dir}")
+	copyfile(path.join(tmp_dir, SystemInfo["canMultiBoot"][slot]["startupfile"]), path.join(tmp_dir, "STARTUP"))
+	if SystemInfo["HasMultibootMTD"]:
+		with open('/dev/block/by-name/flag', 'wb') as f:
+			f.write(struct.pack("B", int(slotCode)))
+	Console(binary=True).ePopen(f"umount {tmp_dir}")
+	callback(0, 0)

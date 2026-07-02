@@ -8,6 +8,12 @@ int eVideoWidget::posFullsizeLeft = 0;
 int eVideoWidget::posFullsizeTop = 0;
 int eVideoWidget::posFullsizeWidth = 0;
 int eVideoWidget::posFullsizeHeight = 0;
+#ifdef DREAMBOX
+int eVideoWidget::lastPigLeft[2]   = {0, 0};
+int eVideoWidget::lastPigTop[2]    = {0, 0};
+int eVideoWidget::lastPigWidth[2]  = {0, 0};
+int eVideoWidget::lastPigHeight[2] = {0, 0};
+#endif
 
 eVideoWidget::eVideoWidget(eWidget *parent)
 	:eLabel(parent), m_fb_size(720, 576), m_state(0), m_decoder(1)
@@ -16,6 +22,13 @@ eVideoWidget::eVideoWidget(eWidget *parent)
 	{
 		fullsizeTimer = eTimer::create(eApp);
 		fullsizeTimer->timeout.connect(sigc::bind(sigc::ptr_fun(&eVideoWidget::setFullsize), false));
+#ifdef DREAMBOX
+		if (posFullsizeWidth == 0)
+		{
+			posFullsizeWidth = 720;
+			posFullsizeHeight = 576;
+		}
+#endif
 	}
 	parent->setPositionNotifyChild(1);
 }
@@ -84,6 +97,13 @@ void eVideoWidget::setFullsize(bool force)
 	{
 		if (force || (pendingFullsize & (1 << decoder)))
 		{
+#ifdef DREAMBOX
+			if (lastPigWidth[decoder] > 0 && lastPigHeight[decoder] > 0)
+			{
+				eVideoWidget::setPosition(decoder, posFullsizeLeft, posFullsizeTop, posFullsizeWidth, posFullsizeHeight);
+				eVideoWidget::setPosition(decoder, lastPigLeft[decoder], lastPigTop[decoder], lastPigWidth[decoder], lastPigHeight[decoder]);
+			}
+#endif			
 			eVideoWidget::setPosition(decoder, posFullsizeLeft, posFullsizeTop, posFullsizeWidth, posFullsizeHeight);
 			pendingFullsize &= ~(1 << decoder);
 		}
@@ -129,7 +149,23 @@ void eVideoWidget::updatePosition(int disable)
 
 	if (!disable)
 	{
+#ifdef DREAMBOX
+		if (left == posFullsizeLeft && top == posFullsizeTop && width == posFullsizeWidth && height == posFullsizeHeight && lastPigWidth[m_decoder] > 0 && lastPigHeight[m_decoder] > 0 && (lastPigWidth[m_decoder] != posFullsizeWidth || lastPigHeight[m_decoder] != posFullsizeHeight))
+		{
+			/* dm9xx: decoder may be in a reset/fullscreen state and ignore a direct
+			 * fullscreen command. Bounce via the stored PIG position to force the
+			 * driver to acknowledge the transition (same trick as setFullsize). */
+			setPosition(m_decoder, posFullsizeLeft, posFullsizeTop, posFullsizeWidth, posFullsizeHeight);
+			setPosition(m_decoder, lastPigLeft[m_decoder], lastPigTop[m_decoder], lastPigWidth[m_decoder], lastPigHeight[m_decoder]);
+		}
+#endif
 		setPosition(m_decoder, left, top, width, height);
+#ifdef DREAMBOX
+		lastPigLeft[m_decoder]   = left;
+		lastPigTop[m_decoder]    = top;
+		lastPigWidth[m_decoder]  = width;
+		lastPigHeight[m_decoder] = height;
+#endif		
 		pendingFullsize &= ~(1 << m_decoder);
 		m_state |= 8;
 	}

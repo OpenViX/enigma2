@@ -236,6 +236,9 @@ class ServiceList(GUIComponent):
 		def itemsDistances(value):
 			self.l.setItemsDistances(parseScale(value))
 
+		def piconMargin(value):
+			self.l.setPiconMargin(parseScale(value))
+
 		def sidesMargin(value):
 			self.sidesMargin = parseScale(value)
 

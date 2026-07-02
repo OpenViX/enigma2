@@ -195,7 +195,7 @@ class ScreenButtonsBar(GUIAddon):
 		sequenceColor = {}
 		sequenceAction = []
 		for x, val in self.colorButtonSources.items():
-			if hasattr(val, "text") and val.text:
+			if hasattr(val, "text") and (hasattr(val, "boolean") and val.boolean or hasattr(val, "visible") and val.visible):
 				sequenceColor[x] = val
 
 		for x, val in self.actionButtonSources.items():
