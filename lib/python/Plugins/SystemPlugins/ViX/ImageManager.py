@@ -1527,7 +1527,7 @@ class ImageBackup(Screen):
 		try:
 			if config.imagemanager.number_to_keep.value > 0 and path.exists(self.BackupDirectory):  # !?!
 				images = listdir(self.BackupDirectory)
-				patt = f"{config.imagemanager.folderprefix.value}-*-{MACHINEBUILD}-*.zip" 
+				patt = f"{config.imagemanager.folderprefix.value}-*-{MACHINEBUILD}-*.zip"
 				emlist = []
 				for fil in images:
 					if fnmatch.fnmatchcase(fil, patt):
