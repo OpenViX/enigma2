@@ -10,9 +10,9 @@ realtimeMonitor = None
 
 
 def InitRealtimeMonitor():
-  global realtimeMonitor
-  if realtimeMonitor is None:
-    realtimeMonitor = ClockRealtimeMonitor()
+	global realtimeMonitor
+	if realtimeMonitor is None:
+		realtimeMonitor = ClockRealtimeMonitor()
 
 
 class timespec(ctypes.Structure):
