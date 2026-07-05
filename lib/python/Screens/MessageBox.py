@@ -78,17 +78,17 @@ class MessageBox(Screen, HelpableScreen):
 			self.onLayoutFinish.append(self.layoutFinished)
 		if enable_input:
 			self["actions"] = HelpableNumberActionMap(self, ["MsgBoxActions", "DirectionActions", "NumberActions",],
-			({
-				"cancel": (self.cancel, _("Cancel the selection")),
-				"ok": (self.ok, _("Accept the current selection"))} | (({
-				"alwaysOK": (self.alwaysOK, _("Always select OK")),
-				"up": (self.up, _("Move up a line")),
-				"down": (self.down, _("Move down a line")),
-				"left": (self.left, _("Move up a page")),
-				"right": (self.right, _("Move down a page"))} | {
-				str(i): (self.keyNumberGlobal, _("Direct item selection")) for i in range(10)}
-				) if self.list else {
-			})), prio=-1, description=_("MessageBox Actions"))
+				({
+					"cancel": (self.cancel, _("Cancel the selection")),
+					"ok": (self.ok, _("Accept the current selection"))} | (({
+					"alwaysOK": (self.alwaysOK, _("Always select OK")),
+					"up": (self.up, _("Move up a line")),
+					"down": (self.down, _("Move down a line")),
+					"left": (self.left, _("Move up a page")),
+					"right": (self.right, _("Move down a page"))} | {
+					str(i): (self.keyNumberGlobal, _("Direct item selection")) for i in range(10)}
+					) if self.list else {
+				})), prio=-1, description=_("MessageBox Actions"))
 
 	def layoutFinished(self):
 		self["icon"].setPixmapNum(self.type)
