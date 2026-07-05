@@ -479,6 +479,11 @@ if SystemInfo["imagetype"] != "release":
 	print(f"[StartEnigma]  Image DevBuild -> {SystemInfo['imagedevbuild']}")
 
 
+profile("Init:RealtimeMonitor")
+print("[StartEnigma]  Initialising RealtimeMonitor.")
+from Components.ClockRealtimeMonitor import InitRealtimeMonitor  # noqa: E402
+InitRealtimeMonitor()
+
 # SetupDevices sets up defaults:- language, keyboard, parental & expert config.
 # Moving further down will break translation.
 # Moving further up will break imports in config.py
