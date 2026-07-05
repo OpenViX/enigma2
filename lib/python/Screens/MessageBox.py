@@ -1,6 +1,6 @@
 from enigma import eTimer, ePoint, eSize, getDesktop
 
-from Components.ActionMap import ActionMap, HelpableNumberActionMap
+from Components.ActionMap import HelpableNumberActionMap
 from Components.config import config
 from Components.Label import Label
 from Components.MenuList import MenuList
@@ -78,7 +78,7 @@ class MessageBox(Screen, HelpableScreen):
 			self.onLayoutFinish.append(self.layoutFinished)
 		if enable_input:
 			self["actions"] = HelpableNumberActionMap(self, ["MsgBoxActions", "DirectionActions", "NumberActions",],
-			{
+			({
 				"cancel": (self.cancel, _("Cancel the selection")),
 				"ok": (self.ok, _("Accept the current selection"))} | (({
 				"alwaysOK": (self.alwaysOK, _("Always select OK")),
@@ -87,8 +87,8 @@ class MessageBox(Screen, HelpableScreen):
 				"left": (self.left, _("Move up a page")),
 				"right": (self.right, _("Move down a page"))} | {
 				str(i): (self.keyNumberGlobal, _("Direct item selection")) for i in range(10)}
-				) if self.list else {}),
-			prio=-1, description=_("MessageBox Actions"))
+				) if self.list else {
+			})), prio=-1, description=_("MessageBox Actions"))
 
 	def layoutFinished(self):
 		self["icon"].setPixmapNum(self.type)

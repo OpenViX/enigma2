@@ -412,7 +412,7 @@ class UBISlotManager(Setup):
 		TARGET = self.deviceData[self.UBISlotManagerDevice][0].split("/")[-1]
 		TARGET_DEVICE = f"/dev/{TARGET}"
 		PART_SUFFIX = "p" if "mmcblk" in TARGET else ""
-		PART = lambda n: f"{TARGET_DEVICE}{PART_SUFFIX}{n}"
+		PART = lambda n: f"{TARGET_DEVICE}{PART_SUFFIX}{n}"  # noqa E731
 		MOUNTPOINT = "/tmp/boot"
 		print(f"[UBISlotManager] createSlots TARGET:{TARGET} TARGET_DEVICE:{TARGET_DEVICE} Mountpoint:{MOUNTPOINT}")
 		if exists(TARGET_DEVICE):

@@ -1,7 +1,6 @@
 from enigma import eTimer, eDVBDB
 
 from Components.ActionMap import ActionMap
-from Components.Button import Button
 from Components.config import config
 from Components.Ipkg import IpkgComponent
 from Components.Pixmap import Pixmap
