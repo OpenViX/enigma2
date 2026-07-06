@@ -1612,7 +1612,7 @@ void eServiceMP3::startHDRProbe()
 				if (hdrFromCaps != m_hdr_type)
 				{
 					m_hdr_type = hdrFromCaps;
-					m_event((iPlayableService*)this, evVideoGammaChanged);
+					m_event((iPlayableService*)this, evUpdatedInfo);
 				}
 				return;
 			}
@@ -1699,11 +1699,12 @@ void eServiceMP3::checkHDRProbe()
 	{
 		int newHdrType = (result == HevcHDR::HDR_HDR10) ? 1 :
 		                 (result == HevcHDR::HDR_HLG)   ? 2 : 3;
+		eDebug("[eServiceMP3] HDR probe: result %d from bitstream", newHdrType);
 		stopHDRProbe();
 		if (newHdrType != m_hdr_type)
 		{
 			m_hdr_type = newHdrType;
-			m_event((iPlayableService*)this, evVideoGammaChanged);
+			m_event((iPlayableService*)this, evUpdatedInfo);
 		}
 		return;
 	}
@@ -1797,13 +1798,15 @@ void eServiceMP3::updateHDRFromVideoPad()
 		gst_iterator_free(eit);
 	}
 
+	eDebug("[eServiceMP3] HDR probe: result %d from video pad colorimetry", hdr);
+
 	/* Only update m_hdr_type when caps give a positive result.
 	 * Do NOT reset a previously probed HDR result just because
 	 * caps lack colorimetry (e.g. older STB GStreamer builds). */
 	if (hdr > 0 && hdr != m_hdr_type)
 	{
 		m_hdr_type = hdr;
-		m_event((iPlayableService*)this, evVideoGammaChanged);
+		m_event((iPlayableService*)this, evUpdatedInfo);
 	}
 }
 #endif /* HAS_SOFTWARE_HDR_DETECTION */
