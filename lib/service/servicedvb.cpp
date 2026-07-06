@@ -4565,8 +4565,6 @@ void eDVBServicePlay::hdrResult(int result)
 	 * - evVideoSizeChanged:  skins that refresh video info on size events
 	 * - evUpdatedInfo:       general service-info listeners (ServiceInfo converter) */
 	m_event((iPlayableService*)this, evVideoGammaChanged);
-	m_event((iPlayableService*)this, evVideoSizeChanged);
-	m_event((iPlayableService*)this, evUpdatedInfo);
 }
 #endif /* HAS_SOFTWARE_HDR_DETECTION */
 
