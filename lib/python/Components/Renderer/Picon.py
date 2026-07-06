@@ -44,6 +44,16 @@ class PiconLocator:
 			self.__onMountpointAdded(part.mountpoint)
 
 	def __onMountpointAdded(self, mountpoint):
+		if mountpoint.startswith(("/media/net", "/media/autofs")):
+			# A network share can go unreachable after being mounted (server
+			# down, network drop) without ever being unmounted, and a stat()
+			# against a dead NFS/CIFS path blocks in uninterruptible sleep -
+			# findPicon() below calls pathExists() on every searchPaths entry
+			# synchronously on the main/reactor thread, so one dead network
+			# mount left in searchPaths freezes the whole box. addSearchPath
+			# already excludes these paths for the same reason; mirror it here
+			# since this is the other, automatic way a path enters searchPaths.
+			return
 		for piconDirectory in self.piconDirectories:
 			try:
 				path = join(normpath(mountpoint), piconDirectory)
