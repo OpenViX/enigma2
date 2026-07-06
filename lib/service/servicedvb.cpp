@@ -4562,9 +4562,9 @@ void eDVBServicePlay::hdrResult(int result)
 	m_hdr_type = result;
 	/* Fire all three events so every skin pattern is covered:
 	 * - evVideoGammaChanged: skins that track gamma/HDR changes
-	 * - evVideoSizeChanged:  skins that refresh video info on size events
 	 * - evUpdatedInfo:       general service-info listeners (ServiceInfo converter) */
 	m_event((iPlayableService*)this, evVideoGammaChanged);
+	m_event((iPlayableService*)this, evUpdatedInfo);
 }
 #endif /* HAS_SOFTWARE_HDR_DETECTION */
 
