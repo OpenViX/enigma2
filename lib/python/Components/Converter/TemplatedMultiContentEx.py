@@ -10,20 +10,20 @@ class TemplatedMultiContentEx(TemplatedMultiContent):
 		self._raw_args = args
 		self._size_resolved = False
 		StringList.__init__(self, args)
-		from enigma import (
+		from enigma import (  # noqa F401
 			BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALPHATEST, BT_ALPHABLEND,
 			BT_FIXRATIO, BT_HALIGN_LEFT, BT_HALIGN_CENTER, BT_HALIGN_RIGHT,
 			BT_VALIGN_TOP, BT_VALIGN_CENTER, BT_VALIGN_BOTTOM, BT_ALIGN_CENTER,
 			RT_HALIGN_CENTER, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_BOTTOM,
 			RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_WRAP, RT_BLEND,
-			eListboxPythonMultiContent, gFont)  # noqa F401
+			eListboxPythonMultiContent, gFont)
 
-		from Components.MultiContent import (
+		from Components.MultiContent import (  # noqa F401
 			MultiContentEntryLinearGradient, MultiContentEntryLinearGradientAlphaBlend,
 			MultiContentEntryPixmap, MultiContentEntryPixmapAlphaBlend,
 			MultiContentEntryPixmapAlphaTest, MultiContentEntryProgress,
 			MultiContentEntryProgressPixmap, MultiContentEntryText,
-			MultiContentTemplateColor)  # noqa F401
+			MultiContentTemplateColor)
 
 		from skin import parseFont, getSkinFactor  # noqa F401
 
