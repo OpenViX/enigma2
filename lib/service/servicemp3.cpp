@@ -1046,9 +1046,6 @@ RESULT eServiceMP3::stop()
 	if (!m_gst_playbin || m_state == stStopped)
 		return -1;
 
-#ifdef HAS_SOFTWARE_HDR_DETECTION
-	stopHDRProbe();
-#endif
 	eDebug("[eServiceMP3] stop %s", m_ref.path.c_str());
 	m_state = stStopped;
 
@@ -1064,6 +1061,15 @@ RESULT eServiceMP3::stop()
 	ret = gst_element_set_state(m_gst_playbin, GST_STATE_NULL);
 	if (ret != GST_STATE_CHANGE_SUCCESS)
 		eDebug("[eServiceMP3] stop GST_STATE_NULL failure");
+
+#ifdef HAS_SOFTWARE_HDR_DETECTION
+	/* stopHDRProbe() calls gst_pad_remove_probe() which blocks until any
+	 * in-flight probe callback finishes.  Call it AFTER GST_STATE_NULL so the
+	 * streaming thread is guaranteed to have stopped; calling it earlier (on a
+	 * live pipeline) can block the main thread indefinitely if the streaming
+	 * thread is stuck waiting on hardware. */
+	stopHDRProbe();
+#endif
 
 	saveCuesheet();
 	m_nownext_timer->stop();
@@ -1467,7 +1473,16 @@ GstPadProbeReturn eServiceMP3::hdrProbeCallback(GstPad*, GstPadProbeInfo *info, 
 		return GST_PAD_PROBE_OK;  /* DMA/opaque buffer — skip silently */
 
 	g_mutex_lock(&self->m_hdr_probe_mutex);
-	if (self->m_hdr_probe_active && self->m_hdr_probe_es.size() < (8 * 1024 * 1024))
+	if (!self->m_hdr_probe_active)
+	{
+		/* stopHDRProbe() was called; self-remove so gst_pad_remove_probe()
+		 * (called immediately after releasing the mutex in stopHDRProbe) does
+		 * not have to wait for us, avoiding a potential main-thread stall. */
+		g_mutex_unlock(&self->m_hdr_probe_mutex);
+		gst_buffer_unmap(buf, &map);
+		return GST_PAD_PROBE_REMOVE;
+	}
+	if (self->m_hdr_probe_es.size() < (8 * 1024 * 1024))
 	{
 		const uint8_t *d = map.data;
 		gsize sz = map.size;
@@ -1506,8 +1521,9 @@ GstPadProbeReturn eServiceMP3::hdrProbeCallback(GstPad*, GstPadProbeInfo *info, 
 
 void eServiceMP3::startHDRProbe()
 {
+	/* Guard against stale GStreamer bus messages delivered after stop() */
+	if (m_state != stRunning || !m_gst_playbin) return;
 	stopHDRProbe();
-	if (!m_gst_playbin) return;
 
 	/* Find the first src pad in the pipeline that outputs video/x-h265.
 	 * Search by caps rather than by element name — STB pipelines often do not
@@ -1596,7 +1612,7 @@ void eServiceMP3::startHDRProbe()
 				if (hdrFromCaps != m_hdr_type)
 				{
 					m_hdr_type = hdrFromCaps;
-					m_event((iPlayableService*)this, evUpdatedInfo);
+					m_event((iPlayableService*)this, evVideoGammaChanged);
 				}
 				return;
 			}
@@ -1630,36 +1646,54 @@ void eServiceMP3::startHDRProbe()
 void eServiceMP3::stopHDRProbe()
 {
 	if (m_hdr_probe_timer) { m_hdr_probe_timer->stop(); m_hdr_probe_timer = 0; }
-	if (m_hdr_probe_pad && m_hdr_probe_id)
-	{
-		gst_pad_remove_probe(m_hdr_probe_pad, m_hdr_probe_id);
-		m_hdr_probe_id = 0;
-	}
-	if (m_hdr_probe_pad) { gst_object_unref(m_hdr_probe_pad); m_hdr_probe_pad = NULL; }
+
+	/* Signal the probe callback to self-remove by returning GST_PAD_PROBE_REMOVE.
+	 * We do NOT call gst_pad_remove_probe() here:
+	 *  - Called from startHDRProbe()/checkHDRProbe() while the pipeline is PLAYING:
+	 *    gst_pad_remove_probe() acquires GST_OBJECT_LOCK(pad), which the streaming
+	 *    thread also holds briefly during probe-list iteration.  On hardware STBs
+	 *    where the streaming thread is stalled inside a hardware decoder, this can
+	 *    hang the main thread.
+	 *  - Called from stop() after gst_element_set_state(NULL) returns ASYNC:
+	 *    the streaming thread may still be running, same risk applies.
+	 * The probe callback returns GST_PAD_PROBE_REMOVE when m_hdr_probe_active==false,
+	 * causing GStreamer to remove it from the streaming thread automatically.
+	 * Any remaining probe is cleaned up when the pipeline is destroyed. */
 	g_mutex_lock(&m_hdr_probe_mutex);
 	m_hdr_probe_active = false;
 	std::vector<uint8_t>().swap(m_hdr_probe_es);
 	g_mutex_unlock(&m_hdr_probe_mutex);
+	std::vector<uint8_t>().swap(m_hdr_probe_snap); /* main-thread only, no lock needed */
+
+	/* Release our pad ref; GStreamer holds its own ref until the probe is removed. */
+	m_hdr_probe_id = 0;
+	if (m_hdr_probe_pad) { gst_object_unref(m_hdr_probe_pad); m_hdr_probe_pad = NULL; }
 }
 
 void eServiceMP3::checkHDRProbe()
 {
-	/* Copy accumulated data under lock, then classify outside lock */
-	std::vector<uint8_t> snap;
+	/* Swap out new data under lock in O(1), then append to the main-thread
+	 * accumulator and classify entirely outside the lock.  This keeps the
+	 * mutex hold-time to a pointer swap rather than an O(N) copy that would
+	 * stall the streaming thread (hdrProbeCallback) for the copy duration. */
+	std::vector<uint8_t> batch;
 	g_mutex_lock(&m_hdr_probe_mutex);
-	snap = m_hdr_probe_es; /* copy */
+	batch.swap(m_hdr_probe_es);                    /* O(1) */
+	m_hdr_probe_es.reserve(64 * 1024);             /* pre-allocate for next batch */
 	g_mutex_unlock(&m_hdr_probe_mutex);
 
-	if (snap.empty()) return;
+	if (batch.empty()) return;
+
+	m_hdr_probe_snap.insert(m_hdr_probe_snap.end(), batch.begin(), batch.end());
 
 	/* Only re-classify every 64KB of new data */
-	if (snap.size() - m_hdr_probe_last_classify < (64 * 1024) &&
-	    snap.size() < (8 * 1024 * 1024))
+	if (m_hdr_probe_snap.size() - m_hdr_probe_last_classify < (64 * 1024) &&
+	    m_hdr_probe_snap.size() < (8 * 1024 * 1024))
 		return;
-	m_hdr_probe_last_classify = snap.size();
+	m_hdr_probe_last_classify = m_hdr_probe_snap.size();
 
 	bool sawSPS = false;
-	int result = HevcHDR::classify(snap.data(), (int)snap.size(), &sawSPS);
+	int result = HevcHDR::classify(m_hdr_probe_snap.data(), (int)m_hdr_probe_snap.size(), &sawSPS);
 
 	if (result == HevcHDR::HDR_HDR10 || result == HevcHDR::HDR_HLG || result == HevcHDR::HDR_GENERIC)
 	{
@@ -1669,15 +1703,15 @@ void eServiceMP3::checkHDRProbe()
 		if (newHdrType != m_hdr_type)
 		{
 			m_hdr_type = newHdrType;
-			m_event((iPlayableService*)this, evUpdatedInfo);
+			m_event((iPlayableService*)this, evVideoGammaChanged);
 		}
 		return;
 	}
 
 	if (sawSPS)
 	{
-		if (!m_hdr_probe_first_sps_at) m_hdr_probe_first_sps_at = snap.size();
-		if (snap.size() - m_hdr_probe_first_sps_at >= (768 * 1024))
+		if (!m_hdr_probe_first_sps_at) m_hdr_probe_first_sps_at = m_hdr_probe_snap.size();
+		if (m_hdr_probe_snap.size() - m_hdr_probe_first_sps_at >= (768 * 1024))
 		{
 			/* Read enough past first SPS without finding HDR -> SDR */
 			stopHDRProbe();
@@ -1685,7 +1719,7 @@ void eServiceMP3::checkHDRProbe()
 		}
 	}
 
-	if (snap.size() >= (8 * 1024 * 1024))
+	if (m_hdr_probe_snap.size() >= (8 * 1024 * 1024))
 		stopHDRProbe();
 }
 
@@ -1693,7 +1727,7 @@ void eServiceMP3::checkHDRProbe()
 
 void eServiceMP3::updateHDRFromVideoPad()
 {
-	if (!m_gst_playbin)
+	if (!m_gst_playbin || m_state != stRunning)
 		return;
 
 	int hdr = -1;
@@ -1769,7 +1803,7 @@ void eServiceMP3::updateHDRFromVideoPad()
 	if (hdr > 0 && hdr != m_hdr_type)
 	{
 		m_hdr_type = hdr;
-		m_event((iPlayableService*)this, evUpdatedInfo);
+		m_event((iPlayableService*)this, evVideoGammaChanged);
 	}
 }
 #endif /* HAS_SOFTWARE_HDR_DETECTION */
