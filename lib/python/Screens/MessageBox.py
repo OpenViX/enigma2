@@ -100,7 +100,7 @@ class MessageBox(Screen, HelpableScreen):
 				}
 
 			self["actions"] = HelpableNumberActionMap(
-				self, 
+				self,
 				["MsgBoxActions", "DirectionActions", "NumberActions", ],
 				actions,
 				prio=-1,
