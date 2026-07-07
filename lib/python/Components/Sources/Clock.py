@@ -25,7 +25,7 @@ class Clock(Source):
 	def _start(self):
 		self.clock_timer.startEpochAligned(1000)
 		self.poll()  # instant, not aligned
-	
+
 	def poll(self):
 		self.changed((self.CHANGED_POLL,))
 
