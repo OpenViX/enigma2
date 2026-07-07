@@ -139,16 +139,18 @@ def InitSkins(booting=True):
 	gMainDC.getInstance().setResolution(xres, yres)
 	desktop.resize(eSize(xres, yres))
 
+	# notify plugins WHERE_SKINCHANGE of skin load/reload
+	def _notifySkinPlugins():
+		from Session import SessionObject
+		from Components.PluginComponent import plugins
+		from Plugins.Plugin import PluginDescriptor
+		for plugin in plugins.getPlugins(PluginDescriptor.WHERE_SKINCHANGE):
+			plugin(session=SessionObject().session)
+
+	_notifySkinPlugins()
+
 	# notify any other modules about skin reloads
 	if not booting:
-		def _notifySkinPlugins():
-			from Session import SessionObject
-			from Components.PluginComponent import plugins
-			from Plugins.Plugin import PluginDescriptor
-			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_SKINCHANGE):
-				plugin(session=SessionObject().session)
-
-		_notifySkinPlugins()
 		for method in onLoadCallbacks:
 			if method:
 				method()
