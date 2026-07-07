@@ -153,7 +153,7 @@ class ClockRealtimeMonitor:
 			print("[ClockRealtimeMonitor] Recreate failed, monitoring disabled.")
 			return False
 		return True
-	
+
 	def _close_fd(self):
 		if self.fd >= 0:
 			os.close(self.fd)
