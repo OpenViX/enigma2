@@ -13,7 +13,7 @@ class Clock(Source):
 		Source.__init__(self)
 		self.clock_timer = eTimer()
 		self.clock_timer.callback.append(self.poll)
-		self.clock_timer.startEpochAligned(1000)
+		self._start()
 		Components.ClockRealtimeMonitor.realtimeMonitor.addRealtimeChangedCallback(self._timeUpdated)
 
 	@cached
@@ -22,21 +22,22 @@ class Clock(Source):
 
 	time = property(getClock)
 
+	def _start(self):
+		self.clock_timer.startEpochAligned(1000)
+		self.poll()  # instant, not aligned
+	
 	def poll(self):
-		print("[Clock] poll")  # temporary debug
 		self.changed((self.CHANGED_POLL,))
 
 	def _timeUpdated(self):
 		# Re-align after CLOCK_REALTIME discontinuity.
-		self.clock_timer.startEpochAligned(1000)
-		self.poll()
+		self._start()
 
 	def doSuspend(self, suspended):
 		if suspended:
 			self.clock_timer.stop()
 		else:
-			self.clock_timer.startEpochAligned(1000)
-			self.poll()
+			self._start()
 
 	def destroy(self):
 		Components.ClockRealtimeMonitor.realtimeMonitor.removeRealtimeChangedCallback(self._timeUpdated)
