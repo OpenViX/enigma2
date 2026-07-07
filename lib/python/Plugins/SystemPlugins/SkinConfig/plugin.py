@@ -201,7 +201,14 @@ class SkinSetupConfig(Setup):
 
 def sessionstart(reason, session, **kwargs):
 	if not reason:
+		print("[SkinConfigPlugin] loading custom layouts")
 		applyCustomLayouts()
+
+def onSkinReload(session):
+	print("[SkinConfigPlugin] skin reload detected, reapplying custom layouts")
+	loadFileSystemToDict()
+	loadConfigToDict()
+	applyCustomLayouts()
 
 
 def loadFileSystemToDict():
@@ -245,6 +252,7 @@ def SkinSetupMenu(session, close=None, **kwargs):
 def Plugins(path, **kwargs):
 	plugin = [
 		PluginDescriptor(where=PluginDescriptor.WHERE_SESSIONSTART, fnc=sessionstart, needsRestart=False),
+		PluginDescriptor(where=PluginDescriptor.WHERE_SKINCHANGE, fnc=onSkinReload),
 		PluginDescriptor(name=PROGRAM_NAME, description=PROGRAM_DESCRIPTION, where=PluginDescriptor.WHERE_MENU, fnc=startFromSkinMenu)
 	]
 

@@ -141,9 +141,17 @@ def InitSkins(booting=True):
 
 	# notify any other modules about skin reloads
 	if not booting:
+		def _notifySkinPlugins():
+			from Session import SessionObject
+			from Components.PluginComponent import plugins
+			from Plugins.Plugin import PluginDescriptor
+			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_SKINCHANGE):
+				plugin(session=SessionObject().session)
+
 		for method in onLoadCallbacks:
 			if method:
 				method()
+		_notifySkinPlugins()
 
 # Temporary entry point for older versions of StartEnigma.py.
 #
