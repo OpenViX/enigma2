@@ -148,10 +148,10 @@ def InitSkins(booting=True):
 			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_SKINCHANGE):
 				plugin(session=SessionObject().session)
 
+		_notifySkinPlugins()
 		for method in onLoadCallbacks:
 			if method:
 				method()
-		_notifySkinPlugins()
 
 # Temporary entry point for older versions of StartEnigma.py.
 #
