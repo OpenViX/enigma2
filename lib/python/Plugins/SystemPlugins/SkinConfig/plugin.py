@@ -204,6 +204,7 @@ def sessionstart(reason, session, **kwargs):
 		print("[SkinConfigPlugin] loading custom layouts")
 		applyCustomLayouts()
 
+
 def onSkinReload(session):
 	print("[SkinConfigPlugin] skin reload detected, reapplying custom layouts")
 	loadFileSystemToDict()
