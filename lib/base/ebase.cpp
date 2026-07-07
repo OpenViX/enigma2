@@ -50,17 +50,17 @@ void eTimer::start(long msek, bool singleShot)
 	if (bActive)
 		stop();
 
-	ASSERT(msek >= 0); // A negative interval would not make sense
-	ASSERT(singleShot || msek > 0); // Repeat timers with zero interval would not make sense
+	if (msek < 0) // A negative interval would not make sense
+		msek = 0;
 	
 	if (eMainloop::isValid(&context))
 	{
 		bActive = true;
-		bSingleShot = singleShot;
+		bSingleShot = msek == 0 || singleShot;  // Prevent zero-interval repeat timers.
 		interval = msek;
 		clock_gettime(CLOCK_MONOTONIC, &nextActivation);
 //		eDebug("[eTimer] this = %p\nnow sec = %d, nsec = %d\nadd %d msec", this, nextActivation.tv_sec, nextActivation.tv_nsec, msek);
-		nextActivation += (msek<0 ? 0 : msek);
+		nextActivation += msek;
 //		eDebug("[eTimer] next Activation sec = %d, nsec = %d", nextActivation.tv_sec, nextActivation.tv_nsec );
 		context.addTimer(this);
 	}
@@ -103,14 +103,14 @@ void eTimer::startEpochAligned(long msek, bool singleShot)
 	if (bActive)
 		stop();
 
-	ASSERT(msek >= 0); // A negative interval would not make sense
-	ASSERT(singleShot || msek > 0); // Repeat timers with zero interval would not make sense
+	if (msek < 0) // A negative interval would not make sense
+		msek = 0;
 
 	if (!eMainloop::isValid(&context))
 		return;
 
 	bActive = true;
-	bSingleShot = singleShot;
+	bSingleShot = msek == 0 || singleShot;  // Prevent zero-interval repeat timers.
 	interval = msek;
 
 	// Use realtime clock only for phase alignment.
@@ -121,18 +121,17 @@ void eTimer::startEpochAligned(long msek, bool singleShot)
 	clock_gettime(CLOCK_MONOTONIC, &nextActivation);
 
 	// Total realtime milliseconds.
-	long long realtime_ms = 0;
+	long delay = 0;
 
 	if (msek)
 	{
-		realtime_ms =
+		long long realtime_ms =
 			((long long)realtime_now.tv_sec * 1000LL) +
 			(realtime_now.tv_nsec / 1000000LL);
-	}
 
-	// Time until next aligned boundary.
-	long delay =
-		(msek ? (msek - (realtime_ms % msek)) % msek : 0);
+		// Time until next aligned boundary.
+		delay = (msek - (realtime_ms % msek)) % msek;
+	}
 
 	// Avoid immediate activation.
 	if (delay == 0)
