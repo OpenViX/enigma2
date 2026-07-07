@@ -58,15 +58,39 @@ class ClockRealtimeMonitor:
 		]
 		self._libc.timerfd_settime.restype = ctypes.c_int
 
+		self.onRealtimeChanged = []
+
+		self.fd = -1
+		self._notifier = None
+
+		if not self._create() or not self._arm():
+			print("[ClockRealtimeMonitor] Failed to initialise.")
+			return
+
+		self._add_notifier()
+
+	def _create(self):
 		self.fd = self._libc.timerfd_create(self.CLOCK_REALTIME, 0)
 		if self.fd < 0:
-			raise OSError(ctypes.get_errno(), "timerfd_create failed")
+			print("[ClockRealtimeMonitor] timerfd_create failed")
+			self.fd = -1
+			return False
+		return True
 
-		self._arm()
+	def _recreate(self):
+		self._remove_notifier()
 
-		self.onRealtimeChanged = []
-		self._notifier = eSocketNotifier(self.fd, select.POLLIN)
-		self._notifier.callback.append(self._activated)
+		self._close_fd()
+
+		if not self._create():
+			return False
+
+		if not self._arm():
+			return False
+
+		self._add_notifier()
+
+		return True
 
 	def _arm(self):
 		spec = itimerspec()
@@ -88,22 +112,52 @@ class ClockRealtimeMonitor:
 			None,
 		)
 		if ret != 0:
-			raise OSError(ctypes.get_errno(), "timerfd_settime failed")
+			err = ctypes.get_errno()
+			print(f"[ClockRealtimeMonitor] timerfd_settime failed ({err}: {os.strerror(err)})")
+			return False
+
+		return True
 
 	def _activated(self, what):
 		try:
 			os.read(self.fd, 8)
 		except OSError as e:
 			if e.errno != errno.ECANCELED:
-				raise
-			self._arm()
+				print(f"[ClockRealtimeMonitor] read failed ({e.errno})")
+				return
+
 			print("[ClockRealtimeMonitor] system clock step detected")
+
 			for f in list(self.onRealtimeChanged):
 				if callable(f):
 					f()
-			return
-		# Only reachable on genuine expiry (year 2038) -- keep watching.
-		self._arm()
+
+		# Either after a clock step or a genuine expiry (year 2038),
+		# continue monitoring.
+		self._arm() or self._recover()
+
+	def _add_notifier(self):
+		self._notifier = eSocketNotifier(self.fd, select.POLLIN)
+		self._notifier.callback.append(self._activated)
+
+	def _remove_notifier(self):
+		if self._notifier is not None:
+			if self._activated in self._notifier.callback:
+				self._notifier.callback.remove(self._activated)
+			self._notifier.stop()
+			self._notifier = None
+
+	def _recover(self):
+		print("[ClockRealtimeMonitor] Recreating timerfd...")
+		if not self._recreate():
+			print("[ClockRealtimeMonitor] Recreate failed, monitoring disabled.")
+			return False
+		return True
+	
+	def _close_fd(self):
+		if self.fd >= 0:
+			os.close(self.fd)
+			self.fd = -1
 
 	def addRealtimeChangedCallback(self, f):
 		if f not in self.onRealtimeChanged:
@@ -114,13 +168,8 @@ class ClockRealtimeMonitor:
 			self.onRealtimeChanged.remove(f)
 
 	def close(self):
-		if self._notifier is not None:
-			self._notifier.callback.remove(self._activated)
-			self._notifier.stop()
-			self._notifier = None
-		if self.fd >= 0:
-			os.close(self.fd)
-			self.fd = -1
+		self._remove_notifier()
+		self._close_fd()
 
 	def __del__(self):
 		try:
