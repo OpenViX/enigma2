@@ -160,7 +160,12 @@ class EventInfo(PerServiceBase, Source):
 		if what == iPlayableService.evEnd and not self.__service:
 			self.changed((self.CHANGED_CLEAR,))
 		else:
-			self.__service = None
+			# pnav.stopService() fires evEnd and pnav.playService() fires evStart
+			# synchronously, both before any repaint runs.  Preserve an eServiceReference
+			# set by updateSource() across that whole old→new transition so renderers
+			# can show cached EPG immediately.  Clear only when real EIT data arrives.
+			if not (isinstance(self.__service, eServiceReference) and what in (iPlayableService.evEnd, iPlayableService.evStart)):
+				self.__service = None
 			self.changed((self.CHANGED_ALL,))
 		# if evUpdatedEventInfo arrives before the event starts the fields will not change, so add an additional future timed event to make sure it does update.
 		if not from_timer and what in (iPlayableService.evUpdatedInfo, iPlayableService.evUpdatedEventInfo):

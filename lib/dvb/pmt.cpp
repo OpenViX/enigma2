@@ -860,6 +860,17 @@ void eDVBServicePMTHandler::SDTScanEvent(int event)
 	{
 		case eDVBScan::evtFinish:
 		{
+			/* Snapshot m_dvb_scan into a local ePtr before any use.
+			 * This increments the refcount so the eDVBScan object cannot be
+			 * destroyed under us if free() is called concurrently (e.g. from
+			 * another thread or a reentrant signal), and provides a single
+			 * null-check that covers every subsequent dereference. */
+			ePtr<eDVBScan> scan = m_dvb_scan;
+			if (!scan)
+			{
+				eDebug("[eDVBServicePMTHandler] SDTScanEvent: m_dvb_scan is null, skipping SDT update");
+				break;
+			}
 			ePtr<iDVBChannelList> db;
 			if (m_resourceManager->getChannelList(db) != 0)
 				eDebug("[eDVBServicePMTHandler] no channel list");
@@ -867,10 +878,10 @@ void eDVBServicePMTHandler::SDTScanEvent(int event)
 			{
 				eDVBChannelID chid, curr_chid;
 				m_reference.getChannelID(chid);
-				curr_chid = m_dvb_scan->getCurrentChannelID();
+				curr_chid = scan->getCurrentChannelID();
 				if (chid == curr_chid)
 				{
-					m_dvb_scan->insertInto(db, true);
+					scan->insertInto(db, true);
 					eDebug("[eDVBServicePMTHandler] sdt update done!");
 				}
 				else

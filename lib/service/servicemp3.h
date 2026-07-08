@@ -411,7 +411,7 @@ private:
 	size_t          m_hdr_probe_first_sps_at;
 	gulong          m_hdr_probe_id;
 	GstPad         *m_hdr_probe_pad;
-	bool            m_hdr_probe_active;
+	gint            m_hdr_probe_active; /* atomic: 0=inactive, 1=active; use g_atomic_int_* */
 	ePtr<eTimer>    m_hdr_probe_timer;
 	void startHDRProbe();
 	void stopHDRProbe();

@@ -562,7 +562,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 #ifdef HAS_SOFTWARE_HDR_DETECTION
 	m_hdr_probe_id = 0;
 	m_hdr_probe_pad = NULL;
-	m_hdr_probe_active = false;
+	g_atomic_int_set(&m_hdr_probe_active, 0);
 	m_hdr_probe_last_classify = 0;
 	m_hdr_probe_first_sps_at = 0;
 	g_mutex_init(&m_hdr_probe_mutex);
@@ -1019,7 +1019,7 @@ RESULT eServiceMP3::start()
 		}
 	}
 
-	if (m_ref.path.find("://") == std::string::npos)
+	if (m_ref && m_ref.path.find("://") == std::string::npos)
 	{
 		/* read event from .eit file */
 		size_t pos;
@@ -1043,7 +1043,7 @@ RESULT eServiceMP3::start()
 
 RESULT eServiceMP3::stop()
 {
-	if (!m_gst_playbin || m_state == stStopped)
+	if (!m_gst_playbin || m_state == stStopped || !m_ref)
 		return -1;
 
 	eDebug("[eServiceMP3] stop %s", m_ref.path.c_str());
@@ -1051,8 +1051,12 @@ RESULT eServiceMP3::stop()
 
 	GstStateChangeReturn ret;
 	GstState state, pending;
-	/* make sure that last state change was successfull */
-	ret = gst_element_get_state(m_gst_playbin, &state, &pending, 5 * GST_SECOND);
+	/* Non-blocking state query: gst_element_set_state(NULL) aborts any
+	 * pending state change internally, so we do not need to wait here.
+	 * The previous 5 * GST_SECOND blocking wait caused the UI to freeze
+	 * (spinner with video still playing) on rapid channel zaps, especially
+	 * on H.265 channels where hardware decoders are slower to respond. */
+	ret = gst_element_get_state(m_gst_playbin, &state, &pending, 0);
 	eDebug("[eServiceMP3] stop state:%s pending:%s ret:%s",
 		gst_element_state_get_name(state),
 		gst_element_state_get_name(pending),
@@ -1468,16 +1472,22 @@ GstPadProbeReturn eServiceMP3::hdrProbeCallback(GstPad*, GstPadProbeInfo *info, 
 	GstBuffer *buf = GST_PAD_PROBE_INFO_BUFFER(info);
 	if (!buf) return GST_PAD_PROBE_OK;
 
+	/* Atomic pre-check before any buffer mapping or mutex: stopHDRProbe()
+	 * sets m_hdr_probe_active to 0 via g_atomic_int_set() WITHOUT acquiring
+	 * the mutex, so this check is always safe and avoids the cost of
+	 * gst_buffer_map + mutex acquisition when we are already stopping. */
+	if (!g_atomic_int_get(&self->m_hdr_probe_active))
+		return GST_PAD_PROBE_REMOVE;
+
 	GstMapInfo map;
 	if (!gst_buffer_map(buf, &map, GST_MAP_READ))
 		return GST_PAD_PROBE_OK;  /* DMA/opaque buffer — skip silently */
 
 	g_mutex_lock(&self->m_hdr_probe_mutex);
-	if (!self->m_hdr_probe_active)
+	if (!g_atomic_int_get(&self->m_hdr_probe_active))
 	{
-		/* stopHDRProbe() was called; self-remove so gst_pad_remove_probe()
-		 * (called immediately after releasing the mutex in stopHDRProbe) does
-		 * not have to wait for us, avoiding a potential main-thread stall. */
+		/* Double-check under mutex in case stopHDRProbe() ran between the
+		 * atomic pre-check above and acquiring the mutex. */
 		g_mutex_unlock(&self->m_hdr_probe_mutex);
 		gst_buffer_unmap(buf, &map);
 		return GST_PAD_PROBE_REMOVE;
@@ -1630,7 +1640,7 @@ void eServiceMP3::startHDRProbe()
 	}
 	m_hdr_probe_last_classify = 0;
 	m_hdr_probe_first_sps_at = 0;
-	m_hdr_probe_active = true;
+	g_atomic_int_set(&m_hdr_probe_active, 1);
 	g_mutex_unlock(&m_hdr_probe_mutex);
 
 	m_hdr_probe_id = gst_pad_add_probe(hevc_pad, GST_PAD_PROBE_TYPE_BUFFER,
@@ -1647,22 +1657,24 @@ void eServiceMP3::stopHDRProbe()
 {
 	if (m_hdr_probe_timer) { m_hdr_probe_timer->stop(); m_hdr_probe_timer = 0; }
 
-	/* Signal the probe callback to self-remove by returning GST_PAD_PROBE_REMOVE.
-	 * We do NOT call gst_pad_remove_probe() here:
-	 *  - Called from startHDRProbe()/checkHDRProbe() while the pipeline is PLAYING:
-	 *    gst_pad_remove_probe() acquires GST_OBJECT_LOCK(pad), which the streaming
-	 *    thread also holds briefly during probe-list iteration.  On hardware STBs
-	 *    where the streaming thread is stalled inside a hardware decoder, this can
-	 *    hang the main thread.
-	 *  - Called from stop() after gst_element_set_state(NULL) returns ASYNC:
-	 *    the streaming thread may still be running, same risk applies.
-	 * The probe callback returns GST_PAD_PROBE_REMOVE when m_hdr_probe_active==false,
-	 * causing GStreamer to remove it from the streaming thread automatically.
-	 * Any remaining probe is cleaned up when the pipeline is destroyed. */
-	g_mutex_lock(&m_hdr_probe_mutex);
-	m_hdr_probe_active = false;
-	std::vector<uint8_t>().swap(m_hdr_probe_es);
-	g_mutex_unlock(&m_hdr_probe_mutex);
+	/* Set the active flag atomically WITHOUT acquiring m_hdr_probe_mutex.
+	 * This is the key fix for the UI lockup on H.265 channel zapping:
+	 *  - gst_element_set_state(NULL) can return GST_STATE_CHANGE_ASYNC,
+	 *    meaning the streaming thread is still running hdrProbeCallback.
+	 *  - hdrProbeCallback holds m_hdr_probe_mutex while copying H.265 I-frame
+	 *    data (can be 500KB-2MB per frame), which could block the main thread
+	 *    for a significant time if we call g_mutex_lock() here.
+	 *  - By using g_atomic_int_set(), we set inactive instantly without
+	 *    contending the mutex.  The probe callback's atomic pre-check sees the
+	 *    flag and returns GST_PAD_PROBE_REMOVE without touching the mutex at all.
+	 * m_hdr_probe_es cleanup: try a non-blocking lock; if the probe is mid-copy
+	 * skip the clear — the data is harmless and freed with the object. */
+	g_atomic_int_set(&m_hdr_probe_active, 0);
+	if (g_mutex_trylock(&m_hdr_probe_mutex))
+	{
+		std::vector<uint8_t>().swap(m_hdr_probe_es);
+		g_mutex_unlock(&m_hdr_probe_mutex);
+	}
 	std::vector<uint8_t>().swap(m_hdr_probe_snap); /* main-thread only, no lock needed */
 
 	/* Release our pad ref; GStreamer holds its own ref until the probe is removed. */
@@ -2236,13 +2248,20 @@ void eServiceMP3::clearBuffers(bool force)
 {
 	if ((!m_initial_start || !m_clear_buffers) && !force) return;
 
+	/* Live streams cannot seek back; flushing would stall playback, so skip. */
+	if (m_is_live && !force)
+	{
+		eDebug ("[eServiceMP3] Clear Buffers skipped (live stream)");
+		return;
+	}
+
 	eDebug ("[eServiceMP3] Clear Buffers!");
 	bool validposition = false;
 	pts_t ppos = 0;
 	if (getPlayPosition(ppos) >= 0)
 	{
 		validposition = true;
-		ppos -= 90000;
+		ppos -= 9000; /* seek back ~100ms instead of 1s for faster audio switch */
 		if (ppos < 0)
 			ppos = 0;
 	}
@@ -2263,16 +2282,32 @@ void eServiceMP3::clearBuffers(bool force)
 
 int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 {
+	/* Validate index against our own track list to avoid relying solely on
+	 * an immediate g_object_get readback which can return a stale value when
+	 * GStreamer is in a transitional state. */
+	if (i < 0 || i >= (int)m_audioStreams.size())
+	{
+		eDebug ("[eServiceMP3] selectAudioStream: index %d out of range (n=%d)", i, (int)m_audioStreams.size());
+		return -1;
+	}
 	int current_audio, current_audio_orig;
 	g_object_get (G_OBJECT (m_gst_playbin), "current-audio", &current_audio_orig, NULL);
 	g_object_set (G_OBJECT (m_gst_playbin), "current-audio", i, NULL);
 	g_object_get (G_OBJECT (m_gst_playbin), "current-audio", &current_audio, NULL);
+	if (current_audio != i)
+	{
+		/* GStreamer may be in a transitional state and hasn't applied the
+		 * property yet. Since we validated the index ourselves, trust the set. */
+		eDebug ("[eServiceMP3] selectAudioStream: readback returned %d (expected %d), trusting range-validated set", current_audio, i);
+		current_audio = i;
+	}
 	if ( current_audio == i )
 	{
 		if (!skipAudioFix)
 		{
 			eDebug ("[eServiceMP3] switched to audio stream %i", current_audio);
 			m_currentAudioStream = i;
+			m_event((iPlayableService*)this, evUpdatedInfo);
 #ifdef PASSTHROUGH_FIX
 			GstPad* pad = 0;
 			g_signal_emit_by_name (m_gst_playbin, "get-audio-pad", i, &pad);
