@@ -238,6 +238,9 @@ class Navigation:
 					"InfoBarInstance": InfoBarInstance, "oldref": oldref,
 					"checkParentalControl": checkParentalControl, "forceRestart": forceRestart,
 					"adjust": adjust, "event": event,
+					# Save the post-setCurrent value so _executePendingPlay can restore it
+					# after evEnd (fired by pnav.stopService) clears currentlyPlaying*.
+					"serviceOrGroup": self.currentlyPlayingServiceOrGroup,
 				}
 				if not hasattr(self, "_pendingPlayTimer"):
 					self._pendingPlayTimer = eTimer()
@@ -269,6 +272,13 @@ class Navigation:
 
 		if not SystemInfo["FCCactive"]:
 			self.pnav.stopService()
+
+		# Restore the service references that evEnd (fired inside stopService) just
+		# cleared.  This mirrors the original synchronous code where these were
+		# assigned *after* pnav.stopService() so that callers such as movieSelected()
+		# always find a valid getCurrentlyPlayingServiceOrGroup() value.
+		self.currentlyPlayingServiceReference = p["playref"]
+		self.currentlyPlayingServiceOrGroup = p["serviceOrGroup"]
 
 		if SystemInfo["FCCactive"] and "%3a//" in ref.toString() and not is_stream_relay:
 			self.pnav.stopService()
