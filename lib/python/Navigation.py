@@ -180,16 +180,11 @@ class Navigation:
 			else:
 				playref = ref
 			if self.pnav:
-				if not SystemInfo["FCCactive"]:
-					self.pnav.stopService()
-				else:
+				if SystemInfo["FCCactive"]:
 					self.skipServiceReferenceReset = True
 
 				self.currentlyPlayingServiceReference = playref
 				playref, is_stream_relay = streamrelay.streamrelayChecker(playref)
-
-				if SystemInfo["FCCactive"] and "%3a//" in ref.toString() and not is_stream_relay:
-					self.pnav.stopService()
 
 				playref_str_orig = playref.toString()
 				for f in Navigation.playServiceExtensions:
@@ -233,44 +228,86 @@ class Navigation:
 								if config.usage.frontend_priority_dvbs.value != config.usage.frontend_priority.value:
 									setPreferredTuner(int(config.usage.frontend_priority_dvbs.value))
 									setPriorityFrontend = True
-				if config.misc.softcam_streamrelay_delay.value and self.currentServiceIsStreamRelay:
-					self.currentServiceIsStreamRelay = False
-					self.currentlyPlayingServiceReference = None
-					self.currentlyPlayingServiceOrGroup = None
-					self.retryServicePlayCount = 1  # Pre-arm retry cycle in case play fails after delay.
-					print("[Navigation] Streamrelay was active -> delay the zap till tuner is freed")
-					self.retryServicePlayTimer = eTimer()
-					self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
-					self.retryServicePlayTimer.start(config.misc.softcam_streamrelay_delay.value, True)
-				elif not is_async_play and self.pnav.playService(playref):
-					self.currentlyPlayingServiceReference = None
-					self.originalPlayingServiceReference = None
-					self.currentlyPlayingServiceOrGroup = None
-					if oldref and "://" in oldref.getPath():
-						self.retryServicePlayCount = 1  # Start retry cycle for stream relay tuner deallocation.
-					if 0 < self.retryServicePlayCount <= 20:
-						print(f"[Navigation] Streaming was active -> try again (attempt {self.retryServicePlayCount}).")  # Use timer to give the stream server the time to deallocate the tuner.
-						self.retryServicePlayTimer = eTimer()
-						self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
-						self.retryServicePlayTimer.start(500, True)
-						self.retryServicePlayCount += 1
-					elif self.retryServicePlayCount > 20:
-						print(f"[Navigation] Gave up retrying after {self.retryServicePlayCount - 1} attempts.")
-						self.retryServicePlayCount = 0
+
+				# Defer the actual stop+play to the next event-loop iteration so the
+				# InfoBar repaint (triggered by the early newService/updateSource calls
+				# above) can execute before the synchronous evEnd/evStart chains fire.
+				self._pendingPlay = {
+					"playref": playref, "ref": ref, "is_async_play": is_async_play,
+					"is_stream_relay": is_stream_relay, "setPriorityFrontend": setPriorityFrontend,
+					"InfoBarInstance": InfoBarInstance, "oldref": oldref,
+					"checkParentalControl": checkParentalControl, "forceRestart": forceRestart,
+					"adjust": adjust, "event": event,
+				}
+				if not hasattr(self, "_pendingPlayTimer"):
+					self._pendingPlayTimer = eTimer()
+					self._pendingPlayTimer.callback.append(self._executePendingPlay)
 				else:
-					self.retryServicePlayCount = 0
-				self.skipServiceReferenceReset = False
-				if setPriorityFrontend:
-					setPreferredTuner(int(config.usage.frontend_priority.value))
-				if self.currentlyPlayingServiceReference and self.currentlyPlayingServiceReference.toString() in streamrelay.data:
-					self.currentServiceIsStreamRelay = True
-				if InfoBarInstance and "%3a//" in playref.toString() and not is_async_play:
-					self.originalPlayingServiceReference = None
-					InfoBarInstance.serviceStarted()
+					self._pendingPlayTimer.stop()
+				self._pendingPlayTimer.start(0, True)
 				return 0
 		elif oldref and InfoBarInstance and InfoBarInstance.servicelist.servicelist.setCurrent(ref, adjust):
 			self.currentlyPlayingServiceOrGroup = InfoBarInstance.servicelist.servicelist.getCurrent()
 		return 1
+
+	def _executePendingPlay(self):
+		p = getattr(self, "_pendingPlay", None)
+		if p is None or not self.pnav:
+			return
+		del self._pendingPlay
+
+		playref = p["playref"]
+		ref = p["ref"]
+		is_async_play = p["is_async_play"]
+		is_stream_relay = p["is_stream_relay"]
+		setPriorityFrontend = p["setPriorityFrontend"]
+		InfoBarInstance = p["InfoBarInstance"]
+		oldref = p["oldref"]
+		checkParentalControl = p["checkParentalControl"]
+		forceRestart = p["forceRestart"]
+		adjust = p["adjust"]
+
+		if not SystemInfo["FCCactive"]:
+			self.pnav.stopService()
+
+		if SystemInfo["FCCactive"] and "%3a//" in ref.toString() and not is_stream_relay:
+			self.pnav.stopService()
+
+		if config.misc.softcam_streamrelay_delay.value and self.currentServiceIsStreamRelay:
+			self.currentServiceIsStreamRelay = False
+			self.currentlyPlayingServiceReference = None
+			self.currentlyPlayingServiceOrGroup = None
+			self.retryServicePlayCount = 1  # Pre-arm retry cycle in case play fails after delay.
+			print("[Navigation] Streamrelay was active -> delay the zap till tuner is freed")
+			self.retryServicePlayTimer = eTimer()
+			self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
+			self.retryServicePlayTimer.start(config.misc.softcam_streamrelay_delay.value, True)
+		elif not is_async_play and self.pnav.playService(playref):
+			self.currentlyPlayingServiceReference = None
+			self.originalPlayingServiceReference = None
+			self.currentlyPlayingServiceOrGroup = None
+			if oldref and "://" in oldref.getPath():
+				self.retryServicePlayCount = 1  # Start retry cycle for stream relay tuner deallocation.
+			if 0 < self.retryServicePlayCount <= 20:
+				print(f"[Navigation] Streaming was active -> try again (attempt {self.retryServicePlayCount}).")  # Use timer to give the stream server the time to deallocate the tuner.
+				self.retryServicePlayTimer = eTimer()
+				self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
+				self.retryServicePlayTimer.start(500, True)
+				self.retryServicePlayCount += 1
+			elif self.retryServicePlayCount > 20:
+				print(f"[Navigation] Gave up retrying after {self.retryServicePlayCount - 1} attempts.")
+				self.retryServicePlayCount = 0
+		else:
+			self.retryServicePlayCount = 0
+
+		self.skipServiceReferenceReset = False
+		if setPriorityFrontend:
+			setPreferredTuner(int(config.usage.frontend_priority.value))
+		if self.currentlyPlayingServiceReference and self.currentlyPlayingServiceReference.toString() in streamrelay.data:
+			self.currentServiceIsStreamRelay = True
+		if InfoBarInstance and "%3a//" in playref.toString() and not is_async_play:
+			self.originalPlayingServiceReference = None
+			InfoBarInstance.serviceStarted()
 
 	def getCurrentlyPlayingServiceReference(self):
 		return self.currentlyPlayingServiceReference
@@ -316,6 +353,11 @@ class Navigation:
 		return self.currentlyPlayingService
 
 	def stopService(self):
+		# Cancel any deferred play so it cannot restart the service after an
+		# explicit stop (e.g. when Movie Selection or another screen stops live TV).
+		if hasattr(self, "_pendingPlayTimer"):
+			self._pendingPlayTimer.stop()
+		self.__dict__.pop("_pendingPlay", None)
 		if self.pnav:
 			self.pnav.stopService()
 		self.currentlyPlayingServiceReference = None
