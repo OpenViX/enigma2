@@ -386,7 +386,7 @@ class VIXImageManager(Screen):
 					remove(self.sel[1])
 				else:
 					rmtree(self.sel[1])
-			except as Exception as e:
+			except Exception as e:
 				print(f"[ImageManager][keyDelete] failed to delete {self.sel[1]}: {e}")
 				self.session.open(MessageBox, _("Delete failure - check device available."), MessageBox.TYPE_INFO, timeout=10)
 			self.refreshList()
