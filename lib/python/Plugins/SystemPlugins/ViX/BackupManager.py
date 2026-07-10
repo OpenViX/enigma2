@@ -256,9 +256,11 @@ class VIXBackupManager(Screen):
 				else:
 					self["key_red"].hide()
 					self["key_yellow"].hide()
-			except Exception as err:
+			except OSError as err:
 				print("[BackupManager] populate_List:", err)
-				self["lab1"].setText(_("Device: ") + path.normpath(config.backupmanager.backuplocation.value) + "\n" + _("Unable to read from the backup device. Please check that it is accessible and contains valid backups."))
+				self["lab1"].setText(
+					_("Device: ") + path.normpath(config.backupmanager.backuplocation.value) + "\n" + 
+					_("Unable to read from the backup device. Please check that it is accessible and contains valid backups."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX')
