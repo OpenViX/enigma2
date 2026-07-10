@@ -1644,15 +1644,15 @@ class ImageManagerDownload(Screen):
 			return
 
 		imglist = []  # this is reset on every "ok" key press of an expandable item so it reflects the current state of expandability of that item
-		for categorie in sorted(self.imagesList.keys(), reverse=True):
-			if categorie in self.expanded:
-				imglist.append(ChoiceEntryComponent("expanded", ((str(categorie)), "Expander")))
-				for image in sorted(self.imagesList[categorie].keys(), reverse=True):
-					imglist.append(ChoiceEntryComponent("verticalline", ((str(self.imagesList[categorie][image]["name"])), str(self.imagesList[categorie][image]["link"]))))
+		for category in sorted(self.imagesList.keys(), reverse=True):
+			if category in self.expanded:
+				imglist.append(ChoiceEntryComponent("expanded", ((str(category)), "Expander")))
+				for image in sorted(self.imagesList[category].keys(), reverse=True):
+					imglist.append(ChoiceEntryComponent("verticalline", ((str(self.imagesList[category][image]["name"])), str(self.imagesList[category][image]["link"]))))
 			else:
-				# print("[ImageManager] [GetImageDistro] keys: %s" % list(self.imagesList[categorie].keys()))
-				for image in list(self.imagesList[categorie].keys()):
-					imglist.append(ChoiceEntryComponent("expandable", ((str(categorie)), "Expander")))
+				# print("[ImageManager] [GetImageDistro] keys: %s" % list(self.imagesList[category].keys()))
+				for image in list(self.imagesList[category].keys()):
+					imglist.append(ChoiceEntryComponent("expandable", ((str(category)), "Expander")))
 					break
 		if imglist:
 			# print("[ImageManager] [GetImageDistro] imglist: %s" % imglist)
