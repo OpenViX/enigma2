@@ -739,7 +739,7 @@ class XtraPluginsSelection(Screen):
 			config.backupmanager.xtraplugindir.setValue(current[0])
 			config.backupmanager.xtraplugindir.save()
 			config.backupmanager.save()
-			config.save()
+			configfile.save()
 			self.close(None)
 		else:
 			self.session.open(MessageBox, _("Please select folder that contains .ipk packages."), MessageBox.TYPE_INFO, timeout=10)
