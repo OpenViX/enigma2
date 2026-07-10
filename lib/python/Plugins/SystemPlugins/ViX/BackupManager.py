@@ -534,7 +534,6 @@ class VIXBackupManager(Screen):
 				with open("/tmp/3rdPartyPluginsLocation", "r") as fd:
 					thirdpartyPluginsLocation = fd.readline().strip()
 					print("[BackupManager] Restoring Stage 3: thirdpartyPluginsLocation from file", "'%s'" % thirdpartyPluginsLocation)
-			thirdpartyPluginsLocation = thirdpartyPluginsLocation.replace(" ", "%20")  # What is this replace for?
 			with open("/tmp/3rdPartyPlugins", "r") as fd:
 				tmppluginslist2 = [package.split("_")[0] for line in fd.readlines() if (package := line.strip())]  # ".split("_")[0]" should be redundant if the input is correct
 			relative_path = len(x := thirdpartyPluginsLocation.split("/", 3)) > 3 and x[3] or None  # expects thirdpartyPluginsLocation to be in the format /media/something/myFolder
