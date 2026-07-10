@@ -810,17 +810,36 @@ int eTextPara::renderString(const char *string, int rflags, int border)
 						{
 							char color[8];
 							int codeidx;
+							bool validhex = true;
 							for (codeidx = 0; codeidx < 8; codeidx++)
 							{
-								if ((i + 2 + codeidx) == uc_visual.end()) break;
-								color[codeidx] = (char)((*(i + 2 + codeidx)) & 0xff);
+								if ((i + 2 + codeidx) == uc_visual.end())
+								{
+									validhex = false;
+									break;
+								}
+								unsigned long hexchr = *(i + 2 + codeidx);
+								if (!((hexchr >= '0' && hexchr <= '9') ||
+								      (hexchr >= 'a' && hexchr <= 'f') ||
+								      (hexchr >= 'A' && hexchr <= 'F')))
+								{
+									validhex = false;
+									break;
+								}
+								color[codeidx] = (char)hexchr;
 							}
-							if (codeidx == 8)
+							isprintable = 0;
+							if (validhex && codeidx == 8)
 							{
 								newcolor = gRGB(color).argb();
 								activate_newcolor = true;
-								isprintable = 0;
 								i += 1 + codeidx;
+							}
+							else
+							{
+								/* "\c" not followed by 8 valid hex digits: reset to default colour */
+								nextflags |= GS_COLORRESET;
+								i += 1;
 							}
 							break;
 						}
@@ -967,10 +986,14 @@ void eTextPara::blit(gDC &dc, const ePoint &offset, const gRGB &cbackground, con
 			line_offs = *(line_offs_it++);
 			line_chars = *(line_chars_it++);
 		}
-		if (i->flags & GS_COLORCHANGE)
+		if (!border) /* don't do colorchanges in borders */
 		{
-			/* don't do colorchanges in borders */
-			if (!border)
+			if (i->flags & GS_COLORRESET)
+			{
+				currentforeground = foreground;
+				setcolor = true;
+			}
+			else if (i->flags & GS_COLORCHANGE)
 			{
 				currentforeground = i->newcolor;
 				setcolor = true;
