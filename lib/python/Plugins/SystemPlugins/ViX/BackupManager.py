@@ -133,8 +133,7 @@ class VIXBackupManager(Screen):
 		self.BackupRunning = False
 		self.BackupDirectory = " "
 		self.onChangedEntry = []
-		self.emlist = []
-		self["list"] = MenuList(self.emlist)
+		self["list"] = MenuList([])
 		self.populate_List()
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.backupRunning)
@@ -235,22 +234,14 @@ class VIXBackupManager(Screen):
 			try:
 				if not path.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0o755)
-				images = listdir(self.BackupDirectory)
-				del self.emlist[:]
 				mtimes = []
-				for fil in images:
+				for fil in listdir(self.BackupDirectory):
 					if fil.endswith(".tar.gz") and ("vix" in fil.lower() or fil.startswith(defaultprefix)):
-						if fil.startswith(defaultprefix):   # Ensure the current image backup are sorted to the top
-							prefix = "B"
-						else:
-							prefix = "A"
-						key = "%s-%012u" % (prefix, stat(self.BackupDirectory + fil).st_mtime)
-						mtimes.append((fil, key))  # (filname, prefix-mtime)
-				for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]:  # sort by mtime
-					self.emlist.append(fil)
-				self["list"].setList(self.emlist)
+						mtimes.append((fil, fil.startswith(defaultprefix), stat(path.join(self.BackupDirectory, fil)).st_mtime))
+				backups = [x[0] for x in sorted(mtimes, key=lambda x: (x[1], x[2]), reverse=True)]
+				self["list"].setList(backups)
 				self["list"].show()
-				if len(self.emlist):
+				if backups:
 					self["key_red"].show()
 					self["key_yellow"].show()
 				else:
