@@ -239,7 +239,7 @@ class VIXBackupManager(Screen):
 				del self.emlist[:]
 				mtimes = []
 				for fil in images:
-					if fil.endswith(".tar.gz") and "vix" in fil.lower() or fil.startswith("%s" % defaultprefix):
+					if fil.endswith(".tar.gz") and ("vix" in fil.lower() or fil.startswith(defaultprefix)):
 						if fil.startswith(defaultprefix):   # Ensure the current image backup are sorted to the top
 							prefix = "B"
 						else:
