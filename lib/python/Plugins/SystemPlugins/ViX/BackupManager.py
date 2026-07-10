@@ -250,7 +250,7 @@ class VIXBackupManager(Screen):
 			except OSError as err:
 				print("[BackupManager] populate_List:", err)
 				self["lab1"].setText(
-					_("Device: ") + path.normpath(config.backupmanager.backuplocation.value) + "\n" + 
+					_("Device: ") + path.normpath(config.backupmanager.backuplocation.value) + "\n" +
 					_("Unable to read from the backup device. Please check that it is accessible and contains valid backups."))
 
 	def createSetup(self):
