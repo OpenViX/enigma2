@@ -386,7 +386,8 @@ class VIXImageManager(Screen):
 					remove(self.sel[1])
 				else:
 					rmtree(self.sel[1])
-			except:
+			except as Exception as e:
+				print(f"[ImageManager][keyDelete] failed to delete {self.sel[1]}: {e}")
 				self.session.open(MessageBox, _("Delete failure - check device available."), MessageBox.TYPE_INFO, timeout=10)
 			self.refreshList()
 
@@ -667,7 +668,7 @@ class VIXImageManager(Screen):
 				rmdir(tmp_dir)
 			self.session.open(TryQuitMainloop, 2)
 		else:
-			self.close
+			self.close()
 
 	def dualBoot(self):
 		rootfs2 = False
@@ -1148,7 +1149,7 @@ class ImageBackup(Screen):
 		if SystemInfo["canMultiBoot"]:
 			slot = SystemInfo["MultiBootSlot"]
 		print("[ImageManager] Stage1: Making Kernel Image.")
-		if "bin" or "uImage" in self.KERNELFILE:
+		if "bin" in self.KERNELFILE or "uImage" in self.KERNELFILE:
 			if SystemInfo["HasKexecMultiboot"]:
 				# boot = "boot" if slot > 0 and slot < 4 else "dev/%s/%s"  %(self.MTDROOTFS, self.ROOTFSSUBDIR)
 				boot = "boot"
@@ -1193,7 +1194,7 @@ class ImageBackup(Screen):
 				with open("/proc/cmdline", "r") as z:
 					if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z.read():
 						self.ROOTFSTYPE = "tar.bz2"
-						self.commands.append(f"/bin/tar -jcf {self.WORKDIR, }/rootfs.tar.bz2 -C {self.TMPDIR}/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock .")
+						self.commands.append(f"/bin/tar -jcf {self.WORKDIR}/rootfs.tar.bz2 -C {self.TMPDIR}/root --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock .")
 					else:
 						self.commands.append(f"touch {self.WORKDIR}/root.ubi")
 						self.commands.append(f"mkfs.ubifs -r {self.TMPDIR}/root -o {self.WORKDIR}/root.ubi {self.MKUBIFS_ARGS}")
@@ -1426,7 +1427,7 @@ class ImageBackup(Screen):
 			if fileExists("/usr/share/apploader.bin"):
 				system(f"cp -f /usr/share/apploader.bin {self.MAINDEST2}/apploader.bin")
 
-		if "bin" or "uImage" in self.KERNELFILE and path.exists(f"{self.WORKDIR}/vmlinux.bin"):
+		if ("bin" in self.KERNELFILE or "uImage" in self.KERNELFILE) and path.exists(f"{self.WORKDIR}/vmlinux.bin"):
 			move(f"{self.WORKDIR}/vmlinux.bin", f"{self.MAINDEST}/{self.KERNELFILE}")
 		else:
 			move(f"{self.WORKDIR}/vmlinux.gz", f"{self.MAINDEST}/{self.KERNELFILE}")
