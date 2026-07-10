@@ -256,7 +256,8 @@ class VIXBackupManager(Screen):
 				else:
 					self["key_red"].hide()
 					self["key_yellow"].hide()
-			except:
+			except Exception as err:
+				print("[BackupManager] populate_List:", err)
 				self["lab1"].setText(_("Device: ") + path.normpath(config.backupmanager.backuplocation.value) + "\n" + _("There is a problem with this device. Please reformat it and try again."))
 
 	def createSetup(self):
