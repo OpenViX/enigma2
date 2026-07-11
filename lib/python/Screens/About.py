@@ -168,9 +168,9 @@ class AboutBase(TextBox):
 			self["lab2"] = StaticText(_("By Team ViX"))
 			self["lab3"] = StaticText(_("Support at") + " www.world-of-satellite.com")
 
-	def addColor(self, text, i=1):
+	def addColor(self, text, i=0):
 		if i < len(self.colors):
-			text = Hex2strColor(self.colors[i]) + text + Hex2strColor(self.colors[0])
+			text = Hex2strColor(self.colors[i]) + text + r"\c"
 		return text
 
 	def createSummary(self):
@@ -765,7 +765,7 @@ class AboutSummary(ScreenSummary):
 
 	def clean(self, x):
 		# remove colours, replace tabs with spaces, remove leading/trailing whitespace
-		return sub("\\\\c[0-9-a-f]{8}", "", x).replace("\t", " ").strip()
+		return sub(r"\\c[0-9a-f]{8}", "", x).replace(r"\c", "").replace("\t", " ").strip()
 
 
 class TranslationInfo(Screen):
