@@ -160,7 +160,9 @@ class AboutBase(TextBox):
 	def __init__(self, session, labels=None):
 		TextBox.__init__(self, session, label="AboutScrollLabel")
 		self.skinName = "AboutOE"
-		self.colors = parameters.get("AboutColors", [])  # First item must be default text colour. If parameter is missing adding colours will be skipped.
+		self.colors = parameters.get("AboutColors", [])
+		if isinstance(self.colors, int):  # a single entry in skin parameters would not be comma separated and therefore an int, not a list
+			self.colors = [self.colors]
 		if labels:
 			self["lab1"] = StaticText(_("Virtuosso Image Xtreme"))
 			self["lab2"] = StaticText(_("By Team ViX"))
