@@ -130,6 +130,24 @@ class VIXBackupManager(Screen):
 		self["key_menu"] = StaticText(_("MENU"))
 		self["key_info"] = StaticText(_("INFO"))
 
+		self["essentialActions"] = ActionMap(
+			["OkCancelActions", "MenuActions"],
+			{
+				"cancel": self.close,
+				"menu": self.createSetup,
+			}, -1)
+
+		self["optionalActions"] = ActionMap(
+			["ColorActions", "OkCancelActions", "DirectionActions", "TimerEditActions"],
+			{
+				"ok": self.keyRestore,
+				"red": self.keyDelete,
+				"green": self.GreenPressed,
+				"yellow": self.keyRestore,
+				"log": self.showLog,
+			}, -1)
+		self["optionalActions"].setEnabled(False)
+
 		self.BackupRunning = False
 		self.BackupDirectory = " "
 		self.onChangedEntry = []
@@ -198,31 +216,15 @@ class VIXBackupManager(Screen):
 		# using /media/hdd." message ever. And "Press 'Menu' to select a storage device"
 		# would not be of any help because "Backup location" would not be populated.
 		# --------------------------------------------------------------------------------------
+		self["optionalActions"].setEnabled(False)
 		mount = config.backupmanager.backuplocation.value, path.normpath(config.backupmanager.backuplocation.value)
 		hdd = "/media/hdd/", "/media/hdd"
+		self["key_red"].hide()
+		self["key_green"].hide()
+		self["key_yellow"].hide()
 		if mount not in config.backupmanager.backuplocation.choices.choices and hdd not in config.backupmanager.backuplocation.choices.choices:
-			self["myactions"] = ActionMap(
-				["OkCancelActions", "MenuActions"],
-				{
-					"cancel": self.close,
-					"menu": self.createSetup,
-				}, -1)
-			self["key_red"].hide()
-			self["key_green"].hide()
-			self["key_yellow"].hide()
 			self["lab1"].setText(_("Device: Press 'Menu' to select a storage device - none available"))
 		else:
-			self["myactions"] = ActionMap(
-				["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "TimerEditActions"],
-				{
-					"cancel": self.close,
-					"ok": self.keyRestore,
-					"red": self.keyDelete,
-					"green": self.GreenPressed,
-					"yellow": self.keyRestore,
-					"menu": self.createSetup,
-					"log": self.showLog,
-				}, -1)
 			if mount not in config.backupmanager.backuplocation.choices.choices:
 				config.backupmanager.backuplocation.value = hdd[0]
 				config.backupmanager.backuplocation.save()
@@ -247,6 +249,8 @@ class VIXBackupManager(Screen):
 				else:
 					self["key_red"].hide()
 					self["key_yellow"].hide()
+				self["key_green"].show()
+				self["optionalActions"].setEnabled(True)
 			except OSError as err:
 				print("[BackupManager] populate_List:", err)
 				self["lab1"].setText(
