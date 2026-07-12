@@ -639,7 +639,7 @@ class VIXBackupManager(Screen):
 			else:
 				print("[BackupManager] Stage 6 Restoring Completed rebooting")
 				quitMainloop(2)
-		elif not self.didSettingsRestore and (self.pluginsRestoreDeclined or self.pluginsRestoreNotNeeded):
+		elif self.pluginsRestoreDeclined or self.pluginsRestoreNotNeeded:
 			print("[BackupManager] Stage 6 Restoring: Settings restore was cancelled and there were no plugins to restore")
 			self.restoreOutcome = "nothing"
 		else:
