@@ -359,10 +359,6 @@ class VIXBackupManager(Screen):
 		task.work = self.JobStart
 		task.weighting = 1
 
-		task = Components.Task.PythonTask(job, _("Restoring backup..."))
-		task.work = self.Stage1
-		task.weighting = 1
-
 		task = Components.Task.ConditionTask(job, _("Restoring backup..."), timeoutCount=60)
 		task.check = lambda: self.Stage1Completed
 		task.weighting = 1
