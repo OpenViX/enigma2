@@ -149,6 +149,7 @@ class VIXBackupManager(Screen):
 		self["optionalActions"].setEnabled(False)
 
 		self.BackupRunning = False
+		self.restoreOutcome = None
 		self.BackupDirectory = " "
 		self.onChangedEntry = []
 		self["list"] = MenuList([])
@@ -198,6 +199,14 @@ class VIXBackupManager(Screen):
 
 	def JobViewCB(self, in_background):
 		Components.Task.job_manager.in_background = in_background
+		msg = None
+		if self.restoreOutcome == "nothing":
+			msg = _("Settings restore was cancelled and there are no plugins to restore.")
+		elif self.restoreOutcome == "failed":
+			msg = _("Settings restore failed.")
+		self.restoreOutcome = None
+		if msg:
+			self.session.open(MessageBox, msg, MessageBox.TYPE_INFO, timeout=15)
 
 	def populate_List(self):
 		# --------------------------------------------------------------------------------------
@@ -339,15 +348,14 @@ class VIXBackupManager(Screen):
 					self.showJobView(job)
 					break
 
-	def myclose(self):
-		self.close()
-
 	def createRestoreJob(self):
 		self.pluginslist = []
 		self.pluginslist2 = []
 		self.didSettingsRestore = False
 		self.doPluginsRestore = False
 		self.didPluginsRestore = False
+		self.pluginsRestoreDeclined = False
+		self.pluginsRestoreNotNeeded = False
 		self.Stage1Completed = False
 		self.Stage2Completed = False
 		self.Stage3Completed = False
@@ -435,7 +443,7 @@ class VIXBackupManager(Screen):
 				self.Stage2,
 				_("Sorry, but the restore failed."),
 				MessageBox.TYPE_INFO,
-				10,
+				15,
 				"StageOneFailedNotification"
 			)
 
@@ -577,6 +585,7 @@ class VIXBackupManager(Screen):
 				PLUGINRESTOREQUESTIONID
 			)
 		else:
+			self.pluginsRestoreNotNeeded = True
 			print("[BackupManager] Restoring Stage 4: plugin restore not required")
 			self.Stage6()
 
@@ -586,14 +595,9 @@ class VIXBackupManager(Screen):
 			self.doPluginsRestore = True
 			self.Stage4Completed = True
 		elif answer is False:
+			self.pluginsRestoreDeclined = True
 			print("[BackupManager] Restoring Stage 4: plugin restore skipped by user")
-			AddPopupWithCallback(
-				self.Stage6,
-				_("Now skipping restore process"),
-				MessageBox.TYPE_INFO,
-				15,
-				NOPLUGINS
-			)
+			self.Stage6()
 
 	def Stage5(self):
 		if self.doPluginsRestore:
@@ -635,9 +639,12 @@ class VIXBackupManager(Screen):
 			else:
 				print("[BackupManager] Stage 6 Restoring Completed rebooting")
 				quitMainloop(2)
+		elif not self.didSettingsRestore and (self.pluginsRestoreDeclined or self.pluginsRestoreNotNeeded):
+			print("[BackupManager] Stage 6 Restoring: Settings restore was cancelled and there were no plugins to restore")
+			self.restoreOutcome = "nothing"
 		else:
-			print("[BackupManager] Restoring failed or canceled")
-			self.close()
+			print("[BackupManager] Stage 6 Restoring failed")
+			self.restoreOutcome = "failed"
 
 
 class BackupSelection(Screen):
