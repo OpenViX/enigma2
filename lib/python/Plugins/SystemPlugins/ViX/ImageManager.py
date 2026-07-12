@@ -334,7 +334,7 @@ class VIXImageManager(Screen):
 				self["mainactions"].setEnabled(True)
 			except Exception:
 				self["lab1"].setText(
-					_("Device: ") + config.imagemanager.backuplocation.value + "\n" + 
+					_("Device: ") + config.imagemanager.backuplocation.value + "\n" +
 					_("Unable to read from the backup device. Please check that it is accessible."))
 
 	def createSetup(self):
