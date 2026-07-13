@@ -299,7 +299,11 @@ class VIXBackupManager(Screen):
 		self.sel = self["list"].getCurrent()
 		if self.sel is not None:
 			self["list"].moveToIndex(self["list"].getSelectedIndex() if len(self["list"].list) > self["list"].getSelectedIndex() + 1 else max(len(self["list"].list) - 2, 0))  # hold the selection current possition if the list is long enough, else go to last item
-			remove(self.BackupDirectory + self.sel)
+			try:
+				remove(self.BackupDirectory + self.sel)
+			except Exception as err:
+				print("[BackupManager] keyDelete: error while deleting", err)
+				self.session.open(MessageBox, _("Delete failure - check device available."), MessageBox.TYPE_INFO, timeout=10)
 			self.populate_List()
 
 	def GreenPressed(self):
