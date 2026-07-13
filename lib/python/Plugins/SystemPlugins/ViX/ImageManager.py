@@ -1539,8 +1539,8 @@ class ImageBackup(Screen):
 					emlist = emlist[0:len(emlist) - config.imagemanager.number_to_keep.value]
 					for fil in emlist:
 						remove(self.BackupDirectory + fil)
-		except Exception:
-			pass
+		except Exception as err:
+			print("[ImageManager] BackupComplete: error while pruning", err)
 		if config.imagemanager.schedule.value:
 			atLeast = 60
 			autoImageManagerTimer.backupupdate(atLeast)

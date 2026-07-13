@@ -1159,8 +1159,8 @@ class BackupFiles(Screen):
 					emlist = emlist[0:len(emlist) - config.backupmanager.number_to_keep.value]
 					for fil in emlist:
 						remove(self.BackupDirectory + fil)
-		except:
-			pass
+		except Exception as err:
+			print("[BackupManager] BackupComplete: error while pruning", err)
 		if config.backupmanager.schedule.value:
 			atLeast = 60
 			autoBackupManagerTimer.backupupdate(atLeast)
