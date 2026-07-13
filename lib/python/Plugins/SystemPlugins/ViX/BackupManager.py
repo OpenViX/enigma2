@@ -17,6 +17,7 @@ from Components.SystemInfo import SystemInfo, DISPLAYBRAND, IMAGETYPE, MACHINENA
 import Components.Task
 from Components.UserInstalledPackages import UserInstalledPackages
 from Screens.MessageBox import MessageBox
+from Screens.PluginBrowser import PluginBrowserSummary
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Screens.TextBox import TextBox
@@ -167,7 +168,6 @@ class VIXBackupManager(Screen):
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
 	def createSummary(self):
-		from Screens.PluginBrowser import PluginBrowserSummary
 		return PluginBrowserSummary
 
 	def selectionChanged(self):
@@ -740,6 +740,10 @@ class XtraPluginsSelection(Screen):
 				"up": self["config"].up,
 			}, -1)
 
+		self.onChangedEntry = []
+		if self.selectionChanged not in self["config"].onSelectionChanged:
+			self["config"].onSelectionChanged.append(self.selectionChanged)
+
 	def saveSelection(self):
 		current = self["config"].getCurrent()[0]
 		print("[BackupManager][saveSelection] current", str(current))
@@ -764,6 +768,25 @@ class XtraPluginsSelection(Screen):
 	def okClicked(self):
 		if self["config"].canDescent():
 			self["config"].descent()
+
+	def createSummary(self):
+		return XtraPluginsSelectionSummary
+
+	def selectionChanged(self):
+		item = self["config"].getCurrent()
+		desc = ""
+		if item:
+			name = str(item[0][0] or "")
+		else:
+			name = ""
+		for cb in self.onChangedEntry:
+			cb(name, desc)
+
+
+class XtraPluginsSelectionSummary(PluginBrowserSummary):
+	def __init__(self, session, parent):
+		PluginBrowserSummary.__init__(self, session, parent=parent)
+		self.skinName = "PluginBrowserSummary"
 
 
 class VIXBackupManagerMenu(Setup):
