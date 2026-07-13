@@ -80,11 +80,9 @@ config.backupmanager.number_to_keep = ConfigNumber(default=0)
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
 	global autoBackupManagerTimer
-	global _session
 	if reason == 0:
 		print("[BackupManager] AutoStart Enabled")
 		if session is not None:
-			_session = session
 			if autoBackupManagerTimer is None:
 				autoBackupManagerTimer = AutoBackupManagerTimer(session)
 	else:

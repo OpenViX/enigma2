@@ -110,11 +110,9 @@ cleanup()
 def ImageManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
 	global autoImageManagerTimer
-	global _session
 	if reason == 0:
 		print("[ImageManager] AutoStart Enabled")
 		if session is not None:
-			_session = session
 			if autoImageManagerTimer is None:
 				autoImageManagerTimer = AutoImageManagerTimer(session)
 	else:
