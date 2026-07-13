@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-11 14:35+0300\n"
-"PO-Revision-Date: 2026-07-12 16:26+0300\n"
+"POT-Creation-Date: 2026-07-13 03:22+0300\n"
+"PO-Revision-Date: 2026-07-13 07:09+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -10057,9 +10057,6 @@ msgctxt "now/next: 'now' event label"
 msgid "Now"
 msgstr "NYT"
 
-msgid "Now skipping restore process"
-msgstr "Ohitetaan palautusprosessia"
-
 msgid "Now, use the contrast setting to turn up the brightness of the background as much as possible, but make sure that you can still see the difference between the two brightest levels of shades.If you have done that, press OK."
 msgstr "Säädä kontrastisäädöllä tausta mahdollisimman valkoiseksi. Varmista, että näet yhä kahden kirkkaimman sävyn eron. Kun olet tyytyväinen tulokseen, paina OK."
 
@@ -13687,6 +13684,12 @@ msgstr "Asennus käynnissä..."
 msgid "Settings"
 msgstr "Asetukset"
 
+msgid "Settings restore failed."
+msgstr "Asetusten palautus epäonnistui."
+
+msgid "Settings restore was cancelled and there are no plugins to restore."
+msgstr "Asetusten palautus peruutettiin, eikä palautettavia lisäosia ole."
+
 msgid "Settings, information and more functions"
 msgstr "Asetukset, tiedot ja lisää toimintoja"
 
@@ -15219,7 +15222,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 12.07.2026 ---\n"
+"--- 13.07.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -15614,9 +15617,6 @@ msgstr "On tapahtunut '%s', yritä myöhemmin uudelleen. Jos ongelma jatkuu, tar
 
 msgid "There has been an error, please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com"
 msgstr "Tapahtui virhe, yritä myöhemmin uudelleen. Jos virhe jatkuu tarkista openvix.co.uk tai world-of-satellite.com sivuilta"
-
-msgid "There is a problem with this device. Please reformat it and try again."
-msgstr "Tässä laitteessa on ongelma. Alusta se ja yritä uudelleen."
 
 msgid "There is no backup to restore."
 msgstr "Ei ole varmuuskopiota mitä palauttaa."
@@ -16404,7 +16404,10 @@ msgid "Unable to change password"
 msgstr "Salasanan vaihto epäonnistui"
 
 msgid "Unable to read from the backup device. Please check that it is accessible and contains valid backups."
-msgstr "Varmuuskopiolaitteelta lukeminen ei onnistunut. Tarkista, että laite on käytettävissä ja sisältää kelvollisia varmuuskopioita."
+msgstr "Varmuuskopiolaitteelta lukeminen epäonnistui. Tarkista, että laite on käytettävissä ja sisältää kelvollisia varmuuskopioita."
+
+msgid "Unable to read from the backup device. Please check that it is accessible."
+msgstr "Varmuuskopiolaitteelta lukeminen epäonnistui. Tarkista, että laite on käytettävissä."
 
 msgid "Uncover dashed flickering line for this service"
 msgstr "Näytä yläreunan pistejuova tältä kanavalta"
