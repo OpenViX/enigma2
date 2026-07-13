@@ -881,7 +881,6 @@ class AutoBackupManagerTimer:
 		self.backuptimer.stop()
 		now = int(time())
 		wake = self.getBackupTime()
-		atLeast = 0  # noqa: F841 if we're close enough, we're okay...
 		if wake - now < 60:
 			print("[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now)))
 			from Screens.Standby import inStandby
