@@ -765,7 +765,6 @@ int eTextPara::renderString(const char *string, int rflags, int border)
 
 	unsigned long newcolor = 0;
 	bool activate_newcolor = false;
-	bool activate_colorreset = false;
 	int nextflags = 0;
 
 	for (std::vector<unsigned long>::const_iterator i(uc_visual.begin());
@@ -815,20 +814,13 @@ int eTextPara::renderString(const char *string, int rflags, int border)
 							{
 								if ((i + 2 + codeidx) == uc_visual.end()) break;
 								color[codeidx] = (char)((*(i + 2 + codeidx)) & 0xff);
-								if (!isxdigit((unsigned char)color[codeidx]))
-									break;
 							}
-							isprintable = 0;
 							if (codeidx == 8)
 							{
 								newcolor = gRGB(color).argb();
 								activate_newcolor = true;
+								isprintable = 0;
 								i += 1 + codeidx;
-							}
-							else
-							{
-								activate_colorreset = true;
-								i++;
 							}
 							break;
 						}
@@ -871,9 +863,6 @@ nprint:				isprintable=0;
 		}
 		if (isprintable)
 		{
-			if (activate_colorreset)
-				flags |= GS_COLORRESET;
-
 			FT_UInt index = 0;
 
 				/* FIXME: our font doesn't seem to have a hyphen, so use hyphen-minus for it. */
@@ -903,7 +892,6 @@ nprint:				isprintable=0;
 				appendGlyph(current_font, current_face, index, flags, rflags, border, i == uc_visual.end() - 1, activate_newcolor, newcolor);
 
 			activate_newcolor = false;
-			activate_colorreset = false;
 		}
 	}
 	bboxValid=false;
@@ -979,15 +967,10 @@ void eTextPara::blit(gDC &dc, const ePoint &offset, const gRGB &cbackground, con
 			line_offs = *(line_offs_it++);
 			line_chars = *(line_chars_it++);
 		}
-		/* don't do colorchanges in borders */
-		if (!border)
+		if (i->flags & GS_COLORCHANGE)
 		{
-			if (i->flags & GS_COLORRESET)
-			{
-				currentforeground = foreground;
-				setcolor = true;
-			}
-			else if (i->flags & GS_COLORCHANGE)
+			/* don't do colorchanges in borders */
+			if (!border)
 			{
 				currentforeground = i->newcolor;
 				setcolor = true;
