@@ -142,7 +142,7 @@ def getMultibootslots():
 					struct_fmt = "B"
 					flag = f.read(struct.calcsize(struct_fmt))
 					slot = struct.unpack(struct_fmt, flag)
-					SystemInfo["MultiBootSlot"] =  str(slot[0])  # needs to be tested so this comment can be removed.
+					SystemInfo["MultiBootSlot"] = str(slot[0])  # needs to be tested so this comment can be removed.
 			elif bootArgs and SystemInfo["HasRootSubdir"] and "root=/dev/sda" not in bootArgs and not UBIMB:							# RootSubdir receiver or sf8008 receiver with root in eMMC slot
 				slot = [x[-1] for x in bootArgs.split() if x.startswith("rootsubdir")]
 				SystemInfo["MultiBootSlot"] = int(slot[0])
