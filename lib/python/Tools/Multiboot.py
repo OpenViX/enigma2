@@ -386,13 +386,15 @@ def getSlotImageList(callback):
 	callback(imageList)
 
 
-def getBootCodeDescription(bootCodeEntry):
+def getBootCodeDescription(bootCode=None):
 	bootCodeDescriptions = {
 		"": _("Normal: No boot modes required."),
 		"1": _("Mode 1: Supports Kodi but PiP may not work"),
 		"12": _("Mode 12: Supports PiP but Kodi may not work")
 	}
-	return bootCodeDescriptions
+	if bootCode is None:
+		return bootCodeDescriptions
+	return bootCodeDescriptions.get(bootCode, "")
 
 
 def activateSlot(slotCode, bootCode, callback):
