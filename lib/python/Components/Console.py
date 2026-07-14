@@ -26,7 +26,7 @@ class ConsoleItem:
 		retval = self.container.execute(*cmd)
 		if retval:
 			self.finishedCB(retval)
-		if callback is None:
+		elif callback is None:
 			pid = self.container.getPID()
 			try:
 				waitpid(pid, 0)
