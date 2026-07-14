@@ -170,7 +170,7 @@ class AboutBase(TextBox):
 
 	def addColor(self, text, i=0):
 		if i < len(self.colors):
-			text = Hex2strColor(self.colors[i]) + text + r"\c"
+			text = Hex2strColor(self.colors[i]) + text + r"\C"
 		return text
 
 	def createSummary(self):
