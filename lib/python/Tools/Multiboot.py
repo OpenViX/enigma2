@@ -58,9 +58,10 @@ def getMultibootslots():
 				if path.exists("/sys/firmware/devicetree/base/chosen/bootargs") or CHKROOTMB:  # check validity for multiboot
 					for file in glob.glob(path.join(tmpname, "STARTUP_*")):
 						slotnumber = file.rsplit("_", 3 if "BOXMODE" in file else 1)[1]
-						slotname = file.rsplit("_", 3 if "BOXMODE" in file else 1)[0]
-						slotname = file.rsplit("/", 1)[1]
-						slotname = slotname if len(slotname) > 1 else ""
+						# slotname - WIP
+						# slotname = file.rsplit("_", 3 if "BOXMODE" in file else 1)[0]
+						# slotname = file.rsplit("/", 1)[1]
+						# slotname = slotname if len(slotname) > 1 else ""
 						slotname = ""  # nullify for current moment
 						if "STARTUP_ANDROID" in file:
 							SystemInfo["AndroidMode"] = True
