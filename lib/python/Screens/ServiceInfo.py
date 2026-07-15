@@ -194,6 +194,7 @@ class ServiceInfo(Screen):
 					aspect = self.getServiceInfoValue(iServiceInformation.sAspect)
 					resolution += " - %s" % (aspect in (1, 2, 5, 6, 9, 0xA, 0xD, 0xE) and "4:3" or "16:9")
 				hdr = self.info.getInfo(iServiceInformation.sHDRType)
+				gamma = ""
 				if hdr >= 0:
 					if hdr == 0:
 						gamma = "SDR"
