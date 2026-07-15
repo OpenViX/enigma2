@@ -213,6 +213,8 @@ def GetImagelist(Recovery=None):
 			print(f"[multiboot][GetImagelist] SystemInfo['canMultiBoot'][slot]['root']:{SystemInfo['canMultiBoot'][slot]['root']}")
 			if SystemInfo['canMultiBoot'][slot]['root'] != slotRoot:
 				print(f"[multiboot][GetImagelist] slotRoot]:{slotRoot}")
+				if path.ismount(tmp.dir):
+					Console(binary=True).ePopen(f"umount {tmpname}")
 				slotRoot = SystemInfo['canMultiBoot'][slot]['root']
 				if SystemInfo["HasMultibootMTD"]:
 					Console(binary=True).ePopen(f"mount -t ubifs {SystemInfo['canMultiBoot'][slot]['root']} {tmpname}")
