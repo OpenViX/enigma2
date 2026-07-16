@@ -15,11 +15,13 @@ def initMultiboot():
 	SystemInfo["HasRootSubdir"] = False
 	SystemInfo["RecoveryMode"] = False
 	SystemInfo["AndroidMode"] = False
-	SystemInfo["resetMBoot"] = False
 	SystemInfo["HasMultibootMTD"] = False
+	SystemInfo["resetMBoot"] = False
+	SystemInfo["HasKexecUSB"] = False
 	SystemInfo["HasMultibootFlags"] = False
 	SystemInfo["HasKexecMultiboot"] = fileHas("/proc/cmdline", "kexec=1")
 	SystemInfo["HasChkrootMultiboot"] = isFat32("/dev/block/by-name/others") or fileExists("/dev/block/by-name/startup")
+	SystemInfo["MBbootdevice"] = ""
 	SystemInfo["canchkroot"] = (UBIMB or fileExists("/dev/block/by-name/others")) and not SystemInfo["HasChkrootMultiboot"] and not fileExists("/etc/.disableChkroot")
 	SystemInfo["HasHiSi"] = pathExists("/proc/hisi") and BOXTYPE not in ("vipertwin", "viper4kv20", "viper4kv40", "sfx6008", "sfx6018")  # This needs to be for later checks
 	SystemInfo["canMultiBoot"] = getMultibootslots()
