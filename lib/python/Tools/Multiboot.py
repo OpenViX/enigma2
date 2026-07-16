@@ -411,3 +411,4 @@ def activateSlot(slotCode, bootCode, callback):
 			f.write(struct.pack("B", int(slotCode)))
 	Console(binary=True).ePopen(f"umount {tmp_dir}")
 	callback(0, 0)
+	# no need to rmdir(tmp_dir) as reboot called immediately after this function
