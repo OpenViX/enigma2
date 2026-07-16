@@ -7,13 +7,23 @@ from os import path, rmdir, rename, sep, stat
 import re
 
 from Components.Console import Console
-from Components.SystemInfo import SystemInfo, BoxInfo as BoxInfoRunningInstance, BoxInformation, BOXTYPE, CHKROOTMB, MTDROOTFS, UBIMB
-from Tools.Directories import copyfile, fileExists, fileReadLine
+from Components.SystemInfo import SystemInfo, BoxInfo as BoxInfoRunningInstance, BoxInformation, BOXTYPE, CHKROOTMB, MODEL, MTDROOTFS, UBIMB
+from Tools.Directories import copyfile, fileExists, fileHas, fileReadLine, pathExists
 
-if SystemInfo["HasKexecMultiboot"]:
-	from PIL import Image, ImageDraw, ImageFont
-
-MbootList1 = ("/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/mtdblock2", "/dev/block/by-name/bootoptions", "/dev/block/by-name/others", "/dev/block/by-name/startup")
+def initMultiboot():
+	SystemInfo["HasRootSubdir"] = False
+	SystemInfo["RecoveryMode"] = False
+	SystemInfo["AndroidMode"] = False
+	SystemInfo["resetMBoot"] = False
+	SystemInfo["HasMultibootMTD"] = False
+	SystemInfo["HasMultibootFlags"] = False
+	SystemInfo["HasKexecMultiboot"] = fileHas("/proc/cmdline", "kexec=1")
+	SystemInfo["HasChkrootMultiboot"] = isFat32("/dev/block/by-name/others") or fileExists("/dev/block/by-name/startup")
+	SystemInfo["canchkroot"] = (UBIMB or fileExists("/dev/block/by-name/others")) and not SystemInfo["HasChkrootMultiboot"] and not fileExists("/etc/.disableChkroot")
+	SystemInfo["HasHiSi"] = pathExists("/proc/hisi") and BOXTYPE not in ("vipertwin", "viper4kv20", "viper4kv40", "sfx6008", "sfx6018")  # This needs to be for later checks
+	SystemInfo["canMultiBoot"] = getMultibootslots()
+	SystemInfo["canBackupEMC"] = MODEL in ("hd51", "h7") and ("disk.img", "%s" % SystemInfo["MBbootdevice"]) or MODEL in ("osmio4k", "osmio4kplus", "osmini4k") and ("emmc.img", "%s" % SystemInfo["MBbootdevice"]) or SystemInfo["HasHiSi"] and ("usb_update.bin", "none")
+	SystemInfo["CanKexecVu"] = MODEL in ("vusolo4k", "vuduo4k", "vuduo4kse", "vuultimo4k", "vuuno4k", "vuuno4kse", "vuzero4k") and not SystemInfo["HasKexecMultiboot"]  # Was in SystemInfo.py. Seems to be unsed.
 
 
 class tmp:
@@ -31,6 +41,7 @@ def getMultibootslots():
 	tmp.dir = tempfile.mkdtemp(prefix="getMultibootslots")
 	tmpname = tmp.dir
 	print(f"[multiboot][getMultibootslots]root:{MTDROOTFS} UBIMB:{UBIMB} CHKROOTMB:{CHKROOTMB}")
+	MbootList1 = ("/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/mtdblock2", "/dev/block/by-name/bootoptions", "/dev/block/by-name/others", "/dev/block/by-name/startup")
 	MbootList = MbootList1 if not SystemInfo["HasKexecMultiboot"] else (f"/dev/{MTDROOTFS}", )  # kexec kernel Vu+ multiboot
 	for device in MbootList:
 		if len(bootslots) != 0:
@@ -317,6 +328,9 @@ def bootmviSlot(imagedir="/", text=" ", slot=0):
 	if path.exists(inmviPath):
 		if path.exists(outmviPath) and path.exists(txtPath) and open(txtPath).read() == text:
 			return
+
+		from PIL import Image, ImageDraw, ImageFont
+
 		Console(binary=True).ePopen(f"cp {inmviPath} /tmp/bootlogo.m1v")
 		Console(binary=True).ePopen("ffmpeg -skip_frame nokey -i /tmp/bootlogo.m1v -vsync 0  -y  /tmp/out1.png 2>/dev/null")
 		Console(binary=True).ePopen("rm -f /tmp/mypicture.m1v")

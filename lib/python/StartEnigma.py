@@ -468,9 +468,14 @@ def runScreenTest():
 
 
 profile("PYTHON_START")
-from Components.SystemInfo import SystemInfo  # noqa: E402  don't move this import
+print("[StartEnigma] Starting Python Level Initialisation.")
 
-print("[StartEnigma]  Starting Python Level Initialisation.")
+profile("Init:Multiboot")
+print("[StartEnigma] Initialising Multiboot.")
+from Tools.Multiboot import initMultiboot  # noqa: E402  
+initMultiboot()
+
+from Components.SystemInfo import SystemInfo  # noqa: E402  don't move this import
 print(f"[StartEnigma]  Receiver -> {SystemInfo['displaybrand']} {SystemInfo['displaymodel']}")
 print(f"[StartEnigma]  Image Type -> {SystemInfo['imagetype']}")
 print(f"[StartEnigma]  Image Version -> {SystemInfo['imageversion']}")
