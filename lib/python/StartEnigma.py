@@ -472,7 +472,7 @@ print("[StartEnigma] Starting Python Level Initialisation.")
 
 profile("Init:Multiboot")
 print("[StartEnigma] Initialising Multiboot.")
-from Tools.Multiboot import initMultiboot  # noqa: E402  
+from Tools.Multiboot import initMultiboot  # noqa: E402
 initMultiboot()
 
 from Components.SystemInfo import SystemInfo  # noqa: E402  don't move this import
