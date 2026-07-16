@@ -10,6 +10,7 @@ from Components.Console import Console
 from Components.SystemInfo import SystemInfo, BoxInfo as BoxInfoRunningInstance, BoxInformation, BOXTYPE, CHKROOTMB, MODEL, MTDROOTFS, UBIMB
 from Tools.Directories import copyfile, fileExists, fileHas, fileReadLine, pathExists
 
+
 def initMultiboot():
 	SystemInfo["HasRootSubdir"] = False
 	SystemInfo["RecoveryMode"] = False
