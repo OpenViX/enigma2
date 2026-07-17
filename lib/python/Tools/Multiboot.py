@@ -45,89 +45,98 @@ def getMultibootslots():
 	for device in MbootList:
 		if bootslots:  # if bootslots is populated, the correct device has already been found so abort search
 			break
+
 		print(f"[multiboot][getMultibootslots]device:{device}")
-		if path.exists(device):
-			print(f"[multiboot][getMultibootslots]root:{MTDROOTFS} device:{device} UBIMB:{UBIMB} CHKROOTMB:{CHKROOTMB}")
-			_mount(device, tmpdir)
-			if path.isfile(path.join(tmpdir, "STARTUP")):  # Multiboot receiver
-				print(f"[multiboot][getMultibootslots]device:{device} found STARTUP")
-				STARTUP = fileReadLine(path.join(tmpdir, "STARTUP"))
-				print(f"[multiboot][getMultibootslots] STARTUP:{STARTUP}")
-				if SystemInfo["HasKexecMultiboot"] and not path.isfile(dest := path.join(tmpdir, "etc/init.d/kexec-multiboot-recovery")) and path.isfile("/etc/init.d/kexec-multiboot-recovery"):  # check Recovery & slot image for recovery script
-					if path.isfile(etc_issue := path.join(tmpdir, "etc/issue")):
-						try:
-							Creator = open(etc_issue).readlines()[-2].lower().split(maxsplit=1)[0]
-						except IndexError:  # /etc/issue non standard file content
-							Creator = ""
-						if Creator in ("openvix", "openbh"):
-							copyfile("/etc/init.d/kexec-multiboot-recovery", dest)
-				# print(f"[multiboot][getMultibootslots]1 bootargs?: {path.exists('/sys/firmware/devicetree/base/chosen/bootargs')}")
-				SystemInfo["MBbootdevice"] = resolveDevice(device)  # used in SystemInfo
-				SystemInfo["BootDevice"] = SystemInfo["MBbootdevice"].rsplit("/", 1)[1]  # used by About
-				print(f"[Multiboot][[getMultibootslots]2 *** Bootdevice found: {SystemInfo['BootDevice']} CHKROOTMB:{CHKROOTMB} MBbootdevice:{SystemInfo['MBbootdevice']}")
-				if path.exists("/sys/firmware/devicetree/base/chosen/bootargs") or CHKROOTMB:  # check validity for multiboot
-					for file in glob.glob(path.join(tmpdir, "STARTUP_*")):
-						slotnumber = file.rsplit("_", 3 if "BOXMODE" in file else 1)[1]
-						# slotname - WIP
-						# slotname = file.rsplit("_", 3 if "BOXMODE" in file else 1)[0]
-						# slotname = file.rsplit("/", 1)[1]
-						# slotname = slotname if len(slotname) > 1 else ""
-						slotname = ""  # nullify for current moment
-						if "STARTUP_ANDROID" in file:
-							SystemInfo["AndroidMode"] = True
-							continue
-						if "STARTUP_RECOVERY" in file:
-							slotnumber = "0"
-							SystemInfo["RecoveryMode"] = BOXTYPE != "gbquad4kpro"
-						if "STARTUP_FLASH" in file:
-							slotnumber = "0"
-						if slotnumber.isdigit() and int(slotnumber) not in bootslots:
-							line = open(file).read().replace("'", "").replace('"', "").replace("\n", " ").replace("ubi.mtd", "mtd").replace("bootargs=", "")
-							slot = dict([(x.split("=", 1)[0].strip(), x.split("=", 1)[1].strip()) for x in line.strip().split(" ") if "=" in x])
-							print(f"[Multiboot][[getMultibootslots]3 slotnumber:{slotnumber} slot:{slot}")
-							if slotnumber == "0":
-								slot["slotType"] = "" if not UBIMB else "eMMC"
-								slot["startupfile"] = path.basename(file)
-							else:
-								slot["slotType"] = "eMMC" if "mmc" in slot["root"] else "USB"
-							print(f"[Multiboot][[getMultibootslots]4 slotnumber:{slotnumber} slotType:{slot["slotType"]}")
-							if SystemInfo["HasKexecMultiboot"] and int(slotnumber) > 3:
-								SystemInfo["HasKexecUSB"] = True
-							if "root" in slot.keys():
-								if "UUID=" in slot["root"]:	 # KexecMultiboot or UBIMB
-									UUIDValue = slot["root"]
-									slotx = getUUIDtoSD(slot["root"])
-									if slotx is not None:
-										slot["root"] = slotx
-										UUID = slot["root"]
-										UUIDnum += 1
-									if not UBIMB:
-										slot["kernel"] = f"/linuxrootfs{slotnumber}/zImage"
-								if path.exists(slot["root"]) or slot["root"] in ("ubi0:ubifs", "ubi0:rootfs"):
-									slot["startupfile"] = path.basename(file)
-									slot["slotname"] = slotname
-									if not UBIMB:
-										SystemInfo["HasMultibootMTD"] = slot.get("mtd")
-										SystemInfo["HasMultibootFlags"] = path.exists("/dev/block/by-name/flag")
-									if not SystemInfo["HasKexecMultiboot"] and not UBIMB and "sda" in slot["root"]:		# Not Kexec Vu+ receiver -- sf8008 type receiver with sd card, reset value as SD card slot has no rootsubdir
-										slot["rootsubdir"] = None
-										slot["slotType"] = "SDCARD"
-									elif "STARTUP_RECOVERY" not in file:
-										SystemInfo["HasRootSubdir"] = slot.get("rootsubdir")
-									if "kernel" not in slot.keys():
-										slot["kernel"] = f"{slot['root'].split('p')[0]}p{int(slot['root'].split('p')[1]) - 1}"  # oldstyle MB kernel = root-1
-								else:
-									continue
-								bootslots[int(slotnumber)] = slot
-							elif slotnumber == "0":
-								bootslots[int(slotnumber)] = slot
-							else:
-								continue
-				else:  # kernel corruption set corruption flag
-					# print(f"[multiboot][getMultibootslots]3 bootargs?: {path.exists("/sys/firmware/devicetree/base/chosen/bootargs")}")
-					SystemInfo["resetMBoot"] = True
-					bootslots = {}
+		if not path.exists(device):
+			continue
+
+		print(f"[multiboot][getMultibootslots]root:{MTDROOTFS} device:{device} UBIMB:{UBIMB} CHKROOTMB:{CHKROOTMB}")
+		_mount(device, tmpdir)
+
+		if not path.isfile(path.join(tmpdir, "STARTUP")):  # Not Multiboot receiver
 			_unmount(tmpdir)
+			continue
+
+		print(f"[multiboot][getMultibootslots]device:{device} found STARTUP")
+		STARTUP = fileReadLine(path.join(tmpdir, "STARTUP"))
+		print(f"[multiboot][getMultibootslots] STARTUP:{STARTUP}")
+		if SystemInfo["HasKexecMultiboot"] and not path.isfile(dest := path.join(tmpdir, "etc/init.d/kexec-multiboot-recovery")) and path.isfile("/etc/init.d/kexec-multiboot-recovery"):  # check Recovery & slot image for recovery script
+			if path.isfile(etc_issue := path.join(tmpdir, "etc/issue")):
+				try:
+					Creator = open(etc_issue).readlines()[-2].lower().split(maxsplit=1)[0]
+				except IndexError:  # /etc/issue non standard file content
+					Creator = ""
+				if Creator in ("openvix", "openbh"):
+					copyfile("/etc/init.d/kexec-multiboot-recovery", dest)
+		# print(f"[multiboot][getMultibootslots]1 bootargs?: {path.exists('/sys/firmware/devicetree/base/chosen/bootargs')}")
+		SystemInfo["MBbootdevice"] = resolveDevice(device)  # used in SystemInfo
+		SystemInfo["BootDevice"] = SystemInfo["MBbootdevice"].rsplit("/", 1)[1]  # used by About
+		print(f"[Multiboot][[getMultibootslots]2 *** Bootdevice found: {SystemInfo['BootDevice']} CHKROOTMB:{CHKROOTMB} MBbootdevice:{SystemInfo['MBbootdevice']}")
+		if path.exists("/sys/firmware/devicetree/base/chosen/bootargs") or CHKROOTMB:  # check validity for multiboot
+			for file in glob.glob(path.join(tmpdir, "STARTUP_*")):
+				slotnumber = file.rsplit("_", 3 if "BOXMODE" in file else 1)[1]
+				# slotname - WIP
+				# slotname = file.rsplit("_", 3 if "BOXMODE" in file else 1)[0]
+				# slotname = file.rsplit("/", 1)[1]
+				# slotname = slotname if len(slotname) > 1 else ""
+				slotname = ""  # nullify for current moment
+				if "STARTUP_ANDROID" in file:
+					SystemInfo["AndroidMode"] = True
+					continue
+				if "STARTUP_RECOVERY" in file:
+					slotnumber = "0"
+					SystemInfo["RecoveryMode"] = BOXTYPE != "gbquad4kpro"
+				if "STARTUP_FLASH" in file:
+					slotnumber = "0"
+
+				if not slotnumber.isdigit():
+					continue
+
+				if int(slotnumber) in bootslots:
+					continue
+
+				slot = _parseStartupFile(file)
+				print(f"[Multiboot][[getMultibootslots]3 slotnumber:{slotnumber} slot:{slot}")
+				if slotnumber == "0":
+					slot["slotType"] = "" if not UBIMB else "eMMC"
+					slot["startupfile"] = path.basename(file)
+				else:
+					slot["slotType"] = "eMMC" if "root" in slot and "mmc" in slot["root"] else "USB"  # ("root" in slot) add to protected against possible crash... we dont know "root" was in the START file
+				print(f"[Multiboot][[getMultibootslots]4 slotnumber:{slotnumber} slotType:{slot["slotType"]}")
+				if SystemInfo["HasKexecMultiboot"] and int(slotnumber) > 3:
+					SystemInfo["HasKexecUSB"] = True
+				if "root" in slot:
+					if "UUID=" in slot["root"]:	 # KexecMultiboot or UBIMB
+						UUIDValue = slot["root"]
+						slotx = getUUIDtoSD(slot["root"])
+						if slotx is not None:
+							slot["root"] = slotx
+							UUID = slot["root"]
+							UUIDnum += 1
+						if not UBIMB:
+							slot["kernel"] = f"/linuxrootfs{slotnumber}/zImage"
+					if not (path.exists(slot["root"]) or slot["root"] in ("ubi0:ubifs", "ubi0:rootfs")):
+						continue
+					slot["startupfile"] = path.basename(file)
+					slot["slotname"] = slotname
+					if not UBIMB:
+						SystemInfo["HasMultibootMTD"] = slot.get("mtd")
+						SystemInfo["HasMultibootFlags"] = path.exists("/dev/block/by-name/flag")
+					if not SystemInfo["HasKexecMultiboot"] and not UBIMB and "sda" in slot["root"]:		# Not Kexec Vu+ receiver -- sf8008 type receiver with sd card, reset value as SD card slot has no rootsubdir
+						slot["rootsubdir"] = None
+						slot["slotType"] = "SDCARD"
+					elif "STARTUP_RECOVERY" not in file:
+						SystemInfo["HasRootSubdir"] = slot.get("rootsubdir")
+					if "kernel" not in slot:
+						slot["kernel"] = f"{slot['root'].split('p')[0]}p{int(slot['root'].split('p')[1]) - 1}"  # oldstyle MB kernel = root-1
+					bootslots[int(slotnumber)] = slot
+				elif slotnumber == "0":
+					bootslots[int(slotnumber)] = slot
+		else:  # kernel corruption set corruption flag
+			# print(f"[multiboot][getMultibootslots]3 bootargs?: {path.exists("/sys/firmware/devicetree/base/chosen/bootargs")}")
+			SystemInfo["resetMBoot"] = True
+			bootslots = {}
+		_unmount(tmpdir)
 	_unmountAndRemove(tmpdir)
 	if bootslots:
 		print(f"[multiboot][getMultibootslots] bootslots: {bootslots}")
@@ -150,8 +159,8 @@ def getMultibootslots():
 				SystemInfo["MultiBootSlot"] = int(slot[0])
 			else:
 				root = dict([(x.split("=", 1)[0].strip(), x.split("=", 1)[1].strip()) for x in bootArgs.strip().split(" ") if "=" in x])["root"]  # Broadband receiver (e.g. gbue4k) or sf8008 with sd card as root/kernel pair
-				for slot in bootslots.keys():
-					if "root" not in bootslots[slot].keys():
+				for slot in bootslots:
+					if "root" not in bootslots[slot]:
 						continue
 					if bootslots[slot]["root"] == root:
 						SystemInfo["MultiBootSlot"] = slot
@@ -166,14 +175,17 @@ def getMultibootslots():
 
 
 def getUUIDtoSD(UUID):  # returns None on failure
-	if fileExists("/sbin/blkid"):
-		lines = subprocess.check_output(["/sbin/blkid"]).decode(encoding="utf8", errors="ignore").split("\n")  # note: no graceful fail if check_output raises
-		# print(f"[multiboot][getUUIDtoSD2] lines:{lines}")
-		for line in lines:
-			if UUID in line.replace('"', ''):
-				return line.split(":")[0].strip()
-	else:
+	if not fileExists("/sbin/blkid"):
 		return None
+	try:
+		lines = subprocess.check_output(["/sbin/blkid"]).decode(encoding="utf8", errors="ignore").split("\n")
+	except subprocess.CalledProcessError as err:
+		print(f"[multiboot][getUUIDtoSD] {err}")
+		return None
+	for line in lines:
+		if UUID in line.replace('"', ''):
+			return line.split(":")[0].strip()
+	return None
 
 
 def resolveDevice(devicepath):
@@ -205,8 +217,6 @@ def GetImagelist(Recovery=None):
 				Imagelist[slot] = {"imagename": _("Recovery Mode")}
 				continue
 		BuildVersion = "  "
-		Build = " "  # ViX Build No.
-		Creator = " "  # Openpli Openvix Openatv etc
 		Imagelist[slot] = {"imagename": _("Empty slot")}
 		imagedir = "/"
 		if SystemInfo["MultiBootSlot"] != slot or SystemInfo["HasHiSi"]:
@@ -224,19 +234,7 @@ def GetImagelist(Recovery=None):
 				BuildVersion = createInfo(slot, imagedir=imagedir)
 			else:
 				print("[multiboot] [GetImagelist] using etc/issue")
-				date = VerDate(imagedir)
-				try:
-					Creator = open(f"{imagedir}/etc/issue").readlines()[-2].capitalize().strip()[:-6]
-				except IndexError:  # /etc/issue no standard file content
-					Creator = _("Unknown image")
-				if SystemInfo["HasKexecMultiboot"] and path.isfile(path.join(imagedir, "etc/vtiversion.info")):
-					Vti = open(path.join(imagedir, "etc/vtiversion.info")).read()
-					Creator = Vti[0:3]
-					Build = Vti[-8:-1]
-					BuildVersion = f"{Creator} {Build} ({date}) "
-				else:
-					Creator = Creator.replace("-release", " ")
-					BuildVersion = f"{Creator} ({date})"
+				BuildVersion = _legacyImageName(imagedir)
 			if SystemInfo["HasKexecMultiboot"] and Recovery and config.usage.bootlogo_identify.value:
 				bootmviSlot(imagedir=imagedir, text=BuildVersion, slot=slot)
 			Imagelist[slot] = {"imagename": f"{BuildVersion}"}
@@ -285,6 +283,23 @@ def createInfo(slot, imagedir="/"):
 	return " ".join([str(x).strip() for x in (Creator, BuildImgVersion, BuildType, BuildVer, BuildDev, f"({BuildDate})") if x and str(x).strip()])
 
 
+def _legacyImageName(imagedir):
+	date = VerDate(imagedir)
+	try:
+		Creator = open(f"{imagedir}/etc/issue").readlines()[-2].capitalize().strip()[:-6]
+	except IndexError:  # /etc/issue no standard file content
+		Creator = _("Unknown image")
+	if SystemInfo["HasKexecMultiboot"] and path.isfile(path.join(imagedir, "etc/vtiversion.info")):
+		Vti = open(path.join(imagedir, "etc/vtiversion.info")).read()
+		Creator = Vti[0:3]
+		Build = Vti[-8:-1]
+		BuildVersion = f"{Creator} {Build} ({date}) "
+	else:
+		Creator = Creator.replace("-release", " ")
+		BuildVersion = f"{Creator} ({date})"
+	return BuildVersion
+
+
 def VerDate(imagedir):
 	def mtime(fpath):
 		return fileExists(file := path.join(imagedir, fpath)) and int(stat(file).st_mtime) or 0
@@ -328,7 +343,7 @@ def bootmviSlot(imagedir="/", text=" ", slot=0):
 		])
 
 		_run(["rm", "-f", tmpEditedLogo])  # remove old junk before using this location
-		
+
 		if path.exists(outpng):
 			img = Image.open(outpng)						# Open an Image
 		else:
@@ -338,7 +353,7 @@ def bootmviSlot(imagedir="/", text=" ", slot=0):
 		I1.text((52, 12), text, font=myFont, fill=(255, 0, 0))		# Add Text to an image
 		I1.text((50, 10), text, font=myFont, fill=(255, 255, 255))
 		img.save(outpng)									# Save the edited image
-		
+
 		_run([
 			"ffmpeg",
 			"-i", outpng,
@@ -349,7 +364,7 @@ def bootmviSlot(imagedir="/", text=" ", slot=0):
 		])
 
 		_run(["cp", tmpEditedLogo, outmviPath])
-		
+
 		with open(txtPath, "w") as f:
 			f.write(text)
 
@@ -373,6 +388,21 @@ def isFat32(device):
 
 
 # helper functions
+def _parseStartupFile(file):
+	line = open(file).read() \
+		.replace("'", "") \
+		.replace('"', "") \
+		.replace("\n", " ") \
+		.replace("ubi.mtd", "mtd") \
+		.replace("bootargs=", "")
+
+	return {
+		x.split("=", 1)[0].strip(): x.split("=", 1)[1].strip()
+		for x in line.split()
+		if "=" in x
+	}
+
+
 def _run(cmd):
 	"""Run cmd via subprocess, logging stderr on non-zero exit."""
 	result = subprocess.run(cmd, capture_output=True, check=False)
@@ -382,7 +412,7 @@ def _run(cmd):
 
 
 def _mount(device, mountpoint, ubifs=False):
-	cmd = ["mount"] 
+	cmd = ["mount"]
 	if ubifs:
 		cmd += ["-t", "ubifs"]
 	cmd += [device, mountpoint]
@@ -404,6 +434,7 @@ def _unmount(mountpoint):
 		if result.returncode != 0:
 			break
 
+
 def _unmountAndRemove(mountpoint):
 	_unmount(mountpoint)
 	if mountpoint and not path.ismount(mountpoint):
@@ -415,7 +446,7 @@ def _imageDir(mountroot, slot):
 # end helper functions
 
 
-#    following added for OpenWebif canMultiBoot getCurrentSlotAndBootCodes getSlotImageList getBootCodeDescription activateSlot
+#	following added for OpenWebif canMultiBoot getCurrentSlotAndBootCodes getSlotImageList getBootCodeDescription activateSlot
 def canMultiBoot():
 	# print(f"[multiboot][canMultiBoot] ")
 	return bool(SystemInfo["canMultiBoot"])
@@ -455,4 +486,3 @@ def activateSlot(slotCode, bootCode, callback):
 			f.write(struct.pack("B", int(slotCode)))
 	_unmountAndRemove(tmpdir)
 	callback(0, 0)
-	# no need to rmdir(tmpdir) as reboot called immediately after this function
