@@ -22,6 +22,7 @@ class Progress(VariableValue, Renderer):
 		value = self.source.value
 		if value is None:
 			value = 0
+		value = max(0, min(value, range))  # maintain value between 0 and range
 		(self.range, self.value) = ((0, range), value)
 
 	def postWidgetCreate(self, instance):
