@@ -112,6 +112,19 @@ class _DownloadProtocol(Protocol):
 
 
 # ------------------------------------------------------------
+# DISCARD PROTOCOL (drains a response body we don't want, e.g. on
+# a non-2xx status, so the underlying connection can be released
+# cleanly instead of left dangling)
+# ------------------------------------------------------------
+class _DiscardProtocol(Protocol):
+	def dataReceived(self, data):
+		pass
+
+	def connectionLost(self, reason):
+		pass
+
+
+# ------------------------------------------------------------
 # DOWNLOADER
 # ------------------------------------------------------------
 class DownloadWithProgress:
@@ -210,6 +223,7 @@ class DownloadWithProgress:
 
 		# STRICT HTTP GATE
 		if not (200 <= response.code < 300):  # if not 2XX code means request failed
+			response.deliverBody(_DiscardProtocol())  # drain so the connection can be reused/closed cleanly
 			self._finalise(error=Exception(f"HTTP {response.code}"))
 			return
 
