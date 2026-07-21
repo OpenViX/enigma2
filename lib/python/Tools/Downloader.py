@@ -4,7 +4,7 @@ from time import time
 
 from twisted.internet import reactor
 from twisted.internet.threads import deferToThread
-from twisted.web.client import Agent, RedirectAgent, BrowserLikePolicyForHTTPS, ResponseDone
+from twisted.web.client import Agent, RedirectAgent, BrowserLikePolicyForHTTPS, ResponseDone, PotentialDataLoss
 from twisted.web.http_headers import Headers
 from twisted.internet.protocol import Protocol
 
@@ -101,7 +101,11 @@ class _DownloadProtocol(Protocol):
 		if self.downloader._done:
 			return
 
-		if reason.check(ResponseDone):
+		if reason.check(ResponseDone, PotentialDataLoss):
+			# PotentialDataLoss: connection closed to signal end of body for a
+			# response with no reliable length (e.g. no Content-Length, HTTP/1.0).
+			# Twisted can't tell that apart from a truncated transfer, but since
+			# it's the only way to end such a response, treat it as complete.
 			self.downloader._finalise(success=True)
 		else:
 			self.downloader._finalise(error=reason)
@@ -210,14 +214,10 @@ class DownloadWithProgress:
 			return
 
 		# content-length hint from server
-		try:
-			length = response.headers.getRawHeaders("content-length")
-			if length:
-				val = int(length[0])
-				if val > 0:
-					self.totalSize = val
-		except Exception:
-			pass
+		# NOTE: response.headers never carries Content-Length; Twisted's HTTP/1.1
+		# client consumes it internally for framing and exposes it as response.length.
+		if isinstance(response.length, int) and response.length > 0:
+			self.totalSize = response.length
 
 		try:  # catch any exception while trying to create the local file
 			self.fd = open(self.outputFile, "wb")
@@ -242,13 +242,6 @@ class DownloadWithProgress:
 			return
 
 		self._connectTimer = None
-
-		# cancel request if still pending
-		if self._request:
-			try:
-				self._request.cancel()
-			except Exception:
-				pass
 
 		self._finalise(error=Exception("Connect timeout"))
 
@@ -332,7 +325,16 @@ class DownloadWithProgress:
 			except OSError:
 				pass
 
-		# 4. callbacks ( no callback on cancelled (i.e. forced stop()) )
+		# 4. flush a last pending progress update so fast/small downloads (which can
+		# finish before the throttled 0.2s flushUi() timer ever fires) still report
+		# their final progress instead of jumping straight from 0% to done.
+		if success and self._pendingProgress and callable(self.progressCallback):
+			progress, total = self._pendingProgress
+			if total <= 0:
+				total = -1
+			self.progressCallback(progress, total)
+
+		# 5. callbacks ( no callback on cancelled (i.e. forced stop()) )
 		if success:
 			if callable(self.endCallback):
 				self.endCallback(self.outputFile)
