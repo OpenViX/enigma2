@@ -1116,6 +1116,71 @@ gpointer stopWatchdog(gpointer data)
 
 }  // namespace
 
+void eServiceMP3::disconnectAsyncSignalHandlers()
+{
+	if (!m_gst_playbin)
+		return;
+
+	/* playbinNotifySource()/handleElementAdded()/gstTextpadHasCAPS() were all
+	 * connected with "this" as user_data to react to the pipeline's dynamic
+	 * reconfiguration during normal playback. Now that stop() moves
+	 * GST_STATE_NULL off the main thread (see stopWorker()), the pipeline can
+	 * keep running - and keep emitting these signals - for a while after this
+	 * object itself has been destroyed, since the two are no longer
+	 * synchronized. A real crash from exactly this (gstTextpadHasCAPS firing
+	 * into an already-freed "this") is what prompted this function. None of
+	 * these signals' actions matter once we're stopping regardless, so
+	 * disconnect all of them synchronously here, before handing the actual
+	 * teardown off to the worker thread: g_signal_handlers_disconnect_by_func()
+	 * is fast and non-blocking (it doesn't wait for the pipeline to reach any
+	 * particular state), so this doesn't reintroduce the freeze stopWorker()
+	 * exists to avoid.
+	 *
+	 * handleElementAdded() reconnects itself on every decodebin/uridecodebin
+	 * element it discovers (see its own body) - there is no fixed, known set
+	 * of objects it ends up connected to, so walk the live pipeline and
+	 * disconnect it from every bin found, not just m_gst_playbin itself.
+	 * g_signal_handlers_disconnect_by_func() is a safe no-op on any object
+	 * that callback was never actually connected to. */
+	g_signal_handlers_disconnect_by_func(m_gst_playbin, (gpointer)playbinNotifySource, this);
+	g_signal_handlers_disconnect_by_func(m_gst_playbin, (gpointer)handleElementAdded, this);
+
+	GstIterator *eit = gst_bin_iterate_recurse(GST_BIN(m_gst_playbin));
+	GValue eitem = G_VALUE_INIT;
+	bool edone = false;
+	while (!edone)
+	{
+		switch (gst_iterator_next(eit, &eitem))
+		{
+			case GST_ITERATOR_OK:
+			{
+				GstElement *el = GST_ELEMENT(g_value_get_object(&eitem));
+				if (el && GST_IS_BIN(el))
+					g_signal_handlers_disconnect_by_func(el, (gpointer)handleElementAdded, this);
+				g_value_reset(&eitem);
+				break;
+			}
+			case GST_ITERATOR_RESYNC: gst_iterator_resync(eit); break;
+			default: edone = true; break;
+		}
+	}
+	g_value_unset(&eitem);
+	gst_iterator_free(eit);
+
+	gint n_text = 0;
+	g_object_get(m_gst_playbin, "n-text", &n_text, NULL);
+	for (gint i = 0; i < n_text; i++)
+	{
+		GstPad *pad = NULL;
+		g_signal_emit_by_name(m_gst_playbin, "get-text-pad", i, &pad);
+		if (pad)
+		{
+			g_signal_handlers_disconnect_by_func(pad, (gpointer)gstTextpadHasCAPS, this);
+			gst_object_unref(pad);
+		}
+	}
+}
+
 RESULT eServiceMP3::stop()
 {
 	if (!m_gst_playbin || m_state == stStopped || !m_ref)
@@ -1132,6 +1197,8 @@ RESULT eServiceMP3::stop()
 		gst_element_state_get_name(state),
 		gst_element_state_get_name(pending),
 		gst_element_state_change_return_get_name(ret));
+
+	disconnectAsyncSignalHandlers();
 
 	/* See stopWorker()'s comment: hand the actual (potentially blocking)
 	 * teardown off to a worker thread instead of doing it here, plus a

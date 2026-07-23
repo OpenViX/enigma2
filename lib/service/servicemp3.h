@@ -354,6 +354,7 @@ private:
 	void HandleTocEntry(GstMessage *msg);
 	static gint match_sinktype(const GValue *velement, const gchar *type);
 	static void handleElementAdded(GstBin *bin, GstElement *element, gpointer user_data);
+	void disconnectAsyncSignalHandlers();
 
 	struct subtitle_page_t
 	{
