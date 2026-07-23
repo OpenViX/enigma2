@@ -1212,10 +1212,29 @@ RESULT eServiceMP3::stop()
 	g_thread_unref(watchdogThread);
 
 #ifdef HAS_SOFTWARE_HDR_DETECTION
-	/* Safe to call regardless of whether GST_STATE_NULL has been reached yet
-	 * - see stopHDRProbe()'s own comment: it only sets an atomic flag and
-	 * tries a non-blocking mutex lock, it does not wait on the streaming
-	 * thread at all. */
+	/* stopHDRProbe() itself deliberately never calls the blocking
+	 * gst_pad_remove_probe() - see its own comment - which is correct and
+	 * necessary for its OTHER call sites (startHDRProbe() restarting mid
+	 * playback, checkHDRProbe() finishing classification), where "this"
+	 * stays alive regardless of how long the probe takes to actually detach.
+	 * stop() is different: now that GST_STATE_NULL runs on a worker thread
+	 * (see stopWorker()), this object can be destroyed shortly after
+	 * returning from here, and hdrProbeCallback firing into an already-freed
+	 * "this" is exactly what caused a real crash (glibc robust-mutex
+	 * assertion / heap corruption). So only here, remove the probe for real
+	 * before doing anything else - gst_pad_remove_probe() blocks until any
+	 * in-flight invocation finishes (worst case one buffer copy, low
+	 * milliseconds - nowhere near the multi-second class of block
+	 * stopWorker() exists to avoid), which is the only way to *guarantee*
+	 * hdrProbeCallback can never fire again from here on. */
+	if (m_hdr_probe_pad && m_hdr_probe_id)
+	{
+		gst_pad_remove_probe(m_hdr_probe_pad, m_hdr_probe_id);
+		m_hdr_probe_id = 0;
+	}
+	/* Now safe to call as usual - the flag/trylock dance is redundant at this
+	 * point (nothing can be mid-callback anymore) but harmless, and this
+	 * still does the rest of the cleanup (timer, es/snap buffers, pad ref). */
 	stopHDRProbe();
 #endif
 
