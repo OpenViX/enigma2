@@ -1041,6 +1041,30 @@ RESULT eServiceMP3::start()
 	return 0;
 }
 
+namespace {
+
+/* gst_element_set_state(..., GST_STATE_NULL) is the call that can still block
+ * this (main) thread for seconds: unlike other transitions it is defined to
+ * not return until the element has fully stopped, and some vendor hardware
+ * sinks on this class of STB block synchronously inside their change_state()
+ * vfunc instead of returning ASYNC, especially for H.265. Doing it here on a
+ * worker thread instead just moves that wait off the main thread; nothing
+ * else needs to be touched, since stop() itself already takes just a raw
+ * ref (not "this"), and every eServiceMP3 member accessed after this call
+ * in stop() (stopHDRProbe(), saveCuesheet()) is independently safe to run
+ * before the pipeline has actually reached NULL - see the comments there. */
+gpointer stopWorker(gpointer data)
+{
+	GstElement *playbin = static_cast<GstElement*>(data);
+	GstStateChangeReturn ret = gst_element_set_state(playbin, GST_STATE_NULL);
+	if (ret != GST_STATE_CHANGE_SUCCESS)
+		eDebug("[eServiceMP3] stop GST_STATE_NULL failure");
+	gst_object_unref(playbin);
+	return NULL;
+}
+
+}  // namespace
+
 RESULT eServiceMP3::stop()
 {
 	if (!m_gst_playbin || m_state == stStopped || !m_ref)
@@ -1051,27 +1075,24 @@ RESULT eServiceMP3::stop()
 
 	GstStateChangeReturn ret;
 	GstState state, pending;
-	/* Non-blocking state query: gst_element_set_state(NULL) aborts any
-	 * pending state change internally, so we do not need to wait here.
-	 * The previous 5 * GST_SECOND blocking wait caused the UI to freeze
-	 * (spinner with video still playing) on rapid channel zaps, especially
-	 * on H.265 channels where hardware decoders are slower to respond. */
+	/* Non-blocking state query, for logging only. */
 	ret = gst_element_get_state(m_gst_playbin, &state, &pending, 0);
 	eDebug("[eServiceMP3] stop state:%s pending:%s ret:%s",
 		gst_element_state_get_name(state),
 		gst_element_state_get_name(pending),
 		gst_element_state_change_return_get_name(ret));
 
-	ret = gst_element_set_state(m_gst_playbin, GST_STATE_NULL);
-	if (ret != GST_STATE_CHANGE_SUCCESS)
-		eDebug("[eServiceMP3] stop GST_STATE_NULL failure");
+	/* See stopWorker()'s comment: hand the actual (potentially blocking)
+	 * teardown off to a worker thread instead of doing it here. */
+	gst_object_ref(m_gst_playbin);
+	GThread *thread = g_thread_new("mp3stop", stopWorker, m_gst_playbin);
+	g_thread_unref(thread);
 
 #ifdef HAS_SOFTWARE_HDR_DETECTION
-	/* stopHDRProbe() calls gst_pad_remove_probe() which blocks until any
-	 * in-flight probe callback finishes.  Call it AFTER GST_STATE_NULL so the
-	 * streaming thread is guaranteed to have stopped; calling it earlier (on a
-	 * live pipeline) can block the main thread indefinitely if the streaming
-	 * thread is stuck waiting on hardware. */
+	/* Safe to call regardless of whether GST_STATE_NULL has been reached yet
+	 * - see stopHDRProbe()'s own comment: it only sets an atomic flag and
+	 * tries a non-blocking mutex lock, it does not wait on the streaming
+	 * thread at all. */
 	stopHDRProbe();
 #endif
 
