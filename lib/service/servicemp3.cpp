@@ -1043,6 +1043,32 @@ RESULT eServiceMP3::start()
 
 namespace {
 
+const guint STOP_WATCHDOG_TIMEOUT_SECONDS = 10;
+
+/* Shared between stopWorker() and stopWatchdog() only - never touches
+ * eServiceMP3/"this", same reasoning as not passing "this" to stopWorker
+ * itself: this teardown can outlive the object it came from. refcount starts
+ * at 2 (one per thread below); whichever of the two finishes second frees it,
+ * so it's torn down properly regardless of which one happens to win the race
+ * for the normal (fast) case. */
+struct StopWatchdog
+{
+	gint done;      // atomic bool, set by stopWorker() once GST_STATE_NULL actually returns
+	gint refcount;  // atomic
+};
+
+void stopWatchdogRelease(StopWatchdog *watchdog)
+{
+	if (g_atomic_int_dec_and_test(&watchdog->refcount))
+		delete watchdog;
+}
+
+struct StopWorkerArgs
+{
+	GstElement *playbin;
+	StopWatchdog *watchdog;
+};
+
 /* gst_element_set_state(..., GST_STATE_NULL) is the call that can still block
  * this (main) thread for seconds: unlike other transitions it is defined to
  * not return until the element has fully stopped, and some vendor hardware
@@ -1055,11 +1081,36 @@ namespace {
  * before the pipeline has actually reached NULL - see the comments there. */
 gpointer stopWorker(gpointer data)
 {
-	GstElement *playbin = static_cast<GstElement*>(data);
+	StopWorkerArgs *args = static_cast<StopWorkerArgs*>(data);
+	GstElement *playbin = args->playbin;
+	StopWatchdog *watchdog = args->watchdog;
+	delete args;
+
 	GstStateChangeReturn ret = gst_element_set_state(playbin, GST_STATE_NULL);
 	if (ret != GST_STATE_CHANGE_SUCCESS)
 		eDebug("[eServiceMP3] stop GST_STATE_NULL failure");
 	gst_object_unref(playbin);
+
+	g_atomic_int_set(&watchdog->done, 1);
+	stopWatchdogRelease(watchdog);
+	return NULL;
+}
+
+/* Detection only, not recovery - there is no safe way to force-abort a
+ * thread stuck inside gst_element_set_state(), so this can't do anything
+ * about a genuinely wedged teardown beyond making it visible in the log
+ * instead of silently leaking a thread + pipeline forever. Runs as its own
+ * thread rather than an eTimer specifically because it has to outlive "this"
+ * (the eServiceMP3 destructor calls stop() and then immediately proceeds to
+ * destroy the object) - a member eTimer would be destroyed right along with
+ * it and never get a chance to fire for exactly the case that matters most. */
+gpointer stopWatchdog(gpointer data)
+{
+	StopWatchdog *watchdog = static_cast<StopWatchdog*>(data);
+	g_usleep(STOP_WATCHDOG_TIMEOUT_SECONDS * G_USEC_PER_SEC);
+	if (!g_atomic_int_get(&watchdog->done))
+		eDebug("[eServiceMP3] stop(): GST_STATE_NULL still hasn't completed after %u seconds - hardware sink likely stuck", STOP_WATCHDOG_TIMEOUT_SECONDS);
+	stopWatchdogRelease(watchdog);
 	return NULL;
 }
 
@@ -1083,10 +1134,15 @@ RESULT eServiceMP3::stop()
 		gst_element_state_change_return_get_name(ret));
 
 	/* See stopWorker()'s comment: hand the actual (potentially blocking)
-	 * teardown off to a worker thread instead of doing it here. */
+	 * teardown off to a worker thread instead of doing it here, plus a
+	 * watchdog thread that just logs if it's taking unexpectedly long -
+	 * see stopWatchdog()'s comment for why that's a thread and not a timer. */
 	gst_object_ref(m_gst_playbin);
-	GThread *thread = g_thread_new("mp3stop", stopWorker, m_gst_playbin);
-	g_thread_unref(thread);
+	StopWatchdog *watchdog = new StopWatchdog{0, 2};
+	GThread *worker = g_thread_new("mp3stop", stopWorker, new StopWorkerArgs{m_gst_playbin, watchdog});
+	g_thread_unref(worker);
+	GThread *watchdogThread = g_thread_new("mp3stopwd", stopWatchdog, watchdog);
+	g_thread_unref(watchdogThread);
 
 #ifdef HAS_SOFTWARE_HDR_DETECTION
 	/* Safe to call regardless of whether GST_STATE_NULL has been reached yet
