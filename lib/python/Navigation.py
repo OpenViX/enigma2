@@ -43,6 +43,7 @@ class Navigation:
 		self.currentServiceIsStreamRelay = False
 		self.skipServiceReferenceReset = False
 		self.retryServicePlayCount = 0
+		self.retryServicePlayTimer = eTimer()
 		self.RecordTimer = RecordTimer.RecordTimer()
 		self.PowerTimer = PowerTimer.PowerTimer()
 		self.__wasTimerWakeup = False
@@ -111,7 +112,20 @@ class Navigation:
 	def restartService(self):
 		self.playService(self.currentlyPlayingServiceOrGroup, forceRestart=True)
 
+	def _cancelRetryTimer(self):
+		# Ensure any previous timer is cancelled irrespective of code path through
+		# playService(). Also, remove any pending timer on calling stopService().
+		self.retryServicePlayTimer.stop()
+		self.retryServicePlayTimer.callback.clear()
+
+	def _armRetryTimer(self, delay_ms, ref, checkParentalControl, forceRestart, adjust):
+		self._cancelRetryTimer()
+		self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
+		self.retryServicePlayTimer.start(delay_ms, True)
+
 	def playService(self, ref, checkParentalControl=True, forceRestart=False, adjust=True, event=None):
+		self._cancelRetryTimer()
+
 		if exists("/proc/stb/lcd/symbol_signal") and hasattr(config.lcd, "mode"):
 			open("/proc/stb/lcd/symbol_signal", "w").write("1" if ref and "0:0:0:0:0:0:0:0:0" not in ref.toString() and config.lcd.mode.value else "0")
 
@@ -167,9 +181,7 @@ class Navigation:
 							self.currentlyPlayingServiceOrGroup = None
 							if oldref and "://" in oldref.getPath():
 								print("[Navigation] Streaming was active -> try again")  # use timer to give the streamserver the time to deallocate the tuner
-								self.retryServicePlayTimer = eTimer()
-								self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
-								self.retryServicePlayTimer.start(500, True)
+								self._armRetryTimer(500, ref, checkParentalControl, forceRestart, adjust)
 						else:
 							print("[Navigation] alternative ref as simulate: ", alternativeref.toString())
 					return 0
@@ -289,9 +301,7 @@ class Navigation:
 			self.currentlyPlayingServiceOrGroup = None
 			self.retryServicePlayCount = 1  # Pre-arm retry cycle in case play fails after delay.
 			print("[Navigation] Streamrelay was active -> delay the zap till tuner is freed")
-			self.retryServicePlayTimer = eTimer()
-			self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
-			self.retryServicePlayTimer.start(config.misc.softcam_streamrelay_delay.value, True)
+			self._armRetryTimer(config.misc.softcam_streamrelay_delay.value, ref, checkParentalControl, forceRestart, adjust)
 		elif not is_async_play and self.pnav.playService(playref):
 			self.currentlyPlayingServiceReference = None
 			self.originalPlayingServiceReference = None
@@ -300,9 +310,7 @@ class Navigation:
 				self.retryServicePlayCount = 1  # Start retry cycle for stream relay tuner deallocation.
 			if 0 < self.retryServicePlayCount <= 20:
 				print(f"[Navigation] Streaming was active -> try again (attempt {self.retryServicePlayCount}).")  # Use timer to give the stream server the time to deallocate the tuner.
-				self.retryServicePlayTimer = eTimer()
-				self.retryServicePlayTimer.callback.append(boundFunction(self.playService, ref, checkParentalControl, forceRestart, adjust))
-				self.retryServicePlayTimer.start(500, True)
+				self._armRetryTimer(500, ref, checkParentalControl, forceRestart, adjust)
 				self.retryServicePlayCount += 1
 			elif self.retryServicePlayCount > 20:
 				print(f"[Navigation] Gave up retrying after {self.retryServicePlayCount - 1} attempts.")
@@ -368,6 +376,7 @@ class Navigation:
 		if hasattr(self, "_pendingPlayTimer"):
 			self._pendingPlayTimer.stop()
 		self.__dict__.pop("_pendingPlay", None)
+		self._cancelRetryTimer()
 		if self.pnav:
 			self.pnav.stopService()
 		self.currentlyPlayingServiceReference = None
