@@ -140,6 +140,20 @@ private:
 	bool m_enable_accesspoints; /* set to false to prevent saving .ap files (e.g. timeshift) */
 	bool m_pts_found; /* 'real' mpeg pts has been found, no longer measuring streamtime */
 	bool m_has_accesspoints;
+	/* H.264/H.265 access points are normally triggered by the AUD's pic_type
+	 * hint ("this access unit is I-slices only"), which some encoders set
+	 * permissively/incorrectly and so never actually fires - confirmed in
+	 * production against real streams whose AUD pic_type never indicates a
+	 * keyframe even across genuine IDR access units, leaving .ap permanently
+	 * empty. A real IDR slice NAL (H.264 type 5, H.265 types 19/20) is a
+	 * spec-guaranteed random-access point that doesn't depend on that hint,
+	 * and is used as an additional, more reliable trigger alongside it (not
+	 * instead of it) - see processPacket()'s MPEG4_H264/H265_HEVC cases. This
+	 * flag gates it to at most one extra access point per access unit, reset
+	 * at each AUD; starts true so a lone IDR-type NAL seen before this
+	 * parser's first AUD (e.g. joining a stream mid-GOP) doesn't fire on a
+	 * partial access unit. */
+	bool m_idr_ap_written_this_au;
 };
 
 #endif
