@@ -104,13 +104,113 @@ RESULT eServiceMP3Record::start(bool simulate)
 	return doRecord();
 }
 
+namespace {
+
+const guint RECORD_STOP_WATCHDOG_TIMEOUT_SECONDS = 10;
+
+/* Same pattern as eServiceMP3::stop()'s stopWorker()/stopWatchdog() in
+ * servicemp3.cpp - shared between recordStopWorker()/recordStopWatchdog()
+ * only, never touches eServiceMP3Record/"this". refcount starts at 2 (one per
+ * thread below); whichever finishes second frees it. */
+struct RecordStopWatchdog
+{
+	gint done;      // atomic bool, set by recordStopWorker() once GST_STATE_NULL actually returns
+	gint refcount;  // atomic
+};
+
+void recordStopWatchdogRelease(RecordStopWatchdog *watchdog)
+{
+	if (g_atomic_int_dec_and_test(&watchdog->refcount))
+		delete watchdog;
+}
+
+struct RecordStopWorkerArgs
+{
+	GstElement *pipeline;
+	RecordStopWatchdog *watchdog;
+};
+
+/* gst_element_set_state(..., GST_STATE_NULL) can block the calling thread for
+ * a long time if the pipeline's source is stuck - e.g. uridecodebin/
+ * souphttpsrc wedged trying to reach an unavailable stream (a blocked DNS
+ * lookup isn't even cancellable). stop() is reached directly from the Timer
+ * screen/RecordTimer on the main thread, so blocking here freezes the whole
+ * GUI - the same failure mode already fixed for eServiceMP3::stop(); this is
+ * the same fix, ported to the recording pipeline. */
+gpointer recordStopWorker(gpointer data)
+{
+	RecordStopWorkerArgs *args = static_cast<RecordStopWorkerArgs*>(data);
+	GstElement *pipeline = args->pipeline;
+	RecordStopWatchdog *watchdog = args->watchdog;
+	delete args;
+
+	GstStateChangeReturn ret = gst_element_set_state(pipeline, GST_STATE_NULL);
+	if (ret != GST_STATE_CHANGE_SUCCESS)
+		eDebug("[eServiceMP3Record] stop GST_STATE_NULL failure");
+	gst_object_unref(pipeline);
+
+	g_atomic_int_set(&watchdog->done, 1);
+	recordStopWatchdogRelease(watchdog);
+	return NULL;
+}
+
+/* Detection only, not recovery - same reasoning as stopWatchdog() in
+ * servicemp3.cpp. Runs as its own thread rather than an eTimer because it has
+ * to outlive "this". */
+gpointer recordStopWatchdog(gpointer data)
+{
+	RecordStopWatchdog *watchdog = static_cast<RecordStopWatchdog*>(data);
+	g_usleep(RECORD_STOP_WATCHDOG_TIMEOUT_SECONDS * G_USEC_PER_SEC);
+	if (!g_atomic_int_get(&watchdog->done))
+		eDebug("[eServiceMP3Record] stop(): GST_STATE_NULL still hasn't completed after %u seconds - source likely stuck", RECORD_STOP_WATCHDOG_TIMEOUT_SECONDS);
+	recordStopWatchdogRelease(watchdog);
+	return NULL;
+}
+
+}  // namespace
+
+void eServiceMP3Record::disconnectAsyncSignalHandlers()
+{
+	if (!m_recording_pipeline)
+		return;
+
+	/* Now that stop() moves GST_STATE_NULL off the main thread, the pipeline
+	 * can keep running - and keep emitting these signals - for a while after
+	 * "this" may already have been destroyed (e.g. RecordTimer dropping its
+	 * last reference right after stop() returns). None of these matter once
+	 * we're stopping regardless, so disconnect everything bound to "this"
+	 * synchronously here, before handing teardown off to the worker thread. */
+	GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(m_recording_pipeline));
+	gst_bus_set_sync_handler(bus, NULL, NULL, NULL);
+	gst_object_unref(bus);
+
+	if (m_source)
+	{
+		g_signal_handlers_disconnect_by_func(m_source, (gpointer)handleUridecNotifySource, this);
+		g_signal_handlers_disconnect_by_func(m_source, (gpointer)handleAutoPlugCont, this);
+	}
+}
+
 RESULT eServiceMP3Record::stop()
 {
 	if (!m_simulate)
 		eDebug("[eMP3ServiceRecord] stop recording");
 	if (m_state == stateRecording)
 	{
-		gst_element_set_state(m_recording_pipeline, GST_STATE_NULL);
+		disconnectAsyncSignalHandlers();
+
+		/* See recordStopWorker()'s comment: hand the actual (potentially
+		 * blocking) teardown off to a worker thread instead of doing it here,
+		 * plus a watchdog thread that just logs if it's taking unexpectedly
+		 * long - see recordStopWatchdog()'s comment for why that's a thread
+		 * and not a timer. */
+		gst_object_ref(m_recording_pipeline);
+		RecordStopWatchdog *watchdog = new RecordStopWatchdog{0, 2};
+		GThread *worker = g_thread_new("mp3recstop", recordStopWorker, new RecordStopWorkerArgs{m_recording_pipeline, watchdog});
+		g_thread_unref(worker);
+		GThread *watchdogThread = g_thread_new("mp3recstopwd", recordStopWatchdog, watchdog);
+		g_thread_unref(watchdogThread);
+
 		m_state = statePrepared;
 	} else if (!m_simulate)
 		eDebug("[eMP3ServiceRecord] stop was not recording");
