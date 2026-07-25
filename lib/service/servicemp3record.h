@@ -73,7 +73,8 @@ private:
 	unsigned int m_apsc_next_pkt;  /* packets already checked for PAT/PMT, in m_apsc_buf */
 	int m_apsc_pmt_pid;
 	bool m_apsc_video_pid_found;
-	bool m_apsc_disabled;   /* PAT with no program, or PMT with no supported video stream */
+	bool m_apsc_sync_checked;  /* true once the early "does this even look like TS" check has run */
+	bool m_apsc_disabled;   /* not MPEG-TS at all, PAT with no program, or PMT with no supported video stream */
 	off_t m_record_offset;  /* running byte offset of everything written to m_filename so far */
 	/* Pointer, not a plain member: restartRecordingFromEos() reuses this same
 	 * eServiceMP3Record for a new segment file, and eMPEGStreamParserTS's own

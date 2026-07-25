@@ -29,7 +29,7 @@ const int STREAM_TYPE_H265 = 0x24;
 const int PARSE_RETRY = -2;
 const int PARSE_NONE = -1;
 
-/* Port of ApSc.py's _parse_pat_packet(): return the PMT PID from the PAT
+/* Return the PMT PID from the PAT
  * packet at *pkt* (a 188-byte TS packet, sync byte already verified by the
  * caller), PARSE_RETRY if the section isn't fully captured here, or
  * PARSE_NONE if a complete PAT was parsed but held no program (shouldn't
@@ -71,7 +71,7 @@ int parsePatPacket(const unsigned char *pkt)
 	return PARSE_NONE;
 }
 
-/* Port of ApSc.py's _parse_pmt_packet(): return the video PID from the PMT
+/* Return the video PID from the PMT
  * packet at *pkt*, and its stream_type via *streamtype_out*. Same
  * PARSE_RETRY/PARSE_NONE convention as parsePatPacket(). */
 int parsePmtPacket(const unsigned char *pkt, int &streamtype_out)
@@ -132,6 +132,7 @@ eServiceMP3Record::eServiceMP3Record(const eServiceReference &ref):
 	m_apsc_next_pkt = 0;
 	m_apsc_pmt_pid = -1;
 	m_apsc_video_pid_found = false;
+	m_apsc_sync_checked = false;
 	m_apsc_disabled = false;
 	m_record_offset = 0;
 	m_ts_parser = 0;
@@ -385,6 +386,7 @@ int eServiceMP3Record::doPrepare()
 		m_apsc_next_pkt = 0;
 		m_apsc_pmt_pid = -1;
 		m_apsc_video_pid_found = false;
+		m_apsc_sync_checked = false;
 		m_apsc_disabled = false;
 		m_record_offset = 0;
 		delete m_ts_parser;
@@ -766,8 +768,7 @@ void eServiceMP3Record::handlePadAdded(GstElement *element, GstPad *pad, gpointe
 		/* .ap/.sc generation - see the member declarations' comment. Probe on
 		 * this same pad (uridecodebin's output, about to become filesink's
 		 * input) so we see exactly the bytes landing in the recorded file,
-		 * in order - same requirement ApSc.py's feed() documents for the
-		 * same reason (offsets written to .ap/.sc are file byte offsets). */
+		 * in order */
 		_this->m_record_probe_pad = pad;
 		_this->m_record_probe_id = gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER, handleRecordProbe, _this, NULL);
 	}
@@ -801,6 +802,34 @@ void eServiceMP3Record::findVideoPid()
 {
 	unsigned int npkts = m_apsc_buf.size() / 188;
 	const unsigned char *buf = &m_apsc_buf[0];
+
+	if (!m_apsc_sync_checked)
+	{
+		/* Cheap early-out: eServiceMP3Record's pipeline can also pass
+		 * through non-TS containers unchanged (see doPrepare()'s uridecodebin
+		 * "caps" whitelist - mp4/mkv/flv/asf sources end up written as-is,
+		 * still under a .ts filename, see getFilenameExtension()). Without
+		 * this, a non-TS recording would just spin this function over every
+		 * incoming buffer for its entire duration, never finding a PAT, with
+		 * nothing in the log to say why .ap/.sc never showed up. Checking a
+		 * few consecutive 188-byte-aligned sync bytes up front is enough to
+		 * rule out a lone coincidental 0x47 without waiting for a real
+		 * PAT/PMT. */
+		const unsigned int SYNC_CHECK_PACKETS = 3;
+		if (npkts < SYNC_CHECK_PACKETS)
+			return;
+		m_apsc_sync_checked = true;
+		for (unsigned int i = 0; i < SYNC_CHECK_PACKETS; ++i)
+		{
+			if (buf[i * 188] != 0x47)
+			{
+				eDebug("[eServiceMP3Record] findVideoPid: stream does not look like MPEG-TS; disabling AP/SC");
+				m_apsc_disabled = true;
+				return;
+			}
+		}
+	}
+
 	for (unsigned int idx = m_apsc_next_pkt; idx < npkts; ++idx)
 	{
 		const unsigned char *pkt = buf + idx * 188;
@@ -844,10 +873,8 @@ void eServiceMP3Record::findVideoPid()
 			m_apsc_video_pid_found = true;
 			m_ts_parser->setPid(result, iDVBTSRecorder::video_pid, pidtype);
 			m_ts_parser->startSave(m_filename);
-			/* Catch up on everything buffered so far in one shot - matches
-			 * ApSc.py's _feed() calling _scan() over its whole self._buf the
-			 * moment self._video_pid becomes non-None, so nothing received
-			 * before the PID was found is lost. */
+			/* Catch up on everything buffered so far in one shot, so nothing
+			 * received before the PID was found is lost. */
 			m_ts_parser->parseData(m_apsc_base_pos, &m_apsc_buf[0], m_apsc_buf.size());
 			std::vector<unsigned char>().swap(m_apsc_buf);  /* no longer needed, see header comment */
 			return;
@@ -857,8 +884,7 @@ void eServiceMP3Record::findVideoPid()
 
 	/* Bound memory while still searching: without this, a stream whose
 	 * PAT/PMT never resolves (or never repeats) would grow m_apsc_buf for the
-	 * entire recording. Matches ApSc.py's _trim() "video pid not found yet"
-	 * branch - drop everything already scanned once it's worth the memmove. */
+	 * entire recording. */
 	off_t drop = (off_t)m_apsc_next_pkt * 188;
 	if (drop >= 4096)
 	{
