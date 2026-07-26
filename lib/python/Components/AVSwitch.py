@@ -742,7 +742,7 @@ def InitAVSwitch():
 			("multichannel", _("convert to multi-channel PCM")),
 			("force_ac3", _("convert to AC3")),
 			("force_dts", _("convert to DTS")),
-			("use_hdmi_cacenter", _("use_hdmi_cacenter")),
+			("use_hdmi_cacenter", _("use hdmi cacenter")),
 			("wide", _("wide")),
 			("extrawide", _("extrawide"))
 		]
