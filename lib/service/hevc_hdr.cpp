@@ -25,6 +25,7 @@ public:
 		pos++;
 		return (d[bi] >> off) & 1;
 	}
+	bool exhausted() const { return pos >= size; }
 	uint32_t u(int n) { uint32_t v = 0; while (n--) v = (v << 1) | bit(); return v; }
 	uint32_t ue() { int lz = 0; while (bit() == 0 && lz < 32) lz++; return (1u << lz) - 1 + u(lz); }
 	int32_t se() { uint32_t k = ue(); return (k & 1) ? (int32_t)((k + 1) >> 1) : -(int32_t)(k >> 1); }
@@ -44,8 +45,15 @@ void skip_ptl(BitReader &br, int maxSub) {
 }
 
 void skip_strps(BitReader &br, int num) {
+	/* num comes straight from a bitstream ue() read; a truncated/misaligned
+	 * SPS can desync the bit reader and yield a huge garbage count here.
+	 * Spec caps num_short_term_ref_pic_sets at 64 - clamp defensively, and
+	 * also bail as soon as the reader runs dry rather than looping on
+	 * synthetic zero-bits. */
+	if (num > 64) num = 64;
 	std::vector<int> ndp(num + 1, 0);
 	for (int idx = 0; idx < num; idx++) {
+		if (br.exhausted()) break;
 		int inter = (idx != 0) ? br.u(1) : 0;
 		if (inter) {
 			br.u(1); br.ue();
@@ -57,10 +65,15 @@ void skip_strps(BitReader &br, int num) {
 			}
 			ndp[idx] = cnt;
 		} else {
+			/* num_negative_pics / num_positive_pics: spec bounds their sum
+			 * by sps_max_dec_pic_buffering (<=16) - same desync risk as
+			 * num above, clamp each defensively. */
 			uint32_t neg = br.ue(), pos = br.ue();
+			if (neg > 16) neg = 16;
+			if (pos > 16) pos = 16;
 			ndp[idx] = neg + pos;
-			for (uint32_t j = 0; j < neg; j++) { br.ue(); br.u(1); }
-			for (uint32_t j = 0; j < pos; j++) { br.ue(); br.u(1); }
+			for (uint32_t j = 0; j < neg && !br.exhausted(); j++) { br.ue(); br.u(1); }
+			for (uint32_t j = 0; j < pos && !br.exhausted(); j++) { br.ue(); br.u(1); }
 		}
 	}
 }
@@ -101,7 +114,13 @@ int sps_transfer(const uint8_t *rbsp, int len) {
 	if (br.u(1)) { br.u(4); br.u(4); br.ue(); br.ue(); br.u(1); }
 	uint32_t numShort = br.ue();
 	if (numShort > 0) skip_strps(br, numShort);
-	if (br.u(1)) { uint32_t n = br.ue(); for (uint32_t i = 0; i < n; i++) { br.u(log2poc + 4); br.u(1); } }
+	if (br.u(1)) {
+		/* num_long_term_ref_pics_sps: same desync risk as numShort above -
+		 * spec caps this at 32, clamp and bail early on exhaustion. */
+		uint32_t n = br.ue();
+		if (n > 32) n = 32;
+		for (uint32_t i = 0; i < n && !br.exhausted(); i++) { br.u(log2poc + 4); br.u(1); }
+	}
 	br.u(1); br.u(1);
 	if (!br.u(1)) return -1;                 /* vui_present */
 	if (br.u(1)) { uint32_t idc = br.u(8); if (idc == 255) { br.u(16); br.u(16); } }
