@@ -1005,7 +1005,7 @@ msgid ""
 "Do you want to allow this?"
 msgstr ""
 "%s Update ist bereit.\n"
-"Willst du es starten?"
+"Jetzt starten?"
 
 #, python-format
 msgid "%s updated package available"
@@ -2189,7 +2189,7 @@ msgid "Archive long"
 msgstr ""
 
 msgid "Are You Sure ?"
-msgstr "Bist du sicher?"
+msgstr "Sicher?"
 
 #, python-format
 msgid "Are you ready to install %s ?"
@@ -3570,7 +3570,7 @@ msgid "Choose whether multi channel sound tracks should be output as PCM."
 msgstr "Soll Mehrkanalton als PCM ausgegeben werden?"
 
 msgid "Choose whether or not to show an icon when a motorised dish is moving."
-msgstr "Soll ein Icon angezeigt werden, wenn sich ein Antennenrotor bewegt."
+msgstr "Soll ein Icon angezeigt werden, wenn sich ein Antennenrotor bewegt?"
 
 msgid "Choose whether to scan a single transponder, one satellite or multiple satellites."
 msgstr "Soll ein einzelner Transponder, ein Satellit oder mehrere Satelliten gescannt werden?"
@@ -4070,7 +4070,7 @@ msgid "Configure whether (and for how long) a second infobar will be shown when 
 msgstr "Legt die Anzeigedauer des Second-Infobars fest (durch zweimaliges 'OK'). Zeigt zusätzliche Senderinformationen. Der Skin definiert die Inhalte."
 
 msgid "Configure whether or not an rotor position will be displayed on infobar"
-msgstr "Konfiguriere, ob die Rotorposition in der Infobar angezeigt werden soll."
+msgstr "Lege fest, ob die Rotorposition in der Infobar angezeigt werden soll."
 
 msgid "Configure whether service picons will be shown in number zap."
 msgstr "Konfiguriere die Anzeige von Picons bei der Senderwahl mit Ziffern."
@@ -5250,7 +5250,7 @@ msgstr ""
 "Die Überprüfung könnte einige Zeit in Anspruch nehmen."
 
 msgid "Do you really want to clear this playlist?"
-msgstr "Willst du diese Playliste wirklich löschen?"
+msgstr "Diese Playliste wirklich löschen?"
 
 #, python-format
 msgid "Do you really want to delete %s?"
@@ -5264,7 +5264,7 @@ msgstr ""
 "\n"
 
 msgid "Do you really want to delete this timer ?"
-msgstr "Willst du diesen Timer wirklich löschen?"
+msgstr "Diesen Timer wirklich löschen?"
 
 #, python-format
 msgid "Do you really want to download the plugin \"%s\"?"
@@ -5342,7 +5342,7 @@ msgid "Do you want to burn this collection to DVD medium?"
 msgstr "Soll diese Zusammenstellung auf DVD gebrannt werden?"
 
 msgid "Do you want to change the default skin"
-msgstr "Willst du den Standard-Skin wechseln"
+msgstr "Standard-Skin wechseln?"
 
 msgid "Do you want to continue?"
 msgstr "Weiter machen?"
@@ -5355,7 +5355,7 @@ msgid ""
 "Do you want to delete all the selected files:\n"
 "(choose 'No' to only delete the currently selected file.)"
 msgstr ""
-"Willst du alle markierten Dateien löschen:\n"
+"Alle markierten Dateien löschen:\n"
 "(Wähle 'Nein', um nur die gerade markierte Datei zu löschen.)"
 
 msgid "Do you want to do a service scan?"
@@ -5398,13 +5398,13 @@ msgid "Do you want to restart GUI now ?"
 msgstr "Soll die Benutzeroberfläche jetzt neu gestartet werden?"
 
 msgid "Do you want to restore your Enigma2 plugins ?"
-msgstr "Willst du deine Plugins wiederherstellen?"
+msgstr "Die Plugins wiederherstellen?"
 
 msgid "Do you want to restore your Enigma2 settings ?"
-msgstr "Soll Backup von Einstellungen wiederhergestellt werden?"
+msgstr "Die Einstellungen wiederherstellen?"
 
 msgid "Do you want to restore your enigma2 settings ?"
-msgstr "Willst du die Enigma2-Einstellungen wiederherstellen?"
+msgstr "Die Einstellungen wiederherstellen?"
 
 msgid "Do you want to restore your settings?"
 msgstr "Die Einstellungen wiederherstellen?"
@@ -5989,10 +5989,10 @@ msgid "Enter adapter settings or disable adapter, then Save to action changed se
 msgstr "Gib Adapter-Einstellungen ein, oder deaktiviere den Adapter."
 
 msgid "Enter if you are in the east or west hemisphere."
-msgstr "Gib ein, ob du in der östlichen oder westlichen Hemisphäre bist."
+msgstr "Wähle aus, ob du in der östlichen oder westlichen Hemisphäre bist."
 
 msgid "Enter if you are north or south of the equator."
-msgstr "Gib ein, ob du nördlich oder südlich des Äquators bist."
+msgstr "Wähle aus, ob du nördlich oder südlich des Äquators bist."
 
 msgid "Enter main menu"
 msgstr "Öffne Hauptmenü"
@@ -7663,7 +7663,7 @@ msgid "If enabled, a log will be kept of CEC protocol traffic ('hdmicec.log')."
 msgstr "Soll eine Log-Datei mit der CEC-Kommunikation angelegt werden? ('hdmicec.log')"
 
 msgid "If enabled, display shows 12 chars instead 8, but in latin-1/translit only."
-msgstr "Soll das Display 12 statt 8 Buchstaben anzeigen? (nur bei Latin-1/Translit)"
+msgstr "Sollen 12 statt 8 Buchstaben angezeigt werden? (nur bei Latin-1/Translit)"
 
 msgid "If set to 'Standard' number buttons page up/down/left/right."
 msgstr "Wenn auf 'Standard' gesetzt, funktionieren Zahlen-Tasten Seite hoch/runter/links/rechts."
@@ -13741,7 +13741,7 @@ msgid "Show %s"
 msgstr "Zeige %s"
 
 msgid "Show CCcam Info in extensions?"
-msgstr "Zeige CCcam in Erweiterungsliste?"
+msgstr "CCcam-Info in Erweiterungsliste anzeigen?"
 
 msgid "Show CI messages"
 msgstr "Zeige CI Nachrichten"
@@ -13768,7 +13768,7 @@ msgid "Show Log"
 msgstr "Zeige Log"
 
 msgid "Show Log Manager in extensions list ?"
-msgstr "Zeige Log-Manager in Erweiterungsliste"
+msgstr "Log-Manager in Erweiterungsliste anzeigen?"
 
 msgid "Show Media playback Remaining/Elapsed as"
 msgstr "Zeige Zeit bei Wiedergabe"
@@ -13780,7 +13780,7 @@ msgid "Show Multi EPG"
 msgstr "Zeige Multi-EPG"
 
 msgid "Show OScam/Ncam Info in extensions?"
-msgstr "Zeige OScam-/Ncam-Info in Erweiterungsliste?"
+msgstr "OScam-/Ncam-Info in Erweiterungsliste anzeigen?"
 
 msgid "Show PIP"
 msgstr "Zeige PiP"
@@ -14549,7 +14549,7 @@ msgid "Sort list by"
 msgstr "Sortiere Liste nach"
 
 msgid "Sort list to default and exit?"
-msgstr "Sortiere Liste nach Standard?"
+msgstr "Liste nach Standard sortieren?"
 
 msgid "Sort list:"
 msgstr "Sortiere Liste:"
@@ -14567,7 +14567,7 @@ msgid "Sort plug-in browser alphabetically"
 msgstr "Sortiere Plugins alphabetisch"
 
 msgid "Sort plugins list to default?"
-msgstr "Sortiere Pluginliste nach Standard?"
+msgstr "Pluginliste nach Standard sortieren?"
 
 msgid "Sort setting screens alphabetically"
 msgstr "Sortiere Einstellungen alphabetisch"
@@ -16737,7 +16737,7 @@ msgid "Use this video enhancement settings?"
 msgstr "Diese erweiterten AV-Einstellungen verwenden?"
 
 msgid "Use timeshift seekbar while timeshifting?"
-msgstr "Verwende Timeshift-Suchleiste bei Timeshift?"
+msgstr "Timeshift-Suchleiste bei Timeshift verwenden?"
 
 msgid "Use trash can in movie list"
 msgstr "Verwende Mülleimer in Filmliste"
@@ -17367,7 +17367,7 @@ msgid "When enabled, a recording is allowed to interrupt live TV, when there are
 msgstr "Darf eine Aufnahme das Live-Programm unterbrechen, wenn keine freien Tuner mehr zur Verfügung stehen?"
 
 msgid "When enabled, a warning will be displayed and the user will get an option to stop or to continue the timeshift."
-msgstr "Soll eine Warnung angezeigt, und dem Benutzer die Möglichkeit gegeben werden, Timeshift zu stoppen oder fortzuführen?"
+msgstr "Soll eine Warnung angezeigt und dem Benutzer die Möglichkeit gegeben werden, Timeshift zu stoppen oder fortzuführen?"
 
 msgid "When enabled, always descramble receiving http streams. This takes up more resources (descrambling demuxers), only enable if necessary. Individual streams are always descrambled if 0x100 is added to the service type, regardless of this setting."
 msgstr "Sollen empfangene Streams entschlüsselt werden? Diese Option benötigt mehr Ressourcen (Entschlüsselungs-Demuxer). Daher nur aktivieren, wenn nötig. Einzelne Streams werden immer entschlüsselt, wenn 0x100 als Servicetyp verwendet wird."
@@ -17433,7 +17433,7 @@ msgid "When enabled, teletext subtitles will be displayed at their original posi
 msgstr "Sollen Videotext-Untertitel an der Originalposition angezeigt werden?"
 
 msgid "When enabled, the PiP can be closed by the EXIT button."
-msgstr "Soll man PiP mit der 'EXIT'-Taste beendet können?"
+msgstr "Soll man PiP mit der 'EXIT'-Taste beenden können?"
 
 msgid "When enabled, the VCR scart option will be shown in the main menu"
 msgstr "Soll die SCART Option im Hauptmenü angezeigt werden?"
