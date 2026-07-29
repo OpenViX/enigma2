@@ -2252,6 +2252,9 @@ void gPixmap::blit(const gPixmap& src, const eRect& _pos, const gRegion& clip, i
 			continue;
 		}
 
+		if ((surface->bpp == 0) || (src.surface->bpp == 0)) /* cannot blit */
+			continue;
+
 		if ((surface->bpp == 8) && (src.surface->bpp == 8)) {
 			uint8_t* srcptr = (uint8_t*)src.surface->data;
 			uint8_t* dstptr = (uint8_t*)surface->data;
