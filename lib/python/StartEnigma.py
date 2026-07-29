@@ -83,7 +83,11 @@ class Session:
 		currentDialog.saveKeyboardMode()
 		currentDialog.execBegin()
 		# When execBegin opened a new dialog, don't bother showing the old one.
-		if currentDialog == self.current_dialog and do_show:
+		# currentDialog.execBegin() can also close currentDialog again right away
+		# (a stashed close_on_next_exec re-firing close()), which reenters close()/
+		# execEnd() and clears in_exec - showing it afterwards would resurrect a
+		# window that just closed itself.
+		if currentDialog == self.current_dialog and self.in_exec and do_show:
 			currentDialog.show()
 
 	def execEnd(self, last=True):
