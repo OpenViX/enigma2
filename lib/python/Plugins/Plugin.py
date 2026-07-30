@@ -17,8 +17,9 @@ class PluginDescriptor():
 
 	# you have to ignore unknown kwargs!
 
-	# argument: session
+	# argument: session, servicelist if isinstance(self, InfoBarChannelSelection) else session
 	WHERE_EXTENSIONSMENU = 1
+	# argument: session
 	WHERE_MAINMENU = 2
 	WHERE_PLUGINMENU = 3
 	# argument: session, serviceref (currently selected)
