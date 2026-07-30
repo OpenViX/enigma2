@@ -24,6 +24,11 @@ class eHttpStream: public iTsSource, public sigc::trackable, public eThread
 	int startDelay;
 	bool isStreamRelay;
 
+	int openUrl(const std::string &url, std::string &newurl);
+	void thread();
+	ssize_t httpChunkedRead(void *buf, size_t count);
+	ssize_t syncNextRead(void *buf, ssize_t count);
+
 	/* Ring buffer for pre-fetched stream data */
 	unsigned char *ringBuf;
 	size_t ringBufSize;
@@ -35,14 +40,11 @@ class eHttpStream: public iTsSource, public sigc::trackable, public eThread
 	pthread_cond_t  ringNotFull;	/* signalled when space is freed */
 	bool ringEof;
 	volatile bool threadAbort;
-
-	int openUrl(const std::string &url, std::string &newurl);
-	void thread();
+	ssize_t readFromRing(void *buf, size_t count);
 	void detectStreamRelay(const std::string &url);
 	ssize_t socketRead(void *buf, size_t count);
 	void fillRingBuffer();
-	ssize_t readFromRing(void *buf, size_t count);
-	ssize_t syncNextRead(void *buf, ssize_t count);
+
 
 	/* iTsSource */
 	ssize_t read(off_t offset, void *buf, size_t count);
