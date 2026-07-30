@@ -2782,7 +2782,7 @@ class InfoBarExtensions:
 
 	def getSoftwareUpdate(self):
 		if config.softwareupdate.showinextensions.value == "yes" or config.softwareupdate.showinextensions.value == "available" and config.softwareupdate.updatefound.value:
-			return [((boundFunction(self.getSUname), boundFunction(self.openSoftwareUpdate), lambda: True), None)]
+			return [((self.getSUname, self.openSoftwareUpdate, lambda: True), None)]
 		else:
 			return []
 
@@ -2791,7 +2791,7 @@ class InfoBarExtensions:
 
 	def getLogManager(self):
 		if config.logmanager.showinextensions.value:
-			return [((boundFunction(self.getLMname), boundFunction(self.openLogManager), lambda: True), None)]
+			return [((self.getLMname, self.openLogManager, lambda: True), None)]
 		else:
 			return []
 
@@ -2804,7 +2804,7 @@ class InfoBarExtensions:
 			softcams = listdir('/usr/softcams/')
 		for softcam in softcams:
 			if softcam.lower().startswith('cccam') and config.cccaminfo.showInExtensions.value:
-				return [((boundFunction(self.getCCname), boundFunction(self.openCCcamInfo), lambda: True), None)] or []
+				return [((self.getCCname, self.openCCcamInfo, lambda: True), None)] or []
 		else:
 			return []
 
@@ -2817,7 +2817,7 @@ class InfoBarExtensions:
 			softcams = listdir('/usr/softcams/')
 		for softcam in softcams:
 			if softcam.lower().startswith(('oscam', 'ncam')) and config.oscaminfo.showInExtensions.value:
-				return [((boundFunction(self.getOSname), boundFunction(self.openOScamInfo), lambda: True), None)] or []
+				return [((self.getOSname, self.openOScamInfo, lambda: True), None)] or []
 		else:
 			return []
 
