@@ -2984,11 +2984,12 @@ class InfoBarPlugins:
 
 	def getPluginList(self):
 		x = []
-		for p in plugins.getPlugins(where=PluginDescriptor.WHERE_EXTENSIONSMENU):
-			args = inspect.getfullargspec(p.fnc)[0]
-			if len(args) == 1 or len(args) == 2 and isinstance(self, InfoBarChannelSelection):
-				x.append(((boundFunction(self.getPluginName, p.name), boundFunction(self.runPlugin, p), lambda: True), None, p.name))
-		x.sort(key=lambda e: e[2])  # sort by name
+		if isinstance(self, InfoBarChannelSelection):  # Plugins from this list do not show in MoviePLayer
+			for p in plugins.getPlugins(where=PluginDescriptor.WHERE_EXTENSIONSMENU):
+				args = inspect.getfullargspec(p.fnc)[0]
+				if len(args) in (1,2):
+					x.append(((boundFunction(self.getPluginName, p.name), boundFunction(self.runPlugin, p), lambda: True), None, p.name))
+			x.sort(key=lambda e: e[2])  # sort by name
 		return x
 
 	def runPlugin(self, plugin):
