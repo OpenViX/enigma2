@@ -306,6 +306,11 @@ class PowerTimerEditList(Screen):
 class PowerTimerEditListSummary(ScreenSummary):
 	def __init__(self, session, parent):
 		ScreenSummary.__init__(self, session, parent=parent)
+		# parent.skinName is overridden to "TimerEditList" (to reuse that screen's
+		# GUI skin), which would otherwise make ScreenSummary resolve this summary
+		# to "TimerEditListSummary" first - a real screen, but the wrong one (it has
+		# no "timertype" source). Assert our own name so it's tried first instead.
+		self.skinName = ["PowerTimerEditListSummary", "ScreenSummary"]
 		self["timertype"] = StaticText("")
 		self["time"] = StaticText("")
 		self["duration"] = StaticText("")
