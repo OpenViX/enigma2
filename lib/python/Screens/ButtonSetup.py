@@ -425,7 +425,7 @@ class ButtonSetupActionMap(ActionMap):
 			return ActionMap.action(self, contexts, action)
 
 
-class helpableButtonSetupActionMap(HelpableActionMap):
+class HelpableButtonSetupActionMap(HelpableActionMap):
 	def action(self, contexts, action):
 		if action in tuple(x[1] for x in ButtonSetupKeys) and action in self.actions:
 			res = self.actions[action](action)
@@ -438,7 +438,7 @@ class helpableButtonSetupActionMap(HelpableActionMap):
 
 class InfoBarButtonSetup():
 	def __init__(self):
-		self["ButtonSetupButtonActions"] = helpableButtonSetupActionMap(self, "ButtonSetupActions",
+		self["ButtonSetupButtonActions"] = HelpableButtonSetupActionMap(self, "ButtonSetupActions",
 			dict((x[1], (self.ButtonSetupGlobal, boundFunction(self.getHelpText, x[1]))) for x in ButtonSetupKeys), -10)
 		self.longkeyPressed = False
 		self.onExecEnd.append(self.clearLongkeyPressed)

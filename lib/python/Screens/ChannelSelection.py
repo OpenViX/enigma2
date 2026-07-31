@@ -28,7 +28,7 @@ from Components.SystemInfo import SystemInfo
 from Plugins.Plugin import PluginDescriptor
 from RecordTimer import AFTEREVENT
 from Screens.Screen import Screen
-from Screens.ButtonSetup import InfoBarButtonSetup, helpableButtonSetupActionMap, getButtonSetupFunctions
+from Screens.ButtonSetup import InfoBarButtonSetup, HelpableButtonSetupActionMap, getButtonSetupFunctions
 from Screens.ChoiceBox import ChoiceBox
 from Screens.EpgSelectionSingle import EPGSelectionSingle
 from Screens.HelpMenu import HelpableScreen
@@ -828,7 +828,7 @@ class ChannelSelectionEPG(InfoBarButtonSetup, HelpableScreen):
 			("Info (EPG)" + " " + _("long"), "info_long", "Infobar/showEventInfoPlugins"),
 			("Epg/Guide", "epg", "Infobar/EPGPressed/1"),
 			("Epg/Guide" + " " + _("long"), "epg_long", "Infobar/showEventInfoPlugins")]
-		self["ChannelSelectEPGActions"] = helpableButtonSetupActionMap(self, ["ChannelSelectEPGActions"], dict((x[1], self.ButtonSetupGlobal) for x in self.hotkeys))
+		self["ChannelSelectEPGActions"] = HelpableButtonSetupActionMap(self, ["ChannelSelectEPGActions"], dict((x[1], self.ButtonSetupGlobal) for x in self.hotkeys))
 		self.currentSavedPath = []
 		self.onExecBegin.append(self.clearLongkeyPressed)
 
