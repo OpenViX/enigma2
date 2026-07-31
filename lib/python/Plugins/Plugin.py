@@ -14,16 +14,21 @@ class PluginDescriptor():
 	#   session
 	#   servicereference
 	#   reason
+	#   servicelist
+	#   menuid
 
 	# you have to ignore unknown kwargs!
 
 	# argument: session, servicelist if isinstance(self, InfoBarChannelSelection) else session
 	WHERE_EXTENSIONSMENU = 1
+
 	# argument: session
 	WHERE_MAINMENU = 2
 	WHERE_PLUGINMENU = 3
+
 	# argument: session, serviceref (currently selected)
 	WHERE_MOVIELIST = 4
+
 	# argument: menuid. Fnc must return list with menuitems (4-tuple of name, fnc to call, entryid or None, weight or None)
 	WHERE_MENU = 5
 
