@@ -11,12 +11,15 @@ class RemainingToText(Poll, Converter):
 	IN_SECONDS = 3
 	PERCENTAGE = 4
 	MINUTES_SECONDS = 5
-	VFD = 6
-	VFD_WITH_SECONDS = 7
-	VFD_NO_SECONDS = 8
-	VFD_IN_SECONDS = 9
-	VFD_PERCENTAGE = 10
-	VFD_MINUTES_SECONDS = 11
+	ONLY_MINUTES = 6
+	VFD = 7
+	VFD_WITH_SECONDS = 8
+	VFD_NO_SECONDS = 9
+	VFD_IN_SECONDS = 10
+	VFD_PERCENTAGE = 11
+	VFD_MINUTES_SECONDS = 12
+	VFD_ONLY_MINUTES = 13
+
 
 	TYPES = {
 		"InMinutes": (DEFAULT, None),  # Mins
@@ -25,12 +28,14 @@ class RemainingToText(Poll, Converter):
 		"InSeconds": (IN_SECONDS, 1000),  # Secs
 		"Percentage": (PERCENTAGE, 60 * 1000),  # percentage
 		"MinutesSeconds": (MINUTES_SECONDS, 60 * 1000),  # Mins Secs
+		"OnlyMinutes": (ONLY_MINUTES, 60 * 1000),  # bare digits, no unit
 		"VFD": (VFD, None),  # Mins
 		"VFDWithSeconds": (VFD_WITH_SECONDS, 1000),  # Hours Mins Secs
 		"VFDNoSeconds": (VFD_NO_SECONDS, 60 * 1000),  # Hours Mins
 		"VFDInSeconds": (VFD_IN_SECONDS, 1000),  # Secs
 		"VFDPercentage": (VFD_PERCENTAGE, 60 * 1000),  # percentage
 		"VFDMinutesSeconds": (VFD_MINUTES_SECONDS, 60 * 1000),  # Mins Secs
+		"VFDOnlyMinutes": (VFD_ONLY_MINUTES, 60 * 1000),  # bare digits, no unit
 	}
 
 	CONFIG_TO_TYPE_MAP = {
@@ -39,6 +44,7 @@ class RemainingToText(Poll, Converter):
 		"3": ("NoSeconds", "VFDNoSeconds"),
 		"4": ("WithSeconds", "VFDWithSeconds"),
 		"5": ("Percentage", "VFDPercentage"),
+		"6": ("OnlyMinutes", "VFDOnlyMinutes"),
 	}
 
 	def __init__(self, type):
@@ -104,6 +110,9 @@ class RemainingToText(Poll, Converter):
 		def fmt_m(x):
 			return ngettext("%d Min", "%d Mins", x // 60) % (x // 60)
 
+		def fmt_m_bare(x):
+			return "%d" % (x // 60)
+
 		def fmt_hms(x):
 			return "%d:%02d:%02d" % (x // 3600, x % 3600 // 60, x % 60)
 
@@ -123,6 +132,9 @@ class RemainingToText(Poll, Converter):
 
 		if self.type in (self.DEFAULT, self.VFD):
 			return join(pairs, fmt_m) if remaining is not None else fmt_m(duration)
+
+		elif self.type in (self.ONLY_MINUTES, self.VFD_ONLY_MINUTES):
+			return join(pairs, fmt_m_bare) if remaining is not None else fmt_m_bare(duration)
 
 		elif self.type in (self.WITH_SECONDS, self.VFD_WITH_SECONDS):
 			return join(pairs, fmt_hms) if remaining is not None else fmt_hms(duration)
