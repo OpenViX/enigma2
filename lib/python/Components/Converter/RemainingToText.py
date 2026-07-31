@@ -17,6 +17,7 @@ class RemainingToText(Poll, Converter):
 	VFD_IN_SECONDS = 9
 	VFD_PERCENTAGE = 10
 	VFD_MINUTES_SECONDS = 11
+	ONLY_MINUTES = 12
 
 	TYPES = {
 		"InMinutes": (DEFAULT, None),  # Mins
@@ -31,6 +32,8 @@ class RemainingToText(Poll, Converter):
 		"VFDInSeconds": (VFD_IN_SECONDS, 1000),  # Secs
 		"VFDPercentage": (VFD_PERCENTAGE, 60 * 1000),  # percentage
 		"VFDMinutesSeconds": (VFD_MINUTES_SECONDS, 60 * 1000),  # Mins Secs
+		"OnlyMinutes": (ONLY_MINUTES, 60 * 1000),  # bare digits, no unit
+		"VFDOnlyMinutes": (ONLY_MINUTES, 60 * 1000),  # bare digits, no unit
 	}
 
 	CONFIG_TO_TYPE_MAP = {
@@ -104,6 +107,9 @@ class RemainingToText(Poll, Converter):
 		def fmt_m(x):
 			return ngettext("%d Min", "%d Mins", x // 60) % (x // 60)
 
+		def fmt_m_bare(x):
+			return "%d" % (x // 60)
+
 		def fmt_hms(x):
 			return "%d:%02d:%02d" % (x // 3600, x % 3600 // 60, x % 60)
 
@@ -123,6 +129,9 @@ class RemainingToText(Poll, Converter):
 
 		if self.type in (self.DEFAULT, self.VFD):
 			return join(pairs, fmt_m) if remaining is not None else fmt_m(duration)
+
+		elif self.type == self.ONLY_MINUTES:
+			return join(pairs, fmt_m_bare) if remaining is not None else fmt_m_bare(duration)
 
 		elif self.type in (self.WITH_SECONDS, self.VFD_WITH_SECONDS):
 			return join(pairs, fmt_hms) if remaining is not None else fmt_hms(duration)
