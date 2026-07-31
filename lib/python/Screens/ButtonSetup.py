@@ -15,6 +15,8 @@ from enigma import eServiceReference, eActionMap
 from Components.Label import Label
 
 from time import time
+import importlib
+import ast
 
 ButtonSetupKeys = [(_("Red"), "red", "Infobar/openSingleServiceEPG/1"),
 	(_("Red long"), "red_long", "Infobar/activateRedButton"),
@@ -553,20 +555,33 @@ class InfoBarButtonSetup():
 						self.runPlugin(plugin[1])
 						return
 			elif selected[0] == "Infobar":
-				if hasattr(self, selected[1]):
-					exec("self." + ".".join(selected[1:]) + "()")
+				obj = self
+				for attr in selected[1:]:
+					obj = getattr(obj, attr, None)
+					if obj is None:
+						return 0
+				if callable(obj):
+					obj()
 				else:
 					return 0
 			elif selected[0] == "Module":
 				try:
-					exec(f"from {selected[1]} import {selected[2]}\nself.session.open({','.join(selected[2:])})")
+					module = importlib.import_module(selected[1])
+					screen_class = getattr(module, selected[2])
+					extra_args = []
+					for arg in selected[3:]:
+						try:
+							extra_args.append(ast.literal_eval(arg))
+						except (ValueError, SyntaxError):
+							extra_args.append(arg)  # not a literal, pass through as a plain string
+					self.session.open(screen_class, *extra_args)
 				except Exception as e:
 					print("[ButtonSetup] error during executing module %s, screen %s, %s" % (selected[1], selected[2], e))
 					import traceback
 					traceback.print_exc()
 			elif selected[0] == "Setup":
 				from Screens.Setup import Setup  # noqa: F401
-				exec("self.session.open(Setup, \"%s\")" % selected[1])
+				self.session.open(Setup, selected[1])
 			elif selected[0].startswith("Zap"):
 				if selected[0] == "ZapPanic":
 					self.servicelist.history = []
