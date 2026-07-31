@@ -26,14 +26,14 @@ class RemainingToText(Poll, Converter):
 		"NoSeconds": (NO_SECONDS, 60 * 1000),  # Hours Mins
 		"InSeconds": (IN_SECONDS, 1000),  # Secs
 		"Percentage": (PERCENTAGE, 60 * 1000),  # percentage
-		"MinutesSeconds": (MINUTES_SECONDS, 60 * 1000),  # Mins Secs
+		"MinutesSeconds": (MINUTES_SECONDS, 1000),  # Mins Secs
 		"OnlyMinutes": (ONLY_MINUTES, 60 * 1000),  # bare digits, no unit
 		"VFD": (VFD, None),  # Mins
 		"VFDWithSeconds": (VFD_WITH_SECONDS, 1000),  # Hours Mins Secs
 		"VFDNoSeconds": (VFD_NO_SECONDS, 60 * 1000),  # Hours Mins
 		"VFDInSeconds": (VFD_IN_SECONDS, 1000),  # Secs
 		"VFDPercentage": (VFD_PERCENTAGE, 60 * 1000),  # percentage
-		"VFDMinutesSeconds": (VFD_MINUTES_SECONDS, 60 * 1000),  # Mins Secs
+		"VFDMinutesSeconds": (VFD_MINUTES_SECONDS, 1000),  # Mins Secs
 		"VFDOnlyMinutes": (VFD_ONLY_MINUTES, 60 * 1000),  # bare digits, no unit
 	}
 
