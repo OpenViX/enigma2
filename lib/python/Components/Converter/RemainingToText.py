@@ -20,7 +20,6 @@ class RemainingToText(Poll, Converter):
 	VFD_MINUTES_SECONDS = 12
 	VFD_ONLY_MINUTES = 13
 
-
 	TYPES = {
 		"InMinutes": (DEFAULT, None),  # Mins
 		"WithSeconds": (WITH_SECONDS, 1000),  # Hours Mins Secs
