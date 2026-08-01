@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-01 00:09+0300\n"
-"PO-Revision-Date: 2026-08-01 00:30+0300\n"
+"POT-Creation-Date: 2026-08-01 17:47+0300\n"
+"PO-Revision-Date: 2026-08-01 19:49+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2922,6 +2922,9 @@ msgstr "Joskus ohjelmanimeen lisätään etuliite 'Uusi: ' tai 'Suora: '. Valits
 msgid "Broadcasters sometimes split long event names into the event description using ... Choose whether to prevent this behaviour."
 msgstr "Joskus lähetyksessä pitkät ohjelmanimet jaetaan ohjelmatietoon käyttäen ... Valitse estetäänkö tämä."
 
+msgid "Broadcom default"
+msgstr "Broadcomin oletusasetus"
+
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
 
@@ -5434,6 +5437,9 @@ msgstr "Dokumentointi"
 msgid "Dolby Digital downmix is now %s"
 msgstr "Dolby Digital muunto stereoksi on nyt %s"
 
+msgid "Dolby Vision"
+msgstr "Dolby Vision"
+
 msgid "Domain"
 msgstr "Toimialue"
 
@@ -7031,6 +7037,9 @@ msgstr "Keltainen"
 msgid "Gibraltar"
 msgstr "Gibraltar"
 
+msgid "GigaBlue optimized"
+msgstr "GigaBlue-optimoitu"
+
 msgid "Gioco"
 msgstr "Peli"
 
@@ -7263,11 +7272,20 @@ msgstr "HDMI-IN"
 msgid "HDMIin"
 msgstr "HDMI-sisääntulo"
 
+msgid "HDR OSD adjustment"
+msgstr "Käyttöliittymän (OSD) säätö HDR-tilassa"
+
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr "HDR, 12bit 4:2:0/4:2:2, ei PIP"
 
+msgid "HDR10"
+msgstr "HDR10"
+
 msgid "HDR10 Support"
 msgstr "HDR10-tuki"
+
+msgid "HDR10+"
+msgstr "HDR10+"
 
 msgid "HELP"
 msgstr "HELP"
@@ -7283,6 +7301,9 @@ msgstr "Kuulovammaisten tekstityksen puhdistus ulkoisista tekstityksistä"
 
 msgid "HISTORY"
 msgstr "HISTORIA"
+
+msgid "HLG"
+msgstr "HLG"
 
 msgid "HLG Support"
 msgstr "HLG Tuki"
@@ -12496,6 +12517,9 @@ msgstr "SD"
 msgid "SDCARD"
 msgstr "SD-kortti"
 
+msgid "SDR"
+msgstr "SDR"
+
 msgid "SETUP"
 msgstr "ASETUKSET"
 
@@ -15699,6 +15723,9 @@ msgstr "Tämä ei ole käypä ONID/TSID"
 msgid "This only applies to a handful of Vu+ 4K models."
 msgstr "Tämä koskee vain muutamia Vu+ 4K -malleja."
 
+msgid "This option adjusts SDR graphics and OSD colors while the HDMI output is in HDR mode."
+msgstr "Tämä asetus säätää SDR-grafiikan ja käyttöliittymän (OSD) värejä silloin, kun HDMI-lähtö on HDR-tilassa."
+
 msgid "This option allows to reduce the block-noise in the picture. Obviously this is at the cost of the picture's sharpness."
 msgstr "Tämä asetus vähentää lohkokohinan näkymistä kuvassa. Tämä tietysti tapahtuu kuvaterävyyden kustannuksella."
 
@@ -18447,9 +18474,6 @@ msgstr "dokumentti"
 msgid "documentary (general)"
 msgstr "Dokumentti (yleinen)"
 
-msgid "dolby"
-msgstr "dolby"
-
 msgid "don't convert"
 msgstr "älä muunna"
 
@@ -18672,9 +18696,6 @@ msgstr "käsityö"
 msgid "handled"
 msgstr "hoidettu"
 
-msgid "hdr10"
-msgstr "hdr10"
-
 msgid "height"
 msgstr "Korkeus"
 
@@ -18698,9 +18719,6 @@ msgstr "hh:mmam/pm"
 
 msgid "hide"
 msgstr "Piilota"
-
-msgid "hlg"
-msgstr "hlg"
 
 msgid "hops:"
 msgstr "Hypyt:"
@@ -19139,9 +19157,6 @@ msgstr "Haun tila"
 
 msgid "science fiction/fantasy/horror"
 msgstr "scifi/fantasia/kauhu"
-
-msgid "sdr"
-msgstr "sdr"
 
 msgid "se"
 msgstr "se"
