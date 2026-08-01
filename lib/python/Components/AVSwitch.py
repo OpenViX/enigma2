@@ -5,7 +5,7 @@ from enigma import eAVSwitch, eDVBVolumecontrol, getDesktop
 from Components.config import ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
 from Components.SystemInfo import SystemInfo
 from Tools.CList import CList
-from Tools.Directories import isPluginInstalled
+from Tools.Directories import fileReadLine, fileWriteLine, isPluginInstalled
 
 config.av = ConfigSubsection()
 
@@ -521,16 +521,34 @@ def InitAVSwitch():
 					fd.write(configElement.value)
 			except (IOError, OSError):
 				pass
-		config.av.hdmihdrtype = ConfigSelection(choices={
-			"auto": _("Auto"),
-			"dolby": _("dolby"),
-			"none": _("sdr"),
-			"hdr10": _("hdr10"),
-			"hlg": _("hlg")
-		}, default="auto")
+		f = "/proc/stb/video/hdmi_hdrtype_choices"
+		choices = [("auto", _("Auto")),
+					("dolby", _("Dolby Vision")),
+					("sdr", _("SDR")),
+					("hdr10", _("HDR10")),
+					("hdr10+", _("HDR10+")),
+					("hlg", _("HLG"))]
+		default = "auto"
+		(choices, default) = readChoices(f, choices, default)
+		config.av.hdmihdrtype = ConfigSelection(choices=choices, default=default)
 		config.av.hdmihdrtype.addNotifier(setHdmiHdrType)
 	else:
 		config.av.hdmihdrtype = ConfigNothing()
+
+	hdrOsd = fileReadLine("/proc/stb/video/hdmi_hdr_osd", default=None)
+	SystemInfo["havehdmihdrosd"] = bool(hdrOsd)
+	if hdrOsd:
+		def setHDMIHdrOsd(configElement):
+			fileWriteLine("/proc/stb/video/hdmi_hdr_osd", configElement.value, source=MODULE_NAME)
+
+		hdrOsdChoices = [
+			("32767 0 -16384", _("GigaBlue optimized")),
+			("0 0 0", _("Broadcom default"))
+		]
+		config.av.hdmihdrosd = ConfigSelection(default=hdrOsd if hdrOsd in dict(hdrOsdChoices) else "32767 0 -16384", choices=hdrOsdChoices)
+		config.av.hdmihdrosd.addNotifier(setHDMIHdrOsd)
+	else:
+		config.av.hdmihdrosd = ConfigNothing()
 
 	if SystemInfo["HDRSupport"]:
 		def setHlgSupport(configElement):
