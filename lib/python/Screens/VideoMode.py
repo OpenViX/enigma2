@@ -61,7 +61,7 @@ class VideoSetup(Setup):
 				self.list.append(getConfigListEntry(_("HDMI Color depth"), config.av.hdmicolordepth, _("Change the Colordepth for UHD - this may cause unexpected results or black screen")))
 		if SystemInfo["havehdmihdrtype"]:
 			self.list.append(getConfigListEntry(_("HDMI HDR Type"), config.av.hdmihdrtype, _("Enable or disable to force HDR Modes for UHD")))
-		if SystemInfo("havehdmihdrosd"):
+		if SystemInfo["havehdmihdrosd"]:
 			self.list.append(getConfigListEntry(_("HDR OSD adjustment"), config.av.hdmihdrosd, _("This option adjusts SDR graphics and OSD colors while the HDMI output is in HDR mode.")))
 		if SystemInfo["HDRSupport"]:
 			self.list.append(getConfigListEntry(_("HLG Support"), config.av.hlg_support, _("Enable or disable to force HLG Modes for UHD")))
