@@ -34,7 +34,7 @@ def _fmt_pct(value, duration):
 
 class RemainingToText(Poll, Converter):
 	# These are prefixed with "VFD" if used in the context of Front Panel Display
-	INTERVALS = {
+	POLL_INTERVALS = {
 		"InMinutes": None,
 		"WithSeconds": 1000,
 		"NoSeconds": 60 * 1000,
@@ -84,14 +84,14 @@ class RemainingToText(Poll, Converter):
 		if display in self.CONFIG_TO_TYPE_MAP:
 			type = self.CONFIG_TO_TYPE_MAP[display]
 
-		if type not in self.INTERVALS:
+		if type not in self.POLL_INTERVALS:
 			print(
 				f"[RemainingToText] Error: unknown converter argument '{type}'. "
-				f"Must be one of {'|'.join(sorted([y for x in self.INTERVALS for y in [x, "VFD" + x]]))}."
+				f"Must be one of {'|'.join(sorted([y for x in self.POLL_INTERVALS for y in [x, "VFD" + x]]))}."
 			)
 			type = "InMinutes"  # default fallback if type is unknown
 
-		poll_interval = self.INTERVALS[type]
+		poll_interval = self.POLL_INTERVALS[type]
 
 		if poll_interval:
 			self.poll_interval = poll_interval
