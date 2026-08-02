@@ -351,6 +351,6 @@ class ScreenSummary(Screen):
 		self.skinName = [f"{x}Summary" for x in names]
 		className = self.__class__.__name__
 		if className != "ScreenSummary" and className not in self.skinName:  # e.g. if a module uses Screens.Setup.SetupSummary the skin needs to be available directly
-			self.skinName.append(className)
+			self.skinName.insert(0, className)
 		self.skinName.append("ScreenSummary")
 		self.skin = parent.__dict__.get("skinSummary", self.skin)  # If parent has a "skinSummary" defined, use that as default.
