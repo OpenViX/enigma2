@@ -4,54 +4,75 @@ from Components.Element import cached
 from Components.config import config
 
 
-class RemainingToText(Poll, Converter):
-	DEFAULT = 0
-	WITH_SECONDS = 1
-	NO_SECONDS = 2
-	IN_SECONDS = 3
-	PERCENTAGE = 4
-	MINUTES_SECONDS = 5
-	ONLY_MINUTES = 6
-	VFD = 7
-	VFD_WITH_SECONDS = 8
-	VFD_NO_SECONDS = 9
-	VFD_IN_SECONDS = 10
-	VFD_PERCENTAGE = 11
-	VFD_MINUTES_SECONDS = 12
-	VFD_ONLY_MINUTES = 13
+def _fmt_m(value):
+	return ngettext("%d Min", "%d Mins", value // 60) % (value // 60)
 
-	TYPES = {
-		"InMinutes": (DEFAULT, None),  # Mins
-		"WithSeconds": (WITH_SECONDS, 1000),  # Hours Mins Secs
-		"NoSeconds": (NO_SECONDS, 60 * 1000),  # Hours Mins
-		"InSeconds": (IN_SECONDS, 1000),  # Secs
-		"Percentage": (PERCENTAGE, 60 * 1000),  # percentage
-		"MinutesSeconds": (MINUTES_SECONDS, 1000),  # Mins Secs
-		"OnlyMinutes": (ONLY_MINUTES, 60 * 1000),  # bare digits, no unit
-		"VFD": (VFD, None),  # Mins
-		"VFDWithSeconds": (VFD_WITH_SECONDS, 1000),  # Hours Mins Secs
-		"VFDNoSeconds": (VFD_NO_SECONDS, 60 * 1000),  # Hours Mins
-		"VFDInSeconds": (VFD_IN_SECONDS, 1000),  # Secs
-		"VFDPercentage": (VFD_PERCENTAGE, 60 * 1000),  # percentage
-		"VFDMinutesSeconds": (VFD_MINUTES_SECONDS, 1000),  # Mins Secs
-		"VFDOnlyMinutes": (VFD_ONLY_MINUTES, 60 * 1000),  # bare digits, no unit
+
+def _fmt_m_bare(value):
+	return "%d" % (value // 60)
+
+
+def _fmt_hms(value):
+	return "%d:%02d:%02d" % (value // 3600, value % 3600 // 60, value % 60)
+
+
+def _fmt_hm(value):
+	return "%d:%02d" % (value // 3600, value % 3600 // 60)
+
+
+def _fmt_s(value):
+	return "%d " % value
+
+
+def _fmt_ms(value):
+	return "%d:%02d" % (value // 60, value % 60)
+
+
+def _fmt_pct(value, duration):
+	return "%d%%" % int((float(value) / float(duration)) * 100)
+
+
+class RemainingToText(Poll, Converter):
+	# These are prefixed with "VFD" if used in the context of Front Panel Display
+	INTERVALS = {
+		"InMinutes": None,
+		"WithSeconds": 1000,
+		"NoSeconds": 60 * 1000,
+		"InSeconds": 1000,
+		"Percentage": 60 * 1000,
+		"MinutesSeconds": 1000,
+		"OnlyMinutes": 60 * 1000,
 	}
 
 	CONFIG_TO_TYPE_MAP = {
-		"1": ("InMinutes", "VFD"),
-		"2": ("MinutesSeconds", "VFDMinutesSeconds"),
-		"3": ("NoSeconds", "VFDNoSeconds"),
-		"4": ("WithSeconds", "VFDWithSeconds"),
-		"5": ("Percentage", "VFDPercentage"),
-		"6": ("OnlyMinutes", "VFDOnlyMinutes"),
+		"1": "InMinutes",
+		"2": "MinutesSeconds",
+		"3": "NoSeconds",
+		"4": "WithSeconds",
+		"5": "Percentage",
+		"6": "OnlyMinutes",
+		# "InSeconds" is not currently a config option
+	}
+
+	FORMAT_MAP = {
+		"InMinutes": _fmt_m,
+		"MinutesSeconds": _fmt_ms,
+		"NoSeconds": _fmt_hm,
+		"WithSeconds": _fmt_hms,
+		"OnlyMinutes": _fmt_m_bare,
+		"InSeconds": _fmt_s,
+		# self.formatter is not used for "Percentage"
 	}
 
 	def __init__(self, type):
 		Poll.__init__(self)
 		Converter.__init__(self, type)
 
-		# if user setting > 0, inject setting into type here before we start
-		if is_vfd := bool(type and type.startswith("VFD")):
+		if type == "VFD":  # just in case anyone is using the old name
+			type = "VFDInMinutes"
+
+		if bool(type and type.startswith("VFD")):
+			type = type[3:]  # now we have harvested VFD we discard it
 			self.elapsed_time_positive = config.usage.elapsed_time_positive_vfd.value
 			self.swap_time_remaining = config.usage.swap_time_remaining_on_vfd.value
 			display = config.usage.swap_time_display_on_vfd.value
@@ -61,101 +82,95 @@ class RemainingToText(Poll, Converter):
 			display = config.usage.swap_time_display_on_osd.value
 
 		if display in self.CONFIG_TO_TYPE_MAP:
-			type = self.CONFIG_TO_TYPE_MAP[display][1 if is_vfd else 0]
-		# end inject user setting
+			type = self.CONFIG_TO_TYPE_MAP[display]
 
-		if type not in self.TYPES:
-			print(f"[RemainingToText] Error: unknown converter argument '{str(type)}'. Must be one of {"|".join(sorted(self.TYPES))}.")
-			type = "InMinutes"
-		self.type, poll_interval = self.TYPES[type]
+		if type not in self.INTERVALS:
+			print(
+				f"[RemainingToText] Error: unknown converter argument '{type}'. "
+				f"Must be one of {'|'.join(sorted([y for x in self.INTERVALS for y in [x, "VFD" + x]]))}."
+			)
+			type = "InMinutes"  # default fallback if type is unknown
+
+		poll_interval = self.INTERVALS[type]
 
 		if poll_interval:
 			self.poll_interval = poll_interval
 			self.poll_enabled = True
 
+		self.is_percentage = type == "Percentage"
+		self.formatter = self.FORMAT_MAP.get(type, _fmt_m)
+
+		self.sign_elapsed, self.sign_remaining = (
+			("+", "-") if self.elapsed_time_positive else ("-", "+")
+		)
+
+		self.picker = self._select_picker()
+
+	def _select_picker(self):
+		if self.swap_time_remaining == "1":
+			return self._pick_elapsed
+
+		if self.swap_time_remaining == "2":
+			return self._pick_both_elapsed_first
+
+		if self.swap_time_remaining == "3":
+			return self._pick_both_remaining_first
+
+		return self._pick_remaining
+
+	def _pick_remaining(self, remaining, elapsed):
+		return [(self.sign_remaining, remaining)]
+
+	def _pick_elapsed(self, remaining, elapsed):
+		return [(self.sign_elapsed, elapsed)]
+
+	def _pick_both_elapsed_first(self, remaining, elapsed):
+		return [(self.sign_elapsed, elapsed), (self.sign_remaining, remaining)]
+
+	def _pick_both_remaining_first(self, remaining, elapsed):
+		return [(self.sign_remaining, remaining), (self.sign_elapsed, elapsed)]
+
+	def _join(self, pairs):
+		if len(pairs) == 1:
+			sign, value = pairs[0]
+			return (sign or "") + self.formatter(value)
+
+		(s1, v1), (s2, v2) = pairs
+		return (s1 + self.formatter(v1) + "  " + s2 + self.formatter(v2))
+
+	def _join_percentage(self, pairs, duration):
+		if not duration:  # avoid divide by zero
+			return ""
+		if len(pairs) == 1:
+			sign, value = pairs[0]
+			return sign + _fmt_pct(value, duration)
+
+		(s1, v1), (s2, v2) = pairs
+		return (s1 + _fmt_pct(v1, duration) + "  " + s2 + _fmt_pct(v2, duration))
+
 	@cached
 	def getText(self):
 		time = self.source.time
+
 		if time is None:
 			return ""
 
 		duration, remaining, elapsed = time
 
-		sign_p, sign_r = ("+", "-") if self.elapsed_time_positive else ("-", "+")
-		swap = self.swap_time_remaining
+		if remaining is None:
+			if self.is_percentage:
+				return ""
 
-		def pick():
-			if remaining is None:
-				return [(None, duration)]
+			return self.formatter(duration)
 
-			if swap == "1":
-				return [(sign_p, elapsed)]
-			elif swap == "2":
-				return [(sign_p, elapsed), (sign_r, remaining)]
-			elif swap == "3":
-				return [(sign_r, remaining), (sign_p, elapsed)]
-			else:
-				return [(sign_r, remaining)]
+		if self.is_percentage and not duration:
+			return ""
 
-		def join(pairs, fmt):
-			if len(pairs) == 1:
-				sign, val = pairs[0]
-				return (sign or "") + fmt(val)
-			else:
-				(s1, v1), (s2, v2) = pairs
-				return s1 + fmt(v1) + "  " + s2 + fmt(v2)
+		pairs = self.picker(remaining, elapsed)
 
-		# formatters
-		def fmt_m(x):
-			return ngettext("%d Min", "%d Mins", x // 60) % (x // 60)
+		if self.is_percentage:
+			return self._join_percentage(pairs, duration)
 
-		def fmt_m_bare(x):
-			return "%d" % (x // 60)
-
-		def fmt_hms(x):
-			return "%d:%02d:%02d" % (x // 3600, x % 3600 // 60, x % 60)
-
-		def fmt_hm(x):
-			return "%d:%02d" % (x // 3600, x % 3600 // 60)
-
-		def fmt_s(x):
-			return "%d " % x
-
-		def fmt_ms(x):
-			return "%d:%02d" % (x // 60, x % 60)
-
-		def fmt_pct(x):
-			return "%d%%" % int((float(x) / float(duration)) * 100)
-
-		pairs = pick()
-
-		if self.type in (self.DEFAULT, self.VFD):
-			return join(pairs, fmt_m) if remaining is not None else fmt_m(duration)
-
-		elif self.type in (self.ONLY_MINUTES, self.VFD_ONLY_MINUTES):
-			return join(pairs, fmt_m_bare) if remaining is not None else fmt_m_bare(duration)
-
-		elif self.type in (self.WITH_SECONDS, self.VFD_WITH_SECONDS):
-			return join(pairs, fmt_hms) if remaining is not None else fmt_hms(duration)
-
-		elif self.type in (self.NO_SECONDS, self.VFD_NO_SECONDS):
-			return join(pairs, fmt_hm) if remaining is not None else fmt_hm(duration)
-
-		elif self.type in (self.IN_SECONDS, self.VFD_IN_SECONDS):
-			return join(pairs, fmt_s) if remaining is not None else fmt_s(duration) + _("Mins")
-
-		elif self.type in (self.MINUTES_SECONDS, self.VFD_MINUTES_SECONDS):
-			return join(pairs, fmt_ms) if remaining is not None else fmt_ms(duration)
-
-		elif self.type in (self.PERCENTAGE, self.VFD_PERCENTAGE):
-			if remaining is not None and duration:
-				if len(pairs) == 1:
-					sign, val = pairs[0]
-					return sign + fmt_pct(val)
-				else:
-					(s1, v1), (s2, v2) = pairs
-					return s1 + fmt_pct(v1) + "  " + s2 + fmt_pct(v2)
-
-		return ""
+		return self._join(pairs)
 
 	text = property(getText)
