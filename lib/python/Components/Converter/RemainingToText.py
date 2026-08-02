@@ -163,7 +163,7 @@ class RemainingToText(Poll, Converter):
 
 			return self.formatter(duration)
 
-		if self.is_percentage and not duration:
+		if self.is_percentage and not duration:  # divide by zero guard
 			return ""
 
 		pairs = self.picker(remaining, elapsed)
