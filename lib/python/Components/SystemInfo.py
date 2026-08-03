@@ -292,6 +292,7 @@ SystemInfo["havecolorimetrychoices"] = fileCheck("/proc/stb/video/hdmi_colorimet
 SystemInfo["havehdmicolordepth"] = fileCheck("/proc/stb/video/hdmi_colordepth")
 SystemInfo["havehdmicolordepthchoices"] = fileCheck("/proc/stb/video/hdmi_colordepth_choices")
 SystemInfo["havehdmihdrtype"] = fileCheck("/proc/stb/video/hdmi_hdrtype")
+SystemInfo["havehdmihdrosd"] = bool(fileReadLine("/proc/stb/video/hdmi_hdr_osd", default=None))
 SystemInfo["HDRSupport"] = fileExists("/proc/stb/hdmi/hlg_support_choices")
 SystemInfo["Canedidchecking"] = fileCheck("/proc/stb/hdmi/bypass_edid_checking")
 SystemInfo["haveboxmode"] = fileCheck("/proc/stb/info/boxmode")

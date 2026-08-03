@@ -535,16 +535,14 @@ def InitAVSwitch():
 	else:
 		config.av.hdmihdrtype = ConfigNothing()
 
-	hdrOsd = fileReadLine("/proc/stb/video/hdmi_hdr_osd", default=None)
-	SystemInfo["havehdmihdrosd"] = bool(hdrOsd)
-	if hdrOsd:
+	if SystemInfo["havehdmihdrosd"]:
 		def setHDMIHdrOsd(configElement):
 			fileWriteLine("/proc/stb/video/hdmi_hdr_osd", configElement.value)
-
 		hdrOsdChoices = [
 			("32767 0 -16384", _("GigaBlue optimized")),
 			("0 0 0", _("Broadcom default"))
 		]
+		hdrOsd = fileReadLine("/proc/stb/video/hdmi_hdr_osd", default=None)
 		config.av.hdmihdrosd = ConfigSelection(default=hdrOsd if hdrOsd in dict(hdrOsdChoices) else "32767 0 -16384", choices=hdrOsdChoices)
 		config.av.hdmihdrosd.addNotifier(setHDMIHdrOsd)
 	else:
