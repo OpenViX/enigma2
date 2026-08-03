@@ -3036,7 +3036,7 @@ msgid "CCcam Provider Info"
 msgstr "CCcam Anbieter Info"
 
 msgid "CCcam Remote Info"
-msgstr ""
+msgstr "CCcam Remote-Info"
 
 msgid "CCcam Server Info"
 msgstr "CCcam Server Info"
@@ -3251,7 +3251,7 @@ msgid "Casting"
 msgstr ""
 
 msgid "Catchup player commands"
-msgstr ""
+msgstr "Catchup-Player-Befehle"
 
 msgid "Cayman Islands"
 msgstr "Cayman Islands"
@@ -3497,7 +3497,7 @@ msgid "Choose the display formatting style for dates. 'D' / 'DD' is the date and
 msgstr "Wähle das Datumsformat. 'T'/'TT' ist der Tag, 'M'/'MM' der Monat. 'DD' und 'MM' haben führende Nullen bei einstelligen Werten. Der Skin kann die Anzeige beeinflussen."
 
 msgid "Choose the display formatting style for times. 'H' / 'HH' is the hour for a 24 hour clock, 'h' / 'hh' is the hour for a 12 hour clock, 'mm' is the minutes and 'ss' is the seconds.  ('HH' and 'hh' have leading zeros for single digit values.) The screen display will be based on your choice but can be influenced by the skin."
-msgstr ""
+msgstr "Wählen Sie das Anzeigeformat für Uhrzeiten. 'H' / 'HH' ist die Stunde im 24-Stunden-Format, 'h' / 'hh' ist die Stunde im 12-Stunden-Format, 'mm' sind die Minuten und 'ss' sind die Sekunden. ('HH' und 'hh' haben führende Nullen bei einstelligen Werten.) Die Bildschirmanzeige richtet sich nach Ihrer Wahl, kann aber vom Skin beeinflusst werden."
 "Wähle Anzeigeart für Zeit. 'H'/'HH' ist die Stunde bei 24 Stunden Anzeige. 'h'/'hh' ist die Stunde bei 12 Stunden Anzeige, 'mm' sind die Minuten und 'ss' sind die Sekunden. \n"
 "'HH' und 'hh' bekommen führende 0 bei einstelligen Zeiten. Die Anzeige wird durch diese Einstellungen aber auch den Skin bestimmt."
 
@@ -3505,7 +3505,7 @@ msgid "Choose the front panel display formatting style for dates. 'D' / 'DD' is 
 msgstr "Wähle Datumsformat für Display. 'T'/'TT' ist der Tag und 'M'/'MM' ist der Monat in Ziffern. 'DD' und 'MM' bekommen eine führende 0, wenn einstellig. Die Anzeige erfolgt entsprechend der Einstellung und kann vom Skin beeinflusst werden."
 
 msgid "Choose the front panel display formatting style for times. 'H' / 'HH' is the hour for a 24 hour clock, 'h' / 'hh' is the hour for a 12 hour clock, 'mm' is the minutes.  ('HH' and 'hh' have leading zeros for single digit values.) The front panel display will be based on your choice but can be influenced any applicable skin."
-msgstr ""
+msgstr "Wählen Sie das Anzeigeformat für Uhrzeiten auf dem Frontdisplay. 'H' / 'HH' ist die Stunde im 24-Stunden-Format, 'h' / 'hh' ist die Stunde im 12-Stunden-Format, 'mm' sind die Minuten. ('HH' und 'hh' haben führende Nullen bei einstelligen Werten.) Die Frontdisplay-Anzeige richtet sich nach Ihrer Wahl, kann aber von einem entsprechenden Skin beeinflusst werden."
 "Wähle Anzeigeart für Zeit auf dem Display. 'H'/'HH' ist die Stunde bei 24 Stunden Anzeige. 'h'/'hh' ist die Stunde bei 12 Stunden Anzeige, 'mm' sind die Minuten. \n"
 "'HH' und 'hh' bekommen führende 0 bei einstelligen Zeiten. Die Anzeige auf dem Display wird durch diese Einstellungen aber auch den Skin bestimmt."
 
@@ -7252,7 +7252,7 @@ msgid "HDMI Colorspace"
 msgstr "HDMI Farbraum"
 
 msgid "HDMI HDR Type"
-msgstr ""
+msgstr "HDMI HDR-Typ"
 
 msgid "HDMI Recording Settings"
 msgstr "HDMI Aufnahme-Einstellungen"
@@ -8010,7 +8010,7 @@ msgid "Input Devices"
 msgstr "Eingabegeräte"
 
 msgid "Input Stream ID"
-msgstr ""
+msgstr "Input-Stream-ID"
 
 msgid "InputBox Actions"
 msgstr "Eingabefeld Aktionen"
@@ -8169,7 +8169,7 @@ msgid "Inversion & Bandwidth"
 msgstr "Inversion & Bandbreite"
 
 msgid "Inversion, Pilot & Roll-off"
-msgstr ""
+msgstr "Inversion, Pilot & Roll-off"
 
 msgid "Invert"
 msgstr "Umschalten"
@@ -9492,7 +9492,7 @@ msgid "NFS Setup"
 msgstr "NFS-Einstellungen"
 
 msgid "NIM & Type"
-msgstr ""
+msgstr "NIM & Typ"
 
 msgid "NO"
 msgstr "Nein"
@@ -10136,10 +10136,10 @@ msgid "Offline decode delay (ms)"
 msgstr "Verzögerung der Offline-Entschlüsselung (ms)"
 
 msgid "Offset CA device index"
-msgstr ""
+msgstr "CA-Geräteindex-Offset"
 
 msgid "Offset and close CA device"
-msgstr ""
+msgstr "CA-Gerät versetzen und schließen"
 
 msgid "Olympia"
 msgstr ""
@@ -12174,7 +12174,7 @@ msgid "Repeat type"
 msgstr "Wiederholungstyp"
 
 msgid "Repeating event currently recording... What do you want to do?"
-msgstr ""
+msgstr "Eine sich wiederholende Sendung wird gerade aufgenommen... Was möchten Sie tun?"
 "Wiederholender Aufnahmetimer ist zurzeit aktiv.\n"
 "Was soll gemacht werden?"
 
@@ -13139,7 +13139,7 @@ msgid "Select how quickly the dish should move between satellites."
 msgstr "Konfiguriere die Rotorgeschwindigkeit für die Bewegung zwischen den Satelliten."
 
 msgid "Select how the descrambled data stream is processed. 'Automatic' uses asynchronous writes (lower CPU usage) with automatic fallback to synchronous if kernel AIO is not supported. 'Synchronous' forces blocking writes (stable, most compatible). *Restart E2 for changes to take effect."
-msgstr ""
+msgstr "Wählen Sie, wie der entschlüsselte Datenstrom verarbeitet wird. 'Automatisch' verwendet asynchrones Schreiben (geringere CPU-Last) mit automatischem Rückfall auf synchrones Schreiben, falls Kernel-AIO nicht unterstützt wird. 'Synchron' erzwingt blockierendes Schreiben (stabil, höchste Kompatibilität). *Enigma2 muss neu gestartet werden, damit die Änderungen wirksam werden."
 
 msgid "Select how the satellite dish is set up. i.e. fixed dish, single LNB, DiSEqC switch, positioner, etc."
 msgstr "Wie ist die Satellitenschüssel angebracht, z.B. fester Anbau, ein LNB, DiSEqC Switch, Rotor usw.?"
@@ -15192,10 +15192,10 @@ msgid "T2MI PLP"
 msgstr ""
 
 msgid "T2MI PLP ID"
-msgstr ""
+msgstr "T2MI PLP-ID"
 
 msgid "T2MI RAW Mode"
-msgstr ""
+msgstr "T2MI RAW-Modus"
 
 msgid "TEXT"
 msgstr ""
@@ -16744,7 +16744,7 @@ msgid "Use the alternative screen"
 msgstr "Eine kleine, einfachere Darstellung verwenden"
 
 msgid "Use the deletion time to sort Trash directories. Most recently deleted at the top."
-msgstr ""
+msgstr "Verwendet die Löschzeit zum Sortieren der Papierkorb-Verzeichnisse. Zuletzt gelöschte Einträge oben."
 "Verwende die Löschzeit, um den Mülleimer zu sortieren.\n"
 "Zuletzt gelöschte Filme oben."
 
@@ -18045,7 +18045,7 @@ msgid "Zap back to previously tuned service?"
 msgstr "Zurückschalten zum vorher laufenden Sender?"
 
 msgid "Zap back to service before positioner setup?"
-msgstr ""
+msgstr "Vor der Positioner-Einrichtung zum Sender zurückschalten?"
 "Zurückschalten zum Sender, der vor dem\n"
 "Öffnen der Rotor-Einstellungen lief?"
 
@@ -19011,7 +19011,7 @@ msgid "preserve bookmarks in cuts"
 msgstr "Lesezeichen beim Schneiden erhalten"
 
 msgid "print debug"
-msgstr ""
+msgstr "Debug ausgeben"
 
 msgid "priority"
 msgstr "Priorität"
@@ -19062,7 +19062,7 @@ msgid "rename"
 msgstr "umbenennen"
 
 msgid "rename this file to 'force' to force an update without confirmation"
-msgstr ""
+msgstr "Benennen Sie diese Datei in 'force' um, um ein Update ohne Bestätigung zu erzwingen"
 
 #, python-format
 msgid "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
