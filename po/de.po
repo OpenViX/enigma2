@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-25 06:52+0000\n"
+"POT-Creation-Date: 2026-08-03 12:21+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, xcentaurix\n"
@@ -1820,7 +1820,7 @@ msgid "Add services to this bouquet?"
 msgstr "Zu dieser Favoritenliste hinzufügen?"
 
 msgid "Add the currently selected service to a bouquet"
-msgstr "Füge aktuellen Sender zur Favoritenliste hinzu"
+msgstr "Füge aktuellen Sender zu einer Favoritenliste hinzu"
 
 msgid "Add timer"
 msgstr "Timer hinzufügen"
@@ -2917,6 +2917,9 @@ msgstr "Anbieter verwenden manchmal Neu oder Live um Änderungen deutlich zu mac
 
 msgid "Broadcasters sometimes split long event names into the event description using ... Choose whether to prevent this behaviour."
 msgstr "Anbieter kürzen manchmal lange Inhaltsangaben mit …. Wähle, wie das behandelt werden soll."
+
+msgid "Broadcom default"
+msgstr "Broadcom Standard"
 
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
@@ -5435,6 +5438,9 @@ msgstr "Dokumentation"
 msgid "Dolby Digital downmix is now %s"
 msgstr "DD/DTS Downmix ist jetzt %s"
 
+msgid "Dolby Vision"
+msgstr "Dolby Vision"
+
 msgid "Domain"
 msgstr ""
 
@@ -7031,6 +7037,9 @@ msgstr ""
 msgid "Gibraltar"
 msgstr "Gibraltar"
 
+msgid "GigaBlue optimized"
+msgstr "GigaBlue optimiert"
+
 msgid "Gioco"
 msgstr ""
 
@@ -7263,11 +7272,20 @@ msgstr "HDMI-IN"
 msgid "HDMIin"
 msgstr "HDMIin"
 
+msgid "HDR OSD adjustment"
+msgstr "HDR-OSD-Anpassung"
+
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr "HDR, 12bit 4:2:0/4:2:2, kein PIP"
 
+msgid "HDR10"
+msgstr "HDR10"
+
 msgid "HDR10 Support"
 msgstr "HDR10 Unterstützung"
+
+msgid "HDR10+"
+msgstr "HDR10+"
 
 msgid "HELP"
 msgstr ""
@@ -7283,6 +7301,9 @@ msgstr "Externe Untertitel aufräumen"
 
 msgid "HISTORY"
 msgstr ""
+
+msgid "HLG"
+msgstr "HLG"
 
 msgid "HLG Support"
 msgstr "HLG Unterstützung"
@@ -9045,6 +9066,9 @@ msgstr "Randsportarten"
 
 msgid "Mins"
 msgstr "Minuten"
+
+msgid "Mins (only digits)"
+msgstr "Minuten (nur Ziffern)"
 
 msgid "Mins Secs"
 msgstr "Minuten Sekunden"
@@ -12469,6 +12493,9 @@ msgstr ""
 msgid "SDCARD"
 msgstr ""
 
+msgid "SDR"
+msgstr "SDR"
+
 msgid "SETUP"
 msgstr ""
 
@@ -15663,6 +15690,9 @@ msgstr "Keine gültige ONID/TSID"
 msgid "This only applies to a handful of Vu+ 4K models."
 msgstr "Das betrifft nur eine Handvoll VU+ 4K Modelle."
 
+msgid "This option adjusts SDR graphics and OSD colors while the HDMI output is in HDR mode."
+msgstr "Diese Option passt SDR-Grafiken und OSD-Farben an, während der HDMI-Ausgang sich im HDR-Modus befindet."
+
 msgid "This option allows to reduce the block-noise in the picture. Obviously this is at the cost of the picture's sharpness."
 msgstr "Konfiguriere die Reduktion von Block-Rauschen im Bild. Diese Option geht auf Kosten der Bildschärfe."
 
@@ -18405,9 +18435,6 @@ msgstr "Dokumentation"
 msgid "documentary (general)"
 msgstr "Dokumentation (allgemein)"
 
-msgid "dolby"
-msgstr "Dolby"
-
 msgid "don't convert"
 msgstr "Nicht ändern"
 
@@ -18630,9 +18657,6 @@ msgstr "Handwerk"
 msgid "handled"
 msgstr "behandelt"
 
-msgid "hdr10"
-msgstr "HDR10"
-
 msgid "height"
 msgstr "Höhe"
 
@@ -18656,9 +18680,6 @@ msgstr ""
 
 msgid "hide"
 msgstr "verstecke"
-
-msgid "hlg"
-msgstr ""
 
 msgid "hops:"
 msgstr "hops:"
@@ -19098,9 +19119,6 @@ msgstr "Scan-Status"
 msgid "science fiction/fantasy/horror"
 msgstr "Science Fiction/Fantasy/Horror"
 
-msgid "sdr"
-msgstr "SDR"
-
 msgid "se"
 msgstr "Süd-Ost"
 
@@ -19374,8 +19392,8 @@ msgstr "bis zu Standby/Neustart"
 msgid "use best / controlled by HDMI"
 msgstr "Automatisch/über HDMI gesteuert"
 
-msgid "use_hdmi_cacenter"
-msgstr ""
+msgid "use hdmi cacenter"
+msgstr "Verwende HDMI CA-Center"
 
 msgid "user defined"
 msgstr "benutzerdefiniert"
