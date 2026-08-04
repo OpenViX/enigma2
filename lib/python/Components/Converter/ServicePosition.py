@@ -32,7 +32,7 @@ class ServicePosition(Poll, Converter):
 	}
 
 	# skin values -> formatter
-	FMT_BY_DISPLAY = {"InMinutes": _fmt_m, "MinutesSeconds": _fmt_ms, "NoSeconds": _fmt_hm, "WithSeconds": _fmt_hms, "OnlyMinutes": _fmt_m_bare, "Percentage": _fmt_pct,}
+	FMT_BY_DISPLAY = {"InMinutes": _fmt_m, "MinutesSeconds": _fmt_ms, "NoSeconds": _fmt_hm, "WithSeconds": _fmt_hms, "OnlyMinutes": _fmt_m_bare, "Percentage": _fmt_pct, }
 
 	# self.fmt -> (formatter to use for Length, whether to prefix sign_l).
 	# Keyed by the resolved formatter function itself (not the "display"
