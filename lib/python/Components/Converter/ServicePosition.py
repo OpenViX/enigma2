@@ -98,7 +98,6 @@ class ServicePosition(Poll, Converter):
 					display = arg
 					break
 		
-
 		if type not in self.TYPES:
 			raise ElementError(
 				f"[ServicePosition] Error: unknown converter argument '{type}'. "
@@ -152,7 +151,6 @@ class ServicePosition(Poll, Converter):
 
 		self.picker = getattr(self, picker_name) if picker_name else None
 			
-
 		if self.detailed:
 			self.poll_interval = 100
 		elif self.type == self.TYPE_LENGTH:

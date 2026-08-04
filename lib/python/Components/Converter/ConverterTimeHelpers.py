@@ -41,6 +41,7 @@ def _join(pairs, fmt, duration=None):
 		return ""
 	return s1 + t1 + "  " + s2 + t2
 
+
 # Numeric "swap_media_time_display_*" configuration values mapped to the
 # equivalent skin display arguments.
 CONFIG_TO_SKIN_FLAGS = {
