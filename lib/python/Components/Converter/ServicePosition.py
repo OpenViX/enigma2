@@ -89,7 +89,7 @@ class ServicePosition(Poll, Converter):
 			display = CONFIG_TO_SKIN_FLAGS.get(config.usage.swap_media_time_display_on_osd.value)
 
 		# Note: if "display_from_config" is 0 ("Skin Setting") the value of "swap_time_remaining" will
-		# be ignored. This was the original behaviour and has been retain here even though doing so 
+		# be ignored. This was the original behaviour and has been retain here even though doing so
 		# may be questionable.
 		display_from_config = bool(display)
 		if not display_from_config:  # inject skin display args; config takes priority over skin arguments
@@ -97,7 +97,7 @@ class ServicePosition(Poll, Converter):
 				if arg in CONFIG_TO_SKIN_FLAGS.values():
 					display = arg
 					break
-		
+
 		if type not in self.TYPES:
 			raise ElementError(
 				f"[ServicePosition] Error: unknown converter argument '{type}'. "
@@ -122,7 +122,7 @@ class ServicePosition(Poll, Converter):
 		# with "ShowHours". All other arguments (including from user config)
 		# will be discarded.
 		picker_name = None
-		if self.detailed:   
+		if self.detailed:
 			self.fmt = _fmt_ticks_hms if showHours else _fmt_ticks_ms
 		else:
 			if display_from_config:
@@ -150,7 +150,7 @@ class ServicePosition(Poll, Converter):
 				picker_name = "_pick_remaining_only"
 
 		self.picker = getattr(self, picker_name) if picker_name else None
-			
+
 		if self.detailed:
 			self.poll_interval = 100
 		elif self.type == self.TYPE_LENGTH:
