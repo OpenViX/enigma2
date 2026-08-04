@@ -126,7 +126,7 @@ class ServicePosition(Poll, Converter):
 		if self.detailed:   
 			self.fmt = _fmt_ticks_hms if showHours else _fmt_ticks_ms
 		else:
-			if display_from_config :
+			if display_from_config:
 				# resolve which pair(s) to show, once - only meaningful for
 				# Position/Remaining; Length/Gauge/Summary never use it. Pickers DO
 				# need to be bound methods (they read self.sign_p/self.sign_r), so
