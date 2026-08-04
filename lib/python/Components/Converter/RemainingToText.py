@@ -1,65 +1,8 @@
 from Components.Converter.Converter import Converter
+from Components.Converter.ConverterTimeHelpers import _fmt_m, _fmt_ms, _fmt_hm, _fmt_hms, _fmt_pct, _fmt_m_bare, _fmt_s, _join, CONFIG_TO_SKIN_FLAGS
 from Components.Converter.Poll import Poll
 from Components.Element import cached
 from Components.config import config
-
-
-def _fmt_m(value):
-	return ngettext("%d Min", "%d Mins", value // 60) % (value // 60)
-
-
-def _fmt_m_bare(value):
-	return "%d" % (value // 60)
-
-
-def _fmt_hms(value):
-	return "%d:%02d:%02d" % (value // 3600, value % 3600 // 60, value % 60)
-
-
-def _fmt_hm(value):
-	return "%d:%02d" % (value // 3600, value % 3600 // 60)
-
-
-def _fmt_s(value):
-	return "%d " % value
-
-
-def _fmt_ms(value):
-	return "%d:%02d" % (value // 60, value % 60)
-
-
-def _fmt_pct(value, duration):
-	if not duration:  # avoid divide by zero
-		return None
-	return f"{int(round(value * 100 / duration))}%"
-
-
-def _join(pairs, fmt):
-	if not pairs:
-		return ""
-	if len(pairs) == 1:
-		sign, val = pairs[0]
-		text = fmt(val)
-		return "" if text is None else sign + text
-	(s1, v1), (s2, v2) = pairs
-	t1, t2 = fmt(v1), fmt(v2)
-	if t1 is None or t2 is None:
-		return ""
-	return s1 + t1 + "  " + s2 + t2
-
-
-def _join_pct(pairs, duration):
-	if not duration or not pairs:  # test duration to avoid divide by zero
-		return ""
-	if len(pairs) == 1:
-		sign, val = pairs[0]
-		text = _fmt_pct(val, duration)
-		return "" if text is None else sign + text
-	(s1, v1), (s2, v2) = pairs
-	t1, t2 = _fmt_pct(v1, duration), _fmt_pct(v2, duration)
-	if t1 is None or t2 is None:
-		return ""
-	return s1 + t1 + "  " + s2 + t2
 
 
 class RemainingToText(Poll, Converter):
@@ -74,15 +17,6 @@ class RemainingToText(Poll, Converter):
 		"OnlyMinutes": 60 * 1000,
 	}
 
-	CONFIG_TO_TYPE_MAP = {
-		"1": "InMinutes",
-		"2": "MinutesSeconds",
-		"3": "NoSeconds",
-		"4": "WithSeconds",
-		"5": "Percentage",
-		"6": "OnlyMinutes",
-	}
-
 	FORMAT_MAP = {
 		"InMinutes": _fmt_m,
 		"MinutesSeconds": _fmt_ms,
@@ -90,7 +24,7 @@ class RemainingToText(Poll, Converter):
 		"WithSeconds": _fmt_hms,
 		"OnlyMinutes": _fmt_m_bare,
 		"InSeconds": _fmt_s,
-		# self.fmt is not used for "Percentage"
+		"Percentage": _fmt_pct,
 	}
 
 	def __init__(self, type):
@@ -110,8 +44,8 @@ class RemainingToText(Poll, Converter):
 			swap_time_remaining = config.usage.swap_time_remaining_on_osd.value
 			display = config.usage.swap_time_display_on_osd.value
 
-		if display in self.CONFIG_TO_TYPE_MAP:
-			type = self.CONFIG_TO_TYPE_MAP[display]
+		if display in CONFIG_TO_SKIN_FLAGS:
+			type = CONFIG_TO_SKIN_FLAGS[display]
 
 		if type not in self.POLL_INTERVALS:
 			print(
@@ -126,7 +60,6 @@ class RemainingToText(Poll, Converter):
 			self.poll_interval = poll_interval
 			self.poll_enabled = True
 
-		self.is_percentage = type == "Percentage"
 		self.fmt = self.FORMAT_MAP.get(type, _fmt_m)
 
 		self.sign_elapsed, self.sign_remaining = (
@@ -162,19 +95,10 @@ class RemainingToText(Poll, Converter):
 		duration, remaining, elapsed = time
 
 		if remaining is None:
-			if self.is_percentage:
-				return ""
-
-			return self.fmt(duration)
-
-		if self.is_percentage and not duration:  # divide by zero guard
-			return ""
+			return "" if self.fmt is _fmt_pct else self.fmt(duration)
 
 		pairs = self.picker(remaining, elapsed)
 
-		if self.is_percentage:
-			return _join_pct(pairs, duration)
-
-		return _join(pairs, self.fmt)
+		return _join(pairs, self.fmt, duration)
 
 	text = property(getText)
