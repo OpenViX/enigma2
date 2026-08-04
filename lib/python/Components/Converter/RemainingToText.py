@@ -29,7 +29,37 @@ def _fmt_ms(value):
 
 
 def _fmt_pct(value, duration):
-	return "%d%%" % int((float(value) / float(duration)) * 100)
+	if not duration:  # avoid divide by zero
+		return None
+	return f"{int(round(value * 100 / duration))}%"
+
+
+def _join(pairs, fmt):
+	if not pairs:
+		return ""
+	if len(pairs) == 1:
+		sign, val = pairs[0]
+		text = fmt(val)
+		return "" if text is None else sign + text
+	(s1, v1), (s2, v2) = pairs
+	t1, t2 = fmt(v1), fmt(v2)
+	if t1 is None or t2 is None:
+		return ""
+	return s1 + t1 + "  " + s2 + t2
+
+
+def _join_pct(pairs, duration):
+	if not duration or not pairs:  # test duration to avoid divide by zero
+		return ""
+	if len(pairs) == 1:
+		sign, val = pairs[0]
+		text = _fmt_pct(val, duration)
+		return "" if text is None else sign + text
+	(s1, v1), (s2, v2) = pairs
+	t1, t2 = _fmt_pct(v1, duration), _fmt_pct(v2, duration)
+	if t1 is None or t2 is None:
+		return ""
+	return s1 + t1 + "  " + s2 + t2
 
 
 class RemainingToText(Poll, Converter):
@@ -51,7 +81,6 @@ class RemainingToText(Poll, Converter):
 		"4": "WithSeconds",
 		"5": "Percentage",
 		"6": "OnlyMinutes",
-		# "InSeconds" is not currently a config option
 	}
 
 	FORMAT_MAP = {
@@ -61,7 +90,7 @@ class RemainingToText(Poll, Converter):
 		"WithSeconds": _fmt_hms,
 		"OnlyMinutes": _fmt_m_bare,
 		"InSeconds": _fmt_s,
-		# self.formatter is not used for "Percentage"
+		# self.fmt is not used for "Percentage"
 	}
 
 	def __init__(self, type):
@@ -73,12 +102,12 @@ class RemainingToText(Poll, Converter):
 
 		if bool(type and type.startswith("VFD")):
 			type = type[3:]  # now we have harvested VFD we discard it
-			self.elapsed_time_positive = config.usage.elapsed_time_positive_vfd.value
-			self.swap_time_remaining = config.usage.swap_time_remaining_on_vfd.value
+			elapsed_time_positive = config.usage.elapsed_time_positive_vfd.value
+			swap_time_remaining = config.usage.swap_time_remaining_on_vfd.value
 			display = config.usage.swap_time_display_on_vfd.value
 		else:
-			self.elapsed_time_positive = config.usage.elapsed_time_positive_osd.value
-			self.swap_time_remaining = config.usage.swap_time_remaining_on_osd.value
+			elapsed_time_positive = config.usage.elapsed_time_positive_osd.value
+			swap_time_remaining = config.usage.swap_time_remaining_on_osd.value
 			display = config.usage.swap_time_display_on_osd.value
 
 		if display in self.CONFIG_TO_TYPE_MAP:
@@ -98,25 +127,18 @@ class RemainingToText(Poll, Converter):
 			self.poll_enabled = True
 
 		self.is_percentage = type == "Percentage"
-		self.formatter = self.FORMAT_MAP.get(type, _fmt_m)
+		self.fmt = self.FORMAT_MAP.get(type, _fmt_m)
 
 		self.sign_elapsed, self.sign_remaining = (
-			("+", "-") if self.elapsed_time_positive else ("-", "+")
+			("+", "-") if elapsed_time_positive else ("-", "+")
 		)
 
-		self.picker = self._select_picker()
-
-	def _select_picker(self):
-		if self.swap_time_remaining == "1":
-			return self._pick_elapsed
-
-		if self.swap_time_remaining == "2":
-			return self._pick_both_elapsed_first
-
-		if self.swap_time_remaining == "3":
-			return self._pick_both_remaining_first
-
-		return self._pick_remaining
+		self.picker = {
+			"0": self._pick_remaining,
+			"1": self._pick_elapsed,
+			"2": self._pick_both_elapsed_first,
+			"3": self._pick_both_remaining_first,
+		}.get(swap_time_remaining, self._pick_remaining)
 
 	def _pick_remaining(self, remaining, elapsed):
 		return [(self.sign_remaining, remaining)]
@@ -129,24 +151,6 @@ class RemainingToText(Poll, Converter):
 
 	def _pick_both_remaining_first(self, remaining, elapsed):
 		return [(self.sign_remaining, remaining), (self.sign_elapsed, elapsed)]
-
-	def _join(self, pairs):
-		if len(pairs) == 1:
-			sign, value = pairs[0]
-			return (sign or "") + self.formatter(value)
-
-		(s1, v1), (s2, v2) = pairs
-		return (s1 + self.formatter(v1) + "  " + s2 + self.formatter(v2))
-
-	def _join_percentage(self, pairs, duration):
-		if not duration:  # avoid divide by zero
-			return ""
-		if len(pairs) == 1:
-			sign, value = pairs[0]
-			return sign + _fmt_pct(value, duration)
-
-		(s1, v1), (s2, v2) = pairs
-		return (s1 + _fmt_pct(v1, duration) + "  " + s2 + _fmt_pct(v2, duration))
 
 	@cached
 	def getText(self):
@@ -161,7 +165,7 @@ class RemainingToText(Poll, Converter):
 			if self.is_percentage:
 				return ""
 
-			return self.formatter(duration)
+			return self.fmt(duration)
 
 		if self.is_percentage and not duration:  # divide by zero guard
 			return ""
@@ -169,8 +173,8 @@ class RemainingToText(Poll, Converter):
 		pairs = self.picker(remaining, elapsed)
 
 		if self.is_percentage:
-			return self._join_percentage(pairs, duration)
+			return _join_pct(pairs, duration)
 
-		return self._join(pairs)
+		return _join(pairs, self.fmt)
 
 	text = property(getText)
