@@ -12,7 +12,7 @@ class FixedMenu(Screen, ColorizeText):
 
 	def __init__(self, session, title, list):
 		Screen.__init__(self, session)
-		ColorizeText.__init__(self, session, "FixedMenuColors")
+		ColorizeText.__init__(self, session, "FixedMenuColors", 0x404040)
 
 		self["menu"] = List(list)
 
