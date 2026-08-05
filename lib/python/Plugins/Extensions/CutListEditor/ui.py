@@ -68,22 +68,25 @@ class CutListContextMenu(FixedMenu):
 	SHOW_DELETECUT = 2
 
 	def __init__(self, session, state, nearmark):
+		FixedMenu.__init__(self, session, _("Cut"), [])
+		self.skinName = ["CutListContextMenu", "FixedMenu", "Menu"]
+
 		menu = [(_("back"), self.close)]  # , (None, )]
 
 		if state == self.SHOW_STARTCUT:
 			menu.append((_("start cut here"), self.startCut))
 		else:
-			menu.append((_("start cut here"), ))
+			menu.append((self.addColor(_("start cut here")), ))
 
 		if state == self.SHOW_ENDCUT:
 			menu.append((_("end cut here"), self.endCut))
 		else:
-			menu.append((_("end cut here"), ))
+			menu.append((self.addColor(_("end cut here")), ))
 
 		if state == self.SHOW_DELETECUT:
 			menu.append((_("delete cut"), self.deleteCut))
 		else:
-			menu.append((_("delete cut"), ))
+			menu.append((self.addColor(_("delete cut")), ))
 
 		menu.append((_("remove before this position"), self.removeBefore))
 		menu.append((_("remove after this position"), self.removeAfter))
@@ -108,8 +111,7 @@ class CutListContextMenu(FixedMenu):
 		if MovieCut:
 			menu.append((_("execute cuts (requires MovieCut plugin)"), self.callMovieCut))
 
-		FixedMenu.__init__(self, session, _("Cut"), menu)
-		self.skinName = ["CutListContextMenu", "FixedMenu", "Menu"]
+		self["menu"].setList(menu)
 
 	def startCut(self):
 		self.close(self.RET_STARTCUT)
