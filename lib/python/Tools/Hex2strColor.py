@@ -11,9 +11,10 @@ def Hex2strColor(rgb):
 class ColorizeText:
 	# wraps text in colors imported from skin <parameters>, e.g.
 	# <parameter name="AboutColors" value="#00ffc000"/>
+	# "default" can be None, int or list of ints.
 
-	def __init__(self, session, param_name):
-		self.colors = parameters.get(param_name, [])
+	def __init__(self, session, param_name, default=None):
+		self.colors = parameters.get(param_name, default or [])
 		if isinstance(self.colors, int):  # a single entry in skin parameters would not be comma separated and therefore an int, not a list
 			self.colors = [self.colors]
 
