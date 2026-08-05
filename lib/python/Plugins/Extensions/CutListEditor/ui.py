@@ -343,16 +343,24 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 
 		self.context_nearest_mark = self.toggleMark(onlyreturn=True)
 
-		cur_state = self.getStateForPosition(curpos)
-		if cur_state == 0:
-			print("[CutListEditor] currently in 'IN'")
-			if self.cut_start is None or self.context_position < self.cut_start:
+		# A pending cut_start (from a previous "start cut here") always takes
+		# priority over whatever the persisted cut_list says about the
+		# current position - otherwise unrelated existing cut data near the
+		# intended end point can make "end cut here" silently unavailable
+		# while a cut is still pending.
+		if self.cut_start is not None:
+			if self.context_position < self.cut_start:
 				state = CutListContextMenu.SHOW_STARTCUT
 			else:
 				state = CutListContextMenu.SHOW_ENDCUT
 		else:
-			print("[CutListEditor] currently in 'OUT'")
-			state = CutListContextMenu.SHOW_DELETECUT
+			cur_state = self.getStateForPosition(curpos)
+			if cur_state == 0:
+				print("[CutListEditor] currently in 'IN'")
+				state = CutListContextMenu.SHOW_STARTCUT
+			else:
+				print("[CutListEditor] currently in 'OUT'")
+				state = CutListContextMenu.SHOW_DELETECUT
 
 		if self.context_nearest_mark is None:
 			nearmark = False
