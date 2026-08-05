@@ -17,7 +17,7 @@ class FixedMenu(Screen, ColorizeText):
 		self["menu"] = List(list)
 
 		self.watcher = [None]
-		
+
 		if self.selectionChanged not in self["menu"].onSelectionChanged:
 			self["menu"].onSelectionChanged.append(self.selectionChanged)
 
@@ -44,4 +44,3 @@ class FixedMenu(Screen, ColorizeText):
 			is_selectable = len(entries[i]) > 1 and callable(entries[i][1])
 			if not is_selectable:
 				self["menu"].setIndex((i + step) % n)
-
