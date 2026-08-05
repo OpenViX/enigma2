@@ -88,7 +88,7 @@
 		<item level="0" text="Show time remaining/elapsed *" description="This option allows you choose how to display remaining time, or elapsed time, or both.">config.usage.swap_time_remaining_on_osd</item>
 		<item level="0" text="Show time elapsed as positive *" description="This option allows you choose how to display elapsed time as + or -">config.usage.elapsed_time_positive_osd</item>
 		<item level="0" text="Show transponder remaining/elapsed as *" description="This option allows you to choose how to display the remaining/elapsed time for live TV.">config.usage.swap_time_display_on_osd</item>
-		<item level="0" text="Show Media playback Remaining/Elapsed as *" description="This option allows you to choose how to display the remaining/elapsed time for media playback.">config.usage.swap_media_time_display_on_osd</item>
+		<item level="0" text="Show Media playback Remaining/Elapsed as *" description="This option allows you to choose how to display the remaining/elapsed time for media playback. If set to 'Skin Setting' the setting above 'Show time remaining/elapsed' will be ignored in this context.">config.usage.swap_media_time_display_on_osd</item>
 		<item level="2" text="Hide zap errors" description="Hide any zap error messages.">config.usage.hide_zap_errors</item>
 		<item level="2" text="Hide CI messages" description="Hide error messages from the Common Interface module.">config.usage.hide_ci_messages</item>
 		<item level="2" text="Show crypto info in infobar" description="Show encryption info in the infobar (when supported by the skin).">config.usage.show_cryptoinfo</item>
@@ -325,7 +325,7 @@
 		<item level="1" text="Show Display Icons" description="Allows you to enable/disable displaying icons on the front panel.">config.lcd.mode</item>
 		<item level="1" text="Show Time Remaining/Elapsed *" description="This option allows you choose how to display remaining time, or elapsed time, or both." requires="ConfigDisplay">config.usage.swap_time_remaining_on_vfd</item>
 		<item level="1" text="Show Transponder Remaining/Elapsed as *" description="This option allows you choose how to display the remaining/elapsed time for live TV." requires="ConfigDisplay">config.usage.swap_time_display_on_vfd</item>
-		<item level="1" text="Show Media playback Remaining/Elapsed as *" description="This option allows you to choose how to display the remaining/elapsed time for Media playback." requires="ConfigDisplay">config.usage.swap_media_time_display_on_vfd</item>
+		<item level="1" text="Show Media playback Remaining/Elapsed as *" description="This option allows you to choose how to display the remaining/elapsed time for Media playback. If set to 'Skin Setting' the setting above 'Show time remaining/elapsed' will be ignored in this context." requires="ConfigDisplay">config.usage.swap_media_time_display_on_vfd</item>
 		<item level="0" text="Show time elapsed as positive *" description="This option allows you to choose how to display elapsed time. As + or -" requires="ConfigDisplay">config.usage.elapsed_time_positive_vfd</item>
 		<item level="1" text="Scrolling Speed (software render)" description="Set the scrolling speed of text on the front display, this uses a software render in some skins." requires="ConfigDisplay">config.lcd.scroll_speed</item>
 		<item level="1" text="Scrolling delay (software render)" description="Set the delay time between repeated loops, this uses a software render in some skins." requires="ConfigDisplay">config.lcd.scroll_delay</item>
