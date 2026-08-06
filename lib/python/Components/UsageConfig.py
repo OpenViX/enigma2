@@ -422,7 +422,7 @@ def InitUsageConfig():
 	# hundreds of variations into a sprawling implementation full of duplicated data and implicit
 	# relationships. Instead of deriving formats algorithmically, it stores and synchronises
 	# multiple copies of essentially the same information, creating unnecessary maintenance
-	# overhead and numerous opportunities for inconsistencies. The implementation mixes 
+	# overhead and numerous opportunities for inconsistencies. The implementation mixes
 	# configuration, business logic, presentation, compatibility handling, and runtime side
 	# effects into a single block, making it fragile, difficult to review, and expensive to
 	# modify. It also misuses the translation infrastructure by exposing implementation details
