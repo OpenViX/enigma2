@@ -1,6 +1,7 @@
 from time import localtime, strftime
 
 from Components.Converter.Converter import Converter
+from Components.Converter.ConverterTimeHelpers import _fmt_hm, _fmt_hms, _fmt_ms
 from Components.Element import cached
 from Components.config import config
 
@@ -10,9 +11,9 @@ class ClockToText(Converter):
 		# 		TRANSLATORS: short time representation hour:minute (Same as "Default")
 		"": lambda t: strftime(config.usage.time.short.value, localtime(t)),  # _("%R")
 		#
-		"AsLength": lambda t: "" if t < 0 else "%d:%02d" % (t // 60, t % 60),
-		"AsLengthHours": lambda t: "" if t < 0 else "%d:%02d" % (t // 3600, t // 60 % 60),
-		"AsLengthSeconds": lambda t: "" if t < 0 else "%d:%02d:%02d" % (t // 3600, t // 60 % 60, t % 60),
+		"AsLength": lambda t: "" if t < 0 else _fmt_ms(t),
+		"AsLengthHours": lambda t: "" if t < 0 else _fmt_hm(t),
+		"AsLengthSeconds": lambda t: "" if t < 0 else _fmt_hms(t),
 		# 		TRANSLATORS: full date representation dayname daynum monthname year in strftime() format! See 'man strftime'
 		"Date": lambda t: strftime(config.usage.date.dayfull.value, localtime(t)),  # _("%A %e %B %Y")
 		# 		TRANSLATORS: short time representation hour:minute in strftime() format! See 'man strftime'
