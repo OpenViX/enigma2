@@ -221,7 +221,7 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 				"setMark": (self.setMark, _("Make this mark just a mark")),
 				"addMark": (self.__addMark, _("Add a mark")),
 				"removeMark": (self.__removeMark, _("Remove a mark")),
-				"leave": (self.exit, _("Exit editor")),
+				"leave": (self.close, _("Exit editor")),
 				"showMenu": (self.showMenu, _("menu")),
 			}, prio=-4)
 
@@ -279,9 +279,6 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 		m = m and m[0]
 		if m is not None:
 			self.removeMark(m)
-
-	def exit(self):
-		self.close()
 
 	def getCutlist(self):
 		r = []
@@ -451,7 +448,7 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 					MovieCut(session=self.session, service=self.cut_service)
 				except:
 					print("[CutListEditor] calling MovieCut failed")
-			self.exit()
+			self.close()
 
 	# we modify the "play" behavior a bit:
 	# if we press pause while being in slowmotion, we will pause (and not play)
