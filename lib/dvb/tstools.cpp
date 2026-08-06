@@ -337,7 +337,7 @@ int eDVBTSTools::fixupPTS(const off_t &offset, pts_t &now)
 		pts_t pos = m_pts_begin;
 		if ((now < pos) && ((pos - now) < 90000 * 10))
 		{
-			pos = 0;
+			now = 0;
 			return 0;
 		}
 
