@@ -520,7 +520,7 @@ def InitUsageConfig():
 			_("%A %Y/%-m/%d"): (_("%a %Y/%-m/%d"), _("%a %Y/%-m/%d"), _("%A %-m/%d"), _("%a %-m/%d"), _("%a %d"), _("%Y/%-m/%d"), _("%Y/%-m/%d"), _("%-m/%d")),
 			_("%A %Y/%-m/%-d"): (_("%a %Y/%-m/%-d"), _("%a %Y/%-m/%-d"), _("%A %-m/%-d"), _("%a %-m/%-d"), _("%a %-d"), _("%Y/%-m/%-d"), _("%Y/%-m/%-d"), _("%-m/%-d"))
 		}
-		style = dateStyles.get(configElement.value, ((_("Invalid")) * 8))
+		style = dateStyles.get(configElement.value, ((_("Invalid"),) * 8))
 		config.usage.date.shortdayfull.value = style[0]
 		config.usage.date.shortdayfull.save()
 		config.usage.date.daylong.value = style[1]
@@ -578,7 +578,7 @@ def InitUsageConfig():
 			_("%I:%M:%S"): (_("%I:%M:%S"), _("%I:%M")),
 			_("%-I:%M:%S"): (_("%-I:%M:%S"), _("%-I:%M"))
 		}
-		style = timeStyles.get(configElement.value, ((_("Invalid")) * 2))
+		style = timeStyles.get(configElement.value, ((_("Invalid"),) * 2))
 		config.usage.time.mixed.value = style[0]
 		config.usage.time.mixed.save()
 		config.usage.time.short.value = style[1]
@@ -672,7 +672,7 @@ def InitUsageConfig():
 			_("%-m/%d"): (_("%a %-m/%d"), _("%-m/%d ")),
 			_("%-m/%-d"): (_("%a %-m/%-d"), _("%-m/%-d "))
 		}
-		style = dateDisplayStyles.get(configElement.value, ((_("Invalid")) * 2))
+		style = dateDisplayStyles.get(configElement.value, ((_("Invalid"),) * 2))
 		config.usage.date.displayday.value = style[0]
 		config.usage.date.displayday.save()
 		config.usage.date.display_template.value = style[1]
