@@ -417,6 +417,23 @@ def InitUsageConfig():
 	config.usage.show_vcr_scart = ConfigYesNo(default=False)
 	config.usage.pic_resolution = ConfigSelection(default=None, choices=[(None, _("Same resolution as skin")), ("(720, 576)", "720x576"), ("(1280, 720)", "1280x720"), ("(1920, 1080)", "1920x1080")])
 
+	# WARNING: The following 300 lines of date/time code is a monolithic maintenance nightmare
+	# disguised as a configuration system. Rather than providing a clear model, it hard-codes
+	# hundreds of variations into a sprawling implementation full of duplicated data and implicit
+	# relationships. Instead of deriving formats algorithmically, it stores and synchronises
+	# multiple copies of essentially the same information, creating unnecessary maintenance
+	# overhead and numerous opportunities for inconsistencies. The implementation mixes 
+	# configuration, business logic, presentation, compatibility handling, and runtime side
+	# effects into a single block, making it fragile, difficult to review, and expensive to
+	# modify. It also misuses the translation infrastructure by exposing implementation details
+	# and near-duplicate strings in .po files, creating translation noise that translators cannot
+	# reasonably interpret or maintain. To compound matters, the availability of these user-facing
+	# options is arbitrarily gated by skin-defined parameters (AllowUserDatesAndTimes), so whether
+	# users can access the functionality depends on the skin author rather than the application
+	# itself. Overall, this is an over-engineered, tightly coupled implementation that obscures a
+	# relatively simple problem behind excessive duplication, hidden dependencies, and unnecessary
+	# complexity.
+
 	config.usage.date = ConfigSubsection()
 	config.usage.date.enabled = NoSave(ConfigBoolean(default=False))
 	config.usage.date.enabled_display = NoSave(ConfigBoolean(default=False))
