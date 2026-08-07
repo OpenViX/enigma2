@@ -16,13 +16,20 @@ def _fmt_ticks_ms(x, duration=None):
 
 
 class ServicePosition(Poll, Converter):
+	# valid skin args: 
+	# Mandatory (one of): 
+	# - Length, Position, Remaining, Gauge,  Summary
+	# Optional:
+	# - Detailed, Negate, ShowHours, ShowNoSeconds, InMinutes, MinutesSeconds, NoSeconds,
+	# - WithSeconds, Percentage, OnlyMinutes, VFDInMinutes, VFDMinutesSeconds, VFDNoSeconds,
+	# - VFDWithSeconds, VFDPercentage, VFDOnlyMinutes
+	
 	TYPE_LENGTH = 0
 	TYPE_POSITION = 1
 	TYPE_REMAINING = 2
 	TYPE_GAUGE = 3
 	TYPE_SUMMARY = 4
 
-	# These are prefixed with "VFD" if used in the context of Front Panel Display
 	TYPES = {
 		"Length": TYPE_LENGTH,
 		"Position": TYPE_POSITION,
@@ -43,15 +50,6 @@ class ServicePosition(Poll, Converter):
 	LENGTH_FORMAT_OVERRIDES = {
 		_fmt_pct: (_fmt_hm, True),
 		_fmt_m: (_fmt_m, False),
-	}
-
-	CONFIG_TO_SKIN_FLAGS = {
-		"1": "InMinutes",
-		"2": "MinutesSeconds",
-		"3": "NoSeconds",
-		"4": "WithSeconds",
-		"5": "Percentage",
-		"6": "OnlyMinutes",
 	}
 
 	# (showHours, showNoSeconds) skin flags -> formatter, used only when
@@ -99,10 +97,11 @@ class ServicePosition(Poll, Converter):
 					break
 
 		if type not in self.TYPES:
+			optional = "|".join(sorted(y for x in CONFIG_TO_SKIN_FLAGS.values() for y in (x, "VFD" + x)))
 			raise ElementError(
 				f"[ServicePosition] Error: unknown converter argument '{type}'. "
-				f"Must be one of {'|'.join(sorted([y for x in self.TYPES for y in [x, "VFD" + x]]))}, "
-				f"with optional arguments Negate|Detailed|ShowHours|ShowNoSeconds|{'|'.join(sorted(CONFIG_TO_SKIN_FLAGS.values()))}."
+				f"Must be one of {'|'.join(sorted(self.TYPES))}, "
+				f"with optional arguments Negate|Detailed|ShowHours|ShowNoSeconds|{optional}."
 			)
 		self.type = self.TYPES[type]
 
