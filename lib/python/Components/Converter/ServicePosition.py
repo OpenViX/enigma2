@@ -16,14 +16,14 @@ def _fmt_ticks_ms(x, duration=None):
 
 
 class ServicePosition(Poll, Converter):
-	# valid skin args: 
-	# Mandatory (one of): 
+	# valid skin args:
+	# Mandatory (one of):
 	# - Length, Position, Remaining, Gauge,  Summary
 	# Optional:
 	# - Detailed, Negate, ShowHours, ShowNoSeconds, InMinutes, MinutesSeconds, NoSeconds,
 	# - WithSeconds, Percentage, OnlyMinutes, VFDInMinutes, VFDMinutesSeconds, VFDNoSeconds,
 	# - VFDWithSeconds, VFDPercentage, VFDOnlyMinutes
-	
+
 	TYPE_LENGTH = 0
 	TYPE_POSITION = 1
 	TYPE_REMAINING = 2
