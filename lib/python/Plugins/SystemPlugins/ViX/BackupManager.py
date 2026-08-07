@@ -21,6 +21,7 @@ from Screens.PluginBrowser import PluginBrowserSummary
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Screens.TextBox import TextBox
+from Tools.BoundFunction import boundFunction
 from Tools.Notifications import AddPopupWithCallback
 
 from . import getMountChoices, getMountDefault
@@ -157,6 +158,7 @@ class VIXBackupManager(Screen):
 		self.activityTimer.start(10)
 		self.Console = Console()
 		self.ConsoleB = Console(binary=True)
+		self.installPluginTimeoutTimer = eTimer()
 
 		if BackupTime > 0:
 			t = localtime(BackupTime)
@@ -612,13 +614,21 @@ class VIXBackupManager(Screen):
 			self.Stage6()
 
 	def installNextPackage(self):
-		cmd = "opkg install " + self.pluginslistcombined[self.index]
+		cmd = ["opkg", "opkg", "install", self.pluginslistcombined[self.index]]
 		print("[BackupManager] Console command: '%s'" % cmd)
-		self.ConsoleB.ePopen(cmd, self.Stage5Complete)
+		self.startInstallTimer()
+		self.restoreProcess = self.ConsoleB.ePopen(cmd, self.Stage5Complete, extra_args=[self.index])
 
 	def Stage5Complete(self, result, retval, extra_args):
+		if extra_args[0] != self.index:
+			return  # avoid race possibility
+		self.installPluginTimeoutTimer.stop()
+		self.restoreProcess = None
 		if result:
 			print("[BackupManager] opkg install result:\n", result.decode(errors="ignore"))
+		self.continuePackageInstall()
+
+	def continuePackageInstall(self):
 		self.index += 1
 		if self.index < len(self.pluginslistcombined):
 			self.installNextPackage()
@@ -626,6 +636,28 @@ class VIXBackupManager(Screen):
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
 			print("[BackupManager] Restoring Stage 5: Completed")
+
+	def startInstallTimer(self):
+		self.installPluginTimeoutTimer.stop()
+		del self.installPluginTimeoutTimer.callback[:]
+		self.installPluginTimeoutTimer.callback.append(boundFunction(self.installPluginTimedOut, self.index))
+		self.installPluginTimeoutTimer.start(300000, True)  # 5 mins, if no activity in that time something is wrong, so abort
+
+	def installPluginTimedOut(self, index):
+		if index != self.index:
+			print("[BackupManager] ignoring stale timeout", index, self.index)
+			return  # avoid race possibility
+
+		self.installPluginTimeoutTimer.stop()
+		del self.installPluginTimeoutTimer.callback[:]
+
+		# kill the running opkg process
+		if self.restoreProcess and self.restoreProcess.container:
+			self.restoreProcess.container.kill()
+		print("[BackupManager][installPluginTimedOut] timed out restoring", self.pluginslistcombined[index])
+
+		self.installPluginTimeoutTimer.callback.append(self.continuePackageInstall)
+		self.installPluginTimeoutTimer.start(30000, True)  # 30 secs for the process to exit
 
 	def Stage6(self, result=None, retval=None, extra_args=None):
 		self.Stage1Completed = True
