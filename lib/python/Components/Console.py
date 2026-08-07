@@ -68,7 +68,9 @@ class Console:
 		self.appContainers = {}
 		self.binary = binary
 
-	def ePopen(self, cmd, callback=None, extra_args=[]):
+	def ePopen(self, cmd, callback=None, extra_args=None):
+		if not extra_args:
+			extra_args = []
 		print("[Console] command:", cmd)
 		return ConsoleItem(self.appContainers, cmd, callback, extra_args, self.binary)
 
