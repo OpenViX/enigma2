@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-03 12:21+0000\n"
+"POT-Creation-Date: 2026-08-11 12:40+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, xcentaurix\n"
@@ -3497,16 +3497,16 @@ msgid "Choose the display formatting style for dates. 'D' / 'DD' is the date and
 msgstr "Wähle das Datumsformat. 'T'/'TT' ist der Tag, 'M'/'MM' der Monat. 'DD' und 'MM' haben führende Nullen bei einstelligen Werten. Der Skin kann die Anzeige beeinflussen."
 
 msgid "Choose the display formatting style for times. 'H' / 'HH' is the hour for a 24 hour clock, 'h' / 'hh' is the hour for a 12 hour clock, 'mm' is the minutes and 'ss' is the seconds.  ('HH' and 'hh' have leading zeros for single digit values.) The screen display will be based on your choice but can be influenced by the skin."
-msgstr "Wählen Sie das Anzeigeformat für Uhrzeiten. 'H' / 'HH' ist die Stunde im 24-Stunden-Format, 'h' / 'hh' ist die Stunde im 12-Stunden-Format, 'mm' sind die Minuten und 'ss' sind die Sekunden. ('HH' und 'hh' haben führende Nullen bei einstelligen Werten.) Die Bildschirmanzeige richtet sich nach Ihrer Wahl, kann aber vom Skin beeinflusst werden."
-"Wähle Anzeigeart für Zeit. 'H'/'HH' ist die Stunde bei 24 Stunden Anzeige. 'h'/'hh' ist die Stunde bei 12 Stunden Anzeige, 'mm' sind die Minuten und 'ss' sind die Sekunden. \n"
+msgstr ""
+"Wähle das Anzeigeformat für Uhrzeiten. 'H' / 'HH' ist die Stunde im 24-Stunden-Format, 'h' / 'hh' ist die Stunde im 12-Stunden-Format, 'mm' sind die Minuten und 'ss' sind die Sekunden. ('HH' und 'hh' haben führende Nullen bei einstelligen Werten.) Die Bildschirmanzeige richtet sich nach Ihrer Wahl, kann aber vom Skin beeinflusst werden.Wähle Anzeigeart für Zeit. 'H'/'HH' ist die Stunde bei 24 Stunden Anzeige. 'h'/'hh' ist die Stunde bei 12 Stunden Anzeige, 'mm' sind die Minuten und 'ss' sind die Sekunden. \n"
 "'HH' und 'hh' bekommen führende 0 bei einstelligen Zeiten. Die Anzeige wird durch diese Einstellungen aber auch den Skin bestimmt."
 
 msgid "Choose the front panel display formatting style for dates. 'D' / 'DD' is the date and 'M' / 'MM' is the month in digits.  ('DD' and 'MM' have leading zeros for single digit values.) The screen display will be based on your choice but can be influenced by the skin."
 msgstr "Wähle Datumsformat für Display. 'T'/'TT' ist der Tag und 'M'/'MM' ist der Monat in Ziffern. 'DD' und 'MM' bekommen eine führende 0, wenn einstellig. Die Anzeige erfolgt entsprechend der Einstellung und kann vom Skin beeinflusst werden."
 
 msgid "Choose the front panel display formatting style for times. 'H' / 'HH' is the hour for a 24 hour clock, 'h' / 'hh' is the hour for a 12 hour clock, 'mm' is the minutes.  ('HH' and 'hh' have leading zeros for single digit values.) The front panel display will be based on your choice but can be influenced any applicable skin."
-msgstr "Wählen Sie das Anzeigeformat für Uhrzeiten auf dem Frontdisplay. 'H' / 'HH' ist die Stunde im 24-Stunden-Format, 'h' / 'hh' ist die Stunde im 12-Stunden-Format, 'mm' sind die Minuten. ('HH' und 'hh' haben führende Nullen bei einstelligen Werten.) Die Frontdisplay-Anzeige richtet sich nach Ihrer Wahl, kann aber von einem entsprechenden Skin beeinflusst werden."
-"Wähle Anzeigeart für Zeit auf dem Display. 'H'/'HH' ist die Stunde bei 24 Stunden Anzeige. 'h'/'hh' ist die Stunde bei 12 Stunden Anzeige, 'mm' sind die Minuten. \n"
+msgstr ""
+"Wähle das Anzeigeformat für Uhrzeiten auf dem Frontdisplay. 'H' / 'HH' ist die Stunde im 24-Stunden-Format, 'h' / 'hh' ist die Stunde im 12-Stunden-Format, 'mm' sind die Minuten. ('HH' und 'hh' haben führende Nullen bei einstelligen Werten.) Die Frontdisplay-Anzeige richtet sich nach Ihrer Wahl, kann aber von einem entsprechenden Skin beeinflusst werden.Wähle Anzeigeart für Zeit auf dem Display. 'H'/'HH' ist die Stunde bei 24 Stunden Anzeige. 'h'/'hh' ist die Stunde bei 12 Stunden Anzeige, 'mm' sind die Minuten. \n"
 "'HH' und 'hh' bekommen führende 0 bei einstelligen Zeiten. Die Anzeige auf dem Display wird durch diese Einstellungen aber auch den Skin bestimmt."
 
 msgid "Choose the layout. Single channel, Graphics Grid EPG or Text Grid EPG."
@@ -8975,9 +8975,6 @@ msgstr "Mayotte"
 msgid "Mb/s"
 msgstr ""
 
-msgid "Media playback Remaining/Elapsed as"
-msgstr "Zeige Zeit bei Wiedergabe"
-
 msgid "Media player"
 msgstr "Mediaplayer"
 
@@ -12174,9 +12171,7 @@ msgid "Repeat type"
 msgstr "Wiederholungstyp"
 
 msgid "Repeating event currently recording... What do you want to do?"
-msgstr "Eine sich wiederholende Sendung wird gerade aufgenommen... Was möchten Sie tun?"
-"Wiederholender Aufnahmetimer ist zurzeit aktiv.\n"
-"Was soll gemacht werden?"
+msgstr "Eine sich wiederholende Sendung wird gerade aufgenommen... Was soll gemacht werden?"
 
 msgid "Repeating the event currently recording... What do you want to do?"
 msgstr "Wiederholender Aufnahmetimer ist zurzeit aktiv. Was soll gemacht werden?"
@@ -13139,7 +13134,7 @@ msgid "Select how quickly the dish should move between satellites."
 msgstr "Konfiguriere die Rotorgeschwindigkeit für die Bewegung zwischen den Satelliten."
 
 msgid "Select how the descrambled data stream is processed. 'Automatic' uses asynchronous writes (lower CPU usage) with automatic fallback to synchronous if kernel AIO is not supported. 'Synchronous' forces blocking writes (stable, most compatible). *Restart E2 for changes to take effect."
-msgstr "Wählen Sie, wie der entschlüsselte Datenstrom verarbeitet wird. 'Automatisch' verwendet asynchrones Schreiben (geringere CPU-Last) mit automatischem Rückfall auf synchrones Schreiben, falls Kernel-AIO nicht unterstützt wird. 'Synchron' erzwingt blockierendes Schreiben (stabil, höchste Kompatibilität). *Enigma2 muss neu gestartet werden, damit die Änderungen wirksam werden."
+msgstr "Wie soll der entschlüsselte Datenstrom verarbeitet werden? 'Automatisch' verwendet asynchrones Schreiben (geringere CPU-Last) mit automatischem Rückfall auf synchrones Schreiben, falls Kernel-AIO nicht unterstützt wird. 'Synchron' erzwingt blockierendes Schreiben (stabil, höchste Kompatibilität). *Enigma2 muss neu gestartet werden, damit die Änderungen wirksam werden."
 
 msgid "Select how the satellite dish is set up. i.e. fixed dish, single LNB, DiSEqC switch, positioner, etc."
 msgstr "Wie ist die Satellitenschüssel angebracht, z.B. fester Anbau, ein LNB, DiSEqC Switch, Rotor usw.?"
@@ -13797,8 +13792,8 @@ msgstr "Zeige Log"
 msgid "Show Log Manager in extensions list ?"
 msgstr "Log-Manager in Erweiterungsliste anzeigen?"
 
-msgid "Show Media playback Remaining/Elapsed as"
-msgstr "Zeige Zeit bei Wiedergabe"
+msgid "Show Media playback Remaining/Elapsed as *"
+msgstr "Zeige bei Media Playback verbleibende/verstrichene Zeit als *"
 
 msgid "Show MiniTV in the Front Display"
 msgstr "Zeige MiniTV im Display"
@@ -15709,7 +15704,7 @@ msgid "This option allows you choose how to display the Time or nothing in Stand
 msgstr "Soll die Zeit in Standby angezeigt werden?"
 
 msgid "This option allows you choose how to display the remaining/elapsed time for live TV."
-msgstr "Soll verbleibende/verstrichene Zeit oder beides für Transponder angezeigt werden?"
+msgstr "Soll verbleibende/verstrichene Zeit oder beides für Live-TV angezeigt werden?"
 
 msgid "This option allows you choose the background color of transparent picons."
 msgstr "Konfiguriere die Hintergrundfarbe von transparenten Picons."
@@ -15738,14 +15733,14 @@ msgstr "Diese Option gibt dir die Wahl zwischen den beiden verfügbaren Senderli
 msgid "This option allows you to choose how to display elapsed time. As + or -"
 msgstr "Soll die verstrichene Zeit mit '+' oder '-' angezeigt werden?"
 
-msgid "This option allows you to choose how to display the remaining/elapsed time for Media playback."
-msgstr "Soll die verbleibende/verstrichene Zeit oder beides in Medienwiedergabe angezeigt werden?"
+msgid "This option allows you to choose how to display the remaining/elapsed time for Media playback. If set to 'Skin Setting' the setting above 'Show time remaining/elapsed' will be ignored in this context."
+msgstr "Diese Option definiert, wie verbleibende/verstrichene Zeit für Media Playback angezeigt wird. Bei 'Skin-Einstellung' wird die Einstellung 'Zeige verbleibende/vertrichene Zeit' ignoriert."
 
 msgid "This option allows you to choose how to display the remaining/elapsed time for live TV."
 msgstr "Soll die verbleibende/verstrichene Zeit oder beides für Live-Programm angezeigt werden?"
 
-msgid "This option allows you to choose how to display the remaining/elapsed time for media playback."
-msgstr "Soll die verbleibende/verstrichene Zeit oder beides bei Medienwiedergabe angezeigt werden?"
+msgid "This option allows you to choose how to display the remaining/elapsed time for media playback. If set to 'Skin Setting' the setting above 'Show time remaining/elapsed' will be ignored in this context."
+msgstr "Diese Option definiert, wie verbleibende/verstrichene Zeit für Media Playback angezeigt wird. Bei 'Skin-Einstellung' wird die Einstellung 'Zeige verbleibende/vertrichene Zeit' ignoriert."
 
 msgid "This option allows you to choose what the first button press jumps to in channel list screen, (so pressing '2' jumps to 'A' or '2' first), when 'Quick Actions' preset actions are perfomed. "
 msgstr "Welche Funktion soll der erste Tastendruck in der Senderliste haben ('2' springt zu '2' oder 'A' zuerst)?"
@@ -16744,9 +16739,7 @@ msgid "Use the alternative screen"
 msgstr "Eine kleine, einfachere Darstellung verwenden"
 
 msgid "Use the deletion time to sort Trash directories. Most recently deleted at the top."
-msgstr "Verwendet die Löschzeit zum Sortieren der Papierkorb-Verzeichnisse. Zuletzt gelöschte Einträge oben."
-"Verwende die Löschzeit, um den Mülleimer zu sortieren.\n"
-"Zuletzt gelöschte Filme oben."
+msgstr "Verwende die Löschzeit zum Sortieren der Papierkorb-Verzeichnisse. Zuletzt gelöschte Einträge oben."
 
 msgid "Use the network wizard to configure selected network adapter"
 msgstr "Verwende den Netzwerkassistenten, um den gewählten Adapter zu konfigurieren"
@@ -18045,9 +18038,7 @@ msgid "Zap back to previously tuned service?"
 msgstr "Zurückschalten zum vorher laufenden Sender?"
 
 msgid "Zap back to service before positioner setup?"
-msgstr "Vor der Positioner-Einrichtung zum Sender zurückschalten?"
-"Zurückschalten zum Sender, der vor dem\n"
-"Öffnen der Rotor-Einstellungen lief?"
+msgstr "Zurückschalten zum Sender, der vor dem Öffnen der Rotor-Einstellungen lief?"
 
 msgid "Zap down"
 msgstr "Vorheriger Sender"
@@ -19062,7 +19053,7 @@ msgid "rename"
 msgstr "umbenennen"
 
 msgid "rename this file to 'force' to force an update without confirmation"
-msgstr "Benennen Sie diese Datei in 'force' um, um ein Update ohne Bestätigung zu erzwingen"
+msgstr "Benenne diese Datei in 'force' um, um ein Update ohne Bestätigung zu erzwingen"
 
 #, python-format
 msgid "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
