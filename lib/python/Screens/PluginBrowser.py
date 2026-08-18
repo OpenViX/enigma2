@@ -24,12 +24,8 @@ from Screens.Screen import Screen, ScreenSummary
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
 
-categories = ("bootlogos", "display", "drivers", "extensions", "kernel", "picons", "po", "security", "settings", "skin", "softcams", "systemplugins")
-
-# Note: "config.pluginbrowser" is also used in this module, it set in Components.UsageConfig and accessible via setup.xml.
 config.misc.pluginbrowser = ConfigSubsection()
-for category in categories:  # why do we need these configs if they can't be adjusted anywhere?
-	setattr(config.misc.pluginbrowser, category, ConfigYesNo(default=category not in ("kernel",)))  # all defaults will be True except "kernel"
+config.misc.pluginbrowser.po = ConfigYesNo(default=True)
 config.misc.pluginbrowser.plugin_order = ConfigText(default="")
 
 
@@ -70,7 +66,6 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self["key_red"] = Button(_("Remove plugins"))
 		self["key_green"] = Button(_("Download plugins"))
 		self["key_yellow"] = Button(_("User installed plugins"))
-		self["key_menu"] = StaticText(_("MENU"))
 		self["key_0"] = StaticText(_("0"))
 		self["key_previous"] = StaticText(_("PREVIOUS"))
 		self["key_next"] = StaticText(_("NEXT"))
@@ -82,7 +77,6 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 
 		self["okActions"] = HelpableActionMap(self, ["OkCancelActions"], {"ok": (self.keySelect, _("Select the current item")), }, description=_("Selection Actions"))
 		self["cancelActions"] = HelpableActionMap(self, ["OkCancelActions"], {"cancel": (self.close, _("Exit PluginBrowser")), }, prio=0, description=_("Cancel Actions"))
-		self["menuActions"] = HelpableActionMap(self, ["MenuActions"], {"menu": (self.openSetup, _("Open PluginBrowser setup screen")), }, prio=0, description=_("Setup Actions"))
 		self["PluginDownloadActions"] = HelpableActionMap(self, ["ColorActions"],
 		{
 			"red": (self.delete, _("Open 'Remove Plugins' screen")),
@@ -108,10 +102,6 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self.onChangedEntry = []
 		self["list"].onSelectionChanged.append(self.selectionChanged)
 		self.onLayoutFinish.append(self.saveListsize)
-
-	def openSetup(self):
-		from Screens.Setup import Setup
-		self.session.open(Setup, "pluginbrowsersetup")
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and (not config.ParentalControl.config_sections.main_menu.value or hasattr(self.session, 'infobar') and self.session.infobar is None) and config.ParentalControl.config_sections.plugin_browser.value
@@ -270,9 +260,8 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 			config.misc.pluginbrowser.po.value = False
 			self.setTitle(_("Remove Plugins"))
 
-		self.plugin_prefix_whitelist = tuple([self.PLUGIN_PREFIX + x for x in set(categories).difference({"kernel", "po"}) if getattr(config.misc.pluginbrowser, x).value] + [y for x, y in (("kernel", "kernel-module-"), ("po", "enigma2-locale-")) if getattr(config.misc.pluginbrowser, x).value])
-		self.plugin_suffix_blacklist = tuple(["-dev", "-staticdev", "-dbg", "-doc", "-common", "-meta"] + [f"-{x}" for x in ("src", "po") if not getattr(config.pluginbrowser, x).value])
-
+		self.plugin_prefix_whitelist = ('settings', 'security', 'systemplugins', 'skin', 'drivers', 'display', 'bootlogos', 'picons', 'softcams', 'extensions', 'enigma2-locale-', 'kodi-addon-')
+		self.plugin_suffix_blacklist = ('-dev', '-staticdev', '-dbg', '-doc', '-common', '-meta', '-src', '-po')
 		self.expandableIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expandable-plugins.png"))
 		self.expandedIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expanded-plugins.png"))
 		self.verticallineIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/verticalline-plugins.png"))
@@ -446,13 +435,13 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 				self.doRemove(self.installFinished, self["list"].getCurrent()[0].name + " --force-remove --force-depends")
 
 	def doRemove(self, callback, pkgname):
-		if pkgname.startswith(('kernel-module-', 'enigma2-locale-')):
+		if pkgname.startswith(("kernel-module-", "enigma2-locale-", "kodi-addon-")):
 			self.session.openWithCallback(callback, Console, cmdlist=[self.ipkg_remove + Ipkg.opkgExtraDestinations() + " " + pkgname, "sync"], closeOnSuccess=True)
 		else:
 			self.session.openWithCallback(callback, Console, cmdlist=[self.ipkg_remove + Ipkg.opkgExtraDestinations() + " " + self.PLUGIN_PREFIX + pkgname, "sync"], closeOnSuccess=True)
 
 	def doInstall(self, callback, pkgname):
-		if pkgname.startswith(('kernel-module-', 'enigma2-locale-')):
+		if pkgname.startswith(("kernel-module-", "enigma2-locale-", "kodi-addon-")):
 			self.session.openWithCallback(callback, Console, cmdlist=[self.ipkg_install + " " + pkgname, "sync"], closeOnSuccess=True)
 		else:
 			self.session.openWithCallback(callback, Console, cmdlist=[self.ipkg_install + " " + self.PLUGIN_PREFIX + pkgname, "sync"], closeOnSuccess=True)
@@ -573,7 +562,7 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 
 		for x in lines:
 			plugin = x.split(" - ", 2)
-			if plugin[0] and plugin[0] not in self.installedplugins and plugin[0].startswith(self.plugin_prefix_whitelist) and not plugin[0].endswith(self.plugin_suffix_blacklist):
+			if plugin[0] and plugin[0] not in self.installedplugins and plugin[0].replace(self.PLUGIN_PREFIX, '').startswith(self.plugin_prefix_whitelist) and not plugin[0].endswith(self.plugin_suffix_blacklist):
 				if self.run == 1 and self.type == self.DOWNLOAD:
 					self.installedplugins.append(plugin[0])
 				else:
@@ -586,7 +575,11 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 								plugin.append(lang[2])
 						else:  # 'opkg list_installed' only returns name + version, no description field, so append an empty description
 							plugin.append('')
-					plugin.append(plugin[0][15:])
+
+					if plugin[0].startswith("kodi-addon-"):
+						plugin.append(plugin[0])
+					else:
+						plugin.append(plugin[0][15:])
 					self.pluginlist.append(plugin)
 		self.pluginlist.sort()
 
@@ -605,6 +598,8 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 				split[0] = "kernel modules"
 			elif x[0][0:15] == 'enigma2-locale-':
 				split[0] = "languages"
+			elif x[0][0:10] == "kodi-addon":
+				split[0] = "kodi addon"
 
 			if split[0] not in self.plugins:
 				self.plugins[split[0]] = []

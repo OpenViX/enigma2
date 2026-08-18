@@ -541,10 +541,6 @@
 		<item level="2" text="Blue button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_blue</item>
 		<item level="2" text="Blue button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_bluelong</item>
 	</setup>
-	<setup key="pluginbrowsersetup" title="Plugin browser settings">
-		<item level="2" text="Show translation packages" description="If set to 'yes' it will show the 'PO' packages in browser.">config.pluginbrowser.po</item>
-		<item level="2" text="Show source packages" description="If set to 'yes' it will show the 'SRC' packages in browser.">config.pluginbrowser.src</item>
-	</setup>
 	<setup key="wizardoptions" title="Common options">
 		<item level="0" text="Picons: Show in channel list" description="Configure if service picons will be shown in the channel selection list.">config.usage.service_icon_enable</item>
 	</setup>
