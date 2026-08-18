@@ -124,25 +124,25 @@ class FileList(MenuList):
 		self.mountpoints = [path.join(p.mountpoint, "") for p in harddiskmanager.getMountedPartitions()]
 		self.mountpoints.sort(reverse=True)
 
-	def getMountpoint(self, file):
-		file = path.join(path.realpath(file), "")
+	def getMountpoint(self, directory):
+		directory = path.join(path.realpath(directory), "")
 		for m in self.mountpoints:
-			if file.startswith(m):
+			if directory.startswith(m):
 				return m
 		return False
 
-	def getMountpointLink(self, file):
-		if path.realpath(file) == file:
-			return self.getMountpoint(file)
+	def getMountpointLink(self, directory):
+		if path.realpath(directory) == directory:
+			return self.getMountpoint(directory)
 		else:
-			if file[-1] == "/":
-				file = file[:-1]
-			mp = self.getMountpoint(file)
-			last = file
-			file = path.dirname(file)
-			while last != "/" and mp == self.getMountpoint(file):
-				last = file
-				file = path.dirname(file)
+			if directory[-1] == "/":
+				directory = directory[:-1]
+			mp = self.getMountpoint(directory)
+			last = directory
+			directory = path.dirname(directory)
+			while last != "/" and mp == self.getMountpoint(directory):
+				last = directory
+				directory = path.dirname(directory)
 			return path.join(last, "")
 
 	def getSelection(self):
