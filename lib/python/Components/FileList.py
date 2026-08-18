@@ -216,15 +216,15 @@ class FileList(MenuList):
 				files.sort()
 				tmpfiles = files[:]
 				for x in tmpfiles:
-					if path.isdir(directory + x):
-						directories.append(directory + x + "/")
+					if path.isdir(path.join(directory, x)):
+						directories.append(path.join(directory, x, ""))
 						files.remove(x)
 
 		if directory is not None and self.showDirectories and not self.isTop:
 			if directory == self.current_mountpoint and self.showMountpoints:
 				self.list.append(FileEntryComponent(name="<" + _("List of storage devices") + ">", absolute=None, isDir=True))
 			elif (directory != "/") and not (self.inhibitMounts and self.getMountpoint(directory) in self.inhibitMounts):
-				self.list.append(FileEntryComponent(name="<" + _("Parent directory") + ">", absolute="/".join(directory.split("/")[:-2]) + "/", isDir=True))
+				self.list.append(FileEntryComponent(name="<" + _("Parent directory") + ">", absolute=path.join(path.dirname(path.normpath(directory)), ""), isDir=True))
 
 		if self.showDirectories:
 			for x in directories:
@@ -238,7 +238,7 @@ class FileList(MenuList):
 					showPath = x.getPath()
 					name = showPath.split("/")[-1]
 				else:
-					showPath = directory + x
+					showPath = path.join(directory, x)
 					name = x
 
 				if (self.matchingPattern is None) or self.matchingPattern.search(showPath):
@@ -372,7 +372,7 @@ class MultiFileSelectList(FileList):
 				if x[0][1] is True:
 					realPathname = x[0][0]
 				else:
-					realPathname = self.current_directory + x[0][0]
+					realPathname = path.join(self.current_directory, x[0][0])
 				if x[0][2]:
 					SelectState = False
 					try:
@@ -447,15 +447,15 @@ class MultiFileSelectList(FileList):
 				files.sort()
 				tmpfiles = files[:]
 				for x in tmpfiles:
-					if path.isdir(directory + x):
-						directories.append(directory + x + "/")
+					if path.isdir(path.join(directory, x)):
+						directories.append(path.join(directory, x, ""))
 						files.remove(x)
 
 		if directory is not None and self.showDirectories and not self.isTop:
 			if directory == self.current_mountpoint and self.showMountpoints:
 				self.list.append(MultiFileSelectEntryComponent(name="<" + _("List of storage devices") + ">", absolute=None, isDir=True))
 			elif (directory != "/") and not (self.inhibitMounts and self.getMountpoint(directory) in self.inhibitMounts):
-				self.list.append(MultiFileSelectEntryComponent(name="<" + _("Parent directory") + ">", absolute="/".join(directory.split("/")[:-2]) + "/", isDir=True))
+				self.list.append(MultiFileSelectEntryComponent(name="<" + _("Parent directory") + ">", absolute=path.join(path.dirname(path.normpath(directory)), ""), isDir=True))
 
 		if self.showDirectories:
 			for x in directories:
@@ -470,7 +470,7 @@ class MultiFileSelectList(FileList):
 					showPath = x.getPath()
 					name = showPath.split("/")[-1]
 				else:
-					showPath = directory + x
+					showPath = path.join(directory, x)
 					name = x
 				if (self.matchingPattern is None) or self.matchingPattern.search(showPath):
 					alreadySelected = False
