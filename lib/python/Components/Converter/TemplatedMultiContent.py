@@ -65,10 +65,10 @@ class TemplatedMultiContent(StringList):
 			fonts.append(gFont(font.family, int(font.pointSize * scaleFactorVertical)))
 		for content in template:
 			elments = list(content)
-			elments[1] = int(elments[1] * scaleFactorVertical)
-			elments[2] = int(elments[2] * scaleFactorHorizontal)
-			elments[3] = int(elments[3] * scaleFactorVertical)
-			elments[4] = int(elments[4] * scaleFactorHorizontal)
+			elments[1] = int(elments[1] * scaleFactorHorizontal)  # pos_x
+			elments[2] = int(elments[2] * scaleFactorVertical)  # pos_y
+			elments[3] = int(elments[3] * scaleFactorHorizontal)  # size_x (width)
+			elments[4] = int(elments[4] * scaleFactorVertical)  # size_y (height)
 			scaledtemplate.append(tuple(elments))
 		return scaledtemplate, itemheight, itemwidth, fonts
 
