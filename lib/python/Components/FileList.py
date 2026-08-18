@@ -132,7 +132,7 @@ class FileList(MenuList):
 		return False
 
 	def getMountpointLink(self, directory):
-		if path.realpath(directory) == directory:
+		if path.realpath(directory) == path.normpath(directory):  # not a symlink
 			return self.getMountpoint(directory)
 		else:
 			if directory[-1] == "/":
