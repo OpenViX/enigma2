@@ -2,6 +2,7 @@ from os import path, unlink
 
 from enigma import eConsoleAppContainer, eDVBDB, eTimer
 
+import skin
 from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigText
@@ -12,6 +13,7 @@ from Components.Language import language
 from Components.OnlineUpdateCheck import feedsstatuscheck, kernelMismatch
 from Components.PluginComponent import plugins
 from Components.PluginList import PluginList, PluginEntryComponent, PluginCategoryComponent, PluginDownloadComponent
+from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo, DISPLAYBRAND, MACHINENAME
 from Plugins.Plugin import PluginDescriptor
@@ -55,6 +57,32 @@ class PluginBrowserSummary(ScreenSummary):
 
 
 class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
+	# Fallback layout, only used if no skin defines a "PluginBrowser" screen at all (grid of plugin tiles).
+	# Old skins with <widget name="list" .../> keep using the classic PluginList (vertical, GUIComponent-bound).
+	# New skins can opt into the grid layout by binding "list" as a source instead:
+	# <widget source="list" render="Listbox"><convert type="TemplatedMultiContent">{"orientation": "orGrid", ...}</convert></widget>
+	# __init__ inspects skin.domScreens to see which style the resolved skin actually uses. See usesTemplatedList().
+	skin = """
+		<screen name="PluginBrowser" position="center,center" size="1200,700">
+			<widget name="key_red" position="0,0" size="300,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" foregroundColor="#ffffff" transparent="0" />
+			<widget name="key_green" position="300,0" size="300,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" foregroundColor="#ffffff" transparent="0" />
+			<widget name="key_yellow" position="600,0" size="300,40" zPosition="1" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" foregroundColor="#ffffff" transparent="0" />
+			<widget source="list" render="Listbox" position="0,50" size="1200,650" scrollbarMode="showOnDemand">
+				<convert type="TemplatedMultiContent">
+				{
+					"template": [
+						MultiContentEntryPixmapAlphaBlend(pos = (60, 8), size = (80, 40), png = 3, flags = BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER),
+						MultiContentEntryText(pos = (5, 52), size = (190, 44), font = 0, flags = RT_HALIGN_CENTER | RT_VALIGN_TOP | RT_WRAP, text = 1),
+					],
+					"fonts": [gFont("Regular", 18)],
+					"itemHeight": 100,
+					"itemWidth": 200,
+					"orientation": "orGrid",
+				}
+				</convert>
+			</widget>
+		</screen>"""
+
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Plugin Browser"))
@@ -71,7 +99,8 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self["key_next"] = StaticText(_("NEXT"))
 
 		self.list = []
-		self["list"] = PluginList(self.list)
+		self.templatedMode = self.usesTemplatedList()
+		self["list"] = List([], enableWrapAround=True) if self.templatedMode else PluginList(self.list)
 		if config.usage.sort_pluginlist.value:
 			self["list"].list.sort()
 
@@ -101,7 +130,36 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self.onShown.append(self.updateList)
 		self.onChangedEntry = []
 		self["list"].onSelectionChanged.append(self.selectionChanged)
-		self.onLayoutFinish.append(self.saveListsize)
+		if not self.templatedMode:
+			self.onLayoutFinish.append(self.saveListsize)
+
+	def usesTemplatedList(self):
+		# Look at the skin XML actually resolved for this screen (without applying it) to decide
+		# whether "list" is bound the old way (name="list", classic PluginList) or the new way
+		# (source="list", grid-capable TemplatedMultiContent). Falls back to grid mode (True) only
+		# when no skin defines this screen at all, matching the embedded fallback skin above.
+		names = self.skinName if isinstance(self.skinName, list) else [self.skinName]
+		for name in names:
+			element = skin.domScreens.get(name, (None, None))[0]
+			if element is not None:
+				found = self.findListBinding(element)
+				return found if found is not None else False
+		return True
+
+	def findListBinding(self, element):
+		for widget in element.findall("widget"):
+			if widget.get("name") == "list":
+				return False
+			if widget.get("source") == "list":
+				return True
+		for panel in element.findall("panel"):
+			pname = panel.get("name")
+			sub = skin.domScreens.get(pname, (None, None))[0] if pname else panel
+			if sub is not None:
+				found = self.findListBinding(sub)
+				if found is not None:
+					return found
+		return None
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and (not config.ParentalControl.config_sections.main_menu.value or hasattr(self.session, 'infobar') and self.session.infobar is None) and config.ParentalControl.config_sections.plugin_browser.value
@@ -162,7 +220,7 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 				self.resetNumberKey()
 
 	def okbuttonClick(self):
-		self["list"].moveToIndex(self.number - 1)
+		self["list"].index = self.number - 1
 		self.resetNumberKey()
 		self.run()
 
@@ -197,15 +255,21 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 			config.misc.pluginbrowser.plugin_order.value = ",".join(plugin_order)
 			config.misc.pluginbrowser.plugin_order.save()
 
+	def pluginEntry(self, plugin):
+		if self.templatedMode:
+			icon = plugin.icon or LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/plugin.png"))
+			return (plugin, plugin.name, plugin.description, icon)
+		return PluginEntryComponent(plugin, self.listWidth)
+
 	def updateList(self):
 		self.list = []
 		pluginlist = plugins.getPlugins(PluginDescriptor.WHERE_PLUGINMENU)[:]
 		for x in config.misc.pluginbrowser.plugin_order.value.split(","):
 			plugin = list(plugin for plugin in pluginlist if plugin.path[24:] == x)
 			if plugin:
-				self.list.append(PluginEntryComponent(plugin[0], self.listWidth))
+				self.list.append(self.pluginEntry(plugin[0]))
 				pluginlist.remove(plugin[0])
-		self.list = self.list + [PluginEntryComponent(plugin, self.listWidth) for plugin in pluginlist]
+		self.list = self.list + [self.pluginEntry(plugin) for plugin in pluginlist]
 		self["list"].setList(self.list)
 
 	def delete(self):
