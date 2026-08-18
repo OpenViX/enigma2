@@ -158,10 +158,11 @@ class FileList(MenuList):
 	def getFileList(self):
 		return self.list
 
-	def inParentDirs(self, dir, parents):
-		dir = path.realpath(dir)
-		for p in parents:
-			if dir.startswith(p):
+	def inParentDirs(self, directory, parents):
+		directory = path.realpath(directory)
+		for parent in parents:
+			parent = path.realpath(parent)
+			if path.commonpath((directory, parent)) == parent:
 				return True
 		return False
 
