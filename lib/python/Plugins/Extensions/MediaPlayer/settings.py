@@ -66,16 +66,16 @@ class MediaPlayerSettings(Setup):
 
 	def createSetup(self):
 		clist = [
-			(_("repeat playlist"), config.mediaplayer.repeat),
-			(_("save playlist on exit"), config.mediaplayer.savePlaylistOnExit),
-			(_("save last directory on exit"), config.mediaplayer.saveDirOnExit),
+			(_("Repeat playlist"), config.mediaplayer.repeat, _("When the playlist comes to the end, continue playing, starting with the first item in the playlist.")),
+			(_("Save playlist on exit"), config.mediaplayer.savePlaylistOnExit, _("Retains the playlist for the next time MediaPlayer is used.")),
+			(_("Save last directory on exit"), config.mediaplayer.saveDirOnExit, _("Remembers the current directory location for the next time MediaPlayer is opened.")),
 		]
 		if not config.mediaplayer.saveDirOnExit.value:
-			clist.append((_("default directory"), config.mediaplayer.defaultDir))
+			clist.append((_("Default directory"), config.mediaplayer.defaultDir, _("The default directory is used as the initial filelist location when opening MediaPlayer.")))
 		clist += [
-			(_("sorting of playlists"), config.mediaplayer.sortPlaylists),
-			(_("Always hide infobar"), config.mediaplayer.alwaysHideInfoBar),
-			(_("show mediaplayer on mainmenu"), config.mediaplayer.onMainMenu),
+			(_("Sorting of playlists"), config.mediaplayer.sortPlaylists, _("Sorts stored playlists alphabetically before loading them")),
+			(_("Always hide infobar"), config.mediaplayer.alwaysHideInfoBar, _("Automatically hides the infobar a few second after video playback starts.")),
+			(_("Show MediaPlayer in the main menu"), config.mediaplayer.onMainMenu, _("Places a shortcut to MediaPlayer in the main menu.")),
 		]
 		self["config"].list = clist
 
