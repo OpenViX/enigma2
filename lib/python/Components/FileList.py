@@ -88,8 +88,8 @@ def FileEntryComponent(name, absolute=None, isDir=False):
 class FileList(MenuList):
 	def __init__(self, directory, showDirectories=True, showFiles=True, showMountpoints=True, matchingPattern=None, useServiceRef=False, inhibitDirs=False, inhibitMounts=False, isTop=False, enableWrapAround=False, additionalExtensions=None):
 		if directory is not None:
-			# This module expects "directory" to be an absolute path 
-			# terminated with a trailing slash. Enforce that here. 
+			# This module expects "directory" to be an absolute path
+			# terminated with a trailing slash. Enforce that here.
 			if path.isabs(directory):
 				directory = path.join(path.normpath(directory), "")
 			else:
@@ -342,8 +342,8 @@ def MultiFileSelectEntryComponent(name, absolute=None, isDir=False, selected=Fal
 class MultiFileSelectList(FileList):
 	def __init__(self, preselectedFiles, directory, showMountpoints=False, matchingPattern=None, showDirectories=True, showFiles=True, useServiceRef=False, inhibitDirs=False, inhibitMounts=False, isTop=False, enableWrapAround=False, additionalExtensions=None):
 		if directory is not None:
-			# This module expects "directory" to be an absolute path 
-			# terminated with a trailing slash. Enforce that here. 
+			# This module expects "directory" to be an absolute path
+			# terminated with a trailing slash. Enforce that here.
 			if path.isabs(directory):
 				directory = path.join(path.normpath(directory), "")
 			else:
