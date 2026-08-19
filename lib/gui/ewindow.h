@@ -25,6 +25,7 @@ public:
 	void setBackgroundColor(const gRGB &col) override;
 	void setBackgroundGradient(const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend);
 	void setCornerRadius(int radius, uint8_t edges);
+	void setWidgetAlphaBlend(bool blend) override;
 
 	void setFlag(int flags);
 	void clearFlag(int flags);

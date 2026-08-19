@@ -80,8 +80,8 @@ public:
 	void setMargins(const eRect& value) { m_margins = value; }
 private:
 	ePtrList<eWidget> m_root;
-	void calcWidgetClipRegion(eWidget *widget, gRegion &parent_visible, bool parent = true);
-	void paintBackground(eWidgetDesktopCompBuffer *comp);
+	void calcWidgetClipRegion(eWidget *widget, gRegion &parent_visible);
+	void paintBackground(eWidgetDesktopCompBuffer *comp, bool clearDirty = true);
 
 	eMainloop *m_mainloop;
 	ePtr<eTimer> m_timer;

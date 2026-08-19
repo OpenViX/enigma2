@@ -170,3 +170,13 @@ void eWindow::setCornerRadius(int radius, uint8_t edges)
 	eWidget::setCornerRadius(radius, edges);
 	m_child->setCornerRadius(radius, edges);
 }
+
+void eWindow::setWidgetAlphaBlend(bool blend)
+{
+	/* set alphablend for child, too -- the window itself only ever paints its
+	   border/title decoration (see event(evtPaint)), the actual background is
+	   painted by m_child, so it needs to alphablend as well for a screen-level
+	   alphaBlend skin attribute to have any visible effect. */
+	eWidget::setWidgetAlphaBlend(blend);
+	m_child->setWidgetAlphaBlend(blend);
+}
