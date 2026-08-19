@@ -38,7 +38,7 @@ class DirectoryBrowser(Screen, HelpableScreen):
 				"ok": self.ok,
 				"cancel": self.exit
 			})
-		self.title_= title if title else _("Directory browser")
+		self.title_ = title if title else _("Directory browser")
 
 	def ok(self):
 		if self["filelist"].canDescent():
