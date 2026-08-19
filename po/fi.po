@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-05 04:58+0300\n"
-"PO-Revision-Date: 2026-08-05 07:54+0300\n"
+"POT-Creation-Date: 2026-08-19 12:03+0300\n"
+"PO-Revision-Date: 2026-08-19 14:15+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2500,6 +2500,9 @@ msgstr "Automaattinen päivitysväli"
 msgid "Automatically created"
 msgstr "Automaattisesti luotu"
 
+msgid "Automatically hides the infobar a few second after video playback starts."
+msgstr "Piilottaa ilmoituspalkin automaattisesti muutaman sekunnin kuluttua videon toiston alkamisesta."
+
 msgid "Automatically put the TV in standby whenever the receiver goes into standby or deep standby."
 msgstr "Pistä TV automaattisesti valmiustilaan, kun vastaanotin menee valmiustilaan tai virransäästötilaan."
 
@@ -4825,6 +4828,9 @@ msgstr "Virransäästötila"
 
 msgid "Default"
 msgstr "Oletus"
+
+msgid "Default directory"
+msgstr "Oletuskansio"
 
 msgid "Default movie location"
 msgstr "Oletushakemisto tallennuksille"
@@ -7689,12 +7695,6 @@ msgstr "Jos asetettu vakioksi, numeronäppäimet sivu ylös/alas/vasemmalle/oike
 msgid "If set to 'yes' channels without EPG will not be shown."
 msgstr "'Kyllä' valinnalla kanavia ilman EPG:tä ei näytetä."
 
-msgid "If set to 'yes' it will show the 'PO' packages in browser."
-msgstr "'Kyllä' valinnalla näkyy 'PO'-ohjelmapaketit luettelossa."
-
-msgid "If set to 'yes' it will show the 'SRC' packages in browser."
-msgstr "'Kyllä' valinnalla näkyy 'SRC'-ohjelmapaketit luettelossa."
-
 msgid "If set to 'yes' shows a small TV screen in the EPG."
 msgstr "'Kyllä' valinnalla näytetään pieni TV-kuva EPG:ssä."
 
@@ -10246,9 +10246,6 @@ msgstr "Avaa 'Asenna lisäosia' -näyttö"
 msgid "Open 'Remove Plugins' screen"
 msgstr "Avaa 'Poista lisäosia' -näyttö"
 
-msgid "Open PluginBrowser setup screen"
-msgstr "Avaa Lisäosa-selaimen asetukset"
-
 msgid "Open RDS/RASS screen"
 msgstr "Avaa RDS/RASS näyttö"
 
@@ -10715,6 +10712,9 @@ msgstr "Pilot"
 msgid "Pitcairn"
 msgstr "Pitcairn"
 
+msgid "Places a shortcut to MediaPlayer in the main menu."
+msgstr "Lisää Mediasoittimen pikakuvakkeen päävalikkoon."
+
 msgid "Play"
 msgstr "Jatka toistoa"
 
@@ -11104,9 +11104,6 @@ msgstr "Lisäosa-selaimen toiminnot"
 
 msgid "Plugin browser"
 msgstr "Lisäosien valinta"
-
-msgid "Plugin browser settings"
-msgstr "Lisäosa-selaimen asetukset"
 
 msgid "Plugin install"
 msgstr "Lisäosan asentaminen"
@@ -11997,6 +11994,9 @@ msgstr "Jäljellä oleva ja kulunut"
 msgid "Remember service PIN"
 msgstr "Muista kanavan PIN"
 
+msgid "Remembers the current directory location for the next time MediaPlayer is opened."
+msgstr "Tallentaa nykyisen hakemiston sijainnin seuraavaa Mediasoittimen avaamista varten."
+
 msgid "Reminder, you have chosen to save timeshift file."
 msgstr "Muistutus, olet valinnut ajansiirron tallennuksen tallenteeksi."
 
@@ -12193,6 +12193,9 @@ msgstr "Kuinka usein toistetaan?"
 msgid "Repeat leave standby messages"
 msgstr "Toista poistu valmiustilasta viestit"
 
+msgid "Repeat playlist"
+msgstr "Toista soittolista"
+
 msgid "Repeat type"
 msgstr "Ajastus toistetaan"
 
@@ -12341,6 +12344,9 @@ msgstr "Jatka kohdasta %s"
 
 msgid "Resuming playback"
 msgstr "Toisto jatkuu viimeksi katsotusta kohdasta"
+
+msgid "Retains the playlist for the next time MediaPlayer is used."
+msgstr "Tallentaa soittolistan seuraavaa Mediasoittimen käyttökertaa varten."
 
 msgid "Retrieving image slots - Please wait..."
 msgstr "Haetaan image-paikkoja, odota..."
@@ -12680,8 +12686,14 @@ msgstr "Tallenna muutokset"
 msgid "Save every (in hours)"
 msgstr "Tallenna joka (tunti)"
 
+msgid "Save last directory on exit"
+msgstr "Tallenna viimeisin hakemisto poistuttaessa"
+
 msgid "Save playlist"
 msgstr "Tallenna soittolista"
+
+msgid "Save playlist on exit"
+msgstr "Tallenna soittolista poistuttaessa"
 
 msgid "Save timer"
 msgstr "Tallenna ajastus"
@@ -13252,6 +13264,9 @@ msgstr "Valitse nykyinen kohde"
 msgid "Select the current menu item"
 msgstr "Valitse nykyinen valikkokohde"
 
+msgid "Select the default initial directory"
+msgstr "Valitse oletushakemisto"
+
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Valitse haluttu toiminto uudelleen sijoitettavaksi painamalla \"OK\"  Vaihda listoja painamalla \"CH+/-\"  Sijoita uudelleen painamalla \"OK\" Käytä \"Seuraava/Edellinen\" näppäimiä vaihtaaksesi toimintojen järjestystä."
 
@@ -13726,9 +13741,6 @@ msgstr "Asetukset, tiedot ja lisää toimintoja"
 msgid "Setup"
 msgstr "Asetukset"
 
-msgid "Setup Actions"
-msgstr "Asetustoiminnot"
-
 msgid "Setup how to control the channel changing."
 msgstr "Määritä kanavanvaihdon toiminta."
 
@@ -13822,6 +13834,9 @@ msgstr "Näytä lokien hallinta laajennusvalikossa?"
 
 msgid "Show Media playback Remaining/Elapsed as *"
 msgstr "Näytä toistettavan median jäljellä oleva/kulunut aika: *"
+
+msgid "Show MediaPlayer in the main menu"
+msgstr "Näytä Mediasoitin päävalikossa"
 
 msgid "Show MiniTV in the Front Display"
 msgstr "Näytä MiniTV etupaneelin näytössä"
@@ -14090,9 +14105,6 @@ msgstr "Näytä yhden kanavan ohjelmaopas"
 msgid "Show single epg for current channel"
 msgstr "Näytä nykyisen kanavan ohjelmatiedot"
 
-msgid "Show source packages"
-msgstr "Näytä source-tiedostojen ohjelmapaketit"
-
 msgid "Show status icons in movie list"
 msgstr "Näytä tilakuvakkeet tallenneluettelossa"
 
@@ -14146,9 +14158,6 @@ msgstr "Näytä jäljellä oleva/kulunut aika *"
 
 msgid "Show timer list"
 msgstr "Näytä ajastusluettelo"
-
-msgid "Show translation packages"
-msgstr "Näytä käännöstiedostojen ohjelmapaketit"
 
 msgid "Show transponder info"
 msgstr "Näytä transponderin tietoja"
@@ -14624,6 +14633,12 @@ msgstr "Asetusvalikot aakkosjärjestyksessä"
 
 msgid "Sort the EPG list"
 msgstr "Järjestä EPG-lista"
+
+msgid "Sorting of playlists"
+msgstr "Soittolistojen lajittelu"
+
+msgid "Sorts stored playlists alphabetically before loading them"
+msgstr "Lajittelee tallennetut soittolistat aakkosjärjestykseen ennen niiden lataamista"
 
 msgid "Soul/Rhythm Blues"
 msgstr "Soul/Rhythm Blues"
@@ -15252,7 +15267,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 05.08.2026 ---\n"
+"--- 19.08.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -15535,6 +15550,9 @@ msgstr "Lokia ei voi nyt noutaa, ole hyvä ja yritä myöhemmin uudelleen.\n"
 
 msgid "The current update may be unstable."
 msgstr "Nykyinen päivitys voi olla epästabiili."
+
+msgid "The default directory is used as the initial filelist location when opening MediaPlayer."
+msgstr "Oletushakemistoa käytetään tiedostoluettelon alkuperäisenä sijaintina, kun Mediasoitin avataan."
 
 #, python-format
 msgid "The directory %s already exists."
@@ -17566,6 +17584,9 @@ msgstr "Kun ohjelman kuvasuhde on 16:9, valitse skaalataanko/venytetäänkö kuv
 msgid "When the content has an aspect ratio of 4:3, choose whether to scale/stretch the picture."
 msgstr "Kun ohjelman kuvasuhde on 4:3, valitse skaalataanko/venytetäänkö kuvaa."
 
+msgid "When the playlist comes to the end, continue playing, starting with the first item in the playlist."
+msgstr "Kun soittolista päättyy, jatka toistoa aloittamalla soittolistan ensimmäisestä kohteesta."
+
 msgid "When the receiver wakes from standby, it will send a command to the TV to bring it out of standby too."
 msgstr "Kun vastaanotin herää valmiustilasta, se lähettää TV:lle komennon myös sen herättämiseksi valmiustilasta."
 
@@ -19104,9 +19125,6 @@ msgstr "nimeä tämä tiedosto uudelleen muotoon 'force' pakottaaksesi päivityk
 msgid "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
 msgstr "nimeä tämä unforce_%s.txt uudelleen tiedostoksi force_%s.txt pakottaaksesi päivityksen ilman vahvistusta"
 
-msgid "repeat playlist"
-msgstr "Toista soittolista"
-
 msgid "repeated"
 msgstr "Useita kertoja"
 
@@ -19142,12 +19160,6 @@ msgstr "moottori ei käytössä"
 
 msgid "running..."
 msgstr "Käynnissä..."
-
-msgid "save last directory on exit"
-msgstr "Tallenna viimeisin hakemisto suljettaessa"
-
-msgid "save playlist on exit"
-msgstr "Tallenna soittolista suljettaessa"
 
 msgid "scan state"
 msgstr "Haun tila"
@@ -19224,9 +19236,6 @@ msgstr "Näytä kortit jossa ylöshyppy 9"
 msgid "show event details"
 msgstr "Näytä ohjelman tarkemmat tiedot"
 
-msgid "show mediaplayer on mainmenu"
-msgstr "Näytä mediatoistin päävalikossa"
-
 msgid "show/game show (general)"
 msgstr "show/visailu (yleinen)"
 
@@ -19271,9 +19280,6 @@ msgstr "sosiaalinen/hengellinen tiede"
 
 msgid "softcam"
 msgstr "Softcam"
-
-msgid "sorting of playlists"
-msgstr "soittolistojen järjestys"
 
 msgid "special (general)"
 msgstr "Erikois (yleinen)"
