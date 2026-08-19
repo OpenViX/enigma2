@@ -29,8 +29,7 @@ class DirectoryBrowser(Screen, HelpableScreen):
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Use"))
 
-		self.filelist = FileList(currDir, matchingPattern="")
-		self["filelist"] = self.filelist
+		self["filelist"] = FileList(currDir, matchingPattern="")
 
 		self["FilelistActions"] = ActionMap(["SetupActions", "ColorActions"],
 			{
@@ -42,13 +41,13 @@ class DirectoryBrowser(Screen, HelpableScreen):
 		self.title_= title if title else _("Directory browser")
 
 	def ok(self):
-		if self.filelist.canDescent():
-			self.filelist.descent()
+		if self["filelist"].canDescent():
+			self["filelist"].descent()
 
 	def use(self):
 		if self["filelist"].getCurrentDirectory() is not None:
-			if self.filelist.canDescent() and self["filelist"].getFilename() and len(self["filelist"].getFilename()) > len(self["filelist"].getCurrentDirectory()):
-				self.filelist.descent()
+			if self["filelist"].canDescent() and self["filelist"].getFilename() and len(self["filelist"].getFilename()) > len(self["filelist"].getCurrentDirectory()):
+				self["filelist"].descent()
 				self.close(self["filelist"].getCurrentDirectory())
 		else:
 			self.close(self["filelist"].getFilename())
@@ -81,7 +80,7 @@ class MediaPlayerSettings(Setup):
 
 	def keySelect(self):
 		if self["config"].getCurrent()[1] == config.mediaplayer.defaultDir:
-			self.session.openWithCallback(self.DirectoryBrowserClosed, DirectoryBrowser, self.mediaplayer.filelist.getCurrentDirectory(), _("Select the default initial directory"))
+			self.session.openWithCallback(self.DirectoryBrowserClosed, DirectoryBrowser, self.mediaplayer["filelist"].getCurrentDirectory(), _("Select the default initial directory"))
 		else:
 			Setup.keySelect(self)
 
