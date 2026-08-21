@@ -2,6 +2,7 @@ from os import path, unlink
 
 from enigma import eConsoleAppContainer, eDVBDB, eTimer
 
+import skin
 from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
 from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigText
@@ -12,6 +13,7 @@ from Components.Language import language
 from Components.OnlineUpdateCheck import feedsstatuscheck, kernelMismatch
 from Components.PluginComponent import plugins
 from Components.PluginList import PluginList, PluginEntryComponent, PluginCategoryComponent, PluginDownloadComponent
+from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.SystemInfo import SystemInfo, DISPLAYBRAND, MACHINENAME
 from Plugins.Plugin import PluginDescriptor
@@ -55,6 +57,11 @@ class PluginBrowserSummary(ScreenSummary):
 
 
 class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
+	# Old skins with <widget name="list" .../> continue using the classic PluginList (vertical, GUIComponent-bound).
+	# New skins can opt to use the grid layout by binding "list" as a source instead:
+	# <widget source="list" render="Listbox"><convert type="TemplatedMultiContent">{"orientation": "orGrid", ...}</convert></widget>
+	# __init__ inspects skin.domScreens to see which style the resolved skin actually uses. See usesTemplatedList().
+
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("Plugin Browser"))
@@ -71,7 +78,8 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self["key_next"] = StaticText(_("NEXT"))
 
 		self.list = []
-		self["list"] = PluginList(self.list)
+		self.templatedMode = self.usesTemplatedList()
+		self["list"] = List([], enableWrapAround=True) if self.templatedMode else PluginList(self.list)
 		if config.usage.sort_pluginlist.value:
 			self["list"].list.sort()
 
@@ -101,7 +109,8 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self.onShown.append(self.updateList)
 		self.onChangedEntry = []
 		self["list"].onSelectionChanged.append(self.selectionChanged)
-		self.onLayoutFinish.append(self.saveListsize)
+		if not self.templatedMode:
+			self.onLayoutFinish.append(self.saveListsize)
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and (not config.ParentalControl.config_sections.main_menu.value or hasattr(self.session, 'infobar') and self.session.infobar is None) and config.ParentalControl.config_sections.plugin_browser.value
@@ -162,7 +171,7 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 				self.resetNumberKey()
 
 	def okbuttonClick(self):
-		self["list"].moveToIndex(self.number - 1)
+		self["list"].index = self.number - 1
 		self.resetNumberKey()
 		self.run()
 
@@ -197,15 +206,21 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 			config.misc.pluginbrowser.plugin_order.value = ",".join(plugin_order)
 			config.misc.pluginbrowser.plugin_order.save()
 
+	def pluginEntry(self, plugin):
+		if self.templatedMode:
+			icon = plugin.icon or LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/plugin.png"))
+			return (plugin, plugin.name, plugin.description, icon)
+		return PluginEntryComponent(plugin, self.listWidth)
+
 	def updateList(self):
 		self.list = []
 		pluginlist = plugins.getPlugins(PluginDescriptor.WHERE_PLUGINMENU)[:]
 		for x in config.misc.pluginbrowser.plugin_order.value.split(","):
 			plugin = list(plugin for plugin in pluginlist if plugin.path[24:] == x)
 			if plugin:
-				self.list.append(PluginEntryComponent(plugin[0], self.listWidth))
+				self.list.append(self.pluginEntry(plugin[0]))
 				pluginlist.remove(plugin[0])
-		self.list = self.list + [PluginEntryComponent(plugin, self.listWidth) for plugin in pluginlist]
+		self.list = self.list + [self.pluginEntry(plugin) for plugin in pluginlist]
 		self["list"].setList(self.list)
 
 	def delete(self):
@@ -235,6 +250,33 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 	def userInstalledPlugins(self):
 		from Screens.About import AboutUserInstalledPlugins
 		self.session.open(AboutUserInstalledPlugins)
+
+	def usesTemplatedList(self):
+		# Inspect the skin XML actually resolved for this screen (without applying it) to decide
+		# whether "list" is bound the old way (name="list", classic PluginList) or the new way
+		# (source="list", grid-capable TemplatedMultiContent).
+		names = self.skinName if isinstance(self.skinName, list) else [self.skinName]
+		for name in names:
+			element = skin.domScreens.get(name, (None, None))[0]
+			if element is not None:
+				found = self.findListBinding(element)
+				return found if found is not None else False
+		return False  # We should never arrive here, as emergency skin has PluginBrowser for sure.
+
+	def findListBinding(self, element):
+		for widget in element.findall("widget"):
+			if widget.get("name") == "list":
+				return False
+			if widget.get("source") == "list":
+				return True
+		for panel in element.findall("panel"):
+			pname = panel.get("name")
+			sub = skin.domScreens.get(pname, (None, None))[0] if pname else panel
+			if sub is not None:
+				found = self.findListBinding(sub)
+				if found is not None:
+					return found
+		return None
 
 
 class PluginDownloadBrowser(Screen, HelpableScreen):
