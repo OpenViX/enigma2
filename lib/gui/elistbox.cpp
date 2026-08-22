@@ -481,7 +481,7 @@ void eListbox::moveSelection(long dir)
 			break;
 		case pageUp:
 		case prevPage: {
-			if (m_enabled_wrap_around && oldsel == 0)
+			if (m_orientation == orHorizontal && m_enabled_wrap_around && oldsel == 0)
 			{
 				// already at the first entry, wrap around to the last selectable entry
 				m_content->cursorEnd();
@@ -534,7 +534,7 @@ void eListbox::moveSelection(long dir)
 		}
 		case pageDown:
 		case nextPage: {
-			if (m_enabled_wrap_around && oldsel == m_content->size() - 1)
+			if (m_orientation == orHorizontal && m_enabled_wrap_around && oldsel == m_content->size() - 1)
 			{
 				// already at the last entry, wrap around to the first selectable entry
 				m_content->cursorHome();
