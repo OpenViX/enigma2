@@ -948,10 +948,9 @@ int eListbox::event(int event, void *data, void *data2)
 					gRegion entry_clip_rect = paint_region & entryrect;
 					if (!entry_clip_rect.empty())
 					{
-						if (m_content->cursorValid())
-						{
-							m_content->paint(painter, *style, ePoint(posx, posy), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
-						}
+						// always paint, even for out-of-range cursors (e.g. a ragged last row),
+						// so the content clears stale/selected pixels left over from a previous entry
+						m_content->paint(painter, *style, ePoint(posx, posy), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
 					}
 					m_content->cursorMove(+1);
 				}
