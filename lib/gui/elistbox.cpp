@@ -297,30 +297,31 @@ void eListbox::moveSelection(long dir)
 				}
 				else
 				{
+					// Move left within the current row, wrapping to the row's last column if enabled
+					int rowStart = oldsel - oldColumn;
+					int rowEnd = rowStart + m_max_columns - 1;
+					if (rowEnd > m_content->size() - 1)
+						rowEnd = m_content->size() - 1;
 					int current = oldsel;
-					bool isFirstInRow = current % m_max_columns == 0;
-					
+
 					do
 					{
-						if (isFirstInRow) break;
-						m_content->cursorMove(-1);
-						newsel = m_content->cursorGet();
-						if (newsel == prevsel) {  // cursorMove reached top and left cursor position the same. Must wrap around ?
-							if (m_enabled_wrap_around)
+						--current;
+						if (current < rowStart)
+						{
+							if (!m_enabled_wrap_around)
 							{
-								m_content->cursorEnd();
-								m_content->cursorMove(-1);
-								newsel = m_content->cursorGet();
-							}
-							else
-							{
-								m_content->cursorSet(oldsel);
+								current = oldsel;
+								m_content->cursorSet(current);
 								break;
 							}
+							current = rowEnd;
 						}
-						prevsel = newsel;
+						m_content->cursorSet(current);
 					}
-					while (newsel != oldsel && !m_content->currentCursorSelectable());
+					while (current != oldsel && !m_content->currentCursorSelectable());
+
+					newsel = m_content->cursorGet();
 				}
 			}
 			else
@@ -434,23 +435,31 @@ void eListbox::moveSelection(long dir)
 				}
 				else
 				{
+					// Move right within the current row, wrapping to the row's first column if enabled
+					int rowStart = oldsel - oldColumn;
+					int rowEnd = rowStart + m_max_columns - 1;
+					if (rowEnd > m_content->size() - 1)
+						rowEnd = m_content->size() - 1;
 					int current = oldsel;
+
 					do
 					{
-						current += 1;
-						bool isLastColumn = (current % m_max_columns) == 0;
-						if (isLastColumn)
-							break;
-						m_content->cursorMove(1);
-						if (!m_content->cursorValid()) { //cursorMove reached end and left cursor position past the list. Must wrap around ?
-							if (m_enabled_wrap_around)
-								m_content->cursorHome();
-							else
-								m_content->cursorSet(oldsel);
+						++current;
+						if (current > rowEnd)
+						{
+							if (!m_enabled_wrap_around)
+							{
+								current = oldsel;
+								m_content->cursorSet(current);
+								break;
+							}
+							current = rowStart;
 						}
-						newsel = m_content->cursorGet();
+						m_content->cursorSet(current);
 					}
-					while (newsel != oldsel && !m_content->currentCursorSelectable());
+					while (current != oldsel && !m_content->currentCursorSelectable());
+
+					newsel = m_content->cursorGet();
 				}
 
 			}
@@ -472,6 +481,19 @@ void eListbox::moveSelection(long dir)
 			break;
 		case pageUp:
 		case prevPage: {
+			if (m_enabled_wrap_around && oldsel < m_items_per_page)
+			{
+				// already on the first page, wrap around to the last selectable entry
+				m_content->cursorEnd();
+				m_content->cursorMove(-1);
+				newsel = m_content->cursorGet();
+				while (newsel != oldsel && !m_content->currentCursorSelectable())
+				{
+					m_content->cursorMove(-1);
+					newsel = m_content->cursorGet();
+				}
+				break;
+			}
 			int pageind;
 			do
 			{
@@ -512,6 +534,18 @@ void eListbox::moveSelection(long dir)
 		}
 		case pageDown:
 		case nextPage: {
+			if (m_enabled_wrap_around && oldsel >= ((m_content->size() - 1) / m_items_per_page) * m_items_per_page)
+			{
+				// already on the last page, wrap around to the first selectable entry
+				m_content->cursorHome();
+				newsel = m_content->cursorGet();
+				while (newsel != oldsel && !m_content->currentCursorSelectable())
+				{
+					m_content->cursorMove(1);
+					newsel = m_content->cursorGet();
+				}
+				break;
+			}
 			int pageind;
 			do
 			{
