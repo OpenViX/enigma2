@@ -104,7 +104,7 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self.number = 0
 		self.nextNumberTimer = eTimer()
 		self.nextNumberTimer.callback.append(self.okbuttonClick)
-		
+
 		self.default_icon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/plugin.png"))
 
 		self.onFirstExecBegin.append(self.checkWarnings)
