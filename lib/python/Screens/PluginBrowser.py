@@ -104,6 +104,8 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self.number = 0
 		self.nextNumberTimer = eTimer()
 		self.nextNumberTimer.callback.append(self.okbuttonClick)
+		
+		self.default_icon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/plugin.png"))
 
 		self.onFirstExecBegin.append(self.checkWarnings)
 		self.onShown.append(self.updateList)
@@ -208,8 +210,7 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 
 	def pluginEntry(self, plugin):
 		if self.templatedMode:
-			icon = plugin.icon or LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/plugin.png"))
-			return (plugin, plugin.name, plugin.description, icon)
+			return (plugin, plugin.name, plugin.description, plugin.icon or self.default_icon)
 		return PluginEntryComponent(plugin, self.listWidth)
 
 	def updateList(self):
