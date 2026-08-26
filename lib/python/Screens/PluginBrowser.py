@@ -284,7 +284,7 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 	PLUGIN_PREFIX = 'enigma2-plugin-'
 	lastDownloadDate = None
 
-	def __init__(self, session, type=0, needupdate=True, skin_name=None):
+	def __init__(self, session, type=DOWNLOAD, needupdate=True, skin_name=None, prefix_whitelist=None):
 		Screen.__init__(self, session)
 		HelpableScreen.__init__(self)
 		self.type = type
@@ -299,7 +299,7 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 			self.setTitle(_("Remove Plugins"))
 
 		categories = ("bootlogos", "display", "drivers", "extensions", "picons", "security", "settings", "skin", "softcams", "systemplugins")
-		self.plugin_prefix_whitelist = tuple([self.PLUGIN_PREFIX + x + "-" for x in categories])
+		self.plugin_prefix_whitelist = tuple(prefix_whitelist) if prefix_whitelist else tuple([self.PLUGIN_PREFIX + x + "-" for x in categories])
 		self.plugin_suffix_blacklist = ('-dev', '-staticdev', '-dbg', '-doc', '-common', '-meta', '-src', '-po')
 		self.expandableIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expandable-plugins.png"))
 		self.expandedIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expanded-plugins.png"))
