@@ -9,6 +9,7 @@ from Components.Pixmap import Pixmap
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Screens.MessageBox import MessageBox
+from Screens.PluginBrowser import PluginDownloadBrowser
 from Screens.Rc import Rc
 from Screens.Standby import TryQuitMainloop
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
@@ -190,8 +191,7 @@ class LanguageSelection(Screen):
 		self["languages"].list = list
 
 	def installLanguage(self):
-		from Screens.PluginBrowser import PluginDownloadBrowser
-		self.session.openWithCallback(self.update_after_installLanguage, PluginDownloadBrowser, 0)
+		self.session.openWithCallback(self.update_after_installLanguage, LanguageDownloadBrowser)
 
 	def update_after_installLanguage(self, retval=None):
 		language.InitLang()
@@ -203,6 +203,14 @@ class LanguageSelection(Screen):
 
 	def createSummary(self):
 		return LanguageSelectionSummary
+
+
+class LanguageDownloadBrowser(PluginDownloadBrowser):
+	def __init__(self, session):
+		PluginDownloadBrowser.__init__(self, session, type=PluginDownloadBrowser.DOWNLOAD, prefix_whitelist=["enigma2-locale-"])
+		self.title = _("Install Languages")
+		del self["actions"].actions["blue"]
+		self["key_blue"].text = ""
 
 
 class LanguageSelectionSummary(ScreenSummary):
