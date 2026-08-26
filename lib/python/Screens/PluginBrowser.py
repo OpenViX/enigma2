@@ -5,7 +5,7 @@ from enigma import eConsoleAppContainer, eDVBDB, eTimer
 import skin
 from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
-from Components.config import config, ConfigSubsection, ConfigYesNo, ConfigText
+from Components.config import config, ConfigSubsection, ConfigText
 from Components.Harddisk import harddiskmanager
 from Components import Ipkg
 from Components.Label import Label
@@ -27,7 +27,6 @@ from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
 
 config.misc.pluginbrowser = ConfigSubsection()
-config.misc.pluginbrowser.po = ConfigYesNo(default=True)
 config.misc.pluginbrowser.plugin_order = ConfigText(default="")
 
 
@@ -225,11 +224,9 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self["list"].setList(self.list)
 
 	def delete(self):
-		config.misc.pluginbrowser.po.value = False
 		self.session.openWithCallback(self.PluginDownloadBrowserClosed, PluginDownloadBrowser, PluginDownloadBrowser.REMOVE, True)
 
 	def download(self):
-		config.misc.pluginbrowser.po.value = True
 		if not (feedsstatuscheck.adapterAvailable() and feedsstatuscheck.NetworkUp()):
 			self.session.openWithCallback(self.close, MessageBox, _("Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again.") % (DISPLAYBRAND, MACHINENAME, feedsstatuscheck.adapterAvailable() and 'internet' or 'network'), type=MessageBox.TYPE_INFO, timeout=30, close_on_any_key=True)
 			return
@@ -297,13 +294,12 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 			self.skinName.insert(0, skin_name)
 
 		if self.type == self.DOWNLOAD:
-			config.misc.pluginbrowser.po.value = True
 			self.setTitle(_("Install Plugins"))
 		elif self.type == self.REMOVE:
-			config.misc.pluginbrowser.po.value = False
 			self.setTitle(_("Remove Plugins"))
 
-		self.plugin_prefix_whitelist = ('settings', 'security', 'systemplugins', 'skin', 'drivers', 'display', 'bootlogos', 'picons', 'softcams', 'extensions', 'enigma2-locale-', 'kodi-addon-')
+		categories = ("bootlogos", "display", "drivers", "extensions", "picons", "security", "settings", "skin", "softcams", "systemplugins")
+		self.plugin_prefix_whitelist = tuple([self.PLUGIN_PREFIX + x + "-" for x in categories])
 		self.plugin_suffix_blacklist = ('-dev', '-staticdev', '-dbg', '-doc', '-common', '-meta', '-src', '-po')
 		self.expandableIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expandable-plugins.png"))
 		self.expandedIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expanded-plugins.png"))
@@ -605,7 +601,7 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 
 		for x in lines:
 			plugin = x.split(" - ", 2)
-			if plugin[0] and plugin[0] not in self.installedplugins and plugin[0].replace(self.PLUGIN_PREFIX, '').startswith(self.plugin_prefix_whitelist) and not plugin[0].endswith(self.plugin_suffix_blacklist):
+			if plugin[0] and plugin[0] not in self.installedplugins and plugin[0].startswith(self.plugin_prefix_whitelist) and not plugin[0].endswith(self.plugin_suffix_blacklist):
 				if self.run == 1 and self.type == self.DOWNLOAD:
 					self.installedplugins.append(plugin[0])
 				else:
