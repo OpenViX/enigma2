@@ -81,7 +81,6 @@ class LanguageSelection(Screen):
 
 	def selectActiveLanguage(self):
 		activeLanguage = language.getActiveLanguage()
-		pos = 0
 		for pos, x in enumerate(self.list):
 			if x[0] == activeLanguage:
 				self["languages"].index = pos
@@ -125,34 +124,29 @@ class LanguageSelection(Screen):
 			if curlang == t[0]:
 				lang = t[1]
 				break
-		self.session.openWithCallback(self.delLangCB, MessageBox, _("Select 'Yes' to delete all languages except English and current language:\n\nSelect 'No' to delete only the chosen language:\n\n") + _(lang), default=True)
+		language.activateLanguage(self.oldActiveLanguage)  # display external screen in the current language
+		title = _("Delete Language(s)")
+		text = "\n\n".join([
+			_("Select 'Delete all languages' to delete all languages except English and the current language."),
+			_("Select 'Delete selected language only' to delete only the chosen language: %s.") % lang,
+			_("Select 'Keep all languages' to leave everything unchanged.")
+		])
+		options = [
+			(_("Delete all languages"), "delete_all"),
+			(_("Delete selected language only"), "delete_selected"),
+			(_("Keep all languages"), False)
+		]
+		self.session.openWithCallback(self.delLangCB, MessageBox, text=text, list=options, title=title)
 
 	def delLangCB(self, answer):
 		if answer:
-			language.delLanguage()
+			if answer == "delete_all":
+				language.delLanguage()
+			else:  # answer == "delete_selected":
+				language.delLanguage(delLang=config.osd.language.value)
 			language.activateLanguage(self.oldActiveLanguage)
-			self.updateList()
-			self.selectActiveLanguage()
-		else:
-			curlang = config.osd.language.value
-			lang = curlang
-			languageList = language.getLanguageListSelection()
-			# print("[LanguageSelection] deleting language  lang = %s, languagelist = %s", %(lang, languageList))
-			for t in languageList:
-				if curlang == t[0]:
-					lang = t[1]
-					break
-			self.session.openWithCallback(self.deletelanguagesCB, MessageBox, _("Do you really want to delete selected language:\n\n") + _(lang), default=False)
-
-	def deletelanguagesCB(self, answer):
-		if answer:
-			curlang = config.osd.language.value
-			lang = curlang
-			language.delLanguage(delLang=lang)
-			language.activateLanguage(self.oldActiveLanguage)
-			self.updateList()
-			self.selectActiveLanguage()
-			# self.close()
+		self.updateList()
+		self.selectActiveLanguage()
 
 	def run(self, justlocal=False):
 		# print("[LanguageSelection] updating language...")
@@ -191,6 +185,7 @@ class LanguageSelection(Screen):
 		self["languages"].list = list
 
 	def installLanguage(self):
+		language.activateLanguage(self.oldActiveLanguage)  # display external screen in the current language
 		self.session.openWithCallback(self.update_after_installLanguage, LanguageDownloadBrowser)
 
 	def update_after_installLanguage(self, retval=None):
