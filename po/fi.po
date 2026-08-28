@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-27 02:37+0300\n"
-"PO-Revision-Date: 2026-08-27 07:36+0300\n"
+"POT-Creation-Date: 2026-08-28 01:30+0300\n"
+"PO-Revision-Date: 2026-08-28 07:44+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -4940,6 +4940,9 @@ msgstr "Poista kieli"
 msgid "Delete Timer"
 msgstr "Poista ajastus"
 
+msgid "Delete all languages"
+msgstr "Poista kaikki kielet"
+
 msgid "Delete all log entries"
 msgstr "Poista lokit"
 
@@ -4978,6 +4981,9 @@ msgstr "Poista soittolistan valittu kohde"
 
 msgid "Delete saved playlist"
 msgstr "Poista tallennettu soittolista"
+
+msgid "Delete selected language only"
+msgstr "Poista vain valittu kieli"
 
 msgid "Delete the character to the left of text cursor"
 msgstr "Poista merkki kursorin vasemmalta puolelta"
@@ -5263,13 +5269,6 @@ msgid "Do you really want to delete %s?"
 msgstr ""
 "Haluatko poistaa\n"
 "%s?"
-
-msgid ""
-"Do you really want to delete selected language:\n"
-"\n"
-msgstr ""
-"Haluatko poistaa valitun kielen:\n"
-"\n"
 
 msgid "Do you really want to delete this timer ?"
 msgstr "Haluatko poistaa tämän ajastuksen ?"
@@ -8301,6 +8300,9 @@ msgstr "Katastrofi"
 
 msgid "Kazakhstan"
 msgstr "Kasakstan"
+
+msgid "Keep all languages"
+msgstr "Säilytä kaikki kielet"
 
 msgid "Keep logs"
 msgstr "Säilytä lokit"
@@ -12944,25 +12946,24 @@ msgstr "Valitse '1.0' standardeille kytkimille, '1.1' muille kytkimille ja '1.2'
 msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select 'none'. If you are unsure select 'none'."
 msgstr "Valitse 'A' tai 'B', jos antennijärjestelmäsi sitä vaatii, muuten valitse 'ei mitään'. Jos olet epävarma, valitse 'ei mitään'."
 
+msgid "Select 'Delete all languages' to delete all languages except English and the current language."
+msgstr "Valitse ”Poista kaikki kielet”, poistaaksesi kaikki kielet paitsi englannin ja nykyisen kielen."
+
+#, python-format
+msgid "Select 'Delete selected language only' to delete only the chosen language: %s."
+msgstr "Valitse ”Poista vain valittu kieli”, poistaaksesi vain valitun kielen: %s."
+
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Valitse 'FBC SCR', jos tämä viritin kytketään SCR (Unicable/JESS) laitteeseen. Kaikille muille kokoonpanoille valitse 'FBC automaattinen'."
 
 msgid "Select 'Flash regular slot' to flash a regular MultiBoot slot or select 'Overwrite Recovery' to overwrite the Recovery image."
 msgstr "Valitse 'Flashaa tavallinen paikka' flashataksesi tavallisen MultiBoot-paikan tai valitse 'Korvaa palautusimage' korvataksesi palautusimagen."
 
+msgid "Select 'Keep all languages' to leave everything unchanged."
+msgstr "Valitse ”Säilytä kaikki kielet”, jättääksesi kaiken ennalleen."
+
 msgid "Select 'Standard' to display the standard vertical menu layout, or 'Horizontal' to display the menu items in a row."
 msgstr "Valitse 'Vakio' näyttääksesi tavallisen pystysuoran valikkoasettelun tai 'Horisontaali' näyttääksesi valikon kohdat rivissä."
-
-msgid ""
-"Select 'Yes' to delete all languages except English and current language:\n"
-"\n"
-"Select 'No' to delete only the chosen language:\n"
-"\n"
-msgstr ""
-"Valitse 'Kyllä' poistaaksesi kaikki muut kielet paitsi englannin ja nykyisen:\n"
-"\n"
-"Valitse 'Ei' poistaaksesi vain valitun kielen:\n"
-"\n"
 
 msgid "Select 'Yes' to make a settings backup before wiping the current configuration."
 msgstr "Valitse 'Kyllä' tehdäksesi asetusten varmuuskopion ennen nykyisen konfiguraation poispyyhkimistä."
@@ -15270,7 +15271,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 27.08.2026 ---\n"
+"--- 28.08.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
