@@ -247,10 +247,20 @@ void eWidget::setBackgroundColor(const gRGB &col)
 void eWidget::setZPosition(int z)
 {
 	m_z_position = z;
-	if (!m_parent)
+	if (m_parent)
+	{
+		m_parent->m_childs.remove(this);
+		insertIntoParent(); /* now at the new Z position */
 		return;
-	m_parent->m_childs.remove(this);
-	insertIntoParent(); /* now at the new Z position */
+	}
+		/* a root widget (a window: no m_parent) isn't stacked via m_parent->m_childs
+		   at all -- its stacking order lives in eWidgetDesktop::m_root instead, so it
+		   needs repositioning there. Without this, changing a shown window's zPosition
+		   (skin attribute, or raise()/lower()) updated m_z_position but left the
+		   window painted in whatever position it happened to land in m_root when it
+		   was first added, silently breaking front/behind order against other windows. */
+	if (m_desktop)
+		m_desktop->repositionRootWidget(this);
 }
 
 void eWidget::setTransparent(int transp)

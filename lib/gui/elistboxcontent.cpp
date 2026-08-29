@@ -238,10 +238,12 @@ void eListboxPythonStringContent::paint(gPainter &painter, eWindowStyle &style, 
 		else if (local_style && !local_style->m_background && cursorValid && (local_style->m_gradient_set[0] || radius))
 		{
 			if (local_style->m_gradient_set[0])
-			{
-				alphablendtext = local_style->m_gradient_set[0];
 				painter.setGradient(local_style->m_gradient_colors[0], local_style->m_gradient_direction[0], local_style->m_gradient_alphablend[0]);
-			}
+
+				/* rounded corners show whatever's behind them outside the radius, same as a
+				   gradient background doesn't match the text's assumed flat background -- so
+				   the text needs to blend against the real pixels behind it in both cases. */
+			alphablendtext = local_style->m_gradient_set[0] || radius;
 
 			if(radius)
 				painter.setRadius(radius, edges);
@@ -290,10 +292,11 @@ void eListboxPythonStringContent::paint(gPainter &painter, eWindowStyle &style, 
 		}
 		else if (selected && local_style && (local_style->m_gradient_set[1] || radius) && !local_style->m_selection) {
 			if (local_style->m_gradient_set[1])
-			{
-				alphablendtext = local_style->m_gradient_set[1];
 				painter.setGradient(local_style->m_gradient_colors[1], local_style->m_gradient_direction[1], local_style->m_gradient_alphablend[1]);
-			}
+
+				/* see the matching comment above: rounded corners need the text to blend
+				   against the real backdrop just as much as a gradient background does. */
+			alphablendtext = local_style->m_gradient_set[1] || radius;
 
 			if(radius)
 				painter.setRadius(radius, edges);
@@ -490,10 +493,12 @@ void eListboxPythonConfigContent::paint(gPainter &painter, eWindowStyle &style, 
 		else if (local_style && !local_style->m_background && cursorValid && (local_style->m_gradient_set[0] || radius))
 		{
 			if (local_style->m_gradient_set[0])
-			{
-				alphablendtext = local_style->m_gradient_set[0];
 				painter.setGradient(local_style->m_gradient_colors[0], local_style->m_gradient_direction[0], local_style->m_gradient_alphablend[0]);
-			}
+
+				/* rounded corners show whatever's behind them outside the radius, same as a
+				   gradient background doesn't match the text's assumed flat background -- so
+				   the text needs to blend against the real pixels behind it in both cases. */
+			alphablendtext = local_style->m_gradient_set[0] || radius;
 
 			if(radius)
 				painter.setRadius(radius, edges);
@@ -520,7 +525,6 @@ void eListboxPythonConfigContent::paint(gPainter &painter, eWindowStyle &style, 
 
 	if (m_list && cursorValid)
 	{
-		int alphablendflag = (alphablendtext) ? gPainter::RT_BLEND : 0;
 			/* get current list item */
 		ePyObject item = PyList_GET_ITEM(m_list, m_cursor); // borrowed reference!
 		ePyObject text, value;
@@ -533,15 +537,20 @@ void eListboxPythonConfigContent::paint(gPainter &painter, eWindowStyle &style, 
 				painter.blit(local_style->m_selection, ePoint(offset.x() + (m_itemsize.width() - local_style->m_selection->size().width()) / 2, offset.y()), eRect(), gPainter::BT_ALPHATEST);
 		} else if (selected && (local_style->m_gradient_set[1] || radius) && !local_style->m_selection) {
 			if (local_style->m_gradient_set[1])
-			{
-				alphablendtext = local_style->m_gradient_set[1];
 				painter.setGradient(local_style->m_gradient_colors[1], local_style->m_gradient_direction[1], local_style->m_gradient_alphablend[1]);
-			}
+
+				/* see the matching comment above: rounded corners need the text to blend
+				   against the real backdrop just as much as a gradient background does. */
+			alphablendtext = local_style->m_gradient_set[1] || radius;
 
 			if(radius)
 				painter.setRadius(radius, edges);
 			painter.drawRectangle(itemrect);
 		}
+
+			/* computed after both background blocks above, since either one may have
+			   just turned blending on for this item (gradient or rounded corners). */
+		int alphablendflag = (alphablendtext) ? gPainter::RT_BLEND : 0;
 			/* the first tuple element is a string for the left side.
 			   the second one will be called, and the result shall be an tuple.
 

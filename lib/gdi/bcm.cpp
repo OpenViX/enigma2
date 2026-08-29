@@ -49,6 +49,11 @@ int bcm_accel_init(void)
 	/* hardware doesn't allow us to detect whether the opcode is working */
 	supportblendingflags = false;
 #endif
+#ifdef FORCE_ALPHABLENDING_ACCELERATION
+	/* the probe above doesn't get a reply from this driver even though
+	 * blending is known to work, so trust it instead of the probe */
+	supportblendingflags = true;
+#endif
 	return 0;
 }
 
@@ -177,7 +182,20 @@ void bcm_accel_blit(
 
 	C(0x77);  // do it
 
-	if (!accumulateoperations) exec_list();
+	if (!accumulateoperations && exec_list() && supportblendingflags && flags)
+	{
+		/* the driver rejected the list with the blend opcode included; disable
+		 * hw alphablending from now on and redraw this blit without it, so we
+		 * don't leave a blank/stale area on screen for a blit the driver refused */
+		eDebug("[bcm] blit with blend flags failed, disabling hw alphablending");
+		supportblendingflags = false;
+		bcm_accel_blit(
+				src_addr, src_width, src_height, src_stride, src_format,
+				dst_addr, dst_width, dst_height, dst_stride,
+				src_x, src_y, width, height,
+				dst_x, dst_y, dwidth, dheight,
+				pal_addr, 0);
+	}
 }
 
 void bcm_accel_fill(

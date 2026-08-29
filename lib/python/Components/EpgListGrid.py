@@ -34,6 +34,14 @@ class EPGListGrid(EPGListBase):
 		self.selectedService = None
 		self.selectionRect = None
 		self.eventRect = None
+		# Per-event data (timer/matchType/icons/geometry) that buildEntry needs but that
+		# doesn't depend on WHICH event is currently selected -- keyed by service, and
+		# valid only as long as the cached entry's events list is the same object as the
+		# row's current events list. Horizontal (event-to-event) navigation rebuilds the
+		# whole row via invalidateEntry() on every keypress, so without this cache all of
+		# that gets recomputed from scratch every keypress even though it's unchanged.
+		# Reset in fillEPGNoRefresh() whenever the underlying data can actually change.
+		self.eventStaticCache = {}
 		self.serviceRect = None
 
 		self.nowEvPix = None
@@ -429,12 +437,20 @@ class EPGListGrid(EPGListBase):
 
 			if titleItem == "servicenumber":
 				if not isinstance(channel, int):
+					# Go find the channel number and cache it, same as picon above --
+					# getChannelNumber() is a native lookup and channel doesn't change
+					# between rebuilds of this row (e.g. on every horizontal event nav).
 					channel = self.getChannelNumber(channel)
+					curIdx = self.l.getCurrentSelectionIndex()
+					self.list[curIdx] = (service, serviceName, events, picon, channel)
 				namefont = 0
 				namefontflag = int(config.epgselection.grid.servicenumber_alignment.value)
-				font = gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value)
-				channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(),
-					"0000" if channel < 10000 else str(channel)).width()
+				if channel < 10000:
+					# Already measured once for the common (<=4 digit) case in setFontsize().
+					channelWidth = self.serviceNumberWidth
+				else:
+					font = gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value)
+					channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), str(channel)).width()
 				if channel:
 					res.append(MultiContentEntryText(
 						pos=(colX + self.serviceNumberPadding, r1.top() + self.serviceBorderWidth),
@@ -528,25 +544,49 @@ class EPGListGrid(EPGListBase):
 			end = start + self.timeEpochSecs
 
 			now = time()
+			# serviceref/serviceTimers only depend on the service (constant for this whole
+			# row), not on the individual event -- compute them once instead of once per
+			# event, since this loop can run on every horizontal (event-to-event) navigation
+			# as well as on every row build.
+			serviceref = "1" + service[4:] if service[:4] in config.recording.setstreamto1.value and not isPlaylist(service) else service  # converts 4097, 5001, 5002 to 1
+			serviceTimers = self.filteredTimerList.get(':'.join(serviceref.split(':')[:11]))
+
+			# timer/matchType/timerIcon/autoTimerIcon/xpos/ewidth below only depend on the
+			# event itself (plus serviceTimers and the row's selected state, both constant
+			# for this whole row) -- not on which event within the row is currently
+			# highlighted. Horizontal navigation calls buildEntry again on every keypress
+			# purely to move that highlight, so cache these per (service, event) instead of
+			# recomputing them every time; see eventStaticCache in __init__.
+			cacheEntry = self.eventStaticCache.get(service)
+			if cacheEntry is None or cacheEntry[0] is not events or cacheEntry[1] != selected:
+				perEventCache = {}
+				self.eventStaticCache[service] = (events, selected, perEventCache)
+			else:
+				perEventCache = cacheEntry[2]
+
 			for ev in events:  # (eventId, eventTitle, beginTime, duration)
 				stime = ev[2]
 				duration = ev[3]
 
-				xpos, ewidth = self.calcEventPosAndWidthHelper(stime, duration, start, end, width)
-				serviceref = "1" + service[4:] if service[:4] in config.recording.setstreamto1.value and not isPlaylist(service) else service  # converts 4097, 5001, 5002 to 1
-				serviceTimers = self.filteredTimerList.get(':'.join(serviceref.split(':')[:11]))
-				if serviceTimers is not None:
-					# Code below: "+ (20 if config.recording.margin_before.value == 0 else 0)"
-					# When recording-start-margin is zero allow recordings that start up to 20 seconds
-					# after the program boundary to still produce matchType in (2, 3). This allows
-					# correct display of "epg/RecordEvent.png" when multiple recodings are programmed to
-					# start at the same instant.
-					timer, matchType = RecordTimer.isInTimerOnService(serviceTimers, stime + (20 if config.recording.margin_before.value == 0 else 0), duration)
-					timerIcon, autoTimerIcon = self.getPixmapsForTimer(timer, matchType, selected)
-					if matchType not in (2, 3):
-						timer = None
+				cached = perEventCache.get(ev)
+				if cached is None:
+					xpos, ewidth = self.calcEventPosAndWidthHelper(stime, duration, start, end, width)
+					if serviceTimers is not None:
+						# Code below: "+ (20 if config.recording.margin_before.value == 0 else 0)"
+						# When recording-start-margin is zero allow recordings that start up to 20 seconds
+						# after the program boundary to still produce matchType in (2, 3). This allows
+						# correct display of "epg/RecordEvent.png" when multiple recodings are programmed to
+						# start at the same instant.
+						timer, matchType = RecordTimer.isInTimerOnService(serviceTimers, stime + (20 if config.recording.margin_before.value == 0 else 0), duration)
+						timerIcon, autoTimerIcon = self.getPixmapsForTimer(timer, matchType, selected)
+						if matchType not in (2, 3):
+							timer = None
+					else:
+						timer = matchType = timerIcon = autoTimerIcon = None
+					cached = (xpos, ewidth, timer, matchType, timerIcon, autoTimerIcon)
+					perEventCache[ev] = cached
 				else:
-					timer = matchType = timerIcon = None
+					xpos, ewidth, timer, matchType, timerIcon, autoTimerIcon = cached
 
 				isNow = stime <= now < (stime + duration) and config.epgselection.grid.highlight_current_events.value
 				# Only highlight timers that span an entire event
@@ -837,6 +877,9 @@ class EPGListGrid(EPGListBase):
 		serviceRef = ""
 		serviceName = ""
 		self.snapshotTimers(self.timeBase, self.timeBase + self.timeEpochSecs)
+		# The timer snapshot and event data above may have just changed, so any
+		# previously cached per-event build data (see __init__) is no longer valid.
+		self.eventStaticCache = {}
 
 		def appendService():
 			picon = None if piconIdx == 0 else serviceList[serviceIdx][piconIdx]

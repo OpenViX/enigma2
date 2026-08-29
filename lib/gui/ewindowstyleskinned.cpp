@@ -156,7 +156,7 @@ void eWindowStyleSkinned::drawBorder(gPainter &painter, const eRect &pos, struct
 	if (br)
 	{
 		xm -= br->size().width();
-		painter.blit(br, ePoint(xm, pos.bottom()-br->size().height()), eRect(x, pos.bottom()-br->size().height(), pos.width() - x, bl->size().height()), flags);
+		painter.blit(br, ePoint(xm, pos.bottom()-br->size().height()), eRect(x, pos.bottom()-br->size().height(), pos.width() - x, br->size().height()), flags);
 	}
 
 	if (b)
