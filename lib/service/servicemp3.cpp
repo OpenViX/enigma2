@@ -1067,6 +1067,7 @@ struct StopWorkerArgs
 {
 	GstElement *playbin;
 	StopWatchdog *watchdog;
+	bool hadVideo;
 };
 
 /* gst_element_set_state(..., GST_STATE_NULL) is the call that can still block
@@ -1084,12 +1085,22 @@ gpointer stopWorker(gpointer data)
 	StopWorkerArgs *args = static_cast<StopWorkerArgs*>(data);
 	GstElement *playbin = args->playbin;
 	StopWatchdog *watchdog = args->watchdog;
+	bool hadVideo = args->hadVideo;
 	delete args;
 
 	GstStateChangeReturn ret = gst_element_set_state(playbin, GST_STATE_NULL);
 	if (ret != GST_STATE_CHANGE_SUCCESS)
 		eDebug("[eServiceMP3] stop GST_STATE_NULL failure");
 	gst_object_unref(playbin);
+
+	/* GstDVBVideoSink's own device fd is gone once GST_STATE_NULL has actually
+	 * returned (guaranteed synchronous per the comment above), but whether it
+	 * blanks the video plane on the way down is up to that (out-of-tree) sink.
+	 * Force it here too so the last decoded frame doesn't stay frozen on
+	 * screen after playback has genuinely stopped - this opens its own fd, so
+	 * it doesn't race the sink's teardown. */
+	if (hadVideo)
+		eTSMPEGDecoder::blankPrimaryVideoDecoder();
 
 	g_atomic_int_set(&watchdog->done, 1);
 	stopWatchdogRelease(watchdog);
@@ -1206,7 +1217,7 @@ RESULT eServiceMP3::stop()
 	 * see stopWatchdog()'s comment for why that's a thread and not a timer. */
 	gst_object_ref(m_gst_playbin);
 	StopWatchdog *watchdog = new StopWatchdog{0, 2};
-	GThread *worker = g_thread_new("mp3stop", stopWorker, new StopWorkerArgs{m_gst_playbin, watchdog});
+	GThread *worker = g_thread_new("mp3stop", stopWorker, new StopWorkerArgs{m_gst_playbin, watchdog, videoSink != NULL});
 	g_thread_unref(worker);
 	GThread *watchdogThread = g_thread_new("mp3stopwd", stopWatchdog, watchdog);
 	g_thread_unref(watchdogThread);
