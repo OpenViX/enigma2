@@ -22,7 +22,7 @@
 #if defined(CONFIG_ION) || defined(CONFIG_HISILICON_FB)
 #include <lib/gdi/grc.h>
 
-extern void bcm_accel_blit(
+extern bool bcm_accel_blit(
 		int src_addr, int src_width, int src_height, int src_stride, int src_format,
 		int dst_addr, int dst_width, int dst_height, int dst_stride,
 		int src_x, int src_y, int width, int height,

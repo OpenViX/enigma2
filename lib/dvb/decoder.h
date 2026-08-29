@@ -95,6 +95,7 @@ private:
 	static int m_ac3_delay;
 	static int m_audio_channel;
 	std::string m_radio_pic;
+	bool m_radio_pic_shown;
 	ePtr<eDVBDemux> m_demux;
 	ePtr<eDVBAudio> m_audio;
 	ePtr<eDVBVideo> m_video;
@@ -130,6 +131,7 @@ private:
 	int m_fcc_vtype;
 	int m_fcc_pcrpid;
 	void finishShowSinglePic(); // called by timer
+	void clearRadioBackground(); // blanks the video plane if a radio background picture is still displayed
 public:
 	enum { pidNone = -1 };
 	eTSMPEGDecoder(eDVBDemux *demux, int decoder);
@@ -184,6 +186,11 @@ public:
 	int getVideoGamma();
 	static RESULT setHwPCMDelay(int delay);
 	static RESULT setHwAC3Delay(int delay);
+		/* blanks the primary decoder's video plane directly. Used by consumers
+		   (e.g. servicemp3's GstDVBVideoSink playback) that write frames to the
+		   decoder without going through an eDVBVideo instance, so there is
+		   nobody else to issue the blanking VIDEO_STOP on their behalf. */
+	static RESULT blankPrimaryVideoDecoder();
 
 	enum
 	{

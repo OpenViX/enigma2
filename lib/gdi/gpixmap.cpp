@@ -612,7 +612,7 @@ void gPixmap::drawRectangleNew(const gRegion& region, const eRect& area, const g
 				x_end = std::min(x_end, reg.right());
 				gRGB* dst = (gRGB*)(uint32_t*)((uint8_t*)surface->data + py * surface->stride + x_start * surface->bypp);
 				for (int x = x_start; x < x_end; ++x, ++dst)
-					dst->alpha_blend(gRGB(borderCol));
+					if (borderA == 255) *dst = borderCol; else dst->alpha_blend(gRGB(borderCol));
 			}
 
 			// Bottom Border
@@ -626,7 +626,7 @@ void gPixmap::drawRectangleNew(const gRegion& region, const eRect& area, const g
 				x_end = std::min(x_end, reg.right());
 				gRGB* dst = (gRGB*)(uint32_t*)((uint8_t*)surface->data + py * surface->stride + x_start * surface->bypp);
 				for (int x = x_start; x < x_end; ++x, ++dst)
-					dst->alpha_blend(gRGB(borderCol));
+					if (borderA == 255) *dst = borderCol; else dst->alpha_blend(gRGB(borderCol));
 			}
 
 			// Left Border
@@ -640,7 +640,7 @@ void gPixmap::drawRectangleNew(const gRegion& region, const eRect& area, const g
 				y_end = std::min(y_end, reg.bottom());
 				for (int y = y_start; y < y_end; ++y) {
 					gRGB* dst = (gRGB*)(uint32_t*)((uint8_t*)surface->data + y * surface->stride + px * surface->bypp);
-					dst->alpha_blend(gRGB(borderCol));
+					if (borderA == 255) *dst = borderCol; else dst->alpha_blend(gRGB(borderCol));
 				}
 			}
 
@@ -655,7 +655,7 @@ void gPixmap::drawRectangleNew(const gRegion& region, const eRect& area, const g
 				y_end = std::min(y_end, reg.bottom());
 				for (int y = y_start; y < y_end; ++y) {
 					gRGB* dst = (gRGB*)(uint32_t*)((uint8_t*)surface->data + y * surface->stride + px * surface->bypp);
-					dst->alpha_blend(gRGB(borderCol));
+					if (borderA == 255) *dst = borderCol; else dst->alpha_blend(gRGB(borderCol));
 				}
 			}
 		}
@@ -683,7 +683,7 @@ void gPixmap::drawRectangleNew(const gRegion& region, const eRect& area, const g
 			for (int y = y0; y < y1; ++y) {
 				gRGB* dst = (gRGB*)(uint32_t*)((uint8_t*)surface->data + y * surface->stride + x_start * surface->bypp);
 				for (int x = x_start; x < x_end; ++x, ++dst)
-					dst->alpha_blend(gRGB(fillCol));
+					if (fillA == 255) *dst = fillCol; else dst->alpha_blend(gRGB(fillCol));
 			}
 		}
 
@@ -709,7 +709,7 @@ void gPixmap::drawRectangleNew(const gRegion& region, const eRect& area, const g
 			for (int y = y0; y < y1; ++y) {
 				gRGB* dst = (gRGB*)(uint32_t*)((uint8_t*)surface->data + y * surface->stride + x_start * surface->bypp);
 				for (int x = x_start; x < x_end; ++x, ++dst)
-					dst->alpha_blend(gRGB(fillCol));
+					if (fillA == 255) *dst = fillCol; else dst->alpha_blend(gRGB(fillCol));
 			}
 		}
 
@@ -728,7 +728,7 @@ void gPixmap::drawRectangleNew(const gRegion& region, const eRect& area, const g
 			for (int y = y0; y < y1; ++y) {
 				gRGB* dst = (gRGB*)(uint32_t*)((uint8_t*)surface->data + y * surface->stride + x_start * surface->bypp);
 				for (int x = x_start; x < x_end; ++x, ++dst)
-					dst->alpha_blend(gRGB(fillCol));
+					if (fillA == 255) *dst = fillCol; else dst->alpha_blend(gRGB(fillCol));
 			}
 		}
 	}
@@ -2115,8 +2115,10 @@ void gPixmap::blit(const gPixmap& src, const eRect& _pos, const gRegion& clip, i
 					/* Hardware alpha blending is broken on the few
 					 * boxes that support it, so only use it
 					 * when scaling */
-
-					accel = true;
+					if (flag & blitScale)
+						accel = true;
+					else
+						accel = false;
 #else
 					if (flag & blitScale)
 						accel = true;
