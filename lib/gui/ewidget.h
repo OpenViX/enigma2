@@ -79,6 +79,16 @@ public:
 
 	int isTransparent() { return m_vis & wVisTransparent; }
 
+		/* true whenever this widget's painted output isn't a flat, fully opaque
+		   fill of its own area -- i.e. whenever it must be composited against
+		   whatever is actually behind it rather than against its own nominal
+		   background. Mirrors the condition eWidgetDesktop::calcWidgetClipRegion
+		   uses to decide whether the area behind this widget must stay available
+		   for painting, plus the widget's own background color carrying any
+		   transparency (which doesn't affect occlusion of siblings, but still
+		   means content drawn on top -- e.g. text -- must blend). */
+	bool needsBlendCompositing() { return isTransparent() || m_alphaBlend || m_gradient_alphablend || m_cornerRadius != 0 || (m_have_background_color && m_background_color.a != 0); }
+
 	ePoint getAbsolutePosition();
 
 	eWidgetAnimation m_animation;

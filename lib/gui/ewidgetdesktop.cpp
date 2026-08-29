@@ -5,10 +5,8 @@
 
 extern void dumpRegion(const gRegion &region);
 
-void eWidgetDesktop::addRootWidget(eWidget *root)
+void eWidgetDesktop::insertRootWidgetSorted(eWidget *root)
 {
-	ASSERT(!root->m_desktop);
-
 	int invert_sense = 0;
 		/* m_root is always kept sorted front-to-back in immediate mode (used for
 		   clip region calculation, front to back), and back-to-front in buffered
@@ -32,12 +30,37 @@ void eWidgetDesktop::addRootWidget(eWidget *root)
 		}
 		++insert_position;
 	}
+}
+
+void eWidgetDesktop::addRootWidget(eWidget *root)
+{
+	ASSERT(!root->m_desktop);
+
+	insertRootWidgetSorted(root);
 
 	root->m_desktop = this;
 
 		/* the creation will be postponed. */
 	for (int i = 0; i < MAX_LAYER; ++i)
 		root->m_comp_buffer[i] = 0;
+}
+
+void eWidgetDesktop::repositionRootWidget(eWidget *root)
+{
+		/* called when a root widget's (a window's) own zPosition changes after it
+		   was already added -- e.g. via the skin's zPosition attribute, or
+		   raise()/lower() -- to re-sort it within m_root to match. Without this,
+		   eWidget::setZPosition() would update root->m_z_position but m_root's
+		   actual list order (which is what both occlusion in calcWidgetClipRegion
+		   and paint order in paint() go by, not m_z_position directly) would stay
+		   exactly where the widget happened to land when it was first added,
+		   silently drawing it in front of or behind windows it no longer belongs
+		   in front of or behind. */
+	m_root.remove(root);
+	insertRootWidgetSorted(root);
+
+	if (m_comp_mode == cmImmediate)
+		recalcClipRegions(root);
 }
 
 void eWidgetDesktop::removeRootWidget(eWidget *root)
@@ -49,6 +72,24 @@ void eWidgetDesktop::removeRootWidget(eWidget *root)
 	}
 
 	m_root.remove(root);
+
+		/* the removed widget may have been occluding other root widgets (or the
+		   desktop background) behind it. recalcClipRegions, in immediate mode,
+		   unconditionally recomputes every remaining root widget's visible
+		   region from scratch and invalidates whatever changed (see its body) --
+		   since root is already gone from m_root, this naturally picks up
+		   whatever is now newly visible where root used to be and repaints it,
+		   through the correct layering, all the way down to the desktop
+		   background if nothing else was behind it. This mirrors what
+		   eWidget::hide() already does for a widget that stays alive; here it
+		   also covers the case where a root widget/window is destroyed while
+		   still shown, without hide() having run first. Harmless (and cheap) to
+		   run again if hide() already did run: nothing will have changed since,
+		   so every diff computed below will be empty. root is only passed
+		   through, unused by the immediate-mode path, so it's fine to pass a
+		   widget that's no longer in m_root (or mid-destruction). */
+	if (m_comp_mode == cmImmediate)
+		recalcClipRegions(root);
 }
 
 int eWidgetDesktop::movedWidget(eWidget *root)

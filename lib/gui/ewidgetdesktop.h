@@ -35,6 +35,7 @@ public:
 	~eWidgetDesktop();
 	void addRootWidget(eWidget *root);
 	void removeRootWidget(eWidget *root);
+	void repositionRootWidget(eWidget *root);
 
 		/* try to move widget content. */
 		/* returns -1 if there's no move support. */
@@ -80,6 +81,7 @@ public:
 	void setMargins(const eRect& value) { m_margins = value; }
 private:
 	ePtrList<eWidget> m_root;
+	void insertRootWidgetSorted(eWidget *root);
 	void calcWidgetClipRegion(eWidget *widget, gRegion &parent_visible);
 	void paintBackground(eWidgetDesktopCompBuffer *comp, bool clearDirty = true);
 
