@@ -2112,13 +2112,10 @@ void gPixmap::blit(const gPixmap& src, const eRect& _pos, const gRegion& clip, i
 				/* alpha blending is requested */
 				if (gAccel::getInstance()->hasAlphaBlendingSupport()) {
 #ifdef FORCE_ALPHABLENDING_ACCELERATION
-					/* Hardware alpha blending is broken on the few
-					 * boxes that support it, so only use it
-					 * when scaling */
-					if (flag & blitScale)
-						accel = true;
-					else
-						accel = false;
+					/* Hardware alpha blending is unreliable on these boxes
+					 * even when scaling is involved (e.g. picons silently
+					 * fail to render), so always fall back to software. */
+					accel = false;
 #else
 					if (flag & blitScale)
 						accel = true;
