@@ -2112,10 +2112,11 @@ void gPixmap::blit(const gPixmap& src, const eRect& _pos, const gRegion& clip, i
 				/* alpha blending is requested */
 				if (gAccel::getInstance()->hasAlphaBlendingSupport()) {
 #ifdef FORCE_ALPHABLENDING_ACCELERATION
-					/* Hardware alpha blending is unreliable on these boxes
-					 * even when scaling is involved (e.g. picons silently
-					 * fail to render), so always fall back to software. */
+#ifdef DREAMBOX
 					accel = false;
+#else
+					accel = true;
+#endif
 #else
 					if (flag & blitScale)
 						accel = true;
