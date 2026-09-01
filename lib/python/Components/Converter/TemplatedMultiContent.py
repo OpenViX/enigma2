@@ -64,12 +64,12 @@ class TemplatedMultiContent(StringList):
 		for font in self.template["fonts"]:
 			fonts.append(gFont(font.family, int(font.pointSize * scaleFactorVertical)))
 		for content in template:
-			elments = list(content)
-			elments[1] = int(elments[1] * scaleFactorHorizontal)  # pos_x
-			elments[2] = int(elments[2] * scaleFactorVertical)  # pos_y
-			elments[3] = int(elments[3] * scaleFactorHorizontal)  # size_x (width)
-			elments[4] = int(elments[4] * scaleFactorVertical)  # size_y (height)
-			scaledtemplate.append(tuple(elments))
+			elements = list(content)
+			elements[1] = int(elements[1] * scaleFactorHorizontal)  # pos_x
+			elements[2] = int(elements[2] * scaleFactorVertical)  # pos_y
+			elements[3] = int(elements[3] * scaleFactorHorizontal)  # size_x (width)
+			elements[4] = int(elements[4] * scaleFactorVertical)  # size_y (height)
+			scaledtemplate.append(tuple(elements))
 		return scaledtemplate, itemheight, itemwidth, fonts
 
 	def setTemplate(self):
