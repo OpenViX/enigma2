@@ -2131,7 +2131,7 @@ msgstr "Proveedor de todos los canales"
 
 #
 msgid "All slots"
-msgstr "Todos slots"
+msgstr "Todos los slots"
 
 msgid "Allocate"
 msgstr "Asignar"
@@ -2299,14 +2299,14 @@ msgid "An empty filename is illegal."
 msgstr "El nombre del fichero no puede estar vacío."
 
 msgid "An error occurred while downloading the packetlist. Please try again."
-msgstr "Ha ocurrido un erorr durante la descarga de la lista de paquetes. Vuelve a intentarlo."
+msgstr "Ha ocurrido un error durante la descarga de la lista de paquetes. Vuelve a intentarlo."
 
 #
 msgid "An unknown error occurred!"
 msgstr "Se ha producido un error desconocido!"
 
 msgid "Ancient"
-msgstr "Anciano"
+msgstr "Antiguo"
 
 msgid "Andorra"
 msgstr "Andorra"
@@ -2361,10 +2361,10 @@ msgid "Architektur"
 msgstr "Architektur"
 
 msgid "Archive"
-msgstr "Activar"
+msgstr "Archivar"
 
 msgid "Archive long"
-msgstr "Activar (largo)"
+msgstr "Archivar (largo)"
 
 msgid "Are You Sure ?"
 msgstr "¿Está Seguro?"
@@ -20900,7 +20900,7 @@ msgid "show/game show (general)"
 msgstr "Espectáculos y programas de juegos (general)"
 
 msgid "shuffle"
-msgstr "Reorganizar"
+msgstr "Aleatorio"
 
 #
 msgid "simple"
@@ -21122,8 +21122,8 @@ msgstr "Hasta el modo de espera/reinicio"
 msgid "use best / controlled by HDMI"
 msgstr "Usar mejor / controlada por HDMI"
 
-msgid "use_hdmi_cacenter"
-msgstr "utilizar_hdmi_cacenter"
+msgid "use hdmi cacenter"
+msgstr "utilizar hdmi cacenter"
 
 #
 msgid "user defined"
@@ -21152,7 +21152,7 @@ msgstr "Esperar a ci..."
 
 #
 msgid "wait for mmi..."
-msgstr "Esperar a nmi..."
+msgstr "Esperar a mmi..."
 
 #
 msgid "waiting"
@@ -21185,7 +21185,7 @@ msgid "west"
 msgstr "oeste"
 
 msgid "when PiPzap enabled zap channel down..."
-msgstr "cuando PiPzap habilitó el canal zap hacia abajo..."
+msgstr "con PiPzap habilitado, cambia de canal hacia abajo..."
 
 msgid "when PiPzap enabled zap channel up..."
 msgstr "cuando PiPzap habilitó el canal zap hacia arriba..."
@@ -21246,7 +21246,7 @@ msgstr "Sí"
 
 #
 msgid "yes (keep feeds)"
-msgstr "Sí (conservar fuentes)"
+msgstr "Sí (conservar feeds)"
 
 msgid "yes, but not in multi selections"
 msgstr "Sí, pero no en selecciones múltiples."

@@ -304,10 +304,11 @@ public:
 	bool needsActivation(const timespec &now) { return nextActivation <= now; }
 	bool needsActivation() { timespec now; clock_gettime(CLOCK_MONOTONIC, &now); return nextActivation <= now; }
 
-	void start(long msec, bool b=false);
+	void start(long msec, bool singleShot=false);
 	void stop();
 	void changeInterval(long msek);
 	void startLongTimer(int seconds);
+	void startEpochAligned(long msek, bool singleShot=false);
 	bool operator<(const eTimer& t) const { return nextActivation < t.nextActivation; }
 };
 #endif  // SWIG

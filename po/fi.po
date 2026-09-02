@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-15 19:45+0300\n"
-"PO-Revision-Date: 2026-06-27 08:23+0300\n"
+"POT-Creation-Date: 2026-09-02 03:42+0300\n"
+"PO-Revision-Date: 2026-09-02 07:06+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -2500,6 +2500,9 @@ msgstr "Automaattinen päivitysväli"
 msgid "Automatically created"
 msgstr "Automaattisesti luotu"
 
+msgid "Automatically hides the infobar a few second after video playback starts."
+msgstr "Piilottaa ilmoituspalkin automaattisesti muutaman sekunnin kuluttua videon toiston alkamisesta."
+
 msgid "Automatically put the TV in standby whenever the receiver goes into standby or deep standby."
 msgstr "Pistä TV automaattisesti valmiustilaan, kun vastaanotin menee valmiustilaan tai virransäästötilaan."
 
@@ -2921,6 +2924,9 @@ msgstr "Joskus ohjelmanimeen lisätään etuliite 'Uusi: ' tai 'Suora: '. Valits
 
 msgid "Broadcasters sometimes split long event names into the event description using ... Choose whether to prevent this behaviour."
 msgstr "Joskus lähetyksessä pitkät ohjelmanimet jaetaan ohjelmatietoon käyttäen ... Valitse estetäänkö tämä."
+
+msgid "Broadcom default"
+msgstr "Broadcomin oletusasetus"
 
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
@@ -3660,6 +3666,10 @@ msgstr "Sulje"
 #, python-format
 msgid "Close '%s' screen"
 msgstr "Sulje näyttö '%s'"
+
+#, python-format
+msgid "Close '%s' screen and exit all menus"
+msgstr "Sulje '%s'-näyttö ja poistu kaikista valikoista"
 
 msgid "Close CA device at programm end"
 msgstr "Sulje CA-laite ohjelman lopussa"
@@ -4823,6 +4833,9 @@ msgstr "Virransäästötila"
 msgid "Default"
 msgstr "Oletus"
 
+msgid "Default directory"
+msgstr "Oletuskansio"
+
 msgid "Default movie location"
 msgstr "Oletushakemisto tallennuksille"
 
@@ -4931,6 +4944,9 @@ msgstr "Poista kieli"
 msgid "Delete Timer"
 msgstr "Poista ajastus"
 
+msgid "Delete all languages"
+msgstr "Poista kaikki kielet"
+
 msgid "Delete all log entries"
 msgstr "Poista lokit"
 
@@ -4969,6 +4985,9 @@ msgstr "Poista soittolistan valittu kohde"
 
 msgid "Delete saved playlist"
 msgstr "Poista tallennettu soittolista"
+
+msgid "Delete selected language only"
+msgstr "Poista vain valittu kieli"
 
 msgid "Delete the character to the left of text cursor"
 msgstr "Poista merkki kursorin vasemmalta puolelta"
@@ -5255,13 +5274,6 @@ msgstr ""
 "Haluatko poistaa\n"
 "%s?"
 
-msgid ""
-"Do you really want to delete selected language:\n"
-"\n"
-msgstr ""
-"Haluatko poistaa valitun kielen:\n"
-"\n"
-
 msgid "Do you really want to delete this timer ?"
 msgstr "Haluatko poistaa tämän ajastuksen ?"
 
@@ -5433,6 +5445,9 @@ msgstr "Dokumentointi"
 #, python-format
 msgid "Dolby Digital downmix is now %s"
 msgstr "Dolby Digital muunto stereoksi on nyt %s"
+
+msgid "Dolby Vision"
+msgstr "Dolby Vision"
 
 msgid "Domain"
 msgstr "Toimialue"
@@ -6232,7 +6247,10 @@ msgid "Exit Menusort"
 msgstr "Poistu valikon järjestelystä"
 
 msgid "Exit PluginBrowser"
-msgstr "Poistu lisäoa-selaimesta"
+msgstr "Poistu lisäosa-selaimesta"
+
+msgid "Exit PluginBrowser and close all menus"
+msgstr "Poistu lisäosa-selaimesta ja sulje kaikki valikot"
 
 msgid "Exit all menus"
 msgstr "Poistu kaikista valikoista"
@@ -6848,7 +6866,7 @@ msgid "From:"
 msgstr "Mistä :"
 
 msgid "Front Panel Display"
-msgstr "Näyttöpaneelin asetukset"
+msgstr "Etupaneelin näyttö"
 
 msgid "Front USB"
 msgstr "Etuosan USB"
@@ -6860,7 +6878,7 @@ msgid "Front panel USB"
 msgstr "Etupaneelin USB"
 
 msgid "Front panel settings"
-msgstr "Näyttöpaneelin asetukset"
+msgstr "Etupaneelin asetukset"
 
 msgid "Frozen check interval"
 msgstr "Jumituksen tarkistusväli"
@@ -7030,6 +7048,9 @@ msgstr "Keltainen"
 
 msgid "Gibraltar"
 msgstr "Gibraltar"
+
+msgid "GigaBlue optimized"
+msgstr "GigaBlue-optimoitu"
 
 msgid "Gioco"
 msgstr "Peli"
@@ -7263,11 +7284,20 @@ msgstr "HDMI-IN"
 msgid "HDMIin"
 msgstr "HDMI-sisääntulo"
 
+msgid "HDR OSD adjustment"
+msgstr "Käyttöliittymän (OSD) säätö HDR-tilassa"
+
 msgid "HDR, 12bit 4:2:0/4:2:2, no PIP"
 msgstr "HDR, 12bit 4:2:0/4:2:2, ei PIP"
 
+msgid "HDR10"
+msgstr "HDR10"
+
 msgid "HDR10 Support"
 msgstr "HDR10-tuki"
+
+msgid "HDR10+"
+msgstr "HDR10+"
 
 msgid "HELP"
 msgstr "HELP"
@@ -7283,6 +7313,9 @@ msgstr "Kuulovammaisten tekstityksen puhdistus ulkoisista tekstityksistä"
 
 msgid "HISTORY"
 msgstr "HISTORIA"
+
+msgid "HLG"
+msgstr "HLG"
 
 msgid "HLG Support"
 msgstr "HLG Tuki"
@@ -7668,12 +7701,6 @@ msgstr "Jos asetettu vakioksi, numeronäppäimet sivu ylös/alas/vasemmalle/oike
 msgid "If set to 'yes' channels without EPG will not be shown."
 msgstr "'Kyllä' valinnalla kanavia ilman EPG:tä ei näytetä."
 
-msgid "If set to 'yes' it will show the 'PO' packages in browser."
-msgstr "'Kyllä' valinnalla näkyy 'PO'-ohjelmapaketit luettelossa."
-
-msgid "If set to 'yes' it will show the 'SRC' packages in browser."
-msgstr "'Kyllä' valinnalla näkyy 'SRC'-ohjelmapaketit luettelossa."
-
 msgid "If set to 'yes' shows a small TV screen in the EPG."
 msgstr "'Kyllä' valinnalla näytetään pieni TV-kuva EPG:ssä."
 
@@ -8006,6 +8033,9 @@ msgstr "Asenna '%s'"
 msgid "Install IPK's from your tmp folder."
 msgstr "Asenna IPK-paketteja laitteen tmp-kansiosta."
 
+msgid "Install Languages"
+msgstr "Asenna kielet"
+
 msgid "Install Plugins"
 msgstr "Asenna lisäosia"
 
@@ -8277,6 +8307,9 @@ msgstr "Katastrofi"
 
 msgid "Kazakhstan"
 msgstr "Kasakstan"
+
+msgid "Keep all languages"
+msgstr "Säilytä kaikki kielet"
 
 msgid "Keep logs"
 msgstr "Säilytä lokit"
@@ -8958,9 +8991,6 @@ msgstr "Mayotte"
 msgid "Mb/s"
 msgstr "Mb/s"
 
-msgid "Media playback Remaining/Elapsed as"
-msgstr "Näytä toistettavan median jäljellä oleva/kulunut aika:"
-
 msgid "Media player"
 msgstr "Mediasoitin"
 
@@ -9049,6 +9079,9 @@ msgstr "Vähemmistöurheilu"
 
 msgid "Mins"
 msgstr "Min."
+
+msgid "Mins (only digits)"
+msgstr "Minuutit (vain numerot)"
 
 msgid "Mins Secs"
 msgstr "Min. Sek."
@@ -10057,9 +10090,6 @@ msgctxt "now/next: 'now' event label"
 msgid "Now"
 msgstr "NYT"
 
-msgid "Now skipping restore process"
-msgstr "Ohitetaan palautusprosessia"
-
 msgid "Now, use the contrast setting to turn up the brightness of the background as much as possible, but make sure that you can still see the difference between the two brightest levels of shades.If you have done that, press OK."
 msgstr "Säädä kontrastisäädöllä tausta mahdollisimman valkoiseksi. Varmista, että näet yhä kahden kirkkaimman sävyn eron. Kun olet tyytyväinen tulokseen, paina OK."
 
@@ -10227,9 +10257,6 @@ msgstr "Avaa 'Asenna lisäosia' -näyttö"
 
 msgid "Open 'Remove Plugins' screen"
 msgstr "Avaa 'Poista lisäosia' -näyttö"
-
-msgid "Open PluginBrowser setup screen"
-msgstr "Avaa Lisäosa-selaimen asetukset"
 
 msgid "Open RDS/RASS screen"
 msgstr "Avaa RDS/RASS näyttö"
@@ -10697,6 +10724,9 @@ msgstr "Pilot"
 msgid "Pitcairn"
 msgstr "Pitcairn"
 
+msgid "Places a shortcut to MediaPlayer in the main menu."
+msgstr "Lisää Mediasoittimen pikakuvakkeen päävalikkoon."
+
 msgid "Play"
 msgstr "Jatka toistoa"
 
@@ -10876,6 +10906,12 @@ msgstr "Paina OK kun olet valmis"
 
 msgid "Please re-enter the new PIN code"
 msgstr "Syötä uusi PIN-koodi uudelleen"
+
+msgid "Please select a folder inside a mount point, not the mount point itself."
+msgstr "Valitse kansio, joka sijaitsee liitoksen sisällä, älä itse liitosta."
+
+msgid "Please select a folder under /media, i.e. a mount point that is not in the internal flash"
+msgstr "Valitse kansio /media-hakemiston alta, eli liitos, joka ei sijaitse sisäisessä flash-muistissa"
 
 msgid "Please select a playlist to delete..."
 msgstr "Valitse poistettava soittolista..."
@@ -11080,9 +11116,6 @@ msgstr "Lisäosa-selaimen toiminnot"
 
 msgid "Plugin browser"
 msgstr "Lisäosien valinta"
-
-msgid "Plugin browser settings"
-msgstr "Lisäosa-selaimen asetukset"
 
 msgid "Plugin install"
 msgstr "Lisäosan asentaminen"
@@ -11973,6 +12006,9 @@ msgstr "Jäljellä oleva ja kulunut"
 msgid "Remember service PIN"
 msgstr "Muista kanavan PIN"
 
+msgid "Remembers the current directory location for the next time MediaPlayer is opened."
+msgstr "Tallentaa nykyisen hakemiston sijainnin seuraavaa Mediasoittimen avaamista varten."
+
 msgid "Reminder, you have chosen to save timeshift file."
 msgstr "Muistutus, olet valinnut ajansiirron tallennuksen tallenteeksi."
 
@@ -12169,6 +12205,9 @@ msgstr "Kuinka usein toistetaan?"
 msgid "Repeat leave standby messages"
 msgstr "Toista poistu valmiustilasta viestit"
 
+msgid "Repeat playlist"
+msgstr "Toista soittolista"
+
 msgid "Repeat type"
 msgstr "Ajastus toistetaan"
 
@@ -12317,6 +12356,9 @@ msgstr "Jatka kohdasta %s"
 
 msgid "Resuming playback"
 msgstr "Toisto jatkuu viimeksi katsotusta kohdasta"
+
+msgid "Retains the playlist for the next time MediaPlayer is used."
+msgstr "Tallentaa soittolistan seuraavaa Mediasoittimen käyttökertaa varten."
 
 msgid "Retrieving image slots - Please wait..."
 msgstr "Haetaan image-paikkoja, odota..."
@@ -12490,6 +12532,9 @@ msgstr "SD"
 msgid "SDCARD"
 msgstr "SD-kortti"
 
+msgid "SDR"
+msgstr "SDR"
+
 msgid "SETUP"
 msgstr "ASETUKSET"
 
@@ -12653,8 +12698,14 @@ msgstr "Tallenna muutokset"
 msgid "Save every (in hours)"
 msgstr "Tallenna joka (tunti)"
 
+msgid "Save last directory on exit"
+msgstr "Tallenna viimeisin hakemisto poistuttaessa"
+
 msgid "Save playlist"
 msgstr "Tallenna soittolista"
+
+msgid "Save playlist on exit"
+msgstr "Tallenna soittolista poistuttaessa"
 
 msgid "Save timer"
 msgstr "Tallenna ajastus"
@@ -12902,25 +12953,24 @@ msgstr "Valitse '1.0' standardeille kytkimille, '1.1' muille kytkimille ja '1.2'
 msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select 'none'. If you are unsure select 'none'."
 msgstr "Valitse 'A' tai 'B', jos antennijärjestelmäsi sitä vaatii, muuten valitse 'ei mitään'. Jos olet epävarma, valitse 'ei mitään'."
 
+msgid "Select 'Delete all languages' to delete all languages except English and the current language."
+msgstr "Valitse ”Poista kaikki kielet”, poistaaksesi kaikki kielet paitsi englannin ja nykyisen kielen."
+
+#, python-format
+msgid "Select 'Delete selected language only' to delete only the chosen language: %s."
+msgstr "Valitse ”Poista vain valittu kieli”, poistaaksesi vain valitun kielen: %s."
+
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Valitse 'FBC SCR', jos tämä viritin kytketään SCR (Unicable/JESS) laitteeseen. Kaikille muille kokoonpanoille valitse 'FBC automaattinen'."
 
 msgid "Select 'Flash regular slot' to flash a regular MultiBoot slot or select 'Overwrite Recovery' to overwrite the Recovery image."
 msgstr "Valitse 'Flashaa tavallinen paikka' flashataksesi tavallisen MultiBoot-paikan tai valitse 'Korvaa palautusimage' korvataksesi palautusimagen."
 
+msgid "Select 'Keep all languages' to leave everything unchanged."
+msgstr "Valitse ”Säilytä kaikki kielet”, jättääksesi kaiken ennalleen."
+
 msgid "Select 'Standard' to display the standard vertical menu layout, or 'Horizontal' to display the menu items in a row."
 msgstr "Valitse 'Vakio' näyttääksesi tavallisen pystysuoran valikkoasettelun tai 'Horisontaali' näyttääksesi valikon kohdat rivissä."
-
-msgid ""
-"Select 'Yes' to delete all languages except English and current language:\n"
-"\n"
-"Select 'No' to delete only the chosen language:\n"
-"\n"
-msgstr ""
-"Valitse 'Kyllä' poistaaksesi kaikki muut kielet paitsi englannin ja nykyisen:\n"
-"\n"
-"Valitse 'Ei' poistaaksesi vain valitun kielen:\n"
-"\n"
 
 msgid "Select 'Yes' to make a settings backup before wiping the current configuration."
 msgstr "Valitse 'Kyllä' tehdäksesi asetusten varmuuskopion ennen nykyisen konfiguraation poispyyhkimistä."
@@ -13123,8 +13173,8 @@ msgstr "Valitse varmistettavat tiedostot/kansiot"
 msgid "Select first service in bouquet"
 msgstr "Valitse 1. kanava kanavalistalta"
 
-msgid "Select folder containing plugins(.ipk) and Save"
-msgstr "Valitse lisäosia (.ipk) sisältävä hakemisto ja Tallenna"
+msgid "Select folder under /media containing plugins(.ipk) and Save"
+msgstr "Valitse kansio /media-hakemiston alta, joka sisältää lisäosia (.ipk), ja tallenna"
 
 msgid "Select horizontal resolution:"
 msgstr "Valitse vaakaerottelu:"
@@ -13224,6 +13274,9 @@ msgstr "Valitse nykyinen kohde"
 
 msgid "Select the current menu item"
 msgstr "Valitse nykyinen valikkokohde"
+
+msgid "Select the default initial directory"
+msgstr "Valitse oletushakemisto"
 
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Valitse haluttu toiminto uudelleen sijoitettavaksi painamalla \"OK\"  Vaihda listoja painamalla \"CH+/-\"  Sijoita uudelleen painamalla \"OK\" Käytä \"Seuraava/Edellinen\" näppäimiä vaihtaaksesi toimintojen järjestystä."
@@ -13687,14 +13740,17 @@ msgstr "Asennus käynnissä..."
 msgid "Settings"
 msgstr "Asetukset"
 
+msgid "Settings restore failed."
+msgstr "Asetusten palautus epäonnistui."
+
+msgid "Settings restore was cancelled and there are no plugins to restore."
+msgstr "Asetusten palautus peruutettiin, eikä palautettavia lisäosia ole."
+
 msgid "Settings, information and more functions"
 msgstr "Asetukset, tiedot ja lisää toimintoja"
 
 msgid "Setup"
 msgstr "Asetukset"
-
-msgid "Setup Actions"
-msgstr "Asetustoiminnot"
 
 msgid "Setup how to control the channel changing."
 msgstr "Määritä kanavanvaihdon toiminta."
@@ -13787,8 +13843,11 @@ msgstr "Näytä loki"
 msgid "Show Log Manager in extensions list ?"
 msgstr "Näytä lokien hallinta laajennusvalikossa?"
 
-msgid "Show Media playback Remaining/Elapsed as"
-msgstr "Näytä toistettavan median jäljellä oleva/kulunut aika:"
+msgid "Show Media playback Remaining/Elapsed as *"
+msgstr "Näytä toistettavan median jäljellä oleva/kulunut aika: *"
+
+msgid "Show MediaPlayer in the main menu"
+msgstr "Näytä Mediasoitin päävalikossa"
 
 msgid "Show MiniTV in the Front Display"
 msgstr "Näytä MiniTV etupaneelin näytössä"
@@ -14057,9 +14116,6 @@ msgstr "Näytä yhden kanavan ohjelmaopas"
 msgid "Show single epg for current channel"
 msgstr "Näytä nykyisen kanavan ohjelmatiedot"
 
-msgid "Show source packages"
-msgstr "Näytä source-tiedostojen ohjelmapaketit"
-
 msgid "Show status icons in movie list"
 msgstr "Näytä tilakuvakkeet tallenneluettelossa"
 
@@ -14113,9 +14169,6 @@ msgstr "Näytä jäljellä oleva/kulunut aika *"
 
 msgid "Show timer list"
 msgstr "Näytä ajastusluettelo"
-
-msgid "Show translation packages"
-msgstr "Näytä käännöstiedostojen ohjelmapaketit"
 
 msgid "Show transponder info"
 msgstr "Näytä transponderin tietoja"
@@ -14591,6 +14644,12 @@ msgstr "Asetusvalikot aakkosjärjestyksessä"
 
 msgid "Sort the EPG list"
 msgstr "Järjestä EPG-lista"
+
+msgid "Sorting of playlists"
+msgstr "Soittolistojen lajittelu"
+
+msgid "Sorts stored playlists alphabetically before loading them"
+msgstr "Lajittelee tallennetut soittolistat aakkosjärjestykseen ennen niiden lataamista"
 
 msgid "Soul/Rhythm Blues"
 msgstr "Soul/Rhythm Blues"
@@ -15219,7 +15278,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 27.06.2026 ---\n"
+"--- 02.09.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -15503,6 +15562,9 @@ msgstr "Lokia ei voi nyt noutaa, ole hyvä ja yritä myöhemmin uudelleen.\n"
 msgid "The current update may be unstable."
 msgstr "Nykyinen päivitys voi olla epästabiili."
 
+msgid "The default directory is used as the initial filelist location when opening MediaPlayer."
+msgstr "Oletushakemistoa käytetään tiedostoluettelon alkuperäisenä sijaintina, kun Mediasoitin avataan."
+
 #, python-format
 msgid "The directory %s already exists."
 msgstr "Hakemisto %s on jo olemassa."
@@ -15615,14 +15677,8 @@ msgstr "On tapahtunut '%s', yritä myöhemmin uudelleen. Jos ongelma jatkuu, tar
 msgid "There has been an error, please try again later. If this issue persists, please check openvix.co.uk or world-of-satellite.com"
 msgstr "Tapahtui virhe, yritä myöhemmin uudelleen. Jos virhe jatkuu tarkista openvix.co.uk tai world-of-satellite.com sivuilta"
 
-msgid "There is a problem with this device. Please reformat it and try again."
-msgstr "Tässä laitteessa on ongelma. Alusta se ja yritä uudelleen."
-
 msgid "There is no backup to restore."
 msgstr "Ei ole varmuuskopiota mitä palauttaa."
-
-msgid "There is no image to flash."
-msgstr "Ei ole imagea mitä flashata."
 
 msgid "There is no signal to lock on !"
 msgstr "Ei signaalia johon voisi lukittua!"
@@ -15693,6 +15749,9 @@ msgstr "Tämä ei ole käypä ONID/TSID"
 msgid "This only applies to a handful of Vu+ 4K models."
 msgstr "Tämä koskee vain muutamia Vu+ 4K -malleja."
 
+msgid "This option adjusts SDR graphics and OSD colors while the HDMI output is in HDR mode."
+msgstr "Tämä asetus säätää SDR-grafiikan ja käyttöliittymän (OSD) värejä silloin, kun HDMI-lähtö on HDR-tilassa."
+
 msgid "This option allows to reduce the block-noise in the picture. Obviously this is at the cost of the picture's sharpness."
 msgstr "Tämä asetus vähentää lohkokohinan näkymistä kuvassa. Tämä tietysti tapahtuu kuvaterävyyden kustannuksella."
 
@@ -15738,14 +15797,14 @@ msgstr "Tämän asetuksen avulla voit valita kahden eri kanavalistan välillä."
 msgid "This option allows you to choose how to display elapsed time. As + or -"
 msgstr "Tämä asetus määrittää kuinka kulunut aika näytetään. Joko + tai -"
 
-msgid "This option allows you to choose how to display the remaining/elapsed time for Media playback."
-msgstr "Tämä asetus määrittää kuinka toistettavan median jäljellä oleva/kulunut aika näytetään."
+msgid "This option allows you to choose how to display the remaining/elapsed time for Media playback. If set to 'Skin Setting' the setting above 'Show time remaining/elapsed' will be ignored in this context."
+msgstr "Tämä asetus määrittää kuinka toistettavan median jäljellä oleva/kulunut aika näytetään. Jos asetukseksi valitaan 'Teeman asetus', yllä olevaa ”Näytä jäljellä oleva/kulunut aika” -asetusta ei oteta huomioon tässä yhteydessä."
 
 msgid "This option allows you to choose how to display the remaining/elapsed time for live TV."
 msgstr "Tämä asetus määrittää kuinka TV-lähetyksen jäljellä oleva/kulunut aika näytetään."
 
-msgid "This option allows you to choose how to display the remaining/elapsed time for media playback."
-msgstr "Tämä asetus määrittää kuinka toistettavan median jäljellä oleva/kulunut aika näytetään."
+msgid "This option allows you to choose how to display the remaining/elapsed time for media playback. If set to 'Skin Setting' the setting above 'Show time remaining/elapsed' will be ignored in this context."
+msgstr "Tämä asetus määrittää kuinka toistettavan median jäljellä oleva/kulunut aika näytetään. Jos asetukseksi valitaan 'Teeman asetus', yllä olevaa ”Näytä jäljellä oleva/kulunut aika” -asetusta ei oteta huomioon tässä yhteydessä"
 
 msgid "This option allows you to choose what the first button press jumps to in channel list screen, (so pressing '2' jumps to 'A' or '2' first), when 'Quick Actions' preset actions are perfomed. "
 msgstr "Tämä asetus määrittää mitä ensimmäinen näppäimen painallus tekee kanavalistassa, ('2' painallus hyppää joko 'A' tai '2'' kohtaan ensin), kun suoritetaan 'Pikatoimintojen' määritettyjä asetuksia. "
@@ -16405,6 +16464,12 @@ msgstr "Poista liitos"
 
 msgid "Unable to change password"
 msgstr "Salasanan vaihto epäonnistui"
+
+msgid "Unable to read from the backup device. Please check that it is accessible and contains valid backups."
+msgstr "Varmuuskopiolaitteelta lukeminen epäonnistui. Tarkista, että laite on käytettävissä ja sisältää kelvollisia varmuuskopioita."
+
+msgid "Unable to read from the backup device. Please check that it is accessible."
+msgstr "Varmuuskopiolaitteelta lukeminen epäonnistui. Tarkista, että laite on käytettävissä."
 
 msgid "Uncover dashed flickering line for this service"
 msgstr "Näytä yläreunan pistejuova tältä kanavalta"
@@ -17530,6 +17595,9 @@ msgstr "Kun ohjelman kuvasuhde on 16:9, valitse skaalataanko/venytetäänkö kuv
 msgid "When the content has an aspect ratio of 4:3, choose whether to scale/stretch the picture."
 msgstr "Kun ohjelman kuvasuhde on 4:3, valitse skaalataanko/venytetäänkö kuvaa."
 
+msgid "When the playlist comes to the end, continue playing, starting with the first item in the playlist."
+msgstr "Kun soittolista päättyy, jatka toistoa aloittamalla soittolistan ensimmäisestä kohteesta."
+
 msgid "When the receiver wakes from standby, it will send a command to the TV to bring it out of standby too."
 msgstr "Kun vastaanotin herää valmiustilasta, se lähettää TV:lle komennon myös sen herättämiseksi valmiustilasta."
 
@@ -18435,9 +18503,6 @@ msgstr "dokumentti"
 msgid "documentary (general)"
 msgstr "Dokumentti (yleinen)"
 
-msgid "dolby"
-msgstr "dolby"
-
 msgid "don't convert"
 msgstr "älä muunna"
 
@@ -18660,9 +18725,6 @@ msgstr "käsityö"
 msgid "handled"
 msgstr "hoidettu"
 
-msgid "hdr10"
-msgstr "hdr10"
-
 msgid "height"
 msgstr "Korkeus"
 
@@ -18686,9 +18748,6 @@ msgstr "hh:mmam/pm"
 
 msgid "hide"
 msgstr "Piilota"
-
-msgid "hlg"
-msgstr "hlg"
 
 msgid "hops:"
 msgstr "Hypyt:"
@@ -19077,9 +19136,6 @@ msgstr "nimeä tämä tiedosto uudelleen muotoon 'force' pakottaaksesi päivityk
 msgid "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
 msgstr "nimeä tämä unforce_%s.txt uudelleen tiedostoksi force_%s.txt pakottaaksesi päivityksen ilman vahvistusta"
 
-msgid "repeat playlist"
-msgstr "Toista soittolista"
-
 msgid "repeated"
 msgstr "Useita kertoja"
 
@@ -19116,20 +19172,11 @@ msgstr "moottori ei käytössä"
 msgid "running..."
 msgstr "Käynnissä..."
 
-msgid "save last directory on exit"
-msgstr "Tallenna viimeisin hakemisto suljettaessa"
-
-msgid "save playlist on exit"
-msgstr "Tallenna soittolista suljettaessa"
-
 msgid "scan state"
 msgstr "Haun tila"
 
 msgid "science fiction/fantasy/horror"
 msgstr "scifi/fantasia/kauhu"
-
-msgid "sdr"
-msgstr "sdr"
 
 msgid "se"
 msgstr "se"
@@ -19200,9 +19247,6 @@ msgstr "Näytä kortit jossa ylöshyppy 9"
 msgid "show event details"
 msgstr "Näytä ohjelman tarkemmat tiedot"
 
-msgid "show mediaplayer on mainmenu"
-msgstr "Näytä mediatoistin päävalikossa"
-
 msgid "show/game show (general)"
 msgstr "show/visailu (yleinen)"
 
@@ -19247,9 +19291,6 @@ msgstr "sosiaalinen/hengellinen tiede"
 
 msgid "softcam"
 msgstr "Softcam"
-
-msgid "sorting of playlists"
-msgstr "soittolistojen järjestys"
 
 msgid "special (general)"
 msgstr "Erikois (yleinen)"
@@ -19404,8 +19445,8 @@ msgstr "valmiustilaan/uudelleenkäynnistykseen asti"
 msgid "use best / controlled by HDMI"
 msgstr "käytä parasta / HDMI:n hallinnoima"
 
-msgid "use_hdmi_cacenter"
-msgstr "use_hdmi_cacenter"
+msgid "use hdmi cacenter"
+msgstr "käytä HDMI‑keskikanavaa"
 
 msgid "user defined"
 msgstr "käyttäjän määrittelemä"

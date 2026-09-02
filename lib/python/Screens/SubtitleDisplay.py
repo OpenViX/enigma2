@@ -41,6 +41,10 @@ class SubtitleDisplay(Screen):
 		label.instance.setHAlign(1)
 		label.instance.setVAlign(1)
 		label.instance.setBackgroundColor(gRGB(0xff000000))
+		# fully transparent background: opt into alphablend compositing explicitly so this
+		# label's box and text correctly blend against whatever's behind it (e.g. another
+		# root screen) instead of being treated as opaque for occlusion/paint purposes.
+		label.instance.setWidgetAlphaBlend(True)
 		foreColor_conf = config.subtitles.pango_subtitle_colors.value
 		if foreColor_conf == "2":
 			label.instance.setForegroundColor(gRGB(0x00ffff00))

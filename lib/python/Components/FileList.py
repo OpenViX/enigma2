@@ -87,6 +87,14 @@ def FileEntryComponent(name, absolute=None, isDir=False):
 
 class FileList(MenuList):
 	def __init__(self, directory, showDirectories=True, showFiles=True, showMountpoints=True, matchingPattern=None, useServiceRef=False, inhibitDirs=False, inhibitMounts=False, isTop=False, enableWrapAround=False, additionalExtensions=None):
+		if directory is not None:
+			# This module expects "directory" to be an absolute path
+			# terminated with a trailing slash. Enforce that here.
+			if path.isabs(directory):
+				directory = path.join(path.normpath(directory), "")
+			else:
+				print("[FileList] ERROR: non-absolute directory:", repr(directory))
+				directory = None
 		MenuList.__init__(self, list, enableWrapAround, eListboxPythonMultiContent)
 		self.additional_extensions = additionalExtensions
 		self.mountpoints = []
@@ -116,26 +124,24 @@ class FileList(MenuList):
 		self.mountpoints = [path.join(p.mountpoint, "") for p in harddiskmanager.getMountedPartitions()]
 		self.mountpoints.sort(reverse=True)
 
-	def getMountpoint(self, file):
-		file = path.join(path.realpath(file), "")
+	def getMountpoint(self, directory):
+		directory = path.join(path.realpath(directory), "")
 		for m in self.mountpoints:
-			if file.startswith(m):
+			if directory.startswith(m):
 				return m
 		return False
 
-	def getMountpointLink(self, file):
-		if path.realpath(file) == file:
-			return self.getMountpoint(file)
-		else:
-			if file[-1] == "/":
-				file = file[:-1]
-			mp = self.getMountpoint(file)
-			last = file
-			file = path.dirname(file)
-			while last != "/" and mp == self.getMountpoint(file):
-				last = file
-				file = path.dirname(file)
-			return path.join(last, "")
+	def getMountpointLink(self, directory):
+		directory = path.normpath(directory)
+		if path.realpath(directory) == directory:  # not a symlink
+			return self.getMountpoint(directory)
+		mp = self.getMountpoint(directory)
+		while True:
+			last = directory
+			directory = path.dirname(directory)
+			if last == "/" or mp != self.getMountpoint(directory):
+				break
+		return path.join(last, "")
 
 	def getSelection(self):
 		if self.l.getCurrentSelection() is None:
@@ -152,10 +158,11 @@ class FileList(MenuList):
 	def getFileList(self):
 		return self.list
 
-	def inParentDirs(self, dir, parents):
-		dir = path.realpath(dir)
-		for p in parents:
-			if dir.startswith(p):
+	def inParentDirs(self, directory, parents):
+		directory = path.realpath(directory)
+		for parent in parents:
+			parent = path.realpath(parent)
+			if path.commonpath((directory, parent)) == parent:
 				return True
 		return False
 
@@ -210,15 +217,15 @@ class FileList(MenuList):
 				files.sort()
 				tmpfiles = files[:]
 				for x in tmpfiles:
-					if path.isdir(directory + x):
-						directories.append(directory + x + "/")
+					if path.isdir(path.join(directory, x)):
+						directories.append(path.join(directory, x, ""))
 						files.remove(x)
 
 		if directory is not None and self.showDirectories and not self.isTop:
 			if directory == self.current_mountpoint and self.showMountpoints:
 				self.list.append(FileEntryComponent(name="<" + _("List of storage devices") + ">", absolute=None, isDir=True))
 			elif (directory != "/") and not (self.inhibitMounts and self.getMountpoint(directory) in self.inhibitMounts):
-				self.list.append(FileEntryComponent(name="<" + _("Parent directory") + ">", absolute="/".join(directory.split("/")[:-2]) + "/", isDir=True))
+				self.list.append(FileEntryComponent(name="<" + _("Parent directory") + ">", absolute=path.join(path.dirname(path.normpath(directory)), ""), isDir=True))
 
 		if self.showDirectories:
 			for x in directories:
@@ -232,7 +239,7 @@ class FileList(MenuList):
 					showPath = x.getPath()
 					name = showPath.split("/")[-1]
 				else:
-					showPath = directory + x
+					showPath = path.join(directory, x)
 					name = x
 
 				if (self.matchingPattern is None) or self.matchingPattern.search(showPath):
@@ -334,6 +341,14 @@ def MultiFileSelectEntryComponent(name, absolute=None, isDir=False, selected=Fal
 
 class MultiFileSelectList(FileList):
 	def __init__(self, preselectedFiles, directory, showMountpoints=False, matchingPattern=None, showDirectories=True, showFiles=True, useServiceRef=False, inhibitDirs=False, inhibitMounts=False, isTop=False, enableWrapAround=False, additionalExtensions=None):
+		if directory is not None:
+			# This module expects "directory" to be an absolute path
+			# terminated with a trailing slash. Enforce that here.
+			if path.isabs(directory):
+				directory = path.join(path.normpath(directory), "")
+			else:
+				print("[MultiFileSelectList] ERROR: non-absolute directory:", repr(directory))
+				directory = None
 		if preselectedFiles is None:
 			self.selectedFiles = []
 		else:
@@ -358,7 +373,7 @@ class MultiFileSelectList(FileList):
 				if x[0][1] is True:
 					realPathname = x[0][0]
 				else:
-					realPathname = self.current_directory + x[0][0]
+					realPathname = path.join(self.current_directory, x[0][0])
 				if x[0][2]:
 					SelectState = False
 					try:
@@ -433,15 +448,15 @@ class MultiFileSelectList(FileList):
 				files.sort()
 				tmpfiles = files[:]
 				for x in tmpfiles:
-					if path.isdir(directory + x):
-						directories.append(directory + x + "/")
+					if path.isdir(path.join(directory, x)):
+						directories.append(path.join(directory, x, ""))
 						files.remove(x)
 
 		if directory is not None and self.showDirectories and not self.isTop:
 			if directory == self.current_mountpoint and self.showMountpoints:
 				self.list.append(MultiFileSelectEntryComponent(name="<" + _("List of storage devices") + ">", absolute=None, isDir=True))
 			elif (directory != "/") and not (self.inhibitMounts and self.getMountpoint(directory) in self.inhibitMounts):
-				self.list.append(MultiFileSelectEntryComponent(name="<" + _("Parent directory") + ">", absolute="/".join(directory.split("/")[:-2]) + "/", isDir=True))
+				self.list.append(MultiFileSelectEntryComponent(name="<" + _("Parent directory") + ">", absolute=path.join(path.dirname(path.normpath(directory)), ""), isDir=True))
 
 		if self.showDirectories:
 			for x in directories:
@@ -456,7 +471,7 @@ class MultiFileSelectList(FileList):
 					showPath = x.getPath()
 					name = showPath.split("/")[-1]
 				else:
-					showPath = directory + x
+					showPath = path.join(directory, x)
 					name = x
 				if (self.matchingPattern is None) or self.matchingPattern.search(showPath):
 					alreadySelected = False

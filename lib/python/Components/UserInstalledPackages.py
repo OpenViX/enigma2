@@ -23,7 +23,7 @@ class UserInstalledPackages:
 		try:
 			status = subprocess.run(['opkg', 'status'], stdout=subprocess.PIPE, check=True).stdout.decode('utf-8')
 		except Exception as e:
-			print(f"[UserInstalledPackages] failed to read opkg status\n", e)
+			print("[UserInstalledPackages] failed to read opkg status\n", e)
 		if embedded_packages and status:
 			packages, provides = self.parsestatus(status)
 			for package in packages:
@@ -63,8 +63,8 @@ class UserInstalledPackages:
 		embedded = []
 		try:
 			result = open("/var/lib/opkg/status").read()
-		except Exception:
-			print(f"[UserInstalledPackages] failed to read /var/lib/opkg/status\n", e)
+		except Exception as e:
+			print("[UserInstalledPackages] failed to read /var/lib/opkg/status\n", e)
 			result = ""
 		if result:
 			min_installed_time = min([int(parts[1]) for line in result.split("\n") if line.startswith("Installed-Time") and len(parts := line.strip().split()) > 1 and parts[1].isnumeric()])

@@ -17,9 +17,11 @@ from Components.SystemInfo import SystemInfo, DISPLAYBRAND, IMAGETYPE, MACHINENA
 import Components.Task
 from Components.UserInstalledPackages import UserInstalledPackages
 from Screens.MessageBox import MessageBox
+from Screens.PluginBrowser import PluginBrowserSummary
 from Screens.Screen import Screen
 from Screens.Setup import Setup
 from Screens.TextBox import TextBox
+from Tools.BoundFunction import boundFunction
 from Tools.Notifications import AddPopupWithCallback
 
 from . import getMountChoices, getMountDefault
@@ -45,7 +47,6 @@ config.backupmanager.backupdirs = ConfigLocations(
 		eEnv.resolve("${sysconfdir}/network/interfaces"),
 		eEnv.resolve("${sysconfdir}/passwd"),
 		eEnv.resolve("${sysconfdir}/shadow"),
-		eEnv.resolve("${sysconfdir}/etc/shadow"),
 		eEnv.resolve("${sysconfdir}/resolv.conf"),
 		eEnv.resolve("${sysconfdir}/ushare.conf"),
 		eEnv.resolve("${sysconfdir}/inadyn.conf"),
@@ -80,11 +81,9 @@ config.backupmanager.number_to_keep = ConfigNumber(default=0)
 def BackupManagerautostart(reason, session=None, **kwargs):
 	"""called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"""
 	global autoBackupManagerTimer
-	global _session
 	if reason == 0:
 		print("[BackupManager] AutoStart Enabled")
 		if session is not None:
-			_session = session
 			if autoBackupManagerTimer is None:
 				autoBackupManagerTimer = AutoBackupManagerTimer(session)
 	else:
@@ -130,17 +129,36 @@ class VIXBackupManager(Screen):
 		self["key_menu"] = StaticText(_("MENU"))
 		self["key_info"] = StaticText(_("INFO"))
 
+		self["essentialActions"] = ActionMap(
+			["OkCancelActions", "MenuActions"],
+			{
+				"cancel": self.close,
+				"menu": self.createSetup,
+			}, -1)
+
+		self["optionalActions"] = ActionMap(
+			["ColorActions", "OkCancelActions", "DirectionActions", "TimerEditActions"],
+			{
+				"ok": self.keyRestore,
+				"red": self.keyDelete,
+				"green": self.GreenPressed,
+				"yellow": self.keyRestore,
+				"log": self.showLog,
+			}, -1)
+		self["optionalActions"].setEnabled(False)
+
 		self.BackupRunning = False
+		self.restoreOutcome = None
 		self.BackupDirectory = " "
 		self.onChangedEntry = []
-		self.emlist = []
-		self["list"] = MenuList(self.emlist)
+		self["list"] = MenuList([])
 		self.populate_List()
 		self.activityTimer = eTimer()
 		self.activityTimer.timeout.get().append(self.backupRunning)
 		self.activityTimer.start(10)
 		self.Console = Console()
 		self.ConsoleB = Console(binary=True)
+		self.installPluginTimeoutTimer = eTimer()
 
 		if BackupTime > 0:
 			t = localtime(BackupTime)
@@ -152,7 +170,6 @@ class VIXBackupManager(Screen):
 			self["list"].onSelectionChanged.append(self.selectionChanged)
 
 	def createSummary(self):
-		from Screens.PluginBrowser import PluginBrowserSummary
 		return PluginBrowserSummary
 
 	def selectionChanged(self):
@@ -181,6 +198,14 @@ class VIXBackupManager(Screen):
 
 	def JobViewCB(self, in_background):
 		Components.Task.job_manager.in_background = in_background
+		msg = None
+		if self.restoreOutcome == "nothing":
+			msg = _("Settings restore was cancelled and there are no plugins to restore.")
+		elif self.restoreOutcome == "failed":
+			msg = _("Settings restore failed.")
+		self.restoreOutcome = None
+		if msg:
+			self.session.open(MessageBox, msg, MessageBox.TYPE_INFO, timeout=15)
 
 	def populate_List(self):
 		# --------------------------------------------------------------------------------------
@@ -199,31 +224,15 @@ class VIXBackupManager(Screen):
 		# using /media/hdd." message ever. And "Press 'Menu' to select a storage device"
 		# would not be of any help because "Backup location" would not be populated.
 		# --------------------------------------------------------------------------------------
+		self["optionalActions"].setEnabled(False)
 		mount = config.backupmanager.backuplocation.value, path.normpath(config.backupmanager.backuplocation.value)
 		hdd = "/media/hdd/", "/media/hdd"
+		self["key_red"].hide()
+		self["key_green"].hide()
+		self["key_yellow"].hide()
 		if mount not in config.backupmanager.backuplocation.choices.choices and hdd not in config.backupmanager.backuplocation.choices.choices:
-			self["myactions"] = ActionMap(
-				["OkCancelActions", "MenuActions"],
-				{
-					"cancel": self.close,
-					"menu": self.createSetup,
-				}, -1)
-			self["key_red"].hide()
-			self["key_green"].hide()
-			self["key_yellow"].hide()
 			self["lab1"].setText(_("Device: Press 'Menu' to select a storage device - none available"))
 		else:
-			self["myactions"] = ActionMap(
-				["ColorActions", "OkCancelActions", "DirectionActions", "MenuActions", "TimerEditActions"],
-				{
-					"cancel": self.close,
-					"ok": self.keyRestore,
-					"red": self.keyDelete,
-					"green": self.GreenPressed,
-					"yellow": self.keyRestore,
-					"menu": self.createSetup,
-					"log": self.showLog,
-				}, -1)
 			if mount not in config.backupmanager.backuplocation.choices.choices:
 				config.backupmanager.backuplocation.value = hdd[0]
 				config.backupmanager.backuplocation.save()
@@ -235,29 +244,26 @@ class VIXBackupManager(Screen):
 			try:
 				if not path.exists(self.BackupDirectory):
 					mkdir(self.BackupDirectory, 0o755)
-				images = listdir(self.BackupDirectory)
-				del self.emlist[:]
 				mtimes = []
-				for fil in images:
-					if fil.endswith(".tar.gz") and "vix" in fil.lower() or fil.startswith("%s" % defaultprefix):
-						if fil.startswith(defaultprefix):   # Ensure the current image backup are sorted to the top
-							prefix = "B"
-						else:
-							prefix = "A"
-						key = "%s-%012u" % (prefix, stat(self.BackupDirectory + fil).st_mtime)
-						mtimes.append((fil, key))  # (filname, prefix-mtime)
-				for fil in [x[0] for x in sorted(mtimes, key=lambda x: x[1], reverse=True)]:  # sort by mtime
-					self.emlist.append(fil)
-				self["list"].setList(self.emlist)
+				for fil in listdir(self.BackupDirectory):
+					if fil.endswith(".tar.gz") and ("vix" in fil.lower() or fil.startswith(defaultprefix)):
+						mtimes.append((fil, fil.startswith(defaultprefix), stat(path.join(self.BackupDirectory, fil)).st_mtime))
+				backups = [x[0] for x in sorted(mtimes, key=lambda x: (x[1], x[2]), reverse=True)]
+				self["list"].setList(backups)
 				self["list"].show()
-				if len(self.emlist):
+				if backups:
 					self["key_red"].show()
 					self["key_yellow"].show()
 				else:
 					self["key_red"].hide()
 					self["key_yellow"].hide()
-			except:
-				self["lab1"].setText(_("Device: ") + path.normpath(config.backupmanager.backuplocation.value) + "\n" + _("There is a problem with this device. Please reformat it and try again."))
+				self["key_green"].show()
+				self["optionalActions"].setEnabled(True)
+			except OSError as err:
+				print("[BackupManager] populate_List:", err)
+				self["lab1"].setText(
+					_("Device: ") + path.normpath(config.backupmanager.backuplocation.value) + "\n" +
+					_("Unable to read from the backup device. Please check that it is accessible and contains valid backups."))
 
 	def createSetup(self):
 		self.session.openWithCallback(self.setupDone, VIXBackupManagerMenu, 'vixbackupmanager', 'SystemPlugins/ViX')
@@ -295,7 +301,11 @@ class VIXBackupManager(Screen):
 		self.sel = self["list"].getCurrent()
 		if self.sel is not None:
 			self["list"].moveToIndex(self["list"].getSelectedIndex() if len(self["list"].list) > self["list"].getSelectedIndex() + 1 else max(len(self["list"].list) - 2, 0))  # hold the selection current possition if the list is long enough, else go to last item
-			remove(self.BackupDirectory + self.sel)
+			try:
+				remove(self.BackupDirectory + self.sel)
+			except Exception as err:
+				print("[BackupManager] keyDelete: error while deleting", err)
+				self.session.open(MessageBox, _("Delete failure - check device available."), MessageBox.TYPE_INFO, timeout=10)
 			self.populate_List()
 
 	def GreenPressed(self):
@@ -341,15 +351,14 @@ class VIXBackupManager(Screen):
 					self.showJobView(job)
 					break
 
-	def myclose(self):
-		self.close()
-
 	def createRestoreJob(self):
 		self.pluginslist = []
 		self.pluginslist2 = []
 		self.didSettingsRestore = False
 		self.doPluginsRestore = False
 		self.didPluginsRestore = False
+		self.pluginsRestoreDeclined = False
+		self.pluginsRestoreNotNeeded = False
 		self.Stage1Completed = False
 		self.Stage2Completed = False
 		self.Stage3Completed = False
@@ -359,10 +368,6 @@ class VIXBackupManager(Screen):
 
 		task = Components.Task.PythonTask(job, _("Restoring backup..."))
 		task.work = self.JobStart
-		task.weighting = 1
-
-		task = Components.Task.PythonTask(job, _("Restoring backup..."))
-		task.work = self.Stage1
 		task.weighting = 1
 
 		task = Components.Task.ConditionTask(job, _("Restoring backup..."), timeoutCount=60)
@@ -441,7 +446,7 @@ class VIXBackupManager(Screen):
 				self.Stage2,
 				_("Sorry, but the restore failed."),
 				MessageBox.TYPE_INFO,
-				10,
+				15,
 				"StageOneFailedNotification"
 			)
 
@@ -454,17 +459,23 @@ class VIXBackupManager(Screen):
 		self.Console.ePopen("opkg update", self.Stage2Complete)
 
 	def Stage2Complete(self, result, retval, extra_args):
-		print("[BackupManager] Restoring Stage 2: Result ", result)
-		if result.find("wget returned 4") != -1:  # probably no network adaptor connected
+		print("[BackupManager] Restoring Stage 2: Result", result)
+
+		if "wget returned 4" in result:  # probably no network adaptor connected
 			self.feeds = "NONETWORK"
-			self.Stage2Completed = True
-		if result.find("wget returned 8") != -1 or result.find("wget returned 1") != -1 or result.find("wget returned 255") != -1 or result.find("404 Not Found") != -1:  # Server issued an error response, or there was a wget generic error code.
+
+		elif any(error in result for error in {
+			"wget returned 8",
+			"wget returned 1",
+			"wget returned 255",
+			"404 Not Found",
+		}):  # Page not found or generic wget error.
 			self.feeds = "DOWN"
-			self.Stage2Completed = True
-		elif result.find("bad address") != -1:  # probably DNS lookup failed
+
+		elif "bad address" in result:  # probably DNS lookup failed
 			self.feeds = "BAD"
-			self.Stage2Completed = True
-		elif result.find("Collected errors") != -1:  # none of the above errors. What condition requires this to loop? Maybe double key press.
+
+		elif "Collected errors" in result:  # Background update check already in progress.
 			AddPopupWithCallback(
 				self.Stage2,
 				_("A background update check is in progress, please try again."),
@@ -472,10 +483,13 @@ class VIXBackupManager(Screen):
 				10,
 				NOPLUGINS
 			)
+			return
+
 		else:
 			print("[BackupManager] Restoring Stage 2: Complete")
 			self.feeds = "OK"
-			self.Stage2Completed = True
+
+		self.Stage2Completed = True
 
 	def Stage3(self):
 		print("[BackupManager] Restoring Stage 3: Feeds Checks")
@@ -534,10 +548,10 @@ class VIXBackupManager(Screen):
 				with open("/tmp/3rdPartyPluginsLocation", "r") as fd:
 					thirdpartyPluginsLocation = fd.readline().strip()
 					print("[BackupManager] Restoring Stage 3: thirdpartyPluginsLocation from file", "'%s'" % thirdpartyPluginsLocation)
-			thirdpartyPluginsLocation = thirdpartyPluginsLocation.replace(" ", "%20")  # What is this replace for?
 			with open("/tmp/3rdPartyPlugins", "r") as fd:
 				tmppluginslist2 = [package.split("_")[0] for line in fd.readlines() if (package := line.strip())]  # ".split("_")[0]" should be redundant if the input is correct
-			relative_path = len(x := thirdpartyPluginsLocation.split("/", 3)) > 3 and x[3] or None  # expects thirdpartyPluginsLocation to be in the format /media/something/myFolder
+			relative_path = len(x := thirdpartyPluginsLocation.split("/", 3)) > 3 and x[3] or None  # expects thirdpartyPluginsLocation to be in the format /media/mountpoint/relative_path... (XtraPluginsSelection.saveSelection() now enforces this)
+			# Just in case the mount point has changed?
 			devmounts = relative_path and ["/media/%s/%s" % (media, relative_path) for media in listdir("/media/") if media not in ("autofs", "net") and path.isdir(path.join("/media/", media)) and path.exists("/media/%s/%s" % (media, relative_path))]
 			print("[BackupManager] search dir = %s" % str(devmounts))
 			for ipk in tmppluginslist2:
@@ -575,6 +589,7 @@ class VIXBackupManager(Screen):
 				PLUGINRESTOREQUESTIONID
 			)
 		else:
+			self.pluginsRestoreNotNeeded = True
 			print("[BackupManager] Restoring Stage 4: plugin restore not required")
 			self.Stage6()
 
@@ -584,14 +599,9 @@ class VIXBackupManager(Screen):
 			self.doPluginsRestore = True
 			self.Stage4Completed = True
 		elif answer is False:
+			self.pluginsRestoreDeclined = True
 			print("[BackupManager] Restoring Stage 4: plugin restore skipped by user")
-			AddPopupWithCallback(
-				self.Stage6,
-				_("Now skipping restore process"),
-				MessageBox.TYPE_INFO,
-				15,
-				NOPLUGINS
-			)
+			self.Stage6()
 
 	def Stage5(self):
 		if self.doPluginsRestore:
@@ -604,13 +614,21 @@ class VIXBackupManager(Screen):
 			self.Stage6()
 
 	def installNextPackage(self):
-		cmd = "opkg install " + self.pluginslistcombined[self.index]
+		cmd = ["opkg", "opkg", "install", self.pluginslistcombined[self.index]]
 		print("[BackupManager] Console command: '%s'" % cmd)
-		self.ConsoleB.ePopen(cmd, self.Stage5Complete)
+		self.startInstallTimer()
+		self.restoreProcess = self.ConsoleB.ePopen(cmd, self.Stage5Complete, extra_args=[self.index])
 
 	def Stage5Complete(self, result, retval, extra_args):
+		if extra_args[0] != self.index:
+			return  # avoid race possibility
+		self.installPluginTimeoutTimer.stop()
+		self.restoreProcess = None
 		if result:
 			print("[BackupManager] opkg install result:\n", result.decode(errors="ignore"))
+		self.continuePackageInstall()
+
+	def continuePackageInstall(self):
 		self.index += 1
 		if self.index < len(self.pluginslistcombined):
 			self.installNextPackage()
@@ -618,6 +636,28 @@ class VIXBackupManager(Screen):
 			self.didPluginsRestore = True
 			self.Stage5Completed = True
 			print("[BackupManager] Restoring Stage 5: Completed")
+
+	def startInstallTimer(self):
+		self.installPluginTimeoutTimer.stop()
+		del self.installPluginTimeoutTimer.callback[:]
+		self.installPluginTimeoutTimer.callback.append(boundFunction(self.installPluginTimedOut, self.index))
+		self.installPluginTimeoutTimer.start(300000, True)  # 5 mins, if no activity in that time something is wrong, so abort
+
+	def installPluginTimedOut(self, index):
+		if index != self.index:
+			print("[BackupManager] ignoring stale timeout", index, self.index)
+			return  # avoid race possibility
+
+		self.installPluginTimeoutTimer.stop()
+		del self.installPluginTimeoutTimer.callback[:]
+
+		# kill the running opkg process
+		if self.restoreProcess and self.restoreProcess.container:
+			self.restoreProcess.container.kill()
+		print("[BackupManager][installPluginTimedOut] timed out restoring", self.pluginslistcombined[index])
+
+		self.installPluginTimeoutTimer.callback.append(self.continuePackageInstall)
+		self.installPluginTimeoutTimer.start(30000, True)  # 30 secs for the process to exit
 
 	def Stage6(self, result=None, retval=None, extra_args=None):
 		self.Stage1Completed = True
@@ -633,9 +673,12 @@ class VIXBackupManager(Screen):
 			else:
 				print("[BackupManager] Stage 6 Restoring Completed rebooting")
 				quitMainloop(2)
+		elif self.pluginsRestoreDeclined or self.pluginsRestoreNotNeeded:
+			print("[BackupManager] Stage 6 Restoring: Settings restore was cancelled and there were no plugins to restore")
+			self.restoreOutcome = "nothing"
 		else:
-			print("[BackupManager] Restoring failed or canceled")
-			self.close()
+			print("[BackupManager] Stage 6 Restoring failed")
+			self.restoreOutcome = "failed"
 
 
 class BackupSelection(Screen):
@@ -710,12 +753,12 @@ class XtraPluginsSelection(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = "Setup"
-		self.title = _("Select folder containing plugins(.ipk) and Save")
+		self.title = _("Select folder under /media containing plugins(.ipk) and Save")
 
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 
-		self["config"] = FileList(config.backupmanager.backuplocation.value, showFiles=True, matchingPattern="^.*.(ipk)")
+		self["config"] = FileList(config.backupmanager.backuplocation.value, showFiles=True, matchingPattern=r"^.*\.ipk$")
 
 		self["actions"] = ActionMap(
 			["DirectionActions", "SetupActions"],
@@ -729,24 +772,53 @@ class XtraPluginsSelection(Screen):
 				"up": self["config"].up,
 			}, -1)
 
+		self.onChangedEntry = []
+		if self.selectionChanged not in self["config"].onSelectionChanged:
+			self["config"].onSelectionChanged.append(self.selectionChanged)
+
 	def saveSelection(self):
 		current = self["config"].getCurrent()[0]
-		# print("[BackupManager][saveSelection] current[0] ", current[0])
-		# current[0].split("/", 3) is used in the restore code so a sanity check should be added here.
-		# The restore code assumes the ipk folder starts with /media but that is not a requirement here and needs fixing.
-		ipkList = FileList(current[0], showDirectories=False, showFiles=True, showMountpoints=False, matchingPattern="^.*.(ipk)")
-		if ipkList.getFilename() is not None:
+		print("[BackupManager][saveSelection] current", str(current))
+
+		if not current[0] or not current[0].startswith("/media/"):
+			self.session.open(MessageBox, _("Please select a folder under /media, i.e. a mount point that is not in the internal flash"), MessageBox.TYPE_INFO, timeout=30)
+			return
+
+		elif not (len(x := current[0].split("/", 3)) > 3 and x[3]):  # match formula in VIXBackupManager.Stage3Complete()
+			self.session.open(MessageBox, _("Please select a folder inside a mount point, not the mount point itself."), MessageBox.TYPE_INFO, timeout=30)
+
+		elif not any(f.endswith(".ipk") for f in listdir(current[0])):  # no .ipk found in the selected folder
+			self.session.open(MessageBox, _("Please select folder that contains .ipk packages."), MessageBox.TYPE_INFO, timeout=10)
+
+		else:  # success
 			config.backupmanager.xtraplugindir.setValue(current[0])
 			config.backupmanager.xtraplugindir.save()
 			config.backupmanager.save()
-			config.save()
+			configfile.save()
 			self.close(None)
-		else:
-			self.session.open(MessageBox, _("Please select folder that contains .ipk packages."), MessageBox.TYPE_INFO, timeout=10)
 
 	def okClicked(self):
 		if self["config"].canDescent():
 			self["config"].descent()
+
+	def createSummary(self):
+		return XtraPluginsSelectionSummary
+
+	def selectionChanged(self):
+		item = self["config"].getCurrent()
+		desc = ""
+		if item:
+			name = str(item[0][0] or "")
+		else:
+			name = ""
+		for cb in self.onChangedEntry:
+			cb(name, desc)
+
+
+class XtraPluginsSelectionSummary(PluginBrowserSummary):
+	def __init__(self, session, parent):
+		PluginBrowserSummary.__init__(self, session, parent=parent)
+		self.skinName = "PluginBrowserSummary"
 
 
 class VIXBackupManagerMenu(Setup):
@@ -874,7 +946,6 @@ class AutoBackupManagerTimer:
 		self.backuptimer.stop()
 		now = int(time())
 		wake = self.getBackupTime()
-		atLeast = 0  # noqa: F841 if we're close enough, we're okay...
 		if wake - now < 60:
 			print("[BackupManager] Backup onTimer occured at", strftime("%c", localtime(now)))
 			from Screens.Standby import inStandby
@@ -1153,8 +1224,8 @@ class BackupFiles(Screen):
 					emlist = emlist[0:len(emlist) - config.backupmanager.number_to_keep.value]
 					for fil in emlist:
 						remove(self.BackupDirectory + fil)
-		except:
-			pass
+		except Exception as err:
+			print("[BackupManager] BackupComplete: error while pruning", err)
 		if config.backupmanager.schedule.value:
 			atLeast = 60
 			autoBackupManagerTimer.backupupdate(atLeast)

@@ -2,6 +2,8 @@ from time import time as getTime
 
 from enigma import eTimer
 
+import Components.ClockRealtimeMonitor
+
 from Components.Element import cached
 from Components.Sources.Source import Source
 
@@ -11,7 +13,8 @@ class Clock(Source):
 		Source.__init__(self)
 		self.clock_timer = eTimer()
 		self.clock_timer.callback.append(self.poll)
-		self.clock_timer.start(1000)
+		self._start()
+		Components.ClockRealtimeMonitor.realtimeMonitor.addRealtimeChangedCallback(self._timeUpdated)
 
 	@cached
 	def getClock(self):
@@ -19,16 +22,24 @@ class Clock(Source):
 
 	time = property(getClock)
 
+	def _start(self):
+		self.clock_timer.startEpochAligned(1000)
+		self.poll()  # instant, not aligned
+
 	def poll(self):
 		self.changed((self.CHANGED_POLL,))
+
+	def _timeUpdated(self):
+		# Re-align after CLOCK_REALTIME discontinuity.
+		self._start()
 
 	def doSuspend(self, suspended):
 		if suspended:
 			self.clock_timer.stop()
 		else:
-			self.clock_timer.start(1000)
-			self.poll()
+			self._start()
 
 	def destroy(self):
+		Components.ClockRealtimeMonitor.realtimeMonitor.removeRealtimeChangedCallback(self._timeUpdated)
 		self.clock_timer.callback.remove(self.poll)
 		Source.destroy(self)

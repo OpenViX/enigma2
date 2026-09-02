@@ -227,21 +227,26 @@ class Pager(GUIAddon):
 			self.selChange(currentPageIndex, pagesCount)
 		else:
 			lOrientation = self.getSourceOrientation()
+			sourceSize = self.getSourceSize()
 			if lOrientation == eListbox.orVertical or lOrientation == eListbox.orGrid:
-				listControledlSize = self.getSourceSize().height()
+				listControledlSize = sourceSize.height()
 			else:
-				listControledlSize = self.getSourceSize().width()
+				listControledlSize = sourceSize.width()
 
 			if listControledlSize > 0:
 				currentIndex = self.getCurrentIndex()
 				listCount = self.getListCount()
+				itemSize = self.getListItemSize()
 				if lOrientation == eListbox.orVertical:
-					itemControlledSizeParam = self.getListItemSize().height()
+					itemControlledSizeParam = itemSize.height()
 				elif lOrientation == eListbox.orGrid:
-					itemControlledSizeParam = self.getListItemSize().height()
+					itemControlledSizeParam = itemSize.height()
 				else:
-					itemControlledSizeParam = self.getListItemSize().width()
+					itemControlledSizeParam = itemSize.width()
 				items_per_page = listControledlSize // itemControlledSizeParam
+				if lOrientation == eListbox.orGrid and itemSize.width():
+					# Grid layouts hold multiple columns per row; a "page" is columns * rows, not just rows.
+					items_per_page *= sourceSize.width() // itemSize.width()
 				if items_per_page > 0:
 					currentPageIndex = currentIndex // items_per_page
 					pagesCount = -(listCount // -items_per_page) - 1

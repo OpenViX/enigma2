@@ -83,7 +83,11 @@ class Session:
 		currentDialog.saveKeyboardMode()
 		currentDialog.execBegin()
 		# When execBegin opened a new dialog, don't bother showing the old one.
-		if currentDialog == self.current_dialog and do_show:
+		# currentDialog.execBegin() can also close currentDialog again right away
+		# (a stashed close_on_next_exec re-firing close()), which reenters close()/
+		# execEnd() and clears in_exec - showing it afterwards would resurrect a
+		# window that just closed itself.
+		if currentDialog == self.current_dialog and self.in_exec and do_show:
 			currentDialog.show()
 
 	def execEnd(self, last=True):
@@ -468,9 +472,14 @@ def runScreenTest():
 
 
 profile("PYTHON_START")
-from Components.SystemInfo import SystemInfo  # noqa: E402  don't move this import
+print("[StartEnigma] Starting Python Level Initialisation.")
 
-print("[StartEnigma]  Starting Python Level Initialisation.")
+profile("Init:Multiboot")
+print("[StartEnigma] Initialising Multiboot.")
+from Tools.Multiboot import initMultiboot  # noqa: E402
+initMultiboot()
+
+from Components.SystemInfo import SystemInfo  # noqa: E402  don't move this import
 print(f"[StartEnigma]  Receiver -> {SystemInfo['displaybrand']} {SystemInfo['displaymodel']}")
 print(f"[StartEnigma]  Image Type -> {SystemInfo['imagetype']}")
 print(f"[StartEnigma]  Image Version -> {SystemInfo['imageversion']}")
@@ -478,6 +487,11 @@ print(f"[StartEnigma]  Image Build -> {SystemInfo['imagebuild']}")
 if SystemInfo["imagetype"] != "release":
 	print(f"[StartEnigma]  Image DevBuild -> {SystemInfo['imagedevbuild']}")
 
+
+profile("Init:RealtimeMonitor")
+print("[StartEnigma]  Initialising RealtimeMonitor.")
+from Components.ClockRealtimeMonitor import InitRealtimeMonitor  # noqa: E402
+InitRealtimeMonitor()
 
 # SetupDevices sets up defaults:- language, keyboard, parental & expert config.
 # Moving further down will break translation.

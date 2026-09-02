@@ -1,5 +1,7 @@
 from os import listdir, path, stat
 
+from enigma import eTimer
+
 from Components.config import config
 from Components.Console import Console
 from Components.Pixmap import Pixmap
@@ -7,6 +9,7 @@ from Components.SystemInfo import SystemInfo, DISPLAYBRAND, MACHINENAME
 from Screens.MessageBox import MessageBox
 from Screens.Rc import Rc
 from Screens.WizardLanguage import WizardLanguage
+from Tools.BoundFunction import boundFunction
 from Tools.Directories import fileHas, resolveFilename, SCOPE_PLUGINS
 from Tools.Multiboot import bootmviSlot, createInfo
 
@@ -32,6 +35,7 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.selectedDevice = None
 		self.Console = Console()
 		self.ConsoleB = Console(binary=True)
+		self.installPluginTimeoutTimer = eTimer()
 
 	def getTranslation(self, text):
 		return _(text).replace("%s %s", "%s %s" % (DISPLAYBRAND, MACHINENAME))
@@ -197,19 +201,49 @@ class RestoreWizard(WizardLanguage, Rc):
 		self.buildListRef.close(True)
 
 	def installNextPackage(self):
-		cmd = "opkg install " + self.pluginslistcombined[self.index]
+		cmd = ["opkg", "opkg", "install", self.pluginslistcombined[self.index]]
 		print(f"[RestoreWizard][installNextPackage] Console command:{cmd} index:{self.index}")
-		self.ConsoleB.ePopen(cmd, self.packageInstalled)
+		self.startInstallTimer()
+		self.restoreProcess = self.ConsoleB.ePopen(cmd, self.packageInstalled, extra_args=[self.index])
+
+	def startInstallTimer(self):
+		self.installPluginTimeoutTimer.stop()
+		del self.installPluginTimeoutTimer.callback[:]
+		self.installPluginTimeoutTimer.callback.append(boundFunction(self.installPluginTimedOut, self.index))
+		self.installPluginTimeoutTimer.start(300000, True)  # 5 mins, if no activity in that time something is wrong, so abort
 
 	def packageInstalled(self, result, retval, extra_args):
+		if extra_args[0] != self.index:
+			return  # avoid race possibility
+		self.installPluginTimeoutTimer.stop()
 		if result:
 			print("[RestoreWizard][packageInstalled] opkg install result:\n", result.decode(errors="ignore"))
+		self.continuePackageInstall()
+
+	def continuePackageInstall(self):
+		self.restoreProcess = None
 		self.index += 1
 		if self.index < len(self.pluginslistcombined):
 			self.installNextPackage()
 		else:
-			print("[RestoreWwizard][packageInstalled] Plugin restore finished")
+			print("[RestoreWizard][packageInstalled] Plugin restore finished")
 			self.pluginsRestore_Finished()
+
+	def installPluginTimedOut(self, index):
+		if index != self.index:
+			print("[RestoreWizard] ignoring stale timeout", index, self.index)
+			return  # avoid race possibility
+
+		self.installPluginTimeoutTimer.stop()
+		del self.installPluginTimeoutTimer.callback[:]
+
+		# kill the running opkg process
+		if self.restoreProcess and self.restoreProcess.container:
+			self.restoreProcess.container.kill()
+		print("[RestoreWizard][installPluginTimedOut] timed out restoring", self.pluginslistcombined[index])
+
+		self.installPluginTimeoutTimer.callback.append(self.continuePackageInstall)
+		self.installPluginTimeoutTimer.start(30000, True)  # 30 secs for the process to exit
 
 	def doRestorePluginsTest(self):
 		if self.delaymess:

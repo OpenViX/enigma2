@@ -1,7 +1,5 @@
 from time import time
 
-from enigma import eEPGCache
-
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
 from Components.Element import cached, ElementError

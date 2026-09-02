@@ -853,7 +853,8 @@ eMPEGStreamParserTS::eMPEGStreamParserTS(int packetsize):
 	m_header_offset(packetsize - 188),
 	m_enable_accesspoints(true),
 	m_pts_found(false),
-	m_has_accesspoints(false)
+	m_has_accesspoints(false),
+	m_idr_ap_written_this_au(true)
 {
 }
 
@@ -1010,14 +1011,31 @@ int eMPEGStreamParserTS::processPacket(const unsigned char *pkt, off_t offset)
 						if (ptsvalid) // If available, add timestamp data as well. PTS = 33 bits
 							data |= (pts << 31) | 0x1000000;
 						writeStructureEntry(offset + pkt_offset, data);
+						m_idr_ap_written_this_au = false; /* new access unit: allow one IDR-triggered
+							extra access point for it below, see m_idr_ap_written_this_au's comment */
 						if ( //pkt[3] == 0x09 &&   /* MPEG4 AVC NAL unit access delimiter */
 							(pkt[4] >> 5) == 0) /* and I-frame */
 						{
 							if (ptsvalid && m_enable_accesspoints)
 							{
 								addAccessPoint(offset, pts);
+								m_idr_ap_written_this_au = true;
 								// eDebug("[eMPEGStreamParserTS] MPEG4 AVC UAD at %llx, pts %llx", offset, pts);
 							}
+						}
+					}
+					else if (!(sc & 0x80) && (sc & 0x1f) == 5 /* IDR slice NAL, forbidden_zero_bit clear */
+						&& !m_idr_ap_written_this_au)
+					{
+						/* AUD pic_type hint above is not trusted alone - confirmed in production
+						 * some encoders never set it even across genuine IDR access units, leaving
+						 * .ap permanently empty. A real IDR slice NAL is a spec-guaranteed random
+						 * access point regardless of that hint; see m_idr_ap_written_this_au's
+						 * comment in the header for why this is additional, not a replacement. */
+						if (ptsvalid && m_enable_accesspoints)
+						{
+							addAccessPoint(offset, pts);
+							m_idr_ap_written_this_au = true;
 						}
 					}
 
@@ -1031,13 +1049,27 @@ int eMPEGStreamParserTS::processPacket(const unsigned char *pkt, off_t offset)
 					{
 						unsigned long long data = sc | (pkt[5] << 8);
 						writeStructureEntry(offset + pkt_offset, data);
+						m_idr_ap_written_this_au = false; /* new access unit: allow one IDR-triggered
+							extra access point for it below, see m_idr_ap_written_this_au's comment */
 
 						if ((pkt[5] >> 5) == 0) /* check pic_type for I-frame */
 						{
 							if (ptsvalid)
 							{
 								addAccessPoint(offset, pts);
+								m_idr_ap_written_this_au = true;
 							}
+						}
+					}
+					else if ((nal_unit_type == 19 || nal_unit_type == 20) /* IDR_W_RADL / IDR_N_LP slice NAL */
+						&& !m_idr_ap_written_this_au)
+					{
+						/* AUD pic_type hint above is not trusted alone - same reasoning as the
+						 * H.264 case, see m_idr_ap_written_this_au's comment in the header. */
+						if (ptsvalid && m_enable_accesspoints)
+						{
+							addAccessPoint(offset, pts);
+							m_idr_ap_written_this_au = true;
 						}
 					}
 

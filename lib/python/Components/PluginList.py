@@ -46,7 +46,7 @@ def PluginDownloadComponent(plugin, name, version=None, width=440):
 		plugin,
 		MultiContentEntryText(pos=(x, y), size=(width - x, h), font=0, text=name),
 		MultiContentEntryText(pos=(dx, dy), size=(width - dx, dh), font=1, text=plugin.description),
-		MultiContentEntryPixmapAlphaBlend(pos=(ix, iy), size=(iw, ih), png=png)
+		MultiContentEntryPixmapAlphaBlend(pos=(ix, iy), size=(iw, ih), png=png, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER)
 	]
 
 

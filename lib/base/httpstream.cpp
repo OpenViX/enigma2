@@ -25,33 +25,27 @@ eHttpStream::eHttpStream()
 		startDelay = delay * 1000;
 	}
 
-	/* Ring buffer — default 2 MB, tunable via config.usage.http_buffersize (KB) */
-	int bufKB = eConfigManager::getConfigIntValue("config.usage.http_buffersize");
-	ringBufSize = (bufKB > 0 ? (size_t)bufKB : 2048) * 1024;
-	ringBuf = (unsigned char*)malloc(ringBufSize);
-	ringHead = 0;
-	ringTail = 0;
-	ringFill = 0;
-	ringEof = false;
-	threadAbort = false;
-	pthread_mutex_init(&ringMutex, NULL);
-	pthread_cond_init(&ringNotEmpty, NULL);
-	pthread_cond_init(&ringNotFull, NULL);
 }
 
 eHttpStream::~eHttpStream()
 {
-	threadAbort = true;
-	pthread_cond_broadcast(&ringNotFull);
-	pthread_cond_broadcast(&ringNotEmpty);
+	if (!isStreamRelay)
+	{
+		threadAbort = true;
+		pthread_cond_broadcast(&ringNotFull);
+		pthread_cond_broadcast(&ringNotEmpty);
+	}
 	abort_badly();
 	kill();
 	free(tmpBuf);
-	free(ringBuf);
+	if (!isStreamRelay)
+	{
+		free(ringBuf);
+		pthread_mutex_destroy(&ringMutex);
+		pthread_cond_destroy(&ringNotEmpty);
+		pthread_cond_destroy(&ringNotFull);
+	}
 	close();
-	pthread_mutex_destroy(&ringMutex);
-	pthread_cond_destroy(&ringNotEmpty);
-	pthread_cond_destroy(&ringNotFull);
 }
 
 int eHttpStream::openUrl(const std::string &url, std::string &newurl)
@@ -105,7 +99,7 @@ int eHttpStream::openUrl(const std::string &url, std::string &newurl)
 	int authenticationindex = hostname.find("@");
 	if (authenticationindex > 0)
 	{
-		authorizationData =  base64encode(hostname.substr(0, authenticationindex));
+		authorizationData = base64encode(hostname.substr(0, authenticationindex));
 		hostname = hostname.substr(authenticationindex + 1);
 	}
 	int customportindex = hostname.find(":");
@@ -288,7 +282,7 @@ void eHttpStream::thread()
 		}
 		if (newurl == "")
 		{
-			/* connection established — start filling the ring buffer */
+			/* connection established — start filling the buffer - if not stream relay implement ring buffer*/
 			eDebug("[eHttpStream] Thread - connection established, filling buffer");
 			connectionStatus = CONNECTED;
 			if (!isStreamRelay)
@@ -310,6 +304,7 @@ void eHttpStream::thread()
 		pthread_cond_broadcast(&ringNotEmpty);
 		pthread_mutex_unlock(&ringMutex);
 	}
+	return;
 }
 
 int eHttpStream::close()
@@ -323,14 +318,150 @@ int eHttpStream::close()
 	return retval;
 }
 
-/* detectStreamRelay — check if the URL is a stream relay (localhost/loopback) */
-void eHttpStream::detectStreamRelay(const std::string &url)
+ssize_t eHttpStream::syncNextRead(void *buf, ssize_t length)
 {
-	isStreamRelay = (url.find("0.0.0.0:") != std::string::npos ||
-	                 url.find("127.0.0.1:") != std::string::npos ||
-	                 url.find("localhost:") != std::string::npos);
+	unsigned char *b = (unsigned char*)buf;
+	unsigned char *e = b + length;
+	partialPktSz = 0;
+
+	if (*(char*)buf != 0x47)
+	{
+		// the current read is not aligned
+		// get the head position of the last packet
+		// so we'll try to align the next read
+		while (e != b && *e != 0x47) e--;
+	}
+	else
+	{
+		// the current read is aligned
+		// get the last incomplete packet position
+		e -= length % packetSize;
+	}
+
+	if (e != b && e != (b + length))
+	{
+		partialPktSz = (b + length) - e;
+		// if the last packet is read partially save it to align the next read
+		if (partialPktSz > 0 && partialPktSz < packetSize)
+		{
+			memcpy(partialPkt, e, partialPktSz);
+		}
+	}
+	return (length - partialPktSz);
+}
+
+ssize_t eHttpStream::httpChunkedRead(void *buf, size_t count)
+{
+	ssize_t ret = -1;
+	size_t total_read = partialPktSz;
+
+	// write partial packet from the previous read
+	if (partialPktSz > 0)
+	{
+		memcpy(buf, partialPkt, partialPktSz);
+		partialPktSz = 0;
+	}
+
+	if (!isChunked)
+	{
+		ret = timedRead(streamSocket,((char*)buf) + total_read , count - total_read, 5000, 100);
+		if (ret > 0)
+		{
+			ret += total_read;
+			ret = syncNextRead(buf, ret);
+		}
+	}
+	else
+	{
+		while (total_read < count)
+		{
+			if (0 == currentChunkSize)
+			{
+				do
+				{
+					ret = readLine(streamSocket, &tmpBuf, &tmpBufSize);
+					if (ret < 0) return -1;
+				} while (!*tmpBuf && ret > 0); /* skip CR LF from last chunk */
+				if (ret == 0)
+					break;
+				currentChunkSize = strtol(tmpBuf, NULL, 16);
+				if (currentChunkSize == 0) return -1;
+			}
+
+			size_t to_read = count - total_read;
+			if (currentChunkSize < to_read)
+				to_read = currentChunkSize;
+
+			// do not wait too long if we have something in the buffer already
+			ret = timedRead(streamSocket, ((char*)buf) + total_read, to_read, ((total_read)? 100 : 5000), 100);
+			if (ret <= 0)
+				break;
+			currentChunkSize -= ret;
+			total_read += ret;
+		}
+		if (total_read > 0)
+		{
+			ret = syncNextRead(buf, total_read);
+		}
+	}
+	return ret;
+}
+
+ssize_t eHttpStream::read(off_t offset, void *buf, size_t count)
+{
+	if (connectionStatus == BUSY)
+		return 0;
+	else if (connectionStatus == FAILED)
+		return -1;
 	if (isStreamRelay)
-		eDebug("[eHttpStream] Stream Relay detected - ring buffer disabled");
+		return httpChunkedRead(buf, count);
+	else
+	{
+		unsigned char *b = (unsigned char*)buf;
+		size_t pre = partialPktSz;
+		if (pre > 0)
+		{
+			/* prepend the partial TS packet saved from the previous read */
+			memcpy(b, partialPkt, pre);
+			partialPktSz = 0;
+		}
+		ssize_t got = readFromRing(b + pre, count - pre);
+		if (got <= 0)
+			return got;
+		return syncNextRead(buf, (ssize_t)(got + pre));
+	}
+}
+
+int eHttpStream::valid()
+{
+	if (isStreamRelay)
+	{
+		if (connectionStatus == BUSY)
+			return 0;
+		return streamSocket >= 0;
+	}
+	else
+	{
+		if (connectionStatus == FAILED)
+			return -1;
+		else
+		{
+			pthread_mutex_lock(&ringMutex);
+			int ok = (ringFill > 0 || (!ringEof && streamSocket >= 0)) ? 1 : 0;
+			pthread_mutex_unlock(&ringMutex);
+			return ok;
+		}
+	}
+}
+
+off_t eHttpStream::length()
+{
+	return (off_t)-1;
+}
+
+off_t eHttpStream::offset()
+{
+	return 0;
 }
 
 /* socketRead — reads raw bytes from the socket, transparently handling chunked
@@ -462,92 +593,30 @@ ssize_t eHttpStream::readFromRing(void *buf, size_t count)
 	return (ssize_t)to_read;
 }
 
-ssize_t eHttpStream::syncNextRead(void *buf, ssize_t length)
-{
-	unsigned char *b = (unsigned char*)buf;
-	unsigned char *e = b + length;
-	partialPktSz = 0;
 
-	if (*(char*)buf != 0x47)
+/* detectStreamRelay — check if the URL is a stream relay (localhost/loopback) */
+void eHttpStream::detectStreamRelay(const std::string &url)
+{
+	isStreamRelay = (url.find("0.0.0.0:") != std::string::npos ||
+	                 url.find("127.0.0.1:") != std::string::npos ||
+	                 url.find("localhost:") != std::string::npos);
+	if (isStreamRelay)
 	{
-		// the current read is not aligned
-		// get the head position of the last packet
-		// so we'll try to align the next read
-		while (e != b && *e != 0x47) e--;
+		eDebug("[eHttpStream] Stream Relay detected - ring buffer disabled");
 	}
 	else
 	{
-		// the current read is aligned
-		// get the last incomplete packet position
-		e -= length % packetSize;
+		/* Ring buffer — default 2 MB, tunable via config.usage.http_buffersize (KB) */
+		int bufKB = eConfigManager::getConfigIntValue("config.usage.http_buffersize");
+		ringBufSize = (bufKB > 0 ? (size_t)bufKB : 2048) * 1024;
+		ringBuf = (unsigned char*)malloc(ringBufSize);
+		ringHead = 0;
+		ringTail = 0;
+		ringFill = 0;
+		ringEof = false;
+		threadAbort = false;
+		pthread_mutex_init(&ringMutex, NULL);
+		pthread_cond_init(&ringNotEmpty, NULL);
+		pthread_cond_init(&ringNotFull, NULL);
 	}
-
-	if (e != b && e != (b + length))
-	{
-		partialPktSz = (b + length) - e;
-		// if the last packet is read partially save it to align the next read
-		if (partialPktSz > 0 && partialPktSz < packetSize)
-		{
-			memcpy(partialPkt, e, partialPktSz);
-		}
-	}
-	return (length - partialPktSz);
-}
-
-
-ssize_t eHttpStream::read(off_t offset, void *buf, size_t count)
-{
-	if (connectionStatus == BUSY)
-		return 0;
-	if (connectionStatus == FAILED)
-		return -1;
-
-	unsigned char *b = (unsigned char*)buf;
-	size_t pre = partialPktSz;
-	if (pre > 0)
-	{
-		/* prepend the partial TS packet saved from the previous read */
-		memcpy(b, partialPkt, pre);
-		partialPktSz = 0;
-	}
-
-	if (isStreamRelay)
-	{
-		ssize_t got = socketRead(b + pre, count - pre);
-		if (got <= 0)
-			return got;
-		return syncNextRead(buf, (ssize_t)(got + pre));
-	}
-
-	ssize_t got = readFromRing(b + pre, count - pre);
-	if (got <= 0)
-		return got;
-
-	return syncNextRead(buf, (ssize_t)(got + pre));
-}
-
-int eHttpStream::valid()
-{
-	if (connectionStatus == BUSY)
-		return 0;
-	if (connectionStatus == FAILED)
-		return 0;
-
-	if (isStreamRelay)
-		return streamSocket >= 0;
-
-	pthread_mutex_lock(&ringMutex);
-	int ok = (ringFill > 0 || (!ringEof && streamSocket >= 0)) ? 1 : 0;
-	pthread_mutex_unlock(&ringMutex);
-	return ok;
-}
-
-off_t eHttpStream::length()
-{
-	return (off_t)-1;
-}
-
-off_t eHttpStream::offset()
-{
-	return 0;
 }

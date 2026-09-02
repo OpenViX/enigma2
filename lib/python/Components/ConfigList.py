@@ -359,7 +359,8 @@ class ConfigListScreen:
 				self.keyMenuCallback, ChoiceBox, title=currConfig[0],
 				list=list(zip(currConfig[1].description, currConfig[1].choices)),
 				selection=currConfig[1].getIndex(),
-				keys=[]
+				keys=[],
+				text=self.getCurrentDescription()
 			)
 
 	def keyMenuCallback(self, answer):

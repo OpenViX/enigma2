@@ -4,6 +4,13 @@ from os import waitpid
 
 class ConsoleItem:
 	def __init__(self, containers, cmd, callback, extra_args, binary=False):
+		# cmd may be:
+		#   - str: executed via '/bin/sh -c' (required for shell syntax such as pipes,
+		#          redirection, wildcards, &&, ||, etc.)
+		#   - list: executed directly by execvp (no shell). list[0] and list[1] must
+		#           both be the identical executable name (with or without a full path),
+		#           followed by the arguments.
+
 		self.extra_args = extra_args
 		self.callback = callback
 		self.container = enigma.eConsoleAppContainer()
@@ -26,7 +33,7 @@ class ConsoleItem:
 		retval = self.container.execute(*cmd)
 		if retval:
 			self.finishedCB(retval)
-		if callback is None:
+		elif callback is None:
 			pid = self.container.getPID()
 			try:
 				waitpid(pid, 0)
@@ -61,7 +68,9 @@ class Console:
 		self.appContainers = {}
 		self.binary = binary
 
-	def ePopen(self, cmd, callback=None, extra_args=[]):
+	def ePopen(self, cmd, callback=None, extra_args=None):
+		if not extra_args:
+			extra_args = []
 		print("[Console] command:", cmd)
 		return ConsoleItem(self.appContainers, cmd, callback, extra_args, self.binary)
 

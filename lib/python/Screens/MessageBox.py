@@ -1,6 +1,6 @@
 from enigma import eTimer, ePoint, eSize, getDesktop
 
-from Components.ActionMap import ActionMap, HelpableNumberActionMap
+from Components.ActionMap import HelpableNumberActionMap
 from Components.config import config
 from Components.Label import Label
 from Components.MenuList import MenuList
@@ -77,18 +77,35 @@ class MessageBox(Screen, HelpableScreen):
 		if self.layoutFinished not in self.onLayoutFinish:
 			self.onLayoutFinish.append(self.layoutFinished)
 		if enable_input:
-			self["actions"] = HelpableNumberActionMap(self, ["MsgBoxActions", "DirectionActions", "NumberActions",],
-			{
+			actions = {
 				"cancel": (self.cancel, _("Cancel the selection")),
-				"ok": (self.ok, _("Accept the current selection"))} | (({
-				"alwaysOK": (self.alwaysOK, _("Always select OK")),
-				"up": (self.up, _("Move up a line")),
-				"down": (self.down, _("Move down a line")),
-				"left": (self.left, _("Move up a page")),
-				"right": (self.right, _("Move down a page"))} | {
-				str(i): (self.keyNumberGlobal, _("Direct item selection")) for i in range(10)}
-				) if self.list else {}),
-			prio=-1, description=_("MessageBox Actions"))
+				"ok": (self.ok, _("Accept the current selection")),
+			}
+
+			if self.list:
+				actions |= {
+					"alwaysOK": (self.alwaysOK, _("Always select OK")),
+					"up": (self.up, _("Move up a line")),
+					"down": (self.down, _("Move down a line")),
+					"left": (self.left, _("Move up a page")),
+					"right": (self.right, _("Move down a page")),
+				}
+
+				actions |= {
+					str(i): (
+						self.keyNumberGlobal,
+						_("Direct item selection")
+					)
+					for i in range(10)
+				}
+
+			self["actions"] = HelpableNumberActionMap(
+				self,
+				["MsgBoxActions", "DirectionActions", "NumberActions", ],
+				actions,
+				prio=-1,
+				description=_("MessageBox Actions")
+			)
 
 	def layoutFinished(self):
 		self["icon"].setPixmapNum(self.type)

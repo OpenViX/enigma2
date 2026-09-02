@@ -110,7 +110,17 @@ int eLabel::event(int event, void *data, void *data2)
 			if (!m_nowrap)
 				flags |= gPainter::RT_WRAP;
 
-			if (isGradientSet() || m_blend)
+				/* text needs to blend against the real pixels behind it -- not just the
+				   widget's own nominal background color -- whenever that nominal color
+				   doesn't represent the true backdrop: a gradient, an alphablended
+				   background, rounded corners (which show whatever's behind them outside
+				   the radius), or a configured background color that itself carries any
+				   transparency (see needsBlendCompositing). Otherwise glyph anti-aliasing
+				   gets baked in assuming a flat background that isn't actually there, and
+				   the text ends up dimmed or partially/fully transparent depending on how
+				   much AA coverage each pixel has. See eWidgetDesktop::calcWidgetClipRegion
+				   for the matching condition on the compositing side. */
+			if (m_blend || needsBlendCompositing())
 				flags |= gPainter::RT_BLEND;
 
 				/* if we don't have shadow, m_shadow_offset will be 0,0 */

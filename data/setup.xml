@@ -68,7 +68,9 @@
 		<item level="2" text="Show second infobar" description="Configure whether (and for how long) a second infobar will be shown when OK is pressed twice. The second infobar contains additional information about the current channel.">config.usage.show_second_infobar</item>
 		<item level="2" text="Second infobar style*" description="Choose the style of the second infobar. The 'Standard' view normally includes technical data. The 'Simple' view shows minimal technical data." conditional="findSkinScreen('SecondInfoBarSimple')">config.usage.second_infobar_simple</item>
 		<item level="0" text="Enable infobar fade-out" description="Fade the infobar when hiding">config.usage.show_infobar_do_dimming</item>
-		<item level="0" text="Infobar fade-out speed" description="Configure the infobar fading speed">config.usage.show_infobar_dimming_speed</item>
+		<if conditional="config.usage.show_infobar_do_dimming.value">
+			<item level="0" text="Infobar fade-out speed" description="Configure the infobar fading speed" indents="1">config.usage.show_infobar_dimming_speed</item>
+		</if>
 		<item level="0" text="Infobar EPG activation" description="Select how to activate the Infobar EPG. This will affect Infobar behaviour" requires="InfoBarEpg">config.vixsettings.InfoBarEpg_mode</item>
 		<item level="0" text="Show animation while busy" description="Show ViX spinning logo when the system is busy.">config.usage.show_spinner</item>
 		<item level="0" text="Enable blinking" description="Enable blinking for ui elements. For example for recording icon">config.usage.enable_blinking</item>
@@ -88,7 +90,7 @@
 		<item level="0" text="Show time remaining/elapsed *" description="This option allows you choose how to display remaining time, or elapsed time, or both.">config.usage.swap_time_remaining_on_osd</item>
 		<item level="0" text="Show time elapsed as positive *" description="This option allows you choose how to display elapsed time as + or -">config.usage.elapsed_time_positive_osd</item>
 		<item level="0" text="Show transponder remaining/elapsed as *" description="This option allows you to choose how to display the remaining/elapsed time for live TV.">config.usage.swap_time_display_on_osd</item>
-		<item level="0" text="Media playback Remaining/Elapsed as" description="This option allows you to choose how to display the remaining/elapsed time for media playback.">config.usage.swap_media_time_display_on_osd</item>
+		<item level="0" text="Show Media playback Remaining/Elapsed as *" description="This option allows you to choose how to display the remaining/elapsed time for media playback. If set to 'Skin Setting' the setting above 'Show time remaining/elapsed' will be ignored in this context.">config.usage.swap_media_time_display_on_osd</item>
 		<item level="2" text="Hide zap errors" description="Hide any zap error messages.">config.usage.hide_zap_errors</item>
 		<item level="2" text="Hide CI messages" description="Hide error messages from the Common Interface module.">config.usage.hide_ci_messages</item>
 		<item level="2" text="Show crypto info in infobar" description="Show encryption info in the infobar (when supported by the skin).">config.usage.show_cryptoinfo</item>
@@ -325,7 +327,7 @@
 		<item level="1" text="Show Display Icons" description="Allows you to enable/disable displaying icons on the front panel.">config.lcd.mode</item>
 		<item level="1" text="Show Time Remaining/Elapsed *" description="This option allows you choose how to display remaining time, or elapsed time, or both." requires="ConfigDisplay">config.usage.swap_time_remaining_on_vfd</item>
 		<item level="1" text="Show Transponder Remaining/Elapsed as *" description="This option allows you choose how to display the remaining/elapsed time for live TV." requires="ConfigDisplay">config.usage.swap_time_display_on_vfd</item>
-		<item level="1" text="Show Media playback Remaining/Elapsed as" description="This option allows you to choose how to display the remaining/elapsed time for Media playback." requires="ConfigDisplay">config.usage.swap_media_time_display_on_vfd</item>
+		<item level="1" text="Show Media playback Remaining/Elapsed as *" description="This option allows you to choose how to display the remaining/elapsed time for Media playback. If set to 'Skin Setting' the setting above 'Show time remaining/elapsed' will be ignored in this context." requires="ConfigDisplay">config.usage.swap_media_time_display_on_vfd</item>
 		<item level="0" text="Show time elapsed as positive *" description="This option allows you to choose how to display elapsed time. As + or -" requires="ConfigDisplay">config.usage.elapsed_time_positive_vfd</item>
 		<item level="1" text="Scrolling Speed (software render)" description="Set the scrolling speed of text on the front display, this uses a software render in some skins." requires="ConfigDisplay">config.lcd.scroll_speed</item>
 		<item level="1" text="Scrolling delay (software render)" description="Set the delay time between repeated loops, this uses a software render in some skins." requires="ConfigDisplay">config.lcd.scroll_delay</item>
@@ -540,10 +542,6 @@
 		<item level="2" text="Yellow button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_yellowlong</item>
 		<item level="2" text="Blue button (short)" description="Set to what you want the button to do.">config.epgselection.grid.btn_blue</item>
 		<item level="2" text="Blue button (long)" description="Set to what you want the button to do.">config.epgselection.grid.btn_bluelong</item>
-	</setup>
-	<setup key="pluginbrowsersetup" title="Plugin browser settings">
-		<item level="2" text="Show translation packages" description="If set to 'yes' it will show the 'PO' packages in browser.">config.pluginbrowser.po</item>
-		<item level="2" text="Show source packages" description="If set to 'yes' it will show the 'SRC' packages in browser.">config.pluginbrowser.src</item>
 	</setup>
 	<setup key="wizardoptions" title="Common options">
 		<item level="0" text="Picons: Show in channel list" description="Configure if service picons will be shown in the channel selection list.">config.usage.service_icon_enable</item>

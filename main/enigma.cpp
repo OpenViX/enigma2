@@ -168,7 +168,6 @@ static const std::string getConfigCurrentSpinner(const char* key)
 			return value;
 		}
 	}
-
 	return "spinner"; // fallback on default system spinner
 }
 
@@ -306,7 +305,6 @@ int main(int argc, char **argv)
 	{
 		spinnerPostionX = spinnerPostionY = 25;
 	}
-
 	eDebug("[MAIN] Loading spinners...");
 	{
 #define MAX_SPINNER 64
@@ -382,7 +380,6 @@ int main(int argc, char **argv)
 		p.clear();
 		p.flush();
 	}
-
 	return exit_code;
 }
 
@@ -430,6 +427,11 @@ const char *getOARev()
 const char *getGStreamerVersionString()
 {
 	return gst_version_string();
+}
+
+int getE2Flags()
+{
+	return 3; // start/stop Audio = 1 | WebP = 2
 }
 
 bool checkLogin(const char *user, const char *password)

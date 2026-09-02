@@ -1,12 +1,8 @@
 from Plugins.Plugin import PluginDescriptor
 
 
-def CutListEditor(session, service=None):
-	from . import ui
-	return ui.CutListEditor(session, service)
-
-
 def main(session, service, **kwargs):
+	from .ui import CutListEditor
 	session.open(CutListEditor, service)
 
 

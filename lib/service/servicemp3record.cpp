@@ -4,6 +4,7 @@
 #include <lib/dvb/metaparser.h>
 #include <lib/base/httpstream.h>
 #include <lib/base/nconfig.h>
+#include <lib/dvb/decoder.h>
 #include <lib/nav/core.h>
 
 #include <gst/gst.h>
@@ -15,6 +16,108 @@
 
 DEFINE_REF(eServiceMP3Record);
 
+namespace {
+
+const int STREAM_TYPE_MPEG2 = 0x02;
+const int STREAM_TYPE_H264 = 0x1B;
+const int STREAM_TYPE_H265 = 0x24;
+
+/* Sentinel: PAT/PMT section not fully captured in this one 188-byte packet
+ * yet - caller should keep scanning, not treat this as "no program"/"no
+ * video stream". Real values are >= 0 (a PID) or -1 for "no program"/"no
+ * supported video stream" (a definite negative result, not "try again"). */
+const int PARSE_RETRY = -2;
+const int PARSE_NONE = -1;
+
+/* Return the PMT PID from the PAT
+ * packet at *pkt* (a 188-byte TS packet, sync byte already verified by the
+ * caller), PARSE_RETRY if the section isn't fully captured here, or
+ * PARSE_NONE if a complete PAT was parsed but held no program (shouldn't
+ * happen for a valid mux). */
+int parsePatPacket(const unsigned char *pkt)
+{
+	if (!(pkt[1] & 0x40))  // PUSI must be set for a PAT to start here
+		return PARSE_RETRY;
+	int afc = (pkt[3] >> 4) & 0x03;
+	if (!(afc & 0x01))
+		return PARSE_RETRY;
+	int pos = 4;
+	if (afc & 0x02)
+		pos += 1 + pkt[4];
+	if (pos >= 188)
+		return PARSE_RETRY;
+	int pointer_field = pkt[pos];
+	int sec_start = pos + 1 + pointer_field;
+	if (sec_start + 8 > 188)
+		return PARSE_RETRY;
+	const unsigned char *sec = pkt + sec_start;
+	int sec_len = 188 - sec_start;
+	if (sec[0] != 0x00)  // table_id: program_association_section
+		return PARSE_RETRY;
+	int section_length = ((sec[1] & 0x0F) << 8) | sec[2];
+	int end = 3 + section_length;
+	if (sec_len < end)
+		return PARSE_RETRY;
+	int p = 8;
+	int loop_end = end - 4;  // exclude trailing CRC32
+	while (p + 4 <= loop_end)
+	{
+		int program_number = (sec[p] << 8) | sec[p + 1];
+		int pid = ((sec[p + 2] & 0x1F) << 8) | sec[p + 3];
+		if (program_number != 0)
+			return pid;
+		p += 4;
+	}
+	return PARSE_NONE;
+}
+
+/* Return the video PID from the PMT
+ * packet at *pkt*, and its stream_type via *streamtype_out*. Same
+ * PARSE_RETRY/PARSE_NONE convention as parsePatPacket(). */
+int parsePmtPacket(const unsigned char *pkt, int &streamtype_out)
+{
+	if (!(pkt[1] & 0x40))
+		return PARSE_RETRY;
+	int afc = (pkt[3] >> 4) & 0x03;
+	if (!(afc & 0x01))
+		return PARSE_RETRY;
+	int pos = 4;
+	if (afc & 0x02)
+		pos += 1 + pkt[4];
+	if (pos >= 188)
+		return PARSE_RETRY;
+	int pointer_field = pkt[pos];
+	int sec_start = pos + 1 + pointer_field;
+	if (sec_start + 12 > 188)
+		return PARSE_RETRY;
+	const unsigned char *sec = pkt + sec_start;
+	int sec_len = 188 - sec_start;
+	if (sec[0] != 0x02)  // table_id: TS_program_map_section
+		return PARSE_RETRY;
+	int section_length = ((sec[1] & 0x0F) << 8) | sec[2];
+	int end = 3 + section_length;
+	if (sec_len < end)
+		return PARSE_RETRY;
+	int program_info_length = ((sec[10] & 0x0F) << 8) | sec[11];
+	int p = 12 + program_info_length;
+	int loop_end = end - 4;  // exclude trailing CRC32
+	while (p + 5 <= loop_end)
+	{
+		int stream_type = sec[p];
+		int pid = ((sec[p + 1] & 0x1F) << 8) | sec[p + 2];
+		int es_info_length = ((sec[p + 3] & 0x0F) << 8) | sec[p + 4];
+		if (stream_type == STREAM_TYPE_MPEG2 || stream_type == STREAM_TYPE_H264 || stream_type == STREAM_TYPE_H265)
+		{
+			streamtype_out = stream_type;
+			return pid;
+		}
+		p += 5 + es_info_length;
+	}
+	return PARSE_NONE;
+}
+
+}  // namespace
+
 eServiceMP3Record::eServiceMP3Record(const eServiceReference &ref):
 	m_ref(ref),
 	m_pump(eApp, 1, "servicemp3record")
@@ -25,6 +128,16 @@ eServiceMP3Record::eServiceMP3Record(const eServiceReference &ref):
 	m_recording_pipeline = 0;
 	m_useragent = "Enigma2 Mediaplayer";
 	m_extra_headers = "";
+	m_apsc_base_pos = 0;
+	m_apsc_next_pkt = 0;
+	m_apsc_pmt_pid = -1;
+	m_apsc_video_pid_found = false;
+	m_apsc_sync_checked = false;
+	m_apsc_disabled = false;
+	m_record_offset = 0;
+	m_ts_parser = 0;
+	m_record_probe_pad = 0;
+	m_record_probe_id = 0;
 
 	CONNECT(m_pump.recv_msg, eServiceMP3Record::gstPoll);
 	if (eConfigManager::getConfigBoolValue("config.mediaplayer.useAlternateUserAgent"))
@@ -49,6 +162,8 @@ eServiceMP3Record::~eServiceMP3Record()
 	{
 		gst_object_unref(GST_OBJECT(m_recording_pipeline));
 	}
+
+	delete m_ts_parser;
 }
 
 RESULT eServiceMP3Record::prepare(const char *filename, time_t begTime, time_t endTime, int eit_event_id, const char *name, const char *descr, const char *tags, bool descramble, bool recordecm, int packetsize)
@@ -104,13 +219,143 @@ RESULT eServiceMP3Record::start(bool simulate)
 	return doRecord();
 }
 
+namespace {
+
+const guint RECORD_STOP_WATCHDOG_TIMEOUT_SECONDS = 10;
+
+/* Same pattern as eServiceMP3::stop()'s stopWorker()/stopWatchdog() in
+ * servicemp3.cpp - shared between recordStopWorker()/recordStopWatchdog()
+ * only, never touches eServiceMP3Record/"this". refcount starts at 2 (one per
+ * thread below); whichever finishes second frees it. */
+struct RecordStopWatchdog
+{
+	gint done;      // atomic bool, set by recordStopWorker() once GST_STATE_NULL actually returns
+	gint refcount;  // atomic
+};
+
+void recordStopWatchdogRelease(RecordStopWatchdog *watchdog)
+{
+	if (g_atomic_int_dec_and_test(&watchdog->refcount))
+		delete watchdog;
+}
+
+struct RecordStopWorkerArgs
+{
+	GstElement *pipeline;
+	RecordStopWatchdog *watchdog;
+};
+
+/* gst_element_set_state(..., GST_STATE_NULL) can block the calling thread for
+ * a long time if the pipeline's source is stuck - e.g. uridecodebin/
+ * souphttpsrc wedged trying to reach an unavailable stream (a blocked DNS
+ * lookup isn't even cancellable). stop() is reached directly from the Timer
+ * screen/RecordTimer on the main thread, so blocking here freezes the whole
+ * GUI - the same failure mode already fixed for eServiceMP3::stop(); this is
+ * the same fix, ported to the recording pipeline. */
+gpointer recordStopWorker(gpointer data)
+{
+	RecordStopWorkerArgs *args = static_cast<RecordStopWorkerArgs*>(data);
+	GstElement *pipeline = args->pipeline;
+	RecordStopWatchdog *watchdog = args->watchdog;
+	delete args;
+
+	GstStateChangeReturn ret = gst_element_set_state(pipeline, GST_STATE_NULL);
+	if (ret != GST_STATE_CHANGE_SUCCESS)
+		eDebug("[eServiceMP3Record] stop GST_STATE_NULL failure");
+	gst_object_unref(pipeline);
+
+	g_atomic_int_set(&watchdog->done, 1);
+	recordStopWatchdogRelease(watchdog);
+	return NULL;
+}
+
+/* Detection only, not recovery - same reasoning as stopWatchdog() in
+ * servicemp3.cpp. Runs as its own thread rather than an eTimer because it has
+ * to outlive "this". */
+gpointer recordStopWatchdog(gpointer data)
+{
+	RecordStopWatchdog *watchdog = static_cast<RecordStopWatchdog*>(data);
+	g_usleep(RECORD_STOP_WATCHDOG_TIMEOUT_SECONDS * G_USEC_PER_SEC);
+	if (!g_atomic_int_get(&watchdog->done))
+		eDebug("[eServiceMP3Record] stop(): GST_STATE_NULL still hasn't completed after %u seconds - source likely stuck", RECORD_STOP_WATCHDOG_TIMEOUT_SECONDS);
+	recordStopWatchdogRelease(watchdog);
+	return NULL;
+}
+
+}  // namespace
+
+void eServiceMP3Record::disconnectAsyncSignalHandlers()
+{
+	if (!m_recording_pipeline)
+		return;
+
+	/* Now that stop() moves GST_STATE_NULL off the main thread, the pipeline
+	 * can keep running - and keep emitting these signals - for a while after
+	 * "this" may already have been destroyed (e.g. RecordTimer dropping its
+	 * last reference right after stop() returns). None of these matter once
+	 * we're stopping regardless, so disconnect everything bound to "this"
+	 * synchronously here, before handing teardown off to the worker thread. */
+	GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(m_recording_pipeline));
+	gst_bus_set_sync_handler(bus, NULL, NULL, NULL);
+	gst_object_unref(bus);
+
+	if (m_source)
+	{
+		g_signal_handlers_disconnect_by_func(m_source, (gpointer)handleUridecNotifySource, this);
+		g_signal_handlers_disconnect_by_func(m_source, (gpointer)handleAutoPlugCont, this);
+	}
+
+	/* .ap/.sc: handleRecordProbe() also touches "this" (m_ts_parser,
+	 * m_apsc_*, ...), from whatever thread is pushing buffers through the
+	 * pipeline - same "can outlive this object" concern as the signal
+	 * handlers above, and it's also what makes the stopSave() call in stop()
+	 * safe to do synchronously right after this returns. Detaching a probe
+	 * blocks until any in-flight invocation of it finishes (worst case one
+	 * buffer's worth of TS parsing - low milliseconds, nowhere near the
+	 * multi-second class of block the worker thread in stop() exists to
+	 * avoid), which is the only way to guarantee it can never fire again -
+	 * same reasoning as the HDR probe removal in eServiceMP3::stop(). */
+	if (m_record_probe_pad && m_record_probe_id)
+	{
+		gst_pad_remove_probe(m_record_probe_pad, m_record_probe_id);
+		m_record_probe_pad = NULL;
+		m_record_probe_id = 0;
+	}
+}
+
 RESULT eServiceMP3Record::stop()
 {
 	if (!m_simulate)
 		eDebug("[eMP3ServiceRecord] stop recording");
 	if (m_state == stateRecording)
 	{
-		gst_element_set_state(m_recording_pipeline, GST_STATE_NULL);
+		disconnectAsyncSignalHandlers();
+
+		/* Safe here rather than after the async GST_STATE_NULL below:
+		 * disconnectAsyncSignalHandlers() just synchronously detached the
+		 * record probe, which is what guarantees no more parseData() calls
+		 * can reach m_ts_parser from the streaming thread - the same
+		 * property the original, fully-synchronous version of this code
+		 * relied on gst_element_set_state(NULL) itself to provide. Writing
+		 * the buffered .ap is a single local disk write, not the
+		 * network-bound stall gst_element_set_state(NULL) can hit, so doing
+		 * it here doesn't reintroduce the freeze the worker thread below
+		 * exists to avoid. */
+		if (m_ts_parser)
+			m_ts_parser->stopSave();
+
+		/* See recordStopWorker()'s comment: hand the actual (potentially
+		 * blocking) teardown off to a worker thread instead of doing it here,
+		 * plus a watchdog thread that just logs if it's taking unexpectedly
+		 * long - see recordStopWatchdog()'s comment for why that's a thread
+		 * and not a timer. */
+		gst_object_ref(m_recording_pipeline);
+		RecordStopWatchdog *watchdog = new RecordStopWatchdog{0, 2};
+		GThread *worker = g_thread_new("mp3recstop", recordStopWorker, new RecordStopWorkerArgs{m_recording_pipeline, watchdog});
+		g_thread_unref(worker);
+		GThread *watchdogThread = g_thread_new("mp3recstopwd", recordStopWatchdog, watchdog);
+		g_thread_unref(watchdogThread);
+
 		m_state = statePrepared;
 	} else if (!m_simulate)
 		eDebug("[eMP3ServiceRecord] stop was not recording");
@@ -129,6 +374,29 @@ int eServiceMP3Record::doPrepare()
 	if (m_state == stateIdle)
 	{
 		eDebug("[eMP3ServiceRecord] stateIdle");
+
+		/* Reset .ap/.sc discovery state for this recording - restartRecordingFromEos()
+		 * reuses this same object for a new segment file, so this can't just be
+		 * constructor-only. A fresh eMPEGStreamParserTS instance (not just resetting
+		 * our own m_apsc_* bookkeeping) matters here too: its own internal state
+		 * (locked pid/streamtype, partial-packet buffer, PTS tracking) must not
+		 * carry over from a previous segment. */
+		std::vector<unsigned char>().swap(m_apsc_buf);
+		m_apsc_base_pos = 0;
+		m_apsc_next_pkt = 0;
+		m_apsc_pmt_pid = -1;
+		m_apsc_video_pid_found = false;
+		m_apsc_sync_checked = false;
+		m_apsc_disabled = false;
+		m_record_offset = 0;
+		delete m_ts_parser;
+		m_ts_parser = new eMPEGStreamParserTS(188);
+		/* Stale otherwise: doPrepare() below builds a brand new pipeline/pad
+		 * for this segment, so any probe id from a previous one no longer
+		 * refers to anything live. */
+		m_record_probe_pad = 0;
+		m_record_probe_id = 0;
+
 		gchar *uri;
 		size_t pos = m_ref.path.find('#');
 		std::string stream_uri;
@@ -164,7 +432,7 @@ int eServiceMP3Record::doPrepare()
 		g_object_set(m_source, "uri", uri, NULL);
 		g_object_set(m_source, "caps", gst_caps_from_string("video/mpegts;video/x-flv;video/x-matroska;video/quicktime;video/x-msvideo;video/x-ms-asf;audio/mpeg;audio/x-flac;audio/x-ac3;text/x-raw;text/x-pango-markup"), NULL);
 		g_signal_connect(m_source, "notify::source", G_CALLBACK(handleUridecNotifySource), this);
-		g_signal_connect(m_source, "pad-added", G_CALLBACK(handlePadAdded), sink);
+		g_signal_connect(m_source, "pad-added", G_CALLBACK(handlePadAdded), this);
 		g_signal_connect(m_source, "autoplug-continue", G_CALLBACK(handleAutoPlugCont), this);
 
 		// set sink properties
@@ -475,11 +743,18 @@ void eServiceMP3Record::handleUridecNotifySource(GObject *object, GParamSpec *un
 
 void eServiceMP3Record::handlePadAdded(GstElement *element, GstPad *pad, gpointer user_data)
 {
-	GstElement *sink= (GstElement*)user_data;
+	eServiceMP3Record *_this = (eServiceMP3Record*)user_data;
+	GstElement *sink = gst_bin_get_by_name(GST_BIN(_this->m_recording_pipeline), "fsink");
+	if (!sink)
+	{
+		eDebug("[eServiceMP3Record] handlePadAdded cannot find filesink");
+		return;
+	}
 	GstPad *filesink_pad = gst_element_get_static_pad(sink, "sink");
 	if (gst_pad_is_linked(filesink_pad))
 	{
 		gst_object_unref(filesink_pad);
+		gst_object_unref(sink);
 		return;
 	}
 
@@ -490,14 +765,155 @@ void eServiceMP3Record::handlePadAdded(GstElement *element, GstPad *pad, gpointe
 	else
 	{
 		eDebug("[eServiceMP3Record] handlePadAdded pads linked -> recording starts");
+		/* .ap/.sc generation - see the member declarations' comment. Probe on
+		 * this same pad (uridecodebin's output, about to become filesink's
+		 * input) so we see exactly the bytes landing in the recorded file,
+		 * in order */
+		_this->m_record_probe_pad = pad;
+		_this->m_record_probe_id = gst_pad_add_probe(pad, GST_PAD_PROBE_TYPE_BUFFER, handleRecordProbe, _this, NULL);
 	}
 	gst_object_unref(filesink_pad);
+	gst_object_unref(sink);
 }
 
 gboolean eServiceMP3Record::handleAutoPlugCont(GstElement *bin, GstPad *pad, GstCaps *caps, gpointer user_data)
 {
 	eDebug("[eMP3ServiceRecord] handleAutoPlugCont found caps %s", gst_caps_to_string(caps));
 	return true;
+}
+
+GstPadProbeReturn eServiceMP3Record::handleRecordProbe(GstPad *pad, GstPadProbeInfo *info, gpointer user_data)
+{
+	eServiceMP3Record *_this = (eServiceMP3Record*)user_data;
+	GstBuffer *buffer = GST_PAD_PROBE_INFO_BUFFER(info);
+	if (buffer)
+	{
+		GstMapInfo map;
+		if (gst_buffer_map(buffer, &map, GST_MAP_READ))
+		{
+			_this->processApScData(map.data, map.size);
+			gst_buffer_unmap(buffer, &map);
+		}
+	}
+	return GST_PAD_PROBE_OK;  /* never drop/modify - this is observation only */
+}
+
+void eServiceMP3Record::findVideoPid()
+{
+	unsigned int npkts = m_apsc_buf.size() / 188;
+	const unsigned char *buf = &m_apsc_buf[0];
+
+	if (!m_apsc_sync_checked)
+	{
+		/* Cheap early-out: eServiceMP3Record's pipeline can also pass
+		 * through non-TS containers unchanged (see doPrepare()'s uridecodebin
+		 * "caps" whitelist - mp4/mkv/flv/asf sources end up written as-is,
+		 * still under a .ts filename, see getFilenameExtension()). Without
+		 * this, a non-TS recording would just spin this function over every
+		 * incoming buffer for its entire duration, never finding a PAT, with
+		 * nothing in the log to say why .ap/.sc never showed up. Checking a
+		 * few consecutive 188-byte-aligned sync bytes up front is enough to
+		 * rule out a lone coincidental 0x47 without waiting for a real
+		 * PAT/PMT. */
+		const unsigned int SYNC_CHECK_PACKETS = 3;
+		if (npkts < SYNC_CHECK_PACKETS)
+			return;
+		m_apsc_sync_checked = true;
+		for (unsigned int i = 0; i < SYNC_CHECK_PACKETS; ++i)
+		{
+			if (buf[i * 188] != 0x47)
+			{
+				eDebug("[eServiceMP3Record] findVideoPid: stream does not look like MPEG-TS; disabling AP/SC");
+				m_apsc_disabled = true;
+				return;
+			}
+		}
+	}
+
+	for (unsigned int idx = m_apsc_next_pkt; idx < npkts; ++idx)
+	{
+		const unsigned char *pkt = buf + idx * 188;
+		if (pkt[0] != 0x47)
+			continue;
+		int pid = ((pkt[1] & 0x1F) << 8) | pkt[2];
+		if (pid == 0 && m_apsc_pmt_pid < 0)
+		{
+			int result = parsePatPacket(pkt);
+			if (result == PARSE_RETRY)
+				continue;
+			if (result == PARSE_NONE)
+			{
+				eDebug("[eServiceMP3Record] findVideoPid: PAT has no program; disabling AP/SC");
+				m_apsc_disabled = true;
+				return;
+			}
+			m_apsc_pmt_pid = result;
+		}
+		else if (m_apsc_pmt_pid >= 0 && pid == m_apsc_pmt_pid)
+		{
+			int streamtype = eDVBVideo::UNKNOWN;
+			int result = parsePmtPacket(pkt, streamtype);
+			if (result == PARSE_RETRY)
+				continue;
+			if (result == PARSE_NONE)
+			{
+				eDebug("[eServiceMP3Record] findVideoPid: no supported video stream in PMT; disabling AP/SC");
+				m_apsc_disabled = true;
+				return;
+			}
+			int pidtype;
+			switch (streamtype)
+			{
+				case STREAM_TYPE_MPEG2: pidtype = eDVBVideo::MPEG2; break;
+				case STREAM_TYPE_H264: pidtype = eDVBVideo::MPEG4_H264; break;
+				case STREAM_TYPE_H265: pidtype = eDVBVideo::H265_HEVC; break;
+				default: pidtype = eDVBVideo::UNKNOWN; break;  /* shouldn't happen, parsePmtPacket only returns these three */
+			}
+			eDebug("[eServiceMP3Record] findVideoPid: locked video pid=%#x stream_type=%#x", result, streamtype);
+			m_apsc_video_pid_found = true;
+			m_ts_parser->setPid(result, iDVBTSRecorder::video_pid, pidtype);
+			m_ts_parser->startSave(m_filename);
+			/* Catch up on everything buffered so far in one shot, so nothing
+			 * received before the PID was found is lost. */
+			m_ts_parser->parseData(m_apsc_base_pos, &m_apsc_buf[0], m_apsc_buf.size());
+			std::vector<unsigned char>().swap(m_apsc_buf);  /* no longer needed, see header comment */
+			return;
+		}
+	}
+	m_apsc_next_pkt = npkts;
+
+	/* Bound memory while still searching: without this, a stream whose
+	 * PAT/PMT never resolves (or never repeats) would grow m_apsc_buf for the
+	 * entire recording. */
+	off_t drop = (off_t)m_apsc_next_pkt * 188;
+	if (drop >= 4096)
+	{
+		m_apsc_buf.erase(m_apsc_buf.begin(), m_apsc_buf.begin() + drop);
+		m_apsc_base_pos += drop;
+		m_apsc_next_pkt = 0;
+	}
+}
+
+void eServiceMP3Record::processApScData(const unsigned char *data, unsigned int len)
+{
+	if (m_apsc_disabled || len == 0)
+	{
+		m_record_offset += len;
+		return;
+	}
+	if (m_apsc_video_pid_found)
+	{
+		/* Fast path: eMPEGStreamParserTS does its own internal partial-packet
+		 * buffering, so once locked onto a PID there's no need to keep our
+		 * own m_apsc_buf around - see the header comment. */
+		m_ts_parser->parseData(m_record_offset, data, len);
+	}
+	else
+	{
+		m_apsc_buf.insert(m_apsc_buf.end(), data, data + len);
+		findVideoPid();
+	}
+	m_record_offset += len;
 }
 
 RESULT eServiceMP3Record::frontendInfo(ePtr<iFrontendInformation> &ptr)

@@ -57,7 +57,7 @@ extern void stmfb_accel_fill(
 #ifdef BCM_ACCEL
 extern int bcm_accel_init(void);
 extern void bcm_accel_close(void);
-extern void bcm_accel_blit(
+extern bool bcm_accel_blit(
 		int src_addr, int src_width, int src_height, int src_stride, int src_format,
 		int dst_addr, int dst_width, int dst_height, int dst_stride,
 		int src_x, int src_y, int width, int height,
@@ -272,12 +272,13 @@ int gAccel::blit(gUnmanagedSurface *dst, gUnmanagedSurface *src, const eRect &p,
 		} else
 			return -1; /* unsupported source format */
 
-		bcm_accel_blit(
+		if (!bcm_accel_blit(
 			src->data_phys, src->x, src->y, src->stride, src_format,
 			dst->data_phys, dst->x, dst->y, dst->stride,
 			area.left(), area.top(), area.width(), area.height(),
 			p.x(), p.y(), p.width(), p.height(),
-			pal_addr, flags);
+			pal_addr, flags))
+			return -1; /* hw blit failed, let the caller redraw in software */
 		return 0;
 	}
 #endif

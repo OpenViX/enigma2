@@ -68,22 +68,25 @@ class CutListContextMenu(FixedMenu):
 	SHOW_DELETECUT = 2
 
 	def __init__(self, session, state, nearmark):
+		FixedMenu.__init__(self, session, _("Cut"), [])
+		self.skinName = ["CutListContextMenu", "FixedMenu", "Menu"]
+
 		menu = [(_("back"), self.close)]  # , (None, )]
 
 		if state == self.SHOW_STARTCUT:
 			menu.append((_("start cut here"), self.startCut))
 		else:
-			menu.append((_("start cut here"), ))
+			menu.append((self.addColor(_("start cut here")), ))
 
 		if state == self.SHOW_ENDCUT:
 			menu.append((_("end cut here"), self.endCut))
 		else:
-			menu.append((_("end cut here"), ))
+			menu.append((self.addColor(_("end cut here")), ))
 
 		if state == self.SHOW_DELETECUT:
 			menu.append((_("delete cut"), self.deleteCut))
 		else:
-			menu.append((_("delete cut"), ))
+			menu.append((self.addColor(_("delete cut")), ))
 
 		menu.append((_("remove before this position"), self.removeBefore))
 		menu.append((_("remove after this position"), self.removeAfter))
@@ -108,8 +111,7 @@ class CutListContextMenu(FixedMenu):
 		if MovieCut:
 			menu.append((_("execute cuts (requires MovieCut plugin)"), self.callMovieCut))
 
-		FixedMenu.__init__(self, session, _("Cut"), menu)
-		self.skinName = ["CutListContextMenu", "FixedMenu", "Menu"]
+		self["menu"].setList(menu)
 
 	def startCut(self):
 		self.close(self.RET_STARTCUT)
@@ -219,7 +221,7 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 				"setMark": (self.setMark, _("Make this mark just a mark")),
 				"addMark": (self.__addMark, _("Add a mark")),
 				"removeMark": (self.__removeMark, _("Remove a mark")),
-				"leave": (self.exit, _("Exit editor")),
+				"leave": (self.close, _("Exit editor")),
 				"showMenu": (self.showMenu, _("menu")),
 			}, prio=-4)
 
@@ -277,9 +279,6 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 		m = m and m[0]
 		if m is not None:
 			self.removeMark(m)
-
-	def exit(self):
-		self.close()
 
 	def getCutlist(self):
 		r = []
@@ -341,16 +340,24 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 
 		self.context_nearest_mark = self.toggleMark(onlyreturn=True)
 
-		cur_state = self.getStateForPosition(curpos)
-		if cur_state == 0:
-			print("[CutListEditor] currently in 'IN'")
-			if self.cut_start is None or self.context_position < self.cut_start:
+		# A pending cut_start (from a previous "start cut here") always takes
+		# priority over whatever the persisted cut_list says about the
+		# current position - otherwise unrelated existing cut data near the
+		# intended end point can make "end cut here" silently unavailable
+		# while a cut is still pending.
+		if self.cut_start is not None:
+			if self.context_position < self.cut_start:
 				state = CutListContextMenu.SHOW_STARTCUT
 			else:
 				state = CutListContextMenu.SHOW_ENDCUT
 		else:
-			print("[CutListEditor] currently in 'OUT'")
-			state = CutListContextMenu.SHOW_DELETECUT
+			cur_state = self.getStateForPosition(curpos)
+			if cur_state == 0:
+				print("[CutListEditor] currently in 'IN'")
+				state = CutListContextMenu.SHOW_STARTCUT
+			else:
+				print("[CutListEditor] currently in 'OUT'")
+				state = CutListContextMenu.SHOW_DELETECUT
 
 		if self.context_nearest_mark is None:
 			nearmark = False
@@ -441,7 +448,7 @@ class CutListEditor(Screen, InfoBarBase, InfoBarSeek, InfoBarCueSheetSupport, He
 					MovieCut(session=self.session, service=self.cut_service)
 				except:
 					print("[CutListEditor] calling MovieCut failed")
-			self.exit()
+			self.close()
 
 	# we modify the "play" behavior a bit:
 	# if we press pause while being in slowmotion, we will pause (and not play)

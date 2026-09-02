@@ -157,18 +157,19 @@ class EventInfo(PerServiceBase, Source):
 
 	def gotEvent(self, what, from_timer=False):
 		self.timer.stop()
-		print("[EventInfo] gotEvent, type:", ("'now'" if self.now_or_next == self.NOW else "'next'") + ",", "what:", "'%s'" % str({iPlayableService.evStart: "evStart", iPlayableService.evUpdatedInfo: "evUpdatedInfo", iPlayableService.evUpdatedEventInfo: "evUpdatedEventInfo", iPlayableService.evEnd: "evEnd"}.get(what, "Unknown")) + ",", "is timed repeat:", str(from_timer))
 		if what == iPlayableService.evEnd and not self.__service:
 			self.changed((self.CHANGED_CLEAR,))
 		else:
-			self.__service = None
+			# pnav.stopService() fires evEnd and pnav.playService() fires evStart
+			# synchronously, both before any repaint runs.  Preserve an eServiceReference
+			# set by updateSource() across that whole old→new transition so renderers
+			# can show cached EPG immediately.  Clear only when real EIT data arrives.
+			if not (isinstance(self.__service, eServiceReference) and what in (iPlayableService.evEnd, iPlayableService.evStart)):
+				self.__service = None
 			self.changed((self.CHANGED_ALL,))
 		# if evUpdatedEventInfo arrives before the event starts the fields will not change, so add an additional future timed event to make sure it does update.
 		if not from_timer and what in (iPlayableService.evUpdatedInfo, iPlayableService.evUpdatedEventInfo):
-			self.timer.startLongTimer(wait := 300 - int(time() % 300) + 5)  # repeat event at nearest 5 minutes ahead + 5 seconds
-			print("[EventInfo] gotEvent, timer is set to repeat event in %s seconds" % wait)
-		if self.now_or_next == self.NOW and what in (iPlayableService.evUpdatedInfo, iPlayableService.evUpdatedEventInfo):
-			print("[EventInfo] current event:", str(self.event and hasattr(self.event, "getEventName") and callable(self.event.getEventName) and self.event.getEventName() or self.event))
+			self.timer.startLongTimer(300 - int(time() % 300) + 5)  # repeat event at nearest 5 minutes ahead + 5 seconds
 
 	def destroy(self):
 		PerServiceBase.destroy(self)

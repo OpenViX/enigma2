@@ -57,11 +57,16 @@ class ServiceOrbitalPosition(Converter):
 			if refString.startswith("1:134:"):
 				return _("Alternative")
 		elif info:
-			if "%3a//127" in info.getInfoString(iServiceInformation.sServiceref).lower():
-				nmspc = info.getInfo(iServiceInformation.sNamespace) & 0xFFFFFFFF
+			if "%3a//127." in info.getInfoString(iServiceInformation.sServiceref).lower():
+				nmspc = info.getInfo(iServiceInformation.sNamespace)
+				if nmspc == -1:
+					return ""
+				nmspc &= 0xFFFFFFFF
 				namespace = "%08X" % nmspc
 				EW = "E"
 				orbpos = int(namespace[:4], 16)
+				if orbpos > 3600:
+					return ""  # not a satellite value
 				if orbpos > 1800:
 					orbpos = 3600 - orbpos
 					EW = "W"

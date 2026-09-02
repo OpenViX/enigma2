@@ -2782,7 +2782,7 @@ class InfoBarExtensions:
 
 	def getSoftwareUpdate(self):
 		if config.softwareupdate.showinextensions.value == "yes" or config.softwareupdate.showinextensions.value == "available" and config.softwareupdate.updatefound.value:
-			return [((boundFunction(self.getSUname), boundFunction(self.openSoftwareUpdate), lambda: True), None)]
+			return [((self.getSUname, self.openSoftwareUpdate, lambda: True), None)]
 		else:
 			return []
 
@@ -2791,7 +2791,7 @@ class InfoBarExtensions:
 
 	def getLogManager(self):
 		if config.logmanager.showinextensions.value:
-			return [((boundFunction(self.getLMname), boundFunction(self.openLogManager), lambda: True), None)]
+			return [((self.getLMname, self.openLogManager, lambda: True), None)]
 		else:
 			return []
 
@@ -2804,7 +2804,7 @@ class InfoBarExtensions:
 			softcams = listdir('/usr/softcams/')
 		for softcam in softcams:
 			if softcam.lower().startswith('cccam') and config.cccaminfo.showInExtensions.value:
-				return [((boundFunction(self.getCCname), boundFunction(self.openCCcamInfo), lambda: True), None)] or []
+				return [((self.getCCname, self.openCCcamInfo, lambda: True), None)] or []
 		else:
 			return []
 
@@ -2817,7 +2817,7 @@ class InfoBarExtensions:
 			softcams = listdir('/usr/softcams/')
 		for softcam in softcams:
 			if softcam.lower().startswith(('oscam', 'ncam')) and config.oscaminfo.showInExtensions.value:
-				return [((boundFunction(self.getOSname), boundFunction(self.openOScamInfo), lambda: True), None)] or []
+				return [((self.getOSname, self.openOScamInfo, lambda: True), None)] or []
 		else:
 			return []
 
@@ -2982,11 +2982,59 @@ class InfoBarPlugins:
 	def getPluginName(self, name):
 		return name
 
+	def compatible_plugin(self, p, *names):
+		"""
+		Checks the plugin is compatible with the args sent by self.runPlugin()
+		"""
+		func = p.fnc
+
+		if not callable(func):
+			print("[InfoBarPlugins] error plugin not callable:", p.name)
+			return False
+
+		try:
+			sig = inspect.signature(func)
+		except (TypeError, ValueError) as err:
+			print("[InfoBarPlugins] error loading plugin:", p.name, err)
+			return False
+
+		params = sig.parameters
+
+		has_kwargs = any(
+			p.kind == inspect.Parameter.VAR_KEYWORD
+			for p in params.values()
+		)
+
+		# Check requested keywords are accepted
+		for name in names:
+			if name in params:
+				# self.runPlugin() passes by keyword, so POSITIONAL_ONLY would not be valid
+				if params[name].kind == inspect.Parameter.POSITIONAL_ONLY:
+					return False
+			elif not has_kwargs:
+				return False
+
+		# Check every other parameter is optional, i.e. won't crash the plugin if missing
+		for name, param in params.items():
+			if name in names:
+				continue
+
+			if param.kind in (
+				inspect.Parameter.VAR_POSITIONAL,
+				inspect.Parameter.VAR_KEYWORD,
+			):
+				continue
+
+			if param.default is inspect.Parameter.empty:
+				return False
+
+		return True
+
 	def getPluginList(self):
 		x = []
 		for p in plugins.getPlugins(where=PluginDescriptor.WHERE_EXTENSIONSMENU):
-			args = inspect.getfullargspec(p.fnc)[0]
-			if len(args) == 1 or len(args) == 2 and isinstance(self, InfoBarChannelSelection):
+			if isinstance(self, InfoBarChannelSelection) and self.compatible_plugin(p, "session", "servicelist") or \
+			not isinstance(self, InfoBarChannelSelection) and self.compatible_plugin(p, "session"):
 				x.append(((boundFunction(self.getPluginName, p.name), boundFunction(self.runPlugin, p), lambda: True), None, p.name))
 		x.sort(key=lambda e: e[2])  # sort by name
 		return x

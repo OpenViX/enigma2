@@ -5,7 +5,7 @@ from enigma import eAVSwitch, eDVBVolumecontrol, getDesktop
 from Components.config import ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
 from Components.SystemInfo import SystemInfo
 from Tools.CList import CList
-from Tools.Directories import isPluginInstalled
+from Tools.Directories import fileCheck, fileReadLine, fileWriteLine, isPluginInstalled
 
 config.av = ConfigSubsection()
 
@@ -430,13 +430,14 @@ def InitAVSwitch():
 		iAVSwitch.setAspectRatio(map[configElement.value])
 
 	def readChoices(procx, choices, default):
-		with open(procx, "r") as myfile:
-			procChoices = myfile.read().strip()
-		if procChoices:
-			choiceslist = procChoices.split(" ")
-			choices = [(item, _(item)) for item in choiceslist]
-			default = choiceslist[0]
-			# print("[AVSwitch][readChoices from Proc] choices=%s, default=%s" % (choices, default))
+		if fileCheck(procx):
+			with open(procx, "r") as myfile:
+				procChoices = myfile.read().strip()
+			if procChoices:
+				choiceslist = procChoices.split(" ")
+				choices = [(item, _(item)) for item in choiceslist]
+				default = choiceslist[0]
+				# print(f"[AVSwitch][readChoices from Proc] choices={choices}, default={default}")
 		return (choices, default)
 
 	iAVSwitch.setInput("ENCODER")  # Init on startup.
@@ -521,16 +522,32 @@ def InitAVSwitch():
 					fd.write(configElement.value)
 			except (IOError, OSError):
 				pass
-		config.av.hdmihdrtype = ConfigSelection(choices={
-			"auto": _("Auto"),
-			"dolby": _("dolby"),
-			"none": _("sdr"),
-			"hdr10": _("hdr10"),
-			"hlg": _("hlg")
-		}, default="auto")
+		f = "/proc/stb/video/hdmi_hdrtype_choices"
+		choices = [("auto", _("Auto")),
+					("dolby", _("Dolby Vision")),
+					("sdr", _("SDR")),
+					("hdr10", _("HDR10")),
+					("hdr10+", _("HDR10+")),
+					("hlg", _("HLG"))]
+		default = "auto"
+		(choices, default) = readChoices(f, choices, default)
+		config.av.hdmihdrtype = ConfigSelection(choices=choices, default=default)
 		config.av.hdmihdrtype.addNotifier(setHdmiHdrType)
 	else:
 		config.av.hdmihdrtype = ConfigNothing()
+
+	if SystemInfo["havehdmihdrosd"]:
+		def setHDMIHdrOsd(configElement):
+			fileWriteLine("/proc/stb/video/hdmi_hdr_osd", configElement.value)
+		hdrOsdChoices = [
+			("32767 0 -16384", _("GigaBlue optimized")),
+			("0 0 0", _("Broadcom default"))
+		]
+		hdrOsd = fileReadLine("/proc/stb/video/hdmi_hdr_osd", default=None)
+		config.av.hdmihdrosd = ConfigSelection(default=hdrOsd if hdrOsd in dict(hdrOsdChoices) else "32767 0 -16384", choices=hdrOsdChoices)
+		config.av.hdmihdrosd.addNotifier(setHDMIHdrOsd)
+	else:
+		config.av.hdmihdrosd = ConfigNothing()
 
 	if SystemInfo["HDRSupport"]:
 		def setHlgSupport(configElement):
@@ -742,7 +759,7 @@ def InitAVSwitch():
 			("multichannel", _("convert to multi-channel PCM")),
 			("force_ac3", _("convert to AC3")),
 			("force_dts", _("convert to DTS")),
-			("use_hdmi_cacenter", _("use_hdmi_cacenter")),
+			("use_hdmi_cacenter", _("use hdmi cacenter")),
 			("wide", _("wide")),
 			("extrawide", _("extrawide"))
 		]

@@ -47,11 +47,14 @@
 	</screen>
 
 	<screen name="TunerPanel">
-		<eLabel text="TUNER:" position="20,260" size="155,60" valign="center" font="FdLcD;40"/>
-		<widget source="session.FrontendInfo" render="Label" position="175,260" size="110,60" font="FdLcD;40" valign="center">
-			<convert type="FrontendInfo">USE_TUNERS_STRING</convert>
-		</widget>
-	</screen>
+        <widget source="session.FrontendInfo" render="FixedLabel" text="TUNER:" position="20,260" size="155,60" valign="center" font="FdLcD;40">
+            <convert type="FrontendInfo">USE_TUNERS_STRING</convert>
+            <convert type="ConditionalShowHide" />
+        </widget>
+        <widget source="session.FrontendInfo" render="Label" position="175,260" size="110,60" font="FdLcD;40" valign="center">
+            <convert type="FrontendInfo">USE_TUNERS_STRING</convert>
+        </widget>
+    </screen>
 
 	<screen name="RecordIconPanel">
 		<widget source="session.RecordState" render="Pixmap" pixmap="record.png" position="300,275" size="30,30" zPosition="3" alphatest="blend">

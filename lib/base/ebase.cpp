@@ -50,14 +50,17 @@ void eTimer::start(long msek, bool singleShot)
 	if (bActive)
 		stop();
 
+	if (msek < 0) // A negative interval would not make sense
+		msek = 0;
+	
 	if (eMainloop::isValid(&context))
 	{
 		bActive = true;
-		bSingleShot = singleShot;
+		bSingleShot = msek == 0 || singleShot;  // Prevent zero-interval repeat timers.
 		interval = msek;
 		clock_gettime(CLOCK_MONOTONIC, &nextActivation);
 //		eDebug("[eTimer] this = %p\nnow sec = %d, nsec = %d\nadd %d msec", this, nextActivation.tv_sec, nextActivation.tv_nsec, msek);
-		nextActivation += (msek<0 ? 0 : msek);
+		nextActivation += msek;
 //		eDebug("[eTimer] next Activation sec = %d, nsec = %d", nextActivation.tv_sec, nextActivation.tv_nsec );
 		context.addTimer(this);
 	}
@@ -79,6 +82,64 @@ void eTimer::startLongTimer(int seconds)
 //		eDebug("[eTimer] next Activation sec = %d, nsec = %d", nextActivation.tv_sec, nextActivation.tv_nsec );
 		context.addTimer(this);
 	}
+}
+
+void eTimer::startEpochAligned(long msek, bool singleShot)
+{
+	/*
+	 Starts the timer in phase with the epoch using CLOCK_REALTIME.
+
+	 All repeats are based on CLOCK_MONOTONIC.
+
+	 This will stay in sync if the system clock slews but it is
+	 the responsibility of the calling code to reset this timer 
+	 if CLOCK_REALTIME is stepped. This can be done using 
+	 ClockRealtimeMonitor, e.g.:
+
+	 import Components.ClockRealtimeMonitor
+	 Components.ClockRealtimeMonitor.realtimeMonitor.addRealtimeChangedCallback(yourCallbackFunc)
+	*/
+
+	if (bActive)
+		stop();
+
+	if (msek < 0) // A negative interval would not make sense
+		msek = 0;
+
+	if (!eMainloop::isValid(&context))
+		return;
+
+	bActive = true;
+	bSingleShot = msek == 0 || singleShot;  // Prevent zero-interval repeat timers.
+	interval = msek;
+
+	// Use realtime clock only for phase alignment.
+	timespec realtime_now = {};
+	clock_gettime(CLOCK_REALTIME, &realtime_now);
+
+	// Use monotonic clock for actual scheduling.
+	clock_gettime(CLOCK_MONOTONIC, &nextActivation);
+
+	// Total realtime milliseconds.
+	long delay = 0;
+
+	if (msek)
+	{
+		long long realtime_ms =
+			((long long)realtime_now.tv_sec * 1000LL) +
+			(realtime_now.tv_nsec / 1000000LL);
+
+		// Time until next aligned boundary.
+		delay = (msek - (realtime_ms % msek)) % msek;
+	}
+
+	// Avoid immediate activation.
+	if (delay == 0)
+		delay = msek;
+
+	nextActivation += delay;
+
+	context.addTimer(this);
 }
 
 void eTimer::stop()

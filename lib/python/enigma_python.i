@@ -515,6 +515,7 @@ extern void resumeInit(void);
 extern void setAnimation_current(int a);
 extern void setAnimation_speed(int speed);
 #endif
+extern int getE2Flags();
 extern bool checkLogin(const char *user, const char *pwd);
 %}
 
@@ -536,6 +537,7 @@ extern void resumeInit(void);
 extern void setAnimation_current(int a);
 extern void setAnimation_speed(int speed);
 #endif
+extern int getE2Flags();
 extern bool checkLogin(const char *user, const char *pwd);
 
 %include <lib/python/python_console.i>

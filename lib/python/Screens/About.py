@@ -4,7 +4,6 @@ from re import search, sub
 from requests import get
 from sys import version_info, version as pyversion
 from enigma import eTimer, getDesktop, getEnigmaLastCommitDate, getEnigmaLastCommitHash, eDVBCSAEngine
-from skin import parameters
 from Components.About import getBoxUptime, getCPUArch, getEnigmaUptime, getIfConfig, getIfTransferredData
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -21,7 +20,7 @@ from Screens.Screen import Screen, ScreenSummary
 from Screens.SoftwareUpdate import UpdatePlugin
 from Screens.TextBox import TextBox
 from Tools.Directories import fileHas, fileReadLine, fileReadLines, isPluginInstalled
-from Tools.Hex2strColor import Hex2strColor
+from Tools.Hex2strColor import ColorizeText
 from Tools.Multiboot import GetCurrentImageMode
 from Tools.StbHardware import getFPVersion
 
@@ -156,20 +155,15 @@ def df_h(find=None, binary=False):
 	return out
 
 
-class AboutBase(TextBox):
+class AboutBase(TextBox, ColorizeText):
 	def __init__(self, session, labels=None):
 		TextBox.__init__(self, session, label="AboutScrollLabel")
+		ColorizeText.__init__(self, session, "AboutColors")
 		self.skinName = "AboutOE"
-		self.colors = parameters.get("AboutColors", [])  # First item must be default text colour. If parameter is missing adding colours will be skipped.
 		if labels:
 			self["lab1"] = StaticText(_("Virtuosso Image Xtreme"))
 			self["lab2"] = StaticText(_("By Team ViX"))
 			self["lab3"] = StaticText(_("Support at") + " www.world-of-satellite.com")
-
-	def addColor(self, text, i=1):
-		if i < len(self.colors):
-			text = Hex2strColor(self.colors[i]) + text + Hex2strColor(self.colors[0])
-		return text
 
 	def createSummary(self):
 		return AboutSummary
@@ -763,7 +757,7 @@ class AboutSummary(ScreenSummary):
 
 	def clean(self, x):
 		# remove colours, replace tabs with spaces, remove leading/trailing whitespace
-		return sub("\\\\c[0-9-a-f]{8}", "", x).replace("\t", " ").strip()
+		return sub(r"\\c[0-9a-f]{8}", "", x).replace(r"\c", "").replace("\t", " ").strip()
 
 
 class TranslationInfo(Screen):

@@ -14,15 +14,21 @@ class PluginDescriptor():
 	#   session
 	#   servicereference
 	#   reason
+	#   servicelist
+	#   menuid
 
 	# you have to ignore unknown kwargs!
 
-	# argument: session
+	# argument: session, servicelist if isinstance(self, InfoBarChannelSelection) else session
 	WHERE_EXTENSIONSMENU = 1
+
+	# argument: session
 	WHERE_MAINMENU = 2
 	WHERE_PLUGINMENU = 3
+
 	# argument: session, serviceref (currently selected)
 	WHERE_MOVIELIST = 4
+
 	# argument: menuid. Fnc must return list with menuitems (4-tuple of name, fnc to call, entryid or None, weight or None)
 	WHERE_MENU = 5
 
@@ -78,6 +84,9 @@ class PluginDescriptor():
 
 	# allow plugin to assign to hotkey only
 	WHERE_BUTTONSETUP = 22
+
+	# Called after a GUI skin change and reload, argument: session.
+	WHERE_SKINCHANGE = 23
 
 	def __init__(self, name="Plugin", where=None, description="", icon=None, fnc=None, wakeupfnc=None, needsRestart=None, internal=False, weight=0):
 		if not where:

@@ -1578,6 +1578,31 @@ RESULT eDVBServicePlay::stop()
 
 RESULT eDVBServicePlay::setTarget(int target, bool noaudio = false)
 {
+	// start/stop audio
+	if (target == 1000)
+	{
+		if (noaudio) // stop audio
+		{
+			if (m_decoder && !m_noaudio)
+			{
+				m_noaudio = true;
+				m_decoder->setSyncPCR(-1);
+				m_decoder->setAudioPID(-1, -1);
+				m_decoder->set();
+				return 0;
+			}
+		}
+		else // start audio
+		{
+			if (m_noaudio)
+			{
+				m_noaudio = false;
+				updateDecoder(m_noaudio);
+				return 0;
+			}
+		}
+		return -1;
+	}
 	m_is_primary = !target;
 	m_decoder_index = target;
 	m_noaudio = noaudio;
@@ -4562,10 +4587,8 @@ void eDVBServicePlay::hdrResult(int result)
 	m_hdr_type = result;
 	/* Fire all three events so every skin pattern is covered:
 	 * - evVideoGammaChanged: skins that track gamma/HDR changes
-	 * - evVideoSizeChanged:  skins that refresh video info on size events
 	 * - evUpdatedInfo:       general service-info listeners (ServiceInfo converter) */
 	m_event((iPlayableService*)this, evVideoGammaChanged);
-	m_event((iPlayableService*)this, evVideoSizeChanged);
 	m_event((iPlayableService*)this, evUpdatedInfo);
 }
 #endif /* HAS_SOFTWARE_HDR_DETECTION */

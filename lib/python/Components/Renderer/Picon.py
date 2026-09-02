@@ -44,6 +44,8 @@ class PiconLocator:
 			self.__onMountpointAdded(part.mountpoint)
 
 	def __onMountpointAdded(self, mountpoint):
+		if mountpoint.startswith(("/media/net", "/media/autofs")):
+			return
 		for piconDirectory in self.piconDirectories:
 			try:
 				path = join(normpath(mountpoint), piconDirectory)

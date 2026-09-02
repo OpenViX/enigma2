@@ -97,6 +97,31 @@ eTimerPy_start_long(eTimerPy* self, PyObject *args)
 }
 
 static PyObject *
+eTimerPy_start_epoch_aligned(eTimerPy* self, PyObject *args)
+{
+	long v = 0;
+	long singleShot = 0;
+
+	if (PyTuple_Size(args) > 1)
+	{
+		if (!PyArg_ParseTuple(args, "ll", &v, &singleShot)) // when 2nd arg is a value
+		{
+			PyObject *obj = 0;
+			if (!PyArg_ParseTuple(args, "lO", &v, &obj)) // get 2nd arg as python object
+				return NULL;
+			else if (obj == Py_True)
+				singleShot = 1;
+			else if (obj != Py_False)
+				return NULL;
+		}
+	}
+	else if (!PyArg_ParseTuple(args, "l", &v))
+		return NULL;
+	self->tm->startEpochAligned(v, singleShot);
+	Py_RETURN_NONE;
+}
+
+static PyObject *
 eTimerPy_change_interval(eTimerPy* self, PyObject *args)
 {
 	long v=0;
@@ -129,6 +154,9 @@ static PyMethodDef eTimerPy_methods[] = {
 	},
 	{"startLongTimer", (PyCFunction)eTimerPy_start_long, METH_VARARGS,
 	 "start timer with interval in secs"
+	},
+	{"startEpochAligned", (PyCFunction)eTimerPy_start_epoch_aligned, METH_VARARGS,
+	 "start epoch-aligned timer with interval in msecs"
 	},
 	{"changeInterval", (PyCFunction)eTimerPy_change_interval, METH_VARARGS,
 	 "change interval of a timer (in msecs)"

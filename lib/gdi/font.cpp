@@ -765,6 +765,7 @@ int eTextPara::renderString(const char *string, int rflags, int border)
 
 	unsigned long newcolor = 0;
 	bool activate_newcolor = false;
+	bool activate_colorreset = false;
 	int nextflags = 0;
 
 	for (std::vector<unsigned long>::const_iterator i(uc_visual.begin());
@@ -772,7 +773,6 @@ int eTextPara::renderString(const char *string, int rflags, int border)
 	{
 		int isprintable=1;
 		int flags = nextflags;
-		nextflags = 0;
 		unsigned long chr = *i;
 
 		if (!(rflags&RS_DIRECT))
@@ -814,16 +814,31 @@ int eTextPara::renderString(const char *string, int rflags, int border)
 							{
 								if ((i + 2 + codeidx) == uc_visual.end()) break;
 								color[codeidx] = (char)((*(i + 2 + codeidx)) & 0xff);
+								// Hex digits + legacy color notation (: ; < = > ?)
+								unsigned char c = (unsigned char)color[codeidx];
+								if (!(isxdigit(c) || (c >= ':' && c <= '?')))
+									break;
 							}
 							if (codeidx == 8)
 							{
 								newcolor = gRGB(color).argb();
 								activate_newcolor = true;
+								activate_colorreset = false;
 								isprintable = 0;
 								i += 1 + codeidx;
 							}
+							else
+							{
+								isprintable = 1;
+							}
 							break;
 						}
+						case 'C':
+							isprintable = 0;
+							activate_colorreset = true;
+							activate_newcolor = false;
+							i++;
+							break;
 						default:
 						;
 					}
@@ -863,6 +878,11 @@ nprint:				isprintable=0;
 		}
 		if (isprintable)
 		{
+			nextflags = 0;
+
+			if (activate_colorreset)
+				flags |= GS_COLORRESET;
+
 			FT_UInt index = 0;
 
 				/* FIXME: our font doesn't seem to have a hyphen, so use hyphen-minus for it. */
@@ -892,6 +912,7 @@ nprint:				isprintable=0;
 				appendGlyph(current_font, current_face, index, flags, rflags, border, i == uc_visual.end() - 1, activate_newcolor, newcolor);
 
 			activate_newcolor = false;
+			activate_colorreset = false;
 		}
 	}
 	bboxValid=false;
@@ -967,10 +988,15 @@ void eTextPara::blit(gDC &dc, const ePoint &offset, const gRGB &cbackground, con
 			line_offs = *(line_offs_it++);
 			line_chars = *(line_chars_it++);
 		}
-		if (i->flags & GS_COLORCHANGE)
+		/* don't do colorchanges in borders */
+		if (!border)
 		{
-			/* don't do colorchanges in borders */
-			if (!border)
+			if (i->flags & GS_COLORRESET)
+			{
+				currentforeground = foreground;
+				setcolor = true;
+			}
+			else if (i->flags & GS_COLORCHANGE)
 			{
 				currentforeground = i->newcolor;
 				setcolor = true;
@@ -1194,7 +1220,19 @@ void eTextPara::blit(gDC &dc, const ePoint &offset, const gRGB &cbackground, con
 							{
 								int b=(*s++)>>4;
 								if(b)
-									*td=lookup32[b];
+									/* lookup32[b]'s own alpha byte is only a coverage-interpolated
+									   blend towards this text's *nominal* background alpha -- useful
+									   for smoothing the RGB colour, but not a truthful "what's really
+									   behind this pixel" value. Stamping it verbatim leaves a glyph-
+									   shaped, coverage-dependent alpha footprint in the framebuffer
+									   (near-transparent at AA edges) for what is otherwise a normal,
+									   final, fully-painted pixel. Any later alphablended/rounded-corner
+									   widget that composites on top of this (see the opcode 4 "blend"
+									   case below) reads that leftover footprint back as if it were the
+									   real backdrop, so unrelated text ends up ghosted with the shape
+									   of whatever ordinary text was drawn here before it. Force full
+									   opacity here instead, keeping only the blended RGB. */
+									*td=lookup32[b] | 0xFF000000;
 								++td;
 							}
 							s += extra_source_stride;
@@ -1214,7 +1252,7 @@ void eTextPara::blit(gDC &dc, const ePoint &offset, const gRGB &cbackground, con
 								int b = (*s++) >> 4;
 								if (b)
 								{
-									// unsigned char frame_a = (*td) >> 24 & 0xFF;
+									unsigned char frame_a = (*td) >> 24 & 0xFF;
 									unsigned char frame_r = (*td) >> 16 & 0xFF;
 									unsigned char frame_g = (*td) >> 8 & 0xFF;
 									unsigned char frame_b = (*td) & 0xFF;
@@ -1225,11 +1263,19 @@ void eTextPara::blit(gDC &dc, const ePoint &offset, const gRGB &cbackground, con
 									unsigned char db = lookup32[b] & 0xFF;
 
 #define BLEND(y, x, a) (y + (((x-y) * a)>>8))
+									/* blend the output alpha the same way the color channels are blended,
+									   from whatever is already at the destination towards the glyph's own
+									   ink alpha -- otherwise a fully-opaque foreground color (alpha 0, see
+									   gRGB) turns into a fully-transparent stored alpha (0xFF) at every
+									   pixel the glyph touches, making the text vanish against anything that
+									   composites using that alpha channel (e.g. an alpha-blended layer
+									   painted on top of another one). */
+									frame_a = BLEND(frame_a, (unsigned char)(currentforeground.a ^ 0xFF), da) & 0xFF;
 									frame_r = BLEND(frame_r, dr, da) & 0xFF;
 									frame_g = BLEND(frame_g, dg, da) & 0xFF;
 									frame_b = BLEND(frame_b, db, da) & 0xFF;
 #undef BLEND
-									*td = ((currentforeground.a ^ 0xFF) << 24) | (frame_r << 16) | (frame_g << 8) | frame_b;
+									*td = (frame_a << 24) | (frame_r << 16) | (frame_g << 8) | frame_b;
 								}
 								++td;
 							}
