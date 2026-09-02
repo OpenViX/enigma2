@@ -83,7 +83,10 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 			self["list"].list.sort()
 
 		self["okActions"] = HelpableActionMap(self, ["OkCancelActions"], {"ok": (self.keySelect, _("Select the current item")), }, description=_("Selection Actions"))
-		self["cancelActions"] = HelpableActionMap(self, ["OkCancelActions"], {"cancel": (self.close, _("Exit PluginBrowser")), }, prio=0, description=_("Cancel Actions"))
+		self["cancelActions"] = HelpableActionMap(self, ["OkCancelActions"], {
+			"cancel": (self.close, _("Exit PluginBrowser")), 
+			"close": (lambda: self.close(True), _("Exit PluginBrowser and close all menus")), 
+		}, prio=0, description=_("Cancel Actions"))
 		self["PluginDownloadActions"] = HelpableActionMap(self, ["ColorActions"],
 		{
 			"red": (self.delete, _("Open 'Remove Plugins' screen")),
@@ -237,13 +240,15 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self.firsttime = False
 
 	def PluginDownloadBrowserClosed(self, returnValue):
-		if returnValue is None:
+		if returnValue == PluginDownloadBrowser.DOWNLOAD:
+			self.download()
+		elif returnValue == PluginDownloadBrowser.REMOVE:
+			self.delete()
+		elif returnValue == "closeRecursive":
+			self.close(True)
+		else:
 			self.updateList()
 			self.checkWarnings()
-		elif returnValue == 0:
-			self.download()
-		else:
-			self.delete()
 
 	def userInstalledPlugins(self):
 		from Screens.About import AboutUserInstalledPlugins
@@ -335,11 +340,12 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 		self["key_blue"] = StaticText(_("Remove plugins") if self.type == self.DOWNLOAD else _("Download plugins"))
 		self.run = 0
 		self.remainingdata = ""
-		self["actions"] = HelpableActionMap(self, ["SetupActions", "ColorActions"],
+		self["actions"] = HelpableActionMap(self, ["CancelSaveActions", "ColorActions", "OkCancelActions"],
 		{
 			"ok": (self.go, _("Select current item")),
 			"save": (self.go, _("Select current item")),
 			"cancel": (self.requestClose, _("Close '%s' screen") % self.title),
+			"close": (self.requestCloseRecusive, _("Close '%s' screen and exit all menus") % self.title),
 			"blue": (self.delete if self.type == self.DOWNLOAD else self.download, _("Open 'Remove Plugins' screen") if self.type == self.DOWNLOAD else _("Open 'Install Plugins' screen")),
 		}, description=_("Plugin Browser Actions"))
 		if path.isfile('/usr/bin/opkg'):
@@ -394,10 +400,13 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 				mbox.setTitle(_("Remove plugins"))
 
 	def delete(self):
-		self.requestClose(1)
+		self.requestClose(self.REMOVE)
 
 	def download(self):
-		self.requestClose(0)
+		self.requestClose(self.DOWNLOAD)
+
+	def requestCloseRecusive(self):
+		self.requestClose("closeRecursive")
 
 	def requestClose(self, returnValue=None):
 		if self.plugins_changed:
