@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 01:30+0300\n"
-"PO-Revision-Date: 2026-08-28 07:44+0300\n"
+"POT-Creation-Date: 2026-09-02 03:42+0300\n"
+"PO-Revision-Date: 2026-09-02 07:06+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3667,6 +3667,10 @@ msgstr "Sulje"
 msgid "Close '%s' screen"
 msgstr "Sulje näyttö '%s'"
 
+#, python-format
+msgid "Close '%s' screen and exit all menus"
+msgstr "Sulje '%s'-näyttö ja poistu kaikista valikoista"
+
 msgid "Close CA device at programm end"
 msgstr "Sulje CA-laite ohjelman lopussa"
 
@@ -6243,7 +6247,10 @@ msgid "Exit Menusort"
 msgstr "Poistu valikon järjestelystä"
 
 msgid "Exit PluginBrowser"
-msgstr "Poistu lisäoa-selaimesta"
+msgstr "Poistu lisäosa-selaimesta"
+
+msgid "Exit PluginBrowser and close all menus"
+msgstr "Poistu lisäosa-selaimesta ja sulje kaikki valikot"
 
 msgid "Exit all menus"
 msgstr "Poistu kaikista valikoista"
@@ -15271,7 +15278,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 28.08.2026 ---\n"
+"--- 02.09.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
