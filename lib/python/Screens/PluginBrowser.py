@@ -298,8 +298,8 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 		elif self.type == self.REMOVE:
 			self.setTitle(_("Remove Plugins"))
 
-		categories = ("bootlogos", "display", "drivers", "extensions", "picons", "security", "settings", "skin", "softcams", "systemplugins")
-		self.plugin_prefix_whitelist = tuple(prefix_whitelist) if prefix_whitelist else tuple([self.PLUGIN_PREFIX + x for x in categories])
+		categories = ("bootlogos", "display", "drivers", "extensions", "picons", "security", "settings", "skins", "softcams", "systemplugins")
+		self.plugin_prefix_whitelist = tuple(prefix_whitelist) if prefix_whitelist else tuple([self.PLUGIN_PREFIX + x + "-" for x in categories])
 		self.plugin_suffix_blacklist = ('-dev', '-staticdev', '-dbg', '-doc', '-common', '-meta', '-src', '-po')
 		self.expandableIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expandable-plugins.png"))
 		self.expandedIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expanded-plugins.png"))
