@@ -84,8 +84,8 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 
 		self["okActions"] = HelpableActionMap(self, ["OkCancelActions"], {"ok": (self.keySelect, _("Select the current item")), }, description=_("Selection Actions"))
 		self["cancelActions"] = HelpableActionMap(self, ["OkCancelActions"], {
-			"cancel": (self.close, _("Exit PluginBrowser")), 
-			"close": (lambda: self.close(True), _("Exit PluginBrowser and close all menus")), 
+			"cancel": (self.close, _("Exit PluginBrowser")),
+			"close": (lambda: self.close(True), _("Exit PluginBrowser and close all menus")),
 		}, prio=0, description=_("Cancel Actions"))
 		self["PluginDownloadActions"] = HelpableActionMap(self, ["ColorActions"],
 		{
