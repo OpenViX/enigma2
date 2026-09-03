@@ -20,7 +20,7 @@ class TemplatedMultiContent(StringList):
 		self.active_style = None
 		self.template = eval(args, {}, loc)
 		self.scale = None
-		self.orientations = {"orHorizontal": eListbox.orHorizontal, "orVertical": eListbox.orVertical, "orGrid": eListbox.orGrid}
+		self.orientations = {"orHorizontal": eListbox.orHorizontal, "horizontal": eListbox.orHorizontal, "orVertical": eListbox.orVertical, "vertical": eListbox.orVertical, "orGrid": eListbox.orGrid, "grid": eListbox.orGrid}
 		self._validateTemplate()
 		if "template" not in self.template:  # Default template can be ["template"] or ["templates"]["default"].
 			templateDefault = self.template["templates"]["default"]
