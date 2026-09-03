@@ -30,8 +30,9 @@ class TemplatedMultiContent(StringList):
 				self.template["selectionEnabled"] = templateDefault[2]
 			if len(templateDefault) > 3:  # optional
 				self.template["scrollbarMode"] = templateDefault[3]
-			if len(templateDefault) > 5:  # optional, but, must be present together
+			if len(templateDefault) > 4:  # optional
 				self.template["itemWidth"] = templateDefault[4]
+			if len(templateDefault) > 5:  # optional, can be passed via Listbox widget (compatibility with openatv)
 				self.template["orientation"] = templateDefault[5]
 
 	def _validateTemplate(self):
@@ -101,8 +102,9 @@ class TemplatedMultiContent(StringList):
 					selectionEnabled = templates[style][2]
 				if len(templates[style]) > 3 and templates[style][3] is not None:
 					scrollbarMode = templates[style][3]
-				if len(templates[style]) > 5:  # optional, but, must be present together
+				if len(templates[style]) > 4:  # optional
 					itemwidth = templates[style][4]
+				if len(templates[style]) > 5:  # optional, can be passed via Listbox widget (compatibility with openatv)
 					orientation = templates[style][5]
 
 			if self.scale is not None and (self.scale[0][0] != self.scale[0][1] or self.scale[1][0] != self.scale[1][1]):
@@ -110,9 +112,10 @@ class TemplatedMultiContent(StringList):
 				for index, font in enumerate(fonts):
 					self.content.setFont(index, font)
 			self.content.setTemplate(template)
-			if orientation is not None and itemwidth is not None:
-				self.content.setOrientation(self.orientations.get(orientation, self.orientations["orVertical"]))
+			if itemwidth is not None:
 				self.content.setItemWidth(int(itemwidth))
+			if orientation is not None:
+				self.content.setOrientation(self.orientations.get(orientation, self.orientations["orVertical"]))
 			self.content.setItemHeight(int(itemheight))
 			self.selectionEnabled = selectionEnabled
 			self.scrollbarMode = scrollbarMode
