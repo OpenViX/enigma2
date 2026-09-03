@@ -20,10 +20,7 @@ class TemplatedMultiContent(StringList):
 		self.template = eval(args, {}, loc)
 		self.scale = None
 		self.orientations = {"orHorizontal": eListbox.orHorizontal, "orVertical": eListbox.orVertical, "orGrid": eListbox.orGrid}
-		assert "fonts" in self.template
-		assert "itemHeight" in self.template
-		assert "template" in self.template or "templates" in self.template
-		assert "template" in self.template or "default" in self.template["templates"]  # We need to have a default template.
+		self._validateTemplate()
 		if "template" not in self.template:  # Default template can be ["template"] or ["templates"]["default"].
 			templateDefault = self.template["templates"]["default"]
 			self.template["template"] = templateDefault[1]  # mandatory
@@ -35,6 +32,17 @@ class TemplatedMultiContent(StringList):
 			if len(templateDefault) > 5:  # optional, but, must be present together
 				self.template["itemWidth"] = templateDefault[4]
 				self.template["orientation"] = templateDefault[5]
+
+	def _validateTemplate(self):
+		missing = [key for key in ("fonts", "itemHeight") if key not in self.template]
+		if missing:
+			raise ValueError("[TemplatedMultiContent]: template missing required key(s) %s in %r" % (missing, self.template))
+		if "template" not in self.template:
+			templates = self.template.get("templates")
+			if not templates:
+				raise ValueError("[TemplatedMultiContent]: template must define either 'template' or 'templates' in %r" % (self.template,))
+			if "default" not in templates:
+				raise ValueError("[TemplatedMultiContent]: 'templates' dict must contain a 'default' entry in %r" % (self.template,))
 
 	def changed(self, what):
 		if not self.content:
