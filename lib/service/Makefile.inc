@@ -19,7 +19,8 @@ service/servicehdmi.cpp \
 service/servicepeer.cpp \
 service/servicets.cpp \
 service/servicewebts.cpp \
-service/servicedvbsoftdecoder.cpp
+service/servicedvbsoftdecoder.cpp \
+service/audiochanneldetector.cpp
 
 if HAS_SOFTWARE_HDR_DETECTION
 service_libenigma_service_a_SOURCES += \
@@ -46,7 +47,8 @@ service/servicehdmi.h \
 service/servicepeer.h \
 service/servicets.h \
 service/servicewebts.h \
-service/servicedvbsoftdecoder.h
+service/servicedvbsoftdecoder.h \
+service/audiochanneldetector.h
 
 if HAS_SOFTWARE_HDR_DETECTION
 serviceinclude_HEADERS += \

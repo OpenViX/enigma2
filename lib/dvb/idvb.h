@@ -715,7 +715,7 @@ public:
 		/** Set Displayed Video PID and type */
 	virtual RESULT setVideoPID(int vpid, int type)=0;
 
-	enum { af_MPEG, af_AC3, af_DTS, af_AAC, af_DTSHD };
+	enum { af_MPEG, af_AC3, af_DDP, af_DTS, af_AAC, af_AACHE, af_DTSHD };
 		/** Set Displayed Audio PID and type */
 	virtual RESULT setAudioPID(int apid, int type)=0;
 

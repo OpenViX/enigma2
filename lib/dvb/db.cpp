@@ -176,9 +176,9 @@ RESULT eBouquet::setListName(const std::string &name)
 
 const eDVBService::cacheID eDVBService::audioCacheTags[] = {
 	eDVBService::cMPEGAPID, eDVBService::cAC3PID,
-	eDVBService::cAACHEAPID, eDVBService::cDDPPID,
-	eDVBService::cDTSPID, eDVBService::cAACAPID,
-	eDVBService::cLPCMPID, eDVBService::cDTSHDPID,
+	eDVBService::cDDPPID, eDVBService::cLPCMPID,
+	eDVBService::cAACHEAPID, eDVBService::cAACAPID,
+	eDVBService::cDTSPID, eDVBService::cDTSHDPID,
 };
 
 const int eDVBService::nAudioCacheTags = sizeof(eDVBService::audioCacheTags) / sizeof(eDVBService::audioCacheTags[0]);
@@ -441,14 +441,14 @@ void eDVBService::updateAudioCache(int apid, int apidtype)
 	static const std::array<audioMapEntry, 10> audioMap = {{
 		{ eDVBPMTParser::audioStream::atMPEG,  cMPEGAPID  },
 		{ eDVBPMTParser::audioStream::atAC3,   cAC3PID    },
-		{ eDVBPMTParser::audioStream::atAC4,   cAC4PID    },
 		{ eDVBPMTParser::audioStream::atDDP,   cDDPPID    },
+		{ eDVBPMTParser::audioStream::atLPCM,  cLPCMPID   },
+		{ eDVBPMTParser::audioStream::atAACHE, cAACHEAPID },
 		{ eDVBPMTParser::audioStream::atAAC,   cAACAPID   },
 		{ eDVBPMTParser::audioStream::atDTS,   cDTSPID    },
-		{ eDVBPMTParser::audioStream::atLPCM,  cLPCMPID   },
 		{ eDVBPMTParser::audioStream::atDTSHD, cDTSHDPID  },
-		{ eDVBPMTParser::audioStream::atAACHE, cAACHEAPID },
 		{ eDVBPMTParser::audioStream::atDRA,   cDRAAPID   },
+		{ eDVBPMTParser::audioStream::atAC4,   cAC4PID    },
 	}};
 
 	for (const auto &entry : audioMap)
@@ -505,8 +505,8 @@ void eDVBService::setCacheEntry(cacheID id, int pid)
 				case cacheID::cAC3PID:
 					it->aac3_pid = pid_val;
 					break;
-				case cacheID::cAC4PID:
-					it->aac4_pid = pid_val;
+				case cacheID::cDDPPID:
+					it->addp_pid = pid_val;
 					break;
 				case cacheID::cAACHEAPID:
 					it->aaach_pid = pid_val;
@@ -514,11 +514,11 @@ void eDVBService::setCacheEntry(cacheID id, int pid)
 				case cacheID::cAACAPID:
 					it->aaac_pid = pid_val;
 					break;
-				case cacheID::cDDPPID:
-					it->addp_pid = pid_val;
-					break;
 				case cacheID::cDRAAPID:
 					it->adra_pid = pid_val;
+					break;
+				case cacheID::cAC4PID:
+					it->aac4_pid = pid_val;
 					break;
 				case cacheID::cSUBTITLE:
 					it->subtitle_pid = pid_val;
@@ -540,9 +540,9 @@ void eDVBService::setCacheEntry(cacheID id, int pid)
 			{
 				ref_s = ref_s.substr(0, ref_s.size()-1);
 			}
-			eIPTVDBItem item(ref_s, id == cacheID::cMPEGAPID ? pid_val : -1, id == cacheID::cAC3PID ? pid_val : -1, id == cacheID::cAC4PID ? pid_val : -1,
-							id == cacheID::cDDPPID ? pid_val : -1, id == cacheID::cAACHEAPID ? pid_val : -1, id == cacheID::cAACAPID ? pid_val : -1,
-							id == cacheID::cDRAAPID ? pid_val : -1, id == cacheID::cSUBTITLE ? pid_val : -1, id == cacheID::cVPID ? pid_val : -1);
+			eIPTVDBItem item(ref_s, id == cacheID::cMPEGAPID ? pid_val : -1, id == cacheID::cAC3PID ? pid_val : -1, id == cacheID::cDDPPID ? pid_val : -1,
+							id == cacheID::cAACHEAPID ? pid_val : -1, id == cacheID::cAACAPID ? pid_val : -1, id == cacheID::cDRAAPID ? pid_val : -1,
+							id == cacheID::cAC4PID ? pid_val : -1, id == cacheID::cSUBTITLE ? pid_val : -1, id == cacheID::cVPID ? pid_val : -1);
 			iptv_services.push_back(item);
 		}
 	}
@@ -605,9 +605,6 @@ void eDVBDB::parseServiceData(ePtr<eDVBService> s, std::string str)
 				if (it->aac3_pid != -1) {
 					s->setCacheEntry(eDVBService::cacheID::cAC3PID, it->aac3_pid);
 				}
-				if (it->aac4_pid != -1) {
-					s->setCacheEntry(eDVBService::cacheID::cAC4PID, it->aac4_pid);
-				}
 				if (it->addp_pid != -1) {
 					s->setCacheEntry(eDVBService::cacheID::cDDPPID, it->addp_pid);
 				}
@@ -619,6 +616,9 @@ void eDVBDB::parseServiceData(ePtr<eDVBService> s, std::string str)
 				}
 				if (it->adra_pid != -1) {
 					s->setCacheEntry(eDVBService::cacheID::cDRAAPID, it->adra_pid);
+				}
+				if (it->aac4_pid != -1) {
+					s->setCacheEntry(eDVBService::cacheID::cAC4PID, it->aac4_pid);
 				}
 				if (it->subtitle_pid != -1) {
 					s->setCacheEntry(eDVBService::cacheID::cSUBTITLE, it->subtitle_pid);
@@ -1239,8 +1239,8 @@ void eDVBDB::saveIptvServicelist()
 	std::ofstream outputFile("/etc/enigma2/config_av");
 	for(std::vector<eIPTVDBItem>::iterator it = iptv_services.begin(); it != iptv_services.end(); ++it) {
 		char buffer[256];
-		sprintf(buffer, "%s|%d|%d|%d|%d|%d|%d|%d|%d|%d", it->s_ref.c_str(), it->v_pid, it->ampeg_pid, it->aac3_pid, it->aac4_pid, it->addp_pid,
-					it->aaach_pid, it->aaac_pid, it->adra_pid, it->subtitle_pid);
+		sprintf(buffer, "%s|%d|%d|%d|%d|%d|%d|%d|%d|%d", it->s_ref.c_str(), it->v_pid, it->ampeg_pid, it->aac3_pid, it->addp_pid,
+					it->aaach_pid, it->aaac_pid, it->adra_pid, it->aac4_pid, it->subtitle_pid);
 		std::string line = buffer;
 		outputFile << line << '\n';
 	}
@@ -1569,18 +1569,18 @@ eDVBDB::eDVBDB()
 		int ssret;
 		int service_type = 1, service_bit = 0, service_res = -1, service_id = -1, dvb_namespace, transport_stream_id = -1,
 		original_network_id = -1, service_tsid = -1, service_number = -1, source_id = 0, ampeg_pid = -1, aac3_pid = -1,
-		aac4_pid = -1, addp_pid = -1, aaach_pid = -1,aaac_pid = -1, adra_pid = -1, subtitle_pid = -1, video_pid = -1;
+		addp_pid = -1, aaach_pid = -1,aaac_pid = -1, adra_pid = -1, aac4_pid = -1, subtitle_pid = -1, video_pid = -1;
 
 		ssret = sscanf(line.c_str(), "%d:%d:%x:%x:%x:%x:%x:%d:%d:%x:%999[^|]|%d|%d|%d|%d|%d|%d|%d|%d|%d", &service_type, &service_bit, &service_res, &service_id,
 					  &dvb_namespace, &transport_stream_id, &original_network_id, &service_tsid, &service_number, &source_id, path, &video_pid,
-					  &ampeg_pid, &aac3_pid, &aac4_pid, &addp_pid, &aaach_pid, &aaac_pid, &adra_pid, &subtitle_pid);
+					  &ampeg_pid, &aac3_pid, &addp_pid, &aaach_pid, &aaac_pid, &adra_pid, &aac4_pid, &subtitle_pid);
 
 		switch(ssret) {
 			case 10:
 				strncpy(path, "", 1000);
 				ssret = sscanf(line.c_str(), "%d:%d:%x:%x:%x:%x:%x:%d:%d:%x|%d|%d|%d|%d|%d|%d|%d|%d|%d", &service_type, &service_bit, &service_res, &service_id,
 					&dvb_namespace, &transport_stream_id, &original_network_id, &service_tsid, &service_number, &source_id, &video_pid,
-					&ampeg_pid, &aac3_pid, &aac4_pid, &addp_pid, &aaach_pid, &aaac_pid, &adra_pid, &subtitle_pid);
+					&ampeg_pid, &aac3_pid, &addp_pid, &aaach_pid, &aaac_pid, &adra_pid, &aac4_pid, &subtitle_pid);
 				notFile = true;
 				break;
 		}
@@ -1591,9 +1591,9 @@ eDVBDB::eDVBDB()
 		std::string s_ref = buffer;
 		makeUpper(s_ref);
 
-		eDebug("[eDVBDB] Readed from config_av ref: %s", (s_ref + (notFile ? "" : (std::string(":") + path))).c_str());
+		eDebug("[eDVBDB] Read from config_av ref: %s", (s_ref + (notFile ? "" : (std::string(":") + path))).c_str());
 
-		eIPTVDBItem iptvDBItem(s_ref + (notFile ? "" : (std::string(":") + path)), ampeg_pid, aac3_pid, aac4_pid, addp_pid, aaach_pid, aaac_pid, adra_pid, subtitle_pid, video_pid);
+		eIPTVDBItem iptvDBItem(s_ref + (notFile ? "" : (std::string(":") + path)), ampeg_pid, aac3_pid, addp_pid, aaach_pid, aaac_pid, adra_pid, aac4_pid, subtitle_pid, video_pid);
 		iptv_services.push_back(iptvDBItem);
 		line = "";
 	}
@@ -3001,7 +3001,7 @@ void eDVBDB::searchAllReferences(std::vector<eServiceReference> &result, int tsi
 				ref.getOriginalNetworkID() == Onid &&
 				ref.getServiceID() == Sid)
 				{
-					if (std::find(result.begin(), result.end(), ref) == result.end()) 
+					if (std::find(result.begin(), result.end(), ref) == result.end())
 						result.push_back(ref);
 				}
 		}

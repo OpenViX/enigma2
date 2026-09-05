@@ -60,6 +60,16 @@ public:
 	// Set write accumulation threshold (0 = continuous writing)
 	virtual void setMinWrite(size_t size) = 0;
 
+	/* Attach (or, with fd=-1, detach) a passive monitor fd. When set, a
+	 * best-effort, non-blocking copy of the data actually written to the
+	 * target fd - i.e. already descrambled, when a descrambler is set -
+	 * is also written to the monitor fd. Writes are silently dropped on
+	 * backpressure or error; this must never be allowed to block or
+	 * otherwise affect the primary recording/decode path. The caller is
+	 * responsible for making the fd non-blocking and for closing it -
+	 * detach with fd=-1 before closing. */
+	virtual RESULT setMonitorFD(int fd) = 0;
+
 	enum {
 		eventWriteError,
 				/* a write error has occurred. data won't get lost if fd is writable after return. */

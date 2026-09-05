@@ -163,7 +163,10 @@ int eDVBPMTParser::getProgramInfo(program &program)
 						forced_audio = 1;
 					}
 					[[fallthrough]];
-				case 0x11: // MPEG 4 AAC
+				case 0x11: // MPEG-4 AAC
+				case 0x7c: // MPEG-4 AAC Descriptor
+				case 0x51: // MPEG-4 HE-AAC profile, level 2
+				case 0x52: // MPEG-4 HE-AAC v2 profile, level 2
 					if (!isvideo && !isaudio)
 					{
 						isaudio = 1;

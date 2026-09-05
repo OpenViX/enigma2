@@ -1086,6 +1086,14 @@ int eDVBRecordScrambledThread::writeData(int len)
 		m_ts_parser.parseData(m_current_offset, m_buffer, len);
 	}
 
+	// Best-effort passive tap for diagnostic consumers (see
+	// iDVBTSRecorder::setMonitorFD). m_buffer is already descrambled at
+	// this point when a descrambler is set. The fd is expected to be
+	// non-blocking; a short/failed write just drops data silently and
+	// must never affect the real record/decode path below.
+	if (m_monitor_fd >= 0)
+		(void)::write(m_monitor_fd, m_buffer, len);
+
 	// Call the appropriate parent writeData based on target type:
 	// - Streaming (socket): use eDVBRecordStreamThread::writeData() for proper socket handling
 	// - Recording (file): use eDVBRecordFileThread::writeData() for file I/O
@@ -1383,6 +1391,14 @@ RESULT eDVBTSRecorder::setDescrambler(ePtr<iServiceScrambled> serviceDescrambler
 void eDVBTSRecorder::setDiscardOnTimeout(bool discard)
 {
 	m_thread->setDiscardOnTimeout(discard);
+}
+
+RESULT eDVBTSRecorder::setMonitorFD(int fd)
+{
+	if (!m_thread)
+		return -1;
+	m_thread->setMonitorFD(fd);
+	return 0;
 }
 
 bool eDVBTSRecorder::waitForFirstData(int timeout_ms)

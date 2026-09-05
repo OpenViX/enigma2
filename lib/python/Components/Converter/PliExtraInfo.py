@@ -531,9 +531,11 @@ class PliExtraInfo(Poll, Converter, object):
 
 	def createResolution(self, info):
 		avSwitch = eAVSwitch.getInstance()
-		# print (f"[PliExtraino][createResolution] {avSwitch.getResolutionX(0)}")
-		if avSwitch.getResolutionX(0) > 0:
-			return f"{avSwitch.getResolutionX(0)}x{avSwitch.getResolutionY(0)}{'p' if avSwitch.getProgressive() else 'i'}{(avSwitch.getFrameRate(0) + 500) // 1000}"
+		xres = avSwitch.getResolutionX(0)
+		yres = avSwitch.getResolutionY(0)
+		avSwitch.reportVideoResolutionState(xres, yres)
+		if xres > 0:
+			return f"{xres}x{yres}{'p' if avSwitch.getProgressive() else 'i'}{(avSwitch.getFrameRate(0) + 500) // 1000}"
 		else:
 			return ""
 

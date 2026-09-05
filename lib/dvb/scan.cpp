@@ -512,12 +512,22 @@ void eDVBScan::PMTready(int err)
 					}
 					[[fallthrough]];
 				case 0x0f: // MPEG 2 AAC
-				case 0x11: // MPEG 4 AAC
 					if (!isvideo && !forced_audio)
 					{
 						forced_audio = 1;
 						isaudio = 1;
 						currentAudioCacheId = eDVBService::cAACAPID;
+					}
+					[[fallthrough]];
+				case 0x11: // MPEG-4 AAC
+				case 0x7c: // MPEG-4 AAC Descriptor
+				case 0x51: // MPEG-4 HE-AAC profile, level 2
+				case 0x52: // MPEG-4 HE-AAC v2 profile, level 2
+					if (!isvideo && !forced_audio)
+					{
+						forced_audio = 1;
+						isaudio = 1;
+						currentAudioCacheId = eDVBService::cAACHEAPID;
 					}
 					[[fallthrough]];
 				case 0x06: // PES Private

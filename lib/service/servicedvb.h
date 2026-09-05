@@ -19,6 +19,7 @@ class eDVBCSASession;
 class eHDRStreamDetector;
 #endif
 class eDVBSoftDecoder;
+class eDVBAudioChannelDetector;
 
 class eServiceFactoryDVB : public iServiceHandler {
 	DECLARE_REF(eServiceFactoryDVB);
@@ -207,6 +208,9 @@ public:
 	RESULT stream(ePtr<iStreamableService> &ptr);
 	ePtr<iStreamData> getStreamingData();
 	void setQpipMode(bool value, bool audio);
+#ifdef PASSTHROUGH_FIX
+	void observeVideoResolutionState(int xres, int yres);
+#endif
 
 protected:
 	friend class eServiceFactoryDVB;
@@ -233,6 +237,10 @@ protected:
 	eDVBServiceEITHandler m_event_handler;
 	int m_current_audio_pid;
 	int m_current_video_pid_type;
+
+	// Selected-audio channel-count detection (see audiochanneldetector.h).
+	// One probe at a time, for whichever track is currently selected.
+	ePtr<eDVBAudioChannelDetector> m_audio_channel_detector;
 
 	eDVBServicePlay(const eServiceReference &ref, eDVBService *service, bool connect_event=true);
 
@@ -329,6 +337,9 @@ protected:
 	ePtr<eTimer> m_subtitle_sync_timer;
 	void checkSubtitleTiming();
 
+#ifdef PASSTHROUGH_FIX
+	bool m_encrypted_ddp_audio_reset_done;
+#endif
 	ePtr<eTimer> m_nownext_timer;
 	void updateEpgCacheNowNext();
 

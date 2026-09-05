@@ -717,7 +717,10 @@ bool eStreamThreadWeb::scanAudioInfo(unsigned char buf[], int len)
 			lang = getDescriptor(pmt+b+5, pmt[b+4], LANGUAGE_DESCRIPTOR);
 			ainfo->addAudio(pid, lang, "AAC", eDVBAudio::aAAC);
 			break;
-		case 0x11:
+		case 0x11: // MPEG-4 HE-AAC
+		case 0x7c: // MPEG-4 AAC Descriptor
+		case 0x51: // MPEG-4 HE-AAC profile, level 2
+		case 0x52: // MPEG-4 HE-AAC v2 profile, level 2
 			if (APID == 0)
 				APID =pid;
 			lang = getDescriptor(pmt+b+5, pmt[b+4], LANGUAGE_DESCRIPTOR);
