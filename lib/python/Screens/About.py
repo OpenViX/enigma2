@@ -190,7 +190,7 @@ class About(AboutBase):
 	def populate(self):
 		Brands = {"meson": "MESON", "bcm": "Broadcom", "hisi": "Hisilicon"}
 		AboutText = ""
-		AboutText += _("Model:\t%s %s\n") % (DISPLAYBRAND, MACHINENAME)
+		AboutText += _("Model:\t%s %s\n") % (DISPLAYBRAND.replace("qv", "Qv"), MACHINENAME.replace("4k", "4K"))
 		AboutText += _("Chipset:\t%s %s\n") % (Brands.get(SOC_BRAND, SOC_BRAND), CHIPSET.replace("hi", "HI").replace("cv", "CV").replace("mv", "MV"))
 		CPUArch = getCPUArch(MODEL)
 		AboutText += _("CPU:\t%s %s %s\n") % (CPUArch[0], CPUArch[1], CPUArch[2])

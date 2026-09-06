@@ -158,7 +158,10 @@ class AudioSelection(ConfigListScreen, Screen):
 					choice_list = self.readChoices("/proc/stb/audio/ac3_choices", choice_list)
 				self.settings.downmix_ac3 = ConfigSelection(choices=choice_list, default=config.av.downmix_ac3.value)
 				self.settings.downmix_ac3.addNotifier(self.changeAC3Downmix, initial_call=False)
-				conflist.append(getConfigListEntry(_("AC3 downmix"), self.settings.downmix_ac3, None))
+				if SystemInfo["model"] not in ("gb7252", "vuduo4klite"):
+					conflist.append(getConfigListEntry(_("AC3 / AC3+ Downmix"), self.settings.downmix_ac3, None))
+				else:
+					conflist.append(getConfigListEntry(_("AC3 Downmix"), self.settings.downmix_ac3, None))
 
 			if SystemInfo["CanDownmixDTS"]:
 				choice_list = [
@@ -197,7 +200,10 @@ class AudioSelection(ConfigListScreen, Screen):
 					choice_list = self.readChoices("/proc/stb/audio/aac_choices", choice_list)
 				self.settings.downmix_aac = ConfigSelection(choices=choice_list, default=config.av.downmix_aac.value)
 				self.settings.downmix_aac.addNotifier(self.changeAACDownmix, initial_call=False)
-				conflist.append(getConfigListEntry(_("AAC downmix"), self.settings.downmix_aac, None))
+				if SystemInfo["model"] not in ("gb7252", "vuduo4klite"):
+					conflist.append(getConfigListEntry(_("AAC / AAC+ Downmix"), self.settings.downmix_aac, None))
+				else:
+					conflist.append(getConfigListEntry(_("AAC Downmix"), self.settings.downmix_aac, None))
 
 			if SystemInfo["CanAC3Transcode"]:
 				choice_list = [
