@@ -769,7 +769,7 @@ def InitAVSwitch():
 		choices = [
 			("downmix", _("Downmix")),
 			("passthrough", _("Passthrough")),
-			("multichannel", _("Convert to Nulti-Channel PCM")),
+			("multichannel", _("Convert to Multi-Channel PCM")),
 			("force_ac3", _("Convert to AC3")),
 			("force_dts", _("Convert to DTS"))
 		]
