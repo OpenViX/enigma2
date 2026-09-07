@@ -712,22 +712,31 @@ class AttributeParser:
 		except KeyError:
 			print("[Skin] Error: Invalid scale '%s'!  Must be one of 'none', 'scale', 'scaleKeepAspect', 'scaleLeftTop', 'scaleLeftCenter', 'scaleLeftBotton', 'scaleCenterTop', 'scaleCenter', 'scaleCenterBotton', 'scaleRightTop', 'scaleRightCenter', 'scaleRightBottom', 'moveLeftTop', 'moveLeftCenter', 'moveLeftBotton', 'moveCenterTop', 'moveCenter', 'moveCenterBottom', 'moveRightTop', 'moveRightCenter', 'moveRightBottom' ('Center'/'Centre'/'Middle' are equivalent)." % value)
 
-	def listOrientation(self, value):  # For compatibility with skins written for OpenATV that use this attribute
-		self.orientation({"vertical": "orVertical", "horizontal": "orHorizontal", "grid": "orGrid"}.get(value, value))
-
-	def orientation(self, value):  # Used by eSlider and eListBox.
+	def listOrientation(self, value):  # Used by eListbox.
 		try:
-			self.guiObject.setOrientation(*({
+			self.guiObject.setOrientation({
+				"orVertical": self.guiObject.orVertical,
+				"vertical": self.guiObject.orVertical,  # compatibility with openatv
+				"orHorizontal": self.guiObject.orHorizontal,
+				"horizontal": self.guiObject.orHorizontal,  # compatibility with openatv
+				"orGrid": self.guiObject.orGrid,
+				"grid": self.guiObject.orGrid,  # compatibility with openatv
+			}[value])
+		except:
+			print("[Skin] Error: Invalid listOrientation '%s'!  Must be one of 'orVertical', 'vertical', 'orHorizontal', 'horizontal', 'orGrid' or 'grid'." % value)
+
+	def orientation(self, value):  # Used by eSlider.
+		try:
+			self.guiObject.setOrientation(*{
 				"orVertical": (self.guiObject.orVertical, False),
 				"orTopToBottom": (self.guiObject.orVertical, False),
 				"orBottomToTop": (self.guiObject.orVertical, True),
 				"orHorizontal": (self.guiObject.orHorizontal, False),
 				"orLeftToRight": (self.guiObject.orHorizontal, False),
-				"orRightToLeft": (self.guiObject.orHorizontal, True)} | (
-				{"orGrid": (self.guiObject.orGrid, False)} if hasattr(self.guiObject, "orGrid") else {}  # eListbox only
-			))[value])
+				"orRightToLeft": (self.guiObject.orHorizontal, True)
+			}[value])
 		except KeyError:
-			print("[Skin] Error: Invalid orientation '%s'!  Must be one of 'orVertical', 'orTopToBottom', 'orBottomToTop', 'orHorizontal', 'orLeftToRight', 'orRightToLeft' or 'orGrid (eListbox only)'." % value)
+			print("[Skin] Error: Invalid orientation '%s'!  Must be one of 'orVertical', 'orTopToBottom', 'orBottomToTop', 'orHorizontal', 'orLeftToRight', 'orRightToLeft' or 'orGrid'." % value)
 
 	def valign(self, value):
 		try:

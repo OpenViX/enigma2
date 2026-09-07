@@ -66,7 +66,7 @@ public:
 	void setCompareSref( const std::string &n, bool isSR = false) { compareSref=n; isStreamRelay=isSR; }
 	bool getStreamRelay() const { return isStreamRelay; }
 	std::string getCompareSref() const { return compareSref; }
-	
+
 
 	unsigned int getUnsignedData(unsigned int num) const
 	{
@@ -570,10 +570,12 @@ struct iAudioTrackInfo
 	std::string m_description;
 	std::string m_language; /* iso639 */
 	int m_pid; /* for association with the stream. */
+	int m_channels = 0; /* decoded/source channel count when available. */
 #endif
 	std::string getDescription() { return m_description; }
 	std::string getLanguage() { return m_language; }
 	int getPID() { return m_pid; }
+	int getChannels() { return m_channels; }
 };
 SWIG_ALLOW_OUTPUT_SIMPLE(iAudioTrackInfo);
 

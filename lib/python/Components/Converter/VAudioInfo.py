@@ -11,37 +11,66 @@ from Components.Element import cached
 _acedits = (
 	("MPEG-4 AAC audio", "AAC"),
 	("MPEG-4 AAC", "AAC"),
+	("MPEG-2 AAC audio", "AAC"),
+	("MPEG-2 AAC", "AAC"),
+	("DVD LPCM", "AAC"),
 	("MPEG/L3", "MP2"),
-	("Free Lossless Audio Codec(FLAC)", "FLAC"),
-	("private1-lpcm", "AAC"),
+	("Free Lossless Audio Codec (FLAC)", "FLAC"),
 	("-", ""),
 	("A_", ""),
 	("(ATSC A/52)", ""),
 	("(ATSC A/52B)", ""),
-	("AC3", "AC3"),
 	("EAC3", "AC3+"),
 	("IPCM", "AC3+"),
-	("DVD LPCM", "AAC"),
 	("LPCM", "AC3+"),
-	("AAC_PLUS", "AAC+"),
-	("AAC_LATM", "AAC"),
-	("WMA/PRO", "WMA Pro"),
-	("audio/x-", ""),
-	(" audio", ""),
-	("audio/x-true-hd", "Dolby TrueHD"),
-	("raw", "Dolby TrueHD"),
+	("AAC_PLUS", "HE-AAC"),
+	("AAC_LATM", "HE-AAC"),
 	("HEAAC", "HE-AAC"),
+	("AACHE", "HE-AAC"),
+	("ADTS", "HE-AAC"),
+	("ALAC", "HE-AAC"),
+	("private1-lpcm", "HE-AAC"),
+	("WMA/PRO", "WMA Pro"),
+	("audio/x", ""),
+	(" audio", ""),
+	("raw", "Dolby TrueHD"),
 	("MPEG1", ""),
 	(" Layer 2 (MP2)", "MP2"),
 	(" Layer 3 (MP3)", "MP3"),
 	("MPEG", "MPEG1 Layer II"),
-	("AACHE", "HE-AAC")
+)
+
+
+_accanonical = (
+	("DTSHD Master Audio", "DTS-HD MA"),
+	("DTS-HD Master Audio", "DTS-HD MA"),
+	("DTSHD High Resolution Audio", "DTS-HD HRA"),
+	("DTS-HD High Resolution Audio", "DTS-HD HRA"),
+	("DTSHD High Resolution", "DTS-HD HRA"),
+	("DTS-HD High Resolution", "DTS-HD HRA"),
+	("DTSHD MA + DTS:X IMAX", "DTS-HD MA + DTS:X IMAX"),
+	("DTSHD MA + DTS:X", "DTS-HD MA + DTS:X"),
+	("DTSHD MA", "DTS-HD MA"),
+	("DTSHD HRA", "DTS-HD HRA"),
+	("DTSHD", "DTS-HD"),
+	("DTSES", "DTS-ES"),
+	("xHEAAC", "xHE-AAC"),
+	("HEAAC v2", "HE-AAC v2"),
+	("HEAAC", "HE-AAC"),
+	("AACELD", "AAC-ELD"),
+	("AACLD", "AAC-LD"),
+	("AACLC", "AAC-LC"),
+	("Dolby AC4", "Dolby AC-4"),
+	("AMRWB", "AMR-WB"),
 )
 
 
 def StdAudioDesc(description):
 	for orig, repl in _acedits:
 		description = description.replace(orig, repl)
+	for orig, repl in _accanonical:
+		if description == orig:
+			return repl
 	return description
 
 
@@ -57,8 +86,8 @@ class VAudioInfo(Poll, Converter, object):
 		self.poll_enabled = True
 		self.lang_strings = ("english", "englisch", "eng")
 		self.codecs = {
-			"01_dolbydigitalplus": ("ac3+", "digital+", "digitalplus",),
-			"02_dolbydigital": ("ac3", "dolbydigital",),
+			"01_dolbydigitalplus": ("ac3+", "digital+", "digitalplus", "dolby.digital.plus",),
+			"02_dolbydigital": ("ac3", "dolbydigital", "dolby.digital",),
 			"03_mp3": ("mp3",),
 			"04_wma": ("wma",),
 			"05_flac": ("flac",),
@@ -68,9 +97,9 @@ class VAudioInfo(Poll, Converter, object):
 			"09_dts": ("dts",),
 			"10_pcm": ("pcm",),
 			"11_aac": ("aac",),
-			"12_he-aac": ("he-aac",),
-			"13_truehd": ("truehd",),
-			"14_aacplus": ("aac+",),
+			"12_aac-he": ("he-aac",),
+			"13_dolbytruehd": ("truehd",),
+			"14_aacplus": ("he-aac",),
 			"15_ipcm": ("ipcm",),
 			"16_wma-pro": ("wma pro",),
 			"17_vorbis": ("vorbis",),
@@ -79,9 +108,10 @@ class VAudioInfo(Poll, Converter, object):
 			"20_mp2": ("mp2",),
 		}
 		self.codec_info = {
-			"dolbydigitalplus": ("51", "20", "71"),
-			"dolbydigital": ("51", "20", "71"),
-			"wma": ("8", "9"),
+			"dolbydigitalplus": ("51", "20", "71",),
+			"dolbydigital": ("51", "20", "71",),
+			"dolbytruehd": ("51", "20", "71",),
+			"wma": ("8", "9",),
 		}
 		self.type, self.interesting_events = {
 			"AudioIcon": (self.GET_AUDIO_ICON, (iPlayableService.evUpdatedInfo,)),
@@ -114,8 +144,6 @@ class VAudioInfo(Poll, Converter, object):
 			languages = self.getLanguage()
 			description = StdAudioDesc(self.audio_info.getDescription()) or ""
 			description_str = description.split(" ")
-			if len(description_str) and description_str[0] in languages:
-				return languages
 			if description.lower() in languages.lower():
 				languages = ""
 			description_str = description

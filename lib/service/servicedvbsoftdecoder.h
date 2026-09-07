@@ -88,6 +88,15 @@ public:
 	// Demux access (for position calculation)
 	ePtr<iDVBDemux> getDecodeDemux() { return m_decode_demux; }
 
+	// Attach (fd >= 0) or detach (fd == -1) a passive, best-effort monitor
+	// fd on the existing SoftCSA recorder (see iDVBTSRecorder::setMonitorFD).
+	// Delivers a copy of the already-descrambled TS the recorder produces.
+	// Returns -1 if no recorder is currently active (e.g. between channel
+	// changes) - callers should treat that as "try again once running".
+	// Deliberately does NOT create a second recorder/session: eDVBCSAEngine
+	// is only safe for one concurrent descramble() caller.
+	RESULT setAudioMonitorFD(int fd) { return m_record ? m_record->setMonitorFD(fd) : -1; }
+
 	// Audio track selection signal (notifies parent when SoftDecoder selects audio)
 	sigc::signal<void(int)> m_audio_pid_selected;
 

@@ -13,7 +13,7 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.MessageBox import ModalMessageBox
 from Tools.Directories import fileReadLines, fileWriteLines
 
-HOTPLUG_SOCKET = "/tmp/hotplug.socket"
+HOTPLUG_SOCKET = "/var/run/hotplug.socket"
 
 # globals
 hotplugNotifier = []
@@ -85,7 +85,6 @@ def autostart(reason, **kwargs):
 
 class HotPlugManager:
 	def __init__(self):
-		self.newCount = 0
 		self.addTimer = eTimer()
 		self.addTimer.callback.append(self.processAddDevice)
 		self.removeTimer = eTimer()
@@ -113,7 +112,10 @@ class HotPlugManager:
 			ID_PART_ENTRY_SIZE = int(eventData.get("ID_PART_ENTRY_SIZE", 0))
 			print(f"[Hotplug][processDeviceData] DEVPATH:{DEVPATH} DEVNAME:{DEVNAME} ID_FS_UUID:{ID_FS_UUID} ID_MODEL:{ID_MODEL} ID_PART_ENTRY_SIZE:{ID_PART_ENTRY_SIZE}")
 			notFound = True
-			mounts = fileReadLines("/proc/mounts")
+			mounts = [(x[0], x[1].replace("\\040", " ")) for x in (line.split() for line in fileReadLines("/proc/mounts", default=[])) if len(x) > 1]
+			mountPoints = [x[1] for x in mounts]
+			fstabEntries = [x for x in (line.split() for line in fileReadLines("/etc/fstab", default=[])) if len(x) > 1 and not x[0].startswith("#")]
+			usedMountPoints = mountPoints + [x[1] for x in fstabEntries]
 			mountPoint = "/media/usb"
 			mmcPrefix = "/dev/mmcblk1p"
 			if DEVNAME.startswith(mmcPrefix) and DEVNAME[len(mmcPrefix):].isdigit() and MODEL in ("dm900", "dm920"):
@@ -121,21 +123,19 @@ class HotPlugManager:
 				mountPointDevice = "/media/mmc" if partition == "1" else f"/media/mmc{partition}"
 			else:
 				mountPointDevice = DEVNAME.replace("/dev/", "/media/")
-			mountPointHdd = None if [x.split()[1] for x in mounts if "/media/hdd" in x] else "/media/hdd"
+			mountPointHdd = None if "/media/hdd" in usedMountPoints else "/media/hdd"
 			knownDevices = fileReadLines("/etc/udev/known_devices", default=[])
 			knownDevice = ""
-			if mounts:
-				usbMounts = [x.split()[1] for x in mounts if "/media/usb" in x]
-				nr = 1
-				while mountPoint in usbMounts:
-					nr += 1
-					mountPoint = f"/media/usb{nr}"
+			nr = 1
+			while mountPoint in usedMountPoints:
+				nr += 1
+				mountPoint = f"/media/usb{nr}"
 
-				for mount in mounts:
-					if DEVNAME in mount and DEVNAME.replace("/dev/", "/media/") not in mount:
-						print(f"[Hotplug][processDeviceData] device '{DEVNAME}' found in mounts -> {mount}")
-						notFound = False
-						break
+			for device, point in mounts:
+				if device == DEVNAME and point != mountPointDevice:
+					print(f"[Hotplug][processAddDevice] device '{DEVNAME}' found in mounts -> {point}")
+					notFound = False
+					break
 
 			if notFound and knownDevices:
 				for device in knownDevices:
@@ -146,28 +146,25 @@ class HotPlugManager:
 						notFound = knownDevice != "None"  # Ignore this device
 						break
 
-			if notFound:
-				fstab = fileReadLines("/etc/fstab")
-				fstabDevice = [x.split()[1] for x in fstab if ID_FS_UUID in x]
-				if fstabDevice and fstabDevice[0] not in mounts:  # Check if device is already in fstab and if the mountpoint not used
+			if notFound and ID_FS_UUID:
+				fstabDevice = [x[1] for x in fstabEntries if x[0] == f"UUID={ID_FS_UUID}"]
+				if fstabDevice and fstabDevice[0] not in mountPoints:  # Check if device is already in fstab and if the mountpoint not used
 					if not exists(fstabDevice[0]):
 						mkdir(fstabDevice[0], 0o755)
 					self.callMount = True
 					notFound = False
-					self.newCount += 1
 
-			if notFound and mountPointHdd:  # If device is the first and /media/hdd not mounted
+			if notFound and mountPointHdd and ID_FS_UUID:  # If device is the first and /media/hdd not mounted
 				knownDevices.append(f"{ID_FS_UUID}:{mountPointHdd}")
 				fileWriteLines("/etc/udev/known_devices", knownDevices)
-				fstab = fileReadLines("/etc/fstab")
+				fstab = fileReadLines("/etc/fstab", default=[])
 				newFstab = [x for x in fstab if f"UUID={ID_FS_UUID}" not in x]
 				newFstab.append(f"UUID={ID_FS_UUID} {mountPointHdd} {ID_FS_TYPE} defaults 0 0")
 				fileWriteLines("/etc/fstab", newFstab)
 				if not exists(mountPointHdd):
-					mkdir(mountPoint, 0o755)
+					mkdir(mountPointHdd, 0o755)
 				self.callMount = True
 				notFound = False
-				self.newCount += 1
 
 			if notFound:
 				description = ""
@@ -180,9 +177,8 @@ class HotPlugManager:
 
 				def newDeviceCallback(answer):
 					if answer:
-						if answer in (2, 3, 4, 5):
-							self.newCount += 1
-						fstab = fileReadLines("/etc/fstab")
+						knownDevice = None
+						fstab = fileReadLines("/etc/fstab", default=[])
 						if answer in (2, 3) and not exists(mountPoint):
 							mkdir(mountPoint, 0o755)
 						if answer == 4 and not exists(mountPointHdd):
@@ -190,28 +186,35 @@ class HotPlugManager:
 						if answer == 5 and not exists(mountPointDevice):
 							mkdir(mountPointDevice, 0o755)
 						if answer == 1:  # Permanently ignore this device
-							knownDevices.append(f"{ID_FS_UUID}:None")
+							knownDevice = "None"
 						elif answer == 2:  # Temporarily mount
 							Console().ePopen(f"/bin/mount -t {ID_FS_TYPE} {DEVNAME} {mountPoint}")
 						elif answer == 3:  # permanently mount as media/usb----
-							knownDevices.append(f"{ID_FS_UUID}:{mountPoint}")
+							knownDevice = mountPoint
 							newFstab = [x for x in fstab if f"UUID={ID_FS_UUID}" not in x]
 							newFstab.append(f"UUID={ID_FS_UUID} {mountPoint} {ID_FS_TYPE} defaults 0 0")
 							fileWriteLines("/etc/fstab", newFstab)
 							self.callMount = True
 						elif answer == 4:  # Permanently mount as /media/hdd
-							knownDevices.append(f"{ID_FS_UUID}:{mountPointHdd}")
+							knownDevice = mountPointHdd
 							newFstab = [x for x in fstab if f"UUID={ID_FS_UUID}" not in x]
 							newFstab.append(f"UUID={ID_FS_UUID} {mountPointHdd} {ID_FS_TYPE} defaults 0 0")
 							fileWriteLines("/etc/fstab", newFstab)
 							self.callMount = True
 						elif answer == 5:  # Permanently mount as device name e.g. sda1
-							knownDevices.append(f"{ID_FS_UUID}:{mountPointDevice}")
+							knownDevice = mountPointDevice
 							newFstab = [x for x in fstab if f"UUID={ID_FS_UUID}" not in x]
 							newFstab.append(f"UUID={ID_FS_UUID} {mountPointDevice} {ID_FS_TYPE} defaults 0 0")
 							fileWriteLines("/etc/fstab", newFstab)
 							self.callMount = True
-						if answer in (1, 3, 4, 5):
+						if knownDevice:
+							knownEntry = f"{ID_FS_UUID}:{knownDevice}"
+							for index, device in enumerate(knownDevices):
+								if device.startswith(f"{ID_FS_UUID}:"):
+									knownDevices[index] = knownEntry
+									break
+							else:
+								knownDevices.append(knownEntry)
 							fileWriteLines("/etc/udev/known_devices", knownDevices)
 					self.addedDevice.append((DEVNAME, DEVPATH, ID_MODEL))
 					self.addTimer.start(1000)
@@ -236,14 +239,14 @@ class HotPlugManager:
 			else:
 				self.addedDevice.append((DEVNAME, DEVPATH, ID_MODEL))
 				self.addTimer.start(1000)
-		else:
-			if self.newCount:
-				if self.callMount:
-					self.callMount = False
-					Console().ePopen("/bin/mount -a")
-				self.newCount = 0
-				for device, physicalDevicePath, model in self.addedDevice:
-					harddiskmanager.addHotplugPartition(device, physicalDevicePath, model=model)
+		elif self.addedDevice:
+			if self.callMount:
+				self.callMount = False
+				Console().ePopen("/bin/mount -a")  # Without a callback this blocks, so the mount point is ready below.
+			addedDevice = self.addedDevice
+			self.addedDevice = []
+			for device, physicalDevicePath, model in addedDevice:
+				harddiskmanager.addHotplugPartition(device, physicalDevicePath, model=model)
 
 	def processRemoveDevice(self):
 		self.removeTimer.stop()

@@ -491,7 +491,7 @@ void eDVBRdsDecoder::gotAncillaryData(const uint8_t *buf, int len)
 	int pos;
 	int dir;
 
-	// RDS data included in MPEG Audio frames needs to be readed in reverse order
+	// RDS data included in MPEG Audio frames needs to be read in reverse order
 	if (m_mode == 1 || m_audio_type == eDVBAudio::aAAC || m_audio_type == eDVBAudio::aAACHE)
 	{
 		pos = 0;

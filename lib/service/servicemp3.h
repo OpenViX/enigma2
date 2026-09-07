@@ -116,7 +116,7 @@ public:
 
 typedef struct _GstElement GstElement;
 
-typedef enum { atUnknown, atMPEG, atMP3, atAC3, atDTS, atAAC, atPCM, atOGG, atFLAC, atWMA, atDRA, atEAC3 } audiotype_t;
+typedef enum { atUnknown, atMPEG, atMP3, atAC3, atDTS, atAACHE, atPCM, atOGG, atFLAC, atWMA, atDRA, atEAC3, atDTSHD, atAAC } audiotype_t;
 typedef enum { stUnknown, stPlainText, stSSA, stASS, stSRT, stVOB, stPGS, stDVB } subtype_t;
 typedef enum { ctNone, ctMPEGTS, ctMPEGPS, ctMKV, ctAVI, ctMP4, ctVCD, ctCDA, ctASF, ctOGG, ctWEBM, ctDRA} containertype_t;
 
@@ -218,12 +218,13 @@ public:
 		audiotype_t type;
 		std::string language_code; /* iso-639, if available. */
 		std::string codec; /* clear text codec description */
+		int channels; /* selected-track channels; normally caps, refined from DTS-HD XLL when available. */
 		audioStream()
-			:pad(0), type(atUnknown)
+			:pad(0), type(atUnknown), channels(0)
 		{
 		}
 
-		bool operator==(const audioStream& rhs) const { return type == rhs.type && language_code == rhs.language_code && codec == rhs.codec; }
+		bool operator==(const audioStream& rhs) const { return type == rhs.type && language_code == rhs.language_code && codec == rhs.codec && channels == rhs.channels; }
 
 		bool operator!=(const audioStream& rhs) const { return !(*this == rhs); }
 	};
@@ -385,12 +386,8 @@ private:
 	void pullSubtitle(GstBuffer *buffer);
 	void sourceTimeout();
 	void clearBuffers(bool force=false);
-#ifdef PASSTHROUGH_FIX
 	ePtr<eTimer> m_passthrough_fix_timer;
-#endif
-#ifdef PASSTHROUGH_FIX
 	void forceAudioReset();
-#endif
 	sourceStream m_sourceinfo;
 	gulong m_subs_to_pull_handler_id;
 

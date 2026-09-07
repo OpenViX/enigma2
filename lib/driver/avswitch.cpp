@@ -31,6 +31,7 @@ eAVSwitch::eAVSwitch()
 	instance = this;
 	m_set_video_mode = 0;
 	m_active = false;
+	m_video_resolution_observer = nullptr;
 	struct stat buffer = {};
 #ifdef HAVE_HDMIIN_DM
 	m_b_has_proc_hdmi_rx_monitor = (stat(proc_hdmi_rx_monitor, &buffer) == 0);
@@ -262,6 +263,17 @@ int eAVSwitch::getResolutionY(int defaultVal, int flags) const
 	else if (flags & FLAGS_DEBUG)
 		eDebug("[%s] %s: %d", __MODULE__, "getResolutionY", value);
 	return value;
+}
+
+void eAVSwitch::setVideoResolutionObserver(void (*observer)(int, int))
+{
+	m_video_resolution_observer = observer;
+}
+
+void eAVSwitch::reportVideoResolutionState(int xres, int yres) const
+{
+	if (m_video_resolution_observer)
+		m_video_resolution_observer(xres, yres);
 }
 
 // Get FrameRate
@@ -584,7 +596,7 @@ void eAVSwitch::setPolicy169(const std::string &newPolicy, int flags) const
 }
 
 // set VideoSize
-// param top, left, width, height 
+// param top, left, width, height
 void eAVSwitch::setVideoSize(int top, int left, int width, int height, int flags) const
 {
 
