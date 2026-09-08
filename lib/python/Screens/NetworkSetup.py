@@ -883,7 +883,7 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 			import errno
 		except ImportError:
 			return False
-		
+
 		try:
 			system("ifconfig %s up" % iface)
 			list(Cell.all(iface))
