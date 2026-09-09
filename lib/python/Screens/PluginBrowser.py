@@ -610,7 +610,7 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 
 		for x in lines:
 			plugin = x.split(" - ", 2)
-			if plugin[0] and plugin[0] not in self.installedplugins and plugin[0].startswith(self.plugin_prefix_whitelist) and not plugin[0].endswith(self.plugin_suffix_blacklist):
+			if plugin[0] and plugin[0] not in self.installedplugins and (plugin[0].startswith(self.plugin_prefix_whitelist) or plugin[0].startswith("kodi-addon-")) and not plugin[0].endswith(self.plugin_suffix_blacklist):
 				if self.run == 1 and self.type == self.DOWNLOAD:
 					self.installedplugins.append(plugin[0])
 				else:
