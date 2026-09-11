@@ -590,7 +590,7 @@ DEFINE_REF(eDVBAudioChannelDetector);
 
 eDVBAudioChannelDetector::eDVBAudioChannelDetector()
 	: m_pid(-1), m_codec(ctUnsupported), m_identity(nullptr), m_softcsa(false),
-	  m_channels(0), m_atmos(false), m_monitoring(false), m_gaveUp(false)
+	  m_scanned(0), m_channels(0), m_atmos(false), m_monitoring(false), m_gaveUp(false)
 {
 	m_monitor_fd[0] = m_monitor_fd[1] = -1;
 	m_timeout = eTimer::create(eApp);
@@ -630,6 +630,7 @@ void eDVBAudioChannelDetector::reset()
 	stop();
 	m_data.clear();
 	m_data.reserve(16384);
+	m_scanned = 0;
 	m_channels = 0;
 	m_atmos = false;
 	m_monitoring = false;
@@ -874,6 +875,7 @@ void eDVBAudioChannelDetector::feed(const uint8_t *data, int len)
 		// found until a new one replaces it.
 		m_monitoring = true;
 		m_data.clear();
+		m_scanned = 0;
 		return;
 	}
 
@@ -896,6 +898,7 @@ void eDVBAudioChannelDetector::feed(const uint8_t *data, int len)
 			// answer - not a failure, the last known channels()/isAtmos()
 			// is still valid. Reset the window and keep watching.
 			m_data.clear();
+			m_scanned = 0;
 		}
 	}
 }
@@ -924,31 +927,62 @@ void eDVBAudioChannelDetector::tryDetect()
 	if (m_data.empty())
 		return;
 
+	// Each parse*() below tries every byte offset across the range it's
+	// given, so a call that finds nothing means no valid header starts
+	// anywhere in that range. feed() calls tryDetect() on every arriving
+	// PES/TS chunk (potentially dozens of times a second) and, before this
+	// fix, always passed the *entire* accumulated buffer - so a source
+	// that never produces a recognizable header (wrong codec assumed,
+	// still-encrypted data, plain noise) re-scanned an ever-growing buffer
+	// from byte 0 every single time. That's quadratic in the accumulated
+	// size, up to MAX_CAPTURE_BYTES (1MB): slow enough on embedded CPUs to
+	// stall the whole process for several seconds, blocking the reactor
+	// this runs on (PES reader / socket notifier callbacks) along with
+	// everything else - remote control input included.
+	//
+	// Re-scanning only from m_scanned - RESCAN_MARGIN keeps this roughly
+	// linear instead: bytes before that point already failed every parser
+	// in a prior call and can't suddenly start matching. The margin covers
+	// a header/frame that was too close to the old end to validate in
+	// full last time and so needs to be re-tried now that more bytes are
+	// available - the largest span any parser below needs is LOAS's
+	// mux_length (13 bits, so up to 8191) plus its 3-byte prefix, i.e.
+	// up to 8194 bytes from a candidate sync position (see parseLOAS).
+	const size_t RESCAN_MARGIN = 16384;
+	size_t start = m_scanned > RESCAN_MARGIN ? m_scanned - RESCAN_MARGIN : 0;
+	if (start >= m_data.size())
+		return;
+
+	const uint8_t *data = m_data.data() + start;
+	size_t len = m_data.size() - start;
+
 	int channels = 0;
 	switch (m_codec)
 	{
 		case ctMPEG:
-			channels = parseMPEGAudio(m_data.data(), m_data.size());
+			channels = parseMPEGAudio(data, len);
 			break;
 		case ctAC3:
-			channels = parseAC3EAC3(m_data.data(), m_data.size(), false);
+			channels = parseAC3EAC3(data, len, false);
 			break;
 		case ctEAC3:
-			channels = parseAC3EAC3(m_data.data(), m_data.size(), true);
-			if (!m_atmos && scanForAtmos(m_data.data(), m_data.size()))
+			channels = parseAC3EAC3(data, len, true);
+			if (!m_atmos && scanForAtmos(data, len))
 			{
 				m_atmos = true;
 				eDebug("[eDVBAudioChannelDetector] Dolby Atmos (JOC) detected for pid=%04x", m_pid);
 			}
 			break;
 		case ctAAC:
-			channels = parseLOAS(m_data.data(), m_data.size());
+			channels = parseLOAS(data, len);
 			if (!channels)
-				channels = parseADTS(m_data.data(), m_data.size());
+				channels = parseADTS(data, len);
 			break;
 		default:
 			break;
 	}
+
+	m_scanned = m_data.size();
 
 	if (channels > 0)
 		m_channels = channels;
