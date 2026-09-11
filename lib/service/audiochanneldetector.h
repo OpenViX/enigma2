@@ -153,6 +153,7 @@ private:
 	bool m_softcsa;
 
 	std::vector<uint8_t> m_data;
+	size_t m_scanned; // prefix of m_data already ruled out by tryDetect() - see there
 	int m_channels;
 	bool m_atmos;
 	bool m_monitoring; // true once settled() at least once - see feed()
