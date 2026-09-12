@@ -190,6 +190,42 @@ def getCurrentAudioCodec(service):
 	return description
 
 
+# Canonical video codec label and dynamic icon key, keyed by the raw
+# iServiceInformation.sVideoType stream-type value.  The icon key is
+# deliberately path- and extension-free; the skin chooses its own icon path.
+VIDEO_CODEC_DISPLAY = (
+	(0, "MPEG-2", "mpeg2"),
+	(1, "H.264", "avc"),
+	(2, "H.263", "h263"),
+	(3, "VC-1", "vc1"),
+	(4, "MPEG-4", "mpeg4"),
+	(5, "VC-1 SM", "vc1-sm"),
+	(6, "MPEG-1", "mpeg1"),
+	(7, "H.265", "hevc"),
+	(8, "VP8", "vp8"),
+	(9, "VP9", "vp9"),
+	(10, "XVID", "xvid"),
+	(13, "DIVX 3.11", "divx"),
+	(14, "DIVX 4", "divx"),
+	(15, "DIVX 5", "divx"),
+	(16, "AVS", "avs"),
+	(18, "VP6", "vp6"),
+	(21, "SPARK", "spark"),
+	(40, "AVS2", "avs2"),
+)
+
+VIDEO_CODEC_INFO = {videoType: (label, icon) for videoType, label, icon in VIDEO_CODEC_DISPLAY}
+
+
+def getCurrentVideoCodec(info):
+	videoType = info.getInfo(iServiceInformation.sVideoType)
+	# Some stream-relay paths never report a video type; assume HEVC as that is
+	# the only codec such relays are used for.
+	if videoType == -1 and info.getInfoString(iServiceInformation.sServiceref).startswith("5002"):
+		return 7
+	return videoType
+
+
 def getVideoHeight(info):
 	val = eAVSwitch.getInstance().getResolutionY(0)
 	return val if val else info.getInfo(iServiceInformation.sVideoHeight)
@@ -287,6 +323,7 @@ class ServiceInfo(Poll, Converter):
 		self.poll_interval = 5000
 		self.poll_enabled = True
 		self.audio_codec = AUDIO_CODEC_TYPES.get(type)
+		self.codecIconPrefix = "icon_"  # forced prefix used for video and audio codc icons
 		if self.audio_codec is not None:
 			self.type = self.IS_AUDIO_CODEC
 			self.interesting_events = (iPlayableService.evUpdatedInfo, iPlayableService.evStart)
@@ -547,7 +584,7 @@ class ServiceInfo(Poll, Converter):
 			description = getCurrentAudioCodec(service)
 			label, icon = AUDIO_CODEC_INFO.get(description, (description, ""))
 			if self.type == self.AUDIO_CODEC_ICON:
-				return f"icon_{icon}" if icon else ""
+				return f"{self.codecIconPrefix}{icon}" if icon else ""
 			if self.type == self.AUDIO_CODEC_CHANNELS:
 				channels = getCurrentAudioChannels(service)
 				channel_label = AUDIO_CHANNEL_LABELS.get(channels, f"{channels} ch" if channels > 0 else "")
