@@ -138,7 +138,7 @@ class ServiceInfoBar(GUIAddon):
 
 		filteredElements = list(self.remove_doubles(filteredElements))
 
-		if filteredElements[-1] == "separator" and len(filteredElements) > 1 and filteredElements[len(filteredElements) - 2] != "currentCrypto":
+		if filteredElements and filteredElements[-1] == "separator" and len(filteredElements) > 1 and filteredElements[len(filteredElements) - 2] != "currentCrypto":
 			del filteredElements[-1]
 
 		l_list = []
