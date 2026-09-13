@@ -303,8 +303,9 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 		elif self.type == self.REMOVE:
 			self.setTitle(_("Remove Plugins"))
 
-		categories = ("bootlogos", "display", "drivers", "extensions", "picons", "security", "settings", "skins", "softcams", "systemplugins")
-		self.plugin_prefix_whitelist = tuple(prefix_whitelist) if prefix_whitelist else tuple([self.PLUGIN_PREFIX + x + "-" for x in categories])
+		enigma_plugin_categories = ["bootlogos", "display", "drivers", "extensions", "picons", "security", "settings", "skins", "softcams", "systemplugins"]
+		other_categories = ["kodi-addon-"]
+		self.plugin_prefix_whitelist = tuple(prefix_whitelist) if prefix_whitelist else tuple([self.PLUGIN_PREFIX + x + "-" for x in enigma_plugin_categories] + other_categories)
 		self.plugin_suffix_blacklist = ('-dev', '-staticdev', '-dbg', '-doc', '-common', '-meta', '-src', '-po')
 		self.expandableIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expandable-plugins.png"))
 		self.expandedIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expanded-plugins.png"))
@@ -610,7 +611,7 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 
 		for x in lines:
 			plugin = x.split(" - ", 2)
-			if plugin[0] and plugin[0] not in self.installedplugins and (plugin[0].startswith(self.plugin_prefix_whitelist) or plugin[0].startswith("kodi-addon-")) and not plugin[0].endswith(self.plugin_suffix_blacklist):
+			if plugin[0] and plugin[0] not in self.installedplugins and plugin[0].startswith(self.plugin_prefix_whitelist) and not plugin[0].endswith(self.plugin_suffix_blacklist):
 				if self.run == 1 and self.type == self.DOWNLOAD:
 					self.installedplugins.append(plugin[0])
 				else:
