@@ -1143,7 +1143,7 @@ class BackupFiles(Screen):
 		config.usage.power.was_controlled_shutdown.value = config.usage.power.was_controlled_shutdown.default
 		config.usage.power.was_controlled_shutdown.save()
 		configfile.save()
-		
+
 		self.softwareUpdateIcon = config.softwareupdate.updatefound.value  # remember value to restore after backup
 		config.softwareupdate.updatefound.value = False  # switch off software-update-available icon so it doesn't polute the settings file saved by the backup
 		config.softwareupdate.updatefound.save()
