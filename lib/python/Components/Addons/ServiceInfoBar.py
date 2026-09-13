@@ -3,7 +3,7 @@ from skin import parseScale, applySkinFactor, parseColor, parseFont, parameters
 
 from Components.Addons.GUIAddon import GUIAddon
 from Components.Converter.PliExtraInfo import createCurrentCaidLabel
-from Components.Converter.ServiceInfo import AUDIO_CODEC_INFO, VIDEO_CODEC_INFO, getCurrentAudioCodec, getCurrentVideoCodec, getVideoHeight
+from Components.Converter.ServiceInfo import AUDIO_CHANNEL_LABELS, AUDIO_CODEC_INFO, VIDEO_CODEC_INFO, getCurrentAudioChannels, getCurrentAudioCodec, getCurrentVideoCodec, getVideoHeight
 from Components.Converter.VAudioInfo import StdAudioDesc
 from Components.Label import Label
 from Components.MultiContent import MultiContentEntryPixmapAlphaBlend, MultiContentEntryText
@@ -45,6 +45,8 @@ class ServiceInfoBar(GUIAddon):
 		self.audioCodecIconCache = {}
 		self.videoCodecIconPath = ""
 		self.videoCodecIconCache = {}
+		self.audioChannelsIconPath = ""
+		self.audioChannelsIconCache = {}
 		self.separatorLineColor = 0xC0C0C0
 		self.foreColor = 0xFFFFFF
 		self.textBackColor = None
@@ -193,12 +195,18 @@ class ServiceInfoBar(GUIAddon):
 				description = getCurrentAudioCodec(service)
 				icon = AUDIO_CODEC_INFO.get(description, (description, ""))[1]
 				if icon:
-					return ("codec", "audio", f"{self.codecIconPrefix}{icon}")
+					return ("dynamicIcon", "audioCodec", f"{self.codecIconPrefix}{icon}")
+			elif key == "audioChannels" and not isRef:
+				channels = getCurrentAudioChannels(service)
+				label = AUDIO_CHANNEL_LABELS.get(channels)
+				if label:
+					icon = label.replace(".", "-")  # "5.1" -> "5-1", "2.0" -> "2-0"
+					return ("dynamicIcon", "audioChannels", f"{self.codecIconPrefix}{icon}")
 			elif key == "videoCodec" and not isRef:
 				videoType = getCurrentVideoCodec(info)
 				icon = VIDEO_CODEC_INFO.get(videoType, ("", ""))[1]
 				if icon:
-					return ("codec", "video", f"{self.codecIconPrefix}{icon}")
+					return ("dynamicIcon", "videoCodec", f"{self.codecIconPrefix}{icon}")
 			elif key == "crypt" and not isRef:
 				if "%3a//" in pending_sref and pending_service_ref and not pending_service_ref.getStreamRelay():
 					return key + "_off"
@@ -295,10 +303,14 @@ class ServiceInfoBar(GUIAddon):
 
 		return None
 
-	def findCodecIcon(self, enabledKey):
+	def findDynamicIcon(self, enabledKey):
 		kind, iconName = enabledKey[1:3]
-		path = self.videoCodecIconPath if kind == "video" else self.audioCodecIconPath
-		cache = self.videoCodecIconCache if kind == "video" else self.audioCodecIconCache
+		if kind == "videoCodec":
+			path, cache = self.videoCodecIconPath, self.videoCodecIconCache
+		elif kind == "audioChannels":
+			path, cache = self.audioChannelsIconPath, self.audioChannelsIconCache
+		else:  # "audioCodec"
+			path, cache = self.audioCodecIconPath, self.audioCodecIconCache
 		if iconName in cache:
 			return cache[iconName]
 		pic = None
@@ -325,8 +337,8 @@ class ServiceInfoBar(GUIAddon):
 
 			pic = None
 			if isOn:
-				if isinstance(enabledKey, tuple) and enabledKey[0] == "codec":
-					pic = self.findCodecIcon(enabledKey)
+				if isinstance(enabledKey, tuple) and enabledKey[0] == "dynamicIcon":
+					pic = self.findDynamicIcon(enabledKey)
 				elif isinstance(enabledKey, str) and enabledKey in self.pixmaps:
 					pic = LoadPixmap(resolveFilename(SCOPE_GUISKIN, self.pixmaps[enabledKey]))
 			else:
@@ -414,6 +426,8 @@ class ServiceInfoBar(GUIAddon):
 				self.audioCodecIconPath = value
 			elif attrib == "videoCodecIconPath":
 				self.videoCodecIconPath = value
+			elif attrib == "audioChannelsIconPath":
+				self.audioChannelsIconPath = value
 			elif attrib == "spacing":
 				self.spacing = parseScale(value)
 			elif attrib == "alignment":
