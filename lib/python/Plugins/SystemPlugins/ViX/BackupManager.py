@@ -1149,7 +1149,6 @@ class BackupFiles(Screen):
 		config.softwareupdate.updatefound.save()
 		configfile.save()
 
-
 		tmplist = config.backupmanager.backupdirs.value
 		tmplist.append("/tmp/ExtraInstalledPlugins")
 		if path.exists("/tmp/3rdPartyPlugins"):
