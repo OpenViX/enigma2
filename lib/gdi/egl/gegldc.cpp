@@ -852,10 +852,26 @@ void gEGLDC::flip() {
 				// version despite the copied bytes being correct in memory.
 				bool gpu_copied = gpuCopyPageContent(shown_page, m_render_page);
 
-				if (!eglMakeCurrent(m_egl_display, m_egl_surfaces[m_render_page], m_egl_surfaces[m_render_page], m_egl_context)) {
-					eDebug("[gEGLDC] eglMakeCurrent to page %d failed after flip: 0x%x", m_render_page, eglGetError());
-				} else if (!gpu_copied) {
-					m_window_provider->copyPageContent(shown_page, m_render_page);
+				if (gpu_copied) {
+					// gpuCopyPageContent() already left draw=m_render_page
+					// current (its read surface is stale/irrelevant now -
+					// normal rendering opcodes never read from the
+					// framebuffer). A render-target switch is not cheap on
+					// this tile-based GPU (it has to resolve/flush whatever
+					// was pending for the previous target), so don't pay for
+					// a second one here just to "restore" a draw binding
+					// that's already correct.
+				} else {
+					// GPU copy wasn't available or failed - draw is still
+					// whatever it was before rotation (or in an unknown
+					// state if gpuCopyPageContent()'s own eglMakeCurrent
+					// partially failed). Explicitly bind the new page for
+					// both draw and read before falling back to the CPU copy.
+					if (!eglMakeCurrent(m_egl_display, m_egl_surfaces[m_render_page], m_egl_surfaces[m_render_page], m_egl_context)) {
+						eDebug("[gEGLDC] eglMakeCurrent to page %d failed after flip: 0x%x", m_render_page, eglGetError());
+					} else {
+						m_window_provider->copyPageContent(shown_page, m_render_page);
+					}
 				}
 			}
 		} else {
