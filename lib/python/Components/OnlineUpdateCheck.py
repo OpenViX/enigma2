@@ -178,7 +178,6 @@ class FeedsStatusCheck:
 				if self.total_packages and (SystemInfo["imagetype"] != "release" or (config.softwareupdate.updateisunstable.value == 1 and config.softwareupdate.updatebeta.value) or config.softwareupdate.updateisunstable.value == 0):
 					print(("[OnlineUpdateCheck][ipkgCallback] %s Updates available" % self.total_packages))
 					config.softwareupdate.updatefound.setValue(True)
-		pass
 
 
 feedsstatuscheck = FeedsStatusCheck()
@@ -190,7 +189,7 @@ class OnlineUpdateCheckPoller:
 		self.timer = eTimer()
 
 	# Class variables
-	MIN_INITIAL_DELAY = 40 * 60  # Wait at least 40 mins
+	MIN_INITIAL_DELAY = 2 * 60  # Wait at least 2 mins
 	checktimer_Notifier_Added = False
 
 	# Add optional args to start(), as it is now a callback from addNotifier
@@ -268,9 +267,7 @@ class VersionCheck:
 				return True
 			else:
 				print("[OnlineVersionCheck] skipping as unstable is not wanted")
-				return False
-		else:
-			return False
+		return False
 
 	def getUnstableUpdateAvailable(self):
 		if config.softwareupdate.updatefound.value and config.softwareupdate.check.value:
@@ -279,9 +276,7 @@ class VersionCheck:
 				return True
 			else:
 				print("[OnlineVersionCheck] skipping as beta is not wanted")
-				return False
-		else:
-			return False
+		return False
 
 
 versioncheck = VersionCheck()
