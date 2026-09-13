@@ -52,6 +52,14 @@ private:
 	std::vector<float> m_text_batch_buffer;
 	const size_t MAX_BATCH_GLYPHS = 1024;
 
+	// Union of every area compositeTextOverlay() has painted into that
+	// hasn't since been erased by executeClear() - lets executeClear() skip
+	// its (CPU memset + texture upload + extra draw call) stale-text erase
+	// entirely for the common case of a background clear that never had any
+	// text composited over it, instead of paying that cost on every single
+	// clear opcode once any text exists anywhere on screen.
+	gRegion m_text_overlay_region;
+
 	bool tryInitEGL(int version);
 	void cleanupEGL();
 

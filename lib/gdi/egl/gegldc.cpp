@@ -261,74 +261,67 @@ void gEGLDC::executeClear(const gOpcode* op) {
 	float b = m_background_color_rgb.b / 255.0f;
 	float a = 1.0f - (m_background_color_rgb.a / 255.0f);
 
-	static int s_diag_count = 0;
-	if (s_diag_count < 20) {
-		s_diag_count++;
-		eDebug("[gEGLDC] DIAG executeClear rects=%u rgba=(%.2f,%.2f,%.2f,%.2f)",
-			(unsigned)m_current_clip.rects.size(), r, g, b, a);
-		for (unsigned int i = 0; i < m_current_clip.rects.size() && i < 3; ++i) {
-			eRect dr = m_current_clip.rects[i];
-			eDebug("[gEGLDC] DIAG   rect[%u]=(%d,%d,%d,%d)", i, dr.x(), dr.y(), dr.width(), dr.height());
-		}
-	}
+	// A widget that hides/repaints submits a gOpcode::clear for its own
+	// area, but NOT necessarily a new gOpcode::renderText if it no longer
+	// has any text to draw there. Since text is composited from a
+	// completely separate overlay (m_pixmap's texture, see
+	// gOpcode::renderText below) rather than drawn into this same GPU
+	// target, clearing the background alone does not erase any
+	// previously-composited text sitting at this location - it would just
+	// stay visible forever (e.g. an infobar that "doesn't disappear").
+	//
+	// m_text_overlay_region tracks the union of every area
+	// compositeTextOverlay() has painted into that hasn't since been erased
+	// here. The overwhelming majority of clears (list row highlights,
+	// scrolling backgrounds, plain-color fills) never touched any text and
+	// can skip the erase-and-recomposite work below entirely - only pay for
+	// it when this clear's area actually overlaps something the overlay
+	// drew.
+	GLuint overlay_tex = m_pixmap->surface->gl_texture_id;
+	bool maybe_has_overlay = overlay_tex != 0 && !m_text_overlay_region.empty();
 
 	for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 		eRect area = m_current_clip.rects[i];
 		m_basic_shader.drawRect(area.x(), area.y(), area.width(), area.height(), r, g, b, a);
 
-		// TEMPORARY: for an opaque, non-trivial-sized rect, immediately read
-		// back a pixel from *inside the exact rect we just drew* (not a fixed
-		// sample point elsewhere on screen) to check whether the draw call
-		// itself is landing anywhere at all, independent of any later
-		// present/copy timing.
-		if (s_diag_count <= 20 && a > 0.99f && area.width() > 4 && area.height() > 4) {
-			glFinish();
-			unsigned char px[4] = {0, 0, 0, 0};
-			glReadPixels(area.x() + area.width() / 2, m_height - (area.y() + area.height() / 2), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, px);
-			eDebug("[gEGLDC] DIAG immediate readback at (%d,%d) [rect (%d,%d,%d,%d)] = %02x%02x%02x%02x (expected ~%02x%02x%02x%02x)",
-				area.x() + area.width() / 2, area.y() + area.height() / 2,
-				area.x(), area.y(), area.width(), area.height(),
-				px[0], px[1], px[2], px[3],
-				(unsigned)(r * 255), (unsigned)(g * 255), (unsigned)(b * 255), (unsigned)(a * 255));
+		if (!maybe_has_overlay)
+			continue;
+
+		gRegion overlap = gRegion(area) & m_text_overlay_region;
+		if (overlap.empty())
+			continue;
+
+		int pw = m_pixmap->size().width();
+		int ph = m_pixmap->size().height();
+		uint8_t* base = (uint8_t*)m_pixmap->surface->data;
+		int stride = pw * 4;
+
+		for (unsigned int j = 0; j < overlap.rects.size(); ++j) {
+			eRect erase_area = overlap.rects[j];
+			int left = std::max(0, erase_area.left());
+			int top = std::max(0, erase_area.top());
+			int right = std::min(pw, erase_area.left() + erase_area.width());
+			int bottom = std::min(ph, erase_area.top() + erase_area.height());
+			if (right <= left || bottom <= top)
+				continue;
+
+			for (int y = top; y < bottom; ++y)
+				memset(base + (size_t)y * stride + (size_t)left * 4, 0, (size_t)(right - left) * 4);
+
+			glBindTexture(GL_TEXTURE_2D, overlay_tex);
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, top, pw, bottom - top, GL_RGBA, GL_UNSIGNED_BYTE, base + (size_t)top * stride);
+
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_SCISSOR_TEST);
+			setGlScissor(eRect(left, top, right - left, bottom - top));
+			m_texture_shader.drawTexture(0, 0, (float)m_width, (float)m_height, overlay_tex);
+			glDisable(GL_SCISSOR_TEST);
+			glDisable(GL_BLEND);
 		}
 
-		// A widget that hides/repaints submits a gOpcode::clear for its own
-		// area, but NOT necessarily a new gOpcode::renderText if it no longer
-		// has any text to draw there. Since text is composited from a
-		// completely separate overlay (m_pixmap's texture, see
-		// gOpcode::renderText below) rather than drawn into this same GPU
-		// target, clearing the background alone does not erase any
-		// previously-composited text sitting at this location - it would
-		// just stay visible forever (e.g. an infobar that "doesn't
-		// disappear"). Erase the corresponding region of m_pixmap's CPU
-		// buffer too and re-composite it (now transparent) so stale text
-		// actually goes away.
-		if (m_pixmap->surface->gl_texture_id != 0) {
-			int pw = m_pixmap->size().width();
-			int ph = m_pixmap->size().height();
-			int left = std::max(0, area.left());
-			int top = std::max(0, area.top());
-			int right = std::min(pw, area.left() + area.width());
-			int bottom = std::min(ph, area.top() + area.height());
-			if (right > left && bottom > top) {
-				uint8_t* base = (uint8_t*)m_pixmap->surface->data;
-				int stride = pw * 4;
-				for (int y = top; y < bottom; ++y)
-					memset(base + (size_t)y * stride + (size_t)left * 4, 0, (size_t)(right - left) * 4);
-
-				glBindTexture(GL_TEXTURE_2D, m_pixmap->surface->gl_texture_id);
-				glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-				glTexSubImage2D(GL_TEXTURE_2D, 0, 0, top, pw, bottom - top, GL_RGBA, GL_UNSIGNED_BYTE, base + (size_t)top * stride);
-
-				glEnable(GL_BLEND);
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-				glEnable(GL_SCISSOR_TEST);
-				setGlScissor(eRect(left, top, right - left, bottom - top));
-				m_texture_shader.drawTexture(0, 0, (float)m_width, (float)m_height, m_pixmap->surface->gl_texture_id);
-				glDisable(GL_SCISSOR_TEST);
-				glDisable(GL_BLEND);
-			}
-		}
+		m_text_overlay_region -= overlap;
 	}
 }
 
@@ -404,8 +397,6 @@ void gEGLDC::renderGlyph(const ePoint& pos, gPixmap* glyph_mask, const gRGB& col
 	glyph_uv uv;
 	glyph_key_t key = reinterpret_cast<glyph_key_t>(glyph_mask->surface->data);
 
-	static int s_diag_count = 0;
-	bool do_diag = s_diag_count < 40;
 	bool was_cached = m_font_atlas.getGlyph(key, uv);
 
 	if (!was_cached) {
@@ -416,20 +407,8 @@ void gEGLDC::renderGlyph(const ePoint& pos, gPixmap* glyph_mask, const gRGB& col
 		int h = glyph_mask->size().height();
 		uint8_t* data = (uint8_t*)glyph_mask->surface->data;
 
-		if (do_diag) {
-			int nonzero = 0;
-			for (int i = 0; i < w * h; ++i)
-				if (data[i]) nonzero++;
-			eDebug("[gEGLDC] DIAG renderGlyph MISS key=%p w=%d h=%d nonzero_bytes=%d/%d pos=(%d,%d)",
-				(void*)key, w, h, nonzero, w * h, pos.x(), pos.y());
-		}
-
 		m_font_atlas.addGlyph(key, w, h, data, uv);
-	} else if (do_diag) {
-		eDebug("[gEGLDC] DIAG renderGlyph HIT  key=%p uv=(%.4f,%.4f,%.4f,%.4f) wh=(%u,%u) pos=(%d,%d)",
-			(void*)key, uv.u0, uv.v0, uv.u1, uv.v1, uv.width, uv.height, pos.x(), pos.y());
 	}
-	if (do_diag) s_diag_count++;
 
 	float r = color.r / 255.0f;
 	float g = color.g / 255.0f;
@@ -518,10 +497,6 @@ void gEGLDC::flushTextBatch() {
 }
 
 void gEGLDC::compositeTextOverlay(eRect area) {
-	static int s_diag_count = 0;
-	bool do_diag = s_diag_count < 2000;
-	if (do_diag) s_diag_count++;
-
 	// Clamp to the pixmap's actual bounds - a scrolling list widget's
 	// per-row offset can legitimately place a row partially or fully
 	// outside (e.g. mid-scroll, or a row whose valign correction pushes it
@@ -532,12 +507,8 @@ void gEGLDC::compositeTextOverlay(eRect area) {
 	int top = std::max(0, area.top());
 	int right = std::min(pw, area.left() + area.width());
 	int bottom = std::min(ph, area.top() + area.height());
-	if (right <= left || bottom <= top) {
-		if (do_diag)
-			eDebug("[gEGLDC] DIAG compositeTextOverlay SKIPPED (degenerate clamp) area=(%d,%d,%d,%d) pw=%d ph=%d",
-				area.x(), area.y(), area.width(), area.height(), pw, ph);
+	if (right <= left || bottom <= top)
 		return;
-	}
 	area = eRect(left, top, right - left, bottom - top);
 
 	// Incremental glTexSubImage2D update instead of deleting and recreating
@@ -559,13 +530,7 @@ void gEGLDC::compositeTextOverlay(eRect area) {
 		// this render target's own R/B swap on the way to the screen.
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, area.top(), row_width, area.height(), GL_RGBA, GL_UNSIGNED_BYTE, src);
-		if (do_diag) {
-			GLenum err = glGetError();
-			eDebug("[gEGLDC] DIAG compositeTextOverlay subimage glGetError=0x%x tex_id=%u yoff=%d rows=%d", err, tex_id, area.top(), area.height());
-		}
 	}
-	if (do_diag)
-		eDebug("[gEGLDC] DIAG compositeTextOverlay tex_id=%u area=(%d,%d,%d,%d)", tex_id, area.x(), area.y(), area.width(), area.height());
 	if (tex_id) {
 		// m_pixmap is only valid within the text's own bounding area - the
 		// rest of that 1920x1080 CPU buffer is stale/uninitialized content
@@ -579,6 +544,11 @@ void gEGLDC::compositeTextOverlay(eRect area) {
 		m_texture_shader.drawTexture(0, 0, (float)m_width, (float)m_height, tex_id);
 		glDisable(GL_SCISSOR_TEST);
 		glDisable(GL_BLEND);
+
+		// Record that the overlay now has content here so executeClear()
+		// knows to erase-and-recomposite this area before painting a plain
+		// background over it later - see the comment there.
+		m_text_overlay_region |= gRegion(area);
 	}
 }
 
@@ -778,6 +748,9 @@ void gEGLDC::setResolution(int xres, int yres, int bpp) {
 	m_height = yres;
 	// See the constructor for why accelNever is required here.
 	m_pixmap = new gPixmap(eSize(xres, yres), bpp, gPixmap::accelNever);
+	// The new pixmap has no gl_texture_id and no content yet - any area
+	// tracked from the old one is meaningless now.
+	m_text_overlay_region = gRegion();
 
 	if (isInitialized()) {
 		m_basic_shader.setResolution((float)m_width, (float)m_height);

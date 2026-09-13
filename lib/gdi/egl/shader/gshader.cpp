@@ -189,20 +189,6 @@ void gShader::drawRect(float x, float y, float width, float height, float r, flo
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	static int s_diag_count = 0;
-	if (s_diag_count < 20 && a > 0.99f && width > 4 && height > 4) {
-		s_diag_count++;
-		GLenum err = glGetError();
-		GLenum fbstatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-		GLint viewport[4] = {0, 0, 0, 0};
-		glGetIntegerv(GL_VIEWPORT, viewport);
-		GLint fbo_binding = 0;
-		glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fbo_binding);
-		eDebug("[gShader] DIAG drawRect(%.0f,%.0f,%.0fx%.0f) glGetError=0x%x fbStatus=0x%x fbo=%d viewport=(%d,%d,%d,%d)",
-			x, y, width, height, err, fbstatus, fbo_binding, viewport[0], viewport[1], viewport[2], viewport[3]);
-	}
-
 	unbindVAO();
 }
 

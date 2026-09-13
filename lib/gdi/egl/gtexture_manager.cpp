@@ -133,14 +133,6 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 		// own R/B swap on the way to the screen. No CPU-side byte swapping,
 		// and no texture swizzle, needed.
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->data);
-		{
-			static int s_teximage_diag_count = 0;
-			if (s_teximage_diag_count < 30) {
-				s_teximage_diag_count++;
-				GLenum err = glGetError();
-				eDebug("[gTextureManager] DIAG glTexImage2D(%dx%d) glGetError=0x%x", width, height, err);
-			}
-		}
 	} else if (surface->bpp == 8 && surface->clut.data) {
 		// 8-bit paletted image (often used for picons/skins).
 		// gles 3.0 does not support indexed color textures natively anymore,
