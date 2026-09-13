@@ -153,6 +153,23 @@ bool gEGLDC::initEGL() {
 	glViewport(0, 0, m_width, m_height);
 	eglSwapInterval(m_egl_display, 1);
 
+	// GL_BLEND and GL_SCISSOR_TEST are left enabled for the lifetime of the
+	// context instead of being toggled on/off around every single opcode -
+	// every draw call in this backend uses this same blend func, and for a
+	// fully opaque source (alpha=1.0, the common case: solid fills,
+	// backgrounds, non-alpha-blended blits) it produces exactly the same
+	// result as blending disabled (src*1 + dst*0 == src), so there's no
+	// correctness difference, only fewer state-change calls per frame.
+	// Scissor is always set to the exact intended draw area immediately
+	// before each draw (see setGlScissor() call sites), so a stale rect
+	// left over from an earlier, unrelated opcode can never clip a draw
+	// incorrectly. The one exception is gpuCopyPageContent()'s
+	// glBlitFramebuffer(), which is also subject to the scissor test and
+	// resets it to the full surface before blitting - see its comment.
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_SCISSOR_TEST);
+
 	// 8. initialise shaders and resources
 	if (!m_basic_shader.init()) {
 		eFatal("[gEGLDC] failed to initialise basic shader!");
@@ -201,10 +218,22 @@ void gEGLDC::executeFill(const gOpcode* op) {
 	area.moveBy(m_current_offset);
 	gRegion clip = m_current_clip & area;
 
+	// The CPU/software renderer's gPixmap::fill() is a raw pixel overwrite
+	// that never honors alpha (see its "*dst++ = col" loop in gpixmap.cpp) -
+	// a plain fill/rectangle/clear opcode is expected to flatly overwrite
+	// regardless of the color's alpha, matching that. Blend is left enabled
+	// by default (see initEGL()) for the paths that always genuinely need
+	// it (gradients, blits, text), so it must be explicitly turned off here
+	// or a widget with a non-fully-opaque background color would start
+	// alpha-blending with whatever stale content is already on screen
+	// instead of overwriting it.
+	glDisable(GL_BLEND);
 	for (unsigned int i = 0; i < clip.rects.size(); ++i) {
 		eRect r_area = clip.rects[i];
+		setGlScissor(r_area);
 		m_basic_shader.drawRect(r_area.x(), r_area.y(), r_area.width(), r_area.height(), r, g, b, a);
 	}
+	glEnable(GL_BLEND);
 }
 
 void gEGLDC::executeFillRegion(const gOpcode* op) {
@@ -217,10 +246,14 @@ void gEGLDC::executeFillRegion(const gOpcode* op) {
 	region.moveBy(m_current_offset);
 	gRegion clip = m_current_clip & region;
 
+	// See executeFill() above for why blend must be forced off here.
+	glDisable(GL_BLEND);
 	for (unsigned int i = 0; i < clip.rects.size(); ++i) {
 		eRect r_area = clip.rects[i];
+		setGlScissor(r_area);
 		m_basic_shader.drawRect(r_area.x(), r_area.y(), r_area.width(), r_area.height(), r, g, b, a);
 	}
+	glEnable(GL_BLEND);
 }
 
 void gEGLDC::executeRectangle(const gOpcode* op) {
@@ -228,30 +261,28 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 		return;
 
 	if (m_radius > 0 || m_gradient_colors.size() > 0) {
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_SCISSOR_TEST);
 		for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 			setGlScissor(m_current_clip.rects[i]);
 			m_advanced_shader.drawAdvancedRect(op->parm.rectangle->area.x() + m_current_offset.x(), op->parm.rectangle->area.y() + m_current_offset.y(), op->parm.rectangle->area.width(),
 											   op->parm.rectangle->area.height(), m_radius, m_radius_edges, m_gradient_colors, m_gradient_orientation, m_gradient_alphablend > 0,
 											   1.0f - (m_background_color_rgb.a / 255.0f), m_background_color_rgb);
 		}
-		glDisable(GL_SCISSOR_TEST);
-		glDisable(GL_BLEND);
 	} else {
 		float r = m_background_color_rgb.r / 255.0f;
 		float g = m_background_color_rgb.g / 255.0f;
 		float b = m_background_color_rgb.b / 255.0f;
 		float a = 1.0f - (m_background_color_rgb.a / 255.0f);
 
-		glEnable(GL_SCISSOR_TEST);
+		// See executeFill()'s comment for why blend must be forced off for
+		// a plain flat-color rectangle, to match the CPU renderer's raw
+		// overwrite semantics.
+		glDisable(GL_BLEND);
 		for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 			setGlScissor(m_current_clip.rects[i]);
 			m_basic_shader.drawRect(op->parm.rectangle->area.x() + m_current_offset.x(), op->parm.rectangle->area.y() + m_current_offset.y(), op->parm.rectangle->area.width(),
 									op->parm.rectangle->area.height(), r, g, b, a);
 		}
-		glDisable(GL_SCISSOR_TEST);
+		glEnable(GL_BLEND);
 	}
 }
 
@@ -282,7 +313,15 @@ void gEGLDC::executeClear(const gOpcode* op) {
 
 	for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 		eRect area = m_current_clip.rects[i];
+		setGlScissor(area);
+		// See executeFill()'s comment: this flat background overwrite must
+		// not blend with whatever's already on screen, matching the CPU
+		// renderer's raw-overwrite clear semantics - unlike the erase/
+		// recomposite block below, which is genuinely alpha-aware and
+		// relies on blend being enabled (the default - see initEGL()).
+		glDisable(GL_BLEND);
 		m_basic_shader.drawRect(area.x(), area.y(), area.width(), area.height(), r, g, b, a);
+		glEnable(GL_BLEND);
 
 		if (!maybe_has_overlay)
 			continue;
@@ -312,13 +351,8 @@ void gEGLDC::executeClear(const gOpcode* op) {
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, top, pw, bottom - top, GL_RGBA, GL_UNSIGNED_BYTE, base + (size_t)top * stride);
 
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glEnable(GL_SCISSOR_TEST);
 			setGlScissor(eRect(left, top, right - left, bottom - top));
 			m_texture_shader.drawTexture(0, 0, (float)m_width, (float)m_height, overlay_tex);
-			glDisable(GL_SCISSOR_TEST);
-			glDisable(GL_BLEND);
 		}
 
 		m_text_overlay_region -= overlap;
@@ -334,13 +368,15 @@ void gEGLDC::executeLine(const gOpcode* op) {
 	if (m_current_clip.rects.empty())
 		return;
 
-	glEnable(GL_SCISSOR_TEST);
+	// See executeFill()'s comment: gPixmap::line() is a raw-overwrite
+	// Bresenham rasterizer with no alpha blending, so this must match.
+	glDisable(GL_BLEND);
 	for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 		setGlScissor(m_current_clip.rects[i]);
 		m_basic_shader.drawLine(op->parm.line->start.x() + m_current_offset.x(), op->parm.line->start.y() + m_current_offset.y(), op->parm.line->end.x() + m_current_offset.x(),
 								op->parm.line->end.y() + m_current_offset.y(), r, g, b, a);
 	}
-	glDisable(GL_SCISSOR_TEST);
+	glEnable(GL_BLEND);
 }
 
 void gEGLDC::executeBlit(const gOpcode* opcode) {
@@ -367,27 +403,31 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 	if (clip.rects.empty())
 		return;
 
+	// Unlike our own solid-color fills (where we compute alpha=1.0 ourselves
+	// for "opaque"), a plain blit's alpha comes from the source pixmap's own
+	// data, which this backend doesn't control - a caller that didn't pass
+	// blitAlphaBlend/blitAlphaTest wants a fast, fully opaque copy that
+	// ignores whatever the source's alpha channel happens to contain, so
+	// blend must stay data-independent (off) for that case rather than
+	// being left always-on like scissor.
 	bool enable_blend = (op->flags & (gPixmap::blitAlphaBlend | gPixmap::blitAlphaTest)) || (m_radius > 0);
-	if (enable_blend) {
+	if (enable_blend)
 		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
+	else
+		glDisable(GL_BLEND);
 
 	float x = pos.x();
 	float y = pos.y();
 	float width = pos.width() > 0 ? pos.width() : op->pixmap->size().width();
 	float height = pos.height() > 0 ? pos.height() : op->pixmap->size().height();
 
-	glEnable(GL_SCISSOR_TEST);
 	for (unsigned int i = 0; i < clip.rects.size(); ++i) {
 		setGlScissor(clip.rects[i]);
 		m_texture_shader.drawTexture(x, y, width, height, tex_id, 1.0f, m_radius, m_radius_edges);
 	}
-	glDisable(GL_SCISSOR_TEST);
 
-	if (enable_blend) {
-		glDisable(GL_BLEND);
-	}
+	if (!enable_blend)
+		glEnable(GL_BLEND);
 }
 
 void gEGLDC::renderGlyph(const ePoint& pos, gPixmap* glyph_mask, const gRGB& color) {
@@ -439,9 +479,6 @@ void gEGLDC::flushTextBatch() {
 		return;
 	}
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	m_text_shader.bind();
 
 	// Bind the atlas pixmap
@@ -482,16 +519,12 @@ void gEGLDC::flushTextBatch() {
 
 	int vertex_count = m_text_batch_buffer.size() / 8; // 8 floats per vertex
 
-	glEnable(GL_SCISSOR_TEST);
 	for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 		setGlScissor(m_current_clip.rects[i]);
 		glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 	}
-	glDisable(GL_SCISSOR_TEST);
 
 	m_text_shader.unbindVAO();
-
-	glDisable(GL_BLEND);
 
 	m_text_batch_buffer.clear();
 }
@@ -537,13 +570,8 @@ void gEGLDC::compositeTextOverlay(eRect area) {
 		// from whenever it was last (re)allocated. Scissor the fragment
 		// writes down to just the area this opcode actually populated so
 		// nothing outside it can be touched.
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_SCISSOR_TEST);
 		setGlScissor(area);
 		m_texture_shader.drawTexture(0, 0, (float)m_width, (float)m_height, tex_id);
-		glDisable(GL_SCISSOR_TEST);
-		glDisable(GL_BLEND);
 
 		// Record that the overlay now has content here so executeClear()
 		// knows to erase-and-recomposite this area before painting a plain
@@ -774,6 +802,12 @@ bool gEGLDC::gpuCopyPageContent(int from, int to) {
 		return false;
 	}
 
+	// glBlitFramebuffer() is subject to the scissor test like any other
+	// draw, and GL_SCISSOR_TEST is left permanently enabled (see initEGL())
+	// with whatever rect the last opcode drawn set - reset it to the full
+	// surface first or this copy would silently only cover a leftover
+	// unrelated widget's clip rect instead of the whole page.
+	glScissor(0, 0, m_width, m_height);
 	glBlitFramebuffer(0, 0, m_width, m_height, 0, 0, m_width, m_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	return true;
 #else
