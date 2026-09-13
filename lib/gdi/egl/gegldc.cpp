@@ -65,9 +65,17 @@ bool gEGLDC::tryInitEGL(int version) {
 		return false;
 	}
 
-	// 5. create the rendering surface - a pixmap surface for platforms that only
-	// implement EGL_EXT_platform_base's pixmap path (e.g. Dreambox's VC5/BEGL
-	// stack), a window surface otherwise.
+	// 5. create the rendering surface(s) - a pixmap surface per available
+	// framebuffer page for platforms that only implement EGL_EXT_platform_base's
+	// pixmap path (e.g. Dreambox's VC5/BEGL stack, where the "pixmap" IS live
+	// display memory - see DreamboxWindowProvider's class comment), so this
+	// can ping-pong rendering between pages instead of always rendering into
+	// (and presenting) the one currently on screen - see flip(). A single
+	// window surface otherwise, which already gets real double-buffering for
+	// free via eglSwapBuffers().
+	for (int i = 0; i < MAX_EGL_SURFACES; ++i)
+		m_egl_surfaces[i] = EGL_NO_SURFACE;
+
 	if (pixmap_mode) {
 		PFNEGLCREATEPLATFORMPIXMAPSURFACEEXTPROC eglCreatePlatformPixmapSurfaceEXT =
 			(PFNEGLCREATEPLATFORMPIXMAPSURFACEEXTPROC)eglGetProcAddress("eglCreatePlatformPixmapSurfaceEXT");
@@ -77,25 +85,43 @@ bool gEGLDC::tryInitEGL(int version) {
 			m_egl_context = EGL_NO_CONTEXT;
 			return false;
 		}
-		void* native_pixmap = m_window_provider->getNativePixmap();
-		m_egl_surface = eglCreatePlatformPixmapSurfaceEXT(m_egl_display, m_egl_config, native_pixmap, nullptr);
+
+		m_page_count = std::max(1, std::min(m_window_provider->getPageCount(), MAX_EGL_SURFACES));
+		for (int i = 0; i < m_page_count; ++i) {
+			void* native_pixmap = m_window_provider->getNativePixmap(i);
+			m_egl_surfaces[i] = eglCreatePlatformPixmapSurfaceEXT(m_egl_display, m_egl_config, native_pixmap, nullptr);
+			if (m_egl_surfaces[i] == EGL_NO_SURFACE) {
+				eDebug("[gEGLDC] eglCreatePlatformPixmapSurfaceEXT failed for page %d. EGL error: 0x%x", i, eglGetError());
+				for (int j = 0; j < i; ++j)
+					eglDestroySurface(m_egl_display, m_egl_surfaces[j]);
+				eglDestroyContext(m_egl_display, m_egl_context);
+				m_egl_context = EGL_NO_CONTEXT;
+				return false;
+			}
+		}
 	} else {
+		m_page_count = 1;
 		EGLNativeWindowType native_window = m_window_provider->getNativeWindow();
-		m_egl_surface = eglCreateWindowSurface(m_egl_display, m_egl_config, native_window, nullptr);
-	}
-	if (m_egl_surface == EGL_NO_SURFACE) {
-		eDebug("[gEGLDC] %s failed. EGL error: 0x%x", pixmap_mode ? "eglCreatePlatformPixmapSurfaceEXT" : "eglCreateWindowSurface", eglGetError());
-		eglDestroyContext(m_egl_display, m_egl_context);
-		m_egl_context = EGL_NO_CONTEXT;
-		return false;
+		m_egl_surfaces[0] = eglCreateWindowSurface(m_egl_display, m_egl_config, native_window, nullptr);
+		if (m_egl_surfaces[0] == EGL_NO_SURFACE) {
+			eDebug("[gEGLDC] eglCreateWindowSurface failed. EGL error: 0x%x", eglGetError());
+			eglDestroyContext(m_egl_display, m_egl_context);
+			m_egl_context = EGL_NO_CONTEXT;
+			return false;
+		}
 	}
 
-	// 6. make context current
-	if (!eglMakeCurrent(m_egl_display, m_egl_surface, m_egl_surface, m_egl_context)) {
+	// 6. make context current against the page the first frame will render
+	// into. Start one page *ahead* of whatever the provider is showing at
+	// startup (page 0 - see DreamboxWindowProvider::init()'s initial
+	// setOffset(0)) so the very first frame never renders into the page
+	// that's simultaneously being scanned out.
+	m_render_page = (m_page_count > 1) ? 1 : 0;
+	if (!eglMakeCurrent(m_egl_display, m_egl_surfaces[m_render_page], m_egl_surfaces[m_render_page], m_egl_context)) {
 		eDebug("[gEGLDC] eglMakeCurrent failed.");
-		eglDestroySurface(m_egl_display, m_egl_surface);
+		for (int i = 0; i < m_page_count; ++i)
+			eglDestroySurface(m_egl_display, m_egl_surfaces[i]);
 		eglDestroyContext(m_egl_display, m_egl_context);
-		m_egl_surface = EGL_NO_SURFACE;
 		m_egl_context = EGL_NO_CONTEXT;
 		return false;
 	}
@@ -698,7 +724,10 @@ gEGLDC::gEGLDC(INativeWindowProvider* window_provider, int width, int height) : 
 	m_height = height;
 	m_gles_version = 0;
 	m_egl_display = EGL_NO_DISPLAY;
-	m_egl_surface = EGL_NO_SURFACE;
+	for (int i = 0; i < MAX_EGL_SURFACES; ++i)
+		m_egl_surfaces[i] = EGL_NO_SURFACE;
+	m_page_count = 1;
+	m_render_page = 0;
 	m_egl_context = EGL_NO_CONTEXT;
 
 	// accelNever: this pixmap is a plain CPU-side staging buffer for text
@@ -724,13 +753,18 @@ void gEGLDC::cleanupEGL() {
 		if (m_egl_context != EGL_NO_CONTEXT) {
 			eglDestroyContext(m_egl_display, m_egl_context);
 		}
-		if (m_egl_surface != EGL_NO_SURFACE) {
-			eglDestroySurface(m_egl_display, m_egl_surface);
+		for (int i = 0; i < MAX_EGL_SURFACES; ++i) {
+			if (m_egl_surfaces[i] != EGL_NO_SURFACE) {
+				eglDestroySurface(m_egl_display, m_egl_surfaces[i]);
+			}
 		}
 		eglTerminate(m_egl_display);
 	}
 	m_egl_display = EGL_NO_DISPLAY;
-	m_egl_surface = EGL_NO_SURFACE;
+	for (int i = 0; i < MAX_EGL_SURFACES; ++i)
+		m_egl_surfaces[i] = EGL_NO_SURFACE;
+	m_page_count = 1;
+	m_render_page = 0;
 	m_egl_context = EGL_NO_CONTEXT;
 	m_gles_version = 0;
 	gles::version = 0;
@@ -752,14 +786,80 @@ void gEGLDC::setResolution(int xres, int yres, int bpp) {
 	}
 }
 
+bool gEGLDC::gpuCopyPageContent(int from, int to) {
+#ifdef HAVE_GLES3
+	if (!gles::isGLES3())
+		return false;
+
+	// Asymmetric draw/read: glBlitFramebuffer() below copies from whatever
+	// is bound as GL_READ_FRAMEBUFFER (framebuffer 0 of the *read* surface)
+	// into GL_DRAW_FRAMEBUFFER (framebuffer 0 of the *draw* surface) - EGL
+	// supports different draw and read surfaces for exactly this kind of
+	// surface-to-surface copy.
+	if (!eglMakeCurrent(m_egl_display, m_egl_surfaces[to], m_egl_surfaces[from], m_egl_context)) {
+		eDebug("[gEGLDC] eglMakeCurrent (draw=%d read=%d) failed for GPU copy-forward: 0x%x", to, from, eglGetError());
+		return false;
+	}
+
+	glBlitFramebuffer(0, 0, m_width, m_height, 0, 0, m_width, m_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	return true;
+#else
+	(void)from;
+	(void)to;
+	return false;
+#endif
+}
+
 void gEGLDC::flip() {
-	if (isInitialized() && m_egl_display != EGL_NO_DISPLAY && m_egl_surface != EGL_NO_SURFACE) {
+	if (isInitialized() && m_egl_display != EGL_NO_DISPLAY && m_egl_surfaces[m_render_page] != EGL_NO_SURFACE) {
 		// eglSwapBuffers() is only defined for window surfaces; a pixmap-surface
-		// platform (Dreambox) presents (or, here, simply finishes rendering into
-		// already-visible memory) via the provider instead - see presentPixmap().
-		if (m_window_provider->usesPixmapSurface())
-			m_window_provider->presentPixmap();
-		else
-			eglSwapBuffers(m_egl_display, m_egl_surface);
+		// platform (Dreambox) presents via the provider instead - see
+		// presentPixmap(). m_render_page is the page this frame was just
+		// rendered into (see tryInitEGL()'s initial value and the rotation
+		// below).
+		if (m_window_provider->usesPixmapSurface()) {
+			int shown_page = m_render_page;
+			m_window_provider->presentPixmap(shown_page);
+
+			if (m_page_count > 1) {
+				// Rotate to the next page for the *next* frame's rendering -
+				// never re-render into the page we just told the provider to
+				// show. This is what actually makes rendering happen
+				// off-screen instead of visibly drawing into live scanout
+				// memory (the single-page behavior this replaces rendered
+				// directly into whatever the display was concurrently
+				// showing, so any frame slower than one vblank was visibly
+				// drawn on screen mid-frame no matter how few GL draw calls
+				// it took).
+				m_render_page = (m_render_page + 1) % m_page_count;
+
+				// Seed the new back buffer with what's now actually on screen
+				// (shown_page) before any of the next frame's opcodes run -
+				// needed because the compositor above only redraws dirty
+				// regions, an assumption that only holds if the render
+				// target already reflects the previous frame. Prefer doing
+				// this through the GL pipeline itself (gpuCopyPageContent(),
+				// GLES3's glBlitFramebuffer against asymmetric draw/read
+				// surfaces) over a plain CPU memcpy of the page's backing
+				// memory (INativeWindowProvider::copyPageContent()): this
+				// GPU's tile-based deferred renderer appears to track a
+				// surface's content by what it last wrote through the GL
+				// pipeline, not by re-reading the surface's backing memory
+				// on demand, so a CPU memcpy that bypasses the GL pipeline
+				// can be partially invisible to it on the next frame's
+				// render into that same surface - the actual cause behind
+				// an infobar that looked "half updated" with the memcpy
+				// version despite the copied bytes being correct in memory.
+				bool gpu_copied = gpuCopyPageContent(shown_page, m_render_page);
+
+				if (!eglMakeCurrent(m_egl_display, m_egl_surfaces[m_render_page], m_egl_surfaces[m_render_page], m_egl_context)) {
+					eDebug("[gEGLDC] eglMakeCurrent to page %d failed after flip: 0x%x", m_render_page, eglGetError());
+				} else if (!gpu_copied) {
+					m_window_provider->copyPageContent(shown_page, m_render_page);
+				}
+			}
+		} else {
+			eglSwapBuffers(m_egl_display, m_egl_surfaces[0]);
+		}
 	}
 }

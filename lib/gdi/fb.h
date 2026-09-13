@@ -37,7 +37,7 @@ public:
 	void enableManualBlit();
 	void disableManualBlit();
 	int showConsole(int state);
-	int SetMode(int xRes, int yRes, int bpp, bool forceSingleBuffer = false);
+	int SetMode(int xRes, int yRes, int bpp);
 	void getMode(int &xres, int &yres, int &bpp);
 	int Available() { return available; }
 

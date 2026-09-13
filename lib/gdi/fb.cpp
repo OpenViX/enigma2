@@ -194,7 +194,7 @@ int fbClass::showConsole(int state)
 	return 0;
 }
 
-int fbClass::SetMode(int nxRes, int nyRes, int nbpp, bool forceSingleBuffer)
+int fbClass::SetMode(int nxRes, int nyRes, int nbpp)
 {
 	if (fbFd < 0) return -1;
 #ifdef CONFIG_ION
@@ -206,11 +206,7 @@ int fbClass::SetMode(int nxRes, int nyRes, int nbpp, bool forceSingleBuffer)
 	screeninfo.xres_virtual=screeninfo.xres=nxRes;
 #if defined(CONFIG_ION)
 	screeninfo.yres = nyRes;
-	// TEMPORARY DIAGNOSTIC: forceSingleBuffer lets a caller (currently only
-	// DreamboxWindowProvider, to test whether triple-buffering's stacked
-	// yres_virtual=nyRes*3 layout is confusing the GPU/EGL pixmap surface
-	// about its actual render height) skip straight to a single page.
-	screeninfo.yres_virtual = forceSingleBuffer ? nyRes : nyRes * 3;
+	screeninfo.yres_virtual = nyRes * 3;
 #else
 	screeninfo.yres_virtual=(screeninfo.yres=nyRes)*2;
 #endif

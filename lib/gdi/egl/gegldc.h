@@ -23,8 +23,18 @@ private:
 	INativeWindowProvider* m_window_provider;
 	EGLDisplay m_egl_display;
 	EGLConfig m_egl_config;
-	EGLSurface m_egl_surface;
 	EGLContext m_egl_context;
+
+	// One EGLSurface per framebuffer page for a pixmap-surface provider (see
+	// tryInitEGL()/flip()) so rendering can ping-pong between pages instead
+	// of always targeting the one currently being scanned out - just [0] for
+	// a window-surface provider (real double buffering there is free via
+	// eglSwapBuffers()). MAX_EGL_SURFACES bounds this to fbClass's own
+	// practical maximum (triple buffering - see fb.cpp).
+	static const int MAX_EGL_SURFACES = 3;
+	EGLSurface m_egl_surfaces[MAX_EGL_SURFACES];
+	int m_page_count; // 1 unless a multi-page pixmap-surface provider
+	int m_render_page; // index into m_egl_surfaces currently bound for rendering
 
 	int m_width;
 	int m_height;
@@ -44,6 +54,22 @@ private:
 
 	bool tryInitEGL(int version);
 	void cleanupEGL();
+
+	// Copies page `from`'s content into page `to` entirely through the GL
+	// pipeline (eglMakeCurrent with asymmetric draw/read surfaces, then
+	// glBlitFramebuffer) instead of the INativeWindowProvider's CPU memcpy
+	// fallback (see flip()) - see the comment at its call site for why this
+	// exists: this GPU's tile-based deferred renderer appears to track a
+	// surface's content by what it last wrote through the GL pipeline, not
+	// by re-reading the surface's backing memory, so a CPU memcpy into that
+	// memory can be partially invisible to it. Requires GLES3
+	// (glBlitFramebuffer); returns false (no-op) on GLES2 or if
+	// eglMakeCurrent fails, in which case the caller should fall back to
+	// the CPU path. On success this leaves EGL's current surfaces as
+	// draw=`to`, read=`from` (asymmetric, needed for the blit itself) - the
+	// caller must restore the normal draw=read=`to` current state
+	// afterward regardless of whether this returns true or false.
+	bool gpuCopyPageContent(int from, int to);
 
 	// dedicated opcode handlers
 	void executeFill(const gOpcode* op);

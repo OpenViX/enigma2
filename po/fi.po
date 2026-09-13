@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-08 19:13+0300\n"
+"POT-Creation-Date: 2026-09-13 14:59+0000\n"
 "PO-Revision-Date: 2026-09-08 19:46+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
@@ -1160,9 +1160,6 @@ msgstr "1 minuutti"
 msgid "1 second"
 msgstr "1 sekunti"
 
-msgid "1,1"
-msgstr "1,1"
-
 msgid "1. Try to reboot the box and check if this warning disappears"
 msgstr "1. Yritä käynnistää laite uudelleen ja tarkista, katoaako tämä varoitus"
 
@@ -1243,9 +1240,6 @@ msgstr "25"
 
 msgid "256 Mb"
 msgstr "256 Mb"
-
-msgid "2678400000"
-msgstr "2678400000"
 
 msgid "29.97"
 msgstr "29.97"
@@ -2993,9 +2987,6 @@ msgstr "Tavuja vastaanotettu:"
 msgid "Bytes sent:"
 msgstr "Tavuja lähetetty:"
 
-msgid "C"
-msgstr "M"
-
 msgctxt "Abbreviation of \"Configurable\""
 msgid "C"
 msgstr "M"
@@ -4519,9 +4510,6 @@ msgstr "Tšekki"
 
 msgid "Czechia"
 msgstr "Tšekki"
-
-msgid "D"
-msgstr "D"
 
 msgid "DAC"
 msgstr "DAC"
@@ -6207,9 +6195,6 @@ msgstr "Viro"
 msgid "Estonian"
 msgstr "Viro"
 
-msgid "EtPortal"
-msgstr "EtPortal"
-
 msgid "Ethernet network interface"
 msgstr "Verkkokortti"
 
@@ -6410,9 +6395,6 @@ msgstr "Extremeurheilu"
 
 msgid "Extrude from left"
 msgstr "Kasvata vasemmalta"
-
-msgid "F"
-msgstr "F"
 
 msgid "F1"
 msgstr "F1"
@@ -7633,14 +7615,8 @@ msgstr "I55SE/H7/H17/H9/H9SE/H9COMBO/H9COMBOSE/H10/H11 uusi malli"
 msgid "IDLE"
 msgstr "TYHJÄKÄYNTI"
 
-msgid "IGNORE"
-msgstr "OHITA"
-
 msgid "IMAGE DOWNLOADS"
 msgstr "IMAGEN LATAUKSET"
-
-msgid "IMDB Search"
-msgstr "IMDb-haku"
 
 msgid "IMDB search for current event"
 msgstr "Nykyisen ohjelman IMDb-haku"
@@ -11657,9 +11633,6 @@ msgstr "RDS/RASS näyttö"
 msgid "REC"
 msgstr "REC"
 
-msgid "REC "
-msgstr "REC "
-
 msgid "REC Symbol"
 msgstr "Tallennussymboli"
 
@@ -15338,9 +15311,6 @@ msgstr "TS-tiedosto on liian suuri ISO9660 1-tasolle!"
 
 msgid "TSID"
 msgstr "TSID"
-
-msgid "TUNER:"
-msgstr "VIRITIN:"
 
 msgid "TUNING"
 msgstr "VIRITYS"
@@ -19600,3 +19570,33 @@ msgstr "Vaihdettu"
 
 msgid "| separated list of prefixes you'd like to be removed from event names, separated with |, e.g. New:|Live:"
 msgstr "Lisää | välimerkiksi ohjelmanimistä poistettavien etuliitteiden listaan, esim. Uusi:|Suora:"
+
+#~ msgid "1,1"
+#~ msgstr "1,1"
+
+#~ msgid "2678400000"
+#~ msgstr "2678400000"
+
+#~ msgid "C"
+#~ msgstr "M"
+
+#~ msgid "D"
+#~ msgstr "D"
+
+#~ msgid "EtPortal"
+#~ msgstr "EtPortal"
+
+#~ msgid "F"
+#~ msgstr "F"
+
+#~ msgid "IGNORE"
+#~ msgstr "OHITA"
+
+#~ msgid "IMDB Search"
+#~ msgstr "IMDb-haku"
+
+#~ msgid "REC "
+#~ msgstr "REC "
+
+#~ msgid "TUNER:"
+#~ msgstr "VIRITIN:"

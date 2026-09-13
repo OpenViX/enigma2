@@ -11,14 +11,20 @@
 //
 // Rather than allocating a separate offscreen pixmap and then needing an
 // undocumented ioctl to composite it onto the visible display, this provider
-// describes the *existing*, already-visible framebuffer memory (the same one
-// fbClass/gFBDC already renders the CPU/2D path into) as the pixmap. GLES then
-// renders directly into display-visible memory and no separate present/blit
-// step is required - at the cost of no double-buffering yet (a later, separate
-// improvement once a documented path for that exists).
+// describes the *existing* framebuffer memory (the same one fbClass/gFBDC
+// already renders the CPU/2D path into) as a set of pixmaps, one per page
+// fbClass::SetMode() actually allocated (typically 3, for triple buffering -
+// see fb.cpp). gEGLDC creates one EGLSurface per page and ping-pongs
+// rendering between them (see gEGLDC::flip()), panning the display
+// (FBIOPAN_DISPLAY, via fbClass::setOffset()) to whichever page a frame just
+// finished rendering into.
 class DreamboxWindowProvider : public INativeWindowProvider {
 private:
-	dmegl_pixmap_handle m_pixmap;
+	static const int kMaxPages = 3;
+	dmegl_pixmap_handle m_pixmaps[kMaxPages];
+	int m_page_count;
+	int m_height; // page N's scanout line offset is N * m_height (see presentPixmap())
+	unsigned long m_page_bytes; // one page's size in bytes (see copyPageContent())
 
 public:
 	DreamboxWindowProvider();
@@ -28,7 +34,9 @@ public:
 	bool init(int width, int height) override;
 	EGLNativeDisplayType getNativeDisplay() override;
 	bool usesPixmapSurface() const override { return true; }
-	void* getNativePixmap() override;
-	void presentPixmap() override;
+	int getPageCount() const override { return m_page_count; }
+	void* getNativePixmap(int page) override;
+	void presentPixmap(int page) override;
+	void copyPageContent(int from, int to) override;
 	void cleanup() override;
 };
