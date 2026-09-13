@@ -2,15 +2,18 @@ from enigma import eListbox, eListboxPythonMultiContent, BT_ALIGN_CENTER, iPlaya
 from skin import parseScale, applySkinFactor, parseColor, parseFont, parameters
 
 from Components.Addons.GUIAddon import GUIAddon
+from Components.config import config
 from Components.Converter.PliExtraInfo import createCurrentCaidLabel
 from Components.Converter.ServiceInfo import AUDIO_CHANNEL_LABELS, AUDIO_CODEC_INFO, VIDEO_CODEC_INFO, getCurrentAudioChannels, getCurrentAudioCodec, getCurrentVideoCodec, getVideoHeight
 from Components.Converter.VAudioInfo import StdAudioDesc
 from Components.Label import Label
 from Components.MultiContent import MultiContentEntryPixmapAlphaBlend, MultiContentEntryText
+from Components.OnlineUpdateCheck import versioncheck
 from Components.ServiceEventTracker import ServiceEventTracker
 from Components.Sources.StreamService import StreamServiceList
 from Components.NimManager import nimmanager
 from Screens.InfoBarGenerics import hasActiveSubservicesForCurrentChannel
+from Screens import Standby  # importing "inStandby" here won't work because it is a boolean so won't update
 from Tools.Directories import resolveFilename, SCOPE_GUISKIN, fileExists
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Hex2strColor import Hex2strColor
@@ -65,11 +68,14 @@ class ServiceInfoBar(GUIAddon):
 		self.isCryptedDetected = False
 		self.tunerColors = parameters.get("FrontendInfoColors", (0x0000FF00, 0x00FFFF00, 0x007F7F7F))  # tuner active, busy, available colors
 		self.codecIconPrefix = "icon_"  # forced prefix used for video and audio codc icons
+		self.updateStateKey = None
+		config.softwareupdate.updatefound.addNotifier(self.checkUpdateState, initial_call=False, immediate_feedback=True)
 
 	def onContainerShown(self):
 		self.textRenderer.GUIcreate(self.relatedScreen.instance)
 		self.l.setItemHeight(self.instance.size().height())
 		self.l.setItemWidth(self.instance.size().width())
+		self.checkUpdateState(refresh=False)
 		self.updateAddon()
 		if not self.__event_tracker:
 			self.__event_tracker = ServiceEventTracker(screen=self.relatedScreen,
@@ -91,6 +97,7 @@ class ServiceInfoBar(GUIAddon):
 		self.frontendInfoSource = self.source.screen["FrontendInfo"]
 
 	def destroy(self):
+		config.softwareupdate.updatefound.removeNotifier(self.checkUpdateState)
 		self.nav.record_event.remove(self.gotRecordEvent)
 		self.refreshCryptoInfo.stop()
 		self.refreshAddon.stop()
@@ -300,6 +307,12 @@ class ServiceInfoBar(GUIAddon):
 								return "cable"
 							elif "DVB-T" in tuner_system:
 								return "terestrial"
+			elif key == "updateStable":
+				if self.updateStateKey == "updateStable":
+					return key
+			elif key == "updateUnstable":
+				if self.updateStateKey == "updateUnstable":
+					return key
 
 		return None
 
@@ -398,6 +411,18 @@ class ServiceInfoBar(GUIAddon):
 						else:
 							xPos += textWidth + self.spacing
 		return res
+
+	def checkUpdateState(self, configElement=None, refresh=True):
+		if versioncheck.getUnstableUpdateAvailable():
+			newKey = "updateUnstable"
+		elif versioncheck.getStableUpdateAvailable():
+			newKey = "updateStable"
+		else:
+			newKey = None
+		if newKey != self.updateStateKey:
+			self.updateStateKey = newKey
+			if refresh and not Standby.inStandby:
+				self.updateAddon()
 
 	def getDesktopWith(self):
 		return getDesktop(0).size().width()
