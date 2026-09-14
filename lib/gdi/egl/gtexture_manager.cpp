@@ -181,8 +181,23 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 		// instead of respecting stride is exactly what produces a sheared/
 		// distorted image once stride != width.
 
+		// This source pixmap can be ION/accelerated memory, which on this
+		// hardware is mapped as ARM "Device" type for GPU coherency - a
+		// bulk memcpy of it is fast (benefits from burst reads), but this
+		// loop reading it one byte at a time via scalar loads (row[x]) is
+		// NOT: Device memory disallows the burst/speculative access a
+		// vectorized memcpy implementation uses, so each individual scalar
+		// load pays full memory latency (measured: ~30-45ms for a 400x240
+		// image, vs <1ms via memcpy of the same bytes). Copying the source
+		// rows to an ordinary heap buffer first with that same fast memcpy,
+		// then reading *that* in the loop, sidesteps it - this is what
+		// turned "screen takes 3s to open the first time" into a sub-second
+		// open.
+		std::vector<uint8_t> local_src((size_t)src_stride * height);
+		memcpy(local_src.data(), src_pixels, local_src.size());
+
 		for (int y = 0; y < height; ++y) {
-			const uint8_t* row = src_pixels + (size_t)y * src_stride;
+			const uint8_t* row = local_src.data() + (size_t)y * src_stride;
 			for (int x = 0; x < width; ++x) {
 				// gRGB::argb() returns the native {b,g,r,a} memory order
 				// (see gpixmap.h) with alpha still in enigma2's inverted

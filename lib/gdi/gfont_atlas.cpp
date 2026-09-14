@@ -13,6 +13,18 @@ gFontAtlas::~gFontAtlas()
     // m_pixmap is managed by ePtr
 }
 
+bool gFontAtlas::wouldOverflow(int width, int height) const
+{
+    // Mirrors addGlyph()'s own row-advance-then-overflow-check logic exactly
+    // (see there), without mutating any state, so a caller can decide
+    // whether it needs to flush a pending batch first.
+    int x = m_current_x, y = m_current_y, row_height = m_current_row_height;
+    if (x + width > m_atlas_width) {
+        y += row_height + 1;
+    }
+    return y + height > m_atlas_height;
+}
+
 bool gFontAtlas::init(int width, int height)
 {
     // Normally 2D blitters support at least 2048x2048, but the user can clamp this down 
@@ -21,7 +33,16 @@ bool gFontAtlas::init(int width, int height)
     m_atlas_height = height;
 
     // Create an 8-bit pixmap for the atlas as a simple byte buffer.
-    m_pixmap = new gPixmap(eSize(width, height), 8);
+    // accelNever: this is a CPU-written staging buffer (addGlyph() memcpy's
+    // into it, flushTextBatch() reads it to feed glTexSubImage2D) - not
+    // something ever displayed directly - matching why gEGLDC's own
+    // m_pixmap uses the same flag (see its constructor's comment). Without
+    // it, gPixmap defaults to accelerated/ION-backed memory, which on this
+    // hardware is mapped uncached for GPU coherency - fine for the bulk
+    // reads/writes this class already does (memcpy, glTexSubImage2D), but a
+    // real risk for any other CPU-side access pattern this atlas grows in
+    // the future.
+    m_pixmap = new gPixmap(eSize(width, height), 8, gPixmap::accelNever);
     // Initialize to zero (transparent)
     memset(m_pixmap->surface->data, 0, width * height);
 
@@ -44,7 +65,7 @@ bool gFontAtlas::getGlyph(glyph_key_t key, glyph_uv &uv)
     return false;
 }
 
-void gFontAtlas::addGlyph(glyph_key_t key, int width, int height, const uint8_t *data, glyph_uv &uv)
+void gFontAtlas::addGlyph(glyph_key_t key, int width, int height, const uint8_t *data, int src_pitch, glyph_uv &uv)
 {
     if (!m_pixmap) return;
     
@@ -76,11 +97,15 @@ void gFontAtlas::addGlyph(glyph_key_t key, int width, int height, const uint8_t 
         m_dirty_rect = eRect(0, 0, m_atlas_width, m_atlas_height);
     }
 
-    // Manually copy the glyph into our 8-bit pixmap buffer on the CPU
+    // Manually copy the glyph into our 8-bit pixmap buffer on the CPU.
+    // Source rows are src_pitch bytes apart (>= width - FreeType pads/aligns
+    // small-bitmap cache rows), not tightly packed at width, so row offsets
+    // must use src_pitch on the source side even though the atlas's own
+    // destination rows are tightly packed at m_atlas_width.
     uint8_t *dst = (uint8_t *)m_pixmap->surface->data;
     for (int row = 0; row < height; ++row) {
-        memcpy(dst + ((m_current_y + row) * m_atlas_width) + m_current_x, 
-               data + (row * width), 
+        memcpy(dst + ((m_current_y + row) * m_atlas_width) + m_current_x,
+               data + (row * src_pitch),
                width);
     }
 

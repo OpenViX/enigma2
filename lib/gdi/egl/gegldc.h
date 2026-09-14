@@ -79,6 +79,20 @@ private:
 	// clear opcode once any text exists anywhere on screen.
 	gRegion m_text_overlay_region;
 
+	// Set by onGlyphCpuDrawn() whenever eTextPara::blit() (font.cpp) actually
+	// wrote glyph pixels into m_pixmap's CPU buffer during the current
+	// renderText/renderPara opcode - i.e. renderGlyph() declined a glyph (not
+	// initialized) or blit() never offered one at all (border/pre-rendered
+	// "image" glyphs). Reset before each blit() call in exec() and checked
+	// afterward so compositeTextOverlay() only runs, and only re-uploads
+	// m_pixmap's (possibly stale, untouched-this-draw) content, when the CPU
+	// path actually ran - otherwise a glyph fully handled by renderGlyph()
+	// (drawn straight to the GPU via the atlas/batch below, never touching
+	// m_pixmap) would have compositeTextOverlay() paint whatever unrelated
+	// old content happens to still sit in m_pixmap's buffer at that screen
+	// position on top of it.
+	bool m_cpu_overlay_dirty;
+
 	bool tryInitEGL(int version);
 	void cleanupEGL();
 
@@ -109,16 +123,32 @@ private:
 	void flushTextBatch();
 	void setGlScissor(const eRect& rect);
 
-	// Shared by gOpcode::renderText and gOpcode::renderPara: after the
-	// existing software eTextPara::blit() path (called via gDC::exec()) has
-	// written glyphs into m_pixmap's CPU buffer, upload the affected area as
-	// a texture and composite it onto the real GPU surface - m_pixmap has no
+	// Shared by gOpcode::renderText and gOpcode::renderPara for whatever
+	// glyphs renderGlyph() below didn't handle (border/pre-rendered "image"
+	// glyphs, or EGL not initialized - see m_cpu_overlay_dirty): once the
+	// software eTextPara::blit() path (called via gDC::exec()) has written
+	// those glyphs into m_pixmap's CPU buffer, upload the affected area as a
+	// texture and composite it onto the real GPU surface - m_pixmap has no
 	// GPU hook of its own, so without this nothing drawn into it ever
 	// reaches the display.
 	void compositeTextOverlay(eRect area);
 
 	bool isHardwareAccelerated() const { return true; }
-	void renderGlyph(const ePoint& pos, gPixmap* glyph_mask, const gRGB& color);
+	bool renderGlyph(const ePoint& pos, const uint8_t* data, int width, int height, int pitch, const gRGB& color, uint64_t glyph_key) override;
+	void onGlyphCpuDrawn() override { m_cpu_overlay_dirty = true; }
+
+	// gDC::enableSpinner()/disableSpinner()/incrementSpinner() (grc.cpp) draw
+	// the busy spinner with plain gPixmap::blit() calls straight into
+	// m_pixmap's CPU buffer - entirely outside the gOpcode queue, so
+	// gEGLDC::exec() never sees them. That's fine for a backend where
+	// m_pixmap *is* the displayed framebuffer, but here m_pixmap is only a
+	// CPU-side staging buffer for text (see compositeTextOverlay()'s
+	// comment) - without composing m_spinner_pos to the real GPU surface
+	// after each of these, the spinner is drawn but never actually reaches
+	// the screen.
+	void enableSpinner() override;
+	void disableSpinner() override;
+	void incrementSpinner() override;
 
 	static gEGLDC* s_instance;
 

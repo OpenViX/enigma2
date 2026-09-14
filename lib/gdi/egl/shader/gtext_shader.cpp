@@ -34,7 +34,15 @@ static const char *fragment_shader_es3 = R"(#version 300 es
     
     void main() {
         float mask = texture(u_texture, v_uv).r;
-        frag_color = vec4(v_color.rgb, v_color.a * mask);
+        // See gshader.cpp's fragment shader for why this swap is here - this
+        // render target's output ends up read back in the opposite R/B order
+        // from what GL writes. Unlike gtexture_shader.cpp (which relies on
+        // its *texture upload* already being pre-swapped BGRA-as-RGBA),
+        // v_color here comes straight from gEGLDC::renderGlyph()'s own
+        // color.r/g/b (semantically correct, not pre-swapped), so this
+        // shader needs the same explicit swap gshader.cpp/gadvanced_shader.cpp
+        // do on their own solid-color output.
+        frag_color = vec4(v_color.b, v_color.g, v_color.r, v_color.a * mask);
     }
 )";
 #endif
@@ -71,7 +79,8 @@ static const char *fragment_shader_es2 = R"(#version 100
     void main() {
         // In GL_LUMINANCE textures the single channel is replicated into r/g/b
         float mask = texture2D(u_texture, v_uv).r;
-        gl_FragColor = vec4(v_color.rgb, v_color.a * mask);
+        // See the GLES3 fragment shader above for why this swap is needed here.
+        gl_FragColor = vec4(v_color.b, v_color.g, v_color.r, v_color.a * mask);
     }
 )";
 
@@ -179,6 +188,13 @@ bool gTextShader::init()
 void gTextShader::bind()
 {
     glUseProgram(m_program_id);
+    // gEGLDC::flushTextBatch() (gegldc.cpp) drives this shader directly -
+    // uploading its own VBO data and issuing glDrawArrays() itself - rather
+    // than going through drawGlyph() below, so drawGlyph()'s own
+    // glUniform1i(m_texture_location, 0) never runs for that path. Set it
+    // here instead so every caller of bind() gets a correctly-pointed
+    // sampler regardless of which draw path it then takes.
+    glUniform1i(m_texture_location, 0);
 }
 
 void gTextShader::bindVAO()
@@ -186,6 +202,20 @@ void gTextShader::bindVAO()
 #if defined(HAVE_GLES3)
     if (gles::isGLES3()) {
         glBindVertexArray(m_vao);
+        // glBindVertexArray() does NOT restore GL_ARRAY_BUFFER - that binding
+        // is separate, global context state, not part of the VAO's own
+        // state (only the *attribute pointers'* source buffers, captured at
+        // glVertexAttribPointer() time, are). Without this, flushTextBatch()'s
+        // glBufferSubData(GL_ARRAY_BUFFER, ...) right after this call writes
+        // into whatever buffer some *other* shader (e.g. gTextureShader) last
+        // bound, not into m_vbo - leaving the VAO's own attribute source
+        // (still correctly pointing at m_vbo) never actually updated with the
+        // new glyph data, so the GPU draws whatever stale/uninitialized
+        // content was already in m_vbo instead. This was the root cause of
+        // glyph batches appearing blank (or showing stale garbage) despite
+        // every other piece of GL state (program, texture, blend, scissor,
+        // attribute enables) being correct.
+        glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     } else
 #endif
     {

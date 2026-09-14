@@ -209,11 +209,12 @@ void gEGLDC::setGlScissor(const eRect& rect) {
 }
 
 void gEGLDC::executeFill(const gOpcode* op) {
-	// A pending blit batch (see executeBlit()) hasn't been drawn yet - flush
-	// it first so this fill lands in the correct z-order relative to it,
-	// instead of ending up underneath blits that were actually submitted
-	// before it.
+	// A pending blit or text batch (see executeBlit()/renderGlyph()) hasn't
+	// been drawn yet - flush both first so this fill lands in the correct
+	// z-order relative to them, instead of ending up underneath content that
+	// was actually submitted before it.
 	flushBlitBatch();
+	flushTextBatch();
 
 	float r = m_foreground_color_rgb.r / 255.0f;
 	float g = m_foreground_color_rgb.g / 255.0f;
@@ -243,8 +244,9 @@ void gEGLDC::executeFill(const gOpcode* op) {
 }
 
 void gEGLDC::executeFillRegion(const gOpcode* op) {
-	// See executeFill() above for why a pending blit batch must flush first.
+	// See executeFill() above for why pending blit/text batches must flush first.
 	flushBlitBatch();
+	flushTextBatch();
 
 	float r = m_foreground_color_rgb.r / 255.0f;
 	float g = m_foreground_color_rgb.g / 255.0f;
@@ -269,8 +271,9 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 	if (m_current_clip.rects.empty())
 		return;
 
-	// See executeFill() above for why a pending blit batch must flush first.
+	// See executeFill() above for why pending blit/text batches must flush first.
 	flushBlitBatch();
+	flushTextBatch();
 
 	if (m_radius > 0 || m_gradient_colors.size() > 0) {
 		for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
@@ -299,8 +302,9 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 }
 
 void gEGLDC::executeClear(const gOpcode* op) {
-	// See executeFill() above for why a pending blit batch must flush first.
+	// See executeFill() above for why pending blit/text batches must flush first.
 	flushBlitBatch();
+	flushTextBatch();
 
 	float r = m_background_color_rgb.r / 255.0f;
 	float g = m_background_color_rgb.g / 255.0f;
@@ -383,8 +387,9 @@ void gEGLDC::executeLine(const gOpcode* op) {
 	if (m_current_clip.rects.empty())
 		return;
 
-	// See executeFill()'s comment for why a pending blit batch must flush first.
+	// See executeFill()'s comment for why pending blit/text batches must flush first.
 	flushBlitBatch();
+	flushTextBatch();
 
 	// See executeFill()'s comment: gPixmap::line() is a raw-overwrite
 	// Bresenham rasterizer with no alpha blending, so this must match.
@@ -444,6 +449,7 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 
 	if (!can_batch) {
 		flushBlitBatch();
+		flushTextBatch();
 		if (enable_blend)
 			glEnable(GL_BLEND);
 		else
@@ -464,6 +470,11 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 		flushBlitBatch();
 
 	if (!m_blit_batch_active) {
+		// Starting a fresh blit batch: flush any pending text batch first so
+		// text queued *before* this blit (e.g. a label drawn just before an
+		// icon in the same row) still draws before it, not after - see
+		// executeFill()'s comment for the general reasoning.
+		flushTextBatch();
 		m_blit_batch_tex_id = tex_id;
 		m_blit_batch_blend = enable_blend;
 		m_blit_batch_clip = r;
@@ -499,33 +510,63 @@ void gEGLDC::flushBlitBatch() {
 	m_blit_batch_buffer.clear();
 }
 
-void gEGLDC::renderGlyph(const ePoint& pos, gPixmap* glyph_mask, const gRGB& color) {
-	if (!glyph_mask)
-		return;
+bool gEGLDC::renderGlyph(const ePoint& pos, const uint8_t* data, int width, int height, int pitch, const gRGB& color, uint64_t glyph_key) {
+	if (!isInitialized())
+		return false; // let eTextPara::blit() (font.cpp) fall back to its CPU path
 
-	glyph_uv uv;
-	glyph_key_t key = reinterpret_cast<glyph_key_t>(glyph_mask->surface->data);
+	if (width <= 0 || height <= 0)
+		return true; // nothing to draw (e.g. a space), but this glyph *is* handled
 
-	bool was_cached = m_font_atlas.getGlyph(key, uv);
-
-	if (!was_cached) {
-		// Flush the current batch before uploading a new glyph to the atlas.
-		flushTextBatch();
-
-		int w = glyph_mask->size().width();
-		int h = glyph_mask->size().height();
-		uint8_t* data = (uint8_t*)glyph_mask->surface->data;
-
-		m_font_atlas.addGlyph(key, w, h, data, uv);
+	if (m_text_batch_buffer.empty()) {
+		// Starting a fresh text batch: flush any pending blit batch first so
+		// a blit queued *before* this text (e.g. an icon drawn just before a
+		// label in the same row) still draws before it, not after - see
+		// executeFill()'s comment for the general reasoning.
+		flushBlitBatch();
 	}
 
+	glyph_uv uv;
+	bool was_cached = m_font_atlas.getGlyph(glyph_key, uv);
+
+	if (!was_cached) {
+		// Only flush the current batch first if this glyph would actually
+		// trigger addGlyph()'s atlas-full reset (which clears m_glyphs and
+		// would leave any already-batched-but-undrawn quad's UVs pointing at
+		// whatever glyph ends up reoccupying that texture region) - NOT on
+		// every cache miss unconditionally. A plain row-advance (the
+		// overwhelming majority of additions - the atlas is 2048x2048,
+		// rarely actually full) leaves all existing glyphs' data and UVs
+		// untouched, so there's nothing to protect against, and flushing
+		// here anyway means uploading the atlas's dirty region and drawing
+		// with it once per *individual* new glyph instead of batching many
+		// new glyphs' worth of atlas changes into one upload+draw at the
+		// next real flush point - each of those premature per-glyph flushes
+		// measured 4.5-13ms (a texture the GPU is still using getting
+		// modified mid-frame forces a pipeline sync), which is what made a
+		// screen with many not-yet-cached glyphs (a first-ever open) take
+		// seconds instead of a couple hundred milliseconds.
+		if (m_font_atlas.wouldOverflow(width, height))
+			flushTextBatch();
+		m_font_atlas.addGlyph(glyph_key, width, height, data, pitch, uv);
+	}
+
+	if (uv.width == 0 || uv.height == 0)
+		return true; // empty-space glyph already recorded in the atlas map
+
+	// pos is already an absolute destination-surface pixel position (same
+	// rxbase/rybase eTextPara::blit()'s CPU path writes to directly) - not
+	// relative to m_current_offset like fill/rectangle/blit's opcode-supplied
+	// coordinates are, so unlike executeFill() etc. it must NOT be added
+	// again here, or a GPU-handled glyph would land at a different position
+	// than a CPU-handled one (border text, say) drawn for the very same
+	// eTextPara whenever m_current_offset is non-zero.
 	float r = color.r / 255.0f;
 	float g = color.g / 255.0f;
 	float b = color.b / 255.0f;
 	float a = 1.0f - (color.a / 255.0f);
 
-	float x = pos.x() + m_current_offset.x();
-	float y = pos.y() + m_current_offset.y();
+	float x = (float)pos.x();
+	float y = (float)pos.y();
 	float w = (float)uv.width;
 	float h = (float)uv.height;
 
@@ -538,6 +579,8 @@ void gEGLDC::renderGlyph(const ePoint& pos, gPixmap* glyph_mask, const gRGB& col
 	if (m_text_batch_buffer.size() >= MAX_BATCH_GLYPHS * 48) {
 		flushTextBatch();
 	}
+
+	return true;
 }
 
 void gEGLDC::flushTextBatch() {
@@ -601,8 +644,14 @@ void gEGLDC::flushTextBatch() {
 void gEGLDC::compositeTextOverlay(eRect area) {
 	// See executeFill()'s comment for why a pending blit batch must flush
 	// first - this also uses m_texture_shader's shared VBO, which a
-	// pending batch's data still occupies until drawn.
+	// pending batch's data still occupies until drawn. Also flush any
+	// pending GPU-atlas text batch left over from an *earlier* renderText/
+	// renderPara opcode (this call only runs for the CPU-fallback portion of
+	// the *current* one - see m_cpu_overlay_dirty) - otherwise that older,
+	// still-undrawn text would end up rendered after this opcode's overlay
+	// texture instead of before it.
 	flushBlitBatch();
+	flushTextBatch();
 
 	// Clamp to the pixmap's actual bounds - a scrolling list widget's
 	// per-row offset can legitimately place a row partially or fully
@@ -654,6 +703,25 @@ void gEGLDC::compositeTextOverlay(eRect area) {
 	}
 }
 
+void gEGLDC::enableSpinner() {
+	gDC::enableSpinner();
+	// m_spinner_pos is a screen-absolute rect (the spinner is a global
+	// overlay, not part of any widget's offset-relative coordinate space),
+	// so unlike renderText/renderPara's area it must NOT have
+	// m_current_offset applied here.
+	compositeTextOverlay(m_spinner_pos);
+}
+
+void gEGLDC::disableSpinner() {
+	gDC::disableSpinner();
+	compositeTextOverlay(m_spinner_pos);
+}
+
+void gEGLDC::incrementSpinner() {
+	gDC::incrementSpinner();
+	compositeTextOverlay(m_spinner_pos);
+}
+
 void gEGLDC::exec(const gOpcode* opcode) {
 	if (!isInitialized())
 		return;
@@ -680,21 +748,34 @@ void gEGLDC::exec(const gOpcode* opcode) {
 			break;
 
 		case gOpcode::renderText: {
-			// eTextPara::blit() (lib/gdi/font.cpp) draws glyphs via pure
-			// software rasterization directly into dc.getPixmap()'s CPU
-			// buffer (gDC::m_pixmap) - it has no virtual GPU hook in this
-			// codebase. compositeTextOverlay() uploads the result and
-			// composites it onto the real GPU surface, the same way any
-			// other pixmap (icons etc.) is drawn via executeBlit().
+			// eTextPara::blit() (lib/gdi/font.cpp) draws most glyphs straight
+			// to the GPU via renderGlyph()/the atlas below now, but border
+			// text and pre-rendered "image" glyphs (see grc.h's
+			// gDC::renderGlyph() comment) still fall back to pure software
+			// rasterization directly into dc.getPixmap()'s CPU buffer
+			// (gDC::m_pixmap). compositeTextOverlay() uploads that CPU
+			// result and composites it onto the real GPU surface, the same
+			// way any other pixmap (icons etc.) is drawn via executeBlit() -
+			// m_cpu_overlay_dirty (set by onGlyphCpuDrawn()) tracks whether
+			// this particular draw actually used that fallback, so a glyph
+			// fully handled on the GPU doesn't get compositeTextOverlay()
+			// re-painting whatever unrelated old content still sits in
+			// m_pixmap at this screen position on top of it.
 			//
 			// CRITICAL: capture area BEFORE calling gDC::exec(opcode) - its
 			// renderText handling (grc.cpp) does "delete o->parm.renderText;"
 			// as its very last step. Reading opcode->parm.renderText->area
 			// afterward is a use-after-free.
 			eRect area = opcode->parm.renderText->area;
+			// See executeFill()'s comment: a pending blit batch queued
+			// before this text must draw before it, not after.
+			flushBlitBatch();
+			m_cpu_overlay_dirty = false;
 			gDC::exec(opcode);
-			area.moveBy(m_current_offset);
-			compositeTextOverlay(area);
+			if (m_cpu_overlay_dirty) {
+				area.moveBy(m_current_offset);
+				compositeTextOverlay(area);
+			}
 			break;
 		}
 
@@ -714,9 +795,15 @@ void gEGLDC::exec(const gOpcode* opcode) {
 			eTextPara* textpara = opcode->parm.renderPara->textpara;
 			eRect area = textpara->getArea();
 			area.moveBy(opcode->parm.renderPara->offset);
+			// See executeFill()'s comment: a pending blit batch queued
+			// before this text must draw before it, not after.
+			flushBlitBatch();
+			m_cpu_overlay_dirty = false;
 			gDC::exec(opcode);
-			area.moveBy(m_current_offset);
-			compositeTextOverlay(area);
+			if (m_cpu_overlay_dirty) {
+				area.moveBy(m_current_offset);
+				compositeTextOverlay(area);
+			}
 			break;
 		}
 
@@ -816,6 +903,7 @@ gEGLDC::gEGLDC(INativeWindowProvider* window_provider, int width, int height) : 
 	m_page_count = 1;
 	m_render_page = 0;
 	m_egl_context = EGL_NO_CONTEXT;
+	m_cpu_overlay_dirty = false;
 
 	// accelNever: this pixmap is a plain CPU-side staging buffer for text
 	// compositing (see gOpcode::renderText handling below) that we
