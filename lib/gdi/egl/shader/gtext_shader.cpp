@@ -275,7 +275,7 @@ void gTextShader::drawGlyph(float x, float y, const glyph_uv& uv, float r, float
 
     bindVAO();
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+    gles::uploadDynamicVBO(sizeof(vertices), vertices);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     unbindVAO();
 }

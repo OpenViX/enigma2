@@ -187,7 +187,7 @@ void gShader::drawRect(float x, float y, float width, float height, float r, flo
 
 	bindVAO();
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+	gles::uploadDynamicVBO(sizeof(vertices), vertices);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	unbindVAO();
@@ -201,7 +201,7 @@ void gShader::drawLine(float x1, float y1, float x2, float y2, float r, float g,
 
 	bindVAO();
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+	gles::uploadDynamicVBO(sizeof(vertices), vertices);
 	glDrawArrays(GL_LINES, 0, 2);
 	unbindVAO();
 }

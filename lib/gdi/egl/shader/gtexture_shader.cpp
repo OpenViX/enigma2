@@ -297,7 +297,7 @@ void gTextureShader::drawTexture(float x, float y, float width, float height, GL
 
     bindVAO();
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+    gles::uploadDynamicVBO(sizeof(vertices), vertices);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     unbindVAO();
 }
@@ -316,7 +316,7 @@ void gTextureShader::drawBatch(const float* vertex_data, int vertex_count, GLuin
 
     bindVAO();
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, (size_t)vertex_count * 4 * sizeof(float), vertex_data);
+    gles::uploadDynamicVBO((size_t)vertex_count * 4 * sizeof(float), vertex_data);
     glDrawArrays(GL_TRIANGLES, 0, vertex_count);
     unbindVAO();
 }

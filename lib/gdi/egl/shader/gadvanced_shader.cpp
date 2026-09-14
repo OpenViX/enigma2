@@ -389,7 +389,7 @@ void gAdvancedShader::drawAdvancedRect(float x, float y, float width, float heig
 
 	bindVAO();
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+	gles::uploadDynamicVBO(sizeof(vertices), vertices);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	unbindVAO();
 }

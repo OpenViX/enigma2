@@ -127,6 +127,20 @@ bool gEGLDC::tryInitEGL(int version) {
 	}
 
 	m_gles_version = version;
+
+	// One-time dump of what this driver/hardware actually advertises, as
+	// opposed to what the vendor SDK headers merely *declare* - header
+	// presence (EGL_KHR_partial_update, EGL_KHR_fence_sync, etc. all exist
+	// in eglext.h) says nothing about whether libvc5dream's V3D driver on
+	// this specific box actually implements them. Logged once at startup so
+	// this can be checked against the log rather than guessed at.
+	{
+		const char* egl_ext = eglQueryString(m_egl_display, EGL_EXTENSIONS);
+		const char* gl_ext = (const char*)glGetString(GL_EXTENSIONS);
+		eDebug("[gEGLDC] EGL_EXTENSIONS: %s", egl_ext ? egl_ext : "(null)");
+		eDebug("[gEGLDC] GL_EXTENSIONS: %s", gl_ext ? gl_ext : "(null)");
+	}
+
 	return true;
 }
 
@@ -627,7 +641,7 @@ void gEGLDC::flushTextBatch() {
 	// active, and this batch's data gets completely misinterpreted.
 	m_text_shader.bindVAO();
 
-	glBufferSubData(GL_ARRAY_BUFFER, 0, m_text_batch_buffer.size() * sizeof(float), m_text_batch_buffer.data());
+	gles::uploadDynamicVBO(m_text_batch_buffer.size() * sizeof(float), m_text_batch_buffer.data());
 
 	int vertex_count = m_text_batch_buffer.size() / 8; // 8 floats per vertex
 
