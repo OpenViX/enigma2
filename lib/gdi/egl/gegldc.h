@@ -52,6 +52,25 @@ private:
 	std::vector<float> m_text_batch_buffer;
 	const size_t MAX_BATCH_GLYPHS = 1024;
 
+	// Batches consecutive gOpcode::blit calls that share the same texture,
+	// blend requirement, and a single clip rect into one draw call instead
+	// of one glDrawArrays per blit - targets sequences like
+	// eWindowStyleSkinned::drawBorder()'s tiled border blits (many small
+	// blits of the same tile pixmap in a row) and repeated same-icon
+	// blits, without needing a shared texture atlas. Flushed the instant
+	// anything that would change per-draw state appears (different
+	// texture/blend/clip, rounding, or any other opcode type at all - see
+	// flushBlitBatch()'s call sites), so this never reorders draws
+	// relative to other opcodes and is visually identical to drawing them
+	// one at a time.
+	std::vector<float> m_blit_batch_buffer;
+	GLuint m_blit_batch_tex_id = 0;
+	bool m_blit_batch_blend = false;
+	eRect m_blit_batch_clip;
+	bool m_blit_batch_active = false;
+
+	void flushBlitBatch();
+
 	// Union of every area compositeTextOverlay() has painted into that
 	// hasn't since been erased by executeClear() - lets executeClear() skip
 	// its (CPU memset + texture upload + extra draw call) stale-text erase

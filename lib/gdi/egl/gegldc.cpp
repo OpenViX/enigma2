@@ -209,6 +209,12 @@ void gEGLDC::setGlScissor(const eRect& rect) {
 }
 
 void gEGLDC::executeFill(const gOpcode* op) {
+	// A pending blit batch (see executeBlit()) hasn't been drawn yet - flush
+	// it first so this fill lands in the correct z-order relative to it,
+	// instead of ending up underneath blits that were actually submitted
+	// before it.
+	flushBlitBatch();
+
 	float r = m_foreground_color_rgb.r / 255.0f;
 	float g = m_foreground_color_rgb.g / 255.0f;
 	float b = m_foreground_color_rgb.b / 255.0f;
@@ -237,6 +243,9 @@ void gEGLDC::executeFill(const gOpcode* op) {
 }
 
 void gEGLDC::executeFillRegion(const gOpcode* op) {
+	// See executeFill() above for why a pending blit batch must flush first.
+	flushBlitBatch();
+
 	float r = m_foreground_color_rgb.r / 255.0f;
 	float g = m_foreground_color_rgb.g / 255.0f;
 	float b = m_foreground_color_rgb.b / 255.0f;
@@ -259,6 +268,9 @@ void gEGLDC::executeFillRegion(const gOpcode* op) {
 void gEGLDC::executeRectangle(const gOpcode* op) {
 	if (m_current_clip.rects.empty())
 		return;
+
+	// See executeFill() above for why a pending blit batch must flush first.
+	flushBlitBatch();
 
 	if (m_radius > 0 || m_gradient_colors.size() > 0) {
 		for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
@@ -287,6 +299,9 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 }
 
 void gEGLDC::executeClear(const gOpcode* op) {
+	// See executeFill() above for why a pending blit batch must flush first.
+	flushBlitBatch();
+
 	float r = m_background_color_rgb.r / 255.0f;
 	float g = m_background_color_rgb.g / 255.0f;
 	float b = m_background_color_rgb.b / 255.0f;
@@ -368,6 +383,9 @@ void gEGLDC::executeLine(const gOpcode* op) {
 	if (m_current_clip.rects.empty())
 		return;
 
+	// See executeFill()'s comment for why a pending blit batch must flush first.
+	flushBlitBatch();
+
 	// See executeFill()'s comment: gPixmap::line() is a raw-overwrite
 	// Bresenham rasterizer with no alpha blending, so this must match.
 	glDisable(GL_BLEND);
@@ -408,26 +426,77 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 	// data, which this backend doesn't control - a caller that didn't pass
 	// blitAlphaBlend/blitAlphaTest wants a fast, fully opaque copy that
 	// ignores whatever the source's alpha channel happens to contain, so
-	// blend must stay data-independent (off) for that case rather than
-	// being left always-on like scissor.
+	// blend must stay data-independent rather than being left always-on
+	// like scissor.
 	bool enable_blend = (op->flags & (gPixmap::blitAlphaBlend | gPixmap::blitAlphaTest)) || (m_radius > 0);
-	if (enable_blend)
-		glEnable(GL_BLEND);
-	else
-		glDisable(GL_BLEND);
 
 	float x = pos.x();
 	float y = pos.y();
 	float width = pos.width() > 0 ? pos.width() : op->pixmap->size().width();
 	float height = pos.height() > 0 ? pos.height() : op->pixmap->size().height();
 
-	for (unsigned int i = 0; i < clip.rects.size(); ++i) {
-		setGlScissor(clip.rects[i]);
-		m_texture_shader.drawTexture(x, y, width, height, tex_id, 1.0f, m_radius, m_radius_edges);
+	// Batching needs exactly one scissor rect (a batched draw call has only
+	// one active scissor for every quad in it) and no rounding (the texture
+	// shader's corner SDF uses a single u_rect_size uniform sized for one
+	// quad - wrong for every quad but the first in a batch). Anything else
+	// falls back to the original immediate per-rect draw.
+	bool can_batch = clip.rects.size() == 1 && m_radius <= 0;
+
+	if (!can_batch) {
+		flushBlitBatch();
+		if (enable_blend)
+			glEnable(GL_BLEND);
+		else
+			glDisable(GL_BLEND);
+		for (unsigned int i = 0; i < clip.rects.size(); ++i) {
+			setGlScissor(clip.rects[i]);
+			m_texture_shader.drawTexture(x, y, width, height, tex_id, 1.0f, m_radius, m_radius_edges);
+		}
+		if (!enable_blend)
+			glEnable(GL_BLEND);
+		return;
 	}
 
-	if (!enable_blend)
+	const eRect& r = clip.rects[0];
+	bool state_changed = m_blit_batch_active && (tex_id != m_blit_batch_tex_id || enable_blend != m_blit_batch_blend || r != m_blit_batch_clip);
+	bool full = m_blit_batch_buffer.size() >= (size_t)gTextureShader::kMaxBatchQuads * 24;
+	if (state_changed || full)
+		flushBlitBatch();
+
+	if (!m_blit_batch_active) {
+		m_blit_batch_tex_id = tex_id;
+		m_blit_batch_blend = enable_blend;
+		m_blit_batch_clip = r;
+		m_blit_batch_active = true;
+	}
+
+	// x, y, u, v per vertex - same layout/winding as gTextureShader::drawTexture().
+	float quad[24] = {x,		 y,			 0.0f, 0.0f, x,			y + height, 0.0f, 1.0f, x + width, y,			 1.0f, 0.0f,
+					  x + width, y,			 1.0f, 0.0f, x,			y + height, 0.0f, 1.0f, x + width, y + height, 1.0f, 1.0f};
+	m_blit_batch_buffer.insert(m_blit_batch_buffer.end(), quad, quad + 24);
+}
+
+void gEGLDC::flushBlitBatch() {
+	if (!m_blit_batch_active)
+		return;
+	m_blit_batch_active = false;
+
+	if (m_blit_batch_buffer.empty())
+		return;
+
+	if (m_blit_batch_blend)
 		glEnable(GL_BLEND);
+	else
+		glDisable(GL_BLEND);
+
+	setGlScissor(m_blit_batch_clip);
+	int vertex_count = (int)(m_blit_batch_buffer.size() / 4);
+	m_texture_shader.drawBatch(m_blit_batch_buffer.data(), vertex_count, m_blit_batch_tex_id, 1.0f);
+
+	if (!m_blit_batch_blend)
+		glEnable(GL_BLEND);
+
+	m_blit_batch_buffer.clear();
 }
 
 void gEGLDC::renderGlyph(const ePoint& pos, gPixmap* glyph_mask, const gRGB& color) {
@@ -530,6 +599,11 @@ void gEGLDC::flushTextBatch() {
 }
 
 void gEGLDC::compositeTextOverlay(eRect area) {
+	// See executeFill()'s comment for why a pending blit batch must flush
+	// first - this also uses m_texture_shader's shared VBO, which a
+	// pending batch's data still occupies until drawn.
+	flushBlitBatch();
+
 	// Clamp to the pixmap's actual bounds - a scrolling list widget's
 	// per-row offset can legitimately place a row partially or fully
 	// outside (e.g. mid-scroll, or a row whose valign correction pushes it
@@ -583,8 +657,6 @@ void gEGLDC::compositeTextOverlay(eRect area) {
 void gEGLDC::exec(const gOpcode* opcode) {
 	if (!isInitialized())
 		return;
-
-	m_texture_manager.processDeletions();
 
 	switch (opcode->opcode) {
 		case gOpcode::fill:
@@ -671,20 +743,37 @@ void gEGLDC::exec(const gOpcode* opcode) {
 			// rendered because the GPU/driver eventually flushes its tile
 			// buffer on its own with no explicit sync point, which likely
 			// also explains earlier slowness/latency symptoms.
+			//
+			// processDeletions() moved here too: it used to run at the top
+			// of exec() for every single opcode, taking a mutex lock just
+			// to check for pending texture frees even though a list row's
+			// worth of opcodes (5-10 of them) all belong to the same frame
+			// - freeing a texture a few opcodes later than the very next
+			// one after its pixmap died is harmless, so this only needs to
+			// happen once per real frame boundary, same as flip() itself.
+			m_texture_manager.processDeletions();
+			flushBlitBatch();
 			flushTextBatch();
 			flip();
 			gDC::exec(opcode);
 			break;
 
 		case gOpcode::flip:
+			m_texture_manager.processDeletions();
+			flushBlitBatch();
 			flushTextBatch();
 			flip();
 			gDC::exec(opcode);
 			break;
 
 		default:
-			gDC::exec(opcode);
+			// Unknown to this backend's own opcode handlers - flush any
+			// pending batch first in case it draws something (e.g. a
+			// monoBlit/blitScale variant), same reasoning as executeFill()'s
+			// comment above.
+			flushBlitBatch();
 			flushTextBatch();
+			gDC::exec(opcode);
 			break;
 	}
 

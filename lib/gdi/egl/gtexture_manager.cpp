@@ -2,6 +2,7 @@
 #include <lib/gdi/egl/gles_version.h>
 #include <lib/gdi/egl/gtexture_manager.h>
 #include <algorithm>
+#include <cstring>
 
 static gTextureManager* s_active_manager = nullptr;
 
@@ -132,7 +133,40 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 		// - which is exactly what's needed to cancel out the render target's
 		// own R/B swap on the way to the screen. No CPU-side byte swapping,
 		// and no texture swizzle, needed.
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->data);
+		//
+		// glTexImage2D() assumes each row is tightly packed (row length ==
+		// width, no padding) - true for e2's own pixmap allocations, but
+		// NOT guaranteed for a pixmap loaded from an externally-decoded
+		// image (e.g. a JPEG sized to an arbitrary widget width), whose
+		// stride can be padded wider than width*bypp. Uploading that
+		// directly reads each row starting a few bytes short of where it
+		// actually begins, and the error compounds every row - producing
+		// exactly the diagonal-shear/sheared-image corruption seen with
+		// e.g. TMDBCockpit's cover/backdrop pictures (the CPU renderer
+		// never hits this because gPixmap::fill()/blit() always address
+		// rows via surface->stride explicitly, never assume width*bypp).
+		int row_pixels = surface->stride / surface->bypp;
+		if (row_pixels == width) {
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->data);
+#if defined(HAVE_GLES3)
+		} else if (gles::isGLES3()) {
+			// GL_UNPACK_ROW_LENGTH tells GL the source buffer's actual row
+			// length in pixels, so it can skip the padding itself instead
+			// of a CPU-side repack.
+			glPixelStorei(GL_UNPACK_ROW_LENGTH, row_pixels);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->data);
+			glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+#endif
+		} else {
+			// GLES2 has no GL_UNPACK_ROW_LENGTH - repack into a tightly
+			// packed buffer first, same technique as the paletted branch
+			// below already uses for its own stride-vs-width mismatch.
+			std::vector<uint32_t> packed((size_t)width * height);
+			const uint8_t* src = (const uint8_t*)surface->data;
+			for (int row = 0; row < height; ++row)
+				memcpy(packed.data() + (size_t)row * width, src + (size_t)row * surface->stride, (size_t)width * 4);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, packed.data());
+		}
 	} else if (surface->bpp == 8 && surface->clut.data) {
 		// 8-bit paletted image (often used for picons/skins).
 		// gles 3.0 does not support indexed color textures natively anymore,

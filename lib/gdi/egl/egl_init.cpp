@@ -86,7 +86,19 @@ class gEGLDCAutoInit : protected eAutoInit
 
 public:
 	gEGLDCAutoInit()
-		: eAutoInit(eAutoInitNumbers::graphic - 2, "gEGLDC"), m_dc(nullptr)
+		// graphic-1, not graphic-2 (gAccel's own priority): gEGLDC's teardown
+		// (cleanupEGL()'s eglMakeCurrent/eglDestroyContext/eglTerminate) calls
+		// into the vendor EGL/GLES driver, which depends on the BCM graphics
+		// core that gAccel::~gAccel() releases via bcm_accel_close(). At the
+		// same priority the two would close in registration/link order
+		// (undefined in practice); graphic-1 - the same priority gFBDC and
+		// gSDLDC already use for exactly this reason - guarantees gEGLDC
+		// closes before gAccel (and still inits after it), regardless of link
+		// order. Getting this wrong crashes inside the closed-source EGL
+		// driver on shutdown with an unhelpful backtrace (PC == fault address,
+		// no useful frames) since it's dereferencing state gAccel already
+		// tore down.
+		: eAutoInit(eAutoInitNumbers::graphic - 1, "gEGLDC"), m_dc(nullptr)
 	{
 		eInit::add(rl, this);
 	}

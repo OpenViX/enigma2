@@ -204,8 +204,11 @@ bool gTextureShader::init()
 
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    // 6 vertices × 4 floats (x, y, u, v)
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
+    // Sized for the largest single upload this shader ever does: a batched
+    // draw of up to kMaxBatchQuads quads (see drawBatch()), 6 vertices x 4
+    // floats (x, y, u, v) each. A single drawTexture() call just uploads
+    // its 6 vertices into the front of this same, larger buffer.
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4 * kMaxBatchQuads, nullptr, GL_DYNAMIC_DRAW);
     
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -296,5 +299,24 @@ void gTextureShader::drawTexture(float x, float y, float width, float height, GL
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+    unbindVAO();
+}
+
+void gTextureShader::drawBatch(const float* vertex_data, int vertex_count, GLuint texture_id, float global_alpha)
+{
+    bind();
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glUniform1i(m_texture_location, 0);
+    glUniform1f(m_alpha_location, global_alpha);
+
+    // No rounding for a batch - see the header comment on drawBatch().
+    glUniform1f(m_radius_location, 0.0f);
+
+    bindVAO();
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, (size_t)vertex_count * 4 * sizeof(float), vertex_data);
+    glDrawArrays(GL_TRIANGLES, 0, vertex_count);
     unbindVAO();
 }
