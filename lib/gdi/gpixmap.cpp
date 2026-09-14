@@ -601,12 +601,8 @@ void gPixmap::drawRectangleNew(const gRegion& region, const eRect& area, const g
 		// Borders
 			/* every block below intersects its rows/columns with reg (this iteration's
 			   piece of the region), for the same reason as the corner bound check above:
-			   without it, a multi-rect region would re-blend the same pixels once per rect.
-			   Also skip outright when borderA is 0 (fully transparent border) - same
-			   reasoning as the fillA guard above the fill blocks below: a border color
-			   with 0 alpha is a guaranteed no-op, so don't pay for a full per-pixel
-			   alpha_blend() pass around the whole perimeter to draw nothing. */
-		if (borderWidth > 0 && borderA) {
+			   without it, a multi-rect region would re-blend the same pixels once per rect. */
+		if (borderWidth > 0) {
 			// Top Border
 			for (int y = 0; y < borderWidth; ++y) {
 				int py = area.top() + y;
