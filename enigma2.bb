@@ -1,69 +1,351 @@
-DESCRIPTION = "Enigma2 is an experimental, but useful framebuffer-based frontend for DVB functions"
-MAINTAINER = "OpenVix"
-LICENSE = "GPLv2"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
+SUMMARY = "Enigma2 is an experimental, but useful framebuffer-based frontend for DVB functions"
+MAINTAINER = "OE-Alliance"
+LICENSE = "GPL-2.0-only"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=751419260aa954499f7abaabaa882bbe"
+LIC_FILES_CHKSUM:teamblue = "file://LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
+LIC_FILES_CHKSUM:openatv = "file://LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
+LIC_FILES_CHKSUM:openvix = "file://LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
+LIC_FILES_CHKSUM:openbh = "file://LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
+LIC_FILES_CHKSUM:opendroid = "file://LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
-inherit gitpkgv externalsrc
+DEPENDS = " \
+    curl \
+    freetype \
+    gettext-native \
+    gstreamer1.0-plugins-base gstreamer1.0 \
+    jpeg \
+    libdreamdvd libdvbsi++ fribidi libmad libpng giflib libxml2 libxmlccwrap \
+    ${@bb.utils.contains_any("DISTRO_NAME", "openatv openvix openbh teamblue opendroid openhdf", "libsigc++-3" , "libsigc++-2.0", d)} \
+    openssl avahi libudfread \
+    python3-pillow python3-twisted python3-wifi python3-six-native \
+    swig-native \
+    tuxtxt-enigma2 \
+    ${@bb.utils.contains("DISTRO_NAME", "openatv", "ffmpeg" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "uianimation", "vuplus-libgles-${MACHINE} libvugles2" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "hiaccel", "dinobot-libs-${MACHINE}" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "alsamixer", "ffmpeg" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "e2egl", "virtual/egl virtual/libgles2" , "", d)} \
+    "
 
-S = "${FILE_DIRNAME}"
-WORKDIR = "${S}/build"
+RDEPENDS:${PN} = " \
+    alsa-conf \
+    libdreamdvd \
+    libudfread \
+    enigma2-fonts \
+    font-valis-enigma \
+    ethtool \
+    glibc-gconv-iso8859-15 \
+    glibc-gconv-cp1250 \
+    ${PYTHON_RDEPS} \
+    ${@bb.utils.contains("DISTRO_FEATURES", "e2hotplug", "" , "hotplug-e2-helper", d)} \
+    ${@bb.utils.contains("DISTRO_NAME", "openatv", "openatv-autorestore socketdaemon" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "uianimation", "vuplus-libgles-${MACHINE} libvugles2" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "hiaccel", "dinobot-libs-${MACHINE}" , "", d)} \
+    oe-alliance-branding \
+    ${@bb.utils.contains("MACHINE_FEATURES", "smallflash", "", "${NORMAL_IMAGE_DEPEND}", d)} \
+"
 
-PV = "2.7+git"
-PKGV = "2.7+git${GITPKGV}"
-PR = "r26"
+NORMAL_IMAGE_DEPEND = "\
+    ${E2DEFAULTSKIN} \
+    enigma2-plugin-font-wqy-microhei \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'blindscan-dvbc', d.getVar('VIRTUAL-RUNTIME_blindscan_dvbc') or '', '', d)} \
+    ${@bb.utils.contains("DISTRO_NAME", "openatv", "ffmpeg", "", d)} \
+"
 
-FILES_${PN} += "${datadir}/keymaps"
-FILES_${PN}-meta = "${datadir}/meta"
-PACKAGES =+ "${PN}-src"
+RRECOMMENDS:${PN} = " \
+    libdvdcss \
+    glib-networking \
+    glibc-gconv-utf-16 \
+    ${@bb.utils.contains("MACHINE_FEATURES", "smallflash", "", "${NORMAL_IMAGE_RECOMMENDS}", d)} \
+"
+
+NORMAL_IMAGE_RECOMMENDS = "\
+    gstreamer1.0-plugin-subsink \
+    ${GST_BASE_RDEPS} \
+    ${GST_GOOD_RDEPS} \
+    ${GST_BAD_RDEPS} \
+    ${GST_UGLY_RDEPS} \
+    ${GST_BAD_OPUS} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "smallflash", "", "shellinabox", d)} \
+"
+
+PYTHON_RDEPS = " \
+    python3-asyncio \
+    python3-codecs \
+    python3-core \
+    python3-crypt \
+    python3-fcntl \
+    python3-mmap \
+    python3-netclient \
+    python3-netifaces \
+    python3-netserver \
+    python3-pickle \
+    python3-shell \
+    python3-threading \
+    python3-twisted-core \
+    python3-twisted-web \
+    python3-xml \
+    python3-zopeinterface \
+    python3-email \
+    python3-mime \
+    python3-pyusb \
+    python3-process \
+    python3-image \
+    python3-pillow \
+    python3-six \
+    python3-treq \
+"
+
+GST_BASE_RDEPS = "\
+    gstreamer1.0-plugins-base-alsa \
+    gstreamer1.0-plugins-base-app \
+    gstreamer1.0-plugins-base-audioconvert \
+    gstreamer1.0-plugins-base-audioresample \
+    gstreamer1.0-plugins-base-audiorate \
+    gstreamer1.0-plugins-base-videoconvertscale \
+    gstreamer1.0-plugins-base-ivorbisdec \
+    gstreamer1.0-plugins-base-ogg \
+    gstreamer1.0-plugins-base-playback \
+    gstreamer1.0-plugins-base-subparse \
+    gstreamer1.0-plugins-base-typefindfunctions \
+    gstreamer1.0-plugins-base-vorbis \
+    gstreamer1.0-plugins-base-rawparse \
+"
+
+GST_GOOD_RDEPS = "\
+    gstreamer1.0-plugins-good-amrnb \
+    gstreamer1.0-plugins-good-amrwbdec \
+    gstreamer1.0-plugins-good-apetag \
+    gstreamer1.0-plugins-good-audioparsers \
+    gstreamer1.0-plugins-good-autodetect \
+    gstreamer1.0-plugins-good-avi \
+    gstreamer1.0-plugins-good-flac \
+    gstreamer1.0-plugins-good-flv \
+    gstreamer1.0-plugins-good-icydemux \
+    gstreamer1.0-plugins-good-id3demux \
+    gstreamer1.0-plugins-good-isomp4 \
+    gstreamer1.0-plugins-good-matroska \
+    gstreamer1.0-plugins-good-rtp \
+    gstreamer1.0-plugins-good-rtpmanager \
+    gstreamer1.0-plugins-good-rtsp \
+    gstreamer1.0-plugins-good-soup \
+    gstreamer1.0-plugins-good-udp \
+    gstreamer1.0-plugins-good-wavparse \
+    gstreamer1.0-plugins-good-wavpack \
+"
+
+GST_BAD_RDEPS = "\
+    gstreamer1.0-plugins-bad-dash \
+    gstreamer1.0-plugins-bad-mpegpsdemux \
+    gstreamer1.0-plugins-bad-mpegtsdemux \
+    gstreamer1.0-plugins-bad-rtmp \
+    gstreamer1.0-plugins-bad-smoothstreaming \
+    gstreamer1.0-plugins-bad-faad \
+    gstreamer1.0-plugins-bad-hls \
+    gstreamer1.0-plugins-bad-videoparsersbad \
+    gstreamer1.0-plugins-bad-autoconvert \
+    gstreamer1.0-plugins-bad-subenc \
+"
+
+GST_BAD_OPUS = " \
+    ${@bb.utils.contains("TARGET_ARCH", "arm", " gstreamer1.0-plugins-base-opus gstreamer1.0-plugins-bad-opusparse", "", d)} \
+    ${@bb.utils.contains("TARGET_ARCH", "aarch64", " gstreamer1.0-plugins-base-opus gstreamer1.0-plugins-bad-opusparse", "", d)} \
+"
+
+GST_UGLY_RDEPS = "\
+    gstreamer1.0-plugins-ugly-asf \
+    gstreamer1.0-plugins-ugly-cdio \
+    gstreamer1.0-plugins-ugly-dvdsub \
+"
+
+DESCRIPTION:append:enigma2-plugin-extensions-cutlisteditor = "enables you to cut your movies."
+RDEPENDS:enigma2-plugin-extensions-cutlisteditor = "aio-grab"
+DESCRIPTION:append:enigma2-plugin-extensions-graphmultiepg = "shows a graphical timeline EPG."
+DESCRIPTION:append:enigma2-plugin-extensions-pictureplayer = "displays photos on the TV."
+DESCRIPTION:append:enigma2-plugin-systemplugins-frontprocessorupdate = "keeps your frontprocessor up to date."
+DESCRIPTION:append:enigma2-plugin-systemplugins-positionersetup = "helps you installing a motorized dish."
+DESCRIPTION:append:enigma2-plugin-systemplugins-satelliteequipmentcontrol = "allows you to fine-tune DiSEqC-settings."
+DESCRIPTION:append:enigma2-plugin-systemplugins-satfinder = "helps you to align your dish."
+DESCRIPTION:append:enigma2-plugin-systemplugins-skinselector = "shows a menu with selectable skins."
+DESCRIPTION:append:enigma2-plugin-systemplugins-videomode = "selects advanced video modes"
+RDEPENDS:enigma2-plugin-systemplugins-softwaremanager = "python3-twisted-web"
+DESCRIPTION:append:enigma2-plugin-systemplugins-crashlogautosubmit = "automatically send crashlogs to Dream Multimedia"
+RDEPENDS:enigma2-plugin-systemplugins-crashlogautosubmit = "python3-twisted-mail python3-twisted-names python3-compression python3-mime python3-email"
+DESCRIPTION:append:enigma2-plugin-systemplugins-cleanupwizard = "informs you on low internal memory on system startup."
+DESCRIPTION:append:enigma2-plugin-extensions-modem = "opens a menu to connect to internet via builtin modem."
+RDEPENDS:enigma2-plugin-extensions-modem = "dreambox-modem-ppp-scripts"
+DESCRIPTION:append:enigma2-plugin-systemplugins-wirelesslan = "helps you configuring your wireless lan"
+RDEPENDS:enigma2-plugin-systemplugins-wirelesslan = "wpa-supplicant wireless-tools python3-wifi"
+DESCRIPTION:append:enigma2-plugin-systemplugins-networkwizard = "provides easy step by step network configuration"
+# Note that these tools lack recipes
+RDEPENDS:enigma2-plugin-extensions-dvdburn = "dvd+rw-tools dvdauthor mjpegtools genisoimage replex"
+RRECOMMENDS:enigma2-plugin-extensions-dvdburn = "kernel-module-sg"
+RRECOMMENDS:enigma2-plugin-extensions-dvdplayer = "kernel-module-cdrom kernel-module-sr-mod"
+RDEPENDS:enigma2-plugin-systemplugins-hotplug = "${@bb.utils.contains("DISTRO_FEATURES", "e2hotplug", "" , "hotplug-e2-helper", d)}"
+DESCRIPTION:enigma2-plugin-font-wqy-microhei = "Font wqy-microhei add support for China EPG"
+SUMMARY:enigma2-plugin-extensions-streamlinkwrapper = "Enables support for streamlink url scheme in bouquet list."
+RDEPENDS:enigma2-plugin-extensions-streamlinkwrapper = "streamlink"
+SUMMARY:enigma2-plugin-extensions-ytdlwrapper = "Enables support for Youtube-DL url scheme in bouquet list."
+RDEPENDS:enigma2-plugin-extensions-ytdlwrapper = "python3-youtube-dl"
+SUMMARY:enigma2-plugin-extensions-ytdlpwrapper = "Enables support for YT-DLP url scheme in bouquet list."
+RDEPENDS:enigma2-plugin-extensions-ytdlpwrapper = "python3-yt-dlp"
+RDEPENDS:enigma2-plugin-extensions-filecommander = "python3-puremagic"
+
+RREPLACES:enigma2-plugin-systemplugins-lcnscanner:openatv = "enigma2-plugin-systemplugins-terrestrialscan"
+RCONFLICTS:enigma2-plugin-systemplugins-lcnscanner:openatv = "enigma2-plugin-systemplugins-terrestrialscan"
+
+inherit autotools-brokensep gitpkgv pkgconfig python3native python3targetconfig upx-compress
+
+PV = "${IMAGE_VERSION}+git"
+PKGV = "${IMAGE_VERSION}+git${GITPKGV}"
+
+SRCREV ?= "${AUTOREV}"
+SRC_URI = "${ENIGMA2_URI}"
+PR = "r1"
+
+SRC_URI:append:openatv = " file://swig-4.3.patch"
+
+SRC_URI:append:opendroid = " file://swig-4.3.patch"
+
+#SRC_URI_append_spycatminiv2 = " \
+#    file://enigma2-dinobotplayer.patch \
+#    "
+
+SRC_URI:append:vuduo = " \
+    file://duo_VFD.patch \
+    "
+
+do_patch:append:openatv() {
+    bb.build.exec_func('do_usesigc3', d)
+}
+
+do_usesigc3 () {
+sed -i "s/sigc++-2.0/sigc++-3.0/g" ${S}/configure.ac
+sed -i "s/sigc++-2.0/sigc++-3.0/g" ${S}/enigma2.pc.in 
+}
+
+FILES:${PN} += "${datadir}/keymaps ${datadir}/icons"
+FILES:${PN}-meta = "${datadir}/meta"
 PACKAGES += "${PN}-meta"
-PACKAGE_ARCH = "${MACHINE_ARCH}"
+PACKAGE_ARCH = "${MACHINEBUILD}"
 
-inherit autotools pkgconfig pythonnative
+PACKAGES =+ "enigma2-plugin-font-wqy-microhei enigma2-fonts"
+PACKAGES_DYNAMIC += "^enigma2-plugin-.*"
+PACKAGES_DYNAMIC += "^enigma2-locale-.*"
+FILES:enigma2-plugin-font-wqy-microhei = "${datadir}/fonts/wqy-microhei.ttc ${datadir}/fonts/fallback.font"
+FILES:enigma2-fonts = "${datadir}/fonts"
 
-ACLOCALDIR = "${B}/aclocal-copy"
-e2_copy_aclocal () {
-	rm -rf ${ACLOCALDIR}/
-	mkdir -p ${ACLOCALDIR}/
-	if [ -d ${STAGING_DATADIR_NATIVE}/aclocal ]; then
-		cp-noerror ${STAGING_DATADIR_NATIVE}/aclocal/ ${ACLOCALDIR}/
-	fi
-	if [ -d ${STAGING_DATADIR}/aclocal -a "${STAGING_DATADIR_NATIVE}/aclocal" != "${STAGING_DATADIR}/aclocal" ]; then
-		cp-noerror ${STAGING_DATADIR}/aclocal/ ${ACLOCALDIR}/
-	fi
+ALLOW_EMPTY:enigma2-plugin-font-wqy-microhei = "1"
+
+EXTRA_OECONF = " \
+    BUILD_SYS=${BUILD_SYS} \
+    HOST_SYS=${HOST_SYS} \
+    STAGING_INCDIR=${STAGING_INCDIR} \
+    STAGING_LIBDIR=${STAGING_LIBDIR} \
+    --with-boxtype=${MACHINE} \
+    --with-machinebuild="${MACHINEBUILD}" \
+    --with-libsdl=no \
+    --enable-dependency-tracking \
+    --with-gstversion=1.0 \
+    --with-e2rev=${GITPKGV} \
+    --with-oarev=${@bb.process.run('git -C %s rev-parse --short HEAD' % d.getVar('OEA-META-OE-BASE'))[0].strip()} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "fcc", "--with-fcc" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "textlcd", "--with-textlcd" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "colorlcd", "--with-colorlcd" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "colorlcd128", "--with-colorlcd128" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "colorlcd220", "--with-colorlcd220" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "colorlcd240", "--with-colorlcd240" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "colorlcd390", "--with-colorlcd390" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "colorlcd400", "--with-colorlcd400" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "colorlcd480", "--with-colorlcd480" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "colorlcd720", "--with-colorlcd720" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "colorlcd800", "--with-colorlcd800" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "bwlcd96", "--with-bwlcd96" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "bwlcd128", "--with-bwlcd128" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "bwlcd140", "--with-bwlcd140" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "bwlcd255", "--with-bwlcd255" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "fullgraphiclcd", "--with-fullgraphiclcd" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "gigabluelcd", "--with-gigabluelcd" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "nolcd", "--with-nolcd" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "7segment", "--with-7segment" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "uianimation", "--with-libvugles2" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "osdanimation", "--with-osdanimation" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "hiaccel", "--with-libhiaccel" , "", d)} \
+    ${@bb.utils.contains("MACHINE_FEATURES", "e2egl", "--with-egl" , "", d)} \
+    "
+
+CPPFLAGS += "-Wno-error=format-security"
+LDFLAGS:prepend = "${@bb.utils.contains('GST_VERSION', '1.0', ' -lxml2 ', '', d)}"
+SRC_URI:append = "${@bb.utils.contains("MACHINE_FEATURES", "uianimation", " file://use-lv3ddriver.patch" , "", d)}"
+
+# Swig generated 200k enigma.py file has no purpose for end users
+FILES:${PN}-dbg += "\
+    ${libdir}/enigma2/python/enigma.py \
+    "
+
+# some plugins contain so's, their stripped symbols should not end up in the enigma2 package
+FILES:${PN}-dbg += "\
+    ${libdir}/enigma2/python/*/.debug \
+    ${libdir}/enigma2/python/*/*/*.debug \
+    ${libdir}/enigma2/python/*/*/*/.debug \
+    ${libdir}/enigma2/python/*/*/*/*/.debug \
+    ${libdir}/enigma2/python/Plugins/*/*/.debug \
+    "
+
+# Save some space by not installing sources (StartEnigma.py must remain)
+FILES:${PN}-src = "\
+    ${libdir}/enigma2/python/e2reactor.py \
+    ${libdir}/enigma2/python/enigma_py_patcher.py \
+    ${libdir}/enigma2/python/GlobalActions.py \
+    ${libdir}/enigma2/python/keyids.py \
+    ${libdir}/enigma2/python/keymapparser.py \
+    ${libdir}/enigma2/python/Navigation.py \
+    ${libdir}/enigma2/python/NavigationInstance.py \
+    ${libdir}/enigma2/python/PowerTimer.py \
+    ${libdir}/enigma2/python/RecordTimer.py \
+    ${libdir}/enigma2/python/Scheduler.py \
+    ${libdir}/enigma2/python/ServiceReference.py \
+    ${@bb.utils.contains_any("DISTRO_NAME", "openvix openbh", "${libdir}/enigma2/python/Session.py", "", d)} \
+    ${libdir}/enigma2/python/skin.py \
+    ${libdir}/enigma2/python/timer.py \
+    ${libdir}/enigma2/python/TranslationHelper.py \
+    ${libdir}/enigma2/python/upgrade.py \
+    ${libdir}/enigma2/python/*/*.py \
+    ${libdir}/enigma2/python/*/*/*.py \
+    ${libdir}/enigma2/python/*/*/*/*.py \
+    "
+FILES:${PN} += " \
+    ${bindir} ${sysconfdir}/e2-git.log /usr/lib"
+
+# Save po files
+PACKAGES =+ "${PN}-po"
+FILES:${PN}-po = "${datadir}/enigma2/po/*.po ${datadir}/enigma2/po/*.pot"
+
+do_install:append() {
+    install -d ${D}/usr/share/keymaps
+    ln -s ${libdir}/enigma2/python/Tools/StbHardware.pyc ${D}${libdir}/enigma2/python/Tools/DreamboxHardware.pyc
+    ln -s ${libdir}/enigma2/python/Components/PackageInfo.pyc ${D}${libdir}/enigma2/python/Components/DreamboxInfoHandler.pyc
+    install -d ${D}${sysconfdir}
+    git --git-dir=${S}/.git log --no-merges --since=10.weeks --pretty=format:"%s" > ${D}${sysconfdir}/e2-git.log
+    git --git-dir=${OE-ALLIANCE_BASE}/.git log --no-merges --since=10.weeks --pretty=format:"%s" > ${D}${sysconfdir}/oe-git.log
+    if [ "${base_libdir}" = "/lib64" ] ; then
+        install -d ${D}/usr/lib
+        ln -s ${libdir}/enigma2 ${D}/usr/lib/enigma2
+        ln -s ${libdir}/${PYTHON_DIR} ${D}/usr/lib/${PYTHON_DIR}
+    fi
 }
 
-EXTRACONFFUNCS += "e2_copy_aclocal"
+python populate_packages:prepend() {
+    enigma2_plugindir = bb.data.expand('${libdir}/enigma2/python/Plugins', d)
+    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/[a-zA-Z0-9_]+.*$', 'enigma2-plugin-%s', '%s', recursive=True, match_path=True, prepend=True, extra_depends="enigma2")
+    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/.*\.py$', 'enigma2-plugin-%s-src', '%s (source files)', recursive=True, match_path=True, prepend=True)
+    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/.*\.la$', 'enigma2-plugin-%s-dev', '%s (development)', recursive=True, match_path=True, prepend=True)
+    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/.*\.a$', 'enigma2-plugin-%s-staticdev', '%s (static development)', recursive=True, match_path=True, prepend=True)
+    do_split_packages(d, enigma2_plugindir, '^(\w+/\w+)/(.*/)?\.debug/.*$', 'enigma2-plugin-%s-dbg', '%s (debug)', recursive=True, match_path=True, prepend=True)
 
-bindir = "/usr/bin"
-sbindir = "/usr/sbin"
-
-# e2egl (see the dm900/dm920 machine .conf MACHINE_FEATURES) enables the
-# custom EGL/GLES3 GPU-rendering gDC backend (lib/gdi/egl/) - pull in the
-# EGL/GLES headers and libs it links against, and pass --with-egl through to
-# configure.ac so it actually builds gEGLDC instead of silently falling back
-# to the software framebuffer backend.
-DEPENDS += "${@bb.utils.contains('MACHINE_FEATURES', 'e2egl', 'virtual/egl virtual/libgles2', '', d)}"
-
-EXTRA_OECONF = "\
-	--enable-maintainer-mode --with-target=native --with-libsdl=no --with-boxtype=${MACHINE} \
-	--enable-dependency-tracking \
-	--with-e2rev=${GITPKGV} \
-	--with-oarev=${@bb.process.run('git -C %s rev-parse --short HEAD' % d.getVar('OEA-META-OE-BASE'))[0].strip()} \	
-	${@bb.utils.contains("MACHINE_FEATURES", "textlcd", "--with-textlcd" , "", d)} \
-	${@bb.utils.contains("MACHINE_FEATURES", "colorlcd", "--with-colorlcd" , "", d)} \
-	${@bb.utils.contains("MACHINE_FEATURES", "gigabluelcd", "--with-gigabluelcd" , "", d)} \
-	${@bb.utils.contains("MACHINE_FEATURES", "e2egl", "--with-egl" , "", d)} \
-	BUILD_SYS=${BUILD_SYS} \
-	HOST_SYS=${HOST_SYS} \
-	STAGING_INCDIR=${STAGING_INCDIR} \
-	STAGING_LIBDIR=${STAGING_LIBDIR} \
-	"
-
-do_install_append() {
-	install -d ${D}/usr/share/keymaps
+    enigma2_podir = bb.data.expand('${datadir}/enigma2/po', d)
+    do_split_packages(d, enigma2_podir, '^(\w+)/[a-zA-Z0-9_/]+.*$', 'enigma2-locale-%s', '%s', recursive=True, match_path=True, prepend=True, extra_depends="enigma2")
 }
 
-python populate_packages_prepend () {
-	enigma2_plugindir = bb.data.expand('${libdir}/enigma2/python/Plugins', d)
-	do_split_packages(d, enigma2_plugindir, '(.*?/.*?)/.*', 'enigma2-plugin-%s', '%s ', recursive=True, match_path=True, prepend=True, extra_depends="enigma2")
+do_package_qa() {
 }
