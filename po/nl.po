@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ViX\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-13 14:59+0000\n"
+"POT-Creation-Date: 2026-08-06 18:05+0000\n"
 "PO-Revision-Date: 2026-08-08 17:43+0200\n"
 "Last-Translator: Rob van der Does <RobvanderDoes@Gmail.com>\n"
 "Language-Team: Andy Blackburn, Rob van der Does\n"
@@ -1208,12 +1208,11 @@ msgstr "16:10 pan & scan"
 msgid "16:9"
 msgstr "16:9"
 
-#, fuzzy
-msgid "16:9 Always"
-msgstr "Altijd 16:9"
-
 msgid "16:9 Letterbox"
 msgstr "16:9 Letterbox"
+
+msgid "16:9 always"
+msgstr "Altijd 16:9"
 
 msgid "16K"
 msgstr "16K"
@@ -1271,6 +1270,12 @@ msgstr "3D surround"
 
 msgid "3D Surround Speaker Position"
 msgstr "3D surround luidsprekerpositie"
+
+msgid "3D surround"
+msgstr "3D surround"
+
+msgid "3D surround speaker position"
+msgstr "3D surround luidspreker positie"
 
 msgid "3X"
 msgstr "3X"
@@ -1570,20 +1575,13 @@ msgstr ""
 msgid "A/V settings"
 msgstr "A/V instellingen"
 
-#, fuzzy
-msgid "AAC / AAC+ Downmix"
-msgstr "AAC+ downmix"
-
-#, fuzzy
-msgid "AAC Downmix"
+msgid "AAC downmix"
 msgstr "AAC downmix"
 
-#, fuzzy
-msgid "AAC Transcoding"
+msgid "AAC transcoding"
 msgstr "AAC transcoding"
 
-#, fuzzy
-msgid "AAC+ Downmix"
+msgid "AAC+ downmix"
 msgstr "AAC+ downmix"
 
 msgid "ABOUT"
@@ -1592,17 +1590,14 @@ msgstr "OVER"
 msgid "AC3"
 msgstr "AC3"
 
-#, fuzzy
-msgid "AC3 / AC3+ Downmix"
-msgstr "AAC+ downmix"
-
-#, fuzzy
-msgid "AC3 Downmix"
+msgid "AC3 downmix"
 msgstr "AC3 downmix"
 
-#, fuzzy
-msgid "AC3+ Downmix"
-msgstr "AC3 downmix"
+msgid "AC3 transcoding"
+msgstr "AC3 transcoding"
+
+msgid "AC3+ Passthrough audio fix"
+msgstr "AC3+ Passthrough audio fix"
 
 msgid "ACQUIRING TSID/ONID"
 msgstr "VERKRIJGT TSID/ONID"
@@ -2366,10 +2361,6 @@ msgstr "Audio"
 msgid "Audio & Video"
 msgstr "Audio & video"
 
-#, fuzzy
-msgid "Audio Channel"
-msgstr "Audiokanaal"
-
 msgid "Audio PID"
 msgstr "Audio PID"
 
@@ -2377,9 +2368,8 @@ msgstr "Audio PID"
 msgid "Audio PID%s, codec & lang"
 msgstr "Audio PID%s, codec & taal"
 
-#, fuzzy
-msgid "Audio Volume Step Size"
-msgstr "Stapgrootte audio volume"
+msgid "Audio channel"
+msgstr "Audiokanaal"
 
 msgid "Audio language selection 1"
 msgstr "Audio taalkeuze 1"
@@ -2406,6 +2396,9 @@ msgstr "Audiospoor (%s) taal"
 
 msgid "Audio track selection, downmix and other audio options"
 msgstr "Audiotrack keuze, downmix en andere opties"
+
+msgid "Audio volume step size"
+msgstr "Stapgrootte audio volume"
 
 msgid "Australia"
 msgstr "Australië"
@@ -2434,10 +2427,6 @@ msgstr "Auto DiSEqC"
 msgid "Auto EXIF Orientation rotation/flipping"
 msgstr "Auto EXIF-orientatie: rotatie/spiegelen"
 
-#, fuzzy
-msgid "Auto Scart Switching"
-msgstr "Automatisch scart schakelen"
-
 msgid "Auto Standby"
 msgstr "Stand-by"
 
@@ -2461,6 +2450,12 @@ msgstr "Auto focus begint..."
 
 msgid "Auto play blu-ray file"
 msgstr "Blue-ray bestand automatisch afspelen"
+
+msgid "Auto scart switching"
+msgstr "Automatisch scart schakelen"
+
+msgid "Auto volume level"
+msgstr "Automatisch volumeniveau"
 
 msgid "AutoTimer List"
 msgstr "Autotimer Lijst"
@@ -2497,9 +2492,6 @@ msgstr "Automatisch updaten interval"
 
 msgid "Automatically created"
 msgstr "Automatisch aangemaakt"
-
-msgid "Automatically hides the infobar a few second after video playback starts."
-msgstr ""
 
 msgid "Automatically put the TV in standby whenever the receiver goes into standby or deep standby."
 msgstr "Schakelt de TV automatisch gelijk met de ontvanger uit."
@@ -3258,10 +3250,6 @@ msgstr "Afspeelopdrachten inhalen"
 msgid "Cayman Islands"
 msgstr "Cayman Islands"
 
-#, fuzzy
-msgid "Center"
-msgstr "midden"
-
 msgid "Center DVB subs on this service"
 msgstr "Centreer DVB-ondertitels voor dit kanaal"
 
@@ -3556,48 +3544,20 @@ msgstr "U wilt het apparaat mounten als:"
 msgid "Choose whether AAC sound tracks should be transcoded."
 msgstr "Stel in of AAC-geluid moet worden getranscodeerd."
 
-#, fuzzy
-msgid "Choose whether DTS / DTS-HD sound tracks should be transcoded to Dolby Digital."
-msgstr "Stel in of AAC-geluid moet worden getranscodeerd."
-
-#, fuzzy
-msgid "Choose whether Dolby TrueHD sound tracks should be transcoded to Dolby Digital."
-msgstr "Stel in of AAC-geluid moet worden getranscodeerd."
-
 msgid "Choose whether WMA Pro sound tracks should be downmixed."
 msgstr "Stel in of WMA Pro geluid moet worden gedownmixed."
 
-#, fuzzy
-msgid "Choose whether multi channel AAC / AAC+ sound tracks should be downmixed to stereo."
+msgid "Choose whether multi channel aac sound tracks should be downmixed to stereo."
+msgstr "Stel in of meerkanaals aac-geluid moet worden teruggebracht tot stereo."
+
+msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
 msgstr "Stel in of meerkanaals aac+geluid moet worden teruggebracht tot stereo."
 
-#, fuzzy
-msgid "Choose whether multi channel AAC sound tracks should be downmixed to stereo."
-msgstr "Stel in of meerkanaals aac-geluid moet worden teruggebracht tot stereo."
-
-#, fuzzy
-msgid "Choose whether multi channel AAC+ sound tracks should be downmixed to stereo."
-msgstr "Stel in of meerkanaals aac+geluid moet worden teruggebracht tot stereo."
-
-#, fuzzy
-msgid "Choose whether multi channel AC3 / AC3+ sound tracks should be downmixed to stereo."
+msgid "Choose whether multi channel ac3 sound tracks should be downmixed to stereo."
 msgstr "Stel in of meerkanaals ac3-geluid moet worden teruggebracht tot stereo."
 
-#, fuzzy
-msgid "Choose whether multi channel AC3 sound tracks should be downmixed to stereo."
-msgstr "Stel in of meerkanaals ac3-geluid moet worden teruggebracht tot stereo."
-
-#, fuzzy
-msgid "Choose whether multi channel AC3+ sound tracks should be downmixed to stereo."
-msgstr "Stel in of meerkanaals ac3-geluid moet worden teruggebracht tot stereo."
-
-#, fuzzy
-msgid "Choose whether multi channel DTS sound tracks should be downmixed to stereo."
-msgstr "Stel in of meerkanaals aac-geluid moet worden teruggebracht tot stereo."
-
-#, fuzzy
-msgid "Choose whether multi channel DTS-HD sound tracks should be downmixed or transcoded."
-msgstr "Stel in of meerkanaals aac-geluid moet worden teruggebracht tot stereo."
+msgid "Choose whether multi channel dts sound tracks should be downmixed to stereo."
+msgstr "Stel in of meerkanaals dts-geluid moet worden teruggebracht tot stereo."
 
 msgid "Choose whether multi channel sound tracks should be output as PCM."
 msgstr "Stel in of meerkanaals geluid moet worden uitgevoerd als PCM."
@@ -3694,10 +3654,6 @@ msgstr "Sluiten"
 msgid "Close '%s' screen"
 msgstr "Sluit '%s' scherm"
 
-#, fuzzy, python-format
-msgid "Close '%s' screen and exit all menus"
-msgstr "Annuleer image keuze en verlaat alle menu's"
-
 msgid "Close CA device at programm end"
 msgstr "Sluit het CA-apparaat aan het einde van het programma"
 
@@ -3744,12 +3700,11 @@ msgstr "Instellingen verzameling"
 msgid "Colombia"
 msgstr "Colombia"
 
-#, fuzzy
-msgid "Color Format"
-msgstr "Kleurformaat"
-
 msgid "Color Theme"
 msgstr "Kleur thema"
+
+msgid "Color format"
+msgstr "Kleurformaat"
 
 msgid "Color space"
 msgstr "Kleurruimte"
@@ -4221,22 +4176,6 @@ msgstr "Controle LED kan hier worden in- of uitgeschakeld."
 msgid "Control how finished timers are shown in the timer list. If set to hide, disabled timers will still be shown"
 msgstr "Stel in hoe afgewerkte timers in de lijst moeten staan. Indien 'verbergen' is gekozen, worden uitgeschakelde timers nog steeds getoond"
 
-#, fuzzy
-msgid "Controlled by HDMI"
-msgstr "beheerd door HDMI"
-
-#, fuzzy
-msgid "Convert to AC3"
-msgstr "converteer naar AC3"
-
-#, fuzzy
-msgid "Convert to DTS"
-msgstr "converteer naar DTS"
-
-#, fuzzy
-msgid "Convert to Multi-Channel PCM"
-msgstr "converteer naar meerkanaals PCM"
-
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
@@ -4587,16 +4526,11 @@ msgstr "NEER"
 msgid "DTS"
 msgstr "DTS"
 
-msgid "DTS / DTS-HD Transcoding"
-msgstr ""
-
-#, fuzzy
-msgid "DTS Downmix"
+msgid "DTS downmix"
 msgstr "DTS downmix"
 
-#, fuzzy
-msgid "DTS-HD MA/HR Downmix"
-msgstr "DTS downmix"
+msgid "DTS-HD HR/DTS-HD MA/DTS"
+msgstr "DTS-HD HR/DTS-HD MA/DTS"
 
 #
 msgid "DUAL LAYER DVD"
@@ -4885,10 +4819,6 @@ msgstr "Afsluiten"
 msgid "Default"
 msgstr "Standaard"
 
-#, fuzzy
-msgid "Default directory"
-msgstr "Map aanmaken"
-
 msgid "Default movie location"
 msgstr "Standaard opnamelokatie"
 
@@ -4997,10 +4927,6 @@ msgstr "Verwijder talen"
 msgid "Delete Timer"
 msgstr "Verwijder timer"
 
-#, fuzzy
-msgid "Delete all languages"
-msgstr "Verwijder talen"
-
 msgid "Delete all log entries"
 msgstr "Verwijder alle loginvoer"
 
@@ -5039,12 +4965,6 @@ msgstr "Wis item in de afspeellijst"
 
 msgid "Delete saved playlist"
 msgstr "Opgeslagen afspeellijst verwijderen"
-
-#, fuzzy
-msgid "Delete selected language only"
-msgstr ""
-"Wilt u de geselecteerde taal echt verwijderen:\n"
-"\n"
 
 msgid "Delete the character to the left of text cursor"
 msgstr "Verwijder karakter links van de cursor"
@@ -5273,16 +5193,13 @@ msgstr "Reserveer schijfruimte voor opnames (in GB)"
 msgid "Disk state: "
 msgstr "Disk status: "
 
-#, fuzzy
-msgid "Display 16:9 Content as"
+msgid "Display 16:9 content as"
 msgstr "Toon 16:9 materiaal als"
 
-#, fuzzy
-msgid "Display 4:3 Content as"
+msgid "Display 4:3 content as"
 msgstr "Toon 4:3 materiaal als"
 
-#, fuzzy
-msgid "Display >16:9 Content as"
+msgid "Display >16:9 content as"
 msgstr "Toon >16:9 materiaal als"
 
 msgid "Display Skin"
@@ -5331,6 +5248,13 @@ msgstr "Wilt u echt deze playlistecht verwijderen?"
 #, python-format
 msgid "Do you really want to delete %s?"
 msgstr "Wilt u %s echt verwijderen?"
+
+msgid ""
+"Do you really want to delete selected language:\n"
+"\n"
+msgstr ""
+"Wilt u de geselecteerde taal echt verwijderen:\n"
+"\n"
 
 msgid "Do you really want to delete this timer ?"
 msgstr "Wilt u echt deze timer echt verwijderen?"
@@ -5501,16 +5425,9 @@ msgstr "Dcumentaire"
 msgid "Dokumentation"
 msgstr "Documentatie"
 
-#, fuzzy
-msgid "Dolby Digital"
-msgstr "Dolby Vision"
-
 #, python-format
 msgid "Dolby Digital downmix is now %s"
 msgstr "Dolby Digital downmix is nu %s"
-
-msgid "Dolby TrueHD Transcoding"
-msgstr ""
 
 msgid "Dolby Vision"
 msgstr "Dolby Vision"
@@ -5938,27 +5855,23 @@ msgstr "Verplaatsmodus inschakelen"
 msgid "Enable multiple bouquets"
 msgstr "Meerdere favorietenlijsten toestaan"
 
-#, fuzzy
-msgid "Enable or Disable the 10 Bit Color Mode"
-msgstr "Schakel 10bit kleurmodus in of uit"
-
-#, fuzzy
-msgid "Enable or Disable the 12 Bit Color Mode"
-msgstr "Schakel 12bit kleurmodus in of uit"
-
-#, fuzzy
-msgid "Enable or Disable to Force HDR10 Modes for UHD"
-msgstr "Schakel forceren HDR10 modus voor UHD in of uit"
-
-#, fuzzy
-msgid "Enable or Disable to Force HLG Modes for UHD"
-msgstr "Schakel forceren HGL modus voor UHD in of uit"
-
 msgid "Enable or disable client mode."
 msgstr "Clientmodus in- of uitschakelen."
 
+msgid "Enable or disable the 10 Bit Color Mode"
+msgstr "Schakel 10bit kleurmodus in of uit"
+
+msgid "Enable or disable the 12 Bit Color Mode"
+msgstr "Schakel 12bit kleurmodus in of uit"
+
 msgid "Enable or disable to force HDR Modes for UHD"
 msgstr "Schakel forceren HDR modus voor UHD in of uit"
+
+msgid "Enable or disable to force HDR10 Modes for UHD"
+msgstr "Schakel forceren HDR10 modus voor UHD in of uit"
+
+msgid "Enable or disable to force HLG Modes for UHD"
+msgstr "Schakel forceren HGL modus voor UHD in of uit"
 
 msgid "Enable or disable using HDMI-CEC."
 msgstr "Schakel HDMI-CEC commando's in of uit."
@@ -5998,6 +5911,9 @@ msgstr "Ingeschakeld"
 
 msgid "Enabled *"
 msgstr "Ingeschakeld *"
+
+msgid "Enabled/Disable audio passthrough fix."
+msgstr "Schakel audio passthrough fix in."
 
 msgid "Encrypted TV"
 msgstr "Gecodeerde Tv"
@@ -6313,10 +6229,6 @@ msgstr "Verlaat MenuSort"
 msgid "Exit PluginBrowser"
 msgstr "Pluginbrowser afsluiten"
 
-#, fuzzy
-msgid "Exit PluginBrowser and close all menus"
-msgstr "Pluginbrowser afsluiten"
-
 msgid "Exit all menus"
 msgstr "Verlaat alle menu's"
 
@@ -6427,10 +6339,6 @@ msgstr "Externe van stroom voorzien"
 
 msgid "Extra IPK's"
 msgstr "Extra IPK's"
-
-#, fuzzy
-msgid "Extra Wide"
-msgstr "extra breed"
 
 msgid "Extra motor options"
 msgstr "Extra motor opties"
@@ -7029,15 +6937,13 @@ msgstr "Gateway"
 msgid "General"
 msgstr "Algemeen"
 
-#, fuzzy
-msgid "General AC3 Delay"
+msgid "General AC3 delay"
 msgstr "Algemene AC3 vertraging"
 
 msgid "General Arts"
 msgstr "Algemeen kunst"
 
-#, fuzzy
-msgid "General Bluetooth Audio Delay"
+msgid "General Bluetooth Audio delay"
 msgstr "Algemene Bluetooth audio vertraging"
 
 msgid "General Children's"
@@ -7055,8 +6961,7 @@ msgstr "Algemeen muziek"
 msgid "General News"
 msgstr "Algemeen nieuws"
 
-#, fuzzy
-msgid "General PCM Delay"
+msgid "General PCM delay"
 msgstr "Algemene PCM vertraging"
 
 msgid "General Show"
@@ -7324,8 +7229,7 @@ msgstr "HDD instellingen"
 msgid "HDMI"
 msgstr "HDMI"
 
-#, fuzzy
-msgid "HDMI Color Depth"
+msgid "HDMI Color depth"
 msgstr "HDMI-kleurdiepte"
 
 msgid "HDMI Colorimetry"
@@ -7470,10 +7374,6 @@ msgstr "Verberg"
 msgid "Hide CI messages"
 msgstr "Verberg CI-meldingen"
 
-#, fuzzy
-msgid "Hide Mute Icon"
-msgstr "Verberg mute-ikoon"
-
 msgid "Hide any zap error messages."
 msgstr "Verberg alle zapfouten."
 
@@ -7491,6 +7391,9 @@ msgstr "Verberg de infobar en sluit PiP"
 
 msgid "Hide known extensions"
 msgstr "Verberg bekende extensies"
+
+msgid "Hide mute icon"
+msgstr "Verberg mute-ikoon"
 
 msgid "Hide number markers"
 msgstr "Verberg nummer markeringen"
@@ -7771,6 +7674,12 @@ msgstr "Indien ingesteld op 'standaard' gaat u met de nummertoetsen een pagina o
 
 msgid "If set to 'yes' channels without EPG will not be shown."
 msgstr "Als u 'ja' kiest, zullen kanalen zonder EPG niet getoond worden."
+
+msgid "If set to 'yes' it will show the 'PO' packages in browser."
+msgstr "Als u 'ja' kiest, zijn alle 'PO' (taal)-pakketten in de browser zichtbaar."
+
+msgid "If set to 'yes' it will show the 'SRC' packages in browser."
+msgstr "Als u 'ja' kiest, zijn alle 'SRC' (source (= bron))-pakketten in de browser zichtbaar."
 
 msgid "If set to 'yes' shows a small TV screen in the EPG."
 msgstr "Als u 'ja' kiest, zal het tv-beeld in een klein schermpje in de EPG worden getoond."
@@ -8101,10 +8010,6 @@ msgstr "Installeer '%s'"
 msgid "Install IPK's from your tmp folder."
 msgstr "Installeer IPK's in uw tmp map."
 
-#, fuzzy
-msgid "Install Languages"
-msgstr "talen"
-
 msgid "Install Plugins"
 msgstr "Installeer plugins"
 
@@ -8270,12 +8175,11 @@ msgstr "Iraq"
 msgid "Ireland"
 msgstr "Ireland"
 
-#, fuzzy
-msgid "Is this Video Mode Ok?"
-msgstr "Is deze videomodus goed?"
-
 msgid "Is this setting ok?"
 msgstr "Is deze instelling OK?"
+
+msgid "Is this video mode ok?"
+msgstr "Is deze videomodus goed?"
 
 msgid "Isle of Man"
 msgstr "Isle of Man"
@@ -8356,10 +8260,6 @@ msgid "Jump to the previous marked position"
 msgstr "Spring naar de vorige markering"
 
 #. TRANSLATORS: (aspect ratio policy: cropped content on left/right) in doubt, keep english term
-#, fuzzy
-msgid "Just Scale"
-msgstr "Alleen schalen"
-
 #. TRANSLATORS: (aspect ratio policy: cropped content on left/right) in doubt, keep english term
 #. "nonlinear": _("Nonlinear"),					# TRANSLATORS: (aspect ratio policy: display as fullscreen, with stretching the left/right)
 msgid "Just scale"
@@ -8382,10 +8282,6 @@ msgstr "Catastrofe"
 
 msgid "Kazakhstan"
 msgstr "Kazakhstan"
-
-#, fuzzy
-msgid "Keep all languages"
-msgstr "talen"
 
 msgid "Keep logs"
 msgstr "Bewaar logs"
@@ -9180,8 +9076,7 @@ msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Modus"
 
-#, fuzzy
-msgctxt "Video Output Mode"
+msgctxt "Video output mode"
 msgid "Mode"
 msgstr "Modus"
 
@@ -10335,6 +10230,9 @@ msgstr "Installeer plugins"
 msgid "Open 'Remove Plugins' screen"
 msgstr "Verwijder plugins"
 
+msgid "Open PluginBrowser setup screen"
+msgstr "Pluginbrowser instellingen"
+
 msgid "Open RDS/RASS screen"
 msgstr "Open RDS/RASS scherm"
 
@@ -10431,10 +10329,6 @@ msgstr "Gewoon"
 msgid "Original"
 msgstr "Origineel"
 
-#, fuzzy
-msgid "Original Language"
-msgstr "Originele taal"
-
 msgid "Original language"
 msgstr "Originele taal"
 
@@ -10484,6 +10378,9 @@ msgid "PCM"
 msgstr "PCM"
 
 msgid "PCM Multichannel"
+msgstr "PCM multikanaal"
+
+msgid "PCM multichannel"
 msgstr "PCM multikanaal"
 
 msgid "PCR PID"
@@ -10609,8 +10506,7 @@ msgstr "Palestine, State of"
 
 #. TRANSLATORS: (aspect ratio policy: black bars on top/bottom) in doubt, keep english term.
 #. TRANSLATORS: (aspect ratio policy: black bars on left/right) in doubt, keep english term.
-#, fuzzy
-msgid "Pan&Scan"
+msgid "Pan&scan"
 msgstr "Pan & Scan"
 
 msgid "Panama"
@@ -10803,10 +10699,6 @@ msgstr "Navigatie"
 
 msgid "Pitcairn"
 msgstr "Pitcairn"
-
-#, fuzzy
-msgid "Places a shortcut to MediaPlayer in the main menu."
-msgstr "toon mediaplayer in hoofdmenu"
 
 msgid "Play"
 msgstr "Afspelen"
@@ -11199,6 +11091,9 @@ msgstr "Pluginbrowser acties"
 msgid "Plugin browser"
 msgstr "Pluginbrowser"
 
+msgid "Plugin browser settings"
+msgstr "Pluginbrowser instellingen"
+
 msgid "Plugin install"
 msgstr "Plugin installeren"
 
@@ -11529,12 +11424,6 @@ msgstr ""
 
 msgid "Processing"
 msgstr "Aan het verwerken"
-
-#, fuzzy
-msgid "Processing, please wait"
-msgstr ""
-"\n"
-"Druk op OK en een ogenblik geduld!"
 
 #, python-format
 msgid "Processor temperature:\t%s"
@@ -12022,8 +11911,7 @@ msgstr ""
 msgid "Reflash recommended!"
 msgstr "Opnieuw flashen wordt aanbevolen!"
 
-#, fuzzy
-msgid "Refresh Rate"
+msgid "Refresh rate"
 msgstr "Herhalingsfrequentie"
 
 msgid "Refresh rate selection."
@@ -12091,9 +11979,6 @@ msgstr "Resterend en verstreken"
 
 msgid "Remember service PIN"
 msgstr "Onthoud zender pincode"
-
-msgid "Remembers the current directory location for the next time MediaPlayer is opened."
-msgstr ""
 
 msgid "Reminder, you have chosen to save timeshift file."
 msgstr "Let op: u hebt ervoor gekozen het timeshiftbestand op te slaan."
@@ -12291,10 +12176,6 @@ msgstr "Hoe vaak herhalen"
 msgid "Repeat leave standby messages"
 msgstr "Herhaal verlaat stand-by berichten"
 
-#, fuzzy
-msgid "Repeat playlist"
-msgstr "herhaal afspeellijst"
-
 msgid "Repeat type"
 msgstr "Type herhaling"
 
@@ -12445,9 +12326,6 @@ msgstr "Hervat positie op %s"
 
 msgid "Resuming playback"
 msgstr "Afspelen wordt hervat"
-
-msgid "Retains the playlist for the next time MediaPlayer is used."
-msgstr ""
 
 #
 msgid "Retrieving image slots - Please wait..."
@@ -12789,16 +12667,8 @@ msgstr "Bewaar instellingen"
 msgid "Save every (in hours)"
 msgstr "Sla elke X uur op"
 
-#, fuzzy
-msgid "Save last directory on exit"
-msgstr "bij verlaten bewaar laatste map"
-
 msgid "Save playlist"
 msgstr "Afspeellijst opslaan"
-
-#, fuzzy
-msgid "Save playlist on exit"
-msgstr "bij verlaten bewaar afspeellijst"
 
 msgid "Save timer"
 msgstr "Sla timer op"
@@ -13046,31 +12916,24 @@ msgstr "Kies '1.0' voor standaard committed switches, '1.1' voor uncommitted swi
 msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select 'none'. If you are unsure select 'none'."
 msgstr "Kies 'A' of 'B' als uw antenne-installatie dat vereist, anders kiest u 'geen'. Als u het niet zeker weet kiest u 'geen'."
 
-#, fuzzy
-msgid "Select 'Delete all languages' to delete all languages except English and the current language."
-msgstr ""
-"Kies 'Ja' om alle talen te verwijderen behalve Engels en de huidige taal:\n"
-"\n"
-"Kies 'Nee' om alleen de door u geselecteerde taal te verwijderen.\n"
-
-#, fuzzy, python-format
-msgid "Select 'Delete selected language only' to delete only the chosen language: %s."
-msgstr ""
-"Kies 'Ja' om alle talen te verwijderen behalve Engels en de huidige taal:\n"
-"\n"
-"Kies 'Nee' om alleen de door u geselecteerde taal te verwijderen.\n"
-
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Kies 'FBC SCR' als deze tuner is aangesloten op een SCR-apparaat (Unicable/JESS). Voor alle andere situaties kiest u 'FBC automatisch'."
 
 msgid "Select 'Flash regular slot' to flash a regular MultiBoot slot or select 'Overwrite Recovery' to overwrite the Recovery image."
 msgstr "Kies  'Flash reguliere slot' om een regulier  MultiBoot slot the flashen, of kies 'Overschrijf Recovery' om het Recovery image te overschrijven."
 
-msgid "Select 'Keep all languages' to leave everything unchanged."
-msgstr ""
-
 msgid "Select 'Standard' to display the standard vertical menu layout, or 'Horizontal' to display the menu items in a row."
 msgstr "Kies 'Standaard'om de standaard vertikale menu lay-out te kiezen, of 'Horizontaal' om de hoofditems in een rij de zien."
+
+msgid ""
+"Select 'Yes' to delete all languages except English and current language:\n"
+"\n"
+"Select 'No' to delete only the chosen language:\n"
+"\n"
+msgstr ""
+"Kies 'Ja' om alle talen te verwijderen behalve Engels en de huidige taal:\n"
+"\n"
+"Kies 'Nee' om alleen de door u geselecteerde taal te verwijderen.\n"
 
 msgid "Select 'Yes' to make a settings backup before wiping the current configuration."
 msgstr "Selecteer 'Ja' om een settingsback-up te maken alvorens de huidige configuratie te verwijderen."
@@ -13152,10 +13015,6 @@ msgstr "Kies 'ja' om het DiSEqC-commando alleen te versturen bij veranderen van 
 
 msgid "Select 'yes' to wake up the receiver from deep standby, or select 'no' to skip the import."
 msgstr "Kies 'Ja' om de ontvanger uit deep stand-by te halen, of kies 'Nee' om de import over te slaan."
-
-#, fuzzy
-msgid "Select Audio Track"
-msgstr "Kies audiospoor"
 
 msgid "Select CAId"
 msgstr "Selecteer CAId"
@@ -13378,10 +13237,6 @@ msgstr "Selecteer huidigitem"
 
 msgid "Select the current menu item"
 msgstr "Selecteer huidig menu-item"
-
-#, fuzzy
-msgid "Select the default initial directory"
-msgstr "Kies de standaard sorteermethode."
 
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Kies de gewenste functie en klik dan op \"OK\" om deze toe te wijzen. Gebruik \"CH+/-\" om te wisselen tussen de kolommen in de lijst. Kies de toegewezen functie en klik op \"OK\" om de toewijzing te verwijderen. Gebruik \"Volgende/Vorige\" om de volgorde van de toegewezen functies te veranderen."
@@ -13857,6 +13712,9 @@ msgstr "Instellingen, informatie en meer functies"
 msgid "Setup"
 msgstr "Instellingen"
 
+msgid "Setup Actions"
+msgstr "Instel acties"
+
 msgid "Setup how to control the channel changing."
 msgstr "Stel hier in hoe u van kanaal wilt veranderen."
 
@@ -13950,10 +13808,6 @@ msgstr "Toon logmanager in extensiemenu?"
 
 msgid "Show Media playback Remaining/Elapsed as *"
 msgstr "Toon resterende/verstreken media afspeeltijd als *"
-
-#, fuzzy
-msgid "Show MediaPlayer in the main menu"
-msgstr "toon mediaplayer in hoofdmenu"
 
 msgid "Show MiniTV in the Front Display"
 msgstr "Toon MiniTV op LCD"
@@ -14223,6 +14077,9 @@ msgstr "Toon kanaallijst EPG"
 msgid "Show single epg for current channel"
 msgstr "Toon EPG voor huidige kanaal"
 
+msgid "Show source packages"
+msgstr "Toon source-packages"
+
 msgid "Show status icons in movie list"
 msgstr "Laat status-iconen zien in opnamelijst"
 
@@ -14276,6 +14133,9 @@ msgstr "Toon de resterende/verstreken tijd *"
 
 msgid "Show timer list"
 msgstr "Toon timers"
+
+msgid "Show translation packages"
+msgstr "Toon taalpakketten"
 
 msgid "Show transponder info"
 msgstr "Toon de transponderinformatie"
@@ -14752,13 +14612,6 @@ msgstr "Sorteer de instellingenschermen alfabetisch"
 msgid "Sort the EPG list"
 msgstr "Sorteer EPG-lijst"
 
-#, fuzzy
-msgid "Sorting of playlists"
-msgstr "sorteren van afspeellijsten"
-
-msgid "Sorts stored playlists alphabetically before loading them"
-msgstr ""
-
 msgid "Soul/Rhythm Blues"
 msgstr "Soul/Rhythm Blues"
 
@@ -14935,10 +14788,6 @@ msgstr "Stap > west"
 
 msgid "Steps"
 msgstr "Stappen"
-
-#, fuzzy
-msgid "Stereo"
-msgstr "stereo"
 
 msgid "Stop"
 msgstr "Stop"
@@ -15124,14 +14973,6 @@ msgstr "Ondertitels"
 msgid "Subtitle Long"
 msgstr "Lange ondertitels"
 
-#, fuzzy
-msgid "Subtitle Quickmenu"
-msgstr "Ondertitel snelmenu"
-
-#, fuzzy
-msgid "Subtitle Selection"
-msgstr "Ondertitel selectie"
-
 msgid "Subtitle alignment"
 msgstr "Ondertitel uitlijning"
 
@@ -15161,6 +15002,9 @@ msgstr "Ondertitel taalkeuze 4"
 
 msgid "Subtitle position"
 msgstr "Ondertitel positie"
+
+msgid "Subtitle quickmenu"
+msgstr "Ondertitel snelmenu"
 
 msgid "Subtitle selection"
 msgstr "Ondertitel selectie"
@@ -15669,9 +15513,6 @@ msgstr "Het commitlog kan momenteel niet binnengehaald worden; probeer het later
 
 msgid "The current update may be unstable."
 msgstr "De huidige update kan onstabiel zijn."
-
-msgid "The default directory is used as the initial filelist location when opening MediaPlayer."
-msgstr ""
 
 #, python-format
 msgid "The directory %s already exists."
@@ -16186,17 +16027,12 @@ msgstr "Titel instellingen"
 msgid "Titleset mode"
 msgstr "Titelset modus"
 
-#, fuzzy
-msgid "To Audio Selection"
-msgstr "Naar audioselectie"
-
-#, fuzzy
-msgid "To Subtitle Selection"
-msgstr "Naar ondertitelselectie"
-
 #, python-format
 msgid "To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?"
 msgstr "Om de geselecteerde '%s' skin toe te passen, moet de GUI herstart worden. Wilt u dat nu doen?"
+
+msgid "To audio selection"
+msgstr "Naar audioselectie"
 
 msgid "To be able to download any image local storage must already be configured, HDD, USB or SD, and also be selected as the 'Backup location' in Image Manager setup menu."
 msgstr "Om een image te kunnen downloden moet de opslaglocatie al zijn ingesteld (HDD, USB of SD) als 'back-up locatie' in de instellingen van de Image Manager."
@@ -16216,6 +16052,9 @@ msgstr "Om de geselecteerde skin toe te passen, moet de GUI herstart worden. Wil
 
 msgid "To start a download select YELLOW from Image Manager main screen, then select the distro, and finally which image to download."
 msgstr "Om de download te starten kiest u in het hoofdscherm van de Image Manager GEEL, vervolgens kiest u de gewenste distributie en tot het gewenste image."
+
+msgid "To subtitle selection"
+msgstr "Naar ondertitelselectie"
 
 msgid "Today"
 msgstr "Vandaag"
@@ -16802,10 +16641,6 @@ msgstr "Gebruik"
 msgid "Use 12 characters display mode"
 msgstr "Gebruik de modus met 12 karakters"
 
-#, fuzzy
-msgid "Use Best / Controlled by HDMI"
-msgstr "use best / controlled by HDMI"
-
 msgid "Use DHCP"
 msgstr "Gebruik DHCP"
 
@@ -17118,10 +16953,6 @@ msgstr "Video- en audio-instellingen"
 msgid "Video Chip Mode*"
 msgstr "Videomodus*"
 
-#, fuzzy
-msgid "Video Output"
-msgstr "Video-output"
-
 msgid "Video PID"
 msgstr "Video PID"
 
@@ -17152,6 +16983,9 @@ msgstr ""
 
 msgid "Video mode selection."
 msgstr "Videomodus selectie."
+
+msgid "Video output"
+msgstr "Video-output"
 
 msgid "Video settings"
 msgstr "Video instellingen"
@@ -17280,8 +17114,7 @@ msgstr "WIZTV"
 msgid "WLAN connection"
 msgstr "WLAN verbinding"
 
-#, fuzzy
-msgid "WMA Pro Downmix"
+msgid "WMA Pro downmix"
 msgstr "WMA Pro downmix"
 
 msgid "WPA"
@@ -17716,9 +17549,6 @@ msgstr "Als het beeld een verhouding heeft van 16:9 kan het beeld worden uitgere
 msgid "When the content has an aspect ratio of 4:3, choose whether to scale/stretch the picture."
 msgstr "Als het beeld een verhouding heeft van 4:3 kan het beeld worden uitgerekt of geschaald."
 
-msgid "When the playlist comes to the end, continue playing, starting with the first item in the playlist."
-msgstr ""
-
 msgid "When the receiver wakes from standby, it will send a command to the TV to bring it out of standby too."
 msgstr "Als de ontvanger uit stand-by komt, zal ook de TV aangezet worden."
 
@@ -17742,9 +17572,6 @@ msgstr "Welk programma wilt u permanent verwijderen?"
 
 msgid "White"
 msgstr "Wit"
-
-msgid "Wide"
-msgstr ""
 
 msgid "Width"
 msgstr "Breedte"
@@ -18549,6 +18376,15 @@ msgstr "verbonden"
 msgid "controlled by HDMI"
 msgstr "beheerd door HDMI"
 
+msgid "convert to AC3"
+msgstr "converteer naar AC3"
+
+msgid "convert to DTS"
+msgstr "converteer naar DTS"
+
+msgid "convert to multi-channel PCM"
+msgstr "converteer naar meerkanaals PCM"
+
 msgid "cooking"
 msgstr "koken"
 
@@ -18719,6 +18555,12 @@ msgstr "sluit DVD-speler af of keer terug naar bestandslijst"
 
 msgid "experimental film/video"
 msgstr "experimentele film/video"
+
+msgid "extra wide"
+msgstr "extra breed"
+
+msgid "extrawide"
+msgstr "extra breed"
 
 msgid "failed"
 msgstr "mislukt"
@@ -19243,6 +19085,9 @@ msgstr "hernoem dit bestand in \"force\" om een update zonder confirmatie uit te
 msgid "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
 msgstr "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
 
+msgid "repeat playlist"
+msgstr "herhaal afspeellijst"
+
 msgid "repeated"
 msgstr "herhalen"
 
@@ -19278,6 +19123,12 @@ msgstr "motor is niet in gebruik"
 
 msgid "running..."
 msgstr "actief..."
+
+msgid "save last directory on exit"
+msgstr "bij verlaten bewaar laatste map"
+
+msgid "save playlist on exit"
+msgstr "bij verlaten bewaar afspeellijst"
 
 msgid "scan state"
 msgstr "status"
@@ -19354,6 +19205,9 @@ msgstr "toon kaarten met uphop 9"
 msgid "show event details"
 msgstr "toon EPG-details"
 
+msgid "show mediaplayer on mainmenu"
+msgstr "toon mediaplayer in hoofdmenu"
+
 msgid "show/game show (general)"
 msgstr "show/spelshow (algemeen)"
 
@@ -19399,6 +19253,9 @@ msgstr "sociale/spirituele wetenschap"
 msgid "softcam"
 msgstr "softcam"
 
+msgid "sorting of playlists"
+msgstr "sorteren van afspeellijsten"
+
 msgid "special (general)"
 msgstr "speciaal (algemeen)"
 
@@ -19428,6 +19285,9 @@ msgstr "start knippen hier"
 
 msgid "stepsize"
 msgstr "stapgrootte"
+
+msgid "stereo"
+msgstr "stereo"
 
 msgid "svg only"
 msgstr "alleen SVG"
@@ -19546,6 +19406,12 @@ msgstr "niet gepubliceerd"
 msgid "until standby/restart"
 msgstr "tot stand-by/herstart"
 
+msgid "use best / controlled by HDMI"
+msgstr "use best / controlled by HDMI"
+
+msgid "use hdmi cacenter"
+msgstr "gebruik hdmi cacenter"
+
 msgid "user defined"
 msgstr "door u gedefinieerd"
 
@@ -19602,6 +19468,9 @@ msgstr "indien PiPzap is ingeschakeld zap kanaal verder..."
 
 msgid "white"
 msgstr "wit"
+
+msgid "wide"
+msgstr "breed"
 
 msgid "width"
 msgstr "breedte"
@@ -19673,6 +19542,13 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgstr ""
 #~ "\n"
 #~ "Geavanceerde opties en instellingen."
+
+#~ msgid ""
+#~ "\n"
+#~ "After pressing OK, please wait!"
+#~ msgstr ""
+#~ "\n"
+#~ "Druk op OK en een ogenblik geduld!"
 
 #, python-format
 #~ msgid ""
@@ -19917,12 +19793,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "3D Mode"
 #~ msgstr "3D modus"
 
-#~ msgid "3D surround"
-#~ msgstr "3D surround"
-
-#~ msgid "3D surround speaker position"
-#~ msgstr "3D surround luidspreker positie"
-
 #~ msgid "480p 24Hz"
 #~ msgstr "480p 24Hz"
 
@@ -19940,12 +19810,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "A small overview of the available icon states and actions."
 #~ msgstr "Een klein overzicht van gebruikte icoon-statussen en acties."
-
-#~ msgid "AC3 transcoding"
-#~ msgstr "AC3 transcoding"
-
-#~ msgid "AC3+ Passthrough audio fix"
-#~ msgstr "AC3+ Passthrough audio fix"
 
 #~ msgid "AboutBoxInfo"
 #~ msgstr "About BoxInfo"
@@ -20016,9 +19880,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Author: "
 #~ msgstr "Auteur: "
 
-#~ msgid "Auto volume level"
-#~ msgstr "Automatisch volumeniveau"
-
 #~ msgid "Automatic resolution"
 #~ msgstr "Automatische resolutie"
 
@@ -20080,9 +19941,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Chipset: %s"
 #~ msgstr "Chipset: %s"
 
-#~ msgid "Choose whether multi channel dts sound tracks should be downmixed to stereo."
-#~ msgstr "Stel in of meerkanaals dts-geluid moet worden teruggebracht tot stereo."
-
 #~ msgid "Clear HDMI-CEC fixed address"
 #~ msgstr "Verwijder HDMI-CEC vaste adres"
 
@@ -20130,9 +19988,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "D"
 #~ msgstr "3D"
 
-#~ msgid "DTS-HD HR/DTS-HD MA/DTS"
-#~ msgstr "DTS-HD HR/DTS-HD MA/DTS"
-
 #~ msgid "Default settings"
 #~ msgstr "Standaard instellingen"
 
@@ -20179,9 +20034,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Enable new GStreamer playback"
 #~ msgstr "Schakel afspelen met nieuwe GStreamer in"
-
-#~ msgid "Enabled/Disable audio passthrough fix."
-#~ msgstr "Schakel audio passthrough fix in."
 
 #~ msgid "Erase"
 #~ msgstr "Wis"
@@ -20325,12 +20177,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "If enabled, the new GStreamer playback engine will be used."
 #~ msgstr "Indien ingeschakeld, zal de nieuwe GStreamer afspeel-engine gebruikt worden."
 
-#~ msgid "If set to 'yes' it will show the 'PO' packages in browser."
-#~ msgstr "Als u 'ja' kiest, zijn alle 'PO' (taal)-pakketten in de browser zichtbaar."
-
-#~ msgid "If set to 'yes' it will show the 'SRC' packages in browser."
-#~ msgstr "Als u 'ja' kiest, zijn alle 'SRC' (source (= bron))-pakketten in de browser zichtbaar."
-
 #~ msgid "Init SDcard"
 #~ msgstr "Init SD-kaart"
 
@@ -20400,10 +20246,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "MessageBox Direct Item Selection Actions"
 #~ msgstr "MessageBox Direct Item Selectie acties"
 
-#~ msgctxt "Video output mode"
-#~ msgid "Mode"
-#~ msgstr "Modus"
-
 #, python-format
 #~ msgid "Model: %s %s\n"
 #~ msgstr "Model:\t%s %s\n"
@@ -20453,9 +20295,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Only extensions."
 #~ msgstr "Alleen extensies."
 
-#~ msgid "Open PluginBrowser setup screen"
-#~ msgstr "Pluginbrowser instellingen"
-
 #~ msgid "Open infobar EPG..."
 #~ msgstr "Open Informatiebalk EPG..."
 
@@ -20471,9 +20310,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Overwrite configuration files?"
 #~ msgstr "Configuratiebestanden overschrijven?"
-
-#~ msgid "PCM multichannel"
-#~ msgstr "PCM multikanaal"
 
 #~ msgid "PID"
 #~ msgstr "PID"
@@ -20495,9 +20331,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "Please select medium to use as backup location"
 #~ msgstr "Selecteer het te gebruiken medium als back-up lokatie"
-
-#~ msgid "Plugin browser settings"
-#~ msgstr "Pluginbrowser instellingen"
 
 #~ msgid "Plugin details"
 #~ msgstr "Plugin details"
@@ -20666,9 +20499,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Set the time before checking video source for resolution/refresh rate infomation."
 #~ msgstr "Stel de tijd in voordat u de videobron op resolutie/verversingsfrequentie controleert."
 
-#~ msgid "Setup Actions"
-#~ msgstr "Instel acties"
-
 #~ msgid "Show /tmp/ecm.info"
 #~ msgstr "Toon /tmp/ecm.info"
 
@@ -20702,14 +20532,8 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "Show in extensions list ?"
 #~ msgstr "Toon in extensiemenu?"
 
-#~ msgid "Show source packages"
-#~ msgstr "Toon source-packages"
-
 #~ msgid "Show the service information on two lines in the channel selection screen. You can choose between the current event description below the channel name, or the current event description next to the channel name, and the next event description on the second line."
 #~ msgstr "Toon de kanaalinformatie in twee regels in het kanaalselectiescherm. U kunt kiezen tussen de huidige programmabeschrijving onder de kanaalnaam of de huidige programmabeschrijving naast de kanaalnaam en het volgende programma de tweede regel."
-
-#~ msgid "Show translation packages"
-#~ msgstr "Toon taalpakketten"
 
 #~ msgid "Side by Side"
 #~ msgstr "Naast elkaar"
@@ -21149,9 +20973,6 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 #~ msgid "extensions."
 #~ msgstr "extensies."
 
-#~ msgid "extrawide"
-#~ msgstr "extra breed"
-
 #~ msgid "flat alphabetic reverse"
 #~ msgstr "omgekeerd plat alfabetisch"
 
@@ -21220,9 +21041,3 @@ msgstr "| aparte lijst van voorvoegsels die u van namen wil verwijderen, geschei
 
 #~ msgid "updates available."
 #~ msgstr "updates beschikbaar."
-
-#~ msgid "use hdmi cacenter"
-#~ msgstr "gebruik hdmi cacenter"
-
-#~ msgid "wide"
-#~ msgstr "breed"

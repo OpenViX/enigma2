@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-13 14:59+0000\n"
+"POT-Creation-Date: 2026-09-11 13:25+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, xcentaurix\n"
@@ -1159,6 +1159,9 @@ msgstr "1 Minute"
 msgid "1 second"
 msgstr "1 Sekunde"
 
+msgid "1,1"
+msgstr ""
+
 msgid "1. Try to reboot the box and check if this warning disappears"
 msgstr "1. Versuche, den E2-Receiver neu zu starten und prüfe, ob die Warnung verschwindet."
 
@@ -1239,6 +1242,9 @@ msgstr "25"
 
 msgid "256 Mb"
 msgstr "256 MB"
+
+msgid "2678400000"
+msgstr ""
 
 msgid "29.97"
 msgstr "29.97"
@@ -2983,6 +2989,9 @@ msgstr "Bytes empfangen:"
 msgid "Bytes sent:"
 msgstr "Bytes gesendet:"
 
+msgid "C"
+msgstr ""
+
 msgctxt "Abbreviation of \"Configurable\""
 msgid "C"
 msgstr ""
@@ -4510,6 +4519,9 @@ msgstr "Tschechisch"
 
 msgid "Czechia"
 msgstr "Tschechien"
+
+msgid "D"
+msgstr ""
 
 msgid "DAC"
 msgstr ""
@@ -6194,6 +6206,9 @@ msgstr "Estland"
 msgid "Estonian"
 msgstr "Estnisch"
 
+msgid "EtPortal"
+msgstr ""
+
 msgid "Ethernet network interface"
 msgstr "Ethernet Netzwerkadapter"
 
@@ -6394,6 +6409,9 @@ msgstr ""
 
 msgid "Extrude from left"
 msgstr "Extrudieren von links"
+
+msgid "F"
+msgstr ""
 
 msgid "F1"
 msgstr ""
@@ -7615,8 +7633,14 @@ msgstr ""
 msgid "IDLE"
 msgstr ""
 
+msgid "IGNORE"
+msgstr ""
+
 msgid "IMAGE DOWNLOADS"
 msgstr ""
+
+msgid "IMDB Search"
+msgstr "IMDB-Suche"
 
 msgid "IMDB search for current event"
 msgstr "IMDB-Suche nach Informationen zum laufendem Programm"
@@ -11607,6 +11631,9 @@ msgstr "RDS/RASS-Anzeige"
 msgid "REC"
 msgstr ""
 
+msgid "REC "
+msgstr ""
+
 msgid "REC Symbol"
 msgstr "Aufnahmesymbol"
 
@@ -15275,6 +15302,9 @@ msgstr "TS-Datei ist zu groß für ISO9660 level 1."
 
 msgid "TSID"
 msgstr "TSID"
+
+msgid "TUNER:"
+msgstr "Tuner:"
 
 msgid "TUNING"
 msgstr "Tunen"
@@ -19525,9 +19555,3 @@ msgstr "umgeschaltet"
 
 msgid "| separated list of prefixes you'd like to be removed from event names, separated with |, e.g. New:|Live:"
 msgstr "| getrennte Liste von Präfixen, die aus den Sendungsnamen entfernt werden sollen, z.B. New:|Live:"
-
-#~ msgid "IMDB Search"
-#~ msgstr "IMDB-Suche"
-
-#~ msgid "TUNER:"
-#~ msgstr "Tuner:"
