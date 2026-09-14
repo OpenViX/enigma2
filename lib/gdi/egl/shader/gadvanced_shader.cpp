@@ -39,23 +39,31 @@ static const char* fragment_shader_es3 = R"(#version 300 es
     }
 
     void main() {
+        float coverage = 1.0;
         if (u_radius > 0.0) {
             vec2 half_size = u_rect_size.zw * 0.5;
             vec2 center = vec2(u_rect_size.x, u_rect_size.y) + half_size;
             vec2 p = v_pos - center;
             float r = u_radius;
-            
+
             if (p.x < 0.0 && p.y < 0.0 && (u_edges & 1) == 0) r = 0.0;
             if (p.x > 0.0 && p.y < 0.0 && (u_edges & 2) == 0) r = 0.0;
             if (p.x < 0.0 && p.y > 0.0 && (u_edges & 4) == 0) r = 0.0;
             if (p.x > 0.0 && p.y > 0.0 && (u_edges & 8) == 0) r = 0.0;
 
             float dist = udRoundBox(p, half_size, r);
-            if (dist > 0.5) discard;
+            // Analytic coverage ramp over ~1px instead of a hard discard at
+            // dist>0.5 - the same technique Ganesh's round-rect ops use for
+            // GPU antialiasing (see GrOvalOpFactory): udRoundBox's signed
+            // distance is how many pixels outside the shape this fragment
+            // is, so fading coverage to 0 across that last pixel replaces a
+            // jagged binary edge with a soft one at the same per-pixel cost.
+            coverage = clamp(0.5 - dist, 0.0, 1.0);
+            if (coverage <= 0.0) discard;
         }
-        
+
         vec4 final_color = u_solid_color;
-        
+
         if (u_num_stops > 0) {
             float t = 0.0;
             if (u_gradient_orientation == 1) {
@@ -63,7 +71,7 @@ static const char* fragment_shader_es3 = R"(#version 300 es
             } else {
                 t = (v_pos.y - u_rect_size.y) / u_rect_size.w;
             }
-            
+
             vec4 grad_color = u_gradient_colors[0];
             for (int i = 0; i < 15; i++) {
                 if (i >= u_num_stops - 1) break;
@@ -74,18 +82,20 @@ static const char* fragment_shader_es3 = R"(#version 300 es
                     break;
                 }
             }
-            
+
             if (t > u_gradient_stops[u_num_stops - 1]) {
                 grad_color = u_gradient_colors[u_num_stops - 1];
             }
-            
+
             if (u_alphablend == 1) {
                 final_color.rgb = mix(final_color.rgb, grad_color.rgb, grad_color.a);
             } else {
                 final_color = grad_color;
             }
         }
-        
+
+        final_color.a *= coverage;
+
         // See gshader.cpp's fragment shader for why this swap is here -
         // same render-target-vs-scanout channel-order mismatch applies to
         // every solid-color/gradient draw with no texture to compensate via
@@ -136,23 +146,27 @@ static const char* fragment_shader_es2 = R"(#version 100
     }
 
     void main() {
+        float coverage = 1.0;
         if (u_radius > 0.0) {
             vec2 half_size = u_rect_size.zw * 0.5;
             vec2 center = vec2(u_rect_size.x, u_rect_size.y) + half_size;
             vec2 p = v_pos - center;
             float r = u_radius;
-            
+
             if (p.x < 0.0 && p.y < 0.0) r = u_r_tl;
             if (p.x > 0.0 && p.y < 0.0) r = u_r_tr;
             if (p.x < 0.0 && p.y > 0.0) r = u_r_bl;
             if (p.x > 0.0 && p.y > 0.0) r = u_r_br;
 
             float dist = udRoundBox(p, half_size, r);
-            if (dist > 0.5) discard;
+            // See the ES3 fragment shader above for why this is a coverage
+            // ramp instead of a hard discard.
+            coverage = clamp(0.5 - dist, 0.0, 1.0);
+            if (coverage <= 0.0) discard;
         }
-        
+
         vec4 final_color = u_solid_color;
-        
+
         if (u_num_stops > 0) {
             float t = 0.0;
             if (u_gradient_orientation == 1) {
@@ -160,7 +174,7 @@ static const char* fragment_shader_es2 = R"(#version 100
             } else {
                 t = (v_pos.y - u_rect_size.y) / u_rect_size.w;
             }
-            
+
             vec4 grad_color = u_gradient_colors[0];
             for (int i = 0; i < 15; i++) {
                 if (i >= u_num_stops - 1) break;
@@ -171,18 +185,20 @@ static const char* fragment_shader_es2 = R"(#version 100
                     break;
                 }
             }
-            
+
             if (t > u_gradient_stops[u_num_stops - 1]) {
                 grad_color = u_gradient_colors[u_num_stops - 1];
             }
-            
+
             if (u_alphablend == 1) {
                 final_color.rgb = mix(final_color.rgb, grad_color.rgb, grad_color.a);
             } else {
                 final_color = grad_color;
             }
         }
-        
+
+        final_color.a *= coverage;
+
         // See gshader.cpp's fragment shader for why this swap is here.
         gl_FragColor = final_color.bgra;
     }
