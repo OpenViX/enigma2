@@ -932,6 +932,13 @@ gEGLDC::gEGLDC(INativeWindowProvider* window_provider, int width, int height) : 
 
 gEGLDC::~gEGLDC() {
 	cleanupEGL();
+	// gEGLDCAutoInit::initNow() (egl_init.cpp) transfers ownership of the
+	// provider it constructs to us via the constructor below - nothing else
+	// ever deletes it, so without this DreamboxWindowProvider::cleanup()
+	// (correctly wired to its own destructor) never actually runs, and the
+	// provider itself leaks for the life of the process.
+	delete m_window_provider;
+	m_window_provider = nullptr;
 	if (s_instance == this)
 		s_instance = nullptr;
 }

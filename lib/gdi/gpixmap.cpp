@@ -22,6 +22,18 @@ Licensed under GPLv2.
 #error "no BYTE_ORDER defined!"
 #endif
 
+#ifdef HAVE_EGL
+// Defined in lib/gdi/egl/gtexture_manager.cpp (only compiled when HAVE_EGL is
+// set - see lib/gdi/Makefile.inc), which is why this is a loose extern "C"
+// declaration here rather than a header include: this file is built
+// unconditionally for every backend, not just EGL ones. Safe to call even if
+// no gTextureManager exists yet/anymore (checks for one internally) and safe
+// to call from any thread (queues the id under a mutex; the actual
+// glDeleteTextures() runs later on gEGLDC's own thread - see
+// gTextureManager::processDeletions()).
+extern "C" void egl_queue_texture_deletion(unsigned int gl_texture_id);
+#endif
+
 /* surface acceleration threshold: do not attempt to accelerate surfaces smaller than the threshold (measured in bytes) */
 #ifndef GFX_SURFACE_ACCELERATION_THRESHOLD
 #define GFX_SURFACE_ACCELERATION_THRESHOLD 48000
@@ -233,6 +245,16 @@ gSurface::gSurface(int width, int height, int _bpp, int accel):
 
 gSurface::~gSurface()
 {
+#ifdef HAVE_EGL
+	// gTextureManager::getTexture() (lib/gdi/egl/gtexture_manager.cpp) lazily
+	// caches a GL texture name for this surface in gl_texture_id the first
+	// time it's drawn via the EGL backend - nothing previously freed that
+	// texture when the surface died, leaking one GL texture object (and its
+	// VRAM) for every blit/background/icon/text-overlay pixmap ever
+	// destroyed, unbounded over the life of the process.
+	if (gl_texture_id)
+		egl_queue_texture_deletion(gl_texture_id);
+#endif
 	gAccel::getInstance()->accelFree(this);
 	if (data)
 	{
