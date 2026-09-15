@@ -245,6 +245,15 @@ void *gRC::thread()
 	gles_state_close();
 	gles_close();
 #endif
+#ifdef HAVE_EGL
+	// Tear down the EGL context on this same thread it was made current on
+	// (see the initEGL() call above and gEGLDC::cleanupEGL()'s own comment) -
+	// this thread is about to exit and be pthread_join()'d by gRC::~gRC(),
+	// well before gEGLDC itself is destructed, so this is the last point at
+	// which EGL teardown can safely happen on the thread that owns it.
+	if (gEGLDC::getInstance() && gEGLDC::getInstance()->isInitialized())
+		gEGLDC::getInstance()->cleanupEGL();
+#endif
 #ifndef SYNC_PAINT
 	pthread_exit(0);
 #endif

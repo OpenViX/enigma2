@@ -94,7 +94,6 @@ private:
 	bool m_cpu_overlay_dirty;
 
 	bool tryInitEGL(int version);
-	void cleanupEGL();
 
 	// Copies page `from`'s content into page `to` entirely through the GL
 	// pipeline (eglMakeCurrent with asymmetric draw/read surfaces, then
@@ -160,6 +159,24 @@ public:
 	static gEGLDC* getInstance() { return s_instance; }
 
 	bool initEGL();
+	// eglMakeCurrent()/eglDestroyContext()/eglTerminate() are just as
+	// thread-affine as initEGL()'s own eglMakeCurrent() above - they must run
+	// on the same gRC render thread the context was made current on, not on
+	// the eInit/main thread that destructs gEGLDC (gEGLDCAutoInit::closeNow(),
+	// called from eInit::setRunlevel() - see egl_init.cpp). gRC::~gRC()
+	// pthread_join()s that thread *before* gEGLDC is destructed (gRC's
+	// AutoInit priority is higher, so it closes first), so by the time
+	// ~gEGLDC() used to call this itself, the one thread this context was
+	// ever current on no longer existed - calling these from the wrong
+	// thread is undefined behavior for a thread-affine EGL context and
+	// crashed deep inside the vendor driver with no useful backtrace (PC ==
+	// fault address, no unwindable frames) every time. gRC::thread() now
+	// calls this itself, symmetric to calling initEGL() at thread start, as
+	// its last step before exiting - see the call site in grc.cpp. Safe to
+	// call again afterward (~gEGLDC() still does, in case gRC's thread never
+	// ran at all): checks m_egl_display first and is a no-op once already
+	// torn down.
+	void cleanupEGL();
 	gEGLDC(INativeWindowProvider* window_provider = nullptr, int width = 1280, int height = 720);
 	virtual ~gEGLDC();
 
