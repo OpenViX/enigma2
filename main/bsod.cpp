@@ -295,6 +295,24 @@ void oops(const mcontext_t &context)
 	eLog(lvlFatal, "PC: %08lx", (unsigned long)context.arm_pc);
 	eLog(lvlFatal, "Fault Address: %08lx", (unsigned long)context.fault_address);
 	eLog(lvlFatal, "Error Code: %lu", (unsigned long)context.error_code);
+	// print_backtrace()'s backtrace()/dladdr() walk below only ever resolves
+	// handleFatalSignal()'s own call chain (itself, then libc's signal
+	// trampoline) - signal delivery breaks the normal frame-pointer chain
+	// back into whatever was actually executing when the fault happened, so
+	// the crashing function's own frame never appears there. Resolving the
+	// fault PC itself against the loaded shared object map is the one way
+	// left to identify which library (enigma2 itself, a vendor driver .so,
+	// libc, ...) - and, if debug symbols are present, which function - was
+	// actually running, instead of being left with only a bare, otherwise
+	// unattributable hex address.
+	{
+		Dl_info info;
+		if (dladdr((void*)context.arm_pc, &info) && info.dli_fname != NULL && info.dli_fname[0] != '\0')
+			eLog(lvlFatal, "PC is in: %s(%s) [+0x%lx]", info.dli_fname, info.dli_sname != NULL ? info.dli_sname : "n/a",
+				 (unsigned long)context.arm_pc - (unsigned long)info.dli_fbase);
+		else
+			eLog(lvlFatal, "PC 0x%08lx is not inside any loaded module (wild jump / corrupted function pointer)", (unsigned long)context.arm_pc);
+	}
 #else
 	eLog(lvlFatal, "FIXME: no oops support!");
 #endif

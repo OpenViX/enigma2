@@ -5,7 +5,22 @@
 #include <string>
 #include <lib/base/elock.h>
 
-uint PixmapCache::MaximumSize = 256;
+// 100, not 256: this cap is a plain item COUNT, not a memory budget (see
+// the comment below - a known, pre-existing limitation). On the GLES/EGL
+// backend every cached pixmap also gets its own GPU texture created for it
+// (gTextureManager, lib/gdi/egl/gtexture_manager.cpp) the first time it's
+// blitted, roughly doubling the real memory cost of each cached entry (CPU
+// decode buffer + GPU texture) versus the CPU-only renderer this limit was
+// originally tuned for. 256 simultaneously-cached picons/icons (the common
+// case this cache targets - PNGs are cached by default, see
+// Tools/LoadPixmap.py; JPGs are not) could add up to more than a
+// memory-constrained set-top box's available graphics memory, observed as
+// the vendor GLES driver's own internal ION allocation failing (and
+// segfaulting on the failure - a driver bug we can't fix directly) during
+// heavy list scrolling. Lowering the cap reduces how many of those
+// GPU-backed entries can be alive at once; tune if picons on a given
+// skin/box are unusually large or small.
+uint PixmapCache::MaximumSize = 100;
 
 // Cache objects work best when we manage the ref counting manually. ePtr brings memory protection violations on shutdown
 // We track the filesize and modified date of the file. If either change, the item is considered stale is removedand must be reloaded
@@ -95,8 +110,11 @@ gPixmap* PixmapCache::Get(const char *filename)
 			else
 			{
 				// file no longer exists, has been modified or changed size, so remove from the cache
-				pixmapCache.erase(it);
+				// (read the pixmap pointer BEFORE erase() - erase() invalidates `it`, so reading
+				// it->second afterwards is a dangling-iterator access: it can silently skip the
+				// Release() below, leaking the evicted pixmap's accel-backed memory forever)
 				disposePixmap = it->second.pixmap;
+				pixmapCache.erase(it);
 			}
 		}
 	}
@@ -137,9 +155,10 @@ void PixmapCache::Set(const char *filename, gPixmap* pixmap)
 					NameToPixmap::iterator it = std::min_element(pixmapCache.begin(), pixmapCache.end(), &CompareLastUsed);
 					if (it != pixmapCache.end())
 					{
-						pixmapCache.erase(it);
 						// need to release the pixmap being removed after we've finished updating the cache
+						// (read it->second BEFORE erase() - see the identical comment in Get() above)
 						disposePixmap = it->second.pixmap;
+						pixmapCache.erase(it);
 					}
 				}
 
