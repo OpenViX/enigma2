@@ -177,6 +177,12 @@ public:
 
 	void blit(gDC &dc, const ePoint &offset, const gRGB &cbackground, const gRGB &foreground, bool border = false);
 
+	// Needed by gEGLDC::exec()'s gOpcode::renderPara handling (gegldc.cpp) to
+	// know which screen region to composite after blit() has run - area is
+	// otherwise private, unlike gOpcode::renderText's own area field which
+	// callers can read directly off the opcode.
+	const eRect &getArea() const { return area; }
+
 	enum
 	{
 		dirLeft, dirRight, dirCenter, dirBlock, dirCenterIfFits, dirBidi

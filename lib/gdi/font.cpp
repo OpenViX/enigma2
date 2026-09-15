@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <byteswap.h>
+#include <stdint.h>
 
 #ifndef BYTE_ORDER
 #error "no BYTE_ORDER defined!"
@@ -1119,7 +1120,22 @@ void eTextPara::blit(gDC &dc, const ePoint &offset, const gRGB &cbackground, con
 			sxbase=glyph_bitmap->width;
 			sybase=glyph_bitmap->height;
 			pitch = glyph_bitmap->pitch;
+
+			// Offer this glyph to a hardware-accelerated backend (see
+			// gEGLDC::renderGlyph()) before falling through to the CPU
+			// compositing loop below. Only glyphs from the shared FreeType
+			// small-bitmap cache (this branch, keyed by face+size+index) have
+			// a stable identity worth atlasing - the i->image branch above
+			// (border/pre-rendered glyphs) is per-eTextPara-instance and
+			// isn't offered here; see grc.h's gDC::renderGlyph() comment.
+			uint64_t glyph_key = (uint64_t)(uintptr_t)i->font->scaler.face_id;
+			glyph_key = glyph_key * 1000003ull ^ (uint32_t)i->font->scaler.width;
+			glyph_key = glyph_key * 1000003ull ^ (uint32_t)i->font->scaler.height;
+			glyph_key = glyph_key * 1000003ull ^ (uint32_t)i->glyph_index;
+			if (dc.renderGlyph(ePoint(rxbase, rybase), sbase, sxbase, sybase, pitch, currentforeground, glyph_key))
+				continue;
 		}
+		dc.onGlyphCpuDrawn();
 		dbase = (__u8*)(surface->data)+buffer_stride*rybase+rxbase*surface->bypp;
 		for (unsigned int c = 0; c < clip.rects.size(); ++c)
 		{
