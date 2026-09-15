@@ -197,11 +197,9 @@ void gTextShader::bind()
 {
     glUseProgram(m_program_id);
     // gEGLDC::flushTextBatch() (gegldc.cpp) drives this shader directly -
-    // uploading its own VBO data and issuing glDrawArrays() itself - rather
-    // than going through drawGlyph() below, so drawGlyph()'s own
-    // glUniform1i(m_texture_location, 0) never runs for that path. Set it
-    // here instead so every caller of bind() gets a correctly-pointed
-    // sampler regardless of which draw path it then takes.
+    // uploading its own VBO data and issuing glDrawArrays() itself, with no
+    // other call site that sets the sampler uniform - so it's set here
+    // instead, unconditionally on every bind().
     glUniform1i(m_texture_location, 0);
 }
 
@@ -262,28 +260,3 @@ void gTextShader::setResolution(float width, float height)
     glUniformMatrix4fv(m_projection_location, 1, GL_FALSE, ortho);
 }
 
-void gTextShader::drawGlyph(float x, float y, const glyph_uv& uv, float r, float g, float b, float a)
-{
-    bind();
-    glUniform4f(m_color_location, r, g, b, a);
-    glUniform1i(m_texture_location, 0);
-
-    float w = (float)uv.width;
-    float h = (float)uv.height;
-
-    // 6 vertices × 8 floats: x, y, u, v, r, g, b, a
-    float vertices[48] = {
-        x,     y,     uv.u0, uv.v0, r, g, b, a,
-        x,     y + h, uv.u0, uv.v1, r, g, b, a,
-        x + w, y,     uv.u1, uv.v0, r, g, b, a,
-        x + w, y,     uv.u1, uv.v0, r, g, b, a,
-        x,     y + h, uv.u0, uv.v1, r, g, b, a,
-        x + w, y + h, uv.u1, uv.v1, r, g, b, a
-    };
-
-    bindVAO();
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    gles::uploadDynamicVBO(sizeof(vertices), vertices);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    unbindVAO();
-}

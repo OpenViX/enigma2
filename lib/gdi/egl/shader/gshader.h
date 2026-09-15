@@ -19,7 +19,6 @@ private:
 	GLint m_color_location;
 
 	GLuint compileShader(GLenum type, const char* source);
-	bool checkLinkErrors(GLuint program);
 	void bindVAO();
 	void unbindVAO();
 

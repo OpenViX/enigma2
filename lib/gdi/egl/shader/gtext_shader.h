@@ -33,15 +33,14 @@ public:
 	void destroy();
 
 	// flushTextBatch() (gegldc.cpp) builds its own batched vertex buffer
-	// across many glyphs and issues glBufferSubData()/glDrawArrays() itself
-	// rather than going through drawGlyph() one glyph at a time - it must
-	// bracket that with bindVAO()/unbindVAO() so the correct VBO and vertex
-	// attribute layout (pos_uv + color) are active, since whatever another
-	// shader (e.g. gShader, 2 floats/vertex) last bound would otherwise still
-	// be in effect and the batch data would be misinterpreted.
+	// across many glyphs and issues glBufferSubData()/glDrawArrays() itself -
+	// it must bracket that with bindVAO()/unbindVAO() so the correct VBO and
+	// vertex attribute layout (pos_uv + color) are active, since whatever
+	// another shader (e.g. gShader, 2 floats/vertex) last bound would
+	// otherwise still be in effect and the batch data would be
+	// misinterpreted.
 	void bindVAO();
 	void unbindVAO();
 
 	void setResolution(float width, float height);
-	void drawGlyph(float x, float y, const glyph_uv& uv, float r, float g, float b, float a);
 };

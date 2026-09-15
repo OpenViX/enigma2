@@ -39,7 +39,6 @@ private:
 	int m_width;
 	int m_height;
 	int m_gles_version; // 2 or 3
-	GLint m_max_texture_size;
 
 	gShader m_basic_shader;
 	gAdvancedShader m_advanced_shader;
@@ -139,7 +138,6 @@ private:
 	void executeRectangle(const gOpcode* op);
 	void executeLine(const gOpcode* op);
 	void executeBlit(const gOpcode* op);
-	void executeDrawGlyph(const gOpcode* op);
 	void executeClear(const gOpcode* op);
 	void flushTextBatch();
 	void setGlScissor(const eRect& rect);
@@ -166,7 +164,6 @@ private:
 	// then uploads and composites right along with the real glyph pixels.
 	void clearOverlayArea(const eRect& area);
 
-	bool isHardwareAccelerated() const { return true; }
 	bool renderGlyph(const ePoint& pos, const uint8_t* data, int width, int height, int pitch, const gRGB& color, uint64_t glyph_key) override;
 	void onGlyphCpuDrawn() override { m_cpu_overlay_dirty = true; }
 
