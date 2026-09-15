@@ -126,7 +126,23 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, 0, 0, 0);
 	channels = png_get_channels(png_ptr, info_ptr);
 
-	result = new gPixmap(width, height, bit_depth * channels, cached ? PixmapCache::PixmapDisposed : NULL, accel);
+	// Same EGL-specific override as loadJPG() below, and for the same reason:
+	// every real caller (LoadPixmap.py) passes accel=accelAuto, so PNGs decode
+	// through here for anything from tiny skin icons up to full-size covers/
+	// posters cached locally as .png (e.g. a plugin's downloaded cover-art
+	// cache) - and unlike JPEG, PNG is also eListboxPythonMultiContent's own
+	// grid/list cell image format, so this is the actual path a grid of
+	// picons/covers loads through, not ePicLoad. A large accelAuto PNG is
+	// exactly as capable of alone exhausting the shrunk-for-EGL accel pool as
+	// a large JPEG is - accelerated CPU memory buys nothing on GLES either
+	// way, since gTextureManager textures it regardless. An explicit
+	// non-default request (accelAlways/accelNever) is left alone.
+#ifdef HAVE_EGL
+	int png_accel = (accel == gPixmap::accelAuto) ? gPixmap::accelNever : accel;
+#else
+	int png_accel = accel;
+#endif
+	result = new gPixmap(width, height, bit_depth * channels, cached ? PixmapCache::PixmapDisposed : NULL, png_accel);
 	result->isPNG = true;
 	gUnmanagedSurface *surface = result->surface;
 
@@ -271,7 +287,35 @@ int loadJPG(ePtr<gPixmap> &result, const char *filename, ePtr<gPixmap> alpha, in
 		}
 	}
 
-	result = new gPixmap(cinfo.output_width, cinfo.output_height, grayscale ? 8 : 32, cached ? PixmapCache::PixmapDisposed : NULL);
+	// accelNever on the GLES/EGL backend specifically, not the accelAuto
+	// default: JPEGs are typically large photos (posters, backdrops,
+	// thumbnails) rather than small icons/logos, so at accelAuto's size gate
+	// they were exactly the images actually competing for gAccel's
+	// fixed-size accel pool (loadPNG() above gets the identical override for
+	// the identical reason - a large cover/poster cached as .png hits this
+	// just as hard as one cached as .jpg). On GLES that pool and the vendor
+	// GPU driver's own internal texture memory allocations draw from the
+	// same limited system ION budget (confirmed: this crash - the driver's
+	// own ION allocation failing with a NULL-deref inside libv3ddriver.so -
+	// only reproduces with the GLES backend, not the CPU/FBDC one), and
+	// every decoded pixmap gets uploaded to a GPU texture via glTexImage2D
+	// regardless of whether its source was accel-backed
+	// (gTextureManager::createTextureFromPixmap()'s CPU-upload path handles
+	// heap-backed surfaces exactly as well as the DMA-BUF fast path handles
+	// accel-backed ones) - so accel-backed CPU memory buys JPEGs little on
+	// GLES while large ones alone can exhaust the pool. The non-GLES
+	// renderer has no such second ION consumer and has always used
+	// accelAuto here without issue, so it's untouched - gPixmap::blit()'s
+	// hardware-accelerated path (gpixmap.cpp/accel.cpp) there still
+	// requires both source and destination to be accel-backed, so this
+	// keeps JPEG resize/blend hardware-accelerated exactly as before on
+	// that backend, matching PNG's unchanged behavior on that backend too.
+#ifdef HAVE_EGL
+	int jpeg_accel = gPixmap::accelNever;
+#else
+	int jpeg_accel = gPixmap::accelAuto;
+#endif
+	result = new gPixmap(cinfo.output_width, cinfo.output_height, grayscale ? 8 : 32, cached ? PixmapCache::PixmapDisposed : NULL, jpeg_accel);
 	result->surface->transparent = false;
 	row_stride = cinfo.output_width * cinfo.output_components;
 	buffer = (*cinfo.mem->alloc_sarray)((j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);

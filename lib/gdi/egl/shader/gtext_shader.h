@@ -28,6 +28,10 @@ public:
 	bool init();
 	void bind();
 
+	// See gShader::destroy()'s comment - same reasoning and requirement
+	// (must run while this thread's EGL context is still current).
+	void destroy();
+
 	// flushTextBatch() (gegldc.cpp) builds its own batched vertex buffer
 	// across many glyphs and issues glBufferSubData()/glDrawArrays() itself
 	// rather than going through drawGlyph() one glyph at a time - it must

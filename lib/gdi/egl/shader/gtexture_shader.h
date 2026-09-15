@@ -47,6 +47,10 @@ public:
 	bool init();
 	void bind();
 
+	// See gShader::destroy()'s comment - same reasoning and requirement
+	// (must run while this thread's EGL context is still current).
+	void destroy();
+
 	void setResolution(float width, float height);
 	void drawTexture(float x, float y, float width, float height, GLuint texture_id, float global_alpha = 1.0f, float radius = 0.0f, uint8_t edges = 0);
 

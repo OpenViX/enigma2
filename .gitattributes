@@ -1,0 +1,14 @@
+# autotools/build scripts are parsed by Linux-side m4/automake/make, which do
+# not tolerate CRLF - a Windows checkout with core.autocrlf=true silently
+# corrupts these (see the "config.status: error: cannot find input file"
+# class of build failure) unless their line endings are pinned here
+# regardless of the checking-out machine's local git config.
+configure.ac eol=lf
+configure eol=lf
+Makefile.am eol=lf
+Makefile.inc eol=lf
+*.am eol=lf
+*.inc eol=lf
+*.in eol=lf
+*.m4 eol=lf
+*.sh eol=lf

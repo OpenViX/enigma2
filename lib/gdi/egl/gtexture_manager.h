@@ -22,6 +22,16 @@ private:
 	EGLDisplay m_egl_display;
 	std::unordered_map<GLuint, EGLImageKHR> m_texture_to_image_map;
 
+	// Diagnostic only (see gTextureManager::createTextureFromPixmap()/
+	// processDeletions()): tracks how many GL textures this manager
+	// currently believes are live, so a genuine unbounded leak (count keeps
+	// climbing) can be told apart from a legitimate-but-too-high working set
+	// (count plateaus, then the next alloc past that plateau fails). Both
+	// the increment (getTexture(), on the render/GL thread) and the
+	// decrement (processDeletions(), same thread) only ever run on the
+	// single EGL context thread, so this doesn't need its own lock.
+	long m_live_texture_count = 0;
+
 	// unified method to generate and upload the texture based on bpp
 	GLuint createTextureFromPixmap(gPixmap* pixmap);
 	GLuint createTextureFromDmabuf(gPixmap* pixmap);

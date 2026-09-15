@@ -246,11 +246,19 @@ void *gRC::thread()
 	gles_close();
 #endif
 #ifdef HAVE_EGL
-	// Tear down the EGL context on this same thread it was made current on
-	// (see the initEGL() call above and gEGLDC::cleanupEGL()'s own comment) -
-	// this thread is about to exit and be pthread_join()'d by gRC::~gRC(),
-	// well before gEGLDC itself is destructed, so this is the last point at
-	// which EGL teardown can safely happen on the thread that owns it.
+	// Mirror the initEGL() call at the top of this function: EGL contexts
+	// are per-thread, and this is the thread the context was made current
+	// on, so it must also be torn down here, before this thread exits -
+	// not later from gEGLDC's destructor, which normally runs on a
+	// different thread (eInit's teardown, on the main thread) well after
+	// this thread has already terminated. gRC's own AutoInit priority
+	// (eAutoInitNumbers::graphic) is higher than gEGLDCAutoInit's
+	// (graphic-1), so LIFO close order tears gRC down - joining this
+	// thread - before gEGLDCAutoInit::closeNow() ever runs; by then there
+	// is no longer any thread left where eglMakeCurrent()/eglDestroyContext()
+	// etc. would be valid to call, which is what crashed the closed-source
+	// EGL driver on shutdown (segfault right after "gEGLDC" in the eInit
+	// teardown log, immediately following Ctrl+C).
 	if (gEGLDC::getInstance() && gEGLDC::getInstance()->isInitialized())
 		gEGLDC::getInstance()->cleanupEGL();
 #endif

@@ -22,6 +22,8 @@ private:
 	GLint m_radius_location;
 	GLint m_edges_location;
 	GLint m_solid_color_location;
+	GLint m_border_width_location;
+	GLint m_border_color_location;
 	GLint m_alphablend_location;
 
 	// Gradient uniforms
@@ -48,8 +50,12 @@ public:
 	bool init();
 	void bind();
 
+	// See gShader::destroy()'s comment - same reasoning and requirement
+	// (must run while this thread's EGL context is still current).
+	void destroy();
+
 	void setResolution(float width, float height);
 
 	void drawAdvancedRect(float x, float y, float width, float height, int radius, uint8_t edges, const std::vector<gRGB>& gradient_colors, uint8_t orientation, bool alphablend, float alpha,
-						  const gRGB& solid_color);
+						  const gRGB& solid_color, int border_width, const gRGB& border_color);
 };

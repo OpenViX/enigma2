@@ -181,7 +181,21 @@ bool gEGLDC::initEGL() {
 	// glBlitFramebuffer(), which is also subject to the scissor test and
 	// resets it to the full surface before blitting - see its comment.
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// RGB always blends as normal "over" (GL_SRC_ALPHA,
+	// GL_ONE_MINUS_SRC_ALPHA) - what makes a translucent widget visually
+	// look tinted/composited against whatever real content (another
+	// widget, the desktop) is behind it, exactly like gPixmap's own CPU
+	// blendPixel() (gpixmap.cpp) does for the same case. The alpha channel
+	// is different: this render target's own alpha is read by the
+	// display's hardware compositor to decide how much of the video plane
+	// shows through the OSD, and two genuinely different kinds of "blended"
+	// draw need two different formulas there - see setAlphaBlendMode()
+	// (called at every blend-enabling call site) for which and why. Default
+	// to the "true" alphaBlend formula here since it's what the overwhelming
+	// majority of blended draws (text, alphaBlend/alphaTest images) need;
+	// callers that need the other one set it explicitly right before their
+	// own draw.
+	setAlphaBlendMode(true);
 	glEnable(GL_SCISSOR_TEST);
 
 	// 8. initialise shaders and resources
@@ -220,6 +234,42 @@ void gEGLDC::setGlScissor(const eRect& rect) {
 	int sx = rect.x();
 	int sy = m_height - (rect.y() + rect.height());
 	glScissor(sx, sy, rect.width(), rect.height());
+}
+
+void gEGLDC::setAlphaBlendMode(bool trueAlphaBlend) {
+	// RGB factors are identical either way - see the call sites' comments
+	// and initEGL()'s for the full picture. Only the alpha factors differ:
+	//
+	// trueAlphaBlend: standard Porter-Duff "over" (dst factor
+	// GL_ONE_MINUS_SRC_ALPHA) - out.a = src.a + dst.a*(1-src.a). Stacks
+	// correctly (an opaque destination stays opaque; two translucent
+	// layers compound) and matches gPixmap's own CPU blendPixel() alpha
+	// math. This is what text glyphs, blitAlphaBlend/blitAlphaTest images,
+	// and a rectangle drawn with genuine alphaBlend need: they're real
+	// translucent *content*, and should still fully block the video plane
+	// wherever they sit over already-opaque UI, exactly as they visually
+	// appear to (tinted, not see-through-to-video).
+	//
+	// !trueAlphaBlend: dst factor GL_ZERO - out.a = src.a, unconditionally
+	// overwriting whatever alpha was already in the framebuffer. This is
+	// for draws that aren't really translucent *content* so much as a
+	// deliberately-near-transparent hole with decoration - a video
+	// widget's own rounded/bordered background (e.g. a "Pig" skin element
+	// with backgroundColor close to fully transparent). eWidgetDesktop
+	// still paints whatever opaque parent/screen background sits behind
+	// such a widget first (see calcWidgetClipRegion(), which keeps a
+	// rounded/alphaBlend widget's backdrop visible/painted specifically so
+	// normal translucent widgets CAN blend against it) - accumulating
+	// "over" that already-opaque destination can never read back as
+	// anything but opaque, no matter how transparent the widget's own
+	// color is, which defeats the whole point of a near-transparent video
+	// window background. Ignoring the destination entirely instead makes
+	// this draw's own alpha the absolute truth for video-plane visibility
+	// at the pixels it touches.
+	if (trueAlphaBlend)
+		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	else
+		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 }
 
 void gEGLDC::executeFill(const gOpcode* op) {
@@ -282,19 +332,41 @@ void gEGLDC::executeFillRegion(const gOpcode* op) {
 }
 
 void gEGLDC::executeRectangle(const gOpcode* op) {
-	if (m_current_clip.rects.empty())
+	// gDC::exec()'s own gOpcode::rectangle handling (grc.cpp) always resets
+	// m_border_width/m_radius/m_radius_edges/the gradient state after every
+	// rectangle draw so it never leaks into the next one - this backend
+	// intercepts gOpcode::rectangle entirely (see exec()'s switch below) and
+	// never calls through to gDC::exec() for it, so it must repeat that same
+	// reset itself, on every return path (including the empty-clip one
+	// below, which grc.cpp's equivalent also reaches unconditionally since
+	// the reset there runs after gPixmap::drawRectangle() regardless of
+	// whether that call's region ended up empty).
+	if (m_current_clip.rects.empty()) {
+		m_border_width = 0;
+		m_radius = 0;
+		m_radius_edges = 0;
+		m_gradient_orientation = 0;
+		m_gradient_fullSize = 0;
+		m_gradient_alphablend = false;
+		m_gradient_colors.clear();
 		return;
+	}
 
 	// See executeFill() above for why pending blit/text batches must flush first.
 	flushBlitBatch();
 	flushTextBatch();
 
-	if (m_radius > 0 || m_gradient_colors.size() > 0) {
+	if (m_radius > 0 || m_gradient_colors.size() > 0 || m_border_width > 0) {
+		// useNew is eWidget.cpp's own proxy for "is this rectangle genuinely
+		// alphaBlend" (see setAlphaBlendMode()'s comment) - it's literally
+		// what gets passed as m_alphaBlend at every drawRectangle() call
+		// site in lib/gui/ewidget.cpp.
+		setAlphaBlendMode(op->parm.rectangle->useNew);
 		for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 			setGlScissor(m_current_clip.rects[i]);
 			m_advanced_shader.drawAdvancedRect(op->parm.rectangle->area.x() + m_current_offset.x(), op->parm.rectangle->area.y() + m_current_offset.y(), op->parm.rectangle->area.width(),
 											   op->parm.rectangle->area.height(), m_radius, m_radius_edges, m_gradient_colors, m_gradient_orientation, m_gradient_alphablend > 0,
-											   1.0f - (m_background_color_rgb.a / 255.0f), m_background_color_rgb);
+											   1.0f - (m_background_color_rgb.a / 255.0f), m_background_color_rgb, m_border_width, m_border_color);
 		}
 	} else {
 		float r = m_background_color_rgb.r / 255.0f;
@@ -313,6 +385,14 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 		}
 		glEnable(GL_BLEND);
 	}
+
+	m_border_width = 0;
+	m_radius = 0;
+	m_radius_edges = 0;
+	m_gradient_orientation = 0;
+	m_gradient_fullSize = 0;
+	m_gradient_alphablend = false;
+	m_gradient_colors.clear();
 }
 
 void gEGLDC::executeClear(const gOpcode* op) {
@@ -343,6 +423,16 @@ void gEGLDC::executeClear(const gOpcode* op) {
 	// drew.
 	GLuint overlay_tex = m_pixmap->surface->gl_texture_id;
 	bool maybe_has_overlay = overlay_tex != 0 && !m_text_overlay_region.empty();
+
+	// The blend func's alpha factors are global GL state that persists
+	// across opcodes (see setAlphaBlendMode()) - an earlier rectangle/blit
+	// in this same frame may have left it in the "not true alphaBlend"
+	// mode, which would be wrong for this recomposite: it's uploading real
+	// per-pixel-alpha rendered text/border content back onto the screen,
+	// same as flushTextBatch()/compositeTextOverlay(), so it needs the
+	// normal accumulating formula.
+	if (maybe_has_overlay)
+		setAlphaBlendMode(true);
 
 	for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 		eRect area = m_current_clip.rects[i];
@@ -418,14 +508,126 @@ void gEGLDC::executeLine(const gOpcode* op) {
 
 void gEGLDC::executeBlit(const gOpcode* opcode) {
 	const gOpcode::para::pblit* op = opcode->parm.blit;
+
+	// gPainter::blit() (grc.cpp) AddRef()s op->pixmap when it queues this
+	// opcode, precisely so the pixmap survives even if its last Python/C++
+	// reference goes away before the render thread gets around to processing
+	// this blit. gDC::exec()'s generic (non-EGL) blit case (grc.cpp) balances
+	// that with pixmap->Release() plus delete o->parm.blit once it's done -
+	// but gEGLDC::exec() calls executeBlit() directly instead of going
+	// through gDC::exec()'s switch, and this function never did either of
+	// those. Every single blit through this backend - not just the first
+	// time a given pixmap is drawn, EVERY draw of it - permanently leaked one
+	// AddRef() (and the heap-allocated pblit struct itself), so a pixmap's
+	// underlying refcount could never reach zero no matter how thoroughly
+	// its Python/C++ owners let go of it: it had already accumulated more
+	// AddRef()s than any amount of caller-side cleanup could ever release.
+	// That's what made gSurface::~gSurface() (and with it, the GPU texture
+	// release in gTextureManager) never run - not a missing-check bug in any
+	// specific caller, but every blit call site leaking equally, just at a
+	// rate proportional to how often each was actually drawn (which is why
+	// eListbox's orGrid content, redrawing many distinct large images far
+	// more often than a typical orVertical/orHorizontal list, exhausted
+	// GPU/ION memory so much faster despite going through the exact same
+	// leak). This guard's destructor runs on every exit path below,
+	// including every early return, so it always releases exactly the one
+	// reference/allocation this specific opcode is responsible for.
+	struct BlitOpcodeGuard {
+		const gOpcode::para::pblit* op;
+		~BlitOpcodeGuard() {
+			if (op->pixmap)
+				op->pixmap->Release();
+			delete op;
+		}
+	} guard{op};
+
 	if (!op->pixmap)
 		return;
+
+	// Reclaim any textures already queued for deletion (their source
+	// gPixmap died - e.g. Python replaced a grid/list entry's pixmap
+	// reference on redraw, see gSurface::~gSurface() in gpixmap.cpp)
+	// BEFORE getTexture() below potentially allocates GPU memory for a new
+	// one. processDeletions() is normally only reached once per real frame
+	// (at gOpcode::flush/flip, see exec()'s switch), which is too late for
+	// this specific ordering problem: a widget that rebuilds its content
+	// (a content grid navigating to a new selection, say) releases its OLD
+	// pixmaps - which queues their textures for deletion - and then
+	// submits blit opcodes for the NEW ones, ALL within the same frame,
+	// before that frame's own flush/flip is ever reached. Deletion only
+	// happening at the end meant the old and new textures were both
+	// GPU-resident simultaneously for the whole frame instead of the old
+	// one's memory being reclaimed first - a transient doubling of GPU
+	// texture memory that's exactly what a content grid with many visible,
+	// uncached, per-item images (poster art, thumbnails - anything not
+	// going through PixmapCache) would hit on every navigation step. Cheap
+	// when there's nothing queued (a mutex lock + empty check - see
+	// gTextureManager::processDeletions()), so safe to call this often.
+	m_texture_manager.processDeletions();
 
 	GLuint tex_id = m_texture_manager.getTexture(op->pixmap);
 	if (tex_id == 0)
 		return;
 
+	// Replicate gPixmap::blit()'s (gpixmap.cpp) own position/size resolution
+	// exactly - that CPU function is this codebase's ground truth for what
+	// the blitScale/blitKeepAspectRatio/alignment flags mean, and this
+	// backend has to match it since a plain (non-blitScale) blit's
+	// op->position is NOT a real target size to stretch to: callers like
+	// ePixmap::event(evtPaint) (lib/gui/epixmap.cpp) always pass the
+	// widget's full box as position regardless of whether scaling was
+	// actually requested, with only the flags bit distinguishing the two -
+	// unconditionally treating position as the destination size (as this
+	// used to) force-stretched/distorted every non-scaled icon to its
+	// widget's box and silently dropped blitKeepAspectRatio's letterboxing
+	// for every scaled one.
+	const eSize src_size = op->pixmap->size();
 	eRect pos = op->position;
+
+	if (!(op->flags & gPixmap::blitScale)) {
+		// pos' size is ignored if left or top aligning; if its size isn't
+		// set, centre/right/bottom aligning is ignored.
+		if (pos.size().isValid()) {
+			eRect box = pos;
+			if (op->flags & gPixmap::blitHAlignCenter)
+				pos.setLeft(box.left() + (box.width() - src_size.width()) / 2);
+			else if (op->flags & gPixmap::blitHAlignRight)
+				pos.setLeft(box.right() - src_size.width());
+
+			if (op->flags & gPixmap::blitVAlignCenter)
+				pos.setTop(box.top() + (box.height() - src_size.height()) / 2);
+			else if (op->flags & gPixmap::blitVAlignBottom)
+				pos.setTop(box.bottom() - src_size.height());
+		}
+		pos.setWidth(src_size.width());
+		pos.setHeight(src_size.height());
+	} else if (pos.size() != src_size && (op->flags & gPixmap::blitKeepAspectRatio) && src_size.width() > 0 && src_size.height() > 0) {
+		eRect box = pos;
+		// Compare box.width()/src.width() vs box.height()/src.height()
+		// without floating point, the same comparison gPixmap::blit() makes
+		// via its FIX-point scale_x/scale_y - cross-multiply instead.
+		if ((long long)box.width() * src_size.height() > (long long)box.height() * src_size.width()) {
+			// vertical is full height, shrink horizontal to preserve aspect
+			int w = src_size.width() * box.height() / src_size.height();
+			pos.setWidth(w);
+			if (op->flags & gPixmap::blitHAlignCenter)
+				pos.moveBy((box.width() - w) / 2, 0);
+			else if (op->flags & gPixmap::blitHAlignRight)
+				pos.moveBy(box.width() - w, 0);
+		} else {
+			// horizontal is full width, shrink vertical to preserve aspect
+			int h = src_size.height() * box.width() / src_size.width();
+			pos.setHeight(h);
+			if (op->flags & gPixmap::blitVAlignCenter)
+				pos.moveBy(0, (box.height() - h) / 2);
+			else if (op->flags & gPixmap::blitVAlignBottom)
+				pos.moveBy(0, box.height() - h);
+		}
+	}
+	// else: blitScale is set and either pos already equals src_size, or
+	// blitKeepAspectRatio wasn't requested - pos is already the correct
+	// (possibly non-uniformly stretched) target rect as given.
+
 	pos.moveBy(m_current_offset);
 
 	gRegion clip;
@@ -449,10 +651,21 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 	// like scissor.
 	bool enable_blend = (op->flags & (gPixmap::blitAlphaBlend | gPixmap::blitAlphaTest)) || (m_radius > 0);
 
+	// See setAlphaBlendMode()'s comment. A blit's own blitAlphaBlend/
+	// blitAlphaTest flag means the source pixmap's alpha is genuine
+	// translucent content (icons with soft edges, etc.) - the accumulating
+	// formula. A blit that's only blending because of a corner radius
+	// (rounding forces blend on so the SDF edge anti-aliases smoothly, even
+	// for an otherwise fully opaque image) isn't declaring itself
+	// translucent content in that same sense, so it gets the other formula
+	// - harmless for its opaque interior (src.a=1 either way) and only
+	// matters for the 1px rounded-corner AA fringe.
+	bool true_alpha_blend = (op->flags & (gPixmap::blitAlphaBlend | gPixmap::blitAlphaTest)) != 0;
+
 	float x = pos.x();
 	float y = pos.y();
-	float width = pos.width() > 0 ? pos.width() : op->pixmap->size().width();
-	float height = pos.height() > 0 ? pos.height() : op->pixmap->size().height();
+	float width = pos.width();
+	float height = pos.height();
 
 	// Batching needs exactly one scissor rect (a batched draw call has only
 	// one active scissor for every quad in it) and no rounding (the texture
@@ -464,9 +677,10 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 	if (!can_batch) {
 		flushBlitBatch();
 		flushTextBatch();
-		if (enable_blend)
+		if (enable_blend) {
+			setAlphaBlendMode(true_alpha_blend);
 			glEnable(GL_BLEND);
-		else
+		} else
 			glDisable(GL_BLEND);
 		for (unsigned int i = 0; i < clip.rects.size(); ++i) {
 			setGlScissor(clip.rects[i]);
@@ -478,7 +692,7 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 	}
 
 	const eRect& r = clip.rects[0];
-	bool state_changed = m_blit_batch_active && (tex_id != m_blit_batch_tex_id || enable_blend != m_blit_batch_blend || r != m_blit_batch_clip);
+	bool state_changed = m_blit_batch_active && (tex_id != m_blit_batch_tex_id || enable_blend != m_blit_batch_blend || true_alpha_blend != m_blit_batch_true_alpha || r != m_blit_batch_clip);
 	bool full = m_blit_batch_buffer.size() >= (size_t)gTextureShader::kMaxBatchQuads * 24;
 	if (state_changed || full)
 		flushBlitBatch();
@@ -491,6 +705,7 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 		flushTextBatch();
 		m_blit_batch_tex_id = tex_id;
 		m_blit_batch_blend = enable_blend;
+		m_blit_batch_true_alpha = true_alpha_blend;
 		m_blit_batch_clip = r;
 		m_blit_batch_active = true;
 	}
@@ -509,9 +724,10 @@ void gEGLDC::flushBlitBatch() {
 	if (m_blit_batch_buffer.empty())
 		return;
 
-	if (m_blit_batch_blend)
+	if (m_blit_batch_blend) {
+		setAlphaBlendMode(m_blit_batch_true_alpha);
 		glEnable(GL_BLEND);
-	else
+	} else
 		glDisable(GL_BLEND);
 
 	setGlScissor(m_blit_batch_clip);
@@ -607,6 +823,13 @@ void gEGLDC::flushTextBatch() {
 
 	m_text_shader.bind();
 
+	// Text glyphs are real translucent content (anti-aliased coverage *
+	// color alpha) - see setAlphaBlendMode()'s comment for why this needs
+	// the accumulating ("true" alphaBlend) formula, overriding whatever an
+	// earlier, unrelated draw this frame may have left the blend func's
+	// alpha factors set to.
+	setAlphaBlendMode(true);
+
 	// Bind the atlas pixmap
 	gPixmap* atlas_pix = m_font_atlas.getPixmap();
 	GLuint tex_id = m_texture_manager.getTexture(atlas_pix);
@@ -653,6 +876,26 @@ void gEGLDC::flushTextBatch() {
 	m_text_shader.unbindVAO();
 
 	m_text_batch_buffer.clear();
+}
+
+void gEGLDC::clearOverlayArea(const eRect& area) {
+	int pw = m_pixmap->size().width();
+	int ph = m_pixmap->size().height();
+	int left = std::max(0, area.left());
+	int top = std::max(0, area.top());
+	int right = std::min(pw, area.left() + area.width());
+	int bottom = std::min(ph, area.top() + area.height());
+	if (right <= left || bottom <= top)
+		return;
+
+	// pw*4, not surface->stride: m_pixmap is this backend's own allocation
+	// (see the constructor), always tightly packed - same assumption
+	// executeClear()'s equivalent erase loop and compositeTextOverlay()'s
+	// row_width already make for this same buffer.
+	uint8_t* base = (uint8_t*)m_pixmap->surface->data;
+	int stride = pw * 4;
+	for (int y = top; y < bottom; ++y)
+		memset(base + (size_t)y * stride + (size_t)left * 4, 0, (size_t)(right - left) * 4);
 }
 
 void gEGLDC::compositeTextOverlay(eRect area) {
@@ -708,6 +951,11 @@ void gEGLDC::compositeTextOverlay(eRect area) {
 		// writes down to just the area this opcode actually populated so
 		// nothing outside it can be touched.
 		setGlScissor(area);
+		// Real rendered text/border pixel content - see setAlphaBlendMode()'s
+		// comment for why this needs the accumulating ("true" alphaBlend)
+		// formula rather than whatever an earlier, unrelated draw this frame
+		// may have left the blend func's alpha factors set to.
+		setAlphaBlendMode(true);
 		m_texture_shader.drawTexture(0, 0, (float)m_width, (float)m_height, tex_id);
 
 		// Record that the overlay now has content here so executeClear()
@@ -741,20 +989,35 @@ void gEGLDC::exec(const gOpcode* opcode) {
 		return;
 
 	switch (opcode->opcode) {
+		// fill/fillRegion/rectangle/line/blit are all handled entirely by
+		// this backend's own executeXXX() helpers instead of falling through
+		// to gDC::exec(opcode) - unlike renderText/renderPara/clear below,
+		// which call gDC::exec(opcode) themselves and get its disposal
+		// (delete o->parm.X, plus Release() on any refcounted member) for
+		// free. These five never did, so their heap-allocated opcode struct
+		// (new'd by gPainter's queuing side - see e.g. gPainter::blit() in
+		// grc.cpp) was never freed. blit is the severe case (op->pixmap also
+		// carries an AddRef() from gPainter::blit() that must be Release()'d
+		// - see executeBlit()'s own BlitOpcodeGuard); the rest hold no
+		// refcounted resource, so a plain delete here is enough.
 		case gOpcode::fill:
 			executeFill(opcode);
+			delete opcode->parm.fill;
 			break;
 
 		case gOpcode::fillRegion:
 			executeFillRegion(opcode);
+			delete opcode->parm.fillRegion;
 			break;
 
 		case gOpcode::rectangle:
 			executeRectangle(opcode);
+			delete opcode->parm.rectangle;
 			break;
 
 		case gOpcode::line:
 			executeLine(opcode);
+			delete opcode->parm.line;
 			break;
 
 		case gOpcode::blit:
@@ -785,6 +1048,27 @@ void gEGLDC::exec(const gOpcode* opcode) {
 			// before this text must draw before it, not after.
 			flushBlitBatch();
 			m_cpu_overlay_dirty = false;
+
+			// Border text (textBColor/textBWidth) always takes the CPU
+			// fallback (eTextPara::blit()'s two-pass border+fill technique -
+			// see grc.cpp's renderText handling) - pre-clear its area to
+			// transparent so whatever's NOT actual glyph/border ink (the
+			// padding within this text's own bounding box, or plain stale
+			// content left over from an earlier, unrelated draw at these
+			// same screen coordinates in this shared staging buffer) doesn't
+			// get uploaded and composited as an opaque block - this is what
+			// made bordered text render with a solid background instead of
+			// staying transparent. Gated on ->border specifically (rather
+			// than unconditionally) since it's known up front here, before
+			// gDC::exec() runs, and the overwhelming majority of text draws
+			// have no border and are fully GPU-rendered - no need to pay for
+			// a clear they'll never actually need composited.
+			if (opcode->parm.renderText->border) {
+				eRect clear_area = area;
+				clear_area.moveBy(m_current_offset);
+				clearOverlayArea(clear_area);
+			}
+
 			gDC::exec(opcode);
 			if (m_cpu_overlay_dirty) {
 				area.moveBy(m_current_offset);
@@ -945,6 +1229,24 @@ gEGLDC::~gEGLDC() {
 
 void gEGLDC::cleanupEGL() {
 	if (m_egl_display != EGL_NO_DISPLAY) {
+		// Free every shader's GL objects (program/VBO/VAO) HERE, while this
+		// thread's context is still current, rather than leaving it to
+		// their destructors: those run later as part of gEGLDC's own
+		// member teardown, invoked from ~gEGLDC() on a completely different
+		// thread (eInit's teardown, on the main thread - see this
+		// function's own declaration comment) *after* the context this
+		// function is about to destroy is already gone. A glDelete* call
+		// with no current context at all on that thread is exactly what
+		// was crashing the driver on shutdown even after moving the EGL
+		// context teardown itself to the correct thread - freeing them
+		// here first closes that gap. Each destroy() is safe to call again
+		// later (idempotent), so the destructors calling it a second time
+		// as a fallback is harmless.
+		m_basic_shader.destroy();
+		m_advanced_shader.destroy();
+		m_texture_shader.destroy();
+		m_text_shader.destroy();
+
 		eglMakeCurrent(m_egl_display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 		if (m_egl_context != EGL_NO_CONTEXT) {
 			eglDestroyContext(m_egl_display, m_egl_context);

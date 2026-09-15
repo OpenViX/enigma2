@@ -243,6 +243,9 @@ GLuint gTextureManager::getTexture(gPixmap* pixmap) {
 	GLuint new_texture = createTextureFromPixmap(pixmap);
 	if (new_texture) {
 		pixmap->surface->gl_texture_id = new_texture;
+		++m_live_texture_count;
+		eDebug("[gTextureManager] +texture id=%u live=%ld %dx%d bpp=%d", new_texture, m_live_texture_count,
+			pixmap->surface->x, pixmap->surface->y, pixmap->surface->bpp);
 	}
 	return new_texture;
 }
@@ -253,12 +256,19 @@ void gTextureManager::queueForDeletion(GLuint texture_id) {
 
 	std::lock_guard<std::mutex> lock(m_deletion_mutex);
 	m_pending_deletions.push_back(texture_id);
+	// If this queue depth climbs and stays high, processDeletions() isn't
+	// being reached often enough (rather than surfaces simply never dying) -
+	// a different problem from the live_texture_count in getTexture()/
+	// processDeletions() ever growing, which would mean surfaces are dying
+	// but their textures are never queued/deleted at all.
+	eDebug("[gTextureManager] queued texture id=%u for deletion, pending=%zu", texture_id, m_pending_deletions.size());
 }
 
 void gTextureManager::processDeletions() {
 	std::lock_guard<std::mutex> lock(m_deletion_mutex);
 	if (!m_pending_deletions.empty()) {
 		glDeleteTextures(m_pending_deletions.size(), m_pending_deletions.data());
+		m_live_texture_count -= (long)m_pending_deletions.size();
 
 		PFNEGLDESTROYIMAGEKHRPROC eglDestroyImageKHR = (PFNEGLDESTROYIMAGEKHRPROC)eglGetProcAddress("eglDestroyImageKHR");
 		for (GLuint texture_id : m_pending_deletions) {
@@ -271,6 +281,7 @@ void gTextureManager::processDeletions() {
 			}
 		}
 
+		eDebug("[gTextureManager] -texture count=%zu live=%ld", m_pending_deletions.size(), m_live_texture_count);
 		m_pending_deletions.clear();
 	}
 }
@@ -279,5 +290,11 @@ extern "C" void egl_queue_texture_deletion(unsigned int gl_texture_id);
 void egl_queue_texture_deletion(unsigned int gl_texture_id) {
 	if (s_active_manager) {
 		s_active_manager->queueForDeletion(gl_texture_id);
+	} else {
+		// Diagnostic only: if this ever prints, ~gSurface() is running and
+		// trying to release its texture, but there is no live gTextureManager
+		// to hand it to - the id (and the GPU/ION memory behind it) is
+		// silently dropped on the floor right here instead of being queued.
+		eDebug("[gTextureManager] egl_queue_texture_deletion(%u) called with no active manager - texture leaked", gl_texture_id);
 	}
 }

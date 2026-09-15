@@ -66,8 +66,30 @@ private:
 	std::vector<float> m_blit_batch_buffer;
 	GLuint m_blit_batch_tex_id = 0;
 	bool m_blit_batch_blend = false;
+	bool m_blit_batch_true_alpha = false;
 	eRect m_blit_batch_clip;
 	bool m_blit_batch_active = false;
+
+	// Selects which of two different alpha-channel blend formulas the next
+	// blended draw uses - see the call sites (executeBlit/flushBlitBatch,
+	// executeRectangle, flushTextBatch, compositeTextOverlay, and
+	// executeClear's overlay recomposite) and this function's own definition
+	// in gegldc.cpp for the full reasoning. In short: this render target's
+	// alpha channel is read by the display's hardware compositor to decide
+	// how much of the video plane shows through the OSD, and the two kinds
+	// of blended content this backend draws need different alpha semantics
+	// there - trueAlphaBlend=true (text, blitAlphaBlend/blitAlphaTest
+	// images, a rectangle drawn with genuine alphaBlend) accumulates alpha
+	// normally so it stays opaque (blocking video, as it should) when
+	// layered over already-opaque content; trueAlphaBlend=false (a
+	// near-transparent rounded/bordered background like a video window's
+	// own "Pig" skin element, which isn't really semi-transparent UI so
+	// much as a punched-through hole with decoration) makes the draw's own
+	// alpha the absolute, unaccumulated result, since such a widget is
+	// deliberately layered over whatever opaque parent/screen background
+	// eWidgetDesktop::calcWidgetClipRegion() (lib/gui/ewidgetdesktop.cpp)
+	// still paints underneath it and needs to defeat that, not blend with it.
+	void setAlphaBlendMode(bool trueAlphaBlend);
 
 	void flushBlitBatch();
 
@@ -132,6 +154,18 @@ private:
 	// reaches the display.
 	void compositeTextOverlay(eRect area);
 
+	// Resets m_pixmap's CPU buffer to fully transparent (raw alpha byte 0,
+	// not enigma's inverted gRGB convention - see the call site's comment)
+	// across `area` before a border-text renderText draw runs its CPU
+	// rasterization - eTextPara::blit() (font.cpp) only writes pixels where
+	// it actually draws glyph cells, leaving anything else in that area
+	// (padding between/around characters, or simply whatever this shared,
+	// screen-sized staging buffer held there from an earlier, unrelated
+	// draw at the same screen coordinates - it's never reset between
+	// frames otherwise) as stale/untouched bytes that compositeTextOverlay()
+	// then uploads and composites right along with the real glyph pixels.
+	void clearOverlayArea(const eRect& area);
+
 	bool isHardwareAccelerated() const { return true; }
 	bool renderGlyph(const ePoint& pos, const uint8_t* data, int width, int height, int pitch, const gRGB& color, uint64_t glyph_key) override;
 	void onGlyphCpuDrawn() override { m_cpu_overlay_dirty = true; }
@@ -159,24 +193,28 @@ public:
 	static gEGLDC* getInstance() { return s_instance; }
 
 	bool initEGL();
-	// eglMakeCurrent()/eglDestroyContext()/eglTerminate() are just as
-	// thread-affine as initEGL()'s own eglMakeCurrent() above - they must run
-	// on the same gRC render thread the context was made current on, not on
-	// the eInit/main thread that destructs gEGLDC (gEGLDCAutoInit::closeNow(),
-	// called from eInit::setRunlevel() - see egl_init.cpp). gRC::~gRC()
-	// pthread_join()s that thread *before* gEGLDC is destructed (gRC's
-	// AutoInit priority is higher, so it closes first), so by the time
-	// ~gEGLDC() used to call this itself, the one thread this context was
-	// ever current on no longer existed - calling these from the wrong
-	// thread is undefined behavior for a thread-affine EGL context and
-	// crashed deep inside the vendor driver with no useful backtrace (PC ==
-	// fault address, no unwindable frames) every time. gRC::thread() now
-	// calls this itself, symmetric to calling initEGL() at thread start, as
-	// its last step before exiting - see the call site in grc.cpp. Safe to
-	// call again afterward (~gEGLDC() still does, in case gRC's thread never
-	// ran at all): checks m_egl_display first and is a no-op once already
-	// torn down.
+
+	// Tears down the EGL context/surfaces/display. Like initEGL(), this
+	// must run on gRC's own render thread and NOT on whatever thread ends
+	// up destructing this object (eInit's teardown, driven by ~eMain() on
+	// the main thread - see the destructor's own comment) - eglMakeCurrent()/
+	// eglDestroyContext() etc. are meaningless (and observed to crash inside
+	// the closed-source driver) once called against a context that isn't
+	// current on, or was never made current on, the calling thread. gRC's
+	// AutoInit priority (eAutoInitNumbers::graphic, see grc.cpp) is HIGHER
+	// than gEGLDCAutoInit's (graphic-1), so gRC's own teardown - which joins
+	// and ends the render thread - runs BEFORE gEGLDCAutoInit::closeNow()
+	// even starts (LIFO close order: higher priority number inits later,
+	// closes first). By the time the destructor below would otherwise call
+	// this, the render thread is already gone - there is no longer any
+	// thread left where these calls would be valid. So gRC::thread()
+	// (grc.cpp) calls this itself, still running on the render thread,
+	// right before it exits on gOpcode::shutdown. Safe to call again
+	// afterward (from the destructor, as a fallback for any window
+	// provider/configuration where that ordering assumption doesn't hold) -
+	// it's a no-op once m_egl_display is already EGL_NO_DISPLAY.
 	void cleanupEGL();
+
 	gEGLDC(INativeWindowProvider* window_provider = nullptr, int width = 1280, int height = 720);
 	virtual ~gEGLDC();
 

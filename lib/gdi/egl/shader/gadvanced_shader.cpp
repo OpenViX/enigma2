@@ -26,7 +26,9 @@ static const char* fragment_shader_es3 = R"(#version 300 es
     uniform float u_radius;
     uniform int u_edges;
     uniform vec4 u_solid_color;
-    
+    uniform float u_border_width;
+    uniform vec4 u_border_color;
+
     uniform int u_num_stops;
     uniform vec4 u_gradient_colors[16];
     uniform float u_gradient_stops[16];
@@ -40,12 +42,12 @@ static const char* fragment_shader_es3 = R"(#version 300 es
 
     void main() {
         float coverage = 1.0;
-        if (u_radius > 0.0) {
-            vec2 half_size = u_rect_size.zw * 0.5;
-            vec2 center = vec2(u_rect_size.x, u_rect_size.y) + half_size;
-            vec2 p = v_pos - center;
-            float r = u_radius;
+        vec2 half_size = u_rect_size.zw * 0.5;
+        vec2 center = vec2(u_rect_size.x, u_rect_size.y) + half_size;
+        vec2 p = v_pos - center;
+        float r = u_radius;
 
+        if (u_radius > 0.0) {
             if (p.x < 0.0 && p.y < 0.0 && (u_edges & 1) == 0) r = 0.0;
             if (p.x > 0.0 && p.y < 0.0 && (u_edges & 2) == 0) r = 0.0;
             if (p.x < 0.0 && p.y > 0.0 && (u_edges & 4) == 0) r = 0.0;
@@ -94,6 +96,19 @@ static const char* fragment_shader_es3 = R"(#version 300 es
             }
         }
 
+        if (u_border_width > 0.0) {
+            // Second, inset SDF for the fill/border split: a fragment inside
+            // the shrunk-by-border_width rounded box is fill, one between it
+            // and the outer edge (already established by `coverage` above)
+            // is border - same analytic-ramp antialiasing as the outer edge,
+            // just against this inner boundary instead.
+            float inner_r = max(r - u_border_width, 0.0);
+            vec2 inner_half = max(half_size - vec2(u_border_width), vec2(0.0));
+            float inner_dist = udRoundBox(p, inner_half, inner_r);
+            float inner_coverage = clamp(0.5 - inner_dist, 0.0, 1.0);
+            final_color = mix(u_border_color, final_color, inner_coverage);
+        }
+
         final_color.a *= coverage;
 
         // See gshader.cpp's fragment shader for why this swap is here -
@@ -133,7 +148,9 @@ static const char* fragment_shader_es2 = R"(#version 100
     uniform float u_r_bl; // bottom-left
     uniform float u_r_br; // bottom-right
     uniform vec4 u_solid_color;
-    
+    uniform float u_border_width;
+    uniform vec4 u_border_color;
+
     uniform int u_num_stops;
     uniform vec4 u_gradient_colors[16];
     uniform float u_gradient_stops[16];
@@ -147,12 +164,12 @@ static const char* fragment_shader_es2 = R"(#version 100
 
     void main() {
         float coverage = 1.0;
-        if (u_radius > 0.0) {
-            vec2 half_size = u_rect_size.zw * 0.5;
-            vec2 center = vec2(u_rect_size.x, u_rect_size.y) + half_size;
-            vec2 p = v_pos - center;
-            float r = u_radius;
+        vec2 half_size = u_rect_size.zw * 0.5;
+        vec2 center = vec2(u_rect_size.x, u_rect_size.y) + half_size;
+        vec2 p = v_pos - center;
+        float r = u_radius;
 
+        if (u_radius > 0.0) {
             if (p.x < 0.0 && p.y < 0.0) r = u_r_tl;
             if (p.x > 0.0 && p.y < 0.0) r = u_r_tr;
             if (p.x < 0.0 && p.y > 0.0) r = u_r_bl;
@@ -197,6 +214,16 @@ static const char* fragment_shader_es2 = R"(#version 100
             }
         }
 
+        if (u_border_width > 0.0) {
+            // See the ES3 fragment shader above for the inner-SDF fill/border
+            // split this mirrors.
+            float inner_r = max(r - u_border_width, 0.0);
+            vec2 inner_half = max(half_size - vec2(u_border_width), vec2(0.0));
+            float inner_dist = udRoundBox(p, inner_half, inner_r);
+            float inner_coverage = clamp(0.5 - inner_dist, 0.0, 1.0);
+            final_color = mix(u_border_color, final_color, inner_coverage);
+        }
+
         final_color.a *= coverage;
 
         // See gshader.cpp's fragment shader for why this swap is here.
@@ -213,14 +240,21 @@ gAdvancedShader::gAdvancedShader() : m_program_id(0), m_vbo(0) {}
 #endif
 
 gAdvancedShader::~gAdvancedShader() {
+	destroy();
+}
+
+void gAdvancedShader::destroy() {
 #if defined(HAVE_GLES3)
 	if (gles::isGLES3() && m_vao)
 		glDeleteVertexArrays(1, &m_vao);
+	m_vao = 0;
 #endif
 	if (m_vbo)
 		glDeleteBuffers(1, &m_vbo);
+	m_vbo = 0;
 	if (m_program_id)
 		glDeleteProgram(m_program_id);
+	m_program_id = 0;
 }
 
 GLuint gAdvancedShader::compileShader(GLenum type, const char* source) {
@@ -272,6 +306,8 @@ bool gAdvancedShader::init() {
 	m_radius_location = glGetUniformLocation(m_program_id, "u_radius");
 	m_edges_location = glGetUniformLocation(m_program_id, "u_edges");
 	m_solid_color_location = glGetUniformLocation(m_program_id, "u_solid_color");
+	m_border_width_location = glGetUniformLocation(m_program_id, "u_border_width");
+	m_border_color_location = glGetUniformLocation(m_program_id, "u_border_color");
 	m_alphablend_location = glGetUniformLocation(m_program_id, "u_alphablend");
 	m_gradient_colors_location = glGetUniformLocation(m_program_id, "u_gradient_colors");
 	m_gradient_stops_location = glGetUniformLocation(m_program_id, "u_gradient_stops");
@@ -343,12 +379,14 @@ void gAdvancedShader::setResolution(float width, float height) {
 }
 
 void gAdvancedShader::drawAdvancedRect(float x, float y, float width, float height, int radius, uint8_t edges, const std::vector<gRGB>& gradient_colors, uint8_t orientation, bool alphablend,
-									   float alpha, const gRGB& solid_color) {
+									   float alpha, const gRGB& solid_color, int border_width, const gRGB& border_color) {
 	bind();
 
 	glUniform4f(m_rect_size_location, x, y, width, height);
 	glUniform1f(m_radius_location, (float)radius);
 	glUniform4f(m_solid_color_location, solid_color.r / 255.0f, solid_color.g / 255.0f, solid_color.b / 255.0f, 1.0f - (solid_color.a / 255.0f));
+	glUniform1f(m_border_width_location, (float)border_width);
+	glUniform4f(m_border_color_location, border_color.r / 255.0f, border_color.g / 255.0f, border_color.b / 255.0f, 1.0f - (border_color.a / 255.0f));
 
 	if (gles::isGLES3()) {
 		// ES3: pass as integer bitmask

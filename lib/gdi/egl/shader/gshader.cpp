@@ -62,14 +62,21 @@ gShader::gShader() : m_program_id(0), m_vbo(0) {}
 #endif
 
 gShader::~gShader() {
+	destroy();
+}
+
+void gShader::destroy() {
 #if defined(HAVE_GLES3)
 	if (gles::isGLES3() && m_vao)
 		glDeleteVertexArrays(1, &m_vao);
+	m_vao = 0;
 #endif
 	if (m_vbo)
 		glDeleteBuffers(1, &m_vbo);
+	m_vbo = 0;
 	if (m_program_id)
 		glDeleteProgram(m_program_id);
+	m_program_id = 0;
 }
 
 GLuint gShader::compileShader(GLenum type, const char* source) {

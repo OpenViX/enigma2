@@ -23,14 +23,13 @@ Licensed under GPLv2.
 #endif
 
 #ifdef HAVE_EGL
-// Defined in lib/gdi/egl/gtexture_manager.cpp (only compiled when HAVE_EGL is
-// set - see lib/gdi/Makefile.inc), which is why this is a loose extern "C"
-// declaration here rather than a header include: this file is built
-// unconditionally for every backend, not just EGL ones. Safe to call even if
-// no gTextureManager exists yet/anymore (checks for one internally) and safe
-// to call from any thread (queues the id under a mutex; the actual
-// glDeleteTextures() runs later on gEGLDC's own thread - see
-// gTextureManager::processDeletions()).
+// Defined in lib/gdi/egl/gtexture_manager.cpp - queues a GLES texture name
+// for deletion on gRC's render thread (glDeleteTextures() needs a current
+// EGL context, which only that thread has). gSurface's destructor below is
+// the one place that reliably runs exactly when a surface (and whatever
+// texture gTextureManager may have cached for it - see gUnmanagedSurface's
+// gl_texture_id) is no longer needed by anything, regardless of which
+// specific code path let its last reference go.
 extern "C" void egl_queue_texture_deletion(unsigned int gl_texture_id);
 #endif
 
@@ -245,13 +244,28 @@ gSurface::gSurface(int width, int height, int _bpp, int accel):
 
 gSurface::~gSurface()
 {
+	// gTextureManager::getTexture() (lib/gdi/egl/gtexture_manager.cpp)
+	// caches a GLES texture name here the first time this surface is
+	// blitted through the EGL backend, to avoid re-uploading it on every
+	// draw - but nothing ever released that texture once this surface
+	// (and its cached name) went away: egl_queue_texture_deletion() was
+	// defined but never called anywhere, an unconditional leak of one GL
+	// texture (and, for an accel-backed surface uploaded via
+	// createTextureFromDmabuf()'s DMA-BUF import path, of the underlying
+	// EGLImageKHR pinning that region of the accel pool / system ION heap
+	// at the driver level) per surface that ever got textured. That
+	// matches "ION exhausts gradually as more and more distinct images get
+	// rendered, independent of scroll speed" exactly: every picon/icon
+	// that's ever been shown once leaks its accel-backed memory forever
+	// instead of returning it when scrolled away and destroyed.
 #ifdef HAVE_EGL
-	// gTextureManager::getTexture() (lib/gdi/egl/gtexture_manager.cpp) lazily
-	// caches a GL texture name for this surface in gl_texture_id the first
-	// time it's drawn via the EGL backend - nothing previously freed that
-	// texture when the surface died, leaking one GL texture object (and its
-	// VRAM) for every blit/background/icon/text-overlay pixmap ever
-	// destroyed, unbounded over the life of the process.
+	// Diagnostic only: gTextureManager's own logs (+texture/-texture) never
+	// show a single deletion across an entire long-running session despite
+	// plenty of surfaces provably going out of scope Python-side - this
+	// traces whether that's because ~gSurface() itself isn't running for
+	// them (something else is still keeping the gPixmap referenced) or
+	// because it runs but gl_texture_id is unexpectedly 0 here.
+	eDebug("[gSurface] dtor surface=%p gl_texture_id=%u %dx%d bpp=%d", this, gl_texture_id, x, y, bpp);
 	if (gl_texture_id)
 		egl_queue_texture_deletion(gl_texture_id);
 #endif

@@ -538,6 +538,7 @@ AS_IF([test "x$with_egl" = "xyes"], [
   ])
 ])
 
+# Baseline requirement is EGL + GLESv2 - this alone decides use_egl.
 AS_IF([test "x$have_egl" = "xyes" -a "x$have_gles2" = "xyes"], [
   AC_DEFINE([HAVE_EGL], [1], [Define if EGL/GLES2 support is available])
   use_egl=yes
@@ -545,12 +546,14 @@ AS_IF([test "x$have_egl" = "xyes" -a "x$have_gles2" = "xyes"], [
   use_egl=no
 ])
 
-AS_IF([test "x$have_egl" = "xyes" -a "x$have_gles3" = "xyes"], [
-  AC_DEFINE([HAVE_EGL], [1], [Define if EGL/GLES3 support is available])
+# GLES3 is a strictly optional upgrade on top of that baseline - it must
+# only ever ADD the extra define, never downgrade use_egl back to no when
+# GLES3/gl3.h isn't available (a very common case: many SDKs ship EGL +
+# GLESv2 without GLES3 headers at all). Getting this wrong silently drops
+# the whole EGL backend for anyone without GLES3, with no error - it just
+# falls back to gfbdc/sdl as if --with-egl had never been requested.
+AS_IF([test "x$use_egl" = "xyes" -a "x$have_gles3" = "xyes"], [
   AC_DEFINE([HAVE_GLES3], [1], [Define if GLES3 support is available])
-  use_egl=yes
-], [
-  use_egl=no
 ])
 
 AM_CONDITIONAL([HAVE_EGL], [test "x$use_egl" = "xyes"])
