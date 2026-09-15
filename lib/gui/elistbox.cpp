@@ -872,7 +872,13 @@ int eListbox::event(int event, void *data, void *data2)
 				if (cornerRadius && cornerRadiusEdges)
 				{
 					painter.setRadius(cornerRadius, cornerRadiusEdges);
-					painter.drawRectangle(eRect(ePoint(0, 0), size()));
+					// A listbox's own panel background is never a
+					// video-reveal widget - under GLES this must use the
+					// "over" blend formula regardless of the style's fill
+					// color, same as lib/gui/elistboxcontent.cpp's item
+					// backgrounds (see gEGLDC::executeRectangle()'s
+					// comment); other backends are unaffected either way.
+					painter.drawRectangle(eRect(ePoint(0, 0), size()), painter.usingGLES());
 				}
 				else
 					painter.clear();
