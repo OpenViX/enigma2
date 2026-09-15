@@ -15,7 +15,22 @@
 
 class gEGLDCAutoInit : protected eAutoInit
 {
-	gEGLDC *m_dc;
+	// ePtr, not a raw owning pointer: gEGLDC derives from gMainDC, which is a
+	// refcounted iObject accessed elsewhere via ePtr<gMainDC> (main.cpp's
+	// gMainDC::getInstance(), eWidgetDesktop::setDC(), gRC::setSpinnerDC()
+	// all AddRef() it). A raw pointer here that gets explicit `delete`d in
+	// closeNow() raced those other holders: whichever one released its last
+	// reference first (typically main.cpp's local ePtr<gMainDC>, which goes
+	// out of scope before eMain - and therefore before eInit - is even
+	// destroyed) already called `delete this` via Release() while this
+	// AutoInit's raw pointer kept pointing at the now-freed object; closeNow()
+	// then deleted it a second time, corrupting the heap and crashing with a
+	// wild-jump PC a moment later, on Ctrl+C shutdown. Holding an ePtr here
+	// keeps the refcount above zero for as long as this AutoInit is alive, so
+	// the object is only ever actually destroyed once, from closeNow() below
+	// - exactly like every other gMainDC backend (gFBDC, gSDLDC) already does
+	// via the generic eAutoInitPtr<T> template.
+	ePtr<gEGLDC> m_dc;
 	void initNow() override
 	{
 		// eInit::resumeInit() (called from StartEnigma.py around every plugin
@@ -77,11 +92,11 @@ class gEGLDCAutoInit : protected eAutoInit
 
 	void closeNow() override
 	{
-		if (m_dc)
-		{
-			delete m_dc;
-			m_dc = nullptr;
-		}
+		// Release() (not delete): m_dc is an ePtr now, see its declaration
+		// comment. This drops our reference; the object is only actually
+		// destroyed here if we're the last one holding it, which by this
+		// point (eInit teardown) every other holder already is.
+		m_dc = 0;
 	}
 
 public:
