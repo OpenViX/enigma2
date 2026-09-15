@@ -1,7 +1,7 @@
 from enigma import eTimer, eDVBDB
 
 from Components.ActionMap import ActionMap
-from Components.config import config
+from Components.config import config, configfile
 from Components.Ipkg import IpkgComponent
 from Components.Pixmap import Pixmap
 from Components.Label import Label
@@ -424,6 +424,9 @@ class UpdatePlugin(Screen, ProtectedScreen):
 		elif config.softwareupdate.autoimagebackup.value and hasattr(config, "imagemanager") and config.imagemanager.backuplocation.value and not self.ImageBackupDone:
 			self.doImageBackup()
 		else:
+			config.softwareupdate.updatefound.value = False  # switch off software-update-available icon
+			config.softwareupdate.updatefound.save()
+			configfile.save()
 			self.session.open(TryQuitMainloop, retvalue=QUIT_UPGRADE_PROGRAM)
 			self.close()
 

@@ -890,7 +890,7 @@ def InitUsageConfig():
 	config.softwareupdate.check = ConfigYesNo(default=True)
 	config.softwareupdate.checktimer = ConfigSelectionNumber(min=1, max=48, stepwidth=1, default=24, wraparound=True)
 	config.softwareupdate.updatelastcheck = ConfigInteger(default=0)
-	config.softwareupdate.updatefound = NoSave(ConfigBoolean(default=False))
+	config.softwareupdate.updatefound = ConfigBoolean(default=False)
 	config.softwareupdate.updatebeta = ConfigYesNo(default=False)
 	config.softwareupdate.updateisunstable = ConfigInteger(default=0)
 	config.softwareupdate.showinextensions = ConfigSelection(default="no", choices=[("no", _("no")), ("yes", _("yes")), ("available", _("only when available"))])

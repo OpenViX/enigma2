@@ -1014,6 +1014,7 @@ class BackupFiles(Screen):
 		self.Stage2Completed = False
 		self.Stage3Completed = False
 		self.Stage4Completed = False
+		self.softwareUpdateIcon = False
 
 	def createBackupJob(self):
 		job = Components.Task.Job(_("Backup manager"))
@@ -1143,6 +1144,11 @@ class BackupFiles(Screen):
 		config.usage.power.was_controlled_shutdown.save()
 		configfile.save()
 
+		self.softwareUpdateIcon = config.softwareupdate.updatefound.value  # remember value to restore after backup
+		config.softwareupdate.updatefound.value = False  # switch off software-update-available icon so it doesn't polute the settings file saved by the backup
+		config.softwareupdate.updatefound.save()
+		configfile.save()
+
 		tmplist = config.backupmanager.backupdirs.value
 		tmplist.append("/tmp/ExtraInstalledPlugins")
 		if path.exists("/tmp/3rdPartyPlugins"):
@@ -1199,6 +1205,11 @@ class BackupFiles(Screen):
 		# Return config.usage.power.was_controlled_shutdown to the normal running state
 		config.usage.power.was_controlled_shutdown.value = not config.usage.power.was_controlled_shutdown.default
 		config.usage.power.was_controlled_shutdown.save()
+		configfile.save()
+
+		# restore original setting after backup has completed
+		config.softwareupdate.updatefound.value = self.softwareUpdateIcon
+		config.softwareupdate.updatefound.save()
 		configfile.save()
 
 		# Trim the number of backups to the configured setting...

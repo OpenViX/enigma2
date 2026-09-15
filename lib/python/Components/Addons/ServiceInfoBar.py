@@ -2,21 +2,26 @@ from enigma import eListbox, eListboxPythonMultiContent, BT_ALIGN_CENTER, iPlaya
 from skin import parseScale, applySkinFactor, parseColor, parseFont, parameters
 
 from Components.Addons.GUIAddon import GUIAddon
+from Components.config import config
 from Components.Converter.PliExtraInfo import createCurrentCaidLabel
-from Components.Converter.ServiceInfo import getVideoHeight
+from Components.Converter.ServiceInfo import AUDIO_CHANNEL_LABELS, AUDIO_CODEC_INFO, VIDEO_CODEC_INFO, getCurrentAudioChannels, getCurrentAudioCodec, getCurrentVideoCodec, getVideoHeight
 from Components.Converter.VAudioInfo import StdAudioDesc
 from Components.Label import Label
 from Components.MultiContent import MultiContentEntryPixmapAlphaBlend, MultiContentEntryText
+from Components.OnlineUpdateCheck import versioncheck
 from Components.ServiceEventTracker import ServiceEventTracker
 from Components.Sources.StreamService import StreamServiceList
 from Components.NimManager import nimmanager
 from Screens.InfoBarGenerics import hasActiveSubservicesForCurrentChannel
-from Tools.Directories import resolveFilename, SCOPE_GUISKIN
+from Screens import Standby  # importing "inStandby" here won't work because it is a boolean so won't update
+from Tools.Directories import resolveFilename, SCOPE_GUISKIN, fileExists
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Hex2strColor import Hex2strColor
 
 import NavigationInstance
 import re
+
+from os.path import join
 
 
 class ServiceInfoBar(GUIAddon):
@@ -39,6 +44,12 @@ class ServiceInfoBar(GUIAddon):
 		self.alignment = "left"
 		self.pixmaps = {}
 		self.pixmapsDisabled = {}
+		self.audioCodecIconPath = ""
+		self.audioCodecIconCache = {}
+		self.videoCodecIconPath = ""
+		self.videoCodecIconCache = {}
+		self.audioChannelsIconPath = ""
+		self.audioChannelsIconCache = {}
 		self.separatorLineColor = 0xC0C0C0
 		self.foreColor = 0xFFFFFF
 		self.textBackColor = None
@@ -56,11 +67,15 @@ class ServiceInfoBar(GUIAddon):
 		self.frontendInfoSource = None
 		self.isCryptedDetected = False
 		self.tunerColors = parameters.get("FrontendInfoColors", (0x0000FF00, 0x00FFFF00, 0x007F7F7F))  # tuner active, busy, available colors
+		self.codecIconPrefix = "icon_"  # forced prefix used for video and audio codc icons
+		self.updateStateKey = None
+		config.softwareupdate.updatefound.addNotifier(self.checkUpdateState, initial_call=False, immediate_feedback=True)
 
 	def onContainerShown(self):
 		self.textRenderer.GUIcreate(self.relatedScreen.instance)
 		self.l.setItemHeight(self.instance.size().height())
 		self.l.setItemWidth(self.instance.size().width())
+		self.checkUpdateState(refresh=False)
 		self.updateAddon()
 		if not self.__event_tracker:
 			self.__event_tracker = ServiceEventTracker(screen=self.relatedScreen,
@@ -82,6 +97,7 @@ class ServiceInfoBar(GUIAddon):
 		self.frontendInfoSource = self.source.screen["FrontendInfo"]
 
 	def destroy(self):
+		config.softwareupdate.updatefound.removeNotifier(self.checkUpdateState)
 		self.nav.record_event.remove(self.gotRecordEvent)
 		self.refreshCryptoInfo.stop()
 		self.refreshAddon.stop()
@@ -128,8 +144,9 @@ class ServiceInfoBar(GUIAddon):
 
 		for x in self.elements:
 			enabledKey = self.detectVisible(x) if x != "separator" else "separator"
-			is_off = enabledKey and "_off" in enabledKey
-			enabledKey = enabledKey and enabledKey.replace("_off", "")
+			is_off = isinstance(enabledKey, str) and "_off" in enabledKey
+			if isinstance(enabledKey, str):
+				enabledKey = enabledKey.replace("_off", "")
 			if enabledKey:
 				if not is_off:
 					filteredElements.append(enabledKey)
@@ -138,7 +155,7 @@ class ServiceInfoBar(GUIAddon):
 
 		filteredElements = list(self.remove_doubles(filteredElements))
 
-		if filteredElements[-1] == "separator" and len(filteredElements) > 1 and filteredElements[len(filteredElements) - 2] != "currentCrypto":
+		if filteredElements and filteredElements[-1] == "separator" and len(filteredElements) > 1 and filteredElements[len(filteredElements) - 2] != "currentCrypto":
 			del filteredElements[-1]
 
 		l_list = []
@@ -176,14 +193,27 @@ class ServiceInfoBar(GUIAddon):
 			elif key == "dolby" and not isRef:
 				audio = service.audioTracks()
 				if audio:
-					n = audio.getNumberOfTracks()
-					idx = 0
-					while idx < n:
+					for idx in range(audio.getNumberOfTracks()):
 						i = audio.getTrackInfo(idx)
 						description = StdAudioDesc(i.getDescription())
 						if description and description.split()[0] in ("AC4", "AAC+", "AC3", "AC3+", "Dolby", "DTS", "DTS-HD", "HE-AAC", "IPCM", "LPCM", "WMA Pro"):
 							return key
-						idx += 1
+			elif key == "audioCodec" and not isRef:
+				description = getCurrentAudioCodec(service)
+				icon = AUDIO_CODEC_INFO.get(description, (description, ""))[1]
+				if icon:
+					return ("dynamicIcon", "audioCodec", f"{self.codecIconPrefix}{icon}")
+			elif key == "audioChannels" and not isRef:
+				channels = getCurrentAudioChannels(service)
+				label = AUDIO_CHANNEL_LABELS.get(channels)
+				if label:
+					icon = label.replace(".", "-")  # "5.1" -> "5-1", "2.0" -> "2-0"
+					return ("dynamicIcon", "audioChannels", f"{self.codecIconPrefix}{icon}")
+			elif key == "videoCodec" and not isRef:
+				videoType = getCurrentVideoCodec(info)
+				icon = VIDEO_CODEC_INFO.get(videoType, ("", ""))[1]
+				if icon:
+					return ("dynamicIcon", "videoCodec", f"{self.codecIconPrefix}{icon}")
 			elif key == "crypt" and not isRef:
 				if "%3a//" in pending_sref and pending_service_ref and not pending_service_ref.getStreamRelay():
 					return key + "_off"
@@ -277,8 +307,33 @@ class ServiceInfoBar(GUIAddon):
 								return "cable"
 							elif "DVB-T" in tuner_system:
 								return "terestrial"
+			elif key == "updateStable":
+				if self.updateStateKey == "updateStable":
+					return key
+			elif key == "updateUnstable":
+				if self.updateStateKey == "updateUnstable":
+					return key
 
 		return None
+
+	def findDynamicIcon(self, enabledKey):
+		kind, iconName = enabledKey[1:3]
+		if kind == "videoCodec":
+			path, cache = self.videoCodecIconPath, self.videoCodecIconCache
+		elif kind == "audioChannels":
+			path, cache = self.audioChannelsIconPath, self.audioChannelsIconCache
+		else:  # "audioCodec"
+			path, cache = self.audioCodecIconPath, self.audioCodecIconCache
+		if iconName in cache:
+			return cache[iconName]
+		pic = None
+		for extension in (".svg", ".png"):
+			filename = resolveFilename(SCOPE_GUISKIN, join(path, iconName + extension))
+			if fileExists(filename):
+				pic = LoadPixmap(filename)
+				break
+		cache[iconName] = pic
+		return pic
 
 	def buildEntry(self, sequence):
 		xPos = self.instance.size().width() if self.alignment == "right" else 0
@@ -295,15 +350,18 @@ class ServiceInfoBar(GUIAddon):
 
 			pic = None
 			if isOn:
-				if enabledKey in self.pixmaps:
+				if isinstance(enabledKey, tuple) and enabledKey[0] == "dynamicIcon":
+					pic = self.findDynamicIcon(enabledKey)
+				elif isinstance(enabledKey, str) and enabledKey in self.pixmaps:
 					pic = LoadPixmap(resolveFilename(SCOPE_GUISKIN, self.pixmaps[enabledKey]))
 			else:
 				if enabledKey == "videoRes":
 					enabledKey = "IS_HD"
-				if enabledKey in self.pixmaps:
-					pic = LoadPixmap(resolveFilename(SCOPE_GUISKIN, self.pixmaps[enabledKey]))
-				if enabledKey in self.pixmapsDisabled:
-					pic = LoadPixmap(resolveFilename(SCOPE_GUISKIN, self.pixmapsDisabled[enabledKey]))
+				if isinstance(enabledKey, str):
+					if enabledKey in self.pixmaps:
+						pic = LoadPixmap(resolveFilename(SCOPE_GUISKIN, self.pixmaps[enabledKey]))
+					if enabledKey in self.pixmapsDisabled:
+						pic = LoadPixmap(resolveFilename(SCOPE_GUISKIN, self.pixmapsDisabled[enabledKey]))
 
 			if enabledKey != "separator" and enabledKey != "currentCrypto" and enabledKey != "tuners":
 				if pic:
@@ -354,6 +412,18 @@ class ServiceInfoBar(GUIAddon):
 							xPos += textWidth + self.spacing
 		return res
 
+	def checkUpdateState(self, configElement=None, refresh=True):
+		if versioncheck.getUnstableUpdateAvailable():
+			newKey = "updateUnstable"
+		elif versioncheck.getStableUpdateAvailable():
+			newKey = "updateStable"
+		else:
+			newKey = None
+		if newKey != self.updateStateKey:
+			self.updateStateKey = newKey
+			if refresh and not Standby.inStandby:
+				self.updateAddon()
+
 	def getDesktopWith(self):
 		return getDesktop(0).size().width()
 
@@ -377,6 +447,12 @@ class ServiceInfoBar(GUIAddon):
 				self.pixmaps = {k: v for k, v in (item.split(':') for item in value.split(','))}
 			if attrib == "pixmapsDisabled":
 				self.pixmapsDisabled = {k: v for k, v in (item.split(':') for item in value.split(','))}
+			elif attrib == "audioCodecIconPath":
+				self.audioCodecIconPath = value
+			elif attrib == "videoCodecIconPath":
+				self.videoCodecIconPath = value
+			elif attrib == "audioChannelsIconPath":
+				self.audioChannelsIconPath = value
 			elif attrib == "spacing":
 				self.spacing = parseScale(value)
 			elif attrib == "alignment":
