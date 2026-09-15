@@ -15,7 +15,6 @@ gdi_libenigma_gdi_a_SOURCES = \
 	gdi/font.cpp \
 	gdi/font_arabic.cpp \
 	gdi/gfont.cpp \
-	gdi/gfont_atlas.cpp \
 	gdi/glcddc.cpp \
 	gdi/gmaindc.cpp \
 	gdi/gpixmap.cpp \
@@ -40,7 +39,6 @@ gdiinclude_HEADERS = \
 	gdi/fblcd.h \
 	gdi/font.h \
 	gdi/gfont.h \
-	gdi/gfont_atlas.h \
 	gdi/glcddc.h \
 	gdi/gpixmap.h \
 	gdi/grc.h \
@@ -52,6 +50,7 @@ gdiinclude_HEADERS = \
 
 if HAVE_EGL
 gdi_libenigma_gdi_a_SOURCES += \
+	gdi/gfont_atlas.cpp \
 	gdi/egl/egl_config.cpp \
 	gdi/egl/egl_init.cpp \
 	gdi/egl/gegldc.cpp \
@@ -62,6 +61,7 @@ gdi_libenigma_gdi_a_SOURCES += \
 	gdi/egl/shader/gtext_shader.cpp \
 	gdi/egl/shader/gtexture_shader.cpp
 gdiinclude_HEADERS += \
+	gdi/gfont_atlas.h \
 	gdi/egl/egl_config.h \
 	gdi/egl/gegldc.h \
 	gdi/egl/gles_version.h \
