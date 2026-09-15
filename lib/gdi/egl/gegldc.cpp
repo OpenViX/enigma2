@@ -357,10 +357,30 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 	flushTextBatch();
 
 	if (m_radius > 0 || m_gradient_colors.size() > 0 || m_border_width > 0) {
-		// useNew is eWidget.cpp's own proxy for "is this rectangle genuinely
-		// alphaBlend" (see setAlphaBlendMode()'s comment) - it's literally
-		// what gets passed as m_alphaBlend at every drawRectangle() call
-		// site in lib/gui/ewidget.cpp.
+		// This shape is drawn with an SDF fragment shader (drawAdvancedRect
+		// below), which always produces a partially-covered (src.a < 1) AA
+		// fringe along any rounded corner/border edge, even when the shape's
+		// own fill color is fully opaque. That fringe must accumulate "over"
+		// whatever is already in the destination (the trueAlphaBlend formula
+		// in setAlphaBlendMode()), exactly like every other shaped/
+		// anti-aliased draw (text, blits) and like the CPU renderer's own
+		// read-modify-write corner blending (gPixmap::drawRectangleNew,
+		// gpixmap.cpp) - otherwise those fringe pixels hit the GL_ZERO
+		// "video hole" formula and punch real sub-1.0-alpha holes at every
+		// rounded corner, letting the video plane show through there.
+		//
+		// useNew (eWidget.cpp's m_alphaBlend) is the caller's genuine signal
+		// for which formula this specific draw needs: widgets that are
+		// deliberately painting a near-transparent video-reveal frame (e.g.
+		// session.VideoPicture's Pig renderer - see PictureInPicture-style
+		// skins with a translucent backgroundColor and cornerRadius on an
+		// eVideoWidget) rely on the GL_ZERO formula here to actually show
+		// video through their own rounded/bordered fringe, not just tint it.
+		// Ordinary opaque UI content (list/menu items) must never take this
+		// branch with a translucent-derived flag - see
+		// lib/gui/elistboxcontent.cpp's rounded-background drawRectangle()
+		// calls, which always pass true regardless of the item's fill color
+		// for exactly this reason.
 		setAlphaBlendMode(op->parm.rectangle->useNew);
 		for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 			setGlScissor(m_current_clip.rects[i]);

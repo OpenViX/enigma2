@@ -556,6 +556,18 @@ void gPainter::drawRectangle(const eRect &area, bool useNew) {
 	m_rc->submit(o);
 }
 
+bool gPainter::usingGLES() const {
+#ifdef HAVE_EGL
+	// Same instance/init check as gRC::thread()'s own gEGLDC use above -
+	// getInstance() is a plain static accessor (not virtual), so this has no
+	// effect on gDC/gMainDC's vtable layout, unlike a would-be gDC::isGLES()
+	// virtual reachable from every backend's header.
+	return gEGLDC::getInstance() && gEGLDC::getInstance()->isInitialized();
+#else
+	return false;
+#endif
+}
+
 void gPainter::setPalette(gRGB *colors, int start, int len)
 {
 	if (m_dc->islocked())

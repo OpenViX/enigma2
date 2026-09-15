@@ -354,6 +354,18 @@ public:
 
 	void drawRectangle(const eRect &area, bool useNew=false);
 
+	// Whether the GLES/EGL backend (gEGLDC) is the one actually driving the
+	// screen right now. Some rendering choices only need to differ under
+	// that backend (e.g. which alpha-blend formula a rounded-rect draw
+	// needs - see gEGLDC::executeRectangle()'s comment); every other
+	// backend must keep its existing CPU-composited behavior unconditionally.
+	// Defined in grc.cpp (guarded by #ifdef HAVE_EGL, like every other
+	// gEGLDC-aware spot in that file) rather than as a virtual on gDC, since
+	// gEGLDC/EGL headers aren't available in a non-EGL build at all - adding
+	// a new virtual here would need every backend's header to see it either
+	// way, for no benefit over this free function.
+	bool usingGLES() const;
+
 	void setPalette(gRGB *colors, int start = 0, int len = 256);
 	void setPalette(gPixmap *source);
 	void mergePalette(gPixmap *target);
