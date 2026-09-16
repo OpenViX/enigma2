@@ -51,6 +51,28 @@ private:
 	std::vector<float> m_text_batch_buffer;
 	const size_t MAX_BATCH_GLYPHS = 1024;
 
+	// The clip flushTextBatch() must scissor this batch's glyphs against -
+	// captured once, when the batch starts (see renderGlyph()), NOT read
+	// live from m_current_clip at flush time, because the batch is drawn
+	// later than it's filled: by then m_current_clip may already be a
+	// different widget's clip entirely, or (see exec()'s renderText/
+	// renderPara handling) have been restored from the narrowed value it
+	// was temporarily set to for this specific text draw back to the
+	// wider one active around it. Mirrors m_blit_batch_clip below for the
+	// identical reason on the blit-batching side.
+	//
+	// That narrowing is the actual fix this exists for: eTextPara::blit()'s
+	// CPU path (font.cpp) always additionally intersects the active clip
+	// with the renderText/renderPara opcode's own declared area ("clip &=
+	// eRect(area...)") before drawing, which is what stops long text
+	// exactly at its own column's edge - the GPU glyph path
+	// (renderGlyph()) had no way to replicate that (it never receives
+	// `area` at all), so text rendered via the atlas was only ever
+	// clipped to the surrounding widget/row's clip, letting it overflow
+	// past its own column into whatever's drawn next (observed: EPG title
+	// text overflowing into the signal-strength meter column).
+	gRegion m_text_batch_clip;
+
 	// Batches consecutive gOpcode::blit calls that share the same texture,
 	// blend requirement, and a single clip rect into one draw call instead
 	// of one glDrawArrays per blit - targets sequences like
