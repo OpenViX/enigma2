@@ -51,7 +51,6 @@ gdiinclude_HEADERS = \
 if HAVE_EGL
 gdi_libenigma_gdi_a_SOURCES += \
 	gdi/gfont_atlas.cpp \
-	gdi/egl/egl_config.cpp \
 	gdi/egl/egl_init.cpp \
 	gdi/egl/gegldc.cpp \
 	gdi/egl/gles_version.cpp \
@@ -62,7 +61,6 @@ gdi_libenigma_gdi_a_SOURCES += \
 	gdi/egl/shader/gtexture_shader.cpp
 gdiinclude_HEADERS += \
 	gdi/gfont_atlas.h \
-	gdi/egl/egl_config.h \
 	gdi/egl/gegldc.h \
 	gdi/egl/gles_version.h \
 	gdi/egl/gtexture_manager.h \
