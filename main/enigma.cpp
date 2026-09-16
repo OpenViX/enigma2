@@ -22,9 +22,6 @@
 #include <lib/base/esimpleconfig.h>
 #include <lib/base/init.h>
 #include <lib/base/init_num.h>
-#ifdef HAVE_EGL
-#include <lib/gdi/egl/egl_config.h>
-#endif
 #include <lib/gdi/gmaindc.h>
 #include <lib/gdi/glcddc.h>
 #include <lib/gdi/grc.h>
@@ -241,14 +238,6 @@ int main(int argc, char **argv)
 
 	// Clear LD_PRELOAD so that shells and processes launched by Enigma2 can pass on file handles and pipes
 	unsetenv("LD_PRELOAD");
-
-#ifdef HAVE_EGL
-	for (int i = 1; i < argc; ++i)
-	{
-		if (strcmp(argv[i], "--no-egl") == 0)
-			egl_config::disable_egl = true;
-	}
-#endif
 
 	gst_init(&argc, &argv);
 
