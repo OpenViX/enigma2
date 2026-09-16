@@ -1,7 +1,6 @@
 #include <lib/base/eerror.h>
 #include <lib/base/init.h>
 #include <lib/base/init_num.h>
-#include <lib/gdi/egl/egl_config.h>
 #include <lib/gdi/egl/gegldc.h>
 #include <lib/gdi/fb.h>
 
@@ -43,12 +42,6 @@ class gEGLDCAutoInit : protected eAutoInit
 		// would abort the process.
 		if (m_dc)
 			return;
-
-		if (egl_config::disable_egl)
-		{
-			eDebug("[gEGLDC] EGL disabled via command line");
-			return;
-		}
 
 		INativeWindowProvider *provider = nullptr;
 
