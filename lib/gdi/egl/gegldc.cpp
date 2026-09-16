@@ -357,30 +357,10 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 	flushTextBatch();
 
 	if (m_radius > 0 || m_gradient_colors.size() > 0 || m_border_width > 0) {
-		// This shape is drawn with an SDF fragment shader (drawAdvancedRect
-		// below), which always produces a partially-covered (src.a < 1) AA
-		// fringe along any rounded corner/border edge, even when the shape's
-		// own fill color is fully opaque. That fringe must accumulate "over"
-		// whatever is already in the destination (the trueAlphaBlend formula
-		// in setAlphaBlendMode()), exactly like every other shaped/
-		// anti-aliased draw (text, blits) and like the CPU renderer's own
-		// read-modify-write corner blending (gPixmap::drawRectangleNew,
-		// gpixmap.cpp) - otherwise those fringe pixels hit the GL_ZERO
-		// "video hole" formula and punch real sub-1.0-alpha holes at every
-		// rounded corner, letting the video plane show through there.
-		//
-		// useNew (eWidget.cpp's m_alphaBlend) is the caller's genuine signal
-		// for which formula this specific draw needs: widgets that are
-		// deliberately painting a near-transparent video-reveal frame (e.g.
-		// session.VideoPicture's Pig renderer - see PictureInPicture-style
-		// skins with a translucent backgroundColor and cornerRadius on an
-		// eVideoWidget) rely on the GL_ZERO formula here to actually show
-		// video through their own rounded/bordered fringe, not just tint it.
-		// Ordinary opaque UI content (list/menu items) must never take this
-		// branch with a translucent-derived flag - see
-		// lib/gui/elistboxcontent.cpp's rounded-background drawRectangle()
-		// calls, which always pass true regardless of the item's fill color
-		// for exactly this reason.
+		// useNew is eWidget.cpp's own proxy for "is this rectangle genuinely
+		// alphaBlend" (see setAlphaBlendMode()'s comment) - it's literally
+		// what gets passed as m_alphaBlend at every drawRectangle() call
+		// site in lib/gui/ewidget.cpp.
 		setAlphaBlendMode(op->parm.rectangle->useNew);
 		for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 			setGlScissor(m_current_clip.rects[i]);
@@ -771,8 +751,12 @@ bool gEGLDC::renderGlyph(const ePoint& pos, const uint8_t* data, int width, int 
 		// Starting a fresh text batch: flush any pending blit batch first so
 		// a blit queued *before* this text (e.g. an icon drawn just before a
 		// label in the same row) still draws before it, not after - see
-		// executeFill()'s comment for the general reasoning.
+		// executeFill()'s comment for the general reasoning. Also capture
+		// the clip this batch will be drawn under - see m_text_batch_clip's
+		// declaration comment for why flushTextBatch() must use this
+		// snapshot rather than reading m_current_clip live.
 		flushBlitBatch();
+		m_text_batch_clip = m_current_clip;
 	}
 
 	glyph_uv uv;
@@ -836,7 +820,10 @@ bool gEGLDC::renderGlyph(const ePoint& pos, const uint8_t* data, int width, int 
 void gEGLDC::flushTextBatch() {
 	if (m_text_batch_buffer.empty())
 		return;
-	if (m_current_clip.rects.empty()) {
+	// m_text_batch_clip, not m_current_clip - see its declaration comment:
+	// this batch must be scissored against the clip captured when it
+	// started, not whatever the active clip happens to be right now.
+	if (m_text_batch_clip.rects.empty()) {
 		m_text_batch_buffer.clear();
 		return;
 	}
@@ -888,8 +875,8 @@ void gEGLDC::flushTextBatch() {
 
 	int vertex_count = m_text_batch_buffer.size() / 8; // 8 floats per vertex
 
-	for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
-		setGlScissor(m_current_clip.rects[i]);
+	for (unsigned int i = 0; i < m_text_batch_clip.rects.size(); ++i) {
+		setGlScissor(m_text_batch_clip.rects[i]);
 		glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 	}
 
@@ -1069,6 +1056,32 @@ void gEGLDC::exec(const gOpcode* opcode) {
 			flushBlitBatch();
 			m_cpu_overlay_dirty = false;
 
+			// Flush any pending text batch from an *earlier*, different
+			// renderText/renderPara draw first: a batch only remembers ONE
+			// clip (m_text_batch_clip), captured once when it starts - if
+			// this text's glyphs got appended to a still-open batch from a
+			// prior, differently-positioned text field (e.g. a list row's
+			// channel-name field immediately followed by its event-title
+			// field, with no clip-changing opcode between them to trigger a
+			// flush on its own), they'd wrongly inherit that earlier
+			// field's clip instead of this one's own area below.
+			flushTextBatch();
+
+			// Narrow the active clip to this text's own declared area for
+			// the duration of this draw, exactly like eTextPara::blit()'s
+			// CPU path (font.cpp) already does for itself ("clip &=
+			// eRect(area...)") - the GPU glyph path (renderGlyph(), via
+			// m_text_batch_clip above) has no other way to replicate that,
+			// since it never receives `area` itself. Without this,
+			// GPU-rendered text was only ever clipped to the surrounding
+			// widget/row's clip, letting it overflow past its own column
+			// into whatever's drawn next (e.g. EPG title text running into
+			// the signal-strength meter column).
+			gRegion saved_clip = m_current_clip;
+			eRect clip_area = area;
+			clip_area.moveBy(m_current_offset);
+			m_current_clip = m_current_clip & clip_area;
+
 			// Border text (textBColor/textBWidth) always takes the CPU
 			// fallback (eTextPara::blit()'s two-pass border+fill technique -
 			// see grc.cpp's renderText handling) - pre-clear its area to
@@ -1090,6 +1103,7 @@ void gEGLDC::exec(const gOpcode* opcode) {
 			}
 
 			gDC::exec(opcode);
+			m_current_clip = saved_clip;
 			if (m_cpu_overlay_dirty) {
 				area.moveBy(m_current_offset);
 				compositeTextOverlay(area);
@@ -1117,7 +1131,17 @@ void gEGLDC::exec(const gOpcode* opcode) {
 			// before this text must draw before it, not after.
 			flushBlitBatch();
 			m_cpu_overlay_dirty = false;
+
+			// See the renderText case above for why this flush and the
+			// clip narrowing below are both needed.
+			flushTextBatch();
+			gRegion saved_clip = m_current_clip;
+			eRect clip_area = area;
+			clip_area.moveBy(m_current_offset);
+			m_current_clip = m_current_clip & clip_area;
+
 			gDC::exec(opcode);
+			m_current_clip = saved_clip;
 			if (m_cpu_overlay_dirty) {
 				area.moveBy(m_current_offset);
 				compositeTextOverlay(area);
@@ -1378,6 +1402,7 @@ void gEGLDC::flip() {
 				// an infobar that looked "half updated" with the memcpy
 				// version despite the copied bytes being correct in memory.
 				bool gpu_copied = gpuCopyPageContent(shown_page, m_render_page);
+				bool seeded = gpu_copied;
 
 				if (gpu_copied) {
 					// gpuCopyPageContent() already left draw=m_render_page
@@ -1396,9 +1421,35 @@ void gEGLDC::flip() {
 					// both draw and read before falling back to the CPU copy.
 					if (!eglMakeCurrent(m_egl_display, m_egl_surfaces[m_render_page], m_egl_surfaces[m_render_page], m_egl_context)) {
 						eDebug("[gEGLDC] eglMakeCurrent to page %d failed after flip: 0x%x", m_render_page, eglGetError());
+						seeded = false;
 					} else {
 						m_window_provider->copyPageContent(shown_page, m_render_page);
+						seeded = true;
 					}
+				}
+
+				if (!seeded) {
+					// Both the GL blit and the CPU-copy fallback failed to
+					// seed the new page with shown_page's content. Every
+					// draw opcode from here on only touches its own dirty
+					// rect on the assumption the render target already
+					// holds the previous frame - rendering into this
+					// unseeded page now would bake whatever stale content
+					// it happens to still have (e.g. an already-erased
+					// spinner frame from `page_count` flips ago) back onto
+					// the screen the next time rotation shows it again,
+					// with no later event guaranteed to ever fully repaint
+					// that specific page and clear it. Abandon the rotation
+					// for this frame and go back to rendering into
+					// shown_page instead: it was just presented, so it's
+					// known to hold fully correct, current content. This
+					// re-accepts the single-buffer tearing risk the
+					// rotation above exists to avoid, but only for this one
+					// rare failure frame - far better than a page that can
+					// silently resurrect old content indefinitely.
+					m_render_page = shown_page;
+					if (!eglMakeCurrent(m_egl_display, m_egl_surfaces[shown_page], m_egl_surfaces[shown_page], m_egl_context))
+						eDebug("[gEGLDC] eglMakeCurrent back to shown page %d failed: 0x%x", shown_page, eglGetError());
 				}
 			}
 		} else {
