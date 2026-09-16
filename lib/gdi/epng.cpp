@@ -202,6 +202,38 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 		}
 		surface->clut.start = 0;
 	}
+	else if (color_type == PNG_COLOR_TYPE_GRAY) {
+		// Plain grayscale, no per-pixel alpha (GRAY+tRNS and GRAY_ALPHA above
+		// already convert to RGB via png_set_gray_to_rgb, so they never reach
+		// here) - this is still an 8bpp gPixmap like a PALETTE image, but
+		// without this, surface->clut would be left completely unset.
+		// gTextureManager's GLES texture upload (lib/gdi/egl/gtexture_manager.cpp)
+		// treats ANY bpp==8 gPixmap with no clut as the font glyph atlas (a
+		// single-channel coverage/alpha map) - the only other real producer
+		// of a clut-less 8bpp surface - and uploads it as single-channel
+		// GL_R8/GL_LUMINANCE accordingly. A plain grayscale PNG hitting that
+		// same assumption gets its intensity values sampled as alpha against
+		// whatever color a later draw call happens to bind, instead of being
+		// displayed as its own color: confirmed as the cause of a skin's
+		// "OtherEvent.png" EPG grid background rendering as streaky colored
+		// noise on the GLES backend while looking correct on the CPU/FBDC one.
+		// Giving it a real identity grayscale palette here - mirroring
+		// convert_palette()'s own no-clut fallback in gpixmap.cpp (the CPU
+		// blit path already treats a clut-less 8bpp source as identity
+		// grayscale, which is why this only ever showed up on GLES) - makes
+		// it an unambiguous palette image, so gTextureManager's existing
+		// bpp==8-with-clut branch (built for indexed skin assets) handles it
+		// correctly instead.
+		surface->clut.data = new gRGB[256];
+		surface->clut.colors = 256;
+		surface->clut.start = 0;
+		for (int i = 0; i < 256; i++) {
+			surface->clut.data[i].a = 0; // opaque (enigma2's inverted alpha convention)
+			surface->clut.data[i].r = i;
+			surface->clut.data[i].g = i;
+			surface->clut.data[i].b = i;
+		}
+	}
 
 	if (cached)
 		PixmapCache::Set(filename, result);

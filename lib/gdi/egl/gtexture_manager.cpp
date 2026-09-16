@@ -219,6 +219,15 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 		// "unsupported" branch below, leaving flushTextBatch() uploading
 		// glyph data into a texture object that was never actually created
 		// (id 0) - glyphs rendered as garbage/invisible as a result.
+		// epng.cpp's loadPNG() now always builds a real (identity, for plain
+		// grayscale) clut for anything decoded from a PNG file, so gFontAtlas
+		// - built directly in memory by the font rasterizer, never round-
+		// tripped through a PNG - is the only remaining legitimate producer
+		// of a clut-less bpp==8 surface reaching this branch. A regression
+		// there (e.g. a skin's plain-grayscale PNG asset losing its clut
+		// again) would otherwise be sampled as single-channel alpha against
+		// whatever color a later draw binds, instead of its own color - see
+		// epng.cpp's PNG_COLOR_TYPE_GRAY branch for the incident this fixed.
 		GLenum internal_fmt = gles::isGLES3() ? GL_R8 : GL_LUMINANCE;
 		GLenum src_fmt = gles::isGLES3() ? GL_RED : GL_LUMINANCE;
 		glTexImage2D(GL_TEXTURE_2D, 0, internal_fmt, width, height, 0, src_fmt, GL_UNSIGNED_BYTE, surface->data);
