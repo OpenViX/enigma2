@@ -19,6 +19,18 @@
 #include <interfaces/ion.h>
 #define ION_HEAP_TYPE_BMEM      (ION_HEAP_TYPE_CUSTOM + 1)
 #define ION_HEAP_ID_MASK        (1 << ION_HEAP_TYPE_BMEM)
+// This pool is one upfront ION_IOC_ALLOC() call at boot that PERMANENTLY
+// reserves this much from the system-wide ION heap, regardless of how much
+// of it gAccel's own sub-allocator is actually using at any given moment
+// (accel.cpp's accelAlloc()/accelFree() only manage USERSPACE bookkeeping
+// within this already-reserved block - they never give any of it back to
+// the system). Previously shrunk to 8MB on GLES specifically to leave the
+// vendor GPU driver's own internal ION/texture allocations more headroom -
+// that was working around symptoms of a real bug (gEGLDC::executeBlit() and
+// friends leaking a gPixmap AddRef() and its opcode struct on every draw,
+// see gegldc.cpp - fixed now), not an actual capacity shortfall, so back to
+// the same 32MB both renderers have always safely used as sole/primary
+// consumer.
 #define ACCEL_MEM_SIZE          (32*1024*1024)
 
 #elif !defined(FBIO_BLIT)
@@ -132,6 +144,7 @@ fbClass::fbClass(const char *fb)
 		if (lion)
 		{
 			eDebug("[fb] %dkB available for acceleration surfaces (via ION).", ACCEL_MEM_SIZE / 1024);
+			m_accel_phys_addr = phys_data.addr;
 			gAccel::getInstance()->setAccelMemorySpace(lion, phys_data.addr, ACCEL_MEM_SIZE);
 		}
 		else

@@ -872,7 +872,13 @@ int eListbox::event(int event, void *data, void *data2)
 				if (cornerRadius && cornerRadiusEdges)
 				{
 					painter.setRadius(cornerRadius, cornerRadiusEdges);
-					painter.drawRectangle(eRect(ePoint(0, 0), size()));
+					// A listbox's own panel background is never a
+					// video-reveal widget - under GLES this must use the
+					// "over" blend formula regardless of the style's fill
+					// color, same as lib/gui/elistboxcontent.cpp's item
+					// backgrounds (see gEGLDC::executeRectangle()'s
+					// comment); other backends are unaffected either way.
+					painter.drawRectangle(eRect(ePoint(0, 0), size()), painter.usingGLES());
 				}
 				else
 					painter.clear();
@@ -1186,8 +1192,29 @@ void eListbox::entryChanged(int index)
 	}
 	else
 	{
-		gRegion inv = eRect(getItemPostion(index), eSize(m_itemwidth, m_itemheight));
-		invalidate(inv);
+		// orGrid: unlike the orVertical/orHorizontal branches above, this had
+		// no "is index actually part of the currently displayed page" check
+		// before computing/invalidating a rect for it. A stale entryChanged()
+		// for an index that has since scrolled off-page (e.g. a content
+		// provider's async thumbnail-loaded callback firing for a row the
+		// user has since scrolled past - see eListbox::redrawItemByIndex())
+		// still fell into this branch, and getItemPostion() has no notion of
+		// "off-page" either - it maps ANY index through the current page's
+		// (m_top, m_max_columns) arithmetic regardless of how far off it
+		// actually is, so a stale index some multiple of a page-width away
+		// can alias right back onto a real, currently visible cell's
+		// position. That invalidates and repaints a cell that was never
+		// actually dirty, and each such repaint re-invokes the content
+		// provider's build callback, which is exactly the kind of spurious,
+		// unbounded extra work orVertical/orHorizontal already guard against
+		// by simply not invalidating for an off-page index at all.
+		int gridStart = m_top * m_max_columns;
+		int gridEnd = gridStart + m_items_per_page_with_partials;
+		if ((index >= gridStart) && (index < gridEnd))
+		{
+			gRegion inv = eRect(getItemPostion(index), eSize(m_itemwidth, m_itemheight));
+			invalidate(inv);
+		}
 	}
 }
 

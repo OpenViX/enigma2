@@ -165,6 +165,7 @@ struct gUnmanagedSurface
 	gPalette clut;
 	void *data;
 	int data_phys;
+	unsigned int gl_texture_id = 0; // cached GLES texture name for this surface, if any (see gTextureManager)
 	bool transparent = true;
 
 	gUnmanagedSurface();
