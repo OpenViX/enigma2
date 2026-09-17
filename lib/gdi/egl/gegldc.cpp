@@ -982,7 +982,14 @@ void gEGLDC::enableSpinner() {
 	// overlay, not part of any widget's offset-relative coordinate space),
 	// so unlike renderText/renderPara's area it must NOT have
 	// m_current_offset applied here.
-	compositeTextOverlay(m_spinner_pos);
+	//
+	// false, not the default true - see disableSpinner()'s comment. This
+	// first frame's m_pixmap content is already the full background+icon
+	// composite (gDC::enableSpinner() just built it), not translucent
+	// content to layer over whatever the GPU target previously held there,
+	// so it needs the same unconditional-overwrite blend disableSpinner()
+	// and incrementSpinner() use.
+	compositeTextOverlay(m_spinner_pos, false);
 }
 
 void gEGLDC::disableSpinner() {
@@ -1003,7 +1010,21 @@ void gEGLDC::disableSpinner() {
 
 void gEGLDC::incrementSpinner() {
 	gDC::incrementSpinner();
-	compositeTextOverlay(m_spinner_pos);
+	// false, not the default true - same reasoning as disableSpinner()
+	// above, just mid-animation instead of at the end. gDC::incrementSpinner()
+	// already recomposited this whole rect from scratch (background copied
+	// in fresh, then this frame's rotated icon alpha-blended on top on the
+	// CPU side), so m_pixmap here holds the complete, final pixel content
+	// for the region, not translucent content to accumulate over the GPU
+	// target's existing pixels. The icon's opaque footprint moves every
+	// frame as it rotates; with the default accumulating blend, the pixels
+	// it just vacated (now transparent, src.a=0, in this frame's composite)
+	// leave the destination's alpha/color untouched (out.a = dst.a for
+	// src.a=0), so the previous frame's icon stayed baked into the render
+	// target as a trailing ghost for the whole animation. false makes this
+	// draw's alpha the absolute truth for the region instead, so the
+	// vacated pixels are actually erased back to background every frame.
+	compositeTextOverlay(m_spinner_pos, false);
 }
 
 void gEGLDC::exec(const gOpcode* opcode) {
