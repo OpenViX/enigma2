@@ -172,7 +172,16 @@ private:
 	// texture and composite it onto the real GPU surface - m_pixmap has no
 	// GPU hook of its own, so without this nothing drawn into it ever
 	// reaches the display.
-	void compositeTextOverlay(eRect area);
+	//
+	// trueAlphaBlend (default true) is forwarded to setAlphaBlendMode() -
+	// real content (glyphs, the spinner icon itself) needs the accumulating
+	// mode so it stacks correctly over whatever's already opaque. Erasing
+	// content back to a transparent hole (disableSpinner()) needs false:
+	// with true, alpha-blending m_pixmap's now-fully-transparent restored
+	// pixels onto a destination that still holds the last opaque spinner
+	// frame is a no-op (accumulating alpha never decreases), leaving that
+	// frame permanently stuck on screen even after the icon stops animating.
+	void compositeTextOverlay(eRect area, bool trueAlphaBlend = true);
 
 	// Resets m_pixmap's CPU buffer to fully transparent (raw alpha byte 0,
 	// not enigma's inverted gRGB convention - see the call site's comment)
