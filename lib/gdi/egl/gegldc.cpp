@@ -905,7 +905,7 @@ void gEGLDC::clearOverlayArea(const eRect& area) {
 		memset(base + (size_t)y * stride + (size_t)left * 4, 0, (size_t)(right - left) * 4);
 }
 
-void gEGLDC::compositeTextOverlay(eRect area) {
+void gEGLDC::compositeTextOverlay(eRect area, bool trueAlphaBlend) {
 	// See executeFill()'s comment for why a pending blit batch must flush
 	// first - this also uses m_texture_shader's shared VBO, which a
 	// pending batch's data still occupies until drawn. Also flush any
@@ -958,11 +958,15 @@ void gEGLDC::compositeTextOverlay(eRect area) {
 		// writes down to just the area this opcode actually populated so
 		// nothing outside it can be touched.
 		setGlScissor(area);
-		// Real rendered text/border pixel content - see setAlphaBlendMode()'s
-		// comment for why this needs the accumulating ("true" alphaBlend)
-		// formula rather than whatever an earlier, unrelated draw this frame
-		// may have left the blend func's alpha factors set to.
-		setAlphaBlendMode(true);
+		// Real rendered text/border pixel content normally needs the
+		// accumulating ("true" alphaBlend) formula rather than whatever an
+		// earlier, unrelated draw this frame may have left the blend func's
+		// alpha factors set to - see setAlphaBlendMode()'s comment. A caller
+		// erasing content back to transparent (disableSpinner()) instead
+		// passes false, so its now-fully-transparent source pixels actually
+		// overwrite the destination's alpha instead of leaving whatever
+		// opaque content was already there untouched.
+		setAlphaBlendMode(trueAlphaBlend);
 		m_texture_shader.drawTexture(0, 0, (float)m_width, (float)m_height, tex_id);
 
 		// Record that the overlay now has content here so executeClear()
@@ -983,7 +987,18 @@ void gEGLDC::enableSpinner() {
 
 void gEGLDC::disableSpinner() {
 	gDC::disableSpinner();
-	compositeTextOverlay(m_spinner_pos);
+	// false, not the default true: gDC::disableSpinner() just restored
+	// m_spinner_pos back to fully-transparent pixels in m_pixmap, and this
+	// needs to actually erase the last spinner frame already baked into the
+	// GPU render target, not accumulate on top of it. With the default
+	// accumulating blend, a fully-transparent source leaves an opaque
+	// destination's alpha unchanged (out.a = src.a + dst.a*(1-src.a), which
+	// for src.a=0 is just dst.a) - the icon would stay stuck on screen
+	// forever once the animation itself stops (no more enableSpinner()/
+	// incrementSpinner() calls to eventually paint over it). false makes
+	// this draw's own (transparent) alpha the absolute truth for that
+	// region instead, actually punching the hole back through to video.
+	compositeTextOverlay(m_spinner_pos, false);
 }
 
 void gEGLDC::incrementSpinner() {
