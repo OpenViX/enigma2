@@ -512,21 +512,20 @@ if test "$BOXTYPE" == "vuultimo4k" -o "$BOXTYPE" == "vuduo4kse"; then
 fi
 
 AC_ARG_WITH([egl],
-  AS_HELP_STRING([--with-egl], [enable EGL/GLES2/GLES3 backend]),
+  AS_HELP_STRING([--with-egl], [enable EGL/GLES2/GLES3 backend, yes/no/auto]),
   [],
-  [with_egl=auto])
+  [with_egl=no])
 
-# vuduo4kse, vusolo4k and vuultimo4k carry EGL/GLESv2 pkg-config metadata in
-# their SDKs but their libGLESv2 does not actually provide a working EGL/GLES
-# compositing backend (e.g. link fails with "undefined reference to
-# glBindVertexArray"), so never auto-probe for it on these boxes. vuduo4k
-# itself builds fine and is intentionally not in this list. An explicit
-# --with-egl=yes still errors out below via the have_egl/have_gles2 check,
-# same as any other unsupported box.
-AS_IF([test "x$with_egl" = "xauto" -a \
-       \( "x$BOXTYPE" = "xvuduo4kse" -o "x$BOXTYPE" = "xvusolo4k" -o "x$BOXTYPE" = "xvuultimo4k" \)], \
-      [with_egl=no])
-
+# Unlike most --with-* switches here, EGL is not something a box gets by
+# default: with_egl defaults to "no", so a box only gets probed for EGL/GLES
+# when whatever's driving this build (e.g. the recipe's EXTRA_OECONF, keyed
+# off the distro-level ENABLE_E2EGL var) explicitly passes --with-egl.
+# Boxes whose SDK merely happens to carry EGL/GLESv2/GLES3 pkg-config
+# metadata without a working backend (this has bitten vuduo4kse, vusolo4k
+# and vuultimo4k in the past, with link failures such as "undefined
+# reference to glBindVertexArray") simply never pass --with-egl and are
+# never probed at all - with_egl stays "no" and PKG_CHECK_MODULES below
+# never runs.
 have_egl=no
 have_gles2=no
 have_gles3=no
@@ -538,28 +537,9 @@ AS_IF([test "x$with_egl" != "xno"], [
 
 AS_IF([test "x$have_gles2" = "xyes"], [
   saved_CPPFLAGS="$CPPFLAGS"
-  saved_LIBS="$LIBS"
   CPPFLAGS="$CPPFLAGS $GLES2_CFLAGS"
-  LIBS="$LIBS $GLES2_LIBS"
-  AC_CHECK_HEADERS([GLES3/gl3.h], [have_gles3_header=yes], [have_gles3_header=no])
-  # The header check alone is not enough: some SDKs (e.g. vuduo4kse) ship a
-  # GLES3/gl3.h header in the sysroot but a libGLESv2.so that only actually
-  # implements GLESv2, silently dropping GLES3-only entry points such as
-  # glBindVertexArray/glGenVertexArrays. That mismatch isn't visible until
-  # the final link of enigma2 itself, where it fails with "undefined
-  # reference to glBindVertexArray". Verify the symbols actually resolve
-  # against GLES2_LIBS here, at configure time, so a header-only SDK falls
-  # back to the GLES2 path instead of breaking the build.
-  AS_IF([test "x$have_gles3_header" = "xyes"], [
-    AC_MSG_CHECKING([whether libGLESv2 actually provides GLES3 entry points])
-    AC_LINK_IFELSE([AC_LANG_PROGRAM(
-      [[#include <GLES3/gl3.h>]],
-      [[GLuint vao; glGenVertexArrays(1, &vao); glBindVertexArray(vao);]])],
-      [have_gles3=yes], [have_gles3=no])
-    AC_MSG_RESULT([$have_gles3])
-  ], [have_gles3=no])
+  AC_CHECK_HEADERS([GLES3/gl3.h], [have_gles3=yes], [have_gles3=no])
   CPPFLAGS="$saved_CPPFLAGS"
-  LIBS="$saved_LIBS"
 ])
 
 AS_IF([test "x$with_egl" = "xyes"], [
