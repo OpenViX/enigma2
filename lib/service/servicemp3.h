@@ -314,6 +314,7 @@ private:
 	bool m_use_prefillbuffer;
 	bool m_paused;
 	bool m_clear_buffers;
+	bool m_clear_buffers_done_once;
 	bool m_initial_start;
 	bool m_send_ev_start;
 	bool m_seek_paused;
@@ -388,6 +389,8 @@ private:
 	void clearBuffers(bool force=false);
 	ePtr<eTimer> m_passthrough_fix_timer;
 	void forceAudioReset();
+	ePtr<eTimer> m_subtitle_clear_buffers_timer;
+	void deferredSubtitleClearBuffers();
 	sourceStream m_sourceinfo;
 	gulong m_subs_to_pull_handler_id;
 

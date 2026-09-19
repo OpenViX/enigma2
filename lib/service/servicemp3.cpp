@@ -1603,6 +1603,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_dvb_subtitle_parser = new eDVBSubtitleParser();
 	m_dvb_subtitle_parser->connectNewPage(sigc::mem_fun(*this, &eServiceMP3::newDVBSubtitlePage), m_new_dvb_subtitle_page_connection);
 	m_passthrough_fix_timer = eTimer::create(eApp);
+	m_subtitle_clear_buffers_timer = eTimer::create(eApp);
 	m_stream_tags = 0;
 	m_currentAudioStream = -1;
 	m_currentSubtitleStream = -1;
@@ -1616,6 +1617,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_use_prefillbuffer = false;
 	m_paused = false;
 	m_clear_buffers = true;
+	m_clear_buffers_done_once = false;
 	m_initial_start = false;
 	m_send_ev_start = true;
 	m_seek_paused = false;
@@ -1655,6 +1657,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	CONNECT(m_pump.recv_msg, eServiceMP3::gstPoll);
 	CONNECT(m_nownext_timer->timeout, eServiceMP3::updateEpgCacheNowNext);
 	CONNECT(m_passthrough_fix_timer->timeout, eServiceMP3::forceAudioReset);
+	CONNECT(m_subtitle_clear_buffers_timer->timeout, eServiceMP3::deferredSubtitleClearBuffers);
 
 	m_aspect = m_width = m_height = m_framerate = m_progressive = m_gamma = -1;
 	m_hdr_type = 0;
@@ -2360,6 +2363,7 @@ void eServiceMP3::disconnectAsyncSignalHandlers()
 RESULT eServiceMP3::stop()
 {
 	m_passthrough_fix_timer->stop();
+	m_subtitle_clear_buffers_timer->stop();
 	if (!m_gst_playbin || m_state == stStopped || !m_ref)
 		return -1;
 
@@ -3606,6 +3610,21 @@ void eServiceMP3::clearBuffers(bool force)
 	}
 
 	eDebug ("[eServiceMP3] Clear Buffers!");
+
+	/* On the very first audio stream selection right after start, nothing has
+	 * been decoded/buffered yet, so there is nothing to flush. Skip the
+	 * position-based seek-back here: right after the initial PAUSED->PLAYING
+	 * transition, get-decoder-time/query-position can briefly report a bogus
+	 * but "valid" timestamp before the clock has settled (unrelated to the
+	 * stream's actual timeline). Since the seek below is an absolute
+	 * GST_SEEK_TYPE_SET, trusting that reading would permanently anchor the
+	 * pipeline's reported position to the bogus offset for the rest of playback. */
+	if (!m_clear_buffers_done_once)
+	{
+		m_clear_buffers_done_once = true;
+		return;
+	}
+
 	bool validposition = false;
 	pts_t ppos = 0;
 	if (getPlayPosition(ppos) >= 0)
@@ -3628,6 +3647,11 @@ void eServiceMP3::clearBuffers(bool force)
 			start();
 		}
 	}
+}
+
+void eServiceMP3::deferredSubtitleClearBuffers()
+{
+	clearBuffers();
 }
 
 int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
@@ -5392,8 +5416,18 @@ RESULT eServiceMP3::enableSubtitles(iSubtitleUser *user, struct SubtitleTrack &t
 
 	if (track.type != stDVB)
 	{
+		/* Don't call clearBuffers() inline here. Setting current-text just
+		 * above reconfigures playbin's internal text pad (new subtitle
+		 * decoder/parser linked into the running pipeline) on a GStreamer
+		 * streaming thread. clearBuffers()'s position query/flush-seek can
+		 * then contend with that still-in-progress reconfiguration and block
+		 * this (main) thread forever if the freshly selected embedded
+		 * subtitle track (e.g. an MKV text stream) doesn't produce data
+		 * right away - audio/video keep playing since they are unaffected,
+		 * but enigma2 hangs waiting on the query/seek. Defer the flush by
+		 * one mainloop tick so the pad switch has settled first. */
 		m_clear_buffers = true;
-		clearBuffers();
+		m_subtitle_clear_buffers_timer->start(20, true);
 	}
 
 	m_subtitle_widget = user;
