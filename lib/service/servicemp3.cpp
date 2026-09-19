@@ -5393,7 +5393,6 @@ RESULT eServiceMP3::enableSubtitles(iSubtitleUser *user, struct SubtitleTrack &t
 	if (track.type != stDVB)
 	{
 		m_clear_buffers = true;
-		clearBuffers();
 	}
 
 	m_subtitle_widget = user;
