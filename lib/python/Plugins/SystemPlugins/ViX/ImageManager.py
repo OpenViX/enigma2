@@ -433,7 +433,11 @@ class VIXImageManager(Screen):
 	def getImagesDownloaded(self):
 		def getImages(files):
 			for file in files:
-				imagesFound.append({'link': file, 'name': file.split(ossep)[-1], 'mtime': stat(file).st_mtime})
+# Cater for a file having been deleted since it was added to the list (so mtime fails)
+				try:
+					imagesFound.append({'link': file, 'name': file.split(ossep)[-1], 'mtime': stat(file).st_mtime})
+				except FileNotFoundError:
+					continue
 
 		def checkMachineNameInFilename(filename):
 			return model in filename or "-" + device_name + "-" in filename
