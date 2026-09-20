@@ -1603,7 +1603,6 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_dvb_subtitle_parser = new eDVBSubtitleParser();
 	m_dvb_subtitle_parser->connectNewPage(sigc::mem_fun(*this, &eServiceMP3::newDVBSubtitlePage), m_new_dvb_subtitle_page_connection);
 	m_passthrough_fix_timer = eTimer::create(eApp);
-	m_subtitle_clear_buffers_timer = eTimer::create(eApp);
 	m_stream_tags = 0;
 	m_currentAudioStream = -1;
 	m_currentSubtitleStream = -1;
@@ -1617,7 +1616,6 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_use_prefillbuffer = false;
 	m_paused = false;
 	m_clear_buffers = true;
-	m_clear_buffers_done_once = false;
 	m_initial_start = false;
 	m_send_ev_start = true;
 	m_seek_paused = false;
@@ -1629,6 +1627,11 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_download_buffer_path = "";
 	m_prev_decoder_time = -1;
 	m_decoder_time_valid_state = 0;
+	m_position_baseline_valid = false;
+	m_position_correction_enabled = true;
+	m_position_baseline = 0;
+	m_position_baseline_provisional = -1;
+	m_position_baseline_first_seen_us = 0;
 	m_errorInfo.missing_codec = "";
 	audioSink = videoSink = NULL;
 	m_decoder = NULL;
@@ -1657,7 +1660,6 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	CONNECT(m_pump.recv_msg, eServiceMP3::gstPoll);
 	CONNECT(m_nownext_timer->timeout, eServiceMP3::updateEpgCacheNowNext);
 	CONNECT(m_passthrough_fix_timer->timeout, eServiceMP3::forceAudioReset);
-	CONNECT(m_subtitle_clear_buffers_timer->timeout, eServiceMP3::deferredSubtitleClearBuffers);
 
 	m_aspect = m_width = m_height = m_framerate = m_progressive = m_gamma = -1;
 	m_hdr_type = 0;
@@ -2363,7 +2365,14 @@ void eServiceMP3::disconnectAsyncSignalHandlers()
 RESULT eServiceMP3::stop()
 {
 	m_passthrough_fix_timer->stop();
-	m_subtitle_clear_buffers_timer->stop();
+	/* A restarted pipeline (see start()/forceAudioReset()) can bring the
+	 * decoder-time register back to an arbitrary/stale value unrelated to
+	 * this baseline, so don't carry it across a stop() - re-arm the one-time
+	 * startup correction for the next start() same as a fresh instance. */
+	m_position_baseline_valid = false;
+	m_position_correction_enabled = true;
+	m_position_baseline_provisional = -1;
+	m_position_baseline_first_seen_us = 0;
 	if (!m_gst_playbin || m_state == stStopped || !m_ref)
 		return -1;
 
@@ -2511,6 +2520,32 @@ RESULT eServiceMP3::seekToImpl(pts_t to)
 		return -1;
 	}
 
+	/* A seek just happened: from here on the sink/pipeline itself reports
+	 * position correctly (this is what makes a manual seek "fix" the
+	 * display today), so getPlayPosition()'s one-time startup correction is
+	 * no longer needed - permanently disable it rather than recomputing a
+	 * new baseline, so it never touches an already-correct reading again.
+	 *
+	 * But only if that startup correction had actually finished capturing a
+	 * baseline by the time this seek happened - otherwise there was nothing
+	 * working to replace: an automatic seek can happen very early (e.g. an
+	 * auto/forced "resume playback" seek firing ~1s after start, before the
+	 * confirm window above has necessarily elapsed), and disabling
+	 * correction here unconditionally would leave getPlayPosition()
+	 * permanently returning the raw, uncorrected reading for the rest of
+	 * the session - silently reintroducing the exact bug this correction
+	 * exists to fix, with no further seek left to "fix the display" the way
+	 * the comment above describes for the normal case. In that situation,
+	 * leave correction enabled and let it capture its baseline from
+	 * whatever raw readings come after this seek instead - discard any
+	 * in-progress (pre-seek) candidate first, since the position just
+	 * jumped and that candidate is no longer a reading of the same
+	 * starting point. */
+	if (m_position_baseline_valid)
+		m_position_correction_enabled = false;
+	else
+		m_position_baseline_provisional = -1;
+
 	if (getHDAudioAuxState(m_gst_playbin))
 		seekHDAudioAuxPersistent(m_gst_playbin, m_last_seek_pos);
 
@@ -2624,7 +2659,7 @@ seek_unpause:
 	bool validposition = false;
 	gint64 pos = 0;
 	pts_t pts;
-	if (getPlayPosition(pts) >= 0)
+	if (getRawPlayPosition(pts) >= 0)
 	{
 		validposition = true;
 		pos = pts * 11111LL;
@@ -2660,7 +2695,7 @@ RESULT eServiceMP3::seekRelative(int direction, pts_t to)
 		return -1;
 
 	pts_t ppos;
-	if (getPlayPosition(ppos) < 0) return -1;
+	if (getRawPlayPosition(ppos) < 0) return -1;
 	ppos += to * direction;
 
 	if (ppos < 0)
@@ -2681,7 +2716,12 @@ gint eServiceMP3::match_sinktype(const GValue *velement, const gchar *type)
 	return strcmp(g_type_name(G_OBJECT_TYPE(element)), type);
 }
 
-RESULT eServiceMP3::getPlayPosition(pts_t &pts)
+/* Raw reading, in the same coordinate space gst_element_seek()'s absolute
+ * GST_SEEK_TYPE_SET expects. trickSeek()/seekRelative()/clearBuffers() all
+ * feed this value straight back into a seek, so they must keep using this
+ * (not the corrected getPlayPosition() below) or every relative seek and
+ * trick-play would land off by whatever the display correction is. */
+RESULT eServiceMP3::getRawPlayPosition(pts_t &pts)
 {
 	gint64 pos;
 	pts = 0;
@@ -2693,7 +2733,9 @@ RESULT eServiceMP3::getPlayPosition(pts_t &pts)
 	if ((audioSink || videoSink) && !m_paused)
 	{
 		if (m_sourceinfo.is_audio && videoSink) {
+			eDebug("[eServiceMP3] getRawPlayPosition: emitting get-decoder-time on audioSink (is_audio branch)");
 			g_signal_emit_by_name(audioSink, "get-decoder-time", &pos);
+			eDebug("[eServiceMP3] getRawPlayPosition: get-decoder-time (audioSink) returned pos=%lld", (long long)pos);
 			if (GST_CLOCK_TIME_IS_VALID(pos))
 				got_decoder_time = true;
 		} else if (!m_sourceinfo.is_audio) {
@@ -2701,13 +2743,21 @@ RESULT eServiceMP3::getPlayPosition(pts_t &pts)
 			 * audio is 0 or invalid */
 			/* avoid taking the audio play position if audio sink is in state NULL */
 			if (audioSink) {
+				eDebug("[eServiceMP3] getRawPlayPosition: emitting get-decoder-time on audioSink");
 				g_signal_emit_by_name(audioSink, "get-decoder-time", &pos);
+				eDebug("[eServiceMP3] getRawPlayPosition: get-decoder-time (audioSink) returned pos=%lld", (long long)pos);
 				if (!GST_CLOCK_TIME_IS_VALID(pos) && videoSink)
+				{
+					eDebug("[eServiceMP3] getRawPlayPosition: emitting get-decoder-time on videoSink");
 					g_signal_emit_by_name(videoSink, "get-decoder-time", &pos);
+					eDebug("[eServiceMP3] getRawPlayPosition: get-decoder-time (videoSink) returned pos=%lld", (long long)pos);
+				}
 				if (GST_CLOCK_TIME_IS_VALID(pos))
 					got_decoder_time = true;
 			} else if (videoSink) {
+				eDebug("[eServiceMP3] getRawPlayPosition: emitting get-decoder-time on videoSink (no audioSink)");
 				g_signal_emit_by_name(videoSink, "get-decoder-time", &pos);
+				eDebug("[eServiceMP3] getRawPlayPosition: get-decoder-time (videoSink) returned pos=%lld", (long long)pos);
 				if (GST_CLOCK_TIME_IS_VALID(pos))
 				got_decoder_time = true;
 			}
@@ -2719,7 +2769,10 @@ RESULT eServiceMP3::getPlayPosition(pts_t &pts)
 		* exist but get-decoder-time returns invalid values (e.g. MP4 playback on
 		* some chipsets like HiSilicon), or when no dvb sinks are available at all. */
 		GstFormat fmt = GST_FORMAT_TIME;
-		if (!gst_element_query_position(m_gst_playbin, fmt, &pos))
+		eDebug("[eServiceMP3] getRawPlayPosition: calling gst_element_query_position");
+		gboolean qp_ok = gst_element_query_position(m_gst_playbin, fmt, &pos);
+		eDebug("[eServiceMP3] getRawPlayPosition: gst_element_query_position returned %d, pos=%lld", qp_ok, (long long)pos);
+		if (!qp_ok)
 		{
 			eDebug("[eServiceMP3] gst_element_query_position failed in getPlayPosition");
 			return -1;
@@ -2728,6 +2781,117 @@ RESULT eServiceMP3::getPlayPosition(pts_t &pts)
 
 	/* pos is in nanoseconds. we have 90 000 pts per second. */
 	pts = pos / 11111LL;
+	return 0;
+}
+
+/* Public/display-facing position (iSeekableService, exposed to the UI/OSD).
+ *
+ * On some chipsets/streams, get-decoder-time reads the DVB sink's raw
+ * hardware decoder-time register, which is not guaranteed to be zero-based
+ * at the start of playback (e.g. a stale value from a previous playback
+ * session, or a stream whose PTS domain doesn't start at 0) - even though
+ * actual playback already starts at the real beginning of the stream. A
+ * manual seek reliably "fixes" the displayed position - not by making this
+ * correction recompute itself, but because the sink itself starts reporting
+ * correctly once a real seek has happened. So this correction only ever
+ * applies once, before that first real seek: it captures a baseline and
+ * applies it until seekToImpl() runs for the first time, at which point it
+ * is permanently disabled and getPlayPosition() reverts to returning the
+ * (by then trustworthy) raw value unchanged - it must NOT keep recomputing
+ * a new baseline after every seek.
+ *
+ * The baseline itself is not just latched onto the very first raw reading:
+ * network streams in particular can take a while to buffer/preroll, during
+ * which get-decoder-time/gst_element_query_position() may return a
+ * transient, unrepresentative value (e.g. stuck at 0, or some other
+ * not-yet-locked reading) before the decoder clock genuinely starts
+ * advancing, or may briefly jitter backwards before it locks - latching
+ * onto one of those would bake in a wrong baseline for the rest of this
+ * correction's lifetime. So this waits to see the raw reading hold (not go
+ * backwards) across a short real-time window before trusting it, only then
+ * capturing it as the baseline. Until confirmed, this reports 0 rather than
+ * a baseline computed from an unconfirmed reading.
+ *
+ * The candidate for that baseline is not necessarily first captured here
+ * either: gstBusCall()'s GST_STATE_CHANGE_PAUSED_TO_PLAYING handling seeds
+ * it as soon as the pipeline first reaches PLAYING, rather than leaving the
+ * very first sample to whichever Python UI timer happens to call
+ * getPlayPosition() first. A network/HLS source in particular can sit
+ * PAUSED filling its prefill buffer for a few real seconds before that
+ * transition fires (see the GST_MESSAGE_BUFFERING handling further down),
+ * during which the decoder can already race ahead of real-time on the
+ * queued data - if nothing polled position until after that point, the
+ * first call here would otherwise mistake that already-elapsed offset for
+ * "time zero" and the display would visibly start several seconds in. This
+ * function still seeds its own candidate the same way on its own first
+ * call, as a fallback for any service type/path that does not go through
+ * that state-change handling.
+ *
+ * That confirmation window is real wall-clock time (g_get_monotonic_time()),
+ * not a number of getPlayPosition() calls: this is polled independently by
+ * several UI timers (position display, subtitle renderer, timeshift, ...)
+ * all sharing this same state, so a call-count gate's real-time cost is
+ * unpredictable - depending on how those pollers happen to interleave, or
+ * how coarsely the underlying decoder-time/position query updates, it can
+ * end up spanning several real seconds. Every one of those seconds would
+ * then be baked into m_position_baseline as a permanent offset - visibly,
+ * playback appearing to "start" several seconds in rather than at 0. Using
+ * a small, fixed real-time bound avoids that regardless of polling pattern.
+ * The baseline itself is the reading from when the candidate was first
+ * seen, not from when confirmation completed a short time later, so the
+ * (bounded, small) confirmation delay itself is not baked in either.
+ *
+ * getRawPlayPosition() itself is left untouched - trickSeek()/
+ * seekRelative()/clearBuffers() depend on its value being in the same
+ * coordinate space gst_element_seek() expects, so the correction below is
+ * applied only here, at the point the position is actually reported. */
+RESULT eServiceMP3::getPlayPosition(pts_t &pts)
+{
+	pts_t raw;
+	RESULT res = getRawPlayPosition(raw);
+	if (res < 0)
+		return res;
+
+	if (!m_position_correction_enabled)
+	{
+		pts = raw;
+		return 0;
+	}
+
+	if (!m_position_baseline_valid)
+	{
+		static const gint64 confirm_window_us = 300 * 1000; /* 300ms */
+		gint64 now = g_get_monotonic_time();
+
+		/* No candidate yet, or the reading has gone backwards since the
+		 * candidate was captured (still prerolling, or a jittery/
+		 * not-yet-locked clock) - (re)start the candidate from this
+		 * reading, timestamped now. */
+		if (m_position_baseline_provisional < 0 || raw < m_position_baseline_provisional)
+		{
+			m_position_baseline_provisional = raw;
+			m_position_baseline_first_seen_us = now;
+			pts = 0;
+			return 0;
+		}
+
+		if (now - m_position_baseline_first_seen_us < confirm_window_us)
+		{
+			pts = 0;
+			return 0;
+		}
+
+		/* Confirmed: the reading has not gone backwards for a real
+		 * confirm_window_us stretch, so it is trustworthy. Use the
+		 * candidate as first captured, not "raw" here - the time spent
+		 * confirming must not itself become part of the baseline. */
+		m_position_baseline = m_position_baseline_provisional;
+		m_position_baseline_valid = true;
+	}
+
+	pts = raw - m_position_baseline;
+	if (pts < 0)
+		pts = 0;
 	return 0;
 }
 
@@ -3611,23 +3775,12 @@ void eServiceMP3::clearBuffers(bool force)
 
 	eDebug ("[eServiceMP3] Clear Buffers!");
 
-	/* On the very first audio stream selection right after start, nothing has
-	 * been decoded/buffered yet, so there is nothing to flush. Skip the
-	 * position-based seek-back here: right after the initial PAUSED->PLAYING
-	 * transition, get-decoder-time/query-position can briefly report a bogus
-	 * but "valid" timestamp before the clock has settled (unrelated to the
-	 * stream's actual timeline). Since the seek below is an absolute
-	 * GST_SEEK_TYPE_SET, trusting that reading would permanently anchor the
-	 * pipeline's reported position to the bogus offset for the rest of playback. */
-	if (!m_clear_buffers_done_once)
-	{
-		m_clear_buffers_done_once = true;
-		return;
-	}
-
 	bool validposition = false;
 	pts_t ppos = 0;
-	if (getPlayPosition(ppos) >= 0)
+	eDebug("[eServiceMP3] clearBuffers: calling getRawPlayPosition");
+	int rawpos_res = getRawPlayPosition(ppos);
+	eDebug("[eServiceMP3] clearBuffers: getRawPlayPosition returned %d, ppos=%lld", rawpos_res, (long long)ppos);
+	if (rawpos_res >= 0)
 	{
 		validposition = true;
 		ppos -= 9000; /* seek back ~100ms instead of 1s for faster audio switch */
@@ -3637,7 +3790,9 @@ void eServiceMP3::clearBuffers(bool force)
 	if (validposition)
 	{
 		/* flush */
+		eDebug("[eServiceMP3] clearBuffers: calling seekTo(%lld)", (long long)ppos);
 		int res = seekTo(ppos);
+		eDebug("[eServiceMP3] clearBuffers: seekTo returned %d", res);
 		if (res == -1)
 		{
 			m_clear_buffers = false;
@@ -3647,11 +3802,6 @@ void eServiceMP3::clearBuffers(bool force)
 			start();
 		}
 	}
-}
-
-void eServiceMP3::deferredSubtitleClearBuffers()
-{
-	clearBuffers();
 }
 
 int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
@@ -4030,27 +4180,31 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						 * Then we do aditional sync of subtitles if they arrive ahead of PTS
 						 */
 						g_object_set (G_OBJECT (subsink), "ts-offset", -2LL * GST_SECOND, NULL);
-#ifdef GSTREAMER_SUBTITLE_SYNC_MODE_BUG
 						/*
-						 * HACK: disable sync mode for now, gstreamer suffers from a bug causing sparse streams to loose sync, after pause/resume / skip
+						 * gstreamer suffers from a bug causing sparse streams (like
+						 * embedded subtitle tracks, which can go a long time between
+						 * buffers) to stall pipeline preroll: a sync=TRUE sink won't
+						 * report PAUSED until it has a buffer to preroll on, and a
+						 * flushing seek waits for every sink to reach that state - so
+						 * if the seek target has no subtitle buffer anywhere nearby,
+						 * the whole seek can hang forever waiting on this one sink.
 						 * see: https://bugzilla.gnome.org/show_bug.cgi?id=619434
-						 * Sideeffect of using sync=false is that we receive subtitle buffers (far) ahead of their
-						 * display time.
-						 * Not too far ahead for subtitles contained in the media container.
-						 * But for external srt files, we could receive all subtitles at once.
-						 * And not just once, but after each pause/resume / skip.
-						 * So as soon as gstreamer has been fixed to keep sync in sparse streams, sync needs to be re-enabled.
-						 */
-						g_object_set (G_OBJECT (subsink), "sync", FALSE, NULL);
-#endif
-#if 0
-						/* we should not use ts-offset to sync with the decoder time, we have to do our own decoder timekeeping */
-						g_object_set (G_OBJECT (subsink), "ts-offset", -2LL * GST_SECOND, NULL);
-						/* late buffers probably will not occur very often */
-						g_object_set (G_OBJECT (subsink), "max-lateness", 0LL, NULL);
-						/* avoid prerolling (it might not be a good idea to preroll a sparse stream) */
+						 * async=TRUE (unlike sync=FALSE, tried previously) only takes
+						 * this sink out of the preroll handshake - buffers it does
+						 * receive are still clock-gated/timed normally via sync=TRUE,
+						 * so display timing (ts-offset/pushSubtitles()'s own PTS
+						 * comparison) is unaffected. */
 						g_object_set (G_OBJECT (subsink), "async", TRUE, NULL);
-#endif
+						{
+							/* Read back what GStreamer actually stored: if "subsink"
+							 * doesn't implement GstBaseSink's standard async property
+							 * the way assumed, g_object_set() above silently no-ops
+							 * (GLib only warns, never errors, on an unknown/wrong-type
+							 * property) and this readback will not show TRUE. */
+							gboolean async_readback = FALSE;
+							g_object_get(G_OBJECT(subsink), "async", &async_readback, NULL);
+							eDebug("[eServiceMP3] subsink async property readback: %s", async_readback ? "TRUE" : "FALSE");
+						}
 						eDebug("[eServiceMP3] subsink properties set!");
 						gst_object_unref(subsink);
 					}
@@ -4103,6 +4257,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 				case GST_STATE_CHANGE_PAUSED_TO_PLAYING:
 				{
 					m_paused = false;
+
 					if (hdAudioAuxRetryBlocked(m_gst_playbin))
 					{
 					}
@@ -4166,6 +4321,29 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 					m_clear_buffers = false;
 					if (!m_initial_start)
 					{
+						/* Seed the startup position-baseline candidate right here,
+						 * at the exact moment the pipeline first reaches PLAYING,
+						 * rather than leaving it to whenever some Python UI timer
+						 * happens to make its first getPlayPosition() call. On a
+						 * network/HLS source in particular, the pipeline can sit in
+						 * PAUSED filling its prefill buffer for a few real seconds
+						 * (see the GST_MESSAGE_BUFFERING handling below) before this
+						 * transition ever fires - by the time it does, the decoder
+						 * may already be several real seconds into decoding queued
+						 * data. If getPlayPosition() isn't polled again until after
+						 * that (OSD not up yet, a timer's startup delay, screen
+						 * construction order - all outside this class's control),
+						 * its first call would otherwise capture that already
+						 * elapsed offset as "time zero", and the position display
+						 * would visibly start several seconds in rather than at 0.
+						 * Sampling here instead ties the candidate to the pipeline's
+						 * own state, not to how promptly some poller reacts to it. */
+						pts_t seed_raw;
+						if (getRawPlayPosition(seed_raw) >= 0)
+						{
+							m_position_baseline_provisional = seed_raw;
+							m_position_baseline_first_seen_us = g_get_monotonic_time();
+						}
 						m_initial_start = true;
 					}
 					m_event((iPlayableService*)this, evGstreamerPlayStarted);
@@ -5251,7 +5429,10 @@ void eServiceMP3::pushDVBSubtitles()
 {
 	pts_t running_pts = 0, decoder_ms;
 
-	if (getPlayPosition(running_pts) < 0)
+	/* show_time comes from raw GStreamer buffer PTS (see pullSubtitle()), so
+	 * this must be compared against the same raw domain, not the
+	 * display-corrected getPlayPosition(). */
+	if (getRawPlayPosition(running_pts) < 0)
 		eTrace("[eServiceMP3] Cant get current decoder time.");
 
 	while (1)
@@ -5298,7 +5479,10 @@ void eServiceMP3::pushSubtitles()
 
 	// wait until clock is stable
 
-	if (getPlayPosition(running_pts) < 0)
+	/* start_ms/end_ms below come from raw GStreamer buffer PTS (see
+	 * pullSubtitle()), so this must be compared against the same raw domain,
+	 * not the display-corrected getPlayPosition(). */
+	if (getRawPlayPosition(running_pts) < 0)
 		m_decoder_time_valid_state = 0;
 
 	if (m_decoder_time_valid_state < 4)
@@ -5416,18 +5600,13 @@ RESULT eServiceMP3::enableSubtitles(iSubtitleUser *user, struct SubtitleTrack &t
 
 	if (track.type != stDVB)
 	{
-		/* Don't call clearBuffers() inline here. Setting current-text just
-		 * above reconfigures playbin's internal text pad (new subtitle
-		 * decoder/parser linked into the running pipeline) on a GStreamer
-		 * streaming thread. clearBuffers()'s position query/flush-seek can
-		 * then contend with that still-in-progress reconfiguration and block
-		 * this (main) thread forever if the freshly selected embedded
-		 * subtitle track (e.g. an MKV text stream) doesn't produce data
-		 * right away - audio/video keep playing since they are unaffected,
-		 * but enigma2 hangs waiting on the query/seek. Defer the flush by
-		 * one mainloop tick so the pad switch has settled first. */
+		/* The switch above alone does not make the new track actually
+		 * render until the pipeline flushes - without this, video/audio
+		 * keep playing but the new subtitle track never shows anything
+		 * until the next seek. clearBuffers() has to run here for the
+		 * switch to take visible effect. */
 		m_clear_buffers = true;
-		m_subtitle_clear_buffers_timer->start(20, true);
+		clearBuffers();
 	}
 
 	m_subtitle_widget = user;
