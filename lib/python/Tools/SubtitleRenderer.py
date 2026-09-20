@@ -23,6 +23,8 @@ class SubtitleRenderer:
 		if seek is None:
 			return
 		pos = seek.getPlayPosition()
+		if pos[0]:
+			return
 		current_pts = int(pos[1])
 
 		if self.current_sub_end_pts > -1 and current_pts >= self.current_sub_end_pts:

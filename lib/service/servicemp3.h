@@ -314,7 +314,6 @@ private:
 	bool m_use_prefillbuffer;
 	bool m_paused;
 	bool m_clear_buffers;
-	bool m_clear_buffers_done_once;
 	bool m_initial_start;
 	bool m_send_ev_start;
 	bool m_seek_paused;
@@ -382,6 +381,41 @@ private:
 	pts_t m_prev_decoder_time;
 	int m_decoder_time_valid_state;
 
+	RESULT getRawPlayPosition(pts_t &pts);
+	bool m_position_baseline_valid;
+	bool m_position_correction_enabled;
+	pts_t m_position_baseline;
+	/* Used by getPlayPosition() to avoid capturing m_position_baseline from
+	 * a transient/unrepresentative raw reading seen before the decoder
+	 * clock has actually locked onto real playback - especially likely on
+	 * network streams, which take longer to buffer/preroll than local
+	 * files, so there is more opportunity for an early, spurious reading to
+	 * be mistaken for the real starting offset.
+	 *
+	 * Gated on wall-clock time (g_get_monotonic_time(), microseconds), not
+	 * a fixed number of getPlayPosition() calls: getPlayPosition() is
+	 * polled independently by several UI timers (position display,
+	 * subtitle renderer, timeshift, ...) all sharing this same state, so a
+	 * call-count gate's real-time cost is unpredictable - it can span much
+	 * longer than intended depending on how those pollers happen to
+	 * interleave, or how coarsely the underlying decoder-time/position
+	 * query updates. Since every one of those seconds is then baked in as
+	 * a permanent baseline offset (position display appearing to "start"
+	 * several seconds in), the wait itself needs a hard, small, real-time
+	 * bound instead.
+	 *
+	 * The candidate these track can be seeded from two places: getPlayPosition()
+	 * itself on its own first call, or earlier, from gstBusCall()'s
+	 * GST_STATE_CHANGE_PAUSED_TO_PLAYING handling as soon as the pipeline
+	 * first reaches PLAYING - whichever happens first. The latter matters
+	 * because getPlayPosition() may not be called by anything until well
+	 * after real playback has already started (a network/HLS source can sit
+	 * PAUSED filling its prefill buffer for a few real seconds first), and
+	 * whatever raw reading its first caller happens to see would otherwise
+	 * be mistaken for "time zero". */
+	pts_t m_position_baseline_provisional;
+	gint64 m_position_baseline_first_seen_us;
+
 	void pushDVBSubtitles();
 	void pushSubtitles();
 	void pullSubtitle(GstBuffer *buffer);
@@ -389,8 +423,6 @@ private:
 	void clearBuffers(bool force=false);
 	ePtr<eTimer> m_passthrough_fix_timer;
 	void forceAudioReset();
-	ePtr<eTimer> m_subtitle_clear_buffers_timer;
-	void deferredSubtitleClearBuffers();
 	sourceStream m_sourceinfo;
 	gulong m_subs_to_pull_handler_id;
 

@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh --version)",
+      "Bash(curl -s \"https://api.github.com/search/code?q=repo:oe-alliance/oe-alliance-core+filename:gstreamer1.0_%25.bb\")",
+      "Bash(curl -s \"https://api.github.com/repos/oe-alliance/oe-alliance-core/contents/meta-oe?ref=6.0\")",
+      "Bash(curl -s \"https://api.github.com/repos/oe-alliance/oe-alliance-core/git/trees/6.0?recursive=1\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/oe-alliance/oe-alliance-core/6.0/meta-oe/recipes-multimedia/gstreamer/gstreamer1.0-plugins-base_%25.bbappend\")",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/gstreamer/gstreamer/-/raw/1.28.6/subprojects/gst-plugins-base/gst/playback/gstplaysink.c\" -o /dev/null -w \"%{http_code}\\\\n\")",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/gstreamer/gstreamer/-/raw/1.28.6/subprojects/gst-plugins-base/gst/inputselector/gstinputselector.c\" -o /dev/null -w \"%{http_code}\\\\n\")",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/api/v4/projects/gstreamer%2Fgstreamer/repository/tree?path=subprojects%2Fgst-plugins-base%2Fgst&ref=1.28.6&per_page=100\")",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/api/v4/projects/gstreamer%2Fgstreamer/repository/tree?path=subprojects%2Fgstreamer%2Fplugins%2Felements&ref=1.28.6&per_page=100\")",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/gstreamer/gstreamer/-/raw/1.28.6/subprojects/gstreamer/plugins/elements/gstinputselector.c\" -o /tmp/gstinputselector_1.28.6.c)",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/api/v4/projects/gstreamer%2Fgstreamer/repository/commits?path=subprojects/gstreamer/plugins/elements/gstinputselector.c&since=2025-01-01&per_page=50\")",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/api/v4/projects/gstreamer%2Fgstreamer/repository/commits/b7cabc85f2cc02d55bdbc822fde4c112e618aa26\")",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/api/v4/projects/gstreamer%2Fgstreamer/repository/commits/81125657be1500977c4b3d0f9d76c2a965084b11\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d['title']\\); print\\(d['message']\\)\")",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/api/v4/projects/gstreamer%2Fgstreamer/merge_requests/10507\")",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/api/v4/projects/gstreamer%2Fgstreamer/issues?search=input-selector%20deadlock&per_page=20\")",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/api/v4/projects/gstreamer%2Fgstreamer/issues/5150\")",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/gstreamer/gstreamer/-/commit/dd0c2e3ebadb55341900f88091ccd6f9bebcea30.diff\" -o /tmp/two_phase_switch.diff)",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/api/v4/projects/gstreamer%2Fgstreamer/repository/tags/1.28.6\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d['commit']['created_at']\\)\")",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/api/v4/projects/gstreamer%2Fgstreamer/repository/commits/dd0c2e3ebadb55341900f88091ccd6f9bebcea30\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d['parent_ids']\\)\")",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/gstreamer/gstreamer/-/raw/735f21a4c99d60fda474a1b7651dcc33a1215198/subprojects/gstreamer/plugins/elements/gstinputselector.c\" -o /tmp/old_single_mutex.c)",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/gstreamer/gstreamer/-/raw/735f21a4c99d60fda474a1b7651dcc33a1215198/subprojects/gstreamer/plugins/elements/gstinputselector.h\" -o /tmp/old_single_mutex.h)",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/api/v4/projects/gstreamer%2Fgstreamer/repository/commits?path=subprojects/gstreamer/plugins/elements/gstinputselector.c&since=2026-01-01&until=2026-08-06&per_page=100\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d['created_at']\\)\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/oe-alliance/oe-alliance-core/6.0/meta-oe/recipes-multimedia/gstreamer/gstreamer1.0-plugins-base/0002-subparse-set-need_segment-after-sink-pad-received-GS.patch\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/oe-alliance/oe-alliance-core/6.0/meta-oe/recipes-multimedia/gstreamer/gstreamer1.0_%25.bbappend\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/oe-alliance/oe-alliance-core/6.0/meta-oe/recipes-multimedia/gstreamer/gstreamer1.0/0001-revert-use-new-gst-adapter-get-buffer.patch\")",
+      "Bash(mkdir -p /tmp/patchgen/a/plugins/elements /tmp/patchgen/b/plugins/elements)",
+      "Bash(cp /tmp/old_single_mutex.c /tmp/patchgen/b/plugins/elements/gstinputselector.c)",
+      "Bash(cp /tmp/old_single_mutex.h /tmp/patchgen/b/plugins/elements/gstinputselector.h)",
+      "Bash(cp /tmp/gstinputselector_1.28.6.c /tmp/patchgen/a/plugins/elements/gstinputselector.c)",
+      "Bash(curl -s \"https://gitlab.freedesktop.org/gstreamer/gstreamer/-/raw/1.28.6/subprojects/gstreamer/plugins/elements/gstinputselector.h\" -o /tmp/patchgen/a/plugins/elements/gstinputselector.h)"
+    ]
+  }
+}
