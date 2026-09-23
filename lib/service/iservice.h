@@ -749,6 +749,14 @@ public:
 	virtual void setPage(const eDVBSubtitlePage &p) = 0;
 	virtual void setPage(const ePangoSubtitlePage &p) = 0;
 	virtual void setPixmap(ePtr<gPixmap> &pixmap, gRegion changed, eRect dest) = 0;
+	/* Hides whatever page is currently on screen immediately, independent of
+	 * that page's own m_timeout. A track switch (or turning subtitles off)
+	 * needs this: setPage() arms the display's own internal hide timer for
+	 * that page's timeout, with no awareness of playback switching tracks
+	 * out from under it, so without an explicit clear here the old page
+	 * simply stays visible - correctly rendered, just stale - until its
+	 * original timeout happens to elapse on its own. */
+	virtual void clearPage() = 0;
 	virtual void destroy() = 0;
 };
 
@@ -992,6 +1000,12 @@ public:
 		evUpdateTags,
 		evUpdateIDv3Cover,
 		evGstreamerStart,
+
+		/* eServiceMP3 only: fired once a pending start-position resume seek
+		 * (an "&e2startoffset=" URL parameter - see eServiceMP3's
+		 * constructor) has actually been applied and playback is running
+		 * from it, not merely requested. */
+		evResumed,
 
 		evUser = 0x100
 	};
