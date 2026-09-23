@@ -5606,7 +5606,6 @@ RESULT eServiceMP3::enableSubtitles(iSubtitleUser *user, struct SubtitleTrack &t
 		 * until the next seek. clearBuffers() has to run here for the
 		 * switch to take visible effect. */
 		m_clear_buffers = true;
-		clearBuffers();
 	}
 
 	m_subtitle_widget = user;
