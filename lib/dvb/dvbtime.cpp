@@ -298,33 +298,21 @@ void eDVBLocalTimeHandler::setUseDVBTime(bool b)
 					it->second.timetable = NULL;
 				}
 			}
+			m_updateNonTunedTimer->stop();
 		}
 		else {
 			eDebug("[eDVBLocalTimeHandler] enable sync local time with transponder time!");
 			std::map<iDVBChannel*, channel_data>::iterator it =
 				m_knownChannels.begin();
+			bool anyTuned = false;
 			for (; it != m_knownChannels.end(); ++it) {
 				if (it->second.m_prevChannelState == iDVBChannel::state_ok) {
-					int system = iDVBFrontend::feSatellite;
-					ePtr<iDVBFrontendParameters> parms;
-					it->second.channel->getCurrentFrontendParameters(parms);
-					if (parms)
-					{
-						parms->getSystem(system);
-					}
-
-					it->second.timetable = NULL;
-					if (system == iDVBFrontend::feATSC)
-					{
-						it->second.timetable = new STT(it->second.channel);
-					}
-					else
-					{
-						it->second.timetable = new TDT(it->second.channel);
-					}
-					it->second.timetable->start();
+					anyTuned = true;
+					startTimeTableForChannel(it->second);
 				}
 			}
+			if (!anyTuned)
+				m_updateNonTunedTimer->start(TIME_UPDATE_INTERVAL, true);
 		}
 		m_use_dvb_time = b;
 	}
@@ -338,26 +326,31 @@ void eDVBLocalTimeHandler::syncDVBTime()
 	{
 		if (it->second.m_prevChannelState == iDVBChannel::state_ok)
 		{
-			int system = iDVBFrontend::feSatellite;
-			ePtr<iDVBFrontendParameters> parms;
-			it->second.channel->getCurrentFrontendParameters(parms);
-			if (parms)
-			{
-				parms->getSystem(system);
-			}
-
-			it->second.timetable = NULL;
-			if (system == iDVBFrontend::feATSC)
-			{
-				it->second.timetable = new STT(it->second.channel);
-			}
-			else
-			{
-				it->second.timetable = new TDT(it->second.channel);
-			}
-			it->second.timetable->start();
+			startTimeTableForChannel(it->second);
 		}
 	}
+}
+
+void eDVBLocalTimeHandler::startTimeTableForChannel(channel_data &data)
+{
+	int system = iDVBFrontend::feSatellite;
+	ePtr<iDVBFrontendParameters> parms;
+	data.channel->getCurrentFrontendParameters(parms);
+	if (parms)
+	{
+		parms->getSystem(system);
+	}
+
+	data.timetable = NULL;
+	if (system == iDVBFrontend::feATSC)
+	{
+		data.timetable = new STT(data.channel);
+	}
+	else
+	{
+		data.timetable = new TDT(data.channel);
+	}
+	data.timetable->start();
 }
 
 void eDVBLocalTimeHandler::updateNonTuned()
@@ -375,6 +368,12 @@ void eDVBLocalTimeHandler::updateTime( time_t tp_time, eDVBChannel *chan, int up
 	else if (tp_time == -1)
 	{
 		restart_tdt = true;
+
+		if (!m_use_dvb_time)
+		{
+			eDebug("[eDVBLocalTimerHandler] DVB time sync disabled, skip RTC fallback");
+			return;
+		}
 
 		eDebug("[eDVBLocalTimerHandler] no transponder tuned... or no TDT/TOT avail .. try to use RTC :)");
 		time_t rtc_time = getRTC();
@@ -633,16 +632,7 @@ void eDVBLocalTimeHandler::DVBChannelStateChanged(iDVBChannel *chan)
 					eDebug("[eDVBLocalTimerHandler] channel %p running", chan);
 					m_updateNonTunedTimer->stop();
 					if (m_use_dvb_time) {
-						it->second.timetable = NULL;
-						if (system == iDVBFrontend::feATSC)
-						{
-							it->second.timetable = new STT(it->second.channel);
-						}
-						else
-						{
-							it->second.timetable = new TDT(it->second.channel);
-						}
-						it->second.timetable->start();
+						startTimeTableForChannel(it->second);
 					}
 					break;
 				case iDVBChannel::state_release:

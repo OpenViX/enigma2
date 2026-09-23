@@ -91,6 +91,7 @@ class eDVBLocalTimeHandler: public sigc::trackable
 	void writeTimeOffsetData(const char*);
 	void updateTime(time_t tp_time, eDVBChannel*, int updateCount);
 	void updateNonTuned();
+	void startTimeTableForChannel(channel_data &data);
 	static eDVBLocalTimeHandler *instance;
 #ifdef SWIG
 	eDVBLocalTimeHandler();
