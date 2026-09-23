@@ -10,6 +10,7 @@
 #include <gst/gst.h>
 /* for subtitles */
 #include <lib/gui/esubtitle.h>
+#include <atomic>
 
 class eStaticServiceMP3Info;
 
@@ -93,14 +94,16 @@ class GstMessageContainer: public iObject
 	GstPad *messagePad;
 	GstBuffer *messageBuffer;
 	int messageType;
+	int messageGeneration;
 
 public:
-	GstMessageContainer(int type, GstMessage *msg, GstPad *pad, GstBuffer *buffer)
+	GstMessageContainer(int type, GstMessage *msg, GstPad *pad, GstBuffer *buffer, int generation = 0)
 	{
 		messagePointer = msg;
 		messagePad = pad;
 		messageBuffer = buffer;
 		messageType = type;
+		messageGeneration = generation;
 	}
 	~GstMessageContainer()
 	{
@@ -109,6 +112,9 @@ public:
 		if (messageBuffer) gst_buffer_unref(messageBuffer);
 	}
 	int getType() { return messageType; }
+	/* Only meaningful for type 2 (subtitle buffer) messages - see
+	 * eServiceMP3::m_subtitle_generation. */
+	int getGeneration() { return messageGeneration; }
 	operator GstMessage *() { return messagePointer; }
 	operator GstPad *() { return messagePad; }
 	operator GstBuffer *() { return messageBuffer; }
@@ -324,6 +330,124 @@ private:
 	bool m_use_chapter_entries;
 	/* last used seek position gst-1 only */
 	gint64 m_last_seek_pos;
+
+	/* An "&e2startoffset=<pts>" URL parameter (see the constructor) - the
+	 * position to resume from once the pipeline is actually able to seek.
+	 * -1 once there is nothing left to apply. */
+	pts_t m_pending_start_position;
+	/* True while evGstreamerStart/evStart are being held back because
+	 * m_pending_start_position was still pending when start() requested
+	 * PLAYING - see fireDeferredStartEvents()/tryApplyPendingStartOffset(). */
+	bool m_start_events_deferred;
+	void fireDeferredStartEvents();
+	void tryApplyPendingStartOffset();
+	/*
+	 * Switches playbin's text stream to m_currentSubtitleStream, then calls
+	 * flushNearCurrentPosition() - see its own comment for why an actual
+	 * (near-)flushing seek, not just the property set, is what's needed to
+	 * make the new track show its current cue immediately rather than
+	 * waiting for its own next one. Must only be called while the pipeline
+	 * is settled in PLAYING (a flushing seek against an unsettled pipeline
+	 * risks the deadlock fixed independently upstream in
+	 * openatv/enigma2#3913, "servicemp3: fix audio track switch stall and
+	 * subtitle switch deadlock") - see enableSubtitles(), which defers the
+	 * call via m_subtitle_switch_deferred otherwise. Replaces the previous
+	 * approach of tearing down and restarting the whole pipeline on every
+	 * subtitle switch, which paid for the same re-sync with a visible
+	 * playback stall.
+	 */
+	void applySubtitleStreamSwitch();
+	/* current-text switch requested while the pipeline was not settled in
+	 * PLAYING; applied on the next PAUSED->PLAYING transition - see
+	 * enableSubtitles()/applySubtitleStreamSwitch() and
+	 * selectAudioStream()'s m_audio_switch_deferred, which defers for the
+	 * same reason. */
+	bool m_subtitle_switch_deferred;
+	/*
+	 * Whether applySubtitleStreamSwitch() should flush at all - set by
+	 * enableSubtitles() right before it, and (for a deferred switch) read
+	 * back out by it later once gstBusCall() actually runs it, so the
+	 * decision survives that gap. True only when an already-active
+	 * subtitle track is being replaced by a different one - not for the
+	 * very first enable of a session, automatic or manual, since there is
+	 * no old track's stale data to clear yet and, more importantly,
+	 * nothing yet displayed whose timing a flush could disturb.
+	 *
+	 * flushNearCurrentPosition()'s accurate flushing seek is confirmed on
+	 * device to introduce a small but *permanent* subtitle timing offset
+	 * for the rest of the session (independent of any actual track switch
+	 * happening later) - almost certainly some interaction between
+	 * GST_SEEK_FLAG_ACCURATE and this hardware's decoder-time reporting,
+	 * which subtitle sync (pushSubtitles()) compares raw subtitle-buffer
+	 * PTS against. A genuine track-to-track switch still needs the flush -
+	 * see flushNearCurrentPosition()'s own comment for why a passive
+	 * property switch alone doesn't make the new track's current cue show
+	 * up - so this only narrows *when* it runs, rather than removing it
+	 * outright and reintroducing that older bug.
+	 */
+	bool m_subtitle_switch_needs_flush;
+	/* Bumped on every subtitle track switch/disable. A subtitle buffer
+	 * captured by gstCBsubtitleAvail() under one generation, but not yet
+	 * processed by gstPoll() (it hops through m_pump onto the main thread)
+	 * when a switch to a new generation lands, still carries the old
+	 * track's raw bytes - without this it would get parsed as though it
+	 * were the new track's data. Written on the main thread, read on the
+	 * GStreamer thread that captures buffers. */
+	std::atomic<int> m_subtitle_generation;
+	/* Audio stream index deferred until the pipeline is settled in PLAYING -
+	 * see selectAudioStream()'s own comment for why setting "current-audio"
+	 * against an unsettled pipeline is unsafe. -1 when nothing is pending. */
+	int m_audio_switch_deferred;
+
+	/*
+	 * An ordinary (non-hardware-passthrough) audio track switch runs an
+	 * explicit PAUSE -> accurate flushing seek to the current position ->
+	 * PLAY sequence instead of clearBuffers()'s usual flush-while-PLAYING:
+	 * seeking while genuinely PAUSED lets the pipeline preroll the exact
+	 * target frame before anything is displayed again, so there is nothing
+	 * for the viewer to see change at all - not even the brief decode
+	 * stutter a same-position accurate seek issued while PLAYING can still
+	 * produce - which is the whole point here, video stutter being exactly
+	 * what this was asked to minimize.
+	 *
+	 * Driven entirely off gstBusCall()'s existing GST_STATE_CHANGE_
+	 * PLAYING_TO_PAUSED and GST_MESSAGE_ASYNC_DONE handling rather than any
+	 * blocking gst_element_get_state() wait between steps - deliberately,
+	 * same reasoning as tryApplyPendingStartOffset()'s own comment: an
+	 * explicit blocking PAUSE -> wait -> PLAY was tried elsewhere in this
+	 * class before and confirmed on device to hang the whole UI (the "Main
+	 * thread is busy" watchdog firing) for several seconds. Each step here
+	 * instead just requests the next thing and returns; the following step
+	 * runs whenever its bus message naturally arrives.
+	 */
+	enum { AudioSwitchFlushNone, AudioSwitchFlushWaitPaused, AudioSwitchFlushWaitSeek } m_audio_switch_flush_phase;
+	/* Whether to resume PLAYING once the flush completes. False when the
+	 * pipeline was already paused (by the user) when the switch began -
+	 * GStreamer then won't fire a new PLAYING_TO_PAUSED transition for a
+	 * state it's already in (gstBusCall() filters out old_state==new_state),
+	 * so beginAudioSwitchPauseFlush() skips straight to the seek in that
+	 * case - and resuming PLAYING afterward would then incorrectly override
+	 * the user's own pause. */
+	bool m_audio_switch_flush_resume;
+	/* Set right before the ASYNC_DONE handler's own gst_element_set_state()
+	 * call resumes PLAYING, and consumed by gstBusCall()'s GST_STATE_CHANGE_
+	 * PAUSED_TO_PLAYING handling: that handler unconditionally re-applies
+	 * m_currentAudioStream on every PLAYING transition (to recover from a
+	 * *real* pause/resume or startup), which would otherwise re-enter
+	 * beginAudioSwitchPauseFlush() right as it resumes from its own seek -
+	 * current-audio is already exactly right at that point (that's what
+	 * just got paused and seeked for), so re-running the whole sequence
+	 * would just repeat it forever. */
+	bool m_audio_switch_flush_resuming;
+	void beginAudioSwitchPauseFlush();
+	/* The seek step of the sequence above, run once the pipeline is
+	 * confirmed PAUSED (or was already paused - see m_audio_switch_flush_resume).
+	 * Safe to call gst_element_seek() synchronously here, unlike
+	 * flushNearCurrentPosition()'s subtitle-switch equivalent: that one's
+	 * confirmed-on-device deadlock risk is specifically a thread blocked in
+	 * a sink's clock wait, which only happens in PLAYING (a running clock),
+	 * never in PAUSED. */
+	void doAudioSwitchFlushSeek();
 	bufferInfo m_bufferInfo;
 	errorInfo m_errorInfo;
 	std::string m_download_buffer_path;
@@ -426,7 +550,59 @@ private:
 	sourceStream m_sourceinfo;
 	gulong m_subs_to_pull_handler_id;
 
-	RESULT seekToImpl(pts_t to);
+	/* accurate=false (the default, used by every real user seek/trickplay
+	 * path) seeks with GST_SEEK_FLAG_KEY_UNIT - fast, snaps to the nearest
+	 * keyframe, right when the goal is to get somewhere quickly.
+	 * accurate=true (used by clearBuffers(), for an audio track switch)
+	 * seeks with GST_SEEK_FLAG_ACCURATE instead - see clearBuffers()'s own
+	 * comment for why. flushNearCurrentPosition() below needs the same
+	 * accurate seek for a subtitle track switch, but - unlike clearBuffers()
+	 * - can't safely call through here: see its own comment for why it
+	 * builds and dispatches the gst_element_seek() call itself instead. */
+	RESULT seekToImpl(pts_t to, bool accurate = false);
+	/*
+	 * A flushing seek to (current position - ~1ms) instead of an outright
+	 * reposition, dispatched to a GStreamer pool thread rather than called
+	 * synchronously. This is what actually makes a plain "current-text"
+	 * property switch (applySubtitleStreamSwitch()) take visible effect
+	 * immediately, instead of waiting for a sparse embedded subtitle track's
+	 * (SRT/ASS/PGS) own next cue, possibly minutes away: a real seek is what
+	 * forces the demuxer to re-read and re-emit data at the current position
+	 * on every pad, including whichever one was just switched to - a
+	 * passive property switch alone never does that on its own account.
+	 *
+	 * Seeks with GST_SEEK_FLAG_KEY_UNIT, same as seekToImpl()'s usual real
+	 * user seek - deliberately NOT GST_SEEK_FLAG_ACCURATE, despite that
+	 * being exactly what doAudioSwitchFlushSeek() uses for the equivalent
+	 * audio-switch flush to avoid a keyframe-snap video jump: confirmed on
+	 * device that ACCURATE here left subtitle timing permanently skewed
+	 * for the rest of the session after any actual subtitle track switch -
+	 * almost certainly this hardware's decoder-time reporting disagreeing
+	 * with itself across an accurate seek in some way pushSubtitles()'s
+	 * raw-PTS comparison then inherits permanently. Avoiding a video jump
+	 * was never a requirement for a subtitle switch specifically - only
+	 * avoiding the hang/freeze it used to cause, which this still does
+	 * regardless of which seek flag is used - so there is nothing here
+	 * KEY_UNIT's usual keyframe snap is worth trading that correctness
+	 * away for.
+	 *
+	 * Unlike clearBuffers()'s equivalent audio-switch flush, this cannot
+	 * call gst_element_seek() directly on the calling (E2 main) thread:
+	 * confirmed on device to block for several seconds - a hard UI freeze,
+	 * since applySubtitleStreamSwitch() runs synchronously from a
+	 * key-press handler - when the seek races the text selector's own
+	 * active-pad switch issued moments earlier (a thread blocked in the
+	 * subtitle sink's clock wait holds a lock the seek's FLUSH_START also
+	 * needs). See doDeferredFlush() in the .cpp, which does the actual
+	 * gst_element_seek() call from a GStreamer pool thread instead.
+	 *
+	 * Returns false only if there's no playbin or no valid current position
+	 * to flush at - not confirmation that the seek has landed, or even that
+	 * it started, both of which happen later, off-thread. Skips itself for
+	 * a live source, same as clearBuffers() and for the same reason
+	 * (nothing to seek back to).
+	 */
+	bool flushNearCurrentPosition();
 
 	gint m_aspect, m_width, m_height, m_framerate, m_progressive, m_gamma;
 	int m_hdr_type;                  // 0=SDR 1=HDR10 2=HLG 3=HDR
