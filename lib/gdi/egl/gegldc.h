@@ -252,4 +252,23 @@ public:
 	void flip();
 	bool isInitialized() const { return m_egl_context != EGL_NO_CONTEXT; }
 	int getGLESVersion() const { return m_gles_version; }
+
+	// gDC::islocked() defaults to 0 (unlocked) and gMainDC never overrides
+	// it either - gFBDC is the only other gMainDC subclass, and it forwards
+	// to its own fbClass* (see gfbdc.h). Without this override, every
+	// gPainter call (fill/blit/renderText/flush/flip/...) skips its
+	// `if (m_dc->islocked()) return;` guard (grc.cpp) unconditionally on
+	// this backend, so fbClass::lock()/unlock() - already called by
+	// ImageManager.py bracketing ofgwrite's Mode 2 (non-active-slot, e2
+	// stays running) flash - had no effect here: enigma2 kept drawing and
+	// flipping/presenting pages throughout the flash, racing ofgwrite's own
+	// direct framebuffer writes for the same physical memory. That race is
+	// the progress-screen flicker/corruption seen after gEGLDC's earlier
+	// fix restored real triple-buffered presentPixmap() rotation (see
+	// project memory) - before that fix a leftover forceSingleBuffer flag
+	// meant DM900 never exercised multi-page presentation, so the race was
+	// latent. Forwarding to the same fbClass singleton DreamboxWindowProvider
+	// already uses (see its init()) makes gEGLDC honor the same lock every
+	// other backend does, with no ofgwrite or Python-side change needed.
+	int islocked() const override;
 };

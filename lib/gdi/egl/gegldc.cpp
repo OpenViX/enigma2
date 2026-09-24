@@ -1397,6 +1397,11 @@ bool gEGLDC::gpuCopyPageContent(int from, int to) {
 #endif
 }
 
+int gEGLDC::islocked() const {
+	fbClass* fb = fbClass::getInstance();
+	return fb ? fb->islocked() : 0;
+}
+
 void gEGLDC::flip() {
 	if (isInitialized() && m_egl_display != EGL_NO_DISPLAY && m_egl_surfaces[m_render_page] != EGL_NO_SURFACE) {
 		// eglSwapBuffers() is only defined for window surfaces; a pixmap-surface
