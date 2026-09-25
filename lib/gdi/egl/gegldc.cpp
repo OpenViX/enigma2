@@ -1176,6 +1176,34 @@ void gEGLDC::exec(const gOpcode* opcode) {
 			clip_area.moveBy(m_current_offset);
 			m_current_clip = m_current_clip & clip_area;
 
+			// Same reasoning as renderText's ->border pre-clear above, for a
+			// different trigger: GS_INVERT (a marked/selected character, e.g.
+			// ConfigText's select-all-on-focus state) forces its glyph through
+			// the CPU fallback (font.cpp skips offering it to renderGlyph() -
+			// invert isn't a flat color renderGlyph() can express), so this
+			// call will end up compositeTextOverlay()-ing the CPU buffer over
+			// this WHOLE area, not just that one glyph's cell. Without
+			// clearing first, every position outside that one glyph is
+			// whatever's stale in this shared staging buffer from an earlier,
+			// unrelated draw - compositing that over an otherwise fully
+			// GPU-batched string (every other glyph here has no reason to take
+			// the CPU path) erased the batch-rendered text underneath it
+			// instead of leaving it alone. Checked upfront, before gDC::exec()
+			// runs, same as ->border - most renderPara calls have no inverted
+			// glyph and skip this entirely.
+			bool has_invert_glyph = false;
+			for (int g = 0; g < textpara->size(); ++g) {
+				if (textpara->getGlyphFlags(g) & GS_INVERT) {
+					has_invert_glyph = true;
+					break;
+				}
+			}
+			if (has_invert_glyph) {
+				eRect clear_area = area;
+				clear_area.moveBy(m_current_offset);
+				clearOverlayArea(clear_area);
+			}
+
 			gDC::exec(opcode);
 			m_current_clip = saved_clip;
 			if (m_cpu_overlay_dirty) {

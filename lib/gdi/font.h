@@ -210,6 +210,18 @@ public:
 		return glyphs[num].bbox;
 	}
 
+	// Needed by gEGLDC::exec()'s gOpcode::renderPara handling (gegldc.cpp) to
+	// check, before blit() runs, whether any glyph carries GS_INVERT (a
+	// marked/selected character - see eListboxPythonConfigContent::paint()'s
+	// "mtext" handling) - flags is otherwise private, same reasoning as
+	// getGlyphBBox() above.
+	int getGlyphFlags(int num) const
+	{
+		ASSERT(num >= 0);
+		ASSERT(num < (int)glyphs.size());
+		return glyphs[num].flags;
+	}
+
 	void setGlyphFlag(int g, int f)
 	{
 		ASSERT(g >= 0);
