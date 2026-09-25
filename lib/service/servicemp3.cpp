@@ -756,18 +756,6 @@ GQuark hdAudioAuxRetryBlockQuark()
 	return quark;
 }
 
-GQuark hdAudioNativeEac3ResetPendingQuark()
-{
-	static GQuark quark = g_quark_from_static_string("enigma2-hd-audio-native-eac3-reset-pending");
-	return quark;
-}
-
-GQuark hdAudioNativeRetryQuark()
-{
-	static GQuark quark = g_quark_from_static_string("enigma2-hd-audio-native-retry");
-	return quark;
-}
-
 HDAudioAuxState *getHDAudioAuxState(GstElement *playbin)
 {
 	return playbin ? static_cast<HDAudioAuxState *>(
@@ -794,28 +782,6 @@ void setHDAudioAuxRetryBlocked(GstElement *playbin, bool blocked)
 {
 	if (playbin)
 		g_object_set_qdata(G_OBJECT(playbin), hdAudioAuxRetryBlockQuark(), GINT_TO_POINTER(blocked ? 1 : 0));
-}
-
-bool hdAudioNativeEac3ResetPending(GstElement *playbin)
-{
-	return playbin && GPOINTER_TO_INT(g_object_get_qdata(G_OBJECT(playbin), hdAudioNativeEac3ResetPendingQuark()));
-}
-
-void setHDAudioNativeEac3ResetPending(GstElement *playbin, bool pending)
-{
-	if (playbin)
-		g_object_set_qdata(G_OBJECT(playbin), hdAudioNativeEac3ResetPendingQuark(), GINT_TO_POINTER(pending ? 1 : 0));
-}
-
-int hdAudioNativeRetry(GstElement *playbin)
-{
-	return playbin ? GPOINTER_TO_INT(g_object_get_qdata(G_OBJECT(playbin), hdAudioNativeRetryQuark())) - 1 : -1;
-}
-
-void setHDAudioNativeRetry(GstElement *playbin, int stream)
-{
-	if (playbin)
-		g_object_set_qdata(G_OBJECT(playbin), hdAudioNativeRetryQuark(), stream >= 0 ? GINT_TO_POINTER(stream + 1) : NULL);
 }
 
 gint hdAudioAuxMatchSinkType(const GValue *velement, gpointer user_data)
@@ -2061,62 +2027,10 @@ eServiceMP3::~eServiceMP3()
 	m_new_dvb_subtitle_page_connection = 0;
 }
 
-int eServiceMP3PendingStopWorkers();
-
 void eServiceMP3::forceAudioReset()
 {
-	/* start() reuses this existing main-loop timer while a previous
-	 * GStreamer pipeline is still releasing the shared hardware sinks.
-	 * Polling here keeps Enigma2 responsive and adds no fixed handover
-	 * delay: playback starts on the first tick after teardown completes. */
-	if (m_state == stIdle && m_gst_playbin)
-	{
-		int pending = eServiceMP3PendingStopWorkers();
-		if (pending > 0)
-		{
-			m_passthrough_fix_timer->start(10, true);
-			return;
-		}
-		eDebug("[eServiceMP3] previous pipeline teardown complete; starting deferred pipeline");
-		start();
-		return;
-	}
-
-	if (!eConfigManager::getConfigBoolValue("config.av.passthrough_fix", false))
-	{
-		setHDAudioNativeEac3ResetPending(m_gst_playbin, false);
-		setHDAudioNativeRetry(m_gst_playbin, -1);
-		m_clear_buffers = true;
-		clearBuffers();
-		return;
-	}
-#ifdef PASSTHROUGH_FIX
-	if (hdAudioNativeEac3ResetPending(m_gst_playbin))
-		setHDAudioNativeEac3ResetPending(m_gst_playbin, false);
-	// Toggle Bluetooth audio off->on->off to force audio driver reinitialization
-	std::string btaudio = CFile::read("/proc/stb/audio/btaudio");
-	if (!btaudio.empty() && btaudio.find("off") != std::string::npos)
-	{
-		eDebug("[eDVBSoftDecoder] Force audio reset: toggling btaudio on and back off");
-		CFile::writeStr("/proc/stb/audio/btaudio", "on");
-		CFile::writeStr("/proc/stb/audio/btaudio", "off");
-	}
-
-	if (btaudio.empty())
-	{
-		int currAudioIndex = getCurrentTrack();
-		selectAudioStream(currAudioIndex, true);
-	}
-#endif
-
 	m_clear_buffers = true;
 	clearBuffers();
-	const int retry_audio = hdAudioNativeRetry(m_gst_playbin);
-	if (retry_audio >= 0)
-	{
-		g_object_set(G_OBJECT(m_gst_playbin), "current-audio", retry_audio, NULL);
-		setHDAudioNativeRetry(m_gst_playbin, -1);
-	}
 }
 
 void eServiceMP3::updateEpgCacheNowNext()
@@ -2266,19 +2180,6 @@ RESULT eServiceMP3::start()
 {
 	ASSERT(m_state == stIdle);
 
-#ifdef PASSTHROUGH_FIX
-	if (eConfigManager::getConfigBoolValue("config.av.passthrough_fix", false))
-	{
-		int pending = eServiceMP3PendingStopWorkers();
-		if (pending > 0)
-		{
-			eDebug("[eServiceMP3] deferring pipeline start while %d previous teardown(s) release hardware", pending);
-			m_passthrough_fix_timer->start(10, true);
-			return 0;
-		}
-	}
-#endif
-
 	if (m_gst_playbin)
 	{
 		/* See m_start_events_deferred's header comment - only this session's
@@ -2332,11 +2233,6 @@ RESULT eServiceMP3::start()
 }
 
 static volatile gint s_mp3_stop_workers = 0;
-
-int eServiceMP3PendingStopWorkers()
-{
-	return g_atomic_int_get(&s_mp3_stop_workers);
-}
 
 namespace {
 
@@ -2870,9 +2766,9 @@ RESULT eServiceMP3::getRawPlayPosition(pts_t &pts)
 	if ((audioSink || videoSink) && !m_paused)
 	{
 		if (m_sourceinfo.is_audio && videoSink) {
-			eDebug("[eServiceMP3] getRawPlayPosition: emitting get-decoder-time on audioSink (is_audio branch)");
+			eTrace("[eServiceMP3] getRawPlayPosition: emitting get-decoder-time on audioSink (is_audio branch)");
 			g_signal_emit_by_name(audioSink, "get-decoder-time", &pos);
-			eDebug("[eServiceMP3] getRawPlayPosition: get-decoder-time (audioSink) returned pos=%lld", (long long)pos);
+			eTrace("[eServiceMP3] getRawPlayPosition: get-decoder-time (audioSink) returned pos=%lld", (long long)pos);
 			if (GST_CLOCK_TIME_IS_VALID(pos))
 				got_decoder_time = true;
 		} else if (!m_sourceinfo.is_audio) {
@@ -2880,21 +2776,21 @@ RESULT eServiceMP3::getRawPlayPosition(pts_t &pts)
 			 * audio is 0 or invalid */
 			/* avoid taking the audio play position if audio sink is in state NULL */
 			if (audioSink) {
-				eDebug("[eServiceMP3] getRawPlayPosition: emitting get-decoder-time on audioSink");
+				eTrace("[eServiceMP3] getRawPlayPosition: emitting get-decoder-time on audioSink");
 				g_signal_emit_by_name(audioSink, "get-decoder-time", &pos);
-				eDebug("[eServiceMP3] getRawPlayPosition: get-decoder-time (audioSink) returned pos=%lld", (long long)pos);
+				eTrace("[eServiceMP3] getRawPlayPosition: get-decoder-time (audioSink) returned pos=%lld", (long long)pos);
 				if (!GST_CLOCK_TIME_IS_VALID(pos) && videoSink)
 				{
-					eDebug("[eServiceMP3] getRawPlayPosition: emitting get-decoder-time on videoSink");
+					eTrace("[eServiceMP3] getRawPlayPosition: emitting get-decoder-time on videoSink");
 					g_signal_emit_by_name(videoSink, "get-decoder-time", &pos);
-					eDebug("[eServiceMP3] getRawPlayPosition: get-decoder-time (videoSink) returned pos=%lld", (long long)pos);
+					eTrace("[eServiceMP3] getRawPlayPosition: get-decoder-time (videoSink) returned pos=%lld", (long long)pos);
 				}
 				if (GST_CLOCK_TIME_IS_VALID(pos))
 					got_decoder_time = true;
 			} else if (videoSink) {
-				eDebug("[eServiceMP3] getRawPlayPosition: emitting get-decoder-time on videoSink (no audioSink)");
+				eTrace("[eServiceMP3] getRawPlayPosition: emitting get-decoder-time on videoSink (no audioSink)");
 				g_signal_emit_by_name(videoSink, "get-decoder-time", &pos);
-				eDebug("[eServiceMP3] getRawPlayPosition: get-decoder-time (videoSink) returned pos=%lld", (long long)pos);
+				eTrace("[eServiceMP3] getRawPlayPosition: get-decoder-time (videoSink) returned pos=%lld", (long long)pos);
 				if (GST_CLOCK_TIME_IS_VALID(pos))
 				got_decoder_time = true;
 			}
@@ -2906,12 +2802,12 @@ RESULT eServiceMP3::getRawPlayPosition(pts_t &pts)
 		* exist but get-decoder-time returns invalid values (e.g. MP4 playback on
 		* some chipsets like HiSilicon), or when no dvb sinks are available at all. */
 		GstFormat fmt = GST_FORMAT_TIME;
-		eDebug("[eServiceMP3] getRawPlayPosition: calling gst_element_query_position");
+		eTrace("[eServiceMP3] getRawPlayPosition: calling gst_element_query_position");
 		gboolean qp_ok = gst_element_query_position(m_gst_playbin, fmt, &pos);
-		eDebug("[eServiceMP3] getRawPlayPosition: gst_element_query_position returned %d, pos=%lld", qp_ok, (long long)pos);
+		eTrace("[eServiceMP3] getRawPlayPosition: gst_element_query_position returned %d, pos=%lld", qp_ok, (long long)pos);
 		if (!qp_ok)
 		{
-			eDebug("[eServiceMP3] gst_element_query_position failed in getPlayPosition");
+			eTrace("[eServiceMP3] gst_element_query_position failed in getPlayPosition");
 			return -1;
 		}
 	}
@@ -4127,7 +4023,28 @@ void eServiceMP3::doAudioSwitchFlushSeek()
 	 * confirmed PAUSED at this point, so there is no streaming thread
 	 * blocked in a sink's clock wait (that only happens with a running
 	 * clock, i.e. in PLAYING) for this seek's FLUSH_START to race. */
-	seekToImpl(ppos, true);
+	if (seekToImpl(ppos, true) == -1)
+	{
+		/*
+		 * Seek rejected outright (confirmed on device: some sources report
+		 * m_is_live == false yet still reject an in-place seek exactly like
+		 * a genuinely live/unseekable one would) - the pipeline is left
+		 * PAUSED here with no seek in flight, so no GST_MESSAGE_ASYNC_DONE
+		 * will ever arrive to resume it via m_audio_switch_flush_resume:
+		 * left alone this is a permanently frozen/silent pipeline (confirmed
+		 * on device). Same recovery every other seek-rejected case in this
+		 * class already falls back to: restart the whole service instead of
+		 * leaving it stuck on a switch that never actually took effect.
+		 */
+		eDebug("[eServiceMP3] doAudioSwitchFlushSeek: seek rejected, restarting service to resync");
+		m_audio_switch_flush_phase = AudioSwitchFlushNone;
+		m_clear_buffers = false;
+		m_send_ev_start = false;
+		stop();
+		m_state = stIdle;
+		start();
+		return;
+	}
 	/* GST_MESSAGE_ASYNC_DONE (gstBusCall()) resumes PLAYING - if
 	 * m_audio_switch_flush_resume - once this seek's preroll completes. */
 }
@@ -4176,9 +4093,6 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 	 * GStreamer is in a transitional state. */
 	if (hdAudioAuxRetryBlocked(m_gst_playbin))
 		setHDAudioAuxRetryBlocked(m_gst_playbin, false);
-	const int pending_native_retry = hdAudioNativeRetry(m_gst_playbin);
-	if (pending_native_retry >= 0 && pending_native_retry != i)
-		setHDAudioNativeRetry(m_gst_playbin, -1);
 
 	if (i < 0 || i >= (int)m_audioStreams.size())
 	{
@@ -4231,11 +4145,9 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 	const HDAudioAuxMode aux_mode = !m_sourceinfo.is_streaming ?
 		hdAudioAuxModeForCodec(m_audioStreams[i].codec) : hdAuxNone;
 	HDAudioAuxState *active_aux = getHDAudioAuxState(m_gst_playbin);
-	const HDAudioAuxMode previous_aux_mode = active_aux ? active_aux->mode : hdAuxNone;
 	const bool native_eac3_to_aux = !active_aux && aux_mode == hdAuxAC3 &&
 		m_currentAudioStream >= 0 && m_currentAudioStream < (int)m_audioStreams.size() &&
 		m_audioStreams[m_currentAudioStream].type == atEAC3;
-	bool native_handoff_reset = false;
 
 	if (aux_mode != hdAuxNone || active_aux)
 	{
@@ -4360,11 +4272,6 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 		else
 		{
 			restoreHDAudioMainSink(m_gst_playbin, main_audio_sink, restore_flags);
-#ifdef PASSTHROUGH_FIX
-			if (previous_aux_mode == hdAuxAC3 && m_audioStreams[i].type == atEAC3 &&
-				eConfigManager::getConfigBoolValue("config.av.passthrough_fix", false))
-				native_handoff_reset = true;
-#endif
 			g_object_set(G_OBJECT(m_gst_playbin), "current-audio", i, NULL);
 			if (main_audio_sink)
 				gst_object_unref(main_audio_sink);
@@ -4374,16 +4281,11 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 		setHDAudioAuxReconfiguring(m_gst_playbin, false);
 	}
 
-	int current_audio, current_audio_orig;
-	g_object_get (G_OBJECT (m_gst_playbin), "current-audio", &current_audio_orig, NULL);
+	int current_audio;
 	g_object_set (G_OBJECT (m_gst_playbin), "current-audio", i, NULL);
 	g_object_get (G_OBJECT (m_gst_playbin), "current-audio", &current_audio, NULL);
 	if (current_audio != i)
 	{
-#ifdef PASSTHROUGH_FIX
-		if (native_handoff_reset)
-			setHDAudioNativeRetry(m_gst_playbin, i);
-#endif
 		/* GStreamer may be in a transitional state and hasn't applied the
 		 * property yet. Since we validated the index ourselves, trust the set. */
 		eDebug ("[eServiceMP3] selectAudioStream: readback returned %d (expected %d), trusting range-validated set", current_audio, i);
@@ -4396,56 +4298,61 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 			eDebug ("[eServiceMP3] switched to audio stream %i", current_audio);
 			m_currentAudioStream = i;
 			m_event((iPlayableService*)this, evUpdatedInfo);
+			setCacheEntry(true, i);
 			if (isActualAudioSwitch)
 			{
-#ifdef PASSTHROUGH_FIX
-			if (native_handoff_reset)
-			{
-				setHDAudioNativeEac3ResetPending(m_gst_playbin, true);
-				m_passthrough_fix_timer->stop();
-				m_passthrough_fix_timer->start(300, true);
-			}
-			else
-			{
-				GstPad* pad = 0;
-				g_signal_emit_by_name (m_gst_playbin, "get-audio-pad", i, &pad);
-				GstCaps* caps = gst_pad_get_current_caps(pad);
-				gst_object_unref(pad);
-				if (caps) {
-					GstStructure* str = gst_caps_get_structure(caps, 0);
-					const gchar *g_type = gst_structure_get_name(str);
-					audiotype_t apidtype = gstCheckAudioPad(str);
-					gst_caps_unref(caps);
-					if (apidtype == atAC3 || apidtype == atEAC3 || apidtype == atAAC || apidtype == atUnknown || apidtype == atPCM) {
-						std::string pass = CFile::read("/proc/stb/audio/ac3");
-						if (replace_all(replace_all(pass, "\r", ""), "\n", "") == "passthrough")
-						{
-							/* Actual hardware AC3/EAC3 passthrough format
-							 * reconfiguration, not a plain track switch - this
-							 * still needs the real HDMI/audio-driver reset
-							 * m_passthrough_fix_timer drives via
-							 * forceAudioReset(), not just a buffer flush. */
-							if (m_clear_buffers)
-							{
-								if (!hdAudioNativeEac3ResetPending(m_gst_playbin))
-								{
-									m_passthrough_fix_timer->stop();
-									m_passthrough_fix_timer->start(apidtype == atEAC3 && i > 0 && current_audio_orig > -1 ? 2000 : 300, true);
-								}
-							}
-						}
-						else
-							beginAudioSwitchPauseFlush();
+				/*
+				 * beginAudioSwitchPauseFlush() is a no-op for a live source
+				 * (see its own m_is_live guard) - its pause/wait-for-PAUSED/
+				 * accurate-seek/resume state machine assumes a source that's
+				 * always seekable, which a genuinely live broadcast is not.
+				 * isCurrentlySeekable() is otherwise still a stub that always
+				 * reports "seekable" (see its own comment), so m_is_live is
+				 * the only real non-seekable signal this class has.
+				 *
+				 * Some "live" sources (a timeshift/catchup-capable IPTV
+				 * service, confirmed in the wild - see
+				 * tryApplyPendingStartOffset()'s own comment on the same
+				 * distinction) can still accept a seek even though m_is_live
+				 * is set, so try a small backward flushing keyframe seek
+				 * first - cheap, and just forces a genuine reposition to cut
+				 * over to the new track instead of waiting for whatever the
+				 * old track already queued (our own queue, plus
+				 * dvbaudiosink's hardware ring buffer) to drain on its own.
+				 * Only fall back to restarting the whole service - visibly
+				 * disruptive, and confirmed on device to occasionally leave
+				 * tracks re-enumerated in a different order or the pipeline
+				 * silent/frozen after a fresh cold reselection - when that
+				 * seek is flat-out rejected, i.e. genuinely not seekable.
+				 */
+				if (m_is_live)
+				{
+					pts_t ppos = 0;
+					int seek_res = -1;
+					if (getRawPlayPosition(ppos) >= 0)
+					{
+						ppos -= 9000; /* seek back ~100ms, same margin
+						               * clearBuffers() used for a live audio
+						               * switch before it started skipping
+						               * live sources outright */
+						if (ppos < 0)
+							ppos = 0;
+						seek_res = seekTo(ppos);
 					}
-					else
-						beginAudioSwitchPauseFlush();
+
+					if (seek_res == -1)
+					{
+						eDebug("[eServiceMP3] selectAudioStream: live source, flushing keyframe seek unavailable/rejected, restarting service for audio-track switch");
+						m_clear_buffers = false;
+						m_send_ev_start = false;
+						stop();
+						m_state = stIdle;
+						start();
+					}
+					return 0;
 				}
+				beginAudioSwitchPauseFlush();
 			}
-#else
-			beginAudioSwitchPauseFlush();
-#endif
-			}
-			setCacheEntry(true, i);
 		}
 		return 0;
 	}
@@ -5112,8 +5019,21 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						audio.codec = "DTS 96/24";
 					else if (!strcmp(g_type, "audio/x-dtshd") || !strcmp(g_type, "audio/dtshd") || meta_dtshd)
 						audio.codec = "DTS-HD";
-					else if (!strcmp(g_type, "audio/x-dts") || !strcmp(g_type, "audio/dts") ||
-						(audio_meta_lower && strstr(audio_meta_lower, "dts")))
+					else if (!strcmp(g_type, "audio/x-dts") || !strcmp(g_type, "audio/dts"))
+						/*
+						 * No bare strstr(audio_meta_lower, "dts") fallback here,
+						 * unlike the more specific meta_dts* variants above (which
+						 * only ever refine an already-g_type-confirmed DTS-family
+						 * stream into a more specific label - every other codec's
+						 * base identification above this point requires an exact
+						 * g_type match too). A bare "dts" substring match against
+						 * the full caps dump in audio_meta_lower is far too broad:
+						 * ADTS-framed AAC (stream-format=(string)adts - the normal
+						 * AAC framing for MPEG-TS/HLS, i.e. most network/IPTV
+						 * sources) contains "dts" as a literal substring of "adts",
+						 * so every such stream was being mislabeled DTS regardless
+						 * of its real codec.
+						 */
 						audio.codec = "DTS";
 					else if (audio.type == atAAC || audio.type == atAACHE)
 					{
