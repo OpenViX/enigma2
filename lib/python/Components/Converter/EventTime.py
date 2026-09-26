@@ -1,5 +1,7 @@
 from time import time
 
+from enigma import eEPGCache
+
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
 from Components.Element import cached, ElementError
@@ -48,6 +50,7 @@ class EventTime(Poll, Converter):
 		print(f"[EventTime] Converter argument: '{type}'")
 		if type not in self.TYPES:
 			raise ElementError(f"[EventTime] converter argument '{type}' is not in <{"|".join(sorted(self.TYPES))}>")
+		self.epgcache = eEPGCache.getInstance()
 		self.type, poll_interval = self.TYPES[type]
 		if poll_interval:
 			self.poll_interval = poll_interval
