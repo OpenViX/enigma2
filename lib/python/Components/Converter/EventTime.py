@@ -1,5 +1,7 @@
 from time import time
 
+from enigma import eEPGCache  # FIX
+
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
 from Components.Element import cached, ElementError
@@ -24,13 +26,13 @@ class EventTime(Poll, Converter):
 
 	TYPES = {
 		"EndTime": (ENDTIME, None),
-		"Remaining": (REMAINING, 60 * 1000),
-		"VFDRemaining": (REMAINING, 60 * 1000),  # "VFDRemaining" is redundant. "Remaining" could be used instead.
+		"Remaining": (REMAINING, 60000),
+		"VFDRemaining": (REMAINING, 60000),
 		"StartTime": (STARTTIME, None),
-		"Progress": (PROGRESS, 30 * 1000),
+		"Progress": (PROGRESS, 30000),
 		"Duration": (DURATION, None),
-		"Elapsed": (ELAPSED, 60 * 1000),
-		"VFDElapsed": (ELAPSED, 60 * 1000),  # "VFDElapsed" is redundant. "Elapsed" could be used instead.
+		"Elapsed": (ELAPSED, 60000),
+		"VFDElapsed": (ELAPSED, 60000),
 		"NextStartTime": (NEXT_START_TIME, None),
 		"NextEndTime": (NEXT_END_TIME, None),
 		"NextDuration": (NEXT_DURATION, None),
@@ -47,7 +49,8 @@ class EventTime(Poll, Converter):
 		Poll.__init__(self)
 		print(f"[EventTime] Converter argument: '{type}'")
 		if type not in self.TYPES:
-			raise ElementError(f"[EventTime] converter argument '{type}' is not in <{"|".join(sorted(self.TYPES))}>")
+			raise ElementError(f"[EventTime] converter argument '{type}' is not in <{'|'.join(sorted(self.TYPES))}>")
+		self.epgcache = eEPGCache.getInstance()  # FIX
 		self.type, poll_interval = self.TYPES[type]
 		if poll_interval:
 			self.poll_interval = poll_interval
@@ -55,8 +58,6 @@ class EventTime(Poll, Converter):
 
 	@cached
 	def getTime(self):
-		assert self.type != self.PROGRESS
-
 		event = self.source.event
 		if event is None:
 			return None
@@ -80,10 +81,9 @@ class EventTime(Poll, Converter):
 			now = int(time())
 			remaining = max(end_time - now, 0)
 			elapsed = now - start_time
-
 			if start_time <= now <= end_time:
-				return duration, remaining, elapsed
-			return duration, None, None
+				return (duration, remaining, elapsed)
+			return (duration, None, None)
 
 		if self.type in (
 			self.NEXT_START_TIME, self.NEXT_END_TIME, self.NEXT_DURATION,
@@ -95,7 +95,7 @@ class EventTime(Poll, Converter):
 			if info is None or self.epgcache is None:
 				return None
 
-			test = ['IBDCX', (reference.toString(), 1, -1, 1440)]
+			test = ["IBDCX", (reference.toString(), 1, -1, 1440)]
 			events = self.epgcache.lookupEvent(test) or []
 
 			def get_event(idx):
@@ -107,12 +107,10 @@ class EventTime(Poll, Converter):
 				if event and len(event) > 2:
 					start = event[1]
 					duration = event[2]
-
 					start = int(start) if start else None
 					duration = int(duration) if duration else None
 					end = start + duration if start and duration else None
-
-					return start, duration, end
+					return (start, duration, end)
 				return None
 
 			idx = 1 if self.type in (
@@ -125,7 +123,6 @@ class EventTime(Poll, Converter):
 				return None
 
 			start, duration, end = data
-
 			if self.type in (self.NEXT_START_TIME, self.THIRD_START_TIME):
 				return start
 			if self.type in (self.NEXT_DURATION, self.THIRD_DURATION):
@@ -139,18 +136,14 @@ class EventTime(Poll, Converter):
 
 	@cached
 	def getValue(self):
-		assert self.type == self.PROGRESS
-
 		event = self.source.event
 		if event is None:
 			return None
 
 		progress = int(time()) - event.getBeginTime()
 		duration = event.getDuration()
-
 		if duration <= 0 or progress < 0:
 			return None
-
 		progress = min(progress, duration)
 		return progress * 1000 // duration
 
