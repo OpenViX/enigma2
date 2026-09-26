@@ -756,6 +756,18 @@ GQuark hdAudioAuxRetryBlockQuark()
 	return quark;
 }
 
+GQuark hdAudioNativeEac3ResetPendingQuark()
+{
+	static GQuark quark = g_quark_from_static_string("enigma2-hd-audio-native-eac3-reset-pending");
+	return quark;
+}
+
+GQuark hdAudioNativeRetryQuark()
+{
+	static GQuark quark = g_quark_from_static_string("enigma2-hd-audio-native-retry");
+	return quark;
+}
+
 HDAudioAuxState *getHDAudioAuxState(GstElement *playbin)
 {
 	return playbin ? static_cast<HDAudioAuxState *>(
@@ -782,6 +794,28 @@ void setHDAudioAuxRetryBlocked(GstElement *playbin, bool blocked)
 {
 	if (playbin)
 		g_object_set_qdata(G_OBJECT(playbin), hdAudioAuxRetryBlockQuark(), GINT_TO_POINTER(blocked ? 1 : 0));
+}
+
+bool hdAudioNativeEac3ResetPending(GstElement *playbin)
+{
+	return playbin && GPOINTER_TO_INT(g_object_get_qdata(G_OBJECT(playbin), hdAudioNativeEac3ResetPendingQuark()));
+}
+
+void setHDAudioNativeEac3ResetPending(GstElement *playbin, bool pending)
+{
+	if (playbin)
+		g_object_set_qdata(G_OBJECT(playbin), hdAudioNativeEac3ResetPendingQuark(), GINT_TO_POINTER(pending ? 1 : 0));
+}
+
+int hdAudioNativeRetry(GstElement *playbin)
+{
+	return playbin ? GPOINTER_TO_INT(g_object_get_qdata(G_OBJECT(playbin), hdAudioNativeRetryQuark())) - 1 : -1;
+}
+
+void setHDAudioNativeRetry(GstElement *playbin, int stream)
+{
+	if (playbin)
+		g_object_set_qdata(G_OBJECT(playbin), hdAudioNativeRetryQuark(), stream >= 0 ? GINT_TO_POINTER(stream + 1) : NULL);
 }
 
 gint hdAudioAuxMatchSinkType(const GValue *velement, gpointer user_data)
@@ -2027,8 +2061,29 @@ eServiceMP3::~eServiceMP3()
 	m_new_dvb_subtitle_page_connection = 0;
 }
 
+int eServiceMP3PendingStopWorkers();
+
 void eServiceMP3::forceAudioReset()
 {
+	/* start() reuses this existing main-loop timer while a previous
+	 * GStreamer pipeline is still releasing the shared hardware sinks.
+	 * Polling here keeps Enigma2 responsive and adds no fixed handover
+	 * delay: playback starts on the first tick after teardown completes. */
+	if (m_state == stIdle && m_gst_playbin)
+	{
+		int pending = eServiceMP3PendingStopWorkers();
+		if (pending > 0)
+		{
+			m_passthrough_fix_timer->start(10, true);
+			return;
+		}
+		eDebug("[eServiceMP3] previous pipeline teardown complete; starting deferred pipeline");
+		start();
+		return;
+	}
+
+	setHDAudioNativeEac3ResetPending(m_gst_playbin, false);
+	setHDAudioNativeRetry(m_gst_playbin, -1);
 	m_clear_buffers = true;
 	clearBuffers();
 }
@@ -2234,6 +2289,11 @@ RESULT eServiceMP3::start()
 
 static volatile gint s_mp3_stop_workers = 0;
 
+int eServiceMP3PendingStopWorkers()
+{
+	return g_atomic_int_get(&s_mp3_stop_workers);
+}
+
 namespace {
 
 const guint STOP_WATCHDOG_TIMEOUT_SECONDS = 10;
@@ -2322,6 +2382,28 @@ gpointer stopWatchdog(gpointer data)
 }
 
 }  // namespace
+
+/* Bounded poll on s_mp3_stop_workers - see this function's declaration in
+ * servicemp3.h for why a caller would want this. Deliberately a short sleep
+ * loop rather than a condition variable: s_mp3_stop_workers is a plain
+ * atomic counter shared with stopWorker() (which already has no associated
+ * lock/condvar, by design - see stop()'s comment), and the caller here needs
+ * a hard cap on how long it waits regardless, so polling costs nothing extra
+ * in practice while keeping stopWorker() itself unchanged. */
+bool eServiceMP3::waitForHardwareRelease(unsigned int timeout_ms)
+{
+	const unsigned int pollIntervalMs = 5;
+	unsigned int waited_ms = 0;
+	while (g_atomic_int_get(&s_mp3_stop_workers) > 0 && waited_ms < timeout_ms)
+	{
+		g_usleep(pollIntervalMs * 1000);
+		waited_ms += pollIntervalMs;
+	}
+	int remaining = g_atomic_int_get(&s_mp3_stop_workers);
+	if (remaining > 0)
+		eDebug("[eServiceMP3] waitForHardwareRelease: %d teardown(s) still outstanding after %ums, giving up", remaining, waited_ms);
+	return remaining == 0;
+}
 
 void eServiceMP3::disconnectAsyncSignalHandlers()
 {

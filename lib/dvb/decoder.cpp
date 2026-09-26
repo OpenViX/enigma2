@@ -31,6 +31,36 @@
 #define VIDEO_GET_FRAME_RATE _IOR('o', 56, unsigned int)
 #endif
 
+/* A decoder device (video/audio) node can still be held by a just-stopped
+ * hardware sink for a brief moment after that sink's owner believes it has
+ * released it - e.g. eServiceMP3::stop() hands the actual GStreamer teardown
+ * that releases these same nodes off to a detached worker thread instead of
+ * blocking on it (see its comment), and callers constructing the next
+ * service's decoder are only expected to bound that race, not eliminate it
+ * (see eServiceMP3::waitForHardwareRelease(), called from
+ * eDVBServicePlay::start() for exactly this). If the device is still busy by
+ * the time we get here, the vendor driver on this class of box has been
+ * observed to reject the open with ENOSYS (rather than EBUSY) instead of
+ * queueing it, and nothing else retries afterwards - so without this retry,
+ * losing that race leaves this decoder instance permanently unable to open
+ * video/audio for the lifetime of the service. Short and bounded: this is
+ * strictly a safety net for whatever residual race the caller-side wait
+ * didn't cover, not the primary fix. */
+static int openDecoderDeviceWithRetry(const char *filename)
+{
+	const int maxAttempts = 5;
+	const unsigned int retryDelayUs = 20000;
+	int fd = -1;
+	for (int attempt = 0; attempt < maxAttempts; ++attempt)
+	{
+		fd = ::open(filename, O_RDWR | O_CLOEXEC);
+		if (fd >= 0 || errno != ENOSYS)
+			break;
+		usleep(retryDelayUs);
+	}
+	return fd;
+}
+
 DEFINE_REF(eDVBAudio);
 
 eDVBAudio::eDVBAudio(eDVBDemux *demux, int dev)
@@ -38,7 +68,7 @@ eDVBAudio::eDVBAudio(eDVBDemux *demux, int dev)
 {
 	char filename[128] = {};
 	sprintf(filename, "/dev/dvb/adapter%d/audio%d", demux ? demux->adapter : 0, dev);
-	m_fd = ::open(filename, O_RDWR | O_CLOEXEC);
+	m_fd = openDecoderDeviceWithRetry(filename);
 	if (m_fd < 0)
 		eWarning("[eDVBAudio] %s: %m", filename);
 	if (demux)
@@ -261,7 +291,7 @@ eDVBVideo::eDVBVideo(eDVBDemux *demux, int dev, bool fcc_enable)
 {
 	char filename[128] = {};
 	sprintf(filename, "/dev/dvb/adapter%d/video%d", demux ? demux->adapter : 0, dev);
-	m_fd = ::open(filename, O_RDWR | O_CLOEXEC);
+	m_fd = openDecoderDeviceWithRetry(filename);
 	if (m_fd < 0)
 		eWarning("[eDVBVideo] %s: %m", filename);
 	else
