@@ -42,7 +42,7 @@ class EventTime(Poll, Converter):
 		"Times": (TIMES, None),
 		"NextTimes": (NEXT_TIMES, None),
 		"ThirdTimes": (THIRD_TIMES, None),
-}
+	}
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -92,7 +92,7 @@ class EventTime(Poll, Converter):
 			self.NEXT_START_TIME, self.NEXT_END_TIME, self.NEXT_DURATION,
 			self.THIRD_START_TIME, self.THIRD_END_TIME, self.THIRD_DURATION,
 			self.NEXT_TIMES, self.THIRD_TIMES
-):
+		):
 			reference = self.source.service
 			info = reference and self.source.info
 			if info is None or self.epgcache is None:
@@ -121,7 +121,7 @@ class EventTime(Poll, Converter):
 			idx = 1 if self.type in (
 				self.NEXT_START_TIME, self.NEXT_END_TIME,
 				self.NEXT_DURATION, self.NEXT_TIMES
-) else 2
+			) else 2
 
 			data = extract(get_event(idx))
 			if data is None:
