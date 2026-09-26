@@ -2235,6 +2235,13 @@ RESULT eServiceMP3::start()
 {
 	ASSERT(m_state == stIdle);
 
+	int pending = eServiceMP3PendingStopWorkers();
+	if (pending > 0)
+	{
+		m_passthrough_fix_timer->start(10, true);
+		return 0;
+	}
+
 	if (m_gst_playbin)
 	{
 		/* See m_start_events_deferred's header comment - only this session's
