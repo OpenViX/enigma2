@@ -32,23 +32,34 @@
 #endif
 
 /* A decoder device (video/audio) node can still be held by a just-stopped
- * hardware sink for a brief moment after that sink's owner believes it has
- * released it - e.g. eServiceMP3::stop() hands the actual GStreamer teardown
- * that releases these same nodes off to a detached worker thread instead of
- * blocking on it (see its comment), and callers constructing the next
- * service's decoder are only expected to bound that race, not eliminate it
- * (see eServiceMP3::waitForHardwareRelease(), called from
- * eDVBServicePlay::start() for exactly this). If the device is still busy by
- * the time we get here, the vendor driver on this class of box has been
+ * hardware sink for a while after that sink's owner believes it has released
+ * it - e.g. eServiceMP3::stop() hands the actual GStreamer teardown that
+ * releases these same nodes off to a detached worker thread instead of
+ * blocking on it (see its comment), and that teardown's duration is
+ * inherently unbounded: gst_element_set_state(..., GST_STATE_NULL) is exactly
+ * the call stopWorker() moved off the main thread because some vendor
+ * hardware sinks on this class of box block synchronously inside it for
+ * seconds (see stopWorker()'s comment). eServiceMP3::waitForHardwareRelease()
+ * (called from eDVBServicePlay::start() before tuning even begins) only
+ * covers the fast/common case without reintroducing that multi-second UI
+ * stall - it is capped short deliberately, and has already been observed on
+ * device to time out while a teardown was still genuinely in flight (not
+ * wedged), so this retry loop - the layer that actually witnesses ENOSYS at
+ * the point of failure - is the real backstop for a slow-but-progressing
+ * teardown, not just a residual-race safety net. If the device is still busy
+ * by the time we get here, the vendor driver on this class of box has been
  * observed to reject the open with ENOSYS (rather than EBUSY) instead of
  * queueing it, and nothing else retries afterwards - so without this retry,
  * losing that race leaves this decoder instance permanently unable to open
- * video/audio for the lifetime of the service. Short and bounded: this is
- * strictly a safety net for whatever residual race the caller-side wait
- * didn't cover, not the primary fix. */
+ * video/audio for the lifetime of the service. The total budget here
+ * (~4s) is sized well above the ~0.85s worst-case teardown time observed on
+ * device, while staying short of looking like a hang to the user - a
+ * genuinely wedged teardown (stopWatchdog() already logs past
+ * STOP_WATCHDOG_TIMEOUT_SECONDS=10s) is a separate, much rarer problem this
+ * isn't trying to paper over. */
 static int openDecoderDeviceWithRetry(const char *filename)
 {
-	const int maxAttempts = 5;
+	const int maxAttempts = 200;
 	const unsigned int retryDelayUs = 20000;
 	int fd = -1;
 	for (int attempt = 0; attempt < maxAttempts; ++attempt)
