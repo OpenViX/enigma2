@@ -1,5 +1,7 @@
 from time import time
 
+from enigma import eEPGCache
+
 from Components.Converter.Converter import Converter
 from Components.Converter.Poll import Poll
 from Components.Element import cached, ElementError
@@ -40,7 +42,7 @@ class EventTime(Poll, Converter):
 		"Times": (TIMES, None),
 		"NextTimes": (NEXT_TIMES, None),
 		"ThirdTimes": (THIRD_TIMES, None),
-	}
+}
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -48,6 +50,7 @@ class EventTime(Poll, Converter):
 		print(f"[EventTime] Converter argument: '{type}'")
 		if type not in self.TYPES:
 			raise ElementError(f"[EventTime] converter argument '{type}' is not in <{"|".join(sorted(self.TYPES))}>")
+		self.epgcache = eEPGCache.getInstance()
 		self.type, poll_interval = self.TYPES[type]
 		if poll_interval:
 			self.poll_interval = poll_interval
@@ -89,7 +92,7 @@ class EventTime(Poll, Converter):
 			self.NEXT_START_TIME, self.NEXT_END_TIME, self.NEXT_DURATION,
 			self.THIRD_START_TIME, self.THIRD_END_TIME, self.THIRD_DURATION,
 			self.NEXT_TIMES, self.THIRD_TIMES
-		):
+):
 			reference = self.source.service
 			info = reference and self.source.info
 			if info is None or self.epgcache is None:
@@ -118,7 +121,7 @@ class EventTime(Poll, Converter):
 			idx = 1 if self.type in (
 				self.NEXT_START_TIME, self.NEXT_END_TIME,
 				self.NEXT_DURATION, self.NEXT_TIMES
-			) else 2
+) else 2
 
 			data = extract(get_event(idx))
 			if data is None:
