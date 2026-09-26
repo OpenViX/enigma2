@@ -32,6 +32,7 @@
 #include <lib/base/httpsstream.h>
 #include <lib/base/httpstream.h>
 #include <lib/service/servicedvbfcc.h>
+#include <lib/service/servicemp3.h>
 #include "servicepeer.h"
 
 /* for subtitles */
@@ -1445,6 +1446,20 @@ void eDVBServicePlay::serviceEventTimeshift(int event)
 
 RESULT eDVBServicePlay::start()
 {
+	/* If the previous service was an eServiceMP3 (played file), its
+	 * hardware-sink teardown runs on a detached worker thread and can still
+	 * be in flight here (see eServiceMP3::stop()'s comment) - it releases
+	 * the same /dev/dvb/adapterX/videoY and audioY decoder device nodes that
+	 * this service's own eTSMPEGDecoder is about to open once tuning
+	 * completes. Wait for it to finish first (bounded, so a genuinely wedged
+	 * teardown can't hang a service switch): opening those nodes while the
+	 * old sink still holds them can fail outright (observed as ENOSYS from
+	 * the vendor driver) with nothing to retry it afterwards, leaving this
+	 * service's decoder permanently unable to open video/audio and playback
+	 * silently never showing a picture. Cheap/instant no-op when nothing is
+	 * outstanding, which is the common case. */
+	eServiceMP3::waitForHardwareRelease(500);
+
 	eServiceReferenceDVB service = (eServiceReferenceDVB&)m_reference;
 	bool scrambled = true;
 	int packetsize = 188;
