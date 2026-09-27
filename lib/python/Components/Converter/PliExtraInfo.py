@@ -153,7 +153,7 @@ class PliExtraInfo(Poll, Converter, object):
 		"CryptoDre":      (0x4ae0, 0x4ae1, 'DC'),
 	}
 
-	# (letter, selected) keyed by skin boolean name
+	# (letter, selected) keyed by converter arg
 	CA_TABLE = {
 		"CryptoCaidSecaAvailable":     ("S",  False),
 		"CryptoCaidViaAvailable":      ("V",  False),
