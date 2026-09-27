@@ -24,7 +24,7 @@ caid_data = tuple(
 		("0xb00", "0xbff", "Conax", "Co", "CONAX", True),
 		("0xd00", "0xdff", "CryptoW", "Cw", "CRW", True),
 		("0xe00", "0xeff", "PowerVU", "P", "PV", False),
-		("0x1000", "0x10FF", "Tandberg", "TB", "TAND", False),
+		("0x1000", "0x10FF", "Tandberg", "T", "TAND", False),
 		("0x1700", "0x17ff", "Beta", "B", "BETA", True),
 		("0x1800", "0x18ff", "Nagra", "N", "NAGRA", True),
 		("0x2600", "0x2600", "Biss", "Bi", "BiSS", False),
@@ -133,11 +133,13 @@ class PliExtraInfo(Poll, Converter, object):
 
 	# (lo, hi, letter) - a single generic method + this table replaces what used
 	# to be twelve near-identical createCryptoXxx methods (Seca/Via/Irdeto/NDS/
-	# Conax/CryptoW/PowerVU/Tandberg/Beta/Nagra/Biss/Dre). Note these ranges/
-	# letters do NOT all match caid_data above (e.g. Tandberg is 0x1010-0x1010
-	# here vs 0x1000-0x10FF in caid_data, and the letter is 'T' vs 'TB'; Biss is
-	# 0x2600-0x26ff here vs just 0x2600-0x2600 in caid_data) - that mismatch
-	# existed in the original code too, kept as-is rather than silently "fixed".
+	# Conax/CryptoW/PowerVU/Tandberg/Beta/Nagra/Biss/Dre). Note these ranges do
+	# NOT all match caid_data above (e.g. Tandberg is 0x1010-0x1010 here vs
+	# 0x1000-0x10FF in caid_data; Biss is 0x2600-0x26ff here vs just
+	# 0x2600-0x2600 in caid_data) - that mismatch existed in the original code
+	# too, kept as-is rather than silently "fixed". The letters themselves now
+	# agree with caid_data/CA_TABLE (Tandberg's caid_data letter was 'TB' until
+	# it was corrected to 'T' to match here and in CA_TABLE).
 	CRYPTO_LETTER_RANGES = {
 		"CryptoSeca":     (0x100,  0x1ff,  'S'),
 		"CryptoVia":      (0x500,  0x5ff,  'V'),
