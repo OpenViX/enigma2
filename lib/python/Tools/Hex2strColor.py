@@ -13,7 +13,7 @@ class ColorizeText:
 	# <parameter name="AboutColors" value="#00ffc000"/>
 	# "default" can be None, int or list of ints.
 
-	def __init__(self, session, param_name, default=None):
+	def __init__(self, param_name, default=None):
 		self.colors = parameters.get(param_name, default or [])
 		if isinstance(self.colors, int):  # a single entry in skin parameters would not be comma separated and therefore an int, not a list
 			self.colors = [self.colors]

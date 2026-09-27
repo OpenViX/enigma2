@@ -158,7 +158,7 @@ def df_h(find=None, binary=False):
 class AboutBase(TextBox, ColorizeText):
 	def __init__(self, session, labels=None):
 		TextBox.__init__(self, session, label="AboutScrollLabel")
-		ColorizeText.__init__(self, session, "AboutColors")
+		ColorizeText.__init__(self, "AboutColors")
 		self.skinName = "AboutOE"
 		if labels:
 			self["lab1"] = StaticText(_("Virtuosso Image Xtreme"))
