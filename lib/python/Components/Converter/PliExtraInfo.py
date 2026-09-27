@@ -153,6 +153,40 @@ class PliExtraInfo(Poll, Converter, object):
 		"CryptoDre":      (0x4ae0, 0x4ae1, 'DC'),
 	}
 
+	# (letter, selected) keyed by skin boolean name
+	CA_TABLE = {
+		"CryptoCaidSecaAvailable":     ("S",  False),
+		"CryptoCaidViaAvailable":      ("V",  False),
+		"CryptoCaidIrdetoAvailable":   ("I",  False),
+		"CryptoCaidNDSAvailable":      ("Nd", False),
+		"CryptoCaidConaxAvailable":    ("Co", False),
+		"CryptoCaidCryptoWAvailable":  ("Cw", False),
+		"CryptoCaidPowerVUAvailable":  ("P",  False),
+		"CryptoCaidBetaAvailable":     ("B",  False),
+		"CryptoCaidNagraAvailable":    ("N",  False),
+		"CryptoCaidBissAvailable":     ("Bi", False),
+		"CryptoCaidDre3Available":     ("D3", False),
+		"CryptoCaidDreAvailable":      ("D",  False),
+		"CryptoCaidBulCrypt1Available": ("B1", False),
+		"CryptoCaidBulCrypt2Available": ("B2", False),
+		"CryptoCaidTandbergAvailable":  ("T",  False),
+		"CryptoCaidSecaSelected":      ("S",  True),
+		"CryptoCaidViaSelected":       ("V",  True),
+		"CryptoCaidIrdetoSelected":    ("I",  True),
+		"CryptoCaidNDSSelected":       ("Nd", True),
+		"CryptoCaidConaxSelected":     ("Co", True),
+		"CryptoCaidCryptoWSelected":   ("Cw", True),
+		"CryptoCaidPowerVUSelected":   ("P",  True),
+		"CryptoCaidBetaSelected":      ("B",  True),
+		"CryptoCaidNagraSelected":     ("N",  True),
+		"CryptoCaidBissSelected":      ("Bi", True),
+		"CryptoCaidDre3Selected":      ("D3", True),
+		"CryptoCaidDreSelected":       ("D",  True),
+		"CryptoCaidBulCrypt1Selected": ("B1", True),
+		"CryptoCaidBulCrypt2Selected": ("B2", True),
+		"CryptoCaidTandbergSelected":  ("T",  True),
+	}
+
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)
@@ -246,38 +280,6 @@ class PliExtraInfo(Poll, Converter, object):
 			),
 			"User": (),
 		}
-		self.ca_table = (
-			("CryptoCaidSecaAvailable", "S", False),
-			("CryptoCaidViaAvailable", "V", False),
-			("CryptoCaidIrdetoAvailable", "I", False),
-			("CryptoCaidNDSAvailable", "Nd", False),
-			("CryptoCaidConaxAvailable", "Co", False),
-			("CryptoCaidCryptoWAvailable", "Cw", False),
-			("CryptoCaidPowerVUAvailable", "P", False),
-			("CryptoCaidBetaAvailable", "B", False),
-			("CryptoCaidNagraAvailable", "N", False),
-			("CryptoCaidBissAvailable", "Bi", False),
-			("CryptoCaidDre3Available", "D3", False),
-			("CryptoCaidDreAvailable", "D", False),
-			("CryptoCaidBulCrypt1Available", "B1", False),
-			("CryptoCaidBulCrypt2Available", "B2", False),
-			("CryptoCaidTandbergAvailable", "T", False),
-			("CryptoCaidSecaSelected", "S", True),
-			("CryptoCaidViaSelected", "V", True),
-			("CryptoCaidIrdetoSelected", "I", True),
-			("CryptoCaidNDSSelected", "Nd", True),
-			("CryptoCaidConaxSelected", "Co", True),
-			("CryptoCaidCryptoWSelected", "Cw", True),
-			("CryptoCaidPowerVUSelected", "P", True),
-			("CryptoCaidBetaSelected", "B", True),
-			("CryptoCaidNagraSelected", "N", True),
-			("CryptoCaidBissSelected", "Bi", True),
-			("CryptoCaidDre3Selected", "D3", True),
-			("CryptoCaidDreSelected", "D", True),
-			("CryptoCaidBulCrypt1Selected", "B1", True),
-			("CryptoCaidBulCrypt2Selected", "B2", True),
-			("CryptoCaidTandbergSelected", "T", True)
-		)
 		self.type = self.type.split(',')
 		if self.type[0] == "User":
 			self.info_fields[self.type[0]] = tuple(self.type[1:])
@@ -793,15 +795,10 @@ class PliExtraInfo(Poll, Converter, object):
 			if not info:
 				return False
 
-			request_caid = None
-			for x in self.ca_table:
-				if x[0] == self.type:
-					request_caid = x[1]
-					request_selected = x[2]
-					break
-
-			if request_caid is None:
+			entry = self.CA_TABLE.get(self.type)
+			if entry is None:
 				return False
+			request_caid, request_selected = entry
 
 			if info.getInfo(iServiceInformation.sIsCrypted) != 1:
 				return False
