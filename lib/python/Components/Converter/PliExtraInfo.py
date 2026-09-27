@@ -35,6 +35,7 @@ def getCachedEcmData():
 		_cryptoCacheTime = now
 	return _cryptoCacheData
 
+
 caid_data = tuple(
 	(int(lo, 16), int(hi, 16), name, letter, altname, flag)
 	for lo, hi, name, letter, altname, flag in (
