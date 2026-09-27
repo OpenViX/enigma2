@@ -368,7 +368,7 @@ class PliExtraInfo(Poll, Converter, object):
 		if int(self.current_caid, 16) == 0:
 			return caid_name
 		try:
-			for caid_entry in self.caid_data:
+			for caid_entry in caid_data:
 				if int(caid_entry[0], 16) <= int(self.current_caid, 16) <= int(caid_entry[1], 16):
 					caid_name = caid_entry[2]
 					break
