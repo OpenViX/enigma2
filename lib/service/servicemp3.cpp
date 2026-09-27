@@ -1625,6 +1625,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_clear_buffers = true;
 	m_initial_start = false;
 	m_send_ev_start = true;
+	m_first_frame_fired = false;
 	m_seek_paused = false;
 	m_cuesheet_loaded = false; /* cuesheet CVR */
 	m_use_chapter_entries = false; /* TOC chapter support CVR */
@@ -2211,6 +2212,25 @@ void eServiceMP3::tryApplyPendingStartOffset()
 	pts_t pos = m_pending_start_position;
 	m_pending_start_position = -1;
 	eDebug("[eServiceMP3] tryApplyPendingStartOffset: applying %lld", (long long)pos);
+
+	/* This seek is landing at a known, already-meaningful position (a
+	 * resume point), not at the start of the stream - unlike the generic
+	 * "disable correction only once a baseline has actually been
+	 * confirmed" logic in seekToImpl() (which exists to avoid leaving
+	 * getPlayPosition() stuck on an unconfirmed/uncorrected raw reading
+	 * when an *early* seek races the startup confirm window), there is
+	 * nothing to preserve here: the raw reading from here on is correct
+	 * relative to this resume position, so baking in any baseline at all
+	 * - whether already confirmed or captured fresh from readings taken
+	 * after this seek - would wrongly zero the displayed time back to the
+	 * resume point instead of leaving it at pos. Disable correction
+	 * outright and discard any in-progress candidate so it can't still
+	 * confirm later from stale (pre-seek) readings. */
+	if (pos > 0)
+	{
+		m_position_correction_enabled = false;
+		m_position_baseline_provisional = -1;
+	}
 
 	/*
 	 * Deliberately NOT wrapped in an explicit PAUSE -> (blocking wait) ->
@@ -4786,6 +4806,19 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						}
 						m_initial_start = true;
 					}
+
+					/* Audio-only content has no video-size report to hang
+					 * evFirstFrame off (see the eventSizeAvail/eventSizeChanged
+					 * handling in GST_MESSAGE_ELEMENT below, which fires it for
+					 * anything with a video sink) - there's no equivalent
+					 * per-frame signal from the audio sink, so fall back to
+					 * firing it here, once, the first time the pipeline
+					 * actually reaches PLAYING. */
+					if (!m_first_frame_fired && !videoSink)
+					{
+						m_first_frame_fired = true;
+						m_event((iPlayableService*)this, evFirstFrame);
+					}
 					m_event((iPlayableService*)this, evGstreamerPlayStarted);
 				}	break;
 				case GST_STATE_CHANGE_PLAYING_TO_PAUSED:
@@ -5369,6 +5402,17 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 							gst_structure_get_int (msgstruct, "aspect_ratio", &m_aspect);
 							gst_structure_get_int (msgstruct, "width", &m_width);
 							gst_structure_get_int (msgstruct, "height", &m_height);
+
+							/* The video sink only posts this once it actually
+							 * has a real decoded size to report, i.e. once it
+							 * has a frame ready - the earliest reliable "first
+							 * frame" signal available here (see evFirstFrame's
+							 * own doc comment in iservice.h). */
+							if (!m_first_frame_fired)
+							{
+								m_first_frame_fired = true;
+								m_event((iPlayableService*)this, evFirstFrame);
+							}
 							if (strstr(eventname, "Changed"))
 								m_event((iPlayableService*)this, evVideoSizeChanged);
 #ifdef HAS_SOFTWARE_HDR_DETECTION

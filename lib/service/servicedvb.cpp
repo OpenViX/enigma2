@@ -1069,6 +1069,7 @@ eDVBServicePlay::eDVBServicePlay(const eServiceReference &ref, eDVBService *serv
 	m_is_primary(1),
 	m_decoder_index(0),
 	m_have_video_pid(0),
+	m_first_frame_fired(false),
 	m_hdr_type(0),
 #ifdef HAS_SOFTWARE_HDR_DETECTION
 	m_hdr_detect_vpid(-1),
@@ -1896,6 +1897,7 @@ RESULT eDVBServicePlay::getPlayPosition(pts_t &pos)
 		return -1;
 
 	int r = 0;
+	bool got_decoder_pts = false;
 
 		/* if there is a decoder, use audio or video PTS */
 	// Check SoftDecoder only if session is active AND not in timeshift playback
@@ -1904,12 +1906,29 @@ RESULT eDVBServicePlay::getPlayPosition(pts_t &pos)
 		r = m_soft_decoder->getPTS(0, pos);
 		if (r)
 			return r;
+		got_decoder_pts = true;
 	}
 	else if (m_decoder)
 	{
 		r = m_decoder->getPTS(0, pos);
 		if (r)
 			return r;
+		got_decoder_pts = true;
+	}
+
+	/* A valid PTS means a frame is actually decoding, regardless of
+	 * whether video_event()'s eventSizeChanged has fired - on some
+	 * drivers/hardware that event may not repeat when the new service
+	 * happens to share the previous one's resolution (the decoder device
+	 * itself is reopened per service, but not every driver necessarily
+	 * treats that as a reason to re-report an unchanged size). This is
+	 * the same "first frame" signal as eventSizeChanged, just reached via
+	 * polling rather than the event, so it only ever adds the event for a
+	 * session that would otherwise never get one - guard it the same way. */
+	if (!m_first_frame_fired && got_decoder_pts)
+	{
+		m_first_frame_fired = true;
+		m_event((iPlayableService*)this, evFirstFrame);
 	}
 
 		/* fixup */
@@ -3566,6 +3585,17 @@ void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
 		else
 			m_decoder->set();
 
+		/* Radio/audio-only services have no video pid, so video_event()'s
+		 * eventSizeChanged never fires and can't be relied on to signal
+		 * evFirstFrame - there's no equivalent per-frame signal from the
+		 * audio decoder either, so fall back to firing it here, once,
+		 * right after the decoder has actually been told to play. */
+		if (!m_first_frame_fired && !m_have_video_pid)
+		{
+			m_first_frame_fired = true;
+			m_event((iPlayableService*)this, evFirstFrame);
+		}
+
 		if (!m_noaudio)
 			m_decoder->setAudioChannel(achannel);
 
@@ -4188,6 +4218,17 @@ void eDVBServicePlay::video_event(struct iTSMPEGDecoder::videoEvent event)
 {
 	switch(event.type) {
 		case iTSMPEGDecoder::videoEvent::eventSizeChanged:
+			/* The decoder only reports a real size once it actually has a
+			 * frame decoded and ready to show - the earliest reliable
+			 * "first frame" signal available here (see evFirstFrame's own
+			 * doc comment in iservice.h). This case fires again on every
+			 * later resolution change too, so guard it to only fire once
+			 * per playback session. */
+			if (!m_first_frame_fired)
+			{
+				m_first_frame_fired = true;
+				m_event((iPlayableService*)this, evFirstFrame);
+			}
 			m_event((iPlayableService*)this, evVideoSizeChanged);
 			// For SoftCSA: Send evUpdatedInfo on first video size event
 			// Some skins only query video info on evUpdatedInfo, not on evVideoSizeChanged

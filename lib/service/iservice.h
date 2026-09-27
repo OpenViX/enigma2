@@ -1007,6 +1007,16 @@ public:
 		 * from it, not merely requested. */
 		evResumed,
 
+		/* eServiceMP3 only: fired once, the first time this playback
+		 * session actually has a frame decoded and ready to be shown/heard
+		 * - unlike evStart/evGstreamerStart (fired as soon as the pipeline
+		 * reaches PAUSED, before anything has necessarily been decoded).
+		 * For video, this is the first real video-size report from the
+		 * decoder (i.e. it has a frame to show); for audio-only content,
+		 * there is no equivalent per-frame signal available, so this fires
+		 * once the pipeline first reaches PLAYING instead. */
+		evFirstFrame,
+
 		evUser = 0x100
 	};
 };
