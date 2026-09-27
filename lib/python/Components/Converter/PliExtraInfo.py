@@ -129,6 +129,28 @@ def createCurrentCaidLabel(info, currentCaid=None, currentDevice=None):
 
 class PliExtraInfo(Poll, Converter, object):
 
+	# (lo, hi, letter) - this table + a single generic method replaces what used
+	# to be twelve near-identical createCryptoXxx methods (Seca/Via/Irdeto/NDS/
+	# Conax/CryptoW/PowerVU/Tandberg/Beta/Nagra/Biss/Dre). Note these ranges/
+	# letters do NOT all match caid_data above (e.g. Tandberg is 0x1010-0x1010
+	# here vs 0x1000-0x10FF in caid_data, and the letter is 'T' vs 'TB'; Biss is
+	# 0x2600-0x26ff here vs just 0x2600-0x2600 in caid_data) - that mismatch
+	# existed in the original code too, kept as-is rather than silently "fixed".
+	CRYPTO_LETTER_RANGES = {
+		"CryptoSeca":     (0x100,  0x1ff,  'S'),
+		"CryptoVia":      (0x500,  0x5ff,  'V'),
+		"CryptoIrdeto":   (0x600,  0x6ff,  'I'),
+		"CryptoNDS":      (0x900,  0x9ff,  'NDS'),
+		"CryptoConax":    (0xb00,  0xbff,  'CO'),
+		"CryptoCryptoW":  (0xd00,  0xdff,  'CW'),
+		"CryptoPowerVU":  (0xe00,  0xeff,  'P'),
+		"CryptoTandberg": (0x1010, 0x1010, 'T'),
+		"CryptoBeta":     (0x1700, 0x17ff, 'B'),
+		"CryptoNagra":    (0x1800, 0x18ff, 'N'),
+		"CryptoBiss":     (0x2600, 0x26ff, 'BI'),
+		"CryptoDre":      (0x4ae0, 0x4ae1, 'DC'),
+	}
+
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)
@@ -306,197 +328,23 @@ class PliExtraInfo(Poll, Converter, object):
 		res += Hex2strColor(colors[3])  # white (this acts like a color "reset" for following strings
 		return res
 
-	def createCryptoSeca(self, info):
+	def createCryptoLetter(self, info, lo, hi, letter):
+		"""Generic replacement for the old createCryptoSeca/Via/Irdeto/NDS/Conax/
+		CryptoW/PowerVU/Tandberg/Beta/Nagra/Biss/Dre methods, which differed only
+		in (lo, hi, letter) - see CRYPTO_LETTER_RANGES above."""
 		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if int('0x100', 16) <= int(self.current_caid, 16) <= int('0x1ff', 16):
+		current = int(self.current_caid, 16)
+		if lo <= current <= hi:
 			color = Hex2strColor(self.cryptocolors[0])
 		else:
 			color = Hex2strColor(self.cryptocolors[1])
 			try:
 				for caid in available_caids:
-					if int('0x100', 16) <= caid <= int('0x1ff', 16):
+					if lo <= caid <= hi:
 						color = Hex2strColor(self.cryptocolors[2])
-			except:
+			except Exception:
 				pass
-		res = color + 'S'
-		res += Hex2strColor(self.cryptocolors[3])
-		return res
-
-	def createCryptoVia(self, info):
-		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if int('0x500', 16) <= int(self.current_caid, 16) <= int('0x5ff', 16):
-			color = Hex2strColor(self.cryptocolors[0])
-		else:
-			color = Hex2strColor(self.cryptocolors[1])
-			try:
-				for caid in available_caids:
-					if int('0x500', 16) <= caid <= int('0x5ff', 16):
-						color = Hex2strColor(self.cryptocolors[2])
-			except:
-				pass
-		res = color + 'V'
-		res += Hex2strColor(self.cryptocolors[3])
-		return res
-
-	def createCryptoIrdeto(self, info):
-		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if int('0x600', 16) <= int(self.current_caid, 16) <= int('0x6ff', 16):
-			color = Hex2strColor(self.cryptocolors[0])
-		else:
-			color = Hex2strColor(self.cryptocolors[1])
-			try:
-				for caid in available_caids:
-					if int('0x600', 16) <= caid <= int('0x6ff', 16):
-						color = Hex2strColor(self.cryptocolors[2])
-			except:
-				pass
-		res = color + 'I'
-		res += Hex2strColor(self.cryptocolors[3])
-		return res
-
-	def createCryptoNDS(self, info):
-		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if int('0x900', 16) <= int(self.current_caid, 16) <= int('0x9ff', 16):
-			color = Hex2strColor(self.cryptocolors[0])
-		else:
-			color = Hex2strColor(self.cryptocolors[1])
-			try:
-				for caid in available_caids:
-					if int('0x900', 16) <= caid <= int('0x9ff', 16):
-						color = Hex2strColor(self.cryptocolors[2])
-			except:
-				pass
-		res = color + 'NDS'
-		res += Hex2strColor(self.cryptocolors[3])
-		return res
-
-	def createCryptoConax(self, info):
-		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if int('0xb00', 16) <= int(self.current_caid, 16) <= int('0xbff', 16):
-			color = Hex2strColor(self.cryptocolors[0])
-		else:
-			color = Hex2strColor(self.cryptocolors[1])
-			try:
-				for caid in available_caids:
-					if int('0xb00', 16) <= caid <= int('0xbff', 16):
-						color = Hex2strColor(self.cryptocolors[2])
-			except:
-				pass
-		res = color + 'CO'
-		res += Hex2strColor(self.cryptocolors[3])
-		return res
-
-	def createCryptoCryptoW(self, info):
-		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if int('0xd00', 16) <= int(self.current_caid, 16) <= int('0xdff', 16):
-			color = Hex2strColor(self.cryptocolors[0])
-		else:
-			color = Hex2strColor(self.cryptocolors[1])
-			try:
-				for caid in available_caids:
-					if int('0xd00', 16) <= caid <= int('0xdff', 16):
-						color = Hex2strColor(self.cryptocolors[2])
-			except:
-				pass
-		res = color + 'CW'
-		res += Hex2strColor(self.cryptocolors[3])
-		return res
-
-	def createCryptoPowerVU(self, info):
-		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if int('0xe00', 16) <= int(self.current_caid, 16) <= int('0xeff', 16):
-			color = Hex2strColor(self.cryptocolors[0])
-		else:
-			color = Hex2strColor(self.cryptocolors[1])
-			try:
-				for caid in available_caids:
-					if int('0xe00', 16) <= caid <= int('0xeff', 16):
-						color = Hex2strColor(self.cryptocolors[2])
-			except:
-				pass
-		res = color + 'P'
-		res += Hex2strColor(self.cryptocolors[3])
-		return res
-
-	def createCryptoTandberg(self, info):
-		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if int('0x1010', 16) <= int(self.current_caid, 16) <= int('0x1010', 16):
-			color = Hex2strColor(self.cryptocolors[0])
-		else:
-			color = Hex2strColor(self.cryptocolors[1])
-			try:
-				for caid in available_caids:
-					if int('0x1010', 16) <= caid <= int('0x1010', 16):
-						color = Hex2strColor(self.cryptocolors[2])
-			except:
-				pass
-		res = color + 'T'
-		res += Hex2strColor(self.cryptocolors[3])
-		return res
-
-	def createCryptoBeta(self, info):
-		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if int('0x1700', 16) <= int(self.current_caid, 16) <= int('0x17ff', 16):
-			color = Hex2strColor(self.cryptocolors[0])
-		else:
-			color = Hex2strColor(self.cryptocolors[1])
-			try:
-				for caid in available_caids:
-					if int('0x1700', 16) <= caid <= int('0x17ff', 16):
-						color = Hex2strColor(self.cryptocolors[2])
-			except:
-				pass
-		res = color + 'B'
-		res += Hex2strColor(self.cryptocolors[3])
-		return res
-
-	def createCryptoNagra(self, info):
-		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if int('0x1800', 16) <= int(self.current_caid, 16) <= int('0x18ff', 16):
-			color = Hex2strColor(self.cryptocolors[0])
-		else:
-			color = Hex2strColor(self.cryptocolors[1])
-			try:
-				for caid in available_caids:
-					if int('0x1800', 16) <= caid <= int('0x18ff', 16):
-						color = Hex2strColor(self.cryptocolors[2])
-			except:
-				pass
-		res = color + 'N'
-		res += Hex2strColor(self.cryptocolors[3])
-		return res
-
-	def createCryptoBiss(self, info):
-		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if int('0x2600', 16) <= int(self.current_caid, 16) <= int('0x26ff', 16):
-			color = Hex2strColor(self.cryptocolors[0])
-		else:
-			color = Hex2strColor(self.cryptocolors[1])
-			try:
-				for caid in available_caids:
-					if int('0x2600', 16) <= caid <= int('0x26ff', 16):
-						color = Hex2strColor(self.cryptocolors[2])
-			except:
-				pass
-		res = color + 'BI'
-		res += Hex2strColor(self.cryptocolors[3])
-		return res
-
-	def createCryptoDre(self, info):
-		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		if int('0x4ae0', 16) <= int(self.current_caid, 16) <= int('0x4ae1', 16):
-			color = Hex2strColor(self.cryptocolors[0])
-		else:
-			color = Hex2strColor(self.cryptocolors[1])
-			try:
-				for caid in available_caids:
-					if int('0x4ae0', 16) <= caid <= int('0x4ae1', 16):
-						color = Hex2strColor(self.cryptocolors[2])
-			except:
-				pass
-		res = color + 'DC'
-		res += Hex2strColor(self.cryptocolors[3])
-		return res
+		return color + letter + Hex2strColor(self.cryptocolors[3])
 
 	def createCryptoSpecial(self, info):
 		refstr = info.getInfoString(iServiceInformation.sServiceref)
@@ -838,82 +686,14 @@ class PliExtraInfo(Poll, Converter, object):
 				else:
 					return ""
 
-			if textType == "CryptoSeca":
+			# Replaces twelve near-identical "if textType == 'CryptoXxx':" blocks
+			# (Seca/Via/Irdeto/NDS/Conax/CryptoW/PowerVU/Tandberg/Beta/Nagra/Biss/Dre)
+			if textType in self.CRYPTO_LETTER_RANGES:
 				if int(config.usage.show_cryptoinfo.value) > 0:
 					self.getCryptoInfo(info)
-					return self.createCryptoSeca(info)
-				else:
-					return ""
-
-			if textType == "CryptoVia":
-				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
-					return self.createCryptoVia(info)
-				else:
-					return ""
-
-			if textType == "CryptoIrdeto":
-				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
-					return self.createCryptoIrdeto(info)
-				else:
-					return ""
-
-			if textType == "CryptoNDS":
-				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
-					return self.createCryptoNDS(info)
-				else:
-					return ""
-
-			if textType == "CryptoConax":
-				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
-					return self.createCryptoConax(info)
-				else:
-					return ""
-
-			if textType == "CryptoCryptoW":
-				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
-					return self.createCryptoCryptoW(info)
-				else:
-					return ""
-
-			if textType == "CryptoBeta":
-				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
-					return self.createCryptoBeta(info)
-				else:
-					return ""
-
-			if textType == "CryptoNagra":
-				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
-					return self.createCryptoNagra(info)
-				else:
-					return ""
-
-			if textType == "CryptoBiss":
-				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
-					return self.createCryptoBiss(info)
-				else:
-					return ""
-
-			if textType == "CryptoDre":
-				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
-					return self.createCryptoDre(info)
-				else:
-					return ""
-
-			if textType == "CryptoTandberg":
-				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
-					return self.createCryptoTandberg(info)
-				else:
-					return ""
+					lo, hi, letter = self.CRYPTO_LETTER_RANGES[textType]
+					return self.createCryptoLetter(info, lo, hi, letter)
+				return ""
 
 			if textType == "CryptoSpecial":
 				if int(config.usage.show_cryptoinfo.value) > 0:
