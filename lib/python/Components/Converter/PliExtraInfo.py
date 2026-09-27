@@ -6,9 +6,8 @@ from Components.Element import cached
 from Components.config import config
 from Tools.Transponder import ConvertToHumanReadable
 from Tools.GetEcmInfo import GetEcmInfo
-from Tools.Hex2strColor import Hex2strColor
+from Tools.Hex2strColor import ColorizeText
 from Components.Converter.Poll import Poll
-from skin import parameters
 from Tools.Directories import pathExists
 from Components.SystemInfo import SystemInfo
 
@@ -132,12 +131,12 @@ def createCurrentCaidLabel(info, currentCaid=None, currentDevice=None):
 
 class PliExtraInfo(Poll, Converter, object):
 
-	# (lo, hi, letter) — a single generic method + this table replaces what used
+	# (lo, hi, letter) - a single generic method + this table replaces what used
 	# to be twelve near-identical createCryptoXxx methods (Seca/Via/Irdeto/NDS/
 	# Conax/CryptoW/PowerVU/Tandberg/Beta/Nagra/Biss/Dre). Note these ranges/
 	# letters do NOT all match caid_data above (e.g. Tandberg is 0x1010-0x1010
 	# here vs 0x1000-0x10FF in caid_data, and the letter is 'T' vs 'TB'; Biss is
-	# 0x2600-0x26ff here vs just 0x2600-0x2600 in caid_data) — that mismatch
+	# 0x2600-0x26ff here vs just 0x2600-0x2600 in caid_data) - that mismatch
 	# existed in the original code too, kept as-is rather than silently "fixed".
 	CRYPTO_LETTER_RANGES = {
 		"CryptoSeca":     (0x100,  0x1ff,  'S'),
@@ -286,7 +285,8 @@ class PliExtraInfo(Poll, Converter, object):
 		self.ecmdata = GetEcmInfo()
 		self.feraw = self.fedata = self.updateFEdata = None
 		self.recursionCheck = set()
-		self.cryptocolors = parameters.get("PliExtraInfoCryptoColors", (0x004C7D3F, 0x009F9F9F, 0x00EEEE00, 0x00FFFFFF))
+		self.crypto_bar_colors = ColorizeText(None, "PliExtraInfoColors", [0x0000FF00, 0x00FFFF00, 0x007F7F7F, 0x00FFFFFF])
+		self.crypto_letter_colors = ColorizeText(None, "PliExtraInfoCryptoColors", [0x004C7D3F, 0x009F9F9F, 0x00EEEE00, 0x00FFFFFF])
 
 	def getCryptoInfo(self, info):
 		if info.getInfo(iServiceInformation.sIsCrypted) == 1:
@@ -309,44 +309,42 @@ class PliExtraInfo(Poll, Converter, object):
 	def createCryptoBar(self, info):
 		res = ""
 		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		colors = parameters.get("PliExtraInfoColors", (0x0000FF00, 0x00FFFF00, 0x007F7F7F, 0x00FFFFFF))  # "found", "not found", "available", "default" colors
 
 		for caid_entry in caid_data:
 			if caid_entry[0] <= self.current_caid <= caid_entry[1]:
-				color = Hex2strColor(colors[0])  # green
+				idx = 0  # found (green)
 			else:
-				color = Hex2strColor(colors[2])  # grey
+				idx = 2  # available (grey), may upgrade to "not found" below
 				try:
 					for caid in available_caids:
 						if caid_entry[0] <= caid <= caid_entry[1]:
-							color = Hex2strColor(colors[1])  # yellow
+							idx = 1  # not found (yellow)
 				except:
 					pass
 
-			if color != Hex2strColor(colors[2]) or caid_entry[5]:
+			if idx != 2 or caid_entry[5]:
 				if res:
 					res += " "
-				res += color + caid_entry[3]
+				res += self.crypto_bar_colors.addColor(caid_entry[3], idx)
 
-		res += Hex2strColor(colors[3])  # white (this acts like a color "reset" for following strings
 		return res
 
 	def createCryptoLetter(self, info, lo, hi, letter):
 		"""Generic replacement for the old createCryptoSeca/Via/Irdeto/NDS/Conax/
 		CryptoW/PowerVU/Tandberg/Beta/Nagra/Biss/Dre methods, which differed only
-		in (lo, hi, letter) — see CRYPTO_LETTER_RANGES above."""
+		in (lo, hi, letter) - see CRYPTO_LETTER_RANGES above."""
 		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
 		if lo <= self.current_caid <= hi:
-			color = Hex2strColor(self.cryptocolors[0])
+			idx = 0  # current match
 		else:
-			color = Hex2strColor(self.cryptocolors[1])
+			idx = 1  # not present at all
 			try:
 				for caid in available_caids:
 					if lo <= caid <= hi:
-						color = Hex2strColor(self.cryptocolors[2])
+						idx = 2  # present among available, just not current
 			except Exception:
 				pass
-		return color + letter + Hex2strColor(self.cryptocolors[3])
+		return self.crypto_letter_colors.addColor(letter, idx)
 
 	def createCryptoSpecial(self, info):
 		refstr = info.getInfoString(iServiceInformation.sServiceref)
