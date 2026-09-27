@@ -78,6 +78,18 @@ typedef enum
 namespace
 {
 
+bool isDTSStartupSkipbackContainer(const std::string &path)
+{
+	size_t end = path.find_first_of("?#");
+	if (end == std::string::npos)
+		end = path.size();
+	size_t dot = path.rfind('.', end);
+	if (dot == std::string::npos || dot + 1 >= end)
+		return false;
+	const std::string ext = path.substr(dot, end - dot);
+	return !strcasecmp(ext.c_str(), ".mkv") || !strcasecmp(ext.c_str(), ".mp4");
+}
+
 struct EAC3AtmosBitReader
 {
 	const guint8 *data;
@@ -598,6 +610,108 @@ guint detectDTSXLLChannels(const guint8 *data, gsize size)
 	return 0;
 }
 
+/*
+ * DTS-HD HRA carries the total channel count in the EXSS audio asset
+ * descriptor. GStreamer may expose only the embedded DTS core count, so
+ * read the descriptor directly from the compressed EXSS header.
+ *
+ * This follows the relevant fields in FFmpeg's dca_exss parser. Keep this
+ * separate from detectDTSXLLChannels(): XLL/MA and HRA use different metadata.
+ */
+guint detectDTSExssChannels(const guint8 *data, gsize size)
+{
+	if (!data || size < 16)
+		return 0;
+
+	for (gsize n = 0; n + 7 < size; ++n)
+	{
+		const guint32 word = (guint32(data[n]) << 24) | (guint32(data[n + 1]) << 16) |
+			(guint32(data[n + 2]) << 8) | guint32(data[n + 3]);
+		if (word != 0x64582025)
+			continue;
+
+		EAC3AtmosBitReader br(data + n, size - n, false);
+		if (br.read(32) != 0x64582025)
+			continue;
+
+		br.skip(8); /* user defined bits */
+		const guint exss_index = br.read(2);
+		const guint wide_header = br.read(1);
+		const guint header_size = br.read(8 + 4 * wide_header) + 1;
+		const guint exss_size_nbits = 16 + 4 * wide_header;
+		const guint exss_size = br.read(exss_size_nbits) + 1;
+		if (!br.ok || exss_index > 3 || header_size > size - n ||
+			exss_size > size - n || exss_size < header_size)
+			continue;
+
+		const bool static_fields_present = br.read(1) != 0;
+		if (!br.ok)
+			continue;
+
+		guint nassets = 1;
+		if (static_fields_present)
+		{
+			br.skip(2); /* reference clock code */
+			br.skip(3); /* frame duration */
+			if (br.read(1))
+				br.skip(36); /* timecode */
+
+			const guint npresents = br.read(3) + 1;
+			nassets = br.read(3) + 1;
+			if (!br.ok || npresents != 1 || nassets != 1)
+				continue;
+
+			const guint active_mask = br.read(exss_index + 1);
+			if (!br.ok)
+				continue;
+			br.skip(__builtin_popcount(active_mask) * 8); /* active asset mask */
+
+			if (br.read(1))
+			{
+				br.skip(2); /* mixing metadata adjustment level */
+				const guint spkr_mask_nbits = (br.read(2) + 1) << 2;
+				const guint nmixoutconfigs = br.read(2) + 1;
+				br.skip(nmixoutconfigs * spkr_mask_nbits);
+			}
+			if (!br.ok)
+				continue;
+		}
+
+		const guint asset_size = br.read(exss_size_nbits) + 1;
+		if (!br.ok || header_size + asset_size > exss_size)
+			continue;
+
+		const gsize descriptor_pos = br.bitpos;
+		const guint descriptor_size = br.read(9) + 1;
+		br.skip(3); /* asset identifier */
+		if (!br.ok || descriptor_size * 8 > exss_size * 8 - descriptor_pos)
+			continue;
+
+		if (!static_fields_present)
+			continue;
+
+		if (br.read(1))
+			br.skip(4); /* asset type descriptor */
+		if (br.read(1))
+			br.skip(24); /* language descriptor */
+		if (br.read(1))
+		{
+			const guint text_size = br.read(10) + 1;
+			br.skip(text_size * 8);
+		}
+
+		br.skip(5); /* PCM bit resolution */
+		br.skip(4); /* maximum sample rate */
+		const guint channels = br.read(8) + 1;
+		if (!br.ok || channels < 1 || channels > 16)
+			continue;
+
+		return channels;
+	}
+
+	return 0;
+}
+
 const char *detectDTSProfile(const guint8 *data, gsize size)
 {
 	bool exss = false;
@@ -676,19 +790,23 @@ GstPadProbeReturn dtsHDProbe(GstPad *pad, GstPadProbeInfo *info, gpointer user_d
 			probe->codec = detected_codec;
 		if (!probe->codec.empty() && !strncmp(probe->codec.c_str(), "DTS-HD MA", 9))
 			channels = detectDTSXLLChannels(map.data, map.size);
+		else if (!probe->codec.empty() && !strcmp(probe->codec.c_str(), "DTS-HD HRA"))
+			channels = detectDTSExssChannels(map.data, map.size);
 		gst_buffer_unmap(buffer, &map);
 	}
 
-	/* For XLL, wait briefly for a buffer with a complete parsable header.
-	 * Other DTS-HD profiles can be reported immediately. */
-	const bool xll_profile = !probe->codec.empty() && !strncmp(probe->codec.c_str(), "DTS-HD MA", 9);
-	if (!probe->codec.empty() && (!xll_profile || channels || probe->buffers >= 64))
+	/* For DTS-HD MA and HRA, wait briefly for a buffer with a complete
+	 * parsable channel-count header. Other DTS profiles can be reported
+	 * immediately. */
+	const bool dtshd_profile = !probe->codec.empty() &&
+		(!strncmp(probe->codec.c_str(), "DTS-HD MA", 9) || !strcmp(probe->codec.c_str(), "DTS-HD HRA"));
+	if (!probe->codec.empty() && (!dtshd_profile || channels || probe->buffers >= 64))
 	{
 		const char *codec = probe->codec.c_str();
 		if (channels)
 			eDebug("[eServiceMP3] DTS profile detected on audio stream %d: %s channels=%u", probe->stream, codec, channels);
 		else
-			eDebug("[eServiceMP3] DTS profile detected on audio stream %d: %s (XLL channel count unavailable)", probe->stream, codec);
+			eDebug("[eServiceMP3] DTS profile detected on audio stream %d: %s (channel count unavailable)", probe->stream, codec);
 
 		GstObject *parent = gst_pad_get_parent(pad);
 		if (parent && GST_IS_ELEMENT(parent))
@@ -2066,6 +2184,35 @@ int eServiceMP3PendingStopWorkers();
 
 void eServiceMP3::forceAudioReset()
 {
+	/* A fresh DTS -> AC3 auxiliary handoff can leave the main playbin
+	 * several seconds ahead by the time the 300ms startup reset fires.
+	 * Mark that one startup reset and perform a 10-second skip-back after
+	 * the normal buffer flush. This is deliberately a DTS-transcoding-only
+	 * test and does not alter normal AC3/E-AC3 playback or later track
+	 * switches. */
+	if (m_pending_start_position == -2 && m_currentAudioStream >= 0 &&
+		m_currentAudioStream < (int)m_audioStreams.size() &&
+		m_audioStreams[m_currentAudioStream].codec.compare(0, 3, "DTS") == 0 &&
+		isDTSStartupSkipbackContainer(m_ref.path))
+	{
+		m_pending_start_position = -1;
+		if (!m_is_live)
+		{
+			m_clear_buffers = true;
+			clearBuffers();
+			pts_t pos = 0;
+			if (getRawPlayPosition(pos) >= 0)
+			{
+				const pts_t skip_back = 900000; /* 10 seconds at 90 kHz */
+				pts_t target = pos > skip_back ? pos - skip_back : 0;
+				eDebug("[eServiceMP3] forceAudioReset: DTS startup skip-back %lld -> %lld",
+					(long long)pos, (long long)target);
+				seekTo(target);
+			}
+		}
+		return;
+	}
+
 	/* start() reuses this existing main-loop timer while a previous
 	 * GStreamer pipeline is still releasing the shared hardware sinks.
 	 * Polling here keeps Enigma2 responsive and adds no fixed handover
@@ -4272,6 +4419,19 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 
 		gint64 position_ns = -1;
 		gst_element_query_position(m_gst_playbin, GST_FORMAT_TIME, &position_ns);
+		/* VOB DTS startup: GStreamer reports the demuxer pre-roll PTS here.
+		 * Treat the initial position as zero so the HD-audio auxiliary AC3
+		 * pipeline takes its startup path instead of seeking to the pre-roll. */
+		if (!m_initial_start && m_audioStreams[i].codec.compare(0, 3, "DTS") == 0)
+		{
+			size_t end = m_ref.path.find_first_of("?#");
+			if (end == std::string::npos)
+				end = m_ref.path.size();
+			size_t dot = m_ref.path.rfind('.', end);
+			if (dot != std::string::npos && dot + 1 < end &&
+				!strcasecmp(m_ref.path.substr(dot, end - dot).c_str(), ".vob"))
+				position_ns = 0;
+		}
 		guint restore_flags = 0;
 		GstElement *main_audio_sink = NULL;
 		if (active_aux)
@@ -4332,6 +4492,13 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 					else if (!resume_main)
 					{
 						setHDAudioAuxState(m_gst_playbin, GST_STATE_PAUSED);
+						if (!active_aux && !m_initial_start &&
+							m_pending_start_position < 0 &&
+							m_audioStreams[i].codec.compare(0, 3, "DTS") == 0 &&
+							isDTSStartupSkipbackContainer(m_ref.path))
+						{
+							m_pending_start_position = -2;
+						}
 						/* Cold start: the main pipeline was not yet PLAYING (or
 						 * pending PLAYING) when this aux setup ran, so the
 						 * resume_main branch below - the only other place this
@@ -4356,6 +4523,13 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 					if (resume_main)
 					{
 						gst_element_set_state(m_gst_playbin, GST_STATE_PLAYING);
+						if (!active_aux && !m_initial_start &&
+							m_pending_start_position < 0 &&
+							m_audioStreams[i].codec.compare(0, 3, "DTS") == 0 &&
+							isDTSStartupSkipbackContainer(m_ref.path))
+						{
+							m_pending_start_position = -2;
+						}
 						if (position_ns < 500 * GST_MSECOND || native_eac3_to_aux)
 						{
 							m_passthrough_fix_timer->stop();
@@ -5300,7 +5474,7 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 					std::string &new_codec = audioStreams_temp[ai].codec;
 					if (old_codec == "Dolby Atmos" && new_codec == "Dolby Digital +")
 						new_codec = old_codec;
-					else if ((old_codec.find("DTS-HD") == 0 || old_codec.find("DTS:X") == 0) &&
+					else if (old_codec.find("DTS") == 0 && old_codec != "DTS" &&
 						(new_codec == "DTS" || new_codec == "DTS-HD"))
 					{
 						new_codec = old_codec;
