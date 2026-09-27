@@ -438,8 +438,8 @@ class PliExtraInfo(Poll, Converter, object):
 		self.type = self.type[0]
 		self.feraw = self.fedata = self.updateFEdata = None
 		self.recursionCheck = set()
-		self.crypto_bar_colors = ColorizeText(None, "PliExtraInfoColors", [0x0000FF00, 0x00FFFF00, 0x007F7F7F, 0x00FFFFFF])
-		self.crypto_letter_colors = ColorizeText(None, "PliExtraInfoCryptoColors", [0x004C7D3F, 0x009F9F9F, 0x00EEEE00, 0x00FFFFFF])
+		self.crypto_bar_colors = ColorizeText("PliExtraInfoColors", [0x0000FF00, 0x00FFFF00, 0x007F7F7F, 0x00FFFFFF])
+		self.crypto_letter_colors = ColorizeText("PliExtraInfoCryptoColors", [0x004C7D3F, 0x009F9F9F, 0x00EEEE00, 0x00FFFFFF])
 
 	def refreshCryptoInfo(self, info):
 		if info.getInfo(iServiceInformation.sIsCrypted) == 1:
