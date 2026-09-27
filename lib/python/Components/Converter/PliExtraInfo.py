@@ -630,7 +630,7 @@ class PliExtraInfo(Poll, Converter, object):
 		freq = feraw.get("frequency")
 		if freq and freq < 10700000:  # C-band
 			orbpos += 1 if orbpos > 1800 else -1
-		return SAT_NAMES.get(orbpos, self.formatOrbPos(orbpos))
+		return self.SAT_NAMES[orbpos] if orbpos in self.SAT_NAMES else self.formatOrbPos(orbpos)
 
 	def createProviderName(self, info):
 		return info.getInfoString(iServiceInformation.sProvider)
