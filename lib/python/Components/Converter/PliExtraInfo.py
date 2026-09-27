@@ -1,6 +1,7 @@
 # shamelessly copied from pliExpertInfo (Vali, Mirakels, Littlesat)
 
 from enigma import eAVSwitch, iServiceInformation, iPlayableService, eDVBCI_UI
+from time import monotonic
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.config import config
@@ -13,6 +14,26 @@ from Components.SystemInfo import SystemInfo
 
 dvbCIUI = eDVBCI_UI.getInstance()
 ecmdata = GetEcmInfo()
+
+# ecmdata's own state (old_ecm_time/info/ecm/data in Tools.GetEcmInfo) is
+# already module-level globals shared by every GetEcmInfo() object, so this
+# cache is shared by every PliExtraInfo instance and both refreshCryptoInfo
+# and getBool, not just calls within one instance. GetEcmInfo.pollEcmData()
+# already avoids the expensive file-read-and-parse work unless the file's
+# mtime actually changed - this just avoids the stat() call itself when
+# something already checked within the last second.
+_CRYPTO_CACHE_INTERVAL = 1.0
+_cryptoCacheTime = 0.0
+_cryptoCacheData = None
+
+
+def getCachedEcmData():
+	global _cryptoCacheTime, _cryptoCacheData
+	now = monotonic()
+	if _cryptoCacheData is None or now - _cryptoCacheTime >= _CRYPTO_CACHE_INTERVAL:
+		_cryptoCacheData = ecmdata.getEcmData()
+		_cryptoCacheTime = now
+	return _cryptoCacheData
 
 caid_data = tuple(
 	(int(lo, 16), int(hi, 16), name, letter, altname, flag)
@@ -80,7 +101,7 @@ def addspace(text):
 
 def getCryptoInfo(info):
 	if info and info.getInfo(iServiceInformation.sIsCrypted) == 1 or pathExists("/tmp/ecm.info"):
-		data = ecmdata.getEcmData()
+		data = getCachedEcmData()
 		current_source = data[0]
 		current_caid = int(data[1], 16)
 		current_provid = data[2]
@@ -414,7 +435,6 @@ class PliExtraInfo(Poll, Converter, object):
 		if self.type[0] == "User":
 			self.info_fields[self.type[0]] = tuple(self.type[1:])
 		self.type = self.type[0]
-		self.ecmdata = GetEcmInfo()
 		self.feraw = self.fedata = self.updateFEdata = None
 		self.recursionCheck = set()
 		self.crypto_bar_colors = ColorizeText(None, "PliExtraInfoColors", [0x0000FF00, 0x00FFFF00, 0x007F7F7F, 0x00FFFFFF])
@@ -422,7 +442,7 @@ class PliExtraInfo(Poll, Converter, object):
 
 	def refreshCryptoInfo(self, info):
 		if info.getInfo(iServiceInformation.sIsCrypted) == 1:
-			data = self.ecmdata.getEcmData()
+			data = getCachedEcmData()
 			self.current_source = data[0]
 			self.current_caid = int(data[1], 16)
 			self.current_provid = data[2]
@@ -798,7 +818,7 @@ class PliExtraInfo(Poll, Converter, object):
 			if info.getInfo(iServiceInformation.sIsCrypted) != 1:
 				return False
 
-			data = self.ecmdata.getEcmData()
+			data = getCachedEcmData()
 
 			if data is None:
 				return False
