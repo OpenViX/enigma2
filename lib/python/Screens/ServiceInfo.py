@@ -429,7 +429,7 @@ class ServiceInfo(Screen):
 				extra_info = ""
 				provid = ""
 				for caid_entry in caid_data:
-					if int(caid_entry[0], 16) <= caid[0] <= int(caid_entry[1], 16):
+					if caid_entry[0] <= caid[0] <= caid_entry[1]:
 						CaIdDescription = caid_entry[2]
 						break
 				if caid[2]:

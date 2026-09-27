@@ -15,22 +15,25 @@ from Components.SystemInfo import SystemInfo
 dvbCIUI = eDVBCI_UI.getInstance()
 ecmdata = GetEcmInfo()
 
-caid_data = (
-	("0x100", "0x1ff", "Seca", "S", "SECA", True),
-	("0x500", "0x5ff", "Via", "V", "VIA", True),
-	("0x600", "0x6ff", "Irdeto", "I", "IRD", True),
-	("0x900", "0x9ff", "NDS", "Nd", "NDS", True),
-	("0xb00", "0xbff", "Conax", "Co", "CONAX", True),
-	("0xd00", "0xdff", "CryptoW", "Cw", "CRW", True),
-	("0xe00", "0xeff", "PowerVU", "P", "PV", False),
-	("0x1000", "0x10FF", "Tandberg", "TB", "TAND", False),
-	("0x1700", "0x17ff", "Beta", "B", "BETA", True),
-	("0x1800", "0x18ff", "Nagra", "N", "NAGRA", True),
-	("0x2600", "0x2600", "Biss", "Bi", "BiSS", False),
-	("0x2700", "0x2710", "Dre3", "D3", "DRE3", False),
-	("0x4ae0", "0x4ae1", "Dre", "D", "DRE", False),
-	("0x4aee", "0x4aee", "BulCrypt", "B1", "BUL", False),
-	("0x5581", "0x5581", "BulCrypt", "B2", "BUL", False)
+caid_data = tuple(
+	(int(lo, 16), int(hi, 16), name, letter, altname, flag)
+	for lo, hi, name, letter, altname, flag in (
+		("0x100", "0x1ff", "Seca", "S", "SECA", True),
+		("0x500", "0x5ff", "Via", "V", "VIA", True),
+		("0x600", "0x6ff", "Irdeto", "I", "IRD", True),
+		("0x900", "0x9ff", "NDS", "Nd", "NDS", True),
+		("0xb00", "0xbff", "Conax", "Co", "CONAX", True),
+		("0xd00", "0xdff", "CryptoW", "Cw", "CRW", True),
+		("0xe00", "0xeff", "PowerVU", "P", "PV", False),
+		("0x1000", "0x10FF", "Tandberg", "TB", "TAND", False),
+		("0x1700", "0x17ff", "Beta", "B", "BETA", True),
+		("0x1800", "0x18ff", "Nagra", "N", "NAGRA", True),
+		("0x2600", "0x2600", "Biss", "Bi", "BiSS", False),
+		("0x2700", "0x2710", "Dre3", "D3", "DRE3", False),
+		("0x4ae0", "0x4ae1", "Dre", "D", "DRE", False),
+		("0x4aee", "0x4aee", "BulCrypt", "B1", "BUL", False),
+		("0x5581", "0x5581", "BulCrypt", "B2", "BUL", False)
+	)
 )
 
 # stream type to codec map
@@ -80,21 +83,21 @@ def getCryptoInfo(info):
 	if info and info.getInfo(iServiceInformation.sIsCrypted) == 1 or pathExists("/tmp/ecm.info"):
 		data = ecmdata.getEcmData()
 		current_source = data[0]
-		current_caid = data[1]
+		current_caid = int(data[1], 16)
 		current_provid = data[2]
 		current_ecmpid = data[3]
 		current_device = data[4]
 	else:
 		current_source = ""
 		current_device = ""
-		current_caid = "0"
+		current_caid = 0
 		current_provid = "0"
 		current_ecmpid = "0"
 	return current_source, current_caid, current_provid, current_ecmpid, current_device
 
 
 def createCurrentCaidLabel(info, currentCaid=None, currentDevice=None):
-	if currentCaid:
+	if currentCaid is not None:
 		current_caid = currentCaid
 		current_device = currentDevice
 	else:
@@ -119,7 +122,7 @@ def createCurrentCaidLabel(info, currentCaid=None, currentDevice=None):
 		return "CI%d" % (decodingCiSlot)
 
 	for caid_entry in caid_data:
-		if int(caid_entry[0], 16) <= int(current_caid, 16) <= int(caid_entry[1], 16):
+		if caid_entry[0] <= current_caid <= caid_entry[1]:
 			res = caid_entry[4]
 	if decodingCiSlot > -1:
 		return "CI%d + %s" % (decodingCiSlot, res)
@@ -129,12 +132,12 @@ def createCurrentCaidLabel(info, currentCaid=None, currentDevice=None):
 
 class PliExtraInfo(Poll, Converter, object):
 
-	# (lo, hi, letter) - this table + a single generic method replaces what used
+	# (lo, hi, letter) — a single generic method + this table replaces what used
 	# to be twelve near-identical createCryptoXxx methods (Seca/Via/Irdeto/NDS/
 	# Conax/CryptoW/PowerVU/Tandberg/Beta/Nagra/Biss/Dre). Note these ranges/
 	# letters do NOT all match caid_data above (e.g. Tandberg is 0x1010-0x1010
 	# here vs 0x1000-0x10FF in caid_data, and the letter is 'T' vs 'TB'; Biss is
-	# 0x2600-0x26ff here vs just 0x2600-0x2600 in caid_data) - that mismatch
+	# 0x2600-0x26ff here vs just 0x2600-0x2600 in caid_data) — that mismatch
 	# existed in the original code too, kept as-is rather than silently "fixed".
 	CRYPTO_LETTER_RANGES = {
 		"CryptoSeca":     (0x100,  0x1ff,  'S'),
@@ -289,14 +292,14 @@ class PliExtraInfo(Poll, Converter, object):
 		if info.getInfo(iServiceInformation.sIsCrypted) == 1:
 			data = self.ecmdata.getEcmData()
 			self.current_source = data[0]
-			self.current_caid = data[1]
+			self.current_caid = int(data[1], 16)
 			self.current_provid = data[2]
 			self.current_ecmpid = data[3]
 			self.current_device = data[4]
 		else:
 			self.current_source = ""
 			self.current_device = ""
-			self.current_caid = "0"
+			self.current_caid = 0
 			self.current_provid = "0"
 			self.current_ecmpid = "0"
 
@@ -309,13 +312,13 @@ class PliExtraInfo(Poll, Converter, object):
 		colors = parameters.get("PliExtraInfoColors", (0x0000FF00, 0x00FFFF00, 0x007F7F7F, 0x00FFFFFF))  # "found", "not found", "available", "default" colors
 
 		for caid_entry in caid_data:
-			if int(caid_entry[0], 16) <= int(self.current_caid, 16) <= int(caid_entry[1], 16):
+			if caid_entry[0] <= self.current_caid <= caid_entry[1]:
 				color = Hex2strColor(colors[0])  # green
 			else:
 				color = Hex2strColor(colors[2])  # grey
 				try:
 					for caid in available_caids:
-						if int(caid_entry[0], 16) <= caid <= int(caid_entry[1], 16):
+						if caid_entry[0] <= caid <= caid_entry[1]:
 							color = Hex2strColor(colors[1])  # yellow
 				except:
 					pass
@@ -331,10 +334,9 @@ class PliExtraInfo(Poll, Converter, object):
 	def createCryptoLetter(self, info, lo, hi, letter):
 		"""Generic replacement for the old createCryptoSeca/Via/Irdeto/NDS/Conax/
 		CryptoW/PowerVU/Tandberg/Beta/Nagra/Biss/Dre methods, which differed only
-		in (lo, hi, letter) - see CRYPTO_LETTER_RANGES above."""
+		in (lo, hi, letter) — see CRYPTO_LETTER_RANGES above."""
 		available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
-		current = int(self.current_caid, 16)
-		if lo <= current <= hi:
+		if lo <= self.current_caid <= hi:
 			color = Hex2strColor(self.cryptocolors[0])
 		else:
 			color = Hex2strColor(self.cryptocolors[1])
@@ -351,14 +353,14 @@ class PliExtraInfo(Poll, Converter, object):
 		caid_name = "Free to Air"
 		if "%3a//" in refstr.lower() and "127.0.0.1" not in refstr and "0.0.0.0" not in refstr and "localhost" not in refstr or "@" in refstr:
 			return "IPTV" + ":%06X:%04X" % (int(self.current_provid, 16), info.getInfo(iServiceInformation.sSID))
-		elif int(self.current_caid, 16) == 0:
+		elif self.current_caid == 0:
 			return caid_name + ":%06X:%04X" % (int(self.current_provid, 16), info.getInfo(iServiceInformation.sSID))
 		try:
 			for caid_entry in caid_data:
-				if int(caid_entry[0], 16) <= int(self.current_caid, 16) <= int(caid_entry[1], 16):
+				if caid_entry[0] <= self.current_caid <= caid_entry[1]:
 					caid_name = caid_entry[2]
 					break
-			return caid_name + ":%04X:%06X:%04X" % (int(self.current_caid, 16), int(self.current_provid, 16), info.getInfo(iServiceInformation.sSID))
+			return caid_name + ":%04X:%06X:%04X" % (self.current_caid, int(self.current_provid, 16), info.getInfo(iServiceInformation.sSID))
 		except:
 			pass
 		return ""
@@ -811,19 +813,19 @@ class PliExtraInfo(Poll, Converter, object):
 			if data is None:
 				return False
 
-			current_caid = data[1]
+			current_caid = int(data[1], 16)
 
 			available_caids = info.getInfoObject(iServiceInformation.sCAIDs)
 
 			for caid_entry in caid_data:
 				if caid_entry[3] == request_caid:
 					if request_selected:
-						if int(caid_entry[0], 16) <= int(current_caid, 16) <= int(caid_entry[1], 16):
+						if caid_entry[0] <= current_caid <= caid_entry[1]:
 							return True
 					else:  # request available
 						try:
 							for caid in available_caids:
-								if int(caid_entry[0], 16) <= caid <= int(caid_entry[1], 16):
+								if caid_entry[0] <= caid <= caid_entry[1]:
 									return True
 						except:
 							pass
