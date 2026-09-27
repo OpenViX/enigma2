@@ -288,7 +288,7 @@ class PliExtraInfo(Poll, Converter, object):
 		self.crypto_bar_colors = ColorizeText(None, "PliExtraInfoColors", [0x0000FF00, 0x00FFFF00, 0x007F7F7F, 0x00FFFFFF])
 		self.crypto_letter_colors = ColorizeText(None, "PliExtraInfoCryptoColors", [0x004C7D3F, 0x009F9F9F, 0x00EEEE00, 0x00FFFFFF])
 
-	def getCryptoInfo(self, info):
+	def refreshCryptoInfo(self, info):
 		if info.getInfo(iServiceInformation.sIsCrypted) == 1:
 			data = self.ecmdata.getEcmData()
 			self.current_source = data[0]
@@ -431,7 +431,7 @@ class PliExtraInfo(Poll, Converter, object):
 		for field in fields:
 			val = None
 			if field == "CryptoCurrentSource":
-				self.getCryptoInfo(info)
+				self.refreshCryptoInfo(info)
 				vals.append(self.current_source)
 			elif field == "StreamURLInfo":
 				val = self.createStreamURLInfo(info)
@@ -674,14 +674,14 @@ class PliExtraInfo(Poll, Converter, object):
 
 			if textType == "CurrentCrypto":
 				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
+					self.refreshCryptoInfo(info)
 					return self.createCurrentCaidLabel()
 				else:
 					return ""
 
 			if textType == "CryptoBar":
 				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
+					self.refreshCryptoInfo(info)
 					return self.createCryptoBar(info)
 				else:
 					return ""
@@ -690,21 +690,21 @@ class PliExtraInfo(Poll, Converter, object):
 			# (Seca/Via/Irdeto/NDS/Conax/CryptoW/PowerVU/Tandberg/Beta/Nagra/Biss/Dre)
 			if textType in self.CRYPTO_LETTER_RANGES:
 				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
+					self.refreshCryptoInfo(info)
 					lo, hi, letter = self.CRYPTO_LETTER_RANGES[textType]
 					return self.createCryptoLetter(info, lo, hi, letter)
 				return ""
 
 			if textType == "CryptoSpecial":
 				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
+					self.refreshCryptoInfo(info)
 					return self.createCryptoSpecial(info)
 				else:
 					return ""
 
 			if textType == "CryptoNameCaid":
 				if int(config.usage.show_cryptoinfo.value) > 0:
-					self.getCryptoInfo(info)
+					self.refreshCryptoInfo(info)
 					return self.createCryptoNameCaid(info)
 				else:
 					return ""
