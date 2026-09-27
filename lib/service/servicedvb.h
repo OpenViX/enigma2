@@ -228,6 +228,11 @@ protected:
 	int m_have_video_pid;
 	int m_tune_state;
 	bool m_noaudio;
+	/* True once evFirstFrame has been fired for this playback session -
+	 * see its firing sites in video_event()/updateDecoder() for why this
+	 * needs its own one-shot flag (not reset on a later PID change, unlike
+	 * m_hdr_firstframe_restarted). */
+	bool m_first_frame_fired;
 
 		/* in timeshift mode, we essentially have two channels, and thus pmt handlers. */
 	eDVBServicePMTHandler m_service_handler_timeshift;
