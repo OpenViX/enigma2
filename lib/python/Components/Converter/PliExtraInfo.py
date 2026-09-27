@@ -162,66 +162,66 @@ class PliExtraInfo(Poll, Converter, object):
 	# agree with caid_data/CA_TABLE (Tandberg's caid_data letter was 'TB' until
 	# it was corrected to 'T' to match here and in CA_TABLE).
 	CRYPTO_LETTER_RANGES = {
-		"CryptoSeca":     (0x100,  0x1ff,  'S'),
-		"CryptoVia":      (0x500,  0x5ff,  'V'),
-		"CryptoIrdeto":   (0x600,  0x6ff,  'I'),
-		"CryptoNDS":      (0x900,  0x9ff,  'NDS'),
-		"CryptoConax":    (0xb00,  0xbff,  'CO'),
-		"CryptoCryptoW":  (0xd00,  0xdff,  'CW'),
-		"CryptoPowerVU":  (0xe00,  0xeff,  'P'),
+		"CryptoSeca": (0x100, 0x1ff, 'S'),
+		"CryptoVia": (0x500, 0x5ff, 'V'),
+		"CryptoIrdeto": (0x600, 0x6ff, 'I'),
+		"CryptoNDS": (0x900, 0x9ff, 'NDS'),
+		"CryptoConax": (0xb00, 0xbff, 'CO'),
+		"CryptoCryptoW": (0xd00, 0xdff, 'CW'),
+		"CryptoPowerVU": (0xe00, 0xeff, 'P'),
 		"CryptoTandberg": (0x1010, 0x1010, 'T'),
-		"CryptoBeta":     (0x1700, 0x17ff, 'B'),
-		"CryptoNagra":    (0x1800, 0x18ff, 'N'),
-		"CryptoBiss":     (0x2600, 0x26ff, 'BI'),
-		"CryptoDre":      (0x4ae0, 0x4ae1, 'DC'),
+		"CryptoBeta": (0x1700, 0x17ff, 'B'),
+		"CryptoNagra": (0x1800, 0x18ff, 'N'),
+		"CryptoBiss": (0x2600, 0x26ff, 'BI'),
+		"CryptoDre": (0x4ae0, 0x4ae1, 'DC'),
 	}
 
 	# (letter, selected) keyed by converter arg
 	CA_TABLE = {
-		"CryptoCaidSecaAvailable":     ("S",  False),
-		"CryptoCaidViaAvailable":      ("V",  False),
-		"CryptoCaidIrdetoAvailable":   ("I",  False),
-		"CryptoCaidNDSAvailable":      ("Nd", False),
-		"CryptoCaidConaxAvailable":    ("Co", False),
-		"CryptoCaidCryptoWAvailable":  ("Cw", False),
-		"CryptoCaidPowerVUAvailable":  ("P",  False),
-		"CryptoCaidBetaAvailable":     ("B",  False),
-		"CryptoCaidNagraAvailable":    ("N",  False),
-		"CryptoCaidBissAvailable":     ("Bi", False),
-		"CryptoCaidDre3Available":     ("D3", False),
-		"CryptoCaidDreAvailable":      ("D",  False),
+		"CryptoCaidSecaAvailable": ("S", False),
+		"CryptoCaidViaAvailable": ("V", False),
+		"CryptoCaidIrdetoAvailable": ("I", False),
+		"CryptoCaidNDSAvailable": ("Nd", False),
+		"CryptoCaidConaxAvailable": ("Co", False),
+		"CryptoCaidCryptoWAvailable": ("Cw", False),
+		"CryptoCaidPowerVUAvailable": ("P", False),
+		"CryptoCaidBetaAvailable": ("B", False),
+		"CryptoCaidNagraAvailable": ("N", False),
+		"CryptoCaidBissAvailable": ("Bi", False),
+		"CryptoCaidDre3Available": ("D3", False),
+		"CryptoCaidDreAvailable": ("D", False),
 		"CryptoCaidBulCrypt1Available": ("B1", False),
 		"CryptoCaidBulCrypt2Available": ("B2", False),
-		"CryptoCaidTandbergAvailable":  ("T",  False),
-		"CryptoCaidSecaSelected":      ("S",  True),
-		"CryptoCaidViaSelected":       ("V",  True),
-		"CryptoCaidIrdetoSelected":    ("I",  True),
-		"CryptoCaidNDSSelected":       ("Nd", True),
-		"CryptoCaidConaxSelected":     ("Co", True),
-		"CryptoCaidCryptoWSelected":   ("Cw", True),
-		"CryptoCaidPowerVUSelected":   ("P",  True),
-		"CryptoCaidBetaSelected":      ("B",  True),
-		"CryptoCaidNagraSelected":     ("N",  True),
-		"CryptoCaidBissSelected":      ("Bi", True),
-		"CryptoCaidDre3Selected":      ("D3", True),
-		"CryptoCaidDreSelected":       ("D",  True),
+		"CryptoCaidTandbergAvailable": ("T", False),
+		"CryptoCaidSecaSelected": ("S", True),
+		"CryptoCaidViaSelected": ("V", True),
+		"CryptoCaidIrdetoSelected": ("I", True),
+		"CryptoCaidNDSSelected": ("Nd", True),
+		"CryptoCaidConaxSelected": ("Co", True),
+		"CryptoCaidCryptoWSelected": ("Cw", True),
+		"CryptoCaidPowerVUSelected": ("P", True),
+		"CryptoCaidBetaSelected": ("B", True),
+		"CryptoCaidNagraSelected": ("N", True),
+		"CryptoCaidBissSelected": ("Bi", True),
+		"CryptoCaidDre3Selected": ("D3", True),
+		"CryptoCaidDreSelected": ("D", True),
 		"CryptoCaidBulCrypt1Selected": ("B1", True),
 		"CryptoCaidBulCrypt2Selected": ("B2", True),
-		"CryptoCaidTandbergSelected":  ("T",  True),
+		"CryptoCaidTandbergSelected": ("T", True),
 	}
 
 	# textType -> method name; both take only `info` and are checked BEFORE the
 	# feraw/fedata refresh runs, matching their original position in getTextByType
 	EARLY_TEXT_TYPES = {
 		"ResolutionString": "createResolution",
-		"VideoCodec":       "createVideoCodec",
+		"VideoCodec": "createVideoCodec",
 	}
 
 	# textType -> method name; both take only `info` and are checked AFTER the
 	# feraw/fedata refresh runs (matching their original position), even though
 	# neither of them actually needs feraw/fedata
 	POST_REFRESH_TEXT_TYPES = {
-		"PIDInfo":    "createPIDInfo",
+		"PIDInfo": "createPIDInfo",
 		"ServiceRef": "createServiceRef",
 	}
 
@@ -233,17 +233,17 @@ class PliExtraInfo(Poll, Converter, object):
 	# the instance and is never itself one of these textType keys, so the two
 	# checks can never both match the same call.
 	TRANSPONDER_TEXT_TYPES = {
-		"TransponderFrequency":     lambda self, fedata, feraw: self.createFrequency(feraw),
-		"TransponderFrequencyMHz":  lambda self, fedata, feraw: self.createFrequency(fedata),
-		"TransponderSymbolRate":    lambda self, fedata, feraw: self.createSymbolRate(fedata, feraw),
-		"TransponderPolarization":  lambda self, fedata, feraw: self.createPolarization(fedata),
-		"TransponderFEC":           lambda self, fedata, feraw: self.createFEC(fedata, feraw),
-		"TransponderModulation":    lambda self, fedata, feraw: self.createModulation(fedata),
-		"OrbitalPosition":          lambda self, fedata, feraw: self.createOrbPos(feraw),
-		"TunerType":                lambda self, fedata, feraw: self.createTunerType(feraw),
-		"TunerSystem":              lambda self, fedata, feraw: self.createTunerSystem(fedata),
+		"TransponderFrequency": lambda self, fedata, feraw: self.createFrequency(feraw),
+		"TransponderFrequencyMHz": lambda self, fedata, feraw: self.createFrequency(fedata),
+		"TransponderSymbolRate": lambda self, fedata, feraw: self.createSymbolRate(fedata, feraw),
+		"TransponderPolarization": lambda self, fedata, feraw: self.createPolarization(fedata),
+		"TransponderFEC": lambda self, fedata, feraw: self.createFEC(fedata, feraw),
+		"TransponderModulation": lambda self, fedata, feraw: self.createModulation(fedata),
+		"OrbitalPosition": lambda self, fedata, feraw: self.createOrbPos(feraw),
+		"TunerType": lambda self, fedata, feraw: self.createTunerType(feraw),
+		"TunerSystem": lambda self, fedata, feraw: self.createTunerSystem(fedata),
 		"TerrestrialChannelNumber": lambda self, fedata, feraw: self.createChannelNumber(fedata, feraw),
-		"TransponderInfoMisPls":    lambda self, fedata, feraw: self.createMisPls(fedata),
+		"TransponderInfoMisPls": lambda self, fedata, feraw: self.createMisPls(fedata),
 	}
 
 	SAT_NAMES = {
