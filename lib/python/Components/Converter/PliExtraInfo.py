@@ -365,14 +365,14 @@ class PliExtraInfo(Poll, Converter, object):
 
 	def createCryptoNameCaid(self, info):
 		caid_name = "FTA"
-		if int(self.current_caid, 16) == 0:
+		if self.current_caid == 0:
 			return caid_name
 		try:
 			for caid_entry in caid_data:
-				if int(caid_entry[0], 16) <= int(self.current_caid, 16) <= int(caid_entry[1], 16):
+				if caid_entry[0] <= self.current_caid <= caid_entry[1]:
 					caid_name = caid_entry[2]
 					break
-			return caid_name + ":%04X" % (int(self.current_caid, 16))
+			return caid_name + ":%04X" % self.current_caid
 		except:
 			pass
 		return ""
