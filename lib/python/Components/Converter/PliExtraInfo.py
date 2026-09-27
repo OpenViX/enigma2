@@ -187,6 +187,42 @@ class PliExtraInfo(Poll, Converter, object):
 		"CryptoCaidTandbergSelected":  ("T",  True),
 	}
 
+	# textType -> method name; both take only `info` and are checked BEFORE the
+	# feraw/fedata refresh runs, matching their original position in getTextByType
+	EARLY_TEXT_TYPES = {
+		"ResolutionString": "createResolution",
+		"VideoCodec":       "createVideoCodec",
+	}
+
+	# textType -> method name; both take only `info` and are checked AFTER the
+	# feraw/fedata refresh runs (matching their original position), even though
+	# neither of them actually needs feraw/fedata
+	POST_REFRESH_TEXT_TYPES = {
+		"PIDInfo":    "createPIDInfo",
+		"ServiceRef": "createServiceRef",
+	}
+
+	# textType -> (self, fedata, feraw) -> str; only reached once feraw is known
+	# to be truthy (see the "if not feraw: return" guard in getTextByType).
+	# Checking this dict as one block instead of the original interleaved
+	# if-chain is safe with respect to the "OrbitalPositionOrTunerSystem"
+	# self.type special case right after it: self.type is fixed for the life of
+	# the instance and is never itself one of these textType keys, so the two
+	# checks can never both match the same call.
+	TRANSPONDER_TEXT_TYPES = {
+		"TransponderFrequency":     lambda self, fedata, feraw: self.createFrequency(feraw),
+		"TransponderFrequencyMHz":  lambda self, fedata, feraw: self.createFrequency(fedata),
+		"TransponderSymbolRate":    lambda self, fedata, feraw: self.createSymbolRate(fedata, feraw),
+		"TransponderPolarization":  lambda self, fedata, feraw: self.createPolarization(fedata),
+		"TransponderFEC":           lambda self, fedata, feraw: self.createFEC(fedata, feraw),
+		"TransponderModulation":    lambda self, fedata, feraw: self.createModulation(fedata),
+		"OrbitalPosition":          lambda self, fedata, feraw: self.createOrbPos(feraw),
+		"TunerType":                lambda self, fedata, feraw: self.createTunerType(feraw),
+		"TunerSystem":              lambda self, fedata, feraw: self.createTunerSystem(fedata),
+		"TerrestrialChannelNumber": lambda self, fedata, feraw: self.createChannelNumber(fedata, feraw),
+		"TransponderInfoMisPls":    lambda self, fedata, feraw: self.createMisPls(fedata),
+	}
+
 	SAT_NAMES = {
 		30: 'Rascom/Eutelsat 3E',
 		48: 'SES 5',
@@ -704,11 +740,8 @@ class PliExtraInfo(Poll, Converter, object):
 				else:
 					return ""
 
-			if textType == "ResolutionString":
-				return self.createResolution(info)
-
-			if textType == "VideoCodec":
-				return self.createVideoCodec(info)
+			if textType in self.EARLY_TEXT_TYPES:
+				return getattr(self, self.EARLY_TEXT_TYPES[textType])(info)
 
 			if self.updateFEdata:
 				self.updateFEdata = False
@@ -728,50 +761,17 @@ class PliExtraInfo(Poll, Converter, object):
 			if textType in self.info_fields:
 				return self.createInfoString(textType, fedata, feraw, info)
 
-			if textType == "PIDInfo":
-				return self.createPIDInfo(info)
-
-			if textType == "ServiceRef":
-				return self.createServiceRef(info)
+			if textType in self.POST_REFRESH_TEXT_TYPES:
+				return getattr(self, self.POST_REFRESH_TEXT_TYPES[textType])(info)
 
 			if not feraw:
 				return ""
 
-			if textType == "TransponderFrequency":
-				return self.createFrequency(feraw)
-
-			if textType == "TransponderFrequencyMHz":
-				return self.createFrequency(fedata)
-
-			if textType == "TransponderSymbolRate":
-				return self.createSymbolRate(fedata, feraw)
-
-			if textType == "TransponderPolarization":
-				return self.createPolarization(fedata)
-
-			if textType == "TransponderFEC":
-				return self.createFEC(fedata, feraw)
-
-			if textType == "TransponderModulation":
-				return self.createModulation(fedata)
-
-			if textType == "OrbitalPosition":
-				return self.createOrbPos(feraw)
-
-			if textType == "TunerType":
-				return self.createTunerType(feraw)
-
-			if textType == "TunerSystem":
-				return self.createTunerSystem(fedata)
+			if textType in self.TRANSPONDER_TEXT_TYPES:
+				return self.TRANSPONDER_TEXT_TYPES[textType](self, fedata, feraw)
 
 			if self.type == "OrbitalPositionOrTunerSystem":
 				return self.createOrbPosOrTunerSystem(fedata, feraw)
-
-			if textType == "TerrestrialChannelNumber":
-				return self.createChannelNumber(fedata, feraw)
-
-			if textType == "TransponderInfoMisPls":
-				return self.createMisPls(fedata)
 
 			return _("?%s?") % textType
 		except:
