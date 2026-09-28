@@ -79,8 +79,9 @@ typedef enum NEXUS_HdmiOutputHdcpError
 //
 // Presentation goes through Nexus's own compositor via a genuine EGL window
 // surface (NXPL_CreateNativeWindowEXT + eglCreateWindowSurface +
-// eglSwapBuffers), not the framebuffer: on this stack /dev/fb0 is not
-// connected to the display scanout at all, unlike Dreambox (where the
+// eglSwapBuffers), not the framebuffer: on this stack /dev/fb0 is a separate
+// display layer composited BENEATH that window (ofgwrite's progress screen,
+// drawn into fb0, showed up under enigma2's UI), unlike Dreambox (where the
 // "pixmap" surface IS the live framebuffer memory - see
 // DreamboxWindowProvider). So usesPixmapSurface() stays at its base-class
 // default of false and gEGLDC's existing generic eglCreateWindowSurface/
@@ -111,4 +112,10 @@ public:
 	EGLNativeDisplayType getNativeDisplay() override;
 	EGLNativeWindowType getNativeWindow() override;
 	void cleanup() override;
+	void onFramebufferUnlocked() override { clearFramebuffer(); }
+
+	// Zeroes /dev/fb0 (fully transparent) - it's a display layer beneath this
+	// provider's window, so stale content there (ofgwrite's progress screen
+	// after a failed flash, boot leftovers) shows through transparent OSD.
+	static void clearFramebuffer();
 };

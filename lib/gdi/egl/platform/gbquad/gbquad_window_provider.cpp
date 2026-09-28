@@ -2,6 +2,7 @@
 #include <cstring>
 #include <EGL/egl.h>
 #include <lib/base/eerror.h>
+#include <lib/gdi/fb.h>
 // Must come before <nxclient.h>: this header's NEXUS_HAS_DISPLAY/AUDIO/
 // GRAPHICS2D defines and its nexus_hdmi_output_hdcp.h include both need to
 // be visible before anything reaches nxclient.h's own chain into
@@ -45,9 +46,9 @@ bool GbquadWindowProvider::init(int width, int height) {
 
 	// 3. Create and show a full-screen native window through Nexus's own
 	// compositor - this is what eglCreateWindowSurface() targets below, and
-	// what actually reaches the TV: /dev/fb0 is not connected to the display
-	// scanout at all on this stack (unlike Dreambox, where the pixmap
-	// surface IS the live framebuffer - see DreamboxWindowProvider).
+	// what actually reaches the TV as enigma2's OSD: /dev/fb0 is only a
+	// separate layer beneath it on this stack (unlike Dreambox, where the
+	// pixmap surface IS the live framebuffer - see DreamboxWindowProvider).
 	NXPL_NativeWindowInfoEXT windowInfo;
 	NXPL_GetDefaultNativeWindowInfoEXT(&windowInfo);
 	windowInfo.width = (uint32_t)width;
@@ -64,8 +65,33 @@ bool GbquadWindowProvider::init(int width, int height) {
 
 	NXPL_ShowNativeWindowEXT(m_native_window, true);
 
+	// 4. fbClass is NOT our render target here, but it is the singleton the
+	// rest of enigma2 uses for the framebuffer lock (ImageManager.py's
+	// fbClass.getInstance().lock()/unlock() around ofgwrite, gEGLDC::islocked())
+	// - and gFBDC, its normal owner, isn't built with EGL (see
+	// lib/gdi/Makefile.inc), so without this getInstance() returned None and
+	// the lock silently did nothing. SetMode() is required too: unlock()
+	// re-applies xRes/yRes/bpp, which only SetMode() initializes. Not fatal on
+	// failure - the EGL window above is what actually displays enigma2.
+	fbClass* fb = fbClass::getInstance();
+	if (!fb)
+		fb = new fbClass;
+	if (fb->SetMode(width, height, 32) < 0) {
+		eDebug("[GbquadWindowProvider] fbClass::SetMode(%dx%d) failed - framebuffer lock unavailable", width, height);
+	} else {
+		// fb0 is composited UNDER the Nexus window, so anything left in it
+		// (boot splash leftovers) would show wherever the OSD is transparent.
+		clearFramebuffer();
+	}
+
 	eDebug("[GbquadWindowProvider] init %dx%d - Nexus joined, display platform registered, native window shown", width, height);
 	return true;
+}
+
+void GbquadWindowProvider::clearFramebuffer() {
+	fbClass* fb = fbClass::getInstance();
+	if (fb && fb->lfb && fb->Available() > 0)
+		memset(fb->lfb, 0, (size_t)fb->Available());
 }
 
 EGLNativeDisplayType GbquadWindowProvider::getNativeDisplay() {
