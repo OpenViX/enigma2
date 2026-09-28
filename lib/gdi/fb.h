@@ -62,6 +62,12 @@ public:
 	int lock();
 	void unlock();
 	int islocked() { return locked; }
+#ifndef SWIG
+	// Called on the locking thread after lock()/unlock() change the lock
+	// state. Lets a main DC whose on-screen surface is NOT this framebuffer
+	// (gEGLDC on a window-surface platform) react - see gEGLDC::flip().
+	static void (*lockChanged)(bool locked);
+#endif
 };
 
 #endif

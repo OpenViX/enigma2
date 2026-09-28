@@ -75,6 +75,13 @@ public:
 	// general EGL/GLES behavior. Default false.
 	virtual bool needsRenderTargetRBSwap() const { return false; }
 
+	// Called (on the unlocking thread) when fbClass::unlock() ends an
+	// external framebuffer user's session (ofgwrite, see ImageManager.py) -
+	// lets a provider whose window is a layer ABOVE /dev/fb0 wipe whatever
+	// that user left there, since nothing of enigma2's ever overwrites it.
+	// Default no-op.
+	virtual void onFramebufferUnlocked() {}
+
 	// Cleans up platform-specific resources.
 	virtual void cleanup() = 0;
 };

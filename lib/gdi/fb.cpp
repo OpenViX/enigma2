@@ -407,6 +407,8 @@ int fbClass::lock()
 	}
 	else
 		locked = 1;
+	if (lockChanged)
+		lockChanged(true);
 	return fbFd;
 }
 
@@ -419,7 +421,11 @@ void fbClass::unlock()
 	locked=0;
 	SetMode(xRes, yRes, bpp);
 	PutCMAP();
+	if (lockChanged)
+		lockChanged(false);
 }
+
+void (*fbClass::lockChanged)(bool locked) = nullptr;
 
 void fbClass::enableManualBlit()
 {

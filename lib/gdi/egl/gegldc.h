@@ -79,6 +79,20 @@ private:
 	gEGLOSDCapture m_osd_capture;
 	void serviceOsdCapture();
 
+	// fbClass lock (ofgwrite's Mode 2 flash, see ImageManager.py) on a
+	// window-surface platform: the window surface is a separate layer
+	// composited ABOVE /dev/fb0, so ofgwrite's progress screen - drawn into
+	// fb0 - stayed hidden under enigma's last frame. While locked, flip()
+	// presents one fully transparent frame instead (m_shadow_fbo, enigma's
+	// real UI, is left untouched) and nothing else; unlock's flush then
+	// presents the preserved UI again. Only with the shadow FBO: without it
+	// the window surface's own content is the UI and clearing it would lose it.
+	bool m_lock_cleared = false;
+	static void onFramebufferLockChanged(bool locked);
+	// Wakes the render thread with a flush opcode even while locked
+	// (gPainter::flush() is suppressed then).
+	void requestFlush();
+
 	// Diagnostic only, opt-in via ENIGMA_EGL_PROFILE=1 (read once in
 	// initEGL()): one log line per flip() splitting that frame's render-thread
 	// time by where it went. CPU-side wall time - GL calls are asynchronous,

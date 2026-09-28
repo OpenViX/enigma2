@@ -366,6 +366,8 @@ bool gEGLDC::initEGL() {
 
 	if (!m_window_provider->usesPixmapSurface())
 		m_osd_capture.start(this);
+	if (m_use_shadow_fbo)
+		fbClass::lockChanged = &gEGLDC::onFramebufferLockChanged;
 
 	const char* profile_env = getenv("ENIGMA_EGL_PROFILE");
 	m_profile = profile_env && atoi(profile_env) > 0;
@@ -1699,6 +1701,8 @@ gEGLDC::~gEGLDC() {
 void gEGLDC::cleanupEGL() {
 	// Before the context goes away: nothing can service a capture after this.
 	m_osd_capture.stop();
+	if (fbClass::lockChanged == &gEGLDC::onFramebufferLockChanged)
+		fbClass::lockChanged = nullptr;
 
 	if (m_egl_display != EGL_NO_DISPLAY) {
 		// Free every shader's GL objects (program/VBO/VAO) HERE, while this
@@ -1795,6 +1799,27 @@ bool gEGLDC::gpuCopyPageContent(int from, int to) {
 int gEGLDC::islocked() const {
 	fbClass* fb = fbClass::getInstance();
 	return fb ? fb->islocked() : 0;
+}
+
+void gEGLDC::onFramebufferLockChanged(bool locked) {
+	// Main (Python) thread - the actual clear/restore of the OSD happens in
+	// flip() on the render thread, which islocked() tells which one to do.
+	if (!s_instance)
+		return;
+	if (!locked && s_instance->m_window_provider)
+		s_instance->m_window_provider->onFramebufferUnlocked();
+	s_instance->requestFlush();
+}
+
+void gEGLDC::requestFlush() {
+	gRC* rc = gRC::getInstance();
+	if (!rc)
+		return;
+	gOpcode o;
+	o.opcode = gOpcode::flush;
+	AddRef(); // released by gRC::thread() after exec(), like any opcode's dc
+	o.dc = this;
+	rc->submit(o);
 }
 
 // End of frame for the glyph atlas scheme in flushTextBatch(): the next
@@ -1946,7 +1971,24 @@ void gEGLDC::flip() {
 						eDebug("[gEGLDC] eglMakeCurrent back to shown page %d failed: 0x%x", shown_page, eglGetError());
 				}
 			}
+		} else if (m_use_shadow_fbo && islocked()) {
+			// See m_lock_cleared's comment (gegldc.h): uncover fb0 once, then
+			// present nothing until unlocked.
+			if (!m_lock_cleared) {
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				glScissor(0, 0, m_width, m_height);
+				glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+				glClear(GL_COLOR_BUFFER_BIT);
+				eglSwapBuffers(m_egl_display, m_egl_surfaces[0]);
+				glBindFramebuffer(GL_FRAMEBUFFER, m_shadow_fbo);
+				m_lock_cleared = true;
+				eDebug("[gEGLDC] framebuffer locked - OSD surface cleared so /dev/fb0 shows");
+			}
 		} else {
+			if (m_lock_cleared) {
+				m_lock_cleared = false;
+				eDebug("[gEGLDC] framebuffer unlocked - presenting UI again");
+			}
 			bool shadow_presented = false;
 #ifdef HAVE_GLES3
 			if (m_use_shadow_fbo && gles::isGLES3()) {
