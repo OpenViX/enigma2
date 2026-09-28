@@ -56,6 +56,29 @@ bool GbquadWindowProvider::init(int width, int height) {
 	windowInfo.x = 0;
 	windowInfo.y = 0;
 
+	// width/height above are enigma2's fixed OSD/skin canvas (its own gEGLDC
+	// constructor comment) - NOT the current HDMI/video-mode resolution, and
+	// nothing ever calls NXPL_UpdateNativeWindowEXT() to change them when the
+	// video mode changes later (VideoWizard/VideoSetup only ever write to
+	// /proc/stb/video/videomode_*, see Components/AVSwitch.py's setMode()).
+	// Without this, NXPL_GetDefaultNativeWindowInfoEXT()'s default (false,
+	// confirmed by reading default_nexus.h - see this struct's own comment)
+	// leaves Nexus's compositor showing this window's canvas pixel-for-pixel
+	// against the display's active area instead of scaling it to fit: at any
+	// output resolution below the canvas size (e.g. HDMI at 720p against a
+	// 1920x1080 canvas) the OSD renders correctly internally but the display
+	// only ever shows its unscaled top-left corner - every widget's own pixel
+	// size stays literal, so relative to the now-smaller visible frame
+	// everything reads as oversized, with the right/bottom edge of the UI
+	// simply never reaching the screen. `stretch` (this exact field, same
+	// struct - see NXPL_NativeWindowInfoEXT in default_nexus.h from
+	// gb-v3ddriver-headers.bb) is Nexus's own per-window "author at a fixed
+	// size, scale that to fill the display regardless of its current output
+	// resolution" flag - setting it once here covers every later video-mode
+	// change too, since re-scaling to the display's current mode is exactly
+	// what this flag asks Nexus's compositor to keep doing.
+	windowInfo.stretch = true;
+
 	m_native_window = NXPL_CreateNativeWindowEXT(&windowInfo);
 	if (!m_native_window) {
 		eDebug("[GbquadWindowProvider] NXPL_CreateNativeWindowEXT failed");
