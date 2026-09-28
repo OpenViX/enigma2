@@ -379,6 +379,22 @@ int gAccel::sync()
 
 int gAccel::accelAlloc(gUnmanagedSurface* surface)
 {
+	// On backends where nothing ever calls setAccelMemorySpace() (e.g. the
+	// gbquad4kpro Nexus/EGL stack - /dev/fb0 isn't the scanout there, so
+	// neither fb.cpp's ION path nor gfbdc.cpp's leftover-framebuffer path
+	// ever runs), m_accel_size stays 0 for the process's entire lifetime and
+	// every allocation attempt below is guaranteed to fail. Every gPixmap
+	// surface over GFX_SURFACE_ACCELERATION_THRESHOLD calls this (gpixmap.cpp),
+	// so without this early-out every such picon/pixmap pays a lock
+	// acquisition, a (trivial but pointless) free-list walk, and a
+	// synchronous eDebug() call for zero possible benefit - measurable
+	// overhead on the decode/render hot path during list/EPG-grid scrolling.
+	// Genuine exhaustion of a real, non-empty pool (e.g. Dreambox's
+	// ION-backed one) still falls through to the search below and logs as
+	// before.
+	if (!m_accel_size)
+		return -3;
+
 	int stride = (surface->stride + ACCEL_ALIGNMENT_MASK) & ~ACCEL_ALIGNMENT_MASK;
 	int size = stride * surface->y;
 	if (!size)
