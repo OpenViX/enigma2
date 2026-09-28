@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <EGL/egl.h>
 #ifdef HAVE_GLES3
 #include <GLES3/gl3.h>
@@ -7,6 +8,7 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #endif
+#include <lib/gdi/egl/gosd_capture.h>
 #include <lib/gdi/egl/gtexture_manager.h>
 #include <lib/gdi/egl/inative_window_provider.h>
 #include <lib/gdi/egl/shader/gadvanced_shader.h>
@@ -35,6 +37,62 @@ private:
 	EGLSurface m_egl_surfaces[MAX_EGL_SURFACES];
 	int m_page_count; // 1 unless a multi-page pixmap-surface provider
 	int m_render_page; // index into m_egl_surfaces currently bound for rendering
+
+	// Set in tryInitEGL() when a window-surface provider's driver did NOT
+	// grant EGL_SWAP_BEHAVIOR_PRESERVED (see the eglSurfaceAttrib() check
+	// there). Without it, eglSwapBuffers() is free to hand back a surface
+	// with UNDEFINED content on the next frame - fatal for this backend's
+	// dirty-rect-only opcode redraw, which assumes the render target
+	// already holds the previous frame everywhere it doesn't explicitly
+	// touch. Confirmed on real hardware (GigaBlue Quad 4K Pro/Nexus/NXPL):
+	// "most areas of screen go black, some areas stay" - exactly the areas
+	// each frame's opcodes happened to redraw. When true, every opcode
+	// renders into m_shadow_fbo/m_shadow_texture instead - a persistent
+	// offscreen target that behaves like a single-buffered "pixmap IS the
+	// display" surface (see DreamboxWindowProvider) - and flip() blits its
+	// FULL content into the window surface right before eglSwapBuffers().
+	bool m_use_shadow_fbo = false;
+	GLuint m_shadow_fbo = 0;
+	GLuint m_shadow_texture = 0;
+
+	// Diagnostic only, opt-in via ENIGMA_EGL_SHADOW_BLIT_STRIDE (parsed once
+	// in tryInitEGL() right next to where m_use_shadow_fbo is decided) - see
+	// flip()'s use of these. Default stride is 1, meaning "blit every frame",
+	// i.e. today's actual shipping behaviour; unset/invalid values keep that
+	// default. This exists purely to empirically find this platform's real
+	// window-surface backbuffer count on real hardware (how many consecutive
+	// skipped blits it takes before stale/torn content becomes visible),
+	// which the previous scoped-blit attempt above had to guess at and got
+	// wrong. NOT a proposed fix by itself - production must keep stride 1
+	// until that count is known and a real dirty-region scheme is designed
+	// around it.
+	int m_shadow_blit_stride = 1;
+	int m_shadow_blit_frame = 0;
+
+	bool createShadowFramebuffer();
+	void destroyShadowFramebuffer();
+
+	// External screenshot support (aio-grab) - see gosd_capture.h. Only
+	// started for window-surface providers: on a pixmap-surface provider
+	// (Dreambox) the OSD already IS /dev/fb0 memory and aio-grab's own
+	// framebuffer path captures it correctly.
+	gEGLOSDCapture m_osd_capture;
+	void serviceOsdCapture();
+
+	// Diagnostic only, opt-in via ENIGMA_EGL_PROFILE=1 (read once in
+	// initEGL()): one log line per flip() splitting that frame's render-thread
+	// time by where it went. CPU-side wall time - GL calls are asynchronous,
+	// so a GPU stall shows up in whichever call is forced to wait for it
+	// (buffer map, texture upload, swap), which is exactly what this is for.
+	bool m_profile = false;
+	struct FrameProfile {
+		double text_ms = 0, text_flush_ms = 0, vbo_ms = 0, atlas_ms = 0, band_ms = 0, overlay_ms = 0, other_ms = 0;
+		int text_ops = 0, text_flushes = 0, glyphs = 0, atlas_uploads = 0, atlas_rows = 0, band_uploads = 0, band_rows = 0, overlays = 0, other_ops = 0;
+	} m_prof;
+	std::chrono::steady_clock::time_point m_prof_last_flip;
+	static double msSince(const std::chrono::steady_clock::time_point& t0) {
+		return std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
+	}
 
 	int m_width;
 	int m_height;
@@ -162,7 +220,33 @@ private:
 	void executeBlit(const gOpcode* op);
 	void executeClear(const gOpcode* op);
 	void flushTextBatch();
+	// Draws `vertices` (glyph quads, 8 floats per vertex) with whatever
+	// texture is bound, once per m_text_batch_clip rect.
+	void drawTextVertices(const std::vector<float>& vertices);
+
+	// See flushTextBatch(): the main atlas texture is only updated before its
+	// first use in a frame; glyphs new after that come from per-flush "band"
+	// textures, deleted once the frame is presented.
+	bool m_atlas_used_this_frame = false;
+	std::vector<GLuint> m_atlas_band_textures;
+	std::vector<float> m_text_main_scratch;
+	std::vector<float> m_text_band_scratch;
+	void releaseFrameTextures();
 	void setGlScissor(const eRect& rect);
+
+	// executeFill()/executeFillRegion()/executeClear()'s plain-overwrite
+	// paths all draw one quad per (disjoint) clip.rects entry, sized to
+	// exactly that rect - so, unlike executeRectangle()'s flat branch (which
+	// draws the whole opcode area once per rect and relies on the scissor to
+	// cut it down), none of them actually need glScissor at all: the quad's
+	// own geometry already is the clip. That makes the whole loop just a
+	// pile of independent, same-blend-state quads, which is exactly what
+	// gShader::drawBatch() draws in one glDrawArrays call instead of one per
+	// rect - callers must still bracket this themselves with
+	// glDisable/glEnable(GL_BLEND) as before, since that depends on the
+	// call site (executeClear()'s erase/recomposite pass wants blend back
+	// on immediately after, for instance).
+	void drawFlatRects(const gRegion& clip, float r, float g, float b, float a);
 
 	// Shared by gOpcode::renderText and gOpcode::renderPara for whatever
 	// glyphs renderGlyph() below didn't handle (border/pre-rendered "image"

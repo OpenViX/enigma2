@@ -25,6 +25,8 @@ private:
 	GLint m_border_width_location;
 	GLint m_border_color_location;
 	GLint m_alphablend_location;
+	GLint m_rbswap_location;
+	GLint m_coverage_alpha_location;
 
 	// Gradient uniforms
 	GLint m_gradient_colors_location;
@@ -40,8 +42,6 @@ private:
 	GLint m_edges_br_location; // u_r_br
 
 	GLuint compileShader(GLenum type, const char* source);
-	void bindVAO();
-	void unbindVAO();
 
 public:
 	gAdvancedShader();
@@ -57,5 +57,5 @@ public:
 	void setResolution(float width, float height);
 
 	void drawAdvancedRect(float x, float y, float width, float height, int radius, uint8_t edges, const std::vector<gRGB>& gradient_colors, uint8_t orientation, bool alphablend, float alpha,
-						  const gRGB& solid_color, int border_width, const gRGB& border_color);
+						  const gRGB& solid_color, int border_width, const gRGB& border_color, bool coverage_alpha = false);
 };

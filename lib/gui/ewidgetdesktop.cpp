@@ -116,13 +116,15 @@ void eWidgetDesktop::calcWidgetClipRegion(eWidget *widget, gRegion &parent_visib
 		widget->m_visible_region.moveBy(widget->position());
 		widget->m_visible_region &= parent_visible; // in parent space!
 
-		if (!widget->isTransparent() && !widget->m_gradient_alphablend && widget->m_cornerRadius == 0 && !widget->m_alphaBlend)
+		if (!widget->isTransparent() && !widget->m_gradient_alphablend && widget->m_cornerRadius == 0 && !widget->m_alphaBlend && !widget->m_needs_backdrop)
 				/* remove everything this widget will contain from parent's visible list, unless the
-				   widget is transparent, alphablended, gradient-alphablended or rounded -- in that
-				   case whatever is behind it (a parent widget, another root widget, or the desktop
-				   background) must stay available so it keeps being calculated/painted underneath.
-				   this applies the same way at root (screen) level as it does for nested widgets,
-				   so overlapping root windows respect zPosition and composite correctly. */
+				   widget is transparent, alphablended, gradient-alphablended, rounded, or otherwise
+				   flagged via setNeedsBackdrop() (e.g. eListbox, whose per-item rounding never
+				   touches its own m_cornerRadius) -- in that case whatever is behind it (a parent
+				   widget, another root widget, or the desktop background) must stay available so it
+				   keeps being calculated/painted underneath. this applies the same way at root
+				   (screen) level as it does for nested widgets, so overlapping root windows respect
+				   zPosition and composite correctly. */
 			parent_visible -= widget->m_visible_region; // will remove child regions too!
 
 			/* now prepare for recursing to childs */

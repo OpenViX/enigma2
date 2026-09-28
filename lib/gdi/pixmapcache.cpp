@@ -1,32 +1,67 @@
 #include <lib/gdi/pixmapcache.h>
 
 #include <algorithm>
+#include <cstdlib>
 #include <map>
 #include <string>
+#include <vector>
 #include <lib/base/elock.h>
 
-// 100, not 256: this cap is a plain item COUNT, not a memory budget (see
-// the comment below - a known, pre-existing limitation). On the GLES/EGL
-// backend every cached pixmap also gets its own GPU texture created for it
+// Byte budget, not an item count: the previous version of this cache capped
+// itself at a flat 100 entries regardless of size, so one 24x24 icon and one
+// 799x480 poster each counted as "1 slot" - a skin/bouquet mix skewed toward
+// small icons could never fill available memory, while one skewed toward
+// large posters/SVG-rasterized picons could blow well past it, still only
+// counting as 100 items. This tracks each entry's actual footprint instead
+// (see pixmapBytes() below) and evicts LRU entries until the running total
+// fits, so it naturally allows many small icons or few large images rather
+// than always exactly 100 of either.
+//
+// On the GLES/EGL backend every cached pixmap also gets its own GPU texture
 // (gTextureManager, lib/gdi/egl/gtexture_manager.cpp) the first time it's
-// blitted, roughly doubling the real memory cost of each cached entry (CPU
-// decode buffer + GPU texture) versus the CPU-only renderer this limit was
-// originally tuned for. 256 simultaneously-cached picons/icons (the common
-// case this cache targets - PNGs are cached by default, see
-// Tools/LoadPixmap.py; JPGs are not) could add up to more than a
-// memory-constrained set-top box's available graphics memory, observed as
-// the vendor GLES driver's own internal ION allocation failing (and
-// segfaulting on the failure - a driver bug we can't fix directly) during
-// heavy list scrolling. Lowering the cap reduces how many of those
-// GPU-backed entries can be alive at once; tune if picons on a given
-// skin/box are unusually large or small.
-uint PixmapCache::MaximumSize = 100;
+// blitted, roughly doubling the real memory cost of each entry (CPU decode
+// buffer + GPU texture) versus the CPU-only renderer - pixmapBytes() accounts
+// for that. Exceeding a memory-constrained set-top box's available graphics
+// memory has previously surfaced as the vendor GLES driver's own internal
+// ION allocation failing (and segfaulting on the failure - a driver bug we
+// can't fix directly) during heavy list scrolling, so this default is a
+// conservative starting point, not a measured-safe ceiling for any specific
+// box. Override via ENIGMA_PIXMAP_CACHE_MAX_BYTES (bytes) to tune per box/skin
+// without a rebuild - raise it gradually on real hardware while watching for
+// that failure mode, don't just pick a big number.
+static size_t defaultMaximumBytes()
+{
+	const char *env = getenv("ENIGMA_PIXMAP_CACHE_MAX_BYTES");
+	if (env)
+	{
+		char *end = nullptr;
+		unsigned long long v = strtoull(env, &end, 10);
+		if (end != env && v > 0)
+			return (size_t)v;
+	}
+	return 32u * 1024 * 1024; // 32MB
+}
+size_t PixmapCache::MaximumBytes = defaultMaximumBytes();
+
+static size_t pixmapBytes(gPixmap *pixmap)
+{
+	gUnmanagedSurface *surface = pixmap->surface;
+	if (!surface)
+		return 0;
+	size_t bytes = (size_t)surface->stride * (size_t)surface->y;
+	if (surface->clut.data)
+		bytes += (size_t)surface->clut.colors * sizeof(gRGB);
+#ifdef HAVE_EGL
+	bytes *= 2;
+#endif
+	return bytes;
+}
 
 // Cache objects work best when we manage the ref counting manually. ePtr brings memory protection violations on shutdown
 // We track the filesize and modified date of the file. If either change, the item is considered stale is removedand must be reloaded
-// We also track the last used time so the cache can remove least recently used items when it gets too full. Full is defined
-// as a number of items, rather than memory used, so there's a potential for the cache to occupy too much memory if
-// many large images are loaded with the cached flag set
+// We also track the last used time so the cache can remove least recently used items when it gets too full, and each
+// item's own byte cost (computed once at insert time - see pixmapBytes()) so eviction can track total memory used
+// without re-walking every entry's surface on every Set().
 struct CacheItem
 {
 public:
@@ -40,32 +75,36 @@ public:
 		filesize = p.filesize;
 		modifiedDate = p.modifiedDate;
 		lastUsed = p.lastUsed;
+		bytes = p.bytes;
 		return *this;
 	}
 
-	CacheItem(gPixmap* p, off_t s, time_t m)
+	CacheItem(gPixmap* p, off_t s, time_t m, size_t b)
 	{
 		pixmap = p;
 		filesize = s;
 		modifiedDate = m;
 		lastUsed = ::time(0);
+		bytes = b;
 	};
 
 	gPixmap* pixmap;
 	off_t filesize;
 	time_t modifiedDate;
 	int lastUsed;
+	size_t bytes;
 };
 
 typedef std::map<std::string, CacheItem> NameToPixmap;
 
-static bool CompareLastUsed(NameToPixmap::value_type i, NameToPixmap::value_type j) 
-{ 
+static bool CompareLastUsed(NameToPixmap::value_type i, NameToPixmap::value_type j)
+{
 	return i.second.lastUsed < j.second.lastUsed;
 }
 
 static eSingleLock pixmapCacheLock;
 static NameToPixmap pixmapCache;
+static size_t pixmapCacheBytes = 0; // sum of every live entry's CacheItem::bytes - guarded by pixmapCacheLock, same as pixmapCache itself
 
 /* The "dispose" method isn't very efficient, but not called unless
  * a pixmap is being replaced by another when the cache is full and even then,
@@ -84,18 +123,22 @@ void PixmapCache::PixmapDisposed(gPixmap* pixmap)
 	{
 		if (it->second.pixmap == pixmap)
 		{
+			pixmapCacheBytes -= it->second.bytes;
 			pixmapCache.erase(it);
 			break;
 		}
 	}
 }
 
-gPixmap* PixmapCache::Get(const char *filename)
+gPixmap* PixmapCache::Get(const char *filename, const char *cachekey)
 {
+	if (!cachekey)
+		cachekey = filename;
+
 	gPixmap* disposePixmap = NULL;
 	{
 		eSingleLocker lock(pixmapCacheLock);
-		NameToPixmap::iterator it = pixmapCache.find(filename);
+		NameToPixmap::iterator it = pixmapCache.find(cachekey);
 		if (it != pixmapCache.end())
 		{
 			// find out whether the image has been modified
@@ -114,6 +157,7 @@ gPixmap* PixmapCache::Get(const char *filename)
 				// it->second afterwards is a dangling-iterator access: it can silently skip the
 				// Release() below, leaking the evicted pixmap's accel-backed memory forever)
 				disposePixmap = it->second.pixmap;
+				pixmapCacheBytes -= it->second.bytes;
 				pixmapCache.erase(it);
 			}
 		}
@@ -127,44 +171,58 @@ gPixmap* PixmapCache::Get(const char *filename)
 	return NULL;
 }
 
-void PixmapCache::Set(const char *filename, gPixmap* pixmap)
+void PixmapCache::Set(const char *filename, gPixmap* pixmap, const char *cachekey)
 {
+	if (!cachekey)
+		cachekey = filename;
+
 	gPixmap* disposePixmap = NULL;
+	std::vector<gPixmap*> evicted;
 	{
 		eSingleLocker lock(pixmapCacheLock);
 		struct stat img_stat = {};
 		if (stat(filename, &img_stat) == 0)
 		{
-			NameToPixmap::iterator it = pixmapCache.find(filename);
+			size_t bytes = pixmapBytes(pixmap);
+			NameToPixmap::iterator it = pixmapCache.find(cachekey);
 			if (it != pixmapCache.end())
 			{
 				// need to release the pixmap being replaced after we've finished updating the cache
 				disposePixmap = it->second.pixmap;
-				
+				pixmapCacheBytes -= it->second.bytes;
+
 				// swap in the updated pixmap
 				pixmap->AddRef();
 				it->second.pixmap = pixmap;
 				it->second.filesize = img_stat.st_size;
 				it->second.modifiedDate = img_stat.st_mtime;
+				it->second.bytes = bytes;
+				pixmapCacheBytes += bytes;
 			}
 			else
 			{
-				if (pixmapCache.size() > MaximumSize)
+				// Evict least-recently-used entries until this one fits the
+				// byte budget. If a single entry's own footprint exceeds the
+				// whole budget by itself (e.g. one oversized poster), this
+				// empties the cache and still inserts it anyway rather than
+				// refusing to cache - simplest graceful degradation, and the
+				// next insert starts evicting immediately again.
+				while (!pixmapCache.empty() && (pixmapCacheBytes + bytes) > MaximumBytes)
 				{
-					// find the least recently used
-					NameToPixmap::iterator it = std::min_element(pixmapCache.begin(), pixmapCache.end(), &CompareLastUsed);
-					if (it != pixmapCache.end())
-					{
-						// need to release the pixmap being removed after we've finished updating the cache
-						// (read it->second BEFORE erase() - see the identical comment in Get() above)
-						disposePixmap = it->second.pixmap;
-						pixmapCache.erase(it);
-					}
+					NameToPixmap::iterator victim = std::min_element(pixmapCache.begin(), pixmapCache.end(), &CompareLastUsed);
+					if (victim == pixmapCache.end())
+						break;
+					// need to release the pixmap being removed after we've finished updating the cache
+					// (read victim->second BEFORE erase() - see the identical comment in Get() above)
+					evicted.push_back(victim->second.pixmap);
+					pixmapCacheBytes -= victim->second.bytes;
+					pixmapCache.erase(victim);
 				}
 
 				pixmap->AddRef();
-				NameToPixmap::value_type pr = std::make_pair(std::string(filename), CacheItem(pixmap, img_stat.st_size, img_stat.st_mtime));
+				NameToPixmap::value_type pr = std::make_pair(std::string(cachekey), CacheItem(pixmap, img_stat.st_size, img_stat.st_mtime, bytes));
 				pixmapCache.insert(pr);
+				pixmapCacheBytes += bytes;
 			}
 		}
 	}
@@ -173,4 +231,6 @@ void PixmapCache::Set(const char *filename, gPixmap* pixmap)
 	// Avoid the risk of a deadlock by doing the release outside the lock
 	if (disposePixmap)
 		disposePixmap->Release();
+	for (gPixmap *p : evicted)
+		p->Release();
 }

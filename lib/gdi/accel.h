@@ -27,6 +27,13 @@ public:
 	int accelAlloc(gUnmanagedSurface* surface);
 	void accelFree(gUnmanagedSurface* surface);
 
+	// Cheap, lock-free check for whether setAccelMemorySpace() ever ran (it's
+	// only ever written once, at startup, before any surface allocation can
+	// race it). Lets callers skip accelAlloc()/its failure log entirely on
+	// backends with no accel pool at all, instead of unconditionally trying
+	// and unconditionally logging a guaranteed, permanent failure.
+	bool hasAccelMemory() const { return m_accel_size != 0; }
+
 	void dumpDebug();
 private:
 	struct MemoryBlock {

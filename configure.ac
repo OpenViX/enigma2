@@ -587,6 +587,36 @@ if test "$BOXTYPE" == "dm900" -o "$BOXTYPE" == "dm920"; then
 	AC_DEFINE(FORCE_ALPHABLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])
 fi
 
+# GigaBlue Quad 4K Pro's Broadcom Nexus EGL stack (see
+# lib/gdi/egl/platform/gbquad) - a real EGL window surface reached via
+# NxClient_Join()/NXPL_RegisterNexusDisplayPlatform(), against the real
+# vendor headers/libraries (gb-v3ddriver-headers.bb/gb-v3ddriver.inc in
+# oe-alliance-core's meta-gigablue layer: nxclient.h/default_nexus.h staged
+# into the normal sysroot include dir, libnxclient.so/libnxpl.so/libnexus.so
+# staged into the normal sysroot lib dir alongside a "nxpl" pkg-config
+# module), unlike Dreambox's pixmap-surface VC5/BEGL stack.
+AM_CONDITIONAL(HAVE_GBQUAD_EGL, test "x$use_egl" = "xyes" -a "x$MACHINEBUILD" = "xgbquad4kpro")
+if test "x$use_egl" = "xyes" -a "x$MACHINEBUILD" = "xgbquad4kpro"; then
+	AC_DEFINE(HAVE_GBQUAD_EGL, 1, [GigaBlue Quad 4K Pro Nexus EGL window backend available])
+	PKG_CHECK_MODULES([NXPL], [nxpl], [], [
+		AC_MSG_ERROR([gbquad4kpro EGL build requires the Nexus/NXPL pkg-config module "nxpl" (from gb-v3ddriver-headers/gb-v3ddriver in oe-alliance-core's meta-gigablue layer) - not found in the sysroot])
+	])
+	# bstd.h (base header every nexus_*.h/nxclient.h pulls in) hard-errors
+	# unless BSTD_CPU_ENDIAN is defined before it's parsed - the SDK ships
+	# bstd_cfg.h (where it looks first) as a literal empty "/* stub file */",
+	# deliberately leaving this to the consumer's build system. Every
+	# gbquad4kpro target is ARM Cortex-A15, which is little-endian here (as
+	# is every other Broadcom Nexus STB SoC in this generation - there is no
+	# big-endian variant this box family ships as). enigma2_config.h (where
+	# this ends up) is force-included via -include ahead of every other
+	# header in every translation unit (see lib/gdi/Makefile.inc and
+	# main/Makefile.am's AM_CPPFLAGS), so this is visible by the time
+	# gbquad_window_provider.h's nexus header includes are reached.
+	AC_DEFINE(BSTD_CPU_ENDIAN, BSTD_ENDIAN_LITTLE, [Required by the Nexus SDK's bstd.h before any nexus_*.h/nxclient.h include - see gbquad4kpro's HAVE_GBQUAD_EGL block])
+fi
+AC_SUBST([NXPL_CFLAGS])
+AC_SUBST([NXPL_LIBS])
+
 if test "$BOXTYPE" == "dm900"; then
 	AC_DEFINE(DM900, 1, [Dreambox hardware])
 fi

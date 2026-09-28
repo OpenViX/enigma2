@@ -38,6 +38,8 @@ static const char *fragment_shader_es3 = R"(#version 300 es
     }
 
     void main() {
+        float coverage = 1.0;
+
         if (u_radius > 0.0) {
             vec2 half_size = u_rect_size.zw * 0.5;
             vec2 center = vec2(u_rect_size.x, u_rect_size.y) + half_size;
@@ -50,11 +52,20 @@ static const char *fragment_shader_es3 = R"(#version 300 es
             if (p.x > 0.0 && p.y > 0.0 && (u_edges & 8) == 0) r = 0.0;
 
             float dist = udRoundBox(p, half_size, r);
-            if (dist > 0.5) discard;
+            // Analytic coverage ramp instead of a hard discard - see
+            // gadvanced_shader.cpp's fragment shader for why (same technique,
+            // kept consistent here so a rounded background image blitted
+            // under a rounded solid-color overlay - e.g. eListboxServiceContent's
+            // per-item background pixmap plus its selection highlight rect,
+            // which can legitimately use two different radii - doesn't show a
+            // seam where this shader's old hard edge disagreed with the
+            // other shader's soft one.
+            coverage = clamp(0.5 - dist, 0.0, 1.0);
+            if (coverage <= 0.0) discard;
         }
 
         vec4 tex_color = texture(u_texture, v_uv);
-        frag_color = vec4(tex_color.rgb, tex_color.a * u_global_alpha);
+        frag_color = vec4(tex_color.rgb, tex_color.a * u_global_alpha * coverage);
     }
 )";
 #endif
@@ -97,6 +108,8 @@ static const char *fragment_shader_es2 = R"(#version 100
     }
 
     void main() {
+        float coverage = 1.0;
+
         if (u_radius > 0.0) {
             vec2 half_size = u_rect_size.zw * 0.5;
             vec2 center = vec2(u_rect_size.x, u_rect_size.y) + half_size;
@@ -109,11 +122,14 @@ static const char *fragment_shader_es2 = R"(#version 100
             if (p.x > 0.0 && p.y > 0.0) r = u_r_br;
 
             float dist = udRoundBox(p, half_size, r);
-            if (dist > 0.5) discard;
+            // See the ES3 fragment shader above for why this is a coverage
+            // ramp instead of a hard discard.
+            coverage = clamp(0.5 - dist, 0.0, 1.0);
+            if (coverage <= 0.0) discard;
         }
 
         vec4 tex_color = texture2D(u_texture, v_uv);
-        gl_FragColor = vec4(tex_color.rgb, tex_color.a * u_global_alpha);
+        gl_FragColor = vec4(tex_color.rgb, tex_color.a * u_global_alpha * coverage);
     }
 )";
 
@@ -234,30 +250,19 @@ void gTextureShader::bind()
     glUseProgram(m_program_id);
 }
 
-void gTextureShader::bindVAO()
-{
-#if defined(HAVE_GLES3)
-    if (gles::isGLES3()) {
-        glBindVertexArray(m_vao);
-    } else
-#endif
-    {
-        glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-    }
-}
+// pos_uv (x, y, u, v) - must match init()'s VAO layout.
+static const gles::VertexAttrib texture_attribs[] = {{0, 4, 0}};
 
-void gTextureShader::unbindVAO()
+void gTextureShader::drawVertices(const float* vertex_data, int vertex_count)
 {
 #if defined(HAVE_GLES3)
-    if (gles::isGLES3()) {
-        glBindVertexArray(0);
-    } else
+    GLuint vao = m_vao;
+#else
+    GLuint vao = 0;
 #endif
-    {
-        glDisableVertexAttribArray(0);
-    }
+    gles::setVertexData(vao, m_vbo, vertex_data, (GLsizeiptr)vertex_count * 4 * sizeof(float), 4, texture_attribs, 1);
+    glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+    gles::endVertexData(texture_attribs, 1);
 }
 
 void gTextureShader::setResolution(float width, float height)
@@ -303,11 +308,7 @@ void gTextureShader::drawTexture(float x, float y, float width, float height, GL
         x + width, y + height, 1.0f, 1.0f
     };
 
-    bindVAO();
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    gles::uploadDynamicVBO(sizeof(vertices), vertices);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    unbindVAO();
+    drawVertices(vertices, 6);
 }
 
 void gTextureShader::drawBatch(const float* vertex_data, int vertex_count, GLuint texture_id, float global_alpha)
@@ -322,9 +323,5 @@ void gTextureShader::drawBatch(const float* vertex_data, int vertex_count, GLuin
     // No rounding for a batch - see the header comment on drawBatch().
     glUniform1f(m_radius_location, 0.0f);
 
-    bindVAO();
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    gles::uploadDynamicVBO((size_t)vertex_count * 4 * sizeof(float), vertex_data);
-    glDrawArrays(GL_TRIANGLES, 0, vertex_count);
-    unbindVAO();
+    drawVertices(vertex_data, vertex_count);
 }

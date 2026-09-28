@@ -1400,6 +1400,13 @@ void eListbox::setItemCornerRadiusInternal(int radius, uint8_t edges, int index)
 {
 	m_style.m_itemCornerRadius[index] = radius;
 	m_style.m_itemCornerRadiusEdges[index] = edges;
+
+	// Per-item rounding lives entirely in m_style, never in this widget's own
+	// m_cornerRadius, so eWidgetDesktop::calcWidgetClipRegion has no way to
+	// know each row's antialiased corners need a real backdrop behind them -
+	// see setNeedsBackdrop()'s comment (ewidget.h) for what goes wrong
+	// without this.
+	setNeedsBackdrop(m_style.m_itemCornerRadius[0] != 0 || m_style.m_itemCornerRadius[1] != 0);
 }
 
 void eListbox::setItemCornerRadius(int radius, uint8_t edges)

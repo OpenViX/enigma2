@@ -34,6 +34,9 @@ public:
 	bool init(int width, int height) override;
 	EGLNativeDisplayType getNativeDisplay() override;
 	bool usesPixmapSurface() const override { return true; }
+	// Proven true via a ground-truth debug swatch - see gles::needsRBSwap's
+	// comment (gles_version.h) and gshader.cpp's fragment shader.
+	bool needsRenderTargetRBSwap() const override { return true; }
 	int getPageCount() const override { return m_page_count; }
 	void* getNativePixmap(int page) override;
 	void presentPixmap(int page) override;

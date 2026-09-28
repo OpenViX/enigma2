@@ -126,22 +126,10 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, 0, 0, 0);
 	channels = png_get_channels(png_ptr, info_ptr);
 
-	// Same EGL-specific override as loadJPG() below, and for the same reason:
-	// every real caller (LoadPixmap.py) passes accel=accelAuto, so PNGs decode
-	// through here for anything from tiny skin icons up to full-size covers/
-	// posters cached locally as .png (e.g. a plugin's downloaded cover-art
-	// cache) - and unlike JPEG, PNG is also eListboxPythonMultiContent's own
-	// grid/list cell image format, so this is the actual path a grid of
-	// picons/covers loads through, not ePicLoad. A large accelAuto PNG is
-	// exactly as capable of alone exhausting the shrunk-for-EGL accel pool as
-	// a large JPEG is - accelerated CPU memory buys nothing on GLES either
-	// way, since gTextureManager textures it regardless. An explicit
-	// non-default request (accelAlways/accelNever) is left alone.
-#ifdef HAVE_EGL
-	int png_accel = (accel == gPixmap::accelAuto) ? gPixmap::accelNever : accel;
-#else
+	// PNG accel follows the exact same rule on every backend - accelAuto's
+	// own size gate (is_a_candidate_for_accel(), gpixmap.cpp) already decides
+	// whether a given image is worth accelerating; no EGL-specific override.
 	int png_accel = accel;
-#endif
 	result = new gPixmap(width, height, bit_depth * channels, cached ? PixmapCache::PixmapDisposed : NULL, png_accel);
 	result->isPNG = true;
 	gUnmanagedSurface *surface = result->surface;
@@ -475,7 +463,11 @@ int loadSVG(ePtr<gPixmap> &result, const char *filename, int cached, int width, 
 	char cachefile[strlen(filename) + 10];
 	sprintf(cachefile, "%s%d", filename, size);
 
-	if (cached && (result = PixmapCache::Get(cachefile)))
+	// See PixmapCache::Get()'s comment: `filename` (the real, on-disk path)
+	// must be passed for the staleness stat() to actually work - `cachefile`
+	// is only the lookup key, distinguishing this size/scale's rendering of
+	// this SVG from any other cached for the same file.
+	if (cached && (result = PixmapCache::Get(filename, cachefile)))
 		return 0;
 
 	NSVGimage *image = nullptr;
@@ -558,7 +550,7 @@ int loadSVG(ePtr<gPixmap> &result, const char *filename, int cached, int width, 
 	nsvgRasterizeFull(rast, image, tx, ty, xscale, yscale, (unsigned char*)result->surface->data, width, height, width * 4, 1);
 
 	if (cached)
-		PixmapCache::Set(cachefile, result);
+		PixmapCache::Set(filename, result, cachefile);
 
 	nsvgDeleteRasterizer(rast);
 	nsvgDelete(image);
