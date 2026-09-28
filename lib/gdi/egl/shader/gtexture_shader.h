@@ -37,8 +37,9 @@ private:
 	GLint m_edges_br_location;
 
 	GLuint compileShader(GLenum type, const char* source);
-	void bindVAO();
-	void unbindVAO();
+	// Feeds vertex_count vertices (x, y, u, v) through gles::setVertexData()
+	// and draws them as triangles.
+	void drawVertices(const float* vertex_data, int vertex_count);
 
 public:
 	gTextureShader();

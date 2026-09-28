@@ -20,38 +20,98 @@ namespace gles
     // 0 means not yet initialised (context not created).
     extern int version;
 
+    // True if this platform's actual display scanout reads back a render
+    // target's colors in the opposite R/B order from what GL writes - see
+    // gshader.cpp's fragment shader for the ground-truth test that proved
+    // this true on Dreambox's VC5/BEGL pixmap-surface scanout. Every shader
+    // that outputs a solid/blended color (gshader.cpp, gadvanced_shader.cpp,
+    // gtext_shader.cpp) and every texture upload that claims GL_RGBA for
+    // data that's actually BGRA in memory (gtexture_manager.cpp, gegldc.cpp's
+    // text-overlay compositing) deliberately pre-swaps to cancel that out -
+    // correct ONLY on a backend where the scanout quirk is actually present.
+    // Set once by gEGLDC::initEGL() from the window provider (see
+    // INativeWindowProvider::needsRenderTargetRBSwap()) - NOT assumed true
+    // by default, since it's a Dreambox-specific hardware quirk, not a
+    // general EGL/GLES behavior.
+    extern bool needsRBSwap;
+
     inline bool isGLES3() { return version >= 3; }
 
-    // Uploads `size` bytes into whatever GL_ARRAY_BUFFER is currently bound
-    // (every call site here binds its own m_vbo right before calling this).
-    // Prefers glMapBufferRange()'s GL_MAP_INVALIDATE_BUFFER_BIT - confirmed
-    // available on this hardware's actual driver (core GLES3, and this box's
-    // GL_EXTENSIONS also lists GL_OES_mapbuffer - see gEGLDC::tryInitEGL()'s
-    // startup log dump) - over glBufferSubData(). glBufferSubData() copies
-    // into whatever physical storage the buffer already has, which the
-    // driver must either block on (if the GPU is still reading last frame's
-    // contents from it) or silently race; GL_MAP_INVALIDATE_BUFFER_BIT tells
-    // the driver this call doesn't care about the buffer's previous contents
-    // at all, so it's free to hand back a *different* backing allocation
-    // instead of waiting - the same write-during-GPU-read hazard class as
-    // the font atlas texture upload stall already fixed elsewhere, just on
-    // the vertex-buffer side. GLES2 has no core glMapBufferRange, so it
-    // keeps using glBufferSubData() (this path is only ever a single small
-    // quad there, not worth chasing via GL_OES_mapbuffer's whole-buffer-only
-    // semantics).
-    inline void uploadDynamicVBO(GLsizeiptr size, const void* data)
+    // How per-draw vertex data reaches the GPU - see setVertexData().
+    // Set once by gEGLDC::initEGL() (ENIGMA_EGL_CLIENT_ARRAYS=0 turns it off).
+    extern bool clientArrays;
+
+    // One interleaved float attribute of a shader's vertex layout.
+    struct VertexAttrib {
+        GLuint index;
+        GLint size;       // floats
+        int offset;       // floats from the start of a vertex
+    };
+
+    // Supplies `bytes` of interleaved float vertex data (stride_floats per
+    // vertex) for the draw call(s) that follow; endVertexData() after them.
+    //
+    // Default (clientArrays): client-side arrays - no buffer object at all;
+    // the driver copies the data into its own streaming memory at draw time.
+    // Every shader here used to re-upload one small VBO many times per frame
+    // instead, and on gbquad4kpro's Broadcom driver EVERY way of modifying a
+    // buffer the current frame already drew from waits for the GPU:
+    // ENIGMA_EGL_PROFILE showed text VBO uploads at ~1ms/frame with an idle
+    // GPU but up to 19-21ms while it was busy - identically for
+    // glMapBufferRange(INVALIDATE) and for glBufferData() orphaning - and the
+    // frame's ~240-1400 other draws slowed from 9ms to 40-240ms the same way.
+    // Client arrays never touch a buffer the GPU might still be reading.
+    //
+    // Core in GLES2, and in GLES3 as long as vertex array object 0 is bound
+    // (client pointers are invalid with any other VAO), hence the explicit
+    // glBindVertexArray(0) below.
+    inline void setVertexData(GLuint vao, GLuint vbo, const float* data, GLsizeiptr bytes, int stride_floats, const VertexAttrib* attribs, int count)
     {
+        const GLsizei stride = stride_floats * (GLsizei)sizeof(float);
+        if (clientArrays) {
+#if defined(HAVE_GLES3)
+            if (isGLES3())
+                glBindVertexArray(0);
+#endif
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            for (int i = 0; i < count; ++i) {
+                glVertexAttribPointer(attribs[i].index, attribs[i].size, GL_FLOAT, GL_FALSE, stride, data + attribs[i].offset);
+                glEnableVertexAttribArray(attribs[i].index);
+            }
+            return;
+        }
+
+        // Buffer-object path, kept as the ENIGMA_EGL_CLIENT_ARRAYS=0 fallback.
 #if defined(HAVE_GLES3)
         if (isGLES3()) {
-            void* ptr = glMapBufferRange(GL_ARRAY_BUFFER, 0, size, GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
-            if (ptr) {
-                memcpy(ptr, data, (size_t)size);
-                glUnmapBuffer(GL_ARRAY_BUFFER);
-                return;
+            // The VAO holds the attribute layout (set up once in each
+            // shader's init()); GL_ARRAY_BUFFER is NOT VAO state, so it must
+            // be bound here or the upload lands in another shader's buffer.
+            glBindVertexArray(vao);
+            glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        } else
+#endif
+        {
+            glBindBuffer(GL_ARRAY_BUFFER, vbo);
+            for (int i = 0; i < count; ++i) {
+                glVertexAttribPointer(attribs[i].index, attribs[i].size, GL_FLOAT, GL_FALSE, stride, (const void*)(attribs[i].offset * sizeof(float)));
+                glEnableVertexAttribArray(attribs[i].index);
             }
-            // Map can legally fail (e.g. GL_OUT_OF_MEMORY) - fall back below.
+        }
+        glBufferData(GL_ARRAY_BUFFER, bytes, data, GL_STREAM_DRAW);
+    }
+
+    inline void endVertexData(const VertexAttrib* attribs, int count)
+    {
+#if defined(HAVE_GLES3)
+        if (isGLES3() && !clientArrays) {
+            glBindVertexArray(0);
+            return;
         }
 #endif
-        glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+        // Client pointers must not outlive the data they point into, and
+        // GLES2 re-specifies its layout per draw anyway.
+        for (int i = 0; i < count; ++i)
+            glDisableVertexAttribArray(attribs[i].index);
     }
 }

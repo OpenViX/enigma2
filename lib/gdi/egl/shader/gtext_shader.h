@@ -18,6 +18,7 @@ private:
 	GLint m_projection_location;
 	GLint m_color_location;
 	GLint m_texture_location;
+	GLint m_rbswap_location;
 
 	GLuint compileShader(GLenum type, const char* source);
 
@@ -32,15 +33,13 @@ public:
 	// (must run while this thread's EGL context is still current).
 	void destroy();
 
-	// flushTextBatch() (gegldc.cpp) builds its own batched vertex buffer
-	// across many glyphs and issues glBufferSubData()/glDrawArrays() itself -
-	// it must bracket that with bindVAO()/unbindVAO() so the correct VBO and
-	// vertex attribute layout (pos_uv + color) are active, since whatever
-	// another shader (e.g. gShader, 2 floats/vertex) last bound would
-	// otherwise still be in effect and the batch data would be
-	// misinterpreted.
-	void bindVAO();
-	void unbindVAO();
+	// flushTextBatch() (gegldc.cpp) builds its own batched glyph vertices
+	// (pos_uv + color, 8 floats each) and issues glDrawArrays() itself - it
+	// must bracket those draws with setVertexData()/endVertexData() so this
+	// shader's attribute layout is the one in effect (see
+	// gles::setVertexData()).
+	void setVertexData(const float* vertex_data, int vertex_count);
+	void endVertexData();
 
 	void setResolution(float width, float height);
 };

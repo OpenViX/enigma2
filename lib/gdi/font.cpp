@@ -646,6 +646,9 @@ int eTextPara::renderString(const char *string, int rflags, int border)
 {
 	singleLock s(ftlock);
 
+	// See m_border_width's declaration (font.h) for why this is retained.
+	m_border_width = border;
+
 	if (!current_font)
 	{
 		eWarning("[eTextPara] renderString: No current_font!");
@@ -1108,6 +1111,34 @@ void eTextPara::blit(gDC &dc, const ePoint &offset, const gRGB &cbackground, con
 			sxbase = glyph->bitmap.width;
 			sybase = glyph->bitmap.rows;
 			pitch = glyph->bitmap.pitch;
+
+			// Offer this pre-stroked glyph (FT_Glyph_Stroke, via
+			// appendGlyph()/getGlyphImage() - a real, correctly antialiased
+			// outline, not an approximation) to the same GPU atlas the
+			// plain-glyph branch below already uses, instead of always
+			// falling through to the CPU compositing loop further down.
+			// Identical bitmap either way - this only changes where it gets
+			// drawn. i->image (fill pass, border==false here) and
+			// i->borderimage (border pass, border==true) are visually
+			// different shapes for the same glyph_index, and this eTextPara's
+			// border width changes borderimage's shape too, so both go into
+			// the key below alongside the plain-glyph key's own terms -
+			// otherwise two different border widths' stroked bitmaps (or a
+			// border-pass and fill-pass bitmap for the same glyph_index)
+			// would collide on the same atlas slot. Excludes GS_INVERT for
+			// the identical reason the branch below does: invert isn't a
+			// flat color swap renderGlyph() can express (see its comment).
+			if (!(i->flags & GS_INVERT))
+			{
+				uint64_t glyph_key = (uint64_t)(uintptr_t)i->font->scaler.face_id;
+				glyph_key = glyph_key * 1000003ull ^ (uint32_t)i->font->scaler.width;
+				glyph_key = glyph_key * 1000003ull ^ (uint32_t)i->font->scaler.height;
+				glyph_key = glyph_key * 1000003ull ^ (uint32_t)i->glyph_index;
+				glyph_key = glyph_key * 1000003ull ^ (uint32_t)m_border_width;
+				glyph_key = glyph_key * 1000003ull ^ (border ? 1u : 2u);
+				if (dc.renderGlyph(ePoint(rxbase, rybase), sbase, sxbase, sybase, pitch, currentforeground, glyph_key))
+					continue;
+			}
 		}
 		else
 		{
