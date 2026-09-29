@@ -114,6 +114,17 @@ public:
 	void cleanup() override;
 	void onFramebufferUnlocked() override { clearFramebuffer(); }
 
+	// `stretch` (set in init(), see its own comment there) makes Nexus's
+	// compositor scale THIS window's authored width/height to fill the
+	// display regardless of the current output resolution - but nothing
+	// updates that authored size if the OSD canvas itself changes size
+	// after init() already ran (e.g. a skin whose resolution differs from
+	// whatever this was constructed with - see gEGLDC::setResolution()).
+	// Without this, content gets rendered for the new canvas size but
+	// Nexus keeps scaling as if the window were still its original size -
+	// every widget's position/size reads as wrong relative to the display.
+	void onResolutionChanged(int width, int height) override;
+
 	// Zeroes /dev/fb0 (fully transparent) - it's a display layer beneath this
 	// provider's window, so stale content there (ofgwrite's progress screen
 	// after a failed flash, boot leftovers) shows through transparent OSD.

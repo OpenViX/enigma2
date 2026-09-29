@@ -72,6 +72,29 @@ private:
 	bool createShadowFramebuffer();
 	void destroyShadowFramebuffer();
 
+	// setResolution() (below) is called directly from Python (skin.py,
+	// PicturePlayer, VideoFinetune) on the main thread, but actually
+	// applying a resolution change touches GL/EGL state (shader projection
+	// matrices, the shadow FBO's texture size, the native window's own
+	// authored size) that's only ever valid to touch from gRC's render
+	// thread - the only thread that ever makes the EGL context current (see
+	// cleanupEGL()'s own comment on this same rule). Doing any of that
+	// directly in setResolution() was a silent no-op at best (GL calls
+	// issued with no context current on that thread) - confirmed as why a
+	// 2560x1440 skin rendered with completely wrong sizes/positions while
+	// 1080p ones worked fine: this canvas's *construction-time* size comes
+	// from fbClass's boot-time mode (see egl_init.cpp), which commonly
+	// happens to already be 1920x1080 - so a 1080p skin's setResolution()
+	// call matched it and hit the early-return guard, never exercising this
+	// path at all; anything else actually ran it, on the wrong thread.
+	// setResolution() now only records the request; applyPendingResolutionChange()
+	// - called from the top of flip(), on the render thread - does the real
+	// work, at most one frame later.
+	bool m_pending_resolution_change = false;
+	int m_pending_width = 0;
+	int m_pending_height = 0;
+	void applyPendingResolutionChange();
+
 	// External screenshot support (aio-grab) - see gosd_capture.h. Only
 	// started for window-surface providers: on a pixmap-surface provider
 	// (Dreambox) the OSD already IS /dev/fb0 memory and aio-grab's own

@@ -56,11 +56,17 @@ bool GbquadWindowProvider::init(int width, int height) {
 	windowInfo.x = 0;
 	windowInfo.y = 0;
 
-	// width/height above are enigma2's fixed OSD/skin canvas (its own gEGLDC
-	// constructor comment) - NOT the current HDMI/video-mode resolution, and
-	// nothing ever calls NXPL_UpdateNativeWindowEXT() to change them when the
-	// video mode changes later (VideoWizard/VideoSetup only ever write to
-	// /proc/stb/video/videomode_*, see Components/AVSwitch.py's setMode()).
+	// width/height above are enigma2's OSD/skin canvas size (its own gEGLDC
+	// constructor comment) - NOT the current HDMI/video-mode resolution.
+	// Nothing calls NXPL_UpdateNativeWindowEXT() when the actual video mode
+	// changes later (VideoWizard/VideoSetup only ever write to
+	// /proc/stb/video/videomode_*, see Components/AVSwitch.py's setMode()) -
+	// `stretch` below is what makes that a non-issue, letting Nexus rescale
+	// to whatever the display's current mode is on its own. The OSD canvas
+	// SIZE itself (this window's own authored width/height) is a separate
+	// thing and does change later, if the loaded skin's resolution differs
+	// from whatever this was first constructed with (see
+	// gEGLDC::setResolution()) - see onResolutionChanged() below for that.
 	// Without this, NXPL_GetDefaultNativeWindowInfoEXT()'s default (false,
 	// confirmed by reading default_nexus.h - see this struct's own comment)
 	// leaves Nexus's compositor showing this window's canvas pixel-for-pixel
@@ -109,6 +115,27 @@ bool GbquadWindowProvider::init(int width, int height) {
 
 	eDebug("[GbquadWindowProvider] init %dx%d - Nexus joined, display platform registered, native window shown", width, height);
 	return true;
+}
+
+void GbquadWindowProvider::onResolutionChanged(int width, int height) {
+	if (!m_native_window)
+		return;
+
+	// Same struct/fields as init()'s own NXPL_CreateNativeWindowEXT() call -
+	// NXPL_GetDefaultNativeWindowInfoEXT() resets stretch to its own default
+	// (false, per that call's own comment), so it must be set true again
+	// here too, or this update would silently undo the earlier fix for
+	// oversized-at-lower-output-resolution rendering.
+	NXPL_NativeWindowInfoEXT windowInfo;
+	NXPL_GetDefaultNativeWindowInfoEXT(&windowInfo);
+	windowInfo.width = (uint32_t)width;
+	windowInfo.height = (uint32_t)height;
+	windowInfo.x = 0;
+	windowInfo.y = 0;
+	windowInfo.stretch = true;
+
+	NXPL_UpdateNativeWindowEXT(m_native_window, &windowInfo);
+	eDebug("[GbquadWindowProvider] native window resized to %dx%d", width, height);
 }
 
 void GbquadWindowProvider::clearFramebuffer() {

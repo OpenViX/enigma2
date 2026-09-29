@@ -82,6 +82,17 @@ public:
 	// Default no-op.
 	virtual void onFramebufferUnlocked() {}
 
+	// Called from gEGLDC::applyPendingResolutionChange() (render thread,
+	// EGL context current) when the OSD canvas's resolution changes after
+	// this provider's window/pixmap was already created (see
+	// gEGLDC::setResolution()) - lets a provider whose native window was
+	// given a fixed authored size at creation (e.g. GbquadWindowProvider,
+	// which tells Nexus's compositor to scale that fixed size to fill the
+	// display) update it to match. Default no-op - a provider whose window
+	// naturally tracks this canvas's size some other way (or that only ever
+	// runs at one fixed resolution) needs nothing here.
+	virtual void onResolutionChanged(int width, int height) {}
+
 	// Cleans up platform-specific resources.
 	virtual void cleanup() = 0;
 };

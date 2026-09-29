@@ -2,7 +2,7 @@ from os import listdir
 from os.path import join, normpath, isdir
 from re import compile
 
-from enigma import ePixmap, eServiceCenter, eServiceReference, iServiceInformation, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_HALIGN_CENTER, BT_VALIGN_CENTER
+from enigma import ePixmap, eServiceCenter, eServiceReference, eTimer, iServiceInformation, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_HALIGN_CENTER, BT_VALIGN_CENTER
 
 from Components.config import config
 from Components.Harddisk import harddiskmanager
@@ -165,12 +165,23 @@ def getPiconName(serviceRef):
 
 
 class Picon(Renderer):
+	# Loading and decoding a picon PNG (cache miss: disk read + decode; cache
+	# hit: still a GPU texture re-upload via ePixmap::setPixmapFromFile, see
+	# gTextureManager) happens synchronously on the UI thread. Without this
+	# delay, holding down the channel-list cursor key fires changed() once per
+	# row scrolled past, each one blocking a frame - this settle delay means
+	# only the row the cursor actually stops on ever gets loaded.
+	LOAD_DELAY_MS = 150
+
 	def __init__(self):
 		Renderer.__init__(self)
 		self.pngname = None
+		self.pendingPngname = None
 		self.defaultpngname = resolveFilename(SCOPE_CURRENT_SKIN, "picon_default.png")
 		if not pathExists(self.defaultpngname):
 			self.defaultpngname = ""
+		self.loadTimer = eTimer()
+		self.loadTimer.callback.append(self.applyPendingPicon)
 
 	def applySkin(self, desktop, parent):
 		attribs = []
@@ -190,14 +201,33 @@ class Picon(Renderer):
 		if self.instance:
 			if what[0] in (self.CHANGED_DEFAULT, self.CHANGED_ALL, self.CHANGED_SPECIFIC):
 				pngname = piconLocator.getPiconName(self.source.text) or self.defaultpngname
-				if self.pngname != pngname:
-					if pngname:
-						self.instance.setPixmapScaleFlags(BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER)
-						self.instance.setPixmapFromFile(pngname)
-						self.instance.show()
+				if self.pendingPngname != pngname:
+					self.pendingPngname = pngname
+					if self.pngname is None:
+						# first picon since this widget was created (e.g. screen
+						# just opened) - show it immediately, only debounce
+						# subsequent rapid changes (key-repeat scrolling)
+						self.loadTimer.stop()
+						self.applyPendingPicon()
 					else:
-						self.instance.hide()
-					self.pngname = pngname
+						self.loadTimer.start(self.LOAD_DELAY_MS, True)
 			elif what[0] == self.CHANGED_CLEAR:
+				self.loadTimer.stop()
 				self.pngname = None
+				self.pendingPngname = None
 				self.instance.hide()
+
+	def applyPendingPicon(self):
+		pngname = self.pendingPngname
+		if not self.instance or self.pngname == pngname:
+			return
+		if pngname:
+			self.instance.setPixmapScaleFlags(BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_HALIGN_CENTER | BT_VALIGN_CENTER)
+			self.instance.setPixmapFromFile(pngname)
+			self.instance.show()
+		else:
+			self.instance.hide()
+		self.pngname = pngname
+
+	def preWidgetRemove(self, instance):
+		self.loadTimer.stop()
