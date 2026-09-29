@@ -301,20 +301,7 @@ bool gEGLDC::initEGL() {
 
 	// 7. basic GL state
 	glViewport(0, 0, m_width, m_height);
-
-	// 0, not 1: every ENIGMA_EGL_PROFILE log gathered on real gbquad4kpro
-	// hardware showed present= (this call's own cost - eglSwapBuffers() in
-	// flip()) already well under one vsync period (mostly a few ms, rarely
-	// ~9ms, never close to ~16.6ms@60Hz/20ms@50Hz) - i.e. it was NOT
-	// actually vsync-blocking in practice, so 1 wasn't buying real tear
-	// protection here to begin with, only latency. This is the Nexus/NXPL
-	// window-surface path (only gbquad4kpro; Dreambox's pixmap-surface path
-	// never calls eglSwapInterval at all) - Nexus's own display compositor
-	// is expected to vsync-gate the actual scanout independently of our own
-	// EGL swap, same as it already handles composing/scaling this window
-	// (see GbquadWindowProvider::init()'s windowInfo.stretch). NOT
-	// confirmed tear-free on device - if tearing appears, revert to 1.
-	eglSwapInterval(m_egl_display, 0);
+	eglSwapInterval(m_egl_display, 1);
 
 	// GL_BLEND and GL_SCISSOR_TEST are left enabled for the lifetime of the
 	// context instead of being toggled on/off around every single opcode -
