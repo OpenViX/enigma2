@@ -966,7 +966,12 @@ int eListbox::event(int event, void *data, void *data2)
 			}
 
 			// clear/repaint empty/unused space between scrollbar and listboxentrys
-			if (m_scrollbar_mode == showLeft)
+			// (not for transparent listboxes, the gap must show what is behind)
+			if (isTransparent())
+			{
+				// nothing to repaint
+			}
+			else if (m_scrollbar_mode == showLeft)
 			{
 				if (m_scrollbar)
 				{
