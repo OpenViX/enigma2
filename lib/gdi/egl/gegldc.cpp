@@ -301,7 +301,20 @@ bool gEGLDC::initEGL() {
 
 	// 7. basic GL state
 	glViewport(0, 0, m_width, m_height);
-	eglSwapInterval(m_egl_display, 1);
+
+	// 0, not 1: every ENIGMA_EGL_PROFILE log gathered on real gbquad4kpro
+	// hardware showed present= (this call's own cost - eglSwapBuffers() in
+	// flip()) already well under one vsync period (mostly a few ms, rarely
+	// ~9ms, never close to ~16.6ms@60Hz/20ms@50Hz) - i.e. it was NOT
+	// actually vsync-blocking in practice, so 1 wasn't buying real tear
+	// protection here to begin with, only latency. This is the Nexus/NXPL
+	// window-surface path (only gbquad4kpro; Dreambox's pixmap-surface path
+	// never calls eglSwapInterval at all) - Nexus's own display compositor
+	// is expected to vsync-gate the actual scanout independently of our own
+	// EGL swap, same as it already handles composing/scaling this window
+	// (see GbquadWindowProvider::init()'s windowInfo.stretch). NOT
+	// confirmed tear-free on device - if tearing appears, revert to 1.
+	eglSwapInterval(m_egl_display, 0);
 
 	// GL_BLEND and GL_SCISSOR_TEST are left enabled for the lifetime of the
 	// context instead of being toggled on/off around every single opcode -
@@ -1318,6 +1331,22 @@ void gEGLDC::compositeTextOverlay(eRect area, bool trueAlphaBlend) {
 }
 
 void gEGLDC::enableSpinner() {
+	// gDC::enableSpinner() (grc.cpp) is about to do
+	// "m_spinner_saved->blit(*m_pixmap, ...)" to remember what's under the
+	// spinner for every later restore - written for a backend where
+	// m_pixmap IS the real displayed framebuffer (gFBDC), so that blit
+	// captures genuine on-screen pixels there. Not true here (see this
+	// class's constructor: m_pixmap is only ever a CPU staging buffer for
+	// text on this backend) - without first overwriting m_pixmap's spinner
+	// rect with a real GPU readback, that save captures whatever m_pixmap
+	// already held there (normally nothing, fully transparent), and every
+	// later destructive composite (see compositeTextOverlay(..., false)
+	// below and in incrementSpinner()/disableSpinner() - the deliberate fix
+	// for the spinner otherwise ghosting between frames) paints that
+	// emptiness straight over the real screen: the spinner appeared to
+	// punch a transparent hole through whatever was on screen instead of
+	// animating over it. See captureBackgroundIntoPixmap()'s own comment.
+	captureBackgroundIntoPixmap(m_spinner_pos);
 	gDC::enableSpinner();
 	// m_spinner_pos is a screen-absolute rect (the spinner is a global
 	// overlay, not part of any widget's offset-relative coordinate space),
@@ -1326,10 +1355,11 @@ void gEGLDC::enableSpinner() {
 	//
 	// false, not the default true - see disableSpinner()'s comment. This
 	// first frame's m_pixmap content is already the full background+icon
-	// composite (gDC::enableSpinner() just built it), not translucent
-	// content to layer over whatever the GPU target previously held there,
-	// so it needs the same unconditional-overwrite blend disableSpinner()
-	// and incrementSpinner() use.
+	// composite (gDC::enableSpinner() just built it, from the real
+	// background captureBackgroundIntoPixmap() just seeded it with), not
+	// translucent content to layer over whatever the GPU target previously
+	// held there, so it needs the same unconditional-overwrite blend
+	// disableSpinner() and incrementSpinner() use.
 	compositeTextOverlay(m_spinner_pos, false);
 }
 
@@ -1865,6 +1895,85 @@ void gEGLDC::serviceOsdCapture() {
 		return;
 	}
 	m_osd_capture.complete(pixels, width, height, gles::needsRBSwap);
+}
+
+// Reads back `rect` (clamped to the canvas) from whichever framebuffer
+// object currently holds this backend's real, presented content (same
+// shadow-FBO-or-0 selection as serviceOsdCapture() above) and writes it into
+// m_pixmap's own buffer at that exact rect, as top-down BGRA - m_pixmap's
+// byte convention regardless of gles::needsRBSwap (see compositeTextOverlay()'s
+// comment: the format token passed to glTexSubImage2D is what varies, not
+// the bytes' own order).
+//
+// Used by enableSpinner() (see its own comment) to give gDC's base-class
+// spinner save/restore logic (grc.cpp: enableSpinner()/incrementSpinner()/
+// disableSpinner(), all written for a backend where m_pixmap IS the real
+// displayed framebuffer - true for gFBDC, NOT for this one, see the
+// constructor's accelNever comment) something real to save. Without this,
+// m_spinner_saved captured whatever m_pixmap already held under the
+// spinner's rect - normally nothing (fully transparent), since this backend
+// only ever writes into m_pixmap via CPU-fallback text - so every
+// subsequent destructive composite (compositeTextOverlay(..., false), the
+// deliberate fix for the spinner icon otherwise ghosting/never fully
+// erasing between frames - see incrementSpinner()'s own comment) painted
+// that emptiness straight over the real GPU surface: the spinner appeared
+// to punch a transparent hole through whatever was on screen instead of
+// animating over it.
+void gEGLDC::captureBackgroundIntoPixmap(const eRect& rect) {
+	// Shouldn't be anything pending at this idle-loop call site (see the
+	// call site's comment), but a queued-and-not-yet-drawn batch would
+	// otherwise be invisible to the glReadPixels() below - cheap to guard
+	// unconditionally, same as every other GPU-state-reading spot in this
+	// file (e.g. compositeTextOverlay()'s own opening lines).
+	flushBlitBatch();
+	flushTextBatch();
+
+	const int pw = m_pixmap->size().width();
+	const int ph = m_pixmap->size().height();
+	const int left = std::max(0, rect.left());
+	const int top = std::max(0, rect.top());
+	const int right = std::min(pw, rect.left() + rect.width());
+	const int bottom = std::min(ph, rect.top() + rect.height());
+	const int w = right - left;
+	const int h = bottom - top;
+	if (w <= 0 || h <= 0)
+		return;
+
+	while (glGetError() != GL_NO_ERROR) {
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, m_use_shadow_fbo ? m_shadow_fbo : 0);
+
+	std::vector<uint8_t> pixels((size_t)w * (size_t)h * 4U);
+	glPixelStorei(GL_PACK_ALIGNMENT, 4);
+	// glReadPixels' y is measured from the BOTTOM of the framebuffer (GL
+	// convention) - m_height (the real GPU canvas), not ph (m_pixmap can
+	// briefly differ right after setResolution(), see there).
+	glReadPixels(left, m_height - top - h, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+
+	if (glGetError() != GL_NO_ERROR) {
+		eDebug("[gEGLDC] spinner background capture failed");
+		return; // m_pixmap keeps whatever it already held there - see call site
+	}
+
+	// Bottom-up GL rows -> top-down, and RGBA -> BGRA when this platform's
+	// render target isn't already pre-swapped - same conversion as
+	// gEGLOSDCapture::capture() (gosd_capture.cpp), which this mirrors.
+	uint8_t* dst_base = (uint8_t*)m_pixmap->surface->data;
+	const int dst_stride = pw * 4; // tightly packed - see clearOverlayArea()'s comment
+	const size_t row_bytes = (size_t)w * 4U;
+	for (int row = 0; row < h; ++row) {
+		const uint8_t* src_row = pixels.data() + (size_t)(h - 1 - row) * row_bytes;
+		uint8_t* dst_row = dst_base + (size_t)(top + row) * dst_stride + (size_t)left * 4;
+		memcpy(dst_row, src_row, row_bytes);
+	}
+	if (!gles::needsRBSwap) {
+		for (int row = 0; row < h; ++row) {
+			uint8_t* dst_row = dst_base + (size_t)(top + row) * dst_stride + (size_t)left * 4;
+			for (int x = 0; x < w; ++x)
+				std::swap(dst_row[x * 4 + 0], dst_row[x * 4 + 2]);
+		}
+	}
 }
 
 void gEGLDC::flip() {
