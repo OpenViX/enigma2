@@ -79,6 +79,10 @@ private:
 	gEGLOSDCapture m_osd_capture;
 	void serviceOsdCapture();
 
+	// GPU readback into m_pixmap - see its definition (gegldc.cpp, right
+	// after serviceOsdCapture()) for why enableSpinner() needs this.
+	void captureBackgroundIntoPixmap(const eRect& rect);
+
 	// fbClass lock (ofgwrite's Mode 2 flash, see ImageManager.py) on a
 	// window-surface platform: the window surface is a separate layer
 	// composited ABOVE /dev/fb0, so ofgwrite's progress screen - drawn into
