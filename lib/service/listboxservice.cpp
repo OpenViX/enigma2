@@ -598,6 +598,68 @@ void eListboxServiceContent::setSize(const eSize &size)
 		setVisualMode(m_visual_mode);
 }
 
+bool eListboxServiceContent::getCachedEvent(const eServiceReference &ref, iStaticServiceInformation *service_info, time_t now, ePtr<eServiceEvent> &evt, ePtr<eServiceEvent> &evt_next)
+{
+	std::map<eServiceReference, EventCacheEntry>::iterator it = m_event_cache.find(ref);
+	if (it != m_event_cache.end() && now < it->second.validUntil)
+	{
+		evt = it->second.evt;
+		evt_next = it->second.evt_next;
+		return it->second.hasEvent;
+	}
+
+	EventCacheEntry entry;
+	entry.hasEvent = service_info && !service_info->getEvent(ref, entry.evt);
+	entry.validUntil = now + 60; // no event / lookup unavailable - avoid hammering this every repaint, recheck in a minute
+	if (entry.hasEvent)
+	{
+		time_t begin = entry.evt->getBeginTime();
+		time_t duration = entry.evt->getDuration();
+		entry.validUntil = (begin > 0 && duration > 0 && begin + duration > now) ? (begin + duration) : (now + 60);
+		if (m_has_next_event && begin > 0)
+			service_info->getEvent(ref, entry.evt_next, begin + duration);
+	}
+
+	m_event_cache[ref] = entry;
+	evt = entry.evt;
+	evt_next = entry.evt_next;
+	return entry.hasEvent;
+}
+
+void eListboxServiceContent::getPiconPixmap(const eServiceReference &ref, int width, ePtr<gPixmap> &pixmap, bool &isSVG)
+{
+	std::map<eServiceReference, PiconCacheEntry>::iterator it = m_picon_cache.find(ref);
+	if (it != m_picon_cache.end())
+	{
+		pixmap = it->second.pixmap;
+		isSVG = it->second.isSVG;
+		return;
+	}
+
+	PiconCacheEntry entry;
+	entry.isSVG = false;
+	ePyObject pArgs = PyTuple_New(1);
+	PyTuple_SET_ITEM(pArgs, 0, PyUnicode_FromString(ref.toString().c_str()));
+	ePyObject pRet = PyObject_CallObject(m_GetPiconNameFunc, pArgs);
+	Py_DECREF(pArgs);
+	if (pRet)
+	{
+		if (PyUnicode_Check(pRet))
+		{
+			std::string piconFilename = PyUnicode_AsUTF8(pRet);
+			if (endsWith(piconFilename, ".svg"))
+				entry.isSVG = true;
+			if (!piconFilename.empty())
+				loadImage(entry.pixmap, piconFilename.c_str(), 0, entry.isSVG ? width : 0);
+		}
+		Py_DECREF(pRet);
+	}
+
+	m_picon_cache[ref] = entry;
+	pixmap = entry.pixmap;
+	isSVG = entry.isSVG;
+}
+
 void eListboxServiceContent::setGetPiconNameFunc(ePyObject func)
 {
 	if (m_GetPiconNameFunc)
@@ -865,7 +927,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 
 		std::string event_name = "", next_event_name = "";
 		int event_begin = 0, event_duration = 0, xlpos = m_itemsize.width(), ctrlHeight=m_itemheight, yoffs=0, yoffs_orig=0;
-		bool is_event = isPlayable && service_info && !service_info->getEvent(ref, evt);
+		bool is_event = isPlayable && service_info && getCachedEvent(ref, service_info, now, evt, evt_next);
 		if (m_visual_mode == visSkinDefined) {
 			if (is_event){
 				event_name = evt->getEventName();
@@ -953,25 +1015,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 			bool isPIconSVG = false;
 			bool hasPicon = PyCallable_Check(m_GetPiconNameFunc);
 			if (isPlayable && hasPicon)
-			{
-				ePyObject pArgs = PyTuple_New(1);
-				PyTuple_SET_ITEM(pArgs, 0, PyUnicode_FromString(ref.toString().c_str()));
-				ePyObject pRet = PyObject_CallObject(m_GetPiconNameFunc, pArgs);
-				Py_DECREF(pArgs);
-				if (pRet)
-				{
-					if (PyUnicode_Check(pRet))
-					{
-						std::string piconFilename = PyUnicode_AsUTF8(pRet);
-						if (endsWith(piconFilename, ".svg")) {
-							isPIconSVG = true;
-						}
-						if (!piconFilename.empty())
-							loadImage(piconPixmap, piconFilename.c_str(), 0, isPIconSVG ? 125 : 0);
-					}
-					Py_DECREF(pRet);
-				}
-			}
+				getPiconPixmap(ref, 125, piconPixmap, isPIconSVG);
 			xoffs = xoffset + 16;
 
 			if (hasPicon)
@@ -1081,7 +1125,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				event_duration = evt->getDuration();
 				int timeLeft = event_begin + event_duration - now;
 				eRect progressBarRect = m_element_position[celServiceEventProgressbar];
-				if (m_has_next_event && event_begin > 0 && !service_info->getEvent(*m_cursor, evt_next, (event_begin + event_duration)))
+				if (m_has_next_event && evt_next)
 					next_event_name = evt_next->getEventName();
 
 				if (!event_name.empty())
@@ -1389,25 +1433,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				bool isPIconSVG = false;
 				int piconWidth = m_itemheight*1.67;
 				if (isPlayable && hasPicons)
-				{
-					ePyObject pArgs = PyTuple_New(1);
-					PyTuple_SET_ITEM(pArgs, 0, PyUnicode_FromString(ref.toString().c_str()));
-					ePyObject pRet = PyObject_CallObject(m_GetPiconNameFunc, pArgs);
-					Py_DECREF(pArgs);
-					if (pRet)
-					{
-						if (PyUnicode_Check(pRet))
-						{
-							std::string piconFilename = PyUnicode_AsUTF8(pRet);
-							if (endsWith(piconFilename, ".svg")) {
-								isPIconSVG = true;
-							}
-							if (!piconFilename.empty())
-								loadImage(piconPixmap, piconFilename.c_str(), 0, isPIconSVG ? piconWidth : 0);
-						}
-						Py_DECREF(pRet);
-					}
-				}
+					getPiconPixmap(ref, piconWidth, piconPixmap, isPIconSVG);
 
 				if (hasPicons) {
 					int piconH = m_itemheight - 2 * m_picon_margin;

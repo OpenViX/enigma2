@@ -4,7 +4,9 @@
 #include <lib/gdi/gpixmap.h>
 #include <lib/gui/elistbox.h>
 #include <lib/service/iservice.h>
+#include <lib/service/event.h>
 #include <lib/python/python.h>
+#include <map>
 #include <set>
 
 class eListboxServiceContent: public virtual iListboxContent
@@ -176,6 +178,36 @@ protected:
 
 		/* the following functions always refer to the selected item */
 	void paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected);
+
+	// paint() re-resolves and reloads every visible row's picon on every
+	// repaint (e.g. once per scrolled step, for every row still on screen,
+	// not just the one that changed) - the Python getPiconName() round-trip
+	// and loadImage() lookup are both redone even for rows whose service
+	// hasn't changed since the last paint. This cache makes that a single
+	// lookup by service reference after the first paint of a given row.
+	struct PiconCacheEntry {
+		ePtr<gPixmap> pixmap;
+		bool isSVG;
+	};
+	std::map<eServiceReference, PiconCacheEntry> m_picon_cache;
+	void getPiconPixmap(const eServiceReference &ref, int width, ePtr<gPixmap> &pixmap, bool &isSVG);
+
+	// Same story as the picon cache above, for the per-row "now"/"next" event
+	// lookup (service_info->getEvent()): every repaint re-queries and
+	// re-parses the EPG event for every visible row, even though the result
+	// can only actually change when the "now" event ends. Cached per service
+	// reference and revalidated against the cached event's own begin/end
+	// time (not a fixed poll interval) - a repaint mid-event is a pure map
+	// lookup, and the moment the cached event's end time is reached, the
+	// next repaint naturally re-queries and picks up the new one.
+	struct EventCacheEntry {
+		bool hasEvent;
+		ePtr<eServiceEvent> evt;
+		ePtr<eServiceEvent> evt_next;
+		time_t validUntil;
+	};
+	std::map<eServiceReference, EventCacheEntry> m_event_cache;
+	bool getCachedEvent(const eServiceReference &ref, iStaticServiceInformation *service_info, time_t now, ePtr<eServiceEvent> &evt, ePtr<eServiceEvent> &evt_next);
 
 	int m_visual_mode;
 		/* for complex mode */

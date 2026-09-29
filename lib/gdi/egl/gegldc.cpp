@@ -1770,17 +1770,56 @@ void gEGLDC::setResolution(int xres, int yres, int bpp) {
 
 	m_width = xres;
 	m_height = yres;
-	// See the constructor for why accelNever is required here.
+	// See the constructor for why accelNever is required here. Safe to do
+	// immediately (unlike the GL/EGL work below) - plain CPU allocation, no
+	// GL context needed.
 	m_pixmap = new gPixmap(eSize(xres, yres), bpp, gPixmap::accelNever);
-	// The new pixmap has no gl_texture_id and no content yet - any area
-	// tracked from the old one is meaningless now.
+
+	// See m_pending_resolution_change's comment (gegldc.h) for why the rest
+	// of this can't happen here: it's GL/EGL work, only valid on gRC's
+	// render thread, which this call (from Python - skin.py/PicturePlayer/
+	// VideoFinetune) is not running on. applyPendingResolutionChange(),
+	// called from the top of flip(), does it instead.
+	m_pending_width = xres;
+	m_pending_height = yres;
+	m_pending_resolution_change = true;
+}
+
+void gEGLDC::applyPendingResolutionChange() {
+	if (!m_pending_resolution_change)
+		return;
+	m_pending_resolution_change = false;
+
+	// The new pixmap (already swapped in by setResolution()) has no
+	// gl_texture_id and no content yet - any area tracked from the old one
+	// is meaningless now.
 	m_text_overlay_region = gRegion();
 
 	if (isInitialized()) {
-		m_basic_shader.setResolution((float)m_width, (float)m_height);
-		m_texture_shader.setResolution((float)m_width, (float)m_height);
-		m_text_shader.setResolution((float)m_width, (float)m_height);
+		m_basic_shader.setResolution((float)m_pending_width, (float)m_pending_height);
+		m_advanced_shader.setResolution((float)m_pending_width, (float)m_pending_height);
+		m_texture_shader.setResolution((float)m_pending_width, (float)m_pending_height);
+		m_text_shader.setResolution((float)m_pending_width, (float)m_pending_height);
 	}
+
+	// m_shadow_fbo/m_shadow_texture were sized for whatever resolution was
+	// current when createShadowFramebuffer() first ran (initEGL(), against
+	// this canvas's construction-time size - see egl_init.cpp) and never
+	// resized since. Recreate at the new size, same as initEGL() does the
+	// first time.
+	if (m_use_shadow_fbo) {
+		destroyShadowFramebuffer();
+		if (!createShadowFramebuffer())
+			eDebug("[gEGLDC] failed to recreate shadow framebuffer at %dx%d after resolution change.", m_pending_width, m_pending_height);
+	}
+
+	// Nexus (or whichever platform's provider this is) needs to be told its
+	// window's own authored size changed too - see
+	// GbquadWindowProvider::onResolutionChanged() for why (stretch scales
+	// to whatever size Nexus was last told, not this canvas's actual
+	// current size).
+	if (m_window_provider)
+		m_window_provider->onResolutionChanged(m_pending_width, m_pending_height);
 }
 
 bool gEGLDC::gpuCopyPageContent(int from, int to) {
@@ -1968,6 +2007,11 @@ void gEGLDC::flip() {
 	double prof_blit_ms = 0, prof_present_ms = 0;
 	if (m_profile)
 		prof_t0 = std::chrono::steady_clock::now();
+
+	// See m_pending_resolution_change's comment (gegldc.h) - must run before
+	// anything else below touches m_shadow_fbo/the shaders/the native
+	// window, all of which this may just have resized/recreated.
+	applyPendingResolutionChange();
 
 	if (m_osd_capture.isPending() && isInitialized())
 		serviceOsdCapture();
