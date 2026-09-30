@@ -218,6 +218,20 @@ bool gEGLDC::tryInitEGL(int version) {
 		const char* gl_ext = (const char*)glGetString(GL_EXTENSIONS);
 		eDebug("[gEGLDC] EGL_EXTENSIONS: %s", egl_ext ? egl_ext : "(null)");
 		eDebug("[gEGLDC] GL_EXTENSIONS: %s", gl_ext ? gl_ext : "(null)");
+
+		// Probe for buffer-age / damage support the driver might implement
+		// without advertising it (only the SDK headers declare these).
+		EGLint age = -1;
+		EGLBoolean age_ok = eglQuerySurface(m_egl_display, m_egl_surfaces[0], 0x313D /* EGL_BUFFER_AGE_KHR */, &age);
+		eDebug("[gEGLDC] probe: eglQuerySurface(EGL_BUFFER_AGE) ok=%d age=%d err=0x%x", (int)age_ok, (int)age, age_ok ? 0 : eglGetError());
+		eDebug("[gEGLDC] probe: eglSwapBuffersWithDamageKHR=%p eglSwapBuffersWithDamageEXT=%p eglSetDamageRegionKHR=%p eglPostSubBufferNV=%p",
+			(void*)eglGetProcAddress("eglSwapBuffersWithDamageKHR"), (void*)eglGetProcAddress("eglSwapBuffersWithDamageEXT"),
+			(void*)eglGetProcAddress("eglSetDamageRegionKHR"), (void*)eglGetProcAddress("eglPostSubBufferNV"));
+
+		const char* inv_env = getenv("ENIGMA_EGL_BLIT_INVALIDATE");
+		m_blit_invalidate = inv_env && atoi(inv_env) != 0;
+		if (m_blit_invalidate)
+			eDebug("[gEGLDC] shadow blit will glInvalidateFramebuffer() the window surface first (ENIGMA_EGL_BLIT_INVALIDATE)");
 	}
 
 	return true;
@@ -420,7 +434,29 @@ void gEGLDC::setAlphaBlendMode(bool trueAlphaBlend) {
 		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 }
 
+// Diagnostic ONLY: ENIGMA_EGL_SKIP_DRAW=fill,rect,blit,text (any subset) makes
+// that class of draw a no-op, so combined with ENIGMA_EGL_PROFILE_FINISH the
+// drop in the logged GPU drain time attributes the frame's GPU cost to it. The
+// screen renders wrongly by design - never ship it enabled.
+enum { SKIP_FILL = 1, SKIP_RECT = 2, SKIP_BLIT = 4, SKIP_TEXT = 8 };
+static unsigned skipDrawMask() {
+	static const unsigned mask = []() {
+		unsigned m = 0;
+		if (const char* e = getenv("ENIGMA_EGL_SKIP_DRAW")) {
+			if (strstr(e, "fill")) m |= SKIP_FILL;
+			if (strstr(e, "rect")) m |= SKIP_RECT;
+			if (strstr(e, "blit")) m |= SKIP_BLIT;
+			if (strstr(e, "text")) m |= SKIP_TEXT;
+			eDebug("[gEGLDC] DIAGNOSTIC skip-draw mask=%u (from ENIGMA_EGL_SKIP_DRAW=%s) - display will be wrong", m, e);
+		}
+		return m;
+	}();
+	return mask;
+}
+
 void gEGLDC::drawFlatRects(const gRegion& clip, float r, float g, float b, float a) {
+	if (skipDrawMask() & SKIP_FILL)
+		return;
 	unsigned int count = clip.rects.size();
 	if (count == 0)
 		return;
@@ -516,7 +552,7 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 	// below, which grc.cpp's equivalent also reaches unconditionally since
 	// the reset there runs after gPixmap::drawRectangle() regardless of
 	// whether that call's region ended up empty).
-	if (m_current_clip.rects.empty()) {
+	if (m_current_clip.rects.empty() || (skipDrawMask() & SKIP_RECT)) {
 		m_border_width = 0;
 		m_radius = 0;
 		m_radius_edges = 0;
@@ -572,26 +608,203 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 		const float alpha = 1.0f - (m_background_color_rgb.a / 255.0f);
 		auto drawPass = [&](bool coverage_alpha) {
 			for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
+				if (m_profile) {
+					const eRect& cr = m_current_clip.rects[i];
+					float ix = std::max(0.0f, std::min((float)(cr.left() + cr.width()), x + w) - std::max((float)cr.left(), x));
+					float iy = std::max(0.0f, std::min((float)(cr.top() + cr.height()), y + h) - std::max((float)cr.top(), y));
+					m_prof.rect_adv_draws++;
+					m_prof.rect_adv_mpx += (double)ix * iy / 1e6;
+				}
 				setGlScissor(m_current_clip.rects[i]);
 				m_advanced_shader.drawAdvancedRect(x, y, w, h, m_radius, m_radius_edges, m_gradient_colors, m_gradient_orientation, m_gradient_alphablend > 0, alpha,
 												   m_background_color_rgb, m_border_width, m_border_color, coverage_alpha);
 			}
 		};
 
-		if (accumulate || opaque) {
-			setAlphaBlendMode(true);
-			drawPass(false);
+		// Fast path (ENIGMA_EGL_RECT_FASTPATH=0 disables, for A/B): profiling
+		// on gbquad4kpro (advShadedMpx vs GPU drain time) showed the advanced
+		// shader costs ~10ns/pixel, and translucent rounded/gradient panels
+		// run it over their whole area (twice) although coverage is exactly 1
+		// everywhere except the corner squares. Instead: the interior
+		// (everything outside the rounded corners' r x r squares) is drawn
+		// with the cheap flat shader, its colour - solid or piecewise-linear
+		// gradient, which vertex-colour interpolation reproduces exactly -
+		// baked into the vertices; only the corner squares still go through
+		// the advanced shader. Borders, degenerate gradients and radii larger
+		// than half the rect keep the original path.
+		static const bool s_rect_fastpath = !(getenv("ENIGMA_EGL_RECT_FASTPATH") && atoi(getenv("ENIGMA_EGL_RECT_FASTPATH")) == 0);
+		const size_t nstops = m_gradient_colors.size();
+		const bool fast = s_rect_fastpath && m_border_width <= 0 && (nstops == 0 || (nstops >= 2 && nstops <= 16)) && w > 0 && h > 0 &&
+						  (m_radius <= 0 || 2.0f * m_radius <= std::min(w, h));
+
+		if (fast) {
+			const float rad = m_radius > 0 ? (float)m_radius : 0.0f;
+			const bool c_tl = rad > 0 && (m_radius_edges & 1), c_tr = rad > 0 && (m_radius_edges & 2);
+			const bool c_bl = rad > 0 && (m_radius_edges & 4), c_br = rad > 0 && (m_radius_edges & 8);
+			const bool one_pass = accumulate || opaque;
+			const bool grad_alphablend = m_gradient_alphablend > 0;
+
+			// Mirrors the advanced fragment shader's colour (see
+			// gadvanced_shader.cpp) at a position where coverage == 1.
+			auto colorAt = [&](float px, float py, float out[4]) {
+				float sr = m_background_color_rgb.r / 255.0f, sg = m_background_color_rgb.g / 255.0f, sb = m_background_color_rgb.b / 255.0f;
+				out[0] = sr; out[1] = sg; out[2] = sb; out[3] = alpha;
+				if (nstops == 0)
+					return;
+				float t = m_gradient_orientation == 1 ? (px - x) / w : (py - y) / h;
+				t = std::min(1.0f, std::max(0.0f, t));
+				const float scaled = t * (float)(nstops - 1);
+				size_t i = std::min((size_t)scaled, nstops - 2);
+				const float f = scaled - (float)i;
+				auto stopColor = [&](size_t k, float c[4]) {
+					const gRGB& g = m_gradient_colors[k];
+					c[0] = g.r / 255.0f; c[1] = g.g / 255.0f; c[2] = g.b / 255.0f;
+					c[3] = grad_alphablend ? alpha : (1.0f - (g.a / 255.0f));
+				};
+				float c0[4], c1[4], gc[4];
+				stopColor(i, c0);
+				stopColor(i + 1, c1);
+				for (int k = 0; k < 4; ++k)
+					gc[k] = c0[k] + (c1[k] - c0[k]) * f;
+				if (grad_alphablend) {
+					out[0] = sr + (gc[0] - sr) * gc[3];
+					out[1] = sg + (gc[1] - sg) * gc[3];
+					out[2] = sb + (gc[2] - sb) * gc[3];
+				} else {
+					out[0] = gc[0]; out[1] = gc[1]; out[2] = gc[2]; out[3] = gc[3];
+				}
+			};
+
+			std::vector<float> verts;
+			verts.reserve(64 * 36);
+			auto flushVerts = [&]() {
+				if (!verts.empty()) {
+					m_basic_shader.drawBatch(verts.data(), (int)(verts.size() / 6));
+					verts.clear();
+				}
+			};
+			auto pushQuad = [&](float ax, float ay, float bx, float by) {
+				float c00[4], c10[4], c01[4], c11[4];
+				colorAt(ax, ay, c00); colorAt(bx, ay, c10); colorAt(ax, by, c01); colorAt(bx, by, c11);
+				const float* cs[6] = {c00, c01, c10, c10, c01, c11};
+				const float xs[6] = {ax, ax, bx, bx, ax, bx};
+				const float ys[6] = {ay, by, ay, ay, by, by};
+				for (int k = 0; k < 6; ++k) {
+					verts.push_back(xs[k]); verts.push_back(ys[k]);
+					verts.insert(verts.end(), cs[k], cs[k] + 4);
+				}
+				if (verts.size() >= (size_t)gShader::kMaxBatchQuads * 36 - 36)
+					flushVerts();
+			};
+			// One piece, split at gradient stop boundaries along the gradient axis.
+			auto pushPiece = [&](float x0, float y0, float x1, float y1) {
+				if (x1 <= x0 || y1 <= y0)
+					return;
+				if (nstops < 2) {
+					pushQuad(x0, y0, x1, y1);
+					return;
+				}
+				const bool horiz = m_gradient_orientation == 1;
+				const float lo = horiz ? x0 : y0, hi = horiz ? x1 : y1;
+				const float origin = horiz ? x : y, span = horiz ? w : h;
+				float prev = lo;
+				for (size_t s = 1; s + 1 <= nstops - 1; ++s) {
+					float b = origin + span * (float)s / (float)(nstops - 1);
+					if (b > prev && b < hi) {
+						if (horiz) pushQuad(prev, y0, b, y1); else pushQuad(x0, prev, x1, b);
+						prev = b;
+					}
+				}
+				if (horiz) pushQuad(prev, y0, hi, y1); else pushQuad(x0, prev, x1, hi);
+			};
+
+			// Interior = middle band + the strips above/below it between the corner squares.
+			const float rt = (c_tl || c_tr) ? rad : 0.0f, rb = (c_bl || c_br) ? rad : 0.0f;
+			struct Piece { float x0, y0, x1, y1; };
+			Piece pieces[3];
+			int npieces = 0;
+			pieces[npieces++] = {x, y + rt, x + w, y + h - rb};
+			if (rt > 0)
+				pieces[npieces++] = {x + (c_tl ? rad : 0.0f), y, x + w - (c_tr ? rad : 0.0f), y + rt};
+			if (rb > 0)
+				pieces[npieces++] = {x + (c_bl ? rad : 0.0f), y + h - rb, x + w - (c_br ? rad : 0.0f), y + h};
+
+			if (one_pass)
+				setAlphaBlendMode(true);
+			else
+				glDisable(GL_BLEND);
+			// Geometry is clipped to each clip rect below, so the scissor must be a no-op (see drawFlatRects()).
+			setGlScissor(eRect(0, 0, m_width, m_height));
+			for (const eRect& cr : m_current_clip.rects) {
+				const float cl = cr.left(), ct = cr.top(), cr_r = cr.left() + cr.width(), cb = cr.top() + cr.height();
+				for (int p = 0; p < npieces; ++p)
+					pushPiece(std::max(pieces[p].x0, cl), std::max(pieces[p].y0, ct), std::min(pieces[p].x1, cr_r), std::min(pieces[p].y1, cb));
+			}
+			flushVerts();
+			if (!one_pass)
+				glEnable(GL_BLEND);
+
+			if (m_profile)
+				m_prof.rect_fast++;
+
+			if (rad > 0) {
+				const float corner[4][4] = {{x, y, rad, rad}, {x + w - rad, y, rad, rad}, {x, y + h - rad, rad, rad}, {x + w - rad, y + h - rad, rad, rad}};
+				const bool present[4] = {c_tl, c_tr, c_bl, c_br};
+				auto cornerPass = [&](bool coverage_alpha) {
+					for (const eRect& cr : m_current_clip.rects) {
+						for (int c = 0; c < 4; ++c) {
+							if (!present[c])
+								continue;
+							const float* q = corner[c];
+							if (q[0] >= cr.left() + cr.width() || q[0] + q[2] <= cr.left() || q[1] >= cr.top() + cr.height() || q[1] + q[3] <= cr.top())
+								continue;
+							if (m_profile) {
+								m_prof.rect_adv_draws++;
+								m_prof.rect_adv_mpx += (double)q[2] * q[3] / 1e6;
+							}
+							setGlScissor(cr);
+							m_advanced_shader.drawAdvancedRect(x, y, w, h, m_radius, m_radius_edges, m_gradient_colors, m_gradient_orientation, grad_alphablend, alpha, m_background_color_rgb,
+															   m_border_width, m_border_color, coverage_alpha, q);
+						}
+					}
+				};
+				if (one_pass) {
+					setAlphaBlendMode(true);
+					cornerPass(false);
+				} else {
+					glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
+					cornerPass(true);
+					glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE);
+					glBlendFuncSeparate(GL_ZERO, GL_ONE, GL_ONE, GL_ONE);
+					cornerPass(false);
+					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+					setAlphaBlendMode(true);
+				}
+			} else if (!one_pass) {
+				setAlphaBlendMode(true);
+			}
 		} else {
-			// Pass 1: shader alpha = coverage. rgb = c*cov + dst*(1-cov),
-			// dst alpha *= (1-cov).
-			glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
-			drawPass(true);
-			// Pass 2, alpha only: shader alpha = a*cov, added on top.
-			glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE);
-			glBlendFuncSeparate(GL_ZERO, GL_ONE, GL_ONE, GL_ONE);
-			drawPass(false);
-			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			setAlphaBlendMode(true);
+			if (m_profile) {
+				if (accumulate || opaque)
+					m_prof.rect_adv1++;
+				else
+					m_prof.rect_adv2++;
+			}
+			if (accumulate || opaque) {
+				setAlphaBlendMode(true);
+				drawPass(false);
+			} else {
+				// Pass 1: shader alpha = coverage. rgb = c*cov + dst*(1-cov),
+				// dst alpha *= (1-cov).
+				glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
+				drawPass(true);
+				// Pass 2, alpha only: shader alpha = a*cov, added on top.
+				glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE);
+				glBlendFuncSeparate(GL_ZERO, GL_ONE, GL_ONE, GL_ONE);
+				drawPass(false);
+				glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+				setAlphaBlendMode(true);
+			}
 		}
 	} else {
 		float r = m_background_color_rgb.r / 255.0f;
@@ -603,6 +816,8 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 		// a plain flat-color rectangle, to match the CPU renderer's raw
 		// overwrite semantics.
 		glDisable(GL_BLEND);
+		if (m_profile)
+			m_prof.rect_flat++;
 		for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 			setGlScissor(m_current_clip.rects[i]);
 			m_basic_shader.drawRect(op->parm.rectangle->area.x() + m_current_offset.x(), op->parm.rectangle->area.y() + m_current_offset.y(), op->parm.rectangle->area.width(),
@@ -959,6 +1174,11 @@ void gEGLDC::flushBlitBatch() {
 	if (m_blit_batch_buffer.empty())
 		return;
 
+	if (skipDrawMask() & SKIP_BLIT) {
+		m_blit_batch_buffer.clear();
+		return;
+	}
+
 	if (m_blit_batch_blend) {
 		setAlphaBlendMode(m_blit_batch_true_alpha);
 		glEnable(GL_BLEND);
@@ -1058,7 +1278,7 @@ void gEGLDC::flushTextBatch() {
 	// m_text_batch_clip, not m_current_clip - see its declaration comment:
 	// this batch must be scissored against the clip captured when it
 	// started, not whatever the active clip happens to be right now.
-	if (m_text_batch_clip.rects.empty()) {
+	if (m_text_batch_clip.rects.empty() || (skipDrawMask() & SKIP_TEXT)) {
 		m_text_batch_buffer.clear();
 		return;
 	}
@@ -1795,7 +2015,74 @@ void gEGLDC::applyPendingResolutionChange() {
 	// is meaningless now.
 	m_text_overlay_region = gRegion();
 
+	// Nexus (or whichever platform's provider this is) needs to be told its
+	// window's own authored size changed too - see
+	// GbquadWindowProvider::onResolutionChanged() for why (stretch scales to
+	// whatever size Nexus was last told, not this canvas's actual current
+	// size).
+	if (m_window_provider)
+		m_window_provider->onResolutionChanged(m_pending_width, m_pending_height);
+
+	// Confirmed on real hardware via a diagnostic eglQuerySurface() (now
+	// removed): the EGL window surface's real backing buffer does NOT
+	// follow onResolutionChanged() above - it stayed at the OLD size
+	// (matching fbClass's boot-time mode) while the canvas/shadow FBO/
+	// shaders were all correctly the NEW size, so flip()'s full-screen blit
+	// (dst rect = m_width/m_height, the NEW size) was silently clipping
+	// against a surface whose real bounds were still the OLD, smaller size.
+	//
+	// A first attempt at destroying and recreating m_egl_surfaces[0] here
+	// locked the box - this retry differs in one specific way: it releases
+	// the context from the surface first (eglMakeCurrent to EGL_NO_SURFACE)
+	// before destroying it, which the first attempt skipped. Destroying a
+	// surface that's still the current draw/read target is undefined
+	// behavior by the EGL spec even where a given driver happens to
+	// tolerate it, and NXPL/Nexus's driver plausibly doesn't - this is the
+	// standard, spec-correct release sequence used any time an EGL app
+	// resizes a window surface. Not a guaranteed fix (this driver's exact
+	// failure mode was never confirmed), but a real candidate rather than
+	// another blind guess.
+	if (isInitialized() && m_window_provider && !m_window_provider->usesPixmapSurface()) {
+		eglMakeCurrent(m_egl_display, EGL_NO_SURFACE, EGL_NO_SURFACE, m_egl_context);
+
+		if (m_egl_surfaces[0] != EGL_NO_SURFACE) {
+			eglDestroySurface(m_egl_display, m_egl_surfaces[0]);
+			m_egl_surfaces[0] = EGL_NO_SURFACE;
+		}
+
+		EGLNativeWindowType native_window = m_window_provider->getNativeWindow();
+		m_egl_surfaces[0] = eglCreateWindowSurface(m_egl_display, m_egl_config, native_window, nullptr);
+		if (m_egl_surfaces[0] == EGL_NO_SURFACE) {
+			eDebug("[gEGLDC] eglCreateWindowSurface failed while applying resolution change to %dx%d. EGL error: 0x%x", m_pending_width, m_pending_height, eglGetError());
+		} else {
+			// Best-effort, same as tryInitEGL()'s own attempt - doesn't
+			// change m_use_shadow_fbo, already decided once for this driver.
+			eglSurfaceAttrib(m_egl_display, m_egl_surfaces[0], EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED);
+			m_render_page = 0;
+			if (!eglMakeCurrent(m_egl_display, m_egl_surfaces[0], m_egl_surfaces[0], m_egl_context))
+				eDebug("[gEGLDC] eglMakeCurrent failed after recreating window surface for resolution change: 0x%x", eglGetError());
+
+			EGLint surf_w = -1, surf_h = -1;
+			eglQuerySurface(m_egl_display, m_egl_surfaces[0], EGL_WIDTH, &surf_w);
+			eglQuerySurface(m_egl_display, m_egl_surfaces[0], EGL_HEIGHT, &surf_h);
+			eDebug("[gEGLDC] after surface recreation: canvas=%dx%d, EGL window surface now reports %dx%d",
+				m_pending_width, m_pending_height, (int)surf_w, (int)surf_h);
+		}
+	}
+
 	if (isInitialized()) {
+		// Set once in initEGL() (right after context creation, same "basic GL
+		// state" step) and never touched again until now - a stale viewport
+		// still sized for the OLD resolution clips/rescales everything
+		// through the NDC-to-framebuffer-pixel transform after the shader
+		// projection matrices below already start mapping pixel coordinates
+		// to NDC using the NEW resolution: the two disagreeing is exactly
+		// what turns into elements clipped away entirely (anything outside
+		// the stale, smaller-or-differently-shaped viewport rect) or
+		// stretched/squashed wrong (anything inside it) - not just
+		// mispositioned, which the shader-matrix fix alone already covered.
+		glViewport(0, 0, m_pending_width, m_pending_height);
+
 		m_basic_shader.setResolution((float)m_pending_width, (float)m_pending_height);
 		m_advanced_shader.setResolution((float)m_pending_width, (float)m_pending_height);
 		m_texture_shader.setResolution((float)m_pending_width, (float)m_pending_height);
@@ -1812,14 +2099,6 @@ void gEGLDC::applyPendingResolutionChange() {
 		if (!createShadowFramebuffer())
 			eDebug("[gEGLDC] failed to recreate shadow framebuffer at %dx%d after resolution change.", m_pending_width, m_pending_height);
 	}
-
-	// Nexus (or whichever platform's provider this is) needs to be told its
-	// window's own authored size changed too - see
-	// GbquadWindowProvider::onResolutionChanged() for why (stretch scales
-	// to whatever size Nexus was last told, not this canvas's actual
-	// current size).
-	if (m_window_provider)
-		m_window_provider->onResolutionChanged(m_pending_width, m_pending_height);
 }
 
 bool gEGLDC::gpuCopyPageContent(int from, int to) {
@@ -2163,6 +2442,16 @@ void gEGLDC::flip() {
 						m_shadow_blit_frame, m_shadow_blit_stride, do_blit ? "BLIT" : "skip");
 
 				std::chrono::steady_clock::time_point blit_t0;
+				// Diagnostic (needs ENIGMA_EGL_PROFILE=1 too): ENIGMA_EGL_PROFILE_FINISH=1
+				// drains the GPU before timing the blit, so the frame's real
+				// GPU render time is logged as "finish" and blit= is then the
+				// pure copy cost. Adds a stall - never leave enabled.
+				static const bool s_prof_finish = getenv("ENIGMA_EGL_PROFILE_FINISH") && atoi(getenv("ENIGMA_EGL_PROFILE_FINISH")) != 0;
+				if (m_profile && s_prof_finish) {
+					std::chrono::steady_clock::time_point fin_t0 = std::chrono::steady_clock::now();
+					glFinish();
+					eDebug("[gEGLDC] profile: GPU render drain (finish)=%.2fms", msSince(fin_t0));
+				}
 				if (m_profile)
 					blit_t0 = std::chrono::steady_clock::now();
 				if (do_blit) {
@@ -2185,6 +2474,10 @@ void gEGLDC::flip() {
 					glBindFramebuffer(GL_READ_FRAMEBUFFER, m_shadow_fbo);
 					glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 					glScissor(0, 0, m_width, m_height);
+					if (m_blit_invalidate) {
+						const GLenum att = GL_COLOR;
+						glInvalidateFramebuffer(GL_DRAW_FRAMEBUFFER, 1, &att);
+					}
 					glBlitFramebuffer(0, 0, m_width, m_height, 0, 0, m_width, m_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 					glBindFramebuffer(GL_FRAMEBUFFER, m_shadow_fbo);
 				}
@@ -2225,6 +2518,8 @@ void gEGLDC::flip() {
 			gap_ms, m_prof.text_ops, m_prof.text_ms, m_prof.text_flushes, m_prof.text_flush_ms, m_prof.glyphs, m_prof.vbo_ms, m_prof.atlas_uploads, m_prof.atlas_rows, m_prof.atlas_ms,
 			m_prof.band_uploads, m_prof.band_rows, m_prof.band_ms, m_prof.overlays, m_prof.overlay_ms, m_prof.other_ops, m_prof.other_ms, prof_blit_ms, prof_present_ms, msSince(prof_t0),
 			gles::clientArrays ? 1 : 0);
+		eDebug("[gEGLDC] rects: flat=%d fast=%d adv1pass=%d adv2pass=%d advDraws=%d advShadedMpx=%.2f (screen=%.2fMpx)",
+			m_prof.rect_flat, m_prof.rect_fast, m_prof.rect_adv1, m_prof.rect_adv2, m_prof.rect_adv_draws, m_prof.rect_adv_mpx, (double)m_width * m_height / 1e6);
 		m_prof = FrameProfile();
 		m_prof_last_flip = std::chrono::steady_clock::now();
 	}
