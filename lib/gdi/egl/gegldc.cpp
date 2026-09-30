@@ -1009,6 +1009,11 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 	// going through PixmapCache) would hit on every navigation step. Cheap
 	// when there's nothing queued (a mutex lock + empty check - see
 	// gTextureManager::processDeletions()), so safe to call this often.
+	// A pending batch (quads queued but not yet drawn) may reference a texture
+	// that is queued for deletion - draw it first, or that draw would sample a
+	// deleted texture (black) or one whose id getTexture() below just reused.
+	if (m_texture_manager.hasPendingDeletions())
+		flushBlitBatch();
 	m_texture_manager.processDeletions();
 
 	GLuint tex_id = m_texture_manager.getTexture(op->pixmap);
@@ -1832,17 +1837,21 @@ void gEGLDC::exec(const gOpcode* opcode) {
 			// - freeing a texture a few opcodes later than the very next
 			// one after its pixmap died is harmless, so this only needs to
 			// happen once per real frame boundary, same as flip() itself.
-			m_texture_manager.processDeletions();
+			// Batches first: a pending blit batch may still reference a
+			// texture that is queued for deletion (its pixmap's last ref was
+			// dropped by executeBlit()'s own guard) - deleting it before
+			// that batch is drawn renders the picture black.
 			flushBlitBatch();
 			flushTextBatch();
+			m_texture_manager.processDeletions();
 			flip();
 			gDC::exec(opcode);
 			break;
 
 		case gOpcode::flip:
-			m_texture_manager.processDeletions();
 			flushBlitBatch();
 			flushTextBatch();
+			m_texture_manager.processDeletions();
 			flip();
 			gDC::exec(opcode);
 			break;

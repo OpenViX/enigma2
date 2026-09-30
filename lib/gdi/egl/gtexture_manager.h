@@ -50,4 +50,8 @@ public:
 
 	// called by our egl context thread at the start of exec() to free vram
 	void processDeletions();
+	// True if any texture is queued for deletion. Callers must draw any
+	// pending batch that may reference such a texture (gEGLDC::flushBlitBatch())
+	// BEFORE calling processDeletions(), or that draw samples a deleted texture.
+	bool hasPendingDeletions();
 };
