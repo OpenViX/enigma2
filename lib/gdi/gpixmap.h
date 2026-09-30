@@ -166,6 +166,8 @@ struct gUnmanagedSurface
 	void *data;
 	int data_phys;
 	unsigned int gl_texture_id = 0; // cached GLES texture name for this surface, if any (see gTextureManager)
+	unsigned int gl_last_used_frame = 0; // EGL: frame of the last draw using gl_texture_id (LRU eviction, see gTextureManager)
+	bool gl_texture_pinned = false; // EGL: texture is updated in place - must never be evicted
 	bool transparent = true;
 
 	gUnmanagedSurface();

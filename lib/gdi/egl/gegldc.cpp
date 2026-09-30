@@ -454,6 +454,18 @@ static unsigned skipDrawMask() {
 	return mask;
 }
 
+// Texture deletion order. DEFAULT = the original behaviour: queued texture
+// deletions are processed BEFORE the pending blit batch is drawn. Setting
+// ENIGMA_EGL_FLUSH_BEFORE_DELETE=1 opts into drawing the pending batch first
+// (plus an extra flush in executeBlit()). That was meant to stop a picon whose
+// texture was deleted before its batch drew from rendering black, but on real
+// hardware it caused stale selections and broken redraws, so it is off unless
+// explicitly requested for testing.
+static bool legacyTexDeletion() {
+	static const bool opt_in = getenv("ENIGMA_EGL_FLUSH_BEFORE_DELETE") && atoi(getenv("ENIGMA_EGL_FLUSH_BEFORE_DELETE")) != 0;
+	return !opt_in;
+}
+
 void gEGLDC::drawFlatRects(const gRegion& clip, float r, float g, float b, float a) {
 	if (skipDrawMask() & SKIP_FILL)
 		return;
@@ -1012,7 +1024,7 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 	// A pending batch (quads queued but not yet drawn) may reference a texture
 	// that is queued for deletion - draw it first, or that draw would sample a
 	// deleted texture (black) or one whose id getTexture() below just reused.
-	if (m_texture_manager.hasPendingDeletions())
+	if (!legacyTexDeletion() && m_texture_manager.hasPendingDeletions())
 		flushBlitBatch();
 	m_texture_manager.processDeletions();
 
@@ -1306,6 +1318,9 @@ void gEGLDC::flushTextBatch() {
 
 	gPixmap* atlas_pix = m_font_atlas.getPixmap();
 	GLuint tex_id = m_texture_manager.getTexture(atlas_pix);
+	// Updated in place by row (glTexSubImage2D) - must never be evicted.
+	if (atlas_pix && atlas_pix->surface)
+		atlas_pix->surface->gl_texture_pinned = true;
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex_id);
 
@@ -1501,6 +1516,8 @@ void gEGLDC::compositeTextOverlay(eRect area, bool trueAlphaBlend) {
 	GLuint tex_id = m_pixmap->surface->gl_texture_id;
 	if (tex_id == 0) {
 		tex_id = m_texture_manager.getTexture(m_pixmap);
+		// CPU text-overlay staging texture, updated in place - never evict.
+		m_pixmap->surface->gl_texture_pinned = true;
 	} else {
 		glBindTexture(GL_TEXTURE_2D, tex_id);
 		int row_width = m_pixmap->size().width();
@@ -1841,17 +1858,29 @@ void gEGLDC::exec(const gOpcode* opcode) {
 			// texture that is queued for deletion (its pixmap's last ref was
 			// dropped by executeBlit()'s own guard) - deleting it before
 			// that batch is drawn renders the picture black.
-			flushBlitBatch();
-			flushTextBatch();
-			m_texture_manager.processDeletions();
+			if (legacyTexDeletion()) {
+				m_texture_manager.processDeletions();
+				flushBlitBatch();
+				flushTextBatch();
+			} else {
+				flushBlitBatch();
+				flushTextBatch();
+				m_texture_manager.processDeletions();
+			}
 			flip();
 			gDC::exec(opcode);
 			break;
 
 		case gOpcode::flip:
-			flushBlitBatch();
-			flushTextBatch();
-			m_texture_manager.processDeletions();
+			if (legacyTexDeletion()) {
+				m_texture_manager.processDeletions();
+				flushBlitBatch();
+				flushTextBatch();
+			} else {
+				flushBlitBatch();
+				flushTextBatch();
+				m_texture_manager.processDeletions();
+			}
 			flip();
 			gDC::exec(opcode);
 			break;
@@ -2291,6 +2320,8 @@ void gEGLDC::captureBackgroundIntoPixmap(const eRect& rect) {
 }
 
 void gEGLDC::flip() {
+	// Defines "this frame" for the texture manager's LRU eviction.
+	m_texture_manager.nextFrame();
 	std::chrono::steady_clock::time_point prof_t0;
 	double prof_blit_ms = 0, prof_present_ms = 0;
 	if (m_profile)
