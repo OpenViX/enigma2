@@ -1795,7 +1795,74 @@ void gEGLDC::applyPendingResolutionChange() {
 	// is meaningless now.
 	m_text_overlay_region = gRegion();
 
+	// Nexus (or whichever platform's provider this is) needs to be told its
+	// window's own authored size changed too - see
+	// GbquadWindowProvider::onResolutionChanged() for why (stretch scales to
+	// whatever size Nexus was last told, not this canvas's actual current
+	// size).
+	if (m_window_provider)
+		m_window_provider->onResolutionChanged(m_pending_width, m_pending_height);
+
+	// Confirmed on real hardware via a diagnostic eglQuerySurface() (now
+	// removed): the EGL window surface's real backing buffer does NOT
+	// follow onResolutionChanged() above - it stayed at the OLD size
+	// (matching fbClass's boot-time mode) while the canvas/shadow FBO/
+	// shaders were all correctly the NEW size, so flip()'s full-screen blit
+	// (dst rect = m_width/m_height, the NEW size) was silently clipping
+	// against a surface whose real bounds were still the OLD, smaller size.
+	//
+	// A first attempt at destroying and recreating m_egl_surfaces[0] here
+	// locked the box - this retry differs in one specific way: it releases
+	// the context from the surface first (eglMakeCurrent to EGL_NO_SURFACE)
+	// before destroying it, which the first attempt skipped. Destroying a
+	// surface that's still the current draw/read target is undefined
+	// behavior by the EGL spec even where a given driver happens to
+	// tolerate it, and NXPL/Nexus's driver plausibly doesn't - this is the
+	// standard, spec-correct release sequence used any time an EGL app
+	// resizes a window surface. Not a guaranteed fix (this driver's exact
+	// failure mode was never confirmed), but a real candidate rather than
+	// another blind guess.
+	if (isInitialized() && m_window_provider && !m_window_provider->usesPixmapSurface()) {
+		eglMakeCurrent(m_egl_display, EGL_NO_SURFACE, EGL_NO_SURFACE, m_egl_context);
+
+		if (m_egl_surfaces[0] != EGL_NO_SURFACE) {
+			eglDestroySurface(m_egl_display, m_egl_surfaces[0]);
+			m_egl_surfaces[0] = EGL_NO_SURFACE;
+		}
+
+		EGLNativeWindowType native_window = m_window_provider->getNativeWindow();
+		m_egl_surfaces[0] = eglCreateWindowSurface(m_egl_display, m_egl_config, native_window, nullptr);
+		if (m_egl_surfaces[0] == EGL_NO_SURFACE) {
+			eDebug("[gEGLDC] eglCreateWindowSurface failed while applying resolution change to %dx%d. EGL error: 0x%x", m_pending_width, m_pending_height, eglGetError());
+		} else {
+			// Best-effort, same as tryInitEGL()'s own attempt - doesn't
+			// change m_use_shadow_fbo, already decided once for this driver.
+			eglSurfaceAttrib(m_egl_display, m_egl_surfaces[0], EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED);
+			m_render_page = 0;
+			if (!eglMakeCurrent(m_egl_display, m_egl_surfaces[0], m_egl_surfaces[0], m_egl_context))
+				eDebug("[gEGLDC] eglMakeCurrent failed after recreating window surface for resolution change: 0x%x", eglGetError());
+
+			EGLint surf_w = -1, surf_h = -1;
+			eglQuerySurface(m_egl_display, m_egl_surfaces[0], EGL_WIDTH, &surf_w);
+			eglQuerySurface(m_egl_display, m_egl_surfaces[0], EGL_HEIGHT, &surf_h);
+			eDebug("[gEGLDC] after surface recreation: canvas=%dx%d, EGL window surface now reports %dx%d",
+				m_pending_width, m_pending_height, (int)surf_w, (int)surf_h);
+		}
+	}
+
 	if (isInitialized()) {
+		// Set once in initEGL() (right after context creation, same "basic GL
+		// state" step) and never touched again until now - a stale viewport
+		// still sized for the OLD resolution clips/rescales everything
+		// through the NDC-to-framebuffer-pixel transform after the shader
+		// projection matrices below already start mapping pixel coordinates
+		// to NDC using the NEW resolution: the two disagreeing is exactly
+		// what turns into elements clipped away entirely (anything outside
+		// the stale, smaller-or-differently-shaped viewport rect) or
+		// stretched/squashed wrong (anything inside it) - not just
+		// mispositioned, which the shader-matrix fix alone already covered.
+		glViewport(0, 0, m_pending_width, m_pending_height);
+
 		m_basic_shader.setResolution((float)m_pending_width, (float)m_pending_height);
 		m_advanced_shader.setResolution((float)m_pending_width, (float)m_pending_height);
 		m_texture_shader.setResolution((float)m_pending_width, (float)m_pending_height);
@@ -1812,14 +1879,6 @@ void gEGLDC::applyPendingResolutionChange() {
 		if (!createShadowFramebuffer())
 			eDebug("[gEGLDC] failed to recreate shadow framebuffer at %dx%d after resolution change.", m_pending_width, m_pending_height);
 	}
-
-	// Nexus (or whichever platform's provider this is) needs to be told its
-	// window's own authored size changed too - see
-	// GbquadWindowProvider::onResolutionChanged() for why (stretch scales
-	// to whatever size Nexus was last told, not this canvas's actual
-	// current size).
-	if (m_window_provider)
-		m_window_provider->onResolutionChanged(m_pending_width, m_pending_height);
 }
 
 bool gEGLDC::gpuCopyPageContent(int from, int to) {
