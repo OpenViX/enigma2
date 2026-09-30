@@ -454,6 +454,18 @@ static unsigned skipDrawMask() {
 	return mask;
 }
 
+// Texture deletion order. DEFAULT = the original behaviour: queued texture
+// deletions are processed BEFORE the pending blit batch is drawn. Setting
+// ENIGMA_EGL_FLUSH_BEFORE_DELETE=1 opts into drawing the pending batch first
+// (plus an extra flush in executeBlit()). That was meant to stop a picon whose
+// texture was deleted before its batch drew from rendering black, but on real
+// hardware it caused stale selections and broken redraws, so it is off unless
+// explicitly requested for testing.
+static bool legacyTexDeletion() {
+	static const bool opt_in = getenv("ENIGMA_EGL_FLUSH_BEFORE_DELETE") && atoi(getenv("ENIGMA_EGL_FLUSH_BEFORE_DELETE")) != 0;
+	return !opt_in;
+}
+
 void gEGLDC::drawFlatRects(const gRegion& clip, float r, float g, float b, float a) {
 	if (skipDrawMask() & SKIP_FILL)
 		return;
@@ -1009,6 +1021,11 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 	// going through PixmapCache) would hit on every navigation step. Cheap
 	// when there's nothing queued (a mutex lock + empty check - see
 	// gTextureManager::processDeletions()), so safe to call this often.
+	// A pending batch (quads queued but not yet drawn) may reference a texture
+	// that is queued for deletion - draw it first, or that draw would sample a
+	// deleted texture (black) or one whose id getTexture() below just reused.
+	if (!legacyTexDeletion() && m_texture_manager.hasPendingDeletions())
+		flushBlitBatch();
 	m_texture_manager.processDeletions();
 
 	GLuint tex_id = m_texture_manager.getTexture(op->pixmap);
@@ -1301,6 +1318,9 @@ void gEGLDC::flushTextBatch() {
 
 	gPixmap* atlas_pix = m_font_atlas.getPixmap();
 	GLuint tex_id = m_texture_manager.getTexture(atlas_pix);
+	// Updated in place by row (glTexSubImage2D) - must never be evicted.
+	if (atlas_pix && atlas_pix->surface)
+		atlas_pix->surface->gl_texture_pinned = true;
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex_id);
 
@@ -1496,6 +1516,8 @@ void gEGLDC::compositeTextOverlay(eRect area, bool trueAlphaBlend) {
 	GLuint tex_id = m_pixmap->surface->gl_texture_id;
 	if (tex_id == 0) {
 		tex_id = m_texture_manager.getTexture(m_pixmap);
+		// CPU text-overlay staging texture, updated in place - never evict.
+		m_pixmap->surface->gl_texture_pinned = true;
 	} else {
 		glBindTexture(GL_TEXTURE_2D, tex_id);
 		int row_width = m_pixmap->size().width();
@@ -1832,17 +1854,33 @@ void gEGLDC::exec(const gOpcode* opcode) {
 			// - freeing a texture a few opcodes later than the very next
 			// one after its pixmap died is harmless, so this only needs to
 			// happen once per real frame boundary, same as flip() itself.
-			m_texture_manager.processDeletions();
-			flushBlitBatch();
-			flushTextBatch();
+			// Batches first: a pending blit batch may still reference a
+			// texture that is queued for deletion (its pixmap's last ref was
+			// dropped by executeBlit()'s own guard) - deleting it before
+			// that batch is drawn renders the picture black.
+			if (legacyTexDeletion()) {
+				m_texture_manager.processDeletions();
+				flushBlitBatch();
+				flushTextBatch();
+			} else {
+				flushBlitBatch();
+				flushTextBatch();
+				m_texture_manager.processDeletions();
+			}
 			flip();
 			gDC::exec(opcode);
 			break;
 
 		case gOpcode::flip:
-			m_texture_manager.processDeletions();
-			flushBlitBatch();
-			flushTextBatch();
+			if (legacyTexDeletion()) {
+				m_texture_manager.processDeletions();
+				flushBlitBatch();
+				flushTextBatch();
+			} else {
+				flushBlitBatch();
+				flushTextBatch();
+				m_texture_manager.processDeletions();
+			}
 			flip();
 			gDC::exec(opcode);
 			break;
@@ -1884,6 +1922,23 @@ void gEGLDC::exec(const gOpcode* opcode) {
 
 gEGLDC* gEGLDC::s_instance = nullptr;
 
+// gDC::getRGB() (grc.cpp) resolves a palette-index colour (gColor) through
+// m_pixmap->surface->clut, and falls back to gRGB(col, col, col) - i.e. near
+// black - when there is no palette. gFBDC gives its 32bpp surface a 256-entry
+// palette for exactly this (gfbdc.cpp), because legacy painters such as
+// eGauge (needles), which call setPalette() and then pick colours by index,
+// depend on it. This backend's staging pixmap had none, so those colours all
+// rendered black. Same allocation as gFBDC: 256 zeroed entries, filled in by
+// the gOpcode::setPalette handling in gDC::exec().
+static void allocStagingPalette(gPixmap* pixmap) {
+	if (!pixmap || !pixmap->surface || pixmap->surface->clut.data)
+		return;
+	pixmap->surface->clut.colors = 256;
+	pixmap->surface->clut.start = 0;
+	pixmap->surface->clut.data = new gRGB[256];
+	memset(static_cast<void*>(pixmap->surface->clut.data), 0, sizeof(gRGB) * 256);
+}
+
 gEGLDC::gEGLDC(INativeWindowProvider* window_provider, int width, int height) : gMainDC() {
 	s_instance = this;
 	int xres = width, yres = height, bpp = 32;
@@ -1920,6 +1975,7 @@ gEGLDC::gEGLDC(INativeWindowProvider* window_provider, int width, int height) : 
 	// calls (which assume the latter) operate on the wrong kind of texture
 	// object entirely - a very likely source of the wrong colors seen.
 	m_pixmap = new gPixmap(eSize(width, height), 32, gPixmap::accelNever);
+	allocStagingPalette(m_pixmap);
 }
 
 gEGLDC::~gEGLDC() {
@@ -1994,6 +2050,7 @@ void gEGLDC::setResolution(int xres, int yres, int bpp) {
 	// immediately (unlike the GL/EGL work below) - plain CPU allocation, no
 	// GL context needed.
 	m_pixmap = new gPixmap(eSize(xres, yres), bpp, gPixmap::accelNever);
+	allocStagingPalette(m_pixmap);
 
 	// See m_pending_resolution_change's comment (gegldc.h) for why the rest
 	// of this can't happen here: it's GL/EGL work, only valid on gRC's
@@ -2282,6 +2339,8 @@ void gEGLDC::captureBackgroundIntoPixmap(const eRect& rect) {
 }
 
 void gEGLDC::flip() {
+	// Defines "this frame" for the texture manager's LRU eviction.
+	m_texture_manager.nextFrame();
 	std::chrono::steady_clock::time_point prof_t0;
 	double prof_blit_ms = 0, prof_present_ms = 0;
 	if (m_profile)

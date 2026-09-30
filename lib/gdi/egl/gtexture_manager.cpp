@@ -3,7 +3,9 @@
 #include <lib/gdi/egl/gtexture_manager.h>
 #include <algorithm>
 #include <chrono>
+#include <cstdlib>
 #include <cstring>
+#include <vector>
 
 #ifndef GL_BGRA_EXT
 #define GL_BGRA_EXT 0x80E1
@@ -113,7 +115,31 @@ GLuint gTextureManager::createTextureFromDmabuf(gPixmap* pixmap) {
 #endif
 }
 
+// Diagnostic, opt-in via ENIGMA_EGL_TEX_CHECK=1: logs when a pixmap is about
+// to be uploaded with every source byte zero (in e2's inverted-alpha
+// convention that is fully OPAQUE BLACK) - i.e. a picture uploaded before its
+// decoder finished writing it, or from recycled/cleared memory. That texture
+// is then cached on the surface until the pixmap dies, which would show up as
+// a black square that stays black. Copies the source first (ION memory is
+// slow to read with scalar loads, see the palette branch below).
+static void checkPixmapAllZero(const gUnmanagedSurface* surface, int width, int height) {
+	static const bool enabled = getenv("ENIGMA_EGL_TEX_CHECK") && atoi(getenv("ENIGMA_EGL_TEX_CHECK")) != 0;
+	if (!enabled || !surface->data || surface->stride <= 0)
+		return;
+	std::vector<uint8_t> local((size_t)surface->stride * height);
+	memcpy(local.data(), surface->data, local.size());
+	const size_t row_bytes = (size_t)width * (surface->bpp == 32 ? 4 : 1);
+	for (int y = 0; y < height; ++y) {
+		const uint8_t* row = local.data() + (size_t)y * surface->stride;
+		for (size_t i = 0; i < row_bytes; ++i)
+			if (row[i])
+				return;
+	}
+	eDebug("[gTextureManager] TEX_CHECK: uploading ALL-ZERO pixmap %dx%d bpp=%d stride=%d data=%p - will render as black", width, height, surface->bpp, surface->stride, surface->data);
+}
+
 GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
+	m_last_upload_oom = false;
 	if (!pixmap || !pixmap->surface)
 		return 0;
 
@@ -133,10 +159,18 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 	int width = surface->x;
 	int height = surface->y;
 
+	if (surface->bpp == 32 || surface->bpp == 8)
+		checkPixmapAllZero(surface, width, height);
+
 	// See the bpp==32 branch below for the full explanation - shared here so
 	// the bpp==8 paletted branch (which uploads the same native BGRA memory
 	// order via gRGB::argb()) can use the same platform-dependent format.
 	GLenum src_format = gles::needsRBSwap ? GL_RGBA : GL_BGRA_EXT;
+
+	// Drain any error left over from earlier, unrelated GL calls so the
+	// glGetError() after the upload below can only be this upload's own.
+	for (int i = 0; i < 8 && glGetError() != GL_NO_ERROR; ++i) {
+	}
 
 	glGenTextures(1, &texture_id);
 	glBindTexture(GL_TEXTURE_2D, texture_id);
@@ -215,7 +249,20 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 		// so we expand it to 32-bit rgba on the cpu before uploading.
 		std::vector<uint32_t> rgba_buffer(width * height);
 		uint8_t* src_pixels = (uint8_t*)surface->data;
-		gRGB* palette = surface->clut.data;
+		// Same rule as gpixmap.cpp's convert_palette(): entries beyond the
+		// palette size are an opaque grey ramp. The previous direct
+		// palette[row[x]] had no bounds check, so an index >= clut.colors read
+		// past the end of the palette's heap block - zero/stale memory there
+		// is opaque BLACK (inverted alpha), a nondeterministic black picture.
+		uint32_t pal[256];
+		{
+			int n = std::min(surface->clut.colors, 256);
+			for (int i = 0; i < n; ++i)
+				pal[i] = surface->clut.data[i].argb() ^ 0xFF000000;
+			for (int i = std::max(n, 0); i < 256; ++i)
+				pal[i] = (0x010101 * i) | 0xFF000000;
+		}
+		int max_index = 0;
 		int src_stride = surface->stride; // bytes per row in the *source* -
 		// may differ from width for externally-loaded images (e.g. a PNG
 		// decoder's own row alignment), unlike gPixmap's own allocations
@@ -252,13 +299,33 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 				// BGRA memory order is uploaded as-is either way, with
 				// src_format telling GL the truth or the pre-swap lie as
 				// appropriate for this platform.
-				rgba_buffer[y * width + x] = palette[row[x]].argb() ^ 0xFF000000;
+				rgba_buffer[y * width + x] = pal[row[x]];
+				if (row[x] > max_index)
+					max_index = row[x];
 			}
 		}
 #if TEX_UPLOAD_TIMING
 		double expand_ms = ms_since(t_expand0);
 		auto t_upload0 = std::chrono::steady_clock::now();
 #endif
+
+		// ENIGMA_EGL_TEX_CHECK=1: one line per indexed upload with what was actually
+		// read - palette size/start, its first entries as uploaded, index range and
+		// how many pixels are index 0 - to tell an empty/zero palette or all-zero
+		// indices (both render black) from a rendering-side problem.
+		static const bool tex_check = getenv("ENIGMA_EGL_TEX_CHECK") && atoi(getenv("ENIGMA_EGL_TEX_CHECK")) != 0;
+		if (tex_check) {
+			size_t zero_px = 0, opaque_black = 0;
+			for (size_t i = 0; i < rgba_buffer.size(); ++i) {
+				zero_px += (local_src[(i / width) * src_stride + (i % width)] == 0);
+				opaque_black += (rgba_buffer[i] == 0xFF000000u);
+			}
+			eDebug("[gTextureManager] TEX_CHECK bpp8 %dx%d stride=%d clut.colors=%d clut.start=%d data=%p pal0=%08x pal1=%08x pal2=%08x maxIndex=%d index0Px=%zu/%zu opaqueBlackPx=%zu",
+				width, height, src_stride, surface->clut.colors, surface->clut.start, (void*)surface->clut.data, pal[0], pal[1], pal[2], max_index, zero_px, rgba_buffer.size(), opaque_black);
+		}
+
+		if (max_index >= surface->clut.colors)
+			eDebug("[gTextureManager] bpp8 %dx%d has pixel index %d beyond its palette size %d - unmapped entries use the CPU renderer's grey ramp", width, height, max_index, surface->clut.colors);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, src_format, width, height, 0, src_format, GL_UNSIGNED_BYTE, rgba_buffer.data());
 #if TEX_UPLOAD_TIMING
@@ -290,6 +357,26 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 	}
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// A failed upload (typically GL_OUT_OF_MEMORY from the driver, e.g. while
+	// its buffers are being reallocated for a larger resolution) leaves this
+	// texture with no storage - it samples as solid black - and getTexture()
+	// would cache that id on the surface forever, so the picture would stay
+	// black even after the memory pressure is gone. Report it and hand back 0
+	// instead: nothing is cached, and the next draw retries the upload.
+	// Only GL_OUT_OF_MEMORY is treated as a failed upload. Any other error is
+	// logged but the texture is kept: this driver may raise a non-fatal error
+	// on an upload that still works (the code never checked before), and
+	// dropping such a texture would make the picture vanish instead.
+	GLenum upload_err = glGetError();
+	if (upload_err == GL_OUT_OF_MEMORY) {
+		eDebug("[gTextureManager] texture upload FAILED (out of memory) %dx%d bpp=%d - not caching, will retry on next draw [live textures=%ld, ~%.1fMB tracked]", width, height, surface->bpp, m_live_texture_count, m_live_texture_bytes / 1048576.0);
+		glDeleteTextures(1, &texture_id);
+		m_last_upload_oom = true;
+		return 0;
+	}
+	if (upload_err != GL_NO_ERROR)
+		eDebug("[gTextureManager] texture upload raised glError=0x%x %dx%d bpp=%d (kept)", upload_err, width, height, surface->bpp);
 #if TEX_UPLOAD_TIMING
 	eDebug("[gTextureManager] timing: createTextureFromPixmap total %dx%d bpp=%d took %.2fms", width, height, surface->bpp, ms_since(t_total0));
 #endif
@@ -300,18 +387,103 @@ GLuint gTextureManager::getTexture(gPixmap* pixmap) {
 	if (!pixmap || !pixmap->surface)
 		return 0;
 
-	if (pixmap->surface->gl_texture_id != 0) {
-		return pixmap->surface->gl_texture_id;
+	gUnmanagedSurface* sf = pixmap->surface;
+	if (sf->gl_texture_id != 0) {
+		sf->gl_last_used_frame = m_frame;
+		return sf->gl_texture_id;
 	}
 
 	GLuint new_texture = createTextureFromPixmap(pixmap);
+
+	// The driver ran out of memory: free least-recently-used textures (which
+	// simply re-upload the next time they are drawn) and try again, instead of
+	// leaving this picture blank. At most two rounds, each freeing more.
+	if (!new_texture && m_last_upload_oom) {
+		const size_t need = (size_t)sf->x * sf->y * 4;
+		size_t want = std::max<size_t>(need * 2, 4u << 20);
+		for (int round = 0; round < 2 && !new_texture; ++round, want *= 4) {
+			if (evictLRU(want) == 0)
+				break;
+			new_texture = createTextureFromPixmap(pixmap);
+		}
+	}
+
 	if (new_texture) {
-		pixmap->surface->gl_texture_id = new_texture;
+		sf->gl_texture_id = new_texture;
+		sf->gl_last_used_frame = m_frame;
+		{
+			std::lock_guard<std::mutex> lock(m_deletion_mutex);
+			m_texture_owner[new_texture] = sf;
+		}
 		++m_live_texture_count;
-		eDebug("[gTextureManager] +texture id=%u live=%ld %dx%d bpp=%d", new_texture, m_live_texture_count,
-			pixmap->surface->x, pixmap->surface->y, pixmap->surface->bpp);
+		// Bytes as uploaded: paletted (with a clut) and 32bpp surfaces are RGBA8,
+		// a clut-less 8bpp surface (glyph atlas) is single channel.
+		size_t bytes = (size_t)sf->x * sf->y * ((sf->bpp == 8 && !sf->clut.data) ? 1 : 4);
+		m_texture_bytes[new_texture] = bytes;
+		m_live_texture_bytes += bytes;
+		eDebug("[gTextureManager] +texture id=%u live=%ld ~%.1fMB %dx%d bpp=%d", new_texture, m_live_texture_count, m_live_texture_bytes / 1048576.0,
+			sf->x, sf->y, sf->bpp);
 	}
 	return new_texture;
+}
+
+size_t gTextureManager::evictLRU(size_t bytes_wanted) {
+	struct Cand {
+		unsigned int last_used;
+		GLuint id;
+		gUnmanagedSurface* surface;
+	};
+	std::vector<Cand> cands;
+	size_t freed = 0;
+	int evicted = 0;
+
+	// Held for the whole operation: ~gSurface() releases through the same lock,
+	// so a surface in this map cannot be destroyed while we touch it.
+	std::lock_guard<std::mutex> lock(m_deletion_mutex);
+	for (const auto& kv : m_texture_owner) {
+		gUnmanagedSurface* sf = kv.second;
+		if (sf->gl_texture_pinned || sf->gl_last_used_frame == m_frame)
+			continue; // in use this frame, or updated in place
+		if (m_texture_to_image_map.count(kv.first))
+			continue; // DMA-BUF import, needs eglDestroyImage - leave alone
+		cands.push_back({sf->gl_last_used_frame, kv.first, sf});
+	}
+	std::sort(cands.begin(), cands.end(), [](const Cand& a, const Cand& b) { return a.last_used < b.last_used; });
+
+	for (const Cand& c : cands) {
+		if (freed >= bytes_wanted)
+			break;
+		glDeleteTextures(1, &c.id);
+		c.surface->gl_texture_id = 0;
+		m_texture_owner.erase(c.id);
+		auto bit = m_texture_bytes.find(c.id);
+		if (bit != m_texture_bytes.end()) {
+			freed += bit->second;
+			m_live_texture_bytes -= std::min(m_live_texture_bytes, bit->second);
+			m_texture_bytes.erase(bit);
+		}
+		--m_live_texture_count;
+		++evicted;
+	}
+	if (evicted)
+		eDebug("[gTextureManager] out of memory: evicted %d least-recently-used textures (~%.1fMB), now live=%ld ~%.1fMB", evicted, freed / 1048576.0, m_live_texture_count,
+			m_live_texture_bytes / 1048576.0);
+	return freed;
+}
+
+void gTextureManager::releaseSurfaceTexture(GLuint texture_id, const void* surface) {
+	if (texture_id == 0)
+		return;
+	{
+		std::lock_guard<std::mutex> lock(m_deletion_mutex);
+		auto it = m_texture_owner.find(texture_id);
+		// Not found / owned by someone else: this surface's texture was already
+		// evicted (and the name possibly reused) - nothing to release.
+		if (it == m_texture_owner.end() || it->second != surface)
+			return;
+		m_texture_owner.erase(it);
+	}
+	queueForDeletion(texture_id);
 }
 
 void gTextureManager::queueForDeletion(GLuint texture_id) {
@@ -328,6 +500,11 @@ void gTextureManager::queueForDeletion(GLuint texture_id) {
 	eDebug("[gTextureManager] queued texture id=%u for deletion, pending=%zu", texture_id, m_pending_deletions.size());
 }
 
+bool gTextureManager::hasPendingDeletions() {
+	std::lock_guard<std::mutex> lock(m_deletion_mutex);
+	return !m_pending_deletions.empty();
+}
+
 void gTextureManager::processDeletions() {
 	std::lock_guard<std::mutex> lock(m_deletion_mutex);
 	if (!m_pending_deletions.empty()) {
@@ -336,6 +513,11 @@ void gTextureManager::processDeletions() {
 
 		PFNEGLDESTROYIMAGEKHRPROC eglDestroyImageKHR = (PFNEGLDESTROYIMAGEKHRPROC)eglGetProcAddress("eglDestroyImageKHR");
 		for (GLuint texture_id : m_pending_deletions) {
+			auto bit = m_texture_bytes.find(texture_id);
+			if (bit != m_texture_bytes.end()) {
+				m_live_texture_bytes -= std::min(m_live_texture_bytes, bit->second);
+				m_texture_bytes.erase(bit);
+			}
 			auto it = m_texture_to_image_map.find(texture_id);
 			if (it != m_texture_to_image_map.end()) {
 				if (eglDestroyImageKHR && m_egl_display != EGL_NO_DISPLAY) {
@@ -345,9 +527,17 @@ void gTextureManager::processDeletions() {
 			}
 		}
 
-		eDebug("[gTextureManager] -texture count=%zu live=%ld", m_pending_deletions.size(), m_live_texture_count);
+		eDebug("[gTextureManager] -texture count=%zu live=%ld ~%.1fMB", m_pending_deletions.size(), m_live_texture_count, m_live_texture_bytes / 1048576.0);
 		m_pending_deletions.clear();
 	}
+}
+
+extern "C" void egl_release_surface_texture(unsigned int gl_texture_id, const void* surface);
+void egl_release_surface_texture(unsigned int gl_texture_id, const void* surface) {
+	if (s_active_manager)
+		s_active_manager->releaseSurfaceTexture(gl_texture_id, surface);
+	else
+		eDebug("[gTextureManager] egl_release_surface_texture(%u) called with no active manager - texture leaked", gl_texture_id);
 }
 
 extern "C" void egl_queue_texture_deletion(unsigned int gl_texture_id);

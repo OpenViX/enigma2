@@ -595,11 +595,21 @@ fi
 # into the normal sysroot include dir, libnxclient.so/libnxpl.so/libnexus.so
 # staged into the normal sysroot lib dir alongside a "nxpl" pkg-config
 # module), unlike Dreambox's pixmap-surface VC5/BEGL stack.
-AM_CONDITIONAL(HAVE_GBQUAD_EGL, test "x$use_egl" = "xyes" -a "x$MACHINEBUILD" = "xgbquad4kpro")
-if test "x$use_egl" = "xyes" -a "x$MACHINEBUILD" = "xgbquad4kpro"; then
-	AC_DEFINE(HAVE_GBQUAD_EGL, 1, [GigaBlue Quad 4K Pro Nexus EGL window backend available])
+# vuduo4klite uses the same Broadcom Nexus/NXPL stack (oe-alliance-core's
+# meta-vuplusde vuplus-v3ddriver.inc is a copy of gb-v3ddriver.inc, installing the
+# same libnxpl/libnexus/libnxclient + "nxpl" pkg-config module). The other
+# GigaBlue Broadcom boxes are the two meta-gigablue gb-v3ddriver machines,
+# BOXTYPE gb7252 (also covers gb7252pro's newer driver drop) and gb72604.
+use_nxpl_egl=no
+if test "x$use_egl" = "xyes" -a \( "x$MACHINEBUILD" = "xgbquad4kpro" -o "x$MACHINEBUILD" = "xvuduo4klite" \
+	-o "x$BOXTYPE" = "xgb7252" -o "x$BOXTYPE" = "xgb72604" \); then
+	use_nxpl_egl=yes
+fi
+AM_CONDITIONAL(HAVE_GBQUAD_EGL, test "x$use_nxpl_egl" = "xyes")
+if test "x$use_nxpl_egl" = "xyes"; then
+	AC_DEFINE(HAVE_GBQUAD_EGL, 1, [GigaBlue Broadcom / VU+ Duo 4K Lite Nexus EGL window backend available])
 	PKG_CHECK_MODULES([NXPL], [nxpl], [], [
-		AC_MSG_ERROR([gbquad4kpro EGL build requires the Nexus/NXPL pkg-config module "nxpl" (from gb-v3ddriver-headers/gb-v3ddriver in oe-alliance-core's meta-gigablue layer) - not found in the sysroot])
+		AC_MSG_ERROR([$MACHINEBUILD EGL build requires the Nexus/NXPL pkg-config module "nxpl" (from gb-v3ddriver/vuplus-v3ddriver in oe-alliance-core's meta-gigablue/meta-vuplusde layer) - not found in the sysroot])
 	])
 	# bstd.h (base header every nexus_*.h/nxclient.h pulls in) hard-errors
 	# unless BSTD_CPU_ENDIAN is defined before it's parsed - the SDK ships

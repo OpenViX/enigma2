@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <cstdint>
 #include <cstring>
 #include <EGL/egl.h>
@@ -9,6 +10,70 @@
 // nexus_core_compat.h/nxclient_global.h - see its own comment for why.
 #include <lib/gdi/egl/platform/gbquad/gbquad_window_provider.h>
 #include <nxclient.h>
+
+// Logs the window compositor's blend equations (whatever
+// NXPL_GetDefaultNativeWindowInfoEXT() returned) and, only when
+// ENIGMA_EGL_NXPL_BLEND is set, replaces them - experiment for content whose
+// alpha the Nexus compositor composites differently from the OSD hardware the
+// non-EGL build relies on. Nexus equation form: a*b +/- c*d +/- e.
+//   premult  : color = S*1 + D*(1-Sa)      (source treated as premultiplied)
+//   straight : color = S*Sa + D*(1-Sa)     (source treated as straight alpha)
+// alpha (both) = Sa*1 + Da*(1-Sa), unless the mode also contains "keepalpha".
+static void applyWindowBlendOverride(NXPL_NativeWindowInfoEXT& info, const char* where) {
+	auto dump = [&](const char* tag) {
+		const NEXUS_BlendEquation& c = info.colorBlend;
+		const NEXUS_BlendEquation& a = info.alphaBlend;
+		eDebug("[GbquadWindowProvider] %s (%s) colorBlend a=%d b=%d subCD=%d c=%d d=%d subE=%d e=%d | alphaBlend a=%d b=%d subCD=%d c=%d d=%d subE=%d e=%d", tag, where, (int)c.a, (int)c.b,
+			   (int)c.subtract_cd, (int)c.c, (int)c.d, (int)c.subtract_e, (int)c.e, (int)a.a, (int)a.b, (int)a.subtract_cd, (int)a.c, (int)a.d, (int)a.subtract_e, (int)a.e);
+	};
+	dump("window blend defaults");
+
+	// Default "premult,keepalpha": the OSD content is effectively premultiplied
+	// (GL blending over a transparent area, like the CPU framebuffer path),
+	// but the compositor's default colour equation is straight-alpha over
+	// (S*Sa + D*(1-Sa)), which multiplies by alpha twice and renders
+	// translucent overlays over video too dark. Confirmed on gbquad4kpro with
+	// the Cosmos infobar-top strip. The default alpha equation is kept.
+	// ENIGMA_EGL_NXPL_BLEND=default restores the compositor's own equations;
+	// "straight" / "premult" (optionally + ",keepalpha") select others.
+	const char* mode = getenv("ENIGMA_EGL_NXPL_BLEND");
+	if (!mode)
+		mode = "premult,keepalpha";
+	if (strstr(mode, "default") != nullptr)
+		return;
+	const bool premult = strstr(mode, "premult") != nullptr;
+	const bool straight = strstr(mode, "straight") != nullptr;
+	if (!premult && !straight)
+		return;
+
+	NEXUS_BlendEquation color;
+	memset(&color, 0, sizeof(color));
+	color.a = NEXUS_BlendFactor_eSourceColor;
+	color.b = premult ? NEXUS_BlendFactor_eOne : NEXUS_BlendFactor_eSourceAlpha;
+	color.subtract_cd = false;
+	color.c = NEXUS_BlendFactor_eDestinationColor;
+	color.d = NEXUS_BlendFactor_eInverseSourceAlpha;
+	color.subtract_e = false;
+	color.e = NEXUS_BlendFactor_eZero;
+
+	NEXUS_BlendEquation alpha;
+	memset(&alpha, 0, sizeof(alpha));
+	alpha.a = NEXUS_BlendFactor_eSourceAlpha;
+	alpha.b = NEXUS_BlendFactor_eOne;
+	alpha.subtract_cd = false;
+	alpha.c = NEXUS_BlendFactor_eDestinationAlpha;
+	alpha.d = NEXUS_BlendFactor_eInverseSourceAlpha;
+	alpha.subtract_e = false;
+	alpha.e = NEXUS_BlendFactor_eZero;
+
+	info.colorBlend = color;
+	// "keepalpha": leave the compositor's default alpha equation (Sa + Da) alone
+	// and change only the colour equation.
+	if (strstr(mode, "keepalpha") == nullptr)
+		info.alphaBlend = alpha;
+	dump(premult ? "window blend OVERRIDDEN premult" : "window blend OVERRIDDEN straight");
+}
+
 
 GbquadWindowProvider::GbquadWindowProvider()
 	: m_nxpl_display_handle(nullptr), m_native_window(nullptr), m_joined_nxclient(false) {
@@ -55,6 +120,7 @@ bool GbquadWindowProvider::init(int width, int height) {
 	windowInfo.height = (uint32_t)height;
 	windowInfo.x = 0;
 	windowInfo.y = 0;
+	applyWindowBlendOverride(windowInfo, "init");
 
 	// width/height above are enigma2's OSD/skin canvas size (its own gEGLDC
 	// constructor comment) - NOT the current HDMI/video-mode resolution.
@@ -132,6 +198,7 @@ void GbquadWindowProvider::onResolutionChanged(int width, int height) {
 	windowInfo.height = (uint32_t)height;
 	windowInfo.x = 0;
 	windowInfo.y = 0;
+	applyWindowBlendOverride(windowInfo, "resize");
 	windowInfo.stretch = true;
 
 	// clientID identifies THIS window to Nexus - default_nexus.h separately
