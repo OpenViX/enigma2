@@ -1922,6 +1922,23 @@ void gEGLDC::exec(const gOpcode* opcode) {
 
 gEGLDC* gEGLDC::s_instance = nullptr;
 
+// gDC::getRGB() (grc.cpp) resolves a palette-index colour (gColor) through
+// m_pixmap->surface->clut, and falls back to gRGB(col, col, col) - i.e. near
+// black - when there is no palette. gFBDC gives its 32bpp surface a 256-entry
+// palette for exactly this (gfbdc.cpp), because legacy painters such as
+// eGauge (needles), which call setPalette() and then pick colours by index,
+// depend on it. This backend's staging pixmap had none, so those colours all
+// rendered black. Same allocation as gFBDC: 256 zeroed entries, filled in by
+// the gOpcode::setPalette handling in gDC::exec().
+static void allocStagingPalette(gPixmap* pixmap) {
+	if (!pixmap || !pixmap->surface || pixmap->surface->clut.data)
+		return;
+	pixmap->surface->clut.colors = 256;
+	pixmap->surface->clut.start = 0;
+	pixmap->surface->clut.data = new gRGB[256];
+	memset(static_cast<void*>(pixmap->surface->clut.data), 0, sizeof(gRGB) * 256);
+}
+
 gEGLDC::gEGLDC(INativeWindowProvider* window_provider, int width, int height) : gMainDC() {
 	s_instance = this;
 	int xres = width, yres = height, bpp = 32;
@@ -1958,6 +1975,7 @@ gEGLDC::gEGLDC(INativeWindowProvider* window_provider, int width, int height) : 
 	// calls (which assume the latter) operate on the wrong kind of texture
 	// object entirely - a very likely source of the wrong colors seen.
 	m_pixmap = new gPixmap(eSize(width, height), 32, gPixmap::accelNever);
+	allocStagingPalette(m_pixmap);
 }
 
 gEGLDC::~gEGLDC() {
@@ -2032,6 +2050,7 @@ void gEGLDC::setResolution(int xres, int yres, int bpp) {
 	// immediately (unlike the GL/EGL work below) - plain CPU allocation, no
 	// GL context needed.
 	m_pixmap = new gPixmap(eSize(xres, yres), bpp, gPixmap::accelNever);
+	allocStagingPalette(m_pixmap);
 
 	// See m_pending_resolution_change's comment (gegldc.h) for why the rest
 	// of this can't happen here: it's GL/EGL work, only valid on gRC's
