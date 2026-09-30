@@ -982,11 +982,11 @@ int eListbox::event(int event, void *data, void *data2)
 			}
 
 			// clear/repaint empty/unused space between scrollbar and listboxentrys
-			if (m_scrollbar_mode == showLeft)
+			if (m_scrollbar)
 			{
-				if (m_scrollbar)
+				style->setStyle(painter, eWindowStyle::styleListboxNormal);
+				if (m_scrollbar_mode == showLeft)
 				{
-					style->setStyle(painter, eWindowStyle::styleListboxNormal);
 					if (m_scrollbar->isVisible())
 					{
 						painter.clip(eRect(m_scrollbar->position() + ePoint(m_scrollbar->size().width(), 0), eSize(5,m_scrollbar->size().height())));
@@ -995,13 +995,9 @@ int eListbox::event(int event, void *data, void *data2)
 					{
 						painter.clip(eRect(m_scrollbar->position(), eSize(m_scrollbar->size().width() + 5, m_scrollbar->size().height())));
 					}
-					painter.clear();
-					painter.clippop();
 				}
-			} else if (m_scrollbar_mode == showTop) {
-				if (m_scrollbar)
+				else if (m_scrollbar_mode == showTop)
 				{
-					style->setStyle(painter, eWindowStyle::styleListboxNormal);
 					if (m_scrollbar->isVisible())
 					{
 						painter.clip(eRect(m_scrollbar->position() + ePoint(0, m_scrollbar->size().height()), eSize(m_scrollbar->size().width(), 5)));
@@ -1010,23 +1006,34 @@ int eListbox::event(int event, void *data, void *data2)
 					{
 						painter.clip(eRect(m_scrollbar->position(), eSize(m_scrollbar->size().width(), m_scrollbar->size().height() + 5)));
 					}
-					painter.clear();
-					painter.clippop();
 				}
-			}
-			else
-			{
-				if (m_scrollbar && m_scrollbar->isVisible())
+				else
 				{
-					style->setStyle(painter, eWindowStyle::styleListboxNormal);
-					if (m_orientation == orVertical) {
-						painter.clip(eRect(m_scrollbar->position() - ePoint(5,0), eSize(5,m_scrollbar->size().height())));
-					} else {
-						painter.clip(eRect(m_scrollbar->position() - ePoint(0,5), eSize(m_scrollbar->size().width(), 5)));
+					if (m_orientation == orVertical)
+					{
+						if (m_scrollbar->isVisible())
+						{
+							painter.clip(eRect(m_scrollbar->position() - ePoint(5,0), eSize(5,m_scrollbar->size().height())));
+						}
+						else
+						{
+							painter.clip(eRect(m_scrollbar->position() - ePoint(5,0), eSize(m_scrollbar->size().width() + 5, m_scrollbar->size().height())));
+						}
 					}
-					painter.clear();
-					painter.clippop();
+					else
+					{
+						if (m_scrollbar->isVisible())
+						{
+							painter.clip(eRect(m_scrollbar->position() - ePoint(0,5), eSize(m_scrollbar->size().width(), 5)));
+						}
+						else
+						{
+							painter.clip(eRect(m_scrollbar->position() - ePoint(0,5), eSize(m_scrollbar->size().width(), m_scrollbar->size().height() + 5)));
+						}
+					}
 				}
+				painter.clear();
+				painter.clippop();
 			}
 
 			return 0;
