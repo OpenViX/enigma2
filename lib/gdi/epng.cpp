@@ -2,6 +2,7 @@
 #include <zlib.h>
 #include <png.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <lib/base/cfile.h>
 #include <lib/base/wrappers.h>
 #include <lib/gdi/epng.h>
@@ -130,6 +131,12 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 	// own size gate (is_a_candidate_for_accel(), gpixmap.cpp) already decides
 	// whether a given image is worth accelerating; no EGL-specific override.
 	int png_accel = accel;
+	// Diagnostic only: ENIGMA_PNG_NOACCEL=1 forces plain heap memory for PNGs, to
+	// tell whether a texture built from an accelerated (ION) PNG pixmap that
+	// reads as all zeros at upload time is what blackens images.
+	static const bool s_png_noaccel = getenv("ENIGMA_PNG_NOACCEL") && atoi(getenv("ENIGMA_PNG_NOACCEL")) != 0;
+	if (s_png_noaccel)
+		png_accel = gPixmap::accelNever;
 	result = new gPixmap(width, height, bit_depth * channels, cached ? PixmapCache::PixmapDisposed : NULL, png_accel);
 	result->isPNG = true;
 	gUnmanagedSurface *surface = result->surface;

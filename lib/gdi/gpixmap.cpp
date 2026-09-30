@@ -31,6 +31,9 @@ Licensed under GPLv2.
 // gl_texture_id) is no longer needed by anything, regardless of which
 // specific code path let its last reference go.
 extern "C" void egl_queue_texture_deletion(unsigned int gl_texture_id);
+// Releases gl_texture_id only if `surface` still owns it (it may have been
+// evicted from the GPU under memory pressure, and its name reused, since).
+extern "C" void egl_release_surface_texture(unsigned int gl_texture_id, const void* surface);
 #endif
 
 /* surface acceleration threshold: do not attempt to accelerate surfaces smaller than the threshold (measured in bytes) */
@@ -268,7 +271,7 @@ gSurface::~gSurface()
 	// because it runs but gl_texture_id is unexpectedly 0 here.
 	eDebug("[gSurface] dtor surface=%p gl_texture_id=%u %dx%d bpp=%d", this, gl_texture_id, x, y, bpp);
 	if (gl_texture_id)
-		egl_queue_texture_deletion(gl_texture_id);
+		egl_release_surface_texture(gl_texture_id, this);
 #endif
 	gAccel::getInstance()->accelFree(this);
 	if (data)
