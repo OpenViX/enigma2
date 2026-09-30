@@ -68,6 +68,10 @@ private:
 	// around it.
 	int m_shadow_blit_stride = 1;
 	int m_shadow_blit_frame = 0;
+	// Diagnostic, opt-in via ENIGMA_EGL_BLIT_INVALIDATE=1: call
+	// glInvalidateFramebuffer() on the window surface right before the shadow
+	// blit so a tiled GPU needn't load the stale buffer into tile memory first.
+	bool m_blit_invalidate = false;
 
 	bool createShadowFramebuffer();
 	void destroyShadowFramebuffer();
@@ -129,6 +133,12 @@ private:
 	struct FrameProfile {
 		double text_ms = 0, text_flush_ms = 0, vbo_ms = 0, atlas_ms = 0, band_ms = 0, overlay_ms = 0, other_ms = 0;
 		int text_ops = 0, text_flushes = 0, glyphs = 0, atlas_uploads = 0, atlas_rows = 0, band_uploads = 0, band_rows = 0, overlays = 0, other_ops = 0;
+		// Rectangle breakdown (see executeRectangle()): flat = basic-shader
+		// path, adv1/adv2 = advanced-shader ops drawn in 1 or 2 passes, draws =
+		// advanced-shader draw calls, adv_mpx = megapixels of clip-limited
+		// area actually shaded by the advanced shader (all passes summed).
+		int rect_flat = 0, rect_adv1 = 0, rect_adv2 = 0, rect_adv_draws = 0, rect_fast = 0;
+		double rect_adv_mpx = 0;
 	} m_prof;
 	std::chrono::steady_clock::time_point m_prof_last_flip;
 	static double msSince(const std::chrono::steady_clock::time_point& t0) {

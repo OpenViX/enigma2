@@ -57,5 +57,9 @@ public:
 	void setResolution(float width, float height);
 
 	void drawAdvancedRect(float x, float y, float width, float height, int radius, uint8_t edges, const std::vector<gRGB>& gradient_colors, uint8_t orientation, bool alphablend, float alpha,
-						  const gRGB& solid_color, int border_width, const gRGB& border_color, bool coverage_alpha = false);
+						  const gRGB& solid_color, int border_width, const gRGB& border_color, bool coverage_alpha = false, const float* quad = nullptr);
+	// quad, if non-null, is {x, y, w, h}: draw only that sub-area of the
+	// rect (x, y, width, height) - the shader still evaluates against the
+	// full rect's uniforms, so the result is identical to the corresponding
+	// part of a full-rect draw. Used to shade only a rounded rect's corners.
 };

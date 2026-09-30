@@ -134,8 +134,35 @@ void GbquadWindowProvider::onResolutionChanged(int width, int height) {
 	windowInfo.y = 0;
 	windowInfo.stretch = true;
 
+	// clientID identifies THIS window to Nexus - default_nexus.h separately
+	// exposes NXPL_GetClientID(native) as its own query, which only makes
+	// sense if it's a real per-window identity Nexus tracks, not a cosmetic
+	// setting. init() never sets it explicitly either (same
+	// NXPL_GetDefaultNativeWindowInfoEXT() default this struct already has),
+	// which is fine for a brand-new window at NXPL_CreateNativeWindowEXT()
+	// time - but NXPL_UpdateNativeWindowEXT() plausibly validates the passed
+	// windowInfo against what Nexus has on record for THIS already-existing
+	// window, and a default/zero clientID here would never match that,
+	// which would explain why both the plain update and a hide/show cycle
+	// around it (tried and confirmed safe, but ALSO confirmed not sufficient
+	// on real hardware - still oversized/running off screen either way) had
+	// no visible effect: the update itself may simply have been silently
+	// rejected every time, no error surfaced either way.
+	windowInfo.clientID = NXPL_GetClientID(m_native_window);
+
 	NXPL_UpdateNativeWindowEXT(m_native_window, &windowInfo);
-	eDebug("[GbquadWindowProvider] native window resized to %dx%d", width, height);
+
+	// Kept from the earlier (individually confirmed insufficient, but also
+	// confirmed harmless) attempt - forces Nexus to re-present the window
+	// from scratch, in case the clientID fix above needs this too to
+	// actually take visual effect. Both NXPL_ShowNativeWindowEXT() calls are
+	// already-exercised operations on this exact window (see init()/
+	// cleanup()), unlike recreating the EGL surface (tried and reverted:
+	// locked the box).
+	NXPL_ShowNativeWindowEXT(m_native_window, false);
+	NXPL_ShowNativeWindowEXT(m_native_window, true);
+
+	eDebug("[GbquadWindowProvider] native window resized to %dx%d, clientID=%u", width, height, windowInfo.clientID);
 }
 
 void GbquadWindowProvider::clearFramebuffer() {

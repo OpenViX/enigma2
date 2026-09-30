@@ -364,7 +364,7 @@ void gAdvancedShader::setResolution(float width, float height) {
 }
 
 void gAdvancedShader::drawAdvancedRect(float x, float y, float width, float height, int radius, uint8_t edges, const std::vector<gRGB>& gradient_colors, uint8_t orientation, bool alphablend,
-									   float alpha, const gRGB& solid_color, int border_width, const gRGB& border_color, bool coverage_alpha) {
+									   float alpha, const gRGB& solid_color, int border_width, const gRGB& border_color, bool coverage_alpha, const float* quad) {
 	bind();
 
 	glUniform1f(m_coverage_alpha_location, coverage_alpha ? 1.0f : 0.0f);
@@ -409,7 +409,9 @@ void gAdvancedShader::drawAdvancedRect(float x, float y, float width, float heig
 		glUniform1i(m_num_stops_location, 0);
 	}
 
-	float vertices[6][2] = {{x, y}, {x, y + height}, {x + width, y}, {x + width, y}, {x, y + height}, {x + width, y + height}};
+	const float qx = quad ? quad[0] : x, qy = quad ? quad[1] : y;
+	const float qw = quad ? quad[2] : width, qh = quad ? quad[3] : height;
+	float vertices[6][2] = {{qx, qy}, {qx, qy + qh}, {qx + qw, qy}, {qx + qw, qy}, {qx, qy + qh}, {qx + qw, qy + qh}};
 
 	// position (x, y) - must match init()'s VAO layout.
 	static const gles::VertexAttrib attribs[] = {{0, 2, 0}};
