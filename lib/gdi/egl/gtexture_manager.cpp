@@ -3,7 +3,9 @@
 #include <lib/gdi/egl/gtexture_manager.h>
 #include <algorithm>
 #include <chrono>
+#include <cstdlib>
 #include <cstring>
+#include <vector>
 
 #ifndef GL_BGRA_EXT
 #define GL_BGRA_EXT 0x80E1
@@ -113,6 +115,29 @@ GLuint gTextureManager::createTextureFromDmabuf(gPixmap* pixmap) {
 #endif
 }
 
+// Diagnostic, opt-in via ENIGMA_EGL_TEX_CHECK=1: logs when a pixmap is about
+// to be uploaded with every source byte zero (in e2's inverted-alpha
+// convention that is fully OPAQUE BLACK) - i.e. a picture uploaded before its
+// decoder finished writing it, or from recycled/cleared memory. That texture
+// is then cached on the surface until the pixmap dies, which would show up as
+// a black square that stays black. Copies the source first (ION memory is
+// slow to read with scalar loads, see the palette branch below).
+static void checkPixmapAllZero(const gUnmanagedSurface* surface, int width, int height) {
+	static const bool enabled = getenv("ENIGMA_EGL_TEX_CHECK") && atoi(getenv("ENIGMA_EGL_TEX_CHECK")) != 0;
+	if (!enabled || !surface->data || surface->stride <= 0)
+		return;
+	std::vector<uint8_t> local((size_t)surface->stride * height);
+	memcpy(local.data(), surface->data, local.size());
+	const size_t row_bytes = (size_t)width * (surface->bpp == 32 ? 4 : 1);
+	for (int y = 0; y < height; ++y) {
+		const uint8_t* row = local.data() + (size_t)y * surface->stride;
+		for (size_t i = 0; i < row_bytes; ++i)
+			if (row[i])
+				return;
+	}
+	eDebug("[gTextureManager] TEX_CHECK: uploading ALL-ZERO pixmap %dx%d bpp=%d stride=%d data=%p - will render as black", width, height, surface->bpp, surface->stride, surface->data);
+}
+
 GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 	if (!pixmap || !pixmap->surface)
 		return 0;
@@ -133,10 +158,18 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 	int width = surface->x;
 	int height = surface->y;
 
+	if (surface->bpp == 32 || surface->bpp == 8)
+		checkPixmapAllZero(surface, width, height);
+
 	// See the bpp==32 branch below for the full explanation - shared here so
 	// the bpp==8 paletted branch (which uploads the same native BGRA memory
 	// order via gRGB::argb()) can use the same platform-dependent format.
 	GLenum src_format = gles::needsRBSwap ? GL_RGBA : GL_BGRA_EXT;
+
+	// Drain any error left over from earlier, unrelated GL calls so the
+	// glGetError() after the upload below can only be this upload's own.
+	while (glGetError() != GL_NO_ERROR) {
+	}
 
 	glGenTextures(1, &texture_id);
 	glBindTexture(GL_TEXTURE_2D, texture_id);
@@ -290,6 +323,19 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 	}
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// A failed upload (typically GL_OUT_OF_MEMORY from the driver, e.g. while
+	// its buffers are being reallocated for a larger resolution) leaves this
+	// texture with no storage - it samples as solid black - and getTexture()
+	// would cache that id on the surface forever, so the picture would stay
+	// black even after the memory pressure is gone. Report it and hand back 0
+	// instead: nothing is cached, and the next draw retries the upload.
+	GLenum upload_err = glGetError();
+	if (upload_err != GL_NO_ERROR) {
+		eDebug("[gTextureManager] texture upload FAILED %dx%d bpp=%d glError=0x%x - not caching, will retry on next draw", width, height, surface->bpp, upload_err);
+		glDeleteTextures(1, &texture_id);
+		return 0;
+	}
 #if TEX_UPLOAD_TIMING
 	eDebug("[gTextureManager] timing: createTextureFromPixmap total %dx%d bpp=%d took %.2fms", width, height, surface->bpp, ms_since(t_total0));
 #endif
@@ -326,6 +372,11 @@ void gTextureManager::queueForDeletion(GLuint texture_id) {
 	// processDeletions() ever growing, which would mean surfaces are dying
 	// but their textures are never queued/deleted at all.
 	eDebug("[gTextureManager] queued texture id=%u for deletion, pending=%zu", texture_id, m_pending_deletions.size());
+}
+
+bool gTextureManager::hasPendingDeletions() {
+	std::lock_guard<std::mutex> lock(m_deletion_mutex);
+	return !m_pending_deletions.empty();
 }
 
 void gTextureManager::processDeletions() {
