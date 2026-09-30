@@ -978,14 +978,25 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 	// leak). This guard's destructor runs on every exit path below,
 	// including every early return, so it always releases exactly the one
 	// reference/allocation this specific opcode is responsible for.
+	//
+	// The same guard also does what gDC::exec()'s generic blit case does after
+	// every blit (grc.cpp): reset the one-shot corner radius that
+	// gPainter::setRadius() queued for it. Without that reset a rounded blit
+	// (e.g. a poster with cornerRadius) left m_radius set, and the next blit -
+	// say an icon in a listbox row redrawn after the poster changed - was drawn
+	// with that stale radius, rounded into a distorted blob.
 	struct BlitOpcodeGuard {
 		const gOpcode::para::pblit* op;
+		int& radius;
+		uint8_t& radius_edges;
 		~BlitOpcodeGuard() {
+			radius = 0;
+			radius_edges = 0;
 			if (op->pixmap)
 				op->pixmap->Release();
 			delete op;
 		}
-	} guard{op};
+	} guard{op, m_radius, m_radius_edges};
 
 	if (!op->pixmap)
 		return;
