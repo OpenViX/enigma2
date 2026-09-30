@@ -43,34 +43,50 @@ void eListbox::setOrientation(int orientation)
 void eListbox::setScrollbarMode(int mode)
 {
 	m_scrollbar_mode = mode;
-	if (m_scrollbar)
+
+	if (mode == showNever)
 	{
-		if (m_scrollbar_mode == showNever)
-		{
-			delete m_scrollbar;
-			m_scrollbar=0;
-		}
+		delete m_scrollbar;
+		m_scrollbar = nullptr;
+		return;
+	}
+
+	if (m_scrollbar)
+		return;
+
+	m_scrollbar = new eSlider(this);
+	m_scrollbar->hide();
+
+	if (m_orientation == orVertical || m_orientation == orGrid)
+	{
+		m_scrollbar->setOrientation(eSlider::orVertical);
 	}
 	else
 	{
-		m_scrollbar = new eSlider(this);
-		m_scrollbar->hide();
-		if (m_orientation == orVertical || m_orientation == orGrid) {
-			m_scrollbar->setOrientation(eSlider::orVertical);
-		} else {
-			m_scrollbar->setOrientation(eSlider::orHorizontal);
-		}
-		m_scrollbar->setRange(0,100);
-		if (m_scrollbarbackgroundpixmap) m_scrollbar->setBackgroundPixmap(m_scrollbarbackgroundpixmap);
-		if (m_scrollbarpixmap) m_scrollbar->setPixmap(m_scrollbarpixmap);
-		if (m_style.m_scrollbarforeground_color_set) m_scrollbar->setForegroundColor(m_style.m_scrollbarforeground_color);
-		if (m_style.m_scrollbarbackground_color_set) m_scrollbar->setBackgroundColor(m_style.m_scrollbarbackground_color);
-		if (m_style.m_scrollbarborder_width_set)
-			m_scrollbar->setBorderWidth(m_style.m_scrollbarborder_width);
-		else
-			m_scrollbar->setBorderWidth(1);
-		if (m_style.m_scrollbarborder_color_set) m_scrollbar->setBorderColor(m_style.m_scrollbarborder_color);
+		m_scrollbar->setOrientation(eSlider::orHorizontal);
 	}
+
+	m_scrollbar->setRange(0, 100);
+
+	if (m_scrollbarbackgroundpixmap)
+		m_scrollbar->setBackgroundPixmap(m_scrollbarbackgroundpixmap);
+
+	if (m_scrollbarpixmap)
+		m_scrollbar->setPixmap(m_scrollbarpixmap);
+
+	if (m_style.m_scrollbarforeground_color_set)
+		m_scrollbar->setForegroundColor(m_style.m_scrollbarforeground_color);
+
+	if (m_style.m_scrollbarbackground_color_set)
+		m_scrollbar->setBackgroundColor(m_style.m_scrollbarbackground_color);
+
+	if (m_style.m_scrollbarborder_width_set)
+		m_scrollbar->setBorderWidth(m_style.m_scrollbarborder_width);
+	else
+		m_scrollbar->setBorderWidth(1);
+
+	if (m_style.m_scrollbarborder_color_set)
+		m_scrollbar->setBorderColor(m_style.m_scrollbarborder_color);
 }
 
 void eListbox::setWrapAround(bool state)
