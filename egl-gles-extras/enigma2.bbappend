@@ -8,3 +8,8 @@ VUPL_E2EGL_MACHINES = "vuduo4k vuduo4kse vusolo4k vuultimo4k vuuno4k vuuno4kse v
 
 DEPENDS:append:openvix = " ${@bb.utils.contains("MACHINE_FEATURES", "e2egl", bb.utils.contains_any("MACHINE", d.getVar("VUPL_E2EGL_MACHINES"), "libvupl", "", d), "", d)}"
 RDEPENDS:${PN}:append:openvix = " ${@bb.utils.contains("MACHINE_FEATURES", "e2egl", bb.utils.contains_any("MACHINE", d.getVar("VUPL_E2EGL_MACHINES"), "libvupl-${MACHINE}", "", d), "", d)}"
+
+# Render the OSD canvas scaled down when it is bigger than the GPU's texture
+# limit (--enable-egl-canvas-scaling, see configure.ac) - only for EGL machines
+# that do NOT have E2EGL_WQHD_FEATURE, i.e. that cannot take a 1440p canvas as is.
+EXTRA_OECONF:append:openvix = " ${@bb.utils.contains('MACHINE_FEATURES', 'e2egl', '' if d.getVar('E2EGL_WQHD_FEATURE') else '--enable-egl-canvas-scaling', '', d)}"

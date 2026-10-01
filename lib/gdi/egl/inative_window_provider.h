@@ -82,6 +82,11 @@ public:
 	// Default no-op.
 	virtual void onFramebufferUnlocked() {}
 
+	// width/height are the PHYSICAL render size: equal to the OSD canvas size,
+	// except when the canvas exceeds the GPU's texture/renderbuffer limit and
+	// gEGLDC renders it scaled down (see gEGLDC::m_phys_width) - the window must
+	// match what is actually rendered, and `stretch` fills the display from it.
+	//
 	// Called from gEGLDC::applyPendingResolutionChange() (render thread,
 	// EGL context current) when the OSD canvas's resolution changes after
 	// this provider's window/pixmap was already created (see

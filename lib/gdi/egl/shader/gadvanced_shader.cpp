@@ -208,8 +208,16 @@ static const char* fragment_shader_es2 = R"(#version 100
                 }
             }
 
-            if (t > u_gradient_stops[u_num_stops - 1]) {
-                grad_color = u_gradient_colors[u_num_stops - 1];
+            // GLSL ES 1.00 (Appendix A) only allows constant-index-expressions
+            // for uniform arrays in a fragment shader - u_num_stops - 1 is a
+            // runtime uniform, which Broadcom's V3D driver rejects (confirmed
+            // on VU+ Ultimo4K: "indexing ... with a non-constant is not
+            // mandated in the fragment shader"). Find the last stop with a
+            // loop index instead, which is a constant-index-expression.
+            for (int i = 0; i < 16; i++) {
+                if (i == u_num_stops - 1 && t > u_gradient_stops[i]) {
+                    grad_color = u_gradient_colors[i];
+                }
             }
 
             if (u_alphablend == 1) {

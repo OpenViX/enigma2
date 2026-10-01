@@ -145,8 +145,52 @@ private:
 		return std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
 	}
 
+	// Logical canvas size: what the skin/widgets lay out against and what every
+	// shader projection and draw coordinate is expressed in.
 	int m_width;
 	int m_height;
+
+	// Physical render size: the size of the real GL targets (viewport, shadow
+	// FBO, window surface). Identical to m_width x m_height unless the canvas
+	// is larger than the GPU's GL_MAX_TEXTURE_SIZE / GL_MAX_RENDERBUFFER_SIZE
+	// (m_max_tex_size) - e.g. a 2560x1440 skin on VideoCore IV (2048 limit) -
+	// in which case it is the same aspect ratio shrunk to fit and everything is
+	// rendered scaled by m_scale_x/y (the projection stays logical, so drawing
+	// needs no change; scissors, blits and readbacks convert). m_max_tex_size
+	// is 0 until the context is current; scale is 1.0 whenever it isn't needed.
+	int m_phys_width = 0;
+	int m_phys_height = 0;
+	float m_scale_x = 1.0f;
+	float m_scale_y = 1.0f;
+	int m_max_tex_size = 0;
+	// The size the native window/surface was created at (the canvas size at
+	// construction - egl_init.cpp hands the provider the same width/height).
+	// When the canvas has to be scaled down, a physical size equal to this is
+	// preferred (if the aspect ratio matches): the window then never needs to
+	// be resized at all, which is both the proven-working configuration and
+	// avoids depending on a platform's window-resize path.
+	int m_native_width = 0;
+	int m_native_height = 0;
+	// Diagnostic: how many of the next presented frames to log (GL/EGL error
+	// state, sizes) after a resolution change - to tell "nothing is being drawn
+	// or swapped" from "drawn fine but not shown by the compositor" from a log.
+	int m_log_frames_left = 0;
+	// Set only by updatePhysicalSize() on the render thread (never derived from
+	// m_width/m_height, which setResolution() changes on the main thread before
+	// the render thread has applied the change) - so a GPU that never hits its
+	// limit always takes the original, unscaled code paths.
+	bool m_scaled = false;
+	bool isScaled() const { return m_scaled; }
+	void updatePhysicalSize(int logical_w, int logical_h);
+
+	// Uploads the area [left, right) x [top, bottom) of the CPU text-overlay
+	// staging pixmap (m_pixmap) into its GL texture. Unscaled: full-width rows,
+	// as always (GLES2 has no GL_UNPACK_ROW_LENGTH). When that texture had to be
+	// created smaller than the pixmap (see gTextureManager::setMaxTextureSize())
+	// only the area itself is downsampled and uploaded, so the cost follows the
+	// size of what was drawn, not the width of the screen.
+	void uploadOverlayBand(GLuint tex_id, int left, int top, int right, int bottom);
+
 	int m_gles_version; // 2 or 3
 
 	gShader m_basic_shader;
