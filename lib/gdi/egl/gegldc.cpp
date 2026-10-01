@@ -1,4 +1,7 @@
 #include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <vector>
 #include <cstdlib>
 #include <cstring>
 #include <lib/base/eerror.h>
@@ -196,6 +199,27 @@ bool gEGLDC::tryInitEGL(int version) {
 		return false;
 	}
 
+	// The context is current now: learn the GPU's size limits before anything
+	// sized to the canvas (shadow FBO, viewport, textures) is created. Only
+	// matters when the canvas exceeds them - see updatePhysicalSize().
+	{
+		GLint max_tex = 0, max_rb = 0;
+		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_tex);
+		glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &max_rb);
+#ifdef HAVE_EGL_CANVAS_SCALING
+		m_max_tex_size = (max_tex > 0 && max_rb > 0) ? std::min((int)max_tex, (int)max_rb) : std::max((int)max_tex, (int)max_rb);
+#else
+		// Canvas scaling not enabled for this build (see configure.ac's
+		// --enable-egl-canvas-scaling): leave the limit at 0 = "unlimited", which
+		// makes every size helper a no-op - the limits are only logged.
+		m_max_tex_size = 0;
+#endif
+		m_texture_manager.setMaxTextureSize(m_max_tex_size);
+		const char* renderer = (const char*)glGetString(GL_RENDERER);
+		eDebug("[gEGLDC] GL_RENDERER=%s GL_MAX_TEXTURE_SIZE=%d GL_MAX_RENDERBUFFER_SIZE=%d", renderer ? renderer : "(null)", (int)max_tex, (int)max_rb);
+		updatePhysicalSize(m_width, m_height);
+	}
+
 	if (m_use_shadow_fbo && !createShadowFramebuffer()) {
 		eDebug("[gEGLDC] failed to create shadow framebuffer.");
 		for (int i = 0; i < m_page_count; ++i)
@@ -247,7 +271,7 @@ bool gEGLDC::tryInitEGL(int version) {
 bool gEGLDC::createShadowFramebuffer() {
 	glGenTextures(1, &m_shadow_texture);
 	glBindTexture(GL_TEXTURE_2D, m_shadow_texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_phys_width, m_phys_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -272,7 +296,7 @@ bool gEGLDC::createShadowFramebuffer() {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	eDebug("[gEGLDC] shadow framebuffer created (%dx%d).", m_width, m_height);
+	eDebug("[gEGLDC] shadow framebuffer created (%dx%d).", m_phys_width, m_phys_height);
 	return true;
 }
 
@@ -314,7 +338,7 @@ bool gEGLDC::initEGL() {
 	m_texture_manager.setDisplay(m_egl_display);
 
 	// 7. basic GL state
-	glViewport(0, 0, m_width, m_height);
+	glViewport(0, 0, m_phys_width, m_phys_height);
 	eglSwapInterval(m_egl_display, 1);
 
 	// GL_BLEND and GL_SCISSOR_TEST are left enabled for the lifetime of the
@@ -392,10 +416,84 @@ bool gEGLDC::initEGL() {
 	return true;
 }
 
+// See m_phys_width's comment (gegldc.h). A no-op (physical == logical, scale 1)
+// unless the canvas is larger than the GPU can create a texture/renderbuffer for.
+void gEGLDC::updatePhysicalSize(int logical_w, int logical_h) {
+	int pw = logical_w, ph = logical_h;
+	gtexFitSize(logical_w, logical_h, m_max_tex_size, pw, ph);
+	if ((pw != logical_w || ph != logical_h) && m_native_width > 0 && m_native_height > 0 && m_native_width < logical_w && std::max(m_native_width, m_native_height) <= m_max_tex_size &&
+		std::fabs((double)m_native_width / m_native_height - (double)logical_w / logical_h) < 0.01) {
+		// Needs scaling anyway: render at the size the native window already
+		// has instead of a slightly larger one that would require resizing it.
+		pw = m_native_width;
+		ph = m_native_height;
+	}
+	m_phys_width = pw;
+	m_phys_height = ph;
+	m_scale_x = logical_w > 0 ? (float)pw / (float)logical_w : 1.0f;
+	m_scale_y = logical_h > 0 ? (float)ph / (float)logical_h : 1.0f;
+	m_scaled = (pw != logical_w || ph != logical_h);
+	if (isScaled())
+		eDebug("[gEGLDC] canvas %dx%d exceeds GPU texture limit %d - rendering at %dx%d (scale %.3f x %.3f) and letting the display stretch it", logical_w, logical_h, m_max_tex_size, pw, ph, m_scale_x, m_scale_y);
+}
+
+void gEGLDC::uploadOverlayBand(GLuint tex_id, int left, int top, int right, int bottom) {
+	const int pw = m_pixmap->size().width();
+	const int ph = m_pixmap->size().height();
+	left = std::max(0, left);
+	top = std::max(0, top);
+	right = std::min(pw, right);
+	bottom = std::min(ph, bottom);
+	if (bottom <= top || right <= left)
+		return;
+
+	const uint8_t* base = (const uint8_t*)m_pixmap->surface->data;
+	const size_t stride = (size_t)pw * 4;
+
+	glBindTexture(GL_TEXTURE_2D, tex_id);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+	// m_pixmap is natively BGRA in memory - see gtexture_manager.cpp's bpp==32
+	// branch / gles::needsRBSwap's comment (gles_version.h) for why this
+	// format token is platform-dependent.
+	const GLenum fmt = gles::needsRBSwap ? GL_RGBA : GL_BGRA_EXT;
+
+	// The overlay texture is created by gTextureManager, which shrinks anything
+	// over the GPU's texture limit with the same gtexFitSize() rule used here.
+	int tw = pw, th = ph;
+	gtexFitSize(pw, ph, m_texture_manager.maxTextureSize(), tw, th);
+	if (tw == pw && th == ph) {
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, top, pw, bottom - top, fmt, GL_UNSIGNED_BYTE, base + (size_t)top * stride);
+		return;
+	}
+
+	const float sx = (float)tw / (float)pw;
+	const float sy = (float)th / (float)ph;
+	const int dx0 = std::max(0, (int)std::floor(left * sx));
+	const int dx1 = std::min(tw, (int)std::ceil(right * sx));
+	const int dy0 = std::max(0, (int)std::floor(top * sy));
+	const int dy1 = std::min(th, (int)std::ceil(bottom * sy));
+	if (dx1 <= dx0 || dy1 <= dy0)
+		return;
+	std::vector<uint32_t> small((size_t)(dx1 - dx0) * (size_t)(dy1 - dy0));
+	gtexDownscaleBGRA((const uint32_t*)base, pw, pw, ph, left, top, right, bottom, small.data(), tw, th, dx0, dy0, dx1, dy1);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, dx0, dy0, dx1 - dx0, dy1 - dy0, fmt, GL_UNSIGNED_BYTE, small.data());
+}
+
 void gEGLDC::setGlScissor(const eRect& rect) {
-	int sx = rect.x();
-	int sy = m_height - (rect.y() + rect.height());
-	glScissor(sx, sy, rect.width(), rect.height());
+	if (!isScaled()) {
+		int sx = rect.x();
+		int sy = m_height - (rect.y() + rect.height());
+		glScissor(sx, sy, rect.width(), rect.height());
+		return;
+	}
+
+	// Logical (top-down) rect -> physical (bottom-up) pixels. Rounded outwards
+	// so a scaled-down edge never loses its partially covered pixel row/column.
+	int x0 = std::max(0, (int)std::floor(rect.x() * m_scale_x));
+	int x1 = std::min(m_phys_width, (int)std::ceil((rect.x() + rect.width()) * m_scale_x));
+	int y0 = std::max(0, (int)std::floor(rect.y() * m_scale_y));
+	int y1 = std::min(m_phys_height, (int)std::ceil((rect.y() + rect.height()) * m_scale_y));
+	glScissor(x0, m_phys_height - y1, std::max(0, x1 - x0), std::max(0, y1 - y0));
 }
 
 void gEGLDC::setAlphaBlendMode(bool trueAlphaBlend) {
@@ -925,12 +1023,9 @@ void gEGLDC::executeClear(const gOpcode* op) {
 			for (int y = top; y < bottom; ++y)
 				memset(base + (size_t)y * stride + (size_t)left * 4, 0, (size_t)(right - left) * 4);
 
-			glBindTexture(GL_TEXTURE_2D, overlay_tex);
-			glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-			// m_pixmap is natively BGRA in memory - see gtexture_manager.cpp's
-			// bpp==32 branch / gles::needsRBSwap's comment (gles_version.h)
-			// for why this format token is platform-dependent.
-			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, top, pw, bottom - top, gles::needsRBSwap ? GL_RGBA : GL_BGRA_EXT, GL_UNSIGNED_BYTE, base + (size_t)top * stride);
+			// Uploads rows [top, bottom) of m_pixmap (natively BGRA - see
+			// uploadOverlayBand()), downsampled if the texture is smaller.
+			uploadOverlayBand(overlay_tex, left, top, right, bottom);
 
 			setGlScissor(eRect(left, top, right - left, bottom - top));
 			m_texture_shader.drawTexture(0, 0, (float)m_width, (float)m_height, overlay_tex);
@@ -1530,15 +1625,7 @@ void gEGLDC::compositeTextOverlay(eRect area, bool trueAlphaBlend) {
 		// CPU text-overlay staging texture, updated in place - never evict.
 		m_pixmap->surface->gl_texture_pinned = true;
 	} else {
-		glBindTexture(GL_TEXTURE_2D, tex_id);
-		int row_width = m_pixmap->size().width();
-		const uint8_t* src = (const uint8_t*)m_pixmap->surface->data;
-		src += (size_t)area.top() * row_width * 4;
-		// m_pixmap is natively BGRA in memory (see gtexture_manager.cpp's
-		// bpp==32 branch / gles::needsRBSwap's comment, gles_version.h, for
-		// why this format token is platform-dependent).
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, area.top(), row_width, area.height(), gles::needsRBSwap ? GL_RGBA : GL_BGRA_EXT, GL_UNSIGNED_BYTE, src);
+		uploadOverlayBand(tex_id, area.left(), area.top(), area.left() + area.width(), area.top() + area.height());
 	}
 	if (tex_id) {
 		// m_pixmap is only valid within the text's own bounding area - the
@@ -1968,6 +2055,10 @@ gEGLDC::gEGLDC(INativeWindowProvider* window_provider, int width, int height) : 
 	m_window_provider = window_provider;
 	m_width = width;
 	m_height = height;
+	m_phys_width = width;
+	m_phys_height = height;
+	m_native_width = width;
+	m_native_height = height;
 	m_gles_version = 0;
 	m_egl_display = EGL_NO_DISPLAY;
 	for (int i = 0; i < MAX_EGL_SURFACES; ++i)
@@ -2083,13 +2174,30 @@ void gEGLDC::applyPendingResolutionChange() {
 	// is meaningless now.
 	m_text_overlay_region = gRegion();
 
+	// Physical size first: everything below that touches the real GL targets
+	// (native window, surface, viewport, shadow FBO) uses it, while shader
+	// projections stay in the logical size. Equal to the pending size unless
+	// it exceeds the GPU's texture/renderbuffer limit. The previous physical
+	// size is kept as a fallback in case the driver refuses the new one.
+	const int prev_phys_w = m_phys_width;
+	const int prev_phys_h = m_phys_height;
+	updatePhysicalSize(m_pending_width, m_pending_height);
+
+	// Nothing about the real window/surface changed (the canvas is being
+	// rendered scaled to the size it already had): leave the native window and
+	// EGL surface completely alone and only update the GL state below.
+	m_log_frames_left = 5;
+	const bool physical_unchanged = (m_phys_width == prev_phys_w && m_phys_height == prev_phys_h);
+	if (physical_unchanged)
+		eDebug("[gEGLDC] physical size stays %dx%d for canvas %dx%d - native window and EGL surface left untouched", m_phys_width, m_phys_height, m_pending_width, m_pending_height);
+
 	// Nexus (or whichever platform's provider this is) needs to be told its
 	// window's own authored size changed too - see
 	// GbquadWindowProvider::onResolutionChanged() for why (stretch scales to
 	// whatever size Nexus was last told, not this canvas's actual current
-	// size).
-	if (m_window_provider)
-		m_window_provider->onResolutionChanged(m_pending_width, m_pending_height);
+	// size). That size is the physical one, not the logical canvas.
+	if (m_window_provider && !physical_unchanged)
+		m_window_provider->onResolutionChanged(m_phys_width, m_phys_height);
 
 	// Confirmed on real hardware via a diagnostic eglQuerySurface() (now
 	// removed): the EGL window surface's real backing buffer does NOT
@@ -2110,7 +2218,7 @@ void gEGLDC::applyPendingResolutionChange() {
 	// resizes a window surface. Not a guaranteed fix (this driver's exact
 	// failure mode was never confirmed), but a real candidate rather than
 	// another blind guess.
-	if (isInitialized() && m_window_provider && !m_window_provider->usesPixmapSurface()) {
+	if (isInitialized() && m_window_provider && !m_window_provider->usesPixmapSurface() && !physical_unchanged) {
 		eglMakeCurrent(m_egl_display, EGL_NO_SURFACE, EGL_NO_SURFACE, m_egl_context);
 
 		if (m_egl_surfaces[0] != EGL_NO_SURFACE) {
@@ -2118,11 +2226,13 @@ void gEGLDC::applyPendingResolutionChange() {
 			m_egl_surfaces[0] = EGL_NO_SURFACE;
 		}
 
-		EGLNativeWindowType native_window = m_window_provider->getNativeWindow();
-		m_egl_surfaces[0] = eglCreateWindowSurface(m_egl_display, m_egl_config, native_window, nullptr);
-		if (m_egl_surfaces[0] == EGL_NO_SURFACE) {
-			eDebug("[gEGLDC] eglCreateWindowSurface failed while applying resolution change to %dx%d. EGL error: 0x%x", m_pending_width, m_pending_height, eglGetError());
-		} else {
+		auto recreate_surface = [&]() -> bool {
+			EGLNativeWindowType native_window = m_window_provider->getNativeWindow();
+			m_egl_surfaces[0] = eglCreateWindowSurface(m_egl_display, m_egl_config, native_window, nullptr);
+			if (m_egl_surfaces[0] == EGL_NO_SURFACE) {
+				eDebug("[gEGLDC] eglCreateWindowSurface failed while applying resolution change to canvas %dx%d (physical %dx%d). EGL error: 0x%x", m_pending_width, m_pending_height, m_phys_width, m_phys_height, eglGetError());
+				return false;
+			}
 			// Best-effort, same as tryInitEGL()'s own attempt - doesn't
 			// change m_use_shadow_fbo, already decided once for this driver.
 			eglSurfaceAttrib(m_egl_display, m_egl_surfaces[0], EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED);
@@ -2133,8 +2243,24 @@ void gEGLDC::applyPendingResolutionChange() {
 			EGLint surf_w = -1, surf_h = -1;
 			eglQuerySurface(m_egl_display, m_egl_surfaces[0], EGL_WIDTH, &surf_w);
 			eglQuerySurface(m_egl_display, m_egl_surfaces[0], EGL_HEIGHT, &surf_h);
-			eDebug("[gEGLDC] after surface recreation: canvas=%dx%d, EGL window surface now reports %dx%d",
-				m_pending_width, m_pending_height, (int)surf_w, (int)surf_h);
+			eDebug("[gEGLDC] after surface recreation: canvas=%dx%d, physical=%dx%d, EGL window surface now reports %dx%d",
+				m_pending_width, m_pending_height, m_phys_width, m_phys_height, (int)surf_w, (int)surf_h);
+			return true;
+		};
+
+		if (!recreate_surface() && (prev_phys_w != m_phys_width || prev_phys_h != m_phys_height) && prev_phys_w > 0 && prev_phys_h > 0) {
+			// The driver refused the new window size. Leaving the context with
+			// no surface at all means video with no UI, so retry at the size
+			// that was working before and render the new canvas scaled into it
+			// (aspect may differ from the canvas; this is only a fallback).
+			eDebug("[gEGLDC] falling back to the previous physical size %dx%d for canvas %dx%d", prev_phys_w, prev_phys_h, m_pending_width, m_pending_height);
+			m_phys_width = prev_phys_w;
+			m_phys_height = prev_phys_h;
+			m_scale_x = (float)prev_phys_w / (float)m_pending_width;
+			m_scale_y = (float)prev_phys_h / (float)m_pending_height;
+			m_scaled = true;
+			m_window_provider->onResolutionChanged(prev_phys_w, prev_phys_h);
+			recreate_surface();
 		}
 	}
 
@@ -2149,7 +2275,7 @@ void gEGLDC::applyPendingResolutionChange() {
 		// the stale, smaller-or-differently-shaped viewport rect) or
 		// stretched/squashed wrong (anything inside it) - not just
 		// mispositioned, which the shader-matrix fix alone already covered.
-		glViewport(0, 0, m_pending_width, m_pending_height);
+		glViewport(0, 0, m_phys_width, m_phys_height);
 
 		m_basic_shader.setResolution((float)m_pending_width, (float)m_pending_height);
 		m_advanced_shader.setResolution((float)m_pending_width, (float)m_pending_height);
@@ -2189,8 +2315,8 @@ bool gEGLDC::gpuCopyPageContent(int from, int to) {
 	// with whatever rect the last opcode drawn set - reset it to the full
 	// surface first or this copy would silently only cover a leftover
 	// unrelated widget's clip rect instead of the whole page.
-	glScissor(0, 0, m_width, m_height);
-	glBlitFramebuffer(0, 0, m_width, m_height, 0, 0, m_width, m_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	glScissor(0, 0, m_phys_width, m_phys_height);
+	glBlitFramebuffer(0, 0, m_phys_width, m_phys_height, 0, 0, m_phys_width, m_phys_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	return true;
 #else
 	(void)from;
@@ -2242,8 +2368,10 @@ void gEGLDC::releaseFrameTextures() {
 // content is undefined - the shadow FBO (or the preserved back buffer) is the
 // only place the complete frame is guaranteed to exist.
 void gEGLDC::serviceOsdCapture() {
-	const int width = m_width;
-	const int height = m_height;
+	// The real (physical) render target - when the canvas had to be scaled down
+	// to fit the GPU's limits, that is what actually exists to read back.
+	const int width = m_phys_width;
+	const int height = m_phys_height;
 	if (width <= 0 || height <= 0) {
 		m_osd_capture.fail();
 		return;
@@ -2319,10 +2447,34 @@ void gEGLDC::captureBackgroundIntoPixmap(const eRect& rect) {
 
 	std::vector<uint8_t> pixels((size_t)w * (size_t)h * 4U);
 	glPixelStorei(GL_PACK_ALIGNMENT, 4);
-	// glReadPixels' y is measured from the BOTTOM of the framebuffer (GL
-	// convention) - m_height (the real GPU canvas), not ph (m_pixmap can
-	// briefly differ right after setResolution(), see there).
-	glReadPixels(left, m_height - top - h, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+	if (!isScaled()) {
+		// glReadPixels' y is measured from the BOTTOM of the framebuffer (GL
+		// convention) - m_height (the real GPU canvas), not ph (m_pixmap can
+		// briefly differ right after setResolution(), see there).
+		glReadPixels(left, m_height - top - h, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+	} else {
+		// Canvas is rendered scaled down: read the physical pixels covering
+		// the rect, then nearest-neighbour them back up to logical size so the
+		// conversion loop below (and m_pixmap) stay in logical coordinates.
+		const int px0 = std::max(0, (int)std::floor(left * m_scale_x));
+		const int px1 = std::min(m_phys_width, std::max(px0 + 1, (int)std::ceil(right * m_scale_x)));
+		const int py0 = std::max(0, (int)std::floor(top * m_scale_y));
+		const int py1 = std::min(m_phys_height, std::max(py0 + 1, (int)std::ceil(bottom * m_scale_y)));
+		const int rw = px1 - px0;
+		const int rh = py1 - py0;
+		std::vector<uint8_t> phys((size_t)rw * (size_t)rh * 4U);
+		glReadPixels(px0, m_phys_height - py1, rw, rh, GL_RGBA, GL_UNSIGNED_BYTE, phys.data());
+		for (int row = 0; row < h; ++row) { // row: 0 = bottom of the logical rect
+			const int ly = top + (h - 1 - row);
+			const int from_top = std::min(rh - 1, std::max(0, (int)(ly * m_scale_y) - py0));
+			const uint8_t* src_row = phys.data() + (size_t)(rh - 1 - from_top) * rw * 4U;
+			uint8_t* dst_row = pixels.data() + (size_t)row * w * 4U;
+			for (int col = 0; col < w; ++col) {
+				const int from_left = std::min(rw - 1, std::max(0, (int)((left + col) * m_scale_x) - px0));
+				memcpy(dst_row + (size_t)col * 4U, src_row + (size_t)from_left * 4U, 4U);
+			}
+		}
+	}
 
 	if (glGetError() != GL_NO_ERROR) {
 		eDebug("[gEGLDC] spinner background capture failed");
@@ -2465,7 +2617,7 @@ void gEGLDC::flip() {
 			// present nothing until unlocked.
 			if (!m_lock_cleared) {
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
-				glScissor(0, 0, m_width, m_height);
+				glScissor(0, 0, m_phys_width, m_phys_height);
 				glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 				glClear(GL_COLOR_BUFFER_BIT);
 				eglSwapBuffers(m_egl_display, m_egl_surfaces[0]);
@@ -2543,12 +2695,12 @@ void gEGLDC::flip() {
 					// real hardware even at stride 2).
 					glBindFramebuffer(GL_READ_FRAMEBUFFER, m_shadow_fbo);
 					glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-					glScissor(0, 0, m_width, m_height);
+					glScissor(0, 0, m_phys_width, m_phys_height);
 					if (m_blit_invalidate) {
 						const GLenum att = GL_COLOR;
 						glInvalidateFramebuffer(GL_DRAW_FRAMEBUFFER, 1, &att);
 					}
-					glBlitFramebuffer(0, 0, m_width, m_height, 0, 0, m_width, m_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+					glBlitFramebuffer(0, 0, m_phys_width, m_phys_height, 0, 0, m_phys_width, m_phys_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 					glBindFramebuffer(GL_FRAMEBUFFER, m_shadow_fbo);
 				}
 				if (m_profile)
@@ -2572,7 +2724,7 @@ void gEGLDC::flip() {
 					0.0f, 0.0f, 0.0f, 1.0f,  0.0f, h,    0.0f, 0.0f,  w, 0.0f, 1.0f, 1.0f,
 					w,    0.0f, 1.0f, 1.0f,  0.0f, h,    0.0f, 0.0f,  w, h,    1.0f, 0.0f};
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
-				glScissor(0, 0, m_width, m_height);
+				glScissor(0, 0, m_phys_width, m_phys_height);
 				glDisable(GL_BLEND);
 				m_texture_shader.drawBatch(quad, 6, m_shadow_texture, 1.0f);
 				glEnable(GL_BLEND);
@@ -2581,7 +2733,14 @@ void gEGLDC::flip() {
 			std::chrono::steady_clock::time_point swap_t0;
 			if (m_profile)
 				swap_t0 = std::chrono::steady_clock::now();
-			eglSwapBuffers(m_egl_display, m_egl_surfaces[0]);
+			EGLBoolean swap_ok = eglSwapBuffers(m_egl_display, m_egl_surfaces[0]);
+			if (m_log_frames_left > 0) {
+				--m_log_frames_left;
+				const EGLint egl_err = eglGetError();
+				const GLenum gl_err = glGetError();
+				eDebug("[gEGLDC] frame presented after resolution change: swap=%d eglError=0x%x glError=0x%x canvas=%dx%d physical=%dx%d shadow=%d surface=%p", (int)swap_ok, (int)egl_err, (int)gl_err, m_width, m_height,
+					   m_phys_width, m_phys_height, m_use_shadow_fbo ? 1 : 0, (void*)m_egl_surfaces[0]);
+			}
 			if (m_profile)
 				prof_present_ms = msSince(swap_t0);
 		}

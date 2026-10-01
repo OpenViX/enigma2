@@ -533,30 +533,23 @@ AS_IF([test "x$with_egl" != "xno"], [
 
 AS_IF([test "x$have_gles2" = "xyes"], [
   saved_CPPFLAGS="$CPPFLAGS"
-  saved_LIBS="$LIBS"
   CPPFLAGS="$CPPFLAGS $GLES2_CFLAGS"
-  LIBS="$GLES2_LIBS $LIBS"
-  AC_CHECK_HEADER([GLES3/gl3.h], [
-    # The header alone is not proof the driver actually implements GLES3:
-    # some SDKs (confirmed on VU+'s vuduo4kse/vusolo4k/vuultimo4k, by
-    # inspecting the real vendor libv3ddriver.so - all three ship the
-    # identical GLES1/2-only binary) ship a complete GLES3/gl3.h even
-    # though none of the GLES3-only core symbols (glBindVertexArray,
-    # glGenVertexArrays, glDrawArraysInstanced, glBlitFramebuffer, ...)
-    # are actually exported by the .so. A header-only check used to define
-    # HAVE_GLES3 there, this repo's shader code (gshader.cpp etc - already
-    # correctly gated behind "#if defined(HAVE_GLES3)") would then compile
-    # in calls to those symbols, and the final link failed with "undefined
-    # reference to glBindVertexArray". Try to actually link one of them
-    # against GLES2_LIBS instead of trusting the header.
-    AC_LINK_IFELSE([AC_LANG_PROGRAM([[
-#include <GLES3/gl3.h>
-    ]], [[
-      glBindVertexArray(0);
-    ]])], [have_gles3=yes], [have_gles3=no])
-  ], [have_gles3=no])
+  AC_CHECK_HEADERS([GLES3/gl3.h], [have_gles3=yes], [have_gles3=no])
   CPPFLAGS="$saved_CPPFLAGS"
-  LIBS="$saved_LIBS"
+
+  # The header alone is not proof the driver implements GLES3: VU+'s
+  # vuduo4kse/vusolo4k/vuultimo4k ship a complete GLES3/gl3.h but the same
+  # GLES1/2-only libv3ddriver.so (confirmed by inspecting the real vendor
+  # binary - none of the GLES3-only core symbols such as glBindVertexArray are
+  # exported). With HAVE_GLES3 defined here, the "#if defined(HAVE_GLES3)"
+  # shader code compiles in calls to them and the final link fails with
+  # "undefined reference to glBindVertexArray". Those three boxes are simply
+  # kept off the GLES3 path; every other box keeps the plain header check.
+  case "$BOXTYPE" in
+    vuduo4kse|vusolo4k|vuultimo4k)
+      have_gles3=no
+      ;;
+  esac
 ])
 
 AS_IF([test "x$with_egl" = "xyes"], [
@@ -584,6 +577,20 @@ AS_IF([test "x$use_egl" = "xyes" -a "x$have_gles3" = "xyes"], [
 ])
 
 AM_CONDITIONAL([HAVE_EGL], [test "x$use_egl" = "xyes"])
+
+# Rendering the OSD canvas scaled down when it is larger than the GPU's maximum
+# texture/renderbuffer size (e.g. a 2560x1440 skin on VideoCore IV, limit 2048)
+# - see gEGLDC::updatePhysicalSize(). Off unless asked for: the recipe passes it
+# only for EGL machines that do not carry E2EGL_WQHD_FEATURE (see
+# egl-gles-extras/enigma2.bbappend), so every other box behaves exactly as it
+# did before this existed.
+AC_ARG_ENABLE([egl-canvas-scaling],
+  AS_HELP_STRING([--enable-egl-canvas-scaling], [scale the EGL OSD canvas down when it exceeds the GPU texture size limit]),
+  [],
+  [enable_egl_canvas_scaling=no])
+AS_IF([test "x$use_egl" = "xyes" -a "x$enable_egl_canvas_scaling" = "xyes"], [
+  AC_DEFINE([HAVE_EGL_CANVAS_SCALING], [1], [Scale the EGL OSD canvas down when it exceeds the GPU texture size limit])
+])
 
 AC_SUBST([EGL_CFLAGS])
 AC_SUBST([EGL_LIBS])

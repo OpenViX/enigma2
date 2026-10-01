@@ -10,6 +10,7 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include <lib/gdi/gpixmap.h>
+#include <cstdint>
 #include <mutex>
 #include <unordered_map>
 #include <vector>
@@ -46,6 +47,7 @@ private:
 	std::unordered_map<GLuint, gUnmanagedSurface*> m_texture_owner;
 	unsigned int m_frame = 0;
 	bool m_last_upload_oom = false;
+	int m_max_texture_size = 0;
 
 	// Frees least-recently-used textures (not drawn this frame, not pinned, not
 	// DMA-BUF imports) until about `bytes_wanted` are released. Their surfaces
@@ -62,6 +64,16 @@ public:
 	~gTextureManager();
 
 	void setDisplay(EGLDisplay display) { m_egl_display = display; }
+
+	// The GPU's largest usable texture dimension (GL_MAX_TEXTURE_SIZE), set by
+	// gEGLDC once its context is current. 0 = unknown/unlimited. A pixmap
+	// wider or taller than this can't be uploaded as-is (glTexImage2D raises
+	// GL_INVALID_VALUE and the texture is left empty), so createTextureFromPixmap()
+	// box-downsamples it to fit instead - UVs are normalised, so callers drawing
+	// the texture into a logical-size rect need no change. Never triggers on a
+	// GPU whose limit covers the pixmap.
+	void setMaxTextureSize(int max_dim) { m_max_texture_size = max_dim; }
+	int maxTextureSize() const { return m_max_texture_size; }
 
 	// returns the gl texture id, creating it on the fly if not cached
 	GLuint getTexture(gPixmap* pixmap);
@@ -81,3 +93,20 @@ public:
 	// Release a surface's texture from ~gSurface(), only if it still owns it.
 	void releaseSurfaceTexture(GLuint texture_id, const void* surface);
 };
+
+// Size-limit helpers shared by gTextureManager and gEGLDC's CPU text overlay.
+// Largest size with the same aspect ratio as (w, h) whose longer side is
+// <= max_dim; (w, h) unchanged when max_dim <= 0 or it already fits.
+void gtexFitSize(int w, int h, int max_dim, int& out_w, int& out_h);
+
+// Bilinear downsample of 32-bit BGRA/RGBA pixels (the usual case here is a
+// 0.5x-1x reduction, where bilinear is as good as a box filter and several times
+// cheaper). Source is src_w x src_h with a row stride of src_stride_px pixels;
+// taps are clamped to the clip rect [clip_l, clip_r) x [clip_t, clip_b) so
+// nothing outside it (stale/uninitialised memory around a partially updated
+// area) can bleed in. Writes destination pixels [dst_x0, dst_x1) x [dst_y0,
+// dst_y1) of a dst_w x dst_h image, densely packed ((dst_x1 - dst_x0) per row)
+// into `dst`. Fully opaque neighbourhoods take a packed integer fast path;
+// translucent edges are alpha-weighted so transparent pixels don't darken them.
+void gtexDownscaleBGRA(const uint32_t* src, int src_stride_px, int src_w, int src_h, int clip_l, int clip_t, int clip_r, int clip_b, uint32_t* dst, int dst_w, int dst_h, int dst_x0, int dst_y0,
+					   int dst_x1, int dst_y1);

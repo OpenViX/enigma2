@@ -3,6 +3,8 @@
 #include <lib/gdi/egl/gtexture_manager.h>
 #include <algorithm>
 #include <chrono>
+#include <cmath>
+#include <cstdint>
 #include <cstdlib>
 #include <cstring>
 #include <vector>
@@ -27,6 +29,105 @@ static inline double ms_since(const std::chrono::steady_clock::time_point& t0) {
 #endif
 
 static gTextureManager* s_active_manager = nullptr;
+
+void gtexFitSize(int w, int h, int max_dim, int& out_w, int& out_h) {
+	out_w = w;
+	out_h = h;
+	if (max_dim <= 0 || w <= 0 || h <= 0)
+		return;
+	const int longest = std::max(w, h);
+	if (longest <= max_dim)
+		return;
+	const double s = (double)max_dim / (double)longest;
+	out_w = std::max(1, std::min(max_dim, (int)(w * s + 0.5)));
+	out_h = std::max(1, std::min(max_dim, (int)(h * s + 0.5)));
+}
+
+// Lerp of two packed 8-bit-per-channel pixels, t in 0..256, two channels per
+// 32-bit multiply (each 16-bit lane holds at most 255 * 256, so it never overflows).
+static inline uint32_t gtexLerp32(uint32_t a, uint32_t b, uint32_t t) {
+	const uint32_t ag = (((a >> 8) & 0x00FF00FFu) * (256 - t) + ((b >> 8) & 0x00FF00FFu) * t) & 0xFF00FF00u;
+	const uint32_t rb = ((((a & 0x00FF00FFu) * (256 - t)) + ((b & 0x00FF00FFu) * t)) >> 8) & 0x00FF00FFu;
+	return ag | rb;
+}
+
+// Translucent neighbourhood: bilinear weights, alpha-weighted colour.
+static uint32_t gtexBlendTranslucent(const uint32_t p[4], uint32_t wx0, uint32_t wx1, uint32_t wy0, uint32_t wy1) {
+	const uint32_t w[4] = {(wx0 * wy0) >> 8, (wx1 * wy0) >> 8, (wx0 * wy1) >> 8, (wx1 * wy1) >> 8};
+	const uint32_t wsum = w[0] + w[1] + w[2] + w[3];
+	uint32_t asum = 0, b = 0, g = 0, r = 0;
+	for (int i = 0; i < 4; ++i) {
+		const uint32_t wa = w[i] * (p[i] >> 24);
+		asum += wa;
+		b += wa * (p[i] & 0xFF);
+		g += wa * ((p[i] >> 8) & 0xFF);
+		r += wa * ((p[i] >> 16) & 0xFF);
+	}
+	if (asum == 0 || wsum == 0)
+		return 0;
+	const float inv = 1.0f / (float)asum;
+	const uint32_t a8 = std::min(255u, (uint32_t)((float)asum / (float)wsum + 0.5f));
+	const uint32_t r8 = std::min(255u, (uint32_t)((float)r * inv + 0.5f));
+	const uint32_t g8 = std::min(255u, (uint32_t)((float)g * inv + 0.5f));
+	const uint32_t b8 = std::min(255u, (uint32_t)((float)b * inv + 0.5f));
+	return (a8 << 24) | (r8 << 16) | (g8 << 8) | b8;
+}
+
+void gtexDownscaleBGRA(const uint32_t* src, int src_stride_px, int src_w, int src_h, int clip_l, int clip_t, int clip_r, int clip_b, uint32_t* dst, int dst_w, int dst_h, int dst_x0, int dst_y0,
+					   int dst_x1, int dst_y1) {
+	clip_l = std::max(0, clip_l);
+	clip_t = std::max(0, clip_t);
+	clip_r = std::min(src_w, clip_r);
+	clip_b = std::min(src_h, clip_b);
+	dst_x0 = std::max(0, dst_x0);
+	dst_y0 = std::max(0, dst_y0);
+	dst_x1 = std::min(dst_w, dst_x1);
+	dst_y1 = std::min(dst_h, dst_y1);
+	if (!src || !dst || dst_w <= 0 || dst_h <= 0 || clip_r <= clip_l || clip_b <= clip_t || dst_x1 <= dst_x0 || dst_y1 <= dst_y0)
+		return;
+
+	const float sx = (float)src_w / (float)dst_w;
+	const float sy = (float)src_h / (float)dst_h;
+	const int out_w = dst_x1 - dst_x0;
+
+	// Per destination column: the two source columns and the 0..256 weight of the
+	// second - computed once instead of per pixel.
+	struct Tap {
+		int x0, x1;
+		uint32_t f;
+	};
+	std::vector<Tap> taps((size_t)out_w);
+	for (int dx = dst_x0; dx < dst_x1; ++dx) {
+		const float fx = ((float)dx + 0.5f) * sx - 0.5f;
+		const int x0 = (int)std::floor(fx);
+		Tap& t = taps[(size_t)(dx - dst_x0)];
+		t.f = (uint32_t)((fx - (float)x0) * 256.0f + 0.5f);
+		t.x0 = std::min(std::max(x0, clip_l), clip_r - 1);
+		t.x1 = std::min(std::max(x0 + 1, clip_l), clip_r - 1);
+	}
+
+	for (int dy = dst_y0; dy < dst_y1; ++dy) {
+		const float fy = ((float)dy + 0.5f) * sy - 0.5f;
+		const int y0 = (int)std::floor(fy);
+		const uint32_t ty = (uint32_t)((fy - (float)y0) * 256.0f + 0.5f);
+		const uint32_t* r0 = src + (size_t)std::min(std::max(y0, clip_t), clip_b - 1) * src_stride_px;
+		const uint32_t* r1 = src + (size_t)std::min(std::max(y0 + 1, clip_t), clip_b - 1) * src_stride_px;
+		uint32_t* out = dst + (size_t)(dy - dst_y0) * out_w;
+
+		for (int i = 0; i < out_w; ++i) {
+			const Tap& t = taps[(size_t)i];
+			const uint32_t p00 = r0[t.x0], p01 = r0[t.x1], p10 = r1[t.x0], p11 = r1[t.x1];
+			if (((p00 & p01 & p10 & p11) >> 24) == 0xFFu) {
+				out[i] = gtexLerp32(gtexLerp32(p00, p01, t.f), gtexLerp32(p10, p11, t.f), ty);
+			} else if (((p00 | p01 | p10 | p11) >> 24) == 0) {
+				out[i] = 0;
+			} else {
+				const uint32_t p[4] = {p00, p01, p10, p11};
+				out[i] = gtexBlendTranslucent(p, 256 - t.f, t.f, 256 - ty, ty);
+			}
+		}
+	}
+}
 
 gTextureManager::gTextureManager() : m_egl_display(EGL_NO_DISPLAY) {
 	s_active_manager = this;
@@ -180,7 +281,42 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	if (surface->bpp == 32) {
+	// Wider/taller than the GPU's max texture size (see setMaxTextureSize()):
+	// glTexImage2D would raise GL_INVALID_VALUE and leave the texture empty.
+	// Expand to BGRA on the CPU, box-downsample to the largest size that fits,
+	// and upload that. Only for the 32bpp / paletted formats, whose upload goes
+	// through full BGRA anyway; never taken when the pixmap already fits.
+	int tex_w = width, tex_h = height;
+	if (surface->bpp == 32 || (surface->bpp == 8 && surface->clut.data))
+		gtexFitSize(width, height, m_max_texture_size, tex_w, tex_h);
+
+	if (tex_w != width || tex_h != height) {
+		std::vector<uint32_t> full((size_t)width * height);
+		if (surface->bpp == 32) {
+			const uint8_t* src = (const uint8_t*)surface->data;
+			for (int row = 0; row < height; ++row)
+				memcpy(full.data() + (size_t)row * width, src + (size_t)row * surface->stride, (size_t)width * 4);
+		} else {
+			// Same palette rule as the paletted branch below.
+			uint32_t pal[256];
+			const int n = std::min(surface->clut.colors, 256);
+			for (int i = 0; i < n; ++i)
+				pal[i] = surface->clut.data[i].argb() ^ 0xFF000000;
+			for (int i = std::max(n, 0); i < 256; ++i)
+				pal[i] = (0x010101 * i) | 0xFF000000;
+			const uint8_t* src = (const uint8_t*)surface->data;
+			for (int y = 0; y < height; ++y) {
+				const uint8_t* row = src + (size_t)y * surface->stride;
+				uint32_t* out = full.data() + (size_t)y * width;
+				for (int x = 0; x < width; ++x)
+					out[x] = pal[row[x]];
+			}
+		}
+		std::vector<uint32_t> scaled((size_t)tex_w * tex_h);
+		gtexDownscaleBGRA(full.data(), width, width, height, 0, 0, width, height, scaled.data(), tex_w, tex_h, 0, 0, tex_w, tex_h);
+		glTexImage2D(GL_TEXTURE_2D, 0, src_format, tex_w, tex_h, 0, src_format, GL_UNSIGNED_BYTE, scaled.data());
+		eDebug("[gTextureManager] %dx%d bpp=%d exceeds GL_MAX_TEXTURE_SIZE=%d - uploaded downscaled to %dx%d", width, height, surface->bpp, m_max_texture_size, tex_w, tex_h);
+	} else if (surface->bpp == 32) {
 		// e2's 32bpp surfaces are natively BGRA in memory (see gpixmap.h's
 		// gRGB struct: {b,g,r,a} on little-endian). On a platform where this
 		// render target's fragment-shader output ends up read back by the
