@@ -7,6 +7,17 @@
 #else
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
+
+// Single-channel texture enums are core GLES3 only, but the shared upload
+// code names them in isGLES3() ? GL_R8/GL_RED : GL_LUMINANCE expressions that
+// still have to compile (never execute) in a GLES2-only build. Values per the
+// Khronos headers.
+#ifndef GL_RED
+#define GL_RED 0x1903
+#endif
+#ifndef GL_R8
+#define GL_R8 0x8229
+#endif
 #endif
 
 // gles_version.h
