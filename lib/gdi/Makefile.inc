@@ -87,6 +87,20 @@ gdiinclude_HEADERS += \
 	gdi/egl/platform/gbquad/gbquad_window_provider.h
 endif
 
+if HAVE_VUPLUS_EGL
+gdi_libenigma_gdi_a_SOURCES += \
+	gdi/egl/platform/vuplus/vuplus_window_provider.cpp
+gdiinclude_HEADERS += \
+	gdi/egl/platform/vuplus/vuplus_window_provider.h
+endif
+
+if HAVE_ABCOM_EGL
+gdi_libenigma_gdi_a_SOURCES += \
+	gdi/egl/platform/abcom/abcom_window_provider.cpp
+gdiinclude_HEADERS += \
+	gdi/egl/platform/abcom/abcom_window_provider.h
+endif
+
 # gMainDC is a strict singleton (see gmaindc.cpp: ASSERT(m_instance == 0) in its
 # constructor). gEGLDC is itself a gMainDC, registered via its own AutoInit in
 # gdi/egl/egl_init.cpp, so when EGL is enabled it must be the ONLY gMainDC this

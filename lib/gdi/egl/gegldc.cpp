@@ -2558,15 +2558,25 @@ void gEGLDC::flip() {
 			}
 #endif
 			if (m_use_shadow_fbo && !shadow_presented) {
-				// GLES2 has no glBlitFramebuffer() - nothing has copied the
-				// shadow canvas into the window surface, so this swap
-				// presents whatever the surface already happened to hold.
-				// Not hit by any platform this backend currently ships for
-				// (the one window-surface provider needing the shadow path
-				// initialises GLES3 - see egl_init.cpp), flagged loudly
-				// rather than silently showing a blank/stale screen if that
-				// ever changes.
-				eDebug("[gEGLDC] shadow framebuffer active but no GLES3 present path available - screen will not update correctly.");
+				// GLES2 has no glBlitFramebuffer() (e.g. VU+ vuduo4kse/
+				// vusolo4k/vuultimo4k, whose libv3ddriver.so is GLES1/2-only
+				// - see configure.ac's GLES3 probe), so copy the shadow
+				// canvas into the window surface with a full-screen textured
+				// quad instead. Same full-frame-every-frame rule as the blit
+				// path above applies. m_shadow_texture is a GPU-rendered,
+				// bottom-up texture, whereas the quad geometry below follows
+				// gTextureShader::drawTexture()'s top-down CPU-texture
+				// convention - hence V is flipped (v=1 at y=0).
+				const float w = (float)m_width, h = (float)m_height;
+				const float quad[24] = {
+					0.0f, 0.0f, 0.0f, 1.0f,  0.0f, h,    0.0f, 0.0f,  w, 0.0f, 1.0f, 1.0f,
+					w,    0.0f, 1.0f, 1.0f,  0.0f, h,    0.0f, 0.0f,  w, h,    1.0f, 0.0f};
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				glScissor(0, 0, m_width, m_height);
+				glDisable(GL_BLEND);
+				m_texture_shader.drawBatch(quad, 6, m_shadow_texture, 1.0f);
+				glEnable(GL_BLEND);
+				glBindFramebuffer(GL_FRAMEBUFFER, m_shadow_fbo);
 			}
 			std::chrono::steady_clock::time_point swap_t0;
 			if (m_profile)
