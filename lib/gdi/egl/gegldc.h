@@ -163,6 +163,14 @@ private:
 	float m_scale_x = 1.0f;
 	float m_scale_y = 1.0f;
 	int m_max_tex_size = 0;
+	// The GPU's real limit, kept even when scaling is compiled out (then
+	// m_max_tex_size stays 0) - only used to say so in the log.
+	int m_gpu_max_tex = 0;
+	// The window compositor blends the surface as straight alpha, so the final
+	// present pass must un-premultiply the frame (see
+	// INativeWindowProvider::needsStraightAlphaPresent()). Forces the shader
+	// present path even where glBlitFramebuffer() exists.
+	bool m_straight_alpha_present = false;
 	// The size the native window/surface was created at (the canvas size at
 	// construction - egl_init.cpp hands the provider the same width/height).
 	// When the canvas has to be scaled down, a physical size equal to this is

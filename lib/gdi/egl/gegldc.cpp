@@ -206,8 +206,10 @@ bool gEGLDC::tryInitEGL(int version) {
 		GLint max_tex = 0, max_rb = 0;
 		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_tex);
 		glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &max_rb);
+		m_gpu_max_tex = (max_tex > 0 && max_rb > 0) ? std::min((int)max_tex, (int)max_rb) : std::max((int)max_tex, (int)max_rb);
 #ifdef HAVE_EGL_CANVAS_SCALING
-		m_max_tex_size = (max_tex > 0 && max_rb > 0) ? std::min((int)max_tex, (int)max_rb) : std::max((int)max_tex, (int)max_rb);
+		m_max_tex_size = m_gpu_max_tex;
+		eDebug("[gEGLDC] canvas scaling is ENABLED in this build (--enable-egl-canvas-scaling): GPU texture limit %d", m_max_tex_size);
 #else
 		// Canvas scaling not enabled for this build (see configure.ac's
 		// --enable-egl-canvas-scaling): leave the limit at 0 = "unlimited", which
@@ -218,6 +220,10 @@ bool gEGLDC::tryInitEGL(int version) {
 		const char* renderer = (const char*)glGetString(GL_RENDERER);
 		eDebug("[gEGLDC] GL_RENDERER=%s GL_MAX_TEXTURE_SIZE=%d GL_MAX_RENDERBUFFER_SIZE=%d", renderer ? renderer : "(null)", (int)max_tex, (int)max_rb);
 		updatePhysicalSize(m_width, m_height);
+
+		m_straight_alpha_present = m_window_provider && m_window_provider->needsStraightAlphaPresent();
+		if (m_straight_alpha_present)
+			eDebug("[gEGLDC] present pass will un-premultiply the frame (compositor blends this window as straight alpha)");
 	}
 
 	if (m_use_shadow_fbo && !createShadowFramebuffer()) {
@@ -420,20 +426,28 @@ bool gEGLDC::initEGL() {
 // unless the canvas is larger than the GPU can create a texture/renderbuffer for.
 void gEGLDC::updatePhysicalSize(int logical_w, int logical_h) {
 	int pw = logical_w, ph = logical_h;
-	gtexFitSize(logical_w, logical_h, m_max_tex_size, pw, ph);
-	if ((pw != logical_w || ph != logical_h) && m_native_width > 0 && m_native_height > 0 && m_native_width < logical_w && std::max(m_native_width, m_native_height) <= m_max_tex_size &&
-		std::fabs((double)m_native_width / m_native_height - (double)logical_w / logical_h) < 0.01) {
-		// Needs scaling anyway: render at the size the native window already
-		// has instead of a slightly larger one that would require resizing it.
+	const bool fixed_window = m_window_provider && !m_window_provider->canResizeWindow() && m_native_width > 0 && m_native_height > 0;
+	if (fixed_window) {
+		// This platform's native window cannot be resized (see
+		// INativeWindowProvider::canResizeWindow()): whatever the canvas size,
+		// render into the size the window was created with. Independent of the
+		// GPU texture limit - a 720p canvas is scaled UP to the window just as a
+		// 1440p one is scaled down.
 		pw = m_native_width;
 		ph = m_native_height;
+	} else {
+		gtexFitSize(logical_w, logical_h, m_max_tex_size, pw, ph);
 	}
 	m_phys_width = pw;
 	m_phys_height = ph;
 	m_scale_x = logical_w > 0 ? (float)pw / (float)logical_w : 1.0f;
 	m_scale_y = logical_h > 0 ? (float)ph / (float)logical_h : 1.0f;
 	m_scaled = (pw != logical_w || ph != logical_h);
-	if (isScaled())
+	if (m_max_tex_size == 0 && m_gpu_max_tex > 0 && std::max(logical_w, logical_h) > m_gpu_max_tex)
+		eDebug("[gEGLDC] WARNING: canvas %dx%d exceeds the GPU texture limit %d but canvas scaling is NOT enabled in this build (configure --enable-egl-canvas-scaling / HAVE_EGL_CANVAS_SCALING) - textures wider/taller than the limit will be blank and the window resize will likely fail", logical_w, logical_h, m_gpu_max_tex);
+	if (isScaled() && fixed_window)
+		eDebug("[gEGLDC] native window cannot be resized on this platform - rendering canvas %dx%d scaled (%.3f x %.3f) into the existing %dx%d window", logical_w, logical_h, m_scale_x, m_scale_y, pw, ph);
+	else if (isScaled())
 		eDebug("[gEGLDC] canvas %dx%d exceeds GPU texture limit %d - rendering at %dx%d (scale %.3f x %.3f) and letting the display stretch it", logical_w, logical_h, m_max_tex_size, pw, ph, m_scale_x, m_scale_y);
 }
 
@@ -2632,7 +2646,7 @@ void gEGLDC::flip() {
 			}
 			bool shadow_presented = false;
 #ifdef HAVE_GLES3
-			if (m_use_shadow_fbo && gles::isGLES3()) {
+			if (m_use_shadow_fbo && gles::isGLES3() && !m_straight_alpha_present) {
 				// MUST be a full-screen blit every single frame, regardless
 				// of what actually changed: eglSwapBuffers() on a surface
 				// that doesn't preserve content almost certainly cycles
@@ -2726,7 +2740,12 @@ void gEGLDC::flip() {
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
 				glScissor(0, 0, m_phys_width, m_phys_height);
 				glDisable(GL_BLEND);
+				// A compositor that blends straight alpha would multiply the
+				// premultiplied frame by alpha a second time (translucent areas
+				// too dark) - convert to straight alpha on the way out.
+				m_texture_shader.setUnpremultiply(m_straight_alpha_present);
 				m_texture_shader.drawBatch(quad, 6, m_shadow_texture, 1.0f);
+				m_texture_shader.setUnpremultiply(false);
 				glEnable(GL_BLEND);
 				glBindFramebuffer(GL_FRAMEBUFFER, m_shadow_fbo);
 			}

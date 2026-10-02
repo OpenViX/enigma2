@@ -64,6 +64,10 @@ private:
 	void *m_native_window;    // handle from VUGLES_CreateNativeWindow
 	int m_client_id;          // dvb_client id for this window, from VUGLES_GetClientID
 	bool m_platform_inited;   // VUGLES_InitPlatformAndDefaultDisplay succeeded - must be balanced by VUGLES_TermPlatform
+	bool m_window_resizable;  // the NXPL window struct looks as expected (magic present) - see onResolutionChanged()
+	bool m_blend_applied;     // window colour blend switched to premultiplied - see applyWindowBlend()
+
+	void applyWindowBlend();
 
 public:
 	VuplusWindowProvider();
@@ -87,6 +91,23 @@ public:
 	// correct regardless of that detail and to mirror GbquadWindowProvider's
 	// same defensive re-set.
 	void onResolutionChanged(int width, int height) override;
+
+	// True only when the compositor blend could NOT be switched to premultiplied
+	// (see applyWindowBlend()) - gEGLDC then un-premultiplies in its present
+	// pass instead. ENIGMA_EGL_STRAIGHT_ALPHA=0 disables that too (to compare).
+	bool needsStraightAlphaPresent() override;
+
+	// VUGLES_UpdateNativeWindow() is what used to make every resized window
+	// invisible (frames rendered fine - aio-grab showed them - but never reached
+	// the display): it forwards a 0x60-byte NXPL_NativeWindowInfoEXT built on the
+	// stack with only the first 7 fields filled, so NXPL_UpdateNativeWindowEXT()
+	// (a plain memcpy of 0x58 bytes into the window object) overwrote the
+	// struct's blend equations and its `magic` (0xabba601d) with stack garbage.
+	// onResolutionChanged() therefore writes width/height into the window object
+	// directly and leaves everything else alone. Falls back to "never resize"
+	// (gEGLDC scales the canvas into the boot-size window) if the window object
+	// does not look as expected. ENIGMA_EGL_VUPL_RESIZE=0 forces that fallback.
+	bool canResizeWindow() override;
 
 	// Zeroes /dev/fb0 (fully transparent) - see this class's own comment on
 	// why fb0 is assumed to sit beneath this provider's window, mirroring
