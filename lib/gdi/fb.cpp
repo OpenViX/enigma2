@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <memory.h>
+#include <algorithm>
 #include <linux/kd.h>
 
 #include <lib/gdi/fb.h>
@@ -325,7 +326,16 @@ int fbClass::SetMode(int nxRes, int nyRes, int nbpp)
 	lfb=(unsigned char*)mmap(0, stride * screeninfo.yres_virtual, PROT_WRITE|PROT_READ, MAP_SHARED, fbFd, 0);
 #endif
 
+#ifdef CONFIG_ION
+	// Clear every page of the virtual framebuffer, not just page 0 (the one
+	// shown right now): with multiple pages the others still hold whatever
+	// the previous run/bootlogo left there, and the page the EGL backend
+	// renders its very first frame into (the spinner, before any full
+	// repaint) would otherwise present that stale picture behind it.
+	memset(lfb, 0, stride * std::max<unsigned int>(screeninfo.yres_virtual, yRes));
+#else
 	memset(lfb, 0, stride*yRes);
+#endif
 	blit();
 	return 0;
 }
