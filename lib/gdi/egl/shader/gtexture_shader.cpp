@@ -27,6 +27,7 @@ static const char *fragment_shader_es3 = R"(#version 300 es
     
     uniform sampler2D u_texture;
     uniform float u_global_alpha;
+    uniform float u_unpremultiply;
     
     uniform vec4 u_rect_size;
     uniform float u_radius;
@@ -65,7 +66,11 @@ static const char *fragment_shader_es3 = R"(#version 300 es
         }
 
         vec4 tex_color = texture(u_texture, v_uv);
-        frag_color = vec4(tex_color.rgb, tex_color.a * u_global_alpha * coverage);
+        // Only the final present pass sets this (see setUnpremultiply()).
+        vec3 rgb = tex_color.rgb;
+        if (u_unpremultiply > 0.5 && tex_color.a > 0.0)
+            rgb = min(rgb / tex_color.a, vec3(1.0));
+        frag_color = vec4(rgb, tex_color.a * u_global_alpha * coverage);
     }
 )";
 #endif
@@ -93,6 +98,7 @@ static const char *fragment_shader_es2 = R"(#version 100
     
     uniform sampler2D u_texture;
     uniform float u_global_alpha;
+    uniform float u_unpremultiply;
     
     uniform vec4 u_rect_size;
     uniform float u_radius;
@@ -129,7 +135,11 @@ static const char *fragment_shader_es2 = R"(#version 100
         }
 
         vec4 tex_color = texture2D(u_texture, v_uv);
-        gl_FragColor = vec4(tex_color.rgb, tex_color.a * u_global_alpha * coverage);
+        // Only the final present pass sets this (see setUnpremultiply()).
+        vec3 rgb = tex_color.rgb;
+        if (u_unpremultiply > 0.5 && tex_color.a > 0.0)
+            rgb = min(rgb / tex_color.a, vec3(1.0));
+        gl_FragColor = vec4(rgb, tex_color.a * u_global_alpha * coverage);
     }
 )";
 
@@ -208,6 +218,7 @@ bool gTextureShader::init()
     m_projection_location  = glGetUniformLocation(m_program_id, "u_projection");
     m_texture_location     = glGetUniformLocation(m_program_id, "u_texture");
     m_alpha_location       = glGetUniformLocation(m_program_id, "u_global_alpha");
+    m_unpremult_location   = glGetUniformLocation(m_program_id, "u_unpremultiply");
     m_rect_size_location   = glGetUniformLocation(m_program_id, "u_rect_size");
     m_radius_location      = glGetUniformLocation(m_program_id, "u_radius");
     m_edges_location       = glGetUniformLocation(m_program_id, "u_edges");
@@ -286,6 +297,7 @@ void gTextureShader::drawTexture(float x, float y, float width, float height, GL
     glUniform1i(m_texture_location, 0);
     glUniform1f(m_alpha_location, global_alpha);
     
+    glUniform1f(m_unpremult_location, m_unpremultiply ? 1.0f : 0.0f);
     glUniform4f(m_rect_size_location, x, y, width, height);
     glUniform1f(m_radius_location, radius);
 
@@ -319,6 +331,8 @@ void gTextureShader::drawBatch(const float* vertex_data, int vertex_count, GLuin
     glBindTexture(GL_TEXTURE_2D, texture_id);
     glUniform1i(m_texture_location, 0);
     glUniform1f(m_alpha_location, global_alpha);
+
+    glUniform1f(m_unpremult_location, m_unpremultiply ? 1.0f : 0.0f);
 
     // No rounding for a batch - see the header comment on drawBatch().
     glUniform1f(m_radius_location, 0.0f);

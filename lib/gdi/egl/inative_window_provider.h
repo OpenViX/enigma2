@@ -98,6 +98,24 @@ public:
 	// runs at one fixed resolution) needs nothing here.
 	virtual void onResolutionChanged(int width, int height) {}
 
+	// True when the platform's window compositor blends this window as
+	// STRAIGHT alpha (colour * alpha + background * (1 - alpha)) and the
+	// provider has no way to change that equation (GbquadWindowProvider can,
+	// via its window's blend equations - see applyWindowBlendOverride()). The
+	// OSD frame is rendered premultiplied (GL blending over a transparent
+	// target), so such a compositor multiplies by alpha a second time and every
+	// translucent area comes out too dark. gEGLDC then un-premultiplies the
+	// frame in its final present pass instead. Default false.
+	virtual bool needsStraightAlphaPresent() { return false; }
+
+	// False when resizing this provider's native window after init() does not
+	// work (VU+: VUGLES_UpdateNativeWindow + surface recreation leaves the
+	// window rendering correctly - grabs are fine - but never visible on screen,
+	// for ANY size change). gEGLDC then keeps the window and EGL surface at the
+	// size they were created with and renders every canvas, larger or smaller,
+	// scaled into it (see gEGLDC::updatePhysicalSize()). Default true.
+	virtual bool canResizeWindow() { return true; }
+
 	// Cleans up platform-specific resources.
 	virtual void cleanup() = 0;
 };

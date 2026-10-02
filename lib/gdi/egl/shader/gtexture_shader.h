@@ -25,6 +25,8 @@ private:
 	GLint m_projection_location;
 	GLint m_texture_location;
 	GLint m_alpha_location;
+	GLint m_unpremult_location = -1;
+	bool m_unpremultiply = false;
 
 	GLint m_rect_size_location;
 	GLint m_radius_location;
@@ -53,6 +55,13 @@ public:
 	void destroy();
 
 	void setResolution(float width, float height);
+
+	// While set, every draw divides the sampled colour by its alpha - i.e.
+	// converts premultiplied pixels to straight alpha. Used only by gEGLDC's
+	// final present pass when the window compositor blends the surface as
+	// straight alpha (see INativeWindowProvider::needsStraightAlphaPresent());
+	// must be cleared again right after.
+	void setUnpremultiply(bool on) { m_unpremultiply = on; }
 	void drawTexture(float x, float y, float width, float height, GLuint texture_id, float global_alpha = 1.0f, float radius = 0.0f, uint8_t edges = 0);
 
 	// Draws multiple quads (vertex_count/6 of them, each 4 floats/vertex:
