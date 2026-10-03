@@ -549,6 +549,13 @@ AS_IF([test "x$have_gles2" = "xyes"], [
     vuduo4kse|vusolo4k|vuultimo4k)
       have_gles3=no
       ;;
+    # pulse4k/pulse4kmini: libMali (Mali-450) is GLES 2.0 only - it exports
+    # glBindVertexArrayOES/glGenVertexArraysOES but none of the core GLES3
+    # symbols - while any GLES3/gl3.h that happens to be in the sysroot (e.g.
+    # mesa's) would still turn HAVE_GLES3 on.
+    pulse4k|pulse4kmini)
+      have_gles3=no
+      ;;
   esac
 ])
 
@@ -680,22 +687,14 @@ AC_SUBST([VUPL_LIBS])
 
 # ABCom's pulse4k/pulse4kmini (HiSilicon Hi3798MV200, ARM Mali-450 "Utgard"
 # GPU) EGL backend (see lib/gdi/egl/platform/abcom) - a real EGL window
-# surface against a Mali Utgard fbdev binary driver (libMali.so), unlike
-# GigaBlue/VU+'s Broadcom Nexus stack above. Confirmed by reading the actual
-# recipes (not auth-gated - meta-brands/meta-abcom/recipes-graphics/mali/
-# {abcom-mali-utgard.inc,abcom-mali-3798mv200.bb} in oe-alliance-core, whose
-# COMPATIBLE_MACHINE is exactly "^pulse4k$|^pulse4kmini$"): the vendor
-# package's do_install:append symlinks libMali.so straight onto the
-# completely standard libEGL.so.1/libGLESv1_CM.so.1/libGLESv2.so.2 sonames,
-# and abcom-mali-utgard.inc says outright "The driver is missing EGL/GLES
-# headers and pkgconfig files" - it DEPENDS on mesa purely to obtain mesa's
-# own standard Khronos EGL/GLES headers and egl.pc/glesv2.pc at build time
-# (RREPLACES/RCONFLICTS then swap mesa's runtime libEGL/libGLESv2 for
-# libMali.so at the package level). So unlike gbquad4kpro/VU+, there is no
-# vendor-specific header or pkg-config module to depend on here at all - the
-# generic EGL_CFLAGS/EGL_LIBS/GLES2_CFLAGS/GLES2_LIBS this repo's HAVE_EGL
-# block already resolves via plain "egl"/"glesv2" pkg-config link straight
-# to it, and are already applied build-wide (see CXXFLAGS above).
+# surface against a Mali fbdev binary driver (libMali.so, GLES 2.0 only),
+# unlike GigaBlue/VU+'s Broadcom Nexus stack above. oe-alliance-core's
+# abcom-mali-utgard.inc symlinks libMali.so onto the standard libEGL/libGLESv2
+# sonames but ships NO headers or .pc files (mesa in its DEPENDS never reaches
+# enigma2's sysroot), so egl-gles-extras/meta-local's abcom-mali-3798mv200
+# bbappend stages the matching vendor EGL/GLES/GLES2/KHR headers and generates
+# egl.pc/glesv2.pc - after that the generic "egl"/"glesv2" PKG_CHECK_MODULES
+# above resolve as usual. GLES3 headers are deliberately not staged.
 AM_CONDITIONAL(HAVE_ABCOM_EGL, test "x$use_egl" = "xyes" -a \( "$BOXTYPE" == "pulse4k" -o "$BOXTYPE" == "pulse4kmini" \))
 if test "x$use_egl" = "xyes" -a \( "$BOXTYPE" == "pulse4k" -o "$BOXTYPE" == "pulse4kmini" \); then
 	AC_DEFINE(HAVE_ABCOM_EGL, 1, [ABCom pulse4k/pulse4kmini Mali Utgard fbdev EGL window backend available])
