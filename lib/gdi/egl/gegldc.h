@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <chrono>
 #include <EGL/egl.h>
 #ifdef HAVE_GLES3
@@ -94,7 +95,9 @@ private:
 	// setResolution() now only records the request; applyPendingResolutionChange()
 	// - called from the top of flip(), on the render thread - does the real
 	// work, at most one frame later.
-	bool m_pending_resolution_change = false;
+	// Atomic: set on the main thread after m_pending_width/height are written, polled
+	// by the render thread at every opcode - seq_cst makes the sizes visible first.
+	std::atomic<bool> m_pending_resolution_change{false};
 	int m_pending_width = 0;
 	int m_pending_height = 0;
 	void applyPendingResolutionChange();
