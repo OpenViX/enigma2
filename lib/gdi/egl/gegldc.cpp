@@ -237,6 +237,14 @@ bool gEGLDC::tryInitEGL(int version) {
 
 	m_gles_version = version;
 
+	{
+		const char* egl_ver = eglQueryString(m_egl_display, EGL_VERSION);
+		const char* gl_ver = (const char*)glGetString(GL_VERSION);
+		gles::eglVersionString = egl_ver ? egl_ver : "";
+		gles::glesVersionString = gl_ver ? gl_ver : "";
+		eDebug("[gEGLDC] EGL_VERSION=%s GL_VERSION=%s", egl_ver ? egl_ver : "(null)", gl_ver ? gl_ver : "(null)");
+	}
+
 	// One-time dump of what this driver/hardware actually advertises, as
 	// opposed to what the vendor SDK headers merely *declare* - header
 	// presence (EGL_KHR_partial_update, EGL_KHR_fence_sync, etc. all exist

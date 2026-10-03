@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstring>
+#include <string>
 
 #ifdef HAVE_GLES3
 #include <GLES3/gl3.h>
@@ -47,6 +48,13 @@ namespace gles
     extern bool needsRBSwap;
 
     inline bool isGLES3() { return version >= 3; }
+
+    // Driver-reported version strings (eglQueryString(EGL_VERSION) and
+    // glGetString(GL_VERSION)), e.g. "1.4" / "OpenGL ES 3.0 Mesa 23.1".
+    // Empty until the context is created; exposed to Python through
+    // getEGLVersionString() / getGLESVersionString() (main/enigma.cpp).
+    extern std::string eglVersionString;
+    extern std::string glesVersionString;
 
     // How per-draw vertex data reaches the GPU - see setVertexData().
     // Set once by gEGLDC::initEGL() (ENIGMA_EGL_CLIENT_ARRAYS=0 turns it off).
