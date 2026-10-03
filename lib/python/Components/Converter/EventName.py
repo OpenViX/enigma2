@@ -227,6 +227,47 @@ class EventName(Converter):
 		"NotTrimmed": ("trim", False)
 	}
 
+	# Maps each type to the name of the method that produces its text.
+	HANDLERS = {
+		NAME: "textName",
+		SHORT_DESCRIPTION: "textShortDescription",
+		EXTENDED_DESCRIPTION: "textExtendedDescription",
+		FULL_DESCRIPTION: "textFullDescription",
+		ID: "textID",
+		NAME_NOW: "textNameNow",
+		NAME_NEXT: "textNameNext",
+		NAME_NEXT2: "textNameNextOnly",
+		NEXT_DESCRIPTION: "textNextDescription",
+		THIRD_NAME: "textThirdName",
+		THIRD_NAME2: "textThirdNameOnly",
+		THIRD_DESCRIPTION: "textThirdDescription",
+		GENRE: "textGenre",
+		GENRELIST: "textGenreList",
+		RATING: "textRatingLong",
+		SRATING: "textRatingShort",
+		RATINGICON: "textRatingIcon",
+		PDC: "textPdc",
+		PDCTIME: "textPdcTime",
+		PDCTIMESHORT: "textPdcTimeShort",
+		ISRUNNINGSTATUS: "textRunningStatus",
+		RAWRATING: "textRawRating",
+		RATINGCOUNTRY: "textRatingCountry",
+		RATINGTEXTANDCOLOR: "textRatingTextAndColor",
+		FORMAT_STRING: "textFormatString"
+	}
+
+	# Maps each format-string token to the name of the method that produces its text.
+	FORMAT_TOKENS = {
+		"NAME": "formatName",
+		"STARTTIME": "formatStartTime",
+		"ENDTIME": "formatEndTime",
+		"TIMERANGE": "formatTimeRange",
+		"DURATION": "formatDuration"
+	}
+
+	# The tokens that need the event's begin and end times.
+	FORMAT_TIME_TOKENS = frozenset(("STARTTIME", "ENDTIME", "TIMERANGE", "DURATION"))
+
 	RATSHORT = 0
 	RATLONG = 1
 	RATICON = 2
@@ -243,15 +284,18 @@ class EventName(Converter):
 		self.separator = None
 		self.trim = False
 
-		parse = ","
-		type.replace(";", parse)  # Some builds use ";" as a separator, most use ",".
-		args = [(arg.strip() if i or arg.strip() in self.KEYWORDS else arg) for i, arg in enumerate(type.split(parse))]
+		args = [(arg.strip() if i or arg.strip() in self.KEYWORDS else arg) for i, arg in enumerate(type.split(","))]
 		self.parts = args
 
 		if len(self.parts) > 1 and self.parts[0] not in self.KEYWORDS:
 			self.type = self.FORMAT_STRING
 			self.separator = self.parts[0]
+			# Compile the tokens into bound handlers once. Unknown tokens were always ignored, so they are dropped here.
+			self.formatParts = tuple(getattr(self, self.FORMAT_TOKENS[part]) for part in self.parts[1:] if part in self.FORMAT_TOKENS)
+			self.formatNeedsTimes = any(part in self.FORMAT_TIME_TOKENS for part in self.parts[1:])
 		else:
+			self.formatParts = ()
+			self.formatNeedsTimes = False
 			for arg in args:
 				name, value = self.KEYWORDS.get(arg, ("Error", None))
 				if name == "Error":
@@ -262,11 +306,13 @@ class EventName(Converter):
 				default_sep = "SeparatorComma" if self.type == self.GENRELIST else "NotSeparated"
 				self.separator = self.KEYWORDS[default_sep][1]
 
-	def trimText(self, text):
-		if self.trim:
-			return str(text).strip()
-		else:
-			return str(text)
+		# Choose the trim function and the handler once, so getText never has to work out the type again.
+		self.trimText = self.trimStrip if self.trim else str
+		self.handler = getattr(self, self.HANDLERS.get(self.type, "textEmpty"))
+
+	@staticmethod
+	def trimStrip(text):
+		return str(text).strip()
 
 	def formatDescription(self, description, extended):
 		description = self.trimText(description)
@@ -294,160 +340,222 @@ class EventName(Converter):
 		event = self.source.event
 		if event is None:
 			return ""
-
-		if self.type == self.NAME:
-			return self.trimText(event.getEventName())
-		elif self.type in (self.RATING, self.SRATING, self.RATINGICON):
-			rating = event.getParentalData()
-			if rating:
-				age = rating.getRating()
-				country = rating.getCountryCode().upper()
-				if country in opentv_countries:
-					country = opentv_countries[country]
-				if country in countries:
-					c = countries[country]
-				else:
-					c = countries["ETSI"]
-				if config.misc.epgratingcountry.value:
-					c = countries[config.misc.epgratingcountry.value]
-				rating = c[self.RATNORMAL].get(age, c[self.RATDEFAULT](age))
-				if rating:
-					if self.type == self.RATING:
-						return self.trimText(rating[self.RATLONG])
-					elif self.type == self.SRATING:
-						return self.trimText(rating[self.RATSHORT])
-					return resolveFilename(SCOPE_CURRENT_SKIN, rating[self.RATICON])
-		elif self.type in (self.GENRE, self.GENRELIST):
-			if not config.usage.show_genre_info.value:
-				return ""
-			genres = event.getGenreDataList()
-			if genres:
-				if self.type == self.GENRE:
-					genres = genres[0:1]
-				rating = event.getParentalData()
-				if rating:
-					country = rating.getCountryCode().upper()
-				else:
-					country = "ETSI"
-				if country in opentv_countries:
-					country = opentv_countries[country] + "OpenTV"
-					return self.separator.join((genretext for genretext in (self.trimText(getGenreStringLong(genre[0], genre[1], country=country)) for genre in genres) if genretext))
-				else:
-					if config.misc.epggenrecountry.value:
-						country = config.misc.epggenrecountry.value
-					return self.separator.join((genretext for genretext in (self.trimText(getGenreStringSub(genre[0], genre[1], country=country)) for genre in genres) if genretext))
-		elif self.type == self.NAME_NOW:
-			return pgettext("now/next: 'now' event label", "Now") + ": " + self.trimText(event.getEventName())
-		elif self.type == self.SHORT_DESCRIPTION:
-			return self.trimText(event.getShortDescription())
-		elif self.type == self.EXTENDED_DESCRIPTION:
-			return self.trimText(event.getExtendedDescription() or event.getShortDescription())
-		elif self.type == self.FULL_DESCRIPTION:
-			return self.formatDescription(event.getShortDescription(), event.getExtendedDescription())
-		elif self.type == self.ID:
-			return self.trimText(event.getEventId())
-		elif self.type == self.PDC:
-			if event.getPdcPil():
-				return _("PDC")
-		elif self.type in (self.PDCTIME, self.PDCTIMESHORT):
-			pil = event.getPdcPil()
-			if pil:
-				begin = localtime(event.getBeginTime())
-				start = localtime(mktime([begin.tm_year, (pil & 0x7800) >> 11, (pil & 0xF8000) >> 15, (pil & 0x7C0) >> 6, (pil & 0x3F), 0, begin.tm_wday, begin.tm_yday, begin.tm_isdst]))
-				if self.type == self.PDCTIMESHORT:
-					return strftime(config.usage.time.short.value, start)
-				return strftime(config.usage.date.short.value + " " + config.usage.time.short.value, start)
-		elif self.type == self.ISRUNNINGSTATUS:
-			if event.getPdcPil():
-				running_status = event.getRunningStatus()
-				if running_status == 1:
-					return _("Not running")
-				if running_status == 2:
-					return _("Starts in a few seconds")
-				if running_status == 3:
-					return _("Pausing")
-				if running_status == 4:
-					return _("Running")
-				if running_status == 5:
-					return _("Service off-air")
-				if running_status in (6, 7):
-					return _("Reserved for future use")
-				return _("Undefined")
-		elif self.type in (self.NAME_NEXT, self.NAME_NEXT2) or (self.type >= self.NEXT_DESCRIPTION and not self.type == self.FORMAT_STRING and not self.type == self.RAWRATING and not self.type == self.RATINGTEXTANDCOLOR):
-			try:
-				reference = self.source.service
-				info = reference and self.source.info
-				if info:
-					test = ["ITSECX", (reference.toString(), 1, -1, 1440)]  # Search next 24 hours
-					self.list = [] if self.epgcache is None else self.epgcache.lookupEvent(test)
-					if self.list:
-						if self.type == self.NAME_NEXT and self.list[1][1]:
-							return pgettext("now/next: 'next' event label", "Next") + ": " + self.trimText(self.list[1][1])
-						elif self.type == self.NAME_NEXT2 and self.list[1][1]:
-							return self.trimText(self.list[1][1])
-						elif self.type == self.NEXT_DESCRIPTION and (self.list[1][2] or self.list[1][3]):
-							return self.formatDescription(self.list[1][2], self.list[1][3])
-						if self.type == self.THIRD_NAME and self.list[2][1]:
-							return pgettext("third event: 'third' event label", "Later") + ": " + self.trimText(self.list[2][1])
-						elif self.type == self.THIRD_NAME2 and self.list[2][1]:
-							return self.trimText(self.list[2][1])
-						elif self.type == self.THIRD_DESCRIPTION and (self.list[2][2] or self.list[2][3]):
-							return self.formatDescription(self.list[2][2], self.list[2][3])
-			except:
-				# Failed to return any EPG data.
-				if self.type == self.NAME_NEXT:
-					return pgettext("now/next: 'next' event label", "Next") + ": " + self.trimText(event.getEventName())
-		elif self.type == self.RAWRATING:
-			rating = event.getParentalData()
-			if rating:
-				return "%d" % rating.getRating()
-		elif self.type == self.RATINGCOUNTRY:
-			rating = event.getParentalData()
-			if rating:
-				return rating.getCountryCode().upper()
-		elif self.type == self.RATINGTEXTANDCOLOR:
-			rating = event.getParentalData()
-			if rating:
-				age = rating.getRating()
-				country = rating.getCountryCode().upper()
-				if country in opentv_countries:
-					country = opentv_countries[country]
-				if country in countries:
-					c = countries[country]
-				else:
-					c = countries["ETSI"]
-				rating = c[self.RATNORMAL].get(age, c[self.RATDEFAULT](age))
-				ageText = rating[self.RATSHORT].strip().replace("+", "")
-				color = rating[self.RATCOLOR]
-				return f"{ageText};#{color:08X}"
-		elif self.type == self.FORMAT_STRING:
-			begin = event.getBeginTime()
-			end = begin + event.getDuration()
-			now = int(time())
-			t_start = localtime(begin)
-			t_end = localtime(end)
-			if begin <= now <= end:
-				duration = end - now
-				duration_str = "+%d min" % (duration / 60)
-			else:
-				duration = event.getDuration()
-				duration_str = "%d min" % (duration / 60)
-			start_time_str = "%2d:%02d" % (t_start.tm_hour, t_start.tm_min)
-			end_time_str = "%2d:%02d" % (t_end.tm_hour, t_end.tm_min)
-			name = self.trimText(event.getEventName())
-			res_str = ""
-			for x in self.parts[1:]:
-				if x == "NAME" and name:
-					res_str = self.appendToStringWithSeparator(res_str, name)
-				if x == "STARTTIME" and start_time_str:
-					res_str = self.appendToStringWithSeparator(res_str, start_time_str)
-				if x == "ENDTIME" and end_time_str:
-					res_str = self.appendToStringWithSeparator(res_str, end_time_str)
-				if x == "TIMERANGE" and start_time_str and end_time_str:
-					res_str = self.appendToStringWithSeparator(res_str, "%s - %s" % (start_time_str, end_time_str))
-				if x == "DURATION" and duration_str:
-					res_str = self.appendToStringWithSeparator(res_str, duration_str)
-			return res_str
-		return ""
+		return self.handler(event) or ""
 
 	text = property(getText)
+
+	# ---- Simple event fields ----
+
+	def textEmpty(self, event):
+		return ""
+
+	def textName(self, event):
+		return self.trimText(event.getEventName())
+
+	def textShortDescription(self, event):
+		return self.trimText(event.getShortDescription())
+
+	def textExtendedDescription(self, event):
+		return self.trimText(event.getExtendedDescription() or event.getShortDescription())
+
+	def textFullDescription(self, event):
+		return self.formatDescription(event.getShortDescription(), event.getExtendedDescription())
+
+	def textID(self, event):
+		return self.trimText(event.getEventId())
+
+	def textNameNow(self, event):
+		return pgettext("now/next: 'now' event label", "Now") + ": " + self.trimText(event.getEventName())
+
+	# ---- Ratings ----
+
+	def getRatingEntry(self, event, useConfigCountry=True):
+		rating = event.getParentalData()
+		if not rating:
+			return None
+		age = rating.getRating()
+		country = rating.getCountryCode().upper()
+		country = opentv_countries.get(country, country)
+		c = countries.get(country, countries["ETSI"])
+		if useConfigCountry and config.misc.epgratingcountry.value:
+			c = countries[config.misc.epgratingcountry.value]
+		return c[self.RATNORMAL].get(age, c[self.RATDEFAULT](age))
+
+	def textRatingLong(self, event):
+		entry = self.getRatingEntry(event)
+		return self.trimText(entry[self.RATLONG]) if entry else ""
+
+	def textRatingShort(self, event):
+		entry = self.getRatingEntry(event)
+		return self.trimText(entry[self.RATSHORT]) if entry else ""
+
+	def textRatingIcon(self, event):
+		entry = self.getRatingEntry(event)
+		return resolveFilename(SCOPE_CURRENT_SKIN, entry[self.RATICON]) if entry else ""
+
+	def textRatingTextAndColor(self, event):
+		entry = self.getRatingEntry(event, useConfigCountry=False)  # Matches the original behaviour.
+		if not entry:
+			return ""
+		return f"{entry[self.RATSHORT].strip().replace('+', '')};#{entry[self.RATCOLOR]:08X}"
+
+	def textRawRating(self, event):
+		rating = event.getParentalData()
+		return "%d" % rating.getRating() if rating else ""
+
+	def textRatingCountry(self, event):
+		rating = event.getParentalData()
+		return rating.getCountryCode().upper() if rating else ""
+
+	# ---- Genres ----
+
+	def genreText(self, event, firstOnly):
+		if not config.usage.show_genre_info.value:
+			return ""
+		genres = event.getGenreDataList()
+		if not genres:
+			return ""
+		if firstOnly:
+			genres = genres[0:1]
+		rating = event.getParentalData()
+		country = rating.getCountryCode().upper() if rating else "ETSI"
+		if country in opentv_countries:
+			country = opentv_countries[country] + "OpenTV"
+			lookup = getGenreStringLong
+		else:
+			if config.misc.epggenrecountry.value:
+				country = config.misc.epggenrecountry.value
+			lookup = getGenreStringSub
+		texts = (self.trimText(lookup(genre[0], genre[1], country=country)) for genre in genres)
+		return self.separator.join(text for text in texts if text)
+
+	def textGenre(self, event):
+		return self.genreText(event, True)
+
+	def textGenreList(self, event):
+		return self.genreText(event, False)
+
+	# ---- PDC ----
+
+	def textPdc(self, event):
+		return _("PDC") if event.getPdcPil() else ""
+
+	def pdcStart(self, event):
+		pil = event.getPdcPil()
+		if not pil:
+			return None
+		begin = localtime(event.getBeginTime())
+		return localtime(mktime([begin.tm_year, (pil & 0x7800) >> 11, (pil & 0xF8000) >> 15, (pil & 0x7C0) >> 6, (pil & 0x3F), 0, begin.tm_wday, begin.tm_yday, begin.tm_isdst]))
+
+	def textPdcTime(self, event):
+		start = self.pdcStart(event)
+		return strftime(config.usage.date.short.value + " " + config.usage.time.short.value, start) if start else ""
+
+	def textPdcTimeShort(self, event):
+		start = self.pdcStart(event)
+		return strftime(config.usage.time.short.value, start) if start else ""
+
+	def textRunningStatus(self, event):
+		if not event.getPdcPil():
+			return ""
+		running_status = event.getRunningStatus()
+		if running_status == 1:
+			return _("Not running")
+		if running_status == 2:
+			return _("Starts in a few seconds")
+		if running_status == 3:
+			return _("Pausing")
+		if running_status == 4:
+			return _("Running")
+		if running_status == 5:
+			return _("Service off-air")
+		if running_status in (6, 7):
+			return _("Reserved for future use")
+		return _("Undefined")
+
+	# ---- Next / third events ----
+
+	def getLaterEvent(self, index):
+		reference = self.source.service
+		if reference and self.source.info and self.epgcache:
+			events = self.epgcache.lookupEvent(["ITSECX", (reference.toString(), 1, -1, 1440)])  # Search next 24 hours.
+			if events and len(events) > index:
+				return events[index]
+		return None
+
+	def laterName(self, index, label=None):
+		try:
+			ev = self.getLaterEvent(index)
+			if ev and ev[1]:
+				name = self.trimText(ev[1])
+				return label + ": " + name if label else name
+		except Exception:
+			pass
+		return ""
+
+	def laterDescription(self, index):
+		try:
+			ev = self.getLaterEvent(index)
+			if ev and (ev[2] or ev[3]):
+				return self.formatDescription(ev[2], ev[3])
+		except Exception:
+			pass
+		return ""
+
+	def textNameNext(self, event):
+		return self.laterName(1, pgettext("now/next: 'next' event label", "Next"))
+
+	def textNameNextOnly(self, event):
+		return self.laterName(1)
+
+	def textNextDescription(self, event):
+		return self.laterDescription(1)
+
+	def textThirdName(self, event):
+		return self.laterName(2, pgettext("third event: 'third' event label", "Later"))
+
+	def textThirdNameOnly(self, event):
+		return self.laterName(2)
+
+	def textThirdDescription(self, event):
+		return self.laterDescription(2)
+
+	# ---- Format string ----
+
+	def textFormatString(self, event):
+		if self.formatNeedsTimes:
+			begin = event.getBeginTime()
+			end = begin + event.getDuration()
+		else:
+			begin = end = None  # No time-based token was requested.
+		res_str = ""
+		for handler in self.formatParts:
+			value = handler(event, begin, end)
+			if value:
+				res_str = self.appendToStringWithSeparator(res_str, value)
+		return res_str
+
+	# Each handler computes only what its own token needs.
+
+	@staticmethod
+	def clockText(timestamp):
+		t = localtime(timestamp)
+		return "%2d:%02d" % (t.tm_hour, t.tm_min)
+
+	def formatName(self, event, begin, end):
+		return self.trimText(event.getEventName())
+
+	def formatStartTime(self, event, begin, end):
+		return self.clockText(begin)
+
+	def formatEndTime(self, event, begin, end):
+		return self.clockText(end)
+
+	def formatTimeRange(self, event, begin, end):
+		return "%s - %s" % (self.clockText(begin), self.clockText(end))
+
+	def formatDuration(self, event, begin, end):
+		now = int(time())
+		if begin <= now <= end:
+			return "+%d min" % ((end - now) / 60)
+		return "%d min" % ((end - begin) / 60)
