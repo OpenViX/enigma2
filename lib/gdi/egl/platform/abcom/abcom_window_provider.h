@@ -13,57 +13,36 @@
 //
 // Unlike GigaBlue/VU+'s Broadcom Nexus/NXPL stack (lib/gdi/egl/platform/
 // gbquad, lib/gdi/egl/platform/vuplus), there is no separate compositor
-// process to join or register a window with here: abcom-mali-utgard.inc's
-// do_install:append symlinks libMali.so directly onto the completely
-// standard libEGL.so.1/libGLESv1_CM.so.1/libGLESv2.so.2 sonames, and that
-// same .inc file says outright "The driver is missing EGL/GLES headers and
-// pkgconfig files" - it DEPENDS on mesa purely to obtain mesa's own
-// standard Khronos EGL/GLES headers and egl.pc/glesv2.pc at build time
-// (RREPLACES/RCONFLICTS then swap mesa's runtime libEGL/libGLESv2 for
-// libMali.so at the package level). So, unlike gbquad4kpro/VU+, this
-// platform needs no vendor-specific header or pkg-config module at all -
-// configure.ac's generic EGL/GLESv2 PKG_CHECK_MODULES (HAVE_EGL block)
-// already resolves straight to it.
+// process to join: libMali.so is symlinked onto the standard libEGL.so.1/
+// libGLESv2.so.2 sonames. The vendor package ships no headers/pkg-config
+// files; egl-gles-extras/meta-local stages the HiSilicon SDK ones (see its
+// abcom-mali-3798mv200.bbappend), whose eglplatform.h defines
+// EGLNativeWindowType as fbdev_window*.
 //
-// That also means EGLNativeWindowType, as seen through mesa's own headless
-// (no X11/Wayland) eglplatform.h, is just whatever opaque pointer-sized
-// handle mesa defines it as - NOT a vendor-specific typed struct pointer
-// like GigaBlue's NXPL_PlatformHandle or VU+'s eglvuplus.h types. The
-// concrete struct the Mali Utgard "fbdev" EGL platform backend actually
-// expects behind that handle is not shipped by this vendor package at all,
-// but is a well-known, independently-documented ABI shared by every Mali
-// Utgard fbdev integration for this GPU IP (see e.g. the public, unrelated
-// linux-sunxi/sunxi-mali project's own include/EGL/eglplatform_fb.h, which
-// defines the identical struct for the same GPU IP's fbdev backend):
+// ABI, verified by libMali.so (__egl_platform_window_valid_fbdev,
+// __egl_platform_get_window_size_fbdev): the window handle is a pointer to
 //
-//   struct mali_native_window { unsigned short width; unsigned short height; };
+//   struct fbdev_window { unsigned short width; unsigned short height; };
 //
-// passed to eglCreateWindowSurface() as a pointer. Presentation goes
-// through a genuine EGL window surface (eglCreateWindowSurface +
-// eglSwapBuffers) exactly like GbquadWindowProvider/VuplusWindowProvider,
-// not a pixmap - the Mali fbdev backend does its own internal double
-// buffering against /dev/fb0 - so usesPixmapSurface() stays at its
-// base-class default of false.
+// (1..4096 each), and the native display is EGL_DEFAULT_DISPLAY (0). It is
+// identical to <EGL/fbdev_window.h>'s fbdev_window, mirrored below as
+// mali_native_window so this file does not depend on that header.
+// Presentation goes through a genuine EGL window surface, so
+// usesPixmapSurface() stays at its base-class default of false.
 //
-// There is no NXPL-style per-window "stretch" concept on this platform (no
-// separate compositor to ask): the EGL window's pixel dimensions are
-// authored in the struct above and directly become /dev/fb0's video mode.
-// So a later OSD canvas resize (see gEGLDC::setResolution()) cannot be
-// handled by telling a compositor to rescale - instead onResolutionChanged()
-// updates that struct, and gEGLDC::applyPendingResolutionChange() then
-// destroys and recreates the EGL window surface from getNativeWindow(), which
-// is what makes the Mali fbdev backend pick up the new size. Whether the
-// driver really re-reads it on surface recreation is unconfirmed on hardware.
+// There is no per-window "stretch" concept here: the struct's size becomes
+// the fbdev video mode. onResolutionChanged() updates it and
+// gEGLDC::applyPendingResolutionChange() recreates the window surface from
+// getNativeWindow(); whether the driver re-reads it then is unconfirmed.
 //
-// NOT YET BUILT OR HARDWARE-TESTED on a real pulse4k/pulse4kmini (same
-// caveat VuplusWindowProvider carried when it was first added - see its own
-// header comment): the mali_native_window ABI above is corroborated by an
-// independent public source for the same Mali Utgard GPU IP, not by
-// inspecting ABCom's actual libMali.so, and whether fbClass safely sharing
-// /dev/fb0 with whatever the Mali driver does internally (see init()'s own
-// comment) is unconfirmed. Bring this up on real hardware and check the
-// device log (the eDebug output below) before trusting this over rebuilding
-// with --without-egl.
+// hifb (/dev/fb0) refuses any mode above 1920x1080 (FBIOPUT_VSCREENINFO returns
+// EPERM for 2560x1440 and 3840x2160, verified on device), so the canvas must
+// stay at 1080p or below.
+//
+// libMali is GLES 2.0 only (no GLES3 core, no GL_EXT_texture_rg). That needs no
+// special handling: single-channel textures already take the GL_LUMINANCE path
+// whenever gles::isGLES3() is false, and the shaders sample .r.
+
 class AbcomWindowProvider : public INativeWindowProvider {
 private:
 	// The vendor ABI struct described above - kept as a persistent member
