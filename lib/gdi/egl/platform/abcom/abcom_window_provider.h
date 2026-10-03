@@ -74,7 +74,6 @@ public:
 
 	// See this class's header comment: hifb cannot go above 1920x1080.
 	bool canResizeWindow() override { return false; }
-
 	// Zeroes /dev/fb0 (fully transparent) - same rationale as
 	// GbquadWindowProvider::clearFramebuffer()/VuplusWindowProvider's own,
 	// in case anything (ofgwrite's progress screen, boot leftovers) is left

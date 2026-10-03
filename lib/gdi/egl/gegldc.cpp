@@ -1743,6 +1743,18 @@ void gEGLDC::exec(const gOpcode* opcode) {
 	if (!isInitialized())
 		return;
 
+	// A resolution change recreates the shadow FBO / window surface, which throws
+	// away everything drawn into the old ones. Applying it only at flip() (after
+	// the frame's opcodes) discarded the first paint of whatever the skin switch
+	// showed (e.g. the new infobar) - the desktop believes it was painted and never
+	// repaints it. Apply it before the first opcode that follows setResolution()
+	// instead, so that paint lands in the new target.
+	if (m_pending_resolution_change) {
+		flushBlitBatch();
+		flushTextBatch();
+		applyPendingResolutionChange();
+	}
+
 	// Captured up front: several cases below free opcode->parm.
 	const int prof_op = opcode->opcode;
 	std::chrono::steady_clock::time_point prof_t0;
