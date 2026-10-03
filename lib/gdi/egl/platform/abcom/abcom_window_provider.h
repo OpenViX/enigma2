@@ -30,14 +30,16 @@
 // Presentation goes through a genuine EGL window surface, so
 // usesPixmapSurface() stays at its base-class default of false.
 //
-// There is no per-window "stretch" concept here: the struct's size becomes
-// the fbdev video mode. onResolutionChanged() updates it and
-// gEGLDC::applyPendingResolutionChange() recreates the window surface from
-// getNativeWindow(); whether the driver re-reads it then is unconfirmed.
+// There is no per-window "stretch" concept here, and libMali's fbdev backend
+// reads /dev/fb0's current mode instead of setting one from the window size
+// (it only compares the window against fb0's xres/yres).
 //
 // hifb (/dev/fb0) refuses any mode above 1920x1080 (FBIOPUT_VSCREENINFO returns
-// EPERM for 2560x1440 and 3840x2160, verified on device), so the canvas must
-// stay at 1080p or below.
+// EPERM for 2560x1440 and 3840x2160, verified on device). So canResizeWindow()
+// is false: the window and EGL surface stay at the boot fb size and gEGLDC
+// renders every canvas scaled into them (see gEGLDC::updatePhysicalSize()) - a
+// manually installed 1440p skin included, whether or not the build has
+// E2EGL_WQHD_FEATURE. onResolutionChanged() is therefore never called.
 //
 // libMali is GLES 2.0 only (no GLES3 core, no GL_EXT_texture_rg). That needs no
 // special handling: single-channel textures already take the GL_LUMINANCE path
@@ -66,9 +68,12 @@ public:
 	void cleanup() override;
 	void onFramebufferUnlocked() override { clearFramebuffer(); }
 
-	// Updates m_native_window's authored size - see this class's header
-	// comment for why that is all this platform can do.
+	// Updates m_native_window's authored size. Not reached while
+	// canResizeWindow() is false; kept so the struct stays consistent.
 	void onResolutionChanged(int width, int height) override;
+
+	// See this class's header comment: hifb cannot go above 1920x1080.
+	bool canResizeWindow() override { return false; }
 
 	// Zeroes /dev/fb0 (fully transparent) - same rationale as
 	// GbquadWindowProvider::clearFramebuffer()/VuplusWindowProvider's own,
