@@ -119,6 +119,11 @@ public:
 	void setNextTitle(const std::string &string) { m_next_title = string; }
 	void setTextTime(const std::string &string) { m_text_time = string; }
 	void setTextSeparator(const std::string &string) { m_separator = string; }
+	// leading blanks are dropped, the items distance already separates the event title from the service name
+	void setServiceEventSeparator(const std::string &string) {
+		size_t pos = string.find_first_not_of(" \t");
+		m_service_event_separator = pos == std::string::npos ? string : string.substr(pos);
+	}
 	void setMarkerTextAlignment(const std::string &string) { m_marker_alignment = string; } // currently supports left and center
 	void setMarkerLineColor(const gRGB &col) {
 		m_markerline_color = col;
@@ -264,6 +269,7 @@ private:
 	std::string m_text_time;
 	std::string m_next_title;
 	std::string m_separator;
+	std::string m_service_event_separator;
 	std::string m_marker_alignment;
 	std::string m_progress_mode;
 };

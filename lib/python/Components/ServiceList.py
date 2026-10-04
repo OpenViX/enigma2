@@ -245,6 +245,9 @@ class ServiceList(GUIComponent):
 		def textSeparator(value):
 			self.l.setTextSeparator(value)
 
+		def serviceEventSeparator(value):
+			self.l.setServiceEventSeparator(value)
+
 		def itemHeightTwoLine(value):
 			self.ItemHeightTwoLine = parseScale(value)
 			self.ItemHeightTwoLineSkin = self.ItemHeightTwoLine

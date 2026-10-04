@@ -1566,6 +1566,8 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				if (is_event && !event_name.empty()) {
 					text = event_name;
 					std::replace(text.begin(), text.end(), '\n', ' ');
+					if (m_column_width <= 0)  // with columns the event title already starts at its own position
+						text = m_service_event_separator + text;
 					if (serviceAvail)
 					{
 						if (!selected && m_color_set[eventForeground])
@@ -1599,8 +1601,9 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					ePtr<eTextPara> para = new eTextPara(eRect(0, 0, eventTextWidth, m_itemheight));
 					para->setFont(m_element_font[celServiceInfo]);
 					para->renderString(text.c_str());
-					eRect bbox = para->getBoundBox();
-					painter.renderPara(para, ePoint(m_column_width > 0 ? xoffs_col : xoffs, offset.y() + (m_itemheight - bbox.height())/2));
+					// share the baseline with the service name, the fonts may differ in size
+					int eventY = offset.y() + (ctrlHeight - bboxServiceName.height())/2 + paraServiceName->getBaseline() - para->getBaseline();
+					painter.renderPara(para, ePoint(m_column_width > 0 ? xoffs_col : xoffs, eventY));
 
 					if (eventProgressConfig != "no" && !startsWith(eventProgressConfig, "perc")) {
 						// the progress data...
@@ -1663,7 +1666,8 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 						paraPerc->setFont(m_element_font[celServiceInfo]);
 						paraPerc->renderString(percent.c_str());
 						eRect bboxPerc = paraPerc->getBoundBox();
-						painter.renderPara(paraPerc, ePoint((progressBarRect.width() - bboxPerc.width())/(eventProgressConfig == "percright" ? 1 : 2), offset.y() + (ctrlHeight - bboxPerc.height())/2));
+						int percY = offset.y() + (ctrlHeight - bboxServiceName.height())/2 + paraServiceName->getBaseline() - paraPerc->getBaseline();
+						painter.renderPara(paraPerc, ePoint((progressBarRect.width() - bboxPerc.width())/(eventProgressConfig == "percright" ? 1 : 2), percY));
 					}
 				}
 			}

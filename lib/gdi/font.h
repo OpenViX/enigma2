@@ -204,6 +204,9 @@ public:
 		return boundBox;
 	}
 
+	// baseline of a single line text, relative to the top of the area
+	int getBaseline() const { return cursor.y() - area.y(); }
+
 	const int size() const
 	{
 		return glyphs.size();
