@@ -94,11 +94,11 @@ gdiinclude_HEADERS += \
 	gdi/egl/platform/vuplus/vuplus_window_provider.h
 endif
 
-if HAVE_ABCOM_EGL
+if HAVE_HISI_MALI_EGL
 gdi_libenigma_gdi_a_SOURCES += \
-	gdi/egl/platform/abcom/abcom_window_provider.cpp
+	gdi/egl/platform/hisi/hisi_window_provider.cpp
 gdiinclude_HEADERS += \
-	gdi/egl/platform/abcom/abcom_window_provider.h
+	gdi/egl/platform/hisi/hisi_window_provider.h
 endif
 
 # gMainDC is a strict singleton (see gmaindc.cpp: ASSERT(m_instance == 0) in its

@@ -2,15 +2,19 @@
 
 #include <lib/gdi/egl/inative_window_provider.h>
 
-// EGL native-window provider for ABCom's pulse4k/pulse4kmini/ax61 (HiSilicon
+// EGL native-window provider for HiSilicon Hi3798MV200 + Mali-450 fbdev boxes. First written for
+// ABCom's pulse4k/pulse4kmini (HiSilicon
 // Hi3798MV200 SoC, ARM Mali-450 MP4 "Utgard" GPU). Confirmed (by reading the
 // actual recipes - not auth-gated - meta-brands/meta-abcom/recipes-graphics/
 // mali/{abcom-mali-utgard.inc,abcom-mali-3798mv200.bb,
 // kernel-module-mali-utgard.inc} in github.com/oe-alliance/oe-alliance-core)
 // to ship a Mali Utgard r7p0 kernel driver plus a single combined
 // libMali.so userspace blob whose COMPATIBLE_MACHINE is exactly
-// "^pulse4k$|^pulse4kmini$" (ax61 is the same
-// board as pulse4k and reuses this same driver).
+// "^pulse4k$|^pulse4kmini$".
+//
+// Also used for the other Hi3798MV200 + Mali-450 boxes, which ship the same blob family
+// under their own brand recipes: GFutures hd61 (ax61), Octagon sf8008/sf8008m, GigaBlue
+// gbmv200 (gbip4k/gbtrio4k/gbtrio4kpro).
 //
 // Unlike GigaBlue/VU+'s Broadcom Nexus/NXPL stack (lib/gdi/egl/platform/
 // gbquad, lib/gdi/egl/platform/vuplus), there is no separate compositor
@@ -46,7 +50,7 @@
 // special handling: single-channel textures already take the GL_LUMINANCE path
 // whenever gles::isGLES3() is false, and the shaders sample .r.
 
-class AbcomWindowProvider : public INativeWindowProvider {
+class HisiWindowProvider : public INativeWindowProvider {
 private:
 	// The vendor ABI struct described above - kept as a persistent member
 	// (not a stack temporary) since nothing guarantees the driver only
@@ -59,8 +63,8 @@ private:
 	mali_native_window m_native_window;
 
 public:
-	AbcomWindowProvider();
-	virtual ~AbcomWindowProvider();
+	HisiWindowProvider();
+	virtual ~HisiWindowProvider();
 
 	// INativeWindowProvider
 	bool init(int width, int height) override;

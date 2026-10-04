@@ -97,6 +97,14 @@ typedef enum NEXUS_HdmiOutputHdcpError
 // mirrors the fix validated on real gbquad4kpro hardware by the reference
 // HbbTV2 EGL port (xcentaurix/hbbtv2, WebKit patch "join and register with
 // Nexus before any EGL call").
+//
+// Zgemma's h7/h17 (BCM7251S, meta-airdigital's airdigital-v3ddriver) ship the same
+// libnxpl/libnexus/libv3ddriver trio but no libnxclient.so, so those boxes define
+// HAVE_NXPL_NO_NXCLIENT and join with NEXUS_Platform_AuthenticatedJoin(NULL) instead
+// (see init()). Their libnxpl.so was disassembled to confirm the rest matches:
+// NXPL_NativeWindowInfoEXT is the same 0x58-byte layout (colorBlend at 0x1c,
+// alphaBlend at 0x38, magic at 0x54) and NXPL_CreateNativeWindowEXT ends in
+// NEXUS_SurfaceClient_Acquire(info.clientID), as on GigaBlue.
 class GbquadWindowProvider : public INativeWindowProvider {
 private:
 	NXPL_PlatformHandle m_nxpl_display_handle; // handle from NXPL_RegisterNexusDisplayPlatform
