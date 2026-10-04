@@ -153,6 +153,15 @@ AUDIO_CHANNEL_TYPES = {
 	"IsAudio71": 8,
 }
 
+AUDIO_CHANNELS_DISPLAY = (
+	(1, "Mono", "mono"),
+	(2, "Stereo", "stereo"),
+	(6, "5.1", "5-1"),
+	(8, "7.1", "7-1"),
+)
+
+AUDIO_CHANNELS_INFO = {chCount: (label, icon) for chCount, label, icon in AUDIO_CHANNELS_DISPLAY}
+
 AUDIO_CHANNEL_LABELS = {
 	1: "1.0",
 	2: "2.0",
@@ -194,8 +203,8 @@ def getCurrentAudioCodec(service):
 # iServiceInformation.sVideoType stream-type value.  The icon key is
 # deliberately path- and extension-free; the skin chooses its own icon path.
 VIDEO_CODEC_DISPLAY = (
-	(0, "MPEG-2", "mpeg2"),
-	(1, "H.264", "avc"),
+	(0, "MPEG-2", "h262"),
+	(1, "H.264", "h264"),
 	(2, "H.263", "h263"),
 	(3, "VC-1", "vc1"),
 	(4, "MPEG-4", "mpeg4"),
@@ -236,10 +245,131 @@ def getVideoWidth(info):
 	return val if val else info.getInfo(iServiceInformation.sVideoWidth)
 
 
+# Canonical video resolution format label and dynamic icon key, keyed by the
+# ServiceInfo type IDs (e.g., self.IS_HD, self.IS_4K).
+VIDEO_RESOLUTION_DISPLAY = (
+	(25, "SD", "sd"),
+	(26, "HD", "hd"),
+	(27, "4K", "uhd4k"),
+	(28, "1080", "hd1080"),
+	(29, "720", "hd720"),
+	(30, "576", "sd576"),
+	(31, "480", "sd480"),
+)
+
+VIDEO_RESOLUTION_INFO = {resType: (label, icon) for resType, label, icon in VIDEO_RESOLUTION_DISPLAY}
+
+
+def getCurrentVideoResolutionType(info, video_width, video_height):
+	if video_width >= 1921 and video_height >= 1440:
+		return 27  # IS_4K
+	elif (video_width >= 1220 and video_width <= 2400 and video_height >= 769 and video_height <= 1440) or (video_width <= 1088 and video_height == 1920) or video_height == 1080:
+		return 28  # IS_1080
+	elif (video_width >= 1025 and video_width <= 1366 and video_height >= 481 and video_height <= 768) or (video_width >= 960 and video_height == 720) or (video_width == 720 and video_height == 1280) or video_height == 720:
+		return 29  # IS_720
+	elif video_width > 1 and video_width <= 1024 and video_height >= 481 and video_height <= 578:
+		return 30  # IS_576
+	elif (video_width > 1 and video_width <= 1024 and video_height > 1 and video_height <= 480) or (video_width == 404 and video_height == 720):
+		return 31  # IS_480
+	elif video_width >= 950 and video_width <= 1920 and video_height >= 481 and video_height <= 1080:
+		return 26  # IS_HD
+	elif video_width > 1 and video_width <= 1024 and video_height > 1 and video_height <= 578:
+		return 25  # IS_SD
+	return -1
+
+
+# Canonical video gamma/HDR format label and dynamic icon key,
+# keyed by the ServiceInfo type IDs.
+VIDEO_GAMMA_DISPLAY = (
+	(46, "SDR", "sdr"),
+	(47, "HDR", "hdr"),
+	(48, "HDR10", "hdr10"),
+	(49, "HLG", "hlg"),
+)
+
+VIDEO_GAMMA_INFO = {gammaType: (label, icon) for gammaType, label, icon in VIDEO_GAMMA_DISPLAY}
+
+
+def getCurrentVideoGammaType(info):
+	hdr = info.getInfo(iServiceInformation.sHDRType)
+	gamma = info.getInfo(iServiceInformation.sGamma)
+	if (hdr == 2 if hdr > 0 else gamma == 3):
+		return 49  # IS_HLG
+	elif (hdr == 1 if hdr > 0 else gamma == 2):
+		return 48  # IS_HDR10
+	elif (hdr == 3 if hdr > 0 else gamma == 1):
+		return 47  # IS_HDR
+	elif gamma == 0:
+		return 46  # IS_SDR
+	return -1
+
+
+# Mappings for features that return an active icon name if available.
+FEATURE_ICON_MAPPING = {
+	"Subtitles": "subtitles",
+	"Teletext": "teletext"
+}
+
+
+def isSubtitlesAvailable(service):
+	subtitle = service and service.subtitle()
+	subtitlelist = subtitle and subtitle.getSubtitleList()
+	return bool(subtitlelist and len(subtitlelist) > 0)
+
+
+def isTeletextAvailable(info):
+	tpid = info.getInfo(iServiceInformation.sTXTPID)
+	return tpid > 0
+
+
+# Detailed Aspect Ratio Mapping Constants
+IS_ASPECT_WIDESCREEN = 70
+IS_ASPECT_NOT_WIDESCREEN = 71
+IS_ASPECT_SD_WIDESCREEN = 72
+IS_ASPECT_SD_NOT_WIDESCREEN = 73
+
+ASPECT_ICON_INFO = {
+	70: "widescreen",
+	71: "not_widescreen",
+	72: "sd_widescreen",
+	73: "sd_not_widescreen"
+}
+
+
+def getCurrentAspectType(info, service):
+	from enigma import eServiceReference
+	isRef = isinstance(service, eServiceReference)
+	video_width = getVideoWidth(info)    # still used for HD/SD height guard below
+	video_height = getVideoHeight(info)
+	video_aspect = None
+	if not isRef:
+		video_aspect = info.getInfo(iServiceInformation.sAspect)
+	is_widescreen_flag = video_aspect in WIDESCREEN
+	if info.getInfo(iServiceInformation.sVideoType) == 1:  # H.264/AVC
+		raw_width = info.getInfo(iServiceInformation.sVideoWidth)
+		raw_height = info.getInfo(iServiceInformation.sVideoHeight)
+		if raw_width > 1 and raw_width <= 1024 and raw_height > 1 and raw_height <= 578:
+			is_widescreen_flag = (float(raw_width) / float(raw_height)) >= 1.4
+			is_widescreen_flag = False
+		else:
+			is_widescreen_flag = True
+	is_sd = video_height <= 578 and video_height > 0
+	if is_sd and is_widescreen_flag:
+		return 72  # IS_ASPECT_SD_WIDESCREEN -> icon_sd_widescreen
+	elif is_sd and not is_widescreen_flag:
+		return 73  # IS_ASPECT_SD_NOT_WIDESCREEN -> icon_sd_not_widescreen
+	elif is_widescreen_flag:
+		return 70  # IS_ASPECT_WIDESCREEN -> icon_widescreen
+	elif video_width > 0 or video_height > 0:
+		return 71  # IS_ASPECT_NOT_WIDESCREEN -> icon_not_widescreen
+	return -1
+
+
 # Event sets shared by many types.
 EVENTS_INFO = (iPlayableService.evUpdatedInfo, iPlayableService.evStart)
 EVENTS_SIZE_INFO = (iPlayableService.evVideoSizeChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)
 EVENTS_GAMMA_INFO = (iPlayableService.evVideoGammaChanged, iPlayableService.evUpdatedInfo, iPlayableService.evStart)
+EVENTS_PROGRAM_INFO = (iPlayableService.evUpdatedInfo, iPlayableService.evNewProgramInfo)
 
 # First words of audio descriptions that mean "more than stereo".
 MULTICHANNEL_CODECS = frozenset(("AC3+", "AC3", "Dolby", "TrueHD", "DTS-HD", "DTS", "HE-AAC", "AC4", "AAC+", "IPCM", "LPCM", "WMA Pro"))
@@ -272,34 +402,49 @@ class ServiceInfo(Poll, Converter):
 	IS_STREAM = 24
 	IS_SD = 25
 	IS_HD = 26
-	IS_1080 = 27
-	IS_720 = 28
-	IS_576 = 29
-	IS_480 = 30
-	IS_4K = 31
-	FREQ_INFO = 32
-	PROGRESSIVE = 33
-	VIDEO_INFO = 34
-	IS_SD_AND_WIDESCREEN = 35
-	IS_SD_AND_NOT_WIDESCREEN = 36
-	IS_SDR = 37
-	IS_HDR = 38
-	IS_HDR10 = 39
-	IS_HLG = 40
-	IS_VIDEO_MPEG2 = 41
-	IS_VIDEO_AVC = 42
-	IS_VIDEO_HEVC = 43
-	IS_SOFTCSA = 44
-	IS_STREAM_RELAY = 45
-	IS_AUDIO_CODEC = 46
-	IS_AUDIO_CHANNEL = 47
-	AUDIO_CHANNELS = 48
-	AUDIO_CODEC = 49
-	AUDIO_CODEC_ICON = 50
-	AUDIO_CODEC_CHANNELS = 51
+	IS_4K = 27
+	IS_1080 = 28
+	IS_720 = 29
+	IS_576 = 30
+	IS_480 = 31
+	IS_VIDEO_RESOLUTION_ICON = 32
+	IS_DVBS = 33
+	IS_DVBS2 = 34
+	IS_DVBS2X = 35
+	IS_DVBC = 36
+	IS_DVBT = 37
+	IS_DVBT2 = 38
+	IS_ATSC = 39
+	FREQ_INFO = 40
+	PROGRESSIVE = 41
+	VIDEO_INFO = 42
+	IS_SD_AND_WIDESCREEN = 43
+	IS_SD_AND_NOT_WIDESCREEN = 44
+	IS_SDR = 45
+	IS_HDR = 46
+	IS_HDR10 = 47
+	IS_HLG = 48
+	IS_VIDEO_GAMMA_ICON = 49
+	IS_VIDEO_MPEG2 = 50
+	IS_VIDEO_AVC = 51
+	IS_VIDEO_HEVC = 52
+	IS_SOFTCSA = 53
+	IS_STREAM_RELAY = 54
+	IS_AUDIO_CODEC = 55
+	IS_AUDIO_CHANNEL = 56
+	IS_VIDEO_CODEC_ICON = 57
+	IS_AUDIO_CHANNELS_ICON = 58
+	AUDIO_CHANNELS = 59
+	AUDIO_CODEC = 60
+	AUDIO_CODEC_ICON = 61
+	AUDIO_CODEC_CHANNELS = 62
+	IS_SUBTITLES_ICON = 63
+	IS_TELETEXT_ICON = 64
+	IS_ASPECT_ICON = 65
 
 	# Skin type name -> (type, events that make the converter update).
 	# The IS_AUDIO_CODEC and IS_AUDIO_CHANNEL types are looked up through AUDIO_CODEC_TYPES and AUDIO_CHANNEL_TYPES instead.
+	# "CryptoIcon" shares IS_CRYPTED with "IsCrypted": the boolean answers one, the text the other.
 	TYPES = {
 		"HasTelext": (HAS_TELETEXT, EVENTS_INFO),
 		"IsMultichannel": (IS_MULTICHANNEL, EVENTS_INFO),
@@ -339,6 +484,13 @@ class ServiceInfo(Poll, Converter):
 		"Is576": (IS_576, EVENTS_SIZE_INFO),
 		"Is480": (IS_480, EVENTS_SIZE_INFO),
 		"Is4K": (IS_4K, EVENTS_SIZE_INFO),
+		"IsDvbS": (IS_DVBS, EVENTS_PROGRAM_INFO),
+		"IsDvbS2": (IS_DVBS2, EVENTS_PROGRAM_INFO),
+		"IsDvbS2X": (IS_DVBS2X, EVENTS_PROGRAM_INFO),
+		"IsDvbC": (IS_DVBC, EVENTS_PROGRAM_INFO),
+		"IsDvbT": (IS_DVBT, EVENTS_PROGRAM_INFO),
+		"IsDvbT2": (IS_DVBT2, EVENTS_PROGRAM_INFO),
+		"IsATSC": (IS_ATSC, EVENTS_PROGRAM_INFO),
 		"IsSDR": (IS_SDR, EVENTS_GAMMA_INFO),
 		"IsHDR": (IS_HDR, EVENTS_GAMMA_INFO),
 		"IsHDR10": (IS_HDR10, EVENTS_GAMMA_INFO),
@@ -346,6 +498,14 @@ class ServiceInfo(Poll, Converter):
 		"IsVideoMPEG2": (IS_VIDEO_MPEG2, EVENTS_INFO),
 		"IsVideoAVC": (IS_VIDEO_AVC, EVENTS_INFO),
 		"IsVideoHEVC": (IS_VIDEO_HEVC, (iPlayableService.evUpdatedInfo, iPlayableService.evVideoSizeChanged)),
+		"VideoCodecIcon": (IS_VIDEO_CODEC_ICON, EVENTS_INFO),
+		"AudioChannelsIcon": (IS_AUDIO_CHANNELS_ICON, EVENTS_INFO),
+		"VideoResolutionIcon": (IS_VIDEO_RESOLUTION_ICON, EVENTS_SIZE_INFO),
+		"VideoGammaIcon": (IS_VIDEO_GAMMA_ICON, EVENTS_GAMMA_INFO),
+		"SubtitlesIcon": (IS_SUBTITLES_ICON, EVENTS_INFO),
+		"TeletextIcon": (IS_TELETEXT_ICON, EVENTS_INFO),
+		"AspectIcon": (IS_ASPECT_ICON, EVENTS_SIZE_INFO),
+		"CryptoIcon": (IS_CRYPTED, EVENTS_INFO),
 		"AudioChannels": (AUDIO_CHANNELS, EVENTS_INFO),
 		"AudioCodec": (AUDIO_CODEC, EVENTS_INFO),
 		"AudioCodecIcon": (AUDIO_CODEC_ICON, EVENTS_INFO),
@@ -381,6 +541,13 @@ class ServiceInfo(Poll, Converter):
 		IS_576: "bool576",
 		IS_480: "bool480",
 		IS_4K: "bool4K",
+		IS_DVBS: "boolDvb",
+		IS_DVBS2: "boolDvb",
+		IS_DVBS2X: "boolDvb",
+		IS_DVBC: "boolDvb",
+		IS_DVBT: "boolDvb",
+		IS_DVBT2: "boolDvb",
+		IS_ATSC: "boolDvb",
 		PROGRESSIVE: "boolProgressive",
 		IS_SDR: "boolSDR",
 		IS_HDR: "boolHDR",
@@ -417,7 +584,15 @@ class ServiceInfo(Poll, Converter):
 		TRANSFERBPS: "textTransferBPS",
 		HAS_HBBTV: "textHBBTV",
 		FREQ_INFO: "textFreqInfo",
-		VIDEO_INFO: "textVideoInfo"
+		VIDEO_INFO: "textVideoInfo",
+		IS_CRYPTED: "textCryptoIcon",
+		IS_VIDEO_CODEC_ICON: "textVideoCodecIcon",
+		IS_AUDIO_CHANNELS_ICON: "textAudioChannelsIcon",
+		IS_VIDEO_RESOLUTION_ICON: "textVideoResolutionIcon",
+		IS_VIDEO_GAMMA_ICON: "textVideoGammaIcon",
+		IS_SUBTITLES_ICON: "textSubtitlesIcon",
+		IS_TELETEXT_ICON: "textTeletextIcon",
+		IS_ASPECT_ICON: "textAspectIcon"
 	}
 
 	# Which service information field the "textServiceInfo" handler shows.
@@ -472,6 +647,19 @@ class ServiceInfo(Poll, Converter):
 
 	def formatKBps(self, value):
 		return "%d kB/s" % (value // 1024)
+
+	def iconName(self, icon):
+		return f"{self.codecIconPrefix}{icon}" if icon else ""
+
+	def isWidescreen(self, info):
+		# The aspect flag, except that a small H.264 picture is judged by its own width and height.
+		is_widescreen_flag = info.getInfo(iServiceInformation.sAspect) in WIDESCREEN
+		if info.getInfo(iServiceInformation.sVideoType) == 1:  # H.264/AVC
+			raw_width = info.getInfo(iServiceInformation.sVideoWidth)
+			raw_height = info.getInfo(iServiceInformation.sVideoHeight)
+			if raw_width > 1 and raw_width <= 1024 and raw_height > 1 and raw_height <= 578:
+				is_widescreen_flag = (float(raw_width) / float(raw_height)) >= 1.4
+		return is_widescreen_flag
 
 	def audioChannelLabel(self, channels):
 		return AUDIO_CHANNEL_LABELS.get(channels, f"{channels} ch" if channels > 0 else "")
@@ -599,23 +787,21 @@ class ServiceInfo(Poll, Converter):
 		return hasattr(self.source, "editmode") and bool(self.source.editmode)
 
 	def boolStream(self, service, info):
-		refstr = info.getInfoString(iServiceInformation.sServiceref)
-		if "4097" in refstr or "5001" in refstr or "5002" in refstr or "9999" in refstr:
-			return service.streamed() is not None
-		return False
+		refstr = str(info.getInfoString(iServiceInformation.sServiceref)).lower()
+		return "4097" in refstr or "5001" in refstr or "5002" in refstr or "9999" in refstr
 
 	# The video types below are only reached for services that carry video.
 
 	def boolWidescreen(self, service, info):
-		return info.getInfo(iServiceInformation.sAspect) in WIDESCREEN
+		return self.isWidescreen(info)
 
 	def boolNotWidescreen(self, service, info):
-		return info.getInfo(iServiceInformation.sAspect) not in WIDESCREEN
+		return not self.isWidescreen(info)
 
 	def boolHD(self, service, info):
 		video_width = getVideoWidth(info)
 		video_height = getVideoHeight(info)
-		return video_width > 1025 and video_width <= 1920 and video_height >= 481 and video_height < 1440 or video_width >= 960 and video_height == 720
+		return video_width >= 950 and video_width <= 1920 and video_height >= 481 and video_height <= 1080
 
 	def boolSD(self, service, info):
 		video_width = getVideoWidth(info)
@@ -623,33 +809,74 @@ class ServiceInfo(Poll, Converter):
 		return video_width > 1 and video_width <= 1024 and video_height > 1 and video_height <= 578
 
 	def boolSDAndWidescreen(self, service, info):
-		return getVideoHeight(info) < 578 and info.getInfo(iServiceInformation.sAspect) in WIDESCREEN
+		return getVideoHeight(info) <= 578 and self.isWidescreen(info)
 
 	def boolSDAndNotWidescreen(self, service, info):
-		return getVideoHeight(info) < 578 and info.getInfo(iServiceInformation.sAspect) not in WIDESCREEN
+		return getVideoHeight(info) <= 578 and not self.isWidescreen(info)
 
 	def bool1080(self, service, info):
 		video_width = getVideoWidth(info)
 		video_height = getVideoHeight(info)
-		return video_width >= 1367 and video_width <= 2400 and video_height >= 768 and video_height <= 1440
+		return video_width >= 1220 and video_width <= 2400 and video_height >= 768 and video_height <= 1440 or video_width == 1080 and video_height == 1920 or video_height == 1080
 
 	def bool720(self, service, info):
 		video_width = getVideoWidth(info)
 		video_height = getVideoHeight(info)
-		return video_width >= 1025 and video_width <= 1366 and video_height >= 481 and video_height <= 768 or video_width >= 960 and video_height == 720
+		return video_width >= 1025 and video_width <= 1366 and video_height >= 481 and video_height <= 768 or video_width >= 960 and video_height == 720 or video_width == 720 and video_height == 1280 or video_height == 720
 
 	def bool576(self, service, info):
 		video_width = getVideoWidth(info)
 		video_height = getVideoHeight(info)
-		return video_width > 1 and video_width <= 1024 and video_height > 481 and video_height <= 578
+		return video_width > 1 and video_width <= 1030 and video_height >= 481 and video_height <= 578
 
 	def bool480(self, service, info):
 		video_width = getVideoWidth(info)
 		video_height = getVideoHeight(info)
-		return video_width > 1 and video_width <= 1024 and video_height > 1 and video_height <= 480
+		return video_width > 1 and video_width <= 1030 and video_height > 1 and video_height <= 480 or video_width == 404 and video_height == 720
 
 	def bool4K(self, service, info):
 		return getVideoWidth(info) >= 1921 and getVideoHeight(info) >= 1440
+
+	def boolDvb(self, service, info):
+		# Which kind of frontend delivers the service, worked out from the service reference and the transponder data.
+		sref = str(info.getInfoString(iServiceInformation.sServiceref)).upper()
+		if sref.startswith(("1:0:19:", "4097:", "5001:", "5002:")) and ("://" in sref or "%3A//" in sref):
+			return False
+		tp_data = info.getInfoObject(iServiceInformation.sTransponderData)
+		tp = tp_data if tp_data and isinstance(tp_data, dict) else None
+		if tp:
+			t_type = str(tp.get("tuner_type", "")).upper()
+			system = tp.get("system", -1)
+			sys_str = str(tp.get("system_string", "")).upper()
+			if "DVB-S" in t_type or "SAT" in t_type or "orbital_position" in tp:
+				is_s2x = (system == 2) or (tp.get("is_id", -1) != -1) or ("S2X" in sys_str) or ("S2X" in t_type)
+				if is_s2x:
+					return self.type == self.IS_DVBS2X
+				elif system == 1 or "S2" in sys_str or "S2" in t_type:
+					return self.type == self.IS_DVBS2
+				else:
+					return self.type == self.IS_DVBS
+			elif "DVB-C" in t_type or "CABLE" in t_type:
+				return self.type == self.IS_DVBC
+			elif "DVB-T" in t_type or "TERR" in t_type:
+				is_t2 = (system == 1) or ("T2" in sys_str) or ("T2" in t_type)
+				if is_t2:
+					return self.type == self.IS_DVBT2
+				else:
+					return self.type == self.IS_DVBT
+			elif "ATSC" in t_type:
+				return self.type == self.IS_ATSC
+		is_terrestrial = "EEEE0000" in sref or "FFFF0000" in sref or (tp and "frequency" in tp and "orbital_position" not in tp)
+		if is_terrestrial:
+			name = str(info.getName()).upper()
+			is_t2_feed = "HD" in name or "4K" in name or "T2" in sref or "T2" in name
+			if tp:
+				is_t2_feed = is_t2_feed or (tp.get("system", 0) == 1) or ("T2" in str(tp.get("system_string", "")).upper())
+			if is_t2_feed:
+				return self.type == self.IS_DVBT2
+			else:
+				return self.type == self.IS_DVBT
+		return False
 
 	def boolProgressive(self, service, info):
 		return bool(self.getProgressive())
@@ -715,6 +942,51 @@ class ServiceInfo(Poll, Converter):
 	def textAudioCodecChannels(self, service, info):
 		label = self.audioCodecLabelIcon(service)[0]
 		return f"{label} {self.audioChannelLabel(getCurrentAudioChannels(service))}".strip()
+
+	def textAudioChannelsIcon(self, service, info):
+		return self.iconName(AUDIO_CHANNELS_INFO.get(getCurrentAudioChannels(service), ("", ""))[1])
+
+	def textVideoCodecIcon(self, service, info):
+		return self.iconName(VIDEO_CODEC_INFO.get(getCurrentVideoCodec(info), ("", ""))[1])
+
+	def textVideoResolutionIcon(self, service, info):
+		res_type = getCurrentVideoResolutionType(info, getVideoWidth(info), getVideoHeight(info))
+		return self.iconName(VIDEO_RESOLUTION_INFO.get(res_type, ("", ""))[1])
+
+	def textVideoGammaIcon(self, service, info):
+		return self.iconName(VIDEO_GAMMA_INFO.get(getCurrentVideoGammaType(info), ("", ""))[1])
+
+	def textSubtitlesIcon(self, service, info):
+		return self.iconName("subtitles_on" if isSubtitlesAvailable(service) else "subtitles_off")
+
+	def textTeletextIcon(self, service, info):
+		return self.iconName("teletext_on" if isTeletextAvailable(info) else "teletext_off")
+
+	def textAspectIcon(self, service, info):
+		video_height = getVideoHeight(info)
+		is_widescreen_flag = self.isWidescreen(info)
+		if video_height <= 578 and is_widescreen_flag:
+			icon = "sd_widescreen"
+		elif video_height <= 578 and not is_widescreen_flag:
+			icon = "sd_not_widescreen"
+		elif is_widescreen_flag:
+			icon = "widescreen"
+		else:
+			icon = "not_widescreen"
+		return self.iconName(icon)
+
+	def textCryptoIcon(self, service, info):
+		icon = "clear"
+		if info.getInfo(iServiceInformation.sIsCrypted) == 1:
+			if info.getInfo(iServiceInformation.sIsSoftCSA) == 1:
+				icon = "softcsa"
+			else:
+				refstr = info.getInfoString(iServiceInformation.sServiceref)
+				if "9999" in refstr or "17999" in refstr and "127.0.0.1" in refstr or "localhost" in refstr or "0.0.0.0" in refstr:
+					icon = "streamrelay"
+				else:
+					icon = "crypted"
+		return self.iconName(icon)
 
 	def textTransferBPS(self, service, info):
 		return self.getServiceInfoString(info, iServiceInformation.sTransferBPS, self.formatKBps)
