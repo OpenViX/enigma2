@@ -2,14 +2,15 @@
 
 #include <lib/gdi/egl/inative_window_provider.h>
 
-// EGL native-window provider for ABCom's pulse4k/pulse4kmini (HiSilicon
+// EGL native-window provider for ABCom's pulse4k/pulse4kmini/ax61 (HiSilicon
 // Hi3798MV200 SoC, ARM Mali-450 MP4 "Utgard" GPU). Confirmed (by reading the
 // actual recipes - not auth-gated - meta-brands/meta-abcom/recipes-graphics/
 // mali/{abcom-mali-utgard.inc,abcom-mali-3798mv200.bb,
 // kernel-module-mali-utgard.inc} in github.com/oe-alliance/oe-alliance-core)
 // to ship a Mali Utgard r7p0 kernel driver plus a single combined
 // libMali.so userspace blob whose COMPATIBLE_MACHINE is exactly
-// "^pulse4k$|^pulse4kmini$".
+// "^pulse4k$|^pulse4kmini$" (ax61 is the same
+// board as pulse4k and reuses this same driver).
 //
 // Unlike GigaBlue/VU+'s Broadcom Nexus/NXPL stack (lib/gdi/egl/platform/
 // gbquad, lib/gdi/egl/platform/vuplus), there is no separate compositor
