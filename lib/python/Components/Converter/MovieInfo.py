@@ -47,6 +47,21 @@ class MovieInfo(Converter):
 		"NotTrimmed": ("trim", False)
 	}
 
+	# Map each type to the name of the method that produces its text. They all take (service, info, event).
+	HANDLERS = {
+		MOVIE_SHORT_DESCRIPTION: "textShortDescription",
+		MOVIE_META_DESCRIPTION: "textMetaDescription",
+		MOVIE_REC_SERVICE_NAME: "textRecServiceName",
+		MOVIE_REC_SERVICE_REF: "textRecServiceRef",
+		MOVIE_REC_FILESIZE: "textRecFileSize",
+		MOVIE_FULL_DESCRIPTION: "textFullDescription",
+		MOVIE_NAME: "textName",
+		FORMAT_STRING: "textFormatString"
+	}
+
+	# The tokens a format string understands. Anything else in the list is ignored.
+	FORMAT_TOKENS = ("TIMECREATED", "DURATION", "FILESIZE")
+
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		self.textEvent = None
@@ -55,7 +70,6 @@ class MovieInfo(Converter):
 		self.trim = False
 
 		parse = ","
-		type.replace(";", parse)  # Some builds use ";" as a separator, most use ",".
 		args = [(arg.strip() if i or arg.strip() in self.KEYWORDS else arg) for i, arg in enumerate(type.split(parse))]
 
 		self.parts = args
@@ -74,17 +88,20 @@ class MovieInfo(Converter):
 				print("[MovieInfo] Valid arguments are: ShortDescription|MetaDescription|FullDescription|RecordServiceName|RecordServiceRef|FileSize.")
 				print("[MovieInfo] Valid options for descriptions are: Separated|NotSeparated|Trimmed|NotTrimmed.")
 
+		# Resolve everything that depends on the type and options once; getText never has to work it out again.
+		self.trimText = self.trimStrip if self.trim else str
+		self.formatTokens = tuple(token for token in (part.upper() for part in self.parts[1:]) if token in self.FORMAT_TOKENS)
+		self.formatNeeds = frozenset(self.formatTokens)
+		self.handler = getattr(self, self.HANDLERS.get(self.type, "textEmpty"))
+
 	def destroy(self):
 		Converter.destroy(self)
 		# cancel any running directory scans
 		MovieInfo.startNewScan = True
 		MovieInfo.scanPath = None
 
-	def trimText(self, text):
-		if self.trim:
-			return str(text).strip()
-		else:
-			return str(text)
+	def trimStrip(self, text):
+		return str(text).strip()
 
 	def formatDescription(self, description, extended):
 		description = self.trimText(description)
@@ -100,63 +117,84 @@ class MovieInfo(Converter):
 			return ""
 		return bytesToHumanReadable(filesize)
 
+	def isDirectory(self, service):
+		return (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory
+
 	@cached
 	def getText(self):
 		service = self.source.service
 		info = self.source.info
 		event = self.source.event
 		if info and service:
-			if self.type == self.MOVIE_SHORT_DESCRIPTION:
-				if (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory:
-					# Short description for Directory is the full path
-					return service.getPath()
-				return (
-					self.__getCollectionDescription(service)
-					or force_valid_utf8(info.getInfoString(service, iServiceInformation.sDescription))
-					or (event and self.trimText(event.getShortDescription()))
-					or service.getPath()
-				)
-			elif self.type == self.MOVIE_META_DESCRIPTION:
-				return (
-					self.__getCollectionDescription(service)
-					or (event and (self.trimText(event.getExtendedDescription()) or self.trimText(event.getShortDescription())))
-					or force_valid_utf8(info.getInfoString(service, iServiceInformation.sDescription))
-					or service.getPath()
-				)
-			elif self.type == self.MOVIE_FULL_DESCRIPTION:
-				return (
-					self.__getCollectionDescription(service)
-					or (event and self.formatDescription(event.getShortDescription(), event.getExtendedDescription()))
-					or force_valid_utf8(info.getInfoString(service, iServiceInformation.sDescription))
-					or service.getPath()
-				)
-			elif self.type == self.MOVIE_NAME:
-				if (service.flags & eServiceReference.flagDirectory) == eServiceReference.flagDirectory:
-					# Name for directory is the full path
-					return service.getPath()
-				return event and event.getEventName() or info and info.getName(service)
-			elif self.type == self.MOVIE_REC_SERVICE_NAME:
-				rec_ref_str = info.getInfoString(service, iServiceInformation.sServiceref)
-				return eServiceReference(rec_ref_str).getServiceName()
-			elif self.type == self.MOVIE_REC_SERVICE_REF:
-				return info.getInfoString(service, iServiceInformation.sServiceref)
-			elif self.type == self.MOVIE_REC_FILESIZE:
-				return self.getFileSize(service, info)
-			elif self.type == self.FORMAT_STRING:
-				timeCreate = localtime(info.getInfo(service, iServiceInformation.sTimeCreate))
-				duration = info.getLength(service)
-				filesize = info.getInfoObject(service, iServiceInformation.sFileSize)
-				res_str = ""
-				for x in self.parts[1:]:
-					x = x.upper()
-					if x == "TIMECREATED" and timeCreate and timeCreate.tm_year > 1970:
-						res_str = self.appendToStringWithSeparator(res_str, strftime("%A %d %b %Y", timeCreate))
-					if x == "DURATION" and duration and duration > 0:
-						res_str = self.appendToStringWithSeparator(res_str, "%d min" % (duration / 60))
-					if x == "FILESIZE" and filesize:
-						res_str = self.appendToStringWithSeparator(res_str, self.getFriendlyFilesize(filesize))
-				return res_str
+			return self.handler(service, info, event)
 		return ""
+
+	# ---- Text ----
+
+	def textEmpty(self, service, info, event):
+		return ""
+
+	def textShortDescription(self, service, info, event):
+		if self.isDirectory(service):
+			# Short description for Directory is the full path
+			return service.getPath()
+		return (
+			self.__getCollectionDescription(service)
+			or force_valid_utf8(info.getInfoString(service, iServiceInformation.sDescription))
+			or (event and self.trimText(event.getShortDescription()))
+			or service.getPath()
+		)
+
+	def textMetaDescription(self, service, info, event):
+		return (
+			self.__getCollectionDescription(service)
+			or (event and (self.trimText(event.getExtendedDescription()) or self.trimText(event.getShortDescription())))
+			or force_valid_utf8(info.getInfoString(service, iServiceInformation.sDescription))
+			or service.getPath()
+		)
+
+	def textFullDescription(self, service, info, event):
+		return (
+			self.__getCollectionDescription(service)
+			or (event and self.formatDescription(event.getShortDescription(), event.getExtendedDescription()))
+			or force_valid_utf8(info.getInfoString(service, iServiceInformation.sDescription))
+			or service.getPath()
+		)
+
+	def textName(self, service, info, event):
+		if self.isDirectory(service):
+			# Name for directory is the full path
+			return service.getPath()
+		return event and event.getEventName() or info and info.getName(service)
+
+	def textRecServiceName(self, service, info, event):
+		rec_ref_str = info.getInfoString(service, iServiceInformation.sServiceref)
+		return eServiceReference(rec_ref_str).getServiceName()
+
+	def textRecServiceRef(self, service, info, event):
+		return info.getInfoString(service, iServiceInformation.sServiceref)
+
+	def textRecFileSize(self, service, info, event):
+		return self.getFileSize(service, info)
+
+	def textFormatString(self, service, info, event):
+		# Only work out the values the format string asks for.
+		needs = self.formatNeeds
+		values = {}
+		if "TIMECREATED" in needs:
+			timeCreate = localtime(info.getInfo(service, iServiceInformation.sTimeCreate))
+			values["TIMECREATED"] = strftime("%A %d %b %Y", timeCreate) if timeCreate and timeCreate.tm_year > 1970 else None
+		if "DURATION" in needs:
+			duration = info.getLength(service)
+			values["DURATION"] = "%d min" % (duration / 60) if duration and duration > 0 else None
+		if "FILESIZE" in needs:
+			filesize = info.getInfoObject(service, iServiceInformation.sFileSize)
+			values["FILESIZE"] = self.getFriendlyFilesize(filesize) if filesize else None
+		res_str = ""
+		for token in self.formatTokens:
+			if values[token] is not None:
+				res_str = self.appendToStringWithSeparator(res_str, values[token])
+		return res_str
 
 	def __getCollectionDescription(self, service):
 		if service.flags & eServiceReference.isGroup:
@@ -190,32 +228,48 @@ class MovieInfo(Converter):
 
 	def __directoryScanWorker(self):
 		size = 0
+		failed = False
 
 		def scanDirectory(path):
-			nonlocal size
-			for entry in scandir(path):
+			nonlocal size, failed
+			try:
+				entries = scandir(path)
+			except OSError:
+				failed = True  # unreadable or vanished directory, the total is incomplete
+				return
+			for entry in entries:
 				if MovieInfo.startNewScan:
 					return
-				if entry.is_dir():
-					scanDirectory(entry.path)
-				elif entry.is_file():
-					stat = lstat(entry.path)
-					if stat:
-						size += stat.st_size
+				try:
+					if entry.is_dir():
+						scanDirectory(entry.path)
+					elif entry.is_file():
+						stat = lstat(entry.path)
+						if stat:
+							size += stat.st_size
+				except OSError:
+					failed = True  # file vanished while scanning
 
-		while True:
+		try:
+			while True:
+				with MovieInfo.scanDirectoryLock:
+					path = MovieInfo.scanPath
+					if path is None:
+						MovieInfo.isScanning = False
+						break
+					MovieInfo.scanPath = None
+					MovieInfo.startNewScan = False
+				size = 0
+				failed = False
+				scanDirectory(path)
+		except BaseException:
+			# whatever went wrong, don't leave the flag set or no scan can ever start again
 			with MovieInfo.scanDirectoryLock:
-				path = MovieInfo.scanPath
-				if path is None:
-					MovieInfo.isScanning = False
-					break
-				MovieInfo.scanPath = None
-				MovieInfo.startNewScan = False
-			size = 0
-			scanDirectory(path)
+				MovieInfo.isScanning = False
+			raise
 
-		if not MovieInfo.startNewScan:
-			# cache the value if the scan hasn't been cancelled and fire off a changed event to update any renderers
+		if not MovieInfo.startNewScan and not failed:
+			# cache the value if the scan hasn't been cancelled or hit an error and fire off a changed event to update any renderers
 			if self.source and self.source.additionalInfo:
 				self.source.additionalInfo.directorySize = size
 				self.changed((self.CHANGED_ALL,))
