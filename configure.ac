@@ -549,11 +549,11 @@ AS_IF([test "x$have_gles2" = "xyes"], [
     vuduo4kse|vusolo4k|vuultimo4k)
       have_gles3=no
       ;;
-    # pulse4k/pulse4kmini: libMali (Mali-450) is GLES 2.0 only - it exports
+    # pulse4k/pulse4kmini/ax61: libMali (Mali-450) is GLES 2.0 only - it exports
     # glBindVertexArrayOES/glGenVertexArraysOES but none of the core GLES3
     # symbols - while any GLES3/gl3.h that happens to be in the sysroot (e.g.
     # mesa's) would still turn HAVE_GLES3 on.
-    pulse4k|pulse4kmini)
+    pulse4k|pulse4kmini|ax61)
       have_gles3=no
       ;;
   esac
@@ -685,7 +685,7 @@ fi
 AC_SUBST([VUPL_CFLAGS])
 AC_SUBST([VUPL_LIBS])
 
-# ABCom's pulse4k/pulse4kmini (HiSilicon Hi3798MV200, ARM Mali-450 "Utgard"
+# ABCom's pulse4k/pulse4kmini/ax61 (HiSilicon Hi3798MV200, ARM Mali-450 "Utgard"
 # GPU) EGL backend (see lib/gdi/egl/platform/abcom) - a real EGL window
 # surface against a Mali fbdev binary driver (libMali.so, GLES 2.0 only),
 # unlike GigaBlue/VU+'s Broadcom Nexus stack above. oe-alliance-core's
@@ -695,9 +695,9 @@ AC_SUBST([VUPL_LIBS])
 # bbappend stages the matching vendor EGL/GLES/GLES2/KHR headers and generates
 # egl.pc/glesv2.pc - after that the generic "egl"/"glesv2" PKG_CHECK_MODULES
 # above resolve as usual. GLES3 headers are deliberately not staged.
-AM_CONDITIONAL(HAVE_ABCOM_EGL, test "x$use_egl" = "xyes" -a \( "$BOXTYPE" == "pulse4k" -o "$BOXTYPE" == "pulse4kmini" \))
-if test "x$use_egl" = "xyes" -a \( "$BOXTYPE" == "pulse4k" -o "$BOXTYPE" == "pulse4kmini" \); then
-	AC_DEFINE(HAVE_ABCOM_EGL, 1, [ABCom pulse4k/pulse4kmini Mali Utgard fbdev EGL window backend available])
+AM_CONDITIONAL(HAVE_ABCOM_EGL, test "x$use_egl" = "xyes" -a \( "$BOXTYPE" == "pulse4k" -o "$BOXTYPE" == "pulse4kmini" -o "$BOXTYPE" == "ax61" \))
+if test "x$use_egl" = "xyes" -a \( "$BOXTYPE" == "pulse4k" -o "$BOXTYPE" == "pulse4kmini" -o "$BOXTYPE" == "ax61" \); then
+	AC_DEFINE(HAVE_ABCOM_EGL, 1, [ABCom pulse4k/pulse4kmini/ax61 Mali Utgard fbdev EGL window backend available])
 fi
 
 if test "$BOXTYPE" == "dm900"; then
@@ -759,7 +759,7 @@ if test "$BOXTYPE" == "sf8008" -o "$BOXTYPE" == "sf8008m" -o "$BOXTYPE" == "sx98
 	AC_DEFINE(FORCE_ALPHABLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])	
 fi
 
-if test "$BOXTYPE" == "pulse4k" -o "$BOXTYPE" == "pulse4kmini" -o "$BOXTYPE" == "hd61"; then
+if test "$BOXTYPE" == "pulse4k" -o "$BOXTYPE" == "pulse4kmini" -o "$BOXTYPE" == "ax61" -o "$BOXTYPE" == "hd61"; then
 	AC_DEFINE(HAVE_HISILICON, 1,[define add HISILICON chip])
 	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])
 fi
