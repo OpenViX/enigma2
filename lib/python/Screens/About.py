@@ -58,6 +58,7 @@ def glesStr():
 	gles = getGLESVersionString()
 	if gles:
 		return gles.split(' "', 1)[0]
+	return ""
 
 
 def _formatDate(Date):
