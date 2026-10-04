@@ -399,6 +399,13 @@ private:
 	// comment) - without composing m_spinner_pos to the real GPU surface
 	// after each of these, the spinner is drawn but never actually reaches
 	// the screen.
+	// True while m_spinner_saved holds a background captured from the
+	// *current* render target. A resolution change throws that target (and
+	// m_pixmap/its overlay texture) away, so everything saved/positioned for the
+	// old canvas is stale: restoring or recompositing it painted old-size
+	// leftovers (stripes, a shrunken spinner) over the new canvas. Render
+	// thread only (spinner ops and applyPendingResolutionChange() both run there).
+	bool m_spinner_active = false;
 	void enableSpinner() override;
 	void disableSpinner() override;
 	void incrementSpinner() override;
