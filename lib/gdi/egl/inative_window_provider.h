@@ -116,6 +116,12 @@ public:
 	// Default false: other providers keep the straight overwrite.
 	virtual bool premultipliesOverwrites() { return false; }
 
+	// True when glReadPixels() of a small sub-rect of the window surface can't be
+	// trusted (libMali Utgard: striped results, which the spinner then bakes into
+	// its saved background). gEGLDC::captureBackgroundIntoPixmap() then does a
+	// glFinish() and reads full-width rows, cropping afterwards. Default false.
+	virtual bool conservativeReadback() { return false; }
+
 	// False when resizing this provider's native window after init() does not
 	// work (VU+: VUGLES_UpdateNativeWindow + surface recreation leaves the
 	// window rendering correctly - grabs are fine - but never visible on screen,
