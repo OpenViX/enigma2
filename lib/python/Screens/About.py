@@ -46,11 +46,13 @@ def getLastCommitDate():
 def getLastCommitHash():
 	return getEnigmaLastCommitHash()[:7]
 
+
 def eglStr():
 	egl = getEGLVersionString().split(' ', 1)[0]
 	if egl:
 		return f"EGL {egl}"
 	return ""
+
 
 def glesStr():
 	gles = getGLESVersionString()
