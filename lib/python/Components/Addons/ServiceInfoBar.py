@@ -247,7 +247,7 @@ class ServiceInfoBar(GUIAddon):
 			elif key == "stream" and not isRef:
 				if self.streamServer is None:
 					return None
-				if service.streamed() is not None and ((self.streamServer.getConnectedClients() or StreamServiceList) and True or False):
+				if self.streamServer.getConnectedClients() or StreamServiceList:
 					return key
 			elif key == "currentCrypto":
 				if "%3a//" in pending_sref and pending_service_ref and not pending_service_ref.getStreamRelay():
