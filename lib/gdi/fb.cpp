@@ -333,8 +333,8 @@ int fbClass::SetMode(int nxRes, int nyRes, int nbpp)
 	// renders its very first frame into (the spinner, before any full
 	// repaint) would otherwise present that stale picture behind it.
 	memset(lfb, 0, stride * std::max<unsigned int>(screeninfo.yres_virtual, yRes));
-#elif defined(HAVE_ABCOM_EGL)
-	// Same as the CONFIG_ION branch above, for the Abcom (hifb + Mali fbdev) EGL
+#elif defined(HAVE_HISI_MALI_EGL)
+	// Same as the CONFIG_ION branch above, for the HiSilicon (hifb + Mali fbdev) EGL
 	// build: libMali flips between the framebuffer's pages, so every page has to
 	// start out clear, not just page 0. hifb sizes its video memory per mode, so
 	// re-read it and remap if it changed since the constructor mapped it (the

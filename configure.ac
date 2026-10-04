@@ -549,11 +549,11 @@ AS_IF([test "x$have_gles2" = "xyes"], [
     vuduo4kse|vusolo4k|vuultimo4k)
       have_gles3=no
       ;;
-    # pulse4k/pulse4kmini/ax61: libMali (Mali-450) is GLES 2.0 only - it exports
+    # pulse4k/pulse4kmini/hd61(ax61)/sf8008/sf8008m/gbmv200(gbtrio4k etc.): libMali (Mali-450) is GLES 2.0 only - it exports
     # glBindVertexArrayOES/glGenVertexArraysOES but none of the core GLES3
     # symbols - while any GLES3/gl3.h that happens to be in the sysroot (e.g.
     # mesa's) would still turn HAVE_GLES3 on.
-    pulse4k|pulse4kmini|ax61)
+    pulse4k|pulse4kmini|hd61|sf8008|sf8008m|gbmv200|h8se|h9|h9combo|h9combose|h9se|h10|h11|i55plus|i55se)
       have_gles3=no
       ;;
   esac
@@ -637,8 +637,14 @@ fi
 # BOXTYPE gb7252 (also covers gb7252pro's newer driver drop) and gb72604.
 use_nxpl_egl=no
 if test "x$use_egl" = "xyes" -a \( "x$MACHINEBUILD" = "xgbquad4kpro" -o "x$MACHINEBUILD" = "xvuduo4klite" \
-	-o "x$BOXTYPE" = "xgb7252" -o "x$BOXTYPE" = "xgb72604" \); then
+	-o "x$BOXTYPE" = "xgb7252" -o "x$BOXTYPE" = "xgb72604" \
+	-o "x$BOXTYPE" = "xh7" -o "x$BOXTYPE" = "xh17" \); then
 	use_nxpl_egl=yes
+fi
+# Zgemma h7/h17 (meta-airdigital's airdigital-v3ddriver) ship libnxpl/libnexus/libv3ddriver
+# but no libnxclient.so: the provider joins Nexus via NEXUS_Platform_AuthenticatedJoin instead.
+if test "x$use_nxpl_egl" = "xyes" -a \( "x$BOXTYPE" = "xh7" -o "x$BOXTYPE" = "xh17" \); then
+	AC_DEFINE(HAVE_NXPL_NO_NXCLIENT, 1, [No libnxclient: join Nexus with NEXUS_Platform_AuthenticatedJoin])
 fi
 AM_CONDITIONAL(HAVE_GBQUAD_EGL, test "x$use_nxpl_egl" = "xyes")
 if test "x$use_nxpl_egl" = "xyes"; then
@@ -685,8 +691,10 @@ fi
 AC_SUBST([VUPL_CFLAGS])
 AC_SUBST([VUPL_LIBS])
 
-# ABCom's pulse4k/pulse4kmini/ax61 (HiSilicon Hi3798MV200, ARM Mali-450 "Utgard"
-# GPU) EGL backend (see lib/gdi/egl/platform/abcom) - a real EGL window
+# ABCom's pulse4k/pulse4kmini, GFutures' hd61 (ax61), Octagon's sf8008/sf8008m and
+# GigaBlue's gbmv200 (gbip4k/gbtrio4k/gbtrio4kpro) and Zgemma/AirDigital's h8se/h9/h9combo/
+# h9combose/h9se/h10/h11/i55plus/i55se (all HiSilicon Hi3798MV200, ARM Mali-450 "Utgard"
+# GPU) EGL backend (see lib/gdi/egl/platform/hisi) - a real EGL window
 # surface against a Mali fbdev binary driver (libMali.so, GLES 2.0 only),
 # unlike GigaBlue/VU+'s Broadcom Nexus stack above. oe-alliance-core's
 # abcom-mali-utgard.inc symlinks libMali.so onto the standard libEGL/libGLESv2
@@ -695,9 +703,15 @@ AC_SUBST([VUPL_LIBS])
 # bbappend stages the matching vendor EGL/GLES/GLES2/KHR headers and generates
 # egl.pc/glesv2.pc - after that the generic "egl"/"glesv2" PKG_CHECK_MODULES
 # above resolve as usual. GLES3 headers are deliberately not staged.
-AM_CONDITIONAL(HAVE_ABCOM_EGL, test "x$use_egl" = "xyes" -a \( "$BOXTYPE" == "pulse4k" -o "$BOXTYPE" == "pulse4kmini" -o "$BOXTYPE" == "ax61" \))
-if test "x$use_egl" = "xyes" -a \( "$BOXTYPE" == "pulse4k" -o "$BOXTYPE" == "pulse4kmini" -o "$BOXTYPE" == "ax61" \); then
-	AC_DEFINE(HAVE_ABCOM_EGL, 1, [ABCom pulse4k/pulse4kmini/ax61 Mali Utgard fbdev EGL window backend available])
+# BOXTYPE is the OE MACHINE, so this covers every MACHINEBUILD of these machines; which
+# MACHINEBUILDs actually get EGL is decided by ENABLE_E2EGL in egl-gles-extras/openvix.conf.
+hisi_mali_egl_box=no
+case "$BOXTYPE" in
+  pulse4k|pulse4kmini|hd61|sf8008|sf8008m|gbmv200|h8se|h9|h9combo|h9combose|h9se|h10|h11|i55plus|i55se) hisi_mali_egl_box=yes ;;
+esac
+AM_CONDITIONAL(HAVE_HISI_MALI_EGL, test "x$use_egl" = "xyes" -a "x$hisi_mali_egl_box" = "xyes")
+if test "x$use_egl" = "xyes" -a "x$hisi_mali_egl_box" = "xyes"; then
+	AC_DEFINE(HAVE_HISI_MALI_EGL, 1, [HiSilicon Hi3798MV200 Mali Utgard fbdev EGL window backend available])
 fi
 
 if test "$BOXTYPE" == "dm900"; then
@@ -759,7 +773,7 @@ if test "$BOXTYPE" == "sf8008" -o "$BOXTYPE" == "sf8008m" -o "$BOXTYPE" == "sx98
 	AC_DEFINE(FORCE_ALPHABLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])	
 fi
 
-if test "$BOXTYPE" == "pulse4k" -o "$BOXTYPE" == "pulse4kmini" -o "$BOXTYPE" == "ax61" -o "$BOXTYPE" == "hd61"; then
+if test "$BOXTYPE" == "pulse4k" -o "$BOXTYPE" == "pulse4kmini" -o "$BOXTYPE" == "hd61"; then
 	AC_DEFINE(HAVE_HISILICON, 1,[define add HISILICON chip])
 	AC_DEFINE(FORCE_NO_BLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])
 fi

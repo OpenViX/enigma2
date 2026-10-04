@@ -1,18 +1,11 @@
-# abcom-mali-utgard.inc ships only libMali.so (+ the libEGL/libGLESv1_CM/libGLESv2
-# symlinks onto it) and says outright "The driver is missing EGL/GLES headers and
-# pkgconfig files". mesa is in its DEPENDS but that never reaches enigma2's sysroot
-# (enigma2 only depends on virtual/egl + virtual/libgles2 = this recipe), so
-# configure's PKG_CHECK_MODULES([egl]/[glesv2]) fails.
-#
-# The matching vendor headers are in the HiSilicon SDK drop that dags/amiko/etc. ship
-# for the very same libmali (hisi3798mv200-opengl-20200915.tar.gz contains a libmali.so
-# byte-identical to 3798mv200-mali-20210203.zip's libMali.so, sha256 a95ebd70...).
-# Notably its EGL/eglplatform.h defines EGLNativeWindowType as fbdev_window* (a
-# {unsigned short width, height} struct) - the ABI HisiWindowProvider hands to
-# eglCreateWindowSurface().
-#
-# Only EGL, GLES, GLES2 and KHR are staged: libMali is GLES 2.0 only (no GLES3 core
-# symbols), and configure.ac turns on HAVE_GLES3 whenever GLES3/gl3.h exists.
+# airdigital-mali-utgard.inc (Zgemma/AirDigital, libMali blob zgemma-mali-3798mv310-20211026.zip)
+# ships only libMali.so (+ libEGL/libGLESv1_CM/libGLESv2/libgbm symlinks onto it) and, like
+# ABCom's, no headers or pkg-config files ("The driver is missing EGL/GLES headers and
+# pkgconfig files"), so configure's PKG_CHECK_MODULES([egl]/[glesv2]) fails. The blob is an
+# fbdev Mali-450 one like pulse4k's (no wayland/gbm symbols, opens /dev/fb0, GLES 2.0 only
+# - checked on the zip's strings), so stage the same HiSilicon SDK headers; see
+# machine-pulse4k/mali/abcom-mali-3798mv200.bbappend. Only EGL, GLES, GLES2 and KHR are
+# staged: no GLES3 headers.
 SRC_URI:append:openvix = " https://source.mynonpublic.com/dags/hisi3798mv200-opengl-20200915.tar.gz;name=headers"
 SRC_URI[headers.sha256sum] = "95f4ecd9c90f07075dd24493baa4a440d6140007d33e9238fc37de111ae2c574"
 

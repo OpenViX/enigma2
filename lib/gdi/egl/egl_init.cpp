@@ -20,8 +20,8 @@
 #include <lib/gdi/egl/platform/vuplus/vuplus_window_provider.h>
 #endif
 
-#ifdef HAVE_ABCOM_EGL
-#include <lib/gdi/egl/platform/abcom/abcom_window_provider.h>
+#ifdef HAVE_HISI_MALI_EGL
+#include <lib/gdi/egl/platform/hisi/hisi_window_provider.h>
 #endif
 
 class gEGLDCAutoInit : protected eAutoInit
@@ -65,8 +65,8 @@ class gEGLDCAutoInit : protected eAutoInit
 		provider = new GbquadWindowProvider();
 #elif defined(HAVE_VUPLUS_EGL)
 		provider = new VuplusWindowProvider();
-#elif defined(HAVE_ABCOM_EGL)
-		provider = new AbcomWindowProvider();
+#elif defined(HAVE_HISI_MALI_EGL)
+		provider = new HisiWindowProvider();
 #else
 		// Fallback for other platforms (SDL/Wayland) once implemented
 		// For now, if not HWDREAMONE/HAVE_DREAMBOX_EGL, we don't have a default provider here
