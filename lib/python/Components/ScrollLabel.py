@@ -46,7 +46,7 @@ class ScrollLabel(GUIComponent):
 				elif attrib in ("scrollbarBackgroundPicture", "scrollbarbackgroundPixmap"):
 					self.scrollbar.setBackgroundPixmap(skin.loadPixmap(value, desktop))
 					self.skinAttributes.remove((attrib, value))
-				elif attrib in ("transparent", "backgroundColor"):
+				elif attrib in ("transparent", "backgroundColor", "alphaBlend"):
 					widget_attribs.append((attrib, value))
 				elif attrib == "scrollbarWidth":
 					scrollbarWidth = skin.parseScale(value)
