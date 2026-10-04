@@ -29,6 +29,8 @@ class ScrollLabel(GUIComponent):
 		if self.skinAttributes:
 			widget_attribs = []
 			scrollbar_attribs = []
+			scrollbar_background = None
+			transparent = False
 			scrollbarAttrib = ["borderColor", "borderWidth", "scrollbarSliderForegroundColor", "scrollbarSliderBorderColor"]
 			for (attrib, value) in self.skinAttributes[:]:
 				if attrib == "scrollbarMode":
@@ -46,7 +48,12 @@ class ScrollLabel(GUIComponent):
 				elif attrib in ("scrollbarBackgroundPicture", "scrollbarbackgroundPixmap"):
 					self.scrollbar.setBackgroundPixmap(skin.loadPixmap(value, desktop))
 					self.skinAttributes.remove((attrib, value))
+				elif attrib == "scrollbarBackgroundColor":
+					scrollbar_background = value
+					self.skinAttributes.remove((attrib, value))
 				elif attrib in ("transparent", "backgroundColor", "alphaBlend"):
+					if attrib == "transparent":
+						transparent = value.lower() in ("1", "enabled", "on", "true", "yes")
 					widget_attribs.append((attrib, value))
 				elif attrib == "scrollbarWidth":
 					scrollbarWidth = skin.parseScale(value)
@@ -75,7 +82,12 @@ class ScrollLabel(GUIComponent):
 			else:
 				skin.applyAllAttributes(self.long_text, desktop, self.skinAttributes, parent.scale)
 			skin.applyAllAttributes(self.instance, desktop, widget_attribs, parent.scale)
-			skin.applyAllAttributes(self.scrollbar, desktop, scrollbar_attribs + widget_attribs, parent.scale)
+			# a transparent label must not paint its backgroundColor into the scrollbar track,
+			# otherwise the track hides whatever is behind the label (e.g. a pixmap)
+			track_attribs = [(attrib, value) for (attrib, value) in widget_attribs if not (transparent and attrib == "backgroundColor")]
+			if scrollbar_background is not None:
+				track_attribs.append(("backgroundColor", scrollbar_background))
+			skin.applyAllAttributes(self.scrollbar, desktop, scrollbar_attribs + track_attribs, parent.scale)
 			ret = True
 		lineheight = fontRenderClass.getInstance().getLineHeight(self.long_text.getFont()) or 30  # assume a random lineheight if nothing is visible
 		lines = int(self.long_text.size().height() // lineheight)

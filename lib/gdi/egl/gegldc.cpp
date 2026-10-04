@@ -593,6 +593,17 @@ void gEGLDC::drawFlatRects(const gRegion& clip, float r, float g, float b, float
 	if (count == 0)
 		return;
 
+	// The framebuffer is premultiplied everywhere (blended draws write
+	// S*Sa + D*(1-Sa), and the Nexus/VU+ compositor is set to / converted for
+	// premultiplied content), so a raw-overwrite colour must be premultiplied
+	// too. Otherwise a fully transparent colour such as the skin's
+	// "transparent" (#ffffffff = white, alpha 0) leaves white RGB at alpha 0:
+	// the compositor adds that white on top of the video (white lines/bands),
+	// and later blends against it leak white into translucent pixmaps.
+	r *= a;
+	g *= a;
+	b *= a;
+
 	// GL_SCISSOR_TEST is left permanently enabled for the whole context (see
 	// initEGL()) - every draw call here relies on the immediately preceding
 	// setGlScissor() to cut it down to the right area, since nothing resets
@@ -946,8 +957,21 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 
 		// See executeFill()'s comment for why blend must be forced off for
 		// a plain flat-color rectangle, to match the CPU renderer's raw
-		// overwrite semantics.
-		glDisable(GL_BLEND);
+		// overwrite semantics - except when useNew is set: the CPU path
+		// then goes through drawRectangleNew(), which blends the fill
+		// ("over") against what's behind. Overwriting here instead made
+		// an alphaBlend widget (e.g. a scrollbar over a pixmap
+		// background) punch a hole to the video plane.
+		const bool blend_flat = op->parm.rectangle->useNew;
+		if (blend_flat)
+			setAlphaBlendMode(true);
+		else {
+			glDisable(GL_BLEND);
+			// raw overwrite: keep the framebuffer premultiplied (see drawFlatRects())
+			r *= a;
+			g *= a;
+			b *= a;
+		}
 		if (m_profile)
 			m_prof.rect_flat++;
 		for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
@@ -955,7 +979,8 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 			m_basic_shader.drawRect(op->parm.rectangle->area.x() + m_current_offset.x(), op->parm.rectangle->area.y() + m_current_offset.y(), op->parm.rectangle->area.width(),
 									op->parm.rectangle->area.height(), r, g, b, a);
 		}
-		glEnable(GL_BLEND);
+		if (!blend_flat)
+			glEnable(GL_BLEND);
 	}
 
 	m_border_width = 0;
@@ -1073,6 +1098,10 @@ void gEGLDC::executeLine(const gOpcode* op) {
 	// See executeFill()'s comment: gPixmap::line() is a raw-overwrite
 	// Bresenham rasterizer with no alpha blending, so this must match.
 	glDisable(GL_BLEND);
+	// premultiplied framebuffer - see drawFlatRects()
+	r *= a;
+	g *= a;
+	b *= a;
 	for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 		setGlScissor(m_current_clip.rects[i]);
 		m_basic_shader.drawLine(op->parm.line->start.x() + m_current_offset.x(), op->parm.line->start.y() + m_current_offset.y(), op->parm.line->end.x() + m_current_offset.x(),
