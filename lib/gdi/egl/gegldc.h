@@ -174,6 +174,8 @@ private:
 	// INativeWindowProvider::needsStraightAlphaPresent()). Forces the shader
 	// present path even where glBlitFramebuffer() exists.
 	bool m_straight_alpha_present = false;
+	// Raw-overwrite draws write premultiplied colour (see drawFlatRects()).
+	bool m_premultiply_overwrites = false;
 	// The size the native window/surface was created at (the canvas size at
 	// construction - egl_init.cpp hands the provider the same width/height).
 	// When the canvas has to be scaled down, a physical size equal to this is

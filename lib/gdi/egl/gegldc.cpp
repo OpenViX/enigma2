@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cstdint>
 #include <vector>
-#include <cstdlib>
+#include <cstdlib> 
 #include <cstring>
 #include <lib/base/eerror.h>
 #include <lib/base/init.h>
@@ -222,6 +222,9 @@ bool gEGLDC::tryInitEGL(int version) {
 		updatePhysicalSize(m_width, m_height);
 
 		m_straight_alpha_present = m_window_provider && m_window_provider->needsStraightAlphaPresent();
+		m_premultiply_overwrites = m_window_provider && m_window_provider->premultipliesOverwrites();
+		if (m_premultiply_overwrites)
+			eDebug("[gEGLDC] raw-overwrite draws will write premultiplied colour");
 		if (m_straight_alpha_present)
 			eDebug("[gEGLDC] present pass will un-premultiply the frame (compositor blends this window as straight alpha)");
 	}
@@ -600,9 +603,11 @@ void gEGLDC::drawFlatRects(const gRegion& clip, float r, float g, float b, float
 	// "transparent" (#ffffffff = white, alpha 0) leaves white RGB at alpha 0:
 	// the compositor adds that white on top of the video (white lines/bands),
 	// and later blends against it leak white into translucent pixmaps.
-	r *= a;
-	g *= a;
-	b *= a;
+	if (m_premultiply_overwrites) {
+		r *= a;
+		g *= a;
+		b *= a;
+	}
 
 	// GL_SCISSOR_TEST is left permanently enabled for the whole context (see
 	// initEGL()) - every draw call here relies on the immediately preceding
@@ -968,9 +973,11 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 		else {
 			glDisable(GL_BLEND);
 			// raw overwrite: keep the framebuffer premultiplied (see drawFlatRects())
-			r *= a;
-			g *= a;
-			b *= a;
+			if (m_premultiply_overwrites) {
+				r *= a;
+				g *= a;
+				b *= a;
+			}
 		}
 		if (m_profile)
 			m_prof.rect_flat++;
@@ -1099,9 +1106,11 @@ void gEGLDC::executeLine(const gOpcode* op) {
 	// Bresenham rasterizer with no alpha blending, so this must match.
 	glDisable(GL_BLEND);
 	// premultiplied framebuffer - see drawFlatRects()
-	r *= a;
-	g *= a;
-	b *= a;
+	if (m_premultiply_overwrites) {
+		r *= a;
+		g *= a;
+		b *= a;
+	}
 	for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 		setGlScissor(m_current_clip.rects[i]);
 		m_basic_shader.drawLine(op->parm.line->start.x() + m_current_offset.x(), op->parm.line->start.y() + m_current_offset.y(), op->parm.line->end.x() + m_current_offset.x(),

@@ -75,6 +75,16 @@ static void applyWindowBlendOverride(NXPL_NativeWindowInfoEXT& info, const char*
 }
 
 
+// True while the window blend override is premultiplied (the default - see
+// applyWindowBlendOverride()), so raw-overwrite draws must write premultiplied
+// colour as well.
+bool GbquadWindowProvider::premultipliesOverwrites() {
+	const char* mode = getenv("ENIGMA_EGL_NXPL_BLEND");
+	if (!mode)
+		return true;
+	return strstr(mode, "default") == nullptr && strstr(mode, "premult") != nullptr;
+}
+
 GbquadWindowProvider::GbquadWindowProvider()
 	: m_nxpl_display_handle(nullptr), m_native_window(nullptr), m_joined_nxclient(false) {
 }

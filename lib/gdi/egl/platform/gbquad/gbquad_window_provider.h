@@ -113,6 +113,7 @@ public:
 	EGLNativeWindowType getNativeWindow() override;
 	void cleanup() override;
 	void onFramebufferUnlocked() override { clearFramebuffer(); }
+	bool premultipliesOverwrites() override;
 
 	// `stretch` (set in init(), see its own comment there) makes Nexus's
 	// compositor scale THIS window's authored width/height to fill the
