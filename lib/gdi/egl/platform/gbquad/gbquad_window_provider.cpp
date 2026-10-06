@@ -28,6 +28,18 @@ static void applyWindowBlendOverride(NXPL_NativeWindowInfoEXT& info, const char*
 	};
 	dump("window blend defaults");
 
+#ifdef HAVE_NXPL_NO_NXCLIENT
+	// Without libnxclient nothing here can change the window's blend: a top-level
+	// surface client's composition is server-owned (nexus_surface_client.h) and set
+	// from a client only through NxClient_SetSurfaceClientComposition(), which this
+	// driver drop doesn't ship (its libnxpl.so imports no NxClient_* symbol at all
+	// and never reads colorBlend/alphaBlend). The compositor keeps its default
+	// straight-alpha equation, so gEGLDC un-premultiplies the frame instead - see
+	// needsStraightAlphaPresent().
+	(void)where;
+	return;
+#endif
+
 	// Default "premult,keepalpha": the OSD content is effectively premultiplied
 	// (GL blending over a transparent area, like the CPU framebuffer path),
 	// but the compositor's default colour equation is straight-alpha over
@@ -79,10 +91,26 @@ static void applyWindowBlendOverride(NXPL_NativeWindowInfoEXT& info, const char*
 // applyWindowBlendOverride()), so raw-overwrite draws must write premultiplied
 // colour as well.
 bool GbquadWindowProvider::premultipliesOverwrites() {
+#ifdef HAVE_NXPL_NO_NXCLIENT
+	return false; // compositor blends straight alpha, see applyWindowBlendOverride()
+#endif
 	const char* mode = getenv("ENIGMA_EGL_NXPL_BLEND");
 	if (!mode)
 		return true;
 	return strstr(mode, "default") == nullptr && strstr(mode, "premult") != nullptr;
+}
+
+// True when the compositor blends this window as straight alpha, i.e. the window
+// blend override could not be applied (no libnxclient) - the premultiplied frame
+// must then be un-premultiplied in gEGLDC's present pass or translucent areas
+// come out too dark. ENIGMA_EGL_STRAIGHT_ALPHA=0 turns it off (as on VU+).
+bool GbquadWindowProvider::needsStraightAlphaPresent() {
+#ifdef HAVE_NXPL_NO_NXCLIENT
+	static const bool s_enabled = !(getenv("ENIGMA_EGL_STRAIGHT_ALPHA") && atoi(getenv("ENIGMA_EGL_STRAIGHT_ALPHA")) == 0);
+	return s_enabled;
+#else
+	return false;
+#endif
 }
 
 GbquadWindowProvider::GbquadWindowProvider()
