@@ -2621,6 +2621,27 @@ void gEGLDC::captureBackgroundIntoPixmap(const eRect& rect) {
 				std::swap(dst_row[x * 4 + 0], dst_row[x * 4 + 2]);
 		}
 	}
+
+	// Diagnostic: ENIGMA_EGL_SPINNER_DUMP=1 writes each captured spinner
+	// background (what every later frame is composited over) to
+	// /tmp/spinner_bg_<n>.ppm, so stripes/old frames in the readback itself can
+	// be told apart from a presentation problem. Never on by default.
+	static const bool s_dump = getenv("ENIGMA_EGL_SPINNER_DUMP") && atoi(getenv("ENIGMA_EGL_SPINNER_DUMP")) != 0;
+	if (s_dump) {
+		static int s_dump_n = 0;
+		char path[64];
+		snprintf(path, sizeof(path), "/tmp/spinner_bg_%d.ppm", s_dump_n++);
+		if (FILE* f = fopen(path, "wb")) {
+			fprintf(f, "P6\n%d %d\n255\n", w, h);
+			for (int row = 0; row < h; ++row) {
+				const uint8_t* s = pixels.data() + (size_t)(h - 1 - row) * row_bytes; // RGBA, as read
+				for (int x = 0; x < w; ++x)
+					fwrite(s + x * 4, 1, 3, f);
+			}
+			fclose(f);
+			eDebug("[gEGLDC] spinner background %dx%d at %d,%d (conservative=%d) dumped to %s", w, h, left, top, conservative_readback ? 1 : 0, path);
+		}
+	}
 }
 
 void gEGLDC::flip() {

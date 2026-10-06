@@ -636,14 +636,14 @@ fi
 # GigaBlue Broadcom boxes are the two meta-gigablue gb-v3ddriver machines,
 # BOXTYPE gb7252 (also covers gb7252pro's newer driver drop) and gb72604.
 use_nxpl_egl=no
-if test "x$use_egl" = "xyes" -a \( "x$MACHINEBUILD" = "xgbquad4kpro" -o "x$MACHINEBUILD" = "xvuduo4klite" \
-	-o "x$BOXTYPE" = "xgb7252" -o "x$BOXTYPE" = "xgb72604" \
-	-o "x$BOXTYPE" = "xh7" -o "x$BOXTYPE" = "xh17" -o "x$MACHINEBUILD" = "xzgemmah7" -o "x$MACHINEBUILD" = "xzgemmah17combo" -o "x$MACHINEBUILD" = "xzgemmah17twin" \); then
+if test "x$use_egl" = "xyes" -a \( "$MACHINEBUILD" == "gbquad4kpro" -o "$MACHINEBUILD" == "vuduo4klite" \
+	-o "$BOXTYPE" == "gb7252" -o "$BOXTYPE" == "gb72604" \
+	-o "$BOXTYPE" == "h7" -o "$BOXTYPE" == "h17" -o "$MACHINEBUILD" == "zgemmah7" -o "$MACHINEBUILD" == "zgemmah17combo" -o "$MACHINEBUILD" == "zgemmah17twin" \); then
 	use_nxpl_egl=yes
 fi
 # Zgemma h7/h17 (meta-airdigital's airdigital-v3ddriver) ship libnxpl/libnexus/libv3ddriver
 # but no libnxclient.so: the provider joins Nexus via NEXUS_Platform_AuthenticatedJoin instead.
-if test "x$use_nxpl_egl" = "xyes" -a \( "x$BOXTYPE" = "xh7" -o "x$BOXTYPE" = "xh17" -o "x$MACHINEBUILD" = "xzgemmah7" -o "x$MACHINEBUILD" = "xzgemmah17combo" -o "x$MACHINEBUILD" = "xzgemmah17twin" \); then
+if test "x$use_nxpl_egl" = "xyes" -a \( "$BOXTYPE" == "h7" -o "$BOXTYPE" == "h17" -o "$MACHINEBUILD" == "zgemmah7" -o "$MACHINEBUILD" == "zgemmah17combo" -o "$MACHINEBUILD" == "zgemmah17twin" \); then
 	AC_DEFINE(HAVE_NXPL_NO_NXCLIENT, 1, [No libnxclient: join Nexus with NEXUS_Platform_AuthenticatedJoin])
 fi
 AM_CONDITIONAL(HAVE_GBQUAD_EGL, test "x$use_nxpl_egl" = "xyes")
