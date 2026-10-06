@@ -120,6 +120,23 @@ bool GbquadWindowProvider::needsStraightAlphaPresent() {
 #endif
 }
 
+float GbquadWindowProvider::presentUnpremultiplyPower() {
+#ifdef HAVE_NXPL_NO_NXCLIENT
+	// H17's compositor computes S*A^2 + D*(1-A) for this window (measured on device).
+	return 3.0f;
+#else
+	return 1.0f;
+#endif
+}
+
+bool GbquadWindowProvider::premultipliesBlits() {
+#ifdef HAVE_NXPL_NO_NXCLIENT
+	return needsStraightAlphaPresent();
+#else
+	return false;
+#endif
+}
+
 GbquadWindowProvider::GbquadWindowProvider()
 	: m_nxpl_display_handle(nullptr), m_native_window(nullptr), m_joined_nxclient(false) {
 }

@@ -27,6 +27,8 @@ private:
 	GLint m_alpha_location;
 	GLint m_unpremult_location = -1;
 	bool m_unpremultiply = false;
+	float m_unpremultiply_power = 1.0f;
+	bool m_premultiply = false;
 
 	GLint m_rect_size_location;
 	GLint m_radius_location;
@@ -61,7 +63,10 @@ public:
 	// final present pass when the window compositor blends the surface as
 	// straight alpha (see INativeWindowProvider::needsStraightAlphaPresent());
 	// must be cleared again right after.
-	void setUnpremultiply(bool on) { m_unpremultiply = on; }
+	void setUnpremultiply(bool on, float power = 1.0f) { m_unpremultiply = on; m_unpremultiply_power = power; }
+	// Multiply colour by alpha on output: for blits drawn with blending off (raw overwrite)
+	// into a premultiplied frame.
+	void setPremultiply(bool on) { m_premultiply = on; }
 	void drawTexture(float x, float y, float width, float height, GLuint texture_id, float global_alpha = 1.0f, float radius = 0.0f, uint8_t edges = 0);
 
 	// Same rounded-rect texture draw as drawTexture(), but only covers the

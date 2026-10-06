@@ -108,6 +108,16 @@ public:
 	// frame in its final present pass instead. Default false.
 	virtual bool needsStraightAlphaPresent() { return false; }
 
+	// Present-pass mode, only used when needsStraightAlphaPresent(): 1 = plain divide by
+	// alpha (straight-alpha compositor); 3 = the compositor also multiplies the colour by
+	// alpha itself (H17: result = S*A^2 + D*(1-A)), so the pass sends S = P/A^2 with the
+	// smallest A that keeps S <= 1 (see gtexture_shader.cpp).
+	virtual float presentUnpremultiplyPower() { return 1.0f; }
+
+	// True when blits drawn with blending off (raw overwrite of straight RGBA) must be
+	// premultiplied by the shader to match the rest of the frame. Default false.
+	virtual bool premultipliesBlits() { return false; }
+
 	// True when raw-overwrite draws (clear/fill/flat rectangle/line) must write
 	// premultiplied colour (rgb * alpha). Needed where the compositor adds the
 	// stored colour on top of the video (GbquadWindowProvider's window blend is

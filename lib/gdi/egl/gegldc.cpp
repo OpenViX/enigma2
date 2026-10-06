@@ -224,6 +224,8 @@ bool gEGLDC::tryInitEGL(int version) {
 
 		m_straight_alpha_present = m_window_provider && m_window_provider->needsStraightAlphaPresent();
 		m_premultiply_overwrites = m_window_provider && m_window_provider->premultipliesOverwrites();
+		m_unpremult_power = m_window_provider ? m_window_provider->presentUnpremultiplyPower() : 1.0f;
+		m_premultiply_blits = m_window_provider && m_window_provider->premultipliesBlits();
 		if (m_premultiply_overwrites)
 			eDebug("[gEGLDC] raw-overwrite draws will write premultiplied colour");
 		if (m_straight_alpha_present)
@@ -1418,8 +1420,12 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 		if (enable_blend) {
 			setAlphaBlendMode(true_alpha_blend);
 			glEnable(GL_BLEND);
-		} else
+		} else {
 			glDisable(GL_BLEND);
+			// Raw overwrite of the source's straight RGBA: store it premultiplied like
+			// every other write into the frame (the present pass divides by alpha).
+			m_texture_shader.setPremultiply(m_premultiply_blits);
+		}
 		// Rounded blit fast path (ENIGMA_EGL_RECT_FASTPATH=0 disables, like the
 		// rectangle one): the SDF fragment shader is only needed in the corner
 		// squares, coverage is exactly 1 everywhere else - so draw the interior
@@ -1473,8 +1479,10 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 				m_texture_shader.drawTexture(x, y, width, height, tex_id, 1.0f, m_radius, m_radius_edges);
 			}
 		}
-		if (!enable_blend)
+		if (!enable_blend) {
+			m_texture_shader.setPremultiply(false);
 			glEnable(GL_BLEND);
+		}
 		return;
 	}
 
@@ -1519,15 +1527,19 @@ void gEGLDC::flushBlitBatch() {
 	if (m_blit_batch_blend) {
 		setAlphaBlendMode(m_blit_batch_true_alpha);
 		glEnable(GL_BLEND);
-	} else
+	} else {
 		glDisable(GL_BLEND);
+		m_texture_shader.setPremultiply(m_premultiply_blits);
+	}
 
 	setGlScissor(m_blit_batch_clip);
 	int vertex_count = (int)(m_blit_batch_buffer.size() / 4);
 	m_texture_shader.drawBatch(m_blit_batch_buffer.data(), vertex_count, m_blit_batch_tex_id, 1.0f);
 
-	if (!m_blit_batch_blend)
+	if (!m_blit_batch_blend) {
+		m_texture_shader.setPremultiply(false);
 		glEnable(GL_BLEND);
+	}
 
 	m_blit_batch_buffer.clear();
 }
@@ -3359,7 +3371,7 @@ void gEGLDC::flip() {
 				// A compositor that blends straight alpha would multiply the
 				// premultiplied frame by alpha a second time (translucent areas
 				// too dark) - convert to straight alpha on the way out.
-				m_texture_shader.setUnpremultiply(m_straight_alpha_present);
+				m_texture_shader.setUnpremultiply(m_straight_alpha_present, m_unpremult_power);
 				m_texture_shader.drawBatch(quad, 6, m_shadow_texture, 1.0f);
 				m_texture_shader.setUnpremultiply(false);
 				glEnable(GL_BLEND);
