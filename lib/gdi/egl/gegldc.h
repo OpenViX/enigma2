@@ -135,6 +135,19 @@ private:
 	// GPU readback into m_pixmap - see its definition (gegldc.cpp, right
 	// after serviceOsdCapture()) for why enableSpinner() needs this.
 	void captureBackgroundIntoPixmap(const eRect& rect);
+	void dumpSpinnerRestore();
+
+	// GPU-only spinner (see gEGLDC::spinnerGpuPath()): the area under the spinner is copied
+	// into a small texture once and redrawn from it (destructively, alpha included) before
+	// each icon frame and at the erase, so nothing ever goes through a CPU readback/copy.
+	bool m_spinner_gpu = false;
+	GLuint m_spinner_bg_tex = 0;
+	eRect m_spinner_gpu_rect;
+	bool spinnerGpuPath();
+	bool captureSpinnerGpu();
+	void drawSpinnerGpu(bool with_icon);
+	void releaseSpinnerGpu();
+	void clearWindowSurfaceTransparent();
 
 	// fbClass lock (ofgwrite's Mode 2 flash, see ImageManager.py) on a
 	// window-surface platform: the window surface is a separate layer
