@@ -473,6 +473,8 @@ bool gEGLDC::initEGL() {
 	if (m_use_shadow_fbo)
 		fbClass::lockChanged = &gEGLDC::onFramebufferLockChanged;
 
+	clearWindowSurfaceTransparent();
+
 	const char* profile_env = getenv("ENIGMA_EGL_PROFILE");
 	m_profile = profile_env && atoi(profile_env) > 0;
 	if (m_profile) {
@@ -1851,6 +1853,128 @@ void gEGLDC::compositeTextOverlay(eRect area, bool trueAlphaBlend) {
 	}
 }
 
+// GPU-only spinner, used where window-surface readbacks are unreliable (libMali:
+// conservativeReadback()) - the CPU path (captureBackgroundIntoPixmap() + gDC's m_pixmap
+// compositing) showed stripes and a leftover square there. ENIGMA_EGL_SPINNER_GPU=0 forces
+// the old path, =1 forces this one on every provider. Unscaled canvases only.
+bool gEGLDC::spinnerGpuPath() {
+	static const int mode = getenv("ENIGMA_EGL_SPINNER_GPU") ? atoi(getenv("ENIGMA_EGL_SPINNER_GPU")) : -1;
+	if (mode == 0 || isScaled() || !m_spinner_pic || m_spinner_num <= 0 || !m_window_provider)
+		return false;
+	return mode == 1 || m_window_provider->conservativeReadback();
+}
+
+void gEGLDC::releaseSpinnerGpu() {
+	if (m_spinner_bg_tex) {
+		glDeleteTextures(1, &m_spinner_bg_tex);
+		m_spinner_bg_tex = 0;
+	}
+	m_spinner_gpu = false;
+}
+
+bool gEGLDC::captureSpinnerGpu() {
+	flushBlitBatch();
+	flushTextBatch();
+	releaseSpinnerGpu();
+
+	const int left = std::max(0, m_spinner_pos.left());
+	const int top = std::max(0, m_spinner_pos.top());
+	const int w = std::min(m_width, m_spinner_pos.left() + m_spinner_pos.width()) - left;
+	const int h = std::min(m_height, m_spinner_pos.top() + m_spinner_pos.height()) - top;
+	if (w <= 0 || h <= 0)
+		return false;
+
+	while (glGetError() != GL_NO_ERROR) {
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, m_use_shadow_fbo ? m_shadow_fbo : 0);
+	glGenTextures(1, &m_spinner_bg_tex);
+	glBindTexture(GL_TEXTURE_2D, m_spinner_bg_tex);
+	// glCopyTexImage2D's y is measured from the bottom of the framebuffer.
+	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, left, m_height - top - h, w, h, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	const GLenum err = glGetError();
+	static bool s_logged = false;
+	if (!s_logged) {
+		s_logged = true;
+		eDebug("[gEGLDC] GPU spinner: background copy %dx%d at %d,%d glError=0x%x", w, h, left, top, err);
+	}
+	if (err != GL_NO_ERROR) {
+		releaseSpinnerGpu();
+		while (glGetError() != GL_NO_ERROR) {
+		}
+		return false;
+	}
+	m_spinner_gpu_rect = eRect(left, top, w, h);
+	m_spinner_gpu = true;
+	return true;
+}
+
+// Redraws the saved background over the spinner rect (blend off: an exact overwrite, alpha
+// included, so transparent areas stay transparent) and, if asked, the next icon frame over it.
+void gEGLDC::drawSpinnerGpu(bool with_icon) {
+	if (!m_spinner_gpu || !m_spinner_bg_tex)
+		return;
+	flushBlitBatch();
+	flushTextBatch();
+	m_texture_manager.processDeletions();
+
+	glBindFramebuffer(GL_FRAMEBUFFER, m_use_shadow_fbo ? m_shadow_fbo : 0);
+	setGlScissor(m_spinner_gpu_rect);
+	const float x0 = (float)m_spinner_gpu_rect.left(), y0 = (float)m_spinner_gpu_rect.top();
+	const float x1 = x0 + (float)m_spinner_gpu_rect.width(), y1 = y0 + (float)m_spinner_gpu_rect.height();
+	// The copy is bottom-up (GL framebuffer origin), so V runs 1 at the top edge.
+	const float quad[24] = {x0, y0, 0.0f, 1.0f, x0, y1, 0.0f, 0.0f, x1, y0, 1.0f, 1.0f, x1, y0, 1.0f, 1.0f, x0, y1, 0.0f, 0.0f, x1, y1, 1.0f, 0.0f};
+	glDisable(GL_BLEND);
+	m_texture_shader.setUnpremultiply(false);
+	m_texture_shader.drawBatch(quad, 6, m_spinner_bg_tex, 1.0f);
+
+	// ENIGMA_EGL_SPINNER_TEST (diagnostic): 1 = redraw only the saved background, no icon;
+	// 2 = icon but never animated (always frame 0). If artifacts still show with 1, the
+	// content is not the problem - presenting these small 10 Hz updates is.
+	static const int s_test = getenv("ENIGMA_EGL_SPINNER_TEST") ? atoi(getenv("ENIGMA_EGL_SPINNER_TEST")) : 0;
+	if (with_icon && s_test != 1) {
+		gPixmap* pic = m_spinner_pic[s_test == 2 ? 0 : m_spinner_i];
+		if (s_test != 2)
+			m_spinner_i = (m_spinner_i + 1) % m_spinner_num;
+		if (pic && pic->surface) {
+			GLuint tex = m_texture_manager.getTexture(pic);
+			if (tex) {
+				setAlphaBlendMode(true);
+				glEnable(GL_BLEND);
+				m_texture_shader.drawTexture(x0, y0, x1 - x0, y1 - y0, tex);
+			}
+		}
+	}
+	glEnable(GL_BLEND);
+}
+
+// A fresh window surface's buffers are opaque black on libMali (alpha 1): anywhere the UI
+// has not painted yet - exactly where the boot spinner appears - the screen shows a black
+// square instead of the video/boot picture underneath, and the spinner saves and restores
+// that black as its "background". Clear every buffer to fully transparent once, so
+// unpainted areas show through. Window surfaces without a shadow FBO only (the shadow
+// FBO is created transparent already and overwrites the window each frame).
+void gEGLDC::clearWindowSurfaceTransparent() {
+	if (!m_window_provider || m_window_provider->usesPixmapSurface() || m_use_shadow_fbo || m_egl_surfaces[0] == EGL_NO_SURFACE)
+		return;
+	static const bool s_enabled = !(getenv("ENIGMA_EGL_CLEAR_WINDOW") && atoi(getenv("ENIGMA_EGL_CLEAR_WINDOW")) == 0);
+	if (!s_enabled)
+		return;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glScissor(0, 0, m_phys_width, m_phys_height);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	// Clear + present enough times to cover every buffer of the swap chain.
+	for (int i = 0; i < 3; ++i) {
+		glClear(GL_COLOR_BUFFER_BIT);
+		eglSwapBuffers(m_egl_display, m_egl_surfaces[0]);
+	}
+	eDebug("[gEGLDC] window surface cleared to transparent (3 buffers)");
+}
+
 void gEGLDC::enableSpinner() {
 	// The main thread (busy loading a skin - exactly when the spinner shows) has
 	// already swapped m_pixmap for the new size but the GL targets are still the
@@ -1861,6 +1985,10 @@ void gEGLDC::enableSpinner() {
 		return;
 	}
 	m_spinner_active = true;
+	if (spinnerGpuPath() && captureSpinnerGpu()) {
+		drawSpinnerGpu(true);
+		return;
+	}
 	// gDC::enableSpinner() (grc.cpp) is about to do
 	// "m_spinner_saved->blit(*m_pixmap, ...)" to remember what's under the
 	// spinner for every later restore - written for a backend where
@@ -1893,6 +2021,52 @@ void gEGLDC::enableSpinner() {
 	compositeTextOverlay(m_spinner_pos, false);
 }
 
+// ENIGMA_EGL_SPINNER_DUMP=1: writes what disableSpinner() is about to paint over the
+// screen (m_pixmap's spinner rect right after gDC::disableSpinner() restored the saved
+// background) to /tmp/spinner_restore_<n>.ppm (RGB) and .alpha.pgm (raw alpha byte), so a bad
+// erase can be told apart from a bad capture (see captureBackgroundIntoPixmap()).
+void gEGLDC::dumpSpinnerRestore() {
+	static const bool s_dump = getenv("ENIGMA_EGL_SPINNER_DUMP") && atoi(getenv("ENIGMA_EGL_SPINNER_DUMP")) != 0;
+	if (!s_dump || !m_pixmap || !m_pixmap->surface)
+		return;
+	static int s_n = 0;
+	const int pw = m_pixmap->size().width();
+	const int ph = m_pixmap->size().height();
+	const int left = std::max(0, m_spinner_pos.left());
+	const int top = std::max(0, m_spinner_pos.top());
+	const int w = std::min(pw, m_spinner_pos.left() + m_spinner_pos.width()) - left;
+	const int h = std::min(ph, m_spinner_pos.top() + m_spinner_pos.height()) - top;
+	if (w <= 0 || h <= 0)
+		return;
+	const uint8_t* base = (const uint8_t*)m_pixmap->surface->data;
+	char path[64];
+	snprintf(path, sizeof(path), "/tmp/spinner_restore_%d.ppm", s_n);
+	if (FILE* f = fopen(path, "wb")) {
+		fprintf(f, "P6\n%d %d\n255\n", w, h);
+		for (int row = 0; row < h; ++row) {
+			const uint8_t* src = base + (size_t)(top + row) * pw * 4 + (size_t)left * 4;
+			for (int x = 0; x < w; ++x) {
+				fputc(src[x * 4 + 2], f); // BGRA in memory -> R G B
+				fputc(src[x * 4 + 1], f);
+				fputc(src[x * 4 + 0], f);
+			}
+		}
+		fclose(f);
+	}
+	snprintf(path, sizeof(path), "/tmp/spinner_restore_%d.alpha.pgm", s_n);
+	if (FILE* f = fopen(path, "wb")) {
+		fprintf(f, "P5\n%d %d\n255\n", w, h);
+		for (int row = 0; row < h; ++row) {
+			const uint8_t* src = base + (size_t)(top + row) * pw * 4 + (size_t)left * 4;
+			for (int x = 0; x < w; ++x)
+				fputc(src[x * 4 + 3], f);
+		}
+		fclose(f);
+	}
+	eDebug("[gEGLDC] spinner restore frame %d dumped to /tmp/spinner_restore_%d.{ppm,alpha.pgm}", s_n, s_n);
+	++s_n;
+}
+
 void gEGLDC::disableSpinner() {
 	// Nothing of ours is on the current target (never enabled, or a resolution
 	// change recreated it): restoring m_spinner_saved would paint the old
@@ -1901,7 +2075,13 @@ void gEGLDC::disableSpinner() {
 	m_spinner_active = false;
 	if (!was_active || m_pending_resolution_change)
 		return;
+	if (m_spinner_gpu) {
+		drawSpinnerGpu(false); // exact restore of what was there
+		releaseSpinnerGpu();
+		return;
+	}
 	gDC::disableSpinner();
+	dumpSpinnerRestore();
 	// false, not the default true: gDC::disableSpinner() just restored
 	// m_spinner_pos back to fully-transparent pixels in m_pixmap, and this
 	// needs to actually erase the last spinner frame already baked into the
@@ -1924,6 +2104,10 @@ void gEGLDC::incrementSpinner() {
 		// the new target (fresh background capture) instead of recompositing
 		// the stale one.
 		enableSpinner();
+		return;
+	}
+	if (m_spinner_gpu) {
+		drawSpinnerGpu(true);
 		return;
 	}
 	gDC::incrementSpinner();
@@ -2466,6 +2650,7 @@ void gEGLDC::applyPendingResolutionChange() {
 	// see updatePhysicalSize()) the skin's full repaint covers the old icon.
 	// See m_spinner_active's comment (gegldc.h).
 	m_spinner_active = false;
+	releaseSpinnerGpu();
 
 	// Physical size first: everything below that touches the real GL targets
 	// (native window, surface, viewport, shadow FBO) uses it, while shader
@@ -2574,6 +2759,8 @@ void gEGLDC::applyPendingResolutionChange() {
 			recreate_surface();
 		}
 		m_surface_lost = (m_egl_surfaces[0] == EGL_NO_SURFACE);
+		if (!m_surface_lost)
+			clearWindowSurfaceTransparent();
 		if (m_surface_lost) {
 			eDebug("[gEGLDC] resize: no usable window surface after retries - will keep trying");
 			m_surface_retry_time = std::chrono::steady_clock::now();
@@ -2764,13 +2951,69 @@ void gEGLDC::captureBackgroundIntoPixmap(const eRect& rect) {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_use_shadow_fbo ? m_shadow_fbo : 0);
 
 	const bool conservative_readback = m_window_provider && m_window_provider->conservativeReadback();
+	{
+		static bool s_path_logged = false;
+		if (!s_path_logged) {
+			s_path_logged = true;
+			eDebug("[gEGLDC] spinner capture: conservative=%d shadowFbo=%d scaled=%d gpuCopyEnabled=%d", conservative_readback ? 1 : 0, m_use_shadow_fbo ? 1 : 0, isScaled() ? 1 : 0,
+				!(getenv("ENIGMA_EGL_SPINNER_GPUCOPY") && atoi(getenv("ENIGMA_EGL_SPINNER_GPUCOPY")) == 0) ? 1 : 0);
+		}
+	}
 	std::vector<uint8_t> pixels((size_t)w * (size_t)h * 4U);
 	glPixelStorei(GL_PACK_ALIGNMENT, 4);
 	if (!isScaled()) {
 		// glReadPixels' y is measured from the BOTTOM of the framebuffer (GL
 		// convention) - m_height (the real GPU canvas), not ph (m_pixmap can
 		// briefly differ right after setResolution(), see there).
-		if (conservative_readback) {
+		// Spinner-only "shadow": copy the rect into a small texture on the GPU
+		// (glCopyTexImage2D - never touches the CPU) and read THAT back through a
+		// temporary FBO. libMali's glReadPixels() of the window surface itself comes
+		// back striped / stale; an FBO texture read does not. The texture is padded to
+		// a multiple of 16 pixels wide (narrow, unaligned reads were the striped ones).
+		// ENIGMA_EGL_SPINNER_GPUCOPY=0 turns it off; any failure falls back below.
+		static const bool s_gpucopy = !(getenv("ENIGMA_EGL_SPINNER_GPUCOPY") && atoi(getenv("ENIGMA_EGL_SPINNER_GPUCOPY")) == 0);
+		bool copied = false;
+		if (conservative_readback && !m_use_shadow_fbo && s_gpucopy) {
+			const int cw = std::min(m_width, (w + 15) & ~15);
+			const int x0 = std::min(left, m_width - cw);
+			GLuint tex = 0, fbo = 0;
+			std::vector<uint8_t> band((size_t)cw * (size_t)h * 4U);
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glGenTextures(1, &tex);
+			glBindTexture(GL_TEXTURE_2D, tex);
+			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x0, m_height - top - h, cw, h, 0);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glGenFramebuffers(1, &fbo);
+			glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex, 0);
+			const GLenum fbo_status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+			const GLenum copy_err = glGetError();
+			static bool s_logged = false;
+			if (!s_logged) {
+				s_logged = true;
+				eDebug("[gEGLDC] spinner background via GPU copy: fboStatus=0x%x glError=0x%x rect=%dx%d at %d,%d (copy %dx%d from x=%d)", fbo_status, copy_err, w, h, left, top, cw, h, x0);
+			}
+			if (fbo_status == GL_FRAMEBUFFER_COMPLETE && copy_err == GL_NO_ERROR) {
+				glReadPixels(0, 0, cw, h, GL_RGBA, GL_UNSIGNED_BYTE, band.data());
+				for (int row = 0; row < h; ++row)
+					memcpy(pixels.data() + (size_t)row * w * 4U, band.data() + ((size_t)row * cw + (left - x0)) * 4U, (size_t)w * 4U);
+				copied = true;
+			}
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glDeleteFramebuffers(1, &fbo);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glDeleteTextures(1, &tex);
+			if (!copied) {
+				while (glGetError() != GL_NO_ERROR) {
+				}
+			}
+		}
+		if (copied) {
+			// pixels were filled from the GPU copy above
+		} else if (conservative_readback) {
 			// Full-width rows, cropped afterwards, rather than a small sub-rect:
 			// libMali (Utgard) window-surface readbacks of a narrow, unaligned
 			// rect have come back striped, which then got baked into every
@@ -2855,6 +3098,17 @@ void gEGLDC::captureBackgroundIntoPixmap(const eRect& rect) {
 			}
 			fclose(f);
 			eDebug("[gEGLDC] spinner background %dx%d at %d,%d (conservative=%d) dumped to %s", w, h, left, top, conservative_readback ? 1 : 0, path);
+		}
+		// Alpha as its own greyscale image - a striped alpha is invisible in the RGB dump.
+		snprintf(path, sizeof(path), "/tmp/spinner_bg_%d.alpha.pgm", s_dump_n - 1);
+		if (FILE* f = fopen(path, "wb")) {
+			fprintf(f, "P5\n%d %d\n255\n", w, h);
+			for (int row = 0; row < h; ++row) {
+				const uint8_t* src = pixels.data() + (size_t)(h - 1 - row) * row_bytes;
+				for (int x = 0; x < w; ++x)
+					fputc(src[x * 4 + 3], f);
+			}
+			fclose(f);
 		}
 	}
 }
