@@ -210,6 +210,10 @@ private:
 	// INativeWindowProvider::needsStraightAlphaPresent()). Forces the shader
 	// present path even where glBlitFramebuffer() exists.
 	bool m_straight_alpha_present = false;
+	float m_unpremult_power = 1.0f;
+	// Blits drawn with blending off copy straight RGBA raw; premultiply them in the
+	// shader when the frame is premultiplied for a double-alpha compositor (H17).
+	bool m_premultiply_blits = false;
 	// Raw-overwrite draws write premultiplied colour (see drawFlatRects()).
 	bool m_premultiply_overwrites = false;
 	// The size the native window/surface was created at (the canvas size at

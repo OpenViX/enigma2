@@ -68,9 +68,19 @@ static const char *fragment_shader_es3 = R"(#version 300 es
         vec4 tex_color = texture(u_texture, v_uv);
         // Only the final present pass sets this (see setUnpremultiply()).
         vec3 rgb = tex_color.rgb;
-        if (u_unpremultiply > 0.5 && tex_color.a > 0.0)
+        float out_a = tex_color.a;
+        if (u_unpremultiply < -0.5)
+            rgb *= tex_color.a; // raw-overwrite blit: store premultiplied (setPremultiply())
+        else if (u_unpremultiply > 2.5 && tex_color.a > 0.0) {
+            // Compositor computes S*A^2 + D*(1-A): pick the smallest A >= a for which
+            // S = P/A^2 still fits in [0,1], so the colour term P is reproduced exactly.
+            // P can never exceed a in a premultiplied frame - clamp stray values.
+            rgb = min(rgb, vec3(tex_color.a));
+            out_a = max(tex_color.a, sqrt(max(rgb.r, max(rgb.g, rgb.b))));
+            rgb = min(rgb / (out_a * out_a), vec3(1.0));
+        } else if (u_unpremultiply > 0.5 && tex_color.a > 0.0)
             rgb = min(rgb / tex_color.a, vec3(1.0));
-        frag_color = vec4(rgb, tex_color.a * u_global_alpha * coverage);
+        frag_color = vec4(rgb, out_a * u_global_alpha * coverage);
     }
 )";
 #endif
@@ -137,9 +147,19 @@ static const char *fragment_shader_es2 = R"(#version 100
         vec4 tex_color = texture2D(u_texture, v_uv);
         // Only the final present pass sets this (see setUnpremultiply()).
         vec3 rgb = tex_color.rgb;
-        if (u_unpremultiply > 0.5 && tex_color.a > 0.0)
+        float out_a = tex_color.a;
+        if (u_unpremultiply < -0.5)
+            rgb *= tex_color.a; // raw-overwrite blit: store premultiplied (setPremultiply())
+        else if (u_unpremultiply > 2.5 && tex_color.a > 0.0) {
+            // Compositor computes S*A^2 + D*(1-A): pick the smallest A >= a for which
+            // S = P/A^2 still fits in [0,1], so the colour term P is reproduced exactly.
+            // P can never exceed a in a premultiplied frame - clamp stray values.
+            rgb = min(rgb, vec3(tex_color.a));
+            out_a = max(tex_color.a, sqrt(max(rgb.r, max(rgb.g, rgb.b))));
+            rgb = min(rgb / (out_a * out_a), vec3(1.0));
+        } else if (u_unpremultiply > 0.5 && tex_color.a > 0.0)
             rgb = min(rgb / tex_color.a, vec3(1.0));
-        gl_FragColor = vec4(rgb, tex_color.a * u_global_alpha * coverage);
+        gl_FragColor = vec4(rgb, out_a * u_global_alpha * coverage);
     }
 )";
 
@@ -297,7 +317,7 @@ void gTextureShader::drawTexture(float x, float y, float width, float height, GL
     glUniform1i(m_texture_location, 0);
     glUniform1f(m_alpha_location, global_alpha);
     
-    glUniform1f(m_unpremult_location, m_unpremultiply ? 1.0f : 0.0f);
+    glUniform1f(m_unpremult_location, m_premultiply ? -1.0f : (m_unpremultiply ? m_unpremultiply_power : 0.0f));
     glUniform4f(m_rect_size_location, x, y, width, height);
     glUniform1f(m_radius_location, radius);
 
@@ -332,7 +352,7 @@ void gTextureShader::drawTextureSub(float x, float y, float width, float height,
     glUniform1i(m_texture_location, 0);
     glUniform1f(m_alpha_location, 1.0f);
 
-    glUniform1f(m_unpremult_location, m_unpremultiply ? 1.0f : 0.0f);
+    glUniform1f(m_unpremult_location, m_premultiply ? -1.0f : (m_unpremultiply ? m_unpremultiply_power : 0.0f));
     glUniform4f(m_rect_size_location, x, y, width, height);
     glUniform1f(m_radius_location, radius);
 
@@ -368,7 +388,7 @@ void gTextureShader::drawBatch(const float* vertex_data, int vertex_count, GLuin
     glUniform1i(m_texture_location, 0);
     glUniform1f(m_alpha_location, global_alpha);
 
-    glUniform1f(m_unpremult_location, m_unpremultiply ? 1.0f : 0.0f);
+    glUniform1f(m_unpremult_location, m_premultiply ? -1.0f : (m_unpremultiply ? m_unpremultiply_power : 0.0f));
 
     // No rounding for a batch - see the header comment on drawBatch().
     glUniform1f(m_radius_location, 0.0f);
