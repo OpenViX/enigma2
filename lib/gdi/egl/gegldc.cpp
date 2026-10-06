@@ -848,7 +848,7 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 
 			// Mirrors the advanced fragment shader's colour (see
 			// gadvanced_shader.cpp) at a position where coverage == 1.
-			auto colorAt = [&](float px, float py, float out[4]) {
+			auto colorAtStraight = [&](float px, float py, float out[4]) {
 				float sr = m_background_color_rgb.r / 255.0f, sg = m_background_color_rgb.g / 255.0f, sb = m_background_color_rgb.b / 255.0f;
 				out[0] = sr; out[1] = sg; out[2] = sb; out[3] = alpha;
 				if (nstops == 0)
@@ -874,6 +874,22 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 					out[2] = sb + (gc[2] - sb) * gc[3];
 				} else {
 					out[0] = gc[0]; out[1] = gc[1]; out[2] = gc[2]; out[3] = gc[3];
+				}
+			};
+			// These quads are drawn with blending OFF when the shape is translucent (the
+			// classic overwrite semantics: the colour REPLACES what is there, alpha
+			// included). In a frame that is premultiplied everywhere (see
+			// m_premultiply_overwrites / drawFlatRects()) the stored colour must then be
+			// rgb*alpha as well, or the straight-alpha present pass divides it by alpha a
+			// second time and translucent panels come out wrong. Blended (one-pass) draws
+			// get the premultiplication from the blend function already.
+			const bool premult_quads = m_premultiply_overwrites && !one_pass;
+			auto colorAt = [&](float px, float py, float out[4]) {
+				colorAtStraight(px, py, out);
+				if (premult_quads) {
+					out[0] *= out[3];
+					out[1] *= out[3];
+					out[2] *= out[3];
 				}
 			};
 
@@ -940,7 +956,9 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 					pushPiece(x0, y0, x1, y1);
 					return;
 				}
-				const float bc[4] = {m_border_color.r / 255.0f, m_border_color.g / 255.0f, m_border_color.b / 255.0f, 1.0f - (m_border_color.a / 255.0f)};
+				const float ba = 1.0f - (m_border_color.a / 255.0f);
+				const float bm = premult_quads ? ba : 1.0f;
+				const float bc[4] = {m_border_color.r / 255.0f * bm, m_border_color.g / 255.0f * bm, m_border_color.b / 255.0f * bm, ba};
 				const float fx0 = std::max(x0, x + bw), fy0 = std::max(y0, y + bw), fx1 = std::min(x1, x + w - bw), fy1 = std::min(y1, y + h - bw);
 				if (fx1 <= fx0 || fy1 <= fy0) {
 					pushFlat(x0, y0, x1, y1, bc);
