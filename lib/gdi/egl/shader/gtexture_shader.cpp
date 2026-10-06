@@ -323,6 +323,42 @@ void gTextureShader::drawTexture(float x, float y, float width, float height, GL
     drawVertices(vertices, 6);
 }
 
+void gTextureShader::drawTextureSub(float x, float y, float width, float height, float sx, float sy, float sw, float sh, GLuint texture_id, float radius, uint8_t edges)
+{
+    bind();
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glUniform1i(m_texture_location, 0);
+    glUniform1f(m_alpha_location, 1.0f);
+
+    glUniform1f(m_unpremult_location, m_unpremultiply ? 1.0f : 0.0f);
+    glUniform4f(m_rect_size_location, x, y, width, height);
+    glUniform1f(m_radius_location, radius);
+
+    if (gles::isGLES3()) {
+        glUniform1i(m_edges_location, (int)edges);
+    } else {
+        glUniform1f(m_edges_tl_location, (edges & 1) ? radius : 0.0f);
+        glUniform1f(m_edges_tr_location, (edges & 2) ? radius : 0.0f);
+        glUniform1f(m_edges_bl_location, (edges & 4) ? radius : 0.0f);
+        glUniform1f(m_edges_br_location, (edges & 8) ? radius : 0.0f);
+    }
+
+    const float u0 = (sx - x) / width, u1 = (sx + sw - x) / width;
+    const float v0 = (sy - y) / height, v1 = (sy + sh - y) / height;
+    float vertices[24] = {
+        sx,      sy,      u0, v0,
+        sx,      sy + sh, u0, v1,
+        sx + sw, sy,      u1, v0,
+        sx + sw, sy,      u1, v0,
+        sx,      sy + sh, u0, v1,
+        sx + sw, sy + sh, u1, v1
+    };
+
+    drawVertices(vertices, 6);
+}
+
 void gTextureShader::drawBatch(const float* vertex_data, int vertex_count, GLuint texture_id, float global_alpha)
 {
     bind();

@@ -64,6 +64,13 @@ public:
 	void setUnpremultiply(bool on) { m_unpremultiply = on; }
 	void drawTexture(float x, float y, float width, float height, GLuint texture_id, float global_alpha = 1.0f, float radius = 0.0f, uint8_t edges = 0);
 
+	// Same rounded-rect texture draw as drawTexture(), but only covers the
+	// sub-rectangle (sx, sy, sw, sh) of the rect (x, y, width, height): the SDF
+	// still uses the whole rect's shape, the UVs map the whole texture onto the
+	// whole rect. Lets a rounded blit run the costly SDF fragment shader only
+	// over its corner squares and draw the rest through drawBatch().
+	void drawTextureSub(float x, float y, float width, float height, float sx, float sy, float sw, float sh, GLuint texture_id, float radius, uint8_t edges);
+
 	// Draws multiple quads (vertex_count/6 of them, each 4 floats/vertex:
 	// x,y,u,v - see drawTexture()'s "vertices" layout) sharing one texture
 	// and one draw call, for callers that have accumulated several

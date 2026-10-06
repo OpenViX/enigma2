@@ -92,7 +92,14 @@ static void applyWindowBlendOverride(NXPL_NativeWindowInfoEXT& info, const char*
 // colour as well.
 bool GbquadWindowProvider::premultipliesOverwrites() {
 #ifdef HAVE_NXPL_NO_NXCLIENT
-	return false; // compositor blends straight alpha, see applyWindowBlendOverride()
+	// The compositor blends straight alpha and gEGLDC un-premultiplies the whole frame
+	// in its present pass (needsStraightAlphaPresent()), so everything in the frame -
+	// raw-overwrite colours included - must be premultiplied before that pass. A straight
+	// colour written by a fill/clear/flat rectangle with alpha < 1 would otherwise be
+	// divided by its alpha a second time: translucent grey/colour fills come out bright
+	// and a "transparent" non-black colour leaks. ENIGMA_EGL_PREMULT_OVERWRITE=0 reverts.
+	static const bool s_enabled = needsStraightAlphaPresent() && !(getenv("ENIGMA_EGL_PREMULT_OVERWRITE") && atoi(getenv("ENIGMA_EGL_PREMULT_OVERWRITE")) == 0);
+	return s_enabled;
 #endif
 	const char* mode = getenv("ENIGMA_EGL_NXPL_BLEND");
 	if (!mode)

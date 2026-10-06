@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
@@ -286,9 +287,14 @@ bool gEGLDC::tryInitEGL(int version) {
 // does - that's GLES3-only).
 // ---------------------------------------------------------------------------
 bool gEGLDC::createShadowFramebuffer() {
+	while (glGetError() != GL_NO_ERROR) {
+	}
 	glGenTextures(1, &m_shadow_texture);
 	glBindTexture(GL_TEXTURE_2D, m_shadow_texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_phys_width, m_phys_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	const GLenum alloc_err = glGetError();
+	if (alloc_err != GL_NO_ERROR)
+		eDebug("[gEGLDC] shadow texture %dx%d allocation raised glError=0x%x", m_phys_width, m_phys_height, alloc_err);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -315,6 +321,49 @@ bool gEGLDC::createShadowFramebuffer() {
 
 	eDebug("[gEGLDC] shadow framebuffer created (%dx%d).", m_phys_width, m_phys_height);
 	return true;
+}
+
+bool gEGLDC::recreateWindowSurface() {
+	if (m_egl_surfaces[0] != EGL_NO_SURFACE) {
+		eglMakeCurrent(m_egl_display, EGL_NO_SURFACE, EGL_NO_SURFACE, m_egl_context);
+		eglDestroySurface(m_egl_display, m_egl_surfaces[0]);
+		m_egl_surfaces[0] = EGL_NO_SURFACE;
+	}
+	EGLNativeWindowType native_window = m_window_provider->getNativeWindow();
+	eDebug("[gEGLDC] resize: creating EGL window surface");
+	m_egl_surfaces[0] = eglCreateWindowSurface(m_egl_display, m_egl_config, native_window, nullptr);
+	if (m_egl_surfaces[0] == EGL_NO_SURFACE) {
+		eDebug("[gEGLDC] eglCreateWindowSurface failed (physical %dx%d). EGL error: 0x%x", m_phys_width, m_phys_height, eglGetError());
+		return false;
+	}
+	// Best-effort, same as tryInitEGL()'s own attempt - doesn't
+	// change m_use_shadow_fbo, already decided once for this driver.
+	eglSurfaceAttrib(m_egl_display, m_egl_surfaces[0], EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED);
+	m_render_page = 0;
+	if (!eglMakeCurrent(m_egl_display, m_egl_surfaces[0], m_egl_surfaces[0], m_egl_context)) {
+		eDebug("[gEGLDC] eglMakeCurrent failed after recreating window surface: 0x%x - discarding the surface", eglGetError());
+		eglMakeCurrent(m_egl_display, EGL_NO_SURFACE, EGL_NO_SURFACE, m_egl_context);
+		eglDestroySurface(m_egl_display, m_egl_surfaces[0]);
+		m_egl_surfaces[0] = EGL_NO_SURFACE;
+		return false;
+	}
+	return true;
+}
+
+bool gEGLDC::recreateShadowFramebuffer() {
+	for (int attempt = 0; attempt < 4; ++attempt) {
+		if (attempt > 0) {
+			glFinish();
+			m_texture_manager.processDeletions();
+			if (attempt > 1)
+				m_texture_manager.releaseUnusedTextures();
+			glFinish();
+			eDebug("[gEGLDC] retrying shadow framebuffer creation (attempt %d)", attempt + 1);
+		}
+		if (createShadowFramebuffer())
+			return true;
+	}
+	return false;
 }
 
 void gEGLDC::destroyShadowFramebuffer() {
@@ -782,8 +831,11 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 		// than half the rect keep the original path.
 		static const bool s_rect_fastpath = !(getenv("ENIGMA_EGL_RECT_FASTPATH") && atoi(getenv("ENIGMA_EGL_RECT_FASTPATH")) == 0);
 		const size_t nstops = m_gradient_colors.size();
-		const bool fast = s_rect_fastpath && m_border_width <= 0 && (nstops == 0 || (nstops >= 2 && nstops <= 16)) && w > 0 && h > 0 &&
-						  (m_radius <= 0 || 2.0f * m_radius <= std::min(w, h));
+		// A border is fine too: its inner edge lies on whole pixels (integer
+		// widths), so outside the corner squares each pixel is exactly border or
+		// fill - drawn as flat quads (border bands + fill) around the same corner squares.
+		const bool fast = s_rect_fastpath && (nstops == 0 || (nstops >= 2 && nstops <= 16)) && w > 0 && h > 0 && (m_radius <= 0 || 2.0f * m_radius <= std::min(w, h)) &&
+						  (m_border_width <= 0 || 2.0f * m_border_width <= std::min(w, h));
 
 		if (fast) {
 			const float rad = m_radius > 0 ? (float)m_radius : 0.0f;
@@ -866,6 +918,39 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 				if (horiz) pushQuad(prev, y0, hi, y1); else pushQuad(x0, prev, x1, hi);
 			};
 
+			// With a border, a piece splits into the fill part (inside the border
+			// inset) and up to four border bands, which take the border colour.
+			const float bw = m_border_width > 0 ? (float)m_border_width : 0.0f;
+			auto pushFlat = [&](float ax, float ay, float bx, float by, const float c[4]) {
+				if (bx <= ax || by <= ay)
+					return;
+				const float xs[6] = {ax, ax, bx, bx, ax, bx};
+				const float ys[6] = {ay, by, ay, ay, by, by};
+				for (int k = 0; k < 6; ++k) {
+					verts.push_back(xs[k]); verts.push_back(ys[k]);
+					verts.insert(verts.end(), c, c + 4);
+				}
+				if (verts.size() >= (size_t)gShader::kMaxBatchQuads * 36 - 36)
+					flushVerts();
+			};
+			auto pushBordered = [&](float x0, float y0, float x1, float y1) {
+				if (bw <= 0) {
+					pushPiece(x0, y0, x1, y1);
+					return;
+				}
+				const float bc[4] = {m_border_color.r / 255.0f, m_border_color.g / 255.0f, m_border_color.b / 255.0f, 1.0f - (m_border_color.a / 255.0f)};
+				const float fx0 = std::max(x0, x + bw), fy0 = std::max(y0, y + bw), fx1 = std::min(x1, x + w - bw), fy1 = std::min(y1, y + h - bw);
+				if (fx1 <= fx0 || fy1 <= fy0) {
+					pushFlat(x0, y0, x1, y1, bc);
+					return;
+				}
+				pushPiece(fx0, fy0, fx1, fy1);
+				pushFlat(x0, y0, x1, fy0, bc);
+				pushFlat(x0, fy1, x1, y1, bc);
+				pushFlat(x0, fy0, fx0, fy1, bc);
+				pushFlat(fx1, fy0, x1, fy1, bc);
+			};
+
 			// Interior = middle band + the strips above/below it between the corner squares.
 			const float rt = (c_tl || c_tr) ? rad : 0.0f, rb = (c_bl || c_br) ? rad : 0.0f;
 			struct Piece { float x0, y0, x1, y1; };
@@ -886,7 +971,7 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 			for (const eRect& cr : m_current_clip.rects) {
 				const float cl = cr.left(), ct = cr.top(), cr_r = cr.left() + cr.width(), cb = cr.top() + cr.height();
 				for (int p = 0; p < npieces; ++p)
-					pushPiece(std::max(pieces[p].x0, cl), std::max(pieces[p].y0, ct), std::min(pieces[p].x1, cr_r), std::min(pieces[p].y1, cb));
+					pushBordered(std::max(pieces[p].x0, cl), std::max(pieces[p].y0, ct), std::min(pieces[p].x1, cr_r), std::min(pieces[p].y1, cb));
 			}
 			flushVerts();
 			if (!one_pass)
@@ -1315,9 +1400,58 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 			glEnable(GL_BLEND);
 		} else
 			glDisable(GL_BLEND);
-		for (unsigned int i = 0; i < clip.rects.size(); ++i) {
-			setGlScissor(clip.rects[i]);
-			m_texture_shader.drawTexture(x, y, width, height, tex_id, 1.0f, m_radius, m_radius_edges);
+		// Rounded blit fast path (ENIGMA_EGL_RECT_FASTPATH=0 disables, like the
+		// rectangle one): the SDF fragment shader is only needed in the corner
+		// squares, coverage is exactly 1 everywhere else - so draw the interior
+		// with the plain texture path and run the SDF shader over just the corner
+		// r x r squares.
+		static const bool s_blit_fastpath = !(getenv("ENIGMA_EGL_RECT_FASTPATH") && atoi(getenv("ENIGMA_EGL_RECT_FASTPATH")) == 0);
+		const float rad = (float)m_radius;
+		if (s_blit_fastpath && m_radius > 0 && width > 0 && height > 0 && 2.0f * rad <= std::min(width, height)) {
+			const bool c_tl = m_radius_edges & 1, c_tr = m_radius_edges & 2, c_bl = m_radius_edges & 4, c_br = m_radius_edges & 8;
+			const float rt = (c_tl || c_tr) ? rad : 0.0f, rb = (c_bl || c_br) ? rad : 0.0f;
+			struct Piece { float x0, y0, x1, y1; };
+			Piece pieces[3];
+			int npieces = 0;
+			pieces[npieces++] = {x, y + rt, x + width, y + height - rb};
+			if (rt > 0)
+				pieces[npieces++] = {x + (c_tl ? rad : 0.0f), y, x + width - (c_tr ? rad : 0.0f), y + rt};
+			if (rb > 0)
+				pieces[npieces++] = {x + (c_bl ? rad : 0.0f), y + height - rb, x + width - (c_br ? rad : 0.0f), y + height};
+			const float corner[4][4] = {{x, y, rad, rad}, {x + width - rad, y, rad, rad}, {x, y + height - rad, rad, rad}, {x + width - rad, y + height - rad, rad, rad}};
+			const bool present[4] = {c_tl, c_tr, c_bl, c_br};
+
+			for (unsigned int i = 0; i < clip.rects.size(); ++i) {
+				const eRect& cr = clip.rects[i];
+				setGlScissor(cr);
+				float verts[3 * 24];
+				int nv = 0;
+				for (int p = 0; p < npieces; ++p) {
+					const float x0 = std::max(pieces[p].x0, (float)cr.left()), y0 = std::max(pieces[p].y0, (float)cr.top());
+					const float x1 = std::min(pieces[p].x1, (float)(cr.left() + cr.width())), y1 = std::min(pieces[p].y1, (float)(cr.top() + cr.height()));
+					if (x1 <= x0 || y1 <= y0)
+						continue;
+					const float u0 = (x0 - x) / width, u1 = (x1 - x) / width, v0 = (y0 - y) / height, v1 = (y1 - y) / height;
+					const float q[24] = {x0, y0, u0, v0, x0, y1, u0, v1, x1, y0, u1, v0, x1, y0, u1, v0, x0, y1, u0, v1, x1, y1, u1, v1};
+					memcpy(verts + nv * 4, q, sizeof(q));
+					nv += 6;
+				}
+				if (nv)
+					m_texture_shader.drawBatch(verts, nv, tex_id, 1.0f);
+				for (int c = 0; c < 4; ++c) {
+					if (!present[c])
+						continue;
+					const float* q = corner[c];
+					if (q[0] >= cr.left() + cr.width() || q[0] + q[2] <= cr.left() || q[1] >= cr.top() + cr.height() || q[1] + q[3] <= cr.top())
+						continue;
+					m_texture_shader.drawTextureSub(x, y, width, height, q[0], q[1], q[2], q[3], tex_id, rad, m_radius_edges);
+				}
+			}
+		} else {
+			for (unsigned int i = 0; i < clip.rects.size(); ++i) {
+				setGlScissor(clip.rects[i]);
+				m_texture_shader.drawTexture(x, y, width, height, tex_id, 1.0f, m_radius, m_radius_edges);
+			}
 		}
 		if (!enable_blend)
 			glEnable(GL_BLEND);
@@ -1814,6 +1948,34 @@ void gEGLDC::exec(const gOpcode* opcode) {
 	if (!isInitialized())
 		return;
 
+	// No usable window surface (see applyPendingResolutionChange()): retry, throttled.
+	if (m_surface_lost && !m_pending_resolution_change && std::chrono::steady_clock::now() - m_surface_retry_time > std::chrono::milliseconds(500)) {
+		m_surface_retry_time = std::chrono::steady_clock::now();
+		if (m_window_provider && recreateWindowSurface()) {
+			m_surface_lost = false;
+			eDebug("[gEGLDC] window surface recovered");
+			glViewport(0, 0, m_phys_width, m_phys_height);
+			if (m_use_shadow_fbo) {
+				destroyShadowFramebuffer();
+				recreateShadowFramebuffer();
+			}
+			requestFlush();
+		}
+	}
+	// A failed shadow FBO (e.g. out of GPU memory right after a resolution
+	// change) must not leave rendering on the window surface, which does not
+	// preserve content between frames (partial redraws would lose elements).
+	if (m_use_shadow_fbo && m_shadow_fbo == 0 && !m_pending_resolution_change &&
+		std::chrono::steady_clock::now() - m_shadow_retry_time > std::chrono::milliseconds(200)) {
+		flushBlitBatch();
+		flushTextBatch();
+		m_shadow_retry_time = std::chrono::steady_clock::now();
+		if (recreateShadowFramebuffer()) {
+			eDebug("[gEGLDC] shadow framebuffer recovered");
+			requestFlush(); // the new buffer is blank: ask for a repaint
+		}
+	}
+
 	// A resolution change recreates the shadow FBO / window surface, which throws
 	// away everything drawn into the old ones. Applying it only at flip() (after
 	// the frame's opcodes) discarded the first paint of whatever the skin switch
@@ -2248,16 +2410,23 @@ void gEGLDC::setResolution(int xres, int yres, int bpp) {
 	// See the constructor for why accelNever is required here. Safe to do
 	// immediately (unlike the GL/EGL work below) - plain CPU allocation, no
 	// GL context needed.
-	m_pixmap = new gPixmap(eSize(xres, yres), bpp, gPixmap::accelNever);
-	allocStagingPalette(m_pixmap);
+	ePtr<gPixmap> new_pixmap = new gPixmap(eSize(xres, yres), bpp, gPixmap::accelNever);
+	allocStagingPalette(new_pixmap);
 
 	// See m_pending_resolution_change's comment (gegldc.h) for why the rest
 	// of this can't happen here: it's GL/EGL work, only valid on gRC's
 	// render thread, which this call (from Python - skin.py/PicturePlayer/
 	// VideoFinetune) is not running on. applyPendingResolutionChange(),
 	// called from the top of flip(), does it instead.
-	m_pending_width = xres;
-	m_pending_height = yres;
+	{
+		std::lock_guard<std::mutex> lock(m_resolution_mutex);
+		// The render thread may still be mid-opcode on the old pixmap (a fast
+		// skin switch calls this repeatedly): park it instead of freeing it here.
+		m_retired_pixmaps.push_back(m_pixmap);
+		m_pixmap = new_pixmap;
+		m_pending_width = xres;
+		m_pending_height = yres;
+	}
 	m_pending_resolution_change = true;
 }
 
@@ -2265,6 +2434,27 @@ void gEGLDC::applyPendingResolutionChange() {
 	if (!m_pending_resolution_change)
 		return;
 	m_pending_resolution_change = false;
+
+	// Consistent snapshot of the request (a fast skin switch can call
+	// setResolution() again at any moment), and release the staging pixmaps it
+	// replaced - safe now, this thread is between opcodes.
+	int pending_w, pending_h;
+	std::vector<ePtr<gPixmap>> retired;
+	{
+		std::lock_guard<std::mutex> lock(m_resolution_mutex);
+		pending_w = m_pending_width;
+		pending_h = m_pending_height;
+		retired.swap(m_retired_pixmaps);
+	}
+	retired.clear();
+	eDebug("[gEGLDC] applying resolution change to canvas %dx%d", pending_w, pending_h);
+
+	// Everything queued against the old surface/buffers must have completed
+	// before the window is resized or its surface destroyed: back-to-back skin
+	// switches otherwise tear a surface down under in-flight frames, which can
+	// wedge the Nexus window/swap chain (no error, the UI just stops).
+	if (isInitialized())
+		glFinish();
 
 	// The new pixmap (already swapped in by setResolution()) has no
 	// gl_texture_id and no content yet - any area tracked from the old one
@@ -2284,7 +2474,7 @@ void gEGLDC::applyPendingResolutionChange() {
 	// size is kept as a fallback in case the driver refuses the new one.
 	const int prev_phys_w = m_phys_width;
 	const int prev_phys_h = m_phys_height;
-	updatePhysicalSize(m_pending_width, m_pending_height);
+	updatePhysicalSize(pending_w, pending_h);
 
 	// Nothing about the real window/surface changed (the canvas is being
 	// rendered scaled to the size it already had): leave the native window and
@@ -2292,15 +2482,18 @@ void gEGLDC::applyPendingResolutionChange() {
 	m_log_frames_left = 5;
 	const bool physical_unchanged = (m_phys_width == prev_phys_w && m_phys_height == prev_phys_h);
 	if (physical_unchanged)
-		eDebug("[gEGLDC] physical size stays %dx%d for canvas %dx%d - native window and EGL surface left untouched", m_phys_width, m_phys_height, m_pending_width, m_pending_height);
+		eDebug("[gEGLDC] physical size stays %dx%d for canvas %dx%d - native window and EGL surface left untouched", m_phys_width, m_phys_height, pending_w, pending_h);
 
 	// Nexus (or whichever platform's provider this is) needs to be told its
 	// window's own authored size changed too - see
 	// GbquadWindowProvider::onResolutionChanged() for why (stretch scales to
 	// whatever size Nexus was last told, not this canvas's actual current
 	// size). That size is the physical one, not the logical canvas.
-	if (m_window_provider && !physical_unchanged)
+	if (m_window_provider && !physical_unchanged) {
+		eDebug("[gEGLDC] resize: updating native window to %dx%d", m_phys_width, m_phys_height);
 		m_window_provider->onResolutionChanged(m_phys_width, m_phys_height);
+		eDebug("[gEGLDC] resize: native window updated");
+	}
 
 	// Confirmed on real hardware via a diagnostic eglQuerySurface() (now
 	// removed): the EGL window surface's real backing buffer does NOT
@@ -2322,33 +2515,48 @@ void gEGLDC::applyPendingResolutionChange() {
 	// failure mode was never confirmed), but a real candidate rather than
 	// another blind guess.
 	if (isInitialized() && m_window_provider && !m_window_provider->usesPixmapSurface() && !physical_unchanged) {
+		// Give the old shadow buffer's GPU memory back BEFORE the surface (and its
+		// buffers) is recreated at the new size: holding both at once is what made
+		// the new 2560x1440 shadow texture fail to allocate on the GigaBlue.
+		if (m_use_shadow_fbo) {
+			destroyShadowFramebuffer();
+			glFinish();
+		}
+		eDebug("[gEGLDC] resize: releasing context and destroying EGL surface");
 		eglMakeCurrent(m_egl_display, EGL_NO_SURFACE, EGL_NO_SURFACE, m_egl_context);
 
 		if (m_egl_surfaces[0] != EGL_NO_SURFACE) {
 			eglDestroySurface(m_egl_display, m_egl_surfaces[0]);
 			m_egl_surfaces[0] = EGL_NO_SURFACE;
 		}
+		eDebug("[gEGLDC] resize: EGL surface destroyed");
 
+		// The Nexus native window settles asynchronously after the update/hide/show
+		// above: a surface created too early can come back "valid" yet fail
+		// eglMakeCurrent() with EGL_BAD_NATIVE_WINDOW (0x300b), which left the
+		// context with no usable surface - video playing, UI invisible. So retry
+		// with growing pauses, and re-send the window update late in the sequence.
 		auto recreate_surface = [&]() -> bool {
-			EGLNativeWindowType native_window = m_window_provider->getNativeWindow();
-			m_egl_surfaces[0] = eglCreateWindowSurface(m_egl_display, m_egl_config, native_window, nullptr);
-			if (m_egl_surfaces[0] == EGL_NO_SURFACE) {
-				eDebug("[gEGLDC] eglCreateWindowSurface failed while applying resolution change to canvas %dx%d (physical %dx%d). EGL error: 0x%x", m_pending_width, m_pending_height, m_phys_width, m_phys_height, eglGetError());
-				return false;
+			for (int attempt = 0; attempt < 6; ++attempt) {
+				if (attempt > 0) {
+					usleep(100000 * attempt);
+					if (attempt == 3 && m_window_provider) {
+						eDebug("[gEGLDC] resize: re-sending native window update");
+						m_window_provider->onResolutionChanged(m_phys_width, m_phys_height);
+						usleep(200000);
+					}
+					eDebug("[gEGLDC] resize: retrying window surface creation (attempt %d)", attempt + 1);
+				}
+				if (recreateWindowSurface()) {
+					EGLint surf_w = -1, surf_h = -1;
+					eglQuerySurface(m_egl_display, m_egl_surfaces[0], EGL_WIDTH, &surf_w);
+					eglQuerySurface(m_egl_display, m_egl_surfaces[0], EGL_HEIGHT, &surf_h);
+					eDebug("[gEGLDC] after surface recreation: canvas=%dx%d, physical=%dx%d, EGL window surface now reports %dx%d",
+						pending_w, pending_h, m_phys_width, m_phys_height, (int)surf_w, (int)surf_h);
+					return true;
+				}
 			}
-			// Best-effort, same as tryInitEGL()'s own attempt - doesn't
-			// change m_use_shadow_fbo, already decided once for this driver.
-			eglSurfaceAttrib(m_egl_display, m_egl_surfaces[0], EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED);
-			m_render_page = 0;
-			if (!eglMakeCurrent(m_egl_display, m_egl_surfaces[0], m_egl_surfaces[0], m_egl_context))
-				eDebug("[gEGLDC] eglMakeCurrent failed after recreating window surface for resolution change: 0x%x", eglGetError());
-
-			EGLint surf_w = -1, surf_h = -1;
-			eglQuerySurface(m_egl_display, m_egl_surfaces[0], EGL_WIDTH, &surf_w);
-			eglQuerySurface(m_egl_display, m_egl_surfaces[0], EGL_HEIGHT, &surf_h);
-			eDebug("[gEGLDC] after surface recreation: canvas=%dx%d, physical=%dx%d, EGL window surface now reports %dx%d",
-				m_pending_width, m_pending_height, m_phys_width, m_phys_height, (int)surf_w, (int)surf_h);
-			return true;
+			return false;
 		};
 
 		if (!recreate_surface() && (prev_phys_w != m_phys_width || prev_phys_h != m_phys_height) && prev_phys_w > 0 && prev_phys_h > 0) {
@@ -2356,14 +2564,19 @@ void gEGLDC::applyPendingResolutionChange() {
 			// no surface at all means video with no UI, so retry at the size
 			// that was working before and render the new canvas scaled into it
 			// (aspect may differ from the canvas; this is only a fallback).
-			eDebug("[gEGLDC] falling back to the previous physical size %dx%d for canvas %dx%d", prev_phys_w, prev_phys_h, m_pending_width, m_pending_height);
+			eDebug("[gEGLDC] falling back to the previous physical size %dx%d for canvas %dx%d", prev_phys_w, prev_phys_h, pending_w, pending_h);
 			m_phys_width = prev_phys_w;
 			m_phys_height = prev_phys_h;
-			m_scale_x = (float)prev_phys_w / (float)m_pending_width;
-			m_scale_y = (float)prev_phys_h / (float)m_pending_height;
+			m_scale_x = (float)prev_phys_w / (float)pending_w;
+			m_scale_y = (float)prev_phys_h / (float)pending_h;
 			m_scaled = true;
 			m_window_provider->onResolutionChanged(prev_phys_w, prev_phys_h);
 			recreate_surface();
+		}
+		m_surface_lost = (m_egl_surfaces[0] == EGL_NO_SURFACE);
+		if (m_surface_lost) {
+			eDebug("[gEGLDC] resize: no usable window surface after retries - will keep trying");
+			m_surface_retry_time = std::chrono::steady_clock::now();
 		}
 	}
 
@@ -2380,10 +2593,10 @@ void gEGLDC::applyPendingResolutionChange() {
 		// mispositioned, which the shader-matrix fix alone already covered.
 		glViewport(0, 0, m_phys_width, m_phys_height);
 
-		m_basic_shader.setResolution((float)m_pending_width, (float)m_pending_height);
-		m_advanced_shader.setResolution((float)m_pending_width, (float)m_pending_height);
-		m_texture_shader.setResolution((float)m_pending_width, (float)m_pending_height);
-		m_text_shader.setResolution((float)m_pending_width, (float)m_pending_height);
+		m_basic_shader.setResolution((float)pending_w, (float)pending_h);
+		m_advanced_shader.setResolution((float)pending_w, (float)pending_h);
+		m_texture_shader.setResolution((float)pending_w, (float)pending_h);
+		m_text_shader.setResolution((float)pending_w, (float)pending_h);
 	}
 
 	// m_shadow_fbo/m_shadow_texture were sized for whatever resolution was
@@ -2393,8 +2606,10 @@ void gEGLDC::applyPendingResolutionChange() {
 	// first time.
 	if (m_use_shadow_fbo) {
 		destroyShadowFramebuffer();
-		if (!createShadowFramebuffer())
-			eDebug("[gEGLDC] failed to recreate shadow framebuffer at %dx%d after resolution change.", m_pending_width, m_pending_height);
+		if (!recreateShadowFramebuffer()) {
+			eDebug("[gEGLDC] failed to recreate shadow framebuffer at %dx%d after resolution change - will keep retrying.", pending_w, pending_h);
+			m_shadow_retry_time = std::chrono::steady_clock::now();
+		}
 	}
 }
 
