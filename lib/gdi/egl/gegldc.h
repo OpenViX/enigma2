@@ -1,6 +1,8 @@
 #pragma once
 
 #include <atomic>
+#include <mutex>
+#include <vector>
 #include <chrono>
 #include <EGL/egl.h>
 #ifdef HAVE_GLES3
@@ -74,7 +76,21 @@ private:
 	// blit so a tiled GPU needn't load the stale buffer into tile memory first.
 	bool m_blit_invalidate = false;
 
+	// (Re)creates the EGL window surface for the current native window and makes it
+	// current; false (leaving no surface) if the driver refused either step. Render
+	// thread only.
+	bool recreateWindowSurface();
+	// Set when a resolution change could not get a usable window surface: nothing
+	// can be presented, so exec() keeps retrying (throttled) until it works.
+	bool m_surface_lost = false;
+	std::chrono::steady_clock::time_point m_surface_retry_time;
 	bool createShadowFramebuffer();
+	// createShadowFramebuffer() with retries that first release GPU memory
+	// (queued texture deletions, cached textures) - a large canvas right after a
+	// resolution change can fail to allocate while the old buffers are still alive.
+	bool recreateShadowFramebuffer();
+	// Creation failed (m_use_shadow_fbo set but no FBO): exec() retries, throttled.
+	std::chrono::steady_clock::time_point m_shadow_retry_time;
 	void destroyShadowFramebuffer();
 
 	// setResolution() (below) is called directly from Python (skin.py,
@@ -100,6 +116,13 @@ private:
 	std::atomic<bool> m_pending_resolution_change{false};
 	int m_pending_width = 0;
 	int m_pending_height = 0;
+	// Guards m_pending_width/height (a second setResolution() during an apply
+	// must not be seen half-written) and m_retired_pixmaps: the staging pixmap a
+	// setResolution() replaces may still be in use by the render thread, so it is
+	// parked here and only released by the render thread in
+	// applyPendingResolutionChange(), never freed under it by the main thread.
+	std::mutex m_resolution_mutex;
+	std::vector<ePtr<gPixmap>> m_retired_pixmaps;
 	void applyPendingResolutionChange();
 
 	// External screenshot support (aio-grab) - see gosd_capture.h. Only

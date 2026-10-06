@@ -88,6 +88,14 @@ public:
 	// BEFORE calling processDeletions(), or that draw samples a deleted texture.
 	bool hasPendingDeletions();
 
+	// Frees every evictable texture (not pinned, not DMA-BUF), including ones used
+	// this frame - they re-upload on next draw. For making room for a large GPU
+	// allocation (e.g. the shadow framebuffer after a resolution change).
+	size_t releaseUnusedTextures() {
+		++m_frame;
+		return evictLRU((size_t)-1);
+	}
+
 	// Called once per presented frame: defines 'this frame' for LRU purposes.
 	void nextFrame() { ++m_frame; }
 	// Release a surface's texture from ~gSurface(), only if it still owns it.
