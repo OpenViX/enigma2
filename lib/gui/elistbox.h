@@ -230,6 +230,9 @@ public:
 	// A skin.ani <scrolltime>: the animation (time, tween and easing of its first effect) of the scroll
 	// slide, and whether the list scrolls by single rows (`smooth`) instead of by pages.
 	void setScrollAnimation(int anim_id, bool smooth);
+	// A skin.ani "itemopen" animation: when the list is first shown its rows play it one after the other (the
+	// animation's `stagger` is the delay between two rows). No-op in other builds.
+	void setOpenAnimation(int anim_id);
 
 #ifndef SWIG
 	struct eListboxStyle *getLocalStyle(void);
@@ -266,6 +269,11 @@ private:
 	bool startScrollAnimation(int delta_rows);
 	int scrollOffset();
 	bool m_scroll_run = false;
+	int m_open_anim = 0;
+	int m_open_state = 0; // 0 none, 1 waiting for the first paint, 2 painted (waiting for the render queue), 3 running, 4 done
+	std::chrono::steady_clock::time_point m_open_start, m_open_first_paint;
+	bool m_scroll_synced = true; // the render thread has caught up with the key press, the animation clock runs
+	std::chrono::steady_clock::time_point m_scroll_requested;
 	float m_scroll_off0 = 0;
 	std::chrono::steady_clock::time_point m_scroll_start;
 	// Transform of the row `index` occupying `row` (canvas coordinates); false for none.

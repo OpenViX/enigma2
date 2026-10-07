@@ -827,8 +827,32 @@ void eListbox::animationTick()
 		m_scroll_start = now;
 		m_anim_new_start = now;
 	}
+	const int pending = gRC::getInstance() ? gRC::getInstance()->pendingOpcodes() : 0;
+	// The same for the rows coming in when the list is shown: the clock starts when the render thread has drawn
+	// what was queued when the screen opened (at most 400 ms), until then the rows wait at their start state.
+	if (m_open_state == 2)
+	{
+		if (pending > 60 && msSince(m_open_first_paint, now) < 400.0f)
+		{
+			m_open_start = now;
+			m_anim_timer->start(16, true);
+			return;
+		}
+		m_open_state = 3;
+		m_open_start = now;
+	}
 	bool running = false;
-	const bool scrolling = m_scroll_run; // every row moves: repaint the whole list
+	bool opening = false; // the rows are coming in: repaint the whole list
+	if (m_open_state == 3)
+	{
+		std::shared_ptr<const ganim::Animation> a = ganim::getAnimation(m_open_anim);
+		opening = true;
+		if (a && msSince(m_open_start, now) < a->durationMs() + (float)m_items_per_page * a->stagger_ms)
+			running = true;
+		else
+			m_open_state = 4; // this frame paints the final state
+	}
+	const bool scrolling = m_scroll_run || opening; // every row moves: repaint the whole list
 	if (m_scroll_run)
 	{
 		scrollOffset(); // ends the animation when it is over, the repaint below then draws the final place
@@ -851,7 +875,6 @@ void eListbox::animationTick()
 	// The render thread is still busy with the last frame (a full list is some 170 opcodes): another one
 	// would only queue up and block the main thread when the queue is full, which stalls key handling too.
 	// Skip this frame; all animations follow the clock, so nothing gets slower, it just shows less frames.
-	const int pending = gRC::getInstance() ? gRC::getInstance()->pendingOpcodes() : 0;
 	// A scroll frame repaints the whole list (some 190 opcodes, about 45 ms on the render thread): only paint one
 	// when the queue is nearly empty, else the frames reach the screen late and the animation is over before they
 	// are seen. The small frames of the row effects may queue a little.
@@ -894,11 +917,41 @@ void eListbox::animationTick()
 
 bool eListbox::rowTransform(int index, const eRect &row, float &sx, float &sy, float &tx, float &ty, float &alpha)
 {
-	if (!ganim::listsEnabled() || !m_selection_enabled)
+	if (!ganim::listsEnabled())
 		return false;
 	const std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
 	ganim::Xf xf;
-	if (index == m_selected && m_focus_anim)
+	bool opening = false;
+	if (m_open_state == 2 || m_open_state == 3)
+	{
+		// the rows come in one after the other: row k (counted from the top of the page) starts k * stagger later
+		std::shared_ptr<const ganim::Animation> a = ganim::getAnimation(m_open_anim);
+		if (a)
+		{
+			const int first_index = m_orientation == orGrid ? m_max_columns * m_top : (m_orientation == orHorizontal ? m_left : m_top);
+			const float elapsed = (m_open_state == 2 ? 0.0f : msSince(m_open_start, now)) - (float)std::max(0, index - first_index) * a->stagger_ms;
+			xf = ganim::evaluateAnimation(*a, std::max(0.0f, elapsed), row.x(), row.y(), row.width(), row.height());
+			opening = elapsed < a->durationMs();
+		}
+	}
+	if (opening)
+	{
+		// The selected one is already zoomed while it comes in: the focus effect (applied the whole time the row is
+		// selected) is combined with the entrance, else it would pop when the entrance ends.
+		std::shared_ptr<const ganim::Animation> f = (index == m_selected && m_focus_anim && m_selection_enabled) ? ganim::getAnimation(m_focus_anim) : nullptr;
+		if (f)
+		{
+			const ganim::Xf inner = ganim::evaluateAnimation(*f, msSince(m_anim_new_start, now), row.x(), row.y(), row.width(), row.height());
+			xf.tx = xf.sx * inner.tx + xf.tx;
+			xf.ty = xf.sy * inner.ty + xf.ty;
+			xf.sx *= inner.sx;
+			xf.sy *= inner.sy;
+			xf.alpha *= inner.alpha;
+		}
+	}
+	else if (!m_selection_enabled)
+		return false;
+	else if (index == m_selected && m_focus_anim)
 	{
 		// stays applied for as long as the row is selected (the start state of a fresh list is "long ago")
 		std::shared_ptr<const ganim::Animation> a = ganim::getAnimation(m_focus_anim);
@@ -920,17 +973,23 @@ bool eListbox::rowTransform(int index, const eRect &row, float &sx, float &sy, f
 		return false;
 	if (xf.identity())
 		return false;
-	// The transformed row is clipped to the list (that is all that gets invalidated), which would cut off
-	// the rounded corners of a row filling the list: don't let it grow beyond the list, keeping the slide.
+	// The transformed row is clipped to the list (that is all that gets invalidated), which would cut off the
+	// rounded corners of a row filling the list. A zoomed row therefore never grows beyond the list (a full width
+	// row does not zoom at all), and is moved inwards where it would stick out, e.g. a cell at the edge of a grid
+	// zooms with its outer edges staying in place.
 	if (xf.sx > 1.0f || xf.sy > 1.0f)
 	{
 		const ePoint abs = getAbsolutePosition();
+		const float W = (float)size().width(), H = (float)size().height();
 		const float cx = row.x() + row.width() / 2.0f, cy = row.y() + row.height() / 2.0f;
-		const float ncx = xf.sx * cx + xf.tx, ncy = xf.sy * cy + xf.ty;
+		float ncx = xf.sx * cx + xf.tx, ncy = xf.sy * cy + xf.ty;
 		float s = std::min(xf.sx, xf.sy);
-		s = std::min(s, 2.0f * std::min(ncx - abs.x(), abs.x() + size().width() - ncx) / std::max(1, row.width()));
-		s = std::min(s, 2.0f * std::min(ncy - abs.y(), abs.y() + size().height() - ncy) / std::max(1, row.height()));
+		s = std::min(s, W / (float)std::max(1, row.width()));
+		s = std::min(s, H / (float)std::max(1, row.height()));
 		s = std::max(s, 1.0f);
+		const float hw = s * row.width() / 2.0f, hh = s * row.height() / 2.0f;
+		ncx = std::max(abs.x() + hw, std::min(abs.x() + W - hw, ncx));
+		ncy = std::max(abs.y() + hh, std::min(abs.y() + H - hh, ncy));
 		xf.sx = xf.sy = s;
 		xf.tx = ncx - s * cx;
 		xf.ty = ncy - s * cy;
@@ -945,6 +1004,19 @@ bool eListbox::rowTransform(int index, const eRect &row, float &sx, float &sy, f
 	return true;
 }
 #endif
+
+void eListbox::setOpenAnimation(int anim_id)
+{
+#ifdef HAVE_EGL_ANIMATION
+	m_open_anim = anim_id;
+	m_open_state = anim_id > 0 ? 1 : 0;
+	if (anim_id > 0 && !m_anim_timer)
+	{
+		m_anim_timer = eTimer::create(eApp);
+		CONNECT(m_anim_timer->timeout, eListbox::animationTick);
+	}
+#endif
+}
 
 void eListbox::setScrollAnimation(int anim_id, bool smooth)
 {
@@ -974,9 +1046,9 @@ void eListbox::sendPageAnimation(long r_dir, int new_first, int old_first, bool 
 	// A few rows in a vertical list are scrolled by painting the rows with an offset. Never with a snapshot of
 	// the list (a slow read back on some GPUs, it made every page flip take 300 ms and more): larger jumps
 	// (page up/down) just flip.
-	if (!horizontal && m_orientation == orVertical)
+	if (!horizontal)
 	{
-		if (!(m_smooth_scroll && ganim::listsEnabled() && std::abs(new_first - old_first) <= kMaxScrollRows && startScrollAnimation(new_first - old_first)))
+		if (!(m_orientation == orVertical && m_smooth_scroll && ganim::listsEnabled() && std::abs(new_first - old_first) <= kMaxScrollRows && startScrollAnimation(new_first - old_first)))
 			m_scroll_run = false;
 		return;
 	}
@@ -1249,6 +1321,15 @@ int eListbox::event(int event, void *data, void *data2)
 				yoffset = m_scrollbar->size().height() + 5;
 			}
 
+#ifdef HAVE_EGL_ANIMATION
+			if (m_open_state == 1 && ganim::listsEnabled() && m_anim_timer)
+			{
+				// the list is painted for the first time: the rows start their entrance (see animationTick())
+				m_open_state = 2;
+				m_open_first_paint = m_open_start = std::chrono::steady_clock::now();
+				m_anim_timer->start(16, true);
+			}
+#endif
 			if (m_orientation == orVertical)
 			{
 #ifdef HAVE_EGL_ANIMATION
@@ -1381,6 +1462,12 @@ int eListbox::event(int event, void *data, void *data2)
 			{
 				int line = 0;
 				int m_max_items = m_items_per_page_with_partials;
+#ifdef HAVE_EGL_ANIMATION
+				// Cells with a control animation (see rowTransform()) are drawn in a second pass, like the rows of a list.
+				const ePoint list_abs = getAbsolutePosition();
+				const eRect list_rect(list_abs, size());
+				std::vector<int> animated;
+#endif
 				for (int posx = 0, posy = 0, i = 0; i < m_max_items; posx += m_itemwidth, ++i)
 				{
 					if (i > 0)
@@ -1398,11 +1485,46 @@ int eListbox::event(int event, void *data, void *data2)
 					{
 						// always paint, even for out-of-range cursors (e.g. a ragged last row),
 						// so the content clears stale/selected pixels left over from a previous entry
+#ifdef HAVE_EGL_ANIMATION
+						float tsx, tsy, ttx, tty, ta;
+						if (rowTransform(m_content->cursorGet(), eRect(list_abs.x() + posx, list_abs.y() + posy, m_itemwidth, m_itemheight), tsx, tsy, ttx, tty, ta))
+							animated.push_back(i);
+						else
+#endif
 						m_content->paint(painter, *style, ePoint(posx, posy), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
 					}
 					m_content->cursorMove(+1);
 				}
-				
+#ifdef HAVE_EGL_ANIMATION
+				if (!animated.empty())
+				{
+					m_content->cursorRestore();
+					m_content->cursorSave();
+					m_content->cursorMove((m_max_columns * m_top) - m_selected);
+					size_t next = 0;
+					for (int posx = 0, posy = 0, i = 0; i < m_max_items && next < animated.size(); posx += m_itemwidth, ++i)
+					{
+						if (i > 0 && i % m_max_columns == 0)
+						{
+							posy += m_itemheight;
+							posx = 0;
+						}
+						if (i == animated[next])
+						{
+							++next;
+							float tsx, tsy, ttx, tty, ta;
+							if (rowTransform(m_content->cursorGet(), eRect(list_abs.x() + posx, list_abs.y() + posy, m_itemwidth, m_itemheight), tsx, tsy, ttx, tty, ta))
+							{
+								painter.setTransform(tsx, tsy, ttx, tty, ta, list_rect);
+								m_content->paint(painter, *style, ePoint(posx, posy), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
+								painter.resetTransform();
+							}
+						}
+						m_content->cursorMove(+1);
+					}
+				}
+#endif
+
 				m_content->cursorRestore();
 
 			}

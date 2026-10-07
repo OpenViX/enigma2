@@ -80,14 +80,17 @@ onLoadCallbacks = []
 # compact effect string registerAnimation() takes; "" is an empty <animation/>, which cancels
 # what a less specific rule would give.
 animationRules = []
-ANIMATION_TYPES = ("windowopen", "windowclose", "visible", "hidden", "focus", "unfocus", "conditional", "scroll")
+ANIMATION_TYPES = ("windowopen", "windowclose", "visible", "hidden", "focus", "unfocus", "conditional", "scroll", "itemopen")
 
 
 def animationSpec(node):
 	effects = []
+	stagger = node.attrib.get("stagger", "").strip()  # itemopen: delay between two rows of a list
 	for effect in node.findall("effect"):
 		parts = [effect.attrib.get("type", "").strip()]
 		parts += ["%s=%s" % (key, value.strip()) for key, value in effect.attrib.items() if key not in ("type", "condition", "acceleration")]
+		if stagger:
+			parts.append("stagger=%s" % stagger)
 		effects.append("|".join(parts))
 	return ";".join(effects)
 
@@ -182,6 +185,11 @@ def animationAttributes(attributes, guiObject, widgetAttrib, screenNames):
 	spec = resolveAnimation("widget", screenNames, attrib, "scroll")
 	if spec:  # a <scrolltime> also turns on scrolling by single rows
 		attributes.append(("listScroll", str(registerAnimation("scroll", spec))))
+	spec = resolveAnimation("widget", screenNames, attrib, "itemopen")
+	if spec:  # the rows come in one after the other when the list is first shown
+		openId = registerAnimation("itemopen", spec)
+		if openId:
+			attributes.append(("listOpen", str(openId)))
 
 
 def visibilityAttributes(attributes, widgetAttrib, screenNames):
@@ -223,6 +231,8 @@ def setListAnimation(instance, screenNames, widgetAttrib=None):
 			instance.setFocusAnimation(focus, unfocus)
 		elif attrib == "listScroll":
 			instance.setScrollAnimation(int(value), True)
+		elif attrib == "listOpen":
+			instance.setOpenAnimation(int(value))
 
 
 def InitSkins(booting=True):
@@ -753,6 +763,9 @@ class AttributeParser:
 
 	def listScroll(self, value):  # "<scroll animation id>", a <scrolltime> in skin.ani: smooth scrolling
 		self.guiObject.setScrollAnimation(int(value), True)
+
+	def listOpen(self, value):  # "<itemopen animation id>", set by skin.ani rules: the rows come in one after the other
+		self.guiObject.setOpenAnimation(int(value))
 
 	def visibilityAnimation(self, value):  # "<show id>,<hide id>", the visible/hidden rules of skin.ani
 		show, hide = (int(x) for x in value.split(","))
