@@ -1,6 +1,7 @@
 #include <lib/gdi/egl/shader/gtexture_shader.h>
 #include <lib/gdi/egl/gles_version.h>
 #include <lib/base/eerror.h>
+#include <stdlib.h>
 
 // ---------------------------------------------------------------------------
 // GLES 3.0 shader sources
@@ -164,6 +165,54 @@ static const char *fragment_shader_es2 = R"(#version 100
 )";
 
 // ---------------------------------------------------------------------------
+// Plain (no rounding / no unpremultiply) variants - see gTextureShader::drawBatch()
+// ---------------------------------------------------------------------------
+#if defined(HAVE_GLES3)
+static const char *plain_vertex_shader_es3 = R"(#version 300 es
+    layout(location = 0) in vec4 pos_uv;
+    uniform mat4 u_projection;
+    out vec2 v_uv;
+    void main() {
+        gl_Position = u_projection * vec4(pos_uv.xy, 0.0, 1.0);
+        v_uv = pos_uv.zw;
+    }
+)";
+
+static const char *plain_fragment_shader_es3 = R"(#version 300 es
+    precision mediump float;
+    in vec2 v_uv;
+    out vec4 frag_color;
+    uniform sampler2D u_texture;
+    uniform float u_global_alpha;
+    void main() {
+        vec4 c = texture(u_texture, v_uv);
+        frag_color = vec4(c.rgb, c.a * u_global_alpha);
+    }
+)";
+#endif
+
+static const char *plain_vertex_shader_es2 = R"(#version 100
+    attribute vec4 pos_uv;
+    uniform mat4 u_projection;
+    varying vec2 v_uv;
+    void main() {
+        gl_Position = u_projection * vec4(pos_uv.xy, 0.0, 1.0);
+        v_uv = pos_uv.zw;
+    }
+)";
+
+static const char *plain_fragment_shader_es2 = R"(#version 100
+    precision mediump float;
+    varying vec2 v_uv;
+    uniform sampler2D u_texture;
+    uniform float u_global_alpha;
+    void main() {
+        vec4 c = texture2D(u_texture, v_uv);
+        gl_FragColor = vec4(c.rgb, c.a * u_global_alpha);
+    }
+)";
+
+// ---------------------------------------------------------------------------
 
 #if defined(HAVE_GLES3)
 gTextureShader::gTextureShader() : m_program_id(0), m_vao(0), m_vbo(0)
@@ -188,6 +237,45 @@ void gTextureShader::destroy()
     m_vbo = 0;
     if (m_program_id) glDeleteProgram(m_program_id);
     m_program_id = 0;
+    if (m_plain_program_id) glDeleteProgram(m_plain_program_id);
+    m_plain_program_id = 0;
+}
+
+GLuint gTextureShader::buildPlainProgram()
+{
+#if defined(HAVE_GLES3)
+    const char *vs_src = gles::isGLES3() ? plain_vertex_shader_es3   : plain_vertex_shader_es2;
+    const char *fs_src = gles::isGLES3() ? plain_fragment_shader_es3 : plain_fragment_shader_es2;
+#else
+    const char *vs_src = plain_vertex_shader_es2;
+    const char *fs_src = plain_fragment_shader_es2;
+#endif
+    GLuint vs = compileShader(GL_VERTEX_SHADER, vs_src);
+    GLuint fs = compileShader(GL_FRAGMENT_SHADER, fs_src);
+    if (!vs || !fs) {
+        if (vs) glDeleteShader(vs);
+        if (fs) glDeleteShader(fs);
+        return 0;
+    }
+    GLuint prog = glCreateProgram();
+    if (!gles::isGLES3())
+        glBindAttribLocation(prog, 0, "pos_uv");
+    glAttachShader(prog, vs);
+    glAttachShader(prog, fs);
+    glLinkProgram(prog);
+    glDeleteShader(vs);
+    glDeleteShader(fs);
+    GLint linked = 0;
+    glGetProgramiv(prog, GL_LINK_STATUS, &linked);
+    if (!linked) {
+        eDebug("[gTextureShader] plain program link failed - using the full program for batches");
+        glDeleteProgram(prog);
+        return 0;
+    }
+    m_plain_projection_location = glGetUniformLocation(prog, "u_projection");
+    m_plain_texture_location    = glGetUniformLocation(prog, "u_texture");
+    m_plain_alpha_location      = glGetUniformLocation(prog, "u_global_alpha");
+    return prog;
 }
 
 GLuint gTextureShader::compileShader(GLenum type, const char *source)
@@ -242,6 +330,11 @@ bool gTextureShader::init()
     m_rect_size_location   = glGetUniformLocation(m_program_id, "u_rect_size");
     m_radius_location      = glGetUniformLocation(m_program_id, "u_radius");
     m_edges_location       = glGetUniformLocation(m_program_id, "u_edges");
+
+    // Optional: if it fails to build, batches just keep using the full program.
+    // ENIGMA_EGL_PLAIN_TEXTURE=0 disables it (A/B testing).
+    if (!(getenv("ENIGMA_EGL_PLAIN_TEXTURE") && atoi(getenv("ENIGMA_EGL_PLAIN_TEXTURE")) == 0))
+        m_plain_program_id = buildPlainProgram();
 
     if (!gles::isGLES3()) {
         m_edges_tl_location = glGetUniformLocation(m_program_id, "u_r_tl");
@@ -306,6 +399,11 @@ void gTextureShader::setResolution(float width, float height)
         -1.0f, 1.0f, 0.0f, 1.0f
     };
     glUniformMatrix4fv(m_projection_location, 1, GL_FALSE, ortho);
+    if (m_plain_program_id) {
+        glUseProgram(m_plain_program_id);
+        glUniformMatrix4fv(m_plain_projection_location, 1, GL_FALSE, ortho);
+        glUseProgram(m_program_id);
+    }
 }
 
 void gTextureShader::drawTexture(float x, float y, float width, float height, GLuint texture_id, float global_alpha, float radius, uint8_t edges)
@@ -381,6 +479,16 @@ void gTextureShader::drawTextureSub(float x, float y, float width, float height,
 
 void gTextureShader::drawBatch(const float* vertex_data, int vertex_count, GLuint texture_id, float global_alpha)
 {
+    if (m_plain_program_id && !m_premultiply && !m_unpremultiply) {
+        glUseProgram(m_plain_program_id);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture_id);
+        glUniform1i(m_plain_texture_location, 0);
+        glUniform1f(m_plain_alpha_location, global_alpha);
+        drawVertices(vertex_data, vertex_count);
+        return;
+    }
+
     bind();
 
     glActiveTexture(GL_TEXTURE0);
