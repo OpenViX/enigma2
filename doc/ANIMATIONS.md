@@ -348,3 +348,32 @@ animation needs two read backs of the window (about 350 ms each for a full scree
 made opening a screen take over a second. "Enable animations" now only switches the list and control
 animations (focus effect, smooth scrolling, widget fades). The window rules of skin.ani are kept for when
 the capture is fast enough.
+
+### List scrolling and the render queue (dm900)
+
+- Smooth scrolling of vertical lists never takes a snapshot: `eListbox` paints the rows `scrollOffset()`
+  pixels off their place, eased to 0 over the skin's `<scrolltime>`, for up to 3 rows per step. Page jumps
+  (page up/down) and positioning the list (`justCheck`) just flip, and so do lists without `<scrolltime>`.
+- A full list is about 190 opcodes, which the render thread needs about 45 ms for; the `gRC` queue holds 2048.
+  `animationTick()` therefore skips a frame while the queue is still busy (`gRC::pendingOpcodes()`: more than
+  60 for scroll frames, more than 250 for the small row effect frames), else the main thread would block in
+  `gRC::submit()` and key handling would stall.
+- The key press of an isolated scroll queues several frames at once (the list and everything following the
+  selection), so the animation clock is held at its start until the queue has drained (at most 400 ms);
+  otherwise the animation is over before its first frame is on screen. A scroll that follows another within
+  400 ms (key held) starts at once.
+
+### Entrance of list rows (`itemopen`)
+
+A list rule `<animation type="itemopen" stagger="40">` with its effects makes the rows come in one after the
+other when the list is first shown: row k (counted from the top of the page) starts k * `stagger` ms after the
+first. It is a list animation like the focus effect (rows are drawn in the second, transformed pass), so no
+snapshot is needed. The clock starts when the render queue has drained after the first paint (at most 400 ms),
+and the rows wait at their start state until then. Selectors work as for the other list rules, e.g.
+`<widget render="Listbox" screen="PluginBrowser">`. Python: `eListbox.setOpenAnimation(id)` (skin attribute
+`listOpen`).
+
+A zoomed row or grid cell is kept inside the list rectangle (everything is clipped to it): the scale is limited
+to what fits (a row as wide as the list does not zoom) and the cell is moved inwards where it would stick out,
+so a cell at the edge of a grid zooms with its outer edges in place. While the entrance of a list runs, the
+focus effect of the selected row is combined with it.

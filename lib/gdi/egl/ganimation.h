@@ -112,6 +112,8 @@ struct Effect {
 
 struct Animation {
 	std::vector<Effect> effects;
+	// Per row delay of a list's "itemopen" animation: row k starts k * stagger_ms later (key `stagger` of any effect).
+	float stagger_ms = 0;
 	// delay + time of the longest effect
 	float durationMs() const;
 };

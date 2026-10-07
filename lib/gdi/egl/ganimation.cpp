@@ -249,7 +249,7 @@ int parseFloats(const std::string& s, float* out) {
 }
 
 bool isInType(const std::string& type) {
-	return type == "windowopen" || type == "visible" || type == "focus" || type == "conditional";
+	return type == "windowopen" || type == "visible" || type == "focus" || type == "conditional" || type == "itemopen";
 }
 
 Tween tweenFromName(const std::string& n) {
@@ -347,6 +347,8 @@ bool parseAnimation(const std::string& type, const std::string& spec, Animation&
 				e.time_ms = std::max(0.0f, (float)std::atof(value.c_str()));
 			} else if (key == "delay") {
 				e.delay_ms = std::max(0.0f, (float)std::atof(value.c_str()));
+			} else if (key == "stagger") {
+				out.stagger_ms = std::max(0.0f, (float)std::atof(value.c_str()));
 			} else if (key == "tween") {
 				e.tween = tweenFromName(lower(value));
 			} else if (key == "easing") {
