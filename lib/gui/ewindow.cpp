@@ -13,20 +13,27 @@ eWindow::eWindow(eWidgetDesktop *desktop, int z): eWidget(0)
 	m_flags = 0;
 
 	// check animation_mode once
-	if(eWindow::m_has_animation_mode==-1) {
+	if (eWindow::m_has_animation_mode == -1) {
+#ifdef HAVE_EGL_ANIMATION
+		// the EGL backend implements the show/hide hints itself (gEGLDC)
+		eDebug("[eWindow] animation mode supported (EGL)");
+		eWindow::m_has_animation_mode = 1;
+#else
 		if (::access("/proc/stb/fb/animation_mode", R_OK) < 0)
 		{
 			eDebug("[eWindow] animation mode not supported");
-			m_animation_mode = 0;
-			eWindow::m_has_animation_mode=0;
+			eWindow::m_has_animation_mode = 0;
 		}
-		else {
+		else
+		{
 			eDebug("[eWindow] animation mode supported");
-			m_animation_mode = 0x11;
-			eWindow::m_has_animation_mode=1;
+			eWindow::m_has_animation_mode = 1;
 		}
+#endif
 	}
-	
+	// every window needs it, not only the first one that ran the check above
+	m_animation_mode = (eWindow::m_has_animation_mode == 1) ? 0x11 : 0;
+
 	m_desktop = desktop;
 		/* ask style manager for current style */
 	ePtr<eWindowStyleManager> mgr;

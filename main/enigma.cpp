@@ -514,6 +514,18 @@ void setAnimation_speed(int speed)
 {
 	gles_set_animation_speed(speed);
 }
+#elif defined(HAVE_EGL_ANIMATION)
+#include <lib/gdi/egl/ganimation.h>
+
+void setAnimation_current(int a)
+{
+	ganim::setPreset(a);
+}
+
+void setAnimation_speed(int speed)
+{
+	ganim::setSpeed(speed);
+}
 #else
 #ifndef HAVE_OSDANIMATION
 void setAnimation_current(int a) {}

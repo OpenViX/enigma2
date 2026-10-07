@@ -64,6 +64,10 @@ if HAVE_OSDANIMATION
 SUBDIRS += AnimationSetup
 endif
 
+if HAVE_EGL_ANIMATION_PLUGIN
+SUBDIRS += AnimationSetup
+endif
+
 if HAVE_FCC
 SUBDIRS += FastChannelChange
 endif
