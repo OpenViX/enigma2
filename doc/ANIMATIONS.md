@@ -208,6 +208,38 @@ Runtime:
 5. Lists in the engine: pixel scrolling, per-row focus/unfocus, content cross-fade.
 6. Extras: loop and pulse, rotate, per-screen opt-out.
 
+## 6a. Implementation status
+
+Phase 1 and the window part of phase 2 (Layer A) are implemented; nothing has been built or run
+on a box yet.
+
+- Build switch: `--enable-egl-animation` (default yes when EGL is on) defines
+  `HAVE_EGL_ANIMATION`. The AnimationSetup plugin is built for it unless the libvugles2 or
+  OSD-animation paths already build it.
+- `lib/gdi/egl/ganimation.{h,cpp}`: presets, easing and transform math (no GL), and the two
+  atomics for the current preset and speed.
+- `gEGLDC`: handles `sendShow`/`sendHide`. At the hint the rect is copied into a texture; at the
+  first flush after the window's own draw opcodes ran, the second snapshot is taken and the
+  animation plays as ordinary frames (restore base snapshot, draw the moving snapshot with the
+  preset transform, `flip()`), ending with an exact write-back of the real final content.
+  Skipped when the canvas is scaled, a resolution change is pending, the surface is lost, the
+  framebuffer is locked, the spinner is active, or no preset is selected.
+- `setAnimation_current(idx)`/`setAnimation_speed(n)`: the existing AnimationSetup interface now
+  reaches the engine (`main/enigma.cpp`). Preset 0 is "disabled" and is the default, so nothing
+  animates until the user picks one under Menu > Skin setup > Animations.
+- `eWindow`: the animation mode is now initialised for every window (it used to be set only in
+  the first window's constructor) and counts as supported on EGL boxes.
+- The presets are approximations of the vendor ones (simplefade, simplezoom, growdrop,
+  growfromleft, extrudefromleft, popup, slidedrop, slidefromleft, slidelefttoright,
+  sliderighttoleft, slidetoptobottom, zoomfromleft, zoomfromright, stripes).
+
+Not done yet: `sendShowItem` for list scrolling (phase 3), per-category user switches (today:
+preset 0 = off, plus the speed setting), `skin.ani` loading and everything in Layer B.
+
+First things to check on a box: the plain fade on a menu opening and closing, a popup, that the
+screen after an animation is pixel-identical to one without, no black or stale frames, and the
+behaviour over live video (alpha at the window edges).
+
 ## 7. Risks and open questions
 
 - Layer A blocks the render thread for the length of an animation. Accepted for v1.

@@ -10,6 +10,10 @@
 #include <lib/base/init_num.h>
 #include <lib/gdi/egl/gegldc.h>
 #include <lib/gdi/egl/gles_version.h>
+#ifdef HAVE_EGL_ANIMATION
+#include <lib/gdi/egl/ganimation.h>
+#include <thread>
+#endif
 #include <lib/gdi/fb.h>
 #include <lib/gdi/font.h>
 
@@ -2234,6 +2238,9 @@ void gEGLDC::exec(const gOpcode* opcode) {
 	// repaints it. Apply it before the first opcode that follows setResolution()
 	// instead, so that paint lands in the new target.
 	if (m_pending_resolution_change) {
+#ifdef HAVE_EGL_ANIMATION
+		cancelWindowAnimation();
+#endif
 		flushBlitBatch();
 		flushTextBatch();
 		applyPendingResolutionChange();
@@ -2245,7 +2252,23 @@ void gEGLDC::exec(const gOpcode* opcode) {
 	if (m_profile)
 		prof_t0 = std::chrono::steady_clock::now();
 
+#ifdef HAVE_EGL_ANIMATION
+	if (m_winanim.pending && isDrawOpcode(opcode->opcode))
+		++m_winanim.draw_ops;
+#endif
+
 	switch (opcode->opcode) {
+#ifdef HAVE_EGL_ANIMATION
+		case gOpcode::sendShow:
+		case gOpcode::sendHide:
+			// Window show/hide hints: see beginWindowAnimation(). gDC::exec() does not free these
+			// opcodes' heap parameter, so it is freed here.
+			beginWindowAnimation(opcode->opcode == gOpcode::sendShow,
+				eRect(opcode->parm.setShowHideInfo->point, opcode->parm.setShowHideInfo->size));
+			delete opcode->parm.setShowHideInfo;
+			break;
+
+#endif
 		// fill/fillRegion/rectangle/line/blit are all handled entirely by
 		// this backend's own executeXXX() helpers instead of falling through
 		// to gDC::exec(opcode) - unlike renderText/renderPara/clear below,
@@ -2475,6 +2498,9 @@ void gEGLDC::exec(const gOpcode* opcode) {
 				flushTextBatch();
 				m_texture_manager.processDeletions();
 			}
+#ifdef HAVE_EGL_ANIMATION
+			finishWindowAnimation();
+#endif
 			flip();
 			gDC::exec(opcode);
 			break;
@@ -3189,6 +3215,218 @@ void gEGLDC::captureBackgroundIntoPixmap(const eRect& rect) {
 		}
 	}
 }
+
+#ifdef HAVE_EGL_ANIMATION
+// ---------------------------------------------------------------------------------------
+// Window show/hide animations (Layer A, doc/ANIMATIONS.md). Everything below runs on gRC's
+// render thread. The animation is a sequence of ordinary frames in the normal render
+// target: restore the "base" snapshot over the window rect (exact overwrite), draw the moving
+// snapshot over it with the preset's transform, flip(). Because each step goes through
+// flip(), every presentation mode (pixmap pages, shadow FBO, plain window surface) works
+// unchanged, and the last step writes back the real final content before the normal frame
+// is presented.
+// ---------------------------------------------------------------------------------------
+
+namespace {
+void makeAnimQuad(float* q, float x0, float y0, float x1, float y1) {
+	// Snapshots come from glCopyTexImage2D, i.e. bottom-up: v = 1 is the top edge.
+	const float v[24] = {x0, y0, 0.0f, 1.0f, x0, y1, 0.0f, 0.0f, x1, y0, 1.0f, 1.0f, x1, y0, 1.0f, 1.0f, x0, y1, 0.0f, 0.0f, x1, y1, 1.0f, 0.0f};
+	std::memcpy(q, v, sizeof(v));
+}
+
+float msBetween(const std::chrono::steady_clock::time_point& a, const std::chrono::steady_clock::time_point& b) {
+	return std::chrono::duration<float, std::milli>(b - a).count();
+}
+} // namespace
+
+bool gEGLDC::isDrawOpcode(int op) {
+	switch (op) {
+		case gOpcode::renderText:
+		case gOpcode::renderPara:
+		case gOpcode::fill:
+		case gOpcode::fillRegion:
+		case gOpcode::clear:
+		case gOpcode::blit:
+		case gOpcode::gradient:
+		case gOpcode::rectangle:
+		case gOpcode::line:
+			return true;
+		default:
+			return false;
+	}
+}
+
+// The same conditions the GPU spinner needs: an unscaled canvas, a settled surface and a
+// target that really holds the previous frame.
+bool gEGLDC::animationUsable() const {
+	if (!ganim::getPreset(ganim::currentPreset()))
+		return false;
+	if (!isInitialized() || isScaled() || m_pending_resolution_change || m_surface_lost || islocked())
+		return false;
+	if (m_use_shadow_fbo && m_shadow_fbo == 0)
+		return false;
+	if (m_spinner_active || m_spinner_gpu)
+		return false;
+	return true;
+}
+
+GLuint gEGLDC::captureAnimTexture(const eRect& rect) {
+	while (glGetError() != GL_NO_ERROR) {
+	}
+	GLuint tex = 0;
+	glBindFramebuffer(GL_FRAMEBUFFER, m_use_shadow_fbo ? m_shadow_fbo : 0);
+	glGenTextures(1, &tex);
+	glBindTexture(GL_TEXTURE_2D, tex);
+	// glCopyTexImage2D's y is measured from the bottom of the framebuffer.
+	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rect.left(), m_height - rect.top() - rect.height(), rect.width(), rect.height(), 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	if (glGetError() != GL_NO_ERROR) {
+		glDeleteTextures(1, &tex);
+		while (glGetError() != GL_NO_ERROR) {
+		}
+		return 0;
+	}
+	return tex;
+}
+
+void gEGLDC::cancelWindowAnimation() {
+	if (m_winanim.before)
+		glDeleteTextures(1, &m_winanim.before);
+	m_winanim = WinAnim();
+}
+
+void gEGLDC::beginWindowAnimation(bool show, const eRect& hint) {
+	cancelWindowAnimation();
+	if (!animationUsable())
+		return;
+	const eRect rect = hint & eRect(0, 0, m_width, m_height);
+	if (rect.width() < 16 || rect.height() < 16)
+		return;
+
+	flushBlitBatch();
+	flushTextBatch();
+	const GLuint tex = captureAnimTexture(rect);
+	if (!tex)
+		return;
+
+	m_winanim.pending = true;
+	m_winanim.show = show;
+	m_winanim.rect = rect;
+	m_winanim.before = tex;
+	m_winanim.draw_ops = 0;
+	m_winanim.started = std::chrono::steady_clock::now();
+}
+
+// Called from the flush opcode, after the pending batches were flushed and before the
+// frame is presented.
+void gEGLDC::finishWindowAnimation() {
+	if (!m_winanim.pending)
+		return;
+	if (msBetween(m_winanim.started, std::chrono::steady_clock::now()) > 1000.0f) {
+		cancelWindowAnimation(); // the window never painted: give up
+		return;
+	}
+	if (m_winanim.draw_ops == 0)
+		return; // this flush belongs to something else, the window is not painted yet
+	if (!animationUsable()) {
+		cancelWindowAnimation();
+		return;
+	}
+
+	const bool show = m_winanim.show;
+	const eRect rect = m_winanim.rect;
+	const GLuint before = m_winanim.before;
+	m_winanim = WinAnim();
+
+	const GLuint after = captureAnimTexture(rect);
+	if (after) {
+		runWindowAnimation(show, rect, before, after);
+		glDeleteTextures(1, &after);
+	}
+	glDeleteTextures(1, &before);
+}
+
+void gEGLDC::runWindowAnimation(bool show, const eRect& rect, GLuint before, GLuint after) {
+	const ganim::Preset* preset = ganim::getPreset(ganim::currentPreset());
+	if (!preset)
+		return;
+	const float total_ms = (float)ganim::durationMs(*preset, ganim::currentSpeed());
+	// A show moves the new window over the old background, a hide moves the old window away
+	// over the (already repainted) background.
+	const GLuint base_tex = show ? before : after;
+	const GLuint anim_tex = show ? after : before;
+	const float rx = (float)rect.left(), ry = (float)rect.top();
+	const float rw = (float)rect.width(), rh = (float)rect.height();
+
+	m_texture_shader.setPremultiply(false);
+	m_texture_shader.setUnpremultiply(false);
+
+	float quad[24];
+	const std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+	for (;;) {
+		const std::chrono::steady_clock::time_point frame_t0 = std::chrono::steady_clock::now();
+		const float t = msBetween(t0, frame_t0) / total_ms;
+		if (t >= 1.0f)
+			break;
+		const float amount = ganim::amountAt(*preset, show, t);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, m_use_shadow_fbo ? m_shadow_fbo : 0);
+		setGlScissor(rect);
+		glDisable(GL_BLEND);
+		makeAnimQuad(quad, rx, ry, rx + rw, ry + rh);
+		m_texture_shader.drawBatch(quad, 6, base_tex, 1.0f);
+
+		// The target holds premultiplied pixels: convert the snapshot to straight alpha so
+		// the usual SRC_ALPHA blend gives the premultiplied-correct result at any opacity.
+		glEnable(GL_BLEND);
+		setAlphaBlendMode(true);
+		m_texture_shader.setUnpremultiply(true, 1.0f);
+		if (preset->stripes) {
+			const int stripe_h = 24;
+			const int n = (rect.height() + stripe_h - 1) / stripe_h;
+			for (int i = 0; i < n; ++i) {
+				const float f = std::min(1.0f, (amount - 0.5f * (float)i / (float)std::max(1, n)) / 0.5f);
+				if (f <= 0.0f)
+					continue;
+				const int sy = rect.top() + i * stripe_h;
+				const int sh = std::min(stripe_h, rect.top() + rect.height() - sy);
+				const int sw = std::max(1, (int)(rw * f));
+				const int sx = (i & 1) ? rect.left() + rect.width() - sw : rect.left();
+				setGlScissor(eRect(sx, sy, sw, sh));
+				makeAnimQuad(quad, rx, ry, rx + rw, ry + rh);
+				m_texture_shader.drawBatch(quad, 6, anim_tex, 1.0f);
+			}
+		} else {
+			const ganim::Transform tr = ganim::evaluate(*preset, amount);
+			float d[4];
+			ganim::destRect(tr, rx, ry, rw, rh, d);
+			makeAnimQuad(quad, d[0], d[1], d[2], d[3]);
+			m_texture_shader.drawBatch(quad, 6, anim_tex, tr.alpha);
+		}
+		m_texture_shader.setUnpremultiply(false);
+
+		flip();
+
+		// Cap at ~70 fps if the present did not block on vsync.
+		const float frame_ms = msBetween(frame_t0, std::chrono::steady_clock::now());
+		if (frame_ms < 14.0f)
+			std::this_thread::sleep_for(std::chrono::microseconds((int)((14.0f - frame_ms) * 1000.0f)));
+	}
+
+	// Leave the target holding exactly the real final content, then restore GL state.
+	glBindFramebuffer(GL_FRAMEBUFFER, m_use_shadow_fbo ? m_shadow_fbo : 0);
+	setGlScissor(rect);
+	glDisable(GL_BLEND);
+	makeAnimQuad(quad, rx, ry, rx + rw, ry + rh);
+	m_texture_shader.drawBatch(quad, 6, after, 1.0f);
+	glEnable(GL_BLEND);
+	glScissor(0, 0, m_phys_width, m_phys_height);
+}
+#endif // HAVE_EGL_ANIMATION
 
 void gEGLDC::flip() {
 	// Defines "this frame" for the texture manager's LRU eviction.

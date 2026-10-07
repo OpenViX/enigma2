@@ -450,6 +450,31 @@ private:
 	void disableSpinner() override;
 	void incrementSpinner() override;
 
+#ifdef HAVE_EGL_ANIMATION
+	// Window show/hide animations (Layer A, see doc/ANIMATIONS.md). eWindow::show()/hide() send
+	// sendShow/sendHide(rect) hints. At the hint the target's content in that rect is copied into
+	// a texture ("before": the background for a show, the window for a hide). Once the window's
+	// own draw opcodes have run, the first flush takes the second snapshot ("after") and plays
+	// the animation here on the render thread, one flip() per frame, then leaves the target
+	// holding exactly the real final content.
+	struct WinAnim {
+		bool pending = false;
+		bool show = true;
+		eRect rect;
+		GLuint before = 0;
+		int draw_ops = 0; // draw opcodes seen since the hint (a flush before any means "not painted yet")
+		std::chrono::steady_clock::time_point started;
+	};
+	WinAnim m_winanim;
+	static bool isDrawOpcode(int op);
+	bool animationUsable() const;
+	GLuint captureAnimTexture(const eRect& rect);
+	void beginWindowAnimation(bool show, const eRect& hint);
+	void cancelWindowAnimation();
+	void finishWindowAnimation();
+	void runWindowAnimation(bool show, const eRect& rect, GLuint before, GLuint after);
+#endif
+
 	static gEGLDC* s_instance;
 
 public:

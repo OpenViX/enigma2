@@ -454,7 +454,7 @@ void gFBDC::reloadSettings()
 
 eAutoInitPtr<gFBDC> init_gFBDC(eAutoInitNumbers::graphic-1, "GFBDC");
 
-#ifdef HAVE_OSDANIMATION
+#if defined(HAVE_OSDANIMATION) && !defined(HAVE_EGL_ANIMATION)
 void setAnimation_current(int a) {
 	switch (a) {
 		case 1:

@@ -52,6 +52,7 @@ if HAVE_EGL
 gdi_libenigma_gdi_a_SOURCES += \
 	gdi/gfont_atlas.cpp \
 	gdi/egl/egl_init.cpp \
+	gdi/egl/ganimation.cpp \
 	gdi/egl/gegldc.cpp \
 	gdi/egl/gles_version.cpp \
 	gdi/egl/gosd_capture.cpp \
@@ -62,6 +63,7 @@ gdi_libenigma_gdi_a_SOURCES += \
 	gdi/egl/shader/gtexture_shader.cpp
 gdiinclude_HEADERS += \
 	gdi/gfont_atlas.h \
+	gdi/egl/ganimation.h \
 	gdi/egl/gegldc.h \
 	gdi/egl/gles_version.h \
 	gdi/egl/gosd_capture.h \

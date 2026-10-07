@@ -585,6 +585,24 @@ AS_IF([test "x$use_egl" = "xyes" -a "x$have_gles3" = "xyes"], [
 
 AM_CONDITIONAL([HAVE_EGL], [test "x$use_egl" = "xyes"])
 
+# Window show/hide animations rendered by the EGL backend (lib/gdi/egl/ganimation.*,
+# doc/ANIMATIONS.md). Defaults to on whenever EGL is on; a box without EGL never gets it,
+# and the animation is only ever active once the user picks one in the AnimationSetup plugin.
+AC_ARG_ENABLE([egl-animation],
+  AS_HELP_STRING([--enable-egl-animation], [window show/hide animations in the EGL backend, yes/no (default yes when EGL is enabled)]),
+  [],
+  [enable_egl_animation=yes])
+AS_IF([test "x$use_egl" = "xyes" -a "x$enable_egl_animation" = "xyes"], [
+  AC_DEFINE([HAVE_EGL_ANIMATION], [1], [EGL backend implements window show/hide animations])
+  have_egl_animation=yes
+], [
+  have_egl_animation=no
+])
+AM_CONDITIONAL([HAVE_EGL_ANIMATION], [test "x$have_egl_animation" = "xyes"])
+# the AnimationSetup plugin is built for the vendor paths below; for the EGL engine only when
+# none of them already builds it
+AM_CONDITIONAL([HAVE_EGL_ANIMATION_PLUGIN], [test "x$have_egl_animation" = "xyes" -a "x$with_libvugles2" != "xyes" -a x"$withosdanimation" = xno])
+
 # Rendering the OSD canvas scaled down when it is larger than the GPU's maximum
 # texture/renderbuffer size (e.g. a 2560x1440 skin on VideoCore IV, limit 2048)
 # - see gEGLDC::updatePhysicalSize(). Off unless asked for: the recipe passes it

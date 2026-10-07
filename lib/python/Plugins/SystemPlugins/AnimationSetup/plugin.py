@@ -8,7 +8,7 @@ from Components.config import config, ConfigNumber, ConfigSelectionNumber, getCo
 from Components.SystemInfo import SystemInfo
 from Plugins.Plugin import PluginDescriptor
 
-from enigma import setAnimation_current, setAnimation_speed
+from enigma import setAnimation_current, setAnimation_speed, getEGLVersionString
 
 # default = disabled
 g_default = {
@@ -89,7 +89,8 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 
 
 class AnimationSetupScreen(Screen):
-	if SystemInfo["brand"] == 'gigablue':
+	# the EGL engine implements all of these presets itself (lib/gdi/egl/ganimation.cpp)
+	if SystemInfo["brand"] == 'gigablue' or getEGLVersionString():
 		animationSetupItems = [
 			{"idx": 0, "name": _("Disable Animations")},
 			{"idx": 1, "name": _("Simple fade")},
