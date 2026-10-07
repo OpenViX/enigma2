@@ -637,6 +637,7 @@ void eListbox::moveSelection(long dir)
 	if (m_orientation == orVertical)
 	{
 		if (m_top != oldtop){
+			sendPageAnimation(r_dir, m_top < oldtop, false);
 			invalidate();
 		}
 		else if (m_selected != oldsel)
@@ -650,6 +651,7 @@ void eListbox::moveSelection(long dir)
 	else if (m_orientation == orGrid)
 	{
 		if (m_top != oldtop){
+			sendPageAnimation(r_dir, m_top < oldtop, false);
 			invalidate();
 		}
 		else if (m_selected != oldsel)
@@ -663,6 +665,7 @@ void eListbox::moveSelection(long dir)
 	else
 	{
 		if (m_left != oldleft){
+			sendPageAnimation(r_dir, m_left < oldleft, true);
 			invalidate();
 		}
 		else if (m_selected != oldsel)
@@ -673,6 +676,36 @@ void eListbox::moveSelection(long dir)
 			invalidate(inv);
 		}
 	}
+}
+
+// A page change redraws the whole list at once; let the DC slide the old page out and the new one
+// in (EGL list animation, see doc/ANIMATIONS.md). The hint goes out before the invalidate()/repaint.
+void eListbox::sendPageAnimation(long r_dir, bool fallbackBackwards, bool horizontal)
+{
+	bool backwards;
+	switch (r_dir)
+	{
+		case moveUp:
+		case moveTop:
+		case pageUp:
+		case prevItem:
+		case prevPage:
+		case moveStart:
+		case moveStartTop:
+			backwards = true;
+			break;
+		case moveDown:
+		case moveEnd:
+		case pageDown:
+		case nextItem:
+		case nextPage:
+			backwards = false;
+			break;
+		default:
+			backwards = fallbackBackwards;
+			break;
+	}
+	sendShowItem((horizontal ? 2 : 1) * (backwards ? -1 : 1));
 }
 
 void eListbox::moveSelectionTo(int index)

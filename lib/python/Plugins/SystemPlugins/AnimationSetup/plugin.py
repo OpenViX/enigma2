@@ -4,11 +4,16 @@ from Components.ActionMap import ActionMap
 from Components.ConfigList import ConfigListScreen
 from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
-from Components.config import config, ConfigNumber, ConfigSelectionNumber, getConfigListEntry
+from Components.config import config, ConfigNumber, ConfigSelectionNumber, ConfigYesNo, getConfigListEntry
 from Components.SystemInfo import SystemInfo
 from Plugins.Plugin import PluginDescriptor
 
 from enigma import setAnimation_current, setAnimation_speed, getEGLVersionString
+
+try:
+	from enigma import setAnimation_lists  # EGL list page slide, not in every build
+except ImportError:
+	setAnimation_lists = None
 
 # default = disabled
 g_default = {
@@ -23,6 +28,20 @@ g_orig_doClose = None
 
 config.misc.window_animation_default = ConfigNumber(default=g_default["current"])
 config.misc.window_animation_speed = ConfigSelectionNumber(15, g_max_speed, 1, default=g_default["speed"])
+config.misc.window_animation_lists = ConfigYesNo(default=False)
+
+
+LIST_ANIMATION_KEY = 100  # list entry that toggles the list page slide instead of choosing a preset
+
+
+def listAnimationAvailable():
+	# only the EGL engine slides list pages (lib/gdi/egl/gegldc.cpp, doc/ANIMATIONS.md)
+	return setAnimation_lists is not None and bool(getEGLVersionString())
+
+
+def applyListAnimation():
+	if listAnimationAvailable():
+		setAnimation_lists(1 if config.misc.window_animation_lists.value else 0)
 
 
 class AnimationSetupConfig(ConfigListScreen, Screen):
@@ -63,16 +82,20 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 
 	def keyGreen(self):
 		config.misc.window_animation_speed.save()
+		config.misc.window_animation_lists.save()
 		setAnimation_speed(int(config.misc.window_animation_speed.value))
+		applyListAnimation()
 		self.close()
 
 	def keyRed(self):
 		config.misc.window_animation_speed.cancel()
+		config.misc.window_animation_lists.cancel()
 		self.close()
 
 	def keyYellow(self):
 		global g_default
 		config.misc.window_animation_speed.value = g_default["speed"]
+		config.misc.window_animation_lists.value = False
 		self.makeConfigList()
 
 	def keyLeft(self):
@@ -85,6 +108,8 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 		self.entrylist = []
 		entrySpeed = getConfigListEntry(_("Animation Speed"), config.misc.window_animation_speed)
 		self.entrylist.append(entrySpeed)
+		if listAnimationAvailable():
+			self.entrylist.append(getConfigListEntry(_("Slide list pages"), config.misc.window_animation_lists))
 		self["config"].list = self.entrylist
 
 
@@ -160,6 +185,9 @@ class AnimationSetupScreen(Screen):
 		self.onLayoutFinish.append(self.layoutFinished)
 
 	def layoutFinished(self):
+		self.fillList()
+
+	def fillList(self, index=0):
 		lani = []
 		for x in self.animationSetupItems:
 			key = x.get("idx", 0)
@@ -167,11 +195,22 @@ class AnimationSetupScreen(Screen):
 			if key == config.misc.window_animation_default.value:
 				name = "* %s" % (name)
 			lani.append((name, key))
+		if listAnimationAvailable():
+			state = _("on") if config.misc.window_animation_lists.value else _("off")
+			lani.append((_("Slide list pages: %s") % state, LIST_ANIMATION_KEY))
 
 		self["list"].setList(lani)
+		self["list"].moveToIndex(index)
 
 	def ok(self):
 		current = self["list"].getCurrent()
+		if current and current[1] == LIST_ANIMATION_KEY:
+			# a switch, not a window animation: toggle it and stay in the screen
+			config.misc.window_animation_lists.value = not config.misc.window_animation_lists.value
+			config.misc.window_animation_lists.save()
+			applyListAnimation()
+			self.fillList(self["list"].getSelectedIndex())
+			return
 		if current:
 			key = current[1]
 			config.misc.window_animation_default.value = key
@@ -189,7 +228,7 @@ class AnimationSetupScreen(Screen):
 
 	def preview(self):
 		current = self["list"].getCurrent()
-		if current:
+		if current and current[1] != LIST_ANIMATION_KEY:
 			global g_animation_paused
 			tmp = g_animation_paused
 			g_animation_paused = False
@@ -241,6 +280,7 @@ def startAnimationSetup(menuid):
 def sessionAnimationSetup(session, reason, **kwargs):
 	setAnimation_current(config.misc.window_animation_default.value)
 	setAnimation_speed(int(config.misc.window_animation_speed.value))
+	applyListAnimation()
 
 	global g_orig_show, g_orig_doClose
 	if g_orig_show is None:

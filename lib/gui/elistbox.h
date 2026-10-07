@@ -239,6 +239,7 @@ protected:
 	ePoint getItemPostion(int index);
 
 private:
+	void sendPageAnimation(long r_dir, bool fallbackBackwards, bool horizontal);
 	int m_scrollbar_mode, m_prev_scrollbar_page;
 	bool m_content_changed;
 	bool m_enabled_wrap_around;

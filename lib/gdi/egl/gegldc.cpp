@@ -2274,6 +2274,12 @@ void gEGLDC::exec(const gOpcode* opcode) {
 			delete opcode->parm.setShowHideInfo;
 			break;
 
+		case gOpcode::sendShowItem:
+			// A listbox is about to change page: see beginListAnimation().
+			beginListAnimation(opcode->parm.setShowItemInfo->dir, eRect(opcode->parm.setShowItemInfo->point, opcode->parm.setShowItemInfo->size));
+			delete opcode->parm.setShowItemInfo;
+			break;
+
 #endif
 		// fill/fillRegion/rectangle/line/blit are all handled entirely by
 		// this backend's own executeXXX() helpers instead of falling through
@@ -3286,8 +3292,9 @@ bool gEGLDC::isDrawOpcode(int op) {
 
 // The same conditions the GPU spinner needs: an unscaled canvas, a settled surface and a
 // target that really holds the previous frame.
-bool gEGLDC::animationUsable() const {
-	if (!ganim::getPreset(ganim::currentPreset()))
+bool gEGLDC::animationUsable(bool list) const {
+	// Window animations need a preset; list page slides have their own switch.
+	if (list ? !ganim::listsEnabled() : !ganim::getPreset(ganim::currentPreset()))
 		return false;
 	if (!isInitialized() || isScaled() || m_pending_resolution_change || m_surface_lost || islocked())
 		return false;
@@ -3431,16 +3438,18 @@ void gEGLDC::finishWindowAnimation() {
 		covered += (long long)r.width() * (long long)r.height();
 	const long long total = std::max(1LL, (long long)m_winanim.rect.width() * (long long)m_winanim.rect.height());
 	const int covered_pct = (int)(covered * 100 / total);
-	if (covered_pct < (m_winanim.show ? 25 : 60)) {
+	const bool is_list = m_winanim.list;
+	const char* kind = is_list ? "list" : (m_winanim.show ? "show" : "hide");
+	if (covered_pct < (is_list ? 40 : (m_winanim.show ? 25 : 60))) {
 		static int s_waits = 0;
 		if (s_waits < 20) {
 			++s_waits;
 			if (animDbg())
-				eDebug("[gEGLDC] anim: flush after %s hint, draw_ops=%d but only %d%% of the window rect repainted - waiting", m_winanim.show ? "show" : "hide", m_winanim.draw_ops, covered_pct);
+				eDebug("[gEGLDC] anim: flush after %s hint, draw_ops=%d but only %d%% of the window rect repainted - waiting", kind, m_winanim.draw_ops, covered_pct);
 		}
 		return;
 	}
-	if (!animationUsable()) {
+	if (!animationUsable(is_list)) {
 		if (animDbg())
 			eDebug("[gEGLDC] anim: cancelled at flush, no longer usable");
 		cancelWindowAnimation();
@@ -3448,6 +3457,7 @@ void gEGLDC::finishWindowAnimation() {
 	}
 
 	const bool show = m_winanim.show;
+	const long list_dir = m_winanim.dir;
 	const eRect rect = m_winanim.rect;
 	const GLuint before = m_winanim.before;
 	const int draw_ops = m_winanim.draw_ops;
@@ -3456,13 +3466,51 @@ void gEGLDC::finishWindowAnimation() {
 
 	const GLuint after = captureAnimTexture(rect);
 	if (animDbg())
-		eDebug("[gEGLDC] anim: flush after %s hint, draw_ops=%d, %d%% of the rect repainted, %.0f ms after the hint, after-texture=%u", show ? "show" : "hide", draw_ops, covered_pct, since_hint,
-			(unsigned)after);
+		eDebug("[gEGLDC] anim: flush after %s hint, draw_ops=%d, %d%% of the rect repainted, %.0f ms after the hint, after-texture=%u", kind, draw_ops, covered_pct, since_hint, (unsigned)after);
 	if (after) {
-		runWindowAnimation(show, rect, before, after);
+		if (is_list)
+			runListAnimation(list_dir, rect, before, after);
+		else
+			runWindowAnimation(show, rect, before, after);
 		glDeleteTextures(1, &after);
 	}
 	glDeleteTextures(1, &before);
+}
+
+// A listbox is changing page (sendShowItem). Same snapshot method as a window hint: the list's
+// current content is captured now, and when the list has repainted its new page the animation
+// slides the old page out and the new one in. Never interrupts a pending window animation.
+void gEGLDC::beginListAnimation(long dir, const eRect& hint) {
+	if (m_winanim.pending && !m_winanim.list)
+		return;
+	cancelWindowAnimation();
+	if (!animationUsable(true)) {
+		if (animDbg())
+			eDebug("[gEGLDC] anim: list hint skipped, not usable (lists=%d scaled=%d resChange=%d lost=%d locked=%d spinner=%d/%d)", ganim::listsEnabled() ? 1 : 0, isScaled() ? 1 : 0,
+				m_pending_resolution_change ? 1 : 0, m_surface_lost ? 1 : 0, islocked() ? 1 : 0, m_spinner_active ? 1 : 0, m_spinner_gpu ? 1 : 0);
+		return;
+	}
+	if (dir == 0)
+		return;
+	const eRect rect = hint & eRect(0, 0, m_width, m_height);
+	if (rect.width() < 16 || rect.height() < 16)
+		return;
+
+	flushBlitBatch();
+	flushTextBatch();
+	const GLuint tex = captureAnimTexture(rect);
+	if (animDbg())
+		eDebug("[gEGLDC] anim: list hint dir=%ld %d,%d %dx%d before-texture=%u", dir, rect.left(), rect.top(), rect.width(), rect.height(), (unsigned)tex);
+	if (!tex)
+		return;
+
+	m_winanim.pending = true;
+	m_winanim.list = true;
+	m_winanim.dir = dir;
+	m_winanim.rect = rect;
+	m_winanim.before = tex;
+	m_winanim.draw_ops = 0;
+	m_winanim.started = std::chrono::steady_clock::now();
 }
 
 void gEGLDC::runWindowAnimation(bool show, const eRect& rect, GLuint before, GLuint after) {
@@ -3525,6 +3573,67 @@ void gEGLDC::runWindowAnimation(bool show, const eRect& rect, GLuint before, GLu
 			m_texture_shader.drawBatch(quad, 6, anim_tex, tr.alpha);
 		}
 		m_texture_shader.setUnpremultiply(false);
+
+		flip();
+
+		// Cap at ~70 fps if the present did not block on vsync.
+		const float frame_ms = msBetween(frame_t0, std::chrono::steady_clock::now());
+		if (frame_ms < 14.0f)
+			std::this_thread::sleep_for(std::chrono::microseconds((int)((14.0f - frame_ms) * 1000.0f)));
+	}
+
+	// Leave the target holding exactly the real final content, then restore GL state.
+	glBindFramebuffer(GL_FRAMEBUFFER, m_use_shadow_fbo ? m_shadow_fbo : 0);
+	setGlScissor(rect);
+	glDisable(GL_BLEND);
+	makeAnimQuad(quad, rx, ry, rx + rw, ry + rh);
+	m_texture_shader.drawBatch(quad, 6, after, 1.0f);
+	glEnable(GL_BLEND);
+	glScissor(0, 0, m_phys_width, m_phys_height);
+}
+
+// List page slide: the old and the new page are laid out as one strip (old then new when going
+// forward, new then old when going back) and the strip is moved through the list rect. Both
+// snapshots are exact overwrites that tile the rect, so there is no blending and nothing of the
+// list or the window behind it shows through twice; the transparent video holes stay transparent.
+void gEGLDC::runListAnimation(long dir, const eRect& rect, GLuint before, GLuint after) {
+	const bool horizontal = (dir == 2 || dir == -2);
+	const bool forward = dir > 0;
+	const float total_ms = (float)ganim::listDurationMs(ganim::currentSpeed());
+	const float rx = (float)rect.left(), ry = (float)rect.top();
+	const float rw = (float)rect.width(), rh = (float)rect.height();
+	const float span = horizontal ? rw : rh;
+	if (animDbg())
+		eDebug("[gEGLDC] anim: run list dir=%ld %.0f ms before=%u after=%u", dir, total_ms, (unsigned)before, (unsigned)after);
+
+	m_texture_shader.setPremultiply(false);
+	m_texture_shader.setUnpremultiply(false);
+
+	float quad[24];
+	const std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
+	for (;;) {
+		const std::chrono::steady_clock::time_point frame_t0 = std::chrono::steady_clock::now();
+		const float t = msBetween(t0, frame_t0) / total_ms;
+		if (t >= 1.0f)
+			break;
+		const float shift = ganim::listAmountAt(t) * span;
+		// Forward: the content moves towards the start of the axis, the new page follows it.
+		const float off_before = forward ? -shift : shift;
+		const float off_after = forward ? span - shift : shift - span;
+
+		glBindFramebuffer(GL_FRAMEBUFFER, m_use_shadow_fbo ? m_shadow_fbo : 0);
+		setGlScissor(rect);
+		glDisable(GL_BLEND);
+		if (horizontal)
+			makeAnimQuad(quad, rx + off_before, ry, rx + off_before + rw, ry + rh);
+		else
+			makeAnimQuad(quad, rx, ry + off_before, rx + rw, ry + off_before + rh);
+		m_texture_shader.drawBatch(quad, 6, before, 1.0f);
+		if (horizontal)
+			makeAnimQuad(quad, rx + off_after, ry, rx + off_after + rw, ry + rh);
+		else
+			makeAnimQuad(quad, rx, ry + off_after, rx + rw, ry + off_after + rh);
+		m_texture_shader.drawBatch(quad, 6, after, 1.0f);
 
 		flip();
 

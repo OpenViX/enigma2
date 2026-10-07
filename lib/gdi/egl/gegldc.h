@@ -460,6 +460,8 @@ private:
 	struct WinAnim {
 		bool pending = false;
 		bool show = true;
+		bool list = false; // a list page slide (sendShowItem) instead of a window show/hide
+		long dir = 0; // list only: +-1 vertical, +-2 horizontal, see gOpcode::psetShowItemInfo
 		eRect rect;
 		GLuint before = 0;
 		int draw_ops = 0; // draw opcodes seen since the hint (a flush before any means "not painted yet")
@@ -468,12 +470,14 @@ private:
 	};
 	WinAnim m_winanim;
 	static bool isDrawOpcode(int op);
-	bool animationUsable() const;
+	bool animationUsable(bool list = false) const;
 	GLuint captureAnimTexture(const eRect& rect);
 	void beginWindowAnimation(bool show, const eRect& hint);
+	void beginListAnimation(long dir, const eRect& hint);
 	void cancelWindowAnimation();
 	void finishWindowAnimation();
 	void runWindowAnimation(bool show, const eRect& rect, GLuint before, GLuint after);
+	void runListAnimation(long dir, const eRect& rect, GLuint before, GLuint after);
 #endif
 
 	static gEGLDC* s_instance;

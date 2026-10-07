@@ -9,6 +9,7 @@ namespace {
 
 std::atomic<int> s_preset{0};
 std::atomic<int> s_speed{20};
+std::atomic<bool> s_lists{false};
 
 // name, alpha, scale x, scale y, anchor, translate x, translate y, stripes, overshoot, ms
 const Preset kPresets[] = {
@@ -73,6 +74,24 @@ int currentPreset() {
 
 int currentSpeed() {
 	return s_speed.load();
+}
+
+void setListsEnabled(bool enabled) {
+	s_lists.store(enabled);
+}
+
+bool listsEnabled() {
+	return s_lists.load();
+}
+
+int listDurationMs(int speed) {
+	// Same speed scale as durationMs(): 15..30, 20 is the default and higher is faster.
+	const int s = std::max(5, std::min(60, speed));
+	return std::max(80, 260 * 20 / s);
+}
+
+float listAmountAt(float t) {
+	return easeOutCubic(std::max(0.0f, std::min(1.0f, t)));
 }
 
 int durationMs(const Preset& preset, int speed) {
