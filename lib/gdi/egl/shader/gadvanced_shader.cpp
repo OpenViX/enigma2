@@ -7,119 +7,119 @@
 // ---------------------------------------------------------------------------
 #if defined(HAVE_GLES3)
 static const char* vertex_shader_es3 = R"(#version 300 es
-    layout(location = 0) in vec2 position;
-    uniform mat4 u_projection;
-    out vec2 v_pos;
-    void main() {
-        gl_Position = u_projection * vec4(position, 0.0, 1.0);
-        v_pos = position;
-    }
+	layout(location = 0) in vec2 position;
+	uniform mat4 u_projection;
+	out vec2 v_pos;
+	void main() {
+		gl_Position = u_projection * vec4(position, 0.0, 1.0);
+		v_pos = position;
+	}
 )";
 
 static const char* fragment_shader_es3 = R"(#version 300 es
-    precision mediump float;
-    
-    in vec2 v_pos;
-    out vec4 frag_color;
-    
-    uniform vec4 u_rect_size;
-    uniform float u_radius;
-    uniform int u_edges;
-    uniform vec4 u_solid_color;
-    uniform float u_border_width;
-    uniform vec4 u_border_color;
+	precision mediump float;
+	
+	in vec2 v_pos;
+	out vec4 frag_color;
+	
+	uniform vec4 u_rect_size;
+	uniform float u_radius;
+	uniform int u_edges;
+	uniform vec4 u_solid_color;
+	uniform float u_border_width;
+	uniform vec4 u_border_color;
 
-    uniform int u_num_stops;
-    uniform vec4 u_gradient_colors[16];
-    uniform float u_gradient_stops[16];
-    uniform int u_gradient_orientation;
-    uniform int u_alphablend;
-    uniform float u_rbswap;
-    uniform float u_coverage_alpha;
+	uniform int u_num_stops;
+	uniform vec4 u_gradient_colors[16];
+	uniform float u_gradient_stops[16];
+	uniform int u_gradient_orientation;
+	uniform int u_alphablend;
+	uniform float u_rbswap;
+	uniform float u_coverage_alpha;
 
-    float udRoundBox(vec2 p, vec2 b, float r) {
-        vec2 d = abs(p) - b + vec2(r);
-        return min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - r;
-    }
+	float udRoundBox(vec2 p, vec2 b, float r) {
+		vec2 d = abs(p) - b + vec2(r);
+		return min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - r;
+	}
 
-    void main() {
-        float coverage = 1.0;
-        vec2 half_size = u_rect_size.zw * 0.5;
-        vec2 center = vec2(u_rect_size.x, u_rect_size.y) + half_size;
-        vec2 p = v_pos - center;
-        float r = u_radius;
+	void main() {
+		float coverage = 1.0;
+		vec2 half_size = u_rect_size.zw * 0.5;
+		vec2 center = vec2(u_rect_size.x, u_rect_size.y) + half_size;
+		vec2 p = v_pos - center;
+		float r = u_radius;
 
-        if (u_radius > 0.0) {
-            if (p.x < 0.0 && p.y < 0.0 && (u_edges & 1) == 0) r = 0.0;
-            if (p.x > 0.0 && p.y < 0.0 && (u_edges & 2) == 0) r = 0.0;
-            if (p.x < 0.0 && p.y > 0.0 && (u_edges & 4) == 0) r = 0.0;
-            if (p.x > 0.0 && p.y > 0.0 && (u_edges & 8) == 0) r = 0.0;
+		if (u_radius > 0.0) {
+			if (p.x < 0.0 && p.y < 0.0 && (u_edges & 1) == 0) r = 0.0;
+			if (p.x > 0.0 && p.y < 0.0 && (u_edges & 2) == 0) r = 0.0;
+			if (p.x < 0.0 && p.y > 0.0 && (u_edges & 4) == 0) r = 0.0;
+			if (p.x > 0.0 && p.y > 0.0 && (u_edges & 8) == 0) r = 0.0;
 
-            float dist = udRoundBox(p, half_size, r);
-            // Analytic coverage ramp over ~1px instead of a hard discard at
-            // dist>0.5 - the same technique Ganesh's round-rect ops use for
-            // GPU antialiasing (see GrOvalOpFactory): udRoundBox's signed
-            // distance is how many pixels outside the shape this fragment
-            // is, so fading coverage to 0 across that last pixel replaces a
-            // jagged binary edge with a soft one at the same per-pixel cost.
-            coverage = clamp(0.5 - dist, 0.0, 1.0);
-            if (coverage <= 0.0) discard;
-        }
+			float dist = udRoundBox(p, half_size, r);
+			// Analytic coverage ramp over ~1px instead of a hard discard at
+			// dist>0.5 - the same technique Ganesh's round-rect ops use for
+			// GPU antialiasing (see GrOvalOpFactory): udRoundBox's signed
+			// distance is how many pixels outside the shape this fragment
+			// is, so fading coverage to 0 across that last pixel replaces a
+			// jagged binary edge with a soft one at the same per-pixel cost.
+			coverage = clamp(0.5 - dist, 0.0, 1.0);
+			if (coverage <= 0.0) discard;
+		}
 
-        vec4 final_color = u_solid_color;
+		vec4 final_color = u_solid_color;
 
-        if (u_num_stops > 0) {
-            float t = 0.0;
-            if (u_gradient_orientation == 1) {
-                t = (v_pos.x - u_rect_size.x) / u_rect_size.z;
-            } else {
-                t = (v_pos.y - u_rect_size.y) / u_rect_size.w;
-            }
+		if (u_num_stops > 0) {
+			float t = 0.0;
+			if (u_gradient_orientation == 1) {
+				t = (v_pos.x - u_rect_size.x) / u_rect_size.z;
+			} else {
+				t = (v_pos.y - u_rect_size.y) / u_rect_size.w;
+			}
 
-            vec4 grad_color = u_gradient_colors[0];
-            for (int i = 0; i < 15; i++) {
-                if (i >= u_num_stops - 1) break;
-                if (t >= u_gradient_stops[i] && t <= u_gradient_stops[i+1]) {
-                    float range = u_gradient_stops[i+1] - u_gradient_stops[i];
-                    float f = (t - u_gradient_stops[i]) / range;
-                    grad_color = mix(u_gradient_colors[i], u_gradient_colors[i+1], f);
-                    break;
-                }
-            }
+			vec4 grad_color = u_gradient_colors[0];
+			for (int i = 0; i < 15; i++) {
+				if (i >= u_num_stops - 1) break;
+				if (t >= u_gradient_stops[i] && t <= u_gradient_stops[i+1]) {
+					float range = u_gradient_stops[i+1] - u_gradient_stops[i];
+					float f = (t - u_gradient_stops[i]) / range;
+					grad_color = mix(u_gradient_colors[i], u_gradient_colors[i+1], f);
+					break;
+				}
+			}
 
-            if (t > u_gradient_stops[u_num_stops - 1]) {
-                grad_color = u_gradient_colors[u_num_stops - 1];
-            }
+			if (t > u_gradient_stops[u_num_stops - 1]) {
+				grad_color = u_gradient_colors[u_num_stops - 1];
+			}
 
-            if (u_alphablend == 1) {
-                final_color.rgb = mix(final_color.rgb, grad_color.rgb, grad_color.a);
-            } else {
-                final_color = grad_color;
-            }
-        }
+			if (u_alphablend == 1) {
+				final_color.rgb = mix(final_color.rgb, grad_color.rgb, grad_color.a);
+			} else {
+				final_color = grad_color;
+			}
+		}
 
-        if (u_border_width > 0.0) {
-            // Second, inset SDF for the fill/border split: a fragment inside
-            // the shrunk-by-border_width rounded box is fill, one between it
-            // and the outer edge (already established by `coverage` above)
-            // is border - same analytic-ramp antialiasing as the outer edge,
-            // just against this inner boundary instead.
-            float inner_r = max(r - u_border_width, 0.0);
-            vec2 inner_half = max(half_size - vec2(u_border_width), vec2(0.0));
-            float inner_dist = udRoundBox(p, inner_half, inner_r);
-            float inner_coverage = clamp(0.5 - inner_dist, 0.0, 1.0);
-            final_color = mix(u_border_color, final_color, inner_coverage);
-        }
+		if (u_border_width > 0.0) {
+			// Second, inset SDF for the fill/border split: a fragment inside
+			// the shrunk-by-border_width rounded box is fill, one between it
+			// and the outer edge (already established by `coverage` above)
+			// is border - same analytic-ramp antialiasing as the outer edge,
+			// just against this inner boundary instead.
+			float inner_r = max(r - u_border_width, 0.0);
+			vec2 inner_half = max(half_size - vec2(u_border_width), vec2(0.0));
+			float inner_dist = udRoundBox(p, inner_half, inner_r);
+			float inner_coverage = clamp(0.5 - inner_dist, 0.0, 1.0);
+			final_color = mix(u_border_color, final_color, inner_coverage);
+		}
 
-        // u_coverage_alpha: output bare coverage as alpha so the blend
-        // equation can lerp by coverage alone - see gEGLDC::executeRectangle()'s
-        // coverage-lerp pass.
-        final_color.a = mix(final_color.a * coverage, coverage, u_coverage_alpha);
+		// u_coverage_alpha: output bare coverage as alpha so the blend
+		// equation can lerp by coverage alone - see gEGLDC::executeRectangle()'s
+		// coverage-lerp pass.
+		final_color.a = mix(final_color.a * coverage, coverage, u_coverage_alpha);
 
-        // See gshader.cpp's fragment shader / gles::needsRBSwap's comment
-        // (gles_version.h) for why this per-platform swap is here.
-        frag_color = mix(final_color, final_color.bgra, u_rbswap);
-    }
+		// See gshader.cpp's fragment shader / gles::needsRBSwap's comment
+		// (gles_version.h) for why this per-platform swap is here.
+		frag_color = mix(final_color, final_color.bgra, u_rbswap);
+	}
 )";
 #endif
 
@@ -129,120 +129,120 @@ static const char* fragment_shader_es3 = R"(#version 300 es
 // We replace the bitmask corner test with float comparisons using float uniforms.
 // ---------------------------------------------------------------------------
 static const char* vertex_shader_es2 = R"(#version 100
-    attribute vec2 position;
-    uniform mat4 u_projection;
-    varying vec2 v_pos;
-    void main() {
-        gl_Position = u_projection * vec4(position, 0.0, 1.0);
-        v_pos = position;
-    }
+	attribute vec2 position;
+	uniform mat4 u_projection;
+	varying vec2 v_pos;
+	void main() {
+		gl_Position = u_projection * vec4(position, 0.0, 1.0);
+		v_pos = position;
+	}
 )";
 
 static const char* fragment_shader_es2 = R"(#version 100
-    precision mediump float;
-    
-    varying vec2 v_pos;
-    
-    uniform vec4 u_rect_size;
-    uniform float u_radius;
-    // Per-corner radii replaces bitmask (GLSL ES 1.00 has no bitwise ops on int uniforms)
-    uniform float u_r_tl; // top-left
-    uniform float u_r_tr; // top-right
-    uniform float u_r_bl; // bottom-left
-    uniform float u_r_br; // bottom-right
-    uniform vec4 u_solid_color;
-    uniform float u_border_width;
-    uniform vec4 u_border_color;
+	precision mediump float;
+	
+	varying vec2 v_pos;
+	
+	uniform vec4 u_rect_size;
+	uniform float u_radius;
+	// Per-corner radii replaces bitmask (GLSL ES 1.00 has no bitwise ops on int uniforms)
+	uniform float u_r_tl; // top-left
+	uniform float u_r_tr; // top-right
+	uniform float u_r_bl; // bottom-left
+	uniform float u_r_br; // bottom-right
+	uniform vec4 u_solid_color;
+	uniform float u_border_width;
+	uniform vec4 u_border_color;
 
-    uniform int u_num_stops;
-    uniform vec4 u_gradient_colors[16];
-    uniform float u_gradient_stops[16];
-    uniform int u_gradient_orientation;
-    uniform int u_alphablend;
-    uniform float u_rbswap;
-    uniform float u_coverage_alpha;
+	uniform int u_num_stops;
+	uniform vec4 u_gradient_colors[16];
+	uniform float u_gradient_stops[16];
+	uniform int u_gradient_orientation;
+	uniform int u_alphablend;
+	uniform float u_rbswap;
+	uniform float u_coverage_alpha;
 
-    float udRoundBox(vec2 p, vec2 b, float r) {
-        vec2 d = abs(p) - b + vec2(r);
-        return min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - r;
-    }
+	float udRoundBox(vec2 p, vec2 b, float r) {
+		vec2 d = abs(p) - b + vec2(r);
+		return min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - r;
+	}
 
-    void main() {
-        float coverage = 1.0;
-        vec2 half_size = u_rect_size.zw * 0.5;
-        vec2 center = vec2(u_rect_size.x, u_rect_size.y) + half_size;
-        vec2 p = v_pos - center;
-        float r = u_radius;
+	void main() {
+		float coverage = 1.0;
+		vec2 half_size = u_rect_size.zw * 0.5;
+		vec2 center = vec2(u_rect_size.x, u_rect_size.y) + half_size;
+		vec2 p = v_pos - center;
+		float r = u_radius;
 
-        if (u_radius > 0.0) {
-            if (p.x < 0.0 && p.y < 0.0) r = u_r_tl;
-            if (p.x > 0.0 && p.y < 0.0) r = u_r_tr;
-            if (p.x < 0.0 && p.y > 0.0) r = u_r_bl;
-            if (p.x > 0.0 && p.y > 0.0) r = u_r_br;
+		if (u_radius > 0.0) {
+			if (p.x < 0.0 && p.y < 0.0) r = u_r_tl;
+			if (p.x > 0.0 && p.y < 0.0) r = u_r_tr;
+			if (p.x < 0.0 && p.y > 0.0) r = u_r_bl;
+			if (p.x > 0.0 && p.y > 0.0) r = u_r_br;
 
-            float dist = udRoundBox(p, half_size, r);
-            // See the ES3 fragment shader above for why this is a coverage
-            // ramp instead of a hard discard.
-            coverage = clamp(0.5 - dist, 0.0, 1.0);
-            if (coverage <= 0.0) discard;
-        }
+			float dist = udRoundBox(p, half_size, r);
+			// See the ES3 fragment shader above for why this is a coverage
+			// ramp instead of a hard discard.
+			coverage = clamp(0.5 - dist, 0.0, 1.0);
+			if (coverage <= 0.0) discard;
+		}
 
-        vec4 final_color = u_solid_color;
+		vec4 final_color = u_solid_color;
 
-        if (u_num_stops > 0) {
-            float t = 0.0;
-            if (u_gradient_orientation == 1) {
-                t = (v_pos.x - u_rect_size.x) / u_rect_size.z;
-            } else {
-                t = (v_pos.y - u_rect_size.y) / u_rect_size.w;
-            }
+		if (u_num_stops > 0) {
+			float t = 0.0;
+			if (u_gradient_orientation == 1) {
+				t = (v_pos.x - u_rect_size.x) / u_rect_size.z;
+			} else {
+				t = (v_pos.y - u_rect_size.y) / u_rect_size.w;
+			}
 
-            vec4 grad_color = u_gradient_colors[0];
-            for (int i = 0; i < 15; i++) {
-                if (i >= u_num_stops - 1) break;
-                if (t >= u_gradient_stops[i] && t <= u_gradient_stops[i+1]) {
-                    float range = u_gradient_stops[i+1] - u_gradient_stops[i];
-                    float f = (t - u_gradient_stops[i]) / range;
-                    grad_color = mix(u_gradient_colors[i], u_gradient_colors[i+1], f);
-                    break;
-                }
-            }
+			vec4 grad_color = u_gradient_colors[0];
+			for (int i = 0; i < 15; i++) {
+				if (i >= u_num_stops - 1) break;
+				if (t >= u_gradient_stops[i] && t <= u_gradient_stops[i+1]) {
+					float range = u_gradient_stops[i+1] - u_gradient_stops[i];
+					float f = (t - u_gradient_stops[i]) / range;
+					grad_color = mix(u_gradient_colors[i], u_gradient_colors[i+1], f);
+					break;
+				}
+			}
 
-            // GLSL ES 1.00 (Appendix A) only allows constant-index-expressions
-            // for uniform arrays in a fragment shader - u_num_stops - 1 is a
-            // runtime uniform, which Broadcom's V3D driver rejects (confirmed
-            // on VU+ Ultimo4K: "indexing ... with a non-constant is not
-            // mandated in the fragment shader"). Find the last stop with a
-            // loop index instead, which is a constant-index-expression.
-            for (int i = 0; i < 16; i++) {
-                if (i == u_num_stops - 1 && t > u_gradient_stops[i]) {
-                    grad_color = u_gradient_colors[i];
-                }
-            }
+			// GLSL ES 1.00 (Appendix A) only allows constant-index-expressions
+			// for uniform arrays in a fragment shader - u_num_stops - 1 is a
+			// runtime uniform, which Broadcom's V3D driver rejects (confirmed
+			// on VU+ Ultimo4K: "indexing ... with a non-constant is not
+			// mandated in the fragment shader"). Find the last stop with a
+			// loop index instead, which is a constant-index-expression.
+			for (int i = 0; i < 16; i++) {
+				if (i == u_num_stops - 1 && t > u_gradient_stops[i]) {
+					grad_color = u_gradient_colors[i];
+				}
+			}
 
-            if (u_alphablend == 1) {
-                final_color.rgb = mix(final_color.rgb, grad_color.rgb, grad_color.a);
-            } else {
-                final_color = grad_color;
-            }
-        }
+			if (u_alphablend == 1) {
+				final_color.rgb = mix(final_color.rgb, grad_color.rgb, grad_color.a);
+			} else {
+				final_color = grad_color;
+			}
+		}
 
-        if (u_border_width > 0.0) {
-            // See the ES3 fragment shader above for the inner-SDF fill/border
-            // split this mirrors.
-            float inner_r = max(r - u_border_width, 0.0);
-            vec2 inner_half = max(half_size - vec2(u_border_width), vec2(0.0));
-            float inner_dist = udRoundBox(p, inner_half, inner_r);
-            float inner_coverage = clamp(0.5 - inner_dist, 0.0, 1.0);
-            final_color = mix(u_border_color, final_color, inner_coverage);
-        }
+		if (u_border_width > 0.0) {
+			// See the ES3 fragment shader above for the inner-SDF fill/border
+			// split this mirrors.
+			float inner_r = max(r - u_border_width, 0.0);
+			vec2 inner_half = max(half_size - vec2(u_border_width), vec2(0.0));
+			float inner_dist = udRoundBox(p, inner_half, inner_r);
+			float inner_coverage = clamp(0.5 - inner_dist, 0.0, 1.0);
+			final_color = mix(u_border_color, final_color, inner_coverage);
+		}
 
-        // See the ES3 fragment shader above for u_coverage_alpha.
-        final_color.a = mix(final_color.a * coverage, coverage, u_coverage_alpha);
+		// See the ES3 fragment shader above for u_coverage_alpha.
+		final_color.a = mix(final_color.a * coverage, coverage, u_coverage_alpha);
 
-        // See gshader.cpp's fragment shader for why this swap is here.
-        gl_FragColor = mix(final_color, final_color.bgra, u_rbswap);
-    }
+		// See gshader.cpp's fragment shader for why this swap is here.
+		gl_FragColor = mix(final_color, final_color.bgra, u_rbswap);
+	}
 )";
 
 // ---------------------------------------------------------------------------
