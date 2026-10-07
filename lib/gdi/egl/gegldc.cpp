@@ -2253,8 +2253,14 @@ void gEGLDC::exec(const gOpcode* opcode) {
 		prof_t0 = std::chrono::steady_clock::now();
 
 #ifdef HAVE_EGL_ANIMATION
-	if (m_winanim.pending && isDrawOpcode(opcode->opcode))
+	if (m_winanim.pending && isDrawOpcode(opcode->opcode)) {
 		++m_winanim.draw_ops;
+		// Only what lands inside the window's rect counts as "the window was (re)painted": an
+		// unrelated widget drawing elsewhere, or a few pixels of it, must not end the wait.
+		const gRegion hit = m_current_clip & gRegion(m_winanim.rect);
+		if (!hit.empty())
+			m_winanim.painted |= hit;
+	}
 #endif
 
 	switch (opcode->opcode) {
@@ -3299,8 +3305,52 @@ GLuint gEGLDC::captureAnimTexture(const eRect& rect) {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_use_shadow_fbo ? m_shadow_fbo : 0);
 	glGenTextures(1, &tex);
 	glBindTexture(GL_TEXTURE_2D, tex);
-	// glCopyTexImage2D's y is measured from the bottom of the framebuffer.
-	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rect.left(), m_height - rect.top() - rect.height(), rect.width(), rect.height(), 0);
+	// Both variants are bottom-up (GL origin), so the animation quads use v = 1 at the top edge.
+	// Default: glReadPixels + glTexImage2D. On the dm900 (VC5 pixmap surface) the screen showed
+	// transparent areas turning opaque black after an animation, i.e. the GPU-side
+	// glCopyTexImage2D lost the alpha channel there; reading the pixels back (what the spinner
+	// does on this platform) keeps it. ENIGMA_EGL_ANIM_CAPTURE=copy selects glCopyTexImage2D again.
+	static const bool s_gpu_copy = getenv("ENIGMA_EGL_ANIM_CAPTURE") && strcmp(getenv("ENIGMA_EGL_ANIM_CAPTURE"), "copy") == 0;
+	// On pixmap-page platforms (dm900) flip() leaves the READ surface on the page that was just
+	// presented (gpuCopyPageContent() only makes the new render page the DRAW surface - normal
+	// rendering never reads). glReadPixels()/glCopyTexImage2D() read the READ surface, so the capture
+	// returned the previous presented frame: before/after snapshots were identical, and the final
+	// write-back replaced the freshly painted window with that stale content. Read from the surface
+	// the frame is being drawn into.
+	{
+		const EGLSurface draw = eglGetCurrentSurface(EGL_DRAW);
+		if (draw != EGL_NO_SURFACE && eglGetCurrentSurface(EGL_READ) != draw && !eglMakeCurrent(m_egl_display, draw, draw, m_egl_context))
+			eDebug("[gEGLDC] anim capture: eglMakeCurrent(read=draw) failed: 0x%x", eglGetError());
+	}
+	// ...and the draws are only guaranteed to be in it after glFinish() (presentPixmap() does the same).
+	glFinish();
+	if (s_gpu_copy) {
+		// glCopyTexImage2D's y is measured from the bottom of the framebuffer.
+		glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rect.left(), m_height - rect.top() - rect.height(), rect.width(), rect.height(), 0);
+	} else {
+		const int w = rect.width(), h = rect.height();
+		std::vector<uint8_t> px((size_t)w * (size_t)h * 4U);
+		glPixelStorei(GL_PACK_ALIGNMENT, 4);
+		glReadPixels(rect.left(), m_height - rect.top() - h, w, h, GL_RGBA, GL_UNSIGNED_BYTE, px.data());
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, px.data());
+		static int s_logged = 0;
+		if (s_logged < 40) {
+			++s_logged;
+			GLint alpha_bits = -1;
+			glGetIntegerv(GL_ALPHA_BITS, &alpha_bits);
+			size_t transparent = 0, opaque = 0, total = 0;
+			for (size_t i = 3; i < px.size(); i += 4 * 61) {
+				++total;
+				if (px[i] == 0)
+					++transparent;
+				else if (px[i] == 255)
+					++opaque;
+			}
+			eDebug("[gEGLDC] anim capture %dx%d at %d,%d alphaBits=%d alpha0=%.0f%% alpha255=%.0f%% first=%02x%02x%02x%02x", w, h, rect.left(), rect.top(), (int)alpha_bits,
+				total ? 100.0 * transparent / total : 0.0, total ? 100.0 * opaque / total : 0.0, px[0], px[1], px[2], px[3]);
+		}
+	}
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -3321,10 +3371,24 @@ void gEGLDC::cancelWindowAnimation() {
 	m_winanim = WinAnim();
 }
 
+// Diagnostics for the (untested) window animation: the first 150 lifecycle messages.
+static bool animDbg() {
+	static int s_n = 0;
+	return s_n < 150 && ++s_n > 0;
+}
+
 void gEGLDC::beginWindowAnimation(bool show, const eRect& hint) {
+	if (m_winanim.pending && animDbg())
+		eDebug("[gEGLDC] anim: previous %s %d,%d %dx%d never finished (draw_ops=%d) - replaced by new hint", m_winanim.show ? "show" : "hide", m_winanim.rect.left(), m_winanim.rect.top(),
+			m_winanim.rect.width(), m_winanim.rect.height(), m_winanim.draw_ops);
 	cancelWindowAnimation();
-	if (!animationUsable())
+	if (!animationUsable()) {
+		if (animDbg())
+			eDebug("[gEGLDC] anim: %s hint skipped, not usable (preset=%d scaled=%d resChange=%d lost=%d locked=%d shadow=%d/%u spinner=%d/%d)", show ? "show" : "hide", ganim::currentPreset(),
+				isScaled() ? 1 : 0, m_pending_resolution_change ? 1 : 0, m_surface_lost ? 1 : 0, islocked() ? 1 : 0, m_use_shadow_fbo ? 1 : 0, (unsigned)m_shadow_fbo, m_spinner_active ? 1 : 0,
+				m_spinner_gpu ? 1 : 0);
 		return;
+	}
 	const eRect rect = hint & eRect(0, 0, m_width, m_height);
 	if (rect.width() < 16 || rect.height() < 16)
 		return;
@@ -3332,6 +3396,8 @@ void gEGLDC::beginWindowAnimation(bool show, const eRect& hint) {
 	flushBlitBatch();
 	flushTextBatch();
 	const GLuint tex = captureAnimTexture(rect);
+	if (animDbg())
+		eDebug("[gEGLDC] anim: %s hint %d,%d %dx%d before-texture=%u", show ? "show" : "hide", rect.left(), rect.top(), rect.width(), rect.height(), (unsigned)tex);
 	if (!tex)
 		return;
 
@@ -3349,12 +3415,34 @@ void gEGLDC::finishWindowAnimation() {
 	if (!m_winanim.pending)
 		return;
 	if (msBetween(m_winanim.started, std::chrono::steady_clock::now()) > 1000.0f) {
+		if (animDbg())
+			eDebug("[gEGLDC] anim: gave up, the window did not paint within 1 s (draw_ops=%d)", m_winanim.draw_ops);
 		cancelWindowAnimation(); // the window never painted: give up
 		return;
 	}
 	if (m_winanim.draw_ops == 0)
 		return; // this flush belongs to something else, the window is not painted yet
+	// A hide needs the area behind the window repainted before the "after" snapshot is taken,
+	// a show needs the window itself drawn. Both repaint (almost) the whole rect; wait until the
+	// draw opcodes since the hint covered most of it, else the snapshot still holds the old
+	// content (a hide would then write the closed window back). Gives up after 1 s, see above.
+	long long covered = 0;
+	for (const eRect& r : m_winanim.painted.rects)
+		covered += (long long)r.width() * (long long)r.height();
+	const long long total = std::max(1LL, (long long)m_winanim.rect.width() * (long long)m_winanim.rect.height());
+	const int covered_pct = (int)(covered * 100 / total);
+	if (covered_pct < (m_winanim.show ? 25 : 60)) {
+		static int s_waits = 0;
+		if (s_waits < 20) {
+			++s_waits;
+			if (animDbg())
+				eDebug("[gEGLDC] anim: flush after %s hint, draw_ops=%d but only %d%% of the window rect repainted - waiting", m_winanim.show ? "show" : "hide", m_winanim.draw_ops, covered_pct);
+		}
+		return;
+	}
 	if (!animationUsable()) {
+		if (animDbg())
+			eDebug("[gEGLDC] anim: cancelled at flush, no longer usable");
 		cancelWindowAnimation();
 		return;
 	}
@@ -3362,9 +3450,14 @@ void gEGLDC::finishWindowAnimation() {
 	const bool show = m_winanim.show;
 	const eRect rect = m_winanim.rect;
 	const GLuint before = m_winanim.before;
+	const int draw_ops = m_winanim.draw_ops;
+	const float since_hint = msBetween(m_winanim.started, std::chrono::steady_clock::now());
 	m_winanim = WinAnim();
 
 	const GLuint after = captureAnimTexture(rect);
+	if (animDbg())
+		eDebug("[gEGLDC] anim: flush after %s hint, draw_ops=%d, %d%% of the rect repainted, %.0f ms after the hint, after-texture=%u", show ? "show" : "hide", draw_ops, covered_pct, since_hint,
+			(unsigned)after);
 	if (after) {
 		runWindowAnimation(show, rect, before, after);
 		glDeleteTextures(1, &after);
@@ -3381,6 +3474,8 @@ void gEGLDC::runWindowAnimation(bool show, const eRect& rect, GLuint before, GLu
 	// over the (already repainted) background.
 	const GLuint base_tex = show ? before : after;
 	const GLuint anim_tex = show ? after : before;
+	if (animDbg())
+		eDebug("[gEGLDC] anim: run %s preset=%d speed=%d %.0f ms base=%u anim=%u", show ? "show" : "hide", ganim::currentPreset(), ganim::currentSpeed(), total_ms, (unsigned)base_tex, (unsigned)anim_tex);
 	const float rx = (float)rect.left(), ry = (float)rect.top();
 	const float rw = (float)rect.width(), rh = (float)rect.height();
 
