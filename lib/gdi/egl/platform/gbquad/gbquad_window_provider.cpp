@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <cstdint>
 #include <cstring>
+#include <unistd.h>
 #include <EGL/egl.h>
 #include <lib/base/eerror.h>
 #include <lib/gdi/fb.h>
@@ -303,6 +304,13 @@ void GbquadWindowProvider::onResolutionChanged(int width, int height) {
 	// locked the box).
 	NXPL_ShowNativeWindowEXT(m_native_window, false);
 	NXPL_ShowNativeWindowEXT(m_native_window, true);
+
+	// The Nexus window settles asynchronously after the update/hide/show above.
+	// An EGL surface created before that comes back "valid" but fails
+	// eglMakeCurrent() with EGL_BAD_NATIVE_WINDOW (0x300b), and libnxpl then
+	// crashes (null deref) if such a surface is destroyed. Give it time to
+	// settle so the first surface-creation attempt normally succeeds.
+	usleep(150000);
 
 	eDebug("[GbquadWindowProvider] native window resized to %dx%d, clientID=%u", width, height, windowInfo.clientID);
 }

@@ -345,7 +345,12 @@ bool gEGLDC::recreateWindowSurface() {
 	if (!eglMakeCurrent(m_egl_display, m_egl_surfaces[0], m_egl_surfaces[0], m_egl_context)) {
 		eDebug("[gEGLDC] eglMakeCurrent failed after recreating window surface: 0x%x - discarding the surface", eglGetError());
 		eglMakeCurrent(m_egl_display, EGL_NO_SURFACE, EGL_NO_SURFACE, m_egl_context);
-		eglDestroySurface(m_egl_display, m_egl_surfaces[0]);
+		// Deliberately NOT eglDestroySurface()'d: a surface that fails
+		// eglMakeCurrent() with EGL_BAD_NATIVE_WINDOW (0x300b) is bound to a native
+		// window Nexus hasn't finished settling, and libnxpl dereferences that
+		// window's null internal state (SIGSEGV, fault address 0x4) when asked to
+		// destroy it. Dropping our handle leaks a small EGL surface per failed
+		// attempt (bounded by the retry loop) instead of crashing the box.
 		m_egl_surfaces[0] = EGL_NO_SURFACE;
 		return false;
 	}
