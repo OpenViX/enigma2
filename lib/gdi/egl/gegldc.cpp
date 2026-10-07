@@ -1774,6 +1774,38 @@ void gEGLDC::flushTextBatch() {
 
 void gEGLDC::drawTextVertices(const std::vector<float>& vertices) {
 	const int vertex_count = (int)(vertices.size() / 8); // 8 floats per vertex
+	const std::vector<eRect>& rects = m_text_batch_clip.rects;
+
+	if (rects.size() > 1) {
+		// A multi-rect clip used to re-submit the WHOLE batch once per rect and let
+		// the scissor discard most of it. Submit only the glyph quads that touch
+		// each rect instead. Quad layout (see renderGlyph()): 48 floats, vertex 0 =
+		// (x, y), vertex 1 y = y + h, vertex 2 x = x + w.
+		static std::vector<float> s_cull; // render thread only
+		for (unsigned int i = 0; i < rects.size(); ++i) {
+			const float rl = (float)rects[i].left(), rt = (float)rects[i].top();
+			const float rr = rl + (float)rects[i].width(), rb = rt + (float)rects[i].height();
+			s_cull.clear();
+			for (size_t q = 0; q + 48 <= vertices.size(); q += 48) {
+				const float* quad = &vertices[q];
+				if (quad[16] <= rl || quad[0] >= rr || quad[9] <= rt || quad[1] >= rb)
+					continue;
+				s_cull.insert(s_cull.end(), quad, quad + 48);
+			}
+			if (s_cull.empty())
+				continue;
+			std::chrono::steady_clock::time_point vbo_t0;
+			if (m_profile)
+				vbo_t0 = std::chrono::steady_clock::now();
+			m_text_shader.setVertexData(s_cull.data(), (int)(s_cull.size() / 8));
+			if (m_profile)
+				m_prof.vbo_ms += msSince(vbo_t0);
+			setGlScissor(rects[i]);
+			glDrawArrays(GL_TRIANGLES, 0, (int)(s_cull.size() / 8));
+			m_text_shader.endVertexData();
+		}
+		return;
+	}
 
 	std::chrono::steady_clock::time_point vbo_t0;
 	if (m_profile)
@@ -1783,8 +1815,8 @@ void gEGLDC::drawTextVertices(const std::vector<float>& vertices) {
 		m_prof.vbo_ms += msSince(vbo_t0);
 
 	// m_text_batch_clip, not m_current_clip - see its declaration comment.
-	for (unsigned int i = 0; i < m_text_batch_clip.rects.size(); ++i) {
-		setGlScissor(m_text_batch_clip.rects[i]);
+	for (unsigned int i = 0; i < rects.size(); ++i) {
+		setGlScissor(rects[i]);
 		glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 	}
 
@@ -2679,6 +2711,7 @@ void gEGLDC::applyPendingResolutionChange() {
 	// icon is wiped with it; where it survives (fixed-size window, e.g. Hisi -
 	// see updatePhysicalSize()) the skin's full repaint covers the old icon.
 	// See m_spinner_active's comment (gegldc.h).
+	const bool spinner_was_active = m_spinner_active;
 	m_spinner_active = false;
 	releaseSpinnerGpu();
 
@@ -2796,6 +2829,15 @@ void gEGLDC::applyPendingResolutionChange() {
 			m_surface_retry_time = std::chrono::steady_clock::now();
 		}
 	}
+
+	// Fixed-size window (libMali/Hisi): the surface survives the resize, so the last
+	// spinner frame drawn for the old canvas stays in its buffers - the skin is still
+	// loading, nothing repaints it, and the restarted spinner (new canvas, new position)
+	// then shows up as a second, rotating icon beside this frozen one. Wipe the buffers.
+	// Skipped for a shadow FBO (flip() overwrites the window from it) and when the surface
+	// was recreated above (already cleared there).
+	if (spinner_was_active && physical_unchanged && isInitialized() && !m_surface_lost)
+		clearWindowSurfaceTransparent();
 
 	if (isInitialized()) {
 		// Set once in initEGL() (right after context creation, same "basic GL

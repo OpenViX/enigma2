@@ -30,6 +30,18 @@ static inline double ms_since(const std::chrono::steady_clock::time_point& t0) {
 
 static gTextureManager* s_active_manager = nullptr;
 
+// Guards s_active_manager across check-and-use. egl_release_surface_texture()/
+// egl_queue_texture_deletion() run from ~gSurface() on ANY thread (e.g. ePicLoad's
+// decode thread, the main thread), while ~gTextureManager() can run on another one
+// (gEGLDC teardown). Without this, the pointer could be cleared/freed between the
+// null check and the call, which then locked m_deletion_mutex through a null/dangling
+// 'this' (SIGSEGV in pthread_mutex_lock, fault address = offset of that mutex).
+// Intentionally leaked so it outlives any static destructor that frees a pixmap.
+static std::mutex& activeManagerMutex() {
+	static std::mutex* m = new std::mutex();
+	return *m;
+}
+
 void gtexFitSize(int w, int h, int max_dim, int& out_w, int& out_h) {
 	out_w = w;
 	out_h = h;
@@ -130,10 +142,12 @@ void gtexDownscaleBGRA(const uint32_t* src, int src_stride_px, int src_w, int sr
 }
 
 gTextureManager::gTextureManager() : m_egl_display(EGL_NO_DISPLAY) {
+	std::lock_guard<std::mutex> guard(activeManagerMutex());
 	s_active_manager = this;
 }
 
 gTextureManager::~gTextureManager() {
+	std::lock_guard<std::mutex> guard(activeManagerMutex());
 	if (s_active_manager == this)
 		s_active_manager = nullptr;
 }
@@ -670,6 +684,7 @@ void gTextureManager::processDeletions() {
 
 extern "C" void egl_release_surface_texture(unsigned int gl_texture_id, const void* surface);
 void egl_release_surface_texture(unsigned int gl_texture_id, const void* surface) {
+	std::lock_guard<std::mutex> guard(activeManagerMutex());
 	if (s_active_manager)
 		s_active_manager->releaseSurfaceTexture(gl_texture_id, surface);
 	else
@@ -678,6 +693,7 @@ void egl_release_surface_texture(unsigned int gl_texture_id, const void* surface
 
 extern "C" void egl_queue_texture_deletion(unsigned int gl_texture_id);
 void egl_queue_texture_deletion(unsigned int gl_texture_id) {
+	std::lock_guard<std::mutex> guard(activeManagerMutex());
 	if (s_active_manager) {
 		s_active_manager->queueForDeletion(gl_texture_id);
 	} else {
