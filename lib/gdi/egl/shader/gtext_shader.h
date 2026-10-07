@@ -41,5 +41,5 @@ public:
 	void setVertexData(const float* vertex_data, int vertex_count);
 	void endVertexData();
 
-	void setResolution(float width, float height);
+	void setResolution(float width, float height, float sx = 1.0f, float sy = 1.0f, float tx = 0.0f, float ty = 0.0f);
 };

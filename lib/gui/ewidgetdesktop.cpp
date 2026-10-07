@@ -611,32 +611,32 @@ void eWidgetDesktop::resize(eSize size)
 #endif
 }
 
-void eWidgetDesktop::sendShow(ePoint point, eSize size)
+void eWidgetDesktop::sendShow(ePoint point, eSize size, int anim, int flags)
 {
 	if(m_style_id!=0)
 		return;
 
 	gPainter painter(m_screen.m_dc);
-	painter.sendShow(point, size);
+	painter.sendShow(point, size, anim, flags);
 }
 
-void eWidgetDesktop::sendHide(ePoint point, eSize size)
+void eWidgetDesktop::sendHide(ePoint point, eSize size, int anim, int flags)
 {
 	if(m_style_id!=0)
 		return;
 
 	gPainter painter(m_screen.m_dc);
-	painter.sendHide(point, size);
+	painter.sendHide(point, size, anim, flags);
 }
 
-void eWidgetDesktop::sendShowItem(long dir, ePoint point, eSize size)
+void eWidgetDesktop::sendShowItem(long dir, ePoint point, eSize size, int anim, int step)
 {
 #if defined(USE_LIBVUGLES2) || defined(HAVE_EGL_ANIMATION)
 	if(m_style_id!=0)
 		return;
 
 	gPainter painter(m_screen.m_dc);
-	painter.sendShowItem(dir, point, size);
+	painter.sendShowItem(dir, point, size, anim, step);
 #endif
 }
 

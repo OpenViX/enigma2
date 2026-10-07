@@ -1,8 +1,16 @@
 from xml.etree.ElementTree import Element, ElementTree, fromstring
 
 from enigma import addFont, eLabel, ePixmap, ePoint, eRect, eSize, eWidget, eStack, eRectangle, eWindow, eWindowStyleManager, eWindowStyleSkinned, getDesktop, gFont, getFontFaces, gMainDC, gRGB, BT_ALPHATEST, BT_ALPHABLEND, BT_HALIGN_CENTER, BT_HALIGN_LEFT, BT_HALIGN_RIGHT, BT_KEEP_ASPECT_RATIO, BT_SCALE, BT_VALIGN_BOTTOM, BT_VALIGN_CENTER, BT_VALIGN_TOP
+from fnmatch import fnmatchcase
 from os.path import basename, dirname, isdir, isfile, join
 from os import listdir
+
+from enigma import eListbox
+
+try:
+	from enigma import registerAnimation  # Kodi style animations, not in every build
+except ImportError:
+	registerAnimation = None
 
 from Components.config import ConfigSubsection, ConfigText, config
 from Components.Sources.Source import ObsoleteSource
@@ -66,6 +74,156 @@ onLoadCallbacks = []
 # E.g. "MySkin/skin_display.xml"
 #
 
+# Kodi style animations from "skin.ani", next to the primary skin's skin.xml (doc/ANIMATIONS.md,
+# sections 4 and 4a).  Each rule is {"tag": "screen"|"widget", "sel": {attribute: [patterns]},
+# "n": number of selectors, "order": position in the file, "anims": {type: spec}}.  A spec is the
+# compact effect string registerAnimation() takes; "" is an empty <animation/>, which cancels
+# what a less specific rule would give.
+animationRules = []
+ANIMATION_TYPES = ("windowopen", "windowclose", "visible", "hidden", "focus", "unfocus", "conditional", "scroll")
+
+
+def animationSpec(node):
+	effects = []
+	for effect in node.findall("effect"):
+		parts = [effect.attrib.get("type", "").strip()]
+		parts += ["%s=%s" % (key, value.strip()) for key, value in effect.attrib.items() if key not in ("type", "condition", "acceleration")]
+		effects.append("|".join(parts))
+	return ";".join(effects)
+
+
+def parseAnimationNode(node):
+	# Returns [(type, spec)].  Besides <animation type="..."><effect .../></animation> the old inline
+	# form <animation effect="fade" time="200">WindowOpen</animation> is accepted.
+	atype = node.attrib.get("type", "").strip().lower()
+	if atype:
+		return [(atype, animationSpec(node))]
+	if "effect" in node.attrib and node.text:
+		parts = [node.attrib["effect"].strip()] + ["%s=%s" % (key, value.strip()) for key, value in node.attrib.items() if key not in ("effect", "condition", "acceleration")]
+		spec = "|".join(parts)
+		atype = node.text.strip().lower()
+		if atype == "visiblechange":  # shorthand for "visible" and the reversed "hidden"
+			swapped = dict(node.attrib)
+			if "start" in swapped or "end" in swapped:
+				swapped["start"], swapped["end"] = node.attrib.get("end", ""), node.attrib.get("start", "")
+			hidden = "|".join([node.attrib["effect"].strip()] + ["%s=%s" % (key, value.strip()) for key, value in swapped.items() if key not in ("effect", "condition", "acceleration") and value])
+			return [("visible", spec), ("hidden", hidden)]
+		return [(atype, spec)]
+	return []
+
+
+def loadAnimationRules(skinFile):
+	global animationRules
+	animationRules = []
+	if registerAnimation is None or not skinFile:
+		return
+	filename = resolveFilename(SCOPE_SKIN, join(dirname(skinFile), "skin.ani"))
+	if not isfile(filename):
+		return
+	root = fileReadXML(filename)
+	if root is None:
+		return
+	for order, rule in enumerate(root):
+		if rule.tag not in ("screen", "widget"):
+			continue
+		selectors = {}
+		for key in ("name", "screen", "render", "source", "addon"):
+			if key in rule.attrib:
+				selectors[key] = [pattern.strip() for pattern in rule.attrib[key].split(",") if pattern.strip()]
+		anims = {}
+		for container in [rule] + rule.findall("focusedlayout"):  # <focusedlayout> holds the row animations of a list
+			for node in container.findall("animation"):
+				for atype, spec in parseAnimationNode(node):
+					if atype in ANIMATION_TYPES:
+						anims[atype] = spec
+		for node in rule.findall("scrolltime"):  # <scrolltime tween="cubic" easing="out">180</scrolltime>: smooth scrolling
+			try:
+				time = int((node.text or "0").strip())
+			except ValueError:
+				time = 0
+			anims["scroll"] = "slide|time=%d|tween=%s|easing=%s" % (time, node.attrib.get("tween", "cubic").strip(), node.attrib.get("easing", "out").strip()) if time > 0 else ""
+		animationRules.append({"tag": rule.tag, "sel": selectors, "n": len(selectors), "order": order, "anims": anims})
+	print("[Skin] Loaded %d animation rules from '%s'." % (len(animationRules), filename))
+
+
+def animationRuleMatches(rule, tag, screenNames, attrib):
+	if rule["tag"] != tag:
+		return False
+	for key, patterns in rule["sel"].items():
+		values = screenNames if (key == "screen" or (key == "name" and tag == "screen")) else [attrib.get(key, "")]
+		if not any(fnmatchcase(value, pattern) for value in values for pattern in patterns):
+			return False
+	return True
+
+
+def resolveAnimation(tag, screenNames, attrib, atype):
+	# Cascade (per type): the matching rule with the most selectors wins, a later rule wins a tie.
+	best = None
+	for rule in animationRules:
+		if atype in rule["anims"] and animationRuleMatches(rule, tag, screenNames, attrib):
+			key = (rule["n"], rule["order"])
+			if best is None or key >= best[0]:
+				best = (key, rule["anims"][atype])
+	return best[1] if best else None  # None: no rule at all, "": a rule that cancels the animation
+
+
+def animationAttributes(attributes, guiObject, widgetAttrib, screenNames):
+	# Adds the resolved row animations of a listbox widget to its skin attributes.
+	if not animationRules or registerAnimation is None or getattr(guiObject, "GUI_WIDGET", None) is not eListbox:
+		return
+	attrib = dict(widgetAttrib)
+	attrib.setdefault("render", "Listbox")  # a name based list component is a "Listbox" for the selectors, too
+	ids = []
+	for atype in ("focus", "unfocus"):
+		spec = resolveAnimation("widget", screenNames, attrib, atype)
+		ids.append(registerAnimation(atype, spec) if spec else 0)
+	if ids[0] or ids[1]:
+		attributes.append(("listAnimation", "%d,%d" % tuple(ids)))
+	spec = resolveAnimation("widget", screenNames, attrib, "scroll")
+	if spec:  # a <scrolltime> also turns on scrolling by single rows
+		attributes.append(("listScroll", str(registerAnimation("scroll", spec))))
+
+
+def visibilityAttributes(attributes, widgetAttrib, screenNames):
+	# The skin's show/hide animations of a widget ("visible" / "hidden" rules).
+	if not animationRules or registerAnimation is None:
+		return
+	ids = []
+	for atype in ("visible", "hidden"):
+		spec = resolveAnimation("widget", screenNames, widgetAttrib, atype)
+		ids.append(registerAnimation(atype, spec) if spec else 0)
+	if ids[0] or ids[1]:
+		attributes.append(("visibilityAnimation", "%d,%d" % tuple(ids)))
+
+
+def windowAnimationAttributes(attributes, screenNames):
+	# The skin's open/close animation of a screen: 0 = no rule (the AnimationSetup preset decides), -1 = a
+	# rule cancelled it, > 0 = the animation.
+	if not animationRules or registerAnimation is None:
+		return
+	ids = []
+	for atype in ("windowopen", "windowclose"):
+		spec = resolveAnimation("screen", screenNames, {}, atype)
+		ids.append(0 if spec is None else (registerAnimation(atype, spec) if spec else -1) or -1)
+	if ids[0] or ids[1]:
+		attributes.append(("windowAnimation", "%d,%d" % tuple(ids)))
+
+
+def setListAnimation(instance, screenNames, widgetAttrib=None):
+	# For lists a skin builds in an applet (no skin attributes reach them), e.g. the main menu: resolves
+	# the row animations from skin.ani for a widget with these selector attributes and applies them.
+	class ListWidget:
+		GUI_WIDGET = eListbox
+
+	attributes = []
+	animationAttributes(attributes, ListWidget(), widgetAttrib or {}, [screenNames] if isinstance(screenNames, str) else list(screenNames or []))
+	for attrib, value in attributes:
+		if attrib == "listAnimation":
+			focus, unfocus = (int(x) for x in value.split(","))
+			instance.setFocusAnimation(focus, unfocus)
+		elif attrib == "listScroll":
+			instance.setScrollAnimation(int(value), True)
+
 
 def InitSkins(booting=True):
 	global currentPrimarySkin, currentDisplaySkin
@@ -118,6 +276,7 @@ def InitSkins(booting=True):
 			break
 		print("[Skin] Error: Adding %s GUI skin '%s' has failed!" % (name, config.skin.primary_skin.value))
 		processed.append(skin)
+	loadAnimationRules(currentPrimarySkin)
 	# Check for skin related xml additions provided by third parties, such as plugins.
 	# Check for these in /etc/enigma2/<SkinName>/*.xml.
 	# Files should have clear, unique names like plugin_xyz_skin.xml.
@@ -587,6 +746,21 @@ class AttributeParser:
 
 	def animationPaused(self, value):
 		pass
+
+	def listAnimation(self, value):  # "<focus id>,<unfocus id>", set by skin.ani rules (see animationAttributes())
+		focus, unfocus = (int(x) for x in value.split(","))
+		self.guiObject.setFocusAnimation(focus, unfocus)
+
+	def listScroll(self, value):  # "<scroll animation id>", a <scrolltime> in skin.ani: smooth scrolling
+		self.guiObject.setScrollAnimation(int(value), True)
+
+	def visibilityAnimation(self, value):  # "<show id>,<hide id>", the visible/hidden rules of skin.ani
+		show, hide = (int(x) for x in value.split(","))
+		self.guiObject.setVisibilityAnimation(show, hide)
+
+	def windowAnimation(self, value):  # "<open id>,<close id>", the windowopen/windowclose rules of skin.ani
+		opening, closing = (int(x) for x in value.split(","))
+		self.guiObject.setVisibilityAnimation(opening, closing)
 
 	def animationMode(self, value):
 		try:
@@ -1476,6 +1650,7 @@ def readSkin(screen, skin, names, desktop):
 	context.scale = ((context.w, resolution[0]), (context.h, resolution[1]))
 	del s
 	collectAttributes(screen.skinAttributes, myScreen, context, skinPath, ignore=("name",))
+	windowAnimationAttributes(screen.skinAttributes, names)
 	context = SkinContext(context, myScreen.attrib.get("position"), myScreen.attrib.get("size"))
 	screen.additionalWidgets = []
 	screen.renderer = []
@@ -1616,6 +1791,12 @@ def readSkin(screen, skin, names, desktop):
 			screen[wclassname].connectRelatedElement(wconnection, screen)
 			attributes = screen[wclassname].skinAttributes = []
 			collectAttributes(attributes, widget, context, skinPath, ignore=("addon",))
+		if wname:
+			animationAttributes(attributes, screen[wname], widget.attrib, names)
+			visibilityAttributes(attributes, widget.attrib, names)
+		elif wsource:
+			animationAttributes(attributes, renderer, widget.attrib, names)
+			visibilityAttributes(attributes, widget.attrib, names)
 
 	def processApplet(widget, context):
 		try:

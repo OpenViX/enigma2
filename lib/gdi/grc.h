@@ -83,6 +83,9 @@ struct gOpcode
 #if defined(USE_LIBVUGLES2) || defined(HAVE_EGL_ANIMATION)
 		sendShowItem,
 #endif
+#ifdef HAVE_EGL_ANIMATION
+		setTransform,
+#endif
 #ifdef USE_LIBVUGLES2
 		setFlush,
 		setView,
@@ -197,20 +200,39 @@ struct gOpcode
 
 		gCompositingData *setCompositing;
 
+		// anim: id of a Kodi style animation (lib/gdi/egl/ganimation.h) or 0 = none given; windows use
+		// 0 = "let the AnimationSetup preset decide". flags: bit 0 = the rect is a widget, not a window.
 		struct psetShowHideInfo
 		{
 			ePoint point;
 			eSize size;
+			int anim;
+			int flags;
 		} *setShowHideInfo;
 #if defined(USE_LIBVUGLES2) || defined(HAVE_EGL_ANIMATION)
 		// dir: +-1 = the list contents slide vertically (+1 = forward, the next page enters from the
-		// bottom), +-2 = the same horizontally. The rect is the list in canvas coordinates.
+		// bottom), +-2 = the same horizontally. The rect is the list in canvas coordinates. step: pixels the
+		// contents move (one row); 0 = the whole list (a page). anim: id of the scroll animation (time, tween
+		// and easing of its first effect), 0 = the default.
 		struct psetShowItemInfo
 		{
 			long dir;
 			ePoint point;
 			eSize size;
+			int anim;
+			int step;
 		} *setShowItemInfo;
+#endif
+#ifdef HAVE_EGL_ANIMATION
+		// Scale/move/opacity applied to everything drawn until the next setTransform, in canvas
+		// coordinates (x' = sx * x + tx), cut to `limit` (the control being animated). active == false
+		// switches it off again. Only the EGL backend draws it, every other DC ignores the opcode.
+		struct psetTransformInfo
+		{
+			bool active;
+			float sx, sy, tx, ty, alpha;
+			eRect limit;
+		} *setTransformInfo;
 #endif
 #ifdef USE_LIBVUGLES2
 		struct psetFlush
@@ -266,6 +288,14 @@ public:
 	virtual ~gRC();
 
 	void submit(const gOpcode &o);
+
+	// Number of opcodes the render thread has not executed yet (unlocked, only good as a hint: animation
+	// code skips a frame while the previous one is still queued instead of blocking in submit()).
+	int pendingOpcodes() const
+	{
+		const int n = wp - rp;
+		return n < 0 ? n + MAXSIZE : n;
+	}
 
 #ifdef CONFIG_ION
 	void lock();
@@ -391,10 +421,15 @@ public:
 	void setCompositing(gCompositingData *comp);
 
 	void flush();
-	void sendShow(ePoint point, eSize size);
-	void sendHide(ePoint point, eSize size);
+	void sendShow(ePoint point, eSize size, int anim = 0, int flags = 0);
+	void sendHide(ePoint point, eSize size, int anim = 0, int flags = 0);
 #if defined(USE_LIBVUGLES2) || defined(HAVE_EGL_ANIMATION)
-	void sendShowItem(long dir, ePoint point, eSize size);
+	void sendShowItem(long dir, ePoint point, eSize size, int anim = 0, int step = 0);
+#endif
+#ifdef HAVE_EGL_ANIMATION
+	// limit and the transform are in canvas coordinates, not relative to the painter's offset
+	void setTransform(float sx, float sy, float tx, float ty, float alpha, const eRect& limit);
+	void resetTransform();
 #endif
 #ifdef USE_LIBVUGLES2
 	void setFlush(bool val);

@@ -6,6 +6,7 @@
 #include <lib/gui/ewindowstyle.h> /* for eWindowStyle */
 #include <lib/gui/ewidgetanimation.h>
 #include <vector>
+#include <chrono>
 
 #define MAX_LAYER 16
 
@@ -105,11 +106,26 @@ public:
 	ePoint getAbsolutePosition();
 	// Tells the DC that this widget's contents are about to change by a whole page and may be
 	// slid (list scrolling animation). dir: see gOpcode::psetShowItemInfo. No-op without a desktop.
-	void sendShowItem(long dir);
+	void sendShowItem(long dir, int anim = 0, int step = 0);
+
+	// Kodi style animations for this widget becoming visible (show) or hidden (hide): ids from the
+	// registry in lib/gdi/egl/ganimation.h (EGL builds only, ignored otherwise). For a window 0 means
+	// "no skin rule, the AnimationSetup preset decides" and -1 "no animation"; for any other widget
+	// 0 is none. A widget only animates when it changes visibility while its window is up.
+	void setVisibilityAnimation(int show_id, int hide_id)
+	{
+		m_anim_show = show_id;
+		m_anim_hide = hide_id;
+	}
+	int showAnimation() const { return m_anim_show; }
+	int hideAnimation() const { return m_anim_hide; }
 
 	eWidgetAnimation m_animation;
 private:
 	eWidgetDesktop *m_desktop;
+	int m_anim_show = 0, m_anim_hide = 0;
+	std::chrono::steady_clock::time_point m_shown_at;
+	void sendVisibilityHint(bool show);
 
 	enum {
 		wVisShow = 1,

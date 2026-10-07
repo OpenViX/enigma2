@@ -139,17 +139,19 @@ int eWindow::event(int event, void *data, void *data2)
 	return eWidget::event(event, data, data2);
 }
 
+// A window's animation id is 0 for "no skin rule, the preset decides", -1 for "no animation" (a rule
+// cancelled it) and an animation id from the skin otherwise, see eWidget::setVisibilityAnimation().
 void eWindow::show()
 {
-	if (m_animation_mode & 0x01)
-		m_desktop->sendShow(position(), size());
+	if ((m_animation_mode & 0x01) && showAnimation() >= 0)
+		m_desktop->sendShow(position(), size(), showAnimation(), 0);
 	eWidget::show();
 }
 
 void eWindow::hide()
 {
-	if (m_animation_mode & 0x10)
-		m_desktop->sendHide(position(), size());
+	if ((m_animation_mode & 0x10) && hideAnimation() >= 0)
+		m_desktop->sendHide(position(), size(), hideAnimation(), 0);
 	eWidget::hide();
 }
 

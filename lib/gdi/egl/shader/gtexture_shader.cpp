@@ -389,14 +389,14 @@ void gTextureShader::drawVertices(const float* vertex_data, int vertex_count)
     gles::endVertexData(texture_attribs, 1);
 }
 
-void gTextureShader::setResolution(float width, float height)
+void gTextureShader::setResolution(float width, float height, float sx, float sy, float tx, float ty)
 {
     bind();
     float ortho[16] = {
-        2.0f / width, 0.0f, 0.0f, 0.0f,
-        0.0f, -2.0f / height, 0.0f, 0.0f,
+        2.0f * sx / width, 0.0f, 0.0f, 0.0f,
+        0.0f, -2.0f * sy / height, 0.0f, 0.0f,
         0.0f, 0.0f, -1.0f, 0.0f,
-        -1.0f, 1.0f, 0.0f, 1.0f
+        2.0f * tx / width - 1.0f, 1.0f - 2.0f * ty / height, 0.0f, 1.0f
     };
     glUniformMatrix4fv(m_projection_location, 1, GL_FALSE, ortho);
     if (m_plain_program_id) {
