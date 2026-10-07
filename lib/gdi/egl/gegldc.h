@@ -463,6 +463,7 @@ private:
 		eRect rect;
 		GLuint before = 0;
 		int draw_ops = 0; // draw opcodes seen since the hint (a flush before any means "not painted yet")
+		gRegion painted; // part of `rect` the draw opcodes since the hint covered (their clip regions)
 		std::chrono::steady_clock::time_point started;
 	};
 	WinAnim m_winanim;

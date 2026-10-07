@@ -232,10 +232,10 @@ def animationSetupMain(session, **kwargs):
 
 
 def startAnimationSetup(menuid):
-	if menuid != "skinsetup":
+	if menuid != "gui_menu":
 		return []
 
-	return [(_("Animations"), animationSetupMain, "animation_setup", 3)]
+	return [(_("Animations"), animationSetupMain, "animation_setup", 11)]
 
 
 def sessionAnimationSetup(session, reason, **kwargs):
