@@ -147,6 +147,12 @@ class eTextPara: public iObject
 	eRect boundBox;
 	bool doTopBottomReordering;
 	bool m_blend;
+	// The border width (in points, as passed to renderString()) this para's
+	// glyphs were rasterized/stroked with - pGlyph itself doesn't carry this
+	// per-glyph (every glyph in one eTextPara shares one border width), but
+	// blit() needs it to build a GPU-atlas cache key for i->image/i->borderimage
+	// that's actually unique to this border size (see blit()'s comment there).
+	int m_border_width;
 
 	int appendGlyph(Font *current_font, FT_Face current_face, FT_UInt glyphIndex, int flags, int rflags, int border, bool last,
 			bool activate_newcolor, unsigned long newcolor);
@@ -158,7 +164,7 @@ public:
 		: current_font(0), replacement_font(0), current_face(0), replacement_face(0),
 		fallback_font(0), fallback_face(0),
 		area(area), cursor(start), maximum(0, 0), left(start.x()), charCount(0), totalheight(0),
-		bboxValid(0), doTopBottomReordering(false), m_blend(false)
+		bboxValid(0), doTopBottomReordering(false), m_blend(false), m_border_width(0)
 	{
 	}
 	virtual ~eTextPara();
@@ -177,6 +183,12 @@ public:
 
 	void blit(gDC &dc, const ePoint &offset, const gRGB &cbackground, const gRGB &foreground, bool border = false);
 
+	// Needed by gEGLDC::exec()'s gOpcode::renderPara handling (gegldc.cpp) to
+	// know which screen region to composite after blit() has run - area is
+	// otherwise private, unlike gOpcode::renderText's own area field which
+	// callers can read directly off the opcode.
+	const eRect &getArea() const { return area; }
+
 	enum
 	{
 		dirLeft, dirRight, dirCenter, dirBlock, dirCenterIfFits, dirBidi
@@ -192,6 +204,9 @@ public:
 		return boundBox;
 	}
 
+	// baseline of a single line text, relative to the top of the area
+	int getBaseline() const { return cursor.y() - area.y(); }
+
 	const int size() const
 	{
 		return glyphs.size();
@@ -202,6 +217,18 @@ public:
 		ASSERT(num >= 0);
 		ASSERT(num < (int)glyphs.size());
 		return glyphs[num].bbox;
+	}
+
+	// Needed by gEGLDC::exec()'s gOpcode::renderPara handling (gegldc.cpp) to
+	// check, before blit() runs, whether any glyph carries GS_INVERT (a
+	// marked/selected character - see eListboxPythonConfigContent::paint()'s
+	// "mtext" handling) - flags is otherwise private, same reasoning as
+	// getGlyphBBox() above.
+	int getGlyphFlags(int num) const
+	{
+		ASSERT(num >= 0);
+		ASSERT(num < (int)glyphs.size());
+		return glyphs[num].flags;
 	}
 
 	void setGlyphFlag(int g, int f)

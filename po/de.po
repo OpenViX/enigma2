@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-11 12:40+0000\n"
+"POT-Creation-Date: 2026-09-11 13:25+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, xcentaurix\n"
@@ -1210,11 +1210,11 @@ msgstr "16:10 PanScan"
 msgid "16:9"
 msgstr "16:9"
 
+msgid "16:9 Always"
+msgstr "16:9 immer"
+
 msgid "16:9 Letterbox"
 msgstr "16:9 Letterbox"
-
-msgid "16:9 always"
-msgstr "immer 16:9"
 
 msgid "16K"
 msgstr "16 K"
@@ -1274,12 +1274,6 @@ msgid "3D Surround"
 msgstr "3D Surround Ton"
 
 msgid "3D Surround Speaker Position"
-msgstr "3D Surround Lautsprecherposition"
-
-msgid "3D surround"
-msgstr "3D Surround Ton"
-
-msgid "3D surround speaker position"
 msgstr "3D Surround Lautsprecherposition"
 
 msgid "3X"
@@ -1580,13 +1574,16 @@ msgstr ""
 msgid "A/V settings"
 msgstr "AV-Einstellungen"
 
-msgid "AAC downmix"
+msgid "AAC / AAC+ Downmix"
+msgstr "AAC / AAC+ Downmix"
+
+msgid "AAC Downmix"
 msgstr "AAC-Downmix"
 
-msgid "AAC transcoding"
+msgid "AAC Transcoding"
 msgstr "AAC-Transkodierung"
 
-msgid "AAC+ downmix"
+msgid "AAC+ Downmix"
 msgstr "AAC+-Downmix"
 
 msgid "ABOUT"
@@ -1595,14 +1592,14 @@ msgstr "Über"
 msgid "AC3"
 msgstr "AC3"
 
-msgid "AC3 downmix"
+msgid "AC3 / AC3+ Downmix"
+msgstr "AC3 / AC3+ Downmix"
+
+msgid "AC3 Downmix"
 msgstr "AC3-Downmix"
 
-msgid "AC3 transcoding"
-msgstr "AC3-Transkodierung"
-
-msgid "AC3+ Passthrough audio fix"
-msgstr "AC3+ Passthrough Audio-Fix"
+msgid "AC3+ Downmix"
+msgstr "AC3+-Downmix"
 
 msgid "ACQUIRING TSID/ONID"
 msgstr "Sammeln von TSID/ONID"
@@ -2366,6 +2363,9 @@ msgstr "Audio"
 msgid "Audio & Video"
 msgstr "Audio & Video"
 
+msgid "Audio Channel"
+msgstr "Audiokanal"
+
 msgid "Audio PID"
 msgstr "Audio-PID"
 
@@ -2373,8 +2373,8 @@ msgstr "Audio-PID"
 msgid "Audio PID%s, codec & lang"
 msgstr "Audio-PID %s, Codec & Sprache"
 
-msgid "Audio channel"
-msgstr "Audiokanal"
+msgid "Audio Volume Step Size"
+msgstr "Schrittweite bei Lautstärkeänderung"
 
 msgid "Audio language selection 1"
 msgstr "Audio Sprachwahl 1"
@@ -2401,9 +2401,6 @@ msgstr "Sprache der Audiospur (%s)"
 
 msgid "Audio track selection, downmix and other audio options"
 msgstr "Audio Spurwahl, Downmix und andere Optionen"
-
-msgid "Audio volume step size"
-msgstr "Schrittweite bei Lautstärkeänderung"
 
 msgid "Australia"
 msgstr "Australien"
@@ -2432,6 +2429,9 @@ msgstr "Diseqc automatisch"
 msgid "Auto EXIF Orientation rotation/flipping"
 msgstr "Automatisch nach EXIF drehen/spiegeln"
 
+msgid "Auto Scart Switching"
+msgstr "Automatische Scart-Umschaltung"
+
 msgid "Auto Standby"
 msgstr "Automatisch Standby"
 
@@ -2455,12 +2455,6 @@ msgstr "Autofokus beginnt..."
 
 msgid "Auto play blu-ray file"
 msgstr "BluRay-Datei automatisch spielen"
-
-msgid "Auto scart switching"
-msgstr "Automatische Scart-Umschaltung"
-
-msgid "Auto volume level"
-msgstr "Automatische Lautstärkeregelung"
 
 msgid "AutoTimer List"
 msgstr "AutoTimer-Liste"
@@ -2497,6 +2491,9 @@ msgstr "Interval für automatische Updates"
 
 msgid "Automatically created"
 msgstr "Automatisch erzeugt"
+
+msgid "Automatically hides the infobar a few second after video playback starts."
+msgstr "Blendet die Infobar einige Sekunden nach Beginn der Videowiedergabe automatisch aus."
 
 msgid "Automatically put the TV in standby whenever the receiver goes into standby or deep standby."
 msgstr "Schalte den Fernseher automatisch in Standby, wenn der E2-Receiver in Standby oder Deep-Standby geschaltet wird."
@@ -3256,6 +3253,9 @@ msgstr "Catchup-Player-Befehle"
 msgid "Cayman Islands"
 msgstr "Cayman Islands"
 
+msgid "Center"
+msgstr "Center"
+
 msgid "Center DVB subs on this service"
 msgstr "DVB Untertitel zentrieren"
 
@@ -3554,20 +3554,38 @@ msgstr "Wähle Mountpoints der Geräte aus:"
 msgid "Choose whether AAC sound tracks should be transcoded."
 msgstr "Sollen AAC Tonspuren transkodiert werden?"
 
+msgid "Choose whether DTS / DTS-HD sound tracks should be transcoded to Dolby Digital."
+msgstr "Sollen DTS / DTS-HD Tonspuren zu Dolby Digital transkodiert werden?"
+
+msgid "Choose whether Dolby TrueHD sound tracks should be transcoded to Dolby Digital."
+msgstr "Sollen Dolby TrueHD Tonspuren zu Dolby Digital transkodiert werden?"
+
 msgid "Choose whether WMA Pro sound tracks should be downmixed."
 msgstr "Soll WMA Pro Mehrkanalton zu Stereo heruntergemischt werden?"
 
-msgid "Choose whether multi channel aac sound tracks should be downmixed to stereo."
+msgid "Choose whether multi channel AAC / AAC+ sound tracks should be downmixed to stereo."
+msgstr "Soll AAC / AAC+ Mehrkanalton zu Stereo heruntergemischt werden?"
+
+msgid "Choose whether multi channel AAC sound tracks should be downmixed to stereo."
 msgstr "Soll AAC Mehrkanalton zu Stereo heruntergemischt werden?"
 
-msgid "Choose whether multi channel aac+ sound tracks should be downmixed to stereo."
+msgid "Choose whether multi channel AAC+ sound tracks should be downmixed to stereo."
 msgstr "Soll AAC+ Mehrkanalton zu Stereo heruntergemischt werden?"
 
-msgid "Choose whether multi channel ac3 sound tracks should be downmixed to stereo."
+msgid "Choose whether multi channel AC3 / AC3+ sound tracks should be downmixed to stereo."
+msgstr "Soll AC3 / AC3+ Mehrkanalton zu Stereo heruntergemischt werden?"
+
+msgid "Choose whether multi channel AC3 sound tracks should be downmixed to stereo."
 msgstr "Soll AC3 Mehrkanalton zu Stereo heruntergemischt werden?"
 
-msgid "Choose whether multi channel dts sound tracks should be downmixed to stereo."
+msgid "Choose whether multi channel AC3+ sound tracks should be downmixed to stereo."
+msgstr "Soll AC3+ Mehrkanalton zu Stereo heruntergemischt werden?"
+
+msgid "Choose whether multi channel DTS sound tracks should be downmixed to stereo."
 msgstr "Soll DTS Mehrkanalton zu Stereo heruntergemischt werden?"
+
+msgid "Choose whether multi channel DTS-HD sound tracks should be downmixed or transcoded."
+msgstr "Soll DTS-HD Mehrkanalton heruntergemischt oder transkodiert werden?"
 
 msgid "Choose whether multi channel sound tracks should be output as PCM."
 msgstr "Soll Mehrkanalton als PCM ausgegeben werden?"
@@ -3664,6 +3682,10 @@ msgstr "Schließen"
 msgid "Close '%s' screen"
 msgstr "Schließe '%s'"
 
+#, python-format
+msgid "Close '%s' screen and exit all menus"
+msgstr "Schließe '%s' und verlasse alle Menüs"
+
 msgid "Close CA device at programm end"
 msgstr "Schließe CA Gerät bei Programmende"
 
@@ -3710,11 +3732,11 @@ msgstr "Zusammenstellungseinstellungen"
 msgid "Colombia"
 msgstr "Kolumbien"
 
+msgid "Color Format"
+msgstr "Farbformat"
+
 msgid "Color Theme"
 msgstr "Farbschema"
-
-msgid "Color format"
-msgstr "Farbformat"
 
 msgid "Color space"
 msgstr "Farbraum"
@@ -4186,6 +4208,18 @@ msgstr "Kontroll-LED kann hier an- oder ausgeschaltet werden."
 msgid "Control how finished timers are shown in the timer list. If set to hide, disabled timers will still be shown"
 msgstr "Wie sollen abgeschlossene Timer in der Liste angezeigt werden. Wenn versteckt, werden deaktivierte Timer trotzdem angezeigt."
 
+msgid "Controlled by HDMI"
+msgstr "Gesteuert über HDMI"
+
+msgid "Convert to AC3"
+msgstr "In AC3 umwandeln"
+
+msgid "Convert to DTS"
+msgstr "In DTS umwandeln"
+
+msgid "Convert to Multi-Channel PCM"
+msgstr "In Mehrkanal-PCM umwandeln"
+
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
@@ -4538,11 +4572,14 @@ msgstr "Runter"
 msgid "DTS"
 msgstr "DTS"
 
-msgid "DTS downmix"
+msgid "DTS / DTS-HD Transcoding"
+msgstr "DTS / DTS-HD-Transkodierung"
+
+msgid "DTS Downmix"
 msgstr "DTS Downmix"
 
-msgid "DTS-HD HR/DTS-HD MA/DTS"
-msgstr ""
+msgid "DTS-HD MA/HR Downmix"
+msgstr "DTS-HD MA/HR Downmix"
 
 msgid "DUAL LAYER DVD"
 msgstr "DUAL LAYER DVD"
@@ -4829,6 +4866,9 @@ msgstr "Ausschalten"
 msgid "Default"
 msgstr "Standard"
 
+msgid "Default directory"
+msgstr "Standardverzeichnis"
+
 msgid "Default movie location"
 msgstr "Standard Filmlisten-Verzeichnis"
 
@@ -4937,6 +4977,9 @@ msgstr "Sprache(n) löschen"
 msgid "Delete Timer"
 msgstr "Timer löschen"
 
+msgid "Delete all languages"
+msgstr "Alle Sprachen löschen"
+
 msgid "Delete all log entries"
 msgstr "Alle Log Einträge löschen"
 
@@ -4975,6 +5018,9 @@ msgstr "Wiedergabelisteneintrag löschen"
 
 msgid "Delete saved playlist"
 msgstr "Gespeicherte Playliste löschen"
+
+msgid "Delete selected language only"
+msgstr "Nur gewählte Sprache löschen"
 
 msgid "Delete the character to the left of text cursor"
 msgstr "Lösche das Zeichen links vom Cursor"
@@ -5203,13 +5249,13 @@ msgstr "Reservierter Speicherplatz für Aufnahmen (GB)"
 msgid "Disk state: "
 msgstr "Laufwerkstatus "
 
-msgid "Display 16:9 content as"
+msgid "Display 16:9 Content as"
 msgstr "16:9-Inhalt anzeigen als"
 
-msgid "Display 4:3 content as"
+msgid "Display 4:3 Content as"
 msgstr "4:3-Inhalt anzeigen als"
 
-msgid "Display >16:9 content as"
+msgid "Display >16:9 Content as"
 msgstr ">16:9-Inhalt anzeigen als"
 
 msgid "Display Skin"
@@ -5258,13 +5304,6 @@ msgstr "Diese Playliste wirklich löschen?"
 #, python-format
 msgid "Do you really want to delete %s?"
 msgstr "%s wirklich löschen?"
-
-msgid ""
-"Do you really want to delete selected language:\n"
-"\n"
-msgstr ""
-"Soll die gewählte Sprache wirklich gelöscht werden?\n"
-"\n"
 
 msgid "Do you really want to delete this timer ?"
 msgstr "Diesen Timer wirklich löschen?"
@@ -5434,9 +5473,15 @@ msgstr "Dokumentation"
 msgid "Dokumentation"
 msgstr "Dokumentation"
 
+msgid "Dolby Digital"
+msgstr "Dolby Digital"
+
 #, python-format
 msgid "Dolby Digital downmix is now %s"
 msgstr "DD/DTS Downmix ist jetzt %s"
+
+msgid "Dolby TrueHD Transcoding"
+msgstr "Dolby TrueHD-Transkodierung"
 
 msgid "Dolby Vision"
 msgstr "Dolby Vision"
@@ -5864,22 +5909,22 @@ msgstr "Aktiviere Verschiebemodus"
 msgid "Enable multiple bouquets"
 msgstr "Aktiviere mehrere Favoritenlisten"
 
+msgid "Enable or Disable the 10 Bit Color Mode"
+msgstr "10 Bit Farbmodus aktivieren/deaktivieren"
+
+msgid "Enable or Disable the 12 Bit Color Mode"
+msgstr "12-Bit Farbmodus aktivieren/deaktivieren"
+
+msgid "Enable or Disable to Force HDR10 Modes for UHD"
+msgstr "HDR-Modus bei UHD aktivieren/deaktivieren"
+
+msgid "Enable or Disable to Force HLG Modes for UHD"
+msgstr "HDR-Modus bei UHD aktivieren/deaktivieren"
+
 msgid "Enable or disable client mode."
 msgstr "Client-Modus aktivieren/deaktivieren."
 
-msgid "Enable or disable the 10 Bit Color Mode"
-msgstr "10 Bit Farbmodus aktivieren/deaktivieren"
-
-msgid "Enable or disable the 12 Bit Color Mode"
-msgstr "12-Bit Farbmodus aktivieren/deaktivieren"
-
 msgid "Enable or disable to force HDR Modes for UHD"
-msgstr "HDR-Modus bei UHD aktivieren/deaktivieren"
-
-msgid "Enable or disable to force HDR10 Modes for UHD"
-msgstr "HDR-Modus bei UHD aktivieren/deaktivieren"
-
-msgid "Enable or disable to force HLG Modes for UHD"
 msgstr "HDR-Modus bei UHD aktivieren/deaktivieren"
 
 msgid "Enable or disable using HDMI-CEC."
@@ -5920,9 +5965,6 @@ msgstr "Aktiviert"
 
 msgid "Enabled *"
 msgstr "Eingeschaltet *"
-
-msgid "Enabled/Disable audio passthrough fix."
-msgstr "Aktiviere/Deaktiviere Audio-Passthrough-Fix"
 
 msgid "Encrypted TV"
 msgstr "Verschlüsselt TV"
@@ -6239,6 +6281,9 @@ msgstr "Menüsortierung verlassen"
 msgid "Exit PluginBrowser"
 msgstr "Pluginbrowser verlassen"
 
+msgid "Exit PluginBrowser and close all menus"
+msgstr "Pluginbrowser verlassen und alle Menüs schließen"
+
 msgid "Exit all menus"
 msgstr "Verlasse alle Menüs"
 
@@ -6349,6 +6394,9 @@ msgstr "Externe Stromversorgung"
 
 msgid "Extra IPK's"
 msgstr "Extra IPKs"
+
+msgid "Extra Wide"
+msgstr "Extrabreit"
 
 msgid "Extra motor options"
 msgstr "Extra Rotoroptionen"
@@ -6950,13 +6998,13 @@ msgstr "Gateway"
 msgid "General"
 msgstr "Allgemein"
 
-msgid "General AC3 delay"
+msgid "General AC3 Delay"
 msgstr "Allgemeine AC3 Verzögerung"
 
 msgid "General Arts"
 msgstr "Kunst allgemein"
 
-msgid "General Bluetooth Audio delay"
+msgid "General Bluetooth Audio Delay"
 msgstr "Allgemeine BlueTooth Audio Verzögerung"
 
 msgid "General Children's"
@@ -6974,7 +7022,7 @@ msgstr "Musik allgemein"
 msgid "General News"
 msgstr "Nachrichten allgemein"
 
-msgid "General PCM delay"
+msgid "General PCM Delay"
 msgstr "Allgemeine MPEG2 Verzögerung"
 
 msgid "General Show"
@@ -7242,7 +7290,7 @@ msgstr "HDD-Einstellungen"
 msgid "HDMI"
 msgstr ""
 
-msgid "HDMI Color depth"
+msgid "HDMI Color Depth"
 msgstr "HDMI Farbtiefe"
 
 msgid "HDMI Colorimetry"
@@ -7387,6 +7435,9 @@ msgstr ""
 msgid "Hide CI messages"
 msgstr "Verberge CI Nachrichten"
 
+msgid "Hide Mute Icon"
+msgstr "Verstecke Mute Icon"
+
 msgid "Hide any zap error messages."
 msgstr "Fehlermeldungen beim Umschalten unterdrücken."
 
@@ -7404,9 +7455,6 @@ msgstr "Verstecke Infobar-Anzeige und schließe PiP"
 
 msgid "Hide known extensions"
 msgstr "Bekannte Plugins verstecken"
-
-msgid "Hide mute icon"
-msgstr "Verstecke Mute Icon"
 
 msgid "Hide number markers"
 msgstr "Nummernmarkierung verstecken"
@@ -7691,12 +7739,6 @@ msgstr "Wenn auf 'Standard' gesetzt, funktionieren Zahlen-Tasten Seite hoch/runt
 
 msgid "If set to 'yes' channels without EPG will not be shown."
 msgstr "Sollen Sender ohne EPG nicht angezeigt werden?"
-
-msgid "If set to 'yes' it will show the 'PO' packages in browser."
-msgstr "Sollen 'PO' Pakete im Browser angezeigt werden? 'PO' Dateien werden für Übersetzungen benötigt."
-
-msgid "If set to 'yes' it will show the 'SRC' packages in browser."
-msgstr "Sollen 'SRC' Pakete im Browser angezeigt werden? 'SRC' Dateien enthalten den Quelltext, wenn verfügbar, falls man Änderungen vornehmen möchte und kann."
 
 msgid "If set to 'yes' shows a small TV screen in the EPG."
 msgstr "Soll ein PiG (kleines TV-Bild) im EPG angezeigt werden?"
@@ -8025,6 +8067,9 @@ msgstr "Installiere '%s'"
 msgid "Install IPK's from your tmp folder."
 msgstr "Installiere IPKs aus dem /tmp Verzeichnis."
 
+msgid "Install Languages"
+msgstr "Sprachen installieren"
+
 msgid "Install Plugins"
 msgstr "Installiere Plugins"
 
@@ -8189,11 +8234,11 @@ msgstr "Iraq"
 msgid "Ireland"
 msgstr "Ireland"
 
+msgid "Is this Video Mode Ok?"
+msgstr "Ist dieser Videomodus in Ordnung?"
+
 msgid "Is this setting ok?"
 msgstr "Sind die Einstellungen richtig?"
-
-msgid "Is this video mode ok?"
-msgstr "Ist dieser Videomodus in Ordnung?"
 
 msgid "Isle of Man"
 msgstr "Isle of Man"
@@ -8274,6 +8319,9 @@ msgid "Jump to the previous marked position"
 msgstr "Springe zur vorherigen Markerposition"
 
 #. TRANSLATORS: (aspect ratio policy: cropped content on left/right) in doubt, keep english term
+msgid "Just Scale"
+msgstr "Nur Skalieren"
+
 #. TRANSLATORS: (aspect ratio policy: cropped content on left/right) in doubt, keep english term
 #. "nonlinear": _("Nonlinear"),					# TRANSLATORS: (aspect ratio policy: display as fullscreen, with stretching the left/right)
 msgid "Just scale"
@@ -8296,6 +8344,9 @@ msgstr ""
 
 msgid "Kazakhstan"
 msgstr "Kazakhstan"
+
+msgid "Keep all languages"
+msgstr "Alle Sprachen behalten"
 
 msgid "Keep logs"
 msgstr "Behalte Logs"
@@ -9089,7 +9140,7 @@ msgctxt "Satellite configuration mode"
 msgid "Mode"
 msgstr "Modus [Satelliten-Konfiguration]"
 
-msgctxt "Video output mode"
+msgctxt "Video Output Mode"
 msgid "Mode"
 msgstr "Modus [Video-Ausgang]"
 
@@ -10222,9 +10273,6 @@ msgstr "Öffne 'Installiere Plugins' Menü"
 msgid "Open 'Remove Plugins' screen"
 msgstr "Öffne 'Plugins löschen' Menü"
 
-msgid "Open PluginBrowser setup screen"
-msgstr "Öffne Pluginbrowser-Einstellungen"
-
 msgid "Open RDS/RASS screen"
 msgstr "Öffne RDS/RASS-Anzeige"
 
@@ -10319,6 +10367,9 @@ msgstr ""
 msgid "Original"
 msgstr "Original"
 
+msgid "Original Language"
+msgstr "Originalsprache"
+
 msgid "Original language"
 msgstr "Originalsprache"
 
@@ -10368,9 +10419,6 @@ msgid "PCM"
 msgstr ""
 
 msgid "PCM Multichannel"
-msgstr "PCM-Mehrkanal"
-
-msgid "PCM multichannel"
 msgstr "PCM-Mehrkanal"
 
 msgid "PCR PID"
@@ -10495,7 +10543,7 @@ msgstr "Palästina"
 
 #. TRANSLATORS: (aspect ratio policy: black bars on top/bottom) in doubt, keep english term.
 #. TRANSLATORS: (aspect ratio policy: black bars on left/right) in doubt, keep english term.
-msgid "Pan&scan"
+msgid "Pan&Scan"
 msgstr "Pan&Scan"
 
 msgid "Panama"
@@ -10688,6 +10736,9 @@ msgstr "Pilot"
 
 msgid "Pitcairn"
 msgstr "Pitcairn"
+
+msgid "Places a shortcut to MediaPlayer in the main menu."
+msgstr "Platziert eine Verknüpfung zum MediaPlayer im Hauptmenü."
 
 msgid "Play"
 msgstr "Abspielen"
@@ -11079,9 +11130,6 @@ msgstr "Pluginbrowser Aktionen"
 msgid "Plugin browser"
 msgstr "Plugins"
 
-msgid "Plugin browser settings"
-msgstr "Pluginbrowser-Einstellungen"
-
 msgid "Plugin install"
 msgstr "Plugin-Installation"
 
@@ -11412,6 +11460,9 @@ msgstr ""
 
 msgid "Processing"
 msgstr "Ausführung"
+
+msgid "Processing, please wait"
+msgstr "Verarbeitung, bitte warten"
 
 #, python-format
 msgid "Processor temperature:\t%s"
@@ -11902,7 +11953,7 @@ msgstr ""
 msgid "Reflash recommended!"
 msgstr "Neu flashen wird empfohlen."
 
-msgid "Refresh rate"
+msgid "Refresh Rate"
 msgstr "Wiederholrate"
 
 msgid "Refresh rate selection."
@@ -11970,6 +12021,9 @@ msgstr "Verbleibend & Verstrichen"
 
 msgid "Remember service PIN"
 msgstr "Sender PIN-Code merken"
+
+msgid "Remembers the current directory location for the next time MediaPlayer is opened."
+msgstr "Merkt sich das aktuelle Verzeichnis für den nächsten Start des MediaPlayers."
 
 msgid "Reminder, you have chosen to save timeshift file."
 msgstr "Erinnerung: Du hast gewählt, dass die Timeshift Datei gespeichert wird."
@@ -12167,6 +12221,9 @@ msgstr "Wie oft wiederholen"
 msgid "Repeat leave standby messages"
 msgstr "Wiederhole 'Verlasse Standby'-Befehl"
 
+msgid "Repeat playlist"
+msgstr "Wiederholung der Playliste"
+
 msgid "Repeat type"
 msgstr "Wiederholungstyp"
 
@@ -12315,6 +12372,9 @@ msgstr "Wiedergabestart ab %s"
 
 msgid "Resuming playback"
 msgstr "Setze Wiedergabe fort"
+
+msgid "Retains the playlist for the next time MediaPlayer is used."
+msgstr "Behält die Playlist für die nächste Verwendung des MediaPlayers bei."
 
 msgid "Retrieving image slots - Please wait..."
 msgstr "Suche Image-Slots - bitte warten..."
@@ -12654,8 +12714,14 @@ msgstr "Änderungen speichern"
 msgid "Save every (in hours)"
 msgstr "Automatisch speichern alle x Stunden"
 
+msgid "Save last directory on exit"
+msgstr "Anfangsverzeichnis beim Beenden speichern"
+
 msgid "Save playlist"
 msgstr "Playliste speichern"
+
+msgid "Save playlist on exit"
+msgstr "Playliste beim Beenden speichern"
 
 msgid "Save timer"
 msgstr "Timer speichern"
@@ -12903,25 +12969,24 @@ msgstr "Wähle '1.0' für standard committed Switche, '1.1' für uncommitted Swi
 msgid "Select 'A' or 'B' if your aerial system requires this, otherwise select 'none'. If you are unsure select 'none'."
 msgstr "Wähle 'A' oder 'B', wenn die Anlage es benötigt, sonst wähle 'keine'. Wenn du unsicher bist, wähle 'keine'."
 
+msgid "Select 'Delete all languages' to delete all languages except English and the current language."
+msgstr "Wähle 'Alle Sprachen löschen', um alle Sprachen außer Englisch und der aktuellen Sprache zu löschen."
+
+#, python-format
+msgid "Select 'Delete selected language only' to delete only the chosen language: %s."
+msgstr "Wähle 'Nur gewählte Sprache löschen', um nur die gewählte Sprache zu löschen: %s."
+
 msgid "Select 'FBC SCR' if this tuner will connect to a SCR (Unicable/JESS) device. For all other setups select 'FBC automatic'."
 msgstr "Wähle 'FBC SCR', wenn dieser Tuner ein Unicable Gerät verwendet. Für alle anderen Systeme wähle 'FBC automatisch'."
 
 msgid "Select 'Flash regular slot' to flash a regular MultiBoot slot or select 'Overwrite Recovery' to overwrite the Recovery image."
 msgstr "Wähle 'Flash in Slot', um in einen normalen Multi-Boot Slot zu flashen oder 'Überschreibe Recovery', um das Recovery Image zu überschreiben."
 
+msgid "Select 'Keep all languages' to leave everything unchanged."
+msgstr "Wähle 'Alle Sprachen behalten', um alles unverändert zu lassen."
+
 msgid "Select 'Standard' to display the standard vertical menu layout, or 'Horizontal' to display the menu items in a row."
 msgstr "Wähle 'Standard für ein vertikales Menü-Layout oder 'Horizontal', um die Menüs in Zeilen anzuzeigen."
-
-msgid ""
-"Select 'Yes' to delete all languages except English and current language:\n"
-"\n"
-"Select 'No' to delete only the chosen language:\n"
-"\n"
-msgstr ""
-"Wähle 'Ja', um alle Sprachen außer Englisch und der gewählten Sprache zu löschen:\n"
-"\n"
-"Wähle 'Nein', um nur die gewählte Sprache zu löschen:\n"
-"\n"
 
 msgid "Select 'Yes' to make a settings backup before wiping the current configuration."
 msgstr "Soll ein Backup angefertigt werden, bevor die aktuelle Konfiguration gelöscht wird?"
@@ -13003,6 +13068,9 @@ msgstr "Sollen nur DiSEqC-Befehle gesendet werden, wenn der Satellit gewechselt 
 
 msgid "Select 'yes' to wake up the receiver from deep standby, or select 'no' to skip the import."
 msgstr "Soll der E2-Receiver für den Import eingeschaltet werden? Ansonsten wird der Import übersprungen."
+
+msgid "Select Audio Track"
+msgstr "Audiospur auswählen"
 
 msgid "Select CAId"
 msgstr "CAID auswählen"
@@ -13225,6 +13293,9 @@ msgstr "Wähle aktuelles Element"
 
 msgid "Select the current menu item"
 msgstr "Wähle aktuellen Eintrag"
+
+msgid "Select the default initial directory"
+msgstr "Wähle das Standard-Anfangsverzeichnis"
 
 msgid "Select the desired function and click on \"OK\" to assign it. Use \"CH+/-\" to toggle between the lists. Select an assigned function and click on \"OK\" to de-assign it. Use \"Next/Previous\" to change the order of the assigned functions."
 msgstr "Gewünschte Funktion auswählen und 'OK' drücken, um sie zu belegen. Verwende 'CH+/-', um zwischen den Listen umzuschalten. Wähle zugeordnete Funktion aus und drücke 'OK', um die Belegung zu entfernen."
@@ -13698,9 +13769,6 @@ msgstr "Einstellungen, Informationen und weitere Funktionen"
 msgid "Setup"
 msgstr "Konfiguration"
 
-msgid "Setup Actions"
-msgstr "Einstellungsaktionen"
-
 msgid "Setup how to control the channel changing."
 msgstr "Konfiguriere den Senderwechsel."
 
@@ -13794,6 +13862,9 @@ msgstr "Log-Manager in Erweiterungsliste anzeigen?"
 
 msgid "Show Media playback Remaining/Elapsed as *"
 msgstr "Zeige bei Media Playback verbleibende/verstrichene Zeit als *"
+
+msgid "Show MediaPlayer in the main menu"
+msgstr "Zeige MediaPlayer im Hauptmenü"
 
 msgid "Show MiniTV in the Front Display"
 msgstr "Zeige MiniTV im Display"
@@ -14062,9 +14133,6 @@ msgstr "Zeige Einfach-EPG"
 msgid "Show single epg for current channel"
 msgstr "Zeige Einzel-EPG für den aktuellen Sender"
 
-msgid "Show source packages"
-msgstr "Zeige Source-Pakete (SRC)"
-
 msgid "Show status icons in movie list"
 msgstr "Zeige Status-Icons in der Filmliste"
 
@@ -14118,9 +14186,6 @@ msgstr "Zeige Zeit 'Verbleibend/Verstrichen' *"
 
 msgid "Show timer list"
 msgstr "Zeige Timerliste"
-
-msgid "Show translation packages"
-msgstr "Zeige Pakete mit den Sprachdateien für die Übersetzung"
 
 msgid "Show transponder info"
 msgstr "Transponder-Info anzeigen"
@@ -14597,6 +14662,12 @@ msgstr "Sortiere Einstellungen alphabetisch"
 msgid "Sort the EPG list"
 msgstr "Sortiere das EPG"
 
+msgid "Sorting of playlists"
+msgstr "Sortierung der Playliste"
+
+msgid "Sorts stored playlists alphabetically before loading them"
+msgstr "Sortiert gespeicherte Playlisten alphabetisch, bevor sie geladen werden"
+
 msgid "Soul/Rhythm Blues"
 msgstr ""
 
@@ -14773,6 +14844,9 @@ msgstr "Schritt nach Westen"
 
 msgid "Steps"
 msgstr "Schritte"
+
+msgid "Stereo"
+msgstr "Stereo"
 
 msgid "Stop"
 msgstr "Stopp"
@@ -14958,6 +15032,12 @@ msgstr "Untertitel"
 msgid "Subtitle Long"
 msgstr "Untertitel lang"
 
+msgid "Subtitle Quickmenu"
+msgstr "Untertitel Schnellmenü"
+
+msgid "Subtitle Selection"
+msgstr "Untertitel-Auswahl"
+
 msgid "Subtitle alignment"
 msgstr "Untertitel Ausrichtung"
 
@@ -14987,9 +15067,6 @@ msgstr "Untertitel Sprachwahl 4"
 
 msgid "Subtitle position"
 msgstr "Untertitel Position"
-
-msgid "Subtitle quickmenu"
-msgstr "Untertitel Schnellmenü"
 
 msgid "Subtitle selection"
 msgstr "Untertitel-Auswahl"
@@ -15499,6 +15576,9 @@ msgstr "Die Commit-Log-Datei kann im Moment nicht ermittelt werden - bitte spät
 
 msgid "The current update may be unstable."
 msgstr "Das aktuelle Update könnte instabil sein."
+
+msgid "The default directory is used as the initial filelist location when opening MediaPlayer."
+msgstr "Das Standardverzeichnis wird als anfänglicher Verzeichnisort beim Öffnen des MediaPlayers verwendet."
 
 #, python-format
 msgid "The directory %s already exists."
@@ -16014,12 +16094,15 @@ msgstr "Titeldetails"
 msgid "Titleset mode"
 msgstr "Titleset"
 
+msgid "To Audio Selection"
+msgstr "Zur Audio-Auswahl"
+
+msgid "To Subtitle Selection"
+msgstr "Zur Untertitel-Auswahl"
+
 #, python-format
 msgid "To apply the selected '%s' skin the GUI needs to restart. Would you like to restart the GUI now?"
 msgstr "Damit der gewählte Skin '%s' verwendet wird, muss die Benutzeroberfläche neu gestartet werden. Benutzeroberfläche neu starten?"
-
-msgid "To audio selection"
-msgstr "Zur Audio-Auswahl"
 
 msgid "To be able to download any image local storage must already be configured, HDD, USB or SD, and also be selected as the 'Backup location' in Image Manager setup menu."
 msgstr "Bevor Images heruntergeladen werden können, muss ein lokales Verzeichnis auf HDD, USB oder SD im Image-Manager ausgewählt werden."
@@ -16039,9 +16122,6 @@ msgstr "Ein Enigma2 Neustart ist erforderlich, um den gewählten Skin zu speiche
 
 msgid "To start a download select YELLOW from Image Manager main screen, then select the distro, and finally which image to download."
 msgstr "Um ein Image herunterzuladen, wähle 'Gelb' in der Hauptansicht des Image-Managers, dann wähle die Distribution und zum Schluss das Image, das du herunterladen möchtest."
-
-msgid "To subtitle selection"
-msgstr "Zur Untertitel-Auswahl"
 
 msgid "Today"
 msgstr "Heute"
@@ -16621,6 +16701,9 @@ msgstr "Benutzen"
 msgid "Use 12 characters display mode"
 msgstr "Verwende 12-Zeichen-Modus"
 
+msgid "Use Best / Controlled by HDMI"
+msgstr "Automatisch/über HDMI gesteuert"
+
 msgid "Use DHCP"
 msgstr "Adresse automatisch beziehen (DHCP)"
 
@@ -16933,6 +17016,9 @@ msgstr "Bild&Ton-Einstellungen"
 msgid "Video Chip Mode*"
 msgstr "Videochipmodus *"
 
+msgid "Video Output"
+msgstr "Video Ausgang"
+
 msgid "Video PID"
 msgstr "Video-PID"
 
@@ -16963,9 +17049,6 @@ msgstr ""
 
 msgid "Video mode selection."
 msgstr "Auswahl des Videomodus."
-
-msgid "Video output"
-msgstr "Video Ausgang"
 
 msgid "Video settings"
 msgstr "Video-Einstellungen"
@@ -17094,7 +17177,7 @@ msgstr ""
 msgid "WLAN connection"
 msgstr "WLAN-Verbindung"
 
-msgid "WMA Pro downmix"
+msgid "WMA Pro Downmix"
 msgstr "WMA Pro Downmix"
 
 msgid "WPA"
@@ -17527,6 +17610,9 @@ msgstr "Soll der Bildinhalt bei einem Seitenverhältnis von 16:9 skaliert/gestre
 msgid "When the content has an aspect ratio of 4:3, choose whether to scale/stretch the picture."
 msgstr "Soll der Bildinhalt bei einem Seitenverhältnis von 4:3 skaliert/gestreckt werden?"
 
+msgid "When the playlist comes to the end, continue playing, starting with the first item in the playlist."
+msgstr "Wenn die Playlist zu Ende ist, wird die Wiedergabe mit dem ersten Titel der Playlist fortgesetzt."
+
 msgid "When the receiver wakes from standby, it will send a command to the TV to bring it out of standby too."
 msgstr "Wenn der E2-Receiver aus Standby aufwacht, schickt er einen Befehl zum Fernseher, um ihn auch aus Standby einzuschalten."
 
@@ -17550,6 +17636,9 @@ msgstr "Welche Sendung soll permanent gesichert werden?"
 
 msgid "White"
 msgstr "Weiß"
+
+msgid "Wide"
+msgstr "Breit"
 
 msgid "Width"
 msgstr "Breite"
@@ -18351,15 +18440,6 @@ msgstr "Verbunden"
 msgid "controlled by HDMI"
 msgstr "gesteuert über HDMI"
 
-msgid "convert to AC3"
-msgstr "In AC3 umwandeln"
-
-msgid "convert to DTS"
-msgstr "In DTS umwandeln"
-
-msgid "convert to multi-channel PCM"
-msgstr "In Mehrkanal-PCM umwandeln"
-
 msgid "cooking"
 msgstr "Kochen"
 
@@ -18530,12 +18610,6 @@ msgstr "DVD-Player verlassen oder zurück zur Dateiverwaltung"
 
 msgid "experimental film/video"
 msgstr "Experimental Filme/Video"
-
-msgid "extra wide"
-msgstr "Extrabreit"
-
-msgid "extrawide"
-msgstr "extrabreit"
 
 msgid "failed"
 msgstr "fehlgeschlagen"
@@ -19059,9 +19133,6 @@ msgstr "Benenne diese Datei in 'force' um, um ein Update ohne Bestätigung zu er
 msgid "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation"
 msgstr "Benenne unforce_%s.txt nach force_%s.txt um, um einen Update ohne Bestätigung zu starten."
 
-msgid "repeat playlist"
-msgstr "Wiederholung der Playliste"
-
 msgid "repeated"
 msgstr "wiederholend"
 
@@ -19097,12 +19168,6 @@ msgstr "Rotor wird nicht verwendet"
 
 msgid "running..."
 msgstr "läuft..."
-
-msgid "save last directory on exit"
-msgstr "Anfangsverzeichnis beim Beenden speichern"
-
-msgid "save playlist on exit"
-msgstr "Playliste beim Beenden speichern"
 
 msgid "scan state"
 msgstr "Scan-Status"
@@ -19179,9 +19244,6 @@ msgstr "Zeige Karten mit uphop 9"
 msgid "show event details"
 msgstr "Sendungs-Details anzeigen"
 
-msgid "show mediaplayer on mainmenu"
-msgstr "Zeige Mediaplayer im Hauptmenü"
-
 msgid "show/game show (general)"
 msgstr "Show/Spielshow (allgemein)"
 
@@ -19227,9 +19289,6 @@ msgstr "soziale/spirituelle Wissenschaft"
 msgid "softcam"
 msgstr "Softcam"
 
-msgid "sorting of playlists"
-msgstr "Sortierung der Playliste"
-
 msgid "special (general)"
 msgstr "Spezial (allgemein)"
 
@@ -19259,9 +19318,6 @@ msgstr "Schnitt hier starten"
 
 msgid "stepsize"
 msgstr "Schrittweite"
-
-msgid "stereo"
-msgstr "Stereo"
 
 msgid "svg only"
 msgstr "Nur SVG"
@@ -19380,12 +19436,6 @@ msgstr "unveröffentlicht"
 msgid "until standby/restart"
 msgstr "bis zu Standby/Neustart"
 
-msgid "use best / controlled by HDMI"
-msgstr "Automatisch/über HDMI gesteuert"
-
-msgid "use hdmi cacenter"
-msgstr "Verwende HDMI CA-Center"
-
 msgid "user defined"
 msgstr "benutzerdefiniert"
 
@@ -19442,9 +19492,6 @@ msgstr "Wenn PiPZap aktiviert ist, wechsle Sender hoch"
 
 msgid "white"
 msgstr "Weiß"
-
-msgid "wide"
-msgstr "breit"
 
 msgid "width"
 msgstr "Breite"

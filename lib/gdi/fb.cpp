@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <memory.h>
+#include <algorithm>
 #include <linux/kd.h>
 
 #include <lib/gdi/fb.h>
@@ -19,6 +20,18 @@
 #include <interfaces/ion.h>
 #define ION_HEAP_TYPE_BMEM      (ION_HEAP_TYPE_CUSTOM + 1)
 #define ION_HEAP_ID_MASK        (1 << ION_HEAP_TYPE_BMEM)
+// This pool is one upfront ION_IOC_ALLOC() call at boot that PERMANENTLY
+// reserves this much from the system-wide ION heap, regardless of how much
+// of it gAccel's own sub-allocator is actually using at any given moment
+// (accel.cpp's accelAlloc()/accelFree() only manage USERSPACE bookkeeping
+// within this already-reserved block - they never give any of it back to
+// the system). Previously shrunk to 8MB on GLES specifically to leave the
+// vendor GPU driver's own internal ION/texture allocations more headroom -
+// that was working around symptoms of a real bug (gEGLDC::executeBlit() and
+// friends leaking a gPixmap AddRef() and its opcode struct on every draw,
+// see gegldc.cpp - fixed now), not an actual capacity shortfall, so back to
+// the same 32MB both renderers have always safely used as sole/primary
+// consumer.
 #define ACCEL_MEM_SIZE          (32*1024*1024)
 
 #elif !defined(FBIO_BLIT)
@@ -132,6 +145,7 @@ fbClass::fbClass(const char *fb)
 		if (lion)
 		{
 			eDebug("[fb] %dkB available for acceleration surfaces (via ION).", ACCEL_MEM_SIZE / 1024);
+			m_accel_phys_addr = phys_data.addr;
 			gAccel::getInstance()->setAccelMemorySpace(lion, phys_data.addr, ACCEL_MEM_SIZE);
 		}
 		else
@@ -312,7 +326,36 @@ int fbClass::SetMode(int nxRes, int nyRes, int nbpp)
 	lfb=(unsigned char*)mmap(0, stride * screeninfo.yres_virtual, PROT_WRITE|PROT_READ, MAP_SHARED, fbFd, 0);
 #endif
 
+#ifdef CONFIG_ION
+	// Clear every page of the virtual framebuffer, not just page 0 (the one
+	// shown right now): with multiple pages the others still hold whatever
+	// the previous run/bootlogo left there, and the page the EGL backend
+	// renders its very first frame into (the spinner, before any full
+	// repaint) would otherwise present that stale picture behind it.
+	memset(lfb, 0, stride * std::max<unsigned int>(screeninfo.yres_virtual, yRes));
+#elif defined(HAVE_HISI_MALI_EGL)
+	// Same as the CONFIG_ION branch above, for the HiSilicon (hifb + Mali fbdev) EGL
+	// build: libMali flips between the framebuffer's pages, so every page has to
+	// start out clear, not just page 0. hifb sizes its video memory per mode, so
+	// re-read it and remap if it changed since the constructor mapped it (the
+	// clear is bounded by what is actually mapped).
+	if (fix.smem_len != (unsigned int)available)
+	{
+		if (lfb && lfb != MAP_FAILED)
+			munmap(lfb, available);
+		available = fix.smem_len;
+		lfb = (unsigned char*)mmap(0, available, PROT_WRITE|PROT_READ, MAP_SHARED, fbFd, 0);
+		if (lfb == MAP_FAILED)
+		{
+			eDebug("[fb] remap after SetMode failed: %m");
+			lfb = 0;
+		}
+	}
+	if (lfb)
+		memset(lfb, 0, std::min<size_t>((size_t)available, (size_t)stride * std::max<unsigned int>(screeninfo.yres_virtual, yRes)));
+#else
 	memset(lfb, 0, stride*yRes);
+#endif
 	blit();
 	return 0;
 }
@@ -394,6 +437,8 @@ int fbClass::lock()
 	}
 	else
 		locked = 1;
+	if (lockChanged)
+		lockChanged(true);
 	return fbFd;
 }
 
@@ -406,7 +451,11 @@ void fbClass::unlock()
 	locked=0;
 	SetMode(xRes, yRes, bpp);
 	PutCMAP();
+	if (lockChanged)
+		lockChanged(false);
 }
+
+void (*fbClass::lockChanged)(bool locked) = nullptr;
 
 void fbClass::enableManualBlit()
 {

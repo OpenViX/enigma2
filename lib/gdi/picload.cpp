@@ -1443,8 +1443,39 @@ int ePicLoad::getData(ePtr<gPixmap> &result)
 		return 0;
 	}
 
+	// accelAuto (not accelAlways) for 8bpp too, same as every other decode
+	// path (e.g. epng.cpp's loadPNG) - accelAlways bypassed
+	// is_a_candidate_for_accel()'s size gate (gpixmap.cpp) entirely, so
+	// even a tiny 16x16 icon/picon claimed a block from the fixed-size ION
+	// accel pool. Under fast eListbox scrolling with many small icons
+	// decoded in quick succession, that pool exhausts fast (repeated
+	// "[gAccel] alloc failed"/"ION_IOC_ALLOC: Cannot allocate memory"),
+	// which is the condition that preceded a crash inside the vendor accel
+	// blit path. accelAuto still accelerates large 8bpp images exactly as
+	// before (is_a_candidate_for_accel() checks pixel count for both 8 and
+	// 32 bpp, not bpp itself), so this only changes behavior for images too
+	// small to have needed acceleration in the first place.
+	//
+	// On GLES/EGL specifically, that's still not enough: this is the general
+	// decode-to-a-target-size path every ePicLoad caller (getThumbnail(),
+	// and any plugin resizing a downloaded image via LoadPixmap/ePicLoad -
+	// e.g. a cover/poster grid) goes through, and unlike small icons, a
+	// resized poster/cover is routinely well above the 48KB accel
+	// threshold. See epng.cpp's loadJPG() for the full reasoning (identical
+	// here): on EGL, accelerated CPU memory buys a large decoded image
+	// nothing (gTextureManager uploads it to a GL texture either way), while
+	// it does compete with the vendor GPU driver's own internal texture
+	// allocations for the same shrunk-for-EGL accel pool - so a handful of
+	// full-size posters alone can exhaust it, independent of any leak.
+	// accelAuto is kept on the non-GLES renderer, where this pool is the
+	// only ION consumer and has always safely handled large images.
+#ifdef HAVE_EGL
+	int picload_accel = gPixmap::accelNever;
+#else
+	int picload_accel = gPixmap::accelAuto;
+#endif
 	result = new gPixmap(m_filepara->max_x, m_filepara->max_y, m_filepara->bits == 8 ? 8 : 32,
-				NULL, m_filepara->bits == 8 ? gPixmap::accelAlways : gPixmap::accelAuto);
+				NULL, picload_accel);
 	gUnmanagedSurface *surface = result->surface;
 
 	// original image    : ox, oy

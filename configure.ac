@@ -11,6 +11,7 @@ AC_SYS_LARGEFILE
 
 AC_PROG_CC
 AC_PROG_CXX
+PKG_PROG_PKG_CONFIG
 m4_ifdef([LT_INIT], [LT_INIT], [AC_PROG_LIBTOOL])
 AC_CONFIG_MACRO_DIR([m4])
 AC_OPENMP()
@@ -506,8 +507,111 @@ if test `echo "$BOXTYPE" | cut -b 1-2` == "vu"; then
 	AC_DEFINE(FORCE_ADVANCED_REMOTE, 1,[define to fixup the input device identification when the remote control is actually an 'advanced' remote (with play/forward/rewind keys)])
 fi
 
-if test "$BOXTYPE" == "vuultimo4k" -o "$BOXTYPE" == "vuduo4kse"; then
-	AC_DEFINE(PASSTHROUGH_FIX, 1 ,[define when passthrough is not entirely supported by drivers])
+AC_ARG_WITH([egl],
+  AS_HELP_STRING([--with-egl], [enable EGL/GLES2/GLES3 backend, yes/no/auto]),
+  [],
+  [with_egl=no])
+
+# Unlike most --with-* switches here, EGL is not something a box gets by
+# default: with_egl defaults to "no", so a box only gets probed for EGL/GLES
+# when whatever's driving this build (e.g. the recipe's EXTRA_OECONF, keyed
+# off the distro-level ENABLE_E2EGL var) explicitly passes --with-egl.
+# Boxes whose SDK merely happens to carry EGL/GLESv2/GLES3 pkg-config
+# metadata without a working backend (this has bitten vuduo4kse, vusolo4k
+# and vuultimo4k in the past, with link failures such as "undefined
+# reference to glBindVertexArray") simply never pass --with-egl and are
+# never probed at all - with_egl stays "no" and PKG_CHECK_MODULES below
+# never runs.
+have_egl=no
+have_gles2=no
+have_gles3=no
+
+AS_IF([test "x$with_egl" != "xno"], [
+  PKG_CHECK_MODULES([EGL], [egl], [have_egl=yes], [have_egl=no])
+  PKG_CHECK_MODULES([GLES2], [glesv2], [have_gles2=yes], [have_gles2=no])
+])
+
+AS_IF([test "x$have_gles2" = "xyes"], [
+  saved_CPPFLAGS="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS $GLES2_CFLAGS"
+  AC_CHECK_HEADERS([GLES3/gl3.h], [have_gles3=yes], [have_gles3=no])
+  CPPFLAGS="$saved_CPPFLAGS"
+
+  # The header alone is not proof the driver implements GLES3: VU+'s
+  # vuduo4kse/vusolo4k/vuultimo4k ship a complete GLES3/gl3.h but the same
+  # GLES1/2-only libv3ddriver.so (confirmed by inspecting the real vendor
+  # binary - none of the GLES3-only core symbols such as glBindVertexArray are
+  # exported). With HAVE_GLES3 defined here, the "#if defined(HAVE_GLES3)"
+  # shader code compiles in calls to them and the final link fails with
+  # "undefined reference to glBindVertexArray". Those three boxes are simply
+  # kept off the GLES3 path; every other box keeps the plain header check.
+  case "$BOXTYPE" in
+    vuduo4kse|vusolo4k|vuultimo4k)
+      have_gles3=no
+      ;;
+    # pulse4k/pulse4kmini/hd61(ax61)/sf8008/sf8008m/gbmv200(gbtrio4k etc.): libMali (Mali-450) is GLES 2.0 only - it exports
+    # glBindVertexArrayOES/glGenVertexArraysOES but none of the core GLES3
+    # symbols - while any GLES3/gl3.h that happens to be in the sysroot (e.g.
+    # mesa's) would still turn HAVE_GLES3 on.
+    pulse4k|pulse4kmini|hd61|sf8008|sf8008m|gbmv200|h8se|h9|h9combo|h9combose|h9se|h10|h11|i55plus|i55se)
+      have_gles3=no
+      ;;
+  esac
+])
+
+AS_IF([test "x$with_egl" = "xyes"], [
+  AS_IF([test "x$have_egl" != "xyes" -o "x$have_gles2" != "xyes"], [
+    AC_MSG_ERROR([--with-egl was given, but egl and/or glesv2 were not found])
+  ])
+])
+
+# Baseline requirement is EGL + GLESv2 - this alone decides use_egl.
+AS_IF([test "x$have_egl" = "xyes" -a "x$have_gles2" = "xyes"], [
+  AC_DEFINE([HAVE_EGL], [1], [Define if EGL/GLES2 support is available])
+  use_egl=yes
+], [
+  use_egl=no
+])
+
+# GLES3 is a strictly optional upgrade on top of that baseline - it must
+# only ever ADD the extra define, never downgrade use_egl back to no when
+# GLES3/gl3.h isn't available (a very common case: many SDKs ship EGL +
+# GLESv2 without GLES3 headers at all). Getting this wrong silently drops
+# the whole EGL backend for anyone without GLES3, with no error - it just
+# falls back to gfbdc/sdl as if --with-egl had never been requested.
+AS_IF([test "x$use_egl" = "xyes" -a "x$have_gles3" = "xyes"], [
+  AC_DEFINE([HAVE_GLES3], [1], [Define if GLES3 support is available])
+])
+
+AM_CONDITIONAL([HAVE_EGL], [test "x$use_egl" = "xyes"])
+
+# Rendering the OSD canvas scaled down when it is larger than the GPU's maximum
+# texture/renderbuffer size (e.g. a 2560x1440 skin on VideoCore IV, limit 2048)
+# - see gEGLDC::updatePhysicalSize(). Off unless asked for: the recipe passes it
+# only for EGL machines that do not carry E2EGL_WQHD_FEATURE (see
+# egl-gles-extras/enigma2.bbappend), so every other box behaves exactly as it
+# did before this existed.
+AC_ARG_ENABLE([egl-canvas-scaling],
+  AS_HELP_STRING([--enable-egl-canvas-scaling], [scale the EGL OSD canvas down when it exceeds the GPU texture size limit]),
+  [],
+  [enable_egl_canvas_scaling=no])
+AS_IF([test "x$use_egl" = "xyes" -a "x$enable_egl_canvas_scaling" = "xyes"], [
+  AC_DEFINE([HAVE_EGL_CANVAS_SCALING], [1], [Scale the EGL OSD canvas down when it exceeds the GPU texture size limit])
+])
+
+AC_SUBST([EGL_CFLAGS])
+AC_SUBST([EGL_LIBS])
+AC_SUBST([GLES2_CFLAGS])
+AC_SUBST([GLES2_LIBS])
+
+# Dreambox's VC5/BEGL EGL stack (libvc5dream/libv3ddriver) only implements the
+# EGL_EXT_platform_base *pixmap* path (see lib/gdi/egl/platform/dreambox) - it
+# is unrelated to, and independent of, the FORCE_ALPHABLENDING_ACCELERATION
+# workaround below (that one is about the older 2D/bcm blit accelerator being
+# unreliable on these boxes, not about this GPU path).
+AM_CONDITIONAL(HAVE_DREAMBOX_EGL, test "x$use_egl" = "xyes" -a \( "$BOXTYPE" == "dm900" -o "$BOXTYPE" == "dm920" \))
+if test "x$use_egl" = "xyes" -a \( "$BOXTYPE" == "dm900" -o "$BOXTYPE" == "dm920" \); then
+	AC_DEFINE(HAVE_DREAMBOX_EGL, 1, [Dreambox VC5/BEGL EGL pixmap backend available])
 fi
 
 if test "$BOXTYPE" == "dm900" -o "$BOXTYPE" == "dm920"; then
@@ -516,6 +620,98 @@ if test "$BOXTYPE" == "dm900" -o "$BOXTYPE" == "dm920"; then
 	AC_DEFINE(LCD_DM900_Y_OFFSET, 4,[define LCD Y offset for dm900 and dm920])
 	AC_DEFINE(DREAMBOX_DUAL_TUNER, 1,[define it is dreambox dual tuner present])
 	AC_DEFINE(FORCE_ALPHABLENDING_ACCELERATION, 1,[define when the framebuffer acceleration has alphablending support, but detection slow down all])
+fi
+
+# GigaBlue Quad 4K Pro's Broadcom Nexus EGL stack (see
+# lib/gdi/egl/platform/gbquad) - a real EGL window surface reached via
+# NxClient_Join()/NXPL_RegisterNexusDisplayPlatform(), against the real
+# vendor headers/libraries (gb-v3ddriver-headers.bb/gb-v3ddriver.inc in
+# oe-alliance-core's meta-gigablue layer: nxclient.h/default_nexus.h staged
+# into the normal sysroot include dir, libnxclient.so/libnxpl.so/libnexus.so
+# staged into the normal sysroot lib dir alongside a "nxpl" pkg-config
+# module), unlike Dreambox's pixmap-surface VC5/BEGL stack.
+# vuduo4klite uses the same Broadcom Nexus/NXPL stack (oe-alliance-core's
+# meta-vuplusde vuplus-v3ddriver.inc is a copy of gb-v3ddriver.inc, installing the
+# same libnxpl/libnexus/libnxclient + "nxpl" pkg-config module). The other
+# GigaBlue Broadcom boxes are the two meta-gigablue gb-v3ddriver machines,
+# BOXTYPE gb7252 (also covers gb7252pro's newer driver drop) and gb72604.
+use_nxpl_egl=no
+if test "x$use_egl" = "xyes" -a \( "$MACHINEBUILD" == "gbquad4kpro" -o "$MACHINEBUILD" == "vuduo4klite" \
+	-o "$BOXTYPE" == "gb7252" -o "$BOXTYPE" == "gb72604" \
+	-o "$BOXTYPE" == "h7" -o "$BOXTYPE" == "h17" -o "$MACHINEBUILD" == "zgemmah7" -o "$MACHINEBUILD" == "zgemmah17combo" -o "$MACHINEBUILD" == "zgemmah17twin" \); then
+	use_nxpl_egl=yes
+fi
+# Zgemma h7/h17 (meta-airdigital's airdigital-v3ddriver) ship libnxpl/libnexus/libv3ddriver
+# but no libnxclient.so: the provider joins Nexus via NEXUS_Platform_AuthenticatedJoin instead.
+if test "x$use_nxpl_egl" = "xyes" -a \( "$BOXTYPE" == "h7" -o "$BOXTYPE" == "h17" -o "$MACHINEBUILD" == "zgemmah7" -o "$MACHINEBUILD" == "zgemmah17combo" -o "$MACHINEBUILD" == "zgemmah17twin" \); then
+	AC_DEFINE(HAVE_NXPL_NO_NXCLIENT, 1, [No libnxclient: join Nexus with NEXUS_Platform_AuthenticatedJoin])
+fi
+AM_CONDITIONAL(HAVE_GBQUAD_EGL, test "x$use_nxpl_egl" = "xyes")
+if test "x$use_nxpl_egl" = "xyes"; then
+	AC_DEFINE(HAVE_GBQUAD_EGL, 1, [GigaBlue Broadcom / VU+ Duo 4K Lite Nexus EGL window backend available])
+	PKG_CHECK_MODULES([NXPL], [nxpl], [], [
+		AC_MSG_ERROR([$MACHINEBUILD EGL build requires the Nexus/NXPL pkg-config module "nxpl" (from gb-v3ddriver/vuplus-v3ddriver in oe-alliance-core's meta-gigablue/meta-vuplusde layer) - not found in the sysroot])
+	])
+	# bstd.h (base header every nexus_*.h/nxclient.h pulls in) hard-errors
+	# unless BSTD_CPU_ENDIAN is defined before it's parsed - the SDK ships
+	# bstd_cfg.h (where it looks first) as a literal empty "/* stub file */",
+	# deliberately leaving this to the consumer's build system. Every
+	# gbquad4kpro target is ARM Cortex-A15, which is little-endian here (as
+	# is every other Broadcom Nexus STB SoC in this generation - there is no
+	# big-endian variant this box family ships as). enigma2_config.h (where
+	# this ends up) is force-included via -include ahead of every other
+	# header in every translation unit (see lib/gdi/Makefile.inc and
+	# main/Makefile.am's AM_CPPFLAGS), so this is visible by the time
+	# gbquad_window_provider.h's nexus header includes are reached.
+	AC_DEFINE(BSTD_CPU_ENDIAN, BSTD_ENDIAN_LITTLE, [Required by the Nexus SDK's bstd.h before any nexus_*.h/nxclient.h include - see gbquad4kpro's HAVE_GBQUAD_EGL block])
+fi
+AC_SUBST([NXPL_CFLAGS])
+AC_SUBST([NXPL_LIBS])
+
+# VU+'s Broadcom Nexus EGL stack (see lib/gdi/egl/platform/vuplus) - the same
+# underlying Nexus/NXPL/V3D driver family as GigaBlue Quad 4K Pro above
+# (confirmed by inspecting the actual vendor tarball: libgles-<machine>
+# ships libnxpl.so/libv3ddriver.so/libdvb_base.so/libdvb_client.so, and its
+# nxpl.pc reads "Broadcom/Vu+ Nexus platform layer"), reached through VU+'s
+# own thin wrapper library "libvupl" (<eglvuplus.h>, "Vu+ API for
+# EGL/OpenGLES") instead of raw nxclient.h/default_nexus.h - so, unlike
+# gbquad4kpro, no direct Nexus header dependency or BSTD_CPU_ENDIAN define is
+# needed here. Model list mirrors oe-alliance-core's
+# meta-brands/meta-vuplus/recipes-graphics/{libgles,libvupl} COMPATIBLE_MACHINE
+# sets (the models that actually ship a libvupl package) - not every VUPLUS*
+# BOXTYPE defined above has one (e.g. vuduo, vuduo4klite, vusolo, vuultimo,
+# vuuno, vuzero do not and are deliberately left out here).
+AM_CONDITIONAL(HAVE_VUPLUS_EGL, test "x$use_egl" = "xyes" -a \( "$BOXTYPE" == "vuduo2" -o "$BOXTYPE" == "vuduo4k" -o "$BOXTYPE" == "vuduo4kse" -o "$BOXTYPE" == "vusolo2" -o "$BOXTYPE" == "vusolo4k" -o "$BOXTYPE" == "vusolose" -o "$BOXTYPE" == "vuultimo4k" -o "$BOXTYPE" == "vuuno4k" -o "$BOXTYPE" == "vuuno4kse" -o "$BOXTYPE" == "vuzero4k" \))
+if test "x$use_egl" = "xyes" -a \( "$BOXTYPE" == "vuduo2" -o "$BOXTYPE" == "vuduo4k" -o "$BOXTYPE" == "vuduo4kse" -o "$BOXTYPE" == "vusolo2" -o "$BOXTYPE" == "vusolo4k" -o "$BOXTYPE" == "vusolose" -o "$BOXTYPE" == "vuultimo4k" -o "$BOXTYPE" == "vuuno4k" -o "$BOXTYPE" == "vuuno4kse" -o "$BOXTYPE" == "vuzero4k" \); then
+	AC_DEFINE(HAVE_VUPLUS_EGL, 1, [VU+ Nexus EGL window backend (libvupl) available])
+	PKG_CHECK_MODULES([VUPL], [libvupl], [], [
+		AC_MSG_ERROR([VU+ EGL build requires the "libvupl" pkg-config module (from libvupl/libvupl.inc in oe-alliance-core's meta-vuplus layer) - not found in the sysroot])
+	])
+fi
+AC_SUBST([VUPL_CFLAGS])
+AC_SUBST([VUPL_LIBS])
+
+# ABCom's pulse4k/pulse4kmini, GFutures' hd61 (ax61), Octagon's sf8008/sf8008m and
+# GigaBlue's gbmv200 (gbip4k/gbtrio4k/gbtrio4kpro) and Zgemma/AirDigital's h8se/h9/h9combo/
+# h9combose/h9se/h10/h11/i55plus/i55se (all HiSilicon Hi3798MV200, ARM Mali-450 "Utgard"
+# GPU) EGL backend (see lib/gdi/egl/platform/hisi) - a real EGL window
+# surface against a Mali fbdev binary driver (libMali.so, GLES 2.0 only),
+# unlike GigaBlue/VU+'s Broadcom Nexus stack above. oe-alliance-core's
+# abcom-mali-utgard.inc symlinks libMali.so onto the standard libEGL/libGLESv2
+# sonames but ships NO headers or .pc files (mesa in its DEPENDS never reaches
+# enigma2's sysroot), so egl-gles-extras/meta-local's abcom-mali-3798mv200
+# bbappend stages the matching vendor EGL/GLES/GLES2/KHR headers and generates
+# egl.pc/glesv2.pc - after that the generic "egl"/"glesv2" PKG_CHECK_MODULES
+# above resolve as usual. GLES3 headers are deliberately not staged.
+# BOXTYPE is the OE MACHINE, so this covers every MACHINEBUILD of these machines; which
+# MACHINEBUILDs actually get EGL is decided by ENABLE_E2EGL in egl-gles-extras/openvix.conf.
+hisi_mali_egl_box=no
+case "$BOXTYPE" in
+  pulse4k|pulse4kmini|hd61|sf8008|sf8008m|gbmv200|h8se|h9|h9combo|h9combose|h9se|h10|h11|i55plus|i55se) hisi_mali_egl_box=yes ;;
+esac
+AM_CONDITIONAL(HAVE_HISI_MALI_EGL, test "x$use_egl" = "xyes" -a "x$hisi_mali_egl_box" = "xyes")
+if test "x$use_egl" = "xyes" -a "x$hisi_mali_egl_box" = "xyes"; then
+	AC_DEFINE(HAVE_HISI_MALI_EGL, 1, [HiSilicon Hi3798MV200 Mali Utgard fbdev EGL window backend available])
 fi
 
 if test "$BOXTYPE" == "dm900"; then
@@ -702,7 +898,7 @@ CXXFLAGS="$CXXFLAGS -Wall -Wextra\
 	-Wno-error=stringop-truncation -Wno-error=shadow -Wno-error=cast-qual \
 	-Wno-error=aggregate-return -Wno-error=missing-field-initializers \
 	-Wno-error=packed -Wno-error=vla -Wno-error=clobbered -Wno-error=unused-parameter \
-	$BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS $ALSA_CFLAGS $GLES_CFLAGS"
+	$BASE_CFLAGS $ENIGMA2_CFLAGS $PTHREAD_CFLAGS $OPENMP_CFLAGS $ALSA_CFLAGS $GLES_CFLAGS $EGL_CFLAGS $GLES2_CFLAGS"
 AX_SWIG_PYTHON_OPT="$AX_SWIG_PYTHON_OPT -DSWIG_PYTHON_LEGACY_BOOL"
 
 AC_CONFIG_FILES([

@@ -231,6 +231,9 @@ class ServicePosition(Poll, Converter):
 		if length < 0:
 			return ""
 
+		if self.type == self.TYPE_REMAINING and length == 0:
+			return ""  # unknown length (e.g. a stream): remaining would be just -position
+
 		if not self.detailed:
 			length //= 90000
 			p //= 90000

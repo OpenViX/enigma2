@@ -330,8 +330,8 @@ class LogManagerViewLog(Screen):
 		fontwidth = getTextBoundarySize(self.instance, font, self["list"].instance.size(), _(" ")).width()
 		listwidth = int(self["list"].instance.size().width() / fontwidth) - 2
 		if path.exists(self.logfile):
-			for line in open(self.logfile).readlines():
-				line = line.replace("\t", " " * 9)
+			for line in open(self.logfile, "rb").readlines():
+				line = line.decode('utf-8', errors="ignore").replace("\t", " " * 9)
 				if len(line) > listwidth:
 					pos = 0
 					offset = 0

@@ -2,6 +2,7 @@
 #include <zlib.h>
 #include <png.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <lib/base/cfile.h>
 #include <lib/base/wrappers.h>
 #include <lib/gdi/epng.h>
@@ -126,7 +127,17 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, 0, 0, 0);
 	channels = png_get_channels(png_ptr, info_ptr);
 
-	result = new gPixmap(width, height, bit_depth * channels, cached ? PixmapCache::PixmapDisposed : NULL, accel);
+	// PNG accel follows the exact same rule on every backend - accelAuto's
+	// own size gate (is_a_candidate_for_accel(), gpixmap.cpp) already decides
+	// whether a given image is worth accelerating; no EGL-specific override.
+	int png_accel = accel;
+	// Diagnostic only: ENIGMA_PNG_NOACCEL=1 forces plain heap memory for PNGs, to
+	// tell whether a texture built from an accelerated (ION) PNG pixmap that
+	// reads as all zeros at upload time is what blackens images.
+	static const bool s_png_noaccel = getenv("ENIGMA_PNG_NOACCEL") && atoi(getenv("ENIGMA_PNG_NOACCEL")) != 0;
+	if (s_png_noaccel)
+		png_accel = gPixmap::accelNever;
+	result = new gPixmap(width, height, bit_depth * channels, cached ? PixmapCache::PixmapDisposed : NULL, png_accel);
 	result->isPNG = true;
 	gUnmanagedSurface *surface = result->surface;
 
@@ -185,6 +196,38 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 			surface->clut.colors = 0;
 		}
 		surface->clut.start = 0;
+	}
+	else if (color_type == PNG_COLOR_TYPE_GRAY) {
+		// Plain grayscale, no per-pixel alpha (GRAY+tRNS and GRAY_ALPHA above
+		// already convert to RGB via png_set_gray_to_rgb, so they never reach
+		// here) - this is still an 8bpp gPixmap like a PALETTE image, but
+		// without this, surface->clut would be left completely unset.
+		// gTextureManager's GLES texture upload (lib/gdi/egl/gtexture_manager.cpp)
+		// treats ANY bpp==8 gPixmap with no clut as the font glyph atlas (a
+		// single-channel coverage/alpha map) - the only other real producer
+		// of a clut-less 8bpp surface - and uploads it as single-channel
+		// GL_R8/GL_LUMINANCE accordingly. A plain grayscale PNG hitting that
+		// same assumption gets its intensity values sampled as alpha against
+		// whatever color a later draw call happens to bind, instead of being
+		// displayed as its own color: confirmed as the cause of a skin's
+		// "OtherEvent.png" EPG grid background rendering as streaky colored
+		// noise on the GLES backend while looking correct on the CPU/FBDC one.
+		// Giving it a real identity grayscale palette here - mirroring
+		// convert_palette()'s own no-clut fallback in gpixmap.cpp (the CPU
+		// blit path already treats a clut-less 8bpp source as identity
+		// grayscale, which is why this only ever showed up on GLES) - makes
+		// it an unambiguous palette image, so gTextureManager's existing
+		// bpp==8-with-clut branch (built for indexed skin assets) handles it
+		// correctly instead.
+		surface->clut.data = new gRGB[256];
+		surface->clut.colors = 256;
+		surface->clut.start = 0;
+		for (int i = 0; i < 256; i++) {
+			surface->clut.data[i].a = 0; // opaque (enigma2's inverted alpha convention)
+			surface->clut.data[i].r = i;
+			surface->clut.data[i].g = i;
+			surface->clut.data[i].b = i;
+		}
 	}
 
 	if (cached)
@@ -271,7 +314,35 @@ int loadJPG(ePtr<gPixmap> &result, const char *filename, ePtr<gPixmap> alpha, in
 		}
 	}
 
-	result = new gPixmap(cinfo.output_width, cinfo.output_height, grayscale ? 8 : 32, cached ? PixmapCache::PixmapDisposed : NULL);
+	// accelNever on the GLES/EGL backend specifically, not the accelAuto
+	// default: JPEGs are typically large photos (posters, backdrops,
+	// thumbnails) rather than small icons/logos, so at accelAuto's size gate
+	// they were exactly the images actually competing for gAccel's
+	// fixed-size accel pool (loadPNG() above gets the identical override for
+	// the identical reason - a large cover/poster cached as .png hits this
+	// just as hard as one cached as .jpg). On GLES that pool and the vendor
+	// GPU driver's own internal texture memory allocations draw from the
+	// same limited system ION budget (confirmed: this crash - the driver's
+	// own ION allocation failing with a NULL-deref inside libv3ddriver.so -
+	// only reproduces with the GLES backend, not the CPU/FBDC one), and
+	// every decoded pixmap gets uploaded to a GPU texture via glTexImage2D
+	// regardless of whether its source was accel-backed
+	// (gTextureManager::createTextureFromPixmap()'s CPU-upload path handles
+	// heap-backed surfaces exactly as well as the DMA-BUF fast path handles
+	// accel-backed ones) - so accel-backed CPU memory buys JPEGs little on
+	// GLES while large ones alone can exhaust the pool. The non-GLES
+	// renderer has no such second ION consumer and has always used
+	// accelAuto here without issue, so it's untouched - gPixmap::blit()'s
+	// hardware-accelerated path (gpixmap.cpp/accel.cpp) there still
+	// requires both source and destination to be accel-backed, so this
+	// keeps JPEG resize/blend hardware-accelerated exactly as before on
+	// that backend, matching PNG's unchanged behavior on that backend too.
+#ifdef HAVE_EGL
+	int jpeg_accel = gPixmap::accelNever;
+#else
+	int jpeg_accel = gPixmap::accelAuto;
+#endif
+	result = new gPixmap(cinfo.output_width, cinfo.output_height, grayscale ? 8 : 32, cached ? PixmapCache::PixmapDisposed : NULL, jpeg_accel);
 	result->surface->transparent = false;
 	row_stride = cinfo.output_width * cinfo.output_components;
 	buffer = (*cinfo.mem->alloc_sarray)((j_common_ptr) &cinfo, JPOOL_IMAGE, row_stride, 1);
@@ -399,7 +470,11 @@ int loadSVG(ePtr<gPixmap> &result, const char *filename, int cached, int width, 
 	char cachefile[strlen(filename) + 10];
 	sprintf(cachefile, "%s%d", filename, size);
 
-	if (cached && (result = PixmapCache::Get(cachefile)))
+	// See PixmapCache::Get()'s comment: `filename` (the real, on-disk path)
+	// must be passed for the staleness stat() to actually work - `cachefile`
+	// is only the lookup key, distinguishing this size/scale's rendering of
+	// this SVG from any other cached for the same file.
+	if (cached && (result = PixmapCache::Get(filename, cachefile)))
 		return 0;
 
 	NSVGimage *image = nullptr;
@@ -482,7 +557,7 @@ int loadSVG(ePtr<gPixmap> &result, const char *filename, int cached, int width, 
 	nsvgRasterizeFull(rast, image, tx, ty, xscale, yscale, (unsigned char*)result->surface->data, width, height, width * 4, 1);
 
 	if (cached)
-		PixmapCache::Set(cachefile, result);
+		PixmapCache::Set(filename, result, cachefile);
 
 	nsvgDeleteRasterizer(rast);
 	nsvgDelete(image);

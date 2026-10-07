@@ -371,10 +371,11 @@ def runScreenTest():
 	def runNextScreen(session, screensToRun, *result):
 		if result:
 			if result[0] == "reloadskin":
-				InitSkins(False)
-				session.openWithCallback(boundFunction(runNextScreen, session, []), InfoBar.InfoBar)
+				# close the "Loading skin" notification before the new skin is loaded
 				if result[1]:
 					session.deleteDialog(result[1])
+				InitSkins(False)
+				session.openWithCallback(boundFunction(runNextScreen, session, []), InfoBar.InfoBar)
 			else:
 				enigma.quitMainloop(*result)
 		else:

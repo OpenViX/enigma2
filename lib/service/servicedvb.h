@@ -208,9 +208,6 @@ public:
 	RESULT stream(ePtr<iStreamableService> &ptr);
 	ePtr<iStreamData> getStreamingData();
 	void setQpipMode(bool value, bool audio);
-#ifdef PASSTHROUGH_FIX
-	void observeVideoResolutionState(int xres, int yres);
-#endif
 
 protected:
 	friend class eServiceFactoryDVB;
@@ -231,6 +228,11 @@ protected:
 	int m_have_video_pid;
 	int m_tune_state;
 	bool m_noaudio;
+	/* True once evFirstFrame has been fired for this playback session -
+	 * see its firing sites in video_event()/updateDecoder() for why this
+	 * needs its own one-shot flag (not reset on a later PID change, unlike
+	 * m_hdr_firstframe_restarted). */
+	bool m_first_frame_fired;
 
 		/* in timeshift mode, we essentially have two channels, and thus pmt handlers. */
 	eDVBServicePMTHandler m_service_handler_timeshift;
@@ -279,9 +281,6 @@ protected:
 	void switchToTimeshift();
 
 	void updateDecoder(bool sendSeekableStateChanged=false);
-#ifdef PASSTHROUGH_FIX
-	void forceAudioReset();
-#endif
 
 	int m_skipmode;
 	int m_fastforward;
@@ -337,9 +336,6 @@ protected:
 	ePtr<eTimer> m_subtitle_sync_timer;
 	void checkSubtitleTiming();
 
-#ifdef PASSTHROUGH_FIX
-	bool m_encrypted_ddp_audio_reset_done;
-#endif
 	ePtr<eTimer> m_nownext_timer;
 	void updateEpgCacheNowNext();
 

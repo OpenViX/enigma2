@@ -48,6 +48,66 @@ gdiinclude_HEADERS = \
 	gdi/pixmapcache.h \
 	gdi/region.h
 
+if HAVE_EGL
+gdi_libenigma_gdi_a_SOURCES += \
+	gdi/gfont_atlas.cpp \
+	gdi/egl/egl_init.cpp \
+	gdi/egl/gegldc.cpp \
+	gdi/egl/gles_version.cpp \
+	gdi/egl/gosd_capture.cpp \
+	gdi/egl/gtexture_manager.cpp \
+	gdi/egl/shader/gadvanced_shader.cpp \
+	gdi/egl/shader/gshader.cpp \
+	gdi/egl/shader/gtext_shader.cpp \
+	gdi/egl/shader/gtexture_shader.cpp
+gdiinclude_HEADERS += \
+	gdi/gfont_atlas.h \
+	gdi/egl/gegldc.h \
+	gdi/egl/gles_version.h \
+	gdi/egl/gosd_capture.h \
+	gdi/egl/gtexture_manager.h \
+	gdi/egl/inative_window_provider.h \
+	gdi/egl/shader/gadvanced_shader.h \
+	gdi/egl/shader/gshader.h \
+	gdi/egl/shader/gtext_shader.h \
+	gdi/egl/shader/gtexture_shader.h
+endif
+
+if HAVE_DREAMBOX_EGL
+gdi_libenigma_gdi_a_SOURCES += \
+	gdi/egl/platform/dreambox/dreambox_window_provider.cpp
+gdiinclude_HEADERS += \
+	gdi/egl/platform/dreambox/dreambox_window_provider.h
+endif
+
+if HAVE_GBQUAD_EGL
+gdi_libenigma_gdi_a_SOURCES += \
+	gdi/egl/platform/gbquad/gbquad_window_provider.cpp
+gdiinclude_HEADERS += \
+	gdi/egl/platform/gbquad/gbquad_window_provider.h
+endif
+
+if HAVE_VUPLUS_EGL
+gdi_libenigma_gdi_a_SOURCES += \
+	gdi/egl/platform/vuplus/vuplus_window_provider.cpp
+gdiinclude_HEADERS += \
+	gdi/egl/platform/vuplus/vuplus_window_provider.h
+endif
+
+if HAVE_HISI_MALI_EGL
+gdi_libenigma_gdi_a_SOURCES += \
+	gdi/egl/platform/hisi/hisi_window_provider.cpp
+gdiinclude_HEADERS += \
+	gdi/egl/platform/hisi/hisi_window_provider.h
+endif
+
+# gMainDC is a strict singleton (see gmaindc.cpp: ASSERT(m_instance == 0) in its
+# constructor). gEGLDC is itself a gMainDC, registered via its own AutoInit in
+# gdi/egl/egl_init.cpp, so when EGL is enabled it must be the ONLY gMainDC this
+# binary constructs - building gfbdc.cpp/sdl.cpp alongside it double-constructs
+# the singleton and aborts at startup.
+if HAVE_EGL
+else
 if HAVE_LIBSDL
 gdi_libenigma_gdi_a_SOURCES += \
 	gdi/sdl.cpp \
@@ -56,4 +116,5 @@ else
 gdi_libenigma_gdi_a_SOURCES += \
 	gdi/gfbdc.cpp \
 	gdi/gfbdc.h
+endif
 endif

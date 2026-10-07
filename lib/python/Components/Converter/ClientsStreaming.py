@@ -1,4 +1,5 @@
 import socket
+
 from enigma import eStreamServer
 
 from Components.Converter.Converter import Converter
@@ -21,108 +22,136 @@ class ClientsStreaming(Converter, Poll):
 	INFO_RESOLVE = 8
 	INFO_RESOLVE_SHORT = 9
 
+	TEXT_HANDLERS = {
+		REF: "textRefs",
+		IP: "textIPs",
+		NAME: "textNames",
+		ENCODER: "textEncoders",
+		NUMBER: "textNumber",
+		SHORT_ALL: "textShortAll",
+		ALL: "textAll",
+		INFO: "textInfo",
+		INFO_RESOLVE: "textInfoResolve",
+		INFO_RESOLVE_SHORT: "textInfoResolveShort",
+	}
+
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		Poll.__init__(self)
+
 		self.poll_interval = 5000
 		self.poll_enabled = True
-		if type == "REF":
-			self.type = self.REF
-		elif type == "IP":
-			self.type = self.IP
-		elif type == "NAME":
-			self.type = self.NAME
-		elif type == "ENCODER":
-			self.type = self.ENCODER
-		elif type == "NUMBER":
-			self.type = self.NUMBER
-		elif type == "SHORT_ALL":
-			self.type = self.SHORT_ALL
-		elif type == "ALL":
-			self.type = self.ALL
-		elif type == "INFO":
-			self.type = self.INFO
-		elif type == "INFO_RESOLVE":
-			self.type = self.INFO_RESOLVE
-		elif type == "INFO_RESOLVE_SHORT":
-			self.type = self.INFO_RESOLVE_SHORT
-		else:
-			self.type = self.UNKNOWN
+
+		self.type = {
+			"REF": self.REF,
+			"IP": self.IP,
+			"NAME": self.NAME,
+			"ENCODER": self.ENCODER,
+			"NUMBER": self.NUMBER,
+			"SHORT_ALL": self.SHORT_ALL,
+			"ALL": self.ALL,
+			"INFO": self.INFO,
+			"INFO_RESOLVE": self.INFO_RESOLVE,
+			"INFO_RESOLVE_SHORT": self.INFO_RESOLVE_SHORT,
+		}.get(type, self.UNKNOWN)
 
 		self.streamServer = eStreamServer.getInstance()
+
+		self.textHandler = getattr(self, self.TEXT_HANDLERS.get(self.type, "textUnknown"))
 
 	@cached
 	def getText(self):
 		if self.streamServer is None:
 			return ""
+		return self.textHandler()
 
-		clients = []
-		refs = []
-		ips = []
-		names = []
+	text = property(getText)
+
+	# ---- Text ----
+
+	def textUnknown(self):
+		return _("(unknown)")
+
+	def textRefs(self):
+		return " ".join(client[1] for client in self.streamServer.getConnectedClients())
+
+	def textIPs(self):
+		return " ".join(client[0] for client in self.streamServer.getConnectedClients())
+
+	def textNames(self):
+		return " ".join(ServiceReference(client[1]).getServiceName() or "(unknown service)" for client in self.streamServer.getConnectedClients())
+
+	def textEncoders(self):
 		encoders = []
-		info = ""
 
-		for x in self.streamServer.getConnectedClients():
-			refs.append((x[1]))
-			servicename = ServiceReference(x[1]).getServiceName() or "(unknown service)"
-			service_name = servicename
-			names.append((service_name))
-			ip = x[0]
+		for client in self.streamServer.getConnectedClients():
+			encoders.append(_("YES") if int(client[2]) else _("NO"))
 
-			ips.append((ip))
+		return _("Transcoding: ") + " ".join(encoders)
 
-			if int(x[2]) == 0:
-				strtype = "Streaming: "
-				encoder = _('NO')
-			else:
-				strtype = "Transcoding: "
-				encoder = _('YES')
+	def textNumber(self):
+		return str(len(self.streamServer.getConnectedClients()))
 
-			encoders.append((encoder))
+	def textShortAll(self):
+		clients = self.streamServer.getConnectedClients()
+		names = []
 
-			if self.type == self.INFO_RESOLVE or self.type == self.INFO_RESOLVE_SHORT:
-				try:
-					raw = socket.gethostbyaddr(ip)
-					ip = raw[0]
-				except:
-					pass
+		for client in clients:
+			names.append(ServiceReference(client[1]).getServiceName() or "(unknown service)")
 
-				if self.type == self.INFO_RESOLVE_SHORT:
-					ip, sep, tail = ip.partition('.')
+		return _("Total clients streaming: %d (%s)") % (len(clients), " ".join(names))
 
-			info += ("%s  %-8s  %s\n") % (strtype, ip, service_name)
+	def getClientInfo(self):
+		clients = []
+
+		for client in self.streamServer.getConnectedClients():
+			ip = client[0]
+			service_name = (ServiceReference(client[1]).getServiceName() or "(unknown service)")
+			encoder = _("YES") if int(client[2]) else _("NO")
 
 			clients.append((ip, service_name, encoder))
 
-		if self.type == self.REF:
-			return ' '.join(refs)
-		elif self.type == self.IP:
-			return ' '.join(ips)
-		elif self.type == self.NAME:
-			return ' '.join(names)
-		elif self.type == self.ENCODER:
-			return _("Transcoding: ") + ' '.join(encoders)
-		elif self.type == self.NUMBER:
-			return str(len(clients))
-		elif self.type == self.SHORT_ALL:
-			return _("Total clients streaming: %d (%s)") % (len(clients), ' '.join(names))
-		elif self.type == self.ALL:
-			return '\n'.join(' '.join(elems) for elems in clients)
-		elif self.type == self.INFO or self.type == self.INFO_RESOLVE or self.type == self.INFO_RESOLVE_SHORT:
-			return info
-		else:
-			return _("(unknown)")
+		return clients
 
-		return ""
+	def textAll(self):
+		return "\n".join(" ".join(client) for client in self.getClientInfo())
 
-	text = property(getText)
+	def textInfo(self, resolve=False, short=False):
+		info = []
+
+		for client in self.streamServer.getConnectedClients():
+			ip = client[0]
+			service_name = (ServiceReference(client[1]).getServiceName() or "(unknown service)")
+
+			if resolve:
+				try:
+					ip = socket.gethostbyaddr(ip)[0]
+				except Exception:
+					pass
+
+				if short:
+					ip, _, _ = ip.partition(".")
+
+			strtype = "Transcoding: " if int(client[2]) else "Streaming: "
+
+			info.append("%s  %-8s  %s\n" % (strtype, ip, service_name))
+
+		return "".join(info)
+
+	def textInfoResolve(self):
+		return self.textInfo(resolve=True)
+
+	def textInfoResolveShort(self):
+		return self.textInfo(resolve=True, short=True)
+
+	# ---- Boolean ----
 
 	@cached
 	def getBoolean(self):
 		if self.streamServer is None:
 			return False
-		return (self.streamServer.getConnectedClients() or StreamServiceList) and True or False
+
+		return bool(self.streamServer.getConnectedClients() or StreamServiceList)
 
 	boolean = property(getBoolean)
 

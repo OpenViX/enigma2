@@ -68,10 +68,14 @@ int eSlider::event(int event, void *data, void *data2)
 		getStyle(style);
 		/* paint background */
 		int cornerRadius = getCornerRadius();
-		if(!cornerRadius && !isGradientSet()) // don't call eWidget paint if radius or gradient
+		// an alphablended slider with its own background colour must not
+		// first paint the opaque style background underneath it
+		const bool blendBg = m_alphaBlend && m_have_background_color;
+		if(!cornerRadius && !isGradientSet() && !blendBg) // don't call eWidget paint if radius or gradient
 			eWidget::event(evtPaint, data, data2);
 
 		gPainter &painter = *(gPainter*)data2;
+		const int pixmapBlend = (isTransparent() || m_alphaBlend) ? gPainter::BT_ALPHABLEND : 0;
 
 		bool drawborder = m_border_width;
 
@@ -80,10 +84,13 @@ int eSlider::event(int event, void *data, void *data2)
 		{
 			if (cornerRadius)
 				painter.setRadius(cornerRadius, getCornerRadiusEdges());
-			painter.blit(m_backgroundpixmap, ePoint(0, 0), eRect(), isTransparent() ? gPainter::BT_ALPHABLEND : 0);
+			painter.blit(m_backgroundpixmap, ePoint(0, 0), eRect(), pixmapBlend);
 		} else if(m_have_background_color && !cornerRadius && !m_background_gradient_set) {
 			painter.setBackgroundColor(m_background_color);
-			painter.clear();
+			if (m_alphaBlend)
+				painter.drawRectangle(eRect(ePoint(0, 0), s), true);
+			else
+				painter.clear();
 		}
 
 		if(cornerRadius || m_background_gradient_set)
@@ -150,6 +157,11 @@ int eSlider::event(int event, void *data, void *data2)
 					rect.setWidth(size().width()-m_border_width*2);
 				painter.drawRectangle(rect);
 			}
+			else if (m_alphaBlend && m_have_foreground_color) {
+				painter.setBackgroundColor(m_foreground_color);
+				for (const eRect &r : m_currently_filled.rects)
+					painter.drawRectangle(r, true);
+			}
 			else {
 				if (m_have_foreground_color)
 					painter.setForegroundColor(m_foreground_color);
@@ -160,7 +172,7 @@ int eSlider::event(int event, void *data, void *data2)
 
 			if (cornerRadius)
 				painter.setRadius(cornerRadius, getCornerRadiusEdges());
-			painter.blit(m_pixmap, ePoint(0, 0), m_currently_filled.extends, isTransparent() ? gPainter::BT_ALPHABLEND : 0);
+			painter.blit(m_pixmap, ePoint(0, 0), m_currently_filled.extends, pixmapBlend);
 		}
 
 		if(drawborder) {

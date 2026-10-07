@@ -247,7 +247,14 @@ void eListboxPythonStringContent::paint(gPainter &painter, eWindowStyle &style, 
 
 			if(radius)
 				painter.setRadius(radius, edges);
-			painter.drawRectangle(itemRect);
+			// Under GLES, a rounded item background must use the "over"
+			// blend formula or its AA corner fringe leaks to the video
+			// plane (see gEGLDC::executeRectangle()'s comment) - a listbox
+			// item is never a video-reveal widget. Only forced when radius
+			// is actually in play here (not for a plain gradient fill,
+			// which this same call also handles) and only under GLES -
+			// other backends keep their original unconditional behavior.
+			painter.drawRectangle(itemRect, radius && painter.usingGLES());
 		}
 		else
 			painter.clear();
@@ -300,7 +307,8 @@ void eListboxPythonStringContent::paint(gPainter &painter, eWindowStyle &style, 
 
 			if(radius)
 				painter.setRadius(radius, edges);
-			painter.drawRectangle(itemRect);
+			// See the matching comment above.
+			painter.drawRectangle(itemRect, radius && painter.usingGLES());
 		}
 
 		if (item == Py_None)
@@ -502,7 +510,8 @@ void eListboxPythonConfigContent::paint(gPainter &painter, eWindowStyle &style, 
 
 			if(radius)
 				painter.setRadius(radius, edges);
-			painter.drawRectangle(itemrect);
+			// See eListboxPythonStringContent::paint()'s matching comment.
+			painter.drawRectangle(itemrect, radius && painter.usingGLES());
 		}
 		else
 			painter.clear();
@@ -545,7 +554,8 @@ void eListboxPythonConfigContent::paint(gPainter &painter, eWindowStyle &style, 
 
 			if(radius)
 				painter.setRadius(radius, edges);
-			painter.drawRectangle(itemrect);
+			// See eListboxPythonStringContent::paint()'s matching comment.
+			painter.drawRectangle(itemrect, radius && painter.usingGLES());
 		}
 
 			/* computed after both background blocks above, since either one may have
@@ -1121,7 +1131,12 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				painter.setGradient(local_style->m_gradient_colors[mode], local_style->m_gradient_direction[mode], local_style->m_gradient_alphablend[mode]);
 			else
 				painter.setBackgroundColor(gRGB(color));
-			painter.drawRectangle(itemRect);
+			// See eListboxPythonStringContent::paint()'s matching comment -
+			// this is the skin-configured (eListboxStyle) item background,
+			// the path most listboxes (e.g. a plain skinned menu list) hit,
+			// as opposed to the per-item TYPE_TEXT cornerRadius tuple
+			// handled further down in this function.
+			painter.drawRectangle(itemRect, radius && painter.usingGLES());
 		}
 		else
 			clearRegion(painter, style, local_style, ePyObject(), ePyObject(), ePyObject(), ePyObject(), selected, itemregion, sel_clip, offset, m_itemsize, cursorValid, true, isverticallb);
@@ -1312,19 +1327,30 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 					if(cornerRadius && cornerEdges)
 					{
 						if (pbackColor) {
-							bool blend = false;
 							painter.setRadius(cornerRadius, cornerEdges);
 							gRGB color = gRGB((uint32_t)PyLong_AsUnsignedLongMask(selected ? pbackColorSelected : pbackColor));
 							painter.setBackgroundColor(color);
-							blend = color.a > 0;
-							
+
 							if(bwidth && pborderColor)
 							{
 								uint32_t color = PyLong_AsUnsignedLongMask(pborderColor);
 								painter.setBorder(gRGB(color), bwidth);
 							}
 							bwidth = 0;
-							painter.drawRectangle(rect, blend);
+							// Only the GLES/EGL backend (gEGLDC) has a
+							// distinct "video hole" blend formula for
+							// gOpcode::rectangle (see its executeRectangle()
+							// comment) - deriving useNew from the fill
+							// color's own translucency there mistakenly
+							// routes ordinary opaque, rounded listbox items
+							// through it too, punching a hole to the video
+							// plane at their AA corner fringe. A listbox
+							// item is never a video-reveal widget (unlike
+							// e.g. Pig's eVideoWidget), so always request
+							// the "over" formula under GLES. Other backends
+							// never had this issue - keep their original
+							// color-alpha-derived behavior unchanged.
+							painter.drawRectangle(rect, painter.usingGLES() ? true : color.a > 0);
 						} else if (bwidth && pborderColor) {
 							painter.setRadius(cornerRadius, cornerEdges);
 							painter.setBackgroundColor(gRGB(0xFF000000));
@@ -1527,7 +1553,10 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				else
 				{
 					if (cornerRadius)
-						painter.drawRectangle(rect);
+						// See eListboxPythonStringContent::paint()'s
+						// matching comment - a progress bar fill is never a
+						// video-reveal widget either.
+						painter.drawRectangle(rect, painter.usingGLES());
 					else
 						painter.fill(rect);
 				}
@@ -1588,11 +1617,9 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 					if (cornerRadius && cornerEdges)
 					{
 						if (pbackColor) {
-							bool blend = false;
 							gRGB color = gRGB((uint32_t)PyLong_AsUnsignedLongMask(selected ? pbackColorSelected : pbackColor));
 							painter.setRadius(cornerRadius, cornerEdges);
 							painter.setBackgroundColor(color);
-							blend = color.a > 0;
 
 							if(bwidth && pborderColor)
 							{
@@ -1600,7 +1627,9 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 								painter.setBorder(gRGB(color), bwidth);
 							}
 							bwidth = 0;
-							painter.drawRectangle(rect, blend);
+							// See the TYPE_TEXT corner-radius case above for
+							// why this must be forced true only under GLES.
+							painter.drawRectangle(rect, painter.usingGLES() ? true : color.a > 0);
 						} else if (bwidth && pborderColor) {
 							painter.setRadius(cornerRadius, cornerEdges);
 							painter.setBackgroundColor(gRGB(0xFF000000));

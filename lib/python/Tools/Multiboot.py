@@ -7,7 +7,9 @@ from os import path, rmdir, rename, sep, stat
 import re
 
 from Components.SystemInfo import SystemInfo, BoxInfo as BoxInfoRunningInstance, BoxInformation, BOXTYPE, CHKROOTMB, MODEL, MTDROOTFS, UBIMB
-from Tools.Directories import copyfile, fileExists, fileHas, fileReadLine, pathExists
+from Tools.Directories import copyfile, fileExists, fileHas, fileReadLine, pathExists, resolveFilename, SCOPE_CONFIG
+
+MBBOOTDEVICE_CACHE = resolveFilename(SCOPE_CONFIG, "multiboot_device")
 
 
 def initMultiboot():
@@ -38,10 +40,14 @@ def getMultibootslots():
 	UUIDnum = 0
 	tmpdir = tempfile.mkdtemp(prefix="getMultibootslots")
 	print(f"[multiboot][getMultibootslots]root:{MTDROOTFS} UBIMB:{UBIMB} CHKROOTMB:{CHKROOTMB}")
+	cachedDevice = fileReadLine(MBBOOTDEVICE_CACHE)
 	if SystemInfo["HasKexecMultiboot"]:
 		MbootList = (f"/dev/{MTDROOTFS}", )  # kexec kernel Vu+ multiboot
 	else:
 		MbootList = ("/dev/mmcblk0p1", "/dev/mmcblk1p1", "/dev/mmcblk0p3", "/dev/mmcblk0p4", "/dev/mtdblock2", "/dev/block/by-name/bootoptions", "/dev/block/by-name/others", "/dev/block/by-name/startup")
+		if cachedDevice and cachedDevice in MbootList:  # try the device found on a previous boot first, avoiding a probe of every candidate again
+			print(f"[multiboot][getMultiboots] using cachedDevice:{cachedDevice} in MbootList")
+			MbootList = (cachedDevice, ) + tuple(device for device in MbootList if device != cachedDevice)
 	for device in MbootList:
 		if bootslots:  # if bootslots is populated, the correct device has already been found so abort search
 			break
@@ -71,7 +77,9 @@ def getMultibootslots():
 		# print(f"[multiboot][getMultibootslots]1 bootargs?: {path.exists('/sys/firmware/devicetree/base/chosen/bootargs')}")
 		SystemInfo["MBbootdevice"] = resolveDevice(device)  # used in SystemInfo
 		SystemInfo["BootDevice"] = SystemInfo["MBbootdevice"].rsplit("/", 1)[1]  # used by About
-		print(f"[Multiboot][[getMultibootslots]2 *** Bootdevice found: {SystemInfo['BootDevice']} CHKROOTMB:{CHKROOTMB} MBbootdevice:{SystemInfo['MBbootdevice']}")
+		if device and cachedDevice and device != cachedDevice:  # only write when changed, to avoid a flash write on every boot
+			saveBootDevice(device)  # the (unresolved) MbootList entry that matched, cached by saveBootDevice
+		print(f"[Multiboot][[getMultibootslots]2 *** Bootdevice found: {SystemInfo['BootDevice']} CHKROOTMB:{CHKROOTMB} MBbootdevice:{SystemInfo['MBbootdevice']} device:{device}")
 		if path.exists("/sys/firmware/devicetree/base/chosen/bootargs") or CHKROOTMB:  # check validity for multiboot
 			for file in glob.glob(path.join(tmpdir, "STARTUP_*")):
 				slotnumber = file.rsplit("_", 3 if "BOXMODE" in file else 1)[1]
@@ -172,6 +180,16 @@ def getMultibootslots():
 			SystemInfo["MultiBootSlot"] = 0 if "linuxrootfs" not in STARTUP else int(STARTUP.replace("\n", "").replace(" rootfstype=ext4", "").split("linuxrootfs")[1])
 	print(f"[multiboot][getMultibootslots] bootslots: {bootslots} Activeslot:{SystemInfo['MultiBootSlot']}")
 	return bootslots
+
+
+def saveBootDevice(device):
+	# persist the multiboot device found this boot, so future boots can try it first instead of probing every MbootList candidate again
+	print(f"[multiboot][saveBootDevice] device:{device}")
+	try:
+		with open(MBBOOTDEVICE_CACHE, "w") as f:
+			f.write(device)
+	except OSError as err:
+		print(f"[multiboot][saveBootDevice] {err}")
 
 
 def getUUIDtoSD(UUID):  # returns None on failure

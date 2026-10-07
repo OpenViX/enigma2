@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <byteswap.h>
+#include <stdint.h>
 
 #ifndef BYTE_ORDER
 #error "no BYTE_ORDER defined!"
@@ -645,6 +646,9 @@ int eTextPara::renderString(const char *string, int rflags, int border)
 {
 	singleLock s(ftlock);
 
+	// See m_border_width's declaration (font.h) for why this is retained.
+	m_border_width = border;
+
 	if (!current_font)
 	{
 		eWarning("[eTextPara] renderString: No current_font!");
@@ -1107,6 +1111,34 @@ void eTextPara::blit(gDC &dc, const ePoint &offset, const gRGB &cbackground, con
 			sxbase = glyph->bitmap.width;
 			sybase = glyph->bitmap.rows;
 			pitch = glyph->bitmap.pitch;
+
+			// Offer this pre-stroked glyph (FT_Glyph_Stroke, via
+			// appendGlyph()/getGlyphImage() - a real, correctly antialiased
+			// outline, not an approximation) to the same GPU atlas the
+			// plain-glyph branch below already uses, instead of always
+			// falling through to the CPU compositing loop further down.
+			// Identical bitmap either way - this only changes where it gets
+			// drawn. i->image (fill pass, border==false here) and
+			// i->borderimage (border pass, border==true) are visually
+			// different shapes for the same glyph_index, and this eTextPara's
+			// border width changes borderimage's shape too, so both go into
+			// the key below alongside the plain-glyph key's own terms -
+			// otherwise two different border widths' stroked bitmaps (or a
+			// border-pass and fill-pass bitmap for the same glyph_index)
+			// would collide on the same atlas slot. Excludes GS_INVERT for
+			// the identical reason the branch below does: invert isn't a
+			// flat color swap renderGlyph() can express (see its comment).
+			if (!(i->flags & GS_INVERT))
+			{
+				uint64_t glyph_key = (uint64_t)(uintptr_t)i->font->scaler.face_id;
+				glyph_key = glyph_key * 1000003ull ^ (uint32_t)i->font->scaler.width;
+				glyph_key = glyph_key * 1000003ull ^ (uint32_t)i->font->scaler.height;
+				glyph_key = glyph_key * 1000003ull ^ (uint32_t)i->glyph_index;
+				glyph_key = glyph_key * 1000003ull ^ (uint32_t)m_border_width;
+				glyph_key = glyph_key * 1000003ull ^ (border ? 1u : 2u);
+				if (dc.renderGlyph(ePoint(rxbase, rybase), sbase, sxbase, sybase, pitch, currentforeground, glyph_key))
+					continue;
+			}
 		}
 		else
 		{
@@ -1119,7 +1151,39 @@ void eTextPara::blit(gDC &dc, const ePoint &offset, const gRGB &cbackground, con
 			sxbase=glyph_bitmap->width;
 			sybase=glyph_bitmap->height;
 			pitch = glyph_bitmap->pitch;
+
+			// Offer this glyph to a hardware-accelerated backend (see
+			// gEGLDC::renderGlyph()) before falling through to the CPU
+			// compositing loop below. Only glyphs from the shared FreeType
+			// small-bitmap cache (this branch, keyed by face+size+index) have
+			// a stable identity worth atlasing - the i->image branch above
+			// (border/pre-rendered glyphs) is per-eTextPara-instance and
+			// isn't offered here; see grc.h's gDC::renderGlyph() comment.
+			//
+			// GS_INVERT (a marked/selected character - see
+			// eListboxPythonConfigContent::paint()'s "mtext" handling, e.g. a
+			// ConfigText field's select-all-on-focus state) must NOT take this
+			// path: renderGlyph() takes one flat gRGB, but invert isn't a flat
+			// color swap here - the CPU loop below builds it as
+			// lookup32_invert[i] = lookup32_normal[i^0xF], reversing which
+			// blended color each per-pixel antialiasing coverage level maps
+			// to (see this function's lookup32_invert construction above).
+			// Offering an inverted glyph to the atlas anyway rendered it in
+			// plain currentforeground instead - for a selected config-list
+			// row whose selected-state foreground already matches its own
+			// highlight fill color, that made every marked character
+			// invisible (foreground-on-same-color-background).
+			if (!(i->flags & GS_INVERT))
+			{
+				uint64_t glyph_key = (uint64_t)(uintptr_t)i->font->scaler.face_id;
+				glyph_key = glyph_key * 1000003ull ^ (uint32_t)i->font->scaler.width;
+				glyph_key = glyph_key * 1000003ull ^ (uint32_t)i->font->scaler.height;
+				glyph_key = glyph_key * 1000003ull ^ (uint32_t)i->glyph_index;
+				if (dc.renderGlyph(ePoint(rxbase, rybase), sbase, sxbase, sybase, pitch, currentforeground, glyph_key))
+					continue;
+			}
 		}
+		dc.onGlyphCpuDrawn();
 		dbase = (__u8*)(surface->data)+buffer_stride*rybase+rxbase*surface->bypp;
 		for (unsigned int c = 0; c < clip.rects.size(); ++c)
 		{

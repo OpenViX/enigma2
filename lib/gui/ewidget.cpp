@@ -424,12 +424,26 @@ int eWidget::event(int event, void *data, void *data2)
 					}
 					else
 					{
+						// Under GLES (see gEGLDC::executeRectangle()'s
+						// comment), each of these two draws needs its own
+						// blend formula picked from the color it's actually
+						// filling with, not a single widget-wide flag: an
+						// opaque border/fill (the common case) must use the
+						// "over" formula so its AA corner fringe doesn't leak
+						// to the video plane, while a deliberately
+						// translucent fill (e.g. a Pig-style video window's
+						// near-transparent backgroundColor) must keep using
+						// the "hole" formula so it still actually reveals
+						// video, not just tint over it. Other backends are
+						// unaffected either way - they never had a
+						// use-formula distinction here.
+						gRGB innerColor = m_have_background_color ? m_background_color : gRGB(0, 0, 0);
 						painter.setBackgroundColor(m_border_color);
-						painter.drawRectangle(eRect(ePoint(0, 0), size()));
+						painter.drawRectangle(eRect(ePoint(0, 0), size()), painter.usingGLES() && m_border_color.a == 0);
 						if (r)
 							painter.setRadius(r, m_cornerRadiusEdges);
-						painter.setBackgroundColor(m_have_background_color ? m_background_color : gRGB(0, 0, 0));
-						painter.drawRectangle(eRect(m_border_width, m_border_width, size().width() - m_border_width * 2, size().height() - m_border_width * 2));
+						painter.setBackgroundColor(innerColor);
+						painter.drawRectangle(eRect(m_border_width, m_border_width, size().width() - m_border_width * 2, size().height() - m_border_width * 2), painter.usingGLES() && innerColor.a == 0);
 					}
 
 					drawborder = false;
