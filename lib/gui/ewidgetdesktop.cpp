@@ -629,6 +629,17 @@ void eWidgetDesktop::sendHide(ePoint point, eSize size)
 	painter.sendHide(point, size);
 }
 
+void eWidgetDesktop::sendShowItem(long dir, ePoint point, eSize size)
+{
+#if defined(USE_LIBVUGLES2) || defined(HAVE_EGL_ANIMATION)
+	if(m_style_id!=0)
+		return;
+
+	gPainter painter(m_screen.m_dc);
+	painter.sendShowItem(dir, point, size);
+#endif
+}
+
 eRect eWidgetDesktop::bounds() const
 {
 	const eSize size = m_screen.m_screen_size;

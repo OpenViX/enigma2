@@ -300,6 +300,15 @@ ePoint eWidget::getAbsolutePosition()
 	return abspos;
 }
 
+void eWidget::sendShowItem(long dir)
+{
+	eWidget *root = this;
+	while (root && !root->m_desktop)
+		root = root->m_parent;
+	if (root && root->m_desktop && isVisible())
+		root->m_desktop->sendShowItem(dir, getAbsolutePosition(), size());
+}
+
 void eWidget::mayKillFocus()
 {
 	setFocus(0);

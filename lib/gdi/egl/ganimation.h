@@ -38,6 +38,16 @@ void setSpeed(int speed);
 int currentPreset();
 int currentSpeed();
 
+// List animations (page slide when a listbox changes page) have their own switch, independent of
+// the window preset: they are off until AnimationSetup turns them on (setAnimation_lists).
+void setListsEnabled(bool enabled);
+bool listsEnabled();
+
+// Duration of a list page slide at `speed` (same 15..30 scale as durationMs()) and the 0..1 timeline
+// position -> how far the slide has progressed (ease out).
+int listDurationMs(int speed);
+float listAmountAt(float t);
+
 int durationMs(const Preset& preset, int speed);
 
 // 0..1 timeline position -> how far the window is "in" (show: 0 -> 1, hide: 1 -> 0).

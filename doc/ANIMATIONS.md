@@ -210,8 +210,8 @@ Runtime:
 
 ## 6a. Implementation status
 
-Phase 1 and the window part of phase 2 (Layer A) are implemented; nothing has been built or run
-on a box yet.
+Phase 1 and the window part of phase 2 (Layer A) are implemented and run on the dm900. Phase 3 (list
+page slide, below) is implemented but has not been run on a box yet.
 
 - Build switch: `--enable-egl-animation` (default yes when EGL is on) defines
   `HAVE_EGL_ANIMATION`. The AnimationSetup plugin is built for it unless the libvugles2 or
@@ -233,12 +233,40 @@ on a box yet.
   growfromleft, extrudefromleft, popup, slidedrop, slidefromleft, slidelefttoright,
   sliderighttoleft, slidetoptobottom, zoomfromleft, zoomfromright, stripes).
 
-Not done yet: `sendShowItem` for list scrolling (phase 3), per-category user switches (today:
-preset 0 = off, plus the speed setting), `skin.ani` loading and everything in Layer B.
+Lessons from the first run on the dm900, kept so Layer B does not repeat them:
 
-First things to check on a box: the plain fade on a menu opening and closing, a popup, that the
-screen after an animation is pixel-identical to one without, no black or stale frames, and the
-behaviour over live video (alpha at the window edges).
+- The "after" snapshot must be taken only once the window's rect has been repainted. A hide
+  flushes unrelated draw ops (a clock) before the area behind repaints; the engine therefore tracks
+  the part of the rect covered by the clip regions of the draw opcodes since the hint and waits
+  for 60% (hide) / 25% (show) of it. It gives up after 1 s, which means no animation, never a bad
+  write-back.
+- Pixmap-page platforms leave the READ surface on the page that was just presented
+  (`gpuCopyPageContent()` only makes the new page the DRAW surface). A capture with
+  `glReadPixels`/`glCopyTexImage2D` must first make read = draw (`captureAnimTexture()` does),
+  otherwise it returns the previous frame and the write-back puts stale content over the window.
+
+Phase 3, list page slide (Layer A lists):
+
+- `eListbox::moveSelection()` sends `sendShowItem(dir, rect)` (via `eWidget::sendShowItem()` and
+  `eWidgetDesktop`) when the selection changes the page (`m_top`/`m_left`). `dir` is +-1 for a
+  vertical and +-2 for a horizontal slide, + meaning forward. The opcode exists for the EGL build
+  (`HAVE_EGL_ANIMATION`) as well as libvugles2; other DCs never receive it.
+- `gEGLDC::beginListAnimation()` snapshots the list rect, the same coverage wait as for windows
+  (40%) takes the second snapshot after the list repainted, and `runListAnimation()` moves the old
+  and the new page through the rect as one strip, both drawn as exact overwrites (no blending, so
+  video holes stay transparent). A pending window animation is never interrupted by a list hint.
+- It has its own switch, independent of the window preset: `setAnimation_lists(0/1)`, set from the
+  AnimationSetup settings ("Slide list pages", off by default) and applied at session start.
+  Duration is 260 ms at the default speed, scaled by the speed setting (`ganim::listDurationMs`).
+- The whole list widget is slid, including its scrollbar.
+
+Not done yet: per-category switches beyond lists, scrolling by a single row (eListbox scrolls by
+page), `skin.ani` loading and everything in Layer B.
+
+First things to check on a box: a list slides one page when the selection passes the last visible
+row and back, in a menu, the channel list and a horizontal list; the page after the slide is
+identical to one without; no black or stale frames; the plain fade on a menu opening and closing,
+and the behaviour over live video (alpha at the window edges).
 
 ## 7. Risks and open questions
 

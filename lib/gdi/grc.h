@@ -80,8 +80,10 @@ struct gOpcode
 		setCompositing,
 		sendShow,
 		sendHide,
-#ifdef USE_LIBVUGLES2
+#if defined(USE_LIBVUGLES2) || defined(HAVE_EGL_ANIMATION)
 		sendShowItem,
+#endif
+#ifdef USE_LIBVUGLES2
 		setFlush,
 		setView,
 #endif
@@ -200,14 +202,17 @@ struct gOpcode
 			ePoint point;
 			eSize size;
 		} *setShowHideInfo;
-#ifdef USE_LIBVUGLES2
+#if defined(USE_LIBVUGLES2) || defined(HAVE_EGL_ANIMATION)
+		// dir: +-1 = the list contents slide vertically (+1 = forward, the next page enters from the
+		// bottom), +-2 = the same horizontally. The rect is the list in canvas coordinates.
 		struct psetShowItemInfo
 		{
 			long dir;
 			ePoint point;
 			eSize size;
 		} *setShowItemInfo;
-
+#endif
+#ifdef USE_LIBVUGLES2
 		struct psetFlush
 		{
 			bool enable;
@@ -388,8 +393,10 @@ public:
 	void flush();
 	void sendShow(ePoint point, eSize size);
 	void sendHide(ePoint point, eSize size);
-#ifdef USE_LIBVUGLES2
+#if defined(USE_LIBVUGLES2) || defined(HAVE_EGL_ANIMATION)
 	void sendShowItem(long dir, ePoint point, eSize size);
+#endif
+#ifdef USE_LIBVUGLES2
 	void setFlush(bool val);
 	void setView(eSize size);
 #endif

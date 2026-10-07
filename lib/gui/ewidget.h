@@ -103,6 +103,9 @@ public:
 	bool needsBlendCompositing() { return isTransparent() || m_alphaBlend || m_gradient_alphablend || m_cornerRadius != 0 || m_needs_backdrop || (m_have_background_color && m_background_color.a != 0); }
 
 	ePoint getAbsolutePosition();
+	// Tells the DC that this widget's contents are about to change by a whole page and may be
+	// slid (list scrolling animation). dir: see gOpcode::psetShowItemInfo. No-op without a desktop.
+	void sendShowItem(long dir);
 
 	eWidgetAnimation m_animation;
 private:
