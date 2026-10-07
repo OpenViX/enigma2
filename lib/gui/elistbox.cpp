@@ -797,7 +797,11 @@ bool eListbox::startScrollAnimation(int delta_rows)
 	const float max_off = (float)(kMaxScrollRows * m_itemheight);
 	const float off = std::max(-max_off, std::min(max_off, (float)scrollOffset() + (float)(delta_rows * m_itemheight)));
 	m_scroll_off0 = off;
-	m_scroll_start = std::chrono::steady_clock::now();
+	const std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+	// Only an isolated key press waits for the render thread (see animationTick()); with a key held the queue is
+	// never empty, and waiting would leave the list behind the selection.
+	m_scroll_synced = m_scroll_run || msSince(m_scroll_requested, now) < 400.0f;
+	m_scroll_start = m_scroll_requested = now;
 	m_scroll_run = true;
 	m_anim_timer->start(16, true);
 	return true;
@@ -806,6 +810,23 @@ bool eListbox::startScrollAnimation(int delta_rows)
 void eListbox::animationTick()
 {
 	const std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+	// The key press that started a scroll queues more frames (the list and everything else that follows the
+	// selection) than the render thread has drawn yet, so a clock started at the key press is over before the
+	// first frame shows. Hold the animation at its start until the queue has drained (at most 400 ms), then
+	// let it run; the effect of the newly selected row starts with it.
+	if (m_scroll_run && !m_scroll_synced)
+	{
+		if (gRC::getInstance() && gRC::getInstance()->pendingOpcodes() > 60 && msSince(m_scroll_requested, now) < 400.0f)
+		{
+			m_scroll_start = now;
+			m_anim_new_start = now;
+			m_anim_timer->start(16, true);
+			return;
+		}
+		m_scroll_synced = true;
+		m_scroll_start = now;
+		m_anim_new_start = now;
+	}
 	bool running = false;
 	const bool scrolling = m_scroll_run; // every row moves: repaint the whole list
 	if (m_scroll_run)
@@ -830,7 +851,11 @@ void eListbox::animationTick()
 	// The render thread is still busy with the last frame (a full list is some 170 opcodes): another one
 	// would only queue up and block the main thread when the queue is full, which stalls key handling too.
 	// Skip this frame; all animations follow the clock, so nothing gets slower, it just shows less frames.
-	if (running && gRC::getInstance() && gRC::getInstance()->pendingOpcodes() > 150)
+	const int pending = gRC::getInstance() ? gRC::getInstance()->pendingOpcodes() : 0;
+	// A scroll frame repaints the whole list (some 190 opcodes, about 45 ms on the render thread): only paint one
+	// when the queue is nearly empty, else the frames reach the screen late and the animation is over before they
+	// are seen. The small frames of the row effects may queue a little.
+	if (running && pending > (scrolling ? 60 : 250))
 	{
 		m_anim_timer->start(16, true);
 		return;
