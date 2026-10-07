@@ -460,8 +460,11 @@ private:
 	struct WinAnim {
 		bool pending = false;
 		bool show = true;
-		bool list = false; // a list page slide (sendShowItem) instead of a window show/hide
+		bool list = false; // a list scroll (sendShowItem) instead of a window/widget show/hide
 		long dir = 0; // list only: +-1 vertical, +-2 horizontal, see gOpcode::psetShowItemInfo
+		int step = 0; // list only: pixels the contents move, 0 = the whole list
+		int anim = 0; // id of the Kodi style animation (skin), 0 = the preset / the default scroll
+		int kind = 0; // what animationUsable() has to say yes to: 0 preset window, 1 controls, 2 skin window
 		eRect rect;
 		GLuint before = 0;
 		int draw_ops = 0; // draw opcodes seen since the hint (a flush before any means "not painted yet")
@@ -470,14 +473,30 @@ private:
 	};
 	WinAnim m_winanim;
 	static bool isDrawOpcode(int op);
-	bool animationUsable(bool list = false) const;
+	bool animationUsable(int kind = 0) const;
 	GLuint captureAnimTexture(const eRect& rect);
-	void beginWindowAnimation(bool show, const eRect& hint);
-	void beginListAnimation(long dir, const eRect& hint);
+	void beginWindowAnimation(bool show, const eRect& hint, int anim = 0, bool widget = false);
+	void beginListAnimation(long dir, const eRect& hint, int anim = 0, int step = 0);
 	void cancelWindowAnimation();
 	void finishWindowAnimation();
 	void runWindowAnimation(bool show, const eRect& rect, GLuint before, GLuint after);
-	void runListAnimation(long dir, const eRect& rect, GLuint before, GLuint after);
+	void runSpecAnimation(bool show, const eRect& rect, GLuint before, GLuint after, int anim_id);
+	void runListAnimation(long dir, const eRect& rect, GLuint before, GLuint after, int anim_id, int step);
+
+	// gOpcode::setTransform (control animations, Layer B): while active everything drawn is scaled
+	// and moved (x' = sx * x + tx, y' = sy * y + ty) and cut to `limit`. The geometry goes through the
+	// shaders' projection, the scissor rects are mapped here (setGlScissor), the opacity multiplies
+	// into the draw colours (xfAlpha()). Pending blit/text batches are flushed at every change.
+	struct Xform {
+		bool active = false;
+		float sx = 1.0f, sy = 1.0f, tx = 0.0f, ty = 0.0f, alpha = 1.0f;
+		eRect limit;
+	};
+	Xform m_xf;
+	void setTransformState(bool active, float sx, float sy, float tx, float ty, float alpha, const eRect& limit);
+	float xfAlpha() const { return m_xf.active ? m_xf.alpha : 1.0f; }
+#else
+	float xfAlpha() const { return 1.0f; }
 #endif
 
 	static gEGLDC* s_instance;

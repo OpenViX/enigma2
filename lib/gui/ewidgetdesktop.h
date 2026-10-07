@@ -74,9 +74,9 @@ public:
 
 	void resize(eSize size);
 	eSize size() const { return m_screen.m_screen_size; }
-	void sendShow(ePoint point, eSize size);
-	void sendHide(ePoint point, eSize size);
-	void sendShowItem(long dir, ePoint point, eSize size); // list page slide hint, see gOpcode::psetShowItemInfo
+	void sendShow(ePoint point, eSize size, int anim = 0, int flags = 0); // see gOpcode::psetShowHideInfo
+	void sendHide(ePoint point, eSize size, int anim = 0, int flags = 0);
+	void sendShowItem(long dir, ePoint point, eSize size, int anim = 0, int step = 0); // list scroll hint, see gOpcode::psetShowItemInfo
 	eRect bounds() const; // returns area inside margins
 	eRect margins() const { return m_margins; }
 	void setMargins(const eRect& value) { m_margins = value; }

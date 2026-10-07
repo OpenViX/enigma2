@@ -3,6 +3,10 @@
 
 #include <lib/gui/ewidget.h>
 #include <connection.h>
+#ifdef HAVE_EGL_ANIMATION
+#include <chrono>
+#include <lib/base/ebase.h> /* for eTimer */
+#endif
 
 class eListbox;
 class eSlider;
@@ -219,6 +223,14 @@ public:
 	void setItemGradientSelected(const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend);
 	void redrawItemByIndex(int index) { entryChanged(index); }
 
+	// Control animations of the rows (Layer B of doc/ANIMATIONS.md, EGL only, ids from the registry in
+	// lib/gdi/egl/ganimation.h, 0 = none). `focus` plays on the row that becomes selected and stays
+	// applied while it is selected, `unfocus` on the row the selection leaves. No-op in other builds.
+	void setFocusAnimation(int focus_id, int unfocus_id);
+	// A skin.ani <scrolltime>: the animation (time, tween and easing of its first effect) of the scroll
+	// slide, and whether the list scrolls by single rows (`smooth`) instead of by pages.
+	void setScrollAnimation(int anim_id, bool smooth);
+
 #ifndef SWIG
 	struct eListboxStyle *getLocalStyle(void);
 
@@ -239,7 +251,26 @@ protected:
 	ePoint getItemPostion(int index);
 
 private:
-	void sendPageAnimation(long r_dir, bool fallbackBackwards, bool horizontal);
+	void sendPageAnimation(long r_dir, int new_first, int old_first, bool horizontal);
+	int m_scroll_anim = 0; // id of the skin.ani scroll animation (setScrollAnimation()), 0 = default
+	bool m_smooth_scroll = false; // scroll by single rows instead of pages
+#ifdef HAVE_EGL_ANIMATION
+	int m_focus_anim = 0, m_unfocus_anim = 0;
+	int m_anim_old_row = -1; // row the unfocus animation runs on, -1 none
+	std::chrono::steady_clock::time_point m_anim_new_start, m_anim_old_start;
+	ePtr<eTimer> m_anim_timer;
+	void startRowAnimation(int oldsel);
+	void animationTick();
+	// Smooth scrolling without a snapshot: the rows are painted `scrollOffset()` pixels off their place, the
+	// offset easing to 0 after the first row changed by `delta_rows` (vertical lists only).
+	bool startScrollAnimation(int delta_rows);
+	int scrollOffset();
+	bool m_scroll_run = false;
+	float m_scroll_off0 = 0;
+	std::chrono::steady_clock::time_point m_scroll_start;
+	// Transform of the row `index` occupying `row` (canvas coordinates); false for none.
+	bool rowTransform(int index, const eRect& row, float& sx, float& sy, float& tx, float& ty, float& alpha);
+#endif
 	int m_scrollbar_mode, m_prev_scrollbar_page;
 	bool m_content_changed;
 	bool m_enabled_wrap_around;

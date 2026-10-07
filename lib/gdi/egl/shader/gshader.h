@@ -46,7 +46,7 @@ public:
 	// destructor to also call it as a fallback/no-op.
 	void destroy();
 
-	void setResolution(float width, float height);
+	void setResolution(float width, float height, float sx = 1.0f, float sy = 1.0f, float tx = 0.0f, float ty = 0.0f);
 	void drawRect(float x, float y, float width, float height, float r, float g, float b, float a);
 	void drawLine(float x1, float y1, float x2, float y2, float r, float g, float b, float a);
 

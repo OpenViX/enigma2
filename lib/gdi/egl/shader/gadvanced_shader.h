@@ -54,7 +54,7 @@ public:
 	// (must run while this thread's EGL context is still current).
 	void destroy();
 
-	void setResolution(float width, float height);
+	void setResolution(float width, float height, float sx = 1.0f, float sy = 1.0f, float tx = 0.0f, float ty = 0.0f);
 
 	void drawAdvancedRect(float x, float y, float width, float height, int radius, uint8_t edges, const std::vector<gRGB>& gradient_colors, uint8_t orientation, bool alphablend, float alpha,
 						  const gRGB& solid_color, int border_width, const gRGB& border_color, bool coverage_alpha = false, const float* quad = nullptr);

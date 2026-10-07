@@ -65,7 +65,7 @@ public:
 	// (must run while this thread's EGL context is still current).
 	void destroy();
 
-	void setResolution(float width, float height);
+	void setResolution(float width, float height, float sx = 1.0f, float sy = 1.0f, float tx = 0.0f, float ty = 0.0f);
 
 	// While set, every draw divides the sampled colour by its alpha - i.e.
 	// converts premultiplied pixels to straight alpha. Used only by gEGLDC's

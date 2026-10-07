@@ -2,8 +2,14 @@
 #include <lib/gui/elistboxcontent.h>
 #include <lib/gui/eslider.h>
 #include <lib/actions/action.h>
+#include <algorithm>
+#include <cstdlib>
+#include <cmath>
+#ifdef HAVE_EGL_ANIMATION
+#include <lib/gdi/egl/ganimation.h>
+#endif
 
-int eListbox::defaultItemRadius[2] = {0,0}; 
+int eListbox::defaultItemRadius[2] = {0,0};
 int eListbox::defaultItemRadiusEdges[2] = {0,0};
 
 eListbox::eListbox(eWidget *parent) :
@@ -610,7 +616,23 @@ void eListbox::moveSelection(long dir)
 
 	/* now, look wether the current selection is out of screen */
 	m_selected = m_content->cursorGet();
-	if (m_orientation == orHorizontal)
+	// Smooth scrolling (a skin.ani <scrolltime>): the list moves by single rows, just far enough to keep
+	// the selection in view, instead of flipping a whole page.
+	const bool smooth = m_smooth_scroll && m_content->size() > 0 && (m_orientation == orHorizontal || m_orientation == orVertical)
+#ifdef HAVE_EGL_ANIMATION
+		&& ganim::listsEnabled()
+#endif
+		;
+	if (smooth)
+	{
+		int &first = m_orientation == orHorizontal ? m_left : m_top;
+		if (m_selected < first)
+			first = m_selected;
+		else if (m_selected >= first + m_items_per_page)
+			first = m_selected - m_items_per_page + 1;
+		first = std::max(0, std::min(first, std::max(0, m_content->size() - m_items_per_page)));
+	}
+	else if (m_orientation == orHorizontal)
 		m_left = m_selected - (m_selected % m_items_per_page);
 	else if (m_orientation == orVertical)
 		m_top = m_selected - (m_selected % m_items_per_page);
@@ -632,26 +654,38 @@ void eListbox::moveSelection(long dir)
 	if (oldsel != m_selected)
 		/* emit */ selectionChanged();
 
+#ifdef HAVE_EGL_ANIMATION
+	if (oldsel != m_selected)
+		startRowAnimation(oldsel);
+#endif
+
 	updateScrollBar();
 
 	if (m_orientation == orVertical)
 	{
 		if (m_top != oldtop){
-			sendPageAnimation(r_dir, m_top < oldtop, false);
+			sendPageAnimation(r_dir, m_top, oldtop, false);
 			invalidate();
 		}
 		else if (m_selected != oldsel)
 		{
-			/* redraw the old and newly selected */
-			gRegion inv = eRect(0, m_itemheight * (m_selected-m_top), size().width(), m_itemheight);
-			inv |= eRect(0, m_itemheight * (oldsel-m_top), size().width(), m_itemheight);
-			invalidate(inv);
+#ifdef HAVE_EGL_ANIMATION
+			if (m_scroll_run)
+				invalidate(); // all rows are off their place while the scroll animation runs
+			else
+#endif
+			{
+				/* redraw the old and newly selected */
+				gRegion inv = eRect(0, m_itemheight * (m_selected-m_top), size().width(), m_itemheight);
+				inv |= eRect(0, m_itemheight * (oldsel-m_top), size().width(), m_itemheight);
+				invalidate(inv);
+			}
 		}
 	}
 	else if (m_orientation == orGrid)
 	{
 		if (m_top != oldtop){
-			sendPageAnimation(r_dir, m_top < oldtop, false);
+			sendPageAnimation(r_dir, m_top, oldtop, false);
 			invalidate();
 		}
 		else if (m_selected != oldsel)
@@ -665,7 +699,7 @@ void eListbox::moveSelection(long dir)
 	else
 	{
 		if (m_left != oldleft){
-			sendPageAnimation(r_dir, m_left < oldleft, true);
+			sendPageAnimation(r_dir, m_left, oldleft, true);
 			invalidate();
 		}
 		else if (m_selected != oldsel)
@@ -678,10 +712,254 @@ void eListbox::moveSelection(long dir)
 	}
 }
 
-// A page change redraws the whole list at once; let the DC slide the old page out and the new one
-// in (EGL list animation, see doc/ANIMATIONS.md). The hint goes out before the invalidate()/repaint.
-void eListbox::sendPageAnimation(long r_dir, bool fallbackBackwards, bool horizontal)
+void eListbox::setFocusAnimation(int focus_id, int unfocus_id)
 {
+#ifdef HAVE_EGL_ANIMATION
+	m_focus_anim = focus_id;
+	m_unfocus_anim = unfocus_id;
+	if (!m_anim_timer)
+	{
+		m_anim_timer = eTimer::create(eApp);
+		CONNECT(m_anim_timer->timeout, eListbox::animationTick);
+	}
+	invalidate();
+#endif
+}
+
+#ifdef HAVE_EGL_ANIMATION
+static float msSince(const std::chrono::steady_clock::time_point &t0, const std::chrono::steady_clock::time_point &now)
+{
+	return std::chrono::duration<float, std::milli>(now - t0).count();
+}
+
+// The selection moved from `oldsel` to m_selected: the new row starts its focus animation, the old row
+// its unfocus animation (only visible while it is still on the page).
+void eListbox::startRowAnimation(int oldsel)
+{
+	if (!m_anim_timer || !ganim::listsEnabled() || (!m_focus_anim && !m_unfocus_anim))
+		return;
+	const std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+	m_anim_new_start = now;
+	m_anim_old_row = (m_unfocus_anim && oldsel != m_selected) ? oldsel : -1;
+	m_anim_old_start = now;
+	m_anim_timer->start(16, true);
+}
+
+// Most rows a smooth scroll moves in one go (key repeats can pile up); bigger jumps are not animated.
+static const int kMaxScrollRows = 3;
+
+// The scroll animation of the skin (<scrolltime>): returns false when there is none.
+static bool scrollAnimationParams(int anim_id, float &duration_ms, ganim::Tween &tween, ganim::Easing &easing)
+{
+	std::shared_ptr<const ganim::Animation> a = ganim::getAnimation(anim_id);
+	if (!a || a->effects.empty())
+		return false;
+	duration_ms = std::max(1.0f, a->durationMs());
+	tween = a->effects[0].tween;
+	easing = a->effects[0].easing;
+	return true;
+}
+
+// Current vertical offset in pixels of all rows (0 when no scroll animation runs).
+int eListbox::scrollOffset()
+{
+	if (!m_scroll_run)
+		return 0;
+	float ms;
+	ganim::Tween tween;
+	ganim::Easing easing;
+	if (!scrollAnimationParams(m_scroll_anim, ms, tween, easing))
+	{
+		m_scroll_run = false;
+		return 0;
+	}
+	const float t = msSince(m_scroll_start, std::chrono::steady_clock::now()) / ms;
+	if (t >= 1.0f)
+	{
+		m_scroll_run = false;
+		return 0;
+	}
+	return (int)std::lround(m_scroll_off0 * (1.0f - ganim::tweenValue(tween, easing, t)));
+}
+
+// The first visible row moved by `delta_rows` (new - old): the rows are now laid out for the new first row,
+// start them where they were and let them ease into place. A scroll that is still running continues from
+// where it is, so a held key gives one continuous motion.
+bool eListbox::startScrollAnimation(int delta_rows)
+{
+	float ms;
+	ganim::Tween tween;
+	ganim::Easing easing;
+	if (!m_anim_timer || m_itemheight <= 0 || !scrollAnimationParams(m_scroll_anim, ms, tween, easing))
+		return false;
+	// the paint loop draws the rows above the page (positive offset) or below it (negative) that slide into view,
+	// for up to kMaxScrollRows rows
+	const float max_off = (float)(kMaxScrollRows * m_itemheight);
+	const float off = std::max(-max_off, std::min(max_off, (float)scrollOffset() + (float)(delta_rows * m_itemheight)));
+	m_scroll_off0 = off;
+	m_scroll_start = std::chrono::steady_clock::now();
+	m_scroll_run = true;
+	m_anim_timer->start(16, true);
+	return true;
+}
+
+void eListbox::animationTick()
+{
+	const std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+	bool running = false;
+	const bool scrolling = m_scroll_run; // every row moves: repaint the whole list
+	if (m_scroll_run)
+	{
+		scrollOffset(); // ends the animation when it is over, the repaint below then draws the final place
+		if (m_scroll_run)
+			running = true;
+	}
+	if (m_focus_anim)
+	{
+		std::shared_ptr<const ganim::Animation> a = ganim::getAnimation(m_focus_anim);
+		if (a && msSince(m_anim_new_start, now) < a->durationMs())
+			running = true;
+	}
+	if (m_anim_old_row >= 0 && m_unfocus_anim)
+	{
+		std::shared_ptr<const ganim::Animation> a = ganim::getAnimation(m_unfocus_anim);
+		if (a && msSince(m_anim_old_start, now) < a->durationMs())
+			running = true;
+	}
+
+	// The render thread is still busy with the last frame (a full list is some 170 opcodes): another one
+	// would only queue up and block the main thread when the queue is full, which stalls key handling too.
+	// Skip this frame; all animations follow the clock, so nothing gets slower, it just shows less frames.
+	if (running && gRC::getInstance() && gRC::getInstance()->pendingOpcodes() > 150)
+	{
+		m_anim_timer->start(16, true);
+		return;
+	}
+
+	if (scrolling)
+		invalidate();
+	// Repaint the animated rows and their neighbours (a zoomed row overlaps them).
+	else if (m_orientation == orVertical || m_orientation == orHorizontal)
+	{
+		int first = m_selected, last = m_selected;
+		if (m_anim_old_row >= 0)
+		{
+			first = std::min(first, m_anim_old_row);
+			last = std::max(last, m_anim_old_row);
+		}
+		const int top = m_orientation == orVertical ? m_top : m_left;
+		const int item = m_orientation == orVertical ? m_itemheight : m_itemwidth;
+		const int from = std::max(0, first - 1 - top), to = std::min(m_items_per_page + 1, last + 2 - top);
+		if (to > from && item > 0)
+		{
+			if (m_orientation == orVertical)
+				invalidate(gRegion(eRect(0, from * item, size().width(), (to - from) * item)));
+			else
+				invalidate(gRegion(eRect(from * item, 0, (to - from) * item, size().height())));
+		}
+	}
+	else
+		invalidate();
+
+	if (running)
+		m_anim_timer->start(16, true);
+	else
+		m_anim_old_row = -1; // the invalidate above already paints the final state
+}
+
+bool eListbox::rowTransform(int index, const eRect &row, float &sx, float &sy, float &tx, float &ty, float &alpha)
+{
+	if (!ganim::listsEnabled() || !m_selection_enabled)
+		return false;
+	const std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+	ganim::Xf xf;
+	if (index == m_selected && m_focus_anim)
+	{
+		// stays applied for as long as the row is selected (the start state of a fresh list is "long ago")
+		std::shared_ptr<const ganim::Animation> a = ganim::getAnimation(m_focus_anim);
+		if (!a)
+			return false;
+		xf = ganim::evaluateAnimation(*a, msSince(m_anim_new_start, now), row.x(), row.y(), row.width(), row.height());
+	}
+	else if (index == m_anim_old_row && m_unfocus_anim)
+	{
+		std::shared_ptr<const ganim::Animation> a = ganim::getAnimation(m_unfocus_anim);
+		if (!a)
+			return false;
+		const float elapsed = msSince(m_anim_old_start, now);
+		if (elapsed >= a->durationMs())
+			return false;
+		xf = ganim::evaluateAnimation(*a, elapsed, row.x(), row.y(), row.width(), row.height());
+	}
+	else
+		return false;
+	if (xf.identity())
+		return false;
+	// The transformed row is clipped to the list (that is all that gets invalidated), which would cut off
+	// the rounded corners of a row filling the list: don't let it grow beyond the list, keeping the slide.
+	if (xf.sx > 1.0f || xf.sy > 1.0f)
+	{
+		const ePoint abs = getAbsolutePosition();
+		const float cx = row.x() + row.width() / 2.0f, cy = row.y() + row.height() / 2.0f;
+		const float ncx = xf.sx * cx + xf.tx, ncy = xf.sy * cy + xf.ty;
+		float s = std::min(xf.sx, xf.sy);
+		s = std::min(s, 2.0f * std::min(ncx - abs.x(), abs.x() + size().width() - ncx) / std::max(1, row.width()));
+		s = std::min(s, 2.0f * std::min(ncy - abs.y(), abs.y() + size().height() - ncy) / std::max(1, row.height()));
+		s = std::max(s, 1.0f);
+		xf.sx = xf.sy = s;
+		xf.tx = ncx - s * cx;
+		xf.ty = ncy - s * cy;
+		if (xf.identity())
+			return false;
+	}
+	sx = xf.sx;
+	sy = xf.sy;
+	tx = xf.tx;
+	ty = xf.ty;
+	alpha = xf.alpha;
+	return true;
+}
+#endif
+
+void eListbox::setScrollAnimation(int anim_id, bool smooth)
+{
+#ifdef HAVE_EGL_ANIMATION
+	m_scroll_anim = anim_id;
+	m_smooth_scroll = smooth;
+	if (!m_anim_timer)
+	{
+		m_anim_timer = eTimer::create(eApp);
+		CONNECT(m_anim_timer->timeout, eListbox::animationTick);
+	}
+#endif
+}
+
+// The first visible row (column) changed: a page, or a single row with smooth scrolling, and the whole
+// list is redrawn at once; let the DC slide the old content out and the new one in (EGL list animation,
+// see doc/ANIMATIONS.md). The hint goes out before the invalidate()/repaint.
+void eListbox::sendPageAnimation(long r_dir, int new_first, int old_first, bool horizontal)
+{
+#ifdef HAVE_EGL_ANIMATION
+	// Positioning the list on an entry (opening it, selecting an index) is a jump, not a scroll.
+	if (r_dir == justCheck)
+	{
+		m_scroll_run = false;
+		return;
+	}
+	// A few rows in a vertical list are scrolled by painting the rows with an offset. Never with a snapshot of
+	// the list (a slow read back on some GPUs, it made every page flip take 300 ms and more): larger jumps
+	// (page up/down) just flip.
+	if (!horizontal && m_orientation == orVertical)
+	{
+		if (!(m_smooth_scroll && ganim::listsEnabled() && std::abs(new_first - old_first) <= kMaxScrollRows && startScrollAnimation(new_first - old_first)))
+			m_scroll_run = false;
+		return;
+	}
+	m_scroll_run = false;
+#endif
+	const bool fallbackBackwards = new_first < old_first;
+	// moving by exactly one row (smooth scrolling) slides by one row, anything else by the whole list
+	const int step = (m_smooth_scroll && std::abs(new_first - old_first) == 1) ? (horizontal ? m_itemwidth : m_itemheight) : 0;
 	bool backwards;
 	switch (r_dir)
 	{
@@ -705,7 +983,7 @@ void eListbox::sendPageAnimation(long r_dir, bool fallbackBackwards, bool horizo
 			backwards = fallbackBackwards;
 			break;
 	}
-	sendShowItem((horizontal ? 2 : 1) * (backwards ? -1 : 1));
+	sendShowItem((horizontal ? 2 : 1) * (backwards ? -1 : 1), m_scroll_anim, step);
 }
 
 void eListbox::moveSelectionTo(int index)
@@ -830,7 +1108,7 @@ void eListbox::updateScrollBar()
 	{
 		int topleft = m_orientation == orVertical || m_orientation == orGrid ? m_top : m_left;
 
-		int curVisiblePage = topleft / maxItems;
+		int curVisiblePage = m_smooth_scroll ? topleft : topleft / maxItems; // smooth scrolling moves the thumb row by row
 		if (m_prev_scrollbar_page != curVisiblePage)
 		{
 			m_prev_scrollbar_page = curVisiblePage;
@@ -948,12 +1226,41 @@ int eListbox::event(int event, void *data, void *data2)
 
 			if (m_orientation == orVertical)
 			{
-				for (int y = 0, i = 0; i <= m_items_per_page; y += m_itemheight, ++i)
+#ifdef HAVE_EGL_ANIMATION
+				// Rows with a control animation (focus/unfocus, see rowTransform()) are drawn in a second
+				// pass, scaled/moved by the DC, on top of their neighbours.
+				const ePoint list_abs = getAbsolutePosition();
+				const eRect list_rect(list_abs, size());
+				std::vector<int> animated;
+#endif
+				// While the scroll animation runs all rows are painted `scroll_off` pixels off their place;
+				// a downwards shifted list needs the row above the page as well.
+				int scroll_off = 0, first_i = 0, last_i = m_items_per_page;
+#ifdef HAVE_EGL_ANIMATION
+				scroll_off = scrollOffset();
+				if (scroll_off > 0 && m_top > 0)
+				{
+					first_i = -std::min(m_top, (scroll_off + m_itemheight - 1) / m_itemheight);
+					m_content->cursorMove(first_i);
+				}
+				else if (scroll_off < 0)
+					last_i = m_items_per_page + std::max(0, (-scroll_off + m_itemheight - 1) / m_itemheight - 1);
+#endif
+				entryrect.moveBy(ePoint(0, first_i * m_itemheight + scroll_off));
+				for (int y = first_i * m_itemheight + scroll_off, i = first_i; i <= last_i; y += m_itemheight, ++i)
 				{
 					gRegion entry_clip_rect = paint_region & entryrect;
 
 					if (!entry_clip_rect.empty())
+					{
+#ifdef HAVE_EGL_ANIMATION
+						float tsx, tsy, ttx, tty, ta;
+						if (rowTransform(m_content->cursorGet(), eRect(list_abs.x() + xoffset, list_abs.y() + y, size().width() - xoffset, m_itemheight), tsx, tsy, ttx, tty, ta))
+							animated.push_back(i);
+						else
+#endif
 						m_content->paint(painter, *style, ePoint(xoffset, y), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
+					}
 
 						/* (we could clip with entry_clip_rect, but
 						this shouldn't change the behavior of any
@@ -963,16 +1270,53 @@ int eListbox::event(int event, void *data, void *data2)
 					m_content->cursorMove(+1);
 					entryrect.moveBy(ePoint(0, m_itemheight));
 				}
+#ifdef HAVE_EGL_ANIMATION
+				if (!animated.empty())
+				{
+					m_content->cursorRestore();
+					m_content->cursorSave();
+					m_content->cursorMove(m_top - m_selected + first_i);
+					size_t next = 0;
+					for (int y = first_i * m_itemheight + scroll_off, i = first_i; i <= last_i && next < animated.size(); y += m_itemheight, ++i)
+					{
+						if (i == animated[next])
+						{
+							++next;
+							float tsx, tsy, ttx, tty, ta;
+							if (rowTransform(m_content->cursorGet(), eRect(list_abs.x() + xoffset, list_abs.y() + y, size().width() - xoffset, m_itemheight), tsx, tsy, ttx, tty, ta))
+							{
+								painter.setTransform(tsx, tsy, ttx, tty, ta, list_rect);
+								m_content->paint(painter, *style, ePoint(xoffset, y), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
+								painter.resetTransform();
+							}
+						}
+						m_content->cursorMove(+1);
+					}
+				}
+#endif
 				m_content->cursorRestore();
 			}
 			else if (m_orientation == orHorizontal)
 			{
+#ifdef HAVE_EGL_ANIMATION
+				const ePoint list_abs = getAbsolutePosition();
+				const eRect list_rect(list_abs, size());
+				std::vector<int> animated;
+#endif
 				for (int x = 0, i = 0; i <= m_items_per_page; x += m_itemwidth, ++i)
 				{
 					gRegion entry_clip_rect = paint_region & entryrect;
 
 					if (!entry_clip_rect.empty())
+					{
+#ifdef HAVE_EGL_ANIMATION
+						float tsx, tsy, ttx, tty, ta;
+						if (rowTransform(m_content->cursorGet(), eRect(list_abs.x() + x, list_abs.y() + yoffset, m_itemwidth, size().height() - yoffset), tsx, tsy, ttx, tty, ta))
+							animated.push_back(i);
+						else
+#endif
 						m_content->paint(painter, *style, ePoint(x, yoffset), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
+					}
 
 						/* (we could clip with entry_clip_rect, but
 						this shouldn't change the behavior of any
@@ -982,6 +1326,30 @@ int eListbox::event(int event, void *data, void *data2)
 					m_content->cursorMove(+1);
 					entryrect.moveBy(ePoint(m_itemwidth, 0));
 				}
+#ifdef HAVE_EGL_ANIMATION
+				if (!animated.empty())
+				{
+					m_content->cursorRestore();
+					m_content->cursorSave();
+					m_content->cursorMove(m_left - m_selected);
+					size_t next = 0;
+					for (int x = 0, i = 0; i <= m_items_per_page && next < animated.size(); x += m_itemwidth, ++i)
+					{
+						if (i == animated[next])
+						{
+							++next;
+							float tsx, tsy, ttx, tty, ta;
+							if (rowTransform(m_content->cursorGet(), eRect(list_abs.x() + x, list_abs.y() + yoffset, m_itemwidth, size().height() - yoffset), tsx, tsy, ttx, tty, ta))
+							{
+								painter.setTransform(tsx, tsy, ttx, tty, ta, list_rect);
+								m_content->paint(painter, *style, ePoint(x, yoffset), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
+								painter.resetTransform();
+							}
+						}
+						m_content->cursorMove(+1);
+					}
+				}
+#endif
 				m_content->cursorRestore();
 			}
 			else

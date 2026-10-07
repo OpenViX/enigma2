@@ -260,8 +260,58 @@ Phase 3, list page slide (Layer A lists):
   Duration is 260 ms at the default speed, scaled by the speed setting (`ganim::listDurationMs`).
 - The whole list widget is slid, including its scrollbar.
 
-Not done yet: per-category switches beyond lists, scrolling by a single row (eListbox scrolls by
-page), `skin.ani` loading and everything in Layer B.
+Layer B, first slice (list rows, compiles, not run on a box yet):
+
+- `ganim` (lib/gdi/egl/ganimation.{h,cpp}) has the Kodi model: `Effect` (fade, slide, zoom; rotate is
+  parsed and ignored), `Animation`, the eight tweens with in/out/inout easing, delay, `center`, and
+  `evaluateAnimation()` which turns an animation, an elapsed time and the control's rect into a
+  scale + move + opacity transform (`Xf`). Animations are registered from a compact string
+  (`zoom|start=100|end=103|center=auto|time=120|tween=sine|easing=out;fade|...`) and referred to by
+  an integer id (`registerAnimation(type, spec)`, also exposed to Python). Unit-tested natively.
+- A new painter opcode `setTransform(sx, sy, tx, ty, alpha, limit)` / `resetTransform()` (EGL only,
+  ignored by every other DC). `gEGLDC` applies it by adding the scale/move to the shaders' projection
+  matrices, mapping every scissor rect the same way and cutting it to `limit`, and multiplying the
+  opacity into rectangles (blended while it is below 1), blits and text. Pending batches are flushed
+  at each change and a transform never outlives a frame.
+- `eListbox::setFocusAnimation(focus_id, unfocus_id)`: the selected row is drawn with the `focus`
+  transform, which stays applied while it is selected, and the row the selection leaves plays
+  `unfocus`. Rows with a transform are drawn in a second pass, on top of their neighbours, and an
+  `eTimer` repaints the animated rows (and their neighbours) every 16 ms. Vertical and horizontal
+  lists, switched by the same "lists" switch as the page slide.
+- `skin.py` loads `skin.ani` (next to the primary skin's skin.xml) and resolves the selectors and the
+  cascade per widget (`render`, `source`, `name`, `addon`, `screen`); for listboxes the resolved
+  `focus`/`unfocus` animations (also inside `<focusedlayout>`) become the skin attribute
+  `listAnimation="<focus id>,<unfocus id>"`. Older builds without the engine skip all of it.
+
+Limits of this slice: the transform moves and scales, it does not clip the content to the scaled
+row (the row is only cut to the list); a zoomed row is pixel-scaled, not re-rendered; opacity does not
+reach border colours, the rounded-corner texture pieces or plain `fill`/`line` draws when blending is
+off; grids are not animated.
+
+Layer B, the rest of the `skin.ani` rules (compiles, not run on a box yet):
+
+- `<scrolltime tween="cubic" easing="out">180</scrolltime>` in a widget rule gives the list a scroll
+  animation (the time, tween and easing of its first effect) **and turns on
+  smooth scrolling for it**: the list moves by single rows, just far enough to keep the selection in view,
+  instead of flipping a page. A row scroll slides the old and the new content by one row (`step` of the
+  `sendShowItem` hint); a jump of more than one row (wrap-around, page keys) still slides a whole page.
+  `<scrolltime>0</scrolltime>` cancels it for a list. The scrollbar thumb follows row by row.
+- `visible`/`hidden` rules (and the old `VisibleChange` form, which creates the reversed `hidden` too):
+  a widget that is shown or hidden while its window is up (a converter, `ConditionalShowHide`) animates
+  with the snapshot method, like a window. Not while its window is opening (first 800 ms), not while
+  another animation is pending, and only for widgets whose rule resolved to an animation.
+- `windowopen`/`windowclose` rules: every screen gets the animation its rules resolve to. A rule with
+  no effects cancels it for that screen (`-1`); a screen no rule matches (`0`) falls back to the
+  AnimationSetup preset. The windows only use the skin's animations with the new AnimationSetup entry
+  **"Skin animations"** (preset 15); the other presets keep working as before.
+- Everything is driven by the same snapshot machinery (`runSpecAnimation()`): the transform of the
+  moving snapshot is `evaluateAnimation()` at the elapsed time, drawn inside
+  the hinted rect.
+- "Animate lists and controls" (the former "lists" switch) now covers the row animations, the scroll
+  slide and the widget show/hide animations.
+
+Not done yet: `conditional` animations, animations written inside skin.xml, rotate, and the clipping of a
+scaled row to its own rect.
 
 First things to check on a box: a list slides one page when the selection passes the last visible
 row and back, in a menu, the channel list and a horizontal list; the page after the slide is
@@ -285,3 +335,16 @@ and the behaviour over live video (alpha at the window edges).
   frame; enigma2 is event driven through sources and converters. v1 supports `type`s that do
   not need a condition; an expression syntax tied to sources must be decided before
   `conditional` is implemented.
+
+### AnimationSetup plugin
+
+The plugin has a single switch, "Enable animations" (`config.misc.window_animation_enabled`, off by
+default). On: the "Skin animations" preset (15, the rules of the skin's skin.ani) plus the list/control
+animations on EGL builds, or the simple fade on other engines. Off: no animations at all. The
+presets, speed setting, preview and per-feature switches were removed; all times come from skin.ani.
+
+Window animations are currently switched off by the plugin (`setAnimation_current(0)`): a window
+animation needs two read backs of the window (about 350 ms each for a full screen on the dm900), which
+made opening a screen take over a second. "Enable animations" now only switches the list and control
+animations (focus effect, smooth scrolling, widget fades). The window rules of skin.ani are kept for when
+the capture is fast enough.

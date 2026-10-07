@@ -752,7 +752,7 @@ void gPainter::end()
 		return;
 }
 
-void gPainter::sendShow(ePoint point, eSize size)
+void gPainter::sendShow(ePoint point, eSize size, int anim, int flags)
 {
 	if (m_dc->islocked())
 		return;
@@ -762,10 +762,12 @@ void gPainter::sendShow(ePoint point, eSize size)
 	o.parm.setShowHideInfo = new gOpcode::para::psetShowHideInfo;
 	o.parm.setShowHideInfo->point = point;
 	o.parm.setShowHideInfo->size = size;
+	o.parm.setShowHideInfo->anim = anim;
+	o.parm.setShowHideInfo->flags = flags;
 	m_rc->submit(o);
 }
 
-void gPainter::sendHide(ePoint point, eSize size)
+void gPainter::sendHide(ePoint point, eSize size, int anim, int flags)
 {
 	if (m_dc->islocked())
 		return;
@@ -775,10 +777,12 @@ void gPainter::sendHide(ePoint point, eSize size)
 	o.parm.setShowHideInfo = new gOpcode::para::psetShowHideInfo;
 	o.parm.setShowHideInfo->point = point;
 	o.parm.setShowHideInfo->size = size;
+	o.parm.setShowHideInfo->anim = anim;
+	o.parm.setShowHideInfo->flags = flags;
 	m_rc->submit(o);
 }
 #if defined(USE_LIBVUGLES2) || defined(HAVE_EGL_ANIMATION)
-void gPainter::sendShowItem(long dir, ePoint point, eSize size)
+void gPainter::sendShowItem(long dir, ePoint point, eSize size, int anim, int step)
 {
 	if (m_dc->islocked())
 		return;
@@ -789,6 +793,44 @@ void gPainter::sendShowItem(long dir, ePoint point, eSize size)
 	o.parm.setShowItemInfo->dir = dir;
 	o.parm.setShowItemInfo->point = point;
 	o.parm.setShowItemInfo->size = size;
+	o.parm.setShowItemInfo->anim = anim;
+	o.parm.setShowItemInfo->step = step;
+	m_rc->submit(o);
+}
+#endif
+#ifdef HAVE_EGL_ANIMATION
+void gPainter::setTransform(float sx, float sy, float tx, float ty, float alpha, const eRect& limit)
+{
+	if (m_dc->islocked())
+		return;
+	gOpcode o;
+	o.opcode = gOpcode::setTransform;
+	o.dc = m_dc.grabRef();
+	o.parm.setTransformInfo = new gOpcode::para::psetTransformInfo;
+	o.parm.setTransformInfo->active = true;
+	o.parm.setTransformInfo->sx = sx;
+	o.parm.setTransformInfo->sy = sy;
+	o.parm.setTransformInfo->tx = tx;
+	o.parm.setTransformInfo->ty = ty;
+	o.parm.setTransformInfo->alpha = alpha;
+	o.parm.setTransformInfo->limit = limit;
+	m_rc->submit(o);
+}
+
+void gPainter::resetTransform()
+{
+	if (m_dc->islocked())
+		return;
+	gOpcode o;
+	o.opcode = gOpcode::setTransform;
+	o.dc = m_dc.grabRef();
+	o.parm.setTransformInfo = new gOpcode::para::psetTransformInfo;
+	o.parm.setTransformInfo->active = false;
+	o.parm.setTransformInfo->sx = 1.0f;
+	o.parm.setTransformInfo->sy = 1.0f;
+	o.parm.setTransformInfo->tx = 0.0f;
+	o.parm.setTransformInfo->ty = 0.0f;
+	o.parm.setTransformInfo->alpha = 1.0f;
 	m_rc->submit(o);
 }
 #endif
@@ -1116,6 +1158,11 @@ void gDC::exec(const gOpcode *o)
 		break;
 #if defined(USE_LIBVUGLES2) || defined(HAVE_EGL_ANIMATION)
 	case gOpcode::sendShowItem:
+		break;
+#endif
+#ifdef HAVE_EGL_ANIMATION
+	case gOpcode::setTransform:
+		delete o->parm.setTransformInfo;
 		break;
 #endif
 #ifdef USE_LIBVUGLES2

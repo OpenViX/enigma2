@@ -140,6 +140,11 @@ void eWidget::show()
 	if (m_vis & wVisShow)
 		return;
 
+#ifdef HAVE_EGL_ANIMATION
+	m_shown_at = std::chrono::steady_clock::now();
+	if (m_anim_show > 0)
+		sendVisibilityHint(true);
+#endif
 	m_vis |= wVisShow;
 	//	eDebug("[eWidget] show widget %p", this);
 	notifyShowHide();
@@ -185,6 +190,10 @@ void eWidget::hide()
 	/* become visible again. */
 	if (!(m_vis & wVisShow))
 		return;
+#ifdef HAVE_EGL_ANIMATION
+	if (m_anim_hide > 0)
+		sendVisibilityHint(false);
+#endif
 	m_vis &= ~wVisShow;
 
 	/* this is a workaround to the above problem. when we are in the delete phase,
@@ -300,13 +309,33 @@ ePoint eWidget::getAbsolutePosition()
 	return abspos;
 }
 
-void eWidget::sendShowItem(long dir)
+void eWidget::sendShowItem(long dir, int anim, int step)
 {
 	eWidget *root = this;
 	while (root && !root->m_desktop)
 		root = root->m_parent;
 	if (root && root->m_desktop && isVisible())
-		root->m_desktop->sendShowItem(dir, getAbsolutePosition(), size());
+		root->m_desktop->sendShowItem(dir, getAbsolutePosition(), size(), anim, step);
+}
+
+// A widget (not a window) is about to be shown/hidden: let the DC animate it. See setVisibilityAnimation().
+void eWidget::sendVisibilityHint(bool show)
+{
+#ifdef HAVE_EGL_ANIMATION
+	eWidget *root = this;
+	while (root && !root->m_desktop)
+		root = root->m_parent;
+	if (!root || root == this || !root->m_desktop || !m_parent || !m_parent->isVisible() || !root->isVisible())
+		return;
+	// Not while the window is still being set up or opening: every label shows or hides then, and
+	// the window's own animation covers it.
+	if (std::chrono::steady_clock::now() - root->m_shown_at < std::chrono::milliseconds(800))
+		return;
+	if (show)
+		root->m_desktop->sendShow(getAbsolutePosition(), size(), m_anim_show, 1);
+	else
+		root->m_desktop->sendHide(getAbsolutePosition(), size(), m_anim_hide, 1);
+#endif
 }
 
 void eWidget::mayKillFocus()

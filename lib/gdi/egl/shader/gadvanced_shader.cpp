@@ -367,9 +367,10 @@ void gAdvancedShader::bind() {
 	glUniform1f(m_rbswap_location, gles::needsRBSwap ? 1.0f : 0.0f);
 }
 
-void gAdvancedShader::setResolution(float width, float height) {
+void gAdvancedShader::setResolution(float width, float height, float sx, float sy, float tx, float ty) {
 	bind();
-	float ortho[16] = {2.0f / width, 0.0f, 0.0f, 0.0f, 0.0f, -2.0f / height, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, -1.0f, 1.0f, 0.0f, 1.0f};
+	// sx/sy/tx/ty: optional scale + move applied to every vertex before the projection (see gEGLDC::applyTransform())
+	float ortho[16] = {2.0f * sx / width, 0.0f, 0.0f, 0.0f, 0.0f, -2.0f * sy / height, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 2.0f * tx / width - 1.0f, 1.0f - 2.0f * ty / height, 0.0f, 1.0f};
 	glUniformMatrix4fv(m_projection_location, 1, GL_FALSE, ortho);
 }
 
