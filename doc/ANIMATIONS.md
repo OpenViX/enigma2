@@ -119,6 +119,56 @@ Child elements of a `<screen>` or `<widget>`, parsed in `skin.py` into plain dat
   `VisibleChange` shorthand (creates `visible` plus the reversed `hidden`) are accepted.
 - Defaults as in Kodi: in-effects fade 0 to 100, out-effects fade 100 to 0.
 
+## 4a. Default animation file: `skin.ani`
+
+Writing `<animation>` into every widget of a skin is a lot of work, so animations can be
+collected in one file per skin instead: `skin.ani`, next to the skin's `skin.xml`, for example
+`/usr/share/enigma2/MaterialSkinCockpit/skin.ani`. The file is optional. Its root is
+`<animations version="1">`; a complete example for a real skin is `skin.ani` in the
+MaterialSkinCockpit repository.
+
+Rules are `<screen>` and `<widget>` elements whose attributes select what they apply to,
+and whose children are the same Kodi `<animation>` elements as in section 4, plus the list
+elements `<scrolltime>` and `<focusedlayout>` (which holds the `focus`/`unfocus`
+animations for a row):
+
+```xml
+<animations version="1">
+    <screen name="InfoBar,MoviePlayer">
+        <animation type="windowopen">
+            <effect type="slide" start="0,120" end="0,0" time="220" tween="cubic" easing="out"/>
+        </animation>
+    </screen>
+    <widget render="Listbox">
+        <scrolltime tween="cubic" easing="out">180</scrolltime>
+        <focusedlayout>
+            <animation type="focus"><effect type="zoom" start="100" end="103" center="auto" time="120"/></animation>
+            <animation type="unfocus"><effect type="zoom" start="103" end="100" center="auto" time="120"/></animation>
+        </focusedlayout>
+    </widget>
+</animations>
+```
+
+- Selectors: for a `<screen>` rule `name`; for a `<widget>` rule `render`, `source`, `name`,
+  `addon`, optionally narrowed by `screen`. Values are comma separated lists with `*` and `?`
+  wildcards. A rule without selectors applies to everything of its kind: a plain `<screen>`
+  is the rule for all screens, a plain `<widget>` for all widgets. `name` of a screen rule
+  matches any entry of the screen's name list (the skin name plus the class names in its
+  chain, as in enigma2's "Processing screen ... from list ..." log line), so a rule can
+  target a base class such as `Setup` and cover every screen derived from it.
+- Cascade, evaluated separately for every animation type: an `<animation>` inside skin.xml
+  wins over a `.ani` rule; among `.ani` rules the one with the most selector attributes wins,
+  a later rule wins a tie; otherwise there is no animation.
+- An empty `<animation type="..."/>` cancels what a less specific rule would give, so a rule
+  for all screens can be switched off for, say, the volume bar or the standby screen.
+- Loaded once at skin load by `skin.py` from the current skin directory and resolved into
+  the same plain data structure as inline animations, so the engine does not know where an
+  animation came from. Whole-file switches (master, categories, speed) apply to it like to
+  anything else (section 5).
+- Boxes without the feature do not read the file. It is a data file with no code, so the
+  same skin package works everywhere.
+- Install: listed in the skin's `Makefile.am` (`install_DATA`).
+
 ## 5. Build switches and user settings
 
 Build:
