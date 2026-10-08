@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-// Window show/hide animation presets for the EGL backend (Layer A of doc/ANIMATIONS.md).
+// Window show/hide animation presets for the EGL backend (Layer A of doc/ANIMATIONS_PROPOSAL.md).
 //
 // Pure math, no GL: a preset says how a window's snapshot is faded, scaled and moved over
 // time; gEGLDC (gegldc.cpp) turns that into quads. The two settings below are written from
@@ -68,7 +68,7 @@ Transform evaluate(const Preset& preset, float amount);
 void destRect(const Transform& tr, float x, float y, float w, float h, float out[4]);
 
 // ---------------------------------------------------------------------------------------
-// Kodi style control animations (Layer B of doc/ANIMATIONS.md).
+// Kodi style control animations (Layer B of doc/ANIMATIONS_PROPOSAL.md).
 //
 // An animation is a list of effects (fade, slide, zoom) that all run from the same start.
 // Their tag and attribute names are Kodi's. Skins (skin.ani / skin.xml) are parsed by skin.py,
