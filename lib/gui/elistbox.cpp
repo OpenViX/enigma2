@@ -1033,7 +1033,7 @@ void eListbox::setScrollAnimation(int anim_id, bool smooth)
 
 // The first visible row (column) changed: a page, or a single row with smooth scrolling, and the whole
 // list is redrawn at once; let the DC slide the old content out and the new one in (EGL list animation,
-// see doc/ANIMATIONS.md). The hint goes out before the invalidate()/repaint.
+// see doc/ANIMATIONS_PROPOSAL.md). The hint goes out before the invalidate()/repaint.
 void eListbox::sendPageAnimation(long r_dir, int new_first, int old_first, bool horizontal)
 {
 #ifdef HAVE_EGL_ANIMATION

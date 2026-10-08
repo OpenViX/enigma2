@@ -1,6 +1,9 @@
 # GPU animations for enigma2 (EGL/GLES) - design proposal
 
-Status: proposal, nothing implemented yet.
+This is the design document. How the implementation works and how animations are written in
+`skin.ani` is in `ANIMATIONS_HOWTO.md`.
+
+Status: largely implemented; section 6a and the sections after it record what exists and what was learned.
 
 ## 1. Goals and constraints
 
@@ -251,6 +254,8 @@ Lessons from the first run on the dm900, kept so Layer B does not repeat them:
 
 Phase 3, list page slide (Layer A lists):
 
+- Superseded for vertical lists and grids: today only horizontal lists send this hint (vertical lists scroll
+  by painted offset, larger jumps and grids just flip; see "List scrolling and the render queue").
 - `eListbox::moveSelection()` sends `sendShowItem(dir, rect)` (via `eWidget::sendShowItem()` and
   `eWidgetDesktop`) when the selection changes the page (`m_top`/`m_left`). `dir` is +-1 for a
   vertical and +-2 for a horizontal slide, + meaning forward. The opcode exists for the EGL build
@@ -297,8 +302,7 @@ Layer B, the rest of the `skin.ani` rules (compiles, not run on a box yet):
 - `<scrolltime tween="cubic" easing="out">180</scrolltime>` in a widget rule gives the list a scroll
   animation (the time, tween and easing of its first effect) **and turns on
   smooth scrolling for it**: the list moves by single rows, just far enough to keep the selection in view,
-  instead of flipping a page. A row scroll slides the old and the new content by one row (`step` of the
-  `sendShowItem` hint); a jump of more than one row (wrap-around, page keys) still slides a whole page.
+  instead of flipping a page. Vertical lists scroll by painted offset (see "List scrolling and the render queue"): up to 3 rows per step, larger jumps just flip. Only horizontal lists send the `sendShowItem` hint, sliding by one item (`step`) or a whole page.
   `<scrolltime>0</scrolltime>` cancels it for a list. The scrollbar thumb follows row by row.
 - `visible`/`hidden` rules (and the old `VisibleChange` form, which creates the reversed `hidden` too):
   a widget that is shown or hidden while its window is up (a converter, `ConditionalShowHide`) animates

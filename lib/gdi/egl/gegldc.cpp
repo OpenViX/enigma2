@@ -3263,7 +3263,7 @@ void gEGLDC::captureBackgroundIntoPixmap(const eRect& rect) {
 
 #ifdef HAVE_EGL_ANIMATION
 // ---------------------------------------------------------------------------------------
-// Window show/hide animations (Layer A, doc/ANIMATIONS.md). Everything below runs on gRC's
+// Window show/hide animations (Layer A, doc/ANIMATIONS_PROPOSAL.md). Everything below runs on gRC's
 // render thread. The animation is a sequence of ordinary frames in the normal render
 // target: restore the "base" snapshot over the window rect (exact overwrite), draw the moving
 // snapshot over it with the preset's transform, flip(). Because each step goes through
@@ -3576,7 +3576,7 @@ void gEGLDC::runWindowAnimation(bool show, const eRect& rect, GLuint before, GLu
 }
 
 // Window or widget show/hide with the skin's Kodi style animation (ganim::Animation, see
-// doc/ANIMATIONS.md): like runWindowAnimation(), but the transform of the moving snapshot comes from
+// doc/ANIMATIONS_PROPOSAL.md): like runWindowAnimation(), but the transform of the moving snapshot comes from
 // the animation's effects (fade, slide, zoom) at the elapsed time. A show moves the new content
 // (`after`) over the old background, a hide moves the old content (`before`) over the repainted
 // background; the animation itself says which way (a windowclose fades 100 -> 0). It stays inside `rect`.

@@ -586,7 +586,7 @@ AS_IF([test "x$use_egl" = "xyes" -a "x$have_gles3" = "xyes"], [
 AM_CONDITIONAL([HAVE_EGL], [test "x$use_egl" = "xyes"])
 
 # Window show/hide animations rendered by the EGL backend (lib/gdi/egl/ganimation.*,
-# doc/ANIMATIONS.md). Defaults to on whenever EGL is on; a box without EGL never gets it,
+# doc/ANIMATIONS_PROPOSAL.md). Defaults to on whenever EGL is on; a box without EGL never gets it,
 # and the animation is only ever active once the user picks one in the AnimationSetup plugin.
 AC_ARG_ENABLE([egl-animation],
   AS_HELP_STRING([--enable-egl-animation], [window show/hide animations in the EGL backend, yes/no (default yes when EGL is enabled)]),
