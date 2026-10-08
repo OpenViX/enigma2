@@ -15,7 +15,7 @@ except ImportError:
 from Components.config import ConfigSubsection, ConfigText, config
 from Components.Sources.Source import ObsoleteSource
 from Components.SystemInfo import SystemInfo, BoxInfo  # noqa: F401  # BoxInfo is imported for use in the include conditional
-from Tools.Directories import SCOPE_CONFIG, SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT_SKIN, SCOPE_FONTS, SCOPE_SKIN, SCOPE_SKIN_IMAGE, resolveFilename, fileReadXML, clearResolveLists  # noqa: F401
+from Tools.Directories import SCOPE_CONFIG, SCOPE_CURRENT_LCDSKIN, SCOPE_CURRENT_SKIN, SCOPE_FONTS, SCOPE_GUISKIN, SCOPE_SKIN, SCOPE_SKIN_IMAGE, resolveFilename, fileReadXML, clearResolveLists  # noqa: F401
 from Tools.Import import my_import
 from Tools.LoadPixmap import LoadPixmap
 
@@ -74,8 +74,9 @@ onLoadCallbacks = []
 # E.g. "MySkin/skin_display.xml"
 #
 
-# Kodi style animations from "skin.ani", next to the primary skin's skin.xml (doc/ANIMATIONS.md,
-# sections 4 and 4a).  Each rule is {"tag": "screen"|"widget", "sel": {attribute: [patterns]},
+# Kodi style animations from "skin.ani", found through the GUI skin search path SCOPE_GUISKIN: the first
+# of /etc/enigma2/<skin>/, /etc/enigma2/skin_common/, /etc/enigma2/, the skin's own directory and the
+# fallback skins that has one (doc/ANIMATIONS.md, sections 4 and 4a).  Each rule is {"tag": "screen"|"widget", "sel": {attribute: [patterns]},
 # "n": number of selectors, "order": position in the file, "anims": {type: spec}}.  A spec is the
 # compact effect string registerAnimation() takes; "" is an empty <animation/>, which cancels
 # what a less specific rule would give.
@@ -115,12 +116,12 @@ def parseAnimationNode(node):
 	return []
 
 
-def loadAnimationRules(skinFile):
+def loadAnimationRules():
 	global animationRules
 	animationRules = []
-	if registerAnimation is None or not skinFile:
+	if registerAnimation is None:
 		return
-	filename = resolveFilename(SCOPE_SKIN, join(dirname(skinFile), "skin.ani"))
+	filename = resolveFilename(SCOPE_GUISKIN, "skin.ani")
 	if not isfile(filename):
 		return
 	root = fileReadXML(filename)
@@ -286,7 +287,7 @@ def InitSkins(booting=True):
 			break
 		print("[Skin] Error: Adding %s GUI skin '%s' has failed!" % (name, config.skin.primary_skin.value))
 		processed.append(skin)
-	loadAnimationRules(currentPrimarySkin)
+	loadAnimationRules()
 	# Check for skin related xml additions provided by third parties, such as plugins.
 	# Check for these in /etc/enigma2/<SkinName>/*.xml.
 	# Files should have clear, unique names like plugin_xyz_skin.xml.

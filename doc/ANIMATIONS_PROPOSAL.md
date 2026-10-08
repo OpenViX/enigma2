@@ -122,8 +122,8 @@ Child elements of a `<screen>` or `<widget>`, parsed in `skin.py` into plain dat
 ## 4a. Default animation file: `skin.ani`
 
 Writing `<animation>` into every widget of a skin is a lot of work, so animations can be
-collected in one file per skin instead: `skin.ani`, next to the skin's `skin.xml`, for example
-`/usr/share/enigma2/MaterialSkinCockpit/skin.ani`. The file is optional. Its root is
+collected in one file per skin instead: `skin.ani`, normally shipped in the skin's directory, for
+example `/usr/share/enigma2/MaterialSkinCockpit/skin.ani`. The file is optional. Its root is
 `<animations version="1">`; a complete example for a real skin is `skin.ani` in the
 MaterialSkinCockpit repository.
 
@@ -161,7 +161,11 @@ animations for a row):
   a later rule wins a tie; otherwise there is no animation.
 - An empty `<animation type="..."/>` cancels what a less specific rule would give, so a rule
   for all screens can be switched off for, say, the volume bar or the standby screen.
-- Loaded once at skin load by `skin.py` from the current skin directory and resolved into
+- Loaded once at skin load by `skin.py` through the GUI skin search path (`SCOPE_GUISKIN`), not from
+  the name of the skin file: the first `skin.ani` found in `/etc/enigma2/<skin>/`,
+  `/etc/enigma2/skin_common/`, `/etc/enigma2/`, the skin's own directory and then the fallback
+  skins is used. Only that one file is read (no merging), so a user file in `/etc/enigma2/` replaces
+  the skin's own. It is resolved into
   the same plain data structure as inline animations, so the engine does not know where an
   animation came from. Whole-file switches (master, categories, speed) apply to it like to
   anything else (section 5).
@@ -278,7 +282,7 @@ Layer B, first slice (list rows, compiles, not run on a box yet):
   `unfocus`. Rows with a transform are drawn in a second pass, on top of their neighbours, and an
   `eTimer` repaints the animated rows (and their neighbours) every 16 ms. Vertical and horizontal
   lists, switched by the same "lists" switch as the page slide.
-- `skin.py` loads `skin.ani` (next to the primary skin's skin.xml) and resolves the selectors and the
+- `skin.py` loads `skin.ani` (found through `SCOPE_GUISKIN`, see section 4a) and resolves the selectors and the
   cascade per widget (`render`, `source`, `name`, `addon`, `screen`); for listboxes the resolved
   `focus`/`unfocus` animations (also inside `<focusedlayout>`) become the skin attribute
   `listAnimation="<focus id>,<unfocus id>"`. Older builds without the engine skip all of it.

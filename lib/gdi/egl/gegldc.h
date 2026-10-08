@@ -451,7 +451,7 @@ private:
 	void incrementSpinner() override;
 
 #ifdef HAVE_EGL_ANIMATION
-	// Window show/hide animations (Layer A, see doc/ANIMATIONS.md). eWindow::show()/hide() send
+	// Window show/hide animations (Layer A, see doc/ANIMATIONS_PROPOSAL.md). eWindow::show()/hide() send
 	// sendShow/sendHide(rect) hints. At the hint the target's content in that rect is copied into
 	// a texture ("before": the background for a show, the window for a hide). Once the window's
 	// own draw opcodes have run, the first flush takes the second snapshot ("after") and plays
