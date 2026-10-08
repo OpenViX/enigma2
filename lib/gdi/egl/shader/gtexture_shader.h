@@ -22,6 +22,15 @@ private:
 #endif
 	GLuint m_vbo;
 
+	// Lean program for the common case (batched blits with no corner rounding and
+	// no premultiply/unpremultiply mode): no SDF, no mode branches, no v_pos
+	// varying - just sample * alpha. The full program above handles the rest.
+	GLuint m_plain_program_id = 0;
+	GLint m_plain_projection_location = -1;
+	GLint m_plain_texture_location = -1;
+	GLint m_plain_alpha_location = -1;
+	GLuint buildPlainProgram();
+
 	GLint m_projection_location;
 	GLint m_texture_location;
 	GLint m_alpha_location;
