@@ -517,6 +517,8 @@ extern void resumeInit(void);
 extern void setAnimation_current(int a);
 extern void setAnimation_speed(int speed);
 #endif
+extern void setAnimation_lists(int on);
+extern int registerAnimation(const char *type, const char *spec);
 extern int getE2Flags();
 extern bool checkLogin(const char *user, const char *pwd);
 %}
@@ -541,6 +543,8 @@ extern void resumeInit(void);
 extern void setAnimation_current(int a);
 extern void setAnimation_speed(int speed);
 #endif
+extern void setAnimation_lists(int on);
+extern int registerAnimation(const char *type, const char *spec);
 extern int getE2Flags();
 extern bool checkLogin(const char *user, const char *pwd);
 
