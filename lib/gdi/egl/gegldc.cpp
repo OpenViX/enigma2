@@ -2742,7 +2742,11 @@ void gEGLDC::applyPendingResolutionChange() {
 	// GbquadWindowProvider::onResolutionChanged() for why (stretch scales to
 	// whatever size Nexus was last told, not this canvas's actual current
 	// size). That size is the physical one, not the logical canvas.
-	if (m_window_provider && !physical_unchanged) {
+	// Where the EGL surface is recreated below, the window is updated there instead:
+	// only after the old surface has been released and destroyed, never while it is
+	// still bound to the native window being modified.
+	const bool recreate_window_surface = isInitialized() && m_window_provider && !m_window_provider->usesPixmapSurface() && !physical_unchanged;
+	if (m_window_provider && !physical_unchanged && !recreate_window_surface) {
 		eDebug("[gEGLDC] resize: updating native window to %dx%d", m_phys_width, m_phys_height);
 		m_window_provider->onResolutionChanged(m_phys_width, m_phys_height);
 		eDebug("[gEGLDC] resize: native window updated");
@@ -2767,7 +2771,7 @@ void gEGLDC::applyPendingResolutionChange() {
 	// resizes a window surface. Not a guaranteed fix (this driver's exact
 	// failure mode was never confirmed), but a real candidate rather than
 	// another blind guess.
-	if (isInitialized() && m_window_provider && !m_window_provider->usesPixmapSurface() && !physical_unchanged) {
+	if (recreate_window_surface) {
 		// Give the old shadow buffer's GPU memory back BEFORE the surface (and its
 		// buffers) is recreated at the new size: holding both at once is what made
 		// the new 2560x1440 shadow texture fail to allocate on the GigaBlue.
@@ -2775,6 +2779,19 @@ void gEGLDC::applyPendingResolutionChange() {
 			destroyShadowFramebuffer();
 			glFinish();
 		}
+		// Same for textures: loading the new skin has already queued every old
+		// skin texture for deletion (hundreds, ~35MB), but they are only freed
+		// at the next frame - after this resize. The window surface's buffers
+		// (3 x 2560x1440x4) are then allocated with all of them still resident;
+		// on the GigaBlue that allocation fails (EGL_BAD_NATIVE_WINDOW on
+		// eglMakeCurrent, then EGL_BAD_ALLOC on every retry). Free them now, and
+		// everything evictable too - it re-uploads on demand. Pending batches
+		// were flushed by exec() before this runs.
+		m_texture_manager.processDeletions();
+		const size_t released = m_texture_manager.releaseUnusedTextures();
+		m_texture_manager.processDeletions();
+		glFinish();
+		eDebug("[gEGLDC] resize: released GPU textures before recreating the window surface (%zu evicted)", released);
 		eDebug("[gEGLDC] resize: releasing context and destroying EGL surface");
 		eglMakeCurrent(m_egl_display, EGL_NO_SURFACE, EGL_NO_SURFACE, m_egl_context);
 
@@ -2783,6 +2800,11 @@ void gEGLDC::applyPendingResolutionChange() {
 			m_egl_surfaces[0] = EGL_NO_SURFACE;
 		}
 		eDebug("[gEGLDC] resize: EGL surface destroyed");
+
+		// Only now, with no EGL surface bound to it, update the native window.
+		eDebug("[gEGLDC] resize: updating native window to %dx%d", m_phys_width, m_phys_height);
+		m_window_provider->onResolutionChanged(m_phys_width, m_phys_height);
+		eDebug("[gEGLDC] resize: native window updated");
 
 		// The Nexus native window settles asynchronously after the update/hide/show
 		// above: a surface created too early can come back "valid" yet fail
