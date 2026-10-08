@@ -897,7 +897,7 @@ def applyScrollbar(guiObject):
 	if scrollbarStyle is None:
 		return
 	guiObject.setScrollbarWidth(scrollbarStyle["width"])
-	if "height" in scrollbarStyle and hasattr("setScrollbarHeight", guiObject):
+	if "height" in scrollbarStyle and hasattr(guiObject, "setScrollbarHeight"):
 		guiObject.setScrollbarHeight(scrollbarStyle["height"])
 	guiObject.setScrollbarBorderWidth(scrollbarStyle["borderWidth"])
 	guiObject.setScrollbarBorderColor(scrollbarStyle["borderColor"])
