@@ -49,6 +49,14 @@ namespace gles
 
 	inline bool isGLES3() { return version >= 3; }
 
+	// Returns `source` with its `uniform float u_rbswap;` declaration (if any)
+	// replaced by a compile-time constant matching needsRBSwap. The GPU compiler
+	// can't fold mix(c, c.bgra, <uniform>) away, so on every platform that
+	// doesn't need the swap (all but Dreambox) it cost extra ALU on every shaded
+	// fragment; as a constant it folds to nothing. Call after needsRBSwap is set
+	// (gEGLDC::initEGL() does, before any shader init()).
+	std::string specializeShaderSource(const char* source);
+
 	// Driver-reported version strings (eglQueryString(EGL_VERSION) and
 	// glGetString(GL_VERSION)), e.g. "1.4" / "OpenGL ES 3.0 Mesa 23.1".
 	// Empty until the context is created; exposed to Python through

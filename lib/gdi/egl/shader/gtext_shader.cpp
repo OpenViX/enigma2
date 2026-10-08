@@ -120,7 +120,9 @@ void gTextShader::destroy()
 GLuint gTextShader::compileShader(GLenum type, const char *source)
 {
 	GLuint shader = glCreateShader(type);
-	glShaderSource(shader, 1, &source, nullptr);
+	const std::string specialized = gles::specializeShaderSource(source);
+	const char* specialized_src = specialized.c_str();
+	glShaderSource(shader, 1, &specialized_src, nullptr);
 	glCompileShader(shader);
 
 	GLint success;
