@@ -193,6 +193,12 @@ def hasInitCam():
 SystemInfo["CanChangeOsdAlpha"] = access('/proc/stb/video/alpha', R_OK) and True or False
 SystemInfo["CanChangeOsdPosition"] = (access('/proc/stb/fb/dst_left', R_OK) or access('/proc/stb/vmpeg/0/dst_left', R_OK)) and True or False
 SystemInfo["OsdSetup"] = SystemInfo["CanChangeOsdPosition"]
+try:
+	from enigma import registerAnimation
+	# the animation engine (skin.ani, doc/ANIMATIONS_HOWTO.md) is built in when the registry accepts an animation
+	SystemInfo["HasAnimations"] = bool(registerAnimation("windowopen", "fade|start=0|end=100|time=1"))
+except ImportError:
+	SystemInfo["HasAnimations"] = False
 SystemInfo["HasUsbhdd"] = {}
 SystemInfo["ArchIsARM"] = ARCHITECTURE.startswith(("arm", "cortex"))
 SystemInfo["ArchIsARM64"] = "64" in ARCHITECTURE

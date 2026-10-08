@@ -141,17 +141,51 @@ int eWindow::event(int event, void *data, void *data2)
 
 // A window's animation id is 0 for "no skin rule, the preset decides", -1 for "no animation" (a rule
 // cancelled it) and an animation id from the skin otherwise, see eWidget::setVisibilityAnimation().
+// The area a window animation has to cover: the widgets of the window, not the window itself, which is often
+// the whole screen with only a bar of widgets at one edge (an info bar). A snapshot costs time in proportion
+// to its area.
+eRect eWindow::animationRect()
+{
+	eRect r(position(), size());
+	eWidget *c = child();
+	eRect content = c ? c->contentBounds() : eRect();
+	if (content.valid())
+	{
+		content.moveBy(c->position());
+		content.moveBy(position());
+		r &= content;
+	}
+	return r;
+}
+
 void eWindow::show()
 {
-	if ((m_animation_mode & 0x01) && showAnimation() >= 0)
-		m_desktop->sendShow(position(), size(), showAnimation(), 0);
+#ifdef HAVE_EGL_ANIMATION
+	// only a window with an animation of the skin (skin.ani) is animated
+	const bool animate = showAnimation() > 0;
+#else
+	const bool animate = showAnimation() >= 0;
+#endif
+	if ((m_animation_mode & 0x01) && animate)
+	{
+		const eRect r = animationRect();
+		m_desktop->sendShow(r.topLeft(), r.size(), showAnimation(), 0);
+	}
 	eWidget::show();
 }
 
 void eWindow::hide()
 {
-	if ((m_animation_mode & 0x10) && hideAnimation() >= 0)
-		m_desktop->sendHide(position(), size(), hideAnimation(), 0);
+#ifdef HAVE_EGL_ANIMATION
+	const bool animate = hideAnimation() > 0;
+#else
+	const bool animate = hideAnimation() >= 0;
+#endif
+	if ((m_animation_mode & 0x10) && animate)
+	{
+		const eRect r = animationRect();
+		m_desktop->sendHide(r.topLeft(), r.size(), hideAnimation(), 0);
+	}
 	eWidget::hide();
 }
 

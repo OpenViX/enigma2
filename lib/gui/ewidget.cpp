@@ -309,6 +309,25 @@ ePoint eWidget::getAbsolutePosition()
 	return abspos;
 }
 
+eRect eWidget::contentBounds()
+{
+	eRect bounds;
+	for (ePtrList<eWidget>::iterator i(m_childs.begin()); i != m_childs.end(); ++i)
+	{
+		if (!(i->m_vis & wVisShow) || i->size().isEmpty())
+			continue;
+		eRect r(i->position(), i->size());
+		eRect sub = i->contentBounds();
+		if (sub.valid())
+		{
+			sub.moveBy(i->position());
+			r |= sub;
+		}
+		bounds = bounds.valid() ? (bounds | r) : r;
+	}
+	return bounds;
+}
+
 void eWidget::sendShowItem(long dir, int anim, int step)
 {
 	eWidget *root = this;

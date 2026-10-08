@@ -3,7 +3,7 @@ import locale
 import os
 import skin
 
-from enigma import eDVBDB, eEPGCache, setTunerTypePriorityOrder, setPreferredTuner, setSpinnerOnOff, setEnableTtCachingOnOff, eEnv, Misc_Options, eServiceEvent
+from enigma import eDVBDB, eEPGCache, setTunerTypePriorityOrder, setPreferredTuner, setSpinnerOnOff, setEnableTtCachingOnOff, setAnimation_lists, eEnv, Misc_Options, eServiceEvent
 
 from Components.Harddisk import harddiskmanager
 from Components.config import config, ConfigBoolean, ConfigDictionarySet, ConfigDirectory, ConfigInteger, ConfigIP, ConfigLocations, ConfigNumber, ConfigPassword, ConfigSelection, ConfigSelectionNumber, ConfigSet, ConfigSubsection, ConfigText, ConfigYesNo, NoSave
@@ -397,6 +397,14 @@ def InitUsageConfig():
 	def SpinnerOnOffChanged(configElement):
 		setSpinnerOnOff(int(configElement.value))
 	config.usage.show_spinner.addNotifier(SpinnerOnOffChanged)
+
+	# Animations of lists, widgets and windows as the skin defines them (its skin.ani); off, nothing is animated.
+	config.usage.show_animations = ConfigYesNo(default=False)
+
+	def ShowAnimationsChanged(configElement):
+		setAnimation_lists(int(configElement.value))
+	if SystemInfo["HasAnimations"]:
+		config.usage.show_animations.addNotifier(ShowAnimationsChanged)
 
 	def EnableTtCachingChanged(configElement):
 		setEnableTtCachingOnOff(int(configElement.value))

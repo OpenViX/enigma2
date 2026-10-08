@@ -3326,17 +3326,13 @@ bool gEGLDC::isDrawOpcode(int op) {
 // The same conditions the GPU spinner needs: an unscaled canvas, a settled surface and a
 // target that really holds the previous frame.
 bool gEGLDC::animationUsable(int kind) const {
-	// kind 0: a window with an AnimationSetup preset, 2: a window with the skin's animation (preset
-	// "skin animations"), 1: the controls (lists, widgets), which have their own switch.
-	if (kind == 1) {
-		if (!ganim::listsEnabled())
-			return false;
-	} else if (kind == 2) {
-		if (ganim::currentPreset() != ganim::kSkinPreset)
-			return false;
-	} else if (!ganim::getPreset(ganim::currentPreset())) {
+	// kind 2: a window with the animation of the skin (skin.ani), 1: the controls (lists, widgets); both only
+	// while the "Enable animations" switch is on, what is animated is up to the skin. kind 0: a window with a
+	// built-in preset (never requested any more).
+	if (kind != 0 && !ganim::listsEnabled())
 		return false;
-	}
+	if (kind == 0 && !ganim::getPreset(ganim::currentPreset()))
+		return false;
 	if (!isInitialized() || isScaled() || m_pending_resolution_change || m_surface_lost || islocked())
 		return false;
 	if (m_use_shadow_fbo && m_shadow_fbo == 0)
