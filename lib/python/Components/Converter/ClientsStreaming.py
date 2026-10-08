@@ -22,6 +22,19 @@ class ClientsStreaming(Converter, Poll):
 	INFO_RESOLVE = 8
 	INFO_RESOLVE_SHORT = 9
 
+	KEYWORDS = {
+		"REF": REF,
+		"IP": IP,
+		"NAME": NAME,
+		"ENCODER": ENCODER,
+		"NUMBER": NUMBER,
+		"SHORT_ALL": SHORT_ALL,
+		"ALL": ALL,
+		"INFO": INFO,
+		"INFO_RESOLVE": INFO_RESOLVE,
+		"INFO_RESOLVE_SHORT": INFO_RESOLVE_SHORT
+	}
+
 	TEXT_HANDLERS = {
 		REF: "textRefs",
 		IP: "textIPs",
@@ -32,8 +45,12 @@ class ClientsStreaming(Converter, Poll):
 		ALL: "textAll",
 		INFO: "textInfo",
 		INFO_RESOLVE: "textInfoResolve",
-		INFO_RESOLVE_SHORT: "textInfoResolveShort",
+		INFO_RESOLVE_SHORT: "textInfoResolveShort"
 	}
+
+	# Host names found by reverse lookups, shared by every instance. Looking an address up can take
+	# seconds, so it is done once per connected client and not on every poll.
+	hostnames = {}
 
 	def __init__(self, type):
 		Converter.__init__(self, type)
@@ -42,18 +59,7 @@ class ClientsStreaming(Converter, Poll):
 		self.poll_interval = 5000
 		self.poll_enabled = True
 
-		self.type = {
-			"REF": self.REF,
-			"IP": self.IP,
-			"NAME": self.NAME,
-			"ENCODER": self.ENCODER,
-			"NUMBER": self.NUMBER,
-			"SHORT_ALL": self.SHORT_ALL,
-			"ALL": self.ALL,
-			"INFO": self.INFO,
-			"INFO_RESOLVE": self.INFO_RESOLVE,
-			"INFO_RESOLVE_SHORT": self.INFO_RESOLVE_SHORT,
-		}.get(type, self.UNKNOWN)
+		self.type = self.KEYWORDS.get(type, self.UNKNOWN)
 
 		self.streamServer = eStreamServer.getInstance()
 
@@ -67,6 +73,27 @@ class ClientsStreaming(Converter, Poll):
 
 	text = property(getText)
 
+	# ---- Helpers ----
+
+	def serviceName(self, ref):
+		return ServiceReference(ref).getServiceName() or "(unknown service)"
+
+	def resolveHost(self, ip):
+		# The host name for an address, or the address itself when it cannot be resolved. Failures are remembered too.
+		if ip not in self.hostnames:
+			try:
+				self.hostnames[ip] = socket.gethostbyaddr(ip)[0]
+			except Exception:
+				self.hostnames[ip] = ip
+		return self.hostnames[ip]
+
+	def forgetDisconnected(self, clients):
+		# Once a client has gone, look its address up again the next time it connects.
+		connected = {client[0] for client in clients}
+		for ip in list(self.hostnames):
+			if ip not in connected:
+				del self.hostnames[ip]
+
 	# ---- Text ----
 
 	def textUnknown(self):
@@ -79,7 +106,7 @@ class ClientsStreaming(Converter, Poll):
 		return " ".join(client[0] for client in self.streamServer.getConnectedClients())
 
 	def textNames(self):
-		return " ".join(ServiceReference(client[1]).getServiceName() or "(unknown service)" for client in self.streamServer.getConnectedClients())
+		return " ".join(self.serviceName(client[1]) for client in self.streamServer.getConnectedClients())
 
 	def textEncoders(self):
 		encoders = []
@@ -94,47 +121,39 @@ class ClientsStreaming(Converter, Poll):
 
 	def textShortAll(self):
 		clients = self.streamServer.getConnectedClients()
-		names = []
-
-		for client in clients:
-			names.append(ServiceReference(client[1]).getServiceName() or "(unknown service)")
+		names = [self.serviceName(client[1]) for client in clients]
 
 		return _("Total clients streaming: %d (%s)") % (len(clients), " ".join(names))
 
-	def getClientInfo(self):
-		clients = []
+	def textAll(self):
+		lines = []
 
 		for client in self.streamServer.getConnectedClients():
-			ip = client[0]
-			service_name = (ServiceReference(client[1]).getServiceName() or "(unknown service)")
 			encoder = _("YES") if int(client[2]) else _("NO")
 
-			clients.append((ip, service_name, encoder))
+			lines.append(" ".join((client[0], self.serviceName(client[1]), encoder)))
 
-		return clients
-
-	def textAll(self):
-		return "\n".join(" ".join(client) for client in self.getClientInfo())
+		return "\n".join(lines)
 
 	def textInfo(self, resolve=False, short=False):
 		info = []
+		clients = self.streamServer.getConnectedClients()
 
-		for client in self.streamServer.getConnectedClients():
+		if resolve:
+			self.forgetDisconnected(clients)
+
+		for client in clients:
 			ip = client[0]
-			service_name = (ServiceReference(client[1]).getServiceName() or "(unknown service)")
 
 			if resolve:
-				try:
-					ip = socket.gethostbyaddr(ip)[0]
-				except Exception:
-					pass
+				ip = self.resolveHost(ip)
 
 				if short:
-					ip, _, _ = ip.partition(".")
+					ip = ip.partition(".")[0]
 
 			strtype = "Transcoding: " if int(client[2]) else "Streaming: "
 
-			info.append("%s  %-8s  %s\n" % (strtype, ip, service_name))
+			info.append("%s  %-8s  %s\n" % (strtype, ip, self.serviceName(client[1])))
 
 		return "".join(info)
 
