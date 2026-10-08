@@ -1827,9 +1827,10 @@ def applySkinFactor(*d):
 	Multiply the numeric input by the skin factor
 	and return the result as an integer.
 	"""
+	factor = getSkinFactor()
 	if len(d) == 1:
-		return int(d[0] * getSkinFactor())
-	return tuple(int(value * getSkinFactor()) if isinstance(value, (int, float)) else value for value in d)
+		return int(d[0] * factor)
+	return tuple(int(value * factor) if isinstance(value, (int, float)) else value for value in d)
 
 
 def findSkinScreen(names):
