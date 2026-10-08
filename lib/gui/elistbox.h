@@ -223,7 +223,7 @@ public:
 	void setItemGradientSelected(const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend);
 	void redrawItemByIndex(int index) { entryChanged(index); }
 
-	// Control animations of the rows (Layer B of doc/ANIMATIONS.md, EGL only, ids from the registry in
+	// Control animations of the rows (Layer B of doc/ANIMATIONS_PROPOSAL.md, EGL only, ids from the registry in
 	// lib/gdi/egl/ganimation.h, 0 = none). `focus` plays on the row that becomes selected and stays
 	// applied while it is selected, `unfocus` on the row the selection leaves. No-op in other builds.
 	void setFocusAnimation(int focus_id, int unfocus_id);

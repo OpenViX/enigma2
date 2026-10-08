@@ -76,7 +76,7 @@ onLoadCallbacks = []
 
 # Kodi style animations from "skin.ani", found through the GUI skin search path SCOPE_GUISKIN: the first
 # of /etc/enigma2/<skin>/, /etc/enigma2/skin_common/, /etc/enigma2/, the skin's own directory and the
-# fallback skins that has one (doc/ANIMATIONS.md, sections 4 and 4a).  Each rule is {"tag": "screen"|"widget", "sel": {attribute: [patterns]},
+# fallback skins that has one (doc/ANIMATIONS_HOWTO.md).  Each rule is {"tag": "screen"|"widget", "sel": {attribute: [patterns]},
 # "n": number of selectors, "order": position in the file, "anims": {type: spec}}.  A spec is the
 # compact effect string registerAnimation() takes; "" is an empty <animation/>, which cancels
 # what a less specific rule would give.
