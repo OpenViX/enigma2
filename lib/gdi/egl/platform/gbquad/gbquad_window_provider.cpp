@@ -235,6 +235,8 @@ bool GbquadWindowProvider::init(int width, int height) {
 	}
 
 	NXPL_ShowNativeWindowEXT(m_native_window, true);
+	m_window_width = width;
+	m_window_height = height;
 
 	// 4. fbClass is NOT our render target here, but it is the singleton the
 	// rest of enigma2 uses for the framebuffer lock (ImageManager.py's
@@ -260,14 +262,34 @@ bool GbquadWindowProvider::init(int width, int height) {
 }
 
 void GbquadWindowProvider::onResolutionChanged(int width, int height) {
-	if (!m_native_window)
+	if (!m_nxpl_display_handle)
 		return;
 
-	// Same struct/fields as init()'s own NXPL_CreateNativeWindowEXT() call -
-	// NXPL_GetDefaultNativeWindowInfoEXT() resets stretch to its own default
-	// (false, per that call's own comment), so it must be set true again
-	// here too, or this update would silently undo the earlier fix for
-	// oversized-at-lower-output-resolution rendering.
+	// Device log (skin switch to a 2560x1440 skin): after an in-place
+	// NXPL_UpdateNativeWindowEXT() on the live window the first eglCreateWindowSurface()
+	// returned a surface that failed eglMakeCurrent() with EGL_BAD_NATIVE_WINDOW. That
+	// surface can't be destroyed (libnxpl crashes), stays bound to the window, and every
+	// later create then failed with EGL_BAD_ALLOC - no UI, and a libnxpl SIGSEGV at
+	// shutdown. A window created fresh at the target size is exactly what init() does at
+	// boot (known to work, also at 2560x1440), so replace the window instead of mutating
+	// it. gEGLDC has destroyed its EGL surface before calling this, so nothing is bound to
+	// the old window; getNativeWindow() hands out the new one.
+	if (m_window_width == width && m_window_height == height) {
+		// Already that size (gEGLDC re-sends the request while retrying): replacing
+		// the window now could pull it from under a surface that is bound to it.
+		eDebug("[GbquadWindowProvider] native window already %dx%d - unchanged", width, height);
+		usleep(150000);
+		return;
+	}
+
+	if (m_native_window) {
+		NXPL_ShowNativeWindowEXT(m_native_window, false);
+		NXPL_DestroyNativeWindow(m_native_window);
+		m_native_window = nullptr;
+	}
+
+	// Same struct/fields as init()'s own NXPL_CreateNativeWindowEXT() call, incl.
+	// `stretch` (see the comment there).
 	NXPL_NativeWindowInfoEXT windowInfo;
 	NXPL_GetDefaultNativeWindowInfoEXT(&windowInfo);
 	windowInfo.width = (uint32_t)width;
@@ -277,42 +299,20 @@ void GbquadWindowProvider::onResolutionChanged(int width, int height) {
 	applyWindowBlendOverride(windowInfo, "resize");
 	windowInfo.stretch = true;
 
-	// clientID identifies THIS window to Nexus - default_nexus.h separately
-	// exposes NXPL_GetClientID(native) as its own query, which only makes
-	// sense if it's a real per-window identity Nexus tracks, not a cosmetic
-	// setting. init() never sets it explicitly either (same
-	// NXPL_GetDefaultNativeWindowInfoEXT() default this struct already has),
-	// which is fine for a brand-new window at NXPL_CreateNativeWindowEXT()
-	// time - but NXPL_UpdateNativeWindowEXT() plausibly validates the passed
-	// windowInfo against what Nexus has on record for THIS already-existing
-	// window, and a default/zero clientID here would never match that,
-	// which would explain why both the plain update and a hide/show cycle
-	// around it (tried and confirmed safe, but ALSO confirmed not sufficient
-	// on real hardware - still oversized/running off screen either way) had
-	// no visible effect: the update itself may simply have been silently
-	// rejected every time, no error surfaced either way.
-	windowInfo.clientID = NXPL_GetClientID(m_native_window);
-
-	NXPL_UpdateNativeWindowEXT(m_native_window, &windowInfo);
-
-	// Kept from the earlier (individually confirmed insufficient, but also
-	// confirmed harmless) attempt - forces Nexus to re-present the window
-	// from scratch, in case the clientID fix above needs this too to
-	// actually take visual effect. Both NXPL_ShowNativeWindowEXT() calls are
-	// already-exercised operations on this exact window (see init()/
-	// cleanup()), unlike recreating the EGL surface (tried and reverted:
-	// locked the box).
-	NXPL_ShowNativeWindowEXT(m_native_window, false);
+	m_native_window = NXPL_CreateNativeWindowEXT(&windowInfo);
+	if (!m_native_window) {
+		eDebug("[GbquadWindowProvider] NXPL_CreateNativeWindowEXT failed for %dx%d on resize", width, height);
+		m_window_width = m_window_height = 0;
+		return;
+	}
 	NXPL_ShowNativeWindowEXT(m_native_window, true);
+	m_window_width = width;
+	m_window_height = height;
 
-	// The Nexus window settles asynchronously after the update/hide/show above.
-	// An EGL surface created before that comes back "valid" but fails
-	// eglMakeCurrent() with EGL_BAD_NATIVE_WINDOW (0x300b), and libnxpl then
-	// crashes (null deref) if such a surface is destroyed. Give it time to
-	// settle so the first surface-creation attempt normally succeeds.
+	// Let the compositor settle on the new window before an EGL surface is bound to it.
 	usleep(150000);
 
-	eDebug("[GbquadWindowProvider] native window resized to %dx%d, clientID=%u", width, height, windowInfo.clientID);
+	eDebug("[GbquadWindowProvider] native window recreated at %dx%d, clientID=%u", width, height, NXPL_GetClientID(m_native_window));
 }
 
 void GbquadWindowProvider::clearFramebuffer() {
@@ -334,6 +334,7 @@ void GbquadWindowProvider::cleanup() {
 		NXPL_ShowNativeWindowEXT(m_native_window, false);
 		NXPL_DestroyNativeWindow(m_native_window);
 		m_native_window = nullptr;
+		m_window_width = m_window_height = 0;
 	}
 	if (m_nxpl_display_handle) {
 		NXPL_UnregisterNexusDisplayPlatform(m_nxpl_display_handle);
