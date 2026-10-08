@@ -206,8 +206,8 @@ def visibilityAttributes(attributes, widgetAttrib, screenNames):
 
 
 def windowAnimationAttributes(attributes, screenNames):
-	# The skin's open/close animation of a screen: 0 = no rule (the AnimationSetup preset decides), -1 = a
-	# rule cancelled it, > 0 = the animation.
+	# The skin's open/close animation of a screen: 0 = no rule (not animated), -1 = a
+	# rule cancelled it (not animated either), > 0 = the animation.
 	if not animationRules or registerAnimation is None:
 		return
 	ids = []

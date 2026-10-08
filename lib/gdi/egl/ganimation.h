@@ -42,13 +42,8 @@ void setSpeed(int speed);
 int currentPreset();
 int currentSpeed();
 
-// The AnimationSetup entry "skin animations": windows then animate with the open/close rules of the
-// skin (skin.ani) instead of one of the presets above.
-const int kSkinPreset = 15;
-
-// The "controls" switch: list animations (page slide, smooth scrolling, focus/unfocus of the rows) and
-// the show/hide animations of widgets. Independent of the window preset, off until AnimationSetup turns
-// it on (setAnimation_lists).
+// The master switch of the Kodi style animations (AnimationSetup: "Enable animations", setAnimation_lists):
+// off, nothing is animated; on, the rules of the skin's skin.ani decide what is (lists, widgets, windows).
 void setListsEnabled(bool enabled);
 bool listsEnabled();
 

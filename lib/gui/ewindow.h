@@ -31,6 +31,9 @@ public:
 	void clearFlag(int flags);
 	void setAnimationMode(int mode);
 protected:
+#ifndef SWIG
+	eRect animationRect();
+#endif
 	enum eWindowEvents
 	{
 		evtTitleChanged = evtUserWidget,

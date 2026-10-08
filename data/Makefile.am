@@ -2,6 +2,7 @@ SUBDIRS = fonts keymaps
 
 dist_pkgdata_DATA = \
 	encoding.conf \
+	skin.ani \
 	keymap.xml \
 	menu.xml \
 	black.mvi \

@@ -23,20 +23,24 @@ Not implemented yet: `conditional` animations, `rotate` (parsed, not drawn), ani
 inside `skin.xml`, and the Kodi attributes `reversible`, `pulse`, `loop`, `acceleration` and `condition`
 (ignored). `fadediffuse` is ignored too.
 
-Window animations exist in the engine but are switched off by the AnimationSetup plugin (see 2): reading
-back a whole window was too slow on some boxes. Lists and widgets are animated.
+A window animation is a snapshot animation (section 8) of the area covered by the window's widgets, not of the
+window itself: an info bar, which is a bar at one edge of a full screen window, costs its bar; a full screen
+menu would cost two reads of the whole screen (about 350 ms each on the dm900). Only windows that a rule of
+`skin.ani` names are animated, so a skin gives rules to small windows (the OSD, dialogs) only.
 
-## 2. Requirements and switches
+## 2. Requirements and the switch
 
 - Build: `--enable-egl-animation` (default yes when `--with-egl` is on) defines
   `HAVE_EGL_ANIMATION`. Without it none of this is compiled and the skin's `skin.ani` is ignored.
   Boxes without EGL are not affected in any way.
-- User setting: the "Animations" entry of the GUI menu (AnimationSetup plugin, menu id `gui_menu`) has one
-  switch, **Enable animations** (`config.misc.window_animation_enabled`, off by default). It turns on the
-  list and widget animations of `skin.ani` through `setAnimation_lists(1)`. Windows stay off:
-  the plugin always calls `setAnimation_current(0)`.
-- The plugin is only built for EGL boxes that have no other animation plugin (libvugles2 and the
-  driver-level `HAVE_OSDANIMATION` paths keep theirs).
+- User setting: **Show animations**, the last entry of Menu > Setup > User Interface > Settings
+  (`config.usage.show_animations`, off by default; shown only when the engine is built in,
+  `SystemInfo["HasAnimations"]`). It is the master switch, applied through `setAnimation_lists()`: off, nothing is
+  animated; on, the rules of `skin.ani` decide what is: lists, widgets and the windows a rule names. There is
+  nothing else to set: which screens and widgets animate is up to the skin. A skin without a `skin.ani` (and
+  without the default one, section 3) is not animated, and neither is anything no rule names.
+- There is no AnimationSetup plugin for the EGL engine; libvugles2 and the driver-level `HAVE_OSDANIMATION`
+  paths keep theirs.
 - Changes to `skin.ani` are read when the skin is loaded: restart the GUI after editing.
 
 ## 3. Where skin.ani is found
@@ -49,6 +53,10 @@ the skin file. The first file found in this order is used:
 3. `/etc/enigma2/skin.ani`
 4. `/usr/share/enigma2/<SkinName>/skin.ani` (the one the skin ships)
 5. the fallback skins (`skin_fallback_<resolution>`, `skin_default`, `/usr/share/enigma2/`)
+
+enigma2 ships a default for skins that have none, `data/skin.ani` (installed as `/usr/share/enigma2/skin.ani`, step 5): the values of Kodi's
+default skin Estuary: window fade, dialog pop-up, OSD slide, smooth scrolling, the focus fade of the selected item,
+the zoom of a focused grid cell and fading widgets, for all screens.
 
 Only that one file is read; files are never merged, so a user's file replaces the skin's own. The log
 shows what happened: `[Skin] Loaded N animation rules from '<path>'.` If that line is missing, no file was
@@ -111,15 +119,14 @@ attributes** wins; a later rule wins a tie. Consequences:
 - A general rule for all screens can be refined for some screens without repeating anything.
 - An animation element **without effects**, such as `<animation type="windowopen"/>`, is a rule that
   gives "no animation" and so cancels what a less specific rule would give.
-- For a type no rule defines there is no animation. Window rules additionally distinguish "no rule" (the
-  AnimationSetup window preset decides, currently none) from "cancelled by an empty rule" (never
-  animated).
+- For a type no rule defines there is no animation. Both a missing rule and an empty animation mean "not
+  animated"; the empty one also wins over a more general rule.
 
 ## 6. Animation types and effects
 
 | `type` | Applies to | Notes |
 |---|---|---|
-| `windowopen`, `windowclose` | `<screen>` rules | currently inactive, see 1 |
+| `windowopen`, `windowclose` | `<screen>` rules | only for windows a rule names; the area of the window's widgets is animated, see 1 |
 | `visible`, `hidden` | `<widget>` rules | a widget shown or hidden while its window is up; not during the first 800 ms of the window and not while another animation is pending |
 | `focus`, `unfocus` | `<widget>` rules for lists | the selected row, and the row the selection leaves; also lists in grids |
 | `itemopen` | `<widget>` rules for lists | rows come in when the list is first shown; `stagger` per row |
@@ -240,7 +247,8 @@ skin.ani --skin.py--> rules --resolve per widget--> registerAnimation(type, spec
   rounded-corner texture pieces or plain `fill`/`line` draws when blending is off.
 - `visible`/`hidden` animations are snapshot based: they need the area under the widget repainted, so they
   suit widgets on an otherwise static background.
-- Window animations are off (see 1); their cost is two full-screen read backs.
+- A window animation reads back the area of the window's widgets twice (about 150 ms per 3.7 MB on the dm900), so
+  a rule for a full screen window makes it open slowly. A window without a rule is not animated.
 - Alpha over live video follows the OSD's blend modes; fades near the window edges are the first thing to
   check on a new box.
 

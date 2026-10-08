@@ -107,11 +107,15 @@ public:
 	// Tells the DC that this widget's contents are about to change by a whole page and may be
 	// slid (list scrolling animation). dir: see gOpcode::psetShowItemInfo. No-op without a desktop.
 	void sendShowItem(long dir, int anim = 0, int step = 0);
+#ifndef SWIG
+	// The union of the rectangles of all visible descendants, in this widget's own coordinates; invalid when
+	// there are none. A window's snapshot animation covers just this instead of the whole (often full screen) window.
+	eRect contentBounds();
+#endif
 
 	// Kodi style animations for this widget becoming visible (show) or hidden (hide): ids from the
 	// registry in lib/gdi/egl/ganimation.h (EGL builds only, ignored otherwise). For a window 0 means
-	// "no skin rule, the AnimationSetup preset decides" and -1 "no animation"; for any other widget
-	// 0 is none. A widget only animates when it changes visibility while its window is up.
+	// "no skin rule" and -1 "cancelled by a rule", neither is animated; for any other widget 0 is none. A widget only animates when it changes visibility while its window is up.
 	void setVisibilityAnimation(int show_id, int hide_id)
 	{
 		m_anim_show = show_id;

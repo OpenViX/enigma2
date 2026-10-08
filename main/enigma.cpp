@@ -533,9 +533,9 @@ void setAnimation_speed(int speed) {}
 #endif
 #endif
 
-// Kodi style animations of the EGL engine (doc/ANIMATIONS.md), declared in enigma_python.i for every build
-// (SWIG does not see the config macros): the animations of controls (lists, widgets) on or off, and the
-// registry skin.py fills from skin.ani. No-ops without the engine.
+// Kodi style animations of the EGL engine (doc/ANIMATIONS_HOWTO.md), declared in enigma_python.i for every build
+// (SWIG does not see the config macros): the master switch of the animations, and the registry skin.py fills
+// from skin.ani. No-ops without the engine.
 #ifdef HAVE_EGL_ANIMATION
 void setAnimation_lists(int on)
 {

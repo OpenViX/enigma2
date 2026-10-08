@@ -1392,7 +1392,10 @@ int eListbox::event(int event, void *data, void *data2)
 							if (rowTransform(m_content->cursorGet(), eRect(list_abs.x() + xoffset, list_abs.y() + y, size().width() - xoffset, m_itemheight), tsx, tsy, ttx, tty, ta))
 							{
 								painter.setTransform(tsx, tsy, ttx, tty, ta, list_rect);
+								// some contents clear or clip more than their cell (a grid cell's highlight reached the whole list): keep it to the cell
+								painter.clip(gRegion(eRect(ePoint(xoffset, y), eSize(size().width() - xoffset, m_itemheight))));
 								m_content->paint(painter, *style, ePoint(xoffset, y), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
+								painter.clippop();
 								painter.resetTransform();
 							}
 						}
@@ -1448,7 +1451,10 @@ int eListbox::event(int event, void *data, void *data2)
 							if (rowTransform(m_content->cursorGet(), eRect(list_abs.x() + x, list_abs.y() + yoffset, m_itemwidth, size().height() - yoffset), tsx, tsy, ttx, tty, ta))
 							{
 								painter.setTransform(tsx, tsy, ttx, tty, ta, list_rect);
+								// some contents clear or clip more than their cell (a grid cell's highlight reached the whole list): keep it to the cell
+								painter.clip(gRegion(eRect(ePoint(x, yoffset), eSize(m_itemwidth, size().height() - yoffset))));
 								m_content->paint(painter, *style, ePoint(x, yoffset), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
+								painter.clippop();
 								painter.resetTransform();
 							}
 						}
@@ -1516,7 +1522,10 @@ int eListbox::event(int event, void *data, void *data2)
 							if (rowTransform(m_content->cursorGet(), eRect(list_abs.x() + posx, list_abs.y() + posy, m_itemwidth, m_itemheight), tsx, tsy, ttx, tty, ta))
 							{
 								painter.setTransform(tsx, tsy, ttx, tty, ta, list_rect);
+								// some contents clear or clip more than their cell (a grid cell's highlight reached the whole list): keep it to the cell
+								painter.clip(gRegion(eRect(ePoint(posx, posy), eSize(m_itemwidth, m_itemheight))));
 								m_content->paint(painter, *style, ePoint(posx, posy), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
+								painter.clippop();
 								painter.resetTransform();
 							}
 						}
