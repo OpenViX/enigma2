@@ -9,34 +9,34 @@
 // ---------------------------------------------------------------------------
 #if defined(HAVE_GLES3)
 static const char* vertex_shader_es3 = R"(#version 300 es
-    layout(location = 0) in vec2 position;
-    layout(location = 1) in vec4 color;
-    uniform mat4 u_projection;
-    out vec4 v_color;
-    void main() {
-        gl_Position = u_projection * vec4(position, 0.0, 1.0);
-        v_color = color;
-    }
+	layout(location = 0) in vec2 position;
+	layout(location = 1) in vec4 color;
+	uniform mat4 u_projection;
+	out vec4 v_color;
+	void main() {
+		gl_Position = u_projection * vec4(position, 0.0, 1.0);
+		v_color = color;
+	}
 )";
 
 static const char* fragment_shader_es3 = R"(#version 300 es
-    precision mediump float;
-    in vec4 v_color;
-    uniform float u_rbswap;
-    out vec4 frag_color;
-    void main() {
-        // On platforms where this render target's GL writes end up read
-        // back in the opposite R/B order by the display scanout (proven via
-        // a ground-truth debug swatch on Dreambox: a plain (1,0,0,1) uniform
-        // came out blue, while textured draws - which get an equivalent
-        // correction via their own upload trick in gtexture_manager.cpp -
-        // came out correct), solid-color draws have no texture/swizzle stage
-        // to piggyback on, so swap here instead - see gles::needsRBSwap's
-        // comment (gles_version.h) for why this is now a per-platform
-        // uniform rather than unconditional (NOT every EGL backend has this
-        // scanout quirk - see gEGLDC::initEGL()).
-        frag_color = mix(v_color, v_color.bgra, u_rbswap);
-    }
+	precision mediump float;
+	in vec4 v_color;
+	uniform float u_rbswap;
+	out vec4 frag_color;
+	void main() {
+		// On platforms where this render target's GL writes end up read
+		// back in the opposite R/B order by the display scanout (proven via
+		// a ground-truth debug swatch on Dreambox: a plain (1,0,0,1) uniform
+		// came out blue, while textured draws - which get an equivalent
+		// correction via their own upload trick in gtexture_manager.cpp -
+		// came out correct), solid-color draws have no texture/swizzle stage
+		// to piggyback on, so swap here instead - see gles::needsRBSwap's
+		// comment (gles_version.h) for why this is now a per-platform
+		// uniform rather than unconditional (NOT every EGL backend has this
+		// scanout quirk - see gEGLDC::initEGL()).
+		frag_color = mix(v_color, v_color.bgra, u_rbswap);
+	}
 )";
 #endif
 
@@ -45,24 +45,24 @@ static const char* fragment_shader_es3 = R"(#version 300 es
 // Uses attribute/varying, gl_FragColor
 // ---------------------------------------------------------------------------
 static const char* vertex_shader_es2 = R"(#version 100
-    attribute vec2 position;
-    attribute vec4 color;
-    uniform mat4 u_projection;
-    varying vec4 v_color;
-    void main() {
-        gl_Position = u_projection * vec4(position, 0.0, 1.0);
-        v_color = color;
-    }
+	attribute vec2 position;
+	attribute vec4 color;
+	uniform mat4 u_projection;
+	varying vec4 v_color;
+	void main() {
+		gl_Position = u_projection * vec4(position, 0.0, 1.0);
+		v_color = color;
+	}
 )";
 
 static const char* fragment_shader_es2 = R"(#version 100
-    precision mediump float;
-    varying vec4 v_color;
-    uniform float u_rbswap;
-    void main() {
-        // See the GLES3 fragment shader above for why this swap is here.
-        gl_FragColor = mix(v_color, v_color.bgra, u_rbswap);
-    }
+	precision mediump float;
+	varying vec4 v_color;
+	uniform float u_rbswap;
+	void main() {
+		// See the GLES3 fragment shader above for why this swap is here.
+		gl_FragColor = mix(v_color, v_color.bgra, u_rbswap);
+	}
 )";
 
 // ---------------------------------------------------------------------------
