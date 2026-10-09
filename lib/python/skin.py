@@ -180,14 +180,18 @@ def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screen
 			for element in domSkin:
 				if element.tag == "screen":  # Process all screen elements.
 					name = element.attrib.get("name", None)
-					if name:  # Without a name, it's useless!
+					# "name" attribute is mandatory in <screen> elements
+					if name:
 						scrnID = element.attrib.get("id", None)
-						if scrnID is None or scrnID == screenID:  # If there is a screen ID is it for this display.
+						# "id" attribute is optional in <screen> elements, but if present the screen will  only
+						# be saved if it matches the current skin type, i.e. GUI_SKIN_ID or DISPLAY_SKIN_ID
+						if scrnID is None or scrnID == screenID:
 							# print("[Skin] DEBUG: Extracting screen '%s' from '%s'.  (scope='%s')" % (name, filename, scope))
 							domScreens[name] = (element, "%s/" % dirname(filename))
 				elif element.tag == "windowstyle":  # Process the windowstyle element.
 					scrnID = element.attrib.get("id", None)
-					if scrnID is not None:  # Without an scrnID, it is useless!
+					# "id" attribute is mandatory in <windowstyle> elements
+					if scrnID is not None:
 						scrnID = int(scrnID)
 						# print("[Skin] DEBUG: Processing a windowstyle ID='%s'." % scrnID)
 						domStyle = ElementTree(Element("skin"))
@@ -1655,13 +1659,13 @@ def readSkin(screen, skin, names, desktop):
 	def processScreen(widget, context):
 		for w in list(widget):
 			conditional = w.attrib.get("conditional")
-			if conditional and not [i for i in conditional.split(",") if i in list(screen.keys())]:
+			if conditional and not [i for i in conditional.split(",") if i in screen]:
 				continue
 			objecttypes = w.attrib.get("objectTypes", "").split(",")
-			if len(objecttypes) > 1 and (objecttypes[0] not in list(screen.keys()) or not [i for i in objecttypes[1:] if i == screen[objecttypes[0]].__class__.__name__]):
+			if len(objecttypes) > 1 and (objecttypes[0] not in screen or not [i for i in objecttypes[1:] if i == screen[objecttypes[0]].__class__.__name__]):
 				continue
 			objecttypesinverted = w.attrib.get("objectTypesInverted", "").split(",")
-			if len(objecttypesinverted) > 1 and (objecttypesinverted[0] not in list(screen.keys()) or [i for i in objecttypesinverted[1:] if i == screen[objecttypesinverted[0]].__class__.__name__]):
+			if len(objecttypesinverted) > 1 and (objecttypesinverted[0] not in screen or [i for i in objecttypesinverted[1:] if i == screen[objecttypesinverted[0]].__class__.__name__]):
 				continue
 			p = processors.get(w.tag, processNone)
 			try:
