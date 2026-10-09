@@ -479,7 +479,7 @@ def parseScrollbarMode(s):
 			"showOnDemand": eListbox.showOnDemand,
 			"showAlways": eListbox.showAlways,
 			"showNever": eListbox.showNever,
-			"showLeft": eListbox.showLeft
+			"showLeft": eListbox.showLeft,
 			"showTop": eListbox.showTop
 		}[s]
 	except KeyError:
