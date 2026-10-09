@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Default animations (skin.ani), installed as /usr/share/enigma2/skin.ani.
+
+  Used by every skin that does not ship its own skin.ani (see doc/ANIMATIONS_HOWTO.md, "Where skin.ani is
+  found"); a skin's own file replaces this one completely, files are never merged.
+
+  The values are those of Kodi's default skin, Estuary (xml/Includes_Animations.xml and the views):
+    Animation_BottomSlide        the info bars and player bars: fade 300 ms plus a 200 px slide, cubic out, both ways
+    Visible_Fade                 widgets that appear or disappear: fade 200 ms
+    list focus                   the selected item fades in over 300 ms (Estuary starts at 70%; 30% here, so the
+                                 highlight stands out more)
+  Kodi's defaults apply where it writes nothing: tween linear, easing out.
+
+  Grids: Estuary zooms the focused cell of a grid (SettingsPanel: 100 -> 110 over 250 ms, sine). That is left out
+  here: the zoom enlarges a cell in both directions, and a skin with wide cells (a two column plugin list) would
+  get a highlight that reaches over its neighbour. A skin with square icon cells can add it, see the skin.ani of
+  MaterialSkinCockpit. Grids use the list focus fade below.
+
+  Differences: Estuary's lists scroll in 500 ms (cubic out); with key repeat the rows would trail the selection
+  by about two rows, so <scrolltime> is 250 ms here. Kodi's conditional animations, rotations and per-window
+  special cases are not available or not needed.
+
+  The rules of one type are resolved on their own: the matching rule with the most selector attributes wins, a
+  later rule wins a tie. An <animation type="..."/> without effects cancels what a more general rule gives.
+
+  Windows: a window animation takes a snapshot of the area of the window's widgets before and after (about 150 ms
+  per 3.7 MB on the dm900), so only the info bars and the player bars get one here (a thin bar at the screen edge). Estuary's plain
+  window fade (OpenClose_Fade, 200 ms) and its dialog pop-up (Animation_DialogPopupOpenClose: zoom 80 -> 100 with
+  the back tween, fade, delay 160, 240 ms) are not applied: a full screen window would take over a second to
+  open. A skin can add a rule for a screen it wants animated.
+  With "Show animations" (GUI settings) on, whatever a rule names is animated.
+-->
+<animations version="1">
+
+	<!-- ===== windows ===== -->
+
+	<!-- the info bars and the player bars (Animation_BottomSlide); the only windows that animate -->
+	<screen name="InfoBar,SecondInfoBar,SecondInfoBarSimple,RadioInfoBar,MoviePlayer,DVDPlayer,CatchupPlayer,MediaPlayer,EMCMediaCenter">
+		<animation type="windowopen">
+			<effect type="fade" start="0" end="100" time="300"/>
+			<effect type="slide" start="0,200" end="0,0" time="300" tween="cubic" easing="out"/>
+		</animation>
+		<animation type="windowclose">
+			<effect type="fade" start="100" end="0" time="300"/>
+			<effect type="slide" start="0,0" end="0,200" time="300" tween="cubic" easing="out"/>
+		</animation>
+	</screen>
+
+	<!-- ===== lists ===== -->
+
+	<!-- all lists: smooth scrolling and the selected item fading in (Estuary: <scrolltime>, the Focus fade of the
+	     focused layout, reversible="false") -->
+	<widget render="Listbox">
+		<scrolltime tween="cubic" easing="out">250</scrolltime>
+		<focusedlayout>
+			<animation type="focus">
+				<effect type="fade" start="30" end="100" time="300"/>
+			</animation>
+		</focusedlayout>
+	</widget>
+
+	<!-- ===== widgets ===== -->
+
+	<!-- widgets that appear or disappear on a condition (Visible_Fade) -->
+	<widget render="Label,FixedLabel,Pixmap,MultiPixmap,Picon">
+		<animation effect="fade" start="0" end="100" time="200">VisibleChange</animation>
+	</widget>
+
+	<!-- lists and progress bars never fade when they are shown or hidden -->
+	<widget render="Listbox,Progress">
+		<animation type="visible"/>
+		<animation type="hidden"/>
+	</widget>
+
+</animations>

@@ -1501,7 +1501,7 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 					const float* q = corner[c];
 					if (q[0] >= cr.left() + cr.width() || q[0] + q[2] <= cr.left() || q[1] >= cr.top() + cr.height() || q[1] + q[3] <= cr.top())
 						continue;
-					m_texture_shader.drawTextureSub(x, y, width, height, q[0], q[1], q[2], q[3], tex_id, rad, m_radius_edges);
+					m_texture_shader.drawTextureSub(x, y, width, height, q[0], q[1], q[2], q[3], tex_id, rad, m_radius_edges, xfAlpha());
 				}
 			}
 		} else {
@@ -1932,7 +1932,9 @@ void gEGLDC::compositeTextOverlay(eRect area, bool trueAlphaBlend) {
 		// overwrite the destination's alpha instead of leaving whatever
 		// opaque content was already there untouched.
 		setAlphaBlendMode(trueAlphaBlend);
-		m_texture_shader.drawTexture(0, 0, (float)m_width, (float)m_height, tex_id);
+		// xfAlpha(): the opacity of a control animation (setTransform) - wrapped text is drawn through this
+		// overlay, and without it the text of a fading row/cell would show at full strength.
+		m_texture_shader.drawTexture(0, 0, (float)m_width, (float)m_height, tex_id, xfAlpha());
 
 		// Record that the overlay now has content here so executeClear()
 		// knows to erase-and-recomposite this area before painting a plain

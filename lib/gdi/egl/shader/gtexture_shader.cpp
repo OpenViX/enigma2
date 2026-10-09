@@ -441,14 +441,14 @@ void gTextureShader::drawTexture(float x, float y, float width, float height, GL
     drawVertices(vertices, 6);
 }
 
-void gTextureShader::drawTextureSub(float x, float y, float width, float height, float sx, float sy, float sw, float sh, GLuint texture_id, float radius, uint8_t edges)
+void gTextureShader::drawTextureSub(float x, float y, float width, float height, float sx, float sy, float sw, float sh, GLuint texture_id, float radius, uint8_t edges, float global_alpha)
 {
     bind();
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture_id);
     glUniform1i(m_texture_location, 0);
-    glUniform1f(m_alpha_location, 1.0f);
+    glUniform1f(m_alpha_location, global_alpha);
 
     glUniform1f(m_unpremult_location, m_premultiply ? -1.0f : (m_unpremultiply ? m_unpremultiply_power : 0.0f));
     glUniform4f(m_rect_size_location, x, y, width, height);
