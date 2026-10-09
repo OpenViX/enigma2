@@ -1747,9 +1747,6 @@ def readSkin(screen, skin, names, desktop):
 		import traceback
 		traceback.print_exc()
 
-	from Components.GUIComponent import GUIComponent
-	unusedComponents = [x for x in set(screen.keys()) - usedComponents if isinstance(x, GUIComponent)]
-	assert not unusedComponents, "[Skin] The following components in '%s' don't have a skin entry: %s" % (name, ", ".join(unusedComponents))
 	# This may look pointless, but it unbinds "screen" from the nested scope. A better
 	# solution is to avoid the nested scope above and use the context object to pass
 	# things around.
