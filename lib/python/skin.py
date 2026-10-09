@@ -182,10 +182,9 @@ def loadSkin(filename, scope=SCOPE_SKIN, desktop=getDesktop(GUI_SKIN_ID), screen
 					name = element.attrib.get("name", None)
 					# "name" attribute is mandatory in <screen> elements
 					if name:
-						scrnID = element.attrib.get("id", None)
 						# "id" attribute is optional in <screen> elements, but if present the screen will  only
 						# be saved if it matches the current skin type, i.e. GUI_SKIN_ID or DISPLAY_SKIN_ID
-						if scrnID is None or scrnID == screenID:
+						if int(element.attrib.get("id", screenID)) == screenID:
 							# print("[Skin] DEBUG: Extracting screen '%s' from '%s'.  (scope='%s')" % (name, filename, scope))
 							domScreens[name] = (element, "%s/" % dirname(filename))
 				elif element.tag == "windowstyle":  # Process the windowstyle element.
