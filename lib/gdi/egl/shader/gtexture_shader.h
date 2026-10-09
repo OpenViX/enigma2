@@ -83,7 +83,7 @@ public:
 	// still uses the whole rect's shape, the UVs map the whole texture onto the
 	// whole rect. Lets a rounded blit run the costly SDF fragment shader only
 	// over its corner squares and draw the rest through drawBatch().
-	void drawTextureSub(float x, float y, float width, float height, float sx, float sy, float sw, float sh, GLuint texture_id, float radius, uint8_t edges);
+	void drawTextureSub(float x, float y, float width, float height, float sx, float sy, float sw, float sh, GLuint texture_id, float radius, uint8_t edges, float global_alpha = 1.0f);
 
 	// Draws multiple quads (vertex_count/6 of them, each 4 floats/vertex:
 	// x,y,u,v - see drawTexture()'s "vertices" layout) sharing one texture
