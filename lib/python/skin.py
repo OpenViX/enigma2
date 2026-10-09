@@ -1548,7 +1548,7 @@ def readSkin(screen, skin, names, desktop):
 					print("[Skin] OBSOLETE SOURCE WILL BE REMOVED %s, PLEASE UPDATE!" % source.removalDate)
 					if source.description:
 						print("[Skin] Source description: '%s'." % source.description)
-					wsource = source.new_source
+					wsource = source.newSource
 				else:
 					break  # Otherwise, use the source.
 			if source is None:
