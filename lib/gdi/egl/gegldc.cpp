@@ -3,7 +3,7 @@
 #include <cmath>
 #include <cstdint>
 #include <vector>
-#include <cstdlib> 
+#include <cstdlib>
 #include <cstring>
 #include <lib/base/eerror.h>
 #include <lib/base/init.h>
