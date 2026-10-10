@@ -46,6 +46,7 @@ void eStack::removeChild(eWidget* child) {
 
 	if (auto it = std::ranges::find(m_stackchilds, child); it != m_stackchilds.end()) {
 		m_stackchilds.erase(it);
+		child->setStack(nullptr);
 	}
 
 	recalcLayout();
