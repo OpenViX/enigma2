@@ -233,6 +233,7 @@ dnl Software HDR detection (HEVC bitstream parser + TS recorder tap).
 dnl Enabled for VU+ 4K boxes and GigaBlue 4K boxes, which have capable
 dnl enough SoCs and GStreamer stacks to support the detection pipeline.
 dnl Not enabled for vuduo4klite, vuultimo4k and gbquad4kpro.
+has_sw_hdr_detection=no
 if test "$MACHINEBUILD" != "gbquad4kpro" -a "$MACHINEBUILD" != "vuduo4klite" -a "$MACHINEBUILD" != "vuultimo4k" \
 	-a \( "$BOXTYPE" == "vuduo4k"  -o "$BOXTYPE" == "vuduo4kse" \
 	 -o "$BOXTYPE" == "vusolo4k"   -o "$BOXTYPE" == "vuuno4k"   \
