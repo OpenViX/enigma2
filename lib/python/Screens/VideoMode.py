@@ -69,10 +69,7 @@ class VideoSetup(Setup):
 			self.list.append(getConfigListEntry(_("Allow 10bit"), config.av.allow_10bit, _("Enable or Disable the 10 Bit Color Mode")))
 		if config.usage.setup_level.index >= 1:
 			if SystemInfo["CanDownmixAC3"]:
-				if SystemInfo["Vu_EAC3_fix"]:
-					self.list.append(getConfigListEntry(_("AC3 / AC3+ Downmix"), config.av.downmix_ac3, _("Choose whether multi channel AC3 / AC3+ sound tracks should be downmixed to stereo.")))
-				else:
-					self.list.append(getConfigListEntry(_("AC3 Downmix"), config.av.downmix_ac3, _("Choose whether multi channel AC3 sound tracks should be downmixed to stereo.")))
+				self.list.append(getConfigListEntry(_("AC3 Downmix"), config.av.downmix_ac3, _("Choose whether multi channel AC3 sound tracks should be downmixed to stereo.")))
 			if SystemInfo["CanDownmixAC3Plus"]:
 				self.list.append(getConfigListEntry(_("AC3+ Downmix"), config.av.downmix_ac3plus, _("Choose whether multi channel AC3+ sound tracks should be downmixed to stereo.")))
 			if SystemInfo["CanDownmixAAC"]:
