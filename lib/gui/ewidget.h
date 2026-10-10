@@ -35,7 +35,7 @@ public:
 
 	eWidget *getParent() { return m_parent; }
 
-	void show();
+	virtual void show();
 	void hide();
 
 	void raise();
@@ -162,6 +162,7 @@ protected:
 	bool m_alphaBlend = false;
 	uint8_t m_align = eStackAlignNone;
 	virtual void invalidateChilds() {} // This will be overwritten in subclass
+	virtual void forgetStackChild(eWidget*) {} // This will be overwritten in subclass
 
 public:
 
