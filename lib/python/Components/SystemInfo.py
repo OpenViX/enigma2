@@ -302,7 +302,6 @@ SystemInfo["hasRCA"] = SystemInfo["rca"]
 SystemInfo["hasScart"] = SystemInfo["scart"]
 SystemInfo["hasScartYUV"] = SystemInfo["scartyuv"]
 SystemInfo["hasYUV"] = SystemInfo["yuv"]
-SystemInfo["needsVideoJudderDriverFix"] = BOXTYPE in ("gbquad4kpro", "vuduo4klite")
 SystemInfo["scalerSharpnessWorkaround"] = BOXTYPE in ("gbquad", "gbquadplus")
 SystemInfo["dmVideoRates"] = MODEL in ("dm900", "dm920")
 
