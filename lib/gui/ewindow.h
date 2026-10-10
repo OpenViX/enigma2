@@ -15,7 +15,7 @@ public:
 	void setTitle(const std::string &string);
 	std::string getTitle() const;
 	eWidget *child() { return m_child; }
-	void show();
+	void show() override;
 	void hide();
 
 	enum {

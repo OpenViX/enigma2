@@ -911,6 +911,15 @@ int eTSMPEGDecoder::setState()
 	{
 		if (m_video)
 		{
+			/* the video decoder keeps its fast forward / slow motion setting when its pid is stopped (it is only
+			   set below while a video pid is started): reset it, or whatever plays next without setting it
+			   itself (a gstreamer sink: iptv, recordings played by servicemp3) inherits e.g. 8x fast forward
+			   from the player that was left while it was seeking */
+			if (m_state >= stateDecoderFastForward)
+			{
+				m_video->setSlowMotion(0);
+				m_video->setFastForward(0);
+			}
 			m_video->stop();
 			m_video = 0;
 			m_video_event_conn = 0;
