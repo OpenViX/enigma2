@@ -982,7 +982,8 @@ int eListbox::event(int event, void *data, void *data2)
 			}
 
 			// clear/repaint empty/unused space between scrollbar and listboxentrys
-			if (m_scrollbar && !isTransparent())
+			// (showLeft/showTop always reserve the gap; on the default side it only exists while the scrollbar is shown)
+			if (m_scrollbar && !isTransparent() && (m_scrollbar_mode == showLeft || m_scrollbar_mode == showTop || m_scrollbar->isVisible()))
 			{
 				style->setStyle(painter, eWindowStyle::styleListboxNormal);
 				if (m_scrollbar_mode == showLeft)
@@ -1007,30 +1008,13 @@ int eListbox::event(int event, void *data, void *data2)
 						painter.clip(eRect(m_scrollbar->position(), eSize(m_scrollbar->size().width(), m_scrollbar->size().height() + 5)));
 					}
 				}
+				else if (m_orientation == orVertical)
+				{
+					painter.clip(eRect(m_scrollbar->position() - ePoint(5,0), eSize(5,m_scrollbar->size().height())));
+				}
 				else
 				{
-					if (m_orientation == orVertical)
-					{
-						if (m_scrollbar->isVisible())
-						{
-							painter.clip(eRect(m_scrollbar->position() - ePoint(5,0), eSize(5,m_scrollbar->size().height())));
-						}
-						else
-						{
-							painter.clip(eRect(m_scrollbar->position() - ePoint(5,0), eSize(m_scrollbar->size().width() + 5, m_scrollbar->size().height())));
-						}
-					}
-					else
-					{
-						if (m_scrollbar->isVisible())
-						{
-							painter.clip(eRect(m_scrollbar->position() - ePoint(0,5), eSize(m_scrollbar->size().width(), 5)));
-						}
-						else
-						{
-							painter.clip(eRect(m_scrollbar->position() - ePoint(0,5), eSize(m_scrollbar->size().width(), m_scrollbar->size().height() + 5)));
-						}
-					}
+					painter.clip(eRect(m_scrollbar->position() - ePoint(0,5), eSize(m_scrollbar->size().width(), 5)));
 				}
 				painter.clear();
 				painter.clippop();
