@@ -22,6 +22,7 @@
 #include <lib/base/esimpleconfig.h>
 #include <lib/base/init.h>
 #include <lib/base/init_num.h>
+#include <lib/base/nconfig.h>
 #include <lib/gdi/gmaindc.h>
 #ifdef HAVE_EGL
 #include <lib/gdi/egl/gles_version.h>
@@ -72,6 +73,7 @@ void keyEvent(const eRCKey &key)
 {
 	static eRCKey last(0, 0, 0);
 	static int num_repeat;
+	int repeat = eConfigManager::getConfigIntValue("config.misc.longkey_threshold", 4);
 
 	ePtr<eActionMap> ptr;
 	eActionMap::getInstance(ptr);
@@ -84,7 +86,7 @@ void keyEvent(const eRCKey &key)
 		last = key;
 	}
 
-	if (num_repeat == 4)
+	if (num_repeat == repeat)
 	{
 		ptr->keyPressed(key.producer->getIdentifier(), key.code, eRCKey::flagLong);
 		num_repeat++;
