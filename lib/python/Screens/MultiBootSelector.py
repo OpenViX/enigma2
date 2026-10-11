@@ -178,6 +178,8 @@ class MultiBootSelector(Screen, HelpableScreen):
 					self.session.open(MessageBox, _("[MultiBootSelector][add USB STARTUP slots] - The USB (%s) only has %s free. At least 1024MB is required.") % (usb, des), MessageBox.TYPE_INFO, timeout=30)
 					self.cancel()
 					return
+				self.tmp_dir = tempfile.mkdtemp(prefix="MultibootSelector_addSTARTUPs")
+				Console().ePopen("mount %s %s" % (SystemInfo["MBbootdevice"], self.tmp_dir))
 				Console().ePopen("/sbin/blkid | grep " + "/dev/" + hdd[0], self.KexecMountRet)
 
 		else:
