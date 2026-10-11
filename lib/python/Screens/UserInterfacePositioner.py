@@ -1,5 +1,5 @@
 import traceback
-from enigma import getDesktop
+from enigma import getDesktop, eglOsdRectSupported, eglSetOsdRect
 
 from Components.ActionMap import ActionMap
 from Components.config import config, configfile, getConfigListEntry, ConfigSelectionNumber, NoSave, ConfigNumber
@@ -20,6 +20,9 @@ def getFilePath(setting):
 
 
 def setPositionParameter(parameter, configElement):
+	if eglOsdRectSupported():  # EGL renders the OSD itself, /proc/stb/fb/dst_* has no effect
+		eglSetOsdRect(config.osd.dst_left.value, config.osd.dst_top.value, config.osd.dst_width.value, config.osd.dst_height.value)
+		return
 	f = open(getFilePath(parameter), "w")
 	f.write('%08X\n' % configElement.value)
 	f.close()

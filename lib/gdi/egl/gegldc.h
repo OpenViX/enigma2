@@ -201,6 +201,15 @@ private:
 	int m_phys_height = 0;
 	float m_scale_x = 1.0f;
 	float m_scale_y = 1.0f;
+	// Where the canvas lands inside the physical surface (top-left based pixels):
+	// the whole surface unless an OSD overscan rectangle is set (setOsdRect()).
+	// m_scale_x/y then are m_content_w/h over the canvas size.
+	int m_content_x = 0, m_content_y = 0, m_content_w = 0, m_content_h = 0;
+	// Overscan rectangle, 720x576 units. Main thread writes, render thread reads.
+	std::atomic<int> m_osd_left{0}, m_osd_top{0}, m_osd_width{720}, m_osd_height{576};
+	std::atomic<bool> m_osd_dirty{false};
+	void applyViewport();
+	void applyOsdRect();
 	int m_max_tex_size = 0;
 	// The GPU's real limit, kept even when scaling is compiled out (then
 	// m_max_tex_size stays 0) - only used to say so in the log.
@@ -458,6 +467,13 @@ public:
 	// constructs gEGLDC (eInit/gEGLDCAutoInit) - EGL contexts are per-thread,
 	// and gRC::thread() is the only thread that ever issues GL draw calls.
 	static gEGLDC* getInstance() { return s_instance; }
+
+	// OSD overscan adjustment (what /proc/stb/fb/dst_* does on non-EGL builds).
+	// left/top/width/height are in the same 720x576 units as config.osd.dst_*.
+	// The canvas is rendered into that rectangle of the surface (viewport +
+	// scissor offset), so it works the same for every window provider and needs
+	// no extra buffer. Callers must repaint the desktop afterwards.
+	void setOsdRect(int left, int top, int width, int height);
 
 	bool initEGL();
 
