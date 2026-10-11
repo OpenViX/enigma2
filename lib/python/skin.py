@@ -1401,7 +1401,7 @@ class SkinContextHorizontal(SkinContext):
 			top = self.y
 			positions = pos.split(",")
 			if len(positions) == 2 and positions[0] in ("left", "right") and positions[1].isdigit():
-				top += int(int(positions[1]) * self.scale[0][0] / self.scale[0][1])
+				top += int(int(positions[1]) * self.scale[1][0] / self.scale[1][1])
 				pos = positions[0]
 			if pos == "left":
 				pos = (self.x, top)
