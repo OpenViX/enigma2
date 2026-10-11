@@ -25,6 +25,7 @@
 #include <lib/gdi/gmaindc.h>
 #ifdef HAVE_EGL
 #include <lib/gdi/egl/gles_version.h>
+#include <lib/gdi/egl/gegldc.h>
 #endif
 #include <lib/gdi/glcddc.h>
 #include <lib/gdi/grc.h>
@@ -434,6 +435,31 @@ const char *getEGLVersionString()
 	return gles::eglVersionString.c_str();
 #else
 	return "";
+#endif
+}
+
+// OSD overscan adjustment for the EGL backend (720x576 reference units, like /proc/stb/fb/dst_*).
+bool eglOsdRectSupported()
+{
+#ifdef HAVE_EGL
+	gEGLDC *dc = gEGLDC::getInstance();
+	return dc != nullptr; // whether the present pass can apply it is only known on the render thread
+#else
+	return false;
+#endif
+}
+
+void eglSetOsdRect(int left, int top, int width, int height)
+{
+#ifdef HAVE_EGL
+	gEGLDC *dc = gEGLDC::getInstance();
+	if (!dc)
+		return;
+	dc->setOsdRect(left, top, width, height);
+	// The surface was wiped and the canvas moved: have the whole desktop repainted.
+	eWidgetDesktop *desktop = getDesktop(0);
+	if (desktop)
+		desktop->invalidate(gRegion(eRect(ePoint(0, 0), desktop->size())));
 #endif
 }
 

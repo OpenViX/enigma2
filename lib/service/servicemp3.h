@@ -267,8 +267,9 @@ public:
 		bool is_audio;
 		bool is_streaming;
 		bool is_hls;
+		bool is_dash;
 		sourceStream()
-			:audiotype(atUnknown), containertype(ctNone), is_video(FALSE), is_audio(FALSE), is_streaming(FALSE), is_hls(FALSE)
+			:audiotype(atUnknown), containertype(ctNone), is_video(FALSE), is_audio(FALSE), is_streaming(FALSE), is_hls(FALSE), is_dash(FALSE)
 		{
 		}
 	};
