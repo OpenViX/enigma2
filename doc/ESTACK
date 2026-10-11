@@ -1,0 +1,104 @@
+eStack: Mini Manual
+-------------------
+
+A practical introduction to using eStack as a layout container in Enigma2 skin XML.
+
+
+1. What is eStack?
+------------------
+
+eStack is a container used to group child widgets and arrange them as a layout. It is useful when several elements
+belong together and should be laid out as a unit, rather than each element being positioned independently.
+An eStack can contain ordinary widgets, such as labels, and can also contain another eStack. Nesting containers lets
+one part of a screen use a different arrangement from another.
+
+
+2. The basic pattern
+--------------------
+
+A typical eStack has a position, a size, a layout direction, optional spacing, and child widgets:
+
+<eStack position="20,20" size="e-40,e-40" layout="vertical" spacing="10">
+	<eLabel size="e,50" text="First item" />
+	<eLabel size="e,50" text="Second item" />
+</eStack>
+
+The attributes:
+
+- position — specifies where the container is placed relative to its parent, using the skin system's position syntax.
+
+- size — specifies the container's width and height using the skin system's size syntax. Expressions such as e-40
+  depend on that syntax; they are not ordinary numeric dimensions.
+  
+- layout — chooses the direction in which the container lays out its children. vertical means a column; horizontal means a row.
+
+- spacing — sets the gap between children. The skin parser passes this value to the stack's spacing setter as an integer.
+
+
+3. Choosing a layout direction
+------------------------------
+
+Use layout="vertical" when items should follow one another down the screen. Use layout="horizontal"
+when items should follow one another across the screen.
+
+<!-- A column -->
+<eStack layout="vertical" spacing="8" size="e,120">
+	<eLabel size="e,50" text="Top item" />
+	<eLabel size="e,50" text="Next item" />
+</eStack>
+
+<!-- A row -->
+<eStack layout="horizontal" spacing="8" size="e,60">
+	<eLabel size="120,e" text="First" />
+	<eLabel size="120,e" text="Second" />
+</eStack>
+
+The examples show the intended grouping and direction. Exact sizing and placement still depend on the Enigma2 skin size/position
+rules and the implementation in the version being used.
+
+
+4. Nesting stacks
+-----------------
+
+Nesting is the main way to combine directions. For example, a vertical outer stack can place a header, a horizontal
+row of controls, and a footer one after another. The inner horizontal stack handles the controls as a group.
+
+<eStack position="20,20" size="e-40,e-40" layout="vertical" spacing="10">
+	<eLabel size="e,50" text="Header" />
+	<eStack size="e,70" layout="horizontal" spacing="10">
+		<eLabel size="120,e" text="Choice 1" />
+		<eLabel size="120,e" text="Choice 2" />
+		<eLabel size="120,e" text="Choice 3" />
+	</eStack>
+	<eLabel size="e,40" text="Footer" />
+</eStack>
+
+
+5. Understanding child positions and sizes
+------------------------------------------
+
+A child widget may have its own position and size attributes. Values such as top, bottom, left, and right
+are skin-system placement values; they should not be assumed to behave like ordinary pixel coordinates.
+The exact rules for how those placement values interact with eStack's layout direction, and how multiple children with
+the same placement value are ordered or sized, are implementation-specific. If a layout relies on that detail, verify it
+against the relevant Enigma2 implementation or test it in the image.
+
+
+6. Practical workflow
+---------------------
+
+- Start with one eStack and two simple children so the direction and spacing are easy to see.
+- Set the container's size first; then choose child sizes that make sense within it.
+- Use a nested eStack when a group of children needs a different direction from the outer group.
+- Add spacing gradually and check the rendered result for gaps or overflow.
+- Test on the Enigma2 version and skin environment where the XML will run.
+
+
+7. Quick reference
+------------------
+
+Need a column? Use layout="vertical".
+Need a row? Use layout="horizontal".
+Need both? Nest one eStack inside another.
+Need gaps? Set spacing.
+Need exact placement behavior? Check the Enigma2 implementation or test the skin; do not infer all placement rules from the XML syntax alone.
