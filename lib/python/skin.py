@@ -1728,7 +1728,8 @@ def readSkin(screen, skin, names, desktop):
 			contextScreen = contextClass(context, widget.attrib.get("position"), widget.attrib.get("size"), widget.attrib.get("font"))
 			spacing = widget.attrib.get("spacing")
 			if spacing:
-				contextScreen.spacing = int(spacing)
+				axisScale = contextScreen.scale[0 if item.layout == 0 else 1]  # Spacing runs along the stack's layout axis.
+				contextScreen.spacing = int(int(spacing) * axisScale[0] / axisScale[1])
 			item.index = len(screen.stacks)
 			item.skinAttributes.append(("size", (contextScreen.w, contextScreen.h)))
 			item.skinAttributes.append(("position", (contextScreen.x, contextScreen.y)))
