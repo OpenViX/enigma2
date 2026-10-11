@@ -714,18 +714,20 @@ class HarddiskManager:
 		fileNames = glob("/tmp/hotplug_dev_*")
 		devices = []
 		for fileName in fileNames:
-			with open(fileName) as f:
-				data = f.read()
-				eventData = parseDeviceData(data)
-				print(f"[Harddisk][enumeratehotplug devices] eventData:{eventData}")
-				if eventData["DEVTYPE"] == "partition":  # Handle only partitions
-					device = eventData["DEVNAME"].replace("/dev/", "")
-					shortDevice = device[:7] if device.startswith("mmcblk") else sub(r"[\d]", "", device)
-					removable = fileReadLine(f"/sys/block/{shortDevice}/removable")
-					eventData["SORT"] = 0 if ("pci" in eventData["DEVPATH"] or "ahci" in eventData["DEVPATH"]) and removable == "0" else 1
-					devices.append(eventData)
-				remove(fileName)
-
+			try:
+				with open(fileName) as f:
+					data = f.read()
+					eventData = parseDeviceData(data)
+					print(f"[Harddisk][enumeratehotplug devices] eventData:{eventData}")
+					if eventData["DEVTYPE"] == "partition":  # Handle only partitions
+						device = eventData["DEVNAME"].replace("/dev/", "")
+						shortDevice = device[:7] if device.startswith("mmcblk") else sub(r"[\d]", "", device)
+						removable = fileReadLine(f"/sys/block/{shortDevice}/removable")
+						eventData["SORT"] = 0 if ("pci" in eventData["DEVPATH"] or "ahci" in eventData["DEVPATH"]) and removable == "0" else 1
+						devices.append(eventData)
+					remove(fileName)
+			except Exception:
+				continue
 		if devices:
 			devices.sort(key=lambda x: (x["SORT"], x["ID_PART_ENTRY_SIZE"]))
 			mounts = getProcMounts()
