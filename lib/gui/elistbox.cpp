@@ -788,7 +788,7 @@ void eListbox::updateScrollBar()
 			else if (m_orientation == orHorizontal)
 				m_content->setSize(eSize(m_itemwidth, height));
 			else
-				m_content->setSize(eSize(m_itemwidth, m_itemwidth));
+				m_content->setSize(eSize(m_itemwidth, m_itemheight));
 
 			m_scrollbar->hide();
 		}
