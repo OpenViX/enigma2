@@ -37,7 +37,11 @@ eListbox::~eListbox()
 
 void eListbox::setOrientation(int orientation)
 {
+	const bool wasVerticalBar = (m_orientation == orVertical || m_orientation == orGrid);
 	m_orientation = orientation;
+	const bool verticalBar = (m_orientation == orVertical || m_orientation == orGrid);
+	if (m_scrollbar && verticalBar != wasVerticalBar)
+		m_scrollbar->setOrientation(verticalBar ? eSlider::orVertical : eSlider::orHorizontal);
 }
 
 void eListbox::setScrollbarMode(int mode)
