@@ -411,7 +411,7 @@ bool gEGLDC::initEGL() {
 	m_texture_manager.setDisplay(m_egl_display);
 
 	// 7. basic GL state
-	glViewport(0, 0, m_phys_width, m_phys_height);
+	applyViewport();
 	eglSwapInterval(m_egl_display, 1);
 
 	// GL_BLEND and GL_SCISSOR_TEST are left enabled for the lifetime of the
@@ -509,12 +509,20 @@ void gEGLDC::updatePhysicalSize(int logical_w, int logical_h) {
 	}
 	m_phys_width = pw;
 	m_phys_height = ph;
-	m_scale_x = logical_w > 0 ? (float)pw / (float)logical_w : 1.0f;
-	m_scale_y = logical_h > 0 ? (float)ph / (float)logical_h : 1.0f;
-	m_scaled = (pw != logical_w || ph != logical_h);
+	// The canvas goes into the OSD overscan rectangle (the whole surface by default).
+	const int ol = m_osd_left, ot = m_osd_top, ow = m_osd_width, oh = m_osd_height;
+	m_content_x = ol * pw / 720;
+	m_content_w = std::max(1, (ol + ow) * pw / 720 - m_content_x);
+	m_content_y = ot * ph / 576;
+	m_content_h = std::max(1, (ot + oh) * ph / 576 - m_content_y);
+	m_scale_x = logical_w > 0 ? (float)m_content_w / (float)logical_w : 1.0f;
+	m_scale_y = logical_h > 0 ? (float)m_content_h / (float)logical_h : 1.0f;
+	m_scaled = (m_content_w != logical_w || m_content_h != logical_h || m_content_x != 0 || m_content_y != 0);
 	if (m_max_tex_size == 0 && m_gpu_max_tex > 0 && std::max(logical_w, logical_h) > m_gpu_max_tex)
 		eDebug("[gEGLDC] WARNING: canvas %dx%d exceeds the GPU texture limit %d but canvas scaling is NOT enabled in this build (configure --enable-egl-canvas-scaling / HAVE_EGL_CANVAS_SCALING) - textures wider/taller than the limit will be blank and the window resize will likely fail", logical_w, logical_h, m_gpu_max_tex);
-	if (isScaled() && fixed_window)
+	if (isScaled() && (m_content_w != pw || m_content_h != ph))
+		eDebug("[gEGLDC] OSD overscan: canvas %dx%d rendered into %dx%d at %d,%d of the %dx%d surface", logical_w, logical_h, m_content_w, m_content_h, m_content_x, m_content_y, pw, ph);
+	else if (isScaled() && fixed_window)
 		eDebug("[gEGLDC] native window cannot be resized on this platform - rendering canvas %dx%d scaled (%.3f x %.3f) into the existing %dx%d window", logical_w, logical_h, m_scale_x, m_scale_y, pw, ph);
 	else if (isScaled())
 		eDebug("[gEGLDC] canvas %dx%d exceeds GPU texture limit %d - rendering at %dx%d (scale %.3f x %.3f) and letting the display stretch it", logical_w, logical_h, m_max_tex_size, pw, ph, m_scale_x, m_scale_y);
@@ -562,6 +570,40 @@ void gEGLDC::uploadOverlayBand(GLuint tex_id, int left, int top, int right, int 
 	glTexSubImage2D(GL_TEXTURE_2D, 0, dx0, dy0, dx1 - dx0, dy1 - dy0, fmt, GL_UNSIGNED_BYTE, small.data());
 }
 
+void gEGLDC::applyViewport() {
+	glViewport(m_content_x, m_phys_height - (m_content_y + m_content_h), m_content_w, m_content_h);
+}
+
+void gEGLDC::setOsdRect(int left, int top, int width, int height) {
+	left = std::max(0, std::min(left, 719));
+	top = std::max(0, std::min(top, 575));
+	width = std::max(1, std::min(width, 720 - left));
+	height = std::max(1, std::min(height, 576 - top));
+	m_osd_left = left;
+	m_osd_top = top;
+	m_osd_width = width;
+	m_osd_height = height;
+	m_osd_dirty = true;
+	eDebug("[gEGLDC] OSD rect %d,%d %dx%d (of 720x576)", left, top, width, height);
+	requestFlush(); // makes the render thread pick it up (applyOsdRect())
+}
+
+// Render thread: recompute where the canvas lands, move the viewport and wipe
+// the surface (what was drawn there is at the old place/scale). The caller
+// repaints the desktop afterwards.
+void gEGLDC::applyOsdRect() {
+	if (!m_osd_dirty.exchange(false))
+		return;
+	flushBlitBatch();
+	flushTextBatch();
+	updatePhysicalSize(m_width, m_height);
+	applyViewport();
+	glBindFramebuffer(GL_FRAMEBUFFER, m_use_shadow_fbo ? m_shadow_fbo : 0);
+	glScissor(0, 0, m_phys_width, m_phys_height);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
 void gEGLDC::setGlScissor(const eRect& rect) {
 	if (!isScaled()) {
 		int sx = rect.x();
@@ -572,10 +614,10 @@ void gEGLDC::setGlScissor(const eRect& rect) {
 
 	// Logical (top-down) rect -> physical (bottom-up) pixels. Rounded outwards
 	// so a scaled-down edge never loses its partially covered pixel row/column.
-	int x0 = std::max(0, (int)std::floor(rect.x() * m_scale_x));
-	int x1 = std::min(m_phys_width, (int)std::ceil((rect.x() + rect.width()) * m_scale_x));
-	int y0 = std::max(0, (int)std::floor(rect.y() * m_scale_y));
-	int y1 = std::min(m_phys_height, (int)std::ceil((rect.y() + rect.height()) * m_scale_y));
+	int x0 = std::max(0, m_content_x + (int)std::floor(rect.x() * m_scale_x));
+	int x1 = std::min(m_phys_width, m_content_x + (int)std::ceil((rect.x() + rect.width()) * m_scale_x));
+	int y0 = std::max(0, m_content_y + (int)std::floor(rect.y() * m_scale_y));
+	int y1 = std::min(m_phys_height, m_content_y + (int)std::ceil((rect.y() + rect.height()) * m_scale_y));
 	glScissor(x0, m_phys_height - y1, std::max(0, x1 - x0), std::max(0, y1 - y0));
 }
 
@@ -2205,7 +2247,7 @@ void gEGLDC::exec(const gOpcode* opcode) {
 		if (m_window_provider && recreateWindowSurface()) {
 			m_surface_lost = false;
 			eDebug("[gEGLDC] window surface recovered");
-			glViewport(0, 0, m_phys_width, m_phys_height);
+			applyViewport();
 			if (m_use_shadow_fbo) {
 				destroyShadowFramebuffer();
 				recreateShadowFramebuffer();
@@ -2238,6 +2280,9 @@ void gEGLDC::exec(const gOpcode* opcode) {
 		flushTextBatch();
 		applyPendingResolutionChange();
 	}
+
+	if (m_osd_dirty && !m_pending_resolution_change)
+		applyOsdRect();
 
 	// Captured up front: several cases below free opcode->parm.
 	const int prof_op = opcode->opcode;
@@ -2877,7 +2922,7 @@ void gEGLDC::applyPendingResolutionChange() {
 		// the stale, smaller-or-differently-shaped viewport rect) or
 		// stretched/squashed wrong (anything inside it) - not just
 		// mispositioned, which the shader-matrix fix alone already covered.
-		glViewport(0, 0, m_phys_width, m_phys_height);
+		applyViewport();
 
 		m_basic_shader.setResolution((float)pending_w, (float)pending_h);
 		m_advanced_shader.setResolution((float)pending_w, (float)pending_h);
@@ -3135,21 +3180,21 @@ void gEGLDC::captureBackgroundIntoPixmap(const eRect& rect) {
 		// same reason as the unscaled branch above.
 		if (conservative_readback)
 			glFinish();
-		const int px0 = conservative_readback ? 0 : std::max(0, (int)std::floor(left * m_scale_x));
-		const int px1 = conservative_readback ? m_phys_width : std::min(m_phys_width, std::max(px0 + 1, (int)std::ceil(right * m_scale_x)));
-		const int py0 = std::max(0, (int)std::floor(top * m_scale_y));
-		const int py1 = std::min(m_phys_height, std::max(py0 + 1, (int)std::ceil(bottom * m_scale_y)));
+		const int px0 = conservative_readback ? 0 : std::max(0, m_content_x + (int)std::floor(left * m_scale_x));
+		const int px1 = conservative_readback ? m_phys_width : std::min(m_phys_width, std::max(px0 + 1, m_content_x + (int)std::ceil(right * m_scale_x)));
+		const int py0 = std::max(0, m_content_y + (int)std::floor(top * m_scale_y));
+		const int py1 = std::min(m_phys_height, std::max(py0 + 1, m_content_y + (int)std::ceil(bottom * m_scale_y)));
 		const int rw = px1 - px0;
 		const int rh = py1 - py0;
 		std::vector<uint8_t> phys((size_t)rw * (size_t)rh * 4U);
 		glReadPixels(px0, m_phys_height - py1, rw, rh, GL_RGBA, GL_UNSIGNED_BYTE, phys.data());
 		for (int row = 0; row < h; ++row) { // row: 0 = bottom of the logical rect
 			const int ly = top + (h - 1 - row);
-			const int from_top = std::min(rh - 1, std::max(0, (int)(ly * m_scale_y) - py0));
+			const int from_top = std::min(rh - 1, std::max(0, m_content_y + (int)(ly * m_scale_y) - py0));
 			const uint8_t* src_row = phys.data() + (size_t)(rh - 1 - from_top) * rw * 4U;
 			uint8_t* dst_row = pixels.data() + (size_t)row * w * 4U;
 			for (int col = 0; col < w; ++col) {
-				const int from_left = std::min(rw - 1, std::max(0, (int)((left + col) * m_scale_x) - px0));
+				const int from_left = std::min(rw - 1, std::max(0, m_content_x + (int)((left + col) * m_scale_x) - px0));
 				memcpy(dst_row + (size_t)col * 4U, src_row + (size_t)from_left * 4U, 4U);
 			}
 		}
@@ -3436,6 +3481,7 @@ void gEGLDC::flip() {
 					w,    0.0f, 1.0f, 1.0f,  0.0f, h,    0.0f, 0.0f,  w, h,    1.0f, 0.0f};
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
 				glScissor(0, 0, m_phys_width, m_phys_height);
+				glViewport(0, 0, m_phys_width, m_phys_height); // the shadow canvas already sits in the overscan rectangle
 				glDisable(GL_BLEND);
 				// A compositor that blends straight alpha would multiply the
 				// premultiplied frame by alpha a second time (translucent areas
@@ -3444,6 +3490,7 @@ void gEGLDC::flip() {
 				m_texture_shader.drawBatch(quad, 6, m_shadow_texture, 1.0f);
 				m_texture_shader.setUnpremultiply(false);
 				glEnable(GL_BLEND);
+				applyViewport();
 				glBindFramebuffer(GL_FRAMEBUFFER, m_shadow_fbo);
 			}
 			std::chrono::steady_clock::time_point swap_t0;
