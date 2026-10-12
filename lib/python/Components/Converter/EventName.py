@@ -446,7 +446,7 @@ class EventName(Converter):
 		if not pil:
 			return None
 		begin = localtime(event.getBeginTime())
-		return localtime(mktime([begin.tm_year, (pil & 0x7800) >> 11, (pil & 0xF8000) >> 15, (pil & 0x7C0) >> 6, (pil & 0x3F), 0, begin.tm_wday, begin.tm_yday, begin.tm_isdst]))
+		return localtime(mktime((begin.tm_year, (pil & 0x7800) >> 11, (pil & 0xF8000) >> 15, (pil & 0x7C0) >> 6, (pil & 0x3F), 0, begin.tm_wday, begin.tm_yday, begin.tm_isdst)))
 
 	def textPdcTime(self, event):
 		start = self.pdcStart(event)
