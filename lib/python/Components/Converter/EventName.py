@@ -1,3 +1,4 @@
+import NavigationInstance
 from enigma import eEPGCache
 
 from Components.Converter.Converter import Converter
@@ -258,6 +259,9 @@ class EventName(Converter):
 	}
 
 	# Maps each format-string token to the name of the method that produces its text.
+	# Types that read genre/rating data. The event from the live stream can lack it, so those are filled in from the EPG cache.
+	CACHE_FILL_TYPES = (GENRE, GENRELIST, RATING, SRATING, RATINGICON, RAWRATING, RATINGCOUNTRY, RATINGTEXTANDCOLOR)
+
 	FORMAT_TOKENS = {
 		"NAME": "formatName",
 		"STARTTIME": "formatStartTime",
@@ -310,6 +314,9 @@ class EventName(Converter):
 		# Choose the trim function and the handler once, so getText never has to work out the type again.
 		self.trimText = self.trimStrip if self.trim else str
 		self.handler = getattr(self, self.HANDLERS.get(self.type, "textEmpty"))
+		if self.type in self.CACHE_FILL_TYPES:
+			handler = self.handler
+			self.handler = lambda event: handler(self.cachedEvent(event))
 
 	@staticmethod
 	def trimStrip(text):
@@ -369,6 +376,16 @@ class EventName(Converter):
 		return pgettext("now/next: 'now' event label", "Now") + ": " + self.trimText(event.getEventName())
 
 	# ---- Ratings ----
+
+	# The same event from the EPG cache if the given one has no genre or rating data, otherwise the given one.
+	# e.g. on 28E if we switch to show EIT Now/Next on the infobar, the genre data is not available.
+	def cachedEvent(self, event):
+		if event.getGenreDataList() or event.getParentalData() or not self.epgcache:
+			return event
+		navigation = NavigationInstance.instance
+		reference = getattr(self.source, "service", None) or (navigation and navigation.getCurrentlyPlayingServiceReference())
+		cached = reference and self.epgcache.lookupEventTime(reference, event.getBeginTime())
+		return cached if cached and cached.getBeginTime() == event.getBeginTime() else event
 
 	def getRatingEntry(self, event, useConfigCountry=True):
 		rating = event.getParentalData()
