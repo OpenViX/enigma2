@@ -458,12 +458,20 @@ class EventName(Converter):
 	def textPdc(self, event):
 		return _("PDC") if event.getPdcPil() else ""
 
+	# The PDC start (month, day, hour and minute are packed into the PIL) as a time struct, or None if there is none or it is not a date (control codes).
 	def pdcStart(self, event):
 		pil = event.getPdcPil()
 		if not pil:
 			return None
+		month = (pil & 0x7800) >> 11
+		day = (pil & 0xF8000) >> 15
+		hour = (pil & 0x7C0) >> 6
+		minute = pil & 0x3F
+		if not (1 <= month <= 12 and 1 <= day <= 31 and hour < 24 and minute < 60):
+			return None
 		begin = localtime(event.getBeginTime())
-		return localtime(mktime((begin.tm_year, (pil & 0x7800) >> 11, (pil & 0xF8000) >> 15, (pil & 0x7C0) >> 6, (pil & 0x3F), 0, begin.tm_wday, begin.tm_yday, begin.tm_isdst)))
+		year = begin.tm_year + (1 if month < begin.tm_mon - 6 else 0)  # A PDC date early in the year for an event late in the year is next year's.
+		return localtime(mktime((year, month, day, hour, minute, 0, 0, 0, -1)))
 
 	def textPdcTime(self, event):
 		start = self.pdcStart(event)
