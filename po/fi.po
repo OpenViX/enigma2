@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-04 14:36+0300\n"
-"PO-Revision-Date: 2026-10-04 15:08+0300\n"
+"POT-Creation-Date: 2026-10-12 09:00+0300\n"
+"PO-Revision-Date: 2026-10-12 09:09+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3571,9 +3571,6 @@ msgstr "Valitse, muunnetaanko monikanavaiset AAC -ääniraidat stereoksi."
 
 msgid "Choose whether multi channel AAC+ sound tracks should be downmixed to stereo."
 msgstr "Valitse, muunnetaanko monikanavaiset AAC+ -ääniraidat stereoksi."
-
-msgid "Choose whether multi channel AC3 / AC3+ sound tracks should be downmixed to stereo."
-msgstr "Valitse, muunnetaanko monikanavaiset AC3 / AC3+ -ääniraidat stereoksi."
 
 msgid "Choose whether multi channel AC3 sound tracks should be downmixed to stereo."
 msgstr "Valitse, muunnetaanko monikanavaiset AC3 -ääniraidat stereoksi."
@@ -8788,6 +8785,9 @@ msgstr "Pitkät tiedostonimet"
 
 msgid "Long key press"
 msgstr "Pitkä painallus"
+
+msgid "Long press delay threshold"
+msgstr "Pitkän painalluksen viiveen kynnysarvo"
 
 msgid "Long press: "
 msgstr "Pitkä painallus: "
@@ -15333,7 +15333,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 04.10.2026 ---\n"
+"--- 12.10.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -15953,6 +15953,9 @@ msgstr "Tämä asetus määrittää kuvan terävyyden, käytetään kun kuva ska
 
 msgid "This setting allows the tuner configuration to be a duplication of how another tuner is already configured."
 msgstr "Tämä asetus sallii viritinasetusten kopioinnin jo valmiiksi määritellystä virittimestä."
+
+msgid "This setting allows you to increase or decrease the number of key repeats required to trigger a long press on the remote control or keyboard."
+msgstr "Tämän asetuksen avulla voit lisätä tai vähentää näppäimen toistojen määrää, joka tarvitaan kaukosäätimessä tai näppäimistössä pitkän painalluksen laukaisemiseen."
 
 msgid "This setting depends on your cable provider and location. If you don't know the correct setting refer to the menu in the official cable receiver, or get it from your cable provider, or seek help via internet forum."
 msgstr "Tämä asetus riippuu kaapelipalveluntarjoajastasi ja sijainnistasi. Jos et tiedä oikeaa asetusta, selaa laitteesi valikoita, pyydä kaapelipalveluntarjoajalta tai Googleta."
