@@ -1497,9 +1497,14 @@ def readSkin(screen, skin, names, desktop):
 	def processNone(widget, context, stack=None):
 		pass
 
+	stackOrder = 0
+
 	def proccesStackAddition(widget, stack, target):
+		nonlocal stackOrder
 		if stack:
 			target.stackIndex = stack.index
+			target.stackOrder = stackOrder  # Children must be stacked in skin (XML) order.
+			stackOrder += 1
 			pos = widget.attrib.get("position", "")
 			align = eWidget.eStackAlignNone
 			if stack.layout == 0:  # horizontal
