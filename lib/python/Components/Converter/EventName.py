@@ -200,8 +200,8 @@ class EventName(Converter):
 		"NameNow": ("type", NAME_NOW),
 		"NextName": ("type", NAME_NEXT),
 		"NameNext": ("type", NAME_NEXT),
-		"NextNameOnly": ("type", NAME_NEXT2),
-		"NameNextOnly": ("type", NAME_NEXT2),
+		"NextNameOnly": ("type", NAME_NEXT2),  # only for use with Sources.ServiceEvent
+		"NameNextOnly": ("type", NAME_NEXT2),  # only for use with Sources.ServiceEvent
 		"Genre": ("type", GENRE),
 		"GenreList": ("type", GENRELIST),
 		"Rating": ("type", RATING),
@@ -210,10 +210,10 @@ class EventName(Converter):
 		"PdcTime": ("type", PDCTIME),
 		"PdcTimeShort": ("type", PDCTIMESHORT),
 		"IsRunningStatus": ("type", ISRUNNINGSTATUS),
-		"NextDescription": ("type", NEXT_DESCRIPTION),
-		"ThirdName": ("type", THIRD_NAME),
-		"ThirdNameOnly": ("type", THIRD_NAME2),
-		"ThirdDescription": ("type", THIRD_DESCRIPTION),
+		"NextDescription": ("type", NEXT_DESCRIPTION),  # only for use with Sources.ServiceEvent
+		"ThirdName": ("type", THIRD_NAME),  # only for use with Sources.ServiceEvent
+		"ThirdNameOnly": ("type", THIRD_NAME2),  # only for use with Sources.ServiceEvent
+		"ThirdDescription": ("type", THIRD_DESCRIPTION),  # only for use with Sources.ServiceEvent
 		"RawRating": ("type", RAWRATING),
 		"RatingTextAndColor": ("type", RATINGTEXTANDCOLOR),
 		"RatingCountry": ("type", RATINGCOUNTRY),
