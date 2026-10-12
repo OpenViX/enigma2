@@ -20,7 +20,7 @@ def getFilePath(setting):
 
 
 def setPositionParameter(parameter, configElement):
-	if eglOsdRectSupported():  # EGL renders the OSD itself, /proc/stb/fb/dst_* has no effect
+	if eglOsdRectSupported():
 		# the notifiers fire as each entry is registered, so some entries may not exist yet
 		osd = config.osd
 		left = osd.dst_left.value if hasattr(osd, "dst_left") else 0
@@ -28,10 +28,11 @@ def setPositionParameter(parameter, configElement):
 		width = osd.dst_width.value if hasattr(osd, "dst_width") else 720
 		height = osd.dst_height.value if hasattr(osd, "dst_height") else 576
 		eglSetOsdRect(left, top, width, height)
-		return
-	f = open(getFilePath(parameter), "w")
-	f.write('%08X\n' % configElement.value)
-	f.close()
+		# the proc entries must still be written, otherwise the UI stays shrunk after a reboot
+	if fileExists(getFilePath(parameter)):
+		f = open(getFilePath(parameter), "w")
+		f.write('%08X\n' % configElement.value)
+		f.close()
 	if fileExists(getFilePath("apply")):
 		f = open(getFilePath("apply"), "w")
 		f.write('1')
