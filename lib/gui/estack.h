@@ -37,6 +37,7 @@ private:
 	LayoutDirection m_direction;
 	std::vector<eWidget*> m_stackchilds;
 	int m_spacing;
+	ePoint m_lastpos;
 };
 
 #endif
