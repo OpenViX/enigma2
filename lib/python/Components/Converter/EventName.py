@@ -3,6 +3,7 @@ from enigma import eEPGCache
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.Converter.genre import getGenreStringSub, getGenreStringLong
+from Components.Sources.ServiceEvent import ServiceEvent
 from Components.config import config
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from time import time, localtime, mktime, strftime
@@ -503,7 +504,13 @@ class EventName(Converter):
 		return ""
 
 	def textNameNext(self, event):
-		return self.laterName(1, pgettext("now/next: 'next' event label", "Next"))
+		label = pgettext("now/next: 'next' event label", "Next")
+		# The conditional below is a special case just for NAME_NEXT. It comes from
+		# the original code but was invoked by an exception which obscured the logic.
+		# It has now been made explicit for clarity.
+		if not isinstance(self.source, ServiceEvent):
+			return label + ": " + self.trimText(event.getEventName())
+		return self.laterName(1, label)
 
 	def textNameNextOnly(self, event):
 		return self.laterName(1)
