@@ -1755,62 +1755,78 @@ void gEGLDC::flushTextBatch() {
 		const float band_top = (float)dirty.top();
 		const float band_h = (float)dirty.height();
 
+		// Quads must be drawn in the order they were submitted: bordered text
+		// queues a border-pass glyph and a fill-pass glyph that overlap, and
+		// drawing every main-atlas quad before every band quad (or the
+		// reverse) lets a border glyph land on top of its own fill glyph,
+		// which makes the character appear to be missing. So the batch is
+		// split into consecutive runs sharing the same source texture, each
+		// drawn in turn.
+		GLuint band_tex = 0;
+		auto emitRun = [&](bool in_band) {
+			if (m_text_main_scratch.empty())
+				return;
+			glBindTexture(GL_TEXTURE_2D, in_band ? band_tex : tex_id);
+			drawTextVertices(m_text_main_scratch);
+			if (!in_band)
+				m_atlas_used_this_frame = true;
+			m_text_main_scratch.clear();
+		};
+
 		m_text_main_scratch.clear();
-		m_text_band_scratch.clear();
+		bool run_in_band = false;
 		// 48 floats per glyph quad: 6 vertices x (x, y, u, v, r, g, b, a);
 		// vertex 0 carries v0, vertex 1 carries v1 (see renderGlyph()).
 		for (size_t q = 0; q + 48 <= m_text_batch_buffer.size(); q += 48) {
 			const float* quad = &m_text_batch_buffer[q];
 			const float top = quad[3] * atlas_h;
 			const float bottom = quad[11] * atlas_h;
-			if (top >= band_top - 0.5f && bottom <= band_top + band_h + 0.5f) {
-				m_text_band_scratch.insert(m_text_band_scratch.end(), quad, quad + 48);
-				float* band_quad = &m_text_band_scratch[m_text_band_scratch.size() - 48];
+			const bool in_band = top >= band_top - 0.5f && bottom <= band_top + band_h + 0.5f;
+
+			if (in_band != run_in_band) {
+				emitRun(run_in_band);
+				run_in_band = in_band;
+			}
+
+			if (in_band && band_tex == 0) {
+				std::chrono::steady_clock::time_point band_t0;
+				if (m_profile)
+					band_t0 = std::chrono::steady_clock::now();
+
+				const int width = atlas_pix->size().width();
+				const uint8_t* data = (const uint8_t*)atlas_pix->surface->data + (size_t)dirty.top() * width;
+				glGenTextures(1, &band_tex);
+				glBindTexture(GL_TEXTURE_2D, band_tex);
+				// Same sampling as the main atlas (gTextureManager's defaults).
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+				GLenum internal_fmt = gles::isGLES3() ? GL_R8 : GL_LUMINANCE;
+				GLenum src_fmt = gles::isGLES3() ? GL_RED : GL_LUMINANCE;
+				glTexImage2D(GL_TEXTURE_2D, 0, internal_fmt, width, dirty.height(), 0, src_fmt, GL_UNSIGNED_BYTE, data);
+				glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+				// Deleted after this frame is presented (see flip()); the driver
+				// keeps the storage alive until the GPU is done with it anyway.
+				m_atlas_band_textures.push_back(band_tex);
+
+				if (m_profile) {
+					m_prof.band_ms += msSince(band_t0);
+					m_prof.band_uploads++;
+					m_prof.band_rows += dirty.height();
+				}
+			}
+
+			m_text_main_scratch.insert(m_text_main_scratch.end(), quad, quad + 48);
+			if (in_band) {
+				float* run_quad = &m_text_main_scratch[m_text_main_scratch.size() - 48];
 				for (int v = 0; v < 6; ++v)
-					band_quad[v * 8 + 3] = (band_quad[v * 8 + 3] * atlas_h - band_top) / band_h;
-			} else {
-				m_text_main_scratch.insert(m_text_main_scratch.end(), quad, quad + 48);
+					run_quad[v * 8 + 3] = (run_quad[v * 8 + 3] * atlas_h - band_top) / band_h;
 			}
 		}
-
-		if (!m_text_main_scratch.empty()) {
-			drawTextVertices(m_text_main_scratch);
-			m_atlas_used_this_frame = true;
-		}
-
-		if (!m_text_band_scratch.empty()) {
-			std::chrono::steady_clock::time_point band_t0;
-			if (m_profile)
-				band_t0 = std::chrono::steady_clock::now();
-
-			const int width = atlas_pix->size().width();
-			const uint8_t* data = (const uint8_t*)atlas_pix->surface->data + (size_t)dirty.top() * width;
-			GLuint band_tex = 0;
-			glGenTextures(1, &band_tex);
-			glBindTexture(GL_TEXTURE_2D, band_tex);
-			// Same sampling as the main atlas (gTextureManager's defaults).
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-			GLenum internal_fmt = gles::isGLES3() ? GL_R8 : GL_LUMINANCE;
-			GLenum src_fmt = gles::isGLES3() ? GL_RED : GL_LUMINANCE;
-			glTexImage2D(GL_TEXTURE_2D, 0, internal_fmt, width, dirty.height(), 0, src_fmt, GL_UNSIGNED_BYTE, data);
-			glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-			// Deleted after this frame is presented (see flip()); the driver
-			// keeps the storage alive until the GPU is done with it anyway.
-			m_atlas_band_textures.push_back(band_tex);
-
-			if (m_profile) {
-				m_prof.band_ms += msSince(band_t0);
-				m_prof.band_uploads++;
-				m_prof.band_rows += dirty.height();
-			}
-
-			drawTextVertices(m_text_band_scratch);
-			glBindTexture(GL_TEXTURE_2D, tex_id);
-		}
+		emitRun(run_in_band);
+		glBindTexture(GL_TEXTURE_2D, tex_id);
 	}
 
 	m_text_batch_buffer.clear();
