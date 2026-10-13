@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-11 13:25+0000\n"
+"POT-Creation-Date: 2026-10-13 18:53+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, xcentaurix\n"
@@ -3572,9 +3572,6 @@ msgstr "Soll AAC Mehrkanalton zu Stereo heruntergemischt werden?"
 msgid "Choose whether multi channel AAC+ sound tracks should be downmixed to stereo."
 msgstr "Soll AAC+ Mehrkanalton zu Stereo heruntergemischt werden?"
 
-msgid "Choose whether multi channel AC3 / AC3+ sound tracks should be downmixed to stereo."
-msgstr "Soll AC3 / AC3+ Mehrkanalton zu Stereo heruntergemischt werden?"
-
 msgid "Choose whether multi channel AC3 sound tracks should be downmixed to stereo."
 msgstr "Soll AC3 Mehrkanalton zu Stereo heruntergemischt werden?"
 
@@ -5603,6 +5600,10 @@ msgstr "ECM-Info"
 
 msgid "ECM data will be included in the stream. This enables a client receiver to decode it."
 msgstr "Sollen ECM Daten in HTTP Streams eingebettet werden? Dies ermöglicht es, Clients zu entschlüsseln."
+
+#, python-format
+msgid "EGL/GLES:\t%s\n"
+msgstr "EGL/GLES:\t%s\n"
 
 msgid "EJECTCD"
 msgstr ""
@@ -8782,6 +8783,9 @@ msgstr "Lange Dateinamen"
 
 msgid "Long key press"
 msgstr "Langer Tastendruck"
+
+msgid "Long press delay threshold"
+msgstr "Langer Tastendruck Verzögerungs-Schwellwert"
 
 msgid "Long press: "
 msgstr "Langer Tastendruck: "
@@ -15639,7 +15643,7 @@ msgstr "Sender wurde zur gewählten Favoritenliste hinzugefügt."
 
 #, python-format
 msgid "The user interface of your %s %s is restarting"
-msgstr "Die Benutzeroberfläche der %s %s startet neu"
+msgstr "Die Benutzeroberfläche der %s %s startet neu."
 
 #, python-format
 msgid ""
@@ -15914,6 +15918,9 @@ msgstr "Diese Option bestimmt die Scalerschärfe. Dieser Punkt wirkt sich aus, w
 
 msgid "This setting allows the tuner configuration to be a duplication of how another tuner is already configured."
 msgstr "Diese Einstellung ermöglicht, dass die Tunerkonfiguration ein Duplikat eines schon konfigurierten Tuners ist."
+
+msgid "This setting allows you to increase or decrease the number of key repeats required to trigger a long press on the remote control or keyboard."
+msgstr "Diese Einstellung bestimmt die Anzahl der Tasten-Wiederholungen, die einen langen Tastendruck auslösen."
 
 msgid "This setting depends on your cable provider and location. If you don't know the correct setting refer to the menu in the official cable receiver, or get it from your cable provider, or seek help via internet forum."
 msgstr "Diese Einstellung hängt von deinem Kabelanbieter und Standort ab. Wenn du die korrekten Werte nicht kennst, schau in das Menü des offiziellen Receivers, frage den Kabelanbieter oder suche im Internet."
@@ -17971,19 +17978,19 @@ msgstr ""
 
 #, python-format
 msgid "Your %s %s is rebooting"
-msgstr "Deine %s %s startet neu"
+msgstr "Deine %s %s startet neu."
 
 #, python-format
 msgid "Your %s %s is rebooting into Android Mode"
-msgstr "Deine %s %s startet neu im Android-Modus"
+msgstr "Deine %s %s startet neu im Android-Modus."
 
 #, python-format
 msgid "Your %s %s is rebooting into Recovery Mode"
-msgstr "Deine %s %s startet neu im Recovery-Modus"
+msgstr "Deine %s %s startet neu im Recovery-Modus."
 
 #, python-format
 msgid "Your %s %s is shutting down"
-msgstr "Deine %s %s schaltet sich aus"
+msgstr "Deine %s %s schaltet sich aus."
 
 #, python-format
 msgid ""
