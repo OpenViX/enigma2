@@ -165,7 +165,7 @@ def addInstallTask(job, package):
 
 def bytesToHumanReadable(size_bytes, binary=False):
 	# input is bytes, convert from KB, MB before use.
-	size_units = ("B", "kB", "MB", "GB", "TB")
+	size_units = ("B", "KiB", "MiB", "GiB", "TiB") if binary else ("B", "kB", "MB", "GB", "TB")
 	base = 1024 if binary else 1000
 	i = 0
 	L = len(size_units) - 1
