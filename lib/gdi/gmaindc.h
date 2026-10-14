@@ -16,6 +16,10 @@ protected:
 	virtual ~gMainDC();
 public:
 	virtual void setResolution(int xres, int yres, int bpp = 32) = 0;
+	// HDR10 OSD correction (tone curve + compositor gain): only the EGL canvas on Nexus boxes has
+	// it. supportsHdrOsdCorrection() says whether the setting means anything on this box.
+	virtual bool supportsHdrOsdCorrection() { return false; }
+	virtual void setHdrOsdCorrection(bool enable) { (void)enable; }
 #ifndef SWIG
 	static int getInstance(ePtr<gMainDC> &ptr) { if (!m_instance) return -1; ptr = m_instance; return 0; }
 #endif

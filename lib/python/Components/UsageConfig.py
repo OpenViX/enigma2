@@ -112,6 +112,23 @@ def InitUsageConfig():
 	config.usage.menu_sort_weight = ConfigDictionarySet(default={"mainmenu": {"submenu": {}}})
 	config.usage.menu_sort_mode = ConfigSelection(default="default", choices=[("a_z", _("alphabetical")), ("default", _("Default")), ("user", _("user defined")), ("user_hidden", _("user defined hidden"))])
 	config.usage.menu_show_numbers = ConfigYesNo(default=False)
+
+	# HDR10 OSD correction (EGL builds on Nexus boxes): tone-maps the UI and raises the compositor's
+	# gain for it while an HDR10 programme plays, so the UI keeps its normal look. The setup item only
+	# appears where the canvas supports it (SystemInfo["HdrOsdCorrection"]).
+	try:
+		from enigma import gMainDC
+		_dc = gMainDC.getInstance()
+		SystemInfo["HdrOsdCorrection"] = bool(_dc and _dc.supportsHdrOsdCorrection())
+	except Exception:
+		SystemInfo["HdrOsdCorrection"] = False
+	config.usage.hdr_osd_correction = ConfigYesNo(default=True)
+
+	def hdrOsdCorrectionChanged(configElement):
+		if SystemInfo["HdrOsdCorrection"]:
+			gMainDC.getInstance().setHdrOsdCorrection(configElement.value)
+
+	config.usage.hdr_osd_correction.addNotifier(hdrOsdCorrectionChanged)
 	config.usage.showScreenPath = ConfigSelection(default="small", choices=[("off", _("None")), ("small", _("Small")), ("large", _("Large"))])
 	# The following code is to be short lived and exists to transition
 	# settings from the old config.usage.show_menupath to the new

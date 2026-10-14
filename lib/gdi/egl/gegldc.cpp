@@ -3457,6 +3457,24 @@ static long long steadyMs()
 std::atomic<int> gEGLDC::s_video_gamma{0};
 std::atomic<long long> gEGLDC::s_hdr10_lost_ms{0};
 std::atomic<long long> gEGLDC::s_video_gamma_ms{0};
+std::atomic<bool> gEGLDC::s_hdr_osd_enabled{true};
+
+bool gEGLDC::supportsHdrOsdCorrection()
+{
+#if defined(HAVE_GBQUAD_EGL) || defined(HAVE_VUPLUS_EGL)
+	return true;
+#else
+	return false;
+#endif
+}
+
+void gEGLDC::setHdrOsdCorrection(bool enable)
+{
+	if (s_hdr_osd_enabled.exchange(enable) == enable)
+		return;
+	eDebug("[gEGLDC] HDR10 OSD correction %s", enable ? "enabled" : "disabled");
+	requestFlush(); // act on it now, even if nothing else is being redrawn
+}
 
 // How long after the stream stops reporting HDR10 the tone stays on. Default 0: the output
 // is already SDR then, so keeping the raised gain on flashes the OSD too bright. A zap between
@@ -3512,15 +3530,17 @@ void gEGLDC::updateToneControl()
 	// A stat() a few times a second is the whole cost while nothing changes.
 	// A gamma change is acted on at once, not at the next poll: no further frame may follow it.
 	const int cur_gamma = s_video_gamma.load();
-	const bool gamma_changed = cur_gamma != m_tone_seen_gamma;
+	const bool enabled = s_hdr_osd_enabled.load();
+	const bool gamma_changed = cur_gamma != m_tone_seen_gamma || enabled != m_tone_seen_enabled;
 	m_tone_seen_gamma = cur_gamma;
+	m_tone_seen_enabled = enabled;
 	const auto now = std::chrono::steady_clock::now();
 	if (!gamma_changed && now - m_tone_last_poll < std::chrono::milliseconds(100))
 		return;
 	m_tone_last_poll = now;
 
-	bool hdr10 = cur_gamma == 2;
-	if (!hdr10 && (m_tone_active || m_tone_gain_set)) {
+	bool hdr10 = cur_gamma == 2 && enabled;
+	if (!hdr10 && enabled && (m_tone_active || m_tone_gain_set)) {
 		const long long lost = s_hdr10_lost_ms.load();
 		hdr10 = lost != 0 && steadyMs() - lost < hdr10GraceMs(); // optionally stay on through a zap's SDR blip
 	}

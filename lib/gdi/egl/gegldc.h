@@ -243,6 +243,8 @@ private:
 	// setVideoGamma(). The OSD tone curve + driver gain are on only while it is 2 (HDR10).
 	static std::atomic<int> s_video_gamma;
 	static std::atomic<long long> s_video_gamma_ms; // steady-clock ms of the last gamma change
+	static std::atomic<bool> s_hdr_osd_enabled;
+	bool m_tone_seen_enabled = true;
 	int m_tone_seen_gamma = -1;                    // gamma updateToneControl() last acted on
 	static std::atomic<long long> s_hdr10_lost_ms; // steady-clock ms when gamma left 2; 0 while it is 2
 	ePtr<eTimer> m_hdr_timer;       // main thread: repaint when the HDR10-lost grace period ends
@@ -503,6 +505,10 @@ public:
 	// the OSD is tone-mapped and the driver's OSD gain raised ("hlg 1.1" by default, see
 	// updateToneControl()); for SDR/HLG both are off, so those UIs stay unchanged.
 	static void setVideoGamma(int gamma);
+
+	// config.usage.hdr_osd_correction (via gMainDC): master switch for the HDR10 OSD correction.
+	bool supportsHdrOsdCorrection() override;
+	void setHdrOsdCorrection(bool enable) override;
 
 	// OSD overscan adjustment (what /proc/stb/fb/dst_* does on non-EGL builds).
 	// left/top/width/height are in the same 720x576 units as config.osd.dst_*.
