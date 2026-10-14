@@ -3,6 +3,9 @@
 #include <lib/base/eerror.h>
 #include <lib/base/wrappers.h>
 #include <lib/dvb/decoder.h>
+#ifdef HAVE_EGL
+#include <lib/gdi/egl/gegldc.h>
+#endif
 #include <lib/components/tuxtxtapp.h>
 #include <linux/dvb/audio.h>
 #include <linux/dvb/video.h>
@@ -634,6 +637,9 @@ void eDVBVideo::video_event(int)
 				 */
 				m_gamma = event.gamma = evt.u.frame_rate;
 				eDebugNoNewLine("GAMMA_CHANGED %d\n", m_gamma);
+#ifdef HAVE_EGL
+				gEGLDC::setVideoGamma(m_gamma);
+#endif
 				/* emit */ m_event(event);
 			}
 			else

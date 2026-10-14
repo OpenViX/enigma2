@@ -8,6 +8,9 @@
 #include <lib/base/object.h>
 #include <lib/dvb/epgcache.h>
 #include <lib/dvb/decoder.h>
+#ifdef HAVE_EGL
+#include <lib/gdi/egl/gegldc.h>
+#endif
 #include <lib/dvb/dvb.h>
 #include <lib/dvb/db.h>
 #include <lib/components/file_eraser.h>
@@ -5617,6 +5620,9 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 						else if (!strcmp(eventname, "eventGammaChanged"))
 						{
 							gst_structure_get_int (msgstruct, "gamma", &m_gamma);
+#ifdef HAVE_EGL
+							gEGLDC::setVideoGamma(m_gamma);
+#endif
 							m_event((iPlayableService*)this, evVideoGammaChanged);
 							/* Derive m_hdr_type from the hardware decoder gamma.
 							 * gamma: 0=SDR 1=HDR(generic) 2=SMPTE ST2084/HDR10 3=HLG

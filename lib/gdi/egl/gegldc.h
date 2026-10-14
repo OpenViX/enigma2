@@ -11,6 +11,8 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #endif
+#include <string>
+#include <lib/base/ebase.h>
 #include <lib/gdi/egl/gosd_capture.h>
 #include <lib/gdi/egl/gtexture_manager.h>
 #include <lib/gdi/egl/inative_window_provider.h>
@@ -220,6 +222,35 @@ private:
 	// present path even where glBlitFramebuffer() exists.
 	bool m_straight_alpha_present = false;
 	float m_unpremult_power = 1.0f;
+
+	// HDR10 OSD tone curve. The Broadcom SDR-graphics-to-HDR path is a straight scaling in the PQ
+	// signal domain, which leaves the OSD far too dark in HDR10 (HLG is unaffected). When a control
+	// file (see updateToneControl()) asks for it, the final present pass maps the OSD colours through
+	// a PQ(white * v^gamma) / PQ(white) LUT instead of leaving them as plain SDR code values.
+	GLuint m_tone_lut_tex = 0;
+	bool m_tone_active = false;
+	float m_tone_white_nits = 0.0f;
+	float m_tone_gamma = 0.0f;
+	long long m_tone_stamp = -1; // mtime(ns) ^ size of the control file last read; -1 = none
+	std::chrono::steady_clock::time_point m_tone_last_poll;
+	void updateToneControl();
+	bool setToneCurve(float white_nits, float gamma);
+	bool setToneCurveHlg(float white_signal, float gamma);
+	bool applyToneSpec(const char *text, float *driver_white_nits = nullptr);
+	void disableTone();
+	bool uploadToneLut(const unsigned char *lut);
+	// Video gamma as reported by the decoder (0 SDR, 1 HDR, 2 ST2084/HDR10, 3 HLG); see
+	// setVideoGamma(). The OSD tone curve + driver gain are on only while it is 2 (HDR10).
+	static std::atomic<int> s_video_gamma;
+	static std::atomic<long long> s_video_gamma_ms; // steady-clock ms of the last gamma change
+	int m_tone_seen_gamma = -1;                    // gamma updateToneControl() last acted on
+	static std::atomic<long long> s_hdr10_lost_ms; // steady-clock ms when gamma left 2; 0 while it is 2
+	ePtr<eTimer> m_hdr_timer;       // main thread: repaint when the HDR10-lost grace period ends
+	std::string m_tone_spec;        // spec last acted on ("" = tone off)
+	std::string m_tone_file_text;   // content of the live-tuning file ("" = none)
+	bool m_tone_gain_set = false;   // driver gain currently raised by us
+	int m_tone_kind = 0; // 0 = power curve (white nits, gamma), 1 = HLG response (white signal)
+	void releaseToneLut();
 	// Blits drawn with blending off copy straight RGBA raw; premultiply them in the
 	// shader when the frame is premultiplied for a double-alpha compositor (H17).
 	bool m_premultiply_blits = false;
@@ -467,6 +498,11 @@ public:
 	// constructs gEGLDC (eInit/gEGLDCAutoInit) - EGL contexts are per-thread,
 	// and gRC::thread() is the only thread that ever issues GL draw calls.
 	static gEGLDC* getInstance() { return s_instance; }
+
+	// Decoder gamma hook (any thread): 0 SDR, 1 HDR, 2 HDR10 (ST2084), 3 HLG. While it is 2
+	// the OSD is tone-mapped and the driver's OSD gain raised ("hlg 1.1" by default, see
+	// updateToneControl()); for SDR/HLG both are off, so those UIs stay unchanged.
+	static void setVideoGamma(int gamma);
 
 	// OSD overscan adjustment (what /proc/stb/fb/dst_* does on non-EGL builds).
 	// left/top/width/height are in the same 720x576 units as config.osd.dst_*.

@@ -97,6 +97,9 @@ public:
 	// pass instead. ENIGMA_EGL_STRAIGHT_ALPHA=0 disables that too (to compare).
 	bool needsStraightAlphaPresent() override;
 
+	// HDR10 OSD gain through libnxclient (libvupl joins Nexus as an NxClient in init()).
+	bool setHdrOsdWhiteNits(float nits) override;
+
 	// VUGLES_UpdateNativeWindow() is what used to make every resized window
 	// invisible (frames rendered fine - aio-grab showed them - but never reached
 	// the display): it forwards a 0x60-byte NXPL_NativeWindowInfoEXT built on the
