@@ -146,6 +146,12 @@ RESULT eDVBDemux::createPESReader(eMainloop *context, ePtr<iDVBPESReader> &reade
 	return res;
 }
 
+RESULT eDVBDemux::createScrambleMonitor(ePtr<iDVBScrambleMonitor> &monitor)
+{
+	monitor = new eDVBScrambleMonitor(this);
+	return 0;
+}
+
 RESULT eDVBDemux::createTSRecorder(ePtr<iDVBTSRecorder> &recorder, unsigned int packetsize, bool streaming, bool sync_mode, bool is_streaming_output)
 {
 	if (m_dvr_busy)
@@ -420,6 +426,107 @@ RESULT eDVBPESReader::connectRead(const sigc::slot<void(const uint8_t*,int)> &r,
 {
 	conn = new eConnection(this, m_read.connect(r));
 	return 0;
+}
+
+/* Looks at the TS packets in buf that belong to pid and carry a payload. Returns 1 if the last of them has a scrambling
+ * control value other than 0, 0 if it is clear, -1 if there was none. */
+static int scanScrambling(const uint8_t *buf, ssize_t len, int pid)
+{
+	int state = -1;
+	for (ssize_t i = 0; i + 188 <= len; i += 188)
+	{
+		const uint8_t *p = buf + i;
+		if (p[0] != 0x47 || (p[1] & 0x80) || (((p[1] & 0x1f) << 8) | p[2]) != pid || !(p[3] & 0x10))
+			continue;
+		state = (p[3] & 0xc0) ? 1 : 0;
+	}
+	return state;
+}
+
+eDVBScrambleMonitor::eDVBScrambleMonitor(eDVBDemux *demux):
+	m_fd(-1), m_pid(-1), m_state(-1), m_idle(0), m_demux(demux), m_timer(eTimer::create(eApp))
+{
+	CONNECT(m_timer->timeout, eDVBScrambleMonitor::poll);
+}
+
+DEFINE_REF(eDVBScrambleMonitor)
+
+eDVBScrambleMonitor::~eDVBScrambleMonitor()
+{
+	stop();
+}
+
+RESULT eDVBScrambleMonitor::start(int pid)
+{
+	stop();
+	m_fd = m_demux->openDemux();
+	if (m_fd < 0)
+	{
+		eDebug("[eDVBScrambleMonitor] openDemux failed: %m");
+		return -ENODEV;
+	}
+	::fcntl(m_fd, F_SETFL, O_NONBLOCK);
+
+	dmx_pes_filter_params flt = {};
+	flt.pes_type = DMX_PES_OTHER;
+	flt.output = DMX_OUT_TSDEMUX_TAP;
+	flt.pid = pid;
+	flt.input = DMX_IN_FRONTEND;
+	flt.flags = 0;
+	if (::ioctl(m_fd, DMX_SET_PES_FILTER, &flt) || ::ioctl(m_fd, DMX_START) < 0)
+	{
+		eDebug("[eDVBScrambleMonitor] cannot filter pid=%04x: %m", pid);
+		::close(m_fd);
+		m_fd = -1;
+		return -1;
+	}
+	m_pid = pid;
+	m_state = -1;
+	m_idle = 0;
+	m_timer->start(150, true);
+	return 0;
+}
+
+RESULT eDVBScrambleMonitor::stop()
+{
+	m_timer->stop();
+	m_state = -1;
+	m_pid = -1;
+	if (m_fd < 0)
+		return -1;
+	::ioctl(m_fd, DMX_STOP);
+	::close(m_fd);
+	m_fd = -1;
+	return 0;
+}
+
+void eDVBScrambleMonitor::poll()
+{
+	if (m_fd < 0)
+		return;
+	/* The filter's own buffer is small (a few thousand bytes), so what is in it is always recent. */
+	uint8_t buf[188 * 43];
+	int state = -1;
+	for (int tries = 0; tries < 2; ++tries)
+	{
+		ssize_t r = ::read(m_fd, buf, sizeof(buf));
+		if (r < 0)
+		{
+			if (errno == EOVERFLOW || errno == EINTR)
+				continue; /* the buffer was flushed, the next read gets fresh data */
+			break; /* EAGAIN: nothing yet */
+		}
+		state = scanScrambling(buf, r, m_pid);
+		break;
+	}
+	if (state != -1)
+	{
+		m_state = state;
+		m_idle = 0;
+	}
+	else if (++m_idle >= 6) /* about 3 seconds without a single packet on the pid */
+		m_state = -1;
+	m_timer->start(500, true);
 }
 
 // AIO short write tracking: session-global sync fallback flag

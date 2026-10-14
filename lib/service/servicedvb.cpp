@@ -1287,6 +1287,8 @@ void eDVBServicePlay::serviceEvent(int event)
 			}
 		}
 
+		updateScrambleMonitor();
+
 		// Note: m_soft_decoder exists speculatively, but only blocks updateDecoder when session is active
 		if (!m_timeshift_active && !(m_csa_session && m_csa_session->isActive()))
 			updateDecoder();
@@ -1580,6 +1582,9 @@ RESULT eDVBServicePlay::stop()
 	stopTimeshift(); /* in case time shift was enabled, remove buffer etc. */
 
 	cleanupSoftwareDescrambling();
+
+	m_scramble_monitor = 0;
+	m_scramble_pid = -1;
 
 #ifdef HAS_SOFTWARE_HDR_DETECTION
 	if (m_hdr_detector) { m_hdr_detector->stop(); m_hdr_detector = 0; }
@@ -2205,6 +2210,10 @@ int eDVBServicePlay::getInfo(int w)
 		return program.isCrypted();
 	case sIsSoftCSA:
 		return (m_csa_session && m_csa_session->isActive());
+	case sIsScrambled:
+		if (m_scramble_monitor && !m_timeshift_active)
+			return m_scramble_monitor->getState();
+		return -1;
 	case sHDRType:
 		return m_hdr_type;
 	case sIsDedicated3D:
@@ -3431,6 +3440,41 @@ void eDVBServicePlay::switchToTimeshift()
 	eDebug("[eDVBServicePlay] switchToTimeshift, in pause mode now.");
 	pause();
 	updateDecoder(true); /* mainly to switch off PCR, and to set pause */
+}
+
+/* Follow the video PID (the audio PID for radio) of a live service with a scrambling monitor on the data demux. */
+void eDVBServicePlay::updateScrambleMonitor()
+{
+	if (m_is_pvr || m_is_stream || m_timeshift_active)
+		return;
+
+	int pid = -1;
+	eDVBServicePMTHandler::program program;
+	if (!m_service_handler.getProgramInfo(program))
+	{
+		if (!program.videoStreams.empty())
+			pid = program.videoStreams[0].pid;
+		else if (!program.audioStreams.empty())
+			pid = program.audioStreams[0].pid;
+	}
+	if (pid <= 0 || pid >= 0x2000 || (m_scramble_monitor && m_scramble_pid == pid))
+		return;
+
+	if (!m_scramble_monitor)
+	{
+		ePtr<iDVBDemux> demux;
+		if (m_service_handler.getDataDemux(demux) || !demux || demux->createScrambleMonitor(m_scramble_monitor))
+		{
+			m_scramble_monitor = 0;
+			return;
+		}
+	}
+	m_scramble_pid = pid;
+	if (m_scramble_monitor->start(pid))
+	{
+		m_scramble_monitor = 0;
+		m_scramble_pid = -1;
+	}
 }
 
 void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)

@@ -25,6 +25,7 @@ public:
 
 	RESULT createSectionReader(eMainloop *context, ePtr<iDVBSectionReader> &reader);
 	RESULT createPESReader(eMainloop *context, ePtr<iDVBPESReader> &reader);
+	RESULT createScrambleMonitor(ePtr<iDVBScrambleMonitor> &monitor);
 	RESULT createTSRecorder(ePtr<iDVBTSRecorder> &recorder, unsigned int packetsize = 188, bool streaming=false, bool sync_mode=false, bool is_streaming_output=false);
 	RESULT getMPEGDecoder(ePtr<iTSMPEGDecoder> &reader, int index);
 	RESULT getSTC(pts_t &pts, int num);
@@ -43,6 +44,7 @@ private:
 	int m_dvr_source_offset;
 	friend class eDVBSectionReader;
 	friend class eDVBPESReader;
+	friend class eDVBScrambleMonitor;
 	friend class eDVBAudio;
 	friend class eDVBVideo;
 	friend class eDVBPCR;
@@ -89,6 +91,21 @@ public:
 	RESULT start(int pid);
 	RESULT stop();
 	RESULT connectRead(const sigc::slot<void(const uint8_t*,int)> &read, ePtr<eConnection> &conn);
+};
+
+class eDVBScrambleMonitor: public iDVBScrambleMonitor, public sigc::trackable
+{
+	DECLARE_REF(eDVBScrambleMonitor);
+	int m_fd, m_pid, m_state, m_idle;
+	ePtr<eDVBDemux> m_demux;
+	ePtr<eTimer> m_timer;
+	void poll();
+public:
+	eDVBScrambleMonitor(eDVBDemux *demux);
+	virtual ~eDVBScrambleMonitor();
+	RESULT start(int pid);
+	RESULT stop();
+	int getState() { return m_state; }
 };
 
 class eDVBRecordFileThread: public eFilePushThreadRecorder

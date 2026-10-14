@@ -339,6 +339,11 @@ protected:
 	ePtr<eTimer> m_nownext_timer;
 	void updateEpgCacheNowNext();
 
+		/* scrambling flag of the live stream, see sIsScrambled */
+	ePtr<iDVBScrambleMonitor> m_scramble_monitor;
+	int m_scramble_pid = -1;
+	void updateScrambleMonitor();
+
 		/* radiotext */
 	ePtr<eDVBRdsDecoder> m_rds_decoder;
 	ePtr<eConnection> m_rds_decoder_event_connection;
