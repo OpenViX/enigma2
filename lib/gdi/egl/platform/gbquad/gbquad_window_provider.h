@@ -127,6 +127,8 @@ public:
 	bool needsStraightAlphaPresent() override;
 	float presentUnpremultiplyPower() override;
 	bool premultipliesBlits() override;
+	// Nexus graphics colour (contrast + saturation) so SDR OSD white lands at `nits` in HDR10.
+	bool setHdrOsdWhiteNits(float nits) override;
 
 	// `stretch` (set in init(), see its own comment there) makes Nexus's
 	// compositor scale THIS window's authored width/height to fill the

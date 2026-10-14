@@ -118,6 +118,13 @@ public:
 	// premultiplied by the shader to match the rest of the frame. Default false.
 	virtual bool premultipliesBlits() { return false; }
 
+	// HDR10 OSD brightness: sets the platform compositor's gain for the SDR
+	// OSD so that SDR white lands at `nits` (<= 0 restores the default).
+	// gEGLDC pairs this with its tone curve (see gEGLDC::updateToneControl()),
+	// which assumes the same white level. Returns false when the platform has
+	// no such control - the tone curve is then not used. Render thread.
+	virtual bool setHdrOsdWhiteNits(float nits) { (void)nits; return false; }
+
 	// True when raw-overwrite draws (clear/fill/flat rectangle/line) must write
 	// premultiplied colour (rgb * alpha). Needed where the compositor adds the
 	// stored colour on top of the video (GbquadWindowProvider's window blend is

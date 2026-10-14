@@ -67,6 +67,7 @@ gdiinclude_HEADERS += \
 	gdi/egl/gosd_capture.h \
 	gdi/egl/gtexture_manager.h \
 	gdi/egl/inative_window_provider.h \
+	gdi/egl/platform/nexus_hdr_osd.h \
 	gdi/egl/shader/gadvanced_shader.h \
 	gdi/egl/shader/gshader.h \
 	gdi/egl/shader/gtext_shader.h \

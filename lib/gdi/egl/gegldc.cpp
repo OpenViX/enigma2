@@ -5,6 +5,12 @@
 #include <vector>
 #include <cstdlib> 
 #include <cstring>
+#include <sys/stat.h>
+#include <cstdio>
+#include <chrono>
+#include <cctype>
+#include <locale>
+#include <sstream>
 #include <lib/base/eerror.h>
 #include <lib/base/init.h>
 #include <lib/base/init_num.h>
@@ -2686,6 +2692,8 @@ void gEGLDC::cleanupEGL() {
 		// as a fallback is harmless.
 		m_basic_shader.destroy();
 		m_advanced_shader.destroy();
+		disableTone();
+		releaseToneLut();
 		m_texture_shader.destroy();
 		m_text_shader.destroy();
 		destroyShadowFramebuffer();
@@ -3273,6 +3281,308 @@ void gEGLDC::captureBackgroundIntoPixmap(const eRect& rect) {
 	}
 }
 
+// ---------------------------------------------------------------------------
+// HDR10 OSD tone curve
+// ---------------------------------------------------------------------------
+// Driven by setVideoGamma() (decoder hook): active only while the video is HDR10. Default spec
+// "hlg 1.1"; live override via /tmp/hdr10_osd_tone (see updateToneControl()). Spec forms:
+//     "off"  |  "<white_nits> <gamma>" e.g. "185 2.4"  |  "hlg [<white_signal>] [<gamma>]" e.g. "hlg 1.0 1.2"
+// The curve assumes the driver-side gain is set for the same white level (setHdrOsdWhiteNits()),
+// so that the driver's straight scaling of the corrected values lands on the intended PQ levels.
+
+static float toneNitsToPq(float nits)
+{
+	// SMPTE ST 2084 inverse EOTF (absolute luminance in cd/m2 -> signal 0..1)
+	const float m1 = 0.1593017578125f, m2 = 78.84375f;
+	const float c1 = 0.8359375f, c2 = 18.8515625f, c3 = 18.6875f;
+	const float y = powf(nits / 10000.0f, m1);
+	return powf((c1 + c2 * y) / (1.0f + c3 * y), m2);
+}
+
+static float toneHlgNits(float sig, float gamma)
+{
+	// BT.2100 HLG display light (achromatic, 1000-nit display) for an HLG signal 0..1.
+	// gamma is the system gamma: 1.2 = the standard value; higher darkens the mid-tones, lower lifts them.
+	const float a = 0.17883277f, b = 0.28466892f, c = 0.55991073f;
+	const float e = sig <= 0.5f ? sig * sig / 3.0f : (expf((sig - c) / a) + b) / 12.0f;
+	return 1000.0f * powf(e, gamma);
+}
+
+bool gEGLDC::uploadToneLut(const unsigned char *lut)
+{
+	if (!m_tone_lut_tex)
+		glGenTextures(1, &m_tone_lut_tex);
+	if (!m_tone_lut_tex) {
+		eDebug("[gEGLDC] HDR tone curve: glGenTextures failed");
+		return false;
+	}
+	// texture unit 1 is reserved for the LUT (see gTextureShader); leave unit 0 as it was
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_tone_lut_tex);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, 256, 1, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, lut);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE0);
+	return true;
+}
+
+bool gEGLDC::setToneCurve(float white_nits, float gamma)
+{
+	if (!(white_nits >= 50.0f && white_nits <= 4000.0f && gamma >= 1.0f && gamma <= 3.5f)) {
+		eDebug("[gEGLDC] HDR tone curve: ignoring out-of-range values white=%.1f gamma=%.2f", white_nits, gamma);
+		return false;
+	}
+	if (m_tone_lut_tex && m_tone_kind == 0 && white_nits == m_tone_white_nits && gamma == m_tone_gamma)
+		return true;
+
+	unsigned char lut[256];
+	const float norm = toneNitsToPq(white_nits);
+	for (int i = 0; i < 256; ++i) {
+		const float v = (float)i / 255.0f;
+		float f = toneNitsToPq(white_nits * powf(v, gamma)) / norm;
+		f = f < 0.0f ? 0.0f : (f > 1.0f ? 1.0f : f);
+		lut[i] = (unsigned char)lrintf(f * 255.0f);
+	}
+	if (!uploadToneLut(lut))
+		return false;
+	m_tone_kind = 0;
+	m_tone_white_nits = white_nits;
+	m_tone_gamma = gamma;
+	eDebug("[gEGLDC] HDR tone curve: power, white=%.1f nits gamma=%.2f (lut[64]=%d lut[128]=%d lut[192]=%d)", white_nits, gamma, lut[64], lut[128], lut[192]);
+	return true;
+}
+
+bool gEGLDC::setToneCurveHlg(float white_signal, float gamma)
+{
+	if (!(white_signal >= 0.3f && white_signal <= 1.0f && gamma >= 1.0f && gamma <= 3.5f)) {
+		eDebug("[gEGLDC] HDR tone curve: ignoring out-of-range HLG values white signal=%.2f gamma=%.2f", white_signal, gamma);
+		return false;
+	}
+	if (m_tone_lut_tex && m_tone_kind == 1 && white_signal == m_tone_white_nits && gamma == m_tone_gamma)
+		return true;
+
+	unsigned char lut[256];
+	const float norm = toneNitsToPq(toneHlgNits(white_signal, gamma));
+	for (int i = 0; i < 256; ++i) {
+		float f = toneNitsToPq(toneHlgNits(white_signal * (float)i / 255.0f, gamma)) / norm;
+		f = f < 0.0f ? 0.0f : (f > 1.0f ? 1.0f : f);
+		lut[i] = (unsigned char)lrintf(f * 255.0f);
+	}
+	if (!uploadToneLut(lut))
+		return false;
+	m_tone_kind = 1;
+	m_tone_white_nits = white_signal; // (HLG: the signal level SDR white sits at)
+	m_tone_gamma = gamma;
+	eDebug("[gEGLDC] HDR tone curve: HLG response, SDR white at signal %.2f = %.0f nits, gamma %.2f (lut[64]=%d lut[128]=%d lut[192]=%d)", white_signal, toneHlgNits(white_signal, gamma), gamma, lut[64], lut[128], lut[192]);
+	return true;
+}
+
+// "<white_nits> [<gamma>]"            power curve, gamma default 2.4            e.g. "185 2.4"
+// "hlg [<white_signal>] [<gamma>]"    HLG-style response, white signal default 1.0 (= 1000 nits),
+//                                      system gamma default 1.2.  A lone number above 1.0 is the
+//                                      gamma ("hlg 1.8" = "hlg 1.0 1.8").
+bool gEGLDC::applyToneSpec(const char *text, float *driver_white_nits)
+{
+	while (*text == ' ' || *text == '\t')
+		++text;
+	// Not sscanf("%f"): the process may run under a decimal-comma locale, where
+	// "1.1" would parse as 1. A classic-locale stream always reads '.'.
+	auto parseFloats = [](const char *t, float *out, int max) {
+		std::istringstream is(t);
+		is.imbue(std::locale::classic());
+		int n = 0;
+		while (n < max && (is >> out[n]))
+			++n;
+		return n;
+	};
+	if (!strncmp(text, "hlg", 3)) {
+		float s = 1.0f, g = 1.2f, v[2] = {0.0f, 0.0f};
+		const int n = parseFloats(text + 3, v, 2);
+		const float a = v[0], b = v[1];
+		if (n == 2) {
+			s = a;
+			g = b;
+		} else if (n == 1) {
+			if (a > 1.0f)
+				g = a;
+			else
+				s = a;
+		}
+		if (!setToneCurveHlg(s, g))
+			return false;
+		if (driver_white_nits)
+			*driver_white_nits = toneHlgNits(s, g);
+		return true;
+	}
+	float w = 0.0f, g = 2.4f, v[2] = {0.0f, 2.4f};
+	if (parseFloats(text, v, 2) >= 1 && v[0] > 0.0f) {
+		w = v[0];
+		g = v[1];
+		if (!setToneCurve(w, g))
+			return false;
+		if (driver_white_nits)
+			*driver_white_nits = w;
+		return true;
+	}
+	return false;
+}
+
+void gEGLDC::releaseToneLut()
+{
+	if (m_tone_lut_tex) {
+		glDeleteTextures(1, &m_tone_lut_tex);
+		m_tone_lut_tex = 0;
+	}
+	m_tone_active = false;
+}
+
+// The default OSD tone while an HDR10 stream plays. ENIGMA_EGL_HDR_TONE overrides it
+// ("off" disables the feature); /tmp/hdr10_osd_tone (ENIGMA_EGL_HDR_TONE_FILE) overrides
+// both live, for tuning, and is picked up without a restart.
+static const char *defaultToneSpec()
+{
+	static const char *env = getenv("ENIGMA_EGL_HDR_TONE");
+	return env ? env : "hlg 1.1";
+}
+
+static long long steadyMs()
+{
+	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+}
+
+std::atomic<int> gEGLDC::s_video_gamma{0};
+std::atomic<long long> gEGLDC::s_hdr10_lost_ms{0};
+std::atomic<long long> gEGLDC::s_video_gamma_ms{0};
+
+// How long after the stream stops reporting HDR10 the tone stays on. Default 0: the output
+// is already SDR then, so keeping the raised gain on flashes the OSD too bright. A zap between
+// two HDR10 channels reports SDR for a moment first, which a non-zero value
+// (ENIGMA_EGL_HDR_TONE_GRACE_MS) would bridge at the cost of that flash on real HDR10 -> SDR.
+static long long hdr10GraceMs()
+{
+	static const long long ms = getenv("ENIGMA_EGL_HDR_TONE_GRACE_MS") ? atoll(getenv("ENIGMA_EGL_HDR_TONE_GRACE_MS")) : 0;
+	return ms;
+}
+
+void gEGLDC::setVideoGamma(int gamma)
+{
+	if (gamma < 0 || gamma > 3)
+		gamma = 0;
+	const int prev = s_video_gamma.exchange(gamma);
+	if (prev == gamma)
+		return;
+	s_video_gamma_ms = steadyMs();
+	s_hdr10_lost_ms = gamma == 2 ? 0 : s_video_gamma_ms.load();
+	if (!s_instance)
+		return;
+	// Main thread (decoder / service events). Make sure a frame is presented to act on this,
+	// and - when HDR10 just ended - another one after the grace period.
+	if (gamma != 2 && hdr10GraceMs() > 0) {
+		if (!s_instance->m_hdr_timer) {
+			s_instance->m_hdr_timer = eTimer::create(eApp);
+			s_instance->m_hdr_timer->timeout.connect(sigc::mem_fun(*s_instance, &gEGLDC::requestFlush));
+		}
+		s_instance->m_hdr_timer->start(hdr10GraceMs() + 100, true);
+	}
+	s_instance->requestFlush();
+}
+
+void gEGLDC::disableTone()
+{
+	if (m_tone_active || m_tone_gain_set)
+		eDebug("[gEGLDC] HDR tone curve: off");
+	m_tone_active = false;
+	m_tone_spec.clear();
+	if (m_tone_gain_set) {
+		if (m_window_provider)
+			m_window_provider->setHdrOsdWhiteNits(0.0f);
+		m_tone_gain_set = false;
+	}
+}
+
+// Render thread, once per presented frame. HDR10 playing -> the OSD is mapped through the tone
+// curve and the driver's OSD gain is set for the same SDR white level (the curve assumes it);
+// anything else -> both off.
+void gEGLDC::updateToneControl()
+{
+	// A stat() a few times a second is the whole cost while nothing changes.
+	// A gamma change is acted on at once, not at the next poll: no further frame may follow it.
+	const int cur_gamma = s_video_gamma.load();
+	const bool gamma_changed = cur_gamma != m_tone_seen_gamma;
+	m_tone_seen_gamma = cur_gamma;
+	const auto now = std::chrono::steady_clock::now();
+	if (!gamma_changed && now - m_tone_last_poll < std::chrono::milliseconds(100))
+		return;
+	m_tone_last_poll = now;
+
+	bool hdr10 = cur_gamma == 2;
+	if (!hdr10 && (m_tone_active || m_tone_gain_set)) {
+		const long long lost = s_hdr10_lost_ms.load();
+		hdr10 = lost != 0 && steadyMs() - lost < hdr10GraceMs(); // optionally stay on through a zap's SDR blip
+	}
+	if (!hdr10) {
+		if (gamma_changed)
+			eDebug("[gEGLDC] HDR10 OSD: gamma %d, acting %lldms after the event", cur_gamma, steadyMs() - s_video_gamma_ms.load());
+		disableTone();
+		m_tone_stamp = -1;
+		m_tone_file_text.clear();
+		return;
+	}
+
+	// Live-tuning file, re-read only when it changes.
+	static const char *path = getenv("ENIGMA_EGL_HDR_TONE_FILE") ? getenv("ENIGMA_EGL_HDR_TONE_FILE") : "/tmp/hdr10_osd_tone";
+	struct stat st;
+	if (stat(path, &st) != 0) {
+		m_tone_stamp = -1;
+		m_tone_file_text.clear();
+	} else {
+		const long long stamp = ((long long)st.st_mtim.tv_sec * 1000000000LL + st.st_mtim.tv_nsec) ^ (long long)st.st_size;
+		if (stamp != m_tone_stamp) {
+			m_tone_stamp = stamp;
+			char buf[64] = {0};
+			if (FILE *f = fopen(path, "r")) {
+				size_t n = fread(buf, 1, sizeof(buf) - 1, f);
+				buf[n] = 0;
+				fclose(f);
+			}
+			m_tone_file_text = buf;
+			while (!m_tone_file_text.empty() && isspace((unsigned char)m_tone_file_text.back()))
+				m_tone_file_text.pop_back();
+		}
+	}
+
+	const std::string spec = m_tone_file_text.empty() ? std::string(defaultToneSpec()) : m_tone_file_text;
+	if (spec == m_tone_spec)
+		return; // already acted on (also stops a bad spec from being retried every frame)
+	if (spec.compare(0, 3, "off") == 0) {
+		eDebug("[gEGLDC] HDR10 OSD: tone disabled by spec \"%s\" (%s)", spec.c_str(), m_tone_file_text.empty() ? "default/ENIGMA_EGL_HDR_TONE" : "control file - delete it to use the default");
+		disableTone();
+		m_tone_spec = spec;
+		return;
+	}
+	float white_nits = 0.0f;
+	if (!applyToneSpec(spec.c_str(), &white_nits)) {
+		eDebug("[gEGLDC] HDR tone curve: bad spec \"%s\" - off", spec.c_str());
+		disableTone();
+		m_tone_spec = spec;
+		return;
+	}
+	if (!m_window_provider || !m_window_provider->setHdrOsdWhiteNits(white_nits)) {
+		eDebug("[gEGLDC] HDR tone curve: platform has no OSD gain control - off");
+		disableTone();
+		m_tone_spec = spec;
+		return;
+	}
+	m_tone_gain_set = true;
+	m_tone_active = true;
+	m_tone_spec = spec;
+	eDebug("[gEGLDC] HDR10 OSD: tone \"%s\" on, driver SDR white %.0f nits (%lldms after the gamma event)", spec.c_str(), white_nits, steadyMs() - s_video_gamma_ms.load());
+}
+
 void gEGLDC::flip() {
 	// Defines "this frame" for the texture manager's LRU eviction.
 	m_texture_manager.nextFrame();
@@ -3402,9 +3712,12 @@ void gEGLDC::flip() {
 				m_lock_cleared = false;
 				eDebug("[gEGLDC] framebuffer unlocked - presenting UI again");
 			}
+			updateToneControl();
+			// Tone mapping needs the shader present pass (glBlitFramebuffer() cannot change colours).
+			const bool tone = m_tone_active && m_tone_lut_tex && m_use_shadow_fbo;
 			bool shadow_presented = false;
 #ifdef HAVE_GLES3
-			if (m_use_shadow_fbo && gles::isGLES3() && !m_straight_alpha_present) {
+			if (m_use_shadow_fbo && gles::isGLES3() && !m_straight_alpha_present && !tone) {
 				// MUST be a full-screen blit every single frame, regardless
 				// of what actually changed: eglSwapBuffers() on a surface
 				// that doesn't preserve content almost certainly cycles
@@ -3503,7 +3816,9 @@ void gEGLDC::flip() {
 				// premultiplied frame by alpha a second time (translucent areas
 				// too dark) - convert to straight alpha on the way out.
 				m_texture_shader.setUnpremultiply(m_straight_alpha_present, m_unpremult_power);
+				m_texture_shader.setToneLut(tone ? m_tone_lut_tex : 0);
 				m_texture_shader.drawBatch(quad, 6, m_shadow_texture, 1.0f);
+				m_texture_shader.setToneLut(0);
 				m_texture_shader.setUnpremultiply(false);
 				glEnable(GL_BLEND);
 				applyViewport();
