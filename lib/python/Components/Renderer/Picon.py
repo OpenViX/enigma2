@@ -203,10 +203,11 @@ class Picon(Renderer):
 				pngname = piconLocator.getPiconName(self.source.text) or self.defaultpngname
 				if self.pendingPngname != pngname:
 					self.pendingPngname = pngname
-					if self.pngname is None:
+					if self.pngname is None or not self.isScrollingSource():
 						# first picon since this widget was created (e.g. screen
-						# just opened) - show it immediately, only debounce
-						# subsequent rapid changes (key-repeat scrolling)
+						# just opened), or a source that doesn't change per
+						# key-repeat (e.g. CurrentService on zap) - show it
+						# immediately, only debounce rapid scrolling changes
 						self.loadTimer.stop()
 						self.applyPendingPicon()
 					else:
@@ -216,6 +217,12 @@ class Picon(Renderer):
 				self.pngname = None
 				self.pendingPngname = None
 				self.instance.hide()
+
+	def isScrollingSource(self):
+		source = self.source
+		while getattr(source, "source", None) is not None:  # walk converter chain to the root source
+			source = source.source
+		return type(source).__name__ != "CurrentService"
 
 	def applyPendingPicon(self):
 		pngname = self.pendingPngname
