@@ -166,7 +166,7 @@ public:
 	RESULT cueSheet(ePtr<iCueSheet> &ptr);
 
 		// not implemented (yet)
-	RESULT setTarget(int target, bool noaudio = false) { return -1; }
+	RESULT setTarget(int target, bool noaudio = false);
 	RESULT frontendInfo(ePtr<iFrontendInformation> &ptr) { ptr = 0; return -1; }
 	RESULT subServices(ePtr<iSubserviceList> &ptr) { ptr = 0; return -1; }
 	RESULT timeshift(ePtr<iTimeshiftService> &ptr) { ptr = 0; return -1; }
@@ -332,6 +332,10 @@ private:
 	int m_buffer_size;
 	int m_ignore_buffering_messages;
 	bool m_is_live;
+	/* PiP: video-only playback on a secondary hardware decoder (see setTarget()) */
+	int m_pip_decoder;
+	bool m_pip_applied;
+	void applyPipTarget();
 	bool m_use_prefillbuffer;
 	bool m_paused;
 	bool m_clear_buffers;
