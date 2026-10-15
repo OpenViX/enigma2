@@ -699,7 +699,7 @@ class iDVBScrambleMonitor: public iObject
 public:
 	virtual RESULT start(int pid)=0;
 	virtual RESULT stop()=0;
-	/* 1 = scrambled, 0 = clear, -1 = not known (no packets seen yet, or none for a while) */
+	/* 1 = scrambled, 0 = clear, 2 = started but no packet seen yet, -1 = not known (no packets for a while) */
 	virtual int getState()=0;
 };
 

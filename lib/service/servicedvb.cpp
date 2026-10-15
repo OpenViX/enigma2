@@ -2211,9 +2211,12 @@ int eDVBServicePlay::getInfo(int w)
 	case sIsSoftCSA:
 		return (m_csa_session && m_csa_session->isActive());
 	case sIsScrambled:
-		if (m_scramble_monitor && !m_timeshift_active)
+		if (m_is_pvr || m_is_stream || m_timeshift_active || m_scramble_failed)
+			return -1;
+		if (m_scramble_monitor)
 			return m_scramble_monitor->getState();
-		return -1;
+		/* not tuned yet, or no program info yet: it will be known shortly, unless there is nothing to watch */
+		return (no_program_info || !program.videoStreams.empty() || !program.audioStreams.empty()) ? 2 : -1;
 	case sHDRType:
 		return m_hdr_type;
 	case sIsDedicated3D:
@@ -3457,15 +3460,20 @@ void eDVBServicePlay::updateScrambleMonitor()
 		else if (!program.audioStreams.empty())
 			pid = program.audioStreams[0].pid;
 	}
+	eDebug("[eDVBServicePlay] updateScrambleMonitor pid=%04x monitor=%d (pid %04x) failed=%d", pid, m_scramble_monitor ? 1 : 0, m_scramble_pid, m_scramble_failed ? 1 : 0);
 	if (pid <= 0 || pid >= 0x2000 || (m_scramble_monitor && m_scramble_pid == pid))
 		return;
 
 	if (!m_scramble_monitor)
 	{
 		ePtr<iDVBDemux> demux;
-		if (m_service_handler.getDataDemux(demux) || !demux || demux->createScrambleMonitor(m_scramble_monitor))
+		int dres = m_service_handler.getDataDemux(demux);
+		int cres = (!dres && demux) ? demux->createScrambleMonitor(m_scramble_monitor) : -1;
+		if (dres || !demux || cres)
 		{
+			eDebug("[eDVBServicePlay] scramble monitor not created: getDataDemux=%d demux=%d createScrambleMonitor=%d", dres, demux ? 1 : 0, cres);
 			m_scramble_monitor = 0;
+			m_scramble_failed = true;
 			return;
 		}
 	}
@@ -3474,6 +3482,7 @@ void eDVBServicePlay::updateScrambleMonitor()
 	{
 		m_scramble_monitor = 0;
 		m_scramble_pid = -1;
+		m_scramble_failed = true;
 	}
 }
 

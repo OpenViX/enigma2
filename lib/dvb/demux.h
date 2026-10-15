@@ -96,7 +96,7 @@ public:
 class eDVBScrambleMonitor: public iDVBScrambleMonitor, public sigc::trackable
 {
 	DECLARE_REF(eDVBScrambleMonitor);
-	int m_fd, m_pid, m_state, m_idle;
+	int m_fd, m_pid, m_state, m_idle, m_polls;
 	ePtr<eDVBDemux> m_demux;
 	ePtr<eTimer> m_timer;
 	void poll();

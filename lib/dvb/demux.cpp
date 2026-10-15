@@ -444,7 +444,7 @@ static int scanScrambling(const uint8_t *buf, ssize_t len, int pid)
 }
 
 eDVBScrambleMonitor::eDVBScrambleMonitor(eDVBDemux *demux):
-	m_fd(-1), m_pid(-1), m_state(-1), m_idle(0), m_demux(demux), m_timer(eTimer::create(eApp))
+	m_fd(-1), m_pid(-1), m_state(-1), m_idle(0), m_polls(0), m_demux(demux), m_timer(eTimer::create(eApp))
 {
 	CONNECT(m_timer->timeout, eDVBScrambleMonitor::poll);
 }
@@ -481,8 +481,10 @@ RESULT eDVBScrambleMonitor::start(int pid)
 		return -1;
 	}
 	m_pid = pid;
-	m_state = -1;
+	m_state = 2;
 	m_idle = 0;
+	m_polls = 0;
+	eDebug("[eDVBScrambleMonitor] watching pid=%04x", pid);
 	m_timer->start(150, true);
 	return 0;
 }
@@ -507,9 +509,13 @@ void eDVBScrambleMonitor::poll()
 	/* The filter's own buffer is small (a few thousand bytes), so what is in it is always recent. */
 	uint8_t buf[188 * 43];
 	int state = -1;
+	ssize_t last_r = 0;
+	int last_errno = 0;
 	for (int tries = 0; tries < 2; ++tries)
 	{
 		ssize_t r = ::read(m_fd, buf, sizeof(buf));
+		last_r = r;
+		last_errno = (r < 0) ? errno : 0;
 		if (r < 0)
 		{
 			if (errno == EOVERFLOW || errno == EINTR)
@@ -519,13 +525,23 @@ void eDVBScrambleMonitor::poll()
 		state = scanScrambling(buf, r, m_pid);
 		break;
 	}
+	if (m_polls < 4)
+	{
+		++m_polls;
+		eDebug("[eDVBScrambleMonitor] pid=%04x poll %d: read=%d errno=%d sample=%d", m_pid, m_polls, (int)last_r, last_errno, state);
+	}
 	if (state != -1)
 	{
+		if (state != m_state)
+			eDebug("[eDVBScrambleMonitor] pid=%04x %s", m_pid, state ? "scrambled" : "clear");
 		m_state = state;
 		m_idle = 0;
 	}
-	else if (++m_idle >= 6) /* about 3 seconds without a single packet on the pid */
+	else if (++m_idle >= 6 && m_state != -1) /* about 3 seconds without a single packet on the pid */
+	{
+		eDebug("[eDVBScrambleMonitor] pid=%04x no packets, state not known", m_pid);
 		m_state = -1;
+	}
 	m_timer->start(500, true);
 }
 
