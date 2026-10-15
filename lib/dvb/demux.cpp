@@ -481,8 +481,9 @@ RESULT eDVBScrambleMonitor::start(int pid)
 		return -1;
 	}
 	m_pid = pid;
-	m_state = -1;
+	m_state = 2;
 	m_idle = 0;
+	eDebug("[eDVBScrambleMonitor] watching pid=%04x", pid);
 	m_timer->start(150, true);
 	return 0;
 }
@@ -521,11 +522,16 @@ void eDVBScrambleMonitor::poll()
 	}
 	if (state != -1)
 	{
+		if (state != m_state)
+			eDebug("[eDVBScrambleMonitor] pid=%04x %s", m_pid, state ? "scrambled" : "clear");
 		m_state = state;
 		m_idle = 0;
 	}
-	else if (++m_idle >= 6) /* about 3 seconds without a single packet on the pid */
+	else if (++m_idle >= 6 && m_state != -1) /* about 3 seconds without a single packet on the pid */
+	{
+		eDebug("[eDVBScrambleMonitor] pid=%04x no packets, state not known", m_pid);
 		m_state = -1;
+	}
 	m_timer->start(500, true);
 }
 
