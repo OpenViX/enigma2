@@ -2215,8 +2215,8 @@ int eDVBServicePlay::getInfo(int w)
 			return -1;
 		if (m_scramble_monitor)
 			return m_scramble_monitor->getState();
-		/* not tuned yet, or no program info yet: it will be known shortly, unless there is nothing to watch */
-		return (no_program_info || !program.videoStreams.empty() || !program.audioStreams.empty()) ? 2 : -1;
+		/* not tuned yet, or no program info yet: it will be known shortly, unless the PMT turned out to have nothing to watch */
+		return m_scramble_nopid ? -1 : 2;
 	case sHDRType:
 		return m_hdr_type;
 	case sIsDedicated3D:
@@ -3459,8 +3459,10 @@ void eDVBServicePlay::updateScrambleMonitor()
 			pid = program.videoStreams[0].pid;
 		else if (!program.audioStreams.empty())
 			pid = program.audioStreams[0].pid;
+		/* a real PMT (not the cached start) without video or audio: nothing to watch */
+		m_scramble_nopid = (pid <= 0 || pid >= 0x2000) && !program.isCached;
 	}
-	eDebug("[eDVBServicePlay] updateScrambleMonitor pid=%04x monitor=%d (pid %04x) failed=%d", pid, m_scramble_monitor ? 1 : 0, m_scramble_pid, m_scramble_failed ? 1 : 0);
+	eDebug("[eDVBServicePlay] updateScrambleMonitor pid=%04x monitor=%d (pid %04x) failed=%d nopid=%d", pid, m_scramble_monitor ? 1 : 0, m_scramble_pid, m_scramble_failed ? 1 : 0, m_scramble_nopid ? 1 : 0);
 	if (pid <= 0 || pid >= 0x2000 || (m_scramble_monitor && m_scramble_pid == pid))
 		return;
 
