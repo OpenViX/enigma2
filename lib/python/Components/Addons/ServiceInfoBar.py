@@ -69,6 +69,7 @@ class ServiceInfoBar(GUIAddon):
 		self.tunerColors = parameters.get("FrontendInfoColors", (0x0000FF00, 0x00FFFF00, 0x007F7F7F))  # tuner active, busy, available colors
 		self.codecIconPrefix = "icon_"  # forced prefix used for video and audio codc icons
 		self.updateStateKey = None
+		self.serviceEnded = False
 		config.softwareupdate.updatefound.addNotifier(self.checkUpdateState, initial_call=False, immediate_feedback=True)
 
 	def onContainerShown(self):
@@ -81,14 +82,14 @@ class ServiceInfoBar(GUIAddon):
 			self.__event_tracker = ServiceEventTracker(screen=self.relatedScreen,
 				eventmap={
 					iPlayableService.evStart: self.scheduleAddonUpdate,
-					iPlayableService.evEnd: self.scheduleAddonUpdate,
+					iPlayableService.evEnd: self.onServiceEnd,
 					iPlayableService.evUpdatedInfo: self.scheduleAddonUpdate,
 					iPlayableService.evVideoSizeChanged: self.updateAddon,
 					iPlayableService.evHBBTVInfo: self.scheduleAddonUpdate,
 					iPlayableService.evNewProgramInfo: self.scheduleAddonUpdate,
 					iPlayableService.evCuesheetChanged: self.scheduleAddonUpdate,
 					iPlayableService.evTunedIn: self.scheduleAddonUpdate,
-					iPlayableService.evVideoGammaChanged: self.scheduleAddonUpdate,
+					iPlayableService.evVideoGammaChanged: self.onGammaChanged,
 				}
 			)
 		self.currentServiceSource = self.source.screen["CurrentService"]
@@ -121,6 +122,14 @@ class ServiceInfoBar(GUIAddon):
 			self.records_running = len(recs)
 			if self.records_running != prevRecords:
 				self.updateAddon()
+
+	def onGammaChanged(self):
+		self.serviceEnded = False  # the new service has reported its own gamma
+		self.scheduleAddonUpdate()
+
+	def onServiceEnd(self):
+		self.serviceEnded = True  # keep gamma hidden until the new service reports its own
+		self.updateAddon()
 
 	def scheduleAddonUpdate(self):
 		if hasattr(self, "refreshAddon"):
@@ -262,7 +271,7 @@ class ServiceInfoBar(GUIAddon):
 				self.gotRecordEvent(None, None)
 				if self.records_running > 0:
 					return key
-			elif key == "gamma" and not isRef:
+			elif key == "gamma" and not isRef and not self.serviceEnded:
 				hdr = info.getInfo(iServiceInformation.sHDRType)
 				is_hdr = hdr == 3 if hdr > 0 else info.getInfo(iServiceInformation.sGamma) == 1
 				is_hdr10 = hdr == 1 if hdr > 0 else info.getInfo(iServiceInformation.sGamma) == 2
