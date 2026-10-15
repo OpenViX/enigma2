@@ -137,14 +137,17 @@ class Navigation:
 
 		InfoBarInstance = InfoBar.instance
 
-		oldref = self.currentlyPlayingServiceOrGroup
-		if oldref is not None:
-			self.retryServicePlayCount = 0
-
 		current_service_source = None
-		is_async_play = False
 		if InfoBarInstance:
 			current_service_source = InfoBarInstance.session.screen["CurrentService"]
+
+		oldref = self.currentlyPlayingServiceOrGroup
+		if oldref is not None:
+			if InfoBarInstance and current_service_source:
+				current_service_source.newService(False)
+			self.retryServicePlayCount = 0
+
+		is_async_play = False
 
 		if ref and oldref and ref == oldref and not forceRestart:
 			print("[Navigation] ignore request to play already running service(1)")
