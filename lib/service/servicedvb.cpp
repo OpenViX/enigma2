@@ -3462,7 +3462,6 @@ void eDVBServicePlay::updateScrambleMonitor()
 		/* a real PMT (not the cached start) without video or audio: nothing to watch */
 		m_scramble_nopid = (pid <= 0 || pid >= 0x2000) && !program.isCached;
 	}
-	eDebug("[eDVBServicePlay] updateScrambleMonitor pid=%04x monitor=%d (pid %04x) failed=%d nopid=%d", pid, m_scramble_monitor ? 1 : 0, m_scramble_pid, m_scramble_failed ? 1 : 0, m_scramble_nopid ? 1 : 0);
 	if (pid <= 0 || pid >= 0x2000 || (m_scramble_monitor && m_scramble_pid == pid))
 		return;
 
