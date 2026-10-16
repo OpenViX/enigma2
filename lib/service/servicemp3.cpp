@@ -483,6 +483,39 @@ GstPadProbeReturn eac3AtmosProbe(GstPad *pad, GstPadProbeInfo *info, gpointer us
 	return GST_PAD_PROBE_OK;
 }
 
+struct ByteCounterProbeData
+{
+	std::shared_ptr<std::atomic<guint64> > counter;
+};
+
+static void freeByteCounterProbeData(gpointer data)
+{
+	delete static_cast<ByteCounterProbeData*>(data);
+}
+
+static GstPadProbeReturn byteCounterProbe(GstPad *, GstPadProbeInfo *info, gpointer user_data)
+{
+	ByteCounterProbeData *probe = static_cast<ByteCounterProbeData*>(user_data);
+	guint64 size = 0;
+	if (GST_PAD_PROBE_INFO_TYPE(info) & GST_PAD_PROBE_TYPE_BUFFER_LIST)
+	{
+		GstBufferList *list = GST_PAD_PROBE_INFO_BUFFER_LIST(info);
+		if (list)
+			size = gst_buffer_list_calculate_size(list);
+	}
+	else if (GstBuffer *buffer = GST_PAD_PROBE_INFO_BUFFER(info))
+		size = gst_buffer_get_size(buffer);
+	if (probe && size)
+		probe->counter->fetch_add(size, std::memory_order_relaxed);
+	return GST_PAD_PROBE_OK;
+}
+
+static GQuark byteCounterProbeQuark()
+{
+	static GQuark quark = g_quark_from_static_string("enigma2-byte-counter-probe");
+	return quark;
+}
+
 GQuark eac3AtmosProbeQuark()
 {
 	static GQuark quark = g_quark_from_static_string("enigma2-eac3-atmos-probe");
@@ -1797,6 +1830,10 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 
 	m_aspect = m_width = m_height = m_framerate = m_progressive = m_gamma = -1;
 	m_hdr_type = 0;
+	m_br_last_video_bytes = m_br_last_audio_bytes = 0;
+	m_br_last_us = 0;
+	m_br_audio_idx = -1;
+	m_br_video_kbps = m_br_audio_kbps = 0;
 #ifdef HAS_SOFTWARE_HDR_DETECTION
 	m_hdr_probe_id = 0;
 	m_hdr_probe_pad = NULL;
@@ -3738,6 +3775,79 @@ void eServiceMP3::updateHDRFromVideoPad()
 }
 #endif /* HAS_SOFTWARE_HDR_DETECTION */
 
+/* Count the compressed bytes entering playbin's video/audio stream selectors so the
+ * bitrate viewer has something to show for servicemp3 (there is no demux to tap). */
+void eServiceMP3::installBitrateProbes(int n_video, int n_audio)
+{
+	auto install = [](GstPad *pad, byteCounterPtr &counter) -> bool
+	{
+		if (g_object_get_qdata(G_OBJECT(pad), byteCounterProbeQuark()))
+			return false;
+		g_object_set_qdata(G_OBJECT(pad), byteCounterProbeQuark(), GUINT_TO_POINTER(1));
+		counter = std::make_shared<std::atomic<guint64> >(0);
+		ByteCounterProbeData *data = new ByteCounterProbeData{counter};
+		gst_pad_add_probe(pad, (GstPadProbeType)(GST_PAD_PROBE_TYPE_BUFFER | GST_PAD_PROBE_TYPE_BUFFER_LIST),
+			byteCounterProbe, data, freeByteCounterProbeData);
+		return true;
+	};
+
+	if (n_video > 0)
+	{
+		GstPad *pad = NULL;
+		g_signal_emit_by_name(m_gst_playbin, "get-video-pad", 0, &pad);
+		if (pad)
+		{
+			if (install(pad, m_video_byte_counter))
+				m_br_last_video_bytes = 0;
+			gst_object_unref(pad);
+		}
+	}
+	if ((int)m_audio_byte_counters.size() < n_audio)
+		m_audio_byte_counters.resize(n_audio);
+	for (int i = 0; i < n_audio; i++)
+	{
+		GstPad *pad = NULL;
+		g_signal_emit_by_name(m_gst_playbin, "get-audio-pad", i, &pad);
+		if (!pad)
+			continue;
+		if (install(pad, m_audio_byte_counters[i]) && i == m_br_audio_idx)
+			m_br_last_audio_bytes = 0;
+		gst_object_unref(pad);
+	}
+}
+
+void eServiceMP3::updateLiveBitrate()
+{
+	const gint64 now = g_get_monotonic_time();
+	const int audio_idx = m_currentAudioStream;
+	if (audio_idx != m_br_audio_idx)
+	{
+		m_br_audio_idx = audio_idx;
+		m_br_last_audio_bytes = 0;
+		m_br_last_us = 0;
+		m_br_audio_kbps = 0;
+	}
+	const guint64 vbytes = m_video_byte_counter ? m_video_byte_counter->load(std::memory_order_relaxed) : 0;
+	const guint64 abytes = (audio_idx >= 0 && audio_idx < (int)m_audio_byte_counters.size() && m_audio_byte_counters[audio_idx]) ?
+		m_audio_byte_counters[audio_idx]->load(std::memory_order_relaxed) : 0;
+	if (!m_br_last_us)
+	{
+		m_br_last_us = now;
+		m_br_last_video_bytes = vbytes;
+		m_br_last_audio_bytes = abytes;
+		return;
+	}
+	const gint64 delta_us = now - m_br_last_us;
+	if (delta_us < 500000)
+		return;
+	/* bytes * 8 / 1000 / (us / 1e6) == bytes * 8000 / us */
+	m_br_video_kbps = vbytes >= m_br_last_video_bytes ? (int)((vbytes - m_br_last_video_bytes) * 8000 / delta_us) : 0;
+	m_br_audio_kbps = abytes >= m_br_last_audio_bytes ? (int)((abytes - m_br_last_audio_bytes) * 8000 / delta_us) : 0;
+	m_br_last_us = now;
+	m_br_last_video_bytes = vbytes;
+	m_br_last_audio_bytes = abytes;
+}
+
 RESULT eServiceMP3::info(ePtr<iServiceInformation>&i)
 {
 	i = this;
@@ -3859,6 +3969,14 @@ int eServiceMP3::getInfo(int w)
 		tag = "has-crc";
 		break;
 	case sBuffer: return m_bufferInfo.bufferPercent;
+	case sVideoBitrate:
+		if (!m_video_byte_counter) return -1;
+		updateLiveBitrate();
+		return m_br_video_kbps;
+	case sAudioBitrate:
+		if (m_audio_byte_counters.empty()) return -1;
+		updateLiveBitrate();
+		return m_br_audio_kbps;
 	case sVideoType:
 	{
 		if (!videoSink) return -1;
@@ -5262,6 +5380,8 @@ void eServiceMP3::gstBusCall(GstMessage *msg)
 
 				if ( n_video + n_audio <= 0 )
 					stop();
+
+				installBitrateProbes(n_video, n_audio);
 
 				std::vector<audioStream> audioStreams_temp;
 				std::vector<subtitleStream> subtitleStreams_temp;

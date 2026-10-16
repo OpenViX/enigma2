@@ -431,6 +431,8 @@ public:
 		sHDRType,			/* 0=SDR 1=HDR10 2=HLG 3=HDR */
 
 		sIsScrambled,		/* live DVB: 1 = the packets of the video (or audio) PID carry the scrambling flag right now, 0 = they are clear, 2 = being determined (no packet seen yet), -1 = not available or not known */
+		sVideoBitrate,		/* measured live bitrate of the video stream in kbit/s (servicemp3; -1 = not available) */
+		sAudioBitrate,		/* same for the currently selected audio stream */
 
 		sUser = 0x100
 	};

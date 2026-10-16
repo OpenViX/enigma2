@@ -11,6 +11,7 @@
 /* for subtitles */
 #include <lib/gui/esubtitle.h>
 #include <atomic>
+#include <memory>
 
 class eStaticServiceMP3Info;
 
@@ -318,6 +319,16 @@ protected:
 private:
 	static int pcm_delay;
 	static int ac3_delay;
+	/* live bitrate: pad probes on the playbin stream pads count compressed bytes (streaming thread),
+	 * getInfo(sVideoBitrate/sAudioBitrate) turns the deltas into kbit/s (main thread) */
+	typedef std::shared_ptr<std::atomic<guint64> > byteCounterPtr;
+	byteCounterPtr m_video_byte_counter;
+	std::vector<byteCounterPtr> m_audio_byte_counters;
+	guint64 m_br_last_video_bytes, m_br_last_audio_bytes;
+	gint64 m_br_last_us;
+	int m_br_audio_idx, m_br_video_kbps, m_br_audio_kbps;
+	void installBitrateProbes(int n_video, int n_audio);
+	void updateLiveBitrate();
 	int m_currentAudioStream;
 	int m_currentSubtitleStream;
 	int m_cachedSubtitleStream;
