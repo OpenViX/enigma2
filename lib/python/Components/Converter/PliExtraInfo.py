@@ -47,20 +47,13 @@ def ecmFilePresent():
 
 # Whether a softcam is loaded: only then does a missing /tmp/ecm.info mean something (used when the stream cannot be asked).
 def softcamLoaded():
-	try:
-		return bool(SystemInfo["HasInitCam"])
-	except Exception:
-		return False
+	return bool(SystemInfo["HasInitCam"])
 
 
 # 1 = the packets of the current video (or audio) PID are scrambled right now, 0 = they are clear, -1 = not known
 # (also on images without iServiceInformation.sIsScrambled, for IPTV, recordings, timeshift and in the first moments after a zap).
 def scramblingState(info):
-	key = getattr(iServiceInformation, "sIsScrambled", None)
-	print("scramblingState", repr(key))
-	if key is not None:
-		print("scramblingState", repr(info.getInfo(key)))
-	return -1 if key is None else info.getInfo(key)
+	return info.getInfo(iServiceInformation.sIsScrambled)
 
 
 # Used when there is no ecm.info: True if the stream can be called free to air. If the stream can be asked, that decides,
