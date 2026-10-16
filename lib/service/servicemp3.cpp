@@ -3819,7 +3819,15 @@ void eServiceMP3::installBitrateProbes(int n_video, int n_audio)
 void eServiceMP3::updateLiveBitrate()
 {
 	const gint64 now = g_get_monotonic_time();
-	const int audio_idx = m_currentAudioStream;
+	/* streams (IPTV mpegts) can add their audio pads after async-done, so (re)install lazily;
+	 * pads that already have a probe are skipped */
+	if (m_gst_playbin)
+	{
+		gint n_video = 0, n_audio = 0;
+		g_object_get(m_gst_playbin, "n-video", &n_video, "n-audio", &n_audio, NULL);
+		installBitrateProbes(n_video, n_audio);
+	}
+	const int audio_idx = m_currentAudioStream >= 0 ? m_currentAudioStream : 0;
 	if (audio_idx != m_br_audio_idx)
 	{
 		m_br_audio_idx = audio_idx;
@@ -3970,13 +3978,11 @@ int eServiceMP3::getInfo(int w)
 		break;
 	case sBuffer: return m_bufferInfo.bufferPercent;
 	case sVideoBitrate:
-		if (!m_video_byte_counter) return -1;
 		updateLiveBitrate();
-		return m_br_video_kbps;
+		return m_video_byte_counter ? m_br_video_kbps : -1;
 	case sAudioBitrate:
-		if (m_audio_byte_counters.empty()) return -1;
 		updateLiveBitrate();
-		return m_br_audio_kbps;
+		return m_audio_byte_counters.empty() ? -1 : m_br_audio_kbps;
 	case sVideoType:
 	{
 		if (!videoSink) return -1;
