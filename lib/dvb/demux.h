@@ -2,6 +2,9 @@
 #define __dvb_demux_h
 
 #include <aio.h>
+#include <atomic>
+#include <vector>
+#include <lib/base/thread.h>
 #include <lib/dvb/idvb.h>
 #include <lib/dvb/idemux.h>
 #include <lib/dvb/pvrparse.h>
@@ -26,6 +29,7 @@ public:
 	RESULT createSectionReader(eMainloop *context, ePtr<iDVBSectionReader> &reader);
 	RESULT createPESReader(eMainloop *context, ePtr<iDVBPESReader> &reader);
 	RESULT createScrambleMonitor(ePtr<iDVBScrambleMonitor> &monitor);
+	RESULT createBitrateCounter(ePtr<iDVBBitrateCounter> &counter);
 	RESULT createTSRecorder(ePtr<iDVBTSRecorder> &recorder, unsigned int packetsize = 188, bool streaming=false, bool sync_mode=false, bool is_streaming_output=false);
 	RESULT getMPEGDecoder(ePtr<iTSMPEGDecoder> &reader, int index);
 	RESULT getSTC(pts_t &pts, int num);
@@ -45,6 +49,7 @@ private:
 	friend class eDVBSectionReader;
 	friend class eDVBPESReader;
 	friend class eDVBScrambleMonitor;
+	friend class eDVBBitrateCounter;
 	friend class eDVBAudio;
 	friend class eDVBVideo;
 	friend class eDVBPCR;
@@ -108,6 +113,52 @@ public:
 	int getState() { return m_state; }
 };
 
+/* The thread only reads one PID of a demux and adds up the bytes, nothing is written anywhere. It starts on a
+ * PES tap, like the old bitrate tool. A tap that stays silent for TAP_FALLBACK_US is opened again, as the other
+ * kind of tap if it never delivered a byte, so a stream that stalls or starts late is picked up again. It gives the
+ * demux filter back after IDLE_US without a getKbps() call and getKbps() starts it again. */
+class eDVBBitrateCounter: public iDVBBitrateCounter, public eThread
+{
+	DECLARE_REF(eDVBBitrateCounter);
+	/* a demux filter buffer is only a few KB by default, far too small for a video PID */
+	static const int BUFFER_SIZE = 1024 * 1024;
+	static const int POLL_TIMEOUT_MS = 250;
+	static const int64_t IDLE_US = 5000000;
+	static const int64_t MIN_WINDOW_US = 500000;
+	/* how long a tap may stay silent before it is opened again */
+	static const int64_t TAP_FALLBACK_US = 2000000;
+	/* the kbit/s of the bytes read are scaled down by this much to leave out the TS header overhead of a
+	 * TS tap and the PES header overhead of a PES tap */
+	static const int TS_PAYLOAD_PERCENT = 97;
+	static const int PES_PAYLOAD_PERCENT = 99;
+
+	ePtr<eDVBDemux> m_demux;
+	int m_pid;		/* wanted PID, -1 = stopped (main thread only) */
+	int m_fd;		/* demux filter: opened by the main thread, closed by the counting thread when it ends */
+	int m_wake_fd;		/* eventfd, wakes the counting thread for stop() */
+	std::vector<uint8_t> m_buf;
+	std::atomic<uint64_t> m_bytes;
+	std::atomic<uint64_t> m_overflows;
+	std::atomic<int64_t> m_last_query_us;
+	std::atomic<bool> m_exited;
+	std::atomic<bool> m_ts_tap;	/* the filter is a TS tap, not a PES tap */
+	/* current measuring window (main thread only) */
+	uint64_t m_win_bytes;
+	int64_t m_win_us;
+	int m_kbps;
+
+	int openFilter(int pid, bool ts);
+	int startThread();
+	void stopThread();
+	/* override */ void thread();
+public:
+	eDVBBitrateCounter(eDVBDemux *demux);
+	virtual ~eDVBBitrateCounter();
+	RESULT start(int pid);
+	RESULT stop();
+	int getKbps();
+};
+
 class eDVBRecordFileThread: public eFilePushThreadRecorder
 {
 public:
@@ -125,6 +176,9 @@ public:
 	// See iDVBTSRecorder::setMonitorFD. Only eDVBRecordScrambledThread's
 	// writeData() actually feeds this; harmless (unused) elsewhere.
 	void setMonitorFD(int fd) { m_monitor_fd = fd; }
+	void setCountPID(int slot, int pid);
+	int getCountPID(int slot) { return m_count_pid[slot].load(std::memory_order_relaxed); }
+	uint64_t getCountedBytes(int slot) { return m_count_bytes[slot].load(std::memory_order_relaxed); }
 
 	// Virtual: wait for first data (only ScrambledThread actually waits)
 	virtual bool waitForFirstData(int /*timeout_ms*/) { return true; }
@@ -161,6 +215,10 @@ protected:
 	ePtr<iServiceScrambled> m_serviceDescrambler;
 	int m_aio_short_write_count = 0;
 	int m_monitor_fd = -1;
+	/* bytes of up to two PIDs, see iDVBTSRecorder::setCountPID: written by this thread, read by the main thread */
+	std::atomic<int> m_count_pid[2];
+	std::atomic<uint64_t> m_count_bytes[2];
+	void countPIDs(const unsigned char *buf, int len);
 };
 
 class eDVBRecordStreamThread: public eDVBRecordFileThread
@@ -230,6 +288,9 @@ public:
 	RESULT setDescrambler(ePtr<iServiceScrambled>);
 	void setDiscardOnTimeout(bool discard);
 	RESULT setMonitorFD(int fd) override;
+	RESULT setCountPID(int slot, int pid) override;
+	int getCountPID(int slot) override;
+	uint64_t getCountedBytes(int slot) override;
 
 	// Wait for first data to be written (for SoftDecoder sync)
 	bool waitForFirstData(int timeout_ms);
