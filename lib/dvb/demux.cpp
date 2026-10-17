@@ -6,6 +6,9 @@
 #include <signal.h>
 #include <sys/sysinfo.h>
 #include <sys/mman.h>
+#include <sys/eventfd.h>
+#include <poll.h>
+#include <time.h>
 #include <atomic>
 
 #include <linux/dvb/dmx.h>
@@ -149,6 +152,12 @@ RESULT eDVBDemux::createPESReader(eMainloop *context, ePtr<iDVBPESReader> &reade
 RESULT eDVBDemux::createScrambleMonitor(ePtr<iDVBScrambleMonitor> &monitor)
 {
 	monitor = new eDVBScrambleMonitor(this);
+	return 0;
+}
+
+RESULT eDVBDemux::createBitrateCounter(ePtr<iDVBBitrateCounter> &counter)
+{
+	counter = new eDVBBitrateCounter(this);
 	return 0;
 }
 
@@ -535,6 +544,296 @@ void eDVBScrambleMonitor::poll()
 	m_timer->start(500, true);
 }
 
+static int64_t monotonicUs()
+{
+	struct timespec ts;
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	return (int64_t)ts.tv_sec * 1000000 + ts.tv_nsec / 1000;
+}
+
+eDVBBitrateCounter::eDVBBitrateCounter(eDVBDemux *demux):
+	m_demux(demux), m_pid(-1), m_fd(-1), m_wake_fd(-1), m_buf(188 * 512),
+	m_bytes(0), m_overflows(0), m_last_query_us(0), m_exited(true), m_ts_tap(false),
+	m_win_bytes(0), m_win_us(0), m_kbps(0)
+{
+}
+
+DEFINE_REF(eDVBBitrateCounter)
+
+eDVBBitrateCounter::~eDVBBitrateCounter()
+{
+	stop();
+}
+
+/* Demux filter of one PID, opened the way the old bitrate tool does it. ts == false: PES tap, the payload of
+ * the PID. ts == true: TS tap, the raw packets of the PID, the way the recorder opens it. Some drivers deliver
+ * nothing to a PES tap on a PID the video decoder uses, but do deliver it as a TS tap. */
+int eDVBBitrateCounter::openFilter(int pid, bool ts)
+{
+	/* read-only, the way the recorder opens its TS tap (openDemux() would give O_RDWR) */
+	char filename[32] = {};
+	snprintf(filename, sizeof(filename), "/dev/dvb/adapter%d/demux%d", m_demux->adapter, m_demux->demux);
+	int fd = ::open(filename, O_RDONLY | O_CLOEXEC);
+	if (fd < 0)
+	{
+		eDebug("[eDVBBitrateCounter] open %s failed: %m", filename);
+		return -1;
+	}
+	::fcntl(fd, F_SETFL, O_NONBLOCK);
+	if (::ioctl(fd, DMX_SET_BUFFER_SIZE, BUFFER_SIZE) < 0)
+		eDebug("[eDVBBitrateCounter] DMX_SET_BUFFER_SIZE failed: %m");
+
+	dmx_pes_filter_params flt = {};
+	flt.pes_type = DMX_PES_OTHER;
+	flt.output = ts ? DMX_OUT_TSDEMUX_TAP : DMX_OUT_TAP;
+	flt.pid = pid;
+	flt.input = DMX_IN_FRONTEND;
+	flt.flags = ts ? 0 : DMX_IMMEDIATE_START;
+	if (::ioctl(fd, DMX_SET_PES_FILTER, &flt) < 0 || (ts && ::ioctl(fd, DMX_START) < 0))
+	{
+		eDebug("[eDVBBitrateCounter] cannot filter pid=%04x (%s tap on %s): %m", pid, ts ? "TS" : "PES", filename);
+		::close(fd);
+		return -1;
+	}
+	eDebug("[eDVBBitrateCounter] pid=%04x: %s tap on %s", pid, ts ? "TS" : "PES", filename);
+	return fd;
+}
+
+int eDVBBitrateCounter::startThread()
+{
+	/* always start on the PES tap: a TS tap that was needed once is not trusted for the next start */
+	bool ts = false;
+	int fd = openFilter(m_pid, ts);
+	if (fd < 0 && !ts)
+	{
+		/* the driver does not take a PES filter on this PID: the TS tap is the only way */
+		ts = true;
+		fd = openFilter(m_pid, true);
+	}
+	if (fd < 0)
+		return -1;
+	m_ts_tap = ts;
+	int wake = ::eventfd(0, EFD_CLOEXEC);
+	if (wake < 0)
+	{
+		eDebug("[eDVBBitrateCounter] eventfd failed: %m");
+		::ioctl(fd, DMX_STOP);
+		::close(fd);
+		return -1;
+	}
+	m_fd = fd;
+	m_wake_fd = wake;
+	m_bytes = 0;
+	m_overflows = 0;
+	m_last_query_us = monotonicUs();
+	m_win_bytes = 0;
+	m_win_us = 0;
+	m_kbps = 0;
+	m_exited = false;
+	if (run())
+	{
+		::ioctl(m_fd, DMX_STOP);
+		::close(m_fd);
+		::close(m_wake_fd);
+		m_fd = m_wake_fd = -1;
+		m_exited = true;
+		return -1;
+	}
+	return 0;
+}
+
+void eDVBBitrateCounter::stopThread()
+{
+	if (m_wake_fd >= 0)
+	{
+		uint64_t one = 1;
+		ssize_t w = ::write(m_wake_fd, &one, sizeof(one));
+		(void)w;
+	}
+	kill(); /* joins the thread; nothing to do when it never ran or ended already */
+	if (m_fd >= 0)
+	{
+		::ioctl(m_fd, DMX_STOP);
+		::close(m_fd);
+		m_fd = -1;
+	}
+	if (m_wake_fd >= 0)
+	{
+		::close(m_wake_fd);
+		m_wake_fd = -1;
+	}
+}
+
+RESULT eDVBBitrateCounter::start(int pid)
+{
+	stop();
+	if (pid <= 0 || pid >= 0x2000)
+		return -1;
+	m_pid = pid;
+	m_ts_tap = false; /* a new PID starts on the PES tap again */
+	if (startThread())
+	{
+		m_pid = -1;
+		return -1;
+	}
+	eDebug("[eDVBBitrateCounter] counting pid=%04x", pid);
+	return 0;
+}
+
+RESULT eDVBBitrateCounter::stop()
+{
+	stopThread();
+	m_pid = -1;
+	return 0;
+}
+
+/* Runs on the counting thread: read what the filter has and add it up, nothing else. */
+void eDVBBitrateCounter::thread()
+{
+	hasStarted();
+
+	struct pollfd pfd[2] = {};
+	pfd[0].fd = m_fd;
+	pfd[0].events = POLLIN;
+	pfd[1].fd = m_wake_fd;
+	pfd[1].events = POLLIN;
+
+	/* progress watchdog: a filter that stays silent for TAP_FALLBACK_US is opened again. If it never delivered a
+	 * byte since it was opened, the other kind of tap is tried, otherwise the same kind again */
+	int64_t progress_us = monotonicUs();
+	uint64_t seen_bytes = 0;
+	bool delivered = false;
+	unsigned int reopens = 0;
+	unsigned int wakeups = 0, empty_reads = 0; /* only for the log line at the end */
+
+	while (true)
+	{
+		int r = ::poll(pfd, 2, POLL_TIMEOUT_MS);
+		if (r < 0)
+		{
+			if (errno == EINTR)
+				continue;
+			eDebug("[eDVBBitrateCounter] poll failed: %m");
+			break;
+		}
+		if (pfd[1].revents)
+			break; /* stop() */
+		if (pfd[0].revents & POLLNVAL)
+			break;
+		if (pfd[0].revents & (POLLIN | POLLERR))
+		{
+			++wakeups;
+			bool failed = false;
+			for (int n = 0; n < 16; ++n)
+			{
+				ssize_t len = ::read(m_fd, m_buf.data(), m_buf.size());
+				if (len > 0)
+				{
+					m_bytes.fetch_add((uint64_t)len, std::memory_order_relaxed);
+					continue;
+				}
+				if (len < 0 && errno == EOVERFLOW)
+				{
+					/* the filter buffer ran full and bytes were dropped, keep counting */
+					m_overflows.fetch_add(1, std::memory_order_relaxed);
+					continue;
+				}
+				if (len < 0 && errno == EINTR)
+					continue;
+				if (len < 0 && errno != EAGAIN)
+				{
+					eDebug("[eDVBBitrateCounter] read failed: %m");
+					failed = true;
+				}
+				else
+					++empty_reads;
+				break;
+			}
+			if (failed)
+				break;
+		}
+		const int64_t now_us = monotonicUs();
+		const uint64_t bytes_now = m_bytes.load(std::memory_order_relaxed);
+		if (bytes_now != seen_bytes)
+		{
+			seen_bytes = bytes_now;
+			progress_us = now_us;
+			delivered = true;
+		}
+		else if (now_us - progress_us >= TAP_FALLBACK_US)
+		{
+			/* only this thread touches m_fd while it runs */
+			const bool ts = delivered ? m_ts_tap.load() : !m_ts_tap.load();
+			eDebug("[eDVBBitrateCounter] pid=%04x: nothing on the %s tap for %d ms, opening the %s tap", m_pid,
+				m_ts_tap.load() ? "TS" : "PES", (int)((now_us - progress_us) / 1000), ts ? "TS" : "PES");
+			::ioctl(m_fd, DMX_STOP);
+			::close(m_fd);
+			m_fd = openFilter(m_pid, ts);
+			if (m_fd < 0)
+				break;
+			pfd[0].fd = m_fd;
+			m_ts_tap = ts;
+			delivered = false;
+			progress_us = now_us;
+			++reopens;
+		}
+		if (monotonicUs() - m_last_query_us.load(std::memory_order_relaxed) > IDLE_US)
+			break; /* nobody asks any more: give the demux filter back */
+	}
+
+	if (m_fd >= 0)
+	{
+		::ioctl(m_fd, DMX_STOP);
+		::close(m_fd);
+		m_fd = -1;
+	}
+	{
+		const unsigned long long overflows = m_overflows.load(std::memory_order_relaxed);
+		eDebug("[eDVBBitrateCounter] pid=%04x stopped after %llu bytes on the %s tap, %llu read overflows%s, %u poll wakeups, %u empty reads, %u reopens", m_pid,
+			(unsigned long long)m_bytes.load(std::memory_order_relaxed), m_ts_tap.load() ? "TS" : "PES", overflows,
+			overflows ? " (the rate may read low)" : "", wakeups, empty_reads, reopens);
+	}
+	m_exited = true;
+}
+
+int eDVBBitrateCounter::getKbps()
+{
+	if (m_pid < 0)
+		return -1;
+
+	const int64_t now = monotonicUs();
+	m_last_query_us.store(now, std::memory_order_relaxed);
+
+	if (m_exited)
+	{
+		/* the counting thread gave up while nobody asked: start over, the first window is measured from now */
+		stopThread();
+		if (startThread())
+		{
+			m_pid = -1;
+			return -1;
+		}
+	}
+
+	const uint64_t bytes = m_bytes.load(std::memory_order_relaxed);
+	if (!m_win_us)
+	{
+		m_win_us = now;
+		m_win_bytes = bytes;
+		return m_kbps;
+	}
+	const int64_t delta_us = now - m_win_us;
+	if (delta_us >= MIN_WINDOW_US)
+	{
+		/* bytes * 8 / 1000 / (us / 1e6) == bytes * 8000 / us */
+		const int percent = m_ts_tap.load() ? TS_PAYLOAD_PERCENT : PES_PAYLOAD_PERCENT;
+		m_kbps = (int)((bytes - m_win_bytes) * 8000ULL / (uint64_t)delta_us * percent / 100);
+		m_win_us = now;
+		m_win_bytes = bytes;
+	}
+	return m_kbps;
+}
+
 // AIO short write tracking: session-global sync fallback flag
 static std::atomic<bool> s_aio_sync_fallback{false};
 static const int AIO_SHORT_WRITE_THRESHOLD = 3;
@@ -559,6 +858,11 @@ eDVBRecordFileThread::eDVBRecordFileThread(int packetsize, int bufferCount, int 
 	 m_current_buffer(m_aio.begin()),
 	 m_buffer_use_histogram(bufferCount+1, 0)
 {
+	for (int i = 0; i < 2; ++i)
+	{
+		m_count_pid[i] = -1;
+		m_count_bytes[i] = 0;
+	}
 	if (m_buffer == MAP_FAILED)
 		eFatal("[eDVBRecordFileThread] Failed to allocate filepush buffer, contact MiLo\n");
 	// m_buffer actually points to a data block large enough to hold ALL buffers. m_buffer will
@@ -1129,6 +1433,41 @@ void eDVBRecordStreamThread::flush()
 	eDVBRecordFileThread::flush();
 }
 
+void eDVBRecordFileThread::setCountPID(int slot, int pid)
+{
+	if (slot < 0 || slot > 1)
+		return;
+	/* stop first so the bytes of the old PID are not added to the new one */
+	m_count_pid[slot].store(-1, std::memory_order_relaxed);
+	m_count_bytes[slot].store(0, std::memory_order_relaxed);
+	if (pid >= 0 && pid < 0x1fff)
+		m_count_pid[slot].store(pid, std::memory_order_relaxed);
+}
+
+/* only reads the buffer, called from the thread that owns it */
+void eDVBRecordFileThread::countPIDs(const unsigned char *buf, int len)
+{
+	const int pid0 = m_count_pid[0].load(std::memory_order_relaxed);
+	const int pid1 = m_count_pid[1].load(std::memory_order_relaxed);
+	if (pid0 < 0 && pid1 < 0)
+		return;
+	uint64_t bytes0 = 0, bytes1 = 0;
+	for (int i = 0; i + 188 <= len; i += 188)
+	{
+		if (buf[i] != 0x47)
+			continue;
+		const int pid = ((buf[i + 1] & 0x1f) << 8) | buf[i + 2];
+		if (pid == pid0)
+			bytes0 += 188;
+		else if (pid == pid1)
+			bytes1 += 188;
+	}
+	if (bytes0)
+		m_count_bytes[0].fetch_add(bytes0, std::memory_order_relaxed);
+	if (bytes1)
+		m_count_bytes[1].fetch_add(bytes1, std::memory_order_relaxed);
+}
+
 eDVBRecordScrambledThread::eDVBRecordScrambledThread(int packetsize, int buffersize, bool sync_mode, bool is_streaming) :
 	eDVBRecordStreamThread(packetsize, buffersize, sync_mode),
 	m_first_data_written(false),
@@ -1206,6 +1545,9 @@ int eDVBRecordScrambledThread::writeData(int len)
 	// must never affect the real record/decode path below.
 	if (m_monitor_fd >= 0)
 		(void)::write(m_monitor_fd, m_buffer, len);
+
+	/* adds up the bytes of the PIDs the bitrate readout asked for, after descrambling, writes nothing */
+	countPIDs(m_buffer, len);
 
 	// Call the appropriate parent writeData based on target type:
 	// - Streaming (socket): use eDVBRecordStreamThread::writeData() for proper socket handling
@@ -1512,6 +1854,28 @@ RESULT eDVBTSRecorder::setMonitorFD(int fd)
 		return -1;
 	m_thread->setMonitorFD(fd);
 	return 0;
+}
+
+RESULT eDVBTSRecorder::setCountPID(int slot, int pid)
+{
+	if (!m_thread || slot < 0 || slot > 1)
+		return -1;
+	m_thread->setCountPID(slot, pid);
+	return 0;
+}
+
+int eDVBTSRecorder::getCountPID(int slot)
+{
+	if (!m_thread || slot < 0 || slot > 1)
+		return -1;
+	return m_thread->getCountPID(slot);
+}
+
+uint64_t eDVBTSRecorder::getCountedBytes(int slot)
+{
+	if (!m_thread || slot < 0 || slot > 1)
+		return 0;
+	return m_thread->getCountedBytes(slot);
 }
 
 bool eDVBTSRecorder::waitForFirstData(int timeout_ms)

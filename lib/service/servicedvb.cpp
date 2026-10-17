@@ -43,6 +43,7 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <chrono>
+#include <time.h>
 #include <thread>
 #include <lib/dvb_ci/descrambler.h>
 
@@ -1586,6 +1587,8 @@ RESULT eDVBServicePlay::stop()
 	m_scramble_monitor = 0;
 	m_scramble_pid = -1;
 
+	releaseLiveBitrate();
+
 #ifdef HAS_SOFTWARE_HDR_DETECTION
 	if (m_hdr_detector) { m_hdr_detector->stop(); m_hdr_detector = 0; }
 #endif
@@ -2217,6 +2220,10 @@ int eDVBServicePlay::getInfo(int w)
 			return m_scramble_monitor->getState();
 		/* not tuned yet, or no program info yet: it will be known shortly, unless the PMT turned out to have nothing to watch */
 		return m_scramble_nopid ? -1 : 2;
+	case sVideoBitrate:
+		return getLiveBitrate(false);
+	case sAudioBitrate:
+		return getLiveBitrate(true);
 	case sHDRType:
 		return m_hdr_type;
 	case sIsDedicated3D:
@@ -3485,6 +3492,140 @@ void eDVBServicePlay::updateScrambleMonitor()
 		m_scramble_pid = -1;
 		m_scramble_failed = true;
 	}
+}
+
+void eDVBServicePlay::releaseLiveBitrate()
+{
+	m_vbitrate = 0;
+	m_abitrate = 0;
+	m_vbitrate_pid = -1;
+	m_abitrate_pid = -1;
+	m_bitrate_demux = nullptr;
+	releaseSoftCSABitrate();
+}
+
+void eDVBServicePlay::releaseSoftCSABitrate()
+{
+	if (!m_softcsa_bitrate)
+		return;
+	m_softcsa_bitrate = false;
+	if (m_soft_decoder)
+	{
+		m_soft_decoder->setCountPID(0, -1);
+		m_soft_decoder->setCountPID(1, -1);
+	}
+}
+
+/* The recorder of the soft decoder adds up the descrambled bytes of the PID, this turns them into kbit/s the way
+ * the demux counter does: 0 until the first window of at least 500 ms is complete, then the rate of the last
+ * window. The TS header bytes are left out by the 97 %. */
+int eDVBServicePlay::getSoftCSABitrate(bool audio, int pid)
+{
+	const int slot = audio ? 1 : 0;
+	struct timespec ts;
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	const int64_t now_us = (int64_t)ts.tv_sec * 1000000 + ts.tv_nsec / 1000;
+
+	m_softcsa_bitrate = true;
+	/* the soft decoder starts a new recorder now and then, which does not count yet */
+	if (m_soft_decoder->getCountPID(slot) != pid)
+	{
+		if (m_soft_decoder->setCountPID(slot, pid))
+			return -1; /* no recorder right now, the next query tries again */
+		m_softcsa_bytes[slot] = 0;
+		m_softcsa_us[slot] = now_us;
+		m_softcsa_kbps[slot] = 0;
+		return 0;
+	}
+	const uint64_t bytes = m_soft_decoder->getCountedBytes(slot);
+	const int64_t delta_us = now_us - m_softcsa_us[slot];
+	if (delta_us >= 500000)
+	{
+		if (bytes >= m_softcsa_bytes[slot])
+			m_softcsa_kbps[slot] = (int)((bytes - m_softcsa_bytes[slot]) * 8000 / delta_us * 97 / 100);
+		m_softcsa_bytes[slot] = bytes;
+		m_softcsa_us[slot] = now_us;
+	}
+	return m_softcsa_kbps[slot];
+}
+
+/* Live bitrate of the video PID or of the audio PID that is really decoded, counted on the TS tap of the
+ * data demux, where timeshift taps the same PIDs while the decoder runs. The decode demux is no good for
+ * this: on some receivers a second filter on a PID the hardware decoder uses is accepted but never gets
+ * any data (see startHDRDetection). Scrambled packets are as big as clear ones, so the count is right for
+ * encrypted services too. Nothing runs until the first query: that creates and starts the counter. A
+ * counter gives its demux filter back by itself when the queries stop (see eDVBBitrateCounter) and its next
+ * getKbps() starts it again, so no timer is needed here.
+ * -1 = nothing to measure (PVR, stream, timeshift, not tuned yet, no such PID, no filter available right
+ * now, or the demux cannot make counters at all, which is final for this service). */
+int eDVBServicePlay::getLiveBitrate(bool audio)
+{
+	ePtr<iDVBDemux> demux;
+	if (m_is_pvr || m_is_stream || m_timeshift_active || m_service_handler.getDataDemux(demux) || !demux)
+	{
+		/* drop the counters: when this is live again the data demux may be another one */
+		releaseLiveBitrate();
+		return -1;
+	}
+	if (m_bitrate_demux != demux.operator->())
+	{
+		releaseLiveBitrate();
+		m_bitrate_demux = demux.operator->();
+	}
+
+	int pid = -1;
+	if (audio)
+		pid = m_current_audio_pid;
+	else
+	{
+		eDVBServicePMTHandler::program program;
+		if (!m_service_handler.getProgramInfo(program) && !program.videoStreams.empty())
+			pid = program.videoStreams[0].pid;
+	}
+	if (pid <= 0 || pid >= 0x2000)
+		return -1;
+
+	/* SoftCSA: the descrambling recorder already reads these PIDs, count there and leave the demux alone */
+	if (m_soft_decoder && m_csa_session && m_csa_session->isActive())
+	{
+		m_vbitrate = 0;
+		m_abitrate = 0;
+		m_vbitrate_pid = m_abitrate_pid = -1;
+		return getSoftCSABitrate(audio, pid);
+	}
+	releaseSoftCSABitrate();
+
+	if (m_bitrate_failed)
+		return -1;
+
+	ePtr<iDVBBitrateCounter> &counter = audio ? m_abitrate : m_vbitrate;
+	int &counter_pid = audio ? m_abitrate_pid : m_vbitrate_pid;
+
+	if (!counter || counter_pid != pid)
+	{
+		if (!counter && demux->createBitrateCounter(counter))
+		{
+			eDebug("[eDVBServicePlay] bitrate counter not created");
+			counter = 0;
+			m_bitrate_failed = true;
+			return -1;
+		}
+		counter_pid = pid;
+		if (counter->start(pid))
+		{
+			/* no filter right now (just zapped, no free filter): not final, the next query tries again */
+			counter_pid = -1;
+			return -1;
+		}
+	}
+
+	int kbps = counter->getKbps();
+	if (kbps < 0)
+	{
+		/* the counter could not restart after it had stopped by itself: the next query starts over */
+		counter_pid = -1;
+	}
+	return kbps;
 }
 
 void eDVBServicePlay::updateDecoder(bool sendSeekableStateChanged)
