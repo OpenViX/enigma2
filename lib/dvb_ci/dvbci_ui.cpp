@@ -104,5 +104,10 @@ int eDVBCI_UI::setEnabled(int slot, bool enabled)
 	return eDVBCIInterfaces::getInstance()->setCIEnabled(slot, enabled);
 }
 
+int eDVBCI_UI::setOperatorProfileDisabled(int slot, bool disabled)
+{
+	return eDVBCIInterfaces::getInstance()->setCIOperatorProfileDisabled(slot, disabled);
+}
+
 //FIXME: correct "run/startlevel"
 eAutoInitP0<eDVBCI_UI> init_dvbciui(eAutoInitNumbers::rc, "DVB-CI UI");

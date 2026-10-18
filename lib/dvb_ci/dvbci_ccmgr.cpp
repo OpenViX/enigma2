@@ -65,8 +65,7 @@ eDVBCICcSession::eDVBCICcSession(eDVBCISlot *slot, int version):
 eDVBCICcSession::~eDVBCICcSession()
 {
 	m_slot->setCCManager(0);
-	if (m_slot->getDescramblingOptions() != 1 && m_slot->getDescramblingOptions() != 3)
-		descrambler_deinit(m_descrambler_fd);
+	descrambler_deinit(m_descrambler_fd);
 	if (m_root_ca_store)
 		X509_STORE_free(m_root_ca_store);
 	if (m_cust_cert)
@@ -141,6 +140,8 @@ void eDVBCICcSession::addProgram(uint16_t program_number, std::vector<uint16_t>&
 
 	for (std::vector<uint16_t>::iterator it = pids.begin(); it != pids.end(); ++it)
 		descrambler_set_pid(m_descrambler_fd, m_slot, 1, *it);
+
+	m_programs[program_number] = pids;
 }
 
 void eDVBCICcSession::removeProgram(uint16_t program_number, std::vector<uint16_t>& pids)
@@ -153,11 +154,33 @@ void eDVBCICcSession::removeProgram(uint16_t program_number, std::vector<uint16_
 	for (std::vector<uint16_t>::iterator it = pids.begin(); it != pids.end(); ++it)
 		descrambler_set_pid(m_descrambler_fd, m_slot, 0, *it);
 
-	if (m_slot->getDescramblingOptions() == 1 || m_slot->getDescramblingOptions() == 3)
+	m_programs.erase(program_number);
+
+	// Free the CA device once the last program is gone, otherwise the driver
+	// keeps it locked for other (e.g. softcam) services.
+	if (m_programs.empty() && m_descrambler_fd != -1)
+	{
+		eDebug("[dvbci_ccmgr][CI%d CC] last program removed, closing ca device", m_slot->getSlotID());
 		descrambler_deinit(m_descrambler_fd);
+	}
 
 	// removing program means probably decoding on this slot is ending. So mark this slot as not descrambling
 	eDVBCI_UI::getInstance()->setDecodingState(m_slot->getSlotID(), 0);
+}
+
+void eDVBCICcSession::releaseProgram(uint16_t program_number)
+{
+	auto it = m_programs.find(program_number);
+	if (it == m_programs.end())
+		return;
+	std::vector<uint16_t> pids = it->second;
+	removeProgram(program_number, pids);
+}
+
+void eDVBCICcSession::releaseAllPrograms()
+{
+	while (!m_programs.empty())
+		releaseProgram(m_programs.begin()->first);
 }
 
 void eDVBCICcSession::cc_open_req()
@@ -833,7 +856,7 @@ void eDVBCICcSession::check_new_key()
 void eDVBCICcSession::set_descrambler_key()
 {
 	eDebug("[dvbci_ccmgr][CI%d RCC] set_descrambler_key", m_slot->getSlotID());
-	bool set_key = (m_current_ca_demux_id != m_slot->getCADemuxID()) || (m_slot->getTunerNum() > 7);
+	bool set_key = (m_current_ca_demux_id != m_slot->getCADemuxID()) || (m_slot->getTunerNum() > 7) || (m_descrambler_fd == -1);
 
 	if (m_descrambler_fd != -1 && m_current_ca_demux_id != m_slot->getCADemuxID())
 	{

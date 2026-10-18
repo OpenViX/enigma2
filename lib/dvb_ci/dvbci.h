@@ -78,7 +78,7 @@ class eDVBCISlot: public iObject, public sigc::trackable
 	eMainloop *m_context;
 	int m_ciplus_routing_tunernum;
 	bool m_operator_profiles_disabled;
-	int m_alt_ca_handling;
+	bool m_ca_denied; // last CA_PMT_reply said the module can not descramble
 	std::string m_ciplus_routing_input;
 	std::string m_ciplus_routing_ci_input;
 
@@ -111,6 +111,9 @@ class eDVBCISlot: public iObject, public sigc::trackable
 	void determineCIVersion();
 	int setEnabled(bool);
 public:
+	void setCaDenied(bool denied) { m_ca_denied = denied; };
+	bool isCaDenied() { return m_ca_denied; };
+	void setOperatorProfileDisabled(bool disabled) { m_operator_profiles_disabled = disabled; };
 	static std::string getTunerLetter(int tuner_no) { return std::string(1, char(65 + tuner_no)); }
 	enum {stateRemoved, stateInserted, stateInvalid, stateResetted, stateDisabled};
 	enum {versionUnknown = -1, versionCI = 0, versionCIPlus1 = 1, versionCIPlus2 = 2};
@@ -130,7 +133,6 @@ public:
 	int getSlotID();
 	int getNumOfServices();
 	int getVersion();
-	int getDescramblingOptions() { return m_alt_ca_handling; };
 	bool getIsOperatorProfileDisabled() { return m_operator_profiles_disabled; };
 	int16_t getCADemuxID() { return m_ca_demux_id; };
 	int getTunerNum() { return m_tunernum; };
@@ -219,6 +221,7 @@ public:
 	int getSlotState(int slot);
 
 	int setCIEnabled(int slot, bool enabled);
+	int setCIOperatorProfileDisabled(int slot, bool disabled);
 	int reset(int slot);
 	int initialize(int slot);
 	int startMMI(int slot);
