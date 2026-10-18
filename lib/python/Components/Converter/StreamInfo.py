@@ -62,6 +62,12 @@ class StreamInfo(Converter):
 
 	text = property(getText)
 
+	@cached
+	def getBoolean(self):
+		return bool(self.getText())
+
+	boolean = property(getBoolean)
+
 	def changed(self, what):
 		if what[0] != self.CHANGED_SPECIFIC or what[1] in (iPlayableService.evStart,):
 			Converter.changed(self, what)
