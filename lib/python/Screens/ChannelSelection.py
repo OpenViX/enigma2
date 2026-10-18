@@ -216,7 +216,6 @@ class BouquetSelectionBox(Screen):
 		self.skinName = ["BouquetSelectionBox", "Setup"]
 		path = "/etc/enigma2"
 		bouquetList = [x for x in listdir(path) if x.startswith("userbouquet") and (not onlyDeleted or x.endswith(".del"))]
-		[SelectionEntryComponent(x[12:-4], os_path.join(path, x), "", False) for x in bouquetList]
 		self["config"] = SelectionList([SelectionEntryComponent(x[12:len(x) - (4 if onlyDeleted else 0)], os_path.join(path, x), "", False) for x in bouquetList], enableWrapAround=True)
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(greenText if greenText else _("Save"))
