@@ -114,9 +114,9 @@ public:
 };
 
 /* The thread only reads one PID of a demux and adds up the bytes, nothing is written anywhere. It starts on a
- * PES tap, like the old bitrate tool. A tap that stays silent for TAP_FALLBACK_US is opened again, as the other
- * kind of tap if it never delivered a byte, so a stream that stalls or starts late is picked up again. It gives the
- * demux filter back after IDLE_US without a getKbps() call and getKbps() starts it again. */
+ * PES tap. A tap that stays silent for TAP_FALLBACK_US is opened again, as the other kind of tap if it never
+ * delivered a byte, so a stream that stalls or starts late is picked up again. It gives the demux filter back
+ * after IDLE_US without a getKbps() call and getKbps() starts it again. */
 class eDVBBitrateCounter: public iDVBBitrateCounter, public eThread
 {
 	DECLARE_REF(eDVBBitrateCounter);
@@ -138,7 +138,6 @@ class eDVBBitrateCounter: public iDVBBitrateCounter, public eThread
 	int m_wake_fd;		/* eventfd, wakes the counting thread for stop() */
 	std::vector<uint8_t> m_buf;
 	std::atomic<uint64_t> m_bytes;
-	std::atomic<uint64_t> m_overflows;
 	std::atomic<int64_t> m_last_query_us;
 	std::atomic<bool> m_exited;
 	std::atomic<bool> m_ts_tap;	/* the filter is a TS tap, not a PES tap */

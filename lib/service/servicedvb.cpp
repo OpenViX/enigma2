@@ -3549,15 +3549,14 @@ int eDVBServicePlay::getSoftCSABitrate(bool audio, int pid)
 	return m_softcsa_kbps[slot];
 }
 
-/* Live bitrate of the video PID or of the audio PID that is really decoded, counted on the TS tap of the
- * data demux, where timeshift taps the same PIDs while the decoder runs. The decode demux is no good for
- * this: on some receivers a second filter on a PID the hardware decoder uses is accepted but never gets
- * any data (see startHDRDetection). Scrambled packets are as big as clear ones, so the count is right for
- * encrypted services too. Nothing runs until the first query: that creates and starts the counter. A
- * counter gives its demux filter back by itself when the queries stop (see eDVBBitrateCounter) and its next
- * getKbps() starts it again, so no timer is needed here.
- * -1 = nothing to measure (PVR, stream, timeshift, not tuned yet, no such PID, no filter available right
- * now, or the demux cannot make counters at all, which is final for this service). */
+/* Live bitrate of the video PID or of the audio PID that is decoded, counted on the data demux, where timeshift
+ * taps the same PIDs while the decoder runs (the decode demux can refuse a second filter on a PID the hardware
+ * decoder uses, see startHDRDetection). With SoftCSA the descrambling recorder counts instead. Scrambled packets
+ * are as big as clear ones, so encrypted services are counted too. Nothing runs until the first query. A demux
+ * counter gives its filter back by itself when the queries stop and its next getKbps() starts it again, so no
+ * timer is needed here.
+ * -1 = nothing to measure (PVR, stream, timeshift, not tuned yet, no such PID, no filter available right now,
+ * or the demux cannot make counters at all, which is final for this service). */
 int eDVBServicePlay::getLiveBitrate(bool audio)
 {
 	ePtr<iDVBDemux> demux;
@@ -3605,7 +3604,6 @@ int eDVBServicePlay::getLiveBitrate(bool audio)
 	{
 		if (!counter && demux->createBitrateCounter(counter))
 		{
-			eDebug("[eDVBServicePlay] bitrate counter not created");
 			counter = 0;
 			m_bitrate_failed = true;
 			return -1;
