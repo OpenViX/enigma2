@@ -147,6 +147,18 @@ class BitrateInfo(Converter):
 
 	text = property(getText)
 
+	@cached
+	def getBoolean(self):
+		video, audio = engine.vcur, engine.acur
+		if self.type in (self.VIDEO, self.VIDEO_VALUE):
+			return video > 0
+		elif self.type in (self.AUDIO, self.AUDIO_VALUE):
+			return audio > 0
+		else:
+			return video > 0 or audio > 0
+
+	boolean = property(getBoolean)
+
 	def changed(self, what):
 		if what[0] == self.CHANGED_CLEAR:
 			engine.detach(self)
