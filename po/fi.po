@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-12 09:00+0300\n"
-"PO-Revision-Date: 2026-10-12 09:09+0300\n"
+"POT-Creation-Date: 2026-10-18 18:44+0300\n"
+"PO-Revision-Date: 2026-10-18 20:05+0300\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.9\n"
+"X-Generator: Poedit 3.10\n"
 
 msgid ""
 "\n"
@@ -3683,9 +3683,6 @@ msgstr "Sulje näyttö '%s'"
 msgid "Close '%s' screen and exit all menus"
 msgstr "Sulje '%s'-näyttö ja poistu kaikista valikoista"
 
-msgid "Close CA device at programm end"
-msgstr "Sulje CA-laite ohjelman lopussa"
-
 msgid "Close PiP on exit"
 msgstr "Sulje PiP-kuva Exit-näppäimellä"
 
@@ -5054,9 +5051,6 @@ msgstr "Pura vastaanotettavat http-streamit"
 
 msgid "Descramble sending http streams"
 msgstr "Pura lähetettävät http-streamit"
-
-msgid "Descrambling options"
-msgstr "Salauksen purkuvaihtoehdot"
 
 msgid "Description"
 msgstr "Kuvaus"
@@ -7333,6 +7327,9 @@ msgstr "HDR10"
 msgid "HDR10 Support"
 msgstr "HDR10-tuki"
 
+msgid "HDR10 user interface correction"
+msgstr "HDR10-käyttöliittymän korjaus"
+
 msgid "HDR10+"
 msgstr "HDR10+"
 
@@ -8359,6 +8356,9 @@ msgstr "Säilytä kanava"
 
 msgid "Keeps the movie list open whilst playing audio files."
 msgstr "Pidä tallennelista auki äänitiedostojen toiston aikana."
+
+msgid "Keeps the user interface looking as it does in SDR while an HDR10 programme plays, by compensating the brightness and contrast the HDR10 output would otherwise change. Has no effect on SDR or HLG programmes."
+msgstr "Pitää käyttöliittymän ulkoasun samanlaisena kuin SDR-tilassa, kun HDR10-ohjelmaa toistetaan, kompensoimalla kirkkautta ja kontrastia, joita HDR10-lähtösignaali muuten muuttaisi. Ei vaikuta SDR- tai HLG-ohjelmiin."
 
 msgid "Kenya"
 msgstr "Kenia"
@@ -10210,12 +10210,6 @@ msgstr "Pois päältä"
 
 msgid "Offline decode delay (ms)"
 msgstr "Offline-purkamisen viive (ms)"
-
-msgid "Offset CA device index"
-msgstr "Offset CA-laiteindeksi"
-
-msgid "Offset and close CA device"
-msgstr "Offset ja sulje CA-laite"
 
 msgid "Olympia"
 msgstr "Olympialaiset"
@@ -15333,7 +15327,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 12.10.2026 ---\n"
+"--- 18.10.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
