@@ -379,7 +379,13 @@ static bool looksLikeRecording(const std::string& n)
 
 RESULT eStaticServiceDVBPVRInformation::getName(const eServiceReference &ref, std::string &name)
 {
-	ASSERT(ref == m_ref);
+	/* a stale info object can be queried with another ref while zapping fast, don't crash on that */
+	if (ref != m_ref)
+	{
+		eDebug("[eStaticServiceDVBPVRInformation] getName: ref mismatch (%s != %s)", ref.toString().c_str(), m_ref.toString().c_str());
+		name = ref.name;
+		return 0;
+	}
 	if (!ref.name.empty())
 		name = ref.name;
 	else if (!m_parser.m_name.empty())
@@ -419,7 +425,11 @@ RESULT eStaticServiceDVBPVRInformation::getName(const eServiceReference &ref, st
 
 int eStaticServiceDVBPVRInformation::getLength(const eServiceReference &ref)
 {
-	ASSERT(ref == m_ref);
+	if (ref != m_ref)
+	{
+		eDebug("[eStaticServiceDVBPVRInformation] getLength: ref mismatch (%s != %s)", ref.toString().c_str(), m_ref.toString().c_str());
+		return 0;
+	}
 
 	eDVBTSTools tstools;
 
@@ -3555,12 +3565,13 @@ int eDVBServicePlay::getSoftCSABitrate(bool audio, int pid)
  * are as big as clear ones, so encrypted services are counted too. Nothing runs until the first query. A demux
  * counter gives its filter back by itself when the queries stop and its next getKbps() starts it again, so no
  * timer is needed here.
- * -1 = nothing to measure (PVR, stream, timeshift, not tuned yet, no such PID, no filter available right now,
+ * -1 = nothing to measure (PVR, timeshift, not tuned yet, no such PID, no filter available right now,
  * or the demux cannot make counters at all, which is final for this service). */
 int eDVBServicePlay::getLiveBitrate(bool audio)
 {
 	ePtr<iDVBDemux> demux;
-	if (m_is_pvr || m_is_stream || m_timeshift_active || m_service_handler.getDataDemux(demux) || !demux)
+	/* a DVB IPTV stream (m_is_stream) is fed through a PVR channel into a demux, like live TV, so it can be counted */
+	if (m_is_pvr || m_timeshift_active || m_service_handler.getDataDemux(demux) || !demux)
 	{
 		/* drop the counters: when this is live again the data demux may be another one */
 		releaseLiveBitrate();

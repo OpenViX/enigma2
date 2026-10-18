@@ -34,6 +34,7 @@ public:
 	int cancelEnq(int slot);
 	int setClockRate(int slot, const std::string &rate);
 	int setEnabled(int slot, bool enabled);
+	int setOperatorProfileDisabled(int slot, bool disabled);
 };
 
 #endif
