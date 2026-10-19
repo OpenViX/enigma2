@@ -211,6 +211,7 @@ def removed_userbouquets_available():
 
 from Screens.Screen import ScreenSummary
 
+
 class BouquetSelectionBoxSummary(ScreenSummary):
 	def __init__(self, session, parent):
 		ScreenSummary.__init__(self, session, parent)
