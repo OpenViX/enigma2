@@ -241,7 +241,7 @@ class BouquetSelectionBox(Screen):
 
 	def createSummary(self):
 		return BouquetSelectionBoxSummary
-	
+
 	def keySave(self):
 		self.close([x[0][1] for x in self["config"].list if x[0][3]])
 
