@@ -124,6 +124,7 @@ class eDVBCAService: public eUnixDomainSocket
 	unsigned char m_capmt[2048];
 	ePtr<eTimer> m_retryTimer;
 	bool m_force_cw_send; // force softcam CW resend on next processPMTForService()
+	int m_users; // register/unregister refcount, independent of demux slot bookkeeping
 public:
 	eDVBCAService(const eServiceReferenceDVB &service, uint32_t id);
 	~eDVBCAService();

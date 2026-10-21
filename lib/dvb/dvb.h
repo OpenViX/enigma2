@@ -198,6 +198,7 @@ class eDVBResourceManager: public iObject, public sigc::trackable
 public:
 #endif
 	void releaseCachedChannel();
+	void releaseCachedChannelIfIdle();
 	eDVBResourceManager();
 	virtual ~eDVBResourceManager();
 
