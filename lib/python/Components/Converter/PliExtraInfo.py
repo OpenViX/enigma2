@@ -56,6 +56,15 @@ def scramblingState(info):
 	return info.getInfo(iServiceInformation.sIsScrambled)
 
 
+# Whether /tmp/ecm.info describes the current service. The softcam does not clear it on a zap and a recording can keep it
+# busy, so it can be the other service's. It is not the current one's if the service has no CA descriptors and the stream
+# is clear or not yet known to be scrambled (1 is the only state in which it could still be decoding).
+def ecmFilePresentFor(info):
+	if not ecmFilePresent():
+		return False
+	return not (info and info.getInfo(iServiceInformation.sIsCrypted) != 1 and scramblingState(info) in (0, 2))
+
+
 # Used when there is no ecm.info: True if the stream can be called free to air. If the stream can be asked, that decides,
 # so an encrypted channel in a free news break is free to air (it still has CA descriptors, sIsCrypted == 1). Otherwise:
 # with a softcam loaded no ecm.info on an encrypted service also means free; without one ecm.info never exists, so nothing
@@ -137,7 +146,7 @@ def addspace(text):
 
 
 def getCryptoInfo(info):
-	if info and info.getInfo(iServiceInformation.sIsCrypted) == 1 or ecmFilePresent():
+	if info and info.getInfo(iServiceInformation.sIsCrypted) == 1 or ecmFilePresentFor(info):
 		data = getCachedEcmData()
 		current_source = data[0]
 		current_caid = int(data[1], 16)
@@ -172,7 +181,7 @@ def createCurrentCaidLabel(info, currentCaid=None, currentDevice=None):
 				if stateDecoding == 2 and stateSlot not in (-1, 0, 3):
 					decodingCiSlot = slot
 
-	ecm_present = ecmFilePresent()
+	ecm_present = ecmFilePresentFor(info)
 	if not ecm_present and decodingCiSlot == -1:
 		return "FTA" if isFreeToAir(info) else ""
 
