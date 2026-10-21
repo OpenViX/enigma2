@@ -95,6 +95,35 @@ gWebOverlay::~gWebOverlay()
 // main thread
 // ----------------------------------------------------------------------------------------
 
+bool gWebOverlay::bindSocket()
+{
+	int fd = socket(AF_UNIX, SOCK_DGRAM | SOCK_NONBLOCK | SOCK_CLOEXEC, 0);
+	if (fd < 0) {
+		eDebug("[gWebOverlay] socket: %m");
+		return false;
+	}
+	sockaddr_un addr;
+	memset(&addr, 0, sizeof(addr));
+	addr.sun_family = AF_UNIX;
+	if (m_sock_path.size() >= sizeof(addr.sun_path)) {
+		close(fd);
+		return false;
+	}
+	strcpy(addr.sun_path, m_sock_path.c_str());
+	unlink(m_sock_path.c_str());
+	if (bind(fd, (sockaddr*)&addr, sizeof(addr)) < 0) {
+		eDebug("[gWebOverlay] bind %s: %m", m_sock_path.c_str());
+		close(fd);
+		return false;
+	}
+	struct stat st;
+	m_sock_ino = stat(m_sock_path.c_str(), &st) == 0 ? st.st_ino : 0;
+	m_sock = fd;
+	m_notifier = eSocketNotifier::create(eApp, m_sock, eSocketNotifier::Read);
+	CONNECT(m_notifier->activated, gWebOverlay::onSocket);
+	return true;
+}
+
 void gWebOverlay::startListening(std::function<void()> wake)
 {
 	if (m_sock >= 0)
@@ -104,38 +133,44 @@ void gWebOverlay::startListening(std::function<void()> wake)
 		return;
 	}
 	m_wake = std::move(wake);
-
-	int fd = socket(AF_UNIX, SOCK_DGRAM | SOCK_NONBLOCK | SOCK_CLOEXEC, 0);
-	if (fd < 0) {
-		eDebug("[gWebOverlay] socket: %m");
+	if (!bindSocket())
 		return;
-	}
-	sockaddr_un addr;
-	memset(&addr, 0, sizeof(addr));
-	addr.sun_family = AF_UNIX;
-	if (m_sock_path.size() >= sizeof(addr.sun_path)) {
-		close(fd);
-		return;
-	}
-	strcpy(addr.sun_path, m_sock_path.c_str());
-	unlink(m_sock_path.c_str());
-	if (bind(fd, (sockaddr*)&addr, sizeof(addr)) < 0) {
-		eDebug("[gWebOverlay] bind %s: %m", m_sock_path.c_str());
-		close(fd);
-		return;
-	}
-	m_sock = fd;
-	m_notifier = eSocketNotifier::create(eApp, m_sock, eSocketNotifier::Read);
-	CONNECT(m_notifier->activated, gWebOverlay::onSocket);
 	eDebug("[gWebOverlay] listening on %s, frames from %s", m_sock_path.c_str(), m_shm_path.c_str());
+	m_heal = eTimer::create(eApp);
+	CONNECT(m_heal->timeout, gWebOverlay::onHeal);
+	m_heal->start(1000, false);
+}
+
+// The producer addresses the socket by path. If the file is gone or belongs to someone else (a second
+// gEGLDC bound the same path and the first one's teardown removed it, a tmp cleaner ...), the producer's
+// datagrams go nowhere and the layer never updates: bind again, and look at the frame file once.
+void gWebOverlay::onHeal()
+{
+	if (m_sock < 0)
+		return;
+	struct stat st;
+	if (stat(m_sock_path.c_str(), &st) == 0 && st.st_ino == m_sock_ino)
+		return;
+	eDebug("[gWebOverlay] socket %s was removed or replaced - binding it again", m_sock_path.c_str());
+	m_notifier = 0;
+	close(m_sock);
+	m_sock = -1;
+	if (!bindSocket())
+		return;
+	m_changed = true;
+	if (m_wake)
+		m_wake();
 }
 
 void gWebOverlay::stopListening()
 {
+	m_heal = 0;
 	m_notifier = 0;
 	if (m_sock >= 0) {
 		close(m_sock);
-		unlink(m_sock_path.c_str());
+		struct stat st;
+		if (stat(m_sock_path.c_str(), &st) == 0 && st.st_ino == m_sock_ino)
+			unlink(m_sock_path.c_str());
 		m_sock = -1;
 	}
 }

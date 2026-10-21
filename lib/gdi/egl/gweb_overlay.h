@@ -81,6 +81,8 @@ public:
 
 private:
 	void onSocket(int what);
+	void onHeal();
+	bool bindSocket();
 	void refresh();
 	bool mapFile();
 	void unmap();
@@ -93,6 +95,8 @@ private:
 	ePtr<eSocketNotifier> m_notifier;
 	std::function<void()> m_wake;
 	std::string m_sock_path;
+	ino_t m_sock_ino = 0;     // inode of our socket file: another gEGLDC (re)binding the same path must not lose it to our teardown
+	ePtr<eTimer> m_heal;      // notices the socket file vanishing or being replaced and binds it again
 
 	std::atomic<bool> m_changed{false}; // set by the main thread, consumed by sync()
 
