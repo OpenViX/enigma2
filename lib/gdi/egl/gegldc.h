@@ -14,6 +14,7 @@
 #include <string>
 #include <lib/base/ebase.h>
 #include <lib/gdi/egl/gosd_capture.h>
+#include <lib/gdi/egl/gweb_overlay.h>
 #include <lib/gdi/egl/gtexture_manager.h>
 #include <lib/gdi/egl/inative_window_provider.h>
 #include <lib/gdi/egl/shader/gadvanced_shader.h>
@@ -134,6 +135,24 @@ private:
 	gEGLOSDCapture m_osd_capture;
 	void serviceOsdCapture();
 
+	// Out-of-process web layer (wpe_fb / HbbTV) composited over the finished OSD frame
+	// right before it is presented - see gweb_overlay.h. It is only ever drawn into a frame that
+	// flip() has just rewritten completely from a shadow framebuffer (nothing it draws can stay
+	// behind), and only where the compositor takes premultiplied alpha like the OSD does.
+	gWebOverlay m_web_overlay;
+	// Platforms that render straight into their surface (Dreambox pixmap pages, Mali's preserved
+	// window surface) have no shadow framebuffer, so a layer drawn over the finished frame would
+	// stay in the surface and be baked into every following partial redraw. While the layer is
+	// visible they get a temporary one: updateOverlayShadow() (flip(), render thread) creates it and
+	// copies the surface into it, all opcodes then render there exactly as on shadow platforms, and
+	// when the layer goes away the shadow is copied back and destroyed.
+	bool m_overlay_shadow = false;        // m_use_shadow_fbo is on only because of the layer
+	bool m_overlay_shadow_failed = false; // creating it failed: no layer until it hides again
+	void updateOverlayShadow(bool layer_visible);
+	void copySurfaceToShadow();
+	void copyShadowToSurface();
+	void drawWebOverlay();
+
 	// GPU readback into m_pixmap - see its definition (gegldc.cpp, right
 	// after serviceOsdCapture()) for why enableSpinner() needs this.
 	void captureBackgroundIntoPixmap(const eRect& rect);
@@ -163,7 +182,7 @@ private:
 	static void onFramebufferLockChanged(bool locked);
 	// Wakes the render thread with a flush opcode even while locked
 	// (gPainter::flush() is suppressed then).
-	void requestFlush();
+	void requestFlush();   
 
 	// Diagnostic only, opt-in via ENIGMA_EGL_PROFILE=1 (read once in
 	// initEGL()): one log line per flip() splitting that frame's render-thread
@@ -185,7 +204,7 @@ private:
 	static double msSince(const std::chrono::steady_clock::time_point& t0) {
 		return std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
 	}
-
+ 
 	// Logical canvas size: what the skin/widgets lay out against and what every
 	// shader projection and draw coordinate is expressed in.
 	int m_width;

@@ -2,6 +2,7 @@
 #include <lib/base/eerror.h>
 #include <lib/python/python.h>
 #include <lib/dvb/fcc.h>
+#include <lib/dvb/dvb.h>
 
 eNavigation* eNavigation::instance;
 
@@ -34,6 +35,18 @@ RESULT eNavigation::playService(const eServiceReference &service)
 		stopService();
 		ASSERT(m_servicehandler);
 		res = m_servicehandler->play(service, m_runningService);
+
+		/*
+		 * The previous DVB service parked its channel in the resource manager cache
+		 * for 3s. A non-DVB target never reuses it, so release it now: the tuner use
+		 * mask (and the infobar tuner list) updates at once instead of 3s later.
+		 */
+		if (service.type != eServiceReference::idDVB)
+		{
+			ePtr<eDVBResourceManager> res_mgr;
+			if (!eDVBResourceManager::getInstance(res_mgr))
+				res_mgr->releaseCachedChannelIfIdle();
+		}
 	}
 
 	if (m_runningService)
