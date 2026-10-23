@@ -2,6 +2,7 @@
 #define __rc_h
 
 #include <list>
+#include <deque>
 #include <map>
 
 #include <linux/input.h>
@@ -124,6 +125,11 @@ protected:
 	unsigned char keyCaps[(KEY_MAX / 8) + 1];
 	ePtr<eSocketNotifier> sn;
 	void keyPressed(int);
+	/* events read from the device but not delivered yet; delivered one key per main loop
+	 * iteration so that a screen switch started by a key is complete before the next key */
+	std::deque<struct input_event> m_pending;
+	ePtr<eTimer> m_pending_timer;
+	void processPending();
 public:
 	std::string getDeviceName();
 	eRCInputEventDriver(const char *filename);

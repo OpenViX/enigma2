@@ -96,19 +96,62 @@ eRCShortDriver::~eRCShortDriver()
 
 void eRCInputEventDriver::keyPressed(int)
 {
-	struct input_event ev;
+	struct input_event evs[64];
 	while (1)
 	{
-		if (read(handle, &ev, sizeof(input_event))!=sizeof(input_event))
+		ssize_t len = read(handle, evs, sizeof(evs));
+		if (len < (ssize_t)sizeof(input_event))
 			break;
+		int n = len / sizeof(input_event);
+		for (int k = 0; k < n; ++k)
+			m_pending.push_back(evs[k]);
+	}
+	processPending();
+}
+
+void eRCInputEventDriver::processPending()
+{
+	while (!m_pending.empty())
+	{
+		struct input_event ev = m_pending.front();
+		m_pending.pop_front();
+
+		/* A screen that redraws slower than the key repeat rate would queue up
+		 * repeats and keep scrolling after the key is released. When a newer
+		 * repeat of the same key is already waiting, drop this one. */
+		if (ev.type == EV_KEY && ev.value == 2)
+		{
+			bool newer = false;
+			for (std::deque<struct input_event>::const_iterator i(m_pending.begin()); i != m_pending.end(); ++i)
+				if (i->type == EV_KEY && i->code == ev.code && i->value == 2)
+				{
+					newer = true;
+					break;
+				}
+			if (newer)
+				continue;
+		}
+
 		if (enabled && !input->islocked())
 			for (std::list<eRCDevice*>::iterator i(listeners.begin()); i!=listeners.end(); ++i)
 				(*i)->handleCode((long)&ev);
+
+		/* A key can start a screen switch (e.g. EXIT closing a menu) which the session completes
+		 * from a 0 ms timer, and until then no screen accepts keys. Deliver at most one key per
+		 * main loop iteration so such timers run before the next key is handled; otherwise fast
+		 * repeated presses hit the gap and show up as "unhandled key". */
+		if (ev.type == EV_KEY && !m_pending.empty())
+		{
+			m_pending_timer->start(0, true);
+			return;
+		}
 	}
 }
 
 eRCInputEventDriver::eRCInputEventDriver(const char *filename): eRCDriver(eRCInput::getInstance())
 {
+	m_pending_timer = eTimer::create(eApp);
+	CONNECT(m_pending_timer->timeout, eRCInputEventDriver::processPending);
 	handle=open(filename, O_RDONLY|O_NONBLOCK);
 	if (handle<0)
 	{

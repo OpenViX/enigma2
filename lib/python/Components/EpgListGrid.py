@@ -42,6 +42,7 @@ class EPGListGrid(EPGListBase):
 		# that gets recomputed from scratch every keypress even though it's unchanged.
 		# Reset in fillEPGNoRefresh() whenever the underlying data can actually change.
 		self.eventStaticCache = {}
+		self.rowCache = {}  # service -> (validity, res) for rows that are not the selected one; see buildEntry
 		self.serviceRect = None
 
 		self.nowEvPix = None
@@ -107,6 +108,7 @@ class EPGListGrid(EPGListBase):
 		self.loadConfig()
 
 	def loadConfig(self):
+		self.rowCache = {}
 		self.graphic = self.epgConfig.type_mode.value == "graphics"
 		self.graphicsloaded = False
 		self.epgHistorySecs = int(config.epg.histminutes.value) * SECS_IN_MIN
@@ -285,6 +287,7 @@ class EPGListGrid(EPGListBase):
 			self.listHeight = self.instance.size().height()
 
 	def setFontsize(self):
+		self.rowCache = {}
 		self.l.setFont(0, gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value))
 		self.l.setFont(1, gFont(self.eventFontName, self.eventFontSize + self.epgConfig.eventfs.value))
 		# Cache service number width.
@@ -308,6 +311,9 @@ class EPGListGrid(EPGListBase):
 		self.l.setSelectionClip(eRect(0, 0, 0, 0), False)
 
 	def preWidgetRemove(self, instance):
+		# release the cached rows/events now instead of leaving a big object graph for the garbage collector
+		self.rowCache = {}
+		self.eventStaticCache = {}
 		instance.selectionChanged.get().remove(self.serviceChanged)
 		instance.setContent(None)
 
@@ -362,7 +368,29 @@ class EPGListGrid(EPGListBase):
 			ewidth = width - xpos
 		return xpos, ewidth
 
+	ROW_CACHE_MAX = 48
+
 	def buildEntry(self, service, serviceName, events, picon, channel):
+		# Rows other than the selected one only change when the data, geometry, playing service or
+		# minute changes, so reuse the finished entry instead of rebuilding ~50 items in Python on
+		# every redraw (page scrolls repaint every visible row). The selected row is always rebuilt.
+		if self.selectedService is None or self.selectedService[0] == service or EPGListGrid.buildEntryExtensionFunctions:
+			return self._buildEntry(service, serviceName, events, picon, channel)
+		r1 = self.serviceRect
+		r2 = self.eventRect
+		validity = (events, picon, channel, serviceName, int(time()) // SECS_IN_MIN,
+			CompareWithAlternatives(service, self.session.nav.getCurrentlyPlayingServiceOrGroup()),
+			self.timeBase, self.timeEpochSecs, r1.width(), r2.left(), r2.width(), r2.height(), self.serviceNumberWidth, self.graphic)
+		cached = self.rowCache.get(service)
+		if cached is not None and cached[0][0] is events and cached[0][1:] == validity[1:]:
+			return cached[1]
+		res = self._buildEntry(service, serviceName, events, picon, channel)
+		if len(self.rowCache) >= self.ROW_CACHE_MAX:  # keep it to roughly a few pages, oldest first
+			del self.rowCache[next(iter(self.rowCache))]
+		self.rowCache[service] = (validity, res)
+		return res
+
+	def _buildEntry(self, service, serviceName, events, picon, channel):
 		r1 = self.serviceRect
 		r2 = self.eventRect
 		left = r2.left()
@@ -880,6 +908,7 @@ class EPGListGrid(EPGListBase):
 		# The timer snapshot and event data above may have just changed, so any
 		# previously cached per-event build data (see __init__) is no longer valid.
 		self.eventStaticCache = {}
+		self.rowCache = {}
 
 		def appendService():
 			picon = None if piconIdx == 0 else serviceList[serviceIdx][piconIdx]
