@@ -65,39 +65,51 @@ def ecmFilePresentFor(info):
 	return not (info and info.getInfo(iServiceInformation.sIsCrypted) != 1 and scramblingState(info) in (0, 2))
 
 
-# The ECM PIDs of the service (what the PMT says), empty if they are not known.
-def serviceEcmPids(info):
+# The (CAID, ECM PID) pairs of the service (what the PMT says), empty if they are not known.
+def serviceEcmPairs(info):
 	try:
-		return {pair[1] for pair in info.getInfoObject(iServiceInformation.sCAIDPIDs)}
+		return {(pair[0], pair[1]) for pair in info.getInfoObject(iServiceInformation.sCAIDPIDs)}
 	except Exception:
 		return set()
 
 
+# A hex number of ecm.info, None if the softcam did not give it ("0" is what GetEcmInfo makes of a missing line). A given
+# 0x0000 is a number like any other, and it is no real CAID or ECM PID.
+def ecmNumber(text):
+	if text in ("", "0"):
+		return None
+	try:
+		return int(text, 16)
+	except (TypeError, ValueError):
+		return None
+
+
 NO_ECM_DATA = ("", "0", "0", "0", "")
-_ownEcm = ("", None)  # The service reference and the last ecm.info data that belonged to that service.
+_OWN_ECM_MAX = 8
+_ownEcm = {}  # Service reference -> the last ecm.info data that belonged to that service (the most recent last).
 
 
 # The data of /tmp/ecm.info for the current service. With two services decoding (a recording and the one playing) the softcam
-# writes the file for both in turn, so what is in it is only the current service's if its ECM PID is one of the service's.
-# Otherwise the last data that was the current service's is used, and without any nothing is known. If the ECM PID of
-# either side is not known the file is taken as it is.
+# writes the file for both in turn, so what is in it is only the current service's if its CAID and ECM PID are a pair of the
+# service. Only what the file gives is compared. Otherwise the last data that was the current service's is used, and without
+# any nothing is known. If the file gives neither, or the pairs of the service are not known, the file is taken as it is.
 def ecmDataFor(info):
-	global _ownEcm
 	data = getCachedEcmData()
 	if not info or not ecmFilePresent():
 		return data
-	pids = serviceEcmPids(info)
-	try:
-		ecmpid = int(data[3], 16)
-	except (TypeError, ValueError):
-		ecmpid = 0
-	if not pids or not ecmpid:
+	pairs = serviceEcmPairs(info)
+	caid = ecmNumber(data[1])
+	pid = ecmNumber(data[3])
+	if not pairs or (caid is None and pid is None):
 		return data
 	ref = info.getInfoString(iServiceInformation.sServiceref)
-	if ecmpid in pids:
-		_ownEcm = (ref, data)
+	if any((caid is None or pair[0] == caid) and (pid is None or pair[1] == pid) for pair in pairs):
+		_ownEcm.pop(ref, None)
+		_ownEcm[ref] = data
+		if len(_ownEcm) > _OWN_ECM_MAX:
+			del _ownEcm[next(iter(_ownEcm))]
 		return data
-	return _ownEcm[1] if _ownEcm[0] == ref else NO_ECM_DATA
+	return _ownEcm.get(ref, NO_ECM_DATA)
 
 
 # Used when there is no ecm.info: True if the stream can be called free to air. If the stream can be asked, that decides,
