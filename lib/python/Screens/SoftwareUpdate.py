@@ -303,6 +303,7 @@ class UpdatePlugin(Screen, ProtectedScreen):
 				else:
 					message = _("No updates found, Press OK to exit this screen.")
 					choices = [(_("Nothing to upgrade"), "")]
+					config.softwareupdate.updatefound.setValue(False)
 					self["actions"].setEnabled(True)
 					upgrademessage = self.session.openWithCallback(self.startActualUpgrade, UpdateChoices, text=message, list=choices, skin_name="SoftwareUpdateChoices", var=self.trafficLight)
 					upgrademessage.setTitle(self.getTitle())
