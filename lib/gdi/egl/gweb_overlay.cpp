@@ -7,7 +7,7 @@
 #include <errno.h>
 #include <signal.h>
 #include <time.h>
-#include <fcntl.h>
+#include <fcntl.h> 
 #include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
@@ -228,9 +228,14 @@ bool gWebOverlay::initGL()
 
 void gWebOverlay::destroyGL()
 {
-	if (m_texture)
-		glDeleteTextures(1, &m_texture);
+	for (int i = 0; i < 2; ++i) {
+		if (m_tex[i])
+			glDeleteTextures(1, &m_tex[i]);
+		m_tex[i] = 0;
+		m_st0[i] = m_st1[i] = 0;
+	}
 	m_texture = 0;
+	m_cur = 0;
 	m_tex_w = m_tex_h = 0;
 	if (m_program)
 		glDeleteProgram(m_program);
@@ -279,7 +284,8 @@ bool gWebOverlay::mapFile()
 	m_ino = st.st_ino;
 	m_file_size = st.st_size;
 	m_gen = h->generation;
-	m_tex_w = m_tex_h = 0; // the texture is (re)allocated in upload()
+	// The texture is kept: upload() respecifies its storage only when the frame size differs, otherwise the whole frame is
+	// refilled (m_full_dirty). Respecifying a frame-sized texture on every HbbTV open churns the small GPU heap.
 	m_full_dirty = true;
 	return true;
 }
@@ -313,30 +319,75 @@ void gWebOverlay::unlockShm()
 	__atomic_store_n(&m_shm->lock, 0u, __ATOMIC_RELEASE);
 }
 
+// Two textures are used in turn. An update of a texture that an earlier, still unfinished draw reads makes this GPU/driver
+// either stall, copy the whole texture (a 3.6 MB allocation on a heap that is nearly full) or show a half-updated image, and
+// the storage it sets aside is only released when the GPU is idle. So every update goes to the texture that was NOT drawn
+// last (m_cur is the one drawn); the rows changed since that texture was last written (m_st0/m_st1, they include the rows
+// written to the other one meanwhile) are brought up to date, and it becomes the one drawn.
 void gWebOverlay::upload()
 {
 	const int w = (int)m_shm->width, h = (int)m_shm->height;
-	if (!m_texture)
-		glGenTextures(1, &m_texture);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_texture);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 	const uint8_t* pixels = (const uint8_t*)m_shm + kHeaderBytes;
 
+	// ENIGMA_WEB_OVERLAY_UPLOAD (read once): unset or "inplace" = ONE texture, allocated once, the changed rows written into it (the
+	// glFinish after each draw makes sure no draw still reads it). Nothing is allocated per frame - when the GPU heap is full an
+	// allocation fails, and a texture without storage is drawn as opaque black. "rows" = two textures in turn, only the changed
+	// rows; "full" = the same with the whole frame every time; "recycle" = a new texture with the whole frame for every changed
+	// frame and the previous one deleted (needs 2 x 3.6 MB free at that moment - not for a full heap).
+	static const int mode = []() {
+		const char* e = getenv("ENIGMA_WEB_OVERLAY_UPLOAD");
+		if (e && !strcmp(e, "rows"))
+			return 0;
+		if (e && !strcmp(e, "full"))
+			return 1;
+		if (e && !strcmp(e, "recycle"))
+			return 2;
+		return 3;
+	}();
+	const bool single = mode >= 2;
+
 	if (m_tex_w != w || m_tex_h != h) {
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-		m_tex_w = w;
-		m_tex_h = h;
-		m_full_dirty = false;
-		// whatever the producer marked dirty so far is part of this upload
+		// Take the dirty mark BEFORE the pixels are read: rows the producer writes and marks meanwhile must stay marked.
 		if (lockShm()) {
 			m_shm->dirty = 0;
 			unlockShm();
 		}
+		while (glGetError() != GL_NO_ERROR) {
+		}
+		bool oom = false;
+		for (int i = 0; i < (single ? 1 : 2); ++i) {
+			if (!m_tex[i])
+				glGenTextures(1, &m_tex[i]);
+			glBindTexture(GL_TEXTURE_2D, m_tex[i]);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+			m_st0[i] = m_st1[i] = 0;
+			if (glGetError() == GL_OUT_OF_MEMORY)
+				oom = true;
+		}
+		if (oom) {
+			// No storage for the frame: show no layer (a texture without storage samples as opaque black) and try again next frame.
+			eDebug("[gWebOverlay] out of GPU memory for the %dx%d frame - layer not shown, retrying", w, h);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			for (int i = 0; i < 2; ++i) {
+				if (m_tex[i])
+					glDeleteTextures(1, &m_tex[i]);
+				m_tex[i] = 0;
+			}
+			m_texture = 0;
+			m_changed = true;
+			return;
+		}
+		m_tex_w = w;
+		m_tex_h = h;
+		m_full_dirty = false;
+		m_cur = 0;
+		m_texture = m_tex[0];
 		glBindTexture(GL_TEXTURE_2D, 0);
 		return;
 	}
@@ -366,34 +417,62 @@ void gWebOverlay::upload()
 		} else
 			m_changed = true; // try again next frame
 	}
-	// Whole rows only: plain GLES2 has no GL_UNPACK_ROW_LENGTH, and the hbbtv2 measurements on
-	// this GPU family found narrow sub-rectangle uploads pathologically slow (tiled textures),
-	// while a full-width band is one linear copy. A row still being written when we read it is
-	// simply dirty again - the producer marks it after its copy - so the next frame fixes it.
-	//
-	// Diagnostic, ENIGMA_WEB_OVERLAY_UPLOAD (read once): "rows" = the dirty rows only (default);
-	// "full" = the whole frame with glTexSubImage2D whenever anything changed (rules out the dirty
-	// bookkeeping); "orphan" = the whole frame with glTexImage2D, i.e. new storage every time, so
-	// the texture is never modified while a frame still in flight on the GPU reads it (this
-	// driver is known to corrupt a texture updated after earlier draws used it, see gegldc.cpp's
-	// atlas band textures).
-	static const int mode = []() {
-		const char* e = getenv("ENIGMA_WEB_OVERLAY_UPLOAD");
-		if (e && !strcmp(e, "full"))
-			return 1;
-		if (e && !strcmp(e, "orphan"))
-			return 2;
-		return 0;
-	}();
-	if (have && mode == 2) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-	} else if (have && y1 > y0) {
-		if (mode == 1) {
-			y0 = 0;
-			y1 = h;
-		}
+	if (!have)
+		return; // nothing new: the texture drawn so far stays
+
+	if (mode == 3) {
+		glBindTexture(GL_TEXTURE_2D, m_tex[0]);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, y0, w, y1 - y0, GL_RGBA, GL_UNSIGNED_BYTE, pixels + (size_t)y0 * m_shm->stride);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		return;
 	}
+	if (mode == 2) {
+		while (glGetError() != GL_NO_ERROR) {
+		}
+		GLuint fresh = 0;
+		glGenTextures(1, &fresh);
+		glBindTexture(GL_TEXTURE_2D, fresh);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		if (glGetError() == GL_OUT_OF_MEMORY) {
+			glDeleteTextures(1, &fresh); // keep the last good picture and try again with the next frame
+			m_full_dirty = true;
+			m_changed = true;
+			return;
+		}
+		if (m_tex[0])
+			glDeleteTextures(1, &m_tex[0]); // the one drawn last frame
+		m_tex[0] = fresh;
+		m_cur = 0;
+		m_texture = fresh;
+		return;
+	}
+	if (mode == 1) {
+		y0 = 0;
+		y1 = h;
+	}
+	// Whole rows only: plain GLES2 has no GL_UNPACK_ROW_LENGTH, and narrow sub-rectangle uploads are pathologically slow on this
+	// GPU family (tiled textures), while a full-width band is one linear copy. A row still being written when we read it is
+	// simply dirty again - the producer marks it after its copy - so the next frame fixes it.
+	for (int i = 0; i < 2; ++i) {
+		if (m_st1[i] <= m_st0[i]) {
+			m_st0[i] = y0;
+			m_st1[i] = y1;
+		} else {
+			m_st0[i] = y0 < m_st0[i] ? y0 : m_st0[i];
+			m_st1[i] = y1 > m_st1[i] ? y1 : m_st1[i];
+		}
+	}
+	const int t = 1 - m_cur;
+	glBindTexture(GL_TEXTURE_2D, m_tex[t]);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, m_st0[t], w, m_st1[t] - m_st0[t], GL_RGBA, GL_UNSIGNED_BYTE, pixels + (size_t)m_st0[t] * m_shm->stride);
+	m_st0[t] = m_st1[t] = 0;
+	m_cur = t;
+	m_texture = m_tex[t];
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -506,9 +585,11 @@ void gWebOverlay::draw(int canvas_w, int canvas_h)
 	glDrawArrays(GL_TRIANGLES, 0, 6 * npieces);
 	glDisableVertexAttribArray(0);
 
-	// Diagnostic, ENIGMA_WEB_OVERLAY_FINISH=1: wait for the GPU to finish this frame, so the next
-	// frame's texture upload can never overlap a draw still in flight.
-	static const bool finish = getenv("ENIGMA_WEB_OVERLAY_FINISH") && atoi(getenv("ENIGMA_WEB_OVERLAY_FINISH")) != 0;
+	// Wait for the GPU to finish this frame (default on, ENIGMA_WEB_OVERLAY_FINISH=0 turns it off): the next frame's texture
+	// update can then never overlap a draw still in flight, and the driver releases the storage it set aside for this frame
+	// before the next one asks for more - on a nearly full GPU heap (256 MB shared with the web process) it otherwise ran out
+	// of memory and showed black tiles.
+	static const bool finish = !getenv("ENIGMA_WEB_OVERLAY_FINISH") || atoi(getenv("ENIGMA_WEB_OVERLAY_FINISH")) != 0;
 	if (finish)
 		glFinish();
 

@@ -140,6 +140,7 @@ private:
 	// flip() has just rewritten completely from a shadow framebuffer (nothing it draws can stay
 	// behind), and only where the compositor takes premultiplied alpha like the OSD does.
 	gWebOverlay m_web_overlay;
+	bool m_web_overlay_was_on = false; // the layer was shown in the previous frame (see flip(): the texture budget)
 	// Platforms that render straight into their surface (Dreambox pixmap pages, Mali's preserved
 	// window surface) have no shadow framebuffer, so a layer drawn over the finished frame would
 	// stay in the surface and be baked into every following partial redraw. While the layer is

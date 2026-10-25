@@ -112,7 +112,11 @@ private:
 	GLuint m_program = 0;
 	GLint m_tex_loc = -1;
 	GLint m_alpha_loc = -1;
-	GLuint m_texture = 0;
+	GLuint m_texture = 0; // the texture drawn: m_tex[m_cur]
+	GLuint m_tex[2] = {0, 0}; // updated in turn, see upload()
+	int m_cur = 0;
+	int m_st0[2] = {0, 0}; // rows [m_st0, m_st1) of each texture are older than the shared frame
+	int m_st1[2] = {0, 0};
 	int m_tex_w = 0;
 	int m_tex_h = 0;
 	bool m_full_dirty = false;

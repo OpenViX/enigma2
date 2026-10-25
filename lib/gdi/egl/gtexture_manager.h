@@ -96,6 +96,14 @@ public:
 		return evictLRU((size_t)-1);
 	}
 
+	// Evicts least-recently-used textures (not used this frame) until the live ones hold at most `max_bytes`; returns the bytes
+	// released. The manager has no budget of its own: it keeps every texture until the driver runs out of memory. That is fine
+	// while enigma2 is alone on the GPU, but the GPU heap is also used by the web browser (HbbTV) and it cannot evict.
+	size_t trimTo(size_t max_bytes) {
+		return m_live_texture_bytes > max_bytes ? evictLRU(m_live_texture_bytes - max_bytes) : 0;
+	}
+	size_t liveBytes() const { return m_live_texture_bytes; }
+
 	// Called once per presented frame: defines 'this frame' for LRU purposes.
 	void nextFrame() { ++m_frame; }
 	// Release a surface's texture from ~gSurface(), only if it still owns it.
