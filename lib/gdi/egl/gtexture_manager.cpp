@@ -142,6 +142,10 @@ void gtexDownscaleBGRA(const uint32_t* src, int src_stride_px, int src_w, int sr
 }
 
 gTextureManager::gTextureManager() : m_egl_display(EGL_NO_DISPLAY) {
+	if (const char* e = getenv("ENIGMA_TEX_BUDGET_MB")) {
+		m_soft_budget = (size_t)std::max(0, atoi(e)) << 20;
+		m_budget_fixed = true; // 0 = explicitly no budget, nothing is learned either
+	}
 	std::lock_guard<std::mutex> guard(activeManagerMutex());
 	s_active_manager = this;
 }
@@ -549,6 +553,15 @@ GLuint gTextureManager::getTexture(gPixmap* pixmap) {
 	// simply re-upload the next time they are drawn) and try again, instead of
 	// leaving this picture blank. At most two rounds, each freeing more.
 	if (!new_texture && m_last_upload_oom) {
+		if (!m_budget_fixed) {
+			// What was live when the driver gave up is the real capacity (less whatever other processes hold). Keep 20% headroom so
+			// the per-frame trim in gEGLDC::flip() stays ahead of the limit and this reactive path becomes the exception.
+			const size_t learned = std::max<size_t>(m_live_texture_bytes / 5 * 4, 8u << 20);
+			if (!m_soft_budget || learned < m_soft_budget) {
+				m_soft_budget = learned;
+				eDebug("[gTextureManager] texture budget learned from out-of-memory: ~%.1fMB", m_soft_budget / 1048576.0);
+			}
+		}
 		const size_t need = (size_t)sf->x * sf->y * 4;
 		size_t want = std::max<size_t>(need * 2, 4u << 20);
 		for (int round = 0; round < 2 && !new_texture; ++round, want *= 4) {
@@ -577,7 +590,7 @@ GLuint gTextureManager::getTexture(gPixmap* pixmap) {
 	return new_texture;
 }
 
-size_t gTextureManager::evictLRU(size_t bytes_wanted) {
+size_t gTextureManager::evictLRU(size_t bytes_wanted, size_t max_count) {
 	struct Cand {
 		unsigned int last_used;
 		GLuint id;
@@ -601,7 +614,7 @@ size_t gTextureManager::evictLRU(size_t bytes_wanted) {
 	std::sort(cands.begin(), cands.end(), [](const Cand& a, const Cand& b) { return a.last_used < b.last_used; });
 
 	for (const Cand& c : cands) {
-		if (freed >= bytes_wanted)
+		if (freed >= bytes_wanted || (size_t)evicted >= max_count)
 			break;
 		glDeleteTextures(1, &c.id);
 		c.surface->gl_texture_id = 0;
@@ -616,7 +629,7 @@ size_t gTextureManager::evictLRU(size_t bytes_wanted) {
 		++evicted;
 	}
 	if (evicted)
-		eDebug("[gTextureManager] out of memory: evicted %d least-recently-used textures (~%.1fMB), now live=%ld ~%.1fMB", evicted, freed / 1048576.0, m_live_texture_count,
+		eDebug("[gTextureManager] evicted %d least-recently-used textures (~%.1fMB), now live=%ld ~%.1fMB", evicted, freed / 1048576.0, m_live_texture_count,
 			m_live_texture_bytes / 1048576.0);
 	return freed;
 }

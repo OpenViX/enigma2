@@ -474,6 +474,17 @@ bool gEGLDC::initEGL() {
 	}
 	if (!m_web_overlay.initGL())
 		eDebug("[gEGLDC] web overlay layer unavailable (shader/limits) - the browser cannot be shown through gEGLDC");
+	// The browser shares the small GPU heap and cannot evict: when its layer opens, drop every cached GUI texture first (they
+	// re-upload on demand, trimmed to the web budget by flip()).
+	m_web_overlay.setOnShow([this]() {
+		flushBlitBatch();
+		flushTextBatch();
+		m_texture_manager.processDeletions();
+		const size_t released = m_texture_manager.releaseUnusedTextures();
+		m_texture_manager.processDeletions();
+		glFinish();
+		eDebug("[gEGLDC] web layer opening: released %.1fMB of GUI textures", released / 1048576.0);
+	});
 
 	// 9. upload projection matrices
 	m_basic_shader.setResolution((float)m_width, (float)m_height);
@@ -3757,17 +3768,23 @@ void gEGLDC::flip() {
 	// texture until the driver runs out of memory - on a 256 MB heap shared with the browser it takes all that is free, and the
 	// browser, which cannot evict, then loses its tiles (black rectangles, an empty layer) until enigma2 is restarted and the cache is
 	// empty again. ENIGMA_WEB_TEX_BUDGET_MB (default 48, 0 = no limit). Before nextFrame(): what was drawn this frame stays.
+	// Outside HbbTV the manager's own soft budget (ENIGMA_TEX_BUDGET_MB, or learned from the first out-of-memory) applies instead.
+	// Either way at most a few textures are deleted per frame: the excess goes away gradually, not in one stall (nor inside the draw
+	// that hit the driver's limit, which is what made the UI hiccup).
+	size_t budget = m_texture_manager.softBudget();
 	if (m_web_overlay_was_on) {
-		static const size_t budget = []() {
+		static const size_t web_budget = []() {
 			const char* e = getenv("ENIGMA_WEB_TEX_BUDGET_MB");
 			return (size_t)(e ? atoi(e) : 48) << 20;
 		}();
-		if (budget) {
-			const size_t freed = m_texture_manager.trimTo(budget);
-			if (freed)
-				eDebug("[gEGLDC] web layer visible: released %.1fMB of textures (budget %.0fMB, now ~%.1fMB)", freed / 1048576.0, budget / 1048576.0,
-					m_texture_manager.liveBytes() / 1048576.0);
-		}
+		if (web_budget && (!budget || web_budget < budget))
+			budget = web_budget;
+	}
+	if (budget) {
+		const size_t freed = m_texture_manager.trimTo(budget, 6);
+		if (freed && m_web_overlay_was_on)
+			eDebug("[gEGLDC] web layer visible: released %.1fMB of textures (budget %.0fMB, now ~%.1fMB)", freed / 1048576.0, budget / 1048576.0,
+				m_texture_manager.liveBytes() / 1048576.0);
 	}
 	// Defines "this frame" for the texture manager's LRU eviction.
 	m_texture_manager.nextFrame();
