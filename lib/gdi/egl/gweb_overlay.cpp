@@ -72,6 +72,9 @@ static GLuint compile(GLenum type, const char* src)
 	return s;
 }
 
+static int64_t monotonicMs();
+static int64_t idleReleaseMs();
+
 static std::string basePath()
 {
 	const char* env = getenv("ENIGMA_WEB_OVERLAY_PATH");
@@ -148,6 +151,13 @@ void gWebOverlay::onHeal()
 {
 	if (m_sock < 0)
 		return;
+	// A hidden layer still holds its texture: wake the render thread when the grace period is over so sync() can release it.
+	const int64_t hidden = m_hidden_since_ms.load();
+	if (hidden && monotonicMs() - hidden >= idleReleaseMs()) {
+		m_changed = true;
+		if (m_wake)
+			m_wake();
+	}
 	struct stat st;
 	if (stat(m_sock_path.c_str(), &st) == 0 && st.st_ino == m_sock_ino)
 		return;
@@ -226,17 +236,50 @@ bool gWebOverlay::initGL()
 	return true;
 }
 
-void gWebOverlay::destroyGL()
+static int64_t monotonicMs()
 {
+	timespec ts;
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	return (int64_t)ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
+}
+
+// How long a hidden layer keeps its texture (ENIGMA_WEB_OVERLAY_IDLE_MS, read once; 0 = release at once, <0 = never).
+static int64_t idleReleaseMs()
+{
+	static const int64_t ms = []() {
+		const char* e = getenv("ENIGMA_WEB_OVERLAY_IDLE_MS");
+		return e && *e ? (int64_t)atoi(e) : (int64_t)3000;
+	}();
+	return ms < 0 ? INT64_MAX : ms;
+}
+
+void gWebOverlay::releaseTextures()
+{
+	bool freed = false;
+	glBindTexture(GL_TEXTURE_2D, 0);
 	for (int i = 0; i < 2; ++i) {
-		if (m_tex[i])
+		if (m_tex[i]) {
 			glDeleteTextures(1, &m_tex[i]);
+			freed = true;
+		}
 		m_tex[i] = 0;
 		m_st0[i] = m_st1[i] = 0;
 	}
 	m_texture = 0;
 	m_cur = 0;
 	m_tex_w = m_tex_h = 0;
+	m_full_dirty = true;
+	m_hidden_since_ms = 0;
+	if (freed) {
+		// The driver only frees the storage once the GPU is idle.
+		glFinish();
+		eDebug("[gWebOverlay] hidden - frame texture released");
+	}
+}
+
+void gWebOverlay::destroyGL()
+{
+	releaseTextures();
 	if (m_program)
 		glDeleteProgram(m_program);
 	m_program = 0;
@@ -335,7 +378,8 @@ void gWebOverlay::upload()
 	// glFinish after each draw makes sure no draw still reads it). Nothing is allocated per frame - when the GPU heap is full an
 	// allocation fails, and a texture without storage is drawn as opaque black. "rows" = two textures in turn, only the changed
 	// rows; "full" = the same with the whole frame every time; "recycle" = a new texture with the whole frame for every changed
-	// frame and the previous one deleted (needs 2 x 3.6 MB free at that moment - not for a full heap).
+	// frame and the previous one deleted (needs 2 x 3.6 MB free at that moment - not for a full heap); "destroy" = the previous
+	// frame's texture is deleted and the GPU waited for before the new one is allocated (opt-in).
 	static const int mode = []() {
 		const char* e = getenv("ENIGMA_WEB_OVERLAY_UPLOAD");
 		if (e && !strcmp(e, "rows"))
@@ -344,7 +388,9 @@ void gWebOverlay::upload()
 			return 1;
 		if (e && !strcmp(e, "recycle"))
 			return 2;
-		return 3;
+		if (e && !strcmp(e, "destroy"))
+			return 4;
+		return 3; // default: "inplace"
 	}();
 	const bool single = mode >= 2;
 
@@ -420,6 +466,39 @@ void gWebOverlay::upload()
 	if (!have)
 		return; // nothing new: the texture drawn so far stays
 
+	if (mode == 4) {
+		// "destroy": the texture of the previous frame is deleted (and the GPU waited for, so the driver really frees it) BEFORE
+		// the storage for the new frame is allocated. Never two frame textures alive at once, and nothing is held between frames
+		// but the one being drawn.
+		glBindTexture(GL_TEXTURE_2D, 0);
+		if (m_tex[0])
+			glDeleteTextures(1, &m_tex[0]);
+		m_tex[0] = 0;
+		m_texture = 0;
+		glFinish();
+		while (glGetError() != GL_NO_ERROR) {
+		}
+		GLuint fresh = 0;
+		glGenTextures(1, &fresh);
+		glBindTexture(GL_TEXTURE_2D, fresh);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		if (glGetError() == GL_OUT_OF_MEMORY) {
+			eDebug("[gWebOverlay] out of GPU memory for the %dx%d frame - layer not shown, retrying", w, h);
+			glDeleteTextures(1, &fresh);
+			m_tex_w = m_tex_h = 0; // next frame takes the allocation path above
+			m_changed = true;
+			return;
+		}
+		m_tex[0] = fresh;
+		m_cur = 0;
+		m_texture = fresh;
+		return;
+	}
 	if (mode == 3) {
 		glBindTexture(GL_TEXTURE_2D, m_tex[0]);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, y0, w, y1 - y0, GL_RGBA, GL_UNSIGNED_BYTE, pixels + (size_t)y0 * m_shm->stride);
@@ -484,9 +563,7 @@ bool gWebOverlay::sync()
 		refresh();
 	if (m_shm && __atomic_load_n(&m_shm->visible, __ATOMIC_ACQUIRE)) {
 		// A producer that crashed cannot hide its layer: drop it once its process is gone.
-		timespec ts;
-		clock_gettime(CLOCK_MONOTONIC, &ts);
-		const int64_t now_ms = (int64_t)ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
+		const int64_t now_ms = monotonicMs();
 		if (now_ms >= m_next_alive_check_ms) {
 			m_next_alive_check_ms = now_ms + 1000;
 			if (m_shm->pid && kill((pid_t)m_shm->pid, 0) != 0 && errno == ESRCH) {
@@ -501,8 +578,21 @@ bool gWebOverlay::sync()
 			m_logged_active = false;
 			eDebug("[gWebOverlay] layer hidden");
 		}
+		if (m_tex[0] || m_tex[1]) {
+			// Hidden (or the producer is gone): keep the texture for a short grace period so that a quick re-open does not
+			// respecify it, then give the GPU memory back - HbbTV shares a small heap with the web process. onHeal() wakes
+			// the render thread once the period is over.
+			const int64_t now = monotonicMs();
+			if (!m_hidden_since_ms)
+				m_hidden_since_ms = now;
+			else if (now - m_hidden_since_ms >= idleReleaseMs())
+				releaseTextures();
+		}
 		return false;
 	}
+	m_hidden_since_ms = 0;
+	if (!m_logged_active && m_on_show)
+		m_on_show();
 	upload();
 	if (!m_logged_active) {
 		m_logged_active = true;

@@ -52,8 +52,16 @@ private:
 	// Frees least-recently-used textures (not drawn this frame, not pinned, not
 	// DMA-BUF imports) until about `bytes_wanted` are released. Their surfaces
 	// simply re-upload on next use. Returns the bytes released.
-	size_t evictLRU(size_t bytes_wanted);
+	// `max_count` bounds how many textures are deleted in one call (the rest wait for the next call), so a trim can be spread over
+	// several frames instead of stalling one.
+	size_t evictLRU(size_t bytes_wanted, size_t max_count = (size_t)-1);
 	size_t m_live_texture_bytes = 0;
+
+	// Soft ceiling for the live textures, 0 = none. ENIGMA_TEX_BUDGET_MB sets it; otherwise it is learned from the first
+	// GL_OUT_OF_MEMORY (a fraction of what was live at that moment), so from then on textures are released gradually every frame
+	// instead of all at once inside the draw that ran out of memory.
+	size_t m_soft_budget = 0;
+	bool m_budget_fixed = false;
 
 	// unified method to generate and upload the texture based on bpp
 	GLuint createTextureFromPixmap(gPixmap* pixmap);
@@ -99,9 +107,10 @@ public:
 	// Evicts least-recently-used textures (not used this frame) until the live ones hold at most `max_bytes`; returns the bytes
 	// released. The manager has no budget of its own: it keeps every texture until the driver runs out of memory. That is fine
 	// while enigma2 is alone on the GPU, but the GPU heap is also used by the web browser (HbbTV) and it cannot evict.
-	size_t trimTo(size_t max_bytes) {
-		return m_live_texture_bytes > max_bytes ? evictLRU(m_live_texture_bytes - max_bytes) : 0;
+	size_t trimTo(size_t max_bytes, size_t max_count = (size_t)-1) {
+		return m_live_texture_bytes > max_bytes ? evictLRU(m_live_texture_bytes - max_bytes, max_count) : 0;
 	}
+	size_t softBudget() const { return m_soft_budget; }
 	size_t liveBytes() const { return m_live_texture_bytes; }
 
 	// Called once per presented frame: defines 'this frame' for LRU purposes.

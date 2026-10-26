@@ -70,6 +70,9 @@ public:
 
 	// Render thread, context current.
 	bool initGL();
+	// Called (context current) each time the layer turns from hidden to visible, BEFORE its frame texture is allocated: gEGLDC
+	// frees the GUI texture cache there so the allocation finds the GPU heap as empty as possible.
+	void setOnShow(std::function<void()> cb) { m_on_show = std::move(cb); }
 	void destroyGL();
 	// Picks up producer changes (mapping, size, dirty rows) - true when there is
 	// something to draw. Cheap when nothing changed.
@@ -89,16 +92,19 @@ private:
 	void upload();
 	bool lockShm();
 	void unlockShm();
+	void releaseTextures();
 
 	// main thread
 	int m_sock = -1;
 	ePtr<eSocketNotifier> m_notifier;
 	std::function<void()> m_wake;
+	std::function<void()> m_on_show; // render thread
 	std::string m_sock_path;
 	ino_t m_sock_ino = 0;     // inode of our socket file: another gEGLDC (re)binding the same path must not lose it to our teardown
 	ePtr<eTimer> m_heal;      // notices the socket file vanishing or being replaced and binds it again
 
 	std::atomic<bool> m_changed{false}; // set by the main thread, consumed by sync()
+	std::atomic<int64_t> m_hidden_since_ms{0}; // render thread: since when the layer is hidden while a texture is held (0 = n/a)
 
 	// render thread
 	std::string m_shm_path;
