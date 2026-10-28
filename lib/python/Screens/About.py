@@ -494,6 +494,43 @@ class SystemMemoryInfo(AboutBase):
 		self["AboutScrollLabel"].setText(self.AboutText)
 
 
+class SystemSwapsInfo(AboutBase):
+  def __init__(self, session):
+    AboutBase.__init__(self, session, labels=True)
+    self.setTitle(_("System defined swaps"))
+    self.AboutText = ""
+    self.onLayoutFinish.append(self.updateSwap)
+
+  def updateSwap(self):
+    self.AboutText = ""
+
+    try:
+      with open("/proc/swaps", "r") as f:
+        next(f, None)  # Skip header
+
+        for line in f:
+          parts = line.split()
+          if len(parts) < 3:
+            continue
+
+          try:  # don't crash on rogue output
+            device = parts[0]
+            size_bytes = int(parts[2]) * 1024
+          except ValueError:
+            continue
+
+          size = bytesToHumanReadable(size_bytes, binary=False)
+          self.AboutText += _("%s: %s") % (device, size) + "\n"
+
+      if not self.AboutText:
+        self.AboutText = _("No active swaps found") + "\n"
+
+    except (IOError, ValueError):
+      self.AboutText = _("Unable to read swap information") + "\n"
+
+    self["AboutScrollLabel"].setText(self.AboutText)
+
+
 class SystemNetworkInfo(AboutBase):
 	def __init__(self, session):
 		AboutBase.__init__(self, session)

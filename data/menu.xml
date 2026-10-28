@@ -211,6 +211,7 @@ self.session.open(SABnzbdSetupScreen)
 		<item key="about_screen" level="0" text="About"><screen module="About" /></item>
 		<item key="device_screen" level="0" text="Devices"><screen module="About" screen="Devices" /></item>
 		<item key="memory_screen" level="0" text="Memory"><screen module="About" screen="SystemMemoryInfo" /></item>
+		<item key="swaps_screen" level="0" text="System Swaps"><screen module="About" screen="SystemSwapsInfo" /></item>		
 		<item key="network_screen" level="0" text="Network"><screen module="About" screen="SystemNetworkInfo" /></item>
 		<item key="service_info_screen" level="1" text="Service"><screen module="ServiceInfo" /></item>
 		<item key="streaming_clients_info_screen" level="2" text="Streaming Clients"><screen module="StreamingClientsInfo" /></item>
