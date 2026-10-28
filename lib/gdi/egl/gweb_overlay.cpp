@@ -340,6 +340,7 @@ void gWebOverlay::refresh()
 	struct stat st;
 	if (stat(m_shm_path.c_str(), &st) != 0) {
 		unmap();
+		m_session_open = false;
 		return;
 	}
 	if (m_shm && (st.st_ino != m_ino || st.st_size != m_file_size || m_shm->generation != m_gen))
@@ -561,6 +562,13 @@ bool gWebOverlay::sync()
 		return false;
 	if (m_changed.exchange(false))
 		refresh();
+	// The browser allocates its own GPU memory as soon as it starts (it creates the frame file then), long before the layer is
+	// marked visible - that is when enigma2's cached GUI textures have to go, or the browser runs out of memory while loading.
+	if (m_shm && !m_session_open) {
+		m_session_open = true;
+		if (m_on_show)
+			m_on_show();
+	}
 	if (m_shm && __atomic_load_n(&m_shm->visible, __ATOMIC_ACQUIRE)) {
 		// A producer that crashed cannot hide its layer: drop it once its process is gone.
 		const int64_t now_ms = monotonicMs();
@@ -569,6 +577,7 @@ bool gWebOverlay::sync()
 			if (m_shm->pid && kill((pid_t)m_shm->pid, 0) != 0 && errno == ESRCH) {
 				eDebug("[gWebOverlay] producer %u is gone - dropping the layer", m_shm->pid);
 				unmap();
+				m_session_open = false;
 				unlink(m_shm_path.c_str());
 			}
 		}

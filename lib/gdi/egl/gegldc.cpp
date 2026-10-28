@@ -483,7 +483,7 @@ bool gEGLDC::initEGL() {
 		const size_t released = m_texture_manager.releaseUnusedTextures();
 		m_texture_manager.processDeletions();
 		glFinish();
-		eDebug("[gEGLDC] web layer opening: released %.1fMB of GUI textures", released / 1048576.0);
+		eDebug("[gEGLDC] web layer opening/visible: released %.1fMB of GUI textures", released / 1048576.0);
 	});
 
 	// 9. upload projection matrices
@@ -3772,7 +3772,8 @@ void gEGLDC::flip() {
 	// Either way at most a few textures are deleted per frame: the excess goes away gradually, not in one stall (nor inside the draw
 	// that hit the driver's limit, which is what made the UI hiccup).
 	size_t budget = m_texture_manager.softBudget();
-	if (m_web_overlay_was_on) {
+	const bool web_active = m_web_overlay_was_on || m_web_overlay.sessionOpen();
+	if (web_active) {
 		static const size_t web_budget = []() {
 			const char* e = getenv("ENIGMA_WEB_TEX_BUDGET_MB");
 			return (size_t)(e ? atoi(e) : 48) << 20;
@@ -3782,8 +3783,8 @@ void gEGLDC::flip() {
 	}
 	if (budget) {
 		const size_t freed = m_texture_manager.trimTo(budget, 6);
-		if (freed && m_web_overlay_was_on)
-			eDebug("[gEGLDC] web layer visible: released %.1fMB of textures (budget %.0fMB, now ~%.1fMB)", freed / 1048576.0, budget / 1048576.0,
+		if (freed && web_active)
+			eDebug("[gEGLDC] web layer active: released %.1fMB of textures (budget %.0fMB, now ~%.1fMB)", freed / 1048576.0, budget / 1048576.0,
 				m_texture_manager.liveBytes() / 1048576.0);
 	}
 	// Defines "this frame" for the texture manager's LRU eviction.
