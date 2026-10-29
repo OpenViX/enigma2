@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-18 18:44+0300\n"
-"PO-Revision-Date: 2026-10-18 20:05+0300\n"
+"POT-Creation-Date: 2026-10-28 16:25+0200\n"
+"PO-Revision-Date: 2026-10-29 20:19+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -1033,6 +1033,10 @@ msgstr "%s%s (Oletus: %s)"
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
+
+#, python-format
+msgid "%s: %s"
+msgstr "%s: %s"
 
 #, python-format
 msgid "'%s' already exists"
@@ -3562,9 +3566,6 @@ msgstr "Valitse, muunnetaanko Dolby TrueHD -ääniraidat Dolby Digital -muotoon.
 
 msgid "Choose whether WMA Pro sound tracks should be downmixed."
 msgstr "Valitse muunnetaanko WMA Pro-ääniraidat stereoksi."
-
-msgid "Choose whether multi channel AAC / AAC+ sound tracks should be downmixed to stereo."
-msgstr "Valitse, muunnetaanko monikanavaiset AAC- / AAC+ -ääniraidat stereoksi."
 
 msgid "Choose whether multi channel AAC sound tracks should be downmixed to stereo."
 msgstr "Valitse, muunnetaanko monikanavaiset AAC -ääniraidat stereoksi."
@@ -9828,6 +9829,9 @@ msgstr "Ajansiirtoa ei löytynyt tallennusmuunnosta varten!"
 msgid "No active channel found."
 msgstr "Ei löytynyt aktiivisia kanavia."
 
+msgid "No active swaps found"
+msgstr "Aktiivisia swap-tiedostoja ei löytynyt"
+
 msgid "No age block"
 msgstr "Ei ikälukitusta"
 
@@ -15278,6 +15282,12 @@ msgstr "Järjestelmä"
 msgid "System & Modulation"
 msgstr "Järjestelmä & modulaatio"
 
+msgid "System Swaps"
+msgstr "Järjestelmän swap-tiedostot"
+
+msgid "System defined swaps"
+msgstr "Järjestelmän määrittämät swap-tiedostot"
+
 #, python-format
 msgid "System temperature:\t%s"
 msgstr "Laitteen lämpötila:\t%s"
@@ -15327,7 +15337,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 18.10.2026 ---\n"
+"--- 29.10.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -16522,6 +16532,9 @@ msgstr "Varmuuskopiolaitteelta lukeminen epäonnistui. Tarkista, että laite on 
 
 msgid "Unable to read from the backup device. Please check that it is accessible."
 msgstr "Varmuuskopiolaitteelta lukeminen epäonnistui. Tarkista, että laite on käytettävissä."
+
+msgid "Unable to read swap information"
+msgstr "Swap-tietojen lukeminen epäonnistui"
 
 msgid "Uncover dashed flickering line for this service"
 msgstr "Näytä yläreunan pistejuova tältä kanavalta"
