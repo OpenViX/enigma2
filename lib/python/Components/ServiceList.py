@@ -241,6 +241,7 @@ class ServiceList(GUIComponent):
 
 		def sidesMargin(value):
 			self.sidesMargin = parseScale(value)
+			self.l.setSidesMargin(self.sidesMargin)
 
 		def textSeparator(value):
 			self.l.setTextSeparator(value)

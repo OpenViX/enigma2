@@ -1315,7 +1315,9 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 			if (service_info)
 				service_info->getName(ref, text);
 
-			xoffs += m_sides_margin;
+			// a service with a channel number is indented by the number column already: only one without gets the margin
+			const int sidesMargin = (isPlayable && !(hasChannelNumbers && m_cursor->getChannelNum() > 0)) ? m_sides_margin : 0;
+			xoffs += sidesMargin;
 			if (is_event)
 			{
 				event_name = evt->getEventName();
@@ -1394,7 +1396,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				eRect firstLineRect = eRect(xoffs + m_items_distances, offset.y() + (m_itemheight - m_marker_as_line) / 2, mTextLeft - m_items_distances*2 - xoffs - 16, m_marker_as_line);
 				painter.fill(firstLineRect);
 				int secondLineOffset = mTextLeft + bboxServiceName.width() + m_items_distances + 16;
-				eRect secondLineRect = eRect(secondLineOffset, offset.y() + (m_itemheight - m_marker_as_line) / 2, m_itemsize.width() - secondLineOffset - m_items_distances - m_sides_margin, m_marker_as_line);
+				eRect secondLineRect = eRect(secondLineOffset, offset.y() + (m_itemheight - m_marker_as_line) / 2, m_itemsize.width() - secondLineOffset - m_items_distances - sidesMargin, m_marker_as_line);
 				painter.fill(secondLineRect);
 			}
 
@@ -1560,7 +1562,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				}
 
 				if (eventProgressConfig == "barright" || eventProgressConfig == "percright") {
-					pb_xpos = m_itemsize.width() - progressBarRect.width() - m_items_distances*2 - m_sides_margin*2 - m_progressbar_border_width*2;
+					pb_xpos = m_itemsize.width() - progressBarRect.width() - m_items_distances*2 - sidesMargin*2 - m_progressbar_border_width*2;
 				}
 
 				if (is_event && !event_name.empty()) {
@@ -1596,7 +1598,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					}
 
 					int eventTextWidth = (eventProgressConfig == "barright" || eventProgressConfig == "percright") ?
-							(pb_xpos - (m_column_width > 0 ? xoffs_col : xoffs) - m_items_distances*2 ) : (m_itemsize.width() - m_sides_margin*2 - (m_column_width > 0 ? xoffs_col : xoffs) - m_items_distances*2);
+							(pb_xpos - (m_column_width > 0 ? xoffs_col : xoffs) - m_items_distances*2 ) : (m_itemsize.width() - sidesMargin*2 - (m_column_width > 0 ? xoffs_col : xoffs) - m_items_distances*2);
 
 					ePtr<eTextPara> para = new eTextPara(eRect(0, 0, eventTextWidth, m_itemheight));
 					para->setFont(m_element_font[celServiceInfo]);
