@@ -8678,7 +8678,7 @@ msgid "Load unlinked userbouquets"
 msgstr "Lade nicht verbundene Favoritenlisten"
 
 msgid "Load, Save & Delete EPG Cache"
-msgstr "EPG-Cache laden, speichern und löschen"
+msgstr "EPG-Cache"
 
 msgid "Loading skin"
 msgstr "Lade Skin"
