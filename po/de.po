@@ -2881,7 +2881,7 @@ msgid "Bouvet Island"
 msgstr "Bouvet Island"
 
 msgid "BoxInfo"
-msgstr "E2-Receiver Informationen"
+msgstr "E2-Receiver"
 
 msgid "Boxe"
 msgstr ""
