@@ -380,6 +380,13 @@ void eFilePushThreadRecorder::thread()
 	hasStarted();
 #endif
 
+	/* Some demux drivers block in read() until the whole buffer is filled,
+	 * which delays live data (SoftCSA) by several hundred ms at low bitrates.
+	 * Non-blocking reads after poll() return what is available. */
+	int flags = fcntl(m_fd_source, F_GETFL, 0);
+	flags |= O_NONBLOCK;
+	if (fcntl(m_fd_source, F_SETFL, flags) == -1)
+		eDebug("[eFilePushThreadRecorder] failed setting DMX handle %d in non-blocking mode, error %d: %s", m_fd_source, errno, strerror(errno));
 
 	m_buffer_fill = 0;
 
