@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 18:53+0000\n"
+"POT-Creation-Date: 2026-10-30 16:06+0100\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, xcentaurix\n"
@@ -1032,6 +1032,10 @@ msgstr "%s%s (Standard: %s)"
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
+
+#, python-format
+msgid "%s: %s"
+msgstr ""
 
 #, python-format
 msgid "'%s' already exists"
@@ -2877,7 +2881,7 @@ msgid "Bouvet Island"
 msgstr "Bouvet Island"
 
 msgid "BoxInfo"
-msgstr "E2-Receiver Informationen"
+msgstr "E2-Receiver"
 
 msgid "Boxe"
 msgstr ""
@@ -3199,7 +3203,7 @@ msgid "Cannot find any signal ..., aborting !"
 msgstr "Kann kein Signal finden - breche ab..."
 
 msgid "Cannot move to the trash can"
-msgstr "Die Datei konnte nicht in den Mülleimer verschoben werden"
+msgstr "Die Datei konnte nicht in den Mülleimer verschoben werden."
 
 #, python-format
 msgid "Cannot unmount partition '%s'.  Make sure this partition is not in use.  (SWAP, record/timeshift, etc.)"
@@ -3563,9 +3567,6 @@ msgstr "Sollen Dolby TrueHD Tonspuren zu Dolby Digital transkodiert werden?"
 msgid "Choose whether WMA Pro sound tracks should be downmixed."
 msgstr "Soll WMA Pro Mehrkanalton zu Stereo heruntergemischt werden?"
 
-msgid "Choose whether multi channel AAC / AAC+ sound tracks should be downmixed to stereo."
-msgstr "Soll AAC / AAC+ Mehrkanalton zu Stereo heruntergemischt werden?"
-
 msgid "Choose whether multi channel AAC sound tracks should be downmixed to stereo."
 msgstr "Soll AAC Mehrkanalton zu Stereo heruntergemischt werden?"
 
@@ -3682,9 +3683,6 @@ msgstr "Schließe '%s'"
 #, python-format
 msgid "Close '%s' screen and exit all menus"
 msgstr "Schließe '%s' und verlasse alle Menüs"
-
-msgid "Close CA device at programm end"
-msgstr "Schließe CA Gerät bei Programmende"
 
 msgid "Close PiP on exit"
 msgstr "PiP mit 'EXIT' beenden"
@@ -5058,9 +5056,6 @@ msgstr "HTTP Streams bei Empfang entschlüsseln"
 msgid "Descramble sending http streams"
 msgstr "HTTP Streams entschlüsselt senden"
 
-msgid "Descrambling options"
-msgstr "Entschlüsselungsoptionen"
-
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -5425,7 +5420,7 @@ msgstr "Vor dem Brennen eine Vorschau der DVD ansehen?"
 
 #, python-format
 msgid "Do you want to reboot your %s %s"
-msgstr "Die %s %s neu starten"
+msgstr "Die %s %s neu starten?"
 
 msgid "Do you want to reboot your receiver?"
 msgstr "Soll der E2-Receiver neu gestartet werden?"
@@ -7333,6 +7328,9 @@ msgstr "HDR10"
 msgid "HDR10 Support"
 msgstr "HDR10 Unterstützung"
 
+msgid "HDR10 user interface correction"
+msgstr "HDR10-Korrektur der Benutzeroberfläche"
+
 msgid "HDR10+"
 msgstr "HDR10+"
 
@@ -8358,6 +8356,9 @@ msgstr "Sender beibehalten"
 msgid "Keeps the movie list open whilst playing audio files."
 msgstr "Filmliste offen lassen, wenn Musikdateien abgespielt werden."
 
+msgid "Keeps the user interface looking as it does in SDR while an HDR10 programme plays, by compensating the brightness and contrast the HDR10 output would otherwise change. Has no effect on SDR or HLG programmes."
+msgstr "Sorgt dafür, dass die Benutzeroberfläche während einer HDR10-Sendung wie in SDR aussieht, indem die sonst durch die HDR10-Ausgabe veränderte Helligkeit und der Kontrast ausgeglichen werden. Hat keine Wirkung bei SDR- oder HLG-Sendungen."
+
 msgid "Kenya"
 msgstr "Kenya"
 
@@ -8677,7 +8678,7 @@ msgid "Load unlinked userbouquets"
 msgstr "Lade nicht verbundene Favoritenlisten"
 
 msgid "Load, Save & Delete EPG Cache"
-msgstr "EPG-Cache laden, speichern und löschen"
+msgstr "EPG-Cache"
 
 msgid "Loading skin"
 msgstr "Lade Skin"
@@ -9601,7 +9602,7 @@ msgid ""
 msgstr ""
 "Nameserver (DNS)\n"
 "\n"
-"Dieser Test sucht nach konfigurierten Nameservern\n"
+"Dieser Test sucht nach konfigurierten Nameservern.\n"
 "Wenn eine 'Unbestätigt'-Meldung erscheint:\n"
 "\n"
 "- Überprüfe DHCP, die Verkabelung und die Adapter-Einstellungen.\n"
@@ -9821,6 +9822,9 @@ msgstr "Keine Timeshiftdatei gefunden, die als Aufnahme gespeichert werden kann.
 
 msgid "No active channel found."
 msgstr "Kein aktiver Sender gefunden."
+
+msgid "No active swaps found"
+msgstr "Keine aktiven SWAP-Dateien gefunden"
 
 msgid "No age block"
 msgstr "Kein Jugendschutz"
@@ -10186,12 +10190,6 @@ msgstr "Aus"
 
 msgid "Offline decode delay (ms)"
 msgstr "Verzögerung der Offline-Entschlüsselung (ms)"
-
-msgid "Offset CA device index"
-msgstr "CA-Geräteindex-Offset"
-
-msgid "Offset and close CA device"
-msgstr "CA-Gerät versetzen und schließen"
 
 msgid "Olympia"
 msgstr ""
@@ -15254,6 +15252,12 @@ msgstr "System"
 msgid "System & Modulation"
 msgstr "System & Modulation"
 
+msgid "System Swaps"
+msgstr "System-SWAP-Dateien"
+
+msgid "System defined swaps"
+msgstr "System definierte SWAP-Dateien"
+
 #, python-format
 msgid "System temperature:\t%s"
 msgstr "Systemtemperatur:\t%s"
@@ -15633,7 +15637,7 @@ msgid "The saved PIN was cleared."
 msgstr "Der gespeicherte PIN-Code wurde gelöscht."
 
 msgid "The selected language is unavailable - using en_US"
-msgstr "Die gewählte Sprache ist nicht verfügbar. Verwende en_US"
+msgstr "Die gewählte Sprache ist nicht verfügbar - verwende en_US."
 
 msgid "The service has been added to the favourites."
 msgstr "Sender wurde zu Favoriten hinzugefügt."
@@ -15651,7 +15655,7 @@ msgid ""
 "due to an error in StartEnigma.py"
 msgstr ""
 "Die Benutzeroberfläche der %s %s startet\n"
-"wegen eines Fehlers in StartEnigma.py neu"
+"wegen eines Fehlers in StartEnigma.py neu."
 
 #, python-format
 msgid "The user interface of your %s %s will be stopped to run Kodi"
@@ -15727,7 +15731,7 @@ msgid "This allows you to change the number of rows shown."
 msgstr "Dies ermöglicht anzugeben, wie viele Zeilen gezeigt werden sollen."
 
 msgid "This allows you to set the number of digits you can input when selecting channels using number input."
-msgstr "Dies ermöglicht dir, die maximale Anzahl von Ziffern bei der Senderwahl über Sendernummern festzulegen."
+msgstr "Dies ermöglicht, die maximale Anzahl von Ziffern bei der Senderwahl über Sendernummern festzulegen."
 
 msgid "This can take up to 20 minutes for recovery backup, 6 minutes for image backup."
 msgstr "Dies kann bis zu 20 Minuten für Recovery-Backup und 6 Minuten für Image-Backup dauern."
@@ -16492,6 +16496,9 @@ msgstr "Es kann nicht vom Backup-Gerät gelesen werden. Bitte prüfe, ob es zug�
 msgid "Unable to read from the backup device. Please check that it is accessible."
 msgstr "Es kann nicht vom Backup-Gerät gelesen werden. Bitte prüfe, ob es zugänglich ist."
 
+msgid "Unable to read swap information"
+msgstr "SWAP-Information konnte nicht gelesen werden."
+
 msgid "Uncover dashed flickering line for this service"
 msgstr "Zeige flackernde weiße Linie am oberen Bildrand"
 
@@ -16623,7 +16630,7 @@ msgstr[1] "Update vollendet, %d Pakete installiert."
 
 #, python-format
 msgid "Update failed. Your %s %s does not have a working internet connection."
-msgstr "Update fehlgeschlagen. Deine %s %s hat keine Internetverbindung."
+msgstr "Update fehlgeschlagen. Die %s %s hat keine Internetverbindung."
 
 msgid "Update has completed."
 msgstr "Updates beendet."
@@ -17908,7 +17915,7 @@ msgstr "Timeshift scheint aktiv zu sein. Timeshift stoppen? Streams und IPTV wer
 
 #, python-format
 msgid "Your %s %s could not connect to the plugin feeds at this time. Please try using the Backup manager to restore plugins later."
-msgstr "Deine %s %s kann sich nicht mit dem Feed verbinden - bitte die Plugins mit dem Backup-Manager später wiederherstellen."
+msgstr "Die %s %s kann sich nicht mit dem Feed verbinden - bitte die Plugins mit dem Backup-Manager später wiederherstellen."
 
 #, python-format
 msgid "Your %s %s has no %s access, please check your network settings and make sure you have network cable connected and try again."
@@ -17924,45 +17931,45 @@ msgstr "Die %s %s ist nicht mit dem Internet verbunden - bitte überprüfe die N
 
 #, python-format
 msgid "Your %s %s has successfully flashed slot %s, enter 'Yes' to reboot new image or 'No' to return to Enigma2."
-msgstr "Deine %s %s hat Slot %s erfolgreich geflasht, wähle 'Ja', um das neue Image zu booten oder 'Nein', um zu Enigma2 zurückzukehren."
+msgstr "Die %s %s hat Slot %s erfolgreich geflasht, wähle 'Ja', um das neue Image zu booten oder 'Nein', um zu Enigma2 zurückzukehren."
 
 #, python-format
 msgid ""
 "Your %s %s is about to create a full image backup, this can take from 10 to 15  minutes to complete.\n"
 "Do you want to allow this?"
-msgstr "Deine %s %s erstellt ein Image Backup. Dies kann 10 bis 15 Minuten dauern."
+msgstr "Die %s %s erstellt ein Image Backup. Dies kann 10 bis 15 Minuten dauern."
 
 #, python-format
 msgid ""
 "Your %s %s is about to run a backup of your settings and to detect your plugins.\n"
 "Do you want to allow this?"
 msgstr ""
-"Deine %s %s startet gleich ein Backup deiner Einstellungen und deiner Plugins.\n"
+"Die %s %s startet gleich ein Backup deiner Einstellungen und deiner Plugins.\n"
 "Fortfahren?"
 
 #, python-format
 msgid "Your %s %s is not able to connect to the feeds, please try again later. If this persists please report on the OpenViX forum at world-of-satellite.com."
-msgstr "Deine %s %s kann keine Verbindung zu den Feeds herstellen - bitte später erneut versuchen. Wenn das Problem bestehen bleibt, bitte auf world-of-satellite.com nachsehen."
+msgstr "Die %s %s kann keine Verbindung zu den Feeds herstellen - bitte später erneut versuchen. Wenn das Problem bestehen bleibt, bitte auf world-of-satellite.com nachsehen."
 
 #, python-format
 msgid "Your %s %s is not connected to a network. Please check your network settings and try again."
-msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte Netzwerkeinstellungen prüfen und erneut versuchen."
+msgstr "Die %s %s ist nicht mit dem Internet verbunden - bitte Netzwerkeinstellungen prüfen und erneut versuchen."
 
 #, python-format
 msgid "Your %s %s is not connected to a network. Please try using the Backup manager to restore plugins later when a network connection is available."
-msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte die Plugins mit dem Backup-Manager später wiederherstellen, wenn eine Netzwerkverbindung besteht."
+msgstr "Die %s %s ist nicht mit dem Internet verbunden - bitte die Plugins mit dem Backup-Manager später wiederherstellen, wenn eine Netzwerkverbindung besteht."
 
 #, python-format
 msgid "Your %s %s is not connected to the Internet. Please check your network settings and try again."
-msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte Netzwerkeinstellungen prüfen und erneut versuchen."
+msgstr "Die %s %s ist nicht mit dem Internet verbunden - bitte Netzwerkeinstellungen prüfen und erneut versuchen."
 
 #, python-format
 msgid "Your %s %s is not connected to the Internet. Please try using Backup manager to restore plugins later."
-msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte die Plugins mit dem Backup-Manager später wiederherstellen."
+msgstr "Die %s %s ist nicht mit dem Internet verbunden - bitte die Plugins mit dem Backup-Manager später wiederherstellen."
 
 #, python-format
 msgid "Your %s %s is not connected to the Internet. Please try using the Backup manager to restore plugins later."
-msgstr "Deine %s %s ist nicht mit dem Internet verbunden - bitte die Plugins mit dem Backup-Manager später wiederherstellen."
+msgstr "Die %s %s ist nicht mit dem Internet verbunden - bitte die Plugins mit dem Backup-Manager später wiederherstellen."
 
 #, python-format
 msgid ""
@@ -17978,26 +17985,26 @@ msgstr ""
 
 #, python-format
 msgid "Your %s %s is rebooting"
-msgstr "Deine %s %s startet neu."
+msgstr "Die %s %s startet neu."
 
 #, python-format
 msgid "Your %s %s is rebooting into Android Mode"
-msgstr "Deine %s %s startet neu im Android-Modus."
+msgstr "Die %s %s startet neu im Android-Modus."
 
 #, python-format
 msgid "Your %s %s is rebooting into Recovery Mode"
-msgstr "Deine %s %s startet neu im Recovery-Modus."
+msgstr "Die %s %s startet neu im Recovery-Modus."
 
 #, python-format
 msgid "Your %s %s is shutting down"
-msgstr "Deine %s %s schaltet sich aus."
+msgstr "Die %s %s schaltet sich aus."
 
 #, python-format
 msgid ""
 "Your %s %s needs to be restarted to complete the installation of %s\n"
 "Do you want to reboot now ?"
 msgstr ""
-"Deine %s %s muss neu gestartet werden, um die Installation von '%s' abzuschließen\n"
+"Die %s %s muss neu gestartet werden, um die Installation von '%s' abzuschließen.\n"
 "Jetzt neu starten?"
 
 #, python-format
@@ -18005,7 +18012,7 @@ msgid ""
 "Your %s %s needs to be restarted to complete the removal of %s\n"
 "Do you want to reboot now ?"
 msgstr ""
-"Deine %s %s muss neu gestartet werden, um die Löschung von '%s' abzuschließen\n"
+"Die %s %s muss neu gestartet werden, um die Löschung von '%s' abzuschließen.\n"
 "Jetzt neu starten?"
 
 #, python-format
@@ -18014,7 +18021,7 @@ msgid ""
 "\n"
 "Do you want to install now ?"
 msgstr ""
-"Deine %s %s wird nach Installation des Services neu gestartet\n"
+"Die %s %s wird nach Installation des Services neu gestartet.\n"
 "\n"
 "Service jetzt installieren?"
 
@@ -18023,7 +18030,7 @@ msgid ""
 "Your %s %s will be restarted after the removal of service\n"
 "Do you want to remove now ?"
 msgstr ""
-"Deine %s %s wird nach Entfernen des Services neu gestartet\n"
+"Die %s %s wird nach Entfernen des Services neu gestartet.\n"
 "Service jetzt entfernen?"
 
 msgid "Your STB will restart after pressing OK on your remote control."
@@ -18037,11 +18044,11 @@ msgid ""
 "Your config file is not well formed:\n"
 "%s"
 msgstr ""
-"Deine Konfigurationsdatei ist fehlerhaft:\n"
+"Die Konfigurationsdatei ist fehlerhaft:\n"
 "%s"
 
 msgid "Your current collection will get lost!"
-msgstr "Deine aktuelle Zusammenstellung geht dabei verloren."
+msgstr "Die aktuelle Zusammenstellung geht dabei verloren."
 
 #, python-format
 msgid ""
@@ -18057,12 +18064,12 @@ msgid ""
 "Your internet connection is not working!\n"
 "Please choose what you want to do next."
 msgstr ""
-"Deine Internetverbindung funktioniert nicht.\n"
+"Die Internetverbindung funktioniert nicht.\n"
 "Wähle eine Option zum Fortfahren."
 
 #, python-format
 msgid "Your internet connection is working (ip: %s)"
-msgstr "Deine Internetverbindung funktioniert (IP: %s)"
+msgstr "Die Internetverbindung funktioniert (IP: %s)."
 
 msgid ""
 "Your internet connection is working now.\n"
@@ -18074,10 +18081,10 @@ msgstr ""
 "Drücke 'OK' zum Fortfahren."
 
 msgid "Your network configuration has been activated."
-msgstr "Deine Netzwerk-Konfiguration wurde aktiviert."
+msgstr "Die Netzwerk-Konfiguration wurde aktiviert."
 
 msgid "Your network configuration has been disabled."
-msgstr "Deine Netzwerk-Konfiguration wurde deaktiviert."
+msgstr "Die Netzwerk-Konfiguration wurde deaktiviert."
 
 msgid "Your network has finished restarting"
 msgstr "Dein Netzwerk wurde neu gestartet."
@@ -18107,7 +18114,7 @@ msgid ""
 "\n"
 "Please choose what you want to do next."
 msgstr ""
-"Deine WLAN-Verbindung konnte nicht gestartet werden.\n"
+"Die WLAN-Verbindung konnte nicht gestartet werden.\n"
 "Ist dein USB WLAN-Stick korrekt angeschlossen?\n"
 "\n"
 "Wähle eine Option zum Fortfahren."
