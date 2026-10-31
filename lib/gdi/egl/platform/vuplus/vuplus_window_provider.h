@@ -70,6 +70,8 @@ private:
 	void applyWindowBlend();
 
 public:
+	// Small Nexus GPU heap: keep the GUI's live textures under this (see gTextureManager::setDefaultBudget()).
+	int textureBudgetMB() const override { return 64; } 
 	VuplusWindowProvider();
 	virtual ~VuplusWindowProvider();
 

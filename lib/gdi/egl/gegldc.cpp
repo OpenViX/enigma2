@@ -205,7 +205,7 @@ bool gEGLDC::tryInitEGL(int version) {
 		m_egl_context = EGL_NO_CONTEXT;
 		return false;
 	}
-
+ 
 	// The context is current now: learn the GPU's size limits before anything
 	// sized to the canvas (shadow FBO, viewport, textures) is created. Only
 	// matters when the canvas exceeds them - see updatePhysicalSize().
@@ -224,6 +224,10 @@ bool gEGLDC::tryInitEGL(int version) {
 		m_max_tex_size = 0;
 #endif
 		m_texture_manager.setMaxTextureSize(m_max_tex_size);
+		if (m_window_provider && m_window_provider->textureBudgetMB() > 0) {
+			m_texture_manager.setDefaultBudget((size_t)m_window_provider->textureBudgetMB() << 20);
+			eDebug("[gEGLDC] small GPU heap: texture budget %dMB (ENIGMA_TEX_BUDGET_MB overrides)", m_window_provider->textureBudgetMB());
+		}
 		const char* renderer = (const char*)glGetString(GL_RENDERER);
 		eDebug("[gEGLDC] GL_RENDERER=%s GL_MAX_TEXTURE_SIZE=%d GL_MAX_RENDERBUFFER_SIZE=%d", renderer ? renderer : "(null)", (int)max_tex, (int)max_rb);
 		updatePhysicalSize(m_width, m_height);
