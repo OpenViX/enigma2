@@ -114,6 +114,8 @@ private:
 	bool m_joined_nxclient;                    // NxClient_Join() succeeded - must be balanced by NxClient_Uninit()
 
 public:
+	// Small Nexus GPU heap: keep the GUI's live textures under this (see gTextureManager::setDefaultBudget()).
+	int textureBudgetMB() const override { return 64; } 
 	GbquadWindowProvider();
 	virtual ~GbquadWindowProvider();
 

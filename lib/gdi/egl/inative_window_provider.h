@@ -147,6 +147,11 @@ public:
 	// scaled into it (see gEGLDC::updatePhysicalSize()). Default true.
 	virtual bool canResizeWindow() { return true; }
 
+	// Proactive ceiling in MB for the GUI's live GPU textures on boxes with a small
+	// GPU heap (Nexus). 0 = none: textures are kept until the driver runs out of memory
+	// (see gTextureManager::setDefaultBudget()). ENIGMA_TEX_BUDGET_MB overrides it.
+	virtual int textureBudgetMB() const { return 0; } 
+
 	// Cleans up platform-specific resources.
 	virtual void cleanup() = 0;
 };

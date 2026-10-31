@@ -109,6 +109,12 @@ public:
 	// while enigma2 is alone on the GPU, but the GPU heap is also used by the web browser (HbbTV) and it cannot evict.
 	size_t trimTo(size_t max_bytes, size_t max_count = (size_t)-1) {
 		return m_live_texture_bytes > max_bytes ? evictLRU(m_live_texture_bytes - max_bytes, max_count) : 0;
+	} 
+	// Platform default for the soft budget (small GPU heap): applied from the start so textures are trimmed gradually every frame
+	// instead of piling up until the first out-of-memory. Ignored when ENIGMA_TEX_BUDGET_MB is set; a lower learned value still wins.
+	void setDefaultBudget(size_t bytes) {
+		if (!m_budget_fixed && bytes && (!m_soft_budget || bytes < m_soft_budget))
+			m_soft_budget = bytes;
 	}
 	size_t softBudget() const { return m_soft_budget; }
 	size_t liveBytes() const { return m_live_texture_bytes; }
