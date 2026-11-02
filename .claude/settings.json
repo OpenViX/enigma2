@@ -35,7 +35,12 @@
       "Bash(cp /tmp/old_single_mutex.c /tmp/patchgen/b/plugins/elements/gstinputselector.c)",
       "Bash(cp /tmp/old_single_mutex.h /tmp/patchgen/b/plugins/elements/gstinputselector.h)",
       "Bash(cp /tmp/gstinputselector_1.28.6.c /tmp/patchgen/a/plugins/elements/gstinputselector.c)",
-      "Bash(curl -s \"https://gitlab.freedesktop.org/gstreamer/gstreamer/-/raw/1.28.6/subprojects/gstreamer/plugins/elements/gstinputselector.h\" -o /tmp/patchgen/a/plugins/elements/gstinputselector.h)"
+      "Bash(curl -s \"https://gitlab.freedesktop.org/gstreamer/gstreamer/-/raw/1.28.6/subprojects/gstreamer/plugins/elements/gstinputselector.h\" -o /tmp/patchgen/a/plugins/elements/gstinputselector.h)",
+      "Bash(tee /dev/stderr)",
+      "Bash(xargs touch)",
+      "Bash(grep -nP \"^\\\\+.*'$|^\\\\+.*\\\\\\\\\\\\\\\\'\\\\\\)\")",
+      "Bash(python -c \"import ast;ast.parse\\(open\\('ServiceInfoBar.py'\\).read\\(\\)\\);print\\('ok'\\)\")",
+      "Bash(python actions/parseactions.py parse gui/*.h)"
     ]
   }
 }

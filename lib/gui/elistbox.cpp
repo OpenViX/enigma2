@@ -10,7 +10,7 @@ eListbox::eListbox(eWidget *parent) :
 	eWidget(parent), m_scrollbar_mode(showNever), m_prev_scrollbar_page(-1),
 	m_content_changed(false), m_enabled_wrap_around(false), m_scrollbar_width(10), m_scrollbar_height(10),
 	m_top(0), m_left(0), m_max_columns(0), m_max_rows(0), m_selected(0), m_itemheight(25), m_itemwidth(25), m_orientation(orVertical),
-	m_items_per_page(0), m_items_per_page_with_partials(0), m_selection_enabled(1), m_native_keys_bound(false), m_scrollbar(nullptr)
+	m_items_per_page(0), m_items_per_page_with_partials(0), m_selection_enabled(1), m_ellipsis(true), m_native_keys_bound(false), m_scrollbar(nullptr)
 {
 	memset(static_cast<void*>(&m_style), 0, sizeof(m_style));
 	m_style.m_text_offset = ePoint(1,1);
@@ -1082,6 +1082,20 @@ void eListbox::recalcSize()
 		m_max_rows = 0;
 
 	moveSelection(justCheck);
+}
+
+bool iListboxContent::ellipsisEnabled()
+{
+	return !m_listbox || m_listbox->getEllipsis();
+}
+
+void eListbox::setEllipsis(int en)
+{
+	if (m_ellipsis != (en != 0))
+	{
+		m_ellipsis = en != 0;
+		invalidate();
+	}
 }
 
 void eListbox::setItemHeight(int h)

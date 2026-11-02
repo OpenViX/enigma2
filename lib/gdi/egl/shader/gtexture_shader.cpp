@@ -1,6 +1,7 @@
 #include <lib/gdi/egl/shader/gtexture_shader.h>
 #include <lib/gdi/egl/gles_version.h>
 #include <lib/base/eerror.h>
+#include <lib/gdi/egl/gtexture_manager.h>
 #include <stdlib.h>
 
 // ---------------------------------------------------------------------------
@@ -20,8 +21,8 @@ static const char *vertex_shader_es3 = R"(#version 300 es
 )";
 
 static const char *fragment_shader_es3 = R"(#version 300 es
-    precision mediump float;
-    
+    precision highp float; // indexed textures need exact texel coordinates (see fetchColor())
+
     in vec2 v_uv;
     in vec2 v_pos;
     out vec4 frag_color;
@@ -43,6 +44,26 @@ static const char *fragment_shader_es3 = R"(#version 300 es
 
     // 256-entry per-channel tone LUT (texel centres: v*255/256 + 0.5/256)
     float toneLut(float v) { return texture(u_tone_lut, vec2(v * 0.99609375 + 0.001953125, 0.5)).r; }
+
+    // Palette-indexed texture (u_indexed): u_texture holds the indices, u_palette is the 256x1 colour table. The index texture
+    // is sampled NEAREST, so the bilinear filter a normal texture gets in hardware is done here, on the resolved colours.
+    uniform sampler2D u_palette;
+    uniform float u_indexed;
+    uniform vec2 u_tex_size;
+    vec4 palColor(vec2 uv) {
+        float i = texture(u_texture, uv).r;
+        return texture(u_palette, vec2(i * 0.99609375 + 0.001953125, 0.5));
+    }
+    vec4 fetchColor(vec2 uv) {
+        if (u_indexed < 0.5) return texture(u_texture, uv);
+        vec2 p = uv * u_tex_size - 0.5;
+        vec2 f = fract(p);
+        vec2 o = 1.0 / u_tex_size;
+        vec2 b = (floor(p) + 0.5) * o;
+        vec4 c0 = mix(palColor(b), palColor(b + vec2(o.x, 0.0)), f.x);
+        vec4 c1 = mix(palColor(b + vec2(0.0, o.y)), palColor(b + o), f.x);
+        return mix(c0, c1, f.y);
+    }
 
     void main() {
         float coverage = 1.0;
@@ -71,7 +92,7 @@ static const char *fragment_shader_es3 = R"(#version 300 es
             if (coverage <= 0.0) discard;
         }
 
-        vec4 tex_color = texture(u_texture, v_uv);
+        vec4 tex_color = fetchColor(v_uv);
         if (u_tone_on > 0.5 && tex_color.a > 0.0) {
             // Present pass only: tone-map the straight (un-premultiplied) colour, then
             // re-premultiply so the modes below see the same kind of input as before.
@@ -113,8 +134,12 @@ static const char *vertex_shader_es2 = R"(#version 100
 )";
 
 static const char *fragment_shader_es2 = R"(#version 100
+    #ifdef GL_FRAGMENT_PRECISION_HIGH
+    precision highp float; // indexed textures need exact texel coordinates (see fetchColor())
+    #else
     precision mediump float;
-    
+    #endif
+
     varying vec2 v_uv;
     varying vec2 v_pos;
     
@@ -140,6 +165,25 @@ static const char *fragment_shader_es2 = R"(#version 100
     // 256-entry per-channel tone LUT (texel centres: v*255/256 + 0.5/256)
     float toneLut(float v) { return texture2D(u_tone_lut, vec2(v * 0.99609375 + 0.001953125, 0.5)).r; }
 
+    // See the ES3 fragment shader: palette-indexed texture, bilinear filtered here.
+    uniform sampler2D u_palette;
+    uniform float u_indexed;
+    uniform vec2 u_tex_size;
+    vec4 palColor(vec2 uv) {
+        float i = texture2D(u_texture, uv).r;
+        return texture2D(u_palette, vec2(i * 0.99609375 + 0.001953125, 0.5));
+    }
+    vec4 fetchColor(vec2 uv) {
+        if (u_indexed < 0.5) return texture2D(u_texture, uv);
+        vec2 p = uv * u_tex_size - 0.5;
+        vec2 f = fract(p);
+        vec2 o = 1.0 / u_tex_size;
+        vec2 b = (floor(p) + 0.5) * o;
+        vec4 c0 = mix(palColor(b), palColor(b + vec2(o.x, 0.0)), f.x);
+        vec4 c1 = mix(palColor(b + vec2(0.0, o.y)), palColor(b + o), f.x);
+        return mix(c0, c1, f.y);
+    }
+
     void main() {
         float coverage = 1.0;
 
@@ -161,7 +205,7 @@ static const char *fragment_shader_es2 = R"(#version 100
             if (coverage <= 0.0) discard;
         }
 
-        vec4 tex_color = texture2D(u_texture, v_uv);
+        vec4 tex_color = fetchColor(v_uv);
         if (u_tone_on > 0.5 && tex_color.a > 0.0) {
             // Present pass only: tone-map the straight (un-premultiplied) colour, then
             // re-premultiply so the modes below see the same kind of input as before.
@@ -356,6 +400,14 @@ bool gTextureShader::init()
         if (m_tone_lut_location >= 0) glUniform1i(m_tone_lut_location, 1); // texture unit 1
         if (m_tone_on_location >= 0)  glUniform1f(m_tone_on_location, 0.0f);
     }
+    m_palette_location     = glGetUniformLocation(m_program_id, "u_palette");
+    m_indexed_location     = glGetUniformLocation(m_program_id, "u_indexed");
+    m_tex_size_location    = glGetUniformLocation(m_program_id, "u_tex_size");
+    if (m_palette_location >= 0 || m_indexed_location >= 0) {
+        glUseProgram(m_program_id);
+        if (m_palette_location >= 0) glUniform1i(m_palette_location, 2); // texture unit 2
+        if (m_indexed_location >= 0) glUniform1f(m_indexed_location, 0.0f);
+    }
     m_rect_size_location   = glGetUniformLocation(m_program_id, "u_rect_size");
     m_radius_location      = glGetUniformLocation(m_program_id, "u_radius");
     m_edges_location       = glGetUniformLocation(m_program_id, "u_edges");
@@ -415,6 +467,22 @@ void gTextureShader::bind()
     glUseProgram(m_program_id);
 }
 
+bool gTextureShader::applyIndexedUniforms(GLuint texture_id)
+{
+    GLuint pal = 0;
+    int w = 0, h = 0;
+    const bool indexed = m_indexed_location >= 0 && m_texture_manager && m_texture_manager->indexedInfo(texture_id, pal, w, h);
+    if (m_indexed_location >= 0)
+        glUniform1f(m_indexed_location, indexed ? 1.0f : 0.0f);
+    if (indexed) {
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, pal);
+        glActiveTexture(GL_TEXTURE0);
+        glUniform2f(m_tex_size_location, (float)w, (float)h);
+    }
+    return indexed;
+}
+
 // pos_uv (x, y, u, v) - must match init()'s VAO layout.
 static const gles::VertexAttrib texture_attribs[] = {{0, 4, 0}};
 
@@ -455,7 +523,8 @@ void gTextureShader::drawTexture(float x, float y, float width, float height, GL
     glBindTexture(GL_TEXTURE_2D, texture_id);
     glUniform1i(m_texture_location, 0);
     glUniform1f(m_alpha_location, global_alpha);
-    
+    applyIndexedUniforms(texture_id);
+
     glUniform1f(m_unpremult_location, m_premultiply ? -1.0f : (m_unpremultiply ? m_unpremultiply_power : 0.0f));
     applyToneUniforms();
     glUniform4f(m_rect_size_location, x, y, width, height);
@@ -491,6 +560,7 @@ void gTextureShader::drawTextureSub(float x, float y, float width, float height,
     glBindTexture(GL_TEXTURE_2D, texture_id);
     glUniform1i(m_texture_location, 0);
     glUniform1f(m_alpha_location, 1.0f);
+    applyIndexedUniforms(texture_id);
 
     glUniform1f(m_unpremult_location, m_premultiply ? -1.0f : (m_unpremultiply ? m_unpremultiply_power : 0.0f));
     applyToneUniforms();
@@ -522,7 +592,10 @@ void gTextureShader::drawTextureSub(float x, float y, float width, float height,
 
 void gTextureShader::drawBatch(const float* vertex_data, int vertex_count, GLuint texture_id, float global_alpha)
 {
-    if (m_plain_program_id && !m_premultiply && !m_unpremultiply && !m_tone_lut) {
+    GLuint pal_unused = 0;
+    int w_unused = 0, h_unused = 0;
+    const bool indexed = m_texture_manager && m_texture_manager->indexedInfo(texture_id, pal_unused, w_unused, h_unused);
+    if (m_plain_program_id && !m_premultiply && !m_unpremultiply && !m_tone_lut && !indexed) {
         glUseProgram(m_plain_program_id);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture_id);
@@ -538,6 +611,7 @@ void gTextureShader::drawBatch(const float* vertex_data, int vertex_count, GLuin
     glBindTexture(GL_TEXTURE_2D, texture_id);
     glUniform1i(m_texture_location, 0);
     glUniform1f(m_alpha_location, global_alpha);
+    applyIndexedUniforms(texture_id);
 
     glUniform1f(m_unpremult_location, m_premultiply ? -1.0f : (m_unpremultiply ? m_unpremultiply_power : 0.0f));
     applyToneUniforms();

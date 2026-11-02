@@ -19,6 +19,7 @@ typedef FT_UInt GlyphIndex;
 typedef FT_ULong GlyphIndex;
 #endif
 
+#include <climits>
 #include <string>
 #include <vector>
 #include <list>
@@ -116,6 +117,21 @@ struct pGlyph
 		image = NULL;
 		borderimage = NULL;
 	}
+	pGlyph(const pGlyph &) = default;
+	// ePtr can't be assigned from a const reference or an rvalue, which std::vector::erase and
+	// std::rotate need. The glyph images are plain pointers owned by eTextPara, copied as is.
+	pGlyph &operator=(const pGlyph &o)
+	{
+		x = o.x; y = o.y; w = o.w;
+		newcolor = o.newcolor;
+		font = static_cast<Font*>(o.font);
+		glyph_index = o.glyph_index;
+		flags = o.flags;
+		bbox = o.bbox;
+		image = o.image;
+		borderimage = o.borderimage;
+		return *this;
+	}
 };
 
 typedef std::vector<pGlyph> glyphString;
@@ -156,6 +172,17 @@ class eTextPara: public iObject
 
 	int appendGlyph(Font *current_font, FT_Face current_face, FT_UInt glyphIndex, int flags, int rflags, int border, bool last,
 			bool activate_newcolor, unsigned long newcolor);
+	// gPainter::RT_ELLIPSIS support: all work happens on the already laid out (visual
+	// order) glyphs of a single line, so UTF-8, shaping and bidi are respected.
+	int m_ellipsis_w; // cached advance of the ellipsis, -1 = not measured yet
+	int appendCodepoint(unsigned long chr, int flags, int rflags, int border, bool last);
+	void appendEllipsis(int rflags, int border, bool last);
+	int ellipsisWidth(int rflags, int border);
+	void dropGlyphs(size_t from, size_t to);
+	int maxLines();
+	int ellipsizeLine(size_t start, size_t end, int &endx, bool rtl, int rflags, int border, bool force);
+	int m_maxlines;		// wrapped left-to-right text with RT_ELLIPSIS: lines that fit, otherwise INT_MAX
+	bool m_truncated;	// text was cut off at m_maxlines
 	void newLine(int flags);
 	void setFont(Font *font, Font *replacement_font, Font *fallback_font);
 	void calc_bbox();
@@ -164,7 +191,7 @@ public:
 		: current_font(0), replacement_font(0), current_face(0), replacement_face(0),
 		fallback_font(0), fallback_face(0),
 		area(area), cursor(start), maximum(0, 0), left(start.x()), charCount(0), totalheight(0),
-		bboxValid(0), doTopBottomReordering(false), m_blend(false), m_border_width(0)
+		bboxValid(0), doTopBottomReordering(false), m_blend(false), m_border_width(0), m_ellipsis_w(-1), m_maxlines(INT_MAX), m_truncated(false)
 	{
 	}
 	virtual ~eTextPara();
