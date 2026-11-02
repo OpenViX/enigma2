@@ -90,6 +90,40 @@ void eStack::recalcLayout() {
 		return;
 	if (!isVisible())
 		return;
+	/* resizing or moving a child calls back into invalidateChilds() */
+	if (m_layouting)
+		return;
+	m_layouting = true;
+
+	/* a child with stackFill gets the space the other children leave over */
+	{
+		const bool horizontal = m_direction == Horizontal;
+		eWidget* fill = nullptr;
+		int used = 0, count = 0;
+		for (auto child : m_stackchilds) {
+			if (!child->isVisible() || child->align() == 0 || (child->align() & eStackAlignCenter))
+				continue;
+			/* a child without any size takes no space, not even spacing, but a fill child can grow again */
+			if (!child->stackFill() && (horizontal ? child->size().width() : child->size().height()) == 0)
+				continue;
+			count++;
+			if (child->stackFill() && !fill) {
+				fill = child;
+				continue;
+			}
+			used += horizontal ? child->size().width() : child->size().height();
+		}
+		if (fill) {
+			int avail = (horizontal ? stack_w : stack_h) - used - m_spacing * (count - 1);
+			if (avail < 0)
+				avail = 0;
+			eSize fsize = fill->size();
+			if (horizontal && fsize.width() != avail)
+				fill->resize(eSize(avail, fsize.height()));
+			else if (!horizontal && fsize.height() != avail)
+				fill->resize(eSize(fsize.width(), avail));
+		}
+	}
 
 	int x = 0, y = 0;
 	int xr = stack_w;
@@ -108,6 +142,8 @@ void eStack::recalcLayout() {
 		int cw = csize.width();
 		int ch = csize.height();
 		if (child->align() == 0)
+			continue;
+		if (!child->stackFill() && (m_direction == Horizontal ? cw : ch) == 0)
 			continue;
 
 		if (m_direction == Horizontal) {
@@ -130,7 +166,13 @@ void eStack::recalcLayout() {
 			} else if (child->align() & eStackAlignCenter)
 				cx = (stack_w - cw) / 2;
 
-			child->move(ePoint(cx + position().x(), child->position().y()));
+			int cross = child->position().y();
+			switch (child->stackCross()) {
+			case 1: cross = position().y(); break;
+			case 2: cross = position().y() + (stack_h - ch) / 2; break;
+			case 3: cross = position().y() + stack_h - ch; break;
+			}
+			child->move(ePoint(cx + position().x(), cross));
 		} else {
 			if (child->align() & eStackAlignTop) {
 				cy = y;
@@ -151,7 +193,14 @@ void eStack::recalcLayout() {
 			} else if (child->align() & eStackAlignCenter)
 				cy = (stack_h - ch) / 2;
 
-			child->move(ePoint(child->position().x(), cy + position().y()));
+			int cross = child->position().x();
+			switch (child->stackCross()) {
+			case 1: cross = position().x(); break;
+			case 2: cross = position().x() + (stack_w - cw) / 2; break;
+			case 3: cross = position().x() + stack_w - cw; break;
+			}
+			child->move(ePoint(cross, cy + position().y()));
 		}
 	}
+	m_layouting = false;
 }

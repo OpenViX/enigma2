@@ -719,6 +719,7 @@ bool eListboxServiceContent::checkServiceIsRecorded(eServiceReference ref)
 
 void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected)
 {
+	const int ellipsisFlag = ellipsisEnabled() ? gPainter::RT_ELLIPSIS : 0;
 	painter.clip(eRect(offset, m_itemsize));
 
 	int marked = 0;
@@ -1088,7 +1089,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 
 			ePtr<eTextPara> para = new eTextPara(eRect(0, 0, xlpos - xoffsMarker, m_itemheight/2));
 			para->setFont(m_element_font[celServiceName]);
-			para->renderString(text.c_str());
+			para->renderString(text.c_str(), ellipsisFlag);
 			eRect bbox = para->getBoundBox();
 			service_name_end = xoffsMarker - correction + bbox.width() + m_items_distances;
 			painter.renderPara(para, ePoint(xoffsMarker - correction, offset.y() + yoffs_orig + ((ctrlHeight - bbox.height())/2)));
@@ -1225,7 +1226,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					if (m_has_next_event) {
 						ePtr<eTextPara> para = new eTextPara(eRect(0, 0, pb_xpos - service_name_end - m_items_distances - 15, m_itemheight/2));
 						para->setFont(m_element_font[celServiceInfo]);
-						para->renderString(text.c_str());
+						para->renderString(text.c_str(), ellipsisFlag);
 						eRect bbox = para->getBoundBox();
 						painter.renderPara(para, ePoint(service_name_end, offset.y() + yoffs_orig + ((ctrlHeight - bbox.height())/2)));
 
@@ -1262,7 +1263,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 							}
 							ePtr<eTextPara> paraNext = new eTextPara(eRect(0, 0, xlpos - xoffs - m_items_distances, m_itemheight/2));
 							paraNext->setFont(m_element_font[celServiceNextInfo]);
-							paraNext->renderString((m_next_title + next_event_name).c_str());
+							paraNext->renderString((m_next_title + next_event_name).c_str(), ellipsisFlag);
 							eRect bboxNext = paraNext->getBoundBox();
 							painter.renderPara(paraNext, ePoint(xoffs, offset.y() - 2 + m_itemheight/2 + ((m_itemheight/2 - bboxNext.height())/2)));
 						}
@@ -1279,7 +1280,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 
 						ePtr<eTextPara> para = new eTextPara(eRect(0, 0, m_itemsize.width() - xoffs - bboxtLeft.width() - 25 - m_items_distances, m_itemheight/2));
 						para->setFont(m_element_font[celServiceInfo]);
-						para->renderString(((!percent.empty() ? (percent + m_separator) : "") + text).c_str());
+						para->renderString(((!percent.empty() ? (percent + m_separator) : "") + text).c_str(), ellipsisFlag);
 						eRect bbox = para->getBoundBox();
 						painter.renderPara(para, ePoint(xoffs, offset.y() - 2 + m_itemheight/2 + ((m_itemheight/2 - bbox.height())/2)));
 
@@ -1365,7 +1366,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 
 			ePtr<eTextPara> paraServiceName = new eTextPara(eRect(0, 0, serviceNameWidth, m_itemheight));
 			paraServiceName->setFont(m_element_font[celServiceName]);
-			paraServiceName->renderString(text.c_str());
+			paraServiceName->renderString(text.c_str(), ellipsisFlag);
 			eRect bboxServiceName = paraServiceName->getBoundBox();
 
 			if (isDirectory || (isMarker && !m_marker_as_line)) {
@@ -1602,7 +1603,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 
 					ePtr<eTextPara> para = new eTextPara(eRect(0, 0, eventTextWidth, m_itemheight));
 					para->setFont(m_element_font[celServiceInfo]);
-					para->renderString(text.c_str());
+					para->renderString(text.c_str(), ellipsisFlag);
 					// share the baseline with the service name, the fonts may differ in size
 					int eventY = offset.y() + (ctrlHeight - bboxServiceName.height())/2 + paraServiceName->getBaseline() - para->getBaseline();
 					painter.renderPara(para, ePoint(m_column_width > 0 ? xoffs_col : xoffs, eventY));

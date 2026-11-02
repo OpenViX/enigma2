@@ -333,6 +333,8 @@ void eListboxPythonStringContent::paint(gPainter &painter, eWindowStyle &style, 
 				painter.setForegroundColor(gRGB(0x808080));
 
 			int flags = 0;
+			if (ellipsisEnabled())
+				flags |= gPainter::RT_ELLIPSIS;
 			if (alphablendtext)
 				flags |= gPainter::RT_BLEND;
 			if (local_style)
@@ -1303,6 +1305,8 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				int width = PyFloat_Check(pwidth) ? (int)PyFloat_AsDouble(pwidth) : PyLong_AsLong(pwidth);
 				int height = PyFloat_Check(pheight) ? (int)PyFloat_AsDouble(pheight) : PyLong_AsLong(pheight);
 				int flags = PyLong_AsLong(pflags);
+				if (ellipsisEnabled())
+					flags |= gPainter::RT_ELLIPSIS;
 				int fnt = PyLong_AsLong(pfnt);
 				int bwidth = pborderWidth ? PyLong_AsLong(pborderWidth) : 0;
 				int btwidth = pTextBorderWidth ? PyLong_AsLong(pTextBorderWidth) : 0;

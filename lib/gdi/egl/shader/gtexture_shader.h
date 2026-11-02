@@ -7,6 +7,8 @@
 #include <GLES2/gl2ext.h>
 #endif
 
+class gTextureManager;
+
 class gTextureShader {
 public:
 	// Upper bound on quads per drawBatch() call - the VBO is sized for
@@ -46,6 +48,14 @@ private:
 	GLint m_tone_lut_location = -1;
 	void applyToneUniforms();
 
+	// Palette-indexed textures (see gTextureManager::indexedInfo()): sampled on unit 2, full program only.
+	const gTextureManager* m_texture_manager = nullptr;
+	GLint m_palette_location = -1;
+	GLint m_indexed_location = -1;
+	GLint m_tex_size_location = -1;
+	// Sets the indexed-texture uniforms for `texture_id`; returns true if it is indexed.
+	bool applyIndexedUniforms(GLuint texture_id);
+
 	GLint m_rect_size_location;
 	GLint m_radius_location;
 	GLint m_edges_location;
@@ -73,6 +83,9 @@ public:
 	void destroy();
 
 	void setResolution(float width, float height);
+
+	// Lets the shader resolve palette-indexed textures (8-bit pixmaps); without it every texture is treated as plain RGBA.
+	void setTextureManager(const gTextureManager* mgr) { m_texture_manager = mgr; }
 
 	// While set, every draw divides the sampled colour by its alpha - i.e.
 	// converts premultiplied pixels to straight alpha. Used only by gEGLDC's

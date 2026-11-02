@@ -594,6 +594,15 @@ class AttributeParser:
 	def stack(self, value):  # This is a dummy method for the parser.
 		pass
 
+	def stackCross(self, value):  # Alignment across the stack direction: top/left, center, bottom/right.
+		crossAlign = {"top": 1, "left": 1, "center": 2, "bottom": 3, "right": 3}
+		if value.lower() not in crossAlign:
+			raise SkinError("Invalid stackCross value '%s', use top, left, center, bottom or right" % value)
+		self.guiObject.setStackCross(crossAlign[value.lower()])
+
+	def stackFill(self, value):
+		self.guiObject.setStackFill(int(parseBoolean("stackFill", value)))
+
 	def animationPaused(self, value):
 		pass
 
@@ -883,6 +892,9 @@ class AttributeParser:
 
 	def noWrap(self, value):
 		self.guiObject.setNoWrap(int(parseBoolean("nowrap", value)))
+
+	def ellipsis(self, value):
+		self.guiObject.setEllipsis(int(parseBoolean("ellipsis", value)))
 
 	def split(self, value):
 		pass

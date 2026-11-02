@@ -57,6 +57,8 @@ protected:
 	virtual int getListSize() { return 0; }
 
 	eListbox *m_listbox;
+	// ellipsis for text that does not fit its box, can be disabled per listbox from the skin
+	bool ellipsisEnabled();
 #endif
 };
 
@@ -171,6 +173,8 @@ public:
 	void setItemHeight(int h);
 	void setItemWidth(int w);
 	void setSelectionEnable(int en);
+	void setEllipsis(int en);
+	bool getEllipsis() const { return m_ellipsis; }
 
 	void setBackgroundColor(const gRGB &col);
 	void setBackgroundColorSelected(gRGB &col);
@@ -252,6 +256,7 @@ private:
 	int m_items_per_page;
 	int m_items_per_page_with_partials;
 	int m_selection_enabled;
+	bool m_ellipsis;
 	void setItemCornerRadiusInternal(int radius, uint8_t edges, int index);
 	void setItemGradientInternal(uint8_t index, const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend);
 

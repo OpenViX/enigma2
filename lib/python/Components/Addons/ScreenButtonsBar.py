@@ -190,6 +190,7 @@ class ScreenButtonsBar(GUIAddon):
 		instance.setSelectionEnable(False)
 		instance.setContent(self.l)
 		instance.allowNativeKeys(False)
+		instance.setEllipsis(0)  # ellipsis is off by default here, a skin can enable it with ellipsis="1"
 
 	def constructButtonSequence(self):
 		sequenceColor = {}

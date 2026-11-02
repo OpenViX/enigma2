@@ -29,6 +29,7 @@
 
 #include <fribidi/fribidi.h>
 
+#include <algorithm>
 #include <map>
 #define register      // Deprecated in C++11
 
@@ -422,6 +423,12 @@ int eTextPara::appendGlyph(Font *current_font, FT_Face current_face, FT_UInt gly
 
 	if ((rflags & RS_WRAP) && (nx >= area.right()))
 	{
+		/* RT_ELLIPSIS: no room for another line, drop the rest, the caller adds the ellipsis */
+		if ((int)lineOffsets.size() + 1 >= m_maxlines)
+		{
+			m_truncated = true;
+			return 0;
+		}
 		int cnt = 0;
 		glyphString::reverse_iterator i(glyphs.rbegin());
 			/* find first possibility (from end to begin) to break */
@@ -509,6 +516,164 @@ int eTextPara::appendGlyph(Font *current_font, FT_Face current_face, FT_UInt gly
 		cursor += ePoint(xadvance, 0);
 	previous = glyphIndex;
 	return 0;
+}
+
+/* append a single code point using the current -> replacement -> fallback font chain.
+ * returns -1 when no font has the glyph, otherwise appendGlyph()'s result */
+int eTextPara::appendCodepoint(unsigned long chr, int flags, int rflags, int border, bool last)
+{
+	FT_UInt index = 0;
+	if (forced_replaces.find(chr) == forced_replaces.end())
+		index = FT_Get_Char_Index(current_face, chr);
+	if (index)
+		return appendGlyph(current_font, current_face, index, flags, rflags, border, last, false, 0);
+	if (replacement_face && (index = FT_Get_Char_Index(replacement_face, chr)))
+		return appendGlyph(replacement_font, replacement_face, index, flags, rflags, border, last, false, 0);
+	if (fallback_face && (index = FT_Get_Char_Index(fallback_face, chr)))
+		return appendGlyph(fallback_font, fallback_face, index, flags, rflags, border, last, false, 0);
+	return -1;
+}
+
+/* U+2026, or three full stops if none of the fonts has it */
+void eTextPara::appendEllipsis(int rflags, int border, bool last)
+{
+	rflags &= ~RS_WRAP;
+	if (appendCodepoint(0x2026, 0, rflags, border, last) >= 0)
+		return;
+	for (int n = 0; n < 3; ++n)
+		appendCodepoint('.', 0, rflags, border, last && n == 2);
+}
+
+void eTextPara::dropGlyphs(size_t from, size_t to)
+{
+	for (size_t n = from; n < to; ++n)
+	{
+		if (glyphs[n].image) FT_Done_Glyph(glyphs[n].image);
+		if (glyphs[n].borderimage) FT_Done_Glyph(glyphs[n].borderimage);
+	}
+	glyphs.erase(glyphs.begin() + from, glyphs.begin() + to);
+}
+
+int eTextPara::ellipsisWidth(int rflags, int border)
+{
+	if (m_ellipsis_w >= 0)
+		return m_ellipsis_w;
+	// measure by appending the ellipsis and taking it away again
+	const size_t count = glyphs.size();
+	const ePoint savedcursor = cursor;
+	const int savedchars = charCount, savedprevious = previous;
+	previous = 0;
+	appendEllipsis(rflags, border, false);
+	m_ellipsis_w = cursor.x() - savedcursor.x();
+	dropGlyphs(count, glyphs.size());
+	cursor = savedcursor;
+	charCount = savedchars;
+	previous = savedprevious;
+	return m_ellipsis_w;
+}
+
+/* number of text lines that fit into the area's height (at least one) */
+int eTextPara::maxLines()
+{
+	int lh = current_face->size->metrics.height;
+	int asc = current_face->size->metrics.ascender;
+	if (!lh || !asc)
+	{
+		const int ymax = FT_MulFix(current_face->bbox.yMax, current_face->size->metrics.y_scale);
+		if (!lh) lh = ymax;
+		if (!asc) asc = ymax;
+	}
+	lh >>= 6;
+	asc >>= 6;
+	if (lh <= 0)
+		return 1;
+	// first line needs the ascender, every further one a full line height, and the
+	// last line's descender must fit as well
+	const int avail = area.height() - asc - std::max(0, lh - asc);
+	return (avail > 0) ? avail / lh + 1 : 1;
+}
+
+/* Shorten the line made of glyphs[start..end) (visual order, never wrapped itself)
+ * so it fits into the area, replacing the logical end of the line by an ellipsis.
+ * For a left-to-right paragraph the logical end is the right hand side of the
+ * line, for a right-to-left one it is the left hand side.
+ * endx is the right edge of the line and is updated. With force the ellipsis is
+ * added even if the line fits (more text follows which is not shown).
+ * Returns the change in the number of glyphs; cursor, charCount and previous
+ * are left untouched. */
+int eTextPara::ellipsizeLine(size_t start, size_t end, int &endx, bool rtl, int rflags, int border, bool force)
+{
+	const int width = area.width();
+	if (!force && endx - left <= width)
+		return 0;
+
+	const int ew = ellipsisWidth(rflags, border);
+	const int avail = width - ew;
+	const bool wasfirst = start < end && (glyphs[start].flags & GS_ISFIRST);
+	const int ypos = (start < end) ? glyphs[start].y : cursor.y();
+	size_t k, pos;
+	int dotsx, newendx = 0;
+
+	if (!rtl)
+	{
+		const int limit = left + avail;
+		k = end;
+		while (k > start && glyphs[k - 1].x + glyphs[k - 1].w > limit)
+			--k;
+		while (k > start && (glyphs[k - 1].flags & GS_ISSPACE))
+			--k;
+		dotsx = (k > start) ? glyphs[k - 1].x + glyphs[k - 1].w : left;
+		pos = k;
+		dropGlyphs(k, end);
+	}
+	else
+	{
+		k = start;
+		while (k < end && endx - glyphs[k].x > avail)
+			++k;
+		while (k < end && (glyphs[k].flags & GS_ISSPACE))
+			++k;
+		const bool anykept = k < end;
+		const int shift = anykept ? left + ew - glyphs[k].x : 0;
+		dropGlyphs(start, k);
+		end -= k - start;
+		for (size_t i = start; i < end; ++i)
+		{
+			glyphs[i].x += shift;
+			glyphs[i].bbox.moveBy(shift, 0);
+		}
+		newendx = anykept ? endx + shift : left + ew;
+		dotsx = left;
+		pos = start;
+	}
+	const int removed = (int)(rtl ? (k - start) : (end - k));
+	const size_t kept = rtl ? end - start : k - start;
+
+	// append the ellipsis (at the end of the vector) and move it to its place
+	const ePoint savedcursor = cursor;
+	const int savedprevious = previous, savedchars = charCount;
+	const size_t before = glyphs.size();
+	cursor = ePoint(dotsx, ypos);
+	previous = 0;
+	appendEllipsis(rflags, border, !rtl);
+	const size_t added = glyphs.size() - before;
+	if (!rtl)
+		newendx = cursor.x();
+	cursor = savedcursor;
+	previous = savedprevious;
+	charCount = savedchars;
+	if (pos != before)
+		std::rotate(glyphs.begin() + pos, glyphs.begin() + before, glyphs.end());
+
+	// the first glyph of a line carries GS_ISFIRST, hand it over to the ellipsis if that is now first
+	if (wasfirst && added && (rtl || !kept))
+	{
+		if (kept)
+			glyphs[pos + added].flags &= ~GS_ISFIRST;
+		glyphs[pos].flags |= GS_ISFIRST;
+	}
+	endx = newendx;
+	return (int)added - removed;
 }
 
 void eTextPara::calc_bbox()
@@ -767,6 +932,34 @@ int eTextPara::renderString(const char *string, int rflags, int border)
 
 	glyphs.reserve(size);
 
+	// gPainter::RT_ELLIPSIS
+	const bool ellipsis = (rflags & gPainter::RT_ELLIPSIS) && !(rflags & RS_DIRECT);
+	const bool wrap = (rflags & RS_WRAP) != 0;
+	const bool rtl = (dir & FRIBIDI_MASK_RTL) != 0;
+	// The text is cut after the last line that fits the area's height and only that line
+	// gets the ellipsis (also if it is merely too wide, when not wrapping). For left-to-right
+	// text this is done while laying out (the rest is never created). Right-to-left text is
+	// laid out in visual order, its logical start is the last line, so that is handled below.
+	m_truncated = false;
+	m_maxlines = (ellipsis && !rtl) ? maxLines() : INT_MAX;
+	size_t linestart = glyphs.size();
+	// not wrapping, left-to-right: glyphs behind the right edge of the last line are cut off
+	// anyway, don't create them (earlier lines are kept, alignment needs their full width)
+	bool skipglyphs = false;
+	long lastnl = -1; // index of the last line break in the text
+	if (ellipsis && !wrap && !rtl)
+	{
+		for (long n = (long)uc_visual.size() - 1; n >= 0; --n)
+		{
+			const unsigned long c = uc_visual[n];
+			if (c == '\n' || c == 0x8A || c == 0xE08A || (c == 'n' && n > 0 && uc_visual[n - 1] == '\\'))
+			{
+				lastnl = n;
+				break;
+			}
+		}
+	}
+
 	unsigned long newcolor = 0;
 	bool activate_newcolor = false;
 	bool activate_colorreset = false;
@@ -775,6 +968,9 @@ int eTextPara::renderString(const char *string, int rflags, int border)
 	for (std::vector<unsigned long>::const_iterator i(uc_visual.begin());
 		i != uc_visual.end(); ++i)
 	{
+		if (m_truncated)
+			break;
+
 		int isprintable=1;
 		int flags = nextflags;
 		unsigned long chr = *i;
@@ -858,7 +1054,21 @@ tab:				isprintable=0;
 			case 0xE08A:
 			case '\n':
 newline:			isprintable=0;
+				if ((int)lineOffsets.size() + 1 >= m_maxlines)
+				{
+					// only trailing blanks left? then nothing is cut off
+					auto more = i + 1;
+					while (more != uc_visual.end() && (*more == '\n' || *more == '\r' || *more == ' ' || *more == '\t'))
+						++more;
+					if (more != uc_visual.end())
+						m_truncated = true;
+					else
+						i = uc_visual.end() - 1;
+					break;
+				}
 				newLine(rflags);
+				linestart = glyphs.size();
+				skipglyphs = false;
 				nextflags|=GS_ISFIRST;
 				break;
 			case '\r':
@@ -880,7 +1090,7 @@ nprint:				isprintable=0;
 				break;
 			}
 		}
-		if (isprintable)
+		if (isprintable && !skipglyphs)
 		{
 			nextflags = 0;
 
@@ -917,6 +1127,68 @@ nprint:				isprintable=0;
 
 			activate_newcolor = false;
 			activate_colorreset = false;
+
+			if (ellipsis && !wrap && !rtl && (long)(i - uc_visual.begin()) > lastnl && cursor.x() - left > area.width())
+				skipglyphs = true;
+		}
+	}
+	if (m_truncated)
+	{
+		// ran out of lines: the last line that fits gets the ellipsis
+		int endx = cursor.x();
+		charCount += ellipsizeLine(glyphs.size() - charCount, glyphs.size(), endx, false, rflags, border, true);
+		cursor.setX(endx);
+	}
+	else if (ellipsis && !wrap && !rtl)
+	{
+		// last line, too wide
+		int endx = cursor.x();
+		charCount += ellipsizeLine(linestart, glyphs.size(), endx, false, rflags, border, false);
+		cursor.setX(endx);
+	}
+	if (charCount)
+	{
+		lineOffsets.push_back(cursor.y());
+		lineChars.push_back(charCount);
+		charCount=0;
+	}
+	if (ellipsis && rtl)
+	{
+		// lines are drawn bottom up for right-to-left text, so the visually last lines hold
+		// the start of the text. Drop the visually first lines (the end of the text) that
+		// don't fit and put the ellipsis on the first remaining one.
+		const int lines = (int)lineOffsets.size(), fit = maxLines();
+		if (lines > fit && (int)lineChars.size() == lines)
+		{
+			const int drop = lines - fit;
+			int lh = current_face->size->metrics.height;
+			if (!lh)
+				lh = FT_MulFix(current_face->bbox.yMax, current_face->size->metrics.y_scale);
+			lh >>= 6;
+			size_t dropchars = 0;
+			for (int n = 0; n < drop; ++n)
+			{
+				dropchars += lineChars.front();
+				lineChars.pop_front();
+				lineOffsets.pop_back();
+			}
+			dropGlyphs(0, dropchars);
+			totalheight -= drop * lh;
+			cursor.setY(cursor.y() - drop * lh);
+			int endx = 0;
+			size_t linechars = lineChars.front();
+			if (linechars)
+				endx = glyphs[linechars - 1].x + glyphs[linechars - 1].w;
+			lineChars.front() += ellipsizeLine(0, linechars, endx, true, rflags, border, true);
+		}
+		else if (!wrap && lines && (int)lineChars.size() == lines)
+		{
+			// everything fits vertically: only the logical last line (visually first) may be too wide
+			int endx = 0;
+			size_t linechars = lineChars.front();
+			if (linechars)
+				endx = glyphs[linechars - 1].x + glyphs[linechars - 1].w;
+			lineChars.front() += ellipsizeLine(0, linechars, endx, true, rflags, border, false);
 		}
 	}
 	bboxValid=false;
@@ -924,12 +1196,6 @@ nprint:				isprintable=0;
 	if (dir & FRIBIDI_MASK_RTL)
 	{
 		doTopBottomReordering=true;
-	}
-	if (charCount)
-	{
-		lineOffsets.push_back(cursor.y());
-		lineChars.push_back(charCount);
-		charCount=0;
 	}
 	delete [] target;
 	delete [] array;

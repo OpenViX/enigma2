@@ -257,8 +257,22 @@ static void checkPixmapAllZero(const gUnmanagedSurface* surface, int width, int 
 	eDebug("[gTextureManager] TEX_CHECK: uploading ALL-ZERO pixmap %dx%d bpp=%d stride=%d data=%p - will render as black", width, height, surface->bpp, surface->stride, surface->data);
 }
 
+static bool gpuPaletteEnabled() {
+	static const bool on = !(getenv("ENIGMA_EGL_GPU_PALETTE") && atoi(getenv("ENIGMA_EGL_GPU_PALETTE")) == 0);
+	return on;
+}
+
+void gTextureManager::dropPalette(GLuint texture_id) {
+	auto it = m_palettes.find(texture_id);
+	if (it == m_palettes.end())
+		return;
+	glDeleteTextures(1, &it->second.tex);
+	m_palettes.erase(it);
+}
+
 GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 	m_last_upload_oom = false;
+	m_last_palette = PaletteInfo();
 	if (!pixmap || !pixmap->surface)
 		return 0;
 
@@ -397,6 +411,50 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 #if TEX_UPLOAD_TIMING
 		eDebug("[gTextureManager] timing: bpp32 upload %dx%d (row_pixels=%d) took %.2fms", width, height, row_pixels, ms_since(t_upload0));
 #endif
+	} else if (surface->bpp == 8 && surface->clut.data && gpuPaletteEnabled()) {
+		// Upload the raw indices (1 byte/pixel) and the palette as a 256x1 texture; the shader does the lookup. Saves the CPU
+		// expansion and a 4x smaller glTexImage2D, which is what dominated the cost of building a screenful of list rows.
+#if TEX_UPLOAD_TIMING
+		auto t_upload0 = std::chrono::steady_clock::now();
+#endif
+		const GLenum idx_internal = gles::isGLES3() ? GL_R8 : GL_LUMINANCE;
+		const GLenum idx_format = gles::isGLES3() ? GL_RED : GL_LUMINANCE;
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		if (surface->stride == width) {
+			glTexImage2D(GL_TEXTURE_2D, 0, idx_internal, width, height, 0, idx_format, GL_UNSIGNED_BYTE, surface->data);
+		} else {
+			// No GL_UNPACK_ROW_LENGTH in GLES2: repack the padded rows.
+			std::vector<uint8_t> packed((size_t)width * height);
+			const uint8_t* src = (const uint8_t*)surface->data;
+			for (int row = 0; row < height; ++row)
+				memcpy(packed.data() + (size_t)row * width, src + (size_t)row * surface->stride, (size_t)width);
+			glTexImage2D(GL_TEXTURE_2D, 0, idx_internal, width, height, 0, idx_format, GL_UNSIGNED_BYTE, packed.data());
+		}
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+		// Same palette rule as the CPU expansion: entries beyond the palette size are an opaque grey ramp.
+		uint32_t pal[256];
+		const int n = std::min(surface->clut.colors, 256);
+		for (int i = 0; i < n; ++i)
+			pal[i] = surface->clut.data[i].argb() ^ 0xFF000000;
+		for (int i = std::max(n, 0); i < 256; ++i)
+			pal[i] = (0x010101 * i) | 0xFF000000;
+		GLuint pal_tex = 0;
+		glGenTextures(1, &pal_tex);
+		glBindTexture(GL_TEXTURE_2D, pal_tex);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, src_format, 256, 1, 0, src_format, GL_UNSIGNED_BYTE, pal);
+		m_last_palette.tex = pal_tex;
+		m_last_palette.w = width;
+		m_last_palette.h = height;
+#if TEX_UPLOAD_TIMING
+		eDebug("[gTextureManager] timing: bpp8 GPU-palette upload %dx%d took %.2fms", width, height, ms_since(t_upload0));
+#endif
 	} else if (surface->bpp == 8 && surface->clut.data) {
 		// 8-bit paletted image (often used for picons/skins).
 		// gles 3.0 does not support indexed color textures natively anymore,
@@ -526,6 +584,10 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 	if (upload_err == GL_OUT_OF_MEMORY) {
 		eDebug("[gTextureManager] texture upload FAILED (out of memory) %dx%d bpp=%d - not caching, will retry on next draw [live textures=%ld, ~%.1fMB tracked]", width, height, surface->bpp, m_live_texture_count, m_live_texture_bytes / 1048576.0);
 		glDeleteTextures(1, &texture_id);
+		if (m_last_palette.tex) {
+			glDeleteTextures(1, &m_last_palette.tex);
+			m_last_palette = PaletteInfo();
+		}
 		m_last_upload_oom = true;
 		return 0;
 	}
@@ -582,6 +644,11 @@ GLuint gTextureManager::getTexture(gPixmap* pixmap) {
 		// Bytes as uploaded: paletted (with a clut) and 32bpp surfaces are RGBA8,
 		// a clut-less 8bpp surface (glyph atlas) is single channel.
 		size_t bytes = (size_t)sf->x * sf->y * ((sf->bpp == 8 && !sf->clut.data) ? 1 : 4);
+		if (m_last_palette.tex) {
+			m_palettes[new_texture] = m_last_palette;
+			bytes = (size_t)sf->x * sf->y + 1024; // indices + 256x1 RGBA palette
+			m_last_palette = PaletteInfo();
+		}
 		m_texture_bytes[new_texture] = bytes;
 		m_live_texture_bytes += bytes;
 		eDebug("[gTextureManager] +texture id=%u live=%ld ~%.1fMB %dx%d bpp=%d", new_texture, m_live_texture_count, m_live_texture_bytes / 1048576.0,
@@ -611,12 +678,17 @@ size_t gTextureManager::evictLRU(size_t bytes_wanted, size_t max_count) {
 			continue; // DMA-BUF import, needs eglDestroyImage - leave alone
 		cands.push_back({sf->gl_last_used_frame, kv.first, sf});
 	}
-	std::sort(cands.begin(), cands.end(), [](const Cand& a, const Cand& b) { return a.last_used < b.last_used; });
+	auto older = [](const Cand& a, const Cand& b) { return a.last_used < b.last_used; };
+	if (max_count < cands.size())
+		std::partial_sort(cands.begin(), cands.begin() + max_count, cands.end(), older); // only the oldest few are needed
+	else
+		std::sort(cands.begin(), cands.end(), older);
 
 	for (const Cand& c : cands) {
 		if (freed >= bytes_wanted || (size_t)evicted >= max_count)
 			break;
 		glDeleteTextures(1, &c.id);
+		dropPalette(c.id);
 		c.surface->gl_texture_id = 0;
 		m_texture_owner.erase(c.id);
 		auto bit = m_texture_bytes.find(c.id);
@@ -676,6 +748,7 @@ void gTextureManager::processDeletions() {
 
 		PFNEGLDESTROYIMAGEKHRPROC eglDestroyImageKHR = (PFNEGLDESTROYIMAGEKHRPROC)eglGetProcAddress("eglDestroyImageKHR");
 		for (GLuint texture_id : m_pending_deletions) {
+			dropPalette(texture_id);
 			auto bit = m_texture_bytes.find(texture_id);
 			if (bit != m_texture_bytes.end()) {
 				m_live_texture_bytes -= std::min(m_live_texture_bytes, bit->second);

@@ -1,5 +1,5 @@
-from enigma import eListbox, eListboxPythonMultiContent, BT_ALIGN_CENTER, iPlayableService, iRecordableService, eServiceReference, iServiceInformation, gFont, RT_HALIGN_LEFT, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_HALIGN_CENTER, eTimer, getDesktop, eSize, eStreamServer
-from skin import parseScale, applySkinFactor, parseColor, parseFont, parameters
+from enigma import eListbox, eListboxPythonMultiContent, BT_ALIGN_CENTER, iPlayableService, iRecordableService, eServiceReference, iServiceInformation, gFont, RT_HALIGN_LEFT, RT_VALIGN_CENTER, RT_VALIGN_TOP, RT_HALIGN_CENTER, eTimer, getDesktop, ePoint, eSize, eStreamServer
+from skin import parseScale, applySkinFactor, parseBoolean, parseColor, parseFont, parameters
 
 from Components.Addons.GUIAddon import GUIAddon
 from Components.config import config
@@ -55,6 +55,7 @@ class ServiceInfoBar(GUIAddon):
 		self.textBackColor = None
 		self.separatorLineThickness = 0
 		self.autoresizeMode = "auto"  # possible values: auto, fixed, condensed
+		self.autoresizeWidth = False  # resize the widget to the width of the shown elements (keeps the right edge when alignment is right)
 		self.font = gFont("Regular", 18)
 		self.__event_tracker = None
 		self.currentCrypto = ""
@@ -167,9 +168,23 @@ class ServiceInfoBar(GUIAddon):
 		if filteredElements and filteredElements[-1] == "separator" and len(filteredElements) > 1 and filteredElements[len(filteredElements) - 2] != "currentCrypto":
 			del filteredElements[-1]
 
+		if self.autoresizeWidth and self.instance and self.textRenderer.instance:
+			self.fitWidthToElements(filteredElements)
+
 		l_list = []
 		l_list.append((filteredElements,))
 		self.l.setList(l_list)
+
+	def fitWidthToElements(self, sequence):
+		items = self.resolveElements(sequence)
+		width = sum(item[1] for item in items) + self.spacing * (len(items) - 1) + 2 if items else 0  # 2 is the margin used for texts
+		size = self.instance.size()
+		if width != size.width():
+			if self.alignment == "right":
+				pos = self.instance.position()
+				self.instance.move(ePoint(pos.x() + size.width() - width, pos.y()))
+			self.instance.resize(eSize(width, size.height()))
+			self.l.setItemWidth(max(width, 1))
 
 	def detectVisible(self, key):
 		if self.nav is not None:
@@ -344,12 +359,9 @@ class ServiceInfoBar(GUIAddon):
 		cache[iconName] = pic
 		return pic
 
-	def buildEntry(self, sequence):
-		xPos = self.instance.size().width() if self.alignment == "right" else 0
-		yPos = 0
-
-		res = [None]
-
+	def resolveElements(self, sequence):
+		# returns a list of (kind, width, data), kind is "pic", "separator" or "text"; elements with nothing to draw are left out
+		items = []
 		for x in sequence:
 			enabledKey = x
 			isOn = True
@@ -374,51 +386,52 @@ class ServiceInfoBar(GUIAddon):
 
 			if enabledKey != "separator" and enabledKey != "currentCrypto" and enabledKey != "tuners":
 				if pic:
-					pixd_size = pic.size()
-					pixd_width = pixd_size.width()
-					pixd_height = pixd_size.height()
-					pic_x_pos = (xPos - pixd_width) if self.alignment == "right" else xPos
-					pic_y_pos = yPos + (self.instance.size().height() - pixd_height) // 2
-					res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(pic_x_pos, pic_y_pos),
-						size=(pixd_width, pixd_height),
-						png=pic,
-						backcolor=None, backcolor_sel=None, flags=BT_ALIGN_CENTER))
-					if self.alignment == "right":
-						xPos -= pixd_width + self.spacing
-					else:
-						xPos += pixd_width + self.spacing
+					items.append(("pic", pic.size().width(), pic))
+			elif enabledKey == "separator":
+				items.append(("separator", self.separatorLineThickness, None))
 			else:
-				if enabledKey == "separator":
-					res.append(MultiContentEntryText(
-						pos=(xPos - self.separatorLineThickness, yPos), size=(self.separatorLineThickness, self.instance.size().height()),
-						font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER,
-						text="",
-						color=self.separatorLineColor, color_sel=self.separatorLineColor,
-						backcolor=self.separatorLineColor, backcolor_sel=self.separatorLineColor))
-					if self.alignment == "right":
-						xPos -= self.separatorLineThickness + self.spacing
-					else:
-						xPos += self.separatorLineThickness + self.spacing
-				else:
-					res_string = ""
-					if enabledKey == "tuners":
-						res_string = self.tuner_string
-					else:
-						res_string = self.currentCrypto
-					if res_string:
-						textWidth = self._calcTextWidth(res_string, font=self.font, size=eSize(self.getDesktopWith() // 3, 0))
-						res.append(MultiContentEntryText(
-							pos=(xPos - textWidth - 2, yPos - 2), size=(textWidth + 2, self.instance.size().height()),
-							font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_TOP,
-							text=res_string,
-							color=self.foreColor, color_sel=self.foreColor,
-							textBWidth=1, textBColor=0x000000,
-							backcolor=self.textBackColor, backcolor_sel=self.textBackColor))
-						if self.alignment == "right":
-							xPos -= textWidth + self.spacing
-						else:
-							xPos += textWidth + self.spacing
+				res_string = self.tuner_string if enabledKey == "tuners" else self.currentCrypto
+				if res_string:
+					textWidth = self._calcTextWidth(res_string, font=self.font, size=eSize(self.getDesktopWith() // 3, 0))
+					items.append(("text", textWidth, res_string))
+		return items
+
+	def buildEntry(self, sequence):
+		xPos = self.instance.size().width() if self.alignment == "right" else 0
+		yPos = 0
+		height = self.instance.size().height()
+
+		res = [None]
+
+		for kind, width, data in self.resolveElements(sequence):
+			if kind == "pic":
+				pixd_height = data.size().height()
+				pic_x_pos = (xPos - width) if self.alignment == "right" else xPos
+				pic_y_pos = yPos + (height - pixd_height) // 2
+				res.append(MultiContentEntryPixmapAlphaBlend(
+					pos=(pic_x_pos, pic_y_pos),
+					size=(width, pixd_height),
+					png=data,
+					backcolor=None, backcolor_sel=None, flags=BT_ALIGN_CENTER))
+			elif kind == "separator":
+				res.append(MultiContentEntryText(
+					pos=(xPos - self.separatorLineThickness, yPos), size=(self.separatorLineThickness, height),
+					font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER,
+					text="",
+					color=self.separatorLineColor, color_sel=self.separatorLineColor,
+					backcolor=self.separatorLineColor, backcolor_sel=self.separatorLineColor))
+			else:
+				res.append(MultiContentEntryText(
+					pos=(xPos - width - 2, yPos - 2), size=(width + 2, height),
+					font=0, flags=RT_HALIGN_CENTER | RT_VALIGN_TOP,
+					text=data,
+					color=self.foreColor, color_sel=self.foreColor,
+					textBWidth=1, textBColor=0x000000,
+					backcolor=self.textBackColor, backcolor_sel=self.textBackColor))
+			if self.alignment == "right":
+				xPos -= width + self.spacing
+			else:
+				xPos += width + self.spacing
 		return res
 
 	def checkUpdateState(self, configElement=None, refresh=True):
@@ -482,6 +495,8 @@ class ServiceInfoBar(GUIAddon):
 				self.separatorLineThickness = parseScale(value)
 			elif attrib == "autoresizeMode":
 				self.autoresizeMode = value
+			elif attrib == "autoresizeWidth":
+				self.autoresizeWidth = parseBoolean("autoresizeWidth", value)
 			elif attrib == "font":
 				self.font = parseFont(value, parent.scale)
 			elif attrib == "foregroundColor":

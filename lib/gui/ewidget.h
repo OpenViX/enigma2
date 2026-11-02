@@ -161,6 +161,8 @@ protected:
 	eRect m_padding;
 	bool m_alphaBlend = false;
 	uint8_t m_align = eStackAlignNone;
+	bool m_stackfill = false;
+	uint8_t m_stackcross = 0;
 	virtual void invalidateChilds() {} // This will be overwritten in subclass
 	virtual void forgetStackChild(eWidget*) {} // This will be overwritten in subclass
 
@@ -239,6 +241,12 @@ public:
 	uint8_t align() const { return m_align; }
 	eWidget* m_stack;
 	void setStack(eWidget* stack) { m_stack = stack; }
+	/* a stack child with stackFill gets all the space the other children leave over */
+	void setStackFill(int fill) { m_stackfill = fill != 0; if (m_stack) m_stack->invalidateChilds(); }
+	bool stackFill() const { return m_stackfill; }
+	/* alignment across the stack direction: 0 = keep the position of the widget, 1 = start, 2 = center, 3 = end */
+	void setStackCross(int cross) { m_stackcross = cross; if (m_stack) m_stack->invalidateChilds(); }
+	int stackCross() const { return m_stackcross; }
 
 };
 

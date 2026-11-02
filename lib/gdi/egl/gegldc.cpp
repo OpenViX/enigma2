@@ -468,6 +468,7 @@ bool gEGLDC::initEGL() {
 		eFatal("[gEGLDC] failed to initialise texture shader!");
 		return false;
 	}
+	m_texture_shader.setTextureManager(&m_texture_manager);
 	if (!m_text_shader.init()) {
 		eFatal("[gEGLDC] failed to initialise text shader!");
 		return false;
@@ -3786,7 +3787,7 @@ void gEGLDC::flip() {
 			budget = web_budget;
 	}
 	if (budget) {
-		const size_t freed = m_texture_manager.trimTo(budget, 6);
+		const size_t freed = m_texture_manager.trimTo(budget, m_texture_manager.trimCountFor(budget, 6, 48));
 		if (freed && web_active)
 			eDebug("[gEGLDC] web layer active: released %.1fMB of textures (budget %.0fMB, now ~%.1fMB)", freed / 1048576.0, budget / 1048576.0,
 				m_texture_manager.liveBytes() / 1048576.0);

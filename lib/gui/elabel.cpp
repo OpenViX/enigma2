@@ -17,6 +17,7 @@ eLabel::eLabel(eWidget *parent, int markedPos): eWidget(parent)
 	m_have_shadow_color = 0;
 
 	m_nowrap = 0;
+	m_ellipsis = 1;
 	m_border_size = 0;
 }
 
@@ -109,6 +110,8 @@ int eLabel::event(int event, void *data, void *data2)
 
 			if (!m_nowrap)
 				flags |= gPainter::RT_WRAP;
+			if (m_ellipsis)
+				flags |= gPainter::RT_ELLIPSIS;
 
 				/* text needs to blend against the real pixels behind it -- not just the
 				   widget's own nominal background color -- whenever that nominal color
@@ -231,6 +234,15 @@ void eLabel::setNoWrap(int nowrap)
 	if (m_nowrap != nowrap)
 	{
 		m_nowrap = nowrap;
+		invalidate();
+	}
+}
+
+void eLabel::setEllipsis(int ellipsis)
+{
+	if (m_ellipsis != ellipsis)
+	{
+		m_ellipsis = ellipsis;
 		invalidate();
 	}
 }
