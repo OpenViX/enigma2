@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <vector>
 #include <lib/base/estring.h>
@@ -1001,7 +1002,10 @@ GstElement *quiesceHDAudioMainSink(GstElement *playbin)
 {
 	GstElement *sink = findHDAudioMainSink(playbin);
 	if (!sink)
+	{
+		eWarning("[eServiceMP3] HD audio AC3: main dvbaudiosink not found");
 		return NULL;
+	}
 
 	gst_element_set_locked_state(sink, TRUE);
 	GstStateChangeReturn set_ret = gst_element_set_state(sink, GST_STATE_NULL);
@@ -1009,6 +1013,8 @@ GstElement *quiesceHDAudioMainSink(GstElement *playbin)
 	gst_element_get_state(sink, &state, &pending, 2 * GST_SECOND);
 	if (set_ret == GST_STATE_CHANGE_FAILURE || state != GST_STATE_NULL)
 	{
+		eWarning("[eServiceMP3] HD audio AC3: main dvbaudiosink did not stop (%s, state %s)",
+			set_ret == GST_STATE_CHANGE_FAILURE ? "failure" : "no failure", gst_element_state_get_name(state));
 		gst_element_set_locked_state(sink, FALSE);
 		gst_element_sync_state_with_parent(sink);
 		gst_object_unref(sink);
@@ -1038,8 +1044,402 @@ HDAudioAuxMode hdAudioAuxModeForCodec(const std::string &codec)
 	return hdAuxNone;
 }
 
-GstBusSyncReply hdAudioAuxBusSync(GstBus *, GstMessage *, gpointer)
+/*
+ * HD audio AC3 inside the playbin audio sink.
+ *
+ * The bin wraps the one dvbaudiosink playbin uses: ghost sink pad ! identity
+ * ! dvbaudiosink. It tells playbin it accepts TrueHD/DTS, so playbin hands
+ * those over undecoded like any other passthrough codec. When the caps of a
+ * TrueHD/DTS track set to "ac3" arrive, the identity's src pad is relinked
+ * through [dcaparse !] avdec ! audioconvert ! audioresample ! capsfilter !
+ * avenc_ac3 ! ac3parse ! capsfilter into the same dvbaudiosink, and back to
+ * the sink directly for any other track. Playbin only ever sees a compressed
+ * track and one sink, so a track switch is its ordinary switch, the same as
+ * between AC3 and E-AC3 (and as exteplayer3 does, decoding and re-encoding
+ * in its own feed to the one audio device).
+ */
+struct HDAudioSinkBin
 {
+	GstElement *entry;
+	GstElement *dvbSink;
+	/* decoder name -> its branch, built with the bin, linked in when wanted */
+	std::map<std::string, std::vector<GstElement *> > branches;
+	std::string decoder;
+	bool truehdAC3;
+	bool dtsAC3;
+	/* set by hdAudioSinkBinArmSwitchFlush(), taken by the probe */
+	gint switchFlushArmed;
+	gint64 switchFlushNs;
+	gint64 switchFlushTime;
+	gdouble switchFlushRate;
+};
+
+GQuark hdAudioSinkBinQuark()
+{
+	static GQuark quark = g_quark_from_static_string("enigma2-hdaudio-sinkbin");
+	return quark;
+}
+
+void hdAudioSinkBinFree(gpointer data)
+{
+	delete static_cast<HDAudioSinkBin *>(data);
+}
+
+const char *hdAudioSinkBinDecoderFor(const HDAudioSinkBin *state, GstCaps *caps)
+{
+	const GstStructure *s = caps && gst_caps_get_size(caps) ? gst_caps_get_structure(caps, 0) : NULL;
+	if (!s)
+		return NULL;
+	if (state->truehdAC3 && (gst_structure_has_name(s, "audio/x-true-hd") || gst_structure_has_name(s, "audio/xTrueHD")))
+		return "avdec_truehd";
+	if (state->dtsAC3 && (gst_structure_has_name(s, "audio/x-dts") || gst_structure_has_name(s, "audio/dts") ||
+		gst_structure_has_name(s, "audio/x-dtshd") || gst_structure_has_name(s, "audio/dtshd")))
+		return "avdec_dca";
+	return NULL;
+}
+
+/* what the bin accepts: the dvbaudiosink's caps plus the codecs it transcodes */
+GstCaps *hdAudioSinkBinCaps(const HDAudioSinkBin *state, GstCaps *filter)
+{
+	GstPad *dvb_pad = gst_element_get_static_pad(state->dvbSink, "sink");
+	GstCaps *caps = dvb_pad ? gst_pad_query_caps(dvb_pad, NULL) : gst_caps_new_empty();
+	if (dvb_pad)
+		gst_object_unref(dvb_pad);
+	caps = gst_caps_make_writable(caps);
+	if (state->branches.count("avdec_truehd"))
+		caps = gst_caps_merge(caps, gst_caps_from_string("audio/x-true-hd"));
+	if (state->branches.count("avdec_dca"))
+		caps = gst_caps_merge(caps, gst_caps_from_string("audio/x-dts"));
+	if (filter)
+	{
+		GstCaps *filtered = gst_caps_intersect_full(filter, caps, GST_CAPS_INTERSECT_FIRST);
+		gst_caps_unref(caps);
+		caps = filtered;
+	}
+	return caps;
+}
+
+/* [dcaparse !] avdec ! audioconvert ! audioresample ! capsfilter ! avenc_ac3
+ * ! ac3parse ! capsfilter, added to the bin and linked, both ends left open */
+bool hdAudioSinkBinMakeBranch(GstElement *bin, HDAudioSinkBin *state, const char *decoder_name)
+{
+	std::vector<GstElement *> branch;
+	if (!strcmp(decoder_name, "avdec_dca"))
+	{
+		/* framed DTS for the decoder, if the parser is there */
+		GstElement *parse = gst_element_factory_make("dcaparse", NULL);
+		if (parse)
+			branch.push_back(parse);
+	}
+	const char *names[] = { decoder_name, "audioconvert", "audioresample", "capsfilter", "avenc_ac3", "ac3parse", "capsfilter" };
+	for (const char *name : names)
+	{
+		GstElement *element = gst_element_factory_make(name, NULL);
+		if (!element)
+		{
+			eWarning("[eServiceMP3] HD audio AC3: missing element %s, %s tracks go to dvbaudiosink unconverted", name, decoder_name);
+			for (GstElement *made : branch)
+				gst_object_unref(made);
+			return false;
+		}
+		branch.push_back(element);
+	}
+
+	const guint64 channel_mask = G_GUINT64_CONSTANT(0x003f);
+	GstCaps *raw_caps = gst_caps_new_simple("audio/x-raw",
+		"format", G_TYPE_STRING, "F32LE",
+		"layout", G_TYPE_STRING, "interleaved",
+		"rate", G_TYPE_INT, 48000,
+		"channels", G_TYPE_INT, 6,
+		"channel-mask", GST_TYPE_BITMASK, channel_mask,
+		NULL);
+	GstCaps *out_caps = gst_caps_new_simple("audio/x-ac3",
+		"framed", G_TYPE_BOOLEAN, TRUE,
+		"alignment", G_TYPE_STRING, "frame",
+		"rate", G_TYPE_INT, 48000,
+		"channels", G_TYPE_INT, 6,
+		NULL);
+	const size_t n = branch.size();
+	g_object_set(G_OBJECT(branch[n - 4]), "caps", raw_caps, NULL);
+	g_object_set(G_OBJECT(branch[n - 1]), "caps", out_caps, NULL);
+	gst_caps_unref(raw_caps);
+	gst_caps_unref(out_caps);
+	if (g_object_class_find_property(G_OBJECT_GET_CLASS(branch[n - 3]), "bitrate"))
+		g_object_set(G_OBJECT(branch[n - 3]), "bitrate", 640000, NULL);
+
+	for (GstElement *element : branch)
+		gst_bin_add(GST_BIN(bin), element);
+	bool linked = true;
+	for (size_t k = 0; linked && k + 1 < n; ++k)
+		linked = gst_element_link(branch[k], branch[k + 1]);
+	if (!linked)
+	{
+		eWarning("[eServiceMP3] HD audio AC3: linking the %s ! avenc_ac3 branch failed", decoder_name);
+		for (GstElement *element : branch)
+			gst_bin_remove(GST_BIN(bin), element);
+		return false;
+	}
+	state->branches[decoder_name] = branch;
+	return true;
+}
+
+/* streaming thread: only pads are relinked here, no element is added,
+ * removed or changes state, so this can't race a pipeline state change
+ * (servicemp3 pauses for its flush seek right as the new caps arrive) */
+void hdAudioSinkBinRoute(HDAudioSinkBin *state, const std::string &decoder_name)
+{
+	GstPad *entry_src = gst_element_get_static_pad(state->entry, "src");
+	GstPad *dvb_pad = gst_element_get_static_pad(state->dvbSink, "sink");
+	GstPad *peer = gst_pad_get_peer(entry_src);
+	if (peer)
+	{
+		gst_pad_unlink(entry_src, peer);
+		gst_object_unref(peer);
+	}
+	peer = gst_pad_get_peer(dvb_pad);
+	if (peer)
+	{
+		gst_pad_unlink(peer, dvb_pad);
+		gst_object_unref(peer);
+	}
+
+	GstPad *in = NULL;
+	GstPad *out = NULL;
+	if (!decoder_name.empty())
+	{
+		const std::vector<GstElement *> &branch = state->branches[decoder_name];
+		in = gst_element_get_static_pad(branch.front(), "sink");
+		out = gst_element_get_static_pad(branch.back(), "src");
+		/* drop whatever the branch held from its last use */
+		gst_pad_send_event(in, gst_event_new_flush_start());
+		gst_pad_send_event(in, gst_event_new_flush_stop(FALSE));
+	}
+	if (in && out && gst_pad_link(out, dvb_pad) == GST_PAD_LINK_OK && gst_pad_link(entry_src, in) == GST_PAD_LINK_OK)
+		state->decoder = decoder_name;
+	else
+	{
+		if (in && out)
+		{
+			eWarning("[eServiceMP3] HD audio AC3: linking the %s branch into dvbaudiosink failed", decoder_name.c_str());
+			gst_pad_unlink(out, dvb_pad);
+		}
+		state->decoder.clear();
+		if (gst_pad_link(entry_src, dvb_pad) != GST_PAD_LINK_OK)
+			eWarning("[eServiceMP3] HD audio AC3: relinking dvbaudiosink directly failed");
+	}
+	if (in)
+		gst_object_unref(in);
+	if (out)
+		gst_object_unref(out);
+	gst_object_unref(entry_src);
+	gst_object_unref(dvb_pad);
+}
+
+struct HDAudioSinkBinFlush
+{
+	gdouble rate;
+	gint64 position_ns;
+};
+
+/* GStreamer pool thread, for the same reason as doDeferredFlush() */
+void hdAudioSinkBinDoFlush(GstElement *pipeline, gpointer user_data)
+{
+	HDAudioSinkBinFlush *flush = static_cast<HDAudioSinkBinFlush *>(user_data);
+	if (!gst_element_seek(pipeline, flush->rate, GST_FORMAT_TIME,
+		(GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT),
+		GST_SEEK_TYPE_SET, flush->position_ns,
+		GST_SEEK_TYPE_NONE, GST_CLOCK_TIME_NONE))
+		eDebug("[eServiceMP3] HD audio AC3: second switch flush failed");
+}
+
+/* main thread, right after an audio switch's short flush was queued:
+ * position_ns is where that flush seeks to */
+void hdAudioSinkBinArmSwitchFlush(GstElement *playbin, gint64 position_ns, gdouble rate)
+{
+	GstElement *sink = NULL;
+	g_object_get(G_OBJECT(playbin), "audio-sink", &sink, NULL);
+	if (!sink)
+		return;
+	HDAudioSinkBin *state = static_cast<HDAudioSinkBin *>(g_object_get_qdata(G_OBJECT(sink), hdAudioSinkBinQuark()));
+	if (state)
+	{
+		state->switchFlushNs = position_ns;
+		state->switchFlushTime = g_get_monotonic_time();
+		state->switchFlushRate = rate;
+		g_atomic_int_set(&state->switchFlushArmed, 1);
+	}
+	gst_object_unref(sink);
+}
+
+/*
+ * The new track's caps normally reach the bin before the switch's short
+ * flush is queued, so dvbaudiosink changes over to the new codec and the
+ * flush then restarts it in step with the video. When a switch to a track
+ * that goes to dvbaudiosink directly only reaches the bin after that flush
+ * (once in many switches, about 200 ms late), the Ultimo4K's driver held
+ * playback for about 40 s (confirmed on device), the same wait as a switch
+ * with no flush at all. Flush once more there, at the switch position plus
+ * the time played since.
+ */
+void hdAudioSinkBinFlushAfterLateSwitch(GstElement *bin, HDAudioSinkBin *state)
+{
+	if (!g_atomic_int_compare_and_exchange(&state->switchFlushArmed, 1, 0) || !state->decoder.empty())
+		return;
+	const gint64 elapsed_us = g_get_monotonic_time() - state->switchFlushTime;
+	if (elapsed_us < 0 || elapsed_us > 2 * G_USEC_PER_SEC)
+		return;
+
+	GstElement *pipeline = GST_ELEMENT(gst_object_ref(bin));
+	GstObject *parent;
+	while ((parent = gst_object_get_parent(GST_OBJECT(pipeline))) != NULL)
+	{
+		gst_object_unref(pipeline);
+		pipeline = GST_ELEMENT(parent);
+	}
+	HDAudioSinkBinFlush *flush = g_new(HDAudioSinkBinFlush, 1);
+	flush->rate = state->switchFlushRate;
+	flush->position_ns = state->switchFlushNs + (gint64)(elapsed_us * 1000 * state->switchFlushRate);
+	eDebug("[eServiceMP3] HD audio AC3: track reached the sink %lld ms after the switch flush, flushing again",
+		(long long)(elapsed_us / 1000));
+	gst_element_call_async(pipeline, hdAudioSinkBinDoFlush, flush, (GDestroyNotify)g_free);
+	gst_object_unref(pipeline);
+}
+
+/* streaming thread: the entry identity's sink pad, before the identity sees
+ * the event or query, so the relink is done before the caps go on */
+GstPadProbeReturn hdAudioSinkBinProbe(GstPad *, GstPadProbeInfo *info, gpointer user_data)
+{
+	GstElement *bin = GST_ELEMENT(user_data);
+	HDAudioSinkBin *state = static_cast<HDAudioSinkBin *>(g_object_get_qdata(G_OBJECT(bin), hdAudioSinkBinQuark()));
+	if (!state)
+		return GST_PAD_PROBE_OK;
+
+	if (info->type & GST_PAD_PROBE_TYPE_QUERY_DOWNSTREAM)
+	{
+		GstQuery *query = GST_PAD_PROBE_INFO_QUERY(info);
+		if (GST_QUERY_TYPE(query) == GST_QUERY_CAPS)
+		{
+			GstCaps *filter = NULL;
+			gst_query_parse_caps(query, &filter);
+			GstCaps *caps = hdAudioSinkBinCaps(state, filter);
+			gst_query_set_caps_result(query, caps);
+			gst_caps_unref(caps);
+			return GST_PAD_PROBE_HANDLED;
+		}
+		if (GST_QUERY_TYPE(query) == GST_QUERY_ACCEPT_CAPS)
+		{
+			GstCaps *offered = NULL;
+			gst_query_parse_accept_caps(query, &offered);
+			GstCaps *caps = hdAudioSinkBinCaps(state, NULL);
+			gst_query_set_accept_caps_result(query, offered && gst_caps_can_intersect(offered, caps));
+			gst_caps_unref(caps);
+			return GST_PAD_PROBE_HANDLED;
+		}
+		return GST_PAD_PROBE_OK;
+	}
+
+	GstEvent *event = GST_PAD_PROBE_INFO_EVENT(info);
+	if (!event || GST_EVENT_TYPE(event) != GST_EVENT_CAPS)
+		return GST_PAD_PROBE_OK;
+	GstCaps *caps = NULL;
+	gst_event_parse_caps(event, &caps);
+	const char *decoder_name = hdAudioSinkBinDecoderFor(state, caps);
+	const std::string wanted = decoder_name && state->branches.count(decoder_name) ? decoder_name : "";
+	if (wanted == state->decoder)
+		return GST_PAD_PROBE_OK;
+
+	hdAudioSinkBinRoute(state, wanted);
+	if (!state->decoder.empty())
+		eDebug("[eServiceMP3] HD audio AC3: transcoding through %s ! avenc_ac3", state->decoder.c_str());
+	else
+		eDebug("[eServiceMP3] HD audio AC3: track goes to dvbaudiosink directly");
+	hdAudioSinkBinFlushAfterLateSwitch(bin, state);
+	return GST_PAD_PROBE_OK;
+}
+
+/* NULL when neither TrueHD nor DTS is set to "ac3" or the pieces are missing */
+GstElement *createHDAudioSinkBin()
+{
+	const bool truehd_ac3 = eConfigManager::getConfigValue("config.av.truehd_playback") == "ac3";
+	const bool dts_ac3 = eConfigManager::getConfigValue("config.av.dts_playback") == "ac3";
+	if (!truehd_ac3 && !dts_ac3)
+		return NULL;
+
+	GstElementFactory *encoder = gst_element_factory_find("avenc_ac3");
+	if (!encoder)
+	{
+		eWarning("[eServiceMP3] HD audio AC3: avenc_ac3 missing (gstreamer1.0-libav), no transcoding");
+		return NULL;
+	}
+	gst_object_unref(encoder);
+
+	GstElement *bin = gst_bin_new("enigma2_hdaudio_sinkbin");
+	GstElement *entry = gst_element_factory_make("identity", "hdaudio_sinkbin_entry");
+	GstElement *dvb_sink = gst_element_factory_make("dvbaudiosink", NULL);
+	if (!bin || !entry || !dvb_sink)
+	{
+		eWarning("[eServiceMP3] HD audio AC3: creating the audio sink bin failed");
+		if (bin) gst_object_unref(bin);
+		if (entry) gst_object_unref(entry);
+		if (dvb_sink) gst_object_unref(dvb_sink);
+		return NULL;
+	}
+	gst_bin_add_many(GST_BIN(bin), entry, dvb_sink, NULL);
+	GstPad *entry_sink = gst_element_get_static_pad(entry, "sink");
+	if (!gst_element_link(entry, dvb_sink) ||
+		!gst_element_add_pad(bin, gst_ghost_pad_new("sink", entry_sink)))
+	{
+		eWarning("[eServiceMP3] HD audio AC3: setting up the audio sink bin failed");
+		gst_object_unref(entry_sink);
+		gst_object_unref(bin);
+		return NULL;
+	}
+
+	HDAudioSinkBin *state = new HDAudioSinkBin();
+	state->entry = entry;
+	state->dvbSink = dvb_sink;
+	state->truehdAC3 = truehd_ac3;
+	state->dtsAC3 = dts_ac3;
+	state->switchFlushArmed = 0;
+	if (truehd_ac3)
+		hdAudioSinkBinMakeBranch(bin, state, "avdec_truehd");
+	if (dts_ac3)
+		hdAudioSinkBinMakeBranch(bin, state, "avdec_dca");
+	if (state->branches.empty())
+	{
+		delete state;
+		gst_object_unref(entry_sink);
+		gst_object_unref(bin);
+		return NULL;
+	}
+	g_object_set_qdata_full(G_OBJECT(bin), hdAudioSinkBinQuark(), state, hdAudioSinkBinFree);
+	gst_pad_add_probe(entry_sink,
+		(GstPadProbeType)(GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM | GST_PAD_PROBE_TYPE_QUERY_DOWNSTREAM),
+		hdAudioSinkBinProbe, bin, NULL);
+	gst_object_unref(entry_sink);
+	eDebug("[eServiceMP3] HD audio AC3: audio sink bin in use (TrueHD %s, DTS %s)",
+		state->branches.count("avdec_truehd") ? "ac3" : "native", state->branches.count("avdec_dca") ? "ac3" : "native");
+	return bin;
+}
+
+GstBusSyncReply hdAudioAuxBusSync(GstBus *, GstMessage *msg, gpointer)
+{
+	/* the messages are dropped, but errors and warnings are the only
+	 * trace of a failing transcode, so log them */
+	if (GST_MESSAGE_TYPE(msg) == GST_MESSAGE_ERROR || GST_MESSAGE_TYPE(msg) == GST_MESSAGE_WARNING)
+	{
+		GError *err = NULL;
+		gchar *debug = NULL;
+		if (GST_MESSAGE_TYPE(msg) == GST_MESSAGE_ERROR)
+			gst_message_parse_error(msg, &err, &debug);
+		else
+			gst_message_parse_warning(msg, &err, &debug);
+		eWarning("[eServiceMP3] HD audio AC3 pipeline %s from %s: %s (%s)",
+			GST_MESSAGE_TYPE(msg) == GST_MESSAGE_ERROR ? "error" : "warning",
+			GST_OBJECT_NAME(GST_MESSAGE_SRC(msg)), err ? err->message : "?", debug ? debug : "");
+		if (err) g_error_free(err);
+		g_free(debug);
+	}
 	return GST_BUS_DROP;
 }
 
@@ -1076,6 +1476,9 @@ void hdAudioAuxPadAdded(GstElement *, GstPad *pad, gpointer user_data)
 	const gchar *name = structure ? gst_structure_get_name(structure) : NULL;
 	if (!name || g_strcmp0(name, "audio/x-raw"))
 	{
+		/* an undecoded pad here means there is no decoder for the track */
+		eWarning("[eServiceMP3] HD audio AC3: decoder pad %s is not raw audio (%s)",
+			GST_PAD_NAME(pad), name ? name : "no caps");
 		if (caps) gst_caps_unref(caps);
 		return;
 	}
@@ -1083,6 +1486,9 @@ void hdAudioAuxPadAdded(GstElement *, GstPad *pad, gpointer user_data)
 	GstElement *queue = gst_bin_get_by_name(GST_BIN(state->pipeline), "hdaudio_aux_queue");
 	GstPad *sink_pad = queue ? gst_element_get_static_pad(queue, "sink") : NULL;
 	const GstPadLinkReturn link_ret = sink_pad ? gst_pad_link(pad, sink_pad) : GST_PAD_LINK_REFUSED;
+	if (link_ret != GST_PAD_LINK_OK)
+		eWarning("[eServiceMP3] HD audio AC3: linking decoder pad %s failed (%s)",
+			GST_PAD_NAME(pad), gst_pad_link_get_name(link_ret));
 	g_mutex_lock(&state->linkMutex);
 	state->linked = link_ret == GST_PAD_LINK_OK;
 	if (state->linked)
@@ -1144,6 +1550,11 @@ bool prepareHDAudioAuxPipeline(GstElement *playbin, const gchar *uri, int audio_
 	if (!pipeline || !decode || !queue || !convert || !resample || !raw_capsfilter ||
 		!encoder || !parser || !out_capsfilter || !dvb_sink)
 	{
+		eWarning("[eServiceMP3] HD audio AC3: missing element(s):%s%s%s%s%s%s%s%s%s",
+			!pipeline ? " pipeline" : "", !decode ? " uridecodebin3" : "", !queue ? " queue" : "",
+			!convert ? " audioconvert" : "", !resample ? " audioresample" : "",
+			!raw_capsfilter || !out_capsfilter ? " capsfilter" : "", !encoder ? " avenc_ac3" : "",
+			!parser ? " ac3parse" : "", !dvb_sink ? " dvbaudiosink" : "");
 		if (pipeline) gst_object_unref(pipeline);
 		if (decode) gst_object_unref(decode);
 		if (queue) gst_object_unref(queue);
@@ -1173,6 +1584,7 @@ bool prepareHDAudioAuxPipeline(GstElement *playbin, const gchar *uri, int audio_
 		NULL);
 	if (!raw_caps || !out_caps)
 	{
+		eWarning("[eServiceMP3] HD audio AC3: creating the caps failed");
 		if (raw_caps) gst_caps_unref(raw_caps);
 		if (out_caps) gst_caps_unref(out_caps);
 		gst_object_unref(pipeline);
@@ -1189,6 +1601,7 @@ bool prepareHDAudioAuxPipeline(GstElement *playbin, const gchar *uri, int audio_
 	if (dvb_pad) gst_object_unref(dvb_pad);
 	if (!accepted_output)
 	{
+		eWarning("[eServiceMP3] HD audio AC3: dvbaudiosink does not accept framed AC3 48 kHz 6 ch");
 		gst_caps_unref(raw_caps); gst_caps_unref(out_caps);
 		gst_object_unref(pipeline);
 		gst_object_unref(decode); gst_object_unref(queue); gst_object_unref(convert);
@@ -1225,6 +1638,7 @@ bool prepareHDAudioAuxPipeline(GstElement *playbin, const gchar *uri, int audio_
 	if (!gst_element_link_many(queue, convert, resample, raw_capsfilter,
 		encoder, parser, out_capsfilter, dvb_sink, NULL))
 	{
+		eWarning("[eServiceMP3] HD audio AC3: linking queue ! audioconvert ! audioresample ! capsfilter ! avenc_ac3 ! ac3parse ! capsfilter ! dvbaudiosink failed");
 		gst_object_unref(pipeline);
 		if (state->mainAudioSink) gst_object_unref(state->mainAudioSink);
 		g_cond_clear(&state->linkCond);
@@ -1243,11 +1657,15 @@ bool prepareHDAudioAuxPipeline(GstElement *playbin, const gchar *uri, int audio_
 	g_object_set_qdata(G_OBJECT(playbin), hdAudioAuxStateQuark(), state);
 	if (gst_element_set_state(pipeline, GST_STATE_PAUSED) == GST_STATE_CHANGE_FAILURE)
 	{
+		eWarning("[eServiceMP3] HD audio AC3: pipeline refused PAUSED");
 		stopHDAudioAuxPipeline(playbin, false);
 		return false;
 	}
 	GstState aux_state = GST_STATE_NULL, aux_pending = GST_STATE_VOID_PENDING;
 	gst_element_get_state(pipeline, &aux_state, &aux_pending, 2 * GST_SECOND);
+	if (aux_state != GST_STATE_PAUSED)
+		eWarning("[eServiceMP3] HD audio AC3: pipeline not PAUSED after 2 s (state %s, pending %s)",
+			gst_element_state_get_name(aux_state), gst_element_state_get_name(aux_pending));
 	gst_element_set_locked_state(dvb_sink, TRUE);
 	return true;
 }
@@ -1267,7 +1685,10 @@ bool seekHDAudioAuxThenResetSink(GstElement *playbin, gint64 position_ns)
 
 	if (!gst_element_seek_simple(state->pipeline, GST_FORMAT_TIME,
 		(GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT), position_ns))
+	{
+		eWarning("[eServiceMP3] HD audio AC3: seek to %" G_GINT64_FORMAT " ms failed", position_ns / GST_MSECOND);
 		return false;
+	}
 
 	gst_element_set_locked_state(state->dvbSink, TRUE);
 	GstStateChangeReturn null_ret = gst_element_set_state(state->dvbSink, GST_STATE_NULL);
@@ -1275,13 +1696,20 @@ bool seekHDAudioAuxThenResetSink(GstElement *playbin, gint64 position_ns)
 	gst_element_get_state(state->dvbSink, &sink_state, &sink_pending, 250 * GST_MSECOND);
 	if (null_ret == GST_STATE_CHANGE_FAILURE || sink_state != GST_STATE_NULL)
 	{
+		eWarning("[eServiceMP3] HD audio AC3: dvbaudiosink did not reset after the seek (state %s)",
+			gst_element_state_get_name(sink_state));
 		gst_element_set_locked_state(state->dvbSink, FALSE);
 		gst_element_sync_state_with_parent(state->dvbSink);
 		return false;
 	}
 
 	gst_element_set_locked_state(state->dvbSink, FALSE);
-	return gst_element_sync_state_with_parent(state->dvbSink);
+	if (!gst_element_sync_state_with_parent(state->dvbSink))
+	{
+		eWarning("[eServiceMP3] HD audio AC3: dvbaudiosink did not restart after the seek");
+		return false;
+	}
+	return true;
 }
 
 bool positionHDAudioAuxAfterStart(GstElement *playbin, gint64 position_ns)
@@ -1290,22 +1718,33 @@ bool positionHDAudioAuxAfterStart(GstElement *playbin, gint64 position_ns)
 	if (!state)
 		return false;
 
+	const gint64 wait_start = g_get_monotonic_time();
 	g_mutex_lock(&state->linkMutex);
 	if (!state->linked)
 	{
-		const gint64 until = g_get_monotonic_time() + G_TIME_SPAN_SECOND;
+		const gint64 until = wait_start + G_TIME_SPAN_SECOND;
 		while (!state->linked && g_cond_wait_until(&state->linkCond, &state->linkMutex, until))
 			;
 	}
 	const bool linked = state->linked;
 	g_mutex_unlock(&state->linkMutex);
 	if (!linked)
+	{
+		eWarning("[eServiceMP3] HD audio AC3: no decoded audio within 1 s");
 		return false;
+	}
+	eDebug("[eServiceMP3] HD audio AC3: decoded audio linked after %" G_GINT64_FORMAT " ms",
+		(g_get_monotonic_time() - wait_start) / 1000);
 
 	if (position_ns < 500 * GST_MSECOND)
 	{
 		gst_element_set_locked_state(state->dvbSink, FALSE);
-		return gst_element_sync_state_with_parent(state->dvbSink);
+		if (!gst_element_sync_state_with_parent(state->dvbSink))
+		{
+			eWarning("[eServiceMP3] HD audio AC3: dvbaudiosink did not start");
+			return false;
+		}
+		return true;
 	}
 	return seekHDAudioAuxThenResetSink(playbin, position_ns);
 }
@@ -1789,6 +2228,7 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 	m_last_seek_pos = 0; /* CVR last seek position */
 	m_pending_start_position = -1;
 	m_start_events_deferred = false;
+	m_hdaudio_sinkbin = false;
 	m_useragent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36";
 	m_extra_headers = "";
 	m_download_buffer_path = "";
@@ -2146,6 +2586,15 @@ eServiceMP3::eServiceMP3(eServiceReference ref):
 		}
 		g_object_set (G_OBJECT (m_gst_playbin), "flags", flags, NULL);
 		g_object_set (G_OBJECT (m_gst_playbin), "uri", uri, NULL);
+		/* TrueHD/DTS to AC3 inside the audio sink, see createHDAudioSinkBin().
+		 * Streams too: selectAudioStream() keeps its own DASH and live
+		 * branches, so only seekable streams take the bin's short flush. */
+		GstElement *hdaudio_sink = createHDAudioSinkBin();
+		if (hdaudio_sink)
+		{
+			g_object_set(G_OBJECT(m_gst_playbin), "audio-sink", hdaudio_sink, NULL);
+			m_hdaudio_sinkbin = true;
+		}
 		GstElement *subsink = gst_element_factory_make("subsink", "subtitle_sink");
 		if (!subsink)
 			eDebug("[eServiceMP3] sorry, can't play: missing gst-plugin-subsink");
@@ -4387,12 +4836,12 @@ void doDeferredFlush(GstElement *pipeline, gpointer user_data)
 } // namespace
 
 /* See flushNearCurrentPosition()'s own header comment in the .h. */
-bool eServiceMP3::flushNearCurrentPosition()
+bool eServiceMP3::flushNearCurrentPosition(pts_t at)
 {
 	if (!m_gst_playbin)
 		return false;
-	pts_t ppos = 0;
-	if (getRawPlayPosition(ppos) < 0)
+	pts_t ppos = at;
+	if (ppos < 0 && getRawPlayPosition(ppos) < 0)
 		return false;
 	ppos -= 90; /* seek back ~1ms - enough to force a genuine reposition
 	             * (and so a real re-read/re-emit at this point) without
@@ -4603,7 +5052,8 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 	if (!skipAudioFix)
 		m_audio_switch_deferred = -1;
 
-	const HDAudioAuxMode aux_mode = !m_sourceinfo.is_streaming ?
+	/* the audio sink bin transcodes by itself, the separate pipeline stays off */
+	const HDAudioAuxMode aux_mode = !m_sourceinfo.is_streaming && !m_hdaudio_sinkbin ?
 		hdAudioAuxModeForCodec(m_audioStreams[i].codec) : hdAuxNone;
 	HDAudioAuxState *active_aux = getHDAudioAuxState(m_gst_playbin);
 	const bool native_eac3_to_aux = !active_aux && aux_mode == hdAuxAC3 &&
@@ -4658,8 +5108,10 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 		if (aux_mode != hdAuxNone)
 		{
 			bool prepared = false;
+			eDebug("[eServiceMP3] HD audio AC3: transcoding audio stream %d (%s)", i, m_audioStreams[i].codec.c_str());
 			if (!main_audio_sink)
 			{
+				eWarning("[eServiceMP3] HD audio AC3: no main audio sink to hand over, keeping the original audio");
 				setHDAudioAuxRetryBlocked(m_gst_playbin, true);
 				g_object_set(G_OBJECT(m_gst_playbin), "flags", restore_flags, NULL);
 				if (resume_main)
@@ -4680,6 +5132,7 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 
 				if (!prepared)
 				{
+					eWarning("[eServiceMP3] HD audio AC3: setting up the transcode failed, keeping the original audio");
 					setHDAudioAuxRetryBlocked(m_gst_playbin, true);
 					restoreHDAudioMainSink(m_gst_playbin, main_audio_sink, restore_flags);
 					if (resume_main)
@@ -4690,6 +5143,7 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 					setHDAudioAuxState(m_gst_playbin, GST_STATE_PLAYING);
 					if (!positionHDAudioAuxAfterStart(m_gst_playbin, position_ns))
 					{
+						eWarning("[eServiceMP3] HD audio AC3: starting the transcode failed, keeping the original audio");
 						setHDAudioAuxRetryBlocked(m_gst_playbin, true);
 						stopHDAudioAuxPipeline(m_gst_playbin, true);
 						prepared = false;
@@ -4769,6 +5223,14 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 		setHDAudioAuxReconfiguring(m_gst_playbin, false);
 	}
 
+	/* Taken before the switch: once the selector has switched, the audio
+	 * sink reports the new track's queued timestamps, which on the H17
+	 * Twin ran about 20 s ahead after a switch to E-AC3 (confirmed on
+	 * device), and a flush at that position jumped playback forward. */
+	pts_t switch_pos = -1;
+	if (m_hdaudio_sinkbin && isActualAudioSwitch && !skipAudioFix && getRawPlayPosition(switch_pos) < 0)
+		switch_pos = -1;
+
 	int current_audio;
 	g_object_set (G_OBJECT (m_gst_playbin), "current-audio", i, NULL);
 	g_object_get (G_OBJECT (m_gst_playbin), "current-audio", &current_audio, NULL);
@@ -4837,6 +5299,23 @@ int eServiceMP3::selectAudioStream(int i, bool skipAudioFix)
 						m_state = stIdle;
 						start();
 					}
+					return 0;
+				}
+				/* With the audio sink bin, flush without the pause: dvbaudiosink
+				 * runs with async preroll off, and on the H17 Twin the paused
+				 * flush seek after a TrueHD/E-AC3 switch confirmed on device
+				 * never prerolled again. With no flush at all the new track's
+				 * queued audio starts well ahead of the video (about a minute,
+				 * confirmed on device) and the driver's AV sync holds playback
+				 * until the clock catches up. A short flushing seek while still
+				 * playing drops that queue, as exteplayer3 does on a switch. */
+				if (m_hdaudio_sinkbin)
+				{
+					eDebug("[eServiceMP3] HD audio AC3: audio switch with short flush (audio sink bin)");
+					if (!flushNearCurrentPosition(switch_pos))
+						eDebug("[eServiceMP3] HD audio AC3: no position, switch without flush");
+					else if (switch_pos >= 0)
+						hdAudioSinkBinArmSwitchFlush(m_gst_playbin, switch_pos * 11111LL, m_currentTrickRatio);
 					return 0;
 				}
 				beginAudioSwitchPauseFlush();

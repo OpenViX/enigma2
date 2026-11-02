@@ -351,6 +351,8 @@ private:
 	bool m_paused;
 	bool m_clear_buffers;
 	bool m_initial_start;
+	/* TrueHD/DTS AC3 transcoding happens in the audio sink bin */
+	bool m_hdaudio_sinkbin;
 	bool m_send_ev_start;
 	/* True once evFirstFrame has been fired for this playback session -
 	 * see its firing sites in gstBusCall() for why this needs its own
@@ -635,8 +637,10 @@ private:
 	 * it started, both of which happen later, off-thread. Skips itself for
 	 * a live source, same as clearBuffers() and for the same reason
 	 * (nothing to seek back to).
+	 *
+	 * at: the position to flush at, or -1 to read the current one.
 	 */
-	bool flushNearCurrentPosition();
+	bool flushNearCurrentPosition(pts_t at = -1);
 
 	gint m_aspect, m_width, m_height, m_framerate, m_progressive, m_gamma;
 	int m_hdr_type;                  // 0=SDR 1=HDR10 2=HLG 3=HDR
