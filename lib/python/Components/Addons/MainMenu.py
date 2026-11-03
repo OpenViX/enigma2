@@ -60,7 +60,11 @@ class MainMenu(GUIAddon):
 						size=(self.iconSize, self.iconSize),
 						png=menupng))
 			xPos += self.iconSize + 10
-		textWidth = self.longestMenuTextWidth if self.maxWidth >= (self.longestMenuTextWidth + self.iconSize + 40 + 10) else self.maxWidth - self.iconSize - 40 - 10
+		# The text gets the rest of the row. It must not be sized to the measured width of the longest label: that is the width of
+		# its ink (eLabel::calculateSize), a few pixels less than the advance width the text is checked against, so the longest
+		# label would be cut with an ellipsis however much room the list has.
+		listWidth = self.instance.size().width() if self.instance else self.maxWidth
+		textWidth = max(listWidth - xPos - 10, self.longestMenuTextWidth)
 		res.append(MultiContentEntryText(
 				pos=(xPos, 0),
 				size=(textWidth, self.itemHeight),
