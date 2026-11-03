@@ -47,13 +47,15 @@ bool csa_load_library();
 /**
  * eDVBCSAEngine - Low-Level CSA Descrambler
  *
- * Thread-safe wrapper around libdvbcsa using double-buffered keys.
+ * Thread-safe wrapper around libdvbcsa using a ring of key slots.
  * setKey() from CWHandler thread and descramble() from recorder thread
  * can run concurrently without locks.
  *
- * Each parity (even/odd) has two key slots. setKey() writes into the
- * inactive slot, then atomically swaps the active index. descramble()
- * snapshots the active index once per call and uses it throughout.
+ * Each parity (even/odd) has KEY_SLOTS key slots, and the slot of key
+ * generation g is g % KEY_SLOTS. setKey() writes the slot of the next
+ * generation, then publishes that generation. descramble() snapshots the
+ * generation once per call and resolves slots from it, so it never touches
+ * the one being written.
  */
 class eDVBCSAEngine
 {
@@ -87,17 +89,35 @@ public:
 	int getBatchSizeInstance() const { return m_batch_size; }
 
 private:
-	// Double-buffered keys: two slots per parity, atomic index selects active one.
-	// setKey() writes to inactive slot, then swaps index.
-	// descramble() reads active slot via snapshot of index.
-	dvbcsa_bs_key_t* m_key_even[2];
-	dvbcsa_bs_key_t* m_key_odd[2];
-	std::atomic<int> m_key_even_idx{0};    // active index for even key (0 or 1)
-	std::atomic<int> m_key_odd_idx{0};     // active index for odd key (0 or 1)
+	/* Key slots per parity. A run may still be using the generation before
+	 * the current one, so two slots are in reach of descramble() and the
+	 * third is what setKey() writes: nothing is written while it is read. */
+	static const int KEY_SLOTS = 3;
+
+	dvbcsa_bs_key_t* m_key_even[KEY_SLOTS];
+	dvbcsa_bs_key_t* m_key_odd[KEY_SLOTS];
 	std::atomic<bool> m_key_even_set{false};
 	std::atomic<bool> m_key_odd_set{false};
+	// Slot for generation g is g % KEY_SLOTS: setKey() writes the next slot
+	// and publishes the generation that names it.
+	std::atomic<uint32_t> m_gen_even{0};
+	std::atomic<uint32_t> m_gen_odd{0};
+	/* Last control word written per parity, so a repeat does not spend a
+	 * generation. CWHandler thread only, like setKey() itself. */
+	uint8_t m_last_cw[2][8]{};
+	uint8_t m_last_ecm_mode[2]{0, 0};
+	bool m_last_cw_set[2]{false, false};
+	// A parity run is one crypto period. Recorder thread only, which is the
+	// only caller of descramble().
+	int m_last_parity{-1};        // Parity of the previous packet
+	uint32_t m_bound_gen[2]{0, 0};  // Key generation bound to the run, [0]=even
+	uint32_t m_prev_run_gen[2]{0, 0};  // What the previous run of that parity bound
+	bool m_run_suspect{false};    // Bound key may predate this period
+	bool m_probe_armed{false};    // Confirm the bound key at the next PES start
 	int m_batch_size;
 	unsigned int m_bad_packets{0};  // Log rate limit only, races are harmless
+	unsigned int m_expired_keys{0};  // Log rate limit only, races are harmless
+	unsigned int m_dead_keys{0};  // Log rate limit only, races are harmless
 
 	// Pre-allocated batch arrays
 	std::vector<dvbcsa_bs_batch_s> m_batch_even;
@@ -110,6 +130,7 @@ private:
 	static void clearTSC(unsigned char* pkt);
 	static void setNullPacket(unsigned char* pkt);
 	void logBadPacket(const char* reason, const unsigned char* pkt, int offset, int len);
+	bool probeKey(const dvbcsa_bs_key_t* key, const unsigned char* pkt, int offset) const;
 };
 
 #endif // __dvbcsaengine_h
