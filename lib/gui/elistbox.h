@@ -130,6 +130,18 @@ public:
 	enum { orHorizontal, orVertical, orGrid };
 	void setOrientation(int orientation);
 
+	/* text alignment for setVAlign/setHAlign; the same values as eListboxStyle::align*, which is hidden from SWIG, so
+	   the skin (AttributeParser.valign/halign) can reach them as eListbox.alignCenter etc. */
+	enum
+	{
+		alignLeft,
+		alignTop = alignLeft,
+		alignCenter,
+		alignRight,
+		alignBottom = alignRight,
+		alignBlock
+	};
+
 	void setContent(iListboxContent *content);
 
 	void allowNativeKeys(bool allow);
