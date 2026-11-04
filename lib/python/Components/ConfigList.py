@@ -294,10 +294,12 @@ class ConfigListScreen:
 				self["editConfigActions"].setEnabled(False)
 			if isinstance(currConfig[1], ConfigSelection) and not isinstance(currConfig[1], ConfigNothing):
 				self["menuConfigActions"].setEnabled(True)
-				self["key_menu"].setText(_("MENU"))
+				if self["key_menu"].getText() != _("MENU"):  # setText notifies all renderers, even when nothing changed
+					self["key_menu"].setText(_("MENU"))
 			else:
 				self["menuConfigActions"].setEnabled(False)
-				self["key_menu"].setText("")
+				if self["key_menu"].getText():
+					self["key_menu"].setText("")
 			if isinstance(currConfig[1], (ConfigText, ConfigMacText)) and "HelpWindow" in self and currConfig[1].help_window and currConfig[1].help_window.instance is not None:
 				helpwindowpos = self["HelpWindow"].getPosition()
 				currConfig[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
@@ -310,7 +312,8 @@ class ConfigListScreen:
 
 	def showVirtualKeyBoard(self, state):
 		if "VKeyIcon" in self:
-			self["VKeyIcon"].boolean = state
+			if self["VKeyIcon"].boolean != state:  # the setter notifies all renderers, even when nothing changed
+				self["VKeyIcon"].boolean = state
 			self["virtualKeyBoardActions"].setEnabled(state)
 
 	def showHelpWindow(self):

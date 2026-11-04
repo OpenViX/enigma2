@@ -1717,6 +1717,26 @@ void eTextPara::realign(int dir)	// der code hier ist ein wenig merkwuerdig.
 	calc_bbox();
 }
 
+void eTextPara::moveBy(int dx, int dy)
+{
+	if (!dx && !dy)
+		return;
+	area.moveBy(dx, dy);
+	cursor += ePoint(dx, dy);
+	maximum = eSize(maximum.width() + dx, maximum.height() + dy);
+	left += dx;
+	for (glyphString::iterator i(glyphs.begin()); i != glyphs.end(); ++i)
+	{
+		i->x += dx;
+		i->y += dy;
+		i->bbox.moveBy(dx, dy);
+	}
+	for (std::list<int>::iterator i(lineOffsets.begin()); i != lineOffsets.end(); ++i)
+		*i += dy;
+	if (bboxValid)
+		boundBox.moveBy(dx, dy);
+}
+
 void eTextPara::clear()
 {
 	singleLock s(ftlock);
