@@ -55,7 +55,8 @@ private:
 	// simply re-upload on next use. Returns the bytes released.
 	// `max_count` bounds how many textures are deleted in one call (the rest wait for the next call), so a trim can be spread over
 	// several frames instead of stalling one.
-	size_t evictLRU(size_t bytes_wanted, size_t max_count = (size_t)-1);
+	// min_age: textures drawn fewer than this many frames ago are kept (1 = only skip the current frame).
+	size_t evictLRU(size_t bytes_wanted, size_t max_count = (size_t)-1, unsigned int min_age = 1);
 	size_t m_live_texture_bytes = 0;
 
 	// Soft ceiling for the live textures, 0 = none. ENIGMA_TEX_BUDGET_MB sets it; otherwise it is learned from the first
@@ -132,8 +133,9 @@ public:
 	// Evicts least-recently-used textures (not used this frame) until the live ones hold at most `max_bytes`; returns the bytes
 	// released. The manager has no budget of its own: it keeps every texture until the driver runs out of memory. That is fine
 	// while enigma2 is alone on the GPU, but the GPU heap is also used by the web browser (HbbTV) and it cannot evict.
-	size_t trimTo(size_t max_bytes, size_t max_count = (size_t)-1) {
-		return m_live_texture_bytes > max_bytes ? evictLRU(m_live_texture_bytes - max_bytes, max_count) : 0;
+	// min_age > 1 spares textures the GPU may still be reading from frames in flight: deleting those can make the driver wait for them.
+	size_t trimTo(size_t max_bytes, size_t max_count = (size_t)-1, unsigned int min_age = 1) {
+		return m_live_texture_bytes > max_bytes ? evictLRU(m_live_texture_bytes - max_bytes, max_count, min_age) : 0;
 	}
 	// How many textures a per-frame trim to `max_bytes` should delete: enough to cover the overage (estimated with the average texture
 	// size), never fewer than `min_count` nor more than `max_count`. A fixed small cap cannot keep up while fast scrolling uploads more
