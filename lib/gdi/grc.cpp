@@ -1,5 +1,8 @@
 #include <unistd.h>
 #include <fstream>
+#include <list>
+#include <string>
+#include <unordered_map>
 #include <lib/gdi/grc.h>
 #include <lib/gdi/font.h>
 #include <lib/base/init.h>
@@ -21,6 +24,36 @@ void *gRC::thread_wrapper(void *ptr)
 #endif
 
 gRC *gRC::instance = 0;
+
+// Laid out paragraphs of the renderText opcodes, most recently used first.
+// Not locked: renderText opcodes are only executed on the gRC render thread (or, with
+// SYNC_PAINT, on the main thread that submits them), never from both at once. Paragraphs
+// built on the main thread for renderPara do not go through this cache.
+#define TEXT_PARA_CACHE_SIZE 256
+#define TEXT_PARA_CACHE_MAXLEN 256
+typedef std::list<std::pair<std::string, ePtr<eTextPara>>> TextParaLru;
+static TextParaLru s_text_para_lru;
+static std::unordered_map<std::string, TextParaLru::iterator> s_text_para_index;
+
+static ePtr<eTextPara> textParaCacheGet(const std::string &key)
+{
+	auto it = s_text_para_index.find(key);
+	if (it == s_text_para_index.end())
+		return nullptr;
+	s_text_para_lru.splice(s_text_para_lru.begin(), s_text_para_lru, it->second);
+	return it->second->second;
+}
+
+static void textParaCachePut(const std::string &key, eTextPara *para)
+{
+	s_text_para_lru.emplace_front(key, para);
+	s_text_para_index[key] = s_text_para_lru.begin();
+	if (s_text_para_lru.size() > TEXT_PARA_CACHE_SIZE)
+	{
+		s_text_para_index.erase(s_text_para_lru.back().first);
+		s_text_para_lru.pop_back();
+	}
+}
 
 gRC::gRC() : rp(0), wp(0)
 #ifdef SYNC_PAINT
@@ -886,7 +919,7 @@ void gDC::exec(const gOpcode *o)
 		break;
 	case gOpcode::renderText:
 	{
-		ePtr<eTextPara> para = new eTextPara(o->parm.renderText->area);
+		ePtr<eTextPara> para;
 		int flags = o->parm.renderText->flags;
 		int border = o->parm.renderText->border;
 		int markedpos = o->parm.renderText->markedpos;
@@ -894,7 +927,6 @@ void gDC::exec(const gOpcode *o)
 		if (markedpos != -1)
 			border = 0;
 		ASSERT(m_current_font);
-		para->setFont(m_current_font);
 
 		// RT_ELLIPSIS is handled while laying out the glyphs (see eTextPara::ellipsizeLine),
 		// it works for single lines, lines separated by \n and for wrapped text
@@ -903,20 +935,45 @@ void gDC::exec(const gOpcode *o)
 			rsflags |= RS_WRAP;
 		if (flags & gPainter::RT_ELLIPSIS)
 			rsflags |= gPainter::RT_ELLIPSIS;
-		para->renderString(o->parm.renderText->text, rsflags, o->parm.renderText->border);
+
+		int align = eTextPara::dirBidi;
+		if (flags & gPainter::RT_HALIGN_LEFT)
+			align = eTextPara::dirLeft;
+		else if (flags & gPainter::RT_HALIGN_RIGHT)
+			align = eTextPara::dirRight;
+		else if (flags & gPainter::RT_HALIGN_CENTER)
+			align = (flags & gPainter::RT_WRAP) ? eTextPara::dirCenter : eTextPara::dirCenterIfFits;
+		else if (flags & gPainter::RT_HALIGN_BLOCK)
+			align = eTextPara::dirBlock;
+
+		// Laying out text (shaping, bidi, glyph lookups) is the same work every time a list row
+		// is repainted, only its position differs. Keep the laid out paragraph of plain text
+		// and just move it; the layout depends on the size of the area, never on its position.
+		const eRect textarea = o->parm.renderText->area;
+		const char *text = o->parm.renderText->text;
+		bool cacheable = !o->parm.renderText->border && text && strlen(text) <= TEXT_PARA_CACHE_MAXLEN;
+		std::string cachekey;
+		if (cacheable)
+		{
+			cachekey = m_current_font->family + '|' + std::to_string(m_current_font->pointSize) + '|' +
+				std::to_string(rsflags) + '|' + std::to_string(align) + '|' +
+				std::to_string(textarea.width()) + 'x' + std::to_string(textarea.height()) + '|' + text;
+			para = textParaCacheGet(cachekey);
+			if (para)
+				para->moveBy(textarea.x() - para->getArea().x(), textarea.y() - para->getArea().y());
+		}
+		if (!para)
+		{
+			para = new eTextPara(textarea);
+			para->setFont(m_current_font);
+			para->renderString(text, rsflags, o->parm.renderText->border);
+			para->realign(align);
+			if (cacheable)
+				textParaCachePut(cachekey, para);
+		}
 
 		if (o->parm.renderText->text)
 			free(o->parm.renderText->text);
-		if (flags & gPainter::RT_HALIGN_LEFT)
-			para->realign(eTextPara::dirLeft);
-		else if (flags & gPainter::RT_HALIGN_RIGHT)
-			para->realign(eTextPara::dirRight);
-		else if (flags & gPainter::RT_HALIGN_CENTER)
-			para->realign((flags & gPainter::RT_WRAP) ? eTextPara::dirCenter : eTextPara::dirCenterIfFits);
-		else if (flags & gPainter::RT_HALIGN_BLOCK)
-			para->realign(eTextPara::dirBlock);
-		else
-			para->realign(eTextPara::dirBidi);
 
 		ePoint offset = m_current_offset;
 

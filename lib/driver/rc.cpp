@@ -118,17 +118,20 @@ void eRCInputEventDriver::processPending()
 
 		/* A screen that redraws slower than the key repeat rate would queue up
 		 * repeats and keep scrolling after the key is released. When a newer
-		 * repeat of the same key is already waiting, drop this one. */
+		 * repeat of the same key is already waiting, drop this one. If the key
+		 * has meanwhile been released (the release is queued behind this repeat),
+		 * drop it too, so scrolling stops at once instead of replaying the
+		 * repeats that piled up while the screen was busy. */
 		if (ev.type == EV_KEY && ev.value == 2)
 		{
-			bool newer = false;
+			bool obsolete = false;
 			for (std::deque<struct input_event>::const_iterator i(m_pending.begin()); i != m_pending.end(); ++i)
-				if (i->type == EV_KEY && i->code == ev.code && i->value == 2)
+				if (i->type == EV_KEY && i->code == ev.code && (i->value == 2 || i->value == 0))
 				{
-					newer = true;
+					obsolete = true;
 					break;
 				}
-			if (newer)
+			if (obsolete)
 				continue;
 		}
 

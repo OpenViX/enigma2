@@ -19,6 +19,7 @@ typedef FT_UInt GlyphIndex;
 typedef FT_ULong GlyphIndex;
 #endif
 
+#include <algorithm>
 #include <climits>
 #include <string>
 #include <vector>
@@ -223,12 +224,23 @@ public:
 
 	void realign(int dir);
 
+	// shift an already laid out paragraph, so a cached layout can be reused at another position
+	void moveBy(int dx, int dy);
+
 	const eRect & getBoundBox()
 	{
 		if (!bboxValid)
 			calc_bbox();
 
 		return boundBox;
+	}
+
+	// widest line measured by pen advance, i.e. the same measure ellipsizeLine() uses
+	// to decide whether the text fits. Unlike the bounding box it does not depend on
+	// the side bearings of the first/last glyph.
+	int getAdvanceWidth() const
+	{
+		return std::max(maximum.width(), cursor.x()) - left;
 	}
 
 	// baseline of a single line text, relative to the top of the area

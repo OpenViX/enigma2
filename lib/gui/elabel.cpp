@@ -279,5 +279,10 @@ eSize eLabel::calculateTextSize(gFont* font, const std::string &string, eSize ta
 	eTextPara para(eRect(0, 0, targetSize.width(), targetSize.height()));
 	para.setFont(font);
 	para.renderString(string.empty() ? 0 : string.c_str(), nowrap ? 0 : RS_WRAP);
-	return para.getBoundBox().size();
+	eSize size = para.getBoundBox().size();
+	// The bounding box spans first-glyph-left to last-glyph-right including side bearings,
+	// so it can be 1-2px narrower than the pen advance that decides whether text gets
+	// ellipsized when rendered into an area of exactly this width.
+	size.setWidth(std::max(size.width(), para.getAdvanceWidth()));
+	return size;
 }
