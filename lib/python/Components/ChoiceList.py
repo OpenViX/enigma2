@@ -33,6 +33,9 @@ def ChoiceEntryComponent(key=None, text=None):
 			res.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, RT_HALIGN_LEFT, "-" * 200))
 	else:
 		x, y, w, h = parameters.get("ChoicelistName", applySkinFactor(45, 2, 1280, 25))
+		if not key:
+			# no key button to make room for: a skin can give the text its own position
+			x, y, w, h = parameters.get("ChoicelistNameSingle", (x, y, w, h))
 		res.append((eListboxPythonMultiContent.TYPE_TEXT, x, y, w, h, 0, RT_HALIGN_LEFT, text[0]))
 		if key:
 			# separate the sizes definition for keybutton is=cons and the rest so there to be possibility to use different size images for different type icons
