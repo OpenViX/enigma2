@@ -3787,7 +3787,13 @@ void gEGLDC::flip() {
 			budget = web_budget;
 	}
 	if (budget) {
-		const size_t freed = m_texture_manager.trimTo(budget, m_texture_manager.trimCountFor(budget, 6, 48));
+		const auto trim_t0 = std::chrono::steady_clock::now();
+		// Spare what the last few frames drew: those textures may still be read by frames in flight, and deleting one makes the
+		// driver wait for them - a stall of the whole frame while fast scrolling.
+		const size_t freed = m_texture_manager.trimTo(budget, m_texture_manager.trimCountFor(budget, 6, 48), 4);
+		const double trim_ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - trim_t0).count();
+		if (trim_ms > 8.0)
+			eDebug("[gEGLDC] slow texture trim: %.1fms, freed ~%.1fMB", trim_ms, freed / 1048576.0);
 		if (freed && web_active)
 			eDebug("[gEGLDC] web layer active: released %.1fMB of textures (budget %.0fMB, now ~%.1fMB)", freed / 1048576.0, budget / 1048576.0,
 				m_texture_manager.liveBytes() / 1048576.0);

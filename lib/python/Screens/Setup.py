@@ -15,6 +15,16 @@ from Tools.Directories import SCOPE_PLUGINS, SCOPE_SKIN, fileReadXML, resolveFil
 
 domSetups = {}
 setupModTimes = {}
+evalCodes = {}
+
+
+def evalCode(expression):
+	# createSetup() runs again on every change of a selection/boolean item and evaluates the expressions of every item of
+	# the screen. Compile each expression only once; eval(evalCode(x)) behaves like eval(x) in the calling frame.
+	code = evalCodes.get(expression)
+	if code is None:
+		code = evalCodes[expression] = compile(expression.lstrip(" \t"), "<setup>", "eval")  # eval() skips leading blanks, compile() does not
+	return code
 
 
 class Setup(ConfigListScreen, Screen, HelpableScreen):
@@ -111,7 +121,7 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 		else:
 			itemText = indent + (_(x) if (x := element.get("text")) else "* fix me *")
 			itemDescription = _(x) if (x := element.get("description")) else ""
-		item = element.text and eval(element.text) or ""
+		item = element.text and eval(evalCode(element.text)) or ""
 		if item == "":
 			self.list.append((self.formatItemText(itemText),))  # Add the comment line to the config list.
 		elif not isinstance(item, ConfigNothing):
@@ -143,14 +153,14 @@ class Setup(ConfigListScreen, Screen, HelpableScreen):
 				if negate:
 					require = require[1:]
 				if require.startswith("config."):
-					item = eval(require)
+					item = eval(evalCode(require))
 					result = bool(item.value and item.value not in ("0", "Disable", "disable", "False", "false", "No", "no", "Off", "off"))
 				else:
 					result = bool(SystemInfo.get(require, False))
 				if require and negate == result:  # The item requirements are not met.
 					return False
 		conditional = element.get("conditional")
-		return not conditional or eval(conditional)
+		return not conditional or eval(evalCode(conditional))
 
 	def layoutFinished(self):
 		if not self["config"]:

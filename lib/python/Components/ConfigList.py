@@ -168,6 +168,8 @@ class ConfigList(GUIComponent):
 
 
 class ConfigListScreen:
+	HELPER_UPDATE_DELAY = 120  # ms, see handleInputHelpers()
+
 	def __init__(self, list, session=None, on_change=None, fullUI=False, yellow_button=None, blue_button=None, *args, **kwargs):
 		self.entryChanged = on_change if on_change is not None else lambda: None
 		if fullUI:
@@ -248,6 +250,11 @@ class ConfigListScreen:
 		self["config"] = ConfigList(list, session=session)
 		self.setCancelMessage(None)
 		self.setRestartMessage(None)
+		self.helperTimer = eTimer()
+		self.helperTimer.callback.append(self.helperTimerFired)
+		self.helperUpdatePending = False
+		if hasattr(self, "onClose") and self.helperTimer.stop not in self.onClose:
+			self.onClose.append(self.helperTimer.stop)
 		self.onChangedEntry = []
 		self.onSave = []
 		self.manipulatedItems = []  # keep track of all manipulated items including ones that have been removed from self["config"].list (currently used by Setup.py)
@@ -286,27 +293,41 @@ class ConfigListScreen:
 		self["config"].instance.allowNativeKeys(False)
 
 	def handleInputHelpers(self):
+		# What the next key press depends on is switched at once; the purely visual part (key hint, keyboard icon,
+		# description) is shown for the first step of a burst of cursor moves and, while the cursor keeps moving
+		# faster than HELPER_UPDATE_DELAY, only once after it has come to rest.
 		currConfig = self["config"].getCurrent()
 		if currConfig is not None:
 			if isinstance(currConfig[1], (ConfigInteger, ConfigMacText, ConfigSequence, ConfigText)):
 				self["editConfigActions"].setEnabled(True)
 			else:
 				self["editConfigActions"].setEnabled(False)
+			self["menuConfigActions"].setEnabled(isinstance(currConfig[1], ConfigSelection) and not isinstance(currConfig[1], ConfigNothing))
+			if "VKeyIcon" in self:
+				self["virtualKeyBoardActions"].setEnabled(isinstance(currConfig[1], ConfigText))
+			if self.helperTimer.isActive():
+				self.helperUpdatePending = True
+			else:
+				self.updateInputHelperVisuals()
+			self.helperTimer.start(self.HELPER_UPDATE_DELAY, True)
+
+	def helperTimerFired(self):
+		if self.helperUpdatePending:
+			self.updateInputHelperVisuals()
+
+	def updateInputHelperVisuals(self):
+		self.helperUpdatePending = False
+		currConfig = self["config"].getCurrent()
+		if currConfig is not None:
 			if isinstance(currConfig[1], ConfigSelection) and not isinstance(currConfig[1], ConfigNothing):
-				self["menuConfigActions"].setEnabled(True)
 				if self["key_menu"].getText() != _("MENU"):  # setText notifies all renderers, even when nothing changed
 					self["key_menu"].setText(_("MENU"))
-			else:
-				self["menuConfigActions"].setEnabled(False)
-				if self["key_menu"].getText():
-					self["key_menu"].setText("")
+			elif self["key_menu"].getText():
+				self["key_menu"].setText("")
 			if isinstance(currConfig[1], (ConfigText, ConfigMacText)) and "HelpWindow" in self and currConfig[1].help_window and currConfig[1].help_window.instance is not None:
 				helpwindowpos = self["HelpWindow"].getPosition()
 				currConfig[1].help_window.instance.move(ePoint(helpwindowpos[0], helpwindowpos[1]))
-			if isinstance(currConfig[1], ConfigText):
-				self.showVirtualKeyBoard(True)
-			else:
-				self.showVirtualKeyBoard(False)
+			self.showVirtualKeyBoard(isinstance(currConfig[1], ConfigText))
 			if "description" in self:
 				self["description"].text = self.getCurrentDescription()
 

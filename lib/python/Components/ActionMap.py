@@ -1,6 +1,10 @@
+from time import monotonic
+
 from enigma import eActionMap
 
 from Tools.KeyBindings import queryKeyBinding
+
+lastLogged = [None, 0.0]  # (context, action) and time of the last action logged by ActionMap.action()
 
 
 class ActionMap:
@@ -54,7 +58,11 @@ class ActionMap:
 
 	def action(self, context, action):
 		if action in self.actions:
-			print("[ActionMap] Keymap '%s' -> Action = '%s'." % (context, action))
+			# A held key repeats the same action many times a second; log it once a second at most.
+			now = monotonic()
+			if (context, action) != lastLogged[0] or now - lastLogged[1] > 1.0:
+				lastLogged[0], lastLogged[1] = (context, action), now
+				print("[ActionMap] Keymap '%s' -> Action = '%s'." % (context, action))
 			res = self.actions[action]()
 			if res is not None:
 				return res

@@ -44,6 +44,23 @@ static ePtr<eTextPara> textParaCacheGet(const std::string &key)
 	return it->second->second;
 }
 
+// Admission filter: while fast scrolling nearly every string is seen once and never again, and
+// inserting those would only evict entries that are still useful (and allocate for nothing).
+// A string is cached when it comes up for the second time; the first sighting is remembered
+// as a hash in a small direct-mapped table.
+#define TEXT_PARA_SEEN_SLOTS 1024
+static size_t s_text_para_seen[TEXT_PARA_SEEN_SLOTS];
+
+static bool textParaCacheAdmit(const std::string &key)
+{
+	const size_t h = std::hash<std::string>()(key);
+	size_t &slot = s_text_para_seen[h % TEXT_PARA_SEEN_SLOTS];
+	if (slot == h)
+		return true;
+	slot = h;
+	return false;
+}
+
 static void textParaCachePut(const std::string &key, eTextPara *para)
 {
 	s_text_para_lru.emplace_front(key, para);
@@ -951,7 +968,12 @@ void gDC::exec(const gOpcode *o)
 		// and just move it; the layout depends on the size of the area, never on its position.
 		const eRect textarea = o->parm.renderText->area;
 		const char *text = o->parm.renderText->text;
-		bool cacheable = !o->parm.renderText->border && text && strlen(text) <= TEXT_PARA_CACHE_MAXLEN;
+		// ENIGMA_TEXT_PARA_CACHE=0 disables the cache (to A/B test it).
+		static const bool cache_enabled = []() {
+			const char *e = getenv("ENIGMA_TEXT_PARA_CACHE");
+			return !(e && atoi(e) == 0);
+		}();
+		bool cacheable = cache_enabled && !o->parm.renderText->border && text && strlen(text) <= TEXT_PARA_CACHE_MAXLEN;
 		std::string cachekey;
 		if (cacheable)
 		{
@@ -968,7 +990,7 @@ void gDC::exec(const gOpcode *o)
 			para->setFont(m_current_font);
 			para->renderString(text, rsflags, o->parm.renderText->border);
 			para->realign(align);
-			if (cacheable)
+			if (cacheable && textParaCacheAdmit(cachekey))
 				textParaCachePut(cachekey, para);
 		}
 

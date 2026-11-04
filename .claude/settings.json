@@ -42,7 +42,9 @@
       "Bash(python -c \"import ast;ast.parse\\(open\\('ServiceInfoBar.py'\\).read\\(\\)\\);print\\('ok'\\)\")",
       "Bash(python actions/parseactions.py parse gui/*.h)",
       "Bash(awk -F: '$1>1205 && $1<1625')",
-      "Bash(python -m py_compile lib/python/Components/ConfigList.py)"
+      "Bash(python -m py_compile lib/python/Components/ConfigList.py)",
+      "Bash(python -m py_compile lib/python/Screens/Setup.py)",
+      "Bash(python -m py_compile lib/python/Components/ActionMap.py lib/python/Screens/Setup.py)"
     ]
   }
 }

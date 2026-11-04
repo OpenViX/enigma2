@@ -20,7 +20,8 @@ void eRCDeviceInputDev::handleCode(long rccode)
 	if (ev->type != EV_KEY)
 		return;
 		
-	eDebug("[eInputDeviceInit] %x %x (%u) %x", ev->value, ev->code, ev->code, ev->type);
+	if (ev->value != 2) // not for every repeat, a held key would flood the log
+		eDebug("[eInputDeviceInit] %x %x (%u) %x", ev->value, ev->code, ev->code, ev->type);
 
 	int km = iskeyboard ? input->getKeyboardMode() : eRCInput::kmNone;
 
@@ -129,7 +130,8 @@ void eRCDeviceInputDev::handleCode(long rccode)
 #endif
 	}
 
-	eDebug("[eRCDeviceInputDev] emit: %u", ev->value); // ZZ
+	if (ev->value != 2)
+		eDebug("[eRCDeviceInputDev] emit: %u", ev->value); // ZZ
 	switch (ev->value)
 	{
 		case 0:
