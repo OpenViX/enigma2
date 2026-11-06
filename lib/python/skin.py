@@ -29,6 +29,7 @@ fonts = {}  # Dictionary of predefined and skin defined font aliases.
 menus = {}  # Dictionary of images associated with menu entries.
 menuicons = {}  # Dictionary of icons associated with menu items.
 parameters = {}  # Dictionary of skin parameters used to modify code behavior.
+serviceListTemplates = {"styles": {}, "templates": {}}  # Skin defined row templates for the templated service list.
 screens = {}  # Dictionary of images associated with screen entries.
 setups = {}  # Dictionary of images associated with setup menus.
 switchPixmap = {}  # Dictionary of switch images.
@@ -81,6 +82,8 @@ def InitSkins(booting=True):
 	menus.clear()
 	menuicons.clear()
 	parameters.clear()
+	serviceListTemplates["styles"].clear()
+	serviceListTemplates["templates"].clear()
 	screens.clear()
 	setups.clear()
 	switchPixmap.clear()
@@ -464,6 +467,126 @@ def parseScale(s):
 			print("[Skin] parseScale: %s '%s': formula '%s' cannot be evaluated!" % (type(err).__name__, err, s))
 			val = 0
 	return val
+
+
+def parseServiceListTemplates(tag):
+	"""Parse a <servicelisttemplates> element into dictionaries understood by eListboxServiceTemplateContent.
+
+	Styles are colour sets, templates describe the rows (and the items in a row) of a service list entry.
+	A template can inherit from an earlier one with base="name"; its own rows with an id replace the
+	inherited row with the same id, all others are appended."""
+	scale = ((1, 1), (1, 1))
+	styles = serviceListTemplates["styles"]
+	templates = serviceListTemplates["templates"]
+	colorKeys = ("fg", "fgSelected", "fgFallback", "fgSelectedFallback", "fgNotAvail", "fgRecorded", "fgMarked", "fgMarkedSelected", "border", "borderSelected")
+	fontGroups = {"name": 0, "number": 1, "info": 2, "next": 3, "remaining": 4, "custom1": 5, "custom2": 6, "custom3": 7}
+
+	def number(node, key, default=0):
+		value = node.attrib.get(key)
+		return parseScale(value) if value not in (None, "") else default
+
+	def parseItem(node):
+		a = node.attrib
+		itemType = a.get("type", "text")
+		item = {"type": itemType, "id": a.get("id", ""), "visible": a.get("visible", "")}
+		text = a.get("text")
+		if text is None:
+			text = "{number}" if itemType == "number" else "{name}" if itemType == "text" else ""
+		item["text"] = text
+		width = a.get("width", "auto").strip()
+		if width == "auto":
+			item["wmode"] = 1
+		elif width.startswith("*"):
+			item["wmode"] = 2
+			item["weight"] = int(width[1:] or 1)
+		elif width.startswith("@"):  # width taken from a runtime parameter, e.g. the column width
+			item["wmode"] = 3
+			item["param"] = width[1:]
+		else:
+			item["wmode"] = 0
+			item["width"] = parseScale(width)
+		for key in ("height", "margin", "min", "border"):
+			if key in a:
+				item[key] = parseScale(a[key])
+		if "weight" in a:
+			item["weight"] = int(a["weight"])
+		if "align" in a:
+			item["align"] = a["align"]
+		if "valign" in a:
+			item["valign"] = a["valign"]
+		if "pos" in a:
+			pos = [parseScale(x.strip()) for x in a["pos"].split(",")]
+			if len(pos) == 4:
+				item["pos"] = pos
+		if "font" in a:
+			font = parseFont(a["font"], scale)
+			item["font"] = font.family
+			item["fontSize"] = font.pointSize
+		if "fontGroup" in a:
+			item["fontGroup"] = fontGroups.get(a["fontGroup"], 0)
+		if "style" in a:
+			item["style"] = a["style"]
+		for key in ("ellipsis", "reserve", "keepAspect"):
+			if key in a:
+				item[key] = 1 if a[key].lower() in ("1", "true", "yes", "on") else 0
+		return item
+
+	def parseRow(node):
+		a = node.attrib
+		row = {"id": a.get("id", ""), "for": a.get("for", "service"), "visible": a.get("visible", ""), "items": [parseItem(x) for x in node.findall("item")]}
+		if "height" in a:
+			row["height"] = parseScale(a["height"])
+		if "weight" in a:
+			row["weight"] = int(a["weight"])
+		if "align" in a:
+			row["align"] = a["align"]
+		row["gap"] = number(node, "gap")
+		padding = [parseScale(x.strip()) for x in a.get("padding", "0").split(",")]
+		row["padLeft"] = padding[0]
+		row["padRight"] = padding[-1]
+		return row
+
+	for style in tag.findall("styles/style"):
+		name = style.attrib.get("name")
+		if not name:
+			raise SkinError("Tag 'style' in 'servicelisttemplates' needs a name")
+		entry = {"name": name}
+		for key in colorKeys:
+			if key in style.attrib:
+				entry[key] = parseColor(style.attrib[key]).argb()
+		styles[name] = entry
+
+	for template in tag.findall("template"):
+		a = template.attrib
+		name = a.get("name")
+		if not name:
+			raise SkinError("Tag 'template' in 'servicelisttemplates' needs a name")
+		base = templates.get(a.get("base", ""))
+		entry = {"name": name, "title": a.get("title", name), "rows": []}
+		if base:
+			# "large" is derived from the own row count, so it is not inherited
+			entry.update({k: v for k, v in base.items() if k not in ("name", "title", "rows", "large")})
+			entry["rows"] = list(base["rows"])
+		# layout: "list" (vertical, default), "horizontal" or "grid"; the cell size is itemWidth x itemHeight
+		for key in ("layout", "large"):
+			if key in a:
+				entry[key] = a[key]
+		for key in ("itemHeight", "itemWidth"):
+			if key in a:
+				entry[key] = parseScale(a[key])
+		for rowNode in template.findall("row"):
+			row = parseRow(rowNode)
+			for index, old in enumerate(entry["rows"]):
+				if row["id"] and old["id"] == row["id"]:
+					entry["rows"][index] = row
+					break
+			else:
+				entry["rows"].append(row)
+		serviceRows = len([x for x in entry["rows"] if x["for"] == "service"])
+		large = entry.get("large")
+		entry["large"] = (1 if serviceRows > 1 else 0) if large is None else (1 if str(large).lower() in ("1", "true", "yes") else 0)
+		entry.setdefault("itemHeight", applySkinFactor(28))
+		templates[name] = entry
 
 
 def mergeScale(s1, s2):
@@ -1117,6 +1240,8 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 				parameters[name] = list(map(parseParameter, [x.strip() for x in value.split(",")])) if "," in value else parseParameter(value)
 			else:
 				raise SkinError("Tag 'parameter' needs a name and value, got name='%s' and size='%s'" % (name, value))
+	for tag in domSkin.findall("servicelisttemplates"):
+		parseServiceListTemplates(tag)
 	for tag in domSkin.findall("menus"):
 		for menu in tag.findall("menu"):
 			key = menu.attrib.get("key")

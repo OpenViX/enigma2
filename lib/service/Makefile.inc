@@ -6,6 +6,7 @@ $(LIBXINE_CFLAGS)
 service_libenigma_service_a_SOURCES = \
 service/event.cpp \
 service/listboxservice.cpp \
+service/listboxservicetpl.cpp \
 service/service.cpp \
 service/servicedvb.cpp \
 service/servicedvbrecord.cpp \
@@ -34,6 +35,7 @@ service/event.h \
 service/iservice.h \
 service/iservicescrambled.h \
 service/listboxservice.h \
+service/listboxservicetpl.h \
 service/service.h \
 service/servicedvb.h \
 service/servicedvbrecord.h \

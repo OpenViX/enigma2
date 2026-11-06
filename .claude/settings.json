@@ -44,7 +44,22 @@
       "Bash(awk -F: '$1>1205 && $1<1625')",
       "Bash(python -m py_compile lib/python/Components/ConfigList.py)",
       "Bash(python -m py_compile lib/python/Screens/Setup.py)",
-      "Bash(python -m py_compile lib/python/Components/ActionMap.py lib/python/Screens/Setup.py)"
+      "Bash(python -m py_compile lib/python/Components/ActionMap.py lib/python/Screens/Setup.py)",
+      "Bash(python -I scan.py /c/Users/dimit/Desktop/bcm7439.ko '^parm=|mode_option|alternate_image|^config|[0-9]{3,4}x[0-9]{3,4}|bcmfb' 40)",
+      "Bash(python -I scan.py /c/Users/dimit/Desktop/bcm7439.ko 'mode|yres_virtual|smem|bcm_fb|fb alloc|pan' 40)",
+      "Bash(awk 'NR>=90 && NR<=131 && /public:|protected:|private:|enum/ {print NR\": \"$0}' lib/gui/elistbox.h)",
+      "Bash(python -c \"import ast,sys;ast.parse\\(open\\('lib/python/skin.py',encoding='utf-8'\\).read\\(\\)\\)\")",
+      "Bash(python -I \"C:/Users/dimit/AppData/Local/Temp/claude/ab798c012abd2d97/7cc5eb21-b5e1-47e4-8247-34251217999d/scratchpad/patch_skin.py\")",
+      "Bash(python -c \"import ast;ast.parse\\(open\\('lib/python/skin.py',encoding='utf-8'\\).read\\(\\)\\);print\\('syntax ok'\\)\")",
+      "Bash(python -c ' *)",
+      "Bash(python -I \"C:/Users/dimit/AppData/Local/Temp/claude/ab798c012abd2d97/7cc5eb21-b5e1-47e4-8247-34251217999d/scratchpad/patch2.py\")",
+      "Bash(python -c \"import ast;ast.parse\\(open\\('lib/python/Components/ServiceList.py',encoding='utf-8'\\).read\\(\\)\\)\")",
+      "Bash(python -I \"C:/Users/dimit/AppData/Local/Temp/claude/ab798c012abd2d97/7cc5eb21-b5e1-47e4-8247-34251217999d/scratchpad/patch4.py\")",
+      "Bash(sed -n '/horizontal distribution/,/int x = row.padLeft/p' lib/service/listboxservicetpl.cpp)",
+      "Bash(python -I \"C:/Users/dimit/AppData/Local/Temp/claude/ab798c012abd2d97/7cc5eb21-b5e1-47e4-8247-34251217999d/scratchpad/patch5.py\")",
+      "Bash(python -I \"C:/Users/dimit/AppData/Local/Temp/claude/ab798c012abd2d97/7cc5eb21-b5e1-47e4-8247-34251217999d/scratchpad/patch6.py\")",
+      "Bash(python -c \"import ast;ast.parse\\(open\\('lib/python/skin.py',encoding='utf-8'\\).read\\(\\)\\);print\\('py ok'\\)\")",
+      "Bash(grep -n 'for`\\\\|fall back\\\\|falls back\\\\|marker' doc/SERVICELIST_TEMPLATES.md)"
     ]
   }
 }
