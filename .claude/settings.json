@@ -59,7 +59,17 @@
       "Bash(python -I \"C:/Users/dimit/AppData/Local/Temp/claude/ab798c012abd2d97/7cc5eb21-b5e1-47e4-8247-34251217999d/scratchpad/patch5.py\")",
       "Bash(python -I \"C:/Users/dimit/AppData/Local/Temp/claude/ab798c012abd2d97/7cc5eb21-b5e1-47e4-8247-34251217999d/scratchpad/patch6.py\")",
       "Bash(python -c \"import ast;ast.parse\\(open\\('lib/python/skin.py',encoding='utf-8'\\).read\\(\\)\\);print\\('py ok'\\)\")",
-      "Bash(grep -n 'for`\\\\|fall back\\\\|falls back\\\\|marker' doc/SERVICELIST_TEMPLATES.md)"
+      "Bash(grep -n 'for`\\\\|fall back\\\\|falls back\\\\|marker' doc/SERVICELIST_TEMPLATES.md)",
+      "Bash(python asm.py)",
+      "Bash(python -c \"import ast;ast.parse\\(open\\('EpgListGrid.new.py'\\).read\\(\\)\\);print\\('ok'\\)\")",
+      "Bash(cp EpgListGrid.new.py /e/Enigma2Dev/OpenViX/enigma2/OpenViX-enigma2/lib/python/Components/EpgListGrid.py)",
+      "Bash(python -m pyflakes lib/python/Components/EpgListGrid.py)",
+      "Bash(echo \"- [Grid EPG native list]\\(project_gridepg_native_list.md\\) — eListboxEpgGridContent C++ renderer written 2026-11-06, unbuilt/untested\" >> \"/c/Users/dimit/.claude/projects/e--Enigma2Dev-OpenViX-enigma2-OpenViX-enigma2/memory/MEMORY.md\"; git status --short)",
+      "Bash(python -c \"import ast;ast.parse\\(open\\('lib/python/Components/EpgListGrid.py'\\).read\\(\\)\\);print\\('ok'\\)\")",
+      "Bash(touch lib/gui/elistboxcontent.* lib/gui/elistboxepggrid.* lib/python/Components/EpgListGrid.py)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\dimit\\.claude\\projects\\e--Enigma2Dev-OpenViX-enigma2-OpenViX-enigma2\\memory"
     ]
   }
 }

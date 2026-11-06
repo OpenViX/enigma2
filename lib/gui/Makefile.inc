@@ -10,6 +10,7 @@ gui_libenigma_gui_a_SOURCES = \
 	gui/elabel.cpp \
 	gui/elistbox.cpp \
 	gui/elistboxcontent.cpp \
+	gui/elistboxepggrid.cpp \
 	gui/epixmap.cpp \
 	gui/erectangle.cpp \
 	gui/epositiongauge.cpp \
@@ -35,6 +36,7 @@ guiinclude_HEADERS = \
 	gui/elabel.h \
 	gui/elistbox.h \
 	gui/elistboxcontent.h \
+	gui/elistboxepggrid.h \
 	gui/epixmap.h \
 	gui/erectangle.h \
 	gui/epositiongauge.h \

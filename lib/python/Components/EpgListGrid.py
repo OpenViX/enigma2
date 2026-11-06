@@ -1,6 +1,6 @@
 from time import localtime, time, strftime
 
-from enigma import eListbox, eListboxPythonMultiContent, eServiceReference, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_VALIGN_CENTER, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_ALIGN_CENTER
+from enigma import eListbox, eListboxPythonMultiContent, eListboxEpgGridContent, eServiceReference, gFont, eRect, eSize, RT_HALIGN_LEFT, RT_VALIGN_CENTER, BT_SCALE
 
 from skin import parseColor, parseFont, parseScale, applySkinFactor
 from Components.EpgListBase import EPGListBase
@@ -20,12 +20,25 @@ MAX_TIMELINES = 6
 # Use this to remind us what is going on...
 SECS_IN_MIN = 60
 
+NO_DECOR = (-1, 0, 0, 0)  # (clockIcon, autoIcon, timerKind, fullMatch), see eListboxEpgGridContent
+
 
 class EPGListGrid(EPGListBase):
+	# Rows are drawn natively by eListboxEpgGridContent. Functions appended here are still honoured:
+	# they are called as f(res, listInstance, service, serviceName, events, picon, channel) for every
+	# painted row and the multi content entries they append to res (a list starting with None) are drawn
+	# on top of the native row. picon is always None (the native renderer resolves picons itself).
+	# While the list is empty there is no per-row Python call at all.
 	buildEntryExtensionFunctions = []
 
+	# Each row of self.list is the tuple the native renderer paints:
+	#   (serviceRef, serviceName, events, channelNumber, decor, playing)
+	# events: [(eventId, eventTitle, beginTime, duration), ...] or None
+	# decor:  None or a list parallel to events, see NO_DECOR.
 	def __init__(self, session, isInfobar, selChangedCB=None):
 		EPGListBase.__init__(self, session, selChangedCB)
+		self.l = eListboxEpgGridContent()  # noqa: E741 (replaces the multi content list of the base class)
+		self.l.setGetPiconNameFunc(getPiconName)
 
 		self.isInfobar = isInfobar
 		self.epgConfig = config.epgselection.infobar if isInfobar else config.epgselection.grid
@@ -34,16 +47,10 @@ class EPGListGrid(EPGListBase):
 		self.selectedService = None
 		self.selectionRect = None
 		self.eventRect = None
-		# Per-event data (timer/matchType/icons/geometry) that buildEntry needs but that
-		# doesn't depend on WHICH event is currently selected -- keyed by service, and
-		# valid only as long as the cached entry's events list is the same object as the
-		# row's current events list. Horizontal (event-to-event) navigation rebuilds the
-		# whole row via invalidateEntry() on every keypress, so without this cache all of
-		# that gets recomputed from scratch every keypress even though it's unchanged.
-		# Reset in fillEPGNoRefresh() whenever the underlying data can actually change.
-		self.eventStaticCache = {}
-		self.rowCache = {}  # service -> (validity, res) for rows that are not the selected one; see buildEntry
 		self.serviceRect = None
+		self.list = []
+		self.filteredTimerList = {}
+		self.timeBase = 0
 
 		self.nowEvPix = None
 		self.nowSelEvPix = None
@@ -104,11 +111,22 @@ class EPGListGrid(EPGListBase):
 		self.serviceNumberWidth = 0
 		self.eventTextSidesMargin = 0
 
-		self.l.setBuildFunc(self.buildEntry)
+		self._pushStaticPixmaps()
 		self.loadConfig()
 
+	def _pushStaticPixmaps(self):
+		# icons shared with the other EPG lists, loaded by EPGListBase
+		E = eListboxEpgGridContent
+		for i in range(6):
+			if self.clocks[i] is not None:
+				self.l.setPixmap(E.pixClock0 + i, self.clocks[i])
+			if self.selclocks[i] is not None:
+				self.l.setPixmap(E.pixSelClock0 + i, self.selclocks[i])
+		for idx, pix in ((E.pixAutoTimer, self.autotimericon), (E.pixIceTV, self.icetvicon), (E.pixCatchup, self.catchUpIcon)):
+			if pix is not None:
+				self.l.setPixmap(idx, pix)
+
 	def loadConfig(self):
-		self.rowCache = {}
 		self.graphic = self.epgConfig.type_mode.value == "graphics"
 		self.graphicsloaded = False
 		self.epgHistorySecs = int(config.epg.histminutes.value) * SECS_IN_MIN
@@ -119,6 +137,56 @@ class EPGListGrid(EPGListBase):
 		self.showServiceNumber = "servicenumber" in self.serviceTitleMode
 		self.showServiceName = "servicename" in self.serviceTitleMode
 		self.showPicon = "picon" in self.serviceTitleMode
+		self.pushConfig()
+
+	def buildExtensionEntry(self, service, serviceName, events, channel, decor, playing):
+		res = [None]
+		for f in EPGListGrid.buildEntryExtensionFunctions:
+			f(res, self, service, serviceName, events, None, channel)
+		return res
+
+	def updateExtensions(self):
+		self.l.setExtensionFunc(self.buildExtensionEntry if EPGListGrid.buildEntryExtensionFunctions else None)
+
+	def pushConfig(self):
+		# Everything the native renderer needs besides the rows. Cheap, so it is simply re-sent whenever
+		# anything it depends on may have changed.
+		recIconHeight = config.epgselection.grid.rec_icon_height.value
+		self.l.setConfig({
+			"graphic": self.graphic,
+			"highlightNow": config.epgselection.grid.highlight_current_events.value,
+			"titleOrder": self.serviceTitleMode,
+			"timeBase": int(getattr(self, "timeBase", 0)),
+			"timeEpochSecs": self.timeEpochSecs,
+			"serviceWidth": self.serviceRect.width() if self.serviceRect else 0,
+			"serviceBorderWidth": self.serviceBorderWidth,
+			"serviceNamePadding": self.serviceNamePadding,
+			"serviceNumberPadding": self.serviceNumberPadding,
+			"eventBorderWidth": self.eventBorderWidth,
+			"eventNamePadding": self.eventNamePadding,
+			"eventTextSidesMargin": self.eventTextSidesMargin,
+			"serviceNumberWidth": self.serviceNumberWidth,
+			"piconWidth": self.epgConfig.piconwidth.value if self.showPicon else 0,
+			"infoWidth": self.epgConfig.infowidth.value,
+			"serviceNameAlign": int(config.epgselection.grid.servicename_alignment.value),
+			"serviceNumberAlign": int(config.epgselection.grid.servicenumber_alignment.value),
+			"eventAlign": int(config.epgselection.grid.event_alignment.value),
+			"recIconPos": 0 if recIconHeight == "hide" else 1 if recIconHeight == "middle" else 2 if recIconHeight == "top" else 3
+		})
+
+	def pushColors(self):
+		E = eListboxEpgGridContent
+		for idx, value in (
+			(E.colFore, self.foreColor), (E.colForeSel, self.foreColorSelected), (E.colBack, self.backColor), (E.colBackSel, self.backColorSelected),
+			(E.colForeNow, self.foreColorNow), (E.colForeNowSel, self.foreColorNowSelected), (E.colBackNow, self.backColorNow), (E.colBackNowSel, self.backColorNowSelected),
+			(E.colForeRec, self.foreColorRecord), (E.colForeRecSel, self.foreColorRecordSelected), (E.colBackRec, self.backColorRecord), (E.colBackRecSel, self.backColorRecordSelected),
+			(E.colForeZap, self.foreColorZap), (E.colForeZapSel, self.foreColorZapSelected), (E.colBackZap, self.backColorZap), (E.colBackZapSel, self.backColorZapSelected),
+			(E.colBorder, self.borderColor),
+			(E.colServiceFore, self.foreColorService), (E.colServiceBack, self.backColorService),
+			(E.colServiceForeNow, self.foreColorServiceNow), (E.colServiceBackNow, self.backColorServiceNow),
+			(E.colServiceBorder, self.borderColorService)
+		):
+			self.l.setColor(idx, value & 0xffffffff)
 
 	def applySkin(self, desktop, screen):
 		if self.skinAttributes is not None:
@@ -196,7 +264,10 @@ class EPGListGrid(EPGListBase):
 				else:
 					attribs.append((attrib, value))
 			self.skinAttributes = attribs
-		return EPGListBase.applySkin(self, desktop, screen)
+		rc = EPGListBase.applySkin(self, desktop, screen)
+		self.pushColors()
+		self.pushConfig()
+		return rc
 
 	def setTimeFocus(self, timeFocus):
 		# prefer time being aligned in the middle of the EPG, but clip to the maximum EPG data history
@@ -285,9 +356,7 @@ class EPGListGrid(EPGListBase):
 			self.l.setItemHeight(self.itemHeight)
 			self.instance.resize(eSize(self.listWidth, self.listHeight // self.itemHeight * self.itemHeight))
 			self.listHeight = self.instance.size().height()
-
 	def setFontsize(self):
-		self.rowCache = {}
 		self.l.setFont(0, gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value))
 		self.l.setFont(1, gFont(self.eventFontName, self.eventFontSize + self.epgConfig.eventfs.value))
 		# Cache service number width.
@@ -296,24 +365,18 @@ class EPGListGrid(EPGListBase):
 			if fontConf is not None:
 				font = gFont(self.serviceFontName, self.serviceFontSize + fontConf)
 				self.serviceNumberWidth = getTextBoundarySize(self.instance, font, self.instance.size(), "0000").width()
-
-	def isSelectable(self, service, serviceName, events, picon, channel):
-		return (events and len(events) and True) or False
+		self.pushConfig()
 
 	def postWidgetCreate(self, instance):
-		if config.epgselection.overjump.value:
-			self.l.setSelectableFunc(self.isSelectable)
-		else:
-			self.l.setSelectableFunc(None)
+		self.l.setOverjump(bool(config.epgselection.overjump.value))
 		instance.setWrapAround(True)
 		instance.setContent(self.l)
 		instance.selectionChanged.get().append(self.serviceChanged)
 		self.l.setSelectionClip(eRect(0, 0, 0, 0), False)
 
 	def preWidgetRemove(self, instance):
-		# release the cached rows/events now instead of leaving a big object graph for the garbage collector
-		self.rowCache = {}
-		self.eventStaticCache = {}
+		# release the rows now instead of leaving a big object graph for the garbage collector
+		self.l.clearPiconCache()
 		instance.selectionChanged.get().remove(self.serviceChanged)
 		instance.setContent(None)
 
@@ -348,14 +411,10 @@ class EPGListGrid(EPGListBase):
 		if self.showServiceNumber:
 			w += self.serviceNumberWidth + 2 * self.serviceNumberPadding
 		if self.showPicon:
-			piconWidth = self.epgConfig.piconwidth.value
-			w += piconWidth
-			if piconWidth > w - 2 * self.serviceBorderWidth:
-				piconWidth = w - 2 * self.serviceBorderWidth
-			piconHeight = height - 2 * self.serviceBorderWidth
-			self.piconSize = eSize(piconWidth, piconHeight)
+			w += self.epgConfig.piconwidth.value
 		self.serviceRect = eRect(0, 0, w, height)
 		self.eventRect = eRect(w, 0, width - w, height)
+		self.pushConfig()
 
 	def calcEventPosAndWidthHelper(self, stime, duration, start, end, width):
 		xpos = (stime - start) * width // (end - start)
@@ -368,432 +427,25 @@ class EPGListGrid(EPGListBase):
 			ewidth = width - xpos
 		return xpos, ewidth
 
-	ROW_CACHE_MAX = 48
-
-	def buildEntry(self, service, serviceName, events, picon, channel):
-		# Rows other than the selected one only change when the data, geometry, playing service or
-		# minute changes, so reuse the finished entry instead of rebuilding ~50 items in Python on
-		# every redraw (page scrolls repaint every visible row). The selected row is always rebuilt.
-		if self.selectedService is None or self.selectedService[0] == service or EPGListGrid.buildEntryExtensionFunctions:
-			return self._buildEntry(service, serviceName, events, picon, channel)
-		r1 = self.serviceRect
-		r2 = self.eventRect
-		validity = (events, picon, channel, serviceName, int(time()) // SECS_IN_MIN,
-			CompareWithAlternatives(service, self.session.nav.getCurrentlyPlayingServiceOrGroup()),
-			self.timeBase, self.timeEpochSecs, r1.width(), r2.left(), r2.width(), r2.height(), self.serviceNumberWidth, self.graphic)
-		cached = self.rowCache.get(service)
-		if cached is not None and cached[0][0] is events and cached[0][1:] == validity[1:]:
-			return cached[1]
-		res = self._buildEntry(service, serviceName, events, picon, channel)
-		if len(self.rowCache) >= self.ROW_CACHE_MAX:  # keep it to roughly a few pages, oldest first
-			del self.rowCache[next(iter(self.rowCache))]
-		self.rowCache[service] = (validity, res)
-		return res
-
-	def _buildEntry(self, service, serviceName, events, picon, channel):
-		r1 = self.serviceRect
-		r2 = self.eventRect
-		left = r2.left()
-		top = r2.top()
-		width = r2.width()
-		height = r2.height()
-		selected = self.selectedService[0] == service
-		res = [None]
-
-		borderTopPix = None
-		borderLeftPix = None
-		borderBottomPix = None
-		borderRightPix = None
-
-		# Picon and Service name
-		serviceForeColor = self.foreColorService
-		serviceBackColor = self.backColorService
-		bgpng = self.othServPix
-		if CompareWithAlternatives(service, self.session.nav.getCurrentlyPlayingServiceOrGroup()):
-			serviceForeColor = self.foreColorServiceNow
-			serviceBackColor = self.backColorServiceNow
-			bgpng = self.nowServPix
-
-		if bgpng is not None and self.graphic:
-			serviceBackColor = None
-			res.append(MultiContentEntryPixmapAlphaBlend(
-					pos=(r1.left() + self.serviceBorderWidth, r1.top() + self.serviceBorderWidth),
-					size=(r1.width() - 2 * self.serviceBorderWidth, r1.height() - 2 * self.serviceBorderWidth),
-					png=bgpng,
-					flags=BT_SCALE))
-		else:
-			res.append(MultiContentEntryText(
-					pos=(r1.left(), r1.top()),
-					size=(r1.width() + self.serviceBorderWidth, r1.height() + self.serviceBorderWidth),
-					font=0, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER,
-					text="",
-					color=serviceForeColor, color_sel=serviceForeColor,
-					backcolor=serviceBackColor, backcolor_sel=serviceBackColor,
-					border_width=self.serviceBorderWidth, border_color=self.borderColorService))
-
-		colX = r1.left() + self.serviceBorderWidth
-		for titleItem in self.serviceTitleMode:
-			if titleItem == "picon":
-				if picon is None:
-					# Go find picon and cache its location.
-					picon = getPiconName(service)
-					curIdx = self.l.getCurrentSelectionIndex()
-					self.list[curIdx] = (service, serviceName, events, picon, channel)
-				piconWidth = self.piconSize.width()
-				piconHeight = self.piconSize.height()
-				displayPicon = None
-				if picon != "":
-					displayPicon = LoadPixmap(picon)
-				if displayPicon is not None:
-					res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(colX, r1.top() + self.serviceBorderWidth),
-						size=(piconWidth, piconHeight),
-						png=displayPicon,
-						backcolor=None, backcolor_sel=None, flags=BT_SCALE | BT_KEEP_ASPECT_RATIO | BT_ALIGN_CENTER))
-				elif not self.showServiceName:
-					# No picon so show servicename anyway in picon space.
-					namefont = 1
-					namefontflag = int(config.epgselection.grid.servicename_alignment.value)
-					res.append(MultiContentEntryText(
-						pos=(colX, r1.top() + self.serviceBorderWidth),
-						size=(piconWidth, r1.height() - 2 * self.serviceBorderWidth),
-						font=namefont, flags=namefontflag,
-						text=serviceName,
-						color=serviceForeColor, color_sel=serviceForeColor,
-						backcolor=serviceBackColor, backcolor_sel=serviceBackColor))
-				colX += piconWidth
-
-			if titleItem == "servicenumber":
-				if not isinstance(channel, int):
-					# Go find the channel number and cache it, same as picon above --
-					# getChannelNumber() is a native lookup and channel doesn't change
-					# between rebuilds of this row (e.g. on every horizontal event nav).
-					channel = self.getChannelNumber(channel)
-					curIdx = self.l.getCurrentSelectionIndex()
-					self.list[curIdx] = (service, serviceName, events, picon, channel)
-				namefont = 0
-				namefontflag = int(config.epgselection.grid.servicenumber_alignment.value)
-				if channel < 10000:
-					# Already measured once for the common (<=4 digit) case in setFontsize().
-					channelWidth = self.serviceNumberWidth
-				else:
-					font = gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value)
-					channelWidth = getTextBoundarySize(self.instance, font, self.instance.size(), str(channel)).width()
-				if channel:
-					res.append(MultiContentEntryText(
-						pos=(colX + self.serviceNumberPadding, r1.top() + self.serviceBorderWidth),
-						size=(channelWidth, r1.height() - 2 * self.serviceBorderWidth),
-						font=namefont, flags=namefontflag,
-						text=str(channel),
-						color=serviceForeColor, color_sel=serviceForeColor,
-						backcolor=serviceBackColor, backcolor_sel=serviceBackColor))
-				colX += channelWidth + 2 * self.serviceNumberPadding
-
-			if titleItem == "servicename":
-				namefont = 0
-				namefontflag = int(config.epgselection.grid.servicename_alignment.value)
-				namewidth = r1.width() - colX - 2 * self.serviceNamePadding - self.serviceBorderWidth
-				res.append(MultiContentEntryText(
-					pos=(colX + self.serviceNamePadding, r1.top() + self.serviceBorderWidth),
-					size=(namewidth, r1.height() - 2 * self.serviceBorderWidth),
-					font=namefont, flags=namefontflag,
-					text=serviceName,
-					color=serviceForeColor, color_sel=serviceForeColor,
-					backcolor=serviceBackColor, backcolor_sel=serviceBackColor))
-				colX += namewidth + 2 * self.serviceNamePadding
-
-		if self.graphic:
-			# Service Borders
-			if self.borderTopPix is not None:
-				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(r1.left(), r1.top()),
-						size=(r1.width(), self.serviceBorderWidth),
-						png=self.borderTopPix,
-						flags=BT_SCALE))
-				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(left, top),
-						size=(width, self.eventBorderWidth),
-						png=self.borderTopPix,
-						flags=BT_SCALE))
-			if self.borderBottomPix is not None:
-				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(r1.left(), r1.height() - self.serviceBorderWidth),
-						size=(r1.width(), self.serviceBorderWidth),
-						png=self.borderBottomPix,
-						flags=BT_SCALE))
-				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(left, height - self.eventBorderWidth),
-						size=(width, self.eventBorderWidth),
-						png=self.borderBottomPix,
-						flags=BT_SCALE))
-			if self.borderLeftPix is not None:
-				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(r1.left(), r1.top()),
-						size=(self.serviceBorderWidth, r1.height()),
-						png=self.borderLeftPix,
-						flags=BT_SCALE))
-				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(left, top),
-						size=(self.eventBorderWidth, height),
-						png=self.borderLeftPix,
-						flags=BT_SCALE))
-			if self.borderRightPix is not None:
-				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(r1.width() - self.serviceBorderWidth, r1.left()),
-						size=(self.serviceBorderWidth, r1.height()),
-						png=self.borderRightPix,
-						flags=BT_SCALE))
-				res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(left + width - self.eventBorderWidth, top),
-						size=(self.eventBorderWidth, height),
-						png=self.borderRightPix,
-						flags=BT_SCALE))
-
-			# Only draw the selected graphic if there are no events to fill
-			# the prevents issues with lingering selection highlights.
-			png = (selected and events is None and self.selEvPix) or self.othEvPix
-			if png:
-				res.append(MultiContentEntryPixmapAlphaBlend(
-					pos=(left + self.eventBorderWidth, top + self.eventBorderWidth),
-					size=(width - 2 * self.eventBorderWidth, height - 2 * self.eventBorderWidth),
-					png=png,
-					flags=BT_SCALE))
-		else:
-			res.append(MultiContentEntryText(
-				pos=(left, top), size=(width + self.eventBorderWidth, height + self.eventBorderWidth),
-				font=1, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER,
-				text="", color=None, color_sel=None,
-				backcolor=self.backColor, backcolor_sel=self.backColorSelected,
-				border_width=self.eventBorderWidth, border_color=self.borderColor))
-
-		# Events for service
-		if events:
-			start = self.timeBase
-			end = start + self.timeEpochSecs
-
-			now = time()
-			# serviceref/serviceTimers only depend on the service (constant for this whole
-			# row), not on the individual event -- compute them once instead of once per
-			# event, since this loop can run on every horizontal (event-to-event) navigation
-			# as well as on every row build.
-			serviceref = "1" + service[4:] if service[:4] in config.recording.setstreamto1.value and not isPlaylist(service) else service  # converts 4097, 5001, 5002 to 1
-			serviceTimers = self.filteredTimerList.get(':'.join(serviceref.split(':')[:11]))
-
-			# timer/matchType/timerIcon/autoTimerIcon/xpos/ewidth below only depend on the
-			# event itself (plus serviceTimers and the row's selected state, both constant
-			# for this whole row) -- not on which event within the row is currently
-			# highlighted. Horizontal navigation calls buildEntry again on every keypress
-			# purely to move that highlight, so cache these per (service, event) instead of
-			# recomputing them every time; see eventStaticCache in __init__.
-			cacheEntry = self.eventStaticCache.get(service)
-			if cacheEntry is None or cacheEntry[0] is not events or cacheEntry[1] != selected:
-				perEventCache = {}
-				self.eventStaticCache[service] = (events, selected, perEventCache)
-			else:
-				perEventCache = cacheEntry[2]
-
-			for ev in events:  # (eventId, eventTitle, beginTime, duration)
-				stime = ev[2]
-				duration = ev[3]
-
-				cached = perEventCache.get(ev)
-				if cached is None:
-					xpos, ewidth = self.calcEventPosAndWidthHelper(stime, duration, start, end, width)
-					if serviceTimers is not None:
-						# Code below: "+ (20 if config.recording.margin_before.value == 0 else 0)"
-						# When recording-start-margin is zero allow recordings that start up to 20 seconds
-						# after the program boundary to still produce matchType in (2, 3). This allows
-						# correct display of "epg/RecordEvent.png" when multiple recodings are programmed to
-						# start at the same instant.
-						timer, matchType = RecordTimer.isInTimerOnService(serviceTimers, stime + (20 if config.recording.margin_before.value == 0 else 0), duration)
-						timerIcon, autoTimerIcon = self.getPixmapsForTimer(timer, matchType, selected)
-						if matchType not in (2, 3):
-							timer = None
-					else:
-						timer = matchType = timerIcon = autoTimerIcon = None
-					cached = (xpos, ewidth, timer, matchType, timerIcon, autoTimerIcon)
-					perEventCache[ev] = cached
-				else:
-					xpos, ewidth, timer, matchType, timerIcon, autoTimerIcon = cached
-
-				isNow = stime <= now < (stime + duration) and config.epgselection.grid.highlight_current_events.value
-				# Only highlight timers that span an entire event
-				if timer and matchType == 3:
-					if timer.justplay == 0 and timer.always_zap == 0:
-						foreColor = self.foreColorRecord
-						backColor = self.backColorRecord
-						foreColorSel = self.foreColorRecordSelected
-						backColorSel = self.backColorRecordSelected
-					else:
-						foreColor = self.foreColorZap
-						backColor = self.backColorZap
-						foreColorSel = self.foreColorZapSelected
-						backColorSel = self.backColorZapSelected
-				elif isNow:
-					foreColor = self.foreColorNow
-					backColor = self.backColorNow
-					foreColorSel = self.foreColorNowSelected
-					backColorSel = self.backColorNowSelected
-				else:
-					foreColor = self.foreColor
-					backColor = self.backColor
-					foreColorSel = self.foreColorSelected
-					backColorSel = self.backColorSelected
-
-				if selected and self.selectionRect.left() == xpos + left:
-					borderTopPix = self.borderSelectedTopPix
-					borderLeftPix = self.borderSelectedLeftPix
-					borderBottomPix = self.borderSelectedBottomPix
-					borderRightPix = self.borderSelectedRightPix
-					infoPix = self.selInfoPix
-					bgpng = self.nowSelEvPix if isNow else self.selEvPix
-					if timer:
-						bgpng = self.recSelEvPix if timer.justplay == 0 and timer.always_zap == 0 else self.zapSelEvPix
-				else:
-					borderTopPix = self.borderTopPix
-					borderLeftPix = self.borderLeftPix
-					borderBottomPix = self.borderBottomPix
-					borderRightPix = self.borderRightPix
-					infoPix = self.infoPix
-					bgpng = self.othEvPix
-					if timer:
-						bgpng = self.recEvPix if timer.justplay == 0 and timer.always_zap == 0 else self.zapEvPix
-					elif isNow:
-						bgpng = self.nowEvPix
-
-				# Event box background.
-				if bgpng is not None and self.graphic:
-					backColor = None
-					backColorSel = None
-					res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(left + xpos + self.eventBorderWidth, top + self.eventBorderWidth),
-						size=(ewidth - 2 * self.eventBorderWidth, height - 2 * self.eventBorderWidth),
-						png=bgpng,
-						flags=BT_SCALE))
-				else:
-					res.append(MultiContentEntryText(
-						pos=(left + xpos, top), size=(ewidth + self.eventBorderWidth, height + self.eventBorderWidth),
-						font=1, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER,
-						text="", color=None, color_sel=None,
-						backcolor=backColor, backcolor_sel=backColorSel,
-						border_width=self.eventBorderWidth, border_color=self.borderColor))
-
-				# Event text.
-				evX = left + xpos + self.eventBorderWidth + self.eventNamePadding
-				evY = top + self.eventBorderWidth
-				evW = ewidth - 2 * (self.eventBorderWidth + self.eventNamePadding)
-				evH = height - 2 * self.eventBorderWidth
-				infowidth = self.epgConfig.infowidth.value
-				if infowidth > 0 and evW < infowidth and infoPix is not None:
-					res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(left + xpos + self.eventBorderWidth, evY), size=(ewidth - 2 * self.eventBorderWidth, evH),
-						png=infoPix, flags=BT_ALIGN_CENTER))
-				else:
-					res.append(MultiContentEntryText(
-						pos=(evX + self.eventTextSidesMargin, evY), size=(evW - self.eventTextSidesMargin * 2, evH),
-						font=1, flags=int(config.epgselection.grid.event_alignment.value),
-						text=ev[1],
-						color=foreColor, color_sel=foreColorSel,
-						backcolor=backColor, backcolor_sel=backColorSel))
-
-				# Event box borders.
-				if self.graphic:
-					if borderTopPix is not None:
-						res.append(MultiContentEntryPixmapAlphaBlend(
-								pos=(left + xpos, top),
-								size=(ewidth, self.eventBorderWidth),
-								png=borderTopPix,
-								flags=BT_SCALE))
-					if borderBottomPix is not None:
-						res.append(MultiContentEntryPixmapAlphaBlend(
-								pos=(left + xpos, height - self.eventBorderWidth),
-								size=(ewidth, self.eventBorderWidth),
-								png=borderBottomPix,
-								flags=BT_SCALE))
-					if borderLeftPix is not None:
-						res.append(MultiContentEntryPixmapAlphaBlend(
-								pos=(left + xpos, top),
-								size=(self.eventBorderWidth, height),
-								png=borderLeftPix,
-								flags=BT_SCALE))
-					if borderRightPix is not None:
-						res.append(MultiContentEntryPixmapAlphaBlend(
-								pos=(left + xpos + ewidth - self.eventBorderWidth, top),
-								size=(self.eventBorderWidth, height),
-								png=borderRightPix,
-								flags=BT_SCALE))
-
-				# Recording icons.
-				timer_icon_width = timerIcon.size().width() if timerIcon else 0
-				auto_timer_icon_width = 0
-				if timerIcon is not None:
-					if autoTimerIcon:
-						auto_timer_icon_width = autoTimerIcon.size().width()
-				pos_x = left + xpos + ewidth - 5
-				if timerIcon is not None and ewidth > (timer_icon_width + auto_timer_icon_width):
-					if config.epgselection.grid.rec_icon_height.value != "hide":
-						pix_size = timerIcon.size()
-						pix_width = pix_size.width()
-						pix_height = pix_size.height()
-						isTimerIconAdded = False
-						if config.epgselection.grid.rec_icon_height.value == "middle":
-							recIconHeight = top + (height - pix_height) // 2
-						elif config.epgselection.grid.rec_icon_height.value == "top":
-							recIconHeight = top + 3
-						else:
-							recIconHeight = top + height - pix_height - 10
-
-						pos_x = left + xpos + ewidth - pix_width - 10
-						pos = (pos_x, recIconHeight)
-						isTimerIconAdded = True
-
-						res.append(MultiContentEntryPixmapAlphaBlend(
-							pos=pos, size=(pix_width, pix_height),
-							png=timerIcon))
-						if autoTimerIcon:
-							pix_size = autoTimerIcon.size()
-							pix_width = pix_size.width()
-							pix_height = pix_size.height()
-							pos_x = pos[0] - pix_width - (5 if isTimerIconAdded else 10)
-							res.append(MultiContentEntryPixmapAlphaBlend(
-								pos=(pos_x, pos[1]), size=(pix_width, pix_height),
-								png=autoTimerIcon))
-
-				if self.detectCatchupAvailable(stime, service) and self.catchUpIcon:
-					pix_size = self.catchUpIcon.size()
-					pix_width = pix_size.width()
-					pix_height = pix_size.height()
-					if config.epgselection.grid.rec_icon_height.value == "middle":
-						recIconHeight = top + (height - pix_height) // 2
-					elif config.epgselection.grid.rec_icon_height.value == "top":
-						recIconHeight = top + 3
-					else:
-						recIconHeight = top + height - pix_height - 10
-					res.append(MultiContentEntryPixmapAlphaBlend(
-						pos=(pos_x - pix_width - 6, recIconHeight),
-						size=(pix_width, pix_height),
-						png=self.catchUpIcon,
-						flags=0))
-
-		for f in EPGListGrid.buildEntryExtensionFunctions:
-			f(res, self, service, serviceName, events, picon, channel)
-		return res
 
 	def getSelectionPosition(self):
 		_, sely = EPGListBase.getSelectionPosition(self)
 		return self.selectionRect.left() + self.selectionRect.width() + self.instance.position().x(), sely
 
 	def refreshSelection(self):
-		events = self.selectedService and self.selectedService[2]  # (service, serviceName, events, picon)
+		events = self.selectedService and self.selectedService[2]  # (service, serviceName, events, channel, decor, playing)
 		if events and self.selectedEventIndex is not None and self.selectedEventIndex < len(events):
 			event = events[self.selectedEventIndex]  # (eventId, eventTitle, beginTime, duration)
 			xpos, width = self.calcEventPosAndWidthHelper(event[2], event[3],
 				self.timeBase, self.timeBase + self.timeEpochSecs, self.eventRect.width())
 			self.selectionRect = eRect(xpos + self.eventRect.left(), 0, width, self.eventRect.height())
+			self.l.setSelectedEvent(self.selectedEventIndex)
+			self.l.setSelectionClip(eRect(self.selectionRect.left(), self.selectionRect.top(), self.selectionRect.width(), self.selectionRect.height()), False)
 		else:
 			self.selectionRect = eRect(self.eventRect.left(), self.eventRect.top(), self.eventRect.width(), self.eventRect.height())
-		# Have to copy construct the parameter for this native function or odd selection behaviour results.
-		self.l.setSelectionClip(eRect(self.selectionRect.left(), self.selectionRect.top(), self.selectionRect.width(), self.selectionRect.height()), False)
+			self.l.setSelectedEvent(-1)
+			# Have to copy construct the parameter for this native function or odd selection behaviour results.
+			self.l.setSelectionClip(eRect(self.selectionRect.left(), self.selectionRect.top(), self.selectionRect.width(), self.selectionRect.height()), False)
 		self.selectionChanged()
 
 	def selEvent(self, dir, visible=True):
@@ -855,48 +507,111 @@ class EPGListGrid(EPGListBase):
 		self.refreshSelection()
 		return True
 
+
 	def fillEPG(self, services=None):
 		self.fillEPGNoRefresh(services)
 		self.refreshSelection()
 
-	def fillEPGNoRefresh(self, services=None):
-		if not self.graphicsloaded:
-			if self.graphic:
-				self.nowEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/CurrentEvent.png"))
-				self.nowSelEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedCurrentEvent.png"))
-				self.othEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/OtherEvent.png"))
-				self.selEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedEvent.png"))
-				self.othServPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/OtherService.png"))
-				self.nowServPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/CurrentService.png"))
-				self.recEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/RecordEvent.png"))
-				self.recSelEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedRecordEvent.png"))
-				self.zapEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/ZapEvent.png"))
-				self.zapSelEvPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedZapEvent.png"))
-				self.borderTopPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderTop.png"))
-				self.borderBottomPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderBottom.png"))
-				self.borderLeftPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderLeft.png"))
-				self.borderRightPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/BorderRight.png"))
-				self.borderSelectedTopPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderTop.png"))
-				self.borderSelectedBottomPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderBottom.png"))
-				self.borderSelectedLeftPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderLeft.png"))
-				self.borderSelectedRightPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedBorderRight.png"))
-			self.infoPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/information.png"))
-			self.selInfoPix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/SelectedInformation.png"))
+	def loadGraphics(self):
+		E = eListboxEpgGridContent
 
-			self.graphicsloaded = True
+		def load(idx, name):
+			pix = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "epg/" + name))
+			if pix is not None:
+				self.l.setPixmap(idx, pix)
+			return pix
+
+		if self.graphic:
+			self.nowEvPix = load(E.pixNowEvent, "CurrentEvent.png")
+			self.nowSelEvPix = load(E.pixNowSelEvent, "SelectedCurrentEvent.png")
+			self.othEvPix = load(E.pixOtherEvent, "OtherEvent.png")
+			self.selEvPix = load(E.pixSelEvent, "SelectedEvent.png")
+			self.othServPix = load(E.pixOtherService, "OtherService.png")
+			self.nowServPix = load(E.pixNowService, "CurrentService.png")
+			self.recEvPix = load(E.pixRecEvent, "RecordEvent.png")
+			self.recSelEvPix = load(E.pixRecSelEvent, "SelectedRecordEvent.png")
+			self.zapEvPix = load(E.pixZapEvent, "ZapEvent.png")
+			self.zapSelEvPix = load(E.pixZapSelEvent, "SelectedZapEvent.png")
+			self.borderTopPix = load(E.pixBorderTop, "BorderTop.png")
+			self.borderBottomPix = load(E.pixBorderBottom, "BorderBottom.png")
+			self.borderLeftPix = load(E.pixBorderLeft, "BorderLeft.png")
+			self.borderRightPix = load(E.pixBorderRight, "BorderRight.png")
+			self.borderSelectedTopPix = load(E.pixBorderSelTop, "SelectedBorderTop.png")
+			self.borderSelectedBottomPix = load(E.pixBorderSelBottom, "SelectedBorderBottom.png")
+			self.borderSelectedLeftPix = load(E.pixBorderSelLeft, "SelectedBorderLeft.png")
+			self.borderSelectedRightPix = load(E.pixBorderSelRight, "SelectedBorderRight.png")
+		self.infoPix = load(E.pixInfo, "information.png")
+		self.selInfoPix = load(E.pixSelInfo, "SelectedInformation.png")
+		self.graphicsloaded = True
+
+	def buildDecor(self, serviceRef, events):
+		# Timer information for each event of a service; only needs to be computed for services that actually have timers.
+		serviceref = "1" + serviceRef[4:] if serviceRef[:4] in config.recording.setstreamto1.value and not isPlaylist(serviceRef) else serviceRef  # converts 4097, 5001, 5002 to 1
+		serviceTimers = self.filteredTimerList.get(':'.join(serviceref.split(':')[:11]))
+		if serviceTimers is None:
+			return None
+		# When recording-start-margin is zero allow recordings that start up to 20 seconds
+		# after the program boundary to still produce matchType in (2, 3). This allows
+		# correct display of "epg/RecordEvent.png" when multiple recodings are programmed to
+		# start at the same instant.
+		margin = 20 if config.recording.margin_before.value == 0 else 0
+		decor = []
+		hasTimer = False
+		for ev in events:  # (eventId, eventTitle, beginTime, duration)
+			timer, matchType = RecordTimer.isInTimerOnService(serviceTimers, ev[2] + margin, ev[3])
+			if timer is None:
+				decor.append(NO_DECOR)
+				continue
+			hasTimer = True
+			clockIcon = matchType
+			autoIcon = 0
+			full = matchType == 3
+			if full:
+				# recording the whole event, add the timer type onto the icon lookup index
+				clockIcon += 2 if timer.always_zap else 1 if timer.justplay else 0
+				if hasattr(timer, "ice_timer_id") and timer.ice_timer_id:
+					autoIcon = 2 if self.icetvicon else 0
+				elif timer.isAutoTimer:
+					autoIcon = 1 if self.autotimericon else 0
+			kind = 0
+			if matchType in (2, 3):
+				kind = 1 if timer.justplay == 0 and timer.always_zap == 0 else 2
+			decor.append((clockIcon, autoIcon, kind, 1 if full else 0))
+		return decor if hasTimer else None
+
+	def isPlayingService(self, serviceRef, playing=None):
+		if playing is None:
+			playing = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		return 1 if CompareWithAlternatives(serviceRef, playing) else 0
+
+	def refreshPlaying(self):
+		# The playing service can change while the list is open; only touch rows whose state differs.
+		playing = self.session.nav.getCurrentlyPlayingServiceOrGroup()
+		changed = False
+		for idx, row in enumerate(self.list):
+			state = self.isPlayingService(row[0], playing)
+			if row[5] != state:
+				self.list[idx] = row[:5] + (state,)
+				changed = True
+		if changed:
+			self.l.invalidate()
+
+	def fillEPGNoRefresh(self, services=None):
+		self.updateExtensions()
+		if not self.graphicsloaded:
+			self.loadGraphics()
+			self.pushColors()
 
 		if services is None:
 			test = [(service[0], 0, self.timeBase, self.timeEpoch) for service in self.list]
 			serviceList = self.list
-			piconIdx = 3
-			channelIdx = 4
+			channelIdx = 3
 		else:
 			self.selectedEventIndex = None
 			self.selectedService = None
 			test = [(service.ref.toString(), 0, self.timeBase, self.timeEpoch) for service in services]
 			serviceList = services
-			piconIdx = 0
-			channelIdx = 0
+			channelIdx = None
 
 		test.insert(0, "XRnITBD")  # return record, service ref, service name, event id, event title, begin time, duration
 		epgData = self.queryEPG(test)
@@ -905,16 +620,12 @@ class EPGListGrid(EPGListBase):
 		serviceRef = ""
 		serviceName = ""
 		self.snapshotTimers(self.timeBase, self.timeBase + self.timeEpochSecs)
-		# The timer snapshot and event data above may have just changed, so any
-		# previously cached per-event build data (see __init__) is no longer valid.
-		self.eventStaticCache = {}
-		self.rowCache = {}
+		playing = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 
 		def appendService():
-			picon = None if piconIdx == 0 else serviceList[serviceIdx][piconIdx]
-			# We pass the serviceref if we don't have the channel number yet, so it can be grabbed.
-			channel = serviceList[serviceIdx] if channelIdx == 0 else serviceList[serviceIdx][channelIdx]
-			self.list.append((serviceRef, serviceName, eventList[0][0] is not None and eventList or None, picon, channel))
+			events = eventList if eventList[0][0] is not None else None
+			channel = serviceList[serviceIdx][channelIdx] if channelIdx is not None else (self.getChannelNumber(serviceList[serviceIdx]) if self.showServiceNumber else None)
+			self.list.append((serviceRef, serviceName, events, channel or 0, self.buildDecor(serviceRef, events) if events else None, self.isPlayingService(serviceRef, playing)))
 
 		serviceIdx = 0
 		for x in epgData:

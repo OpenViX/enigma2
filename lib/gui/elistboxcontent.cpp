@@ -797,7 +797,7 @@ int eListboxPythonConfigContent::currentCursorSelectable()
 RESULT SwigFromPython(ePtr<gPixmap> &res, PyObject *obj);
 
 eListboxPythonMultiContent::eListboxPythonMultiContent()
-	:m_clip(gRegion::invalidRegion()), m_old_clip(gRegion::invalidRegion())
+	:m_overlay(false), m_clip(gRegion::invalidRegion()), m_old_clip(gRegion::invalidRegion())
 {
 }
 
@@ -1116,6 +1116,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 
 	painter.clip(itemregion);
 
+	if (!m_overlay) {
 	if(local_style) {
 		int mode = (selected) ? 1:0;
 		int radius = local_style->cornerRadius(mode);
@@ -1149,6 +1150,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 	// Draw frame here so to be under the content
 	if (selected && !sel_clip.valid() && (!local_style || !local_style->m_selection) && (!local_style || !local_style->m_border_set))
 			style.drawFrame(painter, eRect(offset, m_itemsize), eWindowStyle::frameListboxEntry);
+	} // !m_overlay
 
 	ePyObject items, buildfunc_ret;
 
