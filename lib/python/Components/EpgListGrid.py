@@ -356,6 +356,7 @@ class EPGListGrid(EPGListBase):
 			self.l.setItemHeight(self.itemHeight)
 			self.instance.resize(eSize(self.listWidth, self.listHeight // self.itemHeight * self.itemHeight))
 			self.listHeight = self.instance.size().height()
+
 	def setFontsize(self):
 		self.l.setFont(0, gFont(self.serviceFontName, self.serviceFontSize + self.epgConfig.servfs.value))
 		self.l.setFont(1, gFont(self.eventFontName, self.eventFontSize + self.epgConfig.eventfs.value))
@@ -426,7 +427,6 @@ class EPGListGrid(EPGListBase):
 		if (xpos + ewidth) > width:
 			ewidth = width - xpos
 		return xpos, ewidth
-
 
 	def getSelectionPosition(self):
 		_, sely = EPGListBase.getSelectionPosition(self)
@@ -506,7 +506,6 @@ class EPGListGrid(EPGListBase):
 			self.setTimeFocusFromEvent(focusEvent)
 		self.refreshSelection()
 		return True
-
 
 	def fillEPG(self, services=None):
 		self.fillEPGNoRefresh(services)
