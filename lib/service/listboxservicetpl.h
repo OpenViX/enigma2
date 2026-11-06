@@ -1,0 +1,174 @@
+#ifndef __lib_service_listboxservicetpl_h
+#define __lib_service_listboxservicetpl_h
+
+#include <lib/service/listboxservice.h>
+#include <vector>
+#include <map>
+#include <set>
+#include <string>
+
+/*
+ * Service list whose row design comes from skin defined templates.
+ * See doc/SERVICELIST_TEMPLATES.md. The data model (cursor, marks, sort, movemode ...)
+ * is inherited from eListboxServiceContent, only layout and painting differ.
+ */
+class eListboxServiceTemplateContent: public eListboxServiceContent
+{
+	DECLARE_REF(eListboxServiceTemplateContent);
+public:
+	eListboxServiceTemplateContent();
+
+	enum {
+		fontGroupName,
+		fontGroupNumber,
+		fontGroupInfo,
+		fontGroupNext,
+		fontGroupRemaining,
+		fontGroupCustom1,
+		fontGroupCustom2,
+		fontGroupCustom3,
+		fontGroups
+	};
+
+	void clearTemplates();
+	// dict: name + colour entries (see doc), returns style index
+	int setStyle(SWIG_PYOBJECT(ePyObject) dict);
+	// dict describing a template (rows/items), returns template index or -1
+	int addTemplate(SWIG_PYOBJECT(ePyObject) dict);
+	bool setTemplate(const std::string &name);
+	int getTemplateItemHeight(const std::string &name);
+	int getTemplateRows(const std::string &name);
+	// vertical list (1), horizontal list (0) or grid (2), see eListbox::orXXX, and the cell width for the latter two
+	int getTemplateOrientation(const std::string &name);
+	int getTemplateItemWidth(const std::string &name);
+	std::string getTemplateName() { return m_current; }
+
+	// config derived conditions, usable as visible="cfg.<name>" in a template
+	void setFlag(const std::string &name, bool on);
+	void setFontDelta(int group, int delta);
+	// numeric runtime parameter, usable as width="@<name>" in a template
+	void setParam(const std::string &name, int value);
+	void invalidateRows();
+
+#ifndef SWIG
+protected:
+	void setSize(const eSize &size);
+	void paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected);
+	int getItemWidth();
+	int getOrientation();
+
+private:
+	// ePtr can not be copy assigned from a const object (its operator= takes a non-const
+	// reference), which std::vector of the structs below requires.
+	template<class T> struct Ref
+	{
+		ePtr<T> p;
+		Ref() {}
+		Ref(const Ref &o): p(o.p) {}
+		Ref &operator=(const Ref &o) { p = (T*)o.p; return *this; }
+		Ref &operator=(T *c) { p = c; return *this; }
+		operator T*() const { return p; }
+		T *operator->() const { return p; }
+	};
+
+	enum {
+		sPlayable, sMarker, sDirectory, sGroup, sStream, sEvent, sNextEvent, sCrypted,
+		sRecorded, sFallback, sUnavail, sCatchup, sBackup, sSD, sHD, sUHD, sHasNumber, sHasPicon,
+		sBuiltin,
+		sCfgBase = 32
+	};
+	enum { itText, itPicon, itServiceType, itCrypto, itRecord, itResolution, itBackup, itCatchup,
+		itKind, itProgress, itLine, itRect, itSpacer };
+	enum { tokLiteral, tokNumber, tokName, tokEvent, tokNext, tokRemaining, tokPercent, tokStart, tokEnd, tokDuration };
+	enum { wFixed, wAuto, wFlex, wParam };
+	enum { cFg, cFgSel, cFgFallback, cFgSelFallback, cNotAvail, cRecorded, cMarked, cMarkedSel, cBorder, cBorderSel, cCount };
+	enum { rowService, rowMarker, rowDirectory };
+	enum { opText, opBlit, opBlitScale, opBlitSVG, opFill, opProgress };
+	enum { dynRecorded = 1, dynFallback = 2, dynUnavail = 4 };
+
+	struct Style {
+		std::string name;
+		gRGB c[cCount];
+		bool set[cCount];
+	};
+	struct Token {
+		int kind;
+		std::string lit;
+	};
+	struct Item {
+		int type;
+		uint64_t req, forbid;
+		std::string param;
+		int wmode, width, weight, minw, height, margin;
+		int align, valign; // align: -1 unset, 0 left, 1 center, 2 right; valign: 0 top, 1 center, 2 bottom
+		bool absolute;
+		eRect absRect;
+		std::vector<Token> tokens;
+		std::string family;
+		int fontSize, fontGroup;
+		Ref<gFont> font;
+		int style;
+		bool ellipsis, reserve, keepAspect;
+		int border;
+	};
+	struct Row {
+		int kind, height, weight, gap, padLeft, padRight;
+		int align; // alignment of the whole flow when it does not fill the row: 0 left, 1 center, 2 right
+		uint64_t req, forbid; // row is skipped unless these conditions hold
+		std::vector<Item> items;
+	};
+	struct Template {
+		std::string name;
+		int itemHeight, itemWidth, orientation;
+		bool large;
+		bool usesNext, timeDependent, usesPicon;
+		uint64_t usedBits; // every state/config bit the template tests, expensive ones are only computed when used
+		std::vector<Row> rows;
+	};
+	struct Op {
+		int kind;
+		int style;
+		eRect rect;
+		int flags;
+		int border;
+		time_t begin;
+		int duration;
+		Ref<eTextPara> para;
+		Ref<gPixmap> pixmap;
+	};
+	struct RowCache {
+		unsigned int gen;
+		int dyn;
+		int width;
+		time_t validUntil;
+		int dynState;
+		std::vector<Op> ops;
+	};
+
+	std::vector<Style> m_styles;
+	std::vector<Template> m_templates;
+	std::map<std::string, int> m_flag_bits;
+	std::map<std::string, int> m_params;
+	std::string m_current;
+	int m_cur_index;
+	uint64_t m_flags;
+	int m_font_delta[fontGroups];
+	unsigned int m_gen;
+	std::map<eServiceReference, RowCache> m_rows;
+
+	std::set<eServiceReference> m_rec_refs;
+	time_t m_rec_time;
+
+	int styleIndex(const std::string &name);
+	bool parseCondition(const std::string &cond, uint64_t &req, uint64_t &forbid);
+	void parseTokens(const std::string &text, std::vector<Token> &out);
+	void rebuildFonts();
+	bool isRecordedCached(const eServiceReference &ref, time_t now);
+	bool resolveColor(const Style &st, int selected, int marked, int dyn, bool border, gRGB &out) const;
+	void buildRow(const Template &tpl, const eServiceReference &ref, iStaticServiceInformation *info, int dyn, time_t now, RowCache &out);
+	std::string tokenText(int kind, const eServiceReference &ref, const std::string &name, eServiceEvent *evt, eServiceEvent *next, time_t now);
+	void paintOps(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected, int marked, const RowCache &rc, time_t now);
+#endif
+};
+
+#endif

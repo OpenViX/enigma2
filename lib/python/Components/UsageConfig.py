@@ -53,6 +53,15 @@ def InitUsageConfig():
 	config.usage.servicelist_twolines = ConfigSelection(default="0", choices=[("0", _("None")), ("1", _("two lines")), ("2", _("two lines+next event"))])
 	config.usage.servicelist_twolines.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
 
+	# Row design from the skin templates (<servicelisttemplates>). "legacy" keeps the classic renderer, "auto" picks
+	# the template named single / double / double_next from the "two lines" setting above, and every template the
+	# skin defines can be chosen directly. The skin is loaded before this runs. Applied on GUI restart.
+	templateChoices = [("legacy", _("Classic"))]
+	if skin.serviceListTemplates["templates"]:
+		templateChoices.append(("auto", _("Skin templates (follow 'two lines')")))
+		templateChoices += [(name, template["title"]) for name, template in skin.serviceListTemplates["templates"].items()]
+	config.usage.servicelist_template = ConfigSelection(default="legacy", choices=templateChoices)
+
 	config.usage.hide_number_markers = ConfigYesNo(default=True)
 	config.usage.hide_number_markers.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
 

@@ -10,11 +10,64 @@
 #include <lib/python/connections.h>
 #include <lib/python/python.h>
 #include <ctype.h>
+#include <time.h>
+#include <stdlib.h>
 #include <string>
 #include <algorithm>
 #include <lib/base/estring.h>
 
 ePyObject eListboxServiceContent::m_GetPiconNameFunc;
+
+namespace {
+	struct PaintStat { unsigned n, miss; long long us, maxus, lastPrint; };
+	PaintStat s_paint_stats[eServiceListPaintTimer::statCount];
+
+	long long paintNowUs()
+	{
+		struct timespec ts;
+		clock_gettime(CLOCK_MONOTONIC, &ts);
+		return ts.tv_sec * 1000000LL + ts.tv_nsec / 1000;
+	}
+
+	bool paintProfileEnabled()
+	{
+		static int enabled = -1;
+		if (enabled < 0)
+			enabled = getenv("E2_SERVICELIST_PROFILE") ? 1 : 0;
+		return enabled == 1;
+	}
+}
+
+eServiceListPaintTimer::eServiceListPaintTimer(int stat)
+	:m_stat(stat), m_miss(false), m_start(0)
+{
+	if (paintProfileEnabled())
+		m_start = paintNowUs();
+}
+
+eServiceListPaintTimer::~eServiceListPaintTimer()
+{
+	if (!m_start)
+		return;
+	const long long now = paintNowUs();
+	const long long d = now - m_start;
+	PaintStat &st = s_paint_stats[m_stat];
+	if (!st.lastPrint)
+		st.lastPrint = now;
+	st.n++;
+	if (m_miss)
+		st.miss++;
+	st.us += d;
+	if (d > st.maxus)
+		st.maxus = d;
+	if (now - st.lastPrint > 2000000)
+	{
+		static const char *const names[] = { "legacy", "template", "template-build" };
+		eDebug("[ServiceList] profile %s: %u paints, %u cache misses, avg %lld us, max %lld us", names[m_stat], st.n, st.miss, st.us / st.n, st.maxus);
+		st = PaintStat();
+		st.lastPrint = now;
+	}
+}
 
 std::string toLower(std::string& data) {
 	std::string data_tmp = data;
@@ -717,25 +770,64 @@ bool eListboxServiceContent::checkServiceIsRecorded(eServiceReference ref)
 	return false;
 }
 
-void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected)
+int eListboxServiceContent::getMarkedState(int selected)
 {
-	const int ellipsisFlag = ellipsisEnabled() ? gPainter::RT_ELLIPSIS : 0;
-	painter.clip(eRect(offset, m_itemsize));
-
-	int marked = 0;
-
 	if (m_current_marked && selected)
-		marked = 2;
-	else if (cursorValid() && isMarked(*m_cursor))
+		return 2;
+	if (cursorValid() && isMarked(*m_cursor))
+		return selected ? 2 : 1;
+	return 0;
+}
+
+// Sets the painter's base fore/background for the row (window style, marked state, local listbox style).
+// Idempotent, so renderers may call it again to undo per-element colour overrides.
+void eListboxServiceContent::applyBaseColors(gPainter &painter, eWindowStyle &style, int selected, int marked)
+{
+	eListboxStyle *local_style = m_listbox ? m_listbox->getLocalStyle() : 0;
+
+	if (marked == 1)  // marked
 	{
-		if (selected)
-			marked = 2;
-		else
-			marked = 1;
+		style.setStyle(painter, eWindowStyle::styleListboxMarked);
+		if (m_color_set[markedForeground])
+			painter.setForegroundColor(m_color[markedForeground]);
+		if (m_color_set[markedBackground])
+			painter.setBackgroundColor(m_color[markedBackground]);
+	}
+	else if (marked == 2) // marked and selected
+	{
+		style.setStyle(painter, eWindowStyle::styleListboxMarkedAndSelected);
+		if (m_color_set[markedForegroundSelected])
+			painter.setForegroundColor(m_color[markedForegroundSelected]);
+		if (m_color_set[markedBackgroundSelected])
+			painter.setBackgroundColor(m_color[markedBackgroundSelected]);
 	}
 	else
+	{
 		style.setStyle(painter, selected ? eWindowStyle::styleListboxSelected : eWindowStyle::styleListboxNormal);
+		if (local_style)
+		{
+			if (selected)
+			{
+				/* if we have a local background color set, use that. */
+				if (local_style->m_background_color_selected_set)
+					painter.setBackgroundColor(local_style->m_background_color_selected);
+				/* same for foreground */
+				if (local_style->m_foreground_color_selected_set)
+					painter.setForegroundColor(local_style->m_foreground_color_selected);
+			}
+			else
+			{
+				if (local_style->m_background_color_set)
+					painter.setBackgroundColor(local_style->m_background_color);
+				if (local_style->m_foreground_color_set)
+					painter.setForegroundColor(local_style->m_foreground_color);
+			}
+		}
+	}
+}
 
+void eListboxServiceContent::paintBackground(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected, int marked)
+{
 	eListboxStyle *local_style = 0;
 	eRect itemRect = eRect(offset, m_itemsize);
 	int widget_radius = 0;
@@ -756,43 +848,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 		edges = local_style->cornerRadiusEdges(selected ? 1:0);
 	}
 
-	if (marked == 1)  // marked
-	{
-		style.setStyle(painter, eWindowStyle::styleListboxMarked);
-		if (m_color_set[markedForeground])
-			painter.setForegroundColor(m_color[markedForeground]);
-		if (m_color_set[markedBackground])
-			painter.setBackgroundColor(m_color[markedBackground]);
-	}
-	else if (marked == 2) // marked and selected
-	{
-		style.setStyle(painter, eWindowStyle::styleListboxMarkedAndSelected);
-		if (m_color_set[markedForegroundSelected])
-			painter.setForegroundColor(m_color[markedForegroundSelected]);
-		if (m_color_set[markedBackgroundSelected])
-			painter.setBackgroundColor(m_color[markedBackgroundSelected]);
-	}
-	else if (local_style)
-	{
-		if (selected)
-		{
-			/* if we have a local background color set, use that. */
-			if (local_style->m_background_color_selected_set)
-				painter.setBackgroundColor(local_style->m_background_color_selected);
-			/* same for foreground */
-			if (local_style->m_foreground_color_selected_set)
-				painter.setForegroundColor(local_style->m_foreground_color_selected);
-		}
-		else
-		{
-			/* if we have a local background color set, use that. */
-			if (local_style->m_background_color_set)
-				painter.setBackgroundColor(local_style->m_background_color);
-			/* same for foreground */
-			if (local_style->m_foreground_color_set)
-				painter.setForegroundColor(local_style->m_foreground_color);
-		}
-	}
+	applyBaseColors(painter, style, selected, marked);
 
 	if (!local_style || !local_style->m_transparent_background)
 		/* if we have no transparent background */
@@ -837,26 +893,50 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 			}
 		}
 	}
+}
+
+void eListboxServiceContent::paintSelection(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected, bool large)
+{
+	eListboxStyle *local_style = m_listbox ? m_listbox->getLocalStyle() : 0;
+	eRect itemRect = eRect(offset, m_itemsize);
+	int radius = 0;
+	uint8_t edges = 0;
+
+	if (local_style) {
+		radius = local_style->cornerRadius(selected ? 1:0);
+		edges = local_style->cornerRadiusEdges(selected ? 1:0);
+	}
+
+	if (selected && local_style && local_style->m_selection && !large)
+	{
+		if (radius)
+			painter.setRadius(radius, edges);
+		painter.blit(local_style->m_selection, offset, eRect(), gPainter::BT_ALPHABLEND);
+	}
+	if (selected && local_style && local_style->m_selection_large && large)
+	{
+		if (radius)
+			painter.setRadius(radius, edges);
+		painter.blit(local_style->m_selection_large, offset, eRect(), gPainter::BT_ALPHABLEND);
+	}
+
+	// Draw the frame for selected item here so to be under the content
+	if (selected && (!local_style || (!local_style->m_selection && !local_style->m_selection_large)) && !radius)
+		style.drawFrame(painter, itemRect, eWindowStyle::frameListboxEntry);
+}
+
+void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected)
+{
+	eServiceListPaintTimer profileTimer(eServiceListPaintTimer::statLegacy);
+	const int ellipsisFlag = ellipsisEnabled() ? gPainter::RT_ELLIPSIS : 0;
+	painter.clip(eRect(offset, m_itemsize));
+
+	int marked = getMarkedState(selected);
+	paintBackground(painter, style, offset, selected, marked);
 
 	if (cursorValid())
 	{
-		
-		if (selected && local_style && local_style->m_selection && m_visual_mode != visSkinDefined)
-		{
-			if (radius)
-				painter.setRadius(radius, edges);
-			painter.blit(local_style->m_selection, offset, eRect(), gPainter::BT_ALPHABLEND);
-		}
-		if (selected && local_style && local_style->m_selection_large && m_visual_mode == visSkinDefined)
-		{
-			if (radius)
-				painter.setRadius(radius, edges);
-			painter.blit(local_style->m_selection_large, offset, eRect(), gPainter::BT_ALPHABLEND);
-		}
-
-		// Draw the frame for selected item here so to be under the content
-		if (selected && (!local_style || (!local_style->m_selection && !local_style->m_selection_large)) && !radius)
-			style.drawFrame(painter, itemRect, eWindowStyle::frameListboxEntry);
+		paintSelection(painter, style, offset, selected, m_visual_mode == visSkinDefined);
 
 		eServiceReference ref = *m_cursor;
 		std::string orig_ref_str = ref.toString();

@@ -17,7 +17,7 @@ import Components.ParentalControl
 from Components.PluginComponent import plugins
 from Components.Renderer.Picon import getPiconName
 from Components.SelectionList import SelectionList, SelectionEntryComponent
-from Components.ServiceList import ServiceList, refreshServiceList
+from Components.ServiceList import ServiceList, createServiceList, refreshServiceList
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.Sources.Event import Event
 from Components.Sources.List import List
@@ -1498,7 +1498,7 @@ class ChannelSelectionBase(Screen, HelpableScreen):
 		self["key_menu"] = StaticText(_("MENU"))
 		self["key_info"] = StaticText(_("INFO"))
 
-		self["list"] = ServiceList(self)
+		self["list"] = createServiceList(self)
 		self.servicelist = self["list"]
 
 		self.numericalTextInput = NumericalTextInput(handleTimeout=False)

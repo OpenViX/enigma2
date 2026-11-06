@@ -9,9 +9,27 @@
 #include <map>
 #include <set>
 
+#ifndef SWIG
+// Optional paint timing for A/B comparing the renderers, enabled by the environment variable
+// E2_SERVICELIST_PROFILE (results are logged every two seconds of painting).
+class eServiceListPaintTimer
+{
+public:
+	enum { statLegacy, statTemplate, statTemplateBuild, statCount };
+	eServiceListPaintTimer(int stat);
+	~eServiceListPaintTimer();
+	void setMiss() { m_miss = true; }
+private:
+	int m_stat;
+	bool m_miss;
+	long long m_start;
+};
+#endif
+
 class eListboxServiceContent: public virtual iListboxContent
 {
 	DECLARE_REF(eListboxServiceContent);
+protected:
 	static ePyObject m_GetPiconNameFunc;
 public:
 	eListboxServiceContent();
@@ -181,6 +199,12 @@ protected:
 	// void setOutputDevice ? (for allocating colors, ...) .. requires some work, though
 	void setSize(const eSize &size);
 
+		/* shared row decoration, used by the legacy and the templated renderer */
+	int getMarkedState(int selected);
+	void applyBaseColors(gPainter &painter, eWindowStyle &style, int selected, int marked);
+	void paintBackground(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected, int marked);
+	void paintSelection(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected, bool large);
+
 		/* the following functions always refer to the selected item */
 	void paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected);
 
@@ -221,7 +245,7 @@ protected:
 	ePtr<gPixmap> m_pixmaps[picElements];
 	gRGB m_color[colorElements];
 	bool m_color_set[colorElements];
-private:
+protected:
 	typedef std::list<eServiceReference> list;
 
 	list m_list;
