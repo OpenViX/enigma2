@@ -90,6 +90,10 @@ class eListboxPythonMultiContent: public eListboxPythonStringContent
 	ePyObject m_selectableFunc;
 	ePyObject m_template;
 	eRect m_selection_clip;
+protected:
+	// overlay mode: paint the items on top of whatever is already in the row (no background/frame)
+	bool m_overlay;
+private:
 	gRegion m_clip, m_old_clip;
 public:
 	eListboxPythonMultiContent();
