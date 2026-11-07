@@ -1,4 +1,4 @@
-from os import listdir
+from os import scandir
 from os.path import join, normpath, isdir
 from re import compile
 
@@ -50,11 +50,9 @@ class PiconLocator:
 			try:
 				path = join(normpath(mountpoint), piconDirectory)
 				if isdir(path) and path not in self.searchPaths:
-					for fn in listdir(path):
-						if fn.endswith((".png", ".svg")):
-							print("[PiconLocator] adding path:", path)
-							self.searchPaths.append(path)
-							break
+					if any(entry.name.endswith((".png", ".svg")) for entry in scandir(path)):
+						print("[PiconLocator] adding path:", path)
+						self.searchPaths.append(path)
 			except Exception as err:
 				print("[PiconLocator] Error adding mount point", err)
 
