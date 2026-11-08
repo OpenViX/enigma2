@@ -758,11 +758,14 @@ class MovieList(GUIComponent):
 			if name[:2] == "._":
 				continue
 			if MovieList.UsingTrashSort:
-				f_path = serviceref.getPath()
-				if path.exists(f_path):  # Override with deltime for sorting
+				try:  # Override with deltime for sorting
+					deltime = stat(serviceref.getPath()).st_ctime
+				except OSError:
+					pass
+				else:
 					if MovieList.UsingTrashSort == MovieList.TRASHSORT_SHOWRECORD:
 						begin2 = begin      # Save for later re-instatement
-					begin = stat(f_path).st_ctime
+					begin = deltime
 
 			# Filter on a specific collections. Users don't care about case of the name
 			if collectionName and collectionName.lower() != name.strip().lower():
