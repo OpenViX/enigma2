@@ -75,7 +75,7 @@ ButtonSetupKeys = [(_("Red"), "red", "Infobar/openSingleServiceEPG/1"),
 	(_("Slow"), "slow", ""),
 	(_("Mark/Portal/Playlist"), "mark", ""),
 	(_("Sleep"), "sleep", ""),
-	(_("Power"), "power", "Module/Screens.Standby/Standby"),
+	(_("Power"), "power", ""),  # no default: the key is then handled by PowerKey, config.usage.on_short_powerpress
 	(_("Power long"), "power_long", ""),
 	(_("HDMIin"), "HDMIin", "Infobar/HDMIIn"),
 	(_("HDMIin") + " " + _("long"), "HDMIin_long", (SystemInfo["LcdLiveTV"] and "Infobar/ToggleLCDLiveTV") or ""),
