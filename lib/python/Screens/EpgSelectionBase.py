@@ -1,4 +1,4 @@
-from time import time
+from time import monotonic, time
 
 from enigma import ePoint, eServiceCenter, eServiceReference, eTimer
 
@@ -144,6 +144,11 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self.noTMDb = _("The TMDb plugin is not installed!\nPlease install it.")
 		self.refreshTimer = eTimer()
 		self.refreshTimer.timeout.get().append(self.refreshList)
+		# Selection info (event text, service, timer button) is expensive to redraw; while the
+		# cursor is held down it is refreshed at a limited rate instead of on every step.
+		self.selInfoTimer = eTimer()
+		self.selInfoTimer.callback.append(self.updateSelectionInfo)
+		self.selInfoLastUpdate = 0
 		self.onLayoutFinish.append(self.onCreate)
 
 	def moveUp(self):
@@ -435,6 +440,18 @@ class EPGSelectionBase(Screen, HelpableScreen):
 		self["helpActions"].setEnabled(True)
 
 	def onSelectionChanged(self):
+		timer = getattr(self, "selInfoTimer", None)  # plugins may inherit without running our __init__
+		if timer is not None:
+			if monotonic() - self.selInfoLastUpdate < 0.3:  # fast navigation, defer
+				if not timer.isActive():
+					timer.start(150, True)
+				return
+			timer.stop()
+		self.updateSelectionInfo()
+
+	def updateSelectionInfo(self):
+		if hasattr(self, "selInfoTimer"):
+			self.selInfoLastUpdate = monotonic()
 		event, service = self["list"].getCurrent()[:2]
 		self["Event"].newEvent(event)
 		if service is None:
@@ -635,7 +652,9 @@ class EPGBouquetSelection:
 			EPGBouquetSelection.lastPlaying = self.session.nav.getCurrentlyPlayingServiceOrGroup()
 
 	def __onClose(self):
-		EPGSelectionBase.onSelectionChanged(self)
+		if hasattr(self, "selInfoTimer"):
+			self.selInfoTimer.stop()
+		EPGSelectionBase.updateSelectionInfo(self)
 		if self.epgConfig.browse_mode.value == "lastepgservice":
 			EPGBouquetSelection.lastBouquet = self.getCurrentBouquet()
 			EPGBouquetSelection.lastService = self.getCurrentService()

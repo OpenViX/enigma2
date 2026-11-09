@@ -162,6 +162,7 @@ class EPGSelectionGrid(EPGSelectionBase, EPGBouquetSelection, EPGServiceNumberSe
 	def moveTimeLines(self, force=False):
 		self.updateTimelineTimer.start((60 - int(time()) % 60) * 1000)
 		self["timeline_text"].setEntries(self["list"], self["timeline_now"], self.timeLines, force)
+		self["list"].refreshPlaying()
 		self["list"].l.invalidate()
 
 	def leftPressed(self):

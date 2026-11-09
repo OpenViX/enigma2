@@ -3,7 +3,7 @@ from os import path
 from enigma import eAVSwitch, eDVBVolumecontrol, getDesktop
 
 from Components.config import ConfigEnableDisable, ConfigNothing, ConfigSelection, ConfigSelectionNumber, ConfigSlider, ConfigSubDict, ConfigSubsection, ConfigYesNo, NoSave, config
-from Components.SystemInfo import SystemInfo
+from Components.SystemInfo import BOXTYPE, SystemInfo
 from Tools.CList import CList
 from Tools.Directories import fileCheck, fileReadLine, fileWriteLine, isPluginInstalled
 
@@ -509,18 +509,18 @@ def InitAVSwitch():
 
 	if SystemInfo["havehdmicolordepth"]:
 		def setHdmiColordepth(configElement):
-			open(SystemInfo["havehdmicolordepth"], "w").write("12bit" if SystemInfo["needsVideoJudderDriverFix"] else configElement.value)
+			open(SystemInfo["havehdmicolordepth"], "w").write(configElement.value)
 		choices = [("auto", _("Auto")),
 					("8bit", _("8bit")),
 					("10bit", _("10bit")),
 					("12bit", _("12bit"))]
 		default = "auto"
-		if SystemInfo["needsVideoJudderDriverFix"]:
-			choices = [("10bit", "10bit"), ("12bit", "12bit")]
-			default = "12bit"
-		elif SystemInfo["havehdmicolordepthchoices"] and SystemInfo["CanProc"]:
+		if SystemInfo["havehdmicolordepthchoices"] and SystemInfo["CanProc"]:
 			f = "/proc/stb/video/hdmi_colordepth_choices"
 			(choices, default) = readChoices(f, choices, default)
+		if BOXTYPE in ("gbquad4kpro", "vuduo4klite"):
+			choices = [choice for choice in choices if choice[0] not in ("auto", "8bit")]
+			default = "10bit"
 		config.av.hdmicolordepth = ConfigSelection(choices=choices, default=default)
 		config.av.hdmicolordepth.addNotifier(setHdmiColordepth)
 	else:
@@ -916,27 +916,3 @@ def stopHotplug():
 
 def InitiVideomodeHotplug(**kwargs):
 	startHotplug()
-
-
-iVideoJudderDriverFixTask = None
-
-
-class VideoJudderDriverFixTask:
-	def __init__(self):
-		self.onClose = []
-		from enigma import iPlayableService
-		from Components.ServiceEventTracker import ServiceEventTracker
-		self.inited = False
-		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evVideoFramerateChanged: self.__evVideoFramerateChanged})
-
-	def __evVideoFramerateChanged(self):
-		if not self.inited:
-			with open("/proc/stb/video/hdmi_colordepth", "w") as fd:
-				fd.write("10bit")
-			self.inited = True
-
-
-def startVideoJudderDriverFixTask():
-	global iVideoJudderDriverFixTask
-	if SystemInfo["needsVideoJudderDriverFix"]:
-		iVideoJudderDriverFixTask = VideoJudderDriverFixTask()

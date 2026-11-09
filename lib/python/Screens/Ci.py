@@ -23,6 +23,10 @@ def setCIEnabled(configElement):
 	eDVBCI_UI.getInstance().setEnabled(configElement.slotid, configElement.value)
 
 
+def setCIOperatorProfileDisabled(configElement):
+	eDVBCI_UI.getInstance().setOperatorProfileDisabled(configElement.slotid, configElement.value)
+
+
 def setdvbCiDelay(configElement):
 	open(SystemInfo["CommonInterfaceCIDelay"], "w").write(configElement.value)
 	configElement.save()
@@ -50,7 +54,8 @@ def InitCiConfig():
 			config.ci[slot].static_pin = ConfigPIN(default=0)
 			config.ci[slot].show_ci_messages = ConfigYesNo(default=True)
 			config.ci[slot].disable_operator_profile = ConfigYesNo(default=False)
-			config.ci[slot].alternative_ca_handling = ConfigSelection(choices=[(0, _("off")), (1, _("Close CA device at programm end")), (2, _("Offset CA device index")), (3, _("Offset and close CA device"))], default=0)
+			config.ci[slot].disable_operator_profile.slotid = slot
+			config.ci[slot].disable_operator_profile.addNotifier(setCIOperatorProfileDisabled)
 			if SystemInfo[f"CI{slot}SupportsHighBitrates"]:
 				if SystemInfo[f"CI{slot}SupportsHighBitratesChoices"]:
 					with open("/proc/stb/tsmux/ci%d_tsclk_choices" % slot) as fd:
@@ -475,7 +480,6 @@ class CiSelection(Screen):
 		self.list.append((_("Reset persistent PIN code"), ConfigNothing(), 6, slot))
 		self.list.append(getConfigListEntry(_("Show CI messages"), config.ci[slot].show_ci_messages, 3, slot))
 		self.list.append(getConfigListEntry(_("Disable operator profiles"), config.ci[slot].disable_operator_profile, 3, slot))
-		self.list.append(getConfigListEntry(_("Descrambling options") + " *", config.ci[slot].alternative_ca_handling, 3, slot))
 		self.list.append(getConfigListEntry(_("Multiple service support"), config.ci[slot].canDescrambleMultipleServices, 3, slot))
 		if SystemInfo["CI%dSupportsHighBitrates" % slot]:
 			self.list.append(getConfigListEntry(_("High bitrate support"), config.ci[slot].highBitrate))

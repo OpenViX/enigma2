@@ -102,9 +102,11 @@ class PictureInPicture(Screen):
 		self.choicelist = [("standard", _("Standard"))]
 		if SystemInfo["VideoDestinationConfigurable"]:
 			self.choicelist.append(("cascade", _("Cascade PiP")))
-			self.choicelist.append(("split", _("Splitscreen")))
+			if not SystemInfo["PiPLimited720x576"]:
+				self.choicelist.append(("split", _("Splitscreen")))
 			self.choicelist.append(("byside", _("Side by side")))
-		self.choicelist.append(("bigpig", _("Big PiP")))
+		if not SystemInfo["PiPLimited720x576"]:
+			self.choicelist.append(("bigpig", _("Big PiP")))
 		if SystemInfo["HasExternalPIP"]:
 			self.choicelist.append(("external", _("External PiP")))
 
@@ -242,7 +244,19 @@ class PictureInPicture(Screen):
 					if not config.usage.hide_zap_errors.value:
 						Tools.Notifications.AddPopup(text="PiP...\n" + _("Connected transcoding, limit - no PiP!"), type=MessageBox.TYPE_ERROR, timeout=5, id="ZapPipError")
 					return 0
-				if service.toString().startswith("4097"):  # Change to service type 1 and try to play a stream as type 1
+				if service.toString().startswith("4097"):
+					# Try servicemp3 first (needs a dvbvideosink with the "decoder" property and a driver
+					# that accepts memory writes on the PiP video device).
+					# If it refuses the PiP target, change to service type 1 and try to play as type 1.
+					mp3pip = SystemInfo["PiPServiceMP3"] and eServiceCenter.getInstance().play(service)
+					if mp3pip and not mp3pip.setTarget(1, True):
+						self.session.nav.pnav.setPiPService(service)
+						self.pipservice = mp3pip
+						self.pipservice.start()
+						self.currentService = ref
+						self.currentServiceReference = service
+						return 1
+					mp3pip = None
 					service = eServiceReference("1" + service.toString()[4:])
 				self.session.nav.pnav.setPiPService(service)
 				if not self.isPlayableForPipService(service):

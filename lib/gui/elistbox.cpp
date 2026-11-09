@@ -10,7 +10,7 @@ eListbox::eListbox(eWidget *parent) :
 	eWidget(parent), m_scrollbar_mode(showNever), m_prev_scrollbar_page(-1),
 	m_content_changed(false), m_enabled_wrap_around(false), m_scrollbar_width(10), m_scrollbar_height(10),
 	m_top(0), m_left(0), m_max_columns(0), m_max_rows(0), m_selected(0), m_itemheight(25), m_itemwidth(25), m_orientation(orVertical),
-	m_items_per_page(0), m_items_per_page_with_partials(0), m_selection_enabled(1), m_native_keys_bound(false), m_scrollbar(nullptr)
+	m_items_per_page(0), m_items_per_page_with_partials(0), m_selection_enabled(1), m_ellipsis(true), m_native_keys_bound(false), m_scrollbar(nullptr)
 {
 	memset(static_cast<void*>(&m_style), 0, sizeof(m_style));
 	m_style.m_text_offset = ePoint(1,1);
@@ -37,7 +37,11 @@ eListbox::~eListbox()
 
 void eListbox::setOrientation(int orientation)
 {
+	const bool wasVerticalBar = (m_orientation == orVertical || m_orientation == orGrid);
 	m_orientation = orientation;
+	const bool verticalBar = (m_orientation == orVertical || m_orientation == orGrid);
+	if (m_scrollbar && verticalBar != wasVerticalBar)
+		m_scrollbar->setOrientation(verticalBar ? eSlider::orVertical : eSlider::orHorizontal);
 }
 
 void eListbox::setScrollbarMode(int mode)
@@ -788,7 +792,7 @@ void eListbox::updateScrollBar()
 			else if (m_orientation == orHorizontal)
 				m_content->setSize(eSize(m_itemwidth, height));
 			else
-				m_content->setSize(eSize(m_itemwidth, m_itemwidth));
+				m_content->setSize(eSize(m_itemwidth, m_itemheight));
 
 			m_scrollbar->hide();
 		}
@@ -982,7 +986,8 @@ int eListbox::event(int event, void *data, void *data2)
 			}
 
 			// clear/repaint empty/unused space between scrollbar and listboxentrys
-			if (m_scrollbar && !isTransparent())
+			// (showLeft/showTop always reserve the gap; on the default side it only exists while the scrollbar is shown)
+			if (m_scrollbar && !isTransparent() && (m_scrollbar_mode == showLeft || m_scrollbar_mode == showTop || m_scrollbar->isVisible()))
 			{
 				style->setStyle(painter, eWindowStyle::styleListboxNormal);
 				if (m_scrollbar_mode == showLeft)
@@ -1007,30 +1012,13 @@ int eListbox::event(int event, void *data, void *data2)
 						painter.clip(eRect(m_scrollbar->position(), eSize(m_scrollbar->size().width(), m_scrollbar->size().height() + 5)));
 					}
 				}
+				else if (m_orientation == orVertical)
+				{
+					painter.clip(eRect(m_scrollbar->position() - ePoint(5,0), eSize(5,m_scrollbar->size().height())));
+				}
 				else
 				{
-					if (m_orientation == orVertical)
-					{
-						if (m_scrollbar->isVisible())
-						{
-							painter.clip(eRect(m_scrollbar->position() - ePoint(5,0), eSize(5,m_scrollbar->size().height())));
-						}
-						else
-						{
-							painter.clip(eRect(m_scrollbar->position() - ePoint(5,0), eSize(m_scrollbar->size().width() + 5, m_scrollbar->size().height())));
-						}
-					}
-					else
-					{
-						if (m_scrollbar->isVisible())
-						{
-							painter.clip(eRect(m_scrollbar->position() - ePoint(0,5), eSize(m_scrollbar->size().width(), 5)));
-						}
-						else
-						{
-							painter.clip(eRect(m_scrollbar->position() - ePoint(0,5), eSize(m_scrollbar->size().width(), m_scrollbar->size().height() + 5)));
-						}
-					}
+					painter.clip(eRect(m_scrollbar->position() - ePoint(0,5), eSize(m_scrollbar->size().width(), 5)));
 				}
 				painter.clear();
 				painter.clippop();
@@ -1096,6 +1084,20 @@ void eListbox::recalcSize()
 	moveSelection(justCheck);
 }
 
+bool iListboxContent::ellipsisEnabled()
+{
+	return !m_listbox || m_listbox->getEllipsis();
+}
+
+void eListbox::setEllipsis(int en)
+{
+	if (m_ellipsis != (en != 0))
+	{
+		m_ellipsis = en != 0;
+		invalidate();
+	}
+}
+
 void eListbox::setItemHeight(int h)
 {
 	if (h)
@@ -1123,7 +1125,7 @@ void eListbox::setSelectionEnable(int en)
 
 void eListbox::entryAdded(int index)
 {
-	if (m_content && (m_content->size() % m_items_per_page) == 1)
+	if (m_content && m_items_per_page && (m_content->size() % m_items_per_page) == 1)
 		m_content_changed=true;
 	/* manage our local pointers. when the entry was added before the current position, we have to advance. */
 
@@ -1166,7 +1168,7 @@ void eListbox::entryAdded(int index)
 
 void eListbox::entryRemoved(int index)
 {
-	if (m_content && !(m_content->size() % m_items_per_page))
+	if (m_content && m_items_per_page && (m_content->size() % m_items_per_page) == 1)
 		m_content_changed=true;
 
 	if (index == m_selected && m_content)

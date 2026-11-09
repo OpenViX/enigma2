@@ -14,6 +14,8 @@
 
 #include <linux/dvb/ca.h>
 #include <sys/socket.h>
+#include <lib/dvb/csaengine.h>
+#include <lib/dvb/csasession.h>
 #include <lib/dvb/cwhandler.h>
 #include <map>
 #include <vector>
@@ -528,6 +530,7 @@ int eDVBCAHandler::registerService(const eServiceReferenceDVB &ref, int adapter,
 		eDebug("[eDVBCAService] new service %s, serviceId %u", ref.toString().c_str(), id);
 	}
 	caservice->addServiceType(servicetype);
+	++caservice->m_users;
 
 	int loops = demux_nums[0] != demux_nums[1] ? 2 : 1;
 	for (int i = 0; i < loops; ++i)
@@ -568,7 +571,11 @@ int eDVBCAHandler::registerService(const eServiceReferenceDVB &ref, int adapter,
 		// the same service, the PMT is unchanged so buildCAPMT() would skip
 		// sending ("don't build the same CA PMT twice"). Force the softcam to
 		// restart descrambling so it resends CWs for the new CSA session.
-		if (service_already_registered && (servicetype == 0 || servicetype == 12))
+		// Not needed without libdvbcsa or when the service is known to be hardware
+		// descrambled: the restart would only unbind the PIDs briefly and the main
+		// picture stutters.
+		if (service_already_registered && (servicetype == 0 || servicetype == 12)
+			&& eDVBCSAEngine::isAvailable() && eDVBCSASession::cachedCsaAlt(ref) != 0)
 		{
 			// PiP/swap (livetv=0, scrambled_livetv=12): DEFER the CW resend
 			// to handlePMT() so the new CSA session is already activated and
@@ -601,6 +608,8 @@ int eDVBCAHandler::unregisterService(const eServiceReferenceDVB &ref, int adapte
 	{
 		eDVBCAService *caservice = it->second;
 		caservice->removeServiceType(servicetype);
+		if (caservice->m_users > 0)
+			--caservice->m_users;
 
 		int loops = demux_nums[0] != demux_nums[1] ? 2 : 1;
 		for (int i = 0; i < loops; ++i)
@@ -631,7 +640,11 @@ int eDVBCAHandler::unregisterService(const eServiceReferenceDVB &ref, int adapte
 			}
 			if (i || loops == 1)
 			{
-				if (!used_demux_slots)  // no more used.. so we remove it
+				/* a leaked demux slot (register/free demux numbers differing) must
+				 * not keep the service alive, or oscam never gets CMD_NOT_SELECTED */
+				if (used_demux_slots && !caservice->m_users)
+					eDebug("[eDVBCAHandler] service %s has no users left but %d demux slots still marked, removing anyway", caservice->toString().c_str(), used_demux_slots);
+				if (!used_demux_slots || !caservice->m_users)  // no more used.. so we remove it
 				{
 					/*
 					 * Send CMD_NOT_SELECTED to tell the softcam to stop
@@ -733,6 +746,10 @@ void eDVBCAHandler::serviceGone()
 	if (!services.size())
 	{
 		eDebug("[DVBCAHandler] no more services (keeping %zu client connections)", clients.size());
+		/* nothing is descrambling any more: a late ECM answer can make the softcam
+		 * rewrite ecm.info after it handled CMD_NOT_SELECTED, leaving it stale forever */
+		if (m_protocol3_established && !m_pending_sr_service && unlink("/tmp/ecm.info") == 0)
+			eDebug("[DVBCAHandler] removed stale /tmp/ecm.info");
 		if (pmtCache.size() > 500)
 		{
 			pmtCache.clear();
@@ -894,7 +911,7 @@ int eDVBCAHandler::getServiceReference(eServiceReferenceDVB &service, uint32_t s
 }
 
 eDVBCAService::eDVBCAService(const eServiceReferenceDVB &service, uint32_t id)
-	: eUnixDomainSocket(eApp), m_service(service), m_adapter(0), m_service_type_mask(0), m_prev_build_hash(0), m_crc32(0), m_id(id), m_version(-1), m_retryTimer(eTimer::create(eApp)), m_force_cw_send(false)
+	: eUnixDomainSocket(eApp), m_service(service), m_adapter(0), m_service_type_mask(0), m_prev_build_hash(0), m_crc32(0), m_id(id), m_version(-1), m_retryTimer(eTimer::create(eApp)), m_force_cw_send(false), m_users(0)
 {
 	close(); // Don't keep unused legacy socket in poll set; connectToPath() recreates when needed
 	memset(m_used_demux, 0xFF, sizeof(m_used_demux));

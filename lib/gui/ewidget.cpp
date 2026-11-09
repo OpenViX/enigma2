@@ -310,6 +310,11 @@ void eWidget::mayKillFocus()
 
 eWidget::~eWidget()
 {
+	if (m_stack)
+	{
+		m_stack->forgetStackChild(this);
+		m_stack = nullptr;
+	}
 	hide();
 	if (m_parent)
 		m_parent->m_childs.remove(this);

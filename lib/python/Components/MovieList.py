@@ -739,14 +739,15 @@ class MovieList(GUIComponent):
 			elif (config.usage.trashsort_deltime.value == "show delete time"):
 				MovieList.UsingTrashSort = MovieList.TRASHSORT_SHOWDELETE
 
+		parentalControl = None
+		if config.ParentalControl.servicepinactive.value and config.ParentalControl.storeservicepin.value != "never":
+			from Components.ParentalControl import parentalControl
 		while True:
 			serviceref = reflist.getNext()
 			if not serviceref.valid():
 				break
-			if config.ParentalControl.servicepinactive.value and config.ParentalControl.storeservicepin.value != "never":
-				from Components.ParentalControl import parentalControl
-				if not parentalControl.sessionPinCached and parentalControl.isProtected(serviceref):
-					continue
+			if parentalControl and not parentalControl.sessionPinCached and parentalControl.isProtected(serviceref):
+				continue
 			info = serviceHandler.info(serviceref)
 			if info is None:
 				info = justStubInfo
@@ -757,11 +758,14 @@ class MovieList(GUIComponent):
 			if name[:2] == "._":
 				continue
 			if MovieList.UsingTrashSort:
-				f_path = serviceref.getPath()
-				if path.exists(f_path):  # Override with deltime for sorting
+				try:  # Override with deltime for sorting
+					deltime = stat(serviceref.getPath()).st_ctime
+				except OSError:
+					pass
+				else:
 					if MovieList.UsingTrashSort == MovieList.TRASHSORT_SHOWRECORD:
 						begin2 = begin      # Save for later re-instatement
-					begin = stat(f_path).st_ctime
+					begin = deltime
 
 			# Filter on a specific collections. Users don't care about case of the name
 			if collectionName and collectionName.lower() != name.strip().lower():

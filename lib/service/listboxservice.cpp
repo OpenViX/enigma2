@@ -10,11 +10,64 @@
 #include <lib/python/connections.h>
 #include <lib/python/python.h>
 #include <ctype.h>
+#include <time.h>
+#include <stdlib.h>
 #include <string>
 #include <algorithm>
 #include <lib/base/estring.h>
 
 ePyObject eListboxServiceContent::m_GetPiconNameFunc;
+
+namespace {
+	struct PaintStat { unsigned n, miss; long long us, maxus, lastPrint; };
+	PaintStat s_paint_stats[eServiceListPaintTimer::statCount];
+
+	long long paintNowUs()
+	{
+		struct timespec ts;
+		clock_gettime(CLOCK_MONOTONIC, &ts);
+		return ts.tv_sec * 1000000LL + ts.tv_nsec / 1000;
+	}
+
+	bool paintProfileEnabled()
+	{
+		static int enabled = -1;
+		if (enabled < 0)
+			enabled = getenv("E2_SERVICELIST_PROFILE") ? 1 : 0;
+		return enabled == 1;
+	}
+}
+
+eServiceListPaintTimer::eServiceListPaintTimer(int stat)
+	:m_stat(stat), m_miss(false), m_start(0)
+{
+	if (paintProfileEnabled())
+		m_start = paintNowUs();
+}
+
+eServiceListPaintTimer::~eServiceListPaintTimer()
+{
+	if (!m_start)
+		return;
+	const long long now = paintNowUs();
+	const long long d = now - m_start;
+	PaintStat &st = s_paint_stats[m_stat];
+	if (!st.lastPrint)
+		st.lastPrint = now;
+	st.n++;
+	if (m_miss)
+		st.miss++;
+	st.us += d;
+	if (d > st.maxus)
+		st.maxus = d;
+	if (now - st.lastPrint > 2000000)
+	{
+		static const char *const names[] = { "legacy", "template", "template-build" };
+		eDebug("[ServiceList] profile %s: %u paints, %u cache misses, avg %lld us, max %lld us", names[m_stat], st.n, st.miss, st.us / st.n, st.maxus);
+		st = PaintStat();
+		st.lastPrint = now;
+	}
+}
 
 std::string toLower(std::string& data) {
 	std::string data_tmp = data;
@@ -717,24 +770,64 @@ bool eListboxServiceContent::checkServiceIsRecorded(eServiceReference ref)
 	return false;
 }
 
-void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected)
+int eListboxServiceContent::getMarkedState(int selected)
 {
-	painter.clip(eRect(offset, m_itemsize));
-
-	int marked = 0;
-
 	if (m_current_marked && selected)
-		marked = 2;
-	else if (cursorValid() && isMarked(*m_cursor))
+		return 2;
+	if (cursorValid() && isMarked(*m_cursor))
+		return selected ? 2 : 1;
+	return 0;
+}
+
+// Sets the painter's base fore/background for the row (window style, marked state, local listbox style).
+// Idempotent, so renderers may call it again to undo per-element colour overrides.
+void eListboxServiceContent::applyBaseColors(gPainter &painter, eWindowStyle &style, int selected, int marked)
+{
+	eListboxStyle *local_style = m_listbox ? m_listbox->getLocalStyle() : 0;
+
+	if (marked == 1)  // marked
 	{
-		if (selected)
-			marked = 2;
-		else
-			marked = 1;
+		style.setStyle(painter, eWindowStyle::styleListboxMarked);
+		if (m_color_set[markedForeground])
+			painter.setForegroundColor(m_color[markedForeground]);
+		if (m_color_set[markedBackground])
+			painter.setBackgroundColor(m_color[markedBackground]);
+	}
+	else if (marked == 2) // marked and selected
+	{
+		style.setStyle(painter, eWindowStyle::styleListboxMarkedAndSelected);
+		if (m_color_set[markedForegroundSelected])
+			painter.setForegroundColor(m_color[markedForegroundSelected]);
+		if (m_color_set[markedBackgroundSelected])
+			painter.setBackgroundColor(m_color[markedBackgroundSelected]);
 	}
 	else
+	{
 		style.setStyle(painter, selected ? eWindowStyle::styleListboxSelected : eWindowStyle::styleListboxNormal);
+		if (local_style)
+		{
+			if (selected)
+			{
+				/* if we have a local background color set, use that. */
+				if (local_style->m_background_color_selected_set)
+					painter.setBackgroundColor(local_style->m_background_color_selected);
+				/* same for foreground */
+				if (local_style->m_foreground_color_selected_set)
+					painter.setForegroundColor(local_style->m_foreground_color_selected);
+			}
+			else
+			{
+				if (local_style->m_background_color_set)
+					painter.setBackgroundColor(local_style->m_background_color);
+				if (local_style->m_foreground_color_set)
+					painter.setForegroundColor(local_style->m_foreground_color);
+			}
+		}
+	}
+}
 
+void eListboxServiceContent::paintBackground(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected, int marked)
+{
 	eListboxStyle *local_style = 0;
 	eRect itemRect = eRect(offset, m_itemsize);
 	int widget_radius = 0;
@@ -755,43 +848,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 		edges = local_style->cornerRadiusEdges(selected ? 1:0);
 	}
 
-	if (marked == 1)  // marked
-	{
-		style.setStyle(painter, eWindowStyle::styleListboxMarked);
-		if (m_color_set[markedForeground])
-			painter.setForegroundColor(m_color[markedForeground]);
-		if (m_color_set[markedBackground])
-			painter.setBackgroundColor(m_color[markedBackground]);
-	}
-	else if (marked == 2) // marked and selected
-	{
-		style.setStyle(painter, eWindowStyle::styleListboxMarkedAndSelected);
-		if (m_color_set[markedForegroundSelected])
-			painter.setForegroundColor(m_color[markedForegroundSelected]);
-		if (m_color_set[markedBackgroundSelected])
-			painter.setBackgroundColor(m_color[markedBackgroundSelected]);
-	}
-	else if (local_style)
-	{
-		if (selected)
-		{
-			/* if we have a local background color set, use that. */
-			if (local_style->m_background_color_selected_set)
-				painter.setBackgroundColor(local_style->m_background_color_selected);
-			/* same for foreground */
-			if (local_style->m_foreground_color_selected_set)
-				painter.setForegroundColor(local_style->m_foreground_color_selected);
-		}
-		else
-		{
-			/* if we have a local background color set, use that. */
-			if (local_style->m_background_color_set)
-				painter.setBackgroundColor(local_style->m_background_color);
-			/* same for foreground */
-			if (local_style->m_foreground_color_set)
-				painter.setForegroundColor(local_style->m_foreground_color);
-		}
-	}
+	applyBaseColors(painter, style, selected, marked);
 
 	if (!local_style || !local_style->m_transparent_background)
 		/* if we have no transparent background */
@@ -836,26 +893,50 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 			}
 		}
 	}
+}
+
+void eListboxServiceContent::paintSelection(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected, bool large)
+{
+	eListboxStyle *local_style = m_listbox ? m_listbox->getLocalStyle() : 0;
+	eRect itemRect = eRect(offset, m_itemsize);
+	int radius = 0;
+	uint8_t edges = 0;
+
+	if (local_style) {
+		radius = local_style->cornerRadius(selected ? 1:0);
+		edges = local_style->cornerRadiusEdges(selected ? 1:0);
+	}
+
+	if (selected && local_style && local_style->m_selection && !large)
+	{
+		if (radius)
+			painter.setRadius(radius, edges);
+		painter.blit(local_style->m_selection, offset, eRect(), gPainter::BT_ALPHABLEND);
+	}
+	if (selected && local_style && local_style->m_selection_large && large)
+	{
+		if (radius)
+			painter.setRadius(radius, edges);
+		painter.blit(local_style->m_selection_large, offset, eRect(), gPainter::BT_ALPHABLEND);
+	}
+
+	// Draw the frame for selected item here so to be under the content
+	if (selected && (!local_style || (!local_style->m_selection && !local_style->m_selection_large)) && !radius)
+		style.drawFrame(painter, itemRect, eWindowStyle::frameListboxEntry);
+}
+
+void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected)
+{
+	eServiceListPaintTimer profileTimer(eServiceListPaintTimer::statLegacy);
+	const int ellipsisFlag = ellipsisEnabled() ? gPainter::RT_ELLIPSIS : 0;
+	painter.clip(eRect(offset, m_itemsize));
+
+	int marked = getMarkedState(selected);
+	paintBackground(painter, style, offset, selected, marked);
 
 	if (cursorValid())
 	{
-		
-		if (selected && local_style && local_style->m_selection && m_visual_mode != visSkinDefined)
-		{
-			if (radius)
-				painter.setRadius(radius, edges);
-			painter.blit(local_style->m_selection, offset, eRect(), gPainter::BT_ALPHABLEND);
-		}
-		if (selected && local_style && local_style->m_selection_large && m_visual_mode == visSkinDefined)
-		{
-			if (radius)
-				painter.setRadius(radius, edges);
-			painter.blit(local_style->m_selection_large, offset, eRect(), gPainter::BT_ALPHABLEND);
-		}
-
-		// Draw the frame for selected item here so to be under the content
-		if (selected && (!local_style || (!local_style->m_selection && !local_style->m_selection_large)) && !radius)
-			style.drawFrame(painter, itemRect, eWindowStyle::frameListboxEntry);
+		paintSelection(painter, style, offset, selected, m_visual_mode == visSkinDefined);
 
 		eServiceReference ref = *m_cursor;
 		std::string orig_ref_str = ref.toString();
@@ -1088,7 +1169,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 
 			ePtr<eTextPara> para = new eTextPara(eRect(0, 0, xlpos - xoffsMarker, m_itemheight/2));
 			para->setFont(m_element_font[celServiceName]);
-			para->renderString(text.c_str());
+			para->renderString(text.c_str(), ellipsisFlag);
 			eRect bbox = para->getBoundBox();
 			service_name_end = xoffsMarker - correction + bbox.width() + m_items_distances;
 			painter.renderPara(para, ePoint(xoffsMarker - correction, offset.y() + yoffs_orig + ((ctrlHeight - bbox.height())/2)));
@@ -1225,7 +1306,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					if (m_has_next_event) {
 						ePtr<eTextPara> para = new eTextPara(eRect(0, 0, pb_xpos - service_name_end - m_items_distances - 15, m_itemheight/2));
 						para->setFont(m_element_font[celServiceInfo]);
-						para->renderString(text.c_str());
+						para->renderString(text.c_str(), ellipsisFlag);
 						eRect bbox = para->getBoundBox();
 						painter.renderPara(para, ePoint(service_name_end, offset.y() + yoffs_orig + ((ctrlHeight - bbox.height())/2)));
 
@@ -1262,7 +1343,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 							}
 							ePtr<eTextPara> paraNext = new eTextPara(eRect(0, 0, xlpos - xoffs - m_items_distances, m_itemheight/2));
 							paraNext->setFont(m_element_font[celServiceNextInfo]);
-							paraNext->renderString((m_next_title + next_event_name).c_str());
+							paraNext->renderString((m_next_title + next_event_name).c_str(), ellipsisFlag);
 							eRect bboxNext = paraNext->getBoundBox();
 							painter.renderPara(paraNext, ePoint(xoffs, offset.y() - 2 + m_itemheight/2 + ((m_itemheight/2 - bboxNext.height())/2)));
 						}
@@ -1279,7 +1360,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 
 						ePtr<eTextPara> para = new eTextPara(eRect(0, 0, m_itemsize.width() - xoffs - bboxtLeft.width() - 25 - m_items_distances, m_itemheight/2));
 						para->setFont(m_element_font[celServiceInfo]);
-						para->renderString(((!percent.empty() ? (percent + m_separator) : "") + text).c_str());
+						para->renderString(((!percent.empty() ? (percent + m_separator) : "") + text).c_str(), ellipsisFlag);
 						eRect bbox = para->getBoundBox();
 						painter.renderPara(para, ePoint(xoffs, offset.y() - 2 + m_itemheight/2 + ((m_itemheight/2 - bbox.height())/2)));
 
@@ -1315,7 +1396,9 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 			if (service_info)
 				service_info->getName(ref, text);
 
-			xoffs += m_sides_margin;
+			// a service with a channel number is indented by the number column already: only one without gets the margin
+			const int sidesMargin = (isPlayable && !(hasChannelNumbers && m_cursor->getChannelNum() > 0)) ? m_sides_margin : 0;
+			xoffs += sidesMargin;
 			if (is_event)
 			{
 				event_name = evt->getEventName();
@@ -1363,7 +1446,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 
 			ePtr<eTextPara> paraServiceName = new eTextPara(eRect(0, 0, serviceNameWidth, m_itemheight));
 			paraServiceName->setFont(m_element_font[celServiceName]);
-			paraServiceName->renderString(text.c_str());
+			paraServiceName->renderString(text.c_str(), ellipsisFlag);
 			eRect bboxServiceName = paraServiceName->getBoundBox();
 
 			if (isDirectory || (isMarker && !m_marker_as_line)) {
@@ -1394,7 +1477,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				eRect firstLineRect = eRect(xoffs + m_items_distances, offset.y() + (m_itemheight - m_marker_as_line) / 2, mTextLeft - m_items_distances*2 - xoffs - 16, m_marker_as_line);
 				painter.fill(firstLineRect);
 				int secondLineOffset = mTextLeft + bboxServiceName.width() + m_items_distances + 16;
-				eRect secondLineRect = eRect(secondLineOffset, offset.y() + (m_itemheight - m_marker_as_line) / 2, m_itemsize.width() - secondLineOffset - m_items_distances - m_sides_margin, m_marker_as_line);
+				eRect secondLineRect = eRect(secondLineOffset, offset.y() + (m_itemheight - m_marker_as_line) / 2, m_itemsize.width() - secondLineOffset - m_items_distances - sidesMargin, m_marker_as_line);
 				painter.fill(secondLineRect);
 			}
 
@@ -1560,7 +1643,7 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 				}
 
 				if (eventProgressConfig == "barright" || eventProgressConfig == "percright") {
-					pb_xpos = m_itemsize.width() - progressBarRect.width() - m_items_distances*2 - m_sides_margin*2 - m_progressbar_border_width*2;
+					pb_xpos = m_itemsize.width() - progressBarRect.width() - m_items_distances*2 - sidesMargin*2 - m_progressbar_border_width*2;
 				}
 
 				if (is_event && !event_name.empty()) {
@@ -1596,11 +1679,11 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 					}
 
 					int eventTextWidth = (eventProgressConfig == "barright" || eventProgressConfig == "percright") ?
-							(pb_xpos - (m_column_width > 0 ? xoffs_col : xoffs) - m_items_distances*2 ) : (m_itemsize.width() - m_sides_margin*2 - (m_column_width > 0 ? xoffs_col : xoffs) - m_items_distances*2);
+							(pb_xpos - (m_column_width > 0 ? xoffs_col : xoffs) - m_items_distances*2 ) : (m_itemsize.width() - sidesMargin*2 - (m_column_width > 0 ? xoffs_col : xoffs) - m_items_distances*2);
 
 					ePtr<eTextPara> para = new eTextPara(eRect(0, 0, eventTextWidth, m_itemheight));
 					para->setFont(m_element_font[celServiceInfo]);
-					para->renderString(text.c_str());
+					para->renderString(text.c_str(), ellipsisFlag);
 					// share the baseline with the service name, the fonts may differ in size
 					int eventY = offset.y() + (ctrlHeight - bboxServiceName.height())/2 + paraServiceName->getBaseline() - para->getBaseline();
 					painter.renderPara(para, ePoint(m_column_width > 0 ? xoffs_col : xoffs, eventY));

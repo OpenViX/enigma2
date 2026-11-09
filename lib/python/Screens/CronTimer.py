@@ -1,5 +1,6 @@
 from os import system, listdir, rename, path, mkdir
-from time import sleep
+
+from enigma import eTimer
 
 from Components.ActionMap import ActionMap
 from Components.config import getConfigListEntry, ConfigText, ConfigSelection, ConfigInteger, ConfigClock
@@ -38,6 +39,9 @@ class CronTimers(Screen):
 		self['key'] = Label(_("H: = Hourly / D: = Daily / W: = Weekly / M: = Monthly"))
 		self.Console = Console()
 		self.ConsoleB = Console(binary=True)
+		self.updateTimer = eTimer()  # gives crond time to start or stop, without freezing the GUI
+		self.updateTimer.callback.append(self.updateList)
+		self.onClose.append(self.updateTimer.stop)
 		self.my_crond_active = False
 		self.my_crond_run = False
 
@@ -142,16 +146,14 @@ class CronTimers(Screen):
 			self.ConsoleB.ePopen('/etc/init.d/crond stop', self.StartStopCallback)
 
 	def StartStopCallback(self, result=None, retval=None, extra_args=None):
-		sleep(3)
-		self.updateList()
+		self.updateTimer.start(3000, True)
 
 	def autostart(self):
 		if fileExists('/etc/rc2.d/S90crond'):
 			self.ConsoleB.ePopen('update-rc.d -f crond remove')
 		else:
 			self.ConsoleB.ePopen('update-rc.d -f crond defaults 90 60')
-		sleep(3)
-		self.updateList()
+		self.updateTimer.start(3000, True)
 
 	def addtocron(self):
 		self.session.openWithCallback(self.updateList, CronTimersConfig)

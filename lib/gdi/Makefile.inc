@@ -55,6 +55,7 @@ gdi_libenigma_gdi_a_SOURCES += \
 	gdi/egl/gegldc.cpp \
 	gdi/egl/gles_version.cpp \
 	gdi/egl/gosd_capture.cpp \
+	gdi/egl/gweb_overlay.cpp \
 	gdi/egl/gtexture_manager.cpp \
 	gdi/egl/shader/gadvanced_shader.cpp \
 	gdi/egl/shader/gshader.cpp \
@@ -65,8 +66,10 @@ gdiinclude_HEADERS += \
 	gdi/egl/gegldc.h \
 	gdi/egl/gles_version.h \
 	gdi/egl/gosd_capture.h \
+	gdi/egl/gweb_overlay.h \
 	gdi/egl/gtexture_manager.h \
 	gdi/egl/inative_window_provider.h \
+	gdi/egl/platform/nexus_hdr_osd.h \
 	gdi/egl/shader/gadvanced_shader.h \
 	gdi/egl/shader/gshader.h \
 	gdi/egl/shader/gtext_shader.h \

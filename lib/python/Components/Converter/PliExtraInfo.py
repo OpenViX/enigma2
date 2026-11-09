@@ -25,15 +25,107 @@ ecmdata = GetEcmInfo()
 _CRYPTO_CACHE_INTERVAL = 1.0
 _cryptoCacheTime = 0.0
 _cryptoCacheData = None
+_cryptoCachePresent = False
 
 
+# The only place that touches /tmp/ecm.info: the stat() and the parse are both done at most once per interval.
 def getCachedEcmData():
-	global _cryptoCacheTime, _cryptoCacheData
+	global _cryptoCacheTime, _cryptoCacheData, _cryptoCachePresent
 	now = monotonic()
 	if _cryptoCacheData is None or now - _cryptoCacheTime >= _CRYPTO_CACHE_INTERVAL:
+		_cryptoCachePresent = pathExists("/tmp/ecm.info")
 		_cryptoCacheData = ecmdata.getEcmData()
 		_cryptoCacheTime = now
 	return _cryptoCacheData
+
+
+# Whether the softcam has written /tmp/ecm.info (as of the last refresh of the cache above).
+def ecmFilePresent():
+	getCachedEcmData()
+	return _cryptoCachePresent
+
+
+# Whether a softcam is loaded: only then does a missing /tmp/ecm.info mean something (used when the stream cannot be asked).
+def softcamLoaded():
+	return bool(SystemInfo["HasInitCam"])
+
+
+# 1 = the packets of the current video (or audio) PID are scrambled right now, 0 = they are clear, -1 = not known
+# (also on images without iServiceInformation.sIsScrambled, for IPTV, recordings, timeshift and in the first moments after a zap).
+def scramblingState(info):
+	return info.getInfo(iServiceInformation.sIsScrambled)
+
+
+# Whether /tmp/ecm.info describes the current service. The softcam does not clear it on a zap and a recording can keep it
+# busy, so it can be the other service's. It is not the current one's if the service has no CA descriptors and the stream
+# is clear or not yet known to be scrambled (1 is the only state in which it could still be decoding).
+def ecmFilePresentFor(info):
+	if not ecmFilePresent():
+		return False
+	return not (info and info.getInfo(iServiceInformation.sIsCrypted) != 1 and scramblingState(info) in (0, 2))
+
+
+# The (CAID, ECM PID) pairs of the service (what the PMT says), empty if they are not known.
+def serviceEcmPairs(info):
+	try:
+		return {(pair[0], pair[1]) for pair in info.getInfoObject(iServiceInformation.sCAIDPIDs)}
+	except Exception:
+		return set()
+
+
+# A hex number of ecm.info, None if the softcam did not give it ("0" is what GetEcmInfo makes of a missing line). A given
+# 0x0000 is a number like any other, and it is no real CAID or ECM PID.
+def ecmNumber(text):
+	if text in ("", "0"):
+		return None
+	try:
+		return int(text, 16)
+	except (TypeError, ValueError):
+		return None
+
+
+NO_ECM_DATA = ("", "0", "0", "0", "")
+_OWN_ECM_MAX = 8
+_ownEcm = {}  # Service reference -> the last ecm.info data that belonged to that service (the most recent last).
+
+
+# The data of /tmp/ecm.info for the current service. With two services decoding (a recording and the one playing) the softcam
+# writes the file for both in turn, so what is in it is only the current service's if its CAID and ECM PID are a pair of the
+# service. Only what the file gives is compared. Otherwise the last data that was the current service's is used, and without
+# any nothing is known. If the file gives neither, or the pairs of the service are not known, the file is taken as it is.
+def ecmDataFor(info):
+	data = getCachedEcmData()
+	if not info or not ecmFilePresent():
+		return data
+	pairs = serviceEcmPairs(info)
+	caid = ecmNumber(data[1])
+	pid = ecmNumber(data[3])
+	if not pairs or (caid is None and pid is None):
+		return data
+	ref = info.getInfoString(iServiceInformation.sServiceref)
+	if any((caid is None or pair[0] == caid) and (pid is None or pair[1] == pid) for pair in pairs):
+		_ownEcm.pop(ref, None)
+		_ownEcm[ref] = data
+		if len(_ownEcm) > _OWN_ECM_MAX:
+			del _ownEcm[next(iter(_ownEcm))]
+		return data
+	return _ownEcm.get(ref, NO_ECM_DATA)
+
+
+# Used when there is no ecm.info: True if the stream can be called free to air. If the stream can be asked, that decides,
+# so an encrypted channel in a free news break is free to air (it still has CA descriptors, sIsCrypted == 1). Otherwise:
+# with a softcam loaded no ecm.info on an encrypted service also means free; without one ecm.info never exists, so nothing
+# is known. After a zap the video and audio PIDs read -1 until the PMT has arrived (the PCR PID keeps the previous
+# service's value), so that moment is not free to air either.
+def isFreeToAir(info):
+	if not info or not info.getInfoString(iServiceInformation.sServiceref).startswith("1:"):
+		return True
+	scrambled = scramblingState(info)
+	if scrambled != -1:
+		return scrambled == 0
+	if all(info.getInfo(pid) == -1 for pid in (iServiceInformation.sVideoPID, iServiceInformation.sAudioPID)):
+		return False
+	return info.getInfo(iServiceInformation.sIsCrypted) != 1 or softcamLoaded()
 
 
 caid_data = tuple(
@@ -101,8 +193,8 @@ def addspace(text):
 
 
 def getCryptoInfo(info):
-	if info and info.getInfo(iServiceInformation.sIsCrypted) == 1 or pathExists("/tmp/ecm.info"):
-		data = getCachedEcmData()
+	if info and info.getInfo(iServiceInformation.sIsCrypted) == 1 or ecmFilePresentFor(info):
+		data = ecmDataFor(info)
 		current_source = data[0]
 		current_caid = int(data[1], 16)
 		current_provid = data[2]
@@ -136,10 +228,11 @@ def createCurrentCaidLabel(info, currentCaid=None, currentDevice=None):
 				if stateDecoding == 2 and stateSlot not in (-1, 0, 3):
 					decodingCiSlot = slot
 
-	if not pathExists("/tmp/ecm.info") and decodingCiSlot == -1:
-		return "FTA"
+	ecm_present = ecmFilePresentFor(info)
+	if not ecm_present and decodingCiSlot == -1:
+		return "FTA" if isFreeToAir(info) else ""
 
-	if decodingCiSlot > -1 and not pathExists("/tmp/ecm.info"):
+	if decodingCiSlot > -1 and not ecm_present:
 		return "CI%d" % (decodingCiSlot)
 
 	for caid_entry in caid_data:
@@ -443,7 +536,7 @@ class PliExtraInfo(Poll, Converter, object):
 
 	def refreshCryptoInfo(self, info):
 		if info.getInfo(iServiceInformation.sIsCrypted) == 1:
-			data = getCachedEcmData()
+			data = ecmDataFor(info)
 			self.current_source = data[0]
 			self.current_caid = int(data[1], 16)
 			self.current_provid = data[2]
@@ -505,6 +598,8 @@ class PliExtraInfo(Poll, Converter, object):
 		if "%3a//" in refstr.lower() and "127.0.0.1" not in refstr and "0.0.0.0" not in refstr and "localhost" not in refstr or "@" in refstr:
 			return "IPTV" + ":%06X:%04X" % (int(self.current_provid, 16), info.getInfo(iServiceInformation.sSID))
 		elif self.current_caid == 0:
+			if not isFreeToAir(info):
+				return ""  # No ECM, but not known to be free to air.
 			return caid_name + ":%06X:%04X" % (int(self.current_provid, 16), info.getInfo(iServiceInformation.sSID))
 		try:
 			for caid_entry in caid_data:
@@ -519,7 +614,7 @@ class PliExtraInfo(Poll, Converter, object):
 	def createCryptoNameCaid(self, info):
 		caid_name = "FTA"
 		if self.current_caid == 0:
-			return caid_name
+			return caid_name if isFreeToAir(info) else ""
 		try:
 			for caid_entry in caid_data:
 				if caid_entry[0] <= self.current_caid <= caid_entry[1]:
@@ -729,7 +824,7 @@ class PliExtraInfo(Poll, Converter, object):
 			if textType == "CurrentCrypto":
 				if int(config.usage.show_cryptoinfo.value) > 0:
 					self.refreshCryptoInfo(info)
-					return self.createCurrentCaidLabel()
+					return self.createCurrentCaidLabel(info)
 				else:
 					return ""
 
@@ -798,7 +893,7 @@ class PliExtraInfo(Poll, Converter, object):
 
 			return _("?%s?") % textType
 		except:
-			return "FTA"
+			return ""
 
 	text = property(getText)
 
@@ -819,7 +914,7 @@ class PliExtraInfo(Poll, Converter, object):
 			if info.getInfo(iServiceInformation.sIsCrypted) != 1:
 				return False
 
-			data = getCachedEcmData()
+			data = ecmDataFor(info)
 
 			if data is None:
 				return False

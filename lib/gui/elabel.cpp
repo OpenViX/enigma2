@@ -17,6 +17,7 @@ eLabel::eLabel(eWidget *parent, int markedPos): eWidget(parent)
 	m_have_shadow_color = 0;
 
 	m_nowrap = 0;
+	m_ellipsis = 1;
 	m_border_size = 0;
 }
 
@@ -109,6 +110,8 @@ int eLabel::event(int event, void *data, void *data2)
 
 			if (!m_nowrap)
 				flags |= gPainter::RT_WRAP;
+			if (m_ellipsis)
+				flags |= gPainter::RT_ELLIPSIS;
 
 				/* text needs to blend against the real pixels behind it -- not just the
 				   widget's own nominal background color -- whenever that nominal color
@@ -235,6 +238,15 @@ void eLabel::setNoWrap(int nowrap)
 	}
 }
 
+void eLabel::setEllipsis(int ellipsis)
+{
+	if (m_ellipsis != ellipsis)
+	{
+		m_ellipsis = ellipsis;
+		invalidate();
+	}
+}
+
 void eLabel::setAlphatest(int alphatest)
 {
 	bool blend = (alphatest > 0); // blend if BT_ALPHATEST or BT_ALPHABLEND
@@ -267,5 +279,10 @@ eSize eLabel::calculateTextSize(gFont* font, const std::string &string, eSize ta
 	eTextPara para(eRect(0, 0, targetSize.width(), targetSize.height()));
 	para.setFont(font);
 	para.renderString(string.empty() ? 0 : string.c_str(), nowrap ? 0 : RS_WRAP);
-	return para.getBoundBox().size();
+	eSize size = para.getBoundBox().size();
+	// The bounding box spans first-glyph-left to last-glyph-right including side bearings,
+	// so it can be 1-2px narrower than the pen advance that decides whether text gets
+	// ellipsized when rendered into an area of exactly this width.
+	size.setWidth(std::max(size.width(), para.getAdvanceWidth()));
+	return size;
 }

@@ -224,6 +224,9 @@ struct gOpcode
 #define MAXSIZE 2048
 
 /* gRC is the singleton which controls the fifo and dispatches commands */
+#include <deque>
+#include <chrono>
+
 class gRC : public iObject, public sigc::trackable
 {
 	DECLARE_REF(gRC);
@@ -240,6 +243,10 @@ class gRC : public iObject, public sigc::trackable
 
 	gOpcode queue[MAXSIZE];
 	int rp, wp;
+
+	/* submit time of every flush that is queued or being rendered, oldest first: its size is the number
+	 * of frames the render thread is behind. Guarded by the same mutex as the queue. */
+	std::deque<std::chrono::steady_clock::time_point> m_flush_pending;
 
 	eFixedMessagePump<int> m_notify_pump;
 	void recv_notify(const int &i);
@@ -261,6 +268,9 @@ public:
 	virtual ~gRC();
 
 	void submit(const gOpcode &o);
+
+	/* number of frames submitted but not yet taken up by the render thread */
+	int pendingFrames();
 
 #ifdef CONFIG_ION
 	void lock();

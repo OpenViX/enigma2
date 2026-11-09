@@ -5,6 +5,7 @@
 #include <EGL/egl.h>
 #include <lib/base/eerror.h>
 #include <lib/gdi/fb.h>
+#include <lib/gdi/egl/platform/nexus_hdr_osd.h>
 // Must come before <nxclient.h>: this header's NEXUS_HAS_DISPLAY/AUDIO/
 // GRAPHICS2D defines and its nexus_hdmi_output_hdcp.h include both need to
 // be visible before anything reaches nxclient.h's own chain into
@@ -136,6 +137,10 @@ bool GbquadWindowProvider::premultipliesBlits() {
 #else
 	return false;
 #endif
+}
+
+bool GbquadWindowProvider::setHdrOsdWhiteNits(float nits) {
+	return nexus_hdr_osd::setWhiteNits(nits, m_joined_nxclient, "GbquadWindowProvider");
 }
 
 GbquadWindowProvider::GbquadWindowProvider()

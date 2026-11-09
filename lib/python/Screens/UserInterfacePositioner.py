@@ -1,5 +1,5 @@
 import traceback
-from enigma import getDesktop
+from enigma import getDesktop, eglOsdRectSupported, eglSetOsdRect
 
 from Components.ActionMap import ActionMap
 from Components.config import config, configfile, getConfigListEntry, ConfigSelectionNumber, NoSave, ConfigNumber
@@ -20,9 +20,19 @@ def getFilePath(setting):
 
 
 def setPositionParameter(parameter, configElement):
-	f = open(getFilePath(parameter), "w")
-	f.write('%08X\n' % configElement.value)
-	f.close()
+	if eglOsdRectSupported():
+		# the notifiers fire as each entry is registered, so some entries may not exist yet
+		osd = config.osd
+		left = osd.dst_left.value if hasattr(osd, "dst_left") else 0
+		top = osd.dst_top.value if hasattr(osd, "dst_top") else 0
+		width = osd.dst_width.value if hasattr(osd, "dst_width") else 720
+		height = osd.dst_height.value if hasattr(osd, "dst_height") else 576
+		eglSetOsdRect(left, top, width, height)
+		# the proc entries must still be written, otherwise the UI stays shrunk after a reboot
+	if fileExists(getFilePath(parameter)):
+		f = open(getFilePath(parameter), "w")
+		f.write('%08X\n' % configElement.value)
+		f.close()
 	if fileExists(getFilePath("apply")):
 		f = open(getFilePath("apply"), "w")
 		f.write('1')

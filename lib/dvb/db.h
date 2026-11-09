@@ -89,8 +89,15 @@ class eIPTVDBItem
 		int adra_pid;
 		int subtitle_pid;
 		int v_pid;
-		eIPTVDBItem(const std::string sref, const int ampegpid, const int aac3pid, const int aac4pid, const int addppid, const int aaachpid,
-					const int aaacpid, const int adrapid, const int subtitlepid, const int vpid) {
+		/* an entry with only "auto" (-1) audio/subtitle pids carries no information;
+		 * the video pid is deliberately ignored */
+		bool isDefault() const {
+			return ampeg_pid == -1 && aac3_pid == -1 && aac4_pid == -1 && addp_pid == -1 && aaach_pid == -1
+				&& aaac_pid == -1 && adra_pid == -1 && subtitle_pid == -1;
+		}
+		/* argument order matches the order of the columns in config_av */
+		eIPTVDBItem(const std::string sref, const int ampegpid, const int aac3pid, const int addppid, const int aaachpid,
+					const int aaacpid, const int adrapid, const int aac4pid, const int subtitlepid, const int vpid) {
 			s_ref = sref;
 			ampeg_pid = ampegpid;
 			aac3_pid = aac3pid;

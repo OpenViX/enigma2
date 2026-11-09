@@ -11,6 +11,7 @@
 /* for subtitles */
 #include <lib/gui/esubtitle.h>
 #include <atomic>
+#include <memory>
 
 class eStaticServiceMP3Info;
 
@@ -166,7 +167,7 @@ public:
 	RESULT cueSheet(ePtr<iCueSheet> &ptr);
 
 		// not implemented (yet)
-	RESULT setTarget(int target, bool noaudio = false) { return -1; }
+	RESULT setTarget(int target, bool noaudio = false);
 	RESULT frontendInfo(ePtr<iFrontendInformation> &ptr) { ptr = 0; return -1; }
 	RESULT subServices(ePtr<iSubserviceList> &ptr) { ptr = 0; return -1; }
 	RESULT timeshift(ePtr<iTimeshiftService> &ptr) { ptr = 0; return -1; }
@@ -267,8 +268,9 @@ public:
 		bool is_audio;
 		bool is_streaming;
 		bool is_hls;
+		bool is_dash;
 		sourceStream()
-			:audiotype(atUnknown), containertype(ctNone), is_video(FALSE), is_audio(FALSE), is_streaming(FALSE), is_hls(FALSE)
+			:audiotype(atUnknown), containertype(ctNone), is_video(FALSE), is_audio(FALSE), is_streaming(FALSE), is_hls(FALSE), is_dash(FALSE)
 		{
 		}
 	};
@@ -317,6 +319,16 @@ protected:
 private:
 	static int pcm_delay;
 	static int ac3_delay;
+	/* live bitrate: pad probes on the playbin stream pads count compressed bytes (streaming thread),
+	 * getInfo(sVideoBitrate/sAudioBitrate) turns the deltas into kbit/s (main thread) */
+	typedef std::shared_ptr<std::atomic<guint64> > byteCounterPtr;
+	byteCounterPtr m_video_byte_counter;
+	std::vector<byteCounterPtr> m_audio_byte_counters;
+	guint64 m_br_last_video_bytes, m_br_last_audio_bytes;
+	gint64 m_br_last_us;
+	int m_br_audio_idx, m_br_video_kbps, m_br_audio_kbps;
+	void installBitrateProbes(int n_video, int n_audio);
+	void updateLiveBitrate();
 	int m_currentAudioStream;
 	int m_currentSubtitleStream;
 	int m_cachedSubtitleStream;
@@ -331,10 +343,16 @@ private:
 	int m_buffer_size;
 	int m_ignore_buffering_messages;
 	bool m_is_live;
+	/* PiP: video-only playback on a secondary hardware decoder (see setTarget()) */
+	int m_pip_decoder;
+	bool m_pip_applied;
+	void applyPipTarget();
 	bool m_use_prefillbuffer;
 	bool m_paused;
 	bool m_clear_buffers;
 	bool m_initial_start;
+	/* TrueHD/DTS AC3 transcoding happens in the audio sink bin */
+	bool m_hdaudio_sinkbin;
 	bool m_send_ev_start;
 	/* True once evFirstFrame has been fired for this playback session -
 	 * see its firing sites in gstBusCall() for why this needs its own
@@ -619,8 +637,10 @@ private:
 	 * it started, both of which happen later, off-thread. Skips itself for
 	 * a live source, same as clearBuffers() and for the same reason
 	 * (nothing to seek back to).
+	 *
+	 * at: the position to flush at, or -1 to read the current one.
 	 */
-	bool flushNearCurrentPosition();
+	bool flushNearCurrentPosition(pts_t at = -1);
 
 	gint m_aspect, m_width, m_height, m_framerate, m_progressive, m_gamma;
 	int m_hdr_type;                  // 0=SDR 1=HDR10 2=HLG 3=HDR

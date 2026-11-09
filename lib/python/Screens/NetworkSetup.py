@@ -4,7 +4,6 @@ from os.path import exists
 import netifaces as ni
 from random import Random
 import string
-import time
 
 from enigma import eTimer, eConsoleAppContainer
 
@@ -83,8 +82,11 @@ class LogBase(TextBox):
 
 class NSCommon:
 	def StartStopCallback(self, result=None, retval=None, extra_args=None):
-		time.sleep(3)
-		self.updateService()
+		if not hasattr(self, "updateTimer"):  # NSCommon has no __init__ of its own
+			self.updateTimer = eTimer()
+			self.updateTimer.callback.append(self.updateService)
+			self.onClose.append(self.updateTimer.stop)
+		self.updateTimer.start(3000, True)  # give the service time to start or stop, without freezing the GUI
 
 	def removeComplete(self, result=None, retval=None, extra_args=None):
 		if self.reboot_at_end:

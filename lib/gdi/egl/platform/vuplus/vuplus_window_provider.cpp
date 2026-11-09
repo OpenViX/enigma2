@@ -5,6 +5,7 @@
 #include <eglvuplus.h>
 #include <lib/base/eerror.h>
 #include <lib/gdi/fb.h>
+#include <lib/gdi/egl/platform/nexus_hdr_osd.h>
 #include <lib/gdi/egl/platform/vuplus/vuplus_window_provider.h>
 
 // Layout of the object VUGLES_CreateNativeWindow()/NXPL_CreateNativeWindowEXT()
@@ -164,6 +165,10 @@ bool VuplusWindowProvider::needsStraightAlphaPresent() {
 		return false;
 	static const bool s_enabled = !(getenv("ENIGMA_EGL_STRAIGHT_ALPHA") && atoi(getenv("ENIGMA_EGL_STRAIGHT_ALPHA")) == 0);
 	return s_enabled;
+}
+
+bool VuplusWindowProvider::setHdrOsdWhiteNits(float nits) {
+	return nexus_hdr_osd::setWhiteNits(nits, m_platform_inited, "VuplusWindowProvider");
 }
 
 bool VuplusWindowProvider::canResizeWindow() {

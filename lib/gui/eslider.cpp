@@ -93,7 +93,11 @@ int eSlider::event(int event, void *data, void *data2)
 				painter.clear();
 		}
 
-		if(cornerRadius || m_background_gradient_set)
+		// a transparent rounded slider without a background of its own has no track to
+		// paint: drawing one anyway uses whatever colour the painter last had and
+		// overwrites everything stacked beneath it (e.g. layered progress bars)
+		const bool noTrack = isTransparent() && !m_have_background_color && !m_background_gradient_set && !drawborder;
+		if((cornerRadius || m_background_gradient_set) && !noTrack)
 		{
 			if(m_have_background_color) {
 				painter.setBackgroundColor(m_background_color);
@@ -155,7 +159,9 @@ int eSlider::event(int event, void *data, void *data2)
 					rect.setHeight(size().height()-m_border_width*2);
 				else
 					rect.setWidth(size().width()-m_border_width*2);
-				painter.drawRectangle(rect);
+				// blend the rounded fill over what is behind it, otherwise the edge pixels
+				// overwrite instead of mixing and stacked sliders show their backdrop
+				painter.drawRectangle(rect, !m_foreground_gradient_set && m_alphaBlend);
 			}
 			else if (m_alphaBlend && m_have_foreground_color) {
 				painter.setBackgroundColor(m_foreground_color);

@@ -1152,6 +1152,20 @@ int eDVBCIInterfaces::setCIEnabled(int slotid, bool enabled)
 	return -1;
 }
 
+/* The slots are created before the python config query is available, so the
+   constructor can only see defaults. Python pushes the real values in here. */
+int eDVBCIInterfaces::setCIOperatorProfileDisabled(int slotid, bool disabled)
+{
+	singleLock s(m_slot_lock);
+	eDVBCISlot *slot = getSlot(slotid);
+	if (slot)
+	{
+		slot->setOperatorProfileDisabled(disabled);
+		return 0;
+	}
+	return -1;
+}
+
 int eDVBCIInterfaces::setCIClockRate(int slotid, const std::string &rate)
 {
 	singleLock s(m_slot_lock);
@@ -1359,8 +1373,10 @@ void eDVBCISlot::data(int what)
 				eTraceNoNewLine("%02x ",data[i]);
 			eTraceNoNewLine("\n");
 			eDVBCISession::receiveData(this, data, r);
-			// receiving data means probably decoding on this slot is started succesfully. So mark this slot as descrambling
-			/* emit */ eDVBCI_UI::getInstance()->m_messagepump.send(eDVBCIInterfaces::Message(eDVBCIInterfaces::Message::slotDecodingStateChanged, getSlotID(), 2));
+			// receiving data means probably decoding on this slot is started succesfully. So mark this slot as descrambling,
+			// unless the module answered the CA PMT with "can not descramble" (e.g. no subscription)
+			if (!m_ca_denied)
+				/* emit */ eDVBCI_UI::getInstance()->m_messagepump.send(eDVBCIInterfaces::Message(eDVBCIInterfaces::Message::slotDecodingStateChanged, getSlotID(), 2));
 			eDVBCISession::pollAll();
 			return;
 		}
@@ -1389,6 +1405,7 @@ eDVBCISlot::eDVBCISlot(eMainloop *context, int nr)
 	m_isCamMgrRoutingActive = false;
 	m_ciPlusRoutingDone = false;
 	m_ca_demux_id = -1;
+	m_ca_denied = false;
 	m_context = context;
 	m_ciplus_routing_tunernum = -1;
 	state = stateDisabled;
@@ -1407,10 +1424,6 @@ eDVBCISlot::eDVBCISlot(eMainloop *context, int nr)
 	snprintf(config_key_operator_profile, 255, "config.ci.%d.disable_operator_profile", slotid);
 	bool operator_profile_disabled = eConfigManager::getConfigBoolValue(config_key_operator_profile, false);
 	m_operator_profiles_disabled = operator_profile_disabled;
-	char config_key_alt_ca[255];
-	snprintf(config_key_alt_ca, 255, "config.ci.%d.alternative_ca_handling", slotid);
-	int alt_ca = eConfigManager::getConfigIntValue(config_key_alt_ca, 0);
-	m_alt_ca_handling = alt_ca;
 	if (enabled)
 		openDevice();
 	else
@@ -1798,6 +1811,8 @@ int eDVBCISlot::sendCAPMT(eDVBServicePMTHandler *pmthandler, const std::vector<u
 //			eDebugNoNewLine("\n");
 
 			//dont need tag and lenfield
+			if (!sendEmpty)
+				m_ca_denied = false; // wait for the module's CA_PMT_reply
 			ca_manager->sendCAPMT(raw_data + hlen, wp - hlen);
 			running_services[program_number] = pmt_version;
 
@@ -1825,10 +1840,20 @@ int eDVBCISlot::sendCAPMT(eDVBServicePMTHandler *pmthandler, const std::vector<u
 
 void eDVBCISlot::removeService(uint16_t program_number)
 {
+	// The empty CAPMT path (which normally removes the program from the
+	// descrambler) is skipped when the PMT is already gone, so release here too.
 	if (program_number == 0xFFFF)
+	{
 		running_services.clear();  // remove all
+		if (cc_manager)
+			cc_manager->releaseAllPrograms();
+	}
 	else
+	{
 		running_services.erase(program_number);  // remove single service
+		if (cc_manager)
+			cc_manager->releaseProgram(program_number);
+	}
 }
 
 int eDVBCISlot::setSource(const std::string &source)

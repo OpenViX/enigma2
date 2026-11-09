@@ -1263,7 +1263,18 @@ void eDVBResourceManager::DVBChannelStateChanged(iDVBChannel *chan)
 void eDVBResourceManager::releaseCachedChannel()
 {
 	eDebug("[eDVBResourceManager] release cached channel (timer timeout)");
+	m_releaseCachedChannelTimer->stop();
 	m_cached_channel=0;
+}
+
+void eDVBResourceManager::releaseCachedChannelIfIdle()
+{
+	/* the timer only runs while the cached channel has no other user */
+	if (m_cached_channel && m_releaseCachedChannelTimer->isActive())
+	{
+		m_cached_channel_state_changed_conn.disconnect();
+		releaseCachedChannel();
+	}
 }
 
 RESULT eDVBResourceManager::allocateRawChannel(eUsePtr<iDVBChannel> &channel, int slot_index)

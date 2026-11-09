@@ -1,5 +1,9 @@
 #include <unistd.h>
+#include <stdlib.h>
 #include <fstream>
+#include <list>
+#include <string>
+#include <unordered_map>
 #include <lib/gdi/grc.h>
 #include <lib/gdi/font.h>
 #include <lib/base/init.h>
@@ -21,6 +25,53 @@ void *gRC::thread_wrapper(void *ptr)
 #endif
 
 gRC *gRC::instance = 0;
+
+// Laid out paragraphs of the renderText opcodes, most recently used first.
+// Not locked: renderText opcodes are only executed on the gRC render thread (or, with
+// SYNC_PAINT, on the main thread that submits them), never from both at once. Paragraphs
+// built on the main thread for renderPara do not go through this cache.
+#define TEXT_PARA_CACHE_SIZE 256
+#define TEXT_PARA_CACHE_MAXLEN 256
+typedef std::list<std::pair<std::string, ePtr<eTextPara>>> TextParaLru;
+static TextParaLru s_text_para_lru;
+static std::unordered_map<std::string, TextParaLru::iterator> s_text_para_index;
+
+static ePtr<eTextPara> textParaCacheGet(const std::string &key)
+{
+	auto it = s_text_para_index.find(key);
+	if (it == s_text_para_index.end())
+		return nullptr;
+	s_text_para_lru.splice(s_text_para_lru.begin(), s_text_para_lru, it->second);
+	return it->second->second;
+}
+
+// Admission filter: while fast scrolling nearly every string is seen once and never again, and
+// inserting those would only evict entries that are still useful (and allocate for nothing).
+// A string is cached when it comes up for the second time; the first sighting is remembered
+// as a hash in a small direct-mapped table.
+#define TEXT_PARA_SEEN_SLOTS 1024
+static size_t s_text_para_seen[TEXT_PARA_SEEN_SLOTS];
+
+static bool textParaCacheAdmit(const std::string &key)
+{
+	const size_t h = std::hash<std::string>()(key);
+	size_t &slot = s_text_para_seen[h % TEXT_PARA_SEEN_SLOTS];
+	if (slot == h)
+		return true;
+	slot = h;
+	return false;
+}
+
+static void textParaCachePut(const std::string &key, eTextPara *para)
+{
+	s_text_para_lru.emplace_front(key, para);
+	s_text_para_index[key] = s_text_para_lru.begin();
+	if (s_text_para_lru.size() > TEXT_PARA_CACHE_SIZE)
+	{
+		s_text_para_index.erase(s_text_para_lru.back().first);
+		s_text_para_lru.pop_back();
+	}
+}
 
 gRC::gRC() : rp(0), wp(0)
 #ifdef SYNC_PAINT
@@ -112,6 +163,10 @@ void gRC::submit(const gOpcode &o)
 		queue[wp++] = o;
 		if (wp == MAXSIZE)
 			wp = 0;
+#ifndef SYNC_PAINT
+		if (o.opcode == gOpcode::flush)
+			m_flush_pending.push_back(std::chrono::steady_clock::now());
+#endif
 		if (o.opcode == gOpcode::flush || o.opcode == gOpcode::shutdown || o.opcode == gOpcode::notify)
 #ifndef SYNC_PAINT
 			pthread_cond_signal(&cond); // wakeup gdi thread
@@ -123,9 +178,32 @@ void gRC::submit(const gOpcode &o)
 	}
 }
 
+static bool renderTraceEnabled()
+{
+	static const bool enabled = []() {
+		const char *e = getenv("ENIGMA_KEY_TRACE");
+		return e && atoi(e) != 0;
+	}();
+	return enabled;
+}
+
+int gRC::pendingFrames()
+{
+#ifndef SYNC_PAINT
+	pthread_mutex_lock(&mutex);
+	const int n = (int)m_flush_pending.size();
+	pthread_mutex_unlock(&mutex);
+	return n;
+#else
+	return 0;
+#endif
+}
+
 void *gRC::thread()
 {
 	int need_notify = 0;
+	std::chrono::steady_clock::time_point frameStart;
+	bool frameStartSet = false;
 #ifdef USE_LIBVUGLES2
 	if (gles_open())
 	{
@@ -162,6 +240,20 @@ void *gRC::thread()
 			gOpcode o(queue[rp++]);
 			if (rp == MAXSIZE)
 				rp = 0;
+			std::chrono::steady_clock::time_point submitted;
+			const bool isFlush = o.opcode == gOpcode::flush;
+			int behind = 0;
+			if (isFlush && !m_flush_pending.empty())
+			{
+				submitted = m_flush_pending.front();
+				m_flush_pending.pop_front();
+				behind = (int)m_flush_pending.size();
+			}
+			if (!frameStartSet)
+			{
+				frameStart = std::chrono::steady_clock::now();
+				frameStartSet = true;
+			}
 #ifndef SYNC_PAINT
 			pthread_mutex_unlock(&mutex);
 #endif
@@ -179,6 +271,18 @@ void *gRC::thread()
 				o.dc->exec(&o);
 				// o.dc is a gDC* filled with grabref... so we must release it here
 				o.dc->Release();
+			}
+			if (isFlush)
+			{
+				if (renderTraceEnabled())
+				{
+					const auto now = std::chrono::steady_clock::now();
+					const long latency = (long)std::chrono::duration_cast<std::chrono::milliseconds>(now - submitted).count();
+					const long cost = (long)std::chrono::duration_cast<std::chrono::milliseconds>(now - frameStart).count();
+					if (latency > 100 || cost > 60 || behind > 2)
+						eDebug("[gRC] render trace: frame took %ldms to draw, %ldms from submit to done, %d more frames waiting", cost, latency, behind);
+				}
+				frameStartSet = false;
 			}
 		}
 		else
@@ -886,7 +990,7 @@ void gDC::exec(const gOpcode *o)
 		break;
 	case gOpcode::renderText:
 	{
-		ePtr<eTextPara> para = new eTextPara(o->parm.renderText->area);
+		ePtr<eTextPara> para;
 		int flags = o->parm.renderText->flags;
 		int border = o->parm.renderText->border;
 		int markedpos = o->parm.renderText->markedpos;
@@ -894,52 +998,58 @@ void gDC::exec(const gOpcode *o)
 		if (markedpos != -1)
 			border = 0;
 		ASSERT(m_current_font);
-		para->setFont(m_current_font);
 
-		std::string dots = reinterpret_cast<const char*>(u8"…");
-
+		// RT_ELLIPSIS is handled while laying out the glyphs (see eTextPara::ellipsizeLine),
+		// it works for single lines, lines separated by \n and for wrapped text
+		int rsflags = 0;
+		if (flags & gPainter::RT_WRAP)
+			rsflags |= RS_WRAP;
 		if (flags & gPainter::RT_ELLIPSIS)
-		{
-			if (flags & gPainter::RT_WRAP) // Remove wrap
-				flags -= gPainter::RT_WRAP;
-			std::string text = o->parm.renderText->text;
-			
-			text += dots;
+			rsflags |= gPainter::RT_ELLIPSIS;
 
-			eTextPara testpara(o->parm.renderText->area);
-			testpara.setFont(m_current_font);
-			testpara.renderString(text.c_str(), 0);
-			int bw = testpara.getBoundBox().width();
-			int w = o->parm.renderText->area.width();
-			if (bw > w) // Available space not fit
-			{
-				float pers = (float)w / (float)bw;
-				text = o->parm.renderText->text;
-				int ns = text.size() * pers;
-				if ((int)text.size() > ns)
-				{
-					text.resize(ns);
-					text += dots;
-				}
-				if (o->parm.renderText->text)
-					free(o->parm.renderText->text);
-				o->parm.renderText->text = strdup(text.c_str());
-			}
+		int align = eTextPara::dirBidi;
+		if (flags & gPainter::RT_HALIGN_LEFT)
+			align = eTextPara::dirLeft;
+		else if (flags & gPainter::RT_HALIGN_RIGHT)
+			align = eTextPara::dirRight;
+		else if (flags & gPainter::RT_HALIGN_CENTER)
+			align = (flags & gPainter::RT_WRAP) ? eTextPara::dirCenter : eTextPara::dirCenterIfFits;
+		else if (flags & gPainter::RT_HALIGN_BLOCK)
+			align = eTextPara::dirBlock;
+
+		// Laying out text (shaping, bidi, glyph lookups) is the same work every time a list row
+		// is repainted, only its position differs. Keep the laid out paragraph of plain text
+		// and just move it; the layout depends on the size of the area, never on its position.
+		const eRect textarea = o->parm.renderText->area;
+		const char *text = o->parm.renderText->text;
+		// ENIGMA_TEXT_PARA_CACHE=0 disables the cache (to A/B test it).
+		static const bool cache_enabled = []() {
+			const char *e = getenv("ENIGMA_TEXT_PARA_CACHE");
+			return !(e && atoi(e) == 0);
+		}();
+		bool cacheable = cache_enabled && !o->parm.renderText->border && text && strlen(text) <= TEXT_PARA_CACHE_MAXLEN;
+		std::string cachekey;
+		if (cacheable)
+		{
+			cachekey = m_current_font->family + '|' + std::to_string(m_current_font->pointSize) + '|' +
+				std::to_string(rsflags) + '|' + std::to_string(align) + '|' +
+				std::to_string(textarea.width()) + 'x' + std::to_string(textarea.height()) + '|' + text;
+			para = textParaCacheGet(cachekey);
+			if (para)
+				para->moveBy(textarea.x() - para->getArea().x(), textarea.y() - para->getArea().y());
 		}
-		para->renderString(o->parm.renderText->text, (flags & gPainter::RT_WRAP) ? RS_WRAP : 0, o->parm.renderText->border);
+		if (!para)
+		{
+			para = new eTextPara(textarea);
+			para->setFont(m_current_font);
+			para->renderString(text, rsflags, o->parm.renderText->border);
+			para->realign(align);
+			if (cacheable && textParaCacheAdmit(cachekey))
+				textParaCachePut(cachekey, para);
+		}
 
 		if (o->parm.renderText->text)
 			free(o->parm.renderText->text);
-		if (flags & gPainter::RT_HALIGN_LEFT)
-			para->realign(eTextPara::dirLeft);
-		else if (flags & gPainter::RT_HALIGN_RIGHT)
-			para->realign(eTextPara::dirRight);
-		else if (flags & gPainter::RT_HALIGN_CENTER)
-			para->realign((flags & gPainter::RT_WRAP) ? eTextPara::dirCenter : eTextPara::dirCenterIfFits);
-		else if (flags & gPainter::RT_HALIGN_BLOCK)
-			para->realign(eTextPara::dirBlock);
-		else
-			para->realign(eTextPara::dirBidi);
 
 		ePoint offset = m_current_offset;
 

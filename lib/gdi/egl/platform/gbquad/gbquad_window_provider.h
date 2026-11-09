@@ -114,6 +114,8 @@ private:
 	bool m_joined_nxclient;                    // NxClient_Join() succeeded - must be balanced by NxClient_Uninit()
 
 public:
+	// Small Nexus GPU heap: keep the GUI's live textures under this (see gTextureManager::setDefaultBudget()).
+	int textureBudgetMB() const override { return 64; } 
 	GbquadWindowProvider();
 	virtual ~GbquadWindowProvider();
 
@@ -127,6 +129,8 @@ public:
 	bool needsStraightAlphaPresent() override;
 	float presentUnpremultiplyPower() override;
 	bool premultipliesBlits() override;
+	// Nexus graphics colour (contrast + saturation) so SDR OSD white lands at `nits` in HDR10.
+	bool setHdrOsdWhiteNits(float nits) override;
 
 	// `stretch` (set in init(), see its own comment there) makes Nexus's
 	// compositor scale THIS window's authored width/height to fill the

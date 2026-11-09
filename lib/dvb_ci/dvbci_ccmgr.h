@@ -2,6 +2,8 @@
 #define __dvbci_dvbci_ccmgr_h
 
 #include <memory>
+#include <map>
+#include <vector>
 #include <openssl/x509.h>
 #include <openssl/evp.h>
 #include <openssl/param_build.h>
@@ -243,6 +245,7 @@ class eDVBCICcSession: public eDVBCISession
 
 	/* descrambler key */
 	bool m_descrambler_new_key;
+	std::map<uint16_t, std::vector<uint16_t>> m_programs;
 	uint8_t m_descrambler_key_iv[32];
 	uint8_t m_descrambler_odd_even;
 
@@ -293,6 +296,9 @@ public:
 	void send(const unsigned char *tag, const void *data, int len);
 	void addProgram(uint16_t program_number, std::vector<uint16_t>& pids);
 	void removeProgram(uint16_t program_number, std::vector<uint16_t>& pids);
+	/* drop a program using the pids remembered from addProgram (no PMT needed) */
+	void releaseProgram(uint16_t program_number);
+	void releaseAllPrograms();
 };
 
 #endif

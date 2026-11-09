@@ -57,6 +57,8 @@ protected:
 	virtual int getListSize() { return 0; }
 
 	eListbox *m_listbox;
+	// ellipsis for text that does not fit its box, can be disabled per listbox from the skin
+	bool ellipsisEnabled();
 #endif
 };
 
@@ -128,6 +130,18 @@ public:
 	enum { orHorizontal, orVertical, orGrid };
 	void setOrientation(int orientation);
 
+	/* text alignment for setVAlign/setHAlign; the same values as eListboxStyle::align*, which is hidden from SWIG, so
+	   the skin (AttributeParser.valign/halign) can reach them as eListbox.alignCenter etc. */
+	enum
+	{
+		alignLeft,
+		alignTop = alignLeft,
+		alignCenter,
+		alignRight,
+		alignBottom = alignRight,
+		alignBlock
+	};
+
 	void setContent(iListboxContent *content);
 
 	void allowNativeKeys(bool allow);
@@ -171,6 +185,8 @@ public:
 	void setItemHeight(int h);
 	void setItemWidth(int w);
 	void setSelectionEnable(int en);
+	void setEllipsis(int en);
+	bool getEllipsis() const { return m_ellipsis; }
 
 	void setBackgroundColor(const gRGB &col);
 	void setBackgroundColorSelected(gRGB &col);
@@ -252,6 +268,7 @@ private:
 	int m_items_per_page;
 	int m_items_per_page_with_partials;
 	int m_selection_enabled;
+	bool m_ellipsis;
 	void setItemCornerRadiusInternal(int radius, uint8_t edges, int index);
 	void setItemGradientInternal(uint8_t index, const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend);
 

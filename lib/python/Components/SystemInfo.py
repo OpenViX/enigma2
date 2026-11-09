@@ -3,7 +3,7 @@ from hashlib import md5
 from os import listdir, access, R_OK
 from os.path import isfile, join as pathjoin
 from re import split
-from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager, eDVBCSAEngine, getEnigmaLastCommitHash, getOARev
+from enigma import Misc_Options, eDVBCIInterfaces, eDVBResourceManager, eDVBCSAEngine, getEnigmaLastCommitHash, getOARev, eglOsdRectSupported
 
 from Components.RcModel import rc_model
 from Tools.Directories import fileCheck, fileExists, fileHas, pathExists, resolveFilename, SCOPE_LIBDIR, SCOPE_SKIN, fileReadLine, fileReadLines
@@ -191,7 +191,7 @@ def hasInitCam():
 
 
 SystemInfo["CanChangeOsdAlpha"] = access('/proc/stb/video/alpha', R_OK) and True or False
-SystemInfo["CanChangeOsdPosition"] = (access('/proc/stb/fb/dst_left', R_OK) or access('/proc/stb/vmpeg/0/dst_left', R_OK)) and True or False
+SystemInfo["CanChangeOsdPosition"] = (access('/proc/stb/fb/dst_left', R_OK) or access('/proc/stb/vmpeg/0/dst_left', R_OK) or eglOsdRectSupported()) and True or False
 SystemInfo["OsdSetup"] = SystemInfo["CanChangeOsdPosition"]
 SystemInfo["HasUsbhdd"] = {}
 SystemInfo["ArchIsARM"] = ARCHITECTURE.startswith(("arm", "cortex"))
@@ -215,6 +215,9 @@ SystemInfo["NumVideoDecoders"] = getNumVideoDecoders()
 SystemInfo["Udev"] = not fileExists("/dev/.devfsd")
 SystemInfo["HasFullHDSkinSupport"] = MODEL not in ("vipertwin",)
 SystemInfo["PIPAvailable"] = MODEL not in ("i55plus") and SystemInfo["NumVideoDecoders"] > 1
+# PiP from servicemp3 needs the second video device to accept memory writes from dvbvideosink (decoder=1).
+# VU+ dvb-bcm7444 only feeds video1 from the demux (brcm_video2_write is a stub), so use the DVB path there.
+SystemInfo["PiPServiceMP3"] = SystemInfo["PIPAvailable"] and BRAND != "vuplus"
 SystemInfo["CanMeasureFrontendInputPower"] = eDVBResourceManager.getInstance().canMeasureFrontendInputPower()
 SystemInfo["12V_Output"] = Misc_Options.getInstance().detected_12V_output()
 SystemInfo["ZapMode"] = fileCheck("/proc/stb/video/zapmode") or fileCheck("/proc/stb/video/zapping_mode")
@@ -246,6 +249,7 @@ SystemInfo["hasHdmiCec"] = fileExists("/dev/hdmi_cec") or fileExists("/dev/misc/
 SystemInfo["HasExternalPIP"] = MODEL not in ("et9x00", "et6x00", "et5x00") and fileCheck("/proc/stb/vmpeg/1/external")
 SystemInfo["VideoDestinationConfigurable"] = fileExists("/proc/stb/vmpeg/0/dst_left")
 SystemInfo["hasPIPVisibleProc"] = fileCheck("/proc/stb/vmpeg/1/visible")
+SystemInfo["PiPLimited720x576"] = BOXTYPE in ("gbquad4kpro", "vuduo4klite")  # hardware limits PiP to 720x576, no Big PiP / Splitscreen
 SystemInfo["VFD_scroll_repeats"] = not SystemInfo["7segment"] and MODEL not in ("et8500",) and fileCheck("/proc/stb/lcd/scroll_repeats")
 SystemInfo["VFD_scroll_delay"] = not SystemInfo["7segment"] and MODEL not in ("et8500",) and fileCheck("/proc/stb/lcd/scroll_delay")
 SystemInfo["VFD_initial_scroll_delay"] = not SystemInfo["7segment"] and MODEL not in ("et8500",) and fileCheck("/proc/stb/lcd/initial_scroll_delay")
@@ -256,7 +260,6 @@ SystemInfo["LCDMiniTVPiP"] = SystemInfo["LCDMiniTV"] and MODEL != "gb800ueplus"
 SystemInfo["LcdPowerOn"] = fileExists("/proc/stb/power/vfd")
 SystemInfo["FastChannelChange"] = False
 SystemInfo["Blindscan_t2_available"] = fileCheck("/proc/stb/info/vumodel") and MODEL.startswith("vu")
-SystemInfo["Vu_EAC3_fix"] = MODEL in ("vuultimo4k", "vuduo4kse")
 SystemInfo["HasTranscoding"] = pathExists("/proc/stb/encoder/0") or fileCheck("/dev/bcm_enc0")
 SystemInfo["HasH265Encoder"] = fileHas("/proc/stb/encoder/0/vcodec_choices", "h265")
 SystemInfo["CanNotDoSimultaneousTranscodeAndPIP"] = MODEL in ("vusolo4k", "gb7252")
@@ -302,7 +305,6 @@ SystemInfo["hasRCA"] = SystemInfo["rca"]
 SystemInfo["hasScart"] = SystemInfo["scart"]
 SystemInfo["hasScartYUV"] = SystemInfo["scartyuv"]
 SystemInfo["hasYUV"] = SystemInfo["yuv"]
-SystemInfo["needsVideoJudderDriverFix"] = BOXTYPE in ("gbquad4kpro", "vuduo4klite")
 SystemInfo["scalerSharpnessWorkaround"] = BOXTYPE in ("gbquad", "gbquadplus")
 SystemInfo["dmVideoRates"] = MODEL in ("dm900", "dm920")
 

@@ -1,8 +1,10 @@
+import NavigationInstance
 from enigma import eEPGCache
 
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 from Components.Converter.genre import getGenreStringSub, getGenreStringLong
+from Components.Sources.ServiceEvent import ServiceEvent
 from Components.config import config
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 from time import time, localtime, mktime, strftime
@@ -200,8 +202,8 @@ class EventName(Converter):
 		"NameNow": ("type", NAME_NOW),
 		"NextName": ("type", NAME_NEXT),
 		"NameNext": ("type", NAME_NEXT),
-		"NextNameOnly": ("type", NAME_NEXT2),
-		"NameNextOnly": ("type", NAME_NEXT2),
+		"NextNameOnly": ("type", NAME_NEXT2),  # only for use with Sources.ServiceEvent
+		"NameNextOnly": ("type", NAME_NEXT2),  # only for use with Sources.ServiceEvent
 		"Genre": ("type", GENRE),
 		"GenreList": ("type", GENRELIST),
 		"Rating": ("type", RATING),
@@ -210,10 +212,10 @@ class EventName(Converter):
 		"PdcTime": ("type", PDCTIME),
 		"PdcTimeShort": ("type", PDCTIMESHORT),
 		"IsRunningStatus": ("type", ISRUNNINGSTATUS),
-		"NextDescription": ("type", NEXT_DESCRIPTION),
-		"ThirdName": ("type", THIRD_NAME),
-		"ThirdNameOnly": ("type", THIRD_NAME2),
-		"ThirdDescription": ("type", THIRD_DESCRIPTION),
+		"NextDescription": ("type", NEXT_DESCRIPTION),  # only for use with Sources.ServiceEvent
+		"ThirdName": ("type", THIRD_NAME),  # only for use with Sources.ServiceEvent
+		"ThirdNameOnly": ("type", THIRD_NAME2),  # only for use with Sources.ServiceEvent
+		"ThirdDescription": ("type", THIRD_DESCRIPTION),  # only for use with Sources.ServiceEvent
 		"RawRating": ("type", RAWRATING),
 		"RatingTextAndColor": ("type", RATINGTEXTANDCOLOR),
 		"RatingCountry": ("type", RATINGCOUNTRY),
@@ -257,6 +259,9 @@ class EventName(Converter):
 	}
 
 	# Maps each format-string token to the name of the method that produces its text.
+	# Types that read genre/rating data. The event from the live stream can lack it, so those are filled in from the EPG cache.
+	CACHE_FILL_TYPES = (GENRE, GENRELIST, RATING, SRATING, RATINGICON, RAWRATING, RATINGCOUNTRY, RATINGTEXTANDCOLOR)
+
 	FORMAT_TOKENS = {
 		"NAME": "formatName",
 		"STARTTIME": "formatStartTime",
@@ -309,6 +314,9 @@ class EventName(Converter):
 		# Choose the trim function and the handler once, so getText never has to work out the type again.
 		self.trimText = self.trimStrip if self.trim else str
 		self.handler = getattr(self, self.HANDLERS.get(self.type, "textEmpty"))
+		if self.type in self.CACHE_FILL_TYPES:
+			handler = self.handler
+			self.handler = lambda event: handler(self.cachedEvent(event))
 
 	@staticmethod
 	def trimStrip(text):
@@ -368,6 +376,16 @@ class EventName(Converter):
 		return pgettext("now/next: 'now' event label", "Now") + ": " + self.trimText(event.getEventName())
 
 	# ---- Ratings ----
+
+	# The same event from the EPG cache if the given one has no genre or rating data, otherwise the given one.
+	# e.g. on 28E if we switch to show EIT Now/Next on the infobar, the genre data is not available.
+	def cachedEvent(self, event):
+		if event.getGenreDataList() or event.getParentalData() or not self.epgcache:
+			return event
+		navigation = NavigationInstance.instance
+		reference = getattr(self.source, "service", None) or (navigation and navigation.getCurrentlyPlayingServiceReference())
+		cached = reference and self.epgcache.lookupEventTime(reference, event.getBeginTime())
+		return cached if cached and cached.getBeginTime() == event.getBeginTime() else event
 
 	def getRatingEntry(self, event, useConfigCountry=True):
 		rating = event.getParentalData()
@@ -440,12 +458,20 @@ class EventName(Converter):
 	def textPdc(self, event):
 		return _("PDC") if event.getPdcPil() else ""
 
+	# The PDC start (month, day, hour and minute are packed into the PIL) as a time struct, or None if there is none or it is not a date (control codes).
 	def pdcStart(self, event):
 		pil = event.getPdcPil()
 		if not pil:
 			return None
+		month = (pil & 0x7800) >> 11
+		day = (pil & 0xF8000) >> 15
+		hour = (pil & 0x7C0) >> 6
+		minute = pil & 0x3F
+		if not (1 <= month <= 12 and 1 <= day <= 31 and hour < 24 and minute < 60):
+			return None
 		begin = localtime(event.getBeginTime())
-		return localtime(mktime([begin.tm_year, (pil & 0x7800) >> 11, (pil & 0xF8000) >> 15, (pil & 0x7C0) >> 6, (pil & 0x3F), 0, begin.tm_wday, begin.tm_yday, begin.tm_isdst]))
+		year = begin.tm_year + (1 if month < begin.tm_mon - 6 else 0)  # A PDC date early in the year for an event late in the year is next year's.
+		return localtime(mktime((year, month, day, hour, minute, 0, 0, 0, -1)))
 
 	def textPdcTime(self, event):
 		start = self.pdcStart(event)
@@ -503,7 +529,13 @@ class EventName(Converter):
 		return ""
 
 	def textNameNext(self, event):
-		return self.laterName(1, pgettext("now/next: 'next' event label", "Next"))
+		label = pgettext("now/next: 'next' event label", "Next")
+		# The conditional below is a special case just for NAME_NEXT. It comes from
+		# the original code but was invoked by an exception which obscured the logic.
+		# It has now been made explicit for clarity.
+		if not isinstance(self.source, ServiceEvent):
+			return label + ": " + self.trimText(event.getEventName())
+		return self.laterName(1, label)
 
 	def textNameNextOnly(self, event):
 		return self.laterName(1)

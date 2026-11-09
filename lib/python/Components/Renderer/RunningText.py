@@ -188,6 +188,7 @@ class RunningText(Renderer):
 			self.mPageDelay = max(self.mStepTimeout, self.mPageDelay)
 
 		self.scroll_label.setFont(self.txfont)
+		self.scroll_label.setEllipsis(0)  # the text is scrolled, never cut
 		if not (self.txtflags & RT_WRAP):
 			self.scroll_label.setNoWrap(1)
 		self.scroll_label.setVAlign(valign)

@@ -142,6 +142,10 @@ void gtexDownscaleBGRA(const uint32_t* src, int src_stride_px, int src_w, int sr
 }
 
 gTextureManager::gTextureManager() : m_egl_display(EGL_NO_DISPLAY) {
+	if (const char* e = getenv("ENIGMA_TEX_BUDGET_MB")) {
+		m_soft_budget = (size_t)std::max(0, atoi(e)) << 20;
+		m_budget_fixed = true; // 0 = explicitly no budget, nothing is learned either
+	}
 	std::lock_guard<std::mutex> guard(activeManagerMutex());
 	s_active_manager = this;
 }
@@ -253,8 +257,22 @@ static void checkPixmapAllZero(const gUnmanagedSurface* surface, int width, int 
 	eDebug("[gTextureManager] TEX_CHECK: uploading ALL-ZERO pixmap %dx%d bpp=%d stride=%d data=%p - will render as black", width, height, surface->bpp, surface->stride, surface->data);
 }
 
+static bool gpuPaletteEnabled() {
+	static const bool on = !(getenv("ENIGMA_EGL_GPU_PALETTE") && atoi(getenv("ENIGMA_EGL_GPU_PALETTE")) == 0);
+	return on;
+}
+
+void gTextureManager::dropPalette(GLuint texture_id) {
+	auto it = m_palettes.find(texture_id);
+	if (it == m_palettes.end())
+		return;
+	glDeleteTextures(1, &it->second.tex);
+	m_palettes.erase(it);
+}
+
 GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 	m_last_upload_oom = false;
+	m_last_palette = PaletteInfo();
 	if (!pixmap || !pixmap->surface)
 		return 0;
 
@@ -393,6 +411,50 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 #if TEX_UPLOAD_TIMING
 		eDebug("[gTextureManager] timing: bpp32 upload %dx%d (row_pixels=%d) took %.2fms", width, height, row_pixels, ms_since(t_upload0));
 #endif
+	} else if (surface->bpp == 8 && surface->clut.data && gpuPaletteEnabled()) {
+		// Upload the raw indices (1 byte/pixel) and the palette as a 256x1 texture; the shader does the lookup. Saves the CPU
+		// expansion and a 4x smaller glTexImage2D, which is what dominated the cost of building a screenful of list rows.
+#if TEX_UPLOAD_TIMING
+		auto t_upload0 = std::chrono::steady_clock::now();
+#endif
+		const GLenum idx_internal = gles::isGLES3() ? GL_R8 : GL_LUMINANCE;
+		const GLenum idx_format = gles::isGLES3() ? GL_RED : GL_LUMINANCE;
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		if (surface->stride == width) {
+			glTexImage2D(GL_TEXTURE_2D, 0, idx_internal, width, height, 0, idx_format, GL_UNSIGNED_BYTE, surface->data);
+		} else {
+			// No GL_UNPACK_ROW_LENGTH in GLES2: repack the padded rows.
+			std::vector<uint8_t> packed((size_t)width * height);
+			const uint8_t* src = (const uint8_t*)surface->data;
+			for (int row = 0; row < height; ++row)
+				memcpy(packed.data() + (size_t)row * width, src + (size_t)row * surface->stride, (size_t)width);
+			glTexImage2D(GL_TEXTURE_2D, 0, idx_internal, width, height, 0, idx_format, GL_UNSIGNED_BYTE, packed.data());
+		}
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+		// Same palette rule as the CPU expansion: entries beyond the palette size are an opaque grey ramp.
+		uint32_t pal[256];
+		const int n = std::min(surface->clut.colors, 256);
+		for (int i = 0; i < n; ++i)
+			pal[i] = surface->clut.data[i].argb() ^ 0xFF000000;
+		for (int i = std::max(n, 0); i < 256; ++i)
+			pal[i] = (0x010101 * i) | 0xFF000000;
+		GLuint pal_tex = 0;
+		glGenTextures(1, &pal_tex);
+		glBindTexture(GL_TEXTURE_2D, pal_tex);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, src_format, 256, 1, 0, src_format, GL_UNSIGNED_BYTE, pal);
+		m_last_palette.tex = pal_tex;
+		m_last_palette.w = width;
+		m_last_palette.h = height;
+#if TEX_UPLOAD_TIMING
+		eDebug("[gTextureManager] timing: bpp8 GPU-palette upload %dx%d took %.2fms", width, height, ms_since(t_upload0));
+#endif
 	} else if (surface->bpp == 8 && surface->clut.data) {
 		// 8-bit paletted image (often used for picons/skins).
 		// gles 3.0 does not support indexed color textures natively anymore,
@@ -522,6 +584,10 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 	if (upload_err == GL_OUT_OF_MEMORY) {
 		eDebug("[gTextureManager] texture upload FAILED (out of memory) %dx%d bpp=%d - not caching, will retry on next draw [live textures=%ld, ~%.1fMB tracked]", width, height, surface->bpp, m_live_texture_count, m_live_texture_bytes / 1048576.0);
 		glDeleteTextures(1, &texture_id);
+		if (m_last_palette.tex) {
+			glDeleteTextures(1, &m_last_palette.tex);
+			m_last_palette = PaletteInfo();
+		}
 		m_last_upload_oom = true;
 		return 0;
 	}
@@ -549,6 +615,15 @@ GLuint gTextureManager::getTexture(gPixmap* pixmap) {
 	// simply re-upload the next time they are drawn) and try again, instead of
 	// leaving this picture blank. At most two rounds, each freeing more.
 	if (!new_texture && m_last_upload_oom) {
+		if (!m_budget_fixed) {
+			// What was live when the driver gave up is the real capacity (less whatever other processes hold). Keep 20% headroom so
+			// the per-frame trim in gEGLDC::flip() stays ahead of the limit and this reactive path becomes the exception.
+			const size_t learned = std::max<size_t>(m_live_texture_bytes / 5 * 4, 8u << 20);
+			if (!m_soft_budget || learned < m_soft_budget) {
+				m_soft_budget = learned;
+				eDebug("[gTextureManager] texture budget learned from out-of-memory: ~%.1fMB", m_soft_budget / 1048576.0);
+			}
+		}
 		const size_t need = (size_t)sf->x * sf->y * 4;
 		size_t want = std::max<size_t>(need * 2, 4u << 20);
 		for (int round = 0; round < 2 && !new_texture; ++round, want *= 4) {
@@ -569,6 +644,11 @@ GLuint gTextureManager::getTexture(gPixmap* pixmap) {
 		// Bytes as uploaded: paletted (with a clut) and 32bpp surfaces are RGBA8,
 		// a clut-less 8bpp surface (glyph atlas) is single channel.
 		size_t bytes = (size_t)sf->x * sf->y * ((sf->bpp == 8 && !sf->clut.data) ? 1 : 4);
+		if (m_last_palette.tex) {
+			m_palettes[new_texture] = m_last_palette;
+			bytes = (size_t)sf->x * sf->y + 1024; // indices + 256x1 RGBA palette
+			m_last_palette = PaletteInfo();
+		}
 		m_texture_bytes[new_texture] = bytes;
 		m_live_texture_bytes += bytes;
 		eDebug("[gTextureManager] +texture id=%u live=%ld ~%.1fMB %dx%d bpp=%d", new_texture, m_live_texture_count, m_live_texture_bytes / 1048576.0,
@@ -577,35 +657,43 @@ GLuint gTextureManager::getTexture(gPixmap* pixmap) {
 	return new_texture;
 }
 
-size_t gTextureManager::evictLRU(size_t bytes_wanted) {
+size_t gTextureManager::evictLRU(size_t bytes_wanted, size_t max_count, unsigned int min_age) {
 	struct Cand {
 		unsigned int last_used;
 		GLuint id;
 		gUnmanagedSurface* surface;
 	};
 	std::vector<Cand> cands;
+	std::vector<GLuint> victims;
 	size_t freed = 0;
 	int evicted = 0;
 
-	// Held for the whole operation: ~gSurface() releases through the same lock,
-	// so a surface in this map cannot be destroyed while we touch it.
-	std::lock_guard<std::mutex> lock(m_deletion_mutex);
+	// Held while choosing the victims and taking them out of m_texture_owner: ~gSurface()
+	// releases through the same lock, so a surface in this map cannot be destroyed while we
+	// touch it. The GL deletes below run after the lock is released - the driver may wait
+	// for the GPU in glDeleteTextures(), and the main thread, destroying surfaces, must not
+	// be stuck on this mutex meanwhile.
+	std::unique_lock<std::mutex> lock(m_deletion_mutex);
 	for (const auto& kv : m_texture_owner) {
 		gUnmanagedSurface* sf = kv.second;
-		if (sf->gl_texture_pinned || sf->gl_last_used_frame == m_frame)
-			continue; // in use this frame, or updated in place
+		if (sf->gl_texture_pinned || m_frame - sf->gl_last_used_frame < std::max(min_age, 1u))
+			continue; // in use this frame (or still in flight), or updated in place
 		if (m_texture_to_image_map.count(kv.first))
 			continue; // DMA-BUF import, needs eglDestroyImage - leave alone
 		cands.push_back({sf->gl_last_used_frame, kv.first, sf});
 	}
-	std::sort(cands.begin(), cands.end(), [](const Cand& a, const Cand& b) { return a.last_used < b.last_used; });
+	auto older = [](const Cand& a, const Cand& b) { return a.last_used < b.last_used; };
+	if (max_count < cands.size())
+		std::partial_sort(cands.begin(), cands.begin() + max_count, cands.end(), older); // only the oldest few are needed
+	else
+		std::sort(cands.begin(), cands.end(), older);
 
 	for (const Cand& c : cands) {
-		if (freed >= bytes_wanted)
+		if (freed >= bytes_wanted || (size_t)evicted >= max_count)
 			break;
-		glDeleteTextures(1, &c.id);
 		c.surface->gl_texture_id = 0;
 		m_texture_owner.erase(c.id);
+		victims.push_back(c.id);
 		auto bit = m_texture_bytes.find(c.id);
 		if (bit != m_texture_bytes.end()) {
 			freed += bit->second;
@@ -615,8 +703,15 @@ size_t gTextureManager::evictLRU(size_t bytes_wanted) {
 		--m_live_texture_count;
 		++evicted;
 	}
+	lock.unlock();
+
+	if (!victims.empty()) {
+		glDeleteTextures((GLsizei)victims.size(), victims.data());
+		for (GLuint id : victims)
+			dropPalette(id);
+	}
 	if (evicted)
-		eDebug("[gTextureManager] out of memory: evicted %d least-recently-used textures (~%.1fMB), now live=%ld ~%.1fMB", evicted, freed / 1048576.0, m_live_texture_count,
+		eDebug("[gTextureManager] evicted %d least-recently-used textures (~%.1fMB), now live=%ld ~%.1fMB", evicted, freed / 1048576.0, m_live_texture_count,
 			m_live_texture_bytes / 1048576.0);
 	return freed;
 }
@@ -640,14 +735,19 @@ void gTextureManager::queueForDeletion(GLuint texture_id) {
 	if (texture_id == 0)
 		return;
 
-	std::lock_guard<std::mutex> lock(m_deletion_mutex);
-	m_pending_deletions.push_back(texture_id);
+	size_t pending;
+	{
+		std::lock_guard<std::mutex> lock(m_deletion_mutex);
+		m_pending_deletions.push_back(texture_id);
+		pending = m_pending_deletions.size();
+	}
 	// If this queue depth climbs and stays high, processDeletions() isn't
 	// being reached often enough (rather than surfaces simply never dying) -
 	// a different problem from the live_texture_count in getTexture()/
 	// processDeletions() ever growing, which would mean surfaces are dying
 	// but their textures are never queued/deleted at all.
-	eDebug("[gTextureManager] queued texture id=%u for deletion, pending=%zu", texture_id, m_pending_deletions.size());
+	// Logged outside the lock: a slow log sink must not hold up the render thread.
+	eDebug("[gTextureManager] queued texture id=%u for deletion, pending=%zu", texture_id, pending);
 }
 
 bool gTextureManager::hasPendingDeletions() {
@@ -656,13 +756,20 @@ bool gTextureManager::hasPendingDeletions() {
 }
 
 void gTextureManager::processDeletions() {
-	std::lock_guard<std::mutex> lock(m_deletion_mutex);
-	if (!m_pending_deletions.empty()) {
-		glDeleteTextures(m_pending_deletions.size(), m_pending_deletions.data());
-		m_live_texture_count -= (long)m_pending_deletions.size();
+	// Only the queue is guarded by the mutex; take it out and do the GL work unlocked, so the
+	// main thread queueing deletions for dying surfaces never waits for the driver.
+	std::vector<GLuint> deletions;
+	{
+		std::lock_guard<std::mutex> lock(m_deletion_mutex);
+		deletions.swap(m_pending_deletions);
+	}
+	if (!deletions.empty()) {
+		glDeleteTextures(deletions.size(), deletions.data());
+		m_live_texture_count -= (long)deletions.size();
 
 		PFNEGLDESTROYIMAGEKHRPROC eglDestroyImageKHR = (PFNEGLDESTROYIMAGEKHRPROC)eglGetProcAddress("eglDestroyImageKHR");
-		for (GLuint texture_id : m_pending_deletions) {
+		for (GLuint texture_id : deletions) {
+			dropPalette(texture_id);
 			auto bit = m_texture_bytes.find(texture_id);
 			if (bit != m_texture_bytes.end()) {
 				m_live_texture_bytes -= std::min(m_live_texture_bytes, bit->second);
@@ -677,8 +784,7 @@ void gTextureManager::processDeletions() {
 			}
 		}
 
-		eDebug("[gTextureManager] -texture count=%zu live=%ld ~%.1fMB", m_pending_deletions.size(), m_live_texture_count, m_live_texture_bytes / 1048576.0);
-		m_pending_deletions.clear();
+		eDebug("[gTextureManager] -texture count=%zu live=%ld ~%.1fMB", deletions.size(), m_live_texture_count, m_live_texture_bytes / 1048576.0);
 	}
 }
 

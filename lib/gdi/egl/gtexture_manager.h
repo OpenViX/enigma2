@@ -10,6 +10,7 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include <lib/gdi/gpixmap.h>
+#include <algorithm>
 #include <cstdint>
 #include <mutex>
 #include <unordered_map>
@@ -52,8 +53,28 @@ private:
 	// Frees least-recently-used textures (not drawn this frame, not pinned, not
 	// DMA-BUF imports) until about `bytes_wanted` are released. Their surfaces
 	// simply re-upload on next use. Returns the bytes released.
-	size_t evictLRU(size_t bytes_wanted);
+	// `max_count` bounds how many textures are deleted in one call (the rest wait for the next call), so a trim can be spread over
+	// several frames instead of stalling one.
+	// min_age: textures drawn fewer than this many frames ago are kept (1 = only skip the current frame).
+	size_t evictLRU(size_t bytes_wanted, size_t max_count = (size_t)-1, unsigned int min_age = 1);
 	size_t m_live_texture_bytes = 0;
+
+	// Soft ceiling for the live textures, 0 = none. ENIGMA_TEX_BUDGET_MB sets it; otherwise it is learned from the first
+	// GL_OUT_OF_MEMORY (a fraction of what was live at that moment), so from then on textures are released gradually every frame
+	// instead of all at once inside the draw that ran out of memory.
+	size_t m_soft_budget = 0;
+	bool m_budget_fixed = false;
+
+	// 8-bit paletted pixmaps are uploaded as a single-channel index texture plus a 256x1 palette texture and resolved in the fragment
+	// shader (see gTextureShader), instead of being expanded to RGBA on the CPU. ENIGMA_EGL_GPU_PALETTE=0 restores the CPU expansion.
+	// GL thread only, like the other GL state here.
+	struct PaletteInfo {
+		GLuint tex = 0;
+		int w = 0, h = 0;
+	};
+	std::unordered_map<GLuint, PaletteInfo> m_palettes; // index texture -> its palette
+	PaletteInfo m_last_palette; // set by createTextureFromPixmap() for the texture it just made
+	void dropPalette(GLuint texture_id);
 
 	// unified method to generate and upload the texture based on bpp
 	GLuint createTextureFromPixmap(gPixmap* pixmap);
@@ -75,6 +96,19 @@ public:
 	void setMaxTextureSize(int max_dim) { m_max_texture_size = max_dim; }
 	int maxTextureSize() const { return m_max_texture_size; }
 
+	// True if `texture_id` holds palette indices: `palette_tex` is its 256x1 palette and (w, h) the index texture's size.
+	bool indexedInfo(GLuint texture_id, GLuint& palette_tex, int& w, int& h) const {
+		if (m_palettes.empty())
+			return false;
+		auto it = m_palettes.find(texture_id);
+		if (it == m_palettes.end())
+			return false;
+		palette_tex = it->second.tex;
+		w = it->second.w;
+		h = it->second.h;
+		return true;
+	}
+
 	// returns the gl texture id, creating it on the fly if not cached
 	GLuint getTexture(gPixmap* pixmap);
 
@@ -95,6 +129,32 @@ public:
 		++m_frame;
 		return evictLRU((size_t)-1);
 	}
+
+	// Evicts least-recently-used textures (not used this frame) until the live ones hold at most `max_bytes`; returns the bytes
+	// released. The manager has no budget of its own: it keeps every texture until the driver runs out of memory. That is fine
+	// while enigma2 is alone on the GPU, but the GPU heap is also used by the web browser (HbbTV) and it cannot evict.
+	// min_age > 1 spares textures the GPU may still be reading from frames in flight: deleting those can make the driver wait for them.
+	size_t trimTo(size_t max_bytes, size_t max_count = (size_t)-1, unsigned int min_age = 1) {
+		return m_live_texture_bytes > max_bytes ? evictLRU(m_live_texture_bytes - max_bytes, max_count, min_age) : 0;
+	}
+	// How many textures a per-frame trim to `max_bytes` should delete: enough to cover the overage (estimated with the average texture
+	// size), never fewer than `min_count` nor more than `max_count`. A fixed small cap cannot keep up while fast scrolling uploads more
+	// textures per frame than it frees, so the live set creeps up past the budget; deleting is far cheaper than the uploads anyway.
+	size_t trimCountFor(size_t max_bytes, size_t min_count, size_t max_count) const {
+		if (m_live_texture_bytes <= max_bytes || m_live_texture_count <= 0)
+			return min_count;
+		const size_t avg = std::max<size_t>(m_live_texture_bytes / (size_t)m_live_texture_count, 1);
+		const size_t need = (m_live_texture_bytes - max_bytes) / avg + 1;
+		return std::min(std::max(need, min_count), max_count);
+	}
+	// Platform default for the soft budget (small GPU heap): applied from the start so textures are trimmed gradually every frame
+	// instead of piling up until the first out-of-memory. Ignored when ENIGMA_TEX_BUDGET_MB is set; a lower learned value still wins.
+	void setDefaultBudget(size_t bytes) {
+		if (!m_budget_fixed && bytes && (!m_soft_budget || bytes < m_soft_budget))
+			m_soft_budget = bytes;
+	}
+	size_t softBudget() const { return m_soft_budget; }
+	size_t liveBytes() const { return m_live_texture_bytes; }
 
 	// Called once per presented frame: defines 'this frame' for LRU purposes.
 	void nextFrame() { ++m_frame; }

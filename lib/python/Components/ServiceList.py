@@ -1,7 +1,7 @@
 from Components.GUIComponent import GUIComponent
-from skin import parseColor, parseFont, parseScale, applySkinFactor
+from skin import parseColor, parseFont, parseScale, applySkinFactor, serviceListTemplates
 
-from enigma import eListboxServiceContent, eListbox, eServiceCenter, eServiceReference, gFont, eRect, eSize
+from enigma import eListboxServiceContent, eListboxServiceTemplateContent, eListbox, eServiceCenter, eServiceReference, gFont, eRect, eSize
 from Tools.LoadPixmap import LoadPixmap
 # from Tools.TextBoundary import getTextBoundarySize
 
@@ -24,10 +24,13 @@ class ServiceList(GUIComponent):
 	MODE_NORMAL = 0
 	MODE_FAVOURITES = 1
 
+	def createContent(self):
+		return eListboxServiceContent()
+
 	def __init__(self, serviceList):
 		self.serviceList = serviceList
 		GUIComponent.__init__(self)
-		self.l = eListboxServiceContent()  # noqa: E741
+		self.l = self.createContent()  # noqa: E741
 
 		pic = LoadPixmap(cached=True, path=resolveFilename(SCOPE_CURRENT_SKIN, "icons/folder.png"))
 		pic and self.l.setPixmap(self.l.picFolder, pic)
@@ -241,6 +244,7 @@ class ServiceList(GUIComponent):
 
 		def sidesMargin(value):
 			self.sidesMargin = parseScale(value)
+			self.l.setSidesMargin(self.sidesMargin)
 
 		def textSeparator(value):
 			self.l.setTextSeparator(value)
@@ -551,3 +555,115 @@ class ServiceList(GUIComponent):
 	def selectionEnabled(self, enabled):
 		if self.instance is not None:
 			self.instance.setSelectionEnable(enabled)
+
+
+class TemplatedServiceList(ServiceList):
+	"""Service list whose rows are designed by the skin, see doc/SERVICELIST_TEMPLATES.md.
+
+	Only used when the skin defines <servicelisttemplates> and the user did not select the classic
+	list; everything but the painting is shared with the classic ServiceList."""
+	TEMPLATE_BY_TWOLINES = ("single", "double", "double_next")
+
+	def createContent(self):
+		return eListboxServiceTemplateContent()
+
+	def __init__(self, serviceList):
+		ServiceList.__init__(self, serviceList)
+		self.templateName = None
+		self.curItemHeight = self.ItemHeight
+
+	def loadTemplates(self):
+		self.l.clearTemplates()
+		for style in serviceListTemplates["styles"].values():
+			self.l.setStyle(style)
+		for template in serviceListTemplates["templates"].values():
+			self.l.addTemplate(template)
+
+	def getTemplateName(self):
+		templates = serviceListTemplates["templates"]
+		wanted = config.usage.servicelist_template.value
+		if wanted in templates:
+			return wanted
+		twoLines = int(config.usage.servicelist_twolines.value)
+		name = self.TEMPLATE_BY_TWOLINES[twoLines] if twoLines < len(self.TEMPLATE_BY_TWOLINES) else None
+		if name not in templates:
+			name = next(iter(templates))
+		return name
+
+	def applySkin(self, desktop, parent):
+		self.loadTemplates()
+		return ServiceList.applySkin(self, desktop, parent)
+
+	def setFontsize(self):
+		ServiceList.setFontsize(self)
+		usage = config.usage
+		for group, delta in ((0, usage.servicename_fontsize.value), (1, usage.servicenum_fontsize.value), (2, usage.serviceinfo_fontsize.value), (3, usage.serviceinfo_fontsize.value), (4, usage.serviceinfo_fontsize.value)):
+			self.l.setFontDelta(group, delta)
+
+	def setFlags(self):
+		usage = config.usage
+		setFlag = self.l.setFlag
+		setFlag("cfg.numbers", bool(usage.show_channel_numbers_in_servicelist.value))
+		setFlag("cfg.picons", bool(usage.service_icon_enable.value))
+		for key, option in (("type", usage.servicetype_icon_mode), ("crypto", usage.crypto_icon_mode), ("rec", usage.record_indicator_mode)):
+			setFlag("cfg.%sLeft" % key, option.value == "1")
+			setFlag("cfg.%sRight" % key, option.value == "2")
+		setFlag("cfg.recColor", usage.record_indicator_mode.value == "3")
+		setFlag("cfg.typeAny", usage.servicetype_icon_mode.value != "0")
+		setFlag("cfg.cryptoAny", usage.crypto_icon_mode.value != "0")
+		progress = usage.show_event_progress_in_servicelist.value
+		for mode in ("barleft", "barright", "percleft", "percright"):
+			setFlag("cfg." + mode, progress == mode)
+		setFlag("cfg.bar", progress.startswith("bar"))
+		setFlag("cfg.percent", progress.startswith("perc"))
+		column = int(usage.servicelist_column.value)
+		setFlag("cfg.column", column > 0)
+		self.l.setParam("column", column)  # width="@column" in a template
+		setFlag("cfg.altNumbering", bool(usage.alternative_number_mode.value))
+
+	def setItemsPerPage(self):
+		name = self.templateName or self.getTemplateName()
+		cell = self.l.getTemplateItemHeight(name) or self.ItemHeight
+		self.two_lines_val = int(config.usage.servicelist_twolines.value)  # still read by other code
+		if self.l.getTemplateOrientation(name) == eListbox.orVertical:
+			itemHeight = cell
+			numberOfRows = config.usage.serviceitems_per_page.value
+			if numberOfRows > 0:
+				itemHeight = self.listHeight // max(1, numberOfRows // max(1, self.l.getTemplateRows(name)))
+			itemHeight = max(1, itemHeight)
+			self.instance.resize(eSize(self.listWidth, self.listHeightOrig // itemHeight * itemHeight))
+		else:  # horizontal list or grid: the template defines the size of a cell
+			itemHeight = cell
+		self.curItemHeight = itemHeight
+		self.l.setItemHeight(itemHeight)
+
+	def getSelectionPosition(self):
+		itemHeight = self.curItemHeight
+		rowsPerPage = max(1, self.listHeight // itemHeight)
+		index = self.getCurrentIndex() % rowsPerPage
+		sely = self.instance.position().y() + itemHeight * index
+		if sely >= self.instance.position().y() + self.listHeight:
+			sely -= self.listHeight
+		return self.listWidth + self.instance.position().x(), sely
+
+	def setMode(self, mode):
+		self.mode = mode
+		self.templateName = self.getTemplateName()
+		self.l.setTemplate(self.templateName)
+		self.setItemsPerPage()
+		self.l.setTextTime(_("%d min"))
+		self.l.setHideNumberMarker(config.usage.hide_number_markers.value)
+		self.l.setChannelNumbersVisible(config.usage.show_channel_numbers_in_servicelist.value)
+		self.l.setAlternativeNumberingMode(config.usage.alternative_number_mode.value)
+		self.l.setRecordIndicatorMode(int(config.usage.record_indicator_mode.value))
+		self.l.setGetPiconNameFunc(getPiconName if config.usage.service_icon_enable.value else None)
+		self.setFontsize()
+		self.setFlags()
+		self.l.invalidateRows()
+
+
+def createServiceList(serviceList):
+	"""Classic list unless the skin brings templates and the user asked for them (applied on GUI restart)."""
+	if serviceListTemplates["templates"] and config.usage.servicelist_template.value != "legacy":
+		return TemplatedServiceList(serviceList)
+	return ServiceList(serviceList)

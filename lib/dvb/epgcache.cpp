@@ -2483,6 +2483,27 @@ PyObject *eEPGCache::search(ePyObject arg)
 									textlen = text.length();
 								}
 							}
+							else if ( data[0] == SHORT_EVENT_DESCRIPTOR && querytype == 5 )
+							{
+								/* no 0x4E broadcast: the description is in the text field of the
+								   short event descriptor, text_length sits behind event_name */
+								int text_pos = EIT_SHORT_EVENT_DESCRIPTOR_SIZE + data[5];
+								if (text_pos > data[1] + 1)
+									/* no text field */
+									continue;
+								textlen = data[text_pos];
+								if (!textlen || text_pos + textlen > data[1] + 1)
+									/* empty or truncated */
+									continue;
+								textptr = (const char*)&data[text_pos + 1];
+								if ((unsigned char)textptr[0] < 0x20)
+								{
+									/* custom encoding */
+									text = convertDVBUTF8((unsigned char*)textptr, textlen, 0x40, 0);
+									textptr = text.data();
+									textlen = text.length();
+								}
+							}
 							else if ( data[0] == CONTENT_IDENTIFIER_DESCRIPTOR && querytype == 6 )
 							{
 								auto cid = ContentIdentifierDescriptor(data);

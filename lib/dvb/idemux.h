@@ -70,6 +70,14 @@ public:
 	 * detach with fd=-1 before closing. */
 	virtual RESULT setMonitorFD(int fd) = 0;
 
+	/* Counting only, nothing is written anywhere: adds up the TS bytes of one PID that pass through the
+	 * recorder, for two independent slots (0 and 1). pid -1 stops counting that slot. Setting a PID
+	 * starts the slot at 0 bytes. getCountPID() returns -1 for a slot that is not counting. Only a
+	 * recorder with a descrambler thread counts, the others return -1 / 0. */
+	virtual RESULT setCountPID(int slot, int pid) { return -1; }
+	virtual int getCountPID(int slot) { return -1; }
+	virtual uint64_t getCountedBytes(int slot) { return 0; }
+
 	enum {
 		eventWriteError,
 				/* a write error has occurred. data won't get lost if fd is writable after return. */

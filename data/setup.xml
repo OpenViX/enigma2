@@ -101,6 +101,7 @@
 		<item level="1" text="Sort setting screens alphabetically" description="This option allows you to disable sorting of the option in setting screens">config.usage.sort_settings</item>
 		<item level="1" text="Sort menu screens" description="When set to 'user defined' this option allows you to sort or hide menu items via the blue button in menu screens. When set to 'user defined hidden' the blue button text in the menu remains hidden even though the user sort feature is active.">config.usage.menu_sort_mode</item>
 		<item level="0" text="Show menu numbers" description="This option allows you to show menu number quick links.">config.usage.menu_show_numbers</item>
+		<item level="0" text="HDR10 user interface correction" requires="HdrOsdCorrection" description="Keeps the user interface looking as it does in SDR while an HDR10 programme plays, by compensating the brightness and contrast the HDR10 output would otherwise change. Has no effect on SDR or HLG programmes.">config.usage.hdr_osd_correction</item>
 		<item level="0" text="Menu style" conditional="findSkinScreen('MenuHorizontal')" description="Select 'Standard' to display the standard vertical menu layout, or 'Horizontal' to display the menu items in a row.">config.usage.menu_style</item>
 		<item level="1" text="Sort plug-in browser alphabetically" description="This option allows you to disable sorting of the plugin browser.">config.usage.sort_pluginlist</item>
 		<item level="1" text="Show PVR status in Movie Player infobar" description="This option moves the PVR status from the separate window into the Movie Player infobar.">config.usage.movieplayer_pvrstate</item>
@@ -110,6 +111,7 @@
 		<item level="1" text="History buttons mode" description="Configure the function of the &lt;  &gt; buttons.">config.usage.historymode</item>
 		<item level="2" text="Show True/False as graphical switch" description="Enable to display all true/false, yes/no, on/off and enable/disable set up options as a graphical switch.">config.usage.boolean_graphic</item>
 		<item level="1" text="Show setup default values" description="In Setup screens choose whether to show the default value of the selected item in the description field.">config.usage.setupShowDefault</item>
+		<item level="2" text="Long press delay threshold" description="This setting allows you to increase or decrease the number of key repeats required to trigger a long press on the remote control or keyboard.">config.misc.longkey_threshold</item>
 	</setup>
 	<setup key="skinselection" title="Skin selection">
 		<item level="0" text="Allow fast skin reload" description="This feature is for skin developers. It allows the skin to load without requiring an enigma restart.">config.usage.fast_skin_reload</item>
@@ -128,6 +130,7 @@
 		<item level="1" text="Hide number markers" description="When enabled, number markers will be hidden.">config.usage.hide_number_markers</item>
 		<item level="1" text="Jump first press in channel selection" description="This option allows you to choose what the first button press jumps to in channel list screen, (so pressing '2' jumps to 'A' or '2' first), when 'Quick Actions' preset actions are perfomed. ">config.usage.show_channel_jump_in_servicelist</item>
 		<item level="2" text="Show two lines per entry" description="Show the service information on two lines in the channel selection screen.">config.usage.servicelist_twolines</item>
+		<item level="2" text="Channel list design" description="Use the classic channel list or a row design supplied by the skin. Requires a GUI restart.">config.usage.servicelist_template</item>
 		<item level="0" text="Show event-progress in channel selection" description="Set the type of the progress indication in the channel selection screen (right alignment only available in single line mode).">config.usage.show_event_progress_in_servicelist</item>
 		<item level="0" text="Show channel numbers in channel selection" description="When enabled, show channel numbers in the channel selection screen.">config.usage.show_channel_numbers_in_servicelist</item>
 		<item level="1" text="Show crypto icons" description="Configure if and how crypto icons will be shown in the channel selection list (left alignment only available in single line mode).">config.usage.crypto_icon_mode</item>

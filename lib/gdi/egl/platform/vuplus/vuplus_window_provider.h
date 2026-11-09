@@ -70,6 +70,8 @@ private:
 	void applyWindowBlend();
 
 public:
+	// Small Nexus GPU heap: keep the GUI's live textures under this (see gTextureManager::setDefaultBudget()).
+	int textureBudgetMB() const override { return 64; } 
 	VuplusWindowProvider();
 	virtual ~VuplusWindowProvider();
 
@@ -96,6 +98,9 @@ public:
 	// (see applyWindowBlend()) - gEGLDC then un-premultiplies in its present
 	// pass instead. ENIGMA_EGL_STRAIGHT_ALPHA=0 disables that too (to compare).
 	bool needsStraightAlphaPresent() override;
+
+	// HDR10 OSD gain through libnxclient (libvupl joins Nexus as an NxClient in init()).
+	bool setHdrOsdWhiteNits(float nits) override;
 
 	// VUGLES_UpdateNativeWindow() is what used to make every resized window
 	// invisible (frames rendered fine - aio-grab showed them - but never reached

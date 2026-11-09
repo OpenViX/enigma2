@@ -37,6 +37,12 @@ public:
 	// Proven true via a ground-truth debug swatch - see gles::needsRBSwap's
 	// comment (gles_version.h) and gshader.cpp's fragment shader.
 	bool needsRenderTargetRBSwap() const override { return true; }
+	// The fb mode is programmed once at boot and the pixmaps are described at that
+	// size; the driver resets it to the output mode anyway (verified: a manual
+	// fbset does not survive enigma2 starting). Like the stock images, keep the
+	// boot-size fb and render any larger/smaller skin canvas (1440p) scaled into
+	// it - see gEGLDC::updatePhysicalSize().
+	bool canResizeWindow() override { return false; }
 	int getPageCount() const override { return m_page_count; }
 	void* getNativePixmap(int page) override;
 	void presentPixmap(int page) override;

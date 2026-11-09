@@ -705,12 +705,11 @@ ssize_t eHttpsStream::sslRead(void *buf, size_t count)
 	{
 		if (currentChunkSize == 0)
 		{
-			ssize_t r;
+			ssize_t r; 
 			do {
 				r = SSL_readLine(ssl, &tmpBuf, &tmpBufSize);
 				if (r < 0) return (total_read > 0) ? (ssize_t)total_read : -1;
-			} while (!*tmpBuf && r > 0); /* skip blank lines between chunks */
-			if (r == 0) break;
+			} while (r == 0); /* the CRLF that ends a chunk is an empty line: read on to the next chunk's size line (see eHttpStream::socketRead) */
 			currentChunkSize = strtol(tmpBuf, NULL, 16);
 			if (currentChunkSize == 0) return (total_read > 0) ? (ssize_t)total_read : -1;
 		}

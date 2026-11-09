@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-04 14:36+0300\n"
-"PO-Revision-Date: 2026-10-04 15:08+0300\n"
+"POT-Creation-Date: 2026-11-08 13:18+0200\n"
+"PO-Revision-Date: 2026-11-08 18:32+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.9\n"
+"X-Generator: Poedit 3.10\n"
 
 msgid ""
 "\n"
@@ -1033,6 +1033,10 @@ msgstr "%s%s (Oletus: %s)"
 #, python-format
 msgid "%s/%s: %s"
 msgstr "%s/%s: %s"
+
+#, python-format
+msgid "%s: %s"
+msgstr "%s: %s"
 
 #, python-format
 msgid "'%s' already exists"
@@ -3347,6 +3351,9 @@ msgstr "Kanavatiedot"
 msgid "Channel list cursor behavior"
 msgstr "Kursorin toiminta kanavalistassa"
 
+msgid "Channel list design"
+msgstr "Kanavalistan muotoilu"
+
 msgid "Channel list on mode change"
 msgstr "Kanavalistan näyttö tilan vaihtuessa"
 
@@ -3563,17 +3570,11 @@ msgstr "Valitse, muunnetaanko Dolby TrueHD -ääniraidat Dolby Digital -muotoon.
 msgid "Choose whether WMA Pro sound tracks should be downmixed."
 msgstr "Valitse muunnetaanko WMA Pro-ääniraidat stereoksi."
 
-msgid "Choose whether multi channel AAC / AAC+ sound tracks should be downmixed to stereo."
-msgstr "Valitse, muunnetaanko monikanavaiset AAC- / AAC+ -ääniraidat stereoksi."
-
 msgid "Choose whether multi channel AAC sound tracks should be downmixed to stereo."
 msgstr "Valitse, muunnetaanko monikanavaiset AAC -ääniraidat stereoksi."
 
 msgid "Choose whether multi channel AAC+ sound tracks should be downmixed to stereo."
 msgstr "Valitse, muunnetaanko monikanavaiset AAC+ -ääniraidat stereoksi."
-
-msgid "Choose whether multi channel AC3 / AC3+ sound tracks should be downmixed to stereo."
-msgstr "Valitse, muunnetaanko monikanavaiset AC3 / AC3+ -ääniraidat stereoksi."
 
 msgid "Choose whether multi channel AC3 sound tracks should be downmixed to stereo."
 msgstr "Valitse, muunnetaanko monikanavaiset AC3 -ääniraidat stereoksi."
@@ -3628,6 +3629,9 @@ msgstr "Kiertopol. vasen"
 
 msgid "Circular right"
 msgstr "Kiertopol. oikea"
+
+msgid "Classic"
+msgstr "Klassinen"
 
 msgid "Classical"
 msgstr "Klassinen"
@@ -3685,9 +3689,6 @@ msgstr "Sulje näyttö '%s'"
 #, python-format
 msgid "Close '%s' screen and exit all menus"
 msgstr "Sulje '%s'-näyttö ja poistu kaikista valikoista"
-
-msgid "Close CA device at programm end"
-msgstr "Sulje CA-laite ohjelman lopussa"
 
 msgid "Close PiP on exit"
 msgstr "Sulje PiP-kuva Exit-näppäimellä"
@@ -5057,9 +5058,6 @@ msgstr "Pura vastaanotettavat http-streamit"
 
 msgid "Descramble sending http streams"
 msgstr "Pura lähetettävät http-streamit"
-
-msgid "Descrambling options"
-msgstr "Salauksen purkuvaihtoehdot"
 
 msgid "Description"
 msgstr "Kuvaus"
@@ -7336,6 +7334,9 @@ msgstr "HDR10"
 msgid "HDR10 Support"
 msgstr "HDR10-tuki"
 
+msgid "HDR10 user interface correction"
+msgstr "HDR10-käyttöliittymän korjaus"
+
 msgid "HDR10+"
 msgstr "HDR10+"
 
@@ -8363,6 +8364,9 @@ msgstr "Säilytä kanava"
 msgid "Keeps the movie list open whilst playing audio files."
 msgstr "Pidä tallennelista auki äänitiedostojen toiston aikana."
 
+msgid "Keeps the user interface looking as it does in SDR while an HDR10 programme plays, by compensating the brightness and contrast the HDR10 output would otherwise change. Has no effect on SDR or HLG programmes."
+msgstr "Pitää käyttöliittymän ulkoasun samanlaisena kuin SDR-tilassa, kun HDR10-ohjelmaa toistetaan, kompensoimalla kirkkautta ja kontrastia, joita HDR10-lähtösignaali muuten muuttaisi. Ei vaikuta SDR- tai HLG-ohjelmiin."
+
 msgid "Kenya"
 msgstr "Kenia"
 
@@ -8788,6 +8792,9 @@ msgstr "Pitkät tiedostonimet"
 
 msgid "Long key press"
 msgstr "Pitkä painallus"
+
+msgid "Long press delay threshold"
+msgstr "Pitkän painalluksen viiveen kynnysarvo"
 
 msgid "Long press: "
 msgstr "Pitkä painallus: "
@@ -9822,11 +9829,17 @@ msgstr "Ei lokeja"
 msgid "No MAC interface found"
 msgstr "MAC-liitäntää ei löydy"
 
+msgid "No SWAP found"
+msgstr "SWAP-tiedostoa ei löytynyt"
+
 msgid "No Timeshift found to save as recording!"
 msgstr "Ajansiirtoa ei löytynyt tallennusmuunnosta varten!"
 
 msgid "No active channel found."
 msgstr "Ei löytynyt aktiivisia kanavia."
+
+msgid "No active swaps found"
+msgstr "Aktiivisia swap-tiedostoja ei löytynyt"
 
 msgid "No age block"
 msgstr "Ei ikälukitusta"
@@ -10210,12 +10223,6 @@ msgstr "Pois päältä"
 
 msgid "Offline decode delay (ms)"
 msgstr "Offline-purkamisen viive (ms)"
-
-msgid "Offset CA device index"
-msgstr "Offset CA-laiteindeksi"
-
-msgid "Offset and close CA device"
-msgstr "Offset ja sulje CA-laite"
 
 msgid "Olympia"
 msgstr "Olympialaiset"
@@ -14387,6 +14394,9 @@ msgstr "Teeman valinta"
 msgid "Skin setup"
 msgstr "Teeman valinta"
 
+msgid "Skin templates (follow 'two lines')"
+msgstr "Teeman mallit (noudata 'kahta riviä')"
+
 #, python-format
 msgid "Skin:\t%s"
 msgstr "Teema:\t%s"
@@ -15284,6 +15294,12 @@ msgstr "Järjestelmä"
 msgid "System & Modulation"
 msgstr "Järjestelmä & modulaatio"
 
+msgid "System Swaps"
+msgstr "Järjestelmän swap-tiedostot"
+
+msgid "System defined swaps"
+msgstr "Järjestelmän määrittämät swap-tiedostot"
+
 #, python-format
 msgid "System temperature:\t%s"
 msgstr "Laitteen lämpötila:\t%s"
@@ -15333,7 +15349,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 04.10.2026 ---\n"
+"--- 08.11.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -15954,6 +15970,9 @@ msgstr "Tämä asetus määrittää kuvan terävyyden, käytetään kun kuva ska
 msgid "This setting allows the tuner configuration to be a duplication of how another tuner is already configured."
 msgstr "Tämä asetus sallii viritinasetusten kopioinnin jo valmiiksi määritellystä virittimestä."
 
+msgid "This setting allows you to increase or decrease the number of key repeats required to trigger a long press on the remote control or keyboard."
+msgstr "Tämän asetuksen avulla voit lisätä tai vähentää näppäimen toistojen määrää, joka tarvitaan kaukosäätimessä tai näppäimistössä pitkän painalluksen laukaisemiseen."
+
 msgid "This setting depends on your cable provider and location. If you don't know the correct setting refer to the menu in the official cable receiver, or get it from your cable provider, or seek help via internet forum."
 msgstr "Tämä asetus riippuu kaapelipalveluntarjoajastasi ja sijainnistasi. Jos et tiedä oikeaa asetusta, selaa laitteesi valikoita, pyydä kaapelipalveluntarjoajalta tai Googleta."
 
@@ -16526,6 +16545,9 @@ msgstr "Varmuuskopiolaitteelta lukeminen epäonnistui. Tarkista, että laite on 
 msgid "Unable to read from the backup device. Please check that it is accessible."
 msgstr "Varmuuskopiolaitteelta lukeminen epäonnistui. Tarkista, että laite on käytettävissä."
 
+msgid "Unable to read swap information"
+msgstr "Swap-tietojen lukeminen epäonnistui"
+
 msgid "Uncover dashed flickering line for this service"
 msgstr "Näytä yläreunan pistejuova tältä kanavalta"
 
@@ -16863,6 +16885,9 @@ msgstr "Käytä vaihtoehtoista tai tavallista radio-tilaa."
 
 msgid "Use the alternative screen"
 msgstr "Käytä vaihtoehtoista näyttöä"
+
+msgid "Use the classic channel list or a row design supplied by the skin. Requires a GUI restart."
+msgstr "Käytä klassista kanavalistaa tai teeman mukana toimitettua rivimuotoilua. Vaatii käyttöliittymän uudelleenkäynnistyksen."
 
 msgid "Use the deletion time to sort Trash directories. Most recently deleted at the top."
 msgstr "Käytä poistoaikaa lajitteluperusteena roskakorissa. Viimeksi poistetut ylimmäisinä."

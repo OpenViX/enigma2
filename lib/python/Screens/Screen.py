@@ -1,6 +1,6 @@
 from os.path import isfile
 
-from enigma import eRCInput, eTimer, eWindow, getDesktop
+from enigma import eRCInput, eStack, eTimer, eWindow, getDesktop
 
 from skin import GUI_SKIN_ID, DISPLAY_SKIN_ID, applyAllAttributes, menus, screens, setups  # noqa: F401
 from Components.config import config
@@ -146,6 +146,9 @@ class Screen(dict):
 		for val in list(self.values()) + self.renderer:
 			if isinstance(val, GUIComponent) or isinstance(val, Source):
 				val.onShow()
+		for stack in getattr(self, "stacks", []):
+			if isinstance(stack.instance, eStack):
+				stack.instance.show()
 
 	def hide(self):
 		if not self.shown or not self.instance:
@@ -157,6 +160,9 @@ class Screen(dict):
 		for val in list(self.values()) + self.renderer:
 			if isinstance(val, GUIComponent) or isinstance(val, Source):
 				val.onHide()
+		for stack in getattr(self, "stacks", []):
+			if isinstance(stack.instance, eStack):
+				stack.instance.hide()
 
 	def getScreenPath(self):
 		return self.screenPath
@@ -272,19 +278,22 @@ class Screen(dict):
 		self.createGUIScreen(self.instance, self.desktop)
 
 	def createGUIScreen(self, parent, desktop, updateonly=False):
+		stacked = []
+
 		def addToStack(widget):
 			if hasattr(widget, "stackIndex") and widget.stackIndex != -1:
-				stack = self.stacks[widget.stackIndex]
-				stack.instance.addChild(widget.instance)
+				stacked.append(widget)
 
-		for widget in self.stacks:
-			widget.instance = widget.widget(parent, widget.layout)
-			applyAllAttributes(widget.instance, desktop, widget.skinAttributes, self.scale)
-			addToStack(widget)
+		if not updateonly:
+			for widget in self.stacks:
+				widget.instance = widget.widget(parent, widget.layout)
+				applyAllAttributes(widget.instance, desktop, widget.skinAttributes, self.scale)
+				addToStack(widget)
 		for val in self.renderer:
 			if isinstance(val, GUIComponent):
 				if not updateonly:
 					val.GUIcreate(parent)
+					addToStack(val)
 				if not val.applySkin(desktop, self):
 					print("[Screen] Warning: Skin is missing renderer '%s' in %s." % (val, str(self)))
 		for key in self:
@@ -292,6 +301,7 @@ class Screen(dict):
 			if isinstance(val, GUIComponent):
 				if not updateonly:
 					val.GUIcreate(parent)
+					addToStack(val)
 				depr = val.deprecationInfo
 				if val.applySkin(desktop, self):
 					if depr:
@@ -304,6 +314,10 @@ class Screen(dict):
 				w.instance = w.widget(parent)
 				# w.instance.thisown = 0
 			applyAllAttributes(w.instance, desktop, w.skinAttributes, self.scale)
+			if not updateonly:
+				addToStack(w)
+		for widget in sorted(stacked, key=lambda x: getattr(x, "stackOrder", 0)):  # Add in skin order, the stack layout depends on it.
+			self.stacks[widget.stackIndex].instance.addChild(widget.instance)
 		if self.screenImage:
 			self["Image"].setPixmap(LoadPixmap(self.screenImage))
 		for f in self.onLayoutFinish:

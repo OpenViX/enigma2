@@ -237,7 +237,7 @@ protected:
 		/* in timeshift mode, we essentially have two channels, and thus pmt handlers. */
 	eDVBServicePMTHandler m_service_handler_timeshift;
 	eDVBServiceEITHandler m_event_handler;
-	int m_current_audio_pid;
+	int m_current_audio_pid = -1;
 	int m_current_video_pid_type;
 
 	// Selected-audio channel-count detection (see audiochanneldetector.h).
@@ -338,6 +338,28 @@ protected:
 
 	ePtr<eTimer> m_nownext_timer;
 	void updateEpgCacheNowNext();
+
+		/* scrambling flag of the live stream, see sIsScrambled */
+	ePtr<iDVBScrambleMonitor> m_scramble_monitor;
+	int m_scramble_pid = -1;
+	bool m_scramble_failed = false;
+	bool m_scramble_nopid = false;
+	void updateScrambleMonitor();
+
+		/* live bitrate of the video and the audio PID, see sVideoBitrate / sAudioBitrate */
+	ePtr<iDVBBitrateCounter> m_vbitrate, m_abitrate;
+	int m_vbitrate_pid = -1, m_abitrate_pid = -1;
+	const iDVBDemux *m_bitrate_demux = nullptr;	/* the demux the counters were created on, only compared */
+	bool m_bitrate_failed = false;
+	int getLiveBitrate(bool audio);
+	void releaseLiveBitrate();
+		/* SoftCSA: the recorder of the soft decoder counts the descrambled bytes of the two PIDs instead */
+	bool m_softcsa_bitrate = false;
+	uint64_t m_softcsa_bytes[2] = {0, 0};
+	int64_t m_softcsa_us[2] = {0, 0};
+	int m_softcsa_kbps[2] = {0, 0};
+	int getSoftCSABitrate(bool audio, int pid);
+	void releaseSoftCSABitrate();
 
 		/* radiotext */
 	ePtr<eDVBRdsDecoder> m_rds_decoder;

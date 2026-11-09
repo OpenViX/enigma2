@@ -693,9 +693,32 @@ class iDVBPESReader;
 class iDVBTSRecorder;
 class iTSMPEGDecoder;
 
+/* Watches one PID of a demux and reports whether its TS packets carry the scrambling flag. */
+class iDVBScrambleMonitor: public iObject
+{
+public:
+	virtual RESULT start(int pid)=0;
+	virtual RESULT stop()=0;
+	/* 1 = scrambled, 0 = clear, 2 = started but no packet seen yet, -1 = not known (no packets for a while) */
+	virtual int getState()=0;
+};
+
+/* Counts the bytes of one PID of a demux and reports the rate. The counting runs on its own thread
+ * and stops by itself when nobody asks for the rate for a few seconds; the next getKbps() restarts it. */
+class iDVBBitrateCounter: public iObject
+{
+public:
+	virtual RESULT start(int pid)=0;
+	virtual RESULT stop()=0;
+	/* kbit/s of the last measuring window (0 until the first window is complete), -1 = not running */
+	virtual int getKbps()=0;
+};
+
 class iDVBDemux: public iObject
 {
 public:
+	virtual RESULT createScrambleMonitor(ePtr<iDVBScrambleMonitor> &monitor) { (void)monitor; return -1; }
+	virtual RESULT createBitrateCounter(ePtr<iDVBBitrateCounter> &counter) { (void)counter; return -1; }
 	virtual RESULT createSectionReader(eMainloop *context, ePtr<iDVBSectionReader> &reader)=0;
 	virtual RESULT createPESReader(eMainloop *context, ePtr<iDVBPESReader> &reader)=0;
 	virtual RESULT createTSRecorder(ePtr<iDVBTSRecorder> &recorder, unsigned int packetsize = 188, bool streaming=false, bool sync_mode=false, bool is_streaming_output=false)=0;

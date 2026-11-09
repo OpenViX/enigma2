@@ -11,7 +11,10 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #endif
+#include <string>
+#include <lib/base/ebase.h>
 #include <lib/gdi/egl/gosd_capture.h>
+#include <lib/gdi/egl/gweb_overlay.h>
 #include <lib/gdi/egl/gtexture_manager.h>
 #include <lib/gdi/egl/inative_window_provider.h>
 #include <lib/gdi/egl/shader/gadvanced_shader.h>
@@ -132,6 +135,25 @@ private:
 	gEGLOSDCapture m_osd_capture;
 	void serviceOsdCapture();
 
+	// Out-of-process web layer (wpe_fb / HbbTV) composited over the finished OSD frame
+	// right before it is presented - see gweb_overlay.h. It is only ever drawn into a frame that
+	// flip() has just rewritten completely from a shadow framebuffer (nothing it draws can stay
+	// behind), and only where the compositor takes premultiplied alpha like the OSD does.
+	gWebOverlay m_web_overlay;
+	bool m_web_overlay_was_on = false; // the layer was shown in the previous frame (see flip(): the texture budget)
+	// Platforms that render straight into their surface (Dreambox pixmap pages, Mali's preserved
+	// window surface) have no shadow framebuffer, so a layer drawn over the finished frame would
+	// stay in the surface and be baked into every following partial redraw. While the layer is
+	// visible they get a temporary one: updateOverlayShadow() (flip(), render thread) creates it and
+	// copies the surface into it, all opcodes then render there exactly as on shadow platforms, and
+	// when the layer goes away the shadow is copied back and destroyed.
+	bool m_overlay_shadow = false;        // m_use_shadow_fbo is on only because of the layer
+	bool m_overlay_shadow_failed = false; // creating it failed: no layer until it hides again
+	void updateOverlayShadow(bool layer_visible);
+	void copySurfaceToShadow();
+	void copyShadowToSurface();
+	void drawWebOverlay();
+
 	// GPU readback into m_pixmap - see its definition (gegldc.cpp, right
 	// after serviceOsdCapture()) for why enableSpinner() needs this.
 	void captureBackgroundIntoPixmap(const eRect& rect);
@@ -161,7 +183,7 @@ private:
 	static void onFramebufferLockChanged(bool locked);
 	// Wakes the render thread with a flush opcode even while locked
 	// (gPainter::flush() is suppressed then).
-	void requestFlush();
+	void requestFlush();   
 
 	// Diagnostic only, opt-in via ENIGMA_EGL_PROFILE=1 (read once in
 	// initEGL()): one log line per flip() splitting that frame's render-thread
@@ -183,7 +205,7 @@ private:
 	static double msSince(const std::chrono::steady_clock::time_point& t0) {
 		return std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
 	}
-
+ 
 	// Logical canvas size: what the skin/widgets lay out against and what every
 	// shader projection and draw coordinate is expressed in.
 	int m_width;
@@ -201,6 +223,15 @@ private:
 	int m_phys_height = 0;
 	float m_scale_x = 1.0f;
 	float m_scale_y = 1.0f;
+	// Where the canvas lands inside the physical surface (top-left based pixels):
+	// the whole surface unless an OSD overscan rectangle is set (setOsdRect()).
+	// m_scale_x/y then are m_content_w/h over the canvas size.
+	int m_content_x = 0, m_content_y = 0, m_content_w = 0, m_content_h = 0;
+	// Overscan rectangle, 720x576 units. Main thread writes, render thread reads.
+	std::atomic<int> m_osd_left{0}, m_osd_top{0}, m_osd_width{720}, m_osd_height{576};
+	std::atomic<bool> m_osd_dirty{false};
+	void applyViewport();
+	void applyOsdRect();
 	int m_max_tex_size = 0;
 	// The GPU's real limit, kept even when scaling is compiled out (then
 	// m_max_tex_size stays 0) - only used to say so in the log.
@@ -211,6 +242,37 @@ private:
 	// present path even where glBlitFramebuffer() exists.
 	bool m_straight_alpha_present = false;
 	float m_unpremult_power = 1.0f;
+
+	// HDR10 OSD tone curve. The Broadcom SDR-graphics-to-HDR path is a straight scaling in the PQ
+	// signal domain, which leaves the OSD far too dark in HDR10 (HLG is unaffected). When a control
+	// file (see updateToneControl()) asks for it, the final present pass maps the OSD colours through
+	// a PQ(white * v^gamma) / PQ(white) LUT instead of leaving them as plain SDR code values.
+	GLuint m_tone_lut_tex = 0;
+	bool m_tone_active = false;
+	float m_tone_white_nits = 0.0f;
+	float m_tone_gamma = 0.0f;
+	long long m_tone_stamp = -1; // mtime(ns) ^ size of the control file last read; -1 = none
+	std::chrono::steady_clock::time_point m_tone_last_poll;
+	void updateToneControl();
+	bool setToneCurve(float white_nits, float gamma);
+	bool setToneCurveHlg(float white_signal, float gamma);
+	bool applyToneSpec(const char *text, float *driver_white_nits = nullptr);
+	void disableTone();
+	bool uploadToneLut(const unsigned char *lut);
+	// Video gamma as reported by the decoder (0 SDR, 1 HDR, 2 ST2084/HDR10, 3 HLG); see
+	// setVideoGamma(). The OSD tone curve + driver gain are on only while it is 2 (HDR10).
+	static std::atomic<int> s_video_gamma;
+	static std::atomic<long long> s_video_gamma_ms; // steady-clock ms of the last gamma change
+	static std::atomic<bool> s_hdr_osd_enabled;
+	bool m_tone_seen_enabled = true;
+	int m_tone_seen_gamma = -1;                    // gamma updateToneControl() last acted on
+	static std::atomic<long long> s_hdr10_lost_ms; // steady-clock ms when gamma left 2; 0 while it is 2
+	ePtr<eTimer> m_hdr_timer;       // main thread: repaint when the HDR10-lost grace period ends
+	std::string m_tone_spec;        // spec last acted on ("" = tone off)
+	std::string m_tone_file_text;   // content of the live-tuning file ("" = none)
+	bool m_tone_gain_set = false;   // driver gain currently raised by us
+	int m_tone_kind = 0; // 0 = power curve (white nits, gamma), 1 = HLG response (white signal)
+	void releaseToneLut();
 	// Blits drawn with blending off copy straight RGBA raw; premultiply them in the
 	// shader when the frame is premultiplied for a double-alpha compositor (H17).
 	bool m_premultiply_blits = false;
@@ -458,6 +520,22 @@ public:
 	// constructs gEGLDC (eInit/gEGLDCAutoInit) - EGL contexts are per-thread,
 	// and gRC::thread() is the only thread that ever issues GL draw calls.
 	static gEGLDC* getInstance() { return s_instance; }
+
+	// Decoder gamma hook (any thread): 0 SDR, 1 HDR, 2 HDR10 (ST2084), 3 HLG. While it is 2
+	// the OSD is tone-mapped and the driver's OSD gain raised ("hlg 1.1" by default, see
+	// updateToneControl()); for SDR/HLG both are off, so those UIs stay unchanged.
+	static void setVideoGamma(int gamma);
+
+	// config.usage.hdr_osd_correction (via gMainDC): master switch for the HDR10 OSD correction.
+	bool supportsHdrOsdCorrection() override;
+	void setHdrOsdCorrection(bool enable) override;
+
+	// OSD overscan adjustment (what /proc/stb/fb/dst_* does on non-EGL builds).
+	// left/top/width/height are in the same 720x576 units as config.osd.dst_*.
+	// The canvas is rendered into that rectangle of the surface (viewport +
+	// scissor offset), so it works the same for every window provider and needs
+	// no extra buffer. Callers must repaint the desktop afterwards.
+	void setOsdRect(int left, int top, int width, int height);
 
 	bool initEGL();
 

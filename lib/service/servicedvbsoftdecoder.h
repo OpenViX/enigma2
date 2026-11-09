@@ -97,6 +97,12 @@ public:
 	// is only safe for one concurrent descramble() caller.
 	RESULT setAudioMonitorFD(int fd) { return m_record ? m_record->setMonitorFD(fd) : -1; }
 
+	// Byte counters of the descrambled TS for the bitrate readout, see iDVBTSRecorder::setCountPID.
+	// They only count, and -1 / 0 means there is no recorder at the moment.
+	RESULT setCountPID(int slot, int pid) { return m_record ? m_record->setCountPID(slot, pid) : -1; }
+	int getCountPID(int slot) { return m_record ? m_record->getCountPID(slot) : -1; }
+	uint64_t getCountedBytes(int slot) { return m_record ? m_record->getCountedBytes(slot) : 0; }
+
 	// Audio track selection signal (notifies parent when SoftDecoder selects audio)
 	sigc::signal<void(int)> m_audio_pid_selected;
 
@@ -141,6 +147,13 @@ private:
 	bool m_paused;
 	int64_t m_last_health_check;
 	void streamHealthCheck();
+
+	// Writer restart: the record thread exits on write errors
+	static const int MAX_WRITER_RESTARTS = 5;
+	static const int WRITER_RESTART_DELAY = 1000;  // ms
+	ePtr<eTimer> m_writer_restart_timer;
+	int m_writer_restarts;
+	void restartWriter();
 
 	// Event Handlers
 	void onSessionActivated(bool active);

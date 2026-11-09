@@ -165,11 +165,11 @@ def addInstallTask(job, package):
 
 def bytesToHumanReadable(size_bytes, binary=False):
 	# input is bytes, convert from KB, MB before use.
-	size_units = ("B", "kB", "MB", "GB", "TB")
+	size_units = ("B", "KiB", "MiB", "GiB", "TiB") if binary else ("B", "kB", "MB", "GB", "TB")
 	base = 1024 if binary else 1000
 	i = 0
 	L = len(size_units) - 1
-	while i < L and size_bytes >= base:
+	while i < L and round(size_bytes) >= base:
 		size_bytes /= base
 		i += 1
 	return ("%.2f %s" if i != 0 and size_bytes < 10 else "%.0f %s") % (size_bytes, size_units[i])
@@ -714,18 +714,20 @@ class HarddiskManager:
 		fileNames = glob("/tmp/hotplug_dev_*")
 		devices = []
 		for fileName in fileNames:
-			with open(fileName) as f:
-				data = f.read()
-				eventData = parseDeviceData(data)
-				print(f"[Harddisk][enumeratehotplug devices] eventData:{eventData}")
-				if eventData["DEVTYPE"] == "partition":  # Handle only partitions
-					device = eventData["DEVNAME"].replace("/dev/", "")
-					shortDevice = device[:7] if device.startswith("mmcblk") else sub(r"[\d]", "", device)
-					removable = fileReadLine(f"/sys/block/{shortDevice}/removable")
-					eventData["SORT"] = 0 if ("pci" in eventData["DEVPATH"] or "ahci" in eventData["DEVPATH"]) and removable == "0" else 1
-					devices.append(eventData)
-				remove(fileName)
-
+			try:
+				with open(fileName) as f:
+					data = f.read()
+					eventData = parseDeviceData(data)
+					print(f"[Harddisk][enumeratehotplug devices] eventData:{eventData}")
+					if eventData["DEVTYPE"] == "partition":  # Handle only partitions
+						device = eventData["DEVNAME"].replace("/dev/", "")
+						shortDevice = device[:7] if device.startswith("mmcblk") else sub(r"[\d]", "", device)
+						removable = fileReadLine(f"/sys/block/{shortDevice}/removable")
+						eventData["SORT"] = 0 if ("pci" in eventData["DEVPATH"] or "ahci" in eventData["DEVPATH"]) and removable == "0" else 1
+						devices.append(eventData)
+					remove(fileName)
+			except Exception:
+				continue
 		if devices:
 			devices.sort(key=lambda x: (x["SORT"], x["ID_PART_ENTRY_SIZE"]))
 			mounts = getProcMounts()

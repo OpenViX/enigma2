@@ -175,6 +175,7 @@ class Pager(GUIAddon):
 		instance.setSelectionEnable(False)
 		instance.setContent(self.l)
 		instance.allowNativeKeys(False)
+		instance.setEllipsis(0)  # ellipsis is off by default here, a skin can enable it with ellipsis="1"
 
 	def getSourceOrientation(self):
 		if isinstance(self.source, List):  # Components.Sources.List
@@ -220,11 +221,13 @@ class Pager(GUIAddon):
 
 	def initPager(self):
 		if self.source.__class__.__name__ == "ScrollLabel":
-			currentPageIndex = self.source.curPos // self.source.pageHeight
-			if not ((self.source.TotalTextHeight - self.source.curPos) % self.source.pageHeight):
-				currentPageIndex += 1
-			pagesCount = -(-self.source.TotalTextHeight // self.source.pageHeight) - 1
-			self.selChange(currentPageIndex, pagesCount)
+			pageHeight = self.source.pageHeight
+			if pageHeight > 0:  # the label is laid out
+				pagesCount = max(-(-self.source.TotalTextHeight // pageHeight) - 1, 0)
+				# The label stops where the text ends, which is in the middle of a page unless the text is a multiple of its
+				# height: a position at the end is the last page, whatever the text height is divided by.
+				currentPageIndex = pagesCount if self.source.curPos >= self.source.TotalTextHeight - pageHeight else self.source.curPos // pageHeight
+				self.selChange(currentPageIndex, pagesCount)
 		else:
 			lOrientation = self.getSourceOrientation()
 			sourceSize = self.getSourceSize()

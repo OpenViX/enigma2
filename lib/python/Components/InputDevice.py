@@ -20,6 +20,7 @@ IOC_SIZESHIFT = IOC_TYPESHIFT + IOC_TYPEBITS
 IOC_DIRSHIFT = IOC_SIZESHIFT + IOC_SIZEBITS
 
 IOC_READ = 2
+EVIOCGREP = (IOC_READ << IOC_DIRSHIFT) | (8 << IOC_SIZESHIFT) | (0x45 << IOC_TYPESHIFT) | (0x03 << IOC_NRSHIFT)  # unsigned int[2]: REP_DELAY, REP_PERIOD
 
 
 def EVIOCGNAME(length):
@@ -47,11 +48,15 @@ class inputDevices:
 				except (IOError, OSError) as err:
 					print("[InputDevice] Error: evdev='%s' getInputDevices <ERROR: ioctl(EVIOCGNAME): '%s'>" % (evdev, str(err)))
 					continue
+				try:  # the repeat timing the driver/kernel currently uses for this device
+					repDelay, repPeriod = struct.unpack("II", ioctl(fd, EVIOCGREP, b"\0" * 8))
+				except (IOError, OSError, struct.error):
+					repDelay = repPeriod = None
 			deviceName = name[:name.find(b'\0')].decode()
 			if deviceName:
 				devtype = self.getInputDeviceType(deviceName)
 				print("[InputDevice] Found: evdev='%s', name='%s', type='%s'" % (evdev, deviceName, devtype))
-				self.Devices[evdev] = {'name': deviceName, 'type': devtype, 'enabled': False, 'configuredName': None}
+				self.Devices[evdev] = {'name': deviceName, 'type': devtype, 'enabled': False, 'configuredName': None, 'repDelay': repDelay, 'repPeriod': repPeriod}
 
 	def getInputDeviceType(self, name):
 		if "remote control" in name.lower():
@@ -106,8 +111,8 @@ class inputDevices:
 	def setDefaults(self, device):
 		print("[InputDevice] setDefaults for device %s" % device)
 		self.setDeviceAttribute(device, 'configuredName', None)
-		event_repeat = struct.pack('LLHHi', 0, 0, 0x14, 0x01, 100)
-		event_delay = struct.pack('LLHHi', 0, 0, 0x14, 0x00, 700)
+		event_repeat = struct.pack('LLHHi', 0, 0, 0x14, 0x01, self.getDeviceAttribute(device, 'repPeriod') or 100)
+		event_delay = struct.pack('LLHHi', 0, 0, 0x14, 0x00, self.getDeviceAttribute(device, 'repDelay') or 700)
 		fd = os_open("/dev/input/" + device, O_RDWR)
 		write(fd, event_repeat)
 		write(fd, event_delay)
@@ -183,9 +188,12 @@ class InitInputDevices:
 		currentElement.enabled.addNotifier(self.inputDevicesEnabledChanged)
 		currentElement.name = ConfigText(default='')
 		currentElement.name.addNotifier(self.inputDevicesNameChanged)
-		currentElement.repeat = ConfigSlider(default=100, increment=10, limits=(0, 500))
+		# default to what the device actually uses (e.g. 350/40 ms on the patched gigablue RCU)
+		defaultRepeat = min(max(iInputDevices.getDeviceAttribute(device, 'repPeriod') or 100, 0), 500)
+		defaultDelay = min(max(iInputDevices.getDeviceAttribute(device, 'repDelay') or 700, 0), 5000)
+		currentElement.repeat = ConfigSlider(default=defaultRepeat, increment=10, limits=(0, 500))
 		currentElement.repeat.addNotifier(self.inputDevicesRepeatChanged)
-		currentElement.delay = ConfigSlider(default=700, increment=100, limits=(0, 5000))
+		currentElement.delay = ConfigSlider(default=defaultDelay, increment=50, limits=(0, 5000))
 		currentElement.delay.addNotifier(self.inputDevicesDelayChanged)
 
 	def remapRemoteControl(self, device):

@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from os import path, stat, mkdir, listdir, remove, statvfs, chmod
+from os import path, stat, mkdir, listdir, remove, scandir, statvfs, chmod
 from time import localtime, time, strftime, mktime
 import tarfile
 from enigma import eTimer, eEnv, eDVBDB, quitMainloop
@@ -787,7 +787,7 @@ class XtraPluginsSelection(Screen):
 		elif not (len(x := current[0].split("/", 3)) > 3 and x[3]):  # match formula in VIXBackupManager.Stage3Complete()
 			self.session.open(MessageBox, _("Please select a folder inside a mount point, not the mount point itself."), MessageBox.TYPE_INFO, timeout=30)
 
-		elif not any(f.endswith(".ipk") for f in listdir(current[0])):  # no .ipk found in the selected folder
+		elif not any(entry.name.endswith(".ipk") for entry in scandir(current[0])):  # no .ipk found in the selected folder
 			self.session.open(MessageBox, _("Please select folder that contains .ipk packages."), MessageBox.TYPE_INFO, timeout=10)
 
 		else:  # success
