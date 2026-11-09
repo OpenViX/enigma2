@@ -2,12 +2,15 @@
 
 #include <asm/types.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 #include <lib/base/init.h>
 #include <lib/base/init_num.h>
 #include <lib/base/eerror.h>
+#include <lib/gdi/grc.h>
 
 /*
  *  note on the enigma input layer:
@@ -109,6 +112,160 @@ void eRCInputEventDriver::keyPressed(int)
 	processPending();
 }
 
+/* newer kernel headers dropped input_event.time (64 bit time_t) in favour of input_event_sec/usec */
+#ifdef input_event_sec
+#define ev_sec(e) ((e).input_event_sec)
+#define ev_usec(e) ((e).input_event_usec)
+#else
+#define ev_sec(e) ((e).time.tv_sec)
+#define ev_usec(e) ((e).time.tv_usec)
+#endif
+
+static bool keyTraceEnabled()
+{
+	static const bool enabled = []() {
+		const char *e = getenv("ENIGMA_KEY_TRACE");
+		return e && atoi(e) != 0;
+	}();
+	return enabled;
+}
+
+/* Tells apart the two possible reasons for a key repeat that stalls:
+ *  - "driver gap": the kernel timestamps of two consecutive events of the key are far apart, or the key was
+ *    released and pressed again (a press restarts the repeat delay): the driver/remote did not deliver events.
+ *  - "late": the event was timestamped long before enigma2 handled it: the main loop was busy (rendering,
+ *    Python, GL) and is the one to look at.
+ * "dropped" counts repeats discarded by the coalescing in processPending() since the last delivered one. */
+void eRCInputEventDriver::traceKey(const struct input_event &ev, bool dropped)
+{
+	if (ev.type != EV_KEY)
+		return;
+	struct timeval now;
+	gettimeofday(&now, NULL);
+	long late = (now.tv_sec - (long)ev_sec(ev)) * 1000 + (now.tv_usec - (long)ev_usec(ev)) / 1000;
+	long gap = -1;
+	if (m_trace_last_code == ev.code)
+		gap = ((long)ev_sec(ev) - m_trace_last_time.tv_sec) * 1000 + ((long)ev_usec(ev) - m_trace_last_time.tv_usec) / 1000;
+	if (dropped)
+		++m_trace_dropped;
+	if (!dropped && (late > 80 || (gap > 250 && ev.value == 2) || (ev.value == 1 && m_trace_last_value == 0 && gap >= 0 && gap < 400) || (ev.value == 0 && m_trace_last_value == 2 && gap >= 0 && gap < 60)))
+		eDebug("[eRCInputEventDriver] key trace: code=%d value=%d late=%ldms gap_to_previous=%ldms (prev value=%d) dropped_since_last=%d pending=%zu",
+			ev.code, ev.value, late, gap, m_trace_last_value, m_trace_dropped, m_pending.size());
+	if (!dropped)
+		m_trace_dropped = 0;
+	m_trace_last_code = ev.code;
+	m_trace_last_value = ev.value;
+	m_trace_last_time.tv_sec = ev_sec(ev);
+	m_trace_last_time.tv_usec = ev_usec(ev);
+}
+
+void eRCInputEventDriver::deliver(const struct input_event &ev)
+{
+	if (enabled && !input->islocked())
+		for (std::list<eRCDevice*>::iterator i(listeners.begin()); i!=listeners.end(); ++i)
+			(*i)->handleCode((long)&ev);
+}
+
+/* Key repeat workarounds for the gbquad4kpro remote driver (dvb.ko sends a spurious release+press
+ * while a key is held) and a slow renderer. Compiled in only for that box; other remotes are untouched. */
+#ifdef HWGBQUAD4KPRO
+#define HOLD_BRIDGE_MS 70
+
+/* A held key repeats faster than a slow screen can be drawn. The selection moves at once but the
+ * render thread is still busy with the frames before it, so the screen keeps scrolling for many steps
+ * after the key was released. While more than this many frames are waiting, repeats are not delivered. */
+#define MAX_FRAMES_BEHIND 2
+
+static bool renderBusy()
+{
+	gRC *rc = gRC::getInstance();
+	return rc && rc->pendingFrames() > MAX_FRAMES_BEHIND;
+}
+
+static struct input_event makeKeyEvent(int code, int value)
+{
+	struct input_event ev;
+	memset(&ev, 0, sizeof(ev));
+	struct timeval now;
+	gettimeofday(&now, NULL);
+	ev_sec(ev) = now.tv_sec;
+	ev_usec(ev) = now.tv_usec;
+	ev.type = EV_KEY;
+	ev.code = code;
+	ev.value = value;
+	return ev;
+}
+
+/* the held back release turned out to be a real one */
+void eRCInputEventDriver::flushRelease()
+{
+	if (!m_release_pending)
+		return;
+	m_release_pending = false;
+	m_bridge_timer->stop();
+	m_synth_timer->stop();
+	const int code = m_held_code;
+	m_held_code = -1;
+	deliver(makeKeyEvent(code, 0));
+}
+
+void eRCInputEventDriver::synthTick()
+{
+	if (m_held_code < 0 || m_release_pending)
+	{
+		m_synth_timer->stop();
+		return;
+	}
+	if (!renderBusy())
+		deliver(makeKeyEvent(m_held_code, 2));
+}
+
+/* returns true when the event has been consumed */
+bool eRCInputEventDriver::bridgeHold(struct input_event &ev)
+{
+	if (ev.value == 2)
+	{
+		if (m_release_pending)
+			return true; /* stale repeat behind a release */
+		m_synth_timer->stop(); /* real repeats are back */
+		m_held_code = ev.code;
+		return false;
+	}
+	if (m_release_pending)
+	{
+		if (ev.value == 1 && ev.code == m_held_code)
+		{
+			/* release + press of a held key: the key never went up */
+			m_release_pending = false;
+			m_bridge_timer->stop();
+			if (keyTraceEnabled())
+				eDebug("[eRCInputEventDriver] bridged a release/press glitch of key %d", ev.code);
+			ev.value = 2;
+			unsigned int rep[2] = {0, 0};
+			if (::ioctl(handle, EVIOCGREP, rep) < 0 || rep[1] < 20)
+				rep[1] = 80;
+			m_synth_timer->start(rep[1], false);
+			return false;
+		}
+		flushRelease(); /* anything else: the release was real */
+		return false;
+	}
+	if (ev.value == 0 && ev.code == m_held_code)
+	{
+		m_synth_timer->stop();
+		m_release_pending = true;
+		m_bridge_timer->start(HOLD_BRIDGE_MS, true);
+		return true;
+	}
+	if (ev.value == 1 && ev.code != m_held_code)
+	{
+		m_synth_timer->stop();
+		m_held_code = -1;
+	}
+	return false;
+}
+#endif /* HWGBQUAD4KPRO */
+
 void eRCInputEventDriver::processPending()
 {
 	while (!m_pending.empty())
@@ -122,6 +279,7 @@ void eRCInputEventDriver::processPending()
 		 * has meanwhile been released (the release is queued behind this repeat),
 		 * drop it too, so scrolling stops at once instead of replaying the
 		 * repeats that piled up while the screen was busy. */
+		const bool trace = keyTraceEnabled();
 		if (ev.type == EV_KEY && ev.value == 2)
 		{
 			bool obsolete = false;
@@ -132,12 +290,32 @@ void eRCInputEventDriver::processPending()
 					break;
 				}
 			if (obsolete)
+			{
+				if (trace)
+					traceKey(ev, true);
 				continue;
+			}
 		}
 
-		if (enabled && !input->islocked())
-			for (std::list<eRCDevice*>::iterator i(listeners.begin()); i!=listeners.end(); ++i)
-				(*i)->handleCode((long)&ev);
+#ifdef HWGBQUAD4KPRO
+		/* repeats are only an invitation to move on: skip them while the screen has not caught up */
+		if (ev.type == EV_KEY && ev.value == 2 && m_remote_control && renderBusy())
+		{
+			if (trace)
+				traceKey(ev, true);
+			continue;
+		}
+#endif
+
+		if (trace)
+			traceKey(ev, false);
+
+#ifdef HWGBQUAD4KPRO
+		if (ev.type == EV_KEY && m_remote_control && bridgeHold(ev))
+			continue;
+#endif
+
+		deliver(ev);
 
 		/* A key can start a screen switch (e.g. EXIT closing a menu) which the session completes
 		 * from a 0 ms timer, and until then no screen accepts keys. Deliver at most one key per
@@ -154,7 +332,17 @@ void eRCInputEventDriver::processPending()
 eRCInputEventDriver::eRCInputEventDriver(const char *filename): eRCDriver(eRCInput::getInstance())
 {
 	m_pending_timer = eTimer::create(eApp);
+	memset(&m_trace_last_time, 0, sizeof(m_trace_last_time));
+	m_trace_last_code = m_trace_last_value = m_trace_dropped = 0;
 	CONNECT(m_pending_timer->timeout, eRCInputEventDriver::processPending);
+#ifdef HWGBQUAD4KPRO
+	m_bridge_timer = eTimer::create(eApp);
+	m_synth_timer = eTimer::create(eApp);
+	CONNECT(m_bridge_timer->timeout, eRCInputEventDriver::flushRelease);
+	CONNECT(m_synth_timer->timeout, eRCInputEventDriver::synthTick);
+	m_held_code = -1;
+	m_release_pending = false;
+#endif
 	handle=open(filename, O_RDONLY|O_NONBLOCK);
 	if (handle<0)
 	{

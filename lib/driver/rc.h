@@ -130,6 +130,23 @@ protected:
 	std::deque<struct input_event> m_pending;
 	ePtr<eTimer> m_pending_timer;
 	void processPending();
+	/* diagnostics for stuttering key repeat, enabled with ENIGMA_KEY_TRACE=1 */
+	void traceKey(const struct input_event &ev, bool dropped);
+	/* The remote's driver releases a key that is still held whenever an IR frame arrives late, and
+	 * the next frame presses it again, which restarts the (long) repeat delay: scrolling stops for
+	 * that delay. A release of a repeating key is held back briefly; if the key is pressed again
+	 * at once the press is delivered as a repeat and repeats are generated until the real ones resume. */
+	void deliver(const struct input_event &ev);
+#ifdef HWGBQUAD4KPRO /* gbquad4kpro key repeat workaround, see rc.cpp */
+	bool bridgeHold(struct input_event &ev);
+	void flushRelease();
+	void synthTick();
+	ePtr<eTimer> m_bridge_timer, m_synth_timer;
+	int m_held_code;
+	bool m_release_pending;
+#endif
+	struct timeval m_trace_last_time;
+	int m_trace_last_code, m_trace_last_value, m_trace_dropped;
 public:
 	std::string getDeviceName();
 	eRCInputEventDriver(const char *filename);

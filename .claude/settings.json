@@ -66,7 +66,19 @@
       "Bash(python -m pyflakes lib/python/Components/EpgListGrid.py)",
       "Bash(echo \"- [Grid EPG native list]\\(project_gridepg_native_list.md\\) — eListboxEpgGridContent C++ renderer written 2026-11-06, unbuilt/untested\" >> \"/c/Users/dimit/.claude/projects/e--Enigma2Dev-OpenViX-enigma2-OpenViX-enigma2/memory/MEMORY.md\"; git status --short)",
       "Bash(python -c \"import ast;ast.parse\\(open\\('lib/python/Components/EpgListGrid.py'\\).read\\(\\)\\);print\\('ok'\\)\")",
-      "Bash(touch lib/gui/elistboxcontent.* lib/gui/elistboxepggrid.* lib/python/Components/EpgListGrid.py)"
+      "Bash(touch lib/gui/elistboxcontent.* lib/gui/elistboxepggrid.* lib/python/Components/EpgListGrid.py)",
+      "Bash(python patch_dvb_ir.py --help)",
+      "Bash(python patch_dvb_ir.py --keyup 100 gbquad4kpro/dvb_ir_keyup100/dvb.ko)",
+      "Bash(python patch_dvb_ir.py --keyup 130 gbquad4kpro/dvb_ir_keyup130/dvb.ko)",
+      "Bash(mkdir -p gbquad4kpro/dvb_ir_keyup180)",
+      "Bash(cp gbquad4kpro/dvb.ko gbquad4kpro/dvb_ir_keyup180/dvb.ko)",
+      "Bash(python patch_dvb_ir.py --keyup 180 gbquad4kpro/dvb_ir_keyup180/dvb.ko)",
+      "Bash(mkdir -p gbquad4kpro/dvb_ir_keyup115)",
+      "Bash(cp gbquad4kpro/dvb.ko gbquad4kpro/dvb_ir_keyup115/dvb.ko)",
+      "Bash(python patch_dvb_ir.py --keyup 115 gbquad4kpro/dvb_ir_keyup115/dvb.ko)",
+      "Bash(sed -i '171,173d' rc.cpp)",
+      "Bash(sed -i 's|#ifdef KEY_REPEAT_WORKAROUND|#ifdef HWGBQUAD4KPRO|; s|#endif /\\\\* KEY_REPEAT_WORKAROUND \\\\*/|#endif /* HWGBQUAD4KPRO */|' rc.cpp)",
+      "Bash(sed -i 's|#ifdef HWGBQUAD4KPRO /\\\\* same condition as KEY_REPEAT_WORKAROUND in rc.cpp \\\\*/|#ifdef HWGBQUAD4KPRO /* gbquad4kpro key repeat workaround, see rc.cpp */|' rc.h)"
     ],
     "additionalDirectories": [
       "C:\\Users\\dimit\\.claude\\projects\\e--Enigma2Dev-OpenViX-enigma2-OpenViX-enigma2\\memory"
