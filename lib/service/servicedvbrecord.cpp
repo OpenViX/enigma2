@@ -1,5 +1,6 @@
 #include <lib/service/servicedvbrecord.h>
 #include <lib/dvb/csasession.h>
+#include <lib/dvb/demux.h>
 #include <lib/dvb/csaengine.h>
 #include <lib/dvb/cahandler.h>
 #include <lib/base/eerror.h>
@@ -7,6 +8,7 @@
 #include <lib/dvb/dvb.h>
 #include <lib/dvb/epgcache.h>
 #include <lib/dvb/metaparser.h>
+#include <lib/base/nconfig.h>
 #include <lib/base/httpstream.h>
 #include <fcntl.h>
 
@@ -446,6 +448,10 @@ int eDVBServiceRecord::doRecord()
 				{
 					eDebug("[eDVBServiceRecord] Attaching CSA session to recorder");
 					m_record->setDescrambler(static_cast<iServiceScrambled*>(m_csa_session.operator->()));
+
+					// Latency costs nothing for a recording, while an error stays in the file
+					if (int delay = eConfigManager::getConfigIntValue("config.misc.softcsa.playbackDelay", eDVBRecordScrambledThread::AUTO_PLAYBACK_DELAY); delay != 0)
+						m_record->setPlaybackDelay(delay);
 				}
 			}
 

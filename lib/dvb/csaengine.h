@@ -82,6 +82,10 @@ public:
 	// Descrambling (called from recorder thread)
 	void descramble(unsigned char* packets, int len);
 
+	/* Milliseconds the last late key came too late by, cleared on read.
+	 * Zero whenever nothing is pending. */
+	int takeLateDeficitMs();
+
 	// Status
 	bool hasEvenKey() const { return m_key_even_set; }
 	bool hasOddKey() const { return m_key_odd_set; }
@@ -94,8 +98,8 @@ private:
 	 * third is what setKey() writes: nothing is written while it is read. */
 	static const int KEY_SLOTS = 3;
 
-	dvbcsa_bs_key_t* m_key_even[KEY_SLOTS];
-	dvbcsa_bs_key_t* m_key_odd[KEY_SLOTS];
+	dvbcsa_bs_key_t* m_key_even[KEY_SLOTS]{};
+	dvbcsa_bs_key_t* m_key_odd[KEY_SLOTS]{};
 	std::atomic<bool> m_key_even_set{false};
 	std::atomic<bool> m_key_odd_set{false};
 	// Slot for generation g is g % KEY_SLOTS: setKey() writes the next slot
@@ -114,10 +118,38 @@ private:
 	uint32_t m_prev_run_gen[2]{0, 0};  // What the previous run of that parity bound
 	bool m_run_suspect{false};    // Bound key may predate this period
 	bool m_probe_armed{false};    // Confirm the bound key at the next PES start
+	bool m_run_rebound{false};    // The run switched key after it began
+	/* A newer generation found while the run is suspect waits here instead of
+	 * being bound. The probe decides: the newest key can be the one for the
+	 * next period, and swapping blind would ruin the rest of this one. */
+	uint32_t m_cand_gen{0};       // 0 = no candidate
+	/* A probe can miss on a payload that carries no PES start, so one failed
+	 * probe is no proof. This many failures in a run take the key as wrong. */
+	static const unsigned int PROBE_TRIES = 2;
+	/* Probes in one run, whatever they find. A service whose scrambled PIDs
+	 * carry no PES at all must not probe every payload it sends. */
+	static const unsigned int PROBE_LIMIT = 8;
+	unsigned int m_probe_fails{0};  // Failed probes on a PID that carries PES
+	unsigned int m_probe_tries{0};  // Probes of the current run, any outcome
+	/* PIDs that have opened with a PES start code at least once. Only those
+	 * can condemn a key: a payload that is a section holds no start code to
+	 * find however good the key is, so a probe there may confirm, never judge.
+	 * Recorder thread only, like the rest of the run state. */
+	static const int PES_PIDS = 8;
+	uint16_t m_pes_pid[PES_PIDS]{};
+	int m_pes_pid_count{0};
+	uint64_t m_run_start_us{0};   // When the current run began coming out
+	// How much longer the data would have had to wait for its key, taken by
+	// the recorder thread to grow the playback delay. Written here, read and
+	// cleared there, both on the same thread.
+	int m_late_deficit_ms{0};
 	int m_batch_size;
 	unsigned int m_bad_packets{0};  // Log rate limit only, races are harmless
 	unsigned int m_expired_keys{0};  // Log rate limit only, races are harmless
+	unsigned int m_late_keys{0};  // Log rate limit only, races are harmless
 	unsigned int m_dead_keys{0};  // Log rate limit only, races are harmless
+	unsigned int m_probe_skips{0};  // Probes on a PID that carries no PES
+	unsigned int m_periods{0};  // Parity runs seen, to put the others in scale
 
 	// Pre-allocated batch arrays
 	std::vector<dvbcsa_bs_batch_s> m_batch_even;
@@ -131,6 +163,9 @@ private:
 	static void setNullPacket(unsigned char* pkt);
 	void logBadPacket(const char* reason, const unsigned char* pkt, int offset, int len);
 	bool probeKey(const dvbcsa_bs_key_t* key, const unsigned char* pkt, int offset) const;
+	static uint16_t getPid(const unsigned char* pkt);
+	bool knownPesPid(uint16_t pid) const;
+	void notePesPid(uint16_t pid);
 };
 
 #endif // __dvbcsaengine_h

@@ -38,6 +38,7 @@
 			<item level="0" text="Sync Mode *" description="Select how the descrambled data stream is processed. 'Automatic' uses asynchronous writes (lower CPU usage) with automatic fallback to synchronous if kernel AIO is not supported. 'Synchronous' forces blocking writes (stable, most compatible). *Restart E2 for changes to take effect.">config.misc.softcsa.syncMode</item>
 			<item level="0" text="Decoder Start Timeout *" description="Maximum time to wait for the incoming data and descrambling keys (CW) before starting decoder. Usually both arrive much faster and this is only for special cases. *Restart E2 for changes to take effect.">config.misc.softcsa.waitForDataTimeout</item>
 			<item level="0" text="Decoder playback buffer *" description="Buffer descrambled data before starting playback. Fixes audio dropouts with passthrough AC3 by ensuring enough data is available when the decoder starts. Higher values are more stable but increase channel switch time. *Restart E2 for changes to take effect.">config.misc.softcsa.bufferTime</item>
+			<item level="0" text="CW Delay Compensation *" description="Compensates for descrambling keys (CW) that arrive too late by delaying playback. 'Automatic' starts at a tenth of a second and raises the delay when a key came too late, up to five seconds. A fixed value delays every channel switch by that much instead. *Restart E2 for changes to take effect.">config.misc.softcsa.playbackDelay</item>
 		</if>
 	</setup>
 	<setup key="streamrelay" title="Stream Relay Settings">
