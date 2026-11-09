@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 16:25+0200\n"
-"PO-Revision-Date: 2026-10-29 20:19+0200\n"
+"POT-Creation-Date: 2026-11-08 13:18+0200\n"
+"PO-Revision-Date: 2026-11-08 18:32+0200\n"
 "Last-Translator: Orlandox\n"
 "Language-Team: timoj/Kojo/Samzam/Orlandox\n"
 "Language: fi\n"
@@ -3351,6 +3351,9 @@ msgstr "Kanavatiedot"
 msgid "Channel list cursor behavior"
 msgstr "Kursorin toiminta kanavalistassa"
 
+msgid "Channel list design"
+msgstr "Kanavalistan muotoilu"
+
 msgid "Channel list on mode change"
 msgstr "Kanavalistan näyttö tilan vaihtuessa"
 
@@ -3626,6 +3629,9 @@ msgstr "Kiertopol. vasen"
 
 msgid "Circular right"
 msgstr "Kiertopol. oikea"
+
+msgid "Classic"
+msgstr "Klassinen"
 
 msgid "Classical"
 msgstr "Klassinen"
@@ -9823,6 +9829,9 @@ msgstr "Ei lokeja"
 msgid "No MAC interface found"
 msgstr "MAC-liitäntää ei löydy"
 
+msgid "No SWAP found"
+msgstr "SWAP-tiedostoa ei löytynyt"
+
 msgid "No Timeshift found to save as recording!"
 msgstr "Ajansiirtoa ei löytynyt tallennusmuunnosta varten!"
 
@@ -14385,6 +14394,9 @@ msgstr "Teeman valinta"
 msgid "Skin setup"
 msgstr "Teeman valinta"
 
+msgid "Skin templates (follow 'two lines')"
+msgstr "Teeman mallit (noudata 'kahta riviä')"
+
 #, python-format
 msgid "Skin:\t%s"
 msgstr "Teema:\t%s"
@@ -15337,7 +15349,7 @@ msgstr ""
 "Suomenkielinen käännös: timoj, Kojo, Samzam, Orlandox\n"
 "\n"
 "Ylläpito : Orlandox\n"
-"--- 29.10.2026 ---\n"
+"--- 08.11.2026 ---\n"
 "\n"
 "http://www.huoltovalikko.com"
 
@@ -16873,6 +16885,9 @@ msgstr "Käytä vaihtoehtoista tai tavallista radio-tilaa."
 
 msgid "Use the alternative screen"
 msgstr "Käytä vaihtoehtoista näyttöä"
+
+msgid "Use the classic channel list or a row design supplied by the skin. Requires a GUI restart."
+msgstr "Käytä klassista kanavalistaa tai teeman mukana toimitettua rivimuotoilua. Vaatii käyttöliittymän uudelleenkäynnistyksen."
 
 msgid "Use the deletion time to sort Trash directories. Most recently deleted at the top."
 msgstr "Käytä poistoaikaa lajitteluperusteena roskakorissa. Viimeksi poistetut ylimmäisinä."
