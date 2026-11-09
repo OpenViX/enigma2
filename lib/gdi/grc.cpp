@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <stdlib.h>
 #include <fstream>
 #include <list>
 #include <string>
@@ -162,6 +163,10 @@ void gRC::submit(const gOpcode &o)
 		queue[wp++] = o;
 		if (wp == MAXSIZE)
 			wp = 0;
+#ifndef SYNC_PAINT
+		if (o.opcode == gOpcode::flush)
+			m_flush_pending.push_back(std::chrono::steady_clock::now());
+#endif
 		if (o.opcode == gOpcode::flush || o.opcode == gOpcode::shutdown || o.opcode == gOpcode::notify)
 #ifndef SYNC_PAINT
 			pthread_cond_signal(&cond); // wakeup gdi thread
@@ -173,9 +178,32 @@ void gRC::submit(const gOpcode &o)
 	}
 }
 
+static bool renderTraceEnabled()
+{
+	static const bool enabled = []() {
+		const char *e = getenv("ENIGMA_KEY_TRACE");
+		return e && atoi(e) != 0;
+	}();
+	return enabled;
+}
+
+int gRC::pendingFrames()
+{
+#ifndef SYNC_PAINT
+	pthread_mutex_lock(&mutex);
+	const int n = (int)m_flush_pending.size();
+	pthread_mutex_unlock(&mutex);
+	return n;
+#else
+	return 0;
+#endif
+}
+
 void *gRC::thread()
 {
 	int need_notify = 0;
+	std::chrono::steady_clock::time_point frameStart;
+	bool frameStartSet = false;
 #ifdef USE_LIBVUGLES2
 	if (gles_open())
 	{
@@ -212,6 +240,20 @@ void *gRC::thread()
 			gOpcode o(queue[rp++]);
 			if (rp == MAXSIZE)
 				rp = 0;
+			std::chrono::steady_clock::time_point submitted;
+			const bool isFlush = o.opcode == gOpcode::flush;
+			int behind = 0;
+			if (isFlush && !m_flush_pending.empty())
+			{
+				submitted = m_flush_pending.front();
+				m_flush_pending.pop_front();
+				behind = (int)m_flush_pending.size();
+			}
+			if (!frameStartSet)
+			{
+				frameStart = std::chrono::steady_clock::now();
+				frameStartSet = true;
+			}
 #ifndef SYNC_PAINT
 			pthread_mutex_unlock(&mutex);
 #endif
@@ -229,6 +271,18 @@ void *gRC::thread()
 				o.dc->exec(&o);
 				// o.dc is a gDC* filled with grabref... so we must release it here
 				o.dc->Release();
+			}
+			if (isFlush)
+			{
+				if (renderTraceEnabled())
+				{
+					const auto now = std::chrono::steady_clock::now();
+					const long latency = (long)std::chrono::duration_cast<std::chrono::milliseconds>(now - submitted).count();
+					const long cost = (long)std::chrono::duration_cast<std::chrono::milliseconds>(now - frameStart).count();
+					if (latency > 100 || cost > 60 || behind > 2)
+						eDebug("[gRC] render trace: frame took %ldms to draw, %ldms from submit to done, %d more frames waiting", cost, latency, behind);
+				}
+				frameStartSet = false;
 			}
 		}
 		else
