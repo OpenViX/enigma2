@@ -53,6 +53,13 @@ protected:
 	int getItemWidth() { return m_itemwidth; }
 	int getOrientation() { return m_orientation; }
 
+		/* header entries: non selectable section titles with a style of their own (header* skin attributes of the
+		   listbox). An entry is a header when it is an object with the attribute isListHeader (ListHeader, the config
+		   HEADER element). */
+	virtual bool headerOf(ePyObject item, std::string *text);
+	bool paintHeader(gPainter &painter, eWindowStyle &style, const ePoint &offset);
+	bool entryHeightList(std::vector<int> &out);
+
 protected:
 	ePyObject m_list;
 	int m_cursor, m_saved_cursor;
@@ -80,6 +87,11 @@ public:
 		m_sepline_color_set = 1;
 	}
 	void setSepLineThickness(int value) { m_sepline_thickness = value; }
+#ifndef SWIG
+protected:
+	// a config entry is a header when its element is the HEADER element: (text, HEADER)
+	bool headerOf(ePyObject item, std::string *text);
+#endif
 private:
 	int m_seperation, m_slider_height, m_slider_space;
 };
@@ -115,7 +127,11 @@ public:
 	void setTemplate(SWIG_PYOBJECT(ePyObject) tmplate);
 	int getMaxItemTextWidth();
 	int getListSize() { return size(); }
+	void setZoom(int percent) { m_zoom = percent > 0 ? percent : 100; }
+	eRect getContentBounds();
 private:
+	int m_zoom = 100; // all positions, sizes and fonts of an item are scaled by this (percent), see eListbox::paintZoomedSelection()
+	int zoomed(int v) const { return m_zoom == 100 ? v : (v * m_zoom + (v < 0 ? -50 : 50)) / 100; }
 	std::map<int, ePtr<gFont> > m_font;
 };
 

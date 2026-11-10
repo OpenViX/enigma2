@@ -514,6 +514,12 @@ def parseServiceListTemplates(tag, scope, pathSkin):
 			item["align"] = a["align"]
 		if "valign" in a:
 			item["valign"] = a["valign"]
+		# members of a <stack>: alignment along the stack, alignment across it, take the remaining space
+		for key in ("stackAlign", "stackCross"):
+			if key in a:
+				item[key] = a[key].lower()
+		if "stackFill" in a:
+			item["stackFill"] = 1 if a["stackFill"].lower() in ("1", "true", "yes", "on") else 0
 		if "pos" in a:
 			pos = [parseScale(x.strip()) for x in a["pos"].split(",")]
 			if len(pos) == 4:
@@ -549,7 +555,23 @@ def parseServiceListTemplates(tag, scope, pathSkin):
 
 	def parseRow(node):
 		a = node.attrib
-		row = {"id": a.get("id", ""), "for": a.get("for", "service"), "visible": a.get("visible", ""), "items": [parseItem(x) for x in node.findall("item")]}
+		row = {"id": a.get("id", ""), "for": a.get("for", "service"), "visible": a.get("visible", ""), "items": [], "stacks": []}
+		# <item> and <stack> in document order; the items of a <stack> are kept in the row's item list, tagged with the stack
+		for child in node:
+			if child.tag == "item":
+				row["items"].append(parseItem(child))
+			elif child.tag == "stack":
+				stack = {"layout": child.attrib.get("layout", "horizontal"), "spacing": number(child, "spacing"), "visible": child.attrib.get("visible", "")}
+				if "pos" in child.attrib:
+					pos = [parseScale(x.strip()) for x in child.attrib["pos"].split(",")]
+					if len(pos) == 4:
+						stack["pos"] = pos
+				stackId = len(row["stacks"])
+				row["stacks"].append(stack)
+				for sub in child.findall("item"):
+					item = parseItem(sub)
+					item["stack"] = stackId
+					row["items"].append(item)
 		if "height" in a:
 			row["height"] = parseScale(a["height"])
 		if "weight" in a:
@@ -587,10 +609,11 @@ def parseServiceListTemplates(tag, scope, pathSkin):
 			entry.update({k: v for k, v in base.items() if k not in ("name", "title", "rows", "large")})
 			entry["rows"] = list(base["rows"])
 		# layout: "list" (vertical, default), "horizontal" or "grid"; the cell size is itemWidth x itemHeight
-		for key in ("layout", "large"):
+		# spanMarkers="1": in a grid a marker takes a row of its own, as wide as the whole grid
+		for key in ("layout", "large", "spanMarkers"):
 			if key in a:
 				entry[key] = a[key]
-		for key in ("itemHeight", "itemWidth"):
+		for key in ("itemHeight", "itemWidth", "markerHeight"):
 			if key in a:
 				entry[key] = parseScale(a[key])
 		for rowNode in template.findall("row"):
@@ -923,6 +946,51 @@ class AttributeParser:
 		x, y = value.split(",")
 		self.guiObject.setTextOffset(ePoint(int(x) * self.scaleTuple[0][0] // self.scaleTuple[0][1], int(y) * self.scaleTuple[1][0] // self.scaleTuple[1][1]))
 
+	# Style of header entries of a listbox (ListHeader entries, the config HEADER element): non selectable section
+	# titles. Everything that is not given falls back to the normal item style.
+	def headerFont(self, value):
+		self.guiObject.setHeaderFont(parseFont(value, self.scaleTuple))
+
+	def headerForegroundColor(self, value):
+		self.guiObject.setHeaderForegroundColor(parseColor(value))
+
+	def headerBackgroundColor(self, value):
+		self.guiObject.setHeaderBackgroundColor(parseColor(value))
+
+	def headerLineColor(self, value):
+		self.guiObject.setHeaderLineColor(parseColor(value))
+
+	def headerLineThickness(self, value):
+		self.guiObject.setHeaderLineThickness(self.applyVerticalScale(parseScale(value)))
+
+	def headerHeight(self, value):  # Height of a header row, a vertical listbox lays out its rows with it.
+		self.guiObject.setHeaderHeight(self.applyVerticalScale(parseScale(value)))
+
+	def headerValign(self, value):
+		try:
+			self.guiObject.setHeaderVAlign({
+				"top": self.guiObject.alignTop,
+				"center": self.guiObject.alignCenter,
+				"bottom": self.guiObject.alignBottom
+			}[value])
+		except KeyError:
+			print("[Skin] Error: Invalid headerValign '%s'!  Must be one of 'top', 'center' or 'bottom'." % value)
+
+	def headerHalign(self, value):
+		try:
+			self.guiObject.setHeaderHAlign({
+				"left": self.guiObject.alignLeft,
+				"center": self.guiObject.alignCenter,
+				"right": self.guiObject.alignRight,
+				"block": self.guiObject.alignBlock
+			}[value])
+		except KeyError:
+			print("[Skin] Error: Invalid headerHalign '%s'!  Must be one of 'left', 'center', 'right' or 'block'." % value)
+
+	def headerTextOffset(self, value):
+		x, y = value.split(",")
+		self.guiObject.setHeaderTextOffset(ePoint(int(x) * self.scaleTuple[0][0] // self.scaleTuple[0][1], int(y) * self.scaleTuple[1][0] // self.scaleTuple[1][1]))
+
 	def flags(self, value):
 		flags = value.split(",")
 		for f in flags:
@@ -1013,6 +1081,21 @@ class AttributeParser:
 
 	def enableWrapAround(self, value):
 		self.guiObject.setWrapAround(parseBoolean("enablewraparound", value))
+
+	def carousel(self, value):  # Selection stays on the centre slot, entries scroll past it (horizontal/vertical listboxes).
+		self.guiObject.setCarousel(parseBoolean("carousel", value))
+
+	def selectionZoom(self, value):  # Selected entry size in percent for horizontal and grid listboxes, 100 = off (default).
+		try:
+			self.guiObject.setSelectionZoom(int(value))
+		except ValueError:
+			print("[Skin] Error: Invalid selectionZoom '%s'!  Must be a percentage such as '110'." % value)
+
+	def carouselZoom(self, value):  # Centre slot size in percent, 100 = no zoom (default 112).
+		try:
+			self.guiObject.setCarouselZoom(int(value))
+		except ValueError:
+			print("[Skin] Error: Invalid carouselZoom '%s'!  Must be a percentage such as '112'." % value)
 
 	def pointer(self, value):
 		(name, pos) = value.split(":")

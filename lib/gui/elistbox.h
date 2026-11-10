@@ -3,6 +3,8 @@
 
 #include <lib/gui/ewidget.h>
 #include <connection.h>
+#include <algorithm>
+#include <vector>
 
 class eListbox;
 class eSlider;
@@ -46,6 +48,14 @@ protected:
 
 	// void setOutputDevice ? (for allocating colors, ...) .. requires some work, though
 	virtual void setSize(const eSize &size)=0;
+		/* the cell size last given to setSize(); an invalid (empty) size means "unknown" (carousel zoom is skipped) */
+	virtual eSize getItemSize() { return eSize(); }
+		/* scale the painted item content (positions, sizes, fonts) by percent; only set around a single paint() of
+		   an enlarged entry. Contents that cannot scale ignore it and just get the larger cell. */
+	virtual void setZoom(int percent) { (void)percent; }
+		/* bounding box of what the current entry actually draws, relative to its cell and at 100% (an invalid rect if
+		   unknown). The zoom grows the entry around the centre of this box, not around the cell centre. */
+	virtual eRect getContentBounds() { return eRect(); }
 
 		/* the following functions always refer to the selected item */
 	virtual void paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected)=0;
@@ -55,6 +65,18 @@ protected:
 	virtual int getOrientation() { return 1; }
 	virtual int getMaxItemTextWidth() { return 1; }
 	virtual int getListSize() { return 0; }
+
+		/* grid layout: entries that take a whole row of the grid on their own (e.g. markers). Fills one flag per
+		   entry and returns true when at least one entry spans; the default is a plain grid. */
+	virtual bool gridSpanList(std::vector<char> &) { return false; }
+		/* the width of such a full row entry, set by the listbox whenever its size changes */
+	virtual void setSpanWidth(int) { }
+		/* ...and its height, 0 for the height of a normal cell */
+	virtual int gridSpanHeight() { return 0; }
+
+		/* vertical lists: the height of every entry, 0 for the normal item height (headers, markers). Returns true
+		   when at least one entry differs; the listbox then lays out, scrolls and pages by the real heights. */
+	virtual bool entryHeightList(std::vector<int> &) { return false; }
 
 	eListbox *m_listbox;
 	// ellipsis for text that does not fit its box, can be disabled per listbox from the skin
@@ -106,6 +128,17 @@ struct eListboxStyle
 	bool m_gradient_set[4], m_gradient_alphablend[4];
 	uint8_t m_gradient_direction[4];
 	std::vector<gRGB> m_gradient_colors[4];
+
+		/* header entries (non selectable section titles), styled from the skin independent of the normal items.
+		   Everything not set falls back to the normal item style. */
+	ePtr<gFont> m_header_font;
+	gRGB m_header_foreground_color, m_header_background_color, m_header_line_color;
+	int m_header_foreground_color_set, m_header_background_color_set, m_header_line_color_set;
+	int m_header_height; // 0: the normal item height
+	int m_header_line_thickness;
+	int m_header_halign, m_header_valign;
+	ePoint m_header_text_offset;
+	int m_header_text_offset_set;
 };
 #endif
 
@@ -127,6 +160,15 @@ public:
 	};
 	void setScrollbarMode(int mode);
 	void setWrapAround(bool);
+		/* carousel: the selection stays locked on the centre slot and the entries scroll past it (horizontal or
+		   vertical lists). With wrap-around enabled the entries also wrap visually around the list ends. */
+	void setCarousel(bool);
+	bool getCarousel() { return m_carousel; }
+		/* size of the centre slot in percent (100 = no zoom, default 112). Grows along the scroll axis only. */
+	void setCarouselZoom(int percent);
+		/* size of the selected entry in percent for horizontal and grid lists (100 = off, default). Overlaps the
+		   neighbours; a horizontal list only grows along its scroll axis. Not used in carousel mode (carouselZoom). */
+	void setSelectionZoom(int percent);
 	enum { orHorizontal, orVertical, orGrid };
 	void setOrientation(int orientation);
 
@@ -156,6 +198,10 @@ public:
 
 	int getCurrentIndex();
 	int getOrientation();
+		/* pages of the list as the user pages through it; for a grid with rows of different heights (spanning
+		   entries) a page is as many rows as fit. For the pager widget. */
+	int getPageCount();
+	int getCurrentPage();
 	void moveSelection(long how);
 	void moveSelectionTo(int index);
 	void moveToEnd();
@@ -235,6 +281,18 @@ public:
 	void setItemGradientSelected(const gRGB &startcolor, const gRGB &midcolor, const gRGB &endcolor, uint8_t direction, bool alphablend);
 	void redrawItemByIndex(int index) { entryChanged(index); }
 
+		/* style of header entries (see Components/ListHeader.py, config HEADER); set from the skin by the
+		   header* widget attributes */
+	void setHeaderFont(gFont *font);
+	void setHeaderForegroundColor(const gRGB &col);
+	void setHeaderBackgroundColor(const gRGB &col);
+	void setHeaderLineColor(const gRGB &col);
+	void setHeaderLineThickness(int thickness);
+	void setHeaderHeight(int height);
+	void setHeaderVAlign(int align);
+	void setHeaderHAlign(int align);
+	void setHeaderTextOffset(const ePoint &textoffset);
+
 #ifndef SWIG
 	struct eListboxStyle *getLocalStyle(void);
 
@@ -255,9 +313,44 @@ protected:
 	ePoint getItemPostion(int index);
 
 private:
+	/* grid rows. A row is a contiguous range of entries; without spanning entries every row has m_max_columns
+	   of them (the last one fewer), a spanning entry (marker) is a row of its own. */
+	void gridUpdate();
+		/* vertical list with entries of different heights (headers, markers): the rows are the entries */
+	eRect verticalRect(int index);
+		/* ...which scroll entry by entry: the first entry to show so that `index` is fully visible, the number of
+		   entries that fit from a first one */
+	int verticalTopFor(int index);
+	int verticalVisible(int top);
+	bool gridHasSpans() { gridUpdate(); return m_grid_spans; }
+	int gridRows();
+	int gridRowOf(int index);
+	int gridRowFirst(int row);
+	int gridRowCount(int row);
+	int gridColOf(int index) { return index - gridRowFirst(gridRowOf(index)); }
+	int gridRowHeight(int row);
+	int gridRowTop(int row);
+	int gridPageCount();
+	int gridPageOfRow(int row);
+	int gridPageStartRow(int page);
+	bool gridSpanAt(int index);
+	eSize gridItemSize(int index);
+	bool m_grid_dirty, m_grid_spans;
+	std::vector<int> m_grid_first, m_grid_rowof;
+	std::vector<char> m_grid_spanflag;
+	int m_grid_spanheight;
+	std::vector<int> m_grid_ytop, m_grid_pagefirst;
 	int m_scrollbar_mode, m_prev_scrollbar_page;
 	bool m_content_changed;
 	bool m_enabled_wrap_around;
+	bool m_carousel = false;
+	int m_carousel_zoom = 112;
+	int m_selection_zoom = 100;
+	bool selectionZoomActive() const { return m_selection_zoom > 100 && m_selection_enabled && (m_orientation == orHorizontal || m_orientation == orGrid) && m_content && m_content->getItemSize().width() > 0; }
+	void paintZoomed(gPainter &painter, eWindowStyle &style, int index, ePoint pos, int percent);
+	void paintZoomedSelection(gPainter &painter, eWindowStyle &style, int index, ePoint pos, bool bothAxes);
+	bool carouselActive() const { return m_carousel && (m_orientation == orHorizontal || m_orientation == orVertical); }
+	int carouselCenter() const { return m_items_per_page / 2; }
 
 	int m_scrollbar_width;
 	int m_scrollbar_height;

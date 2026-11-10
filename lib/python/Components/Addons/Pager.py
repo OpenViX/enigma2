@@ -186,6 +186,13 @@ class Pager(GUIAddon):
 			return origSource.instance.getOrientation()
 		return eListbox.orVertical
 
+	def getSourceInstance(self):
+		if isinstance(self.source, List):  # Components.Sources.List
+			origSource = self.source.connectedGuiElement or self.source.master.master
+		else:
+			origSource = self.source
+		return getattr(origSource, "instance", None)
+
 	def getCurrentIndex(self):
 		if hasattr(self.source, "index"):
 			return self.source.index
@@ -235,6 +242,17 @@ class Pager(GUIAddon):
 				listControledlSize = sourceSize.height()
 			else:
 				listControledlSize = sourceSize.width()
+
+			instance = self.getSourceInstance()
+			carousel = instance is not None and hasattr(instance, "getCarousel") and instance.getCarousel()
+			if listControledlSize > 0 and (lOrientation == eListbox.orGrid or carousel):
+				# a grid knows its pages itself: its rows can have different heights (spanning entries); a carousel has no
+				# pages, every entry is one position (page count = entries, current page = selected entry)
+				if instance is not None and hasattr(instance, "getPageCount"):
+					pageCount = instance.getPageCount()
+					if pageCount > 0:
+						self.selChange(instance.getCurrentPage(), pageCount - 1)
+						return
 
 			if listControledlSize > 0:
 				currentIndex = self.getCurrentIndex()
