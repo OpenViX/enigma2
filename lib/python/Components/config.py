@@ -1993,6 +1993,23 @@ class ConfigNothing(ConfigSelection):
 	def __init__(self):
 		ConfigSelection.__init__(self, choices=[("", "")])
 
+
+class ConfigHeader(ConfigNothing):
+	"""The element of a header entry in a config list: a section title that cannot be selected and is painted with
+	the header style of the skin (headerFont, headerForegroundColor, headerBackgroundColor, headerHeight, ...).
+	The text is the first element of the entry:
+
+		getConfigListEntry(_("Display"), HEADER)
+	"""
+	isListHeader = True  # This is what the listbox engine looks for.
+
+	def __init__(self):
+		ConfigNothing.__init__(self)
+		self.save_disabled = True
+
+
+HEADER = ConfigHeader()  # There is nothing to store in a header, so one instance serves every config list.
+
 # until here, 'saved_value' always had to be a *string*.
 # now, in ConfigSubsection, and only there, saved_value
 # is a dict, essentially forming a tree.

@@ -54,6 +54,10 @@ public:
 #ifndef SWIG
 protected:
 	void setSize(const eSize &size);
+	bool gridSpanList(std::vector<char> &out);
+	bool entryHeightList(std::vector<int> &out);
+	void setSpanWidth(int width);
+	int gridSpanHeight();
 	void paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected);
 	int getItemWidth();
 	int getOrientation();
@@ -119,18 +123,34 @@ private:
 		std::string src, srcSel;
 		bool isSvg;
 		Ref<gPixmap> pix, pixSel;
+		// member of a <stack> of its row (index into Row::stacks, -1: plain row item), placed like an eStack child:
+		// stackAlign 0 start (left/top), 1 end (right/bottom), 2 centre; stackCross -1 item's own, 0/1/2 start/centre/end
+		// across the stack; stackFill takes the space the other members leave over
+		int stackId, stackAlign, stackCross;
+		bool stackFill;
+	};
+	// a group of items laid out along one axis inside a box (the row's content area, or an absolute rect)
+	struct Stack {
+		bool horizontal;
+		int spacing;
+		bool absolute;
+		eRect rect;
+		uint64_t req, forbid;
 	};
 	struct Row {
 		int kind, height, weight, gap, padLeft, padRight, padTop, padBottom;
 		int align; // alignment of the whole flow when it does not fill the row: 0 left, 1 center, 2 right
 		uint64_t req, forbid; // row is skipped unless these conditions hold
 		std::vector<Item> items;
+		std::vector<Stack> stacks;
 	};
 	struct Template {
 		std::string name;
 		int itemHeight, itemWidth, orientation;
 		bool large;
 		bool usesNext, timeDependent, usesPicon;
+		bool spanMarkers; // grid: a marker is a row of its own, as wide as the whole grid
+		int markerHeight; // ...and this high (0: like a cell)
 		uint64_t usedBits; // every state/config bit the template tests, expensive ones are only computed when used
 		std::vector<Row> rows;
 	};
@@ -163,6 +183,7 @@ private:
 	std::map<std::string, int> m_params;
 	std::string m_current;
 	int m_cur_index;
+	int m_span_width; // width of a full row (marker) entry of a grid, 0 until the listbox told us
 	uint64_t m_flags;
 	int m_font_delta[fontGroups];
 	unsigned int m_gen;

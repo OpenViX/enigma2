@@ -64,7 +64,7 @@ static std::string trim(const std::string &s)
 }
 
 eListboxServiceTemplateContent::eListboxServiceTemplateContent()
-	:m_cur_index(-1), m_flags(0), m_gen(1), m_rec_time(0), m_prefetch_last(-1), m_prefetch_dir(0)
+	:m_cur_index(-1), m_span_width(0), m_flags(0), m_gen(1), m_rec_time(0), m_prefetch_last(-1), m_prefetch_dir(0)
 {
 	for (int i = 0; i < fontGroups; ++i)
 		m_font_delta[i] = 0;
@@ -482,6 +482,11 @@ int eListboxServiceTemplateContent::addTemplate(ePyObject dict)
 	t.orientation = layout == "grid" ? (int)eListbox::orGrid : layout == "horizontal" ? (int)eListbox::orHorizontal : (int)eListbox::orVertical;
 	t.itemWidth = pyInt(d, "itemWidth", 0);
 	t.usesNext = t.timeDependent = t.usesPicon = false;
+	{
+		const std::string spanMarkers = pyStr(d, "spanMarkers");
+		t.spanMarkers = spanMarkers == "1" || spanMarkers == "true" || spanMarkers == "yes";
+		t.markerHeight = pyInt(d, "markerHeight", 0);
+	}
 	t.usedBits = 0;
 
 	PyObject *rows = dictGet(d, "rows");
@@ -504,6 +509,27 @@ int eListboxServiceTemplateContent::addTemplate(ePyObject dict)
 			row.align = rowAlign == "center" ? 1 : rowAlign == "right" ? 2 : 0;
 			parseCondition(pyStr(rd, "visible"), row.req, row.forbid);
 			t.usedBits |= row.req | row.forbid;
+			PyObject *stacks = dictGet(rd, "stacks");
+			for (Py_ssize_t i = 0; stacks && PyList_Check(stacks) && i < PyList_Size(stacks); ++i)
+			{
+				PyObject *sd = PyList_GetItem(stacks, i);
+				Stack st;
+				st.horizontal = pyStr(sd, "layout") != "vertical";
+				st.spacing = pyInt(sd, "spacing", 0);
+				st.absolute = false;
+				PyObject *spos = dictGet(sd, "pos");
+				if (spos && PyList_Check(spos) && PyList_Size(spos) == 4)
+				{
+					int v[4];
+					for (int k = 0; k < 4; ++k)
+						v[k] = (int)PyLong_AsLong(PyList_GetItem(spos, k));
+					st.absolute = true;
+					st.rect = eRect(v[0], v[1], v[2], v[3]);
+				}
+				parseCondition(pyStr(sd, "visible"), st.req, st.forbid);
+				t.usedBits |= st.req | st.forbid;
+				row.stacks.push_back(st);
+			}
 			PyObject *items = dictGet(rd, "items");
 			for (Py_ssize_t i = 0; items && PyList_Check(items) && i < PyList_Size(items); ++i)
 			{
@@ -587,6 +613,16 @@ int eListboxServiceTemplateContent::addTemplate(ePyObject dict)
 				it.src = pyStr(id, "src");
 				it.srcSel = pyStr(id, "srcSelected");
 				it.isSvg = false;
+				it.stackId = pyInt(id, "stack", -1);
+				if (it.stackId >= (int)row.stacks.size())
+					it.stackId = -1;
+				std::string stackAlign = pyStr(id, "stackAlign");
+				it.stackAlign = (stackAlign == "right" || stackAlign == "bottom") ? 1 : stackAlign == "center" ? 2 : 0;
+				std::string stackCross = pyStr(id, "stackCross");
+				it.stackCross = (stackCross == "top" || stackCross == "left") ? 0 : stackCross == "center" ? 1 : (stackCross == "bottom" || stackCross == "right") ? 2 : -1;
+				it.stackFill = pyInt(id, "stackFill", 0) != 0;
+				if (it.stackId >= 0)
+					it.absolute = false; // a stack member is placed by its stack
 				row.items.push_back(it);
 			}
 			t.rows.push_back(row);
@@ -968,6 +1004,7 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 		ePtr<gPixmap> pix, pixSel;
 		ePtr<eTextPara> para;
 		bool svg;
+		int vaOv, haOv; // vertical / horizontal alignment forced by a stack (-1: the item's own)
 	};
 
 	// turns one laid out slot into a display list operation
@@ -977,7 +1014,8 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 		// lineHeight: the item lives in a band of that height (e.g. the height of the text line next to it).
 		// The band is placed in the row by valign and the item is centred inside it, so icons, bars and
 		// text with the same lineHeight and valign stay level with each other.
-		int va = it.valign;
+		int va = s.vaOv >= 0 ? s.vaOv : it.valign;
+		const int al = s.haOv >= 0 ? s.haOv : it.align;
 		if (it.lineH > 0 && it.lineH < h)
 		{
 			ty += va == 0 ? 0 : va == 2 ? h - it.lineH : (h - it.lineH) / 2;
@@ -1011,9 +1049,9 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 			}
 			eRect bb = para->getBoundBox();
 			int px = x;
-			if (it.align == 1)
+			if (al == 1)
 				px = x + (w - bb.width()) / 2;
-			else if (it.align == 2)
+			else if (al == 2)
 				px = x + w - bb.width();
 			op.kind = opText;
 			op.para = para;
@@ -1030,12 +1068,15 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 			const int boxH = it.height > 0 ? std::min(it.height, h) : h - 2 * it.margin;
 			op.rect = eRect(x, ty + (it.height > 0 ? vpos(h - boxH) : it.margin), w, boxH);
 			int flags = gPainter::BT_ALPHABLEND;
-			if (it.align == -1 || it.align == 1) // centred unless told otherwise
+			if (al == -1 || al == 1) // centred unless told otherwise
 				flags |= gPainter::BT_HALIGN_CENTER;
-			else if (it.align == 2)
+			else if (al == 2)
 				flags |= gPainter::BT_HALIGN_RIGHT;
 			flags |= va == 1 ? gPainter::BT_VALIGN_CENTER : va == 2 ? gPainter::BT_VALIGN_BOTTOM : 0;
-			if (s.svg)
+			// a rasterised svg is blitted 1:1; one larger than the box (it is rendered for the cell height,
+			// not for this box) is scaled down to fit like any other picon instead of being cropped
+			const eSize pps = s.pix->size();
+			if (s.svg && pps.width() <= w && pps.height() <= boxH)
 				op.kind = opBlitSVG;
 			else
 			{
@@ -1067,9 +1108,9 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 			else
 			{
 				int ox = x;
-				if (it.align == 1)
+				if (al == 1)
 					ox = x + (w - ps.width()) / 2;
-				else if (it.align == 2)
+				else if (al == 2)
 					ox = x + w - ps.width();
 				op.kind = opBlit;
 				op.rect = eRect(ox, ty + vpos(h - ps.height()), ps.width(), ps.height());
@@ -1128,9 +1169,9 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 			{
 				// content sized: natural size, placed by align / valign
 				int ox = x;
-				if (it.align == 1)
+				if (al == 1)
 					ox = x + (w - ps.width()) / 2;
-				else if (it.align == 2)
+				else if (al == 2)
 					ox = x + w - ps.width();
 				op.kind = opBlit;
 				op.rect = eRect(ox, ty + vpos(h - ps.height()), ps.width(), ps.height());
@@ -1141,9 +1182,9 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 				const int bh = it.height > 0 ? std::min(it.height, h) : h;
 				op.rect = eRect(x, ty + vpos(h - bh), w, bh);
 				int flags = gPainter::BT_ALPHABLEND;
-				if (it.align == -1 || it.align == 1)
+				if (al == -1 || al == 1)
 					flags |= gPainter::BT_HALIGN_CENTER;
-				else if (it.align == 2)
+				else if (al == 2)
 					flags |= gPainter::BT_HALIGN_RIGHT;
 				flags |= va == 1 ? gPainter::BT_VALIGN_CENTER : va == 2 ? gPainter::BT_VALIGN_BOTTOM : 0;
 				if (it.isSvg)
@@ -1162,6 +1203,123 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 		}
 	};
 
+	// builds the slot of one item (what it shows and how wide it is); false when the item has nothing to show
+	auto buildSlot = [&](const Item &it, int rowH, Slot &s) -> bool
+	{
+		s.it = &it;
+		s.vaOv = s.haOv = -1;
+		s.w = 0;
+		s.svg = false;
+		s.shrunk = false;
+		// width="@param": a fixed width taken from a runtime parameter, content sized while it is unset
+		int fixedW = it.width;
+		s.mode = it.wmode;
+		if (s.mode == wParam)
+		{
+			std::map<std::string, int>::iterator pi = m_params.find(it.param);
+			int v = pi != m_params.end() ? pi->second : 0;
+			s.mode = v > 0 ? wFixed : wAuto;
+			fixedW = v;
+		}
+		switch (it.type)
+		{
+		case itText:
+		{
+			for (size_t k = 0; k < it.tokens.size(); ++k)
+			{
+				const Token &tk = it.tokens[k];
+				if (tk.kind == tokLiteral)
+					s.text += tk.lit;
+				else
+				{
+					std::string v = tokenText(tk.kind, ref, name, evt, evt_next, now);
+					if (!v.empty())
+						s.text += v + tk.lit; // lit is the optional "|suffix" of the token
+				}
+			}
+			if (s.text.empty())
+				return false;
+			if (s.mode == wAuto && !it.absolute)
+			{
+				s.para = new eTextPara(eRect(0, 0, 4096, rowH));
+				s.para->setFont(it.font);
+				s.para->renderString(s.text.c_str());
+				s.w = s.para->getBoundBox().width();
+			}
+			else
+				s.w = s.mode == wFixed ? fixedW : 0;
+			break;
+		}
+		case itPicon:
+			s.pix = piconPix;
+			s.svg = piconSVG;
+			if (!s.pix && !it.reserve)
+				return false;
+			s.w = s.mode == wFixed ? fixedW : s.mode == wAuto ? H * 5 / 3 : 0;
+			break;
+		case itServiceType:
+		case itCrypto:
+		case itRecord:
+		case itResolution:
+		case itBackup:
+		case itCatchup:
+		case itKind:
+		{
+			if (it.type == itServiceType)
+				s.pix = playable ? typePix : ePtr<gPixmap>();
+			else if (it.type == itCrypto)
+				s.pix = m_pixmaps[picCrypto];
+			else if (it.type == itRecord)
+				s.pix = m_pixmaps[picRecord];
+			else if (it.type == itResolution)
+				s.pix = playable ? resPix : ePtr<gPixmap>();
+			else if (it.type == itBackup)
+				s.pix = m_pixmaps[picBackup];
+			else if (it.type == itCatchup)
+				s.pix = m_pixmaps[picCatchup];
+			else
+				s.pix = isMarker ? m_pixmaps[picMarker] : isDir ? m_pixmaps[picFolder] : ePtr<gPixmap>();
+			if (!s.pix)
+				return false;
+			if (s.mode == wFixed)
+				s.w = fixedW;
+			else if (s.mode == wAuto)
+			{
+				eSize ps = s.pix->size();
+				s.w = (ps.height() > rowH && ps.height() > 0) ? ps.width() * rowH / ps.height() : ps.width();
+			}
+			break;
+		}
+		case itPixmap:
+		{
+			s.pix = it.pix;
+			s.pixSel = it.pixSel;
+			if (!s.pix)
+				return false;
+			if (s.mode == wFixed)
+				s.w = fixedW;
+			else if (s.mode == wAuto)
+			{
+				eSize ps = s.pix->size();
+				const int bh = it.height > 0 ? std::min(it.height, rowH) : (ps.height() > rowH ? rowH : ps.height());
+				s.w = ps.height() > 0 ? ps.width() * bh / ps.height() : ps.width();
+			}
+			break;
+		}
+		case itProgress:
+			if (!hasEvent)
+				return false;
+			s.w = s.mode == wFixed ? fixedW : 0;
+			break;
+		case itLine:
+		case itRect:
+		case itSpacer:
+			s.w = s.mode == wFixed ? fixedW : 0;
+			break;
+		}
+		return true;
+	};
+
 	int y0 = 0;
 	for (size_t ri = 0; ri < rows.size(); ++ri)
 	{
@@ -1173,119 +1331,11 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 		for (size_t ii = 0; ii < row.items.size(); ++ii)
 		{
 			const Item &it = row.items[ii];
-			if ((fl & it.req) != it.req || (fl & it.forbid))
+			if (it.stackId >= 0 || (fl & it.req) != it.req || (fl & it.forbid))
 				continue;
 			Slot s;
-			s.it = &it;
-			s.w = 0;
-			s.svg = false;
-			s.shrunk = false;
-			// width="@param": a fixed width taken from a runtime parameter, content sized while it is unset
-			int fixedW = it.width;
-			s.mode = it.wmode;
-			if (s.mode == wParam)
-			{
-				std::map<std::string, int>::iterator pi = m_params.find(it.param);
-				int v = pi != m_params.end() ? pi->second : 0;
-				s.mode = v > 0 ? wFixed : wAuto;
-				fixedW = v;
-			}
-			switch (it.type)
-			{
-			case itText:
-			{
-				for (size_t k = 0; k < it.tokens.size(); ++k)
-				{
-					const Token &tk = it.tokens[k];
-					if (tk.kind == tokLiteral)
-						s.text += tk.lit;
-					else
-					{
-						std::string v = tokenText(tk.kind, ref, name, evt, evt_next, now);
-						if (!v.empty())
-							s.text += v + tk.lit; // lit is the optional "|suffix" of the token
-					}
-				}
-				if (s.text.empty())
-					continue;
-				if (s.mode == wAuto && !it.absolute)
-				{
-					s.para = new eTextPara(eRect(0, 0, 4096, rowH));
-					s.para->setFont(it.font);
-					s.para->renderString(s.text.c_str());
-					s.w = s.para->getBoundBox().width();
-				}
-				else
-					s.w = s.mode == wFixed ? fixedW : 0;
-				break;
-			}
-			case itPicon:
-				s.pix = piconPix;
-				s.svg = piconSVG;
-				if (!s.pix && !it.reserve)
-					continue;
-				s.w = s.mode == wFixed ? fixedW : s.mode == wAuto ? H * 5 / 3 : 0;
-				break;
-			case itServiceType:
-			case itCrypto:
-			case itRecord:
-			case itResolution:
-			case itBackup:
-			case itCatchup:
-			case itKind:
-			{
-				if (it.type == itServiceType)
-					s.pix = playable ? typePix : ePtr<gPixmap>();
-				else if (it.type == itCrypto)
-					s.pix = m_pixmaps[picCrypto];
-				else if (it.type == itRecord)
-					s.pix = m_pixmaps[picRecord];
-				else if (it.type == itResolution)
-					s.pix = playable ? resPix : ePtr<gPixmap>();
-				else if (it.type == itBackup)
-					s.pix = m_pixmaps[picBackup];
-				else if (it.type == itCatchup)
-					s.pix = m_pixmaps[picCatchup];
-				else
-					s.pix = isMarker ? m_pixmaps[picMarker] : isDir ? m_pixmaps[picFolder] : ePtr<gPixmap>();
-				if (!s.pix)
-					continue;
-				if (s.mode == wFixed)
-					s.w = fixedW;
-				else if (s.mode == wAuto)
-				{
-					eSize ps = s.pix->size();
-					s.w = (ps.height() > rowH && ps.height() > 0) ? ps.width() * rowH / ps.height() : ps.width();
-				}
-				break;
-			}
-			case itPixmap:
-			{
-				s.pix = it.pix;
-				s.pixSel = it.pixSel;
-				if (!s.pix)
-					continue;
-				if (s.mode == wFixed)
-					s.w = fixedW;
-				else if (s.mode == wAuto)
-				{
-					eSize ps = s.pix->size();
-					const int bh = it.height > 0 ? std::min(it.height, rowH) : (ps.height() > rowH ? rowH : ps.height());
-					s.w = ps.height() > 0 ? ps.width() * bh / ps.height() : ps.width();
-				}
-				break;
-			}
-			case itProgress:
-				if (!hasEvent)
-					continue;
-				s.w = s.mode == wFixed ? fixedW : 0;
-				break;
-			case itLine:
-			case itRect:
-			case itSpacer:
-				s.w = s.mode == wFixed ? fixedW : 0;
-				break;
-			}
+			if (!buildSlot(it, rowH, s))
+				continue;
 			if (it.absolute)
 				overlays.push_back(std::move(s));
 			else
@@ -1355,6 +1405,154 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 		{
 			const eRect &a = overlays[i].it->absRect;
 			emit(overlays[i], a.left(), a.top(), a.width(), a.height());
+		}
+		// stacks: groups of items laid out along one axis like an eStack. Members are placed from the start
+		// or the end (stackAlign) or centred, with `spacing` between them; members without any size take no
+		// space; one member can fill what the others leave over (stackFill, or a width of "*"). The box is
+		// the row's content area, or the `pos` rect of the stack (relative to the whole cell).
+		for (size_t si = 0; si < row.stacks.size(); ++si)
+		{
+			const Stack &st = row.stacks[si];
+			if ((fl & st.req) != st.req || (fl & st.forbid))
+				continue;
+			int sx, sy, sw, sh;
+			if (st.absolute)
+			{
+				sx = st.rect.left();
+				sy = st.rect.top();
+				sw = st.rect.width();
+				sh = st.rect.height();
+			}
+			else
+			{
+				sx = row.padLeft;
+				sy = y0 + row.padTop;
+				sw = std::max(0, W - row.padLeft - row.padRight);
+				sh = std::max(0, rowH - row.padTop - row.padBottom);
+			}
+			std::vector<Slot> kids;
+			for (size_t ii = 0; ii < row.items.size(); ++ii)
+			{
+				const Item &it = row.items[ii];
+				if (it.stackId != (int)si || (fl & it.req) != it.req || (fl & it.forbid))
+					continue;
+				Slot k;
+				if (buildSlot(it, sh, k))
+					kids.push_back(std::move(k));
+			}
+			// size of every member along the stack
+			std::vector<int> len(kids.size(), 0);
+			std::vector<char> skip(kids.size(), 0), fill(kids.size(), 0);
+			int used = 0, count = 0, fillIdx = -1;
+			for (size_t i = 0; i < kids.size(); ++i)
+			{
+				Slot &k = kids[i];
+				const Item &it = *k.it;
+				fill[i] = it.stackFill || k.mode == wFlex;
+				if (st.horizontal)
+					len[i] = k.w;
+				else
+					switch (it.type)
+					{
+					case itText:
+					{
+						ePtr<eTextPara> p = k.para;
+						if (!p)
+						{
+							p = new eTextPara(eRect(0, 0, 4096, std::max(sh, 1)));
+							p->setFont(it.font);
+							p->renderString(k.text.c_str());
+						}
+						len[i] = p->getBoundBox().height();
+						break;
+					}
+					case itPicon:
+					case itRect:
+					case itSpacer:
+						len[i] = it.height;
+						break;
+					case itProgress:
+						len[i] = it.height > 0 ? it.height : m_progressbar_height + 2 * (it.border >= 0 ? it.border : m_progressbar_border_width);
+						break;
+					case itLine:
+						len[i] = it.height > 0 ? it.height : 2;
+						break;
+					default:
+						len[i] = k.pix ? k.pix->size().height() : 0;
+						break;
+					}
+				if (fill[i])
+				{
+					if (fillIdx >= 0)
+					{
+						skip[i] = 1; // only the first member fills
+						continue;
+					}
+					fillIdx = (int)i;
+				}
+				else if (len[i] <= 0)
+				{
+					skip[i] = 1;
+					continue;
+				}
+				if (it.stackAlign == 2)
+					continue; // centred members do not count for the fill
+				count++;
+				if ((int)i != fillIdx)
+					used += len[i];
+			}
+			const int total = st.horizontal ? sw : sh;
+			if (fillIdx >= 0)
+			{
+				len[fillIdx] = std::max(0, total - used - st.spacing * (count - 1));
+				kids[fillIdx].mode = wFlex; // makes the text lay itself out for the width it got
+			}
+			// placement along the stack
+			int startPos = 0, endPos = total, startCount = 0, endCount = 0;
+			for (size_t i = 0; i < kids.size(); ++i)
+			{
+				if (skip[i])
+					continue;
+				Slot &k = kids[i];
+				const Item &it = *k.it;
+				int p;
+				if (it.stackAlign == 1)
+				{
+					p = endPos - len[i];
+					endPos -= len[i];
+					if (endCount > 0)
+					{
+						p -= st.spacing;
+						endPos -= st.spacing;
+					}
+					endCount++;
+				}
+				else if (it.stackAlign == 2)
+					p = (total - len[i]) / 2;
+				else
+				{
+					p = startPos;
+					startPos += len[i];
+					if (startCount > 0)
+					{
+						startPos += st.spacing;
+						p += st.spacing;
+					}
+					startCount++;
+				}
+				if (st.horizontal)
+				{
+					if (it.stackCross >= 0)
+						k.vaOv = it.stackCross;
+					emit(k, sx + p, sy, len[i], sh);
+				}
+				else
+				{
+					if (it.stackCross >= 0)
+						k.haOv = it.stackCross;
+					emit(k, sx, sy + p, sw, len[i]);
+				}
+			}
 		}
 		y0 += rowH;
 	}
@@ -1594,9 +1792,69 @@ int eListboxServiceTemplateContent::getOrientation()
 	return m_cur_index >= 0 ? m_templates[m_cur_index].orientation : (int)eListbox::orVertical;
 }
 
+// grid: tells the listbox which entries are rows of their own (markers, when the template asks for it)
+bool eListboxServiceTemplateContent::gridSpanList(std::vector<char> &out)
+{
+	out.clear();
+	if (m_cur_index < 0 || !m_templates[m_cur_index].spanMarkers || m_span_width <= 0)
+		return false;
+	bool any = false;
+	for (list::iterator i(m_list.begin()); i != m_list.end(); ++i)
+	{
+		const bool marker = (i->flags & eServiceReference::isMarker) != 0;
+		out.push_back(marker ? 1 : 0);
+		any = any || marker;
+	}
+	return any;
+}
+
+// vertical list: a marker is as high as markerHeight says instead of a normal row
+bool eListboxServiceTemplateContent::entryHeightList(std::vector<int> &out)
+{
+	out.clear();
+	if (m_cur_index < 0 || m_templates[m_cur_index].orientation != (int)eListbox::orVertical || m_templates[m_cur_index].markerHeight <= 0)
+		return false;
+	const int height = m_templates[m_cur_index].markerHeight;
+	bool any = false;
+	for (list::iterator i(m_list.begin()); i != m_list.end(); ++i)
+	{
+		const bool marker = (i->flags & eServiceReference::isMarker) != 0;
+		out.push_back(marker ? height : 0);
+		any = any || marker;
+	}
+	return any;
+}
+
+void eListboxServiceTemplateContent::setSpanWidth(int width)
+{
+	m_span_width = width;
+}
+
+int eListboxServiceTemplateContent::gridSpanHeight()
+{
+	return (m_cur_index >= 0 && m_templates[m_cur_index].spanMarkers) ? m_templates[m_cur_index].markerHeight : 0;
+}
+
 void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected)
 {
 	eServiceListPaintTimer profileTimer(eServiceListPaintTimer::statTemplate);
+	// a marker of a grid that spans is as wide as the whole grid: lay it out and paint it with that width
+	const eSize cellSize = m_itemsize;
+	const int cellHeight = m_itemheight;
+	if (m_span_width > 0 && m_cur_index >= 0 && m_templates[m_cur_index].spanMarkers && m_templates[m_cur_index].orientation == (int)eListbox::orGrid &&
+		cursorValid() && ((*m_cursor).flags & eServiceReference::isMarker))
+	{
+		const int markerHeight = m_templates[m_cur_index].markerHeight;
+		m_itemheight = markerHeight > 0 ? markerHeight : cellHeight;
+		m_itemsize = eSize(m_span_width, m_itemheight);
+	}
+	else if (m_cur_index >= 0 && m_templates[m_cur_index].orientation == (int)eListbox::orVertical && m_templates[m_cur_index].markerHeight > 0 &&
+		cursorValid() && ((*m_cursor).flags & eServiceReference::isMarker))
+	{
+		// vertical list: a marker has a height of its own
+		m_itemheight = m_templates[m_cur_index].markerHeight;
+		m_itemsize = eSize(cellSize.width(), m_itemheight);
+	}
 	painter.clip(eRect(offset, m_itemsize));
 
 	const int marked = getMarkedState(selected);
@@ -1647,4 +1905,6 @@ void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &styl
 		paintOps(painter, style, offset, selected, marked, it->second, now);
 	}
 	painter.clippop();
+	m_itemsize = cellSize;
+	m_itemheight = cellHeight;
 }
