@@ -136,6 +136,7 @@ struct eListboxStyle
 	int m_header_foreground_color_set, m_header_background_color_set, m_header_line_color_set;
 	int m_header_height; // 0: the normal item height
 	int m_header_line_thickness;
+	int m_header_line_style, m_header_line_margin; // eListbox::headerLine*, gap between the title and a split line
 	int m_header_halign, m_header_valign;
 	ePoint m_header_text_offset;
 	int m_header_text_offset_set;
@@ -294,6 +295,11 @@ public:
 	void setHeaderBackgroundColor(const gRGB &col);
 	void setHeaderLineColor(const gRGB &col);
 	void setHeaderLineThickness(int thickness);
+		/* where the line of a header entry goes: under the title (default), above it, on both free sides of the
+		   title (like a marker of the service list, title aligned by headerHalign) or none at all */
+	enum { headerLineBottom, headerLineTop, headerLineSplit, headerLineNone };
+	void setHeaderLineStyle(int style);
+	void setHeaderLineMargin(int margin);
 	void setHeaderHeight(int height);
 	void setHeaderVAlign(int align);
 	void setHeaderHAlign(int align);

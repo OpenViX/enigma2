@@ -18,6 +18,7 @@ eListbox::eListbox(eWidget *parent) :
 	m_style.m_header_valign = alignCenter;
 	m_style.m_header_halign = alignLeft;
 	m_style.m_header_line_thickness = 1;
+	m_style.m_header_line_margin = 10;
 
 	for (int x = 0; x < 4; x++) 
 	{
@@ -2058,6 +2059,18 @@ void eListbox::setHeaderLineColor(const gRGB &col)
 void eListbox::setHeaderLineThickness(int thickness)
 {
 	m_style.m_header_line_thickness = thickness;
+}
+
+void eListbox::setHeaderLineStyle(int style)
+{
+	m_style.m_header_line_style = style;
+	invalidate();
+}
+
+void eListbox::setHeaderLineMargin(int margin)
+{
+	m_style.m_header_line_margin = std::max(0, margin);
+	invalidate();
 }
 
 void eListbox::setHeaderVAlign(int align)

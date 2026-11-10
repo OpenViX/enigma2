@@ -229,12 +229,48 @@ bool eListboxPythonStringContent::paintHeader(gPainter &painter, eWindowStyle &s
 	flags |= halign == eListboxStyle::alignCenter ? gPainter::RT_HALIGN_CENTER : halign == eListboxStyle::alignRight ? gPainter::RT_HALIGN_RIGHT : halign == eListboxStyle::alignBlock ? gPainter::RT_HALIGN_BLOCK : gPainter::RT_HALIGN_LEFT;
 
 	const ePoint off = (ls && ls->m_header_text_offset_set) ? ls->m_header_text_offset : (ls ? ls->m_text_offset : ePoint(0, 0));
-	painter.renderText(eRect(offset.x() + off.x(), offset.y() + off.y(), width - off.x() * 2, height - off.y() * 2), title, flags);
-
-	if (ls && ls->m_header_line_color_set && ls->m_header_line_thickness > 0)
+	const int lineStyle = ls ? ls->m_header_line_style : eListbox::headerLineBottom;
+	const int thickness = ls ? ls->m_header_line_thickness : 0;
+	if (lineStyle == eListbox::headerLineSplit)
 	{
-		painter.setForegroundColor(ls->m_header_line_color);
-		painter.fill(eRect(offset.x(), offset.y() + height - ls->m_header_line_thickness, width, ls->m_header_line_thickness));
+		// like a marker in the service list: the title (aligned as set) with a line on each free side of it
+		const int availW = std::max(0, width - off.x() * 2);
+		ePtr<eTextPara> para = new eTextPara(eRect(0, 0, 8000, 200));
+		para->setFont(fnt);
+		para->renderString(title.c_str());
+		const int textW = std::min(availW, para->getBoundBox().width() + 2);
+		int textX = offset.x() + off.x();
+		if (halign == eListboxStyle::alignRight)
+			textX = offset.x() + width - off.x() - textW;
+		else if (halign == eListboxStyle::alignCenter || halign == eListboxStyle::alignBlock)
+			textX = offset.x() + (width - textW) / 2;
+		flags = (flags & ~(gPainter::RT_HALIGN_CENTER | gPainter::RT_HALIGN_RIGHT | gPainter::RT_HALIGN_BLOCK)) | gPainter::RT_HALIGN_LEFT;
+		painter.renderText(eRect(textX, offset.y() + off.y(), textW, height - off.y() * 2), title, flags);
+
+		if (thickness > 0)
+		{
+			if (ls && ls->m_header_line_color_set)
+				painter.setForegroundColor(ls->m_header_line_color);
+			const int gap = ls ? ls->m_header_line_margin : 10;
+			const int lineY = offset.y() + (height - thickness) / 2;
+			const int leftEnd = textX - gap, rightStart = textX + textW + gap;
+			const int leftStart = offset.x() + off.x(), rightEnd = offset.x() + width - off.x();
+			if (leftEnd > leftStart)
+				painter.fill(eRect(leftStart, lineY, leftEnd - leftStart, thickness));
+			if (rightEnd > rightStart)
+				painter.fill(eRect(rightStart, lineY, rightEnd - rightStart, thickness));
+		}
+	}
+	else
+	{
+		painter.renderText(eRect(offset.x() + off.x(), offset.y() + off.y(), width - off.x() * 2, height - off.y() * 2), title, flags);
+
+		if (lineStyle != eListbox::headerLineNone && ls && ls->m_header_line_color_set && thickness > 0)
+		{
+			painter.setForegroundColor(ls->m_header_line_color);
+			const int lineY = lineStyle == eListbox::headerLineTop ? offset.y() : offset.y() + height - thickness;
+			painter.fill(eRect(offset.x(), lineY, width, thickness));
+		}
 	}
 	painter.clippop();
 	return true;
