@@ -245,7 +245,7 @@ class Pager(GUIAddon):
 
 			instance = self.getSourceInstance()
 			carousel = instance is not None and hasattr(instance, "getCarousel") and instance.getCarousel()
-			if listControledlSize > 0 and (lOrientation == eListbox.orGrid or carousel):
+			if listControledlSize > 0 and (lOrientation == eListbox.orGrid or lOrientation == eListbox.orVertical or carousel):
 				# a grid knows its pages itself: its rows can have different heights (spanning entries); a carousel has no
 				# pages, every entry is one position (page count = entries, current page = selected entry)
 				if instance is not None and hasattr(instance, "getPageCount"):

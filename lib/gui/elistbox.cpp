@@ -168,6 +168,49 @@ void eListbox::paintZoomed(gPainter &painter, eWindowStyle &style, int index, eP
 	}
 }
 
+void eListbox::setScrollType(int type)
+{
+	type = (type == scrollByItem) ? scrollByItem : scrollByPage;
+	if (m_scroll_type == type)
+		return;
+	m_scroll_type = type;
+	m_prev_scrollbar_page = -1;
+	m_content_changed = true;
+	if (m_content)
+	{
+		moveSelection(justCheck);
+		invalidate();
+	}
+}
+
+/* first visible entry when scrolling item by item: the list only moves as far as needed to show `sel` */
+int eListbox::itemScrollStart(int sel, int cur, int visible, int total) const
+{
+	visible = std::max(1, visible);
+	cur = std::max(0, std::min(cur, std::max(0, total - visible))); // the list may have shrunk
+	if (sel < cur)
+		return sel;
+	if (sel >= cur + visible)
+		return sel - visible + 1;
+	return cur;
+}
+
+/* same for the rows of a grid (rows can have different heights) */
+int eListbox::gridRowTopFor(int row)
+{
+	const int rows = gridRows();
+	if (rows <= 0)
+		return 0;
+	row = std::min(std::max(row, 0), rows - 1);
+	int top = std::min(std::max(m_top, 0), rows - 1);
+	if (row < top)
+		return row;
+	const int height = size().height();
+	while (top < row && gridRowTop(row + 1) - gridRowTop(top) > height)
+		++top;
+	return top;
+}
+
 void eListbox::setCarouselZoom(int percent)
 {
 	percent = std::max(100, std::min(percent, 300));
@@ -337,7 +380,11 @@ int eListbox::getPageCount()
 	if (m_orientation == orGrid)
 		return gridPageCount();
 	if (m_orientation == orVertical && gridHasSpans())
+	{
+		if (m_scroll_type == scrollByPage)
+			return gridPageCount();
 		return (m_content->size() + verticalVisible(m_top) - 1) / verticalVisible(m_top);
+	}
 	return (m_content->size() + m_items_per_page - 1) / m_items_per_page;
 }
 
@@ -350,7 +397,7 @@ int eListbox::getCurrentPage()
 	if (m_orientation == orGrid)
 		return gridPageOfRow(gridRowOf(m_selected));
 	if (m_orientation == orVertical && gridHasSpans())
-		return m_selected / verticalVisible(m_top);
+		return m_scroll_type == scrollByPage ? gridPageOfRow(m_selected) : m_selected / verticalVisible(m_top);
 	return m_selected / m_items_per_page;
 }
 
@@ -498,7 +545,12 @@ void eListbox::moveToEnd()
 	/* current selection invisible? */
 	if (m_orientation == orVertical && gridHasSpans())
 	{
-		m_top = verticalTopFor(m_content->cursorGet());
+		m_top = m_scroll_type == scrollByItem ? verticalTopFor(m_content->cursorGet()) : gridPageStartRow(gridPageOfRow(m_content->cursorGet()));
+	}
+	else if (m_scroll_type == scrollByItem && (m_orientation == orVertical || m_orientation == orHorizontal))
+	{
+		int &first = m_orientation == orVertical ? m_top : m_left;
+		first = itemScrollStart(m_content->cursorGet(), first, m_items_per_page, m_content->size());
 	}
 	else if (m_orientation == orVertical)
 	{
@@ -1007,11 +1059,16 @@ void eListbox::moveSelection(long dir)
 			m_top = m_selected - carouselCenter();
 	}
 	else if (m_orientation == orHorizontal)
-		m_left = m_selected - (m_selected % m_items_per_page);
+		m_left = m_scroll_type == scrollByItem ? itemScrollStart(m_selected, m_left, m_items_per_page, m_content->size()) : m_selected - (m_selected % m_items_per_page);
 	else if (m_orientation == orVertical)
-		m_top = gridHasSpans() ? verticalTopFor(m_selected) : m_selected - (m_selected % m_items_per_page);
+	{
+		if (gridHasSpans())
+			m_top = m_scroll_type == scrollByItem ? verticalTopFor(m_selected) : gridPageStartRow(gridPageOfRow(m_selected));
+		else
+			m_top = m_scroll_type == scrollByItem ? itemScrollStart(m_selected, m_top, m_items_per_page, m_content->size()) : m_selected - (m_selected % m_items_per_page);
+	}
 	else
-		m_top = gridPageStartRow(gridPageOfRow(gridRowOf(m_selected)));
+		m_top = m_scroll_type == scrollByItem ? gridRowTopFor(gridRowOf(m_selected)) : gridPageStartRow(gridPageOfRow(gridRowOf(m_selected)));
 
 	// if it is, then the old selection clip is irrelevant, clear it or we'll get artifacts
 	if (m_orientation == orVertical || m_orientation == orGrid)
@@ -1136,7 +1193,7 @@ void eListbox::updateScrollBar()
 		entries = gridRows();
 
 	int maxItems = (m_orientation == orGrid) ? m_max_rows : m_items_per_page;
-	const bool paged = m_orientation == orGrid && m_max_columns && gridHasSpans();
+	const bool paged = m_orientation == orGrid && m_max_columns && gridHasSpans() && m_scroll_type == scrollByPage;
 	if (paged)
 	{
 		entries = gridPageCount();
@@ -1223,7 +1280,8 @@ void eListbox::updateScrollBar()
 		if (carouselActive())
 			topleft = std::max(0, std::min(m_selected, entries - 1));
 
-		int curVisiblePage = topleft / maxItems;
+		const bool byItem = m_scroll_type == scrollByItem && !carouselActive();
+		int curVisiblePage = byItem ? topleft : topleft / maxItems;
 		if (m_prev_scrollbar_page != curVisiblePage)
 		{
 			m_prev_scrollbar_page = curVisiblePage;
@@ -1232,6 +1290,12 @@ void eListbox::updateScrollBar()
 				++pages;
 			int start=(topleft*100)/(pages*maxItems);
 			int vis=(maxItems*100+pages*maxItems-1)/(pages*maxItems);
+			if (byItem)
+			{
+				// the thumb moves item by item
+				start = (topleft * 100) / entries;
+				vis = (maxItems * 100 + entries - 1) / entries;
+			}
 			if (vis < 3)
 				vis=3;
 			m_scrollbar->setStartEnd(start,start+vis);

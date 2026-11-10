@@ -1091,6 +1091,15 @@ class AttributeParser:
 		except ValueError:
 			print("[Skin] Error: Invalid selectionZoom '%s'!  Must be a percentage such as '110'." % value)
 
+	def scrollType(self, value):  # "page" (default): jump to the page holding the selection; "item": scroll only as far as needed.
+		try:
+			self.guiObject.setScrollType({
+				"page": self.guiObject.scrollByPage,
+				"item": self.guiObject.scrollByItem
+			}[value])
+		except KeyError:
+			print("[Skin] Error: Invalid scrollType '%s'!  Must be one of 'page' or 'item'." % value)
+
 	def carouselZoom(self, value):  # Centre slot size in percent, 100 = no zoom (default 112).
 		try:
 			self.guiObject.setCarouselZoom(int(value))
