@@ -9,6 +9,7 @@ A listbox can behave as a carousel: the selection stays locked on the centre slo
 | `carousel` | `0` / `1` | `0` | Enable carousel mode. Ignored for `orGrid`, and for vertical lists with entries of different heights. |
 | `carouselZoom` | `100`..`300` | `112` | Size of the centre slot in percent. `100` disables the zoom. |
 | `selectionZoom` | `100`..`300` | `100` (off) | Size of the selected entry in percent, for **horizontal and grid** lists without carousel (see "Selection zoom"). |
+| `scrollType` | `page` / `item` | `page` | How a list scrolls when the selection leaves the visible part (all orientations, see "Scroll type"). |
 | `enableWrapAround` | `0` / `1` | `0` | With carousel: entries also wrap visually, so the last entry is shown just before the first one. |
 
 ```xml
@@ -35,6 +36,19 @@ The centre slot is enlarged uniformly with its content (see "What is scaled") an
 The zoom works by giving the content a larger cell size for that one entry, then restoring it. Content that lays itself out relative to the cell size (centred text, templated service list rows, `width="*"` items) grows with it. Absolute positions and fixed-size pixmaps in a MultiContent template do not move or scale.
 
 Content classes that do not report their cell size (`getItemSize()`) are painted unzoomed.
+
+## Scroll type
+
+`scrollType="page"` (default) or `scrollType="item"`, for every listbox: vertical, horizontal and grid. Python: `setScrollType(eListbox.scrollByPage / scrollByItem)`.
+
+- **page:** when the selection leaves the visible part the list jumps to the page that holds it. Pages are fixed: entries `0..n-1`, `n..2n-1`, ... With variable row heights (vertical lists whose content reports different entry heights, e.g. headers) a page is as many rows as fit, counted from the top of the list.
+- **item:** the list moves only as far as needed to keep the selection visible, one entry (grid: one row) at a time. The scrollbar thumb moves item by item.
+
+Page-up/down keys and the pager are unchanged: the pager counts pages in `page` mode and pages-worth of entries in `item` mode. Carousel mode ignores `scrollType`.
+
+```xml
+<widget name="list" orientation="orVertical" scrollType="item" .../>
+```
 
 ## Selection zoom (horizontal and grid, no carousel)
 

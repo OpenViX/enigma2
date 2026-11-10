@@ -164,6 +164,12 @@ public:
 		   vertical lists). With wrap-around enabled the entries also wrap visually around the list ends. */
 	void setCarousel(bool);
 	bool getCarousel() { return m_carousel; }
+		/* how the list scrolls when the selection leaves the visible part: scrollByPage (default) jumps to the page
+		   that holds the selection, scrollByItem moves only as far as needed to keep the selection visible. For
+		   every orientation; with variable row heights a page is as many rows as fit. Carousel mode ignores it. */
+	enum { scrollByPage, scrollByItem };
+	void setScrollType(int type);
+	int getScrollType() { return m_scroll_type; }
 		/* size of the centre slot in percent (100 = no zoom, default 112). Grows along the scroll axis only. */
 	void setCarouselZoom(int percent);
 		/* size of the selected entry in percent for horizontal and grid lists (100 = off, default). Overlaps the
@@ -345,6 +351,9 @@ private:
 	bool m_enabled_wrap_around;
 	bool m_carousel = false;
 	int m_carousel_zoom = 112;
+	int m_scroll_type = 0; // scrollByPage
+	int itemScrollStart(int sel, int cur, int visible, int total) const;
+	int gridRowTopFor(int row);
 	int m_selection_zoom = 100;
 	bool selectionZoomActive() const { return m_selection_zoom > 100 && m_selection_enabled && (m_orientation == orHorizontal || m_orientation == orGrid) && m_content && m_content->getItemSize().width() > 0; }
 	void paintZoomed(gPainter &painter, eWindowStyle &style, int index, ePoint pos, int percent);
