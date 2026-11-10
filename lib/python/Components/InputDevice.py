@@ -1,12 +1,13 @@
 from os import close, listdir, O_RDWR, open as os_open, path, write
 from fcntl import ioctl
+from json import dumps, loads
 import platform
 import struct
-from enigma import eRCInput
+from enigma import eRCInput, eTimer
 from keyids import KEYIDNAMES
 
 from Components.SystemInfo import SystemInfo
-from Components.config import config, ConfigInteger, ConfigSlider, ConfigSubsection, ConfigText, ConfigYesNo
+from Components.config import config, configfile, ConfigInteger, ConfigSlider, ConfigSubsection, ConfigText, ConfigYesNo
 from Screens.Rc import RcPositions
 
 # include/uapi/asm-generic/ioctl.h
@@ -108,31 +109,41 @@ class inputDevices:
 	# 	__s32 value;            -> DEFAULTS: 700(REP_DELAY) or 100(REP_PERIOD)
 	# }; -> size = 16
 
+	def writeEvents(self, device, *events):
+		# Enigma2 holds the remote exclusively (EVIOCGRAB); the kernel drops events injected through any
+		# other file handle while a grab is active, so a repeat setting written from here (e.g. at boot,
+		# from the saved config) would silently be ignored. Release the grab for the write.
+		rc = eRCInput.getInstance()
+		wasLocked = rc.islocked()
+		if not wasLocked:
+			rc.lock()
+		try:
+			fd = os_open("/dev/input/" + device, O_RDWR)
+			try:
+				for event in events:
+					write(fd, event)
+			finally:
+				close(fd)
+		finally:
+			if not wasLocked:
+				rc.unlock()
+
 	def setDefaults(self, device):
 		print("[InputDevice] setDefaults for device %s" % device)
 		self.setDeviceAttribute(device, 'configuredName', None)
 		event_repeat = struct.pack('LLHHi', 0, 0, 0x14, 0x01, self.getDeviceAttribute(device, 'repPeriod') or 100)
 		event_delay = struct.pack('LLHHi', 0, 0, 0x14, 0x00, self.getDeviceAttribute(device, 'repDelay') or 700)
-		fd = os_open("/dev/input/" + device, O_RDWR)
-		write(fd, event_repeat)
-		write(fd, event_delay)
-		close(fd)
+		self.writeEvents(device, event_repeat, event_delay)
 
 	def setRepeat(self, device, value):  # REP_PERIOD
 		if self.getDeviceAttribute(device, 'enabled'):
 			print("[InputDevice] setRepeat for device %s to %d ms" % (device, value))
-			event = struct.pack('LLHHi', 0, 0, 0x14, 0x01, int(value))
-			fd = os_open("/dev/input/" + device, O_RDWR)
-			write(fd, event)
-			close(fd)
+			self.writeEvents(device, struct.pack('LLHHi', 0, 0, 0x14, 0x01, int(value)))
 
 	def setDelay(self, device, value):  # REP_DELAY
 		if self.getDeviceAttribute(device, 'enabled'):
 			print("[InputDevice] setDelay for device %s to %d ms" % (device, value))
-			event = struct.pack('LLHHi', 0, 0, 0x14, 0x00, int(value))
-			fd = os_open("/dev/input/" + device, O_RDWR)
-			write(fd, event)
-			close(fd)
+			self.writeEvents(device, struct.pack('LLHHi', 0, 0, 0x14, 0x00, int(value)))
 
 
 class InitInputDevices:
@@ -143,6 +154,7 @@ class InitInputDevices:
 
 	def createConfig(self, *args):
 		config.inputDevices = ConfigSubsection()
+		config.inputDevices.byName = ConfigText(default="{}", fixed_size=False)  # {device name: {"repeat": ms, "delay": ms}}
 		for device in sorted(iter(iInputDevices.Devices.keys())):
 			# print("[InputDevice][createConfig]", sorted(iter(iInputDevices.Devices.keys())))
 			self.currentDevice = device
@@ -150,6 +162,25 @@ class InitInputDevices:
 			self.setupConfigEntries(self.currentDevice)
 			self.remapRemoteControl(self.currentDevice)
 			self.currentDevice = ""
+		self.applyTimer = eTimer()
+		self.applyTimer.callback.append(self.applyRepeatSettings)
+		self.applyTimer.start(3000, True)
+
+	def applyRepeatSettings(self):
+		# Re-apply the saved repeat settings once the main loop runs, in case something reset the
+		# device after the first apply during start-up, and log what the kernel really uses.
+		for device in iInputDevices.getDeviceList():
+			element = getattr(config.inputDevices, device, None)
+			if element is None or not iInputDevices.getDeviceAttribute(device, 'enabled'):
+				continue
+			try:
+				iInputDevices.setDelay(device, element.delay.value)
+				iInputDevices.setRepeat(device, element.repeat.value)
+				with open("/dev/input/" + device) as fd:
+					delay, period = struct.unpack("II", ioctl(fd, EVIOCGREP, b"\0" * 8))
+				print("[InputDevice] %s repeat settings applied: configured %d/%d ms, device now uses %d/%d ms" % (device, element.delay.value, element.repeat.value, delay, period))
+			except (IOError, OSError) as err:
+				print("[InputDevice] Error: applying repeat settings for %s failed: %s" % (device, err))
 
 	def inputDevicesEnabledChanged(self, configElement):
 		if self.currentDevice != "" and iInputDevices.currentDevice == "":
@@ -168,6 +199,25 @@ class InitInputDevices:
 					currentElement.enabled.save()
 		elif iInputDevices.currentDevice != "":
 			iInputDevices.setName(iInputDevices.currentDevice, configElement.value)
+
+	def loadByName(self):
+		try:
+			data = loads(config.inputDevices.byName.value)
+			return data if isinstance(data, dict) else {}
+		except ValueError:
+			return {}
+
+	def saveRepeatSetting(self, configElement, deviceName, key):
+		try:
+			data = self.loadByName()
+			data.setdefault(deviceName, {})[key] = int(configElement.value)
+			config.inputDevices.byName.value = dumps(data)
+			config.inputDevices.byName.save()
+			configElement.save()
+			configfile.save()
+			print("[InputDevice] repeat setting saved: %s = %s" % (configElement.getText(), configElement.value))
+		except Exception as err:
+			print("[InputDevice] Error: saving repeat setting failed: %s" % err)
 
 	def inputDevicesRepeatChanged(self, configElement):
 		if self.currentDevice != "" and iInputDevices.currentDevice == "":
@@ -195,6 +245,25 @@ class InitInputDevices:
 		currentElement.repeat.addNotifier(self.inputDevicesRepeatChanged)
 		currentElement.delay = ConfigSlider(default=defaultDelay, increment=50, limits=(0, 5000))
 		currentElement.delay.addNotifier(self.inputDevicesDelayChanged)
+		# The remote can show up as event0 one boot and event1 the next (depends on what else is plugged in), and these settings are
+		# stored per node, so the value picked for one node was lost on the other. For remotes, keep one shared copy that
+		# follows whichever node the remote gets.
+		# Keyed by the device's name, so a BT remote and the built-in remote each keep their own values wherever they land.
+		deviceName = iInputDevices.getDeviceAttribute(device, 'name')
+		saved = self.loadByName().get(deviceName)
+		if saved:
+			if 0 <= saved.get("repeat", -1) <= 500:
+				currentElement.repeat.value = saved["repeat"]
+			if 0 <= saved.get("delay", -1) <= 5000:
+				currentElement.delay.value = saved["delay"]
+			# Make these the "saved" state too. Otherwise the setup screen sees them as unsaved changes and
+			# its cancel restores the per-node values from the settings file, i.e. the driver defaults.
+			currentElement.repeat.save()
+			currentElement.delay.save()
+		# Write a change to the settings file at once (not only when the setup screen is saved), so a restart or crash
+		# right after changing it can't bring back the driver defaults. initial_call=False: not at boot.
+		currentElement.repeat.addNotifier(lambda element, name=deviceName: self.saveRepeatSetting(element, name, "repeat"), initial_call=False)
+		currentElement.delay.addNotifier(lambda element, name=deviceName: self.saveRepeatSetting(element, name, "delay"), initial_call=False)
 
 	def remapRemoteControl(self, device):
 		remapButtons = RcPositions().getRcKeyRemaps()

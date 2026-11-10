@@ -78,10 +78,23 @@
       "Bash(python patch_dvb_ir.py --keyup 115 gbquad4kpro/dvb_ir_keyup115/dvb.ko)",
       "Bash(sed -i '171,173d' rc.cpp)",
       "Bash(sed -i 's|#ifdef KEY_REPEAT_WORKAROUND|#ifdef HWGBQUAD4KPRO|; s|#endif /\\\\* KEY_REPEAT_WORKAROUND \\\\*/|#endif /* HWGBQUAD4KPRO */|' rc.cpp)",
-      "Bash(sed -i 's|#ifdef HWGBQUAD4KPRO /\\\\* same condition as KEY_REPEAT_WORKAROUND in rc.cpp \\\\*/|#ifdef HWGBQUAD4KPRO /* gbquad4kpro key repeat workaround, see rc.cpp */|' rc.h)"
+      "Bash(sed -i 's|#ifdef HWGBQUAD4KPRO /\\\\* same condition as KEY_REPEAT_WORKAROUND in rc.cpp \\\\*/|#ifdef HWGBQUAD4KPRO /* gbquad4kpro key repeat workaround, see rc.cpp */|' rc.h)",
+      "Bash(python -I \"C:/Users/dimit/AppData/Local/Temp/claude/ab798c012abd2d97/7cc5eb21-b5e1-47e4-8247-34251217999d/scratchpad/patch7.py\")",
+      "Bash(sed -i 's/^#define HOLD_BRIDGE_MS 70$/#define HOLD_BRIDGE_MS 100/' lib/driver/rc.cpp)",
+      "Bash(touch lib/driver/rc.cpp)",
+      "Bash(python -m py_compile Navigation.py)",
+      "Bash(python -c \"import capstone; print\\(capstone.__version__\\)\")",
+      "Bash(cat)",
+      "Bash(python /tmp/dis.py gbquad4kpro/dvb.ko)",
+      "Bash(python -c \"import ast;ast.parse\\(open\\('patch_dvb_ir.py'\\).read\\(\\)\\)\")",
+      "Bash(python patch_dvb_ir.py --keyup 130 --keyup-follow gbquad4kpro/dvb_ir_follow/dvb.ko)",
+      "Bash(python patch_dvb_ir.py --keyup 130 --keyup-follow --keyup-floor 120 --check gbquad4kpro/dvb_ir_follow/dvb.ko)",
+      "Bash(python -m py_compile lib/python/Components/InputDevice.py)",
+      "Bash(grep -n \"0\\\\\" \\\\* \\\\|\\\\\\\\\\\\\\\\0\\\\|\\\\^@\" lib/python/Components/InputDevice.py)"
     ],
     "additionalDirectories": [
-      "C:\\Users\\dimit\\.claude\\projects\\e--Enigma2Dev-OpenViX-enigma2-OpenViX-enigma2\\memory"
+      "C:\\Users\\dimit\\.claude\\projects\\e--Enigma2Dev-OpenViX-enigma2-OpenViX-enigma2\\memory",
+      "E:\\Enigma2Dev\\plugins\\iptv-m3u-reader\\src"
     ]
   }
 }

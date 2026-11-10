@@ -317,8 +317,10 @@ class InfoBarUnhandledKey:
 		self.onLayoutFinish.append(self.unhandledKeyDialog.hide)
 		eActionMap.getInstance().bindAction("", -maxsize - 1, self.actionA)  # Highest priority.
 		eActionMap.getInstance().bindAction("", maxsize, self.actionB)  # Lowest priority.
-		self.flags = (1 << 1)
-		self.uflags = 0
+		# Per keypress: [flags seen, flags nobody handled]. The check runs deferred (timer 0) after Break/Long; with a single shared
+		# pair, a busy main loop (fast zapping) let the NEXT key's Make reset it first, so a handled key looked unhandled.
+		self.keyState = [(1 << 1), 0]
+		self.pendingChecks = []
 		self.sibIgnoreKeys = (
 			KEYIDS["KEY_VOLUMEDOWN"], KEYIDS["KEY_VOLUMEUP"],
 			KEYIDS["KEY_OK"], KEYIDS["KEY_UP"], KEYIDS["KEY_DOWN"],
@@ -343,9 +345,10 @@ class InfoBarUnhandledKey:
 				self.secondInfoBarWasShown = False
 		if flag != 4:
 			if flag == 0:
-				self.flags = self.uflags = 0
-			self.flags |= (1 << flag)
+				self.keyState = [0, 0]
+			self.keyState[0] |= (1 << flag)
 			if flag == 1 or flag == 3:  # Break and Long
+				self.pendingChecks.append(self.keyState)
 				self.checkUnusedTimer.start(0, True)
 		return 0
 
@@ -354,12 +357,15 @@ class InfoBarUnhandledKey:
 
 	def actionB(self, key, flag):  # This function is only called when no other action has handled this key.
 		if flag != 4:
-			self.uflags |= (1 << flag)
+			self.keyState[1] |= (1 << flag)
 
 	def checkUnused(self):
-		if self.flags == self.uflags:
-			self.unhandledKeyDialog.show()
-			self.hideUnhandledKeySymbolTimer.start(2000, True)
+		states, self.pendingChecks = self.pendingChecks, []
+		for flags, uflags in states:
+			if flags == uflags:
+				self.unhandledKeyDialog.show()
+				self.hideUnhandledKeySymbolTimer.start(2000, True)
+				break
 
 
 class InfoBarScreenSaver:

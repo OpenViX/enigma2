@@ -469,7 +469,7 @@ def parseScale(s):
 	return val
 
 
-def parseServiceListTemplates(tag):
+def parseServiceListTemplates(tag, scope, pathSkin):
 	"""Parse a <servicelisttemplates> element into dictionaries understood by eListboxServiceTemplateContent.
 
 	Styles are colour sets, templates describe the rows (and the items in a row) of a service list entry.
@@ -505,7 +505,7 @@ def parseServiceListTemplates(tag):
 		else:
 			item["wmode"] = 0
 			item["width"] = parseScale(width)
-		for key in ("height", "margin", "min", "border"):
+		for key in ("height", "margin", "min", "border", "lineHeight"):
 			if key in a:
 				item[key] = parseScale(a[key])
 		if "weight" in a:
@@ -526,6 +526,22 @@ def parseServiceListTemplates(tag):
 			item["fontGroup"] = fontGroups.get(a["fontGroup"], 0)
 		if "style" in a:
 			item["style"] = a["style"]
+		# rect: own colours, border and rounded corners ("8" or "8;top,left" like itemCornerRadius); any item: draw order
+		for key in ("color", "colorSelected", "borderColor", "borderColorSelected"):
+			if key in a:
+				item[key] = parseColor(a[key]).argb()
+		if "radius" in a:
+			item["radius"], item["edges"] = parseRadius(a["radius"])
+		if "z" in a:
+			item["z"] = int(a["z"])
+		# pixmap: static images from the skin
+		for key in ("src", "srcSelected"):
+			if key in a:
+				resolved = resolveFilename(scope, a[key], path_prefix=pathSkin)
+				if isfile(resolved):
+					item[key] = resolved
+				else:
+					print("[Skin] servicelisttemplates: pixmap '%s' (%s) not found!" % (a[key], resolved))
 		for key in ("ellipsis", "reserve", "keepAspect"):
 			if key in a:
 				item[key] = 1 if a[key].lower() in ("1", "true", "yes", "on") else 0
@@ -542,8 +558,11 @@ def parseServiceListTemplates(tag):
 			row["align"] = a["align"]
 		row["gap"] = number(node, "gap")
 		padding = [parseScale(x.strip()) for x in a.get("padding", "0").split(",")]
+		# padding="left,right" (one value: both sides) or padding="left,right,top,bottom"
 		row["padLeft"] = padding[0]
-		row["padRight"] = padding[-1]
+		row["padRight"] = padding[1] if len(padding) > 1 else padding[0]
+		row["padTop"] = padding[2] if len(padding) > 2 else 0
+		row["padBottom"] = padding[3] if len(padding) > 3 else 0
 		return row
 
 	for style in tag.findall("styles/style"):
@@ -1241,7 +1260,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 			else:
 				raise SkinError("Tag 'parameter' needs a name and value, got name='%s' and size='%s'" % (name, value))
 	for tag in domSkin.findall("servicelisttemplates"):
-		parseServiceListTemplates(tag)
+		parseServiceListTemplates(tag, scope, pathSkin)
 	for tag in domSkin.findall("menus"):
 		for menu in tag.findall("menu"):
 			key = menu.attrib.get("key")

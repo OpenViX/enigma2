@@ -679,6 +679,34 @@ bool eListboxServiceContent::getCachedEvent(const eServiceReference &ref, iStati
 	return entry.hasEvent;
 }
 
+std::string eListboxServiceContent::getPiconFilename(const eServiceReference &ref)
+{
+	std::string piconFilename;
+	ePyObject pArgs = PyTuple_New(1);
+	PyTuple_SET_ITEM(pArgs, 0, PyUnicode_FromString(ref.toString().c_str()));
+	ePyObject pRet = PyObject_CallObject(m_GetPiconNameFunc, pArgs);
+	Py_DECREF(pArgs);
+	if (pRet)
+	{
+		if (PyUnicode_Check(pRet))
+			piconFilename = PyUnicode_AsUTF8(pRet);
+		Py_DECREF(pRet);
+	}
+	return piconFilename;
+}
+
+// Look up and load the picon without touching m_picon_cache (the template list keeps its pixmaps in its row cache).
+void eListboxServiceContent::loadPiconPixmap(const eServiceReference &ref, int width, ePtr<gPixmap> &pixmap, bool &isSVG)
+{
+	pixmap = nullptr;
+	isSVG = false;
+	const std::string piconFilename = getPiconFilename(ref);
+	if (piconFilename.empty())
+		return;
+	isSVG = endsWith(piconFilename, ".svg");
+	loadImage(pixmap, piconFilename.c_str(), 0, isSVG ? width : 0);
+}
+
 void eListboxServiceContent::getPiconPixmap(const eServiceReference &ref, int width, ePtr<gPixmap> &pixmap, bool &isSVG)
 {
 	std::map<eServiceReference, PiconCacheEntry>::iterator it = m_picon_cache.find(ref);
@@ -690,23 +718,7 @@ void eListboxServiceContent::getPiconPixmap(const eServiceReference &ref, int wi
 	}
 
 	PiconCacheEntry entry;
-	entry.isSVG = false;
-	ePyObject pArgs = PyTuple_New(1);
-	PyTuple_SET_ITEM(pArgs, 0, PyUnicode_FromString(ref.toString().c_str()));
-	ePyObject pRet = PyObject_CallObject(m_GetPiconNameFunc, pArgs);
-	Py_DECREF(pArgs);
-	if (pRet)
-	{
-		if (PyUnicode_Check(pRet))
-		{
-			std::string piconFilename = PyUnicode_AsUTF8(pRet);
-			if (endsWith(piconFilename, ".svg"))
-				entry.isSVG = true;
-			if (!piconFilename.empty())
-				loadImage(entry.pixmap, piconFilename.c_str(), 0, entry.isSVG ? width : 0);
-		}
-		Py_DECREF(pRet);
-	}
+	loadPiconPixmap(ref, width, entry.pixmap, entry.isSVG);
 
 	m_picon_cache[ref] = entry;
 	pixmap = entry.pixmap;
