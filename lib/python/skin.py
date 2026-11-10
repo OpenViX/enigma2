@@ -963,6 +963,20 @@ class AttributeParser:
 	def headerLineThickness(self, value):
 		self.guiObject.setHeaderLineThickness(self.applyVerticalScale(parseScale(value)))
 
+	def headerLineStyle(self, value):  # "bottom" (default), "top", "split" (line on both sides of the title, like a service list marker) or "none"
+		try:
+			self.guiObject.setHeaderLineStyle({
+				"bottom": self.guiObject.headerLineBottom,
+				"top": self.guiObject.headerLineTop,
+				"split": self.guiObject.headerLineSplit,
+				"none": self.guiObject.headerLineNone
+			}[value])
+		except KeyError:
+			print("[Skin] Error: Invalid headerLineStyle '%s'!  Must be one of 'bottom', 'top', 'split' or 'none'." % value)
+
+	def headerLineMargin(self, value):  # Gap between the title and the line(s) of a "split" header.
+		self.guiObject.setHeaderLineMargin(self.applyHorizontalScale(parseScale(value)))
+
 	def headerHeight(self, value):  # Height of a header row, a vertical listbox lays out its rows with it.
 		self.guiObject.setHeaderHeight(self.applyVerticalScale(parseScale(value)))
 

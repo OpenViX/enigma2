@@ -50,6 +50,24 @@ Page-up/down keys and the pager are unchanged: the pager counts pages in `page` 
 <widget name="list" orientation="orVertical" scrollType="item" .../>
 ```
 
+## Header line style
+
+Header entries (`ListHeader`, the config `HEADER` element) get their line from `headerLineStyle`:
+
+| Value | Look |
+|---|---|
+| `bottom` (default) | line under the title, full width (needs `headerLineColor`) |
+| `top` | the same above the title |
+| `split` | the title, aligned by `headerHalign`, with a line on each free side of it at mid height, like a marker in the service list. Centred title: lines both sides; `left`: line only right of it; `right`: only left. The line uses `headerLineColor`, or the text colour when that is not set |
+| `none` | no line |
+
+`headerLineThickness` sets the thickness, `headerLineMargin` (default 10) the gap between the title and a `split` line.
+
+```xml
+<widget name="config" ... headerHalign="center" headerLineStyle="split" headerLineThickness="2" headerLineMargin="12"
+        headerLineColor="#606060" headerForegroundColor="#ffc000"/>
+```
+
 ## Selection zoom (horizontal and grid, no carousel)
 
 ```xml
