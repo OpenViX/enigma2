@@ -305,7 +305,25 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 	for (int i = 0; i < 8 && glGetError() != GL_NO_ERROR; ++i) {
 	}
 
-	glGenTextures(1, &texture_id);
+	// A pooled index+palette pair of the same size (see m_pal_pool) is refilled with glTexSubImage2D instead of allocating anew.
+	GLuint reused_pal = 0;
+	if (surface->bpp == 8 && surface->clut.data && gpuPaletteEnabled() && width <= m_max_texture_size && height <= m_max_texture_size) {
+		auto pit = m_pal_pool.find(((unsigned long long)width << 32) | (unsigned int)height);
+		if (pit != m_pal_pool.end()) {
+			auto& v = pit->second;
+			for (size_t i = 0; i < v.size(); ++i) {
+				if (m_frame - v[i].frame >= 4) {
+					texture_id = v[i].idx;
+					reused_pal = v[i].pal;
+					v.erase(v.begin() + i);
+					--m_pal_pool_count;
+					break;
+				}
+			}
+		}
+	}
+	if (!texture_id)
+		glGenTextures(1, &texture_id);
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -423,14 +441,20 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		if (surface->stride == width) {
-			glTexImage2D(GL_TEXTURE_2D, 0, idx_internal, width, height, 0, idx_format, GL_UNSIGNED_BYTE, surface->data);
+			if (reused_pal)
+				glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, idx_format, GL_UNSIGNED_BYTE, surface->data);
+			else
+				glTexImage2D(GL_TEXTURE_2D, 0, idx_internal, width, height, 0, idx_format, GL_UNSIGNED_BYTE, surface->data);
 		} else {
 			// No GL_UNPACK_ROW_LENGTH in GLES2: repack the padded rows.
 			std::vector<uint8_t> packed((size_t)width * height);
 			const uint8_t* src = (const uint8_t*)surface->data;
 			for (int row = 0; row < height; ++row)
 				memcpy(packed.data() + (size_t)row * width, src + (size_t)row * surface->stride, (size_t)width);
-			glTexImage2D(GL_TEXTURE_2D, 0, idx_internal, width, height, 0, idx_format, GL_UNSIGNED_BYTE, packed.data());
+			if (reused_pal)
+				glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, idx_format, GL_UNSIGNED_BYTE, packed.data());
+			else
+				glTexImage2D(GL_TEXTURE_2D, 0, idx_internal, width, height, 0, idx_format, GL_UNSIGNED_BYTE, packed.data());
 		}
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
@@ -441,14 +465,19 @@ GLuint gTextureManager::createTextureFromPixmap(gPixmap* pixmap) {
 			pal[i] = surface->clut.data[i].argb() ^ 0xFF000000;
 		for (int i = std::max(n, 0); i < 256; ++i)
 			pal[i] = (0x010101 * i) | 0xFF000000;
-		GLuint pal_tex = 0;
-		glGenTextures(1, &pal_tex);
-		glBindTexture(GL_TEXTURE_2D, pal_tex);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, src_format, 256, 1, 0, src_format, GL_UNSIGNED_BYTE, pal);
+		GLuint pal_tex = reused_pal;
+		if (pal_tex) {
+			glBindTexture(GL_TEXTURE_2D, pal_tex);
+			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, src_format, GL_UNSIGNED_BYTE, pal);
+		} else {
+			glGenTextures(1, &pal_tex);
+			glBindTexture(GL_TEXTURE_2D, pal_tex);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexImage2D(GL_TEXTURE_2D, 0, src_format, 256, 1, 0, src_format, GL_UNSIGNED_BYTE, pal);
+		}
 		m_last_palette.tex = pal_tex;
 		m_last_palette.w = width;
 		m_last_palette.h = height;
@@ -762,14 +791,48 @@ void gTextureManager::processDeletions() {
 	{
 		std::lock_guard<std::mutex> lock(m_deletion_mutex);
 		deletions.swap(m_pending_deletions);
+		// A burst of dying surfaces (list scrolled far, cache trimmed) would otherwise be
+		// glDeleteTextures'd in one frame; delete a bounded number now, the rest on the next call.
+		// Bounded by count and by bytes (large textures cost more to free).
+		static const size_t kMaxDeletionsPerCall = 24;
+		static const size_t kMaxDeletionBytesPerCall = 8u << 20;
+		size_t keep = 0, bytes = 0;
+		while (keep < deletions.size() && keep < kMaxDeletionsPerCall) {
+			auto bit = m_texture_bytes.find(deletions[keep]);
+			const size_t b = bit != m_texture_bytes.end() ? bit->second : 0;
+			if (keep > 0 && bytes + b > kMaxDeletionBytesPerCall)
+				break;
+			bytes += b;
+			++keep;
+		}
+		if (keep < deletions.size()) {
+			m_pending_deletions.insert(m_pending_deletions.begin(), deletions.begin() + keep, deletions.end());
+			deletions.resize(keep);
+		}
 	}
 	if (!deletions.empty()) {
-		glDeleteTextures(deletions.size(), deletions.data());
+		// Index+palette pairs go to the re-use pool (bounded) instead of being freed; everything else is deleted.
+		static const size_t kMaxPooled = 64;
+		std::vector<GLuint> to_delete;
+		std::vector<GLuint> pooled;
+		to_delete.reserve(deletions.size());
+		for (GLuint id : deletions) {
+			auto pit = m_palettes.find(id);
+			if (pit != m_palettes.end() && m_pal_pool_count < kMaxPooled && !m_texture_to_image_map.count(id)) {
+				m_pal_pool[((unsigned long long)pit->second.w << 32) | (unsigned int)pit->second.h].push_back({id, pit->second.tex, m_frame});
+				++m_pal_pool_count;
+				m_palettes.erase(pit);
+				pooled.push_back(id);
+			} else
+				to_delete.push_back(id);
+		}
+		if (!to_delete.empty())
+			glDeleteTextures((GLsizei)to_delete.size(), to_delete.data());
 		m_live_texture_count -= (long)deletions.size();
 
 		PFNEGLDESTROYIMAGEKHRPROC eglDestroyImageKHR = (PFNEGLDESTROYIMAGEKHRPROC)eglGetProcAddress("eglDestroyImageKHR");
 		for (GLuint texture_id : deletions) {
-			dropPalette(texture_id);
+			dropPalette(texture_id); // no-op for pooled ones, their palette entry is already gone
 			auto bit = m_texture_bytes.find(texture_id);
 			if (bit != m_texture_bytes.end()) {
 				m_live_texture_bytes -= std::min(m_live_texture_bytes, bit->second);

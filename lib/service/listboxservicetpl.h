@@ -6,6 +6,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <memory>
 
 /*
  * Service list whose row design comes from skin defined templates.
@@ -78,12 +79,12 @@ private:
 		sCfgBase = 32
 	};
 	enum { itText, itPicon, itServiceType, itCrypto, itRecord, itResolution, itBackup, itCatchup,
-		itKind, itProgress, itLine, itRect, itSpacer };
+		itKind, itProgress, itLine, itRect, itSpacer, itPixmap };
 	enum { tokLiteral, tokNumber, tokName, tokEvent, tokNext, tokRemaining, tokPercent, tokStart, tokEnd, tokDuration };
 	enum { wFixed, wAuto, wFlex, wParam };
 	enum { cFg, cFgSel, cFgFallback, cFgSelFallback, cNotAvail, cRecorded, cMarked, cMarkedSel, cBorder, cBorderSel, cCount };
 	enum { rowService, rowMarker, rowDirectory };
-	enum { opText, opBlit, opBlitScale, opBlitSVG, opFill, opProgress };
+	enum { opText, opBlit, opBlitScale, opBlitSVG, opFill, opProgress, opRect };
 	enum { dynRecorded = 1, dynFallback = 2, dynUnavail = 4 };
 
 	struct Style {
@@ -99,7 +100,7 @@ private:
 		int type;
 		uint64_t req, forbid;
 		std::string param;
-		int wmode, width, weight, minw, height, margin;
+		int wmode, width, weight, minw, height, margin, lineH;
 		int align, valign; // align: -1 unset, 0 left, 1 center, 2 right; valign: 0 top, 1 center, 2 bottom
 		bool absolute;
 		eRect absRect;
@@ -110,9 +111,17 @@ private:
 		int style;
 		bool ellipsis, reserve, keepAspect;
 		int border;
+		// rect: own colours (fill / border, normal and selected) and rounded corners; any item: draw order
+		bool colSet[2], bcolSet[2];
+		gRGB col[2], bcol[2];
+		int radius, edges, z;
+		// pixmap: static image (skin path) and an optional variant for the selected row
+		std::string src, srcSel;
+		bool isSvg;
+		Ref<gPixmap> pix, pixSel;
 	};
 	struct Row {
-		int kind, height, weight, gap, padLeft, padRight;
+		int kind, height, weight, gap, padLeft, padRight, padTop, padBottom;
 		int align; // alignment of the whole flow when it does not fill the row: 0 left, 1 center, 2 right
 		uint64_t req, forbid; // row is skipped unless these conditions hold
 		std::vector<Item> items;
@@ -134,7 +143,10 @@ private:
 		time_t begin;
 		int duration;
 		Ref<eTextPara> para;
-		Ref<gPixmap> pixmap;
+		Ref<gPixmap> pixmap, pixmapSel;
+		int z, radius, edges;
+		bool colSet[2], bcolSet[2];
+		gRGB col[2], bcol[2];
 	};
 	struct RowCache {
 		unsigned int gen;
@@ -159,10 +171,20 @@ private:
 	std::set<eServiceReference> m_rec_refs;
 	time_t m_rec_time;
 
+	// SVG picon read-ahead: while scrolling, the SVG picons of the rows beyond the visible page (in the direction of travel)
+	// are rasterised on a worker thread and filed in m_picon_cache (SVGs only; PNG picons are not cached).
+	friend struct TplPrefetch;
+	std::shared_ptr<void> m_prefetch;
+	int m_prefetch_last, m_prefetch_dir;
+	void prefetchKick();
+	void prefetchTick();
+	void picon(const eServiceReference &ref, int width, ePtr<gPixmap> &pixmap, bool &isSVG);
+
 	int styleIndex(const std::string &name);
 	bool parseCondition(const std::string &cond, uint64_t &req, uint64_t &forbid);
 	void parseTokens(const std::string &text, std::vector<Token> &out);
 	void rebuildFonts();
+	void loadPixmaps(Template &t);
 	bool isRecordedCached(const eServiceReference &ref, time_t now);
 	bool resolveColor(const Style &st, int selected, int marked, int dyn, bool border, gRGB &out) const;
 	void buildRow(const Template &tpl, const eServiceReference &ref, iStaticServiceInformation *info, int dyn, time_t now, RowCache &out);

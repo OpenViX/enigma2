@@ -11,6 +11,8 @@
 #include <lib/base/estring.h>
 
 #include <map>
+#include <vector>
+#include <string.h>
 #include <string>
 #include <lib/base/elock.h>
 
@@ -563,6 +565,58 @@ int loadSVG(ePtr<gPixmap> &result, const char *filename, int cached, int width, 
 	nsvgDelete(image);
 
 	return 0;
+}
+
+// Thread-safe half of loadSVG(filename, width): parse + rasterise into a plain RGBA buffer, touching neither gPixmap nor
+// PixmapCache (neither is thread-safe). Same scaling as loadSVG with only a width given. Used by the picon read-ahead worker.
+bool svgRasterizeToBuffer(const char *filename, int width, std::vector<unsigned char> &buf, int &w, int &h)
+{
+	if (width <= 0)
+		return false;
+	NSVGimage *image = nsvgParseFromFile(filename, "px", 96.0);
+	if (image == nullptr)
+		return false;
+	NSVGrasterizer *rast = nsvgCreateRasterizer();
+	if (rast == nullptr || image->width <= 0)
+	{
+		if (rast)
+			nsvgDeleteRasterizer(rast);
+		nsvgDelete(image);
+		return false;
+	}
+	const double xscale = (double)width / image->width;
+	w = width;
+	h = (int)(image->height * xscale);
+	if (h <= 0)
+	{
+		nsvgDeleteRasterizer(rast);
+		nsvgDelete(image);
+		return false;
+	}
+	buf.assign((size_t)w * h * 4, 0);
+	nsvgRasterizeFull(rast, image, 0.0, 0.0, xscale, xscale, buf.data(), w, h, w * 4, 1);
+	nsvgDeleteRasterizer(rast);
+	nsvgDelete(image);
+	return true;
+}
+
+// Main-thread half: wrap a buffer from svgRasterizeToBuffer() in a gPixmap registered in PixmapCache under the key loadSVG()
+// would use, so the following loadImage(..., width) is a cache hit. The caller must keep the returned pixmap alive (the cache
+// only holds it weakly).
+ePtr<gPixmap> svgBufferToCachedPixmap(const char *filename, const std::vector<unsigned char> &buf, int w, int h)
+{
+	char cachefile[strlen(filename) + 10];
+	sprintf(cachefile, "%s%d", filename, 0);
+	ePtr<gPixmap> result;
+	if ((result = PixmapCache::Get(filename, cachefile))) // the paint path was faster and loaded it synchronously
+		return result;
+	result = new gPixmap(w, h, 32, PixmapCache::PixmapDisposed, -1);
+	if (result == nullptr || !result->surface)
+		return nullptr;
+	for (int y = 0; y < h; ++y)
+		memcpy((unsigned char*)result->surface->data + (size_t)y * result->surface->stride, buf.data() + (size_t)y * w * 4, (size_t)w * 4);
+	PixmapCache::Set(filename, result, cachefile);
+	return result;
 }
 
 int loadImage(ePtr<gPixmap> &result, const char *filename, int accel, int width, int height, int cached, float scale, int keepAspect, int align)

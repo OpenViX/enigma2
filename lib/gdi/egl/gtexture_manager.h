@@ -72,6 +72,14 @@ private:
 		GLuint tex = 0;
 		int w = 0, h = 0;
 	};
+	// Index+palette texture pairs of dead picons, kept for re-use instead of glDeleteTextures + glGenTextures/glTexImage2D: the driver
+	// allocation is what shows up as 5-100 ms stalls in the upload timing. Keyed by (w << 32 | h). GL thread only.
+	struct PooledPalTex {
+		GLuint idx, pal;
+		unsigned int frame; // when it was released; reused only a few frames later so no in-flight draw still samples it
+	};
+	std::unordered_map<unsigned long long, std::vector<PooledPalTex>> m_pal_pool;
+	size_t m_pal_pool_count = 0;
 	std::unordered_map<GLuint, PaletteInfo> m_palettes; // index texture -> its palette
 	PaletteInfo m_last_palette; // set by createTextureFromPixmap() for the texture it just made
 	void dropPalette(GLuint texture_id);

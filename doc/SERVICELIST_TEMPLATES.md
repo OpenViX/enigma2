@@ -81,7 +81,34 @@ A service list holds three kinds of entries, and each can have its own layout. F
 
 ### Item types
 
-`text`, `number` (alias of text), `spacer` (empty, reserves width), `picon`, `servicetype`, `crypto`, `record`, `resolution`, `backup`, `catchup`, `kind` (folder/marker pixmap), `progress`, `line`, `rect`.
+`text`, `number` (alias of text), `spacer` (empty, reserves width), `picon`, `servicetype`, `crypto`, `record`, `resolution`, `backup`, `catchup`, `kind` (folder/marker pixmap), `progress`, `line`, `rect`, `pixmap` (static image).
+
+### Rectangles and static pixmaps
+
+```xml
+<!-- a rounded card behind the whole cell (z < 0 draws it first) -->
+<item type="rect" pos="3,3,186,134" radius="8" color="background2" colorSelected="darkgreen" z="-1" />
+<!-- a thin square frame, the border colour changes when selected -->
+<item type="rect" width="*" height="40" border="2" borderColor="separator" borderColorSelected="light_yellow" />
+<!-- only the top corners rounded, like itemCornerRadius -->
+<item type="rect" width="80" height="6" radius="6;top" color="blue" />
+<!-- a fixed image, with a variant for the selected row -->
+<item type="pixmap" src="icons/star.png" srcSelected="icons/star_sel.png" width="24" height="24" />
+```
+
+**`rect`**
+- Fill: `color` / `colorSelected` (the selected row falls back to `color`), or the `style` colour if neither is given.
+- `border="N"` draws a frame of that width with `borderColor` / `borderColorSelected` (or the style's `border` / `borderSelected`). Without a fill colour only the frame is drawn.
+- `radius="N"` rounds the corners; `radius="N;top,left"` limits them to the listed edges (`top`, `bottom`, `left`, `right`, `topLeft`, `topRight`, `bottomLeft`, `bottomRight`).
+- Size is `width` (a number, `auto` has no meaning here, use `*` or a number) and `height` (default: the row height); `pos="x,y,w,h"` places it freely.
+- A plain filled rectangle (no radius, no border) uses the fast fill path. Rounded or bordered ones are drawn as a rectangle with the fill as background colour. A rounded frame without any fill is the one combination I have not verified on a device.
+
+**`pixmap`**
+- `src` is a path resolved like other skin images; `srcSelected` is optional. A missing file is logged and the item is skipped.
+- Content sized (`width="auto"`, no `height`): drawn at its natural size and placed by `align` / `valign`. With a `width` and/or `height` it is fitted into that box keeping its aspect ratio (`keepAspect="0"` stretches it), centred unless `align` / `valign` say otherwise.
+- `.svg` files are rendered at the item's `width` x `height`.
+
+**`z`** on any item sets the draw order across the whole entry: negative values draw behind everything, positive in front; equal values keep the template order. Absolute (`pos`) items are otherwise drawn after the flowing items of their row.
 
 ### Text tokens
 
@@ -131,6 +158,8 @@ The DarkOS skin (`PLi-DarkOS`, `skin.xml`, right after `</colors>`) defines `sin
 | `<template name>` | One entry per template the skin defines, shown with its `title`. |
 
 Only `legacy` is offered when the skin has no templates.
+
+The choice is remembered per skin (`config.usage.servicelist_template_skins`, a JSON map from skin file to choice). When a skin is loaded, at startup or after a skin reload without restart, its remembered choice is restored; a skin without templates uses the classic list and does not overwrite the choices stored for other skins.
 
 `createServiceList()` only returns the templated list if the skin defines templates and the setting is not `legacy`. Changing it needs a GUI restart.
 

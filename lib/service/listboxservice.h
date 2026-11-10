@@ -220,6 +220,8 @@ protected:
 	};
 	std::map<eServiceReference, PiconCacheEntry> m_picon_cache;
 	void getPiconPixmap(const eServiceReference &ref, int width, ePtr<gPixmap> &pixmap, bool &isSVG);
+	std::string getPiconFilename(const eServiceReference &ref); // "" when there is none
+	void loadPiconPixmap(const eServiceReference &ref, int width, ePtr<gPixmap> &pixmap, bool &isSVG); // uncached
 
 	// Same story as the picon cache above, for the per-row "now"/"next" event
 	// lookup (service_info->getEvent()): every repaint re-queries and

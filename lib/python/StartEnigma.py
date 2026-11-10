@@ -371,6 +371,9 @@ def runScreenTest():
 				if result[1]:
 					session.deleteDialog(result[1])
 				InitSkins(False)
+				# the "Channel list design" choices belong to the skin that was just loaded
+				from Components.UsageConfig import updateServiceListTemplateChoices
+				updateServiceListTemplateChoices()
 				session.openWithCallback(boundFunction(runNextScreen, session, []), InfoBar.InfoBar)
 			else:
 				enigma.quitMainloop(*result)

@@ -1,4 +1,5 @@
 #include <lib/base/wrappers.h>
+#include <lib/base/ebase.h>
 #include <lib/service/listboxservicetpl.h>
 #include <lib/service/service.h>
 #include <lib/service/event.h>
@@ -7,6 +8,14 @@
 #include <lib/nav/core.h>
 #include <lib/python/python.h>
 #include <algorithm>
+#include <lib/gdi/pixmapcache.h>
+#include <chrono>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <deque>
+#include <vector>
+#include <set>
 #include <utility>
 #include <time.h>
 #include <stdio.h>
@@ -55,10 +64,241 @@ static std::string trim(const std::string &s)
 }
 
 eListboxServiceTemplateContent::eListboxServiceTemplateContent()
-	:m_cur_index(-1), m_flags(0), m_gen(1), m_rec_time(0)
+	:m_cur_index(-1), m_flags(0), m_gen(1), m_rec_time(0), m_prefetch_last(-1), m_prefetch_dir(0)
 {
 	for (int i = 0; i < fontGroups; ++i)
 		m_font_delta[i] = 0;
+}
+
+// defined in lib/gdi/epng.cpp
+bool svgRasterizeToBuffer(const char *filename, int width, std::vector<unsigned char> &buf, int &w, int &h);
+ePtr<gPixmap> svgBufferToCachedPixmap(const char *filename, const std::vector<unsigned char> &buf, int w, int h);
+
+struct TplPrefetch: public sigc::trackable
+{
+	struct Job { eServiceReference ref; std::string file; int width; };
+	struct Result { eServiceReference ref; std::string file; int w, h; bool ok; std::vector<unsigned char> buf; };
+
+	eListboxServiceTemplateContent *owner;
+	ePtr<eTimer> timer;
+	// SVG picons are rasterised here, off the UI thread: one takes 5-25 ms and a few in a row delayed key repeats by ~90 ms.
+	std::mutex mtx;
+	std::condition_variable cv;
+	std::deque<Job> jobs;
+	std::deque<Result> results;
+	std::set<eServiceReference> pending; // main thread only: queued or being rasterised
+	bool stop;
+	bool started;
+	std::thread th;
+
+	TplPrefetch(eListboxServiceTemplateContent *o): owner(o), stop(false), started(false)
+	{
+		timer = eTimer::create(eApp);
+		CONNECT(timer->timeout, TplPrefetch::tick);
+	}
+	~TplPrefetch()
+	{
+		if (started)
+		{
+			{
+				std::lock_guard<std::mutex> l(mtx);
+				stop = true;
+			}
+			cv.notify_all();
+			th.join();
+		}
+	}
+	void tick() { owner->prefetchTick(); }
+
+	void work()
+	{
+		for (;;)
+		{
+			Job j;
+			{
+				std::unique_lock<std::mutex> l(mtx);
+				cv.wait(l, [this] { return stop || !jobs.empty(); });
+				if (stop)
+					return;
+				j = jobs.front();
+				jobs.pop_front();
+			}
+			Result r;
+			r.ref = j.ref;
+			r.file = j.file;
+			r.w = r.h = 0;
+			r.ok = svgRasterizeToBuffer(j.file.c_str(), j.width, r.buf, r.w, r.h);
+			std::lock_guard<std::mutex> l(mtx);
+			results.push_back(std::move(r));
+		}
+	}
+	size_t queued()
+	{
+		std::lock_guard<std::mutex> l(mtx);
+		return jobs.size();
+	}
+	void enqueue(const eServiceReference &ref, const std::string &file, int width)
+	{
+		if (!started)
+		{
+			started = true;
+			th = std::thread(&TplPrefetch::work, this);
+		}
+		{
+			std::lock_guard<std::mutex> l(mtx);
+			Job j;
+			j.ref = ref;
+			j.file = file;
+			j.width = width;
+			jobs.push_back(j);
+		}
+		pending.insert(ref);
+		cv.notify_one();
+	}
+	bool popResult(Result &r)
+	{
+		std::lock_guard<std::mutex> l(mtx);
+		if (results.empty())
+			return false;
+		r = std::move(results.front());
+		results.pop_front();
+		return true;
+	}
+};
+
+// Row picon, through m_picon_cache (the read-ahead fills it): without it every row rebuild decodes the PNG and re-uploads
+// its texture, which made fast paging crawl.
+void eListboxServiceTemplateContent::picon(const eServiceReference &ref, int width, ePtr<gPixmap> &pixmap, bool &isSVG)
+{
+	getPiconPixmap(ref, width, pixmap, isSVG);
+}
+
+void eListboxServiceTemplateContent::prefetchKick()
+{
+	if (m_cur_index < 0 || !m_templates[m_cur_index].usesPicon || !PyCallable_Check(m_GetPiconNameFunc))
+		return;
+	if (m_cursor_number != m_prefetch_last)
+	{
+		if (m_prefetch_last >= 0)
+			m_prefetch_dir = m_cursor_number > m_prefetch_last ? 1 : -1;
+		m_prefetch_last = m_cursor_number;
+	}
+	if (!m_prefetch)
+		m_prefetch = std::make_shared<TplPrefetch>(this);
+	TplPrefetch *p = (TplPrefetch*)m_prefetch.get();
+	if (!p->timer->isActive())
+		p->timer->start(15, true);
+}
+
+void eListboxServiceTemplateContent::prefetchTick()
+{
+	if (!m_prefetch)
+		return;
+	TplPrefetch *pf = (TplPrefetch*)m_prefetch.get();
+	const int H = m_itemheight;
+	// Finished rasterisations: wrap them (cheap) and file them in m_picon_cache.
+	{
+		TplPrefetch::Result r;
+		for (int drained = 0; drained < 4 && pf->popResult(r); ++drained)
+		{
+			if (m_picon_cache.find(r.ref) == m_picon_cache.end())
+			{
+				ePtr<gPixmap> keep; // PixmapCache only holds weakly, keep alive until the cache entry has taken it
+				if (r.ok)
+					keep = svgBufferToCachedPixmap(r.file.c_str(), r.buf, r.w, r.h);
+				PiconCacheEntry entry;
+				entry.isSVG = true;
+				entry.pixmap = keep;
+				m_picon_cache[r.ref] = entry;
+			}
+			pf->pending.erase(r.ref);
+		}
+	}
+	if (m_cur_index < 0 || !cursorValid() || !m_prefetch_dir)
+	{
+		if (!pf->pending.empty())
+			pf->timer->start(20, true);
+		return;
+	}
+	const int ahead = std::max(3 * m_size_visible, 30);
+	int loaded = 0;
+	const auto t0 = std::chrono::steady_clock::now();
+	list::iterator it = m_cursor;
+	bool more = false;
+	for (int n = 0; n < ahead; ++n)
+	{
+		if (m_prefetch_dir > 0)
+		{
+			if (it == m_list.end() || ++it == m_list.end())
+				break;
+		}
+		else
+		{
+			if (it == m_list.begin())
+				break;
+			--it;
+		}
+		const eServiceReference &ref = *it;
+		if (ref.flags & (eServiceReference::isMarker | eServiceReference::isDirectory))
+			continue;
+		if (m_picon_cache.find(ref) != m_picon_cache.end() || pf->pending.count(ref))
+			continue;
+		const std::string file = getPiconFilename(ref);
+		if (file.size() <= 4 || file.compare(file.size() - 4, 4, ".svg") != 0)
+		{
+			// PNG etc.: cheap, decode a few per tick on the UI thread
+			if (loaded >= 3 || (loaded > 0 && std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count() > 4.0))
+			{
+				more = true;
+				break;
+			}
+			ePtr<gPixmap> pix;
+			bool svg = false;
+			getPiconPixmap(ref, H * 5 / 3, pix, svg);
+			++loaded;
+			continue;
+		}
+		char cachefile[file.size() + 10];
+		sprintf(cachefile, "%s%d", file.c_str(), 0);
+		if (PixmapCache::Get(file.c_str(), cachefile))
+			continue; // already loaded, a row load will pick it up
+		if (pf->queued() >= 16)
+		{
+			more = true;
+			break;
+		}
+		pf->enqueue(ref, file, H * 5 / 3);
+	}
+	// Bound the cache (CPU pixmaps and, through them, GPU textures): keep only rows near the cursor, trimmed a few per
+	// tick since dropping ~100 pixmaps at once queues ~100 GL texture deletions that stall a frame.
+	if (m_picon_cache.size() > 400)
+	{
+		std::set<eServiceReference> window;
+		list::iterator a = m_cursor, b = m_cursor;
+		for (int n = 0; n < 120; ++n)
+		{
+			if (a != m_list.begin()) --a;
+			if (b != m_list.end()) ++b;
+		}
+		for (list::iterator k = a; k != b && k != m_list.end(); ++k)
+			window.insert(*k);
+		int dropped = 0;
+		for (std::map<eServiceReference, PiconCacheEntry>::iterator f = m_picon_cache.begin();
+			f != m_picon_cache.end() && dropped < 6; )
+		{
+			if (window.find(f->first) == window.end())
+			{
+				m_picon_cache.erase(f++);
+				++dropped;
+			}
+			else
+				++f;
+		}
+		if (dropped >= 6)
+			more = true;
+	}
+	if (more || !pf->pending.empty())
+		pf->timer->start(more ? 25 : 20, true);
 }
 
 /* ---------------------------------- compiling ---------------------------------- */
@@ -231,7 +471,7 @@ int eListboxServiceTemplateContent::addTemplate(ePyObject dict)
 	static const struct { const char *name; int type; } types[] = {
 		{"text", itText}, {"number", itText}, {"picon", itPicon}, {"servicetype", itServiceType},
 		{"crypto", itCrypto}, {"record", itRecord}, {"resolution", itResolution}, {"backup", itBackup},
-		{"catchup", itCatchup}, {"kind", itKind}, {"progress", itProgress}, {"line", itLine}, {"rect", itRect}, {"spacer", itSpacer}
+		{"catchup", itCatchup}, {"kind", itKind}, {"progress", itProgress}, {"line", itLine}, {"rect", itRect}, {"spacer", itSpacer}, {"pixmap", itPixmap}
 	};
 
 	Template t;
@@ -258,6 +498,8 @@ int eListboxServiceTemplateContent::addTemplate(ePyObject dict)
 			row.gap = pyInt(rd, "gap", 0);
 			row.padLeft = pyInt(rd, "padLeft", 0);
 			row.padRight = pyInt(rd, "padRight", 0);
+			row.padTop = pyInt(rd, "padTop", 0);
+			row.padBottom = pyInt(rd, "padBottom", 0);
 			std::string rowAlign = pyStr(rd, "align");
 			row.align = rowAlign == "center" ? 1 : rowAlign == "right" ? 2 : 0;
 			parseCondition(pyStr(rd, "visible"), row.req, row.forbid);
@@ -286,6 +528,7 @@ int eListboxServiceTemplateContent::addTemplate(ePyObject dict)
 				it.minw = pyInt(id, "min", 0);
 				it.height = pyInt(id, "height", 0);
 				it.margin = pyInt(id, "margin", 0);
+				it.lineH = pyInt(id, "lineHeight", 0);
 				std::string align = pyStr(id, "align");
 				it.align = align == "center" ? 1 : align == "right" ? 2 : align == "left" ? 0 : -1;
 				std::string valign = pyStr(id, "valign");
@@ -321,6 +564,29 @@ int eListboxServiceTemplateContent::addTemplate(ePyObject dict)
 				it.reserve = pyInt(id, "reserve", 0) != 0;
 				it.keepAspect = pyInt(id, "keepAspect", 1) != 0;
 				it.border = pyInt(id, "border", -1);
+				static const char *const colKeys[4] = { "color", "colorSelected", "borderColor", "borderColorSelected" };
+				for (int k = 0; k < 4; ++k)
+				{
+					PyObject *o = dictGet(id, colKeys[k]);
+					const bool set = o && PyLong_Check(o);
+					const gRGB c(set ? (unsigned int)PyLong_AsUnsignedLongMask(o) : 0);
+					if (k < 2)
+					{
+						it.colSet[k] = set;
+						it.col[k] = c;
+					}
+					else
+					{
+						it.bcolSet[k - 2] = set;
+						it.bcol[k - 2] = c;
+					}
+				}
+				it.radius = pyInt(id, "radius", 0);
+				it.edges = pyInt(id, "edges", 15);
+				it.z = pyInt(id, "z", 0);
+				it.src = pyStr(id, "src");
+				it.srcSel = pyStr(id, "srcSelected");
+				it.isSvg = false;
 				row.items.push_back(it);
 			}
 			t.rows.push_back(row);
@@ -352,6 +618,34 @@ void eListboxServiceTemplateContent::rebuildFonts()
 			}
 }
 
+// static images of the template's pixmap items, loaded when the template becomes current
+void eListboxServiceTemplateContent::loadPixmaps(Template &t)
+{
+	for (size_t r = 0; r < t.rows.size(); ++r)
+		for (size_t i = 0; i < t.rows[r].items.size(); ++i)
+		{
+			Item &it = t.rows[r].items[i];
+			if (it.type != itPixmap)
+				continue;
+			// svg files are rendered at the size the item asks for
+			const int w = it.wmode == wFixed ? it.width : 0;
+			const int h = it.height;
+			it.isSvg = it.src.size() > 4 && it.src.compare(it.src.size() - 4, 4, ".svg") == 0;
+			const std::string *files[2] = { &it.src, &it.srcSel };
+			Ref<gPixmap> *dest[2] = { &it.pix, &it.pixSel };
+			for (int k = 0; k < 2; ++k)
+			{
+				if (files[k]->empty() || (gPixmap*)*dest[k])
+					continue;
+				ePtr<gPixmap> pm;
+				if (loadImage(pm, files[k]->c_str(), 0, w, h) == 0 && pm)
+					*dest[k] = (gPixmap*)pm;
+				else
+					eDebug("[eListboxServiceTemplateContent] cannot load '%s'", files[k]->c_str());
+			}
+		}
+}
+
 bool eListboxServiceTemplateContent::setTemplate(const std::string &name)
 {
 	for (size_t i = 0; i < m_templates.size(); ++i)
@@ -370,6 +664,7 @@ bool eListboxServiceTemplateContent::setTemplate(const std::string &name)
 			m_event_cache.clear();
 			m_rows.clear();
 			rebuildFonts();
+			loadPixmaps(m_templates[i]);
 			++m_gen;
 			if (m_listbox)
 				m_listbox->invalidate();
@@ -624,7 +919,7 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 	bool piconSVG = false;
 	if (tpl.usesPicon && playable && PyCallable_Check(m_GetPiconNameFunc))
 	{
-		getPiconPixmap(ref, H * 5 / 3, piconPix, piconSVG);
+		picon(ref, H * 5 / 3, piconPix, piconSVG);
 		SETBIT(sHasPicon, piconPix);
 	}
 	#undef SETBIT
@@ -670,7 +965,7 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 		int mode;
 		bool shrunk;
 		std::string text;
-		ePtr<gPixmap> pix;
+		ePtr<gPixmap> pix, pixSel;
 		ePtr<eTextPara> para;
 		bool svg;
 	};
@@ -679,8 +974,18 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 	auto emit = [&](Slot &s, int x, int ty, int w, int h)
 	{
 		const Item &it = *s.it;
+		// lineHeight: the item lives in a band of that height (e.g. the height of the text line next to it).
+		// The band is placed in the row by valign and the item is centred inside it, so icons, bars and
+		// text with the same lineHeight and valign stay level with each other.
+		int va = it.valign;
+		if (it.lineH > 0 && it.lineH < h)
+		{
+			ty += va == 0 ? 0 : va == 2 ? h - it.lineH : (h - it.lineH) / 2;
+			h = it.lineH;
+			va = 1;
+		}
 		// offset of something `space` pixels smaller than the row, as the item wants it placed
-		auto vpos = [&](int space) { return it.valign == 0 ? 0 : it.valign == 2 ? space : space / 2; };
+		auto vpos = [&](int space) { return va == 0 ? 0 : va == 2 ? space : space / 2; };
 		Op op;
 		op.kind = opFill;
 		op.style = it.style;
@@ -688,6 +993,11 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 		op.border = 0;
 		op.begin = 0;
 		op.duration = 0;
+		op.z = it.z;
+		op.radius = 0;
+		op.edges = 0;
+		for (int k = 0; k < 2; ++k)
+			op.colSet[k] = op.bcolSet[k] = false;
 		switch (it.type)
 		{
 		case itText:
@@ -724,7 +1034,7 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 				flags |= gPainter::BT_HALIGN_CENTER;
 			else if (it.align == 2)
 				flags |= gPainter::BT_HALIGN_RIGHT;
-			flags |= it.valign == 1 ? gPainter::BT_VALIGN_CENTER : it.valign == 2 ? gPainter::BT_VALIGN_BOTTOM : 0;
+			flags |= va == 1 ? gPainter::BT_VALIGN_CENTER : va == 2 ? gPainter::BT_VALIGN_BOTTOM : 0;
 			if (s.svg)
 				op.kind = opBlitSVG;
 			else
@@ -790,13 +1100,65 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 			break;
 		}
 		case itRect:
-			op.kind = opFill;
-			{
+		{
 			const int rh = it.height > 0 ? std::min(it.height, h) : h;
+			op.kind = opRect;
 			op.rect = eRect(x, ty + vpos(h - rh), w, rh);
-		}
+			op.radius = it.radius;
+			op.edges = it.edges;
+			op.border = it.border > 0 ? it.border : 0;
+			for (int k = 0; k < 2; ++k)
+			{
+				op.colSet[k] = it.colSet[k];
+				op.col[k] = it.col[k];
+				op.bcolSet[k] = it.bcolSet[k];
+				op.bcol[k] = it.bcol[k];
+			}
 			out.ops.push_back(op);
 			break;
+		}
+		case itPixmap:
+		{
+			if (!s.pix)
+				break;
+			op.pixmap = s.pix;
+			op.pixmapSel = s.pixSel;
+			eSize ps = s.pix->size();
+			if (it.wmode == wAuto && it.height <= 0 && !it.absolute && ps.height() <= h)
+			{
+				// content sized: natural size, placed by align / valign
+				int ox = x;
+				if (it.align == 1)
+					ox = x + (w - ps.width()) / 2;
+				else if (it.align == 2)
+					ox = x + w - ps.width();
+				op.kind = opBlit;
+				op.rect = eRect(ox, ty + vpos(h - ps.height()), ps.width(), ps.height());
+			}
+			else
+			{
+				// fitted into the item box (width x height or row height), centred unless told otherwise
+				const int bh = it.height > 0 ? std::min(it.height, h) : h;
+				op.rect = eRect(x, ty + vpos(h - bh), w, bh);
+				int flags = gPainter::BT_ALPHABLEND;
+				if (it.align == -1 || it.align == 1)
+					flags |= gPainter::BT_HALIGN_CENTER;
+				else if (it.align == 2)
+					flags |= gPainter::BT_HALIGN_RIGHT;
+				flags |= va == 1 ? gPainter::BT_VALIGN_CENTER : va == 2 ? gPainter::BT_VALIGN_BOTTOM : 0;
+				if (it.isSvg)
+					op.kind = opBlitSVG;
+				else
+				{
+					op.kind = opBlitScale;
+					if (it.keepAspect)
+						flags |= gPainter::BT_KEEP_ASPECT_RATIO;
+				}
+				op.flags = flags;
+			}
+			out.ops.push_back(op);
+			break;
+		}
 		}
 	};
 
@@ -897,6 +1259,22 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 				}
 				break;
 			}
+			case itPixmap:
+			{
+				s.pix = it.pix;
+				s.pixSel = it.pixSel;
+				if (!s.pix)
+					continue;
+				if (s.mode == wFixed)
+					s.w = fixedW;
+				else if (s.mode == wAuto)
+				{
+					eSize ps = s.pix->size();
+					const int bh = it.height > 0 ? std::min(it.height, rowH) : (ps.height() > rowH ? rowH : ps.height());
+					s.w = ps.height() > 0 ? ps.width() * bh / ps.height() : ps.width();
+				}
+				break;
+			}
 			case itProgress:
 				if (!hasEvent)
 					continue;
@@ -969,7 +1347,7 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 		}
 		for (size_t i = 0; i < flow.size(); ++i)
 		{
-			emit(flow[i], x, y0, flow[i].w, rowH);
+			emit(flow[i], x, y0 + row.padTop, flow[i].w, std::max(0, rowH - row.padTop - row.padBottom));
 			x += flow[i].w + row.gap;
 		}
 		// absolute items are positioned relative to the whole cell, whatever row they are declared in
@@ -980,6 +1358,14 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 		}
 		y0 += rowH;
 	}
+
+	// items with a `z` are drawn in that order (negative: behind the others), equal z keeps the template order
+	bool layered = false;
+	for (size_t i = 0; i < out.ops.size(); ++i)
+		if (out.ops[i].z)
+			layered = true;
+	if (layered)
+		std::stable_sort(out.ops.begin(), out.ops.end(), [](const Op &a, const Op &b) { return a.z < b.z; });
 }
 
 /* ---------------------------------- painting ---------------------------------- */
@@ -1067,6 +1453,8 @@ void eListboxServiceTemplateContent::paintOps(gPainter &painter, eWindowStyle &s
 	{
 		const Op &op = rc.ops[i];
 		eRect r(op.rect.left() + offset.x(), op.rect.top() + offset.y(), op.rect.width(), op.rect.height());
+		// static pixmaps may have an own image for the selected row
+		gPixmap *pm = (selected && op.pixmapSel) ? (gPixmap*)op.pixmapSel : (gPixmap*)op.pixmap;
 		switch (op.kind)
 		{
 		case opText:
@@ -1075,23 +1463,91 @@ void eListboxServiceTemplateContent::paintOps(gPainter &painter, eWindowStyle &s
 			break;
 		case opBlit:
 			painter.clip(r);
-			painter.blit(op.pixmap, ePoint(r.left(), r.top()), r, gPainter::BT_ALPHABLEND);
+			painter.blit(pm, ePoint(r.left(), r.top()), r, gPainter::BT_ALPHABLEND);
 			painter.clippop();
 			break;
 		case opBlitScale:
 			painter.clip(r);
-			painter.blitScale(op.pixmap, r, r, op.flags);
+			painter.blitScale(pm, r, r, op.flags);
 			painter.clippop();
 			break;
 		case opBlitSVG:
 			painter.clip(r);
-			painter.blit(op.pixmap, r, eRect(), op.flags);
+			painter.blit(pm, r, eRect(), op.flags);
 			painter.clippop();
 			break;
 		case opFill:
 			setStyleColor(op.style, false);
 			painter.fill(r);
 			break;
+		case opRect:
+		{
+			// own colour of the item first (the selected one falls back to the normal one), else the style
+			const int ci = selected ? 1 : 0;
+			gRGB fill, frame;
+			bool hasFill = false, hasFrame = false;
+			if (op.colSet[ci])
+			{
+				fill = op.col[ci];
+				hasFill = true;
+			}
+			else if (op.colSet[0])
+			{
+				fill = op.col[0];
+				hasFill = true;
+			}
+			else if (op.style >= 0 && op.style < (int)m_styles.size())
+				hasFill = resolveColor(m_styles[op.style], selected, marked, rc.dynState, false, fill);
+			if (op.bcolSet[ci])
+			{
+				frame = op.bcol[ci];
+				hasFrame = true;
+			}
+			else if (op.bcolSet[0])
+			{
+				frame = op.bcol[0];
+				hasFrame = true;
+			}
+			else if (op.style >= 0 && op.style < (int)m_styles.size())
+				hasFrame = resolveColor(m_styles[op.style], selected, marked, rc.dynState, true, frame);
+			if (op.radius <= 0 && op.border <= 0)
+			{
+				// plain filled rectangle
+				if (hasFill)
+				{
+					painter.setForegroundColor(fill);
+					dirty = true;
+				}
+				else
+					setStyleColor(op.style, false);
+				painter.fill(r);
+			}
+			else if (op.radius <= 0 && !hasFill)
+			{
+				// square frame without fill
+				const int b = op.border;
+				painter.setForegroundColor(hasFrame ? frame : gRGB(0xdfdfdf));
+				dirty = true;
+				painter.fill(eRect(r.left(), r.top(), r.width(), b));
+				painter.fill(eRect(r.left(), r.top() + r.height() - b, r.width(), b));
+				painter.fill(eRect(r.left(), r.top() + b, b, std::max(0, r.height() - 2 * b)));
+				painter.fill(eRect(r.left() + r.width() - b, r.top() + b, b, std::max(0, r.height() - 2 * b)));
+			}
+			else
+			{
+				// rounded and/or bordered: the rectangle is filled with the background colour
+				painter.setBackgroundColor(hasFill ? fill : gRGB(0xff000000));
+				if (op.border > 0)
+					painter.setBorder(hasFrame ? frame : (hasFill ? fill : gRGB(0xdfdfdf)), op.border);
+				if (op.radius > 0)
+					painter.setRadius(op.radius, op.edges);
+				painter.drawRectangle(r);
+				if (op.border > 0)
+					painter.setBorder(gRGB(0u), 0);
+				dirty = true;
+			}
+			break;
+		}
 		case opProgress:
 		{
 			const int b = op.border;
@@ -1152,6 +1608,8 @@ void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &styl
 		paintSelection(painter, style, offset, selected, tpl.large);
 
 		const eServiceReference ref = *m_cursor;
+		if (selected)
+			prefetchKick();
 		const time_t now = time(0);
 		ePtr<iStaticServiceInformation> info;
 		m_service_center->info(ref, info);

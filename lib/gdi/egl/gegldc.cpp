@@ -1372,7 +1372,15 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 		flushBlitBatch();
 	m_texture_manager.processDeletions();
 
+	// ENIGMA_TEX_TRACE=1: log where on screen each blit that needs a NEW texture is drawn (which widget keeps
+	// creating textures while scrolling). Off by default.
+	static const bool s_tex_trace = getenv("ENIGMA_TEX_TRACE") != nullptr;
+	const bool tex_was_new = s_tex_trace && op->pixmap->surface && op->pixmap->surface->gl_texture_id == 0;
 	GLuint tex_id = m_texture_manager.getTexture(op->pixmap);
+	if (tex_was_new)
+		eDebug("[gEGLDC] new texture for blit: pixmap %p surface %p %dx%d bpp=%d drawn at %d,%d size %dx%d flags=0x%x",
+			(void*)op->pixmap, (void*)op->pixmap->surface, op->pixmap->surface->x, op->pixmap->surface->y, op->pixmap->surface->bpp,
+			op->position.left(), op->position.top(), op->position.width(), op->position.height(), (unsigned)op->flags);
 	if (tex_id == 0)
 		return;
 
@@ -3790,7 +3798,15 @@ void gEGLDC::flip() {
 		const auto trim_t0 = std::chrono::steady_clock::now();
 		// Spare what the last few frames drew: those textures may still be read by frames in flight, and deleting one makes the
 		// driver wait for them - a stall of the whole frame while fast scrolling.
-		const size_t freed = m_texture_manager.trimTo(budget, m_texture_manager.trimCountFor(budget, 6, 48), 4);
+		// Also bound the bytes released per frame: deleting cost grows with texture size, so a handful of large
+		// textures stalls a frame as much as dozens of small ones. The rest of the overage goes away next frame.
+		static const size_t kMaxTrimBytesPerFrame = 6u << 20;
+		const size_t live = m_texture_manager.liveBytes();
+		// Safety valve: if the live set is already well past the budget (uploads outpace the capped trim), stop limiting and
+		// catch up at once - a brief stall beats running into the driver's hard limit.
+		const bool far_over = live > budget + budget / 4;
+		const size_t frame_budget = (!far_over && live > budget && live - budget > kMaxTrimBytesPerFrame) ? live - kMaxTrimBytesPerFrame : budget;
+		const size_t freed = m_texture_manager.trimTo(frame_budget, m_texture_manager.trimCountFor(frame_budget, 6, 48), 4);
 		const double trim_ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - trim_t0).count();
 		if (trim_ms > 8.0)
 			eDebug("[gEGLDC] slow texture trim: %.1fms, freed ~%.1fMB", trim_ms, freed / 1048576.0);
