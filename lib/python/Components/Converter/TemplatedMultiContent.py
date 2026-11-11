@@ -92,6 +92,7 @@ class TemplatedMultiContent(StringList):
 			itemheight = self.template["itemHeight"]
 			itemwidth = self.template.get("itemWidth")
 			orientation = self.template.get("orientation")
+			itemSpacing = self.template.get("itemSpacing")  # gap between the tiles: one value or (horizontal, vertical)
 			selectionEnabled = self.template.get("selectionEnabled", True)
 			scrollbarMode = self.template.get("scrollbarMode", "showOnDemand")
 			if templates and style and style in templates:  # If we have a custom style defined in the source, and different templates in the skin, look it up
@@ -106,6 +107,8 @@ class TemplatedMultiContent(StringList):
 					itemwidth = templates[style][4]
 				if len(templates[style]) > 5:  # optional, can be passed via Listbox widget (compatibility with openatv)
 					orientation = templates[style][5]
+				if len(templates[style]) > 6:  # optional, gap between the tiles
+					itemSpacing = templates[style][6]
 
 			if self.scale is not None and (self.scale[0][0] != self.scale[0][1] or self.scale[1][0] != self.scale[1][1]):
 				template, itemheight, itemwidth, fonts = self.scaleTemplate(template, itemheight, itemwidth)
@@ -117,6 +120,14 @@ class TemplatedMultiContent(StringList):
 			if orientation is not None:
 				self.content.setOrientation(self.orientations.get(orientation, self.orientations["orVertical"]))
 			self.content.setItemHeight(int(itemheight))
+			if itemSpacing is not None:
+				spacingX, spacingY = itemSpacing if isinstance(itemSpacing, (tuple, list)) else (itemSpacing, itemSpacing)
+				if self.scale is not None:
+					spacingX = int(spacingX * self.scale[0][0] / self.scale[0][1])
+					spacingY = int(spacingY * self.scale[1][0] / self.scale[1][1])
+				self.content.setItemSpacing(int(spacingX), int(spacingY))
+			else:
+				self.content.setItemSpacing(-1, -1)  # the spacing of the widget
 			self.selectionEnabled = selectionEnabled
 			self.scrollbarMode = scrollbarMode
 			self.active_style = style

@@ -39,8 +39,10 @@ void iListboxContent::setListbox(eListbox *lb)
 {
 	m_listbox = lb;
 	m_listbox->setItemHeight(getItemHeight());
-	m_listbox->setItemWidth(getItemWidth());
+	if (getItemWidth() != 0) // 0: the content has no width of its own, the one of the widget stays
+		m_listbox->setItemWidth(getItemWidth());
 	m_listbox->setOrientation(getOrientation());
+	m_listbox->applyContentSpacing();
 }
 
 int iListboxContent::currentCursorSelectable()
@@ -579,6 +581,14 @@ void eListboxPythonStringContent::setItemWidth(int width)
 	m_itemwidth = width;
 	if (m_listbox)
 		m_listbox->setItemWidth(width);
+}
+
+void eListboxPythonStringContent::setItemSpacing(int x, int y)
+{
+	m_spacing_x = x;
+	m_spacing_y = y;
+	if (m_listbox)
+		m_listbox->applyContentSpacing();
 }
 
 PyObject *eListboxPythonStringContent::getCurrentSelection()
