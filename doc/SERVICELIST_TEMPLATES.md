@@ -137,7 +137,7 @@ Conditions compile to a required/forbidden bitmask pair, so a check is two AND o
 </template>
 ```
 
-`layout="list"` (default), `"horizontal"` or `"grid"`. `eListbox` already provides the grid/horizontal orientation; the content just reports it (`getOrientation` / `getItemWidth`). In a cell, stack rows with `height` / `weight`, and use `pos="x,y,w,h"` items for free placement.
+`layout="list"` (default), `"horizontal"` or `"grid"`. A template can also set `itemSpacing` / `itemSpacingX` / `itemSpacingY` (gap between the tiles), `selectionZoom`, `carousel`, `carouselZoom`, `carouselFocus`, `carouselCenterWidth` and `carouselCenterHeight`; they replace the widget values while the template is active, and anything not set comes from the widget (see [LISTBOXES.md](LISTBOXES.md), section 9). A template without `itemHeight` / `itemWidth` uses the ones of the widget. `eListbox` already provides the grid/horizontal orientation; the content just reports it (`getOrientation` / `getItemWidth`). In a cell, stack rows with `height` / `weight`, and use `pos="x,y,w,h"` items for free placement.
 
 ### Runtime parameters
 

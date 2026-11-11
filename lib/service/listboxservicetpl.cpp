@@ -500,11 +500,19 @@ int eListboxServiceTemplateContent::addTemplate(ePyObject dict)
 
 	Template t;
 	t.name = pyStr(d, "name");
-	t.itemHeight = pyInt(d, "itemHeight", 30);
+	t.itemHeight = pyInt(d, "itemHeight", 0); // 0: the itemHeight of the widget
 	t.large = pyInt(d, "large", 0) != 0;
 	std::string layout = pyStr(d, "layout");
 	t.orientation = layout == "grid" ? (int)eListbox::orGrid : layout == "horizontal" ? (int)eListbox::orHorizontal : (int)eListbox::orVertical;
 	t.itemWidth = pyInt(d, "itemWidth", 0);
+	t.spacingX = pyInt(d, "spacingX", -1);
+	t.spacingY = pyInt(d, "spacingY", -1);
+	t.selectionZoom = pyInt(d, "selectionZoom", -2);
+	t.carousel = pyInt(d, "carousel", -2);
+	t.carouselZoom = pyInt(d, "carouselZoom", -2);
+	t.carouselFocus = pyInt(d, "carouselFocus", -2);
+	t.carouselCenterWidth = pyInt(d, "carouselCenterWidth", -2);
+	t.carouselCenterHeight = pyInt(d, "carouselCenterHeight", -2);
 	t.usesNext = t.timeDependent = t.usesPicon = false;
 	{
 		const std::string spanMarkers = pyStr(d, "spanMarkers");
@@ -719,7 +727,9 @@ bool eListboxServiceTemplateContent::setTemplate(const std::string &name)
 			if (m_listbox)
 			{
 				m_listbox->setOrientation(getOrientation());
-				m_listbox->setItemWidth(getItemWidth());
+				if (getItemWidth() > 0) // not set in the template: the itemWidth of the widget stays
+					m_listbox->setItemWidth(getItemWidth());
+				m_listbox->applyContentSpacing();
 			}
 			m_event_cache.clear();
 			m_rows.clear();
@@ -829,12 +839,12 @@ void eListboxServiceTemplateContent::setSize(const eSize &size)
 	// A horizontal list gives its cell the height of the whole widget. The tile of a template is as high as its
 	// itemHeight, so that is the cell (background, selection, zoom): a cell as high as the widget leaves the zoom no
 	// room to grow and paints the rounded background taller than the tile.
-	if (m_zoom == 100 && m_cur_index >= 0 && m_templates[m_cur_index].orientation == (int)eListbox::orHorizontal &&
+	if (m_zoom == 100 && !m_cell_override && m_cur_index >= 0 && m_templates[m_cur_index].orientation == (int)eListbox::orHorizontal &&
 		m_itemheight > 0 && cell.height() > m_itemheight)
 		cell = eSize(cell.width(), m_itemheight);
 	const bool changed = !(m_itemsize == cell);
 	eListboxServiceContent::setSize(cell);
-	if (changed && m_zoom == 100)
+	if (changed && m_zoom == 100 && !m_cell_override)
 		++m_gen;
 }
 
@@ -1873,6 +1883,28 @@ int eListboxServiceTemplateContent::getItemWidth()
 	return (m_cur_index >= 0 && m_templates[m_cur_index].orientation != eListbox::orVertical) ? m_templates[m_cur_index].itemWidth : -1;
 }
 
+void eListboxServiceTemplateContent::getListboxOverrides(eListboxOverrides &ov)
+{
+	if (m_cur_index < 0)
+		return;
+	const Template &t = m_templates[m_cur_index];
+	ov.selectionZoom = t.selectionZoom;
+	ov.carousel = t.carousel;
+	ov.carouselZoom = t.carouselZoom;
+	ov.carouselFocus = t.carouselFocus;
+	ov.carouselCenterWidth = t.carouselCenterWidth;
+	ov.carouselCenterHeight = t.carouselCenterHeight;
+}
+
+bool eListboxServiceTemplateContent::getItemSpacing(int &x, int &y)
+{
+	if (m_cur_index < 0)
+		return false;
+	x = m_templates[m_cur_index].spacingX;
+	y = m_templates[m_cur_index].spacingY;
+	return x >= 0 || y >= 0;
+}
+
 int eListboxServiceTemplateContent::getOrientation()
 {
 	return m_cur_index >= 0 ? m_templates[m_cur_index].orientation : (int)eListbox::orVertical;
@@ -1949,6 +1981,8 @@ void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &styl
 	if (cursorValid() && m_cur_index >= 0)
 	{
 		const bool zoomed = m_zoom != 100;
+		if (!zoomed && m_cell_override && m_itemsize.height() == cellSize.height() && m_itemheight == cellHeight)
+			m_itemheight = m_itemsize.height(); // the focused carousel slot has a size of its own, lay the rows out in it
 		if (zoomed)
 		{
 			prepareZoomTemplate();
@@ -1981,7 +2015,7 @@ void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &styl
 
 		std::map<eServiceReference, RowCache>::iterator it = rowCache.find(ref);
 		if (it == rowCache.end() || it->second.gen != m_gen || it->second.dyn != dyn ||
-			it->second.width != m_itemsize.width() || now >= it->second.validUntil)
+			it->second.width != m_itemsize.width() || it->second.height != m_itemheight || now >= it->second.validUntil)
 		{
 			if (rowCache.size() > 256)
 				rowCache.clear();
@@ -1989,6 +2023,7 @@ void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &styl
 			rc.gen = m_gen;
 			rc.dyn = dyn;
 			rc.width = m_itemsize.width();
+			rc.height = m_itemheight;
 			profileTimer.setMiss();
 			{
 				eServiceListPaintTimer buildTimer(eServiceListPaintTimer::statTemplateBuild);

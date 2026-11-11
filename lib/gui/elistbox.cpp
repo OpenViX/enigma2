@@ -106,11 +106,8 @@ void eListbox::setWrapAround(bool state)
 
 void eListbox::setSelectionZoom(int percent)
 {
-	percent = std::max(100, std::min(percent, 300));
-	if (m_selection_zoom == percent)
-		return;
-	m_selection_zoom = percent;
-	invalidate();
+	m_w_selection_zoom = std::max(100, std::min(percent, 300));
+	applyContentSpacing();
 }
 
 /* paints entry `index` enlarged by m_selection_zoom, centred on its cell and kept inside the widget. The content is
@@ -239,30 +236,108 @@ int eListbox::gridRowTopFor(int row)
 	if (row < top)
 		return row;
 	const int height = size().height();
-	while (top < row && gridRowTop(row + 1) - gridRowTop(top) > height)
+	while (top < row && gridRowTop(row + 1) - m_gap_y - gridRowTop(top) > height)
 		++top;
 	return top;
 }
 
 void eListbox::setCarouselZoom(int percent)
 {
-	percent = std::max(100, std::min(percent, 300));
-	if (m_carousel_zoom == percent)
-		return;
-	m_carousel_zoom = percent;
-	if (carouselActive())
-		invalidate();
+	m_w_carousel_zoom = std::max(100, std::min(percent, 300));
+	applyContentSpacing();
 }
 
 void eListbox::setCarousel(bool state)
 {
-	if (m_carousel == state)
-		return;
-	m_carousel = state;
-	m_prev_scrollbar_page = -1;
+	m_w_carousel = state;
+	applyContentSpacing();
+}
+
+void eListbox::setCarouselCenterSize(int width, int height)
+{
+	m_w_carousel_cw = std::max(0, width);
+	m_w_carousel_ch = std::max(0, height);
+	applyContentSpacing();
+}
+
+void eListbox::setCarouselFocus(int slot)
+{
+	m_w_carousel_focus = std::max(-1, slot);
+	applyContentSpacing();
+}
+
+void eListbox::setItemSpacing(int x, int y)
+{
+	m_widget_gap_x = std::max(0, x);
+	m_widget_gap_y = std::max(0, y);
+	applyContentSpacing();
+}
+
+/* works out the settings in effect: the ones of the widget (skin), unless the content (a service list template, a
+   TemplatedMultiContent style) gives its own. Called whenever one of them or the content changes. */
+void eListbox::applyContentSpacing()
+{
+	int x = -1, y = -1;
+	eListboxOverrides ov;
 	if (m_content)
+	{
+		m_content->getItemSpacing(x, y);
+		m_content->getListboxOverrides(ov);
+	}
+	x = x >= 0 ? x : m_widget_gap_x;
+	y = y >= 0 ? y : m_widget_gap_y;
+	auto pick = [](int over, int widget) { return over != -2 ? over : widget; };
+	const bool carousel = pick(ov.carousel, m_w_carousel ? 1 : 0) != 0;
+	const int cw = std::max(0, pick(ov.carouselCenterWidth, m_w_carousel_cw));
+	const int ch = std::max(0, pick(ov.carouselCenterHeight, m_w_carousel_ch));
+	const int focus = std::max(-1, pick(ov.carouselFocus, m_w_carousel_focus));
+	const int czoom = std::max(100, std::min(pick(ov.carouselZoom, m_w_carousel_zoom), 300));
+	const int szoom = std::max(100, std::min(pick(ov.selectionZoom, m_w_selection_zoom), 300));
+
+	const bool layout = m_gap_x != x || m_gap_y != y || m_carousel != carousel || m_carousel_cw != cw || m_carousel_ch != ch;
+	if (!layout && m_carousel_focus == focus && m_carousel_zoom == czoom && m_selection_zoom == szoom)
+		return;
+	m_gap_x = x;
+	m_gap_y = y;
+	m_carousel = carousel;
+	m_carousel_cw = cw;
+	m_carousel_ch = ch;
+	m_carousel_focus = focus;
+	m_carousel_zoom = czoom;
+	m_selection_zoom = szoom;
+	m_prev_scrollbar_page = -1;
+	if (layout)
+		recalcSize(); // the number of tiles depends on the gap and the focus size
+	else if (m_content)
 		moveSelection(justCheck);
+	if (m_content)
+		m_content->resetClip();
 	invalidate();
+}
+
+/* position of a carousel slot along the scroll axis. The focused slot may be larger or smaller than the others, the
+   slots after it follow it with the normal gap */
+int eListbox::carouselSlotPos(int slot) const
+{
+	const int step = carouselNormalExtent() + carouselGap();
+	const int focus = carouselCenter();
+	if (slot <= focus)
+		return slot * step;
+	return focus * step + carouselFocusExtent() + carouselGap() + (slot - focus - 1) * step;
+}
+
+/* cell of the focused slot: the dedicated size, whatever is not given stays as large as the other tiles. The cell never
+   gets larger than the widget. */
+eSize eListbox::carouselFocusCell(const eSize &base) const
+{
+	int w = m_carousel_cw > 0 ? m_carousel_cw : base.width();
+	int h = m_carousel_ch > 0 ? m_carousel_ch : base.height();
+	// along the scroll axis the cell is exactly what the layout reserved, the cross axis must fit the widget
+	if (m_orientation == orVertical)
+		w = std::min(w, size().width());
+	else
+		h = std::min(h, size().height());
+	return eSize(w, h);
 }
 
 /* ---- grid rows ------------------------------------------------------------------------------------------ */
@@ -292,7 +367,7 @@ void eListbox::gridUpdate()
 		rows = n;
 		m_grid_ytop.assign(rows + 1, 0);
 		for (int r = 0; r < rows; ++r)
-			m_grid_ytop[r + 1] = m_grid_ytop[r] + ((r < (int)heights.size() && heights[r] > 0) ? heights[r] : m_itemheight);
+			m_grid_ytop[r + 1] = m_grid_ytop[r] + ((r < (int)heights.size() && heights[r] > 0) ? heights[r] : m_itemheight) + m_gap_y;
 	}
 	else
 	{
@@ -332,7 +407,7 @@ void eListbox::gridUpdate()
 		{
 			const int cnt = (r + 1 < rows ? m_grid_first[r + 1] : n) - m_grid_first[r];
 			const bool spanned = cnt == 1 && m_grid_spanflag[m_grid_first[r]];
-			m_grid_ytop[r + 1] = m_grid_ytop[r] + ((spanned && m_grid_spanheight > 0) ? m_grid_spanheight : m_itemheight);
+			m_grid_ytop[r + 1] = m_grid_ytop[r] + ((spanned && m_grid_spanheight > 0) ? m_grid_spanheight : m_itemheight) + m_gap_y;
 		}
 	}
 
@@ -343,7 +418,7 @@ void eListbox::gridUpdate()
 		m_grid_pagefirst.push_back(r);
 		const int top = m_grid_ytop[r];
 		++r;
-		while (r < rows && m_grid_ytop[r + 1] - top <= listHeight)
+		while (r < rows && m_grid_ytop[r + 1] - m_gap_y - top <= listHeight) // no gap after the last row of a page
 			++r;
 	}
 }
@@ -352,7 +427,7 @@ int eListbox::gridRowHeight(int row)
 {
 	gridUpdate();
 	if (m_grid_spans && row >= 0 && row < (int)m_grid_ytop.size() - 1)
-		return m_grid_ytop[row + 1] - m_grid_ytop[row];
+		return m_grid_ytop[row + 1] - m_grid_ytop[row] - m_gap_y; // the cell, without the gap below it
 	return m_itemheight;
 }
 
@@ -364,12 +439,12 @@ int eListbox::gridRowTop(int row)
 	{
 		const int rows = (int)m_grid_ytop.size() - 1;
 		if (row <= 0)
-			return row * m_itemheight;
+			return row * pitchY();
 		if (row <= rows)
 			return m_grid_ytop[row];
-		return m_grid_ytop[rows] + (row - rows) * m_itemheight;
+		return m_grid_ytop[rows] + (row - rows) * pitchY();
 	}
-	return row * m_itemheight;
+	return row * pitchY();
 }
 
 int eListbox::gridPageCount()
@@ -497,7 +572,7 @@ int eListbox::verticalTopFor(int index)
 	if (index < top)
 		return index;
 	const int height = size().height();
-	while (top < index && gridRowTop(index + 1) - gridRowTop(top) > height)
+	while (top < index && gridRowTop(index + 1) - m_gap_y - gridRowTop(top) > height)
 		++top;
 	return top;
 }
@@ -511,7 +586,7 @@ int eListbox::verticalVisible(int top)
 	top = std::min(std::max(top, 0), total - 1);
 	const int height = size().height();
 	int count = 1;
-	while (top + count < total && gridRowTop(top + count + 1) - gridRowTop(top) <= height)
+	while (top + count < total && gridRowTop(top + count + 1) - m_gap_y - gridRowTop(top) <= height)
 		++count;
 	return count;
 }
@@ -521,12 +596,12 @@ eRect eListbox::verticalRect(int index)
 {
 	if (gridHasSpans())
 		return eRect(0, gridRowTop(index) - gridRowTop(m_top), size().width(), gridRowHeight(index));
-	return eRect(0, m_itemheight * (index - m_top), size().width(), m_itemheight);
+	return eRect(0, pitchY() * (index - m_top), size().width(), m_itemheight);
 }
 
 eSize eListbox::gridItemSize(int index)
 {
-	return eSize(gridSpanAt(index) ? m_max_columns * m_itemwidth : m_itemwidth, gridRowHeight(gridRowOf(index)));
+	return eSize(gridSpanAt(index) ? gridSpanWidth() : m_itemwidth, gridRowHeight(gridRowOf(index)));
 }
 
 void eListbox::setContent(iListboxContent *content)
@@ -536,7 +611,7 @@ void eListbox::setContent(iListboxContent *content)
 	{
 		m_content->setListbox(this);
 		if (m_orientation == orGrid)
-			m_content->setSpanWidth(m_max_columns * m_itemwidth);
+			m_content->setSpanWidth(gridSpanWidth());
 	}
 	entryReset();
 }
@@ -1174,8 +1249,8 @@ void eListbox::moveSelection(long dir)
 		else if (m_selected != oldsel)
 		{
 			/* redraw the old and newly selected */
-			gRegion inv = eRect(m_itemwidth * (m_selected-m_left), 0, m_itemwidth, size().height());
-			inv |= eRect(m_itemwidth * (oldsel-m_left), 0, m_itemwidth, size().height());
+			gRegion inv = eRect(pitchX() * (m_selected-m_left), 0, m_itemwidth, size().height());
+			inv |= eRect(pitchX() * (oldsel-m_left), 0, m_itemwidth, size().height());
 			invalidate(inv);
 		}
 	}
@@ -1339,22 +1414,22 @@ void eListbox::updateScrollBar()
 int eListbox::getEntryTop()
 {
 	if (carouselActive())
-		return carouselCenter() * (m_orientation == orVertical ? m_itemheight : m_itemwidth);
+		return carouselSlotPos(carouselCenter());
 	if (m_orientation == orVertical && gridHasSpans())
 	{
 		return gridRowTop(m_selected) - gridRowTop(m_top);
 	}
 	else if (m_orientation == orGrid)
 	{
-		return (m_selected - m_top) * m_itemheight;
+		return (m_selected - m_top) * pitchY();
 	}
 	else if (m_orientation == orVertical)
 	{
-		return (m_selected - m_top) * m_itemheight;
+		return (m_selected - m_top) * pitchY();
 	}
 	else
 	{
-		return (m_selected - m_left) * m_itemwidth;
+		return (m_selected - m_left) * pitchX();
 	}
 }
 
@@ -1364,13 +1439,13 @@ ePoint eListbox::getItemPostion(int index)
 
 	if (m_orientation == orGrid || m_orientation == orHorizontal)
 	{
-		posx = (m_orientation == orGrid) ? (m_itemwidth) * gridColOf(index) : (m_itemwidth) * (index - m_left);
+		posx = (m_orientation == orGrid) ? pitchX() * gridColOf(index) : pitchX() * (index - m_left);
 		posy = (m_orientation == orGrid) ? gridRowTop(gridRowOf(index)) - gridRowTop(m_top) : 0;
 	}
 	else if (gridHasSpans())
 		posy = gridRowTop(index) - gridRowTop(m_top);
 	else
-		posy = (m_itemheight) * (index - m_top);
+		posy = pitchY() * (index - m_top);
 
 	return ePoint(posx, posy);
 }
@@ -1469,19 +1544,44 @@ int eListbox::event(int event, void *data, void *data2)
 						idx = ((idx % n) + n) % n;
 					else if (idx < 0 || idx >= n)
 						continue;
-					ePoint pos = vert ? ePoint(xoffset, i * m_itemheight) : ePoint(i * m_itemwidth, yoffset);
-					const bool zoom = pass == 1 && m_selection_enabled && m_carousel_zoom > 100;
-					if (zoom)
+					const int slotPos = carouselSlotPos(i);
+					ePoint pos = vert ? ePoint(xoffset, slotPos) : ePoint(slotPos, yoffset);
+					if (i == center)
 					{
-						// centre slot: scaled with its content around the slot centre, overlapping the neighbours
-						paintZoomed(painter, *style, idx, pos, m_carousel_zoom);
+						// the focused slot: its own size if one is given (centred across the scroll direction), scaled
+						// with its content around its centre, overlapping the neighbours
+						const eSize base = m_content->getItemSize();
+						const bool dedicated = (m_carousel_cw > 0 || m_carousel_ch > 0) && base.width() > 0 && base.height() > 0;
+						eSize cell = base;
+						if (dedicated)
+						{
+							cell = carouselFocusCell(base);
+							if (vert)
+								pos.setX(std::max(xoffset, std::min(pos.x() + (base.width() - cell.width()) / 2, size().width() - cell.width())));
+							else
+								pos.setY(std::max(yoffset, std::min(pos.y() + (base.height() - cell.height()) / 2, size().height() - cell.height())));
+							m_content->setCellOverride(true);
+							m_content->setSize(cell);
+						}
+						if (m_selection_enabled && m_carousel_zoom > 100)
+							paintZoomed(painter, *style, idx, pos, m_carousel_zoom);
+						else if (!(paint_region & gRegion(eRect(pos, cell))).empty())
+						{
+							m_content->cursorSet(idx);
+							m_content->paint(painter, *style, pos, m_selection_enabled);
+						}
+						if (dedicated)
+						{
+							m_content->setSize(base);
+							m_content->setCellOverride(false);
+						}
 						continue;
 					}
 					gRegion slot = eRect(pos, vert ? eSize(size().width(), m_itemheight) : eSize(m_itemwidth, size().height()));
 					if ((paint_region & slot).empty())
 						continue;
 					m_content->cursorSet(idx);
-					m_content->paint(painter, *style, pos, i == center && m_selection_enabled);
+					m_content->paint(painter, *style, pos, 0);
 				}
 				m_content->cursorRestore();
 			}
@@ -1499,13 +1599,13 @@ int eListbox::event(int event, void *data, void *data2)
 					if (!entry_clip_rect.empty())
 						m_content->paint(painter, *style, ePoint(xoffset, posy), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
 					m_content->cursorMove(+1);
-					posy += rowHeight;
+					posy += rowHeight + m_gap_y;
 				}
 				m_content->cursorRestore();
 			}
 			else if (m_orientation == orVertical)
 			{
-				for (int y = 0, i = 0; i <= m_items_per_page; y += m_itemheight, ++i)
+				for (int y = 0, i = 0; i <= m_items_per_page; y += pitchY(), ++i)
 				{
 					gRegion entry_clip_rect = paint_region & entryrect;
 
@@ -1518,7 +1618,7 @@ int eListbox::event(int event, void *data, void *data2)
 						degrade performance without any gain.) */
 
 					m_content->cursorMove(+1);
-					entryrect.moveBy(ePoint(0, m_itemheight));
+					entryrect.moveBy(ePoint(0, pitchY()));
 				}
 				m_content->cursorRestore();
 			}
@@ -1527,7 +1627,7 @@ int eListbox::event(int event, void *data, void *data2)
 				const bool deferSel = selectionZoomActive();
 				bool haveSel = false;
 				ePoint selPos;
-				for (int x = 0, i = 0; i <= m_items_per_page; x += m_itemwidth, ++i)
+				for (int x = 0, i = 0; i <= m_items_per_page; x += pitchX(), ++i)
 				{
 					gRegion entry_clip_rect = paint_region & entryrect;
 
@@ -1549,7 +1649,7 @@ int eListbox::event(int event, void *data, void *data2)
 						degrade performance without any gain.) */
 
 					m_content->cursorMove(+1);
-					entryrect.moveBy(ePoint(m_itemwidth, 0));
+					entryrect.moveBy(ePoint(pitchX(), 0));
 				}
 				if (haveSel)
 					paintZoomedSelection(painter, *style, m_selected, selPos, false);
@@ -1573,11 +1673,11 @@ int eListbox::event(int event, void *data, void *data2)
 					const bool spanned = count == 1 && gridSpanAt(gridRowFirst(row));
 					for (int c = 0; c < m_max_columns; ++c)
 					{
-						const int posx = c * m_itemwidth;
+						const int posx = c * pitchX();
 						const bool real = c < count;
 						if (real || !m_content->cursorValid())
 						{
-							entryrect = eRect(posx, posy, spanned ? m_max_columns * m_itemwidth : m_itemwidth, rowHeight);
+							entryrect = eRect(posx, posy, spanned ? gridSpanWidth() : m_itemwidth, rowHeight);
 							gRegion entry_clip_rect = paint_region & entryrect;
 							if (!entry_clip_rect.empty())
 							{
@@ -1596,7 +1696,7 @@ int eListbox::event(int event, void *data, void *data2)
 						if (spanned)
 							break;
 					}
-					posy += rowHeight;
+					posy += rowHeight + m_gap_y;
 				}
 				if (haveSel)
 					paintZoomedSelection(painter, *style, m_selected, selPos, true);
@@ -1671,13 +1771,17 @@ void eListbox::recalcSize()
 	{
 		if (m_content)
 			m_content->setSize(eSize(size().width(), m_itemheight));
-		m_items_per_page = size().height() / m_itemheight;
+		// with gaps only the tiles need a gap in between, the last one may end at the edge; the focused slot of a
+		// carousel may be larger than the others
+		const int ext = carouselActive() ? carouselFocusExtent() : m_itemheight;
+		m_items_per_page = size().height() >= ext ? 1 + (size().height() - ext) / pitchY() : 0;
 	}
 	else if (m_orientation == orHorizontal)
 	{
 		if (m_content)
 			m_content->setSize(eSize(m_itemwidth, size().height()));
-		m_items_per_page = size().width() / m_itemwidth;
+		const int ext = carouselActive() ? carouselFocusExtent() : m_itemwidth;
+		m_items_per_page = size().width() >= ext ? 1 + (size().width() - ext) / pitchX() : 0;
 	}
 	else
 	{
@@ -1687,12 +1791,12 @@ void eListbox::recalcSize()
 		int w = size().width();
 		int h = size().height();
 
-		m_max_columns = w / m_itemwidth;
-		m_max_rows = h / m_itemheight;
+		m_max_columns = (w + m_gap_x) / pitchX();
+		m_max_rows = (h + m_gap_y) / pitchY();
 		m_items_per_page = m_max_columns * m_max_rows;
-		m_items_per_page_with_partials = m_max_columns * ((h + m_itemheight - 1) / m_itemheight);
+		m_items_per_page_with_partials = m_max_columns * ((h + pitchY() - 1) / pitchY());
 		if (m_content)
-			m_content->setSpanWidth(m_max_columns * m_itemwidth);
+			m_content->setSpanWidth(gridSpanWidth());
 	}
 	m_grid_dirty = true;
 
@@ -1866,7 +1970,7 @@ void eListbox::entryChanged(int index)
 	{
 		if ((m_left <= index) && (index <= (m_left + m_items_per_page + 1)))
 		{
-			gRegion inv = eRect(m_itemwidth * (index-m_left), 0, m_itemwidth, size().height());
+			gRegion inv = eRect(pitchX() * (index-m_left), 0, m_itemwidth, size().height());
 			invalidate(inv);
 		}
 	}
@@ -1890,7 +1994,7 @@ void eListbox::entryChanged(int index)
 		// by simply not invalidating for an off-page index at all.
 		int lastRow = m_top;
 		for (int y = 0; y < size().height(); ++lastRow)
-			y += gridRowHeight(lastRow);
+			y += gridRowHeight(lastRow) + m_gap_y;
 		int gridStart = gridRowFirst(m_top);
 		int gridEnd = gridRowFirst(lastRow);
 		if ((index >= gridStart) && (index < gridEnd))

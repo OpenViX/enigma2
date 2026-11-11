@@ -92,11 +92,14 @@
       "Bash(python -m py_compile lib/python/Components/InputDevice.py)",
       "Bash(grep -n \"0\\\\\" \\\\* \\\\|\\\\\\\\\\\\\\\\0\\\\|\\\\^@\" lib/python/Components/InputDevice.py)",
       "Bash(awk '{print $2}')",
-      "Bash(grep -nE '^\\\\+.*\\\\\\\\\\\\s*$')"
+      "Bash(grep -nE '^\\\\+.*\\\\\\\\\\\\s*$')",
+      "Bash(python -c \"import ast;[ast.parse\\(open\\(f,encoding='utf-8'\\).read\\(\\)\\) for f in ['lib/python/skin.py','lib/python/Components/Converter/TemplatedMultiContent.py']];print\\('py ok'\\)\")",
+      "Bash(python -c \"import ast;ast.parse\\(open\\('lib/python/skin.py',encoding='utf-8'\\).read\\(\\)\\)\")"
     ],
     "additionalDirectories": [
       "C:\\Users\\dimit\\.claude\\projects\\e--Enigma2Dev-OpenViX-enigma2-OpenViX-enigma2\\memory",
-      "E:\\Enigma2Dev\\plugins\\iptv-m3u-reader\\src"
+      "E:\\Enigma2Dev\\plugins\\iptv-m3u-reader\\src",
+      "C:\\Users\\dimit\\AppData\\Local\\Temp"
     ]
   }
 }

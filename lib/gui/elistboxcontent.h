@@ -15,6 +15,8 @@ public:
 	void setOrientation(int orientation);
 	void setItemHeight(int height);
 	void setItemWidth(int width);
+		/* gap between the tiles, overrides the itemSpacing of the widget (-1: leave that axis to the widget) */
+	void setItemSpacing(int x, int y);
 	PyObject *getCurrentSelection();
 	int getCurrentSelectionIndex() { return m_cursor; }
 	void invalidateEntry(int index);
@@ -67,6 +69,8 @@ protected:
 	ePtr<gFont> m_font;
 	int m_itemheight;
 	int m_itemwidth;
+	int m_spacing_x = -1, m_spacing_y = -1;
+	bool getItemSpacing(int &x, int &y) { x = m_spacing_x; y = m_spacing_y; return m_spacing_x >= 0 || m_spacing_y >= 0; }
 	int m_max_text_width;
 	int m_orientation;
 	gRGB m_sepline_color;

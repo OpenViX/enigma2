@@ -9,6 +9,14 @@
 class eListbox;
 class eSlider;
 
+#ifndef SWIG
+/* settings a content (e.g. a service list template) can take over from the widget; -2 = not set, the value of the widget is used */
+struct eListboxOverrides
+{
+	int selectionZoom = -2, carousel = -2, carouselZoom = -2, carouselFocus = -2, carouselCenterWidth = -2, carouselCenterHeight = -2;
+};
+#endif
+
 class iListboxContent: public iObject
 {
 public:
@@ -66,6 +74,15 @@ protected:
 	virtual int getItemHeight()=0;
 	virtual int getItemWidth() { return -1; }
 	virtual int getOrientation() { return 1; }
+		/* spacing (gap) between the tiles chosen by the content itself (e.g. a template); false: the listbox keeps
+		   the spacing of its widget (itemSpacing skin attribute). An axis set to -1 is left alone. */
+	virtual bool getItemSpacing(int &, int &) { return false; }
+		/* selectionZoom, carousel, carouselZoom, carouselFocus, carouselCenterWidth/Height of the content; only what is
+		   set (!= -2) replaces the value of the widget */
+	virtual void getListboxOverrides(eListboxOverrides &) { }
+		/* the cell is temporarily given another size than the normal one (the dedicated carousel focus size): a
+		   content that caches its layout by cell size must not throw the cache of the normal cells away for it */
+	virtual void setCellOverride(bool) { }
 	virtual int getMaxItemTextWidth() { return 1; }
 	virtual int getListSize() { return 0; }
 
@@ -176,6 +193,22 @@ public:
 	int getScrollType() { return m_scroll_type; }
 		/* size of the centre slot in percent (100 = no zoom, default 112). Grows along the scroll axis only. */
 	void setCarouselZoom(int percent);
+		/* carousel: size of the focused slot, independent of the other tiles (0 = same as the other tiles). Width is
+		   along the scroll axis of a horizontal list, height along that of a vertical one; the other size is centred
+		   on the other tiles. The zoom (carouselZoom) is applied on top of it. */
+	void setCarouselCenterSize(int width, int height);
+	void setCarouselCenterWidth(int width) { setCarouselCenterSize(width, m_carousel_ch); }
+	void setCarouselCenterHeight(int height) { setCarouselCenterSize(m_carousel_cw, height); }
+		/* carousel: which slot is the focused one, counted from the first visible slot (-1 = the middle slot) */
+	void setCarouselFocus(int slot);
+		/* gap between the tiles in pixels. x: between the columns / the tiles of a horizontal list, y: between the
+		   rows / the tiles of a vertical list. A list only uses the gap of its own scroll direction, a grid both. */
+	void setItemSpacing(int x, int y);
+		/* one axis only: x = between the columns, y = between the rows */
+	void setItemSpacingX(int x) { setItemSpacing(x, m_widget_gap_y); }
+	void setItemSpacingY(int y) { setItemSpacing(m_widget_gap_x, y); }
+		/* the content chose its own spacing (or dropped it): use it instead of the one of the widget */
+	void applyContentSpacing();
 		/* size of the selected entry in percent for horizontal and grid lists (100 = off, default). Overlaps the
 		   neighbours; a horizontal list only grows along its scroll axis. Not used in carousel mode (carouselZoom). */
 	void setSelectionZoom(int percent);
@@ -360,6 +393,24 @@ private:
 	bool m_enabled_wrap_around;
 	bool m_carousel = false;
 	int m_carousel_zoom = 112;
+	int m_carousel_focus = -1;
+	// the values of the widget (skin); the ones above are in effect and may come from the content instead
+	bool m_w_carousel = false;
+	int m_w_carousel_zoom = 112, m_w_carousel_focus = -1, m_w_carousel_cw = 0, m_w_carousel_ch = 0, m_w_selection_zoom = 100;
+	int m_carousel_cw = 0, m_carousel_ch = 0;
+	int m_gap_x = 0, m_gap_y = 0;
+	int m_widget_gap_x = 0, m_widget_gap_y = 0; // the spacing of the widget (skin), a content may override it
+	// distance from one tile to the next (tile size + gap)
+	int pitchX() const { return m_itemwidth + m_gap_x; }
+	int pitchY() const { return m_itemheight + m_gap_y; }
+	// carousel slot geometry along the scroll axis (the focused slot may have a size of its own)
+	int carouselNormalExtent() const { return m_orientation == orVertical ? m_itemheight : m_itemwidth; }
+	int carouselFocusExtent() const { const int v = m_orientation == orVertical ? m_carousel_ch : m_carousel_cw; return v > 0 ? v : carouselNormalExtent(); }
+	int carouselGap() const { return m_orientation == orVertical ? m_gap_y : m_gap_x; }
+	int carouselSlotPos(int slot) const;
+	// width of a grid row entry that spans all columns
+	int gridSpanWidth() const { return std::max(0, m_max_columns * pitchX() - m_gap_x); }
+	eSize carouselFocusCell(const eSize &base) const;
 	int m_scroll_type = 0; // scrollByPage
 	int itemScrollStart(int sel, int cur, int visible, int total) const;
 	int gridRowTopFor(int row);
@@ -368,7 +419,12 @@ private:
 	void paintZoomed(gPainter &painter, eWindowStyle &style, int index, ePoint pos, int percent);
 	void paintZoomedSelection(gPainter &painter, eWindowStyle &style, int index, ePoint pos, bool bothAxes);
 	bool carouselActive() const { return m_carousel && (m_orientation == orHorizontal || m_orientation == orVertical); }
-	int carouselCenter() const { return m_items_per_page / 2; }
+	int carouselCenter() const
+	{
+		if (m_items_per_page <= 0)
+			return 0;
+		return std::min(m_carousel_focus >= 0 ? m_carousel_focus : m_items_per_page / 2, m_items_per_page - 1);
+	}
 
 	int m_scrollbar_width;
 	int m_scrollbar_height;

@@ -55,6 +55,9 @@ public:
 protected:
 	void setSize(const eSize &size);
 	void setZoom(int percent) { m_zoom = percent > 0 ? percent : 100; }
+	void setCellOverride(bool on) { m_cell_override = on; }
+	bool getItemSpacing(int &x, int &y);
+	void getListboxOverrides(eListboxOverrides &ov);
 	bool gridSpanList(std::vector<char> &out);
 	bool entryHeightList(std::vector<int> &out);
 	void setSpanWidth(int width);
@@ -148,6 +151,9 @@ private:
 	struct Template {
 		std::string name;
 		int itemHeight, itemWidth, orientation;
+		int spacingX = -1, spacingY = -1; // gap between the tiles (-1: the one of the widget)
+		// listbox settings of the template, -2 = not set (the value of the widget is used)
+		int selectionZoom = -2, carousel = -2, carouselZoom = -2, carouselFocus = -2, carouselCenterWidth = -2, carouselCenterHeight = -2;
 		bool large;
 		bool usesNext, timeDependent, usesPicon;
 		bool spanMarkers; // grid: a marker is a row of its own, as wide as the whole grid
@@ -173,6 +179,7 @@ private:
 		unsigned int gen;
 		int dyn;
 		int width;
+		int height;
 		time_t validUntil;
 		int dynState;
 		std::vector<Op> ops;
@@ -194,6 +201,7 @@ private:
 	Template m_zoom_tpl;
 	int m_zoom_tpl_idx = -1, m_zoom_tpl_zoom = 100;
 	unsigned int m_zoom_tpl_gen = 0;
+	bool m_cell_override = false; // the cell has the dedicated size of the focused carousel slot
 	std::map<eServiceReference, RowCache> m_zoom_rows;
 	void prepareZoomTemplate();
 

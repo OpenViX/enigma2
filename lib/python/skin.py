@@ -616,6 +616,22 @@ def parseServiceListTemplates(tag, scope, pathSkin):
 		for key in ("itemHeight", "itemWidth", "markerHeight"):
 			if key in a:
 				entry[key] = parseScale(a[key])
+		# listbox settings of the template, they replace the ones of the widget; what is not given is taken from the widget
+		for key in ("selectionZoom", "carouselZoom", "carouselCenterWidth", "carouselCenterHeight"):
+			if key in a:
+				entry[key] = parseScale(a[key]) if key.startswith("carouselCenter") else int(a[key])
+		if "carousel" in a:
+			entry["carousel"] = 1 if str(a["carousel"]).lower() in ("1", "true", "yes") else 0
+		if "carouselFocus" in a:
+			entry["carouselFocus"] = -1 if str(a["carouselFocus"]).lower() in ("center", "centre", "middle") else int(a["carouselFocus"])
+		# itemSpacing="x,y" (or one value for both): the gap between the tiles
+		if "itemSpacing" in a:
+			entry["spacingX"], entry["spacingY"] = parseSpacing(a["itemSpacing"])
+		# ...or each direction alone, itemSpacingX between the columns, itemSpacingY between the rows
+		if "itemSpacingX" in a:
+			entry["spacingX"] = parseScale(a["itemSpacingX"])
+		if "itemSpacingY" in a:
+			entry["spacingY"] = parseScale(a["itemSpacingY"])
 		for rowNode in template.findall("row"):
 			row = parseRow(rowNode)
 			for index, old in enumerate(entry["rows"]):
@@ -627,8 +643,14 @@ def parseServiceListTemplates(tag, scope, pathSkin):
 		serviceRows = len([x for x in entry["rows"] if x["for"] == "service"])
 		large = entry.get("large")
 		entry["large"] = (1 if serviceRows > 1 else 0) if large is None else (1 if str(large).lower() in ("1", "true", "yes") else 0)
-		entry.setdefault("itemHeight", applySkinFactor(28))
+		# no itemHeight in the template: the itemHeight of the widget is used
 		templates[name] = entry
+
+
+def parseSpacing(s):
+	# "10" (both directions) or "10,20" (horizontal, vertical): the gap between the tiles of a listbox
+	parts = [parseScale(x.strip()) for x in str(s).split(",")]
+	return (parts[0], parts[0]) if len(parts) == 1 else (parts[0], parts[1])
 
 
 def mergeScale(s1, s2):
@@ -812,6 +834,20 @@ class AttributeParser:
 
 	def itemWidth(self, value):
 		self.guiObject.setItemWidth(self.applyHorizontalScale(parseScale(value)))
+
+	def itemSpacing(self, value):  # Gap between the tiles of a listbox: "10" for both directions or "10,20" (horizontal, vertical).
+		try:
+			x, y = parseSpacing(value)
+		except Exception:
+			print("[Skin] Error: Invalid itemSpacing '%s'!  Must be a pixel value such as '10' or '10,20'." % value)
+			return
+		self.guiObject.setItemSpacing(self.applyHorizontalScale(x), self.applyVerticalScale(y))
+
+	def itemSpacingX(self, value):  # Gap between the columns of a grid (the tiles of a horizontal list).
+		self.guiObject.setItemSpacingX(self.applyHorizontalScale(parseScale(value)))
+
+	def itemSpacingY(self, value):  # Gap between the rows of a grid (the tiles of a vertical list).
+		self.guiObject.setItemSpacingY(self.applyVerticalScale(parseScale(value)))
 
 	def itemCornerRadius(self, value):
 		radius, edgeValue = parseRadius(value)
@@ -1119,6 +1155,18 @@ class AttributeParser:
 			self.guiObject.setCarouselZoom(int(value))
 		except ValueError:
 			print("[Skin] Error: Invalid carouselZoom '%s'!  Must be a percentage such as '112'." % value)
+
+	def carouselCenterWidth(self, value):  # Width of the focused carousel tile, if it differs from itemWidth.
+		self.guiObject.setCarouselCenterWidth(self.applyHorizontalScale(parseScale(value)))
+
+	def carouselCenterHeight(self, value):  # Height of the focused carousel tile, if it differs from the other tiles.
+		self.guiObject.setCarouselCenterHeight(self.applyVerticalScale(parseScale(value)))
+
+	def carouselFocus(self, value):  # Slot (counted from 0) of the carousel that holds the selection, "center" (default) for the middle one.
+		try:
+			self.guiObject.setCarouselFocus(-1 if str(value).lower() in ("center", "centre", "middle") else int(value))
+		except ValueError:
+			print("[Skin] Error: Invalid carouselFocus '%s'!  Must be 'center' or a slot number such as '1'." % value)
 
 	def pointer(self, value):
 		(name, pos) = value.split(":")
