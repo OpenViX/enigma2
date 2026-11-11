@@ -54,6 +54,7 @@ public:
 #ifndef SWIG
 protected:
 	void setSize(const eSize &size);
+	void setZoom(int percent) { m_zoom = percent > 0 ? percent : 100; }
 	bool gridSpanList(std::vector<char> &out);
 	bool entryHeightList(std::vector<int> &out);
 	void setSpanWidth(int width);
@@ -188,6 +189,13 @@ private:
 	int m_font_delta[fontGroups];
 	unsigned int m_gen;
 	std::map<eServiceReference, RowCache> m_rows;
+
+	// zoomed entry (carousel centre / selection zoom): the whole template, geometry and fonts, scaled by m_zoom percent
+	Template m_zoom_tpl;
+	int m_zoom_tpl_idx = -1, m_zoom_tpl_zoom = 100;
+	unsigned int m_zoom_tpl_gen = 0;
+	std::map<eServiceReference, RowCache> m_zoom_rows;
+	void prepareZoomTemplate();
 
 	std::set<eServiceReference> m_rec_refs;
 	time_t m_rec_time;

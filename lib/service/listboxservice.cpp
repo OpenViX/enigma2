@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <string>
 #include <algorithm>
+#include <chrono>
+#include <lib/base/ebase.h>
 #include <lib/base/estring.h>
 
 ePyObject eListboxServiceContent::m_GetPiconNameFunc;
@@ -651,6 +653,86 @@ void eListboxServiceContent::setSize(const eSize &size)
 		setVisualMode(m_visual_mode);
 }
 
+struct ServiceListWarm: public sigc::trackable
+{
+	eListboxServiceContent *owner;
+	ePtr<eTimer> timer;
+	ServiceListWarm(eListboxServiceContent *o): owner(o)
+	{
+		timer = eTimer::create(eApp);
+		CONNECT(timer->timeout, ServiceListWarm::tick);
+	}
+	void tick() { owner->warmTick(); }
+};
+
+void eListboxServiceContent::warmKick()
+{
+	if (!m_warm)
+		m_warm = std::make_shared<ServiceListWarm>(this);
+	ServiceListWarm *w = (ServiceListWarm*)m_warm.get();
+	if (!w->timer->isActive())
+		w->timer->start(15, true);
+}
+
+void eListboxServiceContent::warmTick()
+{
+	if (!m_warm || !cursorValid())
+		return;
+	ServiceListWarm *w = (ServiceListWarm*)m_warm.get();
+	const bool usePicon = m_visual_mode != visModeSimple && PyCallable_Check(m_GetPiconNameFunc);
+	const int piconWidth = m_visual_mode == visSkinDefined ? (int)(m_itemheight * 1.67) : 125;
+	const int ahead = std::max(3 * m_size_visible, 30);
+	const auto t0 = std::chrono::steady_clock::now();
+	int loaded = 0;
+	bool more = false;
+	for (int d = 0; d < 2 && !more; ++d)
+	{
+		list::iterator it = m_cursor;
+		for (int n = 0; n < ahead; ++n)
+		{
+			if (d == 0)
+			{
+				if (it == m_list.end() || ++it == m_list.end())
+					break;
+			}
+			else
+			{
+				if (it == m_list.begin())
+					break;
+				--it;
+			}
+			const eServiceReference &ref = *it;
+			if (ref.flags & (eServiceReference::isMarker | eServiceReference::isDirectory))
+				continue;
+			const bool needEvent = m_event_cache.find(ref) == m_event_cache.end();
+			const bool needPicon = usePicon && m_picon_cache.find(ref) == m_picon_cache.end();
+			if (!needEvent && !needPicon)
+				continue;
+			if (loaded > 0 && std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count() > 4.0)
+			{
+				more = true;
+				break;
+			}
+			if (needEvent)
+			{
+				ePtr<iStaticServiceInformation> info;
+				m_service_center->info(ref, info);
+				ePtr<eServiceEvent> e1, e2;
+				getCachedEvent(ref, info, time(0), e1, e2); // caches "no event" too, so it is not retried every tick
+			}
+			if (needPicon)
+			{
+				ePtr<gPixmap> pix;
+				bool svg = false;
+				getPiconPixmap(ref, piconWidth, pix, svg);
+			}
+			++loaded;
+		}
+	}
+	if (more)
+		w->timer->start(25, true);
+}
+
 bool eListboxServiceContent::getCachedEvent(const eServiceReference &ref, iStaticServiceInformation *service_info, time_t now, ePtr<eServiceEvent> &evt, ePtr<eServiceEvent> &evt_next)
 {
 	std::map<eServiceReference, EventCacheEntry>::iterator it = m_event_cache.find(ref);
@@ -856,7 +938,7 @@ void eListboxServiceContent::paintBackground(gPainter &painter, eWindowStyle &st
 	}
 
 	if (local_style) {
-		radius = local_style->cornerRadius(selected ? 1:0);
+		radius = zoomedRadius(local_style->cornerRadius(selected ? 1:0));
 		edges = local_style->cornerRadiusEdges(selected ? 1:0);
 	}
 
@@ -915,7 +997,7 @@ void eListboxServiceContent::paintSelection(gPainter &painter, eWindowStyle &sty
 	uint8_t edges = 0;
 
 	if (local_style) {
-		radius = local_style->cornerRadius(selected ? 1:0);
+		radius = zoomedRadius(local_style->cornerRadius(selected ? 1:0));
 		edges = local_style->cornerRadiusEdges(selected ? 1:0);
 	}
 
@@ -950,6 +1032,8 @@ void eListboxServiceContent::paint(gPainter &painter, eWindowStyle &style, const
 	{
 		paintSelection(painter, style, offset, selected, m_visual_mode == visSkinDefined);
 
+		if (selected)
+			warmKick();
 		eServiceReference ref = *m_cursor;
 		std::string orig_ref_str = ref.toString();
 		std::string service_res_str =  toLower(split(orig_ref_str, ":")[2]);

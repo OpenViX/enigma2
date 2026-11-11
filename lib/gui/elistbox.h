@@ -53,6 +53,9 @@ protected:
 		/* scale the painted item content (positions, sizes, fonts) by percent; only set around a single paint() of
 		   an enlarged entry. Contents that cannot scale ignore it and just get the larger cell. */
 	virtual void setZoom(int percent) { (void)percent; }
+	// zoomed paint of a content whose cell was cut down to the enlarged content: the top left of the cell in the
+	// coordinates of the zoomed content (the x/y of the items are shifted by it)
+	virtual void setZoomOrigin(int x, int y) { (void)x; (void)y; }
 		/* bounding box of what the current entry actually draws, relative to its cell and at 100% (an invalid rect if
 		   unknown). The zoom grows the entry around the centre of this box, not around the cell centre. */
 	virtual eRect getContentBounds() { return eRect(); }

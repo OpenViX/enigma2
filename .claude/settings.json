@@ -90,7 +90,9 @@
       "Bash(python patch_dvb_ir.py --keyup 130 --keyup-follow gbquad4kpro/dvb_ir_follow/dvb.ko)",
       "Bash(python patch_dvb_ir.py --keyup 130 --keyup-follow --keyup-floor 120 --check gbquad4kpro/dvb_ir_follow/dvb.ko)",
       "Bash(python -m py_compile lib/python/Components/InputDevice.py)",
-      "Bash(grep -n \"0\\\\\" \\\\* \\\\|\\\\\\\\\\\\\\\\0\\\\|\\\\^@\" lib/python/Components/InputDevice.py)"
+      "Bash(grep -n \"0\\\\\" \\\\* \\\\|\\\\\\\\\\\\\\\\0\\\\|\\\\^@\" lib/python/Components/InputDevice.py)",
+      "Bash(awk '{print $2}')",
+      "Bash(grep -nE '^\\\\+.*\\\\\\\\\\\\s*$')"
     ],
     "additionalDirectories": [
       "C:\\Users\\dimit\\.claude\\projects\\e--Enigma2Dev-OpenViX-enigma2-OpenViX-enigma2\\memory",

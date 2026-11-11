@@ -7,6 +7,7 @@
 #include <lib/service/event.h>
 #include <lib/python/python.h>
 #include <map>
+#include <memory>
 #include <set>
 
 #ifndef SWIG
@@ -199,6 +200,10 @@ protected:
 	// void setOutputDevice ? (for allocating colors, ...) .. requires some work, though
 	void setSize(const eSize &size);
 
+		/* zoomed entry (templated renderer): percent, and the corner radius of its background grows with it */
+	int m_zoom = 100;
+	int zoomedRadius(int r) const { return m_zoom == 100 ? r : (r * m_zoom + 50) / 100; }
+
 		/* shared row decoration, used by the legacy and the templated renderer */
 	int getMarkedState(int selected);
 	void applyBaseColors(gPainter &painter, eWindowStyle &style, int selected, int marked);
@@ -239,6 +244,14 @@ protected:
 	};
 	std::map<eServiceReference, EventCacheEntry> m_event_cache;
 	bool getCachedEvent(const eServiceReference &ref, iStaticServiceInformation *service_info, time_t now, ePtr<eServiceEvent> &evt, ePtr<eServiceEvent> &evt_next);
+
+	// Idle-time warm-up of the picon / event caches around the cursor (legacy renderer): on a fresh list (restart,
+	// skin change) every row of the first scrolled pages otherwise pays the cold picon read + EPG lookup in paint().
+	std::shared_ptr<void> m_warm;
+	void warmKick();
+public:
+	void warmTick();
+protected:
 
 	int m_visual_mode;
 		/* for complex mode */

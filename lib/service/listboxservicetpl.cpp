@@ -175,7 +175,7 @@ void eListboxServiceTemplateContent::picon(const eServiceReference &ref, int wid
 
 void eListboxServiceTemplateContent::prefetchKick()
 {
-	if (m_cur_index < 0 || !m_templates[m_cur_index].usesPicon || !PyCallable_Check(m_GetPiconNameFunc))
+	if (m_cur_index < 0)
 		return;
 	if (m_cursor_number != m_prefetch_last)
 	{
@@ -214,60 +214,84 @@ void eListboxServiceTemplateContent::prefetchTick()
 			pf->pending.erase(r.ref);
 		}
 	}
-	if (m_cur_index < 0 || !cursorValid() || !m_prefetch_dir)
+	if (m_cur_index < 0 || !cursorValid())
 	{
 		if (!pf->pending.empty())
 			pf->timer->start(20, true);
 		return;
 	}
+	const bool usePicon = m_templates[m_cur_index].usesPicon && PyCallable_Check(m_GetPiconNameFunc);
+	// Before the cursor has ever moved (fresh start, skin change) the direction is unknown: warm both sides, so the
+	// first pages scrolled are as warm as later ones (cold picon disk reads, EPG lookups and SVG rasterising were
+	// the hiccups of the first scroll).
 	const int ahead = std::max(3 * m_size_visible, 30);
 	int loaded = 0;
 	const auto t0 = std::chrono::steady_clock::now();
-	list::iterator it = m_cursor;
 	bool more = false;
-	for (int n = 0; n < ahead; ++n)
+	const int ndirs = m_prefetch_dir ? 1 : 2;
+	for (int d = 0; d < ndirs && !more; ++d)
 	{
-		if (m_prefetch_dir > 0)
+		const int dir = m_prefetch_dir ? m_prefetch_dir : (d == 0 ? 1 : -1);
+		list::iterator it = m_cursor;
+		for (int n = 0; n < ahead; ++n)
 		{
-			if (it == m_list.end() || ++it == m_list.end())
-				break;
-		}
-		else
-		{
-			if (it == m_list.begin())
-				break;
-			--it;
-		}
-		const eServiceReference &ref = *it;
-		if (ref.flags & (eServiceReference::isMarker | eServiceReference::isDirectory))
-			continue;
-		if (m_picon_cache.find(ref) != m_picon_cache.end() || pf->pending.count(ref))
-			continue;
-		const std::string file = getPiconFilename(ref);
-		if (file.size() <= 4 || file.compare(file.size() - 4, 4, ".svg") != 0)
-		{
-			// PNG etc.: cheap, decode a few per tick on the UI thread
-			if (loaded >= 3 || (loaded > 0 && std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count() > 4.0))
+			if (dir > 0)
+			{
+				if (it == m_list.end() || ++it == m_list.end())
+					break;
+			}
+			else
+			{
+				if (it == m_list.begin())
+					break;
+				--it;
+			}
+			const eServiceReference &ref = *it;
+			if (ref.flags & (eServiceReference::isMarker | eServiceReference::isDirectory))
+				continue;
+			// EPG lookup of the row, so building it later is a cache hit (time-boxed, UI thread)
+			std::map<eServiceReference, EventCacheEntry>::iterator ev = m_event_cache.find(ref);
+			if (ev == m_event_cache.end() || time(0) >= ev->second.validUntil)
+			{
+				if (loaded > 0 && std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count() > 4.0)
+				{
+					more = true;
+					break;
+				}
+				ePtr<iStaticServiceInformation> info;
+				m_service_center->info(ref, info);
+				ePtr<eServiceEvent> e1, e2;
+				getCachedEvent(ref, info, time(0), e1, e2); // caches "no event" too, so it is not retried every tick
+				++loaded;
+			}
+			if (!usePicon || m_picon_cache.find(ref) != m_picon_cache.end() || pf->pending.count(ref))
+				continue;
+			const std::string file = getPiconFilename(ref);
+			if (file.size() <= 4 || file.compare(file.size() - 4, 4, ".svg") != 0)
+			{
+				// PNG etc.: cheap, decode a few per tick on the UI thread
+				if (loaded >= 3 || (loaded > 0 && std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count() > 4.0))
+				{
+					more = true;
+					break;
+				}
+				ePtr<gPixmap> pix;
+				bool svg = false;
+				getPiconPixmap(ref, H * 5 / 3, pix, svg);
+				++loaded;
+				continue;
+			}
+			char cachefile[file.size() + 10];
+			sprintf(cachefile, "%s%d", file.c_str(), 0);
+			if (PixmapCache::Get(file.c_str(), cachefile))
+				continue; // already loaded, a row load will pick it up
+			if (pf->queued() >= 16)
 			{
 				more = true;
 				break;
 			}
-			ePtr<gPixmap> pix;
-			bool svg = false;
-			getPiconPixmap(ref, H * 5 / 3, pix, svg);
-			++loaded;
-			continue;
+			pf->enqueue(ref, file, H * 5 / 3);
 		}
-		char cachefile[file.size() + 10];
-		sprintf(cachefile, "%s%d", file.c_str(), 0);
-		if (PixmapCache::Get(file.c_str(), cachefile))
-			continue; // already loaded, a row load will pick it up
-		if (pf->queued() >= 16)
-		{
-			more = true;
-			break;
-		}
-		pf->enqueue(ref, file, H * 5 / 3);
 	}
 	// Bound the cache (CPU pixmaps and, through them, GPU textures): keep only rows near the cursor, trimmed a few per
 	// tick since dropping ~100 pixmaps at once queues ~100 GL texture deletions that stall a frame.
@@ -800,10 +824,72 @@ void eListboxServiceTemplateContent::setSize(const eSize &size)
 {
 	// eListbox::updateScrollBar() calls this on every selection move with an unchanged size,
 	// only a real change may throw the cached rows away
-	const bool changed = !(m_itemsize == size);
-	eListboxServiceContent::setSize(size);
-	if (changed)
+	// (a zoomed paint temporarily enlarges the cell: that has its own row cache, see prepareZoomTemplate())
+	eSize cell = size;
+	// A horizontal list gives its cell the height of the whole widget. The tile of a template is as high as its
+	// itemHeight, so that is the cell (background, selection, zoom): a cell as high as the widget leaves the zoom no
+	// room to grow and paints the rounded background taller than the tile.
+	if (m_zoom == 100 && m_cur_index >= 0 && m_templates[m_cur_index].orientation == (int)eListbox::orHorizontal &&
+		m_itemheight > 0 && cell.height() > m_itemheight)
+		cell = eSize(cell.width(), m_itemheight);
+	const bool changed = !(m_itemsize == cell);
+	eListboxServiceContent::setSize(cell);
+	if (changed && m_zoom == 100)
 		++m_gen;
+}
+
+static inline int zoomScale(int v, int pct)
+{
+	return pct == 100 ? v : (v * pct + (v < 0 ? -50 : 50)) / 100;
+}
+
+void eListboxServiceTemplateContent::prepareZoomTemplate()
+{
+	if (m_zoom_tpl_idx == m_cur_index && m_zoom_tpl_zoom == m_zoom && m_zoom_tpl_gen == m_gen)
+		return;
+	m_zoom_tpl = m_templates[m_cur_index];
+	const int z = m_zoom;
+	Template &t = m_zoom_tpl;
+	t.itemHeight = zoomScale(t.itemHeight, z);
+	t.itemWidth = zoomScale(t.itemWidth, z);
+	t.markerHeight = zoomScale(t.markerHeight, z);
+	for (size_t r = 0; r < t.rows.size(); ++r)
+	{
+		Row &row = t.rows[r];
+		row.height = zoomScale(row.height, z);
+		row.gap = zoomScale(row.gap, z);
+		row.padLeft = zoomScale(row.padLeft, z);
+		row.padRight = zoomScale(row.padRight, z);
+		row.padTop = zoomScale(row.padTop, z);
+		row.padBottom = zoomScale(row.padBottom, z);
+		for (size_t s = 0; s < row.stacks.size(); ++s)
+		{
+			Stack &st = row.stacks[s];
+			st.spacing = zoomScale(st.spacing, z);
+			if (st.absolute)
+				st.rect = eRect(zoomScale(st.rect.x(), z), zoomScale(st.rect.y(), z), zoomScale(st.rect.width(), z), zoomScale(st.rect.height(), z));
+		}
+		for (size_t i = 0; i < row.items.size(); ++i)
+		{
+			Item &it = row.items[i];
+			if (it.wmode == wFixed)
+				it.width = zoomScale(it.width, z);
+			it.minw = zoomScale(it.minw, z);
+			it.height = zoomScale(it.height, z);
+			it.margin = zoomScale(it.margin, z);
+			it.lineH = zoomScale(it.lineH, z);
+			if (it.absolute)
+				it.absRect = eRect(zoomScale(it.absRect.x(), z), zoomScale(it.absRect.y(), z), zoomScale(it.absRect.width(), z), zoomScale(it.absRect.height(), z));
+			if (it.border > 0)
+				it.border = std::max(1, zoomScale(it.border, z));
+			it.radius = zoomScale(it.radius, z);
+			it.font = new gFont(it.family.empty() ? "Regular" : it.family, std::max(1, zoomScale(it.fontSize + m_font_delta[it.fontGroup], z)));
+		}
+	}
+	m_zoom_rows.clear();
+	m_zoom_tpl_idx = m_cur_index;
+	m_zoom_tpl_zoom = m_zoom;
+	m_zoom_tpl_gen = m_gen;
 }
 
 /* ---------------------------------- row building ---------------------------------- */
@@ -1862,7 +1948,15 @@ void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &styl
 
 	if (cursorValid() && m_cur_index >= 0)
 	{
-		const Template &tpl = m_templates[m_cur_index];
+		const bool zoomed = m_zoom != 100;
+		if (zoomed)
+		{
+			prepareZoomTemplate();
+			if (m_itemsize.height() == cellSize.height() && m_itemheight == cellHeight) // not a marker with a height of its own
+				m_itemheight = m_itemsize.height();
+		}
+		const Template &tpl = zoomed ? m_zoom_tpl : m_templates[m_cur_index];
+		std::map<eServiceReference, RowCache> &rowCache = zoomed ? m_zoom_rows : m_rows;
 		paintSelection(painter, style, offset, selected, tpl.large);
 
 		const eServiceReference ref = *m_cursor;
@@ -1885,13 +1979,13 @@ void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &styl
 				dyn |= dynFallback;
 		}
 
-		std::map<eServiceReference, RowCache>::iterator it = m_rows.find(ref);
-		if (it == m_rows.end() || it->second.gen != m_gen || it->second.dyn != dyn ||
+		std::map<eServiceReference, RowCache>::iterator it = rowCache.find(ref);
+		if (it == rowCache.end() || it->second.gen != m_gen || it->second.dyn != dyn ||
 			it->second.width != m_itemsize.width() || now >= it->second.validUntil)
 		{
-			if (m_rows.size() > 256)
-				m_rows.clear();
-			RowCache &rc = m_rows[ref];
+			if (rowCache.size() > 256)
+				rowCache.clear();
+			RowCache &rc = rowCache[ref];
 			rc.gen = m_gen;
 			rc.dyn = dyn;
 			rc.width = m_itemsize.width();
@@ -1900,7 +1994,7 @@ void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &styl
 				eServiceListPaintTimer buildTimer(eServiceListPaintTimer::statTemplateBuild);
 				buildRow(tpl, ref, info, dyn, now, rc);
 			}
-			it = m_rows.find(ref);
+			it = rowCache.find(ref);
 		}
 		paintOps(painter, style, offset, selected, marked, it->second, now);
 	}

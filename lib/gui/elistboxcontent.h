@@ -128,8 +128,10 @@ public:
 	int getMaxItemTextWidth();
 	int getListSize() { return size(); }
 	void setZoom(int percent) { m_zoom = percent > 0 ? percent : 100; }
+	void setZoomOrigin(int x, int y) { m_zoom_origin = ePoint(x, y); }
 	eRect getContentBounds();
 private:
+	ePoint m_zoom_origin = ePoint(0, 0);
 	int m_zoom = 100; // all positions, sizes and fonts of an item are scaled by this (percent), see eListbox::paintZoomedSelection()
 	int zoomed(int v) const { return m_zoom == 100 ? v : (v * m_zoom + (v < 0 ? -50 : 50)) / 100; }
 	std::map<int, ePtr<gFont> > m_font;
