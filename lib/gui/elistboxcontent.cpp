@@ -1301,6 +1301,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 		int mode = (selected) ? 1:0;
 		int radius = local_style->cornerRadius(mode);
 		uint8_t edges = local_style->cornerRadiusEdges(mode);
+		radius = zoomed(radius); // the radius grows with a zoomed tile
 		if (radius || local_style->m_gradient_set[mode]) {
 			gRGB color = style.getColor(selected ? eWindowStyleSkinned::colListboxSelectedBackground : eWindowStyleSkinned::colListboxBackground);
 			if (selected && local_style->m_background_color_selected_set)
@@ -1482,8 +1483,8 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 					continue;
 
 				const char *string = (PyUnicode_Check(pstring)) ? PyUnicode_AsUTF8(pstring) : "<not-a-string>";
-				int x = zoomed(PyFloat_Check(px) ? (int)PyFloat_AsDouble(px) : PyLong_AsLong(px)) + offset.x();
-				int y = zoomed(PyFloat_Check(py) ? (int)PyFloat_AsDouble(py) : PyLong_AsLong(py)) + offset.y();
+				int x = zoomed(PyFloat_Check(px) ? (int)PyFloat_AsDouble(px) : PyLong_AsLong(px)) + offset.x() - m_zoom_origin.x();
+				int y = zoomed(PyFloat_Check(py) ? (int)PyFloat_AsDouble(py) : PyLong_AsLong(py)) + offset.y() - m_zoom_origin.y();
 				int width = zoomed(PyFloat_Check(pwidth) ? (int)PyFloat_AsDouble(pwidth) : PyLong_AsLong(pwidth));
 				int height = zoomed(PyFloat_Check(pheight) ? (int)PyFloat_AsDouble(pheight) : PyLong_AsLong(pheight));
 				int flags = PyLong_AsLong(pflags);
@@ -1493,7 +1494,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				int bwidth = pborderWidth ? PyLong_AsLong(pborderWidth) : 0;
 				int btwidth = pTextBorderWidth ? PyLong_AsLong(pTextBorderWidth) : 0;
 
-				int cornerRadius = pCornerRadius ? PyLong_AsLong(pCornerRadius) : 0;
+				int cornerRadius = zoomed(pCornerRadius ? PyLong_AsLong(pCornerRadius) : 0);
 				int cornerEdges = pCornerEdges ? PyLong_AsLong(pCornerEdges) : 0;
 
 				if (m_font.find(fnt) == m_font.end())
@@ -1664,13 +1665,13 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				if (size > idx)
 					pCornerEdges = PyTuple_GET_ITEM(item, idx++);
 
-				int x = zoomed(PyFloat_Check(px) ? (int)PyFloat_AsDouble(px) : PyLong_AsLong(px)) + offset.x();
-				int y = zoomed(PyFloat_Check(py) ? (int)PyFloat_AsDouble(py) : PyLong_AsLong(py)) + offset.y();
+				int x = zoomed(PyFloat_Check(px) ? (int)PyFloat_AsDouble(px) : PyLong_AsLong(px)) + offset.x() - m_zoom_origin.x();
+				int y = zoomed(PyFloat_Check(py) ? (int)PyFloat_AsDouble(py) : PyLong_AsLong(py)) + offset.y() - m_zoom_origin.y();
 				int width = zoomed(PyFloat_Check(pwidth) ? (int)PyFloat_AsDouble(pwidth) : PyLong_AsLong(pwidth));
 				int height = zoomed(PyFloat_Check(pheight) ? (int)PyFloat_AsDouble(pheight) : PyLong_AsLong(pheight));
 				int filled = PyFloat_Check(pfilled_perc) ? (int)PyFloat_AsDouble(pfilled_perc) : PyLong_AsLong(pfilled_perc);
 
-				int cornerRadius = pCornerRadius ? PyLong_AsLong(pCornerRadius) : 0;
+				int cornerRadius = zoomed(pCornerRadius ? PyLong_AsLong(pCornerRadius) : 0);
 				uint8_t cornerEdges = pCornerEdges ? PyLong_AsLong(pCornerEdges) : 15;
 
 				if ((filled < 0) && data) /* if the string is in a negative number, it refers to the 'data' list. */
@@ -1788,12 +1789,12 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 					pCornerEdges = PyTuple_GET_ITEM(item, 11);
 
 
-				int x = zoomed(PyFloat_Check(px) ? (int)PyFloat_AsDouble(px) : PyLong_AsLong(px)) + offset.x();
-				int y = zoomed(PyFloat_Check(py) ? (int)PyFloat_AsDouble(py) : PyLong_AsLong(py)) + offset.y();
+				int x = zoomed(PyFloat_Check(px) ? (int)PyFloat_AsDouble(px) : PyLong_AsLong(px)) + offset.x() - m_zoom_origin.x();
+				int y = zoomed(PyFloat_Check(py) ? (int)PyFloat_AsDouble(py) : PyLong_AsLong(py)) + offset.y() - m_zoom_origin.y();
 				int width = zoomed(PyFloat_Check(pwidth) ? (int)PyFloat_AsDouble(pwidth) : PyLong_AsLong(pwidth));
 				int height = zoomed(PyFloat_Check(pheight) ? (int)PyFloat_AsDouble(pheight) : PyLong_AsLong(pheight));
 				int bwidth = pborderWidth ? PyLong_AsLong(pborderWidth) : 0;
-				int cornerRadius = pCornerRadius ? PyLong_AsLong(pCornerRadius) : 0;
+				int cornerRadius = zoomed(pCornerRadius ? PyLong_AsLong(pCornerRadius) : 0);
 				uint8_t cornerEdges = pCornerEdges ? PyLong_AsLong(pCornerEdges) : 15;
 
 				int radiusBorderWidth = (cornerRadius && cornerEdges) ? 0 : bwidth;
@@ -1908,7 +1909,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 					fullSize = PyLong_AsLong(PyTuple_GET_ITEM(item, 12));
 
 				if (size > 13)
-					radius = PyLong_AsLong(PyTuple_GET_ITEM(item, 13));
+					radius = zoomed(PyLong_AsLong(PyTuple_GET_ITEM(item, 13)));
 
 				if (size > 14)
 					edges = PyLong_AsLong(PyTuple_GET_ITEM(item, 14));
@@ -1990,8 +1991,8 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 				if (ppixmap == Py_None)
 					continue;
 
-				int x = zoomed(PyFloat_Check(px) ? (int)PyFloat_AsDouble(px) : PyLong_AsLong(px)) + offset.x();
-				int y = zoomed(PyFloat_Check(py) ? (int)PyFloat_AsDouble(py) : PyLong_AsLong(py)) + offset.y();
+				int x = zoomed(PyFloat_Check(px) ? (int)PyFloat_AsDouble(px) : PyLong_AsLong(px)) + offset.x() - m_zoom_origin.x();
+				int y = zoomed(PyFloat_Check(py) ? (int)PyFloat_AsDouble(py) : PyLong_AsLong(py)) + offset.y() - m_zoom_origin.y();
 				int width = zoomed(PyFloat_Check(pwidth) ? (int)PyFloat_AsDouble(pwidth) : PyLong_AsLong(pwidth));
 				int height = zoomed(PyFloat_Check(pheight) ? (int)PyFloat_AsDouble(pheight) : PyLong_AsLong(pheight));
 				int flags = 0;
@@ -2014,7 +2015,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 					flags = PyLong_AsLong(PyTuple_GET_ITEM(item, 8));
 
 				if (size > 9)
-					radius = PyLong_AsLong(PyTuple_GET_ITEM(item, 9));
+					radius = zoomed(PyLong_AsLong(PyTuple_GET_ITEM(item, 9)));
 
 				if (size > 10)
 					edges = PyLong_AsLong(PyTuple_GET_ITEM(item, 10));

@@ -128,13 +128,37 @@ void eListbox::paintZoomed(gPainter &painter, eWindowStyle &style, int index, eP
 {
 	const eSize cell = m_content->getItemSize();
 	eSize zoomed = cell;
+	ePoint origin(0, 0);
 	bool resized = false;
 	m_content->cursorSet(index);
 	if (percent > 100 && cell.width() > 0 && cell.height() > 0)
 	{
+		// The zoom is a maximum: an entry larger than the widget would have its rounded corners (and the bottom of
+		// its content) cut off by the widget's edge, so it is reduced until the whole entry fits. Cross axis of a
+		// horizontal list, both axes of a grid; a vertical list's rows span the full width by design.
+		eRect fit = m_content->getContentBounds();
+		if (!fit.valid() || fit.width() <= 0 || fit.height() <= 0)
+			fit = eRect(0, 0, cell.width(), cell.height());
+		int limit = percent;
+		if (m_orientation != orVertical)
+			limit = std::min(limit, size().height() * 100 / fit.height());
+		if (m_orientation == orGrid)
+			limit = std::min(limit, size().width() * 100 / fit.width());
+		if (limit < percent)
+		{
+			static int s_warned = 0;
+			if (s_warned != percent)
+			{
+				s_warned = percent;
+				eDebug("[eListbox] zoom %d%% reduced to %d%%: the zoomed entry would not fit the widget (%dx%d), make the widget at least %d px high", percent, std::max(limit, 100), size().width(), size().height(), fit.height() * percent / 100);
+			}
+			percent = std::max(limit, 100);
+		}
+	}
+	if (percent > 100 && cell.width() > 0 && cell.height() > 0)
+	{
 		resized = true;
 		zoomed = eSize(cell.width() * percent / 100, cell.height() * percent / 100);
-		// grow around the centre of what the entry really draws; the cell centre if the content can't tell
 		eRect bounds = m_content->getContentBounds();
 		if (!bounds.valid() || bounds.width() <= 0 || bounds.height() <= 0)
 			bounds = eRect(0, 0, cell.width(), cell.height());
@@ -154,18 +178,26 @@ void eListbox::paintZoomed(gPainter &painter, eWindowStyle &style, int index, eP
 			dy = size().height() - (by + bh);
 		if (by + dy < 0)
 			dy = -by;
-		pos = ePoint(x + dx, y + dy);
+		// The zoomed "cell" (its rounded background, selection, clip) is exactly the enlarged content: a cell
+		// larger than what it draws (margins around a tile) would hang out of the widget and lose its rounded
+		// corners. The content keeps its place through the origin.
+		origin = ePoint(bounds.x() * percent / 100, bounds.y() * percent / 100);
+		zoomed = eSize(bw, bh);
+		pos = ePoint(x + dx + origin.x(), y + dy + origin.y());
 	}
 	if (resized)
 	{
-		m_content->setSize(zoomed);
+		// zoom first, so a content that keeps per-size caches knows the size change is only temporary
 		m_content->setZoom(percent);
+		m_content->setZoomOrigin(origin.x(), origin.y());
+		m_content->setSize(zoomed);
 	}
 	m_content->paint(painter, style, pos, 1);
 	if (resized)
 	{
-		m_content->setZoom(100);
 		m_content->setSize(cell);
+		m_content->setZoomOrigin(0, 0);
+		m_content->setZoom(100);
 	}
 }
 
