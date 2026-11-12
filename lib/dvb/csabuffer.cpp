@@ -7,9 +7,7 @@
 #include <time.h>
 #include <unistd.h>
 
-/* Ring size per second of delay, and the ceiling before chunks are dropped.
- * Not bitrates - the level also carries what piles up while the decoder
- * lags, which is not predictable. grow() covers what this misses. */
+/* Ring size per second of delay, and the ceiling before chunks drop. */
 static const size_t CSABUF_BYTES_PER_SEC = 1536 * 1024;
 static const size_t CSABUF_BYTES_PER_SEC_MAX = 8 * 1024 * 1024;
 static const size_t CSABUF_HARD_MAX = 64 * 1024 * 1024;
@@ -98,7 +96,6 @@ bool eDVBCSABuffer::start()
 
 void eDVBCSABuffer::stop()
 {
-	/* If we aren't running, don't bother stopping. */
 	if (m_stop == 1)
 		return;
 
@@ -116,40 +113,6 @@ void eDVBCSABuffer::logSummary() const
 		(unsigned long long)(ran / 1000000),
 		(unsigned long long)m_chunks, (unsigned long long)m_dropped, m_size >> 10,
 		(unsigned long long)(ran ? (m_bytes_in * 1000000ULL / ran) >> 10 : 0));
-}
-
-void eDVBCSABuffer::addDelayMs(int add_ms, int max_ms)
-{
-	if (add_ms <= 0)
-		return;
-
-	const uint64_t cur = m_delay_us.load();
-	uint64_t want = cur + (uint64_t)add_ms * 1000;
-	if (want > (uint64_t)max_ms * 1000)
-		want = (uint64_t)max_ms * 1000;
-	if (want <= cur)
-		return;
-
-	m_delay_us.store(want);
-
-	/* Size for the longer wait now: one allocation instead of several once
-	 * pushes start missing. */
-	size_t before, after;
-	{
-		std::lock_guard<std::mutex> lock(m_lock);
-
-		if (const size_t cap = capFor(want); cap > m_max_size)
-			m_max_size = cap;
-
-		before = m_size;
-		if (m_buf)
-			reserve(sizeFor(want));
-		after = m_size;
-	}
-
-	eDebug("[eDVBCSABuffer] delay %llums -> %llums, ring %zuKB -> %zuKB (max %zuKB)",
-		(unsigned long long)(cur / 1000), (unsigned long long)(want / 1000),
-		before >> 10, after >> 10, m_max_size >> 10);
 }
 
 size_t eDVBCSABuffer::used() const
@@ -212,16 +175,15 @@ size_t eDVBCSABuffer::nextChunkPos(size_t pos, uint32_t &len, uint64_t &stamp) c
 
 bool eDVBCSABuffer::grow(size_t inuse, size_t need)
 {
-	/* The larger of what the delay needs and what this push needs, plus a
-	 * slot of headroom. */
+	/* The larger of what the delay and this push need, plus one slot. */
 	size_t want = sizeFor(m_delay_us.load());
 	if (const size_t least = ((inuse + need) / m_slot + 2) * m_slot; want < least)
 		want = least;
 	else
 		want += m_slot;
 
-	/* Repacking alone helps a fragmented ring that has the room. Without the
-	 * room it would be an allocation per chunk, so let the caller drop. */
+	/* Repacking helps a fragmented ring that has the room; without it the
+	 * caller drops. */
 	if (want <= m_size && m_size - inuse <= need + sizeof(ChunkHdr))
 		return false;
 
@@ -244,7 +206,6 @@ bool eDVBCSABuffer::reserve(size_t want)
 		return false;
 	}
 
-	/* Copy pending chunks over linearly. */
 	size_t np = 0;
 	size_t p = m_read_pos;
 	size_t guard = m_size / sizeof(ChunkHdr) + 1;
@@ -367,6 +328,66 @@ void eDVBCSABuffer::thread()
 			const uint64_t now = monotonicUs();
 			const uint64_t age = now - hdr.stamp_us;
 
+			/* Held: the chunks stay put and the delay grows with them, up to the
+			 * ceiling. Nothing is descrambled meanwhile, so the hold has to be
+			 * asked about rather than told. */
+			if (m_holding && m_hold.load() && m_hold_query && !m_hold_query())
+				m_hold.store(false);
+
+			if (!m_hold.load())
+				m_gave_up = false;
+
+			/* At the ceiling with the period still shut: give it up and run,
+			 * rather than holding again for every chunk. */
+			if (m_hold.load() && !m_gave_up && age >= m_max_delay_us)
+			{
+				m_gave_up = true;
+				eDebug("[eDVBCSABuffer] at the %llums ceiling, letting the stream run",
+					(unsigned long long)(m_max_delay_us / 1000));
+			}
+
+			if (m_hold.load() && !m_gave_up && age < m_max_delay_us)
+			{
+				if (!m_holding)
+				{
+					m_holding = true;
+					m_hold_start_us = now;
+					eDebug("[eDVBCSABuffer] holding at %llums, nothing opens the stream",
+						(unsigned long long)(m_delay_us.load() / 1000));
+				}
+				m_cond.wait_for(lock, std::chrono::milliseconds(20));
+				continue;
+			}
+
+			/* What the stream waited out is the delay from now on. */
+			if (m_holding)
+			{
+				const uint64_t was = m_delay_us.load();
+
+				m_holding = false;
+				m_grown_now = true;
+				/* By the clock: the hold can end before the head is due. */
+				m_held_ms = now > m_hold_start_us
+					? (int)((now - m_hold_start_us) / 1000) : 0;
+
+				if (age > was)
+				{
+					/* Plus the margin, or the jitter of the next word leaves the
+					 * period short again. */
+					const uint64_t want = age + HOLD_MARGIN_US;
+
+					m_delay_us.store(want > m_max_delay_us ? m_max_delay_us : want);
+					/* Only the ceiling for later pushes; push() grew the ring. */
+					if (const size_t cap = capFor(m_delay_us.load()); cap > m_max_size)
+						m_max_size = cap;
+				}
+
+				eDebug("[eDVBCSABuffer] held for %dms, delay %llums -> %llums",
+					m_held_ms,
+					(unsigned long long)(was / 1000),
+					(unsigned long long)(m_delay_us.load() / 1000));
+			}
+
 			if (const uint64_t delay_us = m_delay_us.load(); age < delay_us)
 			{
 				/* Sleep the remainder, but wake often enough to see a stop. */
@@ -401,8 +422,7 @@ void eDVBCSABuffer::thread()
 		m_offset_ms.store((int)((out_us - stamp) / 1000));
 		m_chunks++;
 
-		/* A pause is only ours if the released chunk was overdue; on time
-		 * means the stream fed us thinly. */
+		/* Ours only if the chunk was overdue; on time means a thin feed. */
 		if (const int offset_ms = m_offset_ms.load();
 			m_last_out_us && out_us - m_last_out_us > 300000 &&
 			offset_ms > delayMs() + 200)

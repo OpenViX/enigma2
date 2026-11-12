@@ -103,17 +103,17 @@ eDVBCSAEngine::~eDVBCSAEngine()
 {
 	if (g_csa_api.available && g_csa_api.key_free)
 	{
-		for (int i = 0; i < KEY_SLOTS; ++i)
+		for (int p = 0; p < 2; ++p)
 		{
-			if (m_key_even[i])
+			if (m_parity[p].key)
 			{
-				g_csa_api.key_free(m_key_even[i]);
-				m_key_even[i] = nullptr;
+				g_csa_api.key_free(m_parity[p].key);
+				m_parity[p].key = nullptr;
 			}
-			if (m_key_odd[i])
+			if (m_parity[p].waiting)
 			{
-				g_csa_api.key_free(m_key_odd[i]);
-				m_key_odd[i] = nullptr;
+				g_csa_api.key_free(m_parity[p].waiting);
+				m_parity[p].waiting = nullptr;
 			}
 		}
 	}
@@ -129,11 +129,11 @@ bool eDVBCSAEngine::init()
 
 	m_batch_size = g_csa_api.batch_size();
 
-	for (int i = 0; i < KEY_SLOTS; ++i)
+	for (int p = 0; p < 2; ++p)
 	{
-		m_key_even[i] = g_csa_api.key_alloc();
-		m_key_odd[i] = g_csa_api.key_alloc();
-		if (!m_key_even[i] || !m_key_odd[i])
+		m_parity[p].key = g_csa_api.key_alloc();
+		m_parity[p].waiting = g_csa_api.key_alloc();
+		if (!m_parity[p].key || !m_parity[p].waiting)
 		{
 			eWarning("[eDVBCSAEngine] init: key_alloc failed");
 			return false;
@@ -218,43 +218,76 @@ void eDVBCSAEngine::setKey(int parity, uint8_t ecm_mode, const uint8_t* cw)
 		return;
 
 	const int par = parity ? 1 : 0;
-	dvbcsa_bs_key_t* const *slots = par ? m_key_odd : m_key_even;
-	for (int i = 0; i < KEY_SLOTS; ++i)
-	{
-		if (!slots[i])
-			return;
-	}
+	ParityState &st = m_parity[par];
+	if (!st.key || !st.waiting)
+		return;
+
+	// an all-zero half is no word for this parity
+	if (!memcmp(cw, "\x00\x00\x00\x00\x00\x00\x00\x00", 8))
+		return;
 
 	CSA_LOG("[eDVBCSAEngine] setKey: parity=%d ecm_mode=%u CW=%02X %02X %02X %02X %02X %02X %02X %02X",
 			parity, ecm_mode,
 			BYTE_HEX(cw[0]), BYTE_HEX(cw[1]), BYTE_HEX(cw[2]), BYTE_HEX(cw[3]),
 			BYTE_HEX(cw[4]), BYTE_HEX(cw[5]), BYTE_HEX(cw[6]), BYTE_HEX(cw[7]));
 
-	/* The pair comes with every ECM, so the control word of a period that is
-	 * already set arrives again. A repeat must not spend a generation: the
-	 * run of that parity may still be on the one before, and a generation it
-	 * can no longer reach nulls the rest of its period. */
-	if (m_last_cw_set[par] && m_last_ecm_mode[par] == ecm_mode && !memcmp(m_last_cw[par], cw, 8))
+	bool missing = false;
+
 	{
-		CSA_LOG("[eDVBCSAEngine] setKey: parity=%d repeats the key in place, generation unchanged", parity);
-		return;
+		std::lock_guard<std::mutex> lock(m_lock);
+
+		// every ECM repeats the word in force; the table is part of the key
+		if (st.has_waiting)
+		{
+			if (st.mode_waiting == ecm_mode && !memcmp(st.cw_waiting, cw, 8))
+			{
+				CSA_LOG("[eDVBCSAEngine] setKey: parity=%d repeats the word already waiting", parity);
+				return;
+			}
+		}
+		else if (st.live && st.mode == ecm_mode && !memcmp(st.cw, cw, 8))
+		{
+			CSA_LOG("[eDVBCSAEngine] setKey: parity=%d repeats the word in force", parity);
+			return;
+		}
+
+		/* The word the packets coming out still need stays, so a new one waits. */
+		if (m_cur_parity == par && st.live && !st.run_dead)
+		{
+			g_csa_api.key_set_ecm(ecm_mode, cw, st.waiting);
+			memcpy(st.cw_waiting, cw, 8);
+			st.mode_waiting = ecm_mode;
+			st.has_waiting = true;
+		}
+		else
+		{
+			g_csa_api.key_set_ecm(ecm_mode, cw, st.key);
+			memcpy(st.cw, cw, 8);
+			st.mode = ecm_mode;
+			st.has_waiting = false;
+			st.live = true;
+
+			// a word of the other parity marks where the missing one belonged
+			missing = m_parity[par ^ 1].miss_pending;
+			m_parity[par ^ 1].miss_pending = false;
+
+			/* End the hold, so a released chunk can put this word to the test. */
+			if (st.run_dead)
+			{
+				st.run_dead = false;
+				st.probe_armed = true;
+				st.probe_retry = false;
+				st.reported = false;
+				st.miss_pending = false;
+				st.probe_tries = 0;
+			}
+		}
 	}
 
-	/* Write the slot of the next generation, then publish that generation.
-	 * descramble() resolves slots from the generation it snapshots, so it
-	 * never reads the slot written here, and never a half-written one. */
-	std::atomic<uint32_t> &gen = par ? m_gen_odd : m_gen_even;
-	const uint32_t next = gen.load() + 1;
+	m_cw_seen[par].store(true);
 
-	g_csa_api.key_set_ecm(ecm_mode, cw, slots[next % KEY_SLOTS]);
-
-	memcpy(m_last_cw[par], cw, 8);
-	m_last_ecm_mode[par] = ecm_mode;
-	m_last_cw_set[par] = true;
-
-	gen.store(next);
-	std::atomic<bool> &key_set = par ? m_key_odd_set : m_key_even_set;
-	key_set.store(true);
+	if (missing)
+		eWarning("[eDVBCSAEngine] no %s cw arrived for this period", (par ^ 1) ? "odd" : "even");
 
 	if (g_csa_api.get_ecm_table)
 	{
@@ -270,32 +303,38 @@ void eDVBCSAEngine::setKey(int parity, uint8_t ecm_mode, const uint8_t* cw)
 
 void eDVBCSAEngine::clearKeys()
 {
-	m_key_even_set = false;
-	m_key_odd_set = false;
-	/* Forget the repeat check, or the first control word after this would be
-	 * taken for one already in place and never written. */
-	m_last_cw_set[0] = false;
-	m_last_cw_set[1] = false;
-	m_last_parity = -1;
-	m_bound_gen[0] = 0;
-	m_bound_gen[1] = 0;
-	m_prev_run_gen[0] = 0;
-	m_prev_run_gen[1] = 0;
-	m_run_suspect = false;
-	m_probe_armed = false;
-	m_probe_fails = 0;
-	m_probe_tries = 0;
-	m_cand_gen = 0;
-	m_run_rebound = false;
-	m_run_start_us = 0;
-	m_late_deficit_ms = 0;
-	/* Another service brings other PIDs, and a stale one could condemn a key
-	 * it knows nothing about. */
+	std::lock_guard<std::mutex> lock(m_lock);
+
+	for (int p = 0; p < 2; ++p)
+	{
+		ParityState &st = m_parity[p];
+
+		memset(st.cw, 0, 8);
+		memset(st.cw_waiting, 0, 8);
+		memset(st.cw_judged, 0, 8);
+		st.mode = 0;
+		st.mode_waiting = 0;
+		st.period_start_us = 0;
+		st.live = false;
+		st.has_waiting = false;
+		st.probe_armed = false;
+		st.probe_retry = false;
+		st.run_dead = false;
+		st.reported = false;
+		st.miss_pending = false;
+		st.probe_tries = 0;
+		m_cw_seen[p].store(false);
+	}
+
+	m_cur_parity = -1;
+	m_turning = -1;
+	m_turn_count = 0;
+	// another service brings other PIDs, and a stale one could condemn a word
 	m_pes_pid_count = 0;
 }
 
-/* Try a key on one payload: does a PES start code come out? Only valid where
- * the payload unit start indicator is set. */
+/* Try a key on one payload: does a PES start code come out? Only where the
+ * payload unit start indicator is set. */
 bool eDVBCSAEngine::probeKey(const dvbcsa_bs_key_t* key, const unsigned char* pkt, int offset) const
 {
 	if (!key || offset >= 188 || 188 - offset < 4)
@@ -342,11 +381,12 @@ static uint64_t csaMonotonicUs()
 	return (uint64_t)ts.tv_sec * 1000000ULL + (uint64_t)(ts.tv_nsec / 1000);
 }
 
-int eDVBCSAEngine::takeLateDeficitMs()
+/* A parity that never had a word is a service we cannot open: holding for
+ * it would freeze the zap for the length of the ceiling. */
+bool eDVBCSAEngine::holdPlayback() const
 {
-	const int ms = m_late_deficit_ms;
-	m_late_deficit_ms = 0;
-	return ms;
+	return (m_parity[0].live && m_parity[0].run_dead)
+		|| (m_parity[1].live && m_parity[1].run_dead);
 }
 
 // TS Packet Helpers
@@ -384,6 +424,152 @@ void eDVBCSAEngine::setNullPacket(unsigned char* pkt)
 	pkt[2] = 0xFF;
 }
 
+void eDVBCSAEngine::discardPayload(unsigned char* pkt)
+{
+	const unsigned char aflen = (pkt[3] & 0x20) ? pkt[4] : 0;
+
+	clearTSC(pkt);
+
+	// a pcr is six bytes behind the flags, so a shorter field carries none
+	if (aflen >= 7 && aflen <= 183 && (pkt[5] & 0x10))
+	{
+		memset(pkt + 5 + aflen, 0xFF, 188 - 5 - aflen);  // stuffing
+		pkt[4] = 183;
+		pkt[3] = (pkt[3] & ~0x30) | 0x20;  // adaptation field only
+		pkt[1] &= ~0x40;                   // no payload start
+	}
+	else
+		setNullPacket(pkt);
+}
+
+void eDVBCSAEngine::takeWaiting(int parity)
+{
+	ParityState &st = m_parity[parity];
+
+	if (!st.has_waiting)
+		return;
+
+	// the schedules are swapped, not recomputed
+	dvbcsa_bs_key_t* spare = st.key;
+	st.key = st.waiting;
+	st.waiting = spare;
+	memcpy(st.cw, st.cw_waiting, 8);
+	st.mode = st.mode_waiting;
+	st.has_waiting = false;
+	st.live = true;
+}
+
+void eDVBCSAEngine::enterPeriod(int parity)
+{
+	ParityState &st = m_parity[parity];
+
+	m_cur_parity = parity;
+	st.period_start_us = csaMonotonicUs();
+	st.probe_armed = true;
+	st.probe_retry = false;
+	st.run_dead = false;
+	st.reported = false;
+	st.probe_tries = 0;
+	++m_periods;
+}
+
+/* The register in force has to prove itself on the first judgable payload of
+ * a period: a word that does not open it is on its way or unusable. */
+void eDVBCSAEngine::probePeriodKey(int parity, const unsigned char* pkt, int offset,
+	dvbcsa_bs_batch_s* batch, int& cnt)
+{
+	ParityState &st = m_parity[parity];
+	const uint16_t pid = getPid(pkt);
+	const char *name = parity ? "odd" : "even";
+	int late = 0;
+	bool bad = false;
+
+	{
+		std::lock_guard<std::mutex> lock(m_lock);
+
+		if (!st.probe_armed || !st.live)
+			return;
+
+		if (st.probe_tries >= PROBE_LIMIT)
+		{
+			// nothing here can judge the word, so let the period run on it
+			st.probe_armed = false;
+			st.probe_retry = false;
+			return;
+		}
+
+		++st.probe_tries;
+
+		if (probeKey(st.key, pkt, offset))
+		{
+			notePesPid(pid);
+
+			// it had gone without an opening word, and the stream waited that long
+			if (st.run_dead)
+			{
+				// the credit can put the start ahead of now, and the clock is unsigned
+				const uint64_t now_us = csaMonotonicUs();
+
+				late = now_us > st.period_start_us
+					? (int)((now_us - st.period_start_us) / 1000) : 0;
+				st.run_dead = false;
+				st.miss_pending = false;
+			}
+
+			memcpy(st.cw_judged, st.cw, 8);
+			st.probe_armed = false;
+			st.probe_retry = false;
+		}
+		else if (!knownPesPid(pid))
+		{
+			// no payload of this PID ever opened, so the miss says nothing
+			eDebug("[eDVBCSAEngine] probe passed over: pid=%04X holds no PES start, %s, period %u",
+				pid, name, m_periods);
+		}
+		else if (!st.probe_retry)
+		{
+			// one miss can be the payload, judge on the second
+			st.probe_retry = true;
+		}
+		else if (st.has_waiting)
+		{
+			/* The register is past this period; what was collected belongs to the one
+			 * before and goes out with it. */
+			if (cnt > 0)
+			{
+				batch[cnt].data = nullptr;
+				g_csa_api.decrypt(st.key, batch, 184);
+				cnt = 0;
+			}
+			takeWaiting(parity);
+			st.probe_retry = false;
+		}
+		else
+		{
+			/* No word opens this period. Its packets still go out under the
+			 * register: noise only looks bad, a gap starves the decoder. */
+			st.run_dead = true;
+			st.probe_retry = false;
+
+			if (!st.reported)
+			{
+				st.reported = true;
+				/* Another word than the last means unusable, the same means none came. */
+				if (memcmp(st.cw_judged, st.cw, 8))
+					bad = true;
+				else
+					st.miss_pending = true;
+			}
+		}
+	}
+
+	if (late > 0)
+		eWarning("[eDVBCSAEngine] %s cw arrived %dms into its period", name, late);
+
+	if (bad)
+		eWarning("[eDVBCSAEngine] %s cw does not open this period, pid=%04X", name, pid);
+}
+
 void eDVBCSAEngine::logBadPacket(const char* reason, const unsigned char* pkt, int offset, int len)
 {
 	++m_bad_packets;
@@ -397,21 +583,6 @@ void eDVBCSAEngine::logBadPacket(const char* reason, const unsigned char* pkt, i
 }
 
 // Descrambling
-/* Slot for generation "want": the slot of a generation g is g % KEY_SLOTS.
- * Only the current one and the one before it are still intact; anything
- * older has been written over, so return nothing and let the packets be
- * nulled. */
-static dvbcsa_bs_key_t* keyForGeneration(dvbcsa_bs_key_t* const slots[], uint32_t now, uint32_t want, int count)
-{
-	if (!now)
-		return nullptr;
-	if (!want || want == now)
-		return slots[now % count];
-	if (now - want == 1)
-		return slots[want % count];
-	return nullptr;
-}
-
 void eDVBCSAEngine::descramble(unsigned char* packets, int len)
 {
 	if (!packets || len <= 0)
@@ -422,33 +593,6 @@ void eDVBCSAEngine::descramble(unsigned char* packets, int len)
 		return;
 	if (m_batch_even.empty() || m_batch_odd.empty())
 		return;
-
-	// setKey() may swap slots from the CWHandler thread at any time.
-	const bool even_set = m_key_even_set.load();
-	const bool odd_set = m_key_odd_set.load();
-	const uint32_t gen_even_now = m_gen_even.load();
-	const uint32_t gen_odd_now = m_gen_odd.load();
-
-	/* A suspect run bound the same generation as the previous run of its
-	 * parity, so its own CW was missing: offer a newer key once one appears.
-	 * Offer, not bind - a control word arrives about a second before its own
-	 * period, so the newest generation is the next period's key for the last
-	 * stretch of this one, and binding it blind would turn the rest of the
-	 * run into noise. The probe says whether it opens this period. */
-	if (m_run_suspect && m_last_parity >= 0)
-	{
-		const uint32_t now = m_last_parity ? gen_odd_now : gen_even_now;
-		if (now != m_bound_gen[m_last_parity] && now != m_cand_gen)
-		{
-			m_cand_gen = now;
-			m_probe_armed = true;  // the candidate still has to prove itself
-			m_probe_fails = 0;
-			m_probe_tries = 0;
-		}
-	}
-
-	const dvbcsa_bs_key_t* key_even = even_set ? keyForGeneration(m_key_even, gen_even_now, m_bound_gen[0], KEY_SLOTS) : nullptr;
-	const dvbcsa_bs_key_t* key_odd = odd_set ? keyForGeneration(m_key_odd, gen_odd_now, m_bound_gen[1], KEY_SLOTS) : nullptr;
 
 	int i        = 0;
 	int even_cnt = 0;
@@ -479,194 +623,104 @@ void eDVBCSAEngine::descramble(unsigned char* packets, int len)
 		}
 
 		const bool even = (scrambled == 2);
-		const dvbcsa_bs_key_t* key = even ? key_even : key_odd;
+		const int parity = even ? 0 : 1;
+		ParityState &st = m_parity[parity];
+		dvbcsa_bs_batch_s* batch = even ? pcks_even : pcks_odd;
+		int& cnt = even ? even_cnt : odd_cnt;
 		int offset = getPayloadOffset(pkt);
 
-		/* New parity run, so a new crypto period: bind the newest key for
-		 * that parity and hold it. Flush first, or the new key would reach
-		 * packets still collected for the previous run of this parity. */
-		const int parity = even ? 0 : 1;
-		if (parity != m_last_parity)
+		/* The pids do not turn at the same instant, so the parity flaps at a
+		 * boundary. A real period fills the buffer with its parity at once,
+		 * the stragglers arrive singly. */
+		if (parity != m_cur_parity)
 		{
-			m_last_parity = parity;
-			const uint32_t gen_now = even ? gen_even_now : gen_odd_now;
-			/* Same generation twice: this period's CW is missing, unless the
-			 * provider repeats the key - the check below tells apart. */
-			m_run_suspect = m_prev_run_gen[parity] && gen_now == m_prev_run_gen[parity];
-			m_prev_run_gen[parity] = gen_now;
-			m_bound_gen[parity] = gen_now;
-
-			int& cnt = even ? even_cnt : odd_cnt;
-			dvbcsa_bs_batch_s* batch = even ? pcks_even : pcks_odd;
-			const dvbcsa_bs_key_t*& bound = even ? key_even : key_odd;
-			if (cnt > 0 && bound)
+			if (parity != m_turning)
 			{
-				batch[cnt].data = nullptr;
-				g_csa_api.decrypt(bound, batch, 184);
-				cnt = 0;
+				m_turning = parity;
+				m_turn_count = 0;
 			}
 
-			const bool parity_set = even ? even_set : odd_set;
-			dvbcsa_bs_key_t* const *slots = even ? m_key_even : m_key_odd;
-			bound = parity_set ? keyForGeneration(slots, gen_now, m_bound_gen[parity], KEY_SLOTS) : nullptr;
-			key = bound;
-
-			/* Bound key is two generations old and gone: null the run. */
-			if (parity_set && !bound)
+			if (++m_turn_count >= PERIOD_MIN_PACKETS)
 			{
-				++m_expired_keys;
-				if (m_expired_keys <= 20 || !(m_expired_keys % 500))
-					eWarning("[eDVBCSAEngine] expired key #%u: parity=%d wants generation %u, now %u - nulling the period",
-						m_expired_keys, parity, m_bound_gen[parity],
-						even ? gen_even_now : gen_odd_now);
-			}
+				std::lock_guard<std::mutex> lock(m_lock);
 
-			m_run_start_us = csaMonotonicUs();
-			m_probe_armed = true;
-			m_probe_fails = 0;
-			m_probe_tries = 0;
-			m_cand_gen = 0;
-			m_run_rebound = false;
-			++m_periods;
-		}
+				// Flush before the word changes.
+				if (cnt > 0)
+				{
+					batch[cnt].data = nullptr;
+					g_csa_api.decrypt(st.key, batch, 184);
+					cnt = 0;
+				}
 
-		/* Verify the key once, on a payload that must start with a PES start
-		 * code. A candidate is probed in place of the bound key and adopted
-		 * only where it really opens this period. */
-		if (m_probe_armed && (pkt[1] & 0x40) && (pkt[3] & 0x10) && offset < 188
-			&& m_probe_tries < PROBE_LIMIT)
-		{
-			dvbcsa_bs_key_t* const *slots = even ? m_key_even : m_key_odd;
-			const uint32_t gen_now = even ? gen_even_now : gen_odd_now;
-			const dvbcsa_bs_key_t* cand = m_cand_gen ? keyForGeneration(slots, gen_now, m_cand_gen, KEY_SLOTS) : nullptr;
-			if (m_cand_gen && !cand)
-				m_cand_gen = 0;  // written over while we waited for a payload
-			const dvbcsa_bs_key_t* probe = cand ? cand : key;
-			const uint16_t pid = getPid(pkt);
-
-			if (probe)
-			{
-				m_probe_armed = false;
-				++m_probe_tries;
-				if (probeKey(probe, pkt, offset))
-				{
-					notePesPid(pid);
-					if (cand)
-					{
-						/* It opens the period, so it holds for the whole run.
-						 * The batch carries packets of this period only, so
-						 * they go out with it too instead of becoming noise. */
-						const dvbcsa_bs_key_t*& bound = even ? key_even : key_odd;
-						m_bound_gen[parity] = m_cand_gen;
-						m_prev_run_gen[parity] = m_cand_gen;
-						m_cand_gen = 0;
-						m_run_rebound = true;  // only this proves a key came late
-						bound = cand;
-						key = cand;
-					}
-					/* Only a key switch mid-run proves a CW came late; a run
-					 * that checks out had its key from the start. */
-					if (m_run_suspect && m_run_rebound)
-					{
-						m_late_deficit_ms = (int)((csaMonotonicUs() - m_run_start_us) / 1000);
-						++m_late_keys;
-						if (m_late_keys <= 20 || !(m_late_keys % 500))
-							eWarning("[eDVBCSAEngine] late key #%u: parity=%d generation=%u arrived %dms into its period",
-								m_late_keys, parity, m_bound_gen[parity], m_late_deficit_ms);
-					}
-					m_run_suspect = false;
-					m_probe_fails = 0;
-				}
-				else if (!knownPesPid(pid))
-				{
-					/* No payload of this PID has ever opened with a PES start,
-					 * so there may be none to find and the miss says nothing
-					 * about the key. Wait for a payload that can answer. */
-					m_probe_armed = true;
-					++m_probe_skips;
-					if (m_probe_skips <= 20 || !(m_probe_skips % 500))
-						eDebug("[eDVBCSAEngine] probe #%u passed over: pid=%04X holds no PES start, parity=%d, period %u",
-							m_probe_skips, pid, parity, m_periods);
-				}
-				else if (++m_probe_fails < PROBE_TRIES)
-					m_probe_armed = true;  /* no PES start in there after all, try the next */
-				else if (!m_run_suspect)
-				{
-					/* The counter said this run had a CW of its own, and the key in
-					 * force does not open the period: it is the one before, and the
-					 * key of this period is still on the way. Back to waiting, so a
-					 * newer one is taken and how late it was grows the delay. */
-					m_run_suspect = true;
-					++m_dead_keys;
-					if (m_dead_keys <= 20 || !(m_dead_keys % 500))
-						eWarning("[eDVBCSAEngine] dead key #%u: parity=%d generation=%u does not decrypt its period, pid=%04X, period %u",
-							m_dead_keys, parity, m_bound_gen[parity], pid, m_periods);
-				}
+				enterPeriod(parity);
 			}
 		}
+		else
+			m_turn_count = 0;
+
+		/* Payload start, payload present, not marked damaged in transit, and
+		 * of the period that counts as running: a straggler judged inside the
+		 * run that has not been acknowledged yet would be timed against the
+		 * period before. */
+		if (parity == m_cur_parity && st.probe_armed
+			&& (pkt[1] & 0x40) && (pkt[3] & 0x10) && !(pkt[1] & 0x80)
+			&& offset < 188)
+			probePeriodKey(parity, pkt, offset, batch, cnt);
 
 		if (!(pkt[3] & 0x10))
 		{
 			// Adaptation field only, nothing to descramble
 			clearTSC(pkt);
 		}
-		else if (!key)
+		else if (!st.live || st.run_dead)
 		{
-			// No key: convert to null packet - no glitches
-			setNullPacket(pkt);
+			/* Nothing opens this period, so nothing here can be handed out. */
+			discardPayload(pkt);
 		}
 		else if (offset >= 188)
 		{
 			// Never pass an invalid payload length to libdvbcsa, it aborts on it
 			logBadPacket("adaptation field too long", pkt, i, len);
-			setNullPacket(pkt);
+			discardPayload(pkt);
 		}
 		else
 		{
-			// Key available: descramble and clear TSC
+			// Word in force: descramble and clear TSC
 			clearTSC(pkt);
-			dvbcsa_bs_batch_s* batch = even ? pcks_even : pcks_odd;
-			int& cnt = even ? even_cnt : odd_cnt;
 			batch[cnt].data = pkt + offset;
 			batch[cnt].len  = 188 - offset;
 			cnt++;
 		}
 
-		// flush even batch
-		if (even_cnt == m_batch_size)
+		if (cnt == m_batch_size)
 		{
-			pcks_even[even_cnt].data = NULL;
-			g_csa_api.decrypt(key_even, pcks_even, 184);
-			CSA_LOG("[eDVBCSAEngine] decrypt even batch (%d)", m_batch_size);
-			even_cnt = 0;
-		}
-
-		// flush odd batch
-		if (odd_cnt == m_batch_size)
-		{
-			pcks_odd[odd_cnt].data = NULL;
-			g_csa_api.decrypt(key_odd, pcks_odd, 184);
-			CSA_LOG("[eDVBCSAEngine] decrypt odd batch (%d)", m_batch_size);
-			odd_cnt = 0;
+			std::lock_guard<std::mutex> lock(m_lock);
+			batch[cnt].data = nullptr;
+			g_csa_api.decrypt(st.key, batch, 184);
+			CSA_LOG("[eDVBCSAEngine] decrypt %s batch (%d)", even ? "even" : "odd", m_batch_size);
+			cnt = 0;
 		}
 
 		i += 188;
 	}
 
-	// flush remaining even
-	if (even_cnt > 0)
+	if (even_cnt > 0 || odd_cnt > 0)
 	{
-		pcks_even[even_cnt].data = NULL;
-		g_csa_api.decrypt(key_even, pcks_even, 184);
-		CSA_LOG("[eDVBCSAEngine] decrypt remaining even packets=%d", even_cnt);
-	}
+		std::lock_guard<std::mutex> lock(m_lock);
 
-	// flush remaining odd
-	if (odd_cnt > 0)
-	{
-		pcks_odd[odd_cnt].data = NULL;
-		g_csa_api.decrypt(key_odd, pcks_odd, 184);
-		CSA_LOG("[eDVBCSAEngine] decrypt remaining odd packets=%d", odd_cnt);
+		if (even_cnt > 0)
+		{
+			pcks_even[even_cnt].data = NULL;
+			g_csa_api.decrypt(m_parity[0].key, pcks_even, 184);
+			CSA_LOG("[eDVBCSAEngine] decrypt remaining even packets=%d", even_cnt);
+		}
+
+		if (odd_cnt > 0)
+		{
+			pcks_odd[odd_cnt].data = NULL;
+			g_csa_api.decrypt(m_parity[1].key, pcks_odd, 184);
+			CSA_LOG("[eDVBCSAEngine] decrypt remaining odd packets=%d", odd_cnt);
+		}
 	}
 
 	CSA_LOG("[eDVBCSAEngine] descramble done");

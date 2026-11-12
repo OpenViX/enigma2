@@ -4,6 +4,7 @@
 #include <lib/base/object.h>
 #include <vector>
 #include <atomic>
+#include <mutex>
 #include <stdint.h>
 
 // Forward declarations for libdvbcsa
@@ -47,15 +48,11 @@ bool csa_load_library();
 /**
  * eDVBCSAEngine - Low-Level CSA Descrambler
  *
- * Thread-safe wrapper around libdvbcsa using a ring of key slots.
- * setKey() from CWHandler thread and descramble() from recorder thread
- * can run concurrently without locks.
- *
- * Each parity (even/odd) has KEY_SLOTS key slots, and the slot of key
- * generation g is g % KEY_SLOTS. setKey() writes the slot of the next
- * generation, then publishes that generation. descramble() snapshots the
- * generation once per call and resolves slots from it, so it never touches
- * the one being written.
+ * Thread-safe wrapper around libdvbcsa. Two key registers per parity: the one
+ * in force, and one a word that came too early waits in. setKey() (CWHandler
+ * thread) writes the one in force unless the output is inside a period it
+ * still opens; descramble() (recorder thread) takes the waiting word once a
+ * probe on a PES start shows the register is past that period.
  */
 class eDVBCSAEngine
 {
@@ -82,74 +79,57 @@ public:
 	// Descrambling (called from recorder thread)
 	void descramble(unsigned char* packets, int len);
 
-	/* Milliseconds the last late key came too late by, cleared on read.
-	 * Zero whenever nothing is pending. */
-	int takeLateDeficitMs();
+	/* Nothing opens the period coming out: hold until a word arrives. */
+	bool holdPlayback() const;
+
 
 	// Status
-	bool hasEvenKey() const { return m_key_even_set; }
-	bool hasOddKey() const { return m_key_odd_set; }
+	bool hasEvenKey() const { return m_cw_seen[0].load(); }
+	bool hasOddKey() const { return m_cw_seen[1].load(); }
 	bool hasAnyKey() const { return hasEvenKey() || hasOddKey(); }
 	int getBatchSizeInstance() const { return m_batch_size; }
 
 private:
-	/* Key slots per parity. A run may still be using the generation before
-	 * the current one, so two slots are in reach of descramble() and the
-	 * third is what setKey() writes: nothing is written while it is read. */
-	static const int KEY_SLOTS = 3;
+	struct ParityState
+	{
+		dvbcsa_bs_key_t* key{nullptr};      // in force
+		dvbcsa_bs_key_t* waiting{nullptr};  // a word that came too early
+		uint8_t cw[8]{};                    // word in the register in force
+		uint8_t cw_waiting[8]{};
+		uint8_t cw_judged[8]{};             // last word a probe accepted
+		uint8_t mode{0};
+		uint8_t mode_waiting{0};
+		uint64_t period_start_us{0};        // when this period began coming out
+		bool live{false};                   // the register in force holds a word
+		bool has_waiting{false};
+		bool probe_armed{false};            // the register has still to prove itself
+		bool probe_retry{false};            // one probe has missed
+		bool run_dead{false};               // no word here opens this period
+		bool reported{false};               // verdict logged
+		bool miss_pending{false};           // the period got no word of its own
+		unsigned int probe_tries{0};
+	};
 
-	dvbcsa_bs_key_t* m_key_even[KEY_SLOTS]{};
-	dvbcsa_bs_key_t* m_key_odd[KEY_SLOTS]{};
-	std::atomic<bool> m_key_even_set{false};
-	std::atomic<bool> m_key_odd_set{false};
-	// Slot for generation g is g % KEY_SLOTS: setKey() writes the next slot
-	// and publishes the generation that names it.
-	std::atomic<uint32_t> m_gen_even{0};
-	std::atomic<uint32_t> m_gen_odd{0};
-	/* Last control word written per parity, so a repeat does not spend a
-	 * generation. CWHandler thread only, like setKey() itself. */
-	uint8_t m_last_cw[2][8]{};
-	uint8_t m_last_ecm_mode[2]{0, 0};
-	bool m_last_cw_set[2]{false, false};
-	// A parity run is one crypto period. Recorder thread only, which is the
-	// only caller of descramble().
-	int m_last_parity{-1};        // Parity of the previous packet
-	uint32_t m_bound_gen[2]{0, 0};  // Key generation bound to the run, [0]=even
-	uint32_t m_prev_run_gen[2]{0, 0};  // What the previous run of that parity bound
-	bool m_run_suspect{false};    // Bound key may predate this period
-	bool m_probe_armed{false};    // Confirm the bound key at the next PES start
-	bool m_run_rebound{false};    // The run switched key after it began
-	/* A newer generation found while the run is suspect waits here instead of
-	 * being bound. The probe decides: the newest key can be the one for the
-	 * next period, and swapping blind would ruin the rest of this one. */
-	uint32_t m_cand_gen{0};       // 0 = no candidate
-	/* A probe can miss on a payload that carries no PES start, so one failed
-	 * probe is no proof. This many failures in a run take the key as wrong. */
+	ParityState m_parity[2];  // [0] = even
+	// Covers the registers and the state above, a decrypt included
+	std::mutex m_lock;
+	std::atomic<bool> m_cw_seen[2]{};  // A word was accepted, read lock-free
+	int m_cur_parity{-1};  // Parity of the period the output is in
+	int m_turning{-1};     // Parity the packets may be turning to
+	unsigned m_turn_count{0};  // How many of them in a row have said so
 	static const unsigned int PROBE_TRIES = 2;
-	/* Probes in one run, whatever they find. A service whose scrambled PIDs
-	 * carry no PES at all must not probe every payload it sends. */
+	// A service whose scrambled PIDs carry no PES must not probe every payload
 	static const unsigned int PROBE_LIMIT = 8;
-	unsigned int m_probe_fails{0};  // Failed probes on a PID that carries PES
-	unsigned int m_probe_tries{0};  // Probes of the current run, any outcome
-	/* PIDs that have opened with a PES start code at least once. Only those
-	 * can condemn a key: a payload that is a section holds no start code to
-	 * find however good the key is, so a probe there may confirm, never judge.
-	 * Recorder thread only, like the rest of the run state. */
+	/* Packets of the new parity in a row before the period counts as changed. */
+	static const unsigned int PERIOD_MIN_PACKETS = 8;
+	/* PIDs that have opened with a PES start. Only those can condemn a word:
+	 * a section payload holds no start code to find. Recorder thread only. */
 	static const int PES_PIDS = 8;
 	uint16_t m_pes_pid[PES_PIDS]{};
 	int m_pes_pid_count{0};
-	uint64_t m_run_start_us{0};   // When the current run began coming out
-	// How much longer the data would have had to wait for its key, taken by
-	// the recorder thread to grow the playback delay. Written here, read and
-	// cleared there, both on the same thread.
-	int m_late_deficit_ms{0};
 	int m_batch_size;
 	unsigned int m_bad_packets{0};  // Log rate limit only, races are harmless
-	unsigned int m_expired_keys{0};  // Log rate limit only, races are harmless
-	unsigned int m_late_keys{0};  // Log rate limit only, races are harmless
-	unsigned int m_dead_keys{0};  // Log rate limit only, races are harmless
-	unsigned int m_probe_skips{0};  // Probes on a PID that carries no PES
-	unsigned int m_periods{0};  // Parity runs seen, to put the others in scale
+	unsigned int m_periods{0};  // Crypto periods seen, to put the others in scale
 
 	// Pre-allocated batch arrays
 	std::vector<dvbcsa_bs_batch_s> m_batch_even;
@@ -161,11 +141,18 @@ private:
 	static int getPayloadOffset(const unsigned char* pkt);
 	static void clearTSC(unsigned char* pkt);
 	static void setNullPacket(unsigned char* pkt);
+	// Drop the payload, keep the adaptation field: it is never scrambled
+	static void discardPayload(unsigned char* pkt);
 	void logBadPacket(const char* reason, const unsigned char* pkt, int offset, int len);
 	bool probeKey(const dvbcsa_bs_key_t* key, const unsigned char* pkt, int offset) const;
 	static uint16_t getPid(const unsigned char* pkt);
 	bool knownPesPid(uint16_t pid) const;
 	void notePesPid(uint16_t pid);
+	// Caller holds the lock.
+	void takeWaiting(int parity);
+	void enterPeriod(int parity);
+	void probePeriodKey(int parity, const unsigned char* pkt, int offset,
+		dvbcsa_bs_batch_s* batch, int& cnt);
 };
 
 #endif // __dvbcsaengine_h

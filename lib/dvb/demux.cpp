@@ -1553,8 +1553,9 @@ void eDVBRecordScrambledThread::setPlaybackDelay(int delay_ms)
 	delete m_delay_buffer;
 	m_delay_buffer = nullptr;
 	m_delay_auto = false;
-	m_delay_setting = delay_ms;
+	m_delay_config = delay_ms;
 	m_delay_restart = false;
+	m_delay_settling = false;
 
 	if (delay_ms == AUTO_PLAYBACK_DELAY)
 	{
@@ -1572,7 +1573,11 @@ void eDVBRecordScrambledThread::setPlaybackDelay(int delay_ms)
 	}
 
 	m_delay_buffer = new eDVBCSABuffer(delay_ms, m_buffersize);
+	m_delay_buffer->setMaxDelayMs(MAX_PLAYBACK_DELAY_MS);
 	m_delay_buffer->setConsumer([this](unsigned char *d, int l) { consumeDelayed(d, l); });
+	m_delay_buffer->setHoldQuery([this]() {
+		return m_serviceDescrambler && m_serviceDescrambler->holdPlayback();
+	});
 
 	if (!m_delay_buffer->start())
 	{
@@ -1586,37 +1591,17 @@ void eDVBRecordScrambledThread::setPlaybackDelay(int delay_ms)
 		m_delay_auto ? " (automatic)" : "");
 }
 
-/* How late a key was is what the delay was short of. A fifth on top, at
- * least 100ms, to cover the next slightly worse one. All of it in one step:
- * the stream is held back by the step either way, and one interruption costs
- * the viewer less than several spread over as many crypto periods. */
-void eDVBRecordScrambledThread::growDelayOnLateKey()
+/* flush() stopped the buffer thread and the restart reuses this recorder:
+ * without a rebuild the data goes into a line nothing comes out of. */
+void eDVBRecordScrambledThread::restartPlaybackDelay()
 {
-	if (!m_delay_auto || !m_delay_buffer || !m_serviceDescrambler)
+	m_delay_restart = false;
+
+	if (!m_delay_buffer)
 		return;
 
-	const int deficit = m_serviceDescrambler->takeLateDeficitMs();
-	if (deficit <= 0)
-		return;
-
-	const int have = m_delay_buffer->delayMs();
-	if (have >= MAX_PLAYBACK_DELAY_MS)
-	{
-		eDebug("[eDVBRecordScrambledThread] key was %dms late, already at the %dms the automatic takes",
-			deficit, MAX_PLAYBACK_DELAY_MS);
-		return;
-	}
-
-	const int margin = deficit / 5 > 100 ? deficit / 5 : 100;
-	int step = deficit + margin;
-	if (have + step > MAX_PLAYBACK_DELAY_MS)
-		step = MAX_PLAYBACK_DELAY_MS - have;
-
-	eDebug("[eDVBRecordScrambledThread] key was %dms late, delay %dms -> %dms%s",
-		deficit, have, have + step,
-		deficit + margin > step ? ", as far as the ceiling allows" : "");
-
-	m_delay_buffer->addDelayMs(step, MAX_PLAYBACK_DELAY_MS);
+	eWarning("[eDVBRecordScrambledThread] writer restarted, playback delay starts over");
+	setPlaybackDelay(m_delay_config);
 }
 
 /* Buffer thread: a chunk has come due. What writeData() would have done,
@@ -1634,6 +1619,30 @@ void eDVBRecordScrambledThread::consumeDelayed(unsigned char *data, int len)
 
 	signalFirstData(m_is_streaming ? syncWriteTo(data, len)
 		: _syncWrite(len, false, data));
+
+	if (!m_delay_buffer)
+		return;
+
+	/* Nothing here could be descrambled, so hold the stream until a word
+	 * opens it. The wait is what grows the delay. */
+	const bool hold = m_serviceDescrambler && m_serviceDescrambler->holdPlayback();
+
+	m_delay_buffer->setHold(hold);
+
+	/* Tied to the buffer, not to the verdict: at the ceiling it gives the
+	 * period up without ever holding, and no release would follow. */
+	if (m_delay_buffer->holding() && !m_delay_settling)
+	{
+		m_delay_settling = true;
+		sendEvent(eFilePushThreadRecorder::evtDelayGrowing);
+	}
+
+	/* The stream runs again. */
+	if (m_delay_buffer->takeDelayGrown())
+	{
+		m_delay_settling = false;
+		sendEvent(eFilePushThreadRecorder::evtDelayGrown);
+	}
 }
 
 void eDVBRecordScrambledThread::signalFirstData(int written)
@@ -1670,15 +1679,11 @@ int eDVBRecordScrambledThread::writeData(int len)
 	/* Only queue here and return at once; the buffer thread descrambles and
 	 * writes once the chunk is due. */
 	if (m_delay_restart)
-	{
-		/* Same thread as flush(), so the old buffer thread is gone. */
-		eDebug("[eDVBRecordScrambledThread] writer restarted, playback delay starts over");
-		setPlaybackDelay(m_delay_setting);
-	}
+		restartPlaybackDelay();
+
 	if (m_delay_buffer)
 	{
 		m_delay_buffer->push(m_buffer, len);
-		growDelayOnLateKey();
 		return len;
 	}
 
@@ -1984,6 +1989,12 @@ void eDVBTSRecorder::filepushEvent(int event)
 	case eFilePushThreadRecorder::evtStreamCorrupt:
 		eDebug("[eDVBTSRecorder] Stream corruption detected, emitting signal!");
 		m_event(eventStreamCorrupt);
+		break;
+	case eFilePushThreadRecorder::evtDelayGrowing:
+		m_event(eventDelayGrowing);
+		break;
+	case eFilePushThreadRecorder::evtDelayGrown:
+		m_event(eventDelayGrown);
 		break;
 	}
 }

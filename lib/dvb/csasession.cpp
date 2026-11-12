@@ -468,9 +468,9 @@ bool eDVBCSASession::hasKeys() const
 	return m_engine && m_engine->hasAnyKey();
 }
 
-int eDVBCSASession::takeLateDeficitMs()
+bool eDVBCSASession::holdPlayback()
 {
-	return m_engine ? m_engine->takeLateDeficitMs() : 0;
+	return m_active && m_engine && m_engine->holdPlayback();
 }
 
 void eDVBCSASession::descramble(unsigned char* packets, int len)

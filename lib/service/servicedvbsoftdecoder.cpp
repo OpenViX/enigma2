@@ -402,6 +402,17 @@ void eDVBSoftDecoder::recordEvent(int event)
 
 	switch (event)
 	{
+	case iDVBTSRecorder::eventDelayGrowing:
+		/* The stream is held back on purpose: the watchdog has to hold still. */
+		m_delay_settling = true;
+		break;
+	case iDVBTSRecorder::eventDelayGrown:
+		m_delay_settling = false;
+		m_stall_count = 0;
+		m_last_pts = 0;
+		m_stream_stalled = false;
+		m_recovery_attempts = 0;
+		break;
 	case iDVBTSRecorder::eventWriteError:
 		// The record thread has exited, nothing reaches the decoder anymore
 		if (m_writer_restarts < MAX_WRITER_RESTARTS)
@@ -447,6 +458,10 @@ void eDVBSoftDecoder::streamHealthCheck()
 	if (m_paused)
 		return;
 
+	/* Nor while the delay is growing: the stream is held back on purpose. */
+	if (m_delay_settling)
+		return;
+
 	// Detect MainLoop hangs: if this timer callback comes much later than
 	// expected (>2s instead of 500ms), the MainLoop was blocked.
 	// In that case, skip the stall check - the stream kept running fine
@@ -488,7 +503,7 @@ void eDVBSoftDecoder::streamHealthCheck()
 			eWarning("[eDVBSoftDecoder] Stream stalled (PTS=%lld)", current_pts);
 			m_stream_stalled = true;
 		}
-		else if (m_stall_count == 6)
+		else if (m_stall_count == STALL_RECOVERY_TICKS)
 		{
 			m_recovery_attempts++;
 			if (m_recovery_attempts >= 5)

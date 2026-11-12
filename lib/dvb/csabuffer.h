@@ -14,9 +14,8 @@
  * eDVBCSABuffer - Playback delay for SoftCSA
  *
  * push() queues timestamped chunks and returns at once. This thread releases
- * a chunk once it is older than the delay, and descrambling happens then, by
- * which time even a late CW has arrived. The consumer is paced by the
- * decoder, so the level holds itself.
+ * a chunk once it is older than the delay and descrambles it then, by which
+ * time even a late CW has arrived.
  */
 class eDVBCSABuffer: public eThread
 {
@@ -39,8 +38,26 @@ public:
 		return (int)(m_delay_us.load() / 1000);
 	}
 
-	/* Grow the delay by add_ms, up to max_ms, from the next chunk on. */
-	void addDelayMs(int add_ms, int max_ms);
+	/* The ceiling the delay may grow to while the stream is held. */
+	/* Headroom over what a hold measured, against the jitter of the next. */
+	static const uint64_t HOLD_MARGIN_US = 200000;
+
+	void setMaxDelayMs(int max_ms) { m_max_delay_us = (uint64_t)max_ms * 1000; }
+
+	/* Nothing comes out while this is set, and the chunks stay put, so this
+	 * is what grows the delay. Bounded by the ceiling. Consumer thread only. */
+	void setHold(bool hold) { m_hold = hold; }
+	bool holding() const { return m_holding; }
+
+	/* Asked while held, since setHold() would not hear a word arrive.
+	 * Set before start(). */
+	void setHoldQuery(std::function<bool()> fn) { m_hold_query = std::move(fn); }
+
+	/* True once, for the first chunk released after the stream was held. */
+	bool takeDelayGrown() { const bool b = m_grown_now; m_grown_now = false; return b; }
+
+	/* How long that hold lasted, in ms. */
+	int heldMs() const { return m_held_ms; }
 	int    offsetMs() const
 	{
 		return m_offset_ms.load();
@@ -70,8 +87,7 @@ private:
 
 	unsigned char *m_buf{nullptr};
 
-	/* One chunk plus its header. Every size is a whole multiple: a chunk is
-	 * never split, so a shorter tail is unusable. */
+	// One chunk plus its header. A chunk is never split, so a short tail is dead.
 	const size_t m_slot;
 
 	size_t m_size{0};
@@ -88,6 +104,14 @@ private:
 	std::atomic<uint64_t> m_delay_us{0};
 	int m_stop{1};
 	std::atomic<int> m_offset_ms{0};
+	std::atomic<bool> m_hold{false};
+	std::function<bool()> m_hold_query;
+	uint64_t m_max_delay_us{5000000};
+	bool m_holding{false};     // this thread only
+	bool m_grown_now{false};   // this thread only
+	bool m_gave_up{false};     // this thread only
+	int m_held_ms{0};          // this thread only
+	uint64_t m_hold_start_us{0};  // this thread only
 
 	/* Statistics, reported once on stop(). */
 	uint64_t m_start_us{0};

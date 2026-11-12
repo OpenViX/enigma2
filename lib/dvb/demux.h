@@ -281,10 +281,10 @@ private:
 	// and writes once a chunk is due.
 	eDVBCSABuffer *m_delay_buffer{nullptr};
 	bool m_delay_auto{false};
-	/* flush() stops the buffer for good; a restarted writer builds it again. */
-	int m_delay_setting{0};
-	bool m_delay_restart{false};
-	void growDelayOnLateKey();
+	int m_delay_config{0};        // What setPlaybackDelay() was asked for
+	bool m_delay_restart{false};  // flush() stopped the buffer, rebuild it
+	bool m_delay_settling{false};  // a growth is still working its way out
+	void restartPlaybackDelay();
 	void consumeDelayed(unsigned char *data, int len);
 	void signalFirstData(int written);
 	/* What writeData() does to a chunk once it is descrambled. */

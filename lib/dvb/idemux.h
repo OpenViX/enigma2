@@ -91,7 +91,12 @@ public:
 		eventReachedBoundary,
 				/* the programmed boundary was reached. you might set a new target fd. you can close the */
 				/* old one. */
-		eventStreamCorrupt
+		eventStreamCorrupt,
+		eventDelayGrowing,
+				/* nothing comes out while the stream is held. The decoder
+				 * runs dry meanwhile: expected, no reason to recover. */
+		eventDelayGrown
+				/* the first data at the grown delay is out. */
 	};
 	virtual RESULT connectEvent(const sigc::slot<void(int)> &event, ePtr<eConnection> &conn)=0;
 };
