@@ -10,6 +10,8 @@
 #include <unistd.h>
 #include <lib/base/estring.h>
 
+#include <algorithm>
+#include <math.h>
 #include <map>
 #include <vector>
 #include <string.h>
@@ -23,58 +25,56 @@ extern "C" {
 #include <nanosvg.h>
 #include <nanosvgrast.h>
 
-/* TODO: I wonder why this function ALWAYS returns 0 */
-int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
+// Thread-safe half of loadPNG(): read and convert the file into plain memory (`out.ok` tells whether it worked).
+void pngDecodeToBuffer(const char *filename, PngDecoded &out)
 {
-	if (cached && (result = PixmapCache::Get(filename)))
-		return 0;
+	out = PngDecoded();
 
 	CFile fp(filename, "rb");
 
 	if (!fp)
 	{
 		eDebug("[ePNG] couldn't open %s", filename );
-		return 0;
+		return;
 	}
 	{
 		__u8 header[8];
 		if (!fread(header, 8, 1, fp))
 		{
 			eDebug("[ePNG] failed to get png header");
-			return 0;
+			return;
 		}
 		if (png_sig_cmp(header, 0, 8))
 		{
 			eDebug("[ePNG] header size mismatch");
-			return 0;
+			return;
 		}
 	}
 	png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
 	if (!png_ptr)
 	{
 		eDebug("[ePNG] failed to create read struct");
-		return 0;
+		return;
 	}
 	png_infop info_ptr = png_create_info_struct(png_ptr);
 	if (!info_ptr)
 	{
 		eDebug("[ePNG] failed to create info struct");
 		png_destroy_read_struct(&png_ptr, (png_infopp)0, (png_infopp)0);
-		return 0;
+		return;
 	}
 	png_infop end_info = png_create_info_struct(png_ptr);
 	if (!end_info)
 	{
 		eDebug("[ePNG] failed to create end info struct");
 		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-		return 0;
+		return;
 	}
 	if (setjmp(png_jmpbuf(png_ptr)))
 	{
 		eDebug("[ePNG] png setjump failed or activated");
 		png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
-		result = 0;
-		return 0;
+		return; // out.ok is only set once the pixels are read, a failure in png_read_end() still leaves a usable image
 	}
 	png_init_io(png_ptr, fp);
 	png_set_sig_bytes(png_ptr, 8);
@@ -129,29 +129,22 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, 0, 0, 0);
 	channels = png_get_channels(png_ptr, info_ptr);
 
-	// PNG accel follows the exact same rule on every backend - accelAuto's
-	// own size gate (is_a_candidate_for_accel(), gpixmap.cpp) already decides
-	// whether a given image is worth accelerating; no EGL-specific override.
-	int png_accel = accel;
-	// Diagnostic only: ENIGMA_PNG_NOACCEL=1 forces plain heap memory for PNGs, to
-	// tell whether a texture built from an accelerated (ION) PNG pixmap that
-	// reads as all zeros at upload time is what blackens images.
-	static const bool s_png_noaccel = getenv("ENIGMA_PNG_NOACCEL") && atoi(getenv("ENIGMA_PNG_NOACCEL")) != 0;
-	if (s_png_noaccel)
-		png_accel = gPixmap::accelNever;
-	result = new gPixmap(width, height, bit_depth * channels, cached ? PixmapCache::PixmapDisposed : NULL, png_accel);
-	result->isPNG = true;
-	gUnmanagedSurface *surface = result->surface;
+	out.width = width;
+	out.height = height;
+	out.bpp = bit_depth * channels;
+	out.rowbytes = png_get_rowbytes(png_ptr, info_ptr);
+	out.pixels.assign(out.rowbytes * height, 0);
 
 	png_bytep *rowptr = new png_bytep[height];
 	for (unsigned int i = 0; i < height; i++)
-		rowptr[i] = ((png_byte*)(surface->data)) + i * surface->stride;
+		rowptr[i] = (png_byte*)out.pixels.data() + i * out.rowbytes;
 	png_read_image(png_ptr, rowptr);
 
 	delete [] rowptr;
+	out.ok = true;
 
 	if (color_type == PNG_COLOR_TYPE_RGBA || color_type == PNG_COLOR_TYPE_GA)
-		surface->transparent = true;
+		out.transparent = true;
 	else
 	{
 		png_bytep trans_alpha = NULL;
@@ -159,7 +152,7 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 		png_color_16p trans_color = NULL;
 
 		png_get_tRNS(png_ptr, info_ptr, &trans_alpha, &num_trans, &trans_color);
-		surface->transparent = (trans_alpha != NULL);
+		out.transparent = (trans_alpha != NULL);
 	}
 
 	int num_palette = -1, num_trans = -1;
@@ -167,37 +160,36 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 		if (png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE)) {
 			png_color *palette;
 			png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
+			out.setClut = true;
 			if (num_palette) {
-				surface->clut.data = new gRGB[num_palette];
-				surface->clut.colors = num_palette;
+				out.clutColors = num_palette;
+				out.clut.resize(num_palette);
 
 				for (int i = 0; i < num_palette; i++) {
-					surface->clut.data[i].a = 0;
-					surface->clut.data[i].r = palette[i].red;
-					surface->clut.data[i].g = palette[i].green;
-					surface->clut.data[i].b = palette[i].blue;
+					out.clut[i].a = 0;
+					out.clut[i].r = palette[i].red;
+					out.clut[i].g = palette[i].green;
+					out.clut[i].b = palette[i].blue;
 				}
 
 				if (trns) {
 					png_byte *trans;
 					png_get_tRNS(png_ptr, info_ptr, &trans, &num_trans, 0);
 					for (int i = 0; i < num_trans; i++)
-						surface->clut.data[i].a = 255 - trans[i];
+						out.clut[i].a = 255 - trans[i];
 					for (int i = num_trans; i < num_palette; i++)
-						surface->clut.data[i].a = 0;
+						out.clut[i].a = 0;
 				}
 
 			}
 			else {
-				surface->clut.data = 0;
-				surface->clut.colors = num_palette;
+				out.clutColors = num_palette;
 			}
 		}
 		else {
-			surface->clut.data = 0;
-			surface->clut.colors = 0;
+			out.setClut = true;
+			out.clutColors = 0;
 		}
-		surface->clut.start = 0;
 	}
 	else if (color_type == PNG_COLOR_TYPE_GRAY) {
 		// Plain grayscale, no per-pixel alpha (GRAY+tRNS and GRAY_ALPHA above
@@ -221,24 +213,127 @@ int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
 		// it an unambiguous palette image, so gTextureManager's existing
 		// bpp==8-with-clut branch (built for indexed skin assets) handles it
 		// correctly instead.
-		surface->clut.data = new gRGB[256];
-		surface->clut.colors = 256;
-		surface->clut.start = 0;
+		out.setClut = true;
+		out.clutColors = 256;
+		out.clut.resize(256);
 		for (int i = 0; i < 256; i++) {
-			surface->clut.data[i].a = 0; // opaque (enigma2's inverted alpha convention)
-			surface->clut.data[i].r = i;
-			surface->clut.data[i].g = i;
-			surface->clut.data[i].b = i;
+			out.clut[i].a = 0; // opaque (enigma2's inverted alpha convention)
+			out.clut[i].r = i;
+			out.clut[i].g = i;
+			out.clut[i].b = i;
 		}
 	}
-
-	if (cached)
-		PixmapCache::Set(filename, result);
 
 	//eDebug("[ePNG] %s: after  %dx%dx%dbpcx%dchan coltyp=%d cols=%d trans=%d", filename, (int)width, (int)height, bit_depth, channels, color_type, num_palette, num_trans);
 
 	png_read_end(png_ptr, end_info);
 	png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
+}
+
+void pngDownscale(PngDecoded &d, int maxWidth)
+{
+	if (!d.ok || d.bpp != 32 || d.setClut || maxWidth <= 0 || d.width <= maxWidth || d.height <= 0)
+		return;
+	const int sw = d.width, sh = d.height, dw = maxWidth;
+	const int dh = std::max(1, (int)(((long long)sh * dw + sw / 2) / sw));
+	std::vector<unsigned char> out((size_t)dw * 4 * dh);
+	const double xs = (double)sw / dw, ys = (double)sh / dh;
+	for (int y = 0; y < dh; ++y)
+	{
+		const double sy0 = y * ys, sy1 = sy0 + ys;
+		const int iy1 = std::min(sh, (int)ceil(sy1));
+		for (int x = 0; x < dw; ++x)
+		{
+			const double sx0 = x * xs, sx1 = sx0 + xs;
+			const int ix1 = std::min(sw, (int)ceil(sx1));
+			double a = 0, r = 0, g = 0, b = 0, wsum = 0;
+			for (int iy = (int)sy0; iy < iy1; ++iy)
+			{
+				const double wy = std::min(sy1, (double)iy + 1) - std::max(sy0, (double)iy);
+				const unsigned char *row = d.pixels.data() + (size_t)iy * d.rowbytes;
+				for (int ix = (int)sx0; ix < ix1; ++ix)
+				{
+					const double w = wy * (std::min(sx1, (double)ix + 1) - std::max(sx0, (double)ix));
+					const unsigned char *p = row + (size_t)ix * 4;
+					const double wa = w * p[3]; // colours weighted by alpha, so transparent pixels do not bleed their colour
+					b += p[0] * wa;
+					g += p[1] * wa;
+					r += p[2] * wa;
+					a += wa;
+					wsum += w;
+				}
+			}
+			unsigned char *o = out.data() + ((size_t)y * dw + x) * 4;
+			if (a > 0 && wsum > 0)
+			{
+				o[0] = (unsigned char)(b / a + 0.5);
+				o[1] = (unsigned char)(g / a + 0.5);
+				o[2] = (unsigned char)(r / a + 0.5);
+				o[3] = (unsigned char)(a / wsum + 0.5);
+			}
+			else
+				o[0] = o[1] = o[2] = o[3] = 0;
+		}
+	}
+	d.pixels.swap(out);
+	d.width = dw;
+	d.height = dh;
+	d.rowbytes = (size_t)dw * 4;
+}
+
+// Main-thread half of loadPNG(): build the gPixmap (and register it in PixmapCache) from a decoded buffer.
+ePtr<gPixmap> pngBufferToPixmap(const char *filename, PngDecoded &d, int accel, int cached)
+{
+	ePtr<gPixmap> result;
+	if (!d.ok || d.width <= 0 || d.height <= 0)
+		return result;
+
+	// PNG accel follows the exact same rule on every backend - accelAuto's
+	// own size gate (is_a_candidate_for_accel(), gpixmap.cpp) already decides
+	// whether a given image is worth accelerating; no EGL-specific override.
+	int png_accel = accel;
+	// Diagnostic only: ENIGMA_PNG_NOACCEL=1 forces plain heap memory for PNGs, to
+	// tell whether a texture built from an accelerated (ION) PNG pixmap that
+	// reads as all zeros at upload time is what blackens images.
+	static const bool s_png_noaccel = getenv("ENIGMA_PNG_NOACCEL") && atoi(getenv("ENIGMA_PNG_NOACCEL")) != 0;
+	if (s_png_noaccel)
+		png_accel = gPixmap::accelNever;
+	result = new gPixmap(d.width, d.height, d.bpp, cached ? PixmapCache::PixmapDisposed : NULL, png_accel);
+	result->isPNG = true;
+	gUnmanagedSurface *surface = result->surface;
+
+	const size_t copy = std::min<size_t>(d.rowbytes, (size_t)surface->stride);
+	for (int y = 0; y < d.height; ++y)
+		memcpy((unsigned char*)surface->data + (size_t)y * surface->stride, d.pixels.data() + (size_t)y * d.rowbytes, copy);
+	surface->transparent = d.transparent;
+
+	if (d.setClut)
+	{
+		if (!d.clut.empty())
+		{
+			surface->clut.data = new gRGB[d.clut.size()];
+			memcpy(surface->clut.data, d.clut.data(), d.clut.size() * sizeof(gRGB));
+		}
+		else
+			surface->clut.data = 0;
+		surface->clut.colors = d.clutColors;
+		surface->clut.start = 0;
+	}
+
+	if (cached)
+		PixmapCache::Set(filename, result);
+	return result;
+}
+
+/* TODO: I wonder why this function ALWAYS returns 0 */
+int loadPNG(ePtr<gPixmap> &result, const char *filename, int accel, int cached)
+{
+	if (cached && (result = PixmapCache::Get(filename)))
+		return 0;
+
+	PngDecoded decoded;
+	pngDecodeToBuffer(filename, decoded);
+	result = pngBufferToPixmap(filename, decoded, accel, cached);
 	return 0;
 }
 

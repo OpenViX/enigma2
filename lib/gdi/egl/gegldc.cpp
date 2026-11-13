@@ -623,16 +623,36 @@ void gEGLDC::applyOsdRect() {
 	updatePhysicalSize(m_width, m_height);
 	applyViewport();
 	glBindFramebuffer(GL_FRAMEBUFFER, m_use_shadow_fbo ? m_shadow_fbo : 0);
-	glScissor(0, 0, m_phys_width, m_phys_height);
+	glScissorCached(0, 0, m_phys_width, m_phys_height);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+// A closed GL driver validates and re-emits state even for a call that changes nothing, and a list frame issues
+// hundreds of draws that share one scissor rect / one blend function - so identical repeats are dropped here. Only
+// this class touches scissor and (through setAlphaBlendMode / rawBlendFunc) the blend function; anything else that
+// does (the web overlay, a new frame) must call invalidateGlStateCache().
+void gEGLDC::glScissorCached(int x, int y, int w, int h) {
+	if (m_gl_scissor_valid && m_gl_scissor[0] == x && m_gl_scissor[1] == y && m_gl_scissor[2] == w && m_gl_scissor[3] == h)
+		return;
+	m_gl_scissor[0] = x;
+	m_gl_scissor[1] = y;
+	m_gl_scissor[2] = w;
+	m_gl_scissor[3] = h;
+	m_gl_scissor_valid = true;
+	glScissor(x, y, w, h);
+}
+
+void gEGLDC::rawBlendFunc(GLenum srcRGB, GLenum dstRGB, GLenum srcA, GLenum dstA) {
+	m_gl_blend_mode = -1; // not one of the two setAlphaBlendMode() states
+	glBlendFuncSeparate(srcRGB, dstRGB, srcA, dstA);
 }
 
 void gEGLDC::setGlScissor(const eRect& rect) {
 	if (!isScaled()) {
 		int sx = rect.x();
 		int sy = m_height - (rect.y() + rect.height());
-		glScissor(sx, sy, rect.width(), rect.height());
+		glScissorCached(sx, sy, rect.width(), rect.height());
 		return;
 	}
 
@@ -642,7 +662,7 @@ void gEGLDC::setGlScissor(const eRect& rect) {
 	int x1 = std::min(m_phys_width, m_content_x + (int)std::ceil((rect.x() + rect.width()) * m_scale_x));
 	int y0 = std::max(0, m_content_y + (int)std::floor(rect.y() * m_scale_y));
 	int y1 = std::min(m_phys_height, m_content_y + (int)std::ceil((rect.y() + rect.height()) * m_scale_y));
-	glScissor(x0, m_phys_height - y1, std::max(0, x1 - x0), std::max(0, y1 - y0));
+	glScissorCached(x0, m_phys_height - y1, std::max(0, x1 - x0), std::max(0, y1 - y0));
 }
 
 void gEGLDC::setAlphaBlendMode(bool trueAlphaBlend) {
@@ -675,6 +695,10 @@ void gEGLDC::setAlphaBlendMode(bool trueAlphaBlend) {
 	// window background. Ignoring the destination entirely instead makes
 	// this draw's own alpha the absolute truth for video-plane visibility
 	// at the pixels it touches.
+	const int mode = trueAlphaBlend ? 1 : 0;
+	if (m_gl_blend_mode == mode)
+		return;
+	m_gl_blend_mode = mode;
 	if (trueAlphaBlend)
 		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	else
@@ -926,7 +950,7 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 				out[0] = sr; out[1] = sg; out[2] = sb; out[3] = alpha;
 				if (nstops == 0)
 					return;
-				float t = m_gradient_orientation == 1 ? (px - x) / w : (py - y) / h;
+				float t = m_gradient_orientation == 2 ? (px - x) / w : (py - y) / h;
 				t = std::min(1.0f, std::max(0.0f, t));
 				const float scaled = t * (float)(nstops - 1);
 				size_t i = std::min((size_t)scaled, nstops - 2);
@@ -995,7 +1019,7 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 					pushQuad(x0, y0, x1, y1);
 					return;
 				}
-				const bool horiz = m_gradient_orientation == 1;
+				const bool horiz = m_gradient_orientation == 2;
 				const float lo = horiz ? x0 : y0, hi = horiz ? x1 : y1;
 				const float origin = horiz ? x : y, span = horiz ? w : h;
 				float prev = lo;
@@ -1098,10 +1122,10 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 					setAlphaBlendMode(true);
 					cornerPass(false);
 				} else {
-					glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
+					rawBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
 					cornerPass(true);
 					glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE);
-					glBlendFuncSeparate(GL_ZERO, GL_ONE, GL_ONE, GL_ONE);
+					rawBlendFunc(GL_ZERO, GL_ONE, GL_ONE, GL_ONE);
 					cornerPass(false);
 					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 					setAlphaBlendMode(true);
@@ -1122,11 +1146,11 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 			} else {
 				// Pass 1: shader alpha = coverage. rgb = c*cov + dst*(1-cov),
 				// dst alpha *= (1-cov).
-				glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
+				rawBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
 				drawPass(true);
 				// Pass 2, alpha only: shader alpha = a*cov, added on top.
 				glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE);
-				glBlendFuncSeparate(GL_ZERO, GL_ONE, GL_ONE, GL_ONE);
+				rawBlendFunc(GL_ZERO, GL_ONE, GL_ONE, GL_ONE);
 				drawPass(false);
 				glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 				setAlphaBlendMode(true);
@@ -1383,6 +1407,8 @@ void gEGLDC::executeBlit(const gOpcode* opcode) {
 			op->position.left(), op->position.top(), op->position.width(), op->position.height(), (unsigned)op->flags);
 	if (tex_id == 0)
 		return;
+	if (op->flags & gPixmap::blitPreloadTexture)
+		return; // only wanted the texture created ahead of the paint that will draw it
 
 	// Replicate gPixmap::blit()'s (gpixmap.cpp) own position/size resolution
 	// exactly - that CPU function is this codebase's ground truth for what
@@ -2122,7 +2148,7 @@ void gEGLDC::clearWindowSurfaceTransparent() {
 	if (!s_enabled)
 		return;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glScissor(0, 0, m_phys_width, m_phys_height);
+	glScissorCached(0, 0, m_phys_width, m_phys_height);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	// Clear + present enough times to cover every buffer of the swap chain.
 	for (int i = 0; i < 3; ++i) {
@@ -3021,7 +3047,7 @@ bool gEGLDC::gpuCopyPageContent(int from, int to) {
 	// with whatever rect the last opcode drawn set - reset it to the full
 	// surface first or this copy would silently only cover a leftover
 	// unrelated widget's clip rect instead of the whole page.
-	glScissor(0, 0, m_phys_width, m_phys_height);
+	glScissorCached(0, 0, m_phys_width, m_phys_height);
 	glBlitFramebuffer(0, 0, m_phys_width, m_phys_height, 0, 0, m_phys_width, m_phys_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	return true;
 #else
@@ -3109,9 +3135,10 @@ void gEGLDC::serviceOsdCapture() {
 		glBindFramebuffer(GL_FRAMEBUFFER, scratch_fbo);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, scratch_tex, 0);
 		if (glGetError() == GL_NO_ERROR && glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
-			glScissor(0, 0, m_phys_width, m_phys_height);
+			glScissorCached(0, 0, m_phys_width, m_phys_height);
 			glViewport(0, 0, m_phys_width, m_phys_height);
 			m_web_overlay.draw(m_width, m_height);
+			invalidateGlStateCache();
 			glEnable(GL_BLEND);
 			applyViewport();
 		} else {
@@ -3681,7 +3708,7 @@ void gEGLDC::updateToneControl()
 // Copies the surface currently bound as framebuffer 0 (this frame's finished OSD) into the shadow
 // texture and leaves the shadow framebuffer bound.
 void gEGLDC::copySurfaceToShadow() {
-	glScissor(0, 0, m_phys_width, m_phys_height);
+	glScissorCached(0, 0, m_phys_width, m_phys_height);
 #ifdef HAVE_GLES3
 	if (gles::isGLES3()) {
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
@@ -3702,7 +3729,7 @@ void gEGLDC::copySurfaceToShadow() {
 // Writes the whole shadow canvas into the surface bound as framebuffer 0 (raw copy, no blending) and
 // leaves the shadow framebuffer bound again. The same full-frame copy flip() does for shadow platforms.
 void gEGLDC::copyShadowToSurface() {
-	glScissor(0, 0, m_phys_width, m_phys_height);
+	glScissorCached(0, 0, m_phys_width, m_phys_height);
 #ifdef HAVE_GLES3
 	if (gles::isGLES3()) {
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, m_shadow_fbo);
@@ -3733,9 +3760,10 @@ void gEGLDC::copyShadowToSurface() {
 // the shadow framebuffer. The caller presents the surface next.
 void gEGLDC::drawWebOverlay() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glScissor(0, 0, m_phys_width, m_phys_height);
+	glScissorCached(0, 0, m_phys_width, m_phys_height);
 	glViewport(0, 0, m_phys_width, m_phys_height);
 	m_web_overlay.draw(m_width, m_height);
+	invalidateGlStateCache();
 	glEnable(GL_BLEND);
 	applyViewport();
 	glBindFramebuffer(GL_FRAMEBUFFER, m_shadow_fbo);
@@ -3777,6 +3805,7 @@ void gEGLDC::updateOverlayShadow(bool want) {
 }
 
 void gEGLDC::flip() {
+	invalidateGlStateCache(); // never trust cached GL state across a frame boundary (overlays, context loss)
 	// While the web layer (HbbTV) is shown, enigma2's own textures may use only part of the GPU heap. The texture manager keeps every
 	// texture until the driver runs out of memory - on a 256 MB heap shared with the browser it takes all that is free, and the
 	// browser, which cannot evict, then loses its tiles (black rectangles, an empty layer) until enigma2 is restarted and the cache is
@@ -3949,7 +3978,7 @@ void gEGLDC::flip() {
 			// present nothing until unlocked.
 			if (!m_lock_cleared) {
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
-				glScissor(0, 0, m_phys_width, m_phys_height);
+				glScissorCached(0, 0, m_phys_width, m_phys_height);
 				glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 				glClear(GL_COLOR_BUFFER_BIT);
 				eglSwapBuffers(m_egl_display, m_egl_surfaces[0]);
@@ -4030,7 +4059,7 @@ void gEGLDC::flip() {
 					// real hardware even at stride 2).
 					glBindFramebuffer(GL_READ_FRAMEBUFFER, m_shadow_fbo);
 					glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-					glScissor(0, 0, m_phys_width, m_phys_height);
+					glScissorCached(0, 0, m_phys_width, m_phys_height);
 					if (m_blit_invalidate) {
 						const GLenum att = GL_COLOR;
 						glInvalidateFramebuffer(GL_DRAW_FRAMEBUFFER, 1, &att);
@@ -4059,7 +4088,7 @@ void gEGLDC::flip() {
 					0.0f, 0.0f, 0.0f, 1.0f,  0.0f, h,    0.0f, 0.0f,  w, 0.0f, 1.0f, 1.0f,
 					w,    0.0f, 1.0f, 1.0f,  0.0f, h,    0.0f, 0.0f,  w, h,    1.0f, 0.0f};
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
-				glScissor(0, 0, m_phys_width, m_phys_height);
+				glScissorCached(0, 0, m_phys_width, m_phys_height);
 				glViewport(0, 0, m_phys_width, m_phys_height); // the shadow canvas already sits in the overscan rectangle
 				glDisable(GL_BLEND);
 				// A compositor that blends straight alpha would multiply the

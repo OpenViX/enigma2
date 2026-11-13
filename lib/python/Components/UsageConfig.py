@@ -166,6 +166,11 @@ def InitUsageConfig():
 	config.usage.infobar_frontend_source = ConfigSelection(default="tuner", choices=[("settings", _("Settings")), ("tuner", _("Tuner"))])
 
 	config.usage.picon_lookup_priority = ConfigSelection(default="png_svg", choices=[("png_only", _("png only")), ("svg_only", _("svg only")), ("png_svg", _("png, then svg")), ("svg_png", _("svg, then png"))])
+
+	def piconPriorityChanged(configElement):
+		from Components.Renderer.Picon import invalidateListPicons
+		invalidateListPicons()
+	config.usage.picon_lookup_priority.addNotifier(piconPriorityChanged, initial_call=False)
 	config.usage.show_picon_bkgrn = ConfigSelection(default="transparent", choices=[("none", _("Disabled")), ("transparent", _("Transparent")), ("blue", _("Blue")), ("red", _("Red")), ("black", _("Black")), ("white", _("White")), ("lightgrey", _("Light Grey")), ("grey", _("Grey"))])
 	config.usage.show_genre_info = ConfigYesNo(default=False)
 	config.usage.menu_style = ConfigSelection(default="standard", choices=[("standard", _("Standard")), ("horizontal", _("Horizontal"))])

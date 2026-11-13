@@ -83,6 +83,11 @@ protected:
 		/* the cell is temporarily given another size than the normal one (the dedicated carousel focus size): a
 		   content that caches its layout by cell size must not throw the cache of the normal cells away for it */
 	virtual void setCellOverride(bool) { }
+		/* layered painting: a content that can draw all visible entries in several passes (shapes, then images, then text) to save
+		   GPU batch switches returns the number of passes (more than 1). The list then calls setPaintPass(0..n-1), painting every
+		   entry once per pass, and setPaintPass(-1) afterwards. Only used for a plain vertical list. */
+	virtual int paintPasses() { return 1; }
+	virtual void setPaintPass(int) { }
 	virtual int getMaxItemTextWidth() { return 1; }
 	virtual int getListSize() { return 0; }
 
@@ -240,6 +245,7 @@ public:
 	}; */
 
 	int getCurrentIndex();
+	int getItemsPerPage() const { return m_items_per_page; }
 	int getOrientation();
 		/* pages of the list as the user pages through it; for a grid with rows of different heights (spanning
 		   entries) a page is as many rows as fit. For the pager widget. */

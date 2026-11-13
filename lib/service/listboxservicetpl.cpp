@@ -10,10 +10,6 @@
 #include <algorithm>
 #include <lib/gdi/pixmapcache.h>
 #include <chrono>
-#include <thread>
-#include <mutex>
-#include <condition_variable>
-#include <deque>
 #include <vector>
 #include <set>
 #include <utility>
@@ -64,265 +60,173 @@ static std::string trim(const std::string &s)
 }
 
 eListboxServiceTemplateContent::eListboxServiceTemplateContent()
-	:m_cur_index(-1), m_span_width(0), m_flags(0), m_gen(1), m_rec_time(0), m_prefetch_last(-1), m_prefetch_dir(0)
+	:m_cur_index(-1), m_span_width(0), m_flags(0), m_gen(1), m_rec_time(0)
 {
 	for (int i = 0; i < fontGroups; ++i)
 		m_font_delta[i] = 0;
+	m_picon_downscale = true; 
+	m_warm_whole_list = true;
+	m_picon_cache_limit = 1000;
+	m_event_cache_limit = 1500;
+	m_no_event_retry_s = 2; // the EPG of other services arrives some seconds after a start: look again soon
 }
 
-// defined in lib/gdi/epng.cpp
-bool svgRasterizeToBuffer(const char *filename, int width, std::vector<unsigned char> &buf, int &w, int &h);
-ePtr<gPixmap> svgBufferToCachedPixmap(const char *filename, const std::vector<unsigned char> &buf, int w, int h);
+// Picons and events are fetched exactly like the classic list does it (listboxservice.cpp): synchronously from the shared
+// per-service caches, and warmed ahead of the cursor in small time-boxed slices by eListboxServiceContent::warmTick(). The
+// template list used to have a machinery of its own on top (decoder threads, idle row building, whole-list warm-up); it made
+// the first scroll slower than the classic list, which has none of it.
 
-struct TplPrefetch: public sigc::trackable
+// true when the picon of the row is not the one the row was built with (replaced file, other picon source)
+bool eListboxServiceTemplateContent::piconChanged(const eServiceReference &ref, const RowCache &rc)
 {
-	struct Job { eServiceReference ref; std::string file; int width; };
-	struct Result { eServiceReference ref; std::string file; int w, h; bool ok; std::vector<unsigned char> buf; };
+	if (!PyCallable_Check(m_GetPiconNameFunc))
+		return false;
+	ePtr<gPixmap> pix;
+	bool svg = false;
+	getPiconPixmap(ref, m_itemheight * 5 / 3, pix, svg);
+	return pix.operator->() != rc.piconPtr;
+}
 
-	eListboxServiceTemplateContent *owner;
-	ePtr<eTimer> timer;
-	// SVG picons are rasterised here, off the UI thread: one takes 5-25 ms and a few in a row delayed key repeats by ~90 ms.
-	std::mutex mtx;
-	std::condition_variable cv;
-	std::deque<Job> jobs;
-	std::deque<Result> results;
-	std::set<eServiceReference> pending; // main thread only: queued or being rasterised
-	bool stop;
-	bool started;
-	std::thread th;
-
-	TplPrefetch(eListboxServiceTemplateContent *o): owner(o), stop(false), started(false)
-	{
-		timer = eTimer::create(eApp);
-		CONNECT(timer->timeout, TplPrefetch::tick);
-	}
-	~TplPrefetch()
-	{
-		if (started)
-		{
-			{
-				std::lock_guard<std::mutex> l(mtx);
-				stop = true;
-			}
-			cv.notify_all();
-			th.join();
-		}
-	}
-	void tick() { owner->prefetchTick(); }
-
-	void work()
-	{
-		for (;;)
-		{
-			Job j;
-			{
-				std::unique_lock<std::mutex> l(mtx);
-				cv.wait(l, [this] { return stop || !jobs.empty(); });
-				if (stop)
-					return;
-				j = jobs.front();
-				jobs.pop_front();
-			}
-			Result r;
-			r.ref = j.ref;
-			r.file = j.file;
-			r.w = r.h = 0;
-			r.ok = svgRasterizeToBuffer(j.file.c_str(), j.width, r.buf, r.w, r.h);
-			std::lock_guard<std::mutex> l(mtx);
-			results.push_back(std::move(r));
-		}
-	}
-	size_t queued()
-	{
-		std::lock_guard<std::mutex> l(mtx);
-		return jobs.size();
-	}
-	void enqueue(const eServiceReference &ref, const std::string &file, int width)
-	{
-		if (!started)
-		{
-			started = true;
-			th = std::thread(&TplPrefetch::work, this);
-		}
-		{
-			std::lock_guard<std::mutex> l(mtx);
-			Job j;
-			j.ref = ref;
-			j.file = file;
-			j.width = width;
-			jobs.push_back(j);
-		}
-		pending.insert(ref);
-		cv.notify_one();
-	}
-	bool popResult(Result &r)
-	{
-		std::lock_guard<std::mutex> l(mtx);
-		if (results.empty())
-			return false;
-		r = std::move(results.front());
-		results.pop_front();
-		return true;
-	}
-};
-
-// Row picon, through m_picon_cache (the read-ahead fills it): without it every row rebuild decodes the PNG and re-uploads
-// its texture, which made fast paging crawl.
 void eListboxServiceTemplateContent::picon(const eServiceReference &ref, int width, ePtr<gPixmap> &pixmap, bool &isSVG)
 {
 	getPiconPixmap(ref, width, pixmap, isSVG);
 }
 
-void eListboxServiceTemplateContent::prefetchKick()
+bool eListboxServiceTemplateContent::warmUsesPicons()
 {
-	if (m_cur_index < 0)
-		return;
-	if (m_cursor_number != m_prefetch_last)
-	{
-		if (m_prefetch_last >= 0)
-			m_prefetch_dir = m_cursor_number > m_prefetch_last ? 1 : -1;
-		m_prefetch_last = m_cursor_number;
-	}
-	if (!m_prefetch)
-		m_prefetch = std::make_shared<TplPrefetch>(this);
-	TplPrefetch *p = (TplPrefetch*)m_prefetch.get();
-	if (!p->timer->isActive())
-		p->timer->start(15, true);
+	return m_cur_index >= 0 && m_templates[m_cur_index].usesPicon;
 }
 
-void eListboxServiceTemplateContent::prefetchTick()
+int eListboxServiceTemplateContent::warmPiconWidth()
 {
-	if (!m_prefetch)
-		return;
-	TplPrefetch *pf = (TplPrefetch*)m_prefetch.get();
+	return m_itemheight * 5 / 3;
+}
+
+static const size_t kRowCacheLimit = 1200; // rows kept for the whole-list warm-up
+
+// Idle-time build of the rows around the cursor, so the paint of a first-time page only draws them. Rows are cheap to paint but
+// not to build (text layout, glyph rasterising), and after a restart or a skin change nothing is built yet: the first pages
+// scrolled paid for all of it in the frame. Nearest rows first, in the direction of travel first; picons / events are warmed
+// by the same tick just before (a row is built once its picon is in memory, so it does not have to be built again).
+bool eListboxServiceTemplateContent::warmRows(int ahead, int dir, double budgetMs)
+{
+	if (m_cur_index < 0 || m_itemheight <= 0 || m_itemsize.width() <= 0 || !cursorValid())
+		return false;
+	if (m_zoom != 100 || m_cell_override || !m_marked.empty()) // those layouts build their rows for the focused slot at paint time
+		return false;
+	const Template &tpl = m_templates[m_cur_index];
+	const bool usePicon = tpl.usesPicon && PyCallable_Check(m_GetPiconNameFunc);
+	const int W = m_itemsize.width();
 	const int H = m_itemheight;
-	// Finished rasterisations: wrap them (cheap) and file them in m_picon_cache.
-	{
-		TplPrefetch::Result r;
-		for (int drained = 0; drained < 4 && pf->popResult(r); ++drained)
-		{
-			if (m_picon_cache.find(r.ref) == m_picon_cache.end())
-			{
-				ePtr<gPixmap> keep; // PixmapCache only holds weakly, keep alive until the cache entry has taken it
-				if (r.ok)
-					keep = svgBufferToCachedPixmap(r.file.c_str(), r.buf, r.w, r.h);
-				PiconCacheEntry entry;
-				entry.isSVG = true;
-				entry.pixmap = keep;
-				m_picon_cache[r.ref] = entry;
-			}
-			pf->pending.erase(r.ref);
-		}
-	}
-	if (m_cur_index < 0 || !cursorValid())
-	{
-		if (!pf->pending.empty())
-			pf->timer->start(20, true);
-		return;
-	}
-	const bool usePicon = m_templates[m_cur_index].usesPicon && PyCallable_Check(m_GetPiconNameFunc);
-	// Before the cursor has ever moved (fresh start, skin change) the direction is unknown: warm both sides, so the
-	// first pages scrolled are as warm as later ones (cold picon disk reads, EPG lookups and SVG rasterising were
-	// the hiccups of the first scroll).
-	const int ahead = std::max(3 * m_size_visible, 30);
-	int loaded = 0;
+	const time_t now = time(0);
 	const auto t0 = std::chrono::steady_clock::now();
-	bool more = false;
-	const int ndirs = m_prefetch_dir ? 1 : 2;
-	for (int d = 0; d < ndirs && !more; ++d)
+	if (m_rows.size() + 16 >= kRowCacheLimit) // full: paint() evicts the least recently used, warming more would only churn
+		return false;
+	int built = 0;
+	// the current row, then outwards both ways alternately (the direction of travel first): the page on screen first, then the
+	// pages around it
+	list::iterator fwd = m_cursor, bwd = m_cursor;
+	bool fwdEnd = false, bwdEnd = false;
+	for (int n = 0; n < ahead && (!fwdEnd || !bwdEnd); ++n)
 	{
-		const int dir = m_prefetch_dir ? m_prefetch_dir : (d == 0 ? 1 : -1);
-		list::iterator it = m_cursor;
-		for (int n = 0; n < ahead; ++n)
+		for (int side = 0; side < 2; ++side)
 		{
-			if (dir > 0)
+			// side 0: the direction of travel (down when unknown); side 1: the other one
+			const bool down = (side == 0) == (dir >= 0);
+			bool &end = down ? fwdEnd : bwdEnd;
+			list::iterator &it = down ? fwd : bwd;
+			if (end)
+				continue;
+			if (down)
 			{
 				if (it == m_list.end() || ++it == m_list.end())
-					break;
+				{
+					end = true;
+					continue;
+				}
 			}
 			else
 			{
 				if (it == m_list.begin())
-					break;
+				{
+					end = true;
+					continue;
+				}
 				--it;
 			}
 			const eServiceReference &ref = *it;
-			if (ref.flags & (eServiceReference::isMarker | eServiceReference::isDirectory))
+			if (ref.flags & (eServiceReference::isMarker | eServiceReference::isDirectory)) // own heights: built at paint time
 				continue;
-			// EPG lookup of the row, so building it later is a cache hit (time-boxed, UI thread)
-			std::map<eServiceReference, EventCacheEntry>::iterator ev = m_event_cache.find(ref);
-			if (ev == m_event_cache.end() || time(0) >= ev->second.validUntil)
-			{
-				if (loaded > 0 && std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count() > 4.0)
-				{
-					more = true;
-					break;
-				}
-				ePtr<iStaticServiceInformation> info;
-				m_service_center->info(ref, info);
-				ePtr<eServiceEvent> e1, e2;
-				getCachedEvent(ref, info, time(0), e1, e2); // caches "no event" too, so it is not retried every tick
-				++loaded;
-			}
-			if (!usePicon || m_picon_cache.find(ref) != m_picon_cache.end() || pf->pending.count(ref))
+			if (usePicon && m_picon_cache.find(ref) == m_picon_cache.end()) // its picon is not loaded yet: build once it is
 				continue;
-			const std::string file = getPiconFilename(ref);
-			if (file.size() <= 4 || file.compare(file.size() - 4, 4, ".svg") != 0)
-			{
-				// PNG etc.: cheap, decode a few per tick on the UI thread
-				if (loaded >= 3 || (loaded > 0 && std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count() > 4.0))
-				{
-					more = true;
-					break;
-				}
-				ePtr<gPixmap> pix;
-				bool svg = false;
-				getPiconPixmap(ref, H * 5 / 3, pix, svg);
-				++loaded;
+			std::map<eServiceReference, RowCache>::iterator rc = m_rows.find(ref);
+			if (rc != m_rows.end() && rc->second.gen == m_gen && rc->second.width == W && rc->second.height == H && now < rc->second.validUntil)
 				continue;
-			}
-			char cachefile[file.size() + 10];
-			sprintf(cachefile, "%s%d", file.c_str(), 0);
-			if (PixmapCache::Get(file.c_str(), cachefile))
-				continue; // already loaded, a row load will pick it up
-			if (pf->queued() >= 16)
+			if (built > 0 && std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count() > budgetMs)
+				return true;
+			ePtr<iStaticServiceInformation> info;
+			m_service_center->info(ref, info);
+			int dyn = 0; // same rules as paint()
+			if (isRecordedCached(ref, now))
+				dyn |= dynRecorded;
+			if (info && m_is_playable_ignore.valid())
 			{
-				more = true;
-				break;
+				const int v = info->isPlayable(ref, m_is_playable_ignore);
+				if (v == 0)
+					dyn |= dynUnavail;
+				else if (v == 2)
+					dyn |= dynFallback;
 			}
-			pf->enqueue(ref, file, H * 5 / 3);
+			RowCache &row = m_rows[ref];
+			row.gen = m_gen;
+			row.lastUse = ++m_row_tick;
+			row.dyn = dyn;
+			row.width = W;
+			row.height = H;
+			buildRow(tpl, ref, info, dyn, now, row);
+			row.layered = opsLayerSafe(row.ops);
+			++built;
 		}
 	}
-	// Bound the cache (CPU pixmaps and, through them, GPU textures): keep only rows near the cursor, trimmed a few per
-	// tick since dropping ~100 pixmaps at once queues ~100 GL texture deletions that stall a frame.
-	if (m_picon_cache.size() > 400)
-	{
-		std::set<eServiceReference> window;
-		list::iterator a = m_cursor, b = m_cursor;
-		for (int n = 0; n < 120; ++n)
-		{
-			if (a != m_list.begin()) --a;
-			if (b != m_list.end()) ++b;
-		}
-		for (list::iterator k = a; k != b && k != m_list.end(); ++k)
-			window.insert(*k);
-		int dropped = 0;
-		for (std::map<eServiceReference, PiconCacheEntry>::iterator f = m_picon_cache.begin();
-			f != m_picon_cache.end() && dropped < 6; )
-		{
-			if (window.find(f->first) == window.end())
-			{
-				m_picon_cache.erase(f++);
-				++dropped;
-			}
-			else
-				++f;
-		}
-		if (dropped >= 6)
-			more = true;
-	}
-	if (more || !pf->pending.empty())
-		pf->timer->start(more ? 25 : 20, true);
+	return false;
+}
+
+// the event cache holds an event for the service (it may have turned up after the row was built without one)
+bool eListboxServiceTemplateContent::eventAvailable(const eServiceReference &ref)
+{
+	std::map<eServiceReference, EventCacheEntry>::iterator ev = m_event_cache.find(ref);
+	return ev != m_event_cache.end() && ev->second.hasEvent && !ev->second.evt->getEventName().empty();
+}
+
+int eListboxServiceTemplateContent::paintPasses()
+{
+	// shapes, images, text: only in a plain vertical list whose entries are all painted by this function with nothing zoomed
+	return (m_cur_index >= 0 && m_templates[m_cur_index].orientation == (int)eListbox::orVertical && m_zoom == 100 && !m_cell_override) ? 3 : 1;
+}
+
+// an event turned up for a row that was built without one: build it again and repaint it
+void eListboxServiceTemplateContent::warmEventArrived(const eServiceReference &ref)
+{
+	m_rows.erase(ref);
+	m_zoom_rows.erase(ref);
+	if (m_listbox)
+		m_listbox->entryChanged(cursorResolve(lookupService(ref)));
+}
+
+// Least-recently-used eviction: once a cache holds more than `limit` rows, drop the oldest quarter in one go.
+void eListboxServiceTemplateContent::trimRowCache(std::map<eServiceReference, RowCache> &rows, size_t limit)
+{
+	if (rows.size() <= limit)
+		return;
+	const size_t drop = rows.size() - (limit - limit / 4);
+	std::vector<std::pair<unsigned int, eServiceReference> > age;
+	age.reserve(rows.size());
+	for (std::map<eServiceReference, RowCache>::iterator f = rows.begin(); f != rows.end(); ++f)
+		age.push_back(std::make_pair(f->second.lastUse, f->first));
+	std::nth_element(age.begin(), age.begin() + drop, age.end(),
+		[](const std::pair<unsigned int, eServiceReference> &x, const std::pair<unsigned int, eServiceReference> &y) { return x.first < y.first; });
+	for (size_t i = 0; i < drop; ++i)
+		rows.erase(age[i].second);
 }
 
 /* ---------------------------------- compiling ---------------------------------- */
@@ -738,6 +642,8 @@ bool eListboxServiceTemplateContent::setTemplate(const std::string &name)
 			++m_gen;
 			if (m_listbox)
 				m_listbox->invalidate();
+			if (cursorValid())
+				warmKick();
 			return true;
 		}
 	}
@@ -1009,9 +915,12 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 	if (hasEvent && evt->getEventName().empty())
 		hasEvent = false;
 	bool hasNext = hasEvent && evt_next && !evt_next->getEventName().empty();
+	out.hadEvent = hasEvent;
 
-	out.validUntil = now + 60;
-	if (hasEvent && evt->getBeginTime() > 0 && evt->getDuration() > 0)
+	// no event yet: a late one rebuilds the row through warmEventArrived(), so no short expiry (it made the idle pass rebuild
+	// every row of the window every few seconds)
+	out.validUntil = hasEvent ? now + 60 : now + 300;
+	if (hasEvent &&evt->getBeginTime() > 0 && evt->getDuration() > 0)
 	{
 		time_t end = evt->getBeginTime() + evt->getDuration();
 		if (end > now)
@@ -1019,6 +928,7 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 		if (tpl.timeDependent)
 			out.validUntil = std::min(out.validUntil, now + 30);
 	}
+	out.piconPtr = nullptr;
 
 	const uint64_t refBits = ((uint64_t)1 << sCatchup) | ((uint64_t)1 << sBackup);
 	std::string refStr;
@@ -1053,6 +963,7 @@ void eListboxServiceTemplateContent::buildRow(const Template &tpl, const eServic
 	{
 		picon(ref, H * 5 / 3, piconPix, piconSVG);
 		SETBIT(sHasPicon, piconPix);
+		out.piconPtr = piconPix.operator->(); // the row is rebuilt when the picon of the service changes, see paint()
 	}
 	#undef SETBIT
 	const uint64_t fl = st | m_flags;
@@ -1719,8 +1630,37 @@ bool eListboxServiceTemplateContent::resolveColor(const Style &st, int selected,
 	return have;
 }
 
-void eListboxServiceTemplateContent::paintOps(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected, int marked, const RowCache &rc, time_t now)
+// draw layer of an op kind: shapes under images under text
+int eListboxServiceTemplateContent::opLayer(int kind)
 {
+	return kind == opText ? 2 : (kind == opBlit || kind == opBlitScale || kind == opBlitSVG) ? 1 : 0;
+}
+
+// True when drawing the ops layer by layer gives the same picture as drawing them in order: every op that comes later in the
+// list but is drawn earlier (lower layer) must not overlap the ops it would otherwise be drawn over.
+bool eListboxServiceTemplateContent::opsLayerSafe(const std::vector<Op> &ops)
+{
+	for (size_t i = 0; i < ops.size(); ++i)
+		for (size_t j = i + 1; j < ops.size(); ++j)
+			if (opLayer(ops[i].kind) > opLayer(ops[j].kind) && ops[i].rect.intersects(ops[j].rect))
+				return false;
+	return true;
+}
+
+void eListboxServiceTemplateContent::paintOps(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected, int marked, const RowCache &rc, time_t now, int pass)
+{
+	// pass: -1 all of the row (its layers one after the other), 0..2 only that layer of the row (the list paints every row once per
+	// layer, see paintPasses()); a row that cannot be drawn by layer is drawn completely in pass 0 and skipped in the others
+	int firstLayer = 0, lastLayer = rc.layered ? 2 : 0;
+	if (pass >= 0)
+	{
+		if (rc.layered)
+			firstLayer = lastLayer = pass;
+		else if (pass > 0)
+			return;
+	}
+	if (pass > 0) // this row was last drawn some rows ago: the painter colours are not its base colours any more
+		applyBaseColors(painter, style, selected, marked);
 	bool dirty = false; // painter colours differ from the row's base colours
 
 	auto setStyleColor = [&](int si, bool border)
@@ -1743,9 +1683,16 @@ void eListboxServiceTemplateContent::paintOps(gPainter &painter, eWindowStyle &s
 		}
 	};
 
+	// A row drawn in its declared order alternates between fills, images and text, and the GPU backend has to end its current
+	// batch and switch shader program at every change (text, flat colour, texture). A row with an event has many more of those
+	// switches than one without. When the ops of the row do not overlap in a way that makes the order matter (rc.layered, see
+	// opsLayerSafe), they are drawn by kind instead - all fills, then all images, then all text - which needs three batches.
+	for (int layer = firstLayer; layer <= lastLayer; ++layer)
 	for (size_t i = 0; i < rc.ops.size(); ++i)
 	{
 		const Op &op = rc.ops[i];
+		if (rc.layered && opLayer(op.kind) != layer)
+			continue;
 		eRect r(op.rect.left() + offset.x(), op.rect.top() + offset.y(), op.rect.width(), op.rect.height());
 		// static pixmaps may have an own image for the selected row
 		gPixmap *pm = (selected && op.pixmapSel) ? (gPixmap*)op.pixmapSel : (gPixmap*)op.pixmap;
@@ -1756,19 +1703,15 @@ void eListboxServiceTemplateContent::paintOps(gPainter &painter, eWindowStyle &s
 			painter.renderPara(op.para, ePoint(r.left(), r.top()));
 			break;
 		case opBlit:
-			painter.clip(r);
+			// the blit's own clip rectangle is intersected with the active clip by every backend, so no
+			// clip push/pop opcode pair is needed around it (3 opcodes per image became 1)
 			painter.blit(pm, ePoint(r.left(), r.top()), r, gPainter::BT_ALPHABLEND);
-			painter.clippop();
 			break;
 		case opBlitScale:
-			painter.clip(r);
 			painter.blitScale(pm, r, r, op.flags);
-			painter.clippop();
 			break;
 		case opBlitSVG:
-			painter.clip(r);
-			painter.blit(pm, r, eRect(), op.flags);
-			painter.clippop();
+			painter.blit(pm, r, r, op.flags);
 			break;
 		case opFill:
 			setStyleColor(op.style, false);
@@ -1853,9 +1796,7 @@ void eListboxServiceTemplateContent::paintOps(gPainter &painter, eWindowStyle &s
 			ePtr<gPixmap> &bar = m_pixmaps[picServiceEventProgressbar];
 			if (bar)
 			{
-				painter.clip(fillRect);
 				painter.blit(bar, ePoint(fillRect.left(), fillRect.top()), fillRect, gPainter::BT_ALPHABLEND);
-				painter.clippop();
 			}
 			else
 			{
@@ -1956,6 +1897,13 @@ int eListboxServiceTemplateContent::gridSpanHeight()
 void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected)
 {
 	eServiceListPaintTimer profileTimer(eServiceListPaintTimer::statTemplate);
+	const int pass = m_paint_pass; // -1: the whole entry; 0: its shapes / background; 1: images; 2: text (see paintPasses())
+	if (syncPiconGeneration()) // picon source changed: rebuild the rows with the new picons
+	{
+		m_rows.clear();
+		m_zoom_rows.clear();
+		++m_gen;
+	}
 	// a marker of a grid that spans is as wide as the whole grid: lay it out and paint it with that width
 	const eSize cellSize = m_itemsize;
 	const int cellHeight = m_itemheight;
@@ -1973,10 +1921,12 @@ void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &styl
 		m_itemheight = m_templates[m_cur_index].markerHeight;
 		m_itemsize = eSize(cellSize.width(), m_itemheight);
 	}
-	painter.clip(eRect(offset, m_itemsize));
+	if (pass <= 0)
+		painter.clip(eRect(offset, m_itemsize));
 
 	const int marked = getMarkedState(selected);
-	paintBackground(painter, style, offset, selected, marked);
+	if (pass <= 0)
+		paintBackground(painter, style, offset, selected, marked);
 
 	if (cursorValid() && m_cur_index >= 0)
 	{
@@ -1991,11 +1941,22 @@ void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &styl
 		}
 		const Template &tpl = zoomed ? m_zoom_tpl : m_templates[m_cur_index];
 		std::map<eServiceReference, RowCache> &rowCache = zoomed ? m_zoom_rows : m_rows;
-		paintSelection(painter, style, offset, selected, tpl.large);
+		if (pass <= 0)
+			paintSelection(painter, style, offset, selected, tpl.large);
 
 		const eServiceReference ref = *m_cursor;
+		if (pass > 0)
+		{
+			// images and text of a row that pass 0 has just built (and cached)
+			std::map<eServiceReference, RowCache>::iterator done = rowCache.find(ref);
+			if (done != rowCache.end())
+				paintOps(painter, style, offset, selected, marked, done->second, time(0), pass);
+			m_itemsize = cellSize;
+			m_itemheight = cellHeight;
+			return;
+		}
 		if (selected)
-			prefetchKick();
+			warmKick();
 		const time_t now = time(0);
 		ePtr<iStaticServiceInformation> info;
 		m_service_center->info(ref, info);
@@ -2015,12 +1976,14 @@ void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &styl
 
 		std::map<eServiceReference, RowCache>::iterator it = rowCache.find(ref);
 		if (it == rowCache.end() || it->second.gen != m_gen || it->second.dyn != dyn ||
-			it->second.width != m_itemsize.width() || it->second.height != m_itemheight || now >= it->second.validUntil)
+			it->second.width != m_itemsize.width() || it->second.height != m_itemheight || now >= it->second.validUntil ||
+			(!it->second.hadEvent && playable && eventAvailable(ref)) ||
+			(tpl.usesPicon && playable && piconChanged(ref, it->second)))
 		{
-			if (rowCache.size() > 256)
-				rowCache.clear();
+			trimRowCache(rowCache, zoomed ? 320 : kRowCacheLimit + 100); // evicts the least recently used rows, never the whole cache (that was a ~90 ms hiccup)
 			RowCache &rc = rowCache[ref];
 			rc.gen = m_gen;
+			rc.lastUse = ++m_row_tick;
 			rc.dyn = dyn;
 			rc.width = m_itemsize.width();
 			rc.height = m_itemheight;
@@ -2028,12 +1991,15 @@ void eListboxServiceTemplateContent::paint(gPainter &painter, eWindowStyle &styl
 			{
 				eServiceListPaintTimer buildTimer(eServiceListPaintTimer::statTemplateBuild);
 				buildRow(tpl, ref, info, dyn, now, rc);
+				rc.layered = opsLayerSafe(rc.ops);
 			}
 			it = rowCache.find(ref);
 		}
-		paintOps(painter, style, offset, selected, marked, it->second, now);
+		it->second.lastUse = ++m_row_tick;
+		paintOps(painter, style, offset, selected, marked, it->second, now, pass);
 	}
-	painter.clippop();
+	if (pass <= 0)
+		painter.clippop();
 	m_itemsize = cellSize;
 	m_itemheight = cellHeight;
 }

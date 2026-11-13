@@ -1533,6 +1533,11 @@ int eListbox::event(int event, void *data, void *data2)
 				const int n = m_content->size();
 				const int center = carouselCenter();
 				const bool vert = m_orientation == orVertical;
+				// a horizontal carousel row is centred vertically in the widget, so the enlarged focus tile can grow
+				// evenly to both sides instead of being pushed down by the clamp at the widget edge
+				const int rowTop = yoffset; // top of the area below the scrollbar
+				if (!vert)
+					yoffset += std::max(0, (size().height() - yoffset - m_itemheight) / 2);
 				// the centre slot is painted last (and enlarged) so it overlaps its neighbours
 				for (int pass = 0; pass < 2; ++pass)
 				for (int i = 0; i < m_items_per_page && n; ++i)
@@ -1559,7 +1564,7 @@ int eListbox::event(int event, void *data, void *data2)
 							if (vert)
 								pos.setX(std::max(xoffset, std::min(pos.x() + (base.width() - cell.width()) / 2, size().width() - cell.width())));
 							else
-								pos.setY(std::max(yoffset, std::min(pos.y() + (base.height() - cell.height()) / 2, size().height() - cell.height())));
+								pos.setY(std::max(rowTop, std::min(pos.y() + (base.height() - cell.height()) / 2, size().height() - cell.height())));
 							m_content->setCellOverride(true);
 							m_content->setSize(cell);
 						}
@@ -1605,21 +1610,38 @@ int eListbox::event(int event, void *data, void *data2)
 			}
 			else if (m_orientation == orVertical)
 			{
-				for (int y = 0, i = 0; i <= m_items_per_page; y += pitchY(), ++i)
+				// A content that can paint in layers (shapes, images, text) gets every visible entry once per layer: the GPU backend
+				// then needs a few batches for the whole page instead of a handful per entry. Only when the entries do not touch.
+				const int layers = (pitchY() >= m_itemheight) ? m_content->paintPasses() : 1;
+				for (int pass = 0; pass < (layers > 1 ? layers : 1); ++pass)
 				{
-					gRegion entry_clip_rect = paint_region & entryrect;
+					if (layers > 1)
+					{
+						m_content->setPaintPass(pass);
+						if (pass > 0)
+						{
+							m_content->cursorSet(m_top); // back to the first visible entry
+							entryrect = eRect(0, 0, size().width(), m_itemheight);
+						}
+					}
+					for (int y = 0, i = 0; i <= m_items_per_page; y += pitchY(), ++i)
+					{
+						gRegion entry_clip_rect = paint_region & entryrect;
 
-					if (!entry_clip_rect.empty())
-						m_content->paint(painter, *style, ePoint(xoffset, y), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
+						if (!entry_clip_rect.empty())
+							m_content->paint(painter, *style, ePoint(xoffset, y), m_selected == m_content->cursorGet() && m_content->size() && m_selection_enabled);
 
-						/* (we could clip with entry_clip_rect, but
-						this shouldn't change the behavior of any
-						well behaving content, so it would just
-						degrade performance without any gain.) */
+							/* (we could clip with entry_clip_rect, but
+							this shouldn't change the behavior of any
+							well behaving content, so it would just
+							degrade performance without any gain.) */
 
-					m_content->cursorMove(+1);
-					entryrect.moveBy(ePoint(0, pitchY()));
+						m_content->cursorMove(+1);
+						entryrect.moveBy(ePoint(0, pitchY()));
+					}
 				}
+				if (layers > 1)
+					m_content->setPaintPass(-1);
 				m_content->cursorRestore();
 			}
 			else if (m_orientation == orHorizontal)
