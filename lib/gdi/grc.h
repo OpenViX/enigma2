@@ -348,7 +348,8 @@ public:
 		BT_HALIGN_CENTER = 16,
 		BT_HALIGN_RIGHT = 32,
 		BT_VALIGN_CENTER = 64,
-		BT_VALIGN_BOTTOM = 128
+		BT_VALIGN_BOTTOM = 128,
+		BT_PRELOAD_TEXTURE = 256 /* draws nothing: the EGL backend only uploads the texture */
 	};
 
 	enum

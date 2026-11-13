@@ -214,6 +214,17 @@ public:
 	RESULT lookupEventId(const eServiceReference &service, int event_id, Event* &);
 	RESULT lookupEventTime(const eServiceReference &service, time_t, Event* &, int direction=0);
 	RESULT getNextTimeEntry(Event *&);
+
+	// Now / next event of many services under ONE acquisition of the cache lock. Looking them up one at a time
+	// takes the lock (shared with the EIT reader thread) twice per service, which is what made the service list
+	// crawl while the EPG was being filled. `t` = -1 means now. out[i] belongs to refs[i]; out[i].now is null when
+	// the service has no current event.
+	struct NowNextResult
+	{
+		ePtr<eServiceEvent> now;
+		ePtr<eServiceEvent> next;
+	};
+	void lookupNowNextBatch(const std::vector<eServiceReference> &refs, time_t t, bool wantNext, std::vector<NowNextResult> &out);
 #endif
 	enum {
 		SIMILAR_BROADCASTINGS_SEARCH,

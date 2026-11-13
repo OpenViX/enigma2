@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <set>
+#include <vector>
 
 #ifndef SWIG
 // Optional paint timing for A/B comparing the renderers, enabled by the environment variable
@@ -117,7 +118,7 @@ public:
 
 	int getItemHeight() { return m_itemheight; }
 	void setItemHeight(int height);
-	void setHideNumberMarker(bool doHide) { m_hide_number_marker = doHide; }
+	void setHideNumberMarker(bool doHide) { m_hide_number_marker = doHide; m_visible_prefix_valid = false; }
 	void setServiceTypeIconMode(int mode) { m_servicetype_icon_mode = mode; }
 	void setCryptoIconMode(int mode) { m_crypto_icon_mode = mode; }
 	void setRecordIndicatorMode(int mode) { m_record_indicator_mode = mode; }
@@ -150,6 +151,8 @@ public:
 	}
 
 	static void setGetPiconNameFunc(SWIG_PYOBJECT(ePyObject) func);
+	// Drop the cached picons of all service lists (picon source, path or lookup priority changed), re-resolved on the next paint.
+	static void invalidatePiconCaches();
 
 	enum {
 		markedForeground,
@@ -219,14 +222,38 @@ protected:
 	// and loadImage() lookup are both redone even for rows whose service
 	// hasn't changed since the last paint. This cache makes that a single
 	// lookup by service reference after the first paint of a given row.
+	//
+	// An entry is not valid forever: it remembers the file it came from and is re-checked (stat) every few seconds, so a
+	// replaced picon shows up without a restart; a service without picon is looked up again after a while (a picon may
+	// have been added); and invalidatePiconCaches() drops all of them at once (picon source / lookup priority changed).
 	struct PiconCacheEntry {
+		PiconCacheEntry(): isSVG(false), fileSize(0), fileTime(0), fileCTime(0), checkedMs(0), preloadedMs(0) {}
 		ePtr<gPixmap> pixmap;
 		bool isSVG;
+		std::string file;      // "" = no picon found
+		off_t fileSize;
+		time_t fileTime;
+		time_t fileCTime;      // a copy or extract that keeps the old mtime still changes this
+		long long checkedMs;  // last time the file was verified (or the lookup was made)
+		long long preloadedMs; // last time a GPU texture preload was queued for the pixmap
 	};
 	std::map<eServiceReference, PiconCacheEntry> m_picon_cache;
+	size_t m_picon_cache_limit = 400; // entries kept before trimWarmCaches() drops the ones far from the cursor
+	int m_picon_gen = 0;
+	bool m_picon_downscale = false; // PNG picons are decoded down to twice the cell width (set by the template list)
+	static long long nowMs();
+	static void statPiconEntry(PiconCacheEntry &entry); // fills fileSize/fileTime/checkedMs from entry.file
+	bool syncPiconGeneration(); // drops m_picon_cache after invalidatePiconCaches(); true if it did
 	void getPiconPixmap(const eServiceReference &ref, int width, ePtr<gPixmap> &pixmap, bool &isSVG);
 	std::string getPiconFilename(const eServiceReference &ref); // "" when there is none
-	void loadPiconPixmap(const eServiceReference &ref, int width, ePtr<gPixmap> &pixmap, bool &isSVG); // uncached
+	void loadPiconPixmap(const eServiceReference &ref, int width, PiconCacheEntry &entry); // uncached
+	// EGL: textures are created lazily by the first draw of a pixmap, i.e. in the middle of a paint. For the picons of
+	// the rows about to scroll in, have the render thread create them ahead of time (cheap to queue, a few per tick).
+	bool piconNeedsTexture(const eServiceReference &ref);
+	bool preloadPiconTexture(const eServiceReference &ref);
+	int warmAheadRows(); // rows scanned each way by the idle warm-up: a few pages, never the whole list
+	bool trimWarmCaches(); // drop picon / event cache entries far from the cursor, a few per call; true if more remain
+	int textureAheadRows(); // how many rows beyond the cursor get their texture preloaded (about two pages)
 
 	// Same story as the picon cache above, for the per-row "now"/"next" event
 	// lookup (service_info->getEvent()): every repaint re-queries and
@@ -244,11 +271,44 @@ protected:
 	};
 	std::map<eServiceReference, EventCacheEntry> m_event_cache;
 	bool getCachedEvent(const eServiceReference &ref, iStaticServiceInformation *service_info, time_t now, ePtr<eServiceEvent> &evt, ePtr<eServiceEvent> &evt_next);
+	// Fill the event cache of the rows around the cursor (the cursor row and the visible page included) with one
+	// batched EPG lookup instead of two lock round-trips per row. Rows that had no event and now have one are appended
+	// to *gotLate (the template list rebuilds those). Only plain DVB services are batched, the rest keeps the per-row path.
+	void warmEventsBatch(int ahead, std::vector<eServiceReference> *gotLate);
 
 	// Idle-time warm-up of the picon / event caches around the cursor (legacy renderer): on a fresh list (restart,
 	// skin change) every row of the first scrolled pages otherwise pays the cold picon read + EPG lookup in paint().
+	// prefix[i] = number of visible rows among the first i entries of m_list, see cursorResolve()
+	std::vector<int> m_visible_prefix;
+	bool m_visible_prefix_valid = false;
+	// iterator of every list entry, parallel to m_visible_prefix: cursorSet() (called for every painted row) was a walk from the
+	// list start, so painting got slower the further down a long list the cursor was
+	std::vector<std::list<eServiceReference>::iterator> m_iter_index;
+	void invalidateVisibleCache() { m_visible_prefix_valid = false; }
+	void buildVisiblePrefix();
+	bool isHiddenEntry(const eServiceReference &ref) const;
 	std::shared_ptr<void> m_warm;
 	void warmKick();
+	virtual void kickWarmup() { warmKick(); }
+	// hooks of warmTick(): whether the rows have a picon, its width, and a repaint when an event turned up late
+	virtual bool warmUsesPicons() { return m_visual_mode != visModeSimple; }
+	virtual int warmPiconWidth() { return m_visual_mode == visSkinDefined ? (int)(m_itemheight * 1.67) : 125; }
+	virtual void warmEventArrived(const eServiceReference &) {}
+	// build the renderer's own per-row data around the cursor (idle time, within budgetMs); true if more is left
+	virtual bool warmRows(int ahead, int dir, double budgetMs) { return false; }
+	long long m_warm_kick_ms = 0; // last time a selected row was painted / the warm-up was asked for
+	// Whole-list warm-up (set by the template list): while nobody scrolls, events / picons / rows of the entire list are prepared,
+	// nearest to the cursor first, up to the cache limits. After a restart or skin change every cache is empty and the first pages
+	// scrolled otherwise pay for all of it themselves.
+	bool m_warm_whole_list = false;
+	bool m_warm_complete = false;
+	int m_no_event_retry_s = 5; // how long a service without an event is believed to have none before it is looked up again
+	int m_event_retries = 0; // slow re-checks of services that had no event yet (EPG still loading)
+	size_t m_event_cache_limit = 800;
+	size_t m_warm_sig_size = 0;
+	int m_warm_sig_gen = -1;
+	eServiceReference m_warm_sig_front, m_warm_sig_back;
+	int m_warm_last_cursor = -1, m_warm_dir = 0; // direction of the last cursor move: 1 down, -1 up, 0 unknown
 public:
 	void warmTick();
 protected:

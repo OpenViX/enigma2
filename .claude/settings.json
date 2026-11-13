@@ -94,7 +94,20 @@
       "Bash(awk '{print $2}')",
       "Bash(grep -nE '^\\\\+.*\\\\\\\\\\\\s*$')",
       "Bash(python -c \"import ast;[ast.parse\\(open\\(f,encoding='utf-8'\\).read\\(\\)\\) for f in ['lib/python/skin.py','lib/python/Components/Converter/TemplatedMultiContent.py']];print\\('py ok'\\)\")",
-      "Bash(python -c \"import ast;ast.parse\\(open\\('lib/python/skin.py',encoding='utf-8'\\).read\\(\\)\\)\")"
+      "Bash(python -c \"import ast;ast.parse\\(open\\('lib/python/skin.py',encoding='utf-8'\\).read\\(\\)\\)\")",
+      "Bash(git fetch *)",
+      "PowerShell(\\(Get-Item 'lib\\\\python\\\\Screens\\\\ChannelSelection.py'\\).LastWriteTime = Get-Date)",
+      "Bash(python -I \"C:/Users/dimit/AppData/Local/Temp/claude/ab798c012abd2d97/051fe168-bc41-4529-b034-16fc75512803/scratchpad/dropclip.py\" listboxservice.cpp)",
+      "Bash(python -I \"C:/Users/dimit/AppData/Local/Temp/claude/ab798c012abd2d97/051fe168-bc41-4529-b034-16fc75512803/scratchpad/picon.py\" listboxservice.cpp)",
+      "Bash(python -I -c ' *)",
+      "Bash(python -I -c \"import sys;b=sys.stdin.buffer.read\\(\\);print\\(b.count\\(b'\\\\r\\\\n'\\),b.count\\(b'\\\\n'\\)\\)\")",
+      "Bash(sed -i 's/E2_HOLD_START_MS/E2_HOLD_START_MS/' /dev/null)",
+      "Bash(awk 'NR>=1010 && NR<=1085' listboxservicetpl.cpp)",
+      "Bash(awk 'NR>=1800 && NR<=1990' gegldc.cpp)",
+      "Bash(awk 'NR>=720 && NR<=830' listboxservice.cpp)",
+      "Bash(awk 'NR>=1797 && NR<=1890' listboxservicetpl.cpp)",
+      "Bash(awk 'NR>=1888 && NR<=1965' listboxservicetpl.cpp)",
+      "Bash(awk 'NR>=186 && NR<=300 && /^\\(protected|private|public\\):|struct EventCacheEntry|struct PiconCacheEntry/ {print NR\": \"$0}' listboxservice.h)"
     ],
     "additionalDirectories": [
       "C:\\Users\\dimit\\.claude\\projects\\e--Enigma2Dev-OpenViX-enigma2-OpenViX-enigma2\\memory",

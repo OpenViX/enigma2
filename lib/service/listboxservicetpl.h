@@ -180,10 +180,17 @@ private:
 		int dyn;
 		int width;
 		int height;
-		time_t validUntil;
+		time_t validUntil; 
 		int dynState;
+		gPixmap *piconPtr; // picon the row was built with (kept alive by its ops), to notice a changed picon
+		unsigned int lastUse = 0; // m_row_tick when last built or painted, for least-recently-used eviction
+		bool hadEvent = false; // the row was built with an event: one built without is rebuilt as soon as the event cache has one
+		bool layered = false; // the ops can be drawn by layer (shapes, images, text), see opsLayerSafe()
 		std::vector<Op> ops;
 	};
+	static int opLayer(int kind);
+	static bool opsLayerSafe(const std::vector<Op> &ops);
+	bool piconChanged(const eServiceReference &ref, const RowCache &rc);
 
 	std::vector<Style> m_styles;
 	std::vector<Template> m_templates;
@@ -208,13 +215,17 @@ private:
 	std::set<eServiceReference> m_rec_refs;
 	time_t m_rec_time;
 
-	// SVG picon read-ahead: while scrolling, the SVG picons of the rows beyond the visible page (in the direction of travel)
-	// are rasterised on a worker thread and filed in m_picon_cache (SVGs only; PNG picons are not cached).
-	friend struct TplPrefetch;
-	std::shared_ptr<void> m_prefetch;
-	int m_prefetch_last, m_prefetch_dir;
-	void prefetchKick();
-	void prefetchTick();
+	// picons / events: warmed by eListboxServiceContent::warmTick() through these hooks
+	bool warmUsesPicons();
+	int warmPiconWidth();
+	void warmEventArrived(const eServiceReference &ref);
+	bool warmRows(int ahead, int dir, double budgetMs);
+	int paintPasses();
+	bool eventAvailable(const eServiceReference &ref);
+	void setPaintPass(int pass) { m_paint_pass = pass; }
+	int m_paint_pass = -1;
+	unsigned int m_row_tick = 0;
+	void trimRowCache(std::map<eServiceReference, RowCache> &rows, size_t limit);
 	void picon(const eServiceReference &ref, int width, ePtr<gPixmap> &pixmap, bool &isSVG);
 
 	int styleIndex(const std::string &name);
@@ -226,7 +237,7 @@ private:
 	bool resolveColor(const Style &st, int selected, int marked, int dyn, bool border, gRGB &out) const;
 	void buildRow(const Template &tpl, const eServiceReference &ref, iStaticServiceInformation *info, int dyn, time_t now, RowCache &out);
 	std::string tokenText(int kind, const eServiceReference &ref, const std::string &name, eServiceEvent *evt, eServiceEvent *next, time_t now);
-	void paintOps(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected, int marked, const RowCache &rc, time_t now);
+	void paintOps(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected, int marked, const RowCache &rc, time_t now, int pass = -1);
 #endif
 };
 

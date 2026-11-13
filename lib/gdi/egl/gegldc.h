@@ -443,6 +443,13 @@ private:
 	std::vector<float> m_text_band_scratch;
 	void releaseFrameTextures();
 	void setGlScissor(const eRect& rect);
+	// redundant-state filters for the two GL states a frame changes most - see glScissorCached()'s comment
+	void glScissorCached(int x, int y, int w, int h);
+	void rawBlendFunc(GLenum srcRGB, GLenum dstRGB, GLenum srcA, GLenum dstA);
+	void invalidateGlStateCache() { m_gl_scissor_valid = false; m_gl_blend_mode = -1; }
+	int m_gl_scissor[4] = {0, 0, 0, 0};
+	bool m_gl_scissor_valid = false;
+	int m_gl_blend_mode = -1; // 1 = accumulating, 0 = overwrite-alpha, -1 = unknown
 
 	// executeFill()/executeFillRegion()/executeClear()'s plain-overwrite
 	// paths all draw one quad per (disjoint) clip.rects entry, sized to

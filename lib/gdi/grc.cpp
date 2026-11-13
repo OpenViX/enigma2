@@ -1127,6 +1127,13 @@ void gDC::exec(const gOpcode *o)
 		gRegion clip;
 		// this code should be checked again but i'm too tired now
 
+		if (o->parm.blit->flags & gPixmap::blitPreloadTexture) // texture preload is an EGL-only no-op here
+		{
+			o->parm.blit->pixmap->Release();
+			delete o->parm.blit;
+			break;
+		}
+
 		o->parm.blit->position.moveBy(m_current_offset);
 
 		if (o->parm.blit->clip.valid())

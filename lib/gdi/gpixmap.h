@@ -204,7 +204,9 @@ public:
 		blitHAlignCenter = 16,
 		blitHAlignRight = 32,
 		blitVAlignCenter = 64,
-		blitVAlignBottom = 128
+		blitVAlignBottom = 128,
+		// Not a draw: ask the GPU backend to create the pixmap's texture now (off the critical path of a paint), draw nothing.
+		blitPreloadTexture = 256
 	};
 
 	enum
