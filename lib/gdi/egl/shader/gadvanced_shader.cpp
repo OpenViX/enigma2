@@ -33,6 +33,7 @@ static const char* fragment_shader_es3 = R"(#version 300 es
     uniform vec4 u_gradient_colors[16];
     uniform float u_gradient_stops[16];
     uniform int u_gradient_orientation;
+    uniform float u_gradient_span;
     uniform int u_alphablend;
     uniform float u_rbswap;
     uniform float u_coverage_alpha;
@@ -71,9 +72,9 @@ static const char* fragment_shader_es3 = R"(#version 300 es
         if (u_num_stops > 0) {
             float t = 0.0;
             if (u_gradient_orientation == 2) {
-                t = (v_pos.x - u_rect_size.x) / u_rect_size.z;
+                t = (v_pos.x - u_rect_size.x) / u_gradient_span;
             } else {
-                t = (v_pos.y - u_rect_size.y) / u_rect_size.w;
+                t = (v_pos.y - u_rect_size.y) / u_gradient_span;
             }
 
             vec4 grad_color = u_gradient_colors[0];
@@ -158,6 +159,7 @@ static const char* fragment_shader_es2 = R"(#version 100
     uniform vec4 u_gradient_colors[16];
     uniform float u_gradient_stops[16];
     uniform int u_gradient_orientation;
+    uniform float u_gradient_span;
     uniform int u_alphablend;
     uniform float u_rbswap;
     uniform float u_coverage_alpha;
@@ -192,9 +194,9 @@ static const char* fragment_shader_es2 = R"(#version 100
         if (u_num_stops > 0) {
             float t = 0.0;
             if (u_gradient_orientation == 2) {
-                t = (v_pos.x - u_rect_size.x) / u_rect_size.z;
+                t = (v_pos.x - u_rect_size.x) / u_gradient_span;
             } else {
-                t = (v_pos.y - u_rect_size.y) / u_rect_size.w;
+                t = (v_pos.y - u_rect_size.y) / u_gradient_span;
             }
 
             vec4 grad_color = u_gradient_colors[0];
@@ -329,6 +331,7 @@ bool gAdvancedShader::init() {
 	m_gradient_stops_location = glGetUniformLocation(m_program_id, "u_gradient_stops");
 	m_num_stops_location = glGetUniformLocation(m_program_id, "u_num_stops");
 	m_gradient_orientation_location = glGetUniformLocation(m_program_id, "u_gradient_orientation");
+	m_gradient_span_location = glGetUniformLocation(m_program_id, "u_gradient_span");
 	m_rbswap_location = glGetUniformLocation(m_program_id, "u_rbswap");
 	m_coverage_alpha_location = glGetUniformLocation(m_program_id, "u_coverage_alpha");
 
@@ -374,7 +377,7 @@ void gAdvancedShader::setResolution(float width, float height) {
 }
 
 void gAdvancedShader::drawAdvancedRect(float x, float y, float width, float height, int radius, uint8_t edges, const std::vector<gRGB>& gradient_colors, uint8_t orientation, bool alphablend,
-									   float alpha, const gRGB& solid_color, int border_width, const gRGB& border_color, bool coverage_alpha, const float* quad) {
+									   float alpha, const gRGB& solid_color, int border_width, const gRGB& border_color, bool coverage_alpha, const float* quad, float gradient_span) {
 	bind();
 
 	glUniform1f(m_coverage_alpha_location, coverage_alpha ? 1.0f : 0.0f);
@@ -399,6 +402,7 @@ void gAdvancedShader::drawAdvancedRect(float x, float y, float width, float heig
 	if (gradient_colors.size() > 0) {
 		glUniform1i(m_num_stops_location, gradient_colors.size());
 		glUniform1i(m_gradient_orientation_location, orientation);
+		glUniform1f(m_gradient_span_location, gradient_span > 0.0f ? gradient_span : (orientation == 2 ? width : height));
 		glUniform1i(m_alphablend_location, alphablend ? 1 : 0);
 
 		float colors[16 * 4];

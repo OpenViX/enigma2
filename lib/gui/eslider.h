@@ -38,6 +38,7 @@ private:
 	gRegion m_currently_filled;
 	gRGB m_border_color, m_foreground_color, m_background_color;
 
+	uint8_t gradientDirection(uint8_t direction) const;
 	bool m_background_gradient_set = false;
 	bool m_background_gradient_alphablend = false;
 	uint8_t m_background_gradient_direction = 0;

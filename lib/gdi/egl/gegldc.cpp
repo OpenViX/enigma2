@@ -902,6 +902,9 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 		const float w = op->parm.rectangle->area.width();
 		const float h = op->parm.rectangle->area.height();
 		const float alpha = 1.0f - (m_background_color_rgb.a / 255.0f);
+		// Gradient length along its axis: the rect itself, or the full (e.g. whole
+		// progress bar) length when setGradient() gave a larger fullSize.
+		const float grad_span = std::max(m_gradient_orientation == 2 ? w : h, (float)m_gradient_fullSize);
 		auto drawPass = [&](bool coverage_alpha) {
 			for (unsigned int i = 0; i < m_current_clip.rects.size(); ++i) {
 				if (m_profile) {
@@ -913,7 +916,7 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 				}
 				setGlScissor(m_current_clip.rects[i]);
 				m_advanced_shader.drawAdvancedRect(x, y, w, h, m_radius, m_radius_edges, m_gradient_colors, m_gradient_orientation, m_gradient_alphablend > 0, alpha,
-												   m_background_color_rgb, m_border_width, m_border_color, coverage_alpha);
+												   m_background_color_rgb, m_border_width, m_border_color, coverage_alpha, nullptr, grad_span);
 			}
 		};
 
@@ -950,7 +953,7 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 				out[0] = sr; out[1] = sg; out[2] = sb; out[3] = alpha;
 				if (nstops == 0)
 					return;
-				float t = m_gradient_orientation == 2 ? (px - x) / w : (py - y) / h;
+				float t = m_gradient_orientation == 2 ? (px - x) / grad_span : (py - y) / grad_span;
 				t = std::min(1.0f, std::max(0.0f, t));
 				const float scaled = t * (float)(nstops - 1);
 				size_t i = std::min((size_t)scaled, nstops - 2);
@@ -1021,7 +1024,7 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 				}
 				const bool horiz = m_gradient_orientation == 2;
 				const float lo = horiz ? x0 : y0, hi = horiz ? x1 : y1;
-				const float origin = horiz ? x : y, span = horiz ? w : h;
+				const float origin = horiz ? x : y, span = grad_span;
 				float prev = lo;
 				for (size_t s = 1; s + 1 <= nstops - 1; ++s) {
 					float b = origin + span * (float)s / (float)(nstops - 1);
@@ -1114,7 +1117,7 @@ void gEGLDC::executeRectangle(const gOpcode* op) {
 							}
 							setGlScissor(cr);
 							m_advanced_shader.drawAdvancedRect(x, y, w, h, m_radius, m_radius_edges, m_gradient_colors, m_gradient_orientation, grad_alphablend, alpha, m_background_color_rgb,
-															   m_border_width, m_border_color, coverage_alpha, q);
+															   m_border_width, m_border_color, coverage_alpha, q, grad_span);
 						}
 					}
 				};

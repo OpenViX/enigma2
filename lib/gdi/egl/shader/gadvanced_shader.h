@@ -33,6 +33,7 @@ private:
 	GLint m_gradient_stops_location; // array of floats
 	GLint m_num_stops_location;
 	GLint m_gradient_orientation_location;
+	GLint m_gradient_span_location;
 
 	// ES2-only per-corner radius uniforms (replaces integer bitmask u_edges)
 	// GLSL ES 1.00 does not support bitwise operations on integer uniforms.
@@ -57,7 +58,7 @@ public:
 	void setResolution(float width, float height);
 
 	void drawAdvancedRect(float x, float y, float width, float height, int radius, uint8_t edges, const std::vector<gRGB>& gradient_colors, uint8_t orientation, bool alphablend, float alpha,
-						  const gRGB& solid_color, int border_width, const gRGB& border_color, bool coverage_alpha = false, const float* quad = nullptr);
+						  const gRGB& solid_color, int border_width, const gRGB& border_color, bool coverage_alpha = false, const float* quad = nullptr, float gradient_span = 0.0f);
 	// quad, if non-null, is {x, y, w, h}: draw only that sub-area of the
 	// rect (x, y, width, height) - the shader still evaluates against the
 	// full rect's uniforms, so the result is identical to the corresponding

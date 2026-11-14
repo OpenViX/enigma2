@@ -56,6 +56,14 @@ void eSlider::setBackgroundColor(const gRGB &col)
 	invalidate();
 }
 
+// gradient direction as set by the skin; falls back to the slider's own axis when unset
+uint8_t eSlider::gradientDirection(uint8_t direction) const
+{
+	if (direction == 1 || direction == 2)
+		return direction;
+	return m_orientation == orHorizontal ? 2 : 1;
+}
+
 int eSlider::event(int event, void *data, void *data2)
 {
 	switch (event)
@@ -115,10 +123,7 @@ int eSlider::event(int event, void *data, void *data2)
 				}
 				painter.drawRectangle(eRect(ePoint(0, 0), size()));
 				if(m_background_gradient_set) {
-					if (m_orientation == orHorizontal)
-						painter.setGradient(m_background_gradient_colors, 2, m_background_gradient_alphablend, 0);
-					else
-						painter.setGradient(m_background_gradient_colors, 1, m_background_gradient_alphablend, 0);
+						painter.setGradient(m_background_gradient_colors, gradientDirection(m_background_gradient_direction), m_background_gradient_alphablend, 0);
 				}
 				else
 					painter.setBackgroundColor(m_have_background_color ? m_background_color : gRGB(0, 0, 0));
@@ -139,10 +144,10 @@ int eSlider::event(int event, void *data, void *data2)
 			{
 				if (m_foreground_gradient_set)
 				{
-					if (m_orientation == orHorizontal)
-						painter.setGradient(m_foreground_gradient_colors, 2, m_foreground_gradient_alphablend, m_foreground_gradient_fullcolor ? 0 : m_currently_filled.extends.size().height());
-					else
-						painter.setGradient(m_foreground_gradient_colors, 1, m_foreground_gradient_alphablend, m_foreground_gradient_fullcolor ? 0 : m_currently_filled.extends.size().width());
+						// unless fullColor, the gradient spans the whole bar, not just the filled part
+						const uint8_t dir = gradientDirection(m_foreground_gradient_direction);
+						const int fullSize = m_foreground_gradient_fullcolor ? 0 : (dir == 2 ? size().width() : size().height());
+						painter.setGradient(m_foreground_gradient_colors, dir, m_foreground_gradient_alphablend, fullSize);
 				}
 				else
 				{
