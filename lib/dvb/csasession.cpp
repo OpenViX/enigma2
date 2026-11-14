@@ -430,6 +430,10 @@ void eDVBCSASession::onCwReceived(eServiceReferenceDVB ref, int parity, const ch
 		// tuner streams). Register ADDITIONALLY for the actual serviceId so the engine
 		// receives CWs from both connections - OScam alternates CW delivery between them.
 		eDebug("[eDVBCSASession] Additional serviceId %u registered (primary=%u)", serviceId, m_cw_service_id);
+		// The handler keeps a raw engine pointer: a replaced registration that
+		// stayed behind would get CWs after this session and its engine are gone.
+		if (m_cw_alt_service_id)
+			eDVBCWHandler::getInstance()->unregisterEngine(m_cw_alt_service_id, m_engine);
 		m_cw_alt_service_id = serviceId;
 		eDVBCWHandler::getInstance()->registerEngine(serviceId, m_engine, ecm_mode);
 		// Apply this CW directly - CWHandler already intercepted and missed it

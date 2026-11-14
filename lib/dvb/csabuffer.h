@@ -29,6 +29,9 @@ public:
 
 	bool start();
 	void stop();
+	/* Release everything still queued at once, ignoring delay and hold, then
+	 * stop. For a recording ending: what is queued would be lost otherwise. */
+	void drain();
 
 	/* Filepush thread. Copies and returns; false if the chunk was dropped. */
 	bool push(const unsigned char *data, int len);
@@ -103,6 +106,7 @@ private:
 
 	std::atomic<uint64_t> m_delay_us{0};
 	int m_stop{1};
+	std::atomic<bool> m_drain{false};
 	std::atomic<int> m_offset_ms{0};
 	std::atomic<bool> m_hold{false};
 	std::function<bool()> m_hold_query;

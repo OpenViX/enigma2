@@ -1742,7 +1742,14 @@ void eDVBRecordScrambledThread::flush()
 	 * writes to that fd and has to be gone by now. */
 	if (m_delay_buffer)
 	{
-		m_delay_buffer->stop();
+		/* A recording would lose what is still queued, up to the whole delay.
+		 * Live playback and streams are being torn down: stop at once. The
+		 * DVR write could also block on a decoder that is going away. */
+		struct stat st = {};
+		if (!m_is_streaming && m_fd_dest >= 0 && fstat(m_fd_dest, &st) == 0 && S_ISREG(st.st_mode))
+			m_delay_buffer->drain();
+		else
+			m_delay_buffer->stop();
 		m_delay_restart = true;
 	}
 

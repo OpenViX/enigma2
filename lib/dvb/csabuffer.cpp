@@ -85,6 +85,7 @@ bool eDVBCSABuffer::start()
 	m_dropped = 0;
 	m_bytes_in = 0;
 	m_start_us = monotonicUs();
+	m_drain = false;
 	m_stop = 0;
 
 	run();
@@ -103,6 +104,22 @@ void eDVBCSABuffer::stop()
 	m_cond.notify_all();
 	kill();
 
+	logSummary();
+}
+
+void eDVBCSABuffer::drain()
+{
+	if (m_stop == 1)
+		return;
+
+	{
+		std::lock_guard<std::mutex> lock(m_lock);
+		m_drain = true;
+	}
+	m_cond.notify_all();
+	kill();  // the thread exits by itself once the ring is empty
+
+	m_stop = 1;
 	logSummary();
 }
 
@@ -301,11 +318,16 @@ void eDVBCSABuffer::thread()
 		{
 			std::unique_lock<std::mutex> lock(m_lock);
 
-			while (!m_stop && m_read_pos == m_write_pos)
+			while (!m_stop && !m_drain && m_read_pos == m_write_pos)
 				m_cond.wait_for(lock, std::chrono::milliseconds(100));
 
 			if (m_stop)
 				break;
+
+			/* Draining: neither hold nor wait, everything goes out now. */
+			const bool draining = m_drain.load();
+			if (draining && m_read_pos == m_write_pos)
+				break;  // drained
 
 			/* Peek at the oldest chunk; it may not be due yet. */
 			ChunkHdr hdr;
@@ -346,7 +368,7 @@ void eDVBCSABuffer::thread()
 					(unsigned long long)(m_max_delay_us / 1000));
 			}
 
-			if (m_hold.load() && !m_gave_up && age < m_max_delay_us)
+			if (!draining && m_hold.load() && !m_gave_up && age < m_max_delay_us)
 			{
 				if (!m_holding)
 				{
@@ -388,7 +410,7 @@ void eDVBCSABuffer::thread()
 					(unsigned long long)(m_delay_us.load() / 1000));
 			}
 
-			if (const uint64_t delay_us = m_delay_us.load(); age < delay_us)
+			if (const uint64_t delay_us = m_delay_us.load(); !draining && age < delay_us)
 			{
 				/* Sleep the remainder, but wake often enough to see a stop. */
 				uint64_t left_ms = (delay_us - age) / 1000 + 1;
