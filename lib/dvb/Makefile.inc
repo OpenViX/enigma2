@@ -1,6 +1,7 @@
 noinst_LIBRARIES += dvb/libenigma_dvb.a
 
 dvb_libenigma_dvb_a_SOURCES = \
+	dvb/atsc.cpp \
 	dvb/cablescan.cpp \
 	dvb/cahandler.cpp \
 	dvb/crc32.cpp \
@@ -14,12 +15,15 @@ dvb_libenigma_dvb_a_SOURCES = \
 	dvb/dvb.cpp \
 	dvb/dvbtime.cpp \
 	dvb/eit.cpp \
+	dvb/encoder.cpp \
 	dvb/epgcache.cpp \
 	dvb/epgchanneldata.cpp \
 	dvb/epgtransponderdatareader.cpp \
 	dvb/esection.cpp \
 	dvb/fastscan.cpp \
 	dvb/fbc.cpp \
+	dvb/fcc.cpp \
+	dvb/fccdecoder.cpp \
 	dvb/filepush.cpp \
 	dvb/frontend.cpp \
 	dvb/frontendparms.cpp \
@@ -27,25 +31,23 @@ dvb_libenigma_dvb_a_SOURCES = \
 	dvb/opentv.cpp \
 	dvb/pesparse.cpp \
 	dvb/pmt.cpp \
+	dvb/pmtparse.cpp \
 	dvb/pvrparse.cpp \
 	dvb/radiotext.cpp \
 	dvb/rotor_calc.cpp \
 	dvb/scan.cpp \
 	dvb/sec.cpp \
+	dvb/servicetsfilter.cpp \
+	dvb/streamserver.cpp \
 	dvb/subtitle.cpp \
 	dvb/teletext.cpp \
 	dvb/tstools.cpp \
-	dvb/volume.cpp \
-	dvb/streamserver.cpp \
-	dvb/pmtparse.cpp \
-	dvb/encoder.cpp \
-	dvb/atsc.cpp \
-	dvb/fcc.cpp \
-	dvb/fccdecoder.cpp
+	dvb/volume.cpp
 
 dvbincludedir = $(pkgincludedir)/lib/dvb
 dvbinclude_HEADERS = \
 	dvb/absdiff.h \
+	dvb/atsc.h \
 	dvb/cablescan.h \
 	dvb/cahandler.h \
 	dvb/crc32.h \
@@ -59,12 +61,15 @@ dvbinclude_HEADERS = \
 	dvb/dvb.h \
 	dvb/dvbtime.h \
 	dvb/eit.h \
+	dvb/encoder.h \
 	dvb/epgcache.h \
 	dvb/epgchanneldata.h \
 	dvb/epgtransponderdatareader.h \
 	dvb/esection.h \
 	dvb/fastscan.h \
 	dvb/fbc.h \
+	dvb/fcc.h \
+	dvb/fccdecoder.h \
 	dvb/filepush.h \
 	dvb/frontend.h \
 	dvb/frontendparms.h \
@@ -76,19 +81,16 @@ dvbinclude_HEADERS = \
 	dvb/opentv.h \
 	dvb/pesparse.h \
 	dvb/pmt.h \
+	dvb/pmtparse.h \
 	dvb/pvrparse.h \
 	dvb/radiotext.h \
 	dvb/rotor_calc.h \
 	dvb/scan.h \
 	dvb/sec.h \
+	dvb/servicetsfilter.h \
 	dvb/specs.h \
+	dvb/streamserver.h \
 	dvb/subtitle.h \
 	dvb/teletext.h \
 	dvb/tstools.h \
-	dvb/volume.h \
-	dvb/streamserver.h \
-	dvb/pmtparse.h \
-	dvb/encoder.h \
-	dvb/atsc.h \
-	dvb/fcc.h \
-	dvb/fccdecoder.h
+	dvb/volume.h

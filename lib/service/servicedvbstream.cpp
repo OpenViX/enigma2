@@ -267,6 +267,8 @@ int eDVBServiceStream::doRecord()
 	}
 
 	eDebug("[eDVBServiceStream] start streaming...");
+	if (m_record && have_program_info && !program.isCached && !m_record_no_pids)
+		m_record->setServiceFilter(program.serviceId, program.pmtPid, m_service_handler.hasSharedPmtPid(program.pmtPid));
 
 	if (recordCachedPids())
 	{

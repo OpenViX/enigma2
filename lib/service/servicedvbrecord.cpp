@@ -434,6 +434,11 @@ int eDVBServiceRecord::doRecord()
 			eDebug("[eDVBServiceRecord] getting program info failed.");
 		else
 		{
+			// Cached PIDs do not tell us whether this transponder shares a PMT PID
+			// with other services; doRecord() runs again once the real PMT arrives.
+			if (m_record && !program.isCached)
+				m_record->setServiceFilter(program.serviceId, program.pmtPid, m_service_handler.hasSharedPmtPid(program.pmtPid));
+
 			// Check if channel needs software descrambling
 			bool is_encrypted = program.isCrypted();
 			if (is_encrypted && !m_use_software_descramble)

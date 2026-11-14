@@ -831,7 +831,7 @@ eDVBRecordFileThread::eDVBRecordFileThread(int packetsize, int bufferCount, int 
 	 */
 	eFilePushThreadRecorder(
 		/*buffer*/ (unsigned char*) ::mmap(NULL, (buffersize > 0) ? (buffersize * bufferCount) : (bufferCount * packetsize * 1024), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, /*ignored*/-1, 0),
-		/*buffersize*/ (buffersize > 0) ? buffersize : (packetsize * 1024)),
+		/*buffersize*/ (buffersize > 0) ? buffersize : (packetsize * 1024), packetsize),
 	 m_ts_parser(packetsize),
 	 m_current_offset(0),
 	 m_fd_dest(-1),
@@ -2077,6 +2077,11 @@ bool eDVBTSRecorder::waitForFirstData(int timeout_ms)
 	// Delegate to thread - only ScrambledThread actually implements waiting
 	// Other thread types return immediately via base class default
 	return m_thread->waitForFirstData(timeout_ms);
+}
+
+void eDVBTSRecorder::setServiceFilter(int serviceId, int pmtPid, bool shared)
+{
+	m_thread->setServiceFilter(serviceId, pmtPid, shared);
 }
 
 void eDVBTSRecorder::setMinWrite(size_t size)

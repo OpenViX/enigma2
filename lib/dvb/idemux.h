@@ -64,6 +64,8 @@ public:
 
 	// Set write accumulation threshold (0 = continuous writing)
 	virtual void setMinWrite(size_t size) = 0;
+	// Single-service output only. Other demux implementations may leave PSI unchanged.
+	virtual void setServiceFilter(int serviceId, int pmtPid, bool shared) { }
 
 	/* Attach (or, with fd=-1, detach) a passive monitor fd. When set, a
 	 * best-effort, non-blocking copy of the data actually written to the
