@@ -629,6 +629,16 @@ void eWidgetDesktop::sendHide(ePoint point, eSize size)
 	painter.sendHide(point, size);
 }
 
+void eWidgetDesktop::preloadTexture(gPixmap *pixmap)
+{
+#ifdef HAVE_EGL
+	if (!pixmap || !m_screen.m_dc)
+		return;
+	gPainter painter(m_screen.m_dc);
+	painter.blit(pixmap, ePoint(0, 0), eRect(), gPainter::BT_PRELOAD_TEXTURE);
+#endif
+}
+
 eRect eWidgetDesktop::bounds() const
 {
 	const eSize size = m_screen.m_screen_size;

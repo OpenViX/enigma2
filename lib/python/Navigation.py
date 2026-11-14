@@ -44,6 +44,10 @@ class Navigation:
 		self.skipServiceReferenceReset = False
 		self.retryServicePlayCount = 0
 		self.retryServicePlayTimer = eTimer()
+		self._playRestTimer = eTimer()
+		self._playRestTimer.callback.append(self._playServiceRestDeferred)
+		self._playRestArgs = None
+		self._deferredRealPlay = None
 		self.RecordTimer = RecordTimer.RecordTimer()
 		self.PowerTimer = PowerTimer.PowerTimer()
 		self.__wasTimerWakeup = False
@@ -125,6 +129,7 @@ class Navigation:
 
 	def playService(self, ref, checkParentalControl=True, forceRestart=False, adjust=True, event=None):
 		self._cancelRetryTimer()
+		self._playRestArgs = None
 
 		if exists("/proc/stb/lcd/symbol_signal") and hasattr(config.lcd, "mode"):
 			open("/proc/stb/lcd/symbol_signal", "w").write("1" if ref and "0:0:0:0:0:0:0:0:0" not in ref.toString() and config.lcd.mode.value else "0")
@@ -164,6 +169,22 @@ class Navigation:
 			InfoBarInstance.session.screen["Event_Next"].updateSource(self.currentlyPlayingServiceReference)
 			InfoBarInstance.serviceStarted()
 
+		# Let the InfoBar paint first: the work below (parental check, extensions, servicelist
+		# setCurrent, ...) is synchronous and would otherwise delay the initial infobar show.
+		if InfoBarInstance and current_service_source and InfoBarInstance.execing and InfoBarInstance.shown is False and config.usage.show_infobar_on_zap.value:
+			self._playRestArgs = (ref, oldref, InfoBarInstance, checkParentalControl, forceRestart, adjust, event)
+			self._playRestTimer.start(1, True)
+			return 0
+		return self._playServiceRest(ref, oldref, InfoBarInstance, checkParentalControl, forceRestart, adjust, event)
+
+	def _playServiceRestDeferred(self):
+		args = self._playRestArgs
+		self._playRestArgs = None
+		if args is not None:
+			self._playServiceRest(*args)
+
+	def _playServiceRest(self, ref, oldref, InfoBarInstance, checkParentalControl, forceRestart, adjust, event):
+		is_async_play = False
 		if not checkParentalControl or parentalControl.isServicePlayable(ref, boundFunction(self.playService, checkParentalControl=False, forceRestart=forceRestart, adjust=adjust)):
 			if ref.flags & eServiceReference.isGroup:
 				oldref = self.currentlyPlayingServiceReference or eServiceReference()
@@ -262,7 +283,9 @@ class Navigation:
 					self._pendingPlayTimer.callback.append(self._executePendingPlay)
 				else:
 					self._pendingPlayTimer.stop()
-				self._pendingPlayTimer.start(0, True)
+				# A 0 ms timer can fire before the pending InfoBar repaint is processed, so the
+				# blocking stop/play chain delays the infobar. Give the repaint a short head start.
+				self._pendingPlayTimer.start(25, True)
 				return 0
 		elif oldref and InfoBarInstance and InfoBarInstance.servicelist.servicelist.setCurrent(ref, adjust):
 			self.currentlyPlayingServiceOrGroup = InfoBarInstance.servicelist.servicelist.getCurrent()
@@ -330,6 +353,13 @@ class Navigation:
 			self.originalPlayingServiceReference = None
 			InfoBarInstance.serviceStarted()
 
+		# A dynamic (async) service resolver may have answered before this deferred play ran
+		# (see playRealService in the IPTV plugin); start the resolved ref now.
+		deferred = self._deferredRealPlay
+		self._deferredRealPlay = None
+		if deferred is not None and is_async_play and hasattr(self, "playRealService"):
+			self.playRealService(deferred)
+
 	def getCurrentlyPlayingServiceReference(self):
 		return self.currentlyPlayingServiceReference
 
@@ -376,6 +406,9 @@ class Navigation:
 	def stopService(self):
 		# Cancel any deferred play so it cannot restart the service after an
 		# explicit stop (e.g. when Movie Selection or another screen stops live TV).
+		self._deferredRealPlay = None
+		self._playRestArgs = None
+		self._playRestTimer.stop()
 		if hasattr(self, "_pendingPlayTimer"):
 			self._pendingPlayTimer.stop()
 		self.__dict__.pop("_pendingPlay", None)

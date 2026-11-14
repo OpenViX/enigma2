@@ -2,13 +2,21 @@ from os import scandir
 from os.path import join, normpath, isdir
 from re import compile
 
-from enigma import ePixmap, eServiceCenter, eServiceReference, eTimer, iServiceInformation, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_HALIGN_CENTER, BT_VALIGN_CENTER
+from enigma import ePixmap, eServiceCenter, eServiceReference, eTimer, iServiceInformation, BT_SCALE, BT_KEEP_ASPECT_RATIO, BT_HALIGN_CENTER, BT_VALIGN_CENTER, eListboxServiceContent
 
 from Components.config import config
 from Components.Harddisk import harddiskmanager
 from Components.Renderer.Renderer import Renderer
 from Tools.Alternatives import GetWithAlternative
 from Tools.Directories import pathExists, SCOPE_CURRENT_SKIN, resolveFilename, sanitizeFilename
+
+
+def invalidateListPicons():
+	# The service lists cache the picon of every row they have drawn; tell them the picon source changed.
+	try:
+		eListboxServiceContent.invalidatePiconCaches()
+	except Exception as err:
+		print("[Picon] invalidatePiconCaches failed", err)
 
 
 class PiconLocator:
@@ -53,6 +61,7 @@ class PiconLocator:
 					if any(entry.name.endswith((".png", ".svg")) for entry in scandir(path)):
 						print("[PiconLocator] adding path:", path)
 						self.searchPaths.append(path)
+						invalidateListPicons()
 			except Exception as err:
 				print("[PiconLocator] Error adding mount point", err)
 
@@ -64,6 +73,7 @@ class PiconLocator:
 				print("[PiconLocator] removed path:", path)
 				if path == self.activePiconPath:
 					self.activePiconPath = None
+				invalidateListPicons()
 
 	def __onPartitionChange(self, why, part):
 		if why == "add":
@@ -91,6 +101,7 @@ class PiconLocator:
 		value = normpath(value)
 		if pathExists(value) and not value.startswith(("/media/net", "/media/autofs")) and value not in self.searchPaths:
 			self.searchPaths.append(value)
+			invalidateListPicons()
 
 	def __iterServiceRefPiconCandidates(self, serviceRef):
 		# remove the path and name fields, and replace ":" with "_"

@@ -70,7 +70,7 @@ static const char* fragment_shader_es3 = R"(#version 300 es
 
         if (u_num_stops > 0) {
             float t = 0.0;
-            if (u_gradient_orientation == 1) {
+            if (u_gradient_orientation == 2) {
                 t = (v_pos.x - u_rect_size.x) / u_rect_size.z;
             } else {
                 t = (v_pos.y - u_rect_size.y) / u_rect_size.w;
@@ -191,7 +191,7 @@ static const char* fragment_shader_es2 = R"(#version 100
 
         if (u_num_stops > 0) {
             float t = 0.0;
-            if (u_gradient_orientation == 1) {
+            if (u_gradient_orientation == 2) {
                 t = (v_pos.x - u_rect_size.x) / u_rect_size.z;
             } else {
                 t = (v_pos.y - u_rect_size.y) / u_rect_size.w;

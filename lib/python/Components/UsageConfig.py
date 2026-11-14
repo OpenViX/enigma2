@@ -1,4 +1,5 @@
 import io
+import json
 import locale
 import os
 import skin
@@ -29,6 +30,58 @@ originalAudioTracks = "orj dos ory org esl qaa qaf und mis mul ORY ORJ Audio_ORJ
 visuallyImpairedCommentary = "NAR qad"
 
 
+def getServiceListTemplateChoices():
+	# "legacy" keeps the classic renderer, "auto" picks the template named single / double / double_next from the
+	# "two lines" setting, and every template the skin defines can be chosen directly.
+	choices = [("legacy", _("Classic"))]
+	if skin.serviceListTemplates["templates"]:
+		choices.append(("auto", _("Skin templates (follow 'two lines')")))
+		choices += [(name, template["title"]) for name, template in skin.serviceListTemplates["templates"].items()]
+	return choices
+
+
+_serviceListTemplateUpdating = False
+
+
+def getServiceListTemplateMemory():
+	# the choice made for each skin: {"E2-DarkOS/skin.xml": "double", ...}
+	try:
+		memory = json.loads(config.usage.servicelist_template_skins.value)
+	except ValueError:
+		return {}
+	return memory if isinstance(memory, dict) else {}
+
+
+def rememberServiceListTemplate(configElement):
+	# only a choice made by the user for a skin that offers templates is remembered
+	if _serviceListTemplateUpdating or not skin.serviceListTemplates["templates"] or not skin.currentPrimarySkin:
+		return
+	memory = getServiceListTemplateMemory()
+	memory[skin.currentPrimarySkin] = configElement.value
+	config.usage.servicelist_template_skins.value = json.dumps(memory)
+	config.usage.servicelist_template_skins.save()
+
+
+def updateServiceListTemplateChoices():
+	# The choices belong to the skin that is loaded: at startup and after a skin reload without restart.
+	# The choice made before for this skin is restored, a skin without templates falls back to the classic list
+	# without forgetting the choices made for other skins.
+	global _serviceListTemplateUpdating
+	element = config.usage.servicelist_template
+	choices = getServiceListTemplateChoices()
+	names = [x[0] for x in choices]
+	_serviceListTemplateUpdating = True
+	try:
+		element.setChoices(choices, default="legacy")
+		wanted = getServiceListTemplateMemory().get(skin.currentPrimarySkin)
+		if wanted in names:
+			element.value = wanted
+		elif element.value not in names:
+			element.value = "legacy"
+	finally:
+		_serviceListTemplateUpdating = False
+
+
 def InitUsageConfig():
 	config.version = ConfigNumber(default=0)
 	config.misc.remotecontrol_text_support = ConfigYesNo(default=SystemInfo["brand"] in ('vuplus', 'ini'))
@@ -53,14 +106,12 @@ def InitUsageConfig():
 	config.usage.servicelist_twolines = ConfigSelection(default="0", choices=[("0", _("None")), ("1", _("two lines")), ("2", _("two lines+next event"))])
 	config.usage.servicelist_twolines.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
 
-	# Row design from the skin templates (<servicelisttemplates>). "legacy" keeps the classic renderer, "auto" picks
-	# the template named single / double / double_next from the "two lines" setting above, and every template the
-	# skin defines can be chosen directly. The skin is loaded before this runs. Applied on GUI restart.
-	templateChoices = [("legacy", _("Classic"))]
-	if skin.serviceListTemplates["templates"]:
-		templateChoices.append(("auto", _("Skin templates (follow 'two lines')")))
-		templateChoices += [(name, template["title"]) for name, template in skin.serviceListTemplates["templates"].items()]
-	config.usage.servicelist_template = ConfigSelection(default="legacy", choices=templateChoices)
+	# Row design from the skin templates (<servicelisttemplates>), see getServiceListTemplateChoices(). The skin is
+	# loaded before this runs and the choices are refreshed on a skin reload. Applied when the channel list is created.
+	config.usage.servicelist_template = ConfigSelection(default="legacy", choices=getServiceListTemplateChoices())
+	config.usage.servicelist_template_skins = ConfigText(default="{}", fixed_size=False)  # choice per skin, not shown in the GUI
+	config.usage.servicelist_template.addNotifier(rememberServiceListTemplate, initial_call=False, immediate_feedback=False)
+	updateServiceListTemplateChoices()
 
 	config.usage.hide_number_markers = ConfigYesNo(default=True)
 	config.usage.hide_number_markers.addNotifier(refreshServiceList, initial_call=False, immediate_feedback=False)
@@ -115,6 +166,11 @@ def InitUsageConfig():
 	config.usage.infobar_frontend_source = ConfigSelection(default="tuner", choices=[("settings", _("Settings")), ("tuner", _("Tuner"))])
 
 	config.usage.picon_lookup_priority = ConfigSelection(default="png_svg", choices=[("png_only", _("png only")), ("svg_only", _("svg only")), ("png_svg", _("png, then svg")), ("svg_png", _("svg, then png"))])
+
+	def piconPriorityChanged(configElement):
+		from Components.Renderer.Picon import invalidateListPicons
+		invalidateListPicons()
+	config.usage.picon_lookup_priority.addNotifier(piconPriorityChanged, initial_call=False)
 	config.usage.show_picon_bkgrn = ConfigSelection(default="transparent", choices=[("none", _("Disabled")), ("transparent", _("Transparent")), ("blue", _("Blue")), ("red", _("Red")), ("black", _("Black")), ("white", _("White")), ("lightgrey", _("Light Grey")), ("grey", _("Grey"))])
 	config.usage.show_genre_info = ConfigYesNo(default=False)
 	config.usage.menu_style = ConfigSelection(default="standard", choices=[("standard", _("Standard")), ("horizontal", _("Horizontal"))])

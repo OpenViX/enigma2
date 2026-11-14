@@ -169,17 +169,31 @@ void eRCInputEventDriver::deliver(const struct input_event &ev)
 /* Key repeat workarounds for the gbquad4kpro remote driver (dvb.ko sends a spurious release+press
  * while a key is held) and a slow renderer. Compiled in only for that box; other remotes are untouched. */
 #ifdef HWGBQUAD4KPRO
-#define HOLD_BRIDGE_MS 70
+#define HOLD_BRIDGE_MS 100
 
 /* A held key repeats faster than a slow screen can be drawn. The selection moves at once but the
  * render thread is still busy with the frames before it, so the screen keeps scrolling for many steps
  * after the key was released. While more than this many frames are waiting, repeats are not delivered. */
-#define MAX_FRAMES_BEHIND 2
+#define MAX_FRAMES_BEHIND 1
+
+/* E2_MAX_FRAMES_BEHIND=<n> overrides the built-in value at start-up, to try values without rebuilding. */
+static int maxFramesBehind()
+{
+	static const int value = []() {
+		const char *e = getenv("E2_MAX_FRAMES_BEHIND");
+		int v = e && *e ? atoi(e) : MAX_FRAMES_BEHIND;
+		if (v < 0)
+			v = 0;
+		eDebug("[eRCInputEventDriver] max frames behind = %d%s", v, e && *e ? " (from E2_MAX_FRAMES_BEHIND)" : "");
+		return v;
+	}();
+	return value;
+}
 
 static bool renderBusy()
 {
 	gRC *rc = gRC::getInstance();
-	return rc && rc->pendingFrames() > MAX_FRAMES_BEHIND;
+	return rc && rc->pendingFrames() > maxFramesBehind();
 }
 
 static struct input_event makeKeyEvent(int code, int value)

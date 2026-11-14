@@ -469,7 +469,7 @@ def parseScale(s):
 	return val
 
 
-def parseServiceListTemplates(tag):
+def parseServiceListTemplates(tag, scope, pathSkin):
 	"""Parse a <servicelisttemplates> element into dictionaries understood by eListboxServiceTemplateContent.
 
 	Styles are colour sets, templates describe the rows (and the items in a row) of a service list entry.
@@ -505,7 +505,7 @@ def parseServiceListTemplates(tag):
 		else:
 			item["wmode"] = 0
 			item["width"] = parseScale(width)
-		for key in ("height", "margin", "min", "border"):
+		for key in ("height", "margin", "min", "border", "lineHeight"):
 			if key in a:
 				item[key] = parseScale(a[key])
 		if "weight" in a:
@@ -514,6 +514,12 @@ def parseServiceListTemplates(tag):
 			item["align"] = a["align"]
 		if "valign" in a:
 			item["valign"] = a["valign"]
+		# members of a <stack>: alignment along the stack, alignment across it, take the remaining space
+		for key in ("stackAlign", "stackCross"):
+			if key in a:
+				item[key] = a[key].lower()
+		if "stackFill" in a:
+			item["stackFill"] = 1 if a["stackFill"].lower() in ("1", "true", "yes", "on") else 0
 		if "pos" in a:
 			pos = [parseScale(x.strip()) for x in a["pos"].split(",")]
 			if len(pos) == 4:
@@ -526,6 +532,22 @@ def parseServiceListTemplates(tag):
 			item["fontGroup"] = fontGroups.get(a["fontGroup"], 0)
 		if "style" in a:
 			item["style"] = a["style"]
+		# rect: own colours, border and rounded corners ("8" or "8;top,left" like itemCornerRadius); any item: draw order
+		for key in ("color", "colorSelected", "borderColor", "borderColorSelected"):
+			if key in a:
+				item[key] = parseColor(a[key]).argb()
+		if "radius" in a:
+			item["radius"], item["edges"] = parseRadius(a["radius"])
+		if "z" in a:
+			item["z"] = int(a["z"])
+		# pixmap: static images from the skin
+		for key in ("src", "srcSelected"):
+			if key in a:
+				resolved = resolveFilename(scope, a[key], path_prefix=pathSkin)
+				if isfile(resolved):
+					item[key] = resolved
+				else:
+					print("[Skin] servicelisttemplates: pixmap '%s' (%s) not found!" % (a[key], resolved))
 		for key in ("ellipsis", "reserve", "keepAspect"):
 			if key in a:
 				item[key] = 1 if a[key].lower() in ("1", "true", "yes", "on") else 0
@@ -533,7 +555,23 @@ def parseServiceListTemplates(tag):
 
 	def parseRow(node):
 		a = node.attrib
-		row = {"id": a.get("id", ""), "for": a.get("for", "service"), "visible": a.get("visible", ""), "items": [parseItem(x) for x in node.findall("item")]}
+		row = {"id": a.get("id", ""), "for": a.get("for", "service"), "visible": a.get("visible", ""), "items": [], "stacks": []}
+		# <item> and <stack> in document order; the items of a <stack> are kept in the row's item list, tagged with the stack
+		for child in node:
+			if child.tag == "item":
+				row["items"].append(parseItem(child))
+			elif child.tag == "stack":
+				stack = {"layout": child.attrib.get("layout", "horizontal"), "spacing": number(child, "spacing"), "visible": child.attrib.get("visible", "")}
+				if "pos" in child.attrib:
+					pos = [parseScale(x.strip()) for x in child.attrib["pos"].split(",")]
+					if len(pos) == 4:
+						stack["pos"] = pos
+				stackId = len(row["stacks"])
+				row["stacks"].append(stack)
+				for sub in child.findall("item"):
+					item = parseItem(sub)
+					item["stack"] = stackId
+					row["items"].append(item)
 		if "height" in a:
 			row["height"] = parseScale(a["height"])
 		if "weight" in a:
@@ -542,8 +580,11 @@ def parseServiceListTemplates(tag):
 			row["align"] = a["align"]
 		row["gap"] = number(node, "gap")
 		padding = [parseScale(x.strip()) for x in a.get("padding", "0").split(",")]
+		# padding="left,right" (one value: both sides) or padding="left,right,top,bottom"
 		row["padLeft"] = padding[0]
-		row["padRight"] = padding[-1]
+		row["padRight"] = padding[1] if len(padding) > 1 else padding[0]
+		row["padTop"] = padding[2] if len(padding) > 2 else 0
+		row["padBottom"] = padding[3] if len(padding) > 3 else 0
 		return row
 
 	for style in tag.findall("styles/style"):
@@ -568,12 +609,29 @@ def parseServiceListTemplates(tag):
 			entry.update({k: v for k, v in base.items() if k not in ("name", "title", "rows", "large")})
 			entry["rows"] = list(base["rows"])
 		# layout: "list" (vertical, default), "horizontal" or "grid"; the cell size is itemWidth x itemHeight
-		for key in ("layout", "large"):
+		# spanMarkers="1": in a grid a marker takes a row of its own, as wide as the whole grid
+		for key in ("layout", "large", "spanMarkers"):
 			if key in a:
 				entry[key] = a[key]
-		for key in ("itemHeight", "itemWidth"):
+		for key in ("itemHeight", "itemWidth", "markerHeight"):
 			if key in a:
 				entry[key] = parseScale(a[key])
+		# listbox settings of the template, they replace the ones of the widget; what is not given is taken from the widget
+		for key in ("selectionZoom", "carouselZoom", "carouselCenterWidth", "carouselCenterHeight"):
+			if key in a:
+				entry[key] = parseScale(a[key]) if key.startswith("carouselCenter") else int(a[key])
+		if "carousel" in a:
+			entry["carousel"] = 1 if str(a["carousel"]).lower() in ("1", "true", "yes") else 0
+		if "carouselFocus" in a:
+			entry["carouselFocus"] = -1 if str(a["carouselFocus"]).lower() in ("center", "centre", "middle") else int(a["carouselFocus"])
+		# itemSpacing="x,y" (or one value for both): the gap between the tiles
+		if "itemSpacing" in a:
+			entry["spacingX"], entry["spacingY"] = parseSpacing(a["itemSpacing"])
+		# ...or each direction alone, itemSpacingX between the columns, itemSpacingY between the rows
+		if "itemSpacingX" in a:
+			entry["spacingX"] = parseScale(a["itemSpacingX"])
+		if "itemSpacingY" in a:
+			entry["spacingY"] = parseScale(a["itemSpacingY"])
 		for rowNode in template.findall("row"):
 			row = parseRow(rowNode)
 			for index, old in enumerate(entry["rows"]):
@@ -585,8 +643,14 @@ def parseServiceListTemplates(tag):
 		serviceRows = len([x for x in entry["rows"] if x["for"] == "service"])
 		large = entry.get("large")
 		entry["large"] = (1 if serviceRows > 1 else 0) if large is None else (1 if str(large).lower() in ("1", "true", "yes") else 0)
-		entry.setdefault("itemHeight", applySkinFactor(28))
+		# no itemHeight in the template: the itemHeight of the widget is used
 		templates[name] = entry
+
+
+def parseSpacing(s):
+	# "10" (both directions) or "10,20" (horizontal, vertical): the gap between the tiles of a listbox
+	parts = [parseScale(x.strip()) for x in str(s).split(",")]
+	return (parts[0], parts[0]) if len(parts) == 1 else (parts[0], parts[1])
 
 
 def mergeScale(s1, s2):
@@ -771,6 +835,20 @@ class AttributeParser:
 	def itemWidth(self, value):
 		self.guiObject.setItemWidth(self.applyHorizontalScale(parseScale(value)))
 
+	def itemSpacing(self, value):  # Gap between the tiles of a listbox: "10" for both directions or "10,20" (horizontal, vertical).
+		try:
+			x, y = parseSpacing(value)
+		except Exception:
+			print("[Skin] Error: Invalid itemSpacing '%s'!  Must be a pixel value such as '10' or '10,20'." % value)
+			return
+		self.guiObject.setItemSpacing(self.applyHorizontalScale(x), self.applyVerticalScale(y))
+
+	def itemSpacingX(self, value):  # Gap between the columns of a grid (the tiles of a horizontal list).
+		self.guiObject.setItemSpacingX(self.applyHorizontalScale(parseScale(value)))
+
+	def itemSpacingY(self, value):  # Gap between the rows of a grid (the tiles of a vertical list).
+		self.guiObject.setItemSpacingY(self.applyVerticalScale(parseScale(value)))
+
 	def itemCornerRadius(self, value):
 		radius, edgeValue = parseRadius(value)
 		self.guiObject.setItemCornerRadius(radius, edgeValue)
@@ -904,6 +982,65 @@ class AttributeParser:
 		x, y = value.split(",")
 		self.guiObject.setTextOffset(ePoint(int(x) * self.scaleTuple[0][0] // self.scaleTuple[0][1], int(y) * self.scaleTuple[1][0] // self.scaleTuple[1][1]))
 
+	# Style of header entries of a listbox (ListHeader entries, the config HEADER element): non selectable section
+	# titles. Everything that is not given falls back to the normal item style.
+	def headerFont(self, value):
+		self.guiObject.setHeaderFont(parseFont(value, self.scaleTuple))
+
+	def headerForegroundColor(self, value):
+		self.guiObject.setHeaderForegroundColor(parseColor(value))
+
+	def headerBackgroundColor(self, value):
+		self.guiObject.setHeaderBackgroundColor(parseColor(value))
+
+	def headerLineColor(self, value):
+		self.guiObject.setHeaderLineColor(parseColor(value))
+
+	def headerLineThickness(self, value):
+		self.guiObject.setHeaderLineThickness(self.applyVerticalScale(parseScale(value)))
+
+	def headerLineStyle(self, value):  # "bottom" (default), "top", "split" (line on both sides of the title, like a service list marker) or "none"
+		try:
+			self.guiObject.setHeaderLineStyle({
+				"bottom": self.guiObject.headerLineBottom,
+				"top": self.guiObject.headerLineTop,
+				"split": self.guiObject.headerLineSplit,
+				"none": self.guiObject.headerLineNone
+			}[value])
+		except KeyError:
+			print("[Skin] Error: Invalid headerLineStyle '%s'!  Must be one of 'bottom', 'top', 'split' or 'none'." % value)
+
+	def headerLineMargin(self, value):  # Gap between the title and the line(s) of a "split" header.
+		self.guiObject.setHeaderLineMargin(self.applyHorizontalScale(parseScale(value)))
+
+	def headerHeight(self, value):  # Height of a header row, a vertical listbox lays out its rows with it.
+		self.guiObject.setHeaderHeight(self.applyVerticalScale(parseScale(value)))
+
+	def headerValign(self, value):
+		try:
+			self.guiObject.setHeaderVAlign({
+				"top": self.guiObject.alignTop,
+				"center": self.guiObject.alignCenter,
+				"bottom": self.guiObject.alignBottom
+			}[value])
+		except KeyError:
+			print("[Skin] Error: Invalid headerValign '%s'!  Must be one of 'top', 'center' or 'bottom'." % value)
+
+	def headerHalign(self, value):
+		try:
+			self.guiObject.setHeaderHAlign({
+				"left": self.guiObject.alignLeft,
+				"center": self.guiObject.alignCenter,
+				"right": self.guiObject.alignRight,
+				"block": self.guiObject.alignBlock
+			}[value])
+		except KeyError:
+			print("[Skin] Error: Invalid headerHalign '%s'!  Must be one of 'left', 'center', 'right' or 'block'." % value)
+
+	def headerTextOffset(self, value):
+		x, y = value.split(",")
+		self.guiObject.setHeaderTextOffset(ePoint(int(x) * self.scaleTuple[0][0] // self.scaleTuple[0][1], int(y) * self.scaleTuple[1][0] // self.scaleTuple[1][1]))
+
 	def flags(self, value):
 		flags = value.split(",")
 		for f in flags:
@@ -994,6 +1131,42 @@ class AttributeParser:
 
 	def enableWrapAround(self, value):
 		self.guiObject.setWrapAround(parseBoolean("enablewraparound", value))
+
+	def carousel(self, value):  # Selection stays on the centre slot, entries scroll past it (horizontal/vertical listboxes).
+		self.guiObject.setCarousel(parseBoolean("carousel", value))
+
+	def selectionZoom(self, value):  # Selected entry size in percent for horizontal and grid listboxes, 100 = off (default).
+		try:
+			self.guiObject.setSelectionZoom(int(value))
+		except ValueError:
+			print("[Skin] Error: Invalid selectionZoom '%s'!  Must be a percentage such as '110'." % value)
+
+	def scrollType(self, value):  # "page" (default): jump to the page holding the selection; "item": scroll only as far as needed.
+		try:
+			self.guiObject.setScrollType({
+				"page": self.guiObject.scrollByPage,
+				"item": self.guiObject.scrollByItem
+			}[value])
+		except KeyError:
+			print("[Skin] Error: Invalid scrollType '%s'!  Must be one of 'page' or 'item'." % value)
+
+	def carouselZoom(self, value):  # Centre slot size in percent, 100 = no zoom (default 112).
+		try:
+			self.guiObject.setCarouselZoom(int(value))
+		except ValueError:
+			print("[Skin] Error: Invalid carouselZoom '%s'!  Must be a percentage such as '112'." % value)
+
+	def carouselCenterWidth(self, value):  # Width of the focused carousel tile, if it differs from itemWidth.
+		self.guiObject.setCarouselCenterWidth(self.applyHorizontalScale(parseScale(value)))
+
+	def carouselCenterHeight(self, value):  # Height of the focused carousel tile, if it differs from the other tiles.
+		self.guiObject.setCarouselCenterHeight(self.applyVerticalScale(parseScale(value)))
+
+	def carouselFocus(self, value):  # Slot (counted from 0) of the carousel that holds the selection, "center" (default) for the middle one.
+		try:
+			self.guiObject.setCarouselFocus(-1 if str(value).lower() in ("center", "centre", "middle") else int(value))
+		except ValueError:
+			print("[Skin] Error: Invalid carouselFocus '%s'!  Must be 'center' or a slot number such as '1'." % value)
 
 	def pointer(self, value):
 		(name, pos) = value.split(":")
@@ -1241,7 +1414,7 @@ def loadSingleSkinData(desktop, screenID, domSkin, pathSkin, scope=SCOPE_CURRENT
 			else:
 				raise SkinError("Tag 'parameter' needs a name and value, got name='%s' and size='%s'" % (name, value))
 	for tag in domSkin.findall("servicelisttemplates"):
-		parseServiceListTemplates(tag)
+		parseServiceListTemplates(tag, scope, pathSkin)
 	for tag in domSkin.findall("menus"):
 		for menu in tag.findall("menu"):
 			key = menu.attrib.get("key")

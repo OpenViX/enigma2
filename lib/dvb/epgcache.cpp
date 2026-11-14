@@ -1181,6 +1181,44 @@ RESULT eEPGCache::lookupEventTime(const eServiceReference &service, time_t t, eP
 	return ret;
 }
 
+static ePtr<eServiceEvent> parseEventData(const eServiceReference &service, const eventData *data)
+{
+	ePtr<eServiceEvent> result;
+	Event *ev = new Event((uint8_t*)data->get());
+	result = new eServiceEvent();
+	const eServiceReferenceDVB &ref = (const eServiceReferenceDVB&)service;
+	if (result->parseFrom(ev, (ref.getTransportStreamID().get()<<16)|ref.getOriginalNetworkID().get()) != 0)
+		result = NULL;
+	delete ev;
+	return result;
+}
+
+void eEPGCache::lookupNowNextBatch(const std::vector<eServiceReference> &refs, time_t t, bool wantNext, std::vector<NowNextResult> &out)
+{
+	std::vector<NowNextResult> fresh(refs.size()); // ePtr has no const copy assignment: no assign()/fill
+	out.swap(fresh);
+	singleLock s(cache_lock);
+	for (size_t i = 0; i < refs.size(); ++i)
+	{
+		const eventData *data = nullptr;
+		if (lookupEventTime(refs[i], t, data, 0) != 0 || !data)
+			continue;
+		ePtr<eServiceEvent> nowEvt = parseEventData(refs[i], data);
+		out[i].now = nowEvt;
+		if (!wantNext || !out[i].now)
+			continue;
+		const time_t begin = out[i].now->getBeginTime();
+		if (begin <= 0)
+			continue;
+		const eventData *nextData = nullptr;
+		if (lookupEventTime(refs[i], begin + out[i].now->getDuration(), nextData, 0) == 0 && nextData)
+		{
+			ePtr<eServiceEvent> nextEvt = parseEventData(refs[i], nextData);
+			out[i].next = nextEvt;
+		}
+	}
+}
+
 RESULT eEPGCache::lookupEventId(const eServiceReference &service, int event_id, const eventData *&result )
 {
 	uniqueEPGKey key(handleGroup(service));
