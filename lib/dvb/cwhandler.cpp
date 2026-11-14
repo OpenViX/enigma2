@@ -152,10 +152,12 @@ int eDVBCWHandler::addConnection(int softcam_fd)
 	conn.softcam_fd = softcam_fd;
 	conn.proxy_fd = pair[0];  // our end
 	conn.client_fd = pair[1]; // ePMTClient's end
+	conn.remove = false;
 
 	{
 		std::lock_guard<std::mutex> lock(m_connections_mutex);
-		m_connections.push_back(conn);
+		conn.id = m_next_id++;
+		m_connections.push_back(std::move(conn));
 	}
 
 	// Wake up poll loop to pick up new connection
@@ -168,15 +170,15 @@ int eDVBCWHandler::addConnection(int softcam_fd)
 
 void eDVBCWHandler::removeConnection(int client_fd)
 {
+	// The proxy thread may be using these fds right now: only mark the
+	// connection, the thread closes it.
 	std::lock_guard<std::mutex> lock(m_connections_mutex);
-	for (auto it = m_connections.begin(); it != m_connections.end(); ++it)
+	for (auto& conn : m_connections)
 	{
-		if (it->client_fd == client_fd)
+		if (conn.client_fd == client_fd && !conn.remove)
 		{
-			eDebug("[eDVBCWHandler] Removing connection: softcam_fd=%d, client_fd=%d", it->softcam_fd, client_fd);
-			if (it->softcam_fd >= 0) ::close(it->softcam_fd);
-			if (it->proxy_fd >= 0) ::close(it->proxy_fd);
-			m_connections.erase(it);
+			eDebug("[eDVBCWHandler] Removing connection: softcam_fd=%d, client_fd=%d", conn.softcam_fd, client_fd);
+			conn.remove = true;
 
 			// Wake up poll loop
 			char c = 'w';
@@ -184,6 +186,38 @@ void eDVBCWHandler::removeConnection(int client_fd)
 			return;
 		}
 	}
+}
+
+void eDVBCWHandler::closeConnection(Connection& conn)
+{
+	if (conn.softcam_fd >= 0)
+		::close(conn.softcam_fd);
+	if (conn.proxy_fd >= 0)
+		::close(conn.proxy_fd);  // ePMTClient sees EOF on its end
+	conn.softcam_fd = conn.proxy_fd = -1;
+}
+
+/* Write what is pending without blocking. False on a broken connection. */
+bool eDVBCWHandler::flushPending(int fd, std::vector<uint8_t>& pending)
+{
+	size_t done = 0;
+	while (done < pending.size())
+	{
+		ssize_t w = ::send(fd, pending.data() + done, pending.size() - done, MSG_NOSIGNAL);
+		if (w > 0)
+		{
+			done += w;
+			continue;
+		}
+		if (w < 0 && errno == EINTR)
+			continue;
+		if (w < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
+			break;  // the rest goes when poll() reports POLLOUT
+		pending.erase(pending.begin(), pending.begin() + done);
+		return false;
+	}
+	pending.erase(pending.begin(), pending.begin() + done);
+	return true;
 }
 
 void* eDVBCWHandler::threadFunc(void* arg)
@@ -198,14 +232,8 @@ void eDVBCWHandler::threadLoop()
 
 	while (m_running)
 	{
-		// Build poll fd list
 		std::vector<struct pollfd> pfds;
-		std::vector<Connection> conns_snapshot;
-
-		{
-			std::lock_guard<std::mutex> lock(m_connections_mutex);
-			conns_snapshot = m_connections;
-		}
+		std::vector<int> ids;
 
 		// Wake pipe
 		struct pollfd wpfd;
@@ -214,20 +242,34 @@ void eDVBCWHandler::threadLoop()
 		wpfd.revents = 0;
 		pfds.push_back(wpfd);
 
-		// For each connection: poll softcam_fd and proxy_fd
-		for (const auto& conn : conns_snapshot)
 		{
-			struct pollfd pfd;
+			std::lock_guard<std::mutex> lock(m_connections_mutex);
+			for (auto it = m_connections.begin(); it != m_connections.end();)
+			{
+				if (it->remove)
+				{
+					eDebug("[eDVBCWHandler] Closing connection: softcam_fd=%d, proxy_fd=%d", it->softcam_fd, it->proxy_fd);
+					closeConnection(*it);
+					it = m_connections.erase(it);
+					continue;
+				}
 
-			pfd.fd = conn.softcam_fd;
-			pfd.events = POLLIN;
-			pfd.revents = 0;
-			pfds.push_back(pfd);
+				// For each connection: poll softcam_fd and proxy_fd, for writing too
+				// while something waits to go out
+				struct pollfd pfd;
+				pfd.fd = it->softcam_fd;
+				pfd.events = POLLIN | (it->to_softcam.empty() ? 0 : POLLOUT);
+				pfd.revents = 0;
+				pfds.push_back(pfd);
 
-			pfd.fd = conn.proxy_fd;
-			pfd.events = POLLIN;
-			pfd.revents = 0;
-			pfds.push_back(pfd);
+				pfd.fd = it->proxy_fd;
+				pfd.events = POLLIN | (it->to_client.empty() ? 0 : POLLOUT);
+				pfd.revents = 0;
+				pfds.push_back(pfd);
+
+				ids.push_back(it->id);
+				++it;
+			}
 		}
 
 		int ret = poll(pfds.data(), pfds.size(), 1000);
@@ -249,130 +291,102 @@ void eDVBCWHandler::threadLoop()
 			while (::read(m_wake_pipe[0], buf, sizeof(buf)) > 0);
 		}
 
-		// Process connections
-		for (size_t i = 0; i < conns_snapshot.size(); i++)
+		std::lock_guard<std::mutex> lock(m_connections_mutex);
+		for (size_t i = 0; i < ids.size(); i++)
 		{
-			int softcam_idx = 1 + i * 2;
-			int proxy_idx = 2 + i * 2;
-			const Connection& conn = conns_snapshot[i];
-
-			// Softcam → proxy_fd (and intercept CWs)
-			bool softcam_disconnected = false;
-			if (pfds[softcam_idx].revents & POLLIN)
+			// Entries are erased by this thread only, so it is still there
+			Connection* conn = nullptr;
+			for (auto& c : m_connections)
 			{
-				ssize_t n = ::read(conn.softcam_fd, buf, sizeof(buf));
-				if (n > 0)
+				if (c.id == ids[i])
 				{
-					// Intercept CW packets before forwarding
-					processCwFromRawPacket((const uint8_t*)buf, n);
-					// Forward everything to ePMTClient via socketpair
-					ssize_t written = 0;
-					while (written < n)
-					{
-						ssize_t w = ::write(conn.proxy_fd, buf + written, n - written);
-						if (w < 0)
-						{
-							if (errno == EAGAIN || errno == EINTR)
-							{
-								// Socketpair buffer full (MainLoop not reading) - drop this chunk
-								// CWs were already intercepted and setKey() called
-								eDebug("[eDVBCWHandler] Socketpair buffer full, dropping %zd bytes (CWs already processed)", n - written);
-								break;
-							}
-							break; // Error
-						}
-						written += w;
-					}
-				}
-				else if (n == 0)
-				{
-					// EOF - softcam closed the connection
-					eDebug("[eDVBCWHandler] Softcam EOF on fd %d", conn.softcam_fd);
-					softcam_disconnected = true;
-				}
-				else if (errno != EINTR && errno != EAGAIN)
-				{
-					eDebug("[eDVBCWHandler] Softcam read error on fd %d: %m", conn.softcam_fd);
-					softcam_disconnected = true;
+					conn = &c;
+					break;
 				}
 			}
-
-			// Handle softcam disconnect
-			if (softcam_disconnected || (pfds[softcam_idx].revents & (POLLHUP | POLLERR)))
-			{
-				eDebug("[eDVBCWHandler] Softcam disconnected on fd %d", conn.softcam_fd);
-				// Close proxy_fd so ePMTClient gets connectionLost
-				std::lock_guard<std::mutex> lock(m_connections_mutex);
-				for (auto it = m_connections.begin(); it != m_connections.end(); ++it)
-				{
-					if (it->softcam_fd == conn.softcam_fd)
-					{
-						::close(it->softcam_fd);
-						::close(it->proxy_fd);
-						m_connections.erase(it);
-						break;
-					}
-				}
+			if (!conn || conn->remove)
 				continue;
-			}
 
-			// proxy_fd → softcam (CAPMT writes from ePMTClient)
-			bool proxy_disconnected = false;
-			if (pfds[proxy_idx].revents & POLLIN)
+			const short softcam_ev = pfds[1 + i * 2].revents;
+			const short proxy_ev = pfds[2 + i * 2].revents;
+			bool lost = false;
+
+			// Softcam → ePMTClient (and intercept CWs)
+			if (softcam_ev & POLLIN)
 			{
-				ssize_t n = ::read(conn.proxy_fd, buf, sizeof(buf));
+				ssize_t n = ::read(conn->softcam_fd, buf, sizeof(buf));
 				if (n > 0)
 				{
-					ssize_t written = 0;
-					while (written < n)
-					{
-						ssize_t w = ::write(conn.softcam_fd, buf + written, n - written);
-						if (w < 0)
-						{
-							if (errno == EAGAIN || errno == EINTR)
-							{
-								// Brief spin-wait for softcam to catch up (small CAPMT packets)
-								usleep(1000);
-								continue;
-							}
-							break; // Error
-						}
-						written += w;
-					}
+					processCwFromRawPacket(*conn, (const uint8_t*)buf, n);
+					// Queued, never dropped: ePMTClient parses a byte stream
+					conn->to_client.insert(conn->to_client.end(), buf, buf + n);
 				}
 				else if (n == 0)
 				{
-					eDebug("[eDVBCWHandler] ePMTClient EOF on proxy_fd %d", conn.proxy_fd);
-					proxy_disconnected = true;
+					eDebug("[eDVBCWHandler] Softcam EOF on fd %d", conn->softcam_fd);
+					lost = true;
 				}
 				else if (errno != EINTR && errno != EAGAIN)
 				{
-					eDebug("[eDVBCWHandler] ePMTClient read error on proxy_fd %d: %m", conn.proxy_fd);
-					proxy_disconnected = true;
+					eDebug("[eDVBCWHandler] Softcam read error on fd %d: %m", conn->softcam_fd);
+					lost = true;
 				}
+			}
+			else if (softcam_ev & (POLLHUP | POLLERR | POLLNVAL))
+			{
+				eDebug("[eDVBCWHandler] Softcam disconnected on fd %d", conn->softcam_fd);
+				lost = true;
 			}
 
-			// Handle ePMTClient disconnect
-			if (proxy_disconnected || (pfds[proxy_idx].revents & (POLLHUP | POLLERR)))
+			// ePMTClient → softcam (CAPMT)
+			if (!lost && (proxy_ev & POLLIN))
 			{
-				eDebug("[eDVBCWHandler] ePMTClient disconnected on proxy_fd %d", conn.proxy_fd);
-				std::lock_guard<std::mutex> lock(m_connections_mutex);
-				for (auto it = m_connections.begin(); it != m_connections.end(); ++it)
+				ssize_t n = ::read(conn->proxy_fd, buf, sizeof(buf));
+				if (n > 0)
+					conn->to_softcam.insert(conn->to_softcam.end(), buf, buf + n);
+				else if (n == 0)
 				{
-					if (it->proxy_fd == conn.proxy_fd)
-					{
-						::close(it->softcam_fd);
-						::close(it->proxy_fd);
-						m_connections.erase(it);
-						break;
-					}
+					eDebug("[eDVBCWHandler] ePMTClient EOF on proxy_fd %d", conn->proxy_fd);
+					lost = true;
+				}
+				else if (errno != EINTR && errno != EAGAIN)
+				{
+					eDebug("[eDVBCWHandler] ePMTClient read error on proxy_fd %d: %m", conn->proxy_fd);
+					lost = true;
 				}
 			}
+			else if (!lost && (proxy_ev & (POLLHUP | POLLERR | POLLNVAL)))
+			{
+				eDebug("[eDVBCWHandler] ePMTClient disconnected on proxy_fd %d", conn->proxy_fd);
+				lost = true;
+			}
+
+			// Send what each side can take now, the rest on POLLOUT. Never wait
+			// here: this thread is what delivers the CWs.
+			if (!lost && !flushPending(conn->proxy_fd, conn->to_client))
+			{
+				eDebug("[eDVBCWHandler] write to ePMTClient failed on proxy_fd %d: %m", conn->proxy_fd);
+				lost = true;
+			}
+			if (!lost && !flushPending(conn->softcam_fd, conn->to_softcam))
+			{
+				eDebug("[eDVBCWHandler] write to softcam failed on fd %d: %m", conn->softcam_fd);
+				lost = true;
+			}
+			if (!lost && (conn->to_client.size() > MAX_PENDING || conn->to_softcam.size() > MAX_PENDING))
+			{
+				eWarning("[eDVBCWHandler] %s takes no data, closing connection (softcam_fd=%d)",
+					conn->to_client.size() > MAX_PENDING ? "ePMTClient" : "softcam", conn->softcam_fd);
+				lost = true;
+			}
+
+			if (lost)
+				conn->remove = true;  // closed at the top of the next round
 		}
 	}
 }
 
-void eDVBCWHandler::processCwFromRawPacket(const uint8_t* data, int len)
+void eDVBCWHandler::processCwFromRawPacket(Connection& conn, const uint8_t* data, int len)
 {
 	/*
 	 * Softcam Protocol 3 packet format:
@@ -385,12 +399,21 @@ void eDVBCWHandler::processCwFromRawPacket(const uint8_t* data, int len)
 	 *
 	 * ca_descr_t: { uint32_t index, uint32_t parity, uint8_t cw[8] }
 	 *
-	 * Note: No residual buffering needed - Unix domain sockets deliver
-	 * small packets atomically, and ePMTClient handles reassembly for
-	 * all packet types via its state machine on the socketpair end.
+	 * The socket is a byte stream: when more is queued than one read takes,
+	 * a message can be cut between two reads. The start of a CW message cut
+	 * off at the end is kept in conn.cw_rest and joined to the next read.
 	 */
 	static const uint8_t CW_TAG[] = { 0x40, 0x10, 0x6F, 0x86 };
 	static const int CW_PACKET_SIZE = 26; // 0xA5 + 4 msgid + 4 tag + 17 data
+
+	std::vector<uint8_t> joined;
+	if (!conn.cw_rest.empty())
+	{
+		joined.swap(conn.cw_rest);
+		joined.insert(joined.end(), data, data + len);
+		data = joined.data();
+		len = (int)joined.size();
+	}
 
 	int pos = 0;
 	while (pos <= len - CW_PACKET_SIZE)
@@ -435,5 +458,16 @@ void eDVBCWHandler::processCwFromRawPacket(const uint8_t* data, int len)
 		}
 
 		pos += CW_PACKET_SIZE;
+	}
+
+	// Every position before pos had a whole message's room. Keep a frame
+	// start in the shorter tail for the next read.
+	for (; pos < len; ++pos)
+	{
+		if (data[pos] == 0xA5)
+		{
+			conn.cw_rest.assign(data + pos, data + len);
+			break;
+		}
 	}
 }

@@ -80,13 +80,23 @@ private:
 	std::mutex m_targets_mutex;
 
 	// Connection tracking
+	// Only the proxy thread closes the fds and erases entries, so an fd it
+	// polled stays valid (and is never reused) until it has finished with it.
 	struct Connection {
+		int id;
 		int softcam_fd;   // Original softcam socket
 		int proxy_fd;     // Our end of socketpair (proxy_fd ↔ client_fd)
 		int client_fd;    // ePMTClient's end of socketpair
+		bool remove;      // close at the top of the next round
+		std::vector<uint8_t> cw_rest;     // start of a CW message cut off by the last read
+		std::vector<uint8_t> to_client;   // softcam data ePMTClient has not taken yet
+		std::vector<uint8_t> to_softcam;  // CAPMT data the softcam has not taken yet
 	};
 	std::vector<Connection> m_connections;
 	std::mutex m_connections_mutex;
+	int m_next_id = 1;
+	// A peer that takes nothing for this long is gone: drop the connection
+	static const size_t MAX_PENDING = 4 * 1024 * 1024;
 
 	// Pipe for waking up poll() when connections change
 	int m_wake_pipe[2];
@@ -98,7 +108,9 @@ private:
 	void threadLoop();
 
 	// Protocol parsing for CW interception
-	void processCwFromRawPacket(const uint8_t* data, int len);
+	void processCwFromRawPacket(Connection& conn, const uint8_t* data, int len);
+	static bool flushPending(int fd, std::vector<uint8_t>& pending);
+	static void closeConnection(Connection& conn);
 };
 
 #endif // __dvbcwhandler_h
