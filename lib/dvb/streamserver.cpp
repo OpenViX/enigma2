@@ -169,11 +169,22 @@ void eStreamClient::notifier(int what)
 				if (serviceref.substr(0, 10) == "file?file=") /* convert openwebif stream reqeust back to serviceref */
 					serviceref = std::string("1:0:1:0:0:0:0:0:0:0:") + serviceref.substr(10);
 
+				bool streamRelayRequest = false;
+				pos = serviceref.find("?srsid=");
+				if (pos == std::string::npos)
+					pos = serviceref.find("&srsid=");
+				if (pos != std::string::npos)
+				{
+					streamRelayRequest = true;
+					serviceref.erase(pos, std::string::npos);
+					eDebug("[streamserver][eDVBServiceStream] StreamRelay source stream requested");
+				}
+
 				pos = serviceref.find('?');
 				if (pos == std::string::npos)
 				{
-					eDebug("[eDVBServiceStream] stream ref: %s", serviceref.c_str());
-					if (eDVBServiceStream::start(serviceref.c_str(), streamFd) >= 0)
+					eDebug("[streamserver][eDVBServiceStream] stream ref: %s", serviceref.c_str());
+					if (eDVBServiceStream::start(serviceref.c_str(), streamFd, streamRelayRequest) >= 0)
 					{
 						running = true;
 						m_serviceref = serviceref;
@@ -194,7 +205,7 @@ void eStreamClient::notifier(int what)
 					eDebug("[eDVBServiceStream] stream ref: %s", serviceref.c_str());
 					if (posdur != std::string::npos)
 					{
-						if (eDVBServiceStream::start(serviceref.c_str(), streamFd) >= 0)
+						if (eDVBServiceStream::start(serviceref.c_str(), streamFd, streamRelayRequest) >= 0)
 						{
 							running = true;
 							m_serviceref = serviceref;
