@@ -170,7 +170,7 @@ public:
 	void stopSaveMetaInformation();
 	int getLastPTS(pts_t &pts);
 	int getFirstPTS(pts_t &pts);
-	void setTargetFD(int fd) { m_fd_dest = fd; }
+	void setTargetFD(int fd) { m_fd_dest = fd; m_dest_is_file = -1; }
 	void enableAccessPoints(bool enable) { m_ts_parser.enableAccessPoints(enable); }
 	void setDescrambler(ePtr<iServiceScrambled> serviceDescrambler) { m_serviceDescrambler = serviceDescrambler; };
 	void setDiscardOnTimeout(bool discard) { m_discard_on_timeout = discard; }
@@ -211,6 +211,7 @@ protected:
 	eMPEGStreamParserTS m_ts_parser;
 	off_t m_current_offset;
 	int m_fd_dest;
+	int m_dest_is_file = -1; // -1 = not checked yet, see _syncWrite()
 	bool m_sync_mode;
 	bool m_discard_on_timeout;
 	typedef std::vector<AsyncIO> AsyncIOvector;

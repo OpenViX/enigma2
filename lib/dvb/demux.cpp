@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <sys/sysinfo.h>
 #include <sys/mman.h>
+#include <sys/stat.h>
 #include <sys/eventfd.h>
 #include <poll.h>
 #include <time.h>
@@ -1199,10 +1200,22 @@ int eDVBRecordFileThread::_syncWrite(int len, bool parse, const unsigned char *d
 		m_ts_parser.parseData(m_current_offset, src, len);
 	}
 
+	// AIO writes use explicit offsets and never move the file position, so a
+	// recording that switches from AIO to sync writes would otherwise start
+	// writing at byte 0 again. Write regular files at the logical offset;
+	// pipes, sockets and devices have no position and keep using write().
+	if (m_dest_is_file < 0)
+	{
+		struct stat st = {};
+		m_dest_is_file = (fstat(m_fd_dest, &st) == 0 && S_ISREG(st.st_mode)) ? 1 : 0;
+	}
+
 	int written = 0;
 	while (written < len)
 	{
-		ssize_t w = ::write(m_fd_dest, src + written, len - written);
+		ssize_t w = m_dest_is_file
+			? ::pwrite(m_fd_dest, src + written, len - written, m_current_offset + written)
+			: ::write(m_fd_dest, src + written, len - written);
 		if (w > 0)
 		{
 			written += w;
@@ -1255,6 +1268,8 @@ int eDVBRecordFileThread::writeData(int len)
 				return len;
 			}
 		}
+		const int orig_len = len;
+		const off_t offset_before = m_current_offset;
 		len = asyncWrite(len);
 		if (len < 0)
 		{
@@ -1262,15 +1277,19 @@ int eDVBRecordFileThread::writeData(int len)
 				return len;
 			if (errno == ENOSYS)
 			{
+				// asyncWrite() has already parsed this data and lost the length,
+				// so never call writeData() again for it.
 				if (s_aio_state == 1)
+					eWarning("[eDVBRecordFileThread] ENOSYS although AIO was verified - using sync writes for this recording");
+				else
 				{
-					eDebug("[eDVBRecordFileThread] ENOSYS ignored - AIO verified for session");
-					return -1;
+					s_aio_state = 0;
+					eWarning("[eDVBRecordFileThread] AIO not supported (ENOSYS), falling back to sync mode");
 				}
-				s_aio_state = 0;
-				eWarning("[eDVBRecordFileThread] AIO not supported (ENOSYS), falling back to sync mode");
 				m_sync_mode = true;
-				return writeData(m_buffersize);
+				if (m_current_offset == offset_before)
+					return _syncWrite(orig_len, false); // submission was rejected: write the data now
+				return orig_len; // already submitted, writing it again would duplicate it
 			}
 			eWarning("[eDVBRecordFileThread] asyncWrite failed: %d", len);
 			return len;
