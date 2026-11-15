@@ -761,6 +761,11 @@ else:
 	from Components.Network import InitNetwork  # noqa: E402
 	InitNetwork()
 
+	profile("ServiceAutostart")
+	print("[StartEnigma]  Applying network services autostart.")
+	from Components.ServiceAutostart import applyServiceAutostart  # noqa: E402
+	applyServiceAutostart()
+
 	profile("HdmiCec")
 	print("[StartEnigma]  Initialising hdmiCEC.")
 	from Components.HdmiCec import HdmiCec  # noqa: E402
