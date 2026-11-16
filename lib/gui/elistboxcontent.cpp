@@ -352,6 +352,30 @@ int eListboxPythonStringContent::getMaxItemTextWidth()
 	return m_max_text_width + (m_text_offset*2);
 }
 
+/* Under GLES a rounded item background is normally drawn "over" what is behind it, which gives its antialiased
+   corners a real backdrop. For a flat translucent colour that is wrong: blended over an opaque screen background it
+   can never let the video show through, while the CPU renderer (and eWidget's own background, see ewidget.cpp)
+   overwrite with the colour, alpha included. So a flat translucent item colour keeps the overwrite semantics; the
+   GLES rectangle code still blends its antialiased corners with the backdrop in that case. */
+static bool roundedItemOver(gPainter &painter, int radius, bool gradient, const gRGB &color)
+{
+	return radius && painter.usingGLES() && (gradient || color.a == 0);
+}
+
+/* the background colour an item is drawn with, as set on the painter by the paint functions below */
+static gRGB itemBackgroundColor(eWindowStyle &style, eListboxStyle *local_style, int selected)
+{
+	gRGB color = style.getColor(selected ? eWindowStyleSkinned::colListboxSelectedBackground : eWindowStyleSkinned::colListboxBackground);
+	if (local_style)
+	{
+		if (selected && local_style->m_background_color_selected_set)
+			color = local_style->m_background_color_selected;
+		if (!selected && local_style->m_background_color_set)
+			color = local_style->m_background_color;
+	}
+	return color;
+}
+
 void eListboxPythonStringContent::paint(gPainter &painter, eWindowStyle &style, const ePoint &offset, int selected)
 {
 	if (paintHeader(painter, style, offset))
@@ -425,14 +449,11 @@ void eListboxPythonStringContent::paint(gPainter &painter, eWindowStyle &style, 
 
 			if(radius)
 				painter.setRadius(radius, edges);
-			// Under GLES, a rounded item background must use the "over"
-			// blend formula or its AA corner fringe leaks to the video
-			// plane (see gEGLDC::executeRectangle()'s comment) - a listbox
-			// item is never a video-reveal widget. Only forced when radius
-			// is actually in play here (not for a plain gradient fill,
-			// which this same call also handles) and only under GLES -
-			// other backends keep their original unconditional behavior.
-			painter.drawRectangle(itemRect, radius && painter.usingGLES());
+			// Under GLES a rounded item background is drawn "over" the
+			// backdrop, except a flat translucent colour - see
+			// roundedItemOver(). Other backends keep their original
+			// unconditional behavior.
+			painter.drawRectangle(itemRect, roundedItemOver(painter, radius, local_style->m_gradient_set[0], itemBackgroundColor(style, local_style, 0)));
 		}
 		else
 			painter.clear();
@@ -486,7 +507,7 @@ void eListboxPythonStringContent::paint(gPainter &painter, eWindowStyle &style, 
 			if(radius)
 				painter.setRadius(radius, edges);
 			// See the matching comment above.
-			painter.drawRectangle(itemRect, radius && painter.usingGLES());
+			painter.drawRectangle(itemRect, roundedItemOver(painter, radius, local_style->m_gradient_set[1], itemBackgroundColor(style, local_style, 1)));
 		}
 
 		if (item == Py_None)
@@ -701,7 +722,7 @@ void eListboxPythonConfigContent::paint(gPainter &painter, eWindowStyle &style, 
 			if(radius)
 				painter.setRadius(radius, edges);
 			// See eListboxPythonStringContent::paint()'s matching comment.
-			painter.drawRectangle(itemrect, radius && painter.usingGLES());
+			painter.drawRectangle(itemrect, roundedItemOver(painter, radius, local_style->m_gradient_set[0], itemBackgroundColor(style, local_style, 0)));
 		}
 		else
 			painter.clear();
@@ -745,7 +766,7 @@ void eListboxPythonConfigContent::paint(gPainter &painter, eWindowStyle &style, 
 			if(radius)
 				painter.setRadius(radius, edges);
 			// See eListboxPythonStringContent::paint()'s matching comment.
-			painter.drawRectangle(itemrect, radius && painter.usingGLES());
+			painter.drawRectangle(itemrect, roundedItemOver(painter, radius, local_style->m_gradient_set[1], itemBackgroundColor(style, local_style, 1)));
 		}
 
 			/* computed after both background blocks above, since either one may have
@@ -1330,7 +1351,7 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 			// the path most listboxes (e.g. a plain skinned menu list) hit,
 			// as opposed to the per-item TYPE_TEXT cornerRadius tuple
 			// handled further down in this function.
-			painter.drawRectangle(itemRect, radius && painter.usingGLES());
+			painter.drawRectangle(itemRect, roundedItemOver(painter, radius, local_style->m_gradient_set[mode], color));
 		}
 		else
 			clearRegion(painter, style, local_style, ePyObject(), ePyObject(), ePyObject(), ePyObject(), selected, itemregion, sel_clip, offset, m_itemsize, cursorValid, true, isverticallb);
