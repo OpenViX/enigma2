@@ -836,7 +836,7 @@ class HdmiCec:
 							self.tv_powerstate = "get_on"
 						elif ctrl0 == 3:
 							self.tv_powerstate = "get_standby"
-						if config.hdmicec.control_tv_wakeup.value and self.tv_powerstate == "standby":
+						if config.hdmicec.control_tv_wakeup.value and self.tv_powerstate == "standby" and not inStandby:  # box in standby: TV going off is expected, don't wake it again
 							self.sendWakeupMessages()
 						if config.hdmicec.next_boxes_detect.value:
 							self.useStandby = False
