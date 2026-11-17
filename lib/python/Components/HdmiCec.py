@@ -1,4 +1,3 @@
-import chardet
 import datetime
 from os import path, uname, remove
 import struct
@@ -533,7 +532,7 @@ class HdmiCec:
 
 	def sendMessage(self, msgaddress, message):
 		cmd = 0
-		dataStructpack = ""
+		dataStructpack = b""
 		if message == "keypoweroff":
 			cmd = 0x44  # 68
 			dataStructpack = struct.pack("B", 0x6c)
@@ -576,9 +575,7 @@ class HdmiCec:
 		if dataStructpack:				# keep cmd+data calls above this line so binary data converted
 			CECcmd = cmdList.get(cmd, "<Polling Message>").replace("<", "'").replace(">", "'")
 			printX(f"[HdmiCec][sendMessage]: CECcmd={CECcmd}, dataStructpack={dataStructpack}")
-			encoder = chardet.detect(dataStructpack)["encoding"] or "utf8"
-			data = dataStructpack.decode(encoding=encoder, errors="ignore")
-			printX(f"[HdmiCec][sendMessage]: CECcmd={CECcmd}  cmd={cmd:X}, encoder={encoder}, data={data}" + "\n")
+			data = dataStructpack  # raw operand bytes, passed to eHdmiCEC unchanged
 		else:
 			data = ""
 			if message == "wakeup":
@@ -741,9 +738,6 @@ class HdmiCec:
 				elif keyEvent == 1:
 					cmd = 0x45					# 0x45: "<stop>"
 				if cmd != 0:
-					if data:
-						encoder = chardet.detect(data)["encoding"]
-						data = data.decode(encoding=encoder, errors="ignore")
 					if config.hdmicec.minimum_send_interval.value != "0":
 						self.queueKeyEvent.append((self.volumeForwardingDestination, cmd, data))
 						if not self.waitKeyEvent.isActive():
@@ -776,12 +770,12 @@ class HdmiCec:
 		txt = self.now(True) + self.opCode(cmd, True) + " " + f"{cmd:02X}" + " "
 		tmp = ""
 		if len(data):
+			if isinstance(data, str):
+				data = data.encode()
 			if cmd in [0x32, 0x47]:  # set Menu Language/OSD Name
-				for info in data:
-					tmp += f"{info}"
+				tmp += data.decode(errors="replace")
 			else:
-				for bytes in data:
-					tmp += f"{ord(bytes):02X}" + " "
+				tmp += "".join(f"{byte:02X} " for byte in data)
 		tmp += 48 * " "
 		self.fdebug(txt + tmp[:48] + f"[0x{msgaddress:02X}]")
 
