@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-30 16:06+0100\n"
+"POT-Creation-Date: 2026-11-18 14:35+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, xcentaurix\n"
@@ -3093,6 +3093,9 @@ msgstr ""
 msgid "CVBS"
 msgstr "CVBS"
 
+msgid "CW Delay Compensation *"
+msgstr "CW-Verzögerungsausgleich *"
+
 msgid "CaID: "
 msgstr "CaID: "
 
@@ -3346,6 +3349,9 @@ msgstr "Senderinformation"
 
 msgid "Channel list cursor behavior"
 msgstr "Senderliste Cursor-Verhalten"
+
+msgid "Channel list design"
+msgstr "Senderliste Design"
 
 msgid "Channel list on mode change"
 msgstr "Senderliste bei Moduswechsel"
@@ -3627,6 +3633,9 @@ msgstr "Linkszirkular"
 msgid "Circular right"
 msgstr "Rechtszirkular"
 
+msgid "Classic"
+msgstr "Klassisch"
+
 msgid "Classical"
 msgstr "Klassische Musik"
 
@@ -3792,6 +3801,9 @@ msgstr "Comoros"
 
 msgid "Comparing against backup..."
 msgstr "Vergleiche mit Backup..."
+
+msgid "Compensates for descrambling keys (CW) that arrive too late by delaying playback. 'Automatic' starts at a tenth of a second and raises the delay when a key came too late, up to five seconds. A fixed value delays every channel switch by that much instead. *Restart E2 for changes to take effect."
+msgstr "Gleicht Entschlüsselungs-Keys (CW) aus, die zu spät eintreffen, indem die Wiedergabe verzögert wird. 'Automatisch' beginnt bei einer Zehntelsekunde und erhöht die Verzögerung, wenn ein Key zu spät kam, bis maximal fünf Sekunden. Ein fester Wert verzögert stattdessen jeden Senderwechsel um diese Zeit. Starte Enigma2 neu, um die Änderung zu aktivieren."
 
 msgid "Complete"
 msgstr "Komplett"
@@ -9817,6 +9829,9 @@ msgstr "Keine Logs"
 msgid "No MAC interface found"
 msgstr "Fehler: Kein MAC Interface gefunden"
 
+msgid "No SWAP found"
+msgstr "Keine SWAP-Datei gefunden"
+
 msgid "No Timeshift found to save as recording!"
 msgstr "Keine Timeshiftdatei gefunden, die als Aufnahme gespeichert werden kann."
 
@@ -14357,6 +14372,9 @@ msgstr "Skinwahl"
 msgid "Skin setup"
 msgstr "Skinwahl"
 
+msgid "Skin templates (follow 'two lines')"
+msgstr "Skin-Vorlagen (folgen 'Zwei Zeilen')"
+
 #, python-format
 msgid "Skin:\t%s"
 msgstr "Skin:\t%s"
@@ -16834,6 +16852,9 @@ msgstr "Alternativen oder konventionellen Radio-Modus verwenden."
 
 msgid "Use the alternative screen"
 msgstr "Eine kleine, einfachere Darstellung verwenden"
+
+msgid "Use the classic channel list or a row design supplied by the skin. Requires a GUI restart."
+msgstr "Verwende die klassische Senderliste oder ein vom Skin bereitgestelltes Zeilendesign. Erfordert einen Neustart der Benutzeroberfläche."
 
 msgid "Use the deletion time to sort Trash directories. Most recently deleted at the top."
 msgstr "Verwende die Löschzeit zum Sortieren der Papierkorb-Verzeichnisse. Zuletzt gelöschte Einträge oben."
