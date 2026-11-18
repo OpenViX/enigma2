@@ -317,6 +317,7 @@ class ServiceList(GUIComponent):
 						if self.l.setCurrent(ref):
 							config.servicelist.lastmode.save()
 							self.serviceList.saveChannel(ref)
+							self.serviceList.saveRoot()  # the bouquet of the service goes with it, else the saved root is the old one: after a restart the service is not in the channel list that is shown, and the EPG opens on the wrong bouquet
 							return True
 					self.serviceList.enterUserbouquet(revert_tv_root)
 				else:
@@ -328,6 +329,7 @@ class ServiceList(GUIComponent):
 						if self.l.setCurrent(ref):
 							config.servicelist.lastmode.save()
 							self.serviceList.saveChannel(ref)
+							self.serviceList.saveRoot()  # see above
 							return True
 					self.serviceList.enterUserbouquet(revert_radio_root)
 				print("[servicelist] service not found in any userbouquets")

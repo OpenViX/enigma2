@@ -18,6 +18,7 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.TimeDateInput import TimeDateInput
 from Screens.TimerEntry import TimerEntry, addTimerFromEvent, addTimerFromEventSilent
+from Tools.Alternatives import CompareWithAlternatives
 from Tools.Directories import isPluginInstalled
 
 
@@ -667,9 +668,33 @@ class EPGBouquetSelection:
 			return [service for service in servicelist.getContent("R", True) if not (service.flags & (eServiceReference.isDirectory | eServiceReference.isMarker))]
 		return []
 
+	def _bouquetHasStartService(self, bouquet):
+		if bouquet is None:
+			return False
+		for service in self.getBouquetServices(bouquet):
+			if service == self.startRef or (service.type == 0 and service.flags == 134 and CompareWithAlternatives(service, self.startRef)):  # 134: an alternative
+				return True
+		return False
+
+	def _findStartBouquet(self):
+		"""The EPG opens on the bouquet that the channel list shows. The playing service is not necessarily one of it: the
+		channel list can be on another bouquet than the one the service was played from (a stale saved root after a restart,
+		a service played by a plugin, a bouquet that was changed...) and then there is no row for the service, so the list
+		would silently show its first one. Open on a bouquet that has the service instead, the one of the channel list first.
+		Not with "first service" as the browse mode: that one is asked for."""
+		if not self.startRef or not self.bouquets or self.epgConfig.browse_mode.value == "firstservice":
+			return
+		if self._bouquetHasStartService(self.startBouquet):
+			return
+		for _name, bouquet in self.bouquets:
+			if bouquet != self.startBouquet and self._bouquetHasStartService(bouquet):
+				self.startBouquet = bouquet
+				return
+
 	def _populateBouquetList(self):
 		self["bouquetlist"].recalcEntrySize()
 		self["bouquetlist"].fillBouquetList(self.bouquets)
+		self._findStartBouquet()
 		self.setBouquet(self.startBouquet)
 
 	def toggleBouquetList(self):

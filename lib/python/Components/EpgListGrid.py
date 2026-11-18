@@ -294,9 +294,9 @@ class EPGListGrid(EPGListBase):
 	def getIndexFromService(self, serviceref):
 		if serviceref is not None:
 			for x in range(len(self.list)):
+				# [0] is the service reference. ([1] is the service name: it is no reference, and trying to make one of it
+				# only costs a log line ("May be unencoded URL") and an eServiceReference per row that doesn't match.)
 				if CompareWithAlternatives(self.list[x][0], serviceref):
-					return x
-				if CompareWithAlternatives(self.list[x][1], serviceref):
 					return x
 		return None
 
