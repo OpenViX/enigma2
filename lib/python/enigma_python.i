@@ -285,24 +285,7 @@ typedef long time_t;
 %include <lib/components/file_eraser.h>
 %include <lib/components/tuxtxtapp.h>
 %include <lib/driver/avswitch.h>
-/* eHdmiCEC::sendMessage() data is raw CEC operand bytes, so take a bytes
-   object as it is. The default char * typemap only takes str and encodes it
-   to UTF-8, which turns every byte >= 0x80 into two bytes. A str is still
-   accepted (UTF-8 encoded, as before) so existing callers keep working. */
-%typemap(in) char *data {
-	if (PyBytes_Check($input))
-		$1 = PyBytes_AsString($input);
-	else if (PyUnicode_Check($input))
-	{
-		$1 = (char *)PyUnicode_AsUTF8AndSize($input, NULL);
-		if (!$1)
-			SWIG_fail;
-	}
-	else
-		SWIG_exception_fail(SWIG_TypeError, "in method '$symname', argument $argnum must be bytes or str");
-}
 %include <lib/driver/hdmi_cec.h>
-%clear char *data;
 %include <lib/driver/rfmod.h>
 %include <lib/driver/misc_options.h>
 %include <lib/driver/etimezone.h>
