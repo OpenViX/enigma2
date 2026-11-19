@@ -453,7 +453,7 @@ class RecordTimerEntry(TimerEntry):
 			cmd = 0x82  # 130
 			physicaladdress = eHdmiCEC.getInstance().getPhysicalAddress()
 			data = struct.pack("BB", int(physicaladdress // 256), int(physicaladdress % 256))
-			eHdmiCEC.getInstance().sendMessage(msgaddress, cmd, data, len(data))
+			eHdmiCEC.getInstance().sendMessageBytes(msgaddress, cmd, data.hex().upper())  # raw operand bytes, as HdmiCec.sendCecMessage()
 			print("[TIMER] sourceactive was sent")
 
 	def _bouquet_search(self):
