@@ -695,7 +695,7 @@ class HdmiCec:
 			return True
 		if params[0] == 0x03:
 			printX("[HdmiCec] LG Simplink power-on request")
-			if config.hdmicec.handle_tv_wakeup.value != "disabled":
+			if config.hdmicec.handle_tv_wakeup.value:
 				self.wakeup()
 			self.sendMessage(address, "poweractive" if not Screens.Standby.inStandby else "powerinactive")
 			if not Screens.Standby.inStandby and config.hdmicec.report_active_source.value:
@@ -703,7 +703,7 @@ class HdmiCec:
 			return True
 		if params[0] == 0x04:
 			self.sendRawMessage(address, 0x89, (0x05, eHdmiCEC.getInstance().getDeviceType()))
-			if self.activesource:
+			if not Screens.Standby.inStandby:
 				self.sendMessage(address, "poweractive")
 			printX("[HdmiCec] LG Simplink connect request acknowledged")
 			return True
