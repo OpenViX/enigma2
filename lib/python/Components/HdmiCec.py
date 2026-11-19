@@ -646,9 +646,9 @@ class HdmiCec:
 	def sendRawMessage(self, address, cmd, payload):
 		data = bytes(payload)
 		if config.misc.DeepStandby.value:
-			if config.hdmicec.debug.value:
-				self.debugTx(address, cmd, data)
 			self.sendCecMessage(address, cmd, data)
+			if config.hdmicec.debug.value in ["2", "4"]:
+				self.debugTx(address, cmd, data)
 		else:
 			self.queue.append((address, cmd, data))
 			if not self.wait.isActive():
@@ -1146,12 +1146,11 @@ class HdmiCec:
 		txt = self.now(True) + self.opCode(cmd, True) + " " + f"{cmd:02X}" + " "
 		tmp = ""
 		if len(data):
+			data = self.payloadBytes(data)  # the bytes as sent by sendCecMessage()
 			if cmd in [0x32, 0x47]:  # set Menu Language/OSD Name
-				for info in data:
-					tmp += f"{info}"
+				tmp += data.decode("utf-8", errors="replace")
 			else:
-				for bytes in data:
-					tmp += f"{ord(bytes):02X}" + " "
+				tmp += "".join(f"{byte:02X} " for byte in data)
 		tmp += 48 * " "
 		self.fdebug(txt + tmp[:48] + f"[0x{msgaddress:02X}]")
 
