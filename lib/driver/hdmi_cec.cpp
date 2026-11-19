@@ -113,7 +113,7 @@ void eHdmiCEC::initializeCEC()
 	}
 	else
 	{
-		eTrace("[eHdmiCEC] cannot open %s: %m", HDMIDEV); /* Error - should not happen */
+		eLog(1, "[eHdmiCEC] cannot open %s: %m", HDMIDEV); /* Error - should not happen */
 	}
 }
 
@@ -271,7 +271,12 @@ void eHdmiCEC::hdmiEvent(int what)
 		{
 			bool keypressed = false;
 			static unsigned char pressedkey = 0;
-			if (rxmessage.data[0] != 0x87)
+			/* some TVs send <Device Vendor ID> (0x87) continuously, log only the first one */
+			static bool vendorIdLogged = false;
+			bool logMessage = rxmessage.data[0] != 0x87 || !vendorIdLogged;
+			if (rxmessage.data[0] == 0x87)
+				vendorIdLogged = true;
+			if (logMessage)
 			{
 				eTraceNoNewLineStart("[eHdmiCEC] received message");
 				eTraceNoNewLine(" %02X", rxmessage.address);
