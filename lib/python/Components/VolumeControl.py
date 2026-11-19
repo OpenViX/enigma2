@@ -83,6 +83,7 @@ class VolumeControl:
 			self.volumeDialog.setValue(0)
 		else:
 			self.volumeDialog.setValue(self.volctrl.getVolume())
+		self.last_vol = self.volctrl.getVolume()  # changed here, so volHide() must not take it as a change from the web interface
 		self.volSave()
 		self.hideVolTimer.start(3000, True)
 
