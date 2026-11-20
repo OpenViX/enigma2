@@ -1,3 +1,4 @@
+from locale import strxfrm
 from time import localtime, time, strftime
 
 from enigma import eEPGCache, eListboxPythonMultiContent, gFont, eRect, RT_HALIGN_LEFT, RT_HALIGN_RIGHT, RT_VALIGN_CENTER
@@ -170,7 +171,8 @@ class EPGListSingle(EPGListBase):
 	def __sortList(self):
 		sortType = int(config.epgselection.sort.value)
 		if sortType == 1:
-			self.list.sort(key=lambda x: (x[4] and x[4].lower() or '', x[2]))
+			# by the alphabet of the current language (LC_COLLATE, set by Language.py), ignoring case
+			self.list.sort(key=lambda x: (strxfrm(x[4].lower()) if x[4] else "", x[2]))
 		else:
 			assert (sortType == 0)
 			self.list.sort(key=lambda x: x[2])
