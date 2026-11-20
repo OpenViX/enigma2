@@ -18,6 +18,8 @@ class PluginComponent:
 		self.installedPluginList = []
 		self.setPluginPrefix("Plugins.")
 		self.resetWarnings()
+		self.loading = False  # True while readPluginList() is importing plugins
+		self.reloadPending = False  # a reload was requested while loading (e.g. a plugin changed the language during import)
 
 	def setPluginPrefix(self, prefix):
 		self.prefix = prefix
@@ -43,6 +45,26 @@ class PluginComponent:
 
 	def readPluginList(self, directory):
 		"""enumerates plugins"""
+		if self.loading:  # re-entered from inside a plugin import (e.g. language change callback): defer, a nested pass would see half-imported plugins
+			print("[PluginComponent] readPluginList called while loading plugins, reload deferred")
+			self.reloadPending = True
+			return
+		firstRun = self.firstRun
+		self.loading = True
+		try:
+			self.loadPluginList(directory)
+		finally:
+			self.loading = False
+		if self.reloadPending:
+			self.reloadPending = False
+			if firstRun:  # the initial load has just imported every plugin with the current language, nothing left to reload
+				print("[PluginComponent] deferred reload dropped, initial plugin load already complete")
+			else:
+				print("[PluginComponent] running deferred reload")
+				self.clearPluginList()
+				self.readPluginList(directory)
+
+	def loadPluginList(self, directory):
 		new_plugins = []
 		for c in listdir(directory):
 			directory_category = path.join(directory, c)
@@ -148,6 +170,9 @@ class PluginComponent:
 		return [(x, p.description) for p in self.getPlugins(PluginDescriptor.WHERE_MENU) for x in p(menuid)]
 
 	def clearPluginList(self):
+		if self.loading:  # don't empty the list under a running readPluginList(), the reload is deferred instead
+			self.reloadPending = True
+			return
 		self.pluginList = []
 		self.plugins = {}
 
