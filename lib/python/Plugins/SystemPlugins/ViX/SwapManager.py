@@ -217,12 +217,11 @@ class VIXSwap(Screen):
 				f.close()
 		print(f"[SwapManager][updateSwap2]2 self.swap_Pname:{self.swap_Pname} self.Pswapsize:{self.Pswapsize}")
 		self["key_blue"].setText(_("Create"))
-		devicelist = []						# lets find swap file
-		if swaps != 0:
-			for p in harddiskmanager.getMountedPartitions():
-				d = path.normpath(p.mountpoint)
-				if path.exists(p.mountpoint) and p.mountpoint != "/" and not p.mountpoint.startswith("/media/net"):
-					devicelist.append((p.description, d))
+		devicelist = []						# lets find swap file, independent of any swap partition found by parted (e.g. only zram0)
+		for p in harddiskmanager.getMountedPartitions():
+			d = path.normpath(p.mountpoint)
+			if path.exists(p.mountpoint) and p.mountpoint != "/" and not p.mountpoint.startswith(("/media/net/", "/media/autofs/")):
+				devicelist.append((p.description, d))
 		if len(devicelist):
 			print("[SwapManager][{updateSwap2] devicelist = ", devicelist)
 			for device in devicelist:
@@ -379,6 +378,10 @@ class VIXSwap(Screen):
 			self.commands = []
 			self.commands.append("dd if=/dev/zero of=" + myfile + " bs=1024 count=" + swapsize + " 2>/dev/null")
 			self.commands.append("mkswap " + myfile)
+			self.commands.append("swapon -p 10 " + myfile)  # activate the new swap file straight away, as actDeact() does
+			config.swapmanager.swapautostart.setValue(True)
+			config.swapmanager.swapautostart.save()
+			configfile.save()
 			self.Console.eBatch(self.commands, self.updateSwap, debug=True)
 
 	def autoSsWap(self):
