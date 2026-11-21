@@ -5,7 +5,7 @@ from enigma import eConsoleAppContainer, eDVBDB, eTimer
 import skin
 from Components.ActionMap import HelpableActionMap, HelpableNumberActionMap
 from Components.Button import Button
-from Components.config import config, ConfigSubsection, ConfigText
+from Components.config import config, ConfigSubsection, ConfigText, ConfigYesNo
 from Components.Harddisk import harddiskmanager
 from Components import Ipkg
 from Components.Label import Label
@@ -23,11 +23,14 @@ from Screens.HelpMenu import HelpableScreen
 from Screens.MessageBox import MessageBox
 from Screens.ParentalControlSetup import ProtectedScreen
 from Screens.Screen import Screen, ScreenSummary
+from Screens.Setup import Setup
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
 from Tools.LoadPixmap import LoadPixmap
 
 config.misc.pluginbrowser = ConfigSubsection()
 config.misc.pluginbrowser.plugin_order = ConfigText(default="")
+config.misc.pluginbrowser.po = ConfigYesNo(default=False)
+config.misc.pluginbrowser.src = ConfigYesNo(default=False)
 
 
 def languageChanged():
@@ -72,6 +75,7 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self["key_red"] = Button(_("Remove plugins"))
 		self["key_green"] = Button(_("Download plugins"))
 		self["key_yellow"] = Button(_("User installed plugins"))
+		self["key_menu"] = StaticText(_("MENU"))
 		self["key_0"] = StaticText(_("0"))
 		self["key_previous"] = StaticText(_("PREVIOUS"))
 		self["key_next"] = StaticText(_("NEXT"))
@@ -102,6 +106,9 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self["NumberActions"] = HelpableNumberActionMap(self, ["NumberActions"], {
 			str(n): (self.keyNumberGlobal, _("Direct item selection")) for n in range(10)
 		}, description=_("Selection Actions"))
+		self["menuActions"] = HelpableActionMap(self, ["MenuActions"], {
+			"menu": (self.openSetup, _("Open PluginBrowser setup screen")),
+		}, prio=0, description=_("Setup Actions"))
 
 		self.number = 0
 		self.nextNumberTimer = eTimer()
@@ -115,6 +122,10 @@ class PluginBrowser(Screen, ProtectedScreen, HelpableScreen):
 		self["list"].onSelectionChanged.append(self.selectionChanged)
 		if not self.templatedMode:
 			self.onLayoutFinish.append(self.saveListsize)
+
+	def openSetup(self):
+		from Screens.Setup import Setup
+		self.session.open(Setup, "pluginbrowsersetup")
 
 	def isProtected(self):
 		return config.ParentalControl.setuppinactive.value and (not config.ParentalControl.config_sections.main_menu.value or hasattr(self.session, 'infobar') and self.session.infobar is None) and config.ParentalControl.config_sections.plugin_browser.value
@@ -306,7 +317,9 @@ class PluginDownloadBrowser(Screen, HelpableScreen):
 		enigma_plugin_categories = ["bootlogos", "display", "drivers", "extensions", "picons", "security", "settings", "skins", "softcams", "systemplugins"]
 		other_categories = ["kodi-addon-"]
 		self.plugin_prefix_whitelist = tuple(prefix_whitelist) if prefix_whitelist else tuple([self.PLUGIN_PREFIX + x + "-" for x in enigma_plugin_categories] + other_categories)
-		self.plugin_suffix_blacklist = ('-dev', '-staticdev', '-dbg', '-doc', '-common', '-meta', '-src', '-po')
+		self.plugin_suffix_blacklist = ("-dev", "-staticdev", "-dbg", "-doc", "-common", "-meta") + tuple(
+			"-" + suffix for suffix in ("po", "src") if not getattr(config.misc.pluginbrowser, suffix).value
+		)
 		self.expandableIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expandable-plugins.png"))
 		self.expandedIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/expanded-plugins.png"))
 		self.verticallineIcon = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "icons/verticalline-plugins.png"))
