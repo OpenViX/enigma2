@@ -200,6 +200,9 @@ class Screen(dict):
 
 	title = property(getTitle, setTitle)
 
+	def getImage(self):
+		return self.screenImage
+
 	def setImage(self, image, source=None):
 		self.screenImage = None
 		if image and (images := {"menu": menus, "setup": setups}.get(source, screens)):
