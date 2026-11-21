@@ -109,8 +109,9 @@ class Language:
 		for category in [locale.LC_CTYPE, locale.LC_COLLATE, locale.LC_TIME, locale.LC_MONETARY, locale.LC_MESSAGES, locale.LC_NUMERIC]:
 			try:
 				locale.setlocale(category, (self.gotLanguage, 'UTF-8'))
-			except:
-				pass
+			except locale.Error:
+				if category == locale.LC_COLLATE:  # do not keep sorting by the previous language's rules
+					locale.setlocale(category, "C")
 
 		# Also write a locale.conf as /home/root/.config/locale.conf to apply language to interactive shells as well:
 		if not path.exists('/home/root/.config'):
