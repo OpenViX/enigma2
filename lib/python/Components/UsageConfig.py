@@ -84,7 +84,6 @@ def updateServiceListTemplateChoices():
 
 def InitUsageConfig():
 	config.version = ConfigNumber(default=0)
-	config.misc.remotecontrol_text_support = ConfigYesNo(default=SystemInfo["brand"] in ('vuplus', 'ini'))
 
 	config.misc.longkey_threshold = ConfigSelection(default="4", choices=[(str(i), _("%d") % i) for i in range(1, 7)])
 
@@ -136,8 +135,6 @@ def InitUsageConfig():
 		("keep", _("Keep service")),
 		("reverseB", _("Reverse bouquet buttons")),
 		("keep reverseB", _("Keep service") + " + " + _("Reverse bouquet buttons"))])
-
-	config.usage.multiepg_ask_bouquet = ConfigYesNo(default=False)
 
 	config.usage.panicbutton = ConfigYesNo(default=True)
 	config.usage.quickzap_bouquet_change = ConfigYesNo(default=False)
@@ -242,7 +239,6 @@ def InitUsageConfig():
 	for i in [60, 300, 600, 900, 1800, 2700, 3600]:
 		m = i // 60
 		choicelist.append((str(i), ngettext("%d minute", "%d minutes", m) % m))
-	config.usage.pip_last_service_timeout = ConfigSelection(default="0", choices=choicelist)
 
 	if not os.path.exists(resolveFilename(SCOPE_HDD)):
 		try:
@@ -959,15 +955,6 @@ def InitUsageConfig():
 		keytranslation = eEnv.resolve("${datadir}/enigma2/keytranslation.xml")
 	config.usage.keytrans = ConfigText(default=keytranslation)
 
-	config.network = ConfigSubsection()
-
-	config.network.AFP_autostart = ConfigYesNo(default=True)
-	config.network.NFS_autostart = ConfigYesNo(default=True)
-	config.network.OpenVPN_autostart = ConfigYesNo(default=True)
-	config.network.Samba_autostart = ConfigYesNo(default=True)
-	config.network.Inadyn_autostart = ConfigYesNo(default=True)
-	config.network.uShare_autostart = ConfigYesNo(default=True)
-
 	config.softwareupdate = ConfigSubsection()
 	config.softwareupdate.autosettingsbackup = ConfigYesNo(default=True)
 	config.softwareupdate.autoimagebackup = ConfigYesNo(default=False)
@@ -992,7 +979,6 @@ def InitUsageConfig():
 	config.timeshift.favoriteSaveAction = ConfigSelection([("askuser", _("Ask user")), ("savetimeshift", _("Save and stop")), ("savetimeshiftandrecord", _("Save and record")), ("noSave", _("Don't save"))], "askuser")
 	config.timeshift.permanentrecording = ConfigYesNo(default=False)
 	config.timeshift.isRecording = NoSave(ConfigYesNo(default=False))
-	config.timeshift.stream_warning = ConfigYesNo(default=True)
 
 	config.seek = ConfigSubsection()
 	config.seek.baractivation = ConfigSelection([("leftright", _("Long Left/Right")), ("ffrw", _("Long << / >>"))], "leftright")
@@ -1281,7 +1267,6 @@ def InitUsageConfig():
 	config.oscaminfo.ip = ConfigIP(default=[127, 0, 0, 1], auto_jump=True)
 	config.oscaminfo.port = ConfigInteger(default=16002, limits=(1, 65535))
 	config.oscaminfo.intervall = ConfigSelectionNumber(min=1, max=600, stepwidth=1, default=10, wraparound=True)
-	config.misc.enableCamscript = ConfigYesNo(default=False)
 	config.misc.softcams = ConfigSelection(default="None", choices=[(x, _(x)) for x in CamControl("softcam").getList()])
 	config.misc.softcamrestarts = ConfigSelection(default="", choices=[
 		("", _("Don't restart")),
@@ -1317,20 +1302,14 @@ def InitUsageConfig():
 
 	config.cccaminfo = ConfigSubsection()
 	config.cccaminfo.showInExtensions = ConfigYesNo(default=False)
-	config.cccaminfo.serverNameLength = ConfigSelectionNumber(min=10, max=100, stepwidth=1, default=22, wraparound=True)
 	config.cccaminfo.name = ConfigText(default="Profile", fixed_size=False)
-	config.cccaminfo.ip = ConfigText(default="192.168.2.12", fixed_size=False)
+	config.cccaminfo.ip = ConfigText(default="192.168.2.12", fixed_size=False)  # default is obviously someone's personal ip
 	config.cccaminfo.username = ConfigText(default="", fixed_size=False)
 	config.cccaminfo.password = ConfigText(default="", fixed_size=False)
 	config.cccaminfo.port = ConfigInteger(default=16001, limits=(1, 65535))
 	config.cccaminfo.profile = ConfigText(default="", fixed_size=False)
-	config.cccaminfo.ecmInfoEnabled = ConfigYesNo(default=True)
-	config.cccaminfo.ecmInfoTime = ConfigSelectionNumber(min=1, max=10, stepwidth=1, default=5, wraparound=True)
-	config.cccaminfo.ecmInfoForceHide = ConfigYesNo(default=True)
-	config.cccaminfo.ecmInfoPositionX = ConfigInteger(default=50)
-	config.cccaminfo.ecmInfoPositionY = ConfigInteger(default=50)
-	config.cccaminfo.blacklist = ConfigText(default="/media/cf/CCcamInfo.blacklisted", fixed_size=False)
-	config.cccaminfo.profiles = ConfigText(default="/media/cf/CCcamInfo.profiles", fixed_size=False)
+	config.cccaminfo.blacklist = ConfigText(default="/media/cf/CCcamInfo.blacklisted", fixed_size=False)  # default, /media/cf, why?
+	config.cccaminfo.profiles = ConfigText(default="/media/cf/CCcamInfo.profiles", fixed_size=False)  # default, /media/cf, why?
 	SystemInfo["CCcamInstalled"] = False
 	for softcam in softcams:
 		if softcam.lower().startswith("cccam"):

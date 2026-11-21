@@ -683,7 +683,6 @@ class AdapterSetup(ConfigListScreen, HelpableScreen, Screen):
 				self.finished_cb()
 			else:
 				self.close("cancel")
-		config.network.save()
 
 	def keySaveConfirm(self, ret=False):
 		if ret is True:
