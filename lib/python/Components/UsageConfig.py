@@ -416,8 +416,14 @@ def InitUsageConfig():
 		config.usage.wakeOnLAN = ConfigYesNo(default=False)
 		config.usage.wakeOnLAN.addNotifier(wakeOnLANChanged)
 
+	# displaytype (box-hardware.inc in oe-alliance-core) is one of: "" (no display), "textlcd", "7segment", "textlcd7segment",
+	# "bwlcd96", "bwlcd128", "bwlcd140", "bwlcd255", "bwlcd96colorlcd", "colorlcd", "colorlcd128", "colorlcd220", "colorlcd240",
+	# "colorlcd390", "colorlcd400", "colorlcd480", "colorlcd720", "colorlcd800"
+	displayType = SystemInfo["displaytype"]
+	segmentDisplay = displayType in ("7segment", "textlcd7segment")
+
 	# standby
-	if SystemInfo["displaytype"] == "textlcd7segment":
+	if segmentDisplay:
 		config.usage.blinking_display_clock_during_recording = ConfigSelection(default="Rec", choices=[
 			("Rec", _("REC")),
 			("RecBlink", _("Blinking REC")),
@@ -426,12 +432,12 @@ def InitUsageConfig():
 		config.usage.blinking_display_clock_during_recording = ConfigYesNo(default=False)
 
 	# in use
-	if SystemInfo["displaytype"] in ("textlcd"):
+	if displayType == "textlcd":
 		config.usage.blinking_rec_symbol_during_recording = ConfigSelection(default="Channel", choices=[
 			("Rec", _("REC Symbol")),
 			("RecBlink", _("Blinking REC Symbol")),
 			("Channel", _("Channelname"))])
-	if SystemInfo["displaytype"] in ("textlcd7segment"):
+	elif segmentDisplay:
 		config.usage.blinking_rec_symbol_during_recording = ConfigSelection(default="Rec", choices=[
 			("Rec", _("REC")),
 			("RecBlink", _("Blinking REC")),
@@ -439,10 +445,10 @@ def InitUsageConfig():
 	else:
 		config.usage.blinking_rec_symbol_during_recording = ConfigYesNo(default=True)
 
-	if SystemInfo["displaytype"] in ("textlcd7segment"):
-		config.usage.show_in_standby = ConfigSelection(default="time", choices=[
-			("time", _("Time")),
-			("nothing", _("Nothing"))])
+	# always defined, as display skins may refer to it; the setup only shows it for 7 segment displays
+	config.usage.show_in_standby = ConfigSelection(default="time", choices=[
+		("time", _("Time")),
+		("nothing", _("Nothing"))])
 
 	config.usage.show_message_when_recording_starts = ConfigYesNo(default=True)
 
