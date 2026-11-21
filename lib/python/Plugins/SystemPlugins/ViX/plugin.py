@@ -28,15 +28,14 @@ def setLanguageFromBackup(backupfile):
 	import tarfile
 
 	try:
-		tar = tarfile.open(backupfile)
-		member = tar.getmember("etc/enigma2/settings")
-	except KeyError:
-		print("[ViX plugin][setLanguageFromBackup] language selected failed")
-		tar.close()
+		with tarfile.open(backupfile) as tar:
+			settings = tar.extractfile("etc/enigma2/settings")  # None if it is not a file
+			settings = settings.read().decode(errors="ignore") if settings else ""
+	except (OSError, EOFError, KeyError, tarfile.TarError) as err:  # no settings in the backup, or a damaged backup
+		print("[ViX plugin][setLanguageFromBackup] language selected failed:", err)
 		return
 
-	for line in tar.extractfile(member):
-		line = line.decode()
+	for line in settings.splitlines():
 		if line.startswith("config.osd.language"):
 			languageToSelect = line.strip().split("=")[1]
 			print("[ViX plugin][setLanguageFromBackup] language selected", languageToSelect)
@@ -47,7 +46,6 @@ def setLanguageFromBackup(backupfile):
 			config.misc.languageselected.value = 0		# 0 means found
 			config.misc.languageselected.save()
 			break
-	tar.close()
 
 
 def checkConfigBackup():
