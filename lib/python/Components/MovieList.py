@@ -1,4 +1,3 @@
-from locale import strxfrm
 from os import path, stat
 import struct
 import random
@@ -9,6 +8,7 @@ from enigma import eListboxPythonMultiContent, eListbox, gFont, iServiceInformat
 
 from Components.config import config
 from Components.GUIComponent import GUIComponent
+from Components.Language import alphabeticSortKey
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaBlend, MultiContentEntryProgress
 from Components.Renderer.Picon import getPiconName
 from Screens.LocationBox import defaultInhibitDirs
@@ -993,29 +993,23 @@ class MovieList(GUIComponent):
 				ref = firstItem[0] or ref
 		len = x[1] and (x[1].getLength(ref) // 60)  # we only display minutes, so sort by minutes
 		name = x[3].txt
-		return self.getSortPrimaryGroup(x), len or 0, self.buildNameSortKey(name), -x[2]
-
-	@staticmethod
-	def buildNameSortKey(name):
-		# Sort names by the alphabet of the current language (LC_COLLATE, set by Language.py), ignoring case
-		# as before. Without that language's collation data this is the same as plain character order.
-		return strxfrm(name.lower()) if name else ""
+		return self.getSortPrimaryGroup(x), len or 0, alphabeticSortKey(name), -x[2]
 
 	def buildAlphaNumericSortKey(self, x):
 		# x = ref,info,begin,...
 		name = x[3].txt
-		return self.getSortPrimaryGroup(x), self.buildNameSortKey(name), -x[2]
+		return self.getSortPrimaryGroup(x), alphabeticSortKey(name), -x[2]
 
 	# as for buildAlphaNumericSortKey, but without negating dates
 	def buildAlphaDateSortKey(self, x):
 		# x = ref,info,begin,...
 		name = x[3].txt
-		return self.getSortPrimaryGroup(x), self.buildNameSortKey(name), x[2]
+		return self.getSortPrimaryGroup(x), alphabeticSortKey(name), x[2]
 
 	def buildAlphaNumericFlatSortKey(self, x):
 		# x = ref,info,begin,...
 		name = x[3].txt
-		return min(self.getSortPrimaryGroup(x), 2), self.buildNameSortKey(name), -x[2]
+		return min(self.getSortPrimaryGroup(x), 2), alphabeticSortKey(name), -x[2]
 
 	def buildBeginTimeSortKey(self, x):
 		return self.getSortPrimaryGroup(x), "", -x[2]
