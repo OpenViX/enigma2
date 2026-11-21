@@ -468,7 +468,7 @@ class ServiceInfoBar(GUIAddon):
 		for (attrib, value) in self.skinAttributes[:]:
 			if attrib == "pixmaps":
 				self.pixmaps = {k: v for k, v in (item.split(':') for item in value.split(','))}
-			if attrib == "pixmapsDisabled":
+			elif attrib == "pixmapsDisabled":
 				self.pixmapsDisabled = {k: v for k, v in (item.split(':') for item in value.split(','))}
 			elif attrib == "audioCodecIconPath":
 				self.audioCodecIconPath = value
