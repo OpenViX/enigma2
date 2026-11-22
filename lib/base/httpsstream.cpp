@@ -1,4 +1,6 @@
+#include <cerrno>
 #include <cstdio>
+#include <ctime>
 
 #include <lib/base/httpsstream.h>
 #include <lib/base/eerror.h>
@@ -519,7 +521,10 @@ ssize_t eHttpsStream::read(off_t offset, void *buf, size_t count)
 		}
 		ssize_t got = readFromRing(b + pre, count - pre);
 		if (got <= 0)
+		{
+			partialPktSz = pre; /* nothing read: keep the saved partial packet (still in partialPkt) for the next read */
 			return got;
+		}
 		return syncNextRead(buf, (ssize_t)(got + pre));
 	}
 }
@@ -785,12 +790,35 @@ void eHttpsStream::fillRingBuffer()
 }
 
 /* readFromRing — consumer: copies up to count bytes out of the ring buffer,
- * blocking until data is available or EOF/abort is signalled. */
+ * waiting up to 100 ms for data (then -1/EAGAIN), or until EOF/abort is signalled. */
 ssize_t eHttpsStream::readFromRing(void *buf, size_t count)
 {
 	pthread_mutex_lock(&ringMutex);
-	while (ringFill == 0 && !ringEof && !threadAbort)
-		pthread_cond_wait(&ringNotEmpty, &ringMutex);
+	if (ringFill == 0 && !ringEof && !threadAbort)
+	{
+		/* Wait at most 100 ms. A condition wait is not interrupted by the SIGUSR1 that eFilePushThread::stop() sends, so an
+		 * unbounded wait on a stalled source kept the push thread (and the main thread joining it) blocked until the producer
+		 * gave up (~30 s with the stall recovery). Returning EAGAIN lets the push thread check its stop flag and read again. */
+		struct timespec until;
+		clock_gettime(CLOCK_MONOTONIC, &until);
+		until.tv_nsec += 100 * 1000000L;
+		if (until.tv_nsec >= 1000000000L)
+		{
+			until.tv_sec++;
+			until.tv_nsec -= 1000000000L;
+		}
+		while (ringFill == 0 && !ringEof && !threadAbort)
+		{
+			if (pthread_cond_timedwait(&ringNotEmpty, &ringMutex, &until) == ETIMEDOUT)
+				break;
+		}
+		if (ringFill == 0 && !ringEof && !threadAbort)
+		{
+			pthread_mutex_unlock(&ringMutex);
+			errno = EAGAIN;
+			return -1;
+		}
+	}
 
 	if (ringFill == 0)
 	{
@@ -842,7 +870,11 @@ void eHttpsStream::detectStreamRelay(const std::string &url)
 		ringEof = false;
 		threadAbort = false;
 		pthread_mutex_init(&ringMutex, NULL);
-		pthread_cond_init(&ringNotEmpty, NULL);
+		pthread_condattr_t attr;
+		pthread_condattr_init(&attr);
+		pthread_condattr_setclock(&attr, CLOCK_MONOTONIC); /* timed wait in readFromRing() must not follow wall clock (DVB time) jumps */
+		pthread_cond_init(&ringNotEmpty, &attr);
+		pthread_condattr_destroy(&attr);
 		pthread_cond_init(&ringNotFull, NULL);
 	}
 }
