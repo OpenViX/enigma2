@@ -24,6 +24,16 @@ import re
 from os.path import join
 
 
+# A DVB service played without a tuner is a stream from another box (fallback tuner). The other box sends it already
+# descrambled, unless this box is set to descramble received streams itself, so its PMT CA descriptors do not make it
+# encrypted here. Stream relay is descrambled on this box and keeps its icon.
+def isFallbackStream(service, ref):
+	if not ref or ref.getPath() or ref.getStreamRelay() or config.streaming.descramble_client.value:
+		return False
+	frontendInfo = service.frontendInfo()
+	return not (frontendInfo and frontendInfo.getFrontendData())
+
+
 class ServiceInfoBar(GUIAddon):
 	def __init__(self):
 		GUIAddon.__init__(self)
@@ -241,7 +251,7 @@ class ServiceInfoBar(GUIAddon):
 			elif key == "crypt" and not isRef:
 				if "%3a//" in pending_sref and pending_service_ref and not pending_service_ref.getStreamRelay():
 					return key + "_off"
-				if info.getInfo(iServiceInformation.sIsCrypted) == 1 and info.getInfo(iServiceInformation.sIsSoftCSA) != 1 and scramblingState(info) != 0:
+				if info.getInfo(iServiceInformation.sIsCrypted) == 1 and info.getInfo(iServiceInformation.sIsSoftCSA) != 1 and scramblingState(info) != 0 and not isFallbackStream(service, pending_service_ref):
 					self.isCryptedDetected = True
 					return "IS_CRYPT"
 				if info.getInfo(iServiceInformation.sIsSoftCSA) == 1:
