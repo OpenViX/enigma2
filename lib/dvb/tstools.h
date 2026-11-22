@@ -102,6 +102,8 @@ private:
 		/* for simple linear interpolation */
 	std::map<pts_t, off_t> m_samples;
 	int m_samples_taken;
+		/* the end of the file when the samples were taken, to notice that a growing file has outgrown them */
+	off_t m_samples_offset_end;
 
 	eMPEGStreamInformation m_streaminfo;
 	off_t m_last_filelength;
