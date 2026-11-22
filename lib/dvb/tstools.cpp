@@ -58,6 +58,7 @@ eDVBTSTools::eDVBTSTools():
 	m_begin_valid (0),
 	m_end_valid(0),
 	m_samples_taken(0),
+	m_samples_offset_end(0),
 	m_last_filelength(0),
 	m_futile(0)
 {
@@ -369,6 +370,22 @@ int eDVBTSTools::getOffset(off_t &offset, pts_t &pts, int marg)
 		if (!m_end_valid)
 			return -1;
 
+		/*
+		 * The samples are taken once, but a file that is being recorded (timeshift, or a recording that is
+		 * played while it is still recorded: it has no .ap file before the recording has ended) keeps growing.
+		 * A position behind the last sample is then extrapolated from the last segment only, and that can end
+		 * far beyond the end of the file: every skip ends at the live point, wherever it was meant to go.
+		 * So take the samples again when the file has grown since and the position is behind the last sample.
+		 */
+		if (m_samples_taken && !m_samples.empty() &&
+			pts > m_samples.rbegin()->first &&
+			m_offset_end > m_samples_offset_end + 4 * 1024 * 1024)
+		{
+			eDebug("[eDVBTSTools] getOffset the file has grown from %jd to %jd since the samples were taken, taking them again",
+				(intmax_t)m_samples_offset_end, (intmax_t)m_offset_end);
+			m_samples_taken = 0;
+		}
+
 		if (!m_samples_taken)
 			takeSamples();
 
@@ -664,6 +681,7 @@ void eDVBTSTools::takeSamples()
 	}
 	m_samples[0] = m_offset_begin;
 	m_samples[m_pts_end - m_pts_begin] = m_offset_end;
+	m_samples_offset_end = m_offset_end;
 }
 
 	/* returns 0 when a sample was taken. */
