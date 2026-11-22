@@ -501,7 +501,7 @@ print("[StartEnigma]  Initialising SetupDevices.")
 from Components.SetupDevices import InitSetupDevices  # noqa: E402
 InitSetupDevices()
 
-if SystemInfo["architecture"] in ("aarch64"):  # something not right here
+if SystemInfo["architecture"] == "aarch64":  # something not right here
 	from usb.backend import libusb1  # noqa: E402
 	libusb1.get_backend(find_library=lambda x: "/lib64/libusb-1.0.so.0")
 

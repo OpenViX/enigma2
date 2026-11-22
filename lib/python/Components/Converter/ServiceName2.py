@@ -355,7 +355,7 @@ class ServiceName2(Converter):
 
 	def tpFrequency(self, type):  # %F - frequency (dvb-s/s2/c/t) in KHz
 		result = ""
-		if type in ('DVB-S') and self.tpdata.get('frequency', 0) > 0:
+		if type == "DVB-S" and self.tpdata.get('frequency', 0) > 0:
 			result += '%d MHz' % (self.tpdata.get('frequency', 0) / 1000)
 		if type in ('DVB-C', 'DVB-T'):
 			result += '%.3f MHz' % (((self.tpdata.get('frequency', 0) + 500) / 1000) / 1000.0)

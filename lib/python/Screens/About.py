@@ -212,7 +212,7 @@ class About(AboutBase):
 		if ospath.exists('/sys/firmware/devicetree/base/bolt/tag'):
 			with open("/sys/firmware/devicetree/base/bolt/tag") as f:
 				bootLoader = f.read().replace('\x00', '').replace('\n', '')
-				if MODEL in ("gb7252, "):
+				if MODEL == "gb7252":
 					AboutText += _("Bolt:\t%s\n") % bootLoader
 				else:
 					AboutText += _("Bootloader:\t%s\n") % bootLoader
@@ -256,7 +256,7 @@ class About(AboutBase):
 			bootmode = SystemInfo["canMode12"] and (mode := GetCurrentImageMode()) and _("bootmode = %s") % str(mode) or ""
 			AboutText += (_("Image Slot:\t %s %s") % (part, bootmode)) + "\n"
 
-		if MACHINENAME in ("ET8500") and ospath.exists("/proc/mtd"):
+		if MACHINENAME == "ET8500" and ospath.exists("/proc/mtd"):
 			self.dualboot = self.dualBoot()
 			if self.dualboot:
 				AboutText += _("ET8500 Multiboot: Installed\n")

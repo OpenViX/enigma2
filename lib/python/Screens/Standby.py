@@ -59,7 +59,7 @@ def lastPowerState(state):
 class Standby2(Screen):
 	def Power(self):
 		print("[Standby][Standby2][Power] leave standby2")
-		if BRAND in ('dinobot') or SystemInfo["HasHiSi"] or BOXTYPE in ("sfx6008", "sfx6018"):
+		if BRAND == "dinobot" or SystemInfo["HasHiSi"] or BOXTYPE in ("sfx6008", "sfx6018"):
 			try:
 				open("/proc/stb/hdmi/output", "w").write("on")
 				print("[Standby] open hdmi on leave standby")
@@ -137,7 +137,7 @@ class Standby2(Screen):
 			self.setInput("SCART")
 		else:
 			self.setInput("AUX")
-		if BRAND in ('dinobot') or SystemInfo["HasHiSi"] or BOXTYPE in ("sfx6008", "sfx6018"):
+		if BRAND == "dinobot" or SystemInfo["HasHiSi"] or BOXTYPE in ("sfx6008", "sfx6018"):
 			try:
 				open("/proc/stb/hdmi/output", "w").write("off")
 				print("[Standby] close hdmi on enter standby")
