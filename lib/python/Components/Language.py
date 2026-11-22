@@ -12,6 +12,8 @@ def alphabeticSortKey(name):
 	# Sort key for names in the alphabet of the current language (LC_COLLATE, set by activateLanguage()), ignoring case.
 	# Without that language's collation data this is the same as plain character order.
 	return locale.strxfrm(name.lower()) if name else ""
+
+
 Lpackagename = "enigma2-locale-"
 
 
