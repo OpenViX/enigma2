@@ -1,6 +1,7 @@
 #include <lib/dvb/dvbtime.h>
 #include <lib/dvb/dvb.h>
 
+#include <algorithm>
 #include <sys/ioctl.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -188,6 +189,55 @@ void TDT::start()
 				eDVBTableSpec::tfHaveTIDMask |
 				eDVBTableSpec::tfHaveTimeout;
 	TimeTable::startTable(spec);
+}
+
+void TOTLog::start(iDVBDemux *demux)
+{
+	eDVBTableSpec spec;
+	memset(&spec, 0, sizeof(spec));
+	spec.pid = 0x14;
+	spec.tid = 0x73;
+	spec.timeout = 35000;  // A TOT is sent at least every 30 seconds, if at all.
+	spec.flags = eDVBTableSpec::tfAnyVersion | eDVBTableSpec::tfHaveTID | eDVBTableSpec::tfHaveTimeout;
+	eGTable::start(demux, spec);
+}
+
+int TOTLog::createTable(unsigned int nr, const uint8_t *data, unsigned int max)
+{
+	if (!data || data[0] != 0x73)
+		return 0;
+	int end = 3 + (((data[1] & 0x0F) << 8) | data[2]) - 4;  // Up to the CRC.
+	int pos = 10;
+	int loopEnd = std::min(pos + (((data[8] & 0x0F) << 8) | data[9]), end);
+	char text[24];
+	time_t utc = parseDVBtime(&data[3]);
+	struct tm t;
+	strftime(text, sizeof(text), "%Y-%m-%d %H:%M:%S", gmtime_r(&utc, &t));
+	eDebug("[TOT] onid=%04x tsid=%04x UTC=%s descriptors=%d bytes", onid, tsid, text, loopEnd - pos);
+	while (pos + 2 <= loopEnd)
+	{
+		int tag = data[pos];
+		int length = data[pos + 1];
+		if (pos + 2 + length > loopEnd)
+			break;
+		if (tag == 0x58)  // local_time_offset_descriptor: 13 bytes per country/region
+		{
+			for (int i = pos + 2; i + 13 <= pos + 2 + length; i += 13)
+			{
+				const uint8_t *e = &data[i];
+				char sign = (e[3] & 0x01) ? '-' : '+';
+				time_t change = parseDVBtime(&e[6]);
+				strftime(text, sizeof(text), "%Y-%m-%d %H:%M:%S", gmtime_r(&change, &t));
+				eDebug("[TOT]   country=%c%c%c region=%d offset=%c%02x:%02x change=%s UTC next=%c%02x:%02x",
+					e[0], e[1], e[2], e[3] >> 2, sign, e[4], e[5], text, sign, e[11], e[12]);
+			}
+		}
+		else
+			eDebug("[TOT]   descriptor 0x%02x, %d bytes", tag, length);
+		pos += 2 + length;
+	}
+	error = 0;
+	return 1;
 }
 
 STT::STT(eDVBChannel *chan, int update_count)
@@ -630,6 +680,16 @@ void eDVBLocalTimeHandler::DVBChannelStateChanged(iDVBChannel *chan)
 			{
 				case iDVBChannel::state_ok:
 					eDebug("[eDVBLocalTimerHandler] channel %p running", chan);
+					if (parms && system != iDVBFrontend::feATSC)  // TEMP debug: tuned channels only
+					{
+						ePtr<iDVBDemux> demux;
+						if (!it->second.channel->getDemux(demux, 0))
+						{
+							eDVBChannelID chid = it->second.channel->getChannelID();
+							it->second.totlog = new TOTLog(chid.original_network_id.get(), chid.transport_stream_id.get());
+							it->second.totlog->start(demux);
+						}
+					}
 					m_updateNonTunedTimer->stop();
 					if (m_use_dvb_time) {
 						startTimeTableForChannel(it->second);

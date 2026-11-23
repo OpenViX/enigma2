@@ -54,6 +54,16 @@ public:
 	void start();
 };
 
+// TEMP debug: log the TOT (table 0x73) of each tuned multiplex, including its local time offsets.
+class TOTLog: public eGTable
+{
+	int onid, tsid;
+	int createTable(unsigned int nr, const uint8_t *data, unsigned int max);
+public:
+	TOTLog(int onid, int tsid): onid(onid), tsid(tsid) {}
+	void start(iDVBDemux *demux);
+};
+
 class STT: public TimeTable
 {
 	int createTable(unsigned int nr, const __u8 *data, unsigned int max);
@@ -70,6 +80,7 @@ class eDVBLocalTimeHandler: public sigc::trackable
 	struct channel_data
 	{
 		ePtr<TimeTable> timetable;
+		ePtr<TOTLog> totlog;  // TEMP debug
 		ePtr<eDVBChannel> channel;
 		ePtr<eConnection> m_stateChangedConn;
 		int m_prevChannelState;
