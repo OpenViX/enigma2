@@ -95,6 +95,7 @@ class ServiceInfoBar(GUIAddon):
 					iPlayableService.evStart: self.scheduleAddonUpdate,
 					iPlayableService.evEnd: self.onServiceEnd,
 					iPlayableService.evUpdatedInfo: self.scheduleAddonUpdate,
+					iPlayableService.evUpdatedEventInfo: self.scheduleAddonUpdate,
 					iPlayableService.evVideoSizeChanged: self.updateAddon,
 					iPlayableService.evHBBTVInfo: self.scheduleAddonUpdate,
 					iPlayableService.evNewProgramInfo: self.scheduleAddonUpdate,
@@ -274,6 +275,10 @@ class ServiceInfoBar(GUIAddon):
 					return key
 			elif key == "hbbtv" and not isRef:
 				if info.getInfoString(iServiceInformation.sHBBTVUrl) != "":
+					return key
+			elif key == "pdc" and not isRef:
+				event = info.getEvent(0)  # now
+				if event and event.getPdcPil():
 					return key
 			elif key == "subservices" and not isRef:
 				if hasActiveSubservicesForCurrentChannel(service):
