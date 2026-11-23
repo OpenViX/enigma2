@@ -7,7 +7,9 @@ from Components.Converter.genre import getGenreStringSub, getGenreStringLong
 from Components.Sources.ServiceEvent import ServiceEvent
 from Components.config import config
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
-from time import time, localtime, mktime, strftime
+from calendar import timegm
+from collections import Counter
+from time import time, localtime, strftime
 
 
 class ETSIClassifications(dict):
@@ -284,6 +286,7 @@ class EventName(Converter):
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		self.epgcache = eEPGCache.getInstance()
+		self.pdcZoneCache = (None, 0)
 
 		self.type = self.NAME
 		self.separator = None
@@ -459,7 +462,9 @@ class EventName(Converter):
 		return _("PDC") if event.getPdcPil() else ""
 
 	# The PDC start (month, day, hour and minute are packed into the PIL) as a time struct, or None if there is none or it is not a date (control codes).
-	def pdcStart(self, event):
+	# The PIL is the announced start in the broadcaster's local time, as if it were UTC. None if there is no valid PIL.
+	@staticmethod
+	def pilTime(event):
 		pil = event.getPdcPil()
 		if not pil:
 			return None
@@ -471,7 +476,52 @@ class EventName(Converter):
 			return None
 		begin = localtime(event.getBeginTime())
 		year = begin.tm_year + (1 if month < begin.tm_mon - 6 else 0)  # A PDC date early in the year for an event late in the year is next year's.
-		return localtime(mktime((year, month, day, hour, minute, 0, 0, 0, -1)))
+		try:
+			return timegm((year, month, day, hour, minute, 0))
+		except (OverflowError, ValueError):
+			return None
+
+	# How far the broadcaster's local time is ahead of ours (both follow the same summer time dates in Europe).
+	# DVB does not say which time zone a PIL is in, but it is normally the event's announced start, so each PDC event
+	# on the service gives the difference in whole hours. Use the most common one over the service's events from 6 hours
+	# to 2 days ahead: when a programme overruns, the rest of that evening is late too, but the schedule is normally
+	# back on time by then. Nearer events are only used if there are no later ones.
+	def pdcZoneDifference(self, event):
+		def difference(event, pilStart):
+			beginTime = event.getBeginTime()
+			return round((pilStart - beginTime) / 3600) * 3600 - localtime(beginTime).tm_gmtoff
+
+		beginTime = event.getBeginTime()
+		navigation = NavigationInstance.instance
+		reference = getattr(self.source, "service", None) or (navigation and navigation.getCurrentlyPlayingServiceReference())
+		key = (reference and reference.toString(), beginTime)
+		if key == self.pdcZoneCache[0]:
+			return self.pdcZoneCache[1]
+		near = []
+		far = []
+		later = reference and self.epgcache and self.epgcache.lookupEventTime(reference, beginTime)
+		if later and later.getBeginTime() == beginTime:  # Only use the EPG if this event is on that service.
+			for count in range(500):  # A limit, in case the EPG is odd.
+				laterBegin = later.getBeginTime()
+				if laterBegin >= beginTime + 172800:  # 2 days
+					break
+				pilStart = self.pilTime(later)
+				if pilStart is not None:
+					(far if laterBegin >= beginTime + 21600 else near).append(difference(later, pilStart))  # 6 hours
+				following = self.epgcache.lookupEventTime(reference, laterBegin, +1)
+				if not following or following.getBeginTime() <= laterBegin:
+					break
+				later = following
+		samples = far or near or [difference(event, self.pilTime(event))]
+		result = Counter(reversed(samples)).most_common(1)[0][0]  # In a tie, events further ahead win: they are less likely to be running late.
+		self.pdcZoneCache = (key, result)
+		return result
+
+	def pdcStart(self, event):
+		pilStart = self.pilTime(event)
+		if pilStart is None:
+			return None
+		return localtime(pilStart - self.pdcZoneDifference(event) - localtime(event.getBeginTime()).tm_gmtoff)
 
 	def textPdcTime(self, event):
 		start = self.pdcStart(event)
