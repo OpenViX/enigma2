@@ -441,6 +441,23 @@ void eDVBCAHandler::newConnection(int socket)
 	 */
 	bool protocol3_capable = isProtocol3CapableClient(socket);
 
+	/*
+	 * Only offer Protocol 3 when SoftCSA can actually use the CWs.
+	 * With Protocol 3 the softcam sends CA_SET_DESCR/CA_SET_DESCR_MODE
+	 * over this socket instead of setting them on the ca device. If
+	 * SoftCSA is disabled (or libdvbcsa is missing) nothing consumes
+	 * them, so kernel descramblers (e.g. dmxcsa for CSA-ALT) never get
+	 * a key and the picture stays black. Stay on the legacy protocol
+	 * so the softcam drives the ca device itself.
+	 */
+	bool downgraded = false;
+	if (protocol3_capable && !eDVBCSAEngine::isAvailable())
+	{
+		eDebug("[eDVBCAHandler] SoftCSA not active, not offering Protocol 3 to client");
+		protocol3_capable = false;
+		downgraded = true;
+	}
+
 	// Route through eDVBCWHandler proxy for MainLoop-independent CW delivery
 	int client_fd = eDVBCWHandler::getInstance()->addConnection(socket);
 	if (client_fd < 0)
@@ -460,6 +477,15 @@ void eDVBCAHandler::newConnection(int socket)
 		 * after the client responds with SERVER_INFO.
 		 */
 		client->sendClientInfo();
+	}
+	else if (downgraded)
+	{
+		/*
+		 * Protocol-3-capable softcam (e.g. OSCam pmt_mode 6) kept on the
+		 * legacy protocol: it reads CAPMTs only from this socket, so send
+		 * the current list now, as enigma2 did before Protocol 3.
+		 */
+		distributeCAPMT();
 	}
 	/*
 	 * Legacy clients: no data sent on .listen.camd.socket.
