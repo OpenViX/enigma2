@@ -66,7 +66,8 @@ public:
 	bool init();
 
 	// Static helpers
-	static bool isAvailable() { csa_load_library(); return g_csa_api.available; }
+	// false when libdvbcsa is missing or config.misc.softcsa.enabled is off
+	static bool isAvailable() { return csa_load_library(); }
 	static int getBatchSize();
 	static std::string getLibraryName();
 	static std::string getLibraryPath();

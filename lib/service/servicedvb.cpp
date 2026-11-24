@@ -4572,17 +4572,9 @@ void eDVBServicePlay::setupSpeculativeDescrambling()
 	if (m_is_pvr || m_is_stream)
 		return;
 
-	// libdvbcsa missing -> software descrambling not possible, skip all setup
+	// libdvbcsa missing or SoftCSA disabled -> skip all setup
 	if (!eDVBCSAEngine::isAvailable())
 		return;
-
-	int softcsaEnable = eConfigManager::getConfigIntValue("config.misc.softcsa.Enable_Disable", 0);
-	// Enabled (0) Disabled (1)
-	if (softcsaEnable == 1)
-	{
-		eWarning("[eDVBServicePlay] softcsa disabled)");
-		return;
-	}
 
 	eDebug("[eDVBServicePlay] Encrypted channel, creating speculative CSA session");
 
