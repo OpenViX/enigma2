@@ -476,7 +476,6 @@ class ServiceInfoBar(GUIAddon):
 		instance.setSelectionEnable(False)
 		instance.setContent(self.l)
 		instance.allowNativeKeys(False)
-		instance.setEllipsis(0)
 
 	def applySkin(self, desktop, parent):
 		attribs = []
