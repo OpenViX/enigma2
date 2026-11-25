@@ -941,7 +941,9 @@ int eTextPara::renderString(const char *string, int rflags, int border)
 	// text this is done while laying out (the rest is never created). Right-to-left text is
 	// laid out in visual order, its logical start is the last line, so that is handled below.
 	m_truncated = false;
-	m_maxlines = (ellipsis && !rtl) ? maxLines() : INT_MAX;
+	// maxLines() counts the lines that certainly fit. One more is laid out and kept below only
+	// if its glyphs really fit (e.g. a last line without descenders).
+	m_maxlines = (ellipsis && !rtl) ? maxLines() + 1 : INT_MAX;
 	size_t linestart = glyphs.size();
 	// not wrapping, left-to-right: glyphs behind the right edge of the last line are cut off
 	// anyway, don't create them (earlier lines are kept, alignment needs their full width)
@@ -1130,6 +1132,30 @@ nprint:				isprintable=0;
 
 			if (ellipsis && !wrap && !rtl && (long)(i - uc_visual.begin()) > lastnl && cursor.x() - left > area.width())
 				skipglyphs = true;
+		}
+	}
+	if (m_maxlines != INT_MAX && (int)lineOffsets.size() + 1 == m_maxlines && !lineChars.empty())
+	{
+		// the extra line: keep it if its baseline and the glyphs drawn on it are inside the area
+		const size_t extrastart = glyphs.size() - charCount;
+		int bottom = cursor.y();
+		for (size_t n = extrastart; n < glyphs.size(); ++n)
+			if (!(glyphs[n].flags & GS_ISSPACE))
+				bottom = std::max(bottom, glyphs[n].bbox.bottom());
+		// eDebug("[eTextPara] TEMP extra line: bottom=%d area bottom=%d -> %s", bottom, area.bottom(), bottom <= area.bottom() ? "kept" : "dropped");
+		if (bottom > area.bottom())
+		{
+			// drop it and go back to the end of the previous line, which gets the ellipsis
+			dropGlyphs(extrastart, glyphs.size());
+			int lh = current_face->size->metrics.height;
+			if (!lh)
+				lh = FT_MulFix(current_face->bbox.yMax, current_face->size->metrics.y_scale);
+			totalheight -= lh >> 6;
+			charCount = lineChars.back();
+			lineChars.pop_back();
+			cursor = ePoint(charCount ? glyphs.back().x + glyphs.back().w : left, lineOffsets.back());
+			lineOffsets.pop_back();
+			m_truncated = true;
 		}
 	}
 	if (m_truncated)

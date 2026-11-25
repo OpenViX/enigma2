@@ -182,7 +182,7 @@ class eTextPara: public iObject
 	void dropGlyphs(size_t from, size_t to);
 	int maxLines();
 	int ellipsizeLine(size_t start, size_t end, int &endx, bool rtl, int rflags, int border, bool force);
-	int m_maxlines;		// wrapped left-to-right text with RT_ELLIPSIS: lines that fit, otherwise INT_MAX
+	int m_maxlines;		// left-to-right text with RT_ELLIPSIS: lines that certainly fit plus one, otherwise INT_MAX
 	bool m_truncated;	// text was cut off at m_maxlines
 	void newLine(int flags);
 	void setFont(Font *font, Font *replacement_font, Font *fallback_font);
