@@ -1750,8 +1750,19 @@ void eListboxPythonMultiContent::paint(gPainter &painter, eWindowStyle &style, c
 					{
 						if(selected && !pforeColorSelected)
 							pforeColorSelected = pforeColor;
-						unsigned int color = PyLong_AsUnsignedLongMask(selected ? pforeColorSelected : pforeColor);
-						painter.setBackgroundColor(gRGB(color));
+						// the fill of a rounded bar is drawn with the background color; without a color of the entry it is the
+						// foreground color the bar without rounded corners gets from clearRegion() (the list's own, else the
+						// window style's) - a missing color must not reach PyLong_AsUnsignedLongMask(), which fails on NULL
+						// and leaves a Python exception set that brings enigma2 down
+						ePyObject pcolor = selected ? pforeColorSelected : pforeColor;
+						gRGB color;
+						if (pcolor)
+							color = gRGB(PyLong_AsUnsignedLongMask(pcolor));
+						else if (local_style && (selected ? local_style->m_foreground_color_selected_set : local_style->m_foreground_color_set))
+							color = selected ? local_style->m_foreground_color_selected : local_style->m_foreground_color;
+						else
+							color = style.getColor(selected ? eWindowStyleSkinned::colListboxSelectedForeground : eWindowStyleSkinned::colListboxForeground);
+						painter.setBackgroundColor(color);
 					}
 
 				}
