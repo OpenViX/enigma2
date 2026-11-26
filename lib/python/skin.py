@@ -436,6 +436,10 @@ def parseBoolean(attribute, value):
 	return value.lower() in ("1", attribute, "enabled", "on", "true", "yes")
 
 
+def parseCarouselFocus(value):  # The carousel slot (counted from 0) that holds the selection, "center" for the middle one (-1).
+	return -1 if value.lower() in ("center", "centre", "middle") else int(value)
+
+
 def parseParameter(s):
 	"""This function is responsible for parsing parameters in the skin, it can parse integers, floats, hex colors, hex integers, named colors, fonts and strings."""
 	if s[0] == "*":  # String.
@@ -623,7 +627,7 @@ def parseServiceListTemplates(tag, scope, pathSkin):
 		if "carousel" in a:
 			entry["carousel"] = parseBoolean("carousel", a["carousel"])
 		if "carouselFocus" in a:
-			entry["carouselFocus"] = -1 if str(a["carouselFocus"]).lower() in ("center", "centre", "middle") else int(a["carouselFocus"])
+			entry["carouselFocus"] = parseCarouselFocus(a["carouselFocus"])
 		# itemSpacing="x,y" (or one value for both): the gap between the tiles
 		if "itemSpacing" in a:
 			entry["spacingX"], entry["spacingY"] = parseSpacing(a["itemSpacing"])
@@ -1164,7 +1168,7 @@ class AttributeParser:
 
 	def carouselFocus(self, value):  # Slot (counted from 0) of the carousel that holds the selection, "center" (default) for the middle one.
 		try:
-			self.guiObject.setCarouselFocus(-1 if str(value).lower() in ("center", "centre", "middle") else int(value))
+			self.guiObject.setCarouselFocus(parseCarouselFocus(value))
 		except ValueError:
 			print("[Skin] Error: Invalid carouselFocus '%s'!  Must be 'center' or a slot number such as '1'." % value)
 
