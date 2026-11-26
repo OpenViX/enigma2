@@ -519,7 +519,7 @@ def parseServiceListTemplates(tag, scope, pathSkin):
 			if key in a:
 				item[key] = a[key].lower()
 		if "stackFill" in a:
-			item["stackFill"] = 1 if a["stackFill"].lower() in ("1", "true", "yes", "on") else 0
+			item["stackFill"] = parseBoolean("stackFill", a["stackFill"])
 		if "pos" in a:
 			pos = [parseScale(x.strip()) for x in a["pos"].split(",")]
 			if len(pos) == 4:
@@ -550,7 +550,7 @@ def parseServiceListTemplates(tag, scope, pathSkin):
 					print("[Skin] servicelisttemplates: pixmap '%s' (%s) not found!" % (a[key], resolved))
 		for key in ("ellipsis", "reserve", "keepAspect"):
 			if key in a:
-				item[key] = 1 if a[key].lower() in ("1", "true", "yes", "on") else 0
+				item[key] = parseBoolean(key, a[key])
 		return item
 
 	def parseRow(node):
@@ -621,7 +621,7 @@ def parseServiceListTemplates(tag, scope, pathSkin):
 			if key in a:
 				entry[key] = parseScale(a[key]) if key.startswith("carouselCenter") else int(a[key])
 		if "carousel" in a:
-			entry["carousel"] = 1 if str(a["carousel"]).lower() in ("1", "true", "yes") else 0
+			entry["carousel"] = parseBoolean("carousel", a["carousel"])
 		if "carouselFocus" in a:
 			entry["carouselFocus"] = -1 if str(a["carouselFocus"]).lower() in ("center", "centre", "middle") else int(a["carouselFocus"])
 		# itemSpacing="x,y" (or one value for both): the gap between the tiles
@@ -642,7 +642,7 @@ def parseServiceListTemplates(tag, scope, pathSkin):
 				entry["rows"].append(row)
 		serviceRows = len([x for x in entry["rows"] if x["for"] == "service"])
 		large = entry.get("large")
-		entry["large"] = (1 if serviceRows > 1 else 0) if large is None else (1 if str(large).lower() in ("1", "true", "yes") else 0)
+		entry["large"] = (1 if serviceRows > 1 else 0) if large is None else parseBoolean("large", str(large))
 		# no itemHeight in the template: the itemHeight of the widget is used
 		templates[name] = entry
 
