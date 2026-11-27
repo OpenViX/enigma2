@@ -90,24 +90,24 @@
 	</screen>
 
 	<screen name="InfoBarSummary" position="fill" resolution="480,320">
-		<widget source="session.CurrentService" render="Label" position="0,5" size="480,70" font="FdLcD;55" halign="center" valign="center" foregroundColor="FdLcdTitleForeground" >
+		<widget source="session.CurrentService" render="Label" position="0,5" size="480,70" font="FdLcD;55" halign="center" valign="center" foregroundColor="FdLcdTitleForeground" ellipsis="off">
 			<convert type="ServiceName">Name</convert>
 		</widget>
-		<widget source="session.Event_Now" render="Label" position="0,70" size="480,90" font="FdLcD;40" halign="center" valign="center" >
+		<widget source="session.Event_Now" render="Label" position="center,70" size="460,90" font="FdLcD;38" halign="center" valign="center" ellipsis="off">
 			<convert type="EventName">Name</convert>
 		</widget>
 		<widget source="session.Event_Now" render="Progress" position="20,170" size="440,20" borderWidth="1" >
 			<convert type="EventTime">Progress</convert>
 		</widget>
-		<widget source="session.Event_Now" render="Label" position="20,200" size="130,40" font="FdLcD;40" halign="center" valign="center" >
+		<widget source="session.Event_Now" render="Label" position="20,200" size="130,40" font="FdLcD;40" halign="center" valign="center"  ellipsis="off">
 			<convert type="EventTime">StartTime</convert>
 			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
-		<widget source="session.Event_Now" render="Label" position="150,200" size="130,40" font="FdLcD;40" halign="center" valign="center" >
+		<widget source="session.Event_Now" render="Label" position="150,200" size="130,40" font="FdLcD;40" halign="center" valign="center"  ellipsis="off">
 			<convert type="EventTime">EndTime</convert>
 			<convert type="ClockToText">Format:- %H:%M</convert>
 		</widget>
-		<widget source="session.Event_Now" render="Label" position="350,200" size="100,40" font="FdLcD;40" halign="right" valign="center" >
+		<widget source="session.Event_Now" render="Label" position="350,200" size="100,40" font="FdLcD;40" halign="right" valign="center"  ellipsis="off">
 			<convert type="EventTime">VFDRemaining</convert>
 			<convert type="RemainingToText">VFD</convert>
 		</widget>
@@ -118,24 +118,24 @@
 
 <!-- channelselection -->
 	<screen name="ChannelSelectionSummary" position="fill" resolution="480,320">
-		<widget source="parent.ServiceEvent" render="Label" position="0,5" size="480,70" font="FdLcD;55" halign="center" valign="center" foregroundColor="FdLcdTitleForeground" >
+		<widget source="parent.ServiceEvent" render="Label" position="0,5" size="480,70" font="FdLcD;55" halign="center" valign="center" foregroundColor="FdLcdTitleForeground"  ellipsis="off">
 			<convert type="ServiceName">Name</convert>
 		</widget>
-		<widget source="parent.ServiceEvent" render="Label" position="0,70" size="480,90" font="FdLcD;40" halign="center" valign="center" >
+		<widget source="parent.ServiceEvent" render="Label" position="center,70" size="460,90" font="FdLcD;38" halign="center" valign="center" ellipsis="off">
 			<convert type="EventName">Name</convert>
 		</widget>
 		<widget source="parent.ServiceEvent" render="Progress" position="20,170" size="440,20" borderWidth="1" >
 			<convert type="EventTime">Progress</convert>
 		</widget>
-		<widget source="parent.ServiceEvent" render="Label" position="20,200" size="130,40" font="FdLcD;40" halign="center" valign="center" >
+		<widget source="parent.ServiceEvent" render="Label" position="20,200" size="130,40" font="FdLcD;40" halign="center" valign="center"  ellipsis="off">
 			<convert type="EventTime">StartTime</convert>
 			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
-		<widget source="parent.ServiceEvent" render="Label" position="150,200" size="130,40" font="FdLcD;40" halign="center" valign="center" >
+		<widget source="parent.ServiceEvent" render="Label" position="150,200" size="130,40" font="FdLcD;40" halign="center" valign="center"  ellipsis="off">
 			<convert type="EventTime">EndTime</convert>
 			<convert type="ClockToText">Format:- %H:%M</convert>
 		</widget>
-		<widget source="parent.ServiceEvent" render="Label" position="350,200" size="100,40" font="FdLcD;40" halign="right" valign="center" >
+		<widget source="parent.ServiceEvent" render="Label" position="350,200" size="100,40" font="FdLcD;40" halign="right" valign="center" ellipsis="off">
 			<convert type="EventTime">VFDRemaining</convert>
 			<convert type="RemainingToText">VFD</convert>
 		</widget>
@@ -146,24 +146,24 @@
 
 <!-- EPG Screens -->
 	<screen name="EPGSelectionSummary" position="fill" resolution="480,320">
-		<widget source="parent.Service" render="Label" position="0,5" size="480,70" font="FdLcD;55" halign="center" valign="center" foregroundColor="FdLcdTitleForeground" >
+		<widget source="parent.Service" render="Label" position="0,5" size="480,70" font="FdLcD;55" halign="center" valign="center" foregroundColor="FdLcdTitleForeground" ellipsis="off">
 			<convert type="ServiceName">Name</convert>
 		</widget>
-		<widget source="parent.Event" render="Label" position="0,70" size="480,90" font="FdLcD;40" halign="center" valign="center" >
+		<widget source="parent.Event" render="Label" position="0,70" size="480,90" font="FdLcD;38" halign="center" valign="center" ellipsis="off">
 			<convert type="EventName">Name</convert>
 		</widget>
 		<widget source="parent.Event" render="Progress" position="20,170" size="440,20" borderWidth="1" >
 			<convert type="EventTime">Progress</convert>
 		</widget>
-		<widget source="parent.Event" render="Label" position="20,200" size="130,40" font="FdLcD;40" halign="center" valign="center" >
+		<widget source="parent.Event" render="Label" position="20,200" size="130,40" font="FdLcD;40" halign="center" valign="center" ellipsis="off">
 			<convert type="EventTime">StartTime</convert>
 			<convert type="ClockToText">Format:%H:%M</convert>
 		</widget>
-		<widget source="parent.Event" render="Label" position="150,200" size="130,40" font="FdLcD;40" halign="center" valign="center" >
+		<widget source="parent.Event" render="Label" position="150,200" size="130,40" font="FdLcD;40" halign="center" valign="center" ellipsis="off">
 			<convert type="EventTime">EndTime</convert>
 			<convert type="ClockToText">Format:- %H:%M</convert>
 		</widget>
-		<widget source="parent.Event" render="Label" position="350,200" size="100,40" font="FdLcD;40" halign="right" valign="center" >
+		<widget source="parent.Event" render="Label" position="350,200" size="100,40" font="FdLcD;40" halign="right" valign="center" ellipsis="off">
 			<convert type="EventTime">VFDRemaining</convert>
 			<convert type="RemainingToText">VFD</convert>
 		</widget>
