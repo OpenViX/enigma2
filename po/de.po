@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 14:35+0000\n"
+"POT-Creation-Date: 2026-11-27 19:08+0000\n"
 "PO-Revision-Date: 2026-02-07 11:44+0200\n"
 "Last-Translator: xcentaurix\n"
 "Language-Team: AndyBlacburn, j-ot, Trial, xcentaurix\n"
@@ -7751,6 +7751,12 @@ msgstr "Wenn auf 'Standard' gesetzt, funktionieren Zahlen-Tasten Seite hoch/runt
 msgid "If set to 'yes' channels without EPG will not be shown."
 msgstr "Sollen Sender ohne EPG nicht angezeigt werden?"
 
+msgid "If set to 'yes' it will show the 'PO' packages in browser."
+msgstr "Sollen die 'PO' Pakete im Plugin-Browser angezeigt werden?"
+
+msgid "If set to 'yes' it will show the 'SRC' packages in browser."
+msgstr "Sollen die 'SRC' Pakete im Plugin-Browser angezeigt werden?"
+
 msgid "If set to 'yes' shows a small TV screen in the EPG."
 msgstr "Soll ein PiG (kleines TV-Bild) im EPG angezeigt werden?"
 
@@ -10290,6 +10296,9 @@ msgstr "Öffne 'Installiere Plugins' Menü"
 msgid "Open 'Remove Plugins' screen"
 msgstr "Öffne 'Plugins löschen' Menü"
 
+msgid "Open PluginBrowser setup screen"
+msgstr "Öffne Plugin-Browser Einstellungen"
+
 msgid "Open RDS/RASS screen"
 msgstr "Öffne RDS/RASS-Anzeige"
 
@@ -11146,6 +11155,9 @@ msgstr "Pluginbrowser Aktionen"
 
 msgid "Plugin browser"
 msgstr "Plugins"
+
+msgid "Plugin browser settings"
+msgstr "Plugin-Browser Einstellungen"
 
 msgid "Plugin install"
 msgstr "Plugin-Installation"
@@ -13786,6 +13798,9 @@ msgstr "Einstellungen, Informationen und weitere Funktionen"
 msgid "Setup"
 msgstr "Konfiguration"
 
+msgid "Setup Actions"
+msgstr "Einrichtungsaktinen"
+
 msgid "Setup how to control the channel changing."
 msgstr "Konfiguriere den Senderwechsel."
 
@@ -14150,6 +14165,9 @@ msgstr "Zeige Einfach-EPG"
 msgid "Show single epg for current channel"
 msgstr "Zeige Einzel-EPG für den aktuellen Sender"
 
+msgid "Show source packages"
+msgstr "Zeige Source-Pakete"
+
 msgid "Show status icons in movie list"
 msgstr "Zeige Status-Icons in der Filmliste"
 
@@ -14203,6 +14221,9 @@ msgstr "Zeige Zeit 'Verbleibend/Verstrichen' *"
 
 msgid "Show timer list"
 msgstr "Zeige Timerliste"
+
+msgid "Show translation packages"
+msgstr "Zeige Übersetzungspakete"
 
 msgid "Show transponder info"
 msgstr "Transponder-Info anzeigen"
