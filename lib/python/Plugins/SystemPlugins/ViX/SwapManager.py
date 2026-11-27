@@ -272,7 +272,7 @@ class VIXSwap(Screen):
 				self["autostart_on"].show()
 				self["autostart_off"].hide()
 				self.swap_active = self.swap_Factive = True
-			elif name == self.swap_Pname and not self.swap_Fname:	# only the swap partition shown (not zram, the swap in RAM)
+			elif name == self.swap_Pname and not self.swap_Fname:  # only the swap partition shown (not zram, the swap in RAM)
 				self.swap_active = True
 		if self.swap_Pactive:						# a swap partition of a disk is active
 			self.swap_active = True
@@ -321,7 +321,7 @@ class VIXSwap(Screen):
 				else:
 					scanning = _("Enable SWAP at startup")
 
-				if self.swap_name == _("manufacturer defined swap"):	# switched on by the image at every boot: the keys are blank
+				if self.swap_name == _("manufacturer defined swap"):  # switched on by the image at every boot: the keys are blank
 					self["autostart_off"].hide()
 					self["autostart_on"].show()
 					self["key_yellow"].setText("")
@@ -428,7 +428,7 @@ class VIXSwap(Screen):
 			self.Console.eBatch(self.commands, self.updateSwap, debug=True)
 
 	def autoSsWap(self):
-		if self.diskSwaps or self.swap_name == _("manufacturer defined swap"):	# the key is blank: switched on at every boot
+		if self.diskSwaps or self.swap_name == _("manufacturer defined swap"):  # the key is blank: switched on at every boot
 			return
 		if self.swap_name:
 			if config.swapmanager.swapautostart.value:
